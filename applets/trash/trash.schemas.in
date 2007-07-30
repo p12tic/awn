@@ -1,0 +1,18 @@
+<gconfschemafile>
+    <schemalist>
+    
+      <schema>
+        <key>/schemas/apps/awn-trash/prefs/show_count</key>
+        <owner>awn-trash</owner>
+        <type>bool</type>
+        <default>False</default>
+        <locale name="C">
+          <short>Whether the trash applet should show a count on its icon</short>
+          <long></long>
+        </locale>
+      </schema>
+      
+       
+    </schemalist>
+
+</gconfschemafile>  

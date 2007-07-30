@@ -1,0 +1,89 @@
+avant-window-navigator	0.1.1-svn
+
+./autogen.sh --prefix=/usr && make && make install
+
+enjoy!!
+
+launch with avant-window-navigator OR Applications->Accessories->Avant Window Navigator
+
+configure with avant-preferences OR System->Preferences(->More Preferences)->Avant Preferences
+
+New Features In SVN (newest first):
+===================================
+
+* Merged patch by Angafirith (from the forums) which allows you to resize Awn
+  by changing the /apps/avant-window-navigator/bar/bar_height varibale, and then
+  restarting. Be warned, changing the variable to a non-standard icon size
+  will cause you to have very blurry icons (because apps don't set 36x36 icons,
+  for instance), so the best siz4es to choose from, for the moment, are:
+  24, 32, 48, 64, 128, 256 (if your feeling brave :-). I'll think of a way 
+  around this in a bit.
+
+* Hey hey hey, the task manager is now an (internal) applet :). This means you can order it like the other applets, and you need to add it to you configuration, just like you have to with any other applet..
+
+* New separator applet.
+
+****
+
+Move to applets infrastructure. Please do not report bugs at the moment (unless they consist of you not being able to load applets at all). I am aware of most of the issues, and I am trying to fix them as the day progresses :-).
+
+Anyway, you have a Trash & Workspace switcher applet to keep you happy for now.
+There is a lot of polish still to come, so please don't think that this is it.
+
+No notification area applet as I cannot get it to reliably work with RGBA, I have, however, included the code, as I am working on it, and hope to make it work ASAP.
+
+****
+
+* Added a basic GUI for configuring launchers, accessable through the right-click menu.
+
+* Changing the positions of launchers in gconf will update the positions of launchers on the bar automatically :). Now just to create a gui for it!
+
+* New custom icon interface (right-click->preferences->Change Icon). It will work without crashing Awn, which is helpful :).
+
+* Better info support for tasks. Swapped big circle for a rounded rectangle. Makes font smaller depending on size of text.
+
+* Bar now resizes when it is too large for screen. Its still under testing, so be nice!
+
+* Additional launcher->window matching code, should be much better now
+
+* Beryl thumbnail works now, thanks to some help from its creator! If it doesn't work straight away, just click a window or launcher on the bar, and everything should work perfectly :).
+
+* You can now add menu's through dbus! Check out the new Rhythmbox plugin in /plugins/Rhythmbox. Installation is the same as before!
+
+* Awn catches theme-changes signals and updates the launcher icons (window icons are automatic)
+
+* Autohide now supports D&D
+
+* Merged patch by James Willcox that makes the hover effect actually 'bounch' rathe rthan just go up and down.
+
+* Fixed LOTS of small errors & warnings (thanks to Chirstian Kirbach). I fixed what was remaining, plus startup errors, separator positioning errors, and a memory leak in awn-x.c
+
+* Elementry autohide support :). set /apps/avant-window-navigator/auto_hide to TRUE. Once hidden, the 'hot spot' is the bottom 2px of you monitor. It doesn't always hide, but I am working on it. Also, I promise to make it look cooler!
+
+* Awn now has a dbus backend :). Look under 'plugins' for an example. Chck blog for more info, and how to write your own.
+
+****NOTICE*** fade_effect won't work for a while as I am rethinking the effect code.
+
+* Middle-clicking an active launcher will launch that application again. (Modified the patch by Tervi55)
+
+* You can optionally have a notification when a window title changes, byt settings /apps/avant-window-navigator/app/name_change_notify to TRUE. Patch by trevi55.
+
+* Optionally sets _NET_WM_STRUT & _NEW_WM_STRUT_PARTIAL (that means that windows don't go under Awn when they are maximised ;) If you want to activate this behaviour, set '/apps/avant-window-navigator/panel_mode' to TRUE. If you switch it off again, you'll have to restart Awn to see the changes.
+
+*  Made the separator slightly smoother, it still needs work!
+
+*  You can now choose between Awn style arrows, or the "dock" style arrows, and also the arrow colour. Ammended avant-preferences to match.
+
+*  Text has background! You can load up avant-preferences and set the background color. If you don't like it, just set the background color alpha to transparent. The drawing is a bit pixelated sometimes, but I am working on it!
+
+*  Dual screen support! Look under /apps/avant-window-navigator/ and set the monitor_width and monitor_height variables. Then set force_monitor to TRUE, and start up Awn. ATM this only works for the 1st screen. Single screen users should not be affected.
+
+*  Added a new mouse-over effect, it is extreme alpha software, so be careful! Activate it by starting up GConf editor, go to /apps/avant-window-navigator/app/ and set  'fade_effect' to TRUE. Don't report bugs! I know them already, however report new ideas!
+
+*  New preference window to accomodate the separator settings.
+*  You can have a separator between them
+*  Launchers and tasks are now in two different hboxs.
+*  1 sec delay before a window activates while you are dragging.
+*  Bar now has menu for proper exit. Right click on either edge of the bar.
+*  Drag anywhere on bar, not just on another icon.
+*  Drag & Drop support for URIs on launchers! Including multiple files!

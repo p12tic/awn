@@ -1,0 +1,229 @@
+# en_Gb Translation.
+# Copyright (C) 2007 Neil J. Patel
+# This file is distributed under the same license as the avant-window-navigator package.
+# Neil J. Patel <njpatel@gmail.com>, 2007
+# Neil Patel <njpatel@gmail.com>, 2007.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-23 15:51+0100\n"
+"PO-Revision-Date: 2007-06-22 17:44-0400\n"
+"Last-Translator: Javier Aravena <phrodo.00@gmail.com>\n"
+"Language-Team: Spanish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../applets/switcher/applet.c:116
+msgid "Rows:"
+msgstr ""
+
+#: ../applets/switcher/applet.c:128
+msgid "Width:"
+msgstr ""
+
+#: ../applets/switcher/applet.c:140
+msgid "Height:"
+msgstr ""
+
+#: ../applets/trash/trashapplet.glade.h:1
+#, fuzzy
+msgid "<b>From:</b>"
+msgstr "<b>Flechas</b>"
+
+#: ../applets/trash/trashapplet.glade.h:2
+msgid "<big><b>Emptying the Trash</b></big>"
+msgstr ""
+
+#: ../applets/trash/trashapplet.glade.h:3
+msgid "Emptying the Trash"
+msgstr ""
+
+#: ../avant-preferences/window.glade.h:1
+msgid "<b>Active Icon</b>"
+msgstr "<b>Icono activo</b>"
+
+#: ../avant-preferences/window.glade.h:2
+msgid "<b>Arrows</b>"
+msgstr "<b>Flechas</b>"
+
+#: ../avant-preferences/window.glade.h:3
+#, fuzzy
+msgid "<b>Bar behaviour</b>"
+msgstr "<b>Separador</b>"
+
+#: ../avant-preferences/window.glade.h:4
+msgid "<b>Borders</b>"
+msgstr "<b>Bordes</b>"
+
+#: ../avant-preferences/window.glade.h:5
+msgid "<b>Corners</b>"
+msgstr "<b>Esquinas</b>"
+
+#: ../avant-preferences/window.glade.h:6
+msgid "<b>Gradient</b>"
+msgstr "<b>Degradado</b>"
+
+#: ../avant-preferences/window.glade.h:7
+msgid "<b>Highlight</b>"
+msgstr "<b>Resaltado</b>"
+
+#: ../avant-preferences/window.glade.h:8
+msgid "<b>Pattern</b>"
+msgstr "<b>Patrón</b>"
+
+#: ../avant-preferences/window.glade.h:9
+msgid "<b>Separator</b>"
+msgstr "<b>Separador</b>"
+
+#: ../avant-preferences/window.glade.h:10
+msgid "<b>Text</b>"
+msgstr "<b>Texto</b>"
+
+#: ../avant-preferences/window.glade.h:11
+msgid "<b>Windows</b>"
+msgstr "<b>Ventanas</b>"
+
+#: ../avant-preferences/window.glade.h:12
+msgid "Auto hide bar when not in use"
+msgstr ""
+
+#: ../avant-preferences/window.glade.h:13
+msgid "Avant Preferences"
+msgstr "Preferencias de Avant"
+
+#: ../avant-preferences/window.glade.h:14
+msgid "Background color:"
+msgstr "Color de fondo:"
+
+#: ../avant-preferences/window.glade.h:15
+msgid "Bar Appearance"
+msgstr "Apariencia de la barra"
+
+#: ../avant-preferences/window.glade.h:16
+msgid "Bold"
+msgstr "Negrita"
+
+#: ../avant-preferences/window.glade.h:17
+msgid "Color:"
+msgstr "Color:"
+
+#: ../avant-preferences/window.glade.h:18
+msgid "Enable pattern"
+msgstr "Activar patrón"
+
+#: ../avant-preferences/window.glade.h:19
+msgid "Enable rounded corners"
+msgstr "Activar bordes redondeados"
+
+#: ../avant-preferences/window.glade.h:20
+msgid "Fade effect (experimental)"
+msgstr ""
+
+#: ../avant-preferences/window.glade.h:21
+msgid "First step color:"
+msgstr "Primer color:"
+
+#: ../avant-preferences/window.glade.h:22
+msgid "Font size:"
+msgstr "Tamaño del texto:"
+
+#: ../avant-preferences/window.glade.h:23
+msgid "General"
+msgstr "General"
+
+#: ../avant-preferences/window.glade.h:24
+#, fuzzy
+msgid "Glass Engine"
+msgstr "Motor de vidrio"
+
+#: ../avant-preferences/window.glade.h:25
+msgid "Internal border:"
+msgstr "Borde interno"
+
+#: ../avant-preferences/window.glade.h:26
+msgid "Italic"
+msgstr "Cursiva"
+
+#: ../avant-preferences/window.glade.h:27
+msgid "Main border:"
+msgstr "Borde principal"
+
+#: ../avant-preferences/window.glade.h:28
+msgid "Maximized windows don't cover the bar (requires restart)"
+msgstr ""
+
+#: ../avant-preferences/window.glade.h:29
+#, fuzzy
+msgid "Pattern Engine"
+msgstr "Motor de Patrones"
+
+#: ../avant-preferences/window.glade.h:30
+msgid "Second step color:"
+msgstr "Segundo color:"
+
+#: ../avant-preferences/window.glade.h:31
+msgid "Select A File"
+msgstr "Seleccione un archivo"
+
+#: ../avant-preferences/window.glade.h:32
+msgid "Separator color:"
+msgstr "Color del separador:"
+
+#: ../avant-preferences/window.glade.h:33
+msgid "Shadow color:"
+msgstr "Color de la sombra:"
+
+#: ../avant-preferences/window.glade.h:34
+msgid "Show separator between launchers and tasks"
+msgstr "Mostrar separador entre lanzadores y tareas"
+
+#: ../avant-preferences/window.glade.h:35
+msgid "Show windows from all viewports"
+msgstr "Mostrar ventanas de todas las pantallas virtuales"
+
+#: ../avant-preferences/window.glade.h:36
+msgid "Task Appearance"
+msgstr "Aparencia de las tareas"
+
+#: ../avant-preferences/window.glade.h:37
+msgid "Tasks have arrows"
+msgstr "Las tareas tienen flechas"
+
+#: ../avant-preferences/window.glade.h:38
+msgid "The bar automatically hides when not used"
+msgstr ""
+
+#: ../avant-preferences/window.glade.h:39
+msgid "Transparency:"
+msgstr "Transparencia"
+
+#: ../avant-preferences/window.glade.h:40
+msgid "Unused icons fade when mouse-over"
+msgstr ""
+
+#: ../avant-preferences/window.glade.h:41
+msgid "Windows don't overlap the bar if this is set"
+msgstr ""
+
+#: ../avant-applets/avant-applets.glade.h:1
+msgid "Add Applet"
+msgstr ""
+
+#: ../avant-applets/avant-applets.glade.h:2
+#, fuzzy
+msgid "Avant Applet Preferences"
+msgstr "Preferencias de Avant"
+
+#: ../avant-applets/avant-applets.glade.h:3
+#: ../avant-launchers/avant-launchers.glade.h:2
+msgid "Positions"
+msgstr ""
+
+#: ../avant-launchers/avant-launchers.glade.h:1
+#, fuzzy
+msgid "Avant Launcher Preferences"
+msgstr "Preferencias de Avant"

@@ -1,0 +1,82 @@
+AC_INIT([avant-window-navigator], [0.1.1], [])
+
+AC_CONFIG_SRCDIR([.])
+AC_CONFIG_HEADERS([config.h])
+
+AM_INIT_AUTOMAKE([tar-ustar])
+AM_MAINTAINER_MODE
+
+AC_SUBST([ACLOCAL_AMFLAGS], ["\${ACLOCAL_FLAGS}"])
+
+AC_ISC_POSIX
+AC_PROG_CC
+AC_STDC_HEADERS
+AM_PROG_LIBTOOL
+
+dnl CFLAGS
+CFLAGS="$CFLAGS -Wall -fno-strict-aliasing -fmessage-length=0 -D_FORTIFY_SOURCE=2"
+
+dnl ==============================================
+dnl gconf stuff
+dnl ==============================================
+AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+if test x"$GCONFTOOL" = xno; then
+  AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
+fi
+
+dnl ==============================================
+dnl translation support
+dnl ==============================================
+
+GETTEXT_PACKAGE=avant-window-navigator
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package])
+ALL_LINGUAS="cs da de_DE el_GR en_GB es fi_FI fr_FR it_IT no_NO pt_BR sv ru"
+
+IT_PROG_INTLTOOL([0.34])
+AM_GLIB_GNU_GETTEXT
+
+slicelocaledir='${prefix}/${DATADIRNAME}/locale'
+AC_SUBST(slicelocaledir)
+
+dnl ==============================================
+dnl Check that we meet the  dependencies
+dnl ==============================================
+AM_PATH_GLIB_2_0(2.8.0,,,gobject)
+
+COMMON_MODULES="glib-2.0 gobject-2.0 gtk+-2.0 gdk-2.0"
+
+PKG_CHECK_MODULES(AWN, [ $COMMON_MODULES libwnck-1.0 gnome-desktop-2.0 libgnome-2.0 gnome-vfs-2.0 gconf-2.0 x11 xproto dbus-glib-1 libglade-2.0 xdamage xcomposite xrender])
+AC_SUBST(AWN_CFLAGS)
+AC_SUBST(AWN_LIBS)
+
+dnl ==============================================
+dnl DBUS
+dnl ==============================================
+
+DBUS_GLIB_BIN="`$PKG_CONFIG --variable=exec_prefix dbus-glib-1`/bin"
+AC_SUBST(DBUS_GLIB_BIN)
+
+dnl ==============================================
+dnl GConf
+dnl ==============================================
+AM_GCONF_SOURCE_2
+
+AC_OUTPUT([
+Makefile
+avant-preferences/Makefile
+avant-launchers/Makefile
+avant-applets/Makefile
+libawn/Makefile
+src/Makefile
+awn-applet-activation/Makefile
+applets/Makefile
+applets/separator/Makefile
+applets/switcher/Makefile
+applets/trash/Makefile
+applets/notification-area/Makefile
+data/Makefile
+data/active/Makefile
+po/Makefile.in
+awn.pc
+])

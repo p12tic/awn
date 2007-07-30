@@ -1,0 +1,228 @@
+# Greek translation of avant-window-navigator
+# Copyright (C) 2007 avant-window-navigator'S COPYRIGHT HOLDER
+# Copyright (C) 2007 Ado Papas <ado.papas@yahoo.gr>
+# This file is distributed under the same license as the PACKAGE package.
+# Ado Papas <ado.papas@yahoo.gr>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: avant-window-navigator 0.1.1-svn\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-23 15:51+0100\n"
+"PO-Revision-Date: 2007-03-22 14:03+0200\n"
+"Last-Translator: ado papas <ado.papas@yahoo.gr>\n"
+"Language-Team: ado papas <ado.papas@yahoo.gr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Greek\n"
+"X-Poedit-Country: GREECE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../applets/switcher/applet.c:116
+msgid "Rows:"
+msgstr ""
+
+#: ../applets/switcher/applet.c:128
+msgid "Width:"
+msgstr ""
+
+#: ../applets/switcher/applet.c:140
+msgid "Height:"
+msgstr ""
+
+#: ../applets/trash/trashapplet.glade.h:1
+#, fuzzy
+msgid "<b>From:</b>"
+msgstr "<b>Βέλη</b>"
+
+#: ../applets/trash/trashapplet.glade.h:2
+msgid "<big><b>Emptying the Trash</b></big>"
+msgstr ""
+
+#: ../applets/trash/trashapplet.glade.h:3
+msgid "Emptying the Trash"
+msgstr ""
+
+#: ../avant-preferences/window.glade.h:1
+msgid "<b>Active Icon</b>"
+msgstr "<b>Ενεργό εικονίδιο</b>"
+
+#: ../avant-preferences/window.glade.h:2
+msgid "<b>Arrows</b>"
+msgstr "<b>Βέλη</b>"
+
+#: ../avant-preferences/window.glade.h:3
+#, fuzzy
+msgid "<b>Bar behaviour</b>"
+msgstr "<b>Διαχωριστικό</b>"
+
+#: ../avant-preferences/window.glade.h:4
+msgid "<b>Borders</b>"
+msgstr "<b>Περιγράμματα</b>"
+
+#: ../avant-preferences/window.glade.h:5
+msgid "<b>Corners</b>"
+msgstr "<b>Γωνίες</b>"
+
+#: ../avant-preferences/window.glade.h:6
+msgid "<b>Gradient</b>"
+msgstr "<b>Φωτοσκιάσεις</b>"
+
+#: ../avant-preferences/window.glade.h:7
+msgid "<b>Highlight</b>"
+msgstr "<b>Τονισμός</b>"
+
+#: ../avant-preferences/window.glade.h:8
+msgid "<b>Pattern</b>"
+msgstr "<b>Μοτίβο</b>"
+
+#: ../avant-preferences/window.glade.h:9
+msgid "<b>Separator</b>"
+msgstr "<b>Διαχωριστικό</b>"
+
+#: ../avant-preferences/window.glade.h:10
+msgid "<b>Text</b>"
+msgstr "<b>Κείμενο</b>"
+
+#: ../avant-preferences/window.glade.h:11
+msgid "<b>Windows</b>"
+msgstr "<b>Παράθυρα</b>"
+
+#: ../avant-preferences/window.glade.h:12
+msgid "Auto hide bar when not in use"
+msgstr ""
+
+#: ../avant-preferences/window.glade.h:13
+msgid "Avant Preferences"
+msgstr "Ρυθμίσεις του Avant"
+
+#: ../avant-preferences/window.glade.h:14
+msgid "Background color:"
+msgstr "Χρώμα παρασκηνίου:"
+
+#: ../avant-preferences/window.glade.h:15
+msgid "Bar Appearance"
+msgstr "Εμφάνιση Μπάρας"
+
+#: ../avant-preferences/window.glade.h:16
+msgid "Bold"
+msgstr "Έντονα"
+
+#: ../avant-preferences/window.glade.h:17
+msgid "Color:"
+msgstr "Χρώμα:"
+
+#: ../avant-preferences/window.glade.h:18
+msgid "Enable pattern"
+msgstr "Ενεργοποίηση μοτίβου"
+
+#: ../avant-preferences/window.glade.h:19
+msgid "Enable rounded corners"
+msgstr "Ενεργοποίηση στρογγυλεμένων άκρων"
+
+#: ../avant-preferences/window.glade.h:20
+msgid "Fade effect (experimental)"
+msgstr ""
+
+#: ../avant-preferences/window.glade.h:21
+msgid "First step color:"
+msgstr "Χρώμα πρώτου βήματος:"
+
+#: ../avant-preferences/window.glade.h:22
+msgid "Font size:"
+msgstr "Μέγεθος γραμματοσειράς:"
+
+#: ../avant-preferences/window.glade.h:23
+msgid "General"
+msgstr "Γενικά"
+
+#: ../avant-preferences/window.glade.h:24
+msgid "Glass Engine"
+msgstr "Μηχανή γυαλιού"
+
+#: ../avant-preferences/window.glade.h:25
+msgid "Internal border:"
+msgstr "Εσωτερικό περίγραμμα:"
+
+#: ../avant-preferences/window.glade.h:26
+msgid "Italic"
+msgstr "Πλάγια"
+
+#: ../avant-preferences/window.glade.h:27
+msgid "Main border:"
+msgstr "Βασικό περίγραμμα:"
+
+#: ../avant-preferences/window.glade.h:28
+msgid "Maximized windows don't cover the bar (requires restart)"
+msgstr ""
+
+#: ../avant-preferences/window.glade.h:29
+msgid "Pattern Engine"
+msgstr "Μηχανή Μοτίβων"
+
+#: ../avant-preferences/window.glade.h:30
+msgid "Second step color:"
+msgstr "Χρώμα δεύτερου βήματος:"
+
+#: ../avant-preferences/window.glade.h:31
+msgid "Select A File"
+msgstr "Επιλέξτε ένα αρχείο"
+
+#: ../avant-preferences/window.glade.h:32
+msgid "Separator color:"
+msgstr "Χρώμα διαχωριστικού:"
+
+#: ../avant-preferences/window.glade.h:33
+msgid "Shadow color:"
+msgstr "Χρώμα σκιάς:"
+
+#: ../avant-preferences/window.glade.h:34
+msgid "Show separator between launchers and tasks"
+msgstr "Προβολή διαχωριστικού μεταξύ εκκινητών και εργασιών"
+
+#: ../avant-preferences/window.glade.h:35
+msgid "Show windows from all viewports"
+msgstr "Προβολή παραθύρων από όλους τους χώρους εργασιών"
+
+#: ../avant-preferences/window.glade.h:36
+msgid "Task Appearance"
+msgstr "Εμφάνιση Εργασιών"
+
+#: ../avant-preferences/window.glade.h:37
+msgid "Tasks have arrows"
+msgstr "Οι εργασίες έχουν βέλη"
+
+#: ../avant-preferences/window.glade.h:38
+msgid "The bar automatically hides when not used"
+msgstr ""
+
+#: ../avant-preferences/window.glade.h:39
+msgid "Transparency:"
+msgstr "Διαφάνεια:"
+
+#: ../avant-preferences/window.glade.h:40
+msgid "Unused icons fade when mouse-over"
+msgstr ""
+
+#: ../avant-preferences/window.glade.h:41
+msgid "Windows don't overlap the bar if this is set"
+msgstr ""
+
+#: ../avant-applets/avant-applets.glade.h:1
+msgid "Add Applet"
+msgstr ""
+
+#: ../avant-applets/avant-applets.glade.h:2
+#, fuzzy
+msgid "Avant Applet Preferences"
+msgstr "Ρυθμίσεις του Avant"
+
+#: ../avant-applets/avant-applets.glade.h:3
+#: ../avant-launchers/avant-launchers.glade.h:2
+msgid "Positions"
+msgstr ""
+
+#: ../avant-launchers/avant-launchers.glade.h:1
+#, fuzzy
+msgid "Avant Launcher Preferences"
+msgstr "Ρυθμίσεις του Avant"

@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+apiversion=@CLUTTER_API_VERSION@
+
+Name: libawn
+Description: Avant-Window-Navigator applets/plugin library
+Version: @VERSION@
+Libs: -L${libdir} -lawn
+Cflags: -I${includedir}/libawn
+Requires: glib-2.0 gobject-2.0 gtk+-2.0 gdk-2.0 libgnome-2.0 gnome-vfs-2.0 gconf-2.0

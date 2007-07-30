@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<node name="/com/google/code/Awn/AppletManager">
+<interface name="com.google.code.Awn.AppletManager">
+<annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_applet_manager"/>
+
+	<method name="DeleteApplet">
+		<arg name="uid" type="s" direction="in" />
+	</method>
+	
+	<signal name="OrientChanged">
+		<arg type="d" name="orient"/>
+	</signal>
+
+	<signal name="HeightChanged">
+		<arg type="d" name="orient"/>
+	</signal>
+
+	<signal name="SizeChanged">
+		<arg type="d" name="x"/>
+	</signal>
+	
+	<signal name="DestroyNotify">
+	</signal>	
+
+	<signal name="DestroyApplet">
+		<arg type="s" name="uid"/>
+	</signal>	
+
+</interface>
+</node>

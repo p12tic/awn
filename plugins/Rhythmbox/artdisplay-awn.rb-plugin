@@ -1,0 +1,9 @@
+[RB Plugin]
+Loader=python
+Module=artdisplay-awn
+IAge=1
+Name=Art Display-awn
+Description=Displays art for the playing track in RHythmbox & Awn
+Authors=James Livingston <jrl@ids.org.au>
+Copyright=Copyright © 2006 james Livingston
+Website=http://www.rhythmbox.org
