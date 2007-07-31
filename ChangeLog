@@ -1,4 +1,9 @@
-22007-07-30  Anthony Arobone  <aarobone@gmail.com>
+2007-07-31  Neil J. Patel  <njpatel@gmail.com>
+
+	* test:
+	Remove test files.	
+
+2007-07-30  Anthony Arobone  <aarobone@gmail.com>
 
 	* applets/notification-area/applet.c: (awn_applet_factory_initp):
 	* applets/separator/applet.c: (awn_applet_factory_init):
@@ -8,7 +13,7 @@
 	* libawn/awn-applet.h:
 	Made applet hook func backwards comp
 
-007-07-30  Neil J. Patel  <njpatel@gmail.com>
+2007-07-30  Neil J. Patel  <njpatel@gmail.com>
 
 	* applets/taskman.desktop:
 	* applets/trash/trash.desktop:
