@@ -1,3 +1,11 @@
+2007-07-31  Neil J. Patel  <njp@o-hand.com>
+
+	* README:
+	Updated.
+
+	* prepare-ChangeLog.pl:
+	Removed as no longer necessary :-).
+
 2007-07-31  Neil J. Patel  <njpatel@gmail.com>
 
 	* test:

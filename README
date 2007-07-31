@@ -1,15 +1,26 @@
-avant-window-navigator	0.1.1-svn
+avant-window-navigator
 
-./autogen.sh --prefix=/usr && make && make install
+./autogen.sh && make && make install
 
 enjoy!!
 
-launch with avant-window-navigator OR Applications->Accessories->Avant Window Navigator
+launch with avant-window-navigator 
+OR 
+Applications->Accessories->Avant Window Navigator
 
-configure with avant-preferences OR System->Preferences(->More Preferences)->Avant Preferences
+configure with avant-preferences 
+OR 
+System->Preferences(->More Preferences)->Avant Preferences
 
-New Features In SVN (newest first):
+New Features In BZR (newest first):
 ===================================
+
+***
+
+Please read the ChangeLog for new features (or the forums) form now on please.
+As I want to make this into a proper README at some point :-).
+
+***
 
 * Merged patch by Angafirith (from the forums) which allows you to resize Awn
   by changing the /apps/avant-window-navigator/bar/bar_height varibale, and then
@@ -19,7 +30,9 @@ New Features In SVN (newest first):
   24, 32, 48, 64, 128, 256 (if your feeling brave :-). I'll think of a way 
   around this in a bit.
 
-* Hey hey hey, the task manager is now an (internal) applet :). This means you can order it like the other applets, and you need to add it to you configuration, just like you have to with any other applet..
+* Hey hey hey, the task manager is now an (internal) applet :). This means you 
+can order it like the other applets, and you need to add it to you configuration
+, just like you have to with any other applet..
 
 * New separator applet.
 
