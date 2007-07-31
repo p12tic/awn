@@ -1784,11 +1784,9 @@ awn_task_set_width (AwnTask *task, gint width)
 	if (priv->is_launcher) {
 		char * icon_name = gnome_desktop_item_get_icon (priv->item, priv->settings->icon_theme );
 		if (!icon_name)
-			priv->icon = awn_x_get_icon_for_window (priv->window, 
-                            width-6, width-6);
-                        priv->reflect = gdk_pixbuf_flip (priv->icon,FALSE);
-
-		priv->icon = icon_loader_get_icon_spec(icon_name, width-6, width-6);
+			priv->icon = awn_x_get_icon_for_window (priv->window, width-6, width-6);
+		else
+			priv->icon = icon_loader_get_icon_spec(icon_name, width-6, width-6);
 		g_free (icon_name);
         } else {
         	if (WNCK_IS_WINDOW (priv->window))
@@ -1798,6 +1796,7 @@ awn_task_set_width (AwnTask *task, gint width)
         }
         	
 	if (G_IS_OBJECT (priv->icon)) {
+		priv->reflect = gdk_pixbuf_flip (priv->icon,FALSE);
 	        priv->icon_width = gdk_pixbuf_get_width(priv->icon);
 		priv->icon_height = gdk_pixbuf_get_height(priv->icon);
 	}
@@ -1867,8 +1866,8 @@ awn_task_unset_custom_icon (AwnTask *task)
 		icon_name = gnome_desktop_item_get_icon (priv->item, priv->settings->icon_theme );
 		if (!icon_name)
 			priv->icon = awn_x_get_icon_for_window (priv->window, priv->settings->bar_height, priv->settings->bar_height);
-
-		priv->icon = icon_loader_get_icon_spec(icon_name,priv->settings->bar_height,priv->settings->bar_height);
+		else
+			priv->icon = icon_loader_get_icon_spec(icon_name,priv->settings->bar_height,priv->settings->bar_height);
 
                 g_free (icon_name);
         } else {
