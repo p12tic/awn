@@ -1,3 +1,8 @@
+2007-08-01  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* applets/taskman.desktop.in.in:
+	Fixes a typo in Launcher/TaskManager applet.
+
 2007-08-01 Mark Lee <avant-wn@lazymalevolence.com>
 
    * Add optional support for the Xfce4 desktop environment.
