@@ -1,3 +1,8 @@
+2007-08-01  haytjes  <hv1989@gmail.com>
+
+	* avant-preferences/avant-preferences.in.py:
+	Added some errors, when not all gconf entries are set. See bug #129639
+
 2007-08-01  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* applets/taskman.desktop.in.in:

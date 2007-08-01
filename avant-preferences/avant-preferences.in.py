@@ -196,7 +196,11 @@ class main:
 		w.destroy()
 	
 	def setup_color(self, key, colorbut):
-		color, alpha = make_color(self.client.get_string(key))
+		try:
+			color, alpha = make_color(self.client.get_string(key))
+		except TypeError:
+			raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
+
 		colorbut.set_color(color)
 		colorbut.set_alpha(alpha)
 		colorbut.connect("color-set", self.color_changed, key)
@@ -206,7 +210,11 @@ class main:
 		self.client.set_string(key, string)
 
 	def setup_scale(self, key, scale):
-		val = self.client.get_float(key)
+		try:
+			val = self.client.get_float(key)
+		except TypeError:
+			raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
+
 		val = 100 - (val * 100)
 		scale.set_value(val)
 		scale.connect("value-changed", self.scale_changed, key)
@@ -220,7 +228,11 @@ class main:
 		
 	
 	def setup_spin(self, key, spin):
-		spin.set_value(	self.client.get_float(key))
+		try:
+			spin.set_value(	self.client.get_float(key))
+		except TypeError:
+			raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
+
 		spin.connect("value-changed", self.spin_changed, key)
 	
 	def spin_changed(self, spin, key):
@@ -237,7 +249,10 @@ class main:
 		preview = gtk.Image()
 		chooser.set_preview_widget(preview)
 		chooser.connect("update-preview", self.update_preview, preview)
-		chooser.set_filename(self.client.get_string(key))
+		try:
+			chooser.set_filename(self.client.get_string(key))
+		except TypeError:
+			raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
 		chooser.connect("selection-changed", self.chooser_changed, key)
 	
 	def chooser_changed(self, chooser, key):
