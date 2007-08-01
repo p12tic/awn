@@ -31,7 +31,9 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 
+#ifdef USE_GNOME
 #include <libgnome/libgnome.h>
+#endif
 
 #include "xutils.h"
 #include "inlinepixbufs.h"
@@ -140,11 +142,18 @@ awn_x_get_icon_for_window (WnckWindow *window, gint width, gint height)
 			name->str[i] = '-';
 	}
 			
+#ifdef USE_GNOME
 	uri = gnome_util_prepend_user_home(name->str);
+#elif defined(USE_XFCE)
+	uri = g_string_free (g_string_prepend (name, g_get_home_dir ()), FALSE);
+#endif
 	
 	icon = gdk_pixbuf_new_from_file_at_scale (uri, width, height, TRUE, NULL);
 	 
+#ifdef USE_GNOME
+	/* free error under Xfce */
 	g_string_free (name, TRUE);
+#endif
 	g_free (uri);
 	
 	if (icon)
@@ -244,33 +253,54 @@ icon_loader_get_icon_spec( const char *name, int width, int height )
 }
 
 GdkPixbuf * 
-awn_x_get_icon_for_launcher (GnomeDesktopItem *item, gint width, gint height)
+awn_x_get_icon_for_launcher (DESKTOP_ITEM *item, gint width, gint height)
 {
 	GString *name = NULL;
 	gchar *uri = NULL;
 	GdkPixbuf *icon = NULL;
 		
+#ifdef USE_GNOME
 	name = g_string_new ( gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_EXEC));
+#elif defined(USE_XFCE)
+	gchar *app;
+	if (!xfce_desktop_entry_get_string (item, "Exec", FALSE, &app)) {
+		g_warning ("Could not get the value of 'Exec' from '%s'", xfce_desktop_entry_get_file (item));
+		return NULL;
+	}
+	name = g_string_new (app);
+#endif
 	name = g_string_prepend (name, ".awn/custom-icons/");
 	int i = 0;
 	for (i = 0; i < name->len; i++) {
 		if (name->str[i] == ' ')
 			name->str[i] = '-';
 	}	
+#ifdef USE_GNOME
 	uri = gnome_util_prepend_user_home(name->str);
+#elif defined(USE_XFCE)
+	uri = g_string_free (g_string_prepend (name, g_get_home_dir ()), FALSE);
+#endif
 	
 	//g_print ("%s\n", uri);
 	
 	icon = gdk_pixbuf_new_from_file_at_scale (uri, width, height, TRUE, NULL);
 	
+#ifndef USE_XFCE
 	g_string_free (name, TRUE);
+#endif
 	g_free (uri);
 	
 	if (icon)
 		return icon;
 	else {
 		char *icon_name;
+#ifdef USE_GNOME
 		icon_name = gnome_desktop_item_get_icon (item, gtk_icon_theme_get_default());
+#elif defined(USE_XFCE)
+		if (!xfce_desktop_entry_get_string (item, "Icon", FALSE, &icon_name)) {
+			g_warning ("Could not get the value of 'Icon' from '%s'", xfce_desktop_entry_get_file (item));
+		}
+#endif
 		icon = icon_loader_get_icon_spec (icon_name, width, height) ;
 		g_free (icon_name);
 		return icon;

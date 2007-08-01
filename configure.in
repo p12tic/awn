@@ -46,7 +46,34 @@ AM_PATH_GLIB_2_0(2.8.0,,,gobject)
 
 COMMON_MODULES="glib-2.0 gobject-2.0 gtk+-2.0 gdk-2.0"
 
-PKG_CHECK_MODULES(AWN, [ $COMMON_MODULES libwnck-1.0 gnome-desktop-2.0 libgnome-2.0 gnome-vfs-2.0 gconf-2.0 x11 xproto dbus-glib-1 libglade-2.0 xdamage xcomposite xrender])
+AH_TEMPLATE([DESKTOP_ITEM], [The freedesktop.org desktop entry implementation used.])
+
+AC_MSG_CHECKING([for specific desktop support])
+AC_ARG_WITH(desktop,
+            AS_HELP_STRING([--with-desktop=[gnome|xfce4]],
+                           [Specifies which desktop type for which to compile.  Current choices: xfce4, gnome]),
+            [case "$with_desktop" in
+                 gnome)
+                 DESKTOP_MODULES="gnome-desktop-2.0 libgnome-2.0 gnome-vfs-2.0"
+                 AC_DEFINE([DESKTOP_ITEM], [GnomeDesktopItem])
+                 AC_DEFINE(USE_GNOME, 1, [Define support for the Gnome desktop])
+                 AC_MSG_RESULT(Gnome)
+                 ;;
+                 xfce4)
+                 DESKTOP_MODULES="libxfce4util-1.0 >= 4.2 thunar-vfs-1"
+                 AC_DEFINE([DESKTOP_ITEM], [XfceDesktopEntry])
+                 AC_DEFINE(USE_XFCE, 1, [Define support for the Xfce4 desktop])
+                 AC_MSG_RESULT(Xfce4)
+                 ;;
+                 *) ;;
+             esac])
+if test -z "$DESKTOP_MODULES"; then
+    AC_MSG_ERROR([You must enable either Gnome or Xfce4 support])
+fi
+AM_CONDITIONAL(USE_GNOME, test "$with_desktop" = "gnome")
+AM_CONDITIONAL(USE_XFCE, test "$with_desktop" = "xfce4")
+
+PKG_CHECK_MODULES(AWN, [ $COMMON_MODULES libwnck-1.0 $DESKTOP_MODULES gconf-2.0 x11 xproto dbus-glib-1 libglade-2.0 xdamage xcomposite xrender])
 AC_SUBST(AWN_CFLAGS)
 AC_SUBST(AWN_LIBS)
 

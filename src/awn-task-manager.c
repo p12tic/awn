@@ -23,7 +23,6 @@
 
 #define WNCK_I_KNOW_THIS_IS_UNSTABLE 1
 #include <libwnck/libwnck.h>
-#include <libgnome/gnome-desktop-item.h>
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
@@ -38,6 +37,10 @@
 #include "awn-bar.h"
 
 #include "awn-marshallers.h"
+
+#ifdef USE_XFCE
+const gchar *categories[] = {"Name", "Exec", "Icon", "Path"};
+#endif
 
 #define AWN_TASK_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AWN_TYPE_TASK_MANAGER, AwnTaskManagerPrivate))
 
@@ -109,12 +112,16 @@ _load_launchers_func (const char *uri, AwnTaskManager *task_manager)
 {
 	AwnTaskManagerPrivate *priv;
 	GtkWidget *task = NULL;
-	GnomeDesktopItem *item= NULL;
+	DESKTOP_ITEM *item= NULL;
 
 	priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
 
+#ifdef USE_GNOME
 	item = gnome_desktop_item_new_from_file (uri,
 				GNOME_DESKTOP_ITEM_LOAD_ONLY_IF_EXISTS, NULL);
+#elif defined(USE_XFCE)
+	item = xfce_desktop_entry_new (uri, categories, G_N_ELEMENTS(categories));
+#endif
 	if (item == NULL)
 		return;
 
@@ -140,7 +147,11 @@ _load_launchers_func (const char *uri, AwnTaskManager *task_manager)
 		g_print("LOADED : %s\n", uri);
 	} else {
 		gtk_widget_destroy(task);
+#ifdef USE_GNOME
 		gnome_desktop_item_unref(item);
+#elif defined(USE_XFCE)
+		g_object_unref(item);
+#endif
 		g_print("FAILED : %s\n", uri);
 	}
 }
@@ -531,7 +542,7 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 
 	AwnTaskManagerPrivate *priv;
 	GtkWidget *task = NULL;
-	GnomeDesktopItem *item= NULL;
+	DESKTOP_ITEM *item= NULL;
 	GError *err = NULL;
 	GString *uri;
 	AwnSettings *settings;
@@ -551,8 +562,12 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 		uri = g_string_truncate(uri, res+1);
 
 	g_print("Desktop file: %s\n", uri->str);
+#ifdef USE_GNOME
 	item = gnome_desktop_item_new_from_file (uri->str,
 				GNOME_DESKTOP_ITEM_LOAD_ONLY_IF_EXISTS, &err);
+#elif defined(USE_XFCE)
+	item = xfce_desktop_entry_new(uri->str, categories, G_N_ELEMENTS(categories));
+#endif
 
 	if (err)
 		g_print("Error : %s", err->message);
@@ -590,7 +605,11 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 		awn_task_manager_update_separator_position (task_manager);
 	} else {
 		gtk_widget_destroy(task);
+#ifdef USE_GNOME
 		gnome_desktop_item_unref(item);
+#elif defined(USE_XFCE)
+		g_object_unref(item);
+#endif
 		g_print("FAILED : %s\n", _sdata);
 
 	}
@@ -1407,10 +1426,14 @@ awn_task_manger_refresh_launchers (GConfClient *client,
         for (l = launchers; l != NULL; l = l->next) {
                 AwnTask *task = NULL;
                 for (t = priv->launchers; t != NULL; t = t->next) {
-                        GnomeDesktopItem *item;
+                        DESKTOP_ITEM *item;
                         item = awn_task_get_item (AWN_TASK (t->data));
+#ifdef USE_GNOME
                         gchar *file = gnome_vfs_get_local_path_from_uri 
                                        (gnome_desktop_item_get_location (item));
+#elif defined(USE_XFCE)
+						gchar *file = xfce_desktop_entry_get_file (item);
+#endif
                         if (strcmp (file, l->data) == 0) {
                                 task = AWN_TASK (t->data);
                         }

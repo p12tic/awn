@@ -1,4 +1,7 @@
-SUBDIRS = switcher trash separator notification-area
+SUBDIRS = switcher separator notification-area
+if USE_GNOME
+SUBDIRS += trash
+endif
 
 desktopdir = $(libdir)/awn/applets
 

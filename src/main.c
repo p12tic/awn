@@ -18,14 +18,19 @@
  *  Author : Neil Jagdish Patel <njpatel@gmail.com>
 */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <gtk/gtk.h>
+#ifdef USE_GNOME
 #include <libgnomevfs/gnome-vfs.h>
+#elif defined(USE_XFCE)
+#include <thunar-vfs/thunar-vfs.h>
+#endif
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
-#include "config.h"
-
-#include <config.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -121,7 +126,11 @@ main (int argc, char* argv[])
   	g_type_init ();
 
   	gtk_init (&argc, &argv);
+#ifdef USE_GNOME
 	gnome_vfs_init ();
+#elif defined(USE_XFCE)
+    thunar_vfs_init ();
+#endif
 	
 	settings = awn_gconf_new();
 	settings->bar = awn_bar_new(settings);

@@ -22,7 +22,11 @@
 #define __AWN_TASK_H__
 
 #include <gtk/gtk.h>
+#ifdef USE_GNOME
 #include <libgnome/gnome-desktop-item.h>
+#elif defined(USE_XFCE)
+#include <libxfce4util/libxfce4util.h>
+#endif
 
 
 #define WNCK_I_KNOW_THIS_IS_UNSTABLE 1
@@ -73,7 +77,7 @@ gboolean awn_task_get_is_launcher (AwnTask *task);
 gboolean awn_task_set_window (AwnTask *task, WnckWindow *window);
 WnckWindow * awn_task_get_window (AwnTask *task);
 
-gboolean awn_task_set_launcher (AwnTask *task, GnomeDesktopItem *item);
+gboolean awn_task_set_launcher (AwnTask *task, DESKTOP_ITEM *item);
 gboolean awn_task_is_launcher (AwnTask *task);
 
 gulong awn_task_get_xid (AwnTask *task);
@@ -96,7 +100,7 @@ void awn_task_update_icon (AwnTask *task);
 
 void awn_task_set_width (AwnTask *task, gint width);
 
-GnomeDesktopItem* awn_task_get_item (AwnTask *task);
+DESKTOP_ITEM* awn_task_get_item (AwnTask *task);
 
 /* DBUS CALLS */
 void awn_task_set_custom_icon (AwnTask *task, GdkPixbuf *icon);

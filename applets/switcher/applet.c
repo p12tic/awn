@@ -27,7 +27,12 @@
 #include <gtk/gtk.h>
 #include <libawn/awn-applet.h>
 #include <libawn/awn-applet-gconf.h>
+#ifdef USE_GNOME
 #include <libgnome/libgnome.h>
+#else
+#include <libintl.h>
+#define _(x) gettext(x)
+#endif
 
 #define PAGER_ROWS 2
 #define BAR_HEIGHT 100

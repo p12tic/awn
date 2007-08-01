@@ -1,5 +1,8 @@
 /* config.h.in.  Generated from configure.in by autoheader.  */
 
+/* The freedesktop.org desktop entry implementation used. */
+#undef DESKTOP_ITEM
+
 /* always defined to indicate that i18n is enabled */
 #undef ENABLE_NLS
 
@@ -71,6 +74,12 @@
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
+
+/* Define support for the Gnome desktop */
+#undef USE_GNOME
+
+/* Define support for the Xfce4 desktop */
+#undef USE_XFCE
 
 /* Version number of package */
 #undef VERSION
