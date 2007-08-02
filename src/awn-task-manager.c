@@ -1537,6 +1537,10 @@ awn_task_manager_new (AwnSettings *settings)
 	                  G_CALLBACK(_task_manager_window_activate),
 	                  (gpointer)task_manager);
 
+	g_signal_connect (G_OBJECT(priv->screen), "viewports_changed",
+	                  G_CALLBACK(_task_manager_window_activate),
+	                  (gpointer)task_manager);
+
 	/* CONNECT D&D CODE */
 
 	g_signal_connect (G_OBJECT(settings->window), "drag-data-received",
