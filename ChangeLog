@@ -1,3 +1,10 @@
+2007-08-02  haytjes  <hv1989@gmail.com>
+
+	patch by: ryancr
+
+	* src/awn-window.c:
+	Add a name to the window (used for AWN Manager) see bug #129883
+
 2007-08-02  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	patch by: kevinbeard
