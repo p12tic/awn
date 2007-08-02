@@ -1718,9 +1718,9 @@ awn_task_refresh_icon_geometry (AwnTask *task)
 	gdk_drawable_get_size (GDK_DRAWABLE (GTK_WIDGET(task)->window), 
                                &width, &height);
 	
-	width = priv->icon_width;
-	height = priv->icon_height;
-
+	//width = priv->icon_width;
+	//height = priv->icon_height;
+	
 	//printf("width: %d, height: %d\n", width, height);
 
 	if ( (x != old_x) || (y != old_y) ) {

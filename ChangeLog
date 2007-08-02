@@ -1,3 +1,8 @@
+2007-08-02  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* src/awn-task.c:
+	Fixes bug #129678: Beryl/Compiz window previews don't work.
+
 2007-08-02  haytjes  <hv1989@gmail.com>
 
 	patch by: ryancr
