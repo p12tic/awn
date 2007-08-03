@@ -1,3 +1,10 @@
+2007-08-03  haytjes  <hv1989@gmail.com>
+
+	* applets/trash/trashapplet.c:
+	* avant-applets/avant-applets.in.py:
+	Fixes bug #129827 Don't load twice the applets directory for 64 bits
+	Fixes bug #129787 "Emptying the Trash" dialog problems
+
 2007-08-02  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* src/awn-task.c:

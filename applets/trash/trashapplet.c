@@ -681,6 +681,12 @@ update_transfer_callback (GnomeVFSAsyncHandle *handle,
 					   progress_message);
 
 		g_free (progress_message);
+
+		if (fraction == 1) {
+			GtkWidget *dialog;
+		        dialog = glade_xml_get_widget(xml, "empty_trash");
+			gtk_widget_hide_all(dialog);
+		}
 	}
 
 	if (progress_info->source_name != NULL) {
