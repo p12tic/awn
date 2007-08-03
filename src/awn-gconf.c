@@ -167,7 +167,7 @@ awn_gconf_new()
 	
 	/* make the custom icons directory */
 	gchar *path = g_build_filename (g_get_home_dir (),
-					".awn/custom-icons",
+					".config/awn/custom-icons",
 					NULL);
 	g_mkdir_with_parents (path, 0755);
 	g_free (path);

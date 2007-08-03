@@ -2015,7 +2015,7 @@ awn_task_set_check_item (AwnTask *task, gint id, gboolean active)
 static void
 _task_choose_custom_icon (AwnTask *task)
 {
-#define PIXBUF_SAVE_PATH ".awn/custom-icons"
+#define PIXBUF_SAVE_PATH ".config/awn/custom-icons"
 
 	AwnTaskPrivate *priv;
 	GtkWidget *dialog;
