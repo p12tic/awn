@@ -75,20 +75,23 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
 	gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
 	gtk_window_stick(GTK_WINDOW(dialog));
 	
-	/* TODO: makes non-movable, but breaks other things like key press event.
-   * gtk_window_set_type_hint(GTK_WINDOW(dialog), GDK_WINDOW_TYPE_HINT_DOCK);
-   */
-  _on_alpha_screen_changed(GTK_WIDGET(dialog), NULL, NULL);
-  gtk_widget_set_app_paintable(GTK_WIDGET(dialog), TRUE);
+	/* TODO: makes non-movable, but breaks other things like key press 
+         * event. 
+         * gtk_window_set_type_hint(GTK_WINDOW(dialog), 
+         *                          GDK_WINDOW_TYPE_HINT_DOCK);
+         */
+        _on_alpha_screen_changed(GTK_WIDGET(dialog), NULL, NULL);
+        gtk_widget_set_app_paintable(GTK_WIDGET(dialog), TRUE);
 	
 	/* events */
 	gtk_widget_add_events(GTK_WIDGET(dialog), GDK_ALL_EVENTS_MASK);
 	g_signal_connect(G_OBJECT(dialog), "expose-event", 
-                   G_CALLBACK(_on_expose_event), NULL);
+                         G_CALLBACK(_on_expose_event), NULL);
 	
-  g_signal_connect(G_OBJECT(dialog), "key-press-event", 
-                   G_CALLBACK(_on_key_press_event), NULL);
-	g_signal_connect(G_OBJECT(dialog), "realize", G_CALLBACK(_on_realize), NULL);
+        g_signal_connect(G_OBJECT(dialog), "key-press-event", 
+                         G_CALLBACK(_on_key_press_event), NULL);
+	g_signal_connect(G_OBJECT(dialog), "realize", 
+                         G_CALLBACK(_on_realize), NULL);
 }
 
 /*
@@ -99,14 +102,14 @@ awn_applet_dialog_new (AwnApplet *applet)
 {
 	AwnAppletDialog *dialog;
   
-  g_return_val_if_fail (AWN_IS_APPLET (applet), NULL);
+        g_return_val_if_fail (AWN_IS_APPLET (applet), NULL);
 
-  dialog = g_object_new (AWN_TYPE_APPLET_DIALOG,
-                         "type", GTK_WINDOW_TOPLEVEL, 
-                         NULL);
+        dialog = g_object_new (AWN_TYPE_APPLET_DIALOG,
+                               "type", GTK_WINDOW_TOPLEVEL, 
+                               NULL);
 	dialog->applet = applet;
 	
-  return GTK_WINDOW (dialog);
+        return GTK_WIDGET (dialog);
 }
 
 static void 
@@ -126,10 +129,10 @@ _on_alpha_screen_changed (GtkWidget* pWidget,
 
 
 void 
-awn_applet_dialog_postion_reset (AwnAppletDialog *dialog) 
+awn_applet_dialog_position_reset (AwnAppletDialog *dialog) 
 {
 	if (dialog->applet == NULL) 
-    return;
+                return;
 	
 	gint width, height;
 	GtkWindow *window = GTK_WINDOW (dialog);
@@ -151,7 +154,7 @@ awn_applet_dialog_postion_reset (AwnAppletDialog *dialog)
 static void 
 _on_realize(GtkWidget *widget, gpointer *data) 
 {
-	awn_applet_dialog_postion_reset (AWN_APPLET_DIALOG (widget));
+	awn_applet_dialog_position_reset (AWN_APPLET_DIALOG (widget));
 }
 
 static gboolean 
@@ -159,7 +162,7 @@ _on_expose_event(GtkWidget *widget, GdkEventExpose *expose, gpointer *data)
 {
 	cairo_t *cr = NULL;
 	gint width, height;
-  const gchar *text;
+        const gchar *text;
 	
 	cr = gdk_cairo_create (widget->window);
 	if (!cr)
@@ -180,7 +183,7 @@ _on_expose_event(GtkWidget *widget, GdkEventExpose *expose, gpointer *data)
 	// background shading
 	cairo_set_source_rgba (cr, 0, 0, 0, 0.3);
 	awn_cairo_rounded_rect (cr, 0, 0, width, height - gap, 15, ROUND_ALL);
-  cairo_fill(cr);
+        cairo_fill(cr);
 
 	// draw arrow
 	cairo_move_to (cr, 20, height - gap);
@@ -192,7 +195,7 @@ _on_expose_event(GtkWidget *widget, GdkEventExpose *expose, gpointer *data)
 	// rasterize title text
 	text = gtk_window_get_title (GTK_WINDOW (widget));
 	if (text != NULL) 
-  {
+        {
 		cairo_text_extents_t extents;
 		cairo_select_font_face (cr, 
                             "Sans", 
@@ -208,6 +211,11 @@ _on_expose_event(GtkWidget *widget, GdkEventExpose *expose, gpointer *data)
 	
 	// Clean up
 	cairo_destroy (cr);
+
+        /* Propagate the expose event to the child */
+        gtk_container_propagate_expose (GTK_CONTAINER (widget),
+                                        gtk_bin_get_child (GTK_BIN (widget)),
+                                        expose);
                                                        
 	return TRUE;
 }
@@ -218,7 +226,7 @@ _on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer *data)
 {
 	/*printf("is awn applet dialog? %i\n", AWN_IS_APPLET_DIALOG(widget)); */
 	if (event->keyval == 65307 && AWN_IS_APPLET_DIALOG(widget)) 
-  {
+        {
 		AWN_APPLET_DIALOG(widget)->applet = NULL;
 		gtk_widget_destroy(widget);
 	}

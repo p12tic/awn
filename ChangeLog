@@ -1,3 +1,10 @@
+2007-08-04  Neil J. Patel  <njp@o-hand.com>
+
+	* libawn/awn-applet-dialog.c:
+	* libawn/awn-applet-dialog.h:
+	Propagate the expose event properly to children.
+	Fix warning on return type.
+
 2007-08-04  Neil J. Patel  <njpatel@gmail.com>
 
 	* libawn/awn-applet-dialog.c:

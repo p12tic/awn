@@ -68,7 +68,7 @@ GType awn_applet_dialog_get_type (void);
 
 GtkWidget* awn_applet_dialog_new (AwnApplet *applet);
 
-void awn_applet_dialog_postion_reset (AwnAppletDialog *dialog);
+void awn_applet_dialog_position_reset (AwnAppletDialog *dialog);
 
 G_END_DECLS
 
