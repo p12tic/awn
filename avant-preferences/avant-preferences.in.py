@@ -64,7 +64,10 @@ BAR_GLASS_HISTEP_2	= "/apps/avant-window-navigator/bar/glass_histep_2"		#string
 BAR_BORDER_COLOR	= "/apps/avant-window-navigator/bar/border_color"		#string 
 BAR_HILIGHT_COLOR	= "/apps/avant-window-navigator/bar/hilight_color"		#string 
 BAR_SHOW_SEPARATOR	= "/apps/avant-window-navigator/bar/show_separator"		#bool
-BAR_SEP_COLOR		= "/apps/avant-window-navigator/bar/sep_color"
+BAR_SEP_COLOR		= "/apps/avant-window-navigator/bar/sep_color"			
+BAR_HEIGHT		= "/apps/avant-window-navigator/bar/bar_height"			#int
+BAR_ANGLE		= "/apps/avant-window-navigator/bar/bar_angle"			#int
+BAR_ICON_OFFSET		= "/apps/avant-window-navigator/bar/icon_offset"		#int
 
 WINMAN_PATH		= "/apps/avant-window-navigator/window_manager"
 WINMAN_SHOW_ALL_WINS	= "/apps/avant-window-navigator/window_manager/show_all_windows" #bool
@@ -153,6 +156,10 @@ class main:
 
 		self.setup_chooser(APP_ACTIVE_PNG, self.wTree.get_widget("activefilechooser"))
 		self.setup_chooser(BAR_PATTERN_URI, self.wTree.get_widget("patternchooserbutton"))
+
+		self.setup_spin(BAR_ICON_OFFSET, self.wTree.get_widget("bariconoffset"))
+		self.setup_spin(BAR_HEIGHT, self.wTree.get_widget("barheight"))
+		self.setup_spin(BAR_ANGLE, self.wTree.get_widget("barangle"))
 		
 		self.setup_font(TITLE_FONT_FACE, self.wTree.get_widget("selectfontface"))
 		
@@ -174,6 +181,8 @@ class main:
 		self.setup_color(BAR_SEP_COLOR, self.wTree.get_widget("sepcolor"))
 		self.setup_color(APP_ARROW_COLOR, self.wTree.get_widget("arrowcolor"))
 
+		self.setup_look(self.wTree.get_widget("look"))
+
 	def refresh(self, button):
 		w = gtk.Window()
 		i = gtk.IconTheme()
@@ -190,6 +199,33 @@ class main:
 	
 	def win_destroy(self, button, w):
 		w.destroy()
+
+	def setup_look(self, dropdown):
+		dropdown.append_text("Flat bar")
+		dropdown.append_text("3D look")
+
+		self.look_changed(dropdown)
+
+		dropdown.connect("changed", self.look_changed)
+
+	def look_changed(self, dropdown):
+		if dropdown.get_active() == -1: #init
+			if self.client.get_int(BAR_ANGLE) == 0: 
+				dropdown.set_active(0)
+				self.wTree.get_widget("roundedcornerscheck_holder").show_all()
+				self.wTree.get_widget("barangle_holder").hide_all()
+			else:
+				dropdown.set_active(1)
+				self.wTree.get_widget("roundedcornerscheck_holder").hide_all()
+				self.wTree.get_widget("barangle_holder").show_all()
+		elif dropdown.get_active() == 0:
+			self.wTree.get_widget("barangle").set_value(0)
+			self.wTree.get_widget("roundedcornerscheck_holder").show_all()
+			self.wTree.get_widget("barangle_holder").hide_all()
+		else:
+			self.wTree.get_widget("barangle").set_value(45)
+			self.wTree.get_widget("roundedcornerscheck_holder").hide_all()
+			self.wTree.get_widget("barangle_holder").show_all()
 	
 	def setup_color(self, key, colorbut):
 		try:
@@ -225,14 +261,18 @@ class main:
 	
 	def setup_spin(self, key, spin):
 		try:
-			spin.set_value(	self.client.get_float(key))
+			spin.set_value(	float(self.client.get_value(key)))
 		except TypeError:
 			raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
 
 		spin.connect("value-changed", self.spin_changed, key)
 	
 	def spin_changed(self, spin, key):
-		self.client.set_float(key, spin.get_value())
+		#fixme: this is realy bad code. Normally you shouldn't use 'type()'
+		if type(self.client.get_value(key)) == type(1): #int
+			self.client.set_int(key, int(spin.get_value()))
+		else: #float
+			self.client.set_float(key, spin.get_value())
 		
 
 	def setup_chooser(self, key, chooser):

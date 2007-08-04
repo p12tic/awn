@@ -1,3 +1,9 @@
+2007-08-04  haytjes  <hv1989@gmail.com>
+
+	* avant-preferences/avant-preferences.in.py:
+	* avant-preferences/window.glade:
+	Added a way to edit the icon_offset/bar_angle/bar_height in avant-preferenes
+
 2007-08-04  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* src/awn-task-manager.c:
