@@ -155,7 +155,7 @@ awn_gconf_new()
 	awn_load_color(client, TITLE_TEXT_COLOR, &s->text_color, "FFFFFFFF");
 	awn_load_color(client, TITLE_SHADOW_COLOR, &s->shadow_color, "1B3B12E1");
 	awn_load_color(client, TITLE_BACKGROUND, &s->background, "000000AA");
-	awn_load_string(client, TITLE_FONT_FACE, &s->font_face, "Sans 15");	
+	awn_load_string(client, TITLE_FONT_FACE, &s->font_face, "Sans 11");	
 	
 	load_monitor (s);
 	s->task_width = 60;

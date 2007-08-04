@@ -1,5 +1,10 @@
 2007-08-04  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
+	* src/awn-gconf.c:
+	Changed default font size to 11.
+
+2007-08-04  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
 	patch by: ryancr
 
 	* avant-preferences/avant-preferences.in.py:
