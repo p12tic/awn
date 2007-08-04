@@ -65,9 +65,7 @@
 #define TITLE_TEXT_COLOR	TITLE_PATH "/text_color"	/*color*/
 #define TITLE_SHADOW_COLOR	TITLE_PATH "/shadow_color"	/*color*/
 #define TITLE_BACKGROUND	TITLE_PATH "/background"	/*color*/
-#define TITLE_ITALIC		TITLE_PATH "/italic"		/*bool*/
-#define TITLE_BOLD		TITLE_PATH "/bold"		/*bool*/
-#define TITLE_FONT_SIZE		TITLE_PATH "/font_size"		/*bool*/
+#define TITLE_FONT_FACE		TITLE_PATH "/font_face"		/*bool*/
 
 /* globals */
 static AwnSettings *settings		= NULL;
@@ -157,10 +155,7 @@ awn_gconf_new()
 	awn_load_color(client, TITLE_TEXT_COLOR, &s->text_color, "FFFFFFFF");
 	awn_load_color(client, TITLE_SHADOW_COLOR, &s->shadow_color, "1B3B12E1");
 	awn_load_color(client, TITLE_BACKGROUND, &s->background, "000000AA");
-	awn_load_bool(client, TITLE_ITALIC, &s->italic, FALSE);
-	awn_load_bool(client, TITLE_BOLD, &s->bold, FALSE);
-	awn_load_float(client, TITLE_FONT_SIZE, &s->font_size, 15.0);
-	
+	awn_load_string(client, TITLE_FONT_FACE, &s->font_face, "Sans 15");	
 	
 	load_monitor (s);
 	s->task_width = 60;

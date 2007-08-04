@@ -1,3 +1,15 @@
+2007-08-04  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	patch by: ryancr
+
+	* avant-preferences/avant-preferences.in.py:
+	* avant-preferences/window.glade:
+	* avant-preferences/window.glade.h:
+	* src/awn-gconf.c:
+	* src/awn-gconf.h:
+	* src/awn-title.c:
+	Allow Font Face selection. See bug #129977.
+
 2007-08-03  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	patch by: ryancr

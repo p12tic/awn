@@ -79,9 +79,7 @@ TITLE_PATH		= "/apps/avant-window-navigator/title"
 TITLE_TEXT_COLOR	= "/apps/avant-window-navigator/title/text_color" 		#color
 TITLE_SHADOW_COLOR	= "/apps/avant-window-navigator/title/shadow_color" 		#color
 TITLE_BACKGROUND	= "/apps/avant-window-navigator/title/background" 		#color
-TITLE_ITALIC		= "/apps/avant-window-navigator/title/italic" 			#bool
-TITLE_BOLD		= "/apps/avant-window-navigator/title/bold" 			#bool
-TITLE_FONT_SIZE		= "/apps/avant-window-navigator/title/font_size" 		#float
+TITLE_FONT_FACE		= "/apps/avant-window-navigator/title/font_face" 		#float
 
 DATA_DIR = "@PKGDATADIR@"
 
@@ -149,8 +147,6 @@ class main:
 		self.setup_bool (BAR_RENDER_PATTERN, self.wTree.get_widget("patterncheck"))
 		self.setup_bool (BAR_ROUNDED_CORNERS, self.wTree.get_widget("roundedcornerscheck"))
 		self.setup_bool (WINMAN_SHOW_ALL_WINS, self.wTree.get_widget("allwindowscheck"))
-		self.setup_bool (TITLE_ITALIC, self.wTree.get_widget ("italiccheck"))
-		self.setup_bool (TITLE_BOLD, self.wTree.get_widget("boldcheck"))		
 		self.setup_bool (BAR_SHOW_SEPARATOR, self.wTree.get_widget("separatorcheck"))
 		self.setup_bool (APP_TASKS_H_ARROWS, self.wTree.get_widget("arrowcheck"))
 		self.setup_bool (APP_FADE_EFFECT, self.wTree.get_widget("fadeeffect"))		
@@ -158,7 +154,7 @@ class main:
 		self.setup_chooser(APP_ACTIVE_PNG, self.wTree.get_widget("activefilechooser"))
 		self.setup_chooser(BAR_PATTERN_URI, self.wTree.get_widget("patternchooserbutton"))
 		
-		self.setup_spin(TITLE_FONT_SIZE, self.wTree.get_widget("fontsizespin"))
+		self.setup_font(TITLE_FONT_FACE, self.wTree.get_widget("selectfontface"))
 		
 		self.setup_scale(BAR_PATTERN_ALPHA, self.wTree.get_widget("patternscale"))
 		
@@ -280,7 +276,14 @@ class main:
 	def bool_changed(self, check, key):
 		self.client.set_bool(key, check.get_active())
 		print "toggled"
+	
+	def setup_font(self, key, font_btn):
+		"""sets up font chooser"""
+		font_btn.set_font_name(self.client.get_string(key))
+		font_btn.connect("font-set", self.font_changed, key)
 
+	def font_changed(self, font_btn, key):
+		self.client.set_string(key, font_btn.get_font_name())
 
 if __name__ == "__main__":
 	gettext.textdomain(I18N_DOMAIN)

@@ -181,7 +181,7 @@ render (cairo_t *cr, const char *utf8, gint width, gint height, gint x_pos)
 	}
 
 	/* get a new pango-description */
-	pDesc = pango_font_description_new ();
+	pDesc = pango_font_description_from_string(settings->font_face);
 	if (!pDesc)
 	{
 		g_print ("demo_textpath(): ");
@@ -190,18 +190,6 @@ render (cairo_t *cr, const char *utf8, gint width, gint height, gint x_pos)
 		return;
 	}
 
-	int font_slant = PANGO_STYLE_NORMAL;
-	int font_weight = PANGO_WEIGHT_NORMAL;
-	if (settings->italic)
-		font_slant = PANGO_STYLE_ITALIC;
-	if (settings->bold)
-		font_weight = PANGO_WEIGHT_BOLD;
-	
-
-	pango_font_description_set_absolute_size (pDesc, PANGO_SCALE*settings->font_size);
-	pango_font_description_set_family_static (pDesc, "Sans");
-	pango_font_description_set_weight (pDesc, font_weight);
-	pango_font_description_set_style (pDesc, font_slant);
 	pango_layout_set_font_description (pLayout, pDesc);
 	pango_font_description_free (pDesc);
 

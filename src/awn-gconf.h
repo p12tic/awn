@@ -101,10 +101,7 @@ typedef struct {
 	AwnColor text_color;
 	AwnColor shadow_color;
 	AwnColor background;
-	gboolean italic;
-	gboolean bold;
-	gfloat font_size;
-	
+	gchar *font_face;	
 	
 	gboolean btest;
 	float ftest;
