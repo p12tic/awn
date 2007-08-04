@@ -1,4 +1,13 @@
-2007-08-04  Neil J. Patel  <njp@o-hand.com>
+2007-08-04  Neil J. Patel  <njpatel@gmail.com>
+
+	patch by: Eskil Bylund
+
+	* applets/Makefile.am:
+	* data/Makefile.am:
+	* src/Makefile.am:
+	Fixes make dist.
+
+2007-08-04  Neil J. Patel  <njpatel@gmail.com>
 
 	* libawn/awn-applet-dialog.c:
 	* libawn/awn-applet-dialog.h:

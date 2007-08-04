@@ -46,6 +46,7 @@ avant_window_navigator_SOURCES =			\
 	awn-x.c				\
 	awn-utils.h			\
 	awn-utils.c			\
+	inlinepixbufs.h			\
 	xutils.h			\
 	xutils.c			
 

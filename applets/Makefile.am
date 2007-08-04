@@ -9,4 +9,4 @@ desktop_DATA = \
 $(desktop_DATA).in: $(desktop_DATA).in.in
 	sed -e "s|\@PKGDATADIR\@|$(pkgdatadir)|g" $< > $@
 
-extra_dist = $(desktop_DATA).in.in
+EXTRA_DIST = $(desktop_DATA).in.in
