@@ -1,5 +1,10 @@
 2007-08-04  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
+	* src/awn-task-manager.c:
+	Fixes bug #128973: First icon on launcher larger.
+
+2007-08-04  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
 	* src/awn-gconf.c:
 	Changed default font size to 11.
 

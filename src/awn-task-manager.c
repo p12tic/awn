@@ -761,10 +761,12 @@ _task_manager_check_width (AwnTaskManager *task_manager)
 	gint w, h;
 	gtk_window_get_size (GTK_WINDOW (settings->window), &w, &h);
 	
-	gint width = settings->bar_height+10;
+	//gint width = settings->bar_height+10;
+	gint width = 60;
 	gint i = 0;
 		
-	for (i =0; i < settings->bar_height+10; i+=2) {
+	//for (i =0; i < settings->bar_height+10; i+=2) {
+	for (i =0; i < 60; i+=2) {
 		gint res = (settings->monitor.width) / width;
 		if (res > (num_tasks+num_launchers)) {
 			break;
