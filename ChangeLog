@@ -1,3 +1,11 @@
+2007-08-05  haytjes  <hv1989@gmail.com>
+
+	* avant-preferences/avant-preferences.in.py:
+	* src/awn-bar.c:
+	Fix: avant-preferences adapted to let it work with gconf 2.14 (my new code only worked on 2.18): 
+		not tested yet on 2.14: feel free to submit bugs.
+	Fix: separators now properly change height
+
 2007-08-04  Neil J. Patel  <njpatel@gmail.com>
 
 	patch by: Eskil Bylund

@@ -45,6 +45,7 @@ gettext.bindtextdomain(APP, DIR)
 gettext.textdomain(APP)
 _ = gettext.gettext
 
+import gobject
 
 # GCONF KEYS
 AWM_PATH		= "/apps/avant-window-navigator"
@@ -261,19 +262,20 @@ class main:
 	
 	def setup_spin(self, key, spin):
 		try:
-			spin.set_value(	float(self.client.get_value(key)))
+			spin.set_value(	self.client.get_float(key) )
 		except TypeError:
 			raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
+		except gobject.GError, err:
+			spin.set_value(	float(self.client.get_int(key)) )
 
 		spin.connect("value-changed", self.spin_changed, key)
 	
 	def spin_changed(self, spin, key):
-		#fixme: this is realy bad code. Normally you shouldn't use 'type()'
-		if type(self.client.get_value(key)) == type(1): #int
-			self.client.set_int(key, int(spin.get_value()))
-		else: #float
+		try:
+			self.client.get_float(key) #gives error if it is an int
 			self.client.set_float(key, spin.get_value())
-		
+		except gobject.GError, err:
+			self.client.set_int(key, int(spin.get_value()))	
 
 	def setup_chooser(self, key, chooser):
 		"""sets up png choosers"""

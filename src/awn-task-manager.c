@@ -764,7 +764,7 @@ _task_manager_check_width (AwnTaskManager *task_manager)
 	//gint width = settings->bar_height+10;
 	gint width = 60;
 	gint i = 0;
-		
+
 	//for (i =0; i < settings->bar_height+10; i+=2) {
 	for (i =0; i < 60; i+=2) {
 		gint res = (settings->monitor.width) / width;
