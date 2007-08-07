@@ -92,6 +92,16 @@ static void load_monitor (AwnSettings *settings);
 AwnSettings* 
 awn_gconf_new()
 {
+	GdkScreen *screen;
+	gint width = 1024;
+	gint height = 768;
+	
+	screen = gdk_screen_get_default();
+	if (screen) {
+		width = gdk_screen_get_width(screen);
+		height = gdk_screen_get_height(screen);
+	}
+
 	if (settings)
 	        return settings;
 	AwnSettings *s = NULL;
@@ -104,8 +114,8 @@ awn_gconf_new()
 	/* general settings */
 	gconf_client_add_dir(client, AWN_PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);
 	awn_load_bool(client, AWN_FORCE_MONITOR, &s->force_monitor, FALSE);
-	awn_load_int(client, AWN_MONITOR_WIDTH, &s->monitor_width, 1024);
-	awn_load_int(client, AWN_MONITOR_HEIGHT, &s->monitor_height, 768);
+	awn_load_int(client, AWN_MONITOR_WIDTH, &s->monitor_width, width);
+	awn_load_int(client, AWN_MONITOR_HEIGHT, &s->monitor_height, height);
 	awn_load_bool(client, AWN_PANEL_MODE, &s->panel_mode, FALSE);
 	awn_load_bool(client, AWN_AUTO_HIDE, &s->auto_hide, FALSE);
 	s->hidden = FALSE;
@@ -158,7 +168,7 @@ awn_gconf_new()
 	awn_load_string(client, TITLE_FONT_FACE, &s->font_face, "Sans 11");	
 	
 	load_monitor (s);
-	s->task_width = 60;
+	s->task_width = settings->bar_height + 12;
 	
 	/* make the custom icons directory */
 	gchar *path = g_build_filename (g_get_home_dir (),

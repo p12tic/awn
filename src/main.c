@@ -109,6 +109,7 @@ main (int argc, char* argv[])
 	GConfClient *client;
 	GtkWidget *box = NULL;
 	GtkWidget *applet_manager = NULL;
+	GdkScreen *screen;
 	
 	DBusGConnection *connection;
 	DBusGProxy *proxy;
@@ -169,6 +170,12 @@ main (int argc, char* argv[])
 	
 	GtkWidget *hot = awn_hotspot_new (settings);
 	gtk_widget_show (hot);
+	
+	screen = gdk_screen_get_default();
+	if (screen && !settings->force_monitor) {
+		settings->monitor_width = gdk_screen_get_width(screen);
+		settings->monitor_height = gdk_screen_get_height(screen);
+	}
 	
 	g_signal_connect (G_OBJECT(settings->window), "drag-motion",
 	                  G_CALLBACK(drag_motion), (gpointer)settings->window);

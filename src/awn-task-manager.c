@@ -475,8 +475,6 @@ _task_manager_window_closed (WnckScreen *screen, WnckWindow *window,
 
 	_reparent_windows(task_manager);
 	_refresh_box(task_manager);
-	
-	_task_manager_check_width (task_manager);
 }
 
 static void
@@ -754,34 +752,53 @@ _task_manager_check_width (AwnTaskManager *task_manager)
 {
 	AwnTaskManagerPrivate *priv;
 	AwnSettings *settings;
+	gint w, h;
+	gint width;
+	gint x;
+	gint num;
 		
 	priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
 	settings = priv->settings;
-	
-	gint w, h;
+
 	gtk_window_get_size (GTK_WINDOW (settings->window), &w, &h);
 	
-	//gint width = settings->bar_height+10;
-	gint width = 60;
-	gint i = 0;
+	width = settings->task_width;
+	num = num_tasks + num_launchers;
+	
+	if (num == 0) {
+		awn_task_manager_update_separator_position (task_manager);
+		return;
+	}
 
-	//for (i =0; i < settings->bar_height+10; i+=2) {
-	for (i =0; i < 60; i+=2) {
-		gint res = (settings->monitor.width) / width;
-		if (res > (num_tasks+num_launchers)) {
-			break;
+	if (w + 20 > settings->monitor_width) {
+		x = w - num * width;
+		
+		do {
+			--width;
+		} while (x + num * width + 40 > settings->monitor_width);
+	} else if (width != settings->bar_height + 12 && w + 60 < settings->monitor_width) {
+		x = w - num * width;
+
+		do {
+			++width;
+		} while (x + num * width + 50 < settings->monitor_width);
+	}
+
+	if (width < settings->task_width) {
+		settings->task_width = width;
+		g_list_foreach(priv->launchers, (GFunc)_task_resize, GINT_TO_POINTER (settings->task_width));
+		g_list_foreach(priv->tasks, (GFunc)_task_resize, GINT_TO_POINTER (settings->task_width));
+	} else if (width > settings->task_width) {
+		if (width > settings->bar_height + 12) {
+			settings->task_width = settings->bar_height + 12;
+		} else {
+			settings->task_width = width;
 		}
-		width -=i;
+		g_list_foreach(priv->launchers, (GFunc)_task_resize, GINT_TO_POINTER (settings->task_width));
+		g_list_foreach(priv->tasks, (GFunc)_task_resize, GINT_TO_POINTER (settings->task_width));
 	}
-	
-	if (width != priv->settings->task_width) {
-		priv->settings->task_width = width;
-		g_list_foreach(priv->launchers, (GFunc)_task_resize, GINT_TO_POINTER (width));
-		g_list_foreach(priv->tasks, (GFunc)_task_resize, GINT_TO_POINTER (width));
-		g_print ("New width = %d", width);
-	}
+
 	awn_task_manager_update_separator_position (task_manager);
-	
 }
 
 static void

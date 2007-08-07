@@ -1778,19 +1778,23 @@ awn_task_set_width (AwnTask *task, gint width)
 	g_return_if_fail (AWN_IS_TASK (task));
 	priv = AWN_TASK_GET_PRIVATE (task);
 	
+	if (priv->is_closing) {
+		return;
+	}
+	
 	old = priv->icon;
 	old_reflect = priv->reflect;
 
 	if (priv->is_launcher) {
 		char * icon_name = gnome_desktop_item_get_icon (priv->item, priv->settings->icon_theme );
 		if (!icon_name)
-			priv->icon = awn_x_get_icon_for_window (priv->window, width-6, width-6);
+			priv->icon = awn_x_get_icon_for_window (priv->window, width-12, width-12);
 		else
-			priv->icon = icon_loader_get_icon_spec(icon_name, width-6, width-6);
+			priv->icon = icon_loader_get_icon_spec(icon_name, width-12, width-12);
 		g_free (icon_name);
         } else {
         	if (WNCK_IS_WINDOW (priv->window))
-        		priv->icon = awn_x_get_icon_for_window (priv->window, width-6, width-6);
+        		priv->icon = awn_x_get_icon_for_window (priv->window, width-12, width-12);
                         priv->reflect = gdk_pixbuf_flip (priv->icon,FALSE);
 
         }
@@ -1808,7 +1812,8 @@ awn_task_set_width (AwnTask *task, gint width)
 
 	gtk_widget_set_size_request (GTK_WIDGET (task), 
 				     width, 
-				     (priv->settings->bar_height + 2) * 2);		
+				     (priv->settings->bar_height + 2) * 2);
+				     
 }
 
 
