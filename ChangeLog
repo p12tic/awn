@@ -1,6 +1,14 @@
 2007-08-07  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* src/awn-gconf.c:
+	* src/awn-gconf.h:
+	* src/awn-utils.c:
+	Adds an option to set a delay to auto hide. Use gconf-editor to
+	change key "auto_hide_delay" (time in milliseconds).
+
+2007-08-07  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* src/awn-gconf.c:
 	* src/awn-task-manager.c:
 	* src/awn-task.c:
 	* src/main.c:

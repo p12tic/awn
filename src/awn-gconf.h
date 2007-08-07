@@ -57,6 +57,7 @@ typedef struct {
 	
 	gboolean auto_hide;
 	gboolean hidden;
+	gint auto_hide_delay;
 	
 	int bar_height;
 	int bar_angle;

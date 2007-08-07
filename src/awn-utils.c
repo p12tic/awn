@@ -23,6 +23,7 @@
 static gboolean effect_lock = FALSE;
 static gint current_y = 0;
 static gint dest_y = 0;
+static gint hide_delay = 1000 / 20;
 
 static gboolean
 _move_bar (AwnSettings *settings)
@@ -34,12 +35,17 @@ _move_bar (AwnSettings *settings)
 			current_y -= 2;
 		}
  	} else if (current_y < dest_y) {
+ 		if (hide_delay > 0 && current_y == 0) {
+ 			hide_delay--;
+ 			return TRUE;
+ 		}
 		if (dest_y - current_y == 1) {
 			current_y += 1;
 		} else {
 			current_y += 2;
 		}
  	} else {
+ 		hide_delay = settings->auto_hide_delay / 20;
  		effect_lock = FALSE;
  		return FALSE;
 	}
