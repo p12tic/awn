@@ -44,8 +44,6 @@ G_DEFINE_TYPE (AwnTask, awn_task, GTK_TYPE_DRAWING_AREA);
 #define  M_PI 					3.14159265358979323846
 #define  AWN_CLICK_IDLE_TIME			450
 
-#define M_PI		3.14159265358979323846
-
 /* FORWARD DECLERATIONS */
 
 static gboolean awn_task_expose (GtkWidget *task, GdkEventExpose *event);
@@ -330,7 +328,8 @@ _task_launched_effect (AwnTask *task)
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	static gint max = 14;
+	static gint max = 14; /* Max height the icon gets to in pixels */
+	static gint max_bounces = 10;
 
 	if (priv->effect_lock) {
 		if ( priv->current_effect != AWN_TASK_EFFECT_OPENING)
@@ -342,15 +341,15 @@ _task_launched_effect (AwnTask *task)
 		priv->y_offset = 0;
 		priv->count = 0;
 	}
-
-	if (priv->effect_direction) {
+	
+	if (priv->effect_direction == AWN_TASK_EFFECT_DIR_UP) {
 		priv->y_offset +=1;
 
 		if (priv->y_offset >= max)
 			priv->effect_direction = AWN_TASK_EFFECT_DIR_DOWN;
 
-	} else {
-		priv->y_offset-=1;
+	} else if (priv->effect_direction == AWN_TASK_EFFECT_DIR_DOWN) {
+		priv->y_offset-=1;		
 
 		if (priv->y_offset < 1) {
 			priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
@@ -364,7 +363,25 @@ _task_launched_effect (AwnTask *task)
 			priv->y_offset = 0;
 			priv->count = 0;
 		}
-		if ( priv->count > 10 ) {
+		if ( priv->count > max_bounces ) {
+			/* Bounced Enough now... man, slow computer? */
+			priv->effect_lock = FALSE;
+			priv->current_effect = AWN_TASK_EFFECT_NONE;
+			priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
+			priv->y_offset = 0;
+			priv->count = 0;
+		} 
+	}
+	
+	/* This makes sure there is no offscreen bouncing
+	(which is partially seen)... */
+	if (priv->settings->hidden) {
+		priv->y_offset = 0;	
+		priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
+		/* if the program launches while awn is hidden, there
+		should not be an extra bounce upon reentry. */
+		if (priv->window != NULL) {
+			/* finished bouncing, back to normal */
 			priv->effect_lock = FALSE;
 			priv->current_effect = AWN_TASK_EFFECT_NONE;
 			priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
@@ -618,25 +635,41 @@ _task_attention_effect (AwnTask *task)
 		priv->rotate_degrees = 0.0;
 	}
 
-	if (priv->effect_direction) {
+	if (priv->effect_direction == AWN_TASK_EFFECT_DIR_UP) {
 		priv->y_offset +=1;
 
 		if (priv->y_offset >= max)
 			priv->effect_direction = AWN_TASK_EFFECT_DIR_DOWN;
 
-	} else {
+	} else if (priv->effect_direction == AWN_TASK_EFFECT_DIR_DOWN) {
 		priv->y_offset-=1;
 		if (priv->y_offset < 1) {
-			/* finished bouncing, back to normal */
-			if (priv->needs_attention)
+			/* finished bouncing, back to normal 
+			 * (unless it still wants attention) */
+			if (priv->needs_attention) {
 				priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-			else {
+			} else {
 				priv->effect_lock = FALSE;
 				priv->current_effect = AWN_TASK_EFFECT_NONE;
 				priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
 				priv->y_offset = 0;
 				priv->rotate_degrees = 0.0;
 			}
+		}
+	}
+	/* This makes sure there is no offscreen bouncing
+	 (which is partially seen)... */
+	if (priv->settings->hidden) {
+		priv->y_offset = 0;	
+		priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
+		/* if the window is closed or if the attention need is
+		over, there should not be an extra bounce upon reentry. */
+		if (priv->window == NULL || !priv->needs_attention) {
+			/* finished bouncing, back to normal */
+			priv->effect_lock = FALSE;
+			priv->current_effect = AWN_TASK_EFFECT_NONE;
+			priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
+			priv->y_offset = 0;
 		}
 	}
 
@@ -738,7 +771,6 @@ _task_destroy (AwnTask *task)
 		priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
 		priv->y_offset = 0;
 	}
-
 
 	//g_print("%d, %f\n",priv->y_offset, priv->alpha);
 	if (priv->y_offset >= max) {

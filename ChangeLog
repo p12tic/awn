@@ -1,3 +1,10 @@
+2007-08-09  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	patch by: Garoth
+
+	* src/awn-task.c:
+	Fixes bug #130232: Offscreen bouncing.
+
 2007-08-07  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* src/awn-gconf.c:
