@@ -1456,12 +1456,12 @@ on_height_changed (DBusGProxy *proxy, gint height, AwnTaskManager *manager)
 	
 	for (l = priv->launchers; l; l = l->next) {
 	
-		awn_task_set_width (AWN_TASK (l->data), height* 5/4);
+		awn_task_set_width (AWN_TASK (l->data), height+12);
 	}
 	
 	for (l = priv->tasks; l; l = l->next) {
 	
-		awn_task_set_width (AWN_TASK (l->data), height* 5/4);
+		awn_task_set_width (AWN_TASK (l->data), height+12);
 	}
 }
 

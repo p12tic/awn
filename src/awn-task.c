@@ -304,7 +304,7 @@ _task_opening_effect (AwnTask *task)
 		}
 	}
 	gtk_widget_set_size_request(GTK_WIDGET(task), 
-				    (priv->settings->bar_height * 5/4), 
+				    (priv->settings->bar_height + 12), 
 				    (priv->settings->bar_height + 2) * 2);
 
 	gtk_widget_queue_draw(GTK_WIDGET(task));
