@@ -57,6 +57,7 @@
 #define APP_USE_PNG		APP_PATH "/use_png"		/*bool*/
 #define APP_FADE_EFFECT		APP_PATH "/fade_effect"		/*bool*/
 #define APP_ARROW_COLOR		APP_PATH "/arrow_color"		/*color*/
+#define APP_ARROW_OFFSET	APP_PATH "/arrow_offset"	/*offset*/
 #define APP_TASKS_H_ARROWS	APP_PATH "/tasks_have_arrows"	/*bool*/
 #define APP_NAME_CHANGE_NOTIFY	APP_PATH "/name_change_notify"	/*bool*/
 #define APP_ALPHA_EFFECT	APP_PATH "/alpha_effect"	/*bool*/
@@ -157,6 +158,7 @@ awn_gconf_new()
 	awn_load_bool(client, APP_USE_PNG, &s->use_png, FALSE);
 	awn_load_bool(client, APP_FADE_EFFECT, &s->fade_effect, FALSE);
 	awn_load_color(client, APP_ARROW_COLOR, &s->arrow_color, "FFFFFF66");
+	awn_load_int(client, APP_ARROW_OFFSET, &s->arrow_offset, 2);
 	awn_load_bool(client, APP_TASKS_H_ARROWS, &s->tasks_have_arrows, FALSE);
 	awn_load_bool(client, APP_NAME_CHANGE_NOTIFY, &s->name_change_notify, FALSE);
 	awn_load_bool(client, APP_ALPHA_EFFECT, &s->alpha_effect, FALSE);

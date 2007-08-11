@@ -1,3 +1,12 @@
+2007-08-11  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	patch by: ziegs
+
+	* src/awn-gconf.c:
+	* src/awn-gconf.h:
+	* src/awn-task.c:
+	Fixes bug #131738: Lower arrows position to add visibility.
+
 2007-08-09  haytjes <hv1989@gmail.com>
 
 	* src/awn-task-manager.c:

@@ -997,14 +997,16 @@ draw (GtkWidget *task, cairo_t *cr)
 
 	/* arrows */
 	double x1;
+	double arrow_top;
 	x1 = width/2.0;
+	arrow_top = (settings->bar_height * 2) + settings->arrow_offset;
 	cairo_set_source_rgba (cr, settings->arrow_color.red,
 				   settings->arrow_color.green,
 				   settings->arrow_color.blue,
 				   settings->arrow_color.alpha);
-	cairo_move_to(cr, x1-5, (settings->bar_height * 2));
-	cairo_line_to(cr, x1, (settings->bar_height *2) - 5);
-	cairo_line_to(cr, x1+5, (settings->bar_height * 2));
+	cairo_move_to(cr, x1-5, arrow_top);
+	cairo_line_to(cr, x1, arrow_top - 5);
+	cairo_line_to(cr, x1+5, arrow_top);
 	cairo_close_path (cr);
 
 	if (settings->tasks_have_arrows) {

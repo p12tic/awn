@@ -89,6 +89,7 @@ typedef struct {
 	gchar *active_png;
 	
 	AwnColor arrow_color;
+	int arrow_offset;
 	gboolean tasks_have_arrows;
 	gboolean fade_effect;
 	
