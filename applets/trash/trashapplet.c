@@ -336,7 +336,7 @@ draw (GtkWidget *widget, cairo_t *cr, gint width, gint height)
 	
 	if( applet->y_offset >= 0 )
 	{
-		y = (applet->height + PADDING) + applet->height - applet->y_offset;
+		y = (applet->height + PADDING) + applet->height + applet->y_offset;
 		gdk_cairo_set_source_pixbuf (cr, reflect, PADDING, y);
 		cairo_paint_with_alpha(cr, 0.33);
 		//cairo_paint (cr);

@@ -1,5 +1,11 @@
 2007-08-11  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
+	* applets/trash/trashapplet.c:
+	Fixes bug #131827: Trash applet drop effect, reflection
+	moves in wrong direction.
+
+2007-08-11  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
 	patch by: ziegs
 
 	* src/awn-gconf.c:
