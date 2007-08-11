@@ -1,5 +1,12 @@
 2007-08-11  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
+	patch by: Timon_and_Pumba
+
+	* libawn/awn-applet-dialog.c:
+	Fixes bug #131547: Libawn event propagation.
+
+2007-08-11  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
 	* applets/trash/trashapplet.c:
 	Fixes bug #131827: Trash applet drop effect, reflection
 	moves in wrong direction.

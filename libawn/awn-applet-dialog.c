@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "awn-applet.h"
 #include "awn-applet-gconf.h"
@@ -127,7 +128,10 @@ _on_alpha_screen_changed (GtkWidget* pWidget,
 }
 
 
-
+/*
+ * Should "reposition" dialog-arrow if the dialog does not fit
+ *(fall-off-screen) on the desired place.
+ */
 void 
 awn_applet_dialog_position_reset (AwnAppletDialog *dialog) 
 {
@@ -143,6 +147,7 @@ awn_applet_dialog_position_reset (AwnAppletDialog *dialog)
 	/* offest by applet height */
 	gtk_widget_get_size_request (GTK_WIDGET(dialog->applet), &width, &height);
 	y += height;
+	x += (width / 2) - 36; /* gap */
 
 	/* offset dialog height */
 	gtk_window_get_size (window, &width, &height);
@@ -161,6 +166,7 @@ static gboolean
 _on_expose_event(GtkWidget *widget, GdkEventExpose *expose, gpointer *data) 
 {
 	cairo_t *cr = NULL;
+	GtkWidget *child = NULL;
 	gint width, height;
         const gchar *text;
 	
@@ -212,12 +218,13 @@ _on_expose_event(GtkWidget *widget, GdkEventExpose *expose, gpointer *data)
 	// Clean up
 	cairo_destroy (cr);
 
-        /* Propagate the expose event to the child */
-        gtk_container_propagate_expose (GTK_CONTAINER (widget),
-                                        gtk_bin_get_child (GTK_BIN (widget)),
-                                        expose);
-                                                       
-	return TRUE;
+	/* Propagate the signal */
+	child = gtk_bin_get_child (GTK_BIN (widget));
+	if (child)
+		gtk_container_propagate_expose (GTK_CONTAINER (widget),
+						child, expose);
+		
+	return FALSE;
 }
 
 
@@ -225,11 +232,11 @@ static gboolean
 _on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer *data) 
 {
 	/*printf("is awn applet dialog? %i\n", AWN_IS_APPLET_DIALOG(widget)); */
-	if (event->keyval == 65307 && AWN_IS_APPLET_DIALOG(widget)) 
+	if (event->keyval == GDK_Escape && AWN_IS_APPLET_DIALOG(widget))  /* 65307 */
         {
 		AWN_APPLET_DIALOG(widget)->applet = NULL;
 		gtk_widget_destroy(widget);
 	}
-	return TRUE;
+	return FALSE;
 }
 
