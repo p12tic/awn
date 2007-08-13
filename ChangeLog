@@ -1,5 +1,13 @@
 2007-08-13  Neil J. Patel  <njpatel@gmail.com>
 
+	* configure.in:
+	* po/es.po:
+	* po/ru_RU.po:
+	* po/sv.po:
+	Update translations.
+
+2007-08-13  Neil J. Patel  <njpatel@gmail.com>
+
 	* libawn/awn-applet-dialog.c:
 	Move more init calls to g_object_new.
 	Add in some better positioning.
