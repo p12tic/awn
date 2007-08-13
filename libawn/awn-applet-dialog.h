@@ -54,10 +54,11 @@ G_BEGIN_DECLS
 /* AwnAppletDialog CLASS & TYPE */
 typedef struct _AwnAppletDialog AwnAppletDialog;
 typedef struct _AwnAppletDialogClass AwnAppletDialogClass;
+typedef struct _AwnAppletDialogPrivate AwnAppletDialogPrivate;
 
 struct _AwnAppletDialog {
  	GtkWindow 		window;
-	AwnApplet 		*applet;
+	AwnAppletDialogPrivate  *priv;
 };
 
 struct _AwnAppletDialogClass {

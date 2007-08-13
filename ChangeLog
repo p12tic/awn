@@ -1,3 +1,10 @@
+2007-08-13  Neil J. Patel  <njpatel@gmail.com>
+
+	* libawn/Makefile.am:
+	* libawn/awn-applet-dialog.c:
+	* libawn/awn-applet-dialog.h:
+	Lots of fixes, size, colour, GObject stuff, padding.
+
 2007-08-11  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	patch by: Timon_and_Pumba
