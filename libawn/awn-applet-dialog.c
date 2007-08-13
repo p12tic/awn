@@ -72,27 +72,28 @@ _on_alpha_screen_changed (GtkWidget* pWidget,
 void 
 awn_applet_dialog_position_reset (AwnAppletDialog *dialog) 
 {
-	if (dialog->priv->applet == NULL) 
-                return;
-	
-	gint width, height;
-	GtkWindow *window = GTK_WINDOW (dialog);
+  gint ax, ay, aw, ah;
+  gint x, y, w, h;
+  
+  g_return_if_fail (AWN_IS_APPLET_DIALOG (dialog));
 
-	gint x, y;
-	gdk_window_get_origin(GTK_WIDGET(dialog->priv->applet)->window, 
-                              &x, &y);
-	
-	/* offest by applet height */
-	gtk_widget_get_size_request (GTK_WIDGET(dialog->priv->applet), 
-                                     &width, &height);
-	y += height;
-	x += (width / 2) - 36; /* gap */
+  gdk_window_get_origin (GTK_WIDGET (dialog->priv->applet)->window, 
+                         &ax, &ay);
+  gtk_widget_get_size_request (GTK_WIDGET (dialog->priv->applet), &aw, &ah);
 
-	/* offset dialog height */
-	gtk_window_get_size (window, &width, &height);
-	y -= height;
-	
-	gtk_window_move (GTK_WINDOW(window), x, y-1);
+  gtk_window_get_size (GTK_WINDOW (dialog), &w, &h);
+
+  x = ax - w/2;
+  y = ay - h;
+  
+  if (x < 0)
+    x = 2;
+
+  if ((x+w) > gdk_screen_get_width (gdk_screen_get_default()))
+    x = gdk_screen_get_width (gdk_screen_get_default ()) - w -20;
+
+  gtk_window_move (GTK_WINDOW (dialog), x, y);
+
 }
 
 static void 
@@ -127,7 +128,8 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
 	// background shading
 	cairo_set_source_rgba (cr, 0, 0, 0, 0.85f);
-	awn_cairo_rounded_rect (cr, 0, 0, width, height - gap, 15, ROUND_ALL);
+	awn_cairo_rounded_rect (cr, 0, 0, width, height - gap, 
+                                15, ROUND_ALL);
         cairo_fill(cr);
 
 	// draw arrow
@@ -157,6 +159,8 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 	// Clean up
 	cairo_destroy (cr);
 
+        awn_applet_dialog_position_reset (AWN_APPLET_DIALOG (widget));
+
 	/* Propagate the signal */
 	child = gtk_bin_get_child (GTK_BIN (widget));
 	if (child)
@@ -166,6 +170,12 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 	return FALSE;
 }
 
+static gboolean
+_configure_event (GtkWidget *dialog, GdkEventConfigure *event)
+{
+        awn_applet_dialog_position_reset (AWN_APPLET_DIALOG (dialog));
+        return FALSE;
+}
 
 static gboolean 
 _on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer *data)
@@ -201,6 +211,7 @@ awn_applet_dialog_class_init (AwnAppletDialogClass *klass)
 
         widget_class = GTK_WIDGET_CLASS (klass);
 	widget_class->expose_event = _expose_event;
+       // widget_class->configure_event = _configure_event;
 	
         cont_class = GTK_CONTAINER_CLASS (klass);
         cont_class->add = awn_applet_dialog_add;
@@ -228,11 +239,7 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
                           "widget \"AwnDialog.*\" style \"textcolor\"");
         gtk_widget_set_name (GTK_WIDGET (dialog), "AwnDialog");
         
-        /* setup struct init values */
-	gtk_window_set_skip_taskbar_hint (GTK_WINDOW (dialog), TRUE);
-	gtk_window_set_decorated(GTK_WINDOW(dialog), FALSE);
-	gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
-	gtk_window_stick(GTK_WINDOW(dialog));
+       	gtk_window_stick(GTK_WINDOW(dialog));
 	
 	/* TODO: makes non-movable, but breaks other things like key press 
          * event. 
@@ -269,6 +276,9 @@ awn_applet_dialog_new (AwnApplet *applet)
 
         dialog = g_object_new (AWN_TYPE_APPLET_DIALOG,
                                "type", GTK_WINDOW_TOPLEVEL, 
+                               "skip-taskbar-hint", TRUE,
+                               "decorated", FALSE,
+                               "resizable", FALSE,
                                NULL);
 	dialog->priv->applet = applet;
 	
