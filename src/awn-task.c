@@ -122,6 +122,7 @@ struct _AwnTaskPrivate
 	gchar *info_text;
 
 	/* EFFECT VARIABLES */
+	gboolean effect_sheduled;
 	gboolean effect_lock;
 	AwnTaskEffect current_effect;
 	gint effect_direction;
@@ -247,6 +248,7 @@ awn_task_init (AwnTask *task)
 	priv->info_text = NULL;
 	priv->is_active = FALSE;
 	priv->needs_attention = FALSE;
+	priv->effect_sheduled = FALSE;
 	priv->effect_lock = FALSE;
 	priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
 	priv->current_effect = AWN_TASK_EFFECT_NONE;
@@ -273,6 +275,9 @@ _task_opening_effect (AwnTask *task)
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
+
+	priv->effect_sheduled = FALSE;
+
 	static gint max = 10;
 
 	if (priv->effect_lock) {
@@ -321,6 +326,10 @@ static void
 launch_opening_effect (AwnTask *task )
 {
 	g_timeout_add(AWN_FRAME_RATE, (GSourceFunc)_task_opening_effect, (gpointer)task);
+
+	AwnTaskPrivate *priv;
+	priv = AWN_TASK_GET_PRIVATE (task);
+	priv->effect_sheduled = TRUE;
 }
 
 static gboolean
@@ -328,6 +337,9 @@ _task_launched_effect (AwnTask *task)
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
+
+	priv->effect_sheduled = FALSE;
+
 	static gint max = 14; /* Max height the icon gets to in pixels */
 	static gint max_bounces = 10;
 
@@ -409,6 +421,10 @@ launch_launched_effect (AwnTask *task )
 		g_source_remove(tag);
 	*/
 	g_timeout_add(30, (GSourceFunc)_task_launched_effect, (gpointer)task);
+
+	AwnTaskPrivate *priv;
+	priv = AWN_TASK_GET_PRIVATE (task);
+	priv->effect_sheduled = TRUE;
 }
 
 static gboolean
@@ -419,6 +435,9 @@ _task_hover_effect (AwnTask *task)
 	if (!AWN_IS_TASK (task)) return FALSE;
 
 	priv = AWN_TASK_GET_PRIVATE (task);
+
+	priv->effect_sheduled = FALSE;
+
 	static gint max = 15;
 
 
@@ -468,6 +487,9 @@ _task_hover_effect2 (AwnTask *task)
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
+
+	priv->effect_sheduled = FALSE;
+
 	if (priv->effect_lock) {
 		if ( priv->current_effect != AWN_TASK_EFFECT_HOVER)
 			return TRUE;
@@ -610,6 +632,7 @@ launch_hover_effect (AwnTask *task )
 		//g_timeout_add(25, (GSourceFunc)_task_hover_effect2, (gpointer)task);
 	} else if (priv->settings->hover_bounce_effect) {
 		g_timeout_add(40, (GSourceFunc)_task_hover_effect, (gpointer)task);
+		priv->effect_sheduled = TRUE;
 	}
 }
 
@@ -622,6 +645,9 @@ _task_attention_effect (AwnTask *task)
 		return FALSE;
 
 	priv = AWN_TASK_GET_PRIVATE (task);
+
+	priv->effect_sheduled = FALSE;
+
 	static gint max = 20;
 
 	if (priv->effect_lock) {
@@ -686,6 +712,10 @@ static void
 launch_attention_effect (AwnTask *task )
 {
 	g_timeout_add(25, (GSourceFunc)_task_attention_effect, (gpointer)task);
+
+	AwnTaskPrivate *priv;
+	priv = AWN_TASK_GET_PRIVATE (task);
+	priv->effect_sheduled = TRUE;
 }
 
 static gboolean
@@ -693,6 +723,8 @@ _task_fade_out_effect (AwnTask *task)
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
+
+	priv->effect_sheduled = FALSE;
 
 	if (priv->hover) {
 		priv->alpha = 1.0;
@@ -717,6 +749,10 @@ static void
 launch_fade_out_effect (AwnTask *task )
 {
 	g_timeout_add(15, (GSourceFunc)_task_fade_out_effect, (gpointer)task);
+
+	AwnTaskPrivate *priv;
+	priv = AWN_TASK_GET_PRIVATE (task);
+	priv->effect_sheduled = TRUE;
 }
 
 
@@ -725,6 +761,9 @@ _task_fade_in_effect (AwnTask *task)
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
+
+	priv->effect_sheduled = FALSE;
+
 	/*
 	if (priv->hover) {
 		priv->alpha = 1.0;
@@ -752,6 +791,10 @@ static void
 launch_fade_in_effect (AwnTask *task )
 {
 	g_timeout_add(40, (GSourceFunc)_task_fade_in_effect, (gpointer)task);
+
+	AwnTaskPrivate *priv;
+	priv = AWN_TASK_GET_PRIVATE (task);
+	priv->effect_sheduled = TRUE;
 }
 
 static gboolean
@@ -810,6 +853,9 @@ _task_change_name_effect (AwnTask *task)	// Based on notification effect
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
+
+	priv->effect_sheduled = FALSE;
+
 	static gint max = 14;
 
 	if (priv->effect_lock) {
@@ -862,6 +908,10 @@ _launch_name_change_effect (AwnTask *task)
 	//	g_source_remove(tag);
 	//tag =
 	g_timeout_add(30, (GSourceFunc)_task_change_name_effect, (gpointer)task);
+
+	AwnTaskPrivate *priv;
+	priv = AWN_TASK_GET_PRIVATE (task);
+	priv->effect_sheduled = TRUE;
 	return FALSE;
 }
 
@@ -1298,7 +1348,7 @@ awn_task_proximity_in (GtkWidget *task, GdkEventCrossing *event)
 		priv->hover = TRUE;
 
 		if (!settings->fade_effect) {
-			if (priv->current_effect != AWN_TASK_EFFECT_HOVER)
+			if (!priv->effect_sheduled && !priv->effect_lock && priv->current_effect != AWN_TASK_EFFECT_HOVER)
 				launch_hover_effect (AWN_TASK (task));
 		} else {
 			priv->alpha = 1.0;
