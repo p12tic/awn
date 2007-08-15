@@ -1390,6 +1390,10 @@ awn_task_drag_motion (GtkWidget *task,
 
 	if (priv->is_closing)
 		return FALSE;
+		
+	if (priv->settings->auto_hide && priv->settings->hidden) {
+		awn_show(priv->settings);
+	}
 
 	if (priv->window) {
 
@@ -1412,6 +1416,10 @@ awn_task_drag_leave (GtkWidget *task, GdkDragContext *drag_context,
  	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 	priv->hover = FALSE;
+	
+	if (priv->settings->auto_hide && !priv->settings->hidden) {
+		awn_hide(priv->settings);
+	}
 }
 
 static void

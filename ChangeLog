@@ -1,5 +1,10 @@
 2007-08-15  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
+	* src/awn-task.c:
+	Fixes bug #131938: Autohide Drag & No Drop.
+
+2007-08-15  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
 	patch by: Michal Hruby
 
 	* src/awn-gconf.h:
