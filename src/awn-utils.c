@@ -28,6 +28,10 @@ static gint hide_delay = 1000 / 20;
 static gboolean
 _move_bar (AwnSettings *settings)
 {
+	if (settings->hidden && !settings->hiding) {
+		dest_y = 0;
+		settings->hidden = FALSE;
+	}
  	if (current_y > dest_y) {
 		if (current_y - dest_y == 1) {
 			current_y -= 1;
@@ -47,6 +51,7 @@ _move_bar (AwnSettings *settings)
  	} else {
  		hide_delay = settings->auto_hide_delay / 20;
  		effect_lock = FALSE;
+		settings->hiding = FALSE;
  		return FALSE;
 	}
 
@@ -80,6 +85,7 @@ awn_hide (AwnSettings *settings)
 	
 	gtk_widget_hide (settings->title);
 	settings->hidden = TRUE;
+	settings->hiding = TRUE;
 }
 
 void 
@@ -95,6 +101,7 @@ awn_show (AwnSettings *settings)
 	
 	gtk_widget_show (settings->title);
 	settings->hidden = FALSE;
+	settings->hiding = FALSE;
 }
 
 

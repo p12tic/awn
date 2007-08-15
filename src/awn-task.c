@@ -1344,6 +1344,8 @@ awn_task_win_enter_in (GtkWidget *window, GdkEventMotion *event, AwnTask *task)
 	settings = priv->settings;
 	if (settings->fade_effect)
 		launch_fade_out_effect(task);
+	if (settings->hiding)
+		settings->hiding = FALSE;
 	return FALSE;
 }
 

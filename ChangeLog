@@ -1,3 +1,12 @@
+2007-08-15  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	patch by: Michal Hruby
+
+	* src/awn-gconf.h:
+	* src/awn-task.c:
+	* src/awn-utils.c:
+	Fixes bug #132516: Autohide can't be interrupted + fix.
+
 2007-08-13  Neil J. Patel  <njpatel@gmail.com>
 
 	* configure.in:
