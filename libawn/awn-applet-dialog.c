@@ -236,7 +236,7 @@ _on_notify (GObject *dialog, GParamSpec *spec, gpointer null)
         else
         {
                 gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
-                                           40, 30, 10, 10);
+                                           10, 30, 10, 10);
         }
 }
 
