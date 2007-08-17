@@ -1,6 +1,11 @@
 2007-08-17  Neil J. Patel  <njp@o-hand.com>
 
 	* libawn/awn-applet-dialog.c:
+	Fixes bug #132452 (dialog doesn't make space fore the title).
+
+2007-08-17  Neil J. Patel  <njp@o-hand.com>
+
+	* libawn/awn-applet-dialog.c:
 	Fixes bug #132137 (dialog position doesn't update).
 
 2007-08-17  Neil J. Patel  <njp@o-hand.com>

@@ -97,13 +97,6 @@ awn_applet_dialog_position_reset (AwnAppletDialog *dialog)
 
 }
 
-static void 
-_on_size_request (GtkWidget *widget, GtkRequisition *req, gpointer *data) 
-{
-	awn_applet_dialog_position_reset (AWN_APPLET_DIALOG (widget));
-        gtk_widget_queue_draw (widget);
-}
-
 static gboolean 
 _expose_event(GtkWidget *widget, GdkEventExpose *expose) 
 {
@@ -172,13 +165,14 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 	return FALSE;
 }
 
-static gboolean
-_configure_event (GtkWidget *dialog, GdkEventConfigure *event)
+static void 
+_on_size_request (GtkWidget *widget, GtkRequisition *req, gpointer *data) 
 {
-        awn_applet_dialog_position_reset (AWN_APPLET_DIALOG (dialog));
-        gtk_widget_queue_draw (dialog);
-        return FALSE;
+	awn_applet_dialog_position_reset (AWN_APPLET_DIALOG (widget));
+        gtk_widget_queue_draw (widget);
 }
+
+
 
 static gboolean 
 _on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer *data)
@@ -190,6 +184,29 @@ _on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer *data)
 	}
 	return FALSE;
 }
+
+static void
+_on_notify (GObject *dialog, GParamSpec *spec, gpointer null)
+{
+        AwnAppletDialogPrivate *priv;
+
+        priv = AWN_APPLET_DIALOG (dialog)->priv;
+
+        if (strcmp ("title", g_param_spec_get_name (spec)) != 0)
+                return;
+
+        if (gtk_window_get_title (GTK_WINDOW (dialog)))
+        {
+                gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
+                                           30, 40, 10, 10);
+        }
+        else
+        {
+                gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
+                                           40, 40, 10, 10);
+        }
+}
+
 
 static void
 awn_applet_dialog_add (GtkContainer *dialog, GtkWidget *widget)
@@ -242,22 +259,21 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
                           "widget \"AwnDialog.*\" style \"textcolor\"");
         gtk_widget_set_name (GTK_WIDGET (dialog), "AwnDialog");
         
-       	gtk_window_stick(GTK_WINDOW(dialog));
+       	gtk_window_stick (GTK_WINDOW (dialog));
 	
-	/* TODO: makes non-movable, but breaks other things like key press 
-         * event. 
-         * gtk_window_set_type_hint(GTK_WINDOW(dialog), 
-         *                          GDK_WINDOW_TYPE_HINT_DOCK);
-         */
-        _on_alpha_screen_changed(GTK_WIDGET(dialog), NULL, NULL);
-        gtk_widget_set_app_paintable(GTK_WIDGET(dialog), TRUE);
+        _on_alpha_screen_changed (GTK_WIDGET (dialog), NULL, NULL);
+        gtk_widget_set_app_paintable (GTK_WIDGET (dialog), TRUE);
 	
 	/* events */
-	gtk_widget_add_events(GTK_WIDGET(dialog), GDK_ALL_EVENTS_MASK);
-        g_signal_connect(G_OBJECT(dialog), "key-press-event", 
+	gtk_widget_add_events (GTK_WIDGET (dialog), GDK_ALL_EVENTS_MASK);
+        g_signal_connect (G_OBJECT(dialog), "key-press-event", 
                          G_CALLBACK(_on_key_press_event), NULL);
-	g_signal_connect(G_OBJECT(dialog), "size-request", 
+	g_signal_connect (G_OBJECT(dialog), "size-request", 
                          G_CALLBACK(_on_size_request), NULL);
+        g_signal_connect (dialog, "notify",
+                          G_CALLBACK (_on_notify), NULL);
+
+        g_object_notify (G_OBJECT (dialog), "title");
 
         priv->align = gtk_alignment_new (0.5, 0.5, 1, 1);
         gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
