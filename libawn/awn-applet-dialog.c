@@ -100,10 +100,14 @@ awn_applet_dialog_position_reset (AwnAppletDialog *dialog)
 static gboolean 
 _expose_event(GtkWidget *widget, GdkEventExpose *expose) 
 {
-	cairo_t *cr = NULL;
+	AwnAppletDialog *dialog;
+        cairo_t *cr = NULL;
 	GtkWidget *child = NULL;
 	gint width, height;
         const gchar *text;
+        gint x, y, ax, ay, aw, ah;
+
+        dialog = AWN_APPLET_DIALOG (widget);
 	
 	cr = gdk_cairo_create (widget->window);
 	if (!cr)
@@ -118,21 +122,50 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
 	// draw everything else over transparent background	
 	cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+        cairo_set_line_width (cr, 2.0);
 
-	gint gap = 30;
+
+	gint gap = 20;
 
 	// background shading
 	cairo_set_source_rgba (cr, 0, 0, 0, 0.85f);
-	awn_cairo_rounded_rect (cr, 0, 0, width, height - gap, 
+	awn_cairo_rounded_rect (cr, 2, 2, width-4, height-4 - gap, 
                                 15, ROUND_ALL);
-        cairo_fill(cr);
+        cairo_fill_preserve(cr);
+        cairo_set_source_rgba (cr, 1, 1, 1, 0.8f);
+        cairo_stroke (cr);
+
+        //  get some size & position info
+        gdk_window_get_origin (widget->window, &x, &y);
+        gdk_window_get_origin (GTK_WIDGET (dialog->priv->applet)->window, 
+                               &ax, &ay);
+        gtk_widget_get_size_request (GTK_WIDGET (dialog->priv->applet), 
+                                     &aw, &ah);
+
+        // do some maths
+        x = ax - x;
+        x += aw/2;
 
 	// draw arrow
-	cairo_move_to (cr, 20, height - gap);
-	cairo_line_to (cr, 36, height);
-	cairo_line_to (cr, 52, height - gap);
-	cairo_line_to (cr, 20, height - gap);
-	cairo_fill (cr);
+        cairo_set_source_rgba (cr, 0, 0, 0, 0.85f);
+	cairo_move_to (cr, x-15, height - gap - 2);
+	cairo_line_to (cr, x, height);
+	cairo_line_to (cr, x+15, height - gap - 2);
+	//cairo_line_to (cr, x-15, height - gap - 2);
+        cairo_close_path (cr);
+	cairo_fill_preserve (cr);
+        cairo_set_source_rgba (cr, 1, 1, 1, 0.8f);
+        cairo_stroke (cr);
+        
+        cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+        cairo_set_source_rgba (cr, 0, 0, 0, 0.85f);
+        cairo_move_to (cr, x-14, height-gap-4);
+        cairo_line_to (cr, x, height-4);
+        cairo_line_to (cr, x+14, height-gap-4);
+        cairo_close_path (cr);
+        cairo_fill_preserve (cr);
+        cairo_stroke (cr);
+        
 
 	// rasterize title text
 	text = gtk_window_get_title (GTK_WINDOW (widget));
@@ -198,12 +231,12 @@ _on_notify (GObject *dialog, GParamSpec *spec, gpointer null)
         if (gtk_window_get_title (GTK_WINDOW (dialog)))
         {
                 gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
-                                           30, 40, 10, 10);
+                                           30, 30, 10, 10);
         }
         else
         {
                 gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
-                                           40, 40, 10, 10);
+                                           40, 30, 10, 10);
         }
 }
 
@@ -277,7 +310,7 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
 
         priv->align = gtk_alignment_new (0.5, 0.5, 1, 1);
         gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
-                                   10, 40, 10, 10);
+                                   10, 30, 10, 10);
         
         GTK_CONTAINER_CLASS (awn_applet_dialog_parent_class)->add 
                                      (GTK_CONTAINER (dialog), priv->align);

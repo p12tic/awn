@@ -1,3 +1,11 @@
+2007-08-18  Neil J. Patel  <njp@o-hand.com>
+
+	* libawn/awn-applet-dialog.c:
+	Better drawing and positioning.
+	Entire popup now has a white border.
+	Bottom arrow successfully places itseflf over the corressponding applet, 
+	exactly in the middle.
+
 2007-08-17  Neil J. Patel  <njp@o-hand.com>
 
 	* libawn/awn-applet-dialog.c:
