@@ -1,5 +1,18 @@
 2007-08-17  Neil J. Patel  <njp@o-hand.com>
 
+	patch by: Julien Lavergne <bot4gilir@yahoo.fr>
+	* plugins/Rhythmbox/artdisplay-awn/AmazonCoverArtSearch.py:
+	* plugins/Rhythmbox/artdisplay-awn/CoverArtDatabase.py:
+	* plugins/Rhythmbox/artdisplay-awn/Loader.py:
+	* plugins/Rhythmbox/artdisplay-awn/LocalCoverArtSearch.py:
+	* plugins/Rhythmbox/artdisplay-awn/PodcastCoverArtSearch.py:
+	* plugins/Rhythmbox/artdisplay-awn/__init__.py:
+	* plugins/Rhythmbox/artdisplay-awn/__init__.py~:
+	* plugins/Rhythmbox/artdisplay-awn/rhythmbox-missing-artwork.svg:
+	Sync art display plugin with upstream.
+
+2007-08-17  Neil J. Patel  <njp@o-hand.com>
+
 	* src/Makefile.am:
 	* src/awn-app.c:
 	* src/awn-app.h:
