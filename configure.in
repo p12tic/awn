@@ -31,7 +31,7 @@ dnl ==============================================
 GETTEXT_PACKAGE=avant-window-navigator
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package])
-ALL_LINGUAS="cs da de_DE el_GR en_GB es fi_FI fr_FR it_IT no_NO pt_BR sv tr ru ru_RU"
+ALL_LINGUAS="ca cs da de_DE el_GR en_GB es fi_FI fr_FR he hr hu it_IT nb nl no_NO pt_BR ro ru ru_RU sk sr sv tr zh_CN"
 
 IT_PROG_INTLTOOL([0.34])
 AM_GLIB_GNU_GETTEXT

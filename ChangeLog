@@ -1,6 +1,25 @@
 2007-08-17  Neil J. Patel  <njp@o-hand.com>
 
 	* configure.in:
+	* po/ca.po:
+	* po/cs.po:
+	* po/he.po:
+	* po/hr.po:
+	* po/hu.po:
+	* po/nb.po:
+	* po/nl.po:
+	* po/pt_BR.po:
+	* po/ro.po:
+	* po/ru.po:
+	* po/sk.po:
+	* po/sr.po:
+	* po/sv.po:
+	* po/zh_CN.po:
+	Merged & updated lot's and lot's of translations! Yay launchpad.
+
+2007-08-17  Neil J. Patel  <njp@o-hand.com>
+
+	* configure.in:
 	* po/tr.po:
 	Merged updated turkish translation.
 

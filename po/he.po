@@ -1,4 +1,4 @@
-# Czech translation for awn
+# Hebrew translation for awn
 # Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
 # This file is distributed under the same license as the awn package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
@@ -9,286 +9,283 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-08-01 19:45+0000\n"
-"Last-Translator: Kamil Páral <ripper42@gmail.com>\n"
-"Language-Team: Czech <cs@li.org>\n"
+"PO-Revision-Date: 2007-08-02 16:03+0000\n"
+"Last-Translator: mark125 <mark125@gmail.com>\n"
+"Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Rosetta-Export-Date: 2007-08-03 13:48:11+0000\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Rosetta-Export-Date: 2007-08-17 19:08:42+0000\n"
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
-msgstr "Řádky:"
+msgstr "שורות:"
 
 #: ../applets/switcher/applet.c:128
 msgid "Width:"
-msgstr "Šířka:"
+msgstr "רוחב:‏"
 
 #: ../applets/switcher/applet.c:140
 msgid "Height:"
-msgstr "Výška:"
+msgstr "אורך:"
 
 #: ../applets/trash/trashapplet.glade.h:1
 msgid "<b>From:</b>"
-msgstr "<b>Od:</b>"
+msgstr "‏<b>מאת:</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
 msgid "<big><b>Emptying the Trash</b></big>"
-msgstr "<big><b>Vyprazdňuje se koš</b></big>"
+msgstr "‏<big><b>ריקון האשפה</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr "Vyprazdňuje se koš"
+msgstr "מרוקן את האשפה"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "<b>Aktivní ikona</b>"
+msgstr "<b>צלמית פעילה</b>"
 
 #: ../avant-preferences/window.glade.h:2
 msgid "<b>Arrows</b>"
-msgstr "<b>Šipky</b>"
+msgstr "<b>חצים</b>"
 
 #: ../avant-preferences/window.glade.h:3
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>Chování pruhu</b>"
+msgstr "<b>התנהגות הבר</b>"
 
 #: ../avant-preferences/window.glade.h:4
 msgid "<b>Borders</b>"
-msgstr "<b>Okraje</b>"
+msgstr "<b>גבולות</b>"
 
 #: ../avant-preferences/window.glade.h:5
 msgid "<b>Corners</b>"
-msgstr "<b>Rohy</b>"
+msgstr "<b>פינות</b>"
 
 #: ../avant-preferences/window.glade.h:6
 msgid "<b>Gradient</b>"
-msgstr "<b>Gradient</b>"
+msgstr "<b>מדרוני</b>"
 
 #: ../avant-preferences/window.glade.h:7
 msgid "<b>Highlight</b>"
-msgstr "<b>Zvýraznění</b>"
+msgstr "<b>הדגשה</b>"
 
 #: ../avant-preferences/window.glade.h:8
 msgid "<b>Pattern</b>"
-msgstr "<b>Vzorek</b>"
+msgstr "<b>תבנית</b>"
 
 #: ../avant-preferences/window.glade.h:9
 msgid "<b>Separator</b>"
-msgstr "<b>Oddělovač</b>"
+msgstr "<b>הפרדה</b>"
 
 #: ../avant-preferences/window.glade.h:10
 msgid "<b>Text</b>"
-msgstr "<b>Text</b>"
+msgstr "<b>טקסט</b>"
 
 #: ../avant-preferences/window.glade.h:11
 msgid "<b>Windows</b>"
-msgstr "<b>Okna</b>"
+msgstr "<b>חלונות</b>"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
-msgstr "Automaticky schovat pruh, když se nepoužívá"
+msgstr "הסתר אוטומטית את הבר בזמן שלא בשימוש"
 
 #: ../avant-preferences/window.glade.h:13
 msgid "Avant Preferences"
-msgstr "Nastavení Avant"
+msgstr "העדפות"
 
 #: ../avant-preferences/window.glade.h:14
 msgid "Background color:"
-msgstr "Barva pozadí:"
+msgstr "צבע הרקע:"
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
-msgstr "Vzhled pruhu"
+msgstr "הופעת הבר"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
-msgstr "Tučně"
+msgstr "מודגש"
 
 #: ../avant-preferences/window.glade.h:17
 msgid "Color:"
-msgstr "Barva:"
+msgstr "צבע"
 
 #: ../avant-preferences/window.glade.h:18
 msgid "Enable pattern"
-msgstr "Nastavit vzorek"
+msgstr "אפשר תבנית"
 
 #: ../avant-preferences/window.glade.h:19
 msgid "Enable rounded corners"
-msgstr "Nastavit kulaté rohy"
+msgstr "הפעלת פינות מועגלות"
 
 #: ../avant-preferences/window.glade.h:20
 msgid "Fade effect (experimental)"
-msgstr "Blednoucí efekt (experimentální)"
+msgstr "אפקט עימעום (ניסיוני)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
-msgstr "Barva prvního kroku:"
+msgstr "צבע צעד ראשון:"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
-msgstr "Velikost písma:"
+msgstr "גודל גופן:"
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
-msgstr "Obecné"
+msgstr "כללי"
 
 #: ../avant-preferences/window.glade.h:24
 msgid "Glass Engine"
-msgstr "Skleněné prostředí"
+msgstr "מנוע זכוכית"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
-msgstr "Vnitřní okraj:"
+msgstr "גבול פנימי:"
 
 #: ../avant-preferences/window.glade.h:26
 msgid "Italic"
-msgstr "Kurzíva"
+msgstr "נטוי"
 
 #: ../avant-preferences/window.glade.h:27
 msgid "Main border:"
-msgstr "Hlavní okraj:"
+msgstr "גבול ראשי:"
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "Maximalizovaná okna nepřekrývají pruh (vyžaduje restart)"
+msgstr "חלונות מלאים לא מכסים את הבר (דורש הפעלה מחדש)"
 
 #: ../avant-preferences/window.glade.h:29
 msgid "Pattern Engine"
-msgstr "Vzorkované prostředí"
+msgstr "מנוע תבניות"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
-msgstr "Barva druhého kroku:"
+msgstr "צבע צעד שני:"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
-msgstr "Vybrat soubor"
+msgstr "בחר קובץ"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
-msgstr "Barva oddělovače:"
+msgstr "צבע ההפרדה:"
 
 #: ../avant-preferences/window.glade.h:33
 msgid "Shadow color:"
-msgstr "Barva stínu:"
+msgstr "צבע הצללית:"
 
 #: ../avant-preferences/window.glade.h:34
 msgid "Show separator between launchers and tasks"
-msgstr "Zobrazit oddělovač mezi spouštěči a úlohami"
+msgstr "הצג הפרדה בין משגרים לבין משימות"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
-msgstr "Zobrazit okna ze všech pohledů plochy"
+msgstr "הראה חלונות מכל נקודות הצפייה"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
-msgstr "Vzhled úlohy"
+msgstr "הופעת משימות"
 
 #: ../avant-preferences/window.glade.h:37
 msgid "Tasks have arrows"
-msgstr "Úlohy mají šipky"
+msgstr "למשימות יש חצים"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
-msgstr "Nepoužívaný pruh se automaticky skrývá"
+msgstr "הסתר את הבר אוטומטית כשהוא לא בשימוש"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
-msgstr "Průhlednost:"
+msgstr "שקיפות:"
 
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
-msgstr "Nepoužívané ikony blednou po přejetí myší"
+msgstr "עמעום צלמיות שלא בשימוש במעבר עכבר"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
-msgstr "Okna nepřekrývají pruh"
+msgstr "חלונות לא חופפים עם הבר אם זה ניקבע"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
-msgstr "Přidat aplet"
+msgstr "הוסף יישומון"
 
 #: ../avant-applets/avant-applets.glade.h:2
 msgid "Avant Applet Preferences"
-msgstr "Nastavení"
+msgstr "העדפות היישומון"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
 msgid "Positions"
-msgstr "Pozice"
+msgstr "מיקומים"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
 msgid "Avant Launcher Preferences"
-msgstr "Nastavení Avant spouštěče"
+msgstr "העדפות המשגר"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
-msgstr "Orientace"
+msgstr "מיקום"
 
 #: ../applets/notification-area/eggtraymanager.c:147
 msgid "The orientation of the tray."
-msgstr "Orientace oznamovací oblasti."
+msgstr "כיוון מגש המערכת"
 
 #: ../applets/switcher/switcher.schemas.in.h:1
 msgid "How many rows the switcher should have"
-msgstr "Kolik řádků by měl mít přepínač"
+msgstr "כמה שורות אמורות להיות לסויצ'ר"
 
 #: ../applets/switcher/switcher.schemas.in.h:2
 msgid "The height of the switcher"
-msgstr "Výška přepínače"
+msgstr "גובה הסויצ'ר"
 
 #: ../applets/switcher/switcher.schemas.in.h:3
 msgid "The width of the switcher"
-msgstr "Šířka přepínače"
+msgstr "אורך הסויצ'ר"
 
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
-msgstr "Zda má aplet koše zobrazovat na své ikoně počet"
+msgstr "אם יישומון האשפה צריך להראות מספר על הצלמית שלו"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
 msgid "Unable to find the Trash directory: %s"
-msgstr "Nemohu najít složku koše: %s"
+msgstr "לא ניתן למצוא את ספריית האשפה: %s"
 
 #: ../applets/trash/trashapplet.c:526
 msgid "No Items in Trash"
-msgstr "Žádná položka v koši"
+msgstr "אין פריטים באשפה"
 
 #: ../applets/trash/trashapplet.c:530
 #, c-format
 msgid "%d Item in Trash"
 msgid_plural "%d Items in Trash"
-msgstr[0] "%d položka v koši"
-msgstr[1] "%d položky v koši"
-msgstr[2] "%d položek v koši"
+msgstr[0] "‏%d פריטים באשפה"
+msgstr[1] "‏%d פריטים באשפה"
 
 #: ../applets/trash/trashapplet.c:657
 #, c-format
 msgid "Removing item %lu of %lu"
-msgstr "Odstraňování položky %lu z %lu"
+msgstr "מסיר את הפריט %lu מתוך %lu"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
-msgstr "Odstraňuji:"
+msgstr "מסיר:"
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr "Odstranit všechny položky z koše?"
+msgstr "האם לרוקן את כל הפריטים מהאשפה?"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
 "If you choose to empty the trash, all items in it will be permanently lost. "
 "Please note that you can also delete them separately."
 msgstr ""
-"Pokud se rozhodnete vyprázdnit koš, všechny jeho položky budou trvale "
-"ztraceny. Vězte, že je také můžete odstraňovat po jedné."
+"ריקון האשפה יגרום לאבדן הפריטים בה לצמיתות. יש אפשרות למחוק כל פריט בנפרד."
 
 #: ../applets/trash/trashapplet.c:746
 msgid "_Empty Trash"
-msgstr "_Vysypat koš"
+msgstr "_רקן סל מחזור"
 
 #: ../applets/trash/trashapplet.c:825
 #, c-format
@@ -296,45 +293,42 @@ msgid ""
 "Error while spawning nautilus:\n"
 "%s"
 msgstr ""
-"Chyba při spouštění nautilu:\n"
+"שגיאה בקריאה לנאוטילוס:\n"
 "%s"
 
 #: ../applets/trash/trashapplet.c:845
 #, c-format
 msgid "There was an error displaying help: %s"
-msgstr "Při zobrazování nápovědy došlo k chybě: %s"
+msgstr "קרתה שגיאה בהצגת העזרה: %s"
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
-msgstr "Aplet koše"
+msgstr "יישומון אשפה"
 
 #: ../applets/trash/trashapplet.c:871
 msgid ""
 "A GNOME trash bin that lives in your panel. You can use it to view the trash "
 "or drag and drop items into the trash."
-msgstr ""
-"Koš GNOME, který sídlí na vašem panelu. Můžete jej použít pro zobrazení "
-"obsahu koše nebo do něj přetahovat položky."
+msgstr "ישומון אשפה עבור GNOME"
 
 #: ../applets/trash/trashapplet.c:876
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Kamil Páral <https://launchpad.net/~ripper42>"
+"  mark125 <https://launchpad.net/~mark125>"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
-msgstr "Odstranit ihned?"
+msgstr "למחוק לחלוטין?"
 
 #: ../applets/trash/trashapplet.c:925
 msgid "Cannot move items to trash, do you want to delete them immediately?"
-msgstr "Nemohu přesunout položky do koše, chcete je odstranit okamžitě?"
+msgstr "לא ניתן להזיז את הפריטים לאשפה, האם למחוק אותם לחלוטין?"
 
 #: ../applets/trash/trashapplet.c:928
 msgid ""
 "Cannot move some items to trash, do you want to delete these immediately?"
-msgstr ""
-"Nemohu přesunout některé položky do koše, chcete tyto odstranit okamžitě?"
+msgstr "לא ניתן להזיז חלק מהפריטים לאשפה, האם למחוק פריטים אילו לחלוטין?"
 
 #: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
 #, c-format
@@ -342,9 +336,9 @@ msgid ""
 "Unable to move to trash:\n"
 "%s"
 msgstr ""
-"Nemohu přesunout do koše:\n"
+"לא ניתן להעביר לאשפה:\n"
 "%s"
 
 #: ../src/awn-task.c:2279
 msgid "Change Icon"
-msgstr "Změnit ikonu"
+msgstr "החלפת צלם"
