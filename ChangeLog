@@ -1,5 +1,11 @@
 2007-08-17  Neil J. Patel  <njp@o-hand.com>
 
+	* configure.in:
+	* po/tr.po:
+	Merged updated turkish translation.
+
+2007-08-17  Neil J. Patel  <njp@o-hand.com>
+
 	patch by: Michael Hynonen <mhynonen@gmail.com>
 
 	* awn-applet-activation/awn-plug.c:
