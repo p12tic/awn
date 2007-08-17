@@ -38,8 +38,6 @@
 #include "awn-gconf.h"
 #include "awn-bar.h"
 #include "awn-window.h"
-#include "awn-app.h"
-#include "awn-win-manager.h"
 #include "awn-task-manager.h"
 #include "awn-applet-manager.h"
 #include "awn-hotspot.h"

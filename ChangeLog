@@ -1,5 +1,17 @@
 2007-08-17  Neil J. Patel  <njp@o-hand.com>
 
+	* src/Makefile.am:
+	* src/awn-app.c:
+	* src/awn-app.h:
+	* src/awn-task.c:
+	* src/awn-win-manager.c:
+	* src/awn-win-manager.h:
+	* src/main.c:
+	Removed awn-app and awn-win-manager as they are no longer used, and are very
+	out-of-date.
+
+2007-08-17  Neil J. Patel  <njp@o-hand.com>
+
 	* configure.in:
 	* po/ca.po:
 	* po/cs.po:

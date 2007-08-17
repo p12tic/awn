@@ -482,6 +482,7 @@ _task_hover_effect (AwnTask *task)
 	return TRUE;
 }
 
+#if 0
 static gboolean
 _task_hover_effect2 (AwnTask *task)
 {
@@ -530,6 +531,8 @@ _task_hover_effect2 (AwnTask *task)
 
 	return TRUE;
 }
+#endif
+
 GdkPixbuf *
 icon_loader_get_icon_spec( const char *name, int width, int height )
 {
