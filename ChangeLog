@@ -1,5 +1,10 @@
 2007-08-17  Neil J. Patel  <njp@o-hand.com>
 
+	* libawn/awn-applet-dialog.c:
+	Fixes bug #132137 (dialog position doesn't update).
+
+2007-08-17  Neil J. Patel  <njp@o-hand.com>
+
 	patch by: Julien Lavergne <bot4gilir@yahoo.fr>
 	* plugins/Rhythmbox/artdisplay-awn/AmazonCoverArtSearch.py:
 	* plugins/Rhythmbox/artdisplay-awn/CoverArtDatabase.py:

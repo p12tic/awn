@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2007 Anthony Arobone <aarobone@gmail.com>
+ *                    Neil Jagdish Patel <njpatel@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -97,9 +98,10 @@ awn_applet_dialog_position_reset (AwnAppletDialog *dialog)
 }
 
 static void 
-_on_realize(GtkWidget *widget, gpointer *data) 
+_on_size_request (GtkWidget *widget, GtkRequisition *req, gpointer *data) 
 {
 	awn_applet_dialog_position_reset (AWN_APPLET_DIALOG (widget));
+        gtk_widget_queue_draw (widget);
 }
 
 static gboolean 
@@ -174,6 +176,7 @@ static gboolean
 _configure_event (GtkWidget *dialog, GdkEventConfigure *event)
 {
         awn_applet_dialog_position_reset (AWN_APPLET_DIALOG (dialog));
+        gtk_widget_queue_draw (dialog);
         return FALSE;
 }
 
@@ -253,8 +256,8 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
 	gtk_widget_add_events(GTK_WIDGET(dialog), GDK_ALL_EVENTS_MASK);
         g_signal_connect(G_OBJECT(dialog), "key-press-event", 
                          G_CALLBACK(_on_key_press_event), NULL);
-	g_signal_connect(G_OBJECT(dialog), "realize", 
-                         G_CALLBACK(_on_realize), NULL);
+	g_signal_connect(G_OBJECT(dialog), "size-request", 
+                         G_CALLBACK(_on_size_request), NULL);
 
         priv->align = gtk_alignment_new (0.5, 0.5, 1, 1);
         gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
