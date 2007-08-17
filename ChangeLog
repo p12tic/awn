@@ -1,3 +1,18 @@
+2007-08-17  Neil J. Patel  <njp@o-hand.com>
+
+	patch by: Michael Hynonen <mhynonen@gmail.com>
+
+	* awn-applet-activation/awn-plug.c:
+	* awn-applet-activation/main.c:
+	* src/awn-app.c:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	* src/awn-x.c:
+	* src/main.c:
+	Fixes a bunch of memory leaks caused by not freeing GError's.
+
 2007-08-15  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	patch by: Michal Hruby

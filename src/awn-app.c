@@ -257,7 +257,9 @@ awn_app_create_active_icon(AwnApp *app)
 {
 	GError *err = NULL;
        	app->active_icon = gdk_pixbuf_new_from_file(settings->active_png, &err);
-        	
+        if (err) {
+		g_error_free (err);
+	}	
         	
        	int width = gdk_pixbuf_get_width(app->current_icon);
 	printf("Current Width: %d\n",width);

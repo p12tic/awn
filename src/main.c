@@ -346,8 +346,10 @@ prefs_function (GtkMenuItem *menuitem, gpointer null)
 	gdk_spawn_command_line_on_screen (gdk_screen_get_default(),
 					  "avant-preferences", &err);
 	
-	if (err)
+	if (err) {
 		g_print("%s\n", err->message);
+		g_error_free(err);
+	}
 }
 
 static void
@@ -358,8 +360,10 @@ launcher_function (GtkMenuItem *menuitem, gpointer null)
 	gdk_spawn_command_line_on_screen (gdk_screen_get_default(),
 					  "avant-launchers", &err);
 	
-	if (err)
+	if (err) {
 		g_print("%s\n", err->message);
+		g_error_free(err);
+	}
 }
 
 static void
@@ -370,8 +374,10 @@ applets_function (GtkMenuItem *menuitem, gpointer null)
 	gdk_spawn_command_line_on_screen (gdk_screen_get_default(),
 					  "avant-applets", &err);
 	
-	if (err)
+	if (err) {
 		g_print("%s\n", err->message);
+		g_error_free(err);
+	}
 }
 
 static void

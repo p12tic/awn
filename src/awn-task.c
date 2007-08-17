@@ -551,18 +551,25 @@ icon_loader_get_icon_spec( const char *name, int width, int height )
 				      gtk_icon_info_get_filename (icon_info),
                                       width, -1, &error);
 		gtk_icon_info_free(icon_info);
+		if (error) {
+			g_error_free (error);
+			error = NULL;
+		}
 	}
 
         /* first we try gtkicontheme */
-        if (icon == NULL)
+        if (icon == NULL) {
         	icon = gtk_icon_theme_load_icon( theme, name, width, GTK_ICON_LOOKUP_FORCE_SVG, &error);
+		if (error) {
+			g_error_free (error);
+			error = NULL;
+		}
+	}
         else {
         	g_print("Icon theme could not be loaded");
-        	error = (GError *) 1;
         }
         if (icon == NULL) {
                 /* lets try and load directly from file */
-                error = NULL;
                 GString *str;
 
                 if ( strstr(name, "/") != NULL )
@@ -576,12 +583,15 @@ icon_loader_get_icon_spec( const char *name, int width, int height )
                                                          width,
                                                          height,
                                                          TRUE, &error);
+		if (error) {
+			g_error_free (error);
+			error = NULL;
+		}
                 g_string_free(str, TRUE);
         }
 
         if (icon == NULL) {
                 /* lets try and load directly from file */
-                error = NULL;
                 GString *str;
 
                 if ( strstr(name, "/") != NULL )
@@ -595,11 +605,14 @@ icon_loader_get_icon_spec( const char *name, int width, int height )
                                                          width,
                                                          -1,
                                                          TRUE, &error);
+		if (error) {
+			g_error_free (error);
+			error = NULL;
+		}
                 g_string_free(str, TRUE);
         }
 
         if (icon == NULL) {
-                error = NULL;
                 GString *str;
 
                 str = g_string_new("/usr/share/");
@@ -615,6 +628,10 @@ icon_loader_get_icon_spec( const char *name, int width, int height )
                                              -1,
                                              TRUE,
                                              &error);
+		if (error) {
+			g_error_free (error);
+			error = NULL;
+		}
                 g_string_free(str, TRUE);
         }
 
@@ -1168,8 +1185,10 @@ awn_task_launch_unique (AwnTask *task, const char *arg_str)
                                              -1,
                                              &err);
 
-        if (err)
+        if (err) {
         	g_print("Error: %s", err->message);
+		g_error_free(err);
+	}
         else
         	g_print("Launched application : %d\n", pid);
 
@@ -1190,8 +1209,10 @@ awn_task_launch (AwnTask *task, const char *arg_str)
                                              -1,
                                              &err);
 
-        if (err)
+        if (err) {
         	g_print("Error: %s", err->message);
+		g_error_free(err);
+	}
         else
         	g_print("Launched application : %d\n", priv->pid);
 
@@ -1305,8 +1326,10 @@ _task_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
                                              -1,
                                              &err);
 
-        if (err)
+        if (err) {
         	g_print("Error: %s", err->message);
+		g_error_free(err);
+	}
         else
         	g_print("Launched application : %d\n", priv->pid);
 
@@ -2198,6 +2221,7 @@ _task_choose_custom_icon (AwnTask *task)
 	
 	if (err) {
 		g_print ("%s\n", err->message);
+		g_error_free (err);
 		g_free (filename);
 		g_free (save);
 		gtk_widget_destroy (dialog);

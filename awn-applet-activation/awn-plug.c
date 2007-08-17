@@ -227,7 +227,10 @@ awn_plug_init(AwnPlug *plug)
 	
 	error = NULL;
 	priv->connection = dbus_g_bus_get(DBUS_BUS_SESSION, &error);
-	
+	if (error) {
+		g_error_free (error);
+	}
+
 	if (priv->connection != NULL)
 	{
 		priv->proxy = dbus_g_proxy_new_for_name(

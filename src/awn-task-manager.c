@@ -552,8 +552,10 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 	item = gnome_desktop_item_new_from_file (uri->str,
 				GNOME_DESKTOP_ITEM_LOAD_ONLY_IF_EXISTS, &err);
 
-	if (err)
+	if (err) {
 		g_print("Error : %s", err->message);
+		g_error_free (err);
+	}
 	if (item == NULL)
 		return;
 
@@ -1489,8 +1491,14 @@ awn_task_manager_init (AwnTaskManager *task_manager)
                 task_manager, NULL, NULL);
 
         connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
-        if (!connection)
+        if (!connection) {
+		if (error) {
+			g_warning ("Failed to make connection to session bus: %s",
+				   error->message);
+			g_error_free (error);
+		}
                 return;
+	}
 
         proxy = dbus_g_proxy_new_for_name (connection,
                                           "com.google.code.Awn.AppletManager",
