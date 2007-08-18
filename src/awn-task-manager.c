@@ -28,12 +28,12 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
+#include <libawn/awn-title.h>
 
 #include "config.h"
 
 #include "awn-task-manager.h"
 
-#include "awn-title.h"
 #include "awn-task.h"
 #include "awn-bar.h"
 
@@ -1543,11 +1543,8 @@ awn_task_manager_new (AwnSettings *settings)
 	gtk_widget_show(priv->launcher_box);
 	gtk_widget_show(priv->tasks_box);
 
-	priv->title_window = awn_title_new(priv->settings);
+	priv->title_window = awn_title_get_default ();
 	settings->title = priv->title_window;
-	awn_title_show(AWN_TITLE(priv->title_window), " ", 0, 0);
-	gtk_widget_show(priv->title_window);
-
 
 	_task_manager_load_launchers(AWN_TASK_MANAGER (task_manager));
 

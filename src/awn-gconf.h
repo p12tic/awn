@@ -28,15 +28,8 @@
 
 #include <gconf/gconf-client.h>
 
+#include <libawn/awn-cairo-utils.h>
 
-
-typedef struct {
-	float red;
-	float green;
-	float blue;
-	float alpha;
-
-} AwnColor; /* spelt incorrectly, in the interest of brevity ;) */
 
 typedef struct {
 	

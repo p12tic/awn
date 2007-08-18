@@ -1356,10 +1356,9 @@ awn_task_proximity_in (GtkWidget *task, GdkEventCrossing *event)
 	settings = priv->settings;
 
 	if (priv->title) {
-		gint x, y;
-		gdk_window_get_origin (task->window, &x, &y);
-
-		awn_title_show (AWN_TITLE (priv->title), awn_task_get_name(AWN_TASK(task)), x+30, 0);
+	        awn_title_show (AWN_TITLE (priv->title),
+                                task,
+                                awn_task_get_name(AWN_TASK(task)));
 
 	}
 
@@ -1394,7 +1393,7 @@ awn_task_proximity_out (GtkWidget *task, GdkEventCrossing *event)
 	priv = AWN_TASK_GET_PRIVATE (task);
 
 	if (priv->title)
-		awn_title_show(AWN_TITLE (priv->title), " ", 20, 0);
+		awn_title_hide (AWN_TITLE (priv->title), task);
 	priv->hover = FALSE;
 	
 	if (priv->settings->fade_effect) {
@@ -1532,7 +1531,7 @@ _task_wnck_name_hide (AwnTask *task)
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_title_show(AWN_TITLE (priv->title), " ", 20, 0);
+	awn_title_hide (AWN_TITLE (priv->title), task);
 	priv->name_changed = FALSE;
 	return FALSE;
 }
@@ -1567,7 +1566,9 @@ _task_wnck_name_changed (WnckWindow *window, AwnTask *task)
 			_launch_name_change_effect(task);
 		}
 
-		awn_title_show (AWN_TITLE (priv->title), awn_task_get_name(AWN_TASK(task)), x+30, 0);
+		awn_title_show (AWN_TITLE (priv->title), 
+                                GTK_WIDGET (task),
+                                awn_task_get_name(AWN_TASK(task)));
 
 		g_timeout_add(2500, (GSourceFunc)_task_wnck_name_hide, (gpointer)task);
 

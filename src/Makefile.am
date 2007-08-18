@@ -30,8 +30,6 @@ avant_window_navigator_SOURCES =			\
 	awn-hotspot.c			\
 	awn-marshallers.h		\
 	awn-marshallers.c		\
-	awn-title.h			\
-	awn-title.c                     \
 	awn-task.h			\
 	awn-task.c			\
 	awn-task-manager.h		\

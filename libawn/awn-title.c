@@ -1,0 +1,354 @@
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/*
+ * Copyright (C) 2007 Neil J. Patel <njpatel@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ * Authors: Neil J. Patel <njpatel@gmail.com>
+ *
+ */
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#include "awn-title.h"
+
+#include "awn-cairo-utils.h"
+
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <gconf/gconf.h>
+#include <gconf/gconf-client.h>
+
+G_DEFINE_TYPE (AwnTitle, awn_title, GTK_TYPE_WINDOW);
+
+#define AWN_TITLE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
+	AWN_TYPE_TITLE, \
+	AwnTitlePrivate))
+
+#define TITLE_PATH	        "/apps/avant-window-navigator" "/title"
+#define TITLE_TEXT_COLOR	TITLE_PATH "/text_color"	/*color*/
+#define TITLE_BACKGROUND	TITLE_PATH "/background"	/*color*/
+#define TITLE_FONT_FACE		TITLE_PATH "/font_face"		/*bool*/
+
+/* STRUCTS & ENUMS */
+struct _AwnTitlePrivate
+{
+	GtkWidget *focus;
+
+        GtkWidget *image;
+        GtkWidget *label;
+
+        gchar *font;
+        AwnColor bg;
+        gchar *text_col;
+        gint offset;
+};
+
+/* Private */
+static void
+awn_title_position (AwnTitle *title)
+{
+        AwnTitlePrivate *priv;
+        gint x=0, y=0, w, h;
+        gint fx, fy, fw, fh;
+
+        g_return_if_fail (AWN_IS_TITLE (title));
+        priv = title->priv;
+
+        g_return_if_fail (priv->focus);
+
+        /* Get our dimensions */
+        gtk_window_get_size (GTK_WINDOW (title), &w, &h);
+
+        /* Get the dimesions of the widget we are focusing on */        
+        gdk_window_get_origin (priv->focus->window, &fx, &fy);
+        gtk_widget_get_size_request (priv->focus, &fw, &fh);
+
+        /* Find and set our position */
+        x = fx + (fw/2) - (w/2);
+        y = fy - h + priv->offset;
+
+        gtk_window_move (GTK_WINDOW (title), x, y);
+}
+
+/* Public */
+void
+awn_title_show (AwnTitle *title, GtkWidget *focus, const gchar *text)
+{
+        AwnTitlePrivate *priv;
+        gchar *normal;
+        gchar *markup;
+
+        g_return_if_fail (AWN_IS_TITLE (title));
+        g_return_if_fail (GTK_IS_WIDGET (focus));
+        g_return_if_fail (text);
+        priv = title->priv;
+
+        priv->focus = focus;
+
+        normal = g_markup_escape_text (text, -1);
+        markup = g_strdup_printf ("<span foreground='#%s' font_desc='%s'>%s</span>",
+                                  priv->text_col,
+                                  priv->font,
+                                  normal);
+
+        gtk_label_set_markup (GTK_LABEL (priv->label), markup);
+    
+        awn_title_position (title);
+        gtk_widget_show_all (GTK_WIDGET (title));
+
+        g_free (normal);
+        g_free (markup);
+}
+
+void
+awn_title_hide (AwnTitle *title, GtkWidget *focus)
+{
+        AwnTitlePrivate *priv;
+
+        g_return_if_fail (AWN_IS_TITLE (title));
+        g_return_if_fail (GTK_IS_WIDGET (focus));
+        priv = title->priv;
+
+        if (focus != priv->focus)
+                return;
+        priv->focus = NULL;
+        gtk_widget_hide (GTK_WIDGET (title));
+}
+
+/* Overrides */
+static gboolean 
+awn_title_expose_event (GtkWidget *widget, GdkEventExpose *expose)
+{
+        AwnTitlePrivate	*priv;
+        cairo_t *cr = NULL;
+        gint width, height;
+
+        priv = AWN_TITLE (widget)->priv;
+ 
+	if (!GDK_IS_DRAWABLE (widget->window))
+		return FALSE;	
+
+        width = widget->allocation.width;
+        height = widget->allocation.height;
+	
+	cr = gdk_cairo_create (widget->window);
+	if (!cr)
+		return FALSE;
+	
+	/* Clear the background to transparent */
+	cairo_set_source_rgba (cr, 1.0f, 1.0f, 1.0f, 0.0f);
+	cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+	cairo_paint (cr);
+	
+        /* Draw */
+        cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+        cairo_set_source_rgba (cr, priv->bg.red,
+                                   priv->bg.green,
+                                   priv->bg.blue,
+                                   priv->bg.alpha);
+        awn_cairo_rounded_rect (cr, 
+                                0, 0, 
+                                width, height, 
+                                15.0, ROUND_ALL);
+         cairo_fill (cr);
+
+	/* Clean up */
+	cairo_destroy (cr);
+	
+        /* Propagate the signal */
+	gtk_container_propagate_expose (GTK_CONTAINER (widget), 
+                                        gtk_bin_get_child (GTK_BIN (widget)),
+                                        expose);
+                                                         
+	return TRUE;
+}
+
+
+static void 
+on_alpha_screen_changed (GtkWidget* pWidget, 
+                          GdkScreen* pOldScreen, 
+                          GtkWidget* pLabel)
+{                       
+	GdkScreen* pScreen = gtk_widget_get_screen (pWidget);
+	GdkColormap* pColormap = gdk_screen_get_rgba_colormap (pScreen);
+      
+	if (!pColormap)
+		pColormap = gdk_screen_get_rgb_colormap (pScreen);
+
+	gtk_widget_set_colormap (pWidget, pColormap);
+}
+
+static void
+_notify_font (GConfClient *client, 
+              guint cid, 
+              GConfEntry *entry, 
+              AwnTitle *title)
+{
+        AwnTitlePrivate *priv;
+        GConfValue *value = NULL;
+
+        g_return_if_fail (AWN_IS_TITLE (title));
+        priv = title->priv;
+       
+        value = gconf_entry_get_value (entry);
+        if (priv->font)
+                g_free (priv->font);
+        priv->font = g_strdup (gconf_value_get_string (value));
+}
+
+static void
+_notify_bg (GConfClient *client, 
+            guint cid, 
+            GConfEntry *entry, 
+            AwnTitle *title)
+{
+        AwnTitlePrivate *priv;
+        GConfValue *value = NULL;
+
+        g_return_if_fail (AWN_IS_TITLE (title));
+        priv = title->priv;
+       
+        value = gconf_entry_get_value (entry);
+        
+        awn_cairo_string_to_color (
+                gconf_value_get_string (value),
+                &priv->bg);
+}
+
+static void
+_notify_text (GConfClient *client, 
+              guint cid, 
+              GConfEntry *entry, 
+              AwnTitle *title)
+{
+        AwnTitlePrivate *priv;
+        GConfValue *value = NULL;
+
+        g_return_if_fail (AWN_IS_TITLE (title));
+        priv = title->priv;
+       
+        value = gconf_entry_get_value (entry);
+        if (priv->text_col)
+                g_free (priv->text_col);
+        priv->text_col = g_strdup (gconf_value_get_string (value));
+        priv->text_col[6] = '\0';
+}
+
+/*  GOBJECT STUFF */
+
+static void
+awn_title_finalize(GObject *obj)
+{
+	AwnTitle *title;
+	
+	g_return_if_fail(obj != NULL);
+	g_return_if_fail(AWN_IS_TITLE(obj));
+
+	title = AWN_TITLE(obj);
+	
+	G_OBJECT_CLASS(awn_title_parent_class)->finalize(obj);
+}
+  
+static void
+awn_title_class_init(AwnTitleClass *klass)
+{
+	GObjectClass *gobject_class;
+	GtkWidgetClass *widget_class;
+
+        gobject_class = G_OBJECT_CLASS(klass);
+	gobject_class->finalize = awn_title_finalize;
+        		
+	widget_class = GTK_WIDGET_CLASS (klass);
+	widget_class->expose_event = awn_title_expose_event;
+	
+	g_type_class_add_private (gobject_class, sizeof (AwnTitlePrivate));
+
+}
+
+static void
+awn_title_init(AwnTitle *title)
+{
+	AwnTitlePrivate *priv;
+        GtkWidget *hbox;
+        GConfClient *client;
+                		
+	priv = title->priv = AWN_TITLE_GET_PRIVATE (title);
+
+        on_alpha_screen_changed (GTK_WIDGET (title), NULL, NULL);
+        gtk_widget_set_app_paintable (GTK_WIDGET (title), TRUE);
+        gtk_container_set_border_width (GTK_CONTAINER (title), 4);
+
+        priv->focus = NULL;
+
+        hbox = gtk_hbox_new (FALSE, 0);
+        gtk_container_add (GTK_CONTAINER (title), hbox);
+
+        priv->image = NULL;
+
+        priv->label = gtk_label_new ("");
+        gtk_label_set_line_wrap (GTK_LABEL (priv->label), FALSE);
+        gtk_label_set_ellipsize (GTK_LABEL (priv->label), PANGO_ELLIPSIZE_NONE);
+        gtk_box_pack_end (GTK_BOX (hbox), priv->label, TRUE, TRUE, 4);
+
+        gtk_window_set_policy (GTK_WINDOW (title), FALSE, FALSE, TRUE);
+
+        /* gconf stuff */
+        client = gconf_client_get_default ();
+
+        priv->font = g_strdup (
+                gconf_client_get_string (client, TITLE_FONT_FACE, NULL));
+        gconf_client_notify_add (client, TITLE_FONT_FACE, 
+                                 (GConfClientNotifyFunc)_notify_font,
+                                 title, NULL, NULL);
+        
+        awn_cairo_string_to_color (
+                gconf_client_get_string (client, TITLE_BACKGROUND, NULL),
+                &priv->bg);
+        gconf_client_notify_add (client, TITLE_BACKGROUND, 
+                                 (GConfClientNotifyFunc)_notify_bg,
+                                 title, NULL, NULL);
+       
+        priv->text_col = g_strdup (
+                      gconf_client_get_string (client, TITLE_TEXT_COLOR, NULL));
+        priv->text_col[6] = '\0';
+        gconf_client_notify_add (client, TITLE_TEXT_COLOR, 
+                                 (GConfClientNotifyFunc)_notify_text,
+                                 title, NULL, NULL);
+        priv->offset = gconf_client_get_int (client, 
+                       "/apps/avant-window-navigator/bar/icon_offset",
+                       NULL);
+}
+
+GtkWidget *
+awn_title_get_default (void)
+{
+	static GtkWidget *title = NULL;
+        
+        if (!title)
+          title = g_object_new(AWN_TYPE_TITLE,
+                               "type", GTK_WINDOW_POPUP,
+                               "decorated", FALSE,
+                               "skip-pager-hint", TRUE,
+                               "skip-taskbar-hint", TRUE,
+                               //"allow-shrink", TRUE,
+                               //"allow-grow", TRUE,
+			       NULL);
+	return title;
+}
+

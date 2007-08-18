@@ -26,7 +26,10 @@
 //
 // awn_cairo_rounded_rect - draws a rounded rectangle via cairo
 //
-void awn_cairo_rounded_rect( cairo_t *cr, int x0, int y0, int width, int height, double radius, AwnCairoRoundCorners state ) {
+void 
+awn_cairo_rounded_rect( cairo_t *cr, int x0, int y0, 
+                        int width, int height, 
+                        double radius, AwnCairoRoundCorners state ) {
 	double x1,y1;
 
 	x1 = x0 + width;
@@ -67,4 +70,43 @@ void awn_cairo_rounded_rect( cairo_t *cr, int x0, int y0, int width, int height,
    	cairo_close_path (cr);
 }
 
+static int 
+getdec(char hexchar)
+{
+   if ((hexchar >= '0') && (hexchar <= '9')) return hexchar - '0';
+   if ((hexchar >= 'A') && (hexchar <= 'F')) return hexchar - 'A' + 10;
+   if ((hexchar >= 'a') && (hexchar <= 'f')) return hexchar - 'a' + 10;
+
+   return -1; // Wrong character
+
+}
+
+static void 
+hex2float(char* HexColor, float* FloatColor)
+{
+   char* HexColorPtr = HexColor;
+
+   int i = 0;
+   for (i = 0; i < 4; i++)
+   {
+     int IntColor = (getdec(HexColorPtr[0]) * 16) +
+                     getdec(HexColorPtr[1]);
+
+     FloatColor[i] = (float) IntColor / 255.0;
+     HexColorPtr += 2;
+   }
+
+}
+
+void
+awn_cairo_string_to_color (const gchar *string, AwnColor *color)
+{
+        float colors[4];
+
+        hex2float (string, colors);
+        color->red = colors[0];
+        color->green = colors[1];
+        color->blue = colors[2];
+        color->alpha = colors[3];
+}
 

@@ -1,5 +1,26 @@
 2007-08-18  Neil J. Patel  <njpatel@gmail.com>
 
+	* libawn/Makefile.am:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-title.c:
+	* libawn/awn-title.h:
+	* src/Makefile.am:
+	* src/awn-gconf.h:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	* src/awn-task.h:
+	* src/awn-title.c:
+	* src/awn-title.h:
+	Moved the entire window title object into libawn.
+	At the same time, rewrote it to be much simpler, and hopefully close
+	bug#128818 (window titles don't disappear).
+	Also, now that it is in libawn, applets can also use it.
+	Also moved AwnColor into awn-cairo-utils, and added a method to convert from
+	RRGGBBAA to AwnColor in the same file.
+
+2007-08-18  Neil J. Patel  <njpatel@gmail.com>
+
 	* data/avant-window-navigator.svg:
 	Update the icons using the new svg provided by Nicolas.Rougier (thanks).
 	The main svg is also included, if anyone can make better sized png's for it!  
