@@ -44,6 +44,8 @@ struct _AwnAppletDialogPrivate
 {
         AwnApplet *applet;
         GtkWidget *align;
+
+        gint offset;
 };
 
 /* PRIVATE CLASS METHODS */
@@ -73,27 +75,27 @@ _on_alpha_screen_changed (GtkWidget* pWidget,
 void 
 awn_applet_dialog_position_reset (AwnAppletDialog *dialog) 
 {
-  gint ax, ay, aw, ah;
-  gint x, y, w, h;
+        gint ax, ay, aw, ah;
+        gint x, y, w, h;
   
-  g_return_if_fail (AWN_IS_APPLET_DIALOG (dialog));
+        g_return_if_fail (AWN_IS_APPLET_DIALOG (dialog));
 
-  gdk_window_get_origin (GTK_WIDGET (dialog->priv->applet)->window, 
+        gdk_window_get_origin (GTK_WIDGET (dialog->priv->applet)->window, 
                          &ax, &ay);
-  gtk_widget_get_size_request (GTK_WIDGET (dialog->priv->applet), &aw, &ah);
+        gtk_widget_get_size_request (GTK_WIDGET (dialog->priv->applet), 
+                                     &aw, &ah);
+        gtk_window_get_size (GTK_WINDOW (dialog), &w, &h);
 
-  gtk_window_get_size (GTK_WINDOW (dialog), &w, &h);
-
-  x = ax - w/2;
-  y = ay - h;
+        x = ax - w/2 + aw/2;
+        y = ay - h + dialog->priv->offset;
   
-  if (x < 0)
-    x = 2;
+        if (x < 0)
+                x = 2;
 
-  if ((x+w) > gdk_screen_get_width (gdk_screen_get_default()))
-    x = gdk_screen_get_width (gdk_screen_get_default ()) - w -20;
+        if ((x+w) > gdk_screen_get_width (gdk_screen_get_default()))
+                x = gdk_screen_get_width (gdk_screen_get_default ()) - w -20;
 
-  gtk_window_move (GTK_WINDOW (dialog), x, y);
+        gtk_window_move (GTK_WINDOW (dialog), x, y);
 
 }
 
@@ -323,6 +325,10 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
         
         GTK_CONTAINER_CLASS (awn_applet_dialog_parent_class)->add 
                                      (GTK_CONTAINER (dialog), priv->align);
+
+        priv->offset = gconf_client_get_int (gconf_client_get_default (), 
+                       "/apps/avant-window-navigator/bar/icon_offset",
+                       NULL);
 }
 
 /*

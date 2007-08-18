@@ -1,5 +1,10 @@
 2007-08-18  Neil J. Patel  <njpatel@gmail.com>
 
+	* libawn/awn-applet-dialog.c:
+	Fixed positioning bug #132137.
+
+2007-08-18  Neil J. Patel  <njpatel@gmail.com>
+
 	* libawn/Makefile.am:
 	* libawn/awn-cairo-utils.c:
 	* libawn/awn-cairo-utils.h:
