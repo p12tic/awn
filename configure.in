@@ -64,9 +64,7 @@ AM_GCONF_SOURCE_2
 
 AC_OUTPUT([
 Makefile
-avant-preferences/Makefile
-avant-launchers/Makefile
-avant-applets/Makefile
+awn-manager/Makefile
 libawn/Makefile
 src/Makefile
 awn-applet-activation/Makefile

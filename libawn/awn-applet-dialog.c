@@ -104,6 +104,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
         cairo_t *cr = NULL;
 	GtkWidget *child = NULL;
 	gint width, height;
+        gint gap = 20;
         const gchar *text;
         gint x, y, ax, ay, aw, ah;
 
@@ -124,10 +125,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 	cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
         cairo_set_line_width (cr, 2.0);
 
-
-	gint gap = 20;
-
-	// background shading
+      	// background shading
 	cairo_set_source_rgba (cr, 0, 0, 0, 0.85f);
 	awn_cairo_rounded_rect (cr, 2, 2, width-4, height-4 - gap, 
                                 15, ROUND_ALL);
@@ -240,6 +238,11 @@ _on_notify (GObject *dialog, GParamSpec *spec, gpointer null)
         }
 }
 
+static void
+on_realize (GtkWidget *dialog, gpointer null)
+{
+        _on_size_request (dialog, NULL, NULL);
+}
 
 static void
 awn_applet_dialog_add (GtkContainer *dialog, GtkWidget *widget)
@@ -264,7 +267,7 @@ awn_applet_dialog_class_init (AwnAppletDialogClass *klass)
 
         widget_class = GTK_WIDGET_CLASS (klass);
 	widget_class->expose_event = _expose_event;
-       // widget_class->configure_event = _configure_event;
+        //widget_class->configure_event = _configure_event;
 	
         cont_class = GTK_CONTAINER_CLASS (klass);
         cont_class->add = awn_applet_dialog_add;
@@ -297,16 +300,22 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
         _on_alpha_screen_changed (GTK_WIDGET (dialog), NULL, NULL);
         gtk_widget_set_app_paintable (GTK_WIDGET (dialog), TRUE);
 	
-	/* events */
+	/* applet events */
 	gtk_widget_add_events (GTK_WIDGET (dialog), GDK_ALL_EVENTS_MASK);
         g_signal_connect (G_OBJECT(dialog), "key-press-event", 
                          G_CALLBACK(_on_key_press_event), NULL);
 	g_signal_connect (G_OBJECT(dialog), "size-request", 
                          G_CALLBACK(_on_size_request), NULL);
+        
+        /* See if the title has been set */
         g_signal_connect (dialog, "notify",
                           G_CALLBACK (_on_notify), NULL);
 
         g_object_notify (G_OBJECT (dialog), "title");
+
+        /* Position on realize */
+        g_signal_connect (dialog, "realize",
+                          G_CALLBACK (on_realize), NULL);
 
         priv->align = gtk_alignment_new (0.5, 0.5, 1, 1);
         gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),

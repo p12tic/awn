@@ -5,9 +5,7 @@ SUBDIRS =				\
 	data				\
 	applets                         \
 	po				\
-	avant-preferences               \
-	avant-launchers                 \
-	avant-applets
+	awn-manager
 	
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = awn.pc

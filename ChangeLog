@@ -1,5 +1,37 @@
 2007-08-18  Neil J. Patel  <njpatel@gmail.com>
 
+	* Makefile.am:
+	* avant-applets/Makefile.am:
+	* avant-applets/avant-applets.glade:
+	* avant-applets/avant-applets.in.py:
+	* avant-launchers/Makefile.am:
+	* avant-launchers/avant-launchers.glade:
+	* avant-launchers/avant-launchers.in.py:
+	* avant-preferences/Makefile.am:
+	* avant-preferences/avant-preferences.desktop.in.in:
+	* avant-preferences/avant-preferences.in.py:
+	* avant-preferences/test:
+	* avant-preferences/window.glade:
+	* avant-preferences/window.glade.h:
+	* awn-manager/Makefile.am:
+	* awn-manager/awn-manager.desktop.in.in:
+	* awn-manager/awnApplet.py:
+	* awn-manager/awnDefs.in.py:
+	* awn-manager/awnLauncher.py:
+	* awn-manager/awnManager.in.py:
+	* awn-manager/awnPreferences.py:
+	* awn-manager/awnTheme.py:
+	* awn-manager/window.glade:
+	* configure.in:
+	* libawn/awn-applet-dialog.c:
+	* po/POTFILES.in:
+	* src/main.c:
+	Merged awn-manager into core.
+	Removed old configuration tools.
+	Updated Awn to call awn-manher instead.
+
+2007-08-18  Neil J. Patel  <njpatel@gmail.com>
+
 	* libawn/awn-applet-dialog.c:
 	Don't add extra padding to the top if there is no title.
 
