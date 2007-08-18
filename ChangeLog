@@ -1,5 +1,11 @@
 2007-08-18  Neil J. Patel  <njpatel@gmail.com>
 
+	* data/avant-window-navigator.svg:
+	Update the icons using the new svg provided by Nicolas.Rougier (thanks).
+	The main svg is also included, if anyone can make better sized png's for it!  
+
+2007-08-18  Neil J. Patel  <njpatel@gmail.com>
+
 	* Makefile.am:
 	* avant-applets/Makefile.am:
 	* avant-applets/avant-applets.glade:
