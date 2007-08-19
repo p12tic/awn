@@ -1,3 +1,8 @@
+2007-08-19  Neil J. Patel  <njp@o-hand.com>
+
+	* libawn/awn-title.c:
+	Fix title height issue.
+
 2007-08-18  Neil J. Patel  <njpatel@gmail.com>
 
 	* libawn/awn-applet-dialog.c:

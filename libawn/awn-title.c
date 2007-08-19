@@ -81,7 +81,7 @@ awn_title_position (AwnTitle *title)
 
         /* Find and set our position */
         x = fx + (fw/2) - (w/2);
-        y = fy - h + priv->offset;
+        y = fy + (fh/8) - h + priv->offset;
 
         gtk_window_move (GTK_WINDOW (title), x, y);
 }
@@ -166,7 +166,7 @@ awn_title_expose_event (GtkWidget *widget, GdkEventExpose *expose)
                                 0, 0, 
                                 width, height, 
                                 15.0, ROUND_ALL);
-         cairo_fill (cr);
+        cairo_fill (cr);
 
 	/* Clean up */
 	cairo_destroy (cr);
