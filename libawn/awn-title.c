@@ -57,6 +57,8 @@ struct _AwnTitlePrivate
         AwnColor bg;
         gchar *text_col;
         gint offset;
+
+        guint tag;
 };
 
 /* Private */
@@ -70,7 +72,11 @@ awn_title_position (AwnTitle *title)
         g_return_if_fail (AWN_IS_TITLE (title));
         priv = title->priv;
 
-        g_return_if_fail (priv->focus);
+        if (!GTK_IS_WIDGET (priv->focus))
+        {
+                gtk_widget_hide (GTK_WIDGET (title));
+                return;
+        }
 
         /* Get our dimensions */
         gtk_window_get_size (GTK_WINDOW (title), &w, &h);
@@ -87,12 +93,49 @@ awn_title_position (AwnTitle *title)
 }
 
 /* Public */
+
+static gboolean 
+on_prox_out (GtkWidget *focus, GdkEventCrossing *event, AwnTitle *title)
+{
+        awn_title_hide (title, focus);
+        g_signal_handlers_disconnect_by_func (focus, 
+                                              on_prox_out,
+                                              title);
+        return FALSE;
+}
+
+static gboolean
+show (gchar *text)
+{
+        AwnTitle *title = AWN_TITLE (awn_title_get_default ());
+        AwnTitlePrivate *priv;
+        gchar *normal;
+        gchar *markup;
+
+        priv = title->priv;
+        
+
+        normal = g_markup_escape_text (text, -1);
+        markup = g_strdup_printf ("<span foreground='#%s' font_desc='%s'>%s</span>",
+                                  priv->text_col,
+                                  priv->font,
+                                  normal);
+
+        gtk_label_set_markup (GTK_LABEL (priv->label), markup);
+    
+        awn_title_position (title);
+        gtk_widget_show_all (GTK_WIDGET (title));
+        gtk_widget_queue_draw (GTK_WIDGET (title));
+
+        g_free (normal);
+        g_free (markup);
+        g_free (text);
+        return FALSE;
+}
 void
 awn_title_show (AwnTitle *title, GtkWidget *focus, const gchar *text)
 {
         AwnTitlePrivate *priv;
-        gchar *normal;
-        gchar *markup;
 
         g_return_if_fail (AWN_IS_TITLE (title));
         g_return_if_fail (GTK_IS_WIDGET (focus));
@@ -100,7 +143,12 @@ awn_title_show (AwnTitle *title, GtkWidget *focus, const gchar *text)
         priv = title->priv;
 
         priv->focus = focus;
+        priv->tag = g_signal_connect (priv->focus, "leave-notify-event",
+                          G_CALLBACK (on_prox_out), (gpointer)title);
 
+        
+        g_timeout_add (100, (GSourceFunc)show, g_strdup (text));
+/*
         normal = g_markup_escape_text (text, -1);
         markup = g_strdup_printf ("<span foreground='#%s' font_desc='%s'>%s</span>",
                                   priv->text_col,
@@ -114,6 +162,7 @@ awn_title_show (AwnTitle *title, GtkWidget *focus, const gchar *text)
 
         g_free (normal);
         g_free (markup);
+*/
 }
 
 void

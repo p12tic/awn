@@ -83,7 +83,7 @@ awn_hide (AwnSettings *settings)
 		effect_lock = TRUE;
 	} 
 	
-	gtk_widget_hide (settings->title);
+	//gtk_widget_hide (settings->title);
 	settings->hidden = TRUE;
 	settings->hiding = TRUE;
 }
@@ -99,7 +99,7 @@ awn_show (AwnSettings *settings)
 		effect_lock = TRUE;
 	}
 	
-	gtk_widget_show (settings->title);
+	//gtk_widget_show (settings->title);
 	settings->hidden = FALSE;
 	settings->hiding = FALSE;
 }
