@@ -70,6 +70,9 @@ bounce_effect (AwnEffects *fx)
 	// waits for other effects to end
 	AWN_EFFECT_INIT(fx, AWN_EFFECT_HOVER) {
 		AWN_EFFECT_LOCK(fx, AWN_EFFECT_HOVER);
+		// additional init possible here
+		fx->count = 0;
+		fx->effect_direction = 1;
 	}
 	// all other effects ended, our turn
 	const gdouble MAX_BOUNCE_OFFSET = 15.0;
