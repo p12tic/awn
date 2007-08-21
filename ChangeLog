@@ -1,5 +1,12 @@
 2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
+	* src/awn-bar.c:
+	Fixes the width of the bar when using 3d-look.
+	Fixes bug #131819: Bar becomes too narrow when no Icons are present on
+	it in 3D View.
+
+2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
 	patch by: isaacj87
 
 	* awn-manager/awnPreferences.py:

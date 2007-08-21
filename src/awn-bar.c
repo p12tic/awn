@@ -255,11 +255,7 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
         if( settings->bar_angle != 0 ) {
 		icon_offset = 0;
 		/* count extra space on left and right from bar */
-		if(settings->icon_offset-3<=height/4){
-			width += 2*apply_perspective_x(width, settings->icon_offset-3, 0);
-		} else {
-			width += 2*apply_perspective_x(width, height/4, 0);
-		}
+		width += 2*apply_perspective_x(width, height/4, 0);
 	} else {
 		icon_offset = settings->icon_offset;
 	}
