@@ -1,3 +1,10 @@
+2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	patch by: haytjes
+
+	* awn-manager/awnPreferences.py:
+	Fixes bug #133526: Awn-manager crashes with gconf 2.14.
+
 2007-08-19  Neil J. Patel  <njpatel@gmail.com>
 
 	* libawn/awn-title.c:
