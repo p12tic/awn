@@ -71,16 +71,6 @@ static void awn_task_create_menu(AwnTask *task, GtkMenu *menu);
 /* STRUCTS & ENUMS */
 
 typedef enum {
-	AWN_TASK_EFFECT_NONE,
-	AWN_TASK_EFFECT_OPENING,
-	AWN_TASK_EFFECT_HOVER,
-	AWN_TASK_EFFECT_ATTENTION,
-	AWN_TASK_EFFECT_CLOSING,
-	AWN_TASK_EFFECT_CHANGE_NAME
-
-} AwnTaskEffect;
-
-typedef enum {
 	AWN_TASK_MENU_TYPE_NORMAL,
 	AWN_TASK_MENU_TYPE_CHECK
 } AwnTaskMenuType;
@@ -114,9 +104,6 @@ struct _AwnTaskPrivate
 	AwnTitle *title;
 
 	gboolean is_active;
-	gboolean needs_attention;
-	gboolean is_closing;
-	gboolean hover;
 
 	GdkPixbuf *icon;
   GdkPixbuf *reflect;
@@ -128,20 +115,8 @@ struct _AwnTaskPrivate
 	gboolean info;
 	gchar *info_text;
 
-	/* EFFECT VARIABLES */
-	gboolean effect_sheduled;
-	gboolean effect_lock;
-	AwnTaskEffect current_effect;
-	gint effect_direction;
-	gint count;
-	GdkPixbuf *pixbufs[15];
-
-	gdouble x_offset;
-	gdouble y_offset;
-	gint width;
-	gint height;
-	gdouble rotate_degrees;
-	gfloat alpha;
+	/* EFFECT VARIABLE */
+	AwnEffects effects;
 
 	/* MenuItems */
 	AwnTaskMenuItem *menu_items[5];
