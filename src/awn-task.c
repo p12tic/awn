@@ -44,6 +44,13 @@ G_DEFINE_TYPE (AwnTask, awn_task, GTK_TYPE_DRAWING_AREA);
 #define  M_PI 					3.14159265358979323846
 #define  AWN_CLICK_IDLE_TIME			450
 
+#define AWN_EFFECT_INIT(task_private, effect_name)			\
+	if (task_private->effect_lock) { 				\
+		if (task_private->current_effect != effect_name)	\
+			return TRUE;					\
+	} else 
+
+		
 /* FORWARD DECLERATIONS */
 
 static gboolean awn_task_expose (GtkWidget *task, GdkEventExpose *event);
@@ -438,48 +445,35 @@ _task_hover_effect (AwnTask *task)
 
 	priv->effect_sheduled = FALSE;
 
-	static gint max = 15;
+	static gint max = 20;
+	const gdouble MAX_BOUNCE_OFFSET = 15.0;
 
-
-	if (priv->effect_lock) {
-		if ( priv->current_effect != AWN_TASK_EFFECT_HOVER)
-			return TRUE;
-	} else {
+	AWN_EFFECT_INIT(priv, AWN_TASK_EFFECT_HOVER) {
 		priv->effect_lock = TRUE;
 		priv->current_effect = AWN_TASK_EFFECT_HOVER;
 		priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
 		priv->y_offset = 0;
 	}
 
-	if (priv->effect_direction) {
-		priv->y_offset = log10 (++priv->count) * 15.0;
+	priv->y_offset = sin(++priv->count * M_PI / max) * MAX_BOUNCE_OFFSET / (double)priv->effect_direction;
 
-		if (priv->y_offset >= max)
-			priv->effect_direction = AWN_TASK_EFFECT_DIR_DOWN;
-	} else {
-		priv->y_offset = log10 (--priv->count) * 15.0;
-
-		if (priv->y_offset < 1) {
-			/* finished bouncing, back to normal */
-			if (priv->hover)  {
-				priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-				priv->count = 0;
-			} else {
+	if (priv->count >= max) {
+		priv->count = 0;
+		/* finished bouncing, back to normal */
+		if (!priv->hover || priv->is_closing)  {
+			if (++priv->effect_direction >= 4 || priv->is_closing) {
 				priv->effect_lock = FALSE;
 				priv->current_effect = AWN_TASK_EFFECT_NONE;
-				priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
 				priv->y_offset = 0;
 			}
 		}
+		else
+			priv->effect_direction = 1;
 	}
 
 	gtk_widget_queue_draw(GTK_WIDGET(task));
 
-
-	if (priv->effect_lock == FALSE)
-		return FALSE;
-
-	return TRUE;
+	return priv->effect_lock;
 }
 
 #if 0
@@ -705,8 +699,8 @@ _task_attention_effect (AwnTask *task)
 	}
 	/* This makes sure there is no offscreen bouncing
 	 (which is partially seen)... */
-	if (priv->settings->hidden) {
-		priv->y_offset = 0;	
+	if (priv->settings->hidden && !priv->settings->hiding) {
+		priv->y_offset = 0;
 		priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
 		/* if the window is closed or if the attention need is
 		over, there should not be an extra bounce upon reentry. */
@@ -1355,6 +1349,9 @@ awn_task_proximity_in (GtkWidget *task, GdkEventCrossing *event)
 	priv = AWN_TASK_GET_PRIVATE (task);
 	settings = priv->settings;
 
+	if (settings->hiding)
+		settings->hiding = FALSE;
+
 	if (priv->title) {
 	        awn_title_show (AWN_TITLE (priv->title),
                                 task,
@@ -1419,8 +1416,6 @@ awn_task_win_enter_in (GtkWidget *window, GdkEventMotion *event, AwnTask *task)
 	settings = priv->settings;
 	if (settings->fade_effect)
 		launch_fade_out_effect(task);
-	if (settings->hiding)
-		settings->hiding = FALSE;
 	return FALSE;
 }
 
@@ -2536,8 +2531,10 @@ awn_task_close (AwnTask *task)
 
 	g_signal_handler_disconnect ((gpointer)priv->window, priv->icon_changed);
 	g_signal_handler_disconnect ((gpointer)priv->window, priv->state_changed);
-	g_signal_handler_disconnect ((gpointer)priv->settings->window, priv->win_enter);
-	g_signal_handler_disconnect ((gpointer)priv->settings->window, priv->win_leave);
+	if (!priv->is_launcher) {
+		g_signal_handler_disconnect ((gpointer)priv->settings->window, priv->win_enter);
+		g_signal_handler_disconnect ((gpointer)priv->settings->window, priv->win_leave);
+	}
 
 	priv->window = NULL;
 	priv->needs_attention = FALSE;

@@ -24,6 +24,7 @@
 
 #include <libawn/awn-applet.h>
 #include <libawn/awn-applet-gconf.h>
+#include <libawn/awn-title.h> // Add by Nicolas - Use libawn title
 #include <gnome.h>
 #include <libgnomevfs/gnome-vfs.h>
 #include <glade/glade.h>
@@ -65,7 +66,9 @@ struct _TrashApplet
 	guint new_size;
 	GtkOrientation orient;
 
-	GtkTooltips *tooltips;
+	AwnTitle *title;
+	char *title_text;
+	
 	GtkWidget *image;
 	GdkPixbuf *empty_icon;
 	GdkPixbuf *full_icon;
