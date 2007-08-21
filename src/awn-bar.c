@@ -350,19 +350,7 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 
 	/* separator */
 	if (draw_separator && settings->show_separator) {
-		double real_x = (settings->monitor.width-dest_width)/2.0;
-		if (current_width > dest_width )
-			real_x = x + current_width - dest_width;
-		else
-			real_x = x + dest_width - current_width;
-		
-		if (settings->bar_angle != 0)
-		{
-			if(settings->icon_offset-3<=height/4)
-				real_x += apply_perspective_x(width, settings->icon_offset-3, 0);
-			else
-				real_x += apply_perspective_x(width, height/4, 0);
-                }
+		double real_x = (settings->monitor.width-current_width)/2.0;
 
 		cairo_set_line_width (cr, 1.0);
 		
@@ -426,19 +414,11 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
                 gint sep = (GTK_WIDGET (s->data))->allocation.x;
                 sep += (GTK_WIDGET (s->data))->allocation.width/2;
 
-                double real_x = (settings->monitor.width-dest_width)/2.0;
-		if (current_width > dest_width )
-			real_x = x + current_width - dest_width;
-		else
-			real_x = x + dest_width - current_width;
-		
-                if (settings->bar_angle != 0) {
-			if(settings->icon_offset-3<=height/4){
-				real_x += apply_perspective_x(width, settings->icon_offset-3, 0);
-			} else {
-				real_x += apply_perspective_x(width, height/4, 0);
-			}
-		}
+		// separator jumps if it's on right side of launchers/tasks, this fixes it
+		if (sep > separator)
+			sep += current_width - dest_width;
+
+                double real_x = (settings->monitor.width-current_width)/2.0;
 
 		cairo_set_line_width (cr, 1.0);
 		

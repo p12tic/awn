@@ -1,5 +1,12 @@
 2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
+	patch by: Michal Hruby
+
+	* src/awn-bar.c:
+	Fixes bug #133009: Separator flickering when opening/closing task.
+
+2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
 	patch by: haytjes
 
 	* awn-manager/awnPreferences.py:
