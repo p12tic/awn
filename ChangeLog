@@ -1,5 +1,13 @@
 2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
+	patch by: isaacj87
+
+	* awn-manager/awnPreferences.py:
+	* awn-manager/window.glade:
+	Adds an option to set arrow offset in Awn-manager (bug #133366).
+
+2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
 	patch by: Michal Hruby
 
 	* src/awn-task.c:

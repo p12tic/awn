@@ -111,6 +111,7 @@ APP_ACTIVE_PNG		= "/apps/avant-window-navigator/app/active_png" 		#string
 APP_ARROW_COLOR		= "/apps/avant-window-navigator/app/arrow_color" 		#color
 APP_TASKS_H_ARROWS	= "/apps/avant-window-navigator/app/tasks_have_arrows" 	#bool
 APP_FADE_EFFECT		= "/apps/avant-window-navigator/app/fade_effect" 		#bool
+APP_ARROW_OFFSET	= "/apps/avant-window-navigator/app/arrow_offset"
 
 TITLE_PATH		    = "/apps/avant-window-navigator/title"
 TITLE_TEXT_COLOR	= "/apps/avant-window-navigator/title/text_color" 		#color
@@ -150,6 +151,7 @@ class awnPreferences:
         self.setup_spin(BAR_ICON_OFFSET, self.wTree.get_widget("bariconoffset"))
         self.setup_spin(BAR_HEIGHT, self.wTree.get_widget("barheight"))
         self.setup_spin(BAR_ANGLE, self.wTree.get_widget("barangle"))
+        self.setup_spin(APP_ARROW_OFFSET, self.wTree.get_widget("arrowoffset"))
         self.setup_look(self.wTree.get_widget("look"))
 
         self.setup_scale(BAR_PATTERN_ALPHA, self.wTree.get_widget("patternscale"))
