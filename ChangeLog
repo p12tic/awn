@@ -1,5 +1,13 @@
 2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
+	patch by: Nicolas de BONFILS
+
+	* applets/trash/trashapplet.c:
+	* applets/trash/trashapplet.h:
+	Trash applet uses libawn title instead of gtk tooltips (bug #133497).
+
+2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
 	* src/awn-bar.c:
 	Fixes the width of the bar when using 3d-look.
 	Fixes bug #131819: Bar becomes too narrow when no Icons are present on
