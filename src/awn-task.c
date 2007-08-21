@@ -438,7 +438,8 @@ _task_hover_effect (AwnTask *task)
 
 	priv->effect_sheduled = FALSE;
 
-	static gint max = 15;
+	static gint max = 20;
+	const gdouble MAX_BOUNCE_OFFSET = 15.0;
 
 
 	if (priv->effect_lock) {
@@ -451,25 +452,15 @@ _task_hover_effect (AwnTask *task)
 		priv->y_offset = 0;
 	}
 
-	if (priv->effect_direction) {
-		priv->y_offset = log10 (++priv->count) * 15.0;
+	priv->y_offset = sin(++priv->count * M_PI / max) * MAX_BOUNCE_OFFSET;
 
-		if (priv->y_offset >= max)
-			priv->effect_direction = AWN_TASK_EFFECT_DIR_DOWN;
-	} else {
-		priv->y_offset = log10 (--priv->count) * 15.0;
-
-		if (priv->y_offset < 1) {
-			/* finished bouncing, back to normal */
-			if (priv->hover)  {
-				priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-				priv->count = 0;
-			} else {
-				priv->effect_lock = FALSE;
-				priv->current_effect = AWN_TASK_EFFECT_NONE;
-				priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-				priv->y_offset = 0;
-			}
+	if (priv->count >= max) {
+		priv->count = 0;
+		/* finished bouncing, back to normal */
+		if (!priv->hover)  {
+			priv->effect_lock = FALSE;
+			priv->current_effect = AWN_TASK_EFFECT_NONE;
+			priv->y_offset = 0;
 		}
 	}
 

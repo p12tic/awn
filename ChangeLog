@@ -2,6 +2,13 @@
 
 	patch by: Michal Hruby
 
+	* src/awn-task.c:
+	Fixes bug #133506: Simpler bounce implementation.
+
+2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	patch by: Michal Hruby
+
 	* src/awn-bar.c:
 	Fixes bug #133009: Separator flickering when opening/closing task.
 
