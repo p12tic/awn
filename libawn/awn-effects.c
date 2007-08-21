@@ -22,7 +22,9 @@
 #endif
 
 #include "awn-effects.h"
+#include <math.h>
 
+#define  M_PI	3.14159265358979323846
 #define AWN_EFFECT_INIT(fx, effect_name)			\
 	if (fx->effect_lock) {					\
 		if (fx->current_effect != effect_name)		\
@@ -33,13 +35,11 @@
 	fx->effect_lock = TRUE;					\
 	fx->current_effect = effect_name;
 
-static gboolean awn_task_proximity_in (GtkWidget *task, GdkEventCrossing *event);
-static gboolean awn_task_proximity_out (GtkWidget *task, GdkEventCrossing *event);
-
 void
-awn_effects_init(AwnEffects *fx) {
+awn_effects_init(GObject* self, AwnEffects *fx) {
+	fx->self = self;
 	fx->settings = NULL; // TODO: not null
-        fx->needs_attention;
+        fx->needs_attention = FALSE;
 	fx->is_closing = FALSE;
 	fx->hover = FALSE;
 
@@ -83,21 +83,21 @@ bounce_effect (AwnEffects *fx)
 		/* finished bouncing, back to normal */
 		if (!fx->hover || fx->is_closing)  {
 			if (++fx->effect_direction >= 4 || fx->is_closing) {
+				fx->effect_direction = 1;
 				fx->effect_lock = FALSE;
-				fx->current_effect = AWN_TASK_EFFECT_NONE;
+				fx->current_effect = AWN_EFFECT_NONE;
 				fx->y_offset = 0;
 			}
 		}
 	else
 		fx->effect_direction = 1;
 	}
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
 	return fx->effect_lock;
 }
 
 static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data) {
-	printf("enter_event called!\n");
-	
 	AwnEffects *fx = (AwnEffects*)data;
 	fx->hover = TRUE;
 
@@ -108,7 +108,6 @@ static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, g
 }
 
 static gboolean awn_on_leave_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data) {
-	printf("leave_event called!\n");
 	AwnEffects *fx = (AwnEffects*)data;
 
 	fx->hover = FALSE;

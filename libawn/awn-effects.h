@@ -23,6 +23,7 @@
 #include <gtk/gtk.h>
 
 #include "awn-defines.h"
+#include "../src/awn-gconf.h"
 
 G_BEGIN_DECLS
 
@@ -37,8 +38,9 @@ typedef enum {
 
 typedef struct _AwnEffects AwnEffects;
 
-struct _AwnTitle
+struct _AwnEffects
 {
+	GObject *self;
 	AwnSettings *settings;
 	
 	gboolean needs_attention;
@@ -60,16 +62,19 @@ struct _AwnTitle
 	gint height;
 	gdouble rotate_degrees;
 	gfloat alpha;
+
+	guint enter_notify;
+	guint leave_notify;
 };
 
 void
-awn_effects_init(AwnEffects *);
+awn_effects_init(GObject *, AwnEffects *);
 
 void
 awn_register_effects (GObject *, AwnEffects *);
 
 void
-awn_unregister_effects (GObject *);
+awn_unregister_effects (GObject *, AwnEffects *);
 
 G_END_DECLS
 
