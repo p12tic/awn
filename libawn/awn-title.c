@@ -143,11 +143,11 @@ awn_title_show (AwnTitle *title, GtkWidget *focus, const gchar *text)
         priv = title->priv;
 
         priv->focus = focus;
-        priv->tag = g_signal_connect (priv->focus, "leave-notify-event",
-                          G_CALLBACK (on_prox_out), (gpointer)title);
+        //priv->tag = g_signal_connect (priv->focus, "leave-notify-event",
+        //                  G_CALLBACK (on_prox_out), (gpointer)title);
 
         
-        g_timeout_add (100, (GSourceFunc)show, g_strdup (text));
+        g_timeout_add (50, (GSourceFunc)show, g_strdup (text));
 /*
         normal = g_markup_escape_text (text, -1);
         markup = g_strdup_printf ("<span foreground='#%s' font_desc='%s'>%s</span>",
@@ -174,8 +174,6 @@ awn_title_hide (AwnTitle *title, GtkWidget *focus)
         g_return_if_fail (GTK_IS_WIDGET (focus));
         priv = title->priv;
 
-        if (focus != priv->focus)
-                return;
         priv->focus = NULL;
         gtk_widget_hide (GTK_WIDGET (title));
 }
@@ -356,6 +354,9 @@ awn_title_init(AwnTitle *title)
         gtk_box_pack_end (GTK_BOX (hbox), priv->label, TRUE, TRUE, 4);
 
         gtk_window_set_policy (GTK_WINDOW (title), FALSE, FALSE, TRUE);
+
+        g_signal_connect (title, "leave-notify-event",
+                          G_CALLBACK (on_prox_out), (gpointer)title);
 
         /* gconf stuff */
         client = gconf_client_get_default ();

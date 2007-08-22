@@ -1,3 +1,9 @@
+2007-08-22  Neil J. Patel  <njpatel@gmail.com>
+
+	* libawn/awn-title.c:
+	* src/main.c:
+	Some window-title fixes, should hide better now.
+
 2007-08-22  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* src/awn-task.c:

@@ -23,6 +23,8 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
+#include <libawn/awn-title.c>
+
 #include "config.h"
 
 #include <config.h>
@@ -315,6 +317,8 @@ leave_notify_event (GtkWidget *window, GdkEventCrossing *event, AwnSettings *set
 {
 	gint width, height;
 	gint x, y;
+
+  awn_title_hide (AWN_TITLE (awn_title_get_default ()), window);
 	
 	if (settings->auto_hide == FALSE) {
 		if (settings->hidden == TRUE)
@@ -332,6 +336,7 @@ leave_notify_event (GtkWidget *window, GdkEventCrossing *event, AwnSettings *set
 	} else {
 		awn_hide (settings);
 	}
+
 	//g_print ("%d < %f < %d", x, event->x_root, x+width);
 	return FALSE;
 }
