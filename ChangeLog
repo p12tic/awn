@@ -1,3 +1,8 @@
+2007-08-22  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* src/awn-task.c:
+	Fixes bug #133842: Custom icons reset upon resize.
+
 2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	patch by: Nicolas de BONFILS
