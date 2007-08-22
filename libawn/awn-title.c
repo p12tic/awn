@@ -114,7 +114,8 @@ show (gchar *text)
 
         priv = title->priv;
         
-
+        if (priv->focus == NULL)
+          return FALSE;
         normal = g_markup_escape_text (text, -1);
         markup = g_strdup_printf ("<span foreground='#%s' font_desc='%s'>%s</span>",
                                   priv->text_col,
@@ -147,7 +148,7 @@ awn_title_show (AwnTitle *title, GtkWidget *focus, const gchar *text)
         //                  G_CALLBACK (on_prox_out), (gpointer)title);
 
         
-        g_timeout_add (50, (GSourceFunc)show, g_strdup (text));
+        g_timeout_add (1, (GSourceFunc)show, g_strdup (text));
 /*
         normal = g_markup_escape_text (text, -1);
         markup = g_strdup_printf ("<span foreground='#%s' font_desc='%s'>%s</span>",
