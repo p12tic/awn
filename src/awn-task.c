@@ -1906,10 +1906,9 @@ awn_task_set_width (AwnTask *task, gint width)
 		}
 		g_free (icon_name);
         } else {
-        	if (WNCK_IS_WINDOW (priv->window))
+        	if (WNCK_IS_WINDOW (priv->window)) {
         		priv->icon = awn_x_get_icon_for_window (priv->window, width-12, width-12);
-                        priv->reflect = gdk_pixbuf_flip (priv->icon,FALSE);
-
+		}
         }
         	
 	if (G_IS_OBJECT (priv->icon)) {
@@ -1917,11 +1916,13 @@ awn_task_set_width (AwnTask *task, gint width)
 	        priv->icon_width = gdk_pixbuf_get_width(priv->icon);
 		priv->icon_height = gdk_pixbuf_get_height(priv->icon);
 	}
-	if (G_IS_OBJECT (old) && priv->is_launcher)
+	if (G_IS_OBJECT (old) && priv->is_launcher) {
 		gdk_pixbuf_unref (old);
+	}
 		
-	if (G_IS_OBJECT (old_reflect))
+	if (G_IS_OBJECT (old_reflect)) {
 		gdk_pixbuf_unref (old_reflect);
+	}
 
 	gtk_widget_set_size_request (GTK_WIDGET (task), 
 				     width, 
