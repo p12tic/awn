@@ -315,8 +315,11 @@ _task_opening_effect (AwnTask *task)
 	gtk_widget_queue_draw(GTK_WIDGET(task));
 
 
-	if (priv->effect_lock == FALSE)
+	if (priv->effect_lock == FALSE) {
+		g_timeout_add(50, (GSourceFunc)awn_task_manager_refresh_box,
+		              priv->task_manager);
 		return FALSE;
+	}
 
 	return TRUE;
 }
@@ -735,6 +738,8 @@ _task_destroy (AwnTask *task)
 		if (priv->reflect) {
 			gdk_pixbuf_unref(priv->reflect);
 		}
+		g_timeout_add(1000, (GSourceFunc)awn_task_manager_refresh_box,
+		              priv->task_manager);
 		gtk_object_destroy (GTK_OBJECT(task));
 		task = NULL;
 		return FALSE;

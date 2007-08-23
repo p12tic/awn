@@ -695,6 +695,13 @@ _refresh_box(AwnTaskManager *task_manager)
 	_task_manager_check_width (task_manager);
 }
 
+gboolean
+awn_task_manager_refresh_box (AwnTaskManager *task_manager)
+{
+	_refresh_box(task_manager);
+	return FALSE;
+}
+
 void
 awn_task_manager_remove_launcher (AwnTaskManager *task_manager, gpointer  task)
 {
