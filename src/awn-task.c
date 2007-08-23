@@ -524,114 +524,6 @@ _task_hover_effect2 (AwnTask *task)
 }
 #endif
 
-GdkPixbuf *
-icon_loader_get_icon_spec( const char *name, int width, int height )
-{
-	printf("%d,%d\n",width,height);
-        GdkPixbuf *icon = NULL;
-        GdkScreen *screen = gdk_screen_get_default();
-        GtkIconTheme *theme = NULL;
-        theme = gtk_icon_theme_get_for_screen (screen);
-
-        if (!name)
-                return NULL;
-
-        GError *error = NULL;
-
-        GtkIconInfo *icon_info = gtk_icon_theme_lookup_icon (gtk_icon_theme_get_default (),
-                                name, width, 0);
-	if (icon_info != NULL) {
-		icon = gdk_pixbuf_new_from_file_at_size (
-				      gtk_icon_info_get_filename (icon_info),
-                                      width, -1, &error);
-		gtk_icon_info_free(icon_info);
-		if (error) {
-			g_error_free (error);
-			error = NULL;
-		}
-	}
-
-        /* first we try gtkicontheme */
-        if (icon == NULL) {
-        	icon = gtk_icon_theme_load_icon( theme, name, width, GTK_ICON_LOOKUP_FORCE_SVG, &error);
-		if (error) {
-			g_error_free (error);
-			error = NULL;
-		}
-	}
-        else {
-        	g_print("Icon theme could not be loaded");
-        }
-        if (icon == NULL) {
-                /* lets try and load directly from file */
-                GString *str;
-
-                if ( strstr(name, "/") != NULL )
-                        str = g_string_new(name);
-                else {
-                        str = g_string_new("/usr/share/pixmaps/");
-                        g_string_append(str, name);
-                }
-
-                icon = gdk_pixbuf_new_from_file_at_scale(str->str,
-                                                         width,
-                                                         height,
-                                                         TRUE, &error);
-		if (error) {
-			g_error_free (error);
-			error = NULL;
-		}
-                g_string_free(str, TRUE);
-        }
-
-        if (icon == NULL) {
-                /* lets try and load directly from file */
-                GString *str;
-
-                if ( strstr(name, "/") != NULL )
-                        str = g_string_new(name);
-                else {
-                        str = g_string_new("/usr/local/share/pixmaps/");
-                        g_string_append(str, name);
-                }
-
-                icon = gdk_pixbuf_new_from_file_at_scale(str->str,
-                                                         width,
-                                                         -1,
-                                                         TRUE, &error);
-		if (error) {
-			g_error_free (error);
-			error = NULL;
-		}
-                g_string_free(str, TRUE);
-        }
-
-        if (icon == NULL) {
-                GString *str;
-
-                str = g_string_new("/usr/share/");
-                g_string_append(str, name);
-                g_string_erase(str, (str->len - 4), -1 );
-                g_string_append(str, "/");
-		g_string_append(str, "pixmaps/");
-		g_string_append(str, name);
-
-		icon = gdk_pixbuf_new_from_file_at_scale
-       		                             (str->str,
-                                             width,
-                                             -1,
-                                             TRUE,
-                                             &error);
-		if (error) {
-			g_error_free (error);
-			error = NULL;
-		}
-                g_string_free(str, TRUE);
-        }
-
-        return icon;
-}
-
 static void
 launch_hover_effect (AwnTask *task )
 {
@@ -1983,11 +1875,11 @@ awn_task_unset_custom_icon (AwnTask *task)
 
 	if (priv->is_launcher) {
 		icon_name = gnome_desktop_item_get_icon (priv->item, priv->settings->icon_theme );
-		if (!icon_name)
-			priv->icon = awn_x_get_icon_for_window (priv->window, priv->settings->bar_height, priv->settings->bar_height);
-		else
-			priv->icon = icon_loader_get_icon_spec(icon_name,priv->settings->bar_height,priv->settings->bar_height);
-
+		if (!icon_name) {
+			priv->icon = awn_x_get_icon_for_window (priv->window, priv->settings->task_width-12, priv->settings->task_width-12);
+		} else {
+			priv->icon = awn_x_get_icon_for_launcher (priv->item, priv->settings->task_width-12, priv->settings->task_width-12);
+		}
                 g_free (icon_name);
         } else {
         	priv->icon = awn_x_get_icon_for_window (priv->window,priv->settings->bar_height,priv->settings->bar_height);
