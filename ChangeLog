@@ -1,6 +1,11 @@
 2007-08-23  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* src/awn-task.c:
+	Fixes the width of a new task.
+
+2007-08-23  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* src/awn-task.c:
 	Fixed a crash when closing applications.
 
 2007-08-22  Neil J. Patel  <njp@o-hand.com>

@@ -309,7 +309,7 @@ _task_opening_effect (AwnTask *task)
 		}
 	}
 	gtk_widget_set_size_request(GTK_WIDGET(task), 
-				    (priv->settings->bar_height + 12), 
+				    (priv->settings->task_width), 
 				    (priv->settings->bar_height + 2) * 2);
 
 	gtk_widget_queue_draw(GTK_WIDGET(task));
@@ -1614,8 +1614,8 @@ awn_task_set_window (AwnTask *task, WnckWindow *window)
 	priv->window = window;
 	if (!priv->is_launcher) {
 		priv->icon = awn_x_get_icon_for_window (priv->window, 
-                                               priv->settings->bar_height,
-                                               priv->settings->bar_height);
+                                               priv->settings->task_width - 12,
+                                               priv->settings->task_width - 12);
                 priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
                 		
                 priv->icon_width = gdk_pixbuf_get_width(priv->icon);
@@ -1660,8 +1660,8 @@ awn_task_set_launcher (AwnTask *task, GnomeDesktopItem *item)
 	g_free (icon_name);
 	priv->item = item;
 	priv->icon = awn_x_get_icon_for_launcher (item, 
-                                               priv->settings->bar_height, 
-                                               priv->settings->bar_height);
+                                               priv->settings->task_width - 12, 
+                                               priv->settings->task_width - 12);
         priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
 	priv->icon_width = gdk_pixbuf_get_width(priv->icon);
 	priv->icon_height = gdk_pixbuf_get_height(priv->icon);
