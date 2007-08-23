@@ -1554,6 +1554,9 @@ awn_task_set_launcher (AwnTask *task, GnomeDesktopItem *item)
 	priv->icon = awn_x_get_icon_for_launcher (item, 
                                                priv->settings->task_width - 12, 
                                                priv->settings->task_width - 12);
+	if (!priv->icon) {
+		return FALSE;
+	}
         priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
 	priv->icon_width = gdk_pixbuf_get_width(priv->icon);
 	priv->icon_height = gdk_pixbuf_get_height(priv->icon);

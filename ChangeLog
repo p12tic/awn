@@ -1,6 +1,11 @@
 2007-08-23  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* src/awn-task.c:
+	Fixed: Awn crashes when adding a broken launcher.
+
+2007-08-23  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* src/awn-task.c:
 	Fixed an issue with icon width.
 	Removed icon_loader_get_spec.
 
