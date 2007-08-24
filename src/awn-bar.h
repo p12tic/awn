@@ -25,7 +25,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-#include "awn-gconf.h"
+#include <libawn/awn-gconf.h>
 G_BEGIN_DECLS
 
 #define AWN_TYPE_BAR          (awn_bar_get_type())

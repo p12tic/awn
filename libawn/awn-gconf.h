@@ -110,6 +110,8 @@ typedef struct {
 
 AwnSettings* awn_gconf_new(void);
 
+AwnSettings* awn_get_settings(void);
+
 void awn_gconf_set_window_to_update(GtkWidget *window);
 
 #endif /* _AWN_GCONF_H */

@@ -23,7 +23,7 @@
 #include <gtk/gtk.h>
 
 #include "awn-defines.h"
-#include "../src/awn-gconf.h"
+#include "awn-gconf.h"
 
 G_BEGIN_DECLS
 
@@ -50,8 +50,8 @@ struct _AwnEffects
 	gint icon_width, icon_height;
 	
 	 /* EFFECT VARIABLES */
-	gboolean effect_sheduled;
 	gboolean effect_lock;
+	AwnEffect effect_sheduled;
 	AwnEffect current_effect;
 	gint effect_direction;
 	gint count;
@@ -75,6 +75,9 @@ awn_register_effects (GObject *, AwnEffects *);
 
 void
 awn_unregister_effects (GObject *, AwnEffects *);
+
+void
+awn_shedule_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx);
 
 G_END_DECLS
 

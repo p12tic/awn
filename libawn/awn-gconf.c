@@ -18,6 +18,7 @@
  *  Author : Neil Jagdish Patel <njpatel@gmail.com>
 */
 
+#include <assert.h>
 #include "awn-gconf.h"
 
 #include "config.h"
@@ -90,6 +91,12 @@ static void awn_notify_color (GConfClient *client, guint cid, GConfEntry *entry,
 static void hex2float(char* HexColor, float* FloatColor);
 
 static void load_monitor (AwnSettings *settings);
+
+AwnSettings* awn_get_settings(void)
+{
+	assert(settings != NULL);
+	return settings;
+}
 
 AwnSettings* 
 awn_gconf_new()

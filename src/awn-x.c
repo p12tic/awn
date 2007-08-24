@@ -36,7 +36,7 @@
 #include "xutils.h"
 #include "inlinepixbufs.h"
 
-#include "awn-gconf.h"
+#include <libawn/awn-gconf.h>
 
 /*	TODO:
 	This is a cut-and-paste job at the moment, I still need to bring over 

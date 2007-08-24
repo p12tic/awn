@@ -24,6 +24,7 @@
 #include <dbus/dbus-glib-bindings.h>
 
 #include <libawn/awn-title.c>
+#include <libawn/awn-gconf.h>
 
 #include "config.h"
 
@@ -37,7 +38,6 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
-#include "awn-gconf.h"
 #include "awn-bar.h"
 #include "awn-window.h"
 #include "awn-task-manager.h"

@@ -1093,7 +1093,7 @@ applet_enter_notify_event (GtkWidget *window, GdkEventButton *event, gpointer *d
 	TrashApplet *trash = (TrashApplet *)data;
 	awn_title_show (trash->title,GTK_WIDGET(trash->awn_applet), trash->title_text);
 	
-	return TRUE;
+	return FALSE;
 }
 
 static gboolean
@@ -1102,5 +1102,5 @@ applet_leave_notify_event (GtkWidget *window, GdkEventButton *event, gpointer *d
 	TrashApplet *trash = (TrashApplet *)data;
 	awn_title_hide (trash->title, GTK_WIDGET(trash->awn_applet));
 	
-	return TRUE;
+	return FALSE;
 }

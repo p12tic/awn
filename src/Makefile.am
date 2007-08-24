@@ -21,8 +21,6 @@ avant_window_navigator_SOURCES =			\
 	awn-applet-manager-glue.h       \
 	awn-applet-proxy.c              \
 	awn-applet-proxy.h              \
-	awn-gconf.h			\
-	awn-gconf.c			\
 	awn-bar.h			\
 	awn-bar.c   			\
 	awn-dbus-glue.h			\

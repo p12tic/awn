@@ -31,14 +31,14 @@
 			return TRUE;				\
 	} else 
 #define AWN_EFFECT_LOCK(fx, effect_name)			\
-	fx->effect_sheduled = FALSE;				\
 	fx->effect_lock = TRUE;					\
+	fx->effect_sheduled = AWN_EFFECT_NONE;			\
 	fx->current_effect = effect_name;
 
 void
 awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->self = self;
-	fx->settings = NULL; // TODO: not null
+	fx->settings = awn_get_settings();
         fx->needs_attention = FALSE;
 	fx->is_closing = FALSE;
 	fx->hover = FALSE;
@@ -47,8 +47,8 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->icon_height = 0;
 
 	/* EFFECT VARIABLES */
-	fx->effect_sheduled = FALSE;
 	fx->effect_lock = FALSE;
+	fx->effect_sheduled = AWN_EFFECT_NONE;
 	fx->current_effect = AWN_EFFECT_NONE;
 	fx->effect_direction = 0;
 	fx->count = 0;
@@ -101,19 +101,55 @@ bounce_effect (AwnEffects *fx)
 }
 
 static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data) {
+	const AwnEffect eff = AWN_EFFECT_HOVER;
 	AwnEffects *fx = (AwnEffects*)data;
-	fx->hover = TRUE;
 
-	if (!fx->effect_sheduled && fx->current_effect != AWN_EFFECT_HOVER) {
-		g_timeout_add(40, (GSourceFunc)bounce_effect, fx);
-		fx->effect_sheduled = TRUE;
+	fx->hover = TRUE;
+	fx->settings->hiding = FALSE;
+
+	if (fx->effect_sheduled != eff && fx->current_effect != eff) {
+		awn_shedule_effect(40, eff, fx);
 	}
+	return FALSE;
 }
 
 static gboolean awn_on_leave_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data) {
 	AwnEffects *fx = (AwnEffects*)data;
 
 	fx->hover = FALSE;
+
+	if (fx->settings->fade_effect) {
+		fx->alpha = 0.2;
+		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+	}
+	return FALSE;
+}
+
+void awn_shedule_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx) {
+	GSourceFunc animation = NULL;
+
+	fx->effect_sheduled = effect;
+	switch (effect) {
+		case AWN_EFFECT_NONE:
+			return;
+		case AWN_EFFECT_OPENING:
+			break;
+		case AWN_EFFECT_HOVER:
+			if (fx->settings->fade_effect) {
+				fx->alpha = 1.0;
+				gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+			} else {
+				animation = (GSourceFunc)bounce_effect;
+			}
+			break;
+		case AWN_EFFECT_ATTENTION:
+			break;
+		case AWN_EFFECT_CLOSING:
+			break;
+		case AWN_EFFECT_CHANGE_NAME:
+			break;
+	}
+	if (animation) g_timeout_add(timeout, animation, fx);
 }
 
 void

@@ -21,8 +21,8 @@
 #ifndef _AWN_UTILS_
 #define _AWN_UTILS_
 
-#include "awn-gconf.h"
 #include <gtk/gtk.h>
+#include <libawn/awn-gconf.h>
 
 typedef struct {
 	/*
