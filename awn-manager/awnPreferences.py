@@ -47,6 +47,8 @@ gettext.bindtextdomain(APP, DIR)
 gettext.textdomain(APP)
 _ = gettext.gettext
 
+import gobject
+
 def dec2hex(n):
 	"""return the hexadecimal string representation of integer n"""
 	n = int(n)
@@ -109,6 +111,7 @@ APP_ACTIVE_PNG		= "/apps/avant-window-navigator/app/active_png" 		#string
 APP_ARROW_COLOR		= "/apps/avant-window-navigator/app/arrow_color" 		#color
 APP_TASKS_H_ARROWS	= "/apps/avant-window-navigator/app/tasks_have_arrows" 	#bool
 APP_FADE_EFFECT		= "/apps/avant-window-navigator/app/fade_effect" 		#bool
+APP_ARROW_OFFSET	= "/apps/avant-window-navigator/app/arrow_offset"
 
 TITLE_PATH		    = "/apps/avant-window-navigator/title"
 TITLE_TEXT_COLOR	= "/apps/avant-window-navigator/title/text_color" 		#color
@@ -148,6 +151,7 @@ class awnPreferences:
         self.setup_spin(BAR_ICON_OFFSET, self.wTree.get_widget("bariconoffset"))
         self.setup_spin(BAR_HEIGHT, self.wTree.get_widget("barheight"))
         self.setup_spin(BAR_ANGLE, self.wTree.get_widget("barangle"))
+        self.setup_spin(APP_ARROW_OFFSET, self.wTree.get_widget("arrowoffset"))
         self.setup_look(self.wTree.get_widget("look"))
 
         self.setup_scale(BAR_PATTERN_ALPHA, self.wTree.get_widget("patternscale"))
@@ -199,17 +203,20 @@ class awnPreferences:
 
     def setup_spin(self, key, spin):
         try:
-            spin.set_value(	float(self.client.get_value(key)))
+            spin.set_value(	self.client.get_float(key) )
         except TypeError:
             raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
+        except gobject.GError, err:
+            spin.set_value(	float(self.client.get_int(key)) )
+
         spin.connect("value-changed", self.spin_changed, key)
 
     def spin_changed(self, spin, key):
-        type = self.client.get(key).type
-        if type == gconf.VALUE_INT:
-            self.client.set_int(key, int(spin.get_value()))
-        elif type == gconf.VALUE_FLOAT:
+        try:
+            self.client.get_float(key) #gives error if it is an int
             self.client.set_float(key, spin.get_value())
+        except gobject.GError, err:
+            self.client.set_int(key, int(spin.get_value()))	
 
     def setup_chooser(self, key, chooser):
         """sets up png choosers"""

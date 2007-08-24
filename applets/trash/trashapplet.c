@@ -80,12 +80,11 @@ static void on_awn_orient_changed (AwnApplet *app,
                                    guint orient,
                                    TrashApplet *applet);
 
-// Add by Nicolas - Callback function for libawn title
+/* Callback function for libawn title */
 static gboolean
 applet_enter_notify_event (GtkWidget *window, GdkEventButton *event, gpointer *data);
 static gboolean
 applet_leave_notify_event (GtkWidget *window, GdkEventButton *event, gpointer *data);
-// End Add
 
 static void update_icons (TrashApplet *applet);
 
@@ -137,7 +136,7 @@ trash_applet_init (TrashApplet *applet)
 
 	applet->orient = GTK_ORIENTATION_HORIZONTAL;
 	
-	// Add by Nicolas - Use libawn title instead of GtkTooltip
+	/* Use libawn title instead of GtkTooltip */
 	applet->title = AWN_TITLE(awn_title_get_default ());	
 
 
@@ -259,10 +258,13 @@ trash_applet_new (AwnApplet *applet)
         g_signal_connect (G_OBJECT (applet), "orientation-changed",
                     G_CALLBACK (on_awn_orient_changed), (gpointer)app);
 
-	// Add by Nicolas - Use libawn title instead of GtkTooltip
-		// connect to mouse enter/leave events
-		g_signal_connect (G_OBJECT (app->awn_applet), "enter-notify-event", G_CALLBACK (applet_enter_notify_event), (gpointer*)app);
-		g_signal_connect (G_OBJECT (app->awn_applet), "leave-notify-event", G_CALLBACK (applet_leave_notify_event), (gpointer*)app);
+	/* connect to mouse enter/leave events */
+	g_signal_connect (G_OBJECT (app->awn_applet), "enter-notify-event",
+			  G_CALLBACK (applet_enter_notify_event),
+			  (gpointer*)app);
+	g_signal_connect (G_OBJECT (app->awn_applet), "leave-notify-event",
+			  G_CALLBACK (applet_leave_notify_event),
+			  (gpointer*)app);
 
   
         update_icons (app);
@@ -532,7 +534,6 @@ trash_applet_update (gpointer user_data)
 {
 	TrashApplet *applet = TRASH_APPLET (user_data);
 	gint new_item_count;
-	//char *tip_text;
 	TrashState new_state = TRASH_STATE_UNKNOWN;
 	const char *new_icon;
 	GdkScreen *screen;
@@ -565,9 +566,6 @@ trash_applet_update (gpointer user_data)
 						applet->item_count), 
 						    applet->item_count);
 		}
-		//gtk_tooltips_set_tip (applet->tooltips, GTK_WIDGET (applet),
-		//		      tip_text, NULL);
-		//g_free (tip_text);
 	}
 
 	/* work out what icon to use */
@@ -1088,7 +1086,7 @@ trash_applet_drag_data_received (GtkWidget        *widget,
 	gtk_drag_finish (context, TRUE, FALSE, time_);
 }
 
-// Add by Nicolas - Callback function for libawn title
+
 static gboolean
 applet_enter_notify_event (GtkWidget *window, GdkEventButton *event, gpointer *data)
 {

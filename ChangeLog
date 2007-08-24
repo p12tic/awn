@@ -1,3 +1,91 @@
+2007-08-23  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* src/awn-task-manager.c:
+	* src/awn-task-manager.h:
+	* src/awn-task.c:
+	Fix the alignment of Beryl/Compiz window previews.
+
+2007-08-23  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* src/awn-task.c:
+	Fixed: Awn crashes when adding a broken launcher.
+
+2007-08-23  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* src/awn-task.c:
+	Fixed an issue with icon width.
+	Removed icon_loader_get_spec.
+
+2007-08-23  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* src/awn-task.c:
+	Fixes the width of a new task.
+
+2007-08-23  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* src/awn-task.c:
+	Fixed a crash when closing applications.
+
+2007-08-22  Neil J. Patel  <njp@o-hand.com>
+
+	* libawn/awn-title.c:
+	Few more timing fixes.
+
+2007-08-22  Neil J. Patel  <njpatel@gmail.com>
+
+	* libawn/awn-title.c:
+	* src/main.c:
+	Some window-title fixes, should hide better now.
+
+2007-08-22  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* src/awn-task.c:
+	Fixes bug #133842: Custom icons reset upon resize.
+
+2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	patch by: Nicolas de BONFILS
+
+	* applets/trash/trashapplet.c:
+	* applets/trash/trashapplet.h:
+	Trash applet uses libawn title instead of gtk tooltips (bug #133497).
+
+2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* src/awn-bar.c:
+	Fixes the width of the bar when using 3d-look.
+	Fixes bug #131819: Bar becomes too narrow when no Icons are present on
+	it in 3D View.
+
+2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	patch by: isaacj87
+
+	* awn-manager/awnPreferences.py:
+	* awn-manager/window.glade:
+	Adds an option to set arrow offset in Awn-manager (bug #133366).
+
+2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	patch by: Michal Hruby
+
+	* src/awn-task.c:
+	Fixes bug #133506: Simpler bounce implementation.
+
+2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	patch by: Michal Hruby
+
+	* src/awn-bar.c:
+	Fixes bug #133009: Separator flickering when opening/closing task.
+
+2007-08-21  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	patch by: haytjes
+
+	* awn-manager/awnPreferences.py:
+	Fixes bug #133526: Awn-manager crashes with gconf 2.14.
+
 2007-08-19  Neil J. Patel  <njpatel@gmail.com>
 
 	* libawn/awn-title.c:
