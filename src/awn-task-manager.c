@@ -838,16 +838,16 @@ typedef struct {
 static void
 _dbus_find_task (AwnTask *task, AwnDBusTerm *term)
 {
-	gchar *temp;
+	gchar *temp = NULL;
 
 	if (term->name) {
 		temp = (gchar *)awn_task_get_application (task);
-		if (strcmp (term->name, temp) == 0) {
+		if (temp && strcmp (term->name, temp) == 0) {
 			term->task = task;
 			return;
 		}
 		temp = (gchar *)awn_task_get_name (task);
-		if (strcmp (term->name, temp) == 0) {
+		if (temp && strcmp (term->name, temp) == 0) {
 			term->task = task;
 			return;
 		}
