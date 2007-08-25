@@ -1,5 +1,12 @@
 2007-08-25  Neil J. Patel  <njpatel@gmail.com>
 
+	patch by: Julien Lavergne <bot4gilir@yahoo.fr> 
+
+	* libawn/awn-applet-gconf.h:
+	Fix include.
+
+2007-08-25  Neil J. Patel  <njpatel@gmail.com>
+
 	* src/awn-task-manager.c:
 	Check string exists before calling strcmp.
 
