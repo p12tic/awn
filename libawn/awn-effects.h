@@ -49,7 +49,6 @@ struct _AwnEffects
 	AwnTitle *title;
 	AwnTitleCallback get_title;
 	
-	gboolean needs_attention;
 	gboolean is_closing;
 	gboolean hover;
 	
@@ -83,7 +82,10 @@ void
 awn_unregister_effects (GObject *, AwnEffects *);
 
 void
-awn_schedule_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx, const gint max_loops);
+awn_schedule_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx);
+
+void
+awn_schedule_repeating_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx, gboolean *condition, const gint max_loops);
 
 void
 awn_effects_set_title(AwnEffects *, AwnTitle*, AwnTitleCallback);

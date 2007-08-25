@@ -29,6 +29,7 @@ typedef struct _AwnEffectsPrivate AwnEffectsPrivate;
 struct _AwnEffectsPrivate {
 	AwnEffects *effects;
 	AwnEffect next;
+	gboolean *condition;
 	gint max_loops;
 };
 
@@ -65,7 +66,6 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->settings = awn_get_settings();
 	fx->title = NULL;
 	fx->get_title = NULL;
-        fx->needs_attention = FALSE;
 	fx->is_closing = FALSE;
 	fx->hover = FALSE;
 
@@ -100,17 +100,19 @@ static gboolean
 appear_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	const gint MAX_OFFSET = fx->settings->bar_height;
+	const gint PERIOD = 40;
 	// waits for other effects to end
 	AWN_EFFECT_INIT(fx, priv->next) {
 		AWN_EFFECT_LOCK(fx, priv->next);
 		// additional init possible here
 		fx->count = 0;
-		fx->y_offset = fx->settings->bar_height * -1;
+		fx->y_offset = -MAX_OFFSET;
 	}
 	// all other effects ended, our turn
 	
-	if (fx->y_offset < 0) {
-		fx->y_offset += 1;
+	if (fx->count <= PERIOD/2) {
+		fx->y_offset = -cos(fx->count++ * M_PI / PERIOD) * MAX_OFFSET;
 	} else {
 		AWN_EFFECT_FINISH(fx);
 	}
@@ -122,7 +124,8 @@ appear_effect (AwnEffectsPrivate *priv)
 		AwnEffectsPrivate *cont = g_new(AwnEffectsPrivate, 1);
 		cont->effects = fx;
 		cont->next = priv->next;
-		cont->max_loops = 0;
+		cont->condition = priv->condition;
+		cont->max_loops = priv->max_loops;
 		g_timeout_add(40, (GSourceFunc)multibounce_effect, cont);
 		g_free(priv);
 	}
@@ -159,6 +162,7 @@ bounce_effect (AwnEffectsPrivate *priv)
 		} else {
 			repeat = FALSE;
 		}
+		if (priv->condition) repeat = *(priv->condition) == 0;
 		if (fx->is_closing || max_reached) repeat = FALSE;
 
 		if (!repeat) {
@@ -197,6 +201,7 @@ multibounce_effect (AwnEffectsPrivate *priv)
 			priv->max_loops--;
 			max_reached = priv->max_loops <= 0;
 		}
+		// TODO: implement priv->condition check
 		/* finished bouncing, back to normal */
 		if (++fx->effect_direction >= 4 || fx->is_closing || max_reached) {
 			fx->effect_direction = 1;
@@ -224,7 +229,7 @@ static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, g
 	}
 
 	if (fx->effect_sheduled != eff && fx->current_effect != eff) {
-		awn_schedule_effect(40, eff, fx, 0);
+		awn_schedule_effect(40, eff, fx);
 	}
 	return FALSE;
 }
@@ -245,7 +250,12 @@ static gboolean awn_on_leave_event(GtkWidget *widget, GdkEventCrossing *event, g
 	return FALSE;
 }
 
-void awn_schedule_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx, gint max_loops) {
+void awn_schedule_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx) {
+	awn_schedule_repeating_effect(timeout, effect, fx, NULL, 0);
+}
+
+void 
+awn_schedule_repeating_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx, gboolean *finished, const gint max_loops) {
 	GSourceFunc animation = NULL;
 
 	fx->effect_sheduled = effect;
@@ -267,6 +277,7 @@ void awn_schedule_effect(const gint timeout, const AwnEffect effect, AwnEffects 
 			}
 			break;
 		case AWN_EFFECT_ATTENTION:
+			animation = (GSourceFunc)bounce_effect;
 			break;
 		case AWN_EFFECT_CLOSING:
 			break;
@@ -277,6 +288,7 @@ void awn_schedule_effect(const gint timeout, const AwnEffect effect, AwnEffects 
 		AwnEffectsPrivate *priv = g_new(AwnEffectsPrivate, 1);
 		priv->effects = fx;
 		priv->next = effect;
+		priv->condition = finished;
 		priv->max_loops = max_loops;
 		g_timeout_add(timeout, animation, priv);
 	}
