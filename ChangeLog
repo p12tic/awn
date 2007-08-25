@@ -1,5 +1,14 @@
 2007-08-25  Neil J. Patel  <njpatel@gmail.com>
 
+	* libawn/Makefile.am:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	Added an AwnAppletSimple, which should suffice for 90% if the use cases for
+	applets, and should make applet developers lifes much easier. See the
+	updated main-menu applet to see how to use this *very* simple applet.
+
+2007-08-25  Neil J. Patel  <njpatel@gmail.com>
+
 	patch by: Julien Lavergne <bot4gilir@yahoo.fr> 
 
 	* libawn/awn-applet-gconf.h:
