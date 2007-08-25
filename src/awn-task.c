@@ -46,13 +46,6 @@ G_DEFINE_TYPE (AwnTask, awn_task, GTK_TYPE_DRAWING_AREA);
 #define  M_PI 					3.14159265358979323846
 #define  AWN_CLICK_IDLE_TIME			450
 
-#define AWN_EFFECT_INIT(task_private, effect_name)			\
-	if (task_private->effects.effect_lock) { 				\
-		if (task_private->effects.current_effect != effect_name)	\
-			return TRUE;					\
-	} else 
-
-		
 /* FORWARD DECLERATIONS */
 
 static gboolean awn_task_expose (GtkWidget *task, GdkEventExpose *event);
@@ -68,6 +61,8 @@ static void
 awn_task_drag_leave (GtkWidget *widget, GdkDragContext *drag_context,
                                         guint time);
 static void awn_task_create_menu(AwnTask *task, GtkMenu *menu);
+
+static const gchar* awn_task_get_title(GObject *);
 
 
 /* STRUCTS & ENUMS */
@@ -238,6 +233,9 @@ awn_task_init (AwnTask *task)
 	awn_register_effects(G_OBJECT(task), &priv->effects);
 }
 
+static const gchar* awn_task_get_title(GObject *obj) {
+	return awn_task_get_name(AWN_TASK(obj));
+}
 
 /************* EFFECTS *****************/
 
@@ -299,16 +297,16 @@ _task_opening_effect (AwnTask *task)
 static void
 launch_opening_effect (AwnTask *task )
 {
-	g_timeout_add(AWN_FRAME_RATE, (GSourceFunc)_task_opening_effect, (gpointer)task);
-
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	priv->effects.effect_sheduled = TRUE;
+	awn_schedule_effect(AWN_FRAME_RATE, AWN_EFFECT_OPENING, &priv->effects, 0);
+	//g_timeout_add(AWN_FRAME_RATE, (GSourceFunc)_task_opening_effect, (gpointer)task);
 }
 
 static gboolean
 _task_launched_effect (AwnTask *task)
 {
+	return FALSE; // now in awn-effects
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 
@@ -389,58 +387,15 @@ _task_launched_effect (AwnTask *task)
 static void
 launch_launched_effect (AwnTask *task )
 {
-	/*
-	static guint tag = NULL; // 3v1n0: fix animation on multiple clicks
-	if (tag)
-		g_source_remove(tag);
-	*/
-	g_timeout_add(30, (GSourceFunc)_task_launched_effect, (gpointer)task);
-
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	priv->effects.effect_sheduled = TRUE;
+	awn_schedule_effect(40, AWN_EFFECT_LAUNCHING, &priv->effects, 10);
 }
 
 static gboolean
 _task_hover_effect (AwnTask *task)
 {
-	AwnTaskPrivate *priv;
-
-	if (!AWN_IS_TASK (task)) return FALSE;
-
-	priv = AWN_TASK_GET_PRIVATE (task);
-
-	priv->effects.effect_sheduled = FALSE;
-
-	static gint max = 20;
-	const gdouble MAX_BOUNCE_OFFSET = 15.0;
-
-	AWN_EFFECT_INIT(priv, AWN_EFFECT_HOVER) {
-		priv->effects.effect_lock = TRUE;
-		priv->effects.current_effect = AWN_EFFECT_HOVER;
-		priv->effects.effect_direction = AWN_EFFECT_DIR_UP;
-		priv->effects.y_offset = 0;
-	}
-
-	priv->effects.y_offset = sin(++priv->effects.count * M_PI / max) * MAX_BOUNCE_OFFSET / (double)priv->effects.effect_direction;
-
-	if (priv->effects.count >= max) {
-		priv->effects.count = 0;
-		/* finished bouncing, back to normal */
-		if (!priv->effects.hover || priv->effects.is_closing)  {
-			if (++priv->effects.effect_direction >= 4 || priv->effects.is_closing) {
-				priv->effects.effect_lock = FALSE;
-				priv->effects.current_effect = AWN_EFFECT_NONE;
-				priv->effects.y_offset = 0;
-			}
-		}
-		else
-			priv->effects.effect_direction = 1;
-	}
-
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-
-	return priv->effects.effect_lock;
+	return FALSE; // now in awn-effects;
 }
 
 #if 0
@@ -1210,9 +1165,6 @@ awn_task_proximity_in (GtkWidget *task, GdkEventCrossing *event)
 	priv = AWN_TASK_GET_PRIVATE (task);
 	settings = priv->settings;
 
-	if (settings->hiding)
-		settings->hiding = FALSE;
-
 	if (priv->title) {
 	        awn_title_show (AWN_TITLE (priv->title),
                                 task,
@@ -1672,6 +1624,7 @@ awn_task_set_title (AwnTask *task, AwnTitle *title)
 	priv = AWN_TASK_GET_PRIVATE (task);
 
 	priv->title = title;
+	awn_effects_set_title(&priv->effects, title, awn_task_get_title);
 }
 
 AwnSettings*

@@ -24,17 +24,21 @@
 
 #include "awn-defines.h"
 #include "awn-gconf.h"
+#include "awn-title.h"
 
 G_BEGIN_DECLS
 
 typedef enum {
         AWN_EFFECT_NONE,
         AWN_EFFECT_OPENING,
+	AWN_EFFECT_LAUNCHING,
         AWN_EFFECT_HOVER,
         AWN_EFFECT_ATTENTION,
         AWN_EFFECT_CLOSING,
         AWN_EFFECT_CHANGE_NAME
 } AwnEffect;
+
+typedef const gchar* (*AwnTitleCallback)(GObject*);
 
 typedef struct _AwnEffects AwnEffects;
 
@@ -42,6 +46,8 @@ struct _AwnEffects
 {
 	GObject *self;
 	AwnSettings *settings;
+	AwnTitle *title;
+	AwnTitleCallback get_title;
 	
 	gboolean needs_attention;
 	gboolean is_closing;
@@ -77,7 +83,10 @@ void
 awn_unregister_effects (GObject *, AwnEffects *);
 
 void
-awn_shedule_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx);
+awn_schedule_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx, const gint max_loops);
+
+void
+awn_effects_set_title(AwnEffects *, AwnTitle*, AwnTitleCallback);
 
 G_END_DECLS
 
