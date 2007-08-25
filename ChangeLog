@@ -1,3 +1,9 @@
+2007-08-25  Neil J. Patel  <njpatel@gmail.com>
+
+	* configure.in:
+	* po/el_GR.po:
+	Remove el_GR.po in place for el.po.
+
 2007-08-23  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* src/awn-task-manager.c:
