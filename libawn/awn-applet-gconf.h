@@ -30,7 +30,7 @@
 #include <glib/gerror.h>
 #include <gconf/gconf-value.h> 
 
-#include <awn-applet.h>
+#include "awn-applet.h"
 
 G_BEGIN_DECLS
 
