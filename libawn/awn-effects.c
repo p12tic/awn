@@ -144,7 +144,10 @@ appear_effect (AwnEffectsPrivate *priv)
 		// don't dispose priv structure, we'll reuse it for multibounce
 		fx->effect_sheduled = priv->next;
 		priv->start = NULL;
-		g_timeout_add(40, (GSourceFunc)multibounce_effect, priv);
+		if (!fx->is_closing)
+			g_timeout_add(40, (GSourceFunc)multibounce_effect, priv);
+		else
+			g_free(priv);
 	}
 	return repeat;
 }
