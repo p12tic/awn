@@ -4,4 +4,4 @@ Encoding=UTF-8
 Name=Separator
 Comment=A simple separator.
 Exec=@LIBDIR@/awn/applets/separator/separator.so
-Icon=gnome-panel-workspace-switcher
+Icon=@ICONDIR@/separator.svg
