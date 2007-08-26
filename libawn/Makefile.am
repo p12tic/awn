@@ -21,6 +21,7 @@ libawninc_HEADERS =	\
 	awn-applet.h                                    \
 	awn-applet-dialog.h                             \
 	awn-applet-gconf.h				\
+	awn-applet-simple.h				\
 	awn-cairo-utils.h				\
 	awn-gconf.h					\
 	awn-title.h					\
@@ -30,6 +31,7 @@ libawn_la_SOURCES =	\
 	awn-applet.c                                    \
 	awn-applet-dialog.c				\
 	awn-applet-gconf.c                              \
+	awn-applet-simple.c				\
 	awn-cairo-utils.c				\
 	awn-gconf.c					\
 	awn-title.c					\
