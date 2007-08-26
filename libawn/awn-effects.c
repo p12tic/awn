@@ -130,8 +130,11 @@ appear_effect (AwnEffectsPrivate *priv)
 	// all other effects ended, our turn
 	
 	if (fx->count <= PERIOD/2) {
-		fx->y_offset = -cos(fx->count++ * M_PI / PERIOD) * MAX_OFFSET;
+		fx->alpha = (double)fx->count / (PERIOD/2);
+		fx->y_offset = cos(fx->count++ * M_PI / PERIOD) * MAX_OFFSET;
 	} else {
+		fx->y_offset = 0;
+		fx->alpha = 1.0;
 		AWN_EFFECT_FINISH(fx);
 	}
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
@@ -160,7 +163,7 @@ disappear_effect (AwnEffectsPrivate *priv)
 	// all other effects ended, our turn
 
 	gint MAX_OFFSET = 50;
-	if (fx->settings) fx->settings->bar_height + 2;
+	if (fx->settings) MAX_OFFSET = fx->settings->bar_height + 2;
 	
 	fx->y_offset++;
 	fx->alpha = 1.0 - (fx->y_offset / MAX_OFFSET);
