@@ -116,8 +116,9 @@ appear_effect (AwnEffectsPrivate *priv)
 	 * When appearing ends, one loop of multibounce is scheduled.
 	 */
 	AwnEffects *fx = priv->effects;
-	const gint MAX_OFFSET = fx->settings->bar_height;
 	const gint PERIOD = 40;
+	gint MAX_OFFSET = 50;
+	if (fx->settings) MAX_OFFSET = fx->settings->bar_height;
 	// waits for other effects to end
 	AWN_EFFECT_INIT(fx, priv->next) {
 		AWN_EFFECT_LOCK(fx, priv->next);
@@ -158,7 +159,8 @@ disappear_effect (AwnEffectsPrivate *priv)
 	}
 	// all other effects ended, our turn
 
-	const gint MAX_OFFSET = fx->settings->bar_height + 2;
+	gint MAX_OFFSET = 50;
+	if (fx->settings) fx->settings->bar_height + 2;
 	
 	fx->y_offset++;
 	fx->alpha = 1.0 - (fx->y_offset / MAX_OFFSET);
@@ -426,7 +428,7 @@ static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, g
 	AwnEffects *fx = (AwnEffects*)data;
 
 	fx->hover = TRUE;
-	fx->settings->hiding = FALSE;
+	if (fx->settings) fx->settings->hiding = FALSE;
 
 	if (fx->title && fx->get_title) {
 		awn_title_show(fx->title, GTK_WIDGET(fx->self), fx->get_title(fx->self));
@@ -445,7 +447,7 @@ static gboolean awn_on_leave_event(GtkWidget *widget, GdkEventCrossing *event, g
 		awn_title_hide(fx->title, GTK_WIDGET(fx->self));
 	}
 
-	if (fx->settings->fade_effect) {
+	if (fx->settings && fx->settings->fade_effect) {
 		fx->alpha = 0.2;
 		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 	}
@@ -472,7 +474,7 @@ awn_schedule_repeating_effect(const gint timeout, const AwnEffect effect, AwnEff
 			animation = (GSourceFunc)bounce_effect;
 			break;
 		case AWN_EFFECT_HOVER:
-			if (fx->settings->fade_effect) {
+			if (fx->settings && fx->settings->fade_effect) {
 				animation = (GSourceFunc)fadein_effect;
 			} else {
 				animation = (GSourceFunc)bounce_effect;

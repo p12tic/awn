@@ -94,7 +94,7 @@ static void load_monitor (AwnSettings *settings);
 
 AwnSettings* awn_get_settings(void)
 {
-	assert(settings != NULL);
+	//assert(settings != NULL);
 	return settings;
 }
 

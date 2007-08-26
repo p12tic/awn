@@ -81,10 +81,7 @@ static void on_awn_orient_changed (AwnApplet *app,
                                    TrashApplet *applet);
 
 /* Callback function for libawn title */
-static gboolean
-applet_enter_notify_event (GtkWidget *window, GdkEventButton *event, gpointer *data);
-static gboolean
-applet_leave_notify_event (GtkWidget *window, GdkEventButton *event, gpointer *data);
+static const gchar* get_title_text(GObject* obj);
 
 static void update_icons (TrashApplet *applet);
 
@@ -130,8 +127,6 @@ trash_applet_init (TrashApplet *applet)
 
 	applet->size = 0;
 	applet->new_size = 0;
-	applet->y_offset = 0;
-	applet->dir = TRASH_DIR_UP;
 	applet->progress = 0;
 
 	applet->orient = GTK_ORIENTATION_HORIZONTAL;
@@ -139,6 +134,10 @@ trash_applet_init (TrashApplet *applet)
 	/* Use libawn title instead of GtkTooltip */
 	applet->title = AWN_TITLE(awn_title_get_default ());	
 
+	/* effects */
+	awn_effects_init(G_OBJECT(applet), &applet->effects);
+	awn_register_effects(G_OBJECT(applet), &applet->effects);
+	awn_effects_set_title(&applet->effects, applet->title, get_title_text);
 
 	applet->image = gtk_image_new ();
 	//gtk_container_add (GTK_CONTAINER (applet), applet->image);
@@ -180,7 +179,7 @@ trash_applet_init (TrashApplet *applet)
   /* handle icon theme changes */
   g_signal_connect (gtk_icon_theme_get_default (),
 		    "changed", G_CALLBACK (trash_applet_theme_change),
-		    applet);        
+		    applet);
 }
 
 static void
@@ -258,15 +257,6 @@ trash_applet_new (AwnApplet *applet)
         g_signal_connect (G_OBJECT (applet), "orientation-changed",
                     G_CALLBACK (on_awn_orient_changed), (gpointer)app);
 
-	/* connect to mouse enter/leave events */
-	g_signal_connect (G_OBJECT (app->awn_applet), "enter-notify-event",
-			  G_CALLBACK (applet_enter_notify_event),
-			  (gpointer*)app);
-	g_signal_connect (G_OBJECT (app->awn_applet), "leave-notify-event",
-			  G_CALLBACK (applet_leave_notify_event),
-			  (gpointer*)app);
-
-  
         update_icons (app);
 	return GTK_WIDGET (app);
 }
@@ -328,7 +318,7 @@ static void
 draw (GtkWidget *widget, cairo_t *cr, gint width, gint height)
 {
 	TrashApplet *applet = TRASH_APPLET (widget);
-	gint y = (applet->height + PADDING) - applet->y_offset;
+	gint y = (applet->height + PADDING) - applet->effects.y_offset;
 	GdkPixbuf *reflect;
 	
 	/* Clear the background to transparent */
@@ -349,9 +339,9 @@ draw (GtkWidget *widget, cairo_t *cr, gint width, gint height)
 	}
 	cairo_paint (cr);
 	
-	if( applet->y_offset >= 0 )
+	if( applet->effects.y_offset >= 0 )
 	{
-		y = (applet->height + PADDING) + applet->height + applet->y_offset;
+		y = (applet->height + PADDING) + applet->height + applet->effects.y_offset;
 		gdk_cairo_set_source_pixbuf (cr, reflect, PADDING, y);
 		cairo_paint_with_alpha(cr, 0.33);
 		//cairo_paint (cr);
@@ -457,35 +447,6 @@ trash_applet_key_press (GtkWidget   *widget,
 		return FALSE;
 }
 
-static gboolean
-_bounce_baby (TrashApplet *applet)
-{
-#define MAX_OFFSET 14
-        
-        if (applet->y_offset == 0 && applet->dir == TRASH_DIR_DOWN 
-                && !applet->drag_hover) {
-                applet->dir = TRASH_DIR_UP;
-                gtk_widget_queue_draw (GTK_WIDGET (applet));
-                return FALSE;
-        }
- 
-        if (applet->dir == TRASH_DIR_UP) {
-                
-                applet->y_offset+=1;
-                
-                if (applet->y_offset == MAX_OFFSET) {
-                        applet->dir = TRASH_DIR_DOWN;
-                }
-        } else {
-                if (!applet->drag_hover)
-                        applet->y_offset-=1;
-                
-        }
-        
-        gtk_widget_queue_draw (GTK_WIDGET (applet));
-        return TRUE;
-}
-
 static void
 trash_applet_drag_leave (GtkWidget      *widget,
 			 GdkDragContext *context,
@@ -507,15 +468,11 @@ trash_applet_drag_motion (GtkWidget      *widget,
 			  guint           time_)
 {
 	TrashApplet *applet = TRASH_APPLET (widget);
-        static gint bounce = 0;
         
 	if (!applet->drag_hover) {
 		applet->drag_hover = TRUE;
 		trash_applet_queue_update (applet);
-		if (applet->y_offset == 0)
-		        bounce = g_timeout_add (25, 
-		                        (GSourceFunc)_bounce_baby,
-		                        (gpointer)applet);
+		awn_schedule_effect(40, AWN_EFFECT_HOVER, &applet->effects);
 	}
 	gdk_drag_status (context, GDK_ACTION_MOVE, time_);
 
@@ -1086,6 +1043,11 @@ trash_applet_drag_data_received (GtkWidget        *widget,
 	gtk_drag_finish (context, TRUE, FALSE, time_);
 }
 
+
+static const gchar* get_title_text(GObject* obj) {
+	TrashApplet *applet = TRASH_APPLET(obj);
+	return applet->title_text;
+}
 
 static gboolean
 applet_enter_notify_event (GtkWidget *window, GdkEventButton *event, gpointer *data)

@@ -25,6 +25,7 @@
 #include <libawn/awn-applet.h>
 #include <libawn/awn-applet-gconf.h>
 #include <libawn/awn-title.h>
+#include <libawn/awn-effects.h>
 #include <gnome.h>
 #include <libgnomevfs/gnome-vfs.h>
 #include <glade/glade.h>
@@ -86,10 +87,8 @@ struct _TrashApplet
 	guint update_id;
 	
 	/* Effect stuff */
+	AwnEffects effects;
 	guint height;
-  gint dir;
-	gint y_offset;
-	
 	gfloat progress;
 };
 struct _TrashAppletClass {
