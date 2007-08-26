@@ -17,6 +17,8 @@
  *
 */
 
+/*! \file awn-effects.h */
+
 #ifndef __AWN_EFFECTS_H__
 #define __AWN_EFFECTS_H__
 
@@ -35,10 +37,15 @@ typedef enum {
         AWN_EFFECT_HOVER,
         AWN_EFFECT_ATTENTION,
         AWN_EFFECT_CLOSING,
-        AWN_EFFECT_CHANGE_NAME
+        AWN_EFFECT_CHANGE_NAME,
+	AWN_EFFECT_FADE,
+	AWN_EFFECT_FADE_IN,
+	AWN_EFFECT_FADE_OUT
 } AwnEffect;
 
 typedef const gchar* (*AwnTitleCallback)(GObject*);
+typedef void (*AwnEventNotify)(GObject*);
+typedef gboolean (*AwnEffectCondition)(GObject*);
 
 typedef struct _AwnEffects AwnEffects;
 
@@ -48,7 +55,8 @@ struct _AwnEffects
 	AwnSettings *settings;
 	AwnTitle *title;
 	AwnTitleCallback get_title;
-	
+	AwnEventNotify start_anim, stop_anim;
+
 	gboolean is_closing;
 	gboolean hover;
 	
@@ -72,23 +80,67 @@ struct _AwnEffects
 	guint leave_notify;
 };
 
+//! Initializes AwnEffects structure.
+/*!
+ * \param obj Managed window to which the effects will apply.
+ * \param fx Pointer to AwnEffects structure.
+ */
 void
-awn_effects_init(GObject *, AwnEffects *);
+awn_effects_init(GObject *obj, AwnEffects *fx);
 
+//! Registers enter-notify and leave-notify events for managed window.
+/*!
+ * \param obj Managed window to which the effects will apply.
+ * \param fx Pointer to AwnEffects structure.
+ */
 void
-awn_register_effects (GObject *, AwnEffects *);
+awn_register_effects (GObject *obj, AwnEffects *fx);
 
+//! Unregisters events for managed window.
+/*!
+ * \param obj Managed window to which the effects apply.
+ * \param fx Pointer to AwnEffects structure.
+ */
 void
-awn_unregister_effects (GObject *, AwnEffects *);
+awn_unregister_effects (GObject *obj, AwnEffects *fx);
 
+//! Schedules single effect with one loop or HOVER effect.
+/*!
+ * \param timeout Frame time in miliseconds.
+ * \param effect Effect to schedule.
+ * \param fx Pointer to AwnEffects structure.
+ */
 void
 awn_schedule_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx);
 
+//! Schedules repeating effect.
+/*!
+ * \param timeout Frame time in miliseconds.
+ * \param effect Effect to schedule.
+ * \param fx Pointer to AwnEffects structure.
+ * \param condition Pointer to control function, the animation will stop looping when this function returns 0 (FALSE).
+ * \param max_loops Maximum number of loops, leave 0 for unlimited looping.
+ */
 void
-awn_schedule_repeating_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx, gboolean *condition, const gint max_loops);
+awn_schedule_repeating_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx, AwnEffectCondition condition, const gint max_loops);
 
+//! Makes AwnTitle appear on event-notify.
+/*!
+ * \param fx Pointer to AwnEffects structure.
+ * \param title Pointer to AwnTitle instance.
+ * \param title_func Pointer to function which returns desired title text.
+ */
 void
-awn_effects_set_title(AwnEffects *, AwnTitle*, AwnTitleCallback);
+awn_effects_set_title(AwnEffects *fx, AwnTitle *title, AwnTitleCallback title_func);
+
+//! Provides callbacks for animation start and end.
+/*!
+ * \param fx Pointer to AwnEffects structure.
+ * \param start Function which will be called when animation starts.
+ * \param stop Function which will be called when animation finishes.
+ */
+void
+awn_effects_set_notify(AwnEffects *fx, AwnEventNotify start, AwnEventNotify stop);
 
 G_END_DECLS
 

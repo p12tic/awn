@@ -238,26 +238,18 @@ static const gchar* awn_task_get_title(GObject *obj) {
 
 /************* EFFECTS *****************/
 
-static gboolean
-_task_opening_effect (AwnTask *task)
+static void
+_task_refresh (GObject *obj)
 {
-	return FALSE; //now in awn-effects
-
+	AwnTask *task = AWN_TASK(obj);
 	AwnTaskPrivate *priv;
-	gtk_widget_set_size_request(GTK_WIDGET(task), 
+	priv = AWN_TASK_GET_PRIVATE (task);
+	gtk_widget_set_size_request(GTK_WIDGET(obj), 
 				    (priv->settings->task_width), 
 				    (priv->settings->bar_height + 2) * 2);
 
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-
-
-	if (priv->effects.effect_lock == FALSE) {
-		g_timeout_add(50, (GSourceFunc)awn_task_manager_refresh_box,
-		              priv->task_manager);
-		return FALSE;
-	}
-
-	return TRUE;
+	g_timeout_add(50, (GSourceFunc)awn_task_manager_refresh_box,
+	              priv->task_manager);
 }
 
 
@@ -266,48 +258,33 @@ launch_opening_effect (AwnTask *task )
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
+	awn_effects_set_notify(&priv->effects, NULL, _task_refresh);
 	awn_schedule_effect(40, AWN_EFFECT_OPENING, &priv->effects);
+	awn_effects_set_notify(&priv->effects, NULL, NULL);
 }
 
 static gboolean
-_task_launched_effect (AwnTask *task)
-{
-	return FALSE; // now in awn-effects
-
+_check_launching(GObject *obj) {
+	AwnTask *task = AWN_TASK(obj);
 	AwnTaskPrivate *priv;
-	/* This makes sure there is no offscreen bouncing
-	(which is partially seen)... */
-	if (priv->settings->hidden) {
-		priv->effects.y_offset = 0;	
-		priv->effects.effect_direction = AWN_EFFECT_DIR_UP;
-		/* if the program launches while awn is hidden, there
-		should not be an extra bounce upon reentry. */
-		if (priv->window != NULL) {
-			/* finished bouncing, back to normal */
-			priv->effects.effect_lock = FALSE;
-			priv->effects.current_effect = AWN_EFFECT_NONE;
-			priv->effects.effect_direction = AWN_EFFECT_DIR_UP;
-			priv->effects.y_offset = 0;
-			priv->effects.count = 0;
-		}
-	}
-
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-
-
-	if (priv->effects.effect_lock == FALSE)
-		return FALSE;
-
-	return TRUE;
+	priv = AWN_TASK_GET_PRIVATE (task);
+	return priv->window == NULL; // repeat if window still NULL
 }
-
 
 static void
 launch_launched_effect (AwnTask *task )
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_schedule_repeating_effect(40, AWN_EFFECT_LAUNCHING, &priv->effects, (gboolean*)&priv->window, 10);
+	awn_schedule_repeating_effect(40, AWN_EFFECT_LAUNCHING, &priv->effects, _check_launching, 10);
+}
+
+static gboolean
+_check_attention(GObject *obj) {
+	AwnTask *task = AWN_TASK(obj);
+	AwnTaskPrivate *priv;
+	priv = AWN_TASK_GET_PRIVATE (task);
+	return priv->needs_attention;
 }
 
 static void
@@ -315,205 +292,68 @@ launch_attention_effect (AwnTask *task )
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_schedule_repeating_effect(40, AWN_EFFECT_ATTENTION, &priv->effects, &priv->needs_attention, 0);
-}
-
-static gboolean
-_task_fade_out_effect (AwnTask *task)
-{
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-
-	priv->effects.effect_sheduled = FALSE;
-
-	if (priv->effects.hover) {
-		priv->effects.alpha = 1.0;
-		return FALSE;
-	}
-
-	priv->effects.alpha-=0.05;
-
-	if (priv->effects.alpha <= 0.2) {
-		priv->effects.alpha = 0.2;
-		gtk_widget_queue_draw(GTK_WIDGET(task));
-		return FALSE;
-	}
-
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-
-	return TRUE;
-
+	awn_schedule_repeating_effect(40, AWN_EFFECT_ATTENTION, &priv->effects, _check_attention, 0);
 }
 
 static void
 launch_fade_out_effect (AwnTask *task )
 {
-	g_timeout_add(15, (GSourceFunc)_task_fade_out_effect, (gpointer)task);
-
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	priv->effects.effect_sheduled = TRUE;
-}
-
-
-static gboolean
-_task_fade_in_effect (AwnTask *task)
-{
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-
-	priv->effects.effect_sheduled = FALSE;
-
-	/*
-	if (priv->effects.hover) {
-		priv->effects.alpha = 1.0;
-		return FALSE;
-	}
-	
-	priv->effects.alpha+=0.05;
-
-	if (priv->effects.alpha >= 1.0 ) {
-		gtk_widget_queue_draw(GTK_WIDGET(task));
-		return FALSE;
-	}
-
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-
-	return TRUE;
-	*/
-	priv->effects.alpha = 1.0;
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-	return FALSE;
-
+	awn_schedule_effect(15, AWN_EFFECT_FADE_OUT, &priv->effects);
 }
 
 static void
 launch_fade_in_effect (AwnTask *task )
 {
-	g_timeout_add(40, (GSourceFunc)_task_fade_in_effect, (gpointer)task);
-
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	priv->effects.effect_sheduled = TRUE;
+	awn_schedule_effect(40, AWN_EFFECT_FADE_IN, &priv->effects);
+}
+
+static void
+_task_destroy (GObject *obj)
+{
+	AwnTask *task = AWN_TASK(obj);
+	AwnTaskPrivate *priv;
+	priv = AWN_TASK_GET_PRIVATE (task);
+	if (priv->is_launcher)
+		awn_task_manager_remove_launcher(priv->task_manager, task);
+	else
+		awn_task_manager_remove_task(priv->task_manager, task);
+
+	priv->title = NULL;
+	g_free(priv->application);
+	gtk_widget_hide (GTK_WIDGET(task));
+
+	if (priv->icon) {
+		gdk_pixbuf_unref(priv->icon);
+	}
+	if (priv->reflect) {
+		gdk_pixbuf_unref(priv->reflect);
+	}
+	g_timeout_add(1000, (GSourceFunc)awn_task_manager_refresh_box,
+	              priv->task_manager);
+	gtk_object_destroy (GTK_OBJECT(task));
+	task = NULL;
 }
 
 static gboolean
-_task_destroy (AwnTask *task)
+_check_change_name (GObject *obj)
 {
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-	const gint max = priv->settings->bar_height + 2;
-	gfloat i;
-
-	if (priv->effects.effect_lock) {
-		if ( priv->effects.current_effect != AWN_EFFECT_CLOSING)
-			return TRUE;
-	} else {
-		priv->effects.effect_lock = TRUE;
-		priv->effects.current_effect = AWN_EFFECT_CLOSING;
-		priv->effects.effect_direction = AWN_EFFECT_DIR_UP;
-		priv->effects.y_offset = 0;
-	}
-
-	//g_print("%d, %f\n",priv->effects.y_offset, priv->effects.alpha);
-	if (priv->effects.y_offset >= max) {
-		if (priv->is_launcher)
-			awn_task_manager_remove_launcher(priv->task_manager, task);
-		else
-			awn_task_manager_remove_task(priv->task_manager, task);
-
-		priv->title = NULL;
-		g_free(priv->application);
-		gtk_widget_hide (GTK_WIDGET(task));
-		
-		if (priv->icon) {
-			gdk_pixbuf_unref(priv->icon);
-		}
-		if (priv->reflect) {
-			gdk_pixbuf_unref(priv->reflect);
-		}
-		g_timeout_add(1000, (GSourceFunc)awn_task_manager_refresh_box,
-		              priv->task_manager);
-		gtk_object_destroy (GTK_OBJECT(task));
-		task = NULL;
-		return FALSE;
-
-	} else {
-
-		priv->effects.y_offset +=1;
-		i = (float) priv->effects.y_offset / max;
-		priv->effects.alpha = 1.0 - i;
-		gtk_widget_queue_draw(GTK_WIDGET(task));
-	}
-
-	return TRUE;
-
-}
-
-static gboolean				// 3v1n0: Change Name (title) effect
-_task_change_name_effect (AwnTask *task)	// Based on notification effect
-{
+	AwnTask *task = AWN_TASK(obj);
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 
-	priv->effects.effect_sheduled = FALSE;
-
-	static gint max = 14;
-
-	if (priv->effects.effect_lock) {
-		if ( priv->effects.current_effect != AWN_EFFECT_CHANGE_NAME)
-			return TRUE;
-	} else {
-		priv->effects.effect_lock = TRUE;
-		priv->effects.current_effect = AWN_EFFECT_CHANGE_NAME;
-		priv->effects.effect_direction = AWN_EFFECT_DIR_UP;
-		priv->effects.y_offset = 0;
-		priv->effects.rotate_degrees = 0.0;
-	}
-
-	if (priv->effects.effect_direction) {
-		priv->effects.y_offset +=1;
-
-		if (priv->effects.y_offset >= max)
-			priv->effects.effect_direction = AWN_EFFECT_DIR_DOWN;
-
-	} else {
-		priv->effects.y_offset-=1;
-		if (priv->effects.y_offset < 1) {
-			/* finished bouncing, back to normal */
-			if (priv->name_changed)
-				priv->effects.effect_direction = AWN_EFFECT_DIR_UP;
-			else {
-				priv->effects.effect_lock = FALSE;
-				priv->effects.current_effect = AWN_EFFECT_NONE;
-				priv->effects.effect_direction = AWN_EFFECT_DIR_UP;
-				priv->effects.y_offset = 0;
-				priv->effects.rotate_degrees = 0.0;
-			}
-		}
-	}
-
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-
-
-	if (priv->effects.effect_lock == FALSE)
-		return FALSE;
-
-	return TRUE;
+	return priv->name_changed;
 }
 
 static gboolean
-_launch_name_change_effect (AwnTask *task)
+launch_name_change_effect (AwnTask *task)
 {
-	//static guint tag = NULL; // 3v1n0: fix animation on multiple clicks
-	//if (tag)
-	//	g_source_remove(tag);
-	//tag =
-	g_timeout_add(30, (GSourceFunc)_task_change_name_effect, (gpointer)task);
-
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	priv->effects.effect_sheduled = TRUE;
+	awn_schedule_repeating_effect(40, AWN_EFFECT_CHANGE_NAME, &priv->effects, _check_change_name, 0);
 	return FALSE;
 }
 
@@ -1080,7 +920,7 @@ _task_wnck_name_changed (WnckWindow *window, AwnTask *task)
 
 		if (!priv->needs_attention) {
 			priv->name_changed = TRUE;
-			_launch_name_change_effect(task);
+			launch_name_change_effect(task);
 		}
 
 		awn_title_show (AWN_TITLE (priv->title), 
@@ -1934,7 +1774,9 @@ _task_remove_launcher (GtkMenuItem *item, AwnTask *task)
 	priv->needs_attention = FALSE;
 	/* start closing effect */
 	priv->effects.is_closing = TRUE;
-	g_timeout_add(AWN_FRAME_RATE, (GSourceFunc)_task_destroy, (gpointer)task);
+	awn_effects_set_notify(&priv->effects, NULL, _task_destroy);
+	awn_schedule_effect(AWN_FRAME_RATE, AWN_EFFECT_CLOSING, &priv->effects);
+	awn_effects_set_notify(&priv->effects, NULL, NULL);
 }
 
 static void
@@ -2084,7 +1926,9 @@ awn_task_close (AwnTask *task)
 	}
 	/* start closing effect */
 	priv->effects.is_closing = TRUE;
-	g_timeout_add(AWN_FRAME_RATE, (GSourceFunc)_task_destroy, (gpointer)task);
+	awn_effects_set_notify(&priv->effects, NULL, _task_destroy);
+	awn_schedule_effect(AWN_FRAME_RATE, AWN_EFFECT_CLOSING, &priv->effects);
+	awn_effects_set_notify(&priv->effects, NULL, NULL);
 }
 
 
