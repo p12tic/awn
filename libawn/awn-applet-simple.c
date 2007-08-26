@@ -69,7 +69,7 @@ awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 
        gtk_widget_set_size_request (GTK_WIDGET (simple), 
                                     priv->icon_width + 2, 
-                                    -1);
+                                    ( priv->bar_height + 2 ) * 2);
        gtk_widget_queue_draw (GTK_WIDGET (simple));
 }
 
