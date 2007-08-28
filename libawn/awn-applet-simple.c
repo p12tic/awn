@@ -63,6 +63,9 @@ awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
        priv->icon = pixbuf;
        priv->reflect = gdk_pixbuf_flip (pixbuf, FALSE);
        g_object_ref (priv->reflect);
+       
+       g_object_unref (old0);
+       g_object_unref (old1);
 
        priv->icon_width = gdk_pixbuf_get_width (priv->icon);
        priv->icon_height = gdk_pixbuf_get_height (priv->icon);
