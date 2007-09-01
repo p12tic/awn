@@ -118,7 +118,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
                                                      priv->reflect,
                                                      x1, y1);
 			cairo_paint_with_alpha(cr, 0.3);
-                        g_print ("%d %d\n", x1, y1);
+
 		}
 	}       
 

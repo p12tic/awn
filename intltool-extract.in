@@ -32,7 +32,7 @@
 ## Release information
 my $PROGRAM      = "intltool-extract";
 my $PACKAGE      = "intltool";
-my $VERSION      = "0.36.1";
+my $VERSION      = "0.35.5";
 
 ## Loaded modules
 use strict; 
@@ -237,9 +237,9 @@ sub entity_decode
 
     s/&apos;/'/g; # '
     s/&quot;/"/g; # "
+    s/&amp;/&/g;
     s/&lt;/</g;
     s/&gt;/>/g;
-    s/&amp;/&/g;
 
     return $_;
 }

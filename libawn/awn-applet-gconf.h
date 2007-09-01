@@ -79,6 +79,7 @@ GSList      *awn_applet_gconf_get_list     (AwnApplet     *applet,
 					      const gchar     *key,
 					      GConfValueType   list_type,
 					      GError         **opt_error);
+
 GConfValue  *awn_applet_gconf_get_value    (AwnApplet     *applet,
 					      const gchar     *key,
 					      GError         **opt_error);

@@ -1,4 +1,4 @@
-SUBDIRS = switcher trash separator notification-area
+SUBDIRS = switcher trash separator notification-area python-test
 
 desktopdir = $(libdir)/awn/applets
 

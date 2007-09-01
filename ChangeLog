@@ -1,3 +1,34 @@
+2007-09-01  Neil J. Patel  <njp@o-hand.com>
+
+	* Makefile.am:
+	* applets/Makefile.am:
+	* applets/python-test/Makefile.am:
+	* applets/python-test/python-test.desktop.in.in:
+	* applets/python-test/python-test.py:
+	* awn-applet-activation/Makefile.am:
+	* awn-applet-activation/awn-plug.c:
+	* awn-applet-activation/awn-plug.h:
+	* awn-applet-activation/main.c:
+	* config.h.in:
+	* configure.in:
+	* intltool-extract.in:
+	* intltool-merge.in:
+	* intltool-update.in:
+	* libawn/Makefile.am:
+	* libawn/awn-applet-gconf.h:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-enum-types.c.in:
+	* libawn/awn-enum-types.h.in:
+	* libawn/awn-plug.c:
+	* libawn/awn-plug.h:
+	* pyawn/Makefile.am:
+	* pyawn/NOTES:
+	* pyawn/__init__.py:
+	* pyawn/awn.defs:
+	* pyawn/awn.override:
+	* pyawn/awnmodule.c:
+	Python bindings. Woo!
+
 2007-08-28  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* libawn/awn-applet-simple.c:

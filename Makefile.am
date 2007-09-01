@@ -5,6 +5,7 @@ SUBDIRS =				\
 	data				\
 	applets                         \
 	po				\
+	pyawn				\
 	awn-manager
 	
 pkgconfigdir = $(libdir)/pkgconfig

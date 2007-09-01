@@ -27,8 +27,15 @@
 #include <string.h>
 
 #include <libawn/awn-defines.h>
+#include <libawn/awn-plug.h>
+#include <libawn/awn-applet.h>
 
-#include "awn-plug.h"
+/* Forwards */
+GtkWidget *
+_awn_plug_new (const gchar *path, 
+              const gchar *uid,
+              gint         orient,
+              gint         height);
 
 /* Commmand line options */
 static gchar    *path = NULL;
@@ -87,6 +94,7 @@ main (gint argc, gchar **argv)
 	GtkWidget *plug = NULL;
 	const gchar *exec;
 	const gchar *name;
+        const gchar *type;
 
 	/* Load options */
 	context = g_option_context_new (" - Awn Applet Activation Options");
@@ -128,6 +136,22 @@ main (gint argc, gchar **argv)
                 return 1;
         }
         
+        /* Check if this is a Python applet */
+        type = gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_TYPE);
+        if (type) {
+                if (strcmp (type, "Python") == 0) {
+                        gchar *cmd = NULL;
+                        GError *err = NULL;
+                        cmd = g_strdup_printf ("python %s --uid=%s --window=%lld --orient=%d --height=%d", exec, uid, window, orient, height );
+                        g_spawn_command_line_async (cmd, &err);
+                        if (err) {
+                                g_warning (err->message);
+                                g_error_free (err);
+                        }
+                        return 0;
+                }
+        }
+        
         /* Process (re)naming */
         /*FIXME: Actually make this work */
         name = gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_NAME);
@@ -142,7 +166,7 @@ main (gint argc, gchar **argv)
         }
 
         /* Create a GtkPlug for the applet */
-        plug = awn_plug_new (exec, uid, orient, height);
+        plug = _awn_plug_new (exec, uid, orient, height);
         
         if (plug == NULL) {
                 g_warning ("Could not create plug\n");
@@ -164,5 +188,64 @@ main (gint argc, gchar **argv)
         gtk_main ();
         
         return 0;
+}
+
+GtkWidget *
+_awn_plug_new (const gchar *path, 
+              const gchar *uid,
+              gint         orient,
+              gint         height)
+{
+	AwnPlugPrivate *priv;
+        GModule *module;
+        AwnApplet *applet;
+        GtkWidget *plug;
+        AwnAppletInitFunc init_func;
+        AwnAppletInitPFunc initp_func;
+	
+        module = g_module_open (path, 
+                                     G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
+        if (module == NULL) {
+                g_warning ("Unable to load module %s\n", path);
+                g_warning (g_module_error());
+                return NULL;
+        }
+
+        /* Try and load the factory symbol */
+        if ( g_module_symbol (module, "awn_applet_factory_init", 
+                     (gpointer *)&init_func) ) {
+ 	        // create new applet
+		applet = AWN_APPLET( awn_applet_new( uid, orient, height ) );
+		// send applet to factory method
+		if (!init_func(applet)) {
+			g_warning ("Unable to create applet from factory\n");
+			gtk_object_destroy(GTK_OBJECT(applet));
+			return NULL;	
+		}		
+    	
+	} else {
+	        /* Try and load the factory_init symbol */
+	        if ( g_module_symbol (module, "awn_applet_factory_initp",
+                                      (gpointer *)&initp_func)) {
+		        /* Create the applet */
+			applet = AWN_APPLET(initp_func (uid, orient, height));
+			if (applet == NULL ) {
+	                        g_warning ("awn_applet_factory_initp method returned NULL" );
+	                        return NULL;
+			}
+        } else {                                     
+                g_warning ("awn_applet_factory_init method not found in applet '%s'", path );
+                g_warning ("%s: %s", path, g_module_error ());
+                  
+                if (!g_module_close (module)) {
+                        g_warning ("%s: %s", path, g_module_error ());
+                }
+                return NULL;  
+        }
+  }       
+        plug = awn_plug_new (applet);
+	gtk_container_add (GTK_CONTAINER (plug), GTK_WIDGET(applet) );
+	
+	return plug;
 }
 
