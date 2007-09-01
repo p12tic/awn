@@ -26,8 +26,8 @@
 
 #include "awn-plug.h"
 
-#include <libawn/awn-defines.h>
-#include <libawn/awn-applet.h>
+#include "awn-defines.h"
+#include "awn-applet.h"
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
@@ -44,9 +44,6 @@ static GtkEventBoxClass *parent_class;
 /* STRUCTS & ENUMS */
 struct _AwnPlugPrivate
 {
-	AwnAppletInitFunc	init_func;
-	AwnAppletInitPFunc	initp_func;
-	GModule		       *module;
 	AwnApplet	       *applet;
 	
 	DBusGConnection	       *connection;
@@ -69,6 +66,12 @@ static void awn_plug_init(AwnPlug *plug);
 static void awn_plug_finalize(GObject *obj);
 
 /* CALLBACKS */
+void
+awn_plug_construct (AwnPlug *plug, GdkNativeWindow socket_id)
+{
+  gtk_plug_construct (GTK_PLUG (plug), socket_id);
+}
+
 static void
 on_plug_embedded (GtkPlug *lug, AwnPlug *plug)
 {
@@ -300,10 +303,7 @@ awn_plug_finalize(GObject *obj)
 }
 
 GtkWidget *
-awn_plug_new (const gchar *path, 
-              const gchar *uid,
-              gint         orient,
-              gint         height)
+awn_plug_new (AwnApplet *applet)
 {
 	AwnPlugPrivate *priv;
 	
@@ -311,46 +311,7 @@ awn_plug_new (const gchar *path,
 	
 	priv = AWN_PLUG_GET_PRIVATE(plug);
 	
-    priv->module = g_module_open(path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
-    if (priv->module == NULL) {
-            g_warning ("Unable to load module %s\n", path);
-            g_warning (g_module_error());
-            return NULL;
-    }
-
-    /* Try and load the factory symbol */
-    if ( g_module_symbol (priv->module, "awn_applet_factory_init", (gpointer *)&priv->init_func) ) {
-    	// create new applet
-		priv->applet = AWN_APPLET( awn_applet_new( uid, orient, height ) );
-		// send applet to factory method
-		if ( !priv->init_func( priv->applet ) ) {
-			g_warning ("Unable to create applet from factory\n");
-			gtk_object_destroy( GTK_OBJECT(priv->applet) );
-			return NULL;	
-		}		
-    	
-	} else {
-	    /* Try and load the factory_init symbol */
-	    if ( g_module_symbol (priv->module, "awn_applet_factory_initp", (gpointer *)&priv->initp_func)) {
-			/* Create the applet */
-			priv->applet = AWN_APPLET( priv->initp_func( uid, orient, height ) );
-			if ( priv->applet == NULL ) {
-	            g_warning ("awn_applet_factory_initp method returned NULL" );
-	            return NULL;
-			}
-	    } else {                                     
-	    	g_warning ("awn_applet_factory_init method not found in applet '%s'", path );
-            g_warning ("%s: %s", path, g_module_error ());
-                  
-            if (!g_module_close (priv->module)) {
-                g_warning ("%s: %s", path, g_module_error ());
-            }
-            return NULL;  
-	    }
-    }	
-
-	gtk_container_add (GTK_CONTAINER (plug), GTK_WIDGET(priv->applet) );
-	
+  priv->applet = applet;
 	g_signal_connect (GTK_PLUG (plug), "embedded", 
 			  G_CALLBACK (on_plug_embedded), (gpointer)plug);
 	return plug;

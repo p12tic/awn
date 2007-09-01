@@ -1,0 +1,2 @@
+awn_applet_dialog_new needs to be re-done to work.
+awn_applet_gconf_set/get_value doesn't work as yet

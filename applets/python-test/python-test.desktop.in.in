@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Python
+Encoding=UTF-8
+Name=Python Test Applet
+Comment=A test python applet for demo purposes
+Exec=@LIBDIR@/awn/applets/python_test/python-test.py
+Icon=binary

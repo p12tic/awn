@@ -22,6 +22,7 @@
 #define __AWN_PLUG_H__
 
 #include <gtk/gtk.h>
+#include "awn-applet.h"
 
 G_BEGIN_DECLS
 
@@ -66,10 +67,10 @@ struct _AwnPlugClass
 GType awn_plug_get_type (void);
 
 GtkWidget *
-awn_plug_new (const gchar *path, 
-              const gchar *uid,
-              gint         orient,
-              gint         height);
+awn_plug_new (AwnApplet *applet);
+
+void
+awn_plug_construct (AwnPlug *plug, GdkNativeWindow socket_id);
 
 G_END_DECLS
 
