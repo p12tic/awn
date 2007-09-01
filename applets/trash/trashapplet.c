@@ -134,11 +134,6 @@ trash_applet_init (TrashApplet *applet)
 	/* Use libawn title instead of GtkTooltip */
 	applet->title = AWN_TITLE(awn_title_get_default ());	
 
-	/* effects */
-	awn_effects_init(G_OBJECT(applet), &applet->effects);
-	awn_register_effects(G_OBJECT(applet), &applet->effects);
-	awn_effects_set_title(&applet->effects, applet->title, get_title_text);
-
 	applet->image = gtk_image_new ();
 	//gtk_container_add (GTK_CONTAINER (applet), applet->image);
 	gtk_widget_show (applet->image);
@@ -256,6 +251,11 @@ trash_applet_new (AwnApplet *applet)
                           G_CALLBACK (on_awn_height_changed), (gpointer)app);
         g_signal_connect (G_OBJECT (applet), "orientation-changed",
                     G_CALLBACK (on_awn_orient_changed), (gpointer)app);
+
+	/* effects */
+	awn_effects_init(G_OBJECT(app), &app->effects);
+	awn_register_effects(G_OBJECT(applet), &app->effects);
+	awn_effects_set_title(&app->effects, app->title, get_title_text);
 
         update_icons (app);
 	return GTK_WIDGET (app);

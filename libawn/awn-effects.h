@@ -52,6 +52,7 @@ typedef struct _AwnEffects AwnEffects;
 struct _AwnEffects
 {
 	GObject *self;
+	GtkWidget *focus_window;
 	AwnSettings *settings;
 	AwnTitle *title;
 	AwnTitleCallback get_title;
@@ -82,7 +83,7 @@ struct _AwnEffects
 
 //! Initializes AwnEffects structure.
 /*!
- * \param obj Managed window to which the effects will apply.
+ * \param obj Object which will be passed to all callback functions, this object is also passed to gtk_widget_queue_draw() during the animation.
  * \param fx Pointer to AwnEffects structure.
  */
 void

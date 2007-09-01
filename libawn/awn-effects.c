@@ -70,6 +70,7 @@ void
 awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->self = self;
 	fx->settings = awn_get_settings();
+	fx->focus_window = NULL;
 	fx->title = NULL;
 	fx->get_title = NULL;
 	fx->is_closing = FALSE;
@@ -437,7 +438,7 @@ static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, g
 	if (fx->settings) fx->settings->hiding = FALSE;
 
 	if (fx->title && fx->get_title) {
-		awn_title_show(fx->title, GTK_WIDGET(fx->self), fx->get_title(fx->self));
+		awn_title_show(fx->title, fx->focus_window, fx->get_title(fx->self));
 	}
 
 	awn_schedule_repeating_effect(40, eff, fx, (AwnEffectCondition)check_hover, 0);
@@ -450,7 +451,7 @@ static gboolean awn_on_leave_event(GtkWidget *widget, GdkEventCrossing *event, g
 	fx->hover = FALSE;
 
 	if (fx->title) {
-		awn_title_hide(fx->title, GTK_WIDGET(fx->self));
+		awn_title_hide(fx->title, fx->focus_window);
 	}
 
 	if (fx->settings && fx->settings->fade_effect) {
@@ -519,6 +520,7 @@ awn_schedule_repeating_effect(const gint timeout, const AwnEffect effect, AwnEff
 
 void
 awn_register_effects (GObject *obj, AwnEffects *fx) {
+	fx->focus_window = GTK_WIDGET(obj);
 	fx->enter_notify = g_signal_connect(obj, "enter-notify-event", G_CALLBACK(awn_on_enter_event), fx);
 	fx->leave_notify = g_signal_connect(obj, "leave-notify-event", G_CALLBACK(awn_on_leave_event), fx);
 }
