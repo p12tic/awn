@@ -1,4 +1,9 @@
-2007-09-01  Neil J. Patel  <njp@o-hand.com>
+2007-09-02  Neil J. Patel  <njpatel@gmail.com>
+
+	* acinclude.m4:
+	It would help if I included this.
+
+2007-09-01  Neil J. Patel  <njpatel@gmail.com>
 
 	* Makefile.am:
 	* applets/Makefile.am:
@@ -89,7 +94,7 @@
 	* src/awn-task.c:
 	Fixed a crash when closing applications.
 
-2007-08-22  Neil J. Patel  <njp@o-hand.com>
+2007-08-22  Neil J. Patel  <njpatel@gmail.com>
 
 	* libawn/awn-title.c:
 	Few more timing fixes.
