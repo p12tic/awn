@@ -1,3 +1,8 @@
+2007-08-28  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Fixes a memory leak in awn_applet_simple_set_icon.
+
 2007-08-25  Neil J. Patel  <njpatel@gmail.com>
 
 	* libawn/Makefile.am:

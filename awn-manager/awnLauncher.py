@@ -148,6 +148,8 @@ class awnLauncher:
         try:
             item = gnomedesktop.item_new_from_file (uri, 0)
             name = item.get_string(gnomedesktop.KEY_ICON)
+            if name is None:
+                return icon
         except:
             return icon
 
