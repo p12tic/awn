@@ -1,3 +1,9 @@
+2007-09-02  Neil J. Patel  <njp@o-hand.com>
+
+	* applets/notification-area/Makefile.am:
+	* applets/notification-area/notification-area.desktop.in.in:
+	Revert the Makefile.am to the correct way of dealing with desktop files.
+
 2007-09-02  Neil J. Patel  <njpatel@gmail.com>
 
 	* acinclude.m4:

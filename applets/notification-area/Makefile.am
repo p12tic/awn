@@ -40,11 +40,11 @@ desktop_DATA = \
 	notification-area.desktop
 @INTLTOOL_DESKTOP_RULE@
 
-$(desktop_DATA): $(desktop_DATA).in
+$(desktop_DATA).in: $(desktop_DATA).in.in
 	sed -e "s|\@LIBDIR\@|$(libdir)|g;s|\@ICONDIR\@|$(icondir)|g" $< > $@
 
 EXTRA_DIST = \
 	$(icon_DATA) \
-        $(desktop_DATA).in
+        $(desktop_DATA).in.in
 
 CLEANFILES = $(desktop_DATA)
