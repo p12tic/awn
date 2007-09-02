@@ -1,0 +1,69 @@
+This package was debianized by Julien Lavergne <julien.lavergne@gmail.com> on
+Mon, 31 Jun 2007 23:36:52 +0200.
+
+It was downloaded from https://launchpad.net/avant-window-navigator/
+
+Copyright Holders and Upstream Authors:
+
+    Neil J. Patel  <njpatel@gmail.com>
+    haytjes  <hv1989@gmail.com>
+    Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+    Anthony Arobone  <aarobone@gmail.com>
+
+License (everything not mentioned below):
+
+    Copyright (C) 2007 Neil Jagdish Patel
+    Copyright (C) 2002 Anders Carlsson <andersca@gnu.org>
+    Copyright (C) 1999, 2000, 2001 Eazel, Inc.
+    Copyright (C) 2004 Canonical Ltd.
+    Copyright (C) 2004  Michiel Sikkes <michiel@eyesopened.nl>,
+    Copyright (C) 2004  Emmanuele Bassi <ebassi@gmail.com>
+    Copyright (C) 1997-2002 Alfredo K. Kojima
+    Copyright (C) 2001, 2002, 2003 Sun Microsystems Inc.
+    Copyright (C) 2007 Anthony Arobone <aarobone@gmail.com>
+    Copyright (C) 2006 - Gareth Murphy, Martin Szulecki
+    Copyright (C) 2006 - Jonathan Matthew
+    Copyright (C) 2006 - James Livingston
+    Copyright (C) 2007 Pavel Sefranek <pavel.sefranek@gmail.com>
+    Copyright (C) 2007 Christian Stangier <chris.stangier@gmail.com>
+    Copyright (C) 2007 Ado Papas <ado.papas@yahoo.gr>
+    Copyright (C) 2007 Andrey Fedoseev <andrey.fedoseev@gmail.com>
+    Copyright (C) 2007 Daniel Nylander <po@danielnylander.se>
+    Copyright (C) 2001 Havoc Pennington
+
+    This package is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; version 2 dated June, 1991.
+
+   This package is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this package; if not, write to the 
+   Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, 
+   Boston, MA 02110-1301, USA.
+
+Licence (for eggtraymanager.c, eggtraymanager.h and applet.c)
+
+   Copyright (C) 2002 Anders Carlsson <andersca@gnu.org>
+   Copyright (c) 2007 Neil Jagdish Patel
+  
+   This library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2 of the License, or (at your option) any later version.
+  
+   This library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+  
+   You should have received a copy of the GNU General Public License
+   along with this package; if not, write to the 
+   Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, 
+   Boston, MA 02110-1301, USA.
+
+The Debian packaging is (C) 2007, Julien Lavergne <julien.lavergne@gmail.com> and
+is licensed under the GPL, see `/usr/share/common-licenses/GPL-2'.
