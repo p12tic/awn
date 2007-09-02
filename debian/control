@@ -50,3 +50,13 @@ Description: A manager for the preferences of avant-window-navigator
  You can manage preferences, themes, applets and launchers.
  .
  Homepage: https://launchpad.net/avant-window-navigator/
+
+Package: python-libawn0
+Section: python
+Architecture: any
+Depends: libawn0 (= ${binary:Version}), ${python:Depends}
+XB-Python-Version: ${python:Versions}
+Description: library for avant-window-navigator - Python bindings
+ This library is used by avant-window-navigator.
+ .
+ Homepage: https://launchpad.net/avant-window-navigator/
