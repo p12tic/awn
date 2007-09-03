@@ -43,7 +43,7 @@ Description: library for avant-window-navigator - developpement files
 Package: awn-manager
 Section: gnome
 Architecture: any
-Depends: avant-window-navigator (= ${binary:Version}), ${python:Depends}
+Depends: avant-window-navigator (= ${binary:Version}), ${python:Depends}, python-gnome2, python-gnome2-desktop
 XB-Python-Version: ${python:Versions}
 Description: A manager for the preferences of avant-window-navigator
  Awn-Manager provide a simple way to configure avant-window-navigator. 
