@@ -2,7 +2,6 @@ debian/tmp/usr/bin/avant-window-navigator
 debian/tmp/usr/bin/awn-applet-activation
 debian/tmp/usr/share/locale/
 debian/tmp/usr/share/applications/avant-window-navigator.desktop
-debian/tmp/etc/gconf/schemas/
 debian/tmp/usr/share/avant-window-navigator/active/
 debian/tmp/usr/share/avant-window-navigator/*.svg
 debian/tmp/usr/share/avant-window-navigator/*.png
