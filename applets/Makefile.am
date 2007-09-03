@@ -1,5 +1,3 @@
-SUBDIRS = .
-
 desktopdir = $(libdir)/awn/applets
 
 desktop_DATA = \

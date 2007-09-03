@@ -3,7 +3,7 @@ Section: gnome
 Priority: optional
 Maintainer: Ubuntu MOTU Developers <ubuntu-motu@lists.ubuntu.com>
 XSBC-Original-Maintainer: Julien Lavergne <julien.lavergne@gmail.com>
-Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python
+Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python, python-gtk2-dev, python-cairo-dev
 Standards-Version: 3.7.2
 XS-Python-Version: current
 
