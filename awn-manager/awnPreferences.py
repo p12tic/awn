@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #
 #  Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>
 #
