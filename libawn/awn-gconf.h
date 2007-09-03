@@ -85,11 +85,14 @@ typedef struct {
 	AwnColor arrow_color;
 	int arrow_offset;
 	gboolean tasks_have_arrows;
-	gboolean fade_effect;
+	//gboolean fade_effect;
 	
 	gboolean name_change_notify;
 	gboolean alpha_effect;
-	gboolean hover_bounce_effect;
+	//gboolean hover_bounce_effect;
+	GSList *icon_effect;
+	gchar *icon_effect_active;
+	gint icon_effect_spotlight;
 	
 	int icon_offset;
 	

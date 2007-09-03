@@ -38,14 +38,21 @@ typedef enum {
         AWN_EFFECT_ATTENTION,
         AWN_EFFECT_CLOSING,
         AWN_EFFECT_CHANGE_NAME,
-	AWN_EFFECT_FADE,
-	AWN_EFFECT_FADE_IN,
-	AWN_EFFECT_FADE_OUT
 } AwnEffect;
 
 typedef const gchar* (*AwnTitleCallback)(GObject*);
 typedef void (*AwnEventNotify)(GObject*);
 typedef gboolean (*AwnEffectCondition)(GObject*);
+
+typedef struct _AwnEffectProperties AwnEffectProperties;
+
+struct _AwnEffectProperties {
+        gboolean state;
+        AwnEventNotify start;
+	AwnEventNotify stop;
+	gint max_loop;
+	gint loop;
+};
 
 typedef struct _AwnEffects AwnEffects;
 
@@ -58,9 +65,15 @@ struct _AwnEffects
 	AwnTitleCallback get_title;
 	AwnEventNotify start_anim, stop_anim;
 
-	gboolean is_closing;
-	gboolean hover;
-	
+	gboolean is_active;
+	AwnEffectProperties is_closing;
+	AwnEffectProperties is_opening;
+	AwnEffectProperties is_opening_launcher;
+	AwnEffectProperties is_asking_attention;
+	gboolean first_run;
+	AwnEffectProperties hover;
+	gboolean kill;
+
 	gint icon_width, icon_height;
 	
 	 /* EFFECT VARIABLES */
@@ -72,10 +85,24 @@ struct _AwnEffects
 
 	gdouble x_offset;
 	gdouble y_offset;
-	gint width;
+	gint bounce_offset;
+	gdouble effect_y_offset;
+	gdouble previous_effect_y_offset;
+	gint current_width;
+	gint current_height;
+	gint normal_width;
+	gint normal_height;
+	gint previous_width;
+	gint previous_height;
 	gint height;
+	gint width;
+
+	
 	gdouble rotate_degrees;
 	gfloat alpha;
+	gfloat spotlight_alpha;
+
+	GdkPixbuf *spotlight;
 
 	guint enter_notify;
 	guint leave_notify;
@@ -112,7 +139,7 @@ awn_unregister_effects (GObject *obj, AwnEffects *fx);
  * \param fx Pointer to AwnEffects structure.
  */
 void
-awn_schedule_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx);
+awn_start_effect(const AwnEffect effect, AwnEffects *fx);
 
 //! Schedules repeating effect.
 /*!
@@ -122,8 +149,12 @@ awn_schedule_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx);
  * \param condition Pointer to control function, the animation will stop looping when this function returns 0 (FALSE).
  * \param max_loops Maximum number of loops, leave 0 for unlimited looping.
  */
+
 void
-awn_schedule_repeating_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx, AwnEffectCondition condition, const gint max_loops);
+awn_stop_effect(const AwnEffect effect, AwnEffects *fx);
+
+//void
+//awn_schedule_repeating_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx, AwnEffectCondition condition, const gint max_loops);
 
 //! Makes AwnTitle appear on event-notify.
 /*!
@@ -141,7 +172,8 @@ awn_effects_set_title(AwnEffects *fx, AwnTitle *title, AwnTitleCallback title_fu
  * \param stop Function which will be called when animation finishes.
  */
 void
-awn_effects_set_notify(AwnEffects *fx, AwnEventNotify start, AwnEventNotify stop);
+awn_effects_set_notify(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start, AwnEventNotify stop, gint max_loop);
+
 
 G_END_DECLS
 

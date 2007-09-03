@@ -23,6 +23,7 @@
 
 #include "awn-effects.h"
 #include <math.h>
+#include <string.h>
 
 typedef struct _AwnEffectsPrivate AwnEffectsPrivate;
 
@@ -38,33 +39,32 @@ struct _AwnEffectsPrivate {
 
 #define AWN_EFFECT_DIR_DOWN	0
 #define AWN_EFFECT_DIR_UP	1
-#define AWN_EFFECT_DIR_LEFT	2
-#define AWN_EFFECT_DIR_RIGHT	3
+#define  AWN_FRAME_RATE 40
+#define  AWN_TASK_EFFECT_DIR_UP			0
+#define  AWN_TASK_EFFECT_DIR_DOWN		1
+#define  AWN_TASK_EFFECT_BOUNCE_SLEEP		0
+#define  AWN_TASK_EFFECT_BOUNCE_SQEEZE_DOWN	1
+#define  AWN_TASK_EFFECT_BOUNCE_SQEEZE_UP	2
+#define  AWN_TASK_EFFECT_BOUNCE_JUMP_UP		3
+#define  AWN_TASK_EFFECT_BOUNCE_JUMP_DOWN	4
+#define  AWN_TASK_EFFECT_BOUNCE_SQEEZE_DOWN2	5
+#define  AWN_TASK_EFFECT_BOUNCE_SQEEZE_UP2	6
+#define  AWN_TASK_EFFECT_TURN_1			0
+#define  AWN_TASK_EFFECT_TURN_2			1
+#define  AWN_TASK_EFFECT_TURN_3			2
+#define  AWN_TASK_EFFECT_TURN_4			3
 
-#define AWN_EFFECT_INIT(fx, effect_name)			\
-	if (fx->effect_lock) {					\
-		if (fx->current_effect != effect_name)		\
-			return TRUE;				\
-	} else 
-#define AWN_EFFECT_LOCK(fx, effect_name)			\
-	fx->effect_lock = TRUE;					\
-	fx->effect_sheduled = AWN_EFFECT_NONE;			\
-	fx->current_effect = effect_name
-#define AWN_EFFECT_FINISH(fx)					\
-	fx->effect_lock = FALSE;				\
-	fx->current_effect = AWN_EFFECT_NONE;			\
-	fx->y_offset = 0
 
 /* FORWARD DECLARATIONS */
+static gboolean awn_task_icon_spotlight_effect (AwnEffects *fx, int j);
+       gboolean awn_task_icon_wrapper( AwnEffects *fx, int i );
+       gboolean awn_tasks_icon_effects(gboolean *true);
+static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data);
+static gboolean awn_on_leave_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data);
 
-static gboolean appear_effect (AwnEffectsPrivate *priv);
-static gboolean disappear_effect (AwnEffectsPrivate *priv);
-static gboolean bounce_effect (AwnEffectsPrivate *priv);
-static gboolean multibounce_effect (AwnEffectsPrivate *priv);
-static gboolean linearbounce_effect (AwnEffectsPrivate *priv);
-static gboolean fade_effect (AwnEffectsPrivate *priv);
-static gboolean fadein_effect (AwnEffectsPrivate *priv);
-static gboolean fadeout_effect (AwnEffectsPrivate *priv);
+GList *effect_list;
+gboolean effectbusy;
+GdkEventMotion *effectevent;
 
 void
 awn_effects_init(GObject* self, AwnEffects *fx) {
@@ -73,11 +73,29 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->focus_window = NULL;
 	fx->title = NULL;
 	fx->get_title = NULL;
-	fx->is_closing = FALSE;
-	fx->hover = FALSE;
-
+	
+	fx->is_active = FALSE;
+	fx->is_closing.state = FALSE;
+	fx->is_closing.max_loop = 0;
+	fx->is_opening.state = TRUE;
+	fx->is_opening.max_loop = 0;
+	fx->is_opening_launcher.state = FALSE;
+	fx->is_opening_launcher.max_loop = 1000;
+	fx->is_asking_attention.state = FALSE;
+	fx->is_asking_attention.max_loop = 0;
+	fx->first_run = TRUE;
+	fx->hover.state = FALSE;
+	fx->hover.max_loop = 0;
+	fx->kill = FALSE;	
+	
+	fx->bounce_offset = 0;
+	fx->effect_y_offset = 0;
 	fx->icon_width = 0;
 	fx->icon_height = 0;
+	fx->current_width = 0;	
+	fx->normal_width = 0;
+	fx->current_height = 0;
+	fx->normal_height = 0;
 
 	/* EFFECT VARIABLES */
 	fx->effect_lock = FALSE;
@@ -91,7 +109,8 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->width = 0;
 	fx->height = 0;
 	fx->rotate_degrees = 0.0;
-	fx->alpha = 1.0;
+	fx->alpha = 0.0;
+	fx->spotlight_alpha = 0.0;
 
 	fx->enter_notify = 0;
 	fx->leave_notify = 0;
@@ -103,418 +122,293 @@ awn_effects_set_title(AwnEffects *fx, AwnTitle* title, AwnTitleCallback title_fu
 	fx->get_title = title_func;
 }
 
-void
-awn_effects_set_notify(AwnEffects *fx, AwnEventNotify start, AwnEventNotify stop) {
-	fx->start_anim = start;
-	fx->stop_anim = stop;
-}
 
 static gboolean
-appear_effect (AwnEffectsPrivate *priv)
-{
-	/* 
-	 * This effect is made of two actual effects (appear and multibounce)
-	 * When appearing ends, one loop of multibounce is scheduled.
-	 */
-	AwnEffects *fx = priv->effects;
-	const gint PERIOD = 40;
-	gint MAX_OFFSET = 50;
-	if (fx->settings) MAX_OFFSET = fx->settings->bar_height;
-	// waits for other effects to end
-	AWN_EFFECT_INIT(fx, priv->next) {
-		AWN_EFFECT_LOCK(fx, priv->next);
-		// additional init possible here
-		fx->count = 0;
-		fx->y_offset = -MAX_OFFSET;
-		if (priv->start) priv->start(fx->self);
-	}
-	// all other effects ended, our turn
-	
-	if (fx->count <= PERIOD/2) {
-		fx->alpha = (double)fx->count / (PERIOD/2);
-		fx->y_offset = cos(fx->count++ * M_PI / PERIOD) * MAX_OFFSET;
-	} else {
-		fx->y_offset = 0;
-		fx->alpha = 1.0;
-		AWN_EFFECT_FINISH(fx);
-	}
-	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
-
-	gboolean repeat = fx->effect_lock;
-	if (!repeat) {
-		// don't dispose priv structure, we'll reuse it for multibounce
-		fx->effect_sheduled = priv->next;
-		priv->start = NULL;
-		if (!fx->is_closing)
-			g_timeout_add(40, (GSourceFunc)multibounce_effect, priv);
-		else
-			g_free(priv);
-	}
-	return repeat;
-}
-
-static gboolean
-disappear_effect (AwnEffectsPrivate *priv)
-{
-	AwnEffects *fx = priv->effects;
-	// waits for other effects to end
-	AWN_EFFECT_INIT(fx, priv->next) {
-		AWN_EFFECT_LOCK(fx, priv->next);
-		// additional init possible here
-		fx->y_offset = 0;
-		if (priv->start) priv->start(fx->self);
-	}
-	// all other effects ended, our turn
-
-	gint MAX_OFFSET = 50;
-	if (fx->settings) MAX_OFFSET = fx->settings->bar_height + 2;
-	
-	fx->y_offset++;
-	fx->alpha = 1.0 - (fx->y_offset / MAX_OFFSET);
-	if (fx->y_offset >= MAX_OFFSET) {
-		fx->alpha = 0;
-		AWN_EFFECT_FINISH(fx);
-	}
-	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
-
-	gboolean repeat = fx->effect_lock;
-	if (!repeat) {
-		if (priv->stop) priv->stop(fx->self);
-		g_free(priv);
-	}
-	return repeat;
-}
-
-static gboolean
-linearbounce_effect (AwnEffectsPrivate *priv)
-{
-	AwnEffects *fx = priv->effects;
-	// waits for other effects to end
-	AWN_EFFECT_INIT(fx, priv->next) {
-		AWN_EFFECT_LOCK(fx, priv->next);
-		// additional init possible here
-		fx->count = 0;
-		fx->effect_direction = AWN_EFFECT_DIR_UP;
-		if (priv->start) priv->start(fx->self);
-	}
-	// all other effects ended, our turn
-	const gdouble MAX_BOUNCE_OFFSET = 15.0;
-
-	gboolean repeat = TRUE;
-	if (fx->effect_direction == AWN_EFFECT_DIR_UP) {
-		if (++fx->y_offset >= MAX_BOUNCE_OFFSET)
-			fx->effect_direction = AWN_EFFECT_DIR_DOWN;
-	} else {
-		if (--fx->y_offset < 1) {
-			fx->effect_direction = AWN_EFFECT_DIR_UP;
-			repeat = FALSE;
-			gboolean max_reached = FALSE;
-			if (priv->max_loops) {
-				priv->max_loops--;
-				max_reached = priv->max_loops <= 0;
-			}
-			if (priv->condition) repeat = priv->condition(fx->self);
-			if (!repeat || fx->is_closing || max_reached) {
-				/* finished bouncing, back to normal */
-				AWN_EFFECT_FINISH(fx);
-			}
+ awn_task_icon_spotlight_effect (AwnEffects *fx, int j)
+ {
+	if(fx->first_run)
+ 	{
+ 		fx->y_offset = 0;
+ 		fx->effect_y_offset = fx->settings->bar_height;
+ 		fx->first_run = FALSE;
+ 		GError *error = NULL;
+ 
+ 		if(fx->settings->icon_effect_spotlight == 1)
+ 			fx->spotlight = gdk_pixbuf_new_from_file_at_scale("/usr/local/share/avant-window-navigator/active/spotlight1.png",75,100,TRUE, &error);
+ 		else
+ 			fx->spotlight = gdk_pixbuf_new_from_file_at_scale("/usr/local/share/avant-window-navigator/active/spotlight2.png",75,100,TRUE, &error);		
+ 		fx->alpha = 1.0;
+ 		fx->normal_width = fx->icon_width;
+ 		fx->current_width = fx->icon_width/2;
+ 	}
+ 
+ 	const gint max = fx->settings->bar_height + 2;
+ 	 	
+ 	if(fx->is_closing.state)
+ 	{		
+		if((fx->is_closing.max_loop != 0 && fx->is_closing.loop > fx->is_closing.max_loop) || fx->effect_y_offset >= max)
+		{
+			fx->kill = TRUE;
+			awn_stop_effect(AWN_EFFECT_CLOSING, fx);			
+			return TRUE;
+		} else {
+ 			fx->spotlight_alpha += AWN_FRAME_RATE * 0.2;
+ 			fx->effect_y_offset += AWN_FRAME_RATE * 0.05;
+ 			if(fx->current_width > 0+AWN_FRAME_RATE * 0.05)	
+ 				fx->current_width -= AWN_FRAME_RATE * 0.05;	
+ 			gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+ 			return TRUE;
+ 		}
+		fx->is_closing.loop++;
+ 	}
+ 	if(fx->is_opening.state)
+ 	{		
+ 		if ((fx->is_opening.max_loop != 0 && fx->is_opening.loop > fx->is_opening.max_loop) || fx->effect_y_offset <= 0) {
+ 			fx->y_offset = 0;
+			fx->effect_y_offset = 0;
+			fx->current_width = fx->normal_width;
+			fx->current_height = fx->normal_height;
+			gtk_widget_queue_draw(GTK_WIDGET(fx->self)); 			
+			awn_stop_effect(AWN_EFFECT_OPENING, fx);
+			return TRUE;
+ 		} else {
+ 			fx->effect_y_offset -= AWN_FRAME_RATE * 0.05;
+ 			fx->spotlight_alpha = 100;
+ 			if(fx->current_width < fx->normal_width)	
+ 				fx->current_width += AWN_FRAME_RATE * 0.05;	
+ 			gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+			fx->is_opening.loop++;
+			return TRUE;
+ 		}
+ 	}
+ 	if( fx->is_opening_launcher.state )
+ 	{
+ 		if (fx->is_opening_launcher.max_loop != 0 && fx->is_opening_launcher.loop > fx->is_opening_launcher.max_loop ) {
+ 			awn_stop_effect(AWN_EFFECT_LAUNCHING, fx);
+			return TRUE;
 		}
-	}
-	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
-
-	repeat = fx->effect_lock;
-	if (!repeat) {
-		if (priv->stop) priv->stop(fx->self);
-		g_free(priv);
-	}
-	return repeat;
-}
-
-static gboolean
-bounce_effect (AwnEffectsPrivate *priv)
-{
-	AwnEffects *fx = priv->effects;
-	// waits for other effects to end
-	AWN_EFFECT_INIT(fx, priv->next) {
-		AWN_EFFECT_LOCK(fx, priv->next);
-		// additional init possible here
-		fx->count = 0;
-		if (priv->start) priv->start(fx->self);
-	}
-	// all other effects ended, our turn
-	const gdouble MAX_BOUNCE_OFFSET = 15.0;
-	const gint PERIOD = 20; // number of calls to this function for the entire animation
-
-	fx->y_offset = sin(++fx->count * M_PI / PERIOD)
-			 * MAX_BOUNCE_OFFSET;
-
-	gboolean repeat = TRUE;
-	if (fx->count >= PERIOD) {
-		fx->count = 0;
-		repeat = FALSE;
-		gboolean max_reached = FALSE;
-		if (priv->max_loops) {
-			priv->max_loops--;
-			max_reached = priv->max_loops <= 0;
+		/*if( fx->self->window != NULL )
+ 		{
+ 			fx->is_opening_launcher = FALSE;			
+ 			return TRUE;
+ 		}*/
+ 		if( fx->spotlight_alpha < 75 )
+ 			fx->spotlight_alpha += AWN_FRAME_RATE * 0.2;
+ 		else if( fx->spotlight_alpha > 75 )
+ 			fx->spotlight_alpha -= AWN_FRAME_RATE * 0.2;	
+ 		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+		fx->is_opening_launcher.loop++;
+ 		return TRUE;	
+ 	}
+ 	if( fx->is_asking_attention.state )
+ 	{
+ 		if (fx->is_asking_attention.max_loop != 0 && fx->is_asking_attention.loop > fx->is_asking_attention.max_loop ) {
+ 			awn_stop_effect(AWN_EFFECT_ATTENTION, fx);
+			return TRUE;
 		}
-		// HACK! pass fx itself for HOVER effect
-		if (priv->condition)
-			repeat = priv->condition(priv->next == AWN_EFFECT_HOVER ? (GObject*)fx : fx->self);
-		if (!repeat || fx->is_closing || max_reached) {
-			/* finished bouncing, back to normal */
-			AWN_EFFECT_FINISH(fx);
+
+		if( fx->spotlight_alpha < 100 )
+ 			fx->spotlight_alpha += AWN_FRAME_RATE * 0.2;
+ 		else if( fx->spotlight_alpha > 100 )
+ 			fx->spotlight_alpha -= AWN_FRAME_RATE * 0.2;	
+ 		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+		fx->is_asking_attention.loop++;
+ 		return TRUE;
+ 	}
+ 
+ 	if(!fx->hover.state && fx->spotlight_alpha == 0)
+ 		return FALSE;
+ 	
+ 
+ 	if(fx->hover.state && fx->spotlight_alpha<100)
+ 		fx->spotlight_alpha = 100;
+ 	else
+ 	{
+ 		if(fx->spotlight_alpha>0)
+ 			fx->spotlight_alpha -= AWN_FRAME_RATE * 0.2;
+ 		else
+ 			fx->spotlight_alpha = 0;
+ 	}
+ 
+	if(fx->hover.state)
+	{
+		if (fx->hover.max_loop != 0 && fx->hover.loop > fx->hover.max_loop ) {
+ 			awn_stop_effect(AWN_EFFECT_HOVER, fx);
+			return TRUE;
 		}
+		fx->hover.loop++;
 	}
-	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+ 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+ 	return TRUE;
+ }
 
-	repeat = fx->effect_lock;
-	if (!repeat) {
-		if (priv->stop) priv->stop(fx->self);
-		g_free(priv);
-	}
-	return repeat;
-}
 
-static gboolean
-multibounce_effect (AwnEffectsPrivate *priv)
-{
-	AwnEffects *fx = priv->effects;
-	// waits for other effects to end
-	AWN_EFFECT_INIT(fx, priv->next) {
-		AWN_EFFECT_LOCK(fx, priv->next);
-		// additional init possible here
-		fx->count = 0;
-		fx->effect_direction = 1;
-		if (priv->start) priv->start(fx->self);
-	}
-	// all other effects ended, our turn
-	const gdouble MAX_BOUNCE_OFFSET = 15.0;
-	const gint PERIOD = 20; // number of calls to this function for the entire animation
+gboolean
+ awn_task_icon_wrapper( AwnEffects *fx, int i )
+ {
+ 		
+ 	//if(strcmp(fx->settings->icon_effect_active,"BOUNCE")==0)
+ 	//	return awn_task_icon_bounce_effect (priv);
+ 	//else if(strcmp(fx->settings->icon_effect_active,"TURN")==0)
+ 	//	return awn_task_icon_turn_effect(task);
+ 	//else if(strcmp(fx->settings->icon_effect_active,"ZOOM")==0)
+ 	//	return awn_task_icon_zoom_effect(task);
+ 	//else if(strcmp(fx->settings->icon_effect_active,"ZOOM2")==0)
+ 	//	return awn_task_icon_zoom2_effect(task);
+ 	//else if(strcmp(fx->settings->icon_effect_active,"FADE")==0)
+ 	//	return awn_task_icon_fade_effect(task);
+ 	//else if(strcmp(fx->settings->icon_effect_active,"OSXZOOM")==0)
+ 	//	return awn_task_icon_osx_effect(task);
+ 	//else 
+	if(strcmp(fx->settings->icon_effect_active,"SPOTLIGHT")==0)
+ 		return awn_task_icon_spotlight_effect(fx,i);
+ 	
+ 	return FALSE;
+ }
+ 
+ gboolean
+ awn_tasks_icon_effects(gboolean *true)
+ {	
+ 	//if(effectevent && effectevent->x_root && (int)effectevent->x_root != 0)
+ 	//	mousex = (int)effectevent->x_root;
+ 	
+ 	int i = 0;
+ 	gboolean change = FALSE;
+ 	GList *list = effect_list; 
+ 	while(list)
+ 	{
+ 		AwnEffects *fx = list->data;
+		if(fx->kill)
+			effect_list = g_list_remove(effect_list, list->data); 		
+		else if( awn_task_icon_wrapper(fx, i) )
+ 			change = TRUE;	
+		list = g_list_next(list);
+ 		i++;
+ 	}
+ 	g_list_free(list);
+ 	
+ 	if(!change)
+ 		effectbusy = FALSE;
 
-	fx->y_offset = sin(++fx->count * M_PI / PERIOD)
-			 * MAX_BOUNCE_OFFSET / (double)fx->effect_direction;
+ 	return change;
+ }
 
-	gboolean repeat = TRUE;
-	if (fx->count >= PERIOD) {
-		fx->count = 0;
-		repeat = FALSE;
-		gboolean max_reached = FALSE;
-		if (priv->max_loops) {
-			priv->max_loops--;
-			max_reached = priv->max_loops <= 0;
-		}
-		if (priv->condition) repeat = priv->condition(fx->self);
-		if (!repeat || fx->is_closing || max_reached) {
-			/* finished bouncing, back to normal */
-			fx->effect_direction++;
-			if (fx->effect_direction >= 4) {
-				fx->effect_direction = 1;
-				AWN_EFFECT_FINISH(fx);
-			}
-		} else fx->effect_direction = 1;
-	}
-	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
-
-	repeat = fx->effect_lock;
-	if (!repeat) {
-		if (priv->stop) priv->stop(fx->self);
-		g_free(priv);
-	}
-	return repeat;
-}
-
-static gboolean
-fade_effect (AwnEffectsPrivate *priv)
-{
-	AwnEffects *fx = priv->effects;
-	// waits for other effects to end
-	AWN_EFFECT_INIT(fx, priv->next) {
-		AWN_EFFECT_LOCK(fx, priv->next);
-		// additional init possible here
-		fx->effect_direction = AWN_EFFECT_DIR_DOWN;
-		if (priv->start) priv->start(fx->self);
-	}
-	// all other effects ended, our turn
-	const gdouble MIN_FADEOUT = 0.2;
-
-	gboolean repeat = TRUE;
-	if (fx->effect_direction == AWN_EFFECT_DIR_DOWN) {
-		fx->alpha -= 0.05;
-		if (fx->alpha <= MIN_FADEOUT)
-			fx->effect_direction = AWN_EFFECT_DIR_UP;
-	} else {
-		fx->alpha += 0.05;
-		if (fx->alpha >= 1) {
-			fx->alpha = 1.0;
-			fx->effect_direction = AWN_EFFECT_DIR_DOWN;
-			repeat = FALSE;
-			gboolean max_reached = FALSE;
-			if (priv->max_loops) {
-				priv->max_loops--;
-				max_reached = priv->max_loops <= 0;
-			}
-			// HACK! pass fx itself for HOVER effect
-			if (priv->condition)
-				repeat = priv->condition(priv->next == AWN_EFFECT_HOVER ? (GObject*)fx : fx->self);
-			if (!repeat || fx->is_closing || max_reached) {
-				/* finished bouncing, back to normal */
-				AWN_EFFECT_FINISH(fx);
-			}
-		}
-	}
-	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
-
-	repeat = fx->effect_lock;
-	if (!repeat) {
-		if (priv->stop) priv->stop(fx->self);
-		g_free(priv);
-	}
-	return repeat;
-}
-
-static gboolean
-fadein_effect (AwnEffectsPrivate *priv)
-{
-	// should we even lock this simple effect?
-	AwnEffects *fx = priv->effects;
-	// waits for other effects to end
-	AWN_EFFECT_INIT(fx, priv->next) {
-		AWN_EFFECT_LOCK(fx, priv->next);
-		// additional init possible here
-		fx->count = 0;
-		if (priv->start) priv->start(fx->self);
-	}
-	fx->alpha = 1.0;
-	AWN_EFFECT_FINISH(fx);
-
-	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
-
-	if (priv->stop) priv->stop(fx->self);
-	g_free(priv);
-	return FALSE;
-}
-
-static gboolean
-fadeout_effect (AwnEffectsPrivate *priv)
-{
-	AwnEffects *fx = priv->effects;
-	// waits for other effects to end
-	AWN_EFFECT_INIT(fx, priv->next) {
-		AWN_EFFECT_LOCK(fx, priv->next);
-		// additional init possible here
-		if (priv->start) priv->start(fx->self);
-	}
-
-        fx->alpha-=0.05;
-
-	if (fx->alpha <= 0.2) {
-		fx->alpha = 0.2;
-		AWN_EFFECT_FINISH(fx);
-	} else if (fx->hover) {
-		// HACK to have same functionality as before awn-effects
-		fx->alpha = 1.0;
-		AWN_EFFECT_FINISH(fx);
-	}
-
-	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
-
-	gboolean repeat = fx->effect_lock;
-	if (!repeat) {
-		if (priv->stop) priv->stop(fx->self);
-		g_free(priv);
-	}
-	return repeat;
-}
 
 static gboolean check_hover(AwnEffects *fx) {
-	return fx->hover;
+	return fx->hover.state;
 }
 
 static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data) {
-	const AwnEffect eff = AWN_EFFECT_HOVER;
+	
 	AwnEffects *fx = (AwnEffects*)data;
 
-	fx->hover = TRUE;
+	fx->hover.state = TRUE;
 	if (fx->settings) fx->settings->hiding = FALSE;
 
 	if (fx->title && fx->get_title) {
 		awn_title_show(fx->title, fx->focus_window, fx->get_title(fx->self));
 	}
 
-	awn_schedule_repeating_effect(40, eff, fx, (AwnEffectCondition)check_hover, 0);
+	awn_start_effect(AWN_EFFECT_HOVER, fx);	
 	return FALSE;
 }
 
 static gboolean awn_on_leave_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data) {
 	AwnEffects *fx = (AwnEffects*)data;
-
-	fx->hover = FALSE;
+	fx->hover.state = FALSE;
 
 	if (fx->title) {
 		awn_title_hide(fx->title, fx->focus_window);
 	}
-
-	if (fx->settings && fx->settings->fade_effect) {
-		fx->alpha = 0.2;
-		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
-	}
+	
+	awn_stop_effect(AWN_EFFECT_HOVER, fx);	
 	return FALSE;
 }
 
-void awn_schedule_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx) {
-	awn_schedule_repeating_effect(timeout, effect, fx, NULL, 0);
-}
-
-void 
-awn_schedule_repeating_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx, AwnEffectCondition condition, const gint max_loops) {
-	GSourceFunc animation = NULL;
-
-	if (fx->current_effect == effect || fx->effect_sheduled == effect) return;
-	fx->effect_sheduled = effect;
+void awn_start_effect(const AwnEffect effect, AwnEffects *fx) {
 	switch (effect) {
 		case AWN_EFFECT_NONE:
 			return;
 		case AWN_EFFECT_OPENING:
-			animation = (GSourceFunc)appear_effect;
+			fx->is_opening.state = TRUE;
+			if(fx->is_opening.start)
+				fx->is_opening.start(fx->self);
 			break;
 		case AWN_EFFECT_LAUNCHING:
-			animation = (GSourceFunc)bounce_effect;
+			fx->is_opening_launcher.state = TRUE;
+			if(fx->is_opening_launcher.start)
+				fx->is_opening_launcher.start(fx->self);
 			break;
 		case AWN_EFFECT_HOVER:
-			if (fx->settings && fx->settings->fade_effect) {
-				animation = (GSourceFunc)fadein_effect;
-			} else {
-				animation = (GSourceFunc)bounce_effect;
-			}
+			fx->hover.state = TRUE;
+			if(fx->hover.start)
+				fx->hover.start(fx->self);
 			break;
 		case AWN_EFFECT_ATTENTION:
-			animation = (GSourceFunc)bounce_effect;
+			fx->is_asking_attention.state = TRUE;
+			if(fx->is_asking_attention.start)
+				fx->is_asking_attention.start(fx->self);
 			break;
 		case AWN_EFFECT_CLOSING:
-			animation = (GSourceFunc)disappear_effect;
+			fx->is_closing.state = TRUE;
+			if(fx->is_closing.start)
+				fx->is_closing.start(fx->self);
 			break;
 		case AWN_EFFECT_CHANGE_NAME:
-			animation = (GSourceFunc)bounce_effect;
-			break;
-		case AWN_EFFECT_FADE:
-			animation = (GSourceFunc)fade_effect;
-			break;
-		case AWN_EFFECT_FADE_IN:
-			animation = (GSourceFunc)fadein_effect;
-			break;
-		case AWN_EFFECT_FADE_OUT:
-			animation = (GSourceFunc)fadeout_effect;
+			
 			break;
 	}
-	if (animation) {
-		AwnEffectsPrivate *priv = g_new(AwnEffectsPrivate, 1);
-		priv->effects = fx;
-		priv->next = effect;
-		priv->condition = condition;
-		priv->max_loops = max_loops;
-		priv->start = fx->start_anim;
-		priv->stop = fx->stop_anim;
-		g_timeout_add(timeout, animation, priv);
+	
+	if( !effectbusy )
+	{
+		effectbusy = TRUE;
+		g_timeout_add(AWN_FRAME_RATE, (GSourceFunc)awn_tasks_icon_effects,(gpointer)1);
+	}
+}
+
+void awn_stop_effect(const AwnEffect effect, AwnEffects *fx) {
+	switch (effect) {
+		case AWN_EFFECT_NONE:
+			return;
+		case AWN_EFFECT_OPENING:
+			fx->is_opening.state = FALSE;
+			fx->is_opening.loop = 0;
+			if(fx->is_opening.stop)
+				fx->is_opening.stop(fx->self);
+			break;
+		case AWN_EFFECT_LAUNCHING:
+			fx->is_opening_launcher.state = FALSE;
+			fx->is_opening_launcher.loop = 0;
+			if(fx->is_opening_launcher.stop)
+				fx->is_opening_launcher.stop(fx->self);
+			break;
+		case AWN_EFFECT_HOVER:
+			fx->hover.state = FALSE;
+			fx->hover.loop = 0;
+			if(fx->hover.stop)
+				fx->hover.stop(fx->self);
+			break;
+		case AWN_EFFECT_ATTENTION:
+			fx->is_asking_attention.state = FALSE;
+			fx->is_asking_attention.loop = 0;
+			if(fx->is_asking_attention.stop)
+				fx->is_asking_attention.stop(fx->self);
+			break;
+		case AWN_EFFECT_CLOSING:
+			if(!fx->kill)
+				g_print("Effect problem: You cannot stop the closing effect!!!!\n");
+			if(fx->is_closing.stop)
+				fx->is_closing.stop(fx->self);		
+			break;
+		case AWN_EFFECT_CHANGE_NAME:
+			
+			break;
+	}
+
+	if( !effectbusy )
+	{
+		effectbusy = TRUE;
+		g_timeout_add(AWN_FRAME_RATE, (GSourceFunc)awn_tasks_icon_effects,(gpointer)1);
 	}
 }
 
@@ -523,11 +417,54 @@ awn_register_effects (GObject *obj, AwnEffects *fx) {
 	fx->focus_window = GTK_WIDGET(obj);
 	fx->enter_notify = g_signal_connect(obj, "enter-notify-event", G_CALLBACK(awn_on_enter_event), fx);
 	fx->leave_notify = g_signal_connect(obj, "leave-notify-event", G_CALLBACK(awn_on_leave_event), fx);
+
+	effect_list = g_list_append(effect_list, (gpointer)fx);
 }
 
 void
 awn_unregister_effects (GObject *obj, AwnEffects *fx) {
 	g_signal_handler_disconnect(obj, fx->enter_notify);
 	g_signal_handler_disconnect(obj, fx->leave_notify);
+}
+
+void
+awn_effects_set_notify(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start, AwnEventNotify stop, gint max_loop) {
+	switch (effect) {
+		case AWN_EFFECT_NONE:
+			return;
+		case AWN_EFFECT_OPENING:
+			fx->is_opening.start = start;
+			fx->is_opening.start = stop;
+			if(max_loop != -1)			
+				fx->is_opening.max_loop = max_loop;			
+			break;
+		case AWN_EFFECT_LAUNCHING:
+			fx->is_opening_launcher.start = start;
+			fx->is_opening_launcher.stop = stop;
+			if(max_loop != -1)
+				fx->is_opening_launcher.max_loop = max_loop;
+			break;
+		case AWN_EFFECT_HOVER:
+			fx->hover.start = start;
+			fx->hover.stop = stop;
+			if(max_loop != -1)
+				fx->hover.max_loop = max_loop;
+			break;
+		case AWN_EFFECT_ATTENTION:
+			fx->is_asking_attention.start = start;
+			fx->is_asking_attention.stop = stop;
+			if(max_loop != -1)
+				fx->is_asking_attention.max_loop = max_loop;
+			break;
+		case AWN_EFFECT_CLOSING:
+			fx->is_closing.start = start;
+			fx->is_closing.stop = stop;
+			if(max_loop != -1)
+				fx->is_closing.max_loop = max_loop;
+			break;
+		case AWN_EFFECT_CHANGE_NAME:
+			
+			break;
+	}
 }
 

@@ -56,12 +56,14 @@
 #define APP_PATH		AWN_PATH "/app"
 #define APP_ACTIVE_PNG		APP_PATH "/active_png"		/*string*/
 #define APP_USE_PNG		APP_PATH "/use_png"		/*bool*/
-#define APP_FADE_EFFECT		APP_PATH "/fade_effect"		/*bool*/
 #define APP_ARROW_COLOR		APP_PATH "/arrow_color"		/*color*/
 #define APP_ARROW_OFFSET	APP_PATH "/arrow_offset"	/*offset*/
 #define APP_TASKS_H_ARROWS	APP_PATH "/tasks_have_arrows"	/*bool*/
 #define APP_NAME_CHANGE_NOTIFY	APP_PATH "/name_change_notify"	/*bool*/
 #define APP_ALPHA_EFFECT	APP_PATH "/alpha_effect"	/*bool*/
+#define ICON_EFFECT		APP_PATH "/icon_effect"		/*list*/
+#define ICON_EFFECT_ACTIVE	APP_PATH "/icon_effect_active"	/*string*/
+#define ICON_EFFECT_SPOTLIGHT	APP_PATH "/icon_effect_spotlight"	/*int*/
 #define APP_HOVER_BOUNCE_EFFECT	APP_PATH "/hover_bounce_effect"	/*bool*/
 
 #define TITLE_PATH		AWN_PATH "/title"
@@ -163,14 +165,15 @@ awn_gconf_new()
 	gconf_client_add_dir(client, APP_PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);
 	awn_load_string(client, APP_ACTIVE_PNG, &s->active_png, "~");
 	awn_load_bool(client, APP_USE_PNG, &s->use_png, FALSE);
-	awn_load_bool(client, APP_FADE_EFFECT, &s->fade_effect, FALSE);
 	awn_load_color(client, APP_ARROW_COLOR, &s->arrow_color, "FFFFFF66");
 	awn_load_int(client, APP_ARROW_OFFSET, &s->arrow_offset, 2);
 	awn_load_bool(client, APP_TASKS_H_ARROWS, &s->tasks_have_arrows, FALSE);
 	awn_load_bool(client, APP_NAME_CHANGE_NOTIFY, &s->name_change_notify, FALSE);
 	awn_load_bool(client, APP_ALPHA_EFFECT, &s->alpha_effect, FALSE);
-	awn_load_bool(client, APP_HOVER_BOUNCE_EFFECT, &s->hover_bounce_effect, TRUE);
-	
+	awn_load_string_list(client, ICON_EFFECT, &s->icon_effect, NULL);
+ 	awn_load_string(client, ICON_EFFECT_ACTIVE, &s->icon_effect_active, "SPOTLIGHT");
+ 	awn_load_int(client, ICON_EFFECT_SPOTLIGHT, &s->icon_effect_spotlight,2);
+
 	/* Title settings */
 	gconf_client_add_dir(client, TITLE_PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);
 	awn_load_color(client, TITLE_TEXT_COLOR, &s->text_color, "FFFFFFFF");
