@@ -61,6 +61,7 @@ static gboolean awn_task_icon_spotlight_effect (AwnEffects *fx, int j);
        gboolean awn_tasks_icon_effects(gboolean *true);
 static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data);
 static gboolean awn_on_leave_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data);
+void		awn_task_icon_spotlight_init (AwnEffects *fx);
 
 GList *effect_list;
 gboolean effectbusy;
@@ -156,38 +157,36 @@ awn_effect_force_quit(const AwnEffect effect, AwnEffects *fx)
 }
 
 
-static gboolean
-awn_task_icon_spotlight_init ()
+void
+awn_task_icon_spotlight_init (AwnEffects *fx)
 {
-	//replace the first_run
+	fx->first_run = FALSE;
+	fx->y_offset = 0;
+	fx->effect_y_offset = fx->settings->bar_height;
+	GError *error = NULL;
+
+	if(fx->settings->icon_effect_spotlight == 1)
+		fx->spotlight = gdk_pixbuf_new_from_file_at_scale("/usr/local/share/avant-window-navigator/active/spotlight1.png",75,100,TRUE, &error);
+	else
+		fx->spotlight = gdk_pixbuf_new_from_file_at_scale("/usr/local/share/avant-window-navigator/active/spotlight2.png",75,100,TRUE, &error);		
+	fx->alpha = 1.0;
+	fx->normal_width = fx->icon_width;
+	fx->current_width = fx->icon_width/2;
 }
 
 static gboolean
  awn_task_icon_spotlight_effect (AwnEffects *fx, int j)
  {
+	const gint max = fx->settings->bar_height + 2;
+ 	
 	if(fx->first_run)
- 	{
- 		fx->y_offset = 0;
- 		fx->effect_y_offset = fx->settings->bar_height;
- 		fx->first_run = FALSE;
- 		GError *error = NULL;
- 
- 		if(fx->settings->icon_effect_spotlight == 1)
- 			fx->spotlight = gdk_pixbuf_new_from_file_at_scale("/usr/local/share/avant-window-navigator/active/spotlight1.png",75,100,TRUE, &error);
- 		else
- 			fx->spotlight = gdk_pixbuf_new_from_file_at_scale("/usr/local/share/avant-window-navigator/active/spotlight2.png",75,100,TRUE, &error);		
- 		fx->alpha = 1.0;
- 		fx->normal_width = fx->icon_width;
- 		fx->current_width = fx->icon_width/2;
- 	}
- 
- 	const gint max = fx->settings->bar_height + 2;
- 	 	
+		awn_task_icon_spotlight_init ((gpointer)fx);
+ 	
  	if(fx->is_closing.state)
  	{		
 		if( fx->is_closing.max_loop != 0 && fx->is_closing.loop > fx->is_closing.max_loop ) {
 			fx->kill = TRUE;
-			awn_effect_force_quit(AWN_EFFECT_CLOSING, fx);			
+			awn_stop_effect(AWN_EFFECT_CLOSING, fx);			
 			return TRUE;
 		} 
 		else if ( fx->effect_y_offset >= max ) {
@@ -329,7 +328,6 @@ gboolean
  		i++;
  	}
  	g_list_free(list);
- 	
  	if(!change)
  		effectbusy = FALSE;
 
@@ -460,7 +458,7 @@ awn_register_effects (GObject *obj, AwnEffects *fx) {
 	fx->focus_window = GTK_WIDGET(obj);
 	fx->enter_notify = g_signal_connect(obj, "enter-notify-event", G_CALLBACK(awn_on_enter_event), fx);
 	fx->leave_notify = g_signal_connect(obj, "leave-notify-event", G_CALLBACK(awn_on_leave_event), fx);
-
+	
 	effect_list = g_list_append(effect_list, (gpointer)fx);
 }
 
