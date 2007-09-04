@@ -1,5 +1,5 @@
-avant-window-navigator (0.1.2~bzr20070903-0ubuntu1) gutsy; urgency=low
+avant-window-navigator (0.1.2~bzr20070904-0ubuntu1~ppa1) gutsy; urgency=low
 
   * Initial release (LP: #118589)
 
- -- Julien Lavergne <julien.lavergne@gmail.com>  Mon, 20 Aug 2007 15:35:07 +0200
+ -- Julien Lavergne <julien.lavergne@gmail.com>  Mon, 4 Sep 2007 15:35:07 +0200
