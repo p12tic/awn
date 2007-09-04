@@ -122,6 +122,45 @@ awn_effects_set_title(AwnEffects *fx, AwnTitle* title, AwnTitleCallback title_fu
 	fx->get_title = title_func;
 }
 
+void
+awn_effect_force_quit(const AwnEffect effect, AwnEffects *fx)
+{
+	switch (effect) {
+		case AWN_EFFECT_NONE:
+			return;
+		case AWN_EFFECT_OPENING:
+			if(fx->is_opening.force_loop_stop)
+				fx->is_opening.force_loop_stop(fx->self);
+			break;
+		case AWN_EFFECT_LAUNCHING:
+			if(fx->is_opening_launcher.force_loop_stop)
+				fx->is_opening_launcher.force_loop_stop(fx->self);
+			break;
+		case AWN_EFFECT_HOVER:
+			if(fx->hover.force_loop_stop)
+				fx->hover.force_loop_stop(fx->self);
+			break;
+		case AWN_EFFECT_ATTENTION:
+			if(fx->is_asking_attention.force_loop_stop)
+				fx->is_asking_attention.force_loop_stop(fx->self);
+			break;
+		case AWN_EFFECT_CLOSING:
+			if(fx->is_closing.force_loop_stop)
+				fx->is_closing.force_loop_stop(fx->self);		
+			break;
+		case AWN_EFFECT_CHANGE_NAME:
+			
+			break;
+	}
+	awn_stop_effect(effect,fx);
+}
+
+
+static gboolean
+awn_task_icon_spotlight_init ()
+{
+	//replace the first_run
+}
 
 static gboolean
  awn_task_icon_spotlight_effect (AwnEffects *fx, int j)
@@ -146,12 +185,17 @@ static gboolean
  	 	
  	if(fx->is_closing.state)
  	{		
-		if((fx->is_closing.max_loop != 0 && fx->is_closing.loop > fx->is_closing.max_loop) || fx->effect_y_offset >= max)
-		{
+		if( fx->is_closing.max_loop != 0 && fx->is_closing.loop > fx->is_closing.max_loop ) {
+			fx->kill = TRUE;
+			awn_effect_force_quit(AWN_EFFECT_CLOSING, fx);			
+			return TRUE;
+		} 
+		else if ( fx->effect_y_offset >= max ) {
 			fx->kill = TRUE;
 			awn_stop_effect(AWN_EFFECT_CLOSING, fx);			
 			return TRUE;
-		} else {
+		}
+		else {
  			fx->spotlight_alpha += AWN_FRAME_RATE * 0.2;
  			fx->effect_y_offset += AWN_FRAME_RATE * 0.05;
  			if(fx->current_width > 0+AWN_FRAME_RATE * 0.05)	
@@ -169,7 +213,10 @@ static gboolean
 			fx->current_width = fx->normal_width;
 			fx->current_height = fx->normal_height;
 			gtk_widget_queue_draw(GTK_WIDGET(fx->self)); 			
-			awn_stop_effect(AWN_EFFECT_OPENING, fx);
+			if( fx->effect_y_offset <= 0 )			
+				awn_stop_effect(AWN_EFFECT_OPENING, fx);
+			else
+				awn_effect_force_quit(AWN_EFFECT_OPENING, fx);
 			return TRUE;
  		} else {
  			fx->effect_y_offset -= AWN_FRAME_RATE * 0.05;
@@ -184,15 +231,11 @@ static gboolean
  	if( fx->is_opening_launcher.state )
  	{
  		if (fx->is_opening_launcher.max_loop != 0 && fx->is_opening_launcher.loop > fx->is_opening_launcher.max_loop ) {
- 			awn_stop_effect(AWN_EFFECT_LAUNCHING, fx);
+ 			awn_effect_force_quit(AWN_EFFECT_LAUNCHING, fx);
 			return TRUE;
 		}
-		/*if( fx->self->window != NULL )
- 		{
- 			fx->is_opening_launcher = FALSE;			
- 			return TRUE;
- 		}*/
- 		if( fx->spotlight_alpha < 75 )
+		
+		if( fx->spotlight_alpha < 75 )
  			fx->spotlight_alpha += AWN_FRAME_RATE * 0.2;
  		else if( fx->spotlight_alpha > 75 )
  			fx->spotlight_alpha -= AWN_FRAME_RATE * 0.2;	
@@ -203,7 +246,7 @@ static gboolean
  	if( fx->is_asking_attention.state )
  	{
  		if (fx->is_asking_attention.max_loop != 0 && fx->is_asking_attention.loop > fx->is_asking_attention.max_loop ) {
- 			awn_stop_effect(AWN_EFFECT_ATTENTION, fx);
+ 			awn_effect_force_quit(AWN_EFFECT_ATTENTION, fx);
 			return TRUE;
 		}
 
@@ -233,7 +276,7 @@ static gboolean
 	if(fx->hover.state)
 	{
 		if (fx->hover.max_loop != 0 && fx->hover.loop > fx->hover.max_loop ) {
- 			awn_stop_effect(AWN_EFFECT_HOVER, fx);
+ 			awn_effect_force_quit(AWN_EFFECT_HOVER, fx);
 			return TRUE;
 		}
 		fx->hover.loop++;
@@ -428,39 +471,85 @@ awn_unregister_effects (GObject *obj, AwnEffects *fx) {
 }
 
 void
-awn_effects_set_notify(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start, AwnEventNotify stop, gint max_loop) {
+awn_effects_set_notify(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start, AwnEventNotify stop, AwnEventNotify force_loop_stop, gint max_loop) {
 	switch (effect) {
 		case AWN_EFFECT_NONE:
 			return;
 		case AWN_EFFECT_OPENING:
 			fx->is_opening.start = start;
 			fx->is_opening.start = stop;
+			fx->is_opening.force_loop_stop = force_loop_stop;
 			if(max_loop != -1)			
 				fx->is_opening.max_loop = max_loop;			
 			break;
 		case AWN_EFFECT_LAUNCHING:
 			fx->is_opening_launcher.start = start;
 			fx->is_opening_launcher.stop = stop;
+			fx->is_opening_launcher.force_loop_stop = force_loop_stop;
 			if(max_loop != -1)
 				fx->is_opening_launcher.max_loop = max_loop;
 			break;
 		case AWN_EFFECT_HOVER:
 			fx->hover.start = start;
 			fx->hover.stop = stop;
+			fx->hover.force_loop_stop = force_loop_stop;
 			if(max_loop != -1)
 				fx->hover.max_loop = max_loop;
 			break;
 		case AWN_EFFECT_ATTENTION:
 			fx->is_asking_attention.start = start;
 			fx->is_asking_attention.stop = stop;
+			fx->is_asking_attention.force_loop_stop = force_loop_stop;
 			if(max_loop != -1)
 				fx->is_asking_attention.max_loop = max_loop;
 			break;
 		case AWN_EFFECT_CLOSING:
 			fx->is_closing.start = start;
 			fx->is_closing.stop = stop;
+			fx->is_closing.force_loop_stop = force_loop_stop;
 			if(max_loop != -1)
 				fx->is_closing.max_loop = max_loop;
+			break;
+		case AWN_EFFECT_CHANGE_NAME:
+			
+			break;
+	}
+}
+
+gint
+awn_effect_progress(AwnEffects *fx, const AwnEffect effect) {
+	switch (effect) {
+		case AWN_EFFECT_NONE:			
+			return 0;
+		case AWN_EFFECT_OPENING:
+			if(!fx->is_opening.state)
+				return 0;
+			else
+				return (fx->is_opening.loop/fx->is_opening.max_loop)*100;			
+			break;
+		case AWN_EFFECT_LAUNCHING:
+			if(!fx->is_opening_launcher.state)
+				return 0;
+			else
+				return (fx->is_opening_launcher.loop/fx->is_opening_launcher.max_loop)*100;
+			break;
+		case AWN_EFFECT_HOVER:
+			if(!fx->hover.state)
+				return 0;
+			else
+				return (fx->hover.loop/fx->hover.max_loop)*100;
+			break;
+		case AWN_EFFECT_ATTENTION:
+			if(!fx->is_asking_attention.state)
+				return 0;
+			else
+				return (fx->is_asking_attention.loop/fx->is_asking_attention.max_loop)*100;
+			break;
+		case AWN_EFFECT_CLOSING:
+			if(!fx->is_closing.state)
+				return 0;
+			else
+				return (fx->is_closing.loop/fx->is_closing.max_loop)*100;
 			break;
 		case AWN_EFFECT_CHANGE_NAME:
 			

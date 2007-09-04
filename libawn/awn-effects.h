@@ -50,6 +50,7 @@ struct _AwnEffectProperties {
         gboolean state;
         AwnEventNotify start;
 	AwnEventNotify stop;
+	AwnEventNotify force_loop_stop;
 	gint max_loop;
 	gint loop;
 };
@@ -132,29 +133,39 @@ awn_register_effects (GObject *obj, AwnEffects *fx);
 void
 awn_unregister_effects (GObject *obj, AwnEffects *fx);
 
-//! Schedules single effect with one loop or HOVER effect.
+//! Start a single effect.
 /*!
- * \param timeout Frame time in miliseconds.
  * \param effect Effect to schedule.
  * \param fx Pointer to AwnEffects structure.
  */
 void
 awn_start_effect(const AwnEffect effect, AwnEffects *fx);
 
-//! Schedules repeating effect.
+//! Stop a single effect.
 /*!
- * \param timeout Frame time in miliseconds.
- * \param effect Effect to schedule.
+ * \param effect Effect to stop.
  * \param fx Pointer to AwnEffects structure.
- * \param condition Pointer to control function, the animation will stop looping when this function returns 0 (FALSE).
- * \param max_loops Maximum number of loops, leave 0 for unlimited looping.
  */
 
 void
 awn_stop_effect(const AwnEffect effect, AwnEffects *fx);
 
-//void
-//awn_schedule_repeating_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx, AwnEffectCondition condition, const gint max_loops);
+//! Force a single effect to stop. This should be called when the effects is using more than the max_loop.  
+/*!
+ * \param effect Effect to stop.
+ * \param fx Pointer to AwnEffects structure.
+ */
+void
+awn_effect_force_quit(const AwnEffect effect, AwnEffects *fx);
+
+//! Returns the progress of a specific effect (You get a percentage 0->100 of loop/max_loop)
+/*!
+ * \param fx Pointer to AwnEffects structure.
+ * \param effect Effect to show the progres of.
+ */
+
+gint
+awn_effect_progress(AwnEffects *fx, const AwnEffect effect);
 
 //! Makes AwnTitle appear on event-notify.
 /*!
@@ -172,8 +183,7 @@ awn_effects_set_title(AwnEffects *fx, AwnTitle *title, AwnTitleCallback title_fu
  * \param stop Function which will be called when animation finishes.
  */
 void
-awn_effects_set_notify(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start, AwnEventNotify stop, gint max_loop);
-
+awn_effects_set_notify(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start, AwnEventNotify stop, AwnEventNotify force_loop_stop, gint max_loop);
 
 G_END_DECLS
 

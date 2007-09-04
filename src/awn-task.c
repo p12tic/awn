@@ -259,7 +259,7 @@ launch_opening_effect (AwnTask *task )
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_effects_set_notify(&priv->effects, AWN_EFFECT_OPENING, NULL, _task_refresh, -1);
+	awn_effects_set_notify(&priv->effects, AWN_EFFECT_OPENING, NULL, _task_refresh, NULL, -1);
 	awn_start_effect(AWN_EFFECT_OPENING, &priv->effects);
 }
 
@@ -1800,7 +1800,7 @@ _task_remove_launcher (GtkMenuItem *item, AwnTask *task)
 
 	priv->window = NULL;
 	/* start closing effect */
-	awn_effects_set_notify(&priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, -1);
+	awn_effects_set_notify(&priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, NULL, -1);
 	awn_start_effect(AWN_EFFECT_CLOSING, &priv->effects);
 }
 
@@ -1950,7 +1950,7 @@ awn_task_close (AwnTask *task)
 		return;
 	}
 	/* start closing effect */
-	awn_effects_set_notify(&priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, -1);
+	awn_effects_set_notify(&priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, NULL, -1);
 	awn_start_effect(AWN_EFFECT_CLOSING, &priv->effects);
 }
 
