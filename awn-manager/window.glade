@@ -1192,7 +1192,7 @@
 						      <child>
 							<widget class="GtkLabel" id="label39">
 							  <property name="visible">True</property>
-							  <property name="label" translatable="yes">Bar height (requires restart): </property>
+							  <property name="label" translatable="yes">Bar height: </property>
 							  <property name="use_underline">False</property>
 							  <property name="use_markup">False</property>
 							  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1249,7 +1249,7 @@
 						      <child>
 							<widget class="GtkLabel" id="label40">
 							  <property name="visible">True</property>
-							  <property name="label" translatable="yes">Icon offset (requires restart): </property>
+							  <property name="label" translatable="yes">Icon offset: </property>
 							  <property name="use_underline">False</property>
 							  <property name="use_markup">False</property>
 							  <property name="justify">GTK_JUSTIFY_LEFT</property>

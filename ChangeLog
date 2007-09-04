@@ -1,3 +1,16 @@
+2007-09-04  haytjes <hv1989@gmail.com>
+
+	* awn-manager/window.glade:
+	* src/awn-bar.c:
+	* src/main.c:
+	(fixes bug #136858 : resizing without restart)
+
+2007-09-04  haytjes <hv1989@gmail.com>
+
+	* applets/trash/trashapplet.c:
+	Let the trashapplet resize dynamically (without restart)
+	(Is necessary for the upcoming change: resizing without restart)
+
 2007-09-02  Neil J. Patel  <njp@o-hand.com>
 
 	* applets/notification-area/Makefile.am:
