@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=C
-Encoding=UTF-8
-Name=Trash Applet
-Comment=A Trash applet for Awn
-Exec=@LIBDIR@/awn/applets/trash/trash.so
-Icon=gnome-stock-trash
