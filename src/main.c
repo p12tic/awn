@@ -76,8 +76,11 @@ static void
 bar_height_changed (GConfClient *client, guint cid, GConfEntry *entry, AwnSettings *Settings);
 static void 
 icon_offset_changed (GConfClient *client, guint cid, GConfEntry *entry, AwnSettings *Settings);
+static void
+screen_size_changed (GdkScreen *screen, AwnSettings *s);
 static void 
 composited_changed ( GdkScreen *screen, AwnSettings *s);
+
 
 static Atom
 panel_atom_get (const char *atom_name)
@@ -177,12 +180,25 @@ main (int argc, char* argv[])
 	
 	settings->hot = awn_hotspot_new (settings);
 	gtk_widget_show (settings->hot);
+	gtk_window_present(GTK_WINDOW(settings->window));
 	
-	screen = gdk_screen_get_default();
-	if (screen && !settings->force_monitor) {
-		settings->monitor_width = gdk_screen_get_width(screen);
-		settings->monitor_height = gdk_screen_get_height(screen);
-	}
+ 	screen = gtk_widget_get_screen(GTK_WIDGET(settings->window));
+  	if (screen && !settings->force_monitor) {
+ 		gdk_screen_get_monitor_geometry( screen,
+                                                  gdk_screen_get_monitor_at_window(screen,GTK_WIDGET(settings->window)->window),
+                                                  &settings->monitor);
+ 		
+ 		//settings->monitor_width = gdk_screen_get_width(screen);
+ 		//settings->monitor_height = gdk_screen_get_height(screen);
+ 		settings->monitor_width = settings->monitor.width;
+ 		settings->monitor_height = settings->monitor.height;
+ 		g_signal_connect ( G_OBJECT(screen), "size-changed", G_CALLBACK(screen_size_changed), (gpointer)settings);
+ 	}
+ 	else
+ 	{
+ 		settings->monitor.width = settings->monitor_width;
+ 		settings->monitor.height = settings->monitor_height;
+ 	}
 
 	g_signal_connect ( G_OBJECT(screen), "composited-changed", G_CALLBACK(composited_changed), (gpointer)settings);
 	
@@ -454,6 +470,15 @@ icon_offset_changed (GConfClient *client, guint cid, GConfEntry *entry, AwnSetti
 	settings->icon_offset = gconf_value_get_int(value);
 	
 	resize (settings);
+}
+
+static void
+screen_size_changed (GdkScreen *screen, AwnSettings *s)
+{
+	g_print ("Screen size changed\n");
+	gdk_screen_get_monitor_geometry(screen,
+					gdk_screen_get_monitor_at_window(screen,GTK_WIDGET(s->window)->window),
+					&s->monitor);
 }
 
 static void 

@@ -171,7 +171,6 @@ awn_gconf_new()
 	awn_load_color(client, TITLE_BACKGROUND, &s->background, "000000AA");
 	awn_load_string(client, TITLE_FONT_FACE, &s->font_face, "Sans 11");	
 	
-	load_monitor (s);
 	s->task_width = settings->bar_height + 12;
 	
 	/* make the custom icons directory */
@@ -380,18 +379,8 @@ static void
 screen_size_changed (GdkScreen *screen, AwnSettings *s)
 {
 	g_print ("Screen size changed\n");
-	gdk_screen_get_monitor_geometry (screen, 0, &s->monitor);
+	gdk_screen_get_monitor_geometry(screen,
+					gdk_screen_get_monitor_at_window(screen,GTK_WIDGET(s->window)->window),
+					&s->monitor);
 }
 
-static void 
-load_monitor (AwnSettings *s)
-{
-	if (s->force_monitor) {
-		s->monitor.width = s->monitor_width;
-		s->monitor.height = s->monitor_height;
-	} else{
-		GdkScreen *screen = gdk_screen_get_default();
-		gdk_screen_get_monitor_geometry (screen, 0, &s->monitor);
-		g_signal_connect ( G_OBJECT(screen), "size-changed", G_CALLBACK(screen_size_changed), (gpointer)s);
-	}
-}
