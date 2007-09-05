@@ -37,23 +37,11 @@ typedef enum {
         AWN_EFFECT_HOVER,
         AWN_EFFECT_ATTENTION,
         AWN_EFFECT_CLOSING,
-        AWN_EFFECT_CHANGE_NAME,
+        AWN_EFFECT_CHANGE_NAME
 } AwnEffect;
 
 typedef const gchar* (*AwnTitleCallback)(GObject*);
 typedef void (*AwnEventNotify)(GObject*);
-typedef gboolean (*AwnEffectCondition)(GObject*);
-
-typedef struct _AwnEffectProperties AwnEffectProperties;
-
-struct _AwnEffectProperties {
-        gboolean state;
-        AwnEventNotify start;
-	AwnEventNotify stop;
-	AwnEventNotify force_loop_stop;
-	gint max_loop;
-	gint loop;
-};
 
 typedef struct _AwnEffects AwnEffects;
 
@@ -64,22 +52,13 @@ struct _AwnEffects
 	AwnSettings *settings;
 	AwnTitle *title;
 	AwnTitleCallback get_title;
-	AwnEventNotify start_anim, stop_anim;
-
-	gboolean is_active;
-	AwnEffectProperties is_closing;
-	AwnEffectProperties is_opening;
-	AwnEffectProperties is_opening_launcher;
-	AwnEffectProperties is_asking_attention;
-	gboolean first_run;
-	AwnEffectProperties hover;
-	gboolean kill;
+	GList *effect_queue;
 
 	gint icon_width, icon_height;
 	
 	 /* EFFECT VARIABLES */
+	
 	gboolean effect_lock;
-	AwnEffect effect_sheduled;
 	AwnEffect current_effect;
 	gint effect_direction;
 	gint count;
@@ -98,7 +77,6 @@ struct _AwnEffects
 	gint height;
 	gint width;
 
-	
 	gdouble rotate_degrees;
 	gfloat alpha;
 	gfloat spotlight_alpha;
@@ -133,13 +111,14 @@ awn_register_effects (GObject *obj, AwnEffects *fx);
 void
 awn_unregister_effects (GObject *obj, AwnEffects *fx);
 
-//! Start a single effect.
+//! Start a single effect. The effect will loop until awn_effect_stop
+//! is called.
 /*!
  * \param effect Effect to schedule.
  * \param fx Pointer to AwnEffects structure.
  */
 void
-awn_start_effect(const AwnEffect effect, AwnEffects *fx);
+awn_effect_start(AwnEffects *fx, const AwnEffect effect);
 
 //! Stop a single effect.
 /*!
@@ -148,24 +127,15 @@ awn_start_effect(const AwnEffect effect, AwnEffects *fx);
  */
 
 void
-awn_stop_effect(const AwnEffect effect, AwnEffects *fx);
+awn_effect_stop(AwnEffects *fx, const AwnEffect effect);
 
-//! Force a single effect to stop. This should be called when the effects is using more than the max_loop.  
+//! Force all effects to stop.
 /*!
  * \param effect Effect to stop.
  * \param fx Pointer to AwnEffects structure.
  */
 void
-awn_effect_force_quit(const AwnEffect effect, AwnEffects *fx);
-
-//! Returns the progress of a specific effect (You get a percentage 0->100 of loop/max_loop)
-/*!
- * \param fx Pointer to AwnEffects structure.
- * \param effect Effect to show the progres of.
- */
-
-gint
-awn_effect_progress(AwnEffects *fx, const AwnEffect effect);
+awn_effect_force_quit(AwnEffects *fx);
 
 //! Makes AwnTitle appear on event-notify.
 /*!
@@ -176,14 +146,14 @@ awn_effect_progress(AwnEffects *fx, const AwnEffect effect);
 void
 awn_effects_set_title(AwnEffects *fx, AwnTitle *title, AwnTitleCallback title_func);
 
-//! Provides callbacks for animation start and end.
+//! Extended effect start, which provides callbacks for animation start, end and possibility to specify maximum number of loops.
 /*!
  * \param fx Pointer to AwnEffects structure.
  * \param start Function which will be called when animation starts.
  * \param stop Function which will be called when animation finishes.
  */
 void
-awn_effects_set_notify(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start, AwnEventNotify stop, AwnEventNotify force_loop_stop, gint max_loop);
+awn_effect_start_ex(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start, AwnEventNotify stop, gint max_loop);
 
 G_END_DECLS
 

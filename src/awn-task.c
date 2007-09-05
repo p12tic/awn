@@ -259,8 +259,7 @@ launch_opening_effect (AwnTask *task )
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_effects_set_notify(&priv->effects, AWN_EFFECT_OPENING, NULL, _task_refresh, NULL, -1);
-	awn_start_effect(AWN_EFFECT_OPENING, &priv->effects);
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_OPENING, NULL, _task_refresh, 1);
 }
 
 static gboolean
@@ -276,7 +275,7 @@ launch_launched_effect (AwnTask *task )
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_start_effect(AWN_EFFECT_LAUNCHING, &priv->effects);
+	awn_effect_start(&priv->effects, AWN_EFFECT_LAUNCHING);
 }
 
 static gboolean
@@ -292,7 +291,7 @@ launch_attention_effect (AwnTask *task )
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_start_effect(AWN_EFFECT_ATTENTION, &priv->effects);
+	awn_effect_start(&priv->effects, AWN_EFFECT_ATTENTION);
 }
 
 static void
@@ -353,7 +352,7 @@ launch_name_change_effect (AwnTask *task)
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_start_effect(AWN_EFFECT_CHANGE_NAME, &priv->effects);
+	awn_effect_start(&priv->effects, AWN_EFFECT_CHANGE_NAME);
 	return FALSE;
 }
 
@@ -489,7 +488,7 @@ draw (GtkWidget *task, cairo_t *cr)
 		}
 	}
 
-	if( priv->effects.spotlight_alpha )
+	/*if( priv->effects.spotlight_alpha )
 	{
 		double x2, y2;
 		x2 = (width-75)/2;
@@ -498,7 +497,7 @@ draw (GtkWidget *task, cairo_t *cr)
 		cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 		gdk_cairo_set_source_pixbuf (cr, priv->effects.spotlight, x2, y2 );
 		cairo_paint_with_alpha(cr, (float)priv->effects.spotlight_alpha/100);
-	}
+	}*/
 
         /* Don't paint in bottom 3px if there is an bar_angle */
         if ( settings->bar_angle != 0) {
@@ -834,7 +833,7 @@ activate_window(AwnTask *task)
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 
-	if (priv->effects.hover.state)
+	//if (priv->effects.hover.state)
 		wnck_window_activate_transient( priv->window, priv->timestamp );
 
 	return FALSE;
@@ -847,9 +846,9 @@ awn_task_drag_motion (GtkWidget *task,
         AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 
-	if (priv->effects.is_closing.state)
-		return FALSE;
-		
+	//if (priv->effects.is_closing.state)
+	//	return FALSE;
+
 	if (priv->settings->auto_hide && priv->settings->hidden) {
 		awn_show(priv->settings);
 	}
@@ -859,7 +858,7 @@ awn_task_drag_motion (GtkWidget *task,
 		if ( wnck_window_is_active( priv->window ) )
 			return FALSE;
 		else {
-			priv->effects.hover.state = TRUE;
+			//priv->effects.hover.state = TRUE;
 			priv->timestamp = gtk_get_current_event_time();
 			g_timeout_add (1000, (GSourceFunc)activate_window, (gpointer)task);
 		}
@@ -874,7 +873,7 @@ awn_task_drag_leave (GtkWidget *task, GdkDragContext *drag_context,
 {
  	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	priv->effects.hover.state = FALSE;
+	//priv->effects.hover.state = FALSE;
 	
 	if (priv->settings->auto_hide && !priv->settings->hidden) {
 		awn_hide(priv->settings);
@@ -1033,7 +1032,7 @@ awn_task_set_window (AwnTask *task, WnckWindow *window)
 
         if (priv->is_launcher)
 	{
-        	awn_stop_effect(AWN_EFFECT_LAUNCHING, &priv->effects);
+        	awn_effect_stop(&priv->effects, AWN_EFFECT_LAUNCHING);
 		return TRUE;
 	}
 
@@ -1290,9 +1289,9 @@ awn_task_set_width (AwnTask *task, gint width)
 	g_return_if_fail (AWN_IS_TASK (task));
 	priv = AWN_TASK_GET_PRIVATE (task);
 	
-	if (priv->effects.is_closing.state) {
-		return;
-	}
+	//if (priv->effects.is_closing.state) {
+	//	return;
+	//}
 	
 	old = priv->icon;
 	old_reflect = priv->reflect;
@@ -1800,8 +1799,7 @@ _task_remove_launcher (GtkMenuItem *item, AwnTask *task)
 
 	priv->window = NULL;
 	/* start closing effect */
-	awn_effects_set_notify(&priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, NULL, -1);
-	awn_start_effect(AWN_EFFECT_CLOSING, &priv->effects);
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, 1);
 }
 
 static void
@@ -1950,8 +1948,7 @@ awn_task_close (AwnTask *task)
 		return;
 	}
 	/* start closing effect */
-	awn_effects_set_notify(&priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, NULL, -1);
-	awn_start_effect(AWN_EFFECT_CLOSING, &priv->effects);
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, 1);
 }
 
 
