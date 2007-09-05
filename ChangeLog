@@ -1,3 +1,11 @@
+2007-09-05  Neil J. Patel  <njpatel@gmail.com>
+
+	* applets/python-test/python-test.py:
+	Add a simple memory test for AwnAppletSimple
+
+	* libawn/awn-applet-simple.c:
+	Make sure the pixbuf's are unref'd correctly, so they don't leak memory.
+
 2007-09-05  haytjes <hv1989@gmail.com>
 
 	* src/awn-gconf.c:
@@ -35,7 +43,7 @@
 	Let the trashapplet resize dynamically (without restart)
 	(Is necessary for the upcoming change: resizing without restart)
 
-2007-09-02  Neil J. Patel  <njp@o-hand.com>
+2007-09-02  Neil J. Patel  <njpatel@gmail.com>
 
 	* applets/notification-area/Makefile.am:
 	* applets/notification-area/notification-area.desktop.in.in:
