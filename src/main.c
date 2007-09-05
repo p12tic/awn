@@ -180,6 +180,7 @@ main (int argc, char* argv[])
 	
 	settings->hot = awn_hotspot_new (settings);
 	gtk_widget_show (settings->hot);
+	gtk_window_present(GTK_WINDOW(settings->window));
 	
  	screen = gtk_widget_get_screen(GTK_WIDGET(settings->window));
   	if (screen && !settings->force_monitor) {
