@@ -39,6 +39,7 @@ typedef struct {
 	GtkWidget *window;
 	GtkWidget *title;
 	GtkWidget *appman;
+	GtkWidget *hot;
 	gint task_width;
 	
 	/* monitor settings */

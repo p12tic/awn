@@ -52,6 +52,7 @@
 #define AWN_APPLET_NAMESPACE "com.google.code.Awn.AppletManager"
 #define AWN_APPLET_OBJECT_PATH "/com/google/code/Awn/AppletManager"
 
+static gboolean started = FALSE;
 static gboolean expose (GtkWidget *widget, GdkEventExpose *event, AwnSettings *settings);
 static gboolean drag_motion (GtkWidget *widget, GdkDragContext *drag_context,
                                                      gint            x,
@@ -75,6 +76,8 @@ static void
 bar_height_changed (GConfClient *client, guint cid, GConfEntry *entry, AwnSettings *Settings);
 static void 
 icon_offset_changed (GConfClient *client, guint cid, GConfEntry *entry, AwnSettings *Settings);
+static void 
+composited_changed ( GdkScreen *screen, AwnSettings *s);
 
 static Atom
 panel_atom_get (const char *atom_name)
@@ -106,7 +109,6 @@ panel_atom_get (const char *atom_name)
 int 
 main (int argc, char* argv[])
 {
-	
 	AwnSettings* settings;
 	GConfClient *client;
 	GtkWidget *box = NULL;
@@ -173,25 +175,27 @@ main (int argc, char* argv[])
                          (unsigned char *) atoms, 
 			 1);   
 	
-	GtkWidget *hot = awn_hotspot_new (settings);
-	gtk_widget_show (hot);
+	settings->hot = awn_hotspot_new (settings);
+	gtk_widget_show (settings->hot);
 	
 	screen = gdk_screen_get_default();
 	if (screen && !settings->force_monitor) {
 		settings->monitor_width = gdk_screen_get_width(screen);
 		settings->monitor_height = gdk_screen_get_height(screen);
 	}
+
+	g_signal_connect ( G_OBJECT(screen), "composited-changed", G_CALLBACK(composited_changed), (gpointer)settings);
 	
 	g_signal_connect (G_OBJECT(settings->window), "drag-motion",
 	                  G_CALLBACK(drag_motion), (gpointer)settings->window);
-	g_signal_connect (G_OBJECT(hot), "drag-motion",
+	g_signal_connect (G_OBJECT(settings->hot), "drag-motion",
 	                  G_CALLBACK(drag_motion_hot), (gpointer)settings);	      
-	g_signal_connect (G_OBJECT(hot), "drag-leave",
+	g_signal_connect (G_OBJECT(settings->hot), "drag-leave",
 	                  G_CALLBACK(drag_leave_hot), (gpointer)settings);
 	                  		                              
 	                  
 	
-	g_signal_connect(G_OBJECT(hot), "enter-notify-event",
+	g_signal_connect(G_OBJECT(settings->hot), "enter-notify-event",
 			 G_CALLBACK(enter_notify_event), (gpointer)settings);	                  
 	g_signal_connect(G_OBJECT(settings->window), "leave-notify-event",
 			 G_CALLBACK(leave_notify_event), (gpointer)settings);
@@ -229,8 +233,7 @@ main (int argc, char* argv[])
 					     AWN_APPLET_OBJECT_PATH,
 					     G_OBJECT (applet_manager));
 	
-	//g_timeout_add (1000, (GSourceFunc)load_applets, applet_manager);
-	awn_applet_manager_load_applets (AWN_APPLET_MANAGER (applet_manager));
+	composited_changed(screen, settings);
 	
 	gtk_main ();
 	
@@ -451,4 +454,27 @@ icon_offset_changed (GConfClient *client, guint cid, GConfEntry *entry, AwnSetti
 	settings->icon_offset = gconf_value_get_int(value);
 	
 	resize (settings);
+}
+
+static void 
+composited_changed ( GdkScreen *screen, AwnSettings *s)
+{
+	if(!gdk_screen_is_composited(screen)) {
+		g_print("Error: Screen isn't composited. Please run compiz (-fusion) or another compositing manager.\n");
+		gtk_widget_hide(s->bar);
+		gtk_widget_hide(s->window);
+		gtk_widget_hide(s->hot);
+	} else {
+		g_print("Screen is composited.\n");
+		if(!started)
+		{
+			//g_timeout_add (1000, (GSourceFunc)load_applets, applet_manager);
+			awn_applet_manager_load_applets (AWN_APPLET_MANAGER (s->appman));
+			started = TRUE;
+		}
+		
+		gtk_widget_show(s->bar);
+		gtk_widget_show(s->window);
+		gtk_widget_show(s->hot);
+	}
 }

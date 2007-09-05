@@ -1,3 +1,21 @@
+2007-09-05  haytjes <hv1989@gmail.com>
+
+	* src/awn-gconf.h:
+	* src/main.c:
+	fixes bug #128383: Fail gracefully in a non-composited environment
+	Now Awn looks if a compositing manager is running. If none is running it will give a message to start one. 
+	It will not fail just print the message and wait till an compositing manager is started.
+	That way there is no problem if Awn is started automatically, but before compiz is initialized.
+
+2007-09-05  haytjes <hv1989@gmail.com>
+
+	* src/awn-task.c:
+	* src/awn-x.c:
+	* src/awn-x.h:
+	fixes bug #129806: Different custom icons for OpenOffice applications 
+	and hopefull some other problems with customised icons
+	Remark: It could be that you need to set some customised icons again.
+
 2007-09-04  haytjes <hv1989@gmail.com>
 
 	* awn-manager/window.glade:
