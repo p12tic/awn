@@ -275,7 +275,7 @@ launch_launched_effect (AwnTask *task )
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_effect_start(&priv->effects, AWN_EFFECT_LAUNCHING);
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_LAUNCHING, NULL, NULL, 10);
 }
 
 static gboolean

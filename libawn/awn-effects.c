@@ -348,13 +348,15 @@ bounce_effect (AwnEffectsPrivate *priv)
 
 	fx->y_offset = sin(++fx->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
 
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
 	gboolean repeat = TRUE;
 	if (fx->count >= PERIOD) {
 		fx->count = 0;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
 	}
-	gtk_widget_queue_draw(fx->self);
 	return repeat;
 }
  
@@ -471,7 +473,7 @@ main_effect_loop(AwnEffects *fx) {
 			// TODO: apply possible settings
 			animation = (GSourceFunc)bounce_effect;
 			break;
-		default: animation = NULL;
+		default: animation = (GSourceFunc)bounce_effect;
 	}
 	if (animation) {
 		g_timeout_add(AWN_FRAME_RATE, animation, topEffect);
