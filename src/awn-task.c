@@ -1556,10 +1556,14 @@ _task_choose_custom_icon (AwnTask *task)
 	} else {
 		WnckApplication *app = NULL;
 		app = wnck_window_get_application (priv->window);
-		if (app == NULL)
+		if (app == NULL) {
 			name = NULL;
-		else
-			name = g_strdup (wnck_application_get_name (app));
+        }
+		else {
+            GString *gname = awn_x_get_application_name(priv->window, app);
+            name = g_strdup(gname->str);
+            g_string_free(gname, TRUE);
+        }
 	}
 	if (name == NULL) {
 		/* Somethings gone very wrong */
@@ -1568,7 +1572,7 @@ _task_choose_custom_icon (AwnTask *task)
 		gtk_widget_destroy (dialog);
 		return;
 	}
-	
+
 	/* Replace spaces with dashs */
 	int i = 0;
 	for (i = 0; i < strlen (name); i++) {
