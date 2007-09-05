@@ -73,6 +73,8 @@ static gboolean button_press_event (GtkWidget *window, GdkEventButton *event);
 
 static void 
 bar_height_changed (GConfClient *client, guint cid, GConfEntry *entry, AwnSettings *Settings);
+static void 
+icon_offset_changed (GConfClient *client, guint cid, GConfEntry *entry, AwnSettings *Settings);
 
 static Atom
 panel_atom_get (const char *atom_name)
@@ -130,6 +132,9 @@ main (int argc, char* argv[])
 	
 	gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/bar_height", 
 				(GConfClientNotifyFunc)bar_height_changed, settings, 
+				NULL, NULL);
+	gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/icon_offset", 
+				(GConfClientNotifyFunc)icon_offset_changed, settings, 
 				NULL, NULL);
 	
 	settings->window = awn_window_new (settings);
@@ -408,27 +413,42 @@ button_press_event (GtkWidget *window, GdkEventButton *event)
 }
 
 static void
-resize (AwnSettings *settings, gint height)
+resize (AwnSettings *settings)
 {
-	settings->bar_height = height;
+	gint ww, wh;
+	
 	awn_applet_manager_height_changed (AWN_APPLET_MANAGER (settings->appman));
-	gtk_widget_set_size_request (settings->window, -1, (height+2)*2);
-	_position_window (settings->window);
+
+	gtk_window_get_size(GTK_WINDOW(settings->window), &ww, &wh);
+	gtk_widget_set_size_request (settings->window, -1, (settings->bar_height)*2+settings->icon_offset);
+	gtk_window_move(settings->window, (settings->monitor.width - ww) / 2, settings->monitor.height-((settings->bar_height)*2+settings->icon_offset));
+	
 	gtk_window_resize(GTK_WINDOW(settings->bar), 
 				  settings->monitor.width, 
-				  ((settings->bar_height+2) *2));
+				  ((settings->bar_height+2) *2 + settings->icon_offset));
 	gtk_window_move (GTK_WINDOW (settings->bar),
 			0, 
-			settings->monitor.height - ((settings->bar_height + 2) * 2));
+			settings->monitor.height - ((settings->bar_height + 2) * 2 + settings->icon_offset));
 }
 
 static void 
 bar_height_changed (GConfClient *client, guint cid, GConfEntry *entry, AwnSettings *settings)
 {
 	GConfValue *value = NULL;
-	gint height;
 	
 	value = gconf_entry_get_value(entry);
-	height = gconf_value_get_int(value);
-	resize (settings, height);	
+	settings->bar_height = gconf_value_get_int(value);
+
+	resize (settings);	
+}
+
+static void 
+icon_offset_changed (GConfClient *client, guint cid, GConfEntry *entry, AwnSettings *settings)
+{
+	GConfValue *value = NULL;
+
+	value = gconf_entry_get_value(entry);
+	settings->icon_offset = gconf_value_get_int(value);
+	
+	resize (settings);
 }
