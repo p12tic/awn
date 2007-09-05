@@ -1,5 +1,11 @@
 2007-09-05  haytjes <hv1989@gmail.com>
 
+	* src/awn-gconf.c:
+	* src/main.c:
+	Fixes bug #133702: Wrong awn location when using xrandr 1.2
+
+2007-09-05  haytjes <hv1989@gmail.com>
+
 	* src/awn-gconf.h:
 	* src/main.c:
 	fixes bug #128383: Fail gracefully in a non-composited environment
