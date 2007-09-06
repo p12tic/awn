@@ -458,7 +458,7 @@ draw (GtkWidget *task, cairo_t *cr)
 			if( priv->effects.current_width == priv->effects.normal_width && priv->effects.current_height == priv->effects.normal_height && priv->effects.effect_y_offset == 0)
 				priv->effect_icon = gdk_pixbuf_copy(priv->icon);
 			else
-				gdk_pixbuf_scale(priv->icon,priv->effect_icon,0,0,priv->effects.normal_width,priv->effects.normal_width,(priv->effects.normal_width-priv->effects.current_width)/2,priv->effects.effect_y_offset,(double)priv->effects.current_width/priv->effects.normal_width,1,GDK_INTERP_BILINEAR);			
+				gdk_pixbuf_scale(priv->icon,priv->effect_icon,0,0,priv->effects.normal_width,priv->effects.normal_width,(priv->effects.normal_width-priv->effects.current_width)/2,priv->effects.effect_y_offset,(double)priv->effects.current_width/priv->effects.normal_width,(double)priv->effects.current_height/priv->effects.normal_height,GDK_INTERP_BILINEAR);			
 			priv->effects.previous_width = priv->effects.current_width;
 			priv->effects.previous_height = priv->effects.current_height;
 			priv->effects.previous_effect_y_offset = priv->effects.effect_y_offset;
