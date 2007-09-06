@@ -379,7 +379,7 @@ fade_out_effect (AwnEffectsPrivate *priv)
 	const gint PERIOD = 20;
 
 	fx->y_offset = ++fx->count * (MAX_OFFSET/PERIOD);
-	fx->alpha = fx->count*(-1/PERIOD)+1;
+	fx->alpha = fx->count*(-1.0/PERIOD)+1;
 
 	// repaint widget
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
