@@ -321,7 +321,7 @@ _position_window (GtkWidget *window)
 	
 	x_pos = (int) ((settings->monitor.width - ww) / 2);
 	
-	if (settings->hidden)
+	if (settings->hidden && !settings->keep_below)
 		y_pos = (int)settings->monitor.height;
 	else
 		//if(settings->bar_angle == 0)
