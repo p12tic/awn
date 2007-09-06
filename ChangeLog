@@ -1,5 +1,10 @@
 2007-09-06  haytjes <hv1989@gmail.com>
 
+	* src/awn-utils.c:
+	part 1 of bug #137714. This will make the auto-hide feature again good.
+
+2007-09-06  haytjes <hv1989@gmail.com>
+
 	patch by: Ryan
 
 	* awn-manager/awnPreferences.py:

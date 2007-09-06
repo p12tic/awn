@@ -58,7 +58,7 @@ _move_bar (AwnSettings *settings)
 	gint x, y;
 	
 	gtk_window_get_position (GTK_WINDOW (settings->bar), &x, &y);
-	gtk_window_move (GTK_WINDOW (settings->bar), x, settings->monitor.height - ((settings->bar_height +2)*2) + current_y);
+	gtk_window_move (GTK_WINDOW (settings->bar), x, settings->monitor.height - ((settings->bar_height +2)*2) - settings->icon_offset + current_y);
 	
 	gtk_window_get_position (GTK_WINDOW (settings->window), &x, &y);
 	gtk_window_move (GTK_WINDOW (settings->window), x, settings->monitor.height - ((settings->bar_height)*2) - settings->icon_offset + current_y);
