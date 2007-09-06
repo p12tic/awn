@@ -1,5 +1,10 @@
 2007-09-06  haytjes <hv1989@gmail.com>
 
+	* libawn/awn-title.c:
+	part 2 of bug #137714. Titles are now back on the right place.
+
+2007-09-06  haytjes <hv1989@gmail.com>
+
 	* src/awn-utils.c:
 	part 1 of bug #137714. This will make the auto-hide feature again good.
 
