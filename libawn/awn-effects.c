@@ -389,7 +389,7 @@ bounce_effect2 (AwnEffectsPrivate *priv)
 	}
 
 	const gdouble MAX_BOUNCE_OFFSET = 15.0;
-	const gint PERIOD = 40;
+	const gint PERIOD = 20;
 	
 	if(fx->effect_direction == AWN_EFFECT_BOUNCE_SQEEZE_DOWN)
 	{
@@ -652,12 +652,12 @@ main_effect_loop(AwnEffects *fx) {
 			break;
 		case AWN_EFFECT_HOVER:
 			// TODO: apply possible settings
-			animation = (GSourceFunc)bounce_effect2;
+			animation = (GSourceFunc)bounce_effect;
 			break;
 		case AWN_EFFECT_CLOSING:
 			animation = (GSourceFunc)fade_out_effect;
 			break;
-		default: animation = (GSourceFunc)bounce_effect2;
+		default: animation = (GSourceFunc)bounce_effect;
 	}
 	if (animation) {
 		g_timeout_add(AWN_FRAME_RATE, animation, topEffect);
@@ -694,6 +694,16 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	if (fx->settings) y1 = fx->settings->bar_height - fx->y_offset;
 
 	/* content */
+	/*if( priv->effects.current_width != priv->effects.previous_width ||  priv->effects.current_height != priv->effects.previous_height || priv->effects.effect_y_offset != priv->effects.previous_effect_y_offset)
+	{
+		if( priv->effects.current_width == priv->effects.normal_width && priv->effects.current_height == priv->effects.normal_height && priv->effects.effect_y_offset == 0)
+			priv->effect_icon = gdk_pixbuf_copy(priv->icon);
+		else
+			gdk_pixbuf_scale(priv->icon,priv->effect_icon,0,0,priv->effects.normal_width,priv->effects.normal_width,(priv->effects.normal_width-priv->effects.current_width)/2,priv->effects.effect_y_offset,(double)priv->effects.current_width/priv->effects.normal_width,(double)priv->effects.current_height/priv->effects.normal_height,GDK_INTERP_BILINEAR);			
+		priv->effects.previous_width = priv->effects.current_width;
+		priv->effects.previous_height = priv->effects.current_height;
+		priv->effects.previous_effect_y_offset = priv->effects.effect_y_offset;
+	} */	
 	gdk_cairo_set_source_pixbuf(cr, icon, x1, y1);
 	cairo_paint_with_alpha(cr, fx->alpha);
 
