@@ -504,7 +504,7 @@ static gboolean is_composited( GdkScreen *screen )
                 }
                 else
                 {
-                        g_warning("command 'ps -eo comm' failed, unable to check if xcompgr is running\n");
+                        g_warning("command 'ps -eo comm' failed, unable to check if xcompmgr is running\n");
                         composited = FALSE;
                 }
         }
