@@ -47,22 +47,20 @@ struct _AwnEffectsPrivate {
 
 #define  M_PI	3.14159265358979323846
 
-#define AWN_EFFECT_DIR_DOWN	0
-#define AWN_EFFECT_DIR_UP	1
-#define  AWN_FRAME_RATE 40
-#define  AWN_TASK_EFFECT_DIR_UP			0
-#define  AWN_TASK_EFFECT_DIR_DOWN		1
-#define  AWN_TASK_EFFECT_BOUNCE_SLEEP		0
-#define  AWN_TASK_EFFECT_BOUNCE_SQEEZE_DOWN	1
-#define  AWN_TASK_EFFECT_BOUNCE_SQEEZE_UP	2
-#define  AWN_TASK_EFFECT_BOUNCE_JUMP_UP		3
-#define  AWN_TASK_EFFECT_BOUNCE_JUMP_DOWN	4
-#define  AWN_TASK_EFFECT_BOUNCE_SQEEZE_DOWN2	5
-#define  AWN_TASK_EFFECT_BOUNCE_SQEEZE_UP2	6
-#define  AWN_TASK_EFFECT_TURN_1			0
-#define  AWN_TASK_EFFECT_TURN_2			1
-#define  AWN_TASK_EFFECT_TURN_3			2
-#define  AWN_TASK_EFFECT_TURN_4			3
+#define AWN_EFFECT_DIR_DOWN			0
+#define AWN_EFFECT_DIR_UP			1
+#define  AWN_FRAME_RATE 			40
+#define  AWN_EFFECT_BOUNCE_SLEEP		0
+#define  AWN_EFFECT_BOUNCE_SQEEZE_DOWN		1
+#define  AWN_EFFECT_BOUNCE_SQEEZE_UP		2
+#define  AWN_EFFECT_BOUNCE_JUMP_UP		3
+#define  AWN_EFFECT_BOUNCE_JUMP_DOWN		4
+#define  AWN_EFFECT_BOUNCE_SQEEZE_DOWN2		5
+#define  AWN_EFFECT_BOUNCE_SQEEZE_UP2		6
+#define  AWN_EFFECT_TURN_1			0
+#define  AWN_EFFECT_TURN_2			1
+#define  AWN_EFFECT_TURN_3			2
+#define  AWN_EFFECT_TURN_4			3
 
 const char *EFFECT_NAMES[] = {
 	"AWN_EFFECT_NONE",
@@ -375,6 +373,72 @@ bounce_effect (AwnEffectsPrivate *priv)
 }
 
 static gboolean
+bounce_effect2 (AwnEffectsPrivate *priv)
+{
+        AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->effect_direction = AWN_EFFECT_BOUNCE_SQEEZE_DOWN;
+		if (priv->start) priv->start(fx->self);
+		// TODO: set priv->start to NULL, so it's not called multiple times while moving in the queue?
+	}
+
+	const gdouble MAX_BOUNCE_OFFSET = 15.0;
+	const gint PERIOD = 40;
+	
+	if(fx->effect_direction == AWN_EFFECT_BOUNCE_SQEEZE_DOWN)
+	{
+		fx->current_height -= (fx->normal_height*3/4)/(PERIOD/4);
+		fx->current_width += (fx->normal_width*3/4)/(PERIOD/4);
+		fx->effect_y_offset = (fx->normal_height-fx->current_height);
+		if(fx->current_height <= fx->normal_height*3/4)
+			fx->effect_direction = AWN_EFFECT_BOUNCE_SQEEZE_UP;
+	}
+	else if(fx->effect_direction == AWN_EFFECT_BOUNCE_SQEEZE_UP)
+	{
+		fx->current_height += (fx->normal_height*3/4)/(PERIOD/4);
+		fx->current_width -= (fx->normal_width*3/4)/(PERIOD/4);
+		fx->effect_y_offset = (fx->normal_height-fx->current_height);
+		if(fx->current_height >= fx->normal_height)
+			fx->effect_direction = AWN_EFFECT_BOUNCE_SLEEP;
+	}
+	else if(fx->effect_direction == AWN_EFFECT_BOUNCE_SLEEP)
+	{
+		fx->y_offset = sin(++fx->count * M_PI * 2 / PERIOD) * MAX_BOUNCE_OFFSET;
+		if(fx->count == PERIOD/2)
+			fx->effect_direction = AWN_EFFECT_BOUNCE_SQEEZE_DOWN2;
+	}
+	else if(fx->effect_direction == AWN_EFFECT_BOUNCE_SQEEZE_DOWN2)
+	{
+		fx->current_height -= (fx->normal_height*3/4)/(PERIOD/4);
+		fx->current_width += (fx->normal_width*3/4)/(PERIOD/4);
+		fx->effect_y_offset = (fx->normal_height-fx->current_height);
+		if(fx->current_height <= fx->normal_height*3/4)
+			fx->effect_direction = AWN_EFFECT_BOUNCE_SQEEZE_UP2;
+	}
+	else if(fx->effect_direction == AWN_EFFECT_BOUNCE_SQEEZE_UP2)
+	{
+		fx->current_height += (fx->normal_height*3/4)/(PERIOD/4);
+		fx->current_width -= (fx->normal_width*3/4)/(PERIOD/4);
+		fx->effect_y_offset = (fx->normal_height-fx->current_height);
+	}
+	
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->effect_direction == AWN_EFFECT_BOUNCE_SQEEZE_UP2 && fx->current_height >= fx->normal_height) {
+		fx->count = 0;
+		fx->effect_direction = AWN_EFFECT_BOUNCE_SLEEP;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+static gboolean
 fade_out_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
@@ -585,12 +649,12 @@ main_effect_loop(AwnEffects *fx) {
 			break;
 		case AWN_EFFECT_HOVER:
 			// TODO: apply possible settings
-			animation = (GSourceFunc)fading_effect;
+			animation = (GSourceFunc)bounce_effect2;
 			break;
 		case AWN_EFFECT_CLOSING:
 			animation = (GSourceFunc)fade_out_effect;
 			break;
-		default: animation = (GSourceFunc)bounce_effect;
+		default: animation = (GSourceFunc)bounce_effect2;
 	}
 	if (animation) {
 		g_timeout_add(AWN_FRAME_RATE, animation, topEffect);
