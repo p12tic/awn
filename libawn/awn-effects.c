@@ -72,6 +72,7 @@ static void awn_task_icon_spotlight_init (AwnEffects *fx);
 
 // effect functions
 static gboolean bounce_effect (AwnEffectsPrivate *priv);
+static gboolean fading_effect (AwnEffectsPrivate *priv);
 
 static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data);
 static gboolean awn_on_leave_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data);
@@ -146,14 +147,16 @@ inline gboolean awn_effect_handle_repeating(AwnEffectsPrivate *priv) {
 	gboolean max_reached = awn_effect_check_max_loops(priv);
 	gboolean repeat = !max_reached && awn_effect_check_top_effect(priv, &effect_stopped);
 	if (!repeat) {
+		gboolean unregistered = FALSE;
 		AwnEffects *fx = priv->effects;
 		fx->current_effect = AWN_EFFECT_NONE;
 		fx->effect_lock = FALSE;
-		main_effect_loop(fx);
 		if (effect_stopped) {
 			if (priv->stop) priv->stop(fx->self);
+			unregistered = fx->self == NULL;
 			g_free(priv);
 		}
+		if (!unregistered) main_effect_loop(fx);
 	}
 	return repeat;
 }
@@ -341,6 +344,7 @@ bounce_effect (AwnEffectsPrivate *priv)
 		// effect start initialize values
 		fx->count = 0;
 		if (priv->start) priv->start(fx->self);
+		// TODO: set priv->start to NULL, so it's not called multiple times while moving in the queue?
 	}
 
 	const gdouble MAX_BOUNCE_OFFSET = 15.0;
@@ -359,6 +363,43 @@ bounce_effect (AwnEffectsPrivate *priv)
 	}
 	return repeat;
 }
+
+static gboolean
+fading_effect (AwnEffectsPrivate *priv)
+{
+        AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->alpha = 1.0;
+		fx->effect_direction = AWN_EFFECT_DIR_DOWN;
+		if (priv->start) priv->start(fx->self);
+		// TODO: set priv->start to NULL, so it's not called multiple times while moving in the queue?
+	}
+	const gdouble MIN_ALPHA = 0.35;
+	const gdouble ALPHA_STEP = 0.05;
+
+	gboolean repeat = TRUE;
+	if (fx->effect_direction == AWN_EFFECT_DIR_DOWN) {
+		fx->alpha -= ALPHA_STEP;
+		if (fx->alpha <= MIN_ALPHA)
+			fx->effect_direction = AWN_EFFECT_DIR_UP;
+		// repaint widget
+		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+	} else {
+		fx->alpha += ALPHA_STEP * 1.5;
+		// repaint widget
+		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+		if (fx->alpha >= 1) {
+			fx->alpha = 1.0;
+			fx->effect_direction = AWN_EFFECT_DIR_DOWN;
+			repeat = awn_effect_handle_repeating(priv);
+		}
+	}
+
+	return repeat;
+}
+
  
 static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data) {
 	
@@ -391,6 +432,18 @@ static gint awn_effect_sort(gconstpointer a, gconstpointer b) {
 	return (gint)(data1->priority - data2->priority);
 }
 
+inline AwnEffectPriority awn_effect_get_priority(const AwnEffect effect) {
+	switch (effect) {
+		case AWN_EFFECT_OPENING: return AWN_EFFECT_PRIORITY_HIGH;
+		case AWN_EFFECT_LAUNCHING: return AWN_EFFECT_PRIORITY_NORMAL;
+		case AWN_EFFECT_HOVER: return AWN_EFFECT_PRIORITY_LOW;
+		case AWN_EFFECT_ATTENTION: return AWN_EFFECT_PRIORITY_ABOVE_NORMAL;
+		case AWN_EFFECT_CLOSING: return AWN_EFFECT_PRIORITY_HIGHEST;
+		case AWN_EFFECT_CHANGE_NAME: return AWN_EFFECT_PRIORITY_NORMAL;
+		default: return AWN_EFFECT_PRIORITY_BELOW_NORMAL;
+	}
+}
+
 void awn_effect_start(AwnEffects *fx, const AwnEffect effect) {
 	awn_effect_start_ex(fx, effect, NULL, NULL, 0);
 }
@@ -421,7 +474,7 @@ awn_effect_start_ex(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start
 	AwnEffectsPrivate *priv = g_new(AwnEffectsPrivate, 1);
 	priv->effects = fx;
 	priv->this_effect = effect;
-	priv->priority = AWN_EFFECT_PRIORITY_NORMAL; // TODO: static inline AwnEffectPriority awn_effect_get_priority(effect);
+	priv->priority = awn_effect_get_priority(effect);
 	priv->max_loops = max_loops;
 	priv->start = start;
 	priv->stop = stop;
@@ -471,7 +524,7 @@ main_effect_loop(AwnEffects *fx) {
 			break;
 		case AWN_EFFECT_HOVER:
 			// TODO: apply possible settings
-			animation = (GSourceFunc)bounce_effect;
+			animation = (GSourceFunc)fading_effect;
 			break;
 		default: animation = (GSourceFunc)bounce_effect;
 	}
@@ -493,5 +546,7 @@ void
 awn_unregister_effects (GObject *obj, AwnEffects *fx) {
 	g_signal_handler_disconnect(obj, fx->enter_notify);
 	g_signal_handler_disconnect(obj, fx->leave_notify);
+	fx->focus_window = NULL;
+	fx->self = NULL;
 }
 
