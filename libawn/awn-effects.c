@@ -365,6 +365,35 @@ bounce_effect (AwnEffectsPrivate *priv)
 }
 
 static gboolean
+fade_out_effect (AwnEffectsPrivate *priv)
+{
+        AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		if (priv->start) priv->start(fx->self);
+	}
+
+	const gdouble MAX_OFFSET = 15.0;
+	const gint PERIOD = 20;
+
+	fx->y_offset = ++fx->count * (MAX_OFFSET/PERIOD);
+	fx->alpha = fx->count*(-1/PERIOD)+1;
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->count >= PERIOD) {
+		fx->count = 0;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+static gboolean
 fading_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
@@ -525,6 +554,9 @@ main_effect_loop(AwnEffects *fx) {
 		case AWN_EFFECT_HOVER:
 			// TODO: apply possible settings
 			animation = (GSourceFunc)fading_effect;
+			break;
+		case AWN_EFFECT_CLOSING:
+			animation = (GSourceFunc)fade_out_effect;
 			break;
 		default: animation = (GSourceFunc)bounce_effect;
 	}
