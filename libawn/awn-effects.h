@@ -68,6 +68,9 @@ struct _AwnEffects
 	gint bounce_offset;
 	gdouble effect_y_offset;
 	gdouble previous_effect_y_offset;
+
+	gint window_width;
+	gint window_height;
 	gint current_width;
 	gint current_height;
 	gint normal_width;
@@ -154,6 +157,11 @@ awn_effects_set_title(AwnEffects *fx, AwnTitle *title, AwnTitleCallback title_fu
  */
 void
 awn_effect_start_ex(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start, AwnEventNotify stop, gint max_loop);
+
+void awn_draw_background(AwnEffects*, cairo_t*);
+void awn_draw_icons(AwnEffects*, cairo_t*, GdkPixbuf*, GdkPixbuf*);
+void awn_draw_foreground(AwnEffects*, cairo_t*);
+void awn_draw_set_size(AwnEffects*, const gint, const gint);
 
 G_END_DECLS
 

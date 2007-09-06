@@ -322,6 +322,9 @@ static void
 draw (GtkWidget *widget, cairo_t *cr, gint width, gint height)
 {
 	TrashApplet *applet = TRASH_APPLET (widget);
+	
+	awn_draw_set_size(&applet->effects, width, height);
+
 	gint y = (applet->height + PADDING) - applet->effects.y_offset;
 	GdkPixbuf *reflect;
 	
@@ -331,26 +334,14 @@ draw (GtkWidget *widget, cairo_t *cr, gint width, gint height)
 	cairo_paint (cr);
 	
 	cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-	
-	if (applet->is_empty) {
-	        gdk_cairo_set_source_pixbuf (cr, applet->empty_icon, PADDING, y);
-	        reflect = applet->reflect_empty;
-	}
-        else
-        {
-	        gdk_cairo_set_source_pixbuf (cr, applet->full_icon, PADDING, y);
-		reflect = applet->reflect_full;
-	}
-	cairo_paint (cr);
-	
-	if( applet->effects.y_offset >= 0 )
-	{
-		y = (applet->height + PADDING) + applet->height + applet->effects.y_offset;
-		gdk_cairo_set_source_pixbuf (cr, reflect, PADDING, y);
-		cairo_paint_with_alpha(cr, 0.33);
-		//cairo_paint (cr);
-	}
 
+	awn_draw_background(&applet->effects, cr);
+	if (applet->is_empty)
+		awn_draw_icons(&applet->effects, cr, applet->empty_icon, applet->reflect_empty);
+	else
+		awn_draw_icons(&applet->effects, cr, applet->full_icon, applet->reflect_full);
+	awn_draw_foreground(&applet->effects, cr);
+	
 	if (applet->progress != 0 && applet->progress != 1) {
 		
 		cairo_move_to (cr, width/2.0, (100 - (applet->height/2)));
@@ -476,7 +467,7 @@ trash_applet_drag_motion (GtkWidget      *widget,
 	if (!applet->drag_hover) {
 		applet->drag_hover = TRUE;
 		trash_applet_queue_update (applet);
-		awn_schedule_effect(40, AWN_EFFECT_HOVER, &applet->effects);
+		// TODO: effect! awn_schedule_effect(40, AWN_EFFECT_HOVER, &applet->effects);
 	}
 	gdk_drag_status (context, GDK_ACTION_MOVE, time_);
 

@@ -98,11 +98,14 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	
 	fx->bounce_offset = 0;
 	fx->effect_y_offset = 0;
+
+	fx->window_width = 0;
+	fx->window_height = 0;
 	fx->icon_width = 0;
 	fx->icon_height = 0;
 	fx->current_width = 0;	
-	fx->normal_width = 0;
 	fx->current_height = 0;
+	fx->normal_width = 0;
 	fx->normal_height = 0;
 
 	/* EFFECT VARIABLES */
@@ -676,5 +679,48 @@ awn_unregister_effects (GObject *obj, AwnEffects *fx) {
 	g_signal_handler_disconnect(obj, fx->leave_notify);
 	fx->focus_window = NULL;
 	fx->self = NULL;
+}
+
+void awn_draw_background(AwnEffects *fx, cairo_t *cr) {
+	// TODO: paint possible background
+}
+
+void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *reflect) {
+	// TODO: shouldn't we want ONLY icon? reflect can be done here
+	gint x1 = (fx->window_width - fx->icon_width)/2;
+	// TODO: settings!!!
+	// y1 = settings->bar_height - fx->y_offset;
+	gint y1 = fx->y_offset;
+	if (fx->settings) y1 = fx->settings->bar_height - fx->y_offset;
+
+	/* content */
+	gdk_cairo_set_source_pixbuf(cr, icon, x1, y1);
+	cairo_paint_with_alpha(cr, fx->alpha);
+
+	if (fx->y_offset >= 0 && reflect) {
+		y1 = fx->icon_height + fx->y_offset;
+		if (fx->settings) y1 = fx->settings->bar_height + fx->icon_height + fx->y_offset;
+		gdk_cairo_set_source_pixbuf(cr, reflect, x1, y1);
+		cairo_paint_with_alpha(cr, fx->alpha/3);
+	}
+
+	/* 4px offset for 3D look */
+	if (fx->settings && fx->settings->bar_height != 0) {
+		cairo_save(cr);
+		cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+		cairo_set_source_rgba (cr, 1, 1, 1, 0);
+		cairo_rectangle (cr, 0, ((fx->settings->bar_height *2)-4)+ fx->settings->icon_offset, fx->window_width,  4);
+		cairo_fill (cr);
+		cairo_restore (cr);
+	}
+}
+
+void awn_draw_foreground(AwnEffects *fx, cairo_t *cr) {
+	// TODO: paint possible foreground
+}
+
+void awn_draw_set_size(AwnEffects *fx, const gint width, const gint height) {
+	fx->window_width = width;
+	fx->window_height = height;
 }
 

@@ -416,6 +416,8 @@ draw (GtkWidget *task, cairo_t *cr)
 	width = task->allocation.width;
 	height = task->allocation.height;
 
+	awn_draw_set_size(&priv->effects, width, height);
+
 	/* task back */
 	cairo_set_source_rgba (cr, 1, 0, 0, 0.0);
 	cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
@@ -445,66 +447,10 @@ draw (GtkWidget *task, cairo_t *cr)
 		cairo_fill(cr);
 	}
 
-	
-	/* content */
-	if (priv->icon) {
-		double x1, y1;
-		
-		if(!priv->effect_icon)
-			priv->effect_icon = gdk_pixbuf_copy(priv->icon);
-		
-		if( priv->effects.current_width != priv->effects.previous_width ||  priv->effects.current_height != priv->effects.previous_height || priv->effects.effect_y_offset != priv->effects.previous_effect_y_offset)
-		{
-			if( priv->effects.current_width == priv->effects.normal_width && priv->effects.current_height == priv->effects.normal_height && priv->effects.effect_y_offset == 0)
-				priv->effect_icon = gdk_pixbuf_copy(priv->icon);
-			else
-				gdk_pixbuf_scale(priv->icon,priv->effect_icon,0,0,priv->effects.normal_width,priv->effects.normal_width,(priv->effects.normal_width-priv->effects.current_width)/2,priv->effects.effect_y_offset,(double)priv->effects.current_width/priv->effects.normal_width,(double)priv->effects.current_height/priv->effects.normal_height,GDK_INTERP_BILINEAR);			
-			priv->effects.previous_width = priv->effects.current_width;
-			priv->effects.previous_height = priv->effects.current_height;
-			priv->effects.previous_effect_y_offset = priv->effects.effect_y_offset;
-		} 	
-
-		x1 = (width-priv->effects.icon_width)/2;
-		y1 = settings->bar_height - priv->effects.y_offset;
-
-		gdk_cairo_set_source_pixbuf (cr, priv->effect_icon, x1, y1);
-		cairo_paint_with_alpha(cr, priv->effects.alpha);
-
-		if (priv->effects.y_offset >= 0 && priv->reflect)
-		{
-			y1 = settings->bar_height 
-                                + priv->effects.icon_height + priv->effects.y_offset;
-			gdk_cairo_set_source_pixbuf (cr, 
-                                                     priv->reflect,
-                                                     x1, y1);
-			cairo_paint_with_alpha(cr, priv->effects.alpha/3);
-		}
-	}
-
-	/*if( priv->effects.spotlight_alpha )
-	{
-		double x2, y2;
-		x2 = (width-75)/2;
-		y2 = settings->bar_height+4;
-		
-		cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-		gdk_cairo_set_source_pixbuf (cr, priv->effects.spotlight, x2, y2 );
-		cairo_paint_with_alpha(cr, (float)priv->effects.spotlight_alpha/100);
-	}*/
-
-        /* Don't paint in bottom 3px if there is an bar_angle */
-        if ( settings->bar_angle != 0) {
-                cairo_save (cr);
-                cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-                cairo_set_source_rgba (cr, 1, 1, 1, 0);
-                cairo_rectangle (cr, 
-                                 0, 
-                                 ((settings->bar_height *2)-4)+ settings->icon_offset,
-                                 width,
-                                 4);
-                cairo_fill (cr);
-                cairo_restore (cr);
-        }
+	/* use libawn to draw */
+	awn_draw_background(&priv->effects, cr);
+	awn_draw_icons(&priv->effects, cr, priv->icon, priv->reflect);
+	awn_draw_foreground(&priv->effects, cr);
 
 	/* arrows */
 	double x1;
