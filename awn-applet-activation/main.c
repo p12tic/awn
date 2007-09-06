@@ -36,6 +36,13 @@ _awn_plug_new (const gchar *path,
               const gchar *uid,
               gint         orient,
               gint         height);
+static void
+launch_python (const gchar *file, 
+               const gchar *module,
+               const gchar *uid,
+               gint64 window,
+               gint orient,
+               gint height);
 
 /* Commmand line options */
 static gchar    *path = NULL;
@@ -140,14 +147,12 @@ main (gint argc, gchar **argv)
         type = gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_TYPE);
         if (type) {
                 if (strcmp (type, "Python") == 0) {
-                        gchar *cmd = NULL;
-                        GError *err = NULL;
-                        cmd = g_strdup_printf ("python %s --uid=%s --window=%lld --orient=%d --height=%d", exec, uid, window, orient, height );
-                        g_spawn_command_line_async (cmd, &err);
-                        if (err) {
-                                g_warning (err->message);
-                                g_error_free (err);
-                        }
+                       launch_python (path, 
+                                      exec,
+                                      uid,
+                                      window,
+                                      orient,
+                                      height);
                         return 0;
                 }
         }
@@ -196,7 +201,6 @@ _awn_plug_new (const gchar *path,
               gint         orient,
               gint         height)
 {
-	AwnPlugPrivate *priv;
         GModule *module;
         AwnApplet *applet;
         GtkWidget *plug;
@@ -249,3 +253,39 @@ _awn_plug_new (const gchar *path,
 	return plug;
 }
 
+
+static void
+launch_python (const gchar *file, 
+               const gchar *module,
+               const gchar *uid,
+               gint64 window,
+               gint orient,
+               gint height)
+{
+        gchar *cmd = NULL;
+        gchar *exec = NULL;
+        GError *err = NULL;
+        
+        
+        if (g_path_is_absolute (module)) {
+                if (g_file_test (module, G_FILE_TEST_EXISTS))
+                        exec = g_strdup (module);
+        } else {
+                gchar *dir = g_path_get_dirname (file);
+                exec = g_build_filename (dir, module, NULL);
+                g_free (dir);
+        }       
+
+        
+        cmd = g_strdup_printf ("python %s --uid=%s --window=%lld --orient=%d "
+                               "--height=%d", 
+                               exec, uid, window, orient, height );
+        g_spawn_command_line_async (cmd, &err);
+        
+        if (err) {
+                g_warning (err->message);
+                g_error_free (err);
+        }
+        g_free (cmd);
+        g_free (exec);
+}

@@ -1,3 +1,10 @@
+2007-09-06  Neil J. Patel  <njp@o-hand.com>
+
+	* awn-applet-activation/main.c:
+	Allow desktop files for python applets to point to relative folders, so
+	Exec=myapplet/applet.py instead of
+	Exec=/usr/local/lib/awn/applets/myapplet/applet/py
+
 2007-09-06  haytjes <hv1989@gmail.com>
 
 	* src/main.c:
