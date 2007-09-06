@@ -278,14 +278,6 @@ launch_launched_effect (AwnTask *task )
 	awn_effect_start_ex(&priv->effects, AWN_EFFECT_LAUNCHING, NULL, NULL, 10);
 }
 
-static gboolean
-_check_attention(GObject *obj) {
-	AwnTask *task = AWN_TASK(obj);
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-	return priv->needs_attention;
-}
-
 static void
 launch_attention_effect (AwnTask *task )
 {
@@ -979,8 +971,10 @@ _task_wnck_state_changed (WnckWindow *window, WnckWindowState  old,
 			launch_attention_effect(task);
 			priv->needs_attention = TRUE;
 		}
-	} else
+	} else {
 		priv->needs_attention = FALSE;
+		awn_effect_stop(&priv->effects, AWN_EFFECT_ATTENTION);
+	}
 }
 
 /**********************Gets & Sets **********************/
@@ -1132,6 +1126,8 @@ awn_task_set_needs_attention (AwnTask *task, gboolean needs_attention)
 	priv->needs_attention = needs_attention;
 	if (needs_attention)
 		launch_opening_effect(task);
+	else
+		awn_effect_stop(&priv->effects, AWN_EFFECT_ATTENTION);
 }
 
 const char*

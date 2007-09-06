@@ -64,6 +64,16 @@ struct _AwnEffectsPrivate {
 #define  AWN_TASK_EFFECT_TURN_3			2
 #define  AWN_TASK_EFFECT_TURN_4			3
 
+const char *EFFECT_NAMES[] = {
+	"AWN_EFFECT_NONE",
+	"AWN_EFFECT_OPENING",
+	"AWN_EFFECT_LAUNCHING",
+	"AWN_EFFECT_HOVER",
+	"AWN_EFFECT_ATTENTION",
+	"AWN_EFFECT_CLOSING",
+	"AWN_EFFECT_CHANGE_NAME"
+};
+
 /* FORWARD DECLARATIONS */
 
 //static gboolean awn_task_icon_spotlight_effect (AwnEffects *fx, int j);
@@ -479,17 +489,6 @@ void awn_effect_start(AwnEffects *fx, const AwnEffect effect) {
 
 void
 awn_effect_start_ex(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start, AwnEventNotify stop, gint max_loops) {
-	const char *EFFECT_NAMES[] = {
-		"AWN_EFFECT_NONE",
-		"AWN_EFFECT_OPENING",
-		"AWN_EFFECT_LAUNCHING",
-		"AWN_EFFECT_HOVER",
-		"AWN_EFFECT_ATTENTION",
-		"AWN_EFFECT_CLOSING",
-		"AWN_EFFECT_CHANGE_NAME"
-	};
-	printf(" AWN-EFFECTS: starting %s\n", EFFECT_NAMES[effect]);
-
 	if (effect == AWN_EFFECT_NONE) return;
 
 	AwnEffectsPrivate *queue_item;
@@ -513,17 +512,6 @@ awn_effect_start_ex(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start
 }
 
 void awn_effect_stop(AwnEffects *fx, const AwnEffect effect) {
-	const char *EFFECT_NAMES[] = {
-		"AWN_EFFECT_NONE",
-		"AWN_EFFECT_OPENING",
-		"AWN_EFFECT_LAUNCHING",
-		"AWN_EFFECT_HOVER",
-		"AWN_EFFECT_ATTENTION",
-		"AWN_EFFECT_CLOSING",
-		"AWN_EFFECT_CHANGE_NAME"
-	};
-	printf(" AWN-EFFECTS: stopping %s\n", EFFECT_NAMES[effect]);
-
 	if (effect == AWN_EFFECT_NONE) return;
 
 	AwnEffectsPrivate *queue_item;
