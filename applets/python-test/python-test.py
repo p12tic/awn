@@ -9,8 +9,9 @@ import awn
 class App (awn.AppletSimple):
   def __init__ (self, uid, orient, height):
     awn.AppletSimple.__init__ (self, uid, orient, height)
-    theme = gtk.IconTheme ()
-    icon = theme.load_icon ("gtk-apply", height, 0)
+    self.height = height
+    self.theme = gtk.IconTheme ()
+    icon = self.theme.load_icon ("gtk-apply", height, 0)
     #icon = gdk.pixbuf_new_from_file ("/home/njp/Projects/test.png")
     self.set_icon (icon)
     self.title = awn.awn_title_get_default ()
@@ -34,10 +35,14 @@ class App (awn.AppletSimple):
 
   def enter_notify (self, widget, event):
     self.title.show (self, "Test python applet")
+    icon = self.theme.load_icon ("gtk-apply", self.height, 0)
+    self.set_icon (icon)
     print "show title"
 
   def leave_notify (self, widget, event):
     self.title.hide (self)
+    icon = self.theme.load_icon ("gtk-cancel", self.height, 0)
+    self.set_icon (icon)
     print "hide title"
 
 if __name__ == "__main__":

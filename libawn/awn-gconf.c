@@ -30,6 +30,7 @@
 #define AWN_PANEL_MODE		AWN_PATH "/panel_mode"		/*bool*/
 #define AWN_AUTO_HIDE		AWN_PATH "/auto_hide"		/*bool*/
 #define AWN_AUTO_HIDE_DELAY	AWN_PATH "/auto_hide_delay"	/*int*/
+#define AWN_KEEP_BELOW		AWN_PATH "/keep_below"		/*bool*/
 
 #define BAR_PATH		AWN_PATH "/bar"
 #define BAR_ROUNDED_CORNERS	BAR_PATH "/rounded_corners"	/*bool*/
@@ -130,6 +131,7 @@ awn_gconf_new()
 	awn_load_bool(client, AWN_PANEL_MODE, &s->panel_mode, FALSE);
 	awn_load_bool(client, AWN_AUTO_HIDE, &s->auto_hide, FALSE);
 	awn_load_int(client, AWN_AUTO_HIDE_DELAY, &s->auto_hide_delay, 1000);
+	awn_load_bool(client, AWN_KEEP_BELOW, &s->keep_below, FALSE);
 	s->hidden = FALSE;
 	
 	/* Bar settings */
@@ -181,7 +183,6 @@ awn_gconf_new()
 	awn_load_color(client, TITLE_BACKGROUND, &s->background, "000000AA");
 	awn_load_string(client, TITLE_FONT_FACE, &s->font_face, "Sans 11");	
 	
-	load_monitor (s);
 	s->task_width = settings->bar_height + 12;
 	
 	/* make the custom icons directory */
@@ -390,18 +391,8 @@ static void
 screen_size_changed (GdkScreen *screen, AwnSettings *s)
 {
 	g_print ("Screen size changed\n");
-	gdk_screen_get_monitor_geometry (screen, 0, &s->monitor);
+	gdk_screen_get_monitor_geometry(screen,
+					gdk_screen_get_monitor_at_window(screen,GTK_WIDGET(s->window)->window),
+					&s->monitor);
 }
 
-static void 
-load_monitor (AwnSettings *s)
-{
-	if (s->force_monitor) {
-		s->monitor.width = s->monitor_width;
-		s->monitor.height = s->monitor_height;
-	} else{
-		GdkScreen *screen = gdk_screen_get_default();
-		gdk_screen_get_monitor_geometry (screen, 0, &s->monitor);
-		g_signal_connect ( G_OBJECT(screen), "size-changed", G_CALLBACK(screen_size_changed), (gpointer)s);
-	}
-}

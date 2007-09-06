@@ -303,6 +303,10 @@ on_awn_height_changed (AwnApplet *app, guint height, TrashApplet *applet)
   applet->height = height;
   gtk_widget_queue_draw (GTK_WIDGET (applet));
 
+  gtk_widget_set_size_request (GTK_WIDGET (app),
+                               height, 
+                               height * 2);
+
   update_icons (applet);
 }
 

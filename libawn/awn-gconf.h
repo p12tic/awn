@@ -39,6 +39,7 @@ typedef struct {
 	GtkWidget *window;
 	GtkWidget *title;
 	GtkWidget *appman;
+	GtkWidget *hot;
 	gint task_width;
 	
 	/* monitor settings */
@@ -52,6 +53,7 @@ typedef struct {
 	gboolean hidden;
 	gboolean hiding;
 	gint auto_hide_delay;
+	gboolean keep_below;
 	
 	int bar_height;
 	int bar_angle;

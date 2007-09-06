@@ -87,7 +87,7 @@ awn_title_position (AwnTitle *title)
 
         /* Find and set our position */
         x = fx + (fw/2) - (w/2);
-        y = fy + (fh/8) - h + priv->offset;
+        y = fy + (fh/8) - h/2;
 
         gtk_window_move (GTK_WINDOW (title), x, y);
 }

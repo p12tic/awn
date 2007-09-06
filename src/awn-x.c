@@ -30,6 +30,7 @@
 #include <X11/Xatom.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
+#include <string.h>
 
 #include <libgnome/libgnome.h>
 
@@ -118,6 +119,34 @@ awn_x_set_icon_geometry  (Window xwindow,
   _wnck_error_trap_pop ();
 }
 
+GString *
+awn_x_get_application_name (WnckWindow *window, WnckApplication *app)
+{
+	GString *windowName = NULL;
+	GString *name = NULL;
+	gchar *pos;
+	gchar *text;
+
+	windowName = g_string_new(wnck_window_get_name(window));
+	pos = g_strrstr((const gchar *)windowName->str," - ");
+
+	if (pos == NULL) {
+		name = g_string_new((const gchar *)windowName->str);
+    //name = g_string_new(wnck_application_get_name(app));
+	} else {
+		text = g_strdup(pos + 3);
+		name = g_string_new((const gchar *)text);
+		g_free(text);
+	}
+
+	g_print("get_name_app: %s\n", wnck_application_get_name(app));
+	g_print("get_name_window: %s\n", windowName->str);
+	g_print("name: %s\n\n", name->str);
+	g_string_free(windowName, TRUE);
+
+	return name;
+}
+
 GdkPixbuf * 
 awn_x_get_icon_for_window (WnckWindow *window, gint width, gint height)
 {
@@ -132,14 +161,16 @@ awn_x_get_icon_for_window (WnckWindow *window, gint width, gint height)
 	app = wnck_window_get_application (window);
 	g_return_val_if_fail (WNCK_IS_APPLICATION (app), NULL);
 	
-	name = g_string_new (wnck_application_get_name (app));
+	name = awn_x_get_application_name(window, app);
+    
 	name = g_string_prepend (name, ".config/awn/custom-icons/");
+
 	int i = 0;
 	for (i = 0; i < name->len; i++) {
 		if (name->str[i] == ' ')
 			name->str[i] = '-';
 	}
-			
+
 	uri = gnome_util_prepend_user_home(name->str);
 	
 	icon = gdk_pixbuf_new_from_file_at_scale (uri, width, height, TRUE, NULL);
