@@ -101,10 +101,10 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 
 	fx->window_width = 0;
 	fx->window_height = 0;
-	fx->icon_width = 0;
-	fx->icon_height = 0;
-	fx->current_width = 0;	
-	fx->current_height = 0;
+	fx->icon_width = 48;
+	fx->icon_height = 48;
+	fx->current_width = 48;
+	fx->current_height = 48;
 
 	/* EFFECT VARIABLES */
 	fx->effect_lock = FALSE;
@@ -449,7 +449,7 @@ fade_out_effect (AwnEffectsPrivate *priv)
 		if (priv->start) priv->start(fx->self);
 	}
 
-	const gdouble MAX_OFFSET = 15.0;
+	const gdouble MAX_OFFSET = 50.0;
 	const gint PERIOD = 20;
 
 	fx->y_offset = ++fx->count * (MAX_OFFSET/PERIOD);
@@ -681,22 +681,24 @@ void awn_draw_background(AwnEffects *fx, cairo_t *cr) {
 void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *reflect) {
 	// TODO: shouldn't we want ONLY icon? reflect can be done here
 	gint x1 = (fx->window_width - fx->icon_width)/2;
-	// TODO: settings!!!
-	// y1 = settings->bar_height - fx->y_offset;
 	gint y1 = fx->y_offset;
 	if (fx->settings) y1 = fx->settings->bar_height - fx->y_offset;
 
-	/* content */
+	// refresh icon info
+	fx->icon_width = gdk_pixbuf_get_width(icon);
+	fx->icon_height = gdk_pixbuf_get_height(icon);
+
+	/* icon */
 	GdkPixbuf *scaledIcon = NULL;
-	printf(" cur_W = %d; prev_W = %d; cur_H = %d; prev_H = %d\n"
-	       " fx_y = %g; prev_y = %g\n", fx->current_width, fx->previous_width, fx->current_height, fx->previous_height, fx->effect_y_offset, fx->previous_effect_y_offset );
 	if( fx->current_width != fx->previous_width ||  fx->current_height != fx->previous_height || fx->effect_y_offset != fx->previous_effect_y_offset)
 	{
 		if( fx->current_width == fx->icon_width && fx->current_height == fx->icon_height && fx->effect_y_offset == 0)
 			scaledIcon = icon;
 		else {
+			// apply squishing effect
 			scaledIcon = gdk_pixbuf_copy(icon);
 			gdk_pixbuf_scale(icon, scaledIcon, 0, 0, fx->icon_width, fx->icon_width, (fx->icon_width-fx->current_width)/2, fx->effect_y_offset, (double)fx->current_width/fx->icon_width, (double)fx->current_height/fx->icon_height, GDK_INTERP_BILINEAR);
+			// refresh reflection, we squished it
 			reflect = gdk_pixbuf_flip(scaledIcon, FALSE);
 		}
 		fx->previous_width = fx->current_width;
@@ -707,10 +709,9 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		gdk_cairo_set_source_pixbuf(cr, icon, x1, y1);
 	cairo_paint_with_alpha(cr, fx->alpha);
 
-	fx->icon_width = gdk_pixbuf_get_width(icon);
-	fx->icon_height = gdk_pixbuf_get_height(icon);
-
-	if (fx->y_offset >= 0 && reflect) {
+	/* reflection */
+	if (fx->y_offset >= 0) {
+		if (reflect == NULL) reflect = gdk_pixbuf_flip(icon, FALSE);
 		y1 = fx->icon_height + fx->y_offset;
 		if (fx->settings) y1 = fx->settings->bar_height + fx->icon_height + fx->y_offset;
 		gdk_cairo_set_source_pixbuf(cr, reflect, x1, y1);
@@ -718,7 +719,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	}
 
 	/* 4px offset for 3D look */
-	if (fx->settings && fx->settings->bar_height != 0) {
+	if (fx->settings && fx->settings->bar_angle != 0) {
 		cairo_save(cr);
 		cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
 		cairo_set_source_rgba (cr, 1, 1, 1, 0);
