@@ -689,6 +689,8 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	fx->icon_height = gdk_pixbuf_get_height(icon);
 
 	/* icon */
+	gboolean free_reflect = FALSE;
+	gboolean free_scaled = FALSE;
 	GdkPixbuf *scaledIcon = NULL;
 	if( fx->current_width != fx->previous_width ||  fx->current_height != fx->previous_height || fx->effect_y_offset != fx->previous_effect_y_offset)
 	{
@@ -697,9 +699,11 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		else {
 			// apply squishing effect
 			scaledIcon = gdk_pixbuf_copy(icon);
-			gdk_pixbuf_scale(icon, scaledIcon, 0, 0, fx->icon_width, fx->icon_width, (fx->icon_width-fx->current_width)/2, fx->effect_y_offset, (double)fx->current_width/fx->icon_width, (double)fx->current_height/fx->icon_height, GDK_INTERP_BILINEAR);
+			free_scaled = TRUE;
+			gdk_pixbuf_scale(icon, scaledIcon, 0, 0, fx->icon_width, fx->icon_height, (fx->icon_width-fx->current_width)/2, fx->effect_y_offset, (double)fx->current_width/fx->icon_width, (double)fx->current_height/fx->icon_height, GDK_INTERP_BILINEAR);
 			// refresh reflection, we squished it
 			reflect = gdk_pixbuf_flip(scaledIcon, FALSE);
+			free_reflect = TRUE;
 		}
 		fx->previous_width = fx->current_width;
 		fx->previous_height = fx->current_height;
@@ -708,14 +712,19 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	} else
 		gdk_cairo_set_source_pixbuf(cr, icon, x1, y1);
 	cairo_paint_with_alpha(cr, fx->alpha);
+	if (free_scaled) g_object_unref(scaledIcon);
 
 	/* reflection */
 	if (fx->y_offset >= 0) {
-		if (reflect == NULL) reflect = gdk_pixbuf_flip(icon, FALSE);
+		if (reflect == NULL) {
+			reflect = gdk_pixbuf_flip(icon, FALSE);
+			free_reflect = TRUE;
+		}
 		y1 = fx->icon_height + fx->y_offset;
 		if (fx->settings) y1 = fx->settings->bar_height + fx->icon_height + fx->y_offset;
 		gdk_cairo_set_source_pixbuf(cr, reflect, x1, y1);
 		cairo_paint_with_alpha(cr, fx->alpha/3);
+		if (free_reflect) g_object_unref(reflect);
 	}
 
 	/* 4px offset for 3D look */
