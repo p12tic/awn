@@ -73,8 +73,6 @@ struct _AwnEffects
 	gint window_height;
 	gint current_width;
 	gint current_height;
-	gint normal_width;
-	gint normal_height;
 	gint previous_width;
 	gint previous_height;
 	gint height;

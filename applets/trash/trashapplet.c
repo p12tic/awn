@@ -324,8 +324,8 @@ draw (GtkWidget *widget, cairo_t *cr, gint width, gint height)
 	TrashApplet *applet = TRASH_APPLET (widget);
 	
 	awn_draw_set_size(&applet->effects, width, height);
+	printf(" TRASH: W = %d, H = %d\n", width, height);
 
-	gint y = (applet->height + PADDING) - applet->effects.y_offset;
 	GdkPixbuf *reflect;
 	
 	/* Clear the background to transparent */
@@ -390,7 +390,8 @@ trash_applet_expose_event (GtkWidget *widget, GdkEventExpose *expose)
 	if (!cr)
 		return FALSE;
 	
-        gtk_widget_get_size_request (widget, &width, &height);
+	GtkRequisition req;
+        gdk_window_get_size (widget->window, &width, &height);
         draw (widget, cr, width, height);
 	
 	/* Clean up */
