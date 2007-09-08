@@ -481,10 +481,47 @@ screen_size_changed (GdkScreen *screen, AwnSettings *s)
 					&s->monitor);
 }
 
+static gboolean is_composited( GdkScreen *screen )
+{
+        gchar *soutput = NULL, *serror = NULL;
+        gint exit_status;
+        gboolean composited;
+        
+        if(!gdk_screen_is_composited(screen))
+        {
+                /* check for xcompmgr, borrowed this piece from Giacomo Lozito <james@develia.org>, (C) 2005-2007 */
+                if ( g_spawn_command_line_sync( "ps -eo comm" ,&soutput , &serror , &exit_status , NULL ) == TRUE )
+                {
+                        if (( soutput != NULL ) && ( strstr( soutput , "\nxcompmgr\n" ) != NULL ))
+                        {
+                                g_print("xcompmgr found as compositing manager\n");
+                                composited = TRUE;
+                        }
+                        else
+                        {
+                                composited = FALSE;
+                        }
+                }
+                else
+                {
+                        g_warning("command 'ps -eo comm' failed, unable to check if xcompmgr is running\n");
+                        composited = FALSE;
+                }
+        }
+        else
+        {
+                composited = TRUE;
+        }
+        g_free( soutput );
+        g_free( serror );
+        
+        return composited;
+}
+
 static void 
 composited_changed ( GdkScreen *screen, AwnSettings *s)
 {
-	if(!gdk_screen_is_composited(screen)) {
+	if( !is_composited(screen) ) {
 		g_print("Error: Screen isn't composited. Please run compiz (-fusion) or another compositing manager.\n");
 		gtk_widget_hide(s->bar);
 		gtk_widget_hide(s->window);
@@ -497,7 +534,6 @@ composited_changed ( GdkScreen *screen, AwnSettings *s)
 			awn_applet_manager_load_applets (AWN_APPLET_MANAGER (s->appman));
 			started = TRUE;
 		}
-		
 		gtk_widget_show(s->bar);
 		gtk_widget_show(s->window);
 		gtk_widget_show(s->hot);

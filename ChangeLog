@@ -1,6 +1,45 @@
 2007-09-06  haytjes <hv1989@gmail.com>
 
 	* src/main.c:
+	typo
+
+2007-09-06  haytjes <hv1989@gmail.com>
+
+	* src/main.c:
+	Make sure xcompmgr get detected. It gets only detected on startup. So Avant-window-navigator needs to be started AFTER xcompmgr.
+
+2007-09-06  haytjes <hv1989@gmail.com>
+
+	* libawn/awn-title.c:
+	part 2 of bug #137714. Titles are now back on the right place.
+
+2007-09-06  haytjes <hv1989@gmail.com>
+
+	* src/awn-utils.c:
+	part 1 of bug #137714. This will make the auto-hide feature again good.
+
+2007-09-06  haytjes <hv1989@gmail.com>
+
+	patch by: Ryan
+
+	* awn-manager/awnPreferences.py:
+	* awn-manager/window.glade:
+	* src/awn-gconf.c:
+	* src/awn-gconf.h:
+	* src/awn-utils.c:
+	* src/awn-window.c:
+	Keep dock below maximized windows when not in use
+
+2007-09-06  Neil J. Patel  <njp@o-hand.com>
+
+	* awn-applet-activation/main.c:
+	Allow desktop files for python applets to point to relative folders, so
+	Exec=myapplet/applet.py instead of
+	Exec=/usr/local/lib/awn/applets/myapplet/applet/py
+
+2007-09-06  haytjes <hv1989@gmail.com>
+
+	* src/main.c:
 	Fixes bug #129750: Bar background is above icons on startup
 
 2007-09-05  Neil J. Patel  <njpatel@gmail.com>

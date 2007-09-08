@@ -58,7 +58,7 @@ _move_bar (AwnSettings *settings)
 	gint x, y;
 	
 	gtk_window_get_position (GTK_WINDOW (settings->bar), &x, &y);
-	gtk_window_move (GTK_WINDOW (settings->bar), x, settings->monitor.height - ((settings->bar_height +2)*2) + current_y);
+	gtk_window_move (GTK_WINDOW (settings->bar), x, settings->monitor.height - ((settings->bar_height +2)*2) - settings->icon_offset + current_y);
 	
 	gtk_window_get_position (GTK_WINDOW (settings->window), &x, &y);
 	gtk_window_move (GTK_WINDOW (settings->window), x, settings->monitor.height - ((settings->bar_height)*2) - settings->icon_offset + current_y);
@@ -67,6 +67,31 @@ _move_bar (AwnSettings *settings)
 	
 }
 
+static gboolean
+_lower_bar (AwnSettings *settings)
+{
+	if(!settings->hiding) {
+		hide_delay = settings->auto_hide_delay / 20;
+		return TRUE;
+	}
+
+	if (hide_delay > 0) {
+ 		hide_delay--;
+ 		return TRUE;
+ 	}
+
+ 	hide_delay = settings->auto_hide_delay / 20;
+ 	
+ 	gtk_window_set_keep_below(GTK_WINDOW (settings->bar), TRUE);
+	gtk_window_set_keep_below(GTK_WINDOW (settings->window), TRUE);
+	gtk_window_stick(GTK_WINDOW (settings->bar));
+	gtk_window_stick(GTK_WINDOW (settings->window));
+	gtk_window_set_decorated(GTK_WINDOW (settings->window), FALSE);
+	gtk_window_set_decorated(GTK_WINDOW (settings->bar), FALSE);
+	effect_lock = FALSE;
+	settings->hiding = FALSE;
+	return FALSE;
+}
 
 void 
 awn_hide (AwnSettings *settings)
@@ -79,9 +104,14 @@ awn_hide (AwnSettings *settings)
 	dest_y = settings->bar_height + settings->icon_offset+4;
 	
 	if (!effect_lock) {
-		g_timeout_add (20, (GSourceFunc)_move_bar, (gpointer)settings);
+		if(settings->keep_below){
+			g_timeout_add (20, (GSourceFunc)_lower_bar, (gpointer)settings);
+		}
+		else{
+			g_timeout_add (20, (GSourceFunc)_move_bar, (gpointer)settings);
+		}
 		effect_lock = TRUE;
-	} 
+	}
 	
 	//gtk_widget_hide (settings->title);
 	settings->hidden = TRUE;
@@ -91,6 +121,15 @@ awn_hide (AwnSettings *settings)
 void 
 awn_show (AwnSettings *settings)
 {
+	if(settings->keep_below){
+		gtk_window_set_keep_above(GTK_WINDOW (settings->bar), TRUE);
+		gtk_window_set_keep_above(GTK_WINDOW (settings->window), TRUE);
+		gtk_window_set_decorated(GTK_WINDOW (settings->window), FALSE);
+		gtk_window_set_decorated(GTK_WINDOW (settings->bar), FALSE);
+		settings->hidden = FALSE;
+		settings->hiding = FALSE;
+		return;
+	}
 	
 	dest_y = 0;
 
