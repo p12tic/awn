@@ -102,10 +102,7 @@ struct _AwnTaskPrivate
 	gboolean needs_attention;
 
 	GdkPixbuf *icon;
-	GdkPixbuf *effect_icon;
   	GdkPixbuf *reflect;
-  	//gint icon_width;
-	//gint icon_height;
 
 	gint progress;
 
@@ -262,14 +259,6 @@ launch_opening_effect (AwnTask *task )
 	awn_effect_start_ex(&priv->effects, AWN_EFFECT_OPENING, NULL, _task_refresh, 1);
 }
 
-static gboolean
-_check_launching(GObject *obj) {
-	AwnTask *task = AWN_TASK(obj);
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-	return priv->window == NULL; // repeat if window still NULL
-}
-
 static void
 launch_launched_effect (AwnTask *task )
 {
@@ -328,16 +317,6 @@ _task_destroy (GObject *obj)
 	awn_unregister_effects(G_OBJECT(task), &priv->effects);
 	gtk_object_destroy (GTK_OBJECT(task));
 	task = NULL;
-}
-
-static gboolean
-_check_change_name (GObject *obj)
-{
-	AwnTask *task = AWN_TASK(obj);
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-
-	return priv->name_changed;
 }
 
 static gboolean

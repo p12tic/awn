@@ -380,6 +380,8 @@ bounce_effect2 (AwnEffectsPrivate *priv)
 		fx->effect_lock = TRUE;
 		// effect start initialize values
 		fx->count = 0;
+		fx->current_width = fx->icon_width;
+		fx->current_height = fx->icon_height;
 		fx->effect_direction = AWN_EFFECT_BOUNCE_SQEEZE_DOWN;
 		if (priv->start) priv->start(fx->self);
 		// TODO: set priv->start to NULL, so it's not called multiple times while moving in the queue?
@@ -432,6 +434,8 @@ bounce_effect2 (AwnEffectsPrivate *priv)
 	if (fx->effect_direction == AWN_EFFECT_BOUNCE_SQEEZE_UP2 && fx->current_height >= fx->icon_height) {
 		fx->count = 0;
 		fx->effect_direction = AWN_EFFECT_BOUNCE_SLEEP;
+		fx->current_width = fx->icon_width;
+		fx->current_height = fx->icon_height;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
 	}
@@ -454,7 +458,9 @@ fade_out_effect (AwnEffectsPrivate *priv)
 
 	fx->y_offset = ++fx->count * (MAX_OFFSET/PERIOD);
 	fx->alpha = fx->count*(-1.0/PERIOD)+1;
-
+	fx->current_width = cos(fx->count * M_PI/3/PERIOD) * fx->icon_width;
+	fx->current_height = cos(fx->count * M_PI/3/PERIOD) * fx->icon_height;
+ 
 	// repaint widget
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
@@ -684,34 +690,32 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	gint y1 = fx->y_offset;
 	if (fx->settings) y1 = fx->settings->bar_height - fx->y_offset;
 
-	// refresh icon info
-	fx->icon_width = gdk_pixbuf_get_width(icon);
-	fx->icon_height = gdk_pixbuf_get_height(icon);
+	/* refresh icon info */
+	gint new_width, new_height;
+	new_width = gdk_pixbuf_get_width(icon);
+	new_height = gdk_pixbuf_get_height(icon);
+	if (new_width != fx->icon_width || new_height != fx->icon_height) {
+		if (fx->current_width == fx->icon_width) fx->current_width = new_width;
+		if (fx->current_height == fx->icon_height) fx->current_height = new_height;
+		fx->icon_width = new_width;
+		fx->icon_height = new_height;
+	}
 
 	/* icon */
 	gboolean free_reflect = FALSE;
 	gboolean was_scaled = FALSE;
 	GdkPixbuf *scaledIcon = NULL;
-	if( fx->current_width != fx->previous_width ||  fx->current_height != fx->previous_height || fx->effect_y_offset != fx->previous_effect_y_offset)
-	{
-		if( fx->current_width == fx->icon_width && fx->current_height == fx->icon_height && fx->effect_y_offset == 0)
-			scaledIcon = icon;
-		else {
-			// apply squishing effect
-			was_scaled = TRUE;
-			scaledIcon = gdk_pixbuf_scale_simple(icon, fx->current_width, fx->current_height, GDK_INTERP_BILINEAR);
-			// refresh reflection, we squished it
-			reflect = gdk_pixbuf_flip(scaledIcon, FALSE);
-			free_reflect = TRUE;
-		}
-		fx->previous_width = fx->current_width;
-		fx->previous_height = fx->current_height;
-		fx->previous_effect_y_offset = fx->effect_y_offset;
+	if( fx->current_width != fx->icon_width ||  fx->current_height != fx->icon_height) {
+		// scale icon
+		was_scaled = TRUE;
+		scaledIcon = gdk_pixbuf_scale_simple(icon, fx->current_width, fx->current_height, GDK_INTERP_BILINEAR);
+		// refresh reflection, we scaled icon
+		reflect = gdk_pixbuf_flip(scaledIcon, FALSE);
+		free_reflect = TRUE;
 		// TODO: stop using effect_y_offset, use y_offset instead
-		if (was_scaled) {
-			x1 = (fx->window_width - fx->current_width)/2;
-			y1 += fx->effect_y_offset;
-		}
+		// adjust offsets
+		x1 = (fx->window_width - fx->current_width)/2;
+		y1 += fx->effect_y_offset;
 		gdk_cairo_set_source_pixbuf(cr, scaledIcon, x1, y1);
 	} else
 		gdk_cairo_set_source_pixbuf(cr, icon, x1, y1);
