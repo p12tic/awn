@@ -1,3 +1,8 @@
+ENUMFILES = awn-enum-types.c awn-enum-types.h
+STAMPFILES = stamp-awn-marshal.h stamp-awn-enum-types.h
+GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
+
+BUILT_SOURCES = $(ENUMFILES)
 
 lib_LTLIBRARIES = libawn.la
 
@@ -11,26 +16,60 @@ INCLUDES = \
 	-DDATADIR=\""$(datadir)"\" 			\
 	-DSYSCONFDIR=\""$(sysconfdir)"\" 	        \
 	-DLIBDIR=\""$(libdir)"\"                        \
-	-shared																					\
+	-shared						\
 	$(NULL)	
 
 libawnincdir = $(includedir)/libawn
 
-libawninc_HEADERS =	\
+source_h =	\
 	awn-defines.h                                   \
 	awn-applet.h                                    \
-	awn-applet-gconf.h                              \
-	awn-applet-dialog.h								\
-	awn-cairo-utils.h								\
-	awn-desktop-file.h
+	awn-applet-dialog.h                             \
+	awn-applet-gconf.h				\
+	awn-applet-simple.h				\
+	awn-cairo-utils.h				\
+	awn-desktop-file.h				\
+	awn-enum-types.h				\
+	awn-plug.h					\
+	awn-title.h					
 
-libawn_la_SOURCES =	\
+source_c =	\
 	awn-applet.c                                    \
+	awn-applet-dialog.c				\
 	awn-applet-gconf.c                              \
 	awn-applet-dialog.c								\
 	awn-cairo-utils.c								\
-	awn-desktop-file.c
+	awn-applet-simple.c				\
+	awn-cairo-utils.c				\
+	awn-desktop-file.c				\
+	awn-enum-types.c				\
+	awn-plug.c					\
+	awn-title.c
 
+libawninc_HEADERS = \
+	$(source_h)
+libawn_la_SOURCES = \
+	$(source_c)
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
 libawn_la_LDFLAGS = -version-info 0:1:0
 
+awn-enum-types.h: stamp-awn-enum-types.h
+	@true
+stamp-awn-enum-types.h: $(source_h) Makefile
+	( cd $(srcdir) && \
+	  $(GLIB_MKENUMS) \
+	  	--template $(srcdir)/awn-enum-types.h.in \
+	  $(source_h) ) >> xgen-ceth && \
+	(cmp xgen-ceth awn-enum-types.h || cp xgen-ceth awn-enum-types.h) && \
+	rm -f xgen-ceth && \
+	echo timestamp > $(@F)
+
+awn-enum-types.c: awn-enum-types.h
+	( cd $(srcdir) && \
+	  $(GLIB_MKENUMS) \
+	  	--template $(srcdir)/awn-enum-types.c.in \
+	  $(source_h) ) >> xgen-cetc && \
+	cp xgen-cetc awn-enum-types.c && \
+	rm -f xgen-cetc
+
+CLEANFILES = $(STAMPFILES)

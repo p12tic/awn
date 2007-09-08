@@ -22,7 +22,6 @@ import locale
 import urllib
 
 import rhythmdb
-from Loader import Loader
 
 LICENSE_KEY = "18C3VZN9HCECM5G3HQG2"
 DEFAULT_LOCALE = "en_US"
@@ -65,8 +64,8 @@ class AmazonCoverArtSearch (object):
 		self.args = args
 		self.keywords = []
 
-		st_artist = db.entry_get (entry, rhythmdb.PROP_ARTIST)
-		st_album = db.entry_get (entry, rhythmdb.PROP_ALBUM)
+		st_artist = db.entry_get (entry, rhythmdb.PROP_ARTIST) or _("Unknown")
+		st_album = db.entry_get (entry, rhythmdb.PROP_ALBUM) or _("Unknown")
 
 		# Tidy up
 
@@ -99,13 +98,13 @@ class AmazonCoverArtSearch (object):
 		
 		# TODO: Improve to decrease wrong cover downloads, maybe add severity?
 		# Assemble list of search keywords (and thus search queries)
-		if st_album == "Unknown":
+		if st_album == _("Unknown"):
 			self.keywords.append ("%s Best of" % (st_artist))
 			self.keywords.append ("%s Greatest Hits" % (st_artist))
 			self.keywords.append ("%s Essential" % (st_artist))
 			self.keywords.append ("%s Collection" % (st_artist))
 			self.keywords.append ("%s" % (st_artist))
-		elif st_artist == "Unknown":
+		elif st_artist == _("Unknown"):
 			self.keywords.append ("%s" % (st_album))
 			if st_album_no_vol != st_artist:
 				self.keywords.append ("%s" % (st_album_no_vol))
@@ -115,7 +114,7 @@ class AmazonCoverArtSearch (object):
 				self.keywords.append ("%s %s" % (st_artist, st_album))
 				if st_album_no_vol != st_album:
 					self.keywords.append ("%s %s" % (st_artist, st_album_no_vol))
-				if (st_album != "Unknown"):
+				if (st_album != _("Unknown")):
 					self.keywords.append ("Various %s" % (st_album))
 			self.keywords.append ("%s" % (st_artist))
 
@@ -219,14 +218,22 @@ class AmazonCoverArtSearch (object):
 
 		return s
 
-	def get_best_match (self, search_results):
+	def __valid_match (self, item):
+		if item.ImageUrlLarge == "" and item.ImageUrlMedium == "":
+			print "%s doesn't have image URLs; ignoring" % (item.URL)
+			return False
+		return True
+
+	def get_best_match_urls (self, search_results):
 		# Default to "no match", our results must match our criteria
 		best_match = None
 
+		search_results = filter(self.__valid_match, search_results)
 		try:
-			if self.search_album != "Unknown":
+			if self.search_album != _("Unknown"):
 				album_check = self.__tidy_up_string (self.search_album)
 				for item in search_results:
+
 					# Check for album name in ProductName
 					product_name = self.__tidy_up_string (item.ProductName)
 
@@ -239,12 +246,13 @@ class AmazonCoverArtSearch (object):
 						best_match = item
 
 			# If we still have no definite hit, use first result where artist matches
-			if (self.search_album == "Unknown" and self.search_artist != "Unknown"):
+			if (self.search_album == _("Unknown") and self.search_artist != _("Unknown")):
 				artist_check = self.__tidy_up_string (self.search_artist)
 				if best_match is None:
 					# Check if artist appears in the Artists list
 					hit = False
 					for item in search_results:
+
 						if type (item.Artists.Artist) <> type ([]):
 							artists = [item.Artists.Artist]
 						else:
@@ -254,12 +262,15 @@ class AmazonCoverArtSearch (object):
 							artist = self.__tidy_up_string (artist)
 							if artist.find (artist_check) != -1:
 								best_match = item
-								hit = True						
+								hit = True
 								break
 						if hit:
 							break
 
-			return best_match
+			if best_match:
+				return filter(lambda x: x != "", [item.ImageUrlLarge, item.ImageUrlMedium])
+			else:
+				return []
 
 		except TypeError:
-			return None
+			return []

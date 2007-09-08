@@ -30,6 +30,7 @@
 #include <X11/Xatom.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
+#include <string.h>
 
 #ifdef USE_GNOME
 #include <libgnome/libgnome.h>
@@ -120,6 +121,34 @@ awn_x_set_icon_geometry  (Window xwindow,
   _wnck_error_trap_pop ();
 }
 
+GString *
+awn_x_get_application_name (WnckWindow *window, WnckApplication *app)
+{
+	GString *windowName = NULL;
+	GString *name = NULL;
+	gchar *pos;
+	gchar *text;
+
+	windowName = g_string_new(wnck_window_get_name(window));
+	pos = g_strrstr((const gchar *)windowName->str," - ");
+
+	if (pos == NULL) {
+		name = g_string_new((const gchar *)windowName->str);
+    //name = g_string_new(wnck_application_get_name(app));
+	} else {
+		text = g_strdup(pos + 3);
+		name = g_string_new((const gchar *)text);
+		g_free(text);
+	}
+
+	g_print("get_name_app: %s\n", wnck_application_get_name(app));
+	g_print("get_name_window: %s\n", windowName->str);
+	g_print("name: %s\n\n", name->str);
+	g_string_free(windowName, TRUE);
+
+	return name;
+}
+
 GdkPixbuf * 
 awn_x_get_icon_for_window (WnckWindow *window, gint width, gint height)
 {
@@ -134,8 +163,10 @@ awn_x_get_icon_for_window (WnckWindow *window, gint width, gint height)
 	app = wnck_window_get_application (window);
 	g_return_val_if_fail (WNCK_IS_APPLICATION (app), NULL);
 	
-	name = g_string_new (wnck_application_get_name (app));
-	name = g_string_prepend (name, ".awn/custom-icons/");
+	name = awn_x_get_application_name(window, app);
+    
+	name = g_string_prepend (name, ".config/awn/custom-icons/");
+
 	int i = 0;
 	for (i = 0; i < name->len; i++) {
 		if (name->str[i] == ' ')
@@ -182,18 +213,25 @@ icon_loader_get_icon_spec( const char *name, int width, int height )
 				      gtk_icon_info_get_filename (icon_info),
                                       width, -1, &error);
 		gtk_icon_info_free(icon_info);
+		if (error) {
+			g_error_free (error);
+			error = NULL;
+		}
 	}
 	  
         /* first we try gtkicontheme */
-        if (icon == NULL)
+        if (icon == NULL) {
         	icon = gtk_icon_theme_load_icon( theme, name, width, GTK_ICON_LOOKUP_FORCE_SVG, &error);
+		if (error) {
+			g_error_free (error);
+			error = NULL;
+		}
+	}
         else {
         	g_print("Icon theme could not be loaded");
-        	error = (GError *) 1;  
         }
         if (icon == NULL) {
                 /* lets try and load directly from file */
-                error = NULL;
                 GString *str;
                 
                 if ( strstr(name, "/") != NULL )
@@ -207,12 +245,15 @@ icon_loader_get_icon_spec( const char *name, int width, int height )
                                                          width,
                                                          height,
                                                          TRUE, &error);
+		if (error) {
+			g_error_free (error);
+			error = NULL;
+		}
                 g_string_free(str, TRUE);
         }
         
         if (icon == NULL) {
                 /* lets try and load directly from file */
-                error = NULL;
                 GString *str;
                 
                 if ( strstr(name, "/") != NULL )
@@ -226,11 +267,14 @@ icon_loader_get_icon_spec( const char *name, int width, int height )
                                                          width,
                                                          -1,
                                                          TRUE, &error);
+		if (error) {
+			g_error_free (error);
+			error = NULL;
+		}
                 g_string_free(str, TRUE);
         }
         
         if (icon == NULL) {
-                error = NULL;
                 GString *str;
                 
                 str = g_string_new("/usr/share/");
@@ -246,6 +290,10 @@ icon_loader_get_icon_spec( const char *name, int width, int height )
                                              -1,
                                              TRUE,
                                              &error);
+		if (error) {
+			g_error_free (error);
+			error = NULL;
+		}
                 g_string_free(str, TRUE);
         }
         
@@ -260,7 +308,7 @@ awn_x_get_icon_for_launcher (AwnDesktopItem *item, gint width, gint height)
 	GdkPixbuf *icon = NULL;
 		
 	name = g_string_new ( awn_desktop_file_get_exec (item));
-	name = g_string_prepend (name, ".awn/custom-icons/");
+	name = g_string_prepend (name, ".config/awn/custom-icons/");
 	int i = 0;
 	for (i = 0; i < name->len; i++) {
 		if (name->str[i] == ' ')

@@ -110,6 +110,7 @@ awn_window_new( AwnSettings *set )
                 type_registered = TRUE;
         }
 
+	gtk_window_set_title(GTK_WINDOW(this), "awn_elements");
         _on_alpha_screen_changed (GTK_WIDGET(this), NULL, NULL);
         gtk_widget_set_app_paintable (GTK_WIDGET(this), TRUE);
         gtk_window_resize (GTK_WINDOW(this), AWN_WINDOW_DEFAULT_WIDTH, (set->bar_height + 2) * 2);
@@ -320,7 +321,7 @@ _position_window (GtkWidget *window)
 	
 	x_pos = (int) ((settings->monitor.width - ww) / 2);
 	
-	if (settings->hidden)
+	if (settings->hidden && !settings->keep_below)
 		y_pos = (int)settings->monitor.height;
 	else
 		//if(settings->bar_angle == 0)

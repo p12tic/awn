@@ -1,59 +1,60 @@
-# Russian translation of avant-window-navigator.
-# Copyright (C) 2007 Neil Jagdish Patel
-# This file is distributed under the same license as the avant-window-navigator package.
-# Andrey Fedoseev <andrey.fedoseev@gmail.com>, 2007.
+# Russian translation for awn
+# Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
+# This file is distributed under the same license as the awn package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: avant-window-navigator-svn\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-23 15:51+0100\n"
-"PO-Revision-Date: 2007-03-07 22:00+0500\n"
-"Last-Translator: Andrey Fedoseev <andrey.fedoseev@gmail.com>\n"
+"Project-Id-Version: awn\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2007-07-25 23:46+0100\n"
+"PO-Revision-Date: 2007-08-15 10:08+0000\n"
+"Last-Translator: Alexey 'huNTer' Kolosov <alexey.kolosov@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Rosetta-Export-Date: 2007-08-17 19:09:00+0000\n"
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
-msgstr ""
+msgstr "Строк:"
 
 #: ../applets/switcher/applet.c:128
 msgid "Width:"
-msgstr ""
+msgstr "Ширина:"
 
 #: ../applets/switcher/applet.c:140
 msgid "Height:"
-msgstr ""
+msgstr "Высота:"
 
 #: ../applets/trash/trashapplet.glade.h:1
-#, fuzzy
 msgid "<b>From:</b>"
-msgstr "<b>Границы</b>"
+msgstr "<b>От:</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
 msgid "<big><b>Emptying the Trash</b></big>"
-msgstr ""
+msgstr "<big><b>Очистка корзины</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr ""
+msgstr "Очистить корзину"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "<b>Активный значок</b>"
+msgstr "Активный значок"
 
 #: ../avant-preferences/window.glade.h:2
-#, fuzzy
 msgid "<b>Arrows</b>"
-msgstr "<b>Границы</b>"
+msgstr "<b>Стрелки</b>"
 
 #: ../avant-preferences/window.glade.h:3
 #, fuzzy
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>Границы</b>"
+msgstr "Поведение панели"
 
 #: ../avant-preferences/window.glade.h:4
 msgid "<b>Borders</b>"
@@ -61,24 +62,23 @@ msgstr "<b>Границы</b>"
 
 #: ../avant-preferences/window.glade.h:5
 msgid "<b>Corners</b>"
-msgstr "<b>Углы</b>"
+msgstr "Углы"
 
 #: ../avant-preferences/window.glade.h:6
 msgid "<b>Gradient</b>"
-msgstr "<b>Градиент</b>"
+msgstr "Градиент"
 
 #: ../avant-preferences/window.glade.h:7
 msgid "<b>Highlight</b>"
-msgstr "<b>Подсветка</b>"
+msgstr "Подсветка"
 
 #: ../avant-preferences/window.glade.h:8
 msgid "<b>Pattern</b>"
-msgstr "<b>Фоновый рисунок</b>"
+msgstr "<b>Шаблон</b>"
 
 #: ../avant-preferences/window.glade.h:9
-#, fuzzy
 msgid "<b>Separator</b>"
-msgstr "<b>Текст</b>"
+msgstr "Разделитель"
 
 #: ../avant-preferences/window.glade.h:10
 msgid "<b>Text</b>"
@@ -86,23 +86,21 @@ msgstr "<b>Текст</b>"
 
 #: ../avant-preferences/window.glade.h:11
 msgid "<b>Windows</b>"
-msgstr "<b>Окна</b>"
+msgstr "Окна"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
-msgstr ""
+msgstr "Автоматически прятать когда не используется"
 
 #: ../avant-preferences/window.glade.h:13
 msgid "Avant Preferences"
-msgstr "Настройка Avant"
+msgstr "Свойства"
 
 #: ../avant-preferences/window.glade.h:14
-#, fuzzy
 msgid "Background color:"
-msgstr "Конечный цвет:"
+msgstr "Цвет фона:"
 
 #: ../avant-preferences/window.glade.h:15
-#, fuzzy
 msgid "Bar Appearance"
 msgstr "Внешний вид панели"
 
@@ -111,38 +109,36 @@ msgid "Bold"
 msgstr "Жирный"
 
 #: ../avant-preferences/window.glade.h:17
-#, fuzzy
 msgid "Color:"
 msgstr "Цвет:"
 
 #: ../avant-preferences/window.glade.h:18
 msgid "Enable pattern"
-msgstr "Включить фоновый рисунок"
+msgstr "Разрешить шаблон"
 
 #: ../avant-preferences/window.glade.h:19
 msgid "Enable rounded corners"
-msgstr "Включить сруглённые углы"
+msgstr "Закругленные углы"
 
 #: ../avant-preferences/window.glade.h:20
 msgid "Fade effect (experimental)"
-msgstr ""
+msgstr "Эффект затухания (нестабильный)"
 
 #: ../avant-preferences/window.glade.h:21
-#, fuzzy
 msgid "First step color:"
-msgstr "Начальный цвет:"
+msgstr "Первый цвет"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
-msgstr "Цвет шрифта"
+msgstr "Размер шрифта:"
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
-msgstr ""
+msgstr "Основные настройки"
 
 #: ../avant-preferences/window.glade.h:24
 msgid "Glass Engine"
-msgstr ""
+msgstr "Цвета отражения"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
@@ -150,59 +146,56 @@ msgstr "Внутренняя граница:"
 
 #: ../avant-preferences/window.glade.h:26
 msgid "Italic"
-msgstr "Курсив"
+msgstr "Наклонный"
 
 #: ../avant-preferences/window.glade.h:27
 msgid "Main border:"
-msgstr "Основная граница:"
+msgstr "Главная граница:"
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
 msgstr ""
+"Развернутые окна не перекрывают панель (требуется перезагрузка панели)"
 
 #: ../avant-preferences/window.glade.h:29
 msgid "Pattern Engine"
-msgstr ""
+msgstr "Шаблоны"
 
 #: ../avant-preferences/window.glade.h:30
-#, fuzzy
 msgid "Second step color:"
-msgstr "Конечный цвет:"
+msgstr "Вторичный цвет:"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
-msgstr "Выберите файл"
+msgstr "Укажите файл шаблона"
 
 #: ../avant-preferences/window.glade.h:32
-#, fuzzy
 msgid "Separator color:"
-msgstr "Цвет тени:"
+msgstr "Цвет разделителя:"
 
 #: ../avant-preferences/window.glade.h:33
-#, fuzzy
 msgid "Shadow color:"
 msgstr "Цвет тени:"
 
 #: ../avant-preferences/window.glade.h:34
 msgid "Show separator between launchers and tasks"
-msgstr ""
+msgstr "Показывать разделитель между запускателями и программами"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
 msgstr "Показывать окна со всех рабочих мест"
 
 #: ../avant-preferences/window.glade.h:36
-#, fuzzy
 msgid "Task Appearance"
-msgstr "Внешний вид панели"
+msgstr "Внешний вид панели задач"
 
 #: ../avant-preferences/window.glade.h:37
 msgid "Tasks have arrows"
-msgstr ""
+msgstr "Задачи обозначаются стрелками"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
-msgstr ""
+msgstr "Автоматически прятать панель, если не используется"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
@@ -210,33 +203,155 @@ msgstr "Прозрачность:"
 
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
-msgstr ""
+msgstr "Затемнять неиспользуемые иконки при наведении"
 
 #: ../avant-preferences/window.glade.h:41
+#, fuzzy
 msgid "Windows don't overlap the bar if this is set"
-msgstr ""
+msgstr "Если выбрано, окна не залезают на панель"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
-msgstr ""
+msgstr "Добавить аплет"
 
 #: ../avant-applets/avant-applets.glade.h:2
-#, fuzzy
 msgid "Avant Applet Preferences"
-msgstr "Настройка Avant"
+msgstr "Настройки апплетов"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
 msgid "Positions"
-msgstr ""
+msgstr "Позиции"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
-#, fuzzy
 msgid "Avant Launcher Preferences"
-msgstr "Настройка Avant"
+msgstr "Настройки запускателей"
 
-#~ msgid "General Appearance"
-#~ msgstr "Общий внешний вид"
+#: ../applets/notification-area/eggtraymanager.c:146
+msgid "Orientation"
+msgstr "Положение"
 
-#~ msgid "Window Management"
-#~ msgstr "Управление окнами"
+#: ../applets/notification-area/eggtraymanager.c:147
+msgid "The orientation of the tray."
+msgstr "Расположение системного лотка."
+
+#: ../applets/switcher/switcher.schemas.in.h:1
+msgid "How many rows the switcher should have"
+msgstr "Количество рядов переключателя"
+
+#: ../applets/switcher/switcher.schemas.in.h:2
+msgid "The height of the switcher"
+msgstr "Высота переключателя"
+
+#: ../applets/switcher/switcher.schemas.in.h:3
+msgid "The width of the switcher"
+msgstr "Длина переключателя"
+
+#: ../applets/trash/trash.schemas.in.h:1
+#, fuzzy
+msgid "Whether the trash applet should show a count on its icon"
+msgstr "Показывать ли количество файлов на иконке корзины"
+
+#: ../applets/trash/trashapplet.c:153
+#, c-format
+msgid "Unable to find the Trash directory: %s"
+msgstr "Не удается найти каталог корзины: %s"
+
+#: ../applets/trash/trashapplet.c:526
+msgid "No Items in Trash"
+msgstr "В корзине нет элементов"
+
+#: ../applets/trash/trashapplet.c:530
+#, fuzzy
+msgid "%d Item in Trash"
+msgid_plural "%d Items in Trash"
+msgstr[0] "%d элемент в корзине"
+msgstr[1] "%d элемента в корзине"
+msgstr[2] "%d элементов в корзине"
+
+#: ../applets/trash/trashapplet.c:657
+#, fuzzy
+msgid "Removing item %lu of %lu"
+msgstr "Удаление: %lu элементов из %lu"
+
+#: ../applets/trash/trashapplet.c:683
+msgid "Removing:"
+msgstr "Удаление:"
+
+#: ../applets/trash/trashapplet.c:723
+msgid "Empty all of the items from the trash?"
+msgstr "Очистить все элементы из корзины?"
+
+#: ../applets/trash/trashapplet.c:726
+msgid ""
+"If you choose to empty the trash, all items in it will be permanently lost. "
+"Please note that you can also delete them separately."
+msgstr ""
+"Если вы очистите корзину, элементы будут окончательно удалены. Учтите, что "
+"их также можно удалять по одному."
+
+#: ../applets/trash/trashapplet.c:746
+msgid "_Empty Trash"
+msgstr "_Очистить корзину"
+
+#: ../applets/trash/trashapplet.c:825
+#, c-format
+msgid ""
+"Error while spawning nautilus:\n"
+"%s"
+msgstr ""
+"Ошибка запуска nautilus:\n"
+"%s"
+
+#: ../applets/trash/trashapplet.c:845
+#, c-format
+msgid "There was an error displaying help: %s"
+msgstr "Ошибка отображения справки: %s"
+
+#: ../applets/trash/trashapplet.c:868
+msgid "Trash Applet"
+msgstr "Апплет корзины"
+
+#: ../applets/trash/trashapplet.c:871
+msgid ""
+"A GNOME trash bin that lives in your panel. You can use it to view the trash "
+"or drag and drop items into the trash."
+msgstr ""
+"Корзина среды GNOME, которая живет в вашей панели. Вы можете использовать ее "
+"для просмотра корзины или перетаскивания в нее элементов."
+
+#: ../applets/trash/trashapplet.c:876
+msgid "translator-credits"
+msgstr ""
+"Launchpad Contributions:\n"
+"  Alexey 'huNTer' Kolosov <https://launchpad.net/~alexey-kolosov>\n"
+"  Photon <https://launchpad.net/~michael-kogan>\n"
+"  Sublimit <https://launchpad.net/~vinokourov>\n"
+"  pavpanchekha <https://launchpad.net/~pavpanchekha>"
+
+#: ../applets/trash/trashapplet.c:896
+msgid "Delete Immediately?"
+msgstr "Удалить немедленно?"
+
+#: ../applets/trash/trashapplet.c:925
+msgid "Cannot move items to trash, do you want to delete them immediately?"
+msgstr "Не удается переместить элементы в корзину, удалить их окончательно?"
+
+#: ../applets/trash/trashapplet.c:928
+msgid ""
+"Cannot move some items to trash, do you want to delete these immediately?"
+msgstr ""
+"Некоторые элементы не удалось переместить в корзину, удалить их безвозвратно?"
+
+#: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
+#, c-format
+msgid ""
+"Unable to move to trash:\n"
+"%s"
+msgstr ""
+"Не удается переместить в корзину:\n"
+"%s"
+
+#: ../src/awn-task.c:2279
+msgid "Change Icon"
+msgstr "Изменить значок"

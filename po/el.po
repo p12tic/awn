@@ -1,0 +1,358 @@
+# Greek translation of avant-window-navigator
+# Copyright (C) 2007 avant-window-navigator'S COPYRIGHT HOLDER
+# Copyright (C) 2007 Ado Papas <ado.papas@yahoo.gr>
+# This file is distributed under the same license as the PACKAGE package.
+# Ado Papas <ado.papas@yahoo.gr>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: avant-window-navigator 0.1.1-svn\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-23 15:51+0100\n"
+"PO-Revision-Date: 2007-08-20 15:37+0200\n"
+"Last-Translator: ado papas <ado.papas@yahoo.gr>\n"
+"Language-Team: ado papas <ado.papas@yahoo.gr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Greek\n"
+"X-Poedit-Country: GREECE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2;plural=0\n"
+
+#: ../applets/switcher/applet.c:117
+msgid "Rows:"
+msgstr "Γραμμές:"
+
+#: ../applets/switcher/applet.c:129
+msgid "Width:"
+msgstr "Πλάτος:"
+
+#: ../applets/switcher/applet.c:141
+msgid "Height:"
+msgstr "Ύψος:"
+
+#: ../applets/trash/trashapplet.glade.h:1
+msgid "<b>From:</b>"
+msgstr "<b>Από:</b>"
+
+#: ../applets/trash/trashapplet.glade.h:2
+msgid "<big><b>Emptying the Trash</b></big>"
+msgstr "<big><b>Άδειασμα των απορριμμάτων</b></big>"
+
+#: ../applets/trash/trashapplet.glade.h:3
+msgid "Emptying the Trash"
+msgstr "Άδειασμα των απορριμμάτων"
+
+#: ../awn-manager/window.glade.h:1
+msgid "<b>Active Icon</b>"
+msgstr "<b>Ενεργό εικονίδιο</b>"
+
+#: ../awn-manager/window.glade.h:2
+msgid "<b>Applet Preferences</b>"
+msgstr "<b>Προτιμήσεις Μικροεφαρμογών</b>"
+
+#: ../awn-manager/window.glade.h:3
+msgid "<b>Arrows</b>"
+msgstr "<b>Βέλη</b>"
+
+#: ../awn-manager/window.glade.h:4
+msgid "<b>Bar behaviour</b>"
+msgstr "<b>Συμπεριφορά μπάρας</b>"
+
+#: ../awn-manager/window.glade.h:5
+msgid "<b>Borders</b>"
+msgstr "<b>Περιγράμματα</b>"
+
+#: ../awn-manager/window.glade.h:6
+msgid "<b>General Preferences</b>"
+msgstr "<b>Γενικές Προτιμήσεις</b>"
+
+#: ../awn-manager/window.glade.h:7
+msgid "<b>Gradient</b>"
+msgstr "<b>Φωτοσκιάσεις</b>"
+
+#: ../awn-manager/window.glade.h:8
+msgid "<b>Highlight</b>"
+msgstr "<b>Τονισμός</b>"
+
+#: ../awn-manager/window.glade.h:9
+msgid "<b>Launcher Preferences</b>"
+msgstr "<b>Προτιμήσεις Εκκινητών</b>"
+
+#: ../awn-manager/window.glade.h:10
+msgid "<b>Look </b>"
+msgstr "<b>Εμφάνιση</b>"
+
+#: ../awn-manager/window.glade.h:11
+msgid "<b>Pattern</b>"
+msgstr "<b>Μοτίβο</b>"
+
+#: ../awn-manager/window.glade.h:12
+msgid "<b>Separator</b>"
+msgstr "<b>Διαχωριστικό</b>"
+
+#: ../awn-manager/window.glade.h:13
+msgid "<b>Text</b>"
+msgstr "<b>Κείμενο</b>"
+
+#: ../awn-manager/window.glade.h:14
+msgid "<b>Themes</b>"
+msgstr "<b>Θέμα</b>"
+
+#: ../awn-manager/window.glade.h:15
+msgid "<b>Windows</b>"
+msgstr "<b>Παράθυρα</b>"
+
+#: ../awn-manager/window.glade.h:16
+msgid "Add and remove applets"
+msgstr "Προσθήκη και αφαίρεση μικροεφαρμογών"
+
+#: ../awn-manager/window.glade.h:17
+msgid "Add and remove launchers"
+msgstr "Προσθήκη και αφαίρεση εκκινητών"
+
+#: ../awn-manager/window.glade.h:18
+msgid "Add, remove and save themes"
+msgstr "Προσθήκη, αφαίρεση και αποθήκευση θεμάτων"
+
+#: ../awn-manager/window.glade.h:19
+msgid "Auto hide bar when not in use"
+msgstr "Αυτόματη απόκρυψη μπάρας όταν δεν είναι σε χρήση"
+
+#: ../awn-manager/window.glade.h:20
+msgid "Awn Manager"
+msgstr "Διαχειριστής Awn"
+
+#: ../awn-manager/window.glade.h:21
+msgid "Background color:"
+msgstr "Χρώμα παρασκηνίου:"
+
+#: ../awn-manager/window.glade.h:22
+msgid "Bar Appearance"
+msgstr "Εμφάνιση Μπάρας"
+
+#: ../awn-manager/window.glade.h:23
+msgid "Bar angle: "
+msgstr "Γωνία Μπάρας:"
+
+#: ../awn-manager/window.glade.h:24
+msgid "Bar height (requires restart): "
+msgstr "Ύψος μπάρας (απαιτεί επανεκκίνηση)"
+
+#: ../awn-manager/window.glade.h:25
+msgid "Change the look and behaviour of the dock"
+msgstr "Αλλαγή της εμφάνισής και της συμπεριφοράς της μπάρας"
+
+#: ../awn-manager/window.glade.h:26
+msgid "Color:"
+msgstr "Χρώμα:"
+
+#: ../awn-manager/window.glade.h:27
+msgid "Enable pattern"
+msgstr "Ενεργοποίηση μοτίβου"
+
+#: ../awn-manager/window.glade.h:28
+msgid "Enable rounded corners"
+msgstr "Ενεργοποίηση στρογγυλεμένων άκρων"
+
+#: ../awn-manager/window.glade.h:29
+msgid "Fade effect (experimental)"
+msgstr ""
+
+#: ../awn-manager/window.glade.h:30
+msgid "First step color:"
+msgstr "Χρώμα πρώτου βήματος:"
+
+#: ../awn-manager/window.glade.h:31
+msgid "Font:"
+msgstr "Γραμματοσειρά:"
+
+#: ../awn-manager/window.glade.h:32
+msgid "General"
+msgstr "Γενικά"
+
+#: ../awn-manager/window.glade.h:33
+msgid "Glass Engine"
+msgstr "Μηχανή γυαλιού"
+
+#: ../awn-manager/window.glade.h:34
+msgid "Icon offset (requires restart): "
+msgstr "Μετατόπιση εικονιδίων (απαιτεί επανεκκίνηση)"
+
+#: ../awn-manager/window.glade.h:35
+msgid "Internal border:"
+msgstr "Εσωτερικό περίγραμμα:"
+
+#: ../awn-manager/window.glade.h:36
+msgid "Main border:"
+msgstr "Βασικό περίγραμμα:"
+
+#: ../awn-manager/window.glade.h:37
+msgid "Maximized windows don't cover the bar (requires restart)"
+msgstr "Τα μεγιστοποιημένα παράθυρα δεν καλύπτουν την μπάρα (απαιτεί επανεκκίνηση)"
+
+#: ../awn-manager/window.glade.h:38
+msgid "Pattern Engine"
+msgstr "Μηχανή Μοτίβων"
+
+#: ../awn-manager/window.glade.h:39
+msgid "Second step color:"
+msgstr "Χρώμα δεύτερου βήματος:"
+
+#: ../awn-manager/window.glade.h:40
+msgid "Select A File"
+msgstr "Επιλέξτε ένα αρχείο"
+
+#: ../awn-manager/window.glade.h:41
+msgid "Separator color:"
+msgstr "Χρώμα διαχωριστικού:"
+
+#: ../awn-manager/window.glade.h:42
+msgid "Shadow color:"
+msgstr "Χρώμα σκιάς:"
+
+#: ../awn-manager/window.glade.h:43
+msgid "Show separator between launchers and tasks"
+msgstr "Προβολή διαχωριστικού μεταξύ εκκινητών και εργασιών"
+
+#: ../awn-manager/window.glade.h:44
+msgid "Show windows from all viewports"
+msgstr "Προβολή παραθύρων από όλους τους χώρους εργασιών"
+
+#: ../awn-manager/window.glade.h:45
+msgid "Task Appearance"
+msgstr "Εμφάνιση Εργασιών"
+
+#: ../awn-manager/window.glade.h:46
+msgid "Tasks have arrows"
+msgstr "Οι εργασίες έχουν βέλη"
+
+#: ../awn-manager/window.glade.h:47
+msgid "The bar automatically hides when not used"
+msgstr "Η μπάρα αποκρύβεται αυτόματα όταν δεν είναι σε χρήση"
+
+#: ../awn-manager/window.glade.h:48
+msgid "Transparency:"
+msgstr "Διαφάνεια:"
+
+#: ../awn-manager/window.glade.h:49
+msgid "Unused icons fade when mouse-over"
+msgstr "Ξεθώριασμα αχρησιμοποίητων εικονιδίων"
+
+#: ../awn-manager/window.glade.h:50
+msgid "Windows don't overlap the bar if this is set"
+msgstr "Τα παράθυρα δεν καλύπτουν την μπάρα εάν επιλεχθεί"
+
+#: ../applets/notification-area/eggtraymanager.c:146
+msgid "Orientation"
+msgstr "Προσανατολισμός"
+
+#: ../applets/notification-area/eggtraymanager.c:147
+msgid "The orientation of the tray."
+msgstr "Ο προσανατολισμός της περιοχής ειδοποιήσεων."
+
+#: ../applets/switcher/switcher.schemas.in.h:1
+msgid "How many rows the switcher should have"
+msgstr "Πόσες γραμμές θα έχει ο επιλογέας"
+
+#: ../applets/switcher/switcher.schemas.in.h:2
+msgid "The height of the switcher"
+msgstr "Το ύψος του επιλογέα"
+
+#: ../applets/switcher/switcher.schemas.in.h:3
+msgid "The width of the switcher"
+msgstr "Το πλάτος του επιλογέα"
+
+#: ../applets/trash/trash.schemas.in.h:1
+msgid "Whether the trash applet should show a count on its icon"
+msgstr "Εάν η μικροεφαρμογή απορριμμάτων θα δείχνει μέτρηση στο εικονίδιο"
+
+#: ../applets/trash/trashapplet.c:153
+#, c-format
+msgid "Unable to find the Trash directory: %s"
+msgstr "Αδυναμία εύρεσης φακέλου απορριμμάτων: %s"
+
+#: ../applets/trash/trashapplet.c:546
+msgid "No Items in Trash"
+msgstr "Κανένα Αντικείμενο στον Κάδο"
+
+#: ../applets/trash/trashapplet.c:550
+#, c-format
+msgid "%d Item in Trash"
+msgid_plural "%d Items in Trash"
+msgstr[0] "%d Αντικείμενο στον Κάδο"
+msgstr[1] "%d Αντικείμενα στον Κάδο"
+
+#: ../applets/trash/trashapplet.c:677
+#, c-format
+msgid "Removing item %lu of %lu"
+msgstr "Αφαίρεση αντικειμένου %lu από %lu"
+
+#: ../applets/trash/trashapplet.c:709
+msgid "Removing:"
+msgstr "Αφαίρεση:"
+
+#: ../applets/trash/trashapplet.c:749
+msgid "Empty all of the items from the trash?"
+msgstr "Άδειασμα όλων των αντικειμένων από τον κάδο;"
+
+#: ../applets/trash/trashapplet.c:752
+msgid "If you choose to empty the trash, all items in it will be permanently lost. Please note that you can also delete them separately."
+msgstr "Εάν επιλέξετε να αδειάσετε τον κάδο, όλα τα αντικείμενα σε αυτόν θα χαθούν δια παντός. Παρακαλώ έχετε υπ' όψη σας ότι μπορείτε να τα διαγράψετε ξεχωριστά."
+
+#: ../applets/trash/trashapplet.c:772
+msgid "_Empty Trash"
+msgstr "Ά_δειασμα Απορριμμάτων"
+
+#: ../applets/trash/trashapplet.c:851
+#, c-format
+msgid ""
+"Error while spawning nautilus:\n"
+"%s"
+msgstr ""
+"Σφάλμα κατά την εκκίνηση του Ναύτιλου:\n"
+"%s"
+
+#: ../applets/trash/trashapplet.c:871
+#, c-format
+msgid "There was an error displaying help: %s"
+msgstr "Υπήρξε σφάλμα κατά την προβολή της βοήθειας: %s"
+
+#: ../applets/trash/trashapplet.c:894
+msgid "Trash Applet"
+msgstr "Μικροεφαρμογή Απορριμάτων"
+
+#: ../applets/trash/trashapplet.c:897
+msgid "A GNOME trash bin that lives in your panel. You can use it to view the trash or drag and drop items into the trash."
+msgstr "Ο κάδος απορριμμάτων του GNOME εμφανίζεται στην μπάρα. Μπορείτε να τον χρησιμοποιήσετε για να δείτε τα απορρίμματα ή να σύρετε αντικείμενα στον κάδο."
+
+#: ../applets/trash/trashapplet.c:902
+msgid "translator-credits"
+msgstr ""
+
+#: ../applets/trash/trashapplet.c:922
+msgid "Delete Immediately?"
+msgstr "Άμεση Διαγραφή; "
+
+#: ../applets/trash/trashapplet.c:951
+msgid "Cannot move items to trash, do you want to delete them immediately?"
+msgstr "Αδυναμία μετακίνησης αντικειμένων στον κάδο, θέλετε να γίνει άμεση διαγραφή τους."
+
+#: ../applets/trash/trashapplet.c:954
+msgid "Cannot move some items to trash, do you want to delete these immediately?"
+msgstr "Αδυναμία μετακίνησης μερικών αντικειμένων στον κάδο, θέλετε να γίνει άμεση διαγραφή τους."
+
+#: ../applets/trash/trashapplet.c:1054
+#: ../applets/trash/trashapplet.c:1071
+#, c-format
+msgid ""
+"Unable to move to trash:\n"
+"%s"
+msgstr ""
+"Αδυναμία μετακίνησης στα απορρίμματα:\n"
+"%s"
+
+#: ../src/awn-task.c:2461
+msgid "Change Icon"
+msgstr "Αλλαγή Εικονιδίου"
+

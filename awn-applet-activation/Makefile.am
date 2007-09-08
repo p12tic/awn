@@ -15,7 +15,6 @@ awn_applet_activation_LDADD  = $(DEPS_LIBS)	\
 	$(top_builddir)/libawn/libawn.la  
 
 awn_applet_activation_SOURCES =			\
-	main.c				        \
-	awn-plug.c                              \
-	awn-plug.h                              
+	main.c				        
+
 

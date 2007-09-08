@@ -1,0 +1,242 @@
+# Russian translation of avant-window-navigator.
+# Copyright (C) 2007 Neil Jagdish Patel
+# This file is distributed under the same license as the avant-window-navigator package.
+# Andrey Fedoseev <andrey.fedoseev@gmail.com>, 2007.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: avant-window-navigator-svn\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-23 15:51+0100\n"
+"PO-Revision-Date: 2007-03-07 22:00+0500\n"
+"Last-Translator: Anatoly Evdokimov <saibaneko@gmail.com>\n"
+"Language-Team: Russian <ru@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../applets/switcher/applet.c:116
+msgid "Rows:"
+msgstr "Ряды:"
+
+#: ../applets/switcher/applet.c:128
+msgid "Width:"
+msgstr "Ширина:"
+
+#: ../applets/switcher/applet.c:140
+msgid "Height:"
+msgstr "Высота:"
+
+#: ../applets/trash/trashapplet.glade.h:1
+#, fuzzy
+msgid "<b>From:</b>"
+msgstr "<b>Из:</b>"
+
+#: ../applets/trash/trashapplet.glade.h:2
+msgid "<big><b>Emptying the Trash</b></big>"
+msgstr "Очистить корзину"
+
+#: ../applets/trash/trashapplet.glade.h:3
+msgid "Emptying the Trash"
+msgstr "Очистить корзину"
+
+#: ../avant-preferences/window.glade.h:1
+msgid "<b>Active Icon</b>"
+msgstr "<b>Активный значок</b>"
+
+#: ../avant-preferences/window.glade.h:2
+#, fuzzy
+msgid "<b>Arrows</b>"
+msgstr "<b>Стрелки</b>"
+
+#: ../avant-preferences/window.glade.h:3
+#, fuzzy
+msgid "<b>Bar behaviour</b>"
+msgstr "<b>Поведение панели</b>"
+
+#: ../avant-preferences/window.glade.h:4
+msgid "<b>Borders</b>"
+msgstr "<b>Границы</b>"
+
+#: ../avant-preferences/window.glade.h:5
+msgid "<b>Corners</b>"
+msgstr "<b>Углы</b>"
+
+#: ../avant-preferences/window.glade.h:6
+msgid "<b>Gradient</b>"
+msgstr "<b>Градиент</b>"
+
+#: ../avant-preferences/window.glade.h:7
+msgid "<b>Highlight</b>"
+msgstr "<b>Подсветка</b>"
+
+#: ../avant-preferences/window.glade.h:8
+msgid "<b>Pattern</b>"
+msgstr "<b>Фоновый рисунок</b>"
+
+#: ../avant-preferences/window.glade.h:9
+#, fuzzy
+msgid "<b>Separator</b>"
+msgstr "<b>Разделитель</b>"
+
+#: ../avant-preferences/window.glade.h:10
+msgid "<b>Text</b>"
+msgstr "<b>Текст</b>"
+
+#: ../avant-preferences/window.glade.h:11
+msgid "<b>Windows</b>"
+msgstr "<b>Окна</b>"
+
+#: ../avant-preferences/window.glade.h:12
+msgid "Auto hide bar when not in use"
+msgstr "Автоматически скрывать панель, если она не используется"
+
+#: ../avant-preferences/window.glade.h:13
+msgid "Avant Preferences"
+msgstr "Настройка Avant"
+
+#: ../avant-preferences/window.glade.h:14
+#, fuzzy
+msgid "Background color:"
+msgstr "Цвет фона:"
+
+#: ../avant-preferences/window.glade.h:15
+#, fuzzy
+msgid "Bar Appearance"
+msgstr "Внешний вид панели"
+
+#: ../avant-preferences/window.glade.h:16
+msgid "Bold"
+msgstr "Жирный"
+
+#: ../avant-preferences/window.glade.h:17
+#, fuzzy
+msgid "Color:"
+msgstr "Цвет:"
+
+#: ../avant-preferences/window.glade.h:18
+msgid "Enable pattern"
+msgstr "Включить фоновый рисунок"
+
+#: ../avant-preferences/window.glade.h:19
+msgid "Enable rounded corners"
+msgstr "Включить сруглённые углы"
+
+#: ../avant-preferences/window.glade.h:20
+msgid "Fade effect (experimental)"
+msgstr "Эффект исчезновения (экспериментально)"
+
+#: ../avant-preferences/window.glade.h:21
+#, fuzzy
+msgid "First step color:"
+msgstr "Начальный цвет:"
+
+#: ../avant-preferences/window.glade.h:22
+msgid "Font size:"
+msgstr "Размер шрифта"
+
+#: ../avant-preferences/window.glade.h:23
+msgid "General"
+msgstr "Общее"
+
+#: ../avant-preferences/window.glade.h:24
+msgid "Glass Engine"
+msgstr "Прозрачность"
+
+#: ../avant-preferences/window.glade.h:25
+msgid "Internal border:"
+msgstr "Внутренняя граница:"
+
+#: ../avant-preferences/window.glade.h:26
+msgid "Italic"
+msgstr "Курсив"
+
+#: ../avant-preferences/window.glade.h:27
+msgid "Main border:"
+msgstr "Основная граница:"
+
+#: ../avant-preferences/window.glade.h:28
+msgid "Maximized windows don't cover the bar (requires restart)"
+msgstr "При раскрытии окон на весь экран не перекрывать панель (требуется перезапуск)"
+
+#: ../avant-preferences/window.glade.h:29
+msgid "Pattern Engine"
+msgstr "Фон"
+
+#: ../avant-preferences/window.glade.h:30
+#, fuzzy
+msgid "Second step color:"
+msgstr "Конечный цвет:"
+
+#: ../avant-preferences/window.glade.h:31
+msgid "Select A File"
+msgstr "Выберите файл"
+
+#: ../avant-preferences/window.glade.h:32
+#, fuzzy
+msgid "Separator color:"
+msgstr "Цвет разделителя:"
+
+#: ../avant-preferences/window.glade.h:33
+#, fuzzy
+msgid "Shadow color:"
+msgstr "Цвет тени:"
+
+#: ../avant-preferences/window.glade.h:34
+msgid "Show separator between launchers and tasks"
+msgstr "Показывать разделитель между кнопками запуска и задачами"
+
+#: ../avant-preferences/window.glade.h:35
+msgid "Show windows from all viewports"
+msgstr "Показывать окна со всех рабочих мест"
+
+#: ../avant-preferences/window.glade.h:36
+#, fuzzy
+msgid "Task Appearance"
+msgstr "Внешний вид панели"
+
+#: ../avant-preferences/window.glade.h:37
+msgid "Tasks have arrows"
+msgstr "Задачи отмечаются стрелками"
+
+#: ../avant-preferences/window.glade.h:38
+msgid "The bar automatically hides when not used"
+msgstr "Панель автоматически скрывается когда не используется"
+
+#: ../avant-preferences/window.glade.h:39
+msgid "Transparency:"
+msgstr "Прозрачность:"
+
+#: ../avant-preferences/window.glade.h:40
+msgid "Unused icons fade when mouse-over"
+msgstr "Неиспользуемые значки исчезают если провести сверху указателем мышки"
+
+#: ../avant-preferences/window.glade.h:41
+msgid "Windows don't overlap the bar if this is set"
+msgstr "Окна не накладываются на панель"
+
+#: ../avant-applets/avant-applets.glade.h:1
+msgid "Add Applet"
+msgstr "Добавить апплет"
+
+#: ../avant-applets/avant-applets.glade.h:2
+#, fuzzy
+msgid "Avant Applet Preferences"
+msgstr "Настройка Avant"
+
+#: ../avant-applets/avant-applets.glade.h:3
+#: ../avant-launchers/avant-launchers.glade.h:2
+msgid "Positions"
+msgstr "Расположение"
+
+#: ../avant-launchers/avant-launchers.glade.h:1
+#, fuzzy
+msgid "Avant Launcher Preferences"
+msgstr "Настройка Avant"
+
+#~ msgid "General Appearance"
+#~ msgstr "Общий внешний вид"
+
+#~ msgid "Window Management"
+#~ msgstr "Управление окнами"

@@ -56,6 +56,7 @@ static int separator			= 0;
 static int draw_separator		= 0;
 int bar_height = 0;
 int icon_offset = 0;
+int top_offset = 0;
 static GtkWidgetClass *parent_class = NULL;
 
 static void _on_alpha_screen_changed (GtkWidget* pWidget, GdkScreen* pOldScreen, GtkWidget* pLabel);
@@ -170,10 +171,10 @@ render_rect (cairo_t *cr, double x, double y, double width, double height, doubl
 		x1	   = x+width,
 		y1	   = y+height;
 
-		cairo_move_to  (cr, x0 + apply_perspective_x(width, height/2, 0)    , y0 + apply_perspective_y( height ) );
-		cairo_line_to  (cr, x0 + apply_perspective_x(width, height/2, width), y0 + apply_perspective_y( height ) );
-		cairo_line_to  (cr, x0 + apply_perspective_x(width, 2*offset, width), y1-2*offset);
-		cairo_line_to  (cr, x0 + apply_perspective_x(width, 2*offset, 0), y1-2*offset);
+		cairo_move_to  (cr, x0 + apply_perspective_x(width, height/2, 0)    , y0 + apply_perspective_y( height ) + top_offset);
+		cairo_line_to  (cr, x0 + apply_perspective_x(width, height/2, width), y0 + apply_perspective_y( height ) + top_offset);
+		cairo_line_to  (cr, x0 + apply_perspective_x(width, 2*offset, width), y1-2*offset + top_offset);
+		cairo_line_to  (cr, x0 + apply_perspective_x(width, 2*offset, 0),     y1-2*offset + top_offset);
 
 	       	cairo_close_path (cr);
 	}
@@ -205,7 +206,7 @@ glass_engine (cairo_t *cr, double x, gint width, gint height, gint offset)
 	cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
 	/* main gradient */
-	pat = cairo_pattern_create_linear (0.0, 0.0, 0.0, height);
+	pat = cairo_pattern_create_linear (0.0, 0.0, 0.0, height+top_offset);
 	cairo_pattern_add_color_stop_rgba (pat, 0.5, 
 						settings->g_step_1.red, 
 				   		settings->g_step_1.green, 
@@ -216,7 +217,7 @@ glass_engine (cairo_t *cr, double x, gint width, gint height, gint offset)
 				   		settings->g_step_2.green, 
 				   		settings->g_step_2.blue,
 				   		settings->g_step_2.alpha);
-	render_rect (cr, x, height/2-offset, width, height/2+offset, 0);
+	render_rect (cr, x, height/2, width, height/2+offset, 0);
 	cairo_set_source(cr, pat);
 	cairo_fill(cr);
 	cairo_pattern_destroy(pat);
@@ -235,7 +236,7 @@ pattern_engine (cairo_t *cr, double x, gint width, gint height, gint offset)
         cairo_pattern_set_extend (pattern, CAIRO_EXTEND_REPEAT);
 
         cairo_set_source (cr, pattern);
-	render_rect  (cr, x, (height/2)-offset, width, (height/2)+offset, 0);
+	render_rect  (cr, x, (height/2), width, (height/2)+offset, 0);
         
         cairo_save(cr);
         	cairo_clip(cr);
@@ -251,19 +252,18 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 {
 	AwnBarPrivate *priv = AWN_BAR_GET_PRIVATE (bar);
         gint width = current_width;
-        
+
+	height -= settings->icon_offset;
         if( settings->bar_angle != 0 ) {
 		icon_offset = 0;
-		/* count extra space on left and right from bar */
-		if(settings->icon_offset-3<=height/4){
-			width += 2*apply_perspective_x(width, settings->icon_offset-3, 0);
-		} else {
-			width += 2*apply_perspective_x(width, height/4, 0);
-		}
+		top_offset = settings->icon_offset;
+		//top_offset = 0;
+		width += 2*apply_perspective_x(width, height/4, 0); /* count extra space on left and right from bar */
 	} else {
 		icon_offset = settings->icon_offset;
+		top_offset = 0;
 	}
-       
+
 	cairo_set_source_rgba (cr, 1.0f, 1.0f, 1.0f, 0.0f);
 	cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
 	cairo_paint (cr);
@@ -296,15 +296,15 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 				   		settings->g_histep_2.alpha);
 	
 	if (settings->bar_angle == 0)
-		render_rect (cr, x+1, height/2-icon_offset, width-2, height/5, 0);
+		render_rect (cr, x+1, height/2, width-2, height/5, 0);
 	else {
 		render_rect (cr, 
                              x+3+apply_perspective_x(width, 
-                                                     bar_height/4, 
+                                                     settings->bar_height/4, 
                                                      0),
                              height*7/10, 
                              width-6-2*apply_perspective_x(width, 
-                                                           bar_height/4, 
+                                                           settings->bar_height/4, 
                                                            0), 
                              height/5, 0);
         }
@@ -317,7 +317,7 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
                                            settings->border_color.green,
                                            settings->border_color.blue,
                                            settings->border_color.alpha+0.2);
-                cairo_rectangle (cr, x, height-3, width, 3);
+                cairo_rectangle (cr, x, height-3+top_offset, width, 3+top_offset);
                 cairo_fill (cr);
                 
                 /* Remove thetwo trailing triangles */
@@ -337,7 +337,7 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 				   settings->hilight_color.green, 
 				   settings->hilight_color.blue,
 				   settings->hilight_color.alpha);
-	render_rect (cr, x+1.5, (height/2-icon_offset)+1.5, width-3, (height/2+icon_offset), 1);
+	render_rect (cr, x+1.5, (height/2)+1.5, width-3, (height/2+icon_offset), 1);
 	cairo_stroke(cr);
 	
 	/* border */
@@ -345,30 +345,18 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 				   settings->border_color.green, 
 				   settings->border_color.blue,
 				   settings->border_color.alpha);
-	render_rect (cr, x+0.5, (height/2-icon_offset)+1, width-1, (height/2+icon_offset), 0);
+	render_rect (cr, x+0.5, (height/2)+1, width-1, (height/2+icon_offset), 0);
 	cairo_stroke(cr);
 
 	/* separator */
 	if (draw_separator && settings->show_separator) {
-		double real_x = (settings->monitor.width-dest_width)/2.0;
-		if (current_width > dest_width )
-			real_x = x + current_width - dest_width;
-		else
-			real_x = x + dest_width - current_width;
-		
-		if (settings->bar_angle != 0)
-		{
-			if(settings->icon_offset-3<=height/4){
-				real_x += apply_perspective_x(width, settings->icon_offset-3, 0);
-			} else {
-				real_x += apply_perspective_x(width, height/4, 0);
-			}
-                }
+		double real_x = (settings->monitor.width-current_width)/2.0;
+
 		cairo_set_line_width (cr, 1.0);
 		
-		cairo_move_to (cr, real_x+apply_perspective_x(width, bar_height/2, separator-2.5), bar_height- icon_offset+3 + apply_perspective_y(bar_height));
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-2.5), (bar_height + 2) * 2-3);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-2.5), (bar_height + 2) * 2);
+		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator-2.5), settings->bar_height+3 + apply_perspective_y(settings->bar_height)+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-2.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-2.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
 		cairo_set_source_rgba (cr, settings->hilight_color.red, 
 				   	   settings->hilight_color.green, 
 				           settings->hilight_color.blue,
@@ -376,9 +364,9 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 		
 		cairo_stroke(cr);
 		
-		cairo_move_to (cr, real_x+apply_perspective_x(width, bar_height/2, separator-1.5), bar_height- icon_offset+2 + apply_perspective_y(bar_height));
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-1.5), (bar_height + 2) * 2-3);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-1.5), (bar_height + 2) * 2);
+		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator-1.5), settings->bar_height+2 + apply_perspective_y(settings->bar_height)+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-1.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-1.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
 		cairo_set_source_rgba (cr, settings->border_color.red, 
 				   	   settings->border_color.green, 
 				           settings->border_color.blue,
@@ -387,9 +375,9 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 		cairo_stroke(cr);
 		
 		cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-		cairo_move_to (cr, real_x+apply_perspective_x(width, bar_height/2, separator-0.5), bar_height- icon_offset+2 + apply_perspective_y(bar_height));
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-0.5), (bar_height + 2) * 2-3);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-0.5), (bar_height + 2) * 2);
+		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator-0.5), settings->bar_height+2 + apply_perspective_y(settings->bar_height)+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-0.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-0.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
 		cairo_set_source_rgba (cr, settings->sep_color.red, 
 				   	   settings->sep_color.green, 
 				           settings->sep_color.blue,
@@ -398,18 +386,18 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 	
 
 		cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-		cairo_move_to (cr, real_x+apply_perspective_x(width, bar_height/2, separator+0.5), bar_height- icon_offset+2 + apply_perspective_y(bar_height));
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+0.5), (bar_height + 2) * 2-3);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-0.5), (bar_height + 2) * 2);
+		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator+0.5), settings->bar_height+2 + apply_perspective_y(settings->bar_height)+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+0.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+0.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
 		cairo_set_source_rgba (cr, settings->border_color.red, 
 				   	   settings->border_color.green, 
 				           settings->border_color.blue,
 				           settings->border_color.alpha);
 		cairo_stroke(cr);
 
-		cairo_move_to (cr, real_x+apply_perspective_x(width, bar_height/2, separator+1.5), bar_height- icon_offset+3 + apply_perspective_y(bar_height));
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+1.5), (bar_height + 2) * 2-3);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+1.5), (bar_height + 2) * 2);
+		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator+1.5), settings->bar_height+3 + apply_perspective_y(settings->bar_height)+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+1.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+1.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
 		cairo_set_source_rgba (cr, settings->hilight_color.red, 
 				   	   settings->hilight_color.green, 
 				           settings->hilight_color.blue,
@@ -419,31 +407,24 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 
         GList *s;
         for (s = priv->seps; s != NULL; s = s->next) {
+
                 if (!GTK_IS_WIDGET (s->data))
                         continue;
 
                 gint sep = (GTK_WIDGET (s->data))->allocation.x;
                 sep += (GTK_WIDGET (s->data))->allocation.width/2;
 
-                double real_x = (settings->monitor.width-dest_width)/2.0;
-		if (current_width > dest_width )
-			real_x = x + current_width - dest_width;
-		else
-			real_x = x + dest_width - current_width;
-		
-                if (settings->bar_angle != 0) {
-			if(settings->icon_offset-3<=height/4){
-				real_x += apply_perspective_x(width, settings->icon_offset-3, 0);
-			} else {
-				real_x += apply_perspective_x(width, height/4, 0);
-			}
-		}
+		// separator jumps if it's on right side of launchers/tasks, this fixes it
+		if (sep > separator)
+			sep += current_width - dest_width;
+
+                double real_x = (settings->monitor.width-current_width)/2.0;
 
 		cairo_set_line_width (cr, 1.0);
 		
-		cairo_move_to (cr, real_x+apply_perspective_x(width, bar_height/2, sep-2.5), bar_height- icon_offset+3 + apply_perspective_y(bar_height));
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep-2.5), (settings->bar_height+2)*2-3);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep-2.5), (settings->bar_height+2)*2);
+		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, sep-2.5), settings->bar_height+3 + apply_perspective_y(settings->bar_height)+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep-2.5), (settings->bar_height+2)*2-3+icon_offset+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep-2.5), (settings->bar_height+2)*2+icon_offset+top_offset);
 		cairo_set_source_rgba (cr, settings->hilight_color.red, 
 				   	   settings->hilight_color.green, 
 				           settings->hilight_color.blue,
@@ -451,9 +432,9 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 		
 		cairo_stroke(cr);
 		
-		cairo_move_to (cr, real_x+apply_perspective_x(width, bar_height/2, sep-1.5), bar_height- icon_offset+2 + apply_perspective_y(bar_height));
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep-1.5), (settings->bar_height+2)*2-3);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep-1.5), (settings->bar_height+2)*2);
+		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, sep-1.5), settings->bar_height+2 + apply_perspective_y(settings->bar_height)+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep-1.5), (settings->bar_height+2)*2-3+icon_offset+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep-1.5), (settings->bar_height+2)*2+icon_offset+top_offset);
 		cairo_set_source_rgba (cr, settings->border_color.red, 
 				   	   settings->border_color.green, 
 				           settings->border_color.blue,
@@ -462,9 +443,9 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 		cairo_stroke(cr);
 		
 		cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-		cairo_move_to (cr, real_x+apply_perspective_x(width, bar_height/2, sep-0.5), bar_height- icon_offset+2 + apply_perspective_y(bar_height));
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep-0.5), (settings->bar_height+2)*2-3);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep-0.5), (settings->bar_height+2)*2);
+		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, sep-0.5), settings->bar_height+2 + apply_perspective_y(settings->bar_height)+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep-0.5), (settings->bar_height+2)*2-3+icon_offset+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep-0.5), (settings->bar_height+2)*2+icon_offset+top_offset);
 		cairo_set_source_rgba (cr, settings->sep_color.red, 
 				   	   settings->sep_color.green, 
 				           settings->sep_color.blue,
@@ -473,9 +454,9 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 	
 
 		cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-		cairo_move_to (cr, real_x+apply_perspective_x(width, bar_height/2, sep+0.5), bar_height- icon_offset+2 + apply_perspective_y(bar_height));
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep+0.5), (settings->bar_height+2)*2-3);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep+0.5), (settings->bar_height+2)*2);
+		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, sep+0.5), settings->bar_height+2 + apply_perspective_y(settings->bar_height)+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep+0.5), (settings->bar_height+2)*2-3+icon_offset+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep+0.5), (settings->bar_height+2)*2+icon_offset+top_offset);
 		cairo_set_source_rgba (cr, settings->border_color.red, 
 				   	   settings->border_color.green, 
 				           settings->border_color.blue,
@@ -483,9 +464,9 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 		cairo_stroke(cr);
 
 		
-		cairo_move_to (cr, real_x+apply_perspective_x(width, bar_height/2, sep+1.5), bar_height- icon_offset+3 + apply_perspective_y(bar_height));
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep+1.5), (settings->bar_height+2)*2-3);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep+1.5), (settings->bar_height+2)*2);
+		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, sep+1.5), settings->bar_height+3 + apply_perspective_y(settings->bar_height)+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep+1.5), (settings->bar_height+2)*2-3+icon_offset+top_offset);
+		cairo_line_to (cr, real_x+apply_perspective_x(width, 3,sep+1.5), (settings->bar_height+2)*2+icon_offset+top_offset);
 		cairo_set_source_rgba (cr, settings->hilight_color.red, 
 				   	   settings->hilight_color.green, 
 				           settings->hilight_color.blue,
@@ -633,13 +614,13 @@ _position_window (GtkWidget *window)
 	
 	gtk_window_get_size(GTK_WINDOW(window), &ww, &wh);
 	
-	y = settings->monitor.height - ((bar_height + 2) * 2);
+	y = settings->monitor.height - ((settings->bar_height + 2) * 2 + settings->icon_offset);
 	//x = (int) ( (settings->monitor.width - ww)/2);
 	x = 0;
 	if ( (settings->monitor.width) != ww) {
 		gtk_window_resize(GTK_WINDOW(window), 
 				  settings->monitor.width, 
-				  ((bar_height+2) *2));
+				  ((settings->bar_height+2) *2 + settings->icon_offset));
 		gtk_window_move(GTK_WINDOW(window), x, y);
 	}
 	

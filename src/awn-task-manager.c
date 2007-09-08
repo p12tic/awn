@@ -27,12 +27,12 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
+#include <libawn/awn-title.h>
 
 #include "config.h"
 
 #include "awn-task-manager.h"
 
-#include "awn-title.h"
 #include "awn-task.h"
 #include "awn-bar.h"
 
@@ -475,8 +475,6 @@ _task_manager_window_closed (WnckScreen *screen, WnckWindow *window,
 
 	_reparent_windows(task_manager);
 	_refresh_box(task_manager);
-	
-	_task_manager_check_width (task_manager);
 }
 
 static void
@@ -532,7 +530,6 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 	AwnTaskManagerPrivate *priv;
 	GtkWidget *task = NULL;
 	AwnDesktopItem *item = NULL;
-	GError *err = NULL;
 	GString *uri;
 	AwnSettings *settings;
 
@@ -694,6 +691,13 @@ _refresh_box(AwnTaskManager *task_manager)
 	_task_manager_check_width (task_manager);
 }
 
+gboolean
+awn_task_manager_refresh_box (AwnTaskManager *task_manager)
+{
+	_refresh_box(task_manager);
+	return FALSE;
+}
+
 void
 awn_task_manager_remove_launcher (AwnTaskManager *task_manager, gpointer  task)
 {
@@ -753,32 +757,53 @@ _task_manager_check_width (AwnTaskManager *task_manager)
 {
 	AwnTaskManagerPrivate *priv;
 	AwnSettings *settings;
+	gint w, h;
+	gint width;
+	gint x;
+	gint num;
 		
 	priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
 	settings = priv->settings;
-	
-	gint w, h;
+
 	gtk_window_get_size (GTK_WINDOW (settings->window), &w, &h);
 	
-	gint width = settings->bar_height+10;
-	gint i = 0;
+	width = settings->task_width;
+	num = num_tasks + num_launchers;
+	
+	if (num == 0) {
+		awn_task_manager_update_separator_position (task_manager);
+		return;
+	}
+
+	if (w + 20 > settings->monitor_width) {
+		x = w - num * width;
 		
-	for (i =0; i < settings->bar_height+10; i+=2) {
-		gint res = (settings->monitor.width) / width;
-		if (res > (num_tasks+num_launchers)) {
-			break;
+		do {
+			--width;
+		} while (x + num * width + 40 > settings->monitor_width);
+	} else if (width != settings->bar_height + 12 && w + 60 < settings->monitor_width) {
+		x = w - num * width;
+
+		do {
+			++width;
+		} while (x + num * width + 50 < settings->monitor_width);
+	}
+
+	if (width < settings->task_width) {
+		settings->task_width = width;
+		g_list_foreach(priv->launchers, (GFunc)_task_resize, GINT_TO_POINTER (settings->task_width));
+		g_list_foreach(priv->tasks, (GFunc)_task_resize, GINT_TO_POINTER (settings->task_width));
+	} else if (width > settings->task_width) {
+		if (width > settings->bar_height + 12) {
+			settings->task_width = settings->bar_height + 12;
+		} else {
+			settings->task_width = width;
 		}
-		width -=i;
+		g_list_foreach(priv->launchers, (GFunc)_task_resize, GINT_TO_POINTER (settings->task_width));
+		g_list_foreach(priv->tasks, (GFunc)_task_resize, GINT_TO_POINTER (settings->task_width));
 	}
-	
-	if (width != priv->settings->task_width) {
-		priv->settings->task_width = width;
-		g_list_foreach(priv->launchers, (GFunc)_task_resize, GINT_TO_POINTER (width));
-		g_list_foreach(priv->tasks, (GFunc)_task_resize, GINT_TO_POINTER (width));
-		g_print ("New width = %d", width);
-	}
+
 	awn_task_manager_update_separator_position (task_manager);
-	
 }
 
 static void
@@ -809,16 +834,16 @@ typedef struct {
 static void
 _dbus_find_task (AwnTask *task, AwnDBusTerm *term)
 {
-	gchar *temp;
+	gchar *temp = NULL;
 
 	if (term->name) {
 		temp = (gchar *)awn_task_get_application (task);
-		if (strcmp (term->name, temp) == 0) {
+		if (temp && strcmp (term->name, temp) == 0) {
 			term->task = task;
 			return;
 		}
 		temp = (gchar *)awn_task_get_name (task);
-		if (strcmp (term->name, temp) == 0) {
+		if (temp && strcmp (term->name, temp) == 0) {
 			term->task = task;
 			return;
 		}
@@ -1435,12 +1460,12 @@ on_height_changed (DBusGProxy *proxy, gint height, AwnTaskManager *manager)
 	
 	for (l = priv->launchers; l; l = l->next) {
 	
-		awn_task_set_width (AWN_TASK (l->data), height* 5/4);
+		awn_task_set_width (AWN_TASK (l->data), height+12);
 	}
 	
 	for (l = priv->tasks; l; l = l->next) {
 	
-		awn_task_set_width (AWN_TASK (l->data), height* 5/4);
+		awn_task_set_width (AWN_TASK (l->data), height+12);
 	}
 }
 
@@ -1468,8 +1493,14 @@ awn_task_manager_init (AwnTaskManager *task_manager)
                 task_manager, NULL, NULL);
 
         connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
-        if (!connection)
+        if (!connection) {
+		if (error) {
+			g_warning ("Failed to make connection to session bus: %s",
+				   error->message);
+			g_error_free (error);
+		}
                 return;
+	}
 
         proxy = dbus_g_proxy_new_for_name (connection,
                                           "com.google.code.Awn.AppletManager",
@@ -1514,11 +1545,8 @@ awn_task_manager_new (AwnSettings *settings)
 	gtk_widget_show(priv->launcher_box);
 	gtk_widget_show(priv->tasks_box);
 
-	priv->title_window = awn_title_new(priv->settings);
+	priv->title_window = awn_title_get_default ();
 	settings->title = priv->title_window;
-	awn_title_show(AWN_TITLE(priv->title_window), " ", 0, 0);
-	gtk_widget_show(priv->title_window);
-
 
 	_task_manager_load_launchers(AWN_TASK_MANAGER (task_manager));
 
@@ -1532,6 +1560,10 @@ awn_task_manager_new (AwnSettings *settings)
 	                  (gpointer)task_manager);
 
 	g_signal_connect (G_OBJECT(priv->screen), "active_window_changed",
+	                  G_CALLBACK(_task_manager_window_activate),
+	                  (gpointer)task_manager);
+
+	g_signal_connect (G_OBJECT(priv->screen), "viewports_changed",
 	                  G_CALLBACK(_task_manager_window_activate),
 	                  (gpointer)task_manager);
 

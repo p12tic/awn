@@ -80,6 +80,12 @@ static void on_awn_orient_changed (AwnApplet *app,
                                    guint orient,
                                    TrashApplet *applet);
 
+/* Callback function for libawn title */
+static gboolean
+applet_enter_notify_event (GtkWidget *window, GdkEventButton *event, gpointer *data);
+static gboolean
+applet_leave_notify_event (GtkWidget *window, GdkEventButton *event, gpointer *data);
+
 static void update_icons (TrashApplet *applet);
 
 static gboolean 
@@ -130,9 +136,9 @@ trash_applet_init (TrashApplet *applet)
 
 	applet->orient = GTK_ORIENTATION_HORIZONTAL;
 	
-	applet->tooltips = gtk_tooltips_new ();
-	g_object_ref (applet->tooltips);
-	gtk_object_sink (GTK_OBJECT (applet->tooltips));
+	/* Use libawn title instead of GtkTooltip */
+	applet->title = AWN_TITLE(awn_title_get_default ());	
+
 
 	applet->image = gtk_image_new ();
 	//gtk_container_add (GTK_CONTAINER (applet), applet->image);
@@ -183,9 +189,9 @@ trash_applet_destroy (GtkObject *object)
 	TrashApplet *applet = TRASH_APPLET (object);
 	
 	applet->image = NULL;
-	if (applet->tooltips)
-		g_object_unref (applet->tooltips);
-	applet->tooltips = NULL;
+	if (applet->title)
+		g_object_unref (applet->title);
+	applet->title = NULL;
 
 	if (applet->monitor_signal_id)
 		g_signal_handler_disconnect (applet->monitor,
@@ -251,6 +257,15 @@ trash_applet_new (AwnApplet *applet)
                           G_CALLBACK (on_awn_height_changed), (gpointer)app);
         g_signal_connect (G_OBJECT (applet), "orientation-changed",
                     G_CALLBACK (on_awn_orient_changed), (gpointer)app);
+
+	/* connect to mouse enter/leave events */
+	g_signal_connect (G_OBJECT (app->awn_applet), "enter-notify-event",
+			  G_CALLBACK (applet_enter_notify_event),
+			  (gpointer*)app);
+	g_signal_connect (G_OBJECT (app->awn_applet), "leave-notify-event",
+			  G_CALLBACK (applet_leave_notify_event),
+			  (gpointer*)app);
+
   
         update_icons (app);
 	return GTK_WIDGET (app);
@@ -298,6 +313,10 @@ on_awn_height_changed (AwnApplet *app, guint height, TrashApplet *applet)
   applet->height = height;
   gtk_widget_queue_draw (GTK_WIDGET (applet));
 
+  gtk_widget_set_size_request (GTK_WIDGET (app),
+                               height, 
+                               height * 2);
+
   update_icons (applet);
 }
 
@@ -336,7 +355,7 @@ draw (GtkWidget *widget, cairo_t *cr, gint width, gint height)
 	
 	if( applet->y_offset >= 0 )
 	{
-		y = (applet->height + PADDING) + applet->height - applet->y_offset;
+		y = (applet->height + PADDING) + applet->height + applet->y_offset;
 		gdk_cairo_set_source_pixbuf (cr, reflect, PADDING, y);
 		cairo_paint_with_alpha(cr, 0.33);
 		//cairo_paint (cr);
@@ -519,7 +538,6 @@ trash_applet_update (gpointer user_data)
 {
 	TrashApplet *applet = TRASH_APPLET (user_data);
 	gint new_item_count;
-  char *tip_text;
 	TrashState new_state = TRASH_STATE_UNKNOWN;
 	const char *new_icon;
 	GdkScreen *screen;
@@ -543,18 +561,15 @@ trash_applet_update (gpointer user_data)
                 */
 		switch (applet->item_count) {
 		case 0:
-			tip_text = g_strdup (_("No Items in Trash"));
+			applet->title_text = g_strdup (_("No Items in Trash"));
 			break;
 		default:
-			tip_text = g_strdup_printf (ngettext (
+			applet->title_text = g_strdup_printf (ngettext (
 						"%d Item in Trash",
 						"%d Items in Trash",
 						applet->item_count), 
 						    applet->item_count);
 		}
-		gtk_tooltips_set_tip (applet->tooltips, GTK_WIDGET (applet),
-				      tip_text, NULL);
-		g_free (tip_text);
 	}
 
 	/* work out what icon to use */
@@ -681,6 +696,12 @@ update_transfer_callback (GnomeVFSAsyncHandle *handle,
 					   progress_message);
 
 		g_free (progress_message);
+
+		if (fraction == 1) {
+			GtkWidget *dialog;
+		        dialog = glade_xml_get_widget(xml, "empty_trash");
+			gtk_widget_hide_all(dialog);
+		}
 	}
 
 	if (progress_info->source_name != NULL) {
@@ -1067,4 +1088,23 @@ trash_applet_drag_data_received (GtkWidget        *widget,
 		}
 	}
 	gtk_drag_finish (context, TRUE, FALSE, time_);
+}
+
+
+static gboolean
+applet_enter_notify_event (GtkWidget *window, GdkEventButton *event, gpointer *data)
+{
+	TrashApplet *trash = (TrashApplet *)data;
+	awn_title_show (trash->title,GTK_WIDGET(trash->awn_applet), trash->title_text);
+	
+	return TRUE;
+}
+
+static gboolean
+applet_leave_notify_event (GtkWidget *window, GdkEventButton *event, gpointer *data)
+{
+	TrashApplet *trash = (TrashApplet *)data;
+	awn_title_hide (trash->title, GTK_WIDGET(trash->awn_applet));
+	
+	return TRUE;
 }

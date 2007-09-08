@@ -28,15 +28,8 @@
 
 #include <gconf/gconf-client.h>
 
+#include <libawn/awn-cairo-utils.h>
 
-
-typedef struct {
-	float red;
-	float green;
-	float blue;
-	float alpha;
-
-} AwnColor; /* spelt incorrectly, in the interest of brevity ;) */
 
 typedef struct {
 	
@@ -46,6 +39,7 @@ typedef struct {
 	GtkWidget *window;
 	GtkWidget *title;
 	GtkWidget *appman;
+	GtkWidget *hot;
 	gint task_width;
 	
 	/* monitor settings */
@@ -57,6 +51,9 @@ typedef struct {
 	
 	gboolean auto_hide;
 	gboolean hidden;
+	gboolean hiding;
+	gint auto_hide_delay;
+	gboolean keep_below;
 	
 	int bar_height;
 	int bar_angle;
@@ -88,6 +85,7 @@ typedef struct {
 	gchar *active_png;
 	
 	AwnColor arrow_color;
+	int arrow_offset;
 	gboolean tasks_have_arrows;
 	gboolean fade_effect;
 	
@@ -101,10 +99,7 @@ typedef struct {
 	AwnColor text_color;
 	AwnColor shadow_color;
 	AwnColor background;
-	gboolean italic;
-	gboolean bold;
-	gfloat font_size;
-	
+	gchar *font_face;	
 	
 	gboolean btest;
 	float ftest;

@@ -1,0 +1,363 @@
+# Dutch translation for awn
+# Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
+# This file is distributed under the same license as the awn package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: awn\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2007-07-25 23:46+0100\n"
+"PO-Revision-Date: 2007-08-11 19:27+0000\n"
+"Last-Translator: jdriessen <j.driessen@ahk.nl>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Rosetta-Export-Date: 2007-08-17 19:08:44+0000\n"
+
+#: ../applets/switcher/applet.c:116
+msgid "Rows:"
+msgstr "Rijen:"
+
+#: ../applets/switcher/applet.c:128
+msgid "Width:"
+msgstr "Breedte:"
+
+#: ../applets/switcher/applet.c:140
+msgid "Height:"
+msgstr "Hoogte:"
+
+#: ../applets/trash/trashapplet.glade.h:1
+msgid "<b>From:</b>"
+msgstr "<b>Van:</b>"
+
+#: ../applets/trash/trashapplet.glade.h:2
+msgid "<big><b>Emptying the Trash</b></big>"
+msgstr "<big><b>Leegmaken van prullenbak</b></big>"
+
+#: ../applets/trash/trashapplet.glade.h:3
+msgid "Emptying the Trash"
+msgstr "De prullenbak wordt geleegd"
+
+#: ../avant-preferences/window.glade.h:1
+msgid "<b>Active Icon</b>"
+msgstr "<b>Actief Icoon</b>"
+
+#: ../avant-preferences/window.glade.h:2
+msgid "<b>Arrows</b>"
+msgstr "<b>Pijlen</b>"
+
+#: ../avant-preferences/window.glade.h:3
+msgid "<b>Bar behaviour</b>"
+msgstr "<b>Gedrag</b>"
+
+#: ../avant-preferences/window.glade.h:4
+msgid "<b>Borders</b>"
+msgstr "<b>Randen</b>"
+
+#: ../avant-preferences/window.glade.h:5
+#, fuzzy
+msgid "<b>Corners</b>"
+msgstr "<b>Hoeken</b>"
+
+#: ../avant-preferences/window.glade.h:6
+msgid "<b>Gradient</b>"
+msgstr "<b>Gradient</b>"
+
+#: ../avant-preferences/window.glade.h:7
+msgid "<b>Highlight</b>"
+msgstr "<b>Markeer</b>"
+
+#: ../avant-preferences/window.glade.h:8
+msgid "<b>Pattern</b>"
+msgstr "<b>Patroon</b>"
+
+#: ../avant-preferences/window.glade.h:9
+msgid "<b>Separator</b>"
+msgstr "<b>Afscheiding</b>"
+
+#: ../avant-preferences/window.glade.h:10
+msgid "<b>Text</b>"
+msgstr "<b>Tekst</b>"
+
+#: ../avant-preferences/window.glade.h:11
+msgid "<b>Windows</b>"
+msgstr "<b>Vensters</b>"
+
+#: ../avant-preferences/window.glade.h:12
+msgid "Auto hide bar when not in use"
+msgstr "Verberg bar indien niet in gebruik"
+
+#: ../avant-preferences/window.glade.h:13
+msgid "Avant Preferences"
+msgstr "Avant Eigenschappen"
+
+#: ../avant-preferences/window.glade.h:14
+msgid "Background color:"
+msgstr "Achtergrondkleur:"
+
+#: ../avant-preferences/window.glade.h:15
+msgid "Bar Appearance"
+msgstr "Bar Uiterlijk"
+
+#: ../avant-preferences/window.glade.h:16
+msgid "Bold"
+msgstr "Vet"
+
+#: ../avant-preferences/window.glade.h:17
+msgid "Color:"
+msgstr "Kleur:"
+
+#: ../avant-preferences/window.glade.h:18
+msgid "Enable pattern"
+msgstr "Gebruik patroon"
+
+#: ../avant-preferences/window.glade.h:19
+msgid "Enable rounded corners"
+msgstr "Rond hoeken af"
+
+#: ../avant-preferences/window.glade.h:20
+msgid "Fade effect (experimental)"
+msgstr "Vervagen (experimenteel)"
+
+#: ../avant-preferences/window.glade.h:21
+msgid "First step color:"
+msgstr "Kleur eerste stap"
+
+#: ../avant-preferences/window.glade.h:22
+msgid "Font size:"
+msgstr "Tekengrootte:"
+
+#: ../avant-preferences/window.glade.h:23
+msgid "General"
+msgstr "Algemeen"
+
+#: ../avant-preferences/window.glade.h:24
+#, fuzzy
+msgid "Glass Engine"
+msgstr "Glass motor"
+
+#: ../avant-preferences/window.glade.h:25
+msgid "Internal border:"
+msgstr "Binnenste rand"
+
+#: ../avant-preferences/window.glade.h:26
+msgid "Italic"
+msgstr "Cursief"
+
+#: ../avant-preferences/window.glade.h:27
+msgid "Main border:"
+msgstr "Buitenste rand"
+
+#: ../avant-preferences/window.glade.h:28
+msgid "Maximized windows don't cover the bar (requires restart)"
+msgstr "Gemaximaliseerde vensters bedekken balk niet (herstart vereist)"
+
+#: ../avant-preferences/window.glade.h:29
+msgid "Pattern Engine"
+msgstr "Patroon Engine"
+
+#: ../avant-preferences/window.glade.h:30
+msgid "Second step color:"
+msgstr "Kleur tweede stap"
+
+#: ../avant-preferences/window.glade.h:31
+msgid "Select A File"
+msgstr "Bestand kiezen"
+
+#: ../avant-preferences/window.glade.h:32
+msgid "Separator color:"
+msgstr "Kleur afscheiding"
+
+#: ../avant-preferences/window.glade.h:33
+msgid "Shadow color:"
+msgstr "Schaduwkleur:"
+
+#: ../avant-preferences/window.glade.h:34
+msgid "Show separator between launchers and tasks"
+msgstr "Laat scheiding tussen starters en taken zien"
+
+#: ../avant-preferences/window.glade.h:35
+msgid "Show windows from all viewports"
+msgstr "Vensters tonen van elke viewport"
+
+#: ../avant-preferences/window.glade.h:36
+msgid "Task Appearance"
+msgstr "Uiterlijk taken"
+
+#: ../avant-preferences/window.glade.h:37
+msgid "Tasks have arrows"
+msgstr "Taken bevatten pijlen"
+
+#: ../avant-preferences/window.glade.h:38
+msgid "The bar automatically hides when not used"
+msgstr "De bar verbergt zich automatisch indien niet in gebruik"
+
+#: ../avant-preferences/window.glade.h:39
+msgid "Transparency:"
+msgstr "Transparantie"
+
+#: ../avant-preferences/window.glade.h:40
+msgid "Unused icons fade when mouse-over"
+msgstr "Ongebruikte iconen vervagen bij muis-over"
+
+#: ../avant-preferences/window.glade.h:41
+msgid "Windows don't overlap the bar if this is set"
+msgstr "Vensters overlappen de bar niet als dit ingesteld is"
+
+#: ../avant-applets/avant-applets.glade.h:1
+msgid "Add Applet"
+msgstr "Applet toevoegen"
+
+#: ../avant-applets/avant-applets.glade.h:2
+msgid "Avant Applet Preferences"
+msgstr "Avant Applet Eigenschappen"
+
+#: ../avant-applets/avant-applets.glade.h:3
+#: ../avant-launchers/avant-launchers.glade.h:2
+msgid "Positions"
+msgstr "Posities"
+
+#: ../avant-launchers/avant-launchers.glade.h:1
+msgid "Avant Launcher Preferences"
+msgstr "Avant Launcher Voorkeuren"
+
+#: ../applets/notification-area/eggtraymanager.c:146
+msgid "Orientation"
+msgstr "Richting"
+
+#: ../applets/notification-area/eggtraymanager.c:147
+msgid "The orientation of the tray."
+msgstr "De richting van de werkbalk."
+
+#: ../applets/switcher/switcher.schemas.in.h:1
+#, fuzzy
+msgid "How many rows the switcher should have"
+msgstr "Hoeveel rijen dient de switch te hebben"
+
+#: ../applets/switcher/switcher.schemas.in.h:2
+#, fuzzy
+msgid "The height of the switcher"
+msgstr "De hoogte van de Switch"
+
+#: ../applets/switcher/switcher.schemas.in.h:3
+#, fuzzy
+msgid "The width of the switcher"
+msgstr "De breedte van de Switch"
+
+#: ../applets/trash/trash.schemas.in.h:1
+#, fuzzy
+msgid "Whether the trash applet should show a count on its icon"
+msgstr "Of het aantal items in de Prullenbak dient weergegeven te worden"
+
+#: ../applets/trash/trashapplet.c:153
+#, c-format
+msgid "Unable to find the Trash directory: %s"
+msgstr "Kan prullenbakmap %s niet openen."
+
+#: ../applets/trash/trashapplet.c:526
+msgid "No Items in Trash"
+msgstr "Geen objecten in Prullenbak"
+
+#: ../applets/trash/trashapplet.c:530
+#, c-format
+msgid "%d Item in Trash"
+msgid_plural "%d Items in Trash"
+msgstr[0] "%d object in Prullenbak"
+msgstr[1] "%d objecten in prullenbak"
+
+#: ../applets/trash/trashapplet.c:657
+#, c-format
+msgid "Removing item %lu of %lu"
+msgstr "Bezig met verwijderen van item %lu van %lu"
+
+#: ../applets/trash/trashapplet.c:683
+msgid "Removing:"
+msgstr "Bezig met verwijderen"
+
+#: ../applets/trash/trashapplet.c:723
+msgid "Empty all of the items from the trash?"
+msgstr "Verwijder alle objecten uit de prullenbak?"
+
+#: ../applets/trash/trashapplet.c:726
+msgid ""
+"If you choose to empty the trash, all items in it will be permanently lost. "
+"Please note that you can also delete them separately."
+msgstr ""
+"Als u ervoor kiest de prullenbak te legen, zullen alle objecten voorgoed "
+"verloren gaan. Merk op dat u de objecten ook één voor één kunt verwijderen."
+
+#: ../applets/trash/trashapplet.c:746
+msgid "_Empty Trash"
+msgstr "_Prullenbak Legen"
+
+#: ../applets/trash/trashapplet.c:825
+#, c-format
+msgid ""
+"Error while spawning nautilus:\n"
+"%s"
+msgstr ""
+"Fout bij het starten van nautilus:\n"
+"%s"
+
+#: ../applets/trash/trashapplet.c:845
+#, c-format
+msgid "There was an error displaying help: %s"
+msgstr "Er is een fout opgetreden bij het weergeven van de hulp: %s"
+
+#: ../applets/trash/trashapplet.c:868
+msgid "Trash Applet"
+msgstr "Prullenbak Applet"
+
+#: ../applets/trash/trashapplet.c:871
+msgid ""
+"A GNOME trash bin that lives in your panel. You can use it to view the trash "
+"or drag and drop items into the trash."
+msgstr ""
+"Een Gnome-prullenbak voor op uw paneel. Hiermee kunt u in de prullenbak "
+"kijken of er objecten naar toeslepen."
+
+#: ../applets/trash/trashapplet.c:876
+msgid "translator-credits"
+msgstr ""
+"Launchpad Contributions:\n"
+"  EndelWar <https://launchpad.net/~endelwar>\n"
+"  eentonig <https://launchpad.net/~eentonig>\n"
+"  haytjes <https://launchpad.net/~h4writer>\n"
+"  jdriessen <https://launchpad.net/~j-driessen>\n"
+"  mithras <https://launchpad.net/~jurian>\n"
+"  obeleh <https://launchpad.net/~sjuulj>\n"
+"  warddr <https://launchpad.net/~warddr>"
+
+#: ../applets/trash/trashapplet.c:896
+msgid "Delete Immediately?"
+msgstr "Voorgoed verwijderen?"
+
+#: ../applets/trash/trashapplet.c:925
+msgid "Cannot move items to trash, do you want to delete them immediately?"
+msgstr ""
+"Kan objecten niet naar de prullenbak verplaatsen, wilt u ze voorgoed "
+"verwijderen?"
+
+#: ../applets/trash/trashapplet.c:928
+msgid ""
+"Cannot move some items to trash, do you want to delete these immediately?"
+msgstr ""
+"Kan sommige objecten niet naar de prullenbak verplaatsen, wilt u ze voorgoed "
+"verwijderen?"
+
+#: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
+#, c-format
+msgid ""
+"Unable to move to trash:\n"
+"%s"
+msgstr ""
+"Kan de volgende objecten niet naar de prullenbak verplaatsen:\n"
+"%s"
+
+#: ../src/awn-task.c:2279
+msgid "Change Icon"
+msgstr "Pictogram wijzigen"

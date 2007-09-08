@@ -25,17 +25,11 @@ avant_window_navigator_SOURCES =			\
 	awn-gconf.c			\
 	awn-bar.h			\
 	awn-bar.c   			\
-	awn-app.h			\
-	awn-app.c      			\
 	awn-dbus-glue.h			\
 	awn-hotspot.h			\
 	awn-hotspot.c			\
 	awn-marshallers.h		\
 	awn-marshallers.c		\
-	awn-win-manager.h		\
-	awn-win-manager.c    		\
-	awn-title.h			\
-	awn-title.c                     \
 	awn-task.h			\
 	awn-task.c			\
 	awn-task-manager.h		\
@@ -46,6 +40,7 @@ avant_window_navigator_SOURCES =			\
 	awn-x.c				\
 	awn-utils.h			\
 	awn-utils.c			\
+	inlinepixbufs.h			\
 	xutils.h			\
 	xutils.c			
 

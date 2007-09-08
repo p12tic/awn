@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Awn manager
+Comment=Manage Awn preferences, launchers, applets and themes
+Exec=awn-manager
+Icon=@PKGDATADIR@/avant-window-navigator-48.png
+Categories=Settings;X-Fedora;
+

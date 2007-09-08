@@ -15,6 +15,6 @@ icon_DATA =  \
 
 icondir = $(pkgdatadir)
 
-EXTRA_DIST = $(icon_DATA) $(desktop_DATA)
+EXTRA_DIST = $(icon_DATA) $(desktop_DATA).in.in
 
 CLEANFILES = $(desktop_DATA) $(desktop_DATA).in

@@ -4,9 +4,7 @@ applets/switcher/applet.c
 applets/switcher/switcher.desktop.in
 applets/trash/trashapplet.glade
 applets/trash/trash.desktop.in
-avant-preferences/window.glade
-avant-applets/avant-applets.glade
-avant-launchers/avant-launchers.glade
+awn-manager/window.glade
 applets/notification-area/eggtraymanager.c
 applets/switcher/switcher.schemas.in
 applets/trash/trash.schemas.in

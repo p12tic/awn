@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=C
+Encoding=UTF-8
+Name=Separator
+Comment=A simple separator.
+Exec=@LIBDIR@/awn/applets/separator/separator.so
+Icon=@ICONDIR@/separator.svg

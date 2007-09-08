@@ -1,4 +1,4 @@
-SUBDIRS = switcher separator notification-area
+SUBDIRS = switcher separator notification-area python-test
 if USE_GNOME
 SUBDIRS += trash
 endif
@@ -12,4 +12,4 @@ desktop_DATA = \
 $(desktop_DATA).in: $(desktop_DATA).in.in
 	sed -e "s|\@PKGDATADIR\@|$(pkgdatadir)|g" $< > $@
 
-extra_dist = $(desktop_DATA).in.in
+EXTRA_DIST = $(desktop_DATA).in.in

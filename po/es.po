@@ -1,9 +1,9 @@
-# en_Gb Translation.
+# es_ES Translation.
 # Copyright (C) 2007 Neil J. Patel
 # This file is distributed under the same license as the avant-window-navigator package.
 # Neil J. Patel <njpatel@gmail.com>, 2007
 # Neil Patel <njpatel@gmail.com>, 2007.
-# 
+# Last Translated by: Miguel Rodriguez Rubinos <mrrubinos_at_gmail_dot_com>, 25 Jul 2007
 # 
 msgid ""
 msgstr ""
@@ -11,7 +11,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-06-23 15:51+0100\n"
 "PO-Revision-Date: 2007-06-22 17:44-0400\n"
-"Last-Translator: Javier Aravena <phrodo.00@gmail.com>\n"
+"Previous-Translator: Javier Aravena <phrodo.00@gmail.com>\n"
+"Last-Translator: Miguel Rodriguez Rubinos <mrrubinos_at_gmail_dot_com>\n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -19,28 +20,28 @@ msgstr ""
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
-msgstr ""
+msgstr "Filas:"
 
 #: ../applets/switcher/applet.c:128
 msgid "Width:"
-msgstr ""
+msgstr "Ancho:"
 
 #: ../applets/switcher/applet.c:140
 msgid "Height:"
-msgstr ""
+msgstr "Alto:"
 
 #: ../applets/trash/trashapplet.glade.h:1
 #, fuzzy
 msgid "<b>From:</b>"
-msgstr "<b>Flechas</b>"
+msgstr "<b>De:</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
 msgid "<big><b>Emptying the Trash</b></big>"
-msgstr ""
+msgstr "<big><b>Vaciando la papelera</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr ""
+msgstr "Vaciando la papelera"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
@@ -53,7 +54,7 @@ msgstr "<b>Flechas</b>"
 #: ../avant-preferences/window.glade.h:3
 #, fuzzy
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>Separador</b>"
+msgstr "<b>Comportamiento de la barra</b>"
 
 #: ../avant-preferences/window.glade.h:4
 msgid "<b>Borders</b>"
@@ -89,7 +90,7 @@ msgstr "<b>Ventanas</b>"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
-msgstr ""
+msgstr "Esconder automáticamente cuando no se use"
 
 #: ../avant-preferences/window.glade.h:13
 msgid "Avant Preferences"
@@ -121,7 +122,7 @@ msgstr "Activar bordes redondeados"
 
 #: ../avant-preferences/window.glade.h:20
 msgid "Fade effect (experimental)"
-msgstr ""
+msgstr "Efecto desvanecimiento (experimental)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
@@ -129,7 +130,7 @@ msgstr "Primer color:"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
-msgstr "Tamaño del texto:"
+msgstr "Tamaño de la fuente:"
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
@@ -138,11 +139,11 @@ msgstr "General"
 #: ../avant-preferences/window.glade.h:24
 #, fuzzy
 msgid "Glass Engine"
-msgstr "Motor de vidrio"
+msgstr "Motor de transparencias"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
-msgstr "Borde interno"
+msgstr "Borde interno:"
 
 #: ../avant-preferences/window.glade.h:26
 msgid "Italic"
@@ -150,11 +151,11 @@ msgstr "Cursiva"
 
 #: ../avant-preferences/window.glade.h:27
 msgid "Main border:"
-msgstr "Borde principal"
+msgstr "Borde principal:"
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr ""
+msgstr "Ventanas maximizadas no cubren la barra (requiere reiniciar)"
 
 #: ../avant-preferences/window.glade.h:29
 #, fuzzy
@@ -183,7 +184,7 @@ msgstr "Mostrar separador entre lanzadores y tareas"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
-msgstr "Mostrar ventanas de todas las pantallas virtuales"
+msgstr "Mostrar ventanas de todos los escritorios virtuales"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
@@ -195,35 +196,35 @@ msgstr "Las tareas tienen flechas"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
-msgstr ""
+msgstr "La barra se esconde automáticamente cuando no se usa"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
-msgstr "Transparencia"
+msgstr "Transparencia:"
 
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
-msgstr ""
+msgstr "Iconos no usados se desvanecen bajo el ratón"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
-msgstr ""
+msgstr "Las ventanas no solapan la barra si esto está activo"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
-msgstr ""
+msgstr "Añadir Applet"
 
 #: ../avant-applets/avant-applets.glade.h:2
 #, fuzzy
 msgid "Avant Applet Preferences"
-msgstr "Preferencias de Avant"
+msgstr "Preferencias de Avant Applet"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
 msgid "Positions"
-msgstr ""
+msgstr "Posiciones"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
 #, fuzzy
 msgid "Avant Launcher Preferences"
-msgstr "Preferencias de Avant"
+msgstr "Preferencias de Avant Launcher"

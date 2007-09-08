@@ -206,8 +206,10 @@ awn_applet_manager_load_applets (AwnAppletManager *manager)
                                        LIBDIR"/awn/applets/taskman.desktop::1");
                 gconf_client_set_list (client, AWN_APPLETS_KEY,
                                        GCONF_VALUE_STRING, keys, NULL);
-                if (err)
+                if (err) {
                         g_print ("%s\n", err->message);
+			g_error_free (err);
+		}
                 return;        
         }
         
@@ -306,8 +308,10 @@ awn_applet_manger_refresh_applets (GConfClient *client,
                                       &err); 
 
         if (keys == NULL || err) {
-                if (err)
+                if (err) {
                         g_print ("%s\n", err->message);
+			g_error_free (err);
+		}
                 return;        
         }
         

@@ -104,6 +104,7 @@ awn_applet_proxy_exec (AwnAppletProxy *proxy)
 	
 	if (error) {
 		g_warning ("%s\n", error->message);
+		g_error_free (error);
 		g_signal_emit (proxy, _proxy_signals[APPLET_DELETED], 
 			       0, priv->uid);
 	}

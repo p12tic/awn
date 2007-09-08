@@ -48,5 +48,6 @@ void awn_x_set_strut (GtkWindow *window);
 
 GdkPixbuf * awn_x_get_icon_for_window (WnckWindow *window, gint width, gint height);
 GdkPixbuf * awn_x_get_icon_for_launcher (AwnDesktopItem *item, gint width, gint height);
+GString * awn_x_get_application_name (WnckWindow *window, WnckApplication *app);
 
 #endif
