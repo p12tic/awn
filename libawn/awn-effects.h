@@ -96,6 +96,13 @@ struct _AwnEffects
 void
 awn_effects_init(GObject *obj, AwnEffects *fx);
 
+//! Finalizes AwnEffects usage and frees internally allocated memory. (also calls awn_unregister_effects())
+/*!
+ * \param fx Pointer to AwnEffects structure.
+ */
+void
+awn_effects_finalize(AwnEffects *fx);
+
 //! Registers enter-notify and leave-notify events for managed window.
 /*!
  * \param obj Managed window to which the effects will apply.
@@ -106,11 +113,10 @@ awn_register_effects (GObject *obj, AwnEffects *fx);
 
 //! Unregisters events for managed window.
 /*!
- * \param obj Managed window to which the effects apply.
  * \param fx Pointer to AwnEffects structure.
  */
 void
-awn_unregister_effects (GObject *obj, AwnEffects *fx);
+awn_unregister_effects (AwnEffects *fx);
 
 //! Start a single effect. The effect will loop until awn_effect_stop
 //! is called.
@@ -129,14 +135,6 @@ awn_effect_start(AwnEffects *fx, const AwnEffect effect);
 
 void
 awn_effect_stop(AwnEffects *fx, const AwnEffect effect);
-
-//! Force all effects to stop.
-/*!
- * \param effect Effect to stop.
- * \param fx Pointer to AwnEffects structure.
- */
-void
-awn_effect_force_quit(AwnEffects *fx);
 
 //! Makes AwnTitle appear on event-notify.
 /*!

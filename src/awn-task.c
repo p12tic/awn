@@ -314,7 +314,7 @@ _task_destroy (GObject *obj)
 	}
 	g_timeout_add(1000, (GSourceFunc)awn_task_manager_refresh_box,
 	              priv->task_manager);
-	awn_unregister_effects(G_OBJECT(task), &priv->effects);
+	awn_effects_finalize(&priv->effects);
 	gtk_object_destroy (GTK_OBJECT(task));
 	task = NULL;
 }

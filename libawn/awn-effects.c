@@ -123,6 +123,13 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->leave_notify = 0;
 }
 
+void
+awn_effects_finalize(AwnEffects *fx) {
+	awn_unregister_effects(fx);
+	fx->focus_window = NULL;
+	fx->self = NULL;
+}
+
 inline gboolean awn_effect_check_max_loops(AwnEffectsPrivate *priv) {
 	gboolean max_reached = FALSE;
 	if (priv->max_loops > 0) {
@@ -599,7 +606,7 @@ void awn_effect_start(AwnEffects *fx, const AwnEffect effect) {
 
 void
 awn_effect_start_ex(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start, AwnEventNotify stop, gint max_loops) {
-	if (effect == AWN_EFFECT_NONE) return;
+	if (effect == AWN_EFFECT_NONE || fx->self == NULL) return;
 
 	AwnEffectsPrivate *queue_item;
 	GList *queue = fx->effect_queue;
@@ -651,7 +658,10 @@ main_effect_loop(AwnEffects *fx) {
 			break;
 		case AWN_EFFECT_HOVER:
 			// TODO: apply possible settings
-			animation = (GSourceFunc)bounce_effect2;
+			/*if (fx->settings && fx->settings->fade_effect)
+				animation = (GSourceFunc)fade_effect;
+			else*/
+				animation = (GSourceFunc)bounce_effect2;
 			break;
 		case AWN_EFFECT_CLOSING:
 			animation = (GSourceFunc)fade_out_effect;
@@ -673,11 +683,13 @@ awn_register_effects (GObject *obj, AwnEffects *fx) {
 }
 
 void
-awn_unregister_effects (GObject *obj, AwnEffects *fx) {
-	g_signal_handler_disconnect(obj, fx->enter_notify);
-	g_signal_handler_disconnect(obj, fx->leave_notify);
-	fx->focus_window = NULL;
-	fx->self = NULL;
+awn_unregister_effects (AwnEffects *fx) {
+	if (fx->enter_notify)
+		g_signal_handler_disconnect(G_OBJECT(fx->focus_window), fx->enter_notify);
+	if (fx->leave_notify)
+		g_signal_handler_disconnect(G_OBJECT(fx->focus_window), fx->leave_notify);
+	fx->enter_notify = 0;
+	fx->leave_notify = 0;
 }
 
 void awn_draw_background(AwnEffects *fx, cairo_t *cr) {
