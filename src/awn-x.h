@@ -33,12 +33,12 @@
 #include <libwnck/libwnck.h>
 
 #ifdef USE_GNOME
-#include <libgnome/gnome-desktop-item.h>
 #include <libgnomevfs/gnome-vfs.h>
 #elif defined(USE_XFCE)
-#include <libxfce4util/libxfce4util.h>
 #include <thunar-vfs/thunar-vfs.h>
 #endif
+
+#include <libawn/awn-desktop-file.h>
 
 GdkPixbuf* awn_x_get_icon (WnckWindow *window, gint width, gint height);
 
@@ -47,6 +47,6 @@ void awn_x_set_icon_geometry (gulong xwindow, int x, int y, int width, int heigh
 void awn_x_set_strut (GtkWindow *window);
 
 GdkPixbuf * awn_x_get_icon_for_window (WnckWindow *window, gint width, gint height);
-GdkPixbuf * awn_x_get_icon_for_launcher (DESKTOP_ITEM *item, gint width, gint height);
+GdkPixbuf * awn_x_get_icon_for_launcher (AwnDesktopItem *item, gint width, gint height);
 
 #endif

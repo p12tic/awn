@@ -104,7 +104,7 @@ struct _AwnTaskPrivate
 	AwnTaskManager 	 *task_manager;
 	AwnSettings 	 *settings;
 
-	DESKTOP_ITEM *item;
+	AwnDesktopItem *item;
 	gint pid;
 
 	gchar *application;
@@ -1077,71 +1077,6 @@ awn_task_expose (GtkWidget *task, GdkEventExpose *event)
 	return FALSE;
 }
 
-#ifdef USE_XFCE
-static gchar** awn_xfce_explode_exec (gchar *exec, GList *extra_argv)
-{
-	gchar **exploded = g_strsplit (exec, " ", 0);
-	guint len = g_strv_length (exploded);
-	guint i;
-	gchar *argv_str = "";
-	for (i = 0; i < len; i++) {
-		if (g_strrstr (exploded[i], "%") == NULL) {
-			if (g_ascii_strcasecmp (argv_str, "") == 0) {
-				argv_str = g_strdup(exploded[i]);
-			} else {
-				argv_str = g_strconcat (argv_str, " ", exploded[i], NULL);
-			}
-		}
-	}
-	g_strfreev (exploded);
-	if (extra_argv != NULL) {
-		len = g_list_length (extra_argv);
-		for (i = 0; i < len; i++) {
-			argv_str = g_strconcat (argv_str, " ", (gchar*)g_list_nth_data(extra_argv, i), NULL);
-		}
-	}
-	return g_strsplit (argv_str, " ", 0);
-}
-static gint awn_xfce_launch (DESKTOP_ITEM *item, GList *extra_argv, GError **err)
-{
-	gboolean success;
-	int pid;
-	gchar *exec;
-	gchar *path = NULL;
-	success = xfce_desktop_entry_get_string (item,
-	                                         "Exec",
-	                                         FALSE,
-	                                         &exec);
-	success = xfce_desktop_entry_get_string (item,
-	                                         "Path",
-	                                         FALSE,
-	                                         &path);
-    if (!g_str_has_prefix (exec, G_DIR_SEPARATOR_S)) {
-        gchar **dirs = g_strsplit (g_getenv ("PATH"), G_SEARCHPATH_SEPARATOR_S, 0);
-        guint len = g_strv_length (dirs);
-        guint i;
-        for (i = 0; i < len; i++) {
-            gchar *tmp_exec = g_strconcat(dirs[i], G_DIR_SEPARATOR_S, exec, NULL);
-            if (g_file_test (tmp_exec, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_EXECUTABLE)) {
-                g_free(exec);
-                exec = tmp_exec;
-                break;
-            }
-        }
-    }
-	success = gdk_spawn_on_screen (gdk_screen_get_default(),
-	                               (const gchar*)path,
-	                               awn_xfce_explode_exec (exec, extra_argv),
-	                               NULL,
-	                               G_SPAWN_STDOUT_TO_DEV_NULL,
-	                               NULL,
-	                               NULL,
-	                               &pid,
-	                               err);
-	return pid;
-}
-#endif
-
 static void
 awn_task_launch_unique (AwnTask *task, const char *arg_str)
 {
@@ -1149,17 +1084,7 @@ awn_task_launch_unique (AwnTask *task, const char *arg_str)
 	priv = AWN_TASK_GET_PRIVATE (task);;
 
 	GError *err = NULL;
-#ifdef USE_GNOME
-	int pid = gnome_desktop_item_launch_on_screen
-                                            (priv->item,
-                                             NULL,
-                                             0,
-                                             gdk_screen_get_default(),
-                                             -1,
-                                             &err);
-#elif defined(USE_XFCE)
-	int pid = awn_xfce_launch (priv->item, NULL, &err);
-#endif
+	int pid = awn_desktop_file_launch (priv->item, NULL, &err);
 
         if (err)
         	g_print("Error: %s", err->message);
@@ -1175,17 +1100,7 @@ awn_task_launch (AwnTask *task, const char *arg_str)
 	priv = AWN_TASK_GET_PRIVATE (task);;
 
 	GError *err = NULL;
-#ifdef USE_GNOME
-	priv->pid = gnome_desktop_item_launch_on_screen
-                                            (priv->item,
-                                             NULL,
-                                             0,
-                                             gdk_screen_get_default(),
-                                             -1,
-                                             &err);
-#elif defined(USE_XFCE)
-	priv->pid = awn_xfce_launch (priv->item, NULL, &err);
-#endif
+	priv->pid = awn_desktop_file_launch (priv->item, NULL, &err);
 
         if (err)
         	g_print("Error: %s", err->message);
@@ -1266,7 +1181,6 @@ _task_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
                                               AwnTask *task)
 {
 
-        GList      *li;
 	GList      *list;
 
         gboolean delete_selection_data = FALSE;
@@ -1287,38 +1201,8 @@ _task_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 
 	GError *err = NULL;
 
-	list = NULL;
-#ifdef USE_GNOME
-        list = gnome_vfs_uri_list_parse ((const char*) selection_data->data);
-	for (li = list; li != NULL; li = li->next) {
-		GnomeVFSURI *uri = li->data;
-		li->data = gnome_vfs_uri_to_string (uri, 0 /* hide_options */);
-		gnome_vfs_uri_unref (uri);
-	}
-
-	priv->pid = gnome_desktop_item_launch_on_screen
-                                            (priv->item,
-                                             list,
-                                             0,
-                                             gdk_screen_get_default(),
-                                             -1,
-                                             &err);
-#elif defined(USE_XFCE)
-	int argc = 0;
-	gchar **argv;
-	list = thunar_vfs_path_list_from_string ((const gchar*) selection_data->data, &err);
-	if (err) {
-		g_print("Error: %s", err->message);
-	} else {
-		for (li = list; li != NULL; li = li->next) {
-			ThunarVfsPath *uri = li->data;
-			argv[argc++] = thunar_vfs_path_dup_string (uri);
-			thunar_vfs_path_unref (uri);
-		}
-	}
-
-	priv->pid = awn_xfce_launch (priv->item, list, &err);
-#endif
+	list = awn_desktop_file_get_pathlist_from_string ((gchar *)selection_data->data, &err);
+	priv->pid = awn_desktop_file_launch (priv->item, list, &err);
 
         if (err)
         	g_print("Error: %s", err->message);
@@ -1633,7 +1517,7 @@ awn_task_set_window (AwnTask *task, WnckWindow *window)
 }
 
 gboolean
-awn_task_set_launcher (AwnTask *task, DESKTOP_ITEM *item)
+awn_task_set_launcher (AwnTask *task, AwnDesktopItem *item)
 {
 	AwnTaskPrivate *priv;
 	gchar *icon_name = NULL;
@@ -1641,14 +1525,7 @@ awn_task_set_launcher (AwnTask *task, DESKTOP_ITEM *item)
 	priv = AWN_TASK_GET_PRIVATE (task);
 
 	priv->is_launcher = TRUE;
-#ifdef USE_GNOME
-	icon_name = gnome_desktop_item_get_icon (item, priv->settings->icon_theme );
-#elif defined(USE_XFCE)
-	if (!xfce_desktop_entry_get_string (item, "Icon", FALSE, &icon_name)) {
-		g_warning("Could not get the value of 'Icon' from '%s'", xfce_desktop_entry_get_file (item));
-		return FALSE;
-	}
-#endif
+	icon_name = awn_desktop_file_get_icon (item, priv->settings->icon_theme );
 	if (!icon_name)
 		return FALSE;
 	g_free (icon_name);
@@ -1742,19 +1619,7 @@ awn_task_get_name (AwnTask *task)
 		name =  wnck_window_get_name(priv->window);
 
 	else if (priv->is_launcher)
-#ifdef USE_GNOME
-		name = gnome_desktop_item_get_localestring (priv->item,
-						       GNOME_DESKTOP_ITEM_NAME);
-#elif defined(USE_XFCE)
-	{
-		gchar *gname;
-		if (xfce_desktop_entry_get_string (priv->item, "Name",TRUE, &gname)) {
-			name = (const char*)g_strdup(gname);
-		} else {
-			name = "No name";
-		}
-	}
-#endif
+		name = awn_desktop_file_get_name (priv->item);
 	else
 		name =  "No name";
 	return name;
@@ -1776,9 +1641,7 @@ awn_task_get_application(AwnTask *task)
 
 	if (priv->is_launcher) {
 
-#ifdef USE_GNOME
-		str = g_string_new(gnome_desktop_item_get_string (priv->item,
-					GNOME_DESKTOP_ITEM_EXEC));
+		str = g_string_new(awn_desktop_file_get_exec (priv->item));
 		int i = 0;
 		for (i=0; i < str->len; i++) {
 			if ( str->str[i] == ' ')
@@ -1789,13 +1652,6 @@ awn_task_get_application(AwnTask *task)
 			str = g_string_truncate (str,i);
 		priv->application = g_strdup(str->str);
 		app = g_string_free (str, TRUE);
-#elif defined(USE_XFCE)
-		if (xfce_desktop_entry_get_string (priv->item, "Exec", FALSE, &app)) {
-			priv->application = g_strdup (app);
-		} else {
-			priv->application = NULL;
-		}
-#endif
 
 	} else if (priv->window) {
 		wnck_app = wnck_window_get_application(priv->window);
@@ -1907,12 +1763,7 @@ awn_task_set_width (AwnTask *task, gint width)
 	old_reflect = priv->reflect;
 
 	if (priv->is_launcher) {
-#ifdef USE_GNOME
-		char * icon_name = gnome_desktop_item_get_icon (priv->item, priv->settings->icon_theme );
-#elif defined(USE_XFCE)
-		char * icon_name = NULL;
-		(void)xfce_desktop_entry_get_string(priv->item, "Icon", FALSE, &icon_name);
-#endif
+		char * icon_name = awn_desktop_file_get_icon (priv->item, priv->settings->icon_theme );
 		if (!icon_name)
 			priv->icon = awn_x_get_icon_for_window (priv->window, width-6, width-6);
 		else
@@ -1942,7 +1793,7 @@ awn_task_set_width (AwnTask *task, gint width)
 }
 
 
-DESKTOP_ITEM* 
+AwnDesktopItem* 
 awn_task_get_item (AwnTask *task)
 {
 	AwnTaskPrivate *priv;
@@ -1993,11 +1844,7 @@ awn_task_unset_custom_icon (AwnTask *task)
 	old_reflect = priv->reflect;
 
 	if (priv->is_launcher) {
-#ifdef USE_GNOME
-		icon_name = gnome_desktop_item_get_icon (priv->item, priv->settings->icon_theme );
-#elif defined(USE_XFCE)
-		(void)xfce_desktop_entry_get_string (priv->item, "Icon", FALSE, &icon_name);
-#endif
+		icon_name = awn_desktop_file_get_icon (priv->item, priv->settings->icon_theme );
 		if (!icon_name)
 			priv->icon = awn_x_get_icon_for_window (priv->window, priv->settings->bar_height, priv->settings->bar_height);
 		else
@@ -2198,12 +2045,7 @@ _task_choose_custom_icon (AwnTask *task)
 	/* So we have a nice new pixbuf, we now want to save it's location
 	   for the future */
 	if (priv->is_launcher) {
-#ifdef USE_GNOME
-		name = g_strdup (gnome_desktop_item_get_string (priv->item,
-						   GNOME_DESKTOP_ITEM_EXEC));
-#elif defined(USE_XFCE)
-		(void)xfce_desktop_entry_get_string(priv->item, "Exec", FALSE, &name);
-#endif
+		name = g_strdup (awn_desktop_file_get_exec (priv->item));
 	} else {
 		WnckApplication *app = NULL;
 		app = wnck_window_get_application (priv->window);
@@ -2407,12 +2249,7 @@ _task_remove_launcher (GtkMenuItem *item, AwnTask *task)
 
 	priv->is_closing = TRUE;
 	priv->hover = FALSE;
-#ifdef USE_GNOME
-	uri = g_string_new (gnome_desktop_item_get_location (priv->item));
-	uri = g_string_erase(uri, 0, 7);
-#elif defined(USE_XFCE)
-	uri = g_string_new (xfce_desktop_entry_get_file (priv->item));
-#endif
+	uri = awn_desktop_file_get_filename (priv->item);
 
 	g_print ("Remove : %s\n", uri->str);
 	term.uri = uri->str;

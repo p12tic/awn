@@ -21,13 +21,15 @@ libawninc_HEADERS =	\
 	awn-applet.h                                    \
 	awn-applet-gconf.h                              \
 	awn-applet-dialog.h								\
-	awn-cairo-utils.h								
+	awn-cairo-utils.h								\
+	awn-desktop-file.h
 
 libawn_la_SOURCES =	\
 	awn-applet.c                                    \
 	awn-applet-gconf.c                              \
 	awn-applet-dialog.c								\
-	awn-cairo-utils.c								
+	awn-cairo-utils.c								\
+	awn-desktop-file.c
 
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
 libawn_la_LDFLAGS = -version-info 0:1:0

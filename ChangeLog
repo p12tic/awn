@@ -1,11 +1,49 @@
+2007-08-06  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* ChangeLog:
+	Fix my last ChangeLog entry.
+	* libawn/Makefile.am:
+	* libawn/awn-desktop-file.h:
+	* libawn/awn-desktop-file.c:
+	Move all of the desktop-specific code to libawn, per
+	<https://bugs.launchpad.net/awn/+bug/129606/comments/3>.
+	There is now a new "type" called AwnDesktopItem, which should be used by
+	both the core and third-party applets to access .desktop files.
+	* config.h.in:
+	* configure.in:
+	The desktop item type is now handled by awn-desktop-file.h.
+	* awn-applet-activation/main.c:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	* src/awn-task.h:
+	* src/awn-x.c:
+	* src/awn-x.h:
+	Update to use AwnDesktopItem and friends.
+	* awn.pc.in:
+	Put the necessary desktop pkgconfig modules into the pkgconfig file.
+
 2007-08-01  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* applets/taskman.desktop.in.in:
 	Fixes a typo in Launcher/TaskManager applet.
 
-2007-08-01 Mark Lee <avant-wn@lazymalevolence.com>
+2007-08-01  Mark Lee <avant-wn@lazymalevolence.com>
 
-   * Add optional support for the Xfce4 desktop environment.
+   * applets/switcher/applet.c:
+   * awn-applet-activation/main.c:
+   * src/awn-task-manager.c:
+   * src/awn-task.c:
+   * src/awn-task.h:
+   * src/awn-x.c:
+   * src/awn-x.h:
+   * src/main.c:
+   Add optional support for the Xfce4 desktop environment.
+   * config.h.in:
+   * configure.in:
+   Add ./configure checks and config.h constants for the various desktops;
+   Determine the desktop item type via ./configure.
+   * applets/Makefile.am:
+   Only build the trash applet if compiling with Gnome.
 
 2007-08-01  haytjes  <hv1989@gmail.com>
 

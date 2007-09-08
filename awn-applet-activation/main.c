@@ -23,21 +23,16 @@
 #include <gtk/gtk.h>
 #ifdef USE_GNOME
 #include <libgnomevfs/gnome-vfs.h>
-#include <libgnome/gnome-desktop-item.h>
 #elif defined(USE_XFCE)
 #include <thunar-vfs/thunar-vfs.h>
-#include <libxfce4util/libxfce4util.h>
 #endif
 #include <stdio.h>
 #include <string.h>
 
 #include <libawn/awn-defines.h>
+#include <libawn/awn-desktop-file.h>
 
 #include "awn-plug.h"
-
-#ifdef USE_XFCE
-const gchar *categories[] = {"Name", "Exec", "Icon", "Path"};
-#endif
 
 /* Commmand line options */
 static gchar    *path = NULL;
@@ -92,8 +87,7 @@ main (gint argc, gchar **argv)
 {
 	GError *error = NULL;
 	GOptionContext *context;
-	DESKTOP_ITEM *item= NULL;
-	GtkWidget *plug = NULL;
+	AwnDesktopItem *item = NULL;	GtkWidget *plug = NULL;
 	const gchar *exec;
 	const gchar *name;
 
@@ -121,14 +115,8 @@ main (gint argc, gchar **argv)
                 return 1;
         }
         
-        /* Try and lod the desktop file */
-#ifdef USE_GNOME
-        item = gnome_desktop_item_new_from_file (path,
-          				 GNOME_DESKTOP_ITEM_LOAD_ONLY_IF_EXISTS,
-	        			 NULL);
-#elif defined(USE_XFCE)
-        item = xfce_desktop_entry_new (path, categories, G_N_ELEMENTS(categories));
-#endif
+        /* Try and load the desktop file */
+        item = awn_desktop_file_new (path);
         if (item == NULL) {
                 g_warning ("This desktop file does not exist %s\n", path);
                 return 1;
@@ -137,11 +125,7 @@ main (gint argc, gchar **argv)
         /* Now we have the file, lets see if we can     
                 a) load the dynamic library it points to
                 b) Find the correct function within that library */
-#ifdef USE_GNOME
-        exec = gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_EXEC);
-#elif defined(USE_XFCE)
-        (void)xfce_desktop_entry_get_string (item, "Exec", FALSE, (gchar**)(&exec));
-#endif
+        exec = awn_desktop_file_get_exec (item);
         
         if (exec == NULL) {
                 g_warning ("No exec path found in desktop file %s\n", path);
@@ -150,11 +134,7 @@ main (gint argc, gchar **argv)
         
         /* Process (re)naming */
         /*FIXME: Actually make this work */
-#ifdef USE_GNOME
-        name = gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_NAME);
-#elif defined(USE_XFCE)
-        (void)xfce_desktop_entry_get_string (item, "Name", FALSE, (gchar**)(&name));
-#endif
+        name = awn_desktop_file_get_name (item);
         if (name != NULL) {
                 gint len = strlen (argv[0]);
                 gint nlen = strlen (name);
@@ -172,11 +152,7 @@ main (gint argc, gchar **argv)
                 g_warning ("Could not create plug\n");
                 return 1;
         }
-#ifdef USE_GNOME
-        name = gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_NAME);
-#elif defined(USE_XFCE)
-        (void)xfce_desktop_entry_get_string (item, "Name", FALSE, (gchar**)(&name));
-#endif
+        name = awn_desktop_file_get_name (item);
         
         if (name != NULL) {
                 gtk_window_set_title (GTK_WINDOW (plug), name);

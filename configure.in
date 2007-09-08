@@ -46,8 +46,6 @@ AM_PATH_GLIB_2_0(2.8.0,,,gobject)
 
 COMMON_MODULES="glib-2.0 gobject-2.0 gtk+-2.0 gdk-2.0"
 
-AH_TEMPLATE([DESKTOP_ITEM], [The freedesktop.org desktop entry implementation used.])
-
 AC_MSG_CHECKING([for specific desktop support])
 AC_ARG_WITH(desktop,
             AS_HELP_STRING([--with-desktop=[gnome|xfce4]],
@@ -55,13 +53,11 @@ AC_ARG_WITH(desktop,
             [case "$with_desktop" in
                  gnome)
                  DESKTOP_MODULES="gnome-desktop-2.0 libgnome-2.0 gnome-vfs-2.0"
-                 AC_DEFINE([DESKTOP_ITEM], [GnomeDesktopItem])
                  AC_DEFINE(USE_GNOME, 1, [Define support for the Gnome desktop])
                  AC_MSG_RESULT(Gnome)
                  ;;
                  xfce4)
                  DESKTOP_MODULES="libxfce4util-1.0 >= 4.2 thunar-vfs-1"
-                 AC_DEFINE([DESKTOP_ITEM], [XfceDesktopEntry])
                  AC_DEFINE(USE_XFCE, 1, [Define support for the Xfce4 desktop])
                  AC_MSG_RESULT(Xfce4)
                  ;;
@@ -70,6 +66,7 @@ AC_ARG_WITH(desktop,
 if test -z "$DESKTOP_MODULES"; then
     AC_MSG_ERROR([You must enable either Gnome or Xfce4 support])
 fi
+AC_SUBST(DESKTOP_MODULES)
 AM_CONDITIONAL(USE_GNOME, test "$with_desktop" = "gnome")
 AM_CONDITIONAL(USE_XFCE, test "$with_desktop" = "xfce4")
 

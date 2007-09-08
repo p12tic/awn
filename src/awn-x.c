@@ -253,22 +253,13 @@ icon_loader_get_icon_spec( const char *name, int width, int height )
 }
 
 GdkPixbuf * 
-awn_x_get_icon_for_launcher (DESKTOP_ITEM *item, gint width, gint height)
+awn_x_get_icon_for_launcher (AwnDesktopItem *item, gint width, gint height)
 {
 	GString *name = NULL;
 	gchar *uri = NULL;
 	GdkPixbuf *icon = NULL;
 		
-#ifdef USE_GNOME
-	name = g_string_new ( gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_EXEC));
-#elif defined(USE_XFCE)
-	gchar *app;
-	if (!xfce_desktop_entry_get_string (item, "Exec", FALSE, &app)) {
-		g_warning ("Could not get the value of 'Exec' from '%s'", xfce_desktop_entry_get_file (item));
-		return NULL;
-	}
-	name = g_string_new (app);
-#endif
+	name = g_string_new ( awn_desktop_file_get_exec (item));
 	name = g_string_prepend (name, ".awn/custom-icons/");
 	int i = 0;
 	for (i = 0; i < name->len; i++) {
@@ -294,13 +285,7 @@ awn_x_get_icon_for_launcher (DESKTOP_ITEM *item, gint width, gint height)
 		return icon;
 	else {
 		char *icon_name;
-#ifdef USE_GNOME
-		icon_name = gnome_desktop_item_get_icon (item, gtk_icon_theme_get_default());
-#elif defined(USE_XFCE)
-		if (!xfce_desktop_entry_get_string (item, "Icon", FALSE, &icon_name)) {
-			g_warning ("Could not get the value of 'Icon' from '%s'", xfce_desktop_entry_get_file (item));
-		}
-#endif
+		icon_name = awn_desktop_file_get_icon (item, gtk_icon_theme_get_default());
 		icon = icon_loader_get_icon_spec (icon_name, width, height) ;
 		g_free (icon_name);
 		return icon;
