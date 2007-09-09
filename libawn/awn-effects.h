@@ -55,9 +55,10 @@ struct _AwnEffects
 	GList *effect_queue;
 
 	gint icon_width, icon_height;
-	
+	gint window_width, window_height;
+
 	 /* EFFECT VARIABLES */
-	
+
 	gboolean effect_lock;
 	AwnEffect current_effect;
 	gint effect_direction;
@@ -65,24 +66,14 @@ struct _AwnEffects
 
 	gdouble x_offset;
 	gdouble y_offset;
-	gint bounce_offset;
-	gdouble effect_y_offset;
-	gdouble previous_effect_y_offset;
+	gdouble effect_y_offset; // TODO: stop using!
 
-	gint window_width;
-	gint window_height;
-	gint current_width;
-	gint current_height;
-	gint previous_width;
-	gint previous_height;
-	gint height;
-	gint width;
+	gint delta_width;
+	gint delta_height;
 
 	gdouble rotate_degrees;
 	gfloat alpha;
 	gfloat spotlight_alpha;
-
-	GdkPixbuf *spotlight;
 
 	guint enter_notify;
 	guint leave_notify;
