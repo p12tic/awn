@@ -66,6 +66,9 @@ awn_applet_simple_new (const gchar *uid, gint orient, gint height);
 void
 awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf);
 
+void 
+awn_applet_simple_set_temp_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf);
+
 G_END_DECLS
 
 #endif
