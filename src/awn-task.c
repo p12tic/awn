@@ -102,9 +102,7 @@ struct _AwnTaskPrivate
 	gboolean needs_attention;
 
 	GdkPixbuf *icon;
-  GdkPixbuf *reflect;
-  gint icon_width;
-	gint icon_height;
+  	GdkPixbuf *reflect;
 
 	gint progress;
 
@@ -258,17 +256,7 @@ launch_opening_effect (AwnTask *task )
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_effects_set_notify(&priv->effects, NULL, _task_refresh);
-	awn_schedule_effect(40, AWN_EFFECT_OPENING, &priv->effects);
-	awn_effects_set_notify(&priv->effects, NULL, NULL);
-}
-
-static gboolean
-_check_launching(GObject *obj) {
-	AwnTask *task = AWN_TASK(obj);
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-	return priv->window == NULL; // repeat if window still NULL
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_OPENING, NULL, _task_refresh, 1);
 }
 
 static void
@@ -276,15 +264,7 @@ launch_launched_effect (AwnTask *task )
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_schedule_repeating_effect(40, AWN_EFFECT_LAUNCHING, &priv->effects, _check_launching, 10);
-}
-
-static gboolean
-_check_attention(GObject *obj) {
-	AwnTask *task = AWN_TASK(obj);
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-	return priv->needs_attention;
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_LAUNCHING, NULL, NULL, 10);
 }
 
 static void
@@ -292,23 +272,23 @@ launch_attention_effect (AwnTask *task )
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_schedule_repeating_effect(40, AWN_EFFECT_ATTENTION, &priv->effects, _check_attention, 0);
+	awn_effect_start(&priv->effects, AWN_EFFECT_ATTENTION);
 }
 
 static void
 launch_fade_out_effect (AwnTask *task )
 {
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_schedule_effect(15, AWN_EFFECT_FADE_OUT, &priv->effects);
+	//AwnTaskPrivate *priv;
+	//priv = AWN_TASK_GET_PRIVATE (task);
+	//awn_schedule_effect(15, AWN_EFFECT_FADE_OUT, &priv->effects);
 }
 
 static void
 launch_fade_in_effect (AwnTask *task )
 {
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_schedule_effect(40, AWN_EFFECT_FADE_IN, &priv->effects);
+	//AwnTaskPrivate *priv;
+	//priv = AWN_TASK_GET_PRIVATE (task);
+	//awn_schedule_effect(40, AWN_EFFECT_FADE_IN, &priv->effects);
 }
 
 static void
@@ -334,18 +314,9 @@ _task_destroy (GObject *obj)
 	}
 	g_timeout_add(1000, (GSourceFunc)awn_task_manager_refresh_box,
 	              priv->task_manager);
+	awn_effects_finalize(&priv->effects);
 	gtk_object_destroy (GTK_OBJECT(task));
 	task = NULL;
-}
-
-static gboolean
-_check_change_name (GObject *obj)
-{
-	AwnTask *task = AWN_TASK(obj);
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-
-	return priv->name_changed;
 }
 
 static gboolean
@@ -353,7 +324,7 @@ launch_name_change_effect (AwnTask *task)
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_schedule_repeating_effect(40, AWN_EFFECT_CHANGE_NAME, &priv->effects, _check_change_name, 0);
+	awn_effect_start(&priv->effects, AWN_EFFECT_CHANGE_NAME);
 	return FALSE;
 }
 
@@ -417,12 +388,14 @@ draw (GtkWidget *task, cairo_t *cr)
 	AwnTaskPrivate *priv;
 	AwnSettings *settings;
 	double width, height;
-
+	
 	priv = AWN_TASK_GET_PRIVATE (task);
 	settings = priv->settings;
 
 	width = task->allocation.width;
 	height = task->allocation.height;
+
+	awn_draw_set_size(&priv->effects, width, height);
 
 	/* task back */
 	cairo_set_source_rgba (cr, 1, 0, 0, 0.0);
@@ -431,7 +404,7 @@ draw (GtkWidget *task, cairo_t *cr)
 	cairo_fill (cr);
 
 	cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-
+	
 	/* active */
 	if (priv->window && wnck_window_is_active(priv->window)) {
 
@@ -452,40 +425,11 @@ draw (GtkWidget *task, cairo_t *cr)
 				width, settings->icon_offset);
 		cairo_fill(cr);
 	}
-	/* content */
-	if (priv->icon) {
-		double x1, y1;
 
-		x1 = (width-priv->icon_width)/2;
-		y1 = settings->bar_height - priv->effects.y_offset;
-
-		gdk_cairo_set_source_pixbuf (cr, priv->icon, x1, y1);
-		cairo_paint_with_alpha(cr, priv->effects.alpha);
-
-		if (priv->effects.y_offset >= 0 && priv->reflect)
-		{
-			y1 = settings->bar_height 
-                                + priv->icon_height + priv->effects.y_offset;
-			gdk_cairo_set_source_pixbuf (cr, 
-                                                     priv->reflect,
-                                                     x1, y1);
-			cairo_paint_with_alpha(cr, priv->effects.alpha/3);
-		}
-	}
-
-        /* Don't paint in bottom 3px if there is an bar_angle */
-        if ( settings->bar_angle != 0) {
-                cairo_save (cr);
-                cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-                cairo_set_source_rgba (cr, 1, 1, 1, 0);
-                cairo_rectangle (cr, 
-                                 0, 
-                                 ((settings->bar_height *2)-4)+ settings->icon_offset,
-                                 width,
-                                 4);
-                cairo_fill (cr);
-                cairo_restore (cr);
-        }
+	/* use libawn to draw */
+	awn_draw_background(&priv->effects, cr);
+	awn_draw_icons(&priv->effects, cr, priv->icon, priv->reflect);
+	awn_draw_foreground(&priv->effects, cr);
 
 	/* arrows */
 	double x1;
@@ -776,8 +720,8 @@ awn_task_win_enter_in (GtkWidget *window, GdkEventMotion *event, AwnTask *task)
 
 	priv = AWN_TASK_GET_PRIVATE (task);
 	settings = priv->settings;
-	if (settings->fade_effect)
-		launch_fade_out_effect(task);
+	//if (settings->fade_effect)
+	//	launch_fade_out_effect(task);
 	return FALSE;
 }
 
@@ -792,10 +736,10 @@ awn_task_win_enter_out (GtkWidget *window, GdkEventCrossing *event, AwnTask *tas
 	priv = AWN_TASK_GET_PRIVATE (task);
 	//priv->effects.alpha = 1.0;
 	
-	if (priv->settings->fade_effect) {
+	/*if (priv->settings->fade_effect) {
 		priv->effects.alpha = 0.2;
 		launch_fade_in_effect(task);
-	}
+	}*/
 	
 	gtk_widget_queue_draw(GTK_WIDGET(task));
 	return FALSE;
@@ -807,7 +751,7 @@ activate_window(AwnTask *task)
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 
-	if (priv->effects.hover)
+	//if (priv->effects.hover.state)
 		wnck_window_activate_transient( priv->window, priv->timestamp );
 
 	return FALSE;
@@ -820,9 +764,9 @@ awn_task_drag_motion (GtkWidget *task,
         AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 
-	if (priv->effects.is_closing)
-		return FALSE;
-		
+	//if (priv->effects.is_closing.state)
+	//	return FALSE;
+
 	if (priv->settings->auto_hide && priv->settings->hidden) {
 		awn_show(priv->settings);
 	}
@@ -832,7 +776,7 @@ awn_task_drag_motion (GtkWidget *task,
 		if ( wnck_window_is_active( priv->window ) )
 			return FALSE;
 		else {
-			priv->effects.hover = TRUE;
+			//priv->effects.hover.state = TRUE;
 			priv->timestamp = gtk_get_current_event_time();
 			g_timeout_add (1000, (GSourceFunc)activate_window, (gpointer)task);
 		}
@@ -847,7 +791,7 @@ awn_task_drag_leave (GtkWidget *task, GdkDragContext *drag_context,
 {
  	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	priv->effects.hover = FALSE;
+	//priv->effects.hover.state = FALSE;
 	
 	if (priv->settings->auto_hide && !priv->settings->hidden) {
 		awn_hide(priv->settings);
@@ -875,8 +819,8 @@ _task_wnck_icon_changed (WnckWindow *window, AwnTask *task)
                                                 height, height);
 	priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE); 
 
-        priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+        priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
+	priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
 	
         gdk_pixbuf_unref(old);
         gdk_pixbuf_unref(old_reflect);
@@ -952,8 +896,10 @@ _task_wnck_state_changed (WnckWindow *window, WnckWindowState  old,
 			launch_attention_effect(task);
 			priv->needs_attention = TRUE;
 		}
-	} else
+	} else {
 		priv->needs_attention = FALSE;
+		awn_effect_stop(&priv->effects, AWN_EFFECT_ATTENTION);
+	}
 }
 
 /**********************Gets & Sets **********************/
@@ -984,8 +930,8 @@ awn_task_set_window (AwnTask *task, WnckWindow *window)
                                                priv->settings->task_width - 12);
                 priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
                 		
-                priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-		priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+                priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
+		priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
 
 	}
 	priv->icon_changed = g_signal_connect (G_OBJECT (priv->window), "icon_changed",
@@ -1005,7 +951,10 @@ awn_task_set_window (AwnTask *task, WnckWindow *window)
         	return TRUE;
 
         if (priv->is_launcher)
-        	return TRUE;
+	{
+        	awn_effect_stop(&priv->effects, AWN_EFFECT_LAUNCHING);
+		return TRUE;
+	}
 
         launch_opening_effect(task);
 	return TRUE;
@@ -1032,8 +981,8 @@ awn_task_set_launcher (AwnTask *task, GnomeDesktopItem *item)
 		return FALSE;
 	}
         priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
-	priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+	priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
+	priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
 	launch_opening_effect(task);
 
 	return TRUE;
@@ -1102,6 +1051,8 @@ awn_task_set_needs_attention (AwnTask *task, gboolean needs_attention)
 	priv->needs_attention = needs_attention;
 	if (needs_attention)
 		launch_opening_effect(task);
+	else
+		awn_effect_stop(&priv->effects, AWN_EFFECT_ATTENTION);
 }
 
 const char*
@@ -1240,8 +1191,8 @@ awn_task_update_icon (AwnTask *task)
                                                   height, height);
         priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
        
-        priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+        priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
+	priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
 
 	gdk_pixbuf_unref (old);
 	gdk_pixbuf_unref (old_reflect);
@@ -1260,9 +1211,9 @@ awn_task_set_width (AwnTask *task, gint width)
 	g_return_if_fail (AWN_IS_TASK (task));
 	priv = AWN_TASK_GET_PRIVATE (task);
 	
-	if (priv->effects.is_closing) {
-		return;
-	}
+	//if (priv->effects.is_closing.state) {
+	//	return;
+	//}
 	
 	old = priv->icon;
 	old_reflect = priv->reflect;
@@ -1283,8 +1234,8 @@ awn_task_set_width (AwnTask *task, gint width)
         	
 	if (G_IS_OBJECT (priv->icon)) {
 		priv->reflect = gdk_pixbuf_flip (priv->icon,FALSE);
-	        priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-		priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+	        priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
+		priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
 	}
 	if (G_IS_OBJECT (old) && priv->is_launcher)
 		gdk_pixbuf_unref (old);
@@ -1326,8 +1277,8 @@ awn_task_set_custom_icon (AwnTask *task, GdkPixbuf *icon)
 
 	priv->icon = icon;
         priv->reflect = gdk_pixbuf_flip (priv->icon,FALSE);
-	priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+	priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
+	priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
 
 	g_object_unref (G_OBJECT (old_icon));
 	g_object_unref (G_OBJECT (old_reflect));
@@ -1361,8 +1312,8 @@ awn_task_unset_custom_icon (AwnTask *task)
         	priv->icon = awn_x_get_icon_for_window (priv->window,priv->settings->bar_height,priv->settings->bar_height);
         }
         priv->reflect = gdk_pixbuf_flip (priv->icon,FALSE);
-        priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+        priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
+	priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
 
 	g_object_unref (G_OBJECT (old_icon));
 	g_object_unref (G_OBJECT (old_reflect));
@@ -1604,8 +1555,8 @@ _task_choose_custom_icon (AwnTask *task)
 
 	priv->icon = pixbuf;
         priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);	
-        priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+        priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
+	priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
 
 	g_object_unref (G_OBJECT (old_icon));
 	g_object_unref (G_OBJECT (old_reflect));
@@ -1759,8 +1710,6 @@ _task_remove_launcher (GtkMenuItem *item, AwnTask *task)
 	priv = AWN_TASK_GET_PRIVATE (task);
 	settings = priv->settings;
 
-	priv->effects.is_closing = TRUE;
-	priv->effects.hover = FALSE;
 	uri = g_string_new (gnome_desktop_item_get_location (priv->item));
 	uri = g_string_erase(uri, 0, 7);
 
@@ -1775,12 +1724,8 @@ _task_remove_launcher (GtkMenuItem *item, AwnTask *task)
 					GCONF_VALUE_STRING,settings->launchers,NULL);
 
 	priv->window = NULL;
-	priv->needs_attention = FALSE;
 	/* start closing effect */
-	priv->effects.is_closing = TRUE;
-	awn_effects_set_notify(&priv->effects, NULL, _task_destroy);
-	awn_schedule_effect(AWN_FRAME_RATE, AWN_EFFECT_CLOSING, &priv->effects);
-	awn_effects_set_notify(&priv->effects, NULL, NULL);
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, 1);
 }
 
 static void
@@ -1929,10 +1874,7 @@ awn_task_close (AwnTask *task)
 		return;
 	}
 	/* start closing effect */
-	priv->effects.is_closing = TRUE;
-	awn_effects_set_notify(&priv->effects, NULL, _task_destroy);
-	awn_schedule_effect(AWN_FRAME_RATE, AWN_EFFECT_CLOSING, &priv->effects);
-	awn_effects_set_notify(&priv->effects, NULL, NULL);
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, 1);
 }
 
 

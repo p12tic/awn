@@ -37,15 +37,11 @@ typedef enum {
         AWN_EFFECT_HOVER,
         AWN_EFFECT_ATTENTION,
         AWN_EFFECT_CLOSING,
-        AWN_EFFECT_CHANGE_NAME,
-	AWN_EFFECT_FADE,
-	AWN_EFFECT_FADE_IN,
-	AWN_EFFECT_FADE_OUT
+        AWN_EFFECT_CHANGE_NAME
 } AwnEffect;
 
 typedef const gchar* (*AwnTitleCallback)(GObject*);
 typedef void (*AwnEventNotify)(GObject*);
-typedef gboolean (*AwnEffectCondition)(GObject*);
 
 typedef struct _AwnEffects AwnEffects;
 
@@ -56,26 +52,29 @@ struct _AwnEffects
 	AwnSettings *settings;
 	AwnTitle *title;
 	AwnTitleCallback get_title;
-	AwnEventNotify start_anim, stop_anim;
+	GList *effect_queue;
 
-	gboolean is_closing;
-	gboolean hover;
-	
 	gint icon_width, icon_height;
-	
+	gint window_width, window_height;
+
 	 /* EFFECT VARIABLES */
+
 	gboolean effect_lock;
-	AwnEffect effect_sheduled;
 	AwnEffect current_effect;
 	gint effect_direction;
 	gint count;
 
 	gdouble x_offset;
 	gdouble y_offset;
-	gint width;
-	gint height;
+	gdouble effect_y_offset; // TODO: stop using!
+
+	gint delta_width;
+	gint delta_height;
+
 	gdouble rotate_degrees;
 	gfloat alpha;
+	gfloat spotlight_alpha;
+	gboolean spotlight;
 
 	guint enter_notify;
 	guint leave_notify;
@@ -89,6 +88,13 @@ struct _AwnEffects
 void
 awn_effects_init(GObject *obj, AwnEffects *fx);
 
+//! Finalizes AwnEffects usage and frees internally allocated memory. (also calls awn_unregister_effects())
+/*!
+ * \param fx Pointer to AwnEffects structure.
+ */
+void
+awn_effects_finalize(AwnEffects *fx);
+
 //! Registers enter-notify and leave-notify events for managed window.
 /*!
  * \param obj Managed window to which the effects will apply.
@@ -99,31 +105,28 @@ awn_register_effects (GObject *obj, AwnEffects *fx);
 
 //! Unregisters events for managed window.
 /*!
- * \param obj Managed window to which the effects apply.
  * \param fx Pointer to AwnEffects structure.
  */
 void
-awn_unregister_effects (GObject *obj, AwnEffects *fx);
+awn_unregister_effects (AwnEffects *fx);
 
-//! Schedules single effect with one loop or HOVER effect.
+//! Start a single effect. The effect will loop until awn_effect_stop
+//! is called.
 /*!
- * \param timeout Frame time in miliseconds.
  * \param effect Effect to schedule.
  * \param fx Pointer to AwnEffects structure.
  */
 void
-awn_schedule_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx);
+awn_effect_start(AwnEffects *fx, const AwnEffect effect);
 
-//! Schedules repeating effect.
+//! Stop a single effect.
 /*!
- * \param timeout Frame time in miliseconds.
- * \param effect Effect to schedule.
+ * \param effect Effect to stop.
  * \param fx Pointer to AwnEffects structure.
- * \param condition Pointer to control function, the animation will stop looping when this function returns 0 (FALSE).
- * \param max_loops Maximum number of loops, leave 0 for unlimited looping.
  */
+
 void
-awn_schedule_repeating_effect(const gint timeout, const AwnEffect effect, AwnEffects *fx, AwnEffectCondition condition, const gint max_loops);
+awn_effect_stop(AwnEffects *fx, const AwnEffect effect);
 
 //! Makes AwnTitle appear on event-notify.
 /*!
@@ -134,14 +137,19 @@ awn_schedule_repeating_effect(const gint timeout, const AwnEffect effect, AwnEff
 void
 awn_effects_set_title(AwnEffects *fx, AwnTitle *title, AwnTitleCallback title_func);
 
-//! Provides callbacks for animation start and end.
+//! Extended effect start, which provides callbacks for animation start, end and possibility to specify maximum number of loops.
 /*!
  * \param fx Pointer to AwnEffects structure.
  * \param start Function which will be called when animation starts.
  * \param stop Function which will be called when animation finishes.
  */
 void
-awn_effects_set_notify(AwnEffects *fx, AwnEventNotify start, AwnEventNotify stop);
+awn_effect_start_ex(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start, AwnEventNotify stop, gint max_loop);
+
+void awn_draw_background(AwnEffects*, cairo_t*);
+void awn_draw_icons(AwnEffects*, cairo_t*, GdkPixbuf*, GdkPixbuf*);
+void awn_draw_foreground(AwnEffects*, cairo_t*);
+void awn_draw_set_size(AwnEffects*, const gint, const gint);
 
 G_END_DECLS
 
