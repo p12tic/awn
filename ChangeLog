@@ -1,6 +1,11 @@
 2007-09-06  haytjes <hv1989@gmail.com>
 
 	* src/main.c:
+	typo
+
+2007-09-06  haytjes <hv1989@gmail.com>
+
+	* src/main.c:
 	Make sure xcompmgr get detected. It gets only detected on startup. So Avant-window-navigator needs to be started AFTER xcompmgr.
 
 2007-09-06  haytjes <hv1989@gmail.com>
