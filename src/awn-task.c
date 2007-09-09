@@ -395,7 +395,7 @@ draw (GtkWidget *task, cairo_t *cr)
 	width = task->allocation.width;
 	height = task->allocation.height;
 
-	awn_draw_set_size(&priv->effects, width, height);
+	awn_draw_set_window_size(&priv->effects, width, height);
 
 	/* task back */
 	cairo_set_source_rgba (cr, 1, 0, 0, 0.0);
@@ -819,8 +819,7 @@ _task_wnck_icon_changed (WnckWindow *window, AwnTask *task)
                                                 height, height);
 	priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE); 
 
-        priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
+	awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 	
         gdk_pixbuf_unref(old);
         gdk_pixbuf_unref(old_reflect);
@@ -930,8 +929,7 @@ awn_task_set_window (AwnTask *task, WnckWindow *window)
                                                priv->settings->task_width - 12);
                 priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
                 		
-                priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
-		priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
+		awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 
 	}
 	priv->icon_changed = g_signal_connect (G_OBJECT (priv->window), "icon_changed",
@@ -981,8 +979,9 @@ awn_task_set_launcher (AwnTask *task, GnomeDesktopItem *item)
 		return FALSE;
 	}
         priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
-	priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
+
+	awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
+
 	launch_opening_effect(task);
 
 	return TRUE;
@@ -1191,8 +1190,7 @@ awn_task_update_icon (AwnTask *task)
                                                   height, height);
         priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
        
-        priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
+	awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 
 	gdk_pixbuf_unref (old);
 	gdk_pixbuf_unref (old_reflect);
@@ -1234,8 +1232,7 @@ awn_task_set_width (AwnTask *task, gint width)
         	
 	if (G_IS_OBJECT (priv->icon)) {
 		priv->reflect = gdk_pixbuf_flip (priv->icon,FALSE);
-	        priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
-		priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
+		awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 	}
 	if (G_IS_OBJECT (old) && priv->is_launcher)
 		gdk_pixbuf_unref (old);
@@ -1277,8 +1274,8 @@ awn_task_set_custom_icon (AwnTask *task, GdkPixbuf *icon)
 
 	priv->icon = icon;
         priv->reflect = gdk_pixbuf_flip (priv->icon,FALSE);
-	priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
+
+	awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 
 	g_object_unref (G_OBJECT (old_icon));
 	g_object_unref (G_OBJECT (old_reflect));
@@ -1312,8 +1309,8 @@ awn_task_unset_custom_icon (AwnTask *task)
         	priv->icon = awn_x_get_icon_for_window (priv->window,priv->settings->bar_height,priv->settings->bar_height);
         }
         priv->reflect = gdk_pixbuf_flip (priv->icon,FALSE);
-        priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
+
+	awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 
 	g_object_unref (G_OBJECT (old_icon));
 	g_object_unref (G_OBJECT (old_reflect));
@@ -1555,8 +1552,8 @@ _task_choose_custom_icon (AwnTask *task)
 
 	priv->icon = pixbuf;
         priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);	
-        priv->effects.icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->effects.icon_height = gdk_pixbuf_get_height(priv->icon);
+	
+	awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 
 	g_object_unref (G_OBJECT (old_icon));
 	g_object_unref (G_OBJECT (old_reflect));

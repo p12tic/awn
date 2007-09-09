@@ -323,7 +323,7 @@ draw (GtkWidget *widget, cairo_t *cr, gint width, gint height)
 {
 	TrashApplet *applet = TRASH_APPLET (widget);
 	
-	awn_draw_set_size(&applet->effects, width, height);
+	awn_draw_set_window_size(&applet->effects, width, height);
 
 	GdkPixbuf *reflect;
 	
