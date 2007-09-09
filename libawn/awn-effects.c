@@ -566,6 +566,7 @@ main_effect_loop(AwnEffects *fx) {
 
 	GSourceFunc animation = NULL;
 	AwnEffectsPrivate *topEffect = (AwnEffectsPrivate*)(fx->effect_queue->data);
+	gint effect = 0;
 	switch (topEffect->this_effect) {
 		case AWN_EFFECT_OPENING:
 			animation = (GSourceFunc)bounce_opening_effect;
@@ -573,7 +574,15 @@ main_effect_loop(AwnEffects *fx) {
 		case AWN_EFFECT_HOVER:
 			// TODO: apply possible settings
 			if (fx->settings) {
-				switch (fx->settings->icon_effect) {
+				effect = fx->settings->icon_effect;
+				if (effect < 0) {
+					effect = random() & 3;
+				}
+			}
+			switch (effect) {
+				case 0:
+					animation = (GSourceFunc)bounce_effect;
+					break;
 				case 1:
 					animation = (GSourceFunc)fading_effect;
 					break;
@@ -582,10 +591,7 @@ main_effect_loop(AwnEffects *fx) {
 					animation = (GSourceFunc)spotlight_effect;
 					break;
 				default: animation = (GSourceFunc)bounce_effect2;
-				}
 			}
-			else
-				animation = (GSourceFunc)bounce_effect2;
 			break;
 		case AWN_EFFECT_CLOSING:
 			animation = (GSourceFunc)fade_out_effect;
