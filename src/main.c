@@ -137,7 +137,7 @@ main (int argc, char* argv[])
 #ifdef USE_GNOME
 	gnome_vfs_init ();
 #elif defined(USE_XFCE)
-    thunar_vfs_init ();
+	thunar_vfs_init ();
 #endif
 	
 	settings = awn_gconf_new();

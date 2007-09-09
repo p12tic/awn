@@ -37,8 +37,6 @@ source_c =	\
 	awn-applet.c                                    \
 	awn-applet-dialog.c				\
 	awn-applet-gconf.c                              \
-	awn-applet-dialog.c								\
-	awn-cairo-utils.c								\
 	awn-applet-simple.c				\
 	awn-cairo-utils.c				\
 	awn-desktop-file.c				\

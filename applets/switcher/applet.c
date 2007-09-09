@@ -30,8 +30,7 @@
 #ifdef USE_GNOME
 #include <libgnome/libgnome.h>
 #else
-#include <libintl.h>
-#define _(x) gettext(x)
+#include <glib/gi18n.h>
 #endif
 
 #define PAGER_ROWS 2

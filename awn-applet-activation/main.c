@@ -101,7 +101,8 @@ main (gint argc, gchar **argv)
 {
 	GError *error = NULL;
 	GOptionContext *context;
-	AwnDesktopItem *item = NULL;	GtkWidget *plug = NULL;
+	AwnDesktopItem *item = NULL;
+	GtkWidget *plug = NULL;
 	const gchar *exec;
 	const gchar *name;
         const gchar *type;
@@ -149,7 +150,7 @@ main (gint argc, gchar **argv)
         }
         
         /* Check if this is a Python applet */
-        type = gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_TYPE);
+        type = awn_desktop_file_get_item_type (item);
         if (type) {
                 if (strcmp (type, "Python") == 0) {
                        launch_python (path, 

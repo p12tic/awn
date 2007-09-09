@@ -52,3 +52,10 @@ src/awn-dbus-glue.h
 src/awn-marshallers.c
 src/awn-marshallers.h
 src/icon-test
+compile
+py-compile
+mkinstalldirs
+libawn/*awn-enum-types.*
+po/*.gmo
+pyawn/awn.c
+awn-manager/awnDefs.py

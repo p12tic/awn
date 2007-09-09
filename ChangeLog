@@ -1,3 +1,16 @@
+2007-09-08  Mark Lee <avant-wn@lazymalevolence.com>
+	* applets/switcher/applet.c:
+	Use Glib's internationalization header instead of directly calling
+	<libintl.h> and hand-rolling _().
+	* libawn/awn-desktop-file.c:
+	* libawn/awn-desktop-file.h:
+	Add new function awn_desktop_file_get_item_type().
+	* awn-applet-activation/main.c:
+	Fix whitespace, replace instance of Gnome-specific API with the new
+	function.
+	* src/main.c:
+	Fix whitespace
+
 2007-09-06  haytjes <hv1989@gmail.com>
 
 	* src/main.c:
@@ -614,8 +627,6 @@
 
 2007-08-06  Mark Lee <avant-wn@lazymalevolence.com>
 
-	* ChangeLog:
-	Fix my last ChangeLog entry.
 	* libawn/Makefile.am:
 	* libawn/awn-desktop-file.h:
 	* libawn/awn-desktop-file.c:
@@ -643,21 +654,21 @@
 
 2007-08-01  Mark Lee <avant-wn@lazymalevolence.com>
 
-   * applets/switcher/applet.c:
-   * awn-applet-activation/main.c:
-   * src/awn-task-manager.c:
-   * src/awn-task.c:
-   * src/awn-task.h:
-   * src/awn-x.c:
-   * src/awn-x.h:
-   * src/main.c:
-   Add optional support for the Xfce4 desktop environment.
-   * config.h.in:
-   * configure.in:
-   Add ./configure checks and config.h constants for the various desktops;
-   Determine the desktop item type via ./configure.
-   * applets/Makefile.am:
-   Only build the trash applet if compiling with Gnome.
+	* applets/switcher/applet.c:
+	* awn-applet-activation/main.c:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	* src/awn-task.h:
+	* src/awn-x.c:
+	* src/awn-x.h:
+	* src/main.c:
+	Add optional support for the Xfce4 desktop environment.
+	* config.h.in:
+	* configure.in:
+	Add ./configure checks and config.h constants for the various desktops;
+	Determine the desktop item type via ./configure.
+	* applets/Makefile.am:
+	Only build the trash applet if compiling with Gnome.
 
 2007-08-01  haytjes  <hv1989@gmail.com>
 

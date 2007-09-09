@@ -98,6 +98,15 @@ gchar *awn_desktop_file_get_filename (AwnDesktopItem *item)
 #endif
 }
 
+gchar *awn_desktop_file_get_item_type (AwnDesktopItem *item)
+{
+#ifdef USE_GNOME
+	return gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_TYPE);
+#elif defined(USE_XFCE)
+	return awn_xfce_desktop_file_get_string (item, "Type", FALSE);
+#endif
+}
+
 gchar *awn_desktop_file_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme)
 {
 #ifdef USE_GNOME
@@ -195,7 +204,7 @@ GList *awn_desktop_file_get_pathlist_from_string (gchar *paths, GError **err)
 	}
 #elif defined(USE_XFCE)
 	list = thunar_vfs_path_list_from_string ((const gchar *) paths, err);
-    GError *error = &err;
+	GError *error = &err;
 	if (error) {
 		g_print("Error: %s", error->message);
 	} else {

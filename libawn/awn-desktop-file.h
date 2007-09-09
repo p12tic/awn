@@ -37,6 +37,7 @@ typedef XfceDesktopEntry AwnDesktopItem;
 /* Wrapper functions */
 AwnDesktopItem *awn_desktop_file_new (gchar *uri);
 gchar          *awn_desktop_file_get_filename (AwnDesktopItem *item);
+gchar          *awn_desktop_file_get_item_type (AwnDesktopItem *tem);
 gchar          *awn_desktop_file_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme);
 gchar          *awn_desktop_file_get_name (AwnDesktopItem *item);
 gchar          *awn_desktop_file_get_exec (AwnDesktopItem *item);
