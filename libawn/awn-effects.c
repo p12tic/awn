@@ -76,7 +76,8 @@ const char *EFFECT_NAMES[] = {
 
 //static gboolean awn_task_icon_spotlight_effect (AwnEffects *fx, int j);
 //static gboolean awn_task_icon_wrapper( AwnEffects *fx, int i );
-static void awn_task_icon_spotlight_init (AwnEffects *fx);
+static GdkPixbuf* SPOTLIGHT_PIXBUF = NULL;
+static void spotlight_init ();
 
 // effect functions
 static gboolean bounce_effect (AwnEffectsPrivate *priv);
@@ -114,7 +115,8 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->y_offset = 0;
 	fx->rotate_degrees = 0.0;
 	fx->alpha = 1.0;
-	fx->spotlight_alpha = 1.0;
+	fx->spotlight_alpha = 0.0;
+	fx->spotlight = FALSE;
 
 	fx->enter_notify = 0;
 	fx->leave_notify = 0;
@@ -174,7 +176,6 @@ inline gboolean awn_effect_handle_repeating(AwnEffectsPrivate *priv) {
 	return repeat;
 }
 
-
 void
 awn_effects_set_title(AwnEffects *fx, AwnTitle* title, AwnTitleCallback title_func) {
 	fx->title = title;
@@ -195,135 +196,47 @@ awn_effect_force_quit(AwnEffects *fx)
 	fx->effect_queue = NULL;
 }
 
-/*
-void
-awn_task_icon_spotlight_init (AwnEffects *fx)
+static void
+spotlight_init()
 {
-	fx->y_offset = 0;
-	fx->effect_y_offset = fx->settings->bar_height;
 	GError *error = NULL;
-
-	if(fx->settings->icon_effect_spotlight == 1)
-		fx->spotlight = gdk_pixbuf_new_from_file_at_scale("/usr/local/share/avant-window-navigator/active/spotlight1.png",75,100,TRUE, &error);
-	else
-		fx->spotlight = gdk_pixbuf_new_from_file_at_scale("/usr/local/share/avant-window-navigator/active/spotlight2.png",75,100,TRUE, &error);		
-	fx->alpha = 1.0;
-	fx->current_width = fx->icon_width/2;
+	if (!SPOTLIGHT_PIXBUF)
+		SPOTLIGHT_PIXBUF = gdk_pixbuf_new_from_file("/usr/local/share/avant-window-navigator/active/spotlight1.png", &error);
+	g_return_if_fail(error == NULL);
 }
 
-
 static gboolean
- awn_task_icon_spotlight_effect (AwnEffects *fx, int j)
- {
-	const gint max = fx->settings->bar_height + 2;
- 	
-	if(fx->first_run)
-		awn_task_icon_spotlight_init ((gpointer)fx);
- 	
- 	if(fx->is_closing.state)
- 	{		
-		if( fx->is_closing.max_loop != 0 && fx->is_closing.loop > fx->is_closing.max_loop ) {
-			fx->kill = TRUE;
-			awn_stop_effect(AWN_EFFECT_CLOSING, fx);			
-			return TRUE;
-		} 
-		else if ( fx->effect_y_offset >= max ) {
-			fx->kill = TRUE;
-			awn_stop_effect(AWN_EFFECT_CLOSING, fx);			
-			return TRUE;
-		}
-		else {
- 			fx->spotlight_alpha += AWN_FRAME_RATE * 0.2;
- 			fx->effect_y_offset += AWN_FRAME_RATE * 0.05;
- 			if(fx->current_width > 0+AWN_FRAME_RATE * 0.05)	
- 				fx->current_width -= AWN_FRAME_RATE * 0.05;	
- 			gtk_widget_queue_draw(GTK_WIDGET(fx->self));
- 			return TRUE;
- 		}
-		fx->is_closing.loop++;
- 	}
- 	if(fx->is_opening.state)
- 	{		
- 		if ((fx->is_opening.max_loop != 0 && fx->is_opening.loop > fx->is_opening.max_loop) || fx->effect_y_offset <= 0) {
- 			fx->y_offset = 0;
-			fx->effect_y_offset = 0;
-			fx->current_width = fx->icon_width;
-			fx->current_height = fx->icon_height;
-			gtk_widget_queue_draw(GTK_WIDGET(fx->self)); 			
-			if( fx->effect_y_offset <= 0 )			
-				awn_stop_effect(AWN_EFFECT_OPENING, fx);
-			else
-				awn_effect_force_quit(AWN_EFFECT_OPENING, fx);
-			return TRUE;
- 		} else {
- 			fx->effect_y_offset -= AWN_FRAME_RATE * 0.05;
- 			fx->spotlight_alpha = 100;
- 			if(fx->current_width < fx->icon_width)	
- 				fx->current_width += AWN_FRAME_RATE * 0.05;	
- 			gtk_widget_queue_draw(GTK_WIDGET(fx->self));
-			fx->is_opening.loop++;
-			return TRUE;
- 		}
- 	}
- 	if( fx->is_opening_launcher.state )
- 	{
- 		if (fx->is_opening_launcher.max_loop != 0 && fx->is_opening_launcher.loop > fx->is_opening_launcher.max_loop ) {
- 			awn_effect_force_quit(AWN_EFFECT_LAUNCHING, fx);
-			return TRUE;
-		}
-		
-		if( fx->spotlight_alpha < 75 )
- 			fx->spotlight_alpha += AWN_FRAME_RATE * 0.2;
- 		else if( fx->spotlight_alpha > 75 )
- 			fx->spotlight_alpha -= AWN_FRAME_RATE * 0.2;	
- 		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
-		fx->is_opening_launcher.loop++;
- 		return TRUE;	
- 	}
- 	if( fx->is_asking_attention.state )
- 	{
- 		if (fx->is_asking_attention.max_loop != 0 && fx->is_asking_attention.loop > fx->is_asking_attention.max_loop ) {
- 			awn_effect_force_quit(AWN_EFFECT_ATTENTION, fx);
-			return TRUE;
-		}
-
-		if( fx->spotlight_alpha < 100 )
- 			fx->spotlight_alpha += AWN_FRAME_RATE * 0.2;
- 		else if( fx->spotlight_alpha > 100 )
- 			fx->spotlight_alpha -= AWN_FRAME_RATE * 0.2;	
- 		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
-		fx->is_asking_attention.loop++;
- 		return TRUE;
- 	}
- 
- 	if(!fx->hover.state && fx->spotlight_alpha == 0)
- 		return FALSE;
- 	
- 
- 	if(fx->hover.state && fx->spotlight_alpha<100)
- 		fx->spotlight_alpha = 100;
- 	else
- 	{
- 		if(fx->spotlight_alpha>0)
- 			fx->spotlight_alpha -= AWN_FRAME_RATE * 0.2;
- 		else
- 			fx->spotlight_alpha = 0;
- 	}
- 
-	if(fx->hover.state)
-	{
-		if (fx->hover.max_loop != 0 && fx->hover.loop > fx->hover.max_loop ) {
- 			awn_effect_force_quit(AWN_EFFECT_HOVER, fx);
-			return TRUE;
-		}
-		fx->hover.loop++;
+spotlight_effect(AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->spotlight_alpha = 0;
+		fx->spotlight = TRUE;
+		if (priv->start) priv->start(fx->self);
+		// TODO: set priv->start to NULL, so it's not called multiple times while moving in the queue?
 	}
- 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
- 	return TRUE;
- }
 
+	const gint PERIOD = 20;
 
-gboolean
+	fx->spotlight_alpha = sin(++fx->count * M_PI / PERIOD);
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->count >= PERIOD) {
+		fx->count = 0;
+		fx->spotlight_alpha = 0;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+/*gboolean
 awn_task_icon_wrapper( AwnEffects *fx, int i )
 {
  		
@@ -659,8 +572,18 @@ main_effect_loop(AwnEffects *fx) {
 			break;
 		case AWN_EFFECT_HOVER:
 			// TODO: apply possible settings
-			if (fx->settings && fx->settings->icon_effect)
-				animation = (GSourceFunc)fading_effect;
+			if (fx->settings) {
+				switch (fx->settings->icon_effect) {
+				case 1:
+					animation = (GSourceFunc)fading_effect;
+					break;
+				case 2:
+					spotlight_init();
+					animation = (GSourceFunc)spotlight_effect;
+					break;
+				default: animation = (GSourceFunc)bounce_effect2;
+				}
+			}
 			else
 				animation = (GSourceFunc)bounce_effect2;
 			break;
@@ -693,8 +616,18 @@ awn_unregister_effects (AwnEffects *fx) {
 	fx->leave_notify = 0;
 }
 
-void awn_draw_background(AwnEffects *fx, cairo_t *cr) {
+void awn_draw_background(AwnEffects *fx, cairo_t *cr) {	
 	// TODO: paint possible background
+	gint x1 = 0; gint y1 = 0;
+	if (fx->settings) y1 = fx->settings->bar_height;
+
+	GdkPixbuf *spot = NULL;
+	if (fx->spotlight && fx->spotlight_alpha > 0) {
+		spot = gdk_pixbuf_scale_simple(SPOTLIGHT_PIXBUF, fx->window_width, gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF), GDK_INTERP_BILINEAR);
+		gdk_cairo_set_source_pixbuf(cr, spot, x1, y1);
+		cairo_paint_with_alpha(cr, fx->spotlight_alpha);
+		g_object_unref(spot);
+	}
 }
 
 void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *reflect) {
@@ -754,6 +687,16 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 
 void awn_draw_foreground(AwnEffects *fx, cairo_t *cr) {
 	// TODO: paint possible foreground
+	gint x1 = 0; gint y1 = 0;
+	if (fx->settings) y1 = fx->settings->bar_height;
+
+	GdkPixbuf *spot = NULL;
+	if (fx->spotlight && fx->spotlight_alpha > 0) {
+		spot = gdk_pixbuf_scale_simple(SPOTLIGHT_PIXBUF, fx->window_width, gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF), GDK_INTERP_BILINEAR);
+		gdk_cairo_set_source_pixbuf(cr, spot, x1, y1);
+		cairo_paint_with_alpha(cr, fx->spotlight_alpha/1.5);
+		g_object_unref(spot);
+	}
 }
 
 void awn_draw_set_size(AwnEffects *fx, const gint width, const gint height) {

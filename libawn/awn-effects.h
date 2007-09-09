@@ -74,6 +74,7 @@ struct _AwnEffects
 	gdouble rotate_degrees;
 	gfloat alpha;
 	gfloat spotlight_alpha;
+	gboolean spotlight;
 
 	guint enter_notify;
 	guint leave_notify;
