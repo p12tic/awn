@@ -43,8 +43,9 @@ struct _AwnAppletSimplePrivate
 
         gint offset;
         gint bar_height;
-};
 
+				gboolean temp;
+};
 
 void
 awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
@@ -68,15 +69,58 @@ awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
         if (G_IS_OBJECT (old0))
         {
                  g_object_unref (old0);
-                 if (G_IS_OBJECT (old0))
+                 if (G_IS_OBJECT (old0) && priv->temp)
                         g_object_unref (old0);
         }
         if (G_IS_OBJECT (old1))
         {
                  g_object_unref (old1);
-                 if (G_IS_OBJECT (old1))
+                 if (G_IS_OBJECT (old1) && priv->temp)
                         g_object_unref (old1);
         }        
+				priv->temp = FALSE;
+        
+        priv->icon_width = gdk_pixbuf_get_width (priv->icon);
+        priv->icon_height = gdk_pixbuf_get_height (priv->icon);
+
+        gtk_widget_set_size_request (GTK_WIDGET (simple), 
+                                     priv->icon_width + 2, 
+                                     (priv->bar_height + 2 ) * 2);
+        gtk_widget_queue_draw (GTK_WIDGET (simple));
+}
+
+void 
+awn_applet_simple_set_temp_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
+{
+        AwnAppletSimplePrivate *priv;
+        GdkPixbuf *old0, *old1;
+
+        g_return_if_fail (AWN_IS_APPLET_SIMPLE (simple));
+        g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+        priv = simple->priv;
+
+        old0 = priv->icon;
+        old1 = priv->reflect;
+
+        priv->icon = pixbuf;
+        priv->reflect = gdk_pixbuf_flip (pixbuf, FALSE);
+        g_object_ref (priv->icon);
+        g_object_ref (priv->reflect);
+
+        /* We need to unref twice because python hurts kittens */
+        if (G_IS_OBJECT (old0))
+        {
+                 g_object_unref (old0);
+                 if (G_IS_OBJECT (old0) && priv->temp)
+                        g_object_unref (old0);
+        }
+        if (G_IS_OBJECT (old1))
+        {
+                 g_object_unref (old1);
+                 if (G_IS_OBJECT (old1) && priv->temp)
+                        g_object_unref (old1);
+        }        
+				priv->temp = TRUE;
         
         priv->icon_width = gdk_pixbuf_get_width (priv->icon);
         priv->icon_height = gdk_pixbuf_get_height (priv->icon);
