@@ -35,7 +35,7 @@
 ## Release information
 my $PROGRAM = "intltool-merge";
 my $PACKAGE = "intltool";
-my $VERSION = "0.35.5";
+my $VERSION = "0.36.1";
 
 ## Loaded modules
 use strict; 
@@ -93,8 +93,23 @@ my $OUTFILE;
 
 my %po_files_by_lang = ();
 my %translations = ();
-my $iconv = $ENV{"ICONV"} || $ENV{"INTLTOOL_ICONV"} || "@INTLTOOL_ICONV@";
+my $iconv = $ENV{"ICONV"} || "iconv";
 my $devnull = ($^O eq 'MSWin32' ? 'NUL:' : '/dev/null');
+
+sub isProgramInPath
+{
+    my ($file) = @_;
+    # If either a file exists, or when run it returns 0 exit status
+    return 1 if ((-x $file) or (system("$file --version >$devnull") == 0));
+    return 0;
+}
+
+if (! isProgramInPath ("$iconv"))
+{
+	print STDERR " *** iconv is not found on this system!\n".
+		     " *** Without it, intltool-merge can not convert encodings.\n";
+	exit;
+}
 
 # Use this instead of \w for XML files to handle more possible characters.
 my $w = "[-A-Za-z0-9._:]";
@@ -494,16 +509,15 @@ sub unescape_po_string
     return $string;
 }
 
-## NOTE: deal with < - &lt; but not > - &gt;  because it seems its ok to have 
-## > in the entity. For further info please look at #84738.
 sub entity_decode
 {
     local ($_) = @_;
 
     s/&apos;/'/g; # '
     s/&quot;/"/g; # "
-    s/&amp;/&/g;
     s/&lt;/</g;
+    s/&gt;/>/g;
+    s/&amp;/&/g;
 
     return $_;
 }
