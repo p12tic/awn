@@ -36,8 +36,7 @@ typedef enum {
 	AWN_EFFECT_LAUNCHING,
 	AWN_EFFECT_HOVER,
 	AWN_EFFECT_ATTENTION,
-	AWN_EFFECT_CLOSING,
-	AWN_EFFECT_CHANGE_NAME
+	AWN_EFFECT_CLOSING
 } AwnEffect;
 
 typedef enum {
@@ -73,7 +72,8 @@ struct _AwnEffects
 	gint icon_width, icon_height;
 	gint window_width, window_height;
 
-	 /* EFFECT VARIABLES */
+	gboolean hover;
+	/* EFFECT VARIABLES */
 
 	gboolean effect_lock;
 	AwnEffect current_effect;

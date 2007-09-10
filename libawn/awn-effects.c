@@ -81,6 +81,7 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->icon_height = 48;
 	fx->delta_width = 0;
 	fx->delta_height = 0;
+	fx->hover = FALSE;
 
 	/* EFFECT VARIABLES */
 	fx->effect_lock = FALSE;
@@ -476,6 +477,7 @@ static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, g
 		awn_title_show(fx->title, fx->focus_window, fx->get_title(fx->self));
 	}
 
+	fx->hover = TRUE;
 	awn_effect_start(fx, AWN_EFFECT_HOVER);
 	return FALSE;
 }
@@ -487,6 +489,7 @@ static gboolean awn_on_leave_event(GtkWidget *widget, GdkEventCrossing *event, g
 		awn_title_hide(fx->title, fx->focus_window);
 	}
 	
+	fx->hover = FALSE;
 	awn_effect_stop(fx, AWN_EFFECT_HOVER);
 	return FALSE;
 }
@@ -500,11 +503,10 @@ static gint awn_effect_sort(gconstpointer a, gconstpointer b) {
 inline AwnEffectPriority awn_effect_get_priority(const AwnEffect effect) {
 	switch (effect) {
 		case AWN_EFFECT_OPENING: return AWN_EFFECT_PRIORITY_HIGH;
-		case AWN_EFFECT_LAUNCHING: return AWN_EFFECT_PRIORITY_NORMAL;
+		case AWN_EFFECT_LAUNCHING: return AWN_EFFECT_PRIORITY_ABOVE_NORMAL;
 		case AWN_EFFECT_HOVER: return AWN_EFFECT_PRIORITY_LOW;
-		case AWN_EFFECT_ATTENTION: return AWN_EFFECT_PRIORITY_ABOVE_NORMAL;
+		case AWN_EFFECT_ATTENTION: return AWN_EFFECT_PRIORITY_NORMAL;
 		case AWN_EFFECT_CLOSING: return AWN_EFFECT_PRIORITY_HIGHEST;
-		case AWN_EFFECT_CHANGE_NAME: return AWN_EFFECT_PRIORITY_NORMAL;
 		default: return AWN_EFFECT_PRIORITY_BELOW_NORMAL;
 	}
 }

@@ -325,8 +325,6 @@ draw (GtkWidget *widget, cairo_t *cr, gint width, gint height)
 	
 	awn_draw_set_window_size(&applet->effects, width, height);
 
-	GdkPixbuf *reflect;
-	
 	/* Clear the background to transparent */
 	cairo_set_source_rgba (cr, 1.0f, 1.0f, 1.0f, 0.0f);
 	cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
@@ -389,7 +387,6 @@ trash_applet_expose_event (GtkWidget *widget, GdkEventExpose *expose)
 	if (!cr)
 		return FALSE;
 	
-	GtkRequisition req;
         gdk_window_get_size (widget->window, &width, &height);
         draw (widget, cr, width, height);
 	
@@ -467,7 +464,7 @@ trash_applet_drag_motion (GtkWidget      *widget,
 	if (!applet->drag_hover) {
 		applet->drag_hover = TRUE;
 		trash_applet_queue_update (applet);
-		// TODO: effect! awn_schedule_effect(40, AWN_EFFECT_HOVER, &applet->effects);
+		awn_effect_start_ex(&applet->effects, AWN_EFFECT_ATTENTION, NULL, NULL, 1);
 	}
 	gdk_drag_status (context, GDK_ACTION_MOVE, time_);
 
@@ -1038,26 +1035,8 @@ trash_applet_drag_data_received (GtkWidget        *widget,
 	gtk_drag_finish (context, TRUE, FALSE, time_);
 }
 
-
 static const gchar* get_title_text(GObject* obj) {
 	TrashApplet *applet = TRASH_APPLET(obj);
 	return applet->title_text;
 }
 
-static gboolean
-applet_enter_notify_event (GtkWidget *window, GdkEventButton *event, gpointer *data)
-{
-	TrashApplet *trash = (TrashApplet *)data;
-	awn_title_show (trash->title,GTK_WIDGET(trash->awn_applet), trash->title_text);
-	
-	return FALSE;
-}
-
-static gboolean
-applet_leave_notify_event (GtkWidget *window, GdkEventButton *event, gpointer *data)
-{
-	TrashApplet *trash = (TrashApplet *)data;
-	awn_title_hide (trash->title, GTK_WIDGET(trash->awn_applet));
-	
-	return FALSE;
-}
