@@ -26,11 +26,7 @@
 #include <string.h>
 #include <math.h>
 #ifdef USE_GNOME
-#include <libgnome/gnome-desktop-item.h>
-#include <libgnomevfs/gnome-vfs.h>
 #include <libgnome/libgnome.h>
-#elif defined(USE_XFCE)
-#include <thunar-vfs/thunar-vfs.h>
 #endif
 
 #include "awn-task.h"
@@ -1076,7 +1072,7 @@ awn_task_launch_unique (AwnTask *task, const char *arg_str)
 	priv = AWN_TASK_GET_PRIVATE (task);;
 
 	GError *err = NULL;
-	int pid = awn_desktop_file_launch (priv->item, NULL, &err);
+	int pid = awn_desktop_item_launch (priv->item, NULL, &err);
 
         if (err) {
         	g_print("Error: %s", err->message);
@@ -1094,7 +1090,7 @@ awn_task_launch (AwnTask *task, const char *arg_str)
 	priv = AWN_TASK_GET_PRIVATE (task);;
 
 	GError *err = NULL;
-	priv->pid = awn_desktop_file_launch (priv->item, NULL, &err);
+	priv->pid = awn_desktop_item_launch (priv->item, NULL, &err);
 
         if (err) {
         	g_print("Error: %s", err->message);
@@ -1197,8 +1193,8 @@ _task_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 
 	GError *err = NULL;
 
-	list = awn_desktop_file_get_pathlist_from_string ((gchar *)selection_data->data, &err);
-	priv->pid = awn_desktop_file_launch (priv->item, list, &err);
+	list = awn_desktop_item_get_pathlist_from_string ((gchar *)selection_data->data, &err);
+	priv->pid = awn_desktop_item_launch (priv->item, list, &err);
 
         if (err) {
         	g_print("Error: %s", err->message);
@@ -1534,7 +1530,7 @@ awn_task_set_launcher (AwnTask *task, AwnDesktopItem *item)
 	priv = AWN_TASK_GET_PRIVATE (task);
 
 	priv->is_launcher = TRUE;
-	icon_name = awn_desktop_file_get_icon (item, priv->settings->icon_theme );
+	icon_name = awn_desktop_item_get_icon (item, priv->settings->icon_theme );
 	if (!icon_name)
 		return FALSE;
 	g_free (icon_name);
@@ -1631,7 +1627,7 @@ awn_task_get_name (AwnTask *task)
 		name =  wnck_window_get_name(priv->window);
 
 	else if (priv->is_launcher)
-		name = awn_desktop_file_get_name (priv->item);
+		name = awn_desktop_item_get_name (priv->item);
 	else
 		name =  "No name";
 	return name;
@@ -1653,7 +1649,7 @@ awn_task_get_application(AwnTask *task)
 
 	if (priv->is_launcher) {
 
-		str = g_string_new(awn_desktop_file_get_exec (priv->item));
+		str = g_string_new(awn_desktop_item_get_exec (priv->item));
 		int i = 0;
 		for (i=0; i < str->len; i++) {
 			if ( str->str[i] == ' ')
@@ -1779,7 +1775,7 @@ awn_task_set_width (AwnTask *task, gint width)
 	old_reflect = priv->reflect;
 
 	if (priv->is_launcher) {
-		char * icon_name = awn_desktop_file_get_icon (priv->item, priv->settings->icon_theme );
+		char * icon_name = awn_desktop_item_get_icon (priv->item, priv->settings->icon_theme );
 		if (!icon_name) {
 			priv->icon = awn_x_get_icon_for_window (priv->window, width-12, width-12);
 		} else {
@@ -1863,7 +1859,7 @@ awn_task_unset_custom_icon (AwnTask *task)
 	old_reflect = priv->reflect;
 
 	if (priv->is_launcher) {
-		icon_name = awn_desktop_file_get_icon (priv->item, priv->settings->icon_theme );
+		icon_name = awn_desktop_item_get_icon (priv->item, priv->settings->icon_theme );
 		if (!icon_name) {
 			priv->icon = awn_x_get_icon_for_window (priv->window, priv->settings->task_width-12, priv->settings->task_width-12);
 		} else {
@@ -2064,7 +2060,7 @@ _task_choose_custom_icon (AwnTask *task)
 	/* So we have a nice new pixbuf, we now want to save it's location
 	   for the future */
 	if (priv->is_launcher) {
-		name = g_strdup (awn_desktop_file_get_exec (priv->item));
+		name = g_strdup (awn_desktop_item_get_exec (priv->item));
 	} else {
 		WnckApplication *app = NULL;
 		app = wnck_window_get_application (priv->window);
@@ -2273,7 +2269,7 @@ _task_remove_launcher (GtkMenuItem *item, AwnTask *task)
 
 	priv->is_closing = TRUE;
 	priv->hover = FALSE;
-	uri = awn_desktop_file_get_filename (priv->item);
+	uri = awn_desktop_item_get_filename (priv->item);
 
 	g_print ("Remove : %s\n", uri->str);
 	term.uri = uri->str;

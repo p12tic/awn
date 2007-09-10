@@ -1,5 +1,8 @@
 %%
 headers
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 #define NO_IMPORT_PYGOBJECT
 #include "pygobject.h"
 #include <pycairo.h>
@@ -13,6 +16,7 @@ headers
 #include <libawn/awn-enum-types.h>
 #include <libawn/awn-plug.h>
 #include <libawn/awn-title.h>
+#include <libawn/awn-desktop-item.h>
 extern Pycairo_CAPI_t *Pycairo_CAPI;
 %%
 modulename awn
@@ -21,6 +25,7 @@ import gobject.GObject as PyGObject_Type
 import gtk.Dialog as PyGtkDialog_Type
 import gtk.EventBox as PyGtkEventBox_Type
 import gtk.HBox as PyGtkHBox_Type
+import gtk.IconTheme as PyGtkIconTheme_Type
 import gtk.Plug as PyGtkPlug_Type
 import gtk.Socket as PyGtkSocket_Type
 import gtk.VBox as PyGtkVBox_Type

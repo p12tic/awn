@@ -1,3 +1,26 @@
+2007-09-09  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/Makefile.am:
+	* libawn/awn-desktop-item.c:
+	* libawn/awn-desktop-item.h:
+	Renamed from awn-desktop-file.[ch].
+	Renamed functions to match with the type.
+	Add a GType retrieval function plus some other GObject-related macros.
+	Fix warning in awn_desktop_item_get_pathlist_from_string().
+
+	* awn-applet-activation/main.c:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	* src/awn-x.c:
+	* src/awn-x.h:
+	Rename AwnDesktopItem-related functions/includes.
+	Cleanup redundant headers.
+	Group libawn-related headers.
+
+	* pyawn/awn.defs:
+	* pyawn/awn.override:
+	Add awn.DesktopItem to the python bindings.
+
 2007-09-09  Neil J. Patel  <njpatel@gmail.com>
 
 	* applets/python-test/python-test.py:
@@ -19,7 +42,8 @@
 	* pyawn/awn.defs:
 	Updated bindings for new AwnAppletSimple function.
 
-2007-09-08  Mark Lee <avant-wn@lazymalevolence.com>
+2007-09-08  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/switcher/applet.c:
 	Use Glib's internationalization header instead of directly calling
 	<libintl.h> and hand-rolling _().

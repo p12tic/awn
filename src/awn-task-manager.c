@@ -27,8 +27,6 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
-#include <libawn/awn-title.h>
-
 #include "config.h"
 
 #include "awn-task-manager.h"
@@ -38,7 +36,8 @@
 
 #include "awn-marshallers.h"
 
-#include "libawn/awn-desktop-file.h"
+#include <libawn/awn-desktop-item.h>
+#include <libawn/awn-title.h>
 
 #define AWN_TASK_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AWN_TYPE_TASK_MANAGER, AwnTaskManagerPrivate))
 
@@ -114,7 +113,7 @@ _load_launchers_func (const char *uri, AwnTaskManager *task_manager)
 
 	priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
 
-	item = awn_desktop_file_new ((gchar *)uri);
+	item = awn_desktop_item_new ((gchar *)uri);
 	if (item == NULL)
 		return;
 
@@ -140,7 +139,7 @@ _load_launchers_func (const char *uri, AwnTaskManager *task_manager)
 		g_print("LOADED : %s\n", uri);
 	} else {
 		gtk_widget_destroy(task);
-		awn_desktop_file_unref(item);
+		awn_desktop_item_unref(item);
 		g_print("FAILED : %s\n", uri);
 	}
 }
@@ -548,7 +547,7 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 		uri = g_string_truncate(uri, res+1);
 
 	g_print("Desktop file: %s\n", uri->str);
-	item = awn_desktop_file_new (uri->str);
+	item = awn_desktop_item_new (uri->str);
 
 	if (item == NULL) {
 		g_print("Error : Could not load the desktop file!");
@@ -586,7 +585,7 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 		awn_task_manager_update_separator_position (task_manager);
 	} else {
 		gtk_widget_destroy(task);
-		awn_desktop_file_unref(item);
+		awn_desktop_item_unref(item);
 		g_print("FAILED : %s\n", _sdata);
 
 	}
@@ -1433,7 +1432,7 @@ awn_task_manger_refresh_launchers (GConfClient *client,
                 for (t = priv->launchers; t != NULL; t = t->next) {
                         AwnDesktopItem *item;
                         item = awn_task_get_item (AWN_TASK (t->data));
-						gchar *file = awn_desktop_file_get_filename (item);
+						gchar *file = awn_desktop_item_get_filename (item);
                         if (strcmp (file, l->data) == 0) {
                                 task = AWN_TASK (t->data);
                         }

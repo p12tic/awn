@@ -30,7 +30,7 @@
 #include <thunar-vfs/thunar-vfs.h>
 #endif
 
-#include "awn-desktop-file.h"
+#include "awn-desktop-item.h"
 
 /* helper functions for xfce */
 #ifdef USE_XFCE
@@ -68,13 +68,25 @@ static gchar *awn_xfce_desktop_file_get_string (AwnDesktopItem *item, gchar *key
 		return value;
 	} else {
 		g_warning("Could not get the value of '%s' from '%s'",
-		          key, awn_desktop_file_get_filename (item));
+		          key, awn_desktop_item_get_filename (item));
 		return NULL;
 	}
 }
 #endif
 
-AwnDesktopItem *awn_desktop_file_new (gchar *uri)
+/* GType function */
+GType awn_desktop_item_get_type (void)
+{
+#ifdef USE_GNOME
+	return gnome_desktop_item_get_type ();
+#elif defined(USE_XFCE)
+	return xfce_desktop_entry_get_type ();
+#endif
+}
+
+/* Wrapper functions */
+
+AwnDesktopItem *awn_desktop_item_new (gchar *uri)
 {
 	AwnDesktopItem *item = NULL;
 #ifdef USE_GNOME
@@ -87,7 +99,7 @@ AwnDesktopItem *awn_desktop_file_new (gchar *uri)
 	return item;
 }
 
-gchar *awn_desktop_file_get_filename (AwnDesktopItem *item)
+gchar *awn_desktop_item_get_filename (AwnDesktopItem *item)
 {
 #ifdef USE_GNOME
 	return gnome_vfs_get_local_path_from_uri (
@@ -98,7 +110,7 @@ gchar *awn_desktop_file_get_filename (AwnDesktopItem *item)
 #endif
 }
 
-gchar *awn_desktop_file_get_item_type (AwnDesktopItem *item)
+gchar *awn_desktop_item_get_item_type (AwnDesktopItem *item)
 {
 #ifdef USE_GNOME
 	return gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_TYPE);
@@ -107,7 +119,7 @@ gchar *awn_desktop_file_get_item_type (AwnDesktopItem *item)
 #endif
 }
 
-gchar *awn_desktop_file_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme)
+gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme)
 {
 #ifdef USE_GNOME
 	return gnome_desktop_item_get_icon (item, icon_theme);
@@ -120,7 +132,7 @@ gchar *awn_desktop_file_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme
 #endif
 }
 
-gchar *awn_desktop_file_get_name (AwnDesktopItem *item)
+gchar *awn_desktop_item_get_name (AwnDesktopItem *item)
 {
 #ifdef USE_GNOME
 	return gnome_desktop_item_get_localestring (item,
@@ -131,7 +143,7 @@ gchar *awn_desktop_file_get_name (AwnDesktopItem *item)
 
 }
 
-gchar *awn_desktop_file_get_exec (AwnDesktopItem *item)
+gchar *awn_desktop_item_get_exec (AwnDesktopItem *item)
 {
 #ifdef USE_GNOME
 	return gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_EXEC);
@@ -140,7 +152,7 @@ gchar *awn_desktop_file_get_exec (AwnDesktopItem *item)
 #endif
 }
 
-gint awn_desktop_file_launch (AwnDesktopItem *item, GList *extra_argv, GError **err)
+gint awn_desktop_item_launch (AwnDesktopItem *item, GList *extra_argv, GError **err)
 {
 #ifdef USE_GNOME
 	return gnome_desktop_item_launch_on_screen (item,
@@ -152,7 +164,7 @@ gint awn_desktop_file_launch (AwnDesktopItem *item, GList *extra_argv, GError **
 #elif defined(USE_XFCE)
 	gboolean success;
 	int pid;
-	gchar *exec = awn_desktop_file_get_exec (item);
+	gchar *exec = awn_desktop_item_get_exec (item);
 	gchar *path = awn_xfce_desktop_file_get_string (item, "Path", FALSE);
 	/* if not an absolute path, manually search through the path list
 	 * since it looks like gdk_spawn_on_screen doesn't do it for us.
@@ -183,7 +195,7 @@ gint awn_desktop_file_launch (AwnDesktopItem *item, GList *extra_argv, GError **
 #endif
 }
 
-void awn_desktop_file_unref (AwnDesktopItem *item)
+void awn_desktop_item_unref (AwnDesktopItem *item)
 {
 #ifdef USE_GNOME
 	gnome_desktop_item_unref(item);
@@ -192,7 +204,7 @@ void awn_desktop_file_unref (AwnDesktopItem *item)
 #endif
 }
 
-GList *awn_desktop_file_get_pathlist_from_string (gchar *paths, GError **err)
+GList *awn_desktop_item_get_pathlist_from_string (gchar *paths, GError **err)
 {
 	GList *list, *li;
 #ifdef USE_GNOME
@@ -204,7 +216,7 @@ GList *awn_desktop_file_get_pathlist_from_string (gchar *paths, GError **err)
 	}
 #elif defined(USE_XFCE)
 	list = thunar_vfs_path_list_from_string ((const gchar *) paths, err);
-	GError *error = &err;
+	GError *error = *err;
 	if (error) {
 		g_print("Error: %s", error->message);
 	} else {

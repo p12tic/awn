@@ -35,6 +35,12 @@
   (gtype-id "AWN_TYPE_TITLE")
 )
 
+(define-object DesktopItem
+  (in-module "Awn")
+  (c-name "AwnDesktopItem")
+  (gtype-id "AWN_TYPE_DESKTOP_ITEM")
+)
+
 ;; Enumerations and flags ...
 
 (define-enum CairoRoundCorners
@@ -337,6 +343,71 @@
 ;; From awn-defines.h
 
 
+
+;; From awn-desktop-item.h
+
+(define-function awn_desktop_item_get_type
+  (c-name "awn_desktop_item_get_type")
+  (return-type "GType")
+)
+
+(define-function awn_desktop_item_new
+  (c-name "awn_desktop_item_new")
+  (is-constructor-of "AwnDesktopItem")
+  (return-type "AwnDesktopItem*")
+  (parameters
+    '("gchar*" "uri")
+  )
+)
+
+(define-method get_filename
+  (c-name "awn_desktop_item_get_filename")
+  (of-object "AwnDesktopItem")
+  (return-type "gchar*")
+)
+
+(define-method get_item_type
+  (c-name "awn_desktop_item_get_item_type")
+  (of-object "AwnDesktopItem")
+  (return-type "gchar*")
+)
+
+(define-method get_icon
+  (c-name "awn_desktop_item_get_icon")
+  (of-object "AwnDesktopItem")
+  (return-type "gchar*")
+  (parameters
+    '("GtkIconTheme*" "icon_theme")
+  )
+)
+
+(define-method get_name
+  (c-name "awn_desktop_item_get_name")
+  (of-object "AwnDesktopItem")
+  (return-type "gchar*")
+)
+
+(define-method get_exec
+  (c-name "awn_desktop_item_get_exec")
+  (of-object "AwnDesktopItem")
+  (return-type "gchar*")
+)
+
+(define-method launch
+  (c-name "awn_desktop_item_launch")
+  (of-object "AwnDesktopItem")
+  (return-type "gint")
+  (parameters
+    '("GList*" "extra_argv")
+    '("GError**" "err")
+  )
+)
+
+(define-method __del__
+  (c-name "awn_desktop_item_unref")
+  (of-object "AwnDesktopItem")
+  (return-type "none")
+)
 
 ;; From awn-enum-types.h
 

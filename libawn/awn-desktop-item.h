@@ -34,17 +34,21 @@ typedef GnomeDesktopItem AwnDesktopItem;
 typedef XfceDesktopEntry AwnDesktopItem;
 #endif
 
+#define AWN_TYPE_DESKTOP_ITEM	(awn_desktop_item_get_type ())
+#define AWN_DESKTOP_ITEM(obj)	(G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_DESKTOP_ITEM, AwnDesktopItem))
+GType awn_desktop_item_get_type (void);
+
 /* Wrapper functions */
-AwnDesktopItem *awn_desktop_file_new (gchar *uri);
-gchar          *awn_desktop_file_get_filename (AwnDesktopItem *item);
-gchar          *awn_desktop_file_get_item_type (AwnDesktopItem *tem);
-gchar          *awn_desktop_file_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme);
-gchar          *awn_desktop_file_get_name (AwnDesktopItem *item);
-gchar          *awn_desktop_file_get_exec (AwnDesktopItem *item);
-gint            awn_desktop_file_launch (AwnDesktopItem *item, GList *extra_argv, GError **err);
-void            awn_desktop_file_unref (AwnDesktopItem *item);
+AwnDesktopItem *awn_desktop_item_new (gchar *uri);
+gchar          *awn_desktop_item_get_filename (AwnDesktopItem *item);
+gchar          *awn_desktop_item_get_item_type (AwnDesktopItem *item);
+gchar          *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme);
+gchar          *awn_desktop_item_get_name (AwnDesktopItem *item);
+gchar          *awn_desktop_item_get_exec (AwnDesktopItem *item);
+gint            awn_desktop_item_launch (AwnDesktopItem *item, GList *extra_argv, GError **err);
+void            awn_desktop_item_unref (AwnDesktopItem *item);
 
 /* utility function */
-GList          *awn_desktop_file_get_pathlist_from_string (gchar *paths, GError **err);
+GList          *awn_desktop_item_get_pathlist_from_string (gchar *paths, GError **err);
 
 #endif /* _LIBAWN_AWN_DESKTOP_FILE_H */

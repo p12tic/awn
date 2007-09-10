@@ -28,7 +28,7 @@ source_h =	\
 	awn-applet-gconf.h				\
 	awn-applet-simple.h				\
 	awn-cairo-utils.h				\
-	awn-desktop-file.h				\
+	awn-desktop-item.h				\
 	awn-enum-types.h				\
 	awn-plug.h					\
 	awn-title.h					
@@ -39,7 +39,7 @@ source_c =	\
 	awn-applet-gconf.c                              \
 	awn-applet-simple.c				\
 	awn-cairo-utils.c				\
-	awn-desktop-file.c				\
+	awn-desktop-item.c				\
 	awn-enum-types.c				\
 	awn-plug.c					\
 	awn-title.c

@@ -38,7 +38,7 @@
 #include <thunar-vfs/thunar-vfs.h>
 #endif
 
-#include <libawn/awn-desktop-file.h>
+#include <libawn/awn-desktop-item.h>
 
 GdkPixbuf* awn_x_get_icon (WnckWindow *window, gint width, gint height);
 

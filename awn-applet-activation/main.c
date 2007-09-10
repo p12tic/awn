@@ -30,7 +30,7 @@
 #include <string.h>
 
 #include <libawn/awn-defines.h>
-#include <libawn/awn-desktop-file.h>
+#include <libawn/awn-desktop-item.h>
 #include <libawn/awn-plug.h>
 #include <libawn/awn-applet.h>
 
@@ -133,7 +133,7 @@ main (gint argc, gchar **argv)
         }
         
         /* Try and load the desktop file */
-        item = awn_desktop_file_new (path);
+        item = awn_desktop_item_new (path);
         if (item == NULL) {
                 g_warning ("This desktop file does not exist %s\n", path);
                 return 1;
@@ -142,7 +142,7 @@ main (gint argc, gchar **argv)
         /* Now we have the file, lets see if we can     
                 a) load the dynamic library it points to
                 b) Find the correct function within that library */
-        exec = awn_desktop_file_get_exec (item);
+        exec = awn_desktop_item_get_exec (item);
         
         if (exec == NULL) {
                 g_warning ("No exec path found in desktop file %s\n", path);
@@ -150,7 +150,7 @@ main (gint argc, gchar **argv)
         }
         
         /* Check if this is a Python applet */
-        type = awn_desktop_file_get_item_type (item);
+        type = awn_desktop_item_get_item_type (item);
         if (type) {
                 if (strcmp (type, "Python") == 0) {
                        launch_python (path, 
@@ -165,7 +165,7 @@ main (gint argc, gchar **argv)
         
         /* Process (re)naming */
         /*FIXME: Actually make this work */
-        name = awn_desktop_file_get_name (item);
+        name = awn_desktop_item_get_name (item);
         if (name != NULL) {
                 gint len = strlen (argv[0]);
                 gint nlen = strlen (name);
@@ -183,7 +183,7 @@ main (gint argc, gchar **argv)
                 g_warning ("Could not create plug\n");
                 return 1;
         }
-        name = awn_desktop_file_get_name (item);
+        name = awn_desktop_item_get_name (item);
         
         if (name != NULL) {
                 gtk_window_set_title (GTK_WINDOW (plug), name);

@@ -307,7 +307,7 @@ awn_x_get_icon_for_launcher (AwnDesktopItem *item, gint width, gint height)
 	gchar *uri = NULL;
 	GdkPixbuf *icon = NULL;
 		
-	name = g_string_new ( awn_desktop_file_get_exec (item));
+	name = g_string_new ( awn_desktop_item_get_exec (item));
 	name = g_string_prepend (name, ".config/awn/custom-icons/");
 	int i = 0;
 	for (i = 0; i < name->len; i++) {
@@ -333,7 +333,7 @@ awn_x_get_icon_for_launcher (AwnDesktopItem *item, gint width, gint height)
 		return icon;
 	else {
 		char *icon_name;
-		icon_name = awn_desktop_file_get_icon (item, gtk_icon_theme_get_default());
+		icon_name = awn_desktop_item_get_icon (item, gtk_icon_theme_get_default());
 		icon = icon_loader_get_icon_spec (icon_name, width, height) ;
 		g_free (icon_name);
 		return icon;
