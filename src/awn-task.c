@@ -887,12 +887,15 @@ draw (GtkWidget *task, cairo_t *cr)
 	AwnTaskPrivate *priv;
 	AwnSettings *settings;
 	double width, height;
+	gint resize_offset;
 
 	priv = AWN_TASK_GET_PRIVATE (task);
 	settings = priv->settings;
 
 	width = task->allocation.width;
 	height = task->allocation.height;
+
+	resize_offset = settings->bar_height + 12 - settings->task_width;
 
 	/* task back */
 	cairo_set_source_rgba (cr, 1, 0, 0, 0.0);
@@ -909,8 +912,8 @@ draw (GtkWidget *task, cairo_t *cr)
                                           settings->border_color.green,
                                           settings->border_color.blue, 
                                           0.2);
-		_rounded_rect(cr, 0 , settings->bar_height, 
-				width, settings->bar_height);
+		_rounded_rect(cr, 0 , settings->bar_height + resize_offset, 
+				width, settings->bar_height - resize_offset);
           
                 cairo_fill(cr);
 		
@@ -927,7 +930,7 @@ draw (GtkWidget *task, cairo_t *cr)
 		double x1, y1;
 
 		x1 = (width-priv->icon_width)/2;
-		y1 = settings->bar_height - priv->y_offset;
+		y1 = settings->bar_height - priv->y_offset + resize_offset;
 
 		gdk_cairo_set_source_pixbuf (cr, priv->icon, x1, y1);
 		cairo_paint_with_alpha(cr, priv->alpha);
@@ -935,7 +938,8 @@ draw (GtkWidget *task, cairo_t *cr)
 		if (priv->y_offset >= 0 && priv->reflect)
 		{
 			y1 = settings->bar_height 
-                                + priv->icon_height + priv->y_offset;
+                                + priv->icon_height + priv->y_offset
+				+ resize_offset;
 			gdk_cairo_set_source_pixbuf (cr, 
                                                      priv->reflect,
                                                      x1, y1);
