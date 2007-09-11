@@ -82,7 +82,6 @@ struct _AwnEffects
 
 	gdouble x_offset;
 	gdouble y_offset;
-	gdouble effect_y_offset; // TODO: stop using!
 
 	gint delta_width;
 	gint delta_height;

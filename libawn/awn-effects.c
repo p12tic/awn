@@ -73,8 +73,6 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->get_title = NULL;
 	fx->effect_queue = NULL;
 	
-	fx->effect_y_offset = 0;
-
 	fx->window_width = 0;
 	fx->window_height = 0;
 	fx->icon_width = 48;
@@ -253,6 +251,7 @@ zoom_effect (AwnEffectsPrivate *priv)
 		fx->count = 0;
 		fx->delta_width = 0;
 		fx->delta_height = 0;
+		fx->y_offset = 0;
 		fx->direction = AWN_EFFECT_DIR_UP;
 		if (priv->start) priv->start(fx->self);
 		priv->start = NULL;
@@ -263,7 +262,7 @@ zoom_effect (AwnEffectsPrivate *priv)
 		if (fx->delta_width+fx->icon_width < fx->window_width) {
 			fx->delta_width+=2;
 			fx->delta_height+=2;
-			fx->y_offset+=2;
+			fx->y_offset+=1;
 		}
 		gboolean top = awn_effect_check_top_effect(priv, NULL);
 		if (top) {
@@ -275,7 +274,7 @@ zoom_effect (AwnEffectsPrivate *priv)
 	case AWN_EFFECT_DIR_DOWN:
 		fx->delta_width-=2;
 		fx->delta_height-=2;
-		fx->y_offset-=2;
+		fx->y_offset-=1;
 		if(fx->delta_width <= 0) {
 			fx->direction = AWN_EFFECT_DIR_UP;
 			fx->delta_width = 0;
@@ -291,6 +290,7 @@ zoom_effect (AwnEffectsPrivate *priv)
 
 	gboolean repeat = TRUE;
 	if (fx->direction == AWN_EFFECT_DIR_UP && !fx->delta_width && !fx->delta_height) {
+		fx->y_offset = 0;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
 	}
@@ -319,14 +319,12 @@ bounce_squish_effect (AwnEffectsPrivate *priv)
 	case AWN_EFFECT_SQUISH_DOWN:
 		fx->delta_width += (fx->icon_width*3/4)/(PERIOD/4);
 		fx->delta_height -= (fx->icon_height*3/4)/(PERIOD/4);
-		fx->effect_y_offset = -fx->delta_height;
 		if(fx->delta_height <= fx->icon_height*-1/4)
 			fx->direction = AWN_EFFECT_SQUISH_UP;
 		break;
 	case AWN_EFFECT_SQUISH_UP:
 		fx->delta_width -= (fx->icon_width*3/4)/(PERIOD/4);
 		fx->delta_height += (fx->icon_height*3/4)/(PERIOD/4);
-		fx->effect_y_offset = -fx->delta_height;
 		if(fx->delta_height >= 0)
 			fx->direction = AWN_EFFECT_DIR_NONE;
 		break;
@@ -371,8 +369,6 @@ fade_out_effect (AwnEffectsPrivate *priv)
 
 	fx->y_offset = ++fx->count * (MAX_OFFSET/PERIOD);
 	fx->alpha = fx->count*(-1.0/PERIOD)+1;
-	fx->delta_width = cos(fx->count * M_PI/3/PERIOD) * fx->icon_width - fx->icon_width;
-	fx->delta_height = fx->delta_width;
  
 	// repaint widget
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
@@ -411,10 +407,8 @@ bounce_opening_effect (AwnEffectsPrivate *priv)
 		fx->delta_width = 0;
 	if(fx->delta_height < 0) {
 		fx->delta_height += fx->icon_height*2/PERIOD;
-		fx->effect_y_offset = -fx->delta_height/2;
 	} else {
 		fx->delta_height = 0;
-		fx->effect_y_offset = 0;
 	}
 	
 	// repaint widget
@@ -638,13 +632,13 @@ void awn_draw_background(AwnEffects *fx, cairo_t *cr) {
 
 void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *reflect) {
 	g_return_if_fail(icon != NULL && fx->window_width>0 && fx->window_height>0);
-	gint x1 = (fx->window_width - fx->icon_width)/2;
-	gint y1 = fx->y_offset;
-	if (fx->settings) y1 = fx->settings->bar_height - fx->y_offset;
-
 	/* refresh icon info */
 	fx->icon_width = gdk_pixbuf_get_width(icon);
 	fx->icon_height = gdk_pixbuf_get_height(icon);
+
+	gint x1 = (fx->window_width - fx->icon_width)/2;
+	gint y1 = fx->y_offset;
+	if (fx->settings) y1 = fx->window_height - fx->settings->icon_offset - fx->icon_height - fx->y_offset;
 
 	/* icon */
 	gboolean free_reflect = FALSE;
@@ -657,10 +651,9 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		// refresh reflection, we scaled icon
 		reflect = gdk_pixbuf_flip(scaledIcon, FALSE);
 		free_reflect = TRUE;
-		// TODO: stop using effect_y_offset, use y_offset instead
 		// adjust offsets
 		x1 = (fx->window_width - fx->icon_width - fx->delta_width)/2;
-		y1 += fx->effect_y_offset;
+		y1 -= fx->delta_height;
 		gdk_cairo_set_source_pixbuf(cr, scaledIcon, x1, y1);
 	} else
 		gdk_cairo_set_source_pixbuf(cr, icon, x1, y1);
@@ -673,8 +666,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 			reflect = gdk_pixbuf_flip(icon, FALSE);
 			free_reflect = TRUE;
 		}
-		y1 += fx->icon_height + fx->y_offset*2;
-		if (was_scaled) y1 -= fx->effect_y_offset;
+		y1 += fx->icon_height + fx->delta_height + fx->y_offset*2;
 		gdk_cairo_set_source_pixbuf(cr, reflect, x1, y1);
 		cairo_paint_with_alpha(cr, fx->alpha/3);
 		if (free_reflect) g_object_unref(reflect);

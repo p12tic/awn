@@ -138,7 +138,7 @@ awn_gconf_new()
 
 	awn_load_int(client, BAR_HEIGHT, &s->bar_height,48);
 	awn_load_int(client, BAR_ANGLE, &s->bar_angle,0);
-	awn_load_int(client, ICON_OFFSET, &s->icon_offset,0);
+	awn_load_int(client, ICON_OFFSET, &s->icon_offset,10);
 	awn_load_bool(client, BAR_ROUNDED_CORNERS, &s->rounded_corners, TRUE);
 	awn_load_float(client, BAR_CORNER_RADIUS, &s->corner_radius, 10.0);	
 	awn_load_bool(client, BAR_RENDER_PATTERN, &s->render_pattern, FALSE);	

@@ -37,12 +37,6 @@
 
 G_DEFINE_TYPE (AwnTask, awn_task, GTK_TYPE_DRAWING_AREA);
 
-#define  AWN_FRAME_RATE	15
-
-#define  AWN_EFFECT_DIR_DOWN		0
-#define  AWN_EFFECT_DIR_UP			1
-#define  AWN_EFFECT_DIR_LEFT		2
-#define  AWN_EFFECT_DIR_RIGHT		3
 #define  M_PI 					3.14159265358979323846
 #define  AWN_CLICK_IDLE_TIME			450
 
@@ -355,6 +349,8 @@ draw (GtkWidget *task, cairo_t *cr)
 
 	awn_draw_set_window_size(&priv->effects, width, height);
 
+	gint resize_offset = settings->bar_height + 12 - settings->task_width;
+
 	/* task back */
 	cairo_set_source_rgba (cr, 1, 0, 0, 0.0);
 	cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
@@ -370,8 +366,8 @@ draw (GtkWidget *task, cairo_t *cr)
                                           settings->border_color.green,
                                           settings->border_color.blue, 
                                           0.2);
-		_rounded_rect(cr, 0 , settings->bar_height, 
-				width, settings->bar_height);
+		_rounded_rect(cr, 0 , settings->bar_height + resize_offset, 
+				width, settings->bar_height - resize_offset);
           
                 cairo_fill(cr);
 		
