@@ -143,11 +143,13 @@ on_destroy_applet (DBusGProxy *proxy, gchar *id, AwnPlug *plug)
 		on_delete_notify (NULL, plug);
 }
 
+/*
 static void
 on_applet_deleted (AwnApplet *applet, gchar *uid, AwnPlug *plug)
 {
 	;
 }
+*/
 
 /*  GOBJECT STUFF */
 

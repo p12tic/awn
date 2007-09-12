@@ -321,6 +321,7 @@ static void
 awn_applet_dialog_init (AwnAppletDialog *dialog) 
 {
         AwnAppletDialogPrivate *priv;
+	GConfClient *client;
 
         priv = dialog->priv = AWN_APPLET_DIALOG_GET_PRIVATE (dialog);
         
@@ -363,9 +364,11 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
         GTK_CONTAINER_CLASS (awn_applet_dialog_parent_class)->add 
                                      (GTK_CONTAINER (dialog), priv->align);
 
-        priv->offset = gconf_client_get_int (gconf_client_get_default (), 
-                       "/apps/avant-window-navigator/bar/icon_offset",
-                       NULL);
+	client = gconf_client_get_default ();
+        priv->offset = gconf_client_get_int (client, 
+					     "/apps/avant-window-navigator/bar/icon_offset",
+					     NULL);
+	g_object_unref (client);
 }
 
 /*

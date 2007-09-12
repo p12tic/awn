@@ -1423,7 +1423,7 @@ _task_wnck_name_hide (AwnTask *task)
 {
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	awn_title_hide (AWN_TITLE (priv->title), task);
+	awn_title_hide (AWN_TITLE(priv->title), GTK_WIDGET(task));
 	priv->name_changed = FALSE;
 	return FALSE;
 }
