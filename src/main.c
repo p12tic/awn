@@ -178,10 +178,6 @@ main (int argc, char* argv[])
                          (unsigned char *) atoms, 
 			 1);   
 	
-	settings->hot = awn_hotspot_new (settings);
-	gtk_widget_show (settings->hot);
-	gtk_window_present(GTK_WINDOW(settings->window));
-	
  	screen = gtk_widget_get_screen(GTK_WIDGET(settings->window));
   	if (screen && !settings->force_monitor) {
  		gdk_screen_get_monitor_geometry( screen,
@@ -199,6 +195,10 @@ main (int argc, char* argv[])
  		settings->monitor.width = settings->monitor_width;
  		settings->monitor.height = settings->monitor_height;
  	}
+ 	
+ 	settings->hot = awn_hotspot_new (settings);
+	gtk_widget_show (settings->hot);
+	gtk_window_present(GTK_WINDOW(settings->window));
 
 	g_signal_connect ( G_OBJECT(screen), "composited-changed", G_CALLBACK(composited_changed), (gpointer)settings);
 	
