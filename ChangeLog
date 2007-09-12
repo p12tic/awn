@@ -1,3 +1,14 @@
+2007-09-12  Neil J. Patel  <njp@o-hand.com>
+
+	* libawn/awn-applet-dialog.c:
+	Use Gtk theme colours so everythign looks nice.
+		
+	* src/awn-applet-manager.c:
+	* src/awn-bar.c:
+	* src/awn-hotspot.c:
+	* src/awn-task-manager.c:
+	Fix compiler warnings.
+
 2007-09-11  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* src/awn-task.c:

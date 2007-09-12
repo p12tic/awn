@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2007 Anthony Arobone <aarobone@gmail.com>
+ * Copyright (c) BOR007 Anthony Arobone <aarobone@gmail.com>
  *                    Neil Jagdish Patel <njpatel@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version BOR of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Boston, MA 0BOR111-1307, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -27,6 +27,8 @@
 #include <string.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+
+#include <gconf/gconf-client.h>
 
 #include "awn-applet.h"
 #include "awn-applet-gconf.h"
@@ -102,13 +104,18 @@ awn_applet_dialog_position_reset (AwnAppletDialog *dialog)
 static gboolean 
 _expose_event(GtkWidget *widget, GdkEventExpose *expose) 
 {
-	AwnAppletDialog *dialog;
+#define BOR 4
+        AwnAppletDialog *dialog;
         cairo_t *cr = NULL;
 	GtkWidget *child = NULL;
 	gint width, height;
         gint gap = 20;
         const gchar *text;
         gint x, y, ax, ay, aw, ah;
+        GtkStyle *style;
+        GdkColor bg;
+        gfloat alpha;
+        GdkColor border;
 
         dialog = AWN_APPLET_DIALOG (widget);
 	
@@ -117,7 +124,12 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 		return FALSE;
 		
 	gtk_window_get_size (GTK_WINDOW (widget), &width, &height);
-	
+        
+        gtk_widget_style_get (widget, "bg_alpha", &alpha, NULL);
+        style = gtk_widget_get_style (widget);
+        bg = style->base[GTK_STATE_NORMAL];
+        border = style->bg[GTK_STATE_SELECTED];
+
 	// Clear the background to transparent
 	cairo_set_source_rgba (cr, 1.0f, 1.0f, 1.0f, 0.0f);
 	cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
@@ -125,14 +137,21 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
 	// draw everything else over transparent background	
 	cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-        cairo_set_line_width (cr, 2.0);
+        cairo_set_line_width (cr, 3.0);
 
       	// background shading
-	cairo_set_source_rgba (cr, 0, 0, 0, 0.85f);
-	awn_cairo_rounded_rect (cr, 2, 2, width-4, height-4 - gap, 
+	cairo_set_source_rgba (cr, bg.red/65535.0, 
+                                   bg.green/65535.0, 
+                                   bg.blue/65535.0,
+                                   alpha);
+	awn_cairo_rounded_rect (cr, BOR, BOR, width-(BOR*2), 
+                                height-(BOR*2) - gap, 
                                 15, ROUND_ALL);
         cairo_fill_preserve(cr);
-        cairo_set_source_rgba (cr, 1, 1, 1, 0.8f);
+        cairo_set_source_rgba (cr, border.red/65535.0, 
+                                   border.green/65535.0, 
+                                   border.blue/65535.0,
+                                   alpha);
         cairo_stroke (cr);
 
         //  get some size & position info
@@ -147,26 +166,34 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
         x += aw/2;
 
 	// draw arrow
-        cairo_set_source_rgba (cr, 0, 0, 0, 0.85f);
-	cairo_move_to (cr, x-15, height - gap - 2);
+        cairo_set_source_rgba (cr, bg.red/65535.0, 
+                                   bg.green/65535.0, 
+                                   bg.blue/65535.0, 
+                                   alpha);
+	cairo_move_to (cr, x-15, height - gap - BOR);
 	cairo_line_to (cr, x, height);
-	cairo_line_to (cr, x+15, height - gap - 2);
-	//cairo_line_to (cr, x-15, height - gap - 2);
+	cairo_line_to (cr, x+15, height - gap - BOR);
+	//cairo_line_to (cr, x-15, height - gap - BOR);
         cairo_close_path (cr);
 	cairo_fill_preserve (cr);
-        cairo_set_source_rgba (cr, 1, 1, 1, 0.8f);
+        cairo_set_source_rgba (cr, border.red/65535.0, 
+                                   border.green/65535.0, 
+                                   border.blue/65535.0, 
+                                   alpha);
         cairo_stroke (cr);
         
         cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-        cairo_set_source_rgba (cr, 0, 0, 0, 0.85f);
-        cairo_move_to (cr, x-14, height-gap-4);
-        cairo_line_to (cr, x, height-4);
-        cairo_line_to (cr, x+14, height-gap-4);
+        cairo_set_source_rgba (cr, bg.red/65535.0, 
+                                   bg.green/65535.0, 
+                                   bg.blue/65535.0, 
+                                   alpha);
+        cairo_move_to (cr, x-14, height-gap-(BOR*2));
+        cairo_line_to (cr, x, height-(BOR*2));
+        cairo_line_to (cr, x+14, height-gap-(BOR*2));
         cairo_close_path (cr);
         cairo_fill_preserve (cr);
         cairo_stroke (cr);
-        
-
+     
 	// rasterize title text
 	text = gtk_window_get_title (GTK_WINDOW (widget));
 	if (text != NULL) 
@@ -179,8 +206,10 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 		cairo_set_font_size (cr, 14);
 		cairo_text_extents (cr, text, &extents);
 		// render title text
-		cairo_set_source_rgba (cr, 1, 1, 1, 1);
-		cairo_move_to (cr, 8, 8 + extents.height);
+		cairo_set_source_rgba (cr, border.red/65535.0, 
+                                           border.green/65535.0, 
+                                           border.blue/65535.0, 1);
+		cairo_move_to (cr, 10, 10 + extents.height);
 		cairo_show_text (cr, text);
 	}
 	
@@ -268,10 +297,17 @@ awn_applet_dialog_class_init (AwnAppletDialogClass *klass)
 
         widget_class = GTK_WIDGET_CLASS (klass);
 	widget_class->expose_event = _expose_event;
-        //widget_class->configure_event = _configure_event;
 	
         cont_class = GTK_CONTAINER_CLASS (klass);
         cont_class->add = awn_applet_dialog_add;
+
+        gtk_widget_class_install_style_property (widget_class,
+               g_param_spec_float (
+                 "bg_alpha",
+                 "Alpha Value",
+                 "The alpha value of the window",
+                 0.0, 1.0, 0.9,
+                 G_PARAM_READABLE | G_PARAM_WRITABLE));
 
 	g_type_class_add_private (G_OBJECT_CLASS (klass), 
                                   sizeof (AwnAppletDialogPrivate));
@@ -288,6 +324,7 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
 
         priv = dialog->priv = AWN_APPLET_DIALOG_GET_PRIVATE (dialog);
         
+        /*
         gtk_rc_parse_string ("style \"textcolor\"\n"
                           "{\n"
                           "fg[NORMAL] = \"#FFFFFF\"\n"
@@ -295,6 +332,7 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
                           "}\n"
                           "widget \"AwnDialog.*\" style \"textcolor\"");
         gtk_widget_set_name (GTK_WIDGET (dialog), "AwnDialog");
+        */
         
        	gtk_window_stick (GTK_WINDOW (dialog));
 	

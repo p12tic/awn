@@ -336,10 +336,13 @@ awn_applet_manger_refresh_applets (GConfClient *client,
                         g_print ("Creating new applet :%s uid:%s\n", 
                                  tokens[0],
                                  tokens[1]);
-                        applet =  _create_applet (manager, tokens[0], tokens[1]);
+                        applet =  _create_applet (manager, 
+					          tokens[0], tokens[1]);
                 }
                 
-                gtk_box_reorder_child (GTK_BOX (manager),GTK_WIDGET (applet),i);
+                if (GTK_IS_WIDGET (applet))
+			gtk_box_reorder_child (GTK_BOX (manager),
+		    			       GTK_WIDGET (applet),i);
                 g_object_set_qdata (G_OBJECT (applet), 
                                     touch_quark, GINT_TO_POINTER (1));
 
