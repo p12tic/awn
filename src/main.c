@@ -487,6 +487,11 @@ static gboolean is_composited( GdkScreen *screen )
         gint exit_status;
         gboolean composited;
         
+#if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 10 ) || GTK_MAJOR_VERSION < 2
+        g_print("Gtk < 2.10, so no checking for compositing manager available.\n");
+        composited = TRUE;
+#else
+        
         if(!gdk_screen_is_composited(screen))
         {
                 /* check for xcompmgr, borrowed this piece from Giacomo Lozito <james@develia.org>, (C) 2005-2007 */
@@ -514,7 +519,8 @@ static gboolean is_composited( GdkScreen *screen )
         }
         g_free( soutput );
         g_free( serror );
-        
+#endif   
+           
         return composited;
 }
 
