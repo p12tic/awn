@@ -31,14 +31,29 @@
 G_BEGIN_DECLS
 
 typedef enum {
-        AWN_EFFECT_NONE,
-        AWN_EFFECT_OPENING,
+	AWN_EFFECT_NONE,
+	AWN_EFFECT_OPENING,
 	AWN_EFFECT_LAUNCHING,
-        AWN_EFFECT_HOVER,
-        AWN_EFFECT_ATTENTION,
-        AWN_EFFECT_CLOSING,
-        AWN_EFFECT_CHANGE_NAME
+	AWN_EFFECT_HOVER,
+	AWN_EFFECT_ATTENTION,
+	AWN_EFFECT_CLOSING
 } AwnEffect;
+
+typedef enum {
+	AWN_EFFECT_DIR_NONE,
+	AWN_EFFECT_DIR_DOWN,
+	AWN_EFFECT_DIR_UP,
+	AWN_EFFECT_DIR_LEFT,
+	AWN_EFFECT_DIR_RIGHT,
+	AWN_EFFECT_SQUISH_DOWN,
+	AWN_EFFECT_SQUISH_DOWN2,
+	AWN_EFFECT_SQUISH_UP,
+	AWN_EFFECT_SQUISH_UP2,
+	AWN_EFFECT_TURN_1,
+	AWN_EFFECT_TURN_2,
+	AWN_EFFECT_TURN_3,
+	AWN_EFFECT_TURN_4
+} AwnEffectSequence;
 
 typedef const gchar* (*AwnTitleCallback)(GObject*);
 typedef void (*AwnEventNotify)(GObject*);
@@ -57,16 +72,16 @@ struct _AwnEffects
 	gint icon_width, icon_height;
 	gint window_width, window_height;
 
-	 /* EFFECT VARIABLES */
+	gboolean hover;
+	/* EFFECT VARIABLES */
 
 	gboolean effect_lock;
 	AwnEffect current_effect;
-	gint effect_direction;
+	AwnEffectSequence direction;
 	gint count;
 
 	gdouble x_offset;
 	gdouble y_offset;
-	gdouble effect_y_offset; // TODO: stop using!
 
 	gint delta_width;
 	gint delta_height;
@@ -140,16 +155,19 @@ awn_effects_set_title(AwnEffects *fx, AwnTitle *title, AwnTitleCallback title_fu
 //! Extended effect start, which provides callbacks for animation start, end and possibility to specify maximum number of loops.
 /*!
  * \param fx Pointer to AwnEffects structure.
+ * \param effect Effect to schedule.
  * \param start Function which will be called when animation starts.
  * \param stop Function which will be called when animation finishes.
+ * \param max_loops Number of maximum animation loops (0 for unlimited).
  */
 void
-awn_effect_start_ex(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start, AwnEventNotify stop, gint max_loop);
+awn_effect_start_ex(AwnEffects *fx, const AwnEffect effect, AwnEventNotify start, AwnEventNotify stop, gint max_loops);
 
 void awn_draw_background(AwnEffects*, cairo_t*);
 void awn_draw_icons(AwnEffects*, cairo_t*, GdkPixbuf*, GdkPixbuf*);
 void awn_draw_foreground(AwnEffects*, cairo_t*);
-void awn_draw_set_size(AwnEffects*, const gint, const gint);
+void awn_draw_set_window_size(AwnEffects*, const gint, const gint);
+void awn_draw_set_icon_size(AwnEffects*, const gint, const gint);
 
 G_END_DECLS
 

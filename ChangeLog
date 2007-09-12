@@ -1,3 +1,34 @@
+2007-09-11  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* src/awn-task.c:
+	Fixed icon offset during bar resize.
+
+2007-09-09  Neil J. Patel  <njpatel@gmail.com>
+
+	* applets/python-test/python-test.py:
+	Added a small test which keeps changing the icons, on hover in and
+	hover out. You can use this to measure memory usage.
+
+	* intltool-extract.in:
+	* intltool-merge.in:
+	* intltool-update.in:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	Added an awn_applet_simple_set_temp_icon, for applets which chaange the icon
+	multiple times. AwnAppletSimple takes control of these pixbufs, and makes
+	sure that they are free'd when the applet set's a new icon.
+	If you want your icons to stay around, keep using
+	awn_applet_simple_set_icon.
+
+	* pyawn/NOTES:
+	* pyawn/awn.defs:
+	Updated bindings for new AwnAppletSimple function.
+
+2007-09-06  haytjes <hv1989@gmail.com>
+
+	* src/main.c:
+	typo
+
 2007-09-06  haytjes <hv1989@gmail.com>
 
 	* src/main.c:

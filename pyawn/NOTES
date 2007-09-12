@@ -1,2 +1,13 @@
 awn_applet_dialog_new needs to be re-done to work.
+
+(define-function dialog_new
+  (c-name "awn_applet_dialog_new")
+  (is-constructor-of "AwnAppletDialog")
+  (return-type "GtkWidget*")
+  (parameters
+    '("AwnApplet*" "applet")
+  )
+)
+
+
 awn_applet_gconf_set/get_value doesn't work as yet
