@@ -231,6 +231,44 @@ spotlight_effect(AwnEffectsPrivate *priv)
 }
 
 static gboolean
+spotlight_half_fade_effect(AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
+		fx->spotlight = TRUE;
+		if (priv->start) priv->start(fx->self);
+		// TODO: set priv->start to NULL, so it's not called multiple times while moving in the queue?
+	}
+
+	const gint PERIOD = 20;
+
+	if(fx->direction == AWN_EFFECT_SPOTLIGHT_ON)
+		fx->spotlight_alpha += 0.75/PERIOD;
+	else
+		fx->spotlight_alpha -= 0.75/PERIOD;
+
+	if(fx->spotlight_alpha > 0.75)
+		fx->direction = AWN_EFFECT_SPOTLIGHT_OFF;
+	else if(fx->spotlight_alpha <= 0.0)
+		fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->spotlight_alpha <= 0) {
+		fx->count = 0;
+		fx->spotlight_alpha = 0;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+static gboolean
 spotlight_opening_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
@@ -258,7 +296,7 @@ spotlight_opening_effect(AwnEffectsPrivate *priv)
 		fx->spotlight_alpha -= (3/1)* 1.0/PERIOD;
 		fx->y_offset = 0;
 	}
-
+	
 	// repaint widget
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
@@ -710,14 +748,41 @@ main_effect_loop(AwnEffects *fx) {
 				}
 			}
 			switch (effect) {
-				case 0:
-					animation = (GSourceFunc)fade_out_effect;
-					break;
 				case 2:
 					spotlight_init();
 					animation = (GSourceFunc)spotlight_closing_effect;
 					break;
 				default: animation = (GSourceFunc)fade_out_effect;
+			}
+			break;
+		case AWN_EFFECT_LAUNCHING:
+			if (fx->settings) {
+				effect = fx->settings->icon_effect;
+				if (effect < 0) {
+					effect = random() & 7;
+				}
+			}
+			switch (effect) {
+				case 2:
+					spotlight_init();
+					animation = (GSourceFunc)spotlight_half_fade_effect;
+					break;
+				default: animation = (GSourceFunc)bounce_effect;
+			}
+			break;
+		case AWN_EFFECT_ATTENTION:
+			if (fx->settings) {
+				effect = fx->settings->icon_effect;
+				if (effect < 0) {
+					effect = random() & 7;
+				}
+			}
+			switch (effect) {
+				case 2:
+					spotlight_init();
+					animation = (GSourceFunc)spotlight_half_fade_effect;
+					break;
+				default: animation = (GSourceFunc)bounce_effect;
 			}
 			break;
 		default: animation = (GSourceFunc)bounce_effect;
