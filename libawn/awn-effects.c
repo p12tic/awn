@@ -79,7 +79,6 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->icon_height = 48;
 	fx->delta_width = 0;
 	fx->delta_height = 0;
-	fx->hover = FALSE;
 
 	/* EFFECT VARIABLES */
 	fx->effect_lock = FALSE;
@@ -91,6 +90,9 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->rotate_degrees = 0.0;
 	fx->alpha = 1.0;
 	fx->spotlight_alpha = 0.0;
+
+	fx->hover = FALSE;
+	fx->clip = FALSE;
 	fx->spotlight = FALSE;
 
 	fx->enter_notify = 0;
@@ -302,6 +304,58 @@ spotlight_opening_effect(AwnEffectsPrivate *priv)
 
 	gboolean repeat = TRUE;
 	if (fx->spotlight_alpha <= 0) {
+		fx->count = 0;
+		fx->spotlight_alpha = 0;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+static gboolean
+spotlight_opening_effect2(AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->spotlight_alpha = 1.0;
+		fx->spotlight = TRUE;
+		fx->y_offset = -fx->settings->bar_height;
+		fx->delta_width = -fx->icon_width/2;
+		fx->clip = TRUE;
+		fx->clip_region.x = 0;
+		fx->clip_region.y = fx->icon_height;
+		fx->clip_region.height = 0;
+		fx->clip_region.width = fx->icon_width;
+		if (priv->start) priv->start(fx->self);
+		// TODO: set priv->start to NULL, so it's not called multiple times while moving in the queue?
+	}
+
+	const gint PERIOD = 20;
+
+	if( fx->delta_width < 0 ){
+		fx->clip_region.y -=  (3/2)* fx->icon_height/PERIOD;
+		fx->clip_region.height += (3/2)* fx->icon_height/PERIOD;
+		fx->y_offset +=  (3/2)* fx->settings->bar_height/PERIOD;
+		fx->delta_width += (3/1)* (fx->icon_width/2) * 1/PERIOD;
+	} else if (fx->y_offset < 0) {
+		fx->clip_region.y -=  (3/2)* fx->settings->bar_height/PERIOD;
+		fx->clip_region.height += (3/2)* fx->icon_height/PERIOD;
+		fx->y_offset +=  (3/2)* fx->settings->bar_height/PERIOD;
+		//fx->delta_width = 0;
+	} else {
+		fx->spotlight_alpha -= (3/1)* 1.0/PERIOD;
+		fx->y_offset = 0;
+	}
+	
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->spotlight_alpha <= 0) {
+		fx->clip = FALSE;
 		fx->count = 0;
 		fx->spotlight_alpha = 0;
 		// check for repeating
@@ -710,7 +764,7 @@ main_effect_loop(AwnEffects *fx) {
 					break;
 				case 2:
 					spotlight_init();
-					animation = (GSourceFunc)spotlight_opening_effect;
+					animation = (GSourceFunc)spotlight_opening_effect2;
 					break;
 				default: animation = (GSourceFunc)bounce_opening_effect;
 			}
@@ -823,29 +877,54 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	fx->icon_width = gdk_pixbuf_get_width(icon);
 	fx->icon_height = gdk_pixbuf_get_height(icon);
 
-	gint x1 = (fx->window_width - fx->icon_width)/2;
-	gint y1 = fx->y_offset;
-	if (fx->settings) y1 = fx->window_height - fx->settings->icon_offset - fx->icon_height - fx->y_offset;
+	gint current_width = fx->icon_width;
+	gint current_height = fx->icon_height;
 
-	/* icon */
+	gint x1 = (fx->window_width - current_width)/2;
+	gint y1 = 0;
+	if (fx->settings) y1 = fx->window_height - fx->settings->icon_offset - current_height - fx->y_offset;
+
+	/* ICONS */
 	gboolean free_reflect = FALSE;
-	gboolean was_scaled = FALSE;
 	GdkPixbuf *scaledIcon = NULL;
+	GdkPixbuf *clippedIcon = NULL;
+
+	/* clipping */
+	if (fx->clip) {
+		clippedIcon = gdk_pixbuf_new_subpixbuf(icon, 
+			fx->clip_region.x,
+			fx->clip_region.y,
+			fx->clip_region.width,
+			fx->clip_region.height);
+		// update current w&h
+		current_width = fx->clip_region.width - fx->clip_region.x;
+		current_height = fx->clip_region.height - fx->clip_region.y;
+		// refresh reflection, icon was clipped
+		// TODO: don't make reflect if we're scaling
+		reflect = gdk_pixbuf_flip(clippedIcon, FALSE);
+		free_reflect = TRUE;
+		// adjust offsets
+		x1 = (fx->window_width - current_width) / 2;
+		y1 += fx->icon_height - current_height;
+	}
+	/* scaling */
 	if (fx->delta_width || fx->delta_height) {
-		// scale icon
-		was_scaled = TRUE;
-		scaledIcon = gdk_pixbuf_scale_simple(icon, fx->icon_width + fx->delta_width, fx->icon_height + fx->delta_height, GDK_INTERP_BILINEAR);
+		scaledIcon = gdk_pixbuf_scale_simple(clippedIcon ? clippedIcon : icon, current_width + fx->delta_width, current_height + fx->delta_height, GDK_INTERP_BILINEAR);
+		// update current w&h
+		current_width += fx->delta_width;
+		current_height += fx->delta_height;
 		// refresh reflection, we scaled icon
 		reflect = gdk_pixbuf_flip(scaledIcon, FALSE);
 		free_reflect = TRUE;
 		// adjust offsets
-		x1 = (fx->window_width - fx->icon_width - fx->delta_width)/2;
+		x1 = (fx->window_width - current_width)/2;
 		y1 -= fx->delta_height;
 		gdk_cairo_set_source_pixbuf(cr, scaledIcon, x1, y1);
 	} else
-		gdk_cairo_set_source_pixbuf(cr, icon, x1, y1);
+		gdk_cairo_set_source_pixbuf(cr, clippedIcon ? clippedIcon : icon, x1, y1);
 	cairo_paint_with_alpha(cr, fx->alpha);
-	if (was_scaled) g_object_unref(scaledIcon);
+	if (scaledIcon) g_object_unref(scaledIcon);
+	if (clippedIcon) g_object_unref(clippedIcon);
 
 	/* reflection */
 	if (fx->y_offset >= 0) {
@@ -853,7 +932,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 			reflect = gdk_pixbuf_flip(icon, FALSE);
 			free_reflect = TRUE;
 		}
-		y1 += fx->icon_height + fx->delta_height + fx->y_offset*2;
+		y1 += current_height + fx->y_offset*2;
 		gdk_cairo_set_source_pixbuf(cr, reflect, x1, y1);
 		cairo_paint_with_alpha(cr, fx->alpha/3);
 		if (free_reflect) g_object_unref(reflect);
