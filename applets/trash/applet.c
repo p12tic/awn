@@ -116,10 +116,11 @@ awn_applet_factory_initp ( gchar* uid, gint orient, gint height )
   g_signal_connect (G_OBJECT (applet), "button-release-event", 
                     G_CALLBACK (applet_button_release), menu);
                          
-  
+
+  gint applet_height = awn_applet_get_height(applet);
   gtk_widget_set_size_request (GTK_WIDGET (applet),
-                               awn_applet_get_height (applet), 
-                               awn_applet_get_height (applet) * 2);
+                               applet_height * 5/4, 
+                               applet_height * 2);
   
   gtk_container_add (GTK_CONTAINER (applet), trash);
   

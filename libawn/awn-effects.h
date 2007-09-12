@@ -72,9 +72,7 @@ struct _AwnEffects
 	gint icon_width, icon_height;
 	gint window_width, window_height;
 
-	gboolean hover;
 	/* EFFECT VARIABLES */
-
 	gboolean effect_lock;
 	AwnEffect current_effect;
 	AwnEffectSequence direction;
@@ -86,9 +84,15 @@ struct _AwnEffects
 	gint delta_width;
 	gint delta_height;
 
+	GtkAllocation clip_region;
+
 	gdouble rotate_degrees;
 	gfloat alpha;
 	gfloat spotlight_alpha;
+
+	/* State variables */
+	gboolean hover;
+	gboolean clip;
 	gboolean spotlight;
 
 	guint enter_notify;
