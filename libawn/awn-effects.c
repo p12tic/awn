@@ -190,20 +190,39 @@ spotlight_effect(AwnEffectsPrivate *priv)
 		fx->count = 0;
 		fx->spotlight_alpha = 0;
 		fx->spotlight = TRUE;
+		fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
 		if (priv->start) priv->start(fx->self);
 		priv->start = NULL;
 	}
 
-	const gint PERIOD = 20;
+	const gint PERIOD = 15;
+	const gint TREMBLE_PERIOD = 5;
+	const gfloat TREMBLE_HEIGHT = 0.6;
 
-	fx->spotlight_alpha = sin(++fx->count * M_PI / PERIOD);
-
+	gboolean busy = awn_effect_check_top_effect(priv, NULL);
+	if( fx->spotlight_alpha < 1.0 && fx->direction == AWN_EFFECT_SPOTLIGHT_ON){
+		fx->spotlight_alpha += 1.0/PERIOD;
+	} else if( busy && fx->direction != AWN_EFFECT_SPOTLIGHT_OFF ){
+		if(fx->direction == AWN_EFFECT_SPOTLIGHT_TREMBLE_UP)
+			fx->spotlight_alpha += TREMBLE_HEIGHT/TREMBLE_PERIOD;
+		else
+			fx->spotlight_alpha -= TREMBLE_HEIGHT/TREMBLE_PERIOD;
+		
+		if( fx->spotlight_alpha>1.0 )
+			fx->direction = AWN_EFFECT_SPOTLIGHT_TREMBLE_DOWN;
+		else if (fx->spotlight_alpha < 1.0-TREMBLE_HEIGHT)
+			fx->direction = AWN_EFFECT_SPOTLIGHT_TREMBLE_UP;
+	}
+	else{
+		fx->direction = AWN_EFFECT_SPOTLIGHT_OFF;
+		fx->spotlight_alpha -= 1.0/PERIOD;
+	}
 	// repaint widget
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
 	gboolean repeat = TRUE;
-	if (fx->count >= PERIOD) {
-		fx->count = 0;
+	if ( fx->direction == AWN_EFFECT_SPOTLIGHT_OFF && fx->spotlight_alpha <= 0.0) {
+		fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
 		fx->spotlight_alpha = 0;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
