@@ -293,7 +293,6 @@ spotlight_opening_effect(AwnEffectsPrivate *priv)
 		fx->delta_width += (3/1)* (fx->icon_width/2) * 1/PERIOD;
 	} else if (fx->y_offset < 0) {
 		fx->y_offset +=  (3/2)* fx->settings->bar_height/PERIOD;
-		//fx->delta_width = 0;
 	} else {
 		fx->spotlight_alpha -= (3/1)* 1.0/PERIOD;
 		fx->y_offset = 0;
@@ -322,11 +321,10 @@ spotlight_opening_effect2(AwnEffectsPrivate *priv)
 		fx->count = 0;
 		fx->spotlight_alpha = 1.0;
 		fx->spotlight = TRUE;
-		fx->y_offset = -fx->settings->bar_height;
 		fx->delta_width = -fx->icon_width/2;
 		fx->clip = TRUE;
 		fx->clip_region.x = 0;
-		fx->clip_region.y = fx->icon_height;
+		fx->clip_region.y = 0;
 		fx->clip_region.height = 0;
 		fx->clip_region.width = fx->icon_width;
 		if (priv->start) priv->start(fx->self);
@@ -336,18 +334,14 @@ spotlight_opening_effect2(AwnEffectsPrivate *priv)
 	const gint PERIOD = 20;
 
 	if( fx->delta_width < 0 ){
-		fx->clip_region.y -=  (3/2)* fx->icon_height/PERIOD;
 		fx->clip_region.height += (3/2)* fx->icon_height/PERIOD;
-		fx->y_offset +=  (3/2)* fx->settings->bar_height/PERIOD;
 		fx->delta_width += (3/1)* (fx->icon_width/2) * 1/PERIOD;
-	} else if (fx->y_offset < 0) {
-		fx->clip_region.y -=  (3/2)* fx->settings->bar_height/PERIOD;
+	} else if (fx->clip_region.height < fx->icon_height) {
 		fx->clip_region.height += (3/2)* fx->icon_height/PERIOD;
-		fx->y_offset +=  (3/2)* fx->settings->bar_height/PERIOD;
-		//fx->delta_width = 0;
+		if(fx->clip_region.height > fx->icon_height)
+			fx->clip_region.height = fx->icon_height;
 	} else {
 		fx->spotlight_alpha -= (3/1)* 1.0/PERIOD;
-		fx->y_offset = 0;
 	}
 	
 	// repaint widget
@@ -374,6 +368,11 @@ spotlight_closing_effect(AwnEffectsPrivate *priv)
 		fx->count = 0;
 		fx->spotlight_alpha = 0.0;
 		fx->spotlight = TRUE;
+		fx->clip = TRUE;
+		fx->clip_region.x = 0;
+		fx->clip_region.y = 0;
+		fx->clip_region.height = fx->icon_height;
+		fx->clip_region.width = fx->icon_width;
 		if (priv->start) priv->start(fx->self);
 		// TODO: set priv->start to NULL, so it's not called multiple times while moving in the queue?
 	}
@@ -381,7 +380,8 @@ spotlight_closing_effect(AwnEffectsPrivate *priv)
 	const gint PERIOD = 40;
 
 	if(fx->alpha > 0.0) {
-		fx->y_offset -=  (2/1)* fx->settings->bar_height/PERIOD;
+		fx->clip_region.height -=  (2/1)* fx->icon_height/PERIOD;
+		//fx->y_offset -=  (2/1)* fx->settings->bar_height/PERIOD;
 		fx->spotlight_alpha += (2/1)* 1.0/PERIOD;
 		fx->delta_width -= (2/1)* fx->icon_width/PERIOD;
 		fx->alpha -= (2/1)* 1.0/PERIOD;
