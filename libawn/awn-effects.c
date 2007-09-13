@@ -743,32 +743,29 @@ bounce_opening_effect (AwnEffectsPrivate *priv)
 		// effect start initialize values
 		fx->count = 0;
 		fx->direction = AWN_EFFECT_DIR_UP;
-		fx->delta_width = -fx->icon_width;
-		fx->delta_height = -fx->icon_height;
+		fx->y_offset = -fx->settings->bar_height;
 		if (priv->start) priv->start(fx->self);
 		priv->start = NULL;
 	}
 
-	const gdouble MAX_BOUNCE_OFFSET = 15.0;
-	const gint PERIOD = 20;
+	const gdouble MAX_BOUNCE_OFFSET = 10.0;
+	const gint PERIOD = 30;
 
-	fx->y_offset = sin(++fx->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
-	if(fx->delta_width < 0)
-		fx->delta_width += fx->icon_width*2/PERIOD;
+	if(fx->direction == AWN_EFFECT_DIR_UP)
+		fx->y_offset += (fx->settings->bar_height+MAX_BOUNCE_OFFSET)/(PERIOD*2/3);
 	else
-		fx->delta_width = 0;
-	if(fx->delta_height < 0) {
-		fx->delta_height += fx->icon_height*2/PERIOD;
-	} else {
-		fx->delta_height = 0;
-	}
+		fx->y_offset -= (MAX_BOUNCE_OFFSET)/(PERIOD*1/3);
+	
+	if(fx->y_offset >= MAX_BOUNCE_OFFSET)
+		fx->direction = AWN_EFFECT_DIR_DOWN;
 	
 	// repaint widget
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
 	gboolean repeat = TRUE;
-	if (fx->count >= PERIOD) {
+	if (fx->direction == AWN_EFFECT_DIR_DOWN && fx->y_offset <= 0) {
 		fx->count = 0;
+		fx->y_offset = 0;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
 	}
