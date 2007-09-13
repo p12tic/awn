@@ -586,8 +586,8 @@ bounce_squish_attention_effect (AwnEffectsPrivate *priv)
 			fx->count = 0;
 	case AWN_EFFECT_DIR_STOP:
 		fx->y_offset = sin(++fx->count * M_PI * 2 / PERIOD) * MAX_BOUNCE_OFFSET;
-		fx->delta_width = sin(fx->count * M_PI * 2 / PERIOD) * (fx->icon_width*1/3);		
-		fx->delta_height = sin(fx->count * M_PI * 2 / PERIOD) * (fx->icon_width*1/3);		
+		fx->delta_width = sin(fx->count * M_PI * 2 / PERIOD) * (fx->icon_width*1/6);		
+		fx->delta_height = sin(fx->count * M_PI * 2 / PERIOD) * (fx->icon_width*1/6);		
 		if (fx->count >= PERIOD/2) {
 			fx->count = 0;
 			fx->direction = AWN_EFFECT_SQUISH_DOWN;
