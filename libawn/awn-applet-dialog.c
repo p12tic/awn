@@ -241,7 +241,7 @@ _on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer *data)
 {
 	if (event->keyval == GDK_Escape && AWN_IS_APPLET_DIALOG(widget))
         {
-		gtk_widget_hide( widget );
+		gtk_widget_hide( GTK_WIDGET(widget) );
 	}
 	return FALSE;
 }
