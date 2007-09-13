@@ -435,7 +435,8 @@ static void
 resize (AwnSettings *settings)
 {
 	gint ww, wh;
-	
+
+	settings->task_width = settings->bar_height+12;
 	awn_applet_manager_height_changed (AWN_APPLET_MANAGER (settings->appman));
 
 	gtk_window_get_size(GTK_WINDOW(settings->window), &ww, &wh);

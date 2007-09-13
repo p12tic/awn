@@ -1,3 +1,9 @@
+2007-09-14  haytjes <hv1989@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* src/main.c:
+	Finally totally dynamical resizing. There was again a bug in it. Now that's solved again and now awn-applet-simple also resizes dynamical
+
 2007-09-13  haytjes <hv1989@gmail.com>
 
 	* libawn/awn-applet-dialog.c:

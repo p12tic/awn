@@ -36,6 +36,7 @@ G_DEFINE_TYPE(AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET)
 
 struct _AwnAppletSimplePrivate
 {
+        GdkPixbuf *org_icon;
         GdkPixbuf *icon;
         GdkPixbuf *reflect;
         gint icon_width;
@@ -44,27 +45,39 @@ struct _AwnAppletSimplePrivate
         gint offset;
         gint bar_height;
 
-				gboolean temp;
+        gboolean temp;
 };
 
-void
-awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
+static void 
+adjust_icon(AwnAppletSimple *simple)
 {
         AwnAppletSimplePrivate *priv;
         GdkPixbuf *old0, *old1;
-
-        g_return_if_fail (AWN_IS_APPLET_SIMPLE (simple));
-        g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+     
         priv = simple->priv;
 
         old0 = priv->icon;
         old1 = priv->reflect;
 
-        priv->icon = pixbuf;
-        priv->reflect = gdk_pixbuf_flip (pixbuf, FALSE);
+	priv->icon_height = priv->bar_height;
+	if( gdk_pixbuf_get_height (priv->org_icon) == priv->icon_height )
+	{
+		priv->icon_width = gdk_pixbuf_get_width (priv->org_icon);
+		priv->icon = priv->org_icon;
+	}
+	else
+	{
+        	priv->icon_width = (int)((double)priv->icon_height/(double)gdk_pixbuf_get_height (priv->org_icon)*(double)gdk_pixbuf_get_width (priv->org_icon));        
+	        priv->icon = gdk_pixbuf_scale_simple(priv->org_icon,
+	                                             priv->icon_width,
+	                                             priv->icon_height,
+	                                             GDK_INTERP_BILINEAR);
+        }
+
+        priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
         g_object_ref (priv->icon);
         g_object_ref (priv->reflect);
-
+        
         /* We need to unref twice because python hurts kittens */
         if (G_IS_OBJECT (old0))
         {
@@ -77,16 +90,37 @@ awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
                  g_object_unref (old1);
                  if (G_IS_OBJECT (old1) && priv->temp)
                         g_object_unref (old1);
-        }        
-				priv->temp = FALSE;
-        
-        priv->icon_width = gdk_pixbuf_get_width (priv->icon);
-        priv->icon_height = gdk_pixbuf_get_height (priv->icon);
-
+        }    
         gtk_widget_set_size_request (GTK_WIDGET (simple), 
                                      priv->icon_width + 2, 
                                      (priv->bar_height + 2 ) * 2);
         gtk_widget_queue_draw (GTK_WIDGET (simple));
+}
+
+void
+awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
+{
+        AwnAppletSimplePrivate *priv;
+        GdkPixbuf *old0, *old1;
+
+        g_return_if_fail (AWN_IS_APPLET_SIMPLE (simple));
+        g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+        
+        priv = simple->priv;
+
+        old0 = priv->org_icon;
+        priv->org_icon = pixbuf;
+
+        /* We need to unref twice because python hurts kittens */
+        if (G_IS_OBJECT (old0))
+        {
+                 g_object_unref (old0);
+                 if (G_IS_OBJECT (old0) && priv->temp)
+                        g_object_unref (old0);
+        }     
+
+        adjust_icon(simple);
+        priv->temp = FALSE;
 }
 
 void 
@@ -97,15 +131,11 @@ awn_applet_simple_set_temp_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 
         g_return_if_fail (AWN_IS_APPLET_SIMPLE (simple));
         g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+        
         priv = simple->priv;
 
-        old0 = priv->icon;
-        old1 = priv->reflect;
-
-        priv->icon = pixbuf;
-        priv->reflect = gdk_pixbuf_flip (pixbuf, FALSE);
-        g_object_ref (priv->icon);
-        g_object_ref (priv->reflect);
+        old0 = priv->org_icon;
+        priv->org_icon = pixbuf;
 
         /* We need to unref twice because python hurts kittens */
         if (G_IS_OBJECT (old0))
@@ -113,22 +143,10 @@ awn_applet_simple_set_temp_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
                  g_object_unref (old0);
                  if (G_IS_OBJECT (old0) && priv->temp)
                         g_object_unref (old0);
-        }
-        if (G_IS_OBJECT (old1))
-        {
-                 g_object_unref (old1);
-                 if (G_IS_OBJECT (old1) && priv->temp)
-                        g_object_unref (old1);
-        }        
-				priv->temp = TRUE;
-        
-        priv->icon_width = gdk_pixbuf_get_width (priv->icon);
-        priv->icon_height = gdk_pixbuf_get_height (priv->icon);
+        }     
 
-        gtk_widget_set_size_request (GTK_WIDGET (simple), 
-                                     priv->icon_width + 2, 
-                                     (priv->bar_height + 2 ) * 2);
-        gtk_widget_queue_draw (GTK_WIDGET (simple));
+        adjust_icon(simple);
+        priv->temp = TRUE;
 }
 
 static gboolean 
@@ -207,10 +225,38 @@ awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
                                   sizeof (AwnAppletSimplePrivate));
 }
 
+static void
+bar_height_changed( GConfClient *client, guint cid, GConfEntry *entry, AwnAppletSimple *simple )
+{
+        AwnAppletSimplePrivate *priv;
+	GConfValue *value = NULL;
+
+	priv = simple->priv;
+	value = gconf_entry_get_value(entry);
+	priv->bar_height = gconf_value_get_int(value);
+	
+	adjust_icon(simple);
+	
+	g_print("bar_height changed\n");
+}
+static void
+icon_offset_changed( GConfClient *client, guint cid, GConfEntry *entry, AwnAppletSimple *simple )
+{
+        AwnAppletSimplePrivate *priv;
+	GConfValue *value = NULL;
+
+	priv = simple->priv;
+	value = gconf_entry_get_value(entry);
+	priv->offset = gconf_value_get_int(value);
+	
+	g_print("icon_offset changed\n");
+}
+
 static void 
 awn_applet_simple_init (AwnAppletSimple *simple) 
 {
         AwnAppletSimplePrivate *priv;
+        GConfClient *client;
 
         priv = simple->priv = AWN_APPLET_SIMPLE_GET_PRIVATE (simple);
 
@@ -220,12 +266,16 @@ awn_applet_simple_init (AwnAppletSimple *simple)
         priv->icon_width = 0;
         priv->offset = 0;
 
-        priv->offset = gconf_client_get_int (gconf_client_get_default (), 
+        client = gconf_client_get_default ();
+        gconf_client_add_dir(client, "/apps/avant-window-navigator/bar", GCONF_CLIENT_PRELOAD_NONE, NULL);
+        priv->offset = gconf_client_get_int (client, 
                        "/apps/avant-window-navigator/bar/icon_offset",
                        NULL);
-        priv->bar_height = gconf_client_get_int (gconf_client_get_default (), 
+        priv->bar_height = gconf_client_get_int (client, 
                        "/apps/avant-window-navigator/bar/bar_height",
                        NULL);
+        gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/bar_height", (GConfClientNotifyFunc)bar_height_changed, simple, NULL, NULL);
+        gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/icon_offset", (GConfClientNotifyFunc)icon_offset_changed, simple, NULL, NULL);
 }
 
 GtkWidget* 
