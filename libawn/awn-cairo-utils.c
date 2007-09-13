@@ -82,9 +82,9 @@ getdec(char hexchar)
 }
 
 static void 
-hex2float(char* HexColor, float* FloatColor)
+hex2float (const char *HexColor, float *FloatColor)
 {
-   char* HexColorPtr = HexColor;
+   const char *HexColorPtr = HexColor;
 
    int i = 0;
    for (i = 0; i < 4; i++)

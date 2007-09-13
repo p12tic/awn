@@ -94,7 +94,8 @@ awn_hotspot_new( AwnSettings *sets )
         
         
         
-        gtk_window_resize (GTK_WINDOW(this), 
+        if (settings->monitor.width > 0)
+		gtk_window_resize (GTK_WINDOW(this), 
         		   settings->monitor.width - (2*PADDING),
         		   AWN_HOTSPOT_DEFAULT_HEIGHT);
         

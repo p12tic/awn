@@ -178,10 +178,6 @@ main (int argc, char* argv[])
                          (unsigned char *) atoms, 
 			 1);   
 	
-	settings->hot = awn_hotspot_new (settings);
-	gtk_widget_show (settings->hot);
-	gtk_window_present(GTK_WINDOW(settings->window));
-	
  	screen = gtk_widget_get_screen(GTK_WIDGET(settings->window));
   	if (screen && !settings->force_monitor) {
  		gdk_screen_get_monitor_geometry( screen,
@@ -199,6 +195,10 @@ main (int argc, char* argv[])
  		settings->monitor.width = settings->monitor_width;
  		settings->monitor.height = settings->monitor_height;
  	}
+ 	
+ 	settings->hot = awn_hotspot_new (settings);
+	gtk_widget_show (settings->hot);
+	gtk_window_present(GTK_WINDOW(settings->window));
 
 	g_signal_connect ( G_OBJECT(screen), "composited-changed", G_CALLBACK(composited_changed), (gpointer)settings);
 	
@@ -440,7 +440,9 @@ resize (AwnSettings *settings)
 
 	gtk_window_get_size(GTK_WINDOW(settings->window), &ww, &wh);
 	gtk_widget_set_size_request (settings->window, -1, (settings->bar_height)*2+settings->icon_offset);
-	gtk_window_move(settings->window, (settings->monitor.width - ww) / 2, settings->monitor.height-((settings->bar_height)*2+settings->icon_offset));
+	gtk_window_move(GTK_WINDOW(settings->window),
+			(settings->monitor.width - ww) / 2,
+			settings->monitor.height-((settings->bar_height)*2+settings->icon_offset));
 	
 	gtk_window_resize(GTK_WINDOW(settings->bar), 
 				  settings->monitor.width, 
@@ -487,6 +489,11 @@ static gboolean is_composited( GdkScreen *screen )
         gint exit_status;
         gboolean composited;
         
+#if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 10 ) || GTK_MAJOR_VERSION < 2
+        g_print("Gtk < 2.10, so no checking for compositing manager available.\n");
+        composited = TRUE;
+#else
+        
         if(!gdk_screen_is_composited(screen))
         {
                 /* check for xcompmgr, borrowed this piece from Giacomo Lozito <james@develia.org>, (C) 2005-2007 */
@@ -514,7 +521,8 @@ static gboolean is_composited( GdkScreen *screen )
         }
         g_free( soutput );
         g_free( serror );
-        
+#endif   
+           
         return composited;
 }
 

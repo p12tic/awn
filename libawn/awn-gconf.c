@@ -91,8 +91,6 @@ static void awn_notify_color (GConfClient *client, guint cid, GConfEntry *entry,
 
 static void hex2float(char* HexColor, float* FloatColor);
 
-static void load_monitor (AwnSettings *settings);
-
 AwnSettings* awn_get_settings(void)
 {
 	//assert(settings != NULL);
@@ -384,12 +382,4 @@ hex2float(char* HexColor, float* FloatColor)
 
 }
 
-static void
-screen_size_changed (GdkScreen *screen, AwnSettings *s)
-{
-	g_print ("Screen size changed\n");
-	gdk_screen_get_monitor_geometry(screen,
-					gdk_screen_get_monitor_at_window(screen,GTK_WIDGET(s->window)->window),
-					&s->monitor);
-}
 

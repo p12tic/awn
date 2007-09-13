@@ -464,10 +464,10 @@ awn_applet_finalize(GObject *obj)
 		G_OBJECT_CLASS(parent_class)->finalize(obj);
 }
 
-GtkWidget *
+AwnApplet *
 awn_applet_new( const gchar* uid, gint orient, gint height )
 {
-	GtkWidget *applet = g_object_new(AWN_TYPE_APPLET, 
+	AwnApplet *applet = g_object_new(AWN_TYPE_APPLET, 
 					 "above-child", FALSE,
 					 "visible-window", TRUE,
 					 NULL);
