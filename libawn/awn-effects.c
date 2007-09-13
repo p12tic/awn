@@ -1143,7 +1143,7 @@ void awn_draw_foreground(AwnEffects *fx, cairo_t *cr) {
 		x1 -= ((fx->window_width*15/11)-fx->window_width)/2;
 		spot = gdk_pixbuf_scale_simple(SPOTLIGHT_PIXBUF, fx->window_width*15/11, gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF), GDK_INTERP_BILINEAR);
 		gdk_cairo_set_source_pixbuf(cr, spot, x1, y1);
-		cairo_paint_with_alpha(cr, fx->spotlight_alpha);
+		cairo_paint_with_alpha(cr, fx->spotlight_alpha/2);
 		g_object_unref(spot);
 	}
 }
