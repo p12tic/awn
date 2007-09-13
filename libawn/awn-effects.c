@@ -1042,6 +1042,16 @@ void awn_draw_background(AwnEffects *fx, cairo_t *cr) {
 	// TODO: paint possible background
 	gint x1 = 0; gint y1 = 0;
 	if (fx->settings) y1 = fx->settings->bar_height;
+
+	GdkPixbuf *spot = NULL;
+	if (fx->spotlight && fx->spotlight_alpha > 0) {
+		y1 += 7;
+		x1 -= ((fx->window_width*15/11)-fx->window_width)/2;
+		spot = gdk_pixbuf_scale_simple(SPOTLIGHT_PIXBUF, fx->window_width*15/11, gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF), GDK_INTERP_BILINEAR);
+		gdk_cairo_set_source_pixbuf(cr, spot, x1, y1);
+		cairo_paint_with_alpha(cr, fx->spotlight_alpha);
+		g_object_unref(spot);
+	}
 }
 
 void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *reflect) {
