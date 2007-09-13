@@ -341,6 +341,7 @@ spotlight_opening_effect2(AwnEffectsPrivate *priv)
 		if(fx->clip_region.height > fx->icon_height)
 			fx->clip_region.height = fx->icon_height;
 	} else {
+		fx->clip = FALSE;
 		fx->spotlight_alpha -= (3/1)* 1.0/PERIOD;
 	}
 	
@@ -349,7 +350,6 @@ spotlight_opening_effect2(AwnEffectsPrivate *priv)
 
 	gboolean repeat = TRUE;
 	if (fx->spotlight_alpha <= 0) {
-		fx->clip = FALSE;
 		fx->count = 0;
 		fx->spotlight_alpha = 0;
 		// check for repeating
@@ -386,6 +386,7 @@ spotlight_closing_effect(AwnEffectsPrivate *priv)
 		fx->delta_width -= (2/1)* fx->icon_width/PERIOD;
 		fx->alpha -= (2/1)* 1.0/PERIOD;
 	} else {
+		fx->clip = FALSE;
 		fx->spotlight_alpha -= (2/1)* 1.0/PERIOD;
 	}
 	
