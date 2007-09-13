@@ -80,7 +80,7 @@ typedef gboolean (*AwnAppletInitFunc) ( AwnApplet *applet );
 typedef AwnApplet* (*AwnAppletInitPFunc) ( const gchar* uid, gint orient, gint height );
 
 
-GtkWidget *
+AwnApplet *
 awn_applet_new ( const gchar* uid, gint orient, gint height );
 
 AwnOrientation

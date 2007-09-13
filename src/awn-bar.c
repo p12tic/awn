@@ -168,7 +168,6 @@ render_rect (cairo_t *cr, double x, double y, double width, double height, doubl
 
 		double x0  = x,  	
 		y0	   = y,
-		x1	   = x+width,
 		y1	   = y+height;
 
 		cairo_move_to  (cr, x0 + apply_perspective_x(width, height/2, 0)    , y0 + apply_perspective_y( height ) + top_offset);
@@ -614,13 +613,15 @@ _position_window (GtkWidget *window)
 	
 	gtk_window_get_size(GTK_WINDOW(window), &ww, &wh);
 	
-	y = settings->monitor.height - ((settings->bar_height + 2) * 2 + settings->icon_offset);
+	y = settings->monitor.height - ((settings->bar_height + 2) * 2 
+	    	+ settings->icon_offset);
 	//x = (int) ( (settings->monitor.width - ww)/2);
 	x = 0;
-	if ( (settings->monitor.width) != ww) {
+	if ((settings->monitor.width) != ww && settings->monitor.width > 0) {
 		gtk_window_resize(GTK_WINDOW(window), 
 				  settings->monitor.width, 
-				  ((settings->bar_height+2) *2 + settings->icon_offset));
+				  ((settings->bar_height+2) *2 
+				   	+ settings->icon_offset));
 		gtk_window_move(GTK_WINDOW(window), x, y);
 	}
 	
