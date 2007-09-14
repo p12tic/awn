@@ -44,6 +44,7 @@ struct _AwnAppletSimplePrivate
 
         gint offset;
         gint bar_height;
+        gint bar_angle;
 
         gboolean temp;
 };
@@ -196,15 +197,15 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 	}       
 
         /* Don't paint in bottom 3px if there is an bar_angle */
-        if ( priv->offset != 0) {
+        if ( priv->bar_angle != 0) {
                 cairo_save (cr);
                 cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
                 cairo_set_source_rgba (cr, 1, 1, 1, 0);
                 cairo_rectangle (cr, 
                                  0, 
-                                 (height-3),
+                                 (height-4),
                                  width,
-                                 3);
+                                 4);
                 cairo_fill (cr);
                 cairo_restore (cr);
         }
@@ -251,6 +252,20 @@ icon_offset_changed( GConfClient *client, guint cid, GConfEntry *entry, AwnApple
 	
 	g_print("icon_offset changed\n");
 }
+static void
+bar_angle_changed( GConfClient *client, guint cid, GConfEntry *entry, AwnAppletSimple *simple )
+{
+        AwnAppletSimplePrivate *priv;
+	GConfValue *value = NULL;
+
+	priv = simple->priv;
+	value = gconf_entry_get_value(entry);
+	priv->bar_angle = gconf_value_get_int(value);
+	
+        gtk_widget_queue_draw (GTK_WIDGET (simple));
+	
+	g_print("bar_angle changed\n");
+}
 
 static void 
 awn_applet_simple_init (AwnAppletSimple *simple) 
@@ -274,6 +289,10 @@ awn_applet_simple_init (AwnAppletSimple *simple)
         priv->bar_height = gconf_client_get_int (client, 
                        "/apps/avant-window-navigator/bar/bar_height",
                        NULL);
+        priv->bar_angle = gconf_client_get_int (client, 
+                       "/apps/avant-window-navigator/bar/bar_angle",
+                       NULL);
+        gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/bar_angle", (GConfClientNotifyFunc)bar_angle_changed, simple, NULL, NULL);
         gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/bar_height", (GConfClientNotifyFunc)bar_height_changed, simple, NULL, NULL);
         gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/icon_offset", (GConfClientNotifyFunc)icon_offset_changed, simple, NULL, NULL);
 }
