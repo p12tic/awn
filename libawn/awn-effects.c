@@ -24,6 +24,7 @@
 #include "awn-effects.h"
 #include <math.h>
 #include <string.h>
+#include <stdlib.h>
 
 typedef enum {
 	AWN_EFFECT_PRIORITY_HIGHEST,
@@ -243,7 +244,7 @@ spotlight_half_fade_effect(AwnEffectsPrivate *priv)
 		fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
 		fx->spotlight = TRUE;
 		if (priv->start) priv->start(fx->self);
-		// TODO: set priv->start to NULL, so it's not called multiple times while moving in the queue?
+		priv->start = NULL;
 	}
 
 	const gint PERIOD = 20;
@@ -283,7 +284,7 @@ spotlight_opening_effect(AwnEffectsPrivate *priv)
 		fx->y_offset = -fx->settings->bar_height;
 		fx->delta_width = -fx->icon_width/2;
 		if (priv->start) priv->start(fx->self);
-		// TODO: set priv->start to NULL, so it's not called multiple times while moving in the queue?
+		priv->start = NULL;
 	}
 
 	const gint PERIOD = 20;
@@ -328,7 +329,7 @@ spotlight_opening_effect2(AwnEffectsPrivate *priv)
 		fx->clip_region.height = 0;
 		fx->clip_region.width = fx->icon_width;
 		if (priv->start) priv->start(fx->self);
-		// TODO: set priv->start to NULL, so it's not called multiple times while moving in the queue?
+		priv->start = NULL;
 	}
 
 	const gint PERIOD = 20;
@@ -374,7 +375,7 @@ spotlight_closing_effect(AwnEffectsPrivate *priv)
 		fx->clip_region.height = fx->icon_height;
 		fx->clip_region.width = fx->icon_width;
 		if (priv->start) priv->start(fx->self);
-		// TODO: set priv->start to NULL, so it's not called multiple times while moving in the queue?
+		priv->start = NULL;
 	}
 
 	const gint PERIOD = 40;
@@ -496,7 +497,7 @@ bounce_squish_effect (AwnEffectsPrivate *priv)
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
-		fx->count = 99;
+		fx->count = 0;
 		fx->delta_width = 0;
 		fx->delta_height = 0;
 		fx->direction = AWN_EFFECT_SQUISH_DOWN;
@@ -509,28 +510,23 @@ bounce_squish_effect (AwnEffectsPrivate *priv)
 
 	switch (fx->direction) {
 	case AWN_EFFECT_SQUISH_DOWN:
+	case AWN_EFFECT_SQUISH_DOWN2:
 		fx->delta_width += (fx->icon_width*3/4)/(PERIOD/4);
 		fx->delta_height -= (fx->icon_height*3/4)/(PERIOD/4);
 		if(fx->delta_height <= fx->icon_height*-1/4)
-			fx->direction = AWN_EFFECT_SQUISH_UP;
+			fx->direction = fx->direction == AWN_EFFECT_SQUISH_DOWN ? AWN_EFFECT_SQUISH_UP : AWN_EFFECT_SQUISH_UP2;
 		break;
 	case AWN_EFFECT_SQUISH_UP:
+	case AWN_EFFECT_SQUISH_UP2:
 		fx->delta_width -= (fx->icon_width*3/4)/(PERIOD/4);
 		fx->delta_height += (fx->icon_height*3/4)/(PERIOD/4);
-		if(fx->delta_height >= 0 && fx->count == 99)
+		if(fx->delta_height >= 0 && fx->direction == AWN_EFFECT_SQUISH_UP)
 			fx->direction = AWN_EFFECT_DIR_NONE;
-		else if (fx->delta_height >= 0)
-			fx->direction = AWN_EFFECT_DIR_STOP;
 		break;
 	case AWN_EFFECT_DIR_NONE:
-		if(fx->count == 99)
-			fx->count = 0;
-	case AWN_EFFECT_DIR_STOP:
 		fx->y_offset = sin(++fx->count * M_PI * 2 / PERIOD) * MAX_BOUNCE_OFFSET;
-		if (fx->count >= PERIOD/2) {
-			fx->count = 0;
-			fx->direction = AWN_EFFECT_SQUISH_DOWN;
-		}
+		if (fx->count >= PERIOD/2)
+			fx->direction = AWN_EFFECT_SQUISH_DOWN2;
 		break;
 	default: fx->direction = AWN_EFFECT_SQUISH_DOWN;
 	}
@@ -539,7 +535,9 @@ bounce_squish_effect (AwnEffectsPrivate *priv)
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
 	gboolean repeat = TRUE;
-	if (fx->direction == AWN_EFFECT_DIR_STOP && fx->count == 0) {
+	if (fx->direction == AWN_EFFECT_SQUISH_UP2 && fx->delta_height >= 0) {
+		fx->direction = AWN_EFFECT_DIR_NONE;
+		fx->count = 0;
 		fx->delta_width = 0;
 		fx->delta_height = 0;
 		// check for repeating
@@ -555,7 +553,7 @@ bounce_squish_attention_effect (AwnEffectsPrivate *priv)
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
-		fx->count = 99;
+		fx->count = 0;
 		fx->delta_width = 0;
 		fx->delta_height = 0;
 		fx->direction = AWN_EFFECT_SQUISH_DOWN;
@@ -568,29 +566,25 @@ bounce_squish_attention_effect (AwnEffectsPrivate *priv)
 
 	switch (fx->direction) {
 	case AWN_EFFECT_SQUISH_DOWN:
+	case AWN_EFFECT_SQUISH_DOWN2:
 		fx->delta_width += (fx->icon_width*3/4)/(PERIOD/4);
 		fx->delta_height -= (fx->icon_height*3/4)/(PERIOD/4);
 		if(fx->delta_height <= fx->icon_height*-1/4)
-			fx->direction = AWN_EFFECT_SQUISH_UP;
+			fx->direction = fx->direction == AWN_EFFECT_SQUISH_DOWN ? AWN_EFFECT_SQUISH_UP : AWN_EFFECT_SQUISH_UP2;
 		break;
 	case AWN_EFFECT_SQUISH_UP:
+	case AWN_EFFECT_SQUISH_UP2:
 		fx->delta_width -= (fx->icon_width*3/4)/(PERIOD/4);
 		fx->delta_height += (fx->icon_height*3/4)/(PERIOD/4);
-		if(fx->delta_height >= 0 && fx->count == 99)
+		if(fx->delta_height >= 0 && fx->direction == AWN_EFFECT_SQUISH_UP)
 			fx->direction = AWN_EFFECT_DIR_NONE;
-		else if (fx->delta_height >= 0)
-			fx->direction = AWN_EFFECT_DIR_STOP;
 		break;
 	case AWN_EFFECT_DIR_NONE:
-		if(fx->count == 99)
-			fx->count = 0;
-	case AWN_EFFECT_DIR_STOP:
 		fx->y_offset = sin(++fx->count * M_PI * 2 / PERIOD) * MAX_BOUNCE_OFFSET;
-		fx->delta_width = sin(fx->count * M_PI * 2 / PERIOD) * (fx->icon_width*1/6);		
-		fx->delta_height = sin(fx->count * M_PI * 2 / PERIOD) * (fx->icon_width*1/6);		
+		fx->delta_width = sin(fx->count * M_PI * 2 / PERIOD) * (fx->icon_width*1/6);
+		fx->delta_height = sin(fx->count * M_PI * 2 / PERIOD) * (fx->icon_width*1/6);
 		if (fx->count >= PERIOD/2) {
-			fx->count = 0;
-			fx->direction = AWN_EFFECT_SQUISH_DOWN;
+			fx->direction = AWN_EFFECT_SQUISH_DOWN2;
 		}
 		break;
 	default: fx->direction = AWN_EFFECT_SQUISH_DOWN;
@@ -600,7 +594,9 @@ bounce_squish_attention_effect (AwnEffectsPrivate *priv)
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
 	gboolean repeat = TRUE;
-	if (fx->direction == AWN_EFFECT_DIR_STOP && fx->count == 0) {
+	if (fx->direction == AWN_EFFECT_SQUISH_UP2 && fx->delta_height >= 0) {
+		fx->direction = AWN_EFFECT_DIR_NONE;
+		fx->count = 0;
 		fx->delta_width = 0;
 		fx->delta_height = 0;
 		// check for repeating
@@ -626,19 +622,22 @@ bounce_squish_opening_effect (AwnEffectsPrivate *priv)
 
 	const gdouble MAX_BOUNCE_OFFSET = 15.0;
 	const gint PERIOD = 20;
+	const gint PERIOD2 = 28;
 
 	switch (fx->direction) {
-	case AWN_EFFECT_SQUISH_DOWN:		
-		fx->delta_width += (fx->icon_width*3/4)/(PERIOD/4);
-		fx->delta_height -= (fx->icon_height*3/4)/(PERIOD/4);
+	case AWN_EFFECT_SQUISH_DOWN:
+		fx->delta_width += (fx->icon_width*3/4)/(PERIOD2/4);
+		fx->delta_height -= (fx->icon_height*3/4)/(PERIOD2/4);
 		if(fx->delta_height <= fx->icon_height*-1/4)
 			fx->direction = AWN_EFFECT_SQUISH_UP;
 		break;
 	case AWN_EFFECT_SQUISH_UP:
-		fx->delta_width -= (fx->icon_width*3/4)/(PERIOD/4);
-		fx->delta_height += (fx->icon_height*3/4)/(PERIOD/4);
-		if(fx->delta_height >= 0 )
-			fx->direction = AWN_EFFECT_DIR_STOP;
+		fx->delta_width -= (fx->icon_width*3/4)/(PERIOD2/4);
+		fx->delta_height += (fx->icon_height*3/4)/(PERIOD2/4);
+		if(fx->delta_height >= 0 ) {
+			fx->direction = AWN_EFFECT_DIR_NONE;
+			fx->count = 0;
+		}
 		break;
 	case AWN_EFFECT_DIR_NONE:
 		fx->y_offset = sin(++fx->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
@@ -647,9 +646,13 @@ bounce_squish_opening_effect (AwnEffectsPrivate *priv)
 		if( fx->delta_height < 0 )
 			fx->delta_height += fx->icon_height*2/PERIOD;
 
-		if(fx->count == PERIOD)
+		if(fx->count == PERIOD) {
 			fx->direction = AWN_EFFECT_SQUISH_DOWN;
-		
+			fx->y_offset = 0;
+			fx->delta_width = 0;
+			fx->delta_height = 0;
+		}
+
 		break;
 	default: fx->direction = AWN_EFFECT_DIR_NONE;
 	}
@@ -658,8 +661,7 @@ bounce_squish_opening_effect (AwnEffectsPrivate *priv)
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
 	gboolean repeat = TRUE;
-	if (fx->direction == AWN_EFFECT_DIR_STOP) {
-		fx->count = 0;
+	if (fx->direction == AWN_EFFECT_DIR_NONE && fx->count <= 0) {
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
 	}
@@ -742,28 +744,32 @@ bounce_opening_effect (AwnEffectsPrivate *priv)
 		fx->effect_lock = TRUE;
 		// effect start initialize values
 		fx->count = 0;
-		fx->direction = AWN_EFFECT_DIR_UP;
-		fx->y_offset = -fx->settings->bar_height;
+		fx->y_offset = 0;
+		fx->clip = TRUE;
+		fx->clip_region.x = 0;
+		fx->clip_region.y = 0;
+		fx->clip_region.width = fx->icon_width;
+		fx->clip_region.height = 0;
 		if (priv->start) priv->start(fx->self);
 		priv->start = NULL;
 	}
 
-	const gdouble MAX_BOUNCE_OFFSET = 10.0;
-	const gint PERIOD = 30;
+	const gint PERIOD1 = 15;
+	const gint PERIOD2 = 20;
+	const gint MAX_BOUNCE_OFFSET = 15;
 
-	if(fx->direction == AWN_EFFECT_DIR_UP)
-		fx->y_offset += (fx->settings->bar_height+MAX_BOUNCE_OFFSET)/(PERIOD*2/3);
-	else
-		fx->y_offset -= (MAX_BOUNCE_OFFSET)/(PERIOD*1/3);
-	
-	if(fx->y_offset >= MAX_BOUNCE_OFFSET)
-		fx->direction = AWN_EFFECT_DIR_DOWN;
+	if (fx->count < PERIOD1)
+		fx->clip_region.height = fx->icon_height*++fx->count/PERIOD1;
+	else if (fx->count < PERIOD1+PERIOD2){
+		fx->clip = FALSE;
+		fx->y_offset = sin((++fx->count-PERIOD1)* M_PI / PERIOD2) * MAX_BOUNCE_OFFSET;
+	}
 	
 	// repaint widget
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
 	gboolean repeat = TRUE;
-	if (fx->direction == AWN_EFFECT_DIR_DOWN && fx->y_offset <= 0) {
+	if (fx->count >= PERIOD1+PERIOD2) {
 		fx->count = 0;
 		fx->y_offset = 0;
 		// check for repeating
@@ -905,109 +911,71 @@ static void
 main_effect_loop(AwnEffects *fx) {
 	if (fx->current_effect != AWN_EFFECT_NONE || fx->effect_queue == NULL) return;
 
+	// NOTE! Always make sure that all EFFECTS arrays have same number of elements
+	static const GSourceFunc OPENING_EFFECTS[] = {
+		(GSourceFunc)bounce_opening_effect,
+		(GSourceFunc)bounce_opening_effect,
+		(GSourceFunc)spotlight_opening_effect2,
+		(GSourceFunc)bounce_opening_effect,
+		(GSourceFunc)bounce_squish_opening_effect
+	};
+	static const GSourceFunc CLOSING_EFFECTS[] = {
+		(GSourceFunc)fade_out_effect,
+		(GSourceFunc)fade_out_effect,
+		(GSourceFunc)spotlight_closing_effect,
+		(GSourceFunc)fade_out_effect,
+		(GSourceFunc)bounce_squish_closing_effect
+	};
+	static const GSourceFunc HOVER_EFFECTS[] = {
+		(GSourceFunc)bounce_effect,
+		(GSourceFunc)fading_effect,
+		(GSourceFunc)spotlight_effect,
+		(GSourceFunc)zoom_effect,
+		(GSourceFunc)bounce_squish_effect
+	};
+	static const GSourceFunc LAUNCHING_EFFECTS[] = {
+		(GSourceFunc)bounce_effect,
+		(GSourceFunc)bounce_effect,
+		(GSourceFunc)spotlight_half_fade_effect,
+		(GSourceFunc)bounce_effect,
+		(GSourceFunc)bounce_squish_effect
+	};
+	static const GSourceFunc ATTENTION_EFFECTS[] = {
+		(GSourceFunc)bounce_effect,
+		(GSourceFunc)bounce_effect,
+		(GSourceFunc)spotlight_half_fade_effect,
+		(GSourceFunc)bounce_effect,
+		(GSourceFunc)bounce_squish_attention_effect
+	};
+
 	GSourceFunc animation = NULL;
 	AwnEffectsPrivate *topEffect = (AwnEffectsPrivate*)(fx->effect_queue->data);
 	gint effect = 0;
+	if (fx->settings) {
+		effect = fx->settings->icon_effect;
+		if (effect < 0)
+			effect = rand() & 7;
+		if (effect >= sizeof(HOVER_EFFECTS)/sizeof(GSourceFunc))
+			effect = 0;
+		// spotlight initialization
+		if (effect == 2) spotlight_init();
+	}
+
 	switch (topEffect->this_effect) {
 		case AWN_EFFECT_OPENING:
-			if (fx->settings) {
-				effect = fx->settings->icon_effect;
-				if (effect < 0) {
-					effect = random() & 7;
-				}
-			}
-			switch (effect) {
-				case 0:
-					animation = (GSourceFunc)bounce_opening_effect;
-					break;
-				case 2:
-					spotlight_init();
-					animation = (GSourceFunc)spotlight_opening_effect2;
-					break;
-				case 4:
-					animation = (GSourceFunc)bounce_squish_opening_effect;
-					break;
-				default: animation = (GSourceFunc)bounce_opening_effect;
-			}
+			animation = OPENING_EFFECTS[effect];
 			break;
 		case AWN_EFFECT_HOVER:
-			// TODO: apply possible settings
-			if (fx->settings) {
-				effect = fx->settings->icon_effect;
-				if (effect < 0) {
-					effect = random() & 7;
-				}
-			}
-			switch (effect) {
-				case 0:
-					animation = (GSourceFunc)bounce_effect;
-					break;
-				case 1:
-					animation = (GSourceFunc)fading_effect;
-					break;
-				case 2:
-					spotlight_init();
-					animation = (GSourceFunc)spotlight_effect;
-					break;
-				case 3:
-					animation = (GSourceFunc)zoom_effect;
-					break;
-				default: animation = (GSourceFunc)bounce_squish_effect;
-			}
+			animation = HOVER_EFFECTS[effect];
 			break;
 		case AWN_EFFECT_CLOSING:
-			if (fx->settings) {
-				effect = fx->settings->icon_effect;
-				if (effect < 0) {
-					effect = random() & 7;
-				}
-			}
-			switch (effect) {
-				case 2:
-					spotlight_init();
-					animation = (GSourceFunc)spotlight_closing_effect;
-					break;
-				case 4:
-					animation = (GSourceFunc)bounce_squish_closing_effect;
-					break;
-				default: animation = (GSourceFunc)fade_out_effect;
-			}
+			animation = CLOSING_EFFECTS[effect];
 			break;
 		case AWN_EFFECT_LAUNCHING:
-			if (fx->settings) {
-				effect = fx->settings->icon_effect;
-				if (effect < 0) {
-					effect = random() & 7;
-				}
-			}
-			switch (effect) {
-				case 2:
-					spotlight_init();
-					animation = (GSourceFunc)spotlight_half_fade_effect;
-					break;
-				case 4:
-					animation = (GSourceFunc)bounce_squish_effect;
-					break;
-				default: animation = (GSourceFunc)bounce_effect;
-			}
+			animation = LAUNCHING_EFFECTS[effect];
 			break;
 		case AWN_EFFECT_ATTENTION:
-			if (fx->settings) {
-				effect = fx->settings->icon_effect;
-				if (effect < 0) {
-					effect = random() & 7;
-				}
-			}
-			switch (effect) {
-				case 2:
-					spotlight_init();
-					animation = (GSourceFunc)spotlight_half_fade_effect;
-					break;
-				case 4:
-					animation = (GSourceFunc)bounce_squish_attention_effect;
-					break;
-				default: animation = (GSourceFunc)bounce_effect;
-			}
+			animation = ATTENTION_EFFECTS[effect];
 			break;
 		default: animation = (GSourceFunc)bounce_effect;
 	}
@@ -1036,7 +1004,6 @@ awn_unregister_effects (AwnEffects *fx) {
 }
 
 void awn_draw_background(AwnEffects *fx, cairo_t *cr) {	
-	// TODO: paint possible background
 	gint x1 = 0; gint y1 = 0;
 	if (fx->settings) y1 = fx->settings->bar_height;
 
@@ -1071,6 +1038,9 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 
 	/* clipping */
 	if (fx->clip) {
+		g_return_if_fail(fx->clip_region.x >= 0 && fx->clip_region.width - fx->clip_region.x <= fx->icon_width);
+		g_return_if_fail(fx->clip_region.y >= 0 && fx->clip_region.height - fx->clip_region.y <= fx->icon_height);
+
 		clippedIcon = gdk_pixbuf_new_subpixbuf(icon, 
 			fx->clip_region.x,
 			fx->clip_region.y,
@@ -1080,9 +1050,11 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		current_width = fx->clip_region.width - fx->clip_region.x;
 		current_height = fx->clip_region.height - fx->clip_region.y;
 		// refresh reflection, icon was clipped
-		// TODO: don't make reflect if we're scaling
-		reflect = gdk_pixbuf_flip(clippedIcon, FALSE);
-		free_reflect = TRUE;
+		if (!fx->delta_width && !fx->delta_height) {
+			// don't create reflection if we're also scaling
+			reflect = gdk_pixbuf_flip(clippedIcon, FALSE);
+			free_reflect = TRUE;
+		}
 		// adjust offsets
 		x1 = (fx->window_width - current_width) / 2;
 		y1 += fx->icon_height - current_height;
@@ -1109,6 +1081,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	/* reflection */
 	if (fx->y_offset >= 0) {
 		if (!reflect) {
+			// create reflection automatically
 			reflect = gdk_pixbuf_flip(icon, FALSE);
 			free_reflect = TRUE;
 		}
@@ -1130,7 +1103,6 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 }
 
 void awn_draw_foreground(AwnEffects *fx, cairo_t *cr) {
-	// TODO: paint possible foreground
 	gint x1 = 0; gint y1 = 0;
 	if (fx->settings) y1 = fx->settings->bar_height;
 
