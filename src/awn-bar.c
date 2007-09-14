@@ -344,7 +344,7 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 				   settings->border_color.green, 
 				   settings->border_color.blue,
 				   settings->border_color.alpha);
-	render_rect (cr, x+0.5, (height/2)+1, width-1, (height/2+icon_offset), 0);
+	render_rect (cr, x+0.5, (height/2)+0.5, width-1, (height/2+icon_offset), 0);
 	cairo_stroke(cr);
 
 	/* separator */
