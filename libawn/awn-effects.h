@@ -94,6 +94,7 @@ struct _AwnEffects
 	gdouble rotate_degrees;
 	gfloat alpha;
 	gfloat spotlight_alpha;
+	gfloat saturation;
 
 	/* State variables */
 	gboolean hover;

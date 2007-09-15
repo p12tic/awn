@@ -91,6 +91,7 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->rotate_degrees = 0.0;
 	fx->alpha = 1.0;
 	fx->spotlight_alpha = 0.0;
+	fx->saturation = 1.0;
 
 	fx->hover = FALSE;
 	fx->clip = FALSE;
@@ -1051,6 +1052,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	gboolean free_reflect = FALSE;
 	GdkPixbuf *scaledIcon = NULL;
 	GdkPixbuf *clippedIcon = NULL;
+	GdkPixbuf *saturatedIcon = NULL;
 
 	/* clipping */
 	if (fx->clip) {
@@ -1074,10 +1076,12 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		// adjust offsets
 		x1 = (fx->window_width - current_width) / 2;
 		y1 += fx->icon_height - current_height;
+		// override provided icon
+		icon = clippedIcon;
 	}
 	/* scaling */
 	if (fx->delta_width || fx->delta_height) {
-		scaledIcon = gdk_pixbuf_scale_simple(clippedIcon ? clippedIcon : icon, current_width + fx->delta_width, current_height + fx->delta_height, GDK_INTERP_BILINEAR);
+		scaledIcon = gdk_pixbuf_scale_simple(icon, current_width + fx->delta_width, current_height + fx->delta_height, GDK_INTERP_BILINEAR);
 		// update current w&h
 		current_width += fx->delta_width;
 		current_height += fx->delta_height;
@@ -1087,12 +1091,30 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		// adjust offsets
 		x1 = (fx->window_width - current_width)/2;
 		y1 -= fx->delta_height;
-		gdk_cairo_set_source_pixbuf(cr, scaledIcon, x1, y1);
-	} else
-		gdk_cairo_set_source_pixbuf(cr, clippedIcon ? clippedIcon : icon, x1, y1);
+		// override provided icon
+		icon = scaledIcon;
+	}
+	if (fx->saturation < 1.0) {
+		// do not change original pixbuf -> create new
+		if (!clippedIcon && !scaledIcon) {
+			saturatedIcon = gdk_pixbuf_copy(icon);
+			icon = saturatedIcon;
+		}
+		gdk_pixbuf_saturate_and_pixelate(icon, icon, fx->saturation, FALSE);
+		if (!free_reflect) {
+			// refresh reflection, we saturated icon
+			reflect = gdk_pixbuf_flip(icon, FALSE);
+			free_reflect = TRUE;
+		} else {
+			gdk_pixbuf_saturate_and_pixelate(reflect, reflect, fx->saturation, FALSE);
+		}
+	}
+
+	gdk_cairo_set_source_pixbuf(cr, icon, x1, y1);
 	cairo_paint_with_alpha(cr, fx->alpha);
 	if (scaledIcon) g_object_unref(scaledIcon);
 	if (clippedIcon) g_object_unref(clippedIcon);
+	if (saturatedIcon) g_object_unref(saturatedIcon);
 
 	/* reflection */
 	if (fx->y_offset >= 0) {

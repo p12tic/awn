@@ -79,9 +79,19 @@ awn_title_position (AwnTitle *title)
         }
 
         /* Get our dimensions */
-        gtk_window_get_size (GTK_WINDOW (title), &w, &h);
+	GtkRequisition req, req2;
+        gtk_widget_size_request (GTK_WIDGET (priv->label), &req);
+	gtk_widget_size_request (GTK_WIDGET (title), &req2);
+	if (req2.width > req.width) {
+		w = req2.width;
+		h = req2.height;
+	} else {
+		// TODO: find better way than adding 8
+		w = req.width + 8;
+		h = req.height + 8;
+	}
 
-        /* Get the dimesions of the widget we are focusing on */        
+        /* Get the dimesions of the widget we are focusing on */
         gdk_window_get_origin (priv->focus->window, &fx, &fy);
         gtk_widget_get_size_request (priv->focus, &fw, &fh);
 
