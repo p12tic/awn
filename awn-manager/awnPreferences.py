@@ -283,7 +283,7 @@ class awnPreferences:
 
     def setup_effect(self, key, dropdown):
         model = gtk.ListStore(str)
-        model.append(["Default Bounce"])
+        model.append(["Classic"])
         model.append(["Fade"])
         model.append(["Spotlight"])
         model.append(["Zoom"])

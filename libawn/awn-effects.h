@@ -36,7 +36,8 @@ typedef enum {
 	AWN_EFFECT_LAUNCHING,
 	AWN_EFFECT_HOVER,
 	AWN_EFFECT_ATTENTION,
-	AWN_EFFECT_CLOSING
+	AWN_EFFECT_CLOSING,
+	AWN_EFFECT_DESATURATE
 } AwnEffect;
 
 typedef enum {
@@ -94,6 +95,7 @@ struct _AwnEffects
 	gdouble rotate_degrees;
 	gfloat alpha;
 	gfloat spotlight_alpha;
+	gfloat saturation;
 
 	/* State variables */
 	gboolean hover;
