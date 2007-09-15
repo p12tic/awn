@@ -1,5 +1,10 @@
 2007-09-16  haytjes <hv1989@gmail.com>
 
+	* libawn/awn-title.c:
+	Let the title never go offscreen on the left.
+
+2007-09-16  haytjes <hv1989@gmail.com>
+
 	* src/awn-bar.c:
 	* src/awn-gconf.c:
 	* src/awn-gconf.h:
