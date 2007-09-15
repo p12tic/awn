@@ -1,3 +1,16 @@
+2007-09-16  haytjes <hv1989@gmail.com>
+
+	* src/awn-bar.c:
+	* src/awn-gconf.c:
+	* src/awn-gconf.h:
+	* src/awn-window.c:
+	* src/main.c:
+	Added a gconf entry: /bar/bar_pos
+	
+	Now you can move AWN on the X rule. So horizontal. It's a float between 0 and 1 that says where it needs to stand. 
+	0.5 is in the middle and the current behaviour. But now it is possible to set it left (0.0) or right (1.0) or something between...
+	Not added to awnManager, because it isn't tested enough.
+
 2007-09-15  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* awn-manager/awnApplet.py:

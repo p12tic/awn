@@ -267,7 +267,7 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 	cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
 	cairo_paint (cr);
 	
-	double x = (settings->monitor.width-width)/2;
+	double x = (settings->monitor.width-width)*settings->bar_pos;
 	
 	cairo_move_to(cr, x, 0);
 	cairo_set_line_width(cr, 1.0);
@@ -349,7 +349,7 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 
 	/* separator */
 	if (draw_separator && settings->show_separator) {
-		double real_x = (settings->monitor.width-current_width)/2.0;
+		double real_x = (settings->monitor.width-current_width)*settings->bar_pos;
 
 		cairo_set_line_width (cr, 1.0);
 		
@@ -417,7 +417,7 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 		if (sep > separator)
 			sep += current_width - dest_width;
 
-                double real_x = (settings->monitor.width-current_width)/2.0;
+                double real_x = (settings->monitor.width-current_width)*settings->bar_pos;
 
 		cairo_set_line_width (cr, 1.0);
 		
