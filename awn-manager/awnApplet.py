@@ -229,7 +229,7 @@ class awnApplet:
     def make_icon (self, name):
             icon = None
 
-            theme = gtk.IconTheme ()
+            theme = gtk.icon_theme_get_default ()
             try:
                     icon = theme.load_icon (name, 32, 0)
             except:
