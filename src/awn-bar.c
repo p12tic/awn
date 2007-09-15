@@ -149,11 +149,25 @@ render_rect (cairo_t *cr, double x, double y, double width, double height, doubl
 
 		x1=x0+rect_width;
 		y1=y0+rect_height;
-	
-		cairo_move_to  (cr, x0, y0 + radius);
-		cairo_curve_to (cr, x0 , y0, x0 , y0, x0 + radius, y0);
-		cairo_line_to (cr, x1 - radius, y0);
-		cairo_curve_to (cr, x1, y0, x1, y0, x1, y0 + radius);
+
+		if( (int)(x0-offset) <= 0 ) // if it is standing against the left wall, the left radius may go away.
+		{
+			cairo_move_to  (cr, x0, y0);
+		}
+		else
+		{
+			cairo_move_to  (cr, x0, y0 + radius);
+			cairo_curve_to (cr, x0 , y0, x0 , y0, x0 + radius, y0);
+		}
+		if( (int)(x1+offset) >= (int)settings->monitor.width-1 ) // if it is standing against the right wall, the right radius may go away.
+		{
+			cairo_line_to (cr, x1, y0);
+		}
+		else
+		{
+			cairo_line_to (cr, x1 - radius, y0);
+			cairo_curve_to (cr, x1, y0, x1, y0, x1, y0 + radius);
+		}
 		cairo_line_to (cr, x1 , y1 );
 		cairo_line_to (cr, x0 , y1);
 	
