@@ -1065,17 +1065,21 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 
 	/* clipping */
 	if (fx->clip) {
-		g_return_if_fail(fx->clip_region.x >= 0 && fx->clip_region.width - fx->clip_region.x <= fx->icon_width);
-		g_return_if_fail(fx->clip_region.y >= 0 && fx->clip_region.height - fx->clip_region.y <= fx->icon_height);
+		gint x = fx->clip_region.x;
+		gint y = fx->clip_region.y;
+		gint w = fx->clip_region.width;
+		gint h = fx->clip_region.height;
+		g_return_if_fail(
+			x >= 0 && x < fx->icon_width &&
+			w-x > 0 && w-x <= fx->icon_width &&
+			y >= 0 && x < fx->icon_height &&
+			h-y > 0 && h-y <= fx->icon_height);
 
-		clippedIcon = gdk_pixbuf_new_subpixbuf(icon, 
-			fx->clip_region.x,
-			fx->clip_region.y,
-			fx->clip_region.width,
-			fx->clip_region.height);
+		// careful! new_subpixbuf shares original pixbuf, no copy!
+		clippedIcon = gdk_pixbuf_new_subpixbuf(icon, x, y, w, h);
 		// update current w&h
-		current_width = fx->clip_region.width - fx->clip_region.x;
-		current_height = fx->clip_region.height - fx->clip_region.y;
+		current_width = w - x;
+		current_height = h - y;
 		// refresh reflection, icon was clipped
 		if (!fx->delta_width && !fx->delta_height) {
 			// don't create reflection if we're also scaling
@@ -1105,7 +1109,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	}
 	if (fx->saturation < 1.0) {
 		// do not change original pixbuf -> create new
-		if (!clippedIcon && !scaledIcon) {
+		if (!scaledIcon) {
 			saturatedIcon = gdk_pixbuf_copy(icon);
 			icon = saturatedIcon;
 		}
