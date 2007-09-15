@@ -451,6 +451,12 @@ bounce_effect (AwnEffectsPrivate *priv)
 }
 
 static gboolean
+desaturate_effect (AwnEffectsPrivate *priv)
+{
+	// TODO: make desaturation
+	return TRUE;
+}
+static gboolean
 zoom_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
@@ -992,6 +998,9 @@ main_effect_loop(AwnEffects *fx) {
 			break;
 		case AWN_EFFECT_ATTENTION:
 			animation = ATTENTION_EFFECTS[effect];
+			break;
+		case AWN_EFFECT_DESATURATE:
+			animation = (GSourceFunc)desaturate_effect;
 			break;
 		default: animation = (GSourceFunc)bounce_effect;
 	}
