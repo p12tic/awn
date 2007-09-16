@@ -49,6 +49,7 @@
 #define BAR_HEIGHT		BAR_PATH "/bar_height"		/*int*/
 #define BAR_ANGLE		BAR_PATH "/bar_angle"		/*int, between 0 and 90*/
 #define ICON_OFFSET		BAR_PATH "/icon_offset" 	/*float*/
+#define BAR_POS			BAR_PATH "/bar_pos" 		/*float, between 0 and 1 */
 
 #define WINMAN_PATH		AWN_PATH "/window_manager"
 #define WINMAN_SHOW_ALL_WINS	WINMAN_PATH "/show_all_windows"	/*bool*/
@@ -135,6 +136,7 @@ awn_gconf_new()
 	gconf_client_add_dir(client, BAR_PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);
 
 	awn_load_int(client, BAR_HEIGHT, &s->bar_height,48);
+	awn_load_float(client, BAR_POS, &s->bar_pos,0.5);
 	awn_load_int(client, BAR_ANGLE, &s->bar_angle,0);
 	awn_load_int(client, ICON_OFFSET, &s->icon_offset,10);
 	awn_load_bool(client, BAR_ROUNDED_CORNERS, &s->rounded_corners, TRUE);
