@@ -669,7 +669,8 @@ _refresh_box(AwnTaskManager *task_manager)
 
 	WnckWorkspace *space;
 
-	g_return_if_fail (AWN_IS_TASK_MANAGER (task_manager));
+	if (!AWN_IS_TASK_MANAGER (task_manager))
+		return;
 	priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
 
 	space = wnck_screen_get_active_workspace(priv->screen);

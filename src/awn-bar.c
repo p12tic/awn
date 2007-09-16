@@ -149,11 +149,25 @@ render_rect (cairo_t *cr, double x, double y, double width, double height, doubl
 
 		x1=x0+rect_width;
 		y1=y0+rect_height;
-	
-		cairo_move_to  (cr, x0, y0 + radius);
-		cairo_curve_to (cr, x0 , y0, x0 , y0, x0 + radius, y0);
-		cairo_line_to (cr, x1 - radius, y0);
-		cairo_curve_to (cr, x1, y0, x1, y0, x1, y0 + radius);
+
+		if( (int)(x0-offset) <= 0 ) // if it is standing against the left wall, the left radius may go away.
+		{
+			cairo_move_to  (cr, x0, y0);
+		}
+		else
+		{
+			cairo_move_to  (cr, x0, y0 + radius);
+			cairo_curve_to (cr, x0 , y0, x0 , y0, x0 + radius, y0);
+		}
+		if( (int)(x1+offset) >= (int)settings->monitor.width-1 ) // if it is standing against the right wall, the right radius may go away.
+		{
+			cairo_line_to (cr, x1, y0);
+		}
+		else
+		{
+			cairo_line_to (cr, x1 - radius, y0);
+			cairo_curve_to (cr, x1, y0, x1, y0, x1, y0 + radius);
+		}
 		cairo_line_to (cr, x1 , y1 );
 		cairo_line_to (cr, x0 , y1);
 	
@@ -168,7 +182,6 @@ render_rect (cairo_t *cr, double x, double y, double width, double height, doubl
 
 		double x0  = x,  	
 		y0	   = y,
-		x1	   = x+width,
 		y1	   = y+height;
 
 		cairo_move_to  (cr, x0 + apply_perspective_x(width, height/2, 0)    , y0 + apply_perspective_y( height ) + top_offset);
@@ -268,7 +281,7 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 	cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
 	cairo_paint (cr);
 	
-	double x = (settings->monitor.width-width)/2;
+	double x = (settings->monitor.width-width)*settings->bar_pos;
 	
 	cairo_move_to(cr, x, 0);
 	cairo_set_line_width(cr, 1.0);
@@ -345,12 +358,12 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 				   settings->border_color.green, 
 				   settings->border_color.blue,
 				   settings->border_color.alpha);
-	render_rect (cr, x+0.5, (height/2)+1, width-1, (height/2+icon_offset), 0);
+	render_rect (cr, x+0.5, (height/2)+0.5, width-1, (height/2+icon_offset), 0);
 	cairo_stroke(cr);
 
 	/* separator */
 	if (draw_separator && settings->show_separator) {
-		double real_x = (settings->monitor.width-current_width)/2.0;
+		double real_x = (settings->monitor.width-current_width)*settings->bar_pos;
 
 		cairo_set_line_width (cr, 1.0);
 		
@@ -418,7 +431,7 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 		if (sep > separator)
 			sep += current_width - dest_width;
 
-                double real_x = (settings->monitor.width-current_width)/2.0;
+                double real_x = (settings->monitor.width-current_width)*settings->bar_pos;
 
 		cairo_set_line_width (cr, 1.0);
 		
@@ -614,13 +627,15 @@ _position_window (GtkWidget *window)
 	
 	gtk_window_get_size(GTK_WINDOW(window), &ww, &wh);
 	
-	y = settings->monitor.height - ((settings->bar_height + 2) * 2 + settings->icon_offset);
+	y = settings->monitor.height - ((settings->bar_height + 2) * 2 
+	    	+ settings->icon_offset);
 	//x = (int) ( (settings->monitor.width - ww)/2);
 	x = 0;
-	if ( (settings->monitor.width) != ww) {
+	if ((settings->monitor.width) != ww && settings->monitor.width > 0) {
 		gtk_window_resize(GTK_WINDOW(window), 
 				  settings->monitor.width, 
-				  ((settings->bar_height+2) *2 + settings->icon_offset));
+				  ((settings->bar_height+2) *2 
+				   	+ settings->icon_offset));
 		gtk_window_move(GTK_WINDOW(window), x, y);
 	}
 	

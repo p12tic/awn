@@ -1,3 +1,92 @@
+2007-09-16  haytjes <hv1989@gmail.com>
+
+	* src/awn-bar.c:
+	Updated look of rounded corners, when it is standing left or right against the wall (end of the screen)
+
+2007-09-16  haytjes <hv1989@gmail.com>
+
+	* libawn/awn-title.c:
+	Let the title never go offscreen on the left.
+
+2007-09-16  haytjes <hv1989@gmail.com>
+
+	* src/awn-bar.c:
+	* src/awn-gconf.c:
+	* src/awn-gconf.h:
+	* src/awn-window.c:
+	* src/main.c:
+	Added a gconf entry: /bar/bar_pos
+	
+	Now you can move AWN on the X rule. So horizontal. It's a float between 0 and 1 that says where it needs to stand. 
+	0.5 is in the middle and the current behaviour. But now it is possible to set it left (0.0) or right (1.0) or something between...
+	Not added to awnManager, because it isn't tested enough.
+
+2007-09-15  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* awn-manager/awnApplet.py:
+	* awn-manager/awnLauncher.py:
+	Fixes bug #134913: Stock icon in applet.desktop does not show in
+	awn-manager.
+
+2007-09-14  haytjes <hv1989@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Some fixes in awn-applet-simple
+
+2007-09-14  haytjes <hv1989@gmail.com>
+
+	* src/awn-bar.c:
+	Fixes bug #139342: Drawing bug on top border
+	(thank you Andrea Cimitan)
+
+2007-09-14  haytjes <hv1989@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* src/main.c:
+	Finally totally dynamical resizing. There was again a bug in it. Now that's solved again and now awn-applet-simple also resizes dynamical
+
+2007-09-13  haytjes <hv1989@gmail.com>
+
+	* libawn/awn-applet-dialog.c:
+	Fixes bug #138148: python applet dialogs spam errors
+
+2007-09-13  haytjes <hv1989@gmail.com>
+
+	* src/main.c:
+	Let AWN come up again when you go over the place where the bar was (not only the middle anymore)
+	(for devs: let the hotspot function again, it didn't had the right dimensions)
+
+2007-09-13  haytjes <hv1989@gmail.com>
+
+	patch by: Gerd Kohlberger
+
+	* libawn/awn-applet-dialog.c:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-plug.c:
+	* src/awn-gconf.c:
+	* src/awn-task.c:
+	* src/main.c:
+	
+	Fixes bug #138050: [Patch] Fix compiler warnings
+
+2007-09-13  haytjes <hv1989@gmail.com>
+
+	* src/main.c:
+	bug #138341: let gtk under 2.10 work again.
+
+2007-09-12  Neil J. Patel  <njp@o-hand.com>
+
+	* libawn/awn-applet-dialog.c:
+	Use Gtk theme colours so everythign looks nice.
+		
+	* src/awn-applet-manager.c:
+	* src/awn-bar.c:
+	* src/awn-hotspot.c:
+	* src/awn-task-manager.c:
+	Fix compiler warnings.
+
 2007-09-11  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* src/awn-task.c:
