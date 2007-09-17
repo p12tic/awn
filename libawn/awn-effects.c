@@ -886,43 +886,41 @@ turn_hover_effect(AwnEffectsPrivate *priv)
 		// effect start initialize values
 		fx->count = 0;
 		fx->y_offset = 0;
-		fx->right_icon_depth = 0;
-		fx->left_icon_depth = 0;
+		fx->icon_depth = 0;
+		fx->icon_depth_direction = 0;
 		if (priv->start) priv->start(fx->self);
 		priv->start = NULL;
 	}
 
 	const gint PERIOD = 100;
 
-	if(fx->count < PERIOD/2)
-		fx->delta_width = -sin((++fx->count)* M_PI / (PERIOD/2)) * (fx->icon_width-1);
+	if(fx->count < PERIOD/4)
+	{
+		fx->icon_depth_direction = 0;		
+		fx->delta_width -= (fx->icon_width) / (PERIOD/4);
+		fx->flip = 0;	
+	}
+	else if( fx->count < PERIOD/2 )
+	{
+		fx->icon_depth_direction = 1;		
+		fx->delta_width += (fx->icon_width) / (PERIOD/4);
+		fx->flip = 1;
+	}
+	else if( fx->count < PERIOD*3/4 )
+	{
+		fx->icon_depth_direction = 0;		
+		fx->delta_width -= (fx->icon_width) / (PERIOD/4);
+		fx->flip = 1;
+	}
 	else
-		fx->delta_width = -sin(((++fx->count)-PERIOD/2)* M_PI / (PERIOD/2)) * (fx->icon_width-1);
-	if(fx->delta_width>-10 && (fx->count < PERIOD/4 || (fx->count > PERIOD/2 && fx->count < PERIOD*3/4)))	
-		fx->right_icon_depth = -fx->delta_width;
-	if(fx->delta_width>-10 && ((fx->count > PERIOD/4 && fx->count < PERIOD/2) || (fx->count > PERIOD*3/4))){
-		fx->left_icon_depth = -fx->delta_width;
-		fx->x_offset = -fx->delta_width;
+	{
+		fx->icon_depth_direction = 1;		
+		fx->delta_width += (fx->icon_width) / (PERIOD/4);
+		fx->flip = 0;
 	}
+	fx->icon_depth = 10.00*-fx->delta_width/fx->icon_width;
+	fx->count++;
 	
-	if(fx->count == PERIOD/4 ){
-		fx->flip = TRUE;
-		fx->left_icon_depth = fx->right_icon_depth;
-		fx->right_icon_depth = 0;
-		fx->x_offset = 10; 
-	}
-	if(fx->count == PERIOD/2 ){
-		fx->flip = TRUE;
-		fx->right_icon_depth = fx->left_icon_depth;
-		fx->left_icon_depth = 0;
-		fx->x_offset = 0; 
-	}
-	if(fx->count == PERIOD*3/4){
-		fx->flip = FALSE; 
-		fx->left_icon_depth = fx->right_icon_depth;
-		fx->right_icon_depth = 0;
-		fx->x_offset = 10;
-	}
 	// repaint widget
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
@@ -1237,13 +1235,33 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		}
 	}
 
-	/* depth */
+	/* note: the framework didn't supported the x_offset yet */
 	if(fx->x_offset)
-		x1 += fx->x_offset; 
+		x1 += fx->x_offset;
+ 
+	/* icon flipping */
 	if(fx->flip)
 		icon = gdk_pixbuf_flip(icon, TRUE);
 	
-	gint i;	
+	/* icon depth */
+	if( fx->icon_depth )
+	{
+		if(fx->icon_depth_direction == 0) 
+			x1 += fx->icon_depth/2;
+		else
+			x1 -= fx->icon_depth/2;	
+		gint i;
+		for(i=0;i<fx->icon_depth;i++)
+		{
+			if(fx->icon_depth_direction == 0) 
+				gdk_cairo_set_source_pixbuf(cr, icon, x1-fx->icon_depth+i, y1);
+			else
+				gdk_cairo_set_source_pixbuf(cr, icon, x1+fx->icon_depth-i, y1);
+			cairo_paint_with_alpha(cr, fx->alpha);
+		}
+	}
+
+	/*gint i;	
 	for(i=0;i<fx->left_icon_depth;i++)
 	{
 		gdk_cairo_set_source_pixbuf(cr, icon, x1-fx->left_icon_depth+i, y1);
@@ -1253,7 +1271,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	{
 		gdk_cairo_set_source_pixbuf(cr, icon, x1+fx->right_icon_depth-i, y1);
 		cairo_paint_with_alpha(cr, fx->alpha);
-	}
+	}*/
 
 	gdk_cairo_set_source_pixbuf(cr, icon, x1, y1);
 	cairo_paint_with_alpha(cr, fx->alpha);

@@ -97,8 +97,8 @@ struct _AwnEffects
 	gfloat spotlight_alpha;
 	gfloat saturation;
 
-	gint right_icon_depth;
-	gint left_icon_depth;
+	gint icon_depth;
+	gint icon_depth_direction;
 	gboolean flip;	
 
 	/* State variables */
