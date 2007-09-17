@@ -1,4 +1,8 @@
-2007-09-12  Neil J. Patel  <njp@o-hand.com>
+2007-09-12  Neil J. Patel  <njpatel@gmail.com>
+	
+	Merged Julien Lavergne's awn-restructure branch.
+
+007-09-12  Neil J. Patel  <njpatel@gmail.com>
 	
 	Merged Michal Hruby's libawn-effects branch.
 
@@ -80,7 +84,7 @@
 	* src/main.c:
 	bug #138341: let gtk under 2.10 work again.
 
-2007-09-12  Neil J. Patel  <njp@o-hand.com>
+2007-09-12  Neil J. Patel  <njpatel@gmail.com>
 
 	* libawn/awn-applet-dialog.c:
 	Use Gtk theme colours so everythign looks nice.
@@ -149,7 +153,7 @@
 	* src/awn-window.c:
 	Keep dock below maximized windows when not in use
 
-2007-09-06  Neil J. Patel  <njp@o-hand.com>
+2007-09-06  Neil J. Patel  <njpatel@gmail.com>
 
 	* awn-applet-activation/main.c:
 	Allow desktop files for python applets to point to relative folders, so

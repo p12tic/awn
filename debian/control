@@ -1,0 +1,61 @@
+Source: avant-window-navigator
+Section: gnome
+Priority: optional
+Maintainer: Julien Lavergne <julien.lavergne@gmail.com>
+Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python, python-gnome2-dev, python-cairo-dev
+Standards-Version: 3.7.2
+XS-Python-Version: current
+
+Package: avant-window-navigator
+Section: gnome
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: compiz-core, awn-manager (= ${binary:Version})
+Description: A MacOS X like panel for GNOME
+ The avant-window-navigator is a MacOS X like panel for the GNOME Desktop 
+ written in C. Besides launchers that can be dragged onto the bar it features 
+ a task bar that behaves similar to the MacOSX dock. The window navigator 
+ uses the composite extension for transparency and other effects.
+ .
+ Homepage: https://launchpad.net/avant-window-navigator/
+
+Package: libawn0
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: compiz-core
+Description: library for avant-window-navigator
+ This library is used by avant-window-navigator.
+ .
+ Homepage: https://launchpad.net/avant-window-navigator/
+
+Package: libawn-dev
+Section: libdevel
+Architecture: any
+Depends: libawn0 (= ${binary:Version})
+Description: library for avant-window-navigator - developpement files
+ This package provides the include files and static library for the 
+ avant-window-navigator library functions.
+ .
+ Homepage: https://launchpad.net/avant-window-navigator/
+
+Package: awn-manager
+Section: gnome
+Architecture: any
+Depends: avant-window-navigator (= ${binary:Version}), ${python:Depends}, python-gnome2, python-gnome2-desktop
+XB-Python-Version: ${python:Versions}
+Description: A manager for the preferences of avant-window-navigator
+ Awn-Manager provide a simple way to configure avant-window-navigator. 
+ You can manage preferences, themes, applets and launchers.
+ .
+ Homepage: https://launchpad.net/avant-window-navigator/
+
+Package: python-libawn0
+Section: python
+Architecture: any
+Depends: libawn0 (= ${binary:Version}), ${python:Depends}
+XB-Python-Version: ${python:Versions}
+Description: library for avant-window-navigator - Python bindings
+ This library is used by avant-window-navigator.
+ .
+ Homepage: https://launchpad.net/avant-window-navigator/
