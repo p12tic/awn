@@ -99,6 +99,9 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 
 	fx->enter_notify = 0;
 	fx->leave_notify = 0;
+
+	// this could be really nice
+	awn_effect_start_ex(fx, AWN_EFFECT_OPENING, NULL, NULL, 1);
 }
 
 void
@@ -1131,6 +1134,12 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	}
 	/* scaling */
 	if (fx->delta_width || fx->delta_height) {
+		// sanity check
+		if (fx->delta_width <= -current_width || fx->delta_height <= -current_height) {
+			// we would display blank icon
+			if (clippedIcon) g_object_unref(clippedIcon);
+			return;
+		}
 		scaledIcon = gdk_pixbuf_scale_simple(icon, current_width + fx->delta_width, current_height + fx->delta_height, GDK_INTERP_BILINEAR);
 		// update current w&h
 		current_width += fx->delta_width;
