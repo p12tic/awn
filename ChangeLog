@@ -1,4 +1,9 @@
-2007-09-17  Michal Hruby <michal.mhr@gmail.com>
+2007-09-17  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fixed bug in awn_unregister_effects.
+
+2007-09-17  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-applet-simple.c:
 	* libawn/awn-effects.c:

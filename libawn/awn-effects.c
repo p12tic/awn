@@ -1062,13 +1062,13 @@ awn_register_effects (GObject *obj, AwnEffects *fx) {
 
 void
 awn_unregister_effects (AwnEffects *fx) {
-	fx->focus_window = NULL;
 	if (fx->enter_notify)
 		g_signal_handler_disconnect(G_OBJECT(fx->focus_window), fx->enter_notify);
 	if (fx->leave_notify)
 		g_signal_handler_disconnect(G_OBJECT(fx->focus_window), fx->leave_notify);
 	fx->enter_notify = 0;
 	fx->leave_notify = 0;
+	fx->focus_window = NULL;
 }
 
 void awn_draw_background(AwnEffects *fx, cairo_t *cr) {	
