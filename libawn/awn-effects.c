@@ -100,14 +100,13 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->enter_notify = 0;
 	fx->leave_notify = 0;
 
-	// this could be really nice
-	awn_effect_start_ex(fx, AWN_EFFECT_OPENING, NULL, NULL, 1);
+	//this is really nice, but causes problem for tasks, have to solve that
+	//awn_effect_start_ex(fx, AWN_EFFECT_OPENING, NULL, NULL, 1);
 }
 
 void
 awn_effects_finalize(AwnEffects *fx) {
 	awn_unregister_effects(fx);
-	fx->focus_window = NULL;
 	fx->self = NULL;
 }
 
@@ -1053,6 +1052,9 @@ main_effect_loop(AwnEffects *fx) {
 
 void
 awn_register_effects (GObject *obj, AwnEffects *fx) {
+	if (fx->focus_window) {
+		awn_unregister_effects(fx);
+	}
 	fx->focus_window = GTK_WIDGET(obj);
 	fx->enter_notify = g_signal_connect(obj, "enter-notify-event", G_CALLBACK(awn_on_enter_event), fx);
 	fx->leave_notify = g_signal_connect(obj, "leave-notify-event", G_CALLBACK(awn_on_leave_event), fx);
@@ -1060,6 +1062,7 @@ awn_register_effects (GObject *obj, AwnEffects *fx) {
 
 void
 awn_unregister_effects (AwnEffects *fx) {
+	fx->focus_window = NULL;
 	if (fx->enter_notify)
 		g_signal_handler_disconnect(G_OBJECT(fx->focus_window), fx->enter_notify);
 	if (fx->leave_notify)

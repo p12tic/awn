@@ -1,3 +1,12 @@
+2007-09-17  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-effects.c:
+	Updated AwnAppletSimple to use hover effect by default (applets can
+	disable).
+	Disabled OPENING effect for applets, because tasks don't work
+	correctly because of it.
+
 2007-09-12  Neil J. Patel  <njpatel@gmail.com>
 	
 	Merged Julien Lavergne's awn-restructure branch.
