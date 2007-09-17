@@ -39,6 +39,9 @@ struct _AwnAppletSimplePrivate
         GdkPixbuf *org_icon;
         GdkPixbuf *icon;
         GdkPixbuf *reflect;
+
+	AwnEffects effects;
+
         gint icon_width;
         gint icon_height;
 
@@ -161,6 +164,9 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
 	width = widget->allocation.width;
 	height = widget->allocation.height;
+
+	awn_draw_set_window_size(&priv->effects, width, height);
+
         bar_height = priv->bar_height;
 
         cr = gdk_cairo_create (widget->window);
@@ -173,42 +179,11 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
 	cairo_set_operator (cr, CAIRO_OPERATOR_OVER);       
         
-        
 	/* content */
-	if (priv->icon) {
-		gint x1, y1;
+	awn_draw_background(&priv->effects, cr);
+	awn_draw_icons(&priv->effects, cr, priv->icon, priv->reflect);
+	awn_draw_foreground(&priv->effects, cr);
 
-		x1 = (width-priv->icon_width)/2;
-		y1 = (height-bar_height) - priv->offset;
-
-		gdk_cairo_set_source_pixbuf (cr, priv->icon, x1, y1);
-		cairo_paint (cr);
-
-		if (priv->offset > 0 && priv->reflect)
-		{
-                        y1 = (height-bar_height) - priv->offset 
-                             + priv->icon_height + 1;
-			gdk_cairo_set_source_pixbuf (cr, 
-                                                     priv->reflect,
-                                                     x1, y1);
-			cairo_paint_with_alpha(cr, 0.3);
-
-		}
-	}       
-
-        /* Don't paint in bottom 3px if there is an bar_angle */
-        if ( priv->bar_angle != 0) {
-                cairo_save (cr);
-                cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-                cairo_set_source_rgba (cr, 1, 1, 1, 0);
-                cairo_rectangle (cr, 
-                                 0, 
-                                 (height-4),
-                                 width,
-                                 4);
-                cairo_fill (cr);
-                cairo_restore (cr);
-        }
         cairo_destroy (cr);
 
         return TRUE;
@@ -281,6 +256,10 @@ awn_applet_simple_init (AwnAppletSimple *simple)
         priv->icon_width = 0;
         priv->offset = 0;
 
+	awn_effects_init(G_OBJECT(simple), &priv->effects);
+	// register hover effects
+	awn_register_effects(G_OBJECT(simple), &priv->effects);
+
         client = gconf_client_get_default ();
         gconf_client_add_dir(client, "/apps/avant-window-navigator/bar", GCONF_CLIENT_PRELOAD_NONE, NULL);
         priv->offset = gconf_client_get_int (client, 
@@ -295,6 +274,13 @@ awn_applet_simple_init (AwnAppletSimple *simple)
         gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/bar_angle", (GConfClientNotifyFunc)bar_angle_changed, simple, NULL, NULL);
         gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/bar_height", (GConfClientNotifyFunc)bar_height_changed, simple, NULL, NULL);
         gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/icon_offset", (GConfClientNotifyFunc)icon_offset_changed, simple, NULL, NULL);
+}
+
+AwnEffects*
+awn_applet_simple_get_effects(AwnAppletSimple *simple)
+{
+        AwnAppletSimplePrivate *priv = simple->priv;
+	return &priv->effects;
 }
 
 GtkWidget* 

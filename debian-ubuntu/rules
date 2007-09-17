@@ -1,0 +1,18 @@
+#!/usr/bin/make -f
+DEB_PYTHON_SYSTEM=pycentral
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/python-distutils.mk
+include /usr/share/cdbs/1/class/gnome.mk
+include /usr/share/cdbs/1/rules/simple-patchsys.mk
+
+DEB_PYTHON_PRIVATE_MODULES_DIRS := debian/tmp/usr/share/avant-window-navigator/awn-manager/
+DEB_PYTHON_SETUP_CMD := awn-manager/awnDefs.in.py
+
+DEB_INSTALL_MANPAGES_avant-window-navigator := debian/avant-window-navigator.1 debian/awn-applet-activation.1
+DEB_INSTALL_MANPAGES_awn-manager := debian/awn-manager.1
+
+DEB_DH_MAKESHLIBS_ARGS_libawn0 := -V"libawn0 (>= 0.1.1)"
+DEB_DH_MAKESHLIBS_ARGS_avant-window-navigator := -n
+DEB_SHLIBDEPS_LIBRARY_avant-window-navigator:= libawn0
+DEB_SHLIBDEPS_INCLUDE_avant-window-navigator := debian/libawn0/usr/lib/

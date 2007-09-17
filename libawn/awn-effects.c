@@ -99,12 +99,14 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 
 	fx->enter_notify = 0;
 	fx->leave_notify = 0;
+
+	//this is really nice, but causes problem for tasks, have to solve that
+	//awn_effect_start_ex(fx, AWN_EFFECT_OPENING, NULL, NULL, 1);
 }
 
 void
 awn_effects_finalize(AwnEffects *fx) {
 	awn_unregister_effects(fx);
-	fx->focus_window = NULL;
 	fx->self = NULL;
 }
 
@@ -453,8 +455,45 @@ bounce_effect (AwnEffectsPrivate *priv)
 static gboolean
 desaturate_effect (AwnEffectsPrivate *priv)
 {
-	// TODO: make desaturation
-	return TRUE;
+        AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->direction = AWN_EFFECT_DIR_DOWN;
+		fx->saturation = 1.0;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gdouble DESATURATION_STEP = 0.04;
+
+	switch (fx->direction) {
+	case AWN_EFFECT_DIR_DOWN:
+		fx->saturation -= DESATURATION_STEP;
+		if (fx->saturation < 0) fx->saturation = 0;
+		gboolean top = awn_effect_check_top_effect(priv, NULL);
+		// TODO: implement sleep function, so effect will stop the timer, but will be paused in middle of the animation and will finish when awn_effect_stop is called or higher priority effect is started
+		if (top) {
+			gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+			return top;
+		} else
+			fx->direction = AWN_EFFECT_DIR_UP;
+		break;
+	case AWN_EFFECT_DIR_UP:
+	default:
+		fx->saturation += DESATURATION_STEP;
+	}
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->saturation >= 1.0) {
+		fx->saturation = 1.0;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
 }
 static gboolean
 zoom_effect (AwnEffectsPrivate *priv)
@@ -1013,6 +1052,9 @@ main_effect_loop(AwnEffects *fx) {
 
 void
 awn_register_effects (GObject *obj, AwnEffects *fx) {
+	if (fx->focus_window) {
+		awn_unregister_effects(fx);
+	}
 	fx->focus_window = GTK_WIDGET(obj);
 	fx->enter_notify = g_signal_connect(obj, "enter-notify-event", G_CALLBACK(awn_on_enter_event), fx);
 	fx->leave_notify = g_signal_connect(obj, "leave-notify-event", G_CALLBACK(awn_on_leave_event), fx);
@@ -1026,6 +1068,7 @@ awn_unregister_effects (AwnEffects *fx) {
 		g_signal_handler_disconnect(G_OBJECT(fx->focus_window), fx->leave_notify);
 	fx->enter_notify = 0;
 	fx->leave_notify = 0;
+	fx->focus_window = NULL;
 }
 
 void awn_draw_background(AwnEffects *fx, cairo_t *cr) {	
@@ -1065,17 +1108,21 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 
 	/* clipping */
 	if (fx->clip) {
-		g_return_if_fail(fx->clip_region.x >= 0 && fx->clip_region.width - fx->clip_region.x <= fx->icon_width);
-		g_return_if_fail(fx->clip_region.y >= 0 && fx->clip_region.height - fx->clip_region.y <= fx->icon_height);
+		gint x = fx->clip_region.x;
+		gint y = fx->clip_region.y;
+		gint w = fx->clip_region.width;
+		gint h = fx->clip_region.height;
+		g_return_if_fail(
+			x >= 0 && x < fx->icon_width &&
+			w-x > 0 && w-x <= fx->icon_width &&
+			y >= 0 && x < fx->icon_height &&
+			h-y > 0 && h-y <= fx->icon_height);
 
-		clippedIcon = gdk_pixbuf_new_subpixbuf(icon, 
-			fx->clip_region.x,
-			fx->clip_region.y,
-			fx->clip_region.width,
-			fx->clip_region.height);
+		// careful! new_subpixbuf shares original pixbuf, no copy!
+		clippedIcon = gdk_pixbuf_new_subpixbuf(icon, x, y, w, h);
 		// update current w&h
-		current_width = fx->clip_region.width - fx->clip_region.x;
-		current_height = fx->clip_region.height - fx->clip_region.y;
+		current_width = w - x;
+		current_height = h - y;
 		// refresh reflection, icon was clipped
 		if (!fx->delta_width && !fx->delta_height) {
 			// don't create reflection if we're also scaling
@@ -1090,6 +1137,12 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	}
 	/* scaling */
 	if (fx->delta_width || fx->delta_height) {
+		// sanity check
+		if (fx->delta_width <= -current_width || fx->delta_height <= -current_height) {
+			// we would display blank icon
+			if (clippedIcon) g_object_unref(clippedIcon);
+			return;
+		}
 		scaledIcon = gdk_pixbuf_scale_simple(icon, current_width + fx->delta_width, current_height + fx->delta_height, GDK_INTERP_BILINEAR);
 		// update current w&h
 		current_width += fx->delta_width;
@@ -1105,7 +1158,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	}
 	if (fx->saturation < 1.0) {
 		// do not change original pixbuf -> create new
-		if (!clippedIcon && !scaledIcon) {
+		if (!scaledIcon) {
 			saturatedIcon = gdk_pixbuf_copy(icon);
 			icon = saturatedIcon;
 		}

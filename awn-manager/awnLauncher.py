@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #
 #  Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>
 #
@@ -153,7 +152,7 @@ class awnLauncher:
         except:
             return icon
 
-        theme = gtk.IconTheme ()
+        theme = gtk.icon_theme_get_default ()
         try:
             icon = theme.load_icon (name, 32, 0)
         except:

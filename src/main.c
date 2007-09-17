@@ -442,7 +442,7 @@ resize (AwnSettings *settings)
 	gtk_window_get_size(GTK_WINDOW(settings->window), &ww, &wh);
 	gtk_widget_set_size_request (settings->window, -1, (settings->bar_height)*2+settings->icon_offset);
 	gtk_window_move(GTK_WINDOW(settings->window),
-			(settings->monitor.width - ww) / 2,
+			(settings->monitor.width - ww)*settings->bar_pos,
 			settings->monitor.height-((settings->bar_height)*2+settings->icon_offset));
 	
 	gtk_window_resize(GTK_WINDOW(settings->bar), 

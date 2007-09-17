@@ -1,3 +1,55 @@
+2007-09-17  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fixed bug in awn_unregister_effects.
+
+2007-09-17  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-effects.c:
+	Updated AwnAppletSimple to use hover effect by default (applets can
+	disable).
+	Disabled OPENING effect for applets, because tasks don't work
+	correctly because of it.
+
+2007-09-12  Neil J. Patel  <njpatel@gmail.com>
+	
+	Merged Julien Lavergne's awn-restructure branch.
+
+007-09-12  Neil J. Patel  <njpatel@gmail.com>
+	
+	Merged Michal Hruby's libawn-effects branch.
+
+007-09-16  haytjes <hv1989@gmail.com>
+
+	* src/awn-bar.c:
+	Updated look of rounded corners, when it is standing left or right against the wall (end of the screen)
+
+2007-09-16  haytjes <hv1989@gmail.com>
+
+	* libawn/awn-title.c:
+	Let the title never go offscreen on the left.
+
+2007-09-16  haytjes <hv1989@gmail.com>
+
+	* src/awn-bar.c:
+	* src/awn-gconf.c:
+	* src/awn-gconf.h:
+	* src/awn-window.c:
+	* src/main.c:
+	Added a gconf entry: /bar/bar_pos
+	
+	Now you can move AWN on the X rule. So horizontal. It's a float between 0 and 1 that says where it needs to stand. 
+	0.5 is in the middle and the current behaviour. But now it is possible to set it left (0.0) or right (1.0) or something between...
+	Not added to awnManager, because it isn't tested enough.
+
+2007-09-15  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* awn-manager/awnApplet.py:
+	* awn-manager/awnLauncher.py:
+	Fixes bug #134913: Stock icon in applet.desktop does not show in
+	awn-manager.
+
 2007-09-14  haytjes <hv1989@gmail.com>
 
 	* libawn/awn-applet-simple.c:
@@ -46,7 +98,7 @@
 	* src/main.c:
 	bug #138341: let gtk under 2.10 work again.
 
-2007-09-12  Neil J. Patel  <njp@o-hand.com>
+2007-09-12  Neil J. Patel  <njpatel@gmail.com>
 
 	* libawn/awn-applet-dialog.c:
 	Use Gtk theme colours so everythign looks nice.
@@ -115,7 +167,7 @@
 	* src/awn-window.c:
 	Keep dock below maximized windows when not in use
 
-2007-09-06  Neil J. Patel  <njp@o-hand.com>
+2007-09-06  Neil J. Patel  <njpatel@gmail.com>
 
 	* awn-applet-activation/main.c:
 	Allow desktop files for python applets to point to relative folders, so
