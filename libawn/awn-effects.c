@@ -877,6 +877,66 @@ fading_effect (AwnEffectsPrivate *priv)
 	return repeat;
 }
 
+gboolean
+turn_hover_effect(AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->y_offset = 0;
+		fx->right_icon_depth = 0;
+		fx->left_icon_depth = 0;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gint PERIOD = 100;
+
+	if(fx->count < PERIOD/2)
+		fx->delta_width = -sin((++fx->count)* M_PI / (PERIOD/2)) * (fx->icon_width-1);
+	else
+		fx->delta_width = -sin(((++fx->count)-PERIOD/2)* M_PI / (PERIOD/2)) * (fx->icon_width-1);
+	if(fx->delta_width>-10 && (fx->count < PERIOD/4 || (fx->count > PERIOD/2 && fx->count < PERIOD*3/4)))	
+		fx->right_icon_depth = -fx->delta_width;
+	if(fx->delta_width>-10 && ((fx->count > PERIOD/4 && fx->count < PERIOD/2) || (fx->count > PERIOD*3/4))){
+		fx->left_icon_depth = -fx->delta_width;
+		fx->x_offset = -fx->delta_width;
+	}
+	
+	if(fx->count == PERIOD/4 ){
+		fx->flip = TRUE;
+		fx->left_icon_depth = fx->right_icon_depth;
+		fx->right_icon_depth = 0;
+		fx->x_offset = 10; 
+	}
+	if(fx->count == PERIOD/2 ){
+		fx->flip = TRUE;
+		fx->right_icon_depth = fx->left_icon_depth;
+		fx->left_icon_depth = 0;
+		fx->x_offset = 0; 
+	}
+	if(fx->count == PERIOD*3/4){
+		fx->flip = FALSE; 
+		fx->left_icon_depth = fx->right_icon_depth;
+		fx->right_icon_depth = 0;
+		fx->x_offset = 10;
+	}
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->count >= PERIOD) {
+		fx->count = 0;
+		fx->y_offset = 0;
+		fx->flip = FALSE;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
  
 static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data) {
 	
@@ -978,6 +1038,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)bounce_opening_effect,
 		(GSourceFunc)spotlight_opening_effect2,
 		(GSourceFunc)bounce_opening_effect,
+		(GSourceFunc)bounce_squish_opening_effect,
 		(GSourceFunc)bounce_squish_opening_effect
 	};
 	static const GSourceFunc CLOSING_EFFECTS[] = {
@@ -985,6 +1046,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)fade_out_effect,
 		(GSourceFunc)spotlight_closing_effect,
 		(GSourceFunc)fade_out_effect,
+		(GSourceFunc)bounce_squish_closing_effect,
 		(GSourceFunc)bounce_squish_closing_effect
 	};
 	static const GSourceFunc HOVER_EFFECTS[] = {
@@ -992,13 +1054,15 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)fading_effect,
 		(GSourceFunc)spotlight_effect,
 		(GSourceFunc)zoom_effect,
-		(GSourceFunc)bounce_squish_effect
+		(GSourceFunc)bounce_squish_effect,
+		(GSourceFunc)turn_hover_effect
 	};
 	static const GSourceFunc LAUNCHING_EFFECTS[] = {
 		(GSourceFunc)bounce_effect,
 		(GSourceFunc)bounce_effect,
 		(GSourceFunc)spotlight_half_fade_effect,
 		(GSourceFunc)bounce_effect,
+		(GSourceFunc)bounce_squish_effect,
 		(GSourceFunc)bounce_squish_effect
 	};
 	static const GSourceFunc ATTENTION_EFFECTS[] = {
@@ -1006,6 +1070,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)bounce_effect,
 		(GSourceFunc)spotlight_half_fade_effect,
 		(GSourceFunc)bounce_effect,
+		(GSourceFunc)bounce_squish_attention_effect,
 		(GSourceFunc)bounce_squish_attention_effect
 	};
 
@@ -1170,6 +1235,24 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		} else {
 			gdk_pixbuf_saturate_and_pixelate(reflect, reflect, fx->saturation, FALSE);
 		}
+	}
+
+	/* depth */
+	if(fx->x_offset)
+		x1 += fx->x_offset; 
+	if(fx->flip)
+		icon = gdk_pixbuf_flip(icon, TRUE);
+	
+	gint i;	
+	for(i=0;i<fx->left_icon_depth;i++)
+	{
+		gdk_cairo_set_source_pixbuf(cr, icon, x1-fx->left_icon_depth+i, y1);
+		cairo_paint_with_alpha(cr, fx->alpha);
+	}
+	for(i=0;i<fx->right_icon_depth;i++)
+	{
+		gdk_cairo_set_source_pixbuf(cr, icon, x1+fx->right_icon_depth-i, y1);
+		cairo_paint_with_alpha(cr, fx->alpha);
 	}
 
 	gdk_cairo_set_source_pixbuf(cr, icon, x1, y1);
