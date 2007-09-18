@@ -1,3 +1,12 @@
+2007-09-18  haytjes <hv1989@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Improved awn-applet-simple dynamical resizing. Now on a bar_height change it will change the icon_height on how much the bar_height changed.
+	Some applets in awn-extras are now wrong, but will commit a rev. to awn-extras soon.
+	For applet devs: You need to give a right sized icon to awn-applet-simple. So awn-applet-simple doesn't resize it anymore, 
+	except when a bar_height change has occurred. Normally you should provide a new icon then, but in the mean time awn-applet-simple resizes the icon
+	to have a semiliar look after the bar_height change.
+
 2007-09-17  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-effects.c:

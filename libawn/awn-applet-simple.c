@@ -45,6 +45,8 @@ struct _AwnAppletSimplePrivate
         gint icon_width;
         gint icon_height;
 
+	gint bar_height_on_icon_recieved;
+
         gint offset;
         gint bar_height;
         gint bar_angle;
@@ -63,14 +65,15 @@ adjust_icon(AwnAppletSimple *simple)
         old0 = priv->icon;
         old1 = priv->reflect;
 
-	priv->icon_height = priv->bar_height;
-	if( gdk_pixbuf_get_height (priv->org_icon) == priv->icon_height )
+	if( priv->bar_height == priv->bar_height_on_icon_recieved )
 	{
+		priv->icon_height = gdk_pixbuf_get_height (priv->org_icon);
 		priv->icon_width = gdk_pixbuf_get_width (priv->org_icon);
 		priv->icon = priv->org_icon;
 	}
 	else
 	{
+		priv->icon_height = gdk_pixbuf_get_height (priv->org_icon)+priv->bar_height-priv->bar_height_on_icon_recieved;
         	priv->icon_width = (int)((double)priv->icon_height/(double)gdk_pixbuf_get_height (priv->org_icon)*(double)gdk_pixbuf_get_width (priv->org_icon));        
 	        priv->icon = gdk_pixbuf_scale_simple(priv->org_icon,
 	                                             priv->icon_width,
@@ -114,6 +117,7 @@ awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 
         old0 = priv->org_icon;
         priv->org_icon = pixbuf;
+        priv->bar_height_on_icon_recieved = priv->bar_height;
 
         /* We need to unref twice because python hurts kittens */
         if (G_IS_OBJECT (old0))
