@@ -6,4 +6,3 @@ debian/tmp/usr/share/avant-window-navigator/active/
 debian/tmp/usr/share/avant-window-navigator/*.svg
 debian/tmp/usr/share/avant-window-navigator/*.png
 debian/tmp/usr/lib/awn/applets/*.desktop
-
