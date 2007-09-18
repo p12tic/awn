@@ -1,5 +1,10 @@
 2007-09-18  haytjes <hv1989@gmail.com>
 
+	* src/awn-x.c:
+	Set xutils_set_strut good.
+
+2007-09-18  haytjes <hv1989@gmail.com>
+
 	* libawn/awn-applet-simple.c:
 	set_temp_icon updated also
 
