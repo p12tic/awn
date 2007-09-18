@@ -1,6 +1,11 @@
 2007-09-18  haytjes <hv1989@gmail.com>
 
 	* libawn/awn-applet-simple.c:
+	set_temp_icon updated also
+
+2007-09-18  haytjes <hv1989@gmail.com>
+
+	* libawn/awn-applet-simple.c:
 	Improved awn-applet-simple dynamical resizing. Now on a bar_height change it will change the icon_height on how much the bar_height changed.
 	Some applets in awn-extras are now wrong, but will commit a rev. to awn-extras soon.
 	For applet devs: You need to give a right sized icon to awn-applet-simple. So awn-applet-simple doesn't resize it anymore, 

@@ -144,6 +144,7 @@ awn_applet_simple_set_temp_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 
         old0 = priv->org_icon;
         priv->org_icon = pixbuf;
+        priv->bar_height_on_icon_recieved = priv->bar_height;
 
         /* We need to unref twice because python hurts kittens */
         if (G_IS_OBJECT (old0))
