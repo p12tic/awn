@@ -1,3 +1,9 @@
+2007-09-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn.pc.in:
+	Fix the Cflags entry so that #include statements that follow the
+	convention "#include <libawn/foo.h>" work.
+
 2007-09-18  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-manager/awn-manager.desktop.in.in:
