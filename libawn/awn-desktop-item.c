@@ -68,7 +68,7 @@ static gchar **awn_xfce_explode_exec (gchar *exec, GList *extra_argv)
 	return g_strsplit (argv_str, " ", 0);
 }
 
-static gchar *awn_xfce_desktop_file_get_string (AwnDesktopItem *item, gchar *key, gboolean translatable)
+static gchar *awn_xfce_desktop_item_get_string (AwnDesktopItem *item, gchar *key, gboolean translatable)
 {
 	gchar *value = NULL;
 	if (xfce_desktop_entry_get_string (item, key, translatable, &value)) {
@@ -140,7 +140,7 @@ gchar *awn_desktop_item_get_item_type (AwnDesktopItem *item)
 #ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_TYPE);
 #elif defined(LIBAWN_USE_XFCE)
-	return awn_xfce_desktop_file_get_string (item, "Type", FALSE);
+	return awn_xfce_desktop_item_get_string (item, "Type", FALSE);
 #endif
 }
 
@@ -153,7 +153,7 @@ gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme
 	 * gnome_desktop_item_get_icon(), gnome_desktop_item_find_icon()
 	 */
 	gchar *full = NULL;
-	gchar *icon = awn_xfce_desktop_file_get_string (item, "Icon", FALSE);
+	gchar *icon = awn_xfce_desktop_item_get_string (item, "Icon", FALSE);
 	if (strcmp (icon, "") == 0) {
 		return NULL;
 	} else if (g_path_is_absolute (icon)) {
@@ -203,7 +203,7 @@ gchar *awn_desktop_item_get_name (AwnDesktopItem *item)
 	return gnome_desktop_item_get_localestring (item,
 	                                            GNOME_DESKTOP_ITEM_NAME);
 #elif defined(LIBAWN_USE_XFCE)
-	return awn_xfce_desktop_file_get_string (item, "Name", TRUE);
+	return awn_xfce_desktop_item_get_string (item, "Name", TRUE);
 #endif
 
 }
@@ -213,7 +213,7 @@ gchar *awn_desktop_item_get_exec (AwnDesktopItem *item)
 #ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_EXEC);
 #elif defined(LIBAWN_USE_XFCE)
-	return awn_xfce_desktop_file_get_string (item, "Exec", FALSE);
+	return awn_xfce_desktop_item_get_string (item, "Exec", FALSE);
 #endif
 }
 
@@ -222,7 +222,7 @@ gchar *awn_desktop_item_get_string (AwnDesktopItem *item, gchar *key)
 #ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_string (item, key);
 #elif defined(LIBAWN_USE_XFCE)
-	return awn_xfce_desktop_file_get_string (item, key, FALSE);
+	return awn_xfce_desktop_item_get_string (item, key, FALSE);
 #endif
 }
 
@@ -231,7 +231,7 @@ gchar *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *key)
 #ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_localestring (item, key);
 #elif defined(LIBAWN_USE_XFCE)
-	return awn_xfce_desktop_file_get_string (item, key, TRUE);
+	return awn_xfce_desktop_item_get_string (item, key, TRUE);
 #endif
 }
 
@@ -249,7 +249,7 @@ gboolean awn_desktop_item_exists (AwnDesktopItem *item)
 
 	g_return_val_if_fail (item != NULL, FALSE);
 
-	try_exec = awn_xfce_desktop_file_get_string (item, "TryExec", FALSE);
+	try_exec = awn_xfce_desktop_item_get_string (item, "TryExec", FALSE);
 	real_try_exec = awn_xfce_get_real_exec ((gchar*)try_exec);
 
 	if (try_exec != NULL && real_try_exec == NULL) {
@@ -305,7 +305,7 @@ gint awn_desktop_item_launch (AwnDesktopItem *item, GList *extra_argv, GError **
 	gboolean success;
 	int pid;
 	gchar *exec = awn_desktop_item_get_exec (item);
-	gchar *path = awn_xfce_desktop_file_get_string (item, "Path", FALSE);
+	gchar *path = awn_xfce_desktop_item_get_string (item, "Path", FALSE);
 	exec = awn_xfce_get_real_exec (exec);
 	success = gdk_spawn_on_screen (gdk_screen_get_default(),
 	                               (const gchar *)path,

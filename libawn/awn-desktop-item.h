@@ -20,8 +20,8 @@
  *  vim: set noet :
  */
 
-#ifndef _LIBAWN_AWN_DESKTOP_FILE_H
-#define _LIBAWN_AWN_DESKTOP_FILE_H
+#ifndef _LIBAWN_AWN_DESKTOP_ITEM_H
+#define _LIBAWN_AWN_DESKTOP_ITEM_H
 
 #ifdef LIBAWN_USE_GNOME
 #include <libgnome/gnome-desktop-item.h>
@@ -55,4 +55,4 @@ void            awn_desktop_item_unref (AwnDesktopItem *item);
 /* utility function */
 GList          *awn_desktop_item_get_pathlist_from_string (gchar *paths, GError **err);
 
-#endif /* _LIBAWN_AWN_DESKTOP_FILE_H */
+#endif /* _LIBAWN_AWN_DESKTOP_ITEM_H */
