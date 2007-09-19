@@ -3,6 +3,8 @@
 	* awn.pc.in:
 	Fix the Cflags entry so that #include statements that follow the
 	convention "#include <libawn/foo.h>" work.
+	Remove the entry that seems to have been copy/pasted from Clutter's
+	pkgconfig file.
 
 2007-09-18  Julien Lavergne <julien.lavergne@gmail.com>
 
