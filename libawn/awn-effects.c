@@ -1161,7 +1161,7 @@ main_effect_loop(AwnEffects *fx) {
 	// NOTE! Always make sure that all EFFECTS arrays have same number of elements
 	static const GSourceFunc OPENING_EFFECTS[] = {
 		(GSourceFunc)bounce_opening_effect,
-		(GSourceFunc)bounce_opening_effect,
+		(GSourceFunc)zoom_opening_effect,
 		(GSourceFunc)spotlight_opening_effect2,
 		(GSourceFunc)zoom_opening_effect,
 		(GSourceFunc)bounce_squish_opening_effect,
@@ -1169,7 +1169,7 @@ main_effect_loop(AwnEffects *fx) {
 	};
 	static const GSourceFunc CLOSING_EFFECTS[] = {
 		(GSourceFunc)fade_out_effect,
-		(GSourceFunc)fade_out_effect,
+		(GSourceFunc)zoom_closing_effect,
 		(GSourceFunc)spotlight_closing_effect,
 		(GSourceFunc)zoom_closing_effect,
 		(GSourceFunc)bounce_squish_closing_effect,
@@ -1185,7 +1185,7 @@ main_effect_loop(AwnEffects *fx) {
 	};
 	static const GSourceFunc LAUNCHING_EFFECTS[] = {
 		(GSourceFunc)bounce_effect,
-		(GSourceFunc)bounce_effect,
+		(GSourceFunc)fading_effect,
 		(GSourceFunc)spotlight_half_fade_effect,
 		(GSourceFunc)zoom_attention_effect,
 		(GSourceFunc)bounce_squish_effect,
@@ -1193,7 +1193,7 @@ main_effect_loop(AwnEffects *fx) {
 	};
 	static const GSourceFunc ATTENTION_EFFECTS[] = {
 		(GSourceFunc)bounce_effect,
-		(GSourceFunc)bounce_effect,
+		(GSourceFunc)fading_effect,
 		(GSourceFunc)spotlight_half_fade_effect,
 		(GSourceFunc)zoom_attention_effect,
 		(GSourceFunc)bounce_squish_attention_effect,
