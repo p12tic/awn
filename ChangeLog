@@ -1,3 +1,13 @@
+2007-09-19  Neil J. Patel  <njp@o-hand.com>
+
+	* libawn/awn-applet-dialog.c:
+	Make the window title into it's own widget, and spruce it up a little.
+	We now only set the text of the label, and draw its background
+	separatly. There should be no difference to exiting applets.
+
+	* libawn/awn-applet-simple.c:
+	Fix a few warnings.
+
 2007-09-19  Michal Hruby <michal.mhr@gmail.com>
 
 	* awn-manager/awnPreferences.py:
