@@ -39,7 +39,7 @@
 #include "xutils.h"
 #include "inlinepixbufs.h"
 
-#include "awn-gconf.h"
+#include <libawn/awn-gconf.h>
 
 /*	TODO:
 	This is a cut-and-paste job at the moment, I still need to bring over 
@@ -87,9 +87,9 @@ awn_x_set_strut (GtkWindow *window)
 	
 	gtk_window_get_size (window, &width, &height);
 	gtk_window_get_position (window, &x, &y);
- 
+
 	xutils_set_strut ((GTK_WIDGET(window)->window), 
-                    (height / 2)+settings->icon_offset, x, x+width);
+                    (height-settings->icon_offset)/2+settings->icon_offset, x, x+width);
 	num++;
 	if (num == 20) {
 		num = 0;

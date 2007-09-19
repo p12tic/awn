@@ -11,6 +11,7 @@ $(desktop_DATA).in: $(desktop_DATA).in.in
 icon_DATA =  \
 	avant-window-navigator.svg	\
 	avant-window-navigator-24.png	\
+	avant-window-navigator-32.png	\
 	avant-window-navigator-48.png
 
 icondir = $(pkgdatadir)

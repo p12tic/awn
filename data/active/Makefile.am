@@ -1,4 +1,6 @@
 active_DATA =  \
+	   spotlight1.png     	\
+	   spotlight2.png     	\
 	   glow.png     	\
 	   glow2.png      	\
 	   glow3.png    	\

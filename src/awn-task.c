@@ -29,6 +29,8 @@
 #include <libgnome/libgnome.h>
 #endif
 
+#include <libawn/awn-effects.h>
+
 #include "awn-task.h"
 #include "awn-x.h"
 
@@ -39,12 +41,6 @@
 
 G_DEFINE_TYPE (AwnTask, awn_task, GTK_TYPE_DRAWING_AREA);
 
-#define  AWN_FRAME_RATE	15
-
-#define  AWN_TASK_EFFECT_DIR_DOWN		0
-#define  AWN_TASK_EFFECT_DIR_UP			1
-#define  AWN_TASK_EFFECT_DIR_LEFT		2
-#define  AWN_TASK_EFFECT_DIR_RIGHT		3
 #define  M_PI 					3.14159265358979323846
 #define  AWN_CLICK_IDLE_TIME			450
 
@@ -52,8 +48,6 @@ G_DEFINE_TYPE (AwnTask, awn_task, GTK_TYPE_DRAWING_AREA);
 
 static gboolean awn_task_expose (GtkWidget *task, GdkEventExpose *event);
 static gboolean awn_task_button_press (GtkWidget *task, GdkEventButton *event);
-static gboolean awn_task_proximity_in (GtkWidget *task, GdkEventCrossing *event);
-static gboolean awn_task_proximity_out (GtkWidget *task, GdkEventCrossing *event);
 static gboolean awn_task_win_enter_in (GtkWidget *window, GdkEventMotion *event, AwnTask *task);
 static gboolean awn_task_win_enter_out (GtkWidget *window, GdkEventCrossing *event, AwnTask *task);
 
@@ -64,18 +58,10 @@ awn_task_drag_leave (GtkWidget *widget, GdkDragContext *drag_context,
                                         guint time);
 static void awn_task_create_menu(AwnTask *task, GtkMenu *menu);
 
+static const gchar* awn_task_get_title(GObject *);
+
 
 /* STRUCTS & ENUMS */
-
-typedef enum {
-	AWN_TASK_EFFECT_NONE,
-	AWN_TASK_EFFECT_OPENING,
-	AWN_TASK_EFFECT_HOVER,
-	AWN_TASK_EFFECT_ATTENTION,
-	AWN_TASK_EFFECT_CLOSING,
-	AWN_TASK_EFFECT_CHANGE_NAME
-
-} AwnTaskEffect;
 
 typedef enum {
 	AWN_TASK_MENU_TYPE_NORMAL,
@@ -111,34 +97,18 @@ struct _AwnTaskPrivate
 	AwnTitle *title;
 
 	gboolean is_active;
-	gboolean needs_attention;
-	gboolean is_closing;
-	gboolean hover;
+	gboolean drag_hover;
 
 	GdkPixbuf *icon;
-  GdkPixbuf *reflect;
-  gint icon_width;
-	gint icon_height;
+  	GdkPixbuf *reflect;
 
 	gint progress;
 
 	gboolean info;
 	gchar *info_text;
 
-	/* EFFECT VARIABLES */
-	gboolean effect_sheduled;
-	gboolean effect_lock;
-	AwnTaskEffect current_effect;
-	gint effect_direction;
-	gint count;
-	GdkPixbuf *pixbufs[15];
-
-	gdouble x_offset;
-	gdouble y_offset;
-	gint width;
-	gint height;
-	gdouble rotate_degrees;
-	gfloat alpha;
+	/* EFFECT VARIABLE */
+	AwnEffects effects;
 
 	/* MenuItems */
 	AwnTaskMenuItem *menu_items[5];
@@ -148,7 +118,7 @@ struct _AwnTaskPrivate
 	/* signal handler ID's, for clean close */
 	gulong icon_changed;
 	gulong state_changed;
-	gulong name_changed; // 3v1n0: added notification on name changing
+	gulong name_changed;
 	gulong win_enter;
 	gulong win_leave;
 };
@@ -183,8 +153,6 @@ awn_task_class_init (AwnTaskClass *class)
 	/* GtkWidget signals */
 	widget_class->expose_event = awn_task_expose;
 	widget_class->button_press_event = awn_task_button_press;
-	widget_class->enter_notify_event = awn_task_proximity_in;
-	widget_class->leave_notify_event = awn_task_proximity_out;
 	widget_class->drag_motion = awn_task_drag_motion;
 	widget_class->drag_leave = awn_task_drag_leave;
 
@@ -241,8 +209,6 @@ awn_task_init (AwnTask *task)
 	priv->application = NULL;
 	priv->is_launcher = FALSE;
 	priv->is_starter = FALSE;
-	priv->is_closing = FALSE;
-	priv->hover = FALSE;
 	priv->window = NULL;
 	priv->title = NULL;
 	priv->icon = NULL;
@@ -251,580 +217,71 @@ awn_task_init (AwnTask *task)
 	priv->info = FALSE;
 	priv->info_text = NULL;
 	priv->is_active = FALSE;
-	priv->needs_attention = FALSE;
-	priv->effect_sheduled = FALSE;
-	priv->effect_lock = FALSE;
-	priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-	priv->current_effect = AWN_TASK_EFFECT_NONE;
-	priv->pixbufs[0] = NULL;
-	priv->x_offset = 0.0;
-	priv->y_offset = 0.0;
-	priv->width = 0;
-	priv->height = 0;
-	priv->rotate_degrees = 0.0;
-	priv->alpha = 1.0;
-	priv->name_changed = FALSE;
+	priv->drag_hover = FALSE;
 	priv->menu_items[0] = NULL;
 	priv->menu_items[1] = NULL;
 	priv->menu_items[2] = NULL;
 	priv->menu_items[3] = NULL;
 	priv->menu_items[4] = NULL;
+
+	awn_effects_init(G_OBJECT(task), &priv->effects);
+	awn_register_effects(G_OBJECT(task), &priv->effects);
 }
 
+static const gchar* awn_task_get_title(GObject *obj) {
+	return awn_task_get_name(AWN_TASK(obj));
+}
 
 /************* EFFECTS *****************/
 
-static gboolean
-_task_opening_effect (AwnTask *task)
+static void
+_task_refresh (GObject *obj)
 {
+	AwnTask *task = AWN_TASK(obj);
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-
-	priv->effect_sheduled = FALSE;
-
-	static gint max = 10;
-
-	if (priv->effect_lock) {
-		if ( priv->current_effect != AWN_TASK_EFFECT_OPENING)
-			return TRUE;
-	} else {
-		priv->effect_lock = TRUE;
-		priv->current_effect = AWN_TASK_EFFECT_OPENING;
-		priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-		priv->y_offset = priv->settings->bar_height * -1;
-	}
-
-	if (priv->effect_direction) {
-		priv->y_offset +=1;
-
-		if (priv->y_offset >= max)
-			priv->effect_direction = AWN_TASK_EFFECT_DIR_DOWN;
-
-	} else {
-		priv->y_offset-=1;
-
-		if (priv->y_offset < 1) {
-			/* finished bouncing, back to normal */
-			priv->effect_lock = FALSE;
-			priv->current_effect = AWN_TASK_EFFECT_NONE;
-			priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-			priv->y_offset = 0;
-
-		}
-	}
-	gtk_widget_set_size_request(GTK_WIDGET(task), 
+	gtk_widget_set_size_request(GTK_WIDGET(obj), 
 				    (priv->settings->task_width), 
 				    (priv->settings->bar_height + 2) * 2);
 
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-
-
-	if (priv->effect_lock == FALSE) {
-		g_timeout_add(50, (GSourceFunc)awn_task_manager_refresh_box,
-		              priv->task_manager);
-		return FALSE;
-	}
-
-	return TRUE;
+	g_timeout_add(50, (GSourceFunc)awn_task_manager_refresh_box,
+	              priv->task_manager);
 }
-
-
-static void
-launch_opening_effect (AwnTask *task )
-{
-	g_timeout_add(AWN_FRAME_RATE, (GSourceFunc)_task_opening_effect, (gpointer)task);
-
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-	priv->effect_sheduled = TRUE;
-}
-
-static gboolean
-_task_launched_effect (AwnTask *task)
-{
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-
-	priv->effect_sheduled = FALSE;
-
-	static gint max = 14; /* Max height the icon gets to in pixels */
-	static gint max_bounces = 10;
-
-	if (priv->effect_lock) {
-		if ( priv->current_effect != AWN_TASK_EFFECT_OPENING)
-			return TRUE;
-	} else {
-		priv->effect_lock = TRUE;
-		priv->current_effect = AWN_TASK_EFFECT_OPENING;
-		priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-		priv->y_offset = 0;
-		priv->count = 0;
-	}
-	
-	if (priv->effect_direction == AWN_TASK_EFFECT_DIR_UP) {
-		priv->y_offset +=1;
-
-		if (priv->y_offset >= max)
-			priv->effect_direction = AWN_TASK_EFFECT_DIR_DOWN;
-
-	} else if (priv->effect_direction == AWN_TASK_EFFECT_DIR_DOWN) {
-		priv->y_offset-=1;		
-
-		if (priv->y_offset < 1) {
-			priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-			priv->count++;
-		}
-		if (priv->y_offset < 1 && (priv->window != NULL)) {
-			/* finished bouncing, back to normal */
-			priv->effect_lock = FALSE;
-			priv->current_effect = AWN_TASK_EFFECT_NONE;
-			priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-			priv->y_offset = 0;
-			priv->count = 0;
-		}
-		if ( priv->count > max_bounces ) {
-			/* Bounced Enough now... man, slow computer? */
-			priv->effect_lock = FALSE;
-			priv->current_effect = AWN_TASK_EFFECT_NONE;
-			priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-			priv->y_offset = 0;
-			priv->count = 0;
-		} 
-	}
-	
-	/* This makes sure there is no offscreen bouncing
-	(which is partially seen)... */
-	if (priv->settings->hidden) {
-		priv->y_offset = 0;	
-		priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-		/* if the program launches while awn is hidden, there
-		should not be an extra bounce upon reentry. */
-		if (priv->window != NULL) {
-			/* finished bouncing, back to normal */
-			priv->effect_lock = FALSE;
-			priv->current_effect = AWN_TASK_EFFECT_NONE;
-			priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-			priv->y_offset = 0;
-			priv->count = 0;
-		}
-	}
-
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-
-
-	if (priv->effect_lock == FALSE)
-		return FALSE;
-
-	return TRUE;
-}
-
 
 static void
 launch_launched_effect (AwnTask *task )
 {
-	/*
-	static guint tag = NULL; // 3v1n0: fix animation on multiple clicks
-	if (tag)
-		g_source_remove(tag);
-	*/
-	g_timeout_add(30, (GSourceFunc)_task_launched_effect, (gpointer)task);
-
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	priv->effect_sheduled = TRUE;
-}
-
-static gboolean
-_task_hover_effect (AwnTask *task)
-{
-	AwnTaskPrivate *priv;
-
-	if (!AWN_IS_TASK (task)) return FALSE;
-
-	priv = AWN_TASK_GET_PRIVATE (task);
-
-	priv->effect_sheduled = FALSE;
-
-	static gint max = 20;
-	const gdouble MAX_BOUNCE_OFFSET = 15.0;
-
-
-	if (priv->effect_lock) {
-		if ( priv->current_effect != AWN_TASK_EFFECT_HOVER)
-			return TRUE;
-	} else {
-		priv->effect_lock = TRUE;
-		priv->current_effect = AWN_TASK_EFFECT_HOVER;
-		priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-		priv->y_offset = 0;
-	}
-
-	priv->y_offset = sin(++priv->count * M_PI / max) * MAX_BOUNCE_OFFSET;
-
-	if (priv->count >= max) {
-		priv->count = 0;
-		/* finished bouncing, back to normal */
-		if (!priv->hover)  {
-			priv->effect_lock = FALSE;
-			priv->current_effect = AWN_TASK_EFFECT_NONE;
-			priv->y_offset = 0;
-		}
-	}
-
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-
-
-	if (priv->effect_lock == FALSE)
-		return FALSE;
-
-	return TRUE;
-}
-
-#if 0
-static gboolean
-_task_hover_effect2 (AwnTask *task)
-{
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-
-	priv->effect_sheduled = FALSE;
-
-	if (priv->effect_lock) {
-		if ( priv->current_effect != AWN_TASK_EFFECT_HOVER)
-			return TRUE;
-	} else {
-		priv->effect_lock = TRUE;
-		priv->current_effect = AWN_TASK_EFFECT_HOVER;
-		priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-		priv->alpha = 1.0;
-	}
-
-	if (priv->effect_direction) {
-		priv->alpha -=0.05;
-
-		if (priv->alpha <= 0.1)
-			priv->effect_direction = AWN_TASK_EFFECT_DIR_DOWN;
-
-	} else {
-		priv->alpha+=0.05;
-
-		if (priv->alpha >= 1.0) {
-			/* finished bouncing, back to normal */
-			if (priv->hover)
-				priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-			else {
-				priv->effect_lock = FALSE;
-				priv->current_effect = AWN_TASK_EFFECT_NONE;
-				priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-				priv->alpha = 1.0;
-			}
-		}
-	}
-
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-
-
-	if (priv->effect_lock == FALSE)
-		return FALSE;
-
-	return TRUE;
-}
-#endif
-
-static void
-launch_hover_effect (AwnTask *task )
-{
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-
-	if (priv->settings->fade_effect) {
-		priv->alpha = 1.0;
-		//g_timeout_add(25, (GSourceFunc)_task_hover_effect2, (gpointer)task);
-	} else if (priv->settings->hover_bounce_effect) {
-		g_timeout_add(40, (GSourceFunc)_task_hover_effect, (gpointer)task);
-		priv->effect_sheduled = TRUE;
-	}
-}
-
-static gboolean
-_task_attention_effect (AwnTask *task)
-{
-	AwnTaskPrivate *priv;
-
-	if (!AWN_IS_TASK (task))
-		return FALSE;
-
-	priv = AWN_TASK_GET_PRIVATE (task);
-
-	priv->effect_sheduled = FALSE;
-
-	static gint max = 20;
-
-	if (priv->effect_lock) {
-		if ( priv->current_effect != AWN_TASK_EFFECT_ATTENTION)
-			return TRUE;
-	} else {
-		priv->effect_lock = TRUE;
-		priv->current_effect = AWN_TASK_EFFECT_ATTENTION;
-		priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-		priv->y_offset = 0;
-		priv->rotate_degrees = 0.0;
-	}
-
-	if (priv->effect_direction == AWN_TASK_EFFECT_DIR_UP) {
-		priv->y_offset +=1;
-
-		if (priv->y_offset >= max)
-			priv->effect_direction = AWN_TASK_EFFECT_DIR_DOWN;
-
-	} else if (priv->effect_direction == AWN_TASK_EFFECT_DIR_DOWN) {
-		priv->y_offset-=1;
-		if (priv->y_offset < 1) {
-			/* finished bouncing, back to normal 
-			 * (unless it still wants attention) */
-			if (priv->needs_attention) {
-				priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-			} else {
-				priv->effect_lock = FALSE;
-				priv->current_effect = AWN_TASK_EFFECT_NONE;
-				priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-				priv->y_offset = 0;
-				priv->rotate_degrees = 0.0;
-			}
-		}
-	}
-	/* This makes sure there is no offscreen bouncing
-	 (which is partially seen)... */
-	if (priv->settings->hidden) {
-		priv->y_offset = 0;	
-		priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-		/* if the window is closed or if the attention need is
-		over, there should not be an extra bounce upon reentry. */
-		if (priv->window == NULL || !priv->needs_attention) {
-			/* finished bouncing, back to normal */
-			priv->effect_lock = FALSE;
-			priv->current_effect = AWN_TASK_EFFECT_NONE;
-			priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-			priv->y_offset = 0;
-		}
-	}
-
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-
-
-	if (priv->effect_lock == FALSE)
-		return FALSE;
-
-	return TRUE;
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_LAUNCHING, NULL, NULL, 10);
 }
 
 static void
-launch_attention_effect (AwnTask *task )
+_task_destroy (GObject *obj)
 {
-	g_timeout_add(25, (GSourceFunc)_task_attention_effect, (gpointer)task);
-
+	AwnTask *task = AWN_TASK(obj);
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	priv->effect_sheduled = TRUE;
-}
+	if (priv->is_launcher)
+		awn_task_manager_remove_launcher(priv->task_manager, task);
+	else
+		awn_task_manager_remove_task(priv->task_manager, task);
 
-static gboolean
-_task_fade_out_effect (AwnTask *task)
-{
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
+	priv->title = NULL;
+	g_free(priv->application);
+	gtk_widget_hide (GTK_WIDGET(task));
 
-	priv->effect_sheduled = FALSE;
-
-	if (priv->hover) {
-		priv->alpha = 1.0;
-		return FALSE;
+	if (priv->icon) {
+		gdk_pixbuf_unref(priv->icon);
 	}
-
-	priv->alpha-=0.05;
-
-	if (priv->alpha <= 0.2) {
-		priv->alpha = 0.2;
-		gtk_widget_queue_draw(GTK_WIDGET(task));
-		return FALSE;
+	if (priv->reflect) {
+		gdk_pixbuf_unref(priv->reflect);
 	}
-
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-
-	return TRUE;
-
-}
-
-static void
-launch_fade_out_effect (AwnTask *task )
-{
-	g_timeout_add(15, (GSourceFunc)_task_fade_out_effect, (gpointer)task);
-
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-	priv->effect_sheduled = TRUE;
-}
-
-
-static gboolean
-_task_fade_in_effect (AwnTask *task)
-{
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-
-	priv->effect_sheduled = FALSE;
-
-	/*
-	if (priv->hover) {
-		priv->alpha = 1.0;
-		return FALSE;
-	}
-	
-	priv->alpha+=0.05;
-
-	if (priv->alpha >= 1.0 ) {
-		gtk_widget_queue_draw(GTK_WIDGET(task));
-		return FALSE;
-	}
-
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-
-	return TRUE;
-	*/
-	priv->alpha = 1.0;
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-	return FALSE;
-
-}
-
-static void
-launch_fade_in_effect (AwnTask *task )
-{
-	g_timeout_add(40, (GSourceFunc)_task_fade_in_effect, (gpointer)task);
-
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-	priv->effect_sheduled = TRUE;
-}
-
-static gboolean
-_task_destroy (AwnTask *task)
-{
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-	const gint max = priv->settings->bar_height + 2;
-	gfloat i;
-
-	if (priv->effect_lock) {
-		if ( priv->current_effect != AWN_TASK_EFFECT_CLOSING)
-			return TRUE;
-	} else {
-		priv->effect_lock = TRUE;
-		priv->current_effect = AWN_TASK_EFFECT_CLOSING;
-		priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-		priv->y_offset = 0;
-	}
-
-	//g_print("%d, %f\n",priv->y_offset, priv->alpha);
-	if (priv->y_offset >= max) {
-		if (priv->is_launcher)
-			awn_task_manager_remove_launcher(priv->task_manager, task);
-		else
-			awn_task_manager_remove_task(priv->task_manager, task);
-
-		priv->title = NULL;
-		g_free(priv->application);
-		gtk_widget_hide (GTK_WIDGET(task));
-		
-		if (priv->icon) {
-			gdk_pixbuf_unref(priv->icon);
-		}
-		if (priv->reflect) {
-			gdk_pixbuf_unref(priv->reflect);
-		}
-		g_timeout_add(1000, (GSourceFunc)awn_task_manager_refresh_box,
-		              priv->task_manager);
-		gtk_object_destroy (GTK_OBJECT(task));
-		task = NULL;
-		return FALSE;
-
-	} else {
-
-		priv->y_offset +=1;
-		i = (float) priv->y_offset / max;
-		priv->alpha = 1.0 - i;
-		gtk_widget_queue_draw(GTK_WIDGET(task));
-	}
-
-	return TRUE;
-
-}
-
-static gboolean				// 3v1n0: Change Name (title) effect
-_task_change_name_effect (AwnTask *task)	// Based on notification effect
-{
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-
-	priv->effect_sheduled = FALSE;
-
-	static gint max = 14;
-
-	if (priv->effect_lock) {
-		if ( priv->current_effect != AWN_TASK_EFFECT_CHANGE_NAME)
-			return TRUE;
-	} else {
-		priv->effect_lock = TRUE;
-		priv->current_effect = AWN_TASK_EFFECT_CHANGE_NAME;
-		priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-		priv->y_offset = 0;
-		priv->rotate_degrees = 0.0;
-	}
-
-	if (priv->effect_direction) {
-		priv->y_offset +=1;
-
-		if (priv->y_offset >= max)
-			priv->effect_direction = AWN_TASK_EFFECT_DIR_DOWN;
-
-	} else {
-		priv->y_offset-=1;
-		if (priv->y_offset < 1) {
-			/* finished bouncing, back to normal */
-			if (priv->name_changed)
-				priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-			else {
-				priv->effect_lock = FALSE;
-				priv->current_effect = AWN_TASK_EFFECT_NONE;
-				priv->effect_direction = AWN_TASK_EFFECT_DIR_UP;
-				priv->y_offset = 0;
-				priv->rotate_degrees = 0.0;
-			}
-		}
-	}
-
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-
-
-	if (priv->effect_lock == FALSE)
-		return FALSE;
-
-	return TRUE;
-}
-
-static gboolean
-_launch_name_change_effect (AwnTask *task)
-{
-	//static guint tag = NULL; // 3v1n0: fix animation on multiple clicks
-	//if (tag)
-	//	g_source_remove(tag);
-	//tag =
-	g_timeout_add(30, (GSourceFunc)_task_change_name_effect, (gpointer)task);
-
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-	priv->effect_sheduled = TRUE;
-	return FALSE;
+	g_timeout_add(1000, (GSourceFunc)awn_task_manager_refresh_box,
+	              priv->task_manager);
+	awn_effects_finalize(&priv->effects);
+	gtk_object_destroy (GTK_OBJECT(task));
+	task = NULL;
 }
 
 /**********************  CALLBACKS  **********************/
@@ -887,15 +344,16 @@ draw (GtkWidget *task, cairo_t *cr)
 	AwnTaskPrivate *priv;
 	AwnSettings *settings;
 	double width, height;
-	gint resize_offset;
-
+	
 	priv = AWN_TASK_GET_PRIVATE (task);
 	settings = priv->settings;
 
 	width = task->allocation.width;
 	height = task->allocation.height;
 
-	resize_offset = settings->bar_height + 12 - settings->task_width;
+	awn_draw_set_window_size(&priv->effects, width, height);
+
+	gint resize_offset = settings->bar_height + 12 - settings->task_width;
 
 	/* task back */
 	cairo_set_source_rgba (cr, 1, 0, 0, 0.0);
@@ -904,7 +362,7 @@ draw (GtkWidget *task, cairo_t *cr)
 	cairo_fill (cr);
 
 	cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-
+	
 	/* active */
 	if (priv->window && wnck_window_is_active(priv->window)) {
 
@@ -925,41 +383,11 @@ draw (GtkWidget *task, cairo_t *cr)
 				width, settings->icon_offset);
 		cairo_fill(cr);
 	}
-	/* content */
-	if (priv->icon) {
-		double x1, y1;
 
-		x1 = (width-priv->icon_width)/2;
-		y1 = settings->bar_height - priv->y_offset + resize_offset;
-
-		gdk_cairo_set_source_pixbuf (cr, priv->icon, x1, y1);
-		cairo_paint_with_alpha(cr, priv->alpha);
-
-		if (priv->y_offset >= 0 && priv->reflect)
-		{
-			y1 = settings->bar_height 
-                                + priv->icon_height + priv->y_offset
-				+ resize_offset;
-			gdk_cairo_set_source_pixbuf (cr, 
-                                                     priv->reflect,
-                                                     x1, y1);
-			cairo_paint_with_alpha(cr, priv->alpha/3);
-		}
-	}
-
-        /* Don't paint in bottom 3px if there is an bar_angle */
-        if ( settings->bar_angle != 0) {
-                cairo_save (cr);
-                cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-                cairo_set_source_rgba (cr, 1, 1, 1, 0);
-                cairo_rectangle (cr, 
-                                 0, 
-                                 ((settings->bar_height *2)-4)+ settings->icon_offset,
-                                 width,
-                                 4);
-                cairo_fill (cr);
-                cairo_restore (cr);
-        }
+	/* use libawn to draw */
+	awn_draw_background(&priv->effects, cr);
+	awn_draw_icons(&priv->effects, cr, priv->icon, priv->reflect);
+	awn_draw_foreground(&priv->effects, cr);
 
 	/* arrows */
 	double x1;
@@ -1215,69 +643,6 @@ _task_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 
 }
 
-
-
-static gboolean
-awn_task_proximity_in (GtkWidget *task, GdkEventCrossing *event)
-{
-	AwnTaskPrivate *priv;
-	AwnSettings *settings;
-
-	priv = AWN_TASK_GET_PRIVATE (task);
-	settings = priv->settings;
-
-	if (priv->title) {
-	        awn_title_show (AWN_TITLE (priv->title),
-                                task,
-                                awn_task_get_name(AWN_TASK(task)));
-
-	}
-
-	if (priv->hover) {
-		if (settings->fade_effect) {
-			priv->alpha = 1.0;
-		}
-		return TRUE;
-	} else {
-		if (priv->needs_attention)
-			return FALSE;
-		priv->hover = TRUE;
-
-		if (!settings->fade_effect) {
-			if (!priv->effect_sheduled && !priv->effect_lock && priv->current_effect != AWN_TASK_EFFECT_HOVER)
-				launch_hover_effect (AWN_TASK (task));
-		} else {
-			priv->alpha = 1.0;
-			gtk_widget_queue_draw(GTK_WIDGET(task));
-			//launch_fade_in_effect(AWN_TASK (task));
-		}
-	}
-
-
-	return TRUE;
-}
-
-static gboolean
-awn_task_proximity_out (GtkWidget *task, GdkEventCrossing *event)
-{
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-
-	if (priv->title)
-		awn_title_hide (AWN_TITLE (priv->title), task);
-	priv->hover = FALSE;
-	
-	if (priv->settings->fade_effect) {
-		priv->alpha = 1.0;
-		gtk_widget_queue_draw(GTK_WIDGET(task));
-	}
-	
-	//priv->alpha = 1.0;
-	//gtk_widget_queue_draw(GTK_WIDGET(task));
-	//launch_fade_in_effect(task);
-	return FALSE;
-}
-
 static gboolean
 awn_task_win_enter_in (GtkWidget *window, GdkEventMotion *event, AwnTask *task)
 {
@@ -1288,28 +653,22 @@ awn_task_win_enter_in (GtkWidget *window, GdkEventMotion *event, AwnTask *task)
 
 	priv = AWN_TASK_GET_PRIVATE (task);
 	settings = priv->settings;
-	if (settings->fade_effect)
-		launch_fade_out_effect(task);
-	if (settings->hiding)
-		settings->hiding = FALSE;
+	//if (settings->fade_effect)
+	//	launch_fade_out_effect(task);
 	return FALSE;
 }
 
 static gboolean
 awn_task_win_enter_out (GtkWidget *window, GdkEventCrossing *event, AwnTask *task)
 {
+	g_return_val_if_fail(AWN_IS_TASK(task), FALSE);
+
 	AwnTaskPrivate *priv;
-
-	//g_return_if_fail(AWN_IS_TASK(task));
-	if (!AWN_IS_TASK (task)) return FALSE;
-
 	priv = AWN_TASK_GET_PRIVATE (task);
-	//priv->alpha = 1.0;
 	
-	if (priv->settings->fade_effect) {
-		priv->alpha = 0.2;
-		launch_fade_in_effect(task);
-	}
+	/*if (priv->settings->fade_effect) {
+		priv->effects.alpha = 0.2;
+	}*/
 	
 	gtk_widget_queue_draw(GTK_WIDGET(task));
 	return FALSE;
@@ -1321,7 +680,7 @@ activate_window(AwnTask *task)
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 
-	if (priv->hover)
+	if (priv->drag_hover && !wnck_window_is_active( priv->window ))
 		wnck_window_activate_transient( priv->window, priv->timestamp );
 
 	return FALSE;
@@ -1334,9 +693,9 @@ awn_task_drag_motion (GtkWidget *task,
         AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 
-	if (priv->is_closing)
-		return FALSE;
-		
+	//if (priv->effects.is_closing.state)
+	//	return FALSE;
+
 	if (priv->settings->auto_hide && priv->settings->hidden) {
 		awn_show(priv->settings);
 	}
@@ -1346,7 +705,7 @@ awn_task_drag_motion (GtkWidget *task,
 		if ( wnck_window_is_active( priv->window ) )
 			return FALSE;
 		else {
-			priv->hover = TRUE;
+			priv->drag_hover = TRUE;
 			priv->timestamp = gtk_get_current_event_time();
 			g_timeout_add (1000, (GSourceFunc)activate_window, (gpointer)task);
 		}
@@ -1361,7 +720,7 @@ awn_task_drag_leave (GtkWidget *task, GdkDragContext *drag_context,
 {
  	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
-	priv->hover = FALSE;
+	priv->drag_hover = FALSE;
 	
 	if (priv->settings->auto_hide && !priv->settings->hidden) {
 		awn_hide(priv->settings);
@@ -1389,8 +748,7 @@ _task_wnck_icon_changed (WnckWindow *window, AwnTask *task)
                                                 height, height);
 	priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE); 
 
-        priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+	awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 	
         gdk_pixbuf_unref(old);
         gdk_pixbuf_unref(old_reflect);
@@ -1403,39 +761,32 @@ _task_wnck_name_hide (AwnTask *task)
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 	awn_title_hide (AWN_TITLE(priv->title), GTK_WIDGET(task));
-	priv->name_changed = FALSE;
+	awn_effect_stop(&priv->effects, AWN_EFFECT_ATTENTION);
 	return FALSE;
 }
 
 static void
 _task_wnck_name_changed (WnckWindow *window, AwnTask *task)
 {
-    AwnTaskPrivate *priv;
-
 	g_return_if_fail (AWN_IS_TASK (task));
 
+	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 
-	if (!priv->window)
-		return;
-	if (!priv->settings->name_change_notify) {
+	if (!priv->window || !priv->settings->name_change_notify) {
 		return;
 	}
 
-	if (priv->current_effect == AWN_TASK_EFFECT_CHANGE_NAME)
-		return;
-
-	//g_print("Name changed on window '%s'\n",
-        //   wnck_window_get_name (priv->window));
+	/*
+	g_print("Name changed on window '%s'\n",
+		wnck_window_get_name (priv->window));
+        */
 
 	if (!wnck_window_is_active(priv->window)) {
 		gint x, y;
 		gdk_window_get_origin (GTK_WIDGET(task)->window, &x, &y);
 
-		if (!priv->needs_attention) {
-			priv->name_changed = TRUE;
-			_launch_name_change_effect(task);
-		}
+		awn_effect_start_ex(&priv->effects, AWN_EFFECT_ATTENTION, NULL, NULL, 10);
 
 		awn_title_show (AWN_TITLE (priv->title), 
                                 GTK_WIDGET (task),
@@ -1462,12 +813,10 @@ _task_wnck_state_changed (WnckWindow *window, WnckWindowState  old,
 		gtk_widget_show (GTK_WIDGET(task));
 
 	if (wnck_window_needs_attention(priv->window)) {
-		if (!priv->needs_attention) {
-			launch_attention_effect(task);
-			priv->needs_attention = TRUE;
-		}
-	} else
-		priv->needs_attention = FALSE;
+		awn_effect_start(&priv->effects, AWN_EFFECT_ATTENTION);
+	} else {
+		awn_effect_stop(&priv->effects, AWN_EFFECT_ATTENTION);
+	}
 }
 
 /**********************Gets & Sets **********************/
@@ -1498,8 +847,7 @@ awn_task_set_window (AwnTask *task, WnckWindow *window)
                                                priv->settings->task_width - 12);
                 priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
                 		
-                priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-		priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+		awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 
 	}
 	priv->icon_changed = g_signal_connect (G_OBJECT (priv->window), "icon_changed",
@@ -1519,9 +867,12 @@ awn_task_set_window (AwnTask *task, WnckWindow *window)
         	return TRUE;
 
         if (priv->is_launcher)
-        	return TRUE;
+	{
+        	awn_effect_stop(&priv->effects, AWN_EFFECT_LAUNCHING);
+		return TRUE;
+	}
 
-        launch_opening_effect(task);
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_OPENING, NULL, _task_refresh, 1);
 	return TRUE;
 }
 
@@ -1546,9 +897,10 @@ awn_task_set_launcher (AwnTask *task, AwnDesktopItem *item)
 		return FALSE;
 	}
         priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
-	priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->icon_height = gdk_pixbuf_get_height(priv->icon);
-	launch_opening_effect(task);
+
+	awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
+
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_OPENING, NULL, _task_refresh, 1);
 
 	return TRUE;
 }
@@ -1607,15 +959,14 @@ awn_task_set_is_active (AwnTask *task, gboolean is_active)
 void
 awn_task_set_needs_attention (AwnTask *task, gboolean needs_attention)
 {
+	// wow, it's never called
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 
-	if (needs_attention == priv->needs_attention)
-		return;
-
-	priv->needs_attention = needs_attention;
 	if (needs_attention)
-		launch_opening_effect(task);
+		awn_effect_start(&priv->effects, AWN_EFFECT_ATTENTION);
+	else
+		awn_effect_stop(&priv->effects, AWN_EFFECT_ATTENTION);
 }
 
 const char*
@@ -1685,6 +1036,7 @@ awn_task_set_title (AwnTask *task, AwnTitle *title)
 	priv = AWN_TASK_GET_PRIVATE (task);
 
 	priv->title = title;
+	awn_effects_set_title(&priv->effects, title, awn_task_get_title);
 }
 
 AwnSettings*
@@ -1751,8 +1103,7 @@ awn_task_update_icon (AwnTask *task)
                                                   height, height);
         priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
        
-        priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+	awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 
 	gdk_pixbuf_unref (old);
 	gdk_pixbuf_unref (old_reflect);
@@ -1771,9 +1122,9 @@ awn_task_set_width (AwnTask *task, gint width)
 	g_return_if_fail (AWN_IS_TASK (task));
 	priv = AWN_TASK_GET_PRIVATE (task);
 	
-	if (priv->is_closing) {
-		return;
-	}
+	//if (priv->effects.is_closing.state) {
+	//	return;
+	//}
 	
 	old = priv->icon;
 	old_reflect = priv->reflect;
@@ -1794,16 +1145,13 @@ awn_task_set_width (AwnTask *task, gint width)
         	
 	if (G_IS_OBJECT (priv->icon)) {
 		priv->reflect = gdk_pixbuf_flip (priv->icon,FALSE);
-	        priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-		priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+		awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 	}
-	if (G_IS_OBJECT (old) && priv->is_launcher) {
+	if (G_IS_OBJECT (old) && priv->is_launcher)
 		gdk_pixbuf_unref (old);
-	}
 		
-	if (G_IS_OBJECT (old_reflect)) {
+	if (G_IS_OBJECT (old_reflect))
 		gdk_pixbuf_unref (old_reflect);
-	}
 
 	gtk_widget_set_size_request (GTK_WIDGET (task), 
 				     width, 
@@ -1839,8 +1187,8 @@ awn_task_set_custom_icon (AwnTask *task, GdkPixbuf *icon)
 
 	priv->icon = icon;
         priv->reflect = gdk_pixbuf_flip (priv->icon,FALSE);
-	priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+
+	awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 
 	g_object_unref (G_OBJECT (old_icon));
 	g_object_unref (G_OBJECT (old_reflect));
@@ -1874,8 +1222,8 @@ awn_task_unset_custom_icon (AwnTask *task)
         	priv->icon = awn_x_get_icon_for_window (priv->window,priv->settings->bar_height,priv->settings->bar_height);
         }
         priv->reflect = gdk_pixbuf_flip (priv->icon,FALSE);
-        priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+
+	awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 
 	g_object_unref (G_OBJECT (old_icon));
 	g_object_unref (G_OBJECT (old_reflect));
@@ -2116,8 +1464,8 @@ _task_choose_custom_icon (AwnTask *task)
 
 	priv->icon = pixbuf;
         priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);	
-        priv->icon_width = gdk_pixbuf_get_width(priv->icon);
-	priv->icon_height = gdk_pixbuf_get_height(priv->icon);
+	
+	awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 
 	g_object_unref (G_OBJECT (old_icon));
 	g_object_unref (G_OBJECT (old_reflect));
@@ -2271,8 +1619,6 @@ _task_remove_launcher (GtkMenuItem *item, AwnTask *task)
 	priv = AWN_TASK_GET_PRIVATE (task);
 	settings = priv->settings;
 
-	priv->is_closing = TRUE;
-	priv->hover = FALSE;
 	uri = awn_desktop_item_get_filename (priv->item);
 
 	g_print ("Remove : %s\n", uri->str);
@@ -2286,10 +1632,8 @@ _task_remove_launcher (GtkMenuItem *item, AwnTask *task)
 					GCONF_VALUE_STRING,settings->launchers,NULL);
 
 	priv->window = NULL;
-	priv->needs_attention = FALSE;
 	/* start closing effect */
-	priv->is_closing = TRUE;
-	g_timeout_add(AWN_FRAME_RATE, (GSourceFunc)_task_destroy, (gpointer)task);
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, 1);
 }
 
 static void
@@ -2412,11 +1756,13 @@ awn_task_close (AwnTask *task)
 
 	g_signal_handler_disconnect ((gpointer)priv->window, priv->icon_changed);
 	g_signal_handler_disconnect ((gpointer)priv->window, priv->state_changed);
-	g_signal_handler_disconnect ((gpointer)priv->settings->window, priv->win_enter);
-	g_signal_handler_disconnect ((gpointer)priv->settings->window, priv->win_leave);
+	g_signal_handler_disconnect ((gpointer)priv->window, priv->name_changed);
+	if (!priv->is_launcher) {
+		g_signal_handler_disconnect ((gpointer)priv->settings->window, priv->win_enter);
+		g_signal_handler_disconnect ((gpointer)priv->settings->window, priv->win_leave);
+	}
 
 	priv->window = NULL;
-	priv->needs_attention = FALSE;
 
 	AwnTaskMenuItem *item;
 	int i;
@@ -2436,8 +1782,7 @@ awn_task_close (AwnTask *task)
 		return;
 	}
 	/* start closing effect */
-	priv->is_closing = TRUE;
-	g_timeout_add(AWN_FRAME_RATE, (GSourceFunc)_task_destroy, (gpointer)task);
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, 1);
 }
 
 

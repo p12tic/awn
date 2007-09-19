@@ -29,6 +29,8 @@ source_h =	\
 	awn-applet-simple.h				\
 	awn-cairo-utils.h				\
 	awn-desktop-item.h				\
+	awn-gconf.h					\
+	awn-effects.h					\
 	awn-enum-types.h				\
 	awn-plug.h					\
 	awn-title.h					
@@ -40,14 +42,18 @@ source_c =	\
 	awn-applet-simple.c				\
 	awn-cairo-utils.c				\
 	awn-desktop-item.c				\
+	awn-gconf.c					\
+	awn-effects.c					\
 	awn-enum-types.c				\
 	awn-plug.c					\
 	awn-title.c
 
 libawninc_HEADERS = \
-	$(source_h)
+	$(source_h)	\
+	awn-enum-types.h.in
 libawn_la_SOURCES = \
-	$(source_c)
+	$(source_c)	\
+	awn-enum-types.c.in
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
 libawn_la_LDFLAGS = -version-info 0:1:0
 

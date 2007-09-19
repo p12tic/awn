@@ -24,6 +24,7 @@
 #include <stdlib.h>
 
 #include "awn-applet.h"
+#include "awn-effects.h"
 
 G_BEGIN_DECLS
 
@@ -68,6 +69,9 @@ awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf);
 
 void 
 awn_applet_simple_set_temp_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf);
+
+AwnEffects*
+awn_applet_simple_get_effects(AwnAppletSimple *simple);
 
 G_END_DECLS
 

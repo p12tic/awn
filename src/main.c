@@ -32,6 +32,7 @@
 #include <dbus/dbus-glib-bindings.h>
 
 #include <libawn/awn-title.c>
+#include <libawn/awn-gconf.h>
 
 #include <string.h>
 #include <unistd.h>
@@ -42,7 +43,6 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
-#include "awn-gconf.h"
 #include "awn-bar.h"
 #include "awn-window.h"
 #include "awn-task-manager.h"
@@ -328,7 +328,7 @@ drag_leave_hot (GtkWidget *widget, GdkDragContext *drag_context,
 	gtk_window_get_size (GTK_WINDOW (settings->window), &width, &height);
 	
 		
-	if ( (x < x_root) && (x_root < x+width) && ( ( settings->monitor.height - (settings->bar_height + 2)) < y_root)) {
+	if ( (x < x_root) && (x_root < x+width) && ( ( settings->monitor.height - (settings->bar_height + 2 + settings->icon_offset)) < y_root)) {
 		
 		//g_print ("Do nothing\n", event->y_root);
 	} else {

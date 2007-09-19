@@ -28,8 +28,8 @@
 #include <libwnck/window-action-menu.h>
 
 #include <libawn/awn-title.h>
+#include <libawn/awn-gconf.h>
 
-#include "awn-gconf.h"
 #include "awn-utils.h"
 #include "awn-task-manager.h"
 #include "awn-x.h"

@@ -1,8 +1,3 @@
-SUBDIRS = switcher separator notification-area python-test
-if USE_GNOME
-SUBDIRS += trash
-endif
-
 desktopdir = $(libdir)/awn/applets
 
 desktop_DATA = \

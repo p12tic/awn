@@ -1,9 +1,0 @@
-[RB Plugin]
-Loader=python
-Module=awn-menus
-IAge=1
-Name=Awn Menus for Rhythmbox
-Description=Allows you to control RHythmbox through the pop-up menu on Awn
-Authors=James Livingston <jrl@ids.org.au>
-Copyright=Copyright © 2007 Neil J. Patel
-Website=http://njpatel.blogspot.com

@@ -665,6 +665,9 @@ _task_refresh (AwnTask *task, AwnTaskManager *task_manager)
 static void
 _refresh_box(AwnTaskManager *task_manager)
 {
+	if(!AWN_IS_TASK_MANAGER(task_manager))
+		return;	
+
 	AwnTaskManagerPrivate *priv;
 
 	WnckWorkspace *space;

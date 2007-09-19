@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #
 #  Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>
 #
@@ -111,8 +110,8 @@ APP_PATH		    = "/apps/avant-window-navigator/app"
 APP_ACTIVE_PNG		= "/apps/avant-window-navigator/app/active_png" 		#string
 APP_ARROW_COLOR		= "/apps/avant-window-navigator/app/arrow_color" 		#color
 APP_TASKS_H_ARROWS	= "/apps/avant-window-navigator/app/tasks_have_arrows" 	#bool
-APP_FADE_EFFECT		= "/apps/avant-window-navigator/app/fade_effect" 		#bool
 APP_ARROW_OFFSET	= "/apps/avant-window-navigator/app/arrow_offset"
+APP_ICON_EFFECT     = "/apps/avant-window-navigator/app/icon_effect"        #int
 
 TITLE_PATH		    = "/apps/avant-window-navigator/title"
 TITLE_TEXT_COLOR	= "/apps/avant-window-navigator/title/text_color" 		#color
@@ -143,7 +142,7 @@ class awnPreferences:
 
         self.setup_bool (BAR_SHOW_SEPARATOR, self.wTree.get_widget("separatorcheck"))
         self.setup_bool (APP_TASKS_H_ARROWS, self.wTree.get_widget("arrowcheck"))
-        self.setup_bool (APP_FADE_EFFECT, self.wTree.get_widget("fadeeffect"))
+        self.setup_effect (APP_ICON_EFFECT, self.wTree.get_widget("iconeffects"))
 
         self.setup_chooser(APP_ACTIVE_PNG, self.wTree.get_widget("activefilechooser"))
         self.setup_chooser(BAR_PATTERN_URI, self.wTree.get_widget("patternchooserbutton"))
@@ -280,6 +279,24 @@ class awnPreferences:
 
     def font_changed(self, font_btn, key):
         self.client.set_string(key, font_btn.get_font_name())
+
+    def setup_effect(self, key, dropdown):
+        model = gtk.ListStore(str)
+        model.append(["Classic"])
+        model.append(["Fade"])
+        model.append(["Spotlight"])
+        model.append(["Zoom"])
+        model.append(["Squish"])
+        dropdown.set_model(model)
+        cell = gtk.CellRendererText()
+        dropdown.pack_start(cell)
+        dropdown.add_attribute(cell,'text',0)
+
+        dropdown.set_active(self.client.get_int(key))
+        dropdown.connect("changed", self.effect_changed, key)
+
+    def effect_changed(self, dropdown, key):
+        self.client.set_int(key, dropdown.get_active())
 
     def setup_look(self, dropdown):
         dropdown.append_text("Flat bar")
