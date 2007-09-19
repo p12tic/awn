@@ -552,6 +552,134 @@ zoom_effect (AwnEffectsPrivate *priv)
 }
 
 static gboolean
+zoom_attention_effect (AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->delta_width = 0;
+		fx->delta_height = 0;
+		fx->y_offset = 0;
+		fx->direction = AWN_EFFECT_DIR_UP;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	switch (fx->direction) {
+	case AWN_EFFECT_DIR_UP:
+		if (fx->delta_width+fx->icon_width < fx->window_width) {
+			fx->delta_width+=2;
+			fx->delta_height+=2;
+			fx->y_offset+=1;
+		}
+		else
+		{
+			fx->direction = AWN_EFFECT_DIR_DOWN;
+		}
+		break;
+	case AWN_EFFECT_DIR_DOWN:
+		fx->delta_width-=2;
+		fx->delta_height-=2;
+		fx->y_offset-=1;
+		if(fx->delta_width <= 0) {
+			fx->direction = AWN_EFFECT_DIR_UP;
+			fx->delta_width = 0;
+			fx->delta_height = 0;
+			fx->y_offset = 0;
+		}
+		break;
+	default: fx->direction = AWN_EFFECT_DIR_UP;
+	}
+	
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->direction == AWN_EFFECT_DIR_UP && !fx->delta_width && !fx->delta_height) {
+		fx->y_offset = 0;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+static gboolean
+zoom_opening_effect (AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->delta_width = -fx->icon_width;
+		fx->delta_height = -fx->icon_width;
+		fx->alpha = 0.0;
+		fx->y_offset = 0;
+		fx->direction = AWN_EFFECT_DIR_UP;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gint PERIOD = 20;
+	fx->delta_width += (fx->icon_width)/PERIOD;
+	fx->delta_height += (fx->icon_width)/PERIOD;
+	fx->alpha += 1.0/PERIOD;	
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->delta_width > 0) {
+		fx->y_offset = 0;
+		fx->alpha = 1.0;
+		fx->delta_width = 0;
+		fx->delta_height = 0;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+static gboolean
+zoom_closing_effect (AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->delta_width = 0;
+		fx->delta_height = 0;
+		fx->alpha = 1.0;
+		fx->y_offset = 0;
+		fx->direction = AWN_EFFECT_DIR_UP;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gint PERIOD = 20;
+	fx->delta_width -= (fx->icon_width)/PERIOD;
+	fx->delta_height -= (fx->icon_width)/PERIOD;
+	fx->alpha -= 1.0/PERIOD;	
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->alpha < 0.0) {
+		fx->y_offset = 0;
+		fx->alpha = 0.0;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+
+
+static gboolean
 bounce_squish_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
@@ -1035,7 +1163,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)bounce_opening_effect,
 		(GSourceFunc)bounce_opening_effect,
 		(GSourceFunc)spotlight_opening_effect2,
-		(GSourceFunc)bounce_opening_effect,
+		(GSourceFunc)zoom_opening_effect,
 		(GSourceFunc)bounce_squish_opening_effect,
 		(GSourceFunc)bounce_squish_opening_effect
 	};
@@ -1043,7 +1171,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)fade_out_effect,
 		(GSourceFunc)fade_out_effect,
 		(GSourceFunc)spotlight_closing_effect,
-		(GSourceFunc)fade_out_effect,
+		(GSourceFunc)zoom_closing_effect,
 		(GSourceFunc)bounce_squish_closing_effect,
 		(GSourceFunc)bounce_squish_closing_effect
 	};
@@ -1059,7 +1187,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)bounce_effect,
 		(GSourceFunc)bounce_effect,
 		(GSourceFunc)spotlight_half_fade_effect,
-		(GSourceFunc)bounce_effect,
+		(GSourceFunc)zoom_attention_effect,
 		(GSourceFunc)bounce_squish_effect,
 		(GSourceFunc)bounce_squish_effect
 	};
@@ -1067,7 +1195,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)bounce_effect,
 		(GSourceFunc)bounce_effect,
 		(GSourceFunc)spotlight_half_fade_effect,
-		(GSourceFunc)bounce_effect,
+		(GSourceFunc)zoom_attention_effect,
 		(GSourceFunc)bounce_squish_attention_effect,
 		(GSourceFunc)bounce_squish_attention_effect
 	};
