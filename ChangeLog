@@ -1,3 +1,49 @@
+2007-09-19  Michal Hruby <michal.mhr@gmail.com>
+
+	* data/active/spotlight_png_inline.c:
+	* libawn/awn-effects.c:
+	Spotlight effect png compiled directly into AWN to prevent problems
+	with loading from hardcoded path.
+
+2007-09-18  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager.desktop.in.in:
+	Delete X-Fedora category to be distribution neutral
+
+	* debian-ubuntu/avant-window-navigator.install:
+	* debian-ubuntu/changelog:
+	* debian-ubuntu/copyright:
+	* debian-ubuntu/python-libawn0.install:
+	* debian-ubuntu/rules:
+	Update/Clean debian-ubuntu dir
+
+	* libawn/Makefile.am:
+	Take all the files in the build process
+
+2007-09-18  haytjes <hv1989@gmail.com>
+
+	* src/main.c:
+	Set the position correct where the bar doesn't hide.
+
+2007-09-18  haytjes <hv1989@gmail.com>
+
+	* src/awn-x.c:
+	Set xutils_set_strut good.
+
+2007-09-18  haytjes <hv1989@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	set_temp_icon updated also
+
+2007-09-18  haytjes <hv1989@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Improved awn-applet-simple dynamical resizing. Now on a bar_height change it will change the icon_height on how much the bar_height changed.
+	Some applets in awn-extras are now wrong, but will commit a rev. to awn-extras soon.
+	For applet devs: You need to give a right sized icon to awn-applet-simple. So awn-applet-simple doesn't resize it anymore, 
+	except when a bar_height change has occurred. Normally you should provide a new icon then, but in the mean time awn-applet-simple resizes the icon
+	to have a semiliar look after the bar_height change.
+
 2007-09-17  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-effects.c:

@@ -4,7 +4,6 @@ DEB_PYTHON_SYSTEM=pycentral
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/python-distutils.mk
 include /usr/share/cdbs/1/class/gnome.mk
-include /usr/share/cdbs/1/rules/simple-patchsys.mk
 
 DEB_PYTHON_PRIVATE_MODULES_DIRS := debian/tmp/usr/share/avant-window-navigator/awn-manager/
 DEB_PYTHON_SETUP_CMD := awn-manager/awnDefs.in.py
