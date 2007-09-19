@@ -97,6 +97,7 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 
 	fx->hover = FALSE;
 	fx->clip = FALSE;
+	fx->flip = FALSE;
 	fx->spotlight = FALSE;
 
 	fx->enter_notify = 0;
@@ -554,6 +555,134 @@ zoom_effect (AwnEffectsPrivate *priv)
 }
 
 static gboolean
+zoom_attention_effect (AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->delta_width = 0;
+		fx->delta_height = 0;
+		fx->y_offset = 0;
+		fx->direction = AWN_EFFECT_DIR_UP;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	switch (fx->direction) {
+	case AWN_EFFECT_DIR_UP:
+		if (fx->delta_width+fx->icon_width < fx->window_width) {
+			fx->delta_width+=2;
+			fx->delta_height+=2;
+			fx->y_offset+=1;
+		}
+		else
+		{
+			fx->direction = AWN_EFFECT_DIR_DOWN;
+		}
+		break;
+	case AWN_EFFECT_DIR_DOWN:
+		fx->delta_width-=2;
+		fx->delta_height-=2;
+		fx->y_offset-=1;
+		if(fx->delta_width <= 0) {
+			fx->direction = AWN_EFFECT_DIR_UP;
+			fx->delta_width = 0;
+			fx->delta_height = 0;
+			fx->y_offset = 0;
+		}
+		break;
+	default: fx->direction = AWN_EFFECT_DIR_UP;
+	}
+	
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->direction == AWN_EFFECT_DIR_UP && !fx->delta_width && !fx->delta_height) {
+		fx->y_offset = 0;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+static gboolean
+zoom_opening_effect (AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->delta_width = -fx->icon_width;
+		fx->delta_height = -fx->icon_width;
+		fx->alpha = 0.0;
+		fx->y_offset = 0;
+		fx->direction = AWN_EFFECT_DIR_UP;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gint PERIOD = 20;
+	fx->delta_width += (fx->icon_width)/PERIOD;
+	fx->delta_height += (fx->icon_width)/PERIOD;
+	fx->alpha += 1.0/PERIOD;	
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->delta_width > 0) {
+		fx->y_offset = 0;
+		fx->alpha = 1.0;
+		fx->delta_width = 0;
+		fx->delta_height = 0;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+static gboolean
+zoom_closing_effect (AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->delta_width = 0;
+		fx->delta_height = 0;
+		fx->alpha = 1.0;
+		fx->y_offset = 0;
+		fx->direction = AWN_EFFECT_DIR_UP;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gint PERIOD = 20;
+	fx->delta_width -= (fx->icon_width)/PERIOD;
+	fx->delta_height -= (fx->icon_width)/PERIOD;
+	fx->alpha -= 1.0/PERIOD;	
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->alpha < 0.0) {
+		fx->y_offset = 0;
+		fx->alpha = 0.0;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+
+
+static gboolean
 bounce_squish_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
@@ -879,6 +1008,248 @@ fading_effect (AwnEffectsPrivate *priv)
 	return repeat;
 }
 
+gboolean
+turn_hover_effect(AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->y_offset = 0;
+		fx->delta_width = 0;
+		fx->icon_depth = 0;
+		fx->icon_depth_direction = 0;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gint PERIOD = 44;
+
+	gint prev_count = fx->count;
+
+	fx->count = sin(fx->count * M_PI/2 / PERIOD)*PERIOD;
+
+	if(fx->count < PERIOD/4)
+	{
+		fx->icon_depth_direction = 0;
+		fx->delta_width = -fx->count * (fx->icon_width) / (PERIOD/4);
+		fx->flip = FALSE;
+	}
+	else if( fx->count < PERIOD/2 )
+	{
+		fx->icon_depth_direction = 1;
+		fx->delta_width = (fx->count-PERIOD/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
+		fx->flip = TRUE;
+	}
+	else if( fx->count < PERIOD*3/4 )
+	{
+		fx->icon_depth_direction = 0;
+		fx->delta_width = -(fx->count-PERIOD/2) * (fx->icon_width) / (PERIOD/4);
+		fx->flip = TRUE;
+	}
+	else
+	{
+		fx->icon_depth_direction = 1;
+		fx->delta_width = (fx->count-PERIOD*3/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
+		fx->flip = FALSE;
+	}
+	fx->icon_depth = 10.00*-fx->delta_width/fx->icon_width;
+
+	fx->count = ++prev_count;
+
+	// fix icon flickering
+	const gint MIN_WIDTH = 4;
+	if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH ) {
+		if (fx->delta_width > 0)
+			fx->delta_width = fx->icon_width - MIN_WIDTH;
+		else
+			fx->delta_width = -fx->icon_width + MIN_WIDTH;
+	}
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->count >= PERIOD) {
+		fx->count = 0;
+		fx->y_offset = 0;
+		fx->icon_depth = 0;
+		fx->icon_depth_direction = 0;
+		fx->delta_width = 0;
+		fx->flip = FALSE;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+gboolean
+turn_opening_effect(AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->y_offset = 0;
+		fx->clip = TRUE;		
+		fx->clip_region.x = 0;
+		fx->clip_region.y = 0;
+		fx->clip_region.width = fx->icon_width;
+		fx->clip_region.height = 0;
+		fx->delta_width = 0;
+		fx->icon_depth = 0;
+		fx->icon_depth_direction = 0;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gint PERIOD = 44;
+	const gint MAX_OFFSET = fx->icon_height/2;
+
+	gint prev_count = fx->count;
+
+	fx->count = sin(fx->count * M_PI/2 / PERIOD)*PERIOD;
+
+	if(fx->count < PERIOD/4)
+	{
+		fx->icon_depth_direction = 0;
+		fx->clip_region.height = fx->count * (fx->icon_height) / (PERIOD/2);
+		fx->delta_width = -fx->count * (fx->icon_width) / (PERIOD/4);
+		fx->flip = FALSE;
+	}
+	else if( fx->count < PERIOD/2 )
+	{
+		fx->icon_depth_direction = 1;
+		fx->clip_region.height = (fx->count) * (fx->icon_height) / (PERIOD/2);
+		fx->delta_width = (fx->count-PERIOD/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
+		fx->flip = TRUE;
+	}
+	else if( fx->count < PERIOD*3/4 )
+	{
+		fx->icon_depth_direction = 0;
+		fx->clip = FALSE;
+		fx->y_offset = (fx->count-PERIOD/2) * MAX_OFFSET / (PERIOD/4);
+		fx->delta_width = -(fx->count-PERIOD/2) * (fx->icon_width) / (PERIOD/4);
+		fx->flip = TRUE;
+	}
+	else
+	{
+		fx->icon_depth_direction = 1;
+		fx->y_offset = MAX_OFFSET - (fx->count-PERIOD*3/4) * MAX_OFFSET / (PERIOD/4);
+		fx->delta_width = (fx->count-PERIOD*3/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
+		fx->flip = FALSE;
+	}
+	fx->icon_depth = 10.00*-fx->delta_width/fx->icon_width;
+
+	fx->count = ++prev_count;
+
+	// fix icon flickering
+	const gint MIN_WIDTH = 4;
+	if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH ) {
+		if (fx->delta_width > 0)
+			fx->delta_width = fx->icon_width - MIN_WIDTH;
+		else
+			fx->delta_width = -fx->icon_width + MIN_WIDTH;
+	}
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->count >= PERIOD) {
+		fx->count = 0;
+		fx->y_offset = 0;
+		fx->icon_depth = 0;
+		fx->icon_depth_direction = 0;
+		fx->delta_width = 0;
+		fx->flip = FALSE;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+gboolean
+turn_closing_effect(AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->y_offset = 0;
+		fx->delta_width = 0;
+		fx->icon_depth = 0;
+		fx->icon_depth_direction = 0;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gint PERIOD = 44;
+	const gint MAX_OFFSET = fx->icon_height;
+
+	gint prev_count = fx->count;
+
+	fx->count = sin(fx->count * M_PI/2 / PERIOD)*PERIOD;
+	fx->y_offset = fx->count * MAX_OFFSET / PERIOD;
+	fx->alpha = 1.0 - fx->count * 1.0 / PERIOD;
+	if(fx->count < PERIOD/4)
+	{
+		fx->icon_depth_direction = 0;
+		fx->delta_width = -fx->count * (fx->icon_width) / (PERIOD/4);
+		fx->flip = FALSE;
+	}
+	else if( fx->count < PERIOD/2 )
+	{
+		fx->icon_depth_direction = 1;
+		fx->delta_width = (fx->count-PERIOD/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
+		fx->flip = TRUE;
+	}
+	else if( fx->count < PERIOD*3/4 )
+	{
+		fx->icon_depth_direction = 0;
+		fx->clip = FALSE;
+		fx->delta_width = -(fx->count-PERIOD/2) * (fx->icon_width) / (PERIOD/4);
+		fx->flip = TRUE;
+	}
+	else
+	{
+		fx->icon_depth_direction = 1;
+		fx->delta_width = (fx->count-PERIOD*3/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
+		fx->flip = FALSE;
+	}
+	fx->icon_depth = 10.00*-fx->delta_width/fx->icon_width;
+
+	fx->count = ++prev_count;
+
+	// fix icon flickering
+	const gint MIN_WIDTH = 4;
+	if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH ) {
+		if (fx->delta_width > 0)
+			fx->delta_width = fx->icon_width - MIN_WIDTH;
+		else
+			fx->delta_width = -fx->icon_width + MIN_WIDTH;
+	}
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->count >= PERIOD) {
+		fx->count = 0;
+		fx->y_offset = 0;
+		fx->icon_depth = 0;
+		fx->icon_depth_direction = 0;
+		fx->delta_width = 0;
+		fx->flip = FALSE;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
  
 static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data) {
 	
@@ -977,38 +1348,43 @@ main_effect_loop(AwnEffects *fx) {
 	// NOTE! Always make sure that all EFFECTS arrays have same number of elements
 	static const GSourceFunc OPENING_EFFECTS[] = {
 		(GSourceFunc)bounce_opening_effect,
-		(GSourceFunc)bounce_opening_effect,
+		(GSourceFunc)zoom_opening_effect,
 		(GSourceFunc)spotlight_opening_effect2,
-		(GSourceFunc)bounce_opening_effect,
-		(GSourceFunc)bounce_squish_opening_effect
+		(GSourceFunc)zoom_opening_effect,
+		(GSourceFunc)bounce_squish_opening_effect,
+		(GSourceFunc)turn_opening_effect
 	};
 	static const GSourceFunc CLOSING_EFFECTS[] = {
 		(GSourceFunc)fade_out_effect,
-		(GSourceFunc)fade_out_effect,
+		(GSourceFunc)zoom_closing_effect,
 		(GSourceFunc)spotlight_closing_effect,
-		(GSourceFunc)fade_out_effect,
-		(GSourceFunc)bounce_squish_closing_effect
+		(GSourceFunc)zoom_closing_effect,
+		(GSourceFunc)bounce_squish_closing_effect,
+		(GSourceFunc)turn_closing_effect
 	};
 	static const GSourceFunc HOVER_EFFECTS[] = {
 		(GSourceFunc)bounce_effect,
 		(GSourceFunc)fading_effect,
 		(GSourceFunc)spotlight_effect,
 		(GSourceFunc)zoom_effect,
-		(GSourceFunc)bounce_squish_effect
+		(GSourceFunc)bounce_squish_effect,
+		(GSourceFunc)turn_hover_effect
 	};
 	static const GSourceFunc LAUNCHING_EFFECTS[] = {
 		(GSourceFunc)bounce_effect,
-		(GSourceFunc)bounce_effect,
+		(GSourceFunc)fading_effect,
 		(GSourceFunc)spotlight_half_fade_effect,
-		(GSourceFunc)bounce_effect,
-		(GSourceFunc)bounce_squish_effect
+		(GSourceFunc)zoom_attention_effect,
+		(GSourceFunc)bounce_squish_effect,
+		(GSourceFunc)turn_hover_effect
 	};
 	static const GSourceFunc ATTENTION_EFFECTS[] = {
 		(GSourceFunc)bounce_effect,
-		(GSourceFunc)bounce_effect,
+		(GSourceFunc)fading_effect,
 		(GSourceFunc)spotlight_half_fade_effect,
-		(GSourceFunc)bounce_effect,
-		(GSourceFunc)bounce_squish_attention_effect
+		(GSourceFunc)zoom_attention_effect,
+		(GSourceFunc)bounce_squish_attention_effect,
+		(GSourceFunc)turn_hover_effect
 	};
 
 	GSourceFunc animation = NULL;
@@ -1073,6 +1449,18 @@ awn_unregister_effects (AwnEffects *fx) {
 	fx->focus_window = NULL;
 }
 
+inline void apply_3d_illusion(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, const gint x, const gint y, const gdouble alpha) {
+	gint i;
+	for(i=1; i < fx->icon_depth; i++)
+	{
+		if(fx->icon_depth_direction == 0)
+			gdk_cairo_set_source_pixbuf(cr, icon, x-fx->icon_depth+i, y);
+		else
+			gdk_cairo_set_source_pixbuf(cr, icon, x+fx->icon_depth-i, y);
+		cairo_paint_with_alpha(cr, alpha);
+	}
+}
+
 void awn_draw_background(AwnEffects *fx, cairo_t *cr) {	
 	gint x1 = 0;
 	gint y1 = fx->window_height - fx->icon_height;
@@ -1106,6 +1494,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	gboolean free_reflect = FALSE;
 	GdkPixbuf *scaledIcon = NULL;
 	GdkPixbuf *clippedIcon = NULL;
+	GdkPixbuf *flippedIcon = NULL;
 	GdkPixbuf *saturatedIcon = NULL;
 
 	/* clipping */
@@ -1158,6 +1547,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		// override provided icon
 		icon = scaledIcon;
 	}
+	/* saturation */
 	if (fx->saturation < 1.0) {
 		// do not change original pixbuf -> create new
 		if (!scaledIcon) {
@@ -1174,10 +1564,35 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		}
 	}
 
+	if(fx->x_offset)
+		x1 += fx->x_offset;
+ 
+	/* icon flipping */
+	if(fx->flip) {
+		flippedIcon = gdk_pixbuf_flip(icon, TRUE);
+		icon = flippedIcon;
+		if (free_reflect)
+			g_object_unref(reflect);
+		else
+			free_reflect = TRUE;
+		reflect = gdk_pixbuf_flip(icon, FALSE);
+	}
+	
+	/* icon depth */
+	if (fx->icon_depth) {
+		if (!fx->icon_depth_direction)
+			x1 += fx->icon_depth/2;
+		else
+			x1 -= fx->icon_depth/2;
+		apply_3d_illusion(fx, cr, icon, x1, y1, fx->alpha);
+	}
+
+	
 	gdk_cairo_set_source_pixbuf(cr, icon, x1, y1);
 	cairo_paint_with_alpha(cr, fx->alpha);
 	if (scaledIcon) g_object_unref(scaledIcon);
 	if (clippedIcon) g_object_unref(clippedIcon);
+	if (flippedIcon) g_object_unref(flippedIcon);
 	if (saturatedIcon) g_object_unref(saturatedIcon);
 
 	/* reflection */
@@ -1188,6 +1603,11 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 			free_reflect = TRUE;
 		}
 		y1 += current_height + fx->y_offset*2;
+
+		/* icon depth */
+		if (fx->icon_depth) {
+			apply_3d_illusion(fx, cr, reflect, x1, y1, fx->alpha/6);
+		}
 		gdk_cairo_set_source_pixbuf(cr, reflect, x1, y1);
 		cairo_paint_with_alpha(cr, fx->alpha/3);
 		if (free_reflect) g_object_unref(reflect);

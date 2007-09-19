@@ -287,6 +287,7 @@ class awnPreferences:
         model.append(["Spotlight"])
         model.append(["Zoom"])
         model.append(["Squish"])
+        model.append(["3D turn"])
         dropdown.set_model(model)
         cell = gtk.CellRendererText()
         dropdown.pack_start(cell)

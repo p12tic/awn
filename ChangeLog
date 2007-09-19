@@ -1,5 +1,12 @@
 2007-09-19  Michal Hruby <michal.mhr@gmail.com>
 
+	* awn-manager/awnPreferences.py:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	Merged with latest changes in libawn-draw-effects.
+
+2007-09-19  Michal Hruby <michal.mhr@gmail.com>
+
 	* data/active/spotlight_png_inline.c:
 	* libawn/awn-effects.c:
 	Spotlight effect png compiled directly into AWN to prevent problems

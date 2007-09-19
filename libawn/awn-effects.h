@@ -97,9 +97,13 @@ struct _AwnEffects
 	gfloat spotlight_alpha;
 	gfloat saturation;
 
+	gint icon_depth;
+	gint icon_depth_direction;
+
 	/* State variables */
 	gboolean hover;
 	gboolean clip;
+	gboolean flip;
 	gboolean spotlight;
 
 	guint enter_notify;
