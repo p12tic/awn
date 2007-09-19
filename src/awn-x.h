@@ -32,9 +32,9 @@
 #define WNCK_I_KNOW_THIS_IS_UNSTABLE 1
 #include <libwnck/libwnck.h>
 
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 #include <libgnomevfs/gnome-vfs.h>
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 #include <thunar-vfs/thunar-vfs.h>
 #endif
 

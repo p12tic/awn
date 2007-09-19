@@ -21,9 +21,9 @@
 #include "config.h"
 
 #include <gtk/gtk.h>
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 #include <libgnomevfs/gnome-vfs.h>
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 #include <thunar-vfs/thunar-vfs.h>
 #endif
 #include <stdio.h>
@@ -120,9 +120,9 @@ main (gint argc, gchar **argv)
 	
 	g_type_init();	
 	if (!g_thread_supported ()) g_thread_init (NULL);
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	gnome_vfs_init ();
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	thunar_vfs_init ();
 #endif
 	gtk_init (&argc, &argv);

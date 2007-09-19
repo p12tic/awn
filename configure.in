@@ -81,12 +81,14 @@ AC_ARG_WITH(desktop,
             [case "$with_desktop" in
                  gnome)
                  DESKTOP_MODULES="gnome-desktop-2.0 libgnome-2.0 gnome-vfs-2.0"
-                 AC_DEFINE(USE_GNOME, 1, [Define support for the Gnome desktop])
+                 AC_DEFINE(LIBAWN_USE_GNOME, 1, [Define support for the Gnome desktop])
+                 USE_DESKTOP="LIBAWN_USE_GNOME"
                  AC_MSG_RESULT(Gnome)
                  ;;
                  xfce4)
                  DESKTOP_MODULES="libxfce4util-1.0 >= 4.2 thunar-vfs-1"
-                 AC_DEFINE(USE_XFCE, 1, [Define support for the Xfce4 desktop])
+                 AC_DEFINE(LIBAWN_USE_XFCE, 1, [Define support for the Xfce4 desktop])
+                 USE_DESKTOP="LIBAWN_USE_XFCE"
                  AC_MSG_RESULT(Xfce4)
                  ;;
                  *) ;;
@@ -95,6 +97,7 @@ if test -z "$DESKTOP_MODULES"; then
     AC_MSG_ERROR([You must enable either Gnome or Xfce4 support])
 fi
 AC_SUBST(DESKTOP_MODULES)
+AC_SUBST(USE_DESKTOP)
 AM_CONDITIONAL(USE_GNOME, test "$with_desktop" = "gnome")
 AM_CONDITIONAL(USE_XFCE, test "$with_desktop" = "xfce4")
 

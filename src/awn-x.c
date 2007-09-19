@@ -32,7 +32,7 @@
 #include <gdk/gdkx.h>
 #include <string.h>
 
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 #include <libgnome/libgnome.h>
 #endif
 
@@ -173,15 +173,15 @@ awn_x_get_icon_for_window (WnckWindow *window, gint width, gint height)
 			name->str[i] = '-';
 	}
 			
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	uri = gnome_util_prepend_user_home(name->str);
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	uri = g_string_free (g_string_prepend (name, g_get_home_dir ()), FALSE);
 #endif
 	
 	icon = gdk_pixbuf_new_from_file_at_scale (uri, width, height, TRUE, NULL);
 	 
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	/* free error under Xfce */
 	g_string_free (name, TRUE);
 #endif
@@ -314,9 +314,9 @@ awn_x_get_icon_for_launcher (AwnDesktopItem *item, gint width, gint height)
 		if (name->str[i] == ' ')
 			name->str[i] = '-';
 	}	
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	uri = gnome_util_prepend_user_home(name->str);
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	uri = g_string_free (g_string_prepend (name, g_get_home_dir ()), FALSE);
 #endif
 	
@@ -324,7 +324,7 @@ awn_x_get_icon_for_launcher (AwnDesktopItem *item, gint width, gint height)
 	
 	icon = gdk_pixbuf_new_from_file_at_scale (uri, width, height, TRUE, NULL);
 	
-#ifndef USE_XFCE
+#ifndef LIBAWN_USE_XFCE
 	g_string_free (name, TRUE);
 #endif
 	g_free (uri);

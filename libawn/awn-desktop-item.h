@@ -23,15 +23,15 @@
 #ifndef _LIBAWN_AWN_DESKTOP_FILE_H
 #define _LIBAWN_AWN_DESKTOP_FILE_H
 
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 #include <libgnome/gnome-desktop-item.h>
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 #include <libxfce4util/libxfce4util.h>
 #endif
 
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 typedef GnomeDesktopItem AwnDesktopItem;
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 typedef XfceDesktopEntry AwnDesktopItem;
 #endif
 

@@ -1,3 +1,18 @@
+2007-09-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-applet-activation/main.c:
+	* awn.pc.in:
+	* config.h.in:
+	* configure.in:
+	* libawn/awn-desktop-item.c:
+	* libawn/awn-desktop-item.h:
+	* src/awn-task.c:
+	* src/awn-x.c:
+	* src/awn-x.h:
+	* src/main.c:
+	Change USE_[GNOME|XFCE] to LIBAWN_USE_[GNOME|XFCE].
+	Add the enabled desktop #define to the pkgconfig file.
+
 2007-09-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* awn.pc.in:

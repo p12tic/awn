@@ -25,7 +25,7 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include <math.h>
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 #include <libgnome/libgnome.h>
 #endif
 

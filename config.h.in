@@ -54,6 +54,12 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
+/* Define support for the Gnome desktop */
+#undef LIBAWN_USE_GNOME
+
+/* Define support for the Xfce4 desktop */
+#undef LIBAWN_USE_XFCE
+
 /* Name of package */
 #undef PACKAGE
 
@@ -74,12 +80,6 @@
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
-
-/* Define support for the Gnome desktop */
-#undef USE_GNOME
-
-/* Define support for the Xfce4 desktop */
-#undef USE_XFCE
 
 /* Version number of package */
 #undef VERSION

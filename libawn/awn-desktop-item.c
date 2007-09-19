@@ -31,16 +31,16 @@
 #include <string.h>
 
 /* VFS */
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 #include <libgnomevfs/gnome-vfs.h>
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 #include <thunar-vfs/thunar-vfs.h>
 #endif
 
 #include "awn-desktop-item.h"
 
 /* helper functions for xfce */
-#ifdef USE_XFCE
+#ifdef LIBAWN_USE_XFCE
 const gchar *desktop_categories[4] = {"Name", "Exec", "Icon", "Path"};
 
 static gchar **awn_xfce_explode_exec (gchar *exec, GList *extra_argv)
@@ -102,9 +102,9 @@ static gchar *awn_xfce_get_real_exec (gchar *exec)
 /* GType function */
 GType awn_desktop_item_get_type (void)
 {
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_type ();
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	return xfce_desktop_entry_get_type ();
 #endif
 }
@@ -114,11 +114,11 @@ GType awn_desktop_item_get_type (void)
 AwnDesktopItem *awn_desktop_item_new (gchar *uri)
 {
 	AwnDesktopItem *item = NULL;
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	item = gnome_desktop_item_new_from_file (uri,
 	                                         GNOME_DESKTOP_ITEM_LOAD_ONLY_IF_EXISTS,
 	                                         NULL);
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	item = xfce_desktop_entry_new (uri, desktop_categories, G_N_ELEMENTS(desktop_categories));
 #endif
 	return item;
@@ -126,29 +126,29 @@ AwnDesktopItem *awn_desktop_item_new (gchar *uri)
 
 gchar *awn_desktop_item_get_filename (AwnDesktopItem *item)
 {
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	return gnome_vfs_get_local_path_from_uri (
 	           gnome_desktop_item_get_location (item)
 	       );
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	return (gchar *)xfce_desktop_entry_get_file (item);
 #endif
 }
 
 gchar *awn_desktop_item_get_item_type (AwnDesktopItem *item)
 {
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_TYPE);
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	return awn_xfce_desktop_file_get_string (item, "Type", FALSE);
 #endif
 }
 
 gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme)
 {
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_icon (item, icon_theme);
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	/* adapted from libgnome-desktop/gnome-desktop-item.c, r4904
 	 * gnome_desktop_item_get_icon(), gnome_desktop_item_find_icon()
 	 */
@@ -199,10 +199,10 @@ gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme
 
 gchar *awn_desktop_item_get_name (AwnDesktopItem *item)
 {
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_localestring (item,
 	                                            GNOME_DESKTOP_ITEM_NAME);
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	return awn_xfce_desktop_file_get_string (item, "Name", TRUE);
 #endif
 
@@ -210,36 +210,36 @@ gchar *awn_desktop_item_get_name (AwnDesktopItem *item)
 
 gchar *awn_desktop_item_get_exec (AwnDesktopItem *item)
 {
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_EXEC);
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	return awn_xfce_desktop_file_get_string (item, "Exec", FALSE);
 #endif
 }
 
 gchar *awn_desktop_item_get_string (AwnDesktopItem *item, gchar *key)
 {
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_string (item, key);
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	return awn_xfce_desktop_file_get_string (item, key, FALSE);
 #endif
 }
 
 gchar *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *key)
 {
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_localestring (item, key);
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	return awn_xfce_desktop_file_get_string (item, key, TRUE);
 #endif
 }
 
 gboolean awn_desktop_item_exists (AwnDesktopItem *item)
 {
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_exists (item);
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	/* adapted from libgnome-desktop/gnome-desktop-item.c, r4904
 	 * gnome_desktop_item_exists()
 	 */
@@ -294,14 +294,14 @@ gboolean awn_desktop_item_exists (AwnDesktopItem *item)
 
 gint awn_desktop_item_launch (AwnDesktopItem *item, GList *extra_argv, GError **err)
 {
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_launch_on_screen (item,
 	                                            NULL,
 	                                            0,
 	                                            gdk_screen_get_default(),
 	                                            -1,
 	                                            &err);
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	gboolean success;
 	int pid;
 	gchar *exec = awn_desktop_item_get_exec (item);
@@ -322,9 +322,9 @@ gint awn_desktop_item_launch (AwnDesktopItem *item, GList *extra_argv, GError **
 
 void awn_desktop_item_unref (AwnDesktopItem *item)
 {
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	gnome_desktop_item_unref(item);
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	g_object_unref(item);
 #endif
 }
@@ -332,14 +332,14 @@ void awn_desktop_item_unref (AwnDesktopItem *item)
 GList *awn_desktop_item_get_pathlist_from_string (gchar *paths, GError **err)
 {
 	GList *list, *li;
-#ifdef USE_GNOME
+#ifdef LIBAWN_USE_GNOME
 	list = gnome_vfs_uri_list_parse ((const gchar *) paths);
 	for (li = list; li != NULL; li = li->next) {
 		GnomeVFSURI *uri = li->data;
 		li->data = gnome_vfs_uri_to_string (uri, 0 /* hide_options */);
 		gnome_vfs_uri_unref (uri);
 	}
-#elif defined(USE_XFCE)
+#elif defined(LIBAWN_USE_XFCE)
 	list = thunar_vfs_path_list_from_string ((const gchar *) paths, err);
 	GError *error = *err;
 	if (error) {
