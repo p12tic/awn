@@ -46,6 +46,9 @@ gchar          *awn_desktop_item_get_item_type (AwnDesktopItem *item);
 gchar          *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme);
 gchar          *awn_desktop_item_get_name (AwnDesktopItem *item);
 gchar          *awn_desktop_item_get_exec (AwnDesktopItem *item);
+gchar          *awn_desktop_item_get_string (AwnDesktopItem *item, gchar *key);
+gchar          *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *key);
+gboolean        awn_desktop_item_exists (AwnDesktopItem *item);
 gint            awn_desktop_item_launch (AwnDesktopItem *item, GList *extra_argv, GError **err);
 void            awn_desktop_item_unref (AwnDesktopItem *item);
 

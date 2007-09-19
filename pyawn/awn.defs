@@ -393,6 +393,30 @@
   (return-type "gchar*")
 )
 
+(define-method get_string
+  (c-name "awn_desktop_item_get_string")
+  (of-object "AwnDesktopItem")
+  (return-type "gchar*")
+  (parameters
+    '("gchar*" "key")
+  )
+)
+
+(define-method get_localestring
+  (c-name "awn_desktop_item_get_localestring")
+  (of-object "AwnDesktopItem")
+  (return-type "gchar*")
+  (parameters
+    '("gchar*" "key")
+  )
+)
+
+(define-method exists
+  (c-name "awn_desktop_item_exists")
+  (of-object "AwnDesktopItem")
+  (return-type "gboolean")
+)
+
 (define-method launch
   (c-name "awn_desktop_item_launch")
   (of-object "AwnDesktopItem")

@@ -1,6 +1,11 @@
 /*
  *  Copyright (C) 2007 Mark Lee <avant-wn@lazymalevolence.com>
  *
+ *  For libgnome-desktop portions:
+ *  Copyright (C) 1999, 2000 Red Hat Inc.
+ *  Copyright (C) 2001 Sid Vicious
+ *  All rights reserved.
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
  *  License as published by the Free Software Foundation; either
@@ -17,12 +22,13 @@
  *  Boston, MA 02111-1307, USA.
  *
  *  Author : Mark Lee <avant-wn@lazymalevolence.com>
- *  vim: set noet :
  */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+
+#include <string.h>
 
 /* VFS */
 #ifdef USE_GNOME
@@ -71,6 +77,24 @@ static gchar *awn_xfce_desktop_file_get_string (AwnDesktopItem *item, gchar *key
 		g_warning("Could not get the value of '%s' from '%s'",
 		          key, awn_desktop_item_get_filename (item));
 		return NULL;
+	}
+}
+
+static gchar *awn_xfce_get_real_exec (gchar *exec)
+{
+	/* if not an absolute path, manually search through the path list
+	 * since it looks like gdk_spawn_on_screen doesn't do it for us.
+	 * Adapted from /libgnome-desktop/gnome-desktop-item.c, r4904
+	 * exec_exists()
+	 */
+	if (g_path_is_absolute (exec)) {
+		if (access (exec, X_OK) == 0) {
+			return exec;
+		} else {
+			return NULL;
+		}
+	} else {
+		return g_find_program_in_path (exec);
 	}
 }
 #endif
@@ -125,11 +149,51 @@ gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme
 #ifdef USE_GNOME
 	return gnome_desktop_item_get_icon (item, icon_theme);
 #elif defined(USE_XFCE)
-	gchar *icon_name = awn_xfce_desktop_file_get_string (item, "Icon", FALSE);
-	/* TODO: replicate functionality of gnome_desktop_get_icon w/o
-	 * looking at the gnome_desktop source
+	/* adapted from libgnome-desktop/gnome-desktop-item.c, r4904
+	 * gnome_desktop_item_get_icon(), gnome_desktop_item_find_icon()
 	 */
-	return icon_name;
+	gchar *full = NULL;
+	gchar *icon = awn_xfce_desktop_file_get_string (item, "Icon", FALSE);
+	if (strcmp (icon, "") == 0) {
+		return NULL;
+	} else if (g_path_is_absolute (icon)) {
+		if (g_file_test (icon, G_FILE_TEST_EXISTS)) {
+			return g_strdup (icon);
+		} else {
+			return NULL;
+		}
+	} else {
+		char *icon_no_extension;
+		char *p;
+
+		if (icon_theme == NULL)
+			icon_theme = gtk_icon_theme_get_default ();
+
+		icon_no_extension = g_strdup (icon);
+		p = strrchr (icon_no_extension, '.');
+		if (p &&
+		    (strcmp (p, ".png") == 0 ||
+		     strcmp (p, ".xpm") == 0 ||
+		     strcmp (p, ".svg") == 0)) {
+		    *p = 0;
+		}
+
+		GtkIconInfo *info;
+
+		info = gtk_icon_theme_lookup_icon (icon_theme,
+						   icon_no_extension,
+						   48,
+						   0);
+
+		full = NULL;
+		if (info) {
+			full = g_strdup (gtk_icon_info_get_filename (info));
+			gtk_icon_info_free (info);
+		}
+
+		g_free (icon_no_extension);
+	}
+	return full;
 #endif
 }
 
@@ -153,6 +217,81 @@ gchar *awn_desktop_item_get_exec (AwnDesktopItem *item)
 #endif
 }
 
+gchar *awn_desktop_item_get_string (AwnDesktopItem *item, gchar *key)
+{
+#ifdef USE_GNOME
+	return gnome_desktop_item_get_string (item, key);
+#elif defined(USE_XFCE)
+	return awn_xfce_desktop_file_get_string (item, key, FALSE);
+#endif
+}
+
+gchar *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *key)
+{
+#ifdef USE_GNOME
+	return gnome_desktop_item_get_localestring (item, key);
+#elif defined(USE_XFCE)
+	return awn_xfce_desktop_file_get_string (item, key, TRUE);
+#endif
+}
+
+gboolean awn_desktop_item_exists (AwnDesktopItem *item)
+{
+#ifdef USE_GNOME
+	return gnome_desktop_item_exists (item);
+#elif defined(USE_XFCE)
+	/* adapted from libgnome-desktop/gnome-desktop-item.c, r4904
+	 * gnome_desktop_item_exists()
+	 */
+	const gchar *try_exec;
+	const gchar *real_try_exec;
+	const gchar *exec;
+
+	g_return_val_if_fail (item != NULL, FALSE);
+
+	try_exec = awn_xfce_desktop_file_get_string (item, "TryExec", FALSE);
+	real_try_exec = awn_xfce_get_real_exec ((gchar*)try_exec);
+
+	if (try_exec != NULL && real_try_exec == NULL) {
+		return FALSE;
+	}
+
+	g_free ((gchar*)real_try_exec);
+
+	if (g_ascii_strcasecmp(awn_desktop_item_get_item_type (item), "Application") == 0) {
+		int argc;
+		gchar **argv;
+		const gchar *exe;
+		const gchar *real_exec;
+
+		exec = awn_desktop_item_get_exec (item);
+		if (exec == NULL)
+			return FALSE;
+
+		if ( ! g_shell_parse_argv (exec, &argc, &argv, NULL))
+			return FALSE;
+
+		if (argc < 1) {
+			g_strfreev (argv);
+			return FALSE;
+		}
+
+		exe = argv[0];
+
+		real_exec = awn_xfce_get_real_exec ((gchar*)exe);
+
+		if (real_exec == NULL) {
+			g_strfreev (argv);
+			return FALSE;
+		}
+		g_strfreev (argv);
+		g_free ((gchar*)real_exec);
+	}
+
+	return TRUE;
+#endif
+}
+
 gint awn_desktop_item_launch (AwnDesktopItem *item, GList *extra_argv, GError **err)
 {
 #ifdef USE_GNOME
@@ -167,22 +306,7 @@ gint awn_desktop_item_launch (AwnDesktopItem *item, GList *extra_argv, GError **
 	int pid;
 	gchar *exec = awn_desktop_item_get_exec (item);
 	gchar *path = awn_xfce_desktop_file_get_string (item, "Path", FALSE);
-	/* if not an absolute path, manually search through the path list
-	 * since it looks like gdk_spawn_on_screen doesn't do it for us.
-	 */
-	if (!g_str_has_prefix (exec, G_DIR_SEPARATOR_S)) {
-		gchar **dirs = g_strsplit (g_getenv ("PATH"), G_SEARCHPATH_SEPARATOR_S, 0);
-		guint len = g_strv_length (dirs);
-		guint i;
-		for (i = 0; i < len; i++) {
-			gchar *tmp_exec = g_strconcat(dirs[i], G_DIR_SEPARATOR_S, exec, NULL);
-			if (g_file_test (tmp_exec, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_EXECUTABLE)) {
-				g_free(exec);
-				exec = tmp_exec;
-				break;
-			}
-		}
-	}
+	exec = awn_xfce_get_real_exec (exec);
 	success = gdk_spawn_on_screen (gdk_screen_get_default(),
 	                               (const gchar *)path,
 	                               awn_xfce_explode_exec (exec, extra_argv),
@@ -230,3 +354,4 @@ GList *awn_desktop_item_get_pathlist_from_string (gchar *paths, GError **err)
 #endif
 	return list;
 }
+/*  vim: set noet ts=8 : */

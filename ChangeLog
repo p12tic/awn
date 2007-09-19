@@ -6,6 +6,16 @@
 	Remove the entry that seems to have been copy/pasted from Clutter's
 	pkgconfig file.
 
+	* libawn/awn-desktop-item.c:
+	* libawn/awn-desktop-item.h:
+	* pyawn/awn.defs:
+	Add the wrapper functions awn_desktop_item_get_string(),
+	awn_desktop_item_get_localestring(), and awn_desktop_item_exists().
+	Add the above functions to the python bindings as well.
+	Adapt code from gnome-desktop svn to implement
+	awn_desktop_item_exists(), awn_desktop_item_get_icon(), and a static
+	function that retrieves the real path of an "Exec" entry.
+
 2007-09-18  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-manager/awn-manager.desktop.in.in:
