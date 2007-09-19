@@ -97,6 +97,7 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 
 	fx->hover = FALSE;
 	fx->clip = FALSE;
+	fx->flip = FALSE;
 	fx->spotlight = FALSE;
 
 	fx->enter_notify = 0;
@@ -1022,35 +1023,44 @@ turn_hover_effect(AwnEffectsPrivate *priv)
 		priv->start = NULL;
 	}
 
-	const gint PERIOD = 100;
+	const gint PERIOD = 44;
 
 	if(fx->count < PERIOD/4)
 	{
 		fx->icon_depth_direction = 0;		
 		fx->delta_width = -fx->count * (fx->icon_width) / (PERIOD/4);
-		fx->flip = 0;	
+		fx->flip = FALSE;
 	}
 	else if( fx->count < PERIOD/2 )
 	{
 		fx->icon_depth_direction = 1;		
 		fx->delta_width = (fx->count-PERIOD/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
-		fx->flip = 1;
+		fx->flip = TRUE;
 	}
 	else if( fx->count < PERIOD*3/4 )
 	{
 		fx->icon_depth_direction = 0;		
 		fx->delta_width = -(fx->count-PERIOD/2) * (fx->icon_width) / (PERIOD/4);
-		fx->flip = 1;
+		fx->flip = TRUE;
 	}
 	else
 	{
 		fx->icon_depth_direction = 1;		
 		fx->delta_width = (fx->count-PERIOD*3/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
-		fx->flip = 0;
+		fx->flip = FALSE;
 	}
 	fx->icon_depth = 10.00*-fx->delta_width/fx->icon_width;
 	fx->count++;
-	
+
+	// fix icon flickering
+	const gint MIN_WIDTH = 4;
+	if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH ) {
+		if (fx->delta_width > 0)
+			fx->delta_width = fx->icon_width - MIN_WIDTH;
+		else
+			fx->delta_width = -fx->icon_width + MIN_WIDTH;
+	}
+
 	// repaint widget
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
@@ -1264,6 +1274,18 @@ awn_unregister_effects (AwnEffects *fx) {
 	fx->focus_window = NULL;
 }
 
+inline void apply_3d_illusion(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, const gint x, const gint y, const gdouble alpha) {
+	gint i;
+	for(i=1; i < fx->icon_depth; i++)
+	{
+		if(fx->icon_depth_direction == 0)
+			gdk_cairo_set_source_pixbuf(cr, icon, x-fx->icon_depth+i, y);
+		else
+			gdk_cairo_set_source_pixbuf(cr, icon, x+fx->icon_depth-i, y);
+		cairo_paint_with_alpha(cr, alpha);
+	}
+}
+
 void awn_draw_background(AwnEffects *fx, cairo_t *cr) {	
 	gint x1 = 0;
 	gint y1 = fx->window_height - fx->icon_height;
@@ -1297,6 +1319,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	gboolean free_reflect = FALSE;
 	GdkPixbuf *scaledIcon = NULL;
 	GdkPixbuf *clippedIcon = NULL;
+	GdkPixbuf *flippedIcon = NULL;
 	GdkPixbuf *saturatedIcon = NULL;
 
 	/* clipping */
@@ -1349,6 +1372,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		// override provided icon
 		icon = scaledIcon;
 	}
+	/* saturation */
 	if (fx->saturation < 1.0) {
 		// do not change original pixbuf -> create new
 		if (!scaledIcon) {
@@ -1365,30 +1389,27 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		}
 	}
 
-	/* note: the framework didn't supported the x_offset yet */
 	if(fx->x_offset)
 		x1 += fx->x_offset;
  
 	/* icon flipping */
-	if(fx->flip)
-		icon = gdk_pixbuf_flip(icon, TRUE);
+	if(fx->flip) {
+		flippedIcon = gdk_pixbuf_flip(icon, TRUE);
+		icon = flippedIcon;
+		if (free_reflect)
+			g_object_unref(reflect);
+		else
+			free_reflect = TRUE;
+		reflect = gdk_pixbuf_flip(icon, FALSE);
+	}
 	
 	/* icon depth */
-	if( fx->icon_depth )
-	{
-		if(fx->icon_depth_direction == 0) 
+	if (fx->icon_depth) {
+		if (!fx->icon_depth_direction)
 			x1 += fx->icon_depth/2;
 		else
-			x1 -= fx->icon_depth/2;	
-		gint i;
-		for(i=0;i<fx->icon_depth;i++)
-		{
-			if(fx->icon_depth_direction == 0) 
-				gdk_cairo_set_source_pixbuf(cr, icon, x1-fx->icon_depth+i, y1);
-			else
-				gdk_cairo_set_source_pixbuf(cr, icon, x1+fx->icon_depth-i, y1);
-			cairo_paint_with_alpha(cr, fx->alpha);
-		}
+			x1 -= fx->icon_depth/2;
+		apply_3d_illusion(fx, cr, icon, x1, y1, fx->alpha);
 	}
 
 	
@@ -1396,6 +1417,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	cairo_paint_with_alpha(cr, fx->alpha);
 	if (scaledIcon) g_object_unref(scaledIcon);
 	if (clippedIcon) g_object_unref(clippedIcon);
+	if (flippedIcon) g_object_unref(flippedIcon);
 	if (saturatedIcon) g_object_unref(saturatedIcon);
 
 	/* reflection */
@@ -1406,6 +1428,11 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 			free_reflect = TRUE;
 		}
 		y1 += current_height + fx->y_offset*2;
+
+		/* icon depth */
+		if (fx->icon_depth) {
+			apply_3d_illusion(fx, cr, reflect, x1, y1, fx->alpha/6);
+		}
 		gdk_cairo_set_source_pixbuf(cr, reflect, x1, y1);
 		cairo_paint_with_alpha(cr, fx->alpha/3);
 		if (free_reflect) g_object_unref(reflect);

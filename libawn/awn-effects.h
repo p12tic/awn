@@ -99,11 +99,11 @@ struct _AwnEffects
 
 	gint icon_depth;
 	gint icon_depth_direction;
-	gboolean flip;	
 
 	/* State variables */
 	gboolean hover;
 	gboolean clip;
+	gboolean flip;
 	gboolean spotlight;
 
 	guint enter_notify;
