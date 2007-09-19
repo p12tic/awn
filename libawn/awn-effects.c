@@ -1017,6 +1017,7 @@ turn_hover_effect(AwnEffectsPrivate *priv)
 		// effect start initialize values
 		fx->count = 0;
 		fx->y_offset = 0;
+		fx->delta_width = 0;
 		fx->icon_depth = 0;
 		fx->icon_depth_direction = 0;
 		if (priv->start) priv->start(fx->self);
@@ -1025,32 +1026,37 @@ turn_hover_effect(AwnEffectsPrivate *priv)
 
 	const gint PERIOD = 44;
 
+	gint prev_count = fx->count;
+
+	fx->count = sin(fx->count * M_PI/2 / PERIOD)*PERIOD;
+
 	if(fx->count < PERIOD/4)
 	{
-		fx->icon_depth_direction = 0;		
+		fx->icon_depth_direction = 0;
 		fx->delta_width = -fx->count * (fx->icon_width) / (PERIOD/4);
 		fx->flip = FALSE;
 	}
 	else if( fx->count < PERIOD/2 )
 	{
-		fx->icon_depth_direction = 1;		
+		fx->icon_depth_direction = 1;
 		fx->delta_width = (fx->count-PERIOD/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
 		fx->flip = TRUE;
 	}
 	else if( fx->count < PERIOD*3/4 )
 	{
-		fx->icon_depth_direction = 0;		
+		fx->icon_depth_direction = 0;
 		fx->delta_width = -(fx->count-PERIOD/2) * (fx->icon_width) / (PERIOD/4);
 		fx->flip = TRUE;
 	}
 	else
 	{
-		fx->icon_depth_direction = 1;		
+		fx->icon_depth_direction = 1;
 		fx->delta_width = (fx->count-PERIOD*3/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
 		fx->flip = FALSE;
 	}
 	fx->icon_depth = 10.00*-fx->delta_width/fx->icon_width;
-	fx->count++;
+
+	fx->count = ++prev_count;
 
 	// fix icon flickering
 	const gint MIN_WIDTH = 4;
@@ -1068,6 +1074,9 @@ turn_hover_effect(AwnEffectsPrivate *priv)
 	if (fx->count >= PERIOD) {
 		fx->count = 0;
 		fx->y_offset = 0;
+		fx->icon_depth = 0;
+		fx->icon_depth_direction = 0;
+		fx->delta_width = 0;
 		fx->flip = FALSE;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
