@@ -26,6 +26,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "../data/active/spotlight_png_inline.c"
+
 typedef enum {
 	AWN_EFFECT_PRIORITY_HIGHEST,
 	AWN_EFFECT_PRIORITY_HIGH,
@@ -182,7 +184,7 @@ spotlight_init()
 {
 	GError *error = NULL;
 	if (!SPOTLIGHT_PIXBUF)
-		SPOTLIGHT_PIXBUF = gdk_pixbuf_new_from_file("/usr/local/share/avant-window-navigator/active/spotlight1.png", &error);
+		SPOTLIGHT_PIXBUF = gdk_pixbuf_new_from_inline(-1, spotlight1_png_inline, FALSE, NULL);
 	g_return_if_fail(error == NULL);
 }
 
