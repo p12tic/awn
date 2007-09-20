@@ -108,7 +108,7 @@ void
 awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 {
         AwnAppletSimplePrivate *priv;
-        GdkPixbuf *old0, *old1;
+        GdkPixbuf *old0;
 
         g_return_if_fail (AWN_IS_APPLET_SIMPLE (simple));
         g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
@@ -135,7 +135,7 @@ void
 awn_applet_simple_set_temp_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 {
         AwnAppletSimplePrivate *priv;
-        GdkPixbuf *old0, *old1;
+        GdkPixbuf *old0;
 
         g_return_if_fail (AWN_IS_APPLET_SIMPLE (simple));
         g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
