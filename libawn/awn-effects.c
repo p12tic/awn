@@ -1269,15 +1269,22 @@ spotlight3D_hover_effect(AwnEffectsPrivate *priv)
 	}
 
 	const gint PERIOD = 44;
+	const gdouble ALPHA_STEP = 0.04;
+
+	if (awn_effect_check_top_effect(priv, NULL))
+		fx->spotlight_alpha = 1.0;
+	else {
+		fx->spotlight_alpha -= ALPHA_STEP;
+		if (fx->spotlight_alpha < 0) fx->spotlight_alpha = 0;
+	}
 
 	gint prev_count = fx->count;
+	if (prev_count > PERIOD) prev_count = --fx->count;
 
 	fx->count = sin(fx->count * M_PI/2 / PERIOD)*PERIOD;
 
 	if(fx->count < PERIOD/4)
 	{
-		fx->spotlight_alpha = 1.0;
-		fx->spotlight = TRUE;
 		fx->icon_depth_direction = 0;
 		fx->delta_width = -fx->count * (fx->icon_width) / (PERIOD/4);
 		fx->flip = FALSE;
@@ -1296,7 +1303,6 @@ spotlight3D_hover_effect(AwnEffectsPrivate *priv)
 	}
 	else
 	{
-		fx->spotlight_alpha = 1.0 - (fx->count-PERIOD*3/4) * 1.0 / (PERIOD/4);
 		fx->icon_depth_direction = 1;
 		fx->delta_width = (fx->count-PERIOD*3/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
 		fx->flip = FALSE;
@@ -1318,16 +1324,16 @@ spotlight3D_hover_effect(AwnEffectsPrivate *priv)
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
 	gboolean repeat = TRUE;
-	if (fx->count >= PERIOD) {
+	if (fx->count >= PERIOD && (fx->spotlight_alpha >= 1 || fx->spotlight_alpha <= 0)) {
 		fx->count = 0;
 		fx->y_offset = 0;
 		fx->icon_depth = 0;
 		fx->icon_depth_direction = 0;
 		fx->delta_width = 0;
 		fx->flip = FALSE;
-		fx->spotlight = FALSE;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
+		if (!repeat) fx->spotlight = FALSE;
 	}
 	return repeat;
 }
