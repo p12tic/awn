@@ -319,7 +319,7 @@ drag_leave_hot (GtkWidget *widget, GdkDragContext *drag_context,
 	gtk_window_get_size (GTK_WINDOW (settings->window), &width, &height);
 	
 		
-	if ( (x < x_root) && (x_root < x+width) && ( ( settings->monitor.height - (settings->bar_height + 2 + settings->icon_offset)) < y_root)) {
+	if ( (x < x_root) && (x_root < x+width) && ( ( settings->monitor.height - (settings->bar_height + settings->icon_offset)) < y_root)) {
 		
 		//g_print ("Do nothing\n", event->y_root);
 	} else {
@@ -354,7 +354,7 @@ leave_notify_event (GtkWidget *window, GdkEventCrossing *event, AwnSettings *set
 	
 	gint x_root = (int)event->x_root;
 	
-	if ( (x < x_root) && (x_root < x+width) && ( ( settings->monitor.height - (settings->bar_height + 2)) < event->y_root)) {
+	if ( (x < x_root) && (x_root < x+width) && ( ( settings->monitor.height - (settings->bar_height + settings->icon_offset)) < event->y_root)) {
 		
 		//g_print ("Do nothing\n", event->y_root);
 	} else {
