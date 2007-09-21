@@ -206,21 +206,21 @@ spotlight_effect(AwnEffectsPrivate *priv)
 
 	const gint PERIOD = 15;
 	const gint TREMBLE_PERIOD = 5;
-	const gfloat TREMBLE_HEIGHT = 0.6;
+	const gfloat TREMBLE_HEIGHT = 0.4;
 
 	gboolean busy = awn_effect_check_top_effect(priv, NULL);
 	if( fx->spotlight_alpha < 1.0 && fx->direction == AWN_EFFECT_SPOTLIGHT_ON){
 		fx->spotlight_alpha += 1.0/PERIOD;
 	} else if( busy && fx->direction != AWN_EFFECT_SPOTLIGHT_OFF ){
+		if( fx->spotlight_alpha>=1.0 )
+			fx->direction = AWN_EFFECT_SPOTLIGHT_TREMBLE_DOWN;
+		else if (fx->spotlight_alpha < 1.0-TREMBLE_HEIGHT)
+			fx->direction = AWN_EFFECT_SPOTLIGHT_TREMBLE_UP;
+
 		if(fx->direction == AWN_EFFECT_SPOTLIGHT_TREMBLE_UP)
 			fx->spotlight_alpha += TREMBLE_HEIGHT/TREMBLE_PERIOD;
 		else
 			fx->spotlight_alpha -= TREMBLE_HEIGHT/TREMBLE_PERIOD;
-		
-		if( fx->spotlight_alpha>1.0 )
-			fx->direction = AWN_EFFECT_SPOTLIGHT_TREMBLE_DOWN;
-		else if (fx->spotlight_alpha < 1.0-TREMBLE_HEIGHT)
-			fx->direction = AWN_EFFECT_SPOTLIGHT_TREMBLE_UP;
 	}
 	else{
 		fx->direction = AWN_EFFECT_SPOTLIGHT_OFF;
