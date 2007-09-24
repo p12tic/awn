@@ -33,7 +33,8 @@ source_h =	\
 	awn-effects.h					\
 	awn-enum-types.h				\
 	awn-plug.h					\
-	awn-title.h					
+	awn-title.h					\
+	awn-vfs.h
 
 source_c =	\
 	awn-applet.c                                    \
@@ -46,7 +47,8 @@ source_c =	\
 	awn-effects.c					\
 	awn-enum-types.c				\
 	awn-plug.c					\
-	awn-title.c
+	awn-title.c					\
+	awn-vfs.c
 
 libawninc_HEADERS = \
 	$(source_h)	\

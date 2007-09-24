@@ -23,6 +23,8 @@
 #ifndef _LIBAWN_AWN_DESKTOP_ITEM_H
 #define _LIBAWN_AWN_DESKTOP_ITEM_H
 
+#include <gtk/gtkicontheme.h>
+
 #ifdef LIBAWN_USE_GNOME
 #include <libgnome/gnome-desktop-item.h>
 #elif defined(LIBAWN_USE_XFCE)
@@ -51,8 +53,5 @@ gchar          *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *
 gboolean        awn_desktop_item_exists (AwnDesktopItem *item);
 gint            awn_desktop_item_launch (AwnDesktopItem *item, GList *extra_argv, GError **err);
 void            awn_desktop_item_unref (AwnDesktopItem *item);
-
-/* utility function */
-GList          *awn_desktop_item_get_pathlist_from_string (gchar *paths, GError **err);
 
 #endif /* _LIBAWN_AWN_DESKTOP_ITEM_H */

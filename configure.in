@@ -101,7 +101,19 @@ AC_SUBST(USE_DESKTOP)
 AM_CONDITIONAL(USE_GNOME, test "$with_desktop" = "gnome")
 AM_CONDITIONAL(USE_XFCE, test "$with_desktop" = "xfce4")
 
-PKG_CHECK_MODULES(AWN, [ $COMMON_MODULES libwnck-1.0 $DESKTOP_MODULES gconf-2.0 x11 xproto dbus-glib-1 libglade-2.0 xdamage xcomposite xrender])
+AC_ARG_WITH(gio,
+    AS_HELP_STRING([--with-gio],[Use the GIO/GVFS libraries instead of the desktop's equivalents]),
+    [if test "$with_gio" = "yes"; then 
+        PKG_CHECK_MODULES(GIO, [gio-standalone], [
+            GIO_MODULE=gio-standalone
+            AC_DEFINE(LIBAWN_USE_GIO, 1, [Define support for the GIO/GVFS libraries])
+            USE_GIO="-DLIBAWN_USE_GIO"
+        ])
+     fi])
+AC_SUBST(GIO_MODULE)
+AC_SUBST(USE_GIO)
+
+PKG_CHECK_MODULES(AWN, [ $COMMON_MODULES libwnck-1.0 $DESKTOP_MODULES $GIO_MODULE gconf-2.0 x11 xproto dbus-glib-1 libglade-2.0 xdamage xcomposite xrender])
 AC_SUBST(AWN_CFLAGS)
 AC_SUBST(AWN_LIBS)
 

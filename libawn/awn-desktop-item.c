@@ -29,13 +29,8 @@
 #endif
 
 #include <string.h>
-
-/* VFS */
-#ifdef LIBAWN_USE_GNOME
-#include <libgnomevfs/gnome-vfs.h>
-#elif defined(LIBAWN_USE_XFCE)
-#include <thunar-vfs/thunar-vfs.h>
-#endif
+#include <unistd.h>
+#include <gdk/gdkspawn.h>
 
 #include "awn-desktop-item.h"
 
@@ -327,31 +322,5 @@ void awn_desktop_item_unref (AwnDesktopItem *item)
 #elif defined(LIBAWN_USE_XFCE)
 	g_object_unref(item);
 #endif
-}
-
-GList *awn_desktop_item_get_pathlist_from_string (gchar *paths, GError **err)
-{
-	GList *list, *li;
-#ifdef LIBAWN_USE_GNOME
-	list = gnome_vfs_uri_list_parse ((const gchar *) paths);
-	for (li = list; li != NULL; li = li->next) {
-		GnomeVFSURI *uri = li->data;
-		li->data = gnome_vfs_uri_to_string (uri, 0 /* hide_options */);
-		gnome_vfs_uri_unref (uri);
-	}
-#elif defined(LIBAWN_USE_XFCE)
-	list = thunar_vfs_path_list_from_string ((const gchar *) paths, err);
-	GError *error = *err;
-	if (error) {
-		g_print("Error: %s", error->message);
-	} else {
-		for (li = list; li != NULL; li = li->next) {
-			ThunarVfsPath *uri = li->data;
-			li->data = thunar_vfs_path_dup_string (uri);
-			thunar_vfs_path_unref (uri);
-		}
-	}
-#endif
-	return list;
 }
 /*  vim: set noet ts=8 : */

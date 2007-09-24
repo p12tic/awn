@@ -30,6 +30,7 @@
 #endif
 
 #include <libawn/awn-effects.h>
+#include <libawn/awn-vfs.h>
 
 #include "awn-task.h"
 #include "awn-x.h"
@@ -625,7 +626,7 @@ _task_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 
 	GError *err = NULL;
 
-	list = awn_desktop_item_get_pathlist_from_string ((gchar *)selection_data->data, &err);
+	list = awn_vfs_get_pathlist_from_string ((gchar *)selection_data->data, &err);
 	priv->pid = awn_desktop_item_launch (priv->item, list, &err);
 
         if (err) {
