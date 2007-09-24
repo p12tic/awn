@@ -185,6 +185,7 @@ _on_expose (GtkWidget *widget, GdkEventExpose *expose)
 static void 
 render_pixmap (cairo_t *cr, gint width, gint height)
 {
+	double rel_height = (double)(settings->bar_height+settings->icon_offset)/(double)height;
 	
 	cairo_scale (cr, (double) width, (double) height);
 	cairo_set_source_rgba (cr, 1.0f, 1.0f, 1.0f, 0.0f);
@@ -197,7 +198,7 @@ render_pixmap (cairo_t *cr, gint width, gint height)
 	pat = cairo_pattern_create_linear (0.0, 0.0, 0.0, 1.0);
 	cairo_pattern_add_color_stop_rgba (pat, 0.5, 1.0, 1.0, 1.0, 1);
 	cairo_pattern_add_color_stop_rgba (pat, 1, 0.8, 0.8, 0.8, 1);
-	cairo_rectangle (cr, 0, 0.5, 1, 1);
+	cairo_rectangle (cr, 0, 1.0-rel_height, 1, 1);
 	cairo_set_source(cr, pat);
 	cairo_fill(cr);
 	cairo_pattern_destroy(pat);

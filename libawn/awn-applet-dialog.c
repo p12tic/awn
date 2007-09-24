@@ -45,6 +45,9 @@ G_DEFINE_TYPE(AwnAppletDialog, awn_applet_dialog, GTK_TYPE_WINDOW)
 struct _AwnAppletDialogPrivate
 {
         AwnApplet *applet;
+        GtkWidget *title;
+        GtkWidget *title_label;
+        GtkWidget *vbox;
         GtkWidget *align;
 
         gint offset;
@@ -110,7 +113,6 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 	GtkWidget *child = NULL;
 	gint width, height;
         gint gap = 20;
-        const gchar *text;
         gint x, y, ax, ay, aw, ah;
         GtkStyle *style;
         GdkColor bg;
@@ -194,25 +196,6 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
         cairo_fill_preserve (cr);
         cairo_stroke (cr);
      
-	// rasterize title text
-	text = gtk_window_get_title (GTK_WINDOW (widget));
-	if (text != NULL) 
-        {
-		cairo_text_extents_t extents;
-		cairo_select_font_face (cr, 
-                            "Sans", 
-                            CAIRO_FONT_SLANT_NORMAL, 
-                            CAIRO_FONT_WEIGHT_BOLD);
-		cairo_set_font_size (cr, 14);
-		cairo_text_extents (cr, text, &extents);
-		// render title text
-		cairo_set_source_rgba (cr, border.red/65535.0, 
-                                           border.green/65535.0, 
-                                           border.blue/65535.0, 1);
-		cairo_move_to (cr, 10, 10 + extents.height);
-		cairo_show_text (cr, text);
-	}
-	
 	// Clean up
 	cairo_destroy (cr);
 
@@ -227,7 +210,91 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 	return FALSE;
 }
 
-static void 
+static gboolean
+on_title_expose (GtkWidget       *widget, 
+                 GdkEventExpose  *expose,
+                 AwnAppletDialog *dialog) 
+{
+        cairo_t *cr = NULL;
+        cairo_pattern_t *pat = NULL;
+	GtkWidget *child = NULL;
+	gint width, height;
+        GtkStyle *style;
+        GdkColor bg;
+        gfloat alpha;
+        GdkColor border;
+
+        cr = gdk_cairo_create (widget->window);
+	if (!cr)
+		return FALSE;
+		
+	width = widget->allocation.width;
+        height = widget->allocation.height;
+        
+        gtk_widget_style_get (GTK_WIDGET (dialog), "bg_alpha", &alpha, NULL);
+        style = gtk_widget_get_style (GTK_WIDGET (dialog));
+        bg = style->base[GTK_STATE_NORMAL];
+        border = style->bg[GTK_STATE_SELECTED];
+
+	// Clear the background to transparent
+	cairo_set_source_rgba (cr, 1.0f, 1.0f, 1.0f, 0.0f);
+	cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+	cairo_paint (cr);
+
+        cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+        cairo_set_line_width (cr, 1.0);
+
+        /* Paint the dialog background */
+        cairo_set_source_rgba (cr, bg.red/65535.0, 
+                                   bg.green/65535.0, 
+                                   bg.blue/65535.0,
+                                   alpha);      
+        cairo_rectangle (cr, 0, 0, width, height);
+        cairo_fill (cr);
+
+        /* Paint the background the border colour */
+        cairo_set_source_rgba (cr, border.red/65535.0, 
+                                   border.green/65535.0, 
+                                   border.blue/65535.0,
+                                   alpha);
+	awn_cairo_rounded_rect (cr, 0, 0, width, height, 15, ROUND_ALL);
+        cairo_fill (cr);
+ 
+        /* Make the background appear 'rounded' */
+	pat = cairo_pattern_create_linear (0, 0, 0, height);
+        cairo_pattern_add_color_stop_rgba (pat, 0, 1, 1, 1, 0.0);
+        cairo_pattern_add_color_stop_rgba (pat, 1, 0, 0, 0, 0.3);       
+      	awn_cairo_rounded_rect (cr, 0, 0, width, height, 15, ROUND_ALL);
+        cairo_set_source (cr, pat);
+        cairo_fill_preserve (cr);
+        cairo_pattern_destroy (pat);
+
+        cairo_set_source_rgba (cr, 0, 0, 0, 0.2);
+        cairo_stroke (cr);
+	
+        /* Highlight */
+        pat = cairo_pattern_create_linear (0, 0, 0, (height/5)*2);
+        cairo_pattern_add_color_stop_rgba (pat, 0, 1, 1, 1, 0.3);
+        cairo_pattern_add_color_stop_rgba (pat, 1, 1, 1, 1, 0.1);       
+      	awn_cairo_rounded_rect (cr, 1, 1, width-2, (height/5)*2, 
+                                15, ROUND_TOP);
+        cairo_set_source (cr, pat);
+        cairo_fill (cr);
+
+        cairo_pattern_destroy (pat);
+
+        // Clean up
+	cairo_destroy (cr);
+
+	/* Propagate the signal */
+	child = gtk_bin_get_child (GTK_BIN (widget));
+	if (child)
+		gtk_container_propagate_expose (GTK_CONTAINER (widget),
+						child, expose);
+		
+	return TRUE;
+}
+  static void 
 _on_size_request (GtkWidget *widget, GtkRequisition *req, gpointer *data) 
 {
 	awn_applet_dialog_position_reset (AWN_APPLET_DIALOG (widget));
@@ -250,21 +317,26 @@ static void
 _on_notify (GObject *dialog, GParamSpec *spec, gpointer null)
 {
         AwnAppletDialogPrivate *priv;
+        const gchar *title;
 
         priv = AWN_APPLET_DIALOG (dialog)->priv;
 
         if (strcmp ("title", g_param_spec_get_name (spec)) != 0)
                 return;
-
-        if (gtk_window_get_title (GTK_WINDOW (dialog)))
+        
+        title = gtk_window_get_title (GTK_WINDOW (dialog));
+        if (title)
         {
-                gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
-                                           30, 30, 10, 10);
+                gchar *markup = g_strdup_printf (
+                                      "<span size='x-large' weight='bold'>%s</span>", title);
+                gtk_label_set_markup (GTK_LABEL (priv->title_label), markup);
+                g_free (markup);
+                gtk_widget_show (priv->title_label);
+                gtk_widget_show (priv->title);
         }
         else
         {
-                gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
-                                           10, 30, 10, 10);
+                gtk_widget_hide (priv->title);
         }
 }
 
@@ -283,7 +355,7 @@ awn_applet_dialog_add (GtkContainer *dialog, GtkWidget *widget)
         g_return_if_fail (GTK_IS_WIDGET (widget));
         priv = AWN_APPLET_DIALOG (dialog)->priv;
 
-        gtk_container_add (GTK_CONTAINER (priv->align), widget);
+        gtk_box_pack_start (GTK_BOX (priv->vbox), widget, TRUE, TRUE, 0);
 }
 
 /*
@@ -324,17 +396,7 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
 	GConfClient *client;
 
         priv = dialog->priv = AWN_APPLET_DIALOG_GET_PRIVATE (dialog);
-        
-        /*
-        gtk_rc_parse_string ("style \"textcolor\"\n"
-                          "{\n"
-                          "fg[NORMAL] = \"#FFFFFF\"\n"
-                          "text[NORMAL] = \"#FFFFFF\"\n"
-                          "}\n"
-                          "widget \"AwnDialog.*\" style \"textcolor\"");
-        gtk_widget_set_name (GTK_WIDGET (dialog), "AwnDialog");
-        */
-        
+            
        	gtk_window_stick (GTK_WINDOW (dialog));
 	
         _on_alpha_screen_changed (GTK_WIDGET (dialog), NULL, NULL);
@@ -364,9 +426,24 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
         GTK_CONTAINER_CLASS (awn_applet_dialog_parent_class)->add 
                                      (GTK_CONTAINER (dialog), priv->align);
 
+        priv->vbox = gtk_vbox_new (FALSE, 6);
+        gtk_container_add (GTK_CONTAINER (priv->align), priv->vbox);
+
+        priv->title = gtk_event_box_new ();
+        gtk_widget_set_no_show_all (priv->title, TRUE);
+        gtk_box_pack_start (GTK_BOX (priv->vbox), priv->title, TRUE, TRUE, 0);
+        g_signal_connect (priv->title, "expose-event",
+                          G_CALLBACK (on_title_expose), dialog);
+
+        priv->title_label = gtk_label_new ("");
+        gtk_widget_set_state (priv->title_label, GTK_STATE_SELECTED);
+        gtk_misc_set_alignment (GTK_MISC (priv->title_label), 0.5, 0.5);
+        gtk_misc_set_padding (GTK_MISC (priv->title_label), 0, 4);
+        gtk_container_add (GTK_CONTAINER (priv->title), priv->title_label);
+
 	client = gconf_client_get_default ();
-        priv->offset = gconf_client_get_int (client, 
-					     "/apps/avant-window-navigator/bar/icon_offset",
+        priv->offset = gconf_client_get_int (client,
+                             "/apps/avant-window-navigator/bar/icon_offset",
 					     NULL);
 	g_object_unref (client);
 }

@@ -112,6 +112,7 @@ APP_ARROW_COLOR		= "/apps/avant-window-navigator/app/arrow_color" 		#color
 APP_TASKS_H_ARROWS	= "/apps/avant-window-navigator/app/tasks_have_arrows" 	#bool
 APP_ARROW_OFFSET	= "/apps/avant-window-navigator/app/arrow_offset"
 APP_ICON_EFFECT     = "/apps/avant-window-navigator/app/icon_effect"        #int
+APP_NAME_CHANGE_NOTIFY 	= "/apps/avant-window-navigator/app/name_change_notify"		#bool
 
 TITLE_PATH		    = "/apps/avant-window-navigator/title"
 TITLE_TEXT_COLOR	= "/apps/avant-window-navigator/title/text_color" 		#color
@@ -136,6 +137,7 @@ class awnPreferences:
         self.setup_bool (AWM_AUTO_HIDE, self.wTree.get_widget("autohide"))
         self.setup_bool (AWM_KEEP_BELOW, self.wTree.get_widget("keepbelow"))
         self.setup_bool (AWM_PANEL_MODE, self.wTree.get_widget("panelmode"))
+	self.setup_bool (APP_NAME_CHANGE_NOTIFY, self.wTree.get_widget("namechangenotify"))
         self.setup_bool (BAR_RENDER_PATTERN, self.wTree.get_widget("patterncheck"))
         self.setup_bool (BAR_ROUNDED_CORNERS, self.wTree.get_widget("roundedcornerscheck"))
         self.setup_bool (WINMAN_SHOW_ALL_WINS, self.wTree.get_widget("allwindowscheck"))
@@ -287,6 +289,7 @@ class awnPreferences:
         model.append(["Spotlight"])
         model.append(["Zoom"])
         model.append(["Squish"])
+        model.append(["3D turn"])
         dropdown.set_model(model)
         cell = gtk.CellRendererText()
         dropdown.pack_start(cell)
