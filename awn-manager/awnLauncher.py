@@ -24,12 +24,12 @@ try:
     import pygtk
     pygtk.require("2.0")
 except:
-  	pass
+    pass
 try:
     import gtk
     import gtk.glade
 except:
-	sys.exit(1)
+    sys.exit(1)
 
 import gtk.gdk as gdk
 import gconf, gnomedesktop, gobject, subprocess, locale, gettext

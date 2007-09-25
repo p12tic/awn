@@ -25,12 +25,12 @@ try:
     import pygtk
     pygtk.require("2.0")
 except:
-  	pass
+    pass
 try:
     import gtk
     import gtk.glade
 except:
-	sys.exit(1)
+    sys.exit(1)
 
 import gconf
 import awnDefs as defs
@@ -49,76 +49,76 @@ _ = gettext.gettext
 import gobject
 
 def dec2hex(n):
-	"""return the hexadecimal string representation of integer n"""
-	n = int(n)
-	if n == 0:
-		return "00"
-	return "%0.2X" % n
+    """return the hexadecimal string representation of integer n"""
+    n = int(n)
+    if n == 0:
+        return "00"
+    return "%0.2X" % n
 
 def hex2dec(s):
-	"""return the integer value of a hexadecimal string s"""
-	return int(s, 16)
+    """return the integer value of a hexadecimal string s"""
+    return int(s, 16)
 
 def make_color(hexi):
-	"""returns a gtk.gdk.Color from a hex string RRGGBBAA"""
-	color = gtk.gdk.color_parse('#' + hexi[:6])
-	alpha = hex2dec(hexi[6:])
-	alpha = (float(alpha)/255)*65535
-	return color, int(alpha)
+    """returns a gtk.gdk.Color from a hex string RRGGBBAA"""
+    color = gtk.gdk.color_parse('#' + hexi[:6])
+    alpha = hex2dec(hexi[6:])
+    alpha = (float(alpha)/255)*65535
+    return color, int(alpha)
 
 def make_color_string(color, alpha):
-	"""makes avant-readable string from gdk.color & alpha (0-65535) """
-	string = ""
+    """makes avant-readable string from gdk.color & alpha (0-65535) """
+    string = ""
 
-	string = string + dec2hex(int( (float(color.red) / 65535)*255))
-	string = string + dec2hex(int( (float(color.green) / 65535)*255))
-	string = string + dec2hex(int( (float(color.blue) / 65535)*255))
-	string = string + dec2hex(int( (float(alpha) / 65535)*255))
+    string = string + dec2hex(int( (float(color.red) / 65535)*255))
+    string = string + dec2hex(int( (float(color.green) / 65535)*255))
+    string = string + dec2hex(int( (float(color.blue) / 65535)*255))
+    string = string + dec2hex(int( (float(alpha) / 65535)*255))
 
-	#hack
-	return string
+    #hack
+    return string
 
 # GCONF KEYS
-AWM_PATH		    = "/apps/avant-window-navigator"
-AWM_AUTO_HIDE		= "/apps/avant-window-navigator/auto_hide"			#bool
-AWM_PANEL_MODE		= "/apps/avant-window-navigator/panel_mode"			#bool
-AWM_KEEP_BELOW		= "/apps/avant-window-navigator/keep_below"			#bool
+AWM_PATH                = "/apps/avant-window-navigator"
+AWM_AUTO_HIDE           = "/apps/avant-window-navigator/auto_hide"                       #bool
+AWM_PANEL_MODE          = "/apps/avant-window-navigator/panel_mode"                      #bool
+AWM_KEEP_BELOW          = "/apps/avant-window-navigator/keep_below"                      #bool
 
-BAR_PATH		    = "/apps/avant-window-navigator/bar"
-BAR_ROUNDED_CORNERS	= "/apps/avant-window-navigator/bar/rounded_corners"		# bool
-BAR_CORNER_RADIUS 	= "/apps/avant-window-navigator/bar/corner_radius" 		# float
-BAR_RENDER_PATTERN	= "/apps/avant-window-navigator/bar/render_pattern"		# bool
-BAR_PATTERN_URI		= "/apps/avant-window-navigator/bar/pattern_uri" 		# string
-BAR_PATTERN_ALPHA 	= "/apps/avant-window-navigator/bar/pattern_alpha" 		# float
-BAR_GLASS_STEP_1	= "/apps/avant-window-navigator/bar/glass_step_1"		#string
-BAR_GLASS_STEP_2	= "/apps/avant-window-navigator/bar/glass_step_2"		#string
-BAR_GLASS_HISTEP_1	= "/apps/avant-window-navigator/bar/glass_histep_1"		#string
-BAR_GLASS_HISTEP_2	= "/apps/avant-window-navigator/bar/glass_histep_2"		#string
-BAR_BORDER_COLOR	= "/apps/avant-window-navigator/bar/border_color"		#string
-BAR_HILIGHT_COLOR	= "/apps/avant-window-navigator/bar/hilight_color"		#string
-BAR_SHOW_SEPARATOR	= "/apps/avant-window-navigator/bar/show_separator"		#bool
-BAR_SEP_COLOR		= "/apps/avant-window-navigator/bar/sep_color"
+BAR_PATH                = "/apps/avant-window-navigator/bar"
+BAR_ROUNDED_CORNERS     = "/apps/avant-window-navigator/bar/rounded_corners"             #bool
+BAR_CORNER_RADIUS       = "/apps/avant-window-navigator/bar/corner_radius"               #float
+BAR_RENDER_PATTERN      = "/apps/avant-window-navigator/bar/render_pattern"              #bool
+BAR_PATTERN_URI         = "/apps/avant-window-navigator/bar/pattern_uri"                 #string
+BAR_PATTERN_ALPHA       = "/apps/avant-window-navigator/bar/pattern_alpha"               #float
+BAR_GLASS_STEP_1        = "/apps/avant-window-navigator/bar/glass_step_1"                #string
+BAR_GLASS_STEP_2        = "/apps/avant-window-navigator/bar/glass_step_2"                #string
+BAR_GLASS_HISTEP_1      = "/apps/avant-window-navigator/bar/glass_histep_1"              #string
+BAR_GLASS_HISTEP_2      = "/apps/avant-window-navigator/bar/glass_histep_2"              #string
+BAR_BORDER_COLOR        = "/apps/avant-window-navigator/bar/border_color"                #string
+BAR_HILIGHT_COLOR       = "/apps/avant-window-navigator/bar/hilight_color"               #string
+BAR_SHOW_SEPARATOR      = "/apps/avant-window-navigator/bar/show_separator"              #bool
+BAR_SEP_COLOR           = "/apps/avant-window-navigator/bar/sep_color"
 
-BAR_HEIGHT		    = "/apps/avant-window-navigator/bar/bar_height"			#int
-BAR_ANGLE		    = "/apps/avant-window-navigator/bar/bar_angle"			#int
-BAR_ICON_OFFSET	    = "/apps/avant-window-navigator/bar/icon_offset"		#int
+BAR_HEIGHT              = "/apps/avant-window-navigator/bar/bar_height"                  #int
+BAR_ANGLE               = "/apps/avant-window-navigator/bar/bar_angle"                   #int
+BAR_ICON_OFFSET         = "/apps/avant-window-navigator/bar/icon_offset"                 #int
 
-WINMAN_PATH		    = "/apps/avant-window-navigator/window_manager"
-WINMAN_SHOW_ALL_WINS	= "/apps/avant-window-navigator/window_manager/show_all_windows" #bool
+WINMAN_PATH             = "/apps/avant-window-navigator/window_manager"
+WINMAN_SHOW_ALL_WINS    = "/apps/avant-window-navigator/window_manager/show_all_windows" #bool
 
-APP_PATH		    = "/apps/avant-window-navigator/app"
-APP_ACTIVE_PNG		= "/apps/avant-window-navigator/app/active_png" 		#string
-APP_ARROW_COLOR		= "/apps/avant-window-navigator/app/arrow_color" 		#color
-APP_TASKS_H_ARROWS	= "/apps/avant-window-navigator/app/tasks_have_arrows" 	#bool
-APP_ARROW_OFFSET	= "/apps/avant-window-navigator/app/arrow_offset"
-APP_ICON_EFFECT     = "/apps/avant-window-navigator/app/icon_effect"        #int
-APP_NAME_CHANGE_NOTIFY 	= "/apps/avant-window-navigator/app/name_change_notify"		#bool
+APP_PATH                = "/apps/avant-window-navigator/app"
+APP_ACTIVE_PNG          = "/apps/avant-window-navigator/app/active_png"                  #string
+APP_ARROW_COLOR         = "/apps/avant-window-navigator/app/arrow_color"                 #color
+APP_TASKS_H_ARROWS      = "/apps/avant-window-navigator/app/tasks_have_arrows"           #bool
+APP_ARROW_OFFSET        = "/apps/avant-window-navigator/app/arrow_offset"
+APP_ICON_EFFECT         = "/apps/avant-window-navigator/app/icon_effect"                 #int
+APP_NAME_CHANGE_NOTIFY  = "/apps/avant-window-navigator/app/name_change_notify"          #bool
 
-TITLE_PATH		    = "/apps/avant-window-navigator/title"
-TITLE_TEXT_COLOR	= "/apps/avant-window-navigator/title/text_color" 		#color
-TITLE_SHADOW_COLOR	= "/apps/avant-window-navigator/title/shadow_color" 	#color
-TITLE_BACKGROUND	= "/apps/avant-window-navigator/title/background" 		#color
-TITLE_FONT_FACE     = "/apps/avant-window-navigator/title/font_face" 		#string
+TITLE_PATH              = "/apps/avant-window-navigator/title"
+TITLE_TEXT_COLOR        = "/apps/avant-window-navigator/title/text_color"                #color
+TITLE_SHADOW_COLOR      = "/apps/avant-window-navigator/title/shadow_color"              #color
+TITLE_BACKGROUND        = "/apps/avant-window-navigator/title/background"                #color
+TITLE_FONT_FACE         = "/apps/avant-window-navigator/title/font_face"                 #string
 
 EMPTY = "none";
 
@@ -137,7 +137,7 @@ class awnPreferences:
         self.setup_bool (AWM_AUTO_HIDE, self.wTree.get_widget("autohide"))
         self.setup_bool (AWM_KEEP_BELOW, self.wTree.get_widget("keepbelow"))
         self.setup_bool (AWM_PANEL_MODE, self.wTree.get_widget("panelmode"))
-	self.setup_bool (APP_NAME_CHANGE_NOTIFY, self.wTree.get_widget("namechangenotify"))
+        self.setup_bool (APP_NAME_CHANGE_NOTIFY, self.wTree.get_widget("namechangenotify"))
         self.setup_bool (BAR_RENDER_PATTERN, self.wTree.get_widget("patterncheck"))
         self.setup_bool (BAR_ROUNDED_CORNERS, self.wTree.get_widget("roundedcornerscheck"))
         self.setup_bool (WINMAN_SHOW_ALL_WINS, self.wTree.get_widget("allwindowscheck"))
@@ -206,11 +206,11 @@ class awnPreferences:
 
     def setup_spin(self, key, spin):
         try:
-            spin.set_value(	self.client.get_float(key) )
+            spin.set_value(    self.client.get_float(key) )
         except TypeError:
             raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
         except gobject.GError, err:
-            spin.set_value(	float(self.client.get_int(key)) )
+            spin.set_value(    float(self.client.get_int(key)) )
 
         spin.connect("value-changed", self.spin_changed, key)
 
