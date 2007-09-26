@@ -143,10 +143,10 @@ class awnApplet:
         else:
             icon, text = self.make_row (appletpath)
             if len (text) > 2:
-            row = model.append ()
-            model.set_value (row, 0, icon)
-            model.set_value (row, 1, text)
-            model.set_value (row, 2, appletpath)
+                row = model.append ()
+                model.set_value (row, 0, icon)
+                model.set_value (row, 1, text)
+                model.set_value (row, 2, appletpath)
             if apply:
                 uid = "%d" % int(time.time())
                 self.model.set_value (row, 3, uid)
