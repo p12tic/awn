@@ -3,21 +3,21 @@
 # This file is distributed under the same license as the awn package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-08-08 09:15+0000\n"
-"Last-Translator: Peter Baričič <pbaricic@gmail.com>\n"
+"PO-Revision-Date: 2007-09-24 10:47+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Slovak <sk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Rosetta-Export-Date: 2007-08-17 19:09:02+0000\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Launchpad-Export-Date: 2007-09-26 18:48+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
@@ -105,23 +105,26 @@ msgstr ""
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
-msgstr ""
+msgstr "Tučné"
 
 #: ../avant-preferences/window.glade.h:17
 msgid "Color:"
-msgstr ""
+msgstr "Farba:"
 
 #: ../avant-preferences/window.glade.h:18
+#, fuzzy
 msgid "Enable pattern"
-msgstr ""
+msgstr "Povoliť šablónu"
 
 #: ../avant-preferences/window.glade.h:19
+#, fuzzy
 msgid "Enable rounded corners"
-msgstr ""
+msgstr "Povoliť zaoblené okraje"
 
 #: ../avant-preferences/window.glade.h:20
+#, fuzzy
 msgid "Fade effect (experimental)"
-msgstr ""
+msgstr "Postupné blednutie"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
@@ -129,11 +132,11 @@ msgstr ""
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
-msgstr ""
+msgstr "Veľkosť písma:"
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
-msgstr ""
+msgstr "Všeobecné"
 
 #: ../avant-preferences/window.glade.h:24
 msgid "Glass Engine"
@@ -263,7 +266,6 @@ msgid "%d Item in Trash"
 msgid_plural "%d Items in Trash"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: ../applets/trash/trashapplet.c:657
 #, c-format
@@ -314,7 +316,8 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Peter Baričič <https://launchpad.net/~denton-sk>"
+"  Peter Baričič https://launchpad.net/~denton-sk\n"
+"  firenze https://launchpad.net/~firenze"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
