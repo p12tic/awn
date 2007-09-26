@@ -135,12 +135,12 @@ class awnLauncher:
                 self.model.set_value (row, 2, i)
 
     def make_row (self, uri):
-            try:
-                item = gnomedesktop.item_new_from_file (uri, 0)
-                text = "<b>%s</b>\n%s" % (item.get_string(gnomedesktop.KEY_NAME), item.get_string (gnomedesktop.KEY_COMMENT))
-            except:
-                return ""
-            return text
+        try:
+            item = gnomedesktop.item_new_from_file (uri, 0)
+            text = "<b>%s</b>\n%s" % (item.get_string(gnomedesktop.KEY_NAME), item.get_string (gnomedesktop.KEY_COMMENT))
+        except:
+            return ""
+        return text
 
     def make_icon (self, uri):
         icon = None
