@@ -18,7 +18,7 @@ $(desktop_DATA).in: $(desktop_DATA).in.in
 	sed -e "s|\@PKGDATADIR\@|$(pkgdatadir)|g" $< > $@
 
 awnDefs.py: awnDefs.in.py
-	sed -e "s|\@DATADIR\@|$(datadir)|g" awnDefs.in.py > awnDefs.py
+	sed -e "s|\@PREFIX\@|$(prefix)|g" awnDefs.in.py > awnDefs.py
 
 install-exec-local:
 	sed -e "s|\@DATADIR\@|$(datadir)|g" awnManager.in.py > awnManager.py
