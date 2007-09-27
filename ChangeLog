@@ -1,3 +1,8 @@
+2007-09-26  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnApplet.py:
+	Refactor some code in order to increase readability.
+
 2007-09-20  haytjes <hv1989@gmail.com>
 
 	* src/main.c:

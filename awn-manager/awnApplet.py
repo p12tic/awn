@@ -106,16 +106,13 @@ class awnApplet:
         appletpath = ""
         applet_exists = False
         tar = tarfile.open(file, "r:gz")
-        filelist = tar.getmembers()
-        for file in filelist:
-            if ".desktop" in file.name:
-                appletpath = os.path.join(self.AWN_APPLET_DIR, file.name)
+        for member in tar.getmembers():
+            if member.name.endswith(".desktop"):
+                appletpath = os.path.join(self.AWN_APPLET_DIR, member.name)
 
-        if os.path.exists(appletpath):
-            applet_exists = True
+        applet_exists = os.path.exists(appletpath)
 
-        for file in tar.getnames():
-            tar.extract(file, self.AWN_APPLET_DIR)
+        [tar.extract(f, self.AWN_APPLET_DIR) for f in tar.getnames()]
         tar.close()
 
         if appletpath:
@@ -350,36 +347,31 @@ class awnApplet:
             except:
                 icon = None
 
+        if icon is None and "/" in name and os.path.exists(name):
+            icon = gtk.gdk.pixbuf_new_from_file_at_size (name, 32, 32)
         if icon is None:
-            if "/" in name and os.path.exists(name):
-                icon = gtk.gdk.pixbuf_new_from_file_at_size (name, 32, 32)
-        if icon is None:
-            dirs = ["/usr/share/pixmaps", "/usr/local/share/pixmaps"]
+            dirs = ["/usr/share/pixmaps", "/usr/local/share/pixmaps",
+                    os.path.join(defs.PREFIX, "share", "pixmaps")]
             for d in dirs:
                 n = name
-                if not ".png" in name:
+                if not name.endswith(".png"):
                     n = name + ".png"
                 path = os.path.join (d, n)
-                if icon is None:
-                    try:
-                        icon = gtk.gdk.pixbuf_new_from_file_at_size (path, 32, 32)
-                    except:
-                        icon = None
-        if icon is None:
-            if "pixmaps" in name:
-                path1 = os.path.join ("/usr/share/pixmaps", name)
-                path2 = os.path.join ("/usr/local/share/pixmaps",
-                                      name)
                 try:
-                    icon = gtk.gdk.pixbuf_new_from_file_at_size (path1, 32, 32)
+                    icon = gtk.gdk.pixbuf_new_from_file_at_size (path, 32, 32)
+                    if icon is not None:
+                        break
                 except:
                     icon = None
-
-                if icon is None:
-                    try:
-                        icon = gtk.gdk.pixbuf_new_from_file_at_scale (path2, 32, 32)
-                    except:
-                        icon = None
+        if icon is None and "pixmaps" in name:
+            for d in dirs:
+                path = os.path.join(d, name)
+                try:
+                    icon = gtk.gdk.pixbuf_new_from_file_at_size (path, 32, 32)
+                    if icon is not None:
+                        break
+                except:
+                    icon = None
         return icon
 
     def refresh_tree (self, applets):
@@ -406,7 +398,6 @@ class awnApplet:
         col = gtk.TreeViewColumn ("Available Applets", ren, pixbuf=0)
 
         ren = gtk.CellRendererText()
-        ren = gtk.CellRendererText()
         col.pack_start(ren, False)
         col.add_attribute(ren, 'markup', 1)
         ren.set_property('xalign', 0)
@@ -417,12 +408,9 @@ class awnApplet:
         self.make_appmodel ()
         model = self.appmodel
 
-        hdir = os.path.join (os.environ["HOME"], ".config/awn/applets")
-        dirs = ["/usr/lib/awn/applets",
-                "/usr/local/lib/awn/applets",
-                "/usr/lib64/awn/applets",
-                "/usr/local/lib64/awn/applets",
-                hdir]
+        prefixes = ["/usr/lib", "/usr/local/lib", "/usr/lib64", "/usr/local/lib64",
+                    os.path.join(defs.PREFIX, "lib"), os.path.expanduser("~/.config")]
+        dirs = [os.path.join(prefix, "awn", "applets") for prefix in prefixes]
         applets = []
         for d in dirs:
             if not os.path.exists (d):
@@ -430,11 +418,7 @@ class awnApplet:
             if not os.path.realpath(d) == d and os.path.realpath(d) in dirs:
                 continue
 
-            apps = os.listdir (d)
-            for a in apps:
-                if ".desktop" in a:
-                    path = os.path.join (d, a)
-                    applets.append (path)
+            applets += [os.path.join(d, a) for a in os.listdir(d) if a.endswith(".desktop")]
 
         for a in applets:
             icon, text = self.make_row (a)
@@ -447,7 +431,8 @@ class awnApplet:
         self.load_finished = True
 
     def popup_msg(self, message):
-        success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_OK, message_format=message)
+        success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING,
+                                    buttons=gtk.BUTTONS_OK, message_format=message)
         success.run()
         success.destroy()
 
@@ -473,9 +458,7 @@ class awnApplet:
         if remove >= 0:
             del l[remove]
 
-        applets = []
-        for item in l:
-            applets.append(l[item])
+        applets = l.values()
 
         if not None in applets and self.load_finished:
             self.client.set_list(self.APPLETS_PATH, gconf.VALUE_STRING, applets)
