@@ -1,4 +1,4 @@
-# Brazilian Portuguese translation for awn
+# Basque translation for awn
 # Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
 # This file is distributed under the same license as the awn package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
@@ -8,286 +8,287 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-12 15:52+0000\n"
+"PO-Revision-Date: 2007-08-19 02:33+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
+"Language-Team: Basque <eu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Launchpad-Export-Date: 2007-09-26 18:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
-msgstr "Linhas:"
+msgstr "Lerroak:"
 
 #: ../applets/switcher/applet.c:128
 msgid "Width:"
-msgstr "Largura:"
+msgstr "Zabalera:"
 
 #: ../applets/switcher/applet.c:140
 msgid "Height:"
-msgstr "Altura:"
+msgstr "Altuera:"
 
 #: ../applets/trash/trashapplet.glade.h:1
 msgid "<b>From:</b>"
-msgstr "<b>De:</b>"
+msgstr "<b>Hemendik:</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
 msgid "<big><b>Emptying the Trash</b></big>"
-msgstr "<big><b>Esvaziando a Lixeira</b></big>"
+msgstr "<big><b>Zakarrontzia hustutzen</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr "Esvaziando a Lixeira"
+msgstr "Zakarrontzia hustutzen"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "<b>Ícone ativo</b>"
+msgstr "<b>Ikur Gaitua</b>"
 
 #: ../avant-preferences/window.glade.h:2
 msgid "<b>Arrows</b>"
-msgstr "<b>Setas</b>"
+msgstr "<b>Geziak</b>"
 
 #: ../avant-preferences/window.glade.h:3
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>Comportamento da barra</b>"
+msgstr "<b>Barraren portaera</b>"
 
 #: ../avant-preferences/window.glade.h:4
 msgid "<b>Borders</b>"
-msgstr "<b>Bordas</b>"
+msgstr "<b>Ertzak</b>"
 
 #: ../avant-preferences/window.glade.h:5
 msgid "<b>Corners</b>"
-msgstr "<b>Cantos</b>"
+msgstr "<b>Izkinak</b>"
 
 #: ../avant-preferences/window.glade.h:6
 msgid "<b>Gradient</b>"
-msgstr "<b>Gradiente</b>"
+msgstr "<b>Gradientea</b>"
 
 #: ../avant-preferences/window.glade.h:7
 msgid "<b>Highlight</b>"
-msgstr "<b>Destacar</b>"
+msgstr "<b>Nabarmendu</b>"
 
 #: ../avant-preferences/window.glade.h:8
 msgid "<b>Pattern</b>"
-msgstr "<b>Padrão</b>"
+msgstr "<b>Eredua</b>"
 
 #: ../avant-preferences/window.glade.h:9
 msgid "<b>Separator</b>"
-msgstr "<b>Separador</b>"
+msgstr "<b>Bereizlea</b>"
 
 #: ../avant-preferences/window.glade.h:10
 msgid "<b>Text</b>"
-msgstr "<b>Texto</b>"
+msgstr "<b>Testua</b>"
 
 #: ../avant-preferences/window.glade.h:11
 msgid "<b>Windows</b>"
-msgstr "<b>Janelas</b>"
+msgstr "<b>Leihoak</b>"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
-msgstr "Ocultar a barra automaticamente quando inativa"
+msgstr "Ez denean erabiltzen, automatikoki ezkutatu barra"
 
 #: ../avant-preferences/window.glade.h:13
 msgid "Avant Preferences"
-msgstr "Preferências do Avant"
+msgstr "Avant-en Hobespenak"
 
 #: ../avant-preferences/window.glade.h:14
 msgid "Background color:"
-msgstr "Cor do plano de fundo:"
+msgstr "Atzealdeko kolorea:"
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
-msgstr "Aparência da barra"
+msgstr "Barraren Itxura"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
-msgstr "Negrito"
+msgstr "Lodia"
 
 #: ../avant-preferences/window.glade.h:17
 msgid "Color:"
-msgstr "Cor:"
+msgstr "Kolorea:"
 
 #: ../avant-preferences/window.glade.h:18
 msgid "Enable pattern"
-msgstr "Habilitar padrão"
+msgstr "Eredua gaitu"
 
 #: ../avant-preferences/window.glade.h:19
 msgid "Enable rounded corners"
-msgstr "Habilitar cantos arredondados"
+msgstr "Izkina borobilduak gaitu"
 
 #: ../avant-preferences/window.glade.h:20
 msgid "Fade effect (experimental)"
-msgstr "Efeito de <i>esmaciamento</i> (experimental)"
+msgstr "Moteltze efektua (esperimentala)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
-msgstr "Cor superior da barra"
+msgstr "Lehen kolorea:"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
-msgstr "Tamanho da fonte:"
+msgstr "Letren tamaina:"
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
-msgstr "Geral"
+msgstr "Orokorra"
 
 #: ../avant-preferences/window.glade.h:24
 msgid "Glass Engine"
-msgstr "Transparência"
+msgstr "Kristal Motorea"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
-msgstr "Borda interna:"
+msgstr "Barne-ertza:"
 
 #: ../avant-preferences/window.glade.h:26
 msgid "Italic"
-msgstr "Itálico"
+msgstr "Etzana"
 
 #: ../avant-preferences/window.glade.h:27
 msgid "Main border:"
-msgstr "Borda principal:"
+msgstr "Ertz nagusia:"
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "Janelas maximizadas não cobrem a barra (é necessário reiniciar)"
+msgstr ""
+"Maximizatutako leihoek ez dute barra estaltzen (berrabiaraztea behar du)"
 
 #: ../avant-preferences/window.glade.h:29
 msgid "Pattern Engine"
-msgstr "Mecanismo de Padrão"
+msgstr "Eredu Motorea"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
-msgstr "Cor inferior da barra"
+msgstr "Bigarren kolorea:"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
-msgstr "Selecione Um Arquivo"
+msgstr "Fitxategia Hautatu"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
-msgstr "Cor do separador:"
+msgstr "Bereizlearen kolorea:"
 
 #: ../avant-preferences/window.glade.h:33
 msgid "Shadow color:"
-msgstr "Cor da sombra:"
+msgstr "Itzalaren kolorea:"
 
 #: ../avant-preferences/window.glade.h:34
 msgid "Show separator between launchers and tasks"
-msgstr "Exibir separador entre lançadores e tarefas"
+msgstr "Bereizlea erakutsi abiarazle eta atazen artean"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
-msgstr "Mostrar janelas de todas as <i>áreas</i>"
+msgstr "Lan-eremu guztietako leihoak erakutsi"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
-msgstr "Aparência da tarefa"
+msgstr "Atazen Itxura"
 
 #: ../avant-preferences/window.glade.h:37
 msgid "Tasks have arrows"
-msgstr "Tarefas possuem setas"
+msgstr "Atazek geziak dituzte"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
-msgstr "A barra oculta-se automaticamente quando inativa"
+msgstr "Ez denean erabiltzen, automatikoki ezkutatzen da barra"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
-msgstr "Transparência:"
+msgstr "Gardentasuna:"
 
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
-msgstr "Ícones inativos desaparecem com o foco do mouse"
+msgstr ""
+"Erabiltzen ez diren ikurrak moteldu egiten dira sagua gainetik pasatzean"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
-msgstr "Janelas não sobrepõem a barra se esta opção estiver ativada"
+msgstr "Leihoak ez zaizkio barrari gainezartzen hau gaituz gero"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
-msgstr "Adicionar Mini-Aplicativo"
+msgstr "Applet-a gehitu"
 
 #: ../avant-applets/avant-applets.glade.h:2
 msgid "Avant Applet Preferences"
-msgstr "Preferências dos Mini-Aplicativos do Avant"
+msgstr "Avant Applet-en Hobespenak"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
 msgid "Positions"
-msgstr "Posições"
+msgstr "Kokapenak"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
 msgid "Avant Launcher Preferences"
-msgstr "Preferências do Lançador do Avant"
+msgstr "Avant Abiarazleen Hobespenak"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
-msgstr "Orientação"
+msgstr "Orientazioa"
 
 #: ../applets/notification-area/eggtraymanager.c:147
 msgid "The orientation of the tray."
-msgstr "A orientação da bandeja."
+msgstr "Erretilularen orientazioa."
 
 #: ../applets/switcher/switcher.schemas.in.h:1
 msgid "How many rows the switcher should have"
-msgstr "Quantas linhas o alternador deve ter"
+msgstr "Aldatzaileak eduki beharko lukeen lerro kopurua"
 
 #: ../applets/switcher/switcher.schemas.in.h:2
 msgid "The height of the switcher"
-msgstr "A altura do alternador"
+msgstr "Aldatzailearen altuera"
 
 #: ../applets/switcher/switcher.schemas.in.h:3
 msgid "The width of the switcher"
-msgstr "A largura do alternador"
+msgstr "Aldatzailearen zabalera"
 
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
-msgstr ""
-"Se o mini-aplicativo da Lixeira deve mostrar um contador em seu ícone"
+msgstr "Ea zakarrontziaren ikurrean kontagailu bat erakutsi behar den"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
 msgid "Unable to find the Trash directory: %s"
-msgstr "Não foi possível encontrar o diretório da Lixeira: %s"
+msgstr "Ezin da zakarrontzi-direktorioa aurkitu: %s"
 
 #: ../applets/trash/trashapplet.c:526
 msgid "No Items in Trash"
-msgstr "Nenhum item na Lixeira"
+msgstr "Elementurik ez zakarrontzian"
 
 #: ../applets/trash/trashapplet.c:530
 #, c-format
 msgid "%d Item in Trash"
 msgid_plural "%d Items in Trash"
-msgstr[0] "%d item na Lixeira"
-msgstr[1] "%d itens na Lixeira"
+msgstr[0] "Elementu %d zakarrontzian"
+msgstr[1] "%d elementu zakarrontzian"
 
 #: ../applets/trash/trashapplet.c:657
 #, c-format
 msgid "Removing item %lu of %lu"
-msgstr "Removendo item %lu of %lu"
+msgstr "%lu elementutik %lu-garrena kentzen"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
-msgstr "Removendo:"
+msgstr "Kentzen:"
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr "Você tem certeza de que deseja esvaziar a lixeira?"
+msgstr "Zakarrontziko elementu guztiak hustu?"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
 "If you choose to empty the trash, all items in it will be permanently lost. "
 "Please note that you can also delete them separately."
 msgstr ""
-"Se você escolher esvaziar a lixeira, todos os itens serão permanentemente "
-"excluídos. Note que você também pode excluí-los separadamente."
+"Zakarrontzia hustea aukeratzen baduzu, elementu guztiak betirako galduko "
+"dira. Kontuan izan elementu bakoitza banan-banan ere ezaba dezakezula."
 
 #: ../applets/trash/trashapplet.c:746
 msgid "_Empty Trash"
-msgstr "_Esvaziar a Lixeira"
+msgstr "_Zakarrontzia Hustu"
 
 #: ../applets/trash/trashapplet.c:825
 #, c-format
@@ -295,51 +296,48 @@ msgid ""
 "Error while spawning nautilus:\n"
 "%s"
 msgstr ""
-"Erro ao executar o nautilus:\n"
+"Errorea nautilus abiaraztean:\n"
 "%s"
 
 #: ../applets/trash/trashapplet.c:845
 #, c-format
 msgid "There was an error displaying help: %s"
-msgstr "Ocorreu um erro ao exibir a ajuda: %s"
+msgstr "Errore bat gertatu da laguntza bistaratzean: %s"
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
-msgstr "Mini-aplicativo Lixeira"
+msgstr "Zakarrontzi Applet-a"
 
 #: ../applets/trash/trashapplet.c:871
 msgid ""
 "A GNOME trash bin that lives in your panel. You can use it to view the trash "
 "or drag and drop items into the trash."
 msgstr ""
-"Uma lixeira do GNOME que fica no seu painel. Você pode usá-la para ver o "
-"lixo ou para arrastar e soltar itens na lixeira."
+"Zure panelean kokatzen den GNOMEren zakarrontzia. Zakarrontziaren edukiak "
+"ikusteko edo zakarrontzira elementuak botatzeko (arrastatu eta jaregin) "
+"erabil dezakezu."
 
 #: ../applets/trash/trashapplet.c:876
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Daniel Tiecher https://launchpad.net/~daniel-anderson-tiecher\n"
-"  Gustavo Silva Castilho de Avellar https://launchpad.net/~gustavoavellar\n"
-"  Rafael Capanema https://launchpad.net/~rafaelcapanema\n"
-"  hmsf https://launchpad.net/~heliomsf"
+"  Mikel Pascual Aldabaldetreku https://launchpad.net/~mpascual"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
-msgstr "Excluir Imediatamente?"
+msgstr "Berehala ezabatu?"
 
 #: ../applets/trash/trashapplet.c:925
 msgid "Cannot move items to trash, do you want to delete them immediately?"
 msgstr ""
-"Não é possível mover os itens para a lixeira, deseja excluí-los "
-"imediatamente?"
+"Ezin dira elementuak zakarrontzira bota, berehala ezabatu nahi al dituzu?"
 
 #: ../applets/trash/trashapplet.c:928
 msgid ""
 "Cannot move some items to trash, do you want to delete these immediately?"
 msgstr ""
-"Não foi possível mover alguns itens para a lixeira, você deseja excluí-los "
-"imediatamente?"
+"Ezin dira elementu batzuk zakarrontzira bota, berehala ezabatu nahi al "
+"dituzu?"
 
 #: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
 #, c-format
@@ -347,9 +345,9 @@ msgid ""
 "Unable to move to trash:\n"
 "%s"
 msgstr ""
-"Não foi possível mover para a lixeira:\n"
+"Ezin da zakarrontzira bota:\n"
 "%s"
 
 #: ../src/awn-task.c:2279
 msgid "Change Icon"
-msgstr "Alterar ícone"
+msgstr "Ikurra aldatu"

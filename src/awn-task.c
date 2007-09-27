@@ -257,12 +257,21 @@ launch_launched_effect (AwnTask *task )
 	awn_effect_start_ex(&priv->effects, AWN_EFFECT_LAUNCHING, NULL, NULL, 10);
 }
 
-static void
-_task_destroy (GObject *obj)
+static gboolean
+_shrink_widget (AwnTask *task)
 {
-	AwnTask *task = AWN_TASK(obj);
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
+        AwnTaskPrivate *priv;
+
+        g_return_val_if_fail (AWN_IS_TASK (task), FALSE);
+        priv = AWN_TASK_GET_PRIVATE (task);
+
+        if (GTK_WIDGET (task)->allocation.width > 5) {
+                gtk_widget_set_size_request (GTK_WIDGET (task), 
+                                    GTK_WIDGET (task)->allocation.width-5,
+                                             -1);
+                return TRUE;
+        }
+
 	if (priv->is_launcher)
 		awn_task_manager_remove_launcher(priv->task_manager, task);
 	else
@@ -280,9 +289,19 @@ _task_destroy (GObject *obj)
 	}
 	g_timeout_add(1000, (GSourceFunc)awn_task_manager_refresh_box,
 	              priv->task_manager);
-	awn_effects_finalize(&priv->effects);
-	gtk_object_destroy (GTK_OBJECT(task));
+	
+        awn_effects_finalize(&priv->effects);
+        
+        gtk_object_destroy (GTK_OBJECT(task));
 	task = NULL;
+
+        return FALSE;
+}
+
+static void
+_task_destroy (GObject *obj)
+{
+        g_timeout_add (25, (GSourceFunc)_shrink_widget, obj);
 }
 
 /**********************  CALLBACKS  **********************/

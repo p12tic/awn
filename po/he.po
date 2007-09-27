@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the awn package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-08-02 16:03+0000\n"
-"Last-Translator: mark125 <mark125@gmail.com>\n"
+"PO-Revision-Date: 2007-09-14 07:51+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Rosetta-Export-Date: 2007-08-17 19:08:42+0000\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2007-09-26 18:48+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
@@ -76,7 +76,7 @@ msgstr "<b>תבנית</b>"
 
 #: ../avant-preferences/window.glade.h:9
 msgid "<b>Separator</b>"
-msgstr "<b>הפרדה</b>"
+msgstr "<b>קו מפריד</b>"
 
 #: ../avant-preferences/window.glade.h:10
 msgid "<b>Text</b>"
@@ -88,7 +88,7 @@ msgstr "<b>חלונות</b>"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
-msgstr "הסתר אוטומטית את הבר בזמן שלא בשימוש"
+msgstr "הסתר את הבר כאשר אינו בשימוש"
 
 #: ../avant-preferences/window.glade.h:13
 msgid "Avant Preferences"
@@ -100,7 +100,7 @@ msgstr "צבע הרקע:"
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
-msgstr "הופעת הבר"
+msgstr "תצוגת הבר"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
@@ -123,8 +123,9 @@ msgid "Fade effect (experimental)"
 msgstr "אפקט עימעום (ניסיוני)"
 
 #: ../avant-preferences/window.glade.h:21
+#, fuzzy
 msgid "First step color:"
-msgstr "צבע צעד ראשון:"
+msgstr "צבע השלב ראשון:"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
@@ -135,8 +136,9 @@ msgid "General"
 msgstr "כללי"
 
 #: ../avant-preferences/window.glade.h:24
+#, fuzzy
 msgid "Glass Engine"
-msgstr "מנוע זכוכית"
+msgstr "מנוע שקיפות"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
@@ -160,7 +162,7 @@ msgstr "מנוע תבניות"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
-msgstr "צבע צעד שני:"
+msgstr "צבע השלב השני:"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
@@ -168,31 +170,32 @@ msgstr "בחר קובץ"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
-msgstr "צבע ההפרדה:"
+msgstr "צבע המפריד:"
 
 #: ../avant-preferences/window.glade.h:33
 msgid "Shadow color:"
-msgstr "צבע הצללית:"
+msgstr "צבע צל:"
 
 #: ../avant-preferences/window.glade.h:34
 msgid "Show separator between launchers and tasks"
-msgstr "הצג הפרדה בין משגרים לבין משימות"
+msgstr "הצג מפריד בין משגרים לבין משימות"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
-msgstr "הראה חלונות מכל נקודות הצפייה"
+msgstr "הראה חלונות מכל שולחנות העבודה"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
-msgstr "הופעת משימות"
+msgstr "תצוגת משימות"
 
 #: ../avant-preferences/window.glade.h:37
 msgid "Tasks have arrows"
 msgstr "למשימות יש חצים"
 
 #: ../avant-preferences/window.glade.h:38
+#, fuzzy
 msgid "The bar automatically hides when not used"
-msgstr "הסתר את הבר אוטומטית כשהוא לא בשימוש"
+msgstr "הבר מוסתר כאשר אינו בשימוש"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
@@ -221,7 +224,7 @@ msgstr "מיקומים"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
 msgid "Avant Launcher Preferences"
-msgstr "העדפות המשגר"
+msgstr "העדפות משגרים"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
@@ -233,15 +236,15 @@ msgstr "כיוון מגש המערכת"
 
 #: ../applets/switcher/switcher.schemas.in.h:1
 msgid "How many rows the switcher should have"
-msgstr "כמה שורות אמורות להיות לסויצ'ר"
+msgstr "כמה שורות אמורות להיות למחליף שולנות העבודה"
 
 #: ../applets/switcher/switcher.schemas.in.h:2
 msgid "The height of the switcher"
-msgstr "גובה הסויצ'ר"
+msgstr "גובה מחליף שולנות העבודה"
 
 #: ../applets/switcher/switcher.schemas.in.h:3
 msgid "The width of the switcher"
-msgstr "אורך הסויצ'ר"
+msgstr "אורך מחליף שולנות העבודה"
 
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
@@ -285,7 +288,7 @@ msgstr ""
 
 #: ../applets/trash/trashapplet.c:746
 msgid "_Empty Trash"
-msgstr "_רקן סל מחזור"
+msgstr "_רוקן אשפה"
 
 #: ../applets/trash/trashapplet.c:825
 #, c-format
@@ -299,7 +302,7 @@ msgstr ""
 #: ../applets/trash/trashapplet.c:845
 #, c-format
 msgid "There was an error displaying help: %s"
-msgstr "קרתה שגיאה בהצגת העזרה: %s"
+msgstr "ארעה שגיאה בהצגת עזרה: %s"
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
@@ -315,7 +318,8 @@ msgstr "ישומון אשפה עבור GNOME"
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  mark125 <https://launchpad.net/~mark125>"
+"  ORG21 https://launchpad.net/~or-grin\n"
+"  Revan https://launchpad.net/~mark125"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
@@ -341,4 +345,4 @@ msgstr ""
 
 #: ../src/awn-task.c:2279
 msgid "Change Icon"
-msgstr "החלפת צלם"
+msgstr "החלפת צלמית"
