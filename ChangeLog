@@ -1,4 +1,10 @@
-2007-09-26  Neil J. Patel  <njp@o-hand.com>
+2007-09-27  Neil J. Patel  <njpatel@gmail.com>
+
+	* src/awn-task.c:
+	Fix closing of a task so there are no 'jumps'. The widget is gradually 
+	reduced in size.
+
+2007-09-26  Neil J. Patel  <njpatel@gmail.com>
 
 	* configure.in:
 	* intltool-extract.in:
