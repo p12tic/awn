@@ -3,128 +3,157 @@ import shutil
 import tarfile
 import os
 import gconf
-import gconf
-import gnomedesktop
 import gtk
 import gobject
 
+import awnDefs as defs
+
 class AwnThemeManager:
 
-    def list(self, model):
+    def __init__(self, glade, config_dir):
+        self.AWN_CONFIG_DIR = config_dir
+        self.wTree = glade
+        self.theme_treeview = self.wTree.get_widget('theme_treeview')
+        self.theme_add = self.wTree.get_widget('theme_add')
+        self.theme_add.connect("clicked", self.add)
+        self.theme_remove = self.wTree.get_widget('theme_remove')
+        self.theme_remove.connect("clicked", self.delete)
+        self.theme_save = self.wTree.get_widget('theme_save')
+        self.theme_save.connect("clicked", self.save)
+        self.theme_apply = self.wTree.get_widget('theme_apply')
+        self.theme_apply.connect("clicked", self.apply_theme)
+
+        self.AWN_THEME_DIR = os.path.join(self.AWN_CONFIG_DIR, "themes/")
+        self.AWN_CONFIG = 'theme.awn'
+        self.AWN_THUMB = 'thumb.png'
+        self.AWN_CUSTOM_ICONS = 'custom-icons'
+        self.AWN_CURRENT = os.path.join(self.AWN_THEME_DIR, 'current.awn')
+        self.GCONF = gconf.client_get_default()
+        self.BUILD_DIR = "/tmp/awn_theme_build"
+        self.theme_list = {}
+        self.currItr = None
+        self.model = None
+        self.window = self.wTree.get_widget("main_window")
+        self.make_model()
+
+    def list_themes(self, model):
         self.model = model
         curr_name = ''
         curr_version = ''
-        if(os.path.exists(self.AWN_CURRENT)):
+        if os.path.exists(self.AWN_CURRENT):
             curr = open(self.AWN_CURRENT, "rb")
             lines = curr.readlines()
-            if(len(lines) == 2):
+            if len(lines) == 2:
                 curr_name = lines[0].rstrip('\n')
                 curr_version = lines[1].rstrip('\n')
                 curr.close()
 
-        if(not os.path.exists(self.AWN_THEME_DIR) and not os.path.isdir(self.AWN_THEME_DIR)):
+        if not os.path.exists(self.AWN_THEME_DIR) and not os.path.isdir(self.AWN_THEME_DIR):
             os.makedirs(self.AWN_THEME_DIR)
 
-        for dir in self.list_dirs(self.AWN_THEME_DIR):
-            theme_path = os.path.join(os.path.join(self.AWN_THEME_DIR, dir), self.AWN_CONFIG)
-            thumb_path = os.path.join(os.path.join(self.AWN_THEME_DIR, dir), self.AWN_THUMB)
+        for d in self.list_dirs(self.AWN_THEME_DIR):
+            theme_path = os.path.join(self.AWN_THEME_DIR, d, self.AWN_CONFIG)
+            thumb_path = os.path.join(self.AWN_THEME_DIR, d, self.AWN_THUMB)
 
             if os.path.exists(theme_path):
                 cfg = self.read(theme_path)
-                if(cfg):
-                    if(os.path.exists(thumb_path)):
+                if cfg:
+                    if os.path.exists(thumb_path):
                         self.pixbuf = gtk.gdk.pixbuf_new_from_file (thumb_path)
                     else:
                         self.pixbuf = None
 
-                    if(curr_name == cfg['details']['name'] and curr_version == cfg['details']['version']):
-                        setRadio = True
-                    else:
-                        setRadio = False
+                    setRadio = curr_name == cfg['details']['name'] and curr_version == cfg['details']['version']
 
-                    row = model.append (None, (setRadio, self.pixbuf, "Theme: "+cfg['details']['name']+"\nVersion: "+cfg['details']['version']+"\nAuthor: "+cfg['details']['author']+"\nDate: "+cfg['details']['date']))
+                    row = model.append (None, (setRadio, self.pixbuf, "Theme: %s\nVersion: %s\nAuthor: %s\nDate: %s" % (cfg['details']['name'], cfg['details']['version'], cfg['details']['author'], cfg['details']['date'])))
+                    
                     path = model.get_path(row)[0]
-                    self.theme_list[path] = {'row':row, 'name':cfg['details']['name'], 'version':cfg['details']['version'], 'dir':dir}
+                    self.theme_list[path] = {
+                        'row': row,
+                        'name': cfg['details']['name'],
+                        'version': cfg['details']['version'],
+                        'dir': d
+                        }
                     if setRadio:
                         self.currItr = row
                     else:
                         self.currItr = ''
 
 
-    def apply(self, widget, data=None):
-        if(self.currItr != None):
+    def apply_themes(self, widget, data=None):
+        if self.currItr is not None:
             index = self.model.get_path(self.currItr)[0]
             name = self.theme_list[index]['name']
             version = self.theme_list[index]['version']
-            dir = self.theme_list[index]['dir']
+            directory = self.theme_list[index]['dir']
 
             curr = open(self.AWN_CURRENT, 'w')
             curr.write(name+"\n")
             curr.write(version+"\n")
             curr.close()
 
-            gconf_insert = self.read(os.path.join(os.path.join(self.AWN_THEME_DIR, dir), self.AWN_CONFIG))
+            gconf_insert = self.read(os.path.join(os.path.join(self.AWN_THEME_DIR, directory), self.AWN_CONFIG))
 
             self.gconf_client = gconf.client_get_default ()
 
             for group in gconf_insert:
                 if group != 'details':
                     if group == "root":
-                        key_path = self.AWN_GCONF
+                        key_path = defs.AWN_PATH
                     else:
-                        key_path = os.path.join(self.AWN_GCONF, group)
+                        key_path = "%s/%s" % (defs.AWN_PATH, group)
                     style = gconf_insert[group]
                     for key in style:
-                        full_key_path = os.path.join(key_path, key)
-                        if(self.gconf_client.get(full_key_path) != None):
-                            type = self.gconf_client.get(full_key_path).type
-                            if type == gconf.VALUE_STRING:
+                        full_key_path = "%s/%s" % (key_path, key)
+                        if self.gconf_client.get(full_key_path) is not None:
+                            ctype = self.gconf_client.get(full_key_path).type
+                            if ctype == gconf.VALUE_STRING:
                                 self.gconf_client.set_string(full_key_path, style[key])
-                            elif type == gconf.VALUE_INT:
+                            elif ctype == gconf.VALUE_INT:
                                 self.gconf_client.set_int(full_key_path, int(style[key]))
-                            elif type == gconf.VALUE_FLOAT:
+                            elif ctype == gconf.VALUE_FLOAT:
                                 self.gconf_client.set_float(full_key_path, float(style[key]))
-                            elif type == gconf.VALUE_BOOL:
+                            elif ctype == gconf.VALUE_BOOL:
                                 self.gconf_client.set_bool(full_key_path, self.str_to_bool(style[key]))
 
-            if self.gconf_client.get_bool(self.AWN_GCONF+"/bar/render_pattern"):
-                self.gconf_client.set_string(self.AWN_GCONF+"/bar/pattern_uri", os.path.join(self.AWN_THEME_DIR, dir, "pattern.png"))
+            if self.gconf_client.get_bool(defs.BAR_RENDER_PATTERN):
+                self.gconf_client.set_string(defs.BAR_PATTERN_URI, os.path.join(self.AWN_THEME_DIR, directory, "pattern.png"))
 
     def add(self, widget, data=None):
         dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
                                   buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
 
-        filter = gtk.FileFilter()
-        filter.set_name("Compressed Files")
-        filter.add_pattern("*.tar.gz")
-        filter.add_pattern("*.tgz")
-        filter.add_pattern("*.bz2")
-        dialog.add_filter(filter)
+        ffilter = gtk.FileFilter()
+        ffilter.set_name("Compressed Files")
+        ffilter.add_pattern("*.tar.gz")
+        ffilter.add_pattern("*.tgz")
+        ffilter.add_pattern("*.bz2")
+        dialog.add_filter(ffilter)
 
         response = dialog.run()
         if response == gtk.RESPONSE_OK:
-            file = dialog.get_filename()
-            if not self.extract_file(file):
+            fname = dialog.get_filename()
+            if not self.extract_file(fname):
                 invalid = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_OK, message_format="Invalid Theme Format")
                 invalid.run()
                 invalid.destroy()
         dialog.destroy()
 
-    def extract_file(self, file):
-        tar = tarfile.open(file, "r:gz")
+    def extract_file(self, fname):
+        tar = tarfile.open(fname, "r:gz")
         filelist = tar.getmembers()
         theme_found = False
         thumb_found = False
-        for file in filelist:
-            path = os.path.split(file.name)
-            if(path[1] == self.AWN_CONFIG):
+        for f in filelist:
+            path = os.path.split(f.name)
+            if path[1] == self.AWN_CONFIG:
                 theme_found = True
-            if(path[1] == self.AWN_THUMB):
+            if path[1] == self.AWN_THUMB:
                 thumb_found = True
-        if(theme_found and thumb_found):
-            for file in tar.getnames():
-                tar.extract(file, self.AWN_THEME_DIR)
+        if theme_found and thumb_found):
+            for f in tar.getnames():
+                tar.extract(f, self.AWN_THEME_DIR)
             #tar.extractall(self.AWN_THEME_DIR) #new in python 2.5
             tar.close()
             self.add_row(path[0])
@@ -194,20 +223,21 @@ class AwnThemeManager:
             gconf_client = gconf.client_get_default()
 
             foldername = entries["name"].get_text().replace(" ", "_")
-            if(foldername == ''): foldername = "awn_theme"
+            if foldername == '':
+                foldername = "awn_theme"
 
-            os.makedirs(self.BUILD_DIR+"/"+foldername)
+            os.makedirs(os.path.join(self.BUILD_DIR, foldername))
 
-            self.write(self.BUILD_DIR+'/'+foldername+"/"+self.AWN_CONFIG, gconfKeys)
+            self.write(os.path.join(self.BUILD_DIR, foldername, self.AWN_CONFIG), gconfKeys)
 
-            if bool(self.GCONF.get_bool(self.AWN_GCONF+"/bar/render_pattern")):
-                pattern_path = str(self.GCONF.get_string(self.AWN_GCONF+"/bar/pattern_uri"))
+            if bool(self.GCONF.get_bool(defs.BAR_RENDER_PATTERN)):
+                pattern_path = str(self.GCONF.get_string(defs.BAR_PATTERN_URI))
                 if os.path.isfile(pattern_path):
-                    shutil.copy(pattern_path,self.BUILD_DIR+'/'+foldername+"/pattern.png")
+                    shutil.copy(pattern_path, os.path.join(self.BUILD_DIR, foldername, "pattern.png"))
 
             img = self.get_img()
             if (img != None):
-                img.save(self.BUILD_DIR+'/'+foldername+"/"+self.AWN_THUMB,"png")
+                img.save(os.path.join(self.BUILD_DIR, foldername, self.AWN_THUMB),"png")
 
             if custom_icons_found:
                 if entries["save_icons"].get_active():
@@ -219,7 +249,7 @@ class AwnThemeManager:
             tar.close()
 
             desktop = os.path.expanduser("~/Desktop")
-            shutil.move(self.BUILD_DIR+'/'+foldername+".tgz", desktop)
+            shutil.move(os.path.join(self.BUILD_DIR, foldername + ".tgz"), desktop)
 
             self.clean_tmp(self.BUILD_DIR)
 
@@ -233,22 +263,22 @@ class AwnThemeManager:
         shutil.copytree(icon_path, build_icon_path)
 
     def delete(self, widget, data=None):
-        if(self.currItr != None):
+        if self.currItr is not None:
             index = self.model.get_path(self.currItr)[0]
             name = self.theme_list[index]['name']
             version = self.theme_list[index]['version']
-            dir = self.theme_list[index]['dir']
+            directory = self.theme_list[index]['dir']
 
-            self.clean_tmp(os.path.join(self.AWN_THEME_DIR, dir))
+            self.clean_tmp(os.path.join(self.AWN_THEME_DIR, directory))
 
             #os.remove(self.AWN_THEME_DIR+'/'+dir+"/"+self.AWN_THUMB)
             #os.remove(self.AWN_THEME_DIR+'/'+dir+"/"+self.AWN_CONFIG)
             #os.rmdir(self.AWN_THEME_DIR+'/'+dir)
 
-            if(os.path.exists(self.AWN_CURRENT)):
+            if os.path.exists(self.AWN_CURRENT):
                 curr = open(self.AWN_CURRENT, "rb")
                 lines = curr.readlines()
-                if(len(lines) == 2):
+                if len(lines) == 2:
                     curr_name = lines[0].rstrip('\n')
                     curr_version = lines[1].rstrip('\n')
                     curr.close()
@@ -260,32 +290,37 @@ class AwnThemeManager:
             del self.theme_list[index]
             self.model.remove(self.currItr)
 
-    def add_row(self, dir):
-        theme_path = os.path.join(os.path.join(self.AWN_THEME_DIR, dir), self.AWN_CONFIG)
-        thumb_path = os.path.join(os.path.join(self.AWN_THEME_DIR, dir), self.AWN_THUMB)
+    def add_row(self, directory):
+        theme_path = os.path.join(self.AWN_THEME_DIR, directory, self.AWN_CONFIG)
+        thumb_path = os.path.join(self.AWN_THEME_DIR, directory, self.AWN_THUMB)
 
         if os.path.exists(theme_path):
             cfg = self.read(theme_path)
 
-            if(os.path.exists(thumb_path)):
+            if os.path.exists(thumb_path):
                 self.pixbuf = gtk.gdk.pixbuf_new_from_file(thumb_path)
             else:
                 self.pixbuf = None
 
-            row = self.model.append (None, (False, self.pixbuf, "Theme: "+cfg['details']['name']+"\nVersion: "+cfg['details']['version']+"\nAuthor: "+cfg['details']['author']+"\nDate: "+cfg['details']['date']))
+            row = self.model.append (None, (False, self.pixbuf, "Theme: %s\nVersion: %s\nAuthor: %s\nDate: " % (cfg['details']['name'], cfg['details']['version'], cfg['details']['author'], cfg['details']['date'])))
             path = self.model.get_path(row)[0]
-            self.theme_list[path] = {'row':row, 'name':cfg['details']['name'], 'version':cfg['details']['version'], 'dir':dir}
+            self.theme_list[path] = {
+                'row': row,
+                'name': cfg['details']['name'],
+                'version': cfg['details']['version'],
+                'dir':directory
+                }
 
     def gconf_get_key(self,full_key):
-        if(self.GCONF.get(full_key) != None):
-            type = self.GCONF.get(full_key).type
-            if type == gconf.VALUE_STRING:
+        if self.GCONF.get(full_key) is not None:
+            ctype = self.GCONF.get(full_key).type
+            if ctype == gconf.VALUE_STRING:
                 key = str(self.GCONF.get_string(full_key))
-            elif type == gconf.VALUE_INT:
+            elif ctype == gconf.VALUE_INT:
                 key = str(self.GCONF.get_int(full_key))
-            elif type == gconf.VALUE_FLOAT:
+            elif ctype == gconf.VALUE_FLOAT:
                 key = str(self.GCONF.get_float(full_key))
-            elif type == gconf.VALUE_BOOL:
+            elif ctype == gconf.VALUE_BOOL:
                 key = str(self.GCONF.get_bool(full_key))
             else:
                 key = ''
@@ -302,7 +337,7 @@ class AwnThemeManager:
                 if item == "details":
                     value = gconfKeys[item][key]
                 else:
-                    value = self.gconf_get_key(os.path.join(os.path.join(self.AWN_GCONF, item), key))
+                    value = self.gconf_get_key("%s/%s/%s" % (defs.AWN_PATH, item, key))
                 if item == "":
                     itm = "root"
                 else:
@@ -333,21 +368,18 @@ class AwnThemeManager:
         os.rmdir(dirPath)
 
     def list_dirs(self, path):
-        dirs = []
-        for dir in os.listdir(path):
-            dirs.append(dir)
-        return dirs
+        return list(os.listdir(path))
 
     def get_img(self):
         img_height = 75
         cmd = 'xwininfo -int -name  "awn_elements"'
         x = gtk.gdk.screen_width()/2
         y = gtk.gdk.screen_height()-img_height
-        for file in os.popen(cmd).readlines():
-            if file.find("Absolute upper-left X:  ") > 0:
-                x = int(file.split("  ")[2])-20
-            elif file.find("Absolute upper-left Y:  ") > 0:
-                y = int(file.split("  ")[2])+int(img_height/2)
+        for line in os.popen(cmd).readlines():
+            if line.find("Absolute upper-left X:  ") > 0:
+                x = int(line.split("  ")[2])-20
+            elif line.find("Absolute upper-left Y:  ") > 0:
+                y = int(line.split("  ")[2])+int(img_height/2)
         w = gtk.gdk.get_default_root_window()
         sz = w.get_size()
         pb = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB,False,8,150,75)
@@ -357,12 +389,12 @@ class AwnThemeManager:
     def on_toggle(self, widget, event, data=None):
         widget.foreach(self.update_radio, event)
 
-    def update_radio(self, model, path, iter, data):
-        if(path[0] == int(data)):
-            model.set_value(iter, 0, 1)
-            self.currItr = iter
+    def update_radio(self, model, path, iterator, data):
+        if path[0] == int(data):
+            model.set_value(iterator, 0, 1)
+            self.currItr = iterator
         else:
-            model.set_value(iter, 0, 0)
+            model.set_value(iterator, 0, 0)
 
     def drag_data_received_data(self, treeview, context, x, y, selection, info, etime):
         data = selection.data
@@ -371,11 +403,8 @@ class AwnThemeManager:
         if tarfile.is_tarfile(data):
             self.extract_file(data)
 
-    def str_to_bool(self, str):
-        if(str.lower() == "true"):
-            return True
-        else:
-            return False
+    def str_to_bool(self, string):
+        return string.lower() == "true"
 
     def make_model(self):
         self.theme_model = gtk.TreeStore (gobject.TYPE_BOOLEAN, gtk.gdk.Pixbuf, str)
@@ -398,32 +427,4 @@ class AwnThemeManager:
         self.theme_treeview.insert_column_with_attributes (-1, 'Preview', gtk.CellRendererPixbuf (), pixbuf=COL_PREVIEW)
         self.theme_treeview.insert_column_with_attributes (-1, 'Author', gtk.CellRendererText (), text=COL_AUTHOR)
 
-        self.list(self.theme_model)
-
-    def __init__(self, glade, config_dir):
-        self.AWN_CONFIG_DIR = config_dir
-        self.wTree = glade
-        self.theme_treeview = self.wTree.get_widget('theme_treeview')
-        self.theme_add = self.wTree.get_widget('theme_add')
-        self.theme_add.connect("clicked", self.add)
-        self.theme_remove = self.wTree.get_widget('theme_remove')
-        self.theme_remove.connect("clicked", self.delete)
-        self.theme_save = self.wTree.get_widget('theme_save')
-        self.theme_save.connect("clicked", self.save)
-        self.theme_apply = self.wTree.get_widget('theme_apply')
-        self.theme_apply.connect("clicked", self.apply)
-
-        self.AWN = 'avant-window-navigator'
-        self.AWN_GCONF = '/apps/'+self.AWN
-        self.AWN_THEME_DIR = os.path.join(self.AWN_CONFIG_DIR, "themes/")
-        self.AWN_CONFIG = 'theme.awn'
-        self.AWN_THUMB = 'thumb.png'
-        self.AWN_CUSTOM_ICONS = 'custom-icons'
-        self.AWN_CURRENT = os.path.join(self.AWN_THEME_DIR, 'current.awn')
-        self.GCONF = gconf.client_get_default()
-        self.BUILD_DIR = "/tmp/awn_theme_build"
-        self.theme_list = {}
-        self.currItr = None
-        self.model = None
-        self.window = self.wTree.get_widget("main_window")
-        self.make_model()
+        self.list_themes(self.theme_model)
