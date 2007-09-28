@@ -79,10 +79,10 @@ def make_color_string(color, alpha):
     return string
 
 # GCONF KEYS
-AWM_PATH                = "/apps/avant-window-navigator"
-AWM_AUTO_HIDE           = "/apps/avant-window-navigator/auto_hide"                       #bool
-AWM_PANEL_MODE          = "/apps/avant-window-navigator/panel_mode"                      #bool
-AWM_KEEP_BELOW          = "/apps/avant-window-navigator/keep_below"                      #bool
+AWN_PATH                = "/apps/avant-window-navigator"
+AWN_AUTO_HIDE           = "/apps/avant-window-navigator/auto_hide"                       #bool
+AWN_PANEL_MODE          = "/apps/avant-window-navigator/panel_mode"                      #bool
+AWN_KEEP_BELOW          = "/apps/avant-window-navigator/keep_below"                      #bool
 
 BAR_PATH                = "/apps/avant-window-navigator/bar"
 BAR_ROUNDED_CORNERS     = "/apps/avant-window-navigator/bar/rounded_corners"             #bool
@@ -134,9 +134,9 @@ class awnPreferences:
         self.client.add_dir(APP_PATH, gconf.CLIENT_PRELOAD_NONE)
         self.client.add_dir(TITLE_PATH, gconf.CLIENT_PRELOAD_NONE)
 
-        self.setup_bool (AWM_AUTO_HIDE, self.wTree.get_widget("autohide"))
-        self.setup_bool (AWM_KEEP_BELOW, self.wTree.get_widget("keepbelow"))
-        self.setup_bool (AWM_PANEL_MODE, self.wTree.get_widget("panelmode"))
+        self.setup_bool (AWN_AUTO_HIDE, self.wTree.get_widget("autohide"))
+        self.setup_bool (AWN_KEEP_BELOW, self.wTree.get_widget("keepbelow"))
+        self.setup_bool (AWN_PANEL_MODE, self.wTree.get_widget("panelmode"))
         self.setup_bool (APP_NAME_CHANGE_NOTIFY, self.wTree.get_widget("namechangenotify"))
         self.setup_bool (BAR_RENDER_PATTERN, self.wTree.get_widget("patterncheck"))
         self.setup_bool (BAR_ROUNDED_CORNERS, self.wTree.get_widget("roundedcornerscheck"))
@@ -263,12 +263,12 @@ class awnPreferences:
 
     def bool_changed(self, check, key):
         self.client.set_bool(key, check.get_active())
-        if key == AWM_KEEP_BELOW:
+        if key == AWN_KEEP_BELOW:
             if check.get_active():
                 self.wTree.get_widget("autohide").set_active(True)
             else:
                 self.wTree.get_widget("autohide").set_active(False)
-        elif key == AWM_AUTO_HIDE:
+        elif key == AWN_AUTO_HIDE:
             if not check.get_active():
                 if self.wTree.get_widget("keepbelow").get_active():
                     self.wTree.get_widget("keepbelow").set_active(False)
