@@ -80,45 +80,45 @@ def make_color_string(color, alpha):
 
 # GCONF KEYS
 AWN_PATH                = "/apps/avant-window-navigator"
-AWN_AUTO_HIDE           = "/apps/avant-window-navigator/auto_hide"                       #bool
-AWN_PANEL_MODE          = "/apps/avant-window-navigator/panel_mode"                      #bool
-AWN_KEEP_BELOW          = "/apps/avant-window-navigator/keep_below"                      #bool
+AWN_AUTO_HIDE           = AWN_PATH + "/auto_hide"                   #bool
+AWN_PANEL_MODE          = AWN_PATH + "/panel_mode"                  #bool
+AWN_KEEP_BELOW          = AWN_PATH + "/keep_below"                  #bool
 
-BAR_PATH                = "/apps/avant-window-navigator/bar"
-BAR_ROUNDED_CORNERS     = "/apps/avant-window-navigator/bar/rounded_corners"             #bool
-BAR_CORNER_RADIUS       = "/apps/avant-window-navigator/bar/corner_radius"               #float
-BAR_RENDER_PATTERN      = "/apps/avant-window-navigator/bar/render_pattern"              #bool
-BAR_PATTERN_URI         = "/apps/avant-window-navigator/bar/pattern_uri"                 #string
-BAR_PATTERN_ALPHA       = "/apps/avant-window-navigator/bar/pattern_alpha"               #float
-BAR_GLASS_STEP_1        = "/apps/avant-window-navigator/bar/glass_step_1"                #string
-BAR_GLASS_STEP_2        = "/apps/avant-window-navigator/bar/glass_step_2"                #string
-BAR_GLASS_HISTEP_1      = "/apps/avant-window-navigator/bar/glass_histep_1"              #string
-BAR_GLASS_HISTEP_2      = "/apps/avant-window-navigator/bar/glass_histep_2"              #string
-BAR_BORDER_COLOR        = "/apps/avant-window-navigator/bar/border_color"                #string
-BAR_HILIGHT_COLOR       = "/apps/avant-window-navigator/bar/hilight_color"               #string
-BAR_SHOW_SEPARATOR      = "/apps/avant-window-navigator/bar/show_separator"              #bool
-BAR_SEP_COLOR           = "/apps/avant-window-navigator/bar/sep_color"
+BAR_PATH                = AWN_PATH + "/bar"
+BAR_ROUNDED_CORNERS     = BAR_PATH + "/rounded_corners"             #bool
+BAR_CORNER_RADIUS       = BAR_PATH + "/corner_radius"               #float
+BAR_RENDER_PATTERN      = BAR_PATH + "/render_pattern"              #bool
+BAR_PATTERN_URI         = BAR_PATH + "/pattern_uri"                 #string
+BAR_PATTERN_ALPHA       = BAR_PATH + "/pattern_alpha"               #float
+BAR_GLASS_STEP_1        = BAR_PATH + "/glass_step_1"                #string
+BAR_GLASS_STEP_2        = BAR_PATH + "/glass_step_2"                #string
+BAR_GLASS_HISTEP_1      = BAR_PATH + "/glass_histep_1"              #string
+BAR_GLASS_HISTEP_2      = BAR_PATH + "/glass_histep_2"              #string
+BAR_BORDER_COLOR        = BAR_PATH + "/border_color"                #string
+BAR_HILIGHT_COLOR       = BAR_PATH + "/hilight_color"               #string
+BAR_SHOW_SEPARATOR      = BAR_PATH + "/show_separator"              #bool
+BAR_SEP_COLOR           = BAR_PATH + "/sep_color"
 
-BAR_HEIGHT              = "/apps/avant-window-navigator/bar/bar_height"                  #int
-BAR_ANGLE               = "/apps/avant-window-navigator/bar/bar_angle"                   #int
-BAR_ICON_OFFSET         = "/apps/avant-window-navigator/bar/icon_offset"                 #int
+BAR_HEIGHT              = BAR_PATH + "/bar_height"                  #int
+BAR_ANGLE               = BAR_PATH + "/bar_angle"                   #int
+BAR_ICON_OFFSET         = BAR_PATH + "/icon_offset"                 #int
 
-WINMAN_PATH             = "/apps/avant-window-navigator/window_manager"
-WINMAN_SHOW_ALL_WINS    = "/apps/avant-window-navigator/window_manager/show_all_windows" #bool
+WINMAN_PATH             = AWN_PATH + "/window_manager"
+WINMAN_SHOW_ALL_WINS    = WINMAN_PATH + "/show_all_windows"         #bool
 
-APP_PATH                = "/apps/avant-window-navigator/app"
-APP_ACTIVE_PNG          = "/apps/avant-window-navigator/app/active_png"                  #string
-APP_ARROW_COLOR         = "/apps/avant-window-navigator/app/arrow_color"                 #color
-APP_TASKS_H_ARROWS      = "/apps/avant-window-navigator/app/tasks_have_arrows"           #bool
-APP_ARROW_OFFSET        = "/apps/avant-window-navigator/app/arrow_offset"
-APP_ICON_EFFECT         = "/apps/avant-window-navigator/app/icon_effect"                 #int
-APP_NAME_CHANGE_NOTIFY  = "/apps/avant-window-navigator/app/name_change_notify"          #bool
+APP_PATH                = AWN_PATH + "/app"
+APP_ACTIVE_PNG          = APP_PATH + "/active_png"                  #string
+APP_ARROW_COLOR         = APP_PATH + "/arrow_color"                 #color
+APP_TASKS_H_ARROWS      = APP_PATH + "/tasks_have_arrows"           #bool
+APP_ARROW_OFFSET        = APP_PATH + "/arrow_offset"
+APP_ICON_EFFECT         = APP_PATH + "/icon_effect"                 #int
+APP_NAME_CHANGE_NOTIFY  = APP_PATH + "/name_change_notify"          #bool
 
-TITLE_PATH              = "/apps/avant-window-navigator/title"
-TITLE_TEXT_COLOR        = "/apps/avant-window-navigator/title/text_color"                #color
-TITLE_SHADOW_COLOR      = "/apps/avant-window-navigator/title/shadow_color"              #color
-TITLE_BACKGROUND        = "/apps/avant-window-navigator/title/background"                #color
-TITLE_FONT_FACE         = "/apps/avant-window-navigator/title/font_face"                 #string
+TITLE_PATH              = AWN_PATH + "/title"
+TITLE_TEXT_COLOR        = TITLE_PATH + "/text_color"                #color
+TITLE_SHADOW_COLOR      = TITLE_PATH + "/shadow_color"              #color
+TITLE_BACKGROUND        = TITLE_PATH + "/background"                #color
+TITLE_FONT_FACE         = TITLE_PATH + "/font_face"                 #string
 
 EMPTY = "none";
 
