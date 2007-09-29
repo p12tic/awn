@@ -1,5 +1,10 @@
 2007-09-29  Neil J. Patel  <njpatel@gmail.com>
 
+	* src/awn-task.c:
+	Attempt to fix bug #144028 by doing more checks before freeing items.
+
+2007-09-29  Neil J. Patel  <njpatel@gmail.com>
+
 	* src/awn-x.c:
 	Comment out unneeded g_prints.
 

@@ -1800,12 +1800,17 @@ awn_task_close (AwnTask *task)
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 
-	g_signal_handler_disconnect ((gpointer)priv->window, priv->icon_changed);
-	g_signal_handler_disconnect ((gpointer)priv->window, priv->state_changed);
-	g_signal_handler_disconnect ((gpointer)priv->window, priv->name_changed);
+	g_signal_handler_disconnect ((gpointer)priv->window, 
+                                     priv->icon_changed);
+	g_signal_handler_disconnect ((gpointer)priv->window, 
+                                     priv->state_changed);
+	g_signal_handler_disconnect ((gpointer)priv->window, 
+                                     priv->name_changed);
 	if (!priv->is_launcher) {
-		g_signal_handler_disconnect ((gpointer)priv->settings->window, priv->win_enter);
-		g_signal_handler_disconnect ((gpointer)priv->settings->window, priv->win_leave);
+		g_signal_handler_disconnect ((gpointer)priv->settings->window,
+                                             priv->win_enter);
+		g_signal_handler_disconnect ((gpointer)priv->settings->window, 
+                                             priv->win_leave);
 	}
 
 	priv->window = NULL;
@@ -1815,8 +1820,10 @@ awn_task_close (AwnTask *task)
 	for (i = 0; i < 5; i++) {
 		item = priv->menu_items[i];
 		if (item != NULL) {
-			gtk_widget_destroy (item->item);
-			g_free (item);
+			if (GTK_IS_WIDGET (item->item))
+                                gtk_widget_destroy (item->item);
+			if (item)
+                                g_free (item);
 			item = priv->menu_items[i] = NULL;
 		}
 
@@ -1828,7 +1835,8 @@ awn_task_close (AwnTask *task)
 		return;
 	}
 	/* start closing effect */
-	awn_effect_start_ex(&priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, 1);
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_CLOSING, 
+                            NULL, _task_destroy, 1);
 }
 
 
