@@ -1,5 +1,12 @@
 2007-09-29  Neil J. Patel  <njpatel@gmail.com>
 
+	patch by: Fabien Chaillou <fabs0028@free.fr>
+
+	* awn-manager/awnLauncher.py:
+	Fix bug #140928: exception in awn-manager when a launcher icon is missing.
+
+2007-09-29  Neil J. Patel  <njpatel@gmail.com>
+
 	patch by: weirdbro <weirdbro@gmail.com>
 
 	* src/awn-task.c:
