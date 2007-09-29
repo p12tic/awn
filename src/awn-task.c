@@ -569,58 +569,60 @@ awn_task_button_press (GtkWidget *task, GdkEventButton *event)
 
 	priv = AWN_TASK_GET_PRIVATE (task);
 
-	if (event->time - past_time > AWN_CLICK_IDLE_TIME) {
-		past_time = event->time;
-		if (priv->window) {
 
-			switch (event->button) {
-				case 1:
+	if (priv->window) {
+
+		switch (event->button) {
+			case 1:
+				if (event->time - past_time > AWN_CLICK_IDLE_TIME) {
+					past_time = event->time;
 					if ( wnck_window_is_active( priv->window ) ) {
 						wnck_window_minimize( priv->window );
 						return TRUE;
 					}
 					wnck_window_activate_transient( priv->window,
 							event->time );
-					break;
-				case 2:
-					if (priv->is_launcher)
-						awn_task_launch_unique(AWN_TASK (task), NULL);
-					break;
-				case 3:
-					menu = wnck_create_window_action_menu(priv->window);
-					awn_task_create_menu(AWN_TASK(task), GTK_MENU (menu));
-					gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL,
-							NULL, 3, event->time);
-					break;
-				default:
-					return FALSE;
-			}
-		} else if (priv->is_launcher) {
-			switch (event->button) {
-				case 1:
+				}
+				break;
+			case 2:
+				if (priv->is_launcher)
+					awn_task_launch_unique(AWN_TASK (task), NULL);
+				break;
+			case 3:
+				menu = wnck_create_window_action_menu(priv->window);
+				awn_task_create_menu(AWN_TASK(task), GTK_MENU (menu));
+				gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL,
+						NULL, 3, event->time);
+				break;
+			default:
+				return FALSE;
+		}
+	} else if (priv->is_launcher) {
+		switch (event->button) {
+			case 1:
+				if (event->time - past_time > AWN_CLICK_IDLE_TIME) {
+					past_time = event->time;
 					awn_task_launch(AWN_TASK (task), NULL);
 					launch_launched_effect(AWN_TASK (task));
-					break;
-// 				case 2:
+				}
+				break;
+// 			case 2:
 // 					// Manage middle click on launchers
 // 					g_print("Middle click pressed for launcher\n");
 // 					break;
-				case 3:
-					menu = gtk_menu_new();
-					awn_task_create_menu(AWN_TASK(task), GTK_MENU (menu));
-					gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL,
-							NULL, 3, event->time);
-					break;
-				default:
-					return FALSE;
-			}
-		} else {
-			;
+			case 3:
+				menu = gtk_menu_new();
+				awn_task_create_menu(AWN_TASK(task), GTK_MENU (menu));
+				gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL,
+						NULL, 3, event->time);
+				break;
+			default:
+				return FALSE;
 		}
+	} else {
+		;
 	}
-	else {
-		return FALSE;
-	}
+	
 
 	return TRUE;
 }

@@ -1,3 +1,11 @@
+2007-09-29  Neil J. Patel  <njpatel@gmail.com>
+
+	patch by: weirdbro <weirdbro@gmail.com>
+
+	* src/awn-task.c:
+	Fix bug #144118: Repeatedly right-clicking on icon brings up AWN context 
+	menu.
+
 2007-09-27  Neil J. Patel  <njpatel@gmail.com>
 
 	* src/awn-task.c:
