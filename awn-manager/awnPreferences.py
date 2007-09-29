@@ -276,7 +276,10 @@ class awnPreferences:
 
     def setup_font(self, key, font_btn):
         """sets up font chooser"""
-        font_btn.set_font_name(self.client.get_string(key))
+        font = self.client.get_string (key)
+        if font == None:
+            font = "Sans 10"
+        font_btn.set_font_name(font)
         font_btn.connect("font-set", self.font_changed, key)
 
     def font_changed(self, font_btn, key):

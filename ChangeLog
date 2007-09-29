@@ -1,5 +1,11 @@
 2007-09-29  Neil J. Patel  <njpatel@gmail.com>
 
+	* awn-manager/awnPreferences.py:
+	Should fix bug 144923, by making sure a string is valid before setting it on
+	the font button.
+
+2007-09-29  Neil J. Patel  <njpatel@gmail.com>
+
 	* src/awn-task.c:
 	Attempt to fix bug #144028 by doing more checks before freeing items.
 
