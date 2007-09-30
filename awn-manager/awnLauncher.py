@@ -19,30 +19,24 @@
 #
 #  Notes: Avant Window Navigator preferences window
 
-import sys, os
+import sys, os, subprocess
 try:
     import pygtk
     pygtk.require("2.0")
 except:
     pass
 try:
+    import gobject
     import gtk
-    import gtk.glade
+    import gtk.gdk as gdk
+    import gconf
 except:
     sys.exit(1)
 
-import gtk.gdk as gdk
-import gconf, gnomedesktop, gobject, subprocess, locale, gettext
+from xdg.DesktopEntry import DesktopEntry
 import awnDefs as defs
 
-APP = 'avant-window-navigator'
-DIR = defs.LOCALEDIR
-I18N_DOMAIN = "avant-window-navigator"
-
-locale.setlocale(locale.LC_ALL, '')
-gettext.bindtextdomain(APP, DIR)
-gettext.textdomain(APP)
-_ = gettext.gettext
+defs.i18nize(globals())
 
 class awnLauncher:
 
@@ -55,8 +49,8 @@ class awnLauncher:
         self.load_finished = False
 
         # GCONF KEYS
-        self.LAUNCHER_DIR = "/apps/avant-window-navigator/window_manager"
-        self.LAUNCHER_PATH = "/apps/avant-window-navigator/window_manager/launchers"
+        self.LAUNCHER_DIR = defs.AWN_PATH + "/window_manager"
+        self.LAUNCHER_PATH = self.LAUNCHER_DIR + "/launchers"
 
         self.client = gconf.client_get_default()
         self.client.add_dir(self.LAUNCHER_DIR, gconf.CLIENT_PRELOAD_NONE)
@@ -136,23 +130,23 @@ class awnLauncher:
 
     def make_row (self, uri):
         try:
-            item = gnomedesktop.item_new_from_file (uri, 0)
-            text = "<b>%s</b>\n%s" % (item.get_string(gnomedesktop.KEY_NAME), item.get_string (gnomedesktop.KEY_COMMENT))
+            item = DesktopEntry (uri)
+            text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
         except:
             return ""
         return text
 
     def make_icon (self, uri):
         icon = None
+        theme = gtk.icon_theme_get_default ()
         try:
-            item = gnomedesktop.item_new_from_file (uri, 0)
-            name = item.get_string(gnomedesktop.KEY_ICON)
+            item = DesktopEntry (uri)
+            name = item.getIcon()
             if name is None:
                 return icon
         except:
             return icon
 
-        theme = gtk.icon_theme_get_default ()
         try:
             icon = theme.load_icon (name, 32, 0)
         except:
@@ -165,37 +159,31 @@ class awnLauncher:
             except:
                 icon = None
 
+        if icon is None and "/" in name:
+            icon = gdk.pixbuf_new_from_file_at_size (name, 32, 32)
         if icon is None:
-            if "/" in name:
-                icon = gtk.gdk.pixbuf_new_from_file_at_size (name, 32, 32)
-
-        if icon is None:
-            dirs = ["/usr/share/pixmaps", "/usr/local/share/pixmaps"]
+            dirs = [os.path.join(p, "share", "pixmaps")
+                    for p in ("/usr", "/usr/local", defs.PREFIX)]
             for d in dirs:
                 n = name
-                if not ".png" in name:
-                        n = name + ".png"
+                if not name.endswith(".png"):
+                    n = name + ".png"
                 path = os.path.join (d, n)
-                if icon is None:
-                    try:
-                        icon = gtk.gdk.pixbuf_new_from_file_at_size (path, 32, 32)
-                    except:
-                        icon = None
-        if icon is None:
-            if "pixmaps" in name:
-                path1 = os.path.join ("/usr/share/pixmaps", name)
-                path2 = os.path.join ("/usr/local/share/pixmaps",
-                                      name)
                 try:
-                    icon = gtk.gdk.pixbuf_new_from_file_at_size (path1, 32, 32)
+                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
+                    if icon is not None:
+                        break
                 except:
                     icon = None
-
-                if icon is None:
-                    try:
-                        icon = gtk.gdk.pixbuf_new_from_file_at_scale (path2, 32, 32)
-                    except:
-                        icon = None
+        if icon is None and "pixmaps" in name:
+            for d in dirs:
+                path = os.path.join(d, name)
+                try:
+                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
+                    if icon is not None:
+                        break
+                except:
+                    icon = None
         return icon
 
 
@@ -220,7 +208,7 @@ class awnLauncher:
             self.refresh_tree(uris)
 
     def waitForNewItemProcess(self, process, file_path):
-        if process.poll() != None:
+        if process.poll() is not None:
             if os.path.isfile(file_path):
                 uris = self.client.get_list(self.LAUNCHER_PATH, gconf.VALUE_STRING)
                 uris.append(file_path)

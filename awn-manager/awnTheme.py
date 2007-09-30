@@ -152,9 +152,10 @@ class AwnThemeManager:
             if path[1] == self.AWN_THUMB:
                 thumb_found = True
         if theme_found and thumb_found:
-            for f in tar.getnames():
-                tar.extract(f, self.AWN_THEME_DIR)
-            #tar.extractall(self.AWN_THEME_DIR) #new in python 2.5
+            if hasattr(tar, 'extractall'):
+                tar.extractall(self.AWN_THEME_DIR) #new in python 2.5
+            else:
+                [tar.extract(f, self.AWN_THEME_DIR) for f in tar.getnames()]
             tar.close()
             self.add_row(path[0])
             message = "Theme Successfully Added"
@@ -162,7 +163,7 @@ class AwnThemeManager:
             success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_OK, message_format=message)
             icon_path = os.path.join(self.AWN_THEME_DIR, path[0], self.AWN_CUSTOM_ICONS)
             if os.path.exists(icon_path):
-                message2 = "Custom icons included can be found at:\n "+str(os.path.join(self.AWN_THEME_DIR, path[0], self.AWN_CUSTOM_ICONS))
+                message2 = "Custom icons included can be found at:\n " + os.path.join(self.AWN_THEME_DIR, path[0], self.AWN_CUSTOM_ICONS)
             success.format_secondary_text(message2)
             success.run()
             success.destroy()

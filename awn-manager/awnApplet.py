@@ -27,45 +27,27 @@ except:
     pass
 try:
     import gtk
-    import gtk.glade
+    import gtk.gdk as gdk
+    import gconf
 except:
     sys.exit(1)
 
-import gconf
-import gnomedesktop
-import gtk.gdk as gdk
 import awnDefs as defs
 import tarfile
+from xdg.DesktopEntry import DesktopEntry
 
-APP = 'avant-window-navigator'
-DIR = defs.LOCALEDIR
-I18N_DOMAIN = "avant-window-navigator"
-
-import locale
-import gettext
-locale.setlocale(locale.LC_ALL, '')
-gettext.bindtextdomain(APP, DIR)
-gettext.textdomain(APP)
-_ = gettext.gettext
-
-
-
-
+defs.i18nize(globals())
 
 class awnApplet:
 
     def __init__(self, glade):
-        # GCONF KEYS
-        self.APPLETS_DIR = "/apps/avant-window-navigator"
-        self.APPLETS_PATH = "/apps/avant-window-navigator/applets_list"
-
         # DIRS
-        self.AWN_APPLET_DIR = os.path.join(os.path.expanduser('~'), ".config/awn/applets")
+        self.AWN_APPLET_DIR = os.path.expanduser("~/.config/awn/applets")
         if not os.path.isdir(self.AWN_APPLET_DIR):
           os.mkdir(self.AWN_APPLET_DIR)
 
         self.client = gconf.client_get_default()
-        self.client.add_dir(self.APPLETS_DIR, gconf.CLIENT_PRELOAD_NONE)
+        self.client.add_dir(defs.AWN_PATH, gconf.CLIENT_PRELOAD_NONE)
 
         self.treeview_current = None
         self.load_finished = False
@@ -84,28 +66,26 @@ class awnApplet:
         self.applet_delete.connect("clicked", self.delete_applet)
 
         self.treeview_available.enable_model_drag_dest([('text/plain', 0, 0)],
-                  gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_MOVE)
+                  gdk.ACTION_DEFAULT | gdk.ACTION_MOVE)
         self.treeview_available.connect("drag_data_received", self.drag_data_received_data)
 
-    def drag_data_received_data(self, treeview, context, x, y, selection, info, etime, apply=False):
-        data = selection.data
-        data = urllib.unquote(data)
-        data = data.replace('file://',"")
-        data = data.replace("\r\n","")
+    def drag_data_received_data(self, treeview, context, x, y, selection, info, etime, do_apply=False):
+        data = urllib.unquote(selection.data)
+        data = data.replace("file://", "").replace("\r\n", "")
         if tarfile.is_tarfile(data):
-            self.extract_file(data, apply)
+            self.extract_file(data, do_apply)
 
     def check_path(self, appletpath):
-        df = gnomedesktop.item_new_from_file (appletpath, 0)
-        icon_path = df.get_string(gnomedesktop.KEY_ICON)
-        if(not icon_path.startswith('/') and icon_path.find('/') != -1):
-            df.set_string(gnomedesktop.KEY_ICON, os.path.join(self.AWN_APPLET_DIR, icon_path))
-            df.save(appletpath, False)
+        df = DesktopEntry(appletpath)
+        icon_path = df.getIcon()
+        if not icon_path.startswith('/') and '/' not in icon_path:
+            df.set("Icon", os.path.join(self.AWN_APPLET_DIR, icon_path))
+            df.write()
 
-    def extract_file(self, file, apply):
+    def extract_file(self, filename, do_apply):
         appletpath = ""
         applet_exists = False
-        tar = tarfile.open(file, "r:gz")
+        tar = tarfile.open(filename, "r:gz")
         for member in tar.getmembers():
             if member.name.endswith(".desktop"):
                 appletpath = os.path.join(self.AWN_APPLET_DIR, member.name)
@@ -118,7 +98,7 @@ class awnApplet:
         if appletpath:
             self.check_path(appletpath)
 
-            if apply:
+            if do_apply:
                 self.install_applet(appletpath, True, applet_exists)
                 self.install_applet(appletpath, False, applet_exists, False)
             else:
@@ -129,8 +109,8 @@ class awnApplet:
             success.run()
             success.destroy()
 
-    def install_applet(self, appletpath, apply, applet_exists, msg=True):
-        if apply:
+    def install_applet(self, appletpath, do_apply, applet_exists, msg=True):
+        if do_apply:
             model = self.model
         else:
             model = self.appmodel
@@ -144,7 +124,7 @@ class awnApplet:
                 model.set_value (row, 0, icon)
                 model.set_value (row, 1, text)
                 model.set_value (row, 2, appletpath)
-            if apply:
+            if do_apply:
                 uid = "%d" % int(time.time())
                 self.model.set_value (row, 3, uid)
                 self._apply ()
@@ -163,8 +143,8 @@ class awnApplet:
         if not select:
             print "no selection"
             return
-        model, iter = select.get_selected ()
-        path = model.get_value (iter, 2)
+        model, iterator = select.get_selected ()
+        path = model.get_value (iterator, 2)
         icon, text = self.make_row (path)
         uid = "%d" % int(time.time())
         if len (text) < 2:
@@ -182,8 +162,8 @@ class awnApplet:
     def row_active (self, q, w, e):
         self.add_applet (None)
 
-    def test_active(self, model, path, iter, sel_path):
-        if model.get_value (iter, 2) == sel_path:
+    def test_active(self, model, path, iterator, sel_path):
+        if model.get_value (iterator, 2) == sel_path:
             self.active_found = True
             return True
 
@@ -192,9 +172,9 @@ class awnApplet:
         select = self.treeview_available.get_selection()
         if not select:
             return
-        model, iter = select.get_selected ()
-        path = model.get_value (iter, 2)
-        item = gnomedesktop.item_new_from_file (path, 0)
+        model, iterator = select.get_selected ()
+        path = model.get_value (iterator, 2)
+        item = DesktopEntry (path)
 
         self.model.foreach(self.test_active, path)
         if self.active_found:
@@ -206,7 +186,7 @@ class awnApplet:
                             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                             (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
                             gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
-        label = gtk.Label("<b>Delete "+item.get_string(gnomedesktop.KEY_NAME) +"?</b>")
+        label = gtk.Label("<b>Delete %s?</b>" % item.getName())
         label.set_use_markup(True)
         align = gtk.Alignment()
         align.set_padding(5,5,5,5)
@@ -216,11 +196,11 @@ class awnApplet:
         result = dialog.run()
 
         if result == -3:
-            execpath = item.get_string(gnomedesktop.KEY_EXEC)
+            execpath = item.get_exec()
             fullpath = os.path.join(self.AWN_APPLET_DIR, os.path.split(execpath)[0])
 
             if os.path.exists(fullpath) and ".config" in path:
-                model.remove (iter)
+                model.remove (iterator)
                 self.remove_applet_dir(fullpath, path)
                 self._apply ()
                 dialog.destroy()
@@ -234,15 +214,15 @@ class awnApplet:
         select = self.treeview_current.get_selection()
         if not select:
             return
-        model, iter = select.get_selected ()
-        self.remove_keys (model, iter)
-        model.remove (iter)
+        model, iterator = select.get_selected ()
+        self.remove_keys (model, iterator)
+        model.remove (iterator)
         self._apply ()
 
-    def remove_keys (self, model, iter):
+    def remove_keys (self, model, iterator):
         engine = gconf.engine_get_default ()
-        uid = model.get_value (iter, 3)
-        key = "/apps/avant-window-navigator/applets/%s" % uid
+        uid = model.get_value (iterator, 3)
+        key = "%s/%s" % (defs.APPLETS_PATH, uid)
         try:
             engine.remove_dir (key)
         except:
@@ -270,12 +250,12 @@ class awnApplet:
             l.append (s)
             it= self.model.iter_next (it)
 
-        self.client.set_list(self.APPLETS_PATH, gconf.VALUE_STRING, l)
+        self.client.set_list(defs.APPLET_LIST, gconf.VALUE_STRING, l)
 
     def up_clicked (self, button):
         select = self.treeview.get_selection()
-        model, iter = select.get_selected ()
-        uri = model.get_value (iter, 2)
+        model, iterator = select.get_selected ()
+        uri = model.get_value (iterator, 2)
         prev = None
         it = model.get_iter_first ()
         while it:
@@ -285,15 +265,15 @@ class awnApplet:
             it = model.iter_next (it)
 
         if prev:
-            model.move_before (iter, prev)
+            model.move_before (iterator, prev)
         self._apply ()
 
     def down_clicked (self, button):
         select = self.treeview.get_selection()
-        model, iter = select.get_selected ()
-        next = model.iter_next (iter)
+        model, iterator = select.get_selected ()
+        next = model.iter_next (iterator)
         if next:
-            model.move_after (iter, next)
+            model.move_after (iterator, next)
         self._apply ()
 
     def make_model (self):
@@ -318,18 +298,18 @@ class awnApplet:
         self.treeview_current.append_column (col)
         self.treeview_current.show()
 
-        applets = self.client.get_list(self.APPLETS_PATH, gconf.VALUE_STRING)
+        applets = self.client.get_list(defs.APPLET_LIST, gconf.VALUE_STRING)
 
         self.refresh_tree (applets)
 
     def make_row (self, path):
         text = ""
         try:
-            item = gnomedesktop.item_new_from_file (path, 0)
-            text = "<b>%s</b>\n%s" % (item.get_string(gnomedesktop.KEY_NAME), item.get_string (gnomedesktop.KEY_COMMENT))
+            item = DesktopEntry (path)
+            text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
         except:
             return None, ""
-        return self.make_icon (item.get_string(gnomedesktop.KEY_ICON)), text
+        return self.make_icon (item.getIcon()), text
 
     def make_icon (self, name):
         icon = None
@@ -348,17 +328,17 @@ class awnApplet:
                 icon = None
 
         if icon is None and "/" in name and os.path.exists(name):
-            icon = gtk.gdk.pixbuf_new_from_file_at_size (name, 32, 32)
+            icon = gdk.pixbuf_new_from_file_at_size (name, 32, 32)
         if icon is None:
-            dirs = ["/usr/share/pixmaps", "/usr/local/share/pixmaps",
-                    os.path.join(defs.PREFIX, "share", "pixmaps")]
+            dirs = [os.path.join(p, "share", "pixmaps")
+                    for p in ("/usr", "/usr/local", defs.PREFIX)]
             for d in dirs:
                 n = name
                 if not name.endswith(".png"):
                     n = name + ".png"
                 path = os.path.join (d, n)
                 try:
-                    icon = gtk.gdk.pixbuf_new_from_file_at_size (path, 32, 32)
+                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
                     if icon is not None:
                         break
                 except:
@@ -367,7 +347,7 @@ class awnApplet:
             for d in dirs:
                 path = os.path.join(d, name)
                 try:
-                    icon = gtk.gdk.pixbuf_new_from_file_at_size (path, 32, 32)
+                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
                     if icon is not None:
                         break
                 except:
@@ -436,10 +416,10 @@ class awnApplet:
         success.run()
         success.destroy()
 
-    def reordered(self, model, path, iter, data=None):
-        cur_index = self.model.get_path(iter)[0]
-        cur_uri = self.model.get_value (iter, 2)
-        cur_uid = self.model.get_value (iter, 3)
+    def reordered(self, model, path, iterator, data=None):
+        cur_index = self.model.get_path(iterator)[0]
+        cur_uri = self.model.get_value (iterator, 2)
+        cur_uid = self.model.get_value (iterator, 3)
         cur_s = "%s::%s" % (cur_uri, cur_uid)
         l = {}
         it = self.model.get_iter_first ()
@@ -461,5 +441,5 @@ class awnApplet:
         applets = l.values()
 
         if not None in applets and self.load_finished:
-            self.client.set_list(self.APPLETS_PATH, gconf.VALUE_STRING, applets)
+            self.client.set_list(defs.APPLET_LIST, gconf.VALUE_STRING, applets)
 # vim: set et ts=4 sts=4 sw=4 :

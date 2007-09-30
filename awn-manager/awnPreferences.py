@@ -27,26 +27,15 @@ try:
 except:
     pass
 try:
+    import gobject
     import gtk
-    import gtk.glade
+    import gconf
 except:
     sys.exit(1)
 
-import gconf
 import awnDefs as defs
 
-APP = 'avant-window-navigator'
-DIR = defs.LOCALEDIR
-I18N_DOMAIN = "avant-window-navigator"
-
-import locale
-import gettext
-locale.setlocale(locale.LC_ALL, '')
-gettext.bindtextdomain(APP, DIR)
-gettext.textdomain(APP)
-_ = gettext.gettext
-
-import gobject
+defs.i18nize(globals())
 
 def dec2hex(n):
     """return the hexadecimal string representation of integer n"""
@@ -78,48 +67,6 @@ def make_color_string(color, alpha):
     #hack
     return string
 
-# GCONF KEYS
-AWN_PATH                = "/apps/avant-window-navigator"
-AWN_AUTO_HIDE           = AWN_PATH + "/auto_hide"                   #bool
-AWN_PANEL_MODE          = AWN_PATH + "/panel_mode"                  #bool
-AWN_KEEP_BELOW          = AWN_PATH + "/keep_below"                  #bool
-
-BAR_PATH                = AWN_PATH + "/bar"
-BAR_ROUNDED_CORNERS     = BAR_PATH + "/rounded_corners"             #bool
-BAR_CORNER_RADIUS       = BAR_PATH + "/corner_radius"               #float
-BAR_RENDER_PATTERN      = BAR_PATH + "/render_pattern"              #bool
-BAR_PATTERN_URI         = BAR_PATH + "/pattern_uri"                 #string
-BAR_PATTERN_ALPHA       = BAR_PATH + "/pattern_alpha"               #float
-BAR_GLASS_STEP_1        = BAR_PATH + "/glass_step_1"                #string
-BAR_GLASS_STEP_2        = BAR_PATH + "/glass_step_2"                #string
-BAR_GLASS_HISTEP_1      = BAR_PATH + "/glass_histep_1"              #string
-BAR_GLASS_HISTEP_2      = BAR_PATH + "/glass_histep_2"              #string
-BAR_BORDER_COLOR        = BAR_PATH + "/border_color"                #string
-BAR_HILIGHT_COLOR       = BAR_PATH + "/hilight_color"               #string
-BAR_SHOW_SEPARATOR      = BAR_PATH + "/show_separator"              #bool
-BAR_SEP_COLOR           = BAR_PATH + "/sep_color"
-
-BAR_HEIGHT              = BAR_PATH + "/bar_height"                  #int
-BAR_ANGLE               = BAR_PATH + "/bar_angle"                   #int
-BAR_ICON_OFFSET         = BAR_PATH + "/icon_offset"                 #int
-
-WINMAN_PATH             = AWN_PATH + "/window_manager"
-WINMAN_SHOW_ALL_WINS    = WINMAN_PATH + "/show_all_windows"         #bool
-
-APP_PATH                = AWN_PATH + "/app"
-APP_ACTIVE_PNG          = APP_PATH + "/active_png"                  #string
-APP_ARROW_COLOR         = APP_PATH + "/arrow_color"                 #color
-APP_TASKS_H_ARROWS      = APP_PATH + "/tasks_have_arrows"           #bool
-APP_ARROW_OFFSET        = APP_PATH + "/arrow_offset"
-APP_ICON_EFFECT         = APP_PATH + "/icon_effect"                 #int
-APP_NAME_CHANGE_NOTIFY  = APP_PATH + "/name_change_notify"          #bool
-
-TITLE_PATH              = AWN_PATH + "/title"
-TITLE_TEXT_COLOR        = TITLE_PATH + "/text_color"                #color
-TITLE_SHADOW_COLOR      = TITLE_PATH + "/shadow_color"              #color
-TITLE_BACKGROUND        = TITLE_PATH + "/background"                #color
-TITLE_FONT_FACE         = TITLE_PATH + "/font_face"                 #string
-
 EMPTY = "none";
 
 class awnPreferences:
@@ -129,51 +76,51 @@ class awnPreferences:
         self.wTree = wTree
 
         self.client = gconf.client_get_default()
-        self.client.add_dir(BAR_PATH, gconf.CLIENT_PRELOAD_NONE)
-        self.client.add_dir(WINMAN_PATH, gconf.CLIENT_PRELOAD_NONE)
-        self.client.add_dir(APP_PATH, gconf.CLIENT_PRELOAD_NONE)
-        self.client.add_dir(TITLE_PATH, gconf.CLIENT_PRELOAD_NONE)
+        self.client.add_dir(defs.BAR_PATH, gconf.CLIENT_PRELOAD_NONE)
+        self.client.add_dir(defs.WINMAN_PATH, gconf.CLIENT_PRELOAD_NONE)
+        self.client.add_dir(defs.APP_PATH, gconf.CLIENT_PRELOAD_NONE)
+        self.client.add_dir(defs.TITLE_PATH, gconf.CLIENT_PRELOAD_NONE)
 
-        self.setup_bool (AWN_AUTO_HIDE, self.wTree.get_widget("autohide"))
-        self.setup_bool (AWN_KEEP_BELOW, self.wTree.get_widget("keepbelow"))
-        self.setup_bool (AWN_PANEL_MODE, self.wTree.get_widget("panelmode"))
-        self.setup_bool (APP_NAME_CHANGE_NOTIFY, self.wTree.get_widget("namechangenotify"))
-        self.setup_bool (BAR_RENDER_PATTERN, self.wTree.get_widget("patterncheck"))
-        self.setup_bool (BAR_ROUNDED_CORNERS, self.wTree.get_widget("roundedcornerscheck"))
-        self.setup_bool (WINMAN_SHOW_ALL_WINS, self.wTree.get_widget("allwindowscheck"))
+        self.setup_bool (defs.AWN_AUTO_HIDE, self.wTree.get_widget("autohide"))
+        self.setup_bool (defs.AWN_KEEP_BELOW, self.wTree.get_widget("keepbelow"))
+        self.setup_bool (defs.AWN_PANEL_MODE, self.wTree.get_widget("panelmode"))
+        self.setup_bool (defs.APP_NAME_CHANGE_NOTIFY, self.wTree.get_widget("namechangenotify"))
+        self.setup_bool (defs.BAR_RENDER_PATTERN, self.wTree.get_widget("patterncheck"))
+        self.setup_bool (defs.BAR_ROUNDED_CORNERS, self.wTree.get_widget("roundedcornerscheck"))
+        self.setup_bool (defs.WINMAN_SHOW_ALL_WINS, self.wTree.get_widget("allwindowscheck"))
 
-        self.setup_bool (BAR_SHOW_SEPARATOR, self.wTree.get_widget("separatorcheck"))
-        self.setup_bool (APP_TASKS_H_ARROWS, self.wTree.get_widget("arrowcheck"))
-        self.setup_effect (APP_ICON_EFFECT, self.wTree.get_widget("iconeffects"))
+        self.setup_bool (defs.BAR_SHOW_SEPARATOR, self.wTree.get_widget("separatorcheck"))
+        self.setup_bool (defs.APP_TASKS_H_ARROWS, self.wTree.get_widget("arrowcheck"))
+        self.setup_effect (defs.APP_ICON_EFFECT, self.wTree.get_widget("iconeffects"))
 
-        self.setup_chooser(APP_ACTIVE_PNG, self.wTree.get_widget("activefilechooser"))
-        self.setup_chooser(BAR_PATTERN_URI, self.wTree.get_widget("patternchooserbutton"))
+        self.setup_chooser(defs.APP_ACTIVE_PNG, self.wTree.get_widget("activefilechooser"))
+        self.setup_chooser(defs.BAR_PATTERN_URI, self.wTree.get_widget("patternchooserbutton"))
 
-        self.setup_font(TITLE_FONT_FACE, self.wTree.get_widget("selectfontface"))
+        self.setup_font(defs.TITLE_FONT_FACE, self.wTree.get_widget("selectfontface"))
 
-        self.setup_spin(BAR_ICON_OFFSET, self.wTree.get_widget("bariconoffset"))
-        self.setup_spin(BAR_HEIGHT, self.wTree.get_widget("barheight"))
-        self.setup_spin(BAR_ANGLE, self.wTree.get_widget("barangle"))
-        self.setup_spin(APP_ARROW_OFFSET, self.wTree.get_widget("arrowoffset"))
+        self.setup_spin(defs.BAR_ICON_OFFSET, self.wTree.get_widget("bariconoffset"))
+        self.setup_spin(defs.BAR_HEIGHT, self.wTree.get_widget("barheight"))
+        self.setup_spin(defs.BAR_ANGLE, self.wTree.get_widget("barangle"))
+        self.setup_spin(defs.APP_ARROW_OFFSET, self.wTree.get_widget("arrowoffset"))
         self.setup_look(self.wTree.get_widget("look"))
 
-        self.setup_scale(BAR_PATTERN_ALPHA, self.wTree.get_widget("patternscale"))
+        self.setup_scale(defs.BAR_PATTERN_ALPHA, self.wTree.get_widget("patternscale"))
 
-        self.setup_color(TITLE_TEXT_COLOR, self.wTree.get_widget("textcolor"))
-        self.setup_color(TITLE_SHADOW_COLOR, self.wTree.get_widget("shadowcolor"))
-        self.setup_color(TITLE_BACKGROUND, self.wTree.get_widget("backgroundcolor"))
+        self.setup_color(defs.TITLE_TEXT_COLOR, self.wTree.get_widget("textcolor"))
+        self.setup_color(defs.TITLE_SHADOW_COLOR, self.wTree.get_widget("shadowcolor"))
+        self.setup_color(defs.TITLE_BACKGROUND, self.wTree.get_widget("backgroundcolor"))
 
-        self.setup_color(BAR_BORDER_COLOR, self.wTree.get_widget("mainbordercolor"))
-        self.setup_color(BAR_HILIGHT_COLOR, self.wTree.get_widget("internalbordercolor"))
+        self.setup_color(defs.BAR_BORDER_COLOR, self.wTree.get_widget("mainbordercolor"))
+        self.setup_color(defs.BAR_HILIGHT_COLOR, self.wTree.get_widget("internalbordercolor"))
 
-        self.setup_color(BAR_GLASS_STEP_1, self.wTree.get_widget("gradientcolor1"))
-        self.setup_color(BAR_GLASS_STEP_2, self.wTree.get_widget("gradientcolor2"))
+        self.setup_color(defs.BAR_GLASS_STEP_1, self.wTree.get_widget("gradientcolor1"))
+        self.setup_color(defs.BAR_GLASS_STEP_2, self.wTree.get_widget("gradientcolor2"))
 
-        self.setup_color(BAR_GLASS_HISTEP_1, self.wTree.get_widget("highlightcolor1"))
-        self.setup_color(BAR_GLASS_HISTEP_1, self.wTree.get_widget("highlightcolor2"))
+        self.setup_color(defs.BAR_GLASS_HISTEP_1, self.wTree.get_widget("highlightcolor1"))
+        self.setup_color(defs.BAR_GLASS_HISTEP_1, self.wTree.get_widget("highlightcolor2"))
 
-        self.setup_color(BAR_SEP_COLOR, self.wTree.get_widget("sepcolor"))
-        self.setup_color(APP_ARROW_COLOR, self.wTree.get_widget("arrowcolor"))
+        self.setup_color(defs.BAR_SEP_COLOR, self.wTree.get_widget("sepcolor"))
+        self.setup_color(defs.APP_ARROW_COLOR, self.wTree.get_widget("arrowcolor"))
 
     def setup_color(self, key, colorbut):
         try:
@@ -235,7 +182,7 @@ class awnPreferences:
             if os.path.exists(key):
                 chooser.set_filename(self.client.get_string(key))
             else:
-                self.client.set_string(BAR_PATTERN_URI, "~")
+                self.client.set_string(defs.BAR_PATTERN_URI, "~")
         except TypeError:
             raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
         chooser.connect("selection-changed", self.chooser_changed, key)
@@ -263,12 +210,12 @@ class awnPreferences:
 
     def bool_changed(self, check, key):
         self.client.set_bool(key, check.get_active())
-        if key == AWN_KEEP_BELOW:
+        if key == defs.AWN_KEEP_BELOW:
             if check.get_active():
                 self.wTree.get_widget("autohide").set_active(True)
             else:
                 self.wTree.get_widget("autohide").set_active(False)
-        elif key == AWN_AUTO_HIDE:
+        elif key == defs.AWN_AUTO_HIDE:
             if not check.get_active():
                 if self.wTree.get_widget("keepbelow").get_active():
                     self.wTree.get_widget("keepbelow").set_active(False)
@@ -309,7 +256,7 @@ class awnPreferences:
 
     def look_changed(self, dropdown):
         if dropdown.get_active() == -1: #init
-            if self.client.get_int(BAR_ANGLE) == 0:
+            if self.client.get_int(defs.BAR_ANGLE) == 0:
                 dropdown.set_active(0)
                 self.wTree.get_widget("roundedcornerscheck_holder").show_all()
                 self.wTree.get_widget("barangle_holder").hide_all()

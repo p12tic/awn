@@ -20,9 +20,9 @@
 #
 #  Notes: Avant Window Navigator Manager
 
-import sys, os, time
+import sys, os, os.path, time
 
-PKGDATA = "@DATADIR@" + "/avant-window-navigator/awn-manager"
+PKGDATA = os.path.join("@DATADIR@", "avant-window-navigator", "awn-manager")
 sys.path.append (PKGDATA)
 
 try:
@@ -33,29 +33,17 @@ except:
 try:
     import gtk
     import gtk.glade
+    import gtk.gdk as gdk
 except:
     sys.exit(1)
-
-import gconf
-import gnomedesktop
-import gtk.gdk as gdk
 
 from awnTheme import AwnThemeManager
 from awnPreferences import awnPreferences
 from awnApplet import awnApplet
 from awnLauncher import awnLauncher
+import awnDefs as defs
 
-APP = 'avant-window-navigator'
-DIR = "@DATADIR@" + "/locale"
-I18N_DOMAIN = "avant-window-navigator"
-
-import locale
-import gettext
-locale.setlocale(locale.LC_ALL, '')
-gettext.bindtextdomain(APP, DIR)
-gettext.textdomain(APP)
-_ = gettext.gettext
-
+defs.i18nize(globals())
 
 class AwnManager:
 
@@ -65,10 +53,10 @@ class AwnManager:
         if not os.path.exists(self.AWN_CONFIG_DIR):
             os.makedirs(self.AWN_CONFIG_DIR)
         self.GLADE_PATH = os.path.join(PKGDATA, "window.glade")
-        gtk.glade.bindtextdomain(APP, DIR)
-        gtk.glade.textdomain(APP)
+        gtk.glade.bindtextdomain(defs.I18N_DOMAIN, defs.LOCALEDIR)
+        gtk.glade.textdomain(defs.I18N_DOMAIN)
 
-        self.wTree = gtk.glade.XML(self.GLADE_PATH, domain=I18N_DOMAIN)
+        self.wTree = gtk.glade.XML(self.GLADE_PATH, domain=defs.I18N_DOMAIN)
 
         self.window = self.wTree.get_widget("main_window")
         self.window.connect("delete-event", gtk.main_quit)
@@ -194,7 +182,5 @@ You should have received a copy of the GNU General Public License along with thi
         gtk.main()
 
 if __name__ == "__main__":
-    gettext.textdomain(I18N_DOMAIN)
-    gtk.glade.bindtextdomain(I18N_DOMAIN, "/usr/share/locale")
     awnmanager = AwnManager()
     awnmanager.main()
