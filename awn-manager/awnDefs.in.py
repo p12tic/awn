@@ -23,8 +23,12 @@ import sys, os
 
 PREFIX = "@PREFIX@"
 
-LOCALEDIR = os.path.join (PREFIX, "share/locale")
-PKGDATADIR = os.path.join (PREFIX, "share/avant-window-navigator")
+LOCALEDIR = os.path.join (PREFIX, "share", "locale")
+PKGDATADIR = os.path.join (PREFIX, "share", "avant-window-navigator")
+
+HOME_CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".config", "awn")
+HOME_APPLETS_DIR = os.path.join(HOME_CONFIG_DIR, "applets")
+HOME_LAUNCHERS_DIR = os.path.join(HOME_CONFIG_DIR, "launchers")
 
 
 # GCONF KEYS
@@ -54,6 +58,7 @@ BAR_ICON_OFFSET         = BAR_PATH + "/icon_offset"                 #int
 
 WINMAN_PATH             = AWN_PATH + "/window_manager"
 WINMAN_SHOW_ALL_WINS    = WINMAN_PATH + "/show_all_windows"         #bool
+WINMAN_LAUNCHERS        = WINMAN_PATH + "/launchers"                #list
 
 APP_PATH                = AWN_PATH + "/app"
 APP_ACTIVE_PNG          = APP_PATH + "/active_png"                  #string
@@ -69,7 +74,7 @@ TITLE_SHADOW_COLOR      = TITLE_PATH + "/shadow_color"              #color
 TITLE_BACKGROUND        = TITLE_PATH + "/background"                #color
 TITLE_FONT_FACE         = TITLE_PATH + "/font_face"                 #string
 
-APPLETS_PATH             = AWN_PATH + "/applets"
+APPLETS_PATH            = AWN_PATH + "/applets"
 APPLET_LIST             = AWN_PATH + "/applets_list"                #list
 
 # i18n-related

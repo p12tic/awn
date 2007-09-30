@@ -42,9 +42,8 @@ class awnApplet:
 
     def __init__(self, glade):
         # DIRS
-        self.AWN_APPLET_DIR = os.path.expanduser("~/.config/awn/applets")
-        if not os.path.isdir(self.AWN_APPLET_DIR):
-          os.mkdir(self.AWN_APPLET_DIR)
+        if not os.path.isdir(defs.HOME_APPLET_DIR):
+          os.mkdir(defs.HOME_APPLET_DIR)
 
         self.client = gconf.client_get_default()
         self.client.add_dir(defs.AWN_PATH, gconf.CLIENT_PRELOAD_NONE)
@@ -104,7 +103,7 @@ class awnApplet:
         df = DesktopEntry(appletpath)
         icon_path = df.getIcon()
         if not icon_path.startswith('/') and '/' not in icon_path:
-            df.set("Icon", os.path.join(self.AWN_APPLET_DIR, icon_path))
+            df.set("Icon", os.path.join(defs.HOME_APPLET_DIR, icon_path))
             df.write()
 
     def extract_file(self, filename, do_apply):
@@ -113,11 +112,11 @@ class awnApplet:
         tar = tarfile.open(filename, "r:gz")
         for member in tar.getmembers():
             if member.name.endswith(".desktop"):
-                appletpath = os.path.join(self.AWN_APPLET_DIR, member.name)
+                appletpath = os.path.join(defs.HOME_APPLET_DIR, member.name)
 
         applet_exists = os.path.exists(appletpath)
 
-        [tar.extract(f, self.AWN_APPLET_DIR) for f in tar.getnames()]
+        [tar.extract(f, defs.HOME_APPLET_DIR) for f in tar.getnames()]
         tar.close()
 
         if appletpath:
@@ -222,7 +221,7 @@ class awnApplet:
 
         if result == -3:
             execpath = item.get_exec()
-            fullpath = os.path.join(self.AWN_APPLET_DIR, os.path.split(execpath)[0])
+            fullpath = os.path.join(defs.HOME_APPLET_DIR, os.path.split(execpath)[0])
 
             if os.path.exists(fullpath) and ".config" in path:
                 model.remove (iterator)

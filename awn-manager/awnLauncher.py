@@ -42,18 +42,15 @@ class awnLauncher:
 
     def __init__(self, glade, config_dir):
         self.wTree = glade
-        self.AWN_CONFIG_LAUNCH_DIR = os.path.join(config_dir, 'launchers')
-        if not os.path.exists(self.AWN_CONFIG_LAUNCH_DIR):
-            os.makedirs(self.AWN_CONFIG_LAUNCH_DIR)
+        if not os.path.exists(defs.HOME_LAUNCHERS_DIR):
+            os.makedirs(defs.HOME_LAUNCHERS_DIR)
 
         self.load_finished = False
 
         # GCONF KEYS
-        self.LAUNCHER_DIR = defs.AWN_PATH + "/window_manager"
-        self.LAUNCHER_PATH = self.LAUNCHER_DIR + "/launchers"
 
         self.client = gconf.client_get_default()
-        self.client.add_dir(self.LAUNCHER_DIR, gconf.CLIENT_PRELOAD_NONE)
+        self.client.add_dir(defs.WINMAN_PATH, gconf.CLIENT_PRELOAD_NONE)
 
         self.scrollwindow = self.wTree.get_widget("launcher_scrollwindow")
         self.make_model()
@@ -86,7 +83,7 @@ class awnLauncher:
             launchers.append(l[item])
 
         if not None in launchers and self.load_finished:
-            self.client.set_list(self.LAUNCHER_PATH, gconf.VALUE_STRING, launchers)
+            self.client.set_list(defs.WINMAN_LAUNCHERS, gconf.VALUE_STRING, launchers)
 
     def make_model (self):
 
@@ -111,7 +108,7 @@ class awnLauncher:
 
         self.treeview.show()
 
-        uris = self.client.get_list(self.LAUNCHER_PATH, gconf.VALUE_STRING)
+        uris = self.client.get_list(defs.WINMAN_LAUNCHERS, gconf.VALUE_STRING)
         self.uris = uris
 
         self.refresh_tree(uris)
@@ -196,7 +193,7 @@ class awnLauncher:
     #   Edited by Ryan Rushton
 
     def add(self, button):
-        file_path = os.path.join(self.AWN_CONFIG_LAUNCH_DIR, self.getUniqueFileId('awn_launcher', '.desktop'))
+        file_path = os.path.join(defs.HOME_LAUNCHERS_DIR, self.getUniqueFileId('awn_launcher', '.desktop'))
         process = subprocess.Popen(['gnome-desktop-item-edit', file_path], env=os.environ)
         gobject.timeout_add(100, self.waitForNewItemProcess, process, file_path)
 
@@ -205,7 +202,7 @@ class awnLauncher:
         (model, iter) = selection.get_selected()
         uri = model.get_value(iter, 2)
         if os.path.exists(uri):
-            uris = self.client.get_list(self.LAUNCHER_PATH, gconf.VALUE_STRING)
+            uris = self.client.get_list(defs.WINMAN_LAUNCHERS, gconf.VALUE_STRING)
             uris.remove(uri)
             os.remove(uri)
             self.refresh_tree(uris)
@@ -213,9 +210,9 @@ class awnLauncher:
     def waitForNewItemProcess(self, process, file_path):
         if process.poll() is not None:
             if os.path.isfile(file_path):
-                uris = self.client.get_list(self.LAUNCHER_PATH, gconf.VALUE_STRING)
+                uris = self.client.get_list(defs.WINMAN_LAUNCHERS, gconf.VALUE_STRING)
                 uris.append(file_path)
-                self.client.set_list(self.LAUNCHER_PATH, gconf.VALUE_STRING, uris)
+                self.client.set_list(defs.WINMAN_LAUNCHERS, gconf.VALUE_STRING, uris)
                 self.refresh_tree(uris)
             return False
         return True
@@ -228,7 +225,7 @@ class awnLauncher:
             else:
                 filename = name + '-' + str(append) + extension
             if extension == '.desktop':
-                if not os.path.isfile(os.path.join(self.AWN_CONFIG_LAUNCH_DIR, filename)):
+                if not os.path.isfile(os.path.join(defs.HOME_LAUNCHERS_DIR, filename)):
                     break
             append += 1
         return filename

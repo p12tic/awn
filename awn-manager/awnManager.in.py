@@ -49,9 +49,8 @@ class AwnManager:
 
     def __init__(self):
 
-        self.AWN_CONFIG_DIR = os.path.join(os.path.expanduser('~'),'.config/awn')
-        if not os.path.exists(self.AWN_CONFIG_DIR):
-            os.makedirs(self.AWN_CONFIG_DIR)
+        if not os.path.exists(defs.HOME_CONFIG_DIR):
+            os.makedirs(defs.HOME_CONFIG_DIR)
         self.GLADE_PATH = os.path.join(PKGDATA, "window.glade")
         gtk.glade.bindtextdomain(defs.I18N_DOMAIN, defs.LOCALEDIR)
         gtk.glade.textdomain(defs.I18N_DOMAIN)
@@ -76,13 +75,13 @@ class AwnManager:
         self.make_menu_model()
 
         #theme
-        self.themeManager = AwnThemeManager(self.wTree, self.AWN_CONFIG_DIR)
+        self.themeManager = AwnThemeManager(self.wTree, defs.HOME_CONFIG_DIR)
 
         #applet
         self.appletManager = awnApplet(self.wTree)
 
         #launcher
-        self.launchManager = awnLauncher(self.wTree, self.AWN_CONFIG_DIR)
+        self.launchManager = awnLauncher(self.wTree, defs.HOME_CONFIG_DIR)
 
         #preferences
         self.prefManager = awnPreferences(self.wTree)
