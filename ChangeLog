@@ -1,3 +1,9 @@
+2007-09-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnApplet.py:
+	* awn-manager/awnLauncher.py:
+	Change dependency from python-gnome-desktop to pyxdg (AKA python-xdg).
+
 2007-09-29  Neil J. Patel  <njpatel@gmail.com>
 
 	* awn-manager/awnPreferences.py:
