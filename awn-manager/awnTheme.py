@@ -80,7 +80,7 @@ class AwnThemeManager:
                         self.currItr = ''
 
 
-    def apply_themes(self, widget, data=None):
+    def apply_theme(self, widget, data=None):
         if self.currItr is not None:
             index = self.model.get_path(self.currItr)[0]
             name = self.theme_list[index]['name']
@@ -151,7 +151,7 @@ class AwnThemeManager:
                 theme_found = True
             if path[1] == self.AWN_THUMB:
                 thumb_found = True
-        if theme_found and thumb_found):
+        if theme_found and thumb_found:
             for f in tar.getnames():
                 tar.extract(f, self.AWN_THEME_DIR)
             #tar.extractall(self.AWN_THEME_DIR) #new in python 2.5
