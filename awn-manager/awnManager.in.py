@@ -88,22 +88,14 @@ class AwnManager:
 
     def menu_row_clicked(self, data=None):
         selection = self.treeview.get_selection()
-        (model, iter) = selection.get_selected()
-        if iter != None:
-            self.show_panel(model.get_path(iter)[0])
+        (model, iterator) = selection.get_selected()
+        if iterator is not None:
+            self.show_panel(model.get_path(iterator)[0])
 
     def show_panel(self, index):
-        for panel in ['panel_preferences','panel_applets','panel_launchers','panel_themes']:
-            self.wTree.get_widget(panel).hide()
-        if index == 0:
-            self.wTree.get_widget('panel_preferences').show()
-        elif index == 1:
-            self.wTree.get_widget('panel_applets').show()
-        elif index == 2:
-            self.wTree.get_widget('panel_launchers').show()
-        elif index == 3:
-            self.wTree.get_widget('panel_themes').show()
-
+        panels = ['panel_preferences','panel_applets','panel_launchers','panel_themes']
+        [self.wTree.get_widget(panel).hide() for panel in panels]
+        self.wTree.get_widget(panels[index]).show()
 
     def make_menu_model (self):
         self.model = model = gtk.ListStore(gdk.Pixbuf, str, str, str)
