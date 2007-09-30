@@ -27,8 +27,10 @@ LOCALEDIR = os.path.join (PREFIX, "share", "locale")
 PKGDATADIR = os.path.join (PREFIX, "share", "avant-window-navigator")
 
 HOME_CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".config", "awn")
-HOME_APPLETS_DIR = os.path.join(HOME_CONFIG_DIR, "applets")
+HOME_APPLET_DIR = os.path.join(HOME_CONFIG_DIR, "applets")
 HOME_LAUNCHERS_DIR = os.path.join(HOME_CONFIG_DIR, "launchers")
+HOME_THEME_DIR = os.path.join(HOME_CONFIG_DIR, "themes")
+HOME_CUSTOM_ICONS_DIR = os.path.join(HOME_CONFIG_DIR, "custom-icons")
 
 
 # GCONF KEYS

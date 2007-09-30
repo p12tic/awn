@@ -75,13 +75,13 @@ class AwnManager:
         self.make_menu_model()
 
         #theme
-        self.themeManager = AwnThemeManager(self.wTree, defs.HOME_CONFIG_DIR)
+        self.themeManager = AwnThemeManager(self.wTree)
 
         #applet
         self.appletManager = awnApplet(self.wTree)
 
         #launcher
-        self.launchManager = awnLauncher(self.wTree, defs.HOME_CONFIG_DIR)
+        self.launchManager = awnLauncher(self.wTree)
 
         #preferences
         self.prefManager = awnPreferences(self.wTree)

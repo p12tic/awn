@@ -10,8 +10,7 @@ import awnDefs as defs
 
 class AwnThemeManager:
 
-    def __init__(self, glade, config_dir):
-        self.AWN_CONFIG_DIR = config_dir
+    def __init__(self, glade):
         self.wTree = glade
         self.theme_treeview = self.wTree.get_widget('theme_treeview')
         self.theme_add = self.wTree.get_widget('theme_add')
@@ -23,11 +22,10 @@ class AwnThemeManager:
         self.theme_apply = self.wTree.get_widget('theme_apply')
         self.theme_apply.connect("clicked", self.apply_theme)
 
-        self.AWN_THEME_DIR = os.path.join(self.AWN_CONFIG_DIR, "themes/")
         self.AWN_CONFIG = 'theme.awn'
         self.AWN_THUMB = 'thumb.png'
         self.AWN_CUSTOM_ICONS = 'custom-icons'
-        self.AWN_CURRENT = os.path.join(self.AWN_THEME_DIR, 'current.awn')
+        self.AWN_CURRENT = os.path.join(defs.HOME_THEME_DIR, 'current.awn')
         self.GCONF = gconf.client_get_default()
         self.BUILD_DIR = "/tmp/awn_theme_build"
         self.theme_list = {}
@@ -48,12 +46,12 @@ class AwnThemeManager:
                 curr_version = lines[1].rstrip('\n')
                 curr.close()
 
-        if not os.path.exists(self.AWN_THEME_DIR) and not os.path.isdir(self.AWN_THEME_DIR):
-            os.makedirs(self.AWN_THEME_DIR)
+        if not os.path.exists(defs.HOME_THEME_DIR) and not os.path.isdir(defs.HOME_THEME_DIR):
+            os.makedirs(defs.HOME_THEME_DIR)
 
-        for d in self.list_dirs(self.AWN_THEME_DIR):
-            theme_path = os.path.join(self.AWN_THEME_DIR, d, self.AWN_CONFIG)
-            thumb_path = os.path.join(self.AWN_THEME_DIR, d, self.AWN_THUMB)
+        for d in self.list_dirs(defs.HOME_THEME_DIR):
+            theme_path = os.path.join(defs.HOME_THEME_DIR, d, self.AWN_CONFIG)
+            thumb_path = os.path.join(defs.HOME_THEME_DIR, d, self.AWN_THUMB)
 
             if os.path.exists(theme_path):
                 cfg = self.read(theme_path)
@@ -92,7 +90,7 @@ class AwnThemeManager:
             curr.write(version+"\n")
             curr.close()
 
-            gconf_insert = self.read(os.path.join(os.path.join(self.AWN_THEME_DIR, directory), self.AWN_CONFIG))
+            gconf_insert = self.read(os.path.join(os.path.join(defs.HOME_THEME_DIR, directory), self.AWN_CONFIG))
 
             self.gconf_client = gconf.client_get_default ()
 
@@ -117,7 +115,7 @@ class AwnThemeManager:
                                 self.gconf_client.set_bool(full_key_path, self.str_to_bool(style[key]))
 
             if self.gconf_client.get_bool(defs.BAR_RENDER_PATTERN):
-                self.gconf_client.set_string(defs.BAR_PATTERN_URI, os.path.join(self.AWN_THEME_DIR, directory, "pattern.png"))
+                self.gconf_client.set_string(defs.BAR_PATTERN_URI, os.path.join(defs.HOME_THEME_DIR, directory, "pattern.png"))
 
     def add(self, widget, data=None):
         dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
@@ -153,17 +151,17 @@ class AwnThemeManager:
                 thumb_found = True
         if theme_found and thumb_found:
             if hasattr(tar, 'extractall'):
-                tar.extractall(self.AWN_THEME_DIR) #new in python 2.5
+                tar.extractall(defs.HOME_THEME_DIR) #new in python 2.5
             else:
-                [tar.extract(f, self.AWN_THEME_DIR) for f in tar.getnames()]
+                [tar.extract(f, defs.HOME_THEME_DIR) for f in tar.getnames()]
             tar.close()
             self.add_row(path[0])
             message = "Theme Successfully Added"
             message2 = ""
             success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_OK, message_format=message)
-            icon_path = os.path.join(self.AWN_THEME_DIR, path[0], self.AWN_CUSTOM_ICONS)
+            icon_path = os.path.join(defs.HOME_THEME_DIR, path[0], self.AWN_CUSTOM_ICONS)
             if os.path.exists(icon_path):
-                message2 = "Custom icons included can be found at:\n " + os.path.join(self.AWN_THEME_DIR, path[0], self.AWN_CUSTOM_ICONS)
+                message2 = "Custom icons included can be found at:\n " + os.path.join(defs.HOME_THEME_DIR, path[0], self.AWN_CUSTOM_ICONS)
             success.format_secondary_text(message2)
             success.run()
             success.destroy()
@@ -200,9 +198,8 @@ class AwnThemeManager:
         hbox.pack_start(entries["version"], expand=False, fill=False)
 
         custom_icons_found = False
-        icon_path = os.path.join(self.AWN_CONFIG_DIR, self.AWN_CUSTOM_ICONS)
-        if os.path.exists(icon_path):
-            if len(os.listdir(icon_path)) > 0:
+        if os.path.exists(defs.HOME_CUSTOM_ICONS_DIR):
+            if len(os.listdir(defs.HOME_CUSTOM_ICONS_DIR)) > 0:
                 hbox = gtk.HBox(homogeneous=False, spacing=5)
                 detailsWindow.vbox.pack_start(hbox)
                 entries["save_icons"] = gtk.CheckButton("Save Custom Icons")
@@ -260,8 +257,7 @@ class AwnThemeManager:
 
     def save_custom_icons(self, foldername):
         build_icon_path = os.path.join(self.BUILD_DIR, foldername, self.AWN_CUSTOM_ICONS)
-        icon_path = os.path.join(self.AWN_CONFIG_DIR, self.AWN_CUSTOM_ICONS)
-        shutil.copytree(icon_path, build_icon_path)
+        shutil.copytree(defs.HOME_CUSTOM_ICONS_DIR, build_icon_path)
 
     def delete(self, widget, data=None):
         if self.currItr is not None:
@@ -270,11 +266,11 @@ class AwnThemeManager:
             version = self.theme_list[index]['version']
             directory = self.theme_list[index]['dir']
 
-            self.clean_tmp(os.path.join(self.AWN_THEME_DIR, directory))
+            self.clean_tmp(os.path.join(defs.HOME_THEME_DIR, directory))
 
-            #os.remove(self.AWN_THEME_DIR+'/'+dir+"/"+self.AWN_THUMB)
-            #os.remove(self.AWN_THEME_DIR+'/'+dir+"/"+self.AWN_CONFIG)
-            #os.rmdir(self.AWN_THEME_DIR+'/'+dir)
+            #os.remove(os.path.join(defs.HOME_THEME_DIR, dir, self.AWN_THUMB))
+            #os.remove(os.path.join(defs.HOME_THEME_DIR, dir, self.AWN_CONFIG))
+            #os.rmdir(os.path.join(defs.HOME_THEME_DIR, dir))
 
             if os.path.exists(self.AWN_CURRENT):
                 curr = open(self.AWN_CURRENT, "rb")
@@ -292,8 +288,8 @@ class AwnThemeManager:
             self.model.remove(self.currItr)
 
     def add_row(self, directory):
-        theme_path = os.path.join(self.AWN_THEME_DIR, directory, self.AWN_CONFIG)
-        thumb_path = os.path.join(self.AWN_THEME_DIR, directory, self.AWN_THUMB)
+        theme_path = os.path.join(defs.HOME_THEME_DIR, directory, self.AWN_CONFIG)
+        thumb_path = os.path.join(defs.HOME_THEME_DIR, directory, self.AWN_THUMB)
 
         if os.path.exists(theme_path):
             cfg = self.read(theme_path)

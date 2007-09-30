@@ -40,7 +40,7 @@ defs.i18nize(globals())
 
 class awnLauncher:
 
-    def __init__(self, glade, config_dir):
+    def __init__(self, glade):
         self.wTree = glade
         if not os.path.exists(defs.HOME_LAUNCHERS_DIR):
             os.makedirs(defs.HOME_LAUNCHERS_DIR)
