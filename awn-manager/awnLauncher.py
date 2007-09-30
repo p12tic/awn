@@ -160,7 +160,10 @@ class awnLauncher:
                 icon = None
 
         if icon is None and "/" in name:
-            icon = gdk.pixbuf_new_from_file_at_size (name, 32, 32)
+            try:
+                icon = gdk.pixbuf_new_from_file_at_size (name, 32, 32)
+            except:
+                icon = None
         if icon is None:
             dirs = [os.path.join(p, "share", "pixmaps")
                     for p in ("/usr", "/usr/local", defs.PREFIX)]

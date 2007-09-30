@@ -141,9 +141,9 @@ awn_x_get_application_name (WnckWindow *window, WnckApplication *app)
 		g_free(text);
 	}
 
-	g_print("get_name_app: %s\n", wnck_application_get_name(app));
-	g_print("get_name_window: %s\n", windowName->str);
-	g_print("name: %s\n\n", name->str);
+	//g_print("get_name_app: %s\n", wnck_application_get_name(app));
+	//g_print("get_name_window: %s\n", windowName->str);
+	//g_print("name: %s\n\n", name->str);
 	g_string_free(windowName, TRUE);
 
 	return name;

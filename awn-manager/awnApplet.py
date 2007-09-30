@@ -65,6 +65,9 @@ class awnApplet:
         self.applet_delete = self.wTree.get_widget("deleteapplet")
         self.applet_delete.connect("clicked", self.delete_applet)
 
+        self.applet_install = self.wTree.get_widget("installapplet")
+        self.applet_install.connect("clicked", self.add)
+
         self.treeview_available.enable_model_drag_dest([('text/plain', 0, 0)],
                   gdk.ACTION_DEFAULT | gdk.ACTION_MOVE)
         self.treeview_available.connect("drag_data_received", self.drag_data_received_data)
@@ -74,6 +77,28 @@ class awnApplet:
         data = data.replace("file://", "").replace("\r\n", "")
         if tarfile.is_tarfile(data):
             self.extract_file(data, do_apply)
+
+    def add(self, widget, data=None):
+        dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                                  buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
+        dialog.set_default_response(gtk.RESPONSE_OK)
+
+        filter = gtk.FileFilter()
+        filter.set_name("AWN Applet Package")
+        filter.add_pattern("*.tar.gz")
+        filter.add_pattern("*.tgz")
+        filter.add_pattern("*.bz2")
+        filter.add_pattern("*.awn")
+        dialog.add_filter(filter)
+
+        response = dialog.run()
+        if response == gtk.RESPONSE_OK:
+            file = dialog.get_filename()
+            dialog.destroy()
+            if tarfile.is_tarfile(file):
+              self.extract_file(file, False)
+        else:
+          dialog.destroy()
 
     def check_path(self, appletpath):
         df = DesktopEntry(appletpath)

@@ -2555,6 +2555,7 @@
 				    <widget class="GtkButton" id="applet_remove">
 				      <property name="visible">True</property>
 				      <property name="can_focus">True</property>
+				      <property name="tooltip" translatable="yes">Deactivate Applet</property>
 				      <property name="relief">GTK_RELIEF_NONE</property>
 				      <property name="focus_on_click">False</property>
 
@@ -2574,13 +2575,35 @@
 				      <property name="padding">0</property>
 				      <property name="expand">False</property>
 				      <property name="fill">False</property>
+				      <property name="position">0</property>
 				    </packing>
 				  </child>
-
+					<child>
+            <widget class="GtkButton" id="installapplet">
+              <property name="visible">True</property>
+              <property name="can_focus">True</property>
+              <property name="tooltip" translatable="yes">Install Applet</property>
+              <property name="receives_default">True</property>
+              <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+              <child>
+                <widget class="GtkImage" id="image5">
+                  <property name="visible">True</property>
+                  <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                  <property name="stock">gtk-add</property>
+                </widget>
+              </child>
+            </widget>
+            <packing>
+              <property name="expand">False</property>
+              <property name="fill">False</property>
+              <property name="position">1</property>
+            </packing>
+          </child>
 					<child>
             <widget class="GtkButton" id="deleteapplet">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="tooltip" translatable="yes">Delete Applet</property>
             <property name="receives_default">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <child>
@@ -2594,7 +2617,7 @@
             <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
             </packing>
           </child>
 
@@ -2602,6 +2625,7 @@
 				    <widget class="GtkButton" id="applet_add">
 				      <property name="visible">True</property>
 				      <property name="can_focus">True</property>
+				      <property name="tooltip" translatable="yes">Activate Applet</property>
 				      <property name="relief">GTK_RELIEF_NONE</property>
 				      <property name="focus_on_click">True</property>
 
@@ -2621,6 +2645,7 @@
 				      <property name="padding">0</property>
 				      <property name="expand">False</property>
 				      <property name="fill">False</property>
+				      <property name="position">3</property>
 				    </packing>
 				  </child>
 				</widget>
