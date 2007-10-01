@@ -1,3 +1,95 @@
+2007-09-29  Neil J. Patel  <njpatel@gmail.com>
+
+	* awn-manager/awnPreferences.py:
+	Should fix bug 144923, by making sure a string is valid before setting it on
+	the font button.
+
+2007-09-29  Neil J. Patel  <njpatel@gmail.com>
+
+	* src/awn-task.c:
+	Attempt to fix bug #144028 by doing more checks before freeing items.
+
+2007-09-29  Neil J. Patel  <njpatel@gmail.com>
+
+	* src/awn-x.c:
+	Comment out unneeded g_prints.
+
+2007-09-29  Neil J. Patel  <njpatel@gmail.com>
+
+	patch by: Fabien Chaillou <fabs0028@free.fr>
+
+	* awn-manager/awnLauncher.py:
+	Fix bug #140928: exception in awn-manager when a launcher icon is missing.
+
+2007-09-29  Neil J. Patel  <njpatel@gmail.com>
+
+	patch by: weirdbro <weirdbro@gmail.com>
+
+	* src/awn-task.c:
+	Fix bug #144118: Repeatedly right-clicking on icon brings up AWN context 
+	menu.
+
+2007-09-27  Neil J. Patel  <njpatel@gmail.com>
+
+	* src/awn-task.c:
+	Fix closing of a task so there are no 'jumps'. The widget is gradually 
+	reduced in size.
+
+2007-09-26  Neil J. Patel  <njpatel@gmail.com>
+
+	* configure.in:
+	* intltool-extract.in:
+	* intltool-merge.in:
+	* intltool-update.in:
+	* po/ar.po:
+	* po/bg.po:
+	* po/ca.po:
+	* po/cs.po:
+	* po/da.po:
+	* po/de.po:
+	* po/el.po:
+	* po/en_AU.po:
+	* po/en_GB.po:
+	* po/es.po:
+	* po/eu.po:
+	* po/fa.po:
+	* po/fi.po:
+	* po/fr.po:
+	* po/he.po:
+	* po/hr.po:
+	* po/hu.po:
+	* po/it.po:
+	* po/ja.po:
+	* po/ko.po:
+	* po/nb.po:
+	* po/nl.po:
+	* po/nn.po:
+	* po/pl.po:
+	* po/pt.po:
+	* po/pt_BR.po:
+	* po/ro.po:
+	* po/ru.po:
+	* po/sk.po:
+	* po/sr.po:
+	* po/sv.po:
+	* po/tr.po:
+	* po/zh_CN.po:
+	* po/zh_HK.po:
+	* po/zh_TW.po:
+	Updated and merged all translations from Launchpad.
+	Thanks to all translators.
+
+2007-09-20  haytjes <hv1989@gmail.com>
+
+	* src/main.c:
+	Set the position correct where the bar doesn't hide.
+
+2007-09-20  haytjes <hv1989@gmail.com>
+
+	* src/awn-window.c:
+	Fixed bug #140649. Now the area where mouse-over/mouse-clicks/... go is right. 
+	So no more problems with clicking on a icon and clicking on the underlying window.
+
 2007-09-19  Neil J. Patel  <njp@o-hand.com>
 
 	* libawn/awn-applet-dialog.c:

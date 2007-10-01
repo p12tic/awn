@@ -1,4 +1,4 @@
-# Brazilian Portuguese translation for awn
+# Chinese (Hong Kong) translation for awn
 # Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
 # This file is distributed under the same license as the awn package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
@@ -8,286 +8,298 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-12 15:52+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
+"Language-Team: Chinese (Hong Kong) <zh_HK@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Launchpad-Export-Date: 2007-09-26 18:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
+#~ msgid ""
+#~ "If you choose to empty the trash, all items in it will be permanently lost.\n"
+#~ "Please note that you can also delete them separately."
+#~ msgstr ""
+#~ "如果選擇清理回收筒，所有項目將會被永久地刪除。\n"
+#~ "注意 您是可以將它們個別地刪除的。"
+
+#~ msgid ""
+#~ "A GNOME trash bin that lives in your panel.\n"
+#~ "You can use it to view the trash or drag and drop items into the trash."
+#~ msgstr ""
+#~ "面板上的GNOME回收筒。\n"
+#~ "你可以用它來查看回收筒及將項目拖曳進去。"
+
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
-msgstr "Linhas:"
+msgstr "列："
 
 #: ../applets/switcher/applet.c:128
 msgid "Width:"
-msgstr "Largura:"
+msgstr "寬度："
 
 #: ../applets/switcher/applet.c:140
 msgid "Height:"
-msgstr "Altura:"
+msgstr "高度："
 
 #: ../applets/trash/trashapplet.glade.h:1
 msgid "<b>From:</b>"
-msgstr "<b>De:</b>"
+msgstr "<b>從：</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
 msgid "<big><b>Emptying the Trash</b></big>"
-msgstr "<big><b>Esvaziando a Lixeira</b></big>"
+msgstr "正在清理回收筒"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr "Esvaziando a Lixeira"
+msgstr "清理回收筒"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "<b>Ícone ativo</b>"
+msgstr "動作圖示"
 
 #: ../avant-preferences/window.glade.h:2
 msgid "<b>Arrows</b>"
-msgstr "<b>Setas</b>"
+msgstr "箭頭"
 
 #: ../avant-preferences/window.glade.h:3
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>Comportamento da barra</b>"
+msgstr ""
+"Copy text   \t\n"
+"<b>啟動圖示列的性能</b>"
 
 #: ../avant-preferences/window.glade.h:4
 msgid "<b>Borders</b>"
-msgstr "<b>Bordas</b>"
+msgstr "邊框"
 
 #: ../avant-preferences/window.glade.h:5
 msgid "<b>Corners</b>"
-msgstr "<b>Cantos</b>"
+msgstr "<b>角度</b>"
 
 #: ../avant-preferences/window.glade.h:6
 msgid "<b>Gradient</b>"
-msgstr "<b>Gradiente</b>"
+msgstr "<b>傾斜度</b>"
 
 #: ../avant-preferences/window.glade.h:7
 msgid "<b>Highlight</b>"
-msgstr "<b>Destacar</b>"
+msgstr "<b>選取中</b>"
 
 #: ../avant-preferences/window.glade.h:8
 msgid "<b>Pattern</b>"
-msgstr "<b>Padrão</b>"
+msgstr "<b>圖案</b>"
 
 #: ../avant-preferences/window.glade.h:9
 msgid "<b>Separator</b>"
-msgstr "<b>Separador</b>"
+msgstr "<b>分隔線</b>"
 
 #: ../avant-preferences/window.glade.h:10
 msgid "<b>Text</b>"
-msgstr "<b>Texto</b>"
+msgstr "<b>字體</b>"
 
 #: ../avant-preferences/window.glade.h:11
 msgid "<b>Windows</b>"
-msgstr "<b>Janelas</b>"
+msgstr "<b>視窗</b>"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
-msgstr "Ocultar a barra automaticamente quando inativa"
+msgstr "非使用時自動隱藏"
 
 #: ../avant-preferences/window.glade.h:13
 msgid "Avant Preferences"
-msgstr "Preferências do Avant"
+msgstr "喜好設置"
 
 #: ../avant-preferences/window.glade.h:14
 msgid "Background color:"
-msgstr "Cor do plano de fundo:"
+msgstr "背景顏色："
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
-msgstr "Aparência da barra"
+msgstr "顯示啟動圖示列"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
-msgstr "Negrito"
+msgstr "粗體"
 
 #: ../avant-preferences/window.glade.h:17
 msgid "Color:"
-msgstr "Cor:"
+msgstr "顏色："
 
 #: ../avant-preferences/window.glade.h:18
 msgid "Enable pattern"
-msgstr "Habilitar padrão"
+msgstr "啟用圖樣"
 
 #: ../avant-preferences/window.glade.h:19
 msgid "Enable rounded corners"
-msgstr "Habilitar cantos arredondados"
+msgstr "啟用圓角"
 
 #: ../avant-preferences/window.glade.h:20
 msgid "Fade effect (experimental)"
-msgstr "Efeito de <i>esmaciamento</i> (experimental)"
+msgstr "淡出效果(實驗中)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
-msgstr "Cor superior da barra"
+msgstr "首階顏色："
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
-msgstr "Tamanho da fonte:"
+msgstr "字體大小："
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
-msgstr "Geral"
+msgstr "基本設置"
 
 #: ../avant-preferences/window.glade.h:24
 msgid "Glass Engine"
-msgstr "Transparência"
+msgstr "玻璃效果"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
-msgstr "Borda interna:"
+msgstr "內部邊框："
 
 #: ../avant-preferences/window.glade.h:26
 msgid "Italic"
-msgstr "Itálico"
+msgstr "斜體"
 
 #: ../avant-preferences/window.glade.h:27
 msgid "Main border:"
-msgstr "Borda principal:"
+msgstr "主要邊框："
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "Janelas maximizadas não cobrem a barra (é necessário reiniciar)"
+msgstr "最大化視窗時不掩蓋AWN快捷列"
 
 #: ../avant-preferences/window.glade.h:29
 msgid "Pattern Engine"
-msgstr "Mecanismo de Padrão"
+msgstr "圖案效果"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
-msgstr "Cor inferior da barra"
+msgstr "次階顏色"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
-msgstr "Selecione Um Arquivo"
+msgstr "選取檔案"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
-msgstr "Cor do separador:"
+msgstr "分隔線顏色："
 
 #: ../avant-preferences/window.glade.h:33
 msgid "Shadow color:"
-msgstr "Cor da sombra:"
+msgstr "陰影顏色："
 
 #: ../avant-preferences/window.glade.h:34
 msgid "Show separator between launchers and tasks"
-msgstr "Exibir separador entre lançadores e tarefas"
+msgstr "在啟動圖示及工作列表間顯示分隔線"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
-msgstr "Mostrar janelas de todas as <i>áreas</i>"
+msgstr "在所有視點顯示視窗"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
-msgstr "Aparência da tarefa"
+msgstr "顯示工作區"
 
 #: ../avant-preferences/window.glade.h:37
 msgid "Tasks have arrows"
-msgstr "Tarefas possuem setas"
+msgstr "在當前執行的工作區上顯示箭頭"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
-msgstr "A barra oculta-se automaticamente quando inativa"
+msgstr "非使用時自動隱藏"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
-msgstr "Transparência:"
+msgstr "透明度："
 
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
-msgstr "Ícones inativos desaparecem com o foco do mouse"
+msgstr "當滑鼠指在非使用中圖示時圖示顯示淡出效果"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
-msgstr "Janelas não sobrepõem a barra se esta opção estiver ativada"
+msgstr "若設定此項目，則視窗不會蓋住工具列"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
-msgstr "Adicionar Mini-Aplicativo"
+msgstr "新增小程式"
 
 #: ../avant-applets/avant-applets.glade.h:2
 msgid "Avant Applet Preferences"
-msgstr "Preferências dos Mini-Aplicativos do Avant"
+msgstr "小程式設置內容"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
 msgid "Positions"
-msgstr "Posições"
+msgstr "位置"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
 msgid "Avant Launcher Preferences"
-msgstr "Preferências do Lançador do Avant"
+msgstr "啟動器的設置項目"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
-msgstr "Orientação"
+msgstr "擺放方向"
 
 #: ../applets/notification-area/eggtraymanager.c:147
 msgid "The orientation of the tray."
-msgstr "A orientação da bandeja."
+msgstr "系統匣的方向"
 
 #: ../applets/switcher/switcher.schemas.in.h:1
 msgid "How many rows the switcher should have"
-msgstr "Quantas linhas o alternador deve ter"
+msgstr "設置多少列啟動圖示"
 
 #: ../applets/switcher/switcher.schemas.in.h:2
 msgid "The height of the switcher"
-msgstr "A altura do alternador"
+msgstr "設置啟動圖示的高度"
 
 #: ../applets/switcher/switcher.schemas.in.h:3
 msgid "The width of the switcher"
-msgstr "A largura do alternador"
+msgstr "設置啟動圖示的闊度"
 
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
-msgstr ""
-"Se o mini-aplicativo da Lixeira deve mostrar um contador em seu ícone"
+msgstr "是否在回收筒圖示上顯示計數"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
 msgid "Unable to find the Trash directory: %s"
-msgstr "Não foi possível encontrar o diretório da Lixeira: %s"
+msgstr "無法找到回收筒目錄：%s"
 
 #: ../applets/trash/trashapplet.c:526
 msgid "No Items in Trash"
-msgstr "Nenhum item na Lixeira"
+msgstr "回收筒中沒有任何項目"
 
 #: ../applets/trash/trashapplet.c:530
 #, c-format
 msgid "%d Item in Trash"
 msgid_plural "%d Items in Trash"
-msgstr[0] "%d item na Lixeira"
-msgstr[1] "%d itens na Lixeira"
+msgstr[0] "回收筒中有 %d 個項目"
 
 #: ../applets/trash/trashapplet.c:657
 #, c-format
 msgid "Removing item %lu of %lu"
-msgstr "Removendo item %lu of %lu"
+msgstr "移除物件 %lu 物件在 %lu 物件之中"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
-msgstr "Removendo:"
+msgstr "移除中："
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr "Você tem certeza de que deseja esvaziar a lixeira?"
+msgstr "清理回收筒中所有物件？"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
 "If you choose to empty the trash, all items in it will be permanently lost. "
 "Please note that you can also delete them separately."
-msgstr ""
-"Se você escolher esvaziar a lixeira, todos os itens serão permanentemente "
-"excluídos. Note que você também pode excluí-los separadamente."
+msgstr "如果選擇清理回收筒，所有項目將會被永久地刪除。注意 您是可以將它們個別地刪除的。"
 
 #: ../applets/trash/trashapplet.c:746
 msgid "_Empty Trash"
-msgstr "_Esvaziar a Lixeira"
+msgstr "清理回收筒(_E)"
 
 #: ../applets/trash/trashapplet.c:825
 #, c-format
@@ -295,51 +307,46 @@ msgid ""
 "Error while spawning nautilus:\n"
 "%s"
 msgstr ""
-"Erro ao executar o nautilus:\n"
+"當執行 nautilus 時發生錯誤：\n"
 "%s"
 
 #: ../applets/trash/trashapplet.c:845
 #, c-format
 msgid "There was an error displaying help: %s"
-msgstr "Ocorreu um erro ao exibir a ajuda: %s"
+msgstr "顯示說明文件時發生錯誤：%s"
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
-msgstr "Mini-aplicativo Lixeira"
+msgstr "回收桶小程式"
 
 #: ../applets/trash/trashapplet.c:871
 msgid ""
 "A GNOME trash bin that lives in your panel. You can use it to view the trash "
 "or drag and drop items into the trash."
-msgstr ""
-"Uma lixeira do GNOME que fica no seu painel. Você pode usá-la para ver o "
-"lixo ou para arrastar e soltar itens na lixeira."
+msgstr "面板上的GNOME回收筒。你可以用它來查看回收筒及將項目拖曳進去。"
 
 #: ../applets/trash/trashapplet.c:876
 msgid "translator-credits"
 msgstr ""
+"翻譯版本提供者\n"
 "Launchpad Contributions:\n"
-"  Daniel Tiecher https://launchpad.net/~daniel-anderson-tiecher\n"
-"  Gustavo Silva Castilho de Avellar https://launchpad.net/~gustavoavellar\n"
-"  Rafael Capanema https://launchpad.net/~rafaelcapanema\n"
-"  hmsf https://launchpad.net/~heliomsf"
+"Alucard https://launchpad.net/~arikado-genya\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Alucard https://launchpad.net/~arikado-genya"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
-msgstr "Excluir Imediatamente?"
+msgstr "需要立即刪除？"
 
 #: ../applets/trash/trashapplet.c:925
 msgid "Cannot move items to trash, do you want to delete them immediately?"
-msgstr ""
-"Não é possível mover os itens para a lixeira, deseja excluí-los "
-"imediatamente?"
+msgstr "無法將項目丟到回收筒，要立即刪除它嗎？"
 
 #: ../applets/trash/trashapplet.c:928
 msgid ""
 "Cannot move some items to trash, do you want to delete these immediately?"
-msgstr ""
-"Não foi possível mover alguns itens para a lixeira, você deseja excluí-los "
-"imediatamente?"
+msgstr "有些項目無法丟到回收筒，您要立即刪除它嗎？"
 
 #: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
 #, c-format
@@ -347,9 +354,9 @@ msgid ""
 "Unable to move to trash:\n"
 "%s"
 msgstr ""
-"Não foi possível mover para a lixeira:\n"
+"不允許丟到回收筒：\n"
 "%s"
 
 #: ../src/awn-task.c:2279
 msgid "Change Icon"
-msgstr "Alterar ícone"
+msgstr "改變圖示"

@@ -167,7 +167,10 @@ class awnLauncher:
 
         if icon is None:
             if "/" in name:
-                icon = gtk.gdk.pixbuf_new_from_file_at_size (name, 32, 32)
+		try:
+			icon = gtk.gdk.pixbuf_new_from_file_at_size (name, 32, 32)
+		except:
+			icon = None
 
         if icon is None:
             dirs = ["/usr/share/pixmaps", "/usr/local/share/pixmaps"]

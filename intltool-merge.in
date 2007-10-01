@@ -35,7 +35,7 @@
 ## Release information
 my $PROGRAM = "intltool-merge";
 my $PACKAGE = "intltool";
-my $VERSION = "0.36.1";
+my $VERSION = "0.36.2";
 
 ## Loaded modules
 use strict; 
@@ -100,7 +100,7 @@ sub isProgramInPath
 {
     my ($file) = @_;
     # If either a file exists, or when run it returns 0 exit status
-    return 1 if ((-x $file) or (system("$file --version >$devnull") == 0));
+    return 1 if ((-x $file) or (system("$file -l >$devnull") == 0));
     return 0;
 }
 
@@ -275,8 +275,42 @@ sub po_file2lang
 
 sub gather_po_files
 {
-    for my $po_file (glob "$PO_DIR/*.po") {
-	$po_files_by_lang{po_file2lang($po_file)} = $po_file;
+    if (my $linguas = $ENV{"LINGUAS"})
+    {
+        for my $lang (split / /, $linguas) {
+            my $po_file = $PO_DIR . "/" . $lang . ".po";
+            if (-e $po_file) {
+                $po_files_by_lang{$lang} = $po_file;
+            }
+        }
+    }
+    else
+    {
+        if (open LINGUAS_FILE, "$PO_DIR/LINGUAS")
+        {
+            while (<LINGUAS_FILE>)
+            {
+                next if /^#/;
+
+                if (/([-a-zA-Z_@.]+)\n/)
+                {
+                    my $lang = $1;
+
+                    my $po_file = $PO_DIR . "/" . $lang . ".po";
+                    if (-e $po_file) {
+                        $po_files_by_lang{$lang} = $po_file;
+                    }
+                }
+            }
+
+            close LINGUAS_FILE;
+        }
+        else
+        {
+            for my $po_file (glob "$PO_DIR/*.po") {
+                $po_files_by_lang{po_file2lang($po_file)} = $po_file;
+            }
+        }
     }
 }
 

@@ -252,12 +252,21 @@ launch_launched_effect (AwnTask *task )
 	awn_effect_start_ex(&priv->effects, AWN_EFFECT_LAUNCHING, NULL, NULL, 10);
 }
 
-static void
-_task_destroy (GObject *obj)
+static gboolean
+_shrink_widget (AwnTask *task)
 {
-	AwnTask *task = AWN_TASK(obj);
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
+        AwnTaskPrivate *priv;
+
+        g_return_val_if_fail (AWN_IS_TASK (task), FALSE);
+        priv = AWN_TASK_GET_PRIVATE (task);
+
+        if (GTK_WIDGET (task)->allocation.width > 5) {
+                gtk_widget_set_size_request (GTK_WIDGET (task), 
+                                    GTK_WIDGET (task)->allocation.width-5,
+                                             -1);
+                return TRUE;
+        }
+
 	if (priv->is_launcher)
 		awn_task_manager_remove_launcher(priv->task_manager, task);
 	else
@@ -275,9 +284,19 @@ _task_destroy (GObject *obj)
 	}
 	g_timeout_add(1000, (GSourceFunc)awn_task_manager_refresh_box,
 	              priv->task_manager);
-	awn_effects_finalize(&priv->effects);
-	gtk_object_destroy (GTK_OBJECT(task));
+	
+        awn_effects_finalize(&priv->effects);
+        
+        gtk_object_destroy (GTK_OBJECT(task));
 	task = NULL;
+
+        return FALSE;
+}
+
+static void
+_task_destroy (GObject *obj)
+{
+        g_timeout_add (25, (GSourceFunc)_shrink_widget, obj);
 }
 
 /**********************  CALLBACKS  **********************/
@@ -550,58 +569,60 @@ awn_task_button_press (GtkWidget *task, GdkEventButton *event)
 
 	priv = AWN_TASK_GET_PRIVATE (task);
 
-	if (event->time - past_time > AWN_CLICK_IDLE_TIME) {
-		past_time = event->time;
-		if (priv->window) {
 
-			switch (event->button) {
-				case 1:
+	if (priv->window) {
+
+		switch (event->button) {
+			case 1:
+				if (event->time - past_time > AWN_CLICK_IDLE_TIME) {
+					past_time = event->time;
 					if ( wnck_window_is_active( priv->window ) ) {
 						wnck_window_minimize( priv->window );
 						return TRUE;
 					}
 					wnck_window_activate_transient( priv->window,
 							event->time );
-					break;
-				case 2:
-					if (priv->is_launcher)
-						awn_task_launch_unique(AWN_TASK (task), NULL);
-					break;
-				case 3:
-					menu = wnck_create_window_action_menu(priv->window);
-					awn_task_create_menu(AWN_TASK(task), GTK_MENU (menu));
-					gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL,
-							NULL, 3, event->time);
-					break;
-				default:
-					return FALSE;
-			}
-		} else if (priv->is_launcher) {
-			switch (event->button) {
-				case 1:
+				}
+				break;
+			case 2:
+				if (priv->is_launcher)
+					awn_task_launch_unique(AWN_TASK (task), NULL);
+				break;
+			case 3:
+				menu = wnck_create_window_action_menu(priv->window);
+				awn_task_create_menu(AWN_TASK(task), GTK_MENU (menu));
+				gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL,
+						NULL, 3, event->time);
+				break;
+			default:
+				return FALSE;
+		}
+	} else if (priv->is_launcher) {
+		switch (event->button) {
+			case 1:
+				if (event->time - past_time > AWN_CLICK_IDLE_TIME) {
+					past_time = event->time;
 					awn_task_launch(AWN_TASK (task), NULL);
 					launch_launched_effect(AWN_TASK (task));
-					break;
-// 				case 2:
+				}
+				break;
+// 			case 2:
 // 					// Manage middle click on launchers
 // 					g_print("Middle click pressed for launcher\n");
 // 					break;
-				case 3:
-					menu = gtk_menu_new();
-					awn_task_create_menu(AWN_TASK(task), GTK_MENU (menu));
-					gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL,
-							NULL, 3, event->time);
-					break;
-				default:
-					return FALSE;
-			}
-		} else {
-			;
+			case 3:
+				menu = gtk_menu_new();
+				awn_task_create_menu(AWN_TASK(task), GTK_MENU (menu));
+				gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL,
+						NULL, 3, event->time);
+				break;
+			default:
+				return FALSE;
 		}
+	} else {
+		;
 	}
-	else {
-		return FALSE;
-	}
+	
 
 	return TRUE;
 }
@@ -1779,12 +1800,17 @@ awn_task_close (AwnTask *task)
 	AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 
-	g_signal_handler_disconnect ((gpointer)priv->window, priv->icon_changed);
-	g_signal_handler_disconnect ((gpointer)priv->window, priv->state_changed);
-	g_signal_handler_disconnect ((gpointer)priv->window, priv->name_changed);
+	g_signal_handler_disconnect ((gpointer)priv->window, 
+                                     priv->icon_changed);
+	g_signal_handler_disconnect ((gpointer)priv->window, 
+                                     priv->state_changed);
+	g_signal_handler_disconnect ((gpointer)priv->window, 
+                                     priv->name_changed);
 	if (!priv->is_launcher) {
-		g_signal_handler_disconnect ((gpointer)priv->settings->window, priv->win_enter);
-		g_signal_handler_disconnect ((gpointer)priv->settings->window, priv->win_leave);
+		g_signal_handler_disconnect ((gpointer)priv->settings->window,
+                                             priv->win_enter);
+		g_signal_handler_disconnect ((gpointer)priv->settings->window, 
+                                             priv->win_leave);
 	}
 
 	priv->window = NULL;
@@ -1794,8 +1820,10 @@ awn_task_close (AwnTask *task)
 	for (i = 0; i < 5; i++) {
 		item = priv->menu_items[i];
 		if (item != NULL) {
-			gtk_widget_destroy (item->item);
-			g_free (item);
+			if (GTK_IS_WIDGET (item->item))
+                                gtk_widget_destroy (item->item);
+			if (item)
+                                g_free (item);
 			item = priv->menu_items[i] = NULL;
 		}
 
@@ -1807,7 +1835,8 @@ awn_task_close (AwnTask *task)
 		return;
 	}
 	/* start closing effect */
-	awn_effect_start_ex(&priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, 1);
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_CLOSING, 
+                            NULL, _task_destroy, 1);
 }
 
 

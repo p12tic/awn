@@ -32,7 +32,7 @@
 ## Release information
 my $PROGRAM      = "intltool-extract";
 my $PACKAGE      = "intltool";
-my $VERSION      = "0.36.1";
+my $VERSION      = "0.36.2";
 
 ## Loaded modules
 use strict; 

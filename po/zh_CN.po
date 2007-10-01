@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the awn package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-08-17 08:08+0000\n"
-"Last-Translator: yegle <cnyegle@gmail.com>\n"
+"PO-Revision-Date: 2007-08-22 07:23+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Simplified Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=(0);\n"
-"X-Rosetta-Export-Date: 2007-08-17 19:09:01+0000\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Launchpad-Export-Date: 2007-09-26 18:48+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
@@ -151,9 +151,8 @@ msgid "Main border:"
 msgstr "主边框："
 
 #: ../avant-preferences/window.glade.h:28
-#, fuzzy
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "最大化窗口时不覆盖导航栏(需要重新启动)"
+msgstr "最大化窗口不会遮盖AWN导航栏(需要重启AWN)"
 
 #: ../avant-preferences/window.glade.h:29
 msgid "Pattern Engine"
@@ -200,9 +199,8 @@ msgid "Transparency:"
 msgstr "透明度："
 
 #: ../avant-preferences/window.glade.h:40
-#, fuzzy
 msgid "Unused icons fade when mouse-over"
-msgstr "鼠标移过时消隐未用图标"
+msgstr "鼠标移过时未用图标消隐"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
@@ -266,9 +264,9 @@ msgid_plural "%d Items in Trash"
 msgstr[0] "回收站中有 %d 项"
 
 #: ../applets/trash/trashapplet.c:657
-#, c-format
+#, fuzzy
 msgid "Removing item %lu of %lu"
-msgstr ""
+msgstr "移除第%lu项（共%lu项）"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
@@ -316,10 +314,10 @@ msgstr "位于您面板上的 GNOME 回收站。您可以使用它查看回收�
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  David Zhang <https://launchpad.net/~gwwfps>\n"
-"  Li Linxiao <https://launchpad.net/~leal>\n"
-"  Wang Jia Liang <https://launchpad.net/~wangjialiang-1986>\n"
-"  yegle <https://launchpad.net/~cnyegle>"
+"  David Zhang https://launchpad.net/~gwwfps\n"
+"  Li Linxiao https://launchpad.net/~leal\n"
+"  Wang Jia Liang https://launchpad.net/~wangjialiang-1986\n"
+"  yegle https://launchpad.net/~cnyegle"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"

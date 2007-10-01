@@ -19,7 +19,7 @@
 #
 #  Notes: Avant Window Navigator applet preferences window
 
-import sys, os, time
+import sys, os, time, urllib
 try:
     import pygtk
     pygtk.require("2.0")
@@ -35,6 +35,7 @@ import gconf
 import gnomedesktop
 import gtk.gdk as gdk
 import awnDefs as defs
+import tarfile
 
 APP = 'avant-window-navigator'
 DIR = defs.LOCALEDIR
@@ -58,6 +59,11 @@ class awnApplet:
         self.APPLETS_DIR = "/apps/avant-window-navigator"
         self.APPLETS_PATH = "/apps/avant-window-navigator/applets_list"
 
+        # DIRS
+        self.AWN_APPLET_DIR = os.path.join(os.path.expanduser('~'), ".config/awn/applets")
+        if not os.path.isdir(self.AWN_APPLET_DIR):
+          os.mkdir(self.AWN_APPLET_DIR)
+
         self.client = gconf.client_get_default()
         self.client.add_dir(self.APPLETS_DIR, gconf.CLIENT_PRELOAD_NONE)
 
@@ -74,36 +80,111 @@ class awnApplet:
         self.applet_add = self.wTree.get_widget("applet_add")
         self.applet_add.connect("clicked", self.add_applet)
 
-        #self.treeview =  self.wTree.get_widget("applet_treeview_current")
-        #self.make_model (treeview)
+        self.applet_delete = self.wTree.get_widget("deleteapplet")
+        self.applet_delete.connect("clicked", self.delete_applet)
 
-        '''self.add = self.wTree.get_widget ("add")
-        self.add.connect("clicked", self.add_clicked)
+        self.applet_install = self.wTree.get_widget("installapplet")
+        self.applet_install.connect("clicked", self.add)
 
-        self.remove = self.wTree.get_widget ("remove")
-        self.remove.connect("clicked", self.remove_clicked)
+        self.treeview_available.enable_model_drag_dest([('text/plain', 0, 0)],
+                  gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_MOVE)
+        self.treeview_available.connect("drag_data_received", self.drag_data_received_data)
 
-        self.up = self.wTree.get_widget ("up")
-        self.up.connect("clicked", self.up_clicked)
+    def drag_data_received_data(self, treeview, context, x, y, selection, info, etime, apply=False):
+        data = selection.data
+        data = urllib.unquote(data)
+        data = data.replace('file://',"")
+        data = data.replace("\r\n","")
+        if tarfile.is_tarfile(data):
+            self.extract_file(data, apply)
 
-        self.down = self.wTree.get_widget ("down")
-        self.down.connect("clicked", self.down_clicked)
+    def add(self, widget, data=None):
+        dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                                  buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
+        dialog.set_default_response(gtk.RESPONSE_OK)
 
-        self.addwindow = self.wTree.get_widget("addapplet")
-        self.addwindow.hide ()'''
+        filter = gtk.FileFilter()
+        filter.set_name("AWN Applet Package")
+        filter.add_pattern("*.tar.gz")
+        filter.add_pattern("*.tgz")
+        filter.add_pattern("*.bz2")
+        filter.add_pattern("*.awn")
+        dialog.add_filter(filter)
 
-        #self.addview =  self.wTree.get_widget("applet_treeview_available")
-        #self.addview.connect ("row-activated", self.row_active)
-        #self.load_applets ()
+        response = dialog.run()
+        if response == gtk.RESPONSE_OK:
+            file = dialog.get_filename()
+            dialog.destroy()
+            if tarfile.is_tarfile(file):
+              self.extract_file(file, False)
+        else:
+          dialog.destroy()
 
-        '''self.addaccept = self.wTree.get_widget ("addaccept")
-        self.addaccept.connect("clicked", self.add_applet)
+    def check_path(self, appletpath):
+      df = gnomedesktop.item_new_from_file (appletpath, 0)
+      icon_path = df.get_string(gnomedesktop.KEY_ICON)
+      if(not icon_path.startswith('/') and icon_path.find('/') != -1):
+        df.set_string(gnomedesktop.KEY_ICON, os.path.join(self.AWN_APPLET_DIR, icon_path))
+        df.save(appletpath, False)
 
-        self.addcancel = self.wTree.get_widget ("addcancel")
-        self.addcancel.connect("clicked", self.cancel_clicked)		'''
+    def extract_file(self, file, apply):
+      appletpath = ""
+      applet_exists = False
+      tar = tarfile.open(file, "r:gz")
+      filelist = tar.getmembers()
+      for file in filelist:
+        if ".desktop" in file.name:
+          appletpath = os.path.join(self.AWN_APPLET_DIR, file.name)
 
-    def cancel_clicked (self, button):
-        self.addwindow.hide ()
+      if os.path.exists(appletpath):
+        applet_exists = True
+
+      for file in tar.getnames():
+        tar.extract(file, self.AWN_APPLET_DIR)
+      tar.close()
+
+      if appletpath:
+        self.check_path(appletpath)
+
+        if apply:
+          self.install_applet(appletpath, True, applet_exists)
+          self.install_applet(appletpath, False, applet_exists, False)
+        else:
+          self.install_applet(appletpath, False, applet_exists)
+      else:
+        message = "Applet Installation Failed"
+        success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_OK, message_format=message)
+        success.run()
+        success.destroy()
+
+    def install_applet(self, appletpath, apply, applet_exists, msg=True):
+      if apply:
+        model = self.model
+      else:
+        model = self.appmodel
+
+      if applet_exists:
+        message = "Applet Successfully Updated"
+      else:
+        icon, text = self.make_row (appletpath)
+        if len (text) > 2:
+          row = model.append ()
+          model.set_value (row, 0, icon)
+          model.set_value (row, 1, text)
+          model.set_value (row, 2, appletpath)
+          if apply:
+            uid = "%d" % int(time.time())
+            self.model.set_value (row, 3, uid)
+            self._apply ()
+          if msg:
+            message = "Applet Successfully Added"
+        else:
+          message = "Applet Installation Failed"
+
+      if msg:
+        success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_OK, message_format=message)
+        success.run()
+        success.destroy()
 
     def add_applet (self, button):
             select = self.treeview_available.get_selection()
@@ -129,8 +210,53 @@ class awnApplet:
     def row_active (self, q, w, e):
             self.add_applet (None)
 
-    def add_clicked (self, button):
-            self.addwindow.show ()
+    def test_active(self, model, path, iter, sel_path):
+      if model.get_value (iter, 2) == sel_path:
+        self.active_found = True
+        return True
+
+    def delete_applet(self,widget):
+      self.active_found = False
+      select = self.treeview_available.get_selection()
+      if not select:
+              return
+      model, iter = select.get_selected ()
+      path = model.get_value (iter, 2)
+      item = gnomedesktop.item_new_from_file (path, 0)
+
+      self.model.foreach(self.test_active, path)
+      if self.active_found:
+        self.popup_msg("Can not delete active applet")
+        return
+
+      dialog = gtk.Dialog("Delete Applet",
+                     None,
+                     gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                     (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
+                      gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+      label = gtk.Label("<b>Delete "+item.get_string(gnomedesktop.KEY_NAME) +"?</b>")
+      label.set_use_markup(True)
+      align = gtk.Alignment()
+      align.set_padding(5,5,5,5)
+      align.add(label)
+      dialog.vbox.add(align)
+      dialog.show_all()
+      result = dialog.run()
+
+      if result == -3:
+        execpath = item.get_string(gnomedesktop.KEY_EXEC)
+        fullpath = os.path.join(self.AWN_APPLET_DIR, os.path.split(execpath)[0])
+
+        if os.path.exists(fullpath) and ".config" in path:
+          model.remove (iter)
+          self.remove_applet_dir(fullpath, path)
+          self._apply ()
+          dialog.destroy()
+        else:
+          dialog.destroy()
+          self.popup_msg("Unable to Delete Applet")
+      else:
+        dialog.destroy()
 
     def remove_clicked (self, button):
             select = self.treeview_current.get_selection()
@@ -150,9 +276,17 @@ class awnApplet:
             except:
                     pass
 
-
-    def win_destroy(self, button, w):
-        w.destroy()
+    def remove_applet_dir(self, dirPath, filename):
+        namesHere = os.listdir(dirPath)
+        for name in namesHere:
+            path = os.path.join(dirPath, name)
+            if not os.path.isdir(path):
+                os.remove(path)
+            else:
+                self.remove_applet_dir(path, filename)
+        os.rmdir(dirPath)
+        if os.path.exists(filename):
+          os.unlink(filename)
 
     def _apply (self):
             l = []
@@ -242,7 +376,7 @@ class awnApplet:
                             icon = None
 
             if icon is None:
-                    if "/" in name:
+                    if "/" in name and os.path.exists(name):
                             icon = gtk.gdk.pixbuf_new_from_file_at_size (name, 32, 32)
             if icon is None:
                     dirs = ["/usr/share/pixmaps", "/usr/local/share/pixmaps"]
@@ -274,7 +408,6 @@ class awnApplet:
             return icon
 
     def refresh_tree (self, applets):
-
             for a in applets:
                     tokens = a.split("::")
                     path = tokens[0]
@@ -338,13 +471,10 @@ class awnApplet:
                 model.set_value (row, 2, a)
         self.load_finished = True
 
-    def widget_callback(self, func, widget):
-        try:
-            function_to_call = getattr(self, func)
-        except AttributeError:
-            print "Bad Attribute"
-        else:
-            function_to_call(widget)
+    def popup_msg(self, message):
+      success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_OK, message_format=message)
+      success.run()
+      success.destroy()
 
     def reordered(self, model, path, iter, data=None):
         cur_index = self.model.get_path(iter)[0]

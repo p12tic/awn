@@ -3,21 +3,21 @@
 # This file is distributed under the same license as the awn package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-08-15 10:08+0000\n"
-"Last-Translator: Alexey 'huNTer' Kolosov <alexey.kolosov@gmail.com>\n"
+"PO-Revision-Date: 2007-09-16 17:51+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Rosetta-Export-Date: 2007-08-17 19:09:00+0000\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Launchpad-Export-Date: 2007-09-26 18:48+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
@@ -41,7 +41,7 @@ msgstr "<big><b>Очистка корзины</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr "Очистить корзину"
+msgstr "Очистка корзины"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
@@ -211,25 +211,28 @@ msgid "Windows don't overlap the bar if this is set"
 msgstr "Если выбрано, окна не залезают на панель"
 
 #: ../avant-applets/avant-applets.glade.h:1
+#, fuzzy
 msgid "Add Applet"
 msgstr "Добавить аплет"
 
 #: ../avant-applets/avant-applets.glade.h:2
+#, fuzzy
 msgid "Avant Applet Preferences"
 msgstr "Настройки апплетов"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
+#, fuzzy
 msgid "Positions"
 msgstr "Позиции"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
 msgid "Avant Launcher Preferences"
-msgstr "Настройки запускателей"
+msgstr "Настройка приложений"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
-msgstr "Положение"
+msgstr "Ориентация"
 
 #: ../applets/notification-area/eggtraymanager.c:147
 msgid "The orientation of the tray."
@@ -245,7 +248,7 @@ msgstr "Высота переключателя"
 
 #: ../applets/switcher/switcher.schemas.in.h:3
 msgid "The width of the switcher"
-msgstr "Длина переключателя"
+msgstr "Ширина переключателя"
 
 #: ../applets/trash/trash.schemas.in.h:1
 #, fuzzy
@@ -324,10 +327,10 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Alexey 'huNTer' Kolosov <https://launchpad.net/~alexey-kolosov>\n"
-"  Photon <https://launchpad.net/~michael-kogan>\n"
-"  Sublimit <https://launchpad.net/~vinokourov>\n"
-"  pavpanchekha <https://launchpad.net/~pavpanchekha>"
+"  Alexey 'huNTer' Kolosov https://launchpad.net/~alexey-kolosov\n"
+"  Photon https://launchpad.net/~michael-kogan\n"
+"  Sublimit https://launchpad.net/~vinokourov\n"
+"  pavpanchekha https://launchpad.net/~pavpanchekha"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
@@ -353,5 +356,6 @@ msgstr ""
 "%s"
 
 #: ../src/awn-task.c:2279
+#, fuzzy
 msgid "Change Icon"
 msgstr "Изменить значок"
