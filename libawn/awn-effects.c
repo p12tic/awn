@@ -98,6 +98,7 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->hover = FALSE;
 	fx->clip = FALSE;
 	fx->flip = FALSE;
+	fx->glow = FALSE;
 	fx->spotlight = FALSE;
 
 	fx->enter_notify = 0;
@@ -453,6 +454,31 @@ bounce_effect (AwnEffectsPrivate *priv)
 		repeat = awn_effect_handle_repeating(priv);
 	}
 	return repeat;
+}
+
+static gboolean
+glow_effect (AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->glow = TRUE;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	// check for repeating
+	gboolean top = awn_effect_check_top_effect(priv, NULL);
+	if (top) {
+		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+		return top; // == TRUE
+	} else {
+		fx->glow = FALSE;
+		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+		gboolean repeat = awn_effect_handle_repeating(priv);
+		return repeat; // == FALSE
+	}
 }
 
 static gboolean
@@ -1458,7 +1484,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)zoom_effect,
 		(GSourceFunc)bounce_squish_effect,
 		(GSourceFunc)turn_hover_effect,
-		(GSourceFunc)spotlight3D_hover_effect
+		(GSourceFunc)glow_effect
 	};
 	static const GSourceFunc LAUNCHING_EFFECTS[] = {
 		(GSourceFunc)bounce_effect,
@@ -1476,7 +1502,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)zoom_attention_effect,
 		(GSourceFunc)bounce_squish_attention_effect,
 		(GSourceFunc)turn_hover_effect,
-		(GSourceFunc)turn_hover_effect
+		(GSourceFunc)spotlight3D_hover_effect
 	};
 
 	GSourceFunc animation = NULL;
@@ -1541,6 +1567,52 @@ awn_unregister_effects (AwnEffects *fx) {
 	fx->focus_window = NULL;
 }
 
+inline guchar
+lighten_component (const guchar cur_value)
+{
+	int new_value = cur_value;
+	new_value += 24 + (new_value >> 3);
+	if (new_value > 255) {
+		new_value = 255;
+	}
+	return (guchar) new_value;
+}
+
+void
+lighten_pixbuf (GdkPixbuf* src)
+{
+	int i, j;
+	int width, height, row_stride, has_alpha;
+	guchar *target_pixels;
+	guchar *pixsrc;
+
+	g_return_if_fail (gdk_pixbuf_get_colorspace (src) == GDK_COLORSPACE_RGB);
+	g_return_if_fail ((!gdk_pixbuf_get_has_alpha (src)
+			       && gdk_pixbuf_get_n_channels (src) == 3)
+			      || (gdk_pixbuf_get_has_alpha (src)
+				  && gdk_pixbuf_get_n_channels (src) == 4));
+	g_return_if_fail (gdk_pixbuf_get_bits_per_sample (src) == 8);
+
+	has_alpha = gdk_pixbuf_get_has_alpha(src);
+	width = gdk_pixbuf_get_width (src);
+	height = gdk_pixbuf_get_height (src);
+	row_stride = gdk_pixbuf_get_rowstride (src);
+	target_pixels = gdk_pixbuf_get_pixels (src);
+
+	for (i = 0; i < height; i++) {
+		pixsrc = target_pixels + i * row_stride;
+		for (j = 0; j < width; j++) {
+			*pixsrc = lighten_component (*pixsrc);
+			pixsrc++;
+			*pixsrc = lighten_component (*pixsrc);
+			pixsrc++;
+			*pixsrc = lighten_component (*pixsrc);
+			pixsrc++;
+			if (has_alpha) pixsrc++;
+		}
+	}
+}
+
 inline void apply_3d_illusion(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, const gint x, const gint y, const gdouble alpha) {
 	gint i;
 	for(i=1; i < fx->icon_depth; i++)
@@ -1584,12 +1656,9 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 
 	/* ICONS */
 	gboolean free_reflect = FALSE;
-	GdkPixbuf *scaledIcon = NULL;
-	GdkPixbuf *clippedIcon = NULL;
-	GdkPixbuf *flippedIcon = NULL;
-	GdkPixbuf *saturatedIcon = NULL;
 
 	/* clipping */
+	GdkPixbuf *clippedIcon = NULL;
 	if (fx->clip) {
 		gint x = fx->clip_region.x;
 		gint y = fx->clip_region.y;
@@ -1618,7 +1687,9 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		// override provided icon
 		icon = clippedIcon;
 	}
+
 	/* scaling */
+	GdkPixbuf *scaledIcon = NULL;
 	if (fx->delta_width || fx->delta_height) {
 		// sanity check
 		if (fx->delta_width <= -current_width || fx->delta_height <= -current_height) {
@@ -1639,7 +1710,9 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		// override provided icon
 		icon = scaledIcon;
 	}
+
 	/* saturation */
+	GdkPixbuf *saturatedIcon = NULL;
 	if (fx->saturation < 1.0) {
 		// do not change original pixbuf -> create new
 		if (!scaledIcon) {
@@ -1659,10 +1732,24 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	if(fx->x_offset)
 		x1 += fx->x_offset;
  
-	/* icon flipping */
+	/* flipping */
+	GdkPixbuf *flippedIcon = NULL;
 	if(fx->flip) {
 		flippedIcon = gdk_pixbuf_flip(icon, TRUE);
 		icon = flippedIcon;
+		if (free_reflect)
+			g_object_unref(reflect);
+		else
+			free_reflect = TRUE;
+		reflect = gdk_pixbuf_flip(icon, FALSE);
+	}
+	
+	/* glow */
+	GdkPixbuf *glowingIcon = NULL;
+	if (fx->glow) {
+		glowingIcon = gdk_pixbuf_copy(icon);
+		icon = glowingIcon;
+		lighten_pixbuf(icon);
 		if (free_reflect)
 			g_object_unref(reflect);
 		else
@@ -1686,6 +1773,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	if (clippedIcon) g_object_unref(clippedIcon);
 	if (flippedIcon) g_object_unref(flippedIcon);
 	if (saturatedIcon) g_object_unref(saturatedIcon);
+	if (glowingIcon) g_object_unref(glowingIcon);
 
 	/* reflection */
 	if (fx->y_offset >= 0) {

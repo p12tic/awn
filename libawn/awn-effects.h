@@ -104,6 +104,7 @@ struct _AwnEffects
 	gboolean hover;
 	gboolean clip;
 	gboolean flip;
+	gboolean glow;
 	gboolean spotlight;
 
 	guint enter_notify;
