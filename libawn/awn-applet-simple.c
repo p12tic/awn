@@ -116,6 +116,8 @@ awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
         priv = simple->priv;
 
 	if (pixbuf == priv->org_icon) {
+		priv->bar_height_on_icon_recieved = priv->bar_height;
+		adjust_icon(simple);
 		return;
 	}
 
@@ -147,6 +149,8 @@ awn_applet_simple_set_temp_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
         priv = simple->priv;
 
 	if (pixbuf == priv->org_icon) {
+		priv->bar_height_on_icon_recieved = priv->bar_height;
+		adjust_icon(simple);
 		return;
 	}
 
