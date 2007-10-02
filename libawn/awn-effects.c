@@ -94,11 +94,11 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->alpha = 1.0;
 	fx->spotlight_alpha = 0.0;
 	fx->saturation = 1.0;
+	fx->glow_amount = 0.0;
 
 	fx->hover = FALSE;
 	fx->clip = FALSE;
 	fx->flip = FALSE;
-	fx->glow = FALSE;
 	fx->spotlight = FALSE;
 
 	fx->enter_notify = 0;
@@ -463,7 +463,7 @@ glow_effect (AwnEffectsPrivate *priv)
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
-		fx->glow = TRUE;
+		fx->glow_amount = 1.0;
 		if (priv->start) priv->start(fx->self);
 		priv->start = NULL;
 	}
@@ -474,11 +474,98 @@ glow_effect (AwnEffectsPrivate *priv)
 		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 		return top; // == TRUE
 	} else {
-		fx->glow = FALSE;
+		fx->glow_amount = 0.0;
 		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 		gboolean repeat = awn_effect_handle_repeating(priv);
 		return repeat; // == FALSE
 	}
+}
+
+static gboolean
+glow_opening_effect (AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->direction = AWN_EFFECT_DIR_UP;
+		fx->alpha = 0.0;
+		fx->glow_amount = 1.95;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gdouble ALPHA_STEP = 0.04;
+	const gdouble GLOW_STEP = 0.05;
+
+	switch (fx->direction) {
+	case AWN_EFFECT_DIR_UP:
+		fx->alpha += ALPHA_STEP;
+		if (fx->alpha > 1) {
+			fx->alpha = 1.0;
+			fx->direction = AWN_EFFECT_DIR_DOWN;
+		}
+		break;
+	case AWN_EFFECT_DIR_DOWN:
+		fx->glow_amount -= GLOW_STEP;
+		if (fx->glow_amount < 0) {
+			fx->glow_amount = 0.0;
+			fx->direction = AWN_EFFECT_DIR_NONE;
+		}
+		break;
+	default:
+		fx->direction = AWN_EFFECT_DIR_DOWN;
+	}
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->direction == AWN_EFFECT_DIR_NONE) {
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+static gboolean
+glow_closing_effect (AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->direction = AWN_EFFECT_DIR_DOWN;
+		fx->glow_amount = 0.8;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gdouble ALPHA_STEP = 0.03;
+	const gdouble GLOW_STEP = 0.085;
+
+	switch (fx->direction) {
+	case AWN_EFFECT_DIR_DOWN:
+		fx->alpha -= ALPHA_STEP;
+		fx->glow_amount += GLOW_STEP;
+		if (fx->alpha < 0) {
+			fx->alpha = 0.0;
+			fx->direction = AWN_EFFECT_DIR_NONE;
+		}
+		break;
+	default:
+		fx->direction = AWN_EFFECT_DIR_DOWN;
+	}
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->direction == AWN_EFFECT_DIR_NONE) {
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
 }
 
 static gboolean
@@ -1297,11 +1384,16 @@ spotlight3D_hover_effect(AwnEffectsPrivate *priv)
 	const gint PERIOD = 44;
 	const gdouble ALPHA_STEP = 0.04;
 
-	if (awn_effect_check_top_effect(priv, NULL))
+	if (awn_effect_check_top_effect(priv, NULL)) {
 		fx->spotlight_alpha = 1.0;
-	else {
+		fx->glow_amount = 1.0;
+	} else {
 		fx->spotlight_alpha -= ALPHA_STEP;
-		if (fx->spotlight_alpha < 0) fx->spotlight_alpha = 0;
+		fx->glow_amount -= ALPHA_STEP;
+		if (fx->spotlight_alpha < 0) {
+			fx->spotlight_alpha = 0;
+			fx->glow_amount = 0;
+		}
 	}
 
 	gint prev_count = fx->count;
@@ -1466,7 +1558,8 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)zoom_opening_effect,
 		(GSourceFunc)bounce_squish_opening_effect,
 		(GSourceFunc)turn_opening_effect,
-		(GSourceFunc)turn_opening_effect
+		(GSourceFunc)turn_opening_effect,
+		(GSourceFunc)glow_opening_effect
 	};
 	static const GSourceFunc CLOSING_EFFECTS[] = {
 		(GSourceFunc)fade_out_effect,
@@ -1475,7 +1568,8 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)zoom_closing_effect,
 		(GSourceFunc)bounce_squish_closing_effect,
 		(GSourceFunc)turn_closing_effect,
-		(GSourceFunc)turn_closing_effect
+		(GSourceFunc)turn_closing_effect,
+		(GSourceFunc)glow_closing_effect
 	};
 	static const GSourceFunc HOVER_EFFECTS[] = {
 		(GSourceFunc)bounce_effect,
@@ -1484,6 +1578,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)zoom_effect,
 		(GSourceFunc)bounce_squish_effect,
 		(GSourceFunc)turn_hover_effect,
+		(GSourceFunc)spotlight3D_hover_effect,
 		(GSourceFunc)glow_effect
 	};
 	static const GSourceFunc LAUNCHING_EFFECTS[] = {
@@ -1493,7 +1588,8 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)zoom_attention_effect,
 		(GSourceFunc)bounce_squish_effect,
 		(GSourceFunc)turn_hover_effect,
-		(GSourceFunc)turn_hover_effect
+		(GSourceFunc)turn_hover_effect,
+		(GSourceFunc)bounce_effect
 	};
 	static const GSourceFunc ATTENTION_EFFECTS[] = {
 		(GSourceFunc)bounce_effect,
@@ -1502,7 +1598,8 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)zoom_attention_effect,
 		(GSourceFunc)bounce_squish_attention_effect,
 		(GSourceFunc)turn_hover_effect,
-		(GSourceFunc)spotlight3D_hover_effect
+		(GSourceFunc)spotlight3D_hover_effect,
+		(GSourceFunc)bounce_effect
 	};
 
 	GSourceFunc animation = NULL;
@@ -1568,10 +1665,10 @@ awn_unregister_effects (AwnEffects *fx) {
 }
 
 inline guchar
-lighten_component (const guchar cur_value)
+lighten_component (const guchar cur_value, const gfloat amount)
 {
 	int new_value = cur_value;
-	new_value += 24 + (new_value >> 3);
+	new_value += (24 + (new_value >> 3)) * amount;
 	if (new_value > 255) {
 		new_value = 255;
 	}
@@ -1579,7 +1676,7 @@ lighten_component (const guchar cur_value)
 }
 
 void
-lighten_pixbuf (GdkPixbuf* src)
+lighten_pixbuf (GdkPixbuf* src, const gfloat amount)
 {
 	int i, j;
 	int width, height, row_stride, has_alpha;
@@ -1602,11 +1699,11 @@ lighten_pixbuf (GdkPixbuf* src)
 	for (i = 0; i < height; i++) {
 		pixsrc = target_pixels + i * row_stride;
 		for (j = 0; j < width; j++) {
-			*pixsrc = lighten_component (*pixsrc);
+			*pixsrc = lighten_component (*pixsrc, amount);
 			pixsrc++;
-			*pixsrc = lighten_component (*pixsrc);
+			*pixsrc = lighten_component (*pixsrc, amount);
 			pixsrc++;
-			*pixsrc = lighten_component (*pixsrc);
+			*pixsrc = lighten_component (*pixsrc, amount);
 			pixsrc++;
 			if (has_alpha) pixsrc++;
 		}
@@ -1746,10 +1843,10 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	
 	/* glow */
 	GdkPixbuf *glowingIcon = NULL;
-	if (fx->glow) {
+	if (fx->glow_amount > 0) {
 		glowingIcon = gdk_pixbuf_copy(icon);
 		icon = glowingIcon;
-		lighten_pixbuf(icon);
+		lighten_pixbuf(icon, fx->glow_amount);
 		if (free_reflect)
 			g_object_unref(reflect);
 		else
