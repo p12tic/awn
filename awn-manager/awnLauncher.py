@@ -47,8 +47,6 @@ class awnLauncher:
 
         self.load_finished = False
 
-        # GCONF KEYS
-
         self.client = gconf.client_get_default()
         self.client.add_dir(defs.WINMAN_PATH, gconf.CLIENT_PRELOAD_NONE)
 
@@ -60,9 +58,9 @@ class awnLauncher:
         self.applet_add = self.wTree.get_widget("launcher_add")
         self.applet_add.connect("clicked", self.add)
 
-    def reordered(self, model, path, iter, data=None):
-        cur_index = self.model.get_path(iter)[0]
-        cur_uri = self.model.get_value (iter, 2)
+    def reordered(self, model, path, iterator, data=None):
+        cur_index = self.model.get_path(iterator)[0]
+        cur_uri = self.model.get_value (iterator, 2)
         l = {}
         it = self.model.get_iter_first ()
         while (it):
