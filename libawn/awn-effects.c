@@ -1550,8 +1550,18 @@ static void
 main_effect_loop(AwnEffects *fx) {
 	if (fx->current_effect != AWN_EFFECT_NONE || fx->effect_queue == NULL) return;
 
+	#define EFFECT_BOUNCE 0
+	#define EFFECT_FADE 1
+	#define EFFECT_SPOTLIGHT 2
+	#define EFFECT_ZOOM 3
+	#define EFFECT_SQUISH 4
+	#define EFFECT_TURN_3D 5
+	#define EFFECT_TURN_3D_SPOTLIGHT 6
+	#define EFFECT_GLOW 7
+
 	// NOTE! Always make sure that all EFFECTS arrays have same number of elements
 	static const GSourceFunc OPENING_EFFECTS[] = {
+		NULL,
 		(GSourceFunc)bounce_opening_effect,
 		(GSourceFunc)zoom_opening_effect,
 		(GSourceFunc)spotlight_opening_effect2,
@@ -1562,6 +1572,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)glow_opening_effect
 	};
 	static const GSourceFunc CLOSING_EFFECTS[] = {
+		NULL,
 		(GSourceFunc)fade_out_effect,
 		(GSourceFunc)zoom_closing_effect,
 		(GSourceFunc)spotlight_closing_effect,
@@ -1572,6 +1583,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)glow_closing_effect
 	};
 	static const GSourceFunc HOVER_EFFECTS[] = {
+		NULL,
 		(GSourceFunc)bounce_effect,
 		(GSourceFunc)fading_effect,
 		(GSourceFunc)spotlight_effect,
@@ -1582,6 +1594,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)glow_effect
 	};
 	static const GSourceFunc LAUNCHING_EFFECTS[] = {
+		NULL,
 		(GSourceFunc)bounce_effect,
 		(GSourceFunc)fading_effect,
 		(GSourceFunc)spotlight_half_fade_effect,
@@ -1592,6 +1605,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)bounce_effect
 	};
 	static const GSourceFunc ATTENTION_EFFECTS[] = {
+		NULL,
 		(GSourceFunc)bounce_effect,
 		(GSourceFunc)fading_effect,
 		(GSourceFunc)spotlight_half_fade_effect,
@@ -1604,37 +1618,45 @@ main_effect_loop(AwnEffects *fx) {
 
 	GSourceFunc animation = NULL;
 	AwnEffectsPrivate *topEffect = (AwnEffectsPrivate*)(fx->effect_queue->data);
-	gint effect = 0;
+	gint icon_effect = 0;
+	#define EFFECT_TYPES_COUNT 5
+	gint effects[EFFECT_TYPES_COUNT] = {0};
 	if (fx->settings) {
-		effect = fx->settings->icon_effect;
-		if (effect < 0)
-			effect = rand() & 7;
-		if (effect >= sizeof(HOVER_EFFECTS)/sizeof(GSourceFunc))
-			effect = 0;
-		// spotlight initialization
-		if (effect == 2 || effect == 6) spotlight_init();
+		icon_effect = fx->settings->icon_effect;
+		gint i;
+		for (i=0; i < EFFECT_TYPES_COUNT; i++) {
+			gint effect = icon_effect & (0xF << (i*4));
+			effect >>= i*4;
+			if (effect >= sizeof(HOVER_EFFECTS)/sizeof(GSourceFunc))
+				effect = -1;
+			// spotlight initialization
+			if (effect == EFFECT_SPOTLIGHT ||
+			    effect == EFFECT_TURN_3D_SPOTLIGHT)
+				spotlight_init();
+			effects[i] = effect+1;
+		}
 	}
 
 	switch (topEffect->this_effect) {
-		case AWN_EFFECT_OPENING:
-			animation = OPENING_EFFECTS[effect];
-			break;
 		case AWN_EFFECT_HOVER:
-			animation = HOVER_EFFECTS[effect];
+			animation = HOVER_EFFECTS[effects[0]];
+			break;
+		case AWN_EFFECT_OPENING:
+			animation = OPENING_EFFECTS[effects[1]];
 			break;
 		case AWN_EFFECT_CLOSING:
-			animation = CLOSING_EFFECTS[effect];
+			animation = CLOSING_EFFECTS[effects[2]];
 			break;
 		case AWN_EFFECT_LAUNCHING:
-			animation = LAUNCHING_EFFECTS[effect];
+			animation = LAUNCHING_EFFECTS[effects[3]];
 			break;
 		case AWN_EFFECT_ATTENTION:
-			animation = ATTENTION_EFFECTS[effect];
+			animation = ATTENTION_EFFECTS[effects[4]];
 			break;
 		case AWN_EFFECT_DESATURATE:
 			animation = (GSourceFunc)desaturate_effect;
 			break;
-		default: animation = (GSourceFunc)bounce_effect;
+		default: return;
 	}
 	if (animation) {
 		g_timeout_add(AWN_FRAME_RATE, animation, topEffect);
