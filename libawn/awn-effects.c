@@ -200,6 +200,7 @@ spotlight_effect(AwnEffectsPrivate *priv)
 		fx->count = 0;
 		fx->spotlight_alpha = 0;
 		fx->spotlight = TRUE;
+		fx->glow_amount = 0;
 		fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
 		if (priv->start) priv->start(fx->self);
 		priv->start = NULL;
@@ -227,6 +228,7 @@ spotlight_effect(AwnEffectsPrivate *priv)
 		fx->direction = AWN_EFFECT_SPOTLIGHT_OFF;
 		fx->spotlight_alpha -= 1.0/PERIOD;
 	}
+	fx->glow_amount = fx->spotlight_alpha;
 	// repaint widget
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
@@ -234,6 +236,7 @@ spotlight_effect(AwnEffectsPrivate *priv)
 	if ( fx->direction == AWN_EFFECT_SPOTLIGHT_OFF && fx->spotlight_alpha <= 0.0) {
 		fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
 		fx->spotlight_alpha = 0;
+		fx->glow_amount = 0;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
 		if (!repeat) fx->spotlight = FALSE;
@@ -257,10 +260,12 @@ spotlight_half_fade_effect(AwnEffectsPrivate *priv)
 
 	const gint PERIOD = 20;
 
-	if(fx->direction == AWN_EFFECT_SPOTLIGHT_ON)
+	if(fx->direction == AWN_EFFECT_SPOTLIGHT_ON) {
 		fx->spotlight_alpha += 0.75/PERIOD;
-	else
+	} else {
 		fx->spotlight_alpha -= 0.75/PERIOD;
+	}
+	fx->glow_amount = fx->spotlight_alpha;
 
 	if(fx->spotlight_alpha > 0.75)
 		fx->direction = AWN_EFFECT_SPOTLIGHT_OFF;
@@ -273,6 +278,7 @@ spotlight_half_fade_effect(AwnEffectsPrivate *priv)
 	if (fx->spotlight_alpha <= 0) {
 		fx->count = 0;
 		fx->spotlight_alpha = 0;
+		fx->glow_amount = 0;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
 		if (!repeat) fx->spotlight = FALSE;
@@ -289,6 +295,7 @@ spotlight_opening_effect(AwnEffectsPrivate *priv)
 		// effect start initialize values
 		fx->count = 0;
 		fx->spotlight_alpha = 1.0;
+		fx->glow_amount = fx->spotlight_alpha;
 		fx->spotlight = TRUE;
 		fx->y_offset = -fx->settings->bar_height;
 		fx->delta_width = -fx->icon_width/2;
@@ -305,6 +312,7 @@ spotlight_opening_effect(AwnEffectsPrivate *priv)
 		fx->y_offset +=  (3/2)* fx->settings->bar_height/PERIOD;
 	} else {
 		fx->spotlight_alpha -= (3/1)* 1.0/PERIOD;
+		fx->glow_amount = fx->spotlight_alpha;
 		fx->y_offset = 0;
 	}
 	
@@ -315,6 +323,7 @@ spotlight_opening_effect(AwnEffectsPrivate *priv)
 	if (fx->spotlight_alpha <= 0) {
 		fx->count = 0;
 		fx->spotlight_alpha = 0;
+		fx->glow_amount = 0;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
 		if (!repeat) fx->spotlight = FALSE;
@@ -332,6 +341,7 @@ spotlight_opening_effect2(AwnEffectsPrivate *priv)
 		fx->count = 0;
 		fx->spotlight_alpha = 1.0;
 		fx->spotlight = TRUE;
+		fx->glow_amount = fx->spotlight_alpha;
 		fx->delta_width = -fx->icon_width/2;
 		fx->clip = TRUE;
 		fx->clip_region.x = 0;
@@ -354,6 +364,7 @@ spotlight_opening_effect2(AwnEffectsPrivate *priv)
 	} else {
 		fx->clip = FALSE;
 		fx->spotlight_alpha -= (3/1)* 1.0/PERIOD;
+		fx->glow_amount = fx->spotlight_alpha;
 	}
 	
 	// repaint widget
@@ -363,6 +374,7 @@ spotlight_opening_effect2(AwnEffectsPrivate *priv)
 	if (fx->spotlight_alpha <= 0) {
 		fx->count = 0;
 		fx->spotlight_alpha = 0;
+		fx->glow_amount = 0;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
 		if (!repeat) fx->spotlight = FALSE;
@@ -379,6 +391,7 @@ spotlight_closing_effect(AwnEffectsPrivate *priv)
 		// effect start initialize values
 		fx->spotlight_alpha = 0.0;
 		fx->spotlight = TRUE;
+		fx->glow_amount = fx->spotlight_alpha;
 		fx->clip = TRUE;
 		fx->clip_region.x = 0;
 		fx->clip_region.y = 0;
@@ -411,6 +424,7 @@ spotlight_closing_effect(AwnEffectsPrivate *priv)
 		fx->clip = FALSE;
 		fx->spotlight_alpha -= 2.0/PERIOD;
 	}
+	fx->glow_amount = fx->spotlight_alpha;
 	
 	// repaint widget
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
@@ -418,6 +432,7 @@ spotlight_closing_effect(AwnEffectsPrivate *priv)
 	gboolean repeat = TRUE;
 	if (fx->direction == AWN_EFFECT_SPOTLIGHT_OFF && fx->spotlight_alpha <= 0) {
 		fx->spotlight_alpha = 0;
+		fx->glow_amount = 0;
 		fx->direction = AWN_EFFECT_DIR_NONE;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
@@ -468,17 +483,24 @@ glow_effect (AwnEffectsPrivate *priv)
 		priv->start = NULL;
 	}
 
+	const gfloat GLOW_STEP = 0.08;
+
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
 	// check for repeating
 	gboolean top = awn_effect_check_top_effect(priv, NULL);
 	if (top) {
-		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+		fx->glow_amount = 1.0;
 		return top; // == TRUE
 	} else {
-		fx->glow_amount = 0.0;
-		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
-		gboolean repeat = awn_effect_handle_repeating(priv);
-		return repeat; // == FALSE
+		fx->glow_amount -= GLOW_STEP;
+		if (fx->glow_amount <= 0) {
+			fx->glow_amount = 0.0;
+			gboolean repeat = awn_effect_handle_repeating(priv);
+			return repeat; // == FALSE
+		}
 	}
+	return TRUE;
 }
 
 static gboolean
@@ -1374,6 +1396,7 @@ spotlight3D_hover_effect(AwnEffectsPrivate *priv)
 		fx->y_offset = 0;
 		fx->spotlight_alpha = 1.0;
 		fx->spotlight = TRUE;
+		fx->glow_amount = fx->spotlight_alpha;
 		fx->delta_width = 0;
 		fx->icon_depth = 0;
 		fx->icon_depth_direction = 0;
@@ -1386,15 +1409,13 @@ spotlight3D_hover_effect(AwnEffectsPrivate *priv)
 
 	if (awn_effect_check_top_effect(priv, NULL)) {
 		fx->spotlight_alpha = 1.0;
-		fx->glow_amount = 1.0;
 	} else {
 		fx->spotlight_alpha -= ALPHA_STEP;
-		fx->glow_amount -= ALPHA_STEP;
 		if (fx->spotlight_alpha < 0) {
 			fx->spotlight_alpha = 0;
-			fx->glow_amount = 0;
 		}
 	}
+	fx->glow_amount = fx->spotlight_alpha;
 
 	gint prev_count = fx->count;
 	if (prev_count > PERIOD) prev_count = --fx->count;
@@ -1451,7 +1472,8 @@ spotlight3D_hover_effect(AwnEffectsPrivate *priv)
 		fx->flip = FALSE;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
-		if (!repeat) fx->spotlight = FALSE;
+		if (!repeat)
+			fx->spotlight = FALSE;
 	}
 	return repeat;
 }
