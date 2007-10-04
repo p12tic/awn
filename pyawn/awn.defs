@@ -67,6 +67,21 @@
   )
 )
 
+(define-enum Effect
+  (in-module "Awn")
+  (c-name "AwnEffect")
+  (gtype-id "AWN_TYPE_EFFECT")
+  (values
+    '("none" "AWN_EFFECT_NONE")
+    '("opening" "AWN_EFFECT_OPENING")
+    '("launching" "AWN_EFFECT_LAUNCHING")
+    '("hover" "AWN_EFFECT_HOVER")
+    '("attention" "AWN_EFFECT_ATTENTION")
+    '("closing" "AWN_EFFECT_CLOSING")
+    '("desaturate" "AWN_EFFECT_DESATURATE")
+  )
+)
+
 
 ;; From awn-applet-dialog.h
 
@@ -305,6 +320,11 @@
   )
 )
 
+(define-method get_effects
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_get_effects")
+  (return-type "gint")
+)
 
 
 ;; From awn-cairo-utils.h
@@ -338,6 +358,28 @@
 
 
 
+;; From awn-effects.h
+
+(define-function awn_effect_start
+  (c-name "awn_effect_start")
+  (return-type "none")
+  (parameters
+    '("int" "fx")
+    '("AwnEffect" "effect")
+  )
+)
+
+(define-function awn_effect_stop
+  (c-name "awn_effect_stop")
+  (return-type "none")
+  (parameters
+    '("int" "fx")
+    '("AwnEffect" "effect")
+  )
+)
+
+
+
 ;; From awn-enum-types.h
 
 (define-function awn_orientation_get_type
@@ -347,6 +389,11 @@
 
 (define-function awn_cairo_round_corners_get_type
   (c-name "awn_cairo_round_corners_get_type")
+  (return-type "GType")
+)
+
+(define-function awn_effect_get_type
+  (c-name "awn_effect_get_type")
   (return-type "GType")
 )
 
