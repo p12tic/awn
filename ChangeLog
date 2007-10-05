@@ -1,3 +1,20 @@
+2007-10-05  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* TODO:
+	* pyawn/NOTES:
+	* data/active/Makefile.am:
+	Move pyawn/NOTES to TODO and include all files in the Makefile. 
+	So "make dist" take all the files.
+
+	* debian-ubuntu/changelog:
+	* debian/avant-window-navigator.install:
+	* debian/changelog:
+	* debian/control:
+	* debian/copyright:
+	* debian/rules:
+	Refresh debian & debian-ubuntu dir for testing.
+	
+
 2007-10-02  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* libawn/awn-applet-simple.c:

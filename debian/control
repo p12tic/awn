@@ -10,7 +10,7 @@ Package: avant-window-navigator
 Section: gnome
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: compiz-core, awn-manager (= ${binary:Version})
+Recommends: compiz | xcompmgr, awn-manager (= ${binary:Version}), python-libawn0
 Description: A MacOS X like panel for GNOME
  The avant-window-navigator is a MacOS X like panel for the GNOME Desktop 
  written in C. Besides launchers that can be dragged onto the bar it features 
@@ -23,7 +23,7 @@ Package: libawn0
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: compiz-core
+Recommends: compiz | xcompmgr
 Description: library for avant-window-navigator
  This library is used by avant-window-navigator.
  .
