@@ -96,6 +96,7 @@ struct _AwnEffects
 	gfloat alpha;
 	gfloat spotlight_alpha;
 	gfloat saturation;
+	gfloat glow_amount;
 
 	gint icon_depth;
 	gint icon_depth_direction;

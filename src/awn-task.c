@@ -296,7 +296,7 @@ _shrink_widget (AwnTask *task)
 static void
 _task_destroy (GObject *obj)
 {
-        g_timeout_add (25, (GSourceFunc)_shrink_widget, obj);
+        g_timeout_add (40, (GSourceFunc)_shrink_widget, obj);
 }
 
 /**********************  CALLBACKS  **********************/

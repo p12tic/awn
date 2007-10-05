@@ -97,9 +97,10 @@ adjust_icon(AwnAppletSimple *simple)
                  g_object_unref (old1);
                  if (G_IS_OBJECT (old1) && priv->temp)
                         g_object_unref (old1);
-        }    
+        }
+	// awn-effects require the window to be 25% bigger than icon
         gtk_widget_set_size_request (GTK_WIDGET (simple), 
-                                     priv->icon_width + 2, 
+                                     priv->icon_width *5/4,
                                      (priv->bar_height + 2 ) * 2);
         gtk_widget_queue_draw (GTK_WIDGET (simple));
 }
@@ -276,6 +277,8 @@ awn_applet_simple_init (AwnAppletSimple *simple)
 	awn_effects_init(G_OBJECT(simple), &priv->effects);
 	// register hover effects
 	awn_register_effects(G_OBJECT(simple), &priv->effects);
+	// start open effect
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_OPENING, 0, 0, 1);
 
         client = gconf_client_get_default ();
         gconf_client_add_dir(client, "/apps/avant-window-navigator/bar", GCONF_CLIENT_PRELOAD_NONE, NULL);

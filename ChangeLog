@@ -1,3 +1,20 @@
+2007-10-06  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awnPreferences.py:
+	* awn-manager/window.glade:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* pyawn/awn.defs:
+	* pyawn/awn.override:
+	* pyawn/awnmodule.c:
+	* src/awn-task.c:
+	Merged with changes in libawn-draw-effects branch.
+	Added customization of all effects.
+	New effects: 3D turn and Glow.
+	Simple python bindings for effects framework.
+
 2007-10-05  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* TODO:
