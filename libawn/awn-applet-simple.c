@@ -265,6 +265,8 @@ awn_applet_simple_init (AwnAppletSimple *simple)
 	awn_effects_init(G_OBJECT(simple), &priv->effects);
 	// register hover effects
 	awn_register_effects(G_OBJECT(simple), &priv->effects);
+	// start open effect
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_OPENING, 0, 0, 1);
 
         client = gconf_client_get_default ();
         gconf_client_add_dir(client, "/apps/avant-window-navigator/bar", GCONF_CLIENT_PRELOAD_NONE, NULL);

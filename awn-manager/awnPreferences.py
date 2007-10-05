@@ -137,7 +137,7 @@ class awnPreferences:
         self.setup_bool (AWM_AUTO_HIDE, self.wTree.get_widget("autohide"))
         self.setup_bool (AWM_KEEP_BELOW, self.wTree.get_widget("keepbelow"))
         self.setup_bool (AWM_PANEL_MODE, self.wTree.get_widget("panelmode"))
-	self.setup_bool (APP_NAME_CHANGE_NOTIFY, self.wTree.get_widget("namechangenotify"))
+        self.setup_bool (APP_NAME_CHANGE_NOTIFY, self.wTree.get_widget("namechangenotify"))
         self.setup_bool (BAR_RENDER_PATTERN, self.wTree.get_widget("patterncheck"))
         self.setup_bool (BAR_ROUNDED_CORNERS, self.wTree.get_widget("roundedcornerscheck"))
         self.setup_bool (WINMAN_SHOW_ALL_WINS, self.wTree.get_widget("allwindowscheck"))
@@ -330,3 +330,110 @@ class awnPreferences:
             self.wTree.get_widget("barangle").set_value(45)
             self.wTree.get_widget("roundedcornerscheck_holder").hide_all()
             self.wTree.get_widget("barangle_holder").show_all()
+
+    def setup_effect_custom(self, key):
+      self.effect_drop = []
+      effect_settings = self.client.get_int(key)
+      cnt = 0
+      for drop in ['hover', 'open', 'close', 'launch', 'attention']:
+        d = self.wTree.get_widget('effect_'+drop)
+        self.effect_drop.append(d)
+        model = gtk.ListStore(str)
+        model.append(["None"])
+        model.append(["Classic"])
+        model.append(["Fade"])
+        model.append(["Spotlight"])
+        model.append(["Zoom"])
+        model.append(["Squish"])
+        model.append(["3D Turn"])
+        model.append(["3D Spotlight Turn"])
+        model.append(["Glow"])
+        d.set_model(model)
+        cell = gtk.CellRendererText()
+        d.pack_start(cell)
+        d.add_attribute(cell,'text',0)
+        current_effect = (effect_settings & (15 << (cnt*4))) >> (cnt*4)
+        if(current_effect == 15):
+          d.set_active(0)
+        else:
+          d.set_active(current_effect+1)
+        d.connect("changed", self.effect_custom_changed, key)
+        cnt = cnt+1
+
+    def refresh_effect_custom(self, key):
+      effect_settings = self.client.get_int(key)
+      cnt = 0
+      for drop in ['hover', 'open', 'close', 'launch', 'attention']:
+        d = self.wTree.get_widget('effect_'+drop)
+        current_effect = (effect_settings & (15 << (cnt*4))) >> (cnt*4)
+        if(current_effect == 15):
+          d.set_active(0)
+        else:
+          d.set_active(current_effect+1)
+        cnt += 1
+
+    def effect_custom_changed(self, dropdown, key):
+      if (dropdown.get_active() != self.effects_dd.get_active()):
+        self.effects_dd.set_active(9) #Custom
+        new_effects = self.get_custom_effects()
+        self.client.set_int(key, new_effects)
+        print "effects set to: ", "%0.8X" % new_effects
+
+    def get_custom_effects(self):
+      effects = 0
+      for drop in ['attention', 'launch', 'close', 'open', 'hover']:
+        d = self.wTree.get_widget('effect_'+drop)
+        if(d.get_active() == 0):
+          effects = effects << 4 | 15
+        else:
+          effects = effects << 4 | int(d.get_active())-1
+      return effects
+
+    def setup_effect(self, key, dropdown):
+        self.effects_dd = dropdown
+        model = gtk.ListStore(str)
+        model.append(["None"])
+        model.append(["Classic"])
+        model.append(["Fade"])
+        model.append(["Spotlight"])
+        model.append(["Zoom"])
+        model.append(["Squish"])
+        model.append(["3D Turn"])
+        model.append(["3D Spotlight Turn"])
+        model.append(["Glow"])
+        model.append(["Custom"]) ##Always last
+        dropdown.set_model(model)
+        cell = gtk.CellRendererText()
+        dropdown.pack_start(cell)
+        dropdown.add_attribute(cell,'text',0)
+
+        effect_settings = self.client.get_int(key)
+        hover_effect = effect_settings & 15
+        bundle = 0
+        for i in range(5):
+          bundle = bundle << 4 | hover_effect
+	if (bundle == effect_settings):
+          if (hover_effect == 15):
+            active = 0
+          else:
+            active = hover_effect+1
+        else:
+          active = 9 #Custom
+
+        dropdown.set_active(int(active))
+        dropdown.connect("changed", self.effect_changed, key)
+        self.setup_effect_custom(key)
+
+    def effect_changed(self, dropdown, key):
+        new_effects = 0
+        effect = 0
+        if(dropdown.get_active() != 9): # not Custom
+          if(dropdown.get_active() == 0):
+            effect = 15
+          else:
+            effect = dropdown.get_active() - 1
+          for i in range(5):
+            new_effects = new_effects << 4 | effect
+          self.client.set_int(key, new_effects)
+          print "effects set to: ", "%0.8X" % new_effects
+          self.refresh_effect_custom(key)
