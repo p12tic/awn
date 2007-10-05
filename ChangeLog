@@ -1,3 +1,33 @@
+2007-10-05  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* TODO:
+	* pyawn/NOTES:
+	* data/active/Makefile.am:
+	Move pyawn/NOTES to TODO and include all files in the Makefile. 
+	So "make dist" take all the files.
+
+	* debian-ubuntu/changelog:
+	* debian/avant-window-navigator.install:
+	* debian/changelog:
+	* debian/control:
+	* debian/copyright:
+	* debian/rules:
+	Refresh debian & debian-ubuntu dir for testing.
+	
+
+2007-10-02  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Update the bar every time awn_applet_simple_set_icon or
+	awn_applet_simple_set_temp_icon is called.
+
+2007-10-02  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	awn_applet_simple_set_icon and awn_applet_simple_set_temp_icon
+	will now gracefully return if the new icon is the same as the
+	old one.
+
 2007-09-29  Neil J. Patel  <njpatel@gmail.com>
 
 	* awn-manager/awnPreferences.py:

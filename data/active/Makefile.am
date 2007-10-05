@@ -13,5 +13,7 @@ active_DATA =  \
 
 activedir = $(pkgdatadir)/active
 
-EXTRA_DIST = $(active_DATA)
+EXTRA_DIST = 			\
+	$(active_DATA)		\
+	spotlight_png_inline.c
 
