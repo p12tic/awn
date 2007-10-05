@@ -1,3 +1,12 @@
+2007-10-05  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/Makefile.am:
+	* awn-manager/awnLauncher.py:
+	* awn-manager/awnLauncherEditor.py:
+	* awn-manager/launcher-editor.glade:
+	Add a pure Python implementation of a launcher editor to replace
+	the use of gnome-desktop-item-edit.
+
 2007-10-02  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* libawn/awn-applet-simple.c:

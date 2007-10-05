@@ -35,6 +35,7 @@ except:
 
 from xdg.DesktopEntry import DesktopEntry
 import awnDefs as defs
+from awnLauncherEditor import awnLauncherEditor
 
 defs.i18nize(globals())
 
@@ -192,8 +193,8 @@ class awnLauncher:
 
     def add(self, button):
         file_path = os.path.join(defs.HOME_LAUNCHERS_DIR, self.getUniqueFileId('awn_launcher', '.desktop'))
-        process = subprocess.Popen(['gnome-desktop-item-edit', file_path], env=os.environ)
-        gobject.timeout_add(100, self.waitForNewItemProcess, process, file_path)
+        editor = awnLauncherEditor(self, file_path)
+        editor.run()
 
     def remove(self, button):
         selection = self.treeview.get_selection()
@@ -204,16 +205,6 @@ class awnLauncher:
             uris.remove(uri)
             os.remove(uri)
             self.refresh_tree(uris)
-
-    def waitForNewItemProcess(self, process, file_path):
-        if process.poll() is not None:
-            if os.path.isfile(file_path):
-                uris = self.client.get_list(defs.WINMAN_LAUNCHERS, gconf.VALUE_STRING)
-                uris.append(file_path)
-                self.client.set_list(defs.WINMAN_LAUNCHERS, gconf.VALUE_STRING, uris)
-                self.refresh_tree(uris)
-            return False
-        return True
 
     def getUniqueFileId(self, name, extension):
         append = 0

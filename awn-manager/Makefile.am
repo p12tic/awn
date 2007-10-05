@@ -2,11 +2,12 @@ pyfiles_DATA = \
 	awnApplet.py		\
 	awnDefs.py		\
 	awnLauncher.py		\
+	awnLauncherEditor.py	\
 	awnPreferences.py	\
 	awnTheme.py		
 pyfilesdir = $(pkgdatadir)/awn-manager
 
-glade_DATA = window.glade
+glade_DATA = launcher-editor.glade window.glade
 gladedir = $(pkgdatadir)/awn-manager
 
 desktopdir   = $(datadir)/applications
