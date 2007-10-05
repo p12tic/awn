@@ -369,6 +369,19 @@
   )
 )
 
+(define-function awn_effect_start_ex
+  (c-name "awn_effect_start_ex")
+  (return-type "none")
+  (parameters
+    '("int" "fx")
+    '("AwnEffect" "effect")
+    '("int" "start")
+    '("int" "stop")
+    '("int" "max_loops")
+  )
+)
+
+
 (define-function awn_effect_stop
   (c-name "awn_effect_stop")
   (return-type "none")
