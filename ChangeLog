@@ -1,5 +1,10 @@
 2007-10-07  Neil J. Patel  <njpatel@gmail.com>
 
+	* libawn/awn-applet.c:
+	Fix warning.
+
+2007-10-07  Neil J. Patel  <njpatel@gmail.com>
+
 	* intltool-extract.in:
 	* intltool-merge.in:
 	* intltool-update.in:
