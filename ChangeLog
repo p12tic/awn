@@ -1,5 +1,12 @@
 2007-10-07  Neil J. Patel  <njpatel@gmail.com>
 
+	* intltool-extract.in:
+	* intltool-merge.in:
+	* intltool-update.in:
+	These shouldn't be here.
+
+2007-10-07  Neil J. Patel  <njpatel@gmail.com>
+
 	* AUTHORS:
 	Updated to add in new authors.
 
