@@ -1,5 +1,13 @@
 2007-10-07  Neil J. Patel  <njpatel@gmail.com>
 
+	* Makefile.am:
+	Don't include autogen.sh as part of make dist.
+
+	* TODO:
+	Clean up old TODO, refer to launchpad.net.
+
+2007-10-07  Neil J. Patel  <njpatel@gmail.com>
+
 	* libawn/awn-applet.c:
 	Fix warning.
 
