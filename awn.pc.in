@@ -8,4 +8,4 @@ Description: Avant-Window-Navigator applets/plugin library
 Version: @VERSION@
 Libs: -L${libdir} -lawn
 Cflags: -I${includedir} -D@USE_DESKTOP@ @USE_GIO@
-Requires: glib-2.0 gobject-2.0 gtk+-2.0 gdk-2.0 @DESKTOP_MODULES@ @GIO_MODULE@ gconf-2.0
+Requires: glib-2.0 gobject-2.0 gtk+-2.0 gdk-2.0 @DESKTOP_MODULES@ @VFS_MODULE@ gconf-2.0

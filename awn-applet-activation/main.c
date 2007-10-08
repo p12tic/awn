@@ -21,11 +21,6 @@
 #include "config.h"
 
 #include <gtk/gtk.h>
-#ifdef LIBAWN_USE_GNOME
-#include <libgnomevfs/gnome-vfs.h>
-#elif defined(LIBAWN_USE_XFCE)
-#include <thunar-vfs/thunar-vfs.h>
-#endif
 #include <stdio.h>
 #include <string.h>
 
@@ -33,6 +28,7 @@
 #include <libawn/awn-desktop-item.h>
 #include <libawn/awn-plug.h>
 #include <libawn/awn-applet.h>
+#include <libawn/awn-vfs.h>
 
 /* Forwards */
 GtkWidget *
@@ -120,11 +116,7 @@ main (gint argc, gchar **argv)
 	
 	g_type_init();	
 	if (!g_thread_supported ()) g_thread_init (NULL);
-#ifdef LIBAWN_USE_GNOME
-	gnome_vfs_init ();
-#elif defined(LIBAWN_USE_XFCE)
-	thunar_vfs_init ();
-#endif
+	awn_vfs_init ();
 	gtk_init (&argc, &argv);
         
         if (uid == NULL) {

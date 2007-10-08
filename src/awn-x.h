@@ -32,12 +32,6 @@
 #define WNCK_I_KNOW_THIS_IS_UNSTABLE 1
 #include <libwnck/libwnck.h>
 
-#ifdef LIBAWN_USE_GNOME
-#include <libgnomevfs/gnome-vfs.h>
-#elif defined(LIBAWN_USE_XFCE)
-#include <thunar-vfs/thunar-vfs.h>
-#endif
-
 #include <libawn/awn-desktop-item.h>
 
 GdkPixbuf* awn_x_get_icon (WnckWindow *window, gint width, gint height);

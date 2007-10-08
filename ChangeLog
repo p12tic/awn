@@ -1,3 +1,20 @@
+2007-10-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn.pc.in:
+	* config.h.in:
+	* configure.in:
+	Only link to the desktop's VFS library if GIO is not selected.
+	Make sure that the GIO define is in config.h.
+	Change the name of the GIO pkgconfig module.
+
+	* libawn/awn-vfs.c:
+	Make awn_vfs_init() a no-op when using GIO.
+	Fix the implementation of awn_vfs_get_pathlist_from_string for GIO.
+
+	* awn-applet-activation/main.c:
+	* src/awn-x.h:
+	Replace desktop-specific #ifdefs with awn-vfs #includes and functions.
+
 2007-10-05  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* TODO:

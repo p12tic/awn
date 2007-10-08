@@ -36,11 +36,13 @@
 
 void awn_vfs_init()
 {
+#ifndef LIBAWN_USE_GIO
 #ifdef LIBAWN_USE_GNOME
 	gnome_vfs_init ();
 #elif defined(LIBAWN_USE_XFCE)
 	thunar_vfs_init ();
 #endif
+#endif /* !LIBAWN_USE_GIO */
 }
 
 GList *awn_vfs_get_pathlist_from_string (gchar *paths, GError **err)
@@ -48,11 +50,11 @@ GList *awn_vfs_get_pathlist_from_string (gchar *paths, GError **err)
 	GList *list = NULL;
 #ifdef LIBAWN_USE_GIO
 	gchar **path_list;
-	path_list = g_strsplit (paths, G_SEARCHPATH_SEPARATOR_S, 0);
+	path_list = g_strsplit (paths, "\r\n", 0);
 	guint i;
 	guint len = g_strv_length (path_list);
 	for (i = 0; i < len; i++) {
-		g_list_append (list, (gpointer)g_strdup (path_list[i]));
+		list = g_list_append (list, (gpointer)g_strdup (path_list[i]));
 	}
 	g_strfreev (path_list);
 #else
