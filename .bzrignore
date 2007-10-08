@@ -46,3 +46,4 @@ libawn/*awn-enum-types.*
 pyawn/awn.c
 awn-manager/awnDefs.py
 awn-manager/awnManager.py
+intltool-*.in
