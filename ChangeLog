@@ -1,3 +1,8 @@
+2007-10-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* autogen.sh:
+	Add support for Xfce's autogen script.
+
 2007-10-07  Neil J. Patel  <njpatel@gmail.com>
 
 	* Makefile.am:
