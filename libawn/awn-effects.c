@@ -94,6 +94,7 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->alpha = 1.0;
 	fx->spotlight_alpha = 0.0;
 	fx->saturation = 1.0;
+	fx->glow_amount = 0.0;
 
 	fx->hover = FALSE;
 	fx->clip = FALSE;
@@ -199,6 +200,7 @@ spotlight_effect(AwnEffectsPrivate *priv)
 		fx->count = 0;
 		fx->spotlight_alpha = 0;
 		fx->spotlight = TRUE;
+		fx->glow_amount = 0;
 		fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
 		if (priv->start) priv->start(fx->self);
 		priv->start = NULL;
@@ -206,26 +208,27 @@ spotlight_effect(AwnEffectsPrivate *priv)
 
 	const gint PERIOD = 15;
 	const gint TREMBLE_PERIOD = 5;
-	const gfloat TREMBLE_HEIGHT = 0.6;
+	const gfloat TREMBLE_HEIGHT = 0.4;
 
 	gboolean busy = awn_effect_check_top_effect(priv, NULL);
 	if( fx->spotlight_alpha < 1.0 && fx->direction == AWN_EFFECT_SPOTLIGHT_ON){
 		fx->spotlight_alpha += 1.0/PERIOD;
 	} else if( busy && fx->direction != AWN_EFFECT_SPOTLIGHT_OFF ){
+		if( fx->spotlight_alpha>=1.0 )
+			fx->direction = AWN_EFFECT_SPOTLIGHT_TREMBLE_DOWN;
+		else if (fx->spotlight_alpha < 1.0-TREMBLE_HEIGHT)
+			fx->direction = AWN_EFFECT_SPOTLIGHT_TREMBLE_UP;
+
 		if(fx->direction == AWN_EFFECT_SPOTLIGHT_TREMBLE_UP)
 			fx->spotlight_alpha += TREMBLE_HEIGHT/TREMBLE_PERIOD;
 		else
 			fx->spotlight_alpha -= TREMBLE_HEIGHT/TREMBLE_PERIOD;
-		
-		if( fx->spotlight_alpha>1.0 )
-			fx->direction = AWN_EFFECT_SPOTLIGHT_TREMBLE_DOWN;
-		else if (fx->spotlight_alpha < 1.0-TREMBLE_HEIGHT)
-			fx->direction = AWN_EFFECT_SPOTLIGHT_TREMBLE_UP;
 	}
 	else{
 		fx->direction = AWN_EFFECT_SPOTLIGHT_OFF;
 		fx->spotlight_alpha -= 1.0/PERIOD;
 	}
+	fx->glow_amount = fx->spotlight_alpha;
 	// repaint widget
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
@@ -233,6 +236,7 @@ spotlight_effect(AwnEffectsPrivate *priv)
 	if ( fx->direction == AWN_EFFECT_SPOTLIGHT_OFF && fx->spotlight_alpha <= 0.0) {
 		fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
 		fx->spotlight_alpha = 0;
+		fx->glow_amount = 0;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
 		if (!repeat) fx->spotlight = FALSE;
@@ -256,10 +260,12 @@ spotlight_half_fade_effect(AwnEffectsPrivate *priv)
 
 	const gint PERIOD = 20;
 
-	if(fx->direction == AWN_EFFECT_SPOTLIGHT_ON)
+	if(fx->direction == AWN_EFFECT_SPOTLIGHT_ON) {
 		fx->spotlight_alpha += 0.75/PERIOD;
-	else
+	} else {
 		fx->spotlight_alpha -= 0.75/PERIOD;
+	}
+	fx->glow_amount = fx->spotlight_alpha;
 
 	if(fx->spotlight_alpha > 0.75)
 		fx->direction = AWN_EFFECT_SPOTLIGHT_OFF;
@@ -272,6 +278,7 @@ spotlight_half_fade_effect(AwnEffectsPrivate *priv)
 	if (fx->spotlight_alpha <= 0) {
 		fx->count = 0;
 		fx->spotlight_alpha = 0;
+		fx->glow_amount = 0;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
 		if (!repeat) fx->spotlight = FALSE;
@@ -288,6 +295,7 @@ spotlight_opening_effect(AwnEffectsPrivate *priv)
 		// effect start initialize values
 		fx->count = 0;
 		fx->spotlight_alpha = 1.0;
+		fx->glow_amount = fx->spotlight_alpha;
 		fx->spotlight = TRUE;
 		fx->y_offset = -fx->settings->bar_height;
 		fx->delta_width = -fx->icon_width/2;
@@ -304,6 +312,7 @@ spotlight_opening_effect(AwnEffectsPrivate *priv)
 		fx->y_offset +=  (3/2)* fx->settings->bar_height/PERIOD;
 	} else {
 		fx->spotlight_alpha -= (3/1)* 1.0/PERIOD;
+		fx->glow_amount = fx->spotlight_alpha;
 		fx->y_offset = 0;
 	}
 	
@@ -314,6 +323,7 @@ spotlight_opening_effect(AwnEffectsPrivate *priv)
 	if (fx->spotlight_alpha <= 0) {
 		fx->count = 0;
 		fx->spotlight_alpha = 0;
+		fx->glow_amount = 0;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
 		if (!repeat) fx->spotlight = FALSE;
@@ -331,6 +341,7 @@ spotlight_opening_effect2(AwnEffectsPrivate *priv)
 		fx->count = 0;
 		fx->spotlight_alpha = 1.0;
 		fx->spotlight = TRUE;
+		fx->glow_amount = fx->spotlight_alpha;
 		fx->delta_width = -fx->icon_width/2;
 		fx->clip = TRUE;
 		fx->clip_region.x = 0;
@@ -353,6 +364,7 @@ spotlight_opening_effect2(AwnEffectsPrivate *priv)
 	} else {
 		fx->clip = FALSE;
 		fx->spotlight_alpha -= (3/1)* 1.0/PERIOD;
+		fx->glow_amount = fx->spotlight_alpha;
 	}
 	
 	// repaint widget
@@ -362,6 +374,7 @@ spotlight_opening_effect2(AwnEffectsPrivate *priv)
 	if (fx->spotlight_alpha <= 0) {
 		fx->count = 0;
 		fx->spotlight_alpha = 0;
+		fx->glow_amount = 0;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
 		if (!repeat) fx->spotlight = FALSE;
@@ -378,6 +391,7 @@ spotlight_closing_effect(AwnEffectsPrivate *priv)
 		// effect start initialize values
 		fx->spotlight_alpha = 0.0;
 		fx->spotlight = TRUE;
+		fx->glow_amount = fx->spotlight_alpha;
 		fx->clip = TRUE;
 		fx->clip_region.x = 0;
 		fx->clip_region.y = 0;
@@ -410,6 +424,7 @@ spotlight_closing_effect(AwnEffectsPrivate *priv)
 		fx->clip = FALSE;
 		fx->spotlight_alpha -= 2.0/PERIOD;
 	}
+	fx->glow_amount = fx->spotlight_alpha;
 	
 	// repaint widget
 	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
@@ -417,6 +432,7 @@ spotlight_closing_effect(AwnEffectsPrivate *priv)
 	gboolean repeat = TRUE;
 	if (fx->direction == AWN_EFFECT_SPOTLIGHT_OFF && fx->spotlight_alpha <= 0) {
 		fx->spotlight_alpha = 0;
+		fx->glow_amount = 0;
 		fx->direction = AWN_EFFECT_DIR_NONE;
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
@@ -449,6 +465,125 @@ bounce_effect (AwnEffectsPrivate *priv)
 	gboolean repeat = TRUE;
 	if (fx->count >= PERIOD) {
 		fx->count = 0;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+static gboolean
+glow_effect (AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->glow_amount = 1.0;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gfloat GLOW_STEP = 0.08;
+
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	// check for repeating
+	gboolean top = awn_effect_check_top_effect(priv, NULL);
+	if (top) {
+		fx->glow_amount = 1.0;
+		return top; // == TRUE
+	} else {
+		fx->glow_amount -= GLOW_STEP;
+		if (fx->glow_amount <= 0) {
+			fx->glow_amount = 0.0;
+			gboolean repeat = awn_effect_handle_repeating(priv);
+			return repeat; // == FALSE
+		}
+	}
+	return TRUE;
+}
+
+static gboolean
+glow_opening_effect (AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->direction = AWN_EFFECT_DIR_UP;
+		fx->alpha = 0.0;
+		fx->glow_amount = 1.95;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gdouble ALPHA_STEP = 0.04;
+	const gdouble GLOW_STEP = 0.05;
+
+	switch (fx->direction) {
+	case AWN_EFFECT_DIR_UP:
+		fx->alpha += ALPHA_STEP;
+		if (fx->alpha > 1) {
+			fx->alpha = 1.0;
+			fx->direction = AWN_EFFECT_DIR_DOWN;
+		}
+		break;
+	case AWN_EFFECT_DIR_DOWN:
+		fx->glow_amount -= GLOW_STEP;
+		if (fx->glow_amount < 0) {
+			fx->glow_amount = 0.0;
+			fx->direction = AWN_EFFECT_DIR_NONE;
+		}
+		break;
+	default:
+		fx->direction = AWN_EFFECT_DIR_DOWN;
+	}
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->direction == AWN_EFFECT_DIR_NONE) {
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+static gboolean
+glow_closing_effect (AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->direction = AWN_EFFECT_DIR_DOWN;
+		fx->glow_amount = 0.8;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gdouble ALPHA_STEP = 0.03;
+	const gdouble GLOW_STEP = 0.085;
+
+	switch (fx->direction) {
+	case AWN_EFFECT_DIR_DOWN:
+		fx->alpha -= ALPHA_STEP;
+		fx->glow_amount += GLOW_STEP;
+		if (fx->alpha < 0) {
+			fx->alpha = 0.0;
+			fx->direction = AWN_EFFECT_DIR_NONE;
+		}
+		break;
+	default:
+		fx->direction = AWN_EFFECT_DIR_DOWN;
+	}
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->direction == AWN_EFFECT_DIR_NONE) {
 		// check for repeating
 		repeat = awn_effect_handle_repeating(priv);
 	}
@@ -1250,6 +1385,98 @@ turn_closing_effect(AwnEffectsPrivate *priv)
 	return repeat;
 }
 
+gboolean
+spotlight3D_hover_effect(AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->y_offset = 0;
+		fx->spotlight_alpha = 1.0;
+		fx->spotlight = TRUE;
+		fx->glow_amount = fx->spotlight_alpha;
+		fx->delta_width = 0;
+		fx->icon_depth = 0;
+		fx->icon_depth_direction = 0;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gint PERIOD = 44;
+	const gdouble ALPHA_STEP = 0.04;
+
+	if (awn_effect_check_top_effect(priv, NULL)) {
+		fx->spotlight_alpha = 1.0;
+	} else {
+		fx->spotlight_alpha -= ALPHA_STEP;
+		if (fx->spotlight_alpha < 0) {
+			fx->spotlight_alpha = 0;
+		}
+	}
+	fx->glow_amount = fx->spotlight_alpha;
+
+	gint prev_count = fx->count;
+	if (prev_count > PERIOD) prev_count = --fx->count;
+
+	fx->count = sin(fx->count * M_PI/2 / PERIOD)*PERIOD;
+
+	if(fx->count < PERIOD/4)
+	{
+		fx->icon_depth_direction = 0;
+		fx->delta_width = -fx->count * (fx->icon_width) / (PERIOD/4);
+		fx->flip = FALSE;
+	}
+	else if( fx->count < PERIOD/2 )
+	{
+		fx->icon_depth_direction = 1;
+		fx->delta_width = (fx->count-PERIOD/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
+		fx->flip = TRUE;
+	}
+	else if( fx->count < PERIOD*3/4 )
+	{
+		fx->icon_depth_direction = 0;
+		fx->delta_width = -(fx->count-PERIOD/2) * (fx->icon_width) / (PERIOD/4);
+		fx->flip = TRUE;
+	}
+	else
+	{
+		fx->icon_depth_direction = 1;
+		fx->delta_width = (fx->count-PERIOD*3/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
+		fx->flip = FALSE;
+	}
+	fx->icon_depth = 10.00*-fx->delta_width/fx->icon_width;
+
+	fx->count = ++prev_count;
+
+	// fix icon flickering
+	const gint MIN_WIDTH = 4;
+	if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH ) {
+		if (fx->delta_width > 0)
+			fx->delta_width = fx->icon_width - MIN_WIDTH;
+		else
+			fx->delta_width = -fx->icon_width + MIN_WIDTH;
+	}
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->count >= PERIOD && (fx->spotlight_alpha >= 1 || fx->spotlight_alpha <= 0)) {
+		fx->count = 0;
+		fx->y_offset = 0;
+		fx->icon_depth = 0;
+		fx->icon_depth_direction = 0;
+		fx->delta_width = 0;
+		fx->flip = FALSE;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+		if (!repeat)
+			fx->spotlight = FALSE;
+	}
+	return repeat;
+}
  
 static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data) {
 	
@@ -1345,81 +1572,113 @@ static void
 main_effect_loop(AwnEffects *fx) {
 	if (fx->current_effect != AWN_EFFECT_NONE || fx->effect_queue == NULL) return;
 
+	#define EFFECT_BOUNCE 0
+	#define EFFECT_FADE 1
+	#define EFFECT_SPOTLIGHT 2
+	#define EFFECT_ZOOM 3
+	#define EFFECT_SQUISH 4
+	#define EFFECT_TURN_3D 5
+	#define EFFECT_TURN_3D_SPOTLIGHT 6
+	#define EFFECT_GLOW 7
+
 	// NOTE! Always make sure that all EFFECTS arrays have same number of elements
 	static const GSourceFunc OPENING_EFFECTS[] = {
+		NULL,
 		(GSourceFunc)bounce_opening_effect,
 		(GSourceFunc)zoom_opening_effect,
 		(GSourceFunc)spotlight_opening_effect2,
 		(GSourceFunc)zoom_opening_effect,
 		(GSourceFunc)bounce_squish_opening_effect,
-		(GSourceFunc)turn_opening_effect
+		(GSourceFunc)turn_opening_effect,
+		(GSourceFunc)turn_opening_effect,
+		(GSourceFunc)glow_opening_effect
 	};
 	static const GSourceFunc CLOSING_EFFECTS[] = {
+		NULL,
 		(GSourceFunc)fade_out_effect,
 		(GSourceFunc)zoom_closing_effect,
 		(GSourceFunc)spotlight_closing_effect,
 		(GSourceFunc)zoom_closing_effect,
 		(GSourceFunc)bounce_squish_closing_effect,
-		(GSourceFunc)turn_closing_effect
+		(GSourceFunc)turn_closing_effect,
+		(GSourceFunc)turn_closing_effect,
+		(GSourceFunc)glow_closing_effect
 	};
 	static const GSourceFunc HOVER_EFFECTS[] = {
+		NULL,
 		(GSourceFunc)bounce_effect,
 		(GSourceFunc)fading_effect,
 		(GSourceFunc)spotlight_effect,
 		(GSourceFunc)zoom_effect,
 		(GSourceFunc)bounce_squish_effect,
-		(GSourceFunc)turn_hover_effect
+		(GSourceFunc)turn_hover_effect,
+		(GSourceFunc)spotlight3D_hover_effect,
+		(GSourceFunc)glow_effect
 	};
 	static const GSourceFunc LAUNCHING_EFFECTS[] = {
+		NULL,
 		(GSourceFunc)bounce_effect,
 		(GSourceFunc)fading_effect,
 		(GSourceFunc)spotlight_half_fade_effect,
 		(GSourceFunc)zoom_attention_effect,
 		(GSourceFunc)bounce_squish_effect,
-		(GSourceFunc)turn_hover_effect
+		(GSourceFunc)turn_hover_effect,
+		(GSourceFunc)turn_hover_effect,
+		(GSourceFunc)bounce_effect
 	};
 	static const GSourceFunc ATTENTION_EFFECTS[] = {
+		NULL,
 		(GSourceFunc)bounce_effect,
 		(GSourceFunc)fading_effect,
 		(GSourceFunc)spotlight_half_fade_effect,
 		(GSourceFunc)zoom_attention_effect,
 		(GSourceFunc)bounce_squish_attention_effect,
-		(GSourceFunc)turn_hover_effect
+		(GSourceFunc)turn_hover_effect,
+		(GSourceFunc)spotlight3D_hover_effect,
+		(GSourceFunc)bounce_effect
 	};
 
 	GSourceFunc animation = NULL;
 	AwnEffectsPrivate *topEffect = (AwnEffectsPrivate*)(fx->effect_queue->data);
-	gint effect = 0;
+	gint icon_effect = 0;
+	#define EFFECT_TYPES_COUNT 5
+	gint effects[EFFECT_TYPES_COUNT] = {0};
 	if (fx->settings) {
-		effect = fx->settings->icon_effect;
-		if (effect < 0)
-			effect = rand() & 7;
-		if (effect >= sizeof(HOVER_EFFECTS)/sizeof(GSourceFunc))
-			effect = 0;
-		// spotlight initialization
-		if (effect == 2) spotlight_init();
+		icon_effect = fx->settings->icon_effect;
+		gint i;
+		for (i=0; i < EFFECT_TYPES_COUNT; i++) {
+			gint effect = icon_effect & (0xF << (i*4));
+			effect >>= i*4;
+			if (effect >= sizeof(HOVER_EFFECTS)/sizeof(GSourceFunc))
+				effect = -1;
+			// spotlight initialization
+			if (effect == EFFECT_SPOTLIGHT ||
+			    effect == EFFECT_TURN_3D_SPOTLIGHT)
+				spotlight_init();
+			effects[i] = effect+1;
+		}
 	}
 
 	switch (topEffect->this_effect) {
-		case AWN_EFFECT_OPENING:
-			animation = OPENING_EFFECTS[effect];
-			break;
 		case AWN_EFFECT_HOVER:
-			animation = HOVER_EFFECTS[effect];
+			animation = HOVER_EFFECTS[effects[0]];
+			break;
+		case AWN_EFFECT_OPENING:
+			animation = OPENING_EFFECTS[effects[1]];
 			break;
 		case AWN_EFFECT_CLOSING:
-			animation = CLOSING_EFFECTS[effect];
+			animation = CLOSING_EFFECTS[effects[2]];
 			break;
 		case AWN_EFFECT_LAUNCHING:
-			animation = LAUNCHING_EFFECTS[effect];
+			animation = LAUNCHING_EFFECTS[effects[3]];
 			break;
 		case AWN_EFFECT_ATTENTION:
-			animation = ATTENTION_EFFECTS[effect];
+			animation = ATTENTION_EFFECTS[effects[4]];
 			break;
 		case AWN_EFFECT_DESATURATE:
 			animation = (GSourceFunc)desaturate_effect;
 			break;
-		default: animation = (GSourceFunc)bounce_effect;
+		default: return;
 	}
 	if (animation) {
 		g_timeout_add(AWN_FRAME_RATE, animation, topEffect);
@@ -1447,6 +1706,52 @@ awn_unregister_effects (AwnEffects *fx) {
 	fx->enter_notify = 0;
 	fx->leave_notify = 0;
 	fx->focus_window = NULL;
+}
+
+inline guchar
+lighten_component (const guchar cur_value, const gfloat amount)
+{
+	int new_value = cur_value;
+	new_value += (24 + (new_value >> 3)) * amount;
+	if (new_value > 255) {
+		new_value = 255;
+	}
+	return (guchar) new_value;
+}
+
+void
+lighten_pixbuf (GdkPixbuf* src, const gfloat amount)
+{
+	int i, j;
+	int width, height, row_stride, has_alpha;
+	guchar *target_pixels;
+	guchar *pixsrc;
+
+	g_return_if_fail (gdk_pixbuf_get_colorspace (src) == GDK_COLORSPACE_RGB);
+	g_return_if_fail ((!gdk_pixbuf_get_has_alpha (src)
+			       && gdk_pixbuf_get_n_channels (src) == 3)
+			      || (gdk_pixbuf_get_has_alpha (src)
+				  && gdk_pixbuf_get_n_channels (src) == 4));
+	g_return_if_fail (gdk_pixbuf_get_bits_per_sample (src) == 8);
+
+	has_alpha = gdk_pixbuf_get_has_alpha(src);
+	width = gdk_pixbuf_get_width (src);
+	height = gdk_pixbuf_get_height (src);
+	row_stride = gdk_pixbuf_get_rowstride (src);
+	target_pixels = gdk_pixbuf_get_pixels (src);
+
+	for (i = 0; i < height; i++) {
+		pixsrc = target_pixels + i * row_stride;
+		for (j = 0; j < width; j++) {
+			*pixsrc = lighten_component (*pixsrc, amount);
+			pixsrc++;
+			*pixsrc = lighten_component (*pixsrc, amount);
+			pixsrc++;
+			*pixsrc = lighten_component (*pixsrc, amount);
+			pixsrc++;
+			if (has_alpha) pixsrc++;
+		}
+	}
 }
 
 inline void apply_3d_illusion(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, const gint x, const gint y, const gdouble alpha) {
@@ -1492,12 +1797,9 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 
 	/* ICONS */
 	gboolean free_reflect = FALSE;
-	GdkPixbuf *scaledIcon = NULL;
-	GdkPixbuf *clippedIcon = NULL;
-	GdkPixbuf *flippedIcon = NULL;
-	GdkPixbuf *saturatedIcon = NULL;
 
 	/* clipping */
+	GdkPixbuf *clippedIcon = NULL;
 	if (fx->clip) {
 		gint x = fx->clip_region.x;
 		gint y = fx->clip_region.y;
@@ -1526,7 +1828,9 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		// override provided icon
 		icon = clippedIcon;
 	}
+
 	/* scaling */
+	GdkPixbuf *scaledIcon = NULL;
 	if (fx->delta_width || fx->delta_height) {
 		// sanity check
 		if (fx->delta_width <= -current_width || fx->delta_height <= -current_height) {
@@ -1547,7 +1851,9 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		// override provided icon
 		icon = scaledIcon;
 	}
+
 	/* saturation */
+	GdkPixbuf *saturatedIcon = NULL;
 	if (fx->saturation < 1.0) {
 		// do not change original pixbuf -> create new
 		if (!scaledIcon) {
@@ -1567,10 +1873,24 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	if(fx->x_offset)
 		x1 += fx->x_offset;
  
-	/* icon flipping */
+	/* flipping */
+	GdkPixbuf *flippedIcon = NULL;
 	if(fx->flip) {
 		flippedIcon = gdk_pixbuf_flip(icon, TRUE);
 		icon = flippedIcon;
+		if (free_reflect)
+			g_object_unref(reflect);
+		else
+			free_reflect = TRUE;
+		reflect = gdk_pixbuf_flip(icon, FALSE);
+	}
+	
+	/* glow */
+	GdkPixbuf *glowingIcon = NULL;
+	if (fx->glow_amount > 0) {
+		glowingIcon = gdk_pixbuf_copy(icon);
+		icon = glowingIcon;
+		lighten_pixbuf(icon, fx->glow_amount);
 		if (free_reflect)
 			g_object_unref(reflect);
 		else
@@ -1594,6 +1914,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	if (clippedIcon) g_object_unref(clippedIcon);
 	if (flippedIcon) g_object_unref(flippedIcon);
 	if (saturatedIcon) g_object_unref(saturatedIcon);
+	if (glowingIcon) g_object_unref(glowingIcon);
 
 	/* reflection */
 	if (fx->y_offset >= 0) {

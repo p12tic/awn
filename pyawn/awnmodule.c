@@ -16,6 +16,7 @@
 #include <libawn/awn-defines.h>
 #include <libawn/awn-cairo-utils.h>
 #include <libawn/awn-enum-types.h>
+#include <libawn/awn-effects.h>
 #include <libawn/awn-plug.h>
 #include <libawn/awn-title.h>
 

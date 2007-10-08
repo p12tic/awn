@@ -149,7 +149,7 @@ class AwnManager:
         self.about.set_name("Avant Window Navigator")
         #self.about.set_version("bzr17")
         self.about.set_copyright("Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>")
-        self.about.set_authors(["Neil Patel", "More to come..."])
+        self.about.set_authors(["Neil Jagdish Patel	<njpatel@gmail.com>", "haytjes <hv1989@gmail.com>", "Miika-Petteri Matikainen <miikapetteri@gmail.com>", "Anthony Arobone  <aarobone@gmail.com>", "Ryan Rushton <ryan@rrdesign.ca>", "Michal Hruby  <michal.mhr@gmail.com>", "Julien Lavergne <julien.lavergne@gmail.com>"])
         self.about.set_comments("Fully customisable dock-like window navigator for GNOME.")
         self.about.set_license('''
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
