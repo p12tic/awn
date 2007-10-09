@@ -1684,6 +1684,11 @@ main_effect_loop(AwnEffects *fx) {
 		g_timeout_add(AWN_FRAME_RATE, animation, topEffect);
 		fx->current_effect = topEffect->this_effect;
 		fx->effect_lock = FALSE;
+	} else {
+		if (topEffect->start) topEffect->start(fx->self);
+		if (topEffect->stop) topEffect->stop(fx->self);
+		// dispose AwnEffectsPrivate
+		awn_effect_stop(fx, topEffect->this_effect);
 	}
 }
 
