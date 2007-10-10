@@ -87,13 +87,6 @@ static void awn_applet_virtual_on_size_changed( AwnApplet *applet, gint x ) {
 
 
 /* MAIN FUNCTIONS */
-
-static void
-on_delete_selected (GtkMenuItem *item, AwnApplet *applet)
-{
-	;
-}
-
 GtkWidget*
 awn_applet_create_default_menu (AwnApplet *applet)
 {
