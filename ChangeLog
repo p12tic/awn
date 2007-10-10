@@ -1,7 +1,9 @@
-2007-10-07  Mark Lee  <avant-wn@lazymalevolence.com>
+2007-10-10  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* autogen.sh:
-	Add support for Xfce's autogen script.
+	Remove required dependency on gnome-autogen.sh; autogen.sh
+	will use it if available, otherwise it will use the
+	autotools-related scripts individually.
 
 2007-10-07  Neil J. Patel  <njpatel@gmail.com>
 
