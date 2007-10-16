@@ -27,14 +27,14 @@
 
 #ifdef LIBAWN_USE_GNOME
 #include <libgnome/gnome-desktop-item.h>
-#elif defined(LIBAWN_USE_XFCE)
-#include <libxfce4util/libxfce4util.h>
+#else
+#include "egg/eggdesktopfile.h"
 #endif
 
 #ifdef LIBAWN_USE_GNOME
 typedef GnomeDesktopItem AwnDesktopItem;
-#elif defined(LIBAWN_USE_XFCE)
-typedef XfceDesktopEntry AwnDesktopItem;
+#else
+typedef EggDesktopFile AwnDesktopItem;
 #endif
 
 #define AWN_TYPE_DESKTOP_ITEM	(awn_desktop_item_get_type ())
@@ -51,7 +51,7 @@ gchar          *awn_desktop_item_get_exec (AwnDesktopItem *item);
 gchar          *awn_desktop_item_get_string (AwnDesktopItem *item, gchar *key);
 gchar          *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *key);
 gboolean        awn_desktop_item_exists (AwnDesktopItem *item);
-gint            awn_desktop_item_launch (AwnDesktopItem *item, GList *extra_argv, GError **err);
+gint            awn_desktop_item_launch (AwnDesktopItem *item, GList *documents, GError **err);
 void            awn_desktop_item_unref (AwnDesktopItem *item);
 
 #endif /* _LIBAWN_AWN_DESKTOP_ITEM_H */

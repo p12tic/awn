@@ -54,9 +54,6 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
-/* Define support for the GIO/GVFS libraries */
-#undef LIBAWN_USE_GIO
-
 /* Define support for the Gnome desktop */
 #undef LIBAWN_USE_GNOME
 

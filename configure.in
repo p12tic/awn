@@ -75,45 +75,36 @@ AM_PATH_GLIB_2_0(2.8.0,,,gobject)
 COMMON_MODULES="glib-2.0 gobject-2.0 gtk+-2.0 gdk-2.0"
 
 AC_MSG_CHECKING([for specific desktop support])
+use_egg=no
 AC_ARG_WITH(desktop,
-            AS_HELP_STRING([--with-desktop=[gnome|xfce4]],
-                           [Specifies which desktop type for which to compile.  Current choices: xfce4, gnome]),
+            AS_HELP_STRING([--with-desktop=[gnome|xfce4|agnostic]],
+                           [Specifies which desktop type for which to compile.  Current choices: xfce4, gnome, agnostic (defaults to gnome)]),
             [case "$with_desktop" in
-                 gnome)
+                 xfce4)
+                 use_egg=yes
+                 VFS_MODULE="thunar-vfs-1"
+                 AC_DEFINE(LIBAWN_USE_XFCE, 1, [Define support for the Xfce4 desktop])
+                 USE_DESKTOP="LIBAWN_USE_XFCE"
+                 AC_MSG_RESULT(Xfce4)
+                 ;;
+                 agnostic)
+                 use_egg=yes
+                 AC_MSG_RESULT([None, enabling desktop agnostic support])
+                 ;;
+                 gnome|*)
                  DESKTOP_MODULES="gnome-desktop-2.0 libgnome-2.0"
                  VFS_MODULE="gnome-vfs-2.0"
                  AC_DEFINE(LIBAWN_USE_GNOME, 1, [Define support for the Gnome desktop])
                  USE_DESKTOP="LIBAWN_USE_GNOME"
                  AC_MSG_RESULT(Gnome)
                  ;;
-                 xfce4)
-                 DESKTOP_MODULES="libxfce4util-1.0 >= 4.2"
-                 VFS_MODULE="thunar-vfs-1"
-                 AC_DEFINE(LIBAWN_USE_XFCE, 1, [Define support for the Xfce4 desktop])
-                 USE_DESKTOP="LIBAWN_USE_XFCE"
-                 AC_MSG_RESULT(Xfce4)
-                 ;;
-                 *) ;;
              esac])
-if test -z "$DESKTOP_MODULES"; then
-    AC_MSG_ERROR([You must enable either Gnome or Xfce4 support])
-fi
 AC_SUBST(DESKTOP_MODULES)
+AC_SUBST(VFS_MODULE)
 AC_SUBST(USE_DESKTOP)
 AM_CONDITIONAL(USE_GNOME, test "$with_desktop" = "gnome")
 AM_CONDITIONAL(USE_XFCE, test "$with_desktop" = "xfce4")
-
-AC_ARG_WITH(gio,
-    AS_HELP_STRING([--with-gio],[Use the GIO/GVFS libraries instead of the desktop's equivalents]),
-    [if test "$with_gio" = "yes"; then 
-        PKG_CHECK_MODULES(GIO, [gio-2.0], [
-            VFS_MODULE=gio-2.0
-            AC_DEFINE(LIBAWN_USE_GIO, 1, [Define support for the GIO/GVFS libraries])
-            USE_GIO="-DLIBAWN_USE_GIO"
-        ])
-     fi])
-AC_SUBST(VFS_MODULE)
-AC_SUBST(USE_GIO)
+AM_CONDITIONAL(USE_EGG, test "$use_egg" = "yes")
 
 PKG_CHECK_MODULES(AWN, [ $COMMON_MODULES libwnck-1.0 $DESKTOP_MODULES $VFS_MODULE gconf-2.0 x11 xproto dbus-glib-1 libglade-2.0 xdamage xcomposite xrender])
 AC_SUBST(AWN_CFLAGS)
@@ -135,6 +126,7 @@ AC_OUTPUT([
 Makefile
 awn-manager/Makefile
 libawn/Makefile
+libawn/egg/Makefile
 src/Makefile
 awn-applet-activation/Makefile
 applets/Makefile

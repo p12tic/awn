@@ -22,6 +22,8 @@
 #ifndef _LIBAWN_AWN_VFS_H
 #define _LIBAWN_AWN_VFS_H
 
+#include <glib.h>
+
 /* utility functions */
 void            awn_vfs_init (void);
 GList          *awn_vfs_get_pathlist_from_string (gchar *paths, GError **err);

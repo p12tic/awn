@@ -1,5 +1,27 @@
 2007-10-15  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* config.h.in:
+	* configure.in:
+	* libawn/Makefile.am:
+	Remove the GIO stuff because we technically don't use GIO/GVFS
+	to do anything.
+	Add --with-desktop=agnostic.
+	The default value of --with-desktop is "gnome".
+	Add conditional libegg support (used if desktop is xfce or agnostic).
+
+	* libawn/awn-desktop-item.c:
+	* libawn/awn-desktop-item.h:
+	Replace XfceDesktopEntry support with that of EggDesktopFile (as
+	the former is a read-only structure).
+	Rename the GList argument in awn_desktop_item_launch() to better fit
+	EggDesktopFile's parameters.
+
+	* libawn/awn-vfs.c:
+	* libawn/awn-vfs.h:
+	Ensure that GList is defined.
+	the "GIO" implementation of awn_vfs_pathlist_from_string() is now
+	the agnostic implementation.
+
 	* libawn/egg/Makefile.am:
 	Fix headers/libraries to compile/link against.
 

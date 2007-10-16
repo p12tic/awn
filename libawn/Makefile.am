@@ -1,3 +1,7 @@
+if USE_EGG
+SUBDIRS = egg
+endif
+
 ENUMFILES = awn-enum-types.c awn-enum-types.h
 STAMPFILES = stamp-awn-marshal.h stamp-awn-enum-types.h
 GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
@@ -58,6 +62,10 @@ libawn_la_SOURCES = \
 	awn-enum-types.c.in
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
 libawn_la_LDFLAGS = -version-info 0:1:0
+
+if USE_EGG
+libawn_la_LIBADD += $(top_builddir)/libawn/egg/libeggdesktopfile.la
+endif
 
 awn-enum-types.h: stamp-awn-enum-types.h
 	@true

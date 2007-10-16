@@ -48,18 +48,8 @@ void awn_vfs_init()
 GList *awn_vfs_get_pathlist_from_string (gchar *paths, GError **err)
 {
 	GList *list = NULL;
-#ifdef LIBAWN_USE_GIO
-	gchar **path_list;
-	path_list = g_strsplit (paths, "\r\n", 0);
-	guint i;
-	guint len = g_strv_length (path_list);
-	for (i = 0; i < len; i++) {
-		list = g_list_append (list, (gpointer)g_strdup (path_list[i]));
-	}
-	g_strfreev (path_list);
-#else
-	GList *li;
 #ifdef LIBAWN_USE_GNOME
+	GList *li;
 	list = gnome_vfs_uri_list_parse ((const gchar *) paths);
 	for (li = list; li != NULL; li = li->next) {
 		GnomeVFSURI *uri = li->data;
@@ -67,6 +57,7 @@ GList *awn_vfs_get_pathlist_from_string (gchar *paths, GError **err)
 		gnome_vfs_uri_unref (uri);
 	}
 #elif defined(LIBAWN_USE_XFCE)
+	GList *li;
 	list = thunar_vfs_path_list_from_string ((const gchar *) paths, err);
 	GError *error = *err;
 	if (error) {
@@ -78,8 +69,16 @@ GList *awn_vfs_get_pathlist_from_string (gchar *paths, GError **err)
 			thunar_vfs_path_unref (uri);
 		}
 	}
+#else
+	gchar **path_list;
+	path_list = g_strsplit (paths, "\r\n", 0);
+	guint i;
+	guint len = g_strv_length (path_list);
+	for (i = 0; i < len; i++) {
+		list = g_list_append (list, (gpointer)g_strdup (path_list[i]));
+	}
+	g_strfreev (path_list);
 #endif
-#endif /* LIBAWN_USE_GIO */
 	return list;
 }
 /*  vim: set noet ts=8 sw=8 : */
