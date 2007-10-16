@@ -27,6 +27,8 @@
 #include <math.h>
 #ifdef LIBAWN_USE_GNOME
 #include <libgnome/libgnome.h>
+#else
+#include <glib/gi18n.h>
 #endif
 
 #include <libawn/awn-effects.h>
@@ -1636,15 +1638,15 @@ _task_remove_launcher (GtkMenuItem *item, AwnTask *task)
 	AwnTaskPrivate *priv;
 	AwnSettings *settings;
 	AwnListTerm term;
-	GString *uri;
+	gchar *uri;
 
 	priv = AWN_TASK_GET_PRIVATE (task);
 	settings = priv->settings;
 
 	uri = awn_desktop_item_get_filename (priv->item);
 
-	g_print ("Remove : %s\n", uri->str);
-	term.uri = uri->str;
+	g_print ("Remove : %s\n", uri);
+	term.uri = uri;
 	term.settings = settings;
 	g_slist_foreach(settings->launchers, (GFunc)_slist_foreach, (gpointer)&term);
 

@@ -1,3 +1,9 @@
+2007-10-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* src/awn-task.c:
+	Make sure _() is defined.
+	Remove extraneous use of GString.
+
 2007-10-10  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* autogen.sh:
