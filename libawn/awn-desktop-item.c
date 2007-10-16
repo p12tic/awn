@@ -29,14 +29,12 @@
 #endif
 
 #include <string.h>
-#include <unistd.h>
-#include <gdk/gdkspawn.h>
+#include <gdk/gdkscreen.h>
 
 #include "awn-desktop-item.h"
 
 /* helper functions for egg */
 #ifndef LIBAWN_USE_GNOME
-
 static GSList *awn_util_glist_to_gslist (GList *list)
 {
 	GSList *slist;
@@ -47,18 +45,6 @@ static GSList *awn_util_glist_to_gslist (GList *list)
 	}
 	g_list_free (list);
 	return slist;
-}
-
-static gchar *awn_util_desktop_item_get_string (AwnDesktopItem *item, gchar *key)
-{
-	gchar *value;
-	GError *err = NULL;
-	value = g_key_file_get_string (egg_desktop_file_get_key_file (item), EGG_DESKTOP_FILE_GROUP, key, &err);
-	if (err) {
-		g_warning("Could not get the value of '%s' from '%s': %s",
-		          key, awn_desktop_item_get_filename (item), err->message);
-	}
-	return value;
 }
 #endif
 
@@ -108,7 +94,7 @@ gchar *awn_desktop_item_get_item_type (AwnDesktopItem *item)
 #ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_TYPE);
 #else
-	return awn_util_desktop_item_get_string (item, EGG_DESKTOP_FILE_KEY_TYPE);
+	return awn_desktop_item_get_string (item, EGG_DESKTOP_FILE_KEY_TYPE);
 #endif
 }
 
@@ -181,7 +167,7 @@ gchar *awn_desktop_item_get_exec (AwnDesktopItem *item)
 #ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_EXEC);
 #else
-	return awn_util_desktop_item_get_string (item, EGG_DESKTOP_FILE_KEY_EXEC);
+	return awn_desktop_item_get_string (item, EGG_DESKTOP_FILE_KEY_EXEC);
 #endif
 }
 
@@ -190,7 +176,14 @@ gchar *awn_desktop_item_get_string (AwnDesktopItem *item, gchar *key)
 #ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_string (item, key);
 #else
-	return awn_util_desktop_item_get_string (item, key);
+	gchar *value;
+	GError *err = NULL;
+	value = g_key_file_get_string (egg_desktop_file_get_key_file (item), EGG_DESKTOP_FILE_GROUP, key, &err);
+	if (err) {
+		g_warning("Could not get the value of '%s' from '%s': %s",
+		          key, awn_desktop_item_get_filename (item), err->message);
+	}
+	return value;
 #endif
 }
 
@@ -199,7 +192,21 @@ gchar *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *key)
 #ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_localestring (item, key);
 #else
-	return awn_util_desktop_item_get_string (item, key);
+	gchar *value;
+	GError *err = NULL;
+	const gchar* const *langs = g_get_language_names ();
+	guint i = 0;
+	guint langs_len = g_strv_length ((gchar**)langs);
+	do {
+		value = g_key_file_get_locale_string (egg_desktop_file_get_key_file (item),
+		                                      EGG_DESKTOP_FILE_GROUP, key, langs[i], &err);
+		i++;
+	} while (err && i < langs_len);
+	if (err) {
+		g_warning("Could not get the value of '%s' from '%s': %s",
+		          key, awn_desktop_item_get_filename (item), err->message);
+	}
+	return value;
 #endif
 }
 
