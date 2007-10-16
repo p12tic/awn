@@ -44,6 +44,11 @@
 	will use it if available, otherwise it will use the
 	autotools-related scripts individually.
 
+2007-10-09  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fixed "none" animation causing problems.
+
 2007-10-07  Neil J. Patel  <njpatel@gmail.com>
 
 	* Makefile.am:
