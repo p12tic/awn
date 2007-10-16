@@ -108,7 +108,7 @@ gchar *awn_desktop_item_get_item_type (AwnDesktopItem *item)
 #ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_TYPE);
 #else
-	return awn_util_desktop_item_get_string (item, "Type");
+	return awn_util_desktop_item_get_string (item, EGG_DESKTOP_FILE_KEY_TYPE);
 #endif
 }
 
@@ -181,7 +181,7 @@ gchar *awn_desktop_item_get_exec (AwnDesktopItem *item)
 #ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_EXEC);
 #else
-	return awn_util_desktop_item_get_string (item, "Exec");
+	return awn_util_desktop_item_get_string (item, EGG_DESKTOP_FILE_KEY_EXEC);
 #endif
 }
 
