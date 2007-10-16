@@ -98,6 +98,15 @@ gchar *awn_desktop_item_get_item_type (AwnDesktopItem *item)
 #endif
 }
 
+void awn_desktop_item_set_item_type (AwnDesktopItem *item, gchar *item_type)
+{
+#ifdef LIBAWN_USE_GNOME
+	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_TYPE, item_type);
+#else
+	awn_desktop_item_set_string (item, EGG_DESKTOP_FILE_KEY_TYPE, item_type);
+#endif
+}
+
 gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -151,6 +160,15 @@ gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme
 #endif
 }
 
+void awn_desktop_item_set_icon (AwnDesktopItem *item, gchar *icon)
+{
+#ifdef LIBAWN_USE_GNOME
+	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_ICON, icon);
+#else
+	awn_desktop_item_set_string (item, EGG_DESKTOP_FILE_KEY_ICON, icon);
+#endif
+}
+
 gchar *awn_desktop_item_get_name (AwnDesktopItem *item)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -159,7 +177,15 @@ gchar *awn_desktop_item_get_name (AwnDesktopItem *item)
 #else
 	return (gchar*)egg_desktop_file_get_name (item);
 #endif
+}
 
+void awn_desktop_item_set_name (AwnDesktopItem *item, gchar *name)
+{
+#ifdef LIBAWN_USE_GNOME
+	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_NAME, name);
+#else
+	awn_desktop_item_set_string (item, EGG_DESKTOP_FILE_KEY_NAME, name);
+#endif
 }
 
 gchar *awn_desktop_item_get_exec (AwnDesktopItem *item)
@@ -168,6 +194,15 @@ gchar *awn_desktop_item_get_exec (AwnDesktopItem *item)
 	return gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_EXEC);
 #else
 	return awn_desktop_item_get_string (item, EGG_DESKTOP_FILE_KEY_EXEC);
+#endif
+}
+
+void awn_desktop_item_set_exec (AwnDesktopItem *item, gchar *exec)
+{
+#ifdef LIBAWN_USE_GNOME
+	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_EXEC, exec);
+#else
+	awn_desktop_item_set_string (item, EGG_DESKTOP_FILE_KEY_EXEC, exec);
 #endif
 }
 
@@ -184,6 +219,16 @@ gchar *awn_desktop_item_get_string (AwnDesktopItem *item, gchar *key)
 		          key, awn_desktop_item_get_filename (item), err->message);
 	}
 	return value;
+#endif
+}
+
+void awn_desktop_item_set_string (AwnDesktopItem *item, gchar *key, gchar *value)
+{
+#ifdef LIBAWN_USE_GNOME
+	gnome_desktop_item_set_string (item, key, value);
+#else
+	g_key_file_set_string (egg_desktop_file_get_key_file (item),
+	                       EGG_DESKTOP_FILE_GROUP, key, value);
 #endif
 }
 
@@ -207,6 +252,24 @@ gchar *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *key)
 		          key, awn_desktop_item_get_filename (item), err->message);
 	}
 	return value;
+#endif
+}
+
+void awn_desktop_item_set_localestring (AwnDesktopItem *item, gchar *key, gchar *locale, gchar *value)
+{
+#ifdef LIBAWN_USE_GNOME
+	if (locale == NULL) {
+		gnome_desktop_item_set_localestring (item, key, value);
+	} else {
+		gnome_desktop_item_set_localestring_lang (item, key, locale, value);
+	}
+#else
+	if (locale == NULL) {
+		/* use the first locale from g_get_language_names () */
+		locale = (gchar*)(g_get_language_names ()[0]);
+	}
+	g_key_file_set_locale_string (egg_desktop_file_get_key_file (item),
+	                              EGG_DESKTOP_FILE_GROUP, key, locale, value);
 #endif
 }
 
@@ -240,6 +303,25 @@ gint awn_desktop_item_launch (AwnDesktopItem *item, GList *documents, GError **e
 					   EGG_DESKTOP_FILE_LAUNCH_RETURN_PID, &pid,
 					   NULL);
 	return pid;
+#endif
+}
+
+void awn_desktop_item_save (AwnDesktopItem *item, GError **err)
+{
+#ifdef LIBAWN_USE_GNOME
+	gnome_desktop_item_save (item, NULL, TRUE, err);
+#else
+	gchar *data;
+	gsize data_len;
+	data = g_key_file_to_data (egg_desktop_file_get_key_file (item), &data_len, err);
+	if (err) {
+		g_free (data);
+		return;
+	} else {
+		/* requires glib 2.8 */
+		g_file_set_contents (awn_desktop_item_get_filename (item), data, data_len, err);
+		g_free (data);
+	}
 #endif
 }
 

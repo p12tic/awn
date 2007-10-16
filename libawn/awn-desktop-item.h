@@ -45,13 +45,20 @@ GType awn_desktop_item_get_type (void);
 AwnDesktopItem *awn_desktop_item_new (gchar *uri);
 gchar          *awn_desktop_item_get_filename (AwnDesktopItem *item);
 gchar          *awn_desktop_item_get_item_type (AwnDesktopItem *item);
+void            awn_desktop_item_set_item_type (AwnDesktopItem *item, gchar *item_type);
 gchar          *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme);
+void            awn_desktop_item_set_icon (AwnDesktopItem *item, gchar *icon);
 gchar          *awn_desktop_item_get_name (AwnDesktopItem *item);
+void            awn_desktop_item_set_name (AwnDesktopItem *item, gchar *name);
 gchar          *awn_desktop_item_get_exec (AwnDesktopItem *item);
+void            awn_desktop_item_set_exec (AwnDesktopItem *item, gchar *exec);
 gchar          *awn_desktop_item_get_string (AwnDesktopItem *item, gchar *key);
+void            awn_desktop_item_set_string (AwnDesktopItem *item, gchar *key, gchar *value);
 gchar          *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *key);
+void            awn_desktop_item_set_localestring (AwnDesktopItem *item, gchar *key, gchar *locale, gchar *value);
 gboolean        awn_desktop_item_exists (AwnDesktopItem *item);
 gint            awn_desktop_item_launch (AwnDesktopItem *item, GList *documents, GError **err);
+void            awn_desktop_item_save (AwnDesktopItem *item, GError **err);
 void            awn_desktop_item_unref (AwnDesktopItem *item);
 
 #endif /* _LIBAWN_AWN_DESKTOP_ITEM_H */

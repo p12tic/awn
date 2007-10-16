@@ -1,3 +1,10 @@
+2007-10-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-desktop-item.c:
+	* libawn/awn-desktop-item.h:
+	Implement write access to the desktop item files.
+	A save method is included.
+
 2007-10-15  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* config.h.in:
