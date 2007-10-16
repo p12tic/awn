@@ -1,5 +1,16 @@
 2007-10-15  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/egg/Makefile.am:
+	Fix headers/libraries to compile/link against.
+
+	* libawn/egg/egg-enum-types.c.in:
+	* libawn/egg/egg-enum-types.h.in:
+	Add enum types for EggDesktopFile* enums.
+
+	* libawn/egg/eggdesktopfile.c:
+	* libawn/egg/eggdesktopfile.h:
+	Add/implement egg_desktop_file_get_type().
+
 	* src/awn-task.c:
 	Make sure _() is defined.
 	Remove extraneous use of GString.

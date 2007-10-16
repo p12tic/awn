@@ -1372,3 +1372,28 @@ egg_get_desktop_file (void)
 
   return retval;
 }
+
+static gpointer
+_egg_desktop_file_copy (gpointer boxed)
+{
+	return g_memdup ((gconstpointer)boxed, sizeof (EggDesktopFile));
+}
+
+static void
+_egg_desktop_file_free (gpointer boxed)
+{
+	egg_desktop_file_free (EGG_DESKTOP_FILE (boxed));
+}
+
+GType egg_desktop_file_get_type (void)
+{
+	static GType type = 0;
+
+	if (type == 0) {
+		type = g_boxed_type_register_static ("EggDesktopFile",
+						     _egg_desktop_file_copy,
+						     _egg_desktop_file_free);
+	}
+
+	return type;
+}

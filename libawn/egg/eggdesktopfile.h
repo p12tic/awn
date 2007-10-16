@@ -21,10 +21,15 @@
 #define __EGG_DESKTOP_FILE_H__
 
 #include <glib.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
 typedef struct EggDesktopFile EggDesktopFile;
+
+GType egg_desktop_file_get_type (void) G_GNUC_CONST;
+#define EGG_TYPE_DESKTOP_FILE (egg_desktop_file_get_type())
+#define EGG_DESKTOP_FILE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), EGG_TYPE_DESKTOP_FILE, EggDesktopFile))
 
 typedef enum {
 	EGG_DESKTOP_FILE_TYPE_UNRECOGNIZED,
