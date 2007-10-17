@@ -293,15 +293,14 @@ gint awn_desktop_item_launch (AwnDesktopItem *item, GList *documents, GError **e
 	                                            err);
 #else
 	GPid pid;
-	gboolean success;
 	GSList *doc_list = NULL;
-	if (egg_desktop_file_accepts_documents (item)) {
+	if (documents != NULL && egg_desktop_file_accepts_documents (item)) {
 		doc_list = awn_util_glist_to_gslist (documents);
 	}
-	success = egg_desktop_file_launch (item, doc_list, err,
-					   EGG_DESKTOP_FILE_LAUNCH_SCREEN, gdk_screen_get_default(),
-					   EGG_DESKTOP_FILE_LAUNCH_RETURN_PID, &pid,
-					   NULL);
+	egg_desktop_file_launch (item, doc_list, err,
+	                         EGG_DESKTOP_FILE_LAUNCH_SCREEN, gdk_screen_get_default(),
+	                         EGG_DESKTOP_FILE_LAUNCH_RETURN_PID, &pid,
+	                         NULL);
 	return pid;
 #endif
 }
