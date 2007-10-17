@@ -271,6 +271,19 @@ egg_desktop_file_new_from_key_file (GKeyFile    *key_file,
 }
 
 /**
+ * egg_desktop_file_copy:
+ * @desktop_file: an #EggDesktopFile
+ *
+ * Creates a duplicate of @desktop_file.
+ * Return value: a newly allocated #EggDesktopFile
+ **/
+EggDesktopFile *
+egg_desktop_file_copy (const EggDesktopFile *desktop_file)
+{
+  return g_memdup ((gconstpointer)desktop_file, sizeof (EggDesktopFile));
+}
+
+/**
  * egg_desktop_file_free:
  * @desktop_file: an #EggDesktopFile
  *
@@ -1376,7 +1389,7 @@ egg_get_desktop_file (void)
 static gpointer
 _egg_desktop_file_copy (gpointer boxed)
 {
-	return g_memdup ((gconstpointer)boxed, sizeof (EggDesktopFile));
+	return egg_desktop_file_copy (EGG_DESKTOP_FILE (boxed));
 }
 
 static void

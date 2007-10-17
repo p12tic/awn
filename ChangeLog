@@ -4,6 +4,15 @@
 	* libawn/awn-desktop-item.h:
 	Implement write access to the desktop item files.
 	A save method is included.
+	Add a copy function.
+
+	* libawn/egg/eggdesktopfile.c:
+	* libawn/egg/eggdesktopfile.h:
+	Add a copy function.
+
+	* pyawn/awn.defs:
+	awn.DesktopItem is now a boxed type.
+	Add write methods.
 
 2007-10-15  Mark Lee  <avant-wn@lazymalevolence.com>
 

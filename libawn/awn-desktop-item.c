@@ -78,6 +78,15 @@ AwnDesktopItem *awn_desktop_item_new (gchar *uri)
 	return item;
 }
 
+AwnDesktopItem *awn_desktop_item_copy (const AwnDesktopItem *item)
+{
+#ifdef LIBAWN_USE_GNOME
+	return gnome_desktop_item_copy (item);
+#else
+	return egg_desktop_file_copy (item);
+#endif
+}
+
 gchar *awn_desktop_item_get_filename (AwnDesktopItem *item)
 {
 #ifdef LIBAWN_USE_GNOME

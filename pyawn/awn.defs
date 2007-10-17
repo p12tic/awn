@@ -35,10 +35,13 @@
   (gtype-id "AWN_TYPE_TITLE")
 )
 
-(define-object DesktopItem
+;; Boxed types ...
+(define-boxed DesktopItem
   (in-module "Awn")
   (c-name "AwnDesktopItem")
   (gtype-id "AWN_TYPE_DESKTOP_ITEM")
+  (copy-func "awn_desktop_item_copy")
+  (release-func "awn_desktop_item_unref")
 )
 
 ;; Enumerations and flags ...
@@ -392,6 +395,15 @@
   (return-type "gchar*")
 )
 
+(define-method set_item_type
+  (c-name "awn_desktop_item_set_item_type")
+  (of-object "AwnDesktopItem")
+  (return-type "none")
+  (parameters
+    '("gchar*" "item_type")
+  )
+)
+
 (define-method get_icon
   (c-name "awn_desktop_item_get_icon")
   (of-object "AwnDesktopItem")
@@ -401,16 +413,43 @@
   )
 )
 
+(define-method set_icon
+  (c-name "awn_desktop_item_set_icon")
+  (of-object "AwnDesktopItem")
+  (return-type "none")
+  (parameters
+    '("gchar*" "icon")
+  )
+)
+
 (define-method get_name
   (c-name "awn_desktop_item_get_name")
   (of-object "AwnDesktopItem")
   (return-type "gchar*")
 )
 
+(define-method set_name
+  (c-name "awn_desktop_item_set_name")
+  (of-object "AwnDesktopItem")
+  (return-type "none")
+  (parameters
+    '("gchar*" "name")
+  )
+)
+
 (define-method get_exec
   (c-name "awn_desktop_item_get_exec")
   (of-object "AwnDesktopItem")
   (return-type "gchar*")
+)
+
+(define-method set_exec
+  (c-name "awn_desktop_item_set_exec")
+  (of-object "AwnDesktopItem")
+  (return-type "none")
+  (parameters
+    '("gchar*" "exec")
+  )
 )
 
 (define-method get_string
@@ -422,12 +461,33 @@
   )
 )
 
+(define-method set_string
+  (c-name "awn_desktop_item_set_string")
+  (of-object "AwnDesktopItem")
+  (return-type "none")
+  (parameters
+    '("gchar*" "key")
+    '("gchar*" "value")
+  )
+)
+
 (define-method get_localestring
   (c-name "awn_desktop_item_get_localestring")
   (of-object "AwnDesktopItem")
   (return-type "gchar*")
   (parameters
     '("gchar*" "key")
+  )
+)
+
+(define-method set_localestring
+  (c-name "awn_desktop_item_set_localestring")
+  (of-object "AwnDesktopItem")
+  (return-type "none")
+  (parameters
+    '("gchar*" "key")
+    '("gchar*" "locale")
+    '("gchar*" "value")
   )
 )
 
@@ -442,15 +502,18 @@
   (of-object "AwnDesktopItem")
   (return-type "gint")
   (parameters
-    '("GList*" "extra_argv")
+    '("GList*" "documents")
     '("GError**" "err")
   )
 )
 
-(define-method __del__
-  (c-name "awn_desktop_item_unref")
+(define-method save
+  (c-name "awn_desktop_item_save")
   (of-object "AwnDesktopItem")
   (return-type "none")
+  (parameters
+    '("GError**" "err")
+  )
 )
 
 ;; From awn-effects.h
