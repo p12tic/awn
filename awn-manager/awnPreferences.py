@@ -232,10 +232,11 @@ class awnPreferences:
         chooser.set_preview_widget(preview)
         chooser.connect("update-preview", self.update_preview, preview)
         try:
-            if os.path.exists(key):
-                chooser.set_filename(self.client.get_string(key))
+            file = self.client.get_string(key)
+            if os.path.exists(file):
+                chooser.set_uri(file)
             else:
-                self.client.set_string(BAR_PATTERN_URI, "~")
+                self.client.set_string(key, "~")
         except TypeError:
             raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
         chooser.connect("selection-changed", self.chooser_changed, key)
@@ -412,13 +413,13 @@ class awnPreferences:
         bundle = 0
         for i in range(5):
           bundle = bundle << 4 | hover_effect
-	if (bundle == effect_settings):
-          if (hover_effect == 15):
-            active = 0
+          if (bundle == effect_settings):
+            if (hover_effect == 15):
+              active = 0
+            else:
+              active = hover_effect+1
           else:
-            active = hover_effect+1
-        else:
-          active = 9 #Custom
+            active = 9 #Custom
 
         dropdown.set_active(int(active))
         dropdown.connect("changed", self.effect_changed, key)
