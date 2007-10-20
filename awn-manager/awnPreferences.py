@@ -413,12 +413,14 @@ class awnPreferences:
         for i in range(5):
           bundle = bundle << 4 | hover_effect
 	if (bundle == effect_settings):
+          self.wTree.get_widget('customeffectsframe').hide()
           if (hover_effect == 15):
             active = 0
           else:
             active = hover_effect+1
         else:
           active = 9 #Custom
+          self.wTree.get_widget('customeffectsframe').show()
 
         dropdown.set_active(int(active))
         dropdown.connect("changed", self.effect_changed, key)
@@ -428,6 +430,7 @@ class awnPreferences:
         new_effects = 0
         effect = 0
         if(dropdown.get_active() != 9): # not Custom
+          self.wTree.get_widget('customeffectsframe').hide()
           if(dropdown.get_active() == 0):
             effect = 15
           else:
@@ -437,3 +440,5 @@ class awnPreferences:
           self.client.set_int(key, new_effects)
           print "effects set to: ", "%0.8X" % new_effects
           self.refresh_effect_custom(key)
+        else:
+          self.wTree.get_widget('customeffectsframe').show()
