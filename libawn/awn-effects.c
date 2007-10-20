@@ -591,6 +591,48 @@ glow_closing_effect (AwnEffectsPrivate *priv)
 }
 
 static gboolean
+glow_attention_effect(AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->direction = AWN_EFFECT_DIR_UP;
+		fx->glow_amount = 0;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gint PERIOD = 20;
+	const gfloat MAX_GLOW = 1.5;
+
+	if(fx->direction == AWN_EFFECT_DIR_UP) {
+		fx->glow_amount += MAX_GLOW/PERIOD;
+	} else {
+		fx->glow_amount -= MAX_GLOW/PERIOD;
+	}
+
+	if(fx->glow_amount >= MAX_GLOW)
+		fx->direction = AWN_EFFECT_DIR_DOWN;
+	else if(fx->glow_amount <= 0.0)
+		fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->glow_amount <= 0) {
+		fx->count = 0;
+		fx->glow_amount = 0;
+		fx->direction = AWN_EFFECT_DIR_UP;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+
+static gboolean
 desaturate_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
@@ -1477,6 +1519,204 @@ spotlight3D_hover_effect(AwnEffectsPrivate *priv)
 	}
 	return repeat;
 }
+
+static gboolean
+spotlight3D_opening_effect(AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->count = 0;
+		fx->y_offset = 0;
+		fx->spotlight_alpha = 1.0;
+		fx->spotlight = TRUE;
+		fx->glow_amount = fx->spotlight_alpha;
+		fx->clip = TRUE;		
+		fx->clip_region.x = 0;
+		fx->clip_region.y = 0;
+		fx->clip_region.width = fx->icon_width;
+		fx->clip_region.height = 0;
+		fx->delta_width = 0;
+		fx->icon_depth = 0;
+		fx->icon_depth_direction = 0;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+	}
+
+	const gint PERIOD = 44;
+	const gint MAX_OFFSET = fx->icon_height/2;
+
+	gint prev_count = fx->count;
+
+	fx->count = sin(fx->count * M_PI/2 / PERIOD)*PERIOD;
+
+	if(fx->count < PERIOD/4)
+	{
+		fx->icon_depth_direction = 0;
+		fx->clip_region.height = fx->count * (fx->icon_height) / (PERIOD/2);
+		fx->delta_width = -fx->count * (fx->icon_width) / (PERIOD/4);
+		fx->flip = FALSE;
+	}
+	else if( fx->count < PERIOD/2 )
+	{
+		fx->icon_depth_direction = 1;
+		fx->clip_region.height = (fx->count) * (fx->icon_height) / (PERIOD/2);
+		fx->delta_width = (fx->count-PERIOD/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
+		fx->flip = TRUE;
+	}
+	else if( fx->count < PERIOD*3/4 )
+	{
+		fx->icon_depth_direction = 0;
+		fx->clip = FALSE;
+		fx->y_offset = (fx->count-PERIOD/2) * MAX_OFFSET / (PERIOD/4);
+		fx->delta_width = -(fx->count-PERIOD/2) * (fx->icon_width) / (PERIOD/4);
+		fx->flip = TRUE;
+	}
+	else
+	{
+		fx->icon_depth_direction = 1;
+		fx->y_offset = MAX_OFFSET - (fx->count-PERIOD*3/4) * MAX_OFFSET / (PERIOD/4);
+		fx->delta_width = (fx->count-PERIOD*3/4) * (fx->icon_width) / (PERIOD/4) - fx->icon_width;
+		fx->flip = FALSE;
+		fx->spotlight_alpha = -(fx->count-PERIOD*3/4) * 1.0 / (PERIOD/4) + 1.0;
+	}
+	fx->icon_depth = 10.00*-fx->delta_width/fx->icon_width;
+	fx->glow_amount = fx->spotlight_alpha;
+		
+	fx->count = ++prev_count;
+
+	// fix icon flickering
+	const gint MIN_WIDTH = 4;
+	if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH ) {
+		if (fx->delta_width > 0)
+			fx->delta_width = fx->icon_width - MIN_WIDTH;
+		else
+			fx->delta_width = -fx->icon_width + MIN_WIDTH;
+	}
+
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->count >= PERIOD) {
+		fx->count = 0;
+		fx->y_offset = 0;
+		fx->icon_depth = 0;
+		fx->icon_depth_direction = 0;
+		fx->delta_width = 0;
+		fx->flip = FALSE;
+		fx->spotlight = FALSE;
+		fx->spotlight_alpha = 0.0;
+		fx->glow_amount = 0.0;
+		fx->clip = FALSE;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+	}
+	return repeat;
+}
+
+static gboolean
+spotlight3D_closing_effect(AwnEffectsPrivate *priv)
+{
+	AwnEffects *fx = priv->effects;
+	if (!fx->effect_lock) {
+		fx->effect_lock = TRUE;
+		// effect start initialize values
+		fx->spotlight_alpha = 0.0;
+		fx->spotlight = TRUE;
+		fx->glow_amount = fx->spotlight_alpha;
+		fx->clip = TRUE;
+		fx->clip_region.x = 0;
+		fx->clip_region.y = 0;
+		fx->clip_region.height = fx->icon_height;
+		fx->clip_region.width = fx->icon_width;
+		fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
+		if (priv->start) priv->start(fx->self);
+		priv->start = NULL;
+		fx->count = 0;
+		fx->delta_width = 0;
+		fx->icon_depth = 0;
+		fx->icon_depth_direction = 0;
+	}
+
+	const gint PERIOD = 80;
+	const gint TURN_PERIOD = 20;
+
+	if (fx->direction == AWN_EFFECT_SPOTLIGHT_ON) {
+		fx->spotlight_alpha += 4.0/PERIOD;
+		if (fx->spotlight_alpha >= 1) {
+			fx->spotlight_alpha = 1;
+			fx->direction = AWN_EFFECT_DIR_NONE;
+		}
+	} else if (fx->direction == AWN_EFFECT_DIR_NONE) {
+		fx->clip_region.height -=  2.0*fx->icon_height/PERIOD;
+		fx->alpha -= 2.0/PERIOD;
+		
+		if(fx->count < TURN_PERIOD/4)
+		{
+			fx->icon_depth_direction = 0;
+			fx->delta_width = -fx->count * (fx->icon_width) / (TURN_PERIOD/4);
+			fx->flip = FALSE;
+		}
+		else if( fx->count < TURN_PERIOD/2 )
+		{
+			fx->icon_depth_direction = 1;
+			fx->delta_width = (fx->count-TURN_PERIOD/4) * (fx->icon_width) / (TURN_PERIOD/4) - fx->icon_width;
+			fx->flip = TRUE;
+		}
+		else if( fx->count < TURN_PERIOD*3/4 )
+		{
+			fx->icon_depth_direction = 0;
+			fx->delta_width = -(fx->count-TURN_PERIOD/2) * (fx->icon_width) / (TURN_PERIOD/4);
+			fx->flip = TRUE;
+		}
+		else
+		{
+			fx->icon_depth_direction = 1;
+			fx->delta_width = (fx->count-TURN_PERIOD*3/4) * (fx->icon_width) / (TURN_PERIOD/4) - fx->icon_width;
+			fx->flip = FALSE;
+		}
+		
+		fx->icon_depth = 10.00*-fx->delta_width/fx->icon_width;
+		
+		// fix icon flickering
+		const gint MIN_WIDTH = 4;
+		if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH ) {
+			if (fx->delta_width > 0)
+				fx->delta_width = fx->icon_width - MIN_WIDTH;
+			else
+				fx->delta_width = -fx->icon_width + MIN_WIDTH;
+		}
+		if( fx->count++ > TURN_PERIOD )
+			fx->count = 0;
+		
+		if(fx->alpha <= 0 || fx->clip_region.height <= 0) {
+			fx->alpha = 0;
+			fx->direction = AWN_EFFECT_SPOTLIGHT_OFF;
+			fx->clip = FALSE;
+		} else if (fx->alpha <= 0.5) {
+			fx->spotlight_alpha -= 2.0/PERIOD;
+		}
+	} else {
+		fx->spotlight_alpha -= 2.0/PERIOD;
+	}
+	fx->glow_amount = fx->spotlight_alpha;
+	
+	// repaint widget
+	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
+	gboolean repeat = TRUE;
+	if (fx->direction == AWN_EFFECT_SPOTLIGHT_OFF && fx->spotlight_alpha <= 0) {
+		fx->spotlight_alpha = 0;
+		fx->glow_amount = 0;
+		fx->direction = AWN_EFFECT_DIR_NONE;
+		// check for repeating
+		repeat = awn_effect_handle_repeating(priv);
+		if (!repeat) fx->spotlight = FALSE;
+	}
+	return repeat;
+}
  
 static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data) {
 	
@@ -1590,7 +1830,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)zoom_opening_effect,
 		(GSourceFunc)bounce_squish_opening_effect,
 		(GSourceFunc)turn_opening_effect,
-		(GSourceFunc)turn_opening_effect,
+		(GSourceFunc)spotlight3D_opening_effect,
 		(GSourceFunc)glow_opening_effect
 	};
 	static const GSourceFunc CLOSING_EFFECTS[] = {
@@ -1601,7 +1841,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)zoom_closing_effect,
 		(GSourceFunc)bounce_squish_closing_effect,
 		(GSourceFunc)turn_closing_effect,
-		(GSourceFunc)turn_closing_effect,
+		(GSourceFunc)spotlight3D_closing_effect,
 		(GSourceFunc)glow_closing_effect
 	};
 	static const GSourceFunc HOVER_EFFECTS[] = {
@@ -1623,8 +1863,8 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)zoom_attention_effect,
 		(GSourceFunc)bounce_squish_effect,
 		(GSourceFunc)turn_hover_effect,
-		(GSourceFunc)turn_hover_effect,
-		(GSourceFunc)bounce_effect
+		(GSourceFunc)spotlight_half_fade_effect,
+		(GSourceFunc)glow_attention_effect
 	};
 	static const GSourceFunc ATTENTION_EFFECTS[] = {
 		NULL,
@@ -1635,7 +1875,7 @@ main_effect_loop(AwnEffects *fx) {
 		(GSourceFunc)bounce_squish_attention_effect,
 		(GSourceFunc)turn_hover_effect,
 		(GSourceFunc)spotlight3D_hover_effect,
-		(GSourceFunc)bounce_effect
+		(GSourceFunc)glow_attention_effect
 	};
 
 	GSourceFunc animation = NULL;
@@ -1788,7 +2028,8 @@ void awn_draw_background(AwnEffects *fx, cairo_t *cr) {
 }
 
 void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *reflect) {
-	g_return_if_fail(icon != NULL && fx->window_width>0 && fx->window_height>0);
+	if (!icon || fx->window_width<=0 || fx->window_height<=0) return;
+
 	/* refresh icon info */
 	fx->icon_width = gdk_pixbuf_get_width(icon);
 	fx->icon_height = gdk_pixbuf_get_height(icon);
@@ -1810,28 +2051,33 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 		gint y = fx->clip_region.y;
 		gint w = fx->clip_region.width;
 		gint h = fx->clip_region.height;
-		g_return_if_fail(
-			x >= 0 && x < fx->icon_width &&
+		
+		if (	x >= 0 && x < fx->icon_width &&
 			w-x > 0 && w-x <= fx->icon_width &&
 			y >= 0 && x < fx->icon_height &&
-			h-y > 0 && h-y <= fx->icon_height);
+			h-y > 0 && h-y <= fx->icon_height) {
 
-		// careful! new_subpixbuf shares original pixbuf, no copy!
-		clippedIcon = gdk_pixbuf_new_subpixbuf(icon, x, y, w, h);
-		// update current w&h
-		current_width = w - x;
-		current_height = h - y;
-		// refresh reflection, icon was clipped
-		if (!fx->delta_width && !fx->delta_height) {
-			// don't create reflection if we're also scaling
-			reflect = gdk_pixbuf_flip(clippedIcon, FALSE);
-			free_reflect = TRUE;
+			// careful! new_subpixbuf shares original pixbuf, no copy!
+			clippedIcon = gdk_pixbuf_new_subpixbuf(icon, x, y, w, h);
+			// update current w&h
+			current_width = w - x;
+			current_height = h - y;
+			// refresh reflection, icon was clipped
+			if (!fx->delta_width && !fx->delta_height) {
+				// don't create reflection if we're also scaling
+				reflect = gdk_pixbuf_flip(clippedIcon, FALSE);
+				free_reflect = TRUE;
+			}
+			// adjust offsets
+			x1 = (fx->window_width - current_width) / 2;
+			y1 += fx->icon_height - current_height;
+			// override provided icon
+			icon = clippedIcon;
+		} else {
+			/* it's pretty common on bar resize */
+			//g_warning("Unable to scale icon!");
+			return;
 		}
-		// adjust offsets
-		x1 = (fx->window_width - current_width) / 2;
-		y1 += fx->icon_height - current_height;
-		// override provided icon
-		icon = clippedIcon;
 	}
 
 	/* scaling */

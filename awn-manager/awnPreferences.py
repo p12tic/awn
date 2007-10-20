@@ -232,11 +232,10 @@ class awnPreferences:
         chooser.set_preview_widget(preview)
         chooser.connect("update-preview", self.update_preview, preview)
         try:
-            file = self.client.get_string(key)
-            if os.path.exists(file):
-                chooser.set_uri(file)
+            if os.path.exists(key):
+                chooser.set_filename(self.client.get_string(key))
             else:
-                self.client.set_string(key, "~")
+                self.client.set_string(BAR_PATTERN_URI, "~")
         except TypeError:
             raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
         chooser.connect("selection-changed", self.chooser_changed, key)
@@ -413,13 +412,16 @@ class awnPreferences:
         bundle = 0
         for i in range(5):
           bundle = bundle << 4 | hover_effect
-          if (bundle == effect_settings):
-            if (hover_effect == 15):
-              active = 0
-            else:
-              active = hover_effect+1
+
+        if (bundle == effect_settings):
+          self.wTree.get_widget('customeffectsframe').hide()
+          if (hover_effect == 15):
+            active = 0
           else:
-            active = 9 #Custom
+            active = hover_effect+1
+        else:
+          active = 9 #Custom
+          self.wTree.get_widget('customeffectsframe').show()
 
         dropdown.set_active(int(active))
         dropdown.connect("changed", self.effect_changed, key)
@@ -429,6 +431,7 @@ class awnPreferences:
         new_effects = 0
         effect = 0
         if(dropdown.get_active() != 9): # not Custom
+          self.wTree.get_widget('customeffectsframe').hide()
           if(dropdown.get_active() == 0):
             effect = 15
           else:
@@ -438,3 +441,5 @@ class awnPreferences:
           self.client.set_int(key, new_effects)
           print "effects set to: ", "%0.8X" % new_effects
           self.refresh_effect_custom(key)
+        else:
+          self.wTree.get_widget('customeffectsframe').show()
