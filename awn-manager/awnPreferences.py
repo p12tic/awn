@@ -412,7 +412,8 @@ class awnPreferences:
         bundle = 0
         for i in range(5):
           bundle = bundle << 4 | hover_effect
-	if (bundle == effect_settings):
+
+        if (bundle == effect_settings):
           self.wTree.get_widget('customeffectsframe').hide()
           if (hover_effect == 15):
             active = 0
