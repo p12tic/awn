@@ -25,6 +25,9 @@ install-exec-local:
 	sed -e "s|\@DATADIR\@|$(datadir)|g" awnManager.in.py > awnManager.py
 	$(INSTALL) -m 755 awnManager.py $(DESTDIR)$(bindir)/awn-manager
 
+uninstall-local:
+	rm -f $(DESTDIR)$(bindir)/awn-manager
+
 EXTRA_DIST = $(glade_DATA) *.py $(desktop_DATA).in.in
 
 clean:
