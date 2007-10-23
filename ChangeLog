@@ -55,6 +55,13 @@
 	* awn-manager/Makefile.am:
 	Uninstall awn-manager when a user does "make uninstall".
 
+2007-10-20  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awnPreferences.py:
+	* libawn/awn-effects.c:
+	Merged with changes in libawn-draw-effects.
+	Custom effects frame now hidden if all effects are same.
+
 2007-10-16  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-desktop-item.c:

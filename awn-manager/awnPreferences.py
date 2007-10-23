@@ -182,10 +182,11 @@ class awnPreferences:
         chooser.set_preview_widget(preview)
         chooser.connect("update-preview", self.update_preview, preview)
         try:
-            if os.path.exists(key):
-                chooser.set_filename(self.client.get_string(group, key))
+            filename = self.client.get_string(group, key)
+            if os.path.exists(filename):
+                chooser.set_uri(filename)
             else:
-                self.client.set_string(defs.BAR, defs.PATTERN_URI, "~")
+                self.client.set_string(group, key, "~")
         except TypeError:
             raise "\nKey: [%s]%s isn't set.\nRestarting AWN usually solves this issue\n" % (group, key)
         chooser.connect("selection-changed", self.chooser_changed, (group, key))
@@ -363,13 +364,16 @@ class awnPreferences:
         bundle = 0
         for i in range(5):
           bundle = bundle << 4 | hover_effect
-	if (bundle == effect_settings):
+
+        if (bundle == effect_settings):
+          self.wTree.get_widget('customeffectsframe').hide()
           if (hover_effect == 15):
             active = 0
           else:
             active = hover_effect+1
         else:
           active = 9 #Custom
+          self.wTree.get_widget('customeffectsframe').show()
 
         dropdown.set_active(int(active))
         dropdown.connect("changed", self.effect_changed, (group, key))
@@ -380,6 +384,7 @@ class awnPreferences:
         new_effects = 0
         effect = 0
         if(dropdown.get_active() != 9): # not Custom
+          self.wTree.get_widget('customeffectsframe').hide()
           if(dropdown.get_active() == 0):
             effect = 15
           else:
@@ -389,3 +394,5 @@ class awnPreferences:
           self.client.set_int(group, key, new_effects)
           print "effects set to: ", "%0.8X" % new_effects
           self.refresh_effect_custom(group, key)
+        else:
+          self.wTree.get_widget('customeffectsframe').show()
