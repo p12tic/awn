@@ -76,7 +76,7 @@ AC_ARG_WITH(desktop,
                  use_egg=yes
                  VFS_MODULE="thunar-vfs-1"
                  AC_DEFINE(LIBAWN_USE_XFCE, 1, [Define support for the Xfce4 desktop])
-                 USE_DESKTOP="LIBAWN_USE_XFCE"
+                 USE_DESKTOP="-DLIBAWN_USE_XFCE"
                  AC_MSG_RESULT(Xfce4)
                  ;;
                  agnostic)
@@ -87,7 +87,7 @@ AC_ARG_WITH(desktop,
                  DESKTOP_MODULES="gnome-desktop-2.0 libgnome-2.0"
                  VFS_MODULE="gnome-vfs-2.0"
                  AC_DEFINE(LIBAWN_USE_GNOME, 1, [Define support for the Gnome desktop])
-                 USE_DESKTOP="LIBAWN_USE_GNOME"
+                 USE_DESKTOP="-DLIBAWN_USE_GNOME"
                  AC_MSG_RESULT(Gnome)
                  ;;
              esac])
