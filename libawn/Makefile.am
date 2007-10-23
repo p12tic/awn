@@ -2,6 +2,8 @@ if USE_EGG
 SUBDIRS = egg
 endif
 
+NULL = 
+
 ENUMFILES = awn-enum-types.c awn-enum-types.h
 STAMPFILES = stamp-awn-marshal.h stamp-awn-enum-types.h
 GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
@@ -29,30 +31,32 @@ source_h =	\
 	awn-defines.h                                   \
 	awn-applet.h                                    \
 	awn-applet-dialog.h                             \
-	awn-applet-gconf.h				\
 	awn-applet-simple.h				\
 	awn-cairo-utils.h				\
+	awn-config-client.h				\
 	awn-desktop-item.h				\
-	awn-gconf.h					\
 	awn-effects.h					\
 	awn-enum-types.h				\
 	awn-plug.h					\
+	awn-settings.h					\
 	awn-title.h					\
-	awn-vfs.h
+	awn-vfs.h					\
+	$(NULL)
 
 source_c =	\
 	awn-applet.c                                    \
 	awn-applet-dialog.c				\
-	awn-applet-gconf.c                              \
 	awn-applet-simple.c				\
 	awn-cairo-utils.c				\
+	awn-config-client.c				\
 	awn-desktop-item.c				\
-	awn-gconf.c					\
 	awn-effects.c					\
 	awn-enum-types.c				\
 	awn-plug.c					\
+	awn-settings.c					\
 	awn-title.c					\
-	awn-vfs.c
+	awn-vfs.c					\
+	$(NULL)
 
 libawninc_HEADERS = \
 	$(source_h)	\

@@ -48,3 +48,4 @@ pyawn/awn.c
 awn-manager/awnDefs.py
 awn-manager/awnManager.py
 intltool-*.in
+test/test-config-client

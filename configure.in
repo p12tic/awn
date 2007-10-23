@@ -45,14 +45,6 @@ dnl CFLAGS
 CFLAGS="$CFLAGS -Wall -fno-strict-aliasing -fmessage-length=0 -D_FORTIFY_SOURCE=2"
 
 dnl ==============================================
-dnl gconf stuff
-dnl ==============================================
-AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
-if test x"$GCONFTOOL" = xno; then
-  AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
-fi
-
-dnl ==============================================
 dnl translation support
 dnl ==============================================
 
@@ -72,7 +64,7 @@ dnl Check that we meet the  dependencies
 dnl ==============================================
 AM_PATH_GLIB_2_0(2.8.0,,,gobject)
 
-COMMON_MODULES="glib-2.0 gobject-2.0 gtk+-2.0 gdk-2.0"
+COMMON_MODULES="glib-2.0 >= 2.8.0 gthread-2.0 gobject-2.0 gtk+-2.0 gdk-2.0"
 
 AC_MSG_CHECKING([for specific desktop support])
 use_egg=no
@@ -106,7 +98,28 @@ AM_CONDITIONAL(USE_GNOME, test "$with_desktop" = "gnome")
 AM_CONDITIONAL(USE_XFCE, test "$with_desktop" = "xfce4")
 AM_CONDITIONAL(USE_EGG, test "$use_egg" = "yes")
 
-PKG_CHECK_MODULES(AWN, [ $COMMON_MODULES libwnck-1.0 $DESKTOP_MODULES $VFS_MODULE gconf-2.0 x11 xproto dbus-glib-1 libglade-2.0 xdamage xcomposite xrender])
+AC_MSG_CHECKING([for config backend support])
+AC_ARG_WITH(gconf,
+            AS_HELP_STRING([--with-gconf],
+                           [Use GConf to store configuration information]),
+            [if test "$with_gconf" != "no"; then
+                CFG_MODULE="gconf-2.0"
+                AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+                if test x"$GCONFTOOL" = xno; then
+                    AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
+                fi
+                AC_DEFINE([USE_GCONF], 1, [Use GConf to store configuration information])
+                AC_MSG_RESULT([GConf])
+            else
+                # use Glib's GKeyFile - it's already covered by $COMMON_MODULES
+                CFG_MODULE=""
+                GCONF_SCHEMA_INSTALL_SOURCE="/dev/null"
+                GCONF_SCHEMA_FILE_DIR="/dev/null"
+                AC_MSG_RESULT([GKeyFile (part of Glib)])
+            fi])
+AC_SUBST(CFG_MODULE)
+
+PKG_CHECK_MODULES(AWN, [ $COMMON_MODULES libwnck-1.0 $DESKTOP_MODULES $VFS_MODULE $CFG_MODULE x11 xproto dbus-glib-1 libglade-2.0 xdamage xcomposite xrender])
 AC_SUBST(AWN_CFLAGS)
 AC_SUBST(AWN_LIBS)
 

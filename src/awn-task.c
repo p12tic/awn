@@ -31,6 +31,7 @@
 #include <glib/gi18n.h>
 #endif
 
+#include <libawn/awn-config-client.h>
 #include <libawn/awn-effects.h>
 #include <libawn/awn-vfs.h>
 
@@ -1650,10 +1651,9 @@ _task_remove_launcher (GtkMenuItem *item, AwnTask *task)
 	term.settings = settings;
 	g_slist_foreach(settings->launchers, (GFunc)_slist_foreach, (gpointer)&term);
 
-	GConfClient *client = gconf_client_get_default();
-		gconf_client_set_list(client,
-					"/apps/avant-window-navigator/window_manager/launchers",
-					GCONF_VALUE_STRING,settings->launchers,NULL);
+	AwnConfigClient *client = awn_config_client_new ();
+	awn_config_client_set_list(client, "window_manager", "launchers",
+                                   AWN_CONFIG_CLIENT_LIST_TYPE_STRING, settings->launchers, NULL);
 
 	priv->window = NULL;
 	/* start closing effect */

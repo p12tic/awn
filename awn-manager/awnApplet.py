@@ -28,10 +28,10 @@ except:
 try:
     import gtk
     import gtk.gdk as gdk
-    import gconf
 except:
     sys.exit(1)
 
+import awn
 import awnDefs as defs
 import tarfile
 from xdg.DesktopEntry import DesktopEntry
@@ -45,8 +45,8 @@ class awnApplet:
         if not os.path.isdir(defs.HOME_APPLET_DIR):
           os.mkdir(defs.HOME_APPLET_DIR)
 
-        self.client = gconf.client_get_default()
-        self.client.add_dir(defs.AWN_PATH, gconf.CLIENT_PRELOAD_NONE)
+        self.client = awn.Config()
+        self.client.ensure_group(defs.AWN)
 
         self.treeview_current = None
         self.load_finished = False
@@ -244,13 +244,9 @@ class awnApplet:
         self._apply ()
 
     def remove_keys (self, model, iterator):
-        engine = gconf.engine_get_default ()
         uid = model.get_value (iterator, 3)
-        key = "%s/%s" % (defs.APPLETS_PATH, uid)
-        try:
-            engine.remove_dir (key)
-        except:
-            pass
+        applet_client = awn.config_for_applet(uid)
+        applet_client.clear()
 
     def remove_applet_dir(self, dirPath, filename):
         namesHere = os.listdir(dirPath)
@@ -274,7 +270,7 @@ class awnApplet:
             l.append (s)
             it= self.model.iter_next (it)
 
-        self.client.set_list(defs.APPLET_LIST, gconf.VALUE_STRING, l)
+        self.client.set_list(defs.AWN, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, l)
 
     def up_clicked (self, button):
         select = self.treeview.get_selection()
@@ -322,7 +318,7 @@ class awnApplet:
         self.treeview_current.append_column (col)
         self.treeview_current.show()
 
-        applets = self.client.get_list(defs.APPLET_LIST, gconf.VALUE_STRING)
+        applets = self.client.get_list(defs.AWN, defs.APPLET_LIST, awn.CONFIG_LIST_STRING)
 
         self.refresh_tree (applets)
 
@@ -465,5 +461,5 @@ class awnApplet:
         applets = l.values()
 
         if not None in applets and self.load_finished:
-            self.client.set_list(defs.APPLET_LIST, gconf.VALUE_STRING, applets)
+            self.client.set_list(defs.AWN, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, applets)
 # vim: set et ts=4 sts=4 sw=4 :

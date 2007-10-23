@@ -6,12 +6,14 @@ headers
 #define NO_IMPORT_PYGOBJECT
 #include "pygobject.h"
 #include <pycairo.h>
+#ifdef USE_GCONF
 #include <gconf/gconf-value.h>
+#endif
 #include <libawn/awn-applet.h>
 #include <libawn/awn-applet-dialog.h>
-#include <libawn/awn-applet-gconf.h>
 #include <libawn/awn-applet-simple.h>
 #include <libawn/awn-cairo-utils.h>
+#include <libawn/awn-config-client.h>
 #include <libawn/awn-defines.h>
 #include <libawn/awn-effects.h>
 #include <libawn/awn-enum-types.h>
@@ -19,6 +21,42 @@ headers
 #include <libawn/awn-title.h>
 #include <libawn/awn-desktop-item.h>
 extern Pycairo_CAPI_t *Pycairo_CAPI;
+
+static GSList *
+_pysequence_to_gslist (PyObject *seq, AwnConfigListType list_type)
+{
+  GSList *list = NULL;
+
+  int i;
+  int len = PySequence_Length (seq);
+  for (i = 0; i < len; i++) {
+    PyObject *item = PySequence_GetItem (seq, i);
+    Py_DECREF(item);
+    switch (list_type) {
+      case AWN_CONFIG_CLIENT_LIST_TYPE_BOOL: {
+        gboolean *data = g_malloc (sizeof (gboolean));
+        *data = (gboolean)PyInt_AsLong (item);
+        list = g_slist_append (list, data);
+        break;
+      } case AWN_CONFIG_CLIENT_LIST_TYPE_FLOAT: {
+        gdouble *data = g_malloc (sizeof (gdouble));
+        *data = (gdouble)PyFloat_AsDouble (item);
+        list = g_slist_append (list, data);
+        break;
+      } case AWN_CONFIG_CLIENT_LIST_TYPE_INT: {
+        gint *data = g_malloc (sizeof (gint));
+        *data = (gint)PyInt_AsLong (item);
+        list = g_slist_append (list, data);
+        break;
+      } case AWN_CONFIG_CLIENT_LIST_TYPE_STRING: {
+        gchar *data = g_strdup (PyString_AsString (item));
+        list = g_slist_append (list, data);
+        break;
+      }
+    }
+  }
+  return list;
+}
 %%
 modulename awn
 %%
@@ -37,3 +75,114 @@ import gtk.gdk.Pixbuf as PyGdkPixbuf_Type
 ignore-glob
   *_get_type
 %%
+override awn_config_client_new kwargs
+static int
+_wrap_awn_config_client_new (PyGBoxed *self, PyObject *args, PyObject *kwargs)
+{
+  static char *kwlist[] = { "name", NULL };
+  gchar *name = NULL;
+
+  if (!PyArg_ParseTupleAndKeywords (args, kwargs,"|s:AwnConfigClient.__init__", kwlist, &name)) {
+    return -1;
+  }
+  self->gtype = AWN_TYPE_CONFIG_CLIENT;
+  self->free_on_dealloc = FALSE;
+  if (name) {
+    self->boxed = awn_config_client_new_for_applet (name);
+  } else {
+    self->boxed = awn_config_client_new ();
+  }
+
+  if (!self->boxed) {
+    PyErr_SetString (PyExc_RuntimeError, "could not create AwnConfigClient object");
+    return -1;
+  }
+  self->free_on_dealloc = TRUE;
+  return 0;
+}
+%%
+override awn_config_client_get_list kwargs
+static PyObject *
+_wrap_awn_config_client_get_list (PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  static char *kwlist[] = { "group", "key", "list_type", NULL };
+  char *group, *key;
+  AwnConfigListType list_type;
+  GSList *ret = NULL;
+  GError *opt_error = NULL;
+  PyObject *py_ret;
+
+  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "ssi:AwnConfigClient.get_list", kwlist, &group, &key, &list_type)) {
+    return NULL;
+  }
+
+  ret = awn_config_client_get_list (pyg_boxed_get (self, AwnConfigClient), group, key, list_type, &opt_error);
+
+  if (pyg_error_check (&opt_error)) {
+    return NULL;
+  }
+
+  guint i;
+  gsize slist_len = g_slist_length (ret);
+  py_ret = PyList_New ((Py_ssize_t)slist_len);
+
+  for (i = 0; i < slist_len; i++) {
+    PyObject *py_data;
+    gpointer data = g_slist_nth_data (ret, i);
+    if (data) {
+      switch (list_type) {
+        case AWN_CONFIG_CLIENT_LIST_TYPE_BOOL:
+          py_data = PyBool_FromLong (*((gboolean*)data));
+          break;
+        case AWN_CONFIG_CLIENT_LIST_TYPE_FLOAT:
+          py_data = PyFloat_FromDouble (*((gdouble*)data));
+          break;
+        case AWN_CONFIG_CLIENT_LIST_TYPE_INT:
+          py_data = PyInt_FromLong (*((gint*)data));
+          break;
+        case AWN_CONFIG_CLIENT_LIST_TYPE_STRING:
+          py_data = PyString_FromString ((gchar*)data);
+          break;
+      }
+      if (PyList_SetItem (py_ret, i, py_data) == -1) {
+        PyErr_SetString (PyExc_ValueError, "Could not populate the list with the configuration value.");
+        return NULL;
+      }
+    }
+  }
+  return py_ret;
+}
+%%
+override awn_config_client_set_list kwargs
+static PyObject *
+_wrap_awn_config_client_set_list (PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  static char *kwlist[] = { "group", "key", "list_type", "value", NULL };
+  char *group, *key;
+  AwnConfigListType list_type;
+  PyObject *py_list;
+  GSList *the_list = NULL;
+  GError *opt_error = NULL;
+
+  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "ssiO:AwnConfigClient.set_list", kwlist, &group, &key, &list_type, &py_list)) {
+    return NULL;
+  }
+
+  if (!PyList_Check (py_list) && !PyTuple_Check (py_list)) {
+    PyErr_SetString (PyExc_TypeError, "First argument not a tuple or list");
+    return NULL;
+  }
+  the_list = _pysequence_to_gslist (py_list, list_type);
+
+  awn_config_client_set_list (pyg_boxed_get (self, AwnConfigClient), group, key, list_type, the_list, &opt_error);
+
+  g_slist_foreach (the_list, (GFunc)g_free, NULL);
+  g_slist_free (the_list);
+
+  if (pyg_error_check (&opt_error)) {
+    return NULL;
+  }
+
+  Py_INCREF (Py_None);
+  return Py_None;
+}

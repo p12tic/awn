@@ -22,11 +22,10 @@
 #endif
 
 #include <gtk/gtk.h>
-#include <gconf/gconf.h>
-#include <gconf/gconf-client.h>
 
 #include "awn-applet.h"
 #include "awn-applet-simple.h"
+#include "awn-config-client.h"
 
 G_DEFINE_TYPE(AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET)
 
@@ -220,40 +219,31 @@ awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
 }
 
 static void
-bar_height_changed( GConfClient *client, guint cid, GConfEntry *entry, AwnAppletSimple *simple )
+bar_height_changed (AwnConfigClientNotifyEntry *entry, AwnAppletSimple *simple)
 {
         AwnAppletSimplePrivate *priv;
-	GConfValue *value = NULL;
 
 	priv = simple->priv;
-	value = gconf_entry_get_value(entry);
-	priv->bar_height = gconf_value_get_int(value);
-	
+	priv->bar_height = entry->value.int_val;
 	adjust_icon(simple);
-	
 	g_print("bar_height changed\n");
 }
 static void
-icon_offset_changed( GConfClient *client, guint cid, GConfEntry *entry, AwnAppletSimple *simple )
+icon_offset_changed (AwnConfigClientNotifyEntry *entry, AwnAppletSimple *simple)
 {
         AwnAppletSimplePrivate *priv;
-	GConfValue *value = NULL;
 
 	priv = simple->priv;
-	value = gconf_entry_get_value(entry);
-	priv->offset = gconf_value_get_int(value);
-	
+	priv->offset = entry->value.int_val;
 	g_print("icon_offset changed\n");
 }
 static void
-bar_angle_changed( GConfClient *client, guint cid, GConfEntry *entry, AwnAppletSimple *simple )
+bar_angle_changed (AwnConfigClientNotifyEntry *entry, AwnAppletSimple *simple)
 {
         AwnAppletSimplePrivate *priv;
-	GConfValue *value = NULL;
 
 	priv = simple->priv;
-	value = gconf_entry_get_value(entry);
-	priv->bar_angle = gconf_value_get_int(value);
+	priv->bar_angle = entry->value.int_val;
 	
         gtk_widget_queue_draw (GTK_WIDGET (simple));
 	
@@ -264,7 +254,7 @@ static void
 awn_applet_simple_init (AwnAppletSimple *simple) 
 {
         AwnAppletSimplePrivate *priv;
-        GConfClient *client;
+        AwnConfigClient *client;
 
         priv = simple->priv = AWN_APPLET_SIMPLE_GET_PRIVATE (simple);
 
@@ -280,20 +270,17 @@ awn_applet_simple_init (AwnAppletSimple *simple)
 	// start open effect
 	awn_effect_start_ex(&priv->effects, AWN_EFFECT_OPENING, 0, 0, 1);
 
-        client = gconf_client_get_default ();
-        gconf_client_add_dir(client, "/apps/avant-window-navigator/bar", GCONF_CLIENT_PRELOAD_NONE, NULL);
-        priv->offset = gconf_client_get_int (client, 
-                       "/apps/avant-window-navigator/bar/icon_offset",
-                       NULL);
-        priv->bar_height = gconf_client_get_int (client, 
-                       "/apps/avant-window-navigator/bar/bar_height",
-                       NULL);
-        priv->bar_angle = gconf_client_get_int (client, 
-                       "/apps/avant-window-navigator/bar/bar_angle",
-                       NULL);
-        gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/bar_angle", (GConfClientNotifyFunc)bar_angle_changed, simple, NULL, NULL);
-        gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/bar_height", (GConfClientNotifyFunc)bar_height_changed, simple, NULL, NULL);
-        gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/icon_offset", (GConfClientNotifyFunc)icon_offset_changed, simple, NULL, NULL);
+        client = awn_config_client_new ();
+        awn_config_client_ensure_group (client, "bar");
+        priv->offset = awn_config_client_get_int (client, "bar", "icon_offset", NULL);
+        priv->bar_height = awn_config_client_get_int (client, "bar", "bar_height", NULL);
+        priv->bar_angle = awn_config_client_get_int (client, "bar", "bar_angle", NULL);
+        awn_config_client_notify_add (client, "bar", "bar_angle",
+				      (AwnConfigClientNotifyFunc)bar_angle_changed, NULL);
+        awn_config_client_notify_add (client, "bar", "bar_height",
+				      (AwnConfigClientNotifyFunc)bar_height_changed, NULL);
+        awn_config_client_notify_add (client, "bar", "icon_offset",
+				      (AwnConfigClientNotifyFunc)icon_offset_changed, NULL);
 }
 
 AwnEffects*

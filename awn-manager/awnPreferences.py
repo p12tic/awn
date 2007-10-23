@@ -29,10 +29,10 @@ except:
 try:
     import gobject
     import gtk
-    import gconf
 except:
     sys.exit(1)
 
+import awn
 import awnDefs as defs
 
 defs.i18nize(globals())
@@ -75,100 +75,103 @@ class awnPreferences:
     def __init__(self, wTree):
         self.wTree = wTree
 
-        self.client = gconf.client_get_default()
-        self.client.add_dir(defs.BAR_PATH, gconf.CLIENT_PRELOAD_NONE)
-        self.client.add_dir(defs.WINMAN_PATH, gconf.CLIENT_PRELOAD_NONE)
-        self.client.add_dir(defs.APP_PATH, gconf.CLIENT_PRELOAD_NONE)
-        self.client.add_dir(defs.TITLE_PATH, gconf.CLIENT_PRELOAD_NONE)
+        self.client = awn.Config()
+        self.client.ensure_group(defs.BAR)
+        self.client.ensure_group(defs.WINMAN)
+        self.client.ensure_group(defs.APP)
+        self.client.ensure_group(defs.TITLE)
 
-        self.setup_bool (defs.AWN_AUTO_HIDE, self.wTree.get_widget("autohide"))
-        self.setup_bool (defs.AWN_KEEP_BELOW, self.wTree.get_widget("keepbelow"))
-        self.setup_bool (defs.AWN_PANEL_MODE, self.wTree.get_widget("panelmode"))
-        self.setup_bool (defs.APP_NAME_CHANGE_NOTIFY, self.wTree.get_widget("namechangenotify"))
-        self.setup_bool (defs.BAR_RENDER_PATTERN, self.wTree.get_widget("patterncheck"))
-        self.setup_bool (defs.BAR_ROUNDED_CORNERS, self.wTree.get_widget("roundedcornerscheck"))
-        self.setup_bool (defs.WINMAN_SHOW_ALL_WINS, self.wTree.get_widget("allwindowscheck"))
+        self.setup_bool (defs.AWN, defs.AUTO_HIDE, self.wTree.get_widget("autohide"))
+        self.setup_bool (defs.AWN, defs.KEEP_BELOW, self.wTree.get_widget("keepbelow"))
+        self.setup_bool (defs.AWN, defs.PANEL_MODE, self.wTree.get_widget("panelmode"))
+        self.setup_bool (defs.APP, defs.NAME_CHANGE_NOTIFY, self.wTree.get_widget("namechangenotify"))
+        self.setup_bool (defs.BAR, defs.RENDER_PATTERN, self.wTree.get_widget("patterncheck"))
+        self.setup_bool (defs.BAR, defs.ROUNDED_CORNERS, self.wTree.get_widget("roundedcornerscheck"))
+        self.setup_bool (defs.WINMAN, defs.SHOW_ALL_WINS, self.wTree.get_widget("allwindowscheck"))
 
-        self.setup_bool (defs.BAR_SHOW_SEPARATOR, self.wTree.get_widget("separatorcheck"))
-        self.setup_bool (defs.APP_TASKS_H_ARROWS, self.wTree.get_widget("arrowcheck"))
-        self.setup_effect (defs.APP_ICON_EFFECT, self.wTree.get_widget("iconeffects"))
+        self.setup_bool (defs.BAR, defs.SHOW_SEPARATOR, self.wTree.get_widget("separatorcheck"))
+        self.setup_bool (defs.APP, defs.TASKS_H_ARROWS, self.wTree.get_widget("arrowcheck"))
+        self.setup_effect (defs.APP, defs.ICON_EFFECT, self.wTree.get_widget("iconeffects"))
 
-        self.setup_chooser(defs.APP_ACTIVE_PNG, self.wTree.get_widget("activefilechooser"))
-        self.setup_chooser(defs.BAR_PATTERN_URI, self.wTree.get_widget("patternchooserbutton"))
+        self.setup_chooser(defs.APP, defs.ACTIVE_PNG, self.wTree.get_widget("activefilechooser"))
+        self.setup_chooser(defs.BAR, defs.PATTERN_URI, self.wTree.get_widget("patternchooserbutton"))
 
-        self.setup_font(defs.TITLE_FONT_FACE, self.wTree.get_widget("selectfontface"))
+        self.setup_font(defs.TITLE, defs.FONT_FACE, self.wTree.get_widget("selectfontface"))
 
-        self.setup_spin(defs.BAR_ICON_OFFSET, self.wTree.get_widget("bariconoffset"))
-        self.setup_spin(defs.BAR_HEIGHT, self.wTree.get_widget("barheight"))
-        self.setup_spin(defs.BAR_ANGLE, self.wTree.get_widget("barangle"))
-        self.setup_spin(defs.APP_ARROW_OFFSET, self.wTree.get_widget("arrowoffset"))
+        self.setup_spin(defs.BAR, defs.ICON_OFFSET, self.wTree.get_widget("bariconoffset"))
+        self.setup_spin(defs.BAR, defs.BAR_HEIGHT, self.wTree.get_widget("barheight"))
+        self.setup_spin(defs.BAR, defs.BAR_ANGLE, self.wTree.get_widget("barangle"))
+        self.setup_spin(defs.APP, defs.ARROW_OFFSET, self.wTree.get_widget("arrowoffset"))
         self.setup_look(self.wTree.get_widget("look"))
 
-        self.setup_scale(defs.BAR_PATTERN_ALPHA, self.wTree.get_widget("patternscale"))
+        self.setup_scale(defs.BAR, defs.PATTERN_ALPHA, self.wTree.get_widget("patternscale"))
 
-        self.setup_color(defs.TITLE_TEXT_COLOR, self.wTree.get_widget("textcolor"))
-        self.setup_color(defs.TITLE_SHADOW_COLOR, self.wTree.get_widget("shadowcolor"))
-        self.setup_color(defs.TITLE_BACKGROUND, self.wTree.get_widget("backgroundcolor"))
+        self.setup_color(defs.TITLE, defs.TEXT_COLOR, self.wTree.get_widget("textcolor"))
+        self.setup_color(defs.TITLE, defs.SHADOW_COLOR, self.wTree.get_widget("shadowcolor"))
+        self.setup_color(defs.TITLE, defs.BACKGROUND, self.wTree.get_widget("backgroundcolor"))
 
-        self.setup_color(defs.BAR_BORDER_COLOR, self.wTree.get_widget("mainbordercolor"))
-        self.setup_color(defs.BAR_HILIGHT_COLOR, self.wTree.get_widget("internalbordercolor"))
+        self.setup_color(defs.BAR, defs.BORDER_COLOR, self.wTree.get_widget("mainbordercolor"))
+        self.setup_color(defs.BAR, defs.HILIGHT_COLOR, self.wTree.get_widget("internalbordercolor"))
 
-        self.setup_color(defs.BAR_GLASS_STEP_1, self.wTree.get_widget("gradientcolor1"))
-        self.setup_color(defs.BAR_GLASS_STEP_2, self.wTree.get_widget("gradientcolor2"))
+        self.setup_color(defs.BAR, defs.GLASS_STEP_1, self.wTree.get_widget("gradientcolor1"))
+        self.setup_color(defs.BAR, defs.GLASS_STEP_2, self.wTree.get_widget("gradientcolor2"))
 
-        self.setup_color(defs.BAR_GLASS_HISTEP_1, self.wTree.get_widget("highlightcolor1"))
-        self.setup_color(defs.BAR_GLASS_HISTEP_1, self.wTree.get_widget("highlightcolor2"))
+        self.setup_color(defs.BAR, defs.GLASS_HISTEP_1, self.wTree.get_widget("highlightcolor1"))
+        self.setup_color(defs.BAR, defs.GLASS_HISTEP_1, self.wTree.get_widget("highlightcolor2"))
 
-        self.setup_color(defs.BAR_SEP_COLOR, self.wTree.get_widget("sepcolor"))
-        self.setup_color(defs.APP_ARROW_COLOR, self.wTree.get_widget("arrowcolor"))
+        self.setup_color(defs.BAR, defs.SEP_COLOR, self.wTree.get_widget("sepcolor"))
+        self.setup_color(defs.APP, defs.ARROW_COLOR, self.wTree.get_widget("arrowcolor"))
 
-    def setup_color(self, key, colorbut):
+    def setup_color(self, group, key, colorbut):
         try:
-            color, alpha = make_color(self.client.get_string(key))
+            color, alpha = make_color(self.client.get_string(group, key))
         except TypeError:
-            raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
+            raise "\nKey: [%s]%s isn't set.\nRestarting AWN usually solves this issue\n" % (group, key)
         colorbut.set_color(color)
         colorbut.set_alpha(alpha)
-        colorbut.connect("color-set", self.color_changed, key)
+        colorbut.connect("color-set", self.color_changed, (group, key))
 
-    def color_changed(self, colorbut, key):
+    def color_changed(self, colorbut, groupkey):
+        group, key = groupkey
         string =  make_color_string(colorbut.get_color(), colorbut.get_alpha())
-        self.client.set_string(key, string)
+        self.client.set_string(group, key, string)
 
-    def setup_scale(self, key, scale):
+    def setup_scale(self, group, key, scale):
         try:
-            val = self.client.get_float(key)
+            val = self.client.get_float(group, key)
         except TypeError:
-            raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
+            raise "\nKey: [%s]%s isn't set.\nRestarting AWN usually solves this issue\n" % (group, key)
         val = 100 - (val * 100)
         scale.set_value(val)
-        scale.connect("value-changed", self.scale_changed, key)
+        scale.connect("value-changed", self.scale_changed, (group, key))
 
-    def scale_changed(self, scale, key):
+    def scale_changed(self, scale, groupkey):
+        group, key = groupkey
         val = scale.get_value()
         val = 100 - val
         if (val):
             val = val/100
-        self.client.set_float(key, val)
+        self.client.set_float(group, key, val)
 
-    def setup_spin(self, key, spin):
+    def setup_spin(self, group, key, spin):
         try:
-            spin.set_value(    self.client.get_float(key) )
+            spin.set_value(    self.client.get_float(group, key) )
         except TypeError:
-            raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
+            raise "\nKey: [%s]%s isn't set.\nRestarting AWN usually solves this issue\n" % (group, key)
         except gobject.GError, err:
-            spin.set_value(    float(self.client.get_int(key)) )
+            spin.set_value(    float(self.client.get_int(group, key)) )
 
-        spin.connect("value-changed", self.spin_changed, key)
+        spin.connect("value-changed", self.spin_changed, (group, key))
 
-    def spin_changed(self, spin, key):
+    def spin_changed(self, spin, groupkey):
+        group, key = groupkey
         try:
-            self.client.get_float(key) #gives error if it is an int
-            self.client.set_float(key, spin.get_value())
+            self.client.get_float(group, key) #gives error if it is an int
+            self.client.set_float(group, key, spin.get_value())
         except gobject.GError, err:
-            self.client.set_int(key, int(spin.get_value()))
+            self.client.set_int(group, key, int(spin.get_value()))
 
-    def setup_chooser(self, key, chooser):
+    def setup_chooser(self, group, key, chooser):
         """sets up png choosers"""
         fil = gtk.FileFilter()
         fil.set_name("PNG Files")
@@ -180,18 +183,19 @@ class awnPreferences:
         chooser.connect("update-preview", self.update_preview, preview)
         try:
             if os.path.exists(key):
-                chooser.set_filename(self.client.get_string(key))
+                chooser.set_filename(self.client.get_string(group, key))
             else:
-                self.client.set_string(defs.BAR_PATTERN_URI, "~")
+                self.client.set_string(defs.BAR, defs.PATTERN_URI, "~")
         except TypeError:
-            raise "\nKey: "+key+" isn't set.\nRestarting AWN usually solves this issue\n"
-        chooser.connect("selection-changed", self.chooser_changed, key)
+            raise "\nKey: [%s]%s isn't set.\nRestarting AWN usually solves this issue\n" % (group, key)
+        chooser.connect("selection-changed", self.chooser_changed, (group, key))
 
-    def chooser_changed(self, chooser, key):
+    def chooser_changed(self, chooser, groupkey):
+        group, key = groupkey
         f = chooser.get_filename()
         if f == None:
             return
-        self.client.set_string(key, f)
+        self.client.set_string(group, key, f)
 
     def update_preview(self, chooser, preview):
         f = chooser.get_preview_filename()
@@ -203,36 +207,34 @@ class awnPreferences:
             have_preview = False
         chooser.set_preview_widget_active(have_preview)
 
-    def setup_bool(self, key, check):
+    def setup_bool(self, group, key, check):
         """sets up checkboxes"""
-        check.set_active(self.client.get_bool(key))
-        check.connect("toggled", self.bool_changed, key)
+        check.set_active(self.client.get_bool(group, key))
+        check.connect("toggled", self.bool_changed, (group, key))
 
-    def bool_changed(self, check, key):
-        self.client.set_bool(key, check.get_active())
-        if key == defs.AWN_KEEP_BELOW:
-            if check.get_active():
-                self.wTree.get_widget("autohide").set_active(True)
-            else:
-                self.wTree.get_widget("autohide").set_active(False)
-        elif key == defs.AWN_AUTO_HIDE:
-            if not check.get_active():
-                if self.wTree.get_widget("keepbelow").get_active():
-                    self.wTree.get_widget("keepbelow").set_active(False)
+    def bool_changed(self, check, groupkey):
+        group, key = groupkey
+        self.client.set_bool(group, key, check.get_active())
+        if key == defs.KEEP_BELOW:
+            self.wTree.get_widget('autohide').set_active(check.get_active)
+        elif key == defs.AUTO_HIDE:
+            if not check.get_active() and self.wTree.get_widget("keepbelow").get_active():
+                self.wTree.get_widget("keepbelow").set_active(False)
         print "toggled"
 
-    def setup_font(self, key, font_btn):
+    def setup_font(self, group, key, font_btn):
         """sets up font chooser"""
-        font = self.client.get_string (key)
+        font = self.client.get_string(group, key)
         if font == None:
             font = "Sans 10"
         font_btn.set_font_name(font)
-        font_btn.connect("font-set", self.font_changed, key)
+        font_btn.connect("font-set", self.font_changed, (group, key))
 
-    def font_changed(self, font_btn, key):
-        self.client.set_string(key, font_btn.get_font_name())
+    def font_changed(self, font_btn, groupkey):
+        group, key = groupkey
+        self.client.set_string(group, key, font_btn.get_font_name())
 
-    def setup_effect(self, key, dropdown):
+    def setup_effect(self, group, key, dropdown):
         model = gtk.ListStore(str)
         model.append(["Classic"])
         model.append(["Fade"])
@@ -247,11 +249,12 @@ class awnPreferences:
         dropdown.pack_start(cell)
         dropdown.add_attribute(cell,'text',0)
 
-        dropdown.set_active(self.client.get_int(key))
-        dropdown.connect("changed", self.effect_changed, key)
+        dropdown.set_active(self.client.get_int(group, key))
+        dropdown.connect("changed", self.effect_changed, (group, key))
 
-    def effect_changed(self, dropdown, key):
-        self.client.set_int(key, dropdown.get_active())
+    def effect_changed(self, dropdown, groupkey):
+        group, key = groupkey
+        self.client.set_int(group, key, dropdown.get_active())
 
     def setup_look(self, dropdown):
         dropdown.append_text("Flat bar")
@@ -261,7 +264,7 @@ class awnPreferences:
 
     def look_changed(self, dropdown):
         if dropdown.get_active() == -1: #init
-            if self.client.get_int(defs.BAR_ANGLE) == 0:
+            if self.client.get_int(defs.BAR, defs.BAR_ANGLE) == 0:
                 dropdown.set_active(0)
                 self.wTree.get_widget("roundedcornerscheck_holder").show_all()
                 self.wTree.get_widget("barangle_holder").hide_all()
@@ -278,9 +281,9 @@ class awnPreferences:
             self.wTree.get_widget("roundedcornerscheck_holder").hide_all()
             self.wTree.get_widget("barangle_holder").show_all()
 
-    def setup_effect_custom(self, key):
+    def setup_effect_custom(self, group, key):
       self.effect_drop = []
-      effect_settings = self.client.get_int(key)
+      effect_settings = self.client.get_int(group, key)
       cnt = 0
       for drop in ['hover', 'open', 'close', 'launch', 'attention']:
         d = self.wTree.get_widget('effect_'+drop)
@@ -304,11 +307,11 @@ class awnPreferences:
           d.set_active(0)
         else:
           d.set_active(current_effect+1)
-        d.connect("changed", self.effect_custom_changed, key)
+        d.connect("changed", self.effect_custom_changed, (group, key))
         cnt = cnt+1
 
-    def refresh_effect_custom(self, key):
-      effect_settings = self.client.get_int(key)
+    def refresh_effect_custom(self, group, key):
+      effect_settings = self.client.get_int(group, key)
       cnt = 0
       for drop in ['hover', 'open', 'close', 'launch', 'attention']:
         d = self.wTree.get_widget('effect_'+drop)
@@ -319,11 +322,12 @@ class awnPreferences:
           d.set_active(current_effect+1)
         cnt += 1
 
-    def effect_custom_changed(self, dropdown, key):
+    def effect_custom_changed(self, dropdown, groupkey):
+      group, key = groupkey
       if (dropdown.get_active() != self.effects_dd.get_active()):
         self.effects_dd.set_active(9) #Custom
         new_effects = self.get_custom_effects()
-        self.client.set_int(key, new_effects)
+        self.client.set_int(group, key, new_effects)
         print "effects set to: ", "%0.8X" % new_effects
 
     def get_custom_effects(self):
@@ -336,7 +340,7 @@ class awnPreferences:
           effects = effects << 4 | int(d.get_active())-1
       return effects
 
-    def setup_effect(self, key, dropdown):
+    def setup_effect(self, group, key, dropdown):
         self.effects_dd = dropdown
         model = gtk.ListStore(str)
         model.append(["None"])
@@ -354,7 +358,7 @@ class awnPreferences:
         dropdown.pack_start(cell)
         dropdown.add_attribute(cell,'text',0)
 
-        effect_settings = self.client.get_int(key)
+        effect_settings = self.client.get_int(group, key)
         hover_effect = effect_settings & 15
         bundle = 0
         for i in range(5):
@@ -368,10 +372,11 @@ class awnPreferences:
           active = 9 #Custom
 
         dropdown.set_active(int(active))
-        dropdown.connect("changed", self.effect_changed, key)
-        self.setup_effect_custom(key)
+        dropdown.connect("changed", self.effect_changed, (group, key))
+        self.setup_effect_custom(group, key)
 
-    def effect_changed(self, dropdown, key):
+    def effect_changed(self, dropdown, groupkey):
+        group, key = groupkey
         new_effects = 0
         effect = 0
         if(dropdown.get_active() != 9): # not Custom
@@ -381,6 +386,6 @@ class awnPreferences:
             effect = dropdown.get_active() - 1
           for i in range(5):
             new_effects = new_effects << 4 | effect
-          self.client.set_int(key, new_effects)
+          self.client.set_int(group, key, new_effects)
           print "effects set to: ", "%0.8X" % new_effects
-          self.refresh_effect_custom(key)
+          self.refresh_effect_custom(group, key)

@@ -36,6 +36,12 @@
 )
 
 ;; Boxed types ...
+(define-boxed Config
+  (in-module "Awn")
+  (c-name "AwnConfigClient")
+  (gtype-id "AWN_TYPE_CONFIG_CLIENT")
+)
+
 (define-boxed DesktopItem
   (in-module "Awn")
   (c-name "AwnDesktopItem")
@@ -91,6 +97,17 @@
   )
 )
 
+(define-enum ConfigListType
+  (in-module "Awn")
+  (c-name "AwnConfigListType")
+  (gtype-id "AWN_TYPE_CONFIG_LIST_TYPE")
+  (values
+    '("boolean" "AWN_CONFIG_LIST_TYPE_BOOL")
+    '("float" "AWN_CONFIG_LIST_TYPE_FLOAT")
+    '("integer" "AWN_CONFIG_LIST_TYPE_INT")
+    '("string" "AWN_CONFIG_LIST_TYPE_STRING")
+  )
+)
 
 ;; From awn-applet-dialog.h
 
@@ -119,66 +136,96 @@
 
 
 
-;; From awn-applet-gconf.h
+;; From awn-config-client.h
 
-(define-method gconf_get_full_key
-  (of-object "AwnApplet")
-  (c-name "awn_applet_gconf_get_full_key")
-  (return-type "gchar*")
+(define-function config_client_new
+  (c-name "awn_config_client_new")
+  (is-constructor-of "AwnConfigClient")
+  (return-type "AwnConfigClient*")
+)
+
+(define-method clear
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_clear")
+  (return-type "none")
   (parameters
+    '("GError**" "opt_error")
+  )
+)
+
+(define-method ensure_group
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_ensure_group")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "group")
+  )
+)
+
+(define-method exists
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_entry_exists")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "group")
     '("const-gchar*" "key")
   )
 )
 
-(define-method gconf_set_bool
-  (of-object "AwnApplet")
-  (c-name "awn_applet_gconf_set_bool")
+(define-method set_bool
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_set_bool")
   (return-type "none")
   (parameters
+    '("const-gchar*" "group")
     '("const-gchar*" "key")
     '("gboolean" "the_bool")
     '("GError**" "opt_error")
   )
 )
 
-(define-method gconf_set_int
-  (of-object "AwnApplet")
-  (c-name "awn_applet_gconf_set_int")
+(define-method set_int
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_set_int")
   (return-type "none")
   (parameters
+    '("const-gchar*" "group")
     '("const-gchar*" "key")
     '("gint" "the_int")
     '("GError**" "opt_error")
   )
 )
 
-(define-method gconf_set_string
-  (of-object "AwnApplet")
-  (c-name "awn_applet_gconf_set_string")
+(define-method set_string
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_set_string")
   (return-type "none")
   (parameters
+    '("const-gchar*" "group")
     '("const-gchar*" "key")
     '("const-gchar*" "the_string")
     '("GError**" "opt_error")
   )
 )
 
-(define-method gconf_set_float
-  (of-object "AwnApplet")
-  (c-name "awn_applet_gconf_set_float")
+(define-method set_float
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_set_float")
   (return-type "none")
   (parameters
+    '("const-gchar*" "group")
     '("const-gchar*" "key")
     '("gdouble" "the_float")
     '("GError**" "opt_error")
   )
 )
 
-(define-method gconf_set_list
-  (of-object "AwnApplet")
-  (c-name "awn_applet_gconf_set_list")
+(define-method set_list
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_set_list")
   (return-type "none")
   (parameters
+    '("const-gchar*" "group")
     '("const-gchar*" "key")
     '("GConfValueType" "list_type")
     '("GSList*" "list")
@@ -186,53 +233,58 @@
   )
 )
 
-(define-method gconf_get_bool
-  (of-object "AwnApplet")
-  (c-name "awn_applet_gconf_get_bool")
+(define-method get_bool
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_get_bool")
   (return-type "gboolean")
   (parameters
+    '("const-gchar*" "group")
     '("const-gchar*" "key")
     '("GError**" "opt_error")
   )
 )
 
-(define-method gconf_get_int
-  (of-object "AwnApplet")
-  (c-name "awn_applet_gconf_get_int")
+(define-method get_int
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_get_int")
   (return-type "gint")
   (parameters
+    '("const-gchar*" "group")
     '("const-gchar*" "key")
     '("GError**" "opt_error")
   )
 )
 
-(define-method gconf_get_string
-  (of-object "AwnApplet")
-  (c-name "awn_applet_gconf_get_string")
+(define-method get_string
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_get_string")
   (return-type "gchar*")
   (parameters
+    '("const-gchar*" "group")
     '("const-gchar*" "key")
     '("GError**" "opt_error")
   )
 )
 
-(define-method gconf_get_float
-  (of-object "AwnApplet")
-  (c-name "awn_applet_gconf_get_float")
-  (return-type "gdouble")
+(define-method get_float
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_get_float")
+  (return-type "gfloat")
   (parameters
+    '("const-gchar*" "group")
     '("const-gchar*" "key")
     '("GError**" "opt_error")
   )
 )
 
-(define-method gconf_get_list
-  (of-object "AwnApplet")
-  (c-name "awn_applet_gconf_get_list")
+(define-method get_list
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_get_list")
   (return-type "GSList*")
   (parameters
+    '("const-gchar*" "group")
     '("const-gchar*" "key")
-    '("GConfValueType" "list_type")
+    '("AwnConfigListType" "list_type")
     '("GError**" "opt_error")
   )
 )
@@ -267,12 +319,6 @@
   (of-object "AwnApplet")
   (c-name "awn_applet_get_height")
   (return-type "guint")
-)
-
-(define-method get_preferences_key
-  (of-object "AwnApplet")
-  (c-name "awn_applet_get_preferences_key")
-  (return-type "gchar*")
 )
 
 (define-method add_preferences

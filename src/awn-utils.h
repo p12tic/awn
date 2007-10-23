@@ -22,7 +22,7 @@
 #define _AWN_UTILS_
 
 #include <gtk/gtk.h>
-#include <libawn/awn-gconf.h>
+#include <libawn/awn-settings.h>
 
 typedef struct {
 	/*

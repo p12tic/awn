@@ -1,3 +1,55 @@
+2007-10-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn.pc.in:
+	* config.h.in:
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/awn-applet-gconf.c:
+	* libawn/awn-applet-gconf.h:
+	* libawn/awn-config-client.c:
+	* libawn/awn-config-client.h:
+	Add a configuration API that allows AWN to use either a GConf or
+	GKeyFile-based backend.  Uses a new structure, called AwnConfigClient.
+
+	* libawn/awn-settings.c:
+	* libawn/awn-settings.h:
+	* src/awn-applet-manager.h:
+	* src/awn-bar.h:
+	* src/awn-hotspot.h:
+	* src/awn-task-manager.h:
+	* src/awn-task.h:
+	* src/awn-window.h:
+	Change the settings API naming scheme and file names to match the
+	structure name.
+
+	* pyawn/__init__.py:
+	* pyawn/awn.defs:
+	* pyawn/awn.override:
+	* pyawn/awnmodule.c:
+	Add an analogous Python API for AwnConfigClient (awn.Config).
+
+	* awn-manager/awnApplet.py:
+	* awn-manager/awnDefs.in.py:
+	* awn-manager/awnLauncher.py:
+	* awn-manager/awnLauncherEditor.py:
+	* awn-manager/awnPreferences.py:
+	Convert from using the GConf API to the awn.Config API.
+
+	* src/awn-applet-manager.c:
+	* src/awn-bar.h:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	* src/awn-x.c:
+	* src/main.c:
+	Convert to use AwnConfigClient and the converted AwnSettings API.
+
+	* Makefile.am:
+	* test/Makefile.am:
+	* test/test-config-client.c:
+	* test/test-config-client.py:
+	Add programs in C and Python to test the setting and retrieval of
+	configuration options.
+
 2007-10-20  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* awn-manager/Makefile.am:

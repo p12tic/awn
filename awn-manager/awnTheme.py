@@ -2,11 +2,35 @@ from ConfigParser import ConfigParser
 import shutil
 import tarfile
 import os
-import gconf
 import gtk
 import gobject
 
+import awn
 import awnDefs as defs
+
+CONFIG_TYPE_MAP = {
+    bool: 'bool',
+    float: 'float',
+    int: 'int',
+    str: 'string'
+    }
+
+def get_typefunc(ptype, prefix):
+    return '%s_%s' % (CONFIG_TYPE_MAP[ptype], prefix)
+
+class Pref:
+    pref_list = {}
+    def __init__(self, name, ptype):
+        self.name = name
+        self.ptype = ptype
+        Pref.pref_list[self.name] = self
+
+    @staticmethod
+    def lookup(name):
+        if name in Pref.pref_list:
+            return Pref.pref_list[name]
+        else:
+            return None
 
 class AwnThemeManager:
 
@@ -26,8 +50,24 @@ class AwnThemeManager:
         self.AWN_THUMB = 'thumb.png'
         self.AWN_CUSTOM_ICONS = 'custom-icons'
         self.AWN_CURRENT = os.path.join(defs.HOME_THEME_DIR, 'current.awn')
-        self.GCONF = gconf.client_get_default()
+        self.CONFIG = awn.Config()
         self.BUILD_DIR = "/tmp/awn_theme_build"
+        self.THEME_PREFS = {
+            '': [Pref('autohide', bool)],
+            'app': [Pref('active_png', str), Pref('alpha_effect', bool),
+                    Pref('arrow_color', str),Pref('hover_bounce_effect', bool),
+                    Pref('tasks_have_arrows', bool)],
+            'bar': [Pref('bar_angle', int), Pref('bar_height', int),
+                    Pref('border_color', str), Pref('corner_radius', float),
+                    Pref('glass_histep_1', str), Pref('glass_histep_2', str),
+                    Pref('glass_step_1', str), Pref('glass_step_2', str),
+                    Pref('hilight_color', str), Pref('icon_offset', float),
+                    Pref('pattern_alpha', float), Pref('pattern_uri', str),
+                    Pref('render_pattern', bool), Pref('rounded_corners', bool),
+                    Pref('sep_color', str), Pref('show_separator', bool)],
+            'title': [Pref('background', str), Pref('font_face', str),
+                      Pref('shadow_color', str), Pref('text_color', str)]
+            }
         self.theme_list = {}
         self.currItr = None
         self.model = None
@@ -90,32 +130,19 @@ class AwnThemeManager:
             curr.write(version+"\n")
             curr.close()
 
-            gconf_insert = self.read(os.path.join(os.path.join(defs.HOME_THEME_DIR, directory), self.AWN_CONFIG))
+            theme_config = self.read(os.path.join(defs.HOME_THEME_DIR, directory, self.AWN_CONFIG))
 
-            self.gconf_client = gconf.client_get_default ()
-
-            for group in gconf_insert:
+            for group, entries in theme_config.iteritems():
                 if group != 'details':
                     if group == "root":
-                        key_path = defs.AWN_PATH
-                    else:
-                        key_path = "%s/%s" % (defs.AWN_PATH, group)
-                    style = gconf_insert[group]
-                    for key in style:
-                        full_key_path = "%s/%s" % (key_path, key)
-                        if self.gconf_client.get(full_key_path) is not None:
-                            ctype = self.gconf_client.get(full_key_path).type
-                            if ctype == gconf.VALUE_STRING:
-                                self.gconf_client.set_string(full_key_path, style[key])
-                            elif ctype == gconf.VALUE_INT:
-                                self.gconf_client.set_int(full_key_path, int(style[key]))
-                            elif ctype == gconf.VALUE_FLOAT:
-                                self.gconf_client.set_float(full_key_path, float(style[key]))
-                            elif ctype == gconf.VALUE_BOOL:
-                                self.gconf_client.set_bool(full_key_path, self.str_to_bool(style[key]))
+                        group = awn.CONFIG_DEFAULT_GROUP
+                    for key, value in entries:
+                        pref = Pref.lookup(key)
+                        if pref is not None:
+                            getattr(self.config, get_typefunc(pref.ptype, 'set'))(group, key, value)
 
-            if self.gconf_client.get_bool(defs.BAR_RENDER_PATTERN):
-                self.gconf_client.set_string(defs.BAR_PATTERN_URI, os.path.join(defs.HOME_THEME_DIR, directory, "pattern.png"))
+            if self.CONFIG.get_bool(defs.BAR, defs.RENDER_PATTERN):
+                self.CONFIG.set_string(defs.BAR, defs.PATTERN_URI, os.path.join(defs.HOME_THEME_DIR, directory, "pattern.png"))
 
     def add(self, widget, data=None):
         dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
@@ -210,26 +237,25 @@ class AwnThemeManager:
 
         response = detailsWindow.run()
         if response == 48:
-            gconfKeys = {}
-            gconfKeys[""] = ["appactive_png", "apparrow_color", "apptasks_have_arrows", "auto_hide"]
-            gconfKeys["app"] = ["active_png", "alpha_effect", "arrow_color", "fade_effect", "hover_bounce_effect", "tasks_have_arrows"]
-            gconfKeys["bar"] = ["bar_angle", "bar_height", "border_color", "corner_radius", "glass_histep_1", "glass_histep_2", "glass_step_1",
-                            "glass_step_2", "hilight_color", "icon_offset", "pattern_alpha", "pattern_uri", "render_pattern",
-                            "rounded_corners", "sep_color", "show_separator"]
-            gconfKeys["title"] = ["background", "bold", "font_face", "font_size", "italic", "shadow_color", "text_color"]
-            gconfKeys["details"] = {"author":entries["author"].get_text(),"name":entries["name"].get_text(),"date":entries["date"].get_text(),"version":entries["version"].get_text()}
-            gconf_client = gconf.client_get_default()
+            theme_name = entries['name'].get_text()
+            self.THEME_PREFS['details'] = {
+                'author': entries['author'].get_text(),
+                'name': theme_name,
+                'date': entries['date'].get_text(),
+                'version': entries['version'].get_text()
+                }
 
-            foldername = entries["name"].get_text().replace(" ", "_")
-            if foldername == '':
-                foldername = "awn_theme"
+            if theme_name == '':
+                foldername = 'awn_theme'
+            else:
+                foldername = theme_name.replace(" ", "_")
 
             os.makedirs(os.path.join(self.BUILD_DIR, foldername))
 
-            self.write(os.path.join(self.BUILD_DIR, foldername, self.AWN_CONFIG), gconfKeys)
+            self.write(os.path.join(self.BUILD_DIR, foldername, self.AWN_CONFIG))
 
-            if bool(self.GCONF.get_bool(defs.BAR_RENDER_PATTERN)):
-                pattern_path = str(self.GCONF.get_string(defs.BAR_PATTERN_URI))
+            if bool(self.CONFIG.get_bool(defs.BAR, defs.RENDER_PATTERN)):
+                pattern_path = str(self.CONFIG.get_string(defs.BAR, defs.PATTERN_URI))
                 if os.path.isfile(pattern_path):
                     shutil.copy(pattern_path, os.path.join(self.BUILD_DIR, foldername, "pattern.png"))
 
@@ -308,39 +334,24 @@ class AwnThemeManager:
                 'dir':directory
                 }
 
-    def gconf_get_key(self,full_key):
-        if self.GCONF.get(full_key) is not None:
-            ctype = self.GCONF.get(full_key).type
-            if ctype == gconf.VALUE_STRING:
-                key = str(self.GCONF.get_string(full_key))
-            elif ctype == gconf.VALUE_INT:
-                key = str(self.GCONF.get_int(full_key))
-            elif ctype == gconf.VALUE_FLOAT:
-                key = str(self.GCONF.get_float(full_key))
-            elif ctype == gconf.VALUE_BOOL:
-                key = str(self.GCONF.get_bool(full_key))
-            else:
-                key = ''
-            return key
-
-    def write(self, path, gconfKeys):
+    def write(self, path):
         cfg = ConfigParser()
-        for item in gconfKeys:
-            if item == "":
-                cfg.add_section("root")
+        for group, contents in self.THEME_PREFS.iteritems():
+            if group == '':
+                group = 'root'
+                cfg_group = awn.CONFIG_DEFAULT_GROUP
             else:
-                cfg.add_section(item)
-            for key in gconfKeys[item]:
-                if item == "details":
-                    value = gconfKeys[item][key]
-                else:
-                    value = self.gconf_get_key("%s/%s/%s" % (defs.AWN_PATH, item, key))
-                if item == "":
-                    itm = "root"
-                else:
-                    itm = item
-                cfg.set(itm, key, value)
+                cfg_group = group
+            cfg.add_section(group)
+            if type(contents) is dict:
+                [cfg.set(group, key, value) for key, value in contents.iteritems()]
+            else:
+                for pref in contents:
+                    # uses the proper retrieval function based on the declared type
+                    value = getattr(self.CONFIG, get_typefunc(pref.ptype, 'get'))(cfg_group, pref.name)
+                    cfg.set(itm, pref.name, value)
         cfg.write(open(path, 'w'))
+        cfg.close()
 
     def read(self, path):
         cp = ConfigParser()
@@ -352,6 +363,7 @@ class AwnThemeManager:
             for opt in opts:
                 grp_list[opt] = cp.get(sec, opt)
             cfg_list[sec] = grp_list
+        cp.close()
         return cfg_list
 
     def clean_tmp(self, dirPath):

@@ -31,10 +31,10 @@ try:
     import gtk
     import gtk.glade
     import gtk.gdk as gdk
-    import gconf
 except:
     sys.exit(1)
 
+import awn
 from xdg.DesktopEntry import DesktopEntry
 import awnDefs as defs
 
@@ -151,10 +151,10 @@ class awnLauncherEditor:
             if self.icon_path is not None:
                 self.desktop_entry.set('Icon', self.icon_path)
             self.desktop_entry.write()
-            client = gconf.client_get_default()
-            uris = client.get_list(defs.WINMAN_LAUNCHERS, gconf.VALUE_STRING)
+            client = awn.Config()
+            uris = client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
             uris.append(self.filename)
-            client.set_list(defs.WINMAN_LAUNCHERS, gconf.VALUE_STRING, uris)
+            client.set_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING, uris)
             self.launcher.refresh_tree(uris)
         self.main_dialog.hide_all()
 

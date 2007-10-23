@@ -39,7 +39,7 @@
 #include "xutils.h"
 #include "inlinepixbufs.h"
 
-#include <libawn/awn-gconf.h>
+#include <libawn/awn-settings.h>
 
 /*	TODO:
 	This is a cut-and-paste job at the moment, I still need to bring over 
@@ -83,7 +83,7 @@ awn_x_set_strut (GtkWindow *window)
 	int y = 0;
 	int width = 0;
 	int height = 0;
-  AwnSettings *settings = awn_gconf_new ();
+  AwnSettings *settings = awn_settings_new ();
 	
 	gtk_window_get_size (window, &width, &height);
 	gtk_window_get_position (window, &x, &y);

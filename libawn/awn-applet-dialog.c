@@ -28,12 +28,10 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
-#include <gconf/gconf-client.h>
-
 #include "awn-applet.h"
-#include "awn-applet-gconf.h"
 #include "awn-applet-dialog.h"
 #include "awn-cairo-utils.h"
+#include "awn-config-client.h"
 #include "awn-defines.h"
 
 G_DEFINE_TYPE(AwnAppletDialog, awn_applet_dialog, GTK_TYPE_WINDOW)
@@ -393,7 +391,7 @@ static void
 awn_applet_dialog_init (AwnAppletDialog *dialog) 
 {
         AwnAppletDialogPrivate *priv;
-	GConfClient *client;
+	AwnConfigClient *client;
 
         priv = dialog->priv = AWN_APPLET_DIALOG_GET_PRIVATE (dialog);
             
@@ -441,11 +439,8 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
         gtk_misc_set_padding (GTK_MISC (priv->title_label), 0, 4);
         gtk_container_add (GTK_CONTAINER (priv->title), priv->title_label);
 
-	client = gconf_client_get_default ();
-        priv->offset = gconf_client_get_int (client,
-                             "/apps/avant-window-navigator/bar/icon_offset",
-					     NULL);
-	g_object_unref (client);
+	client = awn_config_client_new ();
+        priv->offset = awn_config_client_get_int (client, "bar", "icon_offset", NULL);
 }
 
 /*

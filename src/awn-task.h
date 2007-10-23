@@ -27,8 +27,8 @@
 #include <libwnck/libwnck.h>
 #include <libwnck/window-action-menu.h>
 
+#include <libawn/awn-settings.h>
 #include <libawn/awn-title.h>
-#include <libawn/awn-gconf.h>
 
 #include "awn-utils.h"
 #include "awn-task-manager.h"

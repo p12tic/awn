@@ -29,8 +29,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <gconf/gconf.h>
-#include <gconf/gconf-client.h>
 
 G_DEFINE_TYPE (AwnApplet, awn_applet, GTK_TYPE_EVENT_BOX);
 
@@ -136,17 +134,7 @@ awn_applet_get_height (AwnApplet *applet)
 	return priv->height;
 }
 
-gchar*
-awn_applet_get_preferences_key (AwnApplet *applet)
-{
-	AwnAppletPrivate *priv;
-
-	g_return_val_if_fail (AWN_IS_APPLET (applet), NULL);
-	priv = AWN_APPLET_GET_PRIVATE(applet);
-	
-	return g_strdup (priv->gconf_key);
-}
-
+#ifdef USE_GCONF
 static void
 awn_applet_associate_schemas_in_dir (GConfClient  *client,
 				       const gchar  *prefs_key,
@@ -218,12 +206,14 @@ awn_applet_associate_schemas_in_dir (GConfClient  *client,
 
 	g_slist_free (list);
 }
+#endif
 
 void
 awn_applet_add_preferences (AwnApplet  *applet,
 			      const gchar  *schema_dir,
 			      GError      **opt_error)
 {
+#ifdef USE_GCONF
 	AwnAppletPrivate *priv;
 	GConfClient *client;
 	GError **error = NULL;
@@ -251,7 +241,11 @@ awn_applet_add_preferences (AwnApplet  *applet,
 			   schema_dir, our_error->message);
 		g_error_free (our_error);
 	}
+#else
+    /* no-op */
+#endif
 }
+
 
 static gboolean 
 awn_applet_expose_event (GtkWidget *widget, GdkEventExpose *expose)

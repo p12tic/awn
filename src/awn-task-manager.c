@@ -36,14 +36,13 @@
 
 #include "awn-marshallers.h"
 
+#include <libawn/awn-config-client.h>
 #include <libawn/awn-desktop-item.h>
 #include <libawn/awn-title.h>
 
 #define AWN_TASK_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AWN_TYPE_TASK_MANAGER, AwnTaskManagerPrivate))
 
 G_DEFINE_TYPE (AwnTaskManager, awn_task_manager, GTK_TYPE_HBOX);
-
-#define AWN_LAUNCHERS_KEY "/apps/avant-window-navigator/window_manager/launchers"
 
 /* FORWARD DECLERATIONS */
 static void _task_manager_window_opened (WnckScreen *screen, WnckWindow *window,
@@ -573,15 +572,15 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 		_refresh_box (task_manager);
 		g_print("LOADED : %s\n", _sdata);
 
-		/******* Add to Gconf *********/
+		/******* Add to config *********/
 		priv->ignore_gconf = TRUE;
 		settings = priv->settings;
 		settings->launchers = g_slist_append(settings->launchers, g_strdup(uri->str));
                 
-		GConfClient *client = gconf_client_get_default();
-		gconf_client_set_list(client,
-					"/apps/avant-window-navigator/window_manager/launchers",
-					GCONF_VALUE_STRING,settings->launchers,NULL);
+		AwnConfigClient *client = awn_config_client_new ();
+		awn_config_client_set_list(client, "window_manager", "launchers",
+                                           AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                                           settings->launchers, NULL);
 		awn_task_manager_update_separator_position (task_manager);
 	} else {
 		gtk_widget_destroy(task);
@@ -1400,16 +1399,13 @@ awn_task_manager_class_init (AwnTaskManagerClass *class)
 }
 
 static void 
-awn_task_manger_refresh_launchers (GConfClient *client, 
-                                   guint cid, 
-                                   GConfEntry *entry, 
+awn_task_manager_refresh_launchers (AwnConfigClientNotifyEntry *entry, 
                                    AwnTaskManager *task_manager)
 {
 	AwnTaskManagerPrivate *priv;
 	GSList *list, *l;
 	GList *t;
 	GSList *launchers = NULL;
-	GConfValue *value = NULL;
 	
 	
 	priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
@@ -1419,11 +1415,10 @@ awn_task_manger_refresh_launchers (GConfClient *client,
                 return;
         }
         
-        value = gconf_entry_get_value(entry);
-        list = gconf_value_get_list (value);
+        list = entry->value.list_val;
         
         for (l = list; l != NULL; l = l->next) {
-                gchar *string = g_strdup (gconf_value_get_string (l->data));
+                gchar *string = g_strdup ((gchar*) (l->data));
                 launchers = g_slist_append (launchers, string);
         }
         
@@ -1476,7 +1471,7 @@ static void
 awn_task_manager_init (AwnTaskManager *task_manager)
 {
 	AwnTaskManagerPrivate *priv;
-	GConfClient *client = gconf_client_get_default ();
+	AwnConfigClient *client = awn_config_client_new ();
         DBusGConnection *connection;
         DBusGProxy *proxy = NULL;
         GError *error = NULL;
@@ -1491,9 +1486,9 @@ awn_task_manager_init (AwnTaskManager *task_manager)
 	priv->ignore_gconf = FALSE;
 	
 	/* Setup GConf to notify us if the launchers list changes */
-	gconf_client_notify_add (client, AWN_LAUNCHERS_KEY, 
-                (GConfClientNotifyFunc)awn_task_manger_refresh_launchers, 
-                task_manager, NULL, NULL);
+	awn_config_client_notify_add (client, "window_manager", "launchers", 
+                (AwnConfigClientNotifyFunc)awn_task_manager_refresh_launchers, 
+                task_manager);
 
         connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
         if (!connection) {

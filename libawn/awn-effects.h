@@ -25,7 +25,7 @@
 #include <gtk/gtk.h>
 
 #include "awn-defines.h"
-#include "awn-gconf.h"
+#include "awn-settings.h"
 #include "awn-title.h"
 
 G_BEGIN_DECLS

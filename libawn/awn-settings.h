@@ -20,16 +20,13 @@
  *  Notes : This is the actual icon on the app, the "Application Icon" 
 */
 
-#ifndef	_AWN_GCONF_H
-#define	_AWN_GCONF_H
+#ifndef	_AWN_SETTINGS_H
+#define	_AWN_SETTINGS_H
 
 #include <glib.h>
 #include <gtk/gtk.h>
 
-#include <gconf/gconf-client.h>
-
 #include <libawn/awn-cairo-utils.h>
-
 
 typedef struct {
 	
@@ -110,10 +107,11 @@ typedef struct {
 } AwnSettings;
 
 
-AwnSettings* awn_gconf_new(void);
+AwnSettings* awn_settings_new(void);
 
+/* returns singleton */
 AwnSettings* awn_get_settings(void);
 
-void awn_gconf_set_window_to_update(GtkWidget *window);
+void awn_config_set_window_to_update(GtkWidget *window);
 
-#endif /* _AWN_GCONF_H */
+#endif /* _AWN_SETTINGS_H */

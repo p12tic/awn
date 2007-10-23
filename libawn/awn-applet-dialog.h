@@ -28,7 +28,6 @@
 #include <stdlib.h>
 
 #include "awn-applet.h"
-#include "awn-applet-gconf.h"
 #include "awn-defines.h"
 
 G_BEGIN_DECLS

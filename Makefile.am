@@ -1,3 +1,5 @@
+NULL = 
+
 SUBDIRS =				\
 	libawn                          \
 	src				\
@@ -6,7 +8,9 @@ SUBDIRS =				\
 	applets                         \
 	po				\
 	pyawn				\
-	awn-manager
+	awn-manager			\
+	test				\
+	$(NULL)
 	
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = awn.pc

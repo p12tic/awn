@@ -12,6 +12,9 @@ if ver < (2, 11, 1):
 
 from awn import *
 
+CONFIG_LIST_BOOL, CONFIG_LIST_FLOAT, CONFIG_LIST_INT, CONFIG_LIST_STRING = range(4)
+CONFIG_DEFAULT_GROUP = 'DEFAULT'
+
 uid = "0"
 window = 0
 orient = 0

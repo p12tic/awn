@@ -29,10 +29,10 @@ try:
     import gobject
     import gtk
     import gtk.gdk as gdk
-    import gconf
 except:
     sys.exit(1)
 
+import awn
 from xdg.DesktopEntry import DesktopEntry
 import awnDefs as defs
 from awnLauncherEditor import awnLauncherEditor
@@ -48,8 +48,8 @@ class awnLauncher:
 
         self.load_finished = False
 
-        self.client = gconf.client_get_default()
-        self.client.add_dir(defs.WINMAN_PATH, gconf.CLIENT_PRELOAD_NONE)
+        self.client = awn.Config()
+        self.client.ensure_group(defs.WINMAN)
 
         self.scrollwindow = self.wTree.get_widget("launcher_scrollwindow")
         self.make_model()
@@ -82,7 +82,7 @@ class awnLauncher:
             launchers.append(l[item])
 
         if not None in launchers and self.load_finished:
-            self.client.set_list(defs.WINMAN_LAUNCHERS, gconf.VALUE_STRING, launchers)
+            self.client.set_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING, launchers)
 
     def make_model (self):
 
@@ -107,8 +107,9 @@ class awnLauncher:
 
         self.treeview.show()
 
-        uris = self.client.get_list(defs.WINMAN_LAUNCHERS, gconf.VALUE_STRING)
-        self.uris = uris
+        uris = []
+        if self.client.exists(defs.WINMAN, defs.LAUNCHERS):
+            uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
 
         self.refresh_tree(uris)
 
@@ -201,7 +202,7 @@ class awnLauncher:
         (model, iter) = selection.get_selected()
         uri = model.get_value(iter, 2)
         if os.path.exists(uri):
-            uris = self.client.get_list(defs.WINMAN_LAUNCHERS, gconf.VALUE_STRING)
+            uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
             uris.remove(uri)
             os.remove(uri)
             self.refresh_tree(uris)
