@@ -1799,7 +1799,7 @@ awn_task_close (AwnTask *task)
                                      priv->state_changed);
 	g_signal_handler_disconnect ((gpointer)priv->window, 
                                      priv->name_changed);
-	if (!priv->is_launcher) {
+	if (g_signal_handler_is_connected ((gpointer)priv->settings->window, priv->win_enter)) {
 		g_signal_handler_disconnect ((gpointer)priv->settings->window,
                                              priv->win_enter);
 		g_signal_handler_disconnect ((gpointer)priv->settings->window, 
