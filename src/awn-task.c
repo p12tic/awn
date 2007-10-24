@@ -260,13 +260,6 @@ _shrink_widget (AwnTask *task)
         g_return_val_if_fail (AWN_IS_TASK (task), FALSE);
         priv = AWN_TASK_GET_PRIVATE (task);
 
-        if (GTK_WIDGET (task)->allocation.width > 5) {
-                gtk_widget_set_size_request (GTK_WIDGET (task), 
-                                    GTK_WIDGET (task)->allocation.width-5,
-                                             -1);
-                return TRUE;
-        }
-
 	if (priv->is_launcher)
 		awn_task_manager_remove_launcher(priv->task_manager, task);
 	else
