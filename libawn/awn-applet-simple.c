@@ -108,34 +108,14 @@ adjust_icon(AwnAppletSimple *simple)
 void
 awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 {
-        AwnAppletSimplePrivate *priv;
-        GdkPixbuf *old0;
-
-        g_return_if_fail (AWN_IS_APPLET_SIMPLE (simple));
-        g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+	g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
         
-        priv = simple->priv;
-
-	if (pixbuf == priv->org_icon) {
-		priv->bar_height_on_icon_recieved = priv->bar_height;
-		adjust_icon(simple);
-		return;
-	}
-
-        old0 = priv->org_icon;
-        priv->org_icon = pixbuf;
-        priv->bar_height_on_icon_recieved = priv->bar_height;
-
-        /* We need to unref twice because python hurts kittens */
-        if (G_IS_OBJECT (old0))
-        {
-                 g_object_unref (old0);
-                 if (G_IS_OBJECT (old0) && priv->temp)
-                        g_object_unref (old0);
-        }     
-
-        adjust_icon(simple);
-        priv->temp = FALSE;
+	/* awn_applet_simple_set_icon is not heavily used.
+	   Previous inplementation was causing nasty leaks.
+	   This fix seems sensible, easy to maintain.
+	   And it works.
+	 */
+	awn_applet_simple_set_temp_icon (simple, gdk_pixbuf_copy (pixbuf));
 }
 
 void 
@@ -149,11 +129,12 @@ awn_applet_simple_set_temp_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
         
         priv = simple->priv;
 
-	if (pixbuf == priv->org_icon) {
-		priv->bar_height_on_icon_recieved = priv->bar_height;
-		adjust_icon(simple);
-		return;
-	}
+	/* let's make sure that an applet can't screw around with OUR
+	   pixbuf.  We'll make our own copy, and free up theirs.
+	 */
+	old0 = pixbuf;
+	pixbuf = gdk_pixbuf_copy (pixbuf);
+	g_object_unref (old0);
 
         old0 = priv->org_icon;
         priv->org_icon = pixbuf;
