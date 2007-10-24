@@ -1,3 +1,15 @@
+2007-10-20  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awnPreferences.py:
+	* libawn/awn-effects.c:
+	Merged with changes in libawn-draw-effects.
+	Custom effects frame now hidden if all effects are same.
+
+2007-10-09  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fixed "none" animation causing problems.
+
 2007-10-07  Neil J. Patel  <njpatel@gmail.com>
 
 	* Makefile.am:
