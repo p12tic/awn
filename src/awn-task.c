@@ -44,8 +44,6 @@ G_DEFINE_TYPE (AwnTask, awn_task, GTK_TYPE_DRAWING_AREA);
 
 static gboolean awn_task_expose (GtkWidget *task, GdkEventExpose *event);
 static gboolean awn_task_button_press (GtkWidget *task, GdkEventButton *event);
-static gboolean awn_task_win_enter_in (GtkWidget *window, GdkEventMotion *event, AwnTask *task);
-static gboolean awn_task_win_enter_out (GtkWidget *window, GdkEventCrossing *event, AwnTask *task);
 
 static gboolean awn_task_drag_motion (GtkWidget *task,
 		GdkDragContext *context, gint x, gint y, guint t);
@@ -115,8 +113,6 @@ struct _AwnTaskPrivate
 	gulong icon_changed;
 	gulong state_changed;
 	gulong name_changed;
-	gulong win_enter;
-	gulong win_leave;
 };
 
 enum
@@ -678,36 +674,6 @@ _task_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 
 }
 
-static gboolean
-awn_task_win_enter_in (GtkWidget *window, GdkEventMotion *event, AwnTask *task)
-{
-	AwnTaskPrivate *priv;
-	AwnSettings *settings;
-	//g_return_if_fail(AWN_IS_TASK(task));
-	if (!AWN_IS_TASK (task)) return FALSE;
-
-	priv = AWN_TASK_GET_PRIVATE (task);
-	settings = priv->settings;
-	//if (settings->fade_effect)
-	//	launch_fade_out_effect(task);
-	return FALSE;
-}
-
-static gboolean
-awn_task_win_enter_out (GtkWidget *window, GdkEventCrossing *event, AwnTask *task)
-{
-	g_return_val_if_fail(AWN_IS_TASK(task), FALSE);
-
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-	
-	/*if (priv->settings->fade_effect) {
-		priv->effects.alpha = 0.2;
-	}*/
-	
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-	return FALSE;
-}
 
 static gboolean
 activate_window(AwnTask *task)
@@ -1774,12 +1740,6 @@ awn_task_new (AwnTaskManager *task_manager, AwnSettings *settings)
 
 	/* This is code which I will add later for better hover effects over
 	the bar */
-	priv->win_enter = g_signal_connect(G_OBJECT(settings->window), "motion-notify-event",
-			 G_CALLBACK(awn_task_win_enter_in), AWN_TASK(task));
-
-	priv->win_leave = g_signal_connect(G_OBJECT(settings->window), "leave-notify-event",
-			 G_CALLBACK(awn_task_win_enter_out), AWN_TASK(task));
-
 	g_signal_connect (G_OBJECT(task), "drag-data-received",
 		  G_CALLBACK(_task_drag_data_recieved), (gpointer)task);
 	g_signal_connect (G_OBJECT(task), "drag-end",
@@ -1799,12 +1759,6 @@ awn_task_close (AwnTask *task)
                                      priv->state_changed);
 	g_signal_handler_disconnect ((gpointer)priv->window, 
                                      priv->name_changed);
-	if (g_signal_handler_is_connected ((gpointer)priv->settings->window, priv->win_enter)) {
-		g_signal_handler_disconnect ((gpointer)priv->settings->window,
-                                             priv->win_enter);
-		g_signal_handler_disconnect ((gpointer)priv->settings->window, 
-                                             priv->win_leave);
-	}
 
 	priv->window = NULL;
 
