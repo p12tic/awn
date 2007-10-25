@@ -65,6 +65,8 @@ static gboolean fading_effect (AwnEffectsPrivate *priv);
 static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data);
 static gboolean awn_on_leave_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data);
 
+static void awn_effect_kill_midlife(AwnEffectsPrivate *priv);
+
 static void main_effect_loop(AwnEffects *fx);
 
 void
@@ -190,11 +192,30 @@ spotlight_init()
 	g_return_if_fail(error == NULL);
 }
 
+static void
+awn_effect_kill_midlife(AwnEffectsPrivate *priv)
+{
+	gboolean unregistered = FALSE;
+	AwnEffects *fx = priv->effects;
+	fx->current_effect = AWN_EFFECT_NONE;
+	fx->effect_lock = FALSE;
+
+	if (priv->stop) {
+		priv->stop(fx->self);
+	}
+	unregistered = fx->self == NULL;
+	g_free(priv);
+	if (!unregistered) {
+		main_effect_loop(fx);
+	}
+}
+
 static gboolean
 spotlight_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -252,6 +273,7 @@ spotlight_half_fade_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -297,6 +319,7 @@ spotlight_opening_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -345,6 +368,7 @@ spotlight_opening_effect2(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -399,6 +423,7 @@ spotlight_closing_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -462,6 +487,7 @@ bounce_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -494,6 +520,7 @@ glow_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -529,6 +556,7 @@ glow_opening_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -579,6 +607,7 @@ glow_closing_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -622,6 +651,7 @@ glow_attention_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -667,6 +697,7 @@ desaturate_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -713,6 +744,7 @@ zoom_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -772,6 +804,7 @@ zoom_attention_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -829,6 +862,7 @@ zoom_opening_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -869,6 +903,7 @@ zoom_closing_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -909,6 +944,7 @@ bounce_squish_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -968,6 +1004,7 @@ bounce_squish_attention_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -1030,6 +1067,7 @@ bounce_squish_opening_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -1097,6 +1135,7 @@ bounce_squish_closing_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -1136,6 +1175,7 @@ fade_out_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -1170,6 +1210,7 @@ bounce_opening_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -1217,6 +1258,7 @@ fading_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -1256,6 +1298,7 @@ turn_hover_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -1335,6 +1378,7 @@ turn_opening_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -1425,6 +1469,7 @@ turn_closing_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -1507,6 +1552,7 @@ spotlight3D_hover_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -1603,6 +1649,7 @@ spotlight3D_opening_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
@@ -1702,6 +1749,7 @@ spotlight3D_closing_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
 	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+	awn_effect_kill_midlife(priv);	
 		return FALSE;
 	}
 	if (!fx->effect_lock) {
