@@ -1,3 +1,8 @@
+2007-10-25  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
+
+	* src/awn-task.c:
+	Fixes bug #156898.
+
 2007-10-20  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* awn-manager/Makefile.am:
