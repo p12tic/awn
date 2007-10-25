@@ -219,7 +219,8 @@ class awnLauncher:
         if os.path.exists(uri):
             uris = self.client.get_list(self.LAUNCHER_PATH, gconf.VALUE_STRING)
             uris.remove(uri)
-            os.remove(uri)
+            if uri.startswith(self.AWN_CONFIG_LAUNCH_DIR):
+                os.remove(uri)
             self.refresh_tree(uris)
 
     def waitForNewItemProcess(self, process, file_path):
