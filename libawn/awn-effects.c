@@ -194,6 +194,9 @@ static gboolean
 spotlight_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -248,6 +251,9 @@ static gboolean
 spotlight_half_fade_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -290,6 +296,9 @@ static gboolean
 spotlight_opening_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -335,6 +344,9 @@ static gboolean
 spotlight_opening_effect2(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -386,6 +398,9 @@ static gboolean
 spotlight_closing_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -446,6 +461,9 @@ static gboolean
 bounce_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -475,6 +493,9 @@ static gboolean
 glow_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -507,6 +528,9 @@ static gboolean
 glow_opening_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -554,6 +578,9 @@ static gboolean
 glow_closing_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -594,6 +621,9 @@ static gboolean
 glow_attention_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -636,6 +666,9 @@ static gboolean
 desaturate_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -679,6 +712,9 @@ static gboolean
 zoom_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -735,6 +771,9 @@ static gboolean
 zoom_attention_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -789,6 +828,9 @@ static gboolean
 zoom_opening_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -826,6 +868,9 @@ static gboolean
 zoom_closing_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -863,6 +908,9 @@ static gboolean
 bounce_squish_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -919,6 +967,9 @@ static gboolean
 bounce_squish_attention_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -978,6 +1029,9 @@ static gboolean
 bounce_squish_opening_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1042,6 +1096,9 @@ static gboolean
 bounce_squish_closing_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1078,6 +1135,9 @@ static gboolean
 fade_out_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1109,6 +1169,9 @@ static gboolean
 bounce_opening_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1153,6 +1216,9 @@ static gboolean
 fading_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1189,6 +1255,9 @@ gboolean
 turn_hover_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1265,6 +1334,9 @@ gboolean
 turn_opening_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1352,6 +1424,9 @@ gboolean
 turn_closing_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1431,6 +1506,9 @@ gboolean
 spotlight3D_hover_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1524,6 +1602,9 @@ static gboolean
 spotlight3D_opening_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1620,6 +1701,9 @@ static gboolean
 spotlight3D_closing_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
+	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
+		return FALSE;
+	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
