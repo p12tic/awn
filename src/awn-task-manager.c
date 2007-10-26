@@ -206,10 +206,11 @@ _find_launcher (AwnTask *task, AwnLauncherTerm *term)
 		GString *str;
 
 		wnck_app = wnck_window_get_application(term->window);
-        	if (WNCK_IS_APPLICATION (wnck_app))
-        	      	app_name = (char*)wnck_application_get_name(wnck_app);
-		else
+		if (WNCK_IS_APPLICATION (wnck_app)) {
+			app_name = (char*)wnck_application_get_name(wnck_app);
+		} else {
 			app_name = (char*)NULL;
+		}
 		str = g_string_new (app_name);
 		str = g_string_ascii_down (str);
 		_normalize (str->str);
@@ -253,7 +254,12 @@ _find_launcher (AwnTask *task, AwnLauncherTerm *term)
 		GString *str1 = g_string_new (awn_task_get_name (task));
 		str1 = g_string_ascii_down (str1);
 
-		GString *str2 = g_string_new (wnck_application_get_name(wnck_app));
+		GString *str2;
+		if (WNCK_IS_APPLICATION (wnck_app)) {
+			str2 = g_string_new (wnck_application_get_name (wnck_app));
+		} else {
+			str2 = (char*)NULL;
+		}
 		str2 = g_string_ascii_down (str2);
 		
 		gchar *res = NULL;

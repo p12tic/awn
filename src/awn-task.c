@@ -1021,7 +1021,11 @@ awn_task_get_application(AwnTask *task)
 
 	} else if (priv->window) {
 		wnck_app = wnck_window_get_application(priv->window);
-		str = g_string_new (wnck_application_get_name(wnck_app));
+		if (WNCK_IS_APPLICATION (wnck_app)) {
+			str = g_string_new (wnck_application_get_name (wnck_app));
+		} else {
+			str = (char*)NULL;
+		}
 		str = g_string_ascii_down (str);
 		priv->application = g_strdup(str->str);
 		app = g_string_free (str, TRUE);
