@@ -442,12 +442,9 @@ class awnApplet:
         self.make_appmodel ()
         model = self.appmodel
 
-        hdir = os.path.join (os.environ["HOME"], ".config/awn/applets")
-        dirs = ["/usr/lib/awn/applets",
-                "/usr/local/lib/awn/applets",
-                "/usr/lib64/awn/applets",
-                "/usr/local/lib64/awn/applets",
-                hdir]
+        prefixes = ["/usr/lib", "/usr/local/lib", "/usr/lib64", "/usr/local/lib64",
+                    os.path.join(defs.PREFIX, "lib"), os.path.expanduser("~/.config")]
+        dirs = [os.path.join(prefix, "awn", "applets") for prefix in prefixes]
         applets = []
         for d in dirs:
                 if not os.path.exists (d):
