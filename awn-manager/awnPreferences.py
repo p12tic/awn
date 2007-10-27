@@ -29,8 +29,9 @@ except:
 try:
     import gtk
     import gtk.glade
-except:
-	sys.exit(1)
+except Exception, e:
+    sys.stderr.write(str(e) + '\n')
+    sys.exit(1)
 
 import gconf
 import awnDefs as defs
