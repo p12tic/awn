@@ -1,5 +1,10 @@
 2007-10-27  Michal Hruby <michal.mhr@gmail.com>
 
+	* src/awn-task-manager.c:
+	Now it really fixes #147591
+
+2007-10-27  Michal Hruby <michal.mhr@gmail.com>
+
 	patch by: moonbeam
 
 	* src/awn-task-manager.c:
