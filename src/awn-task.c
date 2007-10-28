@@ -1062,7 +1062,11 @@ awn_task_get_application(AwnTask *task)
 
 	} else if (priv->window) {
 		wnck_app = wnck_window_get_application(priv->window);
-		str = g_string_new (wnck_application_get_name(wnck_app));
+		if (WNCK_IS_APPLICATION (wnck_app)) {
+			str = g_string_new (wnck_application_get_name (wnck_app));
+		} else {
+			str = (char*)NULL;
+		}
 		str = g_string_ascii_down (str);
 		priv->application = g_strdup(str->str);
 		app = g_string_free (str, TRUE);
@@ -1145,6 +1149,12 @@ awn_task_update_icon (AwnTask *task)
 	}
 	priv->icon = awn_x_get_icon_for_launcher (priv->item,
                                                   height, height);
+
+	if (!priv->icon) {
+		priv->icon = old;
+		return;
+	}
+
         priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
        
 	awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
@@ -1614,9 +1624,15 @@ _task_show_prefs (GtkMenuItem *item, AwnTask *task)
 			  G_CALLBACK (on_change_icon_clicked), task);
 
 	label = gtk_label_new (" ");
-	char *markup = g_strdup_printf ("<span size='larger' weight='bold'>%s</span>", awn_task_get_application (task));
-	gtk_label_set_markup (GTK_LABEL (label), markup);
-	g_free (markup);
+
+
+    char *app_name = (char*)awn_task_get_application (task);
+    if (app_name) {
+           gchar *markup = g_strdup_printf ("<span size='larger' weight='bold'>%s</span>", app_name);
+           gtk_label_set_markup (GTK_LABEL (label), markup);
+           g_free (markup);
+    }
+
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, TRUE, 0);
 
 	gtk_widget_show_all (hbox);
