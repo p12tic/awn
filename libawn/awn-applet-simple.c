@@ -118,7 +118,9 @@ awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 	/* awn_applet_simple_set_icon is not heavily used.
 	   Previous inplementation was causing nasty leaks.
 	   This fix seems sensible, easy to maintain.
-	   And it works.
+	   And it works.  Note we are making a copy here so
+	   the unref in set_temp_icon leaves the user's original
+	   untouched.
 	 */
 	awn_applet_simple_set_temp_icon (simple, gdk_pixbuf_copy (pixbuf));
 }
