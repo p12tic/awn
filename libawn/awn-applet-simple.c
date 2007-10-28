@@ -51,7 +51,6 @@ struct _AwnAppletSimplePrivate
         gint bar_height;
         gint bar_angle;
 
-        gboolean temp;
 };
 
 static void 
@@ -59,6 +58,7 @@ adjust_icon(AwnAppletSimple *simple)
 {
         AwnAppletSimplePrivate *priv;
         GdkPixbuf *old0, *old1;
+	int refcount = 0;
      
         priv = simple->priv;
 
@@ -69,7 +69,7 @@ adjust_icon(AwnAppletSimple *simple)
 	{
 		priv->icon_height = gdk_pixbuf_get_height (priv->org_icon);
 		priv->icon_width = gdk_pixbuf_get_width (priv->org_icon);
-		priv->icon = priv->org_icon;
+		priv->icon = gdk_pixbuf_copy (priv->org_icon);
 	}
 	else
 	{
@@ -81,23 +81,28 @@ adjust_icon(AwnAppletSimple *simple)
 	                                             GDK_INTERP_BILINEAR);
         }
 
+	g_object_ref (priv->icon);
         priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
-        g_object_ref (priv->icon);
         g_object_ref (priv->reflect);
         
-        /* We need to unref twice because python hurts kittens */
-        if (G_IS_OBJECT (old0))
-        {
-                 g_object_unref (old0);
-                 if (G_IS_OBJECT (old0) && priv->temp)
-                        g_object_unref (old0);
+        if (old0) {
+		for (refcount = (G_OBJECT (old0))->ref_count; refcount > 0; refcount--) {
+			g_object_unref (old0);
+		}
         }
-        if (G_IS_OBJECT (old1))
-        {
-                 g_object_unref (old1);
-                 if (G_IS_OBJECT (old1) && priv->temp)
-                        g_object_unref (old1);
+        if (old1) {
+		for (refcount = (G_OBJECT (old1))->ref_count; refcount > 0; refcount--) {
+			g_object_unref (old1);
+		}
         }
+	/* for some reason priv->reflect is not always a valid pixbuf.
+	   my suspicion is that we are seeing a gdk bug here.  So...if
+	   priv->reflect isn't a good pixbuf, well... let's try making
+	   one from priv->org_icon */
+	if (!GDK_IS_PIXBUF (priv->reflect)) {
+		priv->reflect = gdk_pixbuf_flip (priv->org_icon, FALSE);
+	}
+
 	// awn-effects require the window to be 25% bigger than icon
         gtk_widget_set_size_request (GTK_WIDGET (simple), 
                                      priv->icon_width *5/4,
@@ -123,6 +128,7 @@ awn_applet_simple_set_temp_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 {
         AwnAppletSimplePrivate *priv;
         GdkPixbuf *old0;
+	int refcount;
 
         g_return_if_fail (AWN_IS_APPLET_SIMPLE (simple));
         g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
@@ -140,16 +146,13 @@ awn_applet_simple_set_temp_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
         priv->org_icon = pixbuf;
         priv->bar_height_on_icon_recieved = priv->bar_height;
 
-        /* We need to unref twice because python hurts kittens */
-        if (G_IS_OBJECT (old0))
-        {
-                 g_object_unref (old0);
-                 if (G_IS_OBJECT (old0) && priv->temp)
-                        g_object_unref (old0);
-        }     
+        if (old0) {
+		for (refcount = (G_OBJECT (old0))->ref_count; refcount > 0; refcount--) {
+			g_object_unref (old0);
+		}
+        }
 
         adjust_icon(simple);
-        priv->temp = TRUE;
 }
 
 static gboolean 
@@ -160,6 +163,18 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 	gint width, height, bar_height;
 
 	priv = AWN_APPLET_SIMPLE (widget)->priv;
+
+	/* For some reason, priv->reflect is not always a valid pixbuf.
+	   my suspicion is that we are seeing a gdk bug here. So... if
+	   priv->reflect isn't a good pixbuf well.. let's try making one from
+	   priv->org_icon.  I'm not happy as I'm not exactly sure of the root
+	   cause of this...  but this does resolve the issue */
+	if (!GDK_IS_PIXBUF (priv->reflect)) {
+		priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
+	}
+	if (!GDK_IS_PIXBUF (priv->reflect)) {
+		priv->reflect = gdk_pixbuf_flip (priv->org_icon, FALSE);
+	}
 
 	width = widget->allocation.width;
 	height = widget->allocation.height;
@@ -250,6 +265,7 @@ awn_applet_simple_init (AwnAppletSimple *simple)
         priv = simple->priv = AWN_APPLET_SIMPLE_GET_PRIVATE (simple);
 
         priv->icon = NULL;
+        priv->org_icon = NULL;
         priv->reflect = NULL;
         priv->icon_height = 0;
         priv->icon_width = 0;
