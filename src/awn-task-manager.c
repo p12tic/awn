@@ -217,7 +217,7 @@ _find_launcher (AwnTask *task, AwnLauncherTerm *term)
 		exec = g_strdup (awn_task_get_application(task));
 		_normalize (exec);
 
-		if ( strcmp (exec, str->str) == 0 ) {
+		if (exec && str && strcmp (exec, str->str) == 0) {
 			term->task = task;
 		}
 
