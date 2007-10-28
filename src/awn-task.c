@@ -1126,9 +1126,12 @@ awn_task_update_icon (AwnTask *task)
 	}
 	priv->icon = awn_x_get_icon_for_launcher (priv->item,
                                                   height, height);
-        priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
-       
-	awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
+	if (priv->icon) {
+		priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
+		awn_draw_set_icon_size(&priv->effects,
+		                       gdk_pixbuf_get_width(priv->icon),
+		                       gdk_pixbuf_get_height(priv->icon));
+	}
 
 	gdk_pixbuf_unref (old);
 	gdk_pixbuf_unref (old_reflect);

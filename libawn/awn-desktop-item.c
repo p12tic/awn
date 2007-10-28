@@ -126,7 +126,7 @@ gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme
 	 */
 	gchar *full = NULL;
 	gchar *icon = (gchar*)egg_desktop_file_get_icon (item);
-	if (strcmp (icon, "") == 0) {
+	if (!icon || strcmp (icon, "") == 0) {
 		return NULL;
 	} else if (g_path_is_absolute (icon)) {
 		if (g_file_test (icon, G_FILE_TEST_EXISTS)) {

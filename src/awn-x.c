@@ -179,7 +179,9 @@ awn_x_get_icon_for_window (WnckWindow *window, gint width, gint height)
 	uri = g_string_free (g_string_prepend (name, g_get_home_dir ()), FALSE);
 #endif
 	
-	icon = gdk_pixbuf_new_from_file_at_scale (uri, width, height, TRUE, NULL);
+	if (uri) {
+		icon = gdk_pixbuf_new_from_file_at_scale (uri, width, height, TRUE, NULL);
+	}
 	 
 #ifdef LIBAWN_USE_GNOME
 	/* free error under Xfce */
@@ -321,8 +323,10 @@ awn_x_get_icon_for_launcher (AwnDesktopItem *item, gint width, gint height)
 #endif
 	
 	//g_print ("%s\n", uri);
-	
-	icon = gdk_pixbuf_new_from_file_at_scale (uri, width, height, TRUE, NULL);
+
+	if (uri) {
+		icon = gdk_pixbuf_new_from_file_at_scale (uri, width, height, TRUE, NULL);
+	}
 	
 #ifndef LIBAWN_USE_XFCE
 	g_string_free (name, TRUE);
@@ -334,8 +338,12 @@ awn_x_get_icon_for_launcher (AwnDesktopItem *item, gint width, gint height)
 	else {
 		char *icon_name;
 		icon_name = awn_desktop_item_get_icon (item, gtk_icon_theme_get_default());
-		icon = icon_loader_get_icon_spec (icon_name, width, height) ;
-		g_free (icon_name);
-		return icon;
+		if (icon_name) {
+			icon = icon_loader_get_icon_spec (icon_name, width, height);
+			g_free (icon_name);
+			return icon;
+		} else {
+			return NULL;
+		}
 	}
 }

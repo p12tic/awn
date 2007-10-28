@@ -1,3 +1,11 @@
+2007-10-26  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-desktop-item.c:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	* src/awn-x.c:
+	Add NULL checks to icon-related functions.
+
 2007-10-23  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* awn.pc.in:
