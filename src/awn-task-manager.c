@@ -24,7 +24,6 @@
 #define WNCK_I_KNOW_THIS_IS_UNSTABLE 1
 #include <libwnck/libwnck.h>
 #include <libgnome/gnome-desktop-item.h>
-#include <libgnomevfs/gnome-vfs-version.h>
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
@@ -1585,11 +1584,10 @@ awn_task_manager_new (AwnSettings *settings)
 	                  (gpointer)task_manager);
 
 	g_signal_connect (G_OBJECT(priv->screen), "active-window-changed",
-// this should be check for libwnck version, but it doesn't have version macros
-#if (GNOME_VFS_MAJOR_VERSION >= 2 && GNOME_VFS_MINOR_VERSION < 19 )
-	                  G_CALLBACK(_task_manager_viewports_changed),
-#else
+#ifdef HAVE_LIBWNCK_220
 	                  G_CALLBACK(_task_manager_window_activate),
+#else
+	                  G_CALLBACK(_task_manager_viewports_changed),
 #endif
 	                  (gpointer)task_manager);
 

@@ -24,6 +24,9 @@
 /* Define if your <locale.h> file defines LC_MESSAGES. */
 #undef HAVE_LC_MESSAGES
 
+/* Have libwnck with the ABI that changed with version 2.19.3.1 */
+#undef HAVE_LIBWNCK_220
+
 /* Define to 1 if you have the <locale.h> header file. */
 #undef HAVE_LOCALE_H
 
