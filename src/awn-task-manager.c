@@ -50,10 +50,13 @@ static void _task_manager_window_opened (WnckScreen *screen, WnckWindow *window,
 						AwnTaskManager *task_manager);
 static void _task_manager_window_closed (WnckScreen *screen, WnckWindow *window,
 						 AwnTaskManager *task_manager);
+#ifdef HAVE_LIBWNCK_220
 static void _task_manager_window_activate (WnckScreen *screen,
 			WnckWindow *window, AwnTaskManager *task_manager);
+#else
 static void _task_manager_viewports_changed (WnckScreen *screen,
 						AwnTaskManager *task_manager);
+#endif
 static void _task_manager_drag_data_recieved (GtkWidget        *widget,
                                               GdkDragContext   *drag_context,
                                               gint              x,
@@ -487,19 +490,21 @@ _task_manager_window_closed (WnckScreen *screen, WnckWindow *window,
 	_refresh_box(task_manager);
 }
 
+#ifdef HAVE_LIBWNCK_220
 static void
 _task_manager_window_activate (WnckScreen *screen, WnckWindow *prevWindow,
 						AwnTaskManager *task_manager)
 {
 	_refresh_box(task_manager);
 }
-
+#else
 static void
 _task_manager_viewports_changed (WnckScreen *screen,
 						AwnTaskManager *task_manager)
 {
 	_refresh_box(task_manager);
 }
+#endif
 
 static void
 _task_manager_menu_item_clicked (AwnTask *task, guint id, AwnTaskManager *task_manager)
