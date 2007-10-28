@@ -24,6 +24,7 @@
 #define WNCK_I_KNOW_THIS_IS_UNSTABLE 1
 #include <libwnck/libwnck.h>
 #include <libgnome/gnome-desktop-item.h>
+#include <libgnomevfs/gnome-vfs-version.h>
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
@@ -51,6 +52,8 @@ static void _task_manager_window_opened (WnckScreen *screen, WnckWindow *window,
 static void _task_manager_window_closed (WnckScreen *screen, WnckWindow *window,
 						 AwnTaskManager *task_manager);
 static void _task_manager_window_activate (WnckScreen *screen,
+			WnckWindow *window, AwnTaskManager *task_manager);
+static void _task_manager_viewports_changed (WnckScreen *screen,
 						AwnTaskManager *task_manager);
 static void _task_manager_drag_data_recieved (GtkWidget        *widget,
                                               GdkDragContext   *drag_context,
@@ -484,7 +487,14 @@ _task_manager_window_closed (WnckScreen *screen, WnckWindow *window,
 }
 
 static void
-_task_manager_window_activate (WnckScreen *screen,
+_task_manager_window_activate (WnckScreen *screen, WnckWindow *prevWindow,
+						AwnTaskManager *task_manager)
+{
+	_refresh_box(task_manager);
+}
+
+static void
+_task_manager_viewports_changed (WnckScreen *screen,
 						AwnTaskManager *task_manager)
 {
 	_refresh_box(task_manager);
@@ -1566,20 +1576,25 @@ awn_task_manager_new (AwnSettings *settings)
 	_task_manager_load_launchers(AWN_TASK_MANAGER (task_manager));
 
 	/* LIBWNCK SIGNALS */
-	g_signal_connect (G_OBJECT(priv->screen), "window_opened",
+	g_signal_connect (G_OBJECT(priv->screen), "window-opened",
 	                  G_CALLBACK (_task_manager_window_opened),
 	                  (gpointer)task_manager);
 
-	g_signal_connect (G_OBJECT(priv->screen), "window_closed",
+	g_signal_connect (G_OBJECT(priv->screen), "window-closed",
 	                  G_CALLBACK(_task_manager_window_closed),
 	                  (gpointer)task_manager);
 
-	g_signal_connect (G_OBJECT(priv->screen), "active_window_changed",
+	g_signal_connect (G_OBJECT(priv->screen), "active-window-changed",
+// this should be check for libwnck version, but it doesn't have version macros
+#if (GNOME_VFS_MAJOR_VERSION >= 2 && GNOME_VFS_MINOR_VERSION < 19 )
+	                  G_CALLBACK(_task_manager_viewports_changed),
+#else
 	                  G_CALLBACK(_task_manager_window_activate),
+#endif
 	                  (gpointer)task_manager);
 
-	g_signal_connect (G_OBJECT(priv->screen), "viewports_changed",
-	                  G_CALLBACK(_task_manager_window_activate),
+	g_signal_connect (G_OBJECT(priv->screen), "viewports-changed",
+	                  G_CALLBACK(_task_manager_viewports_changed),
 	                  (gpointer)task_manager);
 
 	/* CONNECT D&D CODE */
