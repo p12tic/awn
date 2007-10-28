@@ -211,7 +211,7 @@ _find_launcher (AwnTask *task, AwnLauncherTerm *term)
 		if (WNCK_IS_APPLICATION (wnck_app)) {
 			app_name = (char*)wnck_application_get_name(wnck_app);
 		} else {
-			app_name = (char*)NULL;
+			app_name = NULL;
 		}
 		str = g_string_new (app_name);
 		str = g_string_ascii_down (str);
@@ -260,7 +260,7 @@ _find_launcher (AwnTask *task, AwnLauncherTerm *term)
 		if (WNCK_IS_APPLICATION (wnck_app)) {
 			str2 = g_string_new (wnck_application_get_name (wnck_app));
 		} else {
-			str2 = (char*)NULL;
+			str2 = g_string_new (NULL);
 		}
 		str2 = g_string_ascii_down (str2);
 		
@@ -319,7 +319,9 @@ _task_manager_window_has_launcher (AwnTaskManager *task_manager,
 
 	if (term.pid == 0) {
 		WnckApplication *app = wnck_window_get_application(window);
-		term.pid = wnck_application_get_pid(app);
+		if (app) {
+			term.pid = wnck_application_get_pid(app);
+		}
 	}
 	//g_print("New window Pid = %d\n", term.pid);
 
