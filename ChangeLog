@@ -1,3 +1,11 @@
+2007-10-29  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awnPreferences.py:
+	* awn-manager/window.glade:
+	* src/awn-bar.c:
+	Merge with libawn-draw-effects:
+	- added rounded corners for 3D look
+
 2007-10-28  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* config.h.in:
