@@ -53,10 +53,9 @@ static void _task_manager_window_closed (WnckScreen *screen, WnckWindow *window,
 #ifdef HAVE_LIBWNCK_220
 static void _task_manager_window_activate (WnckScreen *screen,
 			WnckWindow *window, AwnTaskManager *task_manager);
-#else
+#endif
 static void _task_manager_viewports_changed (WnckScreen *screen,
 						AwnTaskManager *task_manager);
-#endif
 static void _task_manager_drag_data_recieved (GtkWidget        *widget,
                                               GdkDragContext   *drag_context,
                                               gint              x,
@@ -497,14 +496,13 @@ _task_manager_window_activate (WnckScreen *screen, WnckWindow *prevWindow,
 {
 	_refresh_box(task_manager);
 }
-#else
+#endif
 static void
 _task_manager_viewports_changed (WnckScreen *screen,
 						AwnTaskManager *task_manager)
 {
 	_refresh_box(task_manager);
 }
-#endif
 
 static void
 _task_manager_menu_item_clicked (AwnTask *task, guint id, AwnTaskManager *task_manager)
@@ -1598,9 +1596,11 @@ awn_task_manager_new (AwnSettings *settings)
 #endif
 	                  (gpointer)task_manager);
 
+#ifdef HAVE_LIBWNCK_220
 	g_signal_connect (G_OBJECT(priv->screen), "viewports-changed",
 	                  G_CALLBACK(_task_manager_viewports_changed),
 	                  (gpointer)task_manager);
+#endif
 
 	/* CONNECT D&D CODE */
 
