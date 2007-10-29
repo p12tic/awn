@@ -316,13 +316,13 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 	
 	double x = (settings->monitor.width-width)*settings->bar_pos;
 	
-	if (settings->bar_angle >= 0)
+	if (settings->bar_angle != 0)
         {
                 cairo_set_source_rgba (cr, settings->border_color.red,
                                            settings->border_color.green,
                                            settings->border_color.blue,
                                            settings->border_color.alpha+0.2);
-                if(settings->rounded_corners)
+                if(settings->rounded_corners )
 		{
 			double leftcorner_x = cubic_bezier_curve(x+apply_perspective_x(width, height/8, 0), 
 								x, 
@@ -339,6 +339,12 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 			
 			cairo_rectangle (cr, leftcorner_x, corner_y, rightcorner_x-leftcorner_x, top_offset + height - corner_y);
 			cairo_fill (cr);
+			cairo_save (cr);
+			cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+		        cairo_set_source_rgba (cr, 1, 1, 1, 0);
+			render_rect (cr, x+0.5, (height/2)+0.5, width-1, (height/2+icon_offset), 0);
+			cairo_fill (cr);
+			cairo_restore (cr);
 		}
 		else
 		{
