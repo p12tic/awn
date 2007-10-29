@@ -222,6 +222,11 @@ render_rect (cairo_t *cr, double x, double y, double width, double height, doubl
 
 }
 
+double cubic_bezier_curve(double point1, double point2, double point3, double point4, double t)
+{
+	return (1-t)*(1-t)*(1-t)*point1 + 3*t*(1-t)*(1-t)*point2 + 3*t*t*(1-t)*point3 + t*t*t*point4;
+}
+
 float
 apply_perspective_x( double width, double height, double x )
 {
@@ -319,14 +324,21 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
                                            settings->border_color.alpha+0.2);
                 if(settings->rounded_corners)
 		{
-			render_rect (cr, x+0.5, (height/2)+0.5+3, width-1, (height/2+icon_offset), 0);
+			double leftcorner_x = cubic_bezier_curve(x+apply_perspective_x(width, height/8, 0), 
+								x, 
+								x, 
+								x+height/8, 0.5);
+			double rightcorner_x = cubic_bezier_curve(x+apply_perspective_x(width, height/8, width), 
+								x+width, 
+								x+width, 
+								x+width-height/8, 0.5);	
+			double corner_y = cubic_bezier_curve(  top_offset + 7*height/8 - 3, 
+								top_offset + height - 3, 
+								top_offset + height - 3, 
+								top_offset + height - 3, 0.5);
+			
+			cairo_rectangle (cr, leftcorner_x, corner_y, rightcorner_x-leftcorner_x, top_offset + height - corner_y);
 			cairo_fill (cr);
-			cairo_save (cr);
-			cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-		        cairo_set_source_rgba (cr, 1, 1, 1, 0);
-			render_rect (cr, x+0.5, (height/2)+0.5, width-1, (height/2+icon_offset), 0);
-			cairo_fill (cr);
-			cairo_restore (cr);	
 		}
 		else
 		{
