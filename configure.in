@@ -81,6 +81,7 @@ AC_ARG_WITH(desktop,
                  ;;
                  agnostic)
                  use_egg=yes
+                 VFS_MODULE="gio-2.0"
                  AC_MSG_RESULT([None, enabling desktop agnostic support])
                  ;;
                  gnome|*)
@@ -147,5 +148,6 @@ data/Makefile
 data/active/Makefile
 po/Makefile.in
 pyawn/Makefile
+test/Makefile
 awn.pc
 ])
