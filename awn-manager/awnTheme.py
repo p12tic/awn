@@ -363,7 +363,6 @@ class AwnThemeManager:
             for opt in opts:
                 grp_list[opt] = cp.get(sec, opt)
             cfg_list[sec] = grp_list
-        cp.close()
         return cfg_list
 
     def clean_tmp(self, dirPath):
