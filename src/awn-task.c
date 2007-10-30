@@ -113,6 +113,7 @@ struct _AwnTaskPrivate
 	gulong icon_changed;
 	gulong state_changed;
 	gulong name_changed;
+	int timer_count;
 };
 
 enum
@@ -215,6 +216,7 @@ awn_task_init (AwnTask *task)
 	priv->menu_items[2] = NULL;
 	priv->menu_items[3] = NULL;
 	priv->menu_items[4] = NULL;
+	priv->timer_count = 0;
 
 	awn_effects_init(G_OBJECT(task), &priv->effects);
 	awn_register_effects(G_OBJECT(task), &priv->effects);
@@ -255,6 +257,10 @@ _shrink_widget (AwnTask *task)
 
         g_return_val_if_fail (AWN_IS_TASK (task), FALSE);
         priv = AWN_TASK_GET_PRIVATE (task);
+	if (priv->timer_count)
+	{
+		return TRUE;
+	}
 
 	if (priv->is_launcher)
 		awn_task_manager_remove_launcher(priv->task_manager, task);
@@ -763,6 +769,9 @@ _task_wnck_name_hide (AwnTask *task)
 	priv = AWN_TASK_GET_PRIVATE (task);
 	awn_title_hide (AWN_TITLE(priv->title), GTK_WIDGET(task));
 	awn_effect_stop(&priv->effects, AWN_EFFECT_ATTENTION);
+	/* If wanted, this could be done in a GDestroyNotify callback if
+	   we added the timer using g_timeout_add_full () */
+	priv->timer_count--;
 	return FALSE;
 }
 
@@ -793,6 +802,7 @@ _task_wnck_name_changed (WnckWindow *window, AwnTask *task)
                                 GTK_WIDGET (task),
                                 awn_task_get_name(AWN_TASK(task)));
 
+		priv->timer_count++;
 		g_timeout_add(2500, (GSourceFunc)_task_wnck_name_hide, (gpointer)task);
 
 	}
