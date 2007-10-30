@@ -1596,9 +1596,11 @@ awn_task_manager_new (AwnSettings *settings)
 #endif
 	                  (gpointer)task_manager);
 
+#ifdef HAVE_LIBWNCK_220
 	g_signal_connect (G_OBJECT(priv->screen), "viewports-changed",
 	                  G_CALLBACK(_task_manager_viewports_changed),
 	                  (gpointer)task_manager);
+#endif
 
 	/* CONNECT D&D CODE */
 
