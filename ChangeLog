@@ -1,5 +1,12 @@
 2007-10-31  Michal Hruby <michal.mhr@gmail.com>
 
+	patch by: Mark Lee
+
+	* pyawn/awn.defs:
+	awn_register_effects is now method of AppletSimple.
+
+2007-10-31  Michal Hruby <michal.mhr@gmail.com>
+
 	* pyawn/awn.defs:
 	Added python binding for awn_(un)register_effects.
 
