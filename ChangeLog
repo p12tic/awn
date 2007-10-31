@@ -1,3 +1,24 @@
+2007-10-31  Michal Hruby <michal.mhr@gmail.com>
+
+	* pyawn/awn.defs:
+	Added python binding for awn_(un)register_effects.
+
+2007-10-29  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awnPreferences.py:
+	* awn-manager/window.glade:
+	* src/awn-bar.c:
+	Merge with libawn-draw-effects:
+	- added rounded corners for 3D look
+
+2007-10-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* config.h.in:
+	* configure.in:
+	* src/awn-task-manager.c:
+	Add a real check for libwnck's version so that bug #147591 is really,
+	really fixed.
+
 2007-10-27  Michal Hruby <michal.mhr@gmail.com>
 
 	* src/awn-task-manager.c:

@@ -391,6 +391,23 @@
   )
 )
 
+(define-function awn_register_effects
+  (c-name "awn_register_effects")
+  (return-type "none")
+  (parameters
+    '("GObject*" "obj")
+    '("int" "fx")
+  )
+)
+
+(define-function awn_unregister_effects
+  (c-name "awn_unregister_effects")
+  (return-type "none")
+  (parameters
+    '("int" "fx")
+  )
+)
+
 
 
 ;; From awn-enum-types.h

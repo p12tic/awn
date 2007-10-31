@@ -16,7 +16,10 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+#undef NDEBUG
+#include <assert.h>
 
+ 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -51,143 +54,158 @@ struct _AwnAppletSimplePrivate
         gint bar_height;
         gint bar_angle;
 
-        gboolean temp;
 };
 
 static void 
 adjust_icon(AwnAppletSimple *simple)
 {
-        AwnAppletSimplePrivate *priv;
-        GdkPixbuf *old0, *old1;
-     
-        priv = simple->priv;
+    AwnAppletSimplePrivate *priv;
+    GdkPixbuf *old0, *old1;
+    int refcount=0;
+ 
+    priv = simple->priv;
 
-        old0 = priv->icon;
-        old1 = priv->reflect;
+    old0 = priv->icon;
+    old1 = priv->reflect;
 
 	if( priv->bar_height == priv->bar_height_on_icon_recieved )
 	{
 		priv->icon_height = gdk_pixbuf_get_height (priv->org_icon);
 		priv->icon_width = gdk_pixbuf_get_width (priv->org_icon);
-		priv->icon = priv->org_icon;
+		priv->icon = gdk_pixbuf_copy (priv->org_icon); 
 	}
 	else
 	{
 		priv->icon_height = gdk_pixbuf_get_height (priv->org_icon)+priv->bar_height-priv->bar_height_on_icon_recieved;
-        	priv->icon_width = (int)((double)priv->icon_height/(double)gdk_pixbuf_get_height (priv->org_icon)*(double)gdk_pixbuf_get_width (priv->org_icon));        
-	        priv->icon = gdk_pixbuf_scale_simple(priv->org_icon,
+        priv->icon_width = (int)((double)priv->icon_height/(double)gdk_pixbuf_get_height (priv->org_icon)*(double)gdk_pixbuf_get_width (priv->org_icon));        
+	    priv->icon = gdk_pixbuf_scale_simple(priv->org_icon,
 	                                             priv->icon_width,
 	                                             priv->icon_height,
 	                                             GDK_INTERP_BILINEAR);
-        }
+    }
 
-        priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
-        g_object_ref (priv->icon);
-        g_object_ref (priv->reflect);
-        
-        /* We need to unref twice because python hurts kittens */
-        if (G_IS_OBJECT (old0))
+    g_object_ref (priv->icon);  
+    priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
+    g_object_ref (priv->reflect);
+    
+    /* We need to unref twice because python hurts kittens */
+//        refcount=((GdkPixbuf *) old0)->ref_count;
+    if ( old0)
+    {
+        refcount=G_OBJECT(old0)->ref_count;
+        for(;refcount>0; refcount--)
         {
-                 g_object_unref (old0);
-                 if (G_IS_OBJECT (old0) && priv->temp)
-                        g_object_unref (old0);
-        }
-        if (G_IS_OBJECT (old1))
+             g_object_unref (old0);        
+        }                  
+    }
+    if (old1)
+    {            
+        refcount=G_OBJECT (old1)->ref_count;
+        for(;refcount>0; refcount--)
         {
                  g_object_unref (old1);
-                 if (G_IS_OBJECT (old1) && priv->temp)
-                        g_object_unref (old1);
         }
+    }            
+	/*for some reason priv->reflect is not always a valid pixbuf.
+	my suspicion is that we are seeing a gdk bug here. so... if 
+	priv->reflect isn't a good pixbuf well.. let's try making one from
+	priv->org_icon*/
+    if (!GDK_IS_PIXBUF(priv->reflect))
+    {
+        assert(!G_IS_OBJECT(priv->reflect) );
+        priv->reflect = gdk_pixbuf_flip (priv->org_icon, FALSE);
+    }
+
 	// awn-effects require the window to be 25% bigger than icon
-        gtk_widget_set_size_request (GTK_WIDGET (simple), 
-                                     priv->icon_width *5/4,
-                                     (priv->bar_height + 2 ) * 2);
-        gtk_widget_queue_draw (GTK_WIDGET (simple));
+    gtk_widget_set_size_request (GTK_WIDGET (simple), 
+                                 priv->icon_width *5/4,
+                                 (priv->bar_height + 2 ) * 2);
+    gtk_widget_queue_draw (GTK_WIDGET (simple));
 }
 
 void
 awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 {
-        AwnAppletSimplePrivate *priv;
-        GdkPixbuf *old0;
-
-        g_return_if_fail (AWN_IS_APPLET_SIMPLE (simple));
-        g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+	g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
         
-        priv = simple->priv;
-
-	if (pixbuf == priv->org_icon) {
-		priv->bar_height_on_icon_recieved = priv->bar_height;
-		adjust_icon(simple);
-		return;
-	}
-
-        old0 = priv->org_icon;
-        priv->org_icon = pixbuf;
-        priv->bar_height_on_icon_recieved = priv->bar_height;
-
-        /* We need to unref twice because python hurts kittens */
-        if (G_IS_OBJECT (old0))
-        {
-                 g_object_unref (old0);
-                 if (G_IS_OBJECT (old0) && priv->temp)
-                        g_object_unref (old0);
-        }     
-
-        adjust_icon(simple);
-        priv->temp = FALSE;
+	/* awn_applet_simple_set_icon is not heavily used.
+	   Previous inplementation was causing nasty leaks.
+	   This fix seems sensible, easy to maintain.
+	   And it works.  Note we are making a copy here so
+	   the unref in set_temp_icon leaves the user's original
+	   untouched.
+	 */
+	awn_applet_simple_set_temp_icon (simple, gdk_pixbuf_copy (pixbuf));
 }
 
 void 
 awn_applet_simple_set_temp_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 {
-        AwnAppletSimplePrivate *priv;
-        GdkPixbuf *old0;
+    AwnAppletSimplePrivate *priv;
+    GdkPixbuf *old0;
+    int refcount;
 
-        g_return_if_fail (AWN_IS_APPLET_SIMPLE (simple));
-        g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
-        
-        priv = simple->priv;
+    g_return_if_fail (AWN_IS_APPLET_SIMPLE (simple));
+    g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+    
+    priv = simple->priv;
 
-	if (pixbuf == priv->org_icon) {
-		priv->bar_height_on_icon_recieved = priv->bar_height;
-		adjust_icon(simple);
-		return;
-	}
+	/* let's make sure that an applet can't screw around with OUR
+	   pixbuf.  We'll make our own copy, and free up theirs.
+	 */
+	old0 = pixbuf;
+	pixbuf = gdk_pixbuf_copy (pixbuf);
+	g_object_unref (old0);
 
-        old0 = priv->org_icon;
-        priv->org_icon = pixbuf;
-        priv->bar_height_on_icon_recieved = priv->bar_height;
+    old0 = priv->org_icon;      
+    priv->org_icon = pixbuf;
+    priv->bar_height_on_icon_recieved = priv->bar_height;
 
-        /* We need to unref twice because python hurts kittens */
-        if (G_IS_OBJECT (old0))
+    /* We need to unref twice because python hurts kittens */
+    if ( old0)
+    {
+        refcount=G_OBJECT(old0)->ref_count;
+        for(;refcount>0; refcount--)
         {
-                 g_object_unref (old0);
-                 if (G_IS_OBJECT (old0) && priv->temp)
-                        g_object_unref (old0);
-        }     
+             g_object_unref (old0);        
+        }                  
+    }
+    
 
-        adjust_icon(simple);
-        priv->temp = TRUE;
+    adjust_icon(simple);
 }
 
 static gboolean 
 _expose_event(GtkWidget *widget, GdkEventExpose *expose) 
 {
 	AwnAppletSimplePrivate *priv;
-        cairo_t *cr;
+    cairo_t *cr;
 	gint width, height, bar_height;
-
+	
 	priv = AWN_APPLET_SIMPLE (widget)->priv;
-
+	/*for some reason priv->reflect is not always a valid pixbuf.
+	my suspicion is that we are seeing a gdk bug here. so... if 
+	priv->reflect isn't a good pixbuf well.. let's try making one from
+	priv->org_icon.  I'm not happy as I'm not exactly sure of the root 
+	cause of this...  but this does resolve the issue*/
+    if (!GDK_IS_PIXBUF(priv->reflect))
+    {
+        assert(!G_IS_OBJECT(priv->reflect) );
+        priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
+    }	
+    if (!GDK_IS_PIXBUF(priv->reflect))
+    {
+        assert(!G_IS_OBJECT(priv->reflect) );
+        priv->reflect = gdk_pixbuf_flip (priv->org_icon, FALSE);
+    }	    
 	width = widget->allocation.width;
 	height = widget->allocation.height;
 
 	awn_draw_set_window_size(&priv->effects, width, height);
 
-        bar_height = priv->bar_height;
+    bar_height = priv->bar_height;
 
-        cr = gdk_cairo_create (widget->window);
+    cr = gdk_cairo_create (widget->window);
 
 	/* task back */
 	cairo_set_source_rgba (cr, 1, 0, 0, 0.0);
@@ -202,9 +220,9 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 	awn_draw_icons(&priv->effects, cr, priv->icon, priv->reflect);
 	awn_draw_foreground(&priv->effects, cr);
 
-        cairo_destroy (cr);
+    cairo_destroy (cr);
 
-        return TRUE;
+    return TRUE;
 }
 
 static void 
@@ -269,6 +287,7 @@ awn_applet_simple_init (AwnAppletSimple *simple)
         priv = simple->priv = AWN_APPLET_SIMPLE_GET_PRIVATE (simple);
 
         priv->icon = NULL;
+        priv->org_icon=NULL;
         priv->reflect = NULL;
         priv->icon_height = 0;
         priv->icon_width = 0;
