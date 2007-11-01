@@ -65,8 +65,6 @@ static gboolean fading_effect (AwnEffectsPrivate *priv);
 static gboolean awn_on_enter_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data);
 static gboolean awn_on_leave_event(GtkWidget *widget, GdkEventCrossing *event, gpointer data);
 
-static void awn_effect_kill_midlife(AwnEffectsPrivate *priv);
-
 static void main_effect_loop(AwnEffects *fx);
 
 void
@@ -105,14 +103,30 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 
 	fx->enter_notify = 0;
 	fx->leave_notify = 0;
+	fx->timer_id = 0;
+}
 
-	//this is really nice, but causes problem for tasks, have to solve that
-	//awn_effect_start_ex(fx, AWN_EFFECT_OPENING, NULL, NULL, 1);
+void
+awn_effect_dispose_queue(AwnEffects *fx)
+{
+	if (fx->timer_id) {
+		GSource *s = g_main_context_find_source_by_id(NULL, fx->timer_id);
+		if (s) g_source_destroy(s);
+	}
+	GList* queue = fx->effect_queue;
+	while (queue) {
+		g_free(queue->data);
+		queue->data = NULL;
+		queue = g_list_next(queue);
+	}
+	g_list_free(fx->effect_queue);
+	fx->effect_queue = NULL;
 }
 
 void
 awn_effects_finalize(AwnEffects *fx) {
 	awn_unregister_effects(fx);
+	awn_effect_dispose_queue(fx);
 	fx->self = NULL;
 }
 
@@ -153,6 +167,7 @@ inline gboolean awn_effect_handle_repeating(AwnEffectsPrivate *priv) {
 		AwnEffects *fx = priv->effects;
 		fx->current_effect = AWN_EFFECT_NONE;
 		fx->effect_lock = FALSE;
+		fx->timer_id = 0;
 		if (effect_stopped) {
 			if (priv->stop) priv->stop(fx->self);
 			unregistered = fx->self == NULL;
@@ -169,20 +184,6 @@ awn_effects_set_title(AwnEffects *fx, AwnTitle* title, AwnTitleCallback title_fu
 	fx->get_title = title_func;
 }
 
-void
-awn_effect_dispose_queue(AwnEffects *fx)
-{
-	// use only if no effect is active!
-	GList* queue = fx->effect_queue;
-	while (queue) {
-		g_free(queue->data);
-		queue->data = NULL;
-		queue = g_list_next(queue);
-	}
-	g_list_free(fx->effect_queue);
-	fx->effect_queue = NULL;
-}
-
 static void
 spotlight_init()
 {
@@ -192,32 +193,10 @@ spotlight_init()
 	g_return_if_fail(error == NULL);
 }
 
-static void
-awn_effect_kill_midlife(AwnEffectsPrivate *priv)
-{
-	gboolean unregistered = FALSE;
-	AwnEffects *fx = priv->effects;
-	fx->current_effect = AWN_EFFECT_NONE;
-	fx->effect_lock = FALSE;
-
-	if (priv->stop) {
-		priv->stop(fx->self);
-	}
-	unregistered = fx->self == NULL;
-	g_free(priv);
-	if (!unregistered) {
-		main_effect_loop(fx);
-	}
-}
-
 static gboolean
 spotlight_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -272,10 +251,6 @@ static gboolean
 spotlight_half_fade_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -318,10 +293,6 @@ static gboolean
 spotlight_opening_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -367,10 +338,6 @@ static gboolean
 spotlight_opening_effect2(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -422,10 +389,6 @@ static gboolean
 spotlight_closing_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -486,10 +449,6 @@ static gboolean
 bounce_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -519,10 +478,6 @@ static gboolean
 glow_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -555,10 +510,6 @@ static gboolean
 glow_opening_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -606,10 +557,6 @@ static gboolean
 glow_closing_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -650,10 +597,6 @@ static gboolean
 glow_attention_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -696,10 +639,6 @@ static gboolean
 desaturate_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -743,10 +682,6 @@ static gboolean
 zoom_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -803,10 +738,6 @@ static gboolean
 zoom_attention_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -861,10 +792,6 @@ static gboolean
 zoom_opening_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -902,10 +829,6 @@ static gboolean
 zoom_closing_effect (AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -943,10 +866,6 @@ static gboolean
 bounce_squish_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1003,10 +922,6 @@ static gboolean
 bounce_squish_attention_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1066,10 +981,6 @@ static gboolean
 bounce_squish_opening_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1134,10 +1045,6 @@ static gboolean
 bounce_squish_closing_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1174,10 +1081,6 @@ static gboolean
 fade_out_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1209,10 +1112,6 @@ static gboolean
 bounce_opening_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1257,10 +1156,6 @@ static gboolean
 fading_effect (AwnEffectsPrivate *priv)
 {
         AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1297,10 +1192,6 @@ gboolean
 turn_hover_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1377,10 +1268,6 @@ gboolean
 turn_opening_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1468,10 +1355,6 @@ gboolean
 turn_closing_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1551,10 +1434,6 @@ gboolean
 spotlight3D_hover_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1648,10 +1527,6 @@ static gboolean
 spotlight3D_opening_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -1748,10 +1623,6 @@ static gboolean
 spotlight3D_closing_effect(AwnEffectsPrivate *priv)
 {
 	AwnEffects *fx = priv->effects;
-	if (!GTK_IS_WIDGET (GTK_WIDGET (fx->self))) {
-	awn_effect_kill_midlife(priv);	
-		return FALSE;
-	}
 	if (!fx->effect_lock) {
 		fx->effect_lock = TRUE;
 		// effect start initialize values
@@ -2053,7 +1924,7 @@ main_effect_loop(AwnEffects *fx) {
 		default: return;
 	}
 	if (animation) {
-		g_timeout_add(AWN_FRAME_RATE, animation, topEffect);
+		fx->timer_id = g_timeout_add(AWN_FRAME_RATE, animation, topEffect);
 		fx->current_effect = topEffect->this_effect;
 		fx->effect_lock = FALSE;
 	} else {
