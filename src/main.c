@@ -76,6 +76,8 @@ static void
 bar_height_changed (GConfClient *client, guint cid, GConfEntry *entry, AwnSettings *Settings);
 static void 
 icon_offset_changed (GConfClient *client, guint cid, GConfEntry *entry, AwnSettings *Settings);
+static void 
+bar_refresh (GConfClient *client, guint cid, GConfEntry *entry, AwnSettings *settings);
 static void
 screen_size_changed (GdkScreen *screen, AwnSettings *s);
 static void 
@@ -140,6 +142,12 @@ main (int argc, char* argv[])
 				NULL, NULL);
 	gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/icon_offset", 
 				(GConfClientNotifyFunc)icon_offset_changed, settings, 
+				NULL, NULL);
+	gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/bar_angle", 
+				(GConfClientNotifyFunc)bar_refresh, settings, 
+				NULL, NULL);
+	gconf_client_notify_add (client, "/apps/avant-window-navigator/bar/rounded_corners", 
+				(GConfClientNotifyFunc)bar_refresh, settings, 
 				NULL, NULL);
 	
 	settings->window = awn_window_new (settings);
@@ -472,6 +480,12 @@ icon_offset_changed (GConfClient *client, guint cid, GConfEntry *entry, AwnSetti
 	value = gconf_entry_get_value(entry);
 	settings->icon_offset = gconf_value_get_int(value);
 	
+	resize (settings);
+}
+
+static void 
+bar_refresh (GConfClient *client, guint cid, GConfEntry *entry, AwnSettings *settings)
+{
 	resize (settings);
 }
 
