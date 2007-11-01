@@ -28,8 +28,9 @@ except:
 try:
     import gtk
     import gtk.glade
-except:
-	sys.exit(1)
+except Exception, e:
+    sys.stderr.write(str(e) + '\n')
+    sys.exit(1)
 
 import gconf
 import gnomedesktop
@@ -442,12 +443,12 @@ class awnApplet:
         self.make_appmodel ()
         model = self.appmodel
 
-        hdir = os.path.join (os.environ["HOME"], ".config/awn/applets")
-        dirs = ["/usr/lib/awn/applets",
-                "/usr/local/lib/awn/applets",
-                "/usr/lib64/awn/applets",
-                "/usr/local/lib64/awn/applets",
-                hdir]
+        prefixes = ["/usr/lib", "/usr/local/lib", "/usr/lib64", "/usr/local/lib64"]
+        install_prefix = os.path.join(defs.PREFIX, "lib")
+        if install_prefix not in prefixes:
+            prefixes.append(install_prefix)
+        prefixes.append(os.path.expanduser("~/.config"))
+        dirs = [os.path.join(prefix, "awn", "applets") for prefix in prefixes]
         applets = []
         for d in dirs:
                 if not os.path.exists (d):

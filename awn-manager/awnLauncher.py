@@ -28,8 +28,9 @@ except:
 try:
     import gtk
     import gtk.glade
-except:
-	sys.exit(1)
+except Exception, e:
+    sys.stderr.write(str(e) + '\n')
+    sys.exit(1)
 
 import gtk.gdk as gdk
 import gconf, gnomedesktop, gobject, subprocess, locale, gettext
@@ -219,7 +220,8 @@ class awnLauncher:
         if os.path.exists(uri):
             uris = self.client.get_list(self.LAUNCHER_PATH, gconf.VALUE_STRING)
             uris.remove(uri)
-            os.remove(uri)
+            if uri.startswith(self.AWN_CONFIG_LAUNCH_DIR):
+                os.remove(uri)
             self.refresh_tree(uris)
 
     def waitForNewItemProcess(self, process, file_path):
