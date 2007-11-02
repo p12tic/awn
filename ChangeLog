@@ -1,3 +1,26 @@
+2007-11-01  Michal Hruby <michal.mhr@gmail.com>
+
+	* ChangeLog:
+	* awn-manager/Makefile.am:
+	* awn-manager/awnApplet.py:
+	* awn-manager/awnLauncher.py:
+	* awn-manager/awnManager.in.py:
+	* awn-manager/awnPreferences.py:
+	* awn.pc.in:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	Merged multiple stability patches from branch "0.2-stable-testing".
+
+2007-10-31  Michal Hruby <michal.mhr@gmail.com>
+
+	patch by: Mark Lee
+
+	* pyawn/awn.defs:
+	awn_register_effects is now method of AppletSimple.
+
 2007-10-31  Michal Hruby <michal.mhr@gmail.com>
 
 	* pyawn/awn.defs:
@@ -36,6 +59,11 @@
 
 	* src/awn-task.c:
 	Fixes bug #156898.
+
+2007-10-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/Makefile.am:
+	Uninstall awn-manager when a user does "make uninstall".
 
 2007-10-20  Michal Hruby <michal.mhr@gmail.com>
 

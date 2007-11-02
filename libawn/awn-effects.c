@@ -103,14 +103,30 @@ awn_effects_init(GObject* self, AwnEffects *fx) {
 
 	fx->enter_notify = 0;
 	fx->leave_notify = 0;
+	fx->timer_id = 0;
+}
 
-	//this is really nice, but causes problem for tasks, have to solve that
-	//awn_effect_start_ex(fx, AWN_EFFECT_OPENING, NULL, NULL, 1);
+void
+awn_effect_dispose_queue(AwnEffects *fx)
+{
+	if (fx->timer_id) {
+		GSource *s = g_main_context_find_source_by_id(NULL, fx->timer_id);
+		if (s) g_source_destroy(s);
+	}
+	GList* queue = fx->effect_queue;
+	while (queue) {
+		g_free(queue->data);
+		queue->data = NULL;
+		queue = g_list_next(queue);
+	}
+	g_list_free(fx->effect_queue);
+	fx->effect_queue = NULL;
 }
 
 void
 awn_effects_finalize(AwnEffects *fx) {
 	awn_unregister_effects(fx);
+	awn_effect_dispose_queue(fx);
 	fx->self = NULL;
 }
 
@@ -151,6 +167,7 @@ inline gboolean awn_effect_handle_repeating(AwnEffectsPrivate *priv) {
 		AwnEffects *fx = priv->effects;
 		fx->current_effect = AWN_EFFECT_NONE;
 		fx->effect_lock = FALSE;
+		fx->timer_id = 0;
 		if (effect_stopped) {
 			if (priv->stop) priv->stop(fx->self);
 			unregistered = fx->self == NULL;
@@ -165,20 +182,6 @@ void
 awn_effects_set_title(AwnEffects *fx, AwnTitle* title, AwnTitleCallback title_func) {
 	fx->title = title;
 	fx->get_title = title_func;
-}
-
-void
-awn_effect_dispose_queue(AwnEffects *fx)
-{
-	// use only if no effect is active!
-	GList* queue = fx->effect_queue;
-	while (queue) {
-		g_free(queue->data);
-		queue->data = NULL;
-		queue = g_list_next(queue);
-	}
-	g_list_free(fx->effect_queue);
-	fx->effect_queue = NULL;
 }
 
 static void
@@ -1921,7 +1924,7 @@ main_effect_loop(AwnEffects *fx) {
 		default: return;
 	}
 	if (animation) {
-		g_timeout_add(AWN_FRAME_RATE, animation, topEffect);
+		fx->timer_id = g_timeout_add(AWN_FRAME_RATE, animation, topEffect);
 		fx->current_effect = topEffect->this_effect;
 		fx->effect_lock = FALSE;
 	} else {

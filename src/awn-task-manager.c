@@ -50,8 +50,10 @@ static void _task_manager_window_opened (WnckScreen *screen, WnckWindow *window,
 						AwnTaskManager *task_manager);
 static void _task_manager_window_closed (WnckScreen *screen, WnckWindow *window,
 						 AwnTaskManager *task_manager);
+#ifdef HAVE_LIBWNCK_220
 static void _task_manager_window_activate (WnckScreen *screen,
 			WnckWindow *window, AwnTaskManager *task_manager);
+#endif
 static void _task_manager_viewports_changed (WnckScreen *screen,
 						AwnTaskManager *task_manager);
 static void _task_manager_drag_data_recieved (GtkWidget        *widget,
@@ -219,11 +221,9 @@ _find_launcher (AwnTask *task, AwnLauncherTerm *term)
 		exec = g_strdup (awn_task_get_application(task));
 		_normalize (exec);
 
-		if ( exec && str){
-		    if (strcmp (exec, str->str) == 0 ) {
-    			term->task = task;
-	    	}
-        }	
+		if (exec && str && strcmp (exec, str->str) == 0) {
+			term->task = task;
+		}
 
 		g_string_free (str, TRUE);
 		g_free(exec);
@@ -489,13 +489,14 @@ _task_manager_window_closed (WnckScreen *screen, WnckWindow *window,
 	_refresh_box(task_manager);
 }
 
+#ifdef HAVE_LIBWNCK_220
 static void
 _task_manager_window_activate (WnckScreen *screen, WnckWindow *prevWindow,
 						AwnTaskManager *task_manager)
 {
 	_refresh_box(task_manager);
 }
-
+#endif
 static void
 _task_manager_viewports_changed (WnckScreen *screen,
 						AwnTaskManager *task_manager)
@@ -1595,9 +1596,11 @@ awn_task_manager_new (AwnSettings *settings)
 #endif
 	                  (gpointer)task_manager);
 
+#ifdef HAVE_LIBWNCK_220
 	g_signal_connect (G_OBJECT(priv->screen), "viewports-changed",
 	                  G_CALLBACK(_task_manager_viewports_changed),
 	                  (gpointer)task_manager);
+#endif
 
 	/* CONNECT D&D CODE */
 
