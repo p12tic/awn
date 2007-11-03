@@ -1,3 +1,9 @@
+2007-11-03  Neil J. Patel  <njpatel@gmail.com>
+
+	* awn-manager/awnManager.in.py:
+	* configure.in:
+	Bump to 0.2.1
+
 2007-11-01  Michal Hruby <michal.mhr@gmail.com>
 
 	* ChangeLog:
