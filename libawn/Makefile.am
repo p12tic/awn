@@ -1,6 +1,4 @@
-if USE_EGG
 SUBDIRS = egg
-endif
 
 NULL = 
 
@@ -68,7 +66,14 @@ libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
 libawn_la_LDFLAGS = -version-info 0:1:0
 
 if USE_EGG
-libawn_la_LIBADD += $(top_builddir)/libawn/egg/libeggdesktopfile.la
+libawn_la_LIBADD += \
+	$(top_builddir)/libawn/egg/libeggdesktopfile.la \
+	$(NULL)
+endif
+if USE_EGG_CHECKSUM
+libawn_la_LIBADD += \
+	$(top_builddir)/libawn/egg/libeggchecksum.la \
+	$(NULL)
 endif
 
 awn-enum-types.h: stamp-awn-enum-types.h

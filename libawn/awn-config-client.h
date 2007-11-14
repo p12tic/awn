@@ -36,13 +36,13 @@ typedef union {
 	gint int_val;
 	gchar *str_val;
 	GSList *list_val;
-} AwnConfigClientNotifyValue;
+} AwnConfigClientValue;
 
 typedef struct {
 	AwnConfigClient *client;
 	gchar *group;
 	gchar *key;
-	AwnConfigClientNotifyValue value;
+	AwnConfigClientValue value;
 } AwnConfigClientNotifyEntry;
 
 typedef void (*AwnConfigClientNotifyFunc) (AwnConfigClientNotifyEntry *entry, gpointer data);
@@ -53,6 +53,18 @@ typedef struct {
 } AwnConfigClientNotifyData;
 
 #define AWN_CONFIG_CLIENT_DEFAULT_GROUP "DEFAULT"
+
+typedef enum {
+	AWN_CONFIG_VALUE_TYPE_NULL = -1,
+	AWN_CONFIG_VALUE_TYPE_BOOL,
+	AWN_CONFIG_VALUE_TYPE_FLOAT,
+	AWN_CONFIG_VALUE_TYPE_INT,
+	AWN_CONFIG_VALUE_TYPE_STRING,
+	AWN_CONFIG_VALUE_TYPE_LIST_BOOL,
+	AWN_CONFIG_VALUE_TYPE_LIST_FLOAT,
+	AWN_CONFIG_VALUE_TYPE_LIST_INT,
+	AWN_CONFIG_VALUE_TYPE_LIST_STRING
+} AwnConfigValueType;
 
 typedef enum {
 	AWN_CONFIG_CLIENT_LIST_TYPE_BOOL,

@@ -15,6 +15,15 @@ icon_DATA =  \
 	avant-window-navigator-48.png
 
 icondir = $(pkgdatadir)
+if USE_GCONF
+awn.schemas: awn.schemas.in
+
+awn.schemas.in: awn.schema-ini
+	$(top_srcdir)/data/awn-schema-to-gconf avant-window-navigator $< $@
+else
+schemadir = $(datadir)/awn/schemas
+schema_DATA = awn.schema-ini
+endif
 
 EXTRA_DIST = $(icon_DATA) $(desktop_DATA).in.in
 

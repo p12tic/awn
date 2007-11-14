@@ -1,3 +1,39 @@
+2007-11-14  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	* data/Makefile.am:
+	* data/awn-schma-to-gconf:
+	* data/awn.schema-ini:
+	Add a GKeyFile-based schema of the Awn settings.
+	Add a Python-based script to be able to convert that schema into a
+	GConf-compatible one, if Awn is built with GConf.
+
+	* libawn/awn-vfs.c:
+	* libawn/awn-vfs.h:
+	Add a wrapper for VFS file monitoring API.
+	Remove all traces of the GIO #define.
+	Fix vim modelines.
+
+	* libawn/awn-config-client.c:
+	* libawn/awn-config-client.h:
+	Rename the value union to something shorter.
+	Add a value type enumeration.
+	GKeyFile backend: Make the global config client variable a static
+	function variable instead.
+	GKeyFile backend: Add GKeyFile-based schema support.
+	GKeyFile backend: Add file monitoring support, so that awn-manager
+	and Awn can properly receive changes from each other.  Uses checksums
+	to avoid having to diff config files with the same content.
+	GKeyFile backend: Protect from setting a NULL list.
+
+	* libawn/Makefile.am:
+	* libawn/egg/Makefile.am:
+	* libawn/egg/eggchecksum.c:
+	* libawn/egg/eggchecksum.h:
+	* libawn/egg/tests/checksum-test.c:
+	Bundle a copy of GChecksum for the case that the user has not installed
+	glib >= 2.16.
+
 2007-10-26  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-desktop-item.c:

@@ -1,4 +1,11 @@
-noinst_LTLIBRARIES = libeggdesktopfile.la
+if USE_EGG
+desktopfile_lib = libeggdesktopfile.la
+endif
+if USE_EGG_CHECKSUM
+checksum_lib = libeggchecksum.la
+endif
+
+noinst_LTLIBRARIES = $(checksum_lib) $(desktopfile_lib)
 
 NULL = 
 ENUMFILES = egg-enum-types.c egg-enum-types.h
@@ -17,6 +24,10 @@ libeggdesktopfile_la_SOURCES =	\
 	$(NULL)
 
 libeggdesktopfile_la_LIBADD = $(AWN_LIBS)
+
+libeggchecksum_la_SOURCES =	\
+	eggchecksum.c			\
+	eggchecksum.h
 
 egg-enum-types.h: stamp-egg-enum-types.h
 	@true

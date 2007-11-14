@@ -114,11 +114,15 @@ AC_ARG_WITH(gconf,
             else
                 # use Glib's GKeyFile - it's already covered by $COMMON_MODULES
                 CFG_MODULE=""
+                # we need GChecksum (should/will be in Glib 2.16)
+                PKG_CHECK_EXISTS([glib-2.0 >= 2.16], [use_egg_checksum="yes"], [use_egg_checksum="no"])
                 GCONF_SCHEMA_INSTALL_SOURCE="/dev/null"
                 GCONF_SCHEMA_FILE_DIR="/dev/null"
                 AC_MSG_RESULT([GKeyFile (part of Glib)])
             fi])
 AC_SUBST(CFG_MODULE)
+AM_CONDITIONAL(USE_GCONF, test "$with_gconf" != "no")
+AM_CONDITIONAL(USE_EGG_CHECKSUM, test "$use_egg_checksum" = "yes")
 
 PKG_CHECK_MODULES(AWN, [ $COMMON_MODULES libwnck-1.0 $DESKTOP_MODULES $VFS_MODULE $CFG_MODULE x11 xproto dbus-glib-1 libglade-2.0 xdamage xcomposite xrender])
 AC_SUBST(AWN_CFLAGS)
