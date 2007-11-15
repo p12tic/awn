@@ -52,8 +52,6 @@ G_DEFINE_TYPE (AwnTask, awn_task, GTK_TYPE_DRAWING_AREA);
 
 static gboolean awn_task_expose (GtkWidget *task, GdkEventExpose *event);
 static gboolean awn_task_button_press (GtkWidget *task, GdkEventButton *event);
-static gboolean awn_task_win_enter_in (GtkWidget *window, GdkEventMotion *event, AwnTask *task);
-static gboolean awn_task_win_enter_out (GtkWidget *window, GdkEventCrossing *event, AwnTask *task);
 
 static gboolean awn_task_drag_motion (GtkWidget *task,
 		GdkDragContext *context, gint x, gint y, guint t);
@@ -123,8 +121,7 @@ struct _AwnTaskPrivate
 	gulong icon_changed;
 	gulong state_changed;
 	gulong name_changed;
-	gulong win_enter;
-	gulong win_leave;
+	int timer_count;
 };
 
 enum
@@ -227,6 +224,7 @@ awn_task_init (AwnTask *task)
 	priv->menu_items[2] = NULL;
 	priv->menu_items[3] = NULL;
 	priv->menu_items[4] = NULL;
+	priv->timer_count = 0;
 
 	awn_effects_init(G_OBJECT(task), &priv->effects);
 	awn_register_effects(G_OBJECT(task), &priv->effects);
@@ -267,13 +265,10 @@ _shrink_widget (AwnTask *task)
 
         g_return_val_if_fail (AWN_IS_TASK (task), FALSE);
         priv = AWN_TASK_GET_PRIVATE (task);
-
-        if (GTK_WIDGET (task)->allocation.width > 5) {
-                gtk_widget_set_size_request (GTK_WIDGET (task), 
-                                    GTK_WIDGET (task)->allocation.width-5,
-                                             -1);
-                return TRUE;
-        }
+	if (priv->timer_count)
+	{
+		return TRUE;
+	}
 
 	if (priv->is_launcher)
 		awn_task_manager_remove_launcher(priv->task_manager, task);
@@ -668,36 +663,6 @@ _task_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 
 }
 
-static gboolean
-awn_task_win_enter_in (GtkWidget *window, GdkEventMotion *event, AwnTask *task)
-{
-	AwnTaskPrivate *priv;
-	AwnSettings *settings;
-	//g_return_if_fail(AWN_IS_TASK(task));
-	if (!AWN_IS_TASK (task)) return FALSE;
-
-	priv = AWN_TASK_GET_PRIVATE (task);
-	settings = priv->settings;
-	//if (settings->fade_effect)
-	//	launch_fade_out_effect(task);
-	return FALSE;
-}
-
-static gboolean
-awn_task_win_enter_out (GtkWidget *window, GdkEventCrossing *event, AwnTask *task)
-{
-	g_return_val_if_fail(AWN_IS_TASK(task), FALSE);
-
-	AwnTaskPrivate *priv;
-	priv = AWN_TASK_GET_PRIVATE (task);
-	
-	/*if (priv->settings->fade_effect) {
-		priv->effects.alpha = 0.2;
-	}*/
-	
-	gtk_widget_queue_draw(GTK_WIDGET(task));
-	return FALSE;
-}
 
 static gboolean
 activate_window(AwnTask *task)
@@ -787,6 +752,9 @@ _task_wnck_name_hide (AwnTask *task)
 	priv = AWN_TASK_GET_PRIVATE (task);
 	awn_title_hide (AWN_TITLE(priv->title), GTK_WIDGET(task));
 	awn_effect_stop(&priv->effects, AWN_EFFECT_ATTENTION);
+	/* If wanted, this could be done in a GDestroyNotify callback if
+	   we added the timer using g_timeout_add_full () */
+	priv->timer_count--;
 	return FALSE;
 }
 
@@ -817,6 +785,7 @@ _task_wnck_name_changed (WnckWindow *window, AwnTask *task)
                                 GTK_WIDGET (task),
                                 awn_task_get_name(AWN_TASK(task)));
 
+		priv->timer_count++;
 		g_timeout_add(2500, (GSourceFunc)_task_wnck_name_hide, (gpointer)task);
 
 	}
@@ -1043,7 +1012,11 @@ awn_task_get_application(AwnTask *task)
 
 	} else if (priv->window) {
 		wnck_app = wnck_window_get_application(priv->window);
-		str = g_string_new (wnck_application_get_name(wnck_app));
+		if (WNCK_IS_APPLICATION (wnck_app)) {
+			str = g_string_new (wnck_application_get_name (wnck_app));
+		} else {
+			str = g_string_new (NULL);
+		}
 		str = g_string_ascii_down (str);
 		priv->application = g_strdup(str->str);
 		app = g_string_free (str, TRUE);
@@ -1126,12 +1099,17 @@ awn_task_update_icon (AwnTask *task)
 	}
 	priv->icon = awn_x_get_icon_for_launcher (priv->item,
                                                   height, height);
-	if (priv->icon) {
-		priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
-		awn_draw_set_icon_size(&priv->effects,
-		                       gdk_pixbuf_get_width(priv->icon),
-		                       gdk_pixbuf_get_height(priv->icon));
+
+	if (!priv->icon) {
+		priv->icon = old;
+		return;
 	}
+
+	priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
+
+	awn_draw_set_icon_size (&priv->effects,
+	                        gdk_pixbuf_get_width (priv->icon),
+	                        gdk_pixbuf_get_height (priv->icon));
 
 	gdk_pixbuf_unref (old);
 	gdk_pixbuf_unref (old_reflect);
@@ -1597,9 +1575,12 @@ _task_show_prefs (GtkMenuItem *item, AwnTask *task)
 			  G_CALLBACK (on_change_icon_clicked), task);
 
 	label = gtk_label_new (" ");
-	char *markup = g_strdup_printf ("<span size='larger' weight='bold'>%s</span>", awn_task_get_application (task));
-	gtk_label_set_markup (GTK_LABEL (label), markup);
-	g_free (markup);
+	char *app_name = (char*)awn_task_get_application (task);
+	if (app_name) {
+		gchar *markup = g_strdup_printf ("<span size='larger' weight='bold'>%s</span>", app_name);
+		gtk_label_set_markup (GTK_LABEL (label), markup);
+		g_free (markup);
+	}
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, TRUE, 0);
 
 	gtk_widget_show_all (hbox);
@@ -1762,12 +1743,6 @@ awn_task_new (AwnTaskManager *task_manager, AwnSettings *settings)
 
 	/* This is code which I will add later for better hover effects over
 	the bar */
-	priv->win_enter = g_signal_connect(G_OBJECT(settings->window), "motion-notify-event",
-			 G_CALLBACK(awn_task_win_enter_in), AWN_TASK(task));
-
-	priv->win_leave = g_signal_connect(G_OBJECT(settings->window), "leave-notify-event",
-			 G_CALLBACK(awn_task_win_enter_out), AWN_TASK(task));
-
 	g_signal_connect (G_OBJECT(task), "drag-data-received",
 		  G_CALLBACK(_task_drag_data_recieved), (gpointer)task);
 	g_signal_connect (G_OBJECT(task), "drag-end",
@@ -1787,12 +1762,6 @@ awn_task_close (AwnTask *task)
                                      priv->state_changed);
 	g_signal_handler_disconnect ((gpointer)priv->window, 
                                      priv->name_changed);
-	if (!priv->is_launcher) {
-		g_signal_handler_disconnect ((gpointer)priv->settings->window,
-                                             priv->win_enter);
-		g_signal_handler_disconnect ((gpointer)priv->settings->window, 
-                                             priv->win_leave);
-	}
 
 	priv->window = NULL;
 

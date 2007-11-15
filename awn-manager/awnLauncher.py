@@ -29,7 +29,8 @@ try:
     import gobject
     import gtk
     import gtk.gdk as gdk
-except:
+except Exception, e:
+    sys.stderr.write(str(e) + '\n')
     sys.exit(1)
 
 import awn
@@ -204,7 +205,8 @@ class awnLauncher:
         if os.path.exists(uri):
             uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
             uris.remove(uri)
-            os.remove(uri)
+            if uri.startswith(self.AWN_CONFIG_LAUNCH_DIR):
+                os.remove(uri)
             self.refresh_tree(uris)
 
     def getUniqueFileId(self, name, extension):

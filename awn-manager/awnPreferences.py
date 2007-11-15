@@ -29,7 +29,8 @@ except:
 try:
     import gobject
     import gtk
-except:
+except Exception, e:
+    sys.stderr.write(str(e) + '\n')
     sys.exit(1)
 
 import awn

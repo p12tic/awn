@@ -28,7 +28,8 @@ except:
 try:
     import gtk
     import gtk.gdk as gdk
-except:
+except Exception, e:
+    sys.stderr.write(str(e) + '\n')
     sys.exit(1)
 
 import awn
@@ -408,8 +409,11 @@ class awnApplet:
         self.make_appmodel ()
         model = self.appmodel
 
-        prefixes = ["/usr/lib", "/usr/local/lib", "/usr/lib64", "/usr/local/lib64",
-                    os.path.join(defs.PREFIX, "lib"), os.path.expanduser("~/.config")]
+        prefixes = ["/usr/lib", "/usr/local/lib", "/usr/lib64", "/usr/local/lib64"]
+        install_prefix = os.path.join(defs.PREFIX, "lib")
+        if install_prefix not in prefixes:
+            prefixes.append(install_prefix)
+        prefixes.append(os.path.expanduser("~/.config"))
         dirs = [os.path.join(prefix, "awn", "applets") for prefix in prefixes]
         applets = []
         for d in dirs:

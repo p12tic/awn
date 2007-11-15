@@ -109,6 +109,13 @@ struct _AwnEffects
 
 	guint enter_notify;
 	guint leave_notify;
+	guint timer_id;
+
+	/* padding so we dont break ABI compability every time */
+	void *pad1;
+	void *pad2;
+	void *pad3;
+	void *pad4;
 };
 
 //! Initializes AwnEffects structure.

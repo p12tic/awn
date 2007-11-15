@@ -49,7 +49,11 @@ static void _task_manager_window_opened (WnckScreen *screen, WnckWindow *window,
 						AwnTaskManager *task_manager);
 static void _task_manager_window_closed (WnckScreen *screen, WnckWindow *window,
 						 AwnTaskManager *task_manager);
+#ifdef HAVE_LIBWNCK_220
 static void _task_manager_window_activate (WnckScreen *screen,
+			WnckWindow *window, AwnTaskManager *task_manager);
+#endif
+static void _task_manager_viewports_changed (WnckScreen *screen,
 						AwnTaskManager *task_manager);
 static void _task_manager_drag_data_recieved (GtkWidget        *widget,
                                               GdkDragContext   *drag_context,
@@ -204,17 +208,18 @@ _find_launcher (AwnTask *task, AwnLauncherTerm *term)
 		GString *str;
 
 		wnck_app = wnck_window_get_application(term->window);
-        	if (WNCK_IS_APPLICATION (wnck_app))
-        	      	app_name = (char*)wnck_application_get_name(wnck_app);
-		else
-			app_name = (char*)NULL;
+		if (WNCK_IS_APPLICATION (wnck_app)) {
+			app_name = (char*)wnck_application_get_name(wnck_app);
+		} else {
+			app_name = NULL;
+		}
 		str = g_string_new (app_name);
 		str = g_string_ascii_down (str);
 		_normalize (str->str);
 		exec = g_strdup (awn_task_get_application(task));
 		_normalize (exec);
 
-		if ( strcmp (exec, str->str) == 0 ) {
+		if (exec && str && strcmp (exec, str->str) == 0) {
 			term->task = task;
 		}
 
@@ -251,7 +256,12 @@ _find_launcher (AwnTask *task, AwnLauncherTerm *term)
 		GString *str1 = g_string_new (awn_task_get_name (task));
 		str1 = g_string_ascii_down (str1);
 
-		GString *str2 = g_string_new (wnck_application_get_name(wnck_app));
+		GString *str2;
+		if (WNCK_IS_APPLICATION (wnck_app)) {
+			str2 = g_string_new (wnck_application_get_name (wnck_app));
+		} else {
+			str2 = g_string_new (NULL);
+		}
 		str2 = g_string_ascii_down (str2);
 		
 		gchar *res = NULL;
@@ -309,7 +319,9 @@ _task_manager_window_has_launcher (AwnTaskManager *task_manager,
 
 	if (term.pid == 0) {
 		WnckApplication *app = wnck_window_get_application(window);
-		term.pid = wnck_application_get_pid(app);
+		if (app) {
+			term.pid = wnck_application_get_pid(app);
+		}
 	}
 	//g_print("New window Pid = %d\n", term.pid);
 
@@ -475,8 +487,16 @@ _task_manager_window_closed (WnckScreen *screen, WnckWindow *window,
 	_refresh_box(task_manager);
 }
 
+#ifdef HAVE_LIBWNCK_220
 static void
-_task_manager_window_activate (WnckScreen *screen,
+_task_manager_window_activate (WnckScreen *screen, WnckWindow *prevWindow,
+						AwnTaskManager *task_manager)
+{
+	_refresh_box(task_manager);
+}
+#endif
+static void
+_task_manager_viewports_changed (WnckScreen *screen,
 						AwnTaskManager *task_manager)
 {
 	_refresh_box(task_manager);
@@ -1553,21 +1573,27 @@ awn_task_manager_new (AwnSettings *settings)
 	_task_manager_load_launchers(AWN_TASK_MANAGER (task_manager));
 
 	/* LIBWNCK SIGNALS */
-	g_signal_connect (G_OBJECT(priv->screen), "window_opened",
+	g_signal_connect (G_OBJECT(priv->screen), "window-opened",
 	                  G_CALLBACK (_task_manager_window_opened),
 	                  (gpointer)task_manager);
 
-	g_signal_connect (G_OBJECT(priv->screen), "window_closed",
+	g_signal_connect (G_OBJECT(priv->screen), "window-closed",
 	                  G_CALLBACK(_task_manager_window_closed),
 	                  (gpointer)task_manager);
 
-	g_signal_connect (G_OBJECT(priv->screen), "active_window_changed",
+	g_signal_connect (G_OBJECT(priv->screen), "active-window-changed",
+#ifdef HAVE_LIBWNCK_220
 	                  G_CALLBACK(_task_manager_window_activate),
+#else
+	                  G_CALLBACK(_task_manager_viewports_changed),
+#endif
 	                  (gpointer)task_manager);
 
-	g_signal_connect (G_OBJECT(priv->screen), "viewports_changed",
-	                  G_CALLBACK(_task_manager_window_activate),
+#ifdef HAVE_LIBWNCK_220
+	g_signal_connect (G_OBJECT(priv->screen), "viewports-changed",
+	                  G_CALLBACK(_task_manager_viewports_changed),
 	                  (gpointer)task_manager);
+#endif
 
 	/* CONNECT D&D CODE */
 

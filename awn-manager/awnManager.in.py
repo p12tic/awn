@@ -34,7 +34,8 @@ try:
     import gtk
     import gtk.glade
     import gtk.gdk as gdk
-except:
+except Exception, e:
+    sys.stderr.write(str(e) + '\n')
     sys.exit(1)
 
 from awnTheme import AwnThemeManager
