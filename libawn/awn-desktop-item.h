@@ -31,6 +31,11 @@
 #include "egg/eggdesktopfile.h"
 #endif
 
+/**
+ * AwnDesktopItem:
+ *
+ * An alias for the desktop-specific .desktop file-handling structure.
+ */
 #ifdef LIBAWN_USE_GNOME
 typedef GnomeDesktopItem AwnDesktopItem;
 #else
@@ -38,6 +43,12 @@ typedef EggDesktopFile AwnDesktopItem;
 #endif
 
 #define AWN_TYPE_DESKTOP_ITEM	(awn_desktop_item_get_type ())
+/**
+ * AWN_DESKTOP_ITEM:
+ * @obj: The variable/value to cast
+ *
+ * Casts a variable/value to be an #AwnDesktopItem.
+ */
 #define AWN_DESKTOP_ITEM(obj)	(G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_DESKTOP_ITEM, AwnDesktopItem))
 GType awn_desktop_item_get_type (void);
 

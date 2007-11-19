@@ -1,3 +1,24 @@
+2007-11-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	* Makefile.am:
+	* autogen.sh:
+	* configure.in:
+	* doc/:
+	Add gtk-doc support.
+
+	* libawn/awn-config-client.c:
+	* libawn/awn-config-client.h:
+	* libawn/awn-defines.h:
+	* libawn/awn-desktop-item.c:
+	* libawn/awn-desktop-item.h:
+	* libawn/awn-vfs.c:
+	* libawn/awn-vfs.h:
+	Document relevant functions, structures, and constants.
+
+	* libawn/awn-effects.h:
+	Convert Doxygen-style comments to gtk-doc-style comments.
+
 2007-11-14  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* configure.in:

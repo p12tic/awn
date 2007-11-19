@@ -29,6 +29,15 @@
 #define AWN_GCONF_KEY_PREFIX "/apps/avant-window-navigator"
 #endif
 
+/**
+ * SECTION: awn-config-client
+ * @short_description: The configuration API for both Awn proper and
+ * Awn applets.
+ * @include libawn/awn-config-client.h
+ *
+ * A configuration wrapper API that supports both a GConf backend, as well as
+ * a GKeyFile-based backend.  Used for both Awn proper and its applets.
+ */
 #include "libawn/awn-config-client.h"
 #include "libawn/awn-vfs.h"
 #include "egg/eggchecksum.h"
@@ -107,7 +116,13 @@ GType awn_config_client_get_type (void)
 	return type;
 }
 
-/* singleton */
+/**
+ * awn_config_client_new:
+ *
+ * Retrieves the configuration client for Awn proper.  If none exists,
+ * one is created.
+ * Returns: a singleton instance of #AwnConfigClient.
+ */
 AwnConfigClient *awn_config_client_new ()
 {
 	static AwnConfigClient *awn_dock_config = NULL;
@@ -122,6 +137,13 @@ AwnConfigClient *awn_config_client_new ()
 	return awn_dock_config;
 }
 
+/**
+ * awn_config_client_new_for_applet:
+ * @name: The name of the applet.
+ *
+ * Creates a configuration client for the applet named in the parameter.
+ * Returns: an instance of #AwnConfigClient for the specified applet.
+ */
 AwnConfigClient *awn_config_client_new_for_applet (gchar *name)
 {
 #ifdef USE_GCONF
@@ -480,7 +502,14 @@ static void awn_config_client_reload (AwnVfsMonitor *monitor, gchar *monitor_pat
 }
 #endif
 
-/* removes all of the options */
+/**
+ * awn_config_client_clear:
+ * @client: The configuration client that is to be used.
+ * @err: The pointer to the #GError structure that contains an error
+ * message on failure.
+ *
+ * Removes all of the configuration entries from the client.
+ */
 void awn_config_client_clear (AwnConfigClient *client, GError **err)
 {
 #ifdef USE_GCONF
@@ -506,6 +535,13 @@ void awn_config_client_clear (AwnConfigClient *client, GError **err)
 #endif
 }
 
+/**
+ * awn_config_client_ensure_group:
+ * @client: The configuration client to be queried.
+ * @group: The name of the group.
+ *
+ * Ensures that the @group named has been created in the configuration backend.
+ */
 void awn_config_client_ensure_group (AwnConfigClient *client, const gchar *group)
 {
 #ifdef USE_GCONF
@@ -521,6 +557,17 @@ void awn_config_client_ensure_group (AwnConfigClient *client, const gchar *group
 #endif
 }
 
+/**
+ * awn_config_client_notify_add:
+ * @client: The configuration client that is to be used.
+ * @group: The name of the group.
+ * @key: The name of the key.
+ * @callback: The function that is called when the key value has been modified.
+ * @data: Extra data that is passed to the callback.
+ *
+ * Associates a callback function with a group and a key, which is called
+ * when that key's value has been modified in some way.
+ */
 void awn_config_client_notify_add (AwnConfigClient *client, const gchar *group, 
 				   const gchar *key, AwnConfigClientNotifyFunc callback,
 				   gpointer data)
@@ -539,6 +586,16 @@ void awn_config_client_notify_add (AwnConfigClient *client, const gchar *group,
 #endif
 	g_free (full_key);
 }
+
+/**
+ * awn_config_client_entry_exists:
+ * @client: The configuration client that is to be queried.
+ * @group: The name of the group.
+ * @key: The name of the key.
+ *
+ * Determines whether the group and key exists in the configuration backend.
+ * Returns: %TRUE on success, %FALSE otherwise.
+ */
 gboolean awn_config_client_entry_exists (AwnConfigClient *client, const gchar *group, const gchar *key)
 {
 #ifdef USE_GCONF
@@ -552,6 +609,17 @@ gboolean awn_config_client_entry_exists (AwnConfigClient *client, const gchar *g
 #endif
 }
 
+/**
+ * awn_config_client_get_bool:
+ * @client: The configuration client that is to be queried.
+ * @group: The name of the group.
+ * @key: The name of the key.
+ * @err: A pointer to a #GError structure, which contains an error message
+ * if the function fails.
+ *
+ * Retrieves the value (as a boolean) of the specified group and key.
+ * Returns: a boolean value.
+ */
 gboolean awn_config_client_get_bool (AwnConfigClient *client, const gchar *group, const gchar *key, GError **err)
 {
 #ifdef USE_GCONF
@@ -564,6 +632,17 @@ gboolean awn_config_client_get_bool (AwnConfigClient *client, const gchar *group
 #endif
 }
 
+/**
+ * awn_config_client_set_bool:
+ * @client: The configuration client that is to be used.
+ * @group: The name of the group.
+ * @key: The name of the key.
+ * @value: The new value of the key.
+ * @err: A pointer to a #GError structure, which contains an error message
+ * if the function fails.
+ *
+ * Changes the value (as a boolean) of the specified group and key.
+ */
 void awn_config_client_set_bool (AwnConfigClient *client, const gchar *group, const gchar *key, gboolean value, GError **err)
 {
 	gchar *full_key = awn_config_client_generate_key (client, group, key);
@@ -576,6 +655,17 @@ void awn_config_client_set_bool (AwnConfigClient *client, const gchar *group, co
 	g_free (full_key);
 }
 
+/**
+ * awn_config_client_get_float:
+ * @client: The configuration client that is to be queried.
+ * @group: The name of the group.
+ * @key: The name of the key.
+ * @err: A pointer to a #GError structure, which contains an error message
+ * if the function fails.
+ *
+ * Retrieves the value (as a float) of the specified group and key.
+ * Returns: a float value.
+ */
 gfloat awn_config_client_get_float (AwnConfigClient *client, const gchar *group, const gchar *key, GError **err)
 {
 #ifdef USE_GCONF
@@ -588,7 +678,18 @@ gfloat awn_config_client_get_float (AwnConfigClient *client, const gchar *group,
 #endif
 }
 
-/* note: if you want double precision, use a string. */
+/**
+ * awn_config_client_set_float:
+ * @client: The configuration client that is to be used.
+ * @group: The name of the group.
+ * @key: The name of the key.
+ * @value: The new value of the key.
+ * @err: A pointer to a #GError structure, which contains an error message
+ * if the function fails.
+ *
+ * Changes the value (as a float) of the specified group and key.
+ * If you need double precision, use a string.
+ */
 void awn_config_client_set_float (AwnConfigClient *client, const gchar *group, const gchar *key, gfloat value, GError **err)
 {
 #ifdef USE_GCONF
@@ -601,6 +702,17 @@ void awn_config_client_set_float (AwnConfigClient *client, const gchar *group, c
 #endif
 }
 
+/**
+ * awn_config_client_get_int:
+ * @client: The configuration client that is to be queried.
+ * @group: The name of the group.
+ * @key: The name of the key.
+ * @err: A pointer to a #GError structure, which contains an error message
+ * if the function fails.
+ *
+ * Retrieves the value (as an integer) of the specified group and key.
+ * Returns: an integer value.
+ */
 gint awn_config_client_get_int (AwnConfigClient *client, const gchar *group, const gchar *key, GError **err)
 {
 #ifdef USE_GCONF
@@ -613,6 +725,17 @@ gint awn_config_client_get_int (AwnConfigClient *client, const gchar *group, con
 #endif
 }
 
+/**
+ * awn_config_client_set_int:
+ * @client: The configuration client that is to be used.
+ * @group: The name of the group.
+ * @key: The name of the key.
+ * @value: The new value of the key.
+ * @err: A pointer to a #GError structure, which contains an error message
+ * if the function fails.
+ *
+ * Changes the value (as an integer) of the specified group and key.
+ */
 void awn_config_client_set_int (AwnConfigClient *client, const gchar *group, const gchar *key, gint value, GError **err)
 {
 #ifdef USE_GCONF
@@ -625,7 +748,18 @@ void awn_config_client_set_int (AwnConfigClient *client, const gchar *group, con
 #endif
 }
 
-/* returns a newly allocated string */
+/**
+ * awn_config_client_get_string:
+ * @client: The configuration client that is to be queried.
+ * @group: The name of the group.
+ * @key: The name of the key.
+ * @err: A pointer to a #GError structure, which contains an error message
+ * if the function fails.
+ *
+ * Retrieves the value (as a string) of the specified group and key.
+ * Returns: a newly allocated string value.  The caller is responsible
+ * for freeing the memory.
+ */
 gchar *awn_config_client_get_string (AwnConfigClient *client, const gchar *group, const gchar *key, GError **err)
 {
 #ifdef USE_GCONF
@@ -638,6 +772,17 @@ gchar *awn_config_client_get_string (AwnConfigClient *client, const gchar *group
 #endif
 }
 
+/**
+ * awn_config_client_set_string:
+ * @client: The configuration client that is to be used.
+ * @group: The name of the group.
+ * @key: The name of the key.
+ * @value: The new value of the key.
+ * @err: A pointer to a #GError structure, which contains an error message
+ * if the function fails.
+ *
+ * Changes the value (as a string) of the specified group and key.
+ */
 void awn_config_client_set_string (AwnConfigClient *client, const gchar *group, const gchar *key, gchar *value, GError **err)
 {
 #ifdef USE_GCONF
@@ -650,6 +795,19 @@ void awn_config_client_set_string (AwnConfigClient *client, const gchar *group, 
 #endif
 }
 
+/**
+ * awn_config_client_get_list:
+ * @client: The configuration client that is to be queried.
+ * @group: The name of the group.
+ * @key: The name of the key.
+ * @list_type: The value type of every item in the list.
+ * @err: A pointer to a #GError structure, which contains an error message
+ * if the function fails.
+ *
+ * Retrieves the value (as a #GSList) of the specified group and key.
+ * Returns: a newly allocated list value.  The caller is responsible
+ * for freeing the memory.
+ */
 GSList *awn_config_client_get_list (AwnConfigClient *client, const gchar *group, const gchar *key, AwnConfigListType list_type, GError **err)
 {
 #ifdef USE_GCONF
@@ -677,6 +835,18 @@ GSList *awn_config_client_get_list (AwnConfigClient *client, const gchar *group,
 #endif
 }
 
+/**
+ * awn_config_client_set_list:
+ * @client: The configuration client that is to be used.
+ * @group: The name of the group.
+ * @key: The name of the key.
+ * @value: The new value of the key.
+ * @list_type: The value type of every item in the list.
+ * @err: A pointer to a #GError structure, which contains an error message
+ * if the function fails.
+ *
+ * Changes the value (as a list of values) of the specified group and key.
+ */
 void awn_config_client_set_list (AwnConfigClient *client, const gchar *group, const gchar *key, AwnConfigListType list_type, GSList *value, GError **err)
 {
 #ifdef USE_GCONF
@@ -760,6 +930,12 @@ void awn_config_client_set_list (AwnConfigClient *client, const gchar *group, co
 #endif
 }
 
+/**
+ * awn_config_client_unref:
+ * @client: The configuration client structure to free.
+ *
+ * Frees the configuration client structure from memory.
+ */
 void awn_config_client_unref (AwnConfigClient *client)
 {
 #ifdef USE_GCONF

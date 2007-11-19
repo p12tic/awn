@@ -23,7 +23,14 @@
 #include <config.h>
 #endif
 
-/* VFS */
+/**
+ * SECTION: awn-vfs
+ * @short_description: VFS-related API wrappers and utility functions.
+ * @include: libawn/awn-vfs.h
+ *
+ * Contains a file monitoring wrapper API and utility functions whose
+ * implementations depend on the compile-time configuration.
+ */
 #include "libawn/awn-vfs.h"
 
 #ifdef LIBAWN_USE_GNOME
@@ -176,6 +183,22 @@ static void g_file_monitor_callback_proxy (GFileMonitor *monitor, GFile *file, G
 }
 #endif
 
+/**
+ * awn_vfs_monitor_add:
+ * @path: The path to the file/directory being monitored.  The path does not
+ * have to exist on the filesystem at the time this function is called.
+ * @monitor_type: States whether the path being monitored is a directory or
+ * a file.
+ * @callback: The function to be executed when an event occurs with regards
+ * to the path.
+ * @user_data: Extra data to be used by the @callback function.
+ *
+ * Adds a monitor callback to the list of callbacks associated with a file
+ * or directory.
+ *
+ * Returns: a reference to a newly created monitor struct.  The caller is
+ * obligated to free the memory when the struct is no longer needed.
+ */
 AwnVfsMonitor *awn_vfs_monitor_add (gchar *path, AwnVfsMonitorType monitor_type, AwnVfsMonitorFunc callback, gpointer user_data)
 {
 	AwnVfsMonitor *monitor;
@@ -224,6 +247,15 @@ AwnVfsMonitor *awn_vfs_monitor_add (gchar *path, AwnVfsMonitorType monitor_type,
 	return monitor;
 }
 
+/**
+ * awn_vfs_monitor_emit:
+ * @monitor: The monitor structure.
+ * @path: The path on the filesystem that will be passed to the
+ * respective callbacks.
+ * @event: The type of monitor event to fake.
+ *
+ * Emits an artificial monitor event to a monitor.
+ */
 void awn_vfs_monitor_emit (AwnVfsMonitor *monitor, gchar *path, AwnVfsMonitorEvent event)
 {
 	int native_event = awn_vfs_monitor_event_type_to_native (event);
@@ -251,6 +283,13 @@ void awn_vfs_monitor_emit (AwnVfsMonitor *monitor, gchar *path, AwnVfsMonitorEve
 	}
 #endif
 }
+
+/**
+ * awn_vfs_monitor_remove:
+ * @monitor: The structure to remove from monitoring  a path.
+ *
+ * Removes a monitor structure from monitoring a path.
+ */
 void awn_vfs_monitor_remove (AwnVfsMonitor *monitor)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -266,6 +305,11 @@ void awn_vfs_monitor_remove (AwnVfsMonitor *monitor)
 #endif
 }
 
+/**
+ * awn_vfs_init:
+ *
+ * Starts up the VFS library routines that Awn uses, if necessary.
+ */
 void awn_vfs_init()
 {
 #ifdef LIBAWN_USE_GNOME
@@ -275,6 +319,16 @@ void awn_vfs_init()
 #endif
 }
 
+/**
+ * awn_vfs_get_pathlist_from_string:
+ * @paths: A list of strings in a text/uri-list format
+ * @err: A pointer to the reference object that is used to determine whether
+ * the operation was successful.
+ *
+ * Converts a string of type text/uri-list into a GList of URIs.
+ *
+ * Returns: a list of URIs
+ */
 GList *awn_vfs_get_pathlist_from_string (gchar *paths, GError **err)
 {
 	GList *list = NULL;

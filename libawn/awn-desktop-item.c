@@ -31,6 +31,14 @@
 #include <string.h>
 #include <gdk/gdkscreen.h>
 
+/**
+ * SECTION: awn-desktop-item
+ * @short_description: A desktop item-specific API wrapper.
+ * @include: libawn/awn-desktop-item.h
+ *
+ * Contains a desktop item wrapper API whose implementation depends on
+ * the compile-time configuration.
+ */
 #include "awn-desktop-item.h"
 
 /* helper functions for egg */
@@ -60,6 +68,17 @@ GType awn_desktop_item_get_type (void)
 
 /* Wrapper functions */
 
+/**
+ * awn_desktop_item_new:
+ * @uri: The path to the desktop file.  The base name of the path does not need
+ * to exist at the time that this function is called.
+ *
+ * Creates a new desktop item structure.  If @uri exists, it attempts to parse
+ * the file at that path as a desktop file.  Otherwise, it is used as the path
+ * that will be used if awn_desktop_item_save() is called.
+ * Returns: a newly created item structure.  When it is no longer needed, it
+ * needs to be freed via awn_desktop_item_unref().
+ */
 AwnDesktopItem *awn_desktop_item_new (gchar *uri)
 {
 	AwnDesktopItem *item = NULL;
@@ -78,6 +97,13 @@ AwnDesktopItem *awn_desktop_item_new (gchar *uri)
 	return item;
 }
 
+/**
+ * awn_desktop_item_copy:
+ * @item: The desktop item to copy.
+ *
+ * Creates a copy of the structure.
+ * Returns: A copy of the structure.
+ */
 AwnDesktopItem *awn_desktop_item_copy (const AwnDesktopItem *item)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -87,6 +113,14 @@ AwnDesktopItem *awn_desktop_item_copy (const AwnDesktopItem *item)
 #endif
 }
 
+/**
+ * awn_desktop_item_get_filename:
+ * @item: The desktop item structure that is being queried.
+ *
+ * Retrieves the filename that is associated with the desktop item.
+ *
+ * Returns: The filename associated with the desktop item
+ */
 gchar *awn_desktop_item_get_filename (AwnDesktopItem *item)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -98,6 +132,14 @@ gchar *awn_desktop_item_get_filename (AwnDesktopItem *item)
 #endif
 }
 
+/**
+ * awn_desktop_item_get_item_type:
+ * @item: The desktop item structure that is being queried.
+ *
+ * Retrieves the type of the desktop item, for example
+ * "Application" or "Directory".
+ * Returns: the item type name.
+ */
 gchar *awn_desktop_item_get_item_type (AwnDesktopItem *item)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -107,6 +149,14 @@ gchar *awn_desktop_item_get_item_type (AwnDesktopItem *item)
 #endif
 }
 
+/**
+ * awn_desktop_item_set_item_type:
+ * @item: The desktop item structure that is being modified.
+ * @item_type: The new item type of the desktop item.
+ *
+ * Sets the type of the desktop item, for example "Application"
+ * or "Directory".
+ */
 void awn_desktop_item_set_item_type (AwnDesktopItem *item, gchar *item_type)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -116,6 +166,14 @@ void awn_desktop_item_set_item_type (AwnDesktopItem *item, gchar *item_type)
 #endif
 }
 
+/**
+ * awn_desktop_item_get_icon:
+ * @item: The desktop item structre that is being queried.
+ * @icon_theme: The icon theme in which the function searches for the icon.
+ *
+ * Retrieves the icon associated with the desktop item.
+ * Returns: the absolute filename of the icon.
+ */
 gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -169,6 +227,14 @@ gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme
 #endif
 }
 
+/**
+ * awn_desktop_item_set_icon:
+ * @item: The desktop item structure that is being modified.
+ * @icon: The name of the icon, preferably per the Freedesktop.org Icon Naming
+ * Specification.
+ *
+ * Sets the icon name of the desktop item.
+ */
 void awn_desktop_item_set_icon (AwnDesktopItem *item, gchar *icon)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -178,6 +244,13 @@ void awn_desktop_item_set_icon (AwnDesktopItem *item, gchar *icon)
 #endif
 }
 
+/**
+ * awn_desktop_item_get_name:
+ * @item: The desktop item structure that is being queried.
+ *
+ * Retrieves the name of the desktop item.
+ * Returns: the item name.
+ */
 gchar *awn_desktop_item_get_name (AwnDesktopItem *item)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -188,6 +261,13 @@ gchar *awn_desktop_item_get_name (AwnDesktopItem *item)
 #endif
 }
 
+/**
+ * awn_desktop_item_set_name:
+ * @item: The desktop item structure that is being modified.
+ * @name: The new name of the desktop item.
+ *
+ * Sets the name of the desktop item.
+ */
 void awn_desktop_item_set_name (AwnDesktopItem *item, gchar *name)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -197,6 +277,13 @@ void awn_desktop_item_set_name (AwnDesktopItem *item, gchar *name)
 #endif
 }
 
+/**
+ * awn_desktop_item_get_exec:
+ * @item: The desktop item structure that is being queried.
+ *
+ * Retrieves the path of the desktop item.
+ * Returns: the item path.
+ */
 gchar *awn_desktop_item_get_exec (AwnDesktopItem *item)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -206,6 +293,13 @@ gchar *awn_desktop_item_get_exec (AwnDesktopItem *item)
 #endif
 }
 
+/**
+ * awn_desktop_item_set_exec:
+ * @item: The desktop item structure that is being modified.
+ * @exec: The new path of the desktop item.
+ *
+ * Sets the path of the desktop item.
+ */
 void awn_desktop_item_set_exec (AwnDesktopItem *item, gchar *exec)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -215,6 +309,14 @@ void awn_desktop_item_set_exec (AwnDesktopItem *item, gchar *exec)
 #endif
 }
 
+/**
+ * awn_desktop_item_get_string:
+ * @item: The desktop item structure that is being queried.
+ * @key: The name of the key.
+ *
+ * Retrieves the value of a key in the desktop item specified.
+ * Returns: the value of the key if it exists, or %NULL otherwise.
+ */
 gchar *awn_desktop_item_get_string (AwnDesktopItem *item, gchar *key)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -231,6 +333,14 @@ gchar *awn_desktop_item_get_string (AwnDesktopItem *item, gchar *key)
 #endif
 }
 
+/**
+ * awn_desktop_item_set_string:
+ * @item: The desktop item structure that is being modified.
+ * @key: The name of the key.
+ * @value: The new value of the key.
+ *
+ * Changes the value of a key in the desktop item specified.
+ */
 void awn_desktop_item_set_string (AwnDesktopItem *item, gchar *key, gchar *value)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -241,6 +351,14 @@ void awn_desktop_item_set_string (AwnDesktopItem *item, gchar *key, gchar *value
 #endif
 }
 
+/**
+ * awn_desktop_item_get_localestring:
+ * @item: The desktop item structure that is being queried.
+ * @key: The name of the key.
+ *
+ * Retrieves a locale-specific value for a key in the desktop item.
+ * Returns: the locale-specific value, if it exists, or %NULL otherwise.
+ */
 gchar *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *key)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -264,6 +382,16 @@ gchar *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *key)
 #endif
 }
 
+/**
+ * awn_desktop_item_set_localestring:
+ * @item: The desktop item structure that is being modified.
+ * @key: The name of the key.
+ * @locale: The name of the locale.  The format must correspond to the
+ * POSIX specification on locale names.
+ * @value: The new value of the locale-specific key.
+ *
+ * Sets a locale-specific value for a key in a desktop item.
+ */
 void awn_desktop_item_set_localestring (AwnDesktopItem *item, gchar *key, gchar *locale, gchar *value)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -282,6 +410,14 @@ void awn_desktop_item_set_localestring (AwnDesktopItem *item, gchar *key, gchar 
 #endif
 }
 
+/**
+ * awn_desktop_item_exists:
+ * @item: The desktop item structure that is being queried.
+ *
+ * Checks to see if the path associated with the desktop item exists
+ * and is executable.
+ * Returns: %TRUE on success, %FALSE otherwise.
+ */
 gboolean awn_desktop_item_exists (AwnDesktopItem *item)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -291,6 +427,17 @@ gboolean awn_desktop_item_exists (AwnDesktopItem *item)
 #endif
 }
 
+/**
+ * awn_desktop_item_launch:
+ * @item: The desktop item structure to be launched.
+ * @documents: A list of documents that is passed to the path as arguments.
+ * Can be %NULL.
+ * @err: A pointer to a #GError structure, which contains an error message
+ * if the function fails.
+ *
+ * Launches the path of the desktop item.
+ * Returns: the process ID (PID) of the new process.
+ */
 gint awn_desktop_item_launch (AwnDesktopItem *item, GList *documents, GError **err)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -314,6 +461,14 @@ gint awn_desktop_item_launch (AwnDesktopItem *item, GList *documents, GError **e
 #endif
 }
 
+/**
+ * awn_desktop_item_save:
+ * @item: The desktop item structure to be serialized.
+ * @err: The pointer to a #GError structure, which contains an error
+ * message when the function fails.
+ *
+ * Saves the serialized desktop item to disk.
+ */
 void awn_desktop_item_save (AwnDesktopItem *item, GError **err)
 {
 #ifdef LIBAWN_USE_GNOME
@@ -333,6 +488,12 @@ void awn_desktop_item_save (AwnDesktopItem *item, GError **err)
 #endif
 }
 
+/**
+ * awn_desktop_item_unref:
+ * @item: The item to be freed from memory.
+ *
+ * Frees the desktop item structure from memory.
+ */
 void awn_desktop_item_unref (AwnDesktopItem *item)
 {
 #ifdef LIBAWN_USE_GNOME

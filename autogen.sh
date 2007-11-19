@@ -16,12 +16,15 @@ PKG_NAME="avant-window-navigator"
 if which gnome-autogen.sh ; then
   REQUIRED_AUTOMAKE_VERSION=1.9 . gnome-autogen.sh
 else
-  if which intltoolize && which glib-gettextize && which autoreconf ; then
+  if which intltoolize && which glib-gettextize && which gtkdocize && which autoreconf ; then
     intltoolize --copy --force --automake || \
       (echo "There was an error in running intltoolize." > /dev/stderr;
        exit 1)
     glib-gettextize --copy --force || \
       (echo "There was an error in running glib-gettextize." > /dev/stderr;
+       exit 1)
+    gtkdocize --copy || \
+      (echo "There was an error in running gtkdocize." > /dev/stderr;
        exit 1)
     autoreconf --force --install || \
       (echo "There was an error in running autoreconf." > /dev/stderr;
@@ -33,6 +36,7 @@ else
     echo "2. You need to install the following scripts:"
     echo "   * intltool"
     echo "   * glib-gettextize (usually installed with glib-2.0)"
+    echo "   * gtk-doc"
     echo "   * libtool"
     echo "   * automake"
     echo "   * autoconf"

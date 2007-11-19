@@ -9,6 +9,7 @@ SUBDIRS =				\
 	po				\
 	pyawn				\
 	awn-manager			\
+	doc					\
 	test				\
 	$(NULL)
 	

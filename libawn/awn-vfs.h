@@ -24,6 +24,12 @@
 
 #include <glib.h>
 
+/**
+ * AwnVfsMonitor:
+ *
+ * A wrapper structure for the VFS libraries' file/directory monitoring
+ * structure. In the case of the GIO implementation, it is an opaque structure.
+ */
 #ifdef LIBAWN_USE_GNOME
 #include <libgnomevfs/gnome-vfs-monitor.h>
 typedef GnomeVFSMonitorHandle AwnVfsMonitor;
@@ -36,17 +42,53 @@ typedef ThunarVfsMonitorHandle AwnVfsMonitor;
 typedef struct _AwnVfsMonitor AwnVfsMonitor;
 #endif
 
+/**
+ * AwnVfsMonitorEvent:
+ * @AWN_VFS_MONITOR_EVENT_CHANGED: Indicates that the path referenced has
+ * been changed.
+ * @AWN_VFS_MONITOR_EVENT_CREATED: Indicates that the path referenced has
+ * been created on the filesystem.
+ * @AWN_VFS_MONITOR_EVENT_DELETED: Indicates that the path referenced has
+ * been removed from the filesystem.
+ *
+ * A list of valid monitor event types for use with monitor event emission or
+ * retrieving the type of monitor event in the callback.  Due to thunar-vfs's
+ * limited support for event types, only "changed", "created", and "deleted"
+ * are available for use.
+ */
 typedef enum {
 	AWN_VFS_MONITOR_EVENT_CHANGED,
 	AWN_VFS_MONITOR_EVENT_CREATED,
 	AWN_VFS_MONITOR_EVENT_DELETED
 } AwnVfsMonitorEvent;
 
+/**
+ * AwnVfsMonitorType:
+ * @AWN_VFS_MONITOR_FILE: Indicates that the #AwnVfsMonitor instance is
+ * monitoring a file.
+ * @AWN_VFS_MONITOR_DIRECTORY: Indicates that the #AwnVfsMonitor instance is
+ * monitoring a directory.
+ *
+ * The type of path that an #AwnVfsMonitor instance is monitoring.
+ */
 typedef enum {
 	AWN_VFS_MONITOR_FILE,
 	AWN_VFS_MONITOR_DIRECTORY
 } AwnVfsMonitorType;
 
+/**
+ * AwnVfsMonitorFunc:
+ * @monitor: The monitor structure.
+ * @monitor_path: The path that is associated with the monitor structure.
+ * @event_path: In the case of a directory monitor, the path inside the folder
+ * that triggered the event.  Otherwise, it is the same as the @monitor_path.
+ * @event: The filesystem operation that triggered the callback to be executed.
+ * @user_data: The data passed to awn_vfs_monitor_add() so that it could be used
+ * in the callback.
+ *
+ * The function template used for callbacks executed when a filesystem event has
+ * occurred on a path that is being monitored.
+ */
 typedef void (*AwnVfsMonitorFunc) (AwnVfsMonitor *monitor, gchar *monitor_path, gchar *event_path, AwnVfsMonitorEvent event, gpointer user_data);
 
 /* File/Directory monitoring */

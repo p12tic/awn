@@ -16,6 +16,9 @@ AC_PROG_CC
 AC_STDC_HEADERS
 AM_PROG_LIBTOOL
 
+dnl check for gtk-doc
+GTK_DOC_CHECK(1.4)
+
 AM_PATH_PYTHON(2.3.5)
 AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
 
@@ -145,6 +148,8 @@ AM_GCONF_SOURCE_2
 AC_OUTPUT([
 Makefile
 awn-manager/Makefile
+doc/Makefile
+doc/reference/Makefile
 libawn/Makefile
 libawn/egg/Makefile
 src/Makefile
