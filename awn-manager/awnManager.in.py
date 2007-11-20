@@ -148,7 +148,7 @@ class AwnManager:
     def about(self, button):
         self.about = gtk.AboutDialog()
         self.about.set_name("Avant Window Navigator")
-        #self.about.set_version("bzr17")
+        self.about.set_version("0.2.1")
         self.about.set_copyright("Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>")
         self.about.set_authors(["Neil Jagdish Patel	<njpatel@gmail.com>", "haytjes <hv1989@gmail.com>", "Miika-Petteri Matikainen <miikapetteri@gmail.com>", "Anthony Arobone  <aarobone@gmail.com>", "Ryan Rushton <ryan@rrdesign.ca>", "Michal Hruby  <michal.mhr@gmail.com>", "Julien Lavergne <julien.lavergne@gmail.com>"])
         self.about.set_comments("Fully customisable dock-like window navigator for GNOME.")

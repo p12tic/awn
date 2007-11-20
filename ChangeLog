@@ -55,6 +55,12 @@
 	Bundle a copy of GChecksum for the case that the user has not installed
 	glib >= 2.16.
 
+2007-11-03  Neil J. Patel  <njpatel@gmail.com>
+
+	* awn-manager/awnManager.in.py:
+	* configure.in:
+	Bump to 0.2.1
+
 2007-10-28  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* config.h.in:
