@@ -313,7 +313,7 @@
 
 (define-method set_temp_icon
   (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_temp_icon")
+  (c-name "awn_applet_simple_set_icon")
   (return-type "none")
   (parameters
     '("GdkPixbuf*" "pixbuf")
