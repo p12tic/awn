@@ -150,7 +150,7 @@ static void thunar_vfs_monitor_callback_proxy (ThunarVfsMonitor *monitor, Thunar
 		event_path = thunar_vfs_path_dup_string (event_uri);
 	}
 	AwnVfsMonitorEvent awn_event = awn_vfs_monitor_native_event_type_to_awn (event);
-	(data->callback) ((AwnVfsMonitor)handle, monitor_path, event_path, awn_event, data->data);
+	(data->callback) ((AwnVfsMonitor*)handle, monitor_path, event_path, awn_event, data->data);
 	g_free (event_path);
 	g_free (monitor_path);
 }
@@ -215,11 +215,11 @@ AwnVfsMonitor *awn_vfs_monitor_add (gchar *path, AwnVfsMonitorType monitor_type,
 	gnome_vfs_monitor_add (&handle, path, gmtype, gnome_vfs_monitor_callback_proxy, data);
 #elif defined(LIBAWN_USE_XFCE)
 	ThunarVfsMonitor *tvfs_monitor = thunar_vfs_monitor_get_default ();
-	ThunarVfsPath *uri = thunar_vfs_path_new (path);
+	ThunarVfsPath *uri = thunar_vfs_path_new (path, NULL);
 	if (monitor_type == AWN_VFS_MONITOR_FILE) {
-		monitor = thunar_vfs_monitor_add_file (tvfs_monitor, uri, thunar_vfs_monitor_callback_proxy, data);
+		monitor = thunar_vfs_monitor_add_file (tvfs_monitor, uri, (ThunarVfsMonitorCallback)thunar_vfs_monitor_callback_proxy, data);
 	} else if (monitor_type == AWN_VFS_MONITOR_DIRECTORY) {
-		monitor = thunar_vfs_monitor_add_directory (tvfs_monitor, uri, thunar_vfs_monitor_callback_proxy, data);
+		monitor = thunar_vfs_monitor_add_directory (tvfs_monitor, uri, (ThunarVfsMonitorCallback)thunar_vfs_monitor_callback_proxy, data);
 	} else {
 		monitor = NULL;
 	}
@@ -265,7 +265,7 @@ void awn_vfs_monitor_emit (AwnVfsMonitor *monitor, gchar *path, AwnVfsMonitorEve
 	gnome_vfs_uri_unref (uri);
 #elif defined(LIBAWN_USE_XFCE)
 	ThunarVfsPath *uri = thunar_vfs_path_new (path, NULL);
-	thunar_vfs_monitor_feed (monitor, (ThunarVfsMonitorEvent)native_event, uri);
+	thunar_vfs_monitor_feed ((ThunarVfsMonitor*)monitor, (ThunarVfsMonitorEvent)native_event, uri);
 	thunar_vfs_path_unref (uri);
 #else
 	switch (monitor->type) {
