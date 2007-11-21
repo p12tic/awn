@@ -55,7 +55,6 @@ defs_DATA = $(CLUTTERGTK_DEFS)
 	    --py_ssize_t-clean \
 	    --register $(PYGTK_DEFSDIR)/gdk-types.defs \
 	    --register $(PYGTK_DEFSDIR)/gtk-types.defs \
-	    --register $(PYGTK_DEFSDIR)/gconf.defs \
 	--override $(srcdir)/$*.override \
 	    --prefix py$* $<) > gen-$*.c \
 	&& cp -f gen-$*.c $*.c \
