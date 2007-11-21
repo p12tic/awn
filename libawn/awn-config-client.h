@@ -94,20 +94,6 @@ typedef struct {
 typedef void (*AwnConfigClientNotifyFunc) (AwnConfigClientNotifyEntry *entry, gpointer data);
 
 /**
- * AwnConfigClientNotifyData:
- * @callback: The notification callback.
- * @data: Extra data passed to the callback, as defined in the call
- * to awn_config_client_notify_add().
- *
- * A utility structure used to pass callback metadata in the configuration
- * backend implementations.
- */
-typedef struct {
-	AwnConfigClientNotifyFunc callback;
-	gpointer data;
-} AwnConfigClientNotifyData;
-
-/**
  * AWN_CONFIG_CLIENT_DEFAULT_GROUP:
  *
  * In the #GKeyFile backend, the group name with which "top-level" configuration

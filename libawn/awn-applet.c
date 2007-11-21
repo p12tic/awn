@@ -30,6 +30,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef USE_GCONF
+#include <gconf/gconf-client.h>
+#endif
+
 G_DEFINE_TYPE (AwnApplet, awn_applet, GTK_TYPE_EVENT_BOX);
 
 #define AWN_APPLET_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -136,7 +140,7 @@ awn_applet_get_height (AwnApplet *applet)
 
 #ifdef USE_GCONF
 static void
-awn_applet_associate_schemas_in_dir (GConfClient  *client,
+awn_applet_associate_schemas_in_dir (GConfClient    *client,
 				       const gchar  *prefs_key,
 				       const gchar  *schema_dir,
 				       GError      **error)

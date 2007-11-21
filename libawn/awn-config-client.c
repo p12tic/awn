@@ -56,6 +56,23 @@ struct _AwnConfigClient
 	gchar *path; /* GConf: key prefix; GKeyFile: .ini path */
 };
 
+/**
+ * AwnConfigClientNotifyData:
+ * @callback: The notification callback.
+ * @data: Extra data passed to the callback, as defined in the call
+ * to awn_config_client_notify_add().
+ *
+ * A utility structure used to pass callback metadata in the configuration
+ * backend implementations.
+ */
+typedef struct {
+#ifdef USE_GCONF
+	AwnConfigClient *client;
+#endif
+	AwnConfigClientNotifyFunc callback;
+	gpointer data;
+} AwnConfigClientNotifyData;
+
 #ifndef USE_GCONF
 static void awn_config_client_gkeyfile_new_schema (AwnConfigClient *client, gchar *base_name);
 static void awn_config_client_load_data (AwnConfigClient *client);
@@ -132,8 +149,8 @@ AwnConfigClient *awn_config_client_new ()
 #else
 		awn_dock_config = awn_config_client_new_with_path (g_build_filename (g_get_user_config_dir (), "awn", "awn.ini", NULL));
 		awn_config_client_gkeyfile_new_schema (awn_dock_config, NULL);
-	}
 #endif
+	}
 	return awn_dock_config;
 }
 
@@ -164,6 +181,7 @@ static gchar *awn_config_client_generate_key (AwnConfigClient *client, const gch
 		return g_strconcat(client->path, "/", group, "/", key, NULL);
 	}
 }
+
 #ifdef USE_GCONF
 static void awn_config_client_notify_proxy (GConfClient *client, guint cid, GConfEntry *entry, AwnConfigClientNotifyData* notify)
 {
@@ -174,7 +192,7 @@ static void awn_config_client_notify_proxy (GConfClient *client, guint cid, GCon
 		gchar **exploded = g_strsplit (gconf_entry_get_key (entry), "/", 0);
 		guint exploded_len = g_strv_length (exploded);
 		g_return_if_fail (exploded_len < 2);
-		awn_entry->client = client;
+		awn_entry->client = notify->client;
 		awn_entry->group = g_strdup (exploded[exploded_len - 2]);
 		awn_entry->key = g_strdup (exploded[exploded_len - 1]);
 		g_strfreev (exploded);
@@ -192,7 +210,10 @@ static void awn_config_client_notify_proxy (GConfClient *client, guint cid, GCon
 				awn_entry->value.list_val = gconf_value_get_list (value);
 				break;
 			case GCONF_VALUE_STRING:
-				awn_entry->value.str_val = gconf_value_get_string (value);
+				awn_entry->value.str_val = (gchar*)gconf_value_get_string (value);
+				break;
+			default:
+				/* FIXME do an error? */
 				break;
 		}
 		(notify->callback) (awn_entry, notify->data);
@@ -515,7 +536,6 @@ void awn_config_client_clear (AwnConfigClient *client, GError **err)
 #ifdef USE_GCONF
 	/* only do it for applets on gconf */
 	if (strcmp (AWN_GCONF_KEY_PREFIX, client->path) != 0) {
-		GConfClient *client = gconf_client_get_default ();
 		gconf_client_remove_dir (client->client, client->path, err);
 	}
 #else
@@ -577,7 +597,8 @@ void awn_config_client_notify_add (AwnConfigClient *client, const gchar *group,
 	notify->data = data;
 	gchar *full_key = awn_config_client_generate_key (client, group, key);
 #ifdef USE_GCONF
-	gconf_client_notify_add (client->client, gconf_key, (GConfClientNotifyFunc)awn_config_client_notify_proxy, notify, NULL, NULL);
+	notify->client = client;
+	gconf_client_notify_add (client->client, full_key, (GConfClientNotifyFunc)awn_config_client_notify_proxy, notify, NULL, NULL);
 #else
 	GQuark quark = g_quark_from_string (full_key);
 	GSList *funcs = g_datalist_id_get_data (&(client->notify_funcs), quark);
