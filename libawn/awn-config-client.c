@@ -27,6 +27,12 @@
 #ifdef USE_GCONF
 #include <gconf/gconf-client.h>
 #define AWN_GCONF_KEY_PREFIX "/apps/avant-window-navigator"
+#else
+#ifdef USE_EGG_CHECKSUM 
+#include "egg/eggchecksum.h"
+#else
+#include <glib/gchecksum.h>
+#endif
 #endif
 
 /**
@@ -40,7 +46,6 @@
  */
 #include "libawn/awn-config-client.h"
 #include "libawn/awn-vfs.h"
-#include "egg/eggchecksum.h"
 
 struct _AwnConfigClient
 {
