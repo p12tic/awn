@@ -72,3 +72,4 @@ doc/reference/libawn.interfaces
 doc/reference/libawn.prerequisites
 doc/reference/libawn.signals
 doc/reference/libawn.types
+doc/reference/*.bak
