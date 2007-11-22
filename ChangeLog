@@ -1,5 +1,12 @@
 2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
 
+	* applets/taskman.desktop.in.in:
+	* awn-manager/awn-manager.desktop.in.in:
+	* data/avant-window-navigator.desktop.in.in:
+	Fix Exec=none and Encoding in desktop files (patch from Ubuntu)
+
+2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
+
 	* COPYING.LIBS:
 	Add a copy of LGPL
 

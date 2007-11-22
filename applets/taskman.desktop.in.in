@@ -1,7 +1,5 @@
 [Desktop Entry]
 Type=C
-Encoding=UTF-8
 Name=Launcher/Taskmanager
 Comment=The main Awn Launcher/TaskManager applet
-Exec=None
 Icon=@PKGDATADIR@/avant-window-navigator.svg
