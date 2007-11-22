@@ -1,3 +1,17 @@
+2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* COPYING.LIBS:
+	Add a copy of LGPL
+
+	* awn-manager/awnTheme.py:
+	* data/active/spotlight_png_inline.c:
+	* libawn/awn-applet-dialog.c:
+	* pyawn/__init__.py:
+	* pyawn/awnmodule.c:
+	* src/icon-test.c:
+	* src/inlinepixbufs.h:
+	Add some Licence & Copyright
+
 2007-11-03  Neil J. Patel  <njpatel@gmail.com>
 
 	* awn-manager/awnManager.in.py:
