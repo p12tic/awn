@@ -1,5 +1,12 @@
 2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
 
+	patch by: Mark Lee  
+
+	* configure.in:
+	Bump pygtk to 2.10 (Fix Bug 160845)
+
+2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
+
 	* debian-ubuntu/avant-window-navigator.1:
 	* debian-ubuntu/avant-window-navigator.install:
 	* debian-ubuntu/awn-applet-activation.1:
