@@ -171,6 +171,7 @@ AwnConfigClient *awn_config_client_new_for_applet (gchar *name)
 #ifdef USE_GCONF
 	return awn_config_client_new_with_path (g_strconcat (AWN_GCONF_KEY_PREFIX, "/applets/", name, NULL));
 #else
+	/* TODO: add ~/.config/awn/applets if it doesn't exist */
 	AwnConfigClient *client = awn_config_client_new_with_path (g_build_filename (g_get_user_config_dir (), "awn", "applets", g_strconcat(name, ".ini", NULL), NULL));
 	awn_config_client_gkeyfile_new_schema (client, name);
 	return client;
@@ -370,7 +371,7 @@ static void awn_config_client_save (AwnConfigClient *client, GError **err)
 	gchar *data;
 	gsize len;
 	data = g_key_file_to_data (client->client, &len, err);
-	if (!*err) {
+	if (!err || !*err) {
 		g_file_set_contents (client->path, data, len, err);
 		g_free (data);
 	}
@@ -461,7 +462,7 @@ static void awn_config_client_reload (AwnVfsMonitor *monitor, gchar *monitor_pat
 			GKeyFile *old_client = client->client;
 			client->client = g_key_file_new ();
 			awn_config_client_load_data (client);
-			if (strcmp (old_checksum, client->checksum) != 0) {
+			if (!old_checksum || strcmp (old_checksum, client->checksum) != 0) {
 				/* iterate through all of the groups/keys to see if anything's changed */
 				/* merge groups into one array */
 				gsize og_len, ng_len, i, groups_len;
