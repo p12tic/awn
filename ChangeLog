@@ -1,5 +1,36 @@
 2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
 
+	* debian-ubuntu/avant-window-navigator.1:
+	* debian-ubuntu/avant-window-navigator.install:
+	* debian-ubuntu/awn-applet-activation.1:
+	* debian-ubuntu/awn-manager.1:
+	* debian-ubuntu/awn-manager.install:
+	* debian-ubuntu/changelog:
+	* debian-ubuntu/compat:
+	* debian-ubuntu/control:
+	* debian-ubuntu/copyright:
+	* debian-ubuntu/libawn-dev.install:
+	* debian-ubuntu/libawn0.install:
+	* debian-ubuntu/pycompat:
+	* debian-ubuntu/python-libawn0.install:
+	* debian-ubuntu/rules:
+	Delete debian-ubuntu. debian should do the work for Debian and Ubuntu packages
+
+	* debian/avant-window-navigator.1:
+	* debian/awn-applet-activation.1:
+	* debian/awn-manager.1:
+	* debian/changelog:
+	* debian/control:
+	* debian/control.autoppa:
+	* debian/copyright:
+	* debian/python-awn.install:
+	* debian/python-libawn0.install:
+	* debian/rules:
+	* debian/watch:
+	Update debian folder and add support for PPA and autoPPA
+
+2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
+
 	* applets/taskman.desktop.in.in:
 	* awn-manager/awn-manager.desktop.in.in:
 	* data/avant-window-navigator.desktop.in.in:

@@ -1,41 +1,43 @@
 Source: avant-window-navigator-trunk
-Section: gnome
+Section: universe/gnome
 Priority: optional
 Maintainer: Julien Lavergne <julien.lavergne@gmail.com>
-Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake
+AUTOPPA_INCLUDE(dapper):Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-support, python-dev, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake1.9, python-gtk2-dev
+AUTOPPA_INCLUDE(edgy):Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python-dev, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake1.9, python-gtk2-dev
+AUTOPPA_INCLUDE(feisty):Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python-dev, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake, python-gtk2-dev
+AUTOPPA_INCLUDE(gutsy,hardy):Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake
 Standards-Version: 3.7.2
 Homepage: https://launchpad.net/avant-window-navigator/
 XS-Python-Version: current
 
 Package: avant-window-navigator-trunk
-Section: gnome
+Section: universe/gnome
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: awn-manager (>= 0.2)
+Recommends: awn-manager (= ${binary:Version})
 Suggests: xcompmgr | compiz | xfwm4
 Conflicts: awn-window-navigator-bzr, awn-window-navigator
 Replaces: awn-window-navigator-bzr, awn-window-navigator
 Description: A MacOS X like panel for GNOME
  The avant-window-navigator is a MacOS X like panel for the GNOME Desktop
- written in C. Besides launchers that can be dragged onto the bar, it features
- a task bar that behaves similar to the MacOS X dock. The window navigator
+ written in C. Besides launchers that can be dragged onto the bar it features
+ a task bar that behaves similar to the MacOSX dock. The window navigator
  uses the composite extension for transparency and other effects.
 
 Package: libawn0-trunk
-Section: libs
+Section: universe/libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: xcompmgr | compiz | xfwm4
 Conflicts: libawn0-bzr, libawn-bzr, libawn, libawn0
 Replaces: libawn0-bzr, libawn-bzr, libawn, libawn0
 Description: library for avant-window-navigator
- This library is used by avant-window-navigator. It provides functions to create 
- the avant-window-navigator bar and its applets.
+ This library is used by avant-window-navigator.
 
 Package: libawn-dev-trunk
-Section: libdevel
+Section: universe/libdevel
 Architecture: any
-Depends: libawn0 (= ${binary:Version}), ${misc:Depends}, libgnome2-dev, libgtk2.0-dev
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts: libawn-dev-bzr, libawn-dev
 Replaces: libawn-dev-bzr, libawn-dev
 Description: library for avant-window-navigator - developpement files
@@ -43,9 +45,9 @@ Description: library for avant-window-navigator - developpement files
  avant-window-navigator library functions.
 
 Package: awn-manager-trunk
-Section: gnome
-Architecture: all
-Depends: avant-window-navigator (>= 0.2), ${python:Depends}, python-gnome2, python-gnome2-desktop
+Section: universe/gnome
+Architecture: any
+Depends: avant-window-navigator (>= 0.2 ), ${python:Depends}, python-gnome2, python-gnome2-desktop
 Conflicts: awn-manager-bzr, awn-manager
 Replaces: awn-manager-bzr, awn-manager
 XB-Python-Version: ${python:Versions}
@@ -54,12 +56,11 @@ Description: A manager for the preferences of avant-window-navigator
  You can manage preferences, themes, applets and launchers.
 
 Package: python-awn-trunk
-Section: python
+Section: universe/python
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
 Conflicts: python-libawn0, python-libawn, python-libawn-bzr, python-awn
 Replaces: python-libawn0, python-libawn, python-libawn-bzr, python-awn
 XB-Python-Version: ${python:Versions}
 Description: library for avant-window-navigator - Python bindings
- This library is used by avant-window-navigator. It provides python bindings 
- to create and use python applets for avant-window-navigator.
+ This library is used by avant-window-navigator.

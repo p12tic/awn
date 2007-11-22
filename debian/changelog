@@ -1,5 +1,5 @@
-avant-window-navigator (0.1.9-1) unstable; urgency=low
+avant-window-navigator-trunk (0.2.1+bzr-1) unstable; urgency=low
 
-  * Initial release (Closes: 428246)
+  * Current bzr build
 
- -- Julien Lavergne <julien.lavergne@gmail.com>  Mon, 1 Oct 2007 15:35:07 +0200
+ -- Julien Lavergne <julien.lavergne@gmail.com>  Sun, 4 Nov 2007 21:39:41 +0100
