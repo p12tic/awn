@@ -1,3 +1,9 @@
+2007-11-22  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	Changed licence to LGPL.
+
 2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
 
 	patch by: Mark Lee  
