@@ -1,3 +1,94 @@
+2007-11-23  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awnManager.in.py:
+	Don't show awn-manager as python in process list
+
+	* debian/avant-window-navigator-trunk.install:
+	* debian/avant-window-navigator.install:
+	* debian/awn-manager-trunk.install:
+	* debian/awn-manager.install:
+	* debian/control:
+	* debian/control.autoppa:
+	* debian/libawn-dev-trunk.install:
+	* debian/libawn-dev.install:
+	* debian/libawn0-trunk.install:
+	* debian/libawn0.install:
+	* debian/python-awn-trunk.install:
+	* debian/python-awn.install:
+	* debian/rules:
+	Fix debian/ to handle correct depends and and correct install files
+
+2007-11-22  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	Changed licence to LGPL.
+
+2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
+
+	patch by: Mark Lee  
+
+	* configure.in:
+	Bump pygtk to 2.10 (Fix Bug 160845)
+
+2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian-ubuntu/avant-window-navigator.1:
+	* debian-ubuntu/avant-window-navigator.install:
+	* debian-ubuntu/awn-applet-activation.1:
+	* debian-ubuntu/awn-manager.1:
+	* debian-ubuntu/awn-manager.install:
+	* debian-ubuntu/changelog:
+	* debian-ubuntu/compat:
+	* debian-ubuntu/control:
+	* debian-ubuntu/copyright:
+	* debian-ubuntu/libawn-dev.install:
+	* debian-ubuntu/libawn0.install:
+	* debian-ubuntu/pycompat:
+	* debian-ubuntu/python-libawn0.install:
+	* debian-ubuntu/rules:
+	Delete debian-ubuntu. debian should do the work for Debian and Ubuntu packages
+
+	* debian/avant-window-navigator.1:
+	* debian/awn-applet-activation.1:
+	* debian/awn-manager.1:
+	* debian/changelog:
+	* debian/control:
+	* debian/control.autoppa:
+	* debian/copyright:
+	* debian/python-awn.install:
+	* debian/python-libawn0.install:
+	* debian/rules:
+	* debian/watch:
+	Update debian folder and add support for PPA and autoPPA
+
+2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* applets/taskman.desktop.in.in:
+	* awn-manager/awn-manager.desktop.in.in:
+	* data/avant-window-navigator.desktop.in.in:
+	Fix Exec=none and Encoding in desktop files (patch from Ubuntu)
+
+2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* COPYING.LIBS:
+	Add a copy of LGPL
+
+	* awn-manager/awnTheme.py:
+	* data/active/spotlight_png_inline.c:
+	* libawn/awn-applet-dialog.c:
+	* pyawn/__init__.py:
+	* pyawn/awnmodule.c:
+	* src/icon-test.c:
+	* src/inlinepixbufs.h:
+	Add some Licence & Copyright
+
+2007-11-03  Neil J. Patel  <njpatel@gmail.com>
+
+	* awn-manager/awnManager.in.py:
+	* configure.in:
+	Bump to 0.2.1
+
 2007-11-01  Michal Hruby <michal.mhr@gmail.com>
 
 	* ChangeLog:
