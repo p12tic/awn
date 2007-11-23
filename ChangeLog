@@ -1,3 +1,23 @@
+2007-11-23  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awnManager.in.py:
+	Don't show awn-manager as python in process list
+
+	* debian/avant-window-navigator-trunk.install:
+	* debian/avant-window-navigator.install:
+	* debian/awn-manager-trunk.install:
+	* debian/awn-manager.install:
+	* debian/control:
+	* debian/control.autoppa:
+	* debian/libawn-dev-trunk.install:
+	* debian/libawn-dev.install:
+	* debian/libawn0-trunk.install:
+	* debian/libawn0.install:
+	* debian/python-awn-trunk.install:
+	* debian/python-awn.install:
+	* debian/rules:
+	Fix debian/ to handle correct depends and and correct install files
+
 2007-11-22  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-effects.c:
