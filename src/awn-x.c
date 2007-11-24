@@ -69,7 +69,7 @@ awn_x_get_icon (WnckWindow *window, gint width, gint height)
   	if (mini_icon)
   		gdk_pixbuf_unref (mini_icon);
         
-        return gdk_pixbuf_new_from_inline (-1,default_icon_data, TRUE, NULL);
+        return gdk_pixbuf_scale_simple( gdk_pixbuf_new_from_inline (-1,default_icon_data, TRUE, NULL), width, height, GDK_INTERP_BILINEAR);
         return wnck_window_get_icon (window);
 
 }

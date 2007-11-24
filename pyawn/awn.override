@@ -32,3 +32,9 @@ import gtk.gdk.Pixbuf as PyGdkPixbuf_Type
 ignore-glob
   *_get_type
 %%
+override awn_applet_simple_set_temp_icon kwargs
+static PyObject *
+_wrap_awn_applet_simple_set_temp_icon (PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    return _wrap_awn_applet_simple_set_icon (self, args, kwargs);
+}

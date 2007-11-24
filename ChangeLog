@@ -1,3 +1,15 @@
+2007-11-24  Michal Hruby <michal.mhr@gmail.com>
+
+	patch by: dolfje, malept
+
+	* awn-manager/window.glade:
+	* pyawn/awn.override:
+	* src/awn-x.c:
+	* src/main.c:
+	Merge from libawn-draw-effects
+	 - instant bar refresh on bar_angle change
+	Fixes for bug #156697 and bug #159291
+
 2007-11-23  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-manager/awnManager.in.py:
