@@ -246,7 +246,7 @@ class awnApplet:
 
     def remove_keys (self, model, iterator):
         uid = model.get_value (iterator, 3)
-        applet_client = awn.config_for_applet(uid)
+        applet_client = awn.Config(uid)
         applet_client.clear()
 
     def remove_applet_dir(self, dirPath, filename):
