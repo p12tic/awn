@@ -109,6 +109,16 @@ adjust_icon(AwnAppletSimple *simple)
         gtk_widget_queue_draw (GTK_WIDGET (simple));
 }
 
+/**
+ * awn_applet_simple_set_icon:
+ * @simple: The applet whose icon is being set.
+ * @pixbuf: The pixbuf image to use as the icon.
+ *
+ * Sets the applet icon to the pixbuf provided as an argument.  A private copy
+ * of the pixbuf argument is made by awn_applet_simple_set_icon() and the
+ * original argument is left unchanged.  The caller retains ownership of pixbuf
+ * and is required to unref it when it is no longer required.
+ */
 void
 awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 {
@@ -124,6 +134,17 @@ awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 	awn_applet_simple_set_temp_icon (simple, gdk_pixbuf_copy (pixbuf));
 }
 
+/**
+ * awn_applet_simple_set_temp_icon:
+ * @simple: The applet whose icon is being set.
+ * @pixbuf: The pixbuf image to use as the icon.
+ *
+ * A convenience function that sets the applet icon to the pixbuf provided as an
+ * argument.  A private copy of the pixbuf argument is made by the function, and
+ * the argument is unreferenced.  The caller should not reference pixbuf after
+ * calling this function.  If the pixbuf needs to be retained, then
+ * awn_applet_simple_set_icon() should be used.
+ */
 void 
 awn_applet_simple_set_temp_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 {
@@ -282,6 +303,14 @@ awn_applet_simple_init (AwnAppletSimple *simple)
 				      (AwnConfigClientNotifyFunc)icon_offset_changed, NULL);
 }
 
+/**
+ * awn_applet_simple_get_effects:
+ * @simple: The applet whose properties are being queried.
+ *
+ * Retrieves the #AwnEffects object associated with the applet.
+ * Returns: a pointer to an #AwnEffects object associated with the
+ * applet.  The caller does not own this object.
+ */
 AwnEffects*
 awn_applet_simple_get_effects(AwnAppletSimple *simple)
 {
@@ -289,6 +318,16 @@ awn_applet_simple_get_effects(AwnAppletSimple *simple)
 	return &priv->effects;
 }
 
+/**
+ * awn_applet_simple_new:
+ * @uid: The unique identifier of the instance of the applet on the dock.
+ * @orient: The orientation of the applet - see #AwnOrientation.
+ * @height: The height of the applet.
+ * Creates a new #AwnAppletSimple object.  This applet will have awn-effects
+ * effects applied to its icon automatically if awn_applet_simple_set_icon() or
+ * awn_applet_simple_set_temp_icon() are used to specify the applet icon.
+ * Returns: a new instance of an applet.
+ */
 GtkWidget* 
 awn_applet_simple_new (const gchar *uid, gint orient, gint height) 
 {

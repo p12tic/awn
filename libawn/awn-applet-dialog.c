@@ -71,9 +71,12 @@ _on_alpha_screen_changed (GtkWidget* pWidget,
 }
 
 
-/*
- * Should "reposition" dialog-arrow if the dialog does not fit
- *(fall-off-screen) on the desired place.
+/**
+ * awn_applet_dialog_position_reset:
+ * @dialog: The dialog to reposition.
+ * Resets the position of the dialog so it is centered over its associated
+ * applet window.  Should "reposition" dialog-arrow if the dialog does not fit
+ * (fall-off-screen) on the desired place.
  */
 void 
 awn_applet_dialog_position_reset (AwnAppletDialog *dialog) 
@@ -443,8 +446,12 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
         priv->offset = awn_config_client_get_int (client, "bar", "icon_offset", NULL);
 }
 
-/*
- * new - creates a new object
+/**
+ * awn_applet_dialog_new:
+ * @applet: The applet to which to associate the dialog
+ * Creates a new toplevel window that is "attached" to the @applet.
+ * Returns: a new dialog.  Caller is responsible for freeing the memory when the
+ * dialog is no longer being used.
  */
 GtkWidget* 
 awn_applet_dialog_new (AwnApplet *applet) 
