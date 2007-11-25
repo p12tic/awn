@@ -1,3 +1,18 @@
+2007-11-25  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-defines.h:
+	* libawn/awn-gconf.c:
+	* libawn/awn-gconf.h:
+	* libawn/awn-plug.c:
+	* libawn/awn-plug.h:
+	* libawn/awn-title.c:
+	* libawn/awn-title.h:
+	Set Licence to LGPL for libawn/*
+
 2007-11-24  Michal Hruby <michal.mhr@gmail.com>
 
 	patch by: dolfje, malept
