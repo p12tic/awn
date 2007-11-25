@@ -212,7 +212,7 @@ AwnVfsMonitor *awn_vfs_monitor_add (gchar *path, AwnVfsMonitorType monitor_type,
 	} else if (monitor_type == AWN_VFS_MONITOR_DIRECTORY) {
 		gmtype = GNOME_VFS_MONITOR_DIRECTORY;
 	}
-	gnome_vfs_monitor_add (&handle, path, gmtype, gnome_vfs_monitor_callback_proxy, data);
+	gnome_vfs_monitor_add (&monitor, path, gmtype, gnome_vfs_monitor_callback_proxy, data);
 #elif defined(LIBAWN_USE_XFCE)
 	ThunarVfsMonitor *tvfs_monitor = thunar_vfs_monitor_get_default ();
 	ThunarVfsPath *uri = thunar_vfs_path_new (path, NULL);
