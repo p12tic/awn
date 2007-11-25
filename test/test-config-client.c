@@ -224,6 +224,18 @@ static int test_option_list_string (AwnConfigClient *client)
 	return retval;
 }
 
+static void test_notify (AwnConfigClientNotifyEntry *entry, gchar* data)
+{
+	g_print ("The configuration option [%s]%s has been changed to the value '%s'. %s\n",
+		 entry->group, entry->key, entry->value.str_val, data);
+}
+
+static void test_option_notify (AwnConfigClient *client)
+{
+	awn_config_client_notify_add (client, GROUP, "str", (AwnConfigClientNotifyFunc)test_notify,
+				      "This string is the user_data.");
+}
+
 static int test_option_types (AwnConfigClient *client)
 {
 	int retval = 0;
@@ -246,6 +258,7 @@ static int test_awn_config()
 	if (client == NULL) {
 		return 1;
 	}
+	test_option_notify (client);
 	retval |= test_option_types (client);
 	awn_config_client_unref (client);
 	return retval;
@@ -259,6 +272,7 @@ static int test_applet_config()
 	if (client == NULL) {
 		return 1;
 	}
+	test_option_notify (client);
 	retval |= test_option_types (client);
 	awn_config_client_unref (client);
 	return retval;
@@ -267,6 +281,7 @@ static int test_applet_config()
 int main(int argc, char** argv)
 {
 	int retval = 0;
+	g_type_init ();
 	retval |= test_awn_config ();
 	retval |= test_applet_config ();
 	return retval;
