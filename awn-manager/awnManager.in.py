@@ -43,7 +43,9 @@ from awnPreferences import awnPreferences
 from awnApplet import awnApplet
 from awnLauncher import awnLauncher
 import awnDefs as defs
+import awn
 
+awn.vfs_init()
 defs.i18nize(globals())
 
 class AwnManager:

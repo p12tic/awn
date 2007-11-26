@@ -20,6 +20,7 @@ headers
 #include <libawn/awn-plug.h>
 #include <libawn/awn-title.h>
 #include <libawn/awn-desktop-item.h>
+#include <libawn/awn-vfs.h>
 extern Pycairo_CAPI_t *Pycairo_CAPI;
 
 static GSList *

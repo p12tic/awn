@@ -688,6 +688,15 @@
 
 
 
+;; From awn-vfs.h
+
+(define-function vfs_init
+  (c-name "awn_vfs_init")
+  (return-type "none")
+)
+
+
+
 ;; From stamp-awn-enum-types.h
 
 
