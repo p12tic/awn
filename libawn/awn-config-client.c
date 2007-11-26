@@ -260,42 +260,6 @@ static void awn_config_client_gkeyfile_new_schema (AwnConfigClient *client, gcha
 	g_free (schema_path);
 	g_free (file_name);
 }
-static AwnConfigValueType awn_config_client_get_value_type (AwnConfigClient *client, const gchar *group, const gchar *key, GError **err)
-{
-	AwnConfigValueType value_type;
-	gchar *schema_group = g_strconcat (group, "/", key, NULL);
-	if (g_key_file_has_group (client->schema, schema_group)) {
-		if (g_key_file_has_key (client->schema, schema_group, "type", err)) {
-			gchar *value = g_key_file_get_string (client->schema, schema_group, "type", err);
-			if (g_ascii_strcasecmp (value, "bool") == 0) {
-				value_type = AWN_CONFIG_VALUE_TYPE_BOOL;
-			} else if (g_ascii_strcasecmp (value, "float") == 0) {
-				value_type = AWN_CONFIG_VALUE_TYPE_FLOAT;
-			} else if (g_ascii_strcasecmp (value, "int") == 0) {
-				value_type = AWN_CONFIG_VALUE_TYPE_INT;
-			} else if (g_ascii_strcasecmp (value, "string") == 0) {
-				value_type = AWN_CONFIG_VALUE_TYPE_STRING;
-			} else if (g_ascii_strcasecmp (value, "list-bool") == 0) {
-				value_type = AWN_CONFIG_VALUE_TYPE_LIST_BOOL;
-			} else if (g_ascii_strcasecmp (value, "list-float") == 0) {
-				value_type = AWN_CONFIG_VALUE_TYPE_LIST_FLOAT;
-			} else if (g_ascii_strcasecmp (value, "list-int") == 0) {
-				value_type = AWN_CONFIG_VALUE_TYPE_LIST_INT;
-			} else if (g_ascii_strcasecmp (value, "list-string") == 0) {
-				value_type = AWN_CONFIG_VALUE_TYPE_LIST_STRING;
-			} else {
-				value_type = AWN_CONFIG_VALUE_TYPE_NULL;
-			}
-		} else {
-			g_error ("Invalid schema file for the config file '%s': all keys must have a value type.", client->path);
-			value_type = AWN_CONFIG_VALUE_TYPE_NULL;
-		}
-	} else {
-		value_type = AWN_CONFIG_VALUE_TYPE_NULL;
-	}
-	g_free (schema_group);
-	return value_type;
-}
 static GSList *awn_config_client_get_gkeyfile_list_value (AwnConfigClient *client, const gchar *group, const gchar *key, AwnConfigListType list_type, GError **err)
 {
 	GSList *slist = NULL;
@@ -634,6 +598,105 @@ gboolean awn_config_client_entry_exists (AwnConfigClient *client, const gchar *g
 #else
 	return g_key_file_has_key (client->client, group, key, NULL);
 #endif
+}
+
+/**
+ * awn_config_client_get_value_type:
+ * @client: The configuration client that is to be queried.
+ * @group: The group name of the entry.
+ * @key: The key name of the entry.
+ * @err: A pointer to a #GError structure, which contains an error message
+ * if the function fails.
+ *
+ * Retrieves the type of the entry value as reported by the backend's schema.
+ * Returns: the entry type.
+ */
+AwnConfigValueType awn_config_client_get_value_type (AwnConfigClient *client, const gchar *group, const gchar *key, GError **err)
+{
+	AwnConfigValueType value_type;
+#ifdef USE_GCONF
+	gchar *gconf_key = awn_config_client_generate_key (client, group, key);
+	GConfValue *value = gconf_client_get (client->client, gconf_key, err);
+	if (value) {
+		switch (value->type) {
+			case GCONF_VALUE_BOOL:
+				value_type = AWN_CONFIG_VALUE_TYPE_BOOL;
+				break;
+			case GCONF_VALUE_FLOAT:
+				value_type = AWN_CONFIG_VALUE_TYPE_FLOAT;
+				break;
+			case GCONF_VALUE_INT:
+				value_type = AWN_CONFIG_VALUE_TYPE_INT;
+				break;
+			case GCONF_VALUE_STRING:
+				value_type = AWN_CONFIG_VALUE_TYPE_STRING;
+				break;
+			case GCONF_VALUE_LIST: {
+				switch (gconf_value_get_list_type (value)) {
+					case GCONF_VALUE_BOOL:
+						value_type = AWN_CONFIG_VALUE_TYPE_LIST_BOOL;
+						break;
+					case GCONF_VALUE_FLOAT:
+						value_type = AWN_CONFIG_VALUE_TYPE_LIST_FLOAT;
+						break;
+					case GCONF_VALUE_INT:
+						value_type = AWN_CONFIG_CLIENT_LIST_TYPE_INT;
+						break;
+					case GCONF_VALUE_STRING:
+						value_type = AWN_CONFIG_VALUE_TYPE_LIST_STRING;
+						break;
+					default:
+						value_type = AWN_CONFIG_VALUE_TYPE_NULL;
+						break;
+				}
+				break;
+			} default:
+				value_type = AWN_CONFIG_VALUE_TYPE_NULL;
+				break;
+		}
+	} else {
+		value_type = AWN_CONFIG_VALUE_TYPE_NULL;
+	}
+	g_free (gconf_key);
+#else
+	gchar *schema_group = g_strconcat (group, "/", key, NULL);
+	if (g_key_file_has_group (client->schema, schema_group)) {
+		if (g_key_file_has_key (client->schema, schema_group, "type", err)) {
+			gchar *value = g_key_file_get_string (client->schema, schema_group, "type", err);
+			if (err && *err) {
+				value_type = AWN_CONFIG_VALUE_TYPE_NULL;
+			} else {
+				if (g_ascii_strcasecmp (value, "bool") == 0) {
+					value_type = AWN_CONFIG_VALUE_TYPE_BOOL;
+				} else if (g_ascii_strcasecmp (value, "float") == 0) {
+					value_type = AWN_CONFIG_VALUE_TYPE_FLOAT;
+				} else if (g_ascii_strcasecmp (value, "int") == 0) {
+					value_type = AWN_CONFIG_VALUE_TYPE_INT;
+				} else if (g_ascii_strcasecmp (value, "string") == 0) {
+					value_type = AWN_CONFIG_VALUE_TYPE_STRING;
+				} else if (g_ascii_strcasecmp (value, "list-bool") == 0) {
+					value_type = AWN_CONFIG_VALUE_TYPE_LIST_BOOL;
+				} else if (g_ascii_strcasecmp (value, "list-float") == 0) {
+					value_type = AWN_CONFIG_VALUE_TYPE_LIST_FLOAT;
+				} else if (g_ascii_strcasecmp (value, "list-int") == 0) {
+					value_type = AWN_CONFIG_VALUE_TYPE_LIST_INT;
+				} else if (g_ascii_strcasecmp (value, "list-string") == 0) {
+					value_type = AWN_CONFIG_VALUE_TYPE_LIST_STRING;
+				} else {
+					value_type = AWN_CONFIG_VALUE_TYPE_NULL;
+				}
+			}
+		} else {
+			g_error ("Invalid schema file for the config file '%s': all keys must have a value type.", client->path);
+			value_type = AWN_CONFIG_VALUE_TYPE_NULL;
+		}
+	} else {
+		
+		value_type = AWN_CONFIG_VALUE_TYPE_NULL;
+	}
+	g_free (schema_group);
+#endif
+	return value_type;
 }
 
 /**
