@@ -109,6 +109,7 @@ AC_ARG_WITH(gconf,
             [if test "$with_gconf" == "no"; then
                 # use Glib's GKeyFile - it's already covered by $COMMON_MODULES
                 CFG_MODULE=""
+                CFG_BACKEND_NAME="GKeyFile"
                 # we need GChecksum (should/will be in Glib 2.16)
                 PKG_CHECK_EXISTS(
                     [glib-2.0 >= 2.16],
@@ -122,6 +123,7 @@ AC_ARG_WITH(gconf,
             fi])
 if test "$with_gconf" != "no"; then
     CFG_MODULE="gconf-2.0"
+    CFG_BACKEND_NAME="GConf"
     AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
     if test x"$GCONFTOOL" = xno; then
         AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
@@ -130,6 +132,7 @@ if test "$with_gconf" != "no"; then
     AC_MSG_RESULT([GConf])
 fi
 AC_SUBST(CFG_MODULE)
+AC_SUBST(CFG_BACKEND_NAME)
 AM_CONDITIONAL(USE_GCONF, test "$with_gconf" != "no")
 AM_CONDITIONAL(USE_EGG_CHECKSUM, test "$use_egg_checksum" = "yes")
 
