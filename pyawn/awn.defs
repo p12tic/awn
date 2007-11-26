@@ -162,6 +162,18 @@
   )
 )
 
+(define-method notify_add
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_notify_add")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "group")
+    '("const-gchar*" "key")
+    '("AwnConfigClientNotifyFunc" "callback")
+    '("gpointer" "data")
+  )
+)
+
 (define-method exists
   (of-object "AwnConfigClient")
   (c-name "awn_config_client_entry_exists")
