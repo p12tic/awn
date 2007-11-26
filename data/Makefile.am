@@ -16,15 +16,26 @@ icon_DATA =  \
 
 icondir = $(pkgdatadir)
 if USE_GCONF
-awn.schemas: awn.schemas.in
-
+schemasdir   = @GCONF_SCHEMA_FILE_DIR@
+schemas_in_files = awn.schemas.in
+schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
+if GCONF_SCHEMAS_INSTALL
 awn.schemas.in: awn.schema-ini
-	$(top_srcdir)/data/awn-schema-to-gconf avant-window-navigator $< $@
+	$(top_srcdir)/data/awn-schema-to-gconf $< $@
+install-data-local: $(schemas_DATA)
+	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(schemas_DATA)
+endif
 else
 schemadir = $(datadir)/awn/schemas
 schema_DATA = awn.schema-ini
 endif
 
-EXTRA_DIST = $(icon_DATA) $(desktop_DATA).in.in
+install-exec-local:
+	$(INSTALL) -m 755 awn-schema-to-gconf $(DESTDIR)$(bindir)/awn-schema-to-gconf
+
+uninstall-local:
+	rm -f $(DESTDIR)$(bindir)/awn-schema-to-gconf
+
+EXTRA_DIST = $(icon_DATA) $(desktop_DATA).in.in awn.schema-ini
 
 CLEANFILES = $(desktop_DATA) $(desktop_DATA).in
