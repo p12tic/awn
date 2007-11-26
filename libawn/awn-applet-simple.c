@@ -323,6 +323,7 @@ awn_applet_simple_get_effects(AwnAppletSimple *simple)
  * @uid: The unique identifier of the instance of the applet on the dock.
  * @orient: The orientation of the applet - see #AwnOrientation.
  * @height: The height of the applet.
+ *
  * Creates a new #AwnAppletSimple object.  This applet will have awn-effects
  * effects applied to its icon automatically if awn_applet_simple_set_icon() or
  * awn_applet_simple_set_temp_icon() are used to specify the applet icon.
