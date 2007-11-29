@@ -32,6 +32,17 @@ Description: library for avant-window-navigator
  This library is used by avant-window-navigator. It provides functions to create 
  the avant-window-navigator bar and its applets.
 
+Package: libawn0-trunk-dbg
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Suggests: xcompmgr | compiz | xfwm4
+Conflicts: libawn0-bzr, libawn-bzr, libawn, libawn0
+Replaces: libawn0-bzr, libawn-bzr, libawn, libawn0
+Description: library for avant-window-navigator
+ This library is used by avant-window-navigator. It provides functions to create 
+ the avant-window-navigator bar and its applets.
+
 Package: libawn-dev-trunk
 Section: libdevel
 Architecture: any
