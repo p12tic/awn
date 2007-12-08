@@ -160,7 +160,7 @@ typedef enum {
 GType              awn_config_client_get_type (void);
 
 AwnConfigClient   *awn_config_client_new            ();
-AwnConfigClient   *awn_config_client_new_for_applet (gchar *name);
+AwnConfigClient   *awn_config_client_new_for_applet (gchar *name, gchar *uid);
 
 void               awn_config_client_clear          (AwnConfigClient *client, GError **err);
 

@@ -268,7 +268,7 @@ static int test_applet_config()
 {
 	int retval = 0;
 	g_print ("Applet config client\n");
-	AwnConfigClient *client = awn_config_client_new_for_applet ("test");
+	AwnConfigClient *client = awn_config_client_new_for_applet ("test", NULL);
 	if (client == NULL) {
 		return 1;
 	}

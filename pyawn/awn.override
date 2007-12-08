@@ -113,16 +113,21 @@ override awn_config_client_new kwargs
 static int
 _wrap_awn_config_client_new (PyGBoxed *self, PyObject *args, PyObject *kwargs)
 {
-  static char *kwlist[] = { "name", NULL };
+  static char *kwlist[] = { "name", "uid", NULL };
   gchar *name = NULL;
+  gchar *uid = NULL;
 
-  if (!PyArg_ParseTupleAndKeywords (args, kwargs,"|s:AwnConfigClient.__init__", kwlist, &name)) {
+  if (!PyArg_ParseTupleAndKeywords (args, kwargs,"|ss:AwnConfigClient.__init__", kwlist, &name, &uid)) {
     return -1;
   }
   self->gtype = AWN_TYPE_CONFIG_CLIENT;
   self->free_on_dealloc = FALSE;
   if (name) {
-    self->boxed = awn_config_client_new_for_applet (name);
+    if (!uid) {
+      PyErr_SetString (PyExc_ValueError, "The uid argument needs to be defined if the name argument is defined");
+      return -1;
+    }
+    self->boxed = awn_config_client_new_for_applet (name, uid);
   } else {
     self->boxed = awn_config_client_new ();
   }

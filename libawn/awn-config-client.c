@@ -28,6 +28,7 @@
 #include <gconf/gconf-client.h>
 #define AWN_GCONF_KEY_PREFIX "/apps/avant-window-navigator"
 #else
+#include <glib/gstdio.h>
 #ifdef USE_EGG_CHECKSUM 
 #include "egg/eggchecksum.h"
 #else
@@ -152,8 +153,10 @@ AwnConfigClient *awn_config_client_new ()
 #ifdef USE_GCONF
 		awn_dock_config = awn_config_client_new_with_path (AWN_GCONF_KEY_PREFIX);
 #else
-		awn_dock_config = awn_config_client_new_with_path (g_build_filename (g_get_user_config_dir (), "awn", "awn.ini", NULL));
+		gchar *config_path = g_build_filename (g_get_user_config_dir (), "awn", "awn.ini", NULL);
+		awn_dock_config = awn_config_client_new_with_path (g_strdup (config_path));
 		awn_config_client_gkeyfile_new_schema (awn_dock_config, NULL);
+		g_free (config_path);
 #endif
 	}
 	return awn_dock_config;
@@ -162,20 +165,44 @@ AwnConfigClient *awn_config_client_new ()
 /**
  * awn_config_client_new_for_applet:
  * @name: The name of the applet.
+ * @uid: The unique identifier for the applet (used for positioning on the
+ * dock).  Optional value (i.e., may be %NULL).
  *
- * Creates a configuration client for the applet named in the parameter.
+ * Creates a configuration client for the applet named in the parameter.  If
+ * @uid is not defined, it is implied that the applet is a singleton.
  * Returns: an instance of #AwnConfigClient for the specified applet.
  */
-AwnConfigClient *awn_config_client_new_for_applet (gchar *name)
+AwnConfigClient *awn_config_client_new_for_applet (gchar *name, gchar *uid)
 {
+	AwnConfigClient *client;
 #ifdef USE_GCONF
-	return awn_config_client_new_with_path (g_strconcat (AWN_GCONF_KEY_PREFIX, "/applets/", name, NULL));
+	gchar *gconf_key = NULL;
+	if (uid) {
+		gconf_key = g_strconcat (AWN_GCONF_KEY_PREFIX, "/applets/", name, NULL);
+	} else {
+		gconf_key = g_strconcat (AWN_GCONF_KEY_PREFIX, "/applets/", uid, NULL);
+	}
+	client = awn_config_client_new_with_path (gconf_key);
+	g_free (gconf_key);
 #else
-	/* TODO: add ~/.config/awn/applets if it doesn't exist */
-	AwnConfigClient *client = awn_config_client_new_with_path (g_build_filename (g_get_user_config_dir (), "awn", "applets", g_strconcat(name, ".ini", NULL), NULL));
+	gchar *config_dir = g_build_filename (g_get_user_config_dir (), "awn", "applets", NULL);
+	if (!g_file_test (client->path, G_FILE_TEST_EXISTS)) {
+		g_mkdir (config_dir, 0755);
+	}
+	gchar *config_file;
+	if (uid) {
+		config_file = g_strconcat (uid, ".ini", NULL);
+	} else {
+		config_file = g_strconcat (name, ".ini", NULL);
+	}
+	gchar *config_path = g_build_filename (config_dir, config_file, NULL);
+	client = awn_config_client_new_with_path (g_strdup (config_path));
 	awn_config_client_gkeyfile_new_schema (client, name);
-	return client;
+	g_free (config_path);
+	g_free (config_file);
+	g_free (config_dir);
 #endif
+	return client;
 }
 
 /* returns a newly allocated string */
@@ -409,7 +436,9 @@ static void awn_config_client_do_notify (AwnConfigClient *client, const gchar *g
 		GSList *notify_iter;
 		for (notify_iter = callbacks; notify_iter != NULL; notify_iter = g_slist_next (notify_iter)) {
 			AwnConfigClientNotifyData *notify = (AwnConfigClientNotifyData*)notify_iter->data;
-			(notify->callback) (entry, notify->data);
+			if (notify->callback) {
+				(notify->callback) (entry, notify->data);
+			}
 		}
 		g_free (full_key);
 		g_free (value);
