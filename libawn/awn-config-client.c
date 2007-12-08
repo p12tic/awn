@@ -86,19 +86,33 @@ static void awn_config_client_save (AwnConfigClient *client, GError **err);
 static void awn_config_client_reload (AwnVfsMonitor *monitor, gchar *monitor_path, gchar *event_path, AwnVfsMonitorEvent event, AwnConfigClient *client);
 #endif
 
-static AwnConfigClient *awn_config_client_new_with_path (gchar *path)
+static AwnConfigClient *awn_config_client_new_with_path (gchar *path, gchar *name)
 {
 	AwnConfigClient *client = g_new (AwnConfigClient, 1);
 	client->path = path;
 #ifdef USE_GCONF
 	client->client = gconf_client_get_default ();
+	if (!gconf_client_dir_exists (client->client, client->path, NULL)) {
+		GError *err = NULL;
+		awn_config_client_load_defaults_from_schema (client, &err);
+		if (err) {
+			g_error ("Error loading the schema: '%s'", err->message);
+			g_error_free (err);
+		}
+	}
 #else
 	client->client = g_key_file_new ();
+	awn_config_client_gkeyfile_new_schema (client, name);
 	GError *err = NULL;
 	if (g_file_test (client->path, G_FILE_TEST_EXISTS)) {
 		awn_config_client_load_data (client);
 	} else {
 		g_message ("Creating the config file for you.");
+		awn_config_client_load_defaults_from_schema (client, &err);
+		if (err) {
+			g_error ("Error loading the schema: '%s'", err->message);
+			g_error_free (err);
+		}
 		awn_config_client_save (client, &err);
 		if (err) {
 			g_warning ("Error loading the config file: '%s'", err->message);
@@ -151,11 +165,10 @@ AwnConfigClient *awn_config_client_new ()
 	static AwnConfigClient *awn_dock_config = NULL;
 	if (!awn_dock_config) {
 #ifdef USE_GCONF
-		awn_dock_config = awn_config_client_new_with_path (AWN_GCONF_KEY_PREFIX);
+		awn_dock_config = awn_config_client_new_with_path (AWN_GCONF_KEY_PREFIX, NULL);
 #else
 		gchar *config_path = g_build_filename (g_get_user_config_dir (), "awn", "awn.ini", NULL);
-		awn_dock_config = awn_config_client_new_with_path (g_strdup (config_path));
-		awn_config_client_gkeyfile_new_schema (awn_dock_config, NULL);
+		awn_dock_config = awn_config_client_new_with_path (g_strdup (config_path), NULL);
 		g_free (config_path);
 #endif
 	}
@@ -182,7 +195,7 @@ AwnConfigClient *awn_config_client_new_for_applet (gchar *name, gchar *uid)
 	} else {
 		gconf_key = g_strconcat (AWN_GCONF_KEY_PREFIX, "/applets/", uid, NULL);
 	}
-	client = awn_config_client_new_with_path (gconf_key);
+	client = awn_config_client_new_with_path (gconf_key, name);
 	g_free (gconf_key);
 #else
 	gchar *config_dir = g_build_filename (g_get_user_config_dir (), "awn", "applets", NULL);
@@ -196,8 +209,7 @@ AwnConfigClient *awn_config_client_new_for_applet (gchar *name, gchar *uid)
 		config_file = g_strconcat (name, ".ini", NULL);
 	}
 	gchar *config_path = g_build_filename (config_dir, config_file, NULL);
-	client = awn_config_client_new_with_path (g_strdup (config_path));
-	awn_config_client_gkeyfile_new_schema (client, name);
+	client = awn_config_client_new_with_path (g_strdup (config_path), name);
 	g_free (config_path);
 	g_free (config_file);
 	g_free (config_dir);
@@ -287,13 +299,13 @@ static void awn_config_client_gkeyfile_new_schema (AwnConfigClient *client, gcha
 	g_free (schema_path);
 	g_free (file_name);
 }
-static GSList *awn_config_client_get_gkeyfile_list_value (AwnConfigClient *client, const gchar *group, const gchar *key, AwnConfigListType list_type, GError **err)
+static GSList *awn_config_client_get_gkeyfile_list_value (GKeyFile *client, const gchar *group, const gchar *key, AwnConfigListType list_type, GError **err)
 {
 	GSList *slist = NULL;
 	gsize list_len;
 	switch (list_type) {
 		case AWN_CONFIG_CLIENT_LIST_TYPE_BOOL: {
-			gboolean *list = g_key_file_get_boolean_list (client->client, group, key, &list_len, err);
+			gboolean *list = g_key_file_get_boolean_list (client, group, key, &list_len, err);
 			if (list) {
 				gsize i;
 				for (i = 0; i < list_len; i++) {
@@ -302,7 +314,7 @@ static GSList *awn_config_client_get_gkeyfile_list_value (AwnConfigClient *clien
 			}
 			break;
 		} case AWN_CONFIG_CLIENT_LIST_TYPE_FLOAT: {
-			gdouble *list = g_key_file_get_double_list (client->client, group, key, &list_len, err);
+			gdouble *list = g_key_file_get_double_list (client, group, key, &list_len, err);
 			if (list) {
 				gsize i;
 				for (i = 0; i < list_len; i++) {
@@ -311,7 +323,7 @@ static GSList *awn_config_client_get_gkeyfile_list_value (AwnConfigClient *clien
 			}
 			break;
 		} case AWN_CONFIG_CLIENT_LIST_TYPE_INT: {
-			gint *list = g_key_file_get_integer_list (client->client, group, key, &list_len, err);
+			gint *list = g_key_file_get_integer_list (client, group, key, &list_len, err);
 			if (list) {
 				gsize i;
 				for (i = 0; i < list_len; i++) {
@@ -320,7 +332,7 @@ static GSList *awn_config_client_get_gkeyfile_list_value (AwnConfigClient *clien
 			}
 			break;
 		} case AWN_CONFIG_CLIENT_LIST_TYPE_STRING: {
-			gchar **list = g_key_file_get_string_list (client->client, group, key, &list_len, err);
+			gchar **list = g_key_file_get_string_list (client, group, key, &list_len, err);
 			if (list) {
 				gsize i;
 				for (i = 0; i < list_len; i++) {
@@ -415,16 +427,16 @@ static void awn_config_client_do_notify (AwnConfigClient *client, const gchar *g
 				value->str_val = g_key_file_get_string (client->client, group, key, NULL);
 				break;
 			case AWN_CONFIG_VALUE_TYPE_LIST_BOOL:
-				value->list_val = awn_config_client_get_gkeyfile_list_value (client, group, key, AWN_CONFIG_CLIENT_LIST_TYPE_BOOL, NULL);
+				value->list_val = awn_config_client_get_gkeyfile_list_value (client->client, group, key, AWN_CONFIG_CLIENT_LIST_TYPE_BOOL, NULL);
 				break;
 			case AWN_CONFIG_VALUE_TYPE_LIST_FLOAT:
-				value->list_val = awn_config_client_get_gkeyfile_list_value (client, group, key, AWN_CONFIG_CLIENT_LIST_TYPE_FLOAT, NULL);
+				value->list_val = awn_config_client_get_gkeyfile_list_value (client->client, group, key, AWN_CONFIG_CLIENT_LIST_TYPE_FLOAT, NULL);
 				break;
 			case AWN_CONFIG_VALUE_TYPE_LIST_INT:
-				value->list_val = awn_config_client_get_gkeyfile_list_value (client, group, key, AWN_CONFIG_CLIENT_LIST_TYPE_INT, NULL);
+				value->list_val = awn_config_client_get_gkeyfile_list_value (client->client, group, key, AWN_CONFIG_CLIENT_LIST_TYPE_INT, NULL);
 				break;
 			case AWN_CONFIG_VALUE_TYPE_LIST_STRING:
-				value->list_val = awn_config_client_get_gkeyfile_list_value (client, group, key, AWN_CONFIG_CLIENT_LIST_TYPE_STRING, NULL);
+				value->list_val = awn_config_client_get_gkeyfile_list_value (client->client, group, key, AWN_CONFIG_CLIENT_LIST_TYPE_STRING, NULL);
 				break;
 			default: /* NULL */
 				return;
@@ -626,6 +638,79 @@ gboolean awn_config_client_entry_exists (AwnConfigClient *client, const gchar *g
 	return value != NULL;
 #else
 	return g_key_file_has_key (client->client, group, key, NULL);
+#endif
+}
+
+/**
+ * awn_config_client_load_defaults_from_schema:
+ * @client: The configuration client that is to be queried.
+ *
+ * Loads the default configuration values from the backend's schema.
+ */
+void awn_config_client_load_defaults_from_schema (AwnConfigClient *client, GError **err)
+{
+#ifdef USE_GCONF
+	(void)g_spawn_command_line_async ("killall -HUP gconfd-2", err);
+#else
+	gsize i, key_names_len;
+	gchar **key_names = g_key_file_get_groups (client->schema, &key_names_len);
+	for (i = 0; i < key_names_len; i++) {
+		if (g_key_file_has_key (client->schema, key_names[i], "default", err)) {
+			gchar *key_name = key_names[i];
+			gchar **result = g_strsplit (key_name, "/", 2);
+			if (g_strv_length (result) == 2) {
+				gchar *group = result[0];
+				gchar *key = result[1];
+#define SET_DEFAULT(atype, gtype) \
+	awn_config_client_set_##atype (client, group, key, \
+	                               g_key_file_get_##gtype (client->schema, key_name, "default", NULL), \
+	                               NULL)
+#define SET_LIST_DEFAULT(ltype) \
+	awn_config_client_set_list (client, group, key, AWN_CONFIG_CLIENT_LIST_TYPE_##ltype, \
+	                            awn_config_client_get_gkeyfile_list_value (client->schema, group, key, \
+	                                                                       AWN_CONFIG_CLIENT_LIST_TYPE_##ltype, NULL), \
+	                            NULL)
+				switch (awn_config_client_get_value_type (client, group, key, err)) {
+					case AWN_CONFIG_VALUE_TYPE_BOOL:
+						SET_DEFAULT (bool, boolean);
+						break;
+					case AWN_CONFIG_VALUE_TYPE_FLOAT:
+						SET_DEFAULT (float, double);
+						break;
+					case AWN_CONFIG_VALUE_TYPE_INT:
+						SET_DEFAULT (int, integer);
+						break;
+					case AWN_CONFIG_VALUE_TYPE_STRING:
+						SET_DEFAULT (string, string);
+						break;
+					case AWN_CONFIG_VALUE_TYPE_LIST_BOOL:
+						SET_LIST_DEFAULT (BOOL);
+						break;
+					case AWN_CONFIG_VALUE_TYPE_LIST_FLOAT:
+						SET_LIST_DEFAULT (FLOAT);
+						break;
+					case AWN_CONFIG_VALUE_TYPE_LIST_INT:
+						SET_LIST_DEFAULT (INT);
+						break;
+					case AWN_CONFIG_VALUE_TYPE_LIST_STRING:
+						SET_LIST_DEFAULT (STRING);
+						break;
+					default: /* NULL */
+						return;
+						break;
+				}
+				g_strfreev (result);
+			} else {
+				g_error ("The key '%s' has a malformed name.", key_names[i]);
+				g_strfreev (result);
+				return;
+			}
+		} else {
+			g_error ("The key '%s' does not have a default value.", key_names[i]);
+			return;
+		}
+	}
+	g_free (key_names);
 #endif
 }
 
@@ -950,7 +1035,7 @@ GSList *awn_config_client_get_list (AwnConfigClient *client, const gchar *group,
 	g_free (gconf_key);
 	return value;
 #else
-	return awn_config_client_get_gkeyfile_list_value (client, group, key, list_type, err);
+	return awn_config_client_get_gkeyfile_list_value (client->client, group, key, list_type, err);
 #endif
 }
 
