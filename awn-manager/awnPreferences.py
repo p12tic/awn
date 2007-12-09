@@ -268,19 +268,15 @@ class awnPreferences:
         if dropdown.get_active() == -1: #init
             if self.client.get_int(defs.BAR, defs.BAR_ANGLE) == 0:
                 dropdown.set_active(0)
-                self.wTree.get_widget("roundedcornerscheck_holder").show_all()
                 self.wTree.get_widget("barangle_holder").hide_all()
             else:
                 dropdown.set_active(1)
-                self.wTree.get_widget("roundedcornerscheck_holder").hide_all()
                 self.wTree.get_widget("barangle_holder").show_all()
         elif dropdown.get_active() == 0:
             self.wTree.get_widget("barangle").set_value(0)
-            self.wTree.get_widget ("roundedcornerscheck_holder").show_all()
             self.wTree.get_widget("barangle_holder").hide_all()
         else:
             self.wTree.get_widget("barangle").set_value(45)
-            self.wTree.get_widget("roundedcornerscheck_holder").hide_all()
             self.wTree.get_widget("barangle_holder").show_all()
 
     def setup_effect_custom(self, group, key):

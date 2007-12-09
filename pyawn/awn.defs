@@ -393,6 +393,15 @@
   (return-type "gint")
 )
 
+(define-method register_effects
+  (of-object "AwnAppletSimple")
+  (c-name "awn_register_effects")
+  (return-type "none")
+  (parameters
+    '("int" "fx")
+  )
+)
+
 
 ;; From awn-cairo-utils.h
 
@@ -604,6 +613,26 @@
   (parameters
     '("int" "fx")
     '("AwnEffect" "effect")
+  )
+)
+
+;; Doesn't make sense to have awn_register_effects while AwnEffects do not have proper bindings
+;; - currently AppletSimple.register_effects can be used instead
+
+;;(define-function awn_register_effects
+;;  (c-name "awn_register_effects")
+;;  (return-type "none")
+;;  (parameters
+;;    '("GObject*" "obj")
+;;    '("int" "fx")
+;;  )
+;;)
+
+(define-function awn_unregister_effects
+  (c-name "awn_unregister_effects")
+  (return-type "none")
+  (parameters
+    '("int" "fx")
   )
 )
 

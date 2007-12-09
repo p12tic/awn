@@ -1,3 +1,115 @@
+2007-11-25  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-defines.h:
+	* libawn/awn-gconf.c:
+	* libawn/awn-gconf.h:
+	* libawn/awn-plug.c:
+	* libawn/awn-plug.h:
+	* libawn/awn-title.c:
+	* libawn/awn-title.h:
+	Set Licence to LGPL for libawn/*
+
+2007-11-24  Michal Hruby <michal.mhr@gmail.com>
+
+	patch by: dolfje, malept
+
+	* awn-manager/window.glade:
+	* pyawn/awn.override:
+	* src/awn-x.c:
+	* src/main.c:
+	Merge from libawn-draw-effects
+	 - instant bar refresh on bar_angle change
+	Fixes for bug #156697 and bug #159291
+
+2007-11-23  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awnManager.in.py:
+	Don't show awn-manager as python in process list
+
+	* debian/avant-window-navigator-trunk.install:
+	* debian/avant-window-navigator.install:
+	* debian/awn-manager-trunk.install:
+	* debian/awn-manager.install:
+	* debian/control:
+	* debian/control.autoppa:
+	* debian/libawn-dev-trunk.install:
+	* debian/libawn-dev.install:
+	* debian/libawn0-trunk.install:
+	* debian/libawn0.install:
+	* debian/python-awn-trunk.install:
+	* debian/python-awn.install:
+	* debian/rules:
+	Fix debian/ to handle correct depends and and correct install files
+
+2007-11-22  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	Changed licence to LGPL.
+
+2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
+
+	patch by: Mark Lee  
+
+	* configure.in:
+	Bump pygtk to 2.10 (Fix Bug 160845)
+
+2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian-ubuntu/avant-window-navigator.1:
+	* debian-ubuntu/avant-window-navigator.install:
+	* debian-ubuntu/awn-applet-activation.1:
+	* debian-ubuntu/awn-manager.1:
+	* debian-ubuntu/awn-manager.install:
+	* debian-ubuntu/changelog:
+	* debian-ubuntu/compat:
+	* debian-ubuntu/control:
+	* debian-ubuntu/copyright:
+	* debian-ubuntu/libawn-dev.install:
+	* debian-ubuntu/libawn0.install:
+	* debian-ubuntu/pycompat:
+	* debian-ubuntu/python-libawn0.install:
+	* debian-ubuntu/rules:
+	Delete debian-ubuntu. debian should do the work for Debian and Ubuntu packages
+
+	* debian/avant-window-navigator.1:
+	* debian/awn-applet-activation.1:
+	* debian/awn-manager.1:
+	* debian/changelog:
+	* debian/control:
+	* debian/control.autoppa:
+	* debian/copyright:
+	* debian/python-awn.install:
+	* debian/python-libawn0.install:
+	* debian/rules:
+	* debian/watch:
+	Update debian folder and add support for PPA and autoPPA
+
+2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* applets/taskman.desktop.in.in:
+	* awn-manager/awn-manager.desktop.in.in:
+	* data/avant-window-navigator.desktop.in.in:
+	Fix Exec=none and Encoding in desktop files (patch from Ubuntu)
+
+2007-11-22  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* COPYING.LIBS:
+	Add a copy of LGPL
+
+	* awn-manager/awnTheme.py:
+	* data/active/spotlight_png_inline.c:
+	* libawn/awn-applet-dialog.c:
+	* pyawn/__init__.py:
+	* pyawn/awnmodule.c:
+	* src/icon-test.c:
+	* src/inlinepixbufs.h:
+	Add some Licence & Copyright
+
 2007-11-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* .bzrignore:
@@ -60,6 +172,42 @@
 	* awn-manager/awnManager.in.py:
 	* configure.in:
 	Bump to 0.2.1
+
+2007-11-01  Michal Hruby <michal.mhr@gmail.com>
+
+	* ChangeLog:
+	* awn-manager/Makefile.am:
+	* awn-manager/awnApplet.py:
+	* awn-manager/awnLauncher.py:
+	* awn-manager/awnManager.in.py:
+	* awn-manager/awnPreferences.py:
+	* awn.pc.in:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	Merged multiple stability patches from branch "0.2-stable-testing".
+
+2007-10-31  Michal Hruby <michal.mhr@gmail.com>
+
+	patch by: Mark Lee
+
+	* pyawn/awn.defs:
+	awn_register_effects is now method of AppletSimple.
+
+2007-10-31  Michal Hruby <michal.mhr@gmail.com>
+
+	* pyawn/awn.defs:
+	Added python binding for awn_(un)register_effects.
+
+2007-10-29  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awnPreferences.py:
+	* awn-manager/window.glade:
+	* src/awn-bar.c:
+	Merge with libawn-draw-effects:
+	- added rounded corners for 3D look
 
 2007-10-28  Mark Lee  <avant-wn@lazymalevolence.com>
 

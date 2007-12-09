@@ -173,7 +173,35 @@ render_rect (cairo_t *cr, double x, double y, double width, double height, doubl
 	
         	cairo_close_path (cr);
 	}
-	else
+	else if( settings->rounded_corners && settings->bar_angle != 0)
+	{
+		/* Let the bar 4px of the bottom => 3d look*/
+		y-=3;
+
+
+		double x0  = x,  	
+		y0	   = y,
+		y1	   = y+height;
+
+		cairo_move_to  (cr, x0 + apply_perspective_x(width, height/2, 0)+height/4    , y0 + height/2 + top_offset);
+		cairo_line_to  (cr, x0 + apply_perspective_x(width, height/2, width)-height/4, y0 + height/2 + top_offset);
+		cairo_curve_to (cr, x0 + apply_perspective_x(width, height/2, width), y0 + height/2 + top_offset,
+				    x0 + apply_perspective_x(width, height/2, width), y0 + height/2 + top_offset,
+				    x0 + apply_perspective_x(width, 1*height/4, width), y0 + 3*height/4 + top_offset);
+		cairo_curve_to (cr, x0 + apply_perspective_x(width, 2*offset, width), y1-2*offset + top_offset,
+				    x0 + apply_perspective_x(width, 2*offset, width), y1-2*offset + top_offset,
+				    x0 + apply_perspective_x(width, 2*offset, width)-height/4, y1-2*offset + top_offset);
+		cairo_line_to  (cr, x0 + apply_perspective_x(width, 2*offset, 0)+height/4,     y1-2*offset + top_offset);
+		cairo_curve_to (cr, x0 + apply_perspective_x(width, 2*offset, 0),     y1-2*offset + top_offset,
+				    x0 + apply_perspective_x(width, 2*offset, 0),     y1-2*offset + top_offset,
+				    x0 + apply_perspective_x(width, 1*height/4, 0),  y0 + 3*height/4 + top_offset);
+		cairo_curve_to (cr, x0 + apply_perspective_x(width, height/2, 0)    , y0 + height/2 + top_offset,
+				    x0 + apply_perspective_x(width, height/2, 0)    , y0 + height/2 + top_offset,
+				    x0 + apply_perspective_x(width, height/2, 0)+height/4    , y0 + height/2 + top_offset);
+		
+		
+	       	cairo_close_path (cr);
+	}else
 	{
 		/* Let the bar 4px of the bottom => 3d look*/
 		if( settings->bar_angle != 0 ) {
@@ -192,6 +220,11 @@ render_rect (cairo_t *cr, double x, double y, double width, double height, doubl
 	       	cairo_close_path (cr);
 	}
 
+}
+
+double cubic_bezier_curve(double point1, double point2, double point3, double point4, double t)
+{
+	return (1-t)*(1-t)*(1-t)*point1 + 3*t*(1-t)*(1-t)*point2 + 3*t*t*(1-t)*point3 + t*t*t*point4;
 }
 
 float
@@ -283,6 +316,44 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 	
 	double x = (settings->monitor.width-width)*settings->bar_pos;
 	
+	if (settings->bar_angle != 0)
+        {
+                cairo_set_source_rgba (cr, settings->border_color.red,
+                                           settings->border_color.green,
+                                           settings->border_color.blue,
+                                           settings->border_color.alpha+0.2);
+                if(settings->rounded_corners )
+		{
+			double leftcorner_x = cubic_bezier_curve(x+apply_perspective_x(width, height/8, 0), 
+								x, 
+								x, 
+								x+height/8, 0.5);
+			double rightcorner_x = cubic_bezier_curve(x+apply_perspective_x(width, height/8, width), 
+								x+width, 
+								x+width, 
+								x+width-height/8, 0.5);	
+			double corner_y = cubic_bezier_curve(  top_offset + 7*height/8 - 3, 
+								top_offset + height - 3, 
+								top_offset + height - 3, 
+								top_offset + height - 3, 0.5);
+			
+			cairo_rectangle (cr, leftcorner_x, corner_y, rightcorner_x-leftcorner_x, top_offset + height - corner_y);
+			cairo_fill (cr);
+			cairo_save (cr);
+			cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+		        cairo_set_source_rgba (cr, 1, 1, 1, 0);
+			render_rect (cr, x+0.5, (height/2)+0.5, width-1, (height/2+icon_offset), 0);
+			cairo_fill (cr);
+			cairo_restore (cr);
+		}
+		else
+		{
+			cairo_rectangle (cr, x, height-3+top_offset, width, 3+top_offset);
+			cairo_fill (cr);
+		}
+                
+        }
+
 	cairo_move_to(cr, x, 0);
 	cairo_set_line_width(cr, 1.0);
 	
@@ -324,25 +395,6 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 	cairo_set_source (cr, pat);
 	cairo_fill (cr);
 
-        if (settings->bar_angle != 0)
-        {
-                cairo_set_source_rgba (cr, settings->border_color.red,
-                                           settings->border_color.green,
-                                           settings->border_color.blue,
-                                           settings->border_color.alpha+0.2);
-                cairo_rectangle (cr, x, height-3+top_offset, width, 3+top_offset);
-                cairo_fill (cr);
-                
-                /* Remove thetwo trailing triangles */
-                //cairo_save (cr);
-                //cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-                //cairo_set_source_rgba (cr, 1, 1, 1, 0);
-                //cairo_rectangle (cr, x, height-3, 3, height-3);
-                //cairo_fill (cr);
-                //cairo_rectangle (cr, x+3+width-6, height-3, 3, height-3);
-                //cairo_fill (cr);
-                //cairo_restore (cr);
-        }
         cairo_pattern_destroy (pat);
 	
 	/* internal hi-lightborder */

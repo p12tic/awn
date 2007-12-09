@@ -78,6 +78,8 @@ static void
 bar_height_changed (AwnConfigClientNotifyEntry *entry, AwnSettings *Settings);
 static void 
 icon_offset_changed (AwnConfigClientNotifyEntry *entry, AwnSettings *Settings);
+static void 
+bar_refresh (AwnConfigClientNotifyEntry *entry, AwnSettings *settings);
 static void
 screen_size_changed (GdkScreen *screen, AwnSettings *s);
 static void 
@@ -143,6 +145,10 @@ main (int argc, char* argv[])
 	awn_config_client_notify_add (client, "bar", "icon_offset",
 				      (AwnConfigClientNotifyFunc)icon_offset_changed,
                                       settings);
+	awn_config_client_notify_add (client, "bar", "bar_angle",
+				      (AwnConfigClientNotifyFunc)bar_refresh, settings);
+	awn_config_client_notify_add (client, "bar", "rounded_corners",
+				      (AwnConfigClientNotifyFunc)bar_refresh, settings);
 	
 	settings->window = awn_window_new (settings);
 	
@@ -468,6 +474,12 @@ icon_offset_changed (AwnConfigClientNotifyEntry *entry, AwnSettings *settings)
 {
 	settings->icon_offset = entry->value.int_val;
 	
+	resize (settings);
+}
+
+static void 
+bar_refresh (AwnConfigClientNotifyEntry *entry, AwnSettings *settings)
+{
 	resize (settings);
 }
 
