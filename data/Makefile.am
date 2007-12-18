@@ -16,12 +16,16 @@ icon_DATA =  \
 
 icondir = $(pkgdatadir)
 if USE_GCONF
-schemasdir   = @GCONF_SCHEMA_FILE_DIR@
+schemasdir       = @GCONF_SCHEMA_FILE_DIR@
 schemas_in_files = awn.schemas.in
 schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
-if GCONF_SCHEMAS_INSTALL
+
 awn.schemas.in: awn.schema-ini
 	$(top_srcdir)/data/awn-schema-to-gconf $< $@
+
+@INTLTOOL_SCHEMAS_RULE@
+
+if GCONF_SCHEMAS_INSTALL
 install-data-local: $(schemas_DATA)
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(schemas_DATA)
 endif
