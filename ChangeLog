@@ -1,3 +1,11 @@
+2007-12-21  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* configure.in:
+	Add a check when configure/autogen.sh running for python modules.
+	Check is done for python-gnome2, python-gnome2-desktop and python-gconf.
+	To disable the check, add --disable-pymod-checks to configure/autogen.sh
+	Fix for bug 136738.
+
 2007-11-25  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* libawn/awn-applet.c:
