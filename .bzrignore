@@ -73,3 +73,5 @@ doc/reference/libawn.prerequisites
 doc/reference/libawn.signals
 doc/reference/libawn.types
 doc/reference/*.bak
+data/awn.schemas*
+config.h.in
