@@ -1,3 +1,9 @@
+2007-12-26  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* pyawn/__init__.py:
+	Add the function check_dependencies() so that python applets can notify
+	the user when they don't have the required Python modules installed.
+
 2007-12-19  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* acinclude.m4:
