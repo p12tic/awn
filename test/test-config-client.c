@@ -260,7 +260,7 @@ static int test_awn_config()
 	}
 	test_option_notify (client);
 	retval |= test_option_types (client);
-	awn_config_client_unref (client);
+	awn_config_client_free (client);
 	return retval;
 }
 
@@ -274,7 +274,7 @@ static int test_applet_config()
 	}
 	test_option_notify (client);
 	retval |= test_option_types (client);
-	awn_config_client_unref (client);
+	awn_config_client_free (client);
 	return retval;
 }
 

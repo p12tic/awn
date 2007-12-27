@@ -136,7 +136,7 @@ static void
 _awn_config_client_free (gpointer boxed)
 {
 	if (boxed) {
-		awn_config_client_unref (AWN_CONFIG_CLIENT (boxed));
+		awn_config_client_free (AWN_CONFIG_CLIENT (boxed));
 	}
 }
 
@@ -191,11 +191,11 @@ AwnConfigClient *awn_config_client_new_for_applet (gchar *name, gchar *uid)
 #ifdef USE_GCONF
 	gchar *gconf_key = NULL;
 	if (uid) {
-		gconf_key = g_strconcat (AWN_GCONF_KEY_PREFIX, "/applets/", name, NULL);
-	} else {
 		gconf_key = g_strconcat (AWN_GCONF_KEY_PREFIX, "/applets/", uid, NULL);
+	} else {
+		gconf_key = g_strconcat (AWN_GCONF_KEY_PREFIX, "/applets/", name, NULL);
 	}
-	client = awn_config_client_new_with_path (gconf_key, name);
+	client = awn_config_client_new_with_path (g_strdup (gconf_key), name);
 	g_free (gconf_key);
 #else
 	gchar *config_dir = g_build_filename (g_get_user_config_dir (), "awn", "applets", NULL);
@@ -675,7 +675,9 @@ void awn_config_client_load_defaults_from_schema (AwnConfigClient *client, GErro
 						SET_DEFAULT (bool, boolean);
 						break;
 					case AWN_CONFIG_VALUE_TYPE_FLOAT:
-						SET_DEFAULT (float, double);
+						awn_config_client_set_float (client, group, key,
+						                             (gfloat)g_key_file_get_double (client->schema, key_name, "default", NULL),
+						                             NULL);
 						break;
 					case AWN_CONFIG_VALUE_TYPE_INT:
 						SET_DEFAULT (int, integer);
@@ -1135,12 +1137,12 @@ void awn_config_client_set_list (AwnConfigClient *client, const gchar *group, co
 }
 
 /**
- * awn_config_client_unref:
+ * awn_config_client_free:
  * @client: The configuration client structure to free.
  *
  * Frees the configuration client structure from memory.
  */
-void awn_config_client_unref (AwnConfigClient *client)
+void awn_config_client_free (AwnConfigClient *client)
 {
 #ifdef USE_GCONF
 	g_object_unref (client->client);

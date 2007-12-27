@@ -197,7 +197,7 @@ GSList            *awn_config_client_get_list                  (AwnConfigClient 
 void               awn_config_client_set_list                  (AwnConfigClient *client, const gchar *group,
                                                                 const gchar *key, AwnConfigListType list_type,
                                                                 GSList *value, GError **err);
-void               awn_config_client_unref                     (AwnConfigClient *client);
+void               awn_config_client_free                      (AwnConfigClient *client);
 
 #endif /* _LIBAWN_AWN_CONFIG_CLIENT_H */
 /* vim: set noet ts=8 sw=8 sts=8 : */
