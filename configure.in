@@ -88,10 +88,11 @@ AC_ARG_WITH(desktop,
                  ;;
                  gnome|*)
                  DESKTOP_MODULES="gnome-desktop-2.0 libgnome-2.0"
-                 VFS_MODULE="gnome-vfs-2.0"
+                 VFS_MODULE="gnome-vfs-module-2.0"
                  AC_DEFINE(LIBAWN_USE_GNOME, 1, [Define support for the Gnome desktop])
                  USE_DESKTOP="-DLIBAWN_USE_GNOME"
                  AC_MSG_RESULT(Gnome)
+                 AC_SYS_LARGEFILE
                  ;;
              esac])
 AC_SUBST(DESKTOP_MODULES)
@@ -140,6 +141,8 @@ PKG_CHECK_EXISTS([libwnck-1.0 >= 2.19.3.1], [AC_DEFINE(HAVE_LIBWNCK_220, 1, [Hav
 PKG_CHECK_MODULES(AWN, [ $COMMON_MODULES libwnck-1.0 $DESKTOP_MODULES $VFS_MODULE $CFG_MODULE x11 xproto dbus-glib-1 libglade-2.0 xdamage xcomposite xrender])
 AC_SUBST(AWN_CFLAGS)
 AC_SUBST(AWN_LIBS)
+
+AC_CHECK_LIB(m, sin)
 
 dnl ==============================================
 dnl DBUS

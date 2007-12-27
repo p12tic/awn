@@ -22,6 +22,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#define _GNU_SOURCE
 
 /**
  * SECTION: awn-vfs
@@ -34,8 +35,8 @@
 #include "libawn/awn-vfs.h"
 
 #ifdef LIBAWN_USE_GNOME
-#include <libgnomevfs/gnome-vfs-init.h>
-#include <libgnomevfs/gnome-vfs-uri.h>
+#include <libgnomevfs/gnome-vfs.h>
+#include <libgnomevfs/gnome-vfs-module-shared.h>
 #elif defined (LIBAWN_USE_XFCE)
 /* Already included in awn-vfs.h */
 #else
@@ -124,14 +125,14 @@ static AwnVfsMonitorEvent awn_vfs_monitor_native_event_type_to_awn (int native_e
 }
 
 #ifdef LIBAWN_USE_GNOME
-static void gnome_vfs_monitor_callback_proxy (GnomeVFSMonitorHandle *handle, const ghcar *monitor_uri, const gchar *event_uri, GnomeVFSMonitorEventType event, AwnVfsMonitorData *data)
+static void gnome_vfs_monitor_callback_proxy (GnomeVFSMonitorHandle *handle, const gchar *monitor_uri, const gchar *event_uri, GnomeVFSMonitorEventType event, AwnVfsMonitorData *data)
 {
 	switch (event) {
 		case GNOME_VFS_MONITOR_EVENT_CHANGED:
 		case GNOME_VFS_MONITOR_EVENT_CREATED:
 		case GNOME_VFS_MONITOR_EVENT_DELETED: {
 			AwnVfsMonitorEvent awn_event = awn_vfs_monitor_native_event_type_to_awn (event);
-			(data->callback) ((AwnVfsMonitor)handle, monitor_uri, event_uri, awn_event, data->data);
+			(data->callback) ((AwnVfsMonitor*)handle, (gchar*)monitor_uri, (gchar*)event_uri, awn_event, data->data);
 			break;
 		} default:
 			/* Don't do anything */
@@ -212,7 +213,7 @@ AwnVfsMonitor *awn_vfs_monitor_add (gchar *path, AwnVfsMonitorType monitor_type,
 	} else if (monitor_type == AWN_VFS_MONITOR_DIRECTORY) {
 		gmtype = GNOME_VFS_MONITOR_DIRECTORY;
 	}
-	gnome_vfs_monitor_add (&monitor, path, gmtype, gnome_vfs_monitor_callback_proxy, data);
+	gnome_vfs_monitor_add (&monitor, path, gmtype, (GnomeVFSMonitorCallback)gnome_vfs_monitor_callback_proxy, data);
 #elif defined(LIBAWN_USE_XFCE)
 	ThunarVfsMonitor *tvfs_monitor = thunar_vfs_monitor_get_default ();
 	ThunarVfsPath *uri = thunar_vfs_path_new (path, NULL);
@@ -260,8 +261,8 @@ void awn_vfs_monitor_emit (AwnVfsMonitor *monitor, gchar *path, AwnVfsMonitorEve
 {
 	int native_event = awn_vfs_monitor_event_type_to_native (event);
 #ifdef LIBAWN_USE_GNOME
-	GnomeVFSUri *uri = gnome_vfs_uri_new (gnome_vfs_get_uri_from_local_path (path));
-	gnome_vfs_monitor_callback (monitor, uri, (GnomeVFSMonitorEventType)native_event);
+	GnomeVFSURI *uri = gnome_vfs_uri_new (gnome_vfs_get_uri_from_local_path (path));
+	gnome_vfs_monitor_callback ((GnomeVFSMethodHandle)monitor, uri, (GnomeVFSMonitorEventType)native_event);
 	gnome_vfs_uri_unref (uri);
 #elif defined(LIBAWN_USE_XFCE)
 	ThunarVfsPath *uri = thunar_vfs_path_new (path, NULL);
@@ -340,12 +341,12 @@ GList *awn_vfs_get_pathlist_from_string (gchar *paths, GError **err)
 		li->data = gnome_vfs_uri_to_string (uri, 0 /* hide_options */);
 		gnome_vfs_uri_unref (uri);
 	}
+	*err = NULL;
 #elif defined(LIBAWN_USE_XFCE)
 	GList *li;
 	list = thunar_vfs_path_list_from_string ((const gchar *) paths, err);
-	GError *error = *err;
-	if (error) {
-		g_print("Error: %s", error->message);
+	if (*err) {
+		g_print ("Error: %s", (*err)->message);
 	} else {
 		for (li = list; li != NULL; li = li->next) {
 			ThunarVfsPath *uri = li->data;

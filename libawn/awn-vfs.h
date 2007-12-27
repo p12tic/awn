@@ -37,8 +37,7 @@ typedef GnomeVFSMonitorHandle AwnVfsMonitor;
 #include <thunar-vfs/thunar-vfs.h>
 typedef ThunarVfsMonitorHandle AwnVfsMonitor;
 #else
-#include <gio/gfilemonitor.h>
-#include <gio/gdirectorymonitor.h>
+#include <gio/gio.h>
 typedef struct _AwnVfsMonitor AwnVfsMonitor;
 #endif
 
