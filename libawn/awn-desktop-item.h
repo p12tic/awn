@@ -25,22 +25,12 @@
 
 #include <gtk/gtkicontheme.h>
 
-#ifdef LIBAWN_USE_GNOME
-#include <libgnome/gnome-desktop-item.h>
-#else
-#include "egg/eggdesktopfile.h"
-#endif
-
 /**
  * AwnDesktopItem:
  *
  * An alias for the desktop-specific .desktop file-handling structure.
  */
-#ifdef LIBAWN_USE_GNOME
-typedef GnomeDesktopItem AwnDesktopItem;
-#else
-typedef EggDesktopFile AwnDesktopItem;
-#endif
+typedef struct _AwnDesktopItem AwnDesktopItem;
 
 #define AWN_TYPE_DESKTOP_ITEM	(awn_desktop_item_get_type ())
 /**

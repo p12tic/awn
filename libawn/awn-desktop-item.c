@@ -31,6 +31,12 @@
 #include <string.h>
 #include <gdk/gdkscreen.h>
 
+#ifdef LIBAWN_USE_GNOME
+#include <libgnome/gnome-desktop-item.h>
+#else
+#include "egg/eggdesktopfile.h"
+#endif
+
 /**
  * SECTION: awn-desktop-item
  * @short_description: A desktop item-specific API wrapper.
@@ -40,6 +46,12 @@
  * the compile-time configuration.
  */
 #include "awn-desktop-item.h"
+
+#ifdef LIBAWN_USE_GNOME
+typedef GnomeDesktopItem _AwnDesktopItem;
+#else
+typedef EggDesktopFile _AwnDesktopItem;
+#endif
 
 /* helper functions for egg */
 #ifndef LIBAWN_USE_GNOME
