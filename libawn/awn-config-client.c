@@ -29,6 +29,7 @@
 #define AWN_GCONF_KEY_PREFIX "/apps/avant-window-navigator"
 #else
 #include <glib/gstdio.h>
+#include <glib/gutils.h>
 #if GLIB_CHECK_VERSION(2,15,0)
 #include <glib/gchecksum.h>
 #else
