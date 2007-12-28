@@ -1,7 +1,7 @@
 # adapted from vala's vapi/Makefile.am
 NULL =
 
-vapidir = $(pkgdatadir)/vapi
+vapidir = $(datadir)/vala/vapi
 
 dist_vapi_DATA =	\
 	awn.vapi	\
