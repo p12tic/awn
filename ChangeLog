@@ -1,3 +1,16 @@
+2007-12-28  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* pyawn -> bindings/python:
+	Move the bindings to a separate directory.
+
+	* Makefile.am:
+	* acinclude.m4:
+	* bindings/vala:
+	* configure.in:
+	* test/Makefile.am:
+	* test/test.vala:
+	Add Vala bindings support.
+
 2007-12-26  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* pyawn/__init__.py:
