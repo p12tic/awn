@@ -221,9 +221,25 @@ AwnConfigClient *awn_config_client_new_for_applet (gchar *name, gchar *uid)
 static gchar *awn_config_client_generate_key (AwnConfigClient *client, const gchar *group, const gchar *key)
 {
 	if (key == NULL) {
-		return g_strconcat(client->path, "/", group, NULL);
+#ifdef USE_GCONF
+		if (strcmp (group, AWN_CONFIG_CLIENT_DEFAULT_GROUP) == 0) {
+			return g_strdup (client->path);
+		} else {
+#endif
+			return g_strconcat (client->path, "/", group, NULL);
+#ifdef USE_GCONF
+		}
+#endif
 	} else {
-		return g_strconcat(client->path, "/", group, "/", key, NULL);
+#ifdef USE_GCONF
+		if (strcmp (group, AWN_CONFIG_CLIENT_DEFAULT_GROUP) == 0) {
+			return g_strconcat (client->path, "/", key, NULL);
+		} else {
+#endif
+			return g_strconcat (client->path, "/", group, "/", key, NULL);
+#ifdef USE_GCONF
+		}
+#endif
 	}
 }
 
@@ -609,7 +625,11 @@ void awn_config_client_notify_add (AwnConfigClient *client, const gchar *group,
 	gchar *full_key = awn_config_client_generate_key (client, group, key);
 #ifdef USE_GCONF
 	notify->client = client;
-	gconf_client_notify_add (client->client, full_key, (GConfClientNotifyFunc)awn_config_client_notify_proxy, notify, NULL, NULL);
+	GError *err = NULL;
+	guint notify_id = gconf_client_notify_add (client->client, full_key, (GConfClientNotifyFunc)awn_config_client_notify_proxy, notify, NULL, &err);
+	if (notify_id == 0 || err) {
+		g_warning ("Something went wrong when we tried to add a notification callback: %s", err->message);
+	}
 #else
 	GQuark quark = g_quark_from_string (full_key);
 	GSList *funcs = g_datalist_id_get_data (&(client->notify_funcs), quark);
