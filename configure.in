@@ -115,7 +115,6 @@ AC_ARG_WITH(gconf,
                     [glib-2.0 >= 2.15.0],
                     [use_egg_checksum="no"],
                     [use_egg_checksum="yes"])
-                ])
                 GCONF_SCHEMA_INSTALL_SOURCE="/dev/null"
                 GCONF_SCHEMA_FILE_DIR="/dev/null"
                 AC_MSG_RESULT([GKeyFile (part of Glib)])
