@@ -110,12 +110,11 @@ AC_ARG_WITH(gconf,
                 # use Glib's GKeyFile - it's already covered by $COMMON_MODULES
                 CFG_MODULE=""
                 CFG_BACKEND_NAME="GKeyFile"
-                # we need GChecksum (should/will be in Glib 2.16)
+                # we need GChecksum (is in Glib 2.15)
                 PKG_CHECK_EXISTS(
-                    [glib-2.0 >= 2.16],
+                    [glib-2.0 >= 2.15.0],
                     [use_egg_checksum="no"],
-                    [use_egg_checksum="yes"
-                     AC_DEFINE(USE_EGG_CHECKSUM, 1, [Use the bundled GChecksum implementation])
+                    [use_egg_checksum="yes"])
                 ])
                 GCONF_SCHEMA_INSTALL_SOURCE="/dev/null"
                 GCONF_SCHEMA_FILE_DIR="/dev/null"

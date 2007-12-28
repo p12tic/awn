@@ -29,10 +29,10 @@
 #define AWN_GCONF_KEY_PREFIX "/apps/avant-window-navigator"
 #else
 #include <glib/gstdio.h>
-#ifdef USE_EGG_CHECKSUM 
-#include "egg/eggchecksum.h"
-#else
+#if GLIB_CHECK_VERSION(2,15,0)
 #include <glib/gchecksum.h>
+#else
+#include "egg/eggchecksum.h"
 #endif
 #endif
 
