@@ -44,7 +44,7 @@ py-compile
 mkinstalldirs
 libawn/*awn-enum-types.*
 libawn/egg/*egg-enum-types.*
-pyawn/awn.c
+bindings/python/awn.c
 awn-manager/awnDefs.py
 awn-manager/awnManager.py
 intltool-*.in
@@ -75,3 +75,4 @@ doc/reference/libawn.types
 doc/reference/*.bak
 data/awn.schemas*
 config.h.in
+test/vala-test

@@ -1,0 +1,16 @@
+# adapted from vala's vapi/Makefile.am
+NULL =
+
+vapidir = $(pkgdatadir)/vapi
+
+dist_vapi_DATA =	\
+	awn.vapi	\
+	awn.deps	\
+	$(NULL)
+
+dist_noinst_DATA =	\
+	awn.files		\
+	awn.gi			\
+	awn.metadata	\
+	awn.namespace	\
+	$(NULL)

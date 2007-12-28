@@ -7,7 +7,7 @@ SUBDIRS =				\
 	data				\
 	applets                         \
 	po				\
-	pyawn				\
+	bindings				\
 	awn-manager			\
 	doc					\
 	test				\

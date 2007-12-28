@@ -19,6 +19,10 @@ AM_PROG_LIBTOOL
 dnl check for gtk-doc
 GTK_DOC_CHECK(1.4)
 
+dnl ==============================================
+dnl Python support
+dnl ==============================================
+
 AC_PYTHON_DEVEL(2.3.5)
 
 PLATFORM=`$PYTHON -c "from distutils import util; print util.get_platform()"`
@@ -43,7 +47,17 @@ AC_SUBST(PYCAIRO_LIBS)
 PYGTK_CODEGEN_DEFINES="-DHAVE_PYCAIRO $PYGTK_CODEGEN_DEFINES";
 AC_DEFINE([HAVE_PYCAIRO], [1], [Define to 1 if pycairo is available])
 
+dnl ==============================================
+dnl Vala support
+dnl ==============================================
+
+VALA_PROG_VALAC(0.1.6)
+AM_CONDITIONAL(HAVE_VALA, test -n "$VALAC")
+
+dnl ==============================================
 dnl CFLAGS
+dnl ==============================================
+
 CFLAGS="$CFLAGS -Wall -fno-strict-aliasing -fmessage-length=0 -D_FORTIFY_SOURCE=2"
 
 dnl ==============================================
@@ -157,6 +171,9 @@ AM_GCONF_SOURCE_2
 AC_OUTPUT([
 Makefile
 awn-manager/Makefile
+bindings/Makefile
+bindings/python/Makefile
+bindings/vala/Makefile
 doc/Makefile
 doc/reference/Makefile
 libawn/Makefile
@@ -167,7 +184,6 @@ applets/Makefile
 data/Makefile
 data/active/Makefile
 po/Makefile.in
-pyawn/Makefile
 test/Makefile
 awn.pc
 ])
