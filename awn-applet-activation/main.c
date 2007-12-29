@@ -141,8 +141,17 @@ main (gint argc, gchar **argv)
                 return 1;
         }
         
+        name = awn_desktop_item_get_name (item);
+
         /* Check if this is a Python applet */
-        type = awn_desktop_item_get_item_type (item);
+        type = awn_desktop_item_get_string (item, "X-AWN-AppletType");
+        if (!type) {
+                /* FIXME we'll maintain this for a bit until the .desktop files are fixed */
+                type = awn_desktop_item_get_item_type (item);
+                if (type) {
+                        g_warning ("Please inform the developer(s) of the applet '%s' that the .desktop file associated with their applet need to be updated per the Applet Development Guidelines on the AWN Wiki.", name);
+                }
+        }
         if (type) {
                 if (strcmp (type, "Python") == 0) {
                        launch_python (path, 
@@ -157,7 +166,6 @@ main (gint argc, gchar **argv)
         
         /* Process (re)naming */
         /*FIXME: Actually make this work */
-        name = awn_desktop_item_get_name (item);
         if (name != NULL) {
                 gint len = strlen (argv[0]);
                 gint nlen = strlen (name);
