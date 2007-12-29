@@ -1,3 +1,9 @@
+2007-12-29  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* awn-applet-activation/main.c:
+	Merge patch from moonbeam in Launchpad bug #179232, which changes the
+	applet type key to not use the reserved key name.
+
 2007-12-28  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* pyawn -> bindings/python:
