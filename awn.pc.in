@@ -3,7 +3,7 @@ exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 config_backend=@CFG_BACKEND_NAME@
-vapidir=@datadir@/vala/vapi
+vapidir=@datarootdir@/vala/vapi
 
 Name: libawn
 Description: Avant-Window-Navigator applets/plugin library
