@@ -326,7 +326,7 @@ awn_load_string_list(AwnConfigClient *client, const gchar *group, const gchar* k
 	} else {
 		g_print("%s unset, setting now\n", key);
 		awn_config_client_set_list (client, group, key, AWN_CONFIG_CLIENT_LIST_TYPE_STRING, def, NULL);
-		*data = NULL;
+		*data = def;
 	}
 }
 
