@@ -19,7 +19,7 @@
 #
 #  Notes: Avant Window Navigator applet preferences window
 
-import sys, os, time, urllib
+import sys, os, os.path, time, urllib
 try:
     import pygtk
     pygtk.require("2.0")
@@ -245,8 +245,9 @@ class awnApplet:
         self._apply ()
 
     def remove_keys (self, model, iterator):
+        name = os.path.splitext(os.path.basename(model.get_value(iterator, 2)))[0]
         uid = model.get_value (iterator, 3)
-        applet_client = awn.Config(uid)
+        applet_client = awn.Config(name, uid)
         applet_client.clear()
 
     def remove_applet_dir(self, dirPath, filename):
@@ -304,8 +305,9 @@ class awnApplet:
 
         self.scrollwindow.add(self.treeview_current)
 
-        self.model = model = gtk.ListStore(gdk.Pixbuf, str, str, str)
-        self.treeview_current.set_model (model)
+        # icon, name/description, desktop entry path, uid
+        self.model = gtk.ListStore(gdk.Pixbuf, str, str, str)
+        self.treeview_current.set_model (self.model)
         self.model.connect("row-changed", self.reordered)
 
         ren = gtk.CellRendererPixbuf()
