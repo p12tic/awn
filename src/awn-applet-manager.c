@@ -317,7 +317,7 @@ awn_applet_manager_refresh_applets (AwnConfigClientNotifyEntry *entry,
                 gchar **tokens = NULL;
                 tokens = g_strsplit (k->data, "::", 2);
                 
-                if (tokens == NULL) {
+                if (tokens == NULL || g_strv_length (tokens) != 2) {
                         g_warning ("Bad key: %s", (gchar*)k->data);
                         continue;
                 }
@@ -468,7 +468,7 @@ awn_applet_manager_init (AwnAppletManager *applet_manager)
 	
 	touch_quark = g_quark_from_string ("applets-touch-quark");
         
-	/* Setup AwnConfigClient to notify us if the launchers list changes */
+	/* Setup AwnConfigClient to notify us if the applets list changes */
 	awn_config_client_notify_add (client, AWN_CONFIG_CLIENT_DEFAULT_GROUP, APPLETS_LIST,
                                       (AwnConfigClientNotifyFunc)awn_applet_manager_refresh_applets, 
                                       applet_manager);
