@@ -179,7 +179,7 @@ _wrap_awn_config_client_set_list (PyGBoxed *self, PyObject *args, PyObject *kwar
   }
 
   if (!PyList_Check (py_list) && !PyTuple_Check (py_list)) {
-    PyErr_SetString (PyExc_TypeError, "First argument not a tuple or list");
+    PyErr_SetString (PyExc_TypeError, "Fourth argument not a tuple or list");
     return NULL;
   }
   the_list = _pysequence_to_gslist (py_list, list_type);
