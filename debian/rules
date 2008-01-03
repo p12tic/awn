@@ -21,3 +21,6 @@ DEB_DH_MAKESHLIBS_ARGS_libawn0 += -V"libawn0-trunk (>= 0.2.1)"
 DEB_DH_MAKESHLIBS_ARGS_avant-window-navigator += -n
 DEB_SHLIBDEPS_LIBRARY_avant-window-navigator:= libawn0
 DEB_SHLIBDEPS_INCLUDE_avant-window-navigator := debian/libawn0/usr/lib/
+
+# debug lib
+DEB_DH_STRIP_ARGS := --dbg-package=libawn0-trunk-dbg

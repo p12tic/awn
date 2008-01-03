@@ -1,3 +1,15 @@
+2008-01-03  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-applet-activation/main.c:
+	patch by: moonbeam
+	Fix bug #179232 : Don't use Type field of desktop files
+	
+	* debian/control.autoppa:
+	* debian/changelog:
+	* debian/control:
+	Clean debian/control
+	Properly set the debug package
+
 2007-12-29  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* awn-applet-activation/main.c:
@@ -22,6 +34,14 @@
 	* pyawn/__init__.py:
 	Add the function check_dependencies() so that python applets can notify
 	the user when they don't have the required Python modules installed.
+
+2007-12-21  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* configure.in:
+	Add a check when configure/autogen.sh running for python modules.
+	Check is done for python-gnome2, python-gnome2-desktop and python-gconf.
+	To disable the check, add --disable-pymod-checks to configure/autogen.sh
+	Fix for bug 136738.
 
 2007-12-19  Mark Lee <avant-wn@lazymalevolence.com>
 
