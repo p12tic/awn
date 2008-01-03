@@ -447,7 +447,6 @@ gint awn_desktop_item_launch (AwnDesktopItem *item, GSList *documents, GError **
 #else
 	GPid pid;
 	egg_desktop_file_launch ((EggDesktopFile*)item, documents, err,
-	                         EGG_DESKTOP_FILE_LAUNCH_SCREEN, gdk_screen_get_default(),
 	                         EGG_DESKTOP_FILE_LAUNCH_RETURN_PID, &pid,
 	                         NULL);
 	return pid;
