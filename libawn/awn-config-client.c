@@ -306,7 +306,7 @@ static void awn_config_client_gkeyfile_new_schema (AwnConfigClient *client, gcha
 	}
 	client->schema = g_key_file_new ();
 	gchar *file_name = g_strconcat(base_name, ".schema-ini", NULL);
-	gchar *schema_path = g_build_filename (DATADIR, "awn", "schemas", file_name, NULL);
+	gchar *schema_path = g_build_filename (DATADIR, "avant-window-navigator", "schemas", file_name, NULL);
 	GError *err = NULL;
 	if (!g_key_file_load_from_file (client->schema, schema_path,
 	                                (G_KEY_FILE_KEEP_COMMENTS | G_KEY_FILE_KEEP_TRANSLATIONS),
