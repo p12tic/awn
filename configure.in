@@ -154,6 +154,12 @@ PKG_CHECK_MODULES(AWN, [ $COMMON_MODULES libwnck-1.0 $DESKTOP_MODULES $VFS_MODUL
 AC_SUBST(AWN_CFLAGS)
 AC_SUBST(AWN_LIBS)
 
+if test "$use_egg" = "yes"; then
+	old_LIBS="$LIBS"
+	LIBS="$LIBS $AWN_LIBS"
+	AC_CHECK_FUNCS(gdk_x11_display_broadcast_startup_message)
+	LIBS="$old_LIBS"
+fi
 AC_CHECK_LIB(m, sin)
 
 dnl ==============================================
