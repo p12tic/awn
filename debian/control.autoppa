@@ -6,7 +6,7 @@ AUTOPPA_INCLUDE(dapper):Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck
 AUTOPPA_INCLUDE(edgy):Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python-dev, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake1.9, python-gtk2-dev
 AUTOPPA_INCLUDE(feisty):Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python-dev, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake, python-gtk2-dev
 AUTOPPA_INCLUDE(gutsy,hardy):Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake
-Standards-Version: 3.7.2
+Standards-Version: 3.7.3
 Homepage: https://launchpad.net/avant-window-navigator/
 XS-Python-Version: current
 
@@ -14,8 +14,8 @@ Package: avant-window-navigator-trunk
 Section: universe/gnome
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: awn-manager-trunk (= ${binary:Version})
-Suggests: xcompmgr | compiz | xfwm4
+Recommends: awn-manager-trunk (>= 0.2), python-awn-trunk
+Suggests: xcompmgr | compiz | xfwm4 (>= 4.4)
 Conflicts: awn-window-navigator-bzr, awn-window-navigator
 Replaces: awn-window-navigator-bzr, awn-window-navigator
 Description: A MacOS X like panel for GNOME
@@ -34,10 +34,22 @@ Replaces: libawn0-bzr, libawn-bzr, libawn, libawn0
 Description: library for avant-window-navigator
  This library is used by avant-window-navigator.
 
+Package: libawn0-trunk-dbg
+Section: universe/libs
+Architecture: any
+Depends: libawn0-trunk (= ${binary:Version}), ${misc:Depends}
+Suggests: xcompmgr | compiz | xfwm4
+Conflicts: libawn0-bzr-dbg, libawn-bzr-dbg, libawn-dbg, libawn0-dbg
+Replaces: libawn0-bzr-dbg, libawn-bzr-dbg, libawn-dbg, libawn0-dbg
+Description: library for avant-window-navigator - debug package
+ This library is used by avant-window-navigator.
+ .
+ This package contain the debug symbols for libawn.
+
 Package: libawn-dev-trunk
 Section: universe/libdevel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: libawn0-trunk (= ${binary:Version}), ${misc:Depends}, libgnome2-dev, libgtk2.0-dev
 Conflicts: libawn-dev-bzr, libawn-dev
 Replaces: libawn-dev-bzr, libawn-dev
 Description: library for avant-window-navigator - developpement files

@@ -11,8 +11,8 @@ Package: avant-window-navigator-trunk
 Section: universe/gnome
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: awn-manager-trunk (= ${binary:Version})
-Suggests: xcompmgr | compiz | xfwm4
+Recommends: awn-manager-trunk (>= 0.2), python-awn-trunk
+Suggests: xcompmgr | compiz | xfwm4 (>= 4.4)
 Conflicts: awn-window-navigator-bzr, awn-window-navigator
 Replaces: awn-window-navigator-bzr, awn-window-navigator
 Description: A MacOS X like panel for GNOME
@@ -31,10 +31,22 @@ Replaces: libawn0-bzr, libawn-bzr, libawn, libawn0
 Description: library for avant-window-navigator
  This library is used by avant-window-navigator.
 
+Package: libawn0-trunk-dbg
+Section: universe/libs
+Architecture: any
+Depends: libawn0-trunk (= ${binary:Version}), ${misc:Depends}
+Suggests: xcompmgr | compiz | xfwm4
+Conflicts: libawn0-bzr-dbg, libawn-bzr-dbg, libawn-dbg, libawn0-dbg
+Replaces: libawn0-bzr-dbg, libawn-bzr-dbg, libawn-dbg, libawn0-dbg
+Description: library for avant-window-navigator - debug package
+ This library is used by avant-window-navigator.
+ .
+ This package contain the debug symbols for libawn.
+
 Package: libawn-dev-trunk
 Section: universe/libdevel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: libawn0-trunk (= ${binary:Version}), ${misc:Depends}, libgnome2-dev, libgtk2.0-dev
 Conflicts: libawn-dev-bzr, libawn-dev
 Replaces: libawn-dev-bzr, libawn-dev
 Description: library for avant-window-navigator - developpement files

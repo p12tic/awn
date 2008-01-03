@@ -1,3 +1,15 @@
+2008-01-03  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-applet-activation/main.c:
+	patch by: moonbeam
+	Fix bug #179232 : Don't use Type field of desktop files
+	
+	* debian/control.autoppa:
+	* debian/changelog:
+	* debian/control:
+	Clean debian/control
+	Properly set the debug package
+
 2007-12-21  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* configure.in:

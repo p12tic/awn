@@ -144,7 +144,21 @@ main (gint argc, gchar **argv)
         }
         
         /* Check if this is a Python applet */
-        type = gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_TYPE);
+        
+        /*this is how they should be*/
+ 	if ( gnome_desktop_item_attr_exists(item, "X-AWN-AppletType") ){
+        	type = gnome_desktop_item_get_string (item, "X-AWN-AppletType");        	
+	}	        
+        else{
+	/*FIXME  we'll maintain this for a bit until the desktop files are fixed*/
+		name=gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_NAME);
+		if (!name)
+		{
+			name="Unknown";	
+		}
+		printf ("Please inform the developer(s) of the applet '%s' that the .desktop file associated with their applet need to be updated per the Applet Development Guidelines on the AWN Wiki.", name);
+        	type = gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_TYPE);
+        }
         if (type) {
                 if (strcmp (type, "Python") == 0) {
                        launch_python (path, 
