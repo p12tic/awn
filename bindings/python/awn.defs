@@ -47,7 +47,7 @@
   (c-name "AwnDesktopItem")
   (gtype-id "AWN_TYPE_DESKTOP_ITEM")
   (copy-func "awn_desktop_item_copy")
-  (release-func "awn_desktop_item_unref")
+  (release-func "awn_desktop_item_free")
 )
 
 ;; Enumerations and flags ...

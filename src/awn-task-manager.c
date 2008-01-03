@@ -142,7 +142,7 @@ _load_launchers_func (const char *uri, AwnTaskManager *task_manager)
 		g_print("LOADED : %s\n", uri);
 	} else {
 		gtk_widget_destroy(task);
-		awn_desktop_item_unref(item);
+		awn_desktop_item_free (item);
 		g_print("FAILED : %s\n", uri);
 	}
 }
@@ -604,7 +604,7 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 		awn_task_manager_update_separator_position (task_manager);
 	} else {
 		gtk_widget_destroy(task);
-		awn_desktop_item_unref(item);
+		awn_desktop_item_free (item);
 		g_print("FAILED : %s\n", _sdata);
 
 	}

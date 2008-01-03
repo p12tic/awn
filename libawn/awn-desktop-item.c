@@ -482,12 +482,12 @@ void awn_desktop_item_save (AwnDesktopItem *item, GError **err)
 }
 
 /**
- * awn_desktop_item_unref:
+ * awn_desktop_item_free:
  * @item: The item to be freed from memory.
  *
  * Frees the desktop item structure from memory.
  */
-void awn_desktop_item_unref (AwnDesktopItem *item)
+void awn_desktop_item_free (AwnDesktopItem *item)
 {
 #ifdef LIBAWN_USE_GNOME
 	gnome_desktop_item_unref (item);
