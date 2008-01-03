@@ -569,7 +569,7 @@
   (of-object "AwnDesktopItem")
   (return-type "gint")
   (parameters
-    '("GList*" "documents")
+    '("GSList*" "documents")
     '("GError**" "err")
   )
 )

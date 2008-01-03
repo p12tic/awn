@@ -53,21 +53,6 @@ typedef GnomeDesktopItem _AwnDesktopItem;
 typedef EggDesktopFile _AwnDesktopItem;
 #endif
 
-/* helper functions for egg */
-#ifndef LIBAWN_USE_GNOME
-static GSList *awn_util_glist_to_gslist (GList *list)
-{
-	GSList *slist;
-	guint i;
-	guint len = g_list_length (list);
-	for (i = 0; i < len; i++) {
-		slist = g_slist_append (slist, g_list_nth_data (list, i));
-	}
-	g_list_free (list);
-	return slist;
-}
-#endif
-
 /* GType function */
 GType awn_desktop_item_get_type (void)
 {
@@ -450,7 +435,7 @@ gboolean awn_desktop_item_exists (AwnDesktopItem *item)
  * Launches the path of the desktop item.
  * Returns: the process ID (PID) of the new process.
  */
-gint awn_desktop_item_launch (AwnDesktopItem *item, GList *documents, GError **err)
+gint awn_desktop_item_launch (AwnDesktopItem *item, GSList *documents, GError **err)
 {
 #ifdef LIBAWN_USE_GNOME
 	return gnome_desktop_item_launch_on_screen (item,
@@ -461,11 +446,7 @@ gint awn_desktop_item_launch (AwnDesktopItem *item, GList *documents, GError **e
 	                                            err);
 #else
 	GPid pid;
-	GSList *doc_list = NULL;
-	if (documents != NULL && egg_desktop_file_accepts_documents ((EggDesktopFile*)item)) {
-		doc_list = awn_util_glist_to_gslist (documents);
-	}
-	egg_desktop_file_launch ((EggDesktopFile*)item, doc_list, err,
+	egg_desktop_file_launch ((EggDesktopFile*)item, documents, err,
 	                         EGG_DESKTOP_FILE_LAUNCH_SCREEN, gdk_screen_get_default(),
 	                         EGG_DESKTOP_FILE_LAUNCH_RETURN_PID, &pid,
 	                         NULL);

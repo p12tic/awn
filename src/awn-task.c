@@ -625,7 +625,7 @@ _task_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
                                               AwnTask *task)
 {
 
-	GList      *list;
+	GSList      *list;
 
         gboolean delete_selection_data = FALSE;
 

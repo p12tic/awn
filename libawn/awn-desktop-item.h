@@ -59,7 +59,7 @@ void            awn_desktop_item_set_string (AwnDesktopItem *item, gchar *key, g
 gchar          *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *key);
 void            awn_desktop_item_set_localestring (AwnDesktopItem *item, gchar *key, gchar *locale, gchar *value);
 gboolean        awn_desktop_item_exists (AwnDesktopItem *item);
-gint            awn_desktop_item_launch (AwnDesktopItem *item, GList *documents, GError **err);
+gint            awn_desktop_item_launch (AwnDesktopItem *item, GSList *documents, GError **err);
 void            awn_desktop_item_save (AwnDesktopItem *item, GError **err);
 void            awn_desktop_item_unref (AwnDesktopItem *item);
 

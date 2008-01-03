@@ -326,33 +326,37 @@ void awn_vfs_init()
  * @err: A pointer to the reference object that is used to determine whether
  * the operation was successful.
  *
- * Converts a string of type text/uri-list into a GList of URIs.
+ * Converts a string of type text/uri-list into a GSList of URIs.
  *
  * Returns: a list of URIs
  */
-GList *awn_vfs_get_pathlist_from_string (gchar *paths, GError **err)
+GSList *awn_vfs_get_pathlist_from_string (gchar *paths, GError **err)
 {
-	GList *list = NULL;
+	GSList *list = NULL;
 #ifdef LIBAWN_USE_GNOME
+	GList *result = NULL;
 	GList *li;
-	list = gnome_vfs_uri_list_parse ((const gchar *) paths);
-	for (li = list; li != NULL; li = li->next) {
+	result = gnome_vfs_uri_list_parse ((const gchar *) paths);
+	for (li = result; li != NULL; li = li->next) {
 		GnomeVFSURI *uri = li->data;
-		li->data = gnome_vfs_uri_to_string (uri, 0 /* hide_options */);
+		list = g_slist_append (list, gnome_vfs_uri_to_string (uri, 0 /* hide_options */));
 		gnome_vfs_uri_unref (uri);
 	}
+	g_list_free (result);
 	*err = NULL;
 #elif defined(LIBAWN_USE_XFCE)
+	GList *result = NULL;
 	GList *li;
-	list = thunar_vfs_path_list_from_string ((const gchar *) paths, err);
+	result = thunar_vfs_path_list_from_string ((const gchar *) paths, err);
 	if (*err) {
 		g_print ("Error: %s", (*err)->message);
 	} else {
-		for (li = list; li != NULL; li = li->next) {
+		for (li = result; li != NULL; li = li->next) {
 			ThunarVfsPath *uri = li->data;
-			li->data = thunar_vfs_path_dup_string (uri);
+			list = g_slist_append (list, thunar_vfs_path_dup_string (uri));
 			thunar_vfs_path_unref (uri);
 		}
+		g_list_free (result);
 	}
 #else
 	gchar **path_list;
@@ -360,7 +364,7 @@ GList *awn_vfs_get_pathlist_from_string (gchar *paths, GError **err)
 	guint i;
 	guint len = g_strv_length (path_list);
 	for (i = 0; i < len; i++) {
-		list = g_list_append (list, (gpointer)g_strdup (path_list[i]));
+		list = g_slist_append (list, (gpointer)g_strdup (path_list[i]));
 	}
 	g_strfreev (path_list);
 	*err = NULL;
