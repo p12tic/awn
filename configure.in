@@ -54,6 +54,7 @@ dnl Vala support
 dnl ==============================================
 
 VALA_PROG_VALAC(0.1.6)
+AC_PATH_PROG(VAPIGEN, vapigen, vapigen, [])
 AM_CONDITIONAL(HAVE_VALA, test -n "$VALAC")
 
 dnl ==============================================

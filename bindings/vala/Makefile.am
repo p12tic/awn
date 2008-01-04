@@ -14,3 +14,6 @@ dist_noinst_DATA =	\
 	awn.metadata	\
 	awn.namespace	\
 	$(NULL)
+
+awn.vapi: awn.gi
+	$(VAPIGEN) --library=awn $<
