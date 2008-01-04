@@ -67,28 +67,28 @@ GType awn_desktop_item_get_type (void)
 
 /**
  * awn_desktop_item_new:
- * @uri: The path to the desktop file.  The base name of the path does not need
- * to exist at the time that this function is called.
+ * @filename: The path to the desktop file.  The base name of the path does not
+ * need to exist at the time that this function is called.
  *
- * Creates a new desktop item structure.  If @uri exists, it attempts to parse
- * the file at that path as a desktop file.  Otherwise, it is used as the path
- * that will be used if awn_desktop_item_save() is called.
+ * Creates a new desktop item structure.  If @filename exists, it attempts to
+ * parse the file at that path as a desktop file.  Otherwise, it is used as the
+ * path that will be used if awn_desktop_item_save() is called.
  * Returns: a newly created item structure.  When it is no longer needed, it
  * needs to be freed via awn_desktop_item_unref().
  */
-AwnDesktopItem *awn_desktop_item_new (gchar *uri)
+AwnDesktopItem *awn_desktop_item_new (gchar *filename)
 {
 	AwnDesktopItem *item = NULL;
 #ifdef LIBAWN_USE_GNOME
-	item = gnome_desktop_item_new_from_file (uri,
+	item = gnome_desktop_item_new_from_file (filename,
 	                                         GNOME_DESKTOP_ITEM_LOAD_ONLY_IF_EXISTS,
 	                                         NULL);
 #else
 	GError *err = NULL;
-	item = (AwnDesktopItem*)egg_desktop_file_new (uri, &err);
+	item = (AwnDesktopItem*)egg_desktop_file_new (filename, &err);
 	if (err) {
 		g_warning ("Could not load the desktop item at '%s': %s",
-			   uri, err->message);
+			   filename, err->message);
 	}
 #endif
 	return item;

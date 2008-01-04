@@ -43,7 +43,7 @@ typedef struct _AwnDesktopItem AwnDesktopItem;
 GType awn_desktop_item_get_type (void);
 
 /* Wrapper functions */
-AwnDesktopItem *awn_desktop_item_new (gchar *uri);
+AwnDesktopItem *awn_desktop_item_new (gchar *filename);
 AwnDesktopItem *awn_desktop_item_copy (const AwnDesktopItem *item);
 gchar          *awn_desktop_item_get_filename (AwnDesktopItem *item);
 gchar          *awn_desktop_item_get_item_type (AwnDesktopItem *item);

@@ -239,7 +239,7 @@
 			<method name="new" symbol="awn_desktop_item_new">
 				<return-type type="AwnDesktopItem*"/>
 				<parameters>
-					<parameter name="uri" type="gchar*"/>
+					<parameter name="filename" type="gchar*"/>
 				</parameters>
 			</method>
 			<method name="save" symbol="awn_desktop_item_save">

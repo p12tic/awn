@@ -109,7 +109,7 @@ namespace Awn {
 		public weak string get_name ();
 		public weak string get_string (string key);
 		public int launch (GLib.List documents) throws GLib.Error;
-		public DesktopItem (string uri);
+		public DesktopItem (string filename);
 		public void save () throws GLib.Error;
 		public void set_exec (string exec);
 		public void set_icon (string icon);

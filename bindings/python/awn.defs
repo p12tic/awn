@@ -446,7 +446,7 @@
   (is-constructor-of "AwnDesktopItem")
   (return-type "AwnDesktopItem*")
   (parameters
-    '("gchar*" "uri")
+    '("gchar*" "filename")
   )
 )
 
