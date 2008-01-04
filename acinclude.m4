@@ -234,7 +234,7 @@ $ac_distutils_result])
 dnl AM_CHECK_PYMOD(MODNAME [,SYMBOL [,ACTION-IF-FOUND [,ACTION-IF-NOT-FOUND]]])
 dnl Check if a module containing a given symbol is visible to python.
 AC_DEFUN([AM_CHECK_PYMOD],
-[AC_REQUIRE([AM_PATH_PYTHON])
+[AC_REQUIRE([AC_PYTHON_DEVEL])
 py_mod_var=`echo $1['_']$2 | sed 'y%./+-%__p_%'`
 AC_MSG_CHECKING(for ifelse([$2],[],,[$2 in ])python module $1)
 AC_CACHE_VAL(py_cv_mod_$py_mod_var, [
