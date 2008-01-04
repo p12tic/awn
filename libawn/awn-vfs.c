@@ -330,7 +330,7 @@ void awn_vfs_init()
  *
  * Returns: a list of URIs
  */
-GSList *awn_vfs_get_pathlist_from_string (gchar *paths, GError **err)
+GSList *awn_vfs_get_pathlist_from_string (guchar *paths, GError **err)
 {
 	GSList *list = NULL;
 #ifdef LIBAWN_USE_GNOME

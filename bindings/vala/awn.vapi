@@ -318,6 +318,7 @@ namespace Awn {
 	public static weak Awn.Settings get_settings ();
 	public static void register_effects (GLib.Object obj, Awn.Effects fx);
 	public static void unregister_effects (Awn.Effects fx);
-	public static weak GLib.List vfs_get_pathlist_from_string (string paths) throws GLib.Error;
+	[NoArrayLength]
+	public static weak GLib.SList vfs_get_pathlist_from_string (uchar[] paths) throws GLib.Error;
 	public static void vfs_init ();
 }

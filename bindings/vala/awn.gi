@@ -106,9 +106,9 @@
 			</parameters>
 		</function>
 		<function name="vfs_get_pathlist_from_string" symbol="awn_vfs_get_pathlist_from_string">
-			<return-type type="GList*"/>
+			<return-type type="GSList*"/>
 			<parameters>
-				<parameter name="paths" type="gchar*"/>
+				<parameter name="paths" type="guchar*"/>
 				<parameter name="err" type="GError**"/>
 			</parameters>
 		</function>
@@ -294,7 +294,7 @@
 					<parameter name="value" type="gchar*"/>
 				</parameters>
 			</method>
-			<method name="unref" symbol="awn_desktop_item_unref">
+			<method name="free" symbol="awn_desktop_item_free">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="item" type="AwnDesktopItem*"/>
