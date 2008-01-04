@@ -232,7 +232,7 @@
 				<return-type type="gint"/>
 				<parameters>
 					<parameter name="item" type="AwnDesktopItem*"/>
-					<parameter name="documents" type="GList*"/>
+					<parameter name="documents" type="GSList*"/>
 					<parameter name="err" type="GError**"/>
 				</parameters>
 			</method>
