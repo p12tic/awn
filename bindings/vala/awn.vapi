@@ -108,7 +108,7 @@ namespace Awn {
 		public weak string get_localestring (string key);
 		public weak string get_name ();
 		public weak string get_string (string key);
-		public int launch (GLib.List documents) throws GLib.Error;
+		public int launch (GLib.SList documents) throws GLib.Error;
 		public DesktopItem (string filename);
 		public void save () throws GLib.Error;
 		public void set_exec (string exec);
