@@ -419,12 +419,11 @@
   )
 )
 
-(define-function awn_cairo_string_to_color
+(define-function rgba_string_to_dict
   (c-name "awn_cairo_string_to_color")
-  (return-type "none")
+  (return-type "AwnColor*")
   (parameters
     '("const-gchar*" "string")
-    '("AwnColor*" "color")
   )
 )
 
