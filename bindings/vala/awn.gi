@@ -246,6 +246,7 @@
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="item" type="AwnDesktopItem*"/>
+					<parameter name="new_filename" type="gchar*"/>
 					<parameter name="err" type="GError**"/>
 				</parameters>
 			</method>

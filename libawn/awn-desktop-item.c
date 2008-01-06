@@ -456,25 +456,34 @@ gint awn_desktop_item_launch (AwnDesktopItem *item, GSList *documents, GError **
 /**
  * awn_desktop_item_save:
  * @item: The desktop item structure to be serialized.
+ * @new_filename: the new name of the file where the serialized data
+ * is saved.  If it is %NULL, the filename specified in awn_desktop_item_new()
+ * is used.
  * @err: The pointer to a #GError structure, which contains an error
  * message when the function fails.
  *
  * Saves the serialized desktop item to disk.
  */
-void awn_desktop_item_save (AwnDesktopItem *item, GError **err)
+void awn_desktop_item_save (AwnDesktopItem *item, gchar *new_filename, GError **err)
 {
 #ifdef LIBAWN_USE_GNOME
-	gnome_desktop_item_save (item, NULL, TRUE, err);
+	gnome_desktop_item_save (item, new_filename, TRUE, err);
 #else
 	gchar *data;
+	gchar *filename;
 	gsize data_len;
 	data = g_key_file_to_data (egg_desktop_file_get_key_file ((EggDesktopFile*)item), &data_len, err);
 	if (err) {
 		g_free (data);
 		return;
 	} else {
+		if (new_filename) {
+			filename = new_filename;
+		} else {
+			filename = awn_desktop_item_get_filename (item);
+		}
 		/* requires glib 2.8 */
-		g_file_set_contents (awn_desktop_item_get_filename (item), data, data_len, err);
+		g_file_set_contents (filename, data, data_len, err);
 		g_free (data);
 	}
 #endif
@@ -494,4 +503,4 @@ void awn_desktop_item_free (AwnDesktopItem *item)
 	egg_desktop_file_free ((EggDesktopFile*)item);
 #endif
 }
-/*  vim: set noet ts=8 : */
+/*  vim: set noet ts=8 sts=8 sw=8 : */
