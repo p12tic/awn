@@ -426,6 +426,7 @@ class awnApplet:
     def make_appmodel (self):
 
             self.appmodel = model = gtk.ListStore(gdk.Pixbuf, str, str)
+            self.appmodel.set_sort_column_id(1, gtk.SORT_ASCENDING)
             self.treeview_available.set_model (model)
 
             ren = gtk.CellRendererPixbuf()
