@@ -17,10 +17,10 @@ DEB_PYTHON_SETUP_CMD := awn-manager/awnDefs.in.py
 DEB_INSTALL_MANPAGES_avant-window-navigator := debian/avant-window-navigator.1 debian/awn-applet-activation.1
 DEB_INSTALL_MANPAGES_awn-manager := debian/awn-manager.1
 
-DEB_DH_MAKESHLIBS_ARGS_libawn0 += -V"libawn0-trunk (>= 0.2.1)"
+DEB_DH_MAKESHLIBS_ARGS_libawn0 += -V"libawn0-testing (>= 0.2.1)"
 DEB_DH_MAKESHLIBS_ARGS_avant-window-navigator += -n
 DEB_SHLIBDEPS_LIBRARY_avant-window-navigator:= libawn0
 DEB_SHLIBDEPS_INCLUDE_avant-window-navigator := debian/libawn0/usr/lib/
 
 # debug lib
-DEB_DH_STRIP_ARGS := --dbg-package=libawn0-trunk-dbg
+DEB_DH_STRIP_ARGS := --dbg-package=libawn0-testing-dbg
