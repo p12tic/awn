@@ -18,7 +18,7 @@ Build autoppa : dpkg-buildpackage -rfakeroot
 Install the deb
 
 1.Set up the branch
-To build the package, you must have the code : bzr branch http://bazaar.launchpad.net/~awn-testing/awn/awn-core-testing awn-core-testing
+To build the package, you should create a new branch : bzr branch http://bazaar.launchpad.net/~awn-testing/awn/awn-core-testing awn-core-testing-package
 
 2. Configure your dput configuration
 Edit a .dput.conf file in your home directory with this type of configuration
@@ -35,8 +35,8 @@ Edit a .autoppa.conf in your home directory with this type of configuration
 
 [avant-window-navigator-testing]
 email = John Doe <john.doe@mail.com>
-branch = /path/to/the/original/branch/awn-core-testing
-repository = /path/to/the/tempory/branch/awn-core-testing-package
+branch = /path/to/the/branch/awn-core-testing-package
+repository = /path/to/the/branch/awn-core-testing-package
 ppa = awn-testing
 releases = edgy feisty gutsy hardy
 
@@ -48,16 +48,19 @@ replace it with:
 DEBUILD_PRESERVE_ENVVARS="DISPLAY"
 
 5. Use autoPPA
-To build just launch the command for example : avant-window-navigator-testing-0.2.1+bzr156-1
+To build : 
+ - Launch the command for example : "EDITOR=nano avant-window-navigator-testing-0.2.2~bzr156-1"
+ - Write a changelog (like "Build Revision 156")
+ - Ctrl+o to save, Ctrl+q to quit and launch the build
 avant-window-navigator-testing : the name of the package (can't be changed)
--0.2.1 : the version
-.156 : the revision of the branch
+-0.2.2 : the version
+~bzr156 : the revision of the branch
 -1 : the revision of the package
 To upload a new package, the revision must be higher (first the branch, after the package)
 Examples : 
-0.2.1.156-1 is higher than 0.2.1.155-4
-0.2.1.157-2 is higher than 0.2.1.157-1
-The final version will be avant-window-navigator-testing-0.2.1.156-ubuntu1-1
+0.2.2~bzr156-1 is higher than 0.2.2~bzr155-4
+0.2.2~bzr157-2 is higher than 0.2.2~bzr157-1
+The final version will be avant-window-navigator-testing-0.2.2~bzr156-ubuntu1-1
 where ubuntu is the version of ubuntu
 
 Links:

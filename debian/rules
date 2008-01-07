@@ -9,7 +9,7 @@ include /usr/share/cdbs/1/class/gnome.mk
 include /usr/share/cdbs/1/rules/simple-patchsys.mk
 
 DEB_CONFIGURE_SCRIPT := $(CURDIR)/$(DEB_SRCDIR)/autogen.sh
-DEB_CONFIGURE_EXTRA_FLAGS := --prefix=/usr 
+DEB_CONFIGURE_EXTRA_FLAGS += --prefix=/usr --disable-pymod-checks
 
 DEB_PYTHON_PRIVATE_MODULES_DIRS := debian/tmp/usr/share/avant-window-navigator/awn-manager/
 DEB_PYTHON_SETUP_CMD := awn-manager/awnDefs.in.py
