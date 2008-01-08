@@ -1,0 +1,30 @@
+#! /usr/bin/env python
+# encoding: utf-8
+
+#Maybe not necessary
+import misc, gnome
+
+#Substitute environnement variable
+awndesktop=bld.create_obj('subst')
+awndesktop.source = 'avant-window-navigator.desktop.in.in'
+awndesktop.target = 'avant-window-navigator.desktop.in'
+awndesktop.dict = {'PKGDATADIR': bld.env()['PKGDATADIR']}
+awndesktop.fun = misc.subst_func
+awndesktop.prio = 1
+
+#Use intltool
+applets=bld.create_obj('intltool_in')
+applets.source  = 'avant-window-navigator.desktop.in'
+applets.destvar = 'DATADIR'
+applets.subdir  = '/applications'
+applets.podir   = '../po'
+applets.flags   = '-d'
+
+
+#(Prefix d'installation, directory source, subdirectory source)
+install_files('PKGDATADIR', '.', '*.png')
+install_files('PKGDATADIR', '.', '*.svg')
+install_files('PKGDATADIR', 'active', '*.png')
+
+#TODO
+#Install inline file

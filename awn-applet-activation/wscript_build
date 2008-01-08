@@ -1,0 +1,11 @@
+#! /usr/bin/env python
+# encoding: utf-8
+
+#Create a simple binary
+obj = bld.create_obj('gnome', 'program')
+obj.find_sources_in_dirs('.') # take the sources in the current folder
+obj.includes='.' #take include in the currend folder
+obj.uselib='GTK GNOMEVFS GNOMEDESKTOP'
+obj.uselib_local='awn'
+obj.target='awn-applet-activation'
+

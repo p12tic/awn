@@ -1,0 +1,27 @@
+#! /usr/bin/env python
+# encoding: utf-8
+
+import misc, Common
+
+#TODO Genreate files
+# Check the Makefile
+# Should be like this
+
+#out2 = bld.create_obj('command-output')
+#out2.stdin = 'awn-enum-types.c.in' #File in
+#out2.command = '`pkg-config --variable=glib_mkenums glib-2.0`' #Command
+#out2.command_is_external = True
+#out2.argv = ['--template', 'awn-enum-types.c.in', 'awn-defines.c', 'awn-applet.c', 'awn-applet-dialog.c', 'awn-applet-gconf.c', 'awn-applet-simple.c', 'awn-cairo-utils.c', 'awn-gconf.c', 'awn-effects.c', 'awn-enum-types.c', 'awn-plug.c', 'awn-title.c'] #Parameters
+#out2.stdout = 'awn-enum-types.c' #File out
+#out2.prio = 1
+
+
+#out2 = bld.create_obj('command-output')
+#out2.stdin = 'awn-enum-types.h.in'
+#out2.command = '`pkg-config --variable=glib_mkenums glib-2.0`'
+#out2.command_is_external = True
+#out2.argv = ['--template', 'awn-enum-types.h.in', 'awn-defines.h', 'awn-applet.h', awn-applet-dialog.h', 'awn-applet-gconf.h', 'awn-applet-simple.h', 'awn-cairo-utils.h', 'awn-gconf.h', 'awn-effects.h', 'awn-enum-types.h', 'awn-plug.h awn-title.h']
+#out2.stdout = 'awn-enum-types.h'
+#out2.prio = 1
+
+

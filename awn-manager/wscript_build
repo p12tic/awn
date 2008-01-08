@@ -1,0 +1,40 @@
+#! /usr/bin/env python
+# encoding: utf-8
+
+#Maybe not necessary
+import misc, gnome
+
+#Subsistute environnement variable
+managerdesksub=bld.create_obj('subst')
+managerdesksub.source = 'awn-manager.desktop.in.in'
+managerdesksub.target = 'awn-manager.desktop.in'
+managerdesksub.dict = {'PKGDATADIR': bld.env()['PKGDATADIR']}
+managerdesksub.fun = misc.subst_func
+managerdesksub.prio = 1
+
+#Use intltool
+managerdeskdef=bld.create_obj('intltool_in')
+managerdeskdef.source  = 'awn-manager.desktop.in'
+managerdeskdef.destvar = 'DATADIR'
+managerdeskdef.subdir  = '/applications'
+managerdeskdef.podir   = '../po'
+managerdeskdef.flags   = '-d'
+
+#Subsistute environnement variable
+managerdef=bld.create_obj('subst')
+managerdef.source = 'awnDefs.in.py'
+managerdef.dict = {'PREFIX': bld.env()['PREFIX']}
+managerdef.fun = misc.subst_func
+
+#Subsistute environnement variable
+managerbin=bld.create_obj('subst')
+managerbin.source = 'awnManager.in.py'
+managerbin.target = 'awn-manager'
+managerbin.dict = {'DATADIR': bld.env()['DATADIR']}
+managerbin.fun = misc.subst_func
+managerbin.install_var = 'PREFIX'
+managerbin.install_subdir = 'bin/'
+
+#Install *.py and *.glade files
+# (Prefix to install, subdirectory to install, files to install)
+install_files('PKGDATADIR','awn-manager', '*.py *.glade')
