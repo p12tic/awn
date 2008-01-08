@@ -49,9 +49,9 @@ DEBUILD_PRESERVE_ENVVARS="DISPLAY"
 
 5. Use autoPPA
 To build : 
- - Launch the command for example : "EDITOR=nano avant-window-navigator-testing-0.2.2~bzr156-1"
+ - Launch the command for example : "EDITOR=nano autoppa avant-window-navigator-testing-0.2.2~bzr156-1"
  - Write a changelog (like "Build Revision 156")
- - Ctrl+o to save, Ctrl+q to quit and launch the build
+ - Ctrl+o to save, Ctrl+x to quit and launch the build
 avant-window-navigator-testing : the name of the package (can't be changed)
 -0.2.2 : the version
 ~bzr156 : the revision of the branch
