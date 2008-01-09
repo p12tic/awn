@@ -59,6 +59,7 @@ typedef struct {
 	int bar_height;
 	int bar_angle;
 	gfloat bar_pos;
+	gboolean no_bar_resize_ani;
 
 	/* Bar appearance settings */
 	gboolean rounded_corners;

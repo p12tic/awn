@@ -1,5 +1,13 @@
 2008-01-09  haytjes  <hv1989@gmail.com>
 
+	* libawn/awn-gconf.c:
+	* libawn/awn-gconf.h:
+	* src/awn-window.c:
+	Added an option to hide resize animation (for very low end computers)
+	#181168: option to disable resize animation for performance
+
+2008-01-09  haytjes  <hv1989@gmail.com>
+
 	* src/awn-task.c:
 	Solved memory leak
 

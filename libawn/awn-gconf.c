@@ -32,6 +32,7 @@
 #define AWN_AUTO_HIDE		AWN_PATH "/auto_hide"		/*bool*/
 #define AWN_AUTO_HIDE_DELAY	AWN_PATH "/auto_hide_delay"	/*int*/
 #define AWN_KEEP_BELOW		AWN_PATH "/keep_below"		/*bool*/
+#define NO_BAR_RESIZE_ANI	AWN_PATH "/no_bar_resize_animation" /*bool*/
 
 #define BAR_PATH		AWN_PATH "/bar"
 #define BAR_ROUNDED_CORNERS	BAR_PATH "/rounded_corners"	/*bool*/
@@ -131,6 +132,7 @@ awn_gconf_new()
 	awn_load_bool(client, AWN_AUTO_HIDE, &s->auto_hide, FALSE);
 	awn_load_int(client, AWN_AUTO_HIDE_DELAY, &s->auto_hide_delay, 1000);
 	awn_load_bool(client, AWN_KEEP_BELOW, &s->keep_below, FALSE);
+	awn_load_bool(client, NO_BAR_RESIZE_ANI, &s->no_bar_resize_ani, FALSE);
 	s->hidden = FALSE;
 	
 	/* Bar settings */
