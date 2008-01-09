@@ -95,6 +95,13 @@ _position_timeout (gpointer null)
 }
 
 
+void 
+awn_window_force_repos ()
+{
+	stop_position = TRUE;
+	g_timeout_add(5000, (GSourceFunc)_position_timeout, NULL);
+}
+
 GtkWidget *
 awn_window_new( AwnSettings *set )
 {
