@@ -95,6 +95,13 @@ _position_timeout (gpointer null)
 }
 
 
+void 
+awn_window_force_repos ()
+{
+	stop_position = TRUE;
+	g_timeout_add(5000, (GSourceFunc)_position_timeout, NULL);
+}
+
 GtkWidget *
 awn_window_new( AwnSettings *set )
 {
@@ -330,7 +337,7 @@ _position_window (GtkWidget *window)
 		//else
 			//y_pos = (int) (settings->monitor.height-wh*9/8+2);
 	
-	if (stop_position) {
+	if (stop_position || settings->no_bar_resize_ani) {
 		current_pos = x_pos;
 		gtk_window_move(GTK_WINDOW(window), x_pos, y_pos);
 		return;

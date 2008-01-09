@@ -1,3 +1,27 @@
+2008-01-09  haytjes  <hv1989@gmail.com>
+
+	* libawn/awn-gconf.c:
+	* libawn/awn-gconf.h:
+	* src/awn-window.c:
+	Added an option to hide resize animation (for very low end computers)
+	#181168: option to disable resize animation for performance
+
+2008-01-09  haytjes  <hv1989@gmail.com>
+
+	* src/awn-task.c:
+	Solved memory leak
+
+2008-01-09  haytjes  <hv1989@gmail.com>
+
+	* src/awn-window.c:
+	* src/awn-window.h:
+	* src/main.c:
+	Fix bug #159217: awn startup behavior
+	Now AWN is on his place, without moving the applets from the outer left
+	if first AWN starts and afterwards a compositing manager...
+
+	If someone still has problems with first start AWN and afterwards compiz (fusion), plz submit...
+
 2008-01-03  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-applet-activation/main.c:

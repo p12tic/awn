@@ -59,6 +59,9 @@ void _on_alpha_screen_changed (GtkWidget* pWidget, GdkScreen* pOldScreen, GtkWid
 void
 _position_window (GtkWidget *window);
 
+void 
+awn_window_force_repos ();
+
 G_END_DECLS
 
 

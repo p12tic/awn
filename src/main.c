@@ -554,6 +554,7 @@ composited_changed ( GdkScreen *screen, AwnSettings *s)
 		if(!started)
 		{
 			//g_timeout_add (1000, (GSourceFunc)load_applets, applet_manager);
+			awn_window_force_repos (); // set the x position right, without movement.
 			awn_applet_manager_load_applets (AWN_APPLET_MANAGER (s->appman));
 			started = TRUE;
 		}
