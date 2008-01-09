@@ -314,7 +314,7 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 	cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
 	cairo_paint (cr);
 	
-	double x = (settings->monitor.width-width)*settings->bar_pos;
+	double x = (int)((settings->monitor.width-width)*settings->bar_pos);
 	
 	if (settings->bar_angle != 0)
         {

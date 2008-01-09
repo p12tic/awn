@@ -1,5 +1,10 @@
 2008-01-09  haytjes  <hv1989@gmail.com>
 
+	* src/awn-bar.c:
+	Fix #175210: Cairo drawing bugs
+
+2008-01-09  haytjes  <hv1989@gmail.com>
+
 	* libawn/awn-gconf.c:
 	* libawn/awn-gconf.h:
 	* src/awn-window.c:
