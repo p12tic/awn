@@ -1170,7 +1170,7 @@ awn_task_set_width (AwnTask *task, gint width)
 		priv->reflect = gdk_pixbuf_flip (priv->icon,FALSE);
 		awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 	}
-	if (G_IS_OBJECT (old) && priv->is_launcher)
+	if (G_IS_OBJECT (old) && ( priv->is_launcher || WNCK_IS_WINDOW (priv->window)) )
 		gdk_pixbuf_unref (old);
 		
 	if (G_IS_OBJECT (old_reflect))
