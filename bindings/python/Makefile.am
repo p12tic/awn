@@ -39,7 +39,7 @@ awn_la_LIBADD = \
 awn_la_SOURCES = awnmodule.c
 nodist_awn_la_SOURCES = awn.c
 
-defsdir = $(pkgdatadir)/$(PLATFORM_VERSION)/defs
+defsdir = $(pkgdatadir)/defs
 defs_DATA = $(AWN_DEFS)
 
 # code generator
