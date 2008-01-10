@@ -143,11 +143,6 @@ AC_ARG_WITH(gconf,
                 # use Glib's GKeyFile - it's already covered by $COMMON_MODULES
                 CFG_MODULE=""
                 CFG_BACKEND_NAME="GKeyFile"
-                # we need GChecksum (is in Glib 2.15)
-                PKG_CHECK_EXISTS(
-                    [glib-2.0 >= 2.15.0],
-                    [use_egg_checksum="no"],
-                    [use_egg_checksum="yes"])
                 GCONF_SCHEMA_INSTALL_SOURCE="/dev/null"
                 GCONF_SCHEMA_FILE_DIR="/dev/null"
                 AC_MSG_RESULT([GKeyFile (part of Glib)])
@@ -165,6 +160,11 @@ fi
 AC_SUBST(CFG_MODULE)
 AC_SUBST(CFG_BACKEND_NAME)
 AM_CONDITIONAL(USE_GCONF, test "$with_gconf" != "no")
+# we need GChecksum (is in Glib 2.15)
+PKG_CHECK_EXISTS(
+    [glib-2.0 >= 2.15.0],
+    [use_egg_checksum="no"],
+    [use_egg_checksum="yes"])
 AM_CONDITIONAL(USE_EGG_CHECKSUM, test "$use_egg_checksum" = "yes")
 
 PKG_CHECK_EXISTS([libwnck-1.0 >= 2.19.3.1], [AC_DEFINE(HAVE_LIBWNCK_220, 1, [Have libwnck with the ABI that changed with version 2.19.3.1])])

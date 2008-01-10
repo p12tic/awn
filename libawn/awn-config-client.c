@@ -23,6 +23,12 @@
 #include <config.h>
 #endif
 
+#include <glib.h>
+#include <sys/file.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #include <string.h>
 #ifdef USE_GCONF
 #include <gconf/gconf-client.h>
@@ -30,11 +36,11 @@
 #else
 #include <glib/gstdio.h>
 #include <glib/gutils.h>
+#endif
 #if GLIB_CHECK_VERSION(2,15,0)
 #include <glib/gchecksum.h>
 #else
 #include "egg/eggchecksum.h"
-#endif
 #endif
 
 /**
@@ -745,6 +751,52 @@ void awn_config_client_load_defaults_from_schema (AwnConfigClient *client, GErro
 	}
 	g_free (key_names);
 #endif
+}
+
+/**
+ * awn_config_client_lock_open:
+ * @group: The group name of the entry.
+ * @key: The key name of the entry.
+ *
+ * Creates a locking file and file descriptor associated with the (group, key) pair.
+ * Returns: file descriptor for the locking file. -1 on error.
+ */
+int awn_config_client_lock_open (const gchar *group, const gchar *key)
+{
+	int fd;
+	gchar *data     = g_strdup_printf ("%s-%s", group, key);
+	gchar *checksum = g_compute_checksum_for_string (G_CHECKSUM_SHA256, data, strlen (data));
+	gchar *filename = g_strdup_printf ("%s/awn-lock%s.lock", g_get_tmp_dir (), checksum);
+	fd = open (filename, O_CREAT, S_IRWXU);
+	g_free (checksum);
+	g_free (data);
+	g_free (filename);
+	return fd;
+}
+
+/**
+ * awn_config_client_lock:
+ * @fd: File descriptor provided by awn_config_client_lock_open().
+ * @operation: as per 4.4BSD flock().
+ *
+ * Attempts to attain a lock as per flock() semantics.
+ * Returns: On success, zero is returned.  On error, -1 is returned, and errno is set appropriately.
+ */
+int awn_config_client_lock (int fd, int operation)
+{
+	return flock (fd, operation);
+}
+
+/**
+ * awn_config_client_lock_close:
+ * @fd: File descriptor provided by awn_config_client_lock_open().
+ *
+ * Attempts to close the file descriptor obtained with awn_config_client_lock_open().
+ * Returns: On success, zero is returned.  On error, -1 is returned, and errno is set appropriately.
+ */
+int awn_config_client_lock_close (int fd)
+{
+	return close (fd);
 }
 
 /**

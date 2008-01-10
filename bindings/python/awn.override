@@ -375,3 +375,59 @@ _wrap_awn_cairo_string_to_color (PyObject *self, PyObject *args, PyObject *kwarg
 
     return color_dict;
 }
+%%
+override awn_config_client_lock_open kwargs
+static PyObject *
+_wrap_awn_config_client_lock_open(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "group", "key", NULL };
+    char *group, *key;
+    int ret;
+
+    if (!PyArg_ParseTupleAndKeywords (args, kwargs,"ss:AwnConfigClient.lock_open", kwlist, &group, &key))
+        return NULL;
+    
+    ret = awn_config_client_lock_open (group, key);
+    
+    return PyInt_FromLong (ret);
+}
+%%
+override awn_config_client_lock kwargs
+static PyObject *
+_wrap_awn_config_client_lock (PyObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "fd", "operation", NULL };
+    int fd, operation, ret;
+
+    if (!PyArg_ParseTupleAndKeywords (args, kwargs,"ii:AwnConfigClient.lock", kwlist, &fd, &operation))
+        return NULL;
+    
+    ret = awn_config_client_lock (fd, operation);
+
+    if (ret != 0) {
+        return PyErr_SetFromErrno(PyExc_IOError);
+    }
+    
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+%%
+override awn_config_client_lock_close kwargs
+static PyObject *
+_wrap_awn_config_client_lock_close (PyObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "fd", NULL };
+    int fd, ret;
+
+    if (!PyArg_ParseTupleAndKeywords (args, kwargs,"i:AwnConfigClient.lock_close", kwlist, &fd))
+        return NULL;
+    
+    ret = awn_config_client_lock_close (fd);
+
+    if (ret != 0) {
+        return PyErr_SetFromErrno(PyExc_IOError);
+    }
+    
+    Py_INCREF(Py_None);
+    return Py_None;
+}

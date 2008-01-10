@@ -110,3 +110,13 @@ def check_dependencies(scope, *modules):
         dialog.destroy()
         import sys
         sys.exit(RESPONSE_WIKI)
+
+class ConfigLock:
+    def __init__(self, group, key):
+        self.fd = config_lock_open(group, key)
+
+    def lock(self, operation):
+        config_lock(self.fd, operation)
+
+    def close(self):
+        config_lock_close(self.fd)

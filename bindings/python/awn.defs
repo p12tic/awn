@@ -301,6 +301,32 @@
   )
 )
 
+(define-function config_lock_open
+  (c-name "awn_config_client_lock_open")
+  (return-type "int")
+  (parameters
+    '("const-gchar*" "group")
+    '("const-gchar*" "key")
+  )
+)
+
+(define-function config_lock
+  (c-name "awn_config_client_lock")
+  (return-type "none")
+  (parameters
+    '("int" "fd")
+    '("int" "operation")
+  )
+)
+
+(define-function config_lock_close
+  (c-name "awn_config_client_lock_close")
+  (return-type "none")
+  (parameters
+    '("int" "fd")
+  )
+)
+
 
 
 ;; From awn-applet.h
