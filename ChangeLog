@@ -1,3 +1,12 @@
+2008-01-10  haytjes  <hv1989@gmail.com>
+
+	* awn-manager/awnManager.in.py:
+	* src/main.c:
+	- Updated version to 0.2.1+ (unstable)
+	- Added -h and -v command line arguments
+	
+	devs: be carefull if you ever want to change the version, cuzz they are now standing in awnManager.in.py and in main.c
+
 2008-01-09  haytjes  <hv1989@gmail.com>
 
 	* src/awn-bar.c:
