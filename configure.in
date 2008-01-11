@@ -106,28 +106,29 @@ use_egg=no
 AC_ARG_WITH(desktop,
             AS_HELP_STRING([--with-desktop=[gnome|xfce4|agnostic]],
                            [Specifies which desktop type for which to compile.  Current choices: xfce4, gnome, agnostic (defaults to gnome)]),
-            [case "$with_desktop" in
-                 xfce4)
-                 use_egg=yes
-                 VFS_MODULE="thunar-vfs-1"
-                 AC_DEFINE(LIBAWN_USE_XFCE, 1, [Define support for the Xfce4 desktop])
-                 USE_DESKTOP="-DLIBAWN_USE_XFCE"
-                 AC_MSG_RESULT(Xfce4)
-                 ;;
-                 agnostic)
-                 use_egg=yes
-                 VFS_MODULE="gio-2.0"
-                 AC_MSG_RESULT([None, enabling desktop agnostic support])
-                 ;;
-                 gnome|*)
-                 DESKTOP_MODULES="gnome-desktop-2.0 libgnome-2.0"
-                 VFS_MODULE="gnome-vfs-module-2.0"
-                 AC_DEFINE(LIBAWN_USE_GNOME, 1, [Define support for the Gnome desktop])
-                 USE_DESKTOP="-DLIBAWN_USE_GNOME"
-                 AC_MSG_RESULT(Gnome)
-                 AC_SYS_LARGEFILE
-                 ;;
-             esac])
+            [], [with_desktop=gnome])
+case "$with_desktop" in
+    xfce4)
+    use_egg=yes
+    VFS_MODULE="thunar-vfs-1"
+    AC_DEFINE(LIBAWN_USE_XFCE, 1, [Define support for the Xfce4 desktop])
+    USE_DESKTOP="-DLIBAWN_USE_XFCE"
+    AC_MSG_RESULT(Xfce4)
+    ;;
+    agnostic)
+    use_egg=yes
+    VFS_MODULE="gio-2.0"
+    AC_MSG_RESULT([None, enabling desktop agnostic support])
+    ;;
+    gnome|*)
+    DESKTOP_MODULES="gnome-desktop-2.0 libgnome-2.0"
+    VFS_MODULE="gnome-vfs-module-2.0"
+    AC_DEFINE(LIBAWN_USE_GNOME, 1, [Define support for the Gnome desktop])
+    USE_DESKTOP="-DLIBAWN_USE_GNOME"
+    AC_MSG_RESULT(Gnome)
+    AC_SYS_LARGEFILE
+    ;;
+esac
 AC_SUBST(DESKTOP_MODULES)
 AC_SUBST(VFS_MODULE)
 AC_SUBST(USE_DESKTOP)
