@@ -543,7 +543,9 @@ glow_opening_effect (AwnEffectsPrivate *priv)
 	}
 
 	// repaint widget
-	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+	if (fx->self && GTK_IS_WIDGET (fx->self)) {
+		gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+	}
 
 	gboolean repeat = TRUE;
 	if (fx->direction == AWN_EFFECT_DIR_NONE) {

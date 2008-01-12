@@ -1,5 +1,14 @@
 2008-01-12  Julien Lavergne <julien.lavergne@gmail.com>
 
+	* awn-manager/awnManager.in.py:
+	* awn-manager/window.glade:
+	* libawn/awn-effects.c:
+	Merge revision 161 and 162 of awn-core-testing branch
+	- Close bug #179666 : Use of tabs instead of a list in the awn-manager (Patch from Rémi Audebert)
+	- Close bug #179783 : Prevent segfault when opening glow effect (Patch from Mark Lee)
+
+2008-01-12  Julien Lavergne <julien.lavergne@gmail.com>
+
 	* awn-manager/awnApplet.py:
 	* src/awn-task.c:
 	Merge revision 158 and 159 of awn-core-testing branch
