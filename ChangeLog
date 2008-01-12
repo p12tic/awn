@@ -1,3 +1,11 @@
+2008-01-12  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awnApplet.py:
+	* src/awn-task.c:
+	Merge revision 158 and 159 of awn-core-testing branch
+	- Close #158182 : Sort applets alphabetically in awn-manager (Patch from Timon_and_Pumba)
+	- Close #134377 : Mouse wheel implementation (Patch from Ceceppa)
+
 2008-01-10  haytjes  <hv1989@gmail.com>
 
 	* awn-manager/awnManager.in.py:

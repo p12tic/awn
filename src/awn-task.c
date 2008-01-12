@@ -44,7 +44,7 @@ G_DEFINE_TYPE (AwnTask, awn_task, GTK_TYPE_DRAWING_AREA);
 
 static gboolean awn_task_expose (GtkWidget *task, GdkEventExpose *event);
 static gboolean awn_task_button_press (GtkWidget *task, GdkEventButton *event);
-
+static gboolean awn_task_scroll_event (GtkWidget *task, GdkEventScroll *event); //Ceceppa
 static gboolean awn_task_drag_motion (GtkWidget *task,
 		GdkDragContext *context, gint x, gint y, guint t);
 static void
@@ -113,6 +113,10 @@ struct _AwnTaskPrivate
 	gulong icon_changed;
 	gulong state_changed;
 	gulong name_changed;
+	
+    /* Ceceppa: old window position */
+    gint old_x;
+    gint old_y;
 	int timer_count;
 };
 
@@ -128,6 +132,7 @@ static guint awn_task_signals[LAST_SIGNAL] = { 0 };
 /* GLOBALS */
 
 static gint menu_item_id = 100;
+static WnckWindow *last_active_window = NULL;       //Ceceppa
 
 static const GtkTargetEntry drop_types[] = {
 	{ "STRING", 0, 0 }
@@ -146,6 +151,7 @@ awn_task_class_init (AwnTaskClass *class)
 	/* GtkWidget signals */
 	widget_class->expose_event = awn_task_expose;
 	widget_class->button_press_event = awn_task_button_press;
+	widget_class->scroll_event = awn_task_scroll_event;         //Ceceppa: mouse wheel
 	widget_class->drag_motion = awn_task_drag_motion;
 	widget_class->drag_leave = awn_task_drag_leave;
 
@@ -217,6 +223,10 @@ awn_task_init (AwnTask *task)
 	priv->menu_items[3] = NULL;
 	priv->menu_items[4] = NULL;
 	priv->timer_count = 0;
+
+	/* Ceceppa */
+    priv->old_x = -1;
+    priv->old_y = -1;
 
 	awn_effects_init(G_OBJECT(task), &priv->effects);
 	awn_register_effects(G_OBJECT(task), &priv->effects);
@@ -621,6 +631,81 @@ awn_task_button_press (GtkWidget *task, GdkEventButton *event)
 
 	return TRUE;
 }
+
+//Ceceppa
+static gboolean
+awn_task_scroll_event (GtkWidget *task, GdkEventScroll *event)
+{
+    AwnTaskPrivate *priv;
+    gboolean in_viewport;
+    int x, y;
+    int w, h;
+    WnckWindow *focus;
+    WnckScreen *screen;
+    WnckWorkspace *space;
+
+    priv = AWN_TASK_GET_PRIVATE (task);
+
+    if (priv->is_launcher)
+        return TRUE;
+
+    screen = wnck_screen_get_default();
+    space  = wnck_screen_get_active_workspace (screen);
+
+    if (event->direction == GDK_SCROLL_UP) {
+        if (wnck_window_is_active (priv->window))
+            return TRUE;
+
+    	//Save current position
+    	wnck_window_get_geometry (priv->window,
+                				  &x,
+                				  &y,
+                				  &w,
+                				  &h);
+
+        if (priv->old_x == -1 && priv->old_y == -1) {
+            priv->old_x = x;
+            priv->old_y = y;
+        }
+
+        //Window is in current viewport? If no, center window
+    	in_viewport = wnck_window_is_in_viewport (priv->window, space);
+    	x = in_viewport ? x : (wnck_screen_get_width(screen) - w) / 2;
+    	y = in_viewport ? y : (wnck_screen_get_height(screen) - h) / 2;
+
+        //Save last active window
+        last_active_window = wnck_screen_get_active_window (wnck_screen_get_default());
+
+        focus = priv->window;
+    } else if (event->direction == GDK_SCROLL_DOWN) {
+        if (priv->old_x == -1 && priv->old_y == -1) 
+            return TRUE;
+
+        x = priv->old_x;
+        y = priv->old_y;
+
+        focus = wnck_window_is_active (priv->window) ? 
+                                	  last_active_window :
+                                	  wnck_screen_get_active_window(screen);
+
+        priv->old_x = -1;
+        priv->old_y = -1;
+
+        last_active_window = NULL;
+    }
+
+    wnck_window_set_geometry (priv->window, 
+                                WNCK_WINDOW_GRAVITY_CURRENT,
+                                WNCK_WINDOW_CHANGE_X | WNCK_WINDOW_CHANGE_Y,
+                                x, y,
+                                w, h);
+
+    if (focus != NULL)
+        wnck_window_activate_transient (focus, event->time);
+
+    return TRUE;
+}
+
 
 static void
 _task_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
