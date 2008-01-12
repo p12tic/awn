@@ -125,6 +125,22 @@ main (int argc, char* argv[])
 	GError *error = NULL;
 	guint32 ret;
 	
+	int i;
+	for (i = 1; i < argc; i++) {
+		if (argv[i][0] == '-') {
+			switch (argv[i][1]) {
+				case 'h':	
+				case '?': g_print("Usage:\n  avant-window-navigator [OPTION...] - Starts avant-window-navigator\n");
+					  g_print("\nApplication Options:\n  -v\t\tPrints avant-window-navigator version.\n\n");
+					return 0;
+					break;
+				case 'v':g_print("Avant-window-navigator 0.2.1+ (unstable)\n");
+					return 0;
+					break;
+			}
+		}
+	}
+	
   	if (!g_thread_supported ()) g_thread_init (NULL);
 	dbus_g_thread_init ();
   
