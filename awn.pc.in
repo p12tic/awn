@@ -2,10 +2,12 @@ prefix=@prefix@
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
+config_backend=@CFG_BACKEND_NAME@
+vapidir=@datarootdir@/vala/vapi
 
 Name: libawn
 Description: Avant-Window-Navigator applets/plugin library
 Version: @VERSION@
 Libs: -L${libdir} -lawn
-Cflags: -I${includedir}
-Requires: glib-2.0 gobject-2.0 gtk+-2.0 gdk-2.0 libgnome-2.0 gnome-vfs-2.0 gconf-2.0
+Cflags: -I${includedir} @USE_DESKTOP@
+Requires: glib-2.0 >= 2.8 gobject-2.0 gtk+-2.0 gdk-2.0 @DESKTOP_MODULES@ @VFS_MODULE@ @CFG_MODULE@

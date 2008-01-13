@@ -32,12 +32,14 @@
 #include <gdk/gdkx.h>
 #include <string.h>
 
+#ifdef LIBAWN_USE_GNOME
 #include <libgnome/libgnome.h>
+#endif
 
 #include "xutils.h"
 #include "inlinepixbufs.h"
 
-#include <libawn/awn-gconf.h>
+#include <libawn/awn-settings.h>
 
 /*	TODO:
 	This is a cut-and-paste job at the moment, I still need to bring over 
@@ -83,7 +85,7 @@ awn_x_set_strut (GtkWindow *window)
 	int y = 0;
 	int width = 0;
 	int height = 0;
-  AwnSettings *settings = awn_gconf_new ();
+  AwnSettings *settings = awn_settings_new ();
 	
 	gtk_window_get_size (window, &width, &height);
 	gtk_window_get_position (window, &x, &y);
@@ -172,12 +174,21 @@ awn_x_get_icon_for_window (WnckWindow *window, gint width, gint height)
 		if (name->str[i] == ' ')
 			name->str[i] = '-';
 	}
-
+			
+#ifdef LIBAWN_USE_GNOME
 	uri = gnome_util_prepend_user_home(name->str);
+#elif defined(LIBAWN_USE_XFCE)
+	uri = g_string_free (g_string_prepend (name, g_get_home_dir ()), FALSE);
+#endif
 	
-	icon = gdk_pixbuf_new_from_file_at_scale (uri, width, height, TRUE, NULL);
+	if (uri) {
+		icon = gdk_pixbuf_new_from_file_at_scale (uri, width, height, TRUE, NULL);
+	}
 	 
+#ifdef LIBAWN_USE_GNOME
+	/* free error under Xfce */
 	g_string_free (name, TRUE);
+#endif
 	g_free (uri);
 	
 	if (icon)
@@ -294,35 +305,47 @@ icon_loader_get_icon_spec( const char *name, int width, int height )
 }
 
 GdkPixbuf * 
-awn_x_get_icon_for_launcher (GnomeDesktopItem *item, gint width, gint height)
+awn_x_get_icon_for_launcher (AwnDesktopItem *item, gint width, gint height)
 {
 	GString *name = NULL;
 	gchar *uri = NULL;
 	GdkPixbuf *icon = NULL;
 		
-	name = g_string_new ( gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_EXEC));
+	name = g_string_new ( awn_desktop_item_get_exec (item));
 	name = g_string_prepend (name, ".config/awn/custom-icons/");
 	int i = 0;
 	for (i = 0; i < name->len; i++) {
 		if (name->str[i] == ' ')
 			name->str[i] = '-';
 	}	
+#ifdef LIBAWN_USE_GNOME
 	uri = gnome_util_prepend_user_home(name->str);
+#elif defined(LIBAWN_USE_XFCE)
+	uri = g_string_free (g_string_prepend (name, g_get_home_dir ()), FALSE);
+#endif
 	
 	//g_print ("%s\n", uri);
+
+	if (uri) {
+		icon = gdk_pixbuf_new_from_file_at_scale (uri, width, height, TRUE, NULL);
+	}
 	
-	icon = gdk_pixbuf_new_from_file_at_scale (uri, width, height, TRUE, NULL);
-	
+#ifndef LIBAWN_USE_XFCE
 	g_string_free (name, TRUE);
+#endif
 	g_free (uri);
 	
 	if (icon)
 		return icon;
 	else {
 		char *icon_name;
-		icon_name = gnome_desktop_item_get_icon (item, gtk_icon_theme_get_default());
-		icon = icon_loader_get_icon_spec (icon_name, width, height) ;
-		g_free (icon_name);
-		return icon;
+		icon_name = awn_desktop_item_get_icon (item, gtk_icon_theme_get_default());
+		if (icon_name) {
+			icon = icon_loader_get_icon_spec (icon_name, width, height);
+			g_free (icon_name);
+			return icon;
+		} else {
+			return NULL;
+		}
 	}
 }

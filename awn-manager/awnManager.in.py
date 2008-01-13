@@ -20,56 +20,45 @@
 #
 #  Notes: Avant Window Navigator Manager
 
-import sys, os, time
+import sys, os, os.path, time
 
-PKGDATA = "@DATADIR@" + "/avant-window-navigator/awn-manager"
+PKGDATA = os.path.join("@DATADIR@", "avant-window-navigator", "awn-manager")
 sys.path.append (PKGDATA)
 
 try:
     import pygtk
     pygtk.require("2.0")
 except:
-  	pass
+    pass
 try:
     import gtk
     import gtk.glade
+    import gtk.gdk as gdk
 except Exception, e:
     sys.stderr.write(str(e) + '\n')
     sys.exit(1)
-
-import gconf
-import gnomedesktop
-import gtk.gdk as gdk
 
 from awnTheme import AwnThemeManager
 from awnPreferences import awnPreferences
 from awnApplet import awnApplet
 from awnLauncher import awnLauncher
+import awnDefs as defs
+import awn
 
-APP = 'avant-window-navigator'
-DIR = "@DATADIR@" + "/locale"
-I18N_DOMAIN = "avant-window-navigator"
-
-import locale
-import gettext
-locale.setlocale(locale.LC_ALL, '')
-gettext.bindtextdomain(APP, DIR)
-gettext.textdomain(APP)
-_ = gettext.gettext
-
+awn.vfs_init()
+defs.i18nize(globals())
 
 class AwnManager:
 
     def __init__(self):
 
-        self.AWN_CONFIG_DIR = os.path.join(os.path.expanduser('~'),'.config/awn')
-        if not os.path.exists(self.AWN_CONFIG_DIR):
-            os.makedirs(self.AWN_CONFIG_DIR)
+        if not os.path.exists(defs.HOME_CONFIG_DIR):
+            os.makedirs(defs.HOME_CONFIG_DIR)
         self.GLADE_PATH = os.path.join(PKGDATA, "window.glade")
-        gtk.glade.bindtextdomain(APP, DIR)
-        gtk.glade.textdomain(APP)
+        gtk.glade.bindtextdomain(defs.I18N_DOMAIN, defs.LOCALEDIR)
+        gtk.glade.textdomain(defs.I18N_DOMAIN)
 
-        self.wTree = gtk.glade.XML(self.GLADE_PATH, domain=I18N_DOMAIN)
+        self.wTree = gtk.glade.XML(self.GLADE_PATH, domain=defs.I18N_DOMAIN)
 
         self.window = self.wTree.get_widget("main_window")
         self.window.connect("delete-event", gtk.main_quit)
@@ -84,16 +73,60 @@ class AwnManager:
         close.connect("clicked", gtk.main_quit)
 
         #theme
-        self.themeManager = AwnThemeManager(self.wTree, self.AWN_CONFIG_DIR)
+        self.themeManager = AwnThemeManager(self.wTree)
 
         #applet
         self.appletManager = awnApplet(self.wTree)
 
         #launcher
-        self.launchManager = awnLauncher(self.wTree, self.AWN_CONFIG_DIR)
+        self.launchManager = awnLauncher(self.wTree)
 
         #preferences
         self.prefManager = awnPreferences(self.wTree)
+
+    def menu_row_clicked(self, data=None):
+        selection = self.treeview.get_selection()
+        (model, iterator) = selection.get_selected()
+        if iterator is not None:
+            self.show_panel(model.get_path(iterator)[0])
+
+    def show_panel(self, index):
+        panels = ['panel_preferences','panel_applets','panel_launchers','panel_themes']
+        [self.wTree.get_widget(panel).hide() for panel in panels]
+        self.wTree.get_widget(panels[index]).show()
+
+    def make_menu_model (self):
+        self.model = model = gtk.ListStore(gdk.Pixbuf, str, str, str)
+        self.treeview.set_model (model)
+
+        ren = gtk.CellRendererPixbuf()
+        col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
+        self.treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        col = gtk.TreeViewColumn ("Name", ren, markup=1)
+        self.treeview.append_column (col)
+
+        theme = gtk.icon_theme_get_default()
+
+        row = self.model.append ()
+        self.model.set_value (row, 0, theme.load_icon (gtk.STOCK_PREFERENCES, 32, 0))
+        self.model.set_value (row, 1, "General")
+
+        row = self.model.append ()
+        self.model.set_value (row, 0, theme.load_icon (gtk.STOCK_SORT_ASCENDING, 32, 0))
+        self.model.set_value (row, 1, "Applets")
+
+        row = self.model.append ()
+        self.model.set_value (row, 0, theme.load_icon (gtk.STOCK_FULLSCREEN, 32, 0))
+        self.model.set_value (row, 1, "Launchers")
+
+        row = self.model.append ()
+        self.model.set_value (row, 0, theme.load_icon (gtk.STOCK_HOME, 32, 0))
+        self.model.set_value (row, 1, "Themes")
+
+        path = self.model.get_path(self.model.get_iter_first())
+        self.treeview.set_cursor(path, focus_column=None, start_editing=False)
 
     def refresh(self, button):
         w = gtk.Window()
@@ -138,7 +171,5 @@ You should have received a copy of the GNU General Public License along with thi
         gtk.main()
 
 if __name__ == "__main__":
-    gettext.textdomain(I18N_DOMAIN)
-    gtk.glade.bindtextdomain(I18N_DOMAIN, "/usr/share/locale")
     awnmanager = AwnManager()
     awnmanager.main()

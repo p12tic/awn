@@ -22,7 +22,18 @@
 #ifndef __AWN_DEFINES_H__
 #define __AWN_DEFINES_H__
 
+/**
+ * AWN_GCONF_PATH:
+ *
+ * The prefix for all Awn proper configuration keys.
+ */
 #define AWN_GCONF_PATH "/apps/avant-window-navigator"
+
+/**
+ * AWN_APPLET_GCONF_PATH:
+ *
+ * The prefix for all Awn applet instances' configuration keys.
+ */
 #define AWN_APPLET_GCONF_PATH "/apps/avant-window-navigator/applets"
 
 #define AWN_MAX_HEIGHT 100

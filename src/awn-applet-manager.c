@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <libawn/awn-applet.h>
+#include <libawn/awn-config-client.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
@@ -41,7 +42,7 @@
 
 G_DEFINE_TYPE (AwnAppletManager, awn_applet_manager, GTK_TYPE_HBOX);
 
-#define AWN_APPLETS_KEY "/apps/avant-window-navigator/applets_list"
+#define APPLETS_LIST "applets_list"
 
 static GQuark touch_quark       = 0;
 
@@ -189,23 +190,24 @@ awn_applet_manager_load_applets (AwnAppletManager *manager)
 	AwnAppletManagerPrivate *priv;
 	GError *err = NULL;
 	GSList *keys = NULL, *k;
-	GConfClient *client = gconf_client_get_default ();
+	AwnConfigClient *client = awn_config_client_new ();
 	
 	g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
 	priv = AWN_APPLET_MANAGER_GET_PRIVATE (manager);     
 	
 	priv->applets = g_hash_table_new (g_str_hash, g_str_equal);
 	
-	keys = gconf_client_get_list (client,
-                                      AWN_APPLETS_KEY,
-                                      GCONF_VALUE_STRING,
-                                      &err); 
+	keys = awn_config_client_get_list (client,
+                                           AWN_CONFIG_CLIENT_DEFAULT_GROUP,
+                                           APPLETS_LIST,
+                                           AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                                           &err); 
 
         if (keys == NULL || err) {
                 keys = g_slist_append (keys, 
                                        LIBDIR"/awn/applets/taskman.desktop::1");
-                gconf_client_set_list (client, AWN_APPLETS_KEY,
-                                       GCONF_VALUE_STRING, keys, NULL);
+                awn_config_client_set_list (client, AWN_CONFIG_CLIENT_DEFAULT_GROUP, APPLETS_LIST,
+                                            AWN_CONFIG_CLIENT_LIST_TYPE_STRING, keys, NULL);
                 if (err) {
                         g_print ("%s\n", err->message);
 			g_error_free (err);
@@ -289,30 +291,20 @@ _kill_applets (gpointer key, GtkWidget *applet, AwnAppletManager *manager)
 }
 
 static void 
-awn_applet_manger_refresh_applets (GConfClient *client, 
-                                   guint cid, 
-                                   GConfEntry *entry, 
-                                   AwnAppletManager *manager)
+awn_applet_manager_refresh_applets (AwnConfigClientNotifyEntry *entry,
+                                    AwnAppletManager *manager)
 {
 	AwnAppletManagerPrivate *priv;
-	GError *err = NULL;
 	GSList *keys = NULL, *k;
         gint i = 0;
 	
 	g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
 	priv = AWN_APPLET_MANAGER_GET_PRIVATE (manager);     
 	
-	keys = gconf_client_get_list (client,
-                                      AWN_APPLETS_KEY,
-                                      GCONF_VALUE_STRING,
-                                      &err); 
+	keys = entry->value.list_val;
 
-        if (keys == NULL || err) {
-                if (err) {
-                        g_print ("%s\n", err->message);
-			g_error_free (err);
-		}
-                return;        
+	if (keys == NULL) {
+                return;
         }
         
         /* Set the current applets to untouched */
@@ -325,7 +317,7 @@ awn_applet_manger_refresh_applets (GConfClient *client,
                 gchar **tokens = NULL;
                 tokens = g_strsplit (k->data, "::", 2);
                 
-                if (tokens == NULL) {
+                if (tokens == NULL || g_strv_length (tokens) != 2) {
                         g_warning ("Bad key: %s", (gchar*)k->data);
                         continue;
                 }
@@ -468,7 +460,7 @@ static void
 awn_applet_manager_init (AwnAppletManager *applet_manager)
 {
 	AwnAppletManagerPrivate *priv;
-	GConfClient *client = gconf_client_get_default ();
+	AwnConfigClient *client = awn_config_client_new ();
 	
 	priv = AWN_APPLET_MANAGER_GET_PRIVATE (applet_manager);
 
@@ -476,10 +468,10 @@ awn_applet_manager_init (AwnAppletManager *applet_manager)
 	
 	touch_quark = g_quark_from_string ("applets-touch-quark");
         
-	/* Setup GConf to notify us if the launchers list changes */
-	gconf_client_notify_add (client, AWN_APPLETS_KEY, 
-                (GConfClientNotifyFunc)awn_applet_manger_refresh_applets, 
-                applet_manager, NULL, NULL);
+	/* Setup AwnConfigClient to notify us if the applets list changes */
+	awn_config_client_notify_add (client, AWN_CONFIG_CLIENT_DEFAULT_GROUP, APPLETS_LIST,
+                                      (AwnConfigClientNotifyFunc)awn_applet_manager_refresh_applets, 
+                                      applet_manager);
 }
 
 void on_awn_applet_manager_size_allocate (GtkWidget *widget, GtkAllocation *allocation, AwnAppletManager *manager) {

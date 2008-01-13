@@ -48,6 +48,31 @@
 	Clean debian/control
 	Properly set the debug package
 
+2007-12-29  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* awn-applet-activation/main.c:
+	Merge patch from moonbeam in Launchpad bug #179232, which changes the
+	applet type key to not use the reserved key name.
+
+2007-12-28  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* pyawn -> bindings/python:
+	Move the bindings to a separate directory.
+
+	* Makefile.am:
+	* acinclude.m4:
+	* bindings/vala:
+	* configure.in:
+	* test/Makefile.am:
+	* test/test.vala:
+	Add Vala bindings support.
+
+2007-12-26  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* pyawn/__init__.py:
+	Add the function check_dependencies() so that python applets can notify
+	the user when they don't have the required Python modules installed.
+
 2007-12-21  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* configure.in:
@@ -55,6 +80,18 @@
 	Check is done for python-gnome2, python-gnome2-desktop and python-gconf.
 	To disable the check, add --disable-pymod-checks to configure/autogen.sh
 	Fix for bug 136738.
+
+2007-12-19  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* acinclude.m4:
+	* configure.in:
+	Replace the old python-related M4 macros with one from the autoconf
+	macro archive.
+	Make sure that the Gtk+ libraries are linked to the python awn module.
+
+	* pyawn/Makefile.am:
+	Cleanup.
+	Allow the python awn module to link with the linker flag --no-undefined.
 
 2007-11-25  Julien Lavergne <julien.lavergne@gmail.com>
 
@@ -168,6 +205,63 @@
 	* src/inlinepixbufs.h:
 	Add some Licence & Copyright
 
+2007-11-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	* Makefile.am:
+	* autogen.sh:
+	* configure.in:
+	* doc/:
+	Add gtk-doc support.
+
+	* libawn/awn-config-client.c:
+	* libawn/awn-config-client.h:
+	* libawn/awn-defines.h:
+	* libawn/awn-desktop-item.c:
+	* libawn/awn-desktop-item.h:
+	* libawn/awn-vfs.c:
+	* libawn/awn-vfs.h:
+	Document relevant functions, structures, and constants.
+
+	* libawn/awn-effects.h:
+	Convert Doxygen-style comments to gtk-doc-style comments.
+
+2007-11-14  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	* data/Makefile.am:
+	* data/awn-schma-to-gconf:
+	* data/awn.schema-ini:
+	Add a GKeyFile-based schema of the Awn settings.
+	Add a Python-based script to be able to convert that schema into a
+	GConf-compatible one, if Awn is built with GConf.
+
+	* libawn/awn-vfs.c:
+	* libawn/awn-vfs.h:
+	Add a wrapper for VFS file monitoring API.
+	Remove all traces of the GIO #define.
+	Fix vim modelines.
+
+	* libawn/awn-config-client.c:
+	* libawn/awn-config-client.h:
+	Rename the value union to something shorter.
+	Add a value type enumeration.
+	GKeyFile backend: Make the global config client variable a static
+	function variable instead.
+	GKeyFile backend: Add GKeyFile-based schema support.
+	GKeyFile backend: Add file monitoring support, so that awn-manager
+	and Awn can properly receive changes from each other.  Uses checksums
+	to avoid having to diff config files with the same content.
+	GKeyFile backend: Protect from setting a NULL list.
+
+	* libawn/Makefile.am:
+	* libawn/egg/Makefile.am:
+	* libawn/egg/eggchecksum.c:
+	* libawn/egg/eggchecksum.h:
+	* libawn/egg/tests/checksum-test.c:
+	Bundle a copy of GChecksum for the case that the user has not installed
+	glib >= 2.16.
+
 2007-11-03  Neil J. Patel  <njpatel@gmail.com>
 
 	* awn-manager/awnManager.in.py:
@@ -231,10 +325,70 @@
 	* src/awn-task.c:
 	Fixes bug #157625, #157296, #147591
 
+2007-10-26  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-desktop-item.c:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	* src/awn-x.c:
+	Add NULL checks to icon-related functions.
+
 2007-10-25  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* src/awn-task.c:
 	Fixes bug #156898.
+
+2007-10-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn.pc.in:
+	* config.h.in:
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/awn-applet-gconf.c:
+	* libawn/awn-applet-gconf.h:
+	* libawn/awn-config-client.c:
+	* libawn/awn-config-client.h:
+	Add a configuration API that allows AWN to use either a GConf or
+	GKeyFile-based backend.  Uses a new structure, called AwnConfigClient.
+
+	* libawn/awn-settings.c:
+	* libawn/awn-settings.h:
+	* src/awn-applet-manager.h:
+	* src/awn-bar.h:
+	* src/awn-hotspot.h:
+	* src/awn-task-manager.h:
+	* src/awn-task.h:
+	* src/awn-window.h:
+	Change the settings API naming scheme and file names to match the
+	structure name.
+
+	* pyawn/__init__.py:
+	* pyawn/awn.defs:
+	* pyawn/awn.override:
+	* pyawn/awnmodule.c:
+	Add an analogous Python API for AwnConfigClient (awn.Config).
+
+	* awn-manager/awnApplet.py:
+	* awn-manager/awnDefs.in.py:
+	* awn-manager/awnLauncher.py:
+	* awn-manager/awnLauncherEditor.py:
+	* awn-manager/awnPreferences.py:
+	Convert from using the GConf API to the awn.Config API.
+
+	* src/awn-applet-manager.c:
+	* src/awn-bar.h:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	* src/awn-x.c:
+	* src/main.c:
+	Convert to use AwnConfigClient and the converted AwnSettings API.
+
+	* Makefile.am:
+	* test/Makefile.am:
+	* test/test-config-client.c:
+	* test/test-config-client.py:
+	Add programs in C and Python to test the setting and retrieval of
+	configuration options.
 
 2007-10-20  Mark Lee  <avant-wn@lazymalevolence.com>
 
@@ -247,6 +401,68 @@
 	* libawn/awn-effects.c:
 	Merged with changes in libawn-draw-effects.
 	Custom effects frame now hidden if all effects are same.
+
+2007-10-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-desktop-item.c:
+	* libawn/awn-desktop-item.h:
+	Implement write access to the desktop item files.
+	A save method is included.
+	Add a copy function.
+
+	* libawn/egg/eggdesktopfile.c:
+	* libawn/egg/eggdesktopfile.h:
+	Add a copy function.
+
+	* pyawn/awn.defs:
+	awn.DesktopItem is now a boxed type.
+	Add write methods.
+
+2007-10-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* config.h.in:
+	* configure.in:
+	* libawn/Makefile.am:
+	Remove the GIO stuff because we technically don't use GIO/GVFS
+	to do anything.
+	Add --with-desktop=agnostic.
+	The default value of --with-desktop is "gnome".
+	Add conditional libegg support (used if desktop is xfce or agnostic).
+
+	* libawn/awn-desktop-item.c:
+	* libawn/awn-desktop-item.h:
+	Replace XfceDesktopEntry support with that of EggDesktopFile (as
+	the former is a read-only structure).
+	Rename the GList argument in awn_desktop_item_launch() to better fit
+	EggDesktopFile's parameters.
+
+	* libawn/awn-vfs.c:
+	* libawn/awn-vfs.h:
+	Ensure that GList is defined.
+	the "GIO" implementation of awn_vfs_pathlist_from_string() is now
+	the agnostic implementation.
+
+	* libawn/egg/Makefile.am:
+	Fix headers/libraries to compile/link against.
+
+	* libawn/egg/egg-enum-types.c.in:
+	* libawn/egg/egg-enum-types.h.in:
+	Add enum types for EggDesktopFile* enums.
+
+	* libawn/egg/eggdesktopfile.c:
+	* libawn/egg/eggdesktopfile.h:
+	Add/implement egg_desktop_file_get_type().
+
+	* src/awn-task.c:
+	Make sure _() is defined.
+	Remove extraneous use of GString.
+
+2007-10-10  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* autogen.sh:
+	Remove required dependency on gnome-autogen.sh; autogen.sh
+	will use it if available, otherwise it will use the
+	autotools-related scripts individually.
 
 2007-10-09  Michal Hruby <michal.mhr@gmail.com>
 
@@ -326,6 +542,23 @@
 	* po/zh_TW.po:
 	Updated translations from Launchpad.net. Thanks to all translators.
 
+2007-10-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn.pc.in:
+	* config.h.in:
+	* configure.in:
+	Only link to the desktop's VFS library if GIO is not selected.
+	Make sure that the GIO define is in config.h.
+	Change the name of the GIO pkgconfig module.
+
+	* libawn/awn-vfs.c:
+	Make awn_vfs_init() a no-op when using GIO.
+	Fix the implementation of awn_vfs_get_pathlist_from_string for GIO.
+
+	* awn-applet-activation/main.c:
+	* src/awn-x.h:
+	Replace desktop-specific #ifdefs with awn-vfs #includes and functions.
+
 2007-10-06  Michal Hruby <michal.mhr@gmail.com>
 
 	* awn-manager/awnPreferences.py:
@@ -360,6 +593,15 @@
 	Refresh debian & debian-ubuntu dir for testing.
 	
 
+2007-10-05  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/Makefile.am:
+	* awn-manager/awnLauncher.py:
+	* awn-manager/awnLauncherEditor.py:
+	* awn-manager/launcher-editor.glade:
+	Add a pure Python implementation of a launcher editor to replace
+	the use of gnome-desktop-item-edit.
+
 2007-10-02  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* libawn/awn-applet-simple.c:
@@ -372,6 +614,12 @@
 	awn_applet_simple_set_icon and awn_applet_simple_set_temp_icon
 	will now gracefully return if the new icon is the same as the
 	old one.
+
+2007-09-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnApplet.py:
+	* awn-manager/awnLauncher.py:
+	Change dependency from python-gnome-desktop to pyxdg (AKA python-xdg).
 
 2007-09-29  Neil J. Patel  <njpatel@gmail.com>
 
@@ -454,6 +702,11 @@
 	Updated and merged all translations from Launchpad.
 	Thanks to all translators.
 
+2007-09-26  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnApplet.py:
+	Refactor some code in order to increase readability.
+
 2007-09-20  haytjes <hv1989@gmail.com>
 
 	* src/main.c:
@@ -482,12 +735,59 @@
 	* libawn/awn-effects.h:
 	Merged with latest changes in libawn-draw-effects.
 
+2007-09-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn.pc.in:
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/awn-desktop-item.c:
+	* libawn/awn-desktop-item.h:
+	* libawn/awn-vfs.c:
+	* libawn/awn-vfs.h:
+	* src/awn-task.c:
+	* src/main.c:
+	Consolidate VFS-related functions into its own source file/header.
+	Add preliminary support for GIO.
+
 2007-09-19  Michal Hruby <michal.mhr@gmail.com>
 
 	* data/active/spotlight_png_inline.c:
 	* libawn/awn-effects.c:
 	Spotlight effect png compiled directly into AWN to prevent problems
 	with loading from hardcoded path.
+
+2007-09-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-applet-activation/main.c:
+	* awn.pc.in:
+	* config.h.in:
+	* configure.in:
+	* libawn/awn-desktop-item.c:
+	* libawn/awn-desktop-item.h:
+	* src/awn-task.c:
+	* src/awn-x.c:
+	* src/awn-x.h:
+	* src/main.c:
+	Change USE_[GNOME|XFCE] to LIBAWN_USE_[GNOME|XFCE].
+	Add the enabled desktop #define to the pkgconfig file.
+
+2007-09-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn.pc.in:
+	Fix the Cflags entry so that #include statements that follow the
+	convention "#include <libawn/foo.h>" work.
+	Remove the entry that seems to have been copy/pasted from Clutter's
+	pkgconfig file.
+
+	* libawn/awn-desktop-item.c:
+	* libawn/awn-desktop-item.h:
+	* pyawn/awn.defs:
+	Add the wrapper functions awn_desktop_item_get_string(),
+	awn_desktop_item_get_localestring(), and awn_desktop_item_exists().
+	Add the above functions to the python bindings as well.
+	Adapt code from gnome-desktop svn to implement
+	awn_desktop_item_exists(), awn_desktop_item_get_icon(), and a static
+	function that retrieves the real path of an "Exec" entry.
 
 2007-09-18  Julien Lavergne <julien.lavergne@gmail.com>
 
@@ -644,6 +944,29 @@
 	* src/awn-task.c:
 	Fixed icon offset during bar resize.
 
+2007-09-09  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/Makefile.am:
+	* libawn/awn-desktop-item.c:
+	* libawn/awn-desktop-item.h:
+	Renamed from awn-desktop-file.[ch].
+	Renamed functions to match with the type.
+	Add a GType retrieval function plus some other GObject-related macros.
+	Fix warning in awn_desktop_item_get_pathlist_from_string().
+
+	* awn-applet-activation/main.c:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	* src/awn-x.c:
+	* src/awn-x.h:
+	Rename AwnDesktopItem-related functions/includes.
+	Cleanup redundant headers.
+	Group libawn-related headers.
+
+	* pyawn/awn.defs:
+	* pyawn/awn.override:
+	Add awn.DesktopItem to the python bindings.
+
 2007-09-09  Neil J. Patel  <njpatel@gmail.com>
 
 	* applets/python-test/python-test.py:
@@ -664,6 +987,20 @@
 	* pyawn/NOTES:
 	* pyawn/awn.defs:
 	Updated bindings for new AwnAppletSimple function.
+
+2007-09-08  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/switcher/applet.c:
+	Use Glib's internationalization header instead of directly calling
+	<libintl.h> and hand-rolling _().
+	* libawn/awn-desktop-file.c:
+	* libawn/awn-desktop-file.h:
+	Add new function awn_desktop_file_get_item_type().
+	* awn-applet-activation/main.c:
+	Fix whitespace, replace instance of Gnome-specific API with the new
+	function.
+	* src/main.c:
+	Fix whitespace
 
 2007-09-06  haytjes <hv1989@gmail.com>
 
@@ -1279,10 +1616,50 @@
 	* avant-preferences/avant-preferences.in.py:
 	Added some errors, when not all gconf entries are set. See bug #129639
 
+2007-08-06  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* libawn/Makefile.am:
+	* libawn/awn-desktop-file.h:
+	* libawn/awn-desktop-file.c:
+	Move all of the desktop-specific code to libawn, per
+	<https://bugs.launchpad.net/awn/+bug/129606/comments/3>.
+	There is now a new "type" called AwnDesktopItem, which should be used by
+	both the core and third-party applets to access .desktop files.
+	* config.h.in:
+	* configure.in:
+	The desktop item type is now handled by awn-desktop-file.h.
+	* awn-applet-activation/main.c:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	* src/awn-task.h:
+	* src/awn-x.c:
+	* src/awn-x.h:
+	Update to use AwnDesktopItem and friends.
+	* awn.pc.in:
+	Put the necessary desktop pkgconfig modules into the pkgconfig file.
+
 2007-08-01  Miika-Petteri Matikainen  <miikapetteri@gmail.com>
 
 	* applets/taskman.desktop.in.in:
 	Fixes a typo in Launcher/TaskManager applet.
+
+2007-08-01  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* applets/switcher/applet.c:
+	* awn-applet-activation/main.c:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	* src/awn-task.h:
+	* src/awn-x.c:
+	* src/awn-x.h:
+	* src/main.c:
+	Add optional support for the Xfce4 desktop environment.
+	* config.h.in:
+	* configure.in:
+	Add ./configure checks and config.h constants for the various desktops;
+	Determine the desktop item type via ./configure.
+	* applets/Makefile.am:
+	Only build the trash applet if compiling with Gnome.
 
 2007-08-01  haytjes  <hv1989@gmail.com>
 

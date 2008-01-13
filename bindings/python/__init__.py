@@ -29,6 +29,9 @@ if ver < (2, 11, 1):
 
 from awn import *
 
+CONFIG_LIST_BOOL, CONFIG_LIST_FLOAT, CONFIG_LIST_INT, CONFIG_LIST_STRING = range(4)
+CONFIG_DEFAULT_GROUP = 'DEFAULT'
+
 uid = "0"
 window = 0
 orient = 0
@@ -73,3 +76,47 @@ def init_applet (applet):
   else:
     plug.construct (-1)
     plug.show_all ()
+
+def check_dependencies(scope, *modules):
+    not_found_modules = []
+    for module in modules:
+        try:
+            scope[module] = __import__(module, scope)
+        except ImportError:
+            not_found_modules.append(module)
+    if len(not_found_modules) > 0:
+        try:
+            import pygtk
+            pygtk.require('2.0')
+        except:
+            pass
+        import gtk
+        RESPONSE_WIKI = 21
+        msg =  'The following Python modules could not be found: %s.  There are a few possible explanations for this:\n' % (', '.join(not_found_modules))
+        msg += '1. You do not have this Python module installed.  In this case, you should visit the AWN wiki\'s applets section to figure out the exact name of the package for your distribution that provides this module.\n'
+        msg += '2. The module is installed in a non-standard location.  This is usually the case when you manually install a package, that is, not via your distribution\'s package manager.  This situation is explained in the FAQ section of the wiki.'
+        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_ERROR, gtk.BUTTONS_NONE, msg)
+        dialog.add_button('AWN Wiki', RESPONSE_WIKI).grab_default()
+        dialog.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK)
+        dialog.set_alternative_button_order([gtk.RESPONSE_OK, RESPONSE_WIKI])
+        if dialog.run() == RESPONSE_WIKI:
+            url = 'http://wiki.awn-project.org/'
+            import webbrowser
+            if hasattr(webbrowser, 'open_new_tab'):
+                webbrowser.open_new_tab(url)
+            else:
+                webbrowser.open_new(url)
+        dialog.hide_all()
+        dialog.destroy()
+        import sys
+        sys.exit(RESPONSE_WIKI)
+
+class ConfigLock:
+    def __init__(self, group, key):
+        self.fd = config_lock_open(group, key)
+
+    def lock(self, operation):
+        config_lock(self.fd, operation)
+
+    def close(self):
+        config_lock_close(self.fd)

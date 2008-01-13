@@ -16,8 +16,14 @@ AC_PROG_CC
 AC_STDC_HEADERS
 AM_PROG_LIBTOOL
 
-AM_PATH_PYTHON(2.3.5)
-AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
+dnl check for gtk-doc
+GTK_DOC_CHECK(1.4)
+
+dnl ==============================================
+dnl Python support
+dnl ==============================================
+
+AC_PYTHON_DEVEL(2.3.5)
 
 PLATFORM=`$PYTHON -c "from distutils import util; print util.get_platform()"`
 AC_SUBST(PLATFORM)
@@ -25,7 +31,7 @@ AC_SUBST(PLATFORM)
 dnl ==============================================
 dnl check for pygtk
 dnl ==============================================
-PKG_CHECK_MODULES(PYGTK, pygtk-2.0 >= pygtk_required_version)
+PKG_CHECK_MODULES(PYGTK, gtk+-2.0 pygtk-2.0 >= pygtk_required_version)
 AC_SUBST(PYGTK_CFLAGS)
 AC_PATH_PROG(PYGTK_CODEGEN, pygtk-codegen-2.0, no)
 if test "x$PYGTK_CODEGEN" = "xno"; then
@@ -42,6 +48,14 @@ AC_SUBST(PYCAIRO_CFLAGS)
 AC_SUBST(PYCAIRO_LIBS)
 PYGTK_CODEGEN_DEFINES="-DHAVE_PYCAIRO $PYGTK_CODEGEN_DEFINES";
 AC_DEFINE([HAVE_PYCAIRO], [1], [Define to 1 if pycairo is available])
+
+dnl ==============================================
+dnl Vala support
+dnl ==============================================
+
+VALA_PROG_VALAC(0.1.6)
+AC_PATH_PROG(VAPIGEN, vapigen, vapigen, [])
+AM_CONDITIONAL(HAVE_VALA, test -n "$VALAC")
 
 dnl ==============================================
 dnl check for others python modules
@@ -62,15 +76,8 @@ fi
 dnl ==============================================
 dnl CFLAGS
 dnl ==============================================
-CFLAGS="$CFLAGS -Wall -fno-strict-aliasing -fmessage-length=0 -D_FORTIFY_SOURCE=2"
 
-dnl ==============================================
-dnl gconf stuff
-dnl ==============================================
-AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
-if test x"$GCONFTOOL" = xno; then
-  AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
-fi
+CFLAGS="$CFLAGS -Wall -fno-strict-aliasing -fmessage-length=0 -D_FORTIFY_SOURCE=2"
 
 dnl ==============================================
 dnl translation support
@@ -92,13 +99,90 @@ dnl Check that we meet the  dependencies
 dnl ==============================================
 AM_PATH_GLIB_2_0(2.8.0,,,gobject)
 
-COMMON_MODULES="glib-2.0 gobject-2.0 gtk+-2.0 gdk-2.0"
+COMMON_MODULES="glib-2.0 >= 2.8.0 gthread-2.0 gobject-2.0 gtk+-2.0 gdk-2.0"
+
+AC_MSG_CHECKING([for specific desktop support])
+use_egg=no
+AC_ARG_WITH(desktop,
+            AS_HELP_STRING([--with-desktop=[gnome|xfce4|agnostic]],
+                           [Specifies which desktop type for which to compile.  Current choices: xfce4, gnome, agnostic (defaults to gnome)]),
+            [], [with_desktop=gnome])
+case "$with_desktop" in
+    xfce4)
+    use_egg=yes
+    VFS_MODULE="thunar-vfs-1"
+    AC_DEFINE(LIBAWN_USE_XFCE, 1, [Define support for the Xfce4 desktop])
+    USE_DESKTOP="-DLIBAWN_USE_XFCE"
+    AC_MSG_RESULT(Xfce4)
+    ;;
+    agnostic)
+    use_egg=yes
+    VFS_MODULE="gio-2.0"
+    AC_MSG_RESULT([None, enabling desktop agnostic support])
+    ;;
+    gnome|*)
+    DESKTOP_MODULES="gnome-desktop-2.0 libgnome-2.0"
+    VFS_MODULE="gnome-vfs-module-2.0"
+    AC_DEFINE(LIBAWN_USE_GNOME, 1, [Define support for the Gnome desktop])
+    USE_DESKTOP="-DLIBAWN_USE_GNOME"
+    AC_MSG_RESULT(Gnome)
+    AC_SYS_LARGEFILE
+    ;;
+esac
+AC_SUBST(DESKTOP_MODULES)
+
+AC_SUBST(VFS_MODULE)
+AC_SUBST(USE_DESKTOP)
+AM_CONDITIONAL(USE_GNOME, test "$with_desktop" = "gnome")
+AM_CONDITIONAL(USE_XFCE, test "$with_desktop" = "xfce4")
+AM_CONDITIONAL(USE_EGG, test "$use_egg" = "yes")
+old_CPPFLAGS="$CPPFLAGS"
+CPPFLAGS="-D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE $CPPFLAGS"
+AC_MSG_CHECKING([for config backend support])
+AC_ARG_WITH(gconf,
+            AS_HELP_STRING([--with-gconf],
+                           [Use GConf to store configuration information]),
+            [if test "$with_gconf" == "no"; then
+                # use Glib's GKeyFile - it's already covered by $COMMON_MODULES
+                CFG_MODULE=""
+                CFG_BACKEND_NAME="GKeyFile"
+                GCONF_SCHEMA_INSTALL_SOURCE="/dev/null"
+                GCONF_SCHEMA_FILE_DIR="/dev/null"
+                AC_MSG_RESULT([GKeyFile (part of Glib)])
+            fi])
+if test "$with_gconf" != "no"; then
+    CFG_MODULE="gconf-2.0"
+    CFG_BACKEND_NAME="GConf"
+    AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+    if test x"$GCONFTOOL" = xno; then
+        AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
+    fi
+    AC_DEFINE([USE_GCONF], 1, [Use GConf to store configuration information])
+    AC_MSG_RESULT([GConf])
+fi
+AC_SUBST(CFG_MODULE)
+AC_SUBST(CFG_BACKEND_NAME)
+AM_CONDITIONAL(USE_GCONF, test "$with_gconf" != "no")
+# we need GChecksum (is in Glib 2.15)
+PKG_CHECK_EXISTS(
+    [glib-2.0 >= 2.15.0],
+    [use_egg_checksum="no"],
+    [use_egg_checksum="yes"])
+AM_CONDITIONAL(USE_EGG_CHECKSUM, test "$use_egg_checksum" = "yes")
 
 PKG_CHECK_EXISTS([libwnck-1.0 >= 2.19.3.1], [AC_DEFINE(HAVE_LIBWNCK_220, 1, [Have libwnck with the ABI that changed with version 2.19.3.1])])
 
-PKG_CHECK_MODULES(AWN, [ $COMMON_MODULES libwnck-1.0 gnome-desktop-2.0 libgnome-2.0 gnome-vfs-2.0 gconf-2.0 x11 xproto dbus-glib-1 libglade-2.0 xdamage xcomposite xrender])
+PKG_CHECK_MODULES(AWN, [ $COMMON_MODULES libwnck-1.0 $DESKTOP_MODULES $VFS_MODULE $CFG_MODULE x11 xproto dbus-glib-1 libglade-2.0 xdamage xcomposite xrender])
 AC_SUBST(AWN_CFLAGS)
 AC_SUBST(AWN_LIBS)
+
+if test "$use_egg" = "yes"; then
+	old_LIBS="$LIBS"
+	LIBS="$LIBS $AWN_LIBS"
+	AC_CHECK_FUNCS(gdk_x11_display_broadcast_startup_message)
+	LIBS="$old_LIBS"
+fi
+AC_CHECK_LIB(m, sin)
 
 dnl ==============================================
 dnl DBUS
@@ -115,13 +199,19 @@ AM_GCONF_SOURCE_2
 AC_OUTPUT([
 Makefile
 awn-manager/Makefile
+bindings/Makefile
+bindings/python/Makefile
+bindings/vala/Makefile
+doc/Makefile
+doc/reference/Makefile
 libawn/Makefile
+libawn/egg/Makefile
 src/Makefile
 awn-applet-activation/Makefile
 applets/Makefile
 data/Makefile
 data/active/Makefile
 po/Makefile.in
-pyawn/Makefile
+test/Makefile
 awn.pc
 ])
