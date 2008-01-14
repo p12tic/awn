@@ -785,22 +785,17 @@ awn_task_drag_motion (GtkWidget *task,
         AwnTaskPrivate *priv;
 	priv = AWN_TASK_GET_PRIVATE (task);
 
-	//if (priv->effects.is_closing.state)
-	//	return FALSE;
-
 	if (priv->settings->auto_hide && priv->settings->hidden) {
 		awn_show(priv->settings);
 	}
 
 	if (priv->window) {
-
-		if ( wnck_window_is_active( priv->window ) )
-			return FALSE;
-		else {
+		if (!wnck_window_is_active( priv->window )) {
 			priv->drag_hover = TRUE;
 			priv->timestamp = gtk_get_current_event_time();
 			g_timeout_add (1000, (GSourceFunc)activate_window, (gpointer)task);
 		}
+		awn_effect_start_ex(&priv->effects, AWN_EFFECT_LAUNCHING, NULL, NULL, 1);
 	}
 
 	return FALSE;

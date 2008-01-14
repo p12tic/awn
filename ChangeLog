@@ -1,3 +1,10 @@
+2008-01-14  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-applet-dialog.c:
+	* src/awn-task.c:
+	Fix incorrect arrow position in awn-applet-dialog
+	Added effect when dragging items over tasks
+
 2008-01-12  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-manager/awnManager.in.py:
