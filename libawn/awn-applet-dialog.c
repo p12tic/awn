@@ -115,7 +115,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 	GtkWidget *child = NULL;
 	gint width, height;
         gint gap = 20;
-        gint x, y, ax, ay, aw, ah;
+        gint x, y;
         GtkStyle *style;
         GdkColor bg;
         gfloat alpha;
@@ -158,16 +158,8 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
                                    alpha);
         cairo_stroke (cr);
 
-        //  get some size & position info
-        gdk_window_get_origin (widget->window, &x, &y);
-        gdk_window_get_origin (GTK_WIDGET (dialog->priv->applet)->window, 
-                               &ax, &ay);
-        gtk_widget_get_size_request (GTK_WIDGET (dialog->priv->applet), 
-                                     &aw, &ah);
-
         // do some maths
-        x = ax - x;
-        x += aw/2;
+        x = width / 2;
 
 	// draw arrow
         cairo_set_source_rgba (cr, bg.red/65535.0, 
