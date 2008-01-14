@@ -754,14 +754,14 @@ void awn_config_client_load_defaults_from_schema (AwnConfigClient *client, GErro
 }
 
 /**
- * awn_config_client_lock_open:
+ * awn_config_client_key_lock_open:
  * @group: The group name of the entry.
  * @key: The key name of the entry.
  *
  * Creates a locking file and file descriptor associated with the (group, key) pair.
  * Returns: file descriptor for the locking file. -1 on error.
  */
-int awn_config_client_lock_open (const gchar *group, const gchar *key)
+int awn_config_client_key_lock_open (const gchar *group, const gchar *key)
 {
 	int fd;
 	gchar *data     = g_strdup_printf ("%s-%s", group, key);
@@ -775,26 +775,26 @@ int awn_config_client_lock_open (const gchar *group, const gchar *key)
 }
 
 /**
- * awn_config_client_lock:
- * @fd: File descriptor provided by awn_config_client_lock_open().
+ * awn_config_client_key_lock:
+ * @fd: File descriptor provided by awn_config_client_key_lock_open().
  * @operation: as per 4.4BSD flock().
  *
  * Attempts to attain a lock as per flock() semantics.
  * Returns: On success, zero is returned.  On error, -1 is returned, and errno is set appropriately.
  */
-int awn_config_client_lock (int fd, int operation)
+int awn_config_client_key_lock (int fd, int operation)
 {
 	return flock (fd, operation);
 }
 
 /**
- * awn_config_client_lock_close:
- * @fd: File descriptor provided by awn_config_client_lock_open().
+ * awn_config_client_key_lock_close:
+ * @fd: File descriptor provided by awn_config_client_key_lock_open().
  *
- * Attempts to close the file descriptor obtained with awn_config_client_lock_open().
+ * Attempts to close the file descriptor obtained with awn_config_client_key_lock_open().
  * Returns: On success, zero is returned.  On error, -1 is returned, and errno is set appropriately.
  */
-int awn_config_client_lock_close (int fd)
+int awn_config_client_key_lock_close (int fd)
 {
 	return close (fd);
 }

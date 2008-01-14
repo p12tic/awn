@@ -173,9 +173,9 @@ gboolean           awn_config_client_entry_exists              (AwnConfigClient 
                                                                 const gchar *key);
 void               awn_config_client_load_defaults_from_schema (AwnConfigClient *client, GError **err);
 
-int                awn_config_client_lock_open                 (const gchar *group, const gchar *key);
-int                awn_config_client_lock                      (int fd, int operation);
-int                awn_config_client_lock_close                (int fd);
+int                awn_config_client_key_lock_open             (const gchar *group, const gchar *key);
+int                awn_config_client_key_lock                  (int fd, int operation);
+int                awn_config_client_key_lock_close            (int fd);
 
 AwnConfigValueType awn_config_client_get_value_type            (AwnConfigClient *client, const gchar *group,
                                                                 const gchar *key, GError **err);

@@ -113,10 +113,10 @@ def check_dependencies(scope, *modules):
 
 class ConfigLock:
     def __init__(self, group, key):
-        self.fd = config_lock_open(group, key)
+        self.fd = config_key_lock_open(group, key)
 
     def lock(self, operation):
-        config_lock(self.fd, operation)
+        config_key_lock(self.fd, operation)
 
     def close(self):
-        config_lock_close(self.fd)
+        config_key_lock_close(self.fd)
