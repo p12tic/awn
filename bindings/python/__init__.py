@@ -1,4 +1,5 @@
 # Copyright (c) 2007 Neil Jagdish Patel <njpatel@gmail.com>
+# Copyright (c) 2008 Mark Lee <avant-wn@lazymalevolence.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
