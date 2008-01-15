@@ -30,7 +30,7 @@ install-data-local: $(schemas_DATA)
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(schemas_DATA)
 endif
 else
-schemadir = $(datadir)/awn/schemas
+schemadir = $(datadir)/avant-window-navigator/schemas
 schema_DATA = awn.schema-ini
 endif
 
