@@ -318,7 +318,7 @@ static void awn_config_client_gkeyfile_new_schema (AwnConfigClient *client, gcha
 	                                (G_KEY_FILE_KEEP_COMMENTS | G_KEY_FILE_KEEP_TRANSLATIONS),
 	                                &err)) {
 		if (err) {
-			g_error ("Error loading the schema file: '%s'", err->message);
+			g_error ("Error loading the schema file '%s': '%s'", schema_path, err->message);
 			g_error_free (err);
 		} else {
 			g_error ("Error loading the schema file.");
