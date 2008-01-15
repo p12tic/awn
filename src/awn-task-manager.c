@@ -36,6 +36,7 @@
 
 #include "awn-task.h"
 #include "awn-bar.h"
+#include "awn-window.h"
 
 #include "awn-marshallers.h"
 
@@ -53,6 +54,9 @@ static void _task_manager_window_closed (WnckScreen *screen, WnckWindow *window,
 #ifdef HAVE_LIBWNCK_220
 static void _task_manager_window_activate (WnckScreen *screen,
 			WnckWindow *window, AwnTaskManager *task_manager);
+#else
+static void _task_manager_window_activate (WnckScreen *screen,
+						AwnTaskManager *task_manager);
 #endif
 static void _task_manager_viewports_changed (WnckScreen *screen,
 						AwnTaskManager *task_manager);
@@ -496,11 +500,19 @@ _task_manager_window_activate (WnckScreen *screen, WnckWindow *prevWindow,
 {
 	_refresh_box(task_manager);
 }
+#else
+static void
+_task_manager_window_activate (WnckScreen *screen,
+						AwnTaskManager *task_manager)
+{
+	_refresh_box(task_manager);
+}
 #endif
 static void
 _task_manager_viewports_changed (WnckScreen *screen,
 						AwnTaskManager *task_manager)
 {
+	awn_window_force_repos();
 	_refresh_box(task_manager);
 }
 
@@ -1589,11 +1601,7 @@ awn_task_manager_new (AwnSettings *settings)
 	                  (gpointer)task_manager);
 
 	g_signal_connect (G_OBJECT(priv->screen), "active-window-changed",
-#ifdef HAVE_LIBWNCK_220
 	                  G_CALLBACK(_task_manager_window_activate),
-#else
-	                  G_CALLBACK(_task_manager_viewports_changed),
-#endif
 	                  (gpointer)task_manager);
 
 #ifdef HAVE_LIBWNCK_220
