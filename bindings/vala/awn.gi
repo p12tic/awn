@@ -530,20 +530,20 @@
 					<parameter name="err" type="GError**"/>
 				</parameters>
 			</method>
-			<method name="lock" symbol="awn_config_client_lock">
+			<method name="key_lock" symbol="awn_config_client_key_lock">
 				<return-type type="int"/>
 				<parameters>
 					<parameter name="fd" type="int"/>
 					<parameter name="operation" type="int"/>
 				</parameters>
 			</method>
-			<method name="lock_close" symbol="awn_config_client_lock_close">
+			<method name="key_lock_close" symbol="awn_config_client_key_lock_close">
 				<return-type type="int"/>
 				<parameters>
 					<parameter name="fd" type="int"/>
 				</parameters>
 			</method>
-			<method name="lock_open" symbol="awn_config_client_lock_open">
+			<method name="key_lock_open" symbol="awn_config_client_key_lock_open">
 				<return-type type="int"/>
 				<parameters>
 					<parameter name="group" type="gchar*"/>

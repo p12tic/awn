@@ -301,8 +301,8 @@
   )
 )
 
-(define-function config_lock_open
-  (c-name "awn_config_client_lock_open")
+(define-function config_key_lock_open
+  (c-name "awn_config_client_key_lock_open")
   (return-type "int")
   (parameters
     '("const-gchar*" "group")
@@ -310,8 +310,8 @@
   )
 )
 
-(define-function config_lock
-  (c-name "awn_config_client_lock")
+(define-function config_key_lock
+  (c-name "awn_config_client_key_lock")
   (return-type "none")
   (parameters
     '("int" "fd")
@@ -319,8 +319,8 @@
   )
 )
 
-(define-function config_lock_close
-  (c-name "awn_config_client_lock_close")
+(define-function config_key_lock_close
+  (c-name "awn_config_client_key_lock_close")
   (return-type "none")
   (parameters
     '("int" "fd")

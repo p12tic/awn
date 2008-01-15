@@ -1,4 +1,5 @@
 # Copyright (c) 2007 Neil Jagdish Patel <njpatel@gmail.com>
+# Copyright (c) 2008 Mark Lee <avant-wn@lazymalevolence.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -113,10 +114,10 @@ def check_dependencies(scope, *modules):
 
 class ConfigLock:
     def __init__(self, group, key):
-        self.fd = config_lock_open(group, key)
+        self.fd = config_key_lock_open(group, key)
 
     def lock(self, operation):
-        config_lock(self.fd, operation)
+        config_key_lock(self.fd, operation)
 
     def close(self):
-        config_lock_close(self.fd)
+        config_key_lock_close(self.fd)

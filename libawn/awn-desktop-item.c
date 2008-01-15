@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2007 Mark Lee <avant-wn@lazymalevolence.com>
+ *  Copyright (C) 2007, 2008 Mark Lee <avant-wn@lazymalevolence.com>
  *
  *  For libgnome-desktop portions:
  *  Copyright (C) 1999, 2000 Red Hat Inc.

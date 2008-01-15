@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2007 Mark Lee <avant-wn@lazymalevolence.com>
+ *  Copyright (C) 2007, 2008 Mark Lee <avant-wn@lazymalevolence.com>
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -173,9 +173,9 @@ gboolean           awn_config_client_entry_exists              (AwnConfigClient 
                                                                 const gchar *key);
 void               awn_config_client_load_defaults_from_schema (AwnConfigClient *client, GError **err);
 
-int                awn_config_client_lock_open                 (const gchar *group, const gchar *key);
-int                awn_config_client_lock                      (int fd, int operation);
-int                awn_config_client_lock_close                (int fd);
+int                awn_config_client_key_lock_open             (const gchar *group, const gchar *key);
+int                awn_config_client_key_lock                  (int fd, int operation);
+int                awn_config_client_key_lock_close            (int fd);
 
 AwnConfigValueType awn_config_client_get_value_type            (AwnConfigClient *client, const gchar *group,
                                                                 const gchar *key, GError **err);

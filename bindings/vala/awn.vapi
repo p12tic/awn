@@ -236,9 +236,9 @@ namespace Awn {
 		public weak string get_string (string group, string key) throws GLib.Error;
 		public Awn.ConfigValueType get_value_type (string group, string key) throws GLib.Error;
 		public void load_defaults_from_schema () throws GLib.Error;
-		public static int @lock (int fd, int operation);
-		public static int lock_close (int fd);
-		public static int lock_open (string group, string key);
+		public static int key_lock (int fd, int operation);
+		public static int key_lock_close (int fd);
+		public static int key_lock_open (string group, string key);
 		public ConfigClient ();
 		public ConfigClient.for_applet (string name, string uid);
 		public void notify_add (string group, string key, Awn.ConfigClientNotifyFunc callback, pointer data);
