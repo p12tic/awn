@@ -33,7 +33,9 @@
 
 #include "awn-desktop-item.h"
 
-typedef EggDesktopFile _AwnDesktopItem;
+struct _AwnDesktopItem {
+	EggDesktopFile *desktop_file;
+};
 
 /* GType function */
 GType awn_desktop_item_get_type (void)
@@ -45,9 +47,9 @@ GType awn_desktop_item_get_type (void)
 
 AwnDesktopItem *awn_desktop_item_new (gchar *filename)
 {
-	AwnDesktopItem *item = NULL;
+	AwnDesktopItem *item = g_malloc (sizeof (AwnDesktopItem));
 	GError *err = NULL;
-	item = (AwnDesktopItem*)egg_desktop_file_new (filename, &err);
+	item->desktop_file = egg_desktop_file_new (filename, &err);
 	if (err) {
 		g_warning ("Could not load the desktop item at '%s': %s",
 			   filename, err->message);
@@ -57,12 +59,14 @@ AwnDesktopItem *awn_desktop_item_new (gchar *filename)
 
 AwnDesktopItem *awn_desktop_item_copy (const AwnDesktopItem *item)
 {
-	return (AwnDesktopItem*)egg_desktop_file_copy ((EggDesktopFile*)item);
+	AwnDesktopItem *new_item = g_malloc (sizeof (AwnDesktopItem));
+	new_item->desktop_file = egg_desktop_file_copy (item->desktop_file);
+	return new_item;
 }
 
 gchar *awn_desktop_item_get_filename (AwnDesktopItem *item)
 {
-	return (gchar*)egg_desktop_file_get_source ((EggDesktopFile*)item);
+	return (gchar*)egg_desktop_file_get_source (item->desktop_file);
 }
 
 gchar *awn_desktop_item_get_item_type (AwnDesktopItem *item)
@@ -81,7 +85,7 @@ gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme
 	 * gnome_desktop_item_get_icon(), gnome_desktop_item_find_icon()
 	 */
 	gchar *full = NULL;
-	gchar *icon = (gchar*)egg_desktop_file_get_icon ((EggDesktopFile*)item);
+	gchar *icon = (gchar*)egg_desktop_file_get_icon (item->desktop_file);
 	if (!icon || strcmp (icon, "") == 0) {
 		return NULL;
 	} else if (g_path_is_absolute (icon)) {
@@ -131,7 +135,7 @@ void awn_desktop_item_set_icon (AwnDesktopItem *item, gchar *icon)
 
 gchar *awn_desktop_item_get_name (AwnDesktopItem *item)
 {
-	return (gchar*)egg_desktop_file_get_name ((EggDesktopFile*)item);
+	return (gchar*)egg_desktop_file_get_name (item->desktop_file);
 }
 
 void awn_desktop_item_set_name (AwnDesktopItem *item, gchar *name)
@@ -153,7 +157,7 @@ gchar *awn_desktop_item_get_string (AwnDesktopItem *item, gchar *key)
 {
 	gchar *value;
 	GError *err = NULL;
-	value = g_key_file_get_string (egg_desktop_file_get_key_file ((EggDesktopFile*)item), EGG_DESKTOP_FILE_GROUP, key, &err);
+	value = g_key_file_get_string (egg_desktop_file_get_key_file (item->desktop_file), EGG_DESKTOP_FILE_GROUP, key, &err);
 	if (err) {
 		g_warning("Could not get the value of '%s' from '%s': %s",
 		          key, awn_desktop_item_get_filename (item), err->message);
@@ -163,7 +167,7 @@ gchar *awn_desktop_item_get_string (AwnDesktopItem *item, gchar *key)
 
 void awn_desktop_item_set_string (AwnDesktopItem *item, gchar *key, gchar *value)
 {
-	g_key_file_set_string (egg_desktop_file_get_key_file ((EggDesktopFile*)item),
+	g_key_file_set_string (egg_desktop_file_get_key_file (item->desktop_file),
 	                       EGG_DESKTOP_FILE_GROUP, key, value);
 }
 
@@ -175,7 +179,7 @@ gchar *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *key)
 	guint i = 0;
 	guint langs_len = g_strv_length ((gchar**)langs);
 	do {
-		value = g_key_file_get_locale_string (egg_desktop_file_get_key_file ((EggDesktopFile*)item),
+		value = g_key_file_get_locale_string (egg_desktop_file_get_key_file (item->desktop_file),
 		                                      EGG_DESKTOP_FILE_GROUP, key, langs[i], &err);
 		i++;
 	} while (err && i < langs_len);
@@ -192,19 +196,19 @@ void awn_desktop_item_set_localestring (AwnDesktopItem *item, gchar *key, gchar 
 		/* use the first locale from g_get_language_names () */
 		locale = (gchar*)(g_get_language_names ()[0]);
 	}
-	g_key_file_set_locale_string (egg_desktop_file_get_key_file ((EggDesktopFile*)item),
+	g_key_file_set_locale_string (egg_desktop_file_get_key_file (item->desktop_file),
 	                              EGG_DESKTOP_FILE_GROUP, key, locale, value);
 }
 
 gboolean awn_desktop_item_exists (AwnDesktopItem *item)
 {
-	return egg_desktop_file_can_launch ((EggDesktopFile*)item, NULL);
+	return egg_desktop_file_can_launch (item->desktop_file, NULL);
 }
 
 gint awn_desktop_item_launch (AwnDesktopItem *item, GSList *documents, GError **err)
 {
 	GPid pid;
-	egg_desktop_file_launch ((EggDesktopFile*)item, documents, err,
+	egg_desktop_file_launch (item->desktop_file, documents, err,
 	                         EGG_DESKTOP_FILE_LAUNCH_RETURN_PID, &pid,
 	                         NULL);
 	return pid;
@@ -215,7 +219,7 @@ void awn_desktop_item_save (AwnDesktopItem *item, gchar *new_filename, GError **
 	gchar *data;
 	gchar *filename;
 	gsize data_len;
-	data = g_key_file_to_data (egg_desktop_file_get_key_file ((EggDesktopFile*)item), &data_len, err);
+	data = g_key_file_to_data (egg_desktop_file_get_key_file (item->desktop_file), &data_len, err);
 	if (err) {
 		g_free (data);
 		return;
@@ -233,6 +237,7 @@ void awn_desktop_item_save (AwnDesktopItem *item, gchar *new_filename, GError **
 
 void awn_desktop_item_free (AwnDesktopItem *item)
 {
-	egg_desktop_file_free ((EggDesktopFile*)item);
+	egg_desktop_file_free (item->desktop_file);
+	g_free (item);
 }
 /*  vim: set noet ts=8 sts=8 sw=8 : */
