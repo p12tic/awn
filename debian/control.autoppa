@@ -2,9 +2,9 @@ Source: avant-window-navigator-testing
 Section: universe/gnome
 Priority: optional
 Maintainer: Julien Lavergne <julien.lavergne@gmail.com>
-AUTOPPA_INCLUDE(edgy):Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python-dev, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake1.9, python-gtk2-dev
-AUTOPPA_INCLUDE(feisty):Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python-dev, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake, python-gtk2-dev
-AUTOPPA_INCLUDE(gutsy,hardy):Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake
+AUTOPPA_INCLUDE(edgy):Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python-dev, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake1.9, python-gtk2-dev, gtk-doc-tools, valac ( >= 0.1.6~svn20070113)
+AUTOPPA_INCLUDE(feisty):Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python-dev, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake, python-gtk2-dev, gtk-doc-tools, valac ( >= 0.1.6~svn20070113)
+AUTOPPA_INCLUDE(gutsy,hardy):Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake, gtk-doc-tools, valac ( >= 0.1.6~svn20070113)
 Standards-Version: 3.7.3
 Homepage: https://launchpad.net/avant-window-navigator/
 XS-Python-Version: current
@@ -75,3 +75,10 @@ Replaces: python-libawn0, python-libawn, python-libawn-bzr, python-awn, python-a
 XB-Python-Version: ${python:Versions}
 Description: library for avant-window-navigator - Python bindings
  This library is used by avant-window-navigator.
+
+Package: vala-awn-testing
+Section: universe/python
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Description: library for avant-window-navigator - Vala bindings
+ This library is used by avant-window-navigator. It provide Vala bindings for libawn.
