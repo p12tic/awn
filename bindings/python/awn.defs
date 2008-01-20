@@ -109,6 +109,23 @@
   )
 )
 
+(define-enum ConfigValueType
+  (in-module "Awn")
+  (c-name "AwnConfigValueType")
+  (gtype-id "AWN_TYPE_CONFIG_VALUE_TYPE")
+  (values
+    '("null" "AWN_CONFIG_VALUE_TYPE_NULL")
+    '("boolean" "AWN_CONFIG_VALUE_TYPE_BOOL")
+    '("float" "AWN_CONFIG_VALUE_TYPE_FLOAT")
+    '("integer" "AWN_CONFIG_VALUE_TYPE_INT")
+    '("string" "AWN_CONFIG_VALUE_TYPE_STRING")
+    '("list_boolean" "AWN_CONFIG_VALUE_TYPE_LIST_BOOL")
+    '("list_float" "AWN_CONFIG_VALUE_TYPE_LIST_FLOAT")
+    '("list_integer" "AWN_CONFIG_VALUE_TYPE_LIST_INT")
+    '("list_string" "AWN_CONFIG_VALUE_TYPE_LIST_STRING")
+  )
+)
+
 ;; From awn-applet-dialog.h
 
 (define-function awn_applet_dialog_get_type
@@ -181,6 +198,17 @@
   (parameters
     '("const-gchar*" "group")
     '("const-gchar*" "key")
+  )
+)
+
+(define-method get_value_type
+  (of-object "AwnConfigClient")
+  (c-name "awn_config_client_get_value_type")
+  (return-type "AwnConfigValueType")
+  (parameters
+    '("const-gchar*" "group")
+    '("const-gchar*" "key")
+    '("GError**" "opt_error")
   )
 )
 
