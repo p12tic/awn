@@ -47,7 +47,6 @@ source_c =	\
 	awn-applet-simple.c				\
 	awn-cairo-utils.c				\
 	awn-config-client.c				\
-	awn-desktop-item.c				\
 	awn-effects.c					\
 	awn-enum-types.c				\
 	awn-plug.c					\
@@ -55,6 +54,12 @@ source_c =	\
 	awn-title.c					\
 	awn-vfs.c					\
 	$(NULL)
+
+if USE_GNOME
+source_c += awn-desktop-item-gnome.c
+else
+source_c += awn-desktop-item-egg.c
+endif
 
 libawninc_HEADERS = \
 	$(source_h)	\
