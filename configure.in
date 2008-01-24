@@ -99,7 +99,7 @@ dnl Check that we meet the  dependencies
 dnl ==============================================
 AM_PATH_GLIB_2_0(2.8.0,,,gobject)
 
-COMMON_MODULES="glib-2.0 >= 2.8.0 gthread-2.0 gobject-2.0 gtk+-2.0 gdk-2.0"
+AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, glib-genmarshal)
 
 AC_MSG_CHECKING([for specific desktop support])
 use_egg=no
@@ -141,7 +141,7 @@ AC_ARG_WITH(gconf,
             AS_HELP_STRING([--with-gconf],
                            [Use GConf to store configuration information]),
             [if test "$with_gconf" == "no"; then
-                # use Glib's GKeyFile - it's already covered by $COMMON_MODULES
+                # use Glib's GKeyFile - it's already pulled in.
                 CFG_MODULE=""
                 CFG_BACKEND_NAME="GKeyFile"
                 GCONF_SCHEMA_INSTALL_SOURCE="/dev/null"
@@ -168,11 +168,15 @@ PKG_CHECK_EXISTS(
     [use_egg_checksum="yes"])
 AM_CONDITIONAL(USE_EGG_CHECKSUM, test "$use_egg_checksum" = "yes")
 
+LIBRARY_MODULES="glib-2.0 >= 2.8.0 gthread-2.0 gobject-2.0 gtk+-2.0 gdk-2.0 dbus-glib-1 $DESKTOP_MODULES $VFS_MODULE $CFG_MODULE"
+DOCK_MODULES="libwnck-1.0 x11 xproto xcomposite xrender"
+
 PKG_CHECK_EXISTS([libwnck-1.0 >= 2.19.3.1], [AC_DEFINE(HAVE_LIBWNCK_220, 1, [Have libwnck with the ABI that changed with version 2.19.3.1])])
 
-PKG_CHECK_MODULES(AWN, [ $COMMON_MODULES libwnck-1.0 $DESKTOP_MODULES $VFS_MODULE $CFG_MODULE x11 xproto dbus-glib-1 libglade-2.0 xdamage xcomposite xrender])
-AC_SUBST(AWN_CFLAGS)
-AC_SUBST(AWN_LIBS)
+PKG_CHECK_EXISTS([libglade-2.0],,[AC_MSG_ERROR([libglade is needed for awn-manager's user interface])])
+
+PKG_CHECK_MODULES(AWN, [$LIBRARY_MODULES])
+PKG_CHECK_MODULES(DOCK, [$DOCK_MODULES])
 
 if test "$use_egg" = "yes"; then
 	old_LIBS="$LIBS"

@@ -1,20 +1,19 @@
-INCLUDES =					\
+NULL = 
+INCLUDES =				\
 	$(AWN_CFLAGS)			\
-	$(WARN_CFLAGS)
+	$(DOCK_CFLAGS)			\
+	-DLIBDIR=\""$(libdir)"\"	\
+	-I$(top_srcdir)/libawn		\
+	$(NULL)
 
 bin_PROGRAMS = avant-window-navigator
 
-AM_CFLAGS =								\
-	-DDATADIR=\""$(datadir)"\"					\
-	-DLIBDIR=\""$(libdir)"\"                                        \
-	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\"          \
-	-I$(top_builddir)/libawn
+avant_window_navigator_LDADD =			\
+	$(DOCK_LIBS)				\
+	$(top_builddir)/libawn/libawn.la	\
+	$(NULL)
 
-avant_window_navigator_LDADD  = $(DEPS_LIBS)			\
-        $(AWN_LIBS)                             \
-	$(top_builddir)/libawn/libawn.la  
-
-avant_window_navigator_SOURCES =			\
+avant_window_navigator_SOURCES =	\
 	main.c				\
 	awn-applet-manager.h            \
 	awn-applet-manager.c            \
@@ -40,15 +39,18 @@ avant_window_navigator_SOURCES =			\
 	awn-utils.c			\
 	inlinepixbufs.h			\
 	xutils.h			\
-	xutils.c			
+	xutils.c			\
+	$(NULL)
 
-icon_test_SOURCES=		\
-	icon-test.c             \
-	xutils.h		\
-	xutils.c                           	
-						
-icon_test_LDADD =			\
-	$(AWN_LIBS)
+icon_test_SOURCES =	\
+	icon-test.c	\
+	xutils.h	\
+	xutils.c	\
+	$(NULL)
+
+icon_test_LDADD =	\
+	$(DOCK_LIBS)	\
+	$(NULL)
 
 awn-dbus-glue.h: awn-dbus.xml Makefile
 	$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=awn_task_manager --mode=glib-server --output=$@ $<
@@ -57,22 +59,25 @@ awn-applet-manager-glue.h: awn-applet-manager-dbus.xml Makefile
 	$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=awn_applet_manager --mode=glib-server --output=$@ $<
 
 awn-marshallers.c: awn-marshallers.list
-	glib-genmarshal --prefix _awn_marshal --body $< > $@
+	$(GLIB_GENMARSHAL) --prefix _awn_marshal --body $< > $@
 
 awn-marshallers.h: awn-marshallers.list
-	glib-genmarshal --prefix _awn_marshal --header $< > $@
-	
+	$(GLIB_GENMARSHAL) --prefix _awn_marshal --header $< > $@
+
 BUILT_SOURCES =                         \
         awn-dbus-glue.h                 \
         awn-applet-manager-glue.h       \
         awn-marshallers.h               \
-        awn-marshallers.c
+        awn-marshallers.c		\
+	$(NULL)
 
 EXTRA_DIST =                            \
         awn-dbus.xml                    \
         awn-applet-manager-dbus.xml     \
-        awn-marshallers.list
+        awn-marshallers.list		\
+	$(NULL)
 
-noinst_PROGRAMS=		\
-	icon-test							
-
+noinst_PROGRAMS =	\
+	icon-test	\
+	$(NULL)
+# vim: set ts=8 sts=8 sw=8 :
