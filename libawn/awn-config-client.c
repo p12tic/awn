@@ -24,6 +24,9 @@
 #endif
 
 #include <glib.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 #include <sys/file.h>
 #include <sys/types.h>
 #include <sys/stat.h>
