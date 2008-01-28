@@ -22,11 +22,14 @@ awnDefs.py: awnDefs.in.py
 	sed -e "s|\@PREFIX\@|$(prefix)|g" awnDefs.in.py > awnDefs.py
 
 install-exec-local:
+	test -e "$(DESTDIR)$(bindir)" || mkdir -p "$(DESTDIR)$(bindir)"
 	sed -e "s|\@DATADIR\@|$(datadir)|g" awnManager.in.py > awnManager.py
-	$(INSTALL) -m 755 awnManager.py $(DESTDIR)$(bindir)/awn-manager
+	$(INSTALL) -m 755 awnManager.py "$(DESTDIR)$(bindir)/awn-manager"
+	$(INSTALL) -m 755 awn-launcher-editor "$(DESTDIR)$(bindir)"
 
 uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-manager
+	rm -f $(DESTDIR)$(bindir)/awn-launcher-editor
 
 EXTRA_DIST = $(glade_DATA) *.py $(desktop_DATA).in.in
 

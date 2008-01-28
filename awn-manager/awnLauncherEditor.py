@@ -44,7 +44,7 @@ defs.i18nize(globals())
 ICON_COL_PIXBUF, ICON_COL_LABEL, ICON_COL_DATA = range(3)
 
 class awnLauncherEditor:
-    def __init__(self, launcher, filename):
+    def __init__(self, filename, launcher = None):
         self.glade = gtk.glade.XML(os.path.join(defs.PKGDATADIR, 'awn-manager', 'launcher-editor.glade'))
         self.glade.signal_autoconnect(self)
         self.main_dialog = self.glade.get_widget('dialog_desktop_item')
@@ -155,7 +155,8 @@ class awnLauncherEditor:
             uris = client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
             uris.append(self.filename)
             client.set_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING, uris)
-            self.launcher.refresh_tree(uris)
+            if self.launcher is not None:
+                self.launcher.refresh_tree(uris)
         self.main_dialog.hide_all()
 
     def on_dialog_desktop_item_close(self, dialog):

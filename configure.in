@@ -198,9 +198,13 @@ dnl GConf
 dnl ==============================================
 AM_GCONF_SOURCE_2
 
+AS_AC_EXPAND([PY_SITE_PKG], [$PYTHON_SITE_PKG])
+AS_AC_EXPAND([PKGDATADIR], [$datadir/$PACKAGE_NAME])
+
 AC_OUTPUT([
 Makefile
 awn-manager/Makefile
+awn-manager/awn-launcher-editor
 bindings/Makefile
 bindings/python/Makefile
 bindings/vala/Makefile
