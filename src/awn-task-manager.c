@@ -580,11 +580,14 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 	if (res)
 		uri = g_string_truncate(uri, res+1);
 
-	g_print("Desktop file: %s\n", uri->str);
-	item = gnome_desktop_item_new_from_file (uri->str,
-				GNOME_DESKTOP_ITEM_LOAD_ONLY_IF_EXISTS, &err);
+  gchar *filename = gnome_vfs_unescape_string (uri->str, NULL);
 
-	if (err) {
+	g_print("Desktop file: %s\n", filename);
+	item = gnome_desktop_item_new_from_file (filename,
+				GNOME_DESKTOP_ITEM_LOAD_ONLY_IF_EXISTS, &err);
+  g_free (filename);
+	
+  if (err) {
 		g_print("Error : %s", err->message);
 		g_error_free (err);
 	}

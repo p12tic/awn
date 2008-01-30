@@ -1,3 +1,9 @@
+2008-01-30  Neil J. Patel  <njpatel@gmail.com>
+
+	* src/awn-task-manager.c:
+	Fixes #180145 - Cannot add launchers with spaces in filename.
+	First commit for > 2 months! Woohoo!
+
 2008-01-15  haytjes  <hv1989@gmail.com>
 
 	* src/awn-task-manager.c:
