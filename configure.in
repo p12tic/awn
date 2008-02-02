@@ -201,6 +201,9 @@ AC_OUTPUT([
 Makefile
 awn-manager/Makefile
 awn-manager/awn-launcher-editor
+awn-manager/awn-manager.desktop.in
+awn-manager/awnDefs.py
+awn-manager/awnManager.py
 bindings/Makefile
 bindings/python/Makefile
 bindings/vala/Makefile
