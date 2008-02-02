@@ -42,10 +42,14 @@
 #else
 struct _AwnVfsMonitor {
 	AwnVfsMonitorType type;
+#if GLIB_CHECK_VERSION(2,15,1)
+	GFileMonitor *monitor;
+#else
 	union {
 		GFileMonitor *file;
 		GDirectoryMonitor *directory;
 	} monitor;
+#endif
 };
 #endif
 
@@ -172,7 +176,11 @@ static void g_file_monitor_callback_proxy (GFileMonitor *monitor, GFile *file, G
 			}
 			AwnVfsMonitorEvent awn_event = awn_vfs_monitor_native_event_type_to_awn (event);
 			AwnVfsMonitor *handle = g_new (AwnVfsMonitor, 1);
+#if GLIB_CHECK_VERSION(2,15,1)
+			handle->monitor = monitor;
+#else
 			handle->monitor.file = monitor;
+#endif
 			handle->type = AWN_VFS_MONITOR_FILE;
 			(data->callback) (handle, monitor_path, event_path, awn_event, data->data);
 			g_free (handle);
@@ -226,25 +234,46 @@ AwnVfsMonitor *awn_vfs_monitor_add (gchar *path, AwnVfsMonitorType monitor_type,
 	}
 	thunar_vfs_path_unref (uri);
 #else
+#if GLIB_CHECK_VERSION(2,15,1)
+#define FILE_MONITOR monitor->monitor
+#define DIR_MONITOR monitor->monitor
+#else
+#define FILE_MONITOR monitor->monitor.file
+#define DIR_MONITOR monitor->monitor.directory
+#endif
 	monitor = g_new (AwnVfsMonitor, 1);
 	monitor->type = monitor_type;
 	GFile *file = g_file_new_for_path (path);
 	if (monitor_type == AWN_VFS_MONITOR_FILE) {
 		/* based on gio/programs/gio-monitor-file.c */
-		monitor->monitor.file = g_file_monitor_file (file, 0, NULL);
-		g_signal_connect (monitor->monitor.file, "changed", (GCallback)g_file_monitor_callback_proxy, data);
+#if GLIB_CHECK_VERSION(2,15,1)
+		/* Appends GError** to the params */
+		FILE_MONITOR = g_file_monitor_file (file, 0, NULL, NULL);
+#else
+		FILE_MONITOR = g_file_monitor_file (file, 0, NULL);
+#endif
+		if (FILE_MONITOR) {
+			g_signal_connect (FILE_MONITOR, "changed", (GCallback)g_file_monitor_callback_proxy, data);
+		} else {
+			g_free (monitor);
+			monitor = NULL;
+		}
 	} else if (monitor_type == AWN_VFS_MONITOR_DIRECTORY) {
 		/* based on gio/programs/gio-monitor-dir.c */
-		monitor->monitor.directory = g_file_monitor_directory (file, 0, NULL);
-		if (monitor->monitor.directory) {
-			g_signal_connect (monitor->monitor.directory, "changed", (GCallback)g_file_monitor_callback_proxy, data);
+#if GLIB_CHECK_VERSION(2,15,2)
+		/* Appends GError** to the params */
+		DIR_MONITOR = g_file_monitor_directory (file, 0, NULL, NULL);
+#else
+		DIR_MONITOR = g_file_monitor_directory (file, 0, NULL);
+#endif
+		if (DIR_MONITOR) {
+			g_signal_connect (DIR_MONITOR, "changed", (GCallback)g_file_monitor_callback_proxy, data);
 		} else {
 			g_free (monitor);
 			monitor = NULL;
 		}
 	}
 #endif
-	/*g_free (data);*/ /* FIXME can we do this?! */
 	return monitor;
 }
 
@@ -269,6 +298,11 @@ void awn_vfs_monitor_emit (AwnVfsMonitor *monitor, gchar *path, AwnVfsMonitorEve
 	thunar_vfs_monitor_feed ((ThunarVfsMonitor*)monitor, (ThunarVfsMonitorEvent)native_event, uri);
 	thunar_vfs_path_unref (uri);
 #else
+#if GLIB_CHECK_VERSION(2,15,1)
+	GFile *file = g_file_new_for_path (path);
+	GFile *other_file = file;
+	g_file_monitor_emit_event (monitor->monitor, file, other_file, (GFileMonitorEvent)native_event);
+#else
 	switch (monitor->type) {
 		case AWN_VFS_MONITOR_FILE: {
 			GFile *file = g_file_new_for_path (path);
@@ -282,6 +316,7 @@ void awn_vfs_monitor_emit (AwnVfsMonitor *monitor, gchar *path, AwnVfsMonitorEve
 			break;
 		}
 	}
+#endif
 #endif
 }
 
@@ -298,11 +333,15 @@ void awn_vfs_monitor_remove (AwnVfsMonitor *monitor)
 #elif defined(LIBAWN_USE_XFCE)
 	thunar_vfs_monitor_remove (thunar_vfs_monitor_get_default (), monitor);
 #else
+#if GLIB_CHECK_VERSION(2,15,1)
+	g_file_monitor_cancel (monitor->monitor);
+#else
 	if (monitor->type == AWN_VFS_MONITOR_FILE) {
 		g_file_monitor_cancel (monitor->monitor.file);
 	} else if (monitor->type == AWN_VFS_MONITOR_DIRECTORY) {
 		g_directory_monitor_cancel (monitor->monitor.directory);
 	}
+#endif
 #endif
 }
 
@@ -360,7 +399,7 @@ GSList *awn_vfs_get_pathlist_from_string (guchar *paths, GError **err)
 	}
 #else
 	gchar **path_list;
-	path_list = g_strsplit (paths, "\r\n", 0);
+	path_list = g_strsplit ((gchar*)paths, "\r\n", 0);
 	guint i;
 	guint len = g_strv_length (path_list);
 	for (i = 0; i < len; i++) {
