@@ -76,3 +76,4 @@ doc/reference/*.bak
 data/awn.schemas*
 config.h.in
 test/vala-test
+awn-manager/awn-launcher-editor

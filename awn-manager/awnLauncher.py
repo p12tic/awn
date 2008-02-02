@@ -195,7 +195,7 @@ class awnLauncher:
 
     def add(self, button):
         file_path = os.path.join(defs.HOME_LAUNCHERS_DIR, self.getUniqueFileId('awn_launcher', '.desktop'))
-        editor = awnLauncherEditor(self, file_path)
+        editor = awnLauncherEditor(file_path, self)
         editor.run()
 
     def remove(self, button):
