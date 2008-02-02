@@ -213,6 +213,7 @@ awn-applet-activation/Makefile
 applets/Makefile
 data/Makefile
 data/active/Makefile
+data/avant-window-navigator.desktop.in
 po/Makefile.in
 test/Makefile
 awn.pc

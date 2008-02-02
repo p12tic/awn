@@ -4,10 +4,6 @@ desktopdir   = $(datadir)/applications
 desktop_DATA = avant-window-navigator.desktop
 @INTLTOOL_DESKTOP_RULE@
 
-
-$(desktop_DATA).in: $(desktop_DATA).in.in
-	sed -e "s|\@PKGDATADIR\@|$(pkgdatadir)|g" $< > $@
-	
 icon_DATA =  \
 	avant-window-navigator.svg	\
 	avant-window-navigator-24.png	\
