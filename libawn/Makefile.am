@@ -40,7 +40,6 @@ source_c =			\
 	awn-applet-dialog.c	\
 	awn-applet-simple.c	\
 	awn-cairo-utils.c	\
-	awn-config-client.c	\
 	awn-effects.c		\
 	awn-enum-types.c	\
 	awn-plug.c		\
@@ -53,6 +52,12 @@ if USE_GNOME
 source_c += awn-desktop-item-gnome.c
 else
 source_c += awn-desktop-item-egg.c
+endif
+
+if USE_GCONF
+source_c += awn-config-client-gconf.c
+else
+source_c += awn-config-client-gkeyfile.c
 endif
 
 libawninc_HEADERS =		\
