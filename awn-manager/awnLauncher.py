@@ -205,7 +205,7 @@ class awnLauncher:
         if os.path.exists(uri):
             uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
             uris.remove(uri)
-            if uri.startswith(self.AWN_CONFIG_LAUNCH_DIR):
+            if uri.startswith(defs.HOME_LAUNCHERS_DIR):
                 os.remove(uri)
             self.refresh_tree(uris)
 
