@@ -22,8 +22,11 @@
 
 import sys, os, os.path, time
 
-PKGDATA = os.path.join("@DATADIR@", "avant-window-navigator", "awn-manager")
-sys.path.append (PKGDATA)
+SITE_PKG = '@PY_SITE_PKG@'
+AWN_MANAGER_DIR = os.path.join('@PKGDATADIR@', 'awn-manager')
+sys.path = [AWN_MANAGER_DIR] + sys.path
+if SITE_PKG not in sys.path:
+    sys.path = [SITE_PKG] + sys.path
 
 try:
     import pygtk
@@ -54,7 +57,7 @@ class AwnManager:
 
         if not os.path.exists(defs.HOME_CONFIG_DIR):
             os.makedirs(defs.HOME_CONFIG_DIR)
-        self.GLADE_PATH = os.path.join(PKGDATA, "window.glade")
+        self.GLADE_PATH = os.path.join(AWN_MANAGER_DIR, 'window.glade')
         gtk.glade.bindtextdomain(defs.I18N_DOMAIN, defs.LOCALEDIR)
         gtk.glade.textdomain(defs.I18N_DOMAIN)
 
