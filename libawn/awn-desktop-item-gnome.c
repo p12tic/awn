@@ -61,9 +61,7 @@ GType awn_desktop_item_get_type (void)
 AwnDesktopItem *awn_desktop_item_new (gchar *filename)
 {
 	AwnDesktopItem *item = NULL;
-	item = gnome_desktop_item_new_from_file (filename,
-	                                         GNOME_DESKTOP_ITEM_LOAD_ONLY_IF_EXISTS,
-	                                         NULL);
+	item = gnome_desktop_item_new_from_file (filename, 0, NULL);
 	if (!item) {
 		item = gnome_desktop_item_new ();
 	}
