@@ -91,7 +91,7 @@ type = int
 default = 0
 description = In 3D mode, the angle (in degrees, between 0 and 90) that the bar is tilted.
 [bar/icon_offset]
-type = float
+type = int
 default = 10
 description = The number of pixels between the bottom of the icons and the bottom of the dock.
 [bar/bar_pos]
