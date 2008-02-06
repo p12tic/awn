@@ -296,11 +296,11 @@ awn_applet_simple_init (AwnAppletSimple *simple)
         priv->bar_height = awn_config_client_get_int (client, "bar", "bar_height", NULL);
         priv->bar_angle = awn_config_client_get_int (client, "bar", "bar_angle", NULL);
         awn_config_client_notify_add (client, "bar", "bar_angle",
-				      (AwnConfigClientNotifyFunc)bar_angle_changed, NULL);
+				      (AwnConfigClientNotifyFunc)bar_angle_changed, simple);
         awn_config_client_notify_add (client, "bar", "bar_height",
-				      (AwnConfigClientNotifyFunc)bar_height_changed, NULL);
+				      (AwnConfigClientNotifyFunc)bar_height_changed,simple);
         awn_config_client_notify_add (client, "bar", "icon_offset",
-				      (AwnConfigClientNotifyFunc)icon_offset_changed, NULL);
+				      (AwnConfigClientNotifyFunc)icon_offset_changed, simple);
 }
 
 /**
