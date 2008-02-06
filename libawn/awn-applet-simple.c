@@ -254,6 +254,7 @@ icon_offset_changed (AwnConfigClientNotifyEntry *entry, AwnAppletSimple *simple)
 
 	priv = simple->priv;
 	priv->offset = entry->value.int_val;
+        gtk_widget_queue_draw (GTK_WIDGET (simple));
 	g_print("icon_offset changed\n");
 }
 static void
