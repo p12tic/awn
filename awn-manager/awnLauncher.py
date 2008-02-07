@@ -59,7 +59,9 @@ class awnLauncher:
         self.applet_remove.connect("clicked", self.remove)
         self.applet_add = self.wTree.get_widget("launcher_add")
         self.applet_add.connect("clicked", self.add)
-
+        self.launcher_edit = self.wTree.get_widget("launcher_edit")
+        self.launcher_edit.connect("clicked", self.edit)
+        
     def reordered(self, model, path, iterator, data=None):
         cur_index = self.model.get_path(iterator)[0]
         cur_uri = self.model.get_value (iterator, 2)
@@ -185,6 +187,8 @@ class awnLauncher:
                         break
                 except:
                     icon = None
+        if icon is None:
+            icon = theme.load_icon('gtk-execute', 32, 0)
         return icon
 
 
@@ -193,6 +197,13 @@ class awnLauncher:
     #   Copyright (C) 2006  Travis Watkins
     #   Edited by Ryan Rushton
 
+    def edit(self, button):
+        selection = self.treeview.get_selection()
+        (model, iter) = selection.get_selected()
+        uri = model.get_value(iter, 2)
+        editor = awnLauncherEditor(uri, self)
+        editor.run()
+        
     def add(self, button):
         file_path = os.path.join(defs.HOME_LAUNCHERS_DIR, self.getUniqueFileId('awn_launcher', '.desktop'))
         editor = awnLauncherEditor(file_path, self)

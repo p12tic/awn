@@ -53,20 +53,24 @@ class awnApplet:
         self.load_finished = False
 
         self.wTree = glade
-        self.scrollwindow = self.wTree.get_widget("applet_scrollwindow")
-        self.make_model()
-        self.treeview_available =  self.wTree.get_widget("applet_treeview_available")
+        
+        self.scrollwindow = self.wTree.get_widget("appletScrollActive")
+        self.make_active_model()
+        self.treeview_available =  self.wTree.get_widget("appletTreeviewAvailable")
+        
         self.load_applets()
-        self.applet_remove = self.wTree.get_widget("applet_remove")
-        self.applet_remove.connect("clicked", self.remove_clicked)
-        self.applet_add = self.wTree.get_widget("applet_add")
-        self.applet_add.connect("clicked", self.add_applet)
+        
+        self.btn_deactivate = self.wTree.get_widget("appletDeactivate")
+        self.btn_deactivate.connect("clicked", self.deactivate_applet)
+        
+        self.btn_activate = self.wTree.get_widget("appletActivate")
+        self.btn_activate.connect("clicked", self.activate_applet)
 
-        self.applet_delete = self.wTree.get_widget("deleteapplet")
-        self.applet_delete.connect("clicked", self.delete_applet)
+        self.btn_delete = self.wTree.get_widget("appletDelete")
+        self.btn_delete.connect("clicked", self.delete_applet)
 
-        self.applet_install = self.wTree.get_widget("installapplet")
-        self.applet_install.connect("clicked", self.add)
+        self.btn_install = self.wTree.get_widget("appletInstall")
+        self.btn_install.connect("clicked", self.install_applet)
 
         self.treeview_available.enable_model_drag_dest([('text/plain', 0, 0)],
                   gdk.ACTION_DEFAULT | gdk.ACTION_MOVE)
@@ -78,7 +82,7 @@ class awnApplet:
         if tarfile.is_tarfile(data):
             self.extract_file(data, do_apply)
 
-    def add(self, widget, data=None):
+    def install_applet(self, widget, data=None):
         dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
                                   buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
@@ -124,17 +128,17 @@ class awnApplet:
             self.check_path(appletpath)
 
             if do_apply:
-                self.install_applet(appletpath, True, applet_exists)
-                self.install_applet(appletpath, False, applet_exists, False)
+                self.register_applet(appletpath, True, applet_exists)
+                self.register_applet(appletpath, False, applet_exists, False)
             else:
-                self.install_applet(appletpath, False, applet_exists)
+                self.register_applet(appletpath, False, applet_exists)
         else:
             message = "Applet Installation Failed"
             success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_OK, message_format=message)
             success.run()
             success.destroy()
 
-    def install_applet(self, appletpath, do_apply, applet_exists, msg=True):
+    def register_applet(self, appletpath, do_apply, applet_exists, msg=True):
         if do_apply:
             model = self.model
         else:
@@ -163,7 +167,7 @@ class awnApplet:
             success.run()
             success.destroy()
 
-    def add_applet (self, button):
+    def activate_applet (self, button):
         select = self.treeview_available.get_selection()
         if not select:
             print "no selection"
@@ -176,16 +180,12 @@ class awnApplet:
             print "cannot load desktop file %s" % path
             return
 
-        row = self.model.append ()
-        self.model.set_value (row, 0, icon)
-        self.model.set_value (row, 1, text)
-        self.model.set_value (row, 2, path)
-        self.model.set_value (row, 3, uid)
+        self.active_model.append([icon, path, uid, text])
 
         self._apply ()
 
     def row_active (self, q, w, e):
-        self.add_applet (None)
+        self.activate_applet (None)
 
     def test_active(self, model, path, iterator, sel_path):
         if model.get_value (iterator, 2) == sel_path:
@@ -201,7 +201,7 @@ class awnApplet:
         path = model.get_value (iterator, 2)
         item = DesktopEntry (path)
 
-        self.model.foreach(self.test_active, path)
+        self.active_model.foreach(self.test_active, path)
         if self.active_found:
             self.popup_msg("Can not delete active applet")
             return
@@ -221,7 +221,7 @@ class awnApplet:
         result = dialog.run()
 
         if result == -3:
-            execpath = item.get_exec()
+            execpath = item.getExec()
             fullpath = os.path.join(defs.HOME_APPLET_DIR, os.path.split(execpath)[0])
 
             if os.path.exists(fullpath) and ".config" in path:
@@ -235,20 +235,17 @@ class awnApplet:
         else:
             dialog.destroy()
 
-    def remove_clicked (self, button):
-        select = self.treeview_current.get_selection()
-        if not select:
-            return
-        model, iterator = select.get_selected ()
-        self.remove_keys (model, iterator)
-        model.remove (iterator)
-        self._apply ()
-
-    def remove_keys (self, model, iterator):
-        name = os.path.splitext(os.path.basename(model.get_value(iterator, 2)))[0]
-        uid = model.get_value (iterator, 3)
+    def deactivate_applet (self, button):
+        cursor = self.icon_view.get_cursor()  
+        if not cursor:
+            return    
+        itr = self.active_model.get_iter(cursor[0])
+        name = os.path.splitext(os.path.basename(self.active_model.get_value(itr, 1)))[0]
+        uid = self.active_model.get_value (itr, 2)
         applet_client = awn.Config(name, uid)
         applet_client.clear()
+        self.active_model.remove(itr)
+        self._apply()
 
     def remove_applet_dir(self, dirPath, filename):
         namesHere = os.listdir(dirPath)
@@ -264,13 +261,13 @@ class awnApplet:
 
     def _apply (self):
         l = []
-        it = self.model.get_iter_first ()
+        it = self.active_model.get_iter_first ()
         while (it):
-            path = self.model.get_value (it, 2)
-            uid = self.model.get_value (it, 3)
+            path = self.active_model.get_value (it, 1)
+            uid = self.active_model.get_value (it, 2)
             s = "%s::%s" % (path, uid)
             l.append (s)
-            it= self.model.iter_next (it)
+            it= self.active_model.iter_next (it)
 
         self.client.set_list(defs.AWN, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, l)
 
@@ -298,32 +295,26 @@ class awnApplet:
             model.move_after (iterator, next)
         self._apply ()
 
-    def make_model (self):
-        self.treeview_current = gtk.TreeView()
-        self.treeview_current.set_reorderable(True)
-        self.treeview_current.set_headers_visible(True)
-
-        self.scrollwindow.add(self.treeview_current)
-
-        # icon, name/description, desktop entry path, uid
-        self.model = gtk.ListStore(gdk.Pixbuf, str, str, str)
-        self.treeview_current.set_model (self.model)
-        self.model.connect("row-changed", self.reordered)
-
-        ren = gtk.CellRendererPixbuf()
-        col = gtk.TreeViewColumn ("Active Applets", ren, pixbuf=0)
-
-        ren = gtk.CellRendererText()
-        col.pack_start(ren, False)
-        col.add_attribute(ren, 'markup', 1)
-        ren.set_property('xalign', 0)
-
-        self.treeview_current.append_column (col)
-        self.treeview_current.show()
-
+    def make_active_model (self):
+        self.active_model = gtk.ListStore(gtk.gdk.Pixbuf, str, str, str)
+        self.active_model.connect("row-changed", self.applet_reorder)
+        
+        self.icon_view = gtk.IconView(self.active_model)
+        self.icon_view.set_pixbuf_column(0)
+        self.icon_view.set_orientation(gtk.ORIENTATION_HORIZONTAL)
+        self.icon_view.set_selection_mode(gtk.SELECTION_SINGLE)
+        self.icon_view.set_tooltip_column(3)
+        self.icon_view.set_item_width(-1)
+        self.icon_view.set_size_request(48, -1)
+        self.icon_view.set_reorderable(True)
+        self.icon_view.set_columns(100)
+        
+        self.scrollwindow.add(self.icon_view)
+        self.scrollwindow.show()
+        
         applets = self.client.get_list(defs.AWN, defs.APPLET_LIST, awn.CONFIG_LIST_STRING)
 
-        self.refresh_tree (applets)
+        self.refresh_icon_list (applets, self.active_model)
 
     def make_row (self, path):
         text = ""
@@ -375,8 +366,21 @@ class awnApplet:
                         break
                 except:
                     icon = None
+        if icon is None:
+            icon = theme.load_icon('gtk-execute', 32, 0)
         return icon
-
+    
+    def refresh_icon_list (self, applets, model):
+        for a in applets:
+            tokens = a.split("::")
+            path = tokens[0]
+            uid = tokens[1]
+            icon, text = self.make_row(path)
+            if len (text) < 2:
+                continue;
+             
+            model.append([icon, path, uid, text]) 
+              
     def refresh_tree (self, applets):
         for a in applets:
             tokens = a.split("::")
@@ -444,19 +448,19 @@ class awnApplet:
         success.run()
         success.destroy()
 
-    def reordered(self, model, path, iterator, data=None):
-        cur_index = self.model.get_path(iterator)[0]
-        cur_uri = self.model.get_value (iterator, 2)
-        cur_uid = self.model.get_value (iterator, 3)
+    def applet_reorder(self, model, path, iterator, data=None):
+        cur_index = model.get_path(iterator)[0]
+        cur_uri = model.get_value (iterator, 1)
+        cur_uid = model.get_value (iterator, 2)
         cur_s = "%s::%s" % (cur_uri, cur_uid)
         l = {}
-        it = self.model.get_iter_first ()
+        it = model.get_iter_first ()
         while (it):
-            path = self.model.get_value (it, 2)
-            uid = self.model.get_value (it, 3)
+            path = model.get_value (it, 1)
+            uid = model.get_value (it, 2)
             s = "%s::%s" % (path, uid)
-            l[self.model.get_path(it)[0]] = s
-            it = self.model.iter_next (it)
+            l[model.get_path(it)[0]] = s
+            it = model.iter_next (it)
 
         remove = None
         for item in l:
