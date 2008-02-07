@@ -51,7 +51,22 @@ class awnLauncherEditor:
         self.launcher = launcher
         self.filename = os.path.abspath(filename)
         self.desktop_entry = DesktopEntry(self.filename)
-        self.icon_path = None
+        self.client = awn.Config()
+        if os.path.exists(self.filename):
+          self.glade.get_widget('entry_name').set_text(self.desktop_entry.get('Name'))
+          self.glade.get_widget('entry_description').set_text(self.desktop_entry.get('Comment'))
+          self.glade.get_widget('entry_command').set_text(self.desktop_entry.get('Exec'))
+          self.icon_path = self.desktop_entry.get('Icon')
+          image = self.glade.get_widget('image_icon')
+          if os.path.exists(self.icon_path):
+            icon = gdk.pixbuf_new_from_file_at_size (self.icon_path, 32, 32)
+            image.set_from_pixbuf(icon)
+          elif self.icon_path != '':
+            theme = gtk.icon_theme_get_default()
+            icon = theme.load_icon(self.icon_path, 32, 0)
+            image.set_from_pixbuf(icon)
+        else:
+          self.icon_path = None
         self.command_chooser = None
         self.stock_icons = None
         self.icon_viewer = self.glade.get_widget('iconview_launcher_icons')
@@ -151,10 +166,10 @@ class awnLauncherEditor:
             if self.icon_path is not None:
                 self.desktop_entry.set('Icon', self.icon_path)
             self.desktop_entry.write()
-            client = awn.Config()
-            uris = client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
-            uris.append(self.filename)
-            client.set_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING, uris)
+            uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
+            if not os.path.exists(self.filename):
+                uris.append(self.filename)
+            self.client.set_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING, uris)
             if self.launcher is not None:
                 self.launcher.refresh_tree(uris)
         self.main_dialog.hide_all()

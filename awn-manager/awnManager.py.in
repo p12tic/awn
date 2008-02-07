@@ -63,23 +63,36 @@ class AwnManager:
 
         self.wTree = gtk.glade.XML(self.GLADE_PATH, domain=defs.I18N_DOMAIN)
 
-        self.window = self.wTree.get_widget("main_window")
+        self.window = self.wTree.get_widget("awnManagerWindow")
         self.window.connect("delete-event", gtk.main_quit)
 
-        refresh = self.wTree.get_widget("refreshbutton")
+        self.notebook = self.wTree.get_widget("panelCategory")
+
+        refresh = self.wTree.get_widget("buttonRefresh")
         refresh.connect("clicked", self.refresh)
 
-        about = self.wTree.get_widget("aboutbutton")
+        about = self.wTree.get_widget("buttonAbout")
         about.connect("clicked", self.about)
 
-        close = self.wTree.get_widget("closebutton")
+        close = self.wTree.get_widget("buttonClose")
         close.connect("clicked", gtk.main_quit)
 
-        #menu
-        self.treeview =  self.wTree.get_widget("view_menu")
-        self.treeview.get_selection().connect("changed", self.menu_row_clicked)
         self.make_menu_model()
-
+               
+        icon_view = gtk.IconView(self.menu_model)
+        icon_view.set_text_column(0)
+        icon_view.set_pixbuf_column(1)
+        icon_view.set_orientation(gtk.ORIENTATION_VERTICAL)
+        icon_view.set_selection_mode(gtk.SELECTION_SINGLE)
+        icon_view.set_columns(1)
+        icon_view.set_item_width(-1)
+        icon_view.set_size_request(icon_view.get_item_width(), -1)
+        icon_view.connect("selection-changed", self.changeTab)
+        
+        iconViewFrame = self.wTree.get_widget('CategoryMenuFrame')
+        iconViewFrame.add(icon_view)
+        iconViewFrame.show_all()
+        
         #theme
         self.themeManager = AwnThemeManager(self.wTree)
 
@@ -92,50 +105,24 @@ class AwnManager:
         #preferences
         self.prefManager = awnPreferences(self.wTree)
 
-    def menu_row_clicked(self, data=None):
-        selection = self.treeview.get_selection()
-        (model, iterator) = selection.get_selected()
-        if iterator is not None:
-            self.show_panel(model.get_path(iterator)[0])
-
-    def show_panel(self, index):
-        panels = ['panel_preferences','panel_applets','panel_launchers','panel_themes']
-        [self.wTree.get_widget(panel).hide() for panel in panels]
-        self.wTree.get_widget(panels[index]).show()
-
-    def make_menu_model (self):
-        self.model = model = gtk.ListStore(gdk.Pixbuf, str, str, str)
-        self.treeview.set_model (model)
-
-        ren = gtk.CellRendererPixbuf()
-        col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
-        self.treeview.append_column (col)
-
-        ren = gtk.CellRendererText()
-        col = gtk.TreeViewColumn ("Name", ren, markup=1)
-        self.treeview.append_column (col)
-
-        theme = gtk.icon_theme_get_default()
-
-        row = self.model.append ()
-        self.model.set_value (row, 0, theme.load_icon (gtk.STOCK_PREFERENCES, 32, 0))
-        self.model.set_value (row, 1, "General")
-
-        row = self.model.append ()
-        self.model.set_value (row, 0, theme.load_icon (gtk.STOCK_SORT_ASCENDING, 32, 0))
-        self.model.set_value (row, 1, "Applets")
-
-        row = self.model.append ()
-        self.model.set_value (row, 0, theme.load_icon (gtk.STOCK_FULLSCREEN, 32, 0))
-        self.model.set_value (row, 1, "Launchers")
-
-        row = self.model.append ()
-        self.model.set_value (row, 0, theme.load_icon (gtk.STOCK_HOME, 32, 0))
-        self.model.set_value (row, 1, "Themes")
-
-        path = self.model.get_path(self.model.get_iter_first())
-        self.treeview.set_cursor(path, focus_column=None, start_editing=False)
-
+        self.window.show_all()
+    
+    def make_menu_model(self):
+        theme = gtk.icon_theme_get_default()  
+        self.menu_model = gtk.ListStore(str, gtk.gdk.Pixbuf)
+        
+        pixbuf = theme.load_icon("gtk-preferences", 48, gtk.ICON_LOOKUP_FORCE_SVG)     
+        self.menu_model.append(['General', pixbuf])
+        pixbuf = theme.load_icon("gtk-sort-ascending", 48, gtk.ICON_LOOKUP_FORCE_SVG)     
+        self.menu_model.append(['Applets', pixbuf])
+        pixbuf = theme.load_icon("gtk-fullscreen", 48, gtk.ICON_LOOKUP_FORCE_SVG)     
+        self.menu_model.append(['Launchers', pixbuf])
+        pixbuf = theme.load_icon("gtk-home", 48, gtk.ICON_LOOKUP_FORCE_SVG)     
+        self.menu_model.append(['Themes', pixbuf])    
+    
+    def changeTab(self, iconView):
+        self.notebook.set_current_page(iconView.get_cursor()[0][0])
+            
     def refresh(self, button):
         w = gtk.Window()
         i = gtk.IconTheme()
@@ -153,7 +140,7 @@ class AwnManager:
     def about(self, button):
         self.about = gtk.AboutDialog()
         self.about.set_name("Avant Window Navigator")
-        self.about.set_version("0.2.1")
+        self.about.set_version('@VERSION@')
         self.about.set_copyright("Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>")
         self.about.set_authors(["Neil Jagdish Patel	<njpatel@gmail.com>", "haytjes <hv1989@gmail.com>", "Miika-Petteri Matikainen <miikapetteri@gmail.com>", "Anthony Arobone  <aarobone@gmail.com>", "Ryan Rushton <ryan@rrdesign.ca>", "Michal Hruby  <michal.mhr@gmail.com>", "Julien Lavergne <julien.lavergne@gmail.com>"])
         self.about.set_comments("Fully customisable dock-like window navigator for GNOME.")

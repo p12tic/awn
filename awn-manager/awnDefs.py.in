@@ -22,10 +22,10 @@
 import sys, os
 from awn import CONFIG_DEFAULT_GROUP as DEFAULT_GROUP
 
-PREFIX = "@PREFIX@"
+PREFIX = "@prefix@"
 
 LOCALEDIR = os.path.join (PREFIX, "share", "locale")
-PKGDATADIR = os.path.join (PREFIX, "share", "avant-window-navigator")
+PKGDATADIR = '@PKGDATADIR@'
 
 HOME_CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".config", "awn")
 HOME_APPLET_DIR = os.path.join(HOME_CONFIG_DIR, "applets")
