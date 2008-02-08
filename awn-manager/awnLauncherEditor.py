@@ -59,14 +59,17 @@ class awnLauncherEditor:
           self.icon_path = self.desktop_entry.get('Icon')
           image = self.glade.get_widget('image_icon')
           if os.path.exists(self.icon_path):
-            icon = gdk.pixbuf_new_from_file_at_size (self.icon_path, 32, 32)
-            image.set_from_pixbuf(icon)
+              icon = gdk.pixbuf_new_from_file_at_size (self.icon_path, 32, 32)
+              image.set_from_pixbuf(icon)
           elif self.icon_path != '':
-            theme = gtk.icon_theme_get_default()
-            icon = theme.load_icon(self.icon_path, 32, 0)
-            image.set_from_pixbuf(icon)
+              theme = gtk.icon_theme_get_default()
+              try:
+                  icon = theme.load_icon(self.icon_path, 32, 0)
+                  image.set_from_pixbuf(icon)
+              except gobject.GError:
+                  self.icon_path = None
         else:
-          self.icon_path = None
+            self.icon_path = None
         self.command_chooser = None
         self.stock_icons = None
         self.icon_viewer = self.glade.get_widget('iconview_launcher_icons')
@@ -173,6 +176,8 @@ class awnLauncherEditor:
             if self.launcher is not None:
                 self.launcher.refresh_tree(uris)
         self.main_dialog.hide_all()
+        if self.standalone:
+            gtk.main_quit()
 
     def on_dialog_desktop_item_close(self, dialog):
         self.on_dialog_desktop_item_response(dialog, gtk.RESPONSE_CANCEL)
@@ -220,10 +225,18 @@ class awnLauncherEditor:
             self.glade.get_widget('radiobutton_custom').set_active(True)
         dialog.hide_all()
 
-    def run(self):
+    def run(self, standalone = False):
+        self.standalone = standalone
+        if self.standalone:
+            self.main_dialog.set_property('skip-taskbar-hint', False)
+            try:
+                theme = gtk.icon_theme_get_default()
+                self.main_dialog.set_icon(theme.load_icon('launcher-program', 48, 0))
+            except gobject.GError:
+                pass
         self.main_dialog.show_all()
 
 if __name__ == '__main__':
     ale = awnLauncherEditor(sys.argv[1])
-    ale.run()
+    ale.run(True)
     gtk.main()
