@@ -25,6 +25,7 @@
 
 #include <gdk/gdkscreen.h>
 
+#include <libgnomevfs/gnome-vfs-utils.h>
 #include <libgnome/gnome-desktop-item.h>
 
 /**
@@ -37,7 +38,9 @@
  */
 #include "awn-desktop-item.h"
 
-typedef GnomeDesktopItem _AwnDesktopItem;
+struct _AwnDesktopItem {
+	GnomeDesktopItem *desktop_file;
+};
 
 /* GType function */
 GType awn_desktop_item_get_type (void)
@@ -60,10 +63,10 @@ GType awn_desktop_item_get_type (void)
  */
 AwnDesktopItem *awn_desktop_item_new (gchar *filename)
 {
-	AwnDesktopItem *item = NULL;
-	item = gnome_desktop_item_new_from_file (filename, 0, NULL);
-	if (!item) {
-		item = gnome_desktop_item_new ();
+	AwnDesktopItem *item = g_malloc (sizeof (AwnDesktopItem));
+	item->desktop_file = gnome_desktop_item_new_from_file (filename, 0, NULL);
+	if (!item->desktop_file) {
+		item->desktop_file = gnome_desktop_item_new ();
 	}
 	return item;
 }
@@ -77,7 +80,9 @@ AwnDesktopItem *awn_desktop_item_new (gchar *filename)
  */
 AwnDesktopItem *awn_desktop_item_copy (const AwnDesktopItem *item)
 {
-	return gnome_desktop_item_copy (item);
+	AwnDesktopItem *new_item = g_malloc (sizeof (AwnDesktopItem));
+	new_item->desktop_file = gnome_desktop_item_copy (item->desktop_file);
+	return new_item;
 }
 
 /**
@@ -91,7 +96,7 @@ AwnDesktopItem *awn_desktop_item_copy (const AwnDesktopItem *item)
 gchar *awn_desktop_item_get_filename (AwnDesktopItem *item)
 {
 	return gnome_vfs_get_local_path_from_uri (
-	           gnome_desktop_item_get_location (item)
+	           gnome_desktop_item_get_location (item->desktop_file)
 	       );
 }
 
@@ -105,7 +110,7 @@ gchar *awn_desktop_item_get_filename (AwnDesktopItem *item)
  */
 gchar *awn_desktop_item_get_item_type (AwnDesktopItem *item)
 {
-	return gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_TYPE);
+	return (char*)gnome_desktop_item_get_string (item->desktop_file, GNOME_DESKTOP_ITEM_TYPE);
 }
 
 /**
@@ -118,7 +123,7 @@ gchar *awn_desktop_item_get_item_type (AwnDesktopItem *item)
  */
 void awn_desktop_item_set_item_type (AwnDesktopItem *item, gchar *item_type)
 {
-	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_TYPE, item_type);
+	gnome_desktop_item_set_string (item->desktop_file, GNOME_DESKTOP_ITEM_TYPE, item_type);
 }
 
 /**
@@ -131,7 +136,7 @@ void awn_desktop_item_set_item_type (AwnDesktopItem *item, gchar *item_type)
  */
 gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme)
 {
-	return gnome_desktop_item_get_icon (item, icon_theme);
+	return gnome_desktop_item_get_icon (item->desktop_file, icon_theme);
 }
 
 /**
@@ -144,7 +149,7 @@ gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme
  */
 void awn_desktop_item_set_icon (AwnDesktopItem *item, gchar *icon)
 {
-	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_ICON, icon);
+	gnome_desktop_item_set_string (item->desktop_file, GNOME_DESKTOP_ITEM_ICON, icon);
 }
 
 /**
@@ -156,8 +161,7 @@ void awn_desktop_item_set_icon (AwnDesktopItem *item, gchar *icon)
  */
 gchar *awn_desktop_item_get_name (AwnDesktopItem *item)
 {
-	return gnome_desktop_item_get_localestring (item,
-	                                            GNOME_DESKTOP_ITEM_NAME);
+	return (gchar*)gnome_desktop_item_get_localestring (item->desktop_file, GNOME_DESKTOP_ITEM_NAME);
 }
 
 /**
@@ -169,7 +173,7 @@ gchar *awn_desktop_item_get_name (AwnDesktopItem *item)
  */
 void awn_desktop_item_set_name (AwnDesktopItem *item, gchar *name)
 {
-	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_NAME, name);
+	gnome_desktop_item_set_string (item->desktop_file, GNOME_DESKTOP_ITEM_NAME, name);
 }
 
 /**
@@ -181,7 +185,7 @@ void awn_desktop_item_set_name (AwnDesktopItem *item, gchar *name)
  */
 gchar *awn_desktop_item_get_exec (AwnDesktopItem *item)
 {
-	return gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_EXEC);
+	return (gchar*)gnome_desktop_item_get_string (item->desktop_file, GNOME_DESKTOP_ITEM_EXEC);
 }
 
 /**
@@ -193,7 +197,7 @@ gchar *awn_desktop_item_get_exec (AwnDesktopItem *item)
  */
 void awn_desktop_item_set_exec (AwnDesktopItem *item, gchar *exec)
 {
-	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_EXEC, exec);
+	gnome_desktop_item_set_string (item->desktop_file, GNOME_DESKTOP_ITEM_EXEC, exec);
 }
 
 /**
@@ -206,7 +210,7 @@ void awn_desktop_item_set_exec (AwnDesktopItem *item, gchar *exec)
  */
 gchar *awn_desktop_item_get_string (AwnDesktopItem *item, gchar *key)
 {
-	return gnome_desktop_item_get_string (item, key);
+	return (gchar*)gnome_desktop_item_get_string (item->desktop_file, key);
 }
 
 /**
@@ -219,7 +223,7 @@ gchar *awn_desktop_item_get_string (AwnDesktopItem *item, gchar *key)
  */
 void awn_desktop_item_set_string (AwnDesktopItem *item, gchar *key, gchar *value)
 {
-	gnome_desktop_item_set_string (item, key, value);
+	gnome_desktop_item_set_string (item->desktop_file, key, value);
 }
 
 /**
@@ -232,7 +236,7 @@ void awn_desktop_item_set_string (AwnDesktopItem *item, gchar *key, gchar *value
  */
 gchar *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *key)
 {
-	return gnome_desktop_item_get_localestring (item, key);
+	return (gchar*)gnome_desktop_item_get_localestring (item->desktop_file, key);
 }
 
 /**
@@ -248,9 +252,9 @@ gchar *awn_desktop_item_get_localestring (AwnDesktopItem *item, gchar *key)
 void awn_desktop_item_set_localestring (AwnDesktopItem *item, gchar *key, gchar *locale, gchar *value)
 {
 	if (locale == NULL) {
-		gnome_desktop_item_set_localestring (item, key, value);
+		gnome_desktop_item_set_localestring (item->desktop_file, key, value);
 	} else {
-		gnome_desktop_item_set_localestring_lang (item, key, locale, value);
+		gnome_desktop_item_set_localestring_lang (item->desktop_file, key, locale, value);
 	}
 }
 
@@ -264,7 +268,7 @@ void awn_desktop_item_set_localestring (AwnDesktopItem *item, gchar *key, gchar 
  */
 gboolean awn_desktop_item_exists (AwnDesktopItem *item)
 {
-	return gnome_desktop_item_exists (item);
+	return gnome_desktop_item_exists (item->desktop_file);
 }
 
 /**
@@ -280,12 +284,20 @@ gboolean awn_desktop_item_exists (AwnDesktopItem *item)
  */
 gint awn_desktop_item_launch (AwnDesktopItem *item, GSList *documents, GError **err)
 {
-	return gnome_desktop_item_launch_on_screen (item,
-	                                            NULL,
-	                                            0,
-	                                            gdk_screen_get_default(),
-	                                            -1,
-	                                            err);
+	GList *file_list = NULL;
+	GSList *doc = NULL;
+	int pid;
+	for (doc = documents; doc != NULL; doc = g_slist_next (doc)) {
+		file_list = g_list_append (file_list, doc->data);
+	}
+	pid = gnome_desktop_item_launch_on_screen (item->desktop_file,
+	                                           file_list,
+	                                           0,
+	                                           gdk_screen_get_default(),
+	                                           -1,
+	                                           err);
+	g_list_free (file_list);
+	return pid;
 }
 
 /**
@@ -301,7 +313,7 @@ gint awn_desktop_item_launch (AwnDesktopItem *item, GSList *documents, GError **
  */
 void awn_desktop_item_save (AwnDesktopItem *item, gchar *new_filename, GError **err)
 {
-	gnome_desktop_item_save (item, new_filename, TRUE, err);
+	gnome_desktop_item_save (item->desktop_file, new_filename, TRUE, err);
 }
 
 /**
@@ -312,6 +324,11 @@ void awn_desktop_item_save (AwnDesktopItem *item, gchar *new_filename, GError **
  */
 void awn_desktop_item_free (AwnDesktopItem *item)
 {
-	gnome_desktop_item_unref (item);
+	if (item->desktop_file) {
+		gnome_desktop_item_unref (item->desktop_file);
+	}
+	if (item) {
+		g_free (item);
+	}
 }
 /*  vim: set noet ts=8 sts=8 sw=8 : */
