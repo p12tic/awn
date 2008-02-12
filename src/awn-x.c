@@ -106,20 +106,11 @@ xutils_set_strut (GdkWindow        *gdk_window,
 }
 
 
-
-/*	TODO:
-	This is a cut-and-paste job at the moment, I still need to bring over 
-	the error checking from wnck. However, I have been using it, and haven't
-	yet had a problem.
-*/
 GdkPixbuf * 
 awn_x_get_icon (WnckWindow *window, gint width, gint height)
 {
 	GdkPixbuf *icon;
-  	GdkPixbuf *mini_icon;
   	icon = NULL;
-  	mini_icon = NULL;
-
         icon=wnck_window_get_icon(window);
         icon = gdk_pixbuf_scale_simple( icon, width, height, GDK_INTERP_BILINEAR);    
         return icon;
@@ -132,7 +123,7 @@ awn_x_set_strut (GtkWindow *window)
 	int y = 0;
 	int width = 0;
 	int height = 0;
-  AwnSettings *settings = awn_settings_new ();
+        AwnSettings *settings = awn_settings_new ();
 	
 	gtk_window_get_size (window, &width, &height);
 	gtk_window_get_position (window, &x, &y);
@@ -144,33 +135,6 @@ awn_x_set_strut (GtkWindow *window)
 		num = 0;
 	}
 }
-
-/*
-void
-awn_x_set_icon_geometry  (Window xwindow,
-			  int    x,
-			  int    y,
-			  int    width,
-			  int    height)
-{
-  gulong data[4];
-
-  data[0] = x;
-  data[1] = y;
-  data[2] = width;
-  data[3] = height;
-  
-  _wnck_error_trap_push ();
-
-  XChangeProperty (gdk_display,
-		   xwindow,
-		   _wnck_atom_get ("_NET_WM_ICON_GEOMETRY"),
-		   XA_CARDINAL, 32, PropModeReplace,
-		   (guchar *)&data, 4);
-
-  _wnck_error_trap_pop ();
-}
-*/
 
 GString *
 awn_x_get_application_name (WnckWindow *window, WnckApplication *app)
