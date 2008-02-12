@@ -38,14 +38,10 @@ avant_window_navigator_SOURCES =	\
 	awn-utils.h			\
 	awn-utils.c			\
 	inlinepixbufs.h			\
-	xutils.h			\
-	xutils.c			\
 	$(NULL)
 
 icon_test_SOURCES =	\
 	icon-test.c	\
-	xutils.h	\
-	xutils.c	\
 	$(NULL)
 
 icon_test_LDADD =	\
