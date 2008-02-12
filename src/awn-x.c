@@ -20,6 +20,9 @@
  *  Notes : Contains functions allowing Awn to get a icon from XOrg using the
  *          xid. Please note that all icon reading code  has been lifted from
  *	    libwnck (XUtils.c), so track bugfixes in libwnck.
+ *
+ *  Portions Copyright (C) 2001 Havoc Pennington
+ *
 */
 
 
@@ -36,10 +39,73 @@
 #include <libgnome/libgnome.h>
 #endif
 
-#include "xutils.h"
 #include "inlinepixbufs.h"
 
 #include <libawn/awn-settings.h>
+
+
+
+
+//pulled out of xutils.c
+
+enum {
+	STRUT_LEFT = 0,
+	STRUT_RIGHT = 1,
+	STRUT_TOP = 2,
+	STRUT_BOTTOM = 3,
+	STRUT_LEFT_START = 4,
+	STRUT_LEFT_END = 5,
+	STRUT_RIGHT_START = 6,
+	STRUT_RIGHT_END = 7,
+	STRUT_TOP_START = 8,
+	STRUT_TOP_END = 9,
+	STRUT_BOTTOM_START = 10,
+	STRUT_BOTTOM_END = 11
+};
+
+//pulled out of xutils.c
+static Atom net_wm_strut              = 0;
+static Atom net_wm_strut_partial      = 0;
+
+//pulled out of xutils.c
+void
+xutils_set_strut (GdkWindow        *gdk_window,
+			guint32           strut,
+			guint32           strut_start,
+			guint32           strut_end)
+ {
+	Display *display;
+	Window   window;
+	gulong   struts [12] = { 0, };
+
+	if (!GDK_IS_DRAWABLE (gdk_window))
+		return;
+	if (!GDK_IS_WINDOW (gdk_window))
+		return;
+
+	display = GDK_WINDOW_XDISPLAY (gdk_window);
+	window  = GDK_WINDOW_XWINDOW (gdk_window);
+
+	if (net_wm_strut == 0)
+		net_wm_strut = XInternAtom (display, "_NET_WM_STRUT", False);
+	if (net_wm_strut_partial == 0)
+		net_wm_strut_partial = XInternAtom (display, "_NET_WM_STRUT_PARTIAL", False);
+
+	struts [STRUT_BOTTOM] = strut;
+	struts [STRUT_BOTTOM_START] = strut_start;
+	struts [STRUT_BOTTOM_END] = strut_end;
+	
+	gdk_error_trap_push ();
+	XChangeProperty (display, window, net_wm_strut,
+			 XA_CARDINAL, 32, PropModeReplace,
+			 (guchar *) &struts, 4);
+	XChangeProperty (display, window, net_wm_strut_partial,
+			 XA_CARDINAL, 32, PropModeReplace,
+			 (guchar *) &struts, 12);
+	gdk_error_trap_pop ();
+}
+
+
 
 /*	TODO:
 	This is a cut-and-paste job at the moment, I still need to bring over 
@@ -51,31 +117,12 @@ awn_x_get_icon (WnckWindow *window, gint width, gint height)
 {
 	GdkPixbuf *icon;
   	GdkPixbuf *mini_icon;
-
   	icon = NULL;
   	mini_icon = NULL;
-  	
-  	
-  	if ( _wnck_read_icons_ (wnck_window_get_xid(window),
-                        NULL,
-                        &icon,
-                        width, width,
-                        &mini_icon,
-                        24,
-                        24) ) {
-	  	if (mini_icon)
-  		gdk_pixbuf_unref (mini_icon);                        
-        	if (icon)
-        		return icon;
-  	}
-  	if (mini_icon)
-  		gdk_pixbuf_unref (mini_icon);
-        
-        mini_icon = gdk_pixbuf_new_from_inline (-1,default_icon_data, FALSE, NULL);
-        icon = gdk_pixbuf_scale_simple( mini_icon, width, height, GDK_INTERP_BILINEAR);
-	gdk_pixbuf_unref(mini_icon);
+
+        icon=wnck_window_get_icon(window);
+        icon = gdk_pixbuf_scale_simple( icon, width, height, GDK_INTERP_BILINEAR);    
         return icon;
-        //return wnck_window_get_icon (window);
 }
 int num = 0;
 void 
@@ -98,6 +145,7 @@ awn_x_set_strut (GtkWindow *window)
 	}
 }
 
+/*
 void
 awn_x_set_icon_geometry  (Window xwindow,
 			  int    x,
@@ -122,6 +170,7 @@ awn_x_set_icon_geometry  (Window xwindow,
 
   _wnck_error_trap_pop ();
 }
+*/
 
 GString *
 awn_x_get_application_name (WnckWindow *window, WnckApplication *app)

@@ -22,8 +22,6 @@
 #include <string.h>
 
 
-#include "xutils.h"
-
 static GtkWidget *global_tree_view;
 static GtkTreeModel *global_tree_model;
 static guint refill_idle;
@@ -479,30 +477,7 @@ get_window (GtkTreeModel *model,
 static GdkPixbuf *
 _fetch_icon (WnckWindow *window) 
 {
-	if (use_wnck)
-		return wnck_window_get_icon (window);
-	
-	GdkPixbuf *icon;
-  	GdkPixbuf *mini_icon;
-
-  	icon = NULL;
-  	mini_icon = NULL;
-  	
-  	
-  	if ( _wnck_read_icons_ (wnck_window_get_xid(window),
-                        NULL,
-                        &icon,
-                        48, 48,
-                        &mini_icon,
-                        24,
-                        24) ) {
-                        
-        	if (icon)
-        		return icon;
-  	}
-  	g_print("Unable to get icon for :%s, reverting to libwnck\n",
-  		wnck_application_get_name(wnck_window_get_application(window)));
-  	return wnck_window_get_icon (window);
+        return wnck_window_get_icon (window);
 }
 
 static void
