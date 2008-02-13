@@ -65,6 +65,13 @@ class AwnManager:
 
         self.window = self.wTree.get_widget("awnManagerWindow")
         self.window.connect("delete-event", gtk.main_quit)
+		
+	# Enable RGBA colormap
+	self.gtk_screen = self.window.get_screen()
+	colormap = self.gtk_screen.get_rgba_colormap()
+	if colormap == None:
+		colormap = screen.get_rgb_colormap()
+	gtk.widget_set_default_colormap(colormap)
 
         self.notebook = self.wTree.get_widget("panelCategory")
 
