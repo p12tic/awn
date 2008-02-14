@@ -1,5 +1,16 @@
 2008-02-14  Neil J. Patel  <njpatel@gmail.com>
 
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* libawn/awn-settings.c:
+	* libawn/awn-settings.h:
+	* src/awn-bar.c:
+	* src/awn-task.c:
+	* src/awn-window.c:
+	Merged an updated version of awn-core-testing.
+
+2008-02-14  Neil J. Patel  <njpatel@gmail.com>
+
 	* .bzrignore:
 	* CC.COPYING:
 	* ChangeLog:

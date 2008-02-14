@@ -222,6 +222,35 @@ render_rect (cairo_t *cr, double x, double y, double width, double height, doubl
 
 }
 
+static void
+render_outer_curve (cairo_t *cr, double x, double width, double height)
+{
+		double cx = ((settings->bar_width / 2.) * settings->curves_symmetry)* 0.2 ;		// x offset
+		
+		cairo_move_to (cr, x, height+30);
+		cairo_save (cr);		
+
+		cairo_translate (cr, x + (settings->bar_width / 2.) - (cx / 2.), height + 16.);
+		cairo_scale (cr, (settings->bar_width / 2.) + cx, ((height * settings->curviness) / 2) * 1.25 );
+		cairo_arc (cr, 0., 0., 1., 0., 2 * M_PI);
+		cairo_restore (cr);
+}
+
+static void
+render_inner_curve (cairo_t *cr, double x, double width, double height)
+{
+		double cx = ((settings->bar_width / 2.) * settings->curves_symmetry ) * 0.125 ;		// x offset
+		
+		cairo_move_to (cr, x, height+30);
+		cairo_save (cr);
+
+		cairo_translate (cr, x + (settings->bar_width / 2.) + (cx * settings->curves_symmetry), height + 7.);
+		cairo_scale (cr, (settings->bar_width / 2.) - cx, ((height * settings->curviness) / 2) / 1.8);
+		cairo_arc (cr, 0., 0., 1., 0., 2 * M_PI);
+		cairo_restore (cr);
+}
+
+
 double cubic_bezier_curve(double point1, double point2, double point3, double point4, double t)
 {
 	return (1-t)*(1-t)*(1-t)*point1 + 3*t*(1-t)*(1-t)*point2 + 3*t*t*(1-t)*point3 + t*t*t*point4;
@@ -251,22 +280,62 @@ glass_engine (cairo_t *cr, double x, gint width, gint height, gint offset)
 	cairo_pattern_t *pat;
 	cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
-	/* main gradient */
-	pat = cairo_pattern_create_linear (0.0, 0.0, 0.0, height+top_offset);
-	cairo_pattern_add_color_stop_rgba (pat, 0.5, 
-						settings->g_step_1.red, 
-				   		settings->g_step_1.green, 
-				   		settings->g_step_1.blue,
-				   		settings->g_step_1.alpha);
-	cairo_pattern_add_color_stop_rgba (pat, 1, 
-						settings->g_step_2.red, 
-				   		settings->g_step_2.green, 
-				   		settings->g_step_2.blue,
-				   		settings->g_step_2.alpha);
-	render_rect (cr, x, height/2, width, height/2+offset, 0);
-	cairo_set_source(cr, pat);
-	cairo_fill(cr);
-	cairo_pattern_destroy(pat);
+	if(settings->bar_angle >= 0){
+		/* main gradient */
+		pat = cairo_pattern_create_linear (0.0, 0.0, 0.0, height+top_offset);
+		cairo_pattern_add_color_stop_rgba (pat, 0.5, 
+							settings->g_step_1.red, 
+					   		settings->g_step_1.green, 
+					   		settings->g_step_1.blue,
+					   		settings->g_step_1.alpha);
+		cairo_pattern_add_color_stop_rgba (pat, 1, 
+							settings->g_step_2.red, 
+					   		settings->g_step_2.green, 
+					   		settings->g_step_2.blue,
+					   		settings->g_step_2.alpha);
+		render_rect (cr, x, height/2, width, height/2+offset, 0);
+		cairo_set_source(cr, pat);
+		cairo_fill(cr);
+		cairo_pattern_destroy(pat);
+	} else {
+		// draw some curves		
+		pat = cairo_pattern_create_linear (0.0, 0.0, 0.0, height);
+		cairo_pattern_add_color_stop_rgba (pat, 0.5, 
+							settings->g_step_1.red, 
+					   		settings->g_step_1.green, 
+					   		settings->g_step_1.blue,
+					   		settings->g_step_1.alpha);
+		cairo_pattern_add_color_stop_rgba (pat, 1, 
+							settings->g_step_2.red, 
+					   		settings->g_step_2.green, 
+					   		settings->g_step_2.blue,
+					   		settings->g_step_2.alpha);
+		// ellipse outer fill
+		render_outer_curve (cr, x, width, height);
+		cairo_set_source(cr, pat);
+		cairo_fill(cr);
+		cairo_pattern_destroy(pat);
+		
+		// ellipse outer line-stroke
+		render_outer_curve (cr, x, width, height);
+	    cairo_set_source_rgba (cr, settings->border_color.red,
+	                               settings->border_color.green,
+	                               settings->border_color.blue,
+	                               settings->border_color.alpha);
+		cairo_stroke(cr);
+		
+		// clipping (for separator, maybe)
+		render_outer_curve (cr, x, width, height);
+		cairo_clip(cr);
+		
+		// ellipse inner fill
+		render_inner_curve (cr, x, width, height);
+	    cairo_set_source_rgba (cr, settings->g_histep_1.red,
+	                               settings->g_histep_1.green,
+	                               settings->g_histep_1.blue,
+	                               settings->g_histep_1.alpha);
+		cairo_fill (cr);
+	}
 }
 
 static void
@@ -316,14 +385,12 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 	
 	double x = (int)((settings->monitor.width-width)*settings->bar_pos);
 	
-	if (settings->bar_angle != 0)
-        {
-                cairo_set_source_rgba (cr, settings->border_color.red,
-                                           settings->border_color.green,
-                                           settings->border_color.blue,
-                                           settings->border_color.alpha+0.2);
-                if(settings->rounded_corners )
-		{
+	if (settings->bar_angle >= 0) {
+        cairo_set_source_rgba (cr, settings->border_color.red,
+                                   settings->border_color.green,
+                                   settings->border_color.blue,
+                                   settings->border_color.alpha+0.2);
+		if(settings->rounded_corners ) {
 			double leftcorner_x = cubic_bezier_curve(x+apply_perspective_x(width, height/8, 0), 
 								x, 
 								x, 
@@ -346,13 +413,12 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 			cairo_fill (cr);
 			cairo_restore (cr);
 		}
-		else
-		{
+		else {
 			cairo_rectangle (cr, x, height-3+top_offset, width, 3+top_offset);
 			cairo_fill (cr);
 		}
                 
-        }
+    }
 
 	cairo_move_to(cr, x, 0);
 	cairo_set_line_width(cr, 1.0);
@@ -381,7 +447,7 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 	
 	if (settings->bar_angle == 0)
 		render_rect (cr, x+1, height/2, width-2, height/5, 0);
-	else {
+	else if (settings->bar_angle > 0) {
 		render_rect (cr, 
                              x+3+apply_perspective_x(width, 
                                                      settings->bar_height/4, 
@@ -397,78 +463,84 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 
         cairo_pattern_destroy (pat);
 	
-	/* internal hi-lightborder */
-	cairo_set_source_rgba (cr, settings->hilight_color.red, 
-				   settings->hilight_color.green, 
-				   settings->hilight_color.blue,
-				   settings->hilight_color.alpha);
-	render_rect (cr, x+1.5, (height/2)+1.5, width-3, (height/2+icon_offset), 1);
-	cairo_stroke(cr);
-	
-	/* border */
-	cairo_set_source_rgba (cr, settings->border_color.red, 
-				   settings->border_color.green, 
-				   settings->border_color.blue,
-				   settings->border_color.alpha);
-	render_rect (cr, x+0.5, (height/2)+0.5, width-1, (height/2+icon_offset), 0);
-	cairo_stroke(cr);
+    if (settings->bar_angle >= 0){
+		/* internal hi-lightborder */
+		cairo_set_source_rgba (cr, settings->hilight_color.red, 
+					   settings->hilight_color.green, 
+					   settings->hilight_color.blue,
+					   settings->hilight_color.alpha);
+		render_rect (cr, x+1.5, (height/2)+1.5, width-3, (height/2+icon_offset), 1);
+		cairo_stroke(cr);
+		
+		/* border */
+		cairo_set_source_rgba (cr, settings->border_color.red, 
+					   settings->border_color.green, 
+					   settings->border_color.blue,
+					   settings->border_color.alpha);
+		render_rect (cr, x+0.5, (height/2)+0.5, width-1, (height/2+icon_offset), 0);
+		cairo_stroke(cr);
+    }
 
 	/* separator */
 	if (draw_separator && settings->show_separator) {
-		double real_x = (settings->monitor.width-current_width)*settings->bar_pos;
-
-		cairo_set_line_width (cr, 1.0);
-		
-		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator-2.5), settings->bar_height+3 + apply_perspective_y(settings->bar_height)+top_offset);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-2.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-2.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
-		cairo_set_source_rgba (cr, settings->hilight_color.red, 
-				   	   settings->hilight_color.green, 
-				           settings->hilight_color.blue,
-				           settings->hilight_color.alpha);
-		
-		cairo_stroke(cr);
-		
-		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator-1.5), settings->bar_height+2 + apply_perspective_y(settings->bar_height)+top_offset);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-1.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-1.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
-		cairo_set_source_rgba (cr, settings->border_color.red, 
-				   	   settings->border_color.green, 
-				           settings->border_color.blue,
-				           settings->border_color.alpha);
-		
-		cairo_stroke(cr);
-		
-		cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator-0.5), settings->bar_height+2 + apply_perspective_y(settings->bar_height)+top_offset);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-0.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-0.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
-		cairo_set_source_rgba (cr, settings->sep_color.red, 
-				   	   settings->sep_color.green, 
-				           settings->sep_color.blue,
-				           settings->sep_color.alpha);
-		cairo_stroke(cr);
+		if (settings->bar_angle >= 0) {
+			double real_x = (settings->monitor.width-current_width)*settings->bar_pos;
 	
-
-		cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator+0.5), settings->bar_height+2 + apply_perspective_y(settings->bar_height)+top_offset);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+0.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+0.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
-		cairo_set_source_rgba (cr, settings->border_color.red, 
-				   	   settings->border_color.green, 
-				           settings->border_color.blue,
-				           settings->border_color.alpha);
-		cairo_stroke(cr);
-
-		cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator+1.5), settings->bar_height+3 + apply_perspective_y(settings->bar_height)+top_offset);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+1.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
-		cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+1.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
-		cairo_set_source_rgba (cr, settings->hilight_color.red, 
-				   	   settings->hilight_color.green, 
-				           settings->hilight_color.blue,
-				           settings->hilight_color.alpha);
-		cairo_stroke(cr);
+			cairo_set_line_width (cr, 1.0);
+			
+			cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator-2.5), settings->bar_height+3 + apply_perspective_y(settings->bar_height)+top_offset);
+			cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-2.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
+			cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-2.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
+			cairo_set_source_rgba (cr, settings->hilight_color.red, 
+					   	   settings->hilight_color.green, 
+					           settings->hilight_color.blue,
+					           settings->hilight_color.alpha);
+			
+			cairo_stroke(cr);
+			
+			cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator-1.5), settings->bar_height+2 + apply_perspective_y(settings->bar_height)+top_offset);
+			cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-1.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
+			cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-1.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
+			cairo_set_source_rgba (cr, settings->border_color.red, 
+					   	   settings->border_color.green, 
+					           settings->border_color.blue,
+					           settings->border_color.alpha);
+			
+			cairo_stroke(cr);
+			
+			cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+			cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator-0.5), settings->bar_height+2 + apply_perspective_y(settings->bar_height)+top_offset);
+			cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-0.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
+			cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator-0.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
+			cairo_set_source_rgba (cr, settings->sep_color.red, 
+					   	   settings->sep_color.green, 
+					           settings->sep_color.blue,
+					           settings->sep_color.alpha);
+			cairo_stroke(cr);
+		
+	
+			cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+			cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator+0.5), settings->bar_height+2 + apply_perspective_y(settings->bar_height)+top_offset);
+			cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+0.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
+			cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+0.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
+			cairo_set_source_rgba (cr, settings->border_color.red, 
+					   	   settings->border_color.green, 
+					           settings->border_color.blue,
+					           settings->border_color.alpha);
+			cairo_stroke(cr);
+	
+			cairo_move_to (cr, real_x+apply_perspective_x(width, settings->bar_height/2, separator+1.5), settings->bar_height+3 + apply_perspective_y(settings->bar_height)+top_offset);
+			cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+1.5), (settings->bar_height + 2) * 2-3+icon_offset+top_offset);
+			cairo_line_to (cr, real_x+apply_perspective_x(width, 3, separator+1.5), (settings->bar_height + 2) * 2+icon_offset+top_offset);
+			cairo_set_source_rgba (cr, settings->hilight_color.red, 
+					   	   settings->hilight_color.green, 
+					           settings->hilight_color.blue,
+					           settings->hilight_color.alpha);
+			cairo_stroke(cr);
+		}
 	}
+
+	if (settings->bar_angle >= 0) {
 
         GList *s;
         for (s = priv->seps; s != NULL; s = s->next) {
@@ -539,6 +611,7 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 		cairo_stroke(cr);
 
         }
+	}
 }
 
 gboolean 
@@ -705,32 +778,34 @@ static gint step     = 3;
 static gboolean
 resize( GtkWidget *window)
 {
-        if ( dest_width == current_width) {
-                resizing = 0;
-                return FALSE;
-        }
-        
-        if ( dest_width > current_width) {
-                if (dest_width - current_width < 2) {
-               	        dest_width = current_width;
-               	        resizing = 0;
-               	        gtk_widget_queue_draw(GTK_WIDGET(window));
-	                return FALSE;
-        	}
-                current_width += step;
-             
-        } else {
-                if (current_width - dest_width < 2) {
-               	        dest_width = current_width;
-               	        resizing = 0;
-               	        gtk_widget_queue_draw(GTK_WIDGET(window));
-	                return FALSE;
-        	}        	
-        	current_width -= step;
-        }
-        gtk_widget_queue_draw(GTK_WIDGET(window));
+	settings->bar_width = dest_width;	
 
-        return TRUE;
+    if ( dest_width == current_width) {
+            resizing = 0;
+            return FALSE;
+    }
+    
+    if ( dest_width > current_width) {
+            if (dest_width - current_width < 2) {
+           	        dest_width = current_width;
+           	        resizing = 0;
+           	        gtk_widget_queue_draw(GTK_WIDGET(window));
+                return FALSE;
+    	}
+            current_width += step;
+         
+    } else {
+            if (current_width - dest_width < 2) {
+           	        dest_width = current_width;
+           	        resizing = 0;
+           	        gtk_widget_queue_draw(GTK_WIDGET(window));
+                return FALSE;
+    	}        	
+    	current_width -= step;
+    }
+    gtk_widget_queue_draw(GTK_WIDGET(window));
+
+    return TRUE;
 }
 
 void 

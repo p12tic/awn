@@ -393,23 +393,29 @@ draw (GtkWidget *task, cairo_t *cr)
 	
 	/* active */
 	if (priv->window && wnck_window_is_active(priv->window)) {
-
 		cairo_set_source_rgba(cr, settings->border_color.red, 
                                           settings->border_color.green,
                                           settings->border_color.blue, 
                                           0.2);
-		_rounded_rect(cr, 0 , settings->bar_height + resize_offset, 
+		if(settings->bar_angle < 0){
+			_rounded_rect(cr, 0 , settings->bar_height + resize_offset - priv->effects.curve_offset, 
+				width, settings->bar_height - resize_offset);
+          
+                cairo_fill(cr);
+		} else {
+			_rounded_rect(cr, 0 , settings->bar_height + resize_offset, 
 				width, settings->bar_height - resize_offset);
           
                 cairo_fill(cr);
 		
-		cairo_set_source_rgba(cr, settings->border_color.red, 
-                                          settings->border_color.green,
-                                          settings->border_color.blue, 
-                                          0.2/3);	
-                _rounded_rect(cr, 0 , settings->bar_height*2, 
-				width, settings->icon_offset);
-		cairo_fill(cr);
+			cairo_set_source_rgba(cr, settings->border_color.red, 
+	                                          settings->border_color.green,
+	                                          settings->border_color.blue, 
+	                                          0.2/3);	
+	                _rounded_rect(cr, 0 , settings->bar_height*2, 
+					width, settings->icon_offset);
+			cairo_fill(cr);
+		}
 	}
 
 	/* use libawn to draw */
@@ -421,15 +427,23 @@ draw (GtkWidget *task, cairo_t *cr)
 	double x1;
 	double arrow_top;
 	x1 = width/2.0;
-	arrow_top = (settings->bar_height * 2) + settings->arrow_offset;
-	cairo_set_source_rgba (cr, settings->arrow_color.red,
-				   settings->arrow_color.green,
-				   settings->arrow_color.blue,
-				   settings->arrow_color.alpha);
-	cairo_move_to(cr, x1-5, arrow_top);
-	cairo_line_to(cr, x1, arrow_top - 5);
-	cairo_line_to(cr, x1+5, arrow_top);
-	cairo_close_path (cr);
+	if(settings->bar_angle >= 0){
+		arrow_top = (settings->bar_height * 2) + settings->arrow_offset;
+		cairo_set_source_rgba (cr, settings->arrow_color.red,
+					   settings->arrow_color.green,
+					   settings->arrow_color.blue,
+					   settings->arrow_color.alpha);
+		cairo_move_to(cr, x1-5, arrow_top);
+		cairo_line_to(cr, x1, arrow_top - 5);
+		cairo_line_to(cr, x1+5, arrow_top);
+		cairo_close_path (cr);
+	} else {
+		cairo_set_source_rgba (cr, settings->arrow_color.red,
+					   settings->arrow_color.green,
+					   settings->arrow_color.blue,
+					   settings->arrow_color.alpha);
+		cairo_arc (cr, width/2., (settings->bar_height * 2)-5, 3., 0., 2 * M_PI);
+	}
 
 	if (settings->tasks_have_arrows) {
 		if (priv->window != NULL)

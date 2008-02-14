@@ -105,6 +105,11 @@ typedef struct {
 	char* stest;
 	AwnColor ctest;
 	GSList *ltest;
+	
+	/* Curves settings */
+	int bar_width;
+	gfloat curviness;
+	gfloat curves_symmetry;
 		
 } AwnSettings;
 

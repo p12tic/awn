@@ -53,6 +53,9 @@
 #define ICON_OFFSET	"icon_offset"		/*float*/
 #define BAR_POS		"bar_pos" 		/*float, between 0 and 1 */
 
+#define CURVES_SYMMETRY	 "curves_symmetry"	/*float, between 0 and 1*/
+#define CURVINESS		 "curviness"		/*float, between 0 and 1*/
+
 #define WINMAN		"window_manager"
 #define SHOW_ALL_WINS	"show_all_windows"	/*bool*/
 #define LAUNCHERS	"launchers"		/*str list*/
@@ -163,6 +166,9 @@ awn_settings_new()
 	
 	awn_load_bool(client, BAR, SHOW_SEPARATOR, &s->show_separator, TRUE);
 	awn_load_color(client, BAR, SEP_COLOR, &s->sep_color, "FFFFFF00");
+	
+	awn_load_float(client, BAR, CURVES_SYMMETRY, &s->curves_symmetry,0.7);
+	awn_load_float(client, BAR, CURVINESS, &s->curviness,1.0);
 	
 	/* Window Manager settings */
 	awn_config_client_ensure_group (client, WINMAN);
