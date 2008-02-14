@@ -1,0 +1,29 @@
+waf support
+===========
+
+Statut : Imcomplete
+
+TODO
+ - Add pyawn directory
+ - Add awn.pc.in support
+ - src/ dbus stuff : waf doesn't name it as autotools do
+ - libawn/ Generate awn-enum-types.{c|h}
+ - Others stuff (check the #TODO in waf files)
+ - Test installation
+
+Principe
+ - All in Python
+ - Files are build in a subdirectory (build/) So you can use autotools or waf
+ - Basic command : ./waf configure ./waf build (-p for nice progress bar) ./waf install ./waf uninstall ./waf dist ./waf clean
+ - waf is a executable script which extract tools for building
+ - wscript and wscript_build are files for configure build (like configure.in and Makefile.am)
+ - You can put all instruction in the top directory wscript but to simplify debug, I put some wscript_build in subdirectory
+ - To migrate a directory, just try to write the Makefile into waf.
+
+Links
+ - Homepage : http://code.google.com/p/waf/
+ - SVN : svn checkout http://waf.googlecode.com/svn/trunk/ waf-read-only
+ - There is good examples in the SVN dir ( most interested in demos/gnome and demos/adv)
+ - Other examples (semantik and PackageKit are good) : http://code.google.com/p/waf/wiki/ProjectsUsingWaf
+ - Wiki (some stuff is outdate) : http://code.google.com/p/waf/w/list
+ - Internal code : http://freehackers.org/~tnagy/wafdoc/index.html

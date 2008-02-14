@@ -23,7 +23,7 @@
 
 #include <gtk/gtk.h>
 
-#include <libawn/awn-gconf.h>
+#include <libawn/awn-settings.h>
 
 G_BEGIN_DECLS
 

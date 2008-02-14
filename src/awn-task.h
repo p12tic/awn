@@ -22,15 +22,13 @@
 #define __AWN_TASK_H__
 
 #include <gtk/gtk.h>
-#include <libgnome/gnome-desktop-item.h>
-
 
 #define WNCK_I_KNOW_THIS_IS_UNSTABLE 1
 #include <libwnck/libwnck.h>
 #include <libwnck/window-action-menu.h>
 
+#include <libawn/awn-settings.h>
 #include <libawn/awn-title.h>
-#include <libawn/awn-gconf.h>
 
 #include "awn-utils.h"
 #include "awn-task-manager.h"
@@ -74,7 +72,7 @@ gboolean awn_task_get_is_launcher (AwnTask *task);
 gboolean awn_task_set_window (AwnTask *task, WnckWindow *window);
 WnckWindow * awn_task_get_window (AwnTask *task);
 
-gboolean awn_task_set_launcher (AwnTask *task, GnomeDesktopItem *item);
+gboolean awn_task_set_launcher (AwnTask *task, AwnDesktopItem *item);
 gboolean awn_task_is_launcher (AwnTask *task);
 
 gulong awn_task_get_xid (AwnTask *task);
@@ -97,7 +95,7 @@ void awn_task_update_icon (AwnTask *task);
 
 void awn_task_set_width (AwnTask *task, gint width);
 
-GnomeDesktopItem* awn_task_get_item (AwnTask *task);
+AwnDesktopItem* awn_task_get_item (AwnTask *task);
 
 /* DBUS CALLS */
 void awn_task_set_custom_icon (AwnTask *task, GdkPixbuf *icon);

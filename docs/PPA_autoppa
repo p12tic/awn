@@ -1,0 +1,68 @@
+HowTo use PPA and autoppa
+=================
+
+Require:
+- Be admin of the team
+- Install package dput seahorse and devscript
+- Had a OpenPGP key uploaded to Launchpad
+
+Using autoPPA:
+
+You can use this repository for Ubuntu
+deb http://ppa.launchpad.net/autoppa/ubuntu gutsy universe
+deb-src http://ppa.launchpad.net/autoppa/ubuntu gutsy universe
+
+For Debian, add "deb-src http://ppa.launchpad.net/autoppa/ubuntu gutsy universe"
+Download source : apt-get source autoppa
+Build autoppa : dpkg-buildpackage -rfakeroot
+Install the deb
+
+1.Set up the branch
+To build the package, you should create a new branch : bzr branch http://bazaar.launchpad.net/~awn-testing/awn/awn-core-testing awn-core-testing-package
+
+2. Configure your dput configuration
+Edit a .dput.conf file in your home directory with this type of configuration
+
+[awn-testing]
+fqdn = ppa.launchpad.net
+method = ftp
+incoming = ~awn-testing/ubuntu/
+login = anonymous
+allow_unsigned_uploads = 0
+
+3. Configure autoppa
+Edit a .autoppa.conf in your home directory with this type of configuration
+
+[avant-window-navigator-testing]
+email = John Doe <john.doe@mail.com>
+branch = /path/to/the/branch/awn-core-testing-package
+repository = /path/to/the/branch/awn-core-testing-package
+ppa = awn-testing
+releases = edgy feisty gutsy hardy
+
+4. Configure devscripts
+Backup your devscripts if you have one : cp ~/.devscripts ~/.devscripts-backup
+Create the devscripts file : cp /usr/share/devscripts/conf.default ~/.devscripts
+Edit ~/.devscripts, find the ‘# DEBUILD_PRESERVE_ENVVARS=""‘ line and
+replace it with: 
+DEBUILD_PRESERVE_ENVVARS="DISPLAY"
+
+5. Use autoPPA
+To build : 
+ - Launch the command for example : "EDITOR=nano autoppa avant-window-navigator-testing-0.2.2~bzr156-1"
+ - Write a changelog (like "Build Revision 156")
+ - Ctrl+o to save, Ctrl+x to quit and launch the build
+avant-window-navigator-testing : the name of the package (can't be changed)
+-0.2.2 : the version
+~bzr156 : the revision of the branch
+-1 : the revision of the package
+To upload a new package, the revision must be higher (first the branch, after the package)
+Examples : 
+0.2.2~bzr156-1 is higher than 0.2.2~bzr155-4
+0.2.2~bzr157-2 is higher than 0.2.2~bzr157-1
+The final version will be avant-window-navigator-testing-0.2.2~bzr156-ubuntu1-1
+where ubuntu is the version of ubuntu
+
+Links:
+https://help.launchpad.net/PPAQuickStart
+http://news.launchpad.net/ppa/introducing-autoppa

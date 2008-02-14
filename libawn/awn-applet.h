@@ -91,6 +91,7 @@ awn_applet_get_orientation (AwnApplet *applet);
 guint
 awn_applet_get_height (AwnApplet *applet);
 
+/*
 gchar*
 awn_applet_get_preferences_key (AwnApplet *applet);
 
@@ -98,6 +99,7 @@ void
 awn_applet_add_preferences (AwnApplet *applet, 
                             const gchar *schema_dir,
                             GError **opt_error);
+*/
 
 GtkWidget*
 awn_applet_create_default_menu (AwnApplet *applet);

@@ -23,12 +23,9 @@
 
 #define WNCK_I_KNOW_THIS_IS_UNSTABLE 1
 #include <libwnck/libwnck.h>
-#include <libgnome/gnome-desktop-item.h>
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
-
-#include <libawn/awn-title.h>
 
 #include "config.h"
 
@@ -40,11 +37,13 @@
 
 #include "awn-marshallers.h"
 
+#include <libawn/awn-config-client.h>
+#include <libawn/awn-desktop-item.h>
+#include <libawn/awn-title.h>
+
 #define AWN_TASK_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AWN_TYPE_TASK_MANAGER, AwnTaskManagerPrivate))
 
 G_DEFINE_TYPE (AwnTaskManager, awn_task_manager, GTK_TYPE_HBOX);
-
-#define AWN_LAUNCHERS_KEY "/apps/avant-window-navigator/window_manager/launchers"
 
 /* FORWARD DECLERATIONS */
 static void _task_manager_window_opened (WnckScreen *screen, WnckWindow *window,
@@ -117,12 +116,11 @@ _load_launchers_func (const char *uri, AwnTaskManager *task_manager)
 {
 	AwnTaskManagerPrivate *priv;
 	GtkWidget *task = NULL;
-	GnomeDesktopItem *item= NULL;
+	AwnDesktopItem *item = NULL;
 
 	priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
 
-	item = gnome_desktop_item_new_from_file (uri,
-				GNOME_DESKTOP_ITEM_LOAD_ONLY_IF_EXISTS, NULL);
+	item = awn_desktop_item_new ((gchar *)uri);
 	if (item == NULL)
 		return;
 
@@ -148,7 +146,7 @@ _load_launchers_func (const char *uri, AwnTaskManager *task_manager)
 		g_print("LOADED : %s\n", uri);
 	} else {
 		gtk_widget_destroy(task);
-		gnome_desktop_item_unref(item);
+		awn_desktop_item_free (item);
 		g_print("FAILED : %s\n", uri);
 	}
 }
@@ -561,8 +559,7 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 
 	AwnTaskManagerPrivate *priv;
 	GtkWidget *task = NULL;
-	GnomeDesktopItem *item= NULL;
-	GError *err = NULL;
+	AwnDesktopItem *item = NULL;
 	GString *uri;
 	AwnSettings *settings;
 
@@ -580,19 +577,15 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 	if (res)
 		uri = g_string_truncate(uri, res+1);
 
-  gchar *filename = gnome_vfs_unescape_string (uri->str, NULL);
 
-	g_print("Desktop file: %s\n", filename);
-	item = gnome_desktop_item_new_from_file (filename,
-				GNOME_DESKTOP_ITEM_LOAD_ONLY_IF_EXISTS, &err);
-  g_free (filename);
-	
-  if (err) {
-		g_print("Error : %s", err->message);
-		g_error_free (err);
-	}
-	if (item == NULL)
+  g_print("Desktop file: %s\n", uri->str);
+	item = awn_desktop_item_new (uri->str);
+
+	if (item == NULL) {
+		g_print("Error : Could not load the desktop file!");
 		return;
+
+	}
 
 	task = awn_task_new(task_manager, priv->settings);
 	awn_task_set_title (AWN_TASK(task), AWN_TITLE(priv->title_window));
@@ -613,19 +606,19 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 		_refresh_box (task_manager);
 		g_print("LOADED : %s\n", _sdata);
 
-		/******* Add to Gconf *********/
+		/******* Add to config *********/
 		priv->ignore_gconf = TRUE;
 		settings = priv->settings;
 		settings->launchers = g_slist_append(settings->launchers, g_strdup(uri->str));
                 
-		GConfClient *client = gconf_client_get_default();
-		gconf_client_set_list(client,
-					"/apps/avant-window-navigator/window_manager/launchers",
-					GCONF_VALUE_STRING,settings->launchers,NULL);
+		AwnConfigClient *client = awn_config_client_new ();
+		awn_config_client_set_list(client, "window_manager", "launchers",
+                                           AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                                           settings->launchers, NULL);
 		awn_task_manager_update_separator_position (task_manager);
 	} else {
 		gtk_widget_destroy(task);
-		gnome_desktop_item_unref(item);
+		awn_desktop_item_free (item);
 		g_print("FAILED : %s\n", _sdata);
 
 	}
@@ -1068,7 +1061,7 @@ awn_task_manager_set_task_icon_by_name (AwnTaskManager *task_manager,
 {
 	AwnTaskManagerPrivate *priv;
 	AwnDBusTerm term;
-	GdkPixbuf *icon;
+	GdkPixbuf *icon = NULL;
 
 	priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
 
@@ -1080,11 +1073,13 @@ awn_task_manager_set_task_icon_by_name (AwnTaskManager *task_manager,
 	}
 
 	/* Try and load icon from path */
-	icon = gdk_pixbuf_new_from_file_at_scale (icon_path,
-                                                  priv->settings->bar_height,
-                                                  priv->settings->bar_height,
-                                                  TRUE,
-                                                  NULL);
+	if (icon_path) {
+		icon = gdk_pixbuf_new_from_file_at_scale (icon_path,
+	                                                  priv->settings->bar_height,
+	                                                  priv->settings->bar_height,
+	                                                  TRUE,
+	                                                  NULL);
+	}
 	if (icon)
 		awn_task_set_custom_icon (term.task, icon);
 
@@ -1100,7 +1095,7 @@ awn_task_manager_set_task_icon_by_xid (AwnTaskManager *task_manager,
 {
 	AwnTaskManagerPrivate *priv;
 	AwnDBusTerm term;
-	GdkPixbuf *icon;
+	GdkPixbuf *icon = NULL;
 
 	priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
 
@@ -1112,11 +1107,13 @@ awn_task_manager_set_task_icon_by_xid (AwnTaskManager *task_manager,
 	}
 
 	/* Try and load icon from path */
-	icon = gdk_pixbuf_new_from_file_at_scale (icon_path,
-                                                  priv->settings->bar_height,
-                                                  priv->settings->bar_height,
-                                                  TRUE,
-                                                  NULL);
+	if (icon_path) {
+		icon = gdk_pixbuf_new_from_file_at_scale (icon_path,
+	                                                  priv->settings->bar_height,
+	                                                  priv->settings->bar_height,
+	                                                  TRUE,
+	                                                  NULL);
+	}
 	if (icon)
 		awn_task_set_custom_icon (term.task, icon);
 
@@ -1440,16 +1437,13 @@ awn_task_manager_class_init (AwnTaskManagerClass *class)
 }
 
 static void 
-awn_task_manger_refresh_launchers (GConfClient *client, 
-                                   guint cid, 
-                                   GConfEntry *entry, 
+awn_task_manager_refresh_launchers (AwnConfigClientNotifyEntry *entry, 
                                    AwnTaskManager *task_manager)
 {
 	AwnTaskManagerPrivate *priv;
 	GSList *list, *l;
 	GList *t;
 	GSList *launchers = NULL;
-	GConfValue *value = NULL;
 	
 	
 	priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
@@ -1459,11 +1453,10 @@ awn_task_manger_refresh_launchers (GConfClient *client,
                 return;
         }
         
-        value = gconf_entry_get_value(entry);
-        list = gconf_value_get_list (value);
+        list = entry->value.list_val;
         
         for (l = list; l != NULL; l = l->next) {
-                gchar *string = g_strdup (gconf_value_get_string (l->data));
+                gchar *string = g_strdup ((gchar*) (l->data));
                 launchers = g_slist_append (launchers, string);
         }
         
@@ -1474,10 +1467,9 @@ awn_task_manger_refresh_launchers (GConfClient *client,
         for (l = launchers; l != NULL; l = l->next) {
                 AwnTask *task = NULL;
                 for (t = priv->launchers; t != NULL; t = t->next) {
-                        GnomeDesktopItem *item;
+                        AwnDesktopItem *item;
                         item = awn_task_get_item (AWN_TASK (t->data));
-                        gchar *file = gnome_vfs_get_local_path_from_uri 
-                                       (gnome_desktop_item_get_location (item));
+						gchar *file = awn_desktop_item_get_filename (item);
                         if (strcmp (file, l->data) == 0) {
                                 task = AWN_TASK (t->data);
                         }
@@ -1517,7 +1509,7 @@ static void
 awn_task_manager_init (AwnTaskManager *task_manager)
 {
 	AwnTaskManagerPrivate *priv;
-	GConfClient *client = gconf_client_get_default ();
+	AwnConfigClient *client = awn_config_client_new ();
         DBusGConnection *connection;
         DBusGProxy *proxy = NULL;
         GError *error = NULL;
@@ -1532,9 +1524,9 @@ awn_task_manager_init (AwnTaskManager *task_manager)
 	priv->ignore_gconf = FALSE;
 	
 	/* Setup GConf to notify us if the launchers list changes */
-	gconf_client_notify_add (client, AWN_LAUNCHERS_KEY, 
-                (GConfClientNotifyFunc)awn_task_manger_refresh_launchers, 
-                task_manager, NULL, NULL);
+	awn_config_client_notify_add (client, "window_manager", "launchers", 
+                (AwnConfigClientNotifyFunc)awn_task_manager_refresh_launchers, 
+                task_manager);
 
         connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
         if (!connection) {

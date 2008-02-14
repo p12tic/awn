@@ -21,14 +21,14 @@
 #include "config.h"
 
 #include <gtk/gtk.h>
-#include <libgnomevfs/gnome-vfs.h>
-#include <libgnome/gnome-desktop-item.h>
 #include <stdio.h>
 #include <string.h>
 
 #include <libawn/awn-defines.h>
+#include <libawn/awn-desktop-item.h>
 #include <libawn/awn-plug.h>
 #include <libawn/awn-applet.h>
+#include <libawn/awn-vfs.h>
 
 /* Forwards */
 GtkWidget *
@@ -97,7 +97,7 @@ main (gint argc, gchar **argv)
 {
 	GError *error = NULL;
 	GOptionContext *context;
-	GnomeDesktopItem *item= NULL;
+	AwnDesktopItem *item = NULL;
 	GtkWidget *plug = NULL;
 	const gchar *exec;
 	const gchar *name;
@@ -116,7 +116,7 @@ main (gint argc, gchar **argv)
 	
 	g_type_init();	
 	if (!g_thread_supported ()) g_thread_init (NULL);
-	gnome_vfs_init ();
+	awn_vfs_init ();
 	gtk_init (&argc, &argv);
         
         if (uid == NULL) {
@@ -124,10 +124,8 @@ main (gint argc, gchar **argv)
                 return 1;
         }
         
-        /* Try and lod the desktop file */
-        item = gnome_desktop_item_new_from_file (path,
-          				 GNOME_DESKTOP_ITEM_LOAD_ONLY_IF_EXISTS,
-	        			 NULL);
+        /* Try and load the desktop file */
+        item = awn_desktop_item_new (path);
         if (item == NULL) {
                 g_warning ("This desktop file does not exist %s\n", path);
                 return 1;
@@ -136,28 +134,23 @@ main (gint argc, gchar **argv)
         /* Now we have the file, lets see if we can     
                 a) load the dynamic library it points to
                 b) Find the correct function within that library */
-        exec = gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_EXEC);
+        exec = awn_desktop_item_get_exec (item);
         
         if (exec == NULL) {
                 g_warning ("No exec path found in desktop file %s\n", path);
                 return 1;
         }
         
+        name = awn_desktop_item_get_name (item);
+
         /* Check if this is a Python applet */
-        
-        /*this is how they should be*/
- 	if ( gnome_desktop_item_attr_exists(item, "X-AWN-AppletType") ){
-        	type = gnome_desktop_item_get_string (item, "X-AWN-AppletType");        	
-	}	        
-        else{
-	/*FIXME  we'll maintain this for a bit until the desktop files are fixed*/
-		name=gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_NAME);
-		if (!name)
-		{
-			name="Unknown";	
-		}
-		printf ("Please inform the developer(s) of the applet '%s' that the .desktop file associated with their applet need to be updated per the Applet Development Guidelines on the AWN Wiki.", name);
-        	type = gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_TYPE);
+        type = awn_desktop_item_get_string (item, "X-AWN-AppletType");
+        if (!type) {
+                /* FIXME we'll maintain this for a bit until the .desktop files are fixed */
+                type = awn_desktop_item_get_item_type (item);
+                if (type) {
+                        g_warning ("Please inform the developer(s) of the applet '%s' that the .desktop file associated with their applet need to be updated per the Applet Development Guidelines on the AWN Wiki.", name);
+                }
         }
         if (type) {
                 if (strcmp (type, "Python") == 0) {
@@ -173,7 +166,6 @@ main (gint argc, gchar **argv)
         
         /* Process (re)naming */
         /*FIXME: Actually make this work */
-        name = gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_NAME);
         if (name != NULL) {
                 gint len = strlen (argv[0]);
                 gint nlen = strlen (name);
@@ -191,7 +183,7 @@ main (gint argc, gchar **argv)
                 g_warning ("Could not create plug\n");
                 return 1;
         }
-        name = gnome_desktop_item_get_string (item, GNOME_DESKTOP_ITEM_NAME);
+        name = awn_desktop_item_get_name (item);
         
         if (name != NULL) {
                 gtk_window_set_title (GTK_WINDOW (plug), name);

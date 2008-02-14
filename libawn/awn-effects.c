@@ -813,7 +813,9 @@ zoom_opening_effect (AwnEffectsPrivate *priv)
 	fx->alpha += 1.0/PERIOD;	
 
 	// repaint widget
-	gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+	if (fx->self && GTK_IS_WIDGET (fx->self)) {
+		gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+	}
 
 	gboolean repeat = TRUE;
 	if (fx->delta_width > 0) {

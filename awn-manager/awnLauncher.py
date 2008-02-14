@@ -19,48 +19,38 @@
 #
 #  Notes: Avant Window Navigator preferences window
 
-import sys, os
+import sys, os, subprocess
 try:
     import pygtk
     pygtk.require("2.0")
 except:
-  	pass
+    pass
 try:
+    import gobject
     import gtk
-    import gtk.glade
+    import gtk.gdk as gdk
 except Exception, e:
     sys.stderr.write(str(e) + '\n')
     sys.exit(1)
 
-import gtk.gdk as gdk
-import gconf, gnomedesktop, gobject, subprocess, locale, gettext
+import awn
+from xdg.DesktopEntry import DesktopEntry
 import awnDefs as defs
+from awnLauncherEditor import awnLauncherEditor
 
-APP = 'avant-window-navigator'
-DIR = defs.LOCALEDIR
-I18N_DOMAIN = "avant-window-navigator"
-
-locale.setlocale(locale.LC_ALL, '')
-gettext.bindtextdomain(APP, DIR)
-gettext.textdomain(APP)
-_ = gettext.gettext
+defs.i18nize(globals())
 
 class awnLauncher:
 
-    def __init__(self, glade, config_dir):
+    def __init__(self, glade):
         self.wTree = glade
-        self.AWN_CONFIG_LAUNCH_DIR = os.path.join(config_dir, 'launchers')
-        if not os.path.exists(self.AWN_CONFIG_LAUNCH_DIR):
-            os.makedirs(self.AWN_CONFIG_LAUNCH_DIR)
+        if not os.path.exists(defs.HOME_LAUNCHERS_DIR):
+            os.makedirs(defs.HOME_LAUNCHERS_DIR)
 
         self.load_finished = False
 
-        # GCONF KEYS
-        self.LAUNCHER_DIR = "/apps/avant-window-navigator/window_manager"
-        self.LAUNCHER_PATH = "/apps/avant-window-navigator/window_manager/launchers"
-
-        self.client = gconf.client_get_default()
-        self.client.add_dir(self.LAUNCHER_DIR, gconf.CLIENT_PRELOAD_NONE)
+        self.client = awn.Config()
+        self.client.ensure_group(defs.WINMAN)
 
         self.scrollwindow = self.wTree.get_widget("launcher_scrollwindow")
         self.make_model()
@@ -69,10 +59,12 @@ class awnLauncher:
         self.applet_remove.connect("clicked", self.remove)
         self.applet_add = self.wTree.get_widget("launcher_add")
         self.applet_add.connect("clicked", self.add)
-
-    def reordered(self, model, path, iter, data=None):
-        cur_index = self.model.get_path(iter)[0]
-        cur_uri = self.model.get_value (iter, 2)
+        self.launcher_edit = self.wTree.get_widget("launcher_edit")
+        self.launcher_edit.connect("clicked", self.edit)
+        
+    def reordered(self, model, path, iterator, data=None):
+        cur_index = self.model.get_path(iterator)[0]
+        cur_uri = self.model.get_value (iterator, 2)
         l = {}
         it = self.model.get_iter_first ()
         while (it):
@@ -93,7 +85,7 @@ class awnLauncher:
             launchers.append(l[item])
 
         if not None in launchers and self.load_finished:
-            self.client.set_list(self.LAUNCHER_PATH, gconf.VALUE_STRING, launchers)
+            self.client.set_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING, launchers)
 
     def make_model (self):
 
@@ -118,8 +110,9 @@ class awnLauncher:
 
         self.treeview.show()
 
-        uris = self.client.get_list(self.LAUNCHER_PATH, gconf.VALUE_STRING)
-        self.uris = uris
+        uris = []
+        if self.client.exists(defs.WINMAN, defs.LAUNCHERS):
+            uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
 
         self.refresh_tree(uris)
 
@@ -136,24 +129,24 @@ class awnLauncher:
                 self.model.set_value (row, 2, i)
 
     def make_row (self, uri):
-            try:
-                item = gnomedesktop.item_new_from_file (uri, 0)
-                text = "<b>%s</b>\n%s" % (item.get_string(gnomedesktop.KEY_NAME), item.get_string (gnomedesktop.KEY_COMMENT))
-            except:
-                return ""
-            return text
+        try:
+            item = DesktopEntry (uri)
+            text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
+        except:
+            return ""
+        return text
 
     def make_icon (self, uri):
         icon = None
+        theme = gtk.icon_theme_get_default ()
         try:
-            item = gnomedesktop.item_new_from_file (uri, 0)
-            name = item.get_string(gnomedesktop.KEY_ICON)
+            item = DesktopEntry (uri)
+            name = item.getIcon()
             if name is None:
                 return icon
         except:
             return icon
 
-        theme = gtk.icon_theme_get_default ()
         try:
             icon = theme.load_icon (name, 32, 0)
         except:
@@ -166,40 +159,36 @@ class awnLauncher:
             except:
                 icon = None
 
+        if icon is None and "/" in name:
+            try:
+                icon = gdk.pixbuf_new_from_file_at_size (name, 32, 32)
+            except:
+                icon = None
         if icon is None:
-            if "/" in name:
-		try:
-			icon = gtk.gdk.pixbuf_new_from_file_at_size (name, 32, 32)
-		except:
-			icon = None
-
-        if icon is None:
-            dirs = ["/usr/share/pixmaps", "/usr/local/share/pixmaps"]
+            dirs = [os.path.join(p, "share", "pixmaps")
+                    for p in ("/usr", "/usr/local", defs.PREFIX)]
             for d in dirs:
                 n = name
-                if not ".png" in name:
-                        n = name + ".png"
+                if not name.endswith(".png"):
+                    n = name + ".png"
                 path = os.path.join (d, n)
-                if icon is None:
-                    try:
-                        icon = gtk.gdk.pixbuf_new_from_file_at_size (path, 32, 32)
-                    except:
-                        icon = None
-        if icon is None:
-            if "pixmaps" in name:
-                path1 = os.path.join ("/usr/share/pixmaps", name)
-                path2 = os.path.join ("/usr/local/share/pixmaps",
-                                      name)
                 try:
-                    icon = gtk.gdk.pixbuf_new_from_file_at_size (path1, 32, 32)
+                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
+                    if icon is not None:
+                        break
                 except:
                     icon = None
-
-                if icon is None:
-                    try:
-                        icon = gtk.gdk.pixbuf_new_from_file_at_scale (path2, 32, 32)
-                    except:
-                        icon = None
+        if icon is None and "pixmaps" in name:
+            for d in dirs:
+                path = os.path.join(d, name)
+                try:
+                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
+                    if icon is not None:
+                        break
+                except:
+                    icon = None
+        if icon is None:
+            icon = theme.load_icon('gtk-execute', 32, 0)
         return icon
 
 
@@ -208,31 +197,28 @@ class awnLauncher:
     #   Copyright (C) 2006  Travis Watkins
     #   Edited by Ryan Rushton
 
+    def edit(self, button):
+        selection = self.treeview.get_selection()
+        (model, iter) = selection.get_selected()
+        uri = model.get_value(iter, 2)
+        editor = awnLauncherEditor(uri, self)
+        editor.run()
+        
     def add(self, button):
-        file_path = os.path.join(self.AWN_CONFIG_LAUNCH_DIR, self.getUniqueFileId('awn_launcher', '.desktop'))
-        process = subprocess.Popen(['gnome-desktop-item-edit', file_path], env=os.environ)
-        gobject.timeout_add(100, self.waitForNewItemProcess, process, file_path)
+        file_path = os.path.join(defs.HOME_LAUNCHERS_DIR, self.getUniqueFileId('awn_launcher', '.desktop'))
+        editor = awnLauncherEditor(file_path, self)
+        editor.run()
 
     def remove(self, button):
         selection = self.treeview.get_selection()
         (model, iter) = selection.get_selected()
         uri = model.get_value(iter, 2)
         if os.path.exists(uri):
-            uris = self.client.get_list(self.LAUNCHER_PATH, gconf.VALUE_STRING)
+            uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
             uris.remove(uri)
-            if uri.startswith(self.AWN_CONFIG_LAUNCH_DIR):
+            if uri.startswith(defs.HOME_LAUNCHERS_DIR):
                 os.remove(uri)
             self.refresh_tree(uris)
-
-    def waitForNewItemProcess(self, process, file_path):
-        if process.poll() != None:
-            if os.path.isfile(file_path):
-                uris = self.client.get_list(self.LAUNCHER_PATH, gconf.VALUE_STRING)
-                uris.append(file_path)
-                self.client.set_list(self.LAUNCHER_PATH, gconf.VALUE_STRING, uris)
-                self.refresh_tree(uris)
-            return False
-        return True
 
     def getUniqueFileId(self, name, extension):
         append = 0
@@ -242,7 +228,7 @@ class awnLauncher:
             else:
                 filename = name + '-' + str(append) + extension
             if extension == '.desktop':
-                if not os.path.isfile(os.path.join(self.AWN_CONFIG_LAUNCH_DIR, filename)):
+                if not os.path.isfile(os.path.join(defs.HOME_LAUNCHERS_DIR, filename)):
                     break
             append += 1
         return filename

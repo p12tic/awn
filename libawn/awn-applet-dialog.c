@@ -28,12 +28,10 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
-#include <gconf/gconf-client.h>
-
 #include "awn-applet.h"
-#include "awn-applet-gconf.h"
 #include "awn-applet-dialog.h"
 #include "awn-cairo-utils.h"
+#include "awn-config-client.h"
 #include "awn-defines.h"
 
 G_DEFINE_TYPE(AwnAppletDialog, awn_applet_dialog, GTK_TYPE_WINDOW)
@@ -73,9 +71,13 @@ _on_alpha_screen_changed (GtkWidget* pWidget,
 }
 
 
-/*
- * Should "reposition" dialog-arrow if the dialog does not fit
- *(fall-off-screen) on the desired place.
+/**
+ * awn_applet_dialog_position_reset:
+ * @dialog: The dialog to reposition.
+ *
+ * Resets the position of the dialog so it is centered over its associated
+ * applet window.  Should "reposition" dialog-arrow if the dialog does not fit
+ * (fall-off-screen) on the desired place.
  */
 void 
 awn_applet_dialog_position_reset (AwnAppletDialog *dialog) 
@@ -385,7 +387,7 @@ static void
 awn_applet_dialog_init (AwnAppletDialog *dialog) 
 {
         AwnAppletDialogPrivate *priv;
-	GConfClient *client;
+	AwnConfigClient *client;
 
         priv = dialog->priv = AWN_APPLET_DIALOG_GET_PRIVATE (dialog);
             
@@ -433,15 +435,17 @@ awn_applet_dialog_init (AwnAppletDialog *dialog)
         gtk_misc_set_padding (GTK_MISC (priv->title_label), 0, 4);
         gtk_container_add (GTK_CONTAINER (priv->title), priv->title_label);
 
-	client = gconf_client_get_default ();
-        priv->offset = gconf_client_get_int (client,
-                             "/apps/avant-window-navigator/bar/icon_offset",
-					     NULL);
-	g_object_unref (client);
+	client = awn_config_client_new ();
+        priv->offset = awn_config_client_get_int (client, "bar", "icon_offset", NULL);
 }
 
-/*
- * new - creates a new object
+/**
+ * awn_applet_dialog_new:
+ * @applet: The applet to which to associate the dialog
+ *
+ * Creates a new toplevel window that is "attached" to the @applet.
+ * Returns: a new dialog.  Caller is responsible for freeing the memory when the
+ * dialog is no longer being used.
  */
 GtkWidget* 
 awn_applet_dialog_new (AwnApplet *applet) 

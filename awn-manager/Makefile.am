@@ -2,30 +2,26 @@ pyfiles_DATA = \
 	awnApplet.py		\
 	awnDefs.py		\
 	awnLauncher.py		\
+	awnLauncherEditor.py	\
 	awnPreferences.py	\
 	awnTheme.py		
 pyfilesdir = $(pkgdatadir)/awn-manager
 
-glade_DATA = window.glade
+glade_DATA = launcher-editor.glade window.glade
 gladedir = $(pkgdatadir)/awn-manager
 
 desktopdir   = $(datadir)/applications
 desktop_DATA = awn-manager.desktop
 @INTLTOOL_DESKTOP_RULE@
 
-
-$(desktop_DATA).in: $(desktop_DATA).in.in
-	sed -e "s|\@PKGDATADIR\@|$(pkgdatadir)|g" $< > $@
-
-awnDefs.py: awnDefs.in.py
-	sed -e "s|\@PREFIX\@|$(prefix)|g" awnDefs.in.py > awnDefs.py
-
 install-exec-local:
-	sed -e "s|\@DATADIR\@|$(datadir)|g" awnManager.in.py > awnManager.py
-	$(INSTALL) -m 755 awnManager.py $(DESTDIR)$(bindir)/awn-manager
+	test -e "$(DESTDIR)$(bindir)" || mkdir -p "$(DESTDIR)$(bindir)"
+	$(INSTALL) -m 755 awnManager.py "$(DESTDIR)$(bindir)/awn-manager"
+	$(INSTALL) -m 755 awn-launcher-editor "$(DESTDIR)$(bindir)"
 
 uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-manager
+	rm -f $(DESTDIR)$(bindir)/awn-launcher-editor
 
 EXTRA_DIST = $(glade_DATA) *.py $(desktop_DATA).in.in
 

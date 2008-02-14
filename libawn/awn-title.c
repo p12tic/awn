@@ -28,12 +28,11 @@
 #include "awn-title.h"
 
 #include "awn-cairo-utils.h"
+#include "awn-config-client.h"
 
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <gconf/gconf.h>
-#include <gconf/gconf-client.h>
 
 G_DEFINE_TYPE (AwnTitle, awn_title, GTK_TYPE_WINDOW);
 
@@ -41,10 +40,10 @@ G_DEFINE_TYPE (AwnTitle, awn_title, GTK_TYPE_WINDOW);
 	AWN_TYPE_TITLE, \
 	AwnTitlePrivate))
 
-#define TITLE_PATH	        "/apps/avant-window-navigator" "/title"
-#define TITLE_TEXT_COLOR	TITLE_PATH "/text_color"	/*color*/
-#define TITLE_BACKGROUND	TITLE_PATH "/background"	/*color*/
-#define TITLE_FONT_FACE		TITLE_PATH "/font_face"		/*bool*/
+#define TITLE	        "title"
+#define TEXT_COLOR	"text_color"	/*color*/
+#define BACKGROUND	"background"	/*color*/
+#define FONT_FACE	"font_face"	/*bool*/
 
 /* STRUCTS & ENUMS */
 struct _AwnTitlePrivate
@@ -257,58 +256,46 @@ on_alpha_screen_changed (GtkWidget* pWidget,
 }
 
 static void
-_notify_font (GConfClient *client, 
-              guint cid, 
-              GConfEntry *entry, 
+_notify_font (AwnConfigClientNotifyEntry *entry, 
               AwnTitle *title)
 {
         AwnTitlePrivate *priv;
-        GConfValue *value = NULL;
 
         g_return_if_fail (AWN_IS_TITLE (title));
         priv = title->priv;
        
-        value = gconf_entry_get_value (entry);
         if (priv->font)
                 g_free (priv->font);
-        priv->font = g_strdup (gconf_value_get_string (value));
+        priv->font = g_strdup (entry->value.str_val);
 }
 
 static void
-_notify_bg (GConfClient *client, 
-            guint cid, 
-            GConfEntry *entry, 
+_notify_bg (AwnConfigClientNotifyEntry *entry, 
             AwnTitle *title)
 {
         AwnTitlePrivate *priv;
-        GConfValue *value = NULL;
 
         g_return_if_fail (AWN_IS_TITLE (title));
         priv = title->priv;
        
-        value = gconf_entry_get_value (entry);
         
         awn_cairo_string_to_color (
-                gconf_value_get_string (value),
+                entry->value.str_val,
                 &priv->bg);
 }
 
 static void
-_notify_text (GConfClient *client, 
-              guint cid, 
-              GConfEntry *entry, 
+_notify_text (AwnConfigClientNotifyEntry *entry, 
               AwnTitle *title)
 {
         AwnTitlePrivate *priv;
-        GConfValue *value = NULL;
 
         g_return_if_fail (AWN_IS_TITLE (title));
         priv = title->priv;
        
-        value = gconf_entry_get_value (entry);
         if (priv->text_col)
                 g_free (priv->text_col);
-        priv->text_col = g_strdup (gconf_value_get_string (value));
+        priv->text_col = g_strdup (entry->value.str_val);
         priv->text_col[6] = '\0';
 }
 
@@ -348,7 +335,7 @@ awn_title_init(AwnTitle *title)
 {
 	AwnTitlePrivate *priv;
         GtkWidget *hbox;
-        GConfClient *client;
+        AwnConfigClient *client;
                 		
 	priv = title->priv = AWN_TITLE_GET_PRIVATE (title);
 
@@ -373,31 +360,29 @@ awn_title_init(AwnTitle *title)
         g_signal_connect (title, "leave-notify-event",
                           G_CALLBACK (on_prox_out), (gpointer)title);
 
-        /* gconf stuff */
-        client = gconf_client_get_default ();
+        /* AwnConfigClient stuff */
+        client = awn_config_client_new ();
 
         priv->font = g_strdup (
-                gconf_client_get_string (client, TITLE_FONT_FACE, NULL));
-        gconf_client_notify_add (client, TITLE_FONT_FACE, 
-                                 (GConfClientNotifyFunc)_notify_font,
-                                 title, NULL, NULL);
+                awn_config_client_get_string (client, TITLE, FONT_FACE, NULL));
+        awn_config_client_notify_add (client, TITLE, FONT_FACE, 
+                                      (AwnConfigClientNotifyFunc)_notify_font,
+                                      title);
         
         awn_cairo_string_to_color (
-                gconf_client_get_string (client, TITLE_BACKGROUND, NULL),
+                awn_config_client_get_string (client, TITLE, BACKGROUND, NULL),
                 &priv->bg);
-        gconf_client_notify_add (client, TITLE_BACKGROUND, 
-                                 (GConfClientNotifyFunc)_notify_bg,
-                                 title, NULL, NULL);
+        awn_config_client_notify_add (client, TITLE, BACKGROUND, 
+                                      (AwnConfigClientNotifyFunc)_notify_bg,
+                                      title);
        
         priv->text_col = g_strdup (
-                      gconf_client_get_string (client, TITLE_TEXT_COLOR, NULL));
+                      awn_config_client_get_string (client, TITLE, TEXT_COLOR, NULL));
         priv->text_col[6] = '\0';
-        gconf_client_notify_add (client, TITLE_TEXT_COLOR, 
-                                 (GConfClientNotifyFunc)_notify_text,
-                                 title, NULL, NULL);
-        priv->offset = gconf_client_get_int (client, 
-                       "/apps/avant-window-navigator/bar/icon_offset",
-                       NULL);
+        awn_config_client_notify_add (client, TITLE, TEXT_COLOR, 
+                                      (AwnConfigClientNotifyFunc)_notify_text,
+                                      title);
+        priv->offset = awn_config_client_get_int (client, "bar", "icon_offset", NULL);
 }
 
 GtkWidget *
