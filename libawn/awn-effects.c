@@ -67,6 +67,8 @@ static gboolean awn_on_leave_event(GtkWidget *widget, GdkEventCrossing *event, g
 
 static void main_effect_loop(AwnEffects *fx);
 
+static gdouble calc_curve_position (gdouble cx, gdouble a, gdouble b);
+
 void
 awn_effects_init(GObject* self, AwnEffects *fx) {
 	fx->self = self;
@@ -2036,6 +2038,30 @@ void awn_draw_background(AwnEffects *fx, cairo_t *cr) {
 
 void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *reflect) {
 	if (!icon || fx->window_width<=0 || fx->window_height<=0) return;
+	
+	/* Apply the curves */
+	if(fx->settings->bar_angle < 0){
+		int awn_bar_width = fx->settings->bar_width;
+		double awn_curve_curviness = fx->settings->curviness;	
+		int awn_monitor_width = fx->settings->monitor_width;
+					
+		gint curvex = GTK_WIDGET(fx->self)->allocation.x;
+		if(curvex==0)	// is applet?
+		{
+			gint curvex1=0;
+			gdk_window_get_origin(fx->focus_window->window,&curvex1,NULL);	
+			curvex = curvex1 - (awn_monitor_width-awn_bar_width)/2;
+		}
+		if( awn_curve_curviness )
+			fx->settings->curviness = awn_curve_curviness;
+	
+		if(curvex > 0)		
+			fx->curve_offset = calc_curve_position(curvex + (fx->settings->task_width / 4), awn_bar_width, (fx->settings->bar_height * fx->settings->curviness) / 2. );
+		else
+			fx->curve_offset = 0;
+			
+	} else if (fx->curve_offset)
+			fx->curve_offset = 0;
 
 	/* refresh icon info */
 	fx->icon_width = gdk_pixbuf_get_width(icon);
@@ -2047,6 +2073,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	gint x1 = (fx->window_width - current_width)/2;
 	gint y1 = (fx->window_height - current_height); // sit on bottom by default
 	if (fx->settings) y1 = fx->window_height - fx->settings->icon_offset - current_height - fx->y_offset;
+	y1 -= fx->curve_offset;
 
 	/* ICONS */
 	gboolean free_reflect = FALSE;
@@ -2193,7 +2220,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	}
 
 	/* 4px offset for 3D look */
-	if (fx->settings && fx->settings->bar_angle != 0) {
+	if (fx->settings && fx->settings->bar_angle >= 0) {
 		cairo_save(cr);
 		cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
 		cairo_set_source_rgba (cr, 1, 1, 1, 0);
@@ -2226,4 +2253,9 @@ void awn_draw_set_icon_size(AwnEffects *fx, const gint width, const gint height)
 void awn_draw_set_window_size(AwnEffects *fx, const gint width, const gint height) {
 	fx->window_width = width;
 	fx->window_height = height;
+}
+
+static gdouble calc_curve_position (gdouble cx, gdouble a, gdouble b)	// pos, width, height
+{
+	return sin(cx / (a) * M_PI) * b;
 }

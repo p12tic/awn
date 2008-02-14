@@ -84,6 +84,7 @@ struct _AwnEffects
 
 	gdouble x_offset;
 	gdouble y_offset;
+	gdouble curve_offset;
 
 	gint delta_width;
 	gint delta_height;
