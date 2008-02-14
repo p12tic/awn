@@ -2,7 +2,7 @@ Source: avant-window-navigator-trunk
 Section: universe/gnome
 Priority: optional
 Maintainer: Julien Lavergne <julien.lavergne@gmail.com>
-Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake
+Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake,  gtk-doc-tools, valac ( >= 0.1.6~svn20070113)
 Standards-Version: 3.7.2
 Homepage: https://launchpad.net/avant-window-navigator/
 XS-Python-Version: current
@@ -13,8 +13,8 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: awn-manager-trunk (>= 0.2), python-awn-trunk
 Suggests: xcompmgr | compiz | xfwm4 (>= 4.4)
-Conflicts: awn-window-navigator-bzr, awn-window-navigator
-Replaces: awn-window-navigator-bzr, awn-window-navigator
+Conflicts: awn-window-navigator-bzr, awn-window-navigator, awn-window-navigator-testing
+Replaces: awn-window-navigator-bzr, awn-window-navigator, awn-window-navigator-testing
 Description: A MacOS X like panel for GNOME
  The avant-window-navigator is a MacOS X like panel for the GNOME Desktop
  written in C. Besides launchers that can be dragged onto the bar it features
@@ -26,8 +26,8 @@ Section: universe/libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: xcompmgr | compiz | xfwm4
-Conflicts: libawn0-bzr, libawn-bzr, libawn, libawn0
-Replaces: libawn0-bzr, libawn-bzr, libawn, libawn0
+Conflicts: libawn0-bzr, libawn-bzr, libawn, libawn0, libawn0-testing
+Replaces: libawn0-bzr, libawn-bzr, libawn, libawn0, libawn0-testing
 Description: library for avant-window-navigator
  This library is used by avant-window-navigator.
 
@@ -36,8 +36,8 @@ Section: universe/libs
 Architecture: any
 Depends: libawn0-trunk (= ${binary:Version}), ${misc:Depends}
 Suggests: xcompmgr | compiz | xfwm4
-Conflicts: libawn0-bzr-dbg, libawn-bzr-dbg, libawn-dbg, libawn0-dbg
-Replaces: libawn0-bzr-dbg, libawn-bzr-dbg, libawn-dbg, libawn0-dbg
+Conflicts: libawn0-bzr-dbg, libawn-bzr-dbg, libawn-dbg, libawn0-dbg, libawn0-testing-dbg
+Replaces: libawn0-bzr-dbg, libawn-bzr-dbg, libawn-dbg, libawn0-dbg, libawn0-testing-dbg
 Description: library for avant-window-navigator - debug package
  This library is used by avant-window-navigator.
  .
@@ -47,8 +47,8 @@ Package: libawn-dev-trunk
 Section: universe/libdevel
 Architecture: any
 Depends: libawn0-trunk (= ${binary:Version}), ${misc:Depends}, libgnome2-dev, libgtk2.0-dev
-Conflicts: libawn-dev-bzr, libawn-dev
-Replaces: libawn-dev-bzr, libawn-dev
+Conflicts: libawn-dev-bzr, libawn-dev, libawn-testing-dev
+Replaces: libawn-dev-bzr, libawn-dev, libawn-testing-dev
 Description: library for avant-window-navigator - developpement files
  This package provides the include files and static library for the
  avant-window-navigator library functions.
@@ -56,9 +56,9 @@ Description: library for avant-window-navigator - developpement files
 Package: awn-manager-trunk
 Section: universe/gnome
 Architecture: any
-Depends: avant-window-navigator-trunk (>= 0.2 ), ${python:Depends}, python-gnome2, python-gnome2-desktop
-Conflicts: awn-manager-bzr, awn-manager
-Replaces: awn-manager-bzr, awn-manager
+Depends: avant-window-navigator-trunk (>= 0.2 ), ${python:Depends}, python-gnome2, python-gnome2-desktop, python-awn-trunk
+Conflicts: awn-manager-bzr, awn-manager, awn-manager-testing
+Replaces: awn-manager-bzr, awn-manager, awn-manager-testing
 XB-Python-Version: ${python:Versions}
 Description: A manager for the preferences of avant-window-navigator
  Awn-Manager provide a simple way to configure avant-window-navigator.
@@ -68,8 +68,17 @@ Package: python-awn-trunk
 Section: universe/python
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
-Conflicts: python-libawn0, python-libawn, python-libawn-bzr, python-awn
-Replaces: python-libawn0, python-libawn, python-libawn-bzr, python-awn
+Conflicts: python-libawn0, python-libawn, python-libawn-bzr, python-awn, python-awn-testing
+Replaces: python-libawn0, python-libawn, python-libawn-bzr, python-awn, python-awn-testing
 XB-Python-Version: ${python:Versions}
 Description: library for avant-window-navigator - Python bindings
  This library is used by avant-window-navigator.
+
+Package: vala-awn-trunk
+Section: universe/python
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Conflicts: vala-awn-testing, vala-awn
+Replaces: vala-awn-testing, vala-awn
+Description: library for avant-window-navigator - Vala bindings
+ This library is used by avant-window-navigator. It provide Vala bindings for libawn.

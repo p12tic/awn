@@ -1,3 +1,12 @@
+2008-02-14  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/awn-manager-trunk.install:
+	* debian/control:
+	* debian/control.autoppa:
+	* debian/libawn0-trunk.install:
+	* debian/rules:
+	Backport changes of testing in trunk for debian dir.
+
 2008-02-14  Neil J. Patel  <njpatel@gmail.com>
 
 	* libawn/awn-effects.c:
