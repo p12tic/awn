@@ -1,5 +1,10 @@
 2008-02-15  Mark Lee <avant-wn@lazymalevolence.com>
 
+	* awn-manager/awnApplet.py:
+	Only call pygtk-2.12 and above method if it exists.
+
+2008-02-15  Mark Lee <avant-wn@lazymalevolence.com>
+
 	* awn-manager/awnManager.py.in:
 	Whitespace fixes.
 	Add moonbeam and myself to the list of authors.
