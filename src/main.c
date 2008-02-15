@@ -26,7 +26,6 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
-#include <libawn/awn-title.c>
 #include <libawn/awn-config-client.h>
 #include <libawn/awn-settings.h>
 #include <libawn/awn-vfs.h>

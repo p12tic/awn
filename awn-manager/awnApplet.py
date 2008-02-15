@@ -303,7 +303,8 @@ class awnApplet:
         self.icon_view.set_pixbuf_column(0)
         self.icon_view.set_orientation(gtk.ORIENTATION_HORIZONTAL)
         self.icon_view.set_selection_mode(gtk.SELECTION_SINGLE)
-        self.icon_view.set_tooltip_column(3)
+        if hasattr(self.icon_view, 'set_tooltip_column'):
+            self.icon_view.set_tooltip_column(3)
         self.icon_view.set_item_width(-1)
         self.icon_view.set_size_request(48, -1)
         self.icon_view.set_reorderable(True)

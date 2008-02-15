@@ -1,3 +1,22 @@
+2008-02-15  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnApplet.py:
+	Only call pygtk-2.12 and above method if it exists.
+
+2008-02-15  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnManager.py.in:
+	Whitespace fixes.
+	Add moonbeam and myself to the list of authors.
+	Add an image to the About Dialog.
+	Update the website URL.
+
+2008-02-14  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* src/main.c:
+	Fix bug #157615 - a longstanding bug where awn-title.c was being
+	#include'd into main.c for some reason.
+
 2008-02-14  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* debian/awn-manager-trunk.install:
