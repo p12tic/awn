@@ -1,3 +1,11 @@
+2008-02-15  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnManager.py.in:
+	Whitespace fixes.
+	Add moonbeam and myself to the list of authors.
+	Add an image to the About Dialog.
+	Update the website URL.
+
 2008-02-14  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* src/main.c:
