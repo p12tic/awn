@@ -1,3 +1,9 @@
+2008-02-14  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* src/main.c:
+	Fix bug #157615 - a longstanding bug where awn-title.c was being
+	#include'd into main.c for some reason.
+
 2008-01-03  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-applet-activation/main.c:
