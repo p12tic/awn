@@ -1,3 +1,9 @@
+2008-02-16  Neil J. Patel  <njpatel@gmail.com>
+
+	* libawn/awn-applet-dialog.c:
+	Implemented the GtkContainer::remove function. Fixes #155369.
+	Fixed a warning.
+
 2008-02-15  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* awn-manager/awnApplet.py:

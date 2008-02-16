@@ -115,7 +115,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 	GtkWidget *child = NULL;
 	gint width, height;
         gint gap = 20;
-        gint x, y;
+        gint x;
         GtkStyle *style;
         GdkColor bg;
         gfloat alpha;
@@ -352,6 +352,17 @@ awn_applet_dialog_add (GtkContainer *dialog, GtkWidget *widget)
         gtk_box_pack_start (GTK_BOX (priv->vbox), widget, TRUE, TRUE, 0);
 }
 
+static void
+awn_applet_dialog_remove (GtkContainer *dialog, GtkWidget *widget)
+{
+        AwnAppletDialogPrivate *priv;
+
+        g_return_if_fail (AWN_IS_APPLET_DIALOG (dialog));
+        g_return_if_fail (GTK_IS_WIDGET (widget));
+        priv = AWN_APPLET_DIALOG (dialog)->priv;
+
+        gtk_container_remove (GTK_CONTAINER (priv->vbox), widget);
+}
 /*
  * class init
  */
@@ -366,6 +377,7 @@ awn_applet_dialog_class_init (AwnAppletDialogClass *klass)
 	
         cont_class = GTK_CONTAINER_CLASS (klass);
         cont_class->add = awn_applet_dialog_add;
+        cont_class->remove = awn_applet_dialog_remove;
 
         gtk_widget_class_install_style_property (widget_class,
                g_param_spec_float (
