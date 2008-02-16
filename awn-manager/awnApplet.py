@@ -343,7 +343,10 @@ class awnApplet:
                 icon = None
 
         if icon is None and "/" in name and os.path.exists(name):
-            icon = gdk.pixbuf_new_from_file_at_size (name, 32, 32)
+            try:
+                icon = gdk.pixbuf_new_from_file_at_size (name, 32, 32)
+            except:
+                print "Error loading icon " + name
         if icon is None:
             dirs = [os.path.join(p, "share", "pixmaps")
                     for p in ("/usr", "/usr/local", defs.PREFIX)]

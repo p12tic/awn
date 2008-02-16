@@ -1,3 +1,8 @@
+2008-02-16  Neil J. Patel  <njp@o-hand.com>
+
+	* awn-manager/awnApplet.py:
+	Throw a try/except block around icon loading.
+
 2008-02-16  Neil J. Patel  <njpatel@gmail.com>
 
 	* libawn/awn-applet-dialog.c:
