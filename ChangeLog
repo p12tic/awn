@@ -1,3 +1,8 @@
+2008-02-17  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/vala-awn-trunk.install:
+	Add vala binding package.
+
 2008-02-16  Neil J. Patel  <njp@o-hand.com>
 
 	* awn-manager/awnApplet.py:
