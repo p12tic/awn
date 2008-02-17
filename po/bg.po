@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-11 03:54+0000\n"
+"PO-Revision-Date: 2007-10-29 15:22+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Bulgarian <bg@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:19+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -75,9 +75,8 @@ msgid "<b>Pattern</b>"
 msgstr "<b>Плочка</b>"
 
 #: ../avant-preferences/window.glade.h:9
-#, fuzzy
 msgid "<b>Separator</b>"
-msgstr "<b>Ограничител</b>"
+msgstr "<b>Разделител</b>"
 
 #: ../avant-preferences/window.glade.h:10
 msgid "<b>Text</b>"
@@ -112,7 +111,6 @@ msgid "Color:"
 msgstr "Цвят:"
 
 #: ../avant-preferences/window.glade.h:18
-#, fuzzy
 msgid "Enable pattern"
 msgstr "Разреши плочки"
 
@@ -127,7 +125,7 @@ msgstr "Ефект скриване (експирементален)"
 #: ../avant-preferences/window.glade.h:21
 #, fuzzy
 msgid "First step color:"
-msgstr "Цвят на първа стъпка"
+msgstr "Цвят на първо стъпало:"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
@@ -138,7 +136,6 @@ msgid "General"
 msgstr "Общи"
 
 #: ../avant-preferences/window.glade.h:24
-#, fuzzy
 msgid "Glass Engine"
 msgstr "Стъклен енджин"
 
@@ -159,14 +156,13 @@ msgid "Maximized windows don't cover the bar (requires restart)"
 msgstr "Максимизираните прозорци не закриват полето (изисква рестарт)"
 
 #: ../avant-preferences/window.glade.h:29
-#, fuzzy
 msgid "Pattern Engine"
 msgstr "Енджин плочки"
 
 #: ../avant-preferences/window.glade.h:30
 #, fuzzy
 msgid "Second step color:"
-msgstr "Цвят втора стъпка:"
+msgstr "Цвят второ стъпало:"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
@@ -181,9 +177,8 @@ msgid "Shadow color:"
 msgstr "Цвят на сянката:"
 
 #: ../avant-preferences/window.glade.h:34
-#, fuzzy
 msgid "Show separator between launchers and tasks"
-msgstr "Показвай ограничител мебду стартери и задачи"
+msgstr "Показвай разделител между стартери и задачи"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
@@ -206,13 +201,12 @@ msgid "Transparency:"
 msgstr "Прозрачност"
 
 #: ../avant-preferences/window.glade.h:40
-#, fuzzy
 msgid "Unused icons fade when mouse-over"
-msgstr "Неизползваните икони се показват при посочване с мишката"
+msgstr "Неизползваните икони избеляват при посочване с мишката"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
-msgstr ""
+msgstr "Ако това е избрано прозорците не закриват лентата"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
@@ -241,19 +235,20 @@ msgstr "Ориентация на лентата."
 
 #: ../applets/switcher/switcher.schemas.in.h:1
 msgid "How many rows the switcher should have"
-msgstr ""
+msgstr "Колко реда да има лентата"
 
 #: ../applets/switcher/switcher.schemas.in.h:2
 msgid "The height of the switcher"
-msgstr ""
+msgstr "Височина на лентата"
 
 #: ../applets/switcher/switcher.schemas.in.h:3
 msgid "The width of the switcher"
-msgstr ""
+msgstr "Широчина на лентата"
 
 #: ../applets/trash/trash.schemas.in.h:1
+#, fuzzy
 msgid "Whether the trash applet should show a count on its icon"
-msgstr ""
+msgstr "Да бъде ли изписан брой файлове на иконата на кошчето"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
@@ -326,20 +321,25 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Petko Bordjukov https://launchpad.net/~ignis\n"
 "  Vladimir Kolev https://launchpad.net/~admin-vladimirkolev"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
-msgstr ""
+msgstr "Изтрий веднага?"
 
 #: ../applets/trash/trashapplet.c:925
 msgid "Cannot move items to trash, do you want to delete them immediately?"
 msgstr ""
+"Невъзможно е обектите да бъдат преместени в кошчето. Искате ли незабавно да "
+"се изтрият?"
 
 #: ../applets/trash/trashapplet.c:928
 msgid ""
 "Cannot move some items to trash, do you want to delete these immediately?"
 msgstr ""
+"Някои обекти не могат да бъдат преместени в кошчето. Искате ли само те да "
+"бъдат изтрити незабавно?"
 
 #: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
 #, c-format
@@ -347,7 +347,9 @@ msgid ""
 "Unable to move to trash:\n"
 "%s"
 msgstr ""
+"Неможе да бъде преместен в кошчето:\n"
+"%s"
 
 #: ../src/awn-task.c:2279
 msgid "Change Icon"
-msgstr ""
+msgstr "Промени иконата"

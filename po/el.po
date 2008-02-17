@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-25 08:31+0000\n"
+"PO-Revision-Date: 2008-01-14 11:44+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -40,7 +40,7 @@ msgstr "<big><b>Άδειασμα των Απορριμμάτων</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr "Άδειασμα των Απορριμμάτων"
+msgstr "Άδειασμα των απορριμμάτων"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
@@ -104,7 +104,7 @@ msgstr "Εμφάνιση Μπάρας"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
-msgstr "Έντονη γραφή"
+msgstr "Έντονο"
 
 #: ../avant-preferences/window.glade.h:17
 msgid "Color:"
@@ -120,11 +120,11 @@ msgstr "Ενεργοποίηση στρογγυλοποιημένων γωνιώ
 
 #: ../avant-preferences/window.glade.h:20
 msgid "Fade effect (experimental)"
-msgstr "Εφέ σβησίματος (πειραματικό)"
+msgstr "Εφέ σταδιακού σβησίματος (πειραματικό)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
-msgstr ""
+msgstr "Χρώμα πρώτου βήματος"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
@@ -136,7 +136,7 @@ msgstr "Γενικά"
 
 #: ../avant-preferences/window.glade.h:24
 msgid "Glass Engine"
-msgstr ""
+msgstr "Μηχανή Glass"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
@@ -144,11 +144,11 @@ msgstr "Εσωτρικό όριο:"
 
 #: ../avant-preferences/window.glade.h:26
 msgid "Italic"
-msgstr "Πλάγια γραφή"
+msgstr "Πλάγια"
 
 #: ../avant-preferences/window.glade.h:27
 msgid "Main border:"
-msgstr "Κύριο όριο:"
+msgstr "Κύριο περίγραμμα:"
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
@@ -161,7 +161,7 @@ msgstr "Μηχανή Μοτίβων"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
-msgstr ""
+msgstr "Χρώμα δεύτερου βήματος"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
@@ -176,21 +176,21 @@ msgid "Shadow color:"
 msgstr "Χρώμα σκίασης:"
 
 #: ../avant-preferences/window.glade.h:34
-#, fuzzy
 msgid "Show separator between launchers and tasks"
 msgstr "Εμφάνιση διαχωριστή μεταξύ εκκινητών και εργασιών"
 
 #: ../avant-preferences/window.glade.h:35
+#, fuzzy
 msgid "Show windows from all viewports"
-msgstr ""
+msgstr "Εμφάνιση παραθύρων από όλες τις επιφάνειες"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
-msgstr ""
+msgstr "Εμφάνιση Εργασιών"
 
 #: ../avant-preferences/window.glade.h:37
 msgid "Tasks have arrows"
-msgstr ""
+msgstr "Οι Εργασίες έχουν βελάκια"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
@@ -203,10 +203,12 @@ msgstr "Διαφάνεια:"
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
 msgstr ""
+"Τα εικονίδια που δε χρησιμοποιούνται \"σβήνουν\" όταν το ποντίκι περνά από "
+"επάνω"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
-msgstr ""
+msgstr "Με αυτή την επιλογή, τα παράθυρα δεν επικαλύπτουν τη μπάρα"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
@@ -234,20 +236,23 @@ msgid "The orientation of the tray."
 msgstr "Ο προσανατολισμός της εργαλειοθήκης."
 
 #: ../applets/switcher/switcher.schemas.in.h:1
+#, fuzzy
 msgid "How many rows the switcher should have"
-msgstr ""
+msgstr "Πόσες γραμμές θα πρέπει να έχει ο εναλλάκτης"
 
 #: ../applets/switcher/switcher.schemas.in.h:2
+#, fuzzy
 msgid "The height of the switcher"
-msgstr ""
+msgstr "Το ύψος του εναλλάκτη"
 
 #: ../applets/switcher/switcher.schemas.in.h:3
+#, fuzzy
 msgid "The width of the switcher"
-msgstr ""
+msgstr "Το πλάτος του εναλλάκτη"
 
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
-msgstr ""
+msgstr "Eμφάνηση αρίθμησης στο εικονίδιο απορριμάτων"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
@@ -272,7 +277,7 @@ msgstr "Αφαίρεση αντικειμένου %lu του %lu"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
-msgstr "Αφαίρεση:"
+msgstr "Αφαιρείται:"
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
@@ -283,19 +288,21 @@ msgid ""
 "If you choose to empty the trash, all items in it will be permanently lost. "
 "Please note that you can also delete them separately."
 msgstr ""
-"Αν αδειάσετε τα απορρίμματα, τα αντικείμενα θα χαθούνε μόνιμα. Σημειώστε ότι "
-"μπορείτε να τα διαγράψετε και το καθένα ξεχωριστά."
+"Αν αδειάσετε τα απορρίμματα τα αντικείμενα θα χαθούν για πάντα. Σημειώστε "
+"ότι μπορείτε να διαγράψετε καθένα χωριστά."
 
 #: ../applets/trash/trashapplet.c:746
 msgid "_Empty Trash"
 msgstr "Ά_δειασμα Απορριμμάτων"
 
 #: ../applets/trash/trashapplet.c:825
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Error while spawning nautilus:\n"
 "%s"
 msgstr ""
+"Λάθος κατά την εκκίνηση του Ναυτίλου:\n"
+"%s"
 
 #: ../applets/trash/trashapplet.c:845
 #, c-format
@@ -319,6 +326,8 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Aristotelis Grammatikakis https://launchpad.net/~arigram\n"
+"  Dimitris Panagiotakis https://launchpad.net/~dimitrispan\n"
 "  Ioannis Koniaris https://launchpad.net/~ikoniari"
 
 #: ../applets/trash/trashapplet.c:896

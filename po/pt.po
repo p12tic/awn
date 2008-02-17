@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-08-03 09:59+0000\n"
+"PO-Revision-Date: 2008-01-27 18:32+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -88,7 +88,7 @@ msgstr "<b>Janelas</b>"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
-msgstr "Esconder barra automáticamente quando não estiver em uso"
+msgstr "Esconder barra automaticamente quando não estiver em uso"
 
 #: ../avant-preferences/window.glade.h:13
 msgid "Avant Preferences"
@@ -96,7 +96,7 @@ msgstr "Preferências"
 
 #: ../avant-preferences/window.glade.h:14
 msgid "Background color:"
-msgstr "Cor de Fundo:"
+msgstr "Cor de fundo:"
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
@@ -319,7 +319,8 @@ msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
 "  Joel Calado https://launchpad.net/~joelcalado\n"
-"  Luis Gomes https://launchpad.net/~lgomes"
+"  Luis Gomes https://launchpad.net/~lgomes\n"
+"  Tiago Silva https://launchpad.net/~tiagosilva"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"

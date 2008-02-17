@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-22 07:39+0000\n"
+"PO-Revision-Date: 2008-02-13 19:42+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -24,15 +24,15 @@ msgstr "Filas:"
 
 #: ../applets/switcher/applet.c:128
 msgid "Width:"
-msgstr "Anchura:"
+msgstr "Ancho:"
 
 #: ../applets/switcher/applet.c:140
 msgid "Height:"
-msgstr "Altura:"
+msgstr "Alto:"
 
 #: ../applets/trash/trashapplet.glade.h:1
 msgid "<b>From:</b>"
-msgstr "<b>De:</b>"
+msgstr "<b>Desde:</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
 msgid "<big><b>Emptying the Trash</b></big>"
@@ -40,23 +40,25 @@ msgstr "<big><b>Vaciando la papelera</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr "Vaciando la papelera"
+msgstr "Vaciar la papelera"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "<b>Ícono Activo</b>"
+msgstr "<b>Icono Activo</b>"
 
 #: ../avant-preferences/window.glade.h:2
 msgid "<b>Arrows</b>"
-msgstr "<b>Flechas</b>"
+msgstr ""
+"Copy text   \t\n"
+"<b>Flechas</b>"
 
 #: ../avant-preferences/window.glade.h:3
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>Comportamiento de la Barra</b>"
+msgstr "<b>Comportamiento de la barra</b>"
 
 #: ../avant-preferences/window.glade.h:4
 msgid "<b>Borders</b>"
-msgstr "<b>Bordes</b>"
+msgstr "<b>Fronteras</b>"
 
 #: ../avant-preferences/window.glade.h:5
 msgid "<b>Corners</b>"
@@ -64,11 +66,11 @@ msgstr "<b>Esquinas</b>"
 
 #: ../avant-preferences/window.glade.h:6
 msgid "<b>Gradient</b>"
-msgstr "<b>Degradado</b>"
+msgstr "Gradiante"
 
 #: ../avant-preferences/window.glade.h:7
 msgid "<b>Highlight</b>"
-msgstr "<b>Resaltar</b>"
+msgstr "<b>Toque de luz</b>"
 
 #: ../avant-preferences/window.glade.h:8
 msgid "<b>Pattern</b>"
@@ -88,7 +90,7 @@ msgstr "<b>Ventanas</b>"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
-msgstr "Ocultar la barra automaticamente en inactividad"
+msgstr "Ocultar la barra cuando no está en uso"
 
 #: ../avant-preferences/window.glade.h:13
 msgid "Avant Preferences"
@@ -100,7 +102,7 @@ msgstr "Color de fondo:"
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
-msgstr "Apariencia de la Barra"
+msgstr "Apariencia de la barra"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
@@ -120,7 +122,7 @@ msgstr "Habilitar bordes redondeados"
 
 #: ../avant-preferences/window.glade.h:20
 msgid "Fade effect (experimental)"
-msgstr "Efecto de desvanecido (experimental)"
+msgstr "Efecto de atenuación (experimental)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
@@ -128,7 +130,7 @@ msgstr "Primer color:"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
-msgstr "Tamaño de la letra:"
+msgstr "Tamaño de la tipografía:"
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
@@ -136,7 +138,7 @@ msgstr "General"
 
 #: ../avant-preferences/window.glade.h:24
 msgid "Glass Engine"
-msgstr "Efecto de Vidrio"
+msgstr "Efecto cristal"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
@@ -152,11 +154,12 @@ msgstr "Borde principal:"
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "Las ventanas maximizadas no cubren la barra (requiere reiniciar)"
+msgstr ""
+"Las ventanas maximizadas no cubren la barra (requiere reiniciar Avant)"
 
 #: ../avant-preferences/window.glade.h:29
 msgid "Pattern Engine"
-msgstr "Patron de Fondo"
+msgstr "Patrón de fondo"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
@@ -164,7 +167,7 @@ msgstr "Segundo color"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
-msgstr "Seleccione un archivo de imagen"
+msgstr "Seleccione un archivo"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
@@ -184,7 +187,7 @@ msgstr "Mostrar ventanas de todos los espacios de trabajo."
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
-msgstr "Apariencia de las Tareas"
+msgstr "Apariencia de las tareas"
 
 #: ../avant-preferences/window.glade.h:37
 msgid "Tasks have arrows"
@@ -192,7 +195,7 @@ msgstr "Las tareas tienen flechas"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
-msgstr "La barra se oculta automáticamente cuando no se usa"
+msgstr "La barra se esconde automáticamente cuando no se usa"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
@@ -200,11 +203,11 @@ msgstr "Transparencia:"
 
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
-msgstr "Los iconos sin usar se atenúan cuando el ratón pasa por encima"
+msgstr "Los iconos sin usar se desvanecen cuando el ratón pasa por encima"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
-msgstr "Las ventanas no se superponen a la barra si esta está activada"
+msgstr "Las ventanas no se superponen a la barra si esta está activa"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
@@ -221,7 +224,7 @@ msgstr "Posiciones"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
 msgid "Avant Launcher Preferences"
-msgstr "Preferencias de Lanzadores de Avant"
+msgstr "Preferencias de lanzadores de Avant"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
@@ -245,7 +248,7 @@ msgstr "El ancho del cambiador"
 
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
-msgstr "Mostrar un contador en el ícono de la papelera"
+msgstr "Mostrar un contador en el icono de la papelera"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
@@ -274,15 +277,15 @@ msgstr "Borrando:"
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr "¿Vaciar la papelera?"
+msgstr "¿Desea vaciar todos los elementos de la papelera?"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
 "If you choose to empty the trash, all items in it will be permanently lost. "
 "Please note that you can also delete them separately."
 msgstr ""
-"Si elije vaciar la papelera, todos los elementos dentro de ella se borrarán "
-"y se perderán por completo. También puede borrarlos por separado."
+"Si elige vaciar la papelera, todos los elementos en su interior se perderán "
+"permanentemente. Tenga en cuenta que puede borrar cada uno por separado."
 
 #: ../applets/trash/trashapplet.c:746
 msgid "_Empty Trash"
@@ -304,7 +307,7 @@ msgstr "Ha ocurrido un error al mostrar la ayuda: %s"
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
-msgstr "Applet de la Papelera"
+msgstr "Applet de papelera"
 
 #: ../applets/trash/trashapplet.c:871
 msgid ""
@@ -318,29 +321,38 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Aaron H Farias Martinez https://launchpad.net/~harddark\n"
+"  Amin Contreras https://launchpad.net/~koutarou\n"
+"  Angel Guzman Maeso https://launchpad.net/~shakaran\n"
+"  Darkkill https://launchpad.net/~cristopher-nicolas\n"
+"  David Cope https://launchpad.net/~davidcope\n"
 "  Ignacio Larrain https://launchpad.net/~ilarrain\n"
+"  Locoxella https://launchpad.net/~locoxella\n"
 "  MarkitoXs https://launchpad.net/~markitoxs\n"
+"  Paco Molinero https://launchpad.net/~franciscomol\n"
 "  QUASAR_FREAK https://launchpad.net/~quasarfreak\n"
 "  Rodrigo Donado https://launchpad.net/~frezeeer\n"
 "  Sebastián Porta https://launchpad.net/~sebastianporta\n"
+"  franbas https://launchpad.net/~franbas91\n"
+"  gsiliceo https://launchpad.net/~nombre-falso\n"
 "  xcesarfrancox https://launchpad.net/~xcesarfrancox+launchpad"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
-msgstr "¿Borrar Permanentemente?"
+msgstr "¿Borrar inmediatamente?"
 
 #: ../applets/trash/trashapplet.c:925
 msgid "Cannot move items to trash, do you want to delete them immediately?"
 msgstr ""
-"No se pueden mover los elementos a la papelera, ¿Quiere borrarlos "
-"permanentemente?"
+"No se pueden mover los elementos a la papelera, ¿quiere borrarlos "
+"inmediatamente?"
 
 #: ../applets/trash/trashapplet.c:928
 msgid ""
 "Cannot move some items to trash, do you want to delete these immediately?"
 msgstr ""
-"No se pueden mover algunos elementos a la papelera, ¿Quiere borrarlos "
-"permanentemente?"
+"No se pueden mover algunos elementos a la papelera, ¿quiere borrar éstos "
+"inmediatamente?"
 
 #: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
 #, c-format
@@ -353,4 +365,4 @@ msgstr ""
 
 #: ../src/awn-task.c:2279
 msgid "Change Icon"
-msgstr "Cambiar Ícono"
+msgstr "Cambiar icono"

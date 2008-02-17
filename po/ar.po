@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-23 17:36+0000\n"
+"PO-Revision-Date: 2008-02-12 19:23+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n == 2 ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -28,7 +28,7 @@ msgstr "العرض:"
 
 #: ../applets/switcher/applet.c:140
 msgid "Height:"
-msgstr "الطول:"
+msgstr "الإرتفاع:"
 
 #: ../applets/trash/trashapplet.glade.h:1
 msgid "<b>From:</b>"
@@ -36,23 +36,23 @@ msgstr "<b>مِن:</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
 msgid "<big><b>Emptying the Trash</b></big>"
-msgstr "<big><b>يجري إفراغ المهملات</b></big>"
+msgstr "<big><b>إفراغ سلَة المهملات</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr "يجري إفراغ المهملات"
+msgstr "جاري إفراغ سلة المهملات"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "<b>الايقونات الفعالة</b>"
+msgstr "<b>الأيقونة النشطة</b>"
 
 #: ../avant-preferences/window.glade.h:2
 msgid "<b>Arrows</b>"
-msgstr "<b>المِؤشرات</b>"
+msgstr "<b>الأسهم</b>"
 
 #: ../avant-preferences/window.glade.h:3
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>سلوك الشريط</b>"
+msgstr "<b>تفاعلات الشريط</b>"
 
 #: ../avant-preferences/window.glade.h:4
 msgid "<b>Borders</b>"
@@ -60,39 +60,40 @@ msgstr "<b>الحدود</b>"
 
 #: ../avant-preferences/window.glade.h:5
 msgid "<b>Corners</b>"
-msgstr "<b>الاركان</b>"
+msgstr "<b>الزوايا</b>"
 
 #: ../avant-preferences/window.glade.h:6
 msgid "<b>Gradient</b>"
-msgstr ""
+msgstr "<b>التدرج</b>"
 
 #: ../avant-preferences/window.glade.h:7
 msgid "<b>Highlight</b>"
-msgstr ""
+msgstr "<b>التظليل</b>"
 
 #: ../avant-preferences/window.glade.h:8
 msgid "<b>Pattern</b>"
-msgstr ""
+msgstr "<b>نمط</b>"
 
 #: ../avant-preferences/window.glade.h:9
 msgid "<b>Separator</b>"
-msgstr "<b>الفاصل</b>"
+msgstr "<b>فاصل</b>"
 
 #: ../avant-preferences/window.glade.h:10
 msgid "<b>Text</b>"
-msgstr "<b>النص</b>"
+msgstr "<b>نص</b>"
 
 #: ../avant-preferences/window.glade.h:11
 msgid "<b>Windows</b>"
-msgstr "<b>النوافذ</b>"
+msgstr "<b>نوافذ</b>"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
-msgstr "إخفاء الشريط تلقائيا"
+msgstr "إخفاء تلقائي للشريط في حالة  عدم الإستخدام"
 
 #: ../avant-preferences/window.glade.h:13
+#, fuzzy
 msgid "Avant Preferences"
-msgstr "خصائص الشريط"
+msgstr "خصائص Avant"
 
 #: ../avant-preferences/window.glade.h:14
 msgid "Background color:"
@@ -100,7 +101,7 @@ msgstr "لون الخلفية:"
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
-msgstr "منظر الشريط"
+msgstr "مظهر الشريط"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
@@ -108,31 +109,33 @@ msgstr "سميك"
 
 #: ../avant-preferences/window.glade.h:17
 msgid "Color:"
-msgstr "اللون :"
+msgstr "لون:"
 
 #: ../avant-preferences/window.glade.h:18
+#, fuzzy
 msgid "Enable pattern"
-msgstr "تشغيل الانماط"
+msgstr "تفعيل النمط"
 
 #: ../avant-preferences/window.glade.h:19
 msgid "Enable rounded corners"
-msgstr "تشغيل الاركان الدائرية"
+msgstr "تفعيل الزوايا الدائرية"
 
 #: ../avant-preferences/window.glade.h:20
+#, fuzzy
 msgid "Fade effect (experimental)"
-msgstr ""
+msgstr "مؤثر التلاشي (تجريبي)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
-msgstr "اللون الاول"
+msgstr "لون الخطوة الاولى :"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
-msgstr "قياس الخط:"
+msgstr "حجم الخط:"
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
-msgstr "عـام"
+msgstr "عام"
 
 #: ../avant-preferences/window.glade.h:24
 msgid "Glass Engine"
@@ -140,7 +143,7 @@ msgstr "المحرك الزجاجي"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
-msgstr "الحدود الداخلية"
+msgstr "الفواصل الداخلية:"
 
 #: ../avant-preferences/window.glade.h:26
 msgid "Italic"
@@ -148,7 +151,7 @@ msgstr "مائل"
 
 #: ../avant-preferences/window.glade.h:27
 msgid "Main border:"
-msgstr "الحدود الرئيسية"
+msgstr "الفواصل الرئيسية:"
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
@@ -156,19 +159,19 @@ msgstr "النوافذ المكبرة ﻻ تغطي الشريط (تحتاج إع
 
 #: ../avant-preferences/window.glade.h:29
 msgid "Pattern Engine"
-msgstr ""
+msgstr "محرك الأنماط"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
-msgstr ""
+msgstr "لون الخطوة الثانية:"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
-msgstr "اختر ملف"
+msgstr "اختر ملفاً"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
-msgstr ""
+msgstr "لون الفاصل:"
 
 #: ../avant-preferences/window.glade.h:33
 msgid "Shadow color:"
@@ -176,35 +179,36 @@ msgstr "لون الظل:"
 
 #: ../avant-preferences/window.glade.h:34
 msgid "Show separator between launchers and tasks"
-msgstr ""
+msgstr "أظهر الفاصل بين المشغلات والمهام"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
-msgstr ""
+msgstr "اعرض النوافذ من جميع منافذ العرض"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
-msgstr ""
+msgstr "مظهر المهمة"
 
 #: ../avant-preferences/window.glade.h:37
 msgid "Tasks have arrows"
-msgstr ""
+msgstr "مؤشرات للمهام"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
-msgstr ""
+msgstr "يختفي الشريط تلقائيا في حالة عدم الاستخدام"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
-msgstr ""
+msgstr "الشفافية:"
 
 #: ../avant-preferences/window.glade.h:40
+#, fuzzy
 msgid "Unused icons fade when mouse-over"
-msgstr ""
+msgstr "الأيقونات الغير مستخدمة تتلاشى عند مرور الماوس"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
-msgstr ""
+msgstr "لا تتداخل النواف مع الشريط اذا حدد هذا"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
@@ -212,82 +216,82 @@ msgstr "أضف بريمج"
 
 #: ../avant-applets/avant-applets.glade.h:2
 msgid "Avant Applet Preferences"
-msgstr ""
+msgstr "خصائص بريمج الشريط"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
 msgid "Positions"
-msgstr ""
+msgstr "المواقع"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
 msgid "Avant Launcher Preferences"
-msgstr ""
+msgstr "خصائص مشغل الشريط"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
-msgstr "الإتَجاه"
+msgstr "الاتجاه"
 
 #: ../applets/notification-area/eggtraymanager.c:147
 msgid "The orientation of the tray."
-msgstr "اتجاه اللوحة."
+msgstr "اتجاه الحاوي."
 
 #: ../applets/switcher/switcher.schemas.in.h:1
 msgid "How many rows the switcher should have"
-msgstr ""
+msgstr "كم يجب للمحول من سطر"
 
 #: ../applets/switcher/switcher.schemas.in.h:2
 msgid "The height of the switcher"
-msgstr ""
+msgstr "إرتفاع المحول"
 
 #: ../applets/switcher/switcher.schemas.in.h:3
 msgid "The width of the switcher"
-msgstr ""
+msgstr "عرض المحول"
 
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
-msgstr ""
+msgstr "هل للبريمج المهمل إظهار العد على إيقونته"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
 msgid "Unable to find the Trash directory: %s"
-msgstr "تعذّر العثور على مجلد المهملات:  %s"
+msgstr "تعذّر العثور مجلد المهملات:  %s"
 
 #: ../applets/trash/trashapplet.c:526
 msgid "No Items in Trash"
-msgstr "لا عناصر في سلة المهملات"
+msgstr "لا شيء في سلَة المهملات"
 
 #: ../applets/trash/trashapplet.c:530
 #, c-format
 msgid "%d Item in Trash"
 msgid_plural "%d Items in Trash"
-msgstr[0] "عنصر واحد في سلة المهملات"
-msgstr[1] "عنصرين في سلة المهملات"
+msgstr[0] "%d عنصر واحد في سلة المهملات"
+msgstr[1] "%d عنصرين في سلة المهملات"
 msgstr[2] "%d عناصر في سلة المهملات"
 
 #: ../applets/trash/trashapplet.c:657
 #, c-format
 msgid "Removing item %lu of %lu"
-msgstr ""
+msgstr "حذف العنصر %lu من %lu"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
-msgstr "يجري حذف:"
+msgstr "جاري الحذف:"
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr "حذف كل العناصر من سلة المهملات؟"
+msgstr "إفراغ كلي لسلة المهملات؟"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
 "If you choose to empty the trash, all items in it will be permanently lost. "
 "Please note that you can also delete them separately."
 msgstr ""
-"إذا اخترت افراغ المهملات، ستفقد كل العناصر بشكل دائم. رجاء لاحظ أنه بإمكانك "
-"حذفهم كل على حدة."
+"ستحذف العناصر نهائيا, إن اخترت إفراغ سلة المهملات. لاحظ أنك تستطيع أيضا حذف "
+"العناصر بشكل منفصل"
 
 #: ../applets/trash/trashapplet.c:746
 msgid "_Empty Trash"
-msgstr "أ_فرٍغ المهملات"
+msgstr "_إفراغ سلة المهملات"
 
 #: ../applets/trash/trashapplet.c:825
 #, c-format
@@ -295,13 +299,13 @@ msgid ""
 "Error while spawning nautilus:\n"
 "%s"
 msgstr ""
-"خطأ أثناء بدأ نوتيلس:\n"
+"خطأ أثناء بدء نوتيلس:\n"
 "%s"
 
 #: ../applets/trash/trashapplet.c:845
 #, c-format
 msgid "There was an error displaying help: %s"
-msgstr "هناك خطأ في عرض المساعدة: %s"
+msgstr "حدث خطأ أثناء عرض المساعدة: %s"
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
@@ -319,21 +323,24 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Chokri.ysf https://launchpad.net/~chokriyoussef\n"
 "  Nizar K https://launchpad.net/~nizarus\n"
+"  eHobayyeb https://launchpad.net/~ehobayyeb\n"
+"  mmm https://launchpad.net/~mmmnnn333\n"
 "  thamood https://launchpad.net/~thamood"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
-msgstr "احذف حاليا؟"
+msgstr "حذف الآن؟"
 
 #: ../applets/trash/trashapplet.c:925
 msgid "Cannot move items to trash, do you want to delete them immediately?"
-msgstr "لا يمكن نقل العناصر إلى المهملات، هل تريد حذفها فورا؟"
+msgstr "لا يمكن نقل العناصر إلى سلة المهملات، هل تريد حذفها فورا؟"
 
 #: ../applets/trash/trashapplet.c:928
 msgid ""
 "Cannot move some items to trash, do you want to delete these immediately?"
-msgstr "لا يمكن نقل بعض العناصر إلى المهملات، هل تريد حذفها فورا؟"
+msgstr "لا يمكن نقل بعض العناصر إلى سلة المهملات، هل تريد حذفها فورا؟"
 
 #: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
 #, c-format
@@ -341,7 +348,7 @@ msgid ""
 "Unable to move to trash:\n"
 "%s"
 msgstr ""
-"لم يمكن النقل إلى المهملات:\n"
+"لا يمكن النقل إلى سلة المهملات:\n"
 "%s"
 
 #: ../src/awn-task.c:2279

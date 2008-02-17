@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-08-19 11:45+0000\n"
+"PO-Revision-Date: 2007-12-03 17:07+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -36,11 +36,11 @@ msgstr "<b>Van:</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
 msgid "<big><b>Emptying the Trash</b></big>"
-msgstr "<big><b>Leegmaken van prullenbak</b></big>"
+msgstr "<big><b>Bezig met het leegmaken van de prullenbak</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr "De prullenbak wordt geleegd"
+msgstr "Bezig met het leegmaken van de prullenbak"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
@@ -64,7 +64,7 @@ msgstr "<b>Hoeken</b>"
 
 #: ../avant-preferences/window.glade.h:6
 msgid "<b>Gradient</b>"
-msgstr "<b>Gradatie</b>"
+msgstr "<b>Overgang</b>"
 
 #: ../avant-preferences/window.glade.h:7
 msgid "<b>Highlight</b>"
@@ -100,7 +100,7 @@ msgstr "Achtergrondkleur:"
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
-msgstr "Balk Uiterlijk"
+msgstr "Uiterlijk van de balk"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
@@ -116,7 +116,7 @@ msgstr "Gebruik patroon"
 
 #: ../avant-preferences/window.glade.h:19
 msgid "Enable rounded corners"
-msgstr "Rond hoeken af"
+msgstr "Afgeronde hoeken gebruiken"
 
 #: ../avant-preferences/window.glade.h:20
 msgid "Fade effect (experimental)"
@@ -124,7 +124,7 @@ msgstr "Vervagen (experimenteel)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
-msgstr "Kleur eerste stap:"
+msgstr "Kleur 1:"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
@@ -136,7 +136,7 @@ msgstr "Algemeen"
 
 #: ../avant-preferences/window.glade.h:24
 msgid "Glass Engine"
-msgstr "Glass Motor"
+msgstr "Achtergrond balk"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
@@ -152,19 +152,19 @@ msgstr "Buitenste rand:"
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "Gemaximaliseerde vensters bedekken balk niet (herstart vereist)"
+msgstr "Gemaximaliseerde vensters bedekken de balk niet (herstart vereist)"
 
 #: ../avant-preferences/window.glade.h:29
 msgid "Pattern Engine"
-msgstr "Patroon Motor"
+msgstr "Patroon balk"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
-msgstr "Kleur tweede stap:"
+msgstr "Kleur 2:"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
-msgstr "Bestand kiezen"
+msgstr "Selecteer een bestand"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
@@ -180,7 +180,7 @@ msgstr "Laat scheiding tussen starters en taken zien"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
-msgstr "Vensters tonen van elke viewport"
+msgstr "Vensters tonen van alle virtuele desktops"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
@@ -200,7 +200,7 @@ msgstr "Transparantie:"
 
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
-msgstr "Ongebruikte iconen vervagen bij muis-over"
+msgstr "Ongebruikte iconen vervagen bij mouse-over"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
@@ -274,19 +274,19 @@ msgstr "Bezig met verwijderen:"
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr "Verwijder alle objecten uit de prullenbak?"
+msgstr "Alle objecten uit de prullenbak verwijderen?"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
 "If you choose to empty the trash, all items in it will be permanently lost. "
 "Please note that you can also delete them separately."
 msgstr ""
-"Als u ervoor kiest de prullenbak te legen, zullen alle objecten voorgoed "
-"verloren gaan. Merk op dat u de objecten ook één voor één kunt verwijderen."
+"Als u ervoor kiest de prullenbak te legen, zullen alle objecten permanent "
+"verloren gaan.U kunt de objecten ook één voor één verwijderen."
 
 #: ../applets/trash/trashapplet.c:746
 msgid "_Empty Trash"
-msgstr "_Prullenbak Legen"
+msgstr "_Prullenbak leegmaken"
 
 #: ../applets/trash/trashapplet.c:825
 #, c-format
@@ -294,7 +294,7 @@ msgid ""
 "Error while spawning nautilus:\n"
 "%s"
 msgstr ""
-"Fout bij het starten van nautilus:\n"
+"Fout bij het starten van Nautilus:\n"
 "%s"
 
 #: ../applets/trash/trashapplet.c:845
@@ -311,13 +311,14 @@ msgid ""
 "A GNOME trash bin that lives in your panel. You can use it to view the trash "
 "or drag and drop items into the trash."
 msgstr ""
-"Een Gnome-prullenbak voor op uw paneel. Hiermee kunt u in de prullenbak "
-"kijken of er objecten naar toeslepen."
+"Een GNOME prullenbak voor op uw paneel. Hiermee kunt u in de prullenbak "
+"kijken of er objecten naartoe slepen."
 
 #: ../applets/trash/trashapplet.c:876
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Aaron Coone https://launchpad.net/~mrbono\n"
 "  EndelWar https://launchpad.net/~endelwar\n"
 "  Tom Verdaat https://launchpad.net/~tom-verdaat\n"
 "  eentonig https://launchpad.net/~eentonig\n"
@@ -355,4 +356,4 @@ msgstr ""
 
 #: ../src/awn-task.c:2279
 msgid "Change Icon"
-msgstr "Pictogram wijzigen"
+msgstr "Icoon wijzigen"

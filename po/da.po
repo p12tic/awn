@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-16 20:56+0000\n"
+"PO-Revision-Date: 2007-12-20 22:31+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:19+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -47,12 +47,10 @@ msgid "<b>Active Icon</b>"
 msgstr "Aktivt Ikon"
 
 #: ../avant-preferences/window.glade.h:2
-#, fuzzy
 msgid "<b>Arrows</b>"
 msgstr "<b>Pile</b>"
 
 #: ../avant-preferences/window.glade.h:3
-#, fuzzy
 msgid "<b>Bar behaviour</b>"
 msgstr "<b>Bar adfærd</b>"
 
@@ -65,20 +63,18 @@ msgid "<b>Corners</b>"
 msgstr "<b>Hjørner</b>"
 
 #: ../avant-preferences/window.glade.h:6
-#, fuzzy
 msgid "<b>Gradient</b>"
-msgstr "<b>Gradient</b>"
+msgstr "<b>Hældning</b>"
 
 #: ../avant-preferences/window.glade.h:7
 msgid "<b>Highlight</b>"
-msgstr "<b>Marker</b>"
+msgstr "<b>Markér</b>"
 
 #: ../avant-preferences/window.glade.h:8
 msgid "<b>Pattern</b>"
 msgstr "<b>Mønster</b>"
 
 #: ../avant-preferences/window.glade.h:9
-#, fuzzy
 msgid "<b>Separator</b>"
 msgstr "<b>Separator</b>"
 
@@ -100,7 +96,7 @@ msgstr "Avant Indstillinger"
 
 #: ../avant-preferences/window.glade.h:14
 msgid "Background color:"
-msgstr "Baggrundfarve:"
+msgstr "Baggrundsfarve:"
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
@@ -123,12 +119,10 @@ msgid "Enable rounded corners"
 msgstr "Aktiver afrundede hjørner"
 
 #: ../avant-preferences/window.glade.h:20
-#, fuzzy
 msgid "Fade effect (experimental)"
 msgstr "Overgangseffekt (eksperimentel)"
 
 #: ../avant-preferences/window.glade.h:21
-#, fuzzy
 msgid "First step color:"
 msgstr "Første trins farve:"
 
@@ -141,12 +135,10 @@ msgid "General"
 msgstr "Generelt"
 
 #: ../avant-preferences/window.glade.h:24
-#, fuzzy
 msgid "Glass Engine"
 msgstr "Glas motor"
 
 #: ../avant-preferences/window.glade.h:25
-#, fuzzy
 msgid "Internal border:"
 msgstr "Indre ramme:"
 
@@ -155,7 +147,6 @@ msgid "Italic"
 msgstr "Kursiv"
 
 #: ../avant-preferences/window.glade.h:27
-#, fuzzy
 msgid "Main border:"
 msgstr "Hoved ramme:"
 
@@ -164,12 +155,10 @@ msgid "Maximized windows don't cover the bar (requires restart)"
 msgstr "Maksimerede vinduer skjuler ikke baren (kræver genstart)"
 
 #: ../avant-preferences/window.glade.h:29
-#, fuzzy
 msgid "Pattern Engine"
 msgstr "Mønster motor"
 
 #: ../avant-preferences/window.glade.h:30
-#, fuzzy
 msgid "Second step color:"
 msgstr "Andet trins farve:"
 
@@ -178,7 +167,6 @@ msgid "Select A File"
 msgstr "Vælg en fil"
 
 #: ../avant-preferences/window.glade.h:32
-#, fuzzy
 msgid "Separator color:"
 msgstr "Separator farve:"
 
@@ -187,12 +175,10 @@ msgid "Shadow color:"
 msgstr "Skygge farve:"
 
 #: ../avant-preferences/window.glade.h:34
-#, fuzzy
 msgid "Show separator between launchers and tasks"
-msgstr "Vis separator mellem programstartere og opgaver"
+msgstr "Vis separator mellem programstarter og opgaver"
 
 #: ../avant-preferences/window.glade.h:35
-#, fuzzy
 msgid "Show windows from all viewports"
 msgstr "Vis vinduer fra alle virtuelle skriveborde"
 
@@ -201,7 +187,6 @@ msgid "Task Appearance"
 msgstr "Opgave udseende"
 
 #: ../avant-preferences/window.glade.h:37
-#, fuzzy
 msgid "Tasks have arrows"
 msgstr "Opgaver har pile"
 
@@ -214,12 +199,10 @@ msgid "Transparency:"
 msgstr "Gennemsigtighed:"
 
 #: ../avant-preferences/window.glade.h:40
-#, fuzzy
 msgid "Unused icons fade when mouse-over"
 msgstr "Ubrugte ikoner fader når musen er over"
 
 #: ../avant-preferences/window.glade.h:41
-#, fuzzy
 msgid "Windows don't overlap the bar if this is set"
 msgstr "Vinduer overlapper ikke baren hvis dette er sat"
 
@@ -228,20 +211,17 @@ msgid "Add Applet"
 msgstr "Tilføj panelprogram"
 
 #: ../avant-applets/avant-applets.glade.h:2
-#, fuzzy
 msgid "Avant Applet Preferences"
-msgstr "Avant panelprogram indstillinger"
+msgstr "Indstillinger for Avant panelprogram"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
-#, fuzzy
 msgid "Positions"
 msgstr "Positioner"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
-#, fuzzy
 msgid "Avant Launcher Preferences"
-msgstr "Avant programstarter indstillinger"
+msgstr "Indstillinger for Avant programstarter"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
@@ -252,17 +232,14 @@ msgid "The orientation of the tray."
 msgstr "Retning på statusfeltet"
 
 #: ../applets/switcher/switcher.schemas.in.h:1
-#, fuzzy
 msgid "How many rows the switcher should have"
 msgstr "Hvor mange rækker vælgeren skal have"
 
 #: ../applets/switcher/switcher.schemas.in.h:2
-#, fuzzy
 msgid "The height of the switcher"
 msgstr "Vælgerens højde"
 
 #: ../applets/switcher/switcher.schemas.in.h:3
-#, fuzzy
 msgid "The width of the switcher"
 msgstr "Vælgerens bredde"
 
@@ -297,7 +274,7 @@ msgstr "Fjerner:"
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr "Slet alle filer i papirkurven?"
+msgstr "Fjern alle filerne fra papirkurven?"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
@@ -342,6 +319,7 @@ msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
 "  Jonas Häggqvist https://launchpad.net/~rasher\n"
+"  carson https://launchpad.net/~nanker\n"
 "  sertmann https://launchpad.net/~sertmann"
 
 #: ../applets/trash/trashapplet.c:896

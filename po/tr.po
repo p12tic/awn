@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-08-16 10:07+0000\n"
+"PO-Revision-Date: 2007-12-06 20:06+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -226,11 +226,11 @@ msgstr "Avant Başlatıcı Ayarları"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
-msgstr "Yönlendirme"
+msgstr "Yerleşim"
 
 #: ../applets/notification-area/eggtraymanager.c:147
 msgid "The orientation of the tray."
-msgstr "Tepsinin yönelimi."
+msgstr "Tepsinin yerleşimi."
 
 #: ../applets/switcher/switcher.schemas.in.h:1
 msgid "How many rows the switcher should have"
@@ -266,7 +266,7 @@ msgstr[0] "Çöpte %d nesne var"
 #: ../applets/trash/trashapplet.c:657
 #, c-format
 msgid "Removing item %lu of %lu"
-msgstr ""
+msgstr "%lu maddeden%lu inci kaldırılıyor"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
@@ -318,6 +318,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Ali KIBICI https://launchpad.net/~alinux-the-master\n"
 "  Ali Servet Dönmez https://launchpad.net/~exalted"
 
 #: ../applets/trash/trashapplet.c:896

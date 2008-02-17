@@ -1,4 +1,4 @@
-# Slovak translation for awn
+# Thai translation for awn
 # Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
 # This file is distributed under the same license as the awn package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
@@ -8,286 +8,284 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-11-05 13:02+0000\n"
+"PO-Revision-Date: 2008-02-13 08:30+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Slovak <sk@li.org>\n"
+"Language-Team: Thai <th@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
-msgstr "Riadky:"
+msgstr "แถว:"
 
 #: ../applets/switcher/applet.c:128
 msgid "Width:"
-msgstr "Šírka:"
+msgstr "กว้าง:"
 
 #: ../applets/switcher/applet.c:140
 msgid "Height:"
-msgstr "Výška:"
+msgstr "สูง:"
 
 #: ../applets/trash/trashapplet.glade.h:1
 msgid "<b>From:</b>"
-msgstr "<b>Od:</b>"
+msgstr "<b>จาก:</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
 msgid "<big><b>Emptying the Trash</b></big>"
-msgstr "<big><b>Vyprázdňuje sa kôš</b></big>"
+msgstr "<big><b>ทำถังขยะให้ว่าง</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr "Vyprázdňuje sa kôš"
+msgstr "<big><b>กำลังเทขยะทิ้ง</b></big>"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "<b>Aktívna ikona:</b>"
+msgstr "<b>ไอคอนกำลังทำงาน</b>"
 
 #: ../avant-preferences/window.glade.h:2
 msgid "<b>Arrows</b>"
-msgstr "<b>Šípky</b>"
+msgstr "<b>ลูกศร</b>"
 
 #: ../avant-preferences/window.glade.h:3
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>Správanie panelu</b>"
+msgstr "<b>ลักษณะแท่น</b>"
 
 #: ../avant-preferences/window.glade.h:4
 msgid "<b>Borders</b>"
-msgstr "<b>Okraje</b>"
+msgstr "<b>ขอบ</b>"
 
 #: ../avant-preferences/window.glade.h:5
 msgid "<b>Corners</b>"
-msgstr "<b>Rohy</b>"
+msgstr "<b>มุม</b>"
 
 #: ../avant-preferences/window.glade.h:6
 msgid "<b>Gradient</b>"
-msgstr "<b>Gradient</b>"
+msgstr "<b>ไล่ระดับสี</b>"
 
 #: ../avant-preferences/window.glade.h:7
 msgid "<b>Highlight</b>"
-msgstr "<b>Zvýraznenie</b>"
+msgstr "<b>เน้น</b>"
 
 #: ../avant-preferences/window.glade.h:8
 msgid "<b>Pattern</b>"
-msgstr "<b>Vzorka</b>"
+msgstr "<b>ลวดลาย</b>"
 
 #: ../avant-preferences/window.glade.h:9
 msgid "<b>Separator</b>"
-msgstr "<b>Oddelovač</b>"
+msgstr "<b>ตัวคั่น</b>"
 
 #: ../avant-preferences/window.glade.h:10
 msgid "<b>Text</b>"
-msgstr "<b>Text</b>"
+msgstr "<b>ข้อความ</b>"
 
 #: ../avant-preferences/window.glade.h:11
 msgid "<b>Windows</b>"
-msgstr "<b>Okná</b>"
+msgstr "<b>หน้าต่าง</b>"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
-msgstr "Automaticky schovať panel keď sa nepoužíva"
+msgstr "ซ่อนแท่นเมื่อไม่ใช้งาน"
 
 #: ../avant-preferences/window.glade.h:13
 msgid "Avant Preferences"
-msgstr "Nastavenie Avant"
+msgstr "ตั้งค่า Avant"
 
 #: ../avant-preferences/window.glade.h:14
 msgid "Background color:"
-msgstr "Farba pozadia:"
+msgstr "สีพื้นหลัง:"
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
-msgstr "Vzhľad panelu"
+msgstr "ลักษณะแท่น"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
-msgstr "Tučné"
+msgstr "หนา"
 
 #: ../avant-preferences/window.glade.h:17
 msgid "Color:"
-msgstr "Farba:"
+msgstr "สี:"
 
 #: ../avant-preferences/window.glade.h:18
 msgid "Enable pattern"
-msgstr "Povoliť vzorku"
+msgstr "มีลวดลาย"
 
 #: ../avant-preferences/window.glade.h:19
 msgid "Enable rounded corners"
-msgstr "Povoliť zaoblené rohy"
+msgstr "เปิดขอบมน"
 
 #: ../avant-preferences/window.glade.h:20
 msgid "Fade effect (experimental)"
-msgstr "Postupné blednutie (experimentálne)"
+msgstr "เอฟเฟทจาง (อยู่ในขั้นทดลอง)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
-msgstr "Farba prvého kroku:"
+msgstr "สีลำดับแรก:"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
-msgstr "Veľkosť písma:"
+msgstr "ขนาดอักษร:"
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
-msgstr "Všeobecné"
+msgstr "ทั่วไป"
 
 #: ../avant-preferences/window.glade.h:24
 msgid "Glass Engine"
-msgstr "Sklenené prostredie"
+msgstr "เอนจิ้นแก้ว"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
-msgstr "Vnútorný okraj:"
+msgstr "ขอบภายใน:"
 
 #: ../avant-preferences/window.glade.h:26
 msgid "Italic"
-msgstr "Kurzíva"
+msgstr "ตัวเอียง"
 
 #: ../avant-preferences/window.glade.h:27
 msgid "Main border:"
-msgstr "Hlavný okraj:"
+msgstr "ขอบหลัก:"
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "Maximalizované okná neprekrývajú panel (vyžaduje reštart)"
+msgstr "หน้าต่างที่อยู่เต็มจอไม่บังแท่น (ต้องรีสตาร์ท)"
 
 #: ../avant-preferences/window.glade.h:29
 msgid "Pattern Engine"
-msgstr "Vzorkové prostredie"
+msgstr "เอนจิ้นลวดลาย"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
-msgstr "Farba druhého kroku:"
+msgstr "สีลำดับที่สอง:"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
-msgstr "Vybrať súbor"
+msgstr "เลือกไฟล์"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
-msgstr "Farba oddeľovača"
+msgstr "สีคั่น:"
 
 #: ../avant-preferences/window.glade.h:33
 msgid "Shadow color:"
-msgstr "Farba tieňa:"
+msgstr "สีเงา:"
 
 #: ../avant-preferences/window.glade.h:34
 msgid "Show separator between launchers and tasks"
-msgstr "Zobraziť oddeľovač medzi spúšťačmi a úlohami"
+msgstr "แสดงตัวคั่นระหว่างปุ่มเรียกโปรแกรมและงาน"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
-msgstr "Zobraziť okná zo všetkých plôch"
+msgstr "แสดงหน้าต่างจากทุกมุมมอง"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
-msgstr "Vzhľad úlohy"
+msgstr "ลักษณะงาน"
 
 #: ../avant-preferences/window.glade.h:37
 msgid "Tasks have arrows"
-msgstr "Úlohy majú šípky"
+msgstr "งานมีลูกศรชี้"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
-msgstr "Nepoužívaný panel sa automaticky skrýva"
+msgstr "แท่นจะซ่อนเองเมื่อไม่ใช้งาน"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
-msgstr "Priehľadnosť:"
+msgstr "ความโปรงใส:"
 
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
-msgstr "Nepoužívané ikony pri prejdení myšou blednú"
+msgstr "ไอคอนที่ไม่ใช้จางออกเมื่อเมาส์อยู่เหนือ"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
-msgstr "Ak je nastavený panel, okná ho neprekrývajú"
+msgstr "หน้าต่างจะไม่แสดงทับแท่นหากค่านี้กำหนดไว้"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
-msgstr "Pridať applet"
+msgstr "เพิ่มแอพเพล็ต"
 
 #: ../avant-applets/avant-applets.glade.h:2
 msgid "Avant Applet Preferences"
-msgstr "Nastavenie Avant appletu"
+msgstr "ตั้งค่าแอพเพล็ต Avant"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
 msgid "Positions"
-msgstr "Umiestnenie"
+msgstr "ตำแหน่ง"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
 msgid "Avant Launcher Preferences"
-msgstr "Nastavenie spúšťača Avant"
+msgstr "ตั้งค่าตัวเรียก Avant"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
-msgstr "Orientácia"
+msgstr "ทิศทางการวาง"
 
 #: ../applets/notification-area/eggtraymanager.c:147
 msgid "The orientation of the tray."
-msgstr "Orientácia oznamovacej oblasti."
+msgstr "แนววางของพื้นที่แจ้งเหตุ"
 
 #: ../applets/switcher/switcher.schemas.in.h:1
 msgid "How many rows the switcher should have"
-msgstr "Koľko riadkov by mal mať prepínač"
+msgstr "ตัวปรับควรมีกี่แถว"
 
 #: ../applets/switcher/switcher.schemas.in.h:2
 msgid "The height of the switcher"
-msgstr "Výška prepínača"
+msgstr "ความสูงของตัวปรับ"
 
 #: ../applets/switcher/switcher.schemas.in.h:3
 msgid "The width of the switcher"
-msgstr "Šírka prepínača"
+msgstr "ความกว้างของตัวปรับ"
 
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
-msgstr "Či má applet koša zobrazovať na svojej ikone počet"
+msgstr "เมื่อใดที่ถังขยะควรแสดงตัวเลขบนไอคอน"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
 msgid "Unable to find the Trash directory: %s"
-msgstr "Nemôžem nájsť priečinok koša: %s"
+msgstr "ไม่สามารถหาโฟล์เดอร์ถังขยะ: %s"
 
 #: ../applets/trash/trashapplet.c:526
 msgid "No Items in Trash"
-msgstr "Žiadne položky v koši"
+msgstr "ไม่มีอะไรในถัง"
 
 #: ../applets/trash/trashapplet.c:530
 #, c-format
 msgid "%d Item in Trash"
 msgid_plural "%d Items in Trash"
-msgstr[0] "%d položka v koši"
-msgstr[1] "%d položky v koši"
-msgstr[2] "%d položiek v koši"
+msgstr[0] "%d รายการอยู่ในถัง"
 
 #: ../applets/trash/trashapplet.c:657
 #, c-format
 msgid "Removing item %lu of %lu"
-msgstr "Odstraňujem položku %lu z %lu"
+msgstr "กำลังลบรายการ %lu จาก %lu"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
-msgstr "Odstraňujem:"
+msgstr "กำลังลบ:"
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr "Vyprázdniť všetky položky z koša?"
+msgstr "ลบทุกอย่างในถังขยะหรือไม่?"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
 "If you choose to empty the trash, all items in it will be permanently lost. "
 "Please note that you can also delete them separately."
 msgstr ""
-"Ak si zvolíte vyprázdnenie koša, všetky položky v ňom budú natrvalo "
-"stratené. Poznámka: môžete ich odstrániť aj jednotlivo."
+"หากคุณจะล้างถังขยะ รายการทุกอย่างจะหายไปตลอดกาล "
+"โปรดจำไว้ว่าคุณสามารถลบได้ทีละไฟล์เช่นกัน"
 
 #: ../applets/trash/trashapplet.c:746
 msgid "_Empty Trash"
-msgstr "_Vyprázdniť kôš"
+msgstr "_ล้างถังขยะ"
 
 #: ../applets/trash/trashapplet.c:825
 #, c-format
@@ -295,47 +293,45 @@ msgid ""
 "Error while spawning nautilus:\n"
 "%s"
 msgstr ""
-"Chyba pri spúštaní nautilusu:\n"
+"มีปัญหาขณะเรียก nautilus:\n"
 "%s"
 
 #: ../applets/trash/trashapplet.c:845
 #, c-format
 msgid "There was an error displaying help: %s"
-msgstr "Vyskytla sa chyba pri zobrazovaní pomocníka: %s"
+msgstr "เกิดข้อผิดพลาดในการแสดงวิธีใช้: %s"
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
-msgstr "Applet koša"
+msgstr "แอพเพลทถังขยะ"
 
 #: ../applets/trash/trashapplet.c:871
 msgid ""
 "A GNOME trash bin that lives in your panel. You can use it to view the trash "
 "or drag and drop items into the trash."
 msgstr ""
-"Kôš GNOME, ktorý je umiestnený na vašom paneli. Môžete ho používať pre "
-"zobrazenie koša alebo doň presúvať položky."
+"ถังขยะของ GNOME ที่อยู่ในแพเนลของคุณ คุณสามารถใช้มันดูถังขยะ "
+"หรือลากวางรายการลงในถัง"
 
 #: ../applets/trash/trashapplet.c:876
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Matej Duman https://launchpad.net/~dumi\n"
-"  Peter Baričič https://launchpad.net/~denton-sk\n"
-"  firenze https://launchpad.net/~firenze"
+"  DArKer https://launchpad.net/~dak0808\n"
+"  Manatsawin https://launchpad.net/~manatsawin"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
-msgstr "Odstrániť okamžite?"
+msgstr "ลบทันที/"
 
 #: ../applets/trash/trashapplet.c:925
 msgid "Cannot move items to trash, do you want to delete them immediately?"
-msgstr "Nie je možné presunúť položky do koša. Chcete ich odstrániť úplne?"
+msgstr "ไม่สามารถย้ายรายการไปถังขยะ คุณต้องการลบมันไปถาวรเลยหรือไม่?"
 
 #: ../applets/trash/trashapplet.c:928
 msgid ""
 "Cannot move some items to trash, do you want to delete these immediately?"
-msgstr ""
-"Nie je možné niektoré položky presunúť do koša. Chcete ich odstrániť úplne?"
+msgstr "ไม่สามารถย้ายรายการไปยังถังขยะ คุณต้องการลบมันไปถาวรเลยหรือไม่?"
 
 #: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
 #, c-format
@@ -343,9 +339,9 @@ msgid ""
 "Unable to move to trash:\n"
 "%s"
 msgstr ""
-"Nie je možné presunúť do koša:\n"
+"ไม่สามารถย้ายไปยังถังขยะ:\n"
 "%s"
 
 #: ../src/awn-task.c:2279
 msgid "Change Icon"
-msgstr "Zmeniť ikonu"
+msgstr "เปลี่ยนไอคอน"

@@ -1,34 +1,35 @@
 # French translation for awn
 # Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
 # This file is distributed under the same license as the awn package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
+#
+# Stéphane Raimbault <stephane.raimbault@gmail.com>, 2007.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-08-21 14:33+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: French <fr@li.org>\n"
+"PO-Revision-Date: 2007-11-04 18:20+0000\n"
+"Last-Translator: Stéphane Raimbault <stephane.raimbault@gmail.com>\n"
+"Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
-msgstr "Lignes :"
+msgstr "Lignes :"
 
 #: ../applets/switcher/applet.c:128
 msgid "Width:"
-msgstr "Largeur :"
+msgstr "Largeur :"
 
 #: ../applets/switcher/applet.c:140
 msgid "Height:"
-msgstr "Hauteur :"
+msgstr "Hauteur :"
 
 #: ../applets/trash/trashapplet.glade.h:1
 msgid "<b>From:</b>"
@@ -96,7 +97,7 @@ msgstr "Préférences d'Avant"
 
 #: ../avant-preferences/window.glade.h:14
 msgid "Background color:"
-msgstr "Couleur de fond :"
+msgstr "Couleur de fond :"
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
@@ -108,7 +109,7 @@ msgstr "Gras"
 
 #: ../avant-preferences/window.glade.h:17
 msgid "Color:"
-msgstr "Couleur :"
+msgstr "Couleur :"
 
 #: ../avant-preferences/window.glade.h:18
 msgid "Enable pattern"
@@ -124,11 +125,11 @@ msgstr "Effet de fondu (expérimental)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
-msgstr "Couleur de début :"
+msgstr "Couleur de début :"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
-msgstr "Taille de la police :"
+msgstr "Taille de la police :"
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
@@ -140,7 +141,7 @@ msgstr "Moteur de rendu translucide"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
-msgstr "Bordure interne :"
+msgstr "Bordure interne :"
 
 #: ../avant-preferences/window.glade.h:26
 msgid "Italic"
@@ -148,7 +149,7 @@ msgstr "Italique"
 
 #: ../avant-preferences/window.glade.h:27
 msgid "Main border:"
-msgstr "Bordure principale :"
+msgstr "Bordure principale :"
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
@@ -169,19 +170,19 @@ msgstr "Sélectionnez un fichier"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
-msgstr "Couleur du séparateur :"
+msgstr "Couleur du séparateur :"
 
 #: ../avant-preferences/window.glade.h:33
 msgid "Shadow color:"
-msgstr "Couleur de l'ombre :"
+msgstr "Couleur de l'ombre :"
 
 #: ../avant-preferences/window.glade.h:34
 msgid "Show separator between launchers and tasks"
-msgstr "Montrer le séparateur entre les lanceurs et les tâches"
+msgstr "Afficher le séparateur entre les lanceurs et les tâches"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
-msgstr "Montrer les fenêtres de tous les espaces de travail"
+msgstr "Afficher les fenêtres de tous les espaces de travail"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
@@ -197,7 +198,7 @@ msgstr "La barre est automatiquement masquée lorsqu'inutilisée"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
-msgstr "Transparence :"
+msgstr "Transparence :"
 
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
@@ -213,7 +214,7 @@ msgstr "Ajouter une applet"
 
 #: ../avant-applets/avant-applets.glade.h:2
 msgid "Avant Applet Preferences"
-msgstr "Préférences des Applets Avant"
+msgstr "Préférences des applets Avant"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
@@ -234,7 +235,7 @@ msgstr "Orientation de la zone de notification"
 
 #: ../applets/switcher/switcher.schemas.in.h:1
 msgid "How many rows the switcher should have"
-msgstr "Combien de lignes le sélecteur devrait avoir"
+msgstr "Nombre de lignes que le sélecteur doit contenir"
 
 #: ../applets/switcher/switcher.schemas.in.h:2
 msgid "The height of the switcher"
@@ -247,12 +248,12 @@ msgstr "La largeur du sélecteur"
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
 msgstr ""
-"L'applet de la corbeille doit-elle montrer un compteur sur son icône?"
+"Indique si l'applet de la corbeille doit afficher un compteur sur son icône"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
 msgid "Unable to find the Trash directory: %s"
-msgstr "Impossible de trouver le dossier de la corbeille : %s"
+msgstr "Impossible de trouver le dossier de la corbeille : %s"
 
 #: ../applets/trash/trashapplet.c:526
 msgid "No Items in Trash"
@@ -272,11 +273,11 @@ msgstr "Enlever l'élément %lu de %lu"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
-msgstr "Suppression de :"
+msgstr "Suppression de :"
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr "Vider tous les éléments de la corbeille ?"
+msgstr "Vider tous les éléments de la corbeille ?"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
@@ -297,17 +298,17 @@ msgid ""
 "Error while spawning nautilus:\n"
 "%s"
 msgstr ""
-"Erreur lors du lancement de nautilus :\n"
+"Erreur lors du lancement de nautilus :\n"
 "%s"
 
 #: ../applets/trash/trashapplet.c:845
 #, c-format
 msgid "There was an error displaying help: %s"
-msgstr "Une erreur est survenue lors de l'affichage de l'aide : %s"
+msgstr "Une erreur est survenue lors de l'affichage de l'aide : %s"
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
-msgstr "Applet Corbeille"
+msgstr "Applet corbeille"
 
 #: ../applets/trash/trashapplet.c:871
 msgid ""
@@ -322,13 +323,16 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Claude Gagné https://launchpad.net/~miltiad\n"
 "  EndelWar https://launchpad.net/~endelwar\n"
 "  Julien Lavergne https://launchpad.net/~gilir\n"
 "  MarkitoXs https://launchpad.net/~markitoxs\n"
 "  Nicolas Ghaye https://launchpad.net/~ratur\n"
 "  Nicolas de BONFILS https://launchpad.net/~web-nicolas2b\n"
 "  Pierre Slamich https://launchpad.net/~pierre-slamich\n"
+"  Stéphane Raimbault https://launchpad.net/~sra\n"
 "  bilbo-le-hobbit https://launchpad.net/~bilbohobbit\n"
+"  feuloren https://launchpad.net/~florent-thevenet\n"
 "  k3nt-1 https://launchpad.net/~dugauthier\n"
 "  lemsto https://launchpad.net/~lemsto\n"
 "  nafubuntu https://launchpad.net/~francisbouvier\n"
@@ -336,20 +340,20 @@ msgstr ""
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
-msgstr "Supprimer immédiatement ?"
+msgstr "Supprimer immédiatement ?"
 
 #: ../applets/trash/trashapplet.c:925
 msgid "Cannot move items to trash, do you want to delete them immediately?"
 msgstr ""
 "Impossible de déplacer les éléments dans la corbeille. Voulez-vous les "
-"supprimer immédiatement ?"
+"supprimer immédiatement ?"
 
 #: ../applets/trash/trashapplet.c:928
 msgid ""
 "Cannot move some items to trash, do you want to delete these immediately?"
 msgstr ""
 "Impossible de déplacer certains éléments dans la corbeille. Voulez-vous les "
-"supprimer immédiatement ?"
+"supprimer immédiatement ?"
 
 #: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
 #, c-format
@@ -357,7 +361,7 @@ msgid ""
 "Unable to move to trash:\n"
 "%s"
 msgstr ""
-"Impossible de mettre dans la corbeille :\n"
+"Impossible de mettre dans la corbeille :\n"
 "%s"
 
 #: ../src/awn-task.c:2279

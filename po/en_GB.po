@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-08-01 20:43+0000\n"
+"PO-Revision-Date: 2007-10-08 13:16+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -140,7 +140,7 @@ msgstr "Glass Engine"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
-msgstr ""
+msgstr "Internal border:"
 
 #: ../avant-preferences/window.glade.h:26
 msgid "Italic"
@@ -152,7 +152,7 @@ msgstr "Main border:"
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr ""
+msgstr "Maximized windows don't cover the bar (requires restart)"
 
 #: ../avant-preferences/window.glade.h:29
 msgid "Pattern Engine"
@@ -164,7 +164,7 @@ msgstr "Second step colour:"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
-msgstr ""
+msgstr "Select A File"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
@@ -176,35 +176,35 @@ msgstr "Shadow colour:"
 
 #: ../avant-preferences/window.glade.h:34
 msgid "Show separator between launchers and tasks"
-msgstr ""
+msgstr "Show separator between launchers and tasks"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
-msgstr ""
+msgstr "Show windows from all viewports"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
-msgstr ""
+msgstr "Task Appearance"
 
 #: ../avant-preferences/window.glade.h:37
 msgid "Tasks have arrows"
-msgstr ""
+msgstr "Tasks have arrows"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
-msgstr ""
+msgstr "The bar automatically hides when not used"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
-msgstr ""
+msgstr "Transparency:"
 
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
-msgstr ""
+msgstr "Unused icons fade when mouse-over"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
-msgstr ""
+msgstr "Windows don't overlap the bar if this is set"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
@@ -212,16 +212,16 @@ msgstr "Add Applet"
 
 #: ../avant-applets/avant-applets.glade.h:2
 msgid "Avant Applet Preferences"
-msgstr ""
+msgstr "Avant Applet Preferences"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
 msgid "Positions"
-msgstr ""
+msgstr "Positions"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
 msgid "Avant Launcher Preferences"
-msgstr ""
+msgstr "Avant Launcher Preferences"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
@@ -233,19 +233,19 @@ msgstr "The orientation of the tray."
 
 #: ../applets/switcher/switcher.schemas.in.h:1
 msgid "How many rows the switcher should have"
-msgstr ""
+msgstr "How many rows the switcher should have"
 
 #: ../applets/switcher/switcher.schemas.in.h:2
 msgid "The height of the switcher"
-msgstr ""
+msgstr "The height of the switcher"
 
 #: ../applets/switcher/switcher.schemas.in.h:3
 msgid "The width of the switcher"
-msgstr ""
+msgstr "The width of the switcher"
 
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
-msgstr ""
+msgstr "Whether the deleted items applet should show a count on its icon"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
@@ -294,11 +294,13 @@ msgid ""
 "Error while spawning nautilus:\n"
 "%s"
 msgstr ""
+"Error while spawning nautilus:\n"
+"%s"
 
 #: ../applets/trash/trashapplet.c:845
 #, c-format
 msgid "There was an error displaying help: %s"
-msgstr ""
+msgstr "There was an error displaying help: %s"
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
@@ -309,28 +311,35 @@ msgid ""
 "A GNOME trash bin that lives in your panel. You can use it to view the trash "
 "or drag and drop items into the trash."
 msgstr ""
+"A GNOME Deleted Items folder that lives in your panel. You can use it to "
+"view the waste or drag and drop items into the Deleted Items folder."
 
 #: ../applets/trash/trashapplet.c:876
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Andrew Starr-Bochicchio https://launchpad.net/~andrewsomething\n"
+"  David O'Callaghan https://launchpad.net/~david-ocallaghan\n"
 "  EndelWar https://launchpad.net/~endelwar\n"
 "  Neil J. Patel https://launchpad.net/~njpatel\n"
-"  Rodrigo Donado https://launchpad.net/~frezeeer\n"
-"  andrewsomething https://launchpad.net/~a-starr-b"
+"  Rodrigo Donado https://launchpad.net/~frezeeer"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
-msgstr ""
+msgstr "Delete Immediately?"
 
 #: ../applets/trash/trashapplet.c:925
 msgid "Cannot move items to trash, do you want to delete them immediately?"
 msgstr ""
+"Cannot move items to the Deleted Items folder, do you want to delete them "
+"permanently?"
 
 #: ../applets/trash/trashapplet.c:928
 msgid ""
 "Cannot move some items to trash, do you want to delete these immediately?"
 msgstr ""
+"Cannot move some items to the Deleted Items folder, do you want to delete "
+"them permanently?"
 
 #: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
 #, c-format
@@ -338,7 +347,9 @@ msgid ""
 "Unable to move to trash:\n"
 "%s"
 msgstr ""
+"Unable to move to the Deleted Items folder:\n"
+"%s"
 
 #: ../src/awn-task.c:2279
 msgid "Change Icon"
-msgstr ""
+msgstr "Change Icon"

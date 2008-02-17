@@ -1,13 +1,4 @@
 applets/taskman.desktop.in
-applets/separator/separator.desktop.in
-applets/switcher/applet.c
-applets/switcher/switcher.desktop.in
-applets/trash/trashapplet.glade
-applets/trash/trash.desktop.in
 awn-manager/window.glade
-applets/notification-area/eggtraymanager.c
-applets/switcher/switcher.schemas.in
-applets/trash/trash.schemas.in
-applets/trash/trashapplet.c
 src/awn-task.c
 

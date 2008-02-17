@@ -8,19 +8,19 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-24 21:29+0000\n"
+"PO-Revision-Date: 2008-01-22 11:44+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
-msgstr "Zeilen:"
+msgstr "Reihen:"
 
 #: ../applets/switcher/applet.c:128
 msgid "Width:"
@@ -40,11 +40,11 @@ msgstr "<big><b>Mülleimer wird geleert</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr "Müll wird geleert"
+msgstr "Mülleimer leeren"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "<b>Icon wenn aktiv</b>"
+msgstr "<b>Aktives Icon</b>"
 
 #: ../avant-preferences/window.glade.h:2
 msgid "<b>Arrows</b>"
@@ -52,7 +52,7 @@ msgstr "<b>Pfeile</b>"
 
 #: ../avant-preferences/window.glade.h:3
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>Verhalten der Taskleiste</b>"
+msgstr "<b>Verhalten der Leiste</b>"
 
 #: ../avant-preferences/window.glade.h:4
 msgid "<b>Borders</b>"
@@ -100,7 +100,7 @@ msgstr "Hintergrundfarbe:"
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
-msgstr "Taskleisten Design"
+msgstr "Erscheinungsbild"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
@@ -112,15 +112,15 @@ msgstr "Farbe:"
 
 #: ../avant-preferences/window.glade.h:18
 msgid "Enable pattern"
-msgstr "Muster ermöglichen"
+msgstr "Muster verwenden"
 
 #: ../avant-preferences/window.glade.h:19
 msgid "Enable rounded corners"
-msgstr "Runde Ecken ermöglichen"
+msgstr "Runde Ecken verwenden"
 
 #: ../avant-preferences/window.glade.h:20
 msgid "Fade effect (experimental)"
-msgstr "Blendeffekt"
+msgstr "Überblendeffekt (experimentell)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
@@ -128,7 +128,7 @@ msgstr "Erste Farbe:"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
-msgstr "Schriftgröße"
+msgstr "Schriftgröße:"
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
@@ -164,7 +164,7 @@ msgstr "Zweite Farbe:"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
-msgstr "Wählen Sie eine Datei"
+msgstr "Datei auswählen"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
@@ -208,11 +208,11 @@ msgstr "Fenster überlappen die Leiste nicht."
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
-msgstr "Miniprogramm hinzufügen"
+msgstr "Applet hinzufügen"
 
 #: ../avant-applets/avant-applets.glade.h:2
 msgid "Avant Applet Preferences"
-msgstr "Avant Miniprogramm Einstellungen"
+msgstr "Avant Applet Einstellungen"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
@@ -229,7 +229,7 @@ msgstr "Ausrichtung"
 
 #: ../applets/notification-area/eggtraymanager.c:147
 msgid "The orientation of the tray."
-msgstr "Ausrichtung der Ablage."
+msgstr "Die Ausrichtung der Kontrollleiste."
 
 #: ../applets/switcher/switcher.schemas.in.h:1
 msgid "How many rows the switcher should have"
@@ -245,7 +245,7 @@ msgstr "Breite des Umschalters"
 
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
-msgstr "Soll das Trash Applet einen Zähler im Icon anzeigen?"
+msgstr "Soll das Mülleimer Applet einen Zähler im Icon anzeigen?"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
@@ -274,7 +274,8 @@ msgstr "Entferne:"
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr "Möchten Sie alle Objekte aus dem Mülleimer löschen?"
+msgstr ""
+"Sind sie sicher, dass Sie alle Objekte im Müll dauerhaft löschen wollen?"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
@@ -307,25 +308,31 @@ msgstr ""
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
-msgstr "Mülleimer"
+msgstr "Mülleimer Applet"
 
 #: ../applets/trash/trashapplet.c:871
 msgid ""
 "A GNOME trash bin that lives in your panel. You can use it to view the trash "
 "or drag and drop items into the trash."
 msgstr ""
-"Ein Mülleimer für Ihr GNOME-Panel. Sie können dieses verwenden, um sich Ihre "
-"im Müll befindlichen Dateien anzuschauen oder Objekte in den Müll zu "
-"verschieben."
+"Ein Mülleimer für Ihr AWN. Sie können dieses verwenden, um sich Ihre im Müll "
+"befindlichen Dateien anzuschauen oder Objekte in den Müll zu verschieben."
 
 #: ../applets/trash/trashapplet.c:876
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
 "  Andreas Thomas https://launchpad.net/~andreas-thomas\n"
+"  Chocwise https://launchpad.net/~chocwise\n"
+"  Dominik Lübben https://launchpad.net/~domi-media-universe\n"
 "  Hansi Raber https://launchpad.net/~super-superduper\n"
 "  Lorenz https://launchpad.net/~lorenzloidl\n"
-"  Richard Beyer https://launchpad.net/~nazrat"
+"  Martin Lettner https://launchpad.net/~m.lettner\n"
+"  Richard Beyer https://launchpad.net/~nazrat\n"
+"  Uwe Hauck https://launchpad.net/~bicyclist\n"
+"  fabs https://launchpad.net/~fabs-musicjunkie\n"
+"  simpson-fan https://launchpad.net/~valentin-steinwandter\n"
+"  wusch https://launchpad.net/~christoph-pojer"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"

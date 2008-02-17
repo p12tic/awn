@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-23 10:11+0000\n"
+"PO-Revision-Date: 2008-01-11 23:15+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -68,7 +68,7 @@ msgstr "<b>Gradiente</b>"
 
 #: ../avant-preferences/window.glade.h:7
 msgid "<b>Highlight</b>"
-msgstr "<b>Evidenza</b>"
+msgstr "<b>Evidenzia</b>"
 
 #: ../avant-preferences/window.glade.h:8
 msgid "<b>Pattern</b>"
@@ -88,7 +88,7 @@ msgstr "<b>Finestre</b>"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
-msgstr "Nascondi automaticamente la barra quando non utilizzata"
+msgstr "Nascondere automaticamente la barra quando non utilizzata"
 
 #: ../avant-preferences/window.glade.h:13
 msgid "Avant Preferences"
@@ -96,11 +96,11 @@ msgstr "Preferenze di Avant"
 
 #: ../avant-preferences/window.glade.h:14
 msgid "Background color:"
-msgstr "Colore dello sfondo:"
+msgstr "Colore sfondo:"
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
-msgstr "Aspetto della barra"
+msgstr "Aspetto Barra"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
@@ -112,11 +112,11 @@ msgstr "Colore:"
 
 #: ../avant-preferences/window.glade.h:18
 msgid "Enable pattern"
-msgstr "Abilita motivo"
+msgstr "Abilitare il motivo"
 
 #: ../avant-preferences/window.glade.h:19
 msgid "Enable rounded corners"
-msgstr "Abilita angoli arrotondati"
+msgstr "Arrotondare gli angoli"
 
 #: ../avant-preferences/window.glade.h:20
 msgid "Fade effect (experimental)"
@@ -128,15 +128,15 @@ msgstr "Colore del primo passaggio:"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
-msgstr "Dimensione caratteri:"
+msgstr "Dimensione carattere:"
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
-msgstr "Impostazioni Generali"
+msgstr "Generali"
 
 #: ../avant-preferences/window.glade.h:24
 msgid "Glass Engine"
-msgstr "Glass Engine"
+msgstr "Effetto Specchio"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
@@ -156,7 +156,7 @@ msgstr "Le finestre massimizzate non coprono la barra (richiede riavvio)"
 
 #: ../avant-preferences/window.glade.h:29
 msgid "Pattern Engine"
-msgstr "Motore a motivo"
+msgstr "Motore a motivi"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
@@ -164,11 +164,11 @@ msgstr "Colore del secondo passaggio:"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
-msgstr "Seleziona un file"
+msgstr "Selezionare un file"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
-msgstr "Colore del separatore:"
+msgstr "Colore separatore:"
 
 #: ../avant-preferences/window.glade.h:33
 msgid "Shadow color:"
@@ -176,23 +176,23 @@ msgstr "Colore dell'ombra:"
 
 #: ../avant-preferences/window.glade.h:34
 msgid "Show separator between launchers and tasks"
-msgstr "Mostra un separatore fra i launcher e i task"
+msgstr "Mostrare un separatore tra i lanciatori e i task"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
-msgstr "Mostra le finestre di tutte le aree di lavoro"
+msgstr "Mostrare le finestre di tutte le aree di lavoro"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
-msgstr "Aspetto dei task"
+msgstr "Aspetto dei programmi"
 
 #: ../avant-preferences/window.glade.h:37
 msgid "Tasks have arrows"
-msgstr "I task hanno le frecce"
+msgstr "I programmi presentano le frecce"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
-msgstr "La barra si nasconde automaticamente quando non è utilizzata"
+msgstr "Nascondere automaticamente la barra quando non usata"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
@@ -200,11 +200,11 @@ msgstr "Trasparenza:"
 
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
-msgstr "Le icone non utilizzate si dissolvono al passaggio del mouse"
+msgstr "Le icone non utilizzate sfumano al passaggio del mouse"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
-msgstr "Le finestre non coprono la barra se questo è attivato"
+msgstr "Le finestre non coprono la barra se questa è attivata"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
@@ -212,16 +212,16 @@ msgstr "Aggiungi applet"
 
 #: ../avant-applets/avant-applets.glade.h:2
 msgid "Avant Applet Preferences"
-msgstr "Preferenze applet Avant"
+msgstr "Preferenze applet di Avant"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
 msgid "Positions"
-msgstr "Posizioni"
+msgstr "Posizione"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
 msgid "Avant Launcher Preferences"
-msgstr "Preferenze launcher Avant"
+msgstr "Preferenze lanciatori di Avant"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
@@ -229,7 +229,7 @@ msgstr "Orientamento"
 
 #: ../applets/notification-area/eggtraymanager.c:147
 msgid "The orientation of the tray."
-msgstr "L'orientamento della tray."
+msgstr "L'orientamento del vassoio."
 
 #: ../applets/switcher/switcher.schemas.in.h:1
 msgid "How many rows the switcher should have"
@@ -260,17 +260,17 @@ msgstr "Nessun oggetto nel cestino"
 #, c-format
 msgid "%d Item in Trash"
 msgid_plural "%d Items in Trash"
-msgstr[0] "%d oggetto nel cestino"
+msgstr[0] "%d oggetti nel cestino"
 msgstr[1] "%d oggetti nel cestino"
 
 #: ../applets/trash/trashapplet.c:657
 #, c-format
 msgid "Removing item %lu of %lu"
-msgstr "Cancellazione dell'oggetto %lu di %lu"
+msgstr "Rimozione oggetto %lu di %lu"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
-msgstr "Rimozione:"
+msgstr "Rimozione in corso:"
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
@@ -287,7 +287,7 @@ msgstr ""
 
 #: ../applets/trash/trashapplet.c:746
 msgid "_Empty Trash"
-msgstr "Svuota C_estino"
+msgstr "Sv_uota cestino"
 
 #: ../applets/trash/trashapplet.c:825
 #, c-format
@@ -305,26 +305,32 @@ msgstr "C'è stato un errore nella visualizzazione della guida: %s"
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
-msgstr "Applet del cestino"
+msgstr "Applet cestino"
 
 #: ../applets/trash/trashapplet.c:871
 msgid ""
 "A GNOME trash bin that lives in your panel. You can use it to view the trash "
 "or drag and drop items into the trash."
 msgstr ""
-"Un cestino per GNOME che risiede sul pannello. È possibile usarlo per "
-"visualizzare il cestino o trascinarci oggetti."
+"Un cestino per GNOME che risiede sul pannello. È possibile utilizzarlo per "
+"visualizzare il cestino o trascinare oggetti al suo interno."
 
 #: ../applets/trash/trashapplet.c:876
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Alessio Treglia https://launchpad.net/~quadrispro\n"
+"  Antonio Piccinno https://launchpad.net/~acquarica\n"
+"  Davide Ferrero https://launchpad.net/~davideferre\n"
 "  EndelWar https://launchpad.net/~endelwar\n"
 "  Gianni Vialetto https://launchpad.net/~moonfang\n"
+"  Luca Ferretti https://launchpad.net/~elle-uca\n"
+"  Luca Livraghi https://launchpad.net/~luca91\n"
+"  Marco Meoni https://launchpad.net/~marcomeoni\n"
 "  Nicola Piovesan https://launchpad.net/~piovesannicola\n"
-"  acquarica https://launchpad.net/~acquarica\n"
 "  cerebro84 https://launchpad.net/~cerebro84\n"
 "  crash_pc89 https://launchpad.net/~crash-pc89\n"
+"  enubuntu https://launchpad.net/~ironenry-gmail\n"
 "  neoex https://launchpad.net/~neoex-dc"
 
 #: ../applets/trash/trashapplet.c:896

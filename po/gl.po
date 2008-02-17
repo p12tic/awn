@@ -8,23 +8,23 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-28 20:52+0000\n"
+"PO-Revision-Date: 2007-11-10 18:35+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Galician <gl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:19+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
-msgstr "Columnas:"
+msgstr "Filas:"
 
 #: ../applets/switcher/applet.c:128
 msgid "Width:"
-msgstr ""
+msgstr "Anchura:"
 
 #: ../applets/switcher/applet.c:140
 msgid "Height:"
@@ -36,15 +36,15 @@ msgstr "<b>Dende:</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
 msgid "<big><b>Emptying the Trash</b></big>"
-msgstr "<big><b>Baleirado a basoira</b></big>"
+msgstr "<big><b>Baleirando o lixo</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr "Baleirando a basoira"
+msgstr "Baleirando o lixo"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "Icono activo"
+msgstr "<b>Icona activa</b>"
 
 #: ../avant-preferences/window.glade.h:2
 msgid "<b>Arrows</b>"
@@ -56,7 +56,7 @@ msgstr "<b>Comportamento da barra</b>"
 
 #: ../avant-preferences/window.glade.h:4
 msgid "<b>Borders</b>"
-msgstr "<b>Bordes</b>"
+msgstr "<b>Bordos</b>"
 
 #: ../avant-preferences/window.glade.h:5
 msgid "<b>Corners</b>"
@@ -84,7 +84,7 @@ msgstr "<b>Texto</b>"
 
 #: ../avant-preferences/window.glade.h:11
 msgid "<b>Windows</b>"
-msgstr "<b>Fiestras</b>"
+msgstr "<b>Ventás</b>"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
@@ -92,7 +92,7 @@ msgstr "Agochar a barra cando non se empregue"
 
 #: ../avant-preferences/window.glade.h:13
 msgid "Avant Preferences"
-msgstr "Configuracións de Avant"
+msgstr "Preferencias de Avant"
 
 #: ../avant-preferences/window.glade.h:14
 msgid "Background color:"
@@ -104,11 +104,11 @@ msgstr "Apariencia da Barra"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
-msgstr ""
+msgstr "Negriña"
 
 #: ../avant-preferences/window.glade.h:17
 msgid "Color:"
-msgstr ""
+msgstr "Cor:"
 
 #: ../avant-preferences/window.glade.h:18
 msgid "Enable pattern"
@@ -136,7 +136,7 @@ msgstr "Xeral"
 
 #: ../avant-preferences/window.glade.h:24
 msgid "Glass Engine"
-msgstr "Motor Vidro"
+msgstr "Motor de vidro"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
@@ -152,11 +152,11 @@ msgstr "Borde principal"
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "As fiestras maximizadas non cubrirán a barra (require reiniciar)"
+msgstr "As ventás maximizadas non cubrirán a barra (precisa reiniciar)"
 
 #: ../avant-preferences/window.glade.h:29
 msgid "Pattern Engine"
-msgstr "Motor Patrón"
+msgstr "Motor de patróns"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
@@ -172,15 +172,15 @@ msgstr "Cor do separador:"
 
 #: ../avant-preferences/window.glade.h:33
 msgid "Shadow color:"
-msgstr "Cor de sombra:"
+msgstr "Cor da sombra:"
 
 #: ../avant-preferences/window.glade.h:34
 msgid "Show separator between launchers and tasks"
-msgstr "Mostrar separador entre os accesos directos e as tarefas"
+msgstr "Mostrar un separador entre os accesos directos e as tarefas"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
-msgstr "Mostrar fiestras de tódolos escritorios"
+msgstr "Mostrar as ventás de tódolos escritorios"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
@@ -192,7 +192,7 @@ msgstr "As tarefas teñen frechas"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
-msgstr "A barra escondese automáticamente se non se emprega"
+msgstr "A barra escondese automaticamente se non se emprega"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
@@ -200,19 +200,19 @@ msgstr "Transparencia:"
 
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
-msgstr "Os iconos non empregados desvanecense cando o rato non os enfoca"
+msgstr "As iconas que non sen empregan esvaécense cando o rato os enfoca"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
-msgstr "As fiestras non solapan a barra se isto está activado"
+msgstr "As ventás non solapan a barra se isto está activado"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
-msgstr "Engadir Applet"
+msgstr "Engadir un applet"
 
 #: ../avant-applets/avant-applets.glade.h:2
 msgid "Avant Applet Preferences"
-msgstr "Preferencias do Applet Avant"
+msgstr "Preferencias do applet Avant"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
@@ -221,7 +221,7 @@ msgstr "Posicións"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
 msgid "Avant Launcher Preferences"
-msgstr "Preferencias do Avant Launcher"
+msgstr "Preferencias do lanzador de Avant"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
@@ -245,23 +245,23 @@ msgstr "O ancho do cambiador"
 
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
-msgstr "Se o applet de basoira debe mostrar a conta no seu icono"
+msgstr "Se o applet para o lixo debe mostrar a conta no seu icono"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
 msgid "Unable to find the Trash directory: %s"
-msgstr "Non se pode atopar o direcorio de basoira: %s"
+msgstr "Non se pode atopar o directorio do lixo: %s"
 
 #: ../applets/trash/trashapplet.c:526
 msgid "No Items in Trash"
-msgstr "Non hai elementos na basoira"
+msgstr "Non hai elementos no lixo"
 
 #: ../applets/trash/trashapplet.c:530
 #, c-format
 msgid "%d Item in Trash"
 msgid_plural "%d Items in Trash"
-msgstr[0] "%d elemento na basoira"
-msgstr[1] "%d elementos na basoira"
+msgstr[0] "%d elemento no lixo"
+msgstr[1] "%d elementos lo lixo"
 
 #: ../applets/trash/trashapplet.c:657
 #, c-format
@@ -274,66 +274,68 @@ msgstr "Eliminando:"
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr "Baleirando tódolos elementos da basoira"
+msgstr "Baleirar todos os elementos do lixo?"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
 "If you choose to empty the trash, all items in it will be permanently lost. "
 "Please note that you can also delete them separately."
 msgstr ""
-"Se escolle baleirar a basoira, todos os elementos dentro dela borraranse e "
-"perderanse para sempre. Tamén pode borralos por separado."
+"Se selecciona baleirar o lixo, todos os elementos aí contidos eliminaranse "
+"definitivamente. Teña en conta que tamén os pode eliminar por separado."
 
 #: ../applets/trash/trashapplet.c:746
 msgid "_Empty Trash"
-msgstr "_Baleirar Lixo"
+msgstr "_Baleirar o lixo"
 
 #: ../applets/trash/trashapplet.c:825
-#, fuzzy
+#, c-format
 msgid ""
 "Error while spawning nautilus:\n"
 "%s"
 msgstr ""
-"Erro mentras se reinicia o nautilus:\n"
+"Erro ao o iniciar o nautilus:\n"
 "%s"
 
 #: ../applets/trash/trashapplet.c:845
 #, c-format
 msgid "There was an error displaying help: %s"
-msgstr "Houbo un erro ao mostrar a axuda: %s"
+msgstr "Ocorreu un erro ao mostrar a axuda: %s"
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
-msgstr "Applet do Lixo"
+msgstr "Applet do lixo"
 
 #: ../applets/trash/trashapplet.c:871
 msgid ""
 "A GNOME trash bin that lives in your panel. You can use it to view the trash "
 "or drag and drop items into the trash."
 msgstr ""
-"Unha basoira GNOME que está no panel. Podes empregalo para ver a basoira ou "
-"arrastrar elementos nela."
+"Un contedor de lixo do Gnome que está no seu panel. Pode usalo para ver o "
+"contido do lixo ou arrastrar e soltar elementos no lixo."
 
 #: ../applets/trash/trashapplet.c:876
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Francisco Diéguez https://launchpad.net/~cuppido"
+"  Felipe Gil Castiñeira https://launchpad.net/~xil\n"
+"  Francisco Diéguez https://launchpad.net/~cuppido\n"
+"  Manuel Angel Varela https://launchpad.net/~mvarela"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
-msgstr "¿Borrar inmediatamente?"
+msgstr "Quere eliminar inmediatamente?"
 
 #: ../applets/trash/trashapplet.c:925
 msgid "Cannot move items to trash, do you want to delete them immediately?"
 msgstr ""
-"Non se poden mover os elementos ao lixo, ¿quere borralos inmediatamente?"
+"Non se poden mover os elementos ao lixo, quéreos borrar inmediatamente?"
 
 #: ../applets/trash/trashapplet.c:928
 msgid ""
 "Cannot move some items to trash, do you want to delete these immediately?"
 msgstr ""
-"Non é posible mover algúns elementos ó lixo. ¿Quere borralos inmediatamente?"
+"Non se poden mover algúns elementos ao lixo, quéreos eliminar inmediatamente?"
 
 #: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
 #, c-format
@@ -341,9 +343,9 @@ msgid ""
 "Unable to move to trash:\n"
 "%s"
 msgstr ""
-"Imposible mover ao lixo:\n"
+"Non é posible mover ao lixo:\n"
 "%s"
 
 #: ../src/awn-task.c:2279
 msgid "Change Icon"
-msgstr "Cambiar icono"
+msgstr "Mudar icona"

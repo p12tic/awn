@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-16 17:51+0000\n"
+"PO-Revision-Date: 2008-02-08 18:18+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,12 +16,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
-msgstr "Строк:"
+msgstr "Строки:"
 
 #: ../applets/switcher/applet.c:128
 msgid "Width:"
@@ -33,7 +33,7 @@ msgstr "Высота:"
 
 #: ../applets/trash/trashapplet.glade.h:1
 msgid "<b>From:</b>"
-msgstr "<b>От:</b>"
+msgstr "<b>Из:</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
 msgid "<big><b>Emptying the Trash</b></big>"
@@ -45,16 +45,15 @@ msgstr "Очистка корзины"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "Активный значок"
+msgstr "<b>Активный значок</b>"
 
 #: ../avant-preferences/window.glade.h:2
 msgid "<b>Arrows</b>"
 msgstr "<b>Стрелки</b>"
 
 #: ../avant-preferences/window.glade.h:3
-#, fuzzy
 msgid "<b>Bar behaviour</b>"
-msgstr "Поведение панели"
+msgstr "<b>Поведение панели</b>"
 
 #: ../avant-preferences/window.glade.h:4
 msgid "<b>Borders</b>"
@@ -62,11 +61,11 @@ msgstr "<b>Границы</b>"
 
 #: ../avant-preferences/window.glade.h:5
 msgid "<b>Corners</b>"
-msgstr "Углы"
+msgstr "<b>Углы</b>"
 
 #: ../avant-preferences/window.glade.h:6
 msgid "<b>Gradient</b>"
-msgstr "Градиент"
+msgstr "<b>Градиент</b>"
 
 #: ../avant-preferences/window.glade.h:7
 msgid "<b>Highlight</b>"
@@ -78,7 +77,7 @@ msgstr "<b>Шаблон</b>"
 
 #: ../avant-preferences/window.glade.h:9
 msgid "<b>Separator</b>"
-msgstr "Разделитель"
+msgstr "<b>Разделитель</b>"
 
 #: ../avant-preferences/window.glade.h:10
 msgid "<b>Text</b>"
@@ -86,7 +85,7 @@ msgstr "<b>Текст</b>"
 
 #: ../avant-preferences/window.glade.h:11
 msgid "<b>Windows</b>"
-msgstr "Окна"
+msgstr "<b>Окна</b>"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
@@ -106,7 +105,7 @@ msgstr "Внешний вид панели"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
-msgstr "Жирный"
+msgstr "Полужирный"
 
 #: ../avant-preferences/window.glade.h:17
 msgid "Color:"
@@ -126,7 +125,7 @@ msgstr "Эффект затухания (нестабильный)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
-msgstr "Первый цвет"
+msgstr "Первый цвет:"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
@@ -146,7 +145,7 @@ msgstr "Внутренняя граница:"
 
 #: ../avant-preferences/window.glade.h:26
 msgid "Italic"
-msgstr "Наклонный"
+msgstr "Курсив"
 
 #: ../avant-preferences/window.glade.h:27
 msgid "Main border:"
@@ -167,7 +166,7 @@ msgstr "Вторичный цвет:"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
-msgstr "Укажите файл шаблона"
+msgstr "Выберите файл"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
@@ -206,23 +205,19 @@ msgid "Unused icons fade when mouse-over"
 msgstr "Затемнять неиспользуемые иконки при наведении"
 
 #: ../avant-preferences/window.glade.h:41
-#, fuzzy
 msgid "Windows don't overlap the bar if this is set"
-msgstr "Если выбрано, окна не залезают на панель"
+msgstr "Не позволять развернутым на весь экран окнам укладываться под панель"
 
 #: ../avant-applets/avant-applets.glade.h:1
-#, fuzzy
 msgid "Add Applet"
-msgstr "Добавить аплет"
+msgstr "Добавить апплет"
 
 #: ../avant-applets/avant-applets.glade.h:2
-#, fuzzy
 msgid "Avant Applet Preferences"
-msgstr "Настройки апплетов"
+msgstr "Настройки Avant апплетов"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
-#, fuzzy
 msgid "Positions"
 msgstr "Позиции"
 
@@ -251,9 +246,8 @@ msgid "The width of the switcher"
 msgstr "Ширина переключателя"
 
 #: ../applets/trash/trash.schemas.in.h:1
-#, fuzzy
 msgid "Whether the trash applet should show a count on its icon"
-msgstr "Показывать ли количество файлов на иконке корзины"
+msgstr "Показать количество элементов в корзине"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
@@ -262,10 +256,10 @@ msgstr "Не удается найти каталог корзины: %s"
 
 #: ../applets/trash/trashapplet.c:526
 msgid "No Items in Trash"
-msgstr "В корзине нет элементов"
+msgstr "Корзина пуста"
 
 #: ../applets/trash/trashapplet.c:530
-#, fuzzy
+#, c-format
 msgid "%d Item in Trash"
 msgid_plural "%d Items in Trash"
 msgstr[0] "%d элемент в корзине"
@@ -273,9 +267,9 @@ msgstr[1] "%d элемента в корзине"
 msgstr[2] "%d элементов в корзине"
 
 #: ../applets/trash/trashapplet.c:657
-#, fuzzy
+#, fuzzy, c-format
 msgid "Removing item %lu of %lu"
-msgstr "Удаление: %lu элементов из %lu"
+msgstr "Удаление элемента %lu из %lu"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
@@ -283,7 +277,7 @@ msgstr "Удаление:"
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr "Очистить все элементы из корзины?"
+msgstr "Полностью очистить корзину?"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
@@ -309,7 +303,7 @@ msgstr ""
 #: ../applets/trash/trashapplet.c:845
 #, c-format
 msgid "There was an error displaying help: %s"
-msgstr "Ошибка отображения справки: %s"
+msgstr "При отображении справки возникла ошибка: %s"
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
@@ -328,8 +322,13 @@ msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
 "  Alexey 'huNTer' Kolosov https://launchpad.net/~alexey-kolosov\n"
+"  Andrei Zhekov https://launchpad.net/~x3ro.daemon\n"
+"  Artem Urvanov https://launchpad.net/~artem62\n"
+"  Ivan Ivanoff https://launchpad.net/~spammeroff\n"
 "  Photon https://launchpad.net/~michael-kogan\n"
 "  Sublimit https://launchpad.net/~vinokourov\n"
+"  funkypotatoe https://launchpad.net/~littlebro-inbox\n"
+"  idle sign https://launchpad.net/~idlesign\n"
 "  pavpanchekha https://launchpad.net/~pavpanchekha"
 
 #: ../applets/trash/trashapplet.c:896
@@ -338,7 +337,7 @@ msgstr "Удалить немедленно?"
 
 #: ../applets/trash/trashapplet.c:925
 msgid "Cannot move items to trash, do you want to delete them immediately?"
-msgstr "Не удается переместить элементы в корзину, удалить их окончательно?"
+msgstr "Не удалось переместить элементы в корзину, удалить их безвозвратно?"
 
 #: ../applets/trash/trashapplet.c:928
 msgid ""
@@ -356,6 +355,5 @@ msgstr ""
 "%s"
 
 #: ../src/awn-task.c:2279
-#, fuzzy
 msgid "Change Icon"
-msgstr "Изменить значок"
+msgstr "Сменить значок"

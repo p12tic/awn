@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-12 15:52+0000\n"
+"PO-Revision-Date: 2008-02-04 16:35+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -44,7 +44,7 @@ msgstr "Esvaziando a Lixeira"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "<b>Ícone ativo</b>"
+msgstr "<b>Ícone Ativo</b>"
 
 #: ../avant-preferences/window.glade.h:2
 msgid "<b>Arrows</b>"
@@ -124,7 +124,7 @@ msgstr "Efeito de <i>esmaciamento</i> (experimental)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
-msgstr "Cor superior da barra"
+msgstr "Cor superior da barra:"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
@@ -160,7 +160,7 @@ msgstr "Mecanismo de Padrão"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
-msgstr "Cor inferior da barra"
+msgstr "Cor inferior da barra:"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
@@ -184,11 +184,11 @@ msgstr "Mostrar janelas de todas as <i>áreas</i>"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
-msgstr "Aparência da tarefa"
+msgstr "Aparência da Tarefa"
 
 #: ../avant-preferences/window.glade.h:37
 msgid "Tasks have arrows"
-msgstr "Tarefas possuem setas"
+msgstr "As tarefas possuem setas"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
@@ -267,7 +267,7 @@ msgstr[1] "%d itens na Lixeira"
 #: ../applets/trash/trashapplet.c:657
 #, c-format
 msgid "Removing item %lu of %lu"
-msgstr "Removendo item %lu of %lu"
+msgstr "Removendo item %lu de %lu"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
@@ -275,7 +275,7 @@ msgstr "Removendo:"
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr "Você tem certeza de que deseja esvaziar a lixeira?"
+msgstr "Você tem certeza de que deseja esvaziar todos os itens da lixeira?"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
@@ -319,7 +319,9 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  André Gondim https://launchpad.net/~andregondim\n"
 "  Daniel Tiecher https://launchpad.net/~daniel-anderson-tiecher\n"
+"  Fábio Nogueira https://launchpad.net/~deb-user-ba\n"
 "  Gustavo Silva Castilho de Avellar https://launchpad.net/~gustavoavellar\n"
 "  Rafael Capanema https://launchpad.net/~rafaelcapanema\n"
 "  hmsf https://launchpad.net/~heliomsf"
@@ -352,4 +354,4 @@ msgstr ""
 
 #: ../src/awn-task.c:2279
 msgid "Change Icon"
-msgstr "Alterar ícone"
+msgstr "Alterar Ícone"

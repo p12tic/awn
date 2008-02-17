@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-08-01 16:47+0000\n"
+"PO-Revision-Date: 2008-02-04 23:27+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Romanian <ro@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1 ? 0: (((n % 100 > 19) || ((n % 100 "
 "== 0) && (n != 0))) ? 2: 1));\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -36,16 +36,18 @@ msgid "<b>From:</b>"
 msgstr "<b>De la:</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
+#, fuzzy
 msgid "<big><b>Emptying the Trash</b></big>"
-msgstr "<big><b>Golesc Gunoiul</b></big>"
+msgstr "<big><b>Golesc patumierah</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
+#, fuzzy
 msgid "Emptying the Trash"
-msgstr "Golesc gunoiul"
+msgstr "Golesc patumiera"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "<b>Icon</b>"
+msgstr "<b>Iconiţă activă</b>"
 
 #: ../avant-preferences/window.glade.h:2
 msgid "<b>Arrows</b>"
@@ -116,12 +118,14 @@ msgid "Enable pattern"
 msgstr "Activează modelul"
 
 #: ../avant-preferences/window.glade.h:19
+#, fuzzy
 msgid "Enable rounded corners"
-msgstr "Activează colțurile rotunde"
+msgstr "Activează colţuri rotunjite"
 
 #: ../avant-preferences/window.glade.h:20
+#, fuzzy
 msgid "Fade effect (experimental)"
-msgstr "Efect de întunecare (experimental)"
+msgstr "Efect de umbrire (experimental)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
@@ -245,25 +249,27 @@ msgid "The width of the switcher"
 msgstr "Lățime comutator"
 
 #: ../applets/trash/trash.schemas.in.h:1
+#, fuzzy
 msgid "Whether the trash applet should show a count on its icon"
-msgstr "Afișează contor în miniaplicația Coș de gunoi"
+msgstr "Afișează contor fişiere în miniaplicația Patumieră"
 
 #: ../applets/trash/trashapplet.c:153
-#, c-format
+#, fuzzy, c-format
 msgid "Unable to find the Trash directory: %s"
-msgstr "Nu am putut găsi dosarul Gunoi: %s"
+msgstr "Nu am putut găsi dosarul Patumieră: %s"
 
 #: ../applets/trash/trashapplet.c:526
+#, fuzzy
 msgid "No Items in Trash"
-msgstr "Nici un element în Gunoi"
+msgstr "Nici un element în Patumieră"
 
 #: ../applets/trash/trashapplet.c:530
-#, c-format
+#, fuzzy, c-format
 msgid "%d Item in Trash"
 msgid_plural "%d Items in Trash"
-msgstr[0] "%d element în Gunoi"
-msgstr[1] "%d elemente în Gunoi"
-msgstr[2] "%d de elemente în Gunoi"
+msgstr[0] "%d element în Patumieră"
+msgstr[1] "%d elemente în Patumieră"
+msgstr[2] "%d de elemente în Patumieră"
 
 #: ../applets/trash/trashapplet.c:657
 #, c-format
@@ -275,20 +281,23 @@ msgid "Removing:"
 msgstr "Şterg:"
 
 #: ../applets/trash/trashapplet.c:723
+#, fuzzy
 msgid "Empty all of the items from the trash?"
-msgstr "Ștergeți toate elementele din gunoi?"
+msgstr "Ștergeți toate elementele din patumieră?"
 
 #: ../applets/trash/trashapplet.c:726
+#, fuzzy
 msgid ""
 "If you choose to empty the trash, all items in it will be permanently lost. "
 "Please note that you can also delete them separately."
 msgstr ""
-"Dacă alegeți să goliți gunoiul, toate elementele din el vor fi pierdute "
-"pentru totdeauna. Nu uitați că le puteți șterge și separat."
+"Dacă alegeţi să goliţi patumiera, toate elementele din el vor fi pierdute "
+"pentru totdeauna. Nu uitaţi că pot fi şterse şi independent unul de celălalt."
 
 #: ../applets/trash/trashapplet.c:746
+#, fuzzy
 msgid "_Empty Trash"
-msgstr "_Golește coșul de gunoi"
+msgstr "_Golește patumiera"
 
 #: ../applets/trash/trashapplet.c:825
 #, c-format
@@ -308,22 +317,25 @@ msgstr ""
 "%s"
 
 #: ../applets/trash/trashapplet.c:868
+#, fuzzy
 msgid "Trash Applet"
-msgstr "Miniaplicație Coș de gunoi"
+msgstr "Miniaplicație Patumieră"
 
 #: ../applets/trash/trashapplet.c:871
+#, fuzzy
 msgid ""
 "A GNOME trash bin that lives in your panel. You can use it to view the trash "
 "or drag and drop items into the trash."
 msgstr ""
-"O miniaplicație GNOME pentru coșul de gunoi. Poate fi folosită pentru "
-"vizualizarea elementelor aflate în coșul de gunoi sau pentru a arunca "
-"elemente la gunoi prin tragere și plasare."
+"O miniaplicație GNOME pentru patumieră. Poate fi folosită pentru "
+"vizualizarea elementelor aflate în patumieră sau pentru a depozita elemente "
+"în gunoi prin tragere și plasare."
 
 #: ../applets/trash/trashapplet.c:876
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Cris G https://launchpad.net/~krig-tiscali\n"
 "  Mihai Capotă https://launchpad.net/~mihaicapota"
 
 #: ../applets/trash/trashapplet.c:896
@@ -331,25 +343,28 @@ msgid "Delete Immediately?"
 msgstr "Șterg imediat?"
 
 #: ../applets/trash/trashapplet.c:925
+#, fuzzy
 msgid "Cannot move items to trash, do you want to delete them immediately?"
-msgstr "Nu pot muta elementele la gunoi, doriți să le ștergeți permanent?"
+msgstr "Nu pot muta elementele în patumieră, doriți să le ștergeți imediat?"
 
 #: ../applets/trash/trashapplet.c:928
+#, fuzzy
 msgid ""
 "Cannot move some items to trash, do you want to delete these immediately?"
 msgstr ""
-"Nu pot muta unele elemente la gunoi, doriți să le ștergeți pe acestea "
-"permanent?"
+"Nu pot muta unele elemente în patumieră, doriți să le ștergeți pe acestea "
+"imediat?"
 
 #: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Unable to move to trash:\n"
 "%s"
 msgstr ""
-"Nu am putut muta la gunoi:\n"
+"Nu am putut muta în patumieră:\n"
 "%s"
 
 #: ../src/awn-task.c:2279
+#, fuzzy
 msgid "Change Icon"
-msgstr "Schimbă iconul"
+msgstr "Schimbă iconiţa"

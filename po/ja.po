@@ -8,19 +8,19 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-22 22:56+0000\n"
+"PO-Revision-Date: 2007-10-27 15:24+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:19+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
-msgstr ""
+msgstr "行:"
 
 #: ../applets/switcher/applet.c:128
 msgid "Width:"
@@ -32,259 +32,266 @@ msgstr "高さ:"
 
 #: ../applets/trash/trashapplet.glade.h:1
 msgid "<b>From:</b>"
-msgstr ""
+msgstr "<b>場所:</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
 msgid "<big><b>Emptying the Trash</b></big>"
-msgstr ""
+msgstr "<big><b>ゴミ箱を空にしています</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr ""
+msgstr "ゴミ箱を空にしています"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr ""
+msgstr "アクティブなアイコン"
 
 #: ../avant-preferences/window.glade.h:2
 msgid "<b>Arrows</b>"
-msgstr ""
+msgstr "矢印"
 
 #: ../avant-preferences/window.glade.h:3
 msgid "<b>Bar behaviour</b>"
-msgstr ""
+msgstr "バーの動作"
 
 #: ../avant-preferences/window.glade.h:4
 msgid "<b>Borders</b>"
-msgstr ""
+msgstr "境界"
 
 #: ../avant-preferences/window.glade.h:5
 msgid "<b>Corners</b>"
-msgstr ""
+msgstr "角"
 
 #: ../avant-preferences/window.glade.h:6
 msgid "<b>Gradient</b>"
-msgstr ""
+msgstr "グラデーション"
 
 #: ../avant-preferences/window.glade.h:7
 msgid "<b>Highlight</b>"
-msgstr ""
+msgstr "光沢"
 
 #: ../avant-preferences/window.glade.h:8
 msgid "<b>Pattern</b>"
-msgstr ""
+msgstr "パターン"
 
 #: ../avant-preferences/window.glade.h:9
 msgid "<b>Separator</b>"
-msgstr ""
+msgstr "区切り"
 
 #: ../avant-preferences/window.glade.h:10
 msgid "<b>Text</b>"
-msgstr ""
+msgstr "テキスト"
 
 #: ../avant-preferences/window.glade.h:11
+#, fuzzy
 msgid "<b>Windows</b>"
-msgstr ""
+msgstr "ウィンドウ"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
-msgstr ""
+msgstr "使わないときバーを自動的に隠す"
 
 #: ../avant-preferences/window.glade.h:13
 msgid "Avant Preferences"
-msgstr ""
+msgstr "Avantの設定"
 
 #: ../avant-preferences/window.glade.h:14
 msgid "Background color:"
-msgstr ""
+msgstr "背景色:"
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
-msgstr ""
+msgstr "バーの外観"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
-msgstr ""
+msgstr "ボールド"
 
 #: ../avant-preferences/window.glade.h:17
 msgid "Color:"
-msgstr ""
+msgstr "色:"
 
 #: ../avant-preferences/window.glade.h:18
 msgid "Enable pattern"
-msgstr ""
+msgstr "パターンを有効にする"
 
 #: ../avant-preferences/window.glade.h:19
 msgid "Enable rounded corners"
-msgstr ""
+msgstr "Dockの角を丸める"
 
 #: ../avant-preferences/window.glade.h:20
+#, fuzzy
 msgid "Fade effect (experimental)"
-msgstr ""
+msgstr "フェード効果（実験的実装）"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
-msgstr ""
+msgstr "最初の段の色"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
-msgstr ""
+msgstr "フォントの大きさ:"
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
-msgstr ""
+msgstr "全般"
 
 #: ../avant-preferences/window.glade.h:24
 msgid "Glass Engine"
-msgstr ""
+msgstr "鏡面効果の設定"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
-msgstr ""
+msgstr "内側の境界"
 
 #: ../avant-preferences/window.glade.h:26
 msgid "Italic"
-msgstr ""
+msgstr "イタリック"
 
 #: ../avant-preferences/window.glade.h:27
 msgid "Main border:"
-msgstr ""
+msgstr "メインの境界"
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr ""
+msgstr "最大化されたウィンドウをバーで覆わない (再起動が必要)"
 
 #: ../avant-preferences/window.glade.h:29
 msgid "Pattern Engine"
-msgstr ""
+msgstr "パターンの設定"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
-msgstr ""
+msgstr "二段目の色"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
-msgstr ""
+msgstr "ファイルの選択"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
-msgstr ""
+msgstr "区切りの色"
 
 #: ../avant-preferences/window.glade.h:33
 msgid "Shadow color:"
-msgstr ""
+msgstr "影の色:"
 
 #: ../avant-preferences/window.glade.h:34
 msgid "Show separator between launchers and tasks"
-msgstr ""
+msgstr "ランチャとタスクの間に区切りを表示"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
-msgstr ""
+msgstr "全てのビューポートのウィンドウを表示"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
-msgstr ""
+msgstr "タスクの外観"
 
 #: ../avant-preferences/window.glade.h:37
 msgid "Tasks have arrows"
-msgstr ""
+msgstr "タスクに矢印をつける"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
-msgstr ""
+msgstr "使わないときバーを自動的に隠す"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
-msgstr ""
+msgstr "透明度:"
 
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
-msgstr ""
+msgstr "マウスカーソルが上にある時、未使用のアイコンを消す"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
-msgstr ""
+msgstr "ウインドウをバーの上に表示させない"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
-msgstr ""
+msgstr "アプレットを追加"
 
 #: ../avant-applets/avant-applets.glade.h:2
 msgid "Avant Applet Preferences"
 msgstr ""
+"Copy text   \t\n"
+"Avantのアプレットの設定"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
 msgid "Positions"
-msgstr ""
+msgstr "表示する位置"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
 msgid "Avant Launcher Preferences"
-msgstr ""
+msgstr "Avantランチャーの設定"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
-msgstr ""
+msgstr "向き"
 
 #: ../applets/notification-area/eggtraymanager.c:147
 msgid "The orientation of the tray."
-msgstr ""
+msgstr "トレイの向き"
 
 #: ../applets/switcher/switcher.schemas.in.h:1
 msgid "How many rows the switcher should have"
-msgstr ""
+msgstr "スイッチャーの列の数"
 
 #: ../applets/switcher/switcher.schemas.in.h:2
 msgid "The height of the switcher"
-msgstr ""
+msgstr "スイッチャーの高さ"
 
 #: ../applets/switcher/switcher.schemas.in.h:3
 msgid "The width of the switcher"
-msgstr ""
+msgstr "スイッチャーの幅"
 
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
-msgstr ""
+msgstr "ゴミ箱アプレットのアイコンの上に数を表示する"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
 msgid "Unable to find the Trash directory: %s"
-msgstr ""
+msgstr "「ゴミ箱」のディレクトリが見つかりませんでした%s"
 
 #: ../applets/trash/trashapplet.c:526
 msgid "No Items in Trash"
-msgstr ""
+msgstr "ゴミ箱は空です"
 
 #: ../applets/trash/trashapplet.c:530
 #, c-format
 msgid "%d Item in Trash"
 msgid_plural "%d Items in Trash"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "ゴミ箱に%d個のファイルがあります"
 
 #: ../applets/trash/trashapplet.c:657
 #, c-format
 msgid "Removing item %lu of %lu"
-msgstr ""
+msgstr "%lu個のうち%lu個のファイルを削除しています"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
-msgstr ""
+msgstr "削除中："
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr ""
+msgstr "ゴミ箱をすべて空にしますか?"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
 "If you choose to empty the trash, all items in it will be permanently lost. "
 "Please note that you can also delete them separately."
 msgstr ""
+"「ゴミ箱を空にする」を選ぶと、すべてのファイルが完全に削除されます\n"
+"ファイルを個別に削除することもできます"
 
 #: ../applets/trash/trashapplet.c:746
 msgid "_Empty Trash"
 msgstr ""
+"Copy text   \t\n"
+"_ゴミ箱を空にする"
 
 #: ../applets/trash/trashapplet.c:825
 #, c-format
@@ -292,40 +299,44 @@ msgid ""
 "Error while spawning nautilus:\n"
 "%s"
 msgstr ""
+"nautilusの起動中にエラーが発生しました:\n"
+"%s"
 
 #: ../applets/trash/trashapplet.c:845
 #, c-format
 msgid "There was an error displaying help: %s"
-msgstr ""
+msgstr "ヘルプを表示する際にエラーが発生しました:%s"
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
-msgstr ""
+msgstr "ゴミ箱のアプレット"
 
 #: ../applets/trash/trashapplet.c:871
 msgid ""
 "A GNOME trash bin that lives in your panel. You can use it to view the trash "
 "or drag and drop items into the trash."
-msgstr ""
+msgstr "GNOMEのゴミ箱アイコンがパネルの中にあります。ゴミ箱の中を見たり、ファイルをゴミ箱に捨てるのに、このアイコンが使えます"
 
 #: ../applets/trash/trashapplet.c:876
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Alucard https://launchpad.net/~arikado-genya"
+"  Alucard https://launchpad.net/~arikado-genya\n"
+"  inugami https://launchpad.net/~inugami-mamoru\n"
+"  lptarou https://launchpad.net/~hage-warosu-deactivatedaccount"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
-msgstr ""
+msgstr "今すぐ削除しますか？"
 
 #: ../applets/trash/trashapplet.c:925
 msgid "Cannot move items to trash, do you want to delete them immediately?"
-msgstr ""
+msgstr "ゴミ箱に移動できないファイルがありました。今すぐ削除しますか？"
 
 #: ../applets/trash/trashapplet.c:928
 msgid ""
 "Cannot move some items to trash, do you want to delete these immediately?"
-msgstr ""
+msgstr "ゴミ箱に移動できないファイルがありました。今すぐ削除しますか？"
 
 #: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
 #, c-format
@@ -333,7 +344,9 @@ msgid ""
 "Unable to move to trash:\n"
 "%s"
 msgstr ""
+"ゴミ箱へ移動できません:\n"
+"%s"
 
 #: ../src/awn-task.c:2279
 msgid "Change Icon"
-msgstr ""
+msgstr "アイコンを変更する"

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-29 21:11+0000\n"
+"PO-Revision-Date: 2008-01-08 11:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -40,7 +40,7 @@ msgstr "<big><b>A Kuka ürítése</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr "A Kuka ürítése"
+msgstr "A kuka ürítése"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
@@ -120,7 +120,7 @@ msgstr "Lekerekített sarkok engedélyezése"
 
 #: ../avant-preferences/window.glade.h:20
 msgid "Fade effect (experimental)"
-msgstr ""
+msgstr "Elhalványodás effektus (kísérleti)"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
@@ -132,11 +132,12 @@ msgstr "Betűméret:"
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
-msgstr "Álltalános"
+msgstr "Általános"
 
 #: ../avant-preferences/window.glade.h:24
+#, fuzzy
 msgid "Glass Engine"
-msgstr ""
+msgstr "Üveg motor"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
@@ -156,8 +157,9 @@ msgstr ""
 "A maximalizált ablakok ne takarják ki a pultot (újraindítást igényel)"
 
 #: ../avant-preferences/window.glade.h:29
+#, fuzzy
 msgid "Pattern Engine"
-msgstr ""
+msgstr "Minta motor"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
@@ -177,7 +179,7 @@ msgstr "Árnyékolás színe:"
 
 #: ../avant-preferences/window.glade.h:34
 msgid "Show separator between launchers and tasks"
-msgstr ""
+msgstr "Elválasztó megjelenítése az indítóikonok és a feladatok között"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
@@ -200,8 +202,10 @@ msgid "Transparency:"
 msgstr "Átlátszóság:"
 
 #: ../avant-preferences/window.glade.h:40
+#, fuzzy
 msgid "Unused icons fade when mouse-over"
 msgstr ""
+"A nem használt ikonok elhalványulnak, amikor az egérmutató föléjük ér"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
@@ -219,11 +223,12 @@ msgstr "Avant kisalkalmazások beállításai"
 #: ../avant-launchers/avant-launchers.glade.h:2
 #, fuzzy
 msgid "Positions"
-msgstr "Poziciók"
+msgstr "Elhelyezkedés"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
+#, fuzzy
 msgid "Avant Launcher Preferences"
-msgstr ""
+msgstr "Avant Indító Beállításai"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
@@ -234,20 +239,24 @@ msgid "The orientation of the tray."
 msgstr "A panel tájolása."
 
 #: ../applets/switcher/switcher.schemas.in.h:1
+#, fuzzy
 msgid "How many rows the switcher should have"
-msgstr ""
+msgstr "Hány sor legyen a váltóban"
 
 #: ../applets/switcher/switcher.schemas.in.h:2
+#, fuzzy
 msgid "The height of the switcher"
-msgstr ""
+msgstr "Váltó magassága"
 
 #: ../applets/switcher/switcher.schemas.in.h:3
+#, fuzzy
 msgid "The width of the switcher"
-msgstr ""
+msgstr "Váltó szélessége"
 
 #: ../applets/trash/trash.schemas.in.h:1
+#, fuzzy
 msgid "Whether the trash applet should show a count on its icon"
-msgstr ""
+msgstr "Legyen számláló a kuka ikonján?"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
@@ -267,7 +276,7 @@ msgstr[0] "%d elem a Kukában"
 #: ../applets/trash/trashapplet.c:657
 #, c-format
 msgid "Removing item %lu of %lu"
-msgstr ""
+msgstr "Elemek eltávolítása: %lu / %lu"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
@@ -319,7 +328,10 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Gergely Máté https://launchpad.net/~sportember\n"
 "  Kőrösi Zoltán https://launchpad.net/~korosi-zoltan\n"
+"  Márk Zsombók (a.k.a. The Slider) https://launchpad.net/~theslider\n"
+"  Szenográdi Norbert Péter https://launchpad.net/~sevoir\n"
 "  Szilveszter Farkas https://launchpad.net/~phanatic\n"
 "  Szilveszter Kovács https://launchpad.net/~hunsly"
 

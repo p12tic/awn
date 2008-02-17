@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-29 13:25+0000\n"
+"PO-Revision-Date: 2007-10-15 20:23+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Georgian <ka@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:19+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -245,7 +245,7 @@ msgstr "გადამრთველის სიგანე"
 
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
-msgstr ""
+msgstr "სად უნდა აჩვენოს რაოდენობა სანაგვე ყუთის აპლეტმა"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
@@ -265,7 +265,7 @@ msgstr[0] "%d ფაილი სანაგვეში"
 #: ../applets/trash/trashapplet.c:657
 #, c-format
 msgid "Removing item %lu of %lu"
-msgstr ""
+msgstr "%lu ელემენტის წაშლა %lu-დან"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
@@ -293,6 +293,8 @@ msgid ""
 "Error while spawning nautilus:\n"
 "%s"
 msgstr ""
+"დაიშვა შეცდომა ნაუტილუსის გაშვებისას:\n"
+"%s"
 
 #: ../applets/trash/trashapplet.c:845
 #, c-format
@@ -301,13 +303,15 @@ msgstr "დახმარების გამოძახებისას �
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
-msgstr ""
+msgstr "ნაგვის ყუთის აპლეტი"
 
 #: ../applets/trash/trashapplet.c:871
 msgid ""
 "A GNOME trash bin that lives in your panel. You can use it to view the trash "
 "or drag and drop items into the trash."
 msgstr ""
+"GNOME გარსის სანაგვე ყუთი რომელიც არსებობს თქვენს პანელზე. თქვენ შეგიძლიათ "
+"მისი დათვალიერება ან მასში რაიმე ელემენტების გადაგდება."
 
 #: ../applets/trash/trashapplet.c:876
 msgid "translator-credits"
@@ -335,6 +339,8 @@ msgid ""
 "Unable to move to trash:\n"
 "%s"
 msgstr ""
+"შეუძლებელია სანაგვე ყუთში გადატანა:\n"
+"%s"
 
 #: ../src/awn-task.c:2279
 msgid "Change Icon"

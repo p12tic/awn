@@ -8,39 +8,39 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-09-04 04:29+0000\n"
+"PO-Revision-Date: 2007-11-29 10:56+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Traditional Chinese <zh_TW@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:19+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
 msgid "Rows:"
-msgstr ""
+msgstr "列:"
 
 #: ../applets/switcher/applet.c:128
 msgid "Width:"
-msgstr "寬度:"
+msgstr "寬："
 
 #: ../applets/switcher/applet.c:140
 msgid "Height:"
-msgstr "高度:"
+msgstr "高："
 
 #: ../applets/trash/trashapplet.glade.h:1
 msgid "<b>From:</b>"
-msgstr ""
+msgstr "<b>來自：</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
 msgid "<big><b>Emptying the Trash</b></big>"
-msgstr "<big><b>正在清理回收筒</b></big>"
+msgstr "<big><b>淨空回收筒…</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr "清理資源回收筒"
+msgstr "正在淨空回收筒"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
@@ -52,7 +52,7 @@ msgstr "<b>箭頭</b>"
 
 #: ../avant-preferences/window.glade.h:3
 msgid "<b>Bar behaviour</b>"
-msgstr ""
+msgstr "<b>承條屬性</b>"
 
 #: ../avant-preferences/window.glade.h:4
 msgid "<b>Borders</b>"
@@ -60,23 +60,23 @@ msgstr "<b>邊框</b>"
 
 #: ../avant-preferences/window.glade.h:5
 msgid "<b>Corners</b>"
-msgstr ""
+msgstr "<b>角邊</b>"
 
 #: ../avant-preferences/window.glade.h:6
 msgid "<b>Gradient</b>"
-msgstr ""
+msgstr "<b>遞色</b>"
 
 #: ../avant-preferences/window.glade.h:7
 msgid "<b>Highlight</b>"
-msgstr ""
+msgstr "<b>打光</b>"
 
 #: ../avant-preferences/window.glade.h:8
 msgid "<b>Pattern</b>"
-msgstr "<b>圖樣</b>"
+msgstr "<b>花色</b>"
 
 #: ../avant-preferences/window.glade.h:9
 msgid "<b>Separator</b>"
-msgstr "<b>分隔線</b>"
+msgstr "<b>隔線</b>"
 
 #: ../avant-preferences/window.glade.h:10
 msgid "<b>Text</b>"
@@ -88,43 +88,43 @@ msgstr "<b>視窗</b>"
 
 #: ../avant-preferences/window.glade.h:12
 msgid "Auto hide bar when not in use"
-msgstr "不使用時自動隱藏"
+msgstr "自動隱藏"
 
 #: ../avant-preferences/window.glade.h:13
 msgid "Avant Preferences"
-msgstr ""
+msgstr "Avant設定"
 
 #: ../avant-preferences/window.glade.h:14
 msgid "Background color:"
-msgstr "背景色彩:"
+msgstr "背景色："
 
 #: ../avant-preferences/window.glade.h:15
 msgid "Bar Appearance"
-msgstr ""
+msgstr "承條外貌"
 
 #: ../avant-preferences/window.glade.h:16
 msgid "Bold"
-msgstr ""
+msgstr "粗體"
 
 #: ../avant-preferences/window.glade.h:17
 msgid "Color:"
-msgstr ""
+msgstr "色彩："
 
 #: ../avant-preferences/window.glade.h:18
 msgid "Enable pattern"
-msgstr "啟用圖樣效果"
+msgstr "綴花色"
 
 #: ../avant-preferences/window.glade.h:19
 msgid "Enable rounded corners"
-msgstr "啟用圓角"
+msgstr "抹圓角"
 
 #: ../avant-preferences/window.glade.h:20
 msgid "Fade effect (experimental)"
-msgstr "淡出特效（測試用）"
+msgstr "褪色特效（實驗功能）"
 
 #: ../avant-preferences/window.glade.h:21
 msgid "First step color:"
-msgstr ""
+msgstr "起色"
 
 #: ../avant-preferences/window.glade.h:22
 msgid "Font size:"
@@ -132,67 +132,67 @@ msgstr "字型大小:"
 
 #: ../avant-preferences/window.glade.h:23
 msgid "General"
-msgstr ""
+msgstr "一般"
 
 #: ../avant-preferences/window.glade.h:24
 msgid "Glass Engine"
-msgstr ""
+msgstr "琉璃"
 
 #: ../avant-preferences/window.glade.h:25
 msgid "Internal border:"
-msgstr ""
+msgstr "內框："
 
 #: ../avant-preferences/window.glade.h:26
 msgid "Italic"
-msgstr ""
+msgstr "斜體"
 
 #: ../avant-preferences/window.glade.h:27
 msgid "Main border:"
-msgstr ""
+msgstr "主框："
 
 #: ../avant-preferences/window.glade.h:28
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr ""
+msgstr "不被展幅視窗蓋過（重啟生效）"
 
 #: ../avant-preferences/window.glade.h:29
 msgid "Pattern Engine"
-msgstr ""
+msgstr "花色"
 
 #: ../avant-preferences/window.glade.h:30
 msgid "Second step color:"
-msgstr ""
+msgstr "終色"
 
 #: ../avant-preferences/window.glade.h:31
 msgid "Select A File"
-msgstr ""
+msgstr "選取檔案"
 
 #: ../avant-preferences/window.glade.h:32
 msgid "Separator color:"
-msgstr "分隔線色彩:"
+msgstr "隔線色："
 
 #: ../avant-preferences/window.glade.h:33
 msgid "Shadow color:"
-msgstr "陰影色彩:"
+msgstr "陰影色："
 
 #: ../avant-preferences/window.glade.h:34
 msgid "Show separator between launchers and tasks"
-msgstr "在啟動圖示及工作列表間顯示分隔線"
+msgstr "啟動器與程序間以線分隔"
 
 #: ../avant-preferences/window.glade.h:35
 msgid "Show windows from all viewports"
-msgstr ""
+msgstr "顯示各工作區所有視窗"
 
 #: ../avant-preferences/window.glade.h:36
 msgid "Task Appearance"
-msgstr ""
+msgstr "程序外貌"
 
 #: ../avant-preferences/window.glade.h:37
 msgid "Tasks have arrows"
-msgstr "在當前執行的工作上顯示箭頭"
+msgstr "程序下加箭頭"
 
 #: ../avant-preferences/window.glade.h:38
 msgid "The bar automatically hides when not used"
-msgstr "不使用時自動隱藏工作列"
+msgstr "閒置時自動隱藏"
 
 #: ../avant-preferences/window.glade.h:39
 msgid "Transparency:"
@@ -200,11 +200,11 @@ msgstr "透明度:"
 
 #: ../avant-preferences/window.glade.h:40
 msgid "Unused icons fade when mouse-over"
-msgstr ""
+msgstr "鼠標劃過時，褪去非用圖示的顏色"
 
 #: ../avant-preferences/window.glade.h:41
 msgid "Windows don't overlap the bar if this is set"
-msgstr "若設定此項目，則視窗不會蓋住工具列"
+msgstr "設定此項後，視窗不會蓋過承條"
 
 #: ../avant-applets/avant-applets.glade.h:1
 msgid "Add Applet"
@@ -212,7 +212,7 @@ msgstr "加入小程式"
 
 #: ../avant-applets/avant-applets.glade.h:2
 msgid "Avant Applet Preferences"
-msgstr ""
+msgstr "Avant小程式設定"
 
 #: ../avant-applets/avant-applets.glade.h:3
 #: ../avant-launchers/avant-launchers.glade.h:2
@@ -221,31 +221,31 @@ msgstr "位置"
 
 #: ../avant-launchers/avant-launchers.glade.h:1
 msgid "Avant Launcher Preferences"
-msgstr ""
+msgstr "Avant啟動器設定"
 
 #: ../applets/notification-area/eggtraymanager.c:146
 msgid "Orientation"
-msgstr ""
+msgstr "指向"
 
 #: ../applets/notification-area/eggtraymanager.c:147
 msgid "The orientation of the tray."
-msgstr ""
+msgstr "系統匣指向"
 
 #: ../applets/switcher/switcher.schemas.in.h:1
 msgid "How many rows the switcher should have"
-msgstr ""
+msgstr "轉區器行數"
 
 #: ../applets/switcher/switcher.schemas.in.h:2
 msgid "The height of the switcher"
-msgstr ""
+msgstr "轉區器高度"
 
 #: ../applets/switcher/switcher.schemas.in.h:3
 msgid "The width of the switcher"
-msgstr ""
+msgstr "轉區器寬度"
 
 #: ../applets/trash/trash.schemas.in.h:1
 msgid "Whether the trash applet should show a count on its icon"
-msgstr "是否在資源回收筒圖示上顯示計數"
+msgstr "回收筒圖示是否顯示垃圾件數？"
 
 #: ../applets/trash/trashapplet.c:153
 #, c-format
@@ -254,18 +254,18 @@ msgstr "無法找到回收筒目錄：%s"
 
 #: ../applets/trash/trashapplet.c:526
 msgid "No Items in Trash"
-msgstr "回收筒中沒有任何項目"
+msgstr "回收筒淨空"
 
 #: ../applets/trash/trashapplet.c:530
 #, c-format
 msgid "%d Item in Trash"
 msgid_plural "%d Items in Trash"
-msgstr[0] "回收筒中有 %d 個項目"
+msgstr[0] "回收筒內有%d件垃圾"
 
 #: ../applets/trash/trashapplet.c:657
 #, c-format
 msgid "Removing item %lu of %lu"
-msgstr ""
+msgstr "移除第%lu之%lu件垃圾"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
@@ -273,17 +273,17 @@ msgstr "正在移除："
 
 #: ../applets/trash/trashapplet.c:723
 msgid "Empty all of the items from the trash?"
-msgstr "要清除回收筒中的所有項目？"
+msgstr "是否淨空回收筒？"
 
 #: ../applets/trash/trashapplet.c:726
 msgid ""
 "If you choose to empty the trash, all items in it will be permanently lost. "
 "Please note that you can also delete them separately."
-msgstr "如果您清理回收筒，所有項目將會被永遠地刪除。注意您是可以將它們個別地刪除的。"
+msgstr "淨空回收筒，所有垃圾將就此喪失。您也可以只挑幾件刪除。"
 
 #: ../applets/trash/trashapplet.c:746
 msgid "_Empty Trash"
-msgstr "清空回收筒(_E)"
+msgstr "淨空回收筒"
 
 #: ../applets/trash/trashapplet.c:825
 #, c-format
@@ -301,32 +301,34 @@ msgstr "顯示說明文件時發生錯誤：%s"
 
 #: ../applets/trash/trashapplet.c:868
 msgid "Trash Applet"
-msgstr "資源回收桶小程式"
+msgstr "回收筒小程式"
 
 #: ../applets/trash/trashapplet.c:871
 msgid ""
 "A GNOME trash bin that lives in your panel. You can use it to view the trash "
 "or drag and drop items into the trash."
-msgstr "面板上的回收筒。您可以用它來查看回收筒及將項目拖曳進去。"
+msgstr "面版用GNOME回收筒。您可以檢查，或是拖垃圾進去。"
 
 #: ../applets/trash/trashapplet.c:876
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Bob Chao https://launchpad.net/~bobchao"
+"  Bob Chao https://launchpad.net/~bobchao\n"
+"  Gulei https://launchpad.net/~gulei-hu\n"
+"  aric https://launchpad.net/~burnerx"
 
 #: ../applets/trash/trashapplet.c:896
 msgid "Delete Immediately?"
-msgstr "立即刪除？"
+msgstr "即刻刪除嗎？"
 
 #: ../applets/trash/trashapplet.c:925
 msgid "Cannot move items to trash, do you want to delete them immediately?"
-msgstr "無法將項目丟到回收筒，要立即刪除它嗎？"
+msgstr "垃圾無法丟入回收筒，即刻刪除嗎？"
 
 #: ../applets/trash/trashapplet.c:928
 msgid ""
 "Cannot move some items to trash, do you want to delete these immediately?"
-msgstr "有些項目無法丟到回收筒，要立即刪除它嗎？"
+msgstr "某些垃圾無法丟入回收筒，即刻刪除嗎？"
 
 #: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
 #, c-format
@@ -334,7 +336,7 @@ msgid ""
 "Unable to move to trash:\n"
 "%s"
 msgstr ""
-"無法移到回收筒：\n"
+"無法丟入回收筒：\n"
 "%s"
 
 #: ../src/awn-task.c:2279

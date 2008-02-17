@@ -1,6 +1,72 @@
-2007-07-14  Neil J. Patel  <njpatel@gmail.com>
+2008-02-17  Neil J. Patel  <njp@o-hand.com>
 
-	reviewed by: <delete if not using a buddy>
+	* ChangeLog:
+	* configure.in:
+	* po/ChangeLog:
+	* po/POTFILES.in:
+	Removed old .in files which don't exist anymore.
+
+	* po/af.po:
+	* po/ar.po:
+	* po/bg.po:
+	* po/bn.po:
+	* po/ca.po:
+	* po/cs.po:
+	* po/da.po:
+	* po/de.po:
+	* po/el.po:
+	* po/en_AU.po:
+	* po/en_CA.po:
+	* po/en_GB.po:
+	* po/es.po:
+	* po/et.po:
+	* po/eu.po:
+	* po/fa.po:
+	* po/fi.po:
+	* po/fr.po:
+	* po/ga.po:
+	* po/gl.po:
+	* po/gu.po:
+	* po/he.po:
+	* po/hi.po:
+	* po/hr.po:
+	* po/hu.po:
+	* po/id.po:
+	* po/it.po:
+	* po/ja.po:
+	* po/ka.po:
+	* po/ko.po:
+	* po/lt.po:
+	* po/mr.po:
+	* po/ms.po:
+	* po/nb.po:
+	* po/nl.po:
+	* po/nn.po:
+	* po/pl.po:
+	* po/pt.po:
+	* po/pt_BR.po:
+	* po/ro.po:
+	* po/ru.po:
+	* po/sk.po:
+	* po/sl.po:
+	* po/sq.po:
+	* po/sr.po:
+	* po/sv.po:
+	* po/ta.po:
+	* po/te.po:
+	* po/th.po:
+	* po/tr.po:
+	* po/uk.po:
+	* po/vi.po:
+	* po/zh_CN.po:
+	* po/zh_HK.po:
+	* po/zh_TW.po:
+	Updated translations from launchpad.
+
+2008-02-17  Neil J. Patel <njpatel@gmail.com>
+	
+
+2007-07-14  Neil J. Patel  <njpatel@gmail.com>
 
 	* cs.po:
 	* da.po:

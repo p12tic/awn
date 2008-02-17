@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2007-08-22 07:23+0000\n"
+"PO-Revision-Date: 2008-02-10 12:42+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Simplified Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2007-10-07 12:18+0000\n"
+"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/switcher/applet.c:116
@@ -36,11 +36,11 @@ msgstr "<b>来自：</b>"
 
 #: ../applets/trash/trashapplet.glade.h:2
 msgid "<big><b>Emptying the Trash</b></big>"
-msgstr "<big><b>清空回收站</b></big>"
+msgstr "<big><b>正在清空回收站</b></big>"
 
 #: ../applets/trash/trashapplet.glade.h:3
 msgid "Emptying the Trash"
-msgstr "清空回收站"
+msgstr "正在清空回收站"
 
 #: ../avant-preferences/window.glade.h:1
 msgid "<b>Active Icon</b>"
@@ -232,7 +232,6 @@ msgid "The orientation of the tray."
 msgstr "托盘方向"
 
 #: ../applets/switcher/switcher.schemas.in.h:1
-#, fuzzy
 msgid "How many rows the switcher should have"
 msgstr "窗口切换器显示的行数"
 
@@ -264,9 +263,9 @@ msgid_plural "%d Items in Trash"
 msgstr[0] "回收站中有 %d 项"
 
 #: ../applets/trash/trashapplet.c:657
-#, fuzzy
+#, c-format
 msgid "Removing item %lu of %lu"
-msgstr "移除第%lu项（共%lu项）"
+msgstr "正在移除第%lu项（共%lu项）"
 
 #: ../applets/trash/trashapplet.c:683
 msgid "Removing:"
@@ -316,7 +315,9 @@ msgstr ""
 "Launchpad Contributions:\n"
 "  David Zhang https://launchpad.net/~gwwfps\n"
 "  Li Linxiao https://launchpad.net/~leal\n"
+"  Shi, Lei https://launchpad.net/~shilei7899\n"
 "  Wang Jia Liang https://launchpad.net/~wangjialiang-1986\n"
+"  oceanplanet https://launchpad.net/~chendiqiu\n"
 "  yegle https://launchpad.net/~cnyegle"
 
 #: ../applets/trash/trashapplet.c:896
