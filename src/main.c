@@ -113,7 +113,7 @@ panel_atom_get (const char *atom_name)
 }
     
 int 
-main (int argc, char* argv[])
+main (int argc, char *argv[])
 {
 	AwnSettings* settings;
 	AwnConfigClient *client;
@@ -125,24 +125,18 @@ main (int argc, char* argv[])
 	DBusGProxy *proxy;
 	GError *error = NULL;
 	guint32 ret;
-	
-	int i;
-	for (i = 1; i < argc; i++) {
-		if (argv[i][0] == '-') {
-			switch (argv[i][1]) {
-				case 'h':	
-				case '?': g_print("Usage:\n  avant-window-navigator [OPTION...] - Starts avant-window-navigator\n");
-					  g_print("\nApplication Options:\n  -v\t\tPrints avant-window-navigator version.\n\n");
-					return 0;
-					break;
-				case 'v':g_print("Avant-window-navigator ");
-					 g_print(VERSION);
-					 g_print("\n");
-					return 0;
-					break;
-			}
-		}
-	}
+
+	GOptionContext *context;
+	static GOptionEntry entries[] = 
+	{
+		{ "version", 'v', 0, G_OPTION_ARG_NONE, NULL, "Prints the version number", NULL },
+		{ NULL }
+	};
+
+	context = g_option_context_new ("- Starts the Avant Window Navigator dock");
+	g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+	g_option_context_add_group (context, gtk_get_option_group (TRUE));
+	g_option_context_parse (context, &argc, &argv, &error);
 	
   	if (!g_thread_supported ()) g_thread_init (NULL);
 	dbus_g_thread_init ();
