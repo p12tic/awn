@@ -135,7 +135,9 @@ main (int argc, char* argv[])
 					  g_print("\nApplication Options:\n  -v\t\tPrints avant-window-navigator version.\n\n");
 					return 0;
 					break;
-				case 'v':g_print("Avant-window-navigator 0.2.1+ (unstable)\n");
+				case 'v':g_print("Avant-window-navigator ");
+					 g_print(VERSION);
+					 g_print("\n");
 					return 0;
 					break;
 			}
