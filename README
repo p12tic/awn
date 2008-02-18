@@ -27,6 +27,17 @@ python-gnome2-dev
 python-gnome2-desktop-dev
 python-gnome2-extras-dev
 
+Installation: Backends
+======================
+
+Awn can be compiled to work with various desktop-specific backends for file transfer, .desktop file manipulation and configuration. Here's a list of backeds:
+
+  - gnome - This uses gnome-vfs, libgnome-desktop and gconf
+  - xfce4 - thuner-vfs, eggdesktop, GKeyFile
+  - agnostic - gio, eggdesktop, GKeyfile
+
+You can switch between backends using --with-backend=BACKEND, where BACKEND=gnome, xfce4 or agnostic. The default backend it gnome.
+
 Usage
 =====
 
@@ -43,5 +54,5 @@ If you have any questions/bug reports/ideas, you can find help in the following
 locations:
 
 http://launchpad.net/awn - Main project page
-http://awn.wetpaint.com - Wiki
-http://www.planetblur.org/hosted/awnforum - Forum
+http://wiki.awn-project.org - Wiki
+http://forum.awn-project.org - Forum

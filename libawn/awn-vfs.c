@@ -22,7 +22,6 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-#define _GNU_SOURCE
 
 /**
  * SECTION: awn-vfs
@@ -215,7 +214,7 @@ AwnVfsMonitor *awn_vfs_monitor_add (gchar *path, AwnVfsMonitorType monitor_type,
 	data->callback = callback;
 	data->data = user_data;
 #ifdef LIBAWN_USE_GNOME
-	GnomeVFSMonitorType gmtype;
+	GnomeVFSMonitorType gmtype = GNOME_VFS_MONITOR_FILE;
 	if (monitor_type == AWN_VFS_MONITOR_FILE) {
 		gmtype = GNOME_VFS_MONITOR_FILE;
 	} else if (monitor_type == AWN_VFS_MONITOR_DIRECTORY) {
@@ -369,7 +368,7 @@ void awn_vfs_init()
  *
  * Returns: a list of URIs
  */
-GSList *awn_vfs_get_pathlist_from_string (guchar *paths, GError **err)
+GSList *awn_vfs_get_pathlist_from_string (gchar *paths, GError **err)
 {
 	GSList *list = NULL;
 #ifdef LIBAWN_USE_GNOME

@@ -1,4 +1,4 @@
-AC_INIT([avant-window-navigator], [0.2.3], [])
+AC_INIT([avant-window-navigator], [0.2.4], [])
 
 AC_CONFIG_SRCDIR([.])
 AC_CONFIG_HEADERS([config.h])
@@ -242,4 +242,6 @@ echo "    Configuration Backend:   $CFG_BACKEND_NAME"
 echo "              VFS Backend:   $VFS_MODULE"
 echo ""
 echo "             Vala Support:   ${with_vala}"
+echo ""
+echo "            Documentation:   ${enable_gtk_doc}"
 echo ""

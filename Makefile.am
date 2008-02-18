@@ -19,7 +19,8 @@ EXTRA_DIST =				\
 	intltool-extract.in		\
 	intltool-merge.in		\
 	intltool-update.in		\
-	awn.pc.in
+	awn.pc.in			\
+	autogen.sh
 
 DISTCLEANFILES =			\
 	intltool-extract		\

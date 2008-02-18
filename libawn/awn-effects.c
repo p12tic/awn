@@ -291,6 +291,7 @@ spotlight_half_fade_effect(AwnEffectsPrivate *priv)
 	return repeat;
 }
 
+#if 0
 static gboolean
 spotlight_opening_effect(AwnEffectsPrivate *priv)
 {
@@ -335,6 +336,7 @@ spotlight_opening_effect(AwnEffectsPrivate *priv)
 	}
 	return repeat;
 }
+#endif
 
 static gboolean
 spotlight_opening_effect2(AwnEffectsPrivate *priv)

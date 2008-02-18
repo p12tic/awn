@@ -315,7 +315,7 @@ void awn_config_client_set_string (AwnConfigClient *client, const gchar *group, 
 
 GSList *awn_config_client_get_list (AwnConfigClient *client, const gchar *group, const gchar *key, AwnConfigListType list_type, GError **err)
 {
-	GConfValueType value_type;
+	GConfValueType value_type = GCONF_VALUE_INVALID;
 	switch (list_type) {
 		case AWN_CONFIG_CLIENT_LIST_TYPE_BOOL:
 			value_type = GCONF_VALUE_BOOL;
@@ -339,7 +339,7 @@ GSList *awn_config_client_get_list (AwnConfigClient *client, const gchar *group,
 void awn_config_client_set_list (AwnConfigClient *client, const gchar *group, const gchar *key, AwnConfigListType list_type, GSList *value, GError **err)
 {
 	gchar *full_key = awn_config_client_generate_key (client, group, key);
-	GConfValueType value_type;
+	GConfValueType value_type = GCONF_VALUE_INVALID;
 	switch (list_type) {
 		case AWN_CONFIG_CLIENT_LIST_TYPE_BOOL:
 			value_type = GCONF_VALUE_BOOL;

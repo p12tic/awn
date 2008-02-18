@@ -650,7 +650,7 @@ awn_task_scroll_event (GtkWidget *task, GdkEventScroll *event)
     gboolean in_viewport;
     int x, y;
     int w, h;
-    WnckWindow *focus;
+    WnckWindow *focus = NULL;
     WnckScreen *screen;
     WnckWorkspace *space;
 
@@ -754,12 +754,10 @@ _task_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
         else
         	g_print("Launched application : %d\n", priv->pid);
 
-	g_list_foreach (list, (GFunc)g_free, NULL);
-	g_list_free (list);
+	g_slist_foreach (list, (GFunc)g_free, NULL);
+	g_slist_free (list);
 
 	return;
-
-
 }
 
 

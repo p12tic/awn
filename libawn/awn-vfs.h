@@ -97,7 +97,7 @@ void            awn_vfs_monitor_remove (AwnVfsMonitor *monitor);
 
 /* utility functions */
 void            awn_vfs_init (void);
-GSList         *awn_vfs_get_pathlist_from_string (guchar *paths, GError **err);
+GSList         *awn_vfs_get_pathlist_from_string (gchar *paths, GError **err);
 
 #endif /* _LIBAWN_AWN_VFS_H */
 /* vim: set noet ts=8 sts=8 sw=8 : */

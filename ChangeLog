@@ -1,3 +1,21 @@
+2008-02-18  Neil J. Patel  <njpatel@gmail.com>
+
+	* AUTHORS:
+	* Makefile.am:
+	* NEWS:
+	* README:
+	* configure.in:
+	* libawn/awn-config-client-gconf.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-vfs.c:
+	* libawn/awn-vfs.h:
+	* src/awn-task.c:
+	Fixes before release.
+	Fixed all warnings in libawn and src.
+	Populated NEWS.
+	Added some more info to README
+	Updated AUTHORS
+
 2008-02-18  haytjes  <hv1989@gmail.com>
 
 	* src/main.c:

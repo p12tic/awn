@@ -1,0 +1,14 @@
+2008-02-18 - Awn 0.2.4 Release News
+  
+  * Applets are sorted in alphabetical order in AwnManager
+  * VFS abstraction for gnome-vfs, thunar-vfs and gio support.
+  * FDO Desktop file abstraction for GnomeDesktopItem and EggDesktopItem
+    support.
+  * Configuration backend abstraction with GConf & GKeyFile support.
+  * --with-desktop=gnome|xfce4|agnostic, which will use a combination of the
+    above options to work best wth each desktop environment.
+  * Updated python bindings
+  * Vala bindings
+  * Removed gnome-panel dependancy by our own launcher editor.
+  * Updated AwnManager Interface.
+  * Simple mousewheel task scrolling implementation
