@@ -2222,7 +2222,7 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 	}
 
 	/* 4px offset for 3D look */
-	if (fx->settings && fx->settings->bar_angle >= 0) {
+	if (fx->settings && fx->settings->bar_angle > 0) {
 		cairo_save(cr);
 		cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
 		cairo_set_source_rgba (cr, 1, 1, 1, 0);

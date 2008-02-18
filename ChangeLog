@@ -1,3 +1,8 @@
+2008-02-18  haytjes  <hv1989@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fixed bug
+
 2008-02-18  Neil J. Patel  <njpatel@gmail.com>
 
 	* AUTHORS:
