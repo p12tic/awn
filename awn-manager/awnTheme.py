@@ -78,7 +78,7 @@ class AwnThemeManager:
                     Pref('border_color', str), Pref('corner_radius', float),
                     Pref('glass_histep_1', str), Pref('glass_histep_2', str),
                     Pref('glass_step_1', str), Pref('glass_step_2', str),
-                    Pref('hilight_color', str), Pref('icon_offset', float),
+                    Pref('hilight_color', str), Pref('icon_offset', int),
                     Pref('pattern_alpha', float), Pref('pattern_uri', str),
                     Pref('render_pattern', bool), Pref('rounded_corners', bool),
                     Pref('sep_color', str), Pref('show_separator', bool)],
@@ -366,9 +366,8 @@ class AwnThemeManager:
                 for pref in contents:
                     # uses the proper retrieval function based on the declared type
                     value = getattr(self.CONFIG, get_typefunc(pref.ptype, 'get'))(cfg_group, pref.name)
-                    cfg.set(itm, pref.name, value)
+                    cfg.set(cfg_group, pref.name, value)
         cfg.write(open(path, 'w'))
-        cfg.close()
 
     def read(self, path):
         cp = ConfigParser()
