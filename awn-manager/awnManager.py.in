@@ -64,14 +64,31 @@ class AwnManager:
         self.wTree = gtk.glade.XML(self.GLADE_PATH, domain=defs.I18N_DOMAIN)
 
         self.window = self.wTree.get_widget("awnManagerWindow")
+        theme = gtk.icon_theme_get_default()
+        icon_search_path = os.path.join('@DATADIR@', 'icons')
+        if icon_search_path not in theme.get_search_path():
+            theme.append_search_path(icon_search_path)
+        icon_list = []
+        icon_sizes = theme.get_icon_sizes('awn-manager')
+        for size in icon_sizes:
+            if size == -1: # scalable
+                if 128 not in icon_sizes:
+                    icon = theme.load_icon('awn-manager', 128, gtk.ICON_LOOKUP_USE_BUILTIN)
+                else:
+                    continue
+            else:
+                icon = theme.load_icon('awn-manager', size, gtk.ICON_LOOKUP_USE_BUILTIN)
+            icon_list.append(icon)
+        if len(icon_list) > 0:
+            self.window.set_icon_list(*icon_list)
         self.window.connect("delete-event", gtk.main_quit)
 		
-	# Enable RGBA colormap
-	self.gtk_screen = self.window.get_screen()
-	colormap = self.gtk_screen.get_rgba_colormap()
-	if colormap == None:
-		colormap = screen.get_rgb_colormap()
-	gtk.widget_set_default_colormap(colormap)
+        # Enable RGBA colormap
+        self.gtk_screen = self.window.get_screen()
+        colormap = self.gtk_screen.get_rgba_colormap()
+        if colormap == None:
+            colormap = screen.get_rgb_colormap()
+        gtk.widget_set_default_colormap(colormap)
 
         self.notebook = self.wTree.get_widget("panelCategory")
 

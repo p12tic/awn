@@ -1,3 +1,18 @@
+2008-02-18  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* Makefile.app-icons:
+	* awn-manager/Makefile.am:
+	* awn-manager/awn-manager-small.svg:
+	* awn-manager/awn-manager.desktop.in.in:
+	* awn-manager/awn-manager.png
+	* awn-manager/awn-manager.svg:
+	* awn-manager/awnManager.py.in:
+	* configure.in:
+	Fix Launchpad bug #192698 (Awn-manager doesn't have an icon).
+	Add build system infrastructure for app icon installation.
+	Note that new icons are CC-BY-SA 3.0 (unported).
+	Fix typo in awn-manager desktop file.
+
 2008-02-18  Neil J. Patel  <njpatel@gmail.com>
 
 	* configure.in:
@@ -9,6 +24,17 @@
 	* configure.in:
 	* doc/reference/Makefile.am:
 	Updates to allow make-dist to work.
+
+2008-02-18  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awn-manager.desktop.in.in:
+	Fix Launchpad bug #160804 (Change awn-manager desktop file category).
+
+2008-02-17  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnPreferences.py:
+	Fix Launchpad bug #173325 ("Task Appearance > Text > Color > Opacity
+	slide" doesn't effect the opacity).
 
 2008-02-17  Neil J. Patel  <njpatel@gmail.com>
 

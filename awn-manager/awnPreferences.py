@@ -107,7 +107,7 @@ class awnPreferences:
 
         self.setup_scale(defs.BAR, defs.PATTERN_ALPHA, self.wTree.get_widget("patternscale"))
 
-        self.setup_color(defs.TITLE, defs.TEXT_COLOR, self.wTree.get_widget("textcolor"))
+        self.setup_color(defs.TITLE, defs.TEXT_COLOR, self.wTree.get_widget("textcolor"), False)
         self.setup_color(defs.TITLE, defs.SHADOW_COLOR, self.wTree.get_widget("shadowcolor"))
         self.setup_color(defs.TITLE, defs.BACKGROUND, self.wTree.get_widget("backgroundcolor"))
 
@@ -123,13 +123,16 @@ class awnPreferences:
         self.setup_color(defs.BAR, defs.SEP_COLOR, self.wTree.get_widget("sepcolor"))
         self.setup_color(defs.APP, defs.ARROW_COLOR, self.wTree.get_widget("arrowcolor"))
 
-    def setup_color(self, group, key, colorbut):
+    def setup_color(self, group, key, colorbut, show_opacity_scale = True):
         try:
             color, alpha = make_color(self.client.get_string(group, key))
         except TypeError:
             raise "\nKey: [%s]%s isn't set.\nRestarting AWN usually solves this issue\n" % (group, key)
         colorbut.set_color(color)
-        colorbut.set_alpha(alpha)
+        if show_opacity_scale:
+            colorbut.set_alpha(alpha)
+        else:
+            colorbut.set_use_alpha(False)
         colorbut.connect("color-set", self.color_changed, (group, key))
 
     def color_changed(self, colorbut, groupkey):

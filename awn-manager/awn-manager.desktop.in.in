@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
-Name=Awn manager
+Name=Awn Manager
 Comment=Manage Awn preferences, launchers, applets and themes
 Exec=awn-manager
-Icon=@PKGDATADIR@/avant-window-navigator-48.png
-Categories=Settings;
+Icon=awn-manager
+Categories=Settings;DesktopSettings;GTK;
 

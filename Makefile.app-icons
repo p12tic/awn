@@ -1,0 +1,12 @@
+# vim: set ft=automake ts=8 sts=8 sw=8 :
+
+NULL = 
+icondir = $(datadir)/icons/hicolor/48x48/apps
+icon_DATA = $(APP_ICON_NAME).png
+svgicondir = $(datadir)/icons/hicolor/scalable/apps
+svgicon_DATA = $(APP_ICON_NAME).svg
+
+EXTRA_DIST =		\
+	$(icon_DATA)	\
+	$(svgicon_DATA)	\
+	$(NULL)
