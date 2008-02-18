@@ -1,5 +1,10 @@
 2008-02-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* awn-manager/awnTheme.py:
+	Fix theme saving.
+
+2008-02-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* AUTHORS:
 	Fix my email address.
 

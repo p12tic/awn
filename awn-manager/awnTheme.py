@@ -33,7 +33,7 @@ CONFIG_TYPE_MAP = {
     }
 
 def get_typefunc(ptype, prefix):
-    return '%s_%s' % (CONFIG_TYPE_MAP[ptype], prefix)
+    return '%s_%s' % (prefix, CONFIG_TYPE_MAP[ptype])
 
 class Pref:
     pref_list = {}
