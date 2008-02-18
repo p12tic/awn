@@ -385,7 +385,7 @@ render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 	
 	double x = (int)((settings->monitor.width-width)*settings->bar_pos);
 	
-	if (settings->bar_angle >= 0) {
+	if (settings->bar_angle > 0) {
         cairo_set_source_rgba (cr, settings->border_color.red,
                                    settings->border_color.green,
                                    settings->border_color.blue,
