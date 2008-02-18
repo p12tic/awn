@@ -1,3 +1,9 @@
+2008-02-17  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnPreferences.py:
+	Fix Launchpad bug #173325 ("Task Appearance > Text > Color > Opacity
+	slide" doesn't effect the opacity).
+
 2008-02-15  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* awn-manager/awnApplet.py:
