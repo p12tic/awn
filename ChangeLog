@@ -1,3 +1,10 @@
+2008-02-18  Neil J. Patel  <njpatel@gmail.com>
+
+	* Makefile.am:
+	* configure.in:
+	* doc/reference/Makefile.am:
+	Updates to allow make-dist to work.
+
 2008-02-17  Neil J. Patel  <njpatel@gmail.com>
 
 	* configure.in:

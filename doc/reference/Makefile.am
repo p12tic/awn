@@ -72,7 +72,7 @@ expand_content_files=
 INCLUDES = \
 	$(AWN_CFLAGS)			\
 	-I$(top_srcdir)			\
-	-I$(top_srcdir)/libawn	\
+	-I$(top_builddir)/libawn	\
 	-I$(top_builddir)		\
 	$(NULL)
 

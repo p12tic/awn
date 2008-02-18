@@ -7,10 +7,9 @@ SUBDIRS =				\
 	data				\
 	applets                         \
 	po				\
-	bindings				\
+	bindings			\
 	awn-manager			\
-	doc					\
-	test				\
+	doc				\
 	$(NULL)
 	
 pkgconfigdir = $(libdir)/pkgconfig
