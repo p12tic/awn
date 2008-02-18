@@ -127,20 +127,30 @@ main (int argc, char *argv[])
 	guint32 ret;
 
 	GOptionContext *context;
-	static GOptionEntry entries[] = 
+	gboolean version = FALSE;
+	GOptionEntry entries[] = 
 	{
-		{ "version", 'v', 0, G_OPTION_ARG_NONE, NULL, "Prints the version number", NULL },
+		{ "version", 'v', 0, G_OPTION_ARG_NONE, &version, "Prints the version number", NULL },
 		{ NULL }
 	};
 
 	context = g_option_context_new ("- Starts the Avant Window Navigator dock");
 	g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
 	g_option_context_add_group (context, gtk_get_option_group (TRUE));
-	g_option_context_parse (context, &argc, &argv, &error);
+	g_option_context_parse (context, &argc, &argv, NULL);
+	g_option_context_free(context);
+
 	
+	if(version) {
+		g_print("Avant Window Navigator ");
+		g_print(VERSION);
+		g_print("\n");
+		return 0;
+	}
+
   	if (!g_thread_supported ()) g_thread_init (NULL);
 	dbus_g_thread_init ();
-  
+
   	g_type_init ();
 
   	gtk_init (&argc, &argv);
