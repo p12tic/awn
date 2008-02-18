@@ -1,3 +1,6 @@
+APP_ICON_NAME = awn-manager
+include $(top_srcdir)/Makefile.app-icons
+
 pyfiles_DATA = \
 	awnApplet.py		\
 	awnDefs.py		\
@@ -23,7 +26,11 @@ uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-manager
 	rm -f $(DESTDIR)$(bindir)/awn-launcher-editor
 
-EXTRA_DIST = $(glade_DATA) *.py $(desktop_DATA).in.in
+EXTRA_DIST +=			\
+	$(glade_DATA)		\
+	*.py			\
+	$(desktop_DATA).in.in	\
+	$(NULL)
 
 clean:
 	rm -f *.pyo *.pyc *.bak *.gladep $(desktop_DATA) $(desktop_DATA).in
