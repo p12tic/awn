@@ -1,5 +1,10 @@
 2008-02-18  Neil J. Patel  <njpatel@gmail.com>
 
+	* configure.in:
+	Reverted back to original vala checking. Spotted by malept.
+
+2008-02-18  Neil J. Patel  <njpatel@gmail.com>
+
 	* Makefile.am:
 	* configure.in:
 	* doc/reference/Makefile.am:
