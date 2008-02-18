@@ -367,6 +367,7 @@ class awnPreferences:
 
         if (bundle == effect_settings):
           self.wTree.get_widget('customeffectsframe').hide()
+          self.wTree.get_widget('customeffectsframe').set_no_show_all(True)
           if (hover_effect == 15):
             active = 0
           else:
