@@ -1,3 +1,8 @@
+2008-02-18  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awn-manager.desktop.in.in:
+	Fix Launchpad bug #160804 (Change awn-manager desktop file category).
+
 2008-02-17  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* awn-manager/awnPreferences.py:

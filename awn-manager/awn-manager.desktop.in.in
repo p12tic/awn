@@ -4,5 +4,5 @@ Name=Awn manager
 Comment=Manage Awn preferences, launchers, applets and themes
 Exec=awn-manager
 Icon=@PKGDATADIR@/avant-window-navigator-48.png
-Categories=Settings;
+Categories=Settings;DesktopSettings;GTK;
 
