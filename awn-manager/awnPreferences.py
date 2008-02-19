@@ -92,6 +92,7 @@ class awnPreferences:
 
         self.setup_bool (defs.BAR, defs.SHOW_SEPARATOR, self.wTree.get_widget("separatorcheck"))
         self.setup_bool (defs.APP, defs.TASKS_H_ARROWS, self.wTree.get_widget("arrowcheck"))
+	self.setup_autostart (defs.APP, defs.TASKS_H_ARROWS, self.wTree.get_widget("autostart"))
         self.setup_effect (defs.APP, defs.ICON_EFFECT, self.wTree.get_widget("iconeffects"))
 
         self.setup_chooser(defs.APP, defs.ACTIVE_PNG, self.wTree.get_widget("activefilechooser"))
@@ -397,3 +398,85 @@ class awnPreferences:
           self.refresh_effect_custom(group, key)
         else:
           self.wTree.get_widget('customeffectsframe').show()
+
+    def setup_autostart(self, group, key, check):
+        """sets up checkboxes"""
+        check.set_active(self.client.get_bool(group, key))
+        check.connect("toggled", self.autostart_changed, (group, key))
+
+    def autostart_changed(self, check, groupkey):
+        group, key = groupkey
+        self.client.set_bool(group, key, check.get_active())
+	if check.get_active():
+		self.create_autostarter()
+	else:
+		self.delete_autostarter()
+        print "toggled"
+
+    def create_autostarter (self):
+	"""Create a .desktop-file for the awn-launcher in $HOME/.config/autostart."""
+
+	# The following code is adapted from screenlets-manager.py
+
+	if os.geteuid()==0: # we run as root, install system-wide
+		DIR_AUTOSTART   = '/etc/xdg/autostart'                  # TODO: use pyxdg here
+ 	else: # we run as normal user, install into $HOME
+ 	        if os.environ['DESKTOP_SESSION'].startswith('kde'):
+			DIR_AUTOSTART   = os.environ['HOME'] + '/.kde/Autostart/'
+		else:
+			DIR_AUTOSTART   = os.environ['HOME'] + '/.config/autostart/' 
+
+	if not os.path.isdir(DIR_AUTOSTART):
+		# create autostart directory, if not existent
+		#if screenlets.show_question(None, 
+		#	_("There is no existing autostart directory for your user account yet. Do you want me to automatically create it for you?"), 
+		#	_('Error')):
+		#	print "Auto-create autostart dir ..."
+		#	os.system('mkdir %s' % DIR_AUTOSTART)
+		#	if not os.path.isdir(DIR_AUTOSTART):
+		#		screenlets.show_error(None, _("Automatic creation failed. Please manually create the directory:\n%s") % DIR_AUTOSTART, _('Error'))
+		#		return False
+		#else:
+		#	screenlets.show_message(None, _("Please manually create the directory:\n%s") % DIR_AUTOSTART)
+		#	return False
+		#if name.endswith('Screenlet'):
+			#name = name[:-9]
+		print "Couldn't create autostarter for AWN"
+		return False
+	starter = '%s/awn.desktop' % (DIR_AUTOSTART)
+	if not os.path.isfile(starter):
+		print "Create autostarter for: avant-window-navigator"
+		code = ['[Desktop Entry]']
+		code.append('Name=Avant-Window-Navigator')
+		code.append('Encoding=UTF-8')
+		code.append('Version=1.0')
+		code.append('Type=Application')
+		code.append('Exec=avant-window-navigator')
+		code.append('X-GNOME-Autostart-enabled=true')
+		#print code
+		f = open(starter, 'w')
+		if f:
+			for l in code:
+				f.write(l + '\n')
+			f.close()
+			return True
+		print 'Failed to create autostarter for AWN.'
+		return False
+	else:
+		print "Starter already exists."
+		return True
+	
+    def delete_autostarter (self):
+	"""Delete the autostart for the given screenlet."""
+
+	if os.geteuid()==0: # we run as root, install system-wide
+		DIR_AUTOSTART   = '/etc/xdg/autostart'                  # TODO: use pyxdg here
+ 	else: # we run as normal user, install into $HOME
+ 	        if os.environ['DESKTOP_SESSION'].startswith('kde'):
+			DIR_AUTOSTART   = os.environ['HOME'] + '/.kde/Autostart/'
+		else:
+			DIR_AUTOSTART   = os.environ['HOME'] + '/.config/autostart/' 
+
+	print 'Delete autostarter for Avant-Window-Navigator.'
+	os.system('rm %s/awn.desktop' % (DIR_AUTOSTART))
+

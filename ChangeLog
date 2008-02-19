@@ -1,3 +1,14 @@
+2008-02-20  haytjes  <hv1989@gmail.com>
+
+	* configure.in:
+	bumped version to 0.3. This means it is unstable 
+	(this is no release, just needed to distinguish 0.2.4 stable and this unstable version) 
+	The next stable release is 0.4.
+
+	* awn-manager/awnPreferences.py:
+	* awn-manager/window.glade:
+	Added an option to let awn start on login
+
 2008-02-19  Neil J. Patel  <njpatel@gmail.com>
 
 	* configure.in:
