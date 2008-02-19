@@ -46,6 +46,7 @@ typedef struct {
 	int monitor_height;
 	int monitor_width;
 	gboolean panel_mode;
+	gboolean hide_gnome_panel;
 	
 	gboolean auto_hide;
 	gboolean hidden;

@@ -1,5 +1,14 @@
 2008-02-20  haytjes  <hv1989@gmail.com>
 
+	* awn-manager/awnPreferences.py:
+	* awn-manager/window.glade:
+	* libawn/awn-settings.c:
+	* libawn/awn-settings.h:
+	* src/main.c:
+	Added an option to close gnome-panel when starting avant-window-navigator
+
+2008-02-20  haytjes  <hv1989@gmail.com>
+
 	* configure.in:
 	bumped version to 0.3. This means it is unstable 
 	(this is no release, just needed to distinguish 0.2.4 stable and this unstable version) 
