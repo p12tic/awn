@@ -225,7 +225,6 @@ data/Makefile
 data/active/Makefile
 data/avant-window-navigator.desktop.in
 po/Makefile.in
-tests/Makefile
 awn.pc
 ])
 

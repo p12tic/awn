@@ -102,4 +102,6 @@ awn-enum-types.c: awn-enum-types.h
 	rm -f xgen-cetc
 
 CLEANFILES = $(STAMPFILES)
+
+EXTRA_DIST=awn-config-client-shared.c
 # vim: set ts=8 sts=8 sw=8 :

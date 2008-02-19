@@ -1,5 +1,12 @@
 2008-02-19  Neil J. Patel  <njpatel@gmail.com>
 
+	* configure.in:
+	* data/Makefile.am:
+	* libawn/Makefile.am:
+	Fixes for make dist
+
+2008-02-19  Neil J. Patel  <njpatel@gmail.com>
+
 	* awn-manager/awnTheme.py:
 	Fixed theme applying issues thanks to malept.
 

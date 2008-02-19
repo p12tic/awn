@@ -36,6 +36,6 @@ install-exec-local:
 uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-schema-to-gconf
 
-EXTRA_DIST = $(icon_DATA) $(desktop_DATA).in.in awn.schema-ini
+EXTRA_DIST = $(icon_DATA) $(desktop_DATA).in.in awn.schema-ini awn-schema-to-gconf
 
 CLEANFILES = $(desktop_DATA) $(desktop_DATA).in
