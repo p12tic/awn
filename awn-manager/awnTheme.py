@@ -1,4 +1,4 @@
-#
+
 #  Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -48,6 +48,10 @@ class Pref:
             return Pref.pref_list[name]
         else:
             return None
+            
+    def typecast(self, value):
+        return self.ptype(value)
+
 
 class AwnThemeManager:
 
@@ -153,10 +157,10 @@ class AwnThemeManager:
                 if group != 'details':
                     if group == "root":
                         group = awn.CONFIG_DEFAULT_GROUP
-                    for key, value in entries:
+                    for key, value in entries.iteritems():
                         pref = Pref.lookup(key)
                         if pref is not None:
-                            getattr(self.config, get_typefunc(pref.ptype, 'set'))(group, key, value)
+                            getattr(self.CONFIG, get_typefunc(pref.ptype, 'set'))(group, key, pref.typecast(value))
 
             if self.CONFIG.get_bool(defs.BAR, defs.RENDER_PATTERN):
                 self.CONFIG.set_string(defs.BAR, defs.PATTERN_URI, os.path.join(defs.HOME_THEME_DIR, directory, "pattern.png"))

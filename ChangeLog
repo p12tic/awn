@@ -1,3 +1,8 @@
+2008-02-19  Neil J. Patel  <njpatel@gmail.com>
+
+	* awn-manager/awnTheme.py:
+	Fixed theme applying issues thanks to malept.
+
 2008-02-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* awn-manager/awnTheme.py:
