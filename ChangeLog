@@ -1,3 +1,14 @@
+2008-02-19  R. Cryderman (moonbeam) <rcryderman@gmail.com>
+
+	* awn-manager/awnPreferences.py:
+	* awn-manager/window.glade:
+	* libawn/awn-settings.c:
+	* libawn/awn-settings.h:
+	* src/main.c:
+	Reverted commit 192.  Ack'd by njpatel.  Functionality should be
+	implemented by running arbitrary scripts/commands before and after awn
+	startup.
+
 2008-02-19  Neil J. Patel  <njpatel@gmail.com>
 
 	* configure.in:

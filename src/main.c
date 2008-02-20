@@ -47,7 +47,6 @@
 #include "awn-utils.h"
 #include "awn-task.h"
 
-#include <glib.h>
 
 #define AWN_NAMESPACE "com.google.code.Awn"
 #define AWN_OBJECT_PATH "/com/google/code/Awn"
@@ -84,10 +83,7 @@ static void
 screen_size_changed (GdkScreen *screen, AwnSettings *s);
 static void 
 composited_changed ( GdkScreen *screen, AwnSettings *s);
-static void
-hide_gnome_panel ();
-static void 
-show_gnome_panel ();
+
 
 static Atom
 panel_atom_get (const char *atom_name)
@@ -283,14 +279,8 @@ main (int argc, char *argv[])
 					     G_OBJECT (applet_manager));
 	
 	composited_changed(screen, settings);
-
-	if(settings->hide_gnome_panel)
-		g_spawn_command_line_async("gnome-session-remove gnome-panel", NULL);
 	
 	gtk_main ();
-
-	if(settings->hide_gnome_panel)
-		g_spawn_command_line_async("gnome-panel", NULL);
 	
 	return 0;
 }
