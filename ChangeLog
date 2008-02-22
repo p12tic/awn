@@ -1,5 +1,10 @@
 2008-02-22  Neil J. Patel  <njpatel@gmail.com>
 
+	* awn-manager/awnLauncherEditor.py:
+	Fix up creating launchers.
+
+2008-02-22  Neil J. Patel  <njpatel@gmail.com>
+
 	* libawn/egg/Makefile.am:
 	Include the necessary files in EXTRA_DIST.
 
