@@ -166,11 +166,12 @@ class awnLauncherEditor:
             self.desktop_entry.set('Exec', fields['command'])
             if fields['description'] is not None and len(fields['description']) > 0:
                 self.desktop_entry.set('Comment', fields['description'])
-            if self.icon_path is not None:
-                self.desktop_entry.set('Icon', self.icon_path)
+            if self.icon_path is None:
+                self.icon_path = "application-x-executable"
+            self.desktop_entry.set('Icon', self.icon_path)
             self.desktop_entry.write()
             uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
-            if not os.path.exists(self.filename):
+            if os.path.exists(self.filename):
                 uris.append(self.filename)
             self.client.set_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING, uris)
             if self.launcher is not None:
