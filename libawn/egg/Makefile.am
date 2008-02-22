@@ -48,4 +48,10 @@ egg-enum-types.c: egg-enum-types.h
 	cp xgen-cetc $@ && \
 	rm -f xgen-cetc
 
+EXTRA_DIST= \
+	egg-enum-types.h.in \
+	egg-enum-types.c.in \
+  eggdesktopfile.c \
+	eggdesktopfile.h
+
 CLEANFILES = $(STAMPFILES)
