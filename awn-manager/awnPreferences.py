@@ -119,7 +119,7 @@ class awnPreferences:
         self.setup_color(defs.BAR, defs.GLASS_STEP_2, self.wTree.get_widget("gradientcolor2"))
 
         self.setup_color(defs.BAR, defs.GLASS_HISTEP_1, self.wTree.get_widget("highlightcolor1"))
-        self.setup_color(defs.BAR, defs.GLASS_HISTEP_1, self.wTree.get_widget("highlightcolor2"))
+        self.setup_color(defs.BAR, defs.GLASS_HISTEP_2, self.wTree.get_widget("highlightcolor2"))
 
         self.setup_color(defs.BAR, defs.SEP_COLOR, self.wTree.get_widget("sepcolor"))
         self.setup_color(defs.APP, defs.ARROW_COLOR, self.wTree.get_widget("arrowcolor"))
