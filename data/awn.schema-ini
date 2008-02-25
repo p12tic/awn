@@ -160,4 +160,8 @@ description = The background color of the title.
 type = string
 default = Sans 11
 description = The font details of the title.
+[applets/shared/dialog_focus_loss_behavior]
+type = bool
+default = true
+description = Whether to close dialogs on loss of focus.
 ; vim: set ft=dosini :

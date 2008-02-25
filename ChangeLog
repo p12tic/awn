@@ -1,3 +1,8 @@
+2008-02-25  R. Cryderman (moonbeam) <rcryderman@gmail.com>
+
+	* data/awn.schema-ini
+	Added shared applet key: applets/shared/dialog_focus_loss_behavior
+
 2008-02-24  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* debian/awn-manager-trunk.install:
