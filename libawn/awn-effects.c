@@ -2259,5 +2259,5 @@ void awn_draw_set_window_size(AwnEffects *fx, const gint width, const gint heigh
 
 static gdouble calc_curve_position (gdouble cx, gdouble a, gdouble b)	// pos, width, height
 {
-	return sin(cx / (a) * M_PI) * b;
+	return a <= 0 ? 0 : sin(cx / a * M_PI) * b;
 }

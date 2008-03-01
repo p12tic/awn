@@ -1,3 +1,8 @@
+2008-03-01  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fix disappearing applets in curved mode
+
 2008-02-25  R. Cryderman (moonbeam) <rcryderman@gmail.com>
 
 	* data/awn.schema-ini
