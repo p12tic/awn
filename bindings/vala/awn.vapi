@@ -308,7 +308,7 @@ namespace Awn {
 	public const int MAX_HEIGHT;
 	public const int MIN_HEIGHT;
 	public static void cairo_rounded_rect (Cairo.Context cr, int x0, int y0, int width, int height, double radius, Awn.CairoRoundCorners state);
-	public static void cairo_string_to_color (string string, Awn.Color color);
+	public static void cairo_string_to_color (string str, Awn.Color color);
 	public static void config_set_window_to_update (Gtk.Widget window);
 	public static void draw_background (Awn.Effects p1, Cairo.Context p2);
 	public static void draw_foreground (Awn.Effects p1, Cairo.Context p2);

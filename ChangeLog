@@ -1,3 +1,8 @@
+2008-03-02  R. Cryderman (moonbeam) <rcryderman@gmail.com>
+
+	* bindings/vala/awn.vapi
+	Fix for vala bindings and vala v. 0.17
+
 2008-03-01  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-effects.c:
