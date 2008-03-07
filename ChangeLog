@@ -1,3 +1,7 @@
+2008-03-07 R. Cryderman (moonbeam) <rcryderman@gmail.com>
+
+        branch for implementing awn-effects with a fundamental cairo core.
+
 2008-03-02  R. Cryderman (moonbeam) <rcryderman@gmail.com>
 
 	* bindings/vala/awn.vapi
