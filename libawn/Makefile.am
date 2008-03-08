@@ -28,6 +28,8 @@ source_h =			\
 	awn-config-client.h	\
 	awn-desktop-item.h	\
 	awn-effects.h		\
+  awn-effects-shared.h \
+  awn-effect-spotlight.h \
 	awn-enum-types.h	\
 	awn-plug.h		\
 	awn-settings.h		\
@@ -41,6 +43,8 @@ source_c =			\
 	awn-applet-simple.c	\
 	awn-cairo-utils.c	\
 	awn-effects.c		\
+  awn-effects-shared.c \
+  awn-effect-spotlight.c \
 	awn-enum-types.c	\
 	awn-plug.c		\
 	awn-settings.c		\
