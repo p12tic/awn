@@ -16,15 +16,44 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
 
-#ifndef __AWN_EFFECT_SPOTLIGHT_H__
-#define __AWN_EFFECT_SPOTLIGHT_H__
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
+#include "awn-effects.h"
 #include "awn-effects-shared.h"
 
-gboolean spotlight_effect (AwnEffectsPrivate * priv);
-gboolean spotlight_half_fade_effect (AwnEffectsPrivate * priv);
-gboolean spotlight_opening_effect2 (AwnEffectsPrivate * priv);
-gboolean spotlight_closing_effect (AwnEffectsPrivate * priv);
-#endif
+
+// simple bounce effect based on sin function
+gboolean
+bounce_effect (AwnEffectsPrivate * priv)
+{
+  AwnEffects *fx = priv->effects;
+  if (!fx->effect_lock)
+  {
+    fx->effect_lock = TRUE;
+    // effect start initialize values
+    fx->count = 0;
+    if (priv->start)
+      priv->start (fx->self);
+    priv->start = NULL;
+  }
+
+  const gdouble MAX_BOUNCE_OFFSET = 15.0;
+  const gint PERIOD = 20;
+
+  fx->y_offset = sin (++fx->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
+
+  // repaint widget
+  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+
+  gboolean repeat = TRUE;
+  if (fx->count >= PERIOD)
+  {
+    fx->count = 0;
+    // check for repeating
+    repeat = awn_effect_handle_repeating (priv);
+  }
+  return repeat;
+}
