@@ -26,7 +26,9 @@
 #include "awn-settings.h"
 #include "awn-title.h"
 
-G_BEGIN_DECLS typedef enum
+G_BEGIN_DECLS
+
+typedef enum
 {
   AWN_EFFECT_NONE,
   AWN_EFFECT_OPENING,
