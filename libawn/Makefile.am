@@ -35,6 +35,7 @@ source_h =			\
   awn-effect-zoom.h \
   awn-effect-squish.h \
   awn-effect-fade.h \
+  awn-effect-turn.h \
 	awn-enum-types.h	\
 	awn-plug.h		\
 	awn-settings.h		\
@@ -55,6 +56,7 @@ source_c =			\
   awn-effect-zoom.c \
   awn-effect-squish.c \
   awn-effect-fade.c \
+  awn-effect-turn.c \
 	awn-enum-types.c	\
 	awn-plug.c		\
 	awn-settings.c		\
