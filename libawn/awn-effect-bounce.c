@@ -60,3 +60,54 @@ bounce_effect (AwnEffectsPrivate * priv)
   }
   return repeat;
 }
+
+
+
+gboolean
+bounce_opening_effect (AwnEffectsPrivate * priv)
+{
+  AwnEffects *fx = priv->effects;
+  if (!fx->effect_lock)
+  {
+    fx->effect_lock = TRUE;
+    // effect start initialize values
+    fx->count = 0;
+    fx->y_offset = 0;
+    fx->clip = TRUE;
+    fx->clip_region.x = 0;
+    fx->clip_region.y = 0;
+    fx->clip_region.width = fx->icon_width;
+    fx->clip_region.height = 0;
+    if (priv->start)
+      priv->start (fx->self);
+    priv->start = NULL;
+  }
+
+  const gint PERIOD1 = 15;
+  const gint PERIOD2 = 20;
+  const gint MAX_BOUNCE_OFFSET = 15;
+
+  if (fx->count < PERIOD1)
+    fx->clip_region.height = fx->icon_height * ++fx->count / PERIOD1;
+  else if (fx->count < PERIOD1 + PERIOD2)
+  {
+    fx->clip = FALSE;
+    fx->y_offset =
+      sin ((++fx->count - PERIOD1) * M_PI / PERIOD2) * MAX_BOUNCE_OFFSET;
+  }
+
+  // repaint widget
+  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+
+  gboolean repeat = TRUE;
+  if (fx->count >= PERIOD1 + PERIOD2)
+  {
+    fx->count = 0;
+    fx->y_offset = 0;
+    // check for repeating
+    repeat = awn_effect_handle_repeating (priv);
+  }
+  return repeat;
+}
+
+

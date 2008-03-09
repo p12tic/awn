@@ -30,6 +30,8 @@
 #include "awn-effect-bounce.h"
 #include "awn-effect-glow.h"
 #include "awn-effect-zoom.h"
+#include "awn-effect-fade.h"
+#include "awn-effect-squish.h"
 
 
 
@@ -43,9 +45,6 @@ extern GdkPixbuf *SPOTLIGHT_PIXBUF;
 
 
 // effect functions
-static gboolean bounce_squish_effect (AwnEffectsPrivate * priv);
-static gboolean fading_effect (AwnEffectsPrivate * priv);
-
 static gboolean awn_on_enter_event (GtkWidget * widget,
 				    GdkEventCrossing * event, gpointer data);
 static gboolean awn_on_leave_event (GtkWidget * widget,
@@ -132,132 +131,6 @@ awn_effects_set_title (AwnEffects * fx, AwnTitle * title,
 }
 
 
-
-
-static gboolean
-fade_out_effect (AwnEffectsPrivate * priv)
-{
-  AwnEffects *fx = priv->effects;
-  if (!fx->effect_lock)
-  {
-    fx->effect_lock = TRUE;
-    // effect start initialize values
-    fx->count = 0;
-    fx->alpha = 1.0;
-    if (priv->start)
-      priv->start (fx->self);
-    priv->start = NULL;
-  }
-
-  const gdouble MAX_OFFSET = 50.0;
-  const gint PERIOD = 20;
-
-  fx->y_offset = ++fx->count * (MAX_OFFSET / PERIOD);
-  fx->alpha = fx->count * (-1.0 / PERIOD) + 1;
-
-  // repaint widget
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
-
-  gboolean repeat = TRUE;
-  if (fx->count >= PERIOD)
-  {
-    fx->count = 0;
-    // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
-  }
-  return repeat;
-}
-
-static gboolean
-bounce_opening_effect (AwnEffectsPrivate * priv)
-{
-  AwnEffects *fx = priv->effects;
-  if (!fx->effect_lock)
-  {
-    fx->effect_lock = TRUE;
-    // effect start initialize values
-    fx->count = 0;
-    fx->y_offset = 0;
-    fx->clip = TRUE;
-    fx->clip_region.x = 0;
-    fx->clip_region.y = 0;
-    fx->clip_region.width = fx->icon_width;
-    fx->clip_region.height = 0;
-    if (priv->start)
-      priv->start (fx->self);
-    priv->start = NULL;
-  }
-
-  const gint PERIOD1 = 15;
-  const gint PERIOD2 = 20;
-  const gint MAX_BOUNCE_OFFSET = 15;
-
-  if (fx->count < PERIOD1)
-    fx->clip_region.height = fx->icon_height * ++fx->count / PERIOD1;
-  else if (fx->count < PERIOD1 + PERIOD2)
-  {
-    fx->clip = FALSE;
-    fx->y_offset =
-      sin ((++fx->count - PERIOD1) * M_PI / PERIOD2) * MAX_BOUNCE_OFFSET;
-  }
-
-  // repaint widget
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
-
-  gboolean repeat = TRUE;
-  if (fx->count >= PERIOD1 + PERIOD2)
-  {
-    fx->count = 0;
-    fx->y_offset = 0;
-    // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
-  }
-  return repeat;
-}
-
-
-
-static gboolean
-fading_effect (AwnEffectsPrivate * priv)
-{
-  AwnEffects *fx = priv->effects;
-  if (!fx->effect_lock)
-  {
-    fx->effect_lock = TRUE;
-    // effect start initialize values
-    fx->alpha = 1.0;
-    fx->direction = AWN_EFFECT_DIR_DOWN;
-    if (priv->start)
-      priv->start (fx->self);
-    priv->start = NULL;
-  }
-  const gdouble MIN_ALPHA = 0.35;
-  const gdouble ALPHA_STEP = 0.05;
-
-  gboolean repeat = TRUE;
-  if (fx->direction == AWN_EFFECT_DIR_DOWN)
-  {
-    fx->alpha -= ALPHA_STEP;
-    if (fx->alpha <= MIN_ALPHA)
-      fx->direction = AWN_EFFECT_DIR_UP;
-    // repaint widget
-    gtk_widget_queue_draw (GTK_WIDGET (fx->self));
-  }
-  else
-  {
-    fx->alpha += ALPHA_STEP * 1.5;
-    // repaint widget
-    gtk_widget_queue_draw (GTK_WIDGET (fx->self));
-    if (fx->alpha >= 1)
-    {
-      fx->alpha = 1.0;
-      fx->direction = AWN_EFFECT_DIR_DOWN;
-      repeat = awn_effect_handle_repeating (priv);
-    }
-  }
-
-  return repeat;
-}
 
 gboolean
 turn_hover_effect (AwnEffectsPrivate * priv)

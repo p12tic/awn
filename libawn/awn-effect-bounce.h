@@ -24,5 +24,6 @@
 #include "awn-effects-shared.h"
 
 gboolean bounce_effect (AwnEffectsPrivate * priv);
+gboolean bounce_opening_effect (AwnEffectsPrivate * priv);
 
 #endif
