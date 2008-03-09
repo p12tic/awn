@@ -31,6 +31,7 @@ source_h =			\
   awn-effects-shared.h \
   awn-effect-spotlight.h \
   awn-effect-bounce.h \
+  awn-effect-glow.h \
 	awn-enum-types.h	\
 	awn-plug.h		\
 	awn-settings.h		\
@@ -47,6 +48,7 @@ source_c =			\
   awn-effects-shared.c \
   awn-effect-spotlight.c \
   awn-effect-bounce.c \
+  awn-effect-glow.h \
 	awn-enum-types.c	\
 	awn-plug.c		\
 	awn-settings.c		\

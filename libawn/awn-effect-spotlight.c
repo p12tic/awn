@@ -28,6 +28,9 @@
 #include <stdlib.h>
 
 
+GdkPixbuf *SPOTLIGHT_PIXBUF = NULL;
+#include "../data/active/spotlight_png_inline.c"
+
 
 gboolean
 spotlight_effect (AwnEffectsPrivate * priv)
@@ -271,4 +274,14 @@ spotlight_closing_effect (AwnEffectsPrivate * priv)
       fx->spotlight = FALSE;
   }
   return repeat;
+}
+
+void
+spotlight_init ()
+{
+  GError *error = NULL;
+  if (!SPOTLIGHT_PIXBUF)
+    SPOTLIGHT_PIXBUF =
+      gdk_pixbuf_new_from_inline (-1, spotlight1_png_inline, FALSE, NULL);
+  g_return_if_fail (error == NULL);
 }
