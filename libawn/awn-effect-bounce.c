@@ -24,6 +24,9 @@
 #include "awn-effects.h"
 #include "awn-effects-shared.h"
 
+#include <math.h>
+#include <string.h>
+#include <stdlib.h>
 
 // simple bounce effect based on sin function
 gboolean
