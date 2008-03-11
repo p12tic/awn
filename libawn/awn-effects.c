@@ -532,16 +532,18 @@ awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
 
     if (curvex > 0)
       fx->curve_offset =
-	calc_curve_position (curvex + (fx->settings->task_width / 4),
-			     awn_bar_width,
-			     (fx->settings->bar_height *
-			      fx->settings->curviness) / 2.);
+                  calc_curve_position (curvex + (fx->settings->task_width / 4),
+                  awn_bar_width,
+                  (fx->settings->bar_height *
+                  fx->settings->curviness) / 2.);
     else
       fx->curve_offset = 0;
 
   }
   else if (fx->curve_offset)
+  {
     fx->curve_offset = 0;
+  }
 
   /* refresh icon info */
   fx->icon_width = gdk_pixbuf_get_width (icon);
@@ -553,9 +555,10 @@ awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
   gint x1 = (fx->window_width - current_width) / 2;
   gint y1 = (fx->window_height - current_height);	// sit on bottom by default
   if (fx->settings)
-    y1 =
-      fx->window_height - fx->settings->icon_offset - current_height -
-      fx->y_offset;
+  {
+    y1 = fx->window_height - fx->settings->icon_offset - current_height -
+          fx->y_offset;
+  }
   y1 -= fx->curve_offset;
 
   /* ICONS */
@@ -571,9 +574,9 @@ awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
     gint h = fx->clip_region.height;
 
     if (x >= 0 && x < fx->icon_width &&
-	w - x > 0 && w - x <= fx->icon_width &&
-	y >= 0 && x < fx->icon_height &&
-	h - y > 0 && h - y <= fx->icon_height)
+          w - x > 0 && w - x <= fx->icon_width &&
+          y >= 0 && x < fx->icon_height &&
+          h - y > 0 && h - y <= fx->icon_height)
     {
 
       // careful! new_subpixbuf shares original pixbuf, no copy!
@@ -584,9 +587,9 @@ awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
       // refresh reflection, icon was clipped
       if (!fx->delta_width && !fx->delta_height)
       {
-	// don't create reflection if we're also scaling
-	reflect = gdk_pixbuf_flip (clippedIcon, FALSE);
-	free_reflect = TRUE;
+        // don't create reflection if we're also scaling
+        reflect = gdk_pixbuf_flip (clippedIcon, FALSE);
+        free_reflect = TRUE;
       }
       // adjust offsets
       x1 = (fx->window_width - current_width) / 2;
@@ -608,15 +611,14 @@ awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
   {
     // sanity check
     if (fx->delta_width <= -current_width
-	|| fx->delta_height <= -current_height)
+          || fx->delta_height <= -current_height)
     {
       // we would display blank icon
       if (clippedIcon)
-	g_object_unref (clippedIcon);
+        g_object_unref (clippedIcon);
       return;
     }
-    scaledIcon =
-      gdk_pixbuf_scale_simple (icon, current_width + fx->delta_width,
+    scaledIcon = gdk_pixbuf_scale_simple (icon, current_width + fx->delta_width,
 			       current_height + fx->delta_height,
 			       GDK_INTERP_BILINEAR);
     // update current w&h
@@ -738,8 +740,7 @@ awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
     cairo_save (cr);
     cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
     cairo_set_source_rgba (cr, 1, 1, 1, 0);
-    cairo_rectangle (cr, 0,
-		     ((fx->settings->bar_height * 2) - 4) +
+    cairo_rectangle (cr, 0, ((fx->settings->bar_height * 2) - 4) +
 		     fx->settings->icon_offset, fx->window_width, 4);
     cairo_fill (cr);
     cairo_restore (cr);
