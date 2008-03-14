@@ -34,6 +34,7 @@
 #include "awn-effect-squish.h"
 #include "awn-effect-turn.h"
 #include "awn-effect-spotlight3d.h"
+#include "awn-effect-desaturate.h"
 
 
 #define  M_PI	3.14159265358979323846
@@ -52,57 +53,6 @@ static gboolean awn_on_leave_event (GtkWidget * widget,
 				    GdkEventCrossing * event, gpointer data);
 
 static gdouble calc_curve_position (gdouble cx, gdouble a, gdouble b);
-
-static gboolean
-desaturate_effect (AwnEffectsPrivate * priv)
-{
-  AwnEffects *fx = priv->effects;
-  if (!fx->effect_lock)
-  {
-    fx->effect_lock = TRUE;
-    // effect start initialize values
-    fx->direction = AWN_EFFECT_DIR_DOWN;
-    fx->saturation = 1.0;
-    if (priv->start)
-      priv->start (fx->self);
-    priv->start = NULL;
-  }
-
-  const gdouble DESATURATION_STEP = 0.04;
-
-  switch (fx->direction)
-  {
-  case AWN_EFFECT_DIR_DOWN:
-    fx->saturation -= DESATURATION_STEP;
-    if (fx->saturation < 0)
-      fx->saturation = 0;
-    gboolean top = awn_effect_check_top_effect (priv, NULL);
-    // TODO: implement sleep function, so effect will stop the timer, but will be paused in middle of the animation and will finish when awn_effect_stop is called or higher priority effect is started
-    if (top)
-    {
-      gtk_widget_queue_draw (GTK_WIDGET (fx->self));
-      return top;
-    }
-    else
-      fx->direction = AWN_EFFECT_DIR_UP;
-    break;
-  case AWN_EFFECT_DIR_UP:
-  default:
-    fx->saturation += DESATURATION_STEP;
-  }
-
-  // repaint widget
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
-
-  gboolean repeat = TRUE;
-  if (fx->saturation >= 1.0)
-  {
-    fx->saturation = 1.0;
-    // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
-  }
-  return repeat;
-}
 
 
 

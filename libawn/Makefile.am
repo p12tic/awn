@@ -37,6 +37,7 @@ source_h =			\
   awn-effect-fade.h \
   awn-effect-turn.h \
   awn-effect-spotlight3d.h \
+  awn-effect-desaturate.h \
 	awn-enum-types.h	\
 	awn-plug.h		\
 	awn-settings.h		\
@@ -59,6 +60,7 @@ source_c =			\
   awn-effect-fade.c \
   awn-effect-turn.c \
   awn-effect-spotlight3d.c \
+  awn-effect-desaturate.c \
 	awn-enum-types.c	\
 	awn-plug.c		\
 	awn-settings.c		\
