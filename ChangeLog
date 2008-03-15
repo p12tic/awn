@@ -1,3 +1,14 @@
+2008-03-15  Neil J. Patel  <njpatel@gmail.com>
+
+	* src/Makefile.am:
+	* src/awn-app.c:
+	* src/awn-app.h:
+	* src/awn-main.c:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Some inital code for re-organising Awn. Does nothing yet, but with a
+	sprinkle of hope and a little love, you never know.
+
 2008-03-02  R. Cryderman (moonbeam) <rcryderman@gmail.com>
 
 	* bindings/vala/awn.vapi

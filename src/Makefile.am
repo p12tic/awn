@@ -52,6 +52,22 @@ icon_test_LDADD =	\
 	$(DOCK_LIBS)	\
 	$(NULL)
 
+bin_PROGRAMS = awn
+
+awn_SOURCES = \
+	awn-main.c \
+	awn-app.c \
+	awn-app.h \
+	awn-panel.c \
+	awn-panel.h \
+	$(NULL)
+
+awn_LDADD =			\
+	$(DOCK_LIBS)				\
+	$(top_builddir)/libawn/libawn.la	\
+	$(NULL)
+
+
 awn-dbus-glue.h: awn-dbus.xml Makefile
 	$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=awn_task_manager --mode=glib-server --output=$@ $<
 
