@@ -1,3 +1,25 @@
+2008-03-16  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/avant-window-navigator-data-trunk.install:
+	* debian/avant-window-navigator-trunk.install:
+	* debian/awn-launcher-editor.1:
+	* debian/awn-manager-trunk.install:
+	* debian/awn-schema-to-gconf.1:
+	* debian/changelog:
+	* debian/control:
+	* debian/control.autoppa:
+	* debian/copyright:
+	* debian/libawn-dev-trunk.install:
+	* debian/libawn-doc-trunk.doc-base:
+	* debian/libawn-doc-trunk.install:
+	* debian/libawn-doc-trunk.links:
+	* debian/libawn0-trunk.install:
+	* debian/pycompat:
+	* debian/rules:
+	* debian/watch:
+	Sync with debian package.
+	Bump version to 0.3.1.
+
 2008-03-15  Neil J. Patel  <njpatel@gmail.com>
 
 	* src/Makefile.am:

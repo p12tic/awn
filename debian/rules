@@ -1,24 +1,26 @@
 #!/usr/bin/make -f
 DEB_DH_INSTALL_SOURCEDIR=debian/tmp
 
-DEB_PYTHON_SYSTEM=pycentral
-
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/gnome.mk
 include /usr/share/cdbs/1/rules/simple-patchsys.mk
 
-DEB_CONFIGURE_SCRIPT := $(CURDIR)/$(DEB_SRCDIR)/autogen.sh
-DEB_CONFIGURE_EXTRA_FLAGS += --prefix=/usr --disable-pymod-checks --with-desktop=gnome --with-gconf
+DEB_CONFIGURE_EXTRA_FLAGS += 	--disable-pymod-checks \
+				--with-desktop=gnome \
+				--with-gconf
 
-DEB_PYTHON_PRIVATE_MODULES_DIRS := debian/tmp/usr/share/avant-window-navigator/awn-manager/
+DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,-z,defs -Wl,--as-needed"
 
-DEB_INSTALL_MANPAGES_avant-window-navigator := debian/avant-window-navigator.1 debian/awn-applet-activation.1
-DEB_INSTALL_MANPAGES_awn-manager := debian/awn-manager.1
+DEB_INSTALL_MANPAGES_avant-window-navigator-trunk := debian/avant-window-navigator.1 debian/awn-applet-activation.1
+DEB_INSTALL_MANPAGES_awn-manager-trunk := debian/awn-manager.1 debian/awn-launcher-editor.1 debian/awn-schema-to-gconf.1
 
-DEB_DH_MAKESHLIBS_ARGS_libawn0 += -V"libawn0-trunk (>= 0.2.1)"
-DEB_DH_MAKESHLIBS_ARGS_avant-window-navigator += -n
-DEB_SHLIBDEPS_LIBRARY_avant-window-navigator:= libawn0
-DEB_SHLIBDEPS_INCLUDE_avant-window-navigator := debian/libawn0/usr/lib/
+DEB_DH_MAKESHLIBS_ARGS_libawn0-trunk += -V"libawn0-trunk (>= 0.3.1)"
+DEB_DH_MAKESHLIBS_ARGS_avant-window-navigator-trunk += -n
+DEB_SHLIBDEPS_LIBRARY_avant-window-navigator-trunk:= libawn0-trunk
+DEB_SHLIBDEPS_INCLUDE_avant-window-navigator-trunk := debian/libawn0/usr/
 
-# debug lib
-DEB_DH_STRIP_ARGS := --dbg-package=libawn0-trunk-dbg
+binary-post-install/awn-manager-trunk::
+	dh_pycentral -pawn-manager-trunk
+
+binary-post-install/python-awn-trunk::
+	dh_pycentral -ppython-awn-trunk
