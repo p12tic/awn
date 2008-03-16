@@ -6,7 +6,7 @@ INCLUDES =				\
 	-I$(top_srcdir)/libawn		\
 	$(NULL)
 
-bin_PROGRAMS = avant-window-navigator
+bin_PROGRAMS = avant-window-navigator awn
 
 avant_window_navigator_LDADD =			\
 	$(DOCK_LIBS)				\
@@ -51,8 +51,6 @@ icon_test_SOURCES =	\
 icon_test_LDADD =	\
 	$(DOCK_LIBS)	\
 	$(NULL)
-
-bin_PROGRAMS = awn
 
 awn_SOURCES = \
 	awn-main.c \

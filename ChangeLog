@@ -1,5 +1,16 @@
 2008-03-16  Julien Lavergne <julien.lavergne@gmail.com>
 
+	* src/Makefile.am:
+	Add awn and avant-window-navigator as binary
+
+	* debian/avant-window-navigator-trunk.install:
+	Add awn binary
+
+	* debian/rules:
+	Re-enable auto-autogen.sh
+
+2008-03-16  Julien Lavergne <julien.lavergne@gmail.com>
+
 	* debian/avant-window-navigator-data-trunk.install:
 	* debian/avant-window-navigator-trunk.install:
 	* debian/awn-launcher-editor.1:
