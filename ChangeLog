@@ -1,5 +1,10 @@
 2008-03-16  Julien Lavergne <julien.lavergne@gmail.com>
 
+	* data/awn.schema-ini:
+	Don't use empty field for the schemas.
+
+2008-03-16  Julien Lavergne <julien.lavergne@gmail.com>
+
 	* src/Makefile.am:
 	Add awn and avant-window-navigator as binary
 
