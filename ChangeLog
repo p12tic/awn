@@ -1,3 +1,11 @@
+2008-03-16  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	* data/awn.schema-ini => data/awn.schema-ini.in:
+	Fix list syntax.
+	Don't hardcode desktop entry paths.
+	Make the Awn Manager desktop entry the default launcher.
+
 2008-03-16  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* data/awn.schema-ini:

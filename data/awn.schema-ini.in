@@ -28,7 +28,7 @@ default = False
 description = Always keep AWN below all other windows.
 [DEFAULT/applets_list]
 type = list-string
-default = [/usr/lib/awn/applets/taskman.desktop::1]
+default = @LIBDIR@/awn/applets/taskman.desktop::1
 description = The list of paths to the enabled applets, in order from left to right.
 [bar/rounded_corners]
 type = bool
@@ -104,7 +104,7 @@ default = True
 description = Show the tasks from every workspace in the bar.
 [window_manager/launchers]
 type = list-string
-default = []
+default = @DATADIR@/applications/awn-manager.desktop
 description = A list of the paths to the launchers shown on the dock, in order from left to right.
 [app/active_png]
 type  = string

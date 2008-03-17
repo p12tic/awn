@@ -203,6 +203,7 @@ AM_GCONF_SOURCE_2
 AS_AC_EXPAND([PY_SITE_PKG], [$PYTHON_SITE_PKG])
 AS_AC_EXPAND([PKGDATADIR], [$datadir/$PACKAGE_NAME])
 AS_AC_EXPAND([DATADIR], [$datadir])
+AS_AC_EXPAND([LIBDIR], [$libdir])
 
 AC_OUTPUT([
 Makefile
@@ -224,6 +225,7 @@ applets/Makefile
 data/Makefile
 data/active/Makefile
 data/avant-window-navigator.desktop.in
+data/awn.schema-ini
 po/Makefile.in
 awn.pc
 ])
