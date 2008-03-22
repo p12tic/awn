@@ -1,5 +1,11 @@
 2008-03-22  Neil J. Patel  <njpatel@gmail.com>
 
+	* src/awn-panel.c:
+	Fix the drawing of child widgets, for both composited and non-composited.
+	Add some pseudo code describing how the other objects would fit together.
+
+2008-03-22  Neil J. Patel  <njpatel@gmail.com>
+
 	* src/awn-app.c:
 	* src/awn-panel.c:
 	More fixes, removed some non-working code.

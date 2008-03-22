@@ -52,6 +52,7 @@ struct _AwnPanelPrivate
   gboolean composited;
 
   GtkWidget *eventbox;
+  GtkWidget *applet_manager;
 
   gint old_width;
   gint old_height;
@@ -87,9 +88,9 @@ awn_panel_add (GtkContainer *window, GtkWidget *widget)
                                                       priv->eventbox);
 
   gtk_container_add (GTK_CONTAINER (priv->eventbox), widget);
-
-  gtk_widget_show (priv->eventbox);
+  gtk_widget_realize (priv->eventbox);
   gdk_window_set_composited (priv->eventbox->window, priv->composited);
+  gtk_widget_show_all (priv->eventbox);
 }
 /* Window stuff */
 static gboolean
@@ -123,6 +124,9 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
                          */
   
   child = gtk_bin_get_child (GTK_BIN (widget));
+  if (!GTK_IS_WIDGET (child))
+    return TRUE;
+
   if (priv->composited)
   {
     GdkRegion *region;
@@ -137,7 +141,7 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     cairo_clip (cr);
     
     cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-    cairo_paint (cr);
+    cairo_paint_with_alpha (cr, 0.2);
   }
 
   cairo_destroy (cr);
@@ -201,11 +205,15 @@ awn_panel_update_input_shape (AwnPanel *window, gint width, gint height)
  * a time as any to update the input shape of the window.
  */
 static gboolean
-on_window_configure (GtkWidget         *widget,
+on_window_configure (GtkWidget          *widget,
                       GdkEventConfigure *event,
-                      AwnPanel         *window)
+                      AwnPanel          *panel)
 {
-  awn_panel_update_input_shape (window, event->width, event->height);
+  g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
+
+  /* Only set the shape of the window if the window is composited */
+  if (panel->priv->composited)
+    awn_panel_update_input_shape (panel, event->width, event->height);
   return FALSE;
 }
 
@@ -274,6 +282,8 @@ awn_panel_set_client (AwnPanel *panel, AwnConfigClient *client)
   g_return_if_fail (client);
   priv = panel->priv;
 
+  priv->client = client;
+
   /* Start off by figuring out if we are composited or not*/
   /* FIXME: Add overriding by gconf */
   screen = gtk_widget_get_screen (GTK_WIDGET (panel));
@@ -285,7 +295,22 @@ awn_panel_set_client (AwnPanel *panel, AwnConfigClient *client)
   g_signal_connect (panel, "configure-event",
                     G_CALLBACK (on_window_configure), panel);
   on_window_screen_changed (NULL, NULL, panel);
+
+  /* 
+   * Setup the monitor class
+   * priv->monitor = awn_monitor_new (client);
+   * g_signal_connect (priv->monitor, "size-changed",
+   *                   G_CALLBACK (on_monitor_changed), panel
+   */
   
+  /* Create the main AwnBackground object, listen to changes in from the 
+   * client 
+   */
+
+  /*FIXME:  Create the AwnAppletManager object, add it to the panel */
+   priv->applet_manager = gtk_label_new ("HELLOHELLOHELLOHELLOHELLO");
+   gtk_container_add (GTK_CONTAINER (panel), priv->applet_manager);
+
 }
 
 /* GObject stuff */
@@ -390,6 +415,8 @@ awn_panel_init (AwnPanel *panel)
 
   priv = panel->priv = AWN_PANEL_GET_PRIVATE (panel);
 
+  gtk_widget_set_app_paintable (GTK_WIDGET (panel), TRUE);
+
  /* Set up the drag destination */
   gtk_widget_add_events (GTK_WIDGET (panel), GDK_ALL_EVENTS_MASK);
   gtk_drag_dest_set (GTK_WIDGET (panel), 
@@ -413,7 +440,11 @@ awn_panel_new (void)
 GtkWidget *
 awn_panel_new_from_config (AwnConfigClient *client)
 {
-  GtkWidget *window = awn_panel_new ();
+  GtkWidget *window = g_object_new (AWN_TYPE_PANEL,
+                                    "type", GTK_WINDOW_TOPLEVEL,
+                                    "type-hint", GDK_WINDOW_TYPE_HINT_DOCK,
+                                    "client", client,
+                                    NULL);
 
   return window;
 }
