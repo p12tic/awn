@@ -20,6 +20,13 @@
  *
  */
 
-#ifndef _HAVE_AWN_APP_H
-#define _HAVE_AWN_APP_H
+#ifndef _HAVE_AWN_DEFINES_H
+#define _HAVE_AWN_DEFINES_H
+
+#define AWN_DBUS_NAMESPACE  "org.awn-project.Awn"
+#define AWN_DBUS_APP_PATH   "/org/awn-project/Awn/App"
+#define AWN_DBUS_PANEL_PATH "/org/awn-project/Awn/Panel"
+
+#endif /*_HAVE_AWN_DEFINES_H */
+
 

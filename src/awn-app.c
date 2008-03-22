@@ -61,6 +61,7 @@ awn_app_finalize (GObject *app)
   G_OBJECT_CLASS (awn_app_parent_class)->finalize (app);
 }
 
+#include "awn-app-glue.h"
 
 static void
 awn_app_class_init (AwnAppClass *klass)
@@ -70,6 +71,10 @@ awn_app_class_init (AwnAppClass *klass)
   obj_class->finalize = awn_app_finalize;
 
   g_type_class_add_private (obj_class, sizeof (AwnAppPrivate)); 
+  
+  dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass), 
+                                   &dbus_glib_awn_app_object_info);
+
 }
 
 static void
