@@ -1,3 +1,8 @@
+2008-03-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/tmpl:
+	Fix builds with the flag --enable-gtk-doc.
+
 2008-03-22  Neil J. Patel  <njpatel@gmail.com>
 
 	* src/awn-panel.c:

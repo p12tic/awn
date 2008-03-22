@@ -1,0 +1,242 @@
+<!-- ##### SECTION Title ##### -->
+awn-effects
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### ENUM AwnEffect ##### -->
+<para>
+
+</para>
+
+@AWN_EFFECT_NONE: 
+@AWN_EFFECT_OPENING: 
+@AWN_EFFECT_LAUNCHING: 
+@AWN_EFFECT_HOVER: 
+@AWN_EFFECT_ATTENTION: 
+@AWN_EFFECT_CLOSING: 
+@AWN_EFFECT_DESATURATE: 
+
+<!-- ##### ENUM AwnEffectSequence ##### -->
+<para>
+
+</para>
+
+@AWN_EFFECT_DIR_NONE: 
+@AWN_EFFECT_DIR_STOP: 
+@AWN_EFFECT_DIR_DOWN: 
+@AWN_EFFECT_DIR_UP: 
+@AWN_EFFECT_DIR_LEFT: 
+@AWN_EFFECT_DIR_RIGHT: 
+@AWN_EFFECT_SQUISH_DOWN: 
+@AWN_EFFECT_SQUISH_DOWN2: 
+@AWN_EFFECT_SQUISH_UP: 
+@AWN_EFFECT_SQUISH_UP2: 
+@AWN_EFFECT_TURN_1: 
+@AWN_EFFECT_TURN_2: 
+@AWN_EFFECT_TURN_3: 
+@AWN_EFFECT_TURN_4: 
+@AWN_EFFECT_SPOTLIGHT_ON: 
+@AWN_EFFECT_SPOTLIGHT_TREMBLE_UP: 
+@AWN_EFFECT_SPOTLIGHT_TREMBLE_DOWN: 
+@AWN_EFFECT_SPOTLIGHT_OFF: 
+
+<!-- ##### USER_FUNCTION AwnTitleCallback ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION AwnEventNotify ##### -->
+<para>
+
+</para>
+
+@Param1: 
+
+
+<!-- ##### STRUCT AwnEffects ##### -->
+<para>
+
+</para>
+
+@self: 
+@focus_window: 
+@settings: 
+@title: 
+@get_title: 
+@effect_queue: 
+@icon_width: 
+@icon_height: 
+@window_width: 
+@window_height: 
+@effect_lock: 
+@current_effect: 
+@direction: 
+@count: 
+@x_offset: 
+@y_offset: 
+@curve_offset: 
+@delta_width: 
+@delta_height: 
+@clip_region: 
+@rotate_degrees: 
+@alpha: 
+@spotlight_alpha: 
+@saturation: 
+@glow_amount: 
+@icon_depth: 
+@icon_depth_direction: 
+@hover: 
+@clip: 
+@flip: 
+@spotlight: 
+@enter_notify: 
+@leave_notify: 
+@timer_id: 
+@pad1: 
+@pad2: 
+@pad3: 
+@pad4: 
+
+<!-- ##### FUNCTION awn_effects_init ##### -->
+<para>
+
+</para>
+
+@obj: 
+@fx: 
+
+
+<!-- ##### FUNCTION awn_effects_finalize ##### -->
+<para>
+
+</para>
+
+@fx: 
+
+
+<!-- ##### FUNCTION awn_register_effects ##### -->
+<para>
+
+</para>
+
+@obj: 
+@fx: 
+
+
+<!-- ##### FUNCTION awn_unregister_effects ##### -->
+<para>
+
+</para>
+
+@fx: 
+
+
+<!-- ##### FUNCTION awn_effect_start ##### -->
+<para>
+
+</para>
+
+@fx: 
+@effect: 
+
+
+<!-- ##### FUNCTION awn_effect_stop ##### -->
+<para>
+
+</para>
+
+@fx: 
+@effect: 
+
+
+<!-- ##### FUNCTION awn_effects_set_title ##### -->
+<para>
+
+</para>
+
+@fx: 
+@title: 
+@title_func: 
+
+
+<!-- ##### FUNCTION awn_effect_start_ex ##### -->
+<para>
+
+</para>
+
+@fx: 
+@effect: 
+@start: 
+@stop: 
+@max_loops: 
+
+
+<!-- ##### FUNCTION awn_draw_background ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+
+
+<!-- ##### FUNCTION awn_draw_icons ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@Param4: 
+
+
+<!-- ##### FUNCTION awn_draw_foreground ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+
+
+<!-- ##### FUNCTION awn_draw_set_window_size ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+
+
+<!-- ##### FUNCTION awn_draw_set_icon_size ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+
+

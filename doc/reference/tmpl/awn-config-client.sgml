@@ -1,0 +1,267 @@
+<!-- ##### SECTION Title ##### -->
+awn-config-client
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT AwnConfigClient ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO AWN_CONFIG_CLIENT ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### STRUCT AwnConfigClientNotifyEntry ##### -->
+<para>
+
+</para>
+
+@client: 
+@group: 
+@key: 
+@value: 
+
+<!-- ##### USER_FUNCTION AwnConfigClientNotifyFunc ##### -->
+<para>
+
+</para>
+
+@entry: 
+@data: 
+
+
+<!-- ##### MACRO AWN_CONFIG_CLIENT_DEFAULT_GROUP ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### ENUM AwnConfigValueType ##### -->
+<para>
+
+</para>
+
+@AWN_CONFIG_VALUE_TYPE_NULL: 
+@AWN_CONFIG_VALUE_TYPE_BOOL: 
+@AWN_CONFIG_VALUE_TYPE_FLOAT: 
+@AWN_CONFIG_VALUE_TYPE_INT: 
+@AWN_CONFIG_VALUE_TYPE_STRING: 
+@AWN_CONFIG_VALUE_TYPE_LIST_BOOL: 
+@AWN_CONFIG_VALUE_TYPE_LIST_FLOAT: 
+@AWN_CONFIG_VALUE_TYPE_LIST_INT: 
+@AWN_CONFIG_VALUE_TYPE_LIST_STRING: 
+
+<!-- ##### ENUM AwnConfigListType ##### -->
+<para>
+
+</para>
+
+@AWN_CONFIG_CLIENT_LIST_TYPE_BOOL: 
+@AWN_CONFIG_CLIENT_LIST_TYPE_FLOAT: 
+@AWN_CONFIG_CLIENT_LIST_TYPE_INT: 
+@AWN_CONFIG_CLIENT_LIST_TYPE_STRING: 
+
+<!-- ##### FUNCTION awn_config_client_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_config_client_new_for_applet ##### -->
+<para>
+
+</para>
+
+@name: 
+@uid: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_config_client_clear ##### -->
+<para>
+
+</para>
+
+@client: 
+@err: 
+
+
+<!-- ##### FUNCTION awn_config_client_ensure_group ##### -->
+<para>
+
+</para>
+
+@client: 
+@group: 
+
+
+<!-- ##### FUNCTION awn_config_client_notify_add ##### -->
+<para>
+
+</para>
+
+@client: 
+@group: 
+@key: 
+@callback: 
+@data: 
+
+
+<!-- ##### FUNCTION awn_config_client_entry_exists ##### -->
+<para>
+
+</para>
+
+@client: 
+@group: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_config_client_get_bool ##### -->
+<para>
+
+</para>
+
+@client: 
+@group: 
+@key: 
+@err: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_config_client_set_bool ##### -->
+<para>
+
+</para>
+
+@client: 
+@group: 
+@key: 
+@value: 
+@err: 
+
+
+<!-- ##### FUNCTION awn_config_client_get_float ##### -->
+<para>
+
+</para>
+
+@client: 
+@group: 
+@key: 
+@err: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_config_client_set_float ##### -->
+<para>
+
+</para>
+
+@client: 
+@group: 
+@key: 
+@value: 
+@err: 
+
+
+<!-- ##### FUNCTION awn_config_client_get_int ##### -->
+<para>
+
+</para>
+
+@client: 
+@group: 
+@key: 
+@err: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_config_client_set_int ##### -->
+<para>
+
+</para>
+
+@client: 
+@group: 
+@key: 
+@value: 
+@err: 
+
+
+<!-- ##### FUNCTION awn_config_client_get_string ##### -->
+<para>
+
+</para>
+
+@client: 
+@group: 
+@key: 
+@err: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_config_client_set_string ##### -->
+<para>
+
+</para>
+
+@client: 
+@group: 
+@key: 
+@value: 
+@err: 
+
+
+<!-- ##### FUNCTION awn_config_client_get_list ##### -->
+<para>
+
+</para>
+
+@client: 
+@group: 
+@key: 
+@list_type: 
+@err: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_config_client_set_list ##### -->
+<para>
+
+</para>
+
+@client: 
+@group: 
+@key: 
+@list_type: 
+@value: 
+@err: 
+
+
