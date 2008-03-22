@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007 Intel
+ * Copyright (C) 2008 Neil Jagdish Patel
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * Authored by Neil Jagdish Patel <njp@o-hand.com>
+ * Authored by Neil Jagdish Patel <njpatel@gmail.com>
  *
  */
 

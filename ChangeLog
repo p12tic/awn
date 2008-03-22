@@ -1,3 +1,13 @@
+2008-03-22  Neil J. Patel  <njpatel@gmail.com>
+
+	* src/awn-app.c:
+	* src/awn-app.h:
+	* src/awn-defines.h:
+	* src/awn-main.c:
+	* src/awn-panel.h:
+	Fix up copyrighting. Lets not attribute copyright to corporations that
+	have nothing to do with Awn :-).
+
 2008-03-16  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* configure.in:

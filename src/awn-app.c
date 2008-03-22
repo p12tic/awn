@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Neil J. Patel
+ * Copyright (C) 2008 Neil J. Patel <njpatel@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -45,16 +45,11 @@ G_DEFINE_TYPE (AwnApp, awn_app, G_TYPE_OBJECT)
 
 struct _AwnAppPrivate
 {
-  gint null;
+  AwnConfigClient *client;
+
 };
 
 /* GObject functions */
-static void
-awn_app_dispose (GObject *object)
-{
-  G_OBJECT_CLASS (awn_app_parent_class)->dispose (object);
-}
-
 static void
 awn_app_finalize (GObject *app)
 {
@@ -73,7 +68,6 @@ awn_app_class_init (AwnAppClass *klass)
   GObjectClass *obj_class = G_OBJECT_CLASS (klass);
 
   obj_class->finalize = awn_app_finalize;
-  obj_class->dispose = awn_app_dispose;
 
   g_type_class_add_private (obj_class, sizeof (AwnAppPrivate)); 
 }

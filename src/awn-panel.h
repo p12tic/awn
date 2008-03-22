@@ -31,31 +31,33 @@ G_BEGIN_DECLS
 #define AWN_TYPE_PANEL (awn_panel_get_type())
 
 #define AWN_PANEL(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_PANEL, \
-  AwnPanel))
+        AwnPanel))
 
 #define AWN_PANEL_CLASS(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), AWN_PANEL, \
-  AwnPanelClass))
+        AwnPanelClass))
 
 #define AWN_IS_PANEL(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), AWN_TYPE_PANEL))
 
 #define AWN_IS_PANEL_CLASS(obj) (G_TYPE_CHECK_CLASS_TYPE ((obj), \
-  AWN_TYPE_PANEL))
+        AWN_TYPE_PANEL))
 
 #define AWN_PANEL_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  AWN_TYPE_PANEL, AwnPanelClass))
+        AWN_TYPE_PANEL, AwnPanelClass))
 
 typedef struct _AwnPanel AwnPanel;
 typedef struct _AwnPanelClass AwnPanelClass;
 typedef struct _AwnPanelPrivate AwnPanelPrivate;
 
-struct _AwnPanel {
+struct _AwnPanel 
+{
   GtkWindow parent;
 
   /*< private >*/
   AwnPanelPrivate *priv;
 };
 
-struct _AwnPanelClass {
+struct _AwnPanelClass 
+{
   GtkWindowClass parent_class;
 };
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>
+ *  Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -87,4 +87,3 @@ main (gint argc, gchar *argv[])
 	
   return EXIT_SUCCESS;
 }
-
