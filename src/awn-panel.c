@@ -26,7 +26,10 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/shape.h>
 
+#include <libawn/awn-settings.h>
+
 #include "awn-panel.h"
+#include "awn-applet-manager.h"
 
 #if 0
 #include "awn-background.h"
@@ -42,6 +45,7 @@ G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW)
 struct _AwnPanelPrivate
 {
   AwnConfigClient *client;
+  AwnSettings *settings;
 
   GdkScreen *screen;
 
@@ -57,6 +61,7 @@ enum
 {
   PROP_0,
 
+  PROP_CLIENT,
   PROP_COMPOSITED
 };
 
@@ -68,29 +73,6 @@ static const gint n_drop_types = G_N_ELEMENTS (drop_types);
 
 /* Forwards */
 static void on_composite_changed (GdkScreen *screen, AwnPanel *window);
-
-/* Public */
-
-/*
- * Prepare the window for the current desktop composited setting
- */
-void
-awn_panel_set_composited (AwnPanel *window, gboolean composited)
-{
-  AwnPanelPrivate *priv;
-
-  g_return_if_fail (AWN_IS_PANEL (window));
-  priv = window->priv;
-
-  if (priv->composited == composited)
-    return;
-  priv->composited = composited;
-  
-  if (GTK_IS_WIDGET (priv->eventbox))
-    gdk_window_set_composited (priv->eventbox->window, composited);
-
-  gtk_widget_queue_draw (GTK_WIDGET (window));
-}
 
 static void
 awn_panel_add (GtkContainer *window, GtkWidget *widget)
@@ -172,47 +154,6 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
 
   return TRUE;
 }
-/*
- * When the screen changes, its usually due to the fact that
- */
-static void
-on_window_screen_changed (GtkWidget *widget,
-                          GdkScreen *old_screen,
-                          AwnPanel *window)
-{
-  AwnPanelPrivate *priv;
-  GdkScreen *screen;
-  GdkColormap *colormap = NULL;
-  gboolean composited = TRUE;
-
-  g_return_if_fail (AWN_IS_PANEL (window));
-  priv = window->priv;
-
-  screen = priv->screen = gtk_widget_get_screen (GTK_WIDGET (window));
-  g_signal_connect (screen, "composited-changed",
-                    G_CALLBACK (on_composite_changed), window);
-
-  if (gdk_screen_is_composited (screen))
-  {
-    colormap = gdk_screen_get_rgba_colormap (screen);
-  }
-  else
-  {
-    colormap = gdk_screen_get_rgb_colormap (screen);
-    composited = FALSE;
-  }
-  gtk_widget_set_colormap (GTK_WIDGET (window), colormap);
-  g_debug ("Screen is composited: %s\n", 
-            gdk_screen_is_composited (screen) ? "true": "false");
-}
-
-static void
-on_composite_changed (GdkScreen *screen, AwnPanel *window)
-{
-  g_object_set (window, "composited", gdk_screen_is_composited (screen), NULL);
-  g_debug ("Screen is composited: %s, respawning\n", 
-            gdk_screen_is_composited (screen) ? "true": "false");
-}
 
 /*
  * We set the shape of the window, so when in composited mode, we dont't 
@@ -268,6 +209,85 @@ on_window_configure (GtkWidget         *widget,
   return FALSE;
 }
 
+
+/*
+ * When the composited property of the screen changes, prepare to create a
+ * new Awn. This is because we cannot reliable swtich between composited
+ * and non-composited states, especially with the XEmbeding that we do for
+ * applets
+ */
+static void
+on_composite_changed (GdkScreen *screen, AwnPanel *window)
+{
+  /* FIXME: Restart panel */
+  g_debug ("Screen is composited: %s, respawning\n", 
+            gdk_screen_is_composited (screen) ? "true": "false");
+}
+
+/*
+ * When the screen changes, check if it can still provide the correct
+ * colormap, otherwise restart.
+ */
+static void
+on_window_screen_changed (GtkWidget *widget,
+                          GdkScreen *old_screen,
+                          AwnPanel *panel)
+{
+  AwnPanelPrivate *priv;
+  GdkScreen *screen;
+  GdkColormap *colormap = NULL;
+  
+  g_return_if_fail (AWN_IS_PANEL (panel));
+  priv = panel->priv;
+  
+  screen = gtk_widget_get_screen (GTK_WIDGET (panel));
+
+  if (priv->composited)
+  {
+    colormap = gdk_screen_get_rgba_colormap (screen);
+    if (!colormap)
+    {
+      g_warning ("Unable to get rgba colormap, switching to non-composited\n");
+      on_composite_changed (screen, panel);
+      return;
+    }
+  }
+  else
+  {
+    colormap = gdk_screen_get_rgb_colormap (screen);
+  }
+  
+  gtk_widget_set_colormap (GTK_WIDGET (panel), colormap);
+}
+
+/*
+ * THIS is the main function of the class, as everything depends on the 
+ * config client passed in.
+ */
+static void
+awn_panel_set_client (AwnPanel *panel, AwnConfigClient *client)
+{
+  AwnPanelPrivate *priv;
+  GdkScreen *screen;
+
+  g_return_if_fail (AWN_IS_PANEL (panel));
+  g_return_if_fail (client);
+  priv = panel->priv;
+
+  /* Start off by figuring out if we are composited or not*/
+  /* FIXME: Add overriding by gconf */
+  screen = gtk_widget_get_screen (GTK_WIDGET (panel));
+  priv->composited = gdk_screen_is_composited (screen);
+  g_signal_connect (screen, "composited-changed",
+                    G_CALLBACK (on_composite_changed), panel);
+  g_signal_connect (panel, "screen-changed",
+                    G_CALLBACK (on_window_screen_changed), panel);
+  g_signal_connect (panel, "configure-event",
+                    G_CALLBACK (on_window_configure), panel);
+  on_window_screen_changed (NULL, NULL, panel);
+  
+}
+
 /* GObject stuff */
 static void
 awn_panel_get_property (GObject    *object,
@@ -282,6 +302,8 @@ awn_panel_get_property (GObject    *object,
 
   switch (prop_id)
   {
+    case PROP_CLIENT:
+      g_value_set_pointer (value, priv->client);
     case PROP_COMPOSITED:
       g_value_set_boolean (value, priv->composited);
       break;
@@ -303,9 +325,11 @@ awn_panel_set_property (GObject      *object,
 
   switch (prop_id)
   {
+    case PROP_CLIENT:
+      awn_panel_set_client (AWN_PANEL (object), g_value_get_pointer (value));
+      break;
     case PROP_COMPOSITED:
-      awn_panel_set_composited (AWN_PANEL (object), 
-                                 g_value_get_boolean (value));
+      priv->composited = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -342,35 +366,33 @@ awn_panel_class_init (AwnPanelClass *klass)
 
   /* Add properties to the class */
   g_object_class_install_property (obj_class,
+    PROP_CLIENT,
+    g_param_spec_pointer ("client",
+                          "Client",
+                          "The AwnConfigClient",
+                          G_PARAM_READWRITE));
+
+  g_object_class_install_property (obj_class,
     PROP_COMPOSITED,
     g_param_spec_boolean ("composited",
                           "Composited",
                           "The window is composited",
                           TRUE,
-                          G_PARAM_CONSTRUCT|G_PARAM_READWRITE));
+                          G_PARAM_READWRITE));
 
   g_type_class_add_private (obj_class, sizeof (AwnPanelPrivate));
 }
 
 static void
-awn_panel_init (AwnPanel *window)
+awn_panel_init (AwnPanel *panel)
 {
   AwnPanelPrivate *priv;
 
-  priv = window->priv = AWN_PANEL_GET_PRIVATE (window);
+  priv = panel->priv = AWN_PANEL_GET_PRIVATE (panel);
 
-  priv->screen = gtk_widget_get_screen (GTK_WIDGET (window));
-  priv->composited = gdk_screen_is_composited (priv->screen);
-
-  /* Make sure we react to screen-changed & configure events */
-  g_signal_connect (window, "configure-event",
-                    G_CALLBACK (on_window_configure), window);
-  g_signal_connect (window, "screen-changed",
-                    G_CALLBACK (on_window_screen_changed), window);
-  
-  /* Set up the drag destination */
-  gtk_widget_add_events (GTK_WIDGET (window), GDK_ALL_EVENTS_MASK);
-  gtk_drag_dest_set (GTK_WIDGET (window), 
+ /* Set up the drag destination */
+  gtk_widget_add_events (GTK_WIDGET (panel), GDK_ALL_EVENTS_MASK);
+  gtk_drag_dest_set (GTK_WIDGET (panel), 
                      GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
                      drop_types, n_drop_types,
                      GDK_ACTION_MOVE | GDK_ACTION_COPY);
@@ -385,10 +407,6 @@ awn_panel_new (void)
                          "type", GTK_WINDOW_TOPLEVEL,
                          "type-hint", GDK_WINDOW_TYPE_HINT_DOCK,
                          NULL);
-  
-  //gtk_widget_realize (window);
-  on_window_screen_changed (window, NULL, AWN_PANEL (window));
-
   return window;
 }
 

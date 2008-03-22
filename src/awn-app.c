@@ -37,6 +37,8 @@
 #include <libawn/awn-config-client.h>
 
 #include "awn-app.h"
+#include "awn-defines.h"
+#include "awn-panel.h"
 
 G_DEFINE_TYPE (AwnApp, awn_app, G_TYPE_OBJECT)
 
@@ -46,7 +48,8 @@ G_DEFINE_TYPE (AwnApp, awn_app, G_TYPE_OBJECT)
 struct _AwnAppPrivate
 {
   AwnConfigClient *client;
-
+  
+  GtkWidget *panel;
 };
 
 /* GObject functions */
@@ -74,7 +77,6 @@ awn_app_class_init (AwnAppClass *klass)
   
   dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass), 
                                    &dbus_glib_awn_app_object_info);
-
 }
 
 static void
@@ -83,6 +85,12 @@ awn_app_init (AwnApp *app)
   AwnAppPrivate *priv;
     
   priv = app->priv = AWN_APP_GET_PRIVATE (app);
+
+  priv->client = awn_config_client_new ();
+  
+  priv->panel = awn_panel_new_from_config (priv->client);
+
+  gtk_widget_show_all (priv->panel);
 }
 
 AwnApp*

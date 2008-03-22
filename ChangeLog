@@ -1,5 +1,11 @@
 2008-03-22  Neil J. Patel  <njpatel@gmail.com>
 
+	* src/awn-app.c:
+	* src/awn-panel.c:
+	More fixes, removed some non-working code.
+
+2008-03-22  Neil J. Patel  <njpatel@gmail.com>
+
 	* src/Makefile.am:
 	* src/awn-app-dbus.xml:
 	* src/awn-app.c:
