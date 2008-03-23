@@ -1,5 +1,10 @@
 2008-03-23  Julien Lavergne <julien.lavergne@gmail.com>
 
+	* debian/rules:
+	Relax depends of libawn0
+
+2008-03-23  Julien Lavergne <julien.lavergne@gmail.com>
+
 	* debian/control:
 	* debian/control.autoppa:
 	Add automake as build-depends
