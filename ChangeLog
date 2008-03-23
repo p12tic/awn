@@ -1,3 +1,9 @@
+2008-03-23  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/control:
+	* debian/control.autoppa:
+	Add automake as build-depends
+
 2008-03-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* doc/reference/tmpl:

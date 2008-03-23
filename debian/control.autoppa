@@ -18,7 +18,8 @@ AUTOPPA_INCLUDE(gutsy,hardy):Build-Depends: 	debhelper (>= 5),
 		gtk-doc-tools, 
 		doc-base,
 		valac (>= 0.1.6),
-		python-elementtree
+		python-elementtree,
+		automake
 Standards-Version: 3.7.3
 Homepage: https://launchpad.net/avant-window-navigator/
 XS-Python-Version: >= 2.4
