@@ -29,11 +29,12 @@
 #include <libawn/awn-settings.h>
 
 #include "awn-panel.h"
+
 #include "awn-applet-manager.h"
+#include "awn-monitor.h"
 
 #if 0
 #include "awn-background.h"
-#include "awn-monitor.h"
 #include "awn-x.h"
 #endif
 
@@ -45,7 +46,7 @@ G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW)
 struct _AwnPanelPrivate
 {
   AwnConfigClient *client;
-  AwnSettings *settings;
+  AwnMonitor *monitor;
 
   GdkScreen *screen;
 
@@ -283,6 +284,8 @@ awn_panel_set_client (AwnPanel *panel, AwnConfigClient *client)
   priv = panel->priv;
 
   priv->client = client;
+
+  priv->monitor = awn_monitor_new_from_config (client);
 
   /* Start off by figuring out if we are composited or not*/
   /* FIXME: Add overriding by gconf */

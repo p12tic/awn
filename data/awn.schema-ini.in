@@ -10,6 +10,14 @@ description = The width of the monitor that overrides the GDK monitor settings, 
 type = int
 default = 768
 description = The height of the monitor that overrides the GDK monitor settings, if force_monitor is TRUE.
+[DEFAULT/monitor_xoffset]
+type = int
+default = 0
+description = Allows the panel positioning to be offset by X, useful for dual monitor setups. If force_monitor is TRUE.
+[DEFAULT/monitor_xalign]
+type = float
+default = 0.5
+description = Set the panel alignment.
 [DEFAULT/panel_mode]
 type = bool
 default = False

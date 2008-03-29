@@ -1,5 +1,15 @@
 2008-03-29  Neil J. Patel  <njpatel@gmail.com>
 
+	* data/awn.schema-ini.in:
+	* src/Makefile.am:
+	* src/awn-monitor.c:
+	* src/awn-monitor.h:
+	* src/awn-panel.c:
+	Add AwnMonitor class, which wraps the various monitor-size stuff to try and
+	hide the complexity.
+
+2008-03-29  Neil J. Patel  <njpatel@gmail.com>
+
 	* configure.in:
 	Update to require gdk >= 2.12.
 

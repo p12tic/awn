@@ -88,6 +88,8 @@ awn_SOURCES = \
 	awn-app.c \
 	awn-app.h \
 	awn-defines.h \
+	awn-monitor.c \
+	awn-monitor.h \
 	awn-panel.c \
 	awn-panel.h \
 	$(NULL)
