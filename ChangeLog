@@ -1,6 +1,11 @@
 2008-04-11  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* debian/control:
+	Add python-gtk2-dev as Build Depends
+
+2008-04-11  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/control:
 	* debian/control.autoppa:
 	Clean PPA configuration
 
