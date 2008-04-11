@@ -1,5 +1,11 @@
 2008-04-11  Julien Lavergne <julien.lavergne@gmail.com>
 
+	* debian/control:
+	* debian/control.autoppa:
+	Clean PPA configuration
+
+2008-04-11  Julien Lavergne <julien.lavergne@gmail.com>
+
 	* debian/control.autoppa:
 	Enable Feisty and Edgy build in PPA
 
