@@ -24,8 +24,7 @@
 #include "config.h"
 
 #include <gdk/gdkx.h>
-#include <gconf/gconf.h>
-#include <gconf/gconf-client.h>
+#include <libawn/awn-config-client.h>
 
 #include <X11/Xlib.h>
 #include <X11/extensions/shape.h>
@@ -327,5 +326,5 @@ awn_monitor_new_from_config (AwnConfigClient *client)
                                       NULL);
   return monitor;
 }
-
+/* vim: set et ts=2 sts=2 sw=2 : */
 

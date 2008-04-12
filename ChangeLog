@@ -1,3 +1,8 @@
+2008-04-11  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* src/awn-monitor.c:
+	Remove mandatory gconf dependency. (Fixes Launchpad bug #216143)
+
 2008-04-11  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* debian/control:
