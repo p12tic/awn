@@ -66,12 +66,14 @@ def main(argv):
             ET.SubElement(schema_element, 'owner').text = 'avant-window-navigator'
             key_type = in_schema.get(key, 'type')
             element_type = ET.SubElement(schema_element, 'type')
+            value = in_schema.get(key, 'default')
             if key_type.startswith('list-'):
                 element_type.text = 'list'
                 ET.SubElement(schema_element, 'list_type').text = key_type[5:]
+                value = '[%s]' % value.replace(';', ',')
             else:
                 element_type.text = key_type
-            ET.SubElement(schema_element, 'default').text = in_schema.get(key, 'default')
+            ET.SubElement(schema_element, 'default').text = value
             locale = ET.SubElement(schema_element, 'locale')
             locale.set('name', 'C')
             ET.SubElement(locale, 'short')
