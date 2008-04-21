@@ -1,5 +1,13 @@
 2008-04-21  Mark Lee <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-desktop-item-egg.c:
+	* libawn/egg/eggdesktopfile.c:
+	* libawn/egg/eggdesktopfile.h:
+	Refactor the Egg implementation of AwnDesktopItem so that it is more
+	compatible with the Gnome implementation.
+
+2008-04-21  Mark Lee <avant-wn@lazymalevolence.com>
+
 	* acinclude.m4 (AC_PYTHON_DEVEL):
 	* configure.in:
 	* awn-manager/awnManager.py.in:

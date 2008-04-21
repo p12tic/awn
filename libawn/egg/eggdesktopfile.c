@@ -35,15 +35,6 @@
 #include <gtk/gtkwindow.h>
 #include <gdk/gdkx.h>
 
-struct EggDesktopFile {
-  GKeyFile           *key_file;
-  char               *source;
-
-  char               *name, *icon;
-  EggDesktopFileType  type;
-  char                document_code;
-};
-
 /**
  * egg_desktop_file_new:
  * @desktop_file_path: path to a Freedesktop-style Desktop file
@@ -292,11 +283,21 @@ egg_desktop_file_copy (const EggDesktopFile *desktop_file)
 void
 egg_desktop_file_free (EggDesktopFile *desktop_file)
 {
-  g_key_file_free (desktop_file->key_file);
-  g_free (desktop_file->source);
-  g_free (desktop_file->name);
-  g_free (desktop_file->icon);
-  g_free (desktop_file);
+  if (desktop_file) {
+    if (desktop_file->key_file) {
+      g_key_file_free (desktop_file->key_file);
+    }
+    if (desktop_file->source) {
+      g_free (desktop_file->source);
+    }
+    if (desktop_file->name) {
+      g_free (desktop_file->name);
+    }
+    if (desktop_file->icon) {
+      g_free (desktop_file->icon);
+    }
+    g_free (desktop_file);
+  }
 }
 
 /**

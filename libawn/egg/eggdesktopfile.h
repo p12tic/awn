@@ -25,12 +25,6 @@
 
 G_BEGIN_DECLS
 
-typedef struct EggDesktopFile EggDesktopFile;
-
-GType egg_desktop_file_get_type (void) G_GNUC_CONST;
-#define EGG_TYPE_DESKTOP_FILE (egg_desktop_file_get_type())
-#define EGG_DESKTOP_FILE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), EGG_TYPE_DESKTOP_FILE, EggDesktopFile))
-
 typedef enum {
 	EGG_DESKTOP_FILE_TYPE_UNRECOGNIZED,
 
@@ -38,6 +32,19 @@ typedef enum {
 	EGG_DESKTOP_FILE_TYPE_LINK,
 	EGG_DESKTOP_FILE_TYPE_DIRECTORY,
 } EggDesktopFileType;
+
+typedef struct _EggDesktopFile {
+  GKeyFile           *key_file;
+  char               *source;
+
+  char               *name, *icon;
+  EggDesktopFileType  type;
+  char                document_code;
+} EggDesktopFile;
+
+GType egg_desktop_file_get_type (void) G_GNUC_CONST;
+#define EGG_TYPE_DESKTOP_FILE (egg_desktop_file_get_type())
+#define EGG_DESKTOP_FILE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), EGG_TYPE_DESKTOP_FILE, EggDesktopFile))
 
 EggDesktopFile     *egg_desktop_file_new                (const char   *desktop_file_path,
 							 GError      **error);

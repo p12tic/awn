@@ -35,6 +35,7 @@
 
 struct _AwnDesktopItem {
 	EggDesktopFile *desktop_file;
+	GKeyFile *key_file;
 };
 
 /* GType function */
@@ -45,14 +46,42 @@ GType awn_desktop_item_get_type (void)
 
 /* Wrapper functions */
 
+static void awn_desktop_item_initialize (AwnDesktopItem *item, gchar *filename)
+{
+	GError *err = NULL;
+	gchar *default_desktop_entry = g_strdup_printf ("[%s]\nType=Unknown", EGG_DESKTOP_FILE_GROUP);
+	item->desktop_file = g_new0 (EggDesktopFile, 1);
+	item->desktop_file->type = EGG_DESKTOP_FILE_TYPE_UNRECOGNIZED;
+	item->desktop_file->source = g_strdup (filename);
+	item->desktop_file->name = g_strdup ("");
+	item->desktop_file->icon = g_strdup ("");
+	item->key_file = g_key_file_new ();
+	if (!g_key_file_load_from_data (item->key_file, default_desktop_entry, (gsize)strlen (default_desktop_entry), G_KEY_FILE_NONE, &err)) {
+		g_error ("Could not load the default desktop entry: %s", err->message);
+		g_error_free (err);
+	}
+	item->desktop_file->key_file = item->key_file;
+	g_free (default_desktop_entry);
+}
+
 AwnDesktopItem *awn_desktop_item_new (gchar *filename)
 {
 	AwnDesktopItem *item = g_malloc (sizeof (AwnDesktopItem));
 	GError *err = NULL;
-	item->desktop_file = egg_desktop_file_new (filename, &err);
-	if (err) {
-		g_warning ("Could not load the desktop item at '%s': %s",
-			   filename, err->message);
+	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
+		item->desktop_file = egg_desktop_file_new (filename, &err);
+		if (err) {
+			g_warning ("Could not load the desktop item at '%s': %s",
+				   filename, err->message);
+			g_error_free (err);
+		}
+		if (item->desktop_file) {
+			item->key_file = egg_desktop_file_get_key_file (item->desktop_file);
+		} else {
+			awn_desktop_item_initialize (item, filename);
+		}
+	} else {
+		awn_desktop_item_initialize (item, filename);
 	}
 	return item;
 }
@@ -77,6 +106,15 @@ gchar *awn_desktop_item_get_item_type (AwnDesktopItem *item)
 void awn_desktop_item_set_item_type (AwnDesktopItem *item, gchar *item_type)
 {
 	awn_desktop_item_set_string (item, EGG_DESKTOP_FILE_KEY_TYPE, item_type);
+	if (strcmp (item_type, "Application") == 0) {
+		item->desktop_file->type = EGG_DESKTOP_FILE_TYPE_APPLICATION;
+	} else if (strcmp (item_type, "Link") == 0) {
+		item->desktop_file->type = EGG_DESKTOP_FILE_TYPE_LINK;
+	} else if (strcmp (item_type, "Directory") == 0) {
+		item->desktop_file->type = EGG_DESKTOP_FILE_TYPE_DIRECTORY;
+	} else {
+		item->desktop_file->type = EGG_DESKTOP_FILE_TYPE_UNRECOGNIZED;
+	}
 }
 
 gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme)
@@ -131,6 +169,7 @@ gchar *awn_desktop_item_get_icon (AwnDesktopItem *item, GtkIconTheme *icon_theme
 void awn_desktop_item_set_icon (AwnDesktopItem *item, gchar *icon)
 {
 	awn_desktop_item_set_string (item, EGG_DESKTOP_FILE_KEY_ICON, icon);
+	item->desktop_file->icon = g_strdup (icon);
 }
 
 gchar *awn_desktop_item_get_name (AwnDesktopItem *item)
@@ -141,6 +180,7 @@ gchar *awn_desktop_item_get_name (AwnDesktopItem *item)
 void awn_desktop_item_set_name (AwnDesktopItem *item, gchar *name)
 {
 	awn_desktop_item_set_string (item, EGG_DESKTOP_FILE_KEY_NAME, name);
+	item->desktop_file->name = g_strdup (name);
 }
 
 gchar *awn_desktop_item_get_exec (AwnDesktopItem *item)
@@ -226,6 +266,7 @@ void awn_desktop_item_save (AwnDesktopItem *item, gchar *new_filename, GError **
 	} else {
 		if (new_filename) {
 			filename = new_filename;
+			item->desktop_file->source = g_strdup (filename);
 		} else {
 			filename = awn_desktop_item_get_filename (item);
 		}
