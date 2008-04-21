@@ -1,5 +1,11 @@
 2008-04-20  Mark Lee <avant-wn@lazymalevolence.com>
 
+	* debian/control:
+	Fix ElementTree dependency.
+	Update vala dependency.
+
+2008-04-20  Mark Lee <avant-wn@lazymalevolence.com>
+
 	* configure.in:
 	Fix the libglade dependency check (only needed for awn-manager). Spotted
 	by reacocard in IRC.

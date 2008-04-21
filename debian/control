@@ -19,8 +19,8 @@ Build-Depends: 	debhelper (>= 5),
 		python-cairo-dev,
 		gtk-doc-tools, 
 		doc-base,
-		valac (>= 0.1.6),
-		python-elementtree,
+		valac (>= 0.1.7),
+		python2.5 | python-lxml | python-celementtree | python-elementtree,
 		automake
 Standards-Version: 3.7.3
 Homepage: https://launchpad.net/avant-window-navigator/
