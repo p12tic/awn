@@ -199,7 +199,7 @@ dnl GConf
 dnl ==============================================
 AM_GCONF_SOURCE_2
 
-AS_AC_EXPAND([PY_SITE_PKG], [$PYTHON_SITE_PKG])
+AS_AC_EXPAND([PY_PLAT_PKG], [$PYTHON_PLATFORM_PKG])
 AS_AC_EXPAND([PKGDATADIR], [$datadir/$PACKAGE_NAME])
 AS_AC_EXPAND([DATADIR], [$datadir])
 AS_AC_EXPAND([LIBDIR], [$libdir])
