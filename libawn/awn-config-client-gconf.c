@@ -78,11 +78,14 @@ static void awn_config_client_notify_proxy (GConfClient *client, guint cid, GCon
 	if (value) {
 		gchar **exploded = g_strsplit (gconf_entry_get_key (entry), "/", 0);
 		guint exploded_len = g_strv_length (exploded);
+		gchar **base_exploded = g_strsplit (notify->client->path, "/", 0);
+		guint base_exploded_len = g_strv_length (base_exploded);
+		g_strfreev (base_exploded);
 		g_return_if_fail (exploded_len >= 2);
 		awn_entry->client = notify->client;
-		if (exploded_len == 4) { /* special case: top-level dock keys */
+		if (exploded_len - base_exploded_len == 1) { /* special case: top-level dock/applet keys */
 			awn_entry->group = g_strdup (AWN_CONFIG_CLIENT_DEFAULT_GROUP);
-		} else { /* TODO: special case top-level applet keys */
+		} else {
 			awn_entry->group = g_strdup (exploded[exploded_len - 2]);
 		}
 		awn_entry->key = g_strdup (exploded[exploded_len - 1]);

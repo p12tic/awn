@@ -1,3 +1,10 @@
+2008-04-21  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-config-client-gconf.c (awn_config_client_notify_proxy):
+	Fix the algorithm that determines the group name of the configuration
+	option from the GConf path so that the group names for applets are more
+	reliably determined.
+
 2008-04-20  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* bindings/awn/awn.override:
