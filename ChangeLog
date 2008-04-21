@@ -1,5 +1,11 @@
 2008-04-20  Mark Lee <avant-wn@lazymalevolence.com>
 
+	* bindings/awn/awn.override:
+	Allow None as a value for the uid parameter of the awn.Config constructor,
+	which is consistent with the C API.
+
+2008-04-20  Mark Lee <avant-wn@lazymalevolence.com>
+
 	* debian/control:
 	Fix ElementTree dependency.
 	Update vala dependency.
