@@ -1,5 +1,13 @@
 2008-04-21  Mark Lee <avant-wn@lazymalevolence.com>
 
+	* acinclude.m4 (AC_PYTHON_DEVEL):
+	* awn-manager/awnManager.py.in:
+	* bindings/python/Makefile.am:
+	Use the platform-specific site-packages path instead of the general path.
+	Thanks to Adam Williamson (Mandriva maintainer) for testing.
+
+2008-04-21  Mark Lee <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-config-client-gconf.c (awn_config_client_notify_proxy):
 	Fix the algorithm that determines the group name of the configuration
 	option from the GConf path so that the group names for applets are more

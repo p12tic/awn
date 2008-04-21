@@ -168,6 +168,17 @@ $ac_distutils_result])
         AC_SUBST([PYTHON_SITE_PKG])
 
         #
+        # Check for the platform-specific site packages directory
+        #
+        AC_MSG_CHECKING([for Python platform-specific site-packages path])
+        if test -z "$PYTHON_PLATFORM_PKG"; then
+                PYTHON_PLATFORM_PKG=`$PYTHON -c "import distutils.sysconfig; \
+                        print distutils.sysconfig.get_python_lib(1,0,prefix='${PYTHON_EXEC_PREFIX}');"`
+        fi
+        AC_MSG_RESULT([$PYTHON_PLATFORM_PKG])
+        AC_SUBST([PYTHON_PLATFORM_PKG])
+
+        #
         # libraries which must be linked in when embedding
         #
         AC_MSG_CHECKING(python extra libraries)
