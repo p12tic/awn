@@ -6,7 +6,11 @@ INCLUDES =				\
 	-I$(top_srcdir)/libawn		\
 	$(NULL)
 
-bin_PROGRAMS = avant-window-navigator awn
+if BUILD_EXPERIMENTAL
+experimental_programs = awn
+endif
+
+bin_PROGRAMS = avant-window-navigator $(experimental_programs)
 
 avant_window_navigator_LDADD =			\
 	$(DOCK_LIBS)				\

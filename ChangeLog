@@ -1,3 +1,14 @@
+2008-04-23  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	* awn.pc.in:
+	* configure.in:
+	* src/Makefile.am:
+	Add the --enable-experimental flag to ./configure which enables building
+	the awn binary.
+	Generate the Requires field of the pkgconfig file in ./configure.
+	Tell bzr to ignore build files related to the awn binary.
+
 2008-04-21  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-desktop-item-egg.c:
