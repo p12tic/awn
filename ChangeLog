@@ -1,5 +1,10 @@
 2008-04-23  Mark Lee <avant-wn@lazymalevolence.com>
 
+	* debian/avant-window-navigator-trunk.install:
+	Don't install /usr/bin/awn (as it's not built by default anymore).
+
+2008-04-23  Mark Lee <avant-wn@lazymalevolence.com>
+
 	* .bzrignore:
 	* awn.pc.in:
 	* configure.in:
