@@ -127,9 +127,19 @@ Architecture: all
 Depends: 	libawn0-trunk (>= ${source:Version}),
 		${shlibs:Depends}, 
 		${misc:Depends},
-		valac (>= 0.1.6)
+		valac (>= 0.1.7)
 Conflicts: vala-awn-testing, vala-awn
 Replaces: vala-awn-testing, vala-awn
 Description: Vala bindings for avant-window-navigator library 
  This library is used by avant-window-navigator. It provides Vala bindings 
  to create and use Vala applets for avant-window-navigator.
+
+Package: libawn0-dbg-trunk
+Section: libs
+Architecture: any
+Depends: 	libawn0-trunk (= ${binary:Version})
+Conflicts: libawn0-dbg-bzr, libawn-dbg-bzr, libawn-dbg, libawn0-dbg, libawn0-dbg-testing
+Replaces: libawn0-dbg-bzr, libawn-dbg-bzr, libawn-dbg, libawn0-dbg, libawn0-dbg-testing
+Description: library for avant-window-navigator - debug package
+ This library is used by avant-window-navigator and its applets. It provides 
+ functions to create the bar and the applets.

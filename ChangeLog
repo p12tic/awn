@@ -1,3 +1,9 @@
+2008-04-25  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/control:
+	* debian/rules:
+	Add a debug package.
+
 2008-04-23  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* doc/reference/tmpl/*.sgml:
