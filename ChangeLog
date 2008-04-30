@@ -1,3 +1,13 @@
+2008-04-29  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnApplet.py:
+	* awn-manager/awnLauncher.py:
+	* awn-manager/awnLauncherEditor.py:
+	* awn-manager/awnManager.py.in:
+	* awn-manager/awnPreferences.py:
+	* awn-manager/awnTheme.py:
+	Reformat to use four-space soft tabs with no trailing whitespace.
+
 2008-04-25  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* debian/control:

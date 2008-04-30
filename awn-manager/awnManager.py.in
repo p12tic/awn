@@ -82,7 +82,7 @@ class AwnManager:
         if len(icon_list) > 0:
             self.window.set_icon_list(*icon_list)
         self.window.connect("delete-event", gtk.main_quit)
-		
+
         # Enable RGBA colormap
         self.gtk_screen = self.window.get_screen()
         colormap = self.gtk_screen.get_rgba_colormap()
@@ -102,7 +102,7 @@ class AwnManager:
         close.connect("clicked", gtk.main_quit)
 
         self.make_menu_model()
-               
+
         icon_view = gtk.IconView(self.menu_model)
         icon_view.set_text_column(0)
         icon_view.set_pixbuf_column(1)
@@ -112,11 +112,11 @@ class AwnManager:
         icon_view.set_item_width(-1)
         icon_view.set_size_request(icon_view.get_item_width(), -1)
         icon_view.connect("selection-changed", self.changeTab)
-        
+
         iconViewFrame = self.wTree.get_widget('CategoryMenuFrame')
         iconViewFrame.add(icon_view)
         iconViewFrame.show_all()
-        
+
         #theme
         self.themeManager = AwnThemeManager(self.wTree)
 
@@ -130,11 +130,11 @@ class AwnManager:
         self.prefManager = awnPreferences(self.wTree)
 
         self.window.show_all()
-    
+
     def make_menu_model(self):
         theme = gtk.icon_theme_get_default()
         self.menu_model = gtk.ListStore(str, gtk.gdk.Pixbuf)
-        
+
         pixbuf = theme.load_icon("gtk-preferences", 48, gtk.ICON_LOOKUP_FORCE_SVG)
         self.menu_model.append(['General', pixbuf])
         pixbuf = theme.load_icon("gtk-sort-ascending", 48, gtk.ICON_LOOKUP_FORCE_SVG)
@@ -143,10 +143,10 @@ class AwnManager:
         self.menu_model.append(['Launchers', pixbuf])
         pixbuf = theme.load_icon("gtk-home", 48, gtk.ICON_LOOKUP_FORCE_SVG)
         self.menu_model.append(['Themes', pixbuf])
-    
+
     def changeTab(self, iconView):
         self.notebook.set_current_page(iconView.get_cursor()[0][0])
-            
+
     def refresh(self, button):
         w = gtk.Window()
         i = gtk.IconTheme()
@@ -167,7 +167,7 @@ class AwnManager:
         self.about.set_version('@VERSION@')
         self.about.set_copyright("Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>")
         self.about.set_authors([
-            'Neil Jagdish Patel	<njpatel@gmail.com>',
+            'Neil Jagdish Patel <njpatel@gmail.com>',
             'haytjes <hv1989@gmail.com>',
             'Miika-Petteri Matikainen <miikapetteri@gmail.com>',
             'Anthony Arobone  <aarobone@gmail.com>',

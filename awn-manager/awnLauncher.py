@@ -61,7 +61,7 @@ class awnLauncher:
         self.applet_add.connect("clicked", self.add)
         self.launcher_edit = self.wTree.get_widget("launcher_edit")
         self.launcher_edit.connect("clicked", self.edit)
-        
+
     def reordered(self, model, path, iterator, data=None):
         cur_index = self.model.get_path(iterator)[0]
         cur_uri = self.model.get_value (iterator, 2)
@@ -203,7 +203,7 @@ class awnLauncher:
         uri = model.get_value(iter, 2)
         editor = awnLauncherEditor(uri, self)
         editor.run()
-        
+
     def add(self, button):
         file_path = os.path.join(defs.HOME_LAUNCHERS_DIR, self.getUniqueFileId('awn_launcher', '.desktop'))
         editor = awnLauncherEditor(file_path, self)

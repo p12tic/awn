@@ -48,7 +48,7 @@ class Pref:
             return Pref.pref_list[name]
         else:
             return None
-            
+
     def typecast(self, value):
         return self.ptype(value)
 
@@ -125,7 +125,7 @@ class AwnThemeManager:
                     setRadio = curr_name == cfg['details']['name'] and curr_version == cfg['details']['version']
 
                     row = model.append (None, (setRadio, self.pixbuf, "Theme: %s\nVersion: %s\nAuthor: %s\nDate: %s" % (cfg['details']['name'], cfg['details']['version'], cfg['details']['author'], cfg['details']['date'])))
-                    
+
                     path = model.get_path(row)[0]
                     self.theme_list[path] = {
                         'row': row,
