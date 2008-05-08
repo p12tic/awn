@@ -31,9 +31,9 @@ Section: gnome
 Architecture: any
 Depends: 	${shlibs:Depends},
 		${misc:Depends},
-		avant-window-navigator-data-trunk (>= ${source:Version}),
-		dbus-x11
-Recommends:	awn-manager-trunk (>= 0.2)
+		avant-window-navigator-data-trunk (>= ${source:Version})
+Recommends:	awn-manager-trunk (>= 0.2),
+		dbus-x11 | dbus
 Suggests: 	metacity (>= 2.21.5) | xcompmgr | compiz | xfwm4 (>= 4.2)
 Conflicts: awn-window-navigator-bzr, awn-window-navigator, awn-window-navigator-testing
 Replaces: awn-window-navigator-bzr, awn-window-navigator, awn-window-navigator-testing

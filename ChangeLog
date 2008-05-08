@@ -1,3 +1,10 @@
+2008-05-08  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* debian/control:
+	Change D-Bus dependency to be a recommended package, and to also have
+	dbus as a possiblity, as dbus-x11 does not exist in Feisty, but the
+	equivalent functionality is in its dbus package.
+
 2008-05-08 Rodney Cryderman <rcryderman@gmail.com>
 
 	* src/xutils.c:
@@ -9,7 +16,6 @@
 	* src/awn-x.c
 	Modified awn_x_get_icon(), restructured/simplified corner case handling.
 	Conversion of file to awn coding style.
-
 
 2008-04-29  Mark Lee <avant-wn@lazymalevolence.com>
 
