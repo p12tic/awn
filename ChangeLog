@@ -1,3 +1,16 @@
+2008-05-08 Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/xutils.c:
+  	Removed unused code.
+	Partially converted to awn coding style.
+
+2008-05-08  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-x.c
+	Modified awn_x_get_icon(), restructured/simplified corner case handling.
+	Conversion of file to awn coding style.
+
+
 2008-04-29  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* awn-manager/awnApplet.py:
