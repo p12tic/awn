@@ -280,29 +280,64 @@ main_effect_loop (AwnEffects * fx)
   static const GSourceFunc OPENING_EFFECTS[] = {
     NULL,
     (GSourceFunc) bounce_opening_effect,
+    (GSourceFunc) zoom_opening_effect,
+    (GSourceFunc) spotlight_opening_effect2,
+    (GSourceFunc) zoom_opening_effect,
+    (GSourceFunc) bounce_squish_opening_effect,
+    (GSourceFunc) turn_opening_effect,
+    (GSourceFunc) spotlight3D_opening_effect,
+    (GSourceFunc) glow_opening_effect
   };
   static const GSourceFunc CLOSING_EFFECTS[] = {
     NULL,
-    (GSourceFunc) bounce_opening_effect,
+    (GSourceFunc) fade_out_effect,
+    (GSourceFunc) zoom_closing_effect,
+    (GSourceFunc) spotlight_closing_effect,
+    (GSourceFunc) zoom_closing_effect,
+    (GSourceFunc) bounce_squish_closing_effect,
+    (GSourceFunc) turn_closing_effect,
+    (GSourceFunc) spotlight3D_closing_effect,
+    (GSourceFunc) glow_closing_effect
   };
   static const GSourceFunc HOVER_EFFECTS[] = {
     NULL,
     (GSourceFunc) bounce_effect,
+    (GSourceFunc) fading_effect,
+    (GSourceFunc) spotlight_effect,
+    (GSourceFunc) zoom_effect,
+    (GSourceFunc) bounce_squish_effect,
+    (GSourceFunc) turn_hover_effect,
+    (GSourceFunc) spotlight3D_hover_effect,
+    (GSourceFunc) glow_effect
   };
   static const GSourceFunc LAUNCHING_EFFECTS[] = {
     NULL,
     (GSourceFunc) bounce_effect,
+    (GSourceFunc) fading_effect,
+    (GSourceFunc) spotlight_half_fade_effect,
+    (GSourceFunc) zoom_attention_effect,
+    (GSourceFunc) bounce_squish_effect,
+    (GSourceFunc) turn_hover_effect,
+    (GSourceFunc) spotlight_half_fade_effect,
+    (GSourceFunc) glow_attention_effect
   };
   static const GSourceFunc ATTENTION_EFFECTS[] = {
     NULL,
     (GSourceFunc) bounce_effect,
+    (GSourceFunc) fading_effect,
+    (GSourceFunc) spotlight_half_fade_effect,
+    (GSourceFunc) zoom_attention_effect,
+    (GSourceFunc) bounce_squish_attention_effect,
+    (GSourceFunc) turn_hover_effect,
+    (GSourceFunc) spotlight3D_hover_effect,
+    (GSourceFunc) glow_attention_effect
   };
 
   GSourceFunc animation = NULL;
   AwnEffectsPrivate *topEffect =
     (AwnEffectsPrivate *) (fx->effect_queue->data);
   gint icon_effect = 0;
-#define EFFECT_TYPES_COUNT 1
+#define EFFECT_TYPES_COUNT 5
   gint effects[EFFECT_TYPES_COUNT] = { 0 };
   if (fx->settings)
   {
@@ -313,7 +348,10 @@ main_effect_loop (AwnEffects * fx)
       gint effect = icon_effect & (0xF << (i * 4));
       effect >>= i * 4;
       if (effect >= sizeof (HOVER_EFFECTS) / sizeof (GSourceFunc))
-        effect = -1;
+	effect = -1;
+      // spotlight initialization
+      if (effect == EFFECT_SPOTLIGHT || effect == EFFECT_TURN_3D_SPOTLIGHT)
+	spotlight_init ();
       effects[i] = effect + 1;
     }
   }
@@ -353,6 +391,7 @@ main_effect_loop (AwnEffects * fx)
       topEffect->start (fx->self);
     if (topEffect->stop)
       topEffect->stop (fx->self);
+    // dispose AwnEffectsPrivate
     awn_effect_stop (fx, topEffect->this_effect);
   }
 }
@@ -365,9 +404,11 @@ awn_register_effects (GObject * obj, AwnEffects * fx)
     awn_unregister_effects (fx);
   }
   fx->focus_window = GTK_WIDGET (obj);
-  fx->enter_notify =g_signal_connect (obj, "enter-notify-event",
+  fx->enter_notify =
+    g_signal_connect (obj, "enter-notify-event",
 		      G_CALLBACK (awn_on_enter_event), fx);
-  fx->leave_notify =g_signal_connect (obj, "leave-notify-event",
+  fx->leave_notify =
+    g_signal_connect (obj, "leave-notify-event",
 		      G_CALLBACK (awn_on_leave_event), fx);
 }
 
@@ -375,9 +416,11 @@ void
 awn_unregister_effects (AwnEffects * fx)
 {
   if (fx->enter_notify)
-    g_signal_handler_disconnect (G_OBJECT (fx->focus_window),fx->enter_notify);
+    g_signal_handler_disconnect (G_OBJECT (fx->focus_window),
+				 fx->enter_notify);
   if (fx->leave_notify)
-    g_signal_handler_disconnect (G_OBJECT (fx->focus_window),fx->leave_notify);
+    g_signal_handler_disconnect (G_OBJECT (fx->focus_window),
+				 fx->leave_notify);
   fx->enter_notify = 0;
   fx->leave_notify = 0;
   fx->focus_window = NULL;
@@ -405,9 +448,9 @@ lighten_pixbuf (GdkPixbuf * src, const gfloat amount)
 
   g_return_if_fail (gdk_pixbuf_get_colorspace (src) == GDK_COLORSPACE_RGB);
   g_return_if_fail ((!gdk_pixbuf_get_has_alpha (src)
-          && gdk_pixbuf_get_n_channels (src) == 3)
-          || (gdk_pixbuf_get_has_alpha (src)
-          && gdk_pixbuf_get_n_channels (src) == 4));
+		     && gdk_pixbuf_get_n_channels (src) == 3)
+		    || (gdk_pixbuf_get_has_alpha (src)
+			&& gdk_pixbuf_get_n_channels (src) == 4));
   g_return_if_fail (gdk_pixbuf_get_bits_per_sample (src) == 8);
 
   has_alpha = gdk_pixbuf_get_has_alpha (src);
@@ -428,7 +471,7 @@ lighten_pixbuf (GdkPixbuf * src, const gfloat amount)
       *pixsrc = lighten_component (*pixsrc, amount);
       pixsrc++;
       if (has_alpha)
-        pixsrc++;
+	pixsrc++;
     }
   }
 }
@@ -460,7 +503,8 @@ awn_draw_background (AwnEffects * fx, cairo_t * cr)
   if (fx->spotlight && fx->spotlight_alpha > 0)
   {
     y1 += fx->icon_height / 12;
-    spot = gdk_pixbuf_scale_simple (SPOTLIGHT_PIXBUF, fx->window_width,
+    spot =
+      gdk_pixbuf_scale_simple (SPOTLIGHT_PIXBUF, fx->window_width,
 			       fx->icon_height * 5 / 4, GDK_INTERP_BILINEAR);
     gdk_cairo_set_source_pixbuf (cr, spot, x1, y1);
     cairo_paint_with_alpha (cr, fx->spotlight_alpha);
@@ -476,8 +520,37 @@ awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
   if (!icon || fx->window_width <= 0 || fx->window_height <= 0)
     return;
 
-  fx->curve_offset = 0;
+  /* Apply the curves */
+  if (fx->settings->bar_angle < 0)
+  {
+    int awn_bar_width = fx->settings->bar_width;
+    double awn_curve_curviness = fx->settings->curviness;
+    int awn_monitor_width = fx->settings->monitor_width;
 
+    gint curvex = GTK_WIDGET (fx->self)->allocation.x;
+    if (curvex == 0)		// is applet?
+    {
+      gint curvex1 = 0;
+      gdk_window_get_origin (fx->focus_window->window, &curvex1, NULL);
+      curvex = curvex1 - (awn_monitor_width - awn_bar_width) / 2;
+    }
+    if (awn_curve_curviness)
+      fx->settings->curviness = awn_curve_curviness;
+
+    if (curvex > 0)
+      fx->curve_offset =
+                  calc_curve_position (curvex + (fx->settings->task_width / 4),
+                  awn_bar_width,
+                  (fx->settings->bar_height *
+                  fx->settings->curviness) / 2.);
+    else
+      fx->curve_offset = 0;
+
+  }
+  else if (fx->curve_offset)
+  {
+    fx->curve_offset = 0;
+  }
 
   /* refresh icon info */
   fx->icon_width = gdk_pixbuf_get_width (icon);

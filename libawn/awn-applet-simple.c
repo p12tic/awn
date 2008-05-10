@@ -27,93 +27,86 @@
 #include "awn-applet-simple.h"
 #include "awn-config-client.h"
 
-G_DEFINE_TYPE (AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET)
+G_DEFINE_TYPE(AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET)
+
 #define AWN_APPLET_SIMPLE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
 	AWN_TYPE_APPLET_SIMPLE, \
 	AwnAppletSimplePrivate))
 
 struct _AwnAppletSimplePrivate
- {
-   GdkPixbuf *org_icon;
-   GdkPixbuf *icon;
-   GdkPixbuf *reflect;
-
-   AwnEffects effects;
-
-   gint icon_width;
-   gint icon_height;
-
-   gint bar_height_on_icon_recieved;
-
-   gint offset;
-   gint bar_height;
-   gint bar_angle;
-
- };
-
-static void adjust_icon (AwnAppletSimple * simple)
 {
-  AwnAppletSimplePrivate *priv;
-  GdkPixbuf *old0, *old1;
-  int refcount = 0;
+        GdkPixbuf *org_icon;
+        GdkPixbuf *icon;
+        GdkPixbuf *reflect;
 
-  priv = simple->priv;
+	AwnEffects effects;
 
-  old0 = priv->icon;
-  old1 = priv->reflect;
+        gint icon_width;
+        gint icon_height;
 
-  if (priv->bar_height == priv->bar_height_on_icon_recieved)
-  {
-    priv->icon_height = gdk_pixbuf_get_height (priv->org_icon);
-    priv->icon_width = gdk_pixbuf_get_width (priv->org_icon);
-    priv->icon = gdk_pixbuf_copy (priv->org_icon);
-  }
-  else
-  {
-    priv->icon_height =
-      gdk_pixbuf_get_height (priv->org_icon) + priv->bar_height -
-      priv->bar_height_on_icon_recieved;
-    priv->icon_width =
-      (int) ((double) priv->icon_height /
-	     (double) gdk_pixbuf_get_height (priv->org_icon) *
-	     (double) gdk_pixbuf_get_width (priv->org_icon));
-    priv->icon =
-      gdk_pixbuf_scale_simple (priv->org_icon, priv->icon_width,
-			       priv->icon_height, GDK_INTERP_BILINEAR);
-  }
+	gint bar_height_on_icon_recieved;
 
-  g_object_ref (priv->icon);
-  priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
-  g_object_ref (priv->reflect);
+        gint offset;
+        gint bar_height;
+        gint bar_angle;
 
-  if (old0)
-  {
-    for (refcount = (G_OBJECT (old0))->ref_count; refcount > 0; refcount--)
-    {
-      g_object_unref (old0);
-    }
-  }
-  if (old1)
-  {
-    for (refcount = (G_OBJECT (old1))->ref_count; refcount > 0; refcount--)
-    {
-      g_object_unref (old1);
-    }
-  }
-  /* for some reason priv->reflect is not always a valid pixbuf.
-     my suspicion is that we are seeing a gdk bug here.  So...if
-     priv->reflect isn't a good pixbuf, well... let's try making
-     one from priv->org_icon */
-  if (!GDK_IS_PIXBUF (priv->reflect))
-  {
-    priv->reflect = gdk_pixbuf_flip (priv->org_icon, FALSE);
-  }
+};
 
-  // awn-effects require the window to be 25% bigger than icon
-  gtk_widget_set_size_request (GTK_WIDGET (simple),
-			       priv->icon_width * 5 / 4,
-			       (priv->bar_height + 2) * 2);
-  gtk_widget_queue_draw (GTK_WIDGET (simple));
+static void 
+adjust_icon(AwnAppletSimple *simple)
+{
+        AwnAppletSimplePrivate *priv;
+        GdkPixbuf *old0, *old1;
+	int refcount = 0;
+     
+        priv = simple->priv;
+
+        old0 = priv->icon;
+        old1 = priv->reflect;
+
+	if( priv->bar_height == priv->bar_height_on_icon_recieved )
+	{
+		priv->icon_height = gdk_pixbuf_get_height (priv->org_icon);
+		priv->icon_width = gdk_pixbuf_get_width (priv->org_icon);
+		priv->icon = gdk_pixbuf_copy (priv->org_icon);
+	}
+	else
+	{
+		priv->icon_height = gdk_pixbuf_get_height (priv->org_icon)+priv->bar_height-priv->bar_height_on_icon_recieved;
+        	priv->icon_width = (int)((double)priv->icon_height/(double)gdk_pixbuf_get_height (priv->org_icon)*(double)gdk_pixbuf_get_width (priv->org_icon));        
+	        priv->icon = gdk_pixbuf_scale_simple(priv->org_icon,
+	                                             priv->icon_width,
+	                                             priv->icon_height,
+	                                             GDK_INTERP_BILINEAR);
+        }
+
+	g_object_ref (priv->icon);
+        priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
+        g_object_ref (priv->reflect);
+        
+        if (old0) {
+		for (refcount = (G_OBJECT (old0))->ref_count; refcount > 0; refcount--) {
+			g_object_unref (old0);
+		}
+        }
+        if (old1) {
+		for (refcount = (G_OBJECT (old1))->ref_count; refcount > 0; refcount--) {
+			g_object_unref (old1);
+		}
+        }
+	/* for some reason priv->reflect is not always a valid pixbuf.
+	   my suspicion is that we are seeing a gdk bug here.  So...if
+	   priv->reflect isn't a good pixbuf, well... let's try making
+	   one from priv->org_icon */
+	if (!GDK_IS_PIXBUF (priv->reflect)) {
+		priv->reflect = gdk_pixbuf_flip (priv->org_icon, FALSE);
+	}
+
+	// awn-effects require the window to be 25% bigger than icon
+        gtk_widget_set_size_request (GTK_WIDGET (simple), 
+                                     priv->icon_width *5/4,
+                                     (priv->bar_height + 2 ) * 2);
+        gtk_widget_queue_draw (GTK_WIDGET (simple));
 }
 
 /**
@@ -127,18 +120,18 @@ static void adjust_icon (AwnAppletSimple * simple)
  * and is required to unref it when it is no longer required.
  */
 void
-awn_applet_simple_set_icon (AwnAppletSimple * simple, GdkPixbuf * pixbuf)
+awn_applet_simple_set_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 {
-  g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
-
-  /* awn_applet_simple_set_icon is not heavily used.
-     Previous inplementation was causing nasty leaks.
-     This fix seems sensible, easy to maintain.
-     And it works.  Note we are making a copy here so
-     the unref in set_temp_icon leaves the user's original
-     untouched.
-   */
-  awn_applet_simple_set_temp_icon (simple, gdk_pixbuf_copy (pixbuf));
+	g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+        
+	/* awn_applet_simple_set_icon is not heavily used.
+	   Previous inplementation was causing nasty leaks.
+	   This fix seems sensible, easy to maintain.
+	   And it works.  Note we are making a copy here so
+	   the unref in set_temp_icon leaves the user's original
+	   untouched.
+	 */
+	awn_applet_simple_set_temp_icon (simple, gdk_pixbuf_copy (pixbuf));
 }
 
 /**
@@ -152,176 +145,163 @@ awn_applet_simple_set_icon (AwnAppletSimple * simple, GdkPixbuf * pixbuf)
  * calling this function.  If the pixbuf needs to be retained, then
  * awn_applet_simple_set_icon() should be used.
  */
-void
-awn_applet_simple_set_temp_icon (AwnAppletSimple * simple, GdkPixbuf * pixbuf)
+void 
+awn_applet_simple_set_temp_icon (AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 {
-  AwnAppletSimplePrivate *priv;
-  GdkPixbuf *old0;
-  int refcount;
+        AwnAppletSimplePrivate *priv;
+        GdkPixbuf *old0;
+	int refcount;
 
-  g_return_if_fail (AWN_IS_APPLET_SIMPLE (simple));
-  g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+        g_return_if_fail (AWN_IS_APPLET_SIMPLE (simple));
+        g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+        
+        priv = simple->priv;
 
-  priv = simple->priv;
+	/* let's make sure that an applet can't screw around with OUR
+	   pixbuf.  We'll make our own copy, and free up theirs.
+	 */
+	old0 = pixbuf;
+	pixbuf = gdk_pixbuf_copy (pixbuf);
+	g_object_unref (old0);
 
-  /* let's make sure that an applet can't screw around with OUR
-     pixbuf.  We'll make our own copy, and free up theirs.
-   */
-  old0 = pixbuf;
-  pixbuf = gdk_pixbuf_copy (pixbuf);
-  g_object_unref (old0);
+        old0 = priv->org_icon;
+        priv->org_icon = pixbuf;
+        priv->bar_height_on_icon_recieved = priv->bar_height;
 
-  old0 = priv->org_icon;
-  priv->org_icon = pixbuf;
-  priv->bar_height_on_icon_recieved = priv->bar_height;
+        if (old0) {
+		for (refcount = (G_OBJECT (old0))->ref_count; refcount > 0; refcount--) {
+			g_object_unref (old0);
+		}
+        }
 
-  if (old0)
-  {
-    for (refcount = (G_OBJECT (old0))->ref_count; refcount > 0; refcount--)
-    {
-      g_object_unref (old0);
-    }
-  }
-
-  adjust_icon (simple);
+        adjust_icon(simple);
 }
 
-static gboolean
-_expose_event (GtkWidget * widget, GdkEventExpose * expose)
+static gboolean 
+_expose_event(GtkWidget *widget, GdkEventExpose *expose) 
 {
-  AwnAppletSimplePrivate *priv;
-  cairo_t *cr;
-  gint width, height, bar_height;
+	AwnAppletSimplePrivate *priv;
+        cairo_t *cr;
+	gint width, height, bar_height;
 
-  priv = AWN_APPLET_SIMPLE (widget)->priv;
+	priv = AWN_APPLET_SIMPLE (widget)->priv;
 
-  /* For some reason, priv->reflect is not always a valid pixbuf.
-     my suspicion is that we are seeing a gdk bug here. So... if
-     priv->reflect isn't a good pixbuf well.. let's try making one from
-     priv->org_icon.  I'm not happy as I'm not exactly sure of the root
-     cause of this...  but this does resolve the issue */
-  if (!GDK_IS_PIXBUF (priv->reflect))
-  {
-    priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
-  }
-  if (!GDK_IS_PIXBUF (priv->reflect))
-  {
-    priv->reflect = gdk_pixbuf_flip (priv->org_icon, FALSE);
-  }
+	/* For some reason, priv->reflect is not always a valid pixbuf.
+	   my suspicion is that we are seeing a gdk bug here. So... if
+	   priv->reflect isn't a good pixbuf well.. let's try making one from
+	   priv->org_icon.  I'm not happy as I'm not exactly sure of the root
+	   cause of this...  but this does resolve the issue */
+	if (!GDK_IS_PIXBUF (priv->reflect)) {
+		priv->reflect = gdk_pixbuf_flip (priv->icon, FALSE);
+	}
+	if (!GDK_IS_PIXBUF (priv->reflect)) {
+		priv->reflect = gdk_pixbuf_flip (priv->org_icon, FALSE);
+	}
 
-  width = widget->allocation.width;
-  height = widget->allocation.height;
+	width = widget->allocation.width;
+	height = widget->allocation.height;
 
-  awn_draw_set_window_size (&priv->effects, width, height);
+	awn_draw_set_window_size(&priv->effects, width, height);
 
-  bar_height = priv->bar_height;
+        bar_height = priv->bar_height;
 
-  cr = gdk_cairo_create (widget->window);
+        cr = gdk_cairo_create (widget->window);
 
-  /* task back */
-  cairo_set_source_rgba (cr, 1, 0, 0, 0.0);
-  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_rectangle (cr, -1, -1, width + 1, height + 1);
-  cairo_fill (cr);
+	/* task back */
+	cairo_set_source_rgba (cr, 1, 0, 0, 0.0);
+	cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+	cairo_rectangle(cr, -1, -1, width+1, height+1);
+	cairo_fill (cr);
 
-  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+	cairo_set_operator (cr, CAIRO_OPERATOR_OVER);       
+        
+	/* content */
+	awn_draw_background(&priv->effects, cr);
+	awn_draw_icons(&priv->effects, cr, priv->icon, priv->reflect);
+	awn_draw_foreground(&priv->effects, cr);
 
-  /* content */
-  awn_draw_background (&priv->effects, cr);
-  awn_draw_icons (&priv->effects, cr, priv->icon, priv->reflect);
-  awn_draw_foreground (&priv->effects, cr);
+        cairo_destroy (cr);
 
-  cairo_destroy (cr);
-
-  return TRUE;
+        return TRUE;
 }
 
-static void
-awn_applet_simple_class_init (AwnAppletSimpleClass * klass)
+static void 
+awn_applet_simple_class_init (AwnAppletSimpleClass *klass) 
 {
-  GtkWidgetClass *widget_class;
+        GtkWidgetClass *widget_class;
 
-  widget_class = GTK_WIDGET_CLASS (klass);
-  widget_class->expose_event = _expose_event;
-
-  g_type_class_add_private (G_OBJECT_CLASS (klass),
-			    sizeof (AwnAppletSimplePrivate));
+        widget_class = GTK_WIDGET_CLASS (klass);
+        widget_class->expose_event = _expose_event;
+        	
+        g_type_class_add_private (G_OBJECT_CLASS (klass), 
+                                  sizeof (AwnAppletSimplePrivate));
 }
 
 static void
-bar_height_changed (AwnConfigClientNotifyEntry * entry,
-		    AwnAppletSimple * simple)
+bar_height_changed (AwnConfigClientNotifyEntry *entry, AwnAppletSimple *simple)
 {
-  AwnAppletSimplePrivate *priv;
+        AwnAppletSimplePrivate *priv;
 
-  priv = simple->priv;
-  priv->bar_height = entry->value.int_val;
-  adjust_icon (simple);
-  g_print ("bar_height changed\n");
+	priv = simple->priv;
+	priv->bar_height = entry->value.int_val;
+	adjust_icon(simple);
+	g_print("bar_height changed\n");
 }
 static void
-icon_offset_changed (AwnConfigClientNotifyEntry * entry,
-		     AwnAppletSimple * simple)
+icon_offset_changed (AwnConfigClientNotifyEntry *entry, AwnAppletSimple *simple)
 {
-  AwnAppletSimplePrivate *priv;
+        AwnAppletSimplePrivate *priv;
 
-  priv = simple->priv;
-  priv->offset = entry->value.int_val;
-  gtk_widget_queue_draw (GTK_WIDGET (simple));
-  g_print ("icon_offset changed\n");
+	priv = simple->priv;
+	priv->offset = entry->value.int_val;
+        gtk_widget_queue_draw (GTK_WIDGET (simple));
+	g_print("icon_offset changed\n");
 }
 static void
-bar_angle_changed (AwnConfigClientNotifyEntry * entry,
-		   AwnAppletSimple * simple)
+bar_angle_changed (AwnConfigClientNotifyEntry *entry, AwnAppletSimple *simple)
 {
-  AwnAppletSimplePrivate *priv;
+        AwnAppletSimplePrivate *priv;
 
-  priv = simple->priv;
-  priv->bar_angle = entry->value.int_val;
-
-  gtk_widget_queue_draw (GTK_WIDGET (simple));
-
-  g_print ("bar_angle changed\n");
+	priv = simple->priv;
+	priv->bar_angle = entry->value.int_val;
+	
+        gtk_widget_queue_draw (GTK_WIDGET (simple));
+	
+	g_print("bar_angle changed\n");
 }
 
-static void
-awn_applet_simple_init (AwnAppletSimple * simple)
+static void 
+awn_applet_simple_init (AwnAppletSimple *simple) 
 {
-  AwnAppletSimplePrivate *priv;
-  AwnConfigClient *client;
+        AwnAppletSimplePrivate *priv;
+        AwnConfigClient *client;
 
-  priv = simple->priv = AWN_APPLET_SIMPLE_GET_PRIVATE (simple);
+        priv = simple->priv = AWN_APPLET_SIMPLE_GET_PRIVATE (simple);
 
-  priv->icon = NULL;
-  priv->org_icon = NULL;
-  priv->reflect = NULL;
-  priv->icon_height = 0;
-  priv->icon_width = 0;
-  priv->offset = 0;
+        priv->icon = NULL;
+        priv->org_icon = NULL;
+        priv->reflect = NULL;
+        priv->icon_height = 0;
+        priv->icon_width = 0;
+        priv->offset = 0;
 
-  awn_effects_init (G_OBJECT (simple), &priv->effects);
-  // register hover effects
-  awn_register_effects (G_OBJECT (simple), &priv->effects);
-  // start open effect
-  awn_effect_start_ex (&priv->effects, AWN_EFFECT_OPENING, 0, 0, 1);
+	awn_effects_init(G_OBJECT(simple), &priv->effects);
+	// register hover effects
+	awn_register_effects(G_OBJECT(simple), &priv->effects);
+	// start open effect
+	awn_effect_start_ex(&priv->effects, AWN_EFFECT_OPENING, 0, 0, 1);
 
-  client = awn_config_client_new ();
-  awn_config_client_ensure_group (client, "bar");
-  priv->offset =
-    awn_config_client_get_int (client, "bar", "icon_offset", NULL);
-  priv->bar_height =
-    awn_config_client_get_int (client, "bar", "bar_height", NULL);
-  priv->bar_angle =
-    awn_config_client_get_int (client, "bar", "bar_angle", NULL);
-  awn_config_client_notify_add (client, "bar", "bar_angle",
-				(AwnConfigClientNotifyFunc) bar_angle_changed,
-				simple);
-  awn_config_client_notify_add (client, "bar", "bar_height",
-				(AwnConfigClientNotifyFunc)
-				bar_height_changed, simple);
-  awn_config_client_notify_add (client, "bar", "icon_offset",
-				(AwnConfigClientNotifyFunc)
-				icon_offset_changed, simple);
+        client = awn_config_client_new ();
+        awn_config_client_ensure_group (client, "bar");
+        priv->offset = awn_config_client_get_int (client, "bar", "icon_offset", NULL);
+        priv->bar_height = awn_config_client_get_int (client, "bar", "bar_height", NULL);
+        priv->bar_angle = awn_config_client_get_int (client, "bar", "bar_angle", NULL);
+        awn_config_client_notify_add (client, "bar", "bar_angle",
+				      (AwnConfigClientNotifyFunc)bar_angle_changed, simple);
+        awn_config_client_notify_add (client, "bar", "bar_height",
+				      (AwnConfigClientNotifyFunc)bar_height_changed,simple);
+        awn_config_client_notify_add (client, "bar", "icon_offset",
+				      (AwnConfigClientNotifyFunc)icon_offset_changed, simple);
 }
 
 /**
@@ -332,11 +312,11 @@ awn_applet_simple_init (AwnAppletSimple * simple)
  * Returns: a pointer to an #AwnEffects object associated with the
  * applet.  The caller does not own this object.
  */
-AwnEffects *
-awn_applet_simple_get_effects (AwnAppletSimple * simple)
+AwnEffects*
+awn_applet_simple_get_effects(AwnAppletSimple *simple)
 {
-  AwnAppletSimplePrivate *priv = simple->priv;
-  return &priv->effects;
+        AwnAppletSimplePrivate *priv = simple->priv;
+	return &priv->effects;
 }
 
 /**
@@ -350,14 +330,16 @@ awn_applet_simple_get_effects (AwnAppletSimple * simple)
  * awn_applet_simple_set_temp_icon() are used to specify the applet icon.
  * Returns: a new instance of an applet.
  */
-GtkWidget *
-awn_applet_simple_new (const gchar * uid, gint orient, gint height)
+GtkWidget* 
+awn_applet_simple_new (const gchar *uid, gint orient, gint height) 
 {
-  AwnAppletSimple *simple;
+	AwnAppletSimple *simple;
+  
+        simple = g_object_new (AWN_TYPE_APPLET_SIMPLE,
+                               "uid", uid,
+                               "orient", orient,
+                               "height", height,
+                               NULL);
 
-  simple = g_object_new (AWN_TYPE_APPLET_SIMPLE,
-			 "uid", uid,
-			 "orient", orient, "height", height, NULL);
-
-  return GTK_WIDGET (simple);
+        return GTK_WIDGET (simple);
 }
