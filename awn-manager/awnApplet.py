@@ -44,7 +44,7 @@ class awnApplet:
     def __init__(self, glade):
         # DIRS
         if not os.path.isdir(defs.HOME_APPLET_DIR):
-          os.mkdir(defs.HOME_APPLET_DIR)
+            os.mkdir(defs.HOME_APPLET_DIR)
 
         self.client = awn.Config()
         self.client.ensure_group(defs.AWN)
@@ -53,16 +53,16 @@ class awnApplet:
         self.load_finished = False
 
         self.wTree = glade
-        
+
         self.scrollwindow = self.wTree.get_widget("appletScrollActive")
         self.make_active_model()
         self.treeview_available =  self.wTree.get_widget("appletTreeviewAvailable")
-        
+
         self.load_applets()
-        
+
         self.btn_deactivate = self.wTree.get_widget("appletDeactivate")
         self.btn_deactivate.connect("clicked", self.deactivate_applet)
-        
+
         self.btn_activate = self.wTree.get_widget("appletActivate")
         self.btn_activate.connect("clicked", self.activate_applet)
 
@@ -100,9 +100,9 @@ class awnApplet:
             file = dialog.get_filename()
             dialog.destroy()
             if tarfile.is_tarfile(file):
-              self.extract_file(file, False)
+                self.extract_file(file, False)
         else:
-          dialog.destroy()
+            dialog.destroy()
 
     def check_path(self, appletpath):
         df = DesktopEntry(appletpath)
@@ -236,9 +236,9 @@ class awnApplet:
             dialog.destroy()
 
     def deactivate_applet (self, button):
-        cursor = self.icon_view.get_cursor()  
+        cursor = self.icon_view.get_cursor()
         if not cursor:
-            return    
+            return
         itr = self.active_model.get_iter(cursor[0])
         name = os.path.splitext(os.path.basename(self.active_model.get_value(itr, 1)))[0]
         uid = self.active_model.get_value (itr, 2)
@@ -257,7 +257,7 @@ class awnApplet:
                 self.remove_applet_dir(path, filename)
         os.rmdir(dirPath)
         if os.path.exists(filename):
-          os.unlink(filename)
+            os.unlink(filename)
 
     def _apply (self):
         l = []
@@ -298,7 +298,7 @@ class awnApplet:
     def make_active_model (self):
         self.active_model = gtk.ListStore(gtk.gdk.Pixbuf, str, str, str)
         self.active_model.connect("row-changed", self.applet_reorder)
-        
+
         self.icon_view = gtk.IconView(self.active_model)
         self.icon_view.set_pixbuf_column(0)
         self.icon_view.set_orientation(gtk.ORIENTATION_HORIZONTAL)
@@ -309,10 +309,10 @@ class awnApplet:
         self.icon_view.set_size_request(48, -1)
         self.icon_view.set_reorderable(True)
         self.icon_view.set_columns(100)
-        
+
         self.scrollwindow.add(self.icon_view)
         self.scrollwindow.show()
-        
+
         applets = self.client.get_list(defs.AWN, defs.APPLET_LIST, awn.CONFIG_LIST_STRING)
 
         self.refresh_icon_list (applets, self.active_model)
@@ -373,7 +373,7 @@ class awnApplet:
         if icon is None:
             icon = theme.load_icon('gtk-execute', 32, 0)
         return icon
-    
+
     def refresh_icon_list (self, applets, model):
         for a in applets:
             tokens = a.split("::")
@@ -382,9 +382,9 @@ class awnApplet:
             icon, text = self.make_row(path)
             if len (text) < 2:
                 continue;
-             
-            model.append([icon, path, uid, text]) 
-              
+
+            model.append([icon, path, uid, text])
+
     def refresh_tree (self, applets):
         for a in applets:
             tokens = a.split("::")
@@ -402,20 +402,20 @@ class awnApplet:
 
     def make_appmodel (self):
 
-            self.appmodel = model = gtk.ListStore(gdk.Pixbuf, str, str)
-            self.appmodel.set_sort_column_id(1, gtk.SORT_ASCENDING)
-            self.treeview_available.set_model (model)
+        self.appmodel = model = gtk.ListStore(gdk.Pixbuf, str, str)
+        self.appmodel.set_sort_column_id(1, gtk.SORT_ASCENDING)
+        self.treeview_available.set_model (model)
 
-            ren = gtk.CellRendererPixbuf()
-            col = gtk.TreeViewColumn ("Available Applets", ren, pixbuf=0)
+        ren = gtk.CellRendererPixbuf()
+        col = gtk.TreeViewColumn ("Available Applets", ren, pixbuf=0)
 
-            ren = gtk.CellRendererText()
-            ren = gtk.CellRendererText()
-            col.pack_start(ren, False)
-            col.add_attribute(ren, 'markup', 1)
-            ren.set_property('xalign', 0)
+        ren = gtk.CellRendererText()
+        ren = gtk.CellRendererText()
+        col.pack_start(ren, False)
+        col.add_attribute(ren, 'markup', 1)
+        ren.set_property('xalign', 0)
 
-            self.treeview_available.append_column (col)
+        self.treeview_available.append_column (col)
 
     def load_applets (self):
         self.make_appmodel ()

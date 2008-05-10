@@ -6,7 +6,11 @@ INCLUDES =				\
 	-I$(top_srcdir)/libawn		\
 	$(NULL)
 
-bin_PROGRAMS = avant-window-navigator
+if BUILD_EXPERIMENTAL
+experimental_programs = awn
+endif
+
+bin_PROGRAMS = avant-window-navigator $(experimental_programs)
 
 avant_window_navigator_LDADD =			\
 	$(DOCK_LIBS)				\
@@ -68,16 +72,39 @@ BUILT_SOURCES =                         \
         awn-dbus-glue.h                 \
         awn-applet-manager-glue.h       \
         awn-marshallers.h               \
-        awn-marshallers.c		\
-	$(NULL)
+        awn-marshallers.c								\
+				awn-app-glue.h									\
+				$(NULL)
 
 EXTRA_DIST =                            \
         awn-dbus.xml                    \
         awn-applet-manager-dbus.xml     \
-        awn-marshallers.list		\
+        awn-marshallers.list						\
+				awn-app-dbus.xml
 	$(NULL)
 
 noinst_PROGRAMS =	\
 	icon-test	\
 	$(NULL)
+
+awn_SOURCES = \
+	awn-main.c \
+	awn-app.c \
+	awn-app.h \
+	awn-defines.h \
+	awn-monitor.c \
+	awn-monitor.h \
+	awn-panel.c \
+	awn-panel.h \
+	$(NULL)
+
+awn_LDADD =			\
+	$(DOCK_LIBS)				\
+	$(top_builddir)/libawn/libawn.la	\
+	$(NULL)
+
+awn-app-glue.h: awn-app-dbus.xml Makefile
+	$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=awn_app --mode=glib-server --output=$@ $<
+
+
 # vim: set ts=8 sts=8 sw=8 :

@@ -10,6 +10,14 @@ description = The width of the monitor that overrides the GDK monitor settings, 
 type = int
 default = 768
 description = The height of the monitor that overrides the GDK monitor settings, if force_monitor is TRUE.
+[DEFAULT/monitor_xoffset]
+type = int
+default = 0
+description = Allows the panel positioning to be offset by X, useful for dual monitor setups. If force_monitor is TRUE.
+[DEFAULT/monitor_xalign]
+type = float
+default = 0.5
+description = Set the panel alignment.
 [DEFAULT/panel_mode]
 type = bool
 default = False
@@ -28,7 +36,7 @@ default = False
 description = Always keep AWN below all other windows.
 [DEFAULT/applets_list]
 type = list-string
-default = 
+default = @LIBDIR@/awn/applets/taskman.desktop::1
 description = The list of paths to the enabled applets, in order from left to right.
 [bar/rounded_corners]
 type = bool
@@ -104,7 +112,7 @@ default = True
 description = Show the tasks from every workspace in the bar.
 [window_manager/launchers]
 type = list-string
-default = 
+default = @DATADIR@/applications/awn-manager.desktop
 description = A list of the paths to the launchers shown on the dock, in order from left to right.
 [app/active_png]
 type  = string

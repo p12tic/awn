@@ -1,0 +1,58 @@
+<!-- ##### SECTION Title ##### -->
+awn-cairo-utils
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### ENUM AwnCairoRoundCorners ##### -->
+<para>
+
+</para>
+
+@ROUND_NONE: 
+@ROUND_TOP_LEFT: 
+@ROUND_TOP_RIGHT: 
+@ROUND_BOTTOM_RIGHT: 
+@ROUND_BOTTOM_LEFT: 
+@ROUND_TOP: 
+@ROUND_BOTTOM: 
+@ROUND_LEFT: 
+@ROUND_RIGHT: 
+@ROUND_ALL: 
+
+<!-- ##### FUNCTION awn_cairo_rounded_rect ##### -->
+<para>
+
+</para>
+
+@cr: 
+@x0: 
+@y0: 
+@width: 
+@height: 
+@radius: 
+@state: 
+
+
+<!-- ##### FUNCTION awn_cairo_string_to_color ##### -->
+<para>
+
+</para>
+
+@string: 
+@color: 
+
+

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<node name="/org/awn-project/Awn/App">
+<interface name="org.awn-project.Awn.App">
+<annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_app"/>
+
+</interface>
+</node>
+

@@ -92,7 +92,7 @@ class awnPreferences:
 
         self.setup_bool (defs.BAR, defs.SHOW_SEPARATOR, self.wTree.get_widget("separatorcheck"))
         self.setup_bool (defs.APP, defs.TASKS_H_ARROWS, self.wTree.get_widget("arrowcheck"))
-	self.setup_autostart (defs.APP, defs.TASKS_H_ARROWS, self.wTree.get_widget("autostart"))
+        self.setup_autostart (defs.APP, defs.TASKS_H_ARROWS, self.wTree.get_widget("autostart"))
         self.setup_effect (defs.APP, defs.ICON_EFFECT, self.wTree.get_widget("iconeffects"))
 
         self.setup_chooser(defs.APP, defs.ACTIVE_PNG, self.wTree.get_widget("activefilechooser"))
@@ -222,7 +222,7 @@ class awnPreferences:
         group, key = groupkey
         self.client.set_bool(group, key, check.get_active())
         if key == defs.KEEP_BELOW:
-            self.wTree.get_widget('autohide').set_active(check.get_active)
+            self.wTree.get_widget('autohide').set_active(check.get_active())
         elif key == defs.AUTO_HIDE:
             if not check.get_active() and self.wTree.get_widget("keepbelow").get_active():
                 self.wTree.get_widget("keepbelow").set_active(False)
@@ -284,63 +284,63 @@ class awnPreferences:
             self.wTree.get_widget("barangle_holder").show_all()
 
     def setup_effect_custom(self, group, key):
-      self.effect_drop = []
-      effect_settings = self.client.get_int(group, key)
-      cnt = 0
-      for drop in ['hover', 'open', 'close', 'launch', 'attention']:
-        d = self.wTree.get_widget('effect_'+drop)
-        self.effect_drop.append(d)
-        model = gtk.ListStore(str)
-        model.append(["None"])
-        model.append(["Classic"])
-        model.append(["Fade"])
-        model.append(["Spotlight"])
-        model.append(["Zoom"])
-        model.append(["Squish"])
-        model.append(["3D Turn"])
-        model.append(["3D Spotlight Turn"])
-        model.append(["Glow"])
-        d.set_model(model)
-        cell = gtk.CellRendererText()
-        d.pack_start(cell)
-        d.add_attribute(cell,'text',0)
-        current_effect = (effect_settings & (15 << (cnt*4))) >> (cnt*4)
-        if(current_effect == 15):
-          d.set_active(0)
-        else:
-          d.set_active(current_effect+1)
-        d.connect("changed", self.effect_custom_changed, (group, key))
-        cnt = cnt+1
+        self.effect_drop = []
+        effect_settings = self.client.get_int(group, key)
+        cnt = 0
+        for drop in ['hover', 'open', 'close', 'launch', 'attention']:
+            d = self.wTree.get_widget('effect_'+drop)
+            self.effect_drop.append(d)
+            model = gtk.ListStore(str)
+            model.append(["None"])
+            model.append(["Classic"])
+            model.append(["Fade"])
+            model.append(["Spotlight"])
+            model.append(["Zoom"])
+            model.append(["Squish"])
+            model.append(["3D Turn"])
+            model.append(["3D Spotlight Turn"])
+            model.append(["Glow"])
+            d.set_model(model)
+            cell = gtk.CellRendererText()
+            d.pack_start(cell)
+            d.add_attribute(cell,'text',0)
+            current_effect = (effect_settings & (15 << (cnt*4))) >> (cnt*4)
+            if(current_effect == 15):
+                d.set_active(0)
+            else:
+                d.set_active(current_effect+1)
+            d.connect("changed", self.effect_custom_changed, (group, key))
+            cnt = cnt+1
 
     def refresh_effect_custom(self, group, key):
-      effect_settings = self.client.get_int(group, key)
-      cnt = 0
-      for drop in ['hover', 'open', 'close', 'launch', 'attention']:
-        d = self.wTree.get_widget('effect_'+drop)
-        current_effect = (effect_settings & (15 << (cnt*4))) >> (cnt*4)
-        if(current_effect == 15):
-          d.set_active(0)
-        else:
-          d.set_active(current_effect+1)
-        cnt += 1
+        effect_settings = self.client.get_int(group, key)
+        cnt = 0
+        for drop in ['hover', 'open', 'close', 'launch', 'attention']:
+            d = self.wTree.get_widget('effect_'+drop)
+            current_effect = (effect_settings & (15 << (cnt*4))) >> (cnt*4)
+            if(current_effect == 15):
+                d.set_active(0)
+            else:
+                d.set_active(current_effect+1)
+            cnt += 1
 
     def effect_custom_changed(self, dropdown, groupkey):
-      group, key = groupkey
-      if (dropdown.get_active() != self.effects_dd.get_active()):
-        self.effects_dd.set_active(9) #Custom
-        new_effects = self.get_custom_effects()
-        self.client.set_int(group, key, new_effects)
-        print "effects set to: ", "%0.8X" % new_effects
+        group, key = groupkey
+        if (dropdown.get_active() != self.effects_dd.get_active()):
+            self.effects_dd.set_active(9) #Custom
+            new_effects = self.get_custom_effects()
+            self.client.set_int(group, key, new_effects)
+            print "effects set to: ", "%0.8X" % new_effects
 
     def get_custom_effects(self):
-      effects = 0
-      for drop in ['attention', 'launch', 'close', 'open', 'hover']:
-        d = self.wTree.get_widget('effect_'+drop)
-        if(d.get_active() == 0):
-          effects = effects << 4 | 15
-        else:
-          effects = effects << 4 | int(d.get_active())-1
-      return effects
+        effects = 0
+        for drop in ['attention', 'launch', 'close', 'open', 'hover']:
+            d = self.wTree.get_widget('effect_'+drop)
+            if(d.get_active() == 0):
+                effects = effects << 4 | 15
+            else:
+                effects = effects << 4 | int(d.get_active())-1
+        return effects
 
     def setup_effect(self, group, key, dropdown):
         self.effects_dd = dropdown
@@ -364,18 +364,18 @@ class awnPreferences:
         hover_effect = effect_settings & 15
         bundle = 0
         for i in range(5):
-          bundle = bundle << 4 | hover_effect
+            bundle = bundle << 4 | hover_effect
 
         if (bundle == effect_settings):
-          self.wTree.get_widget('customeffectsframe').hide()
-          self.wTree.get_widget('customeffectsframe').set_no_show_all(True)
-          if (hover_effect == 15):
-            active = 0
-          else:
-            active = hover_effect+1
+            self.wTree.get_widget('customeffectsframe').hide()
+            self.wTree.get_widget('customeffectsframe').set_no_show_all(True)
+            if (hover_effect == 15):
+                active = 0
+            else:
+                active = hover_effect+1
         else:
-          active = 9 #Custom
-          self.wTree.get_widget('customeffectsframe').show()
+            active = 9 #Custom
+            self.wTree.get_widget('customeffectsframe').show()
 
         dropdown.set_active(int(active))
         dropdown.connect("changed", self.effect_changed, (group, key))
@@ -386,18 +386,18 @@ class awnPreferences:
         new_effects = 0
         effect = 0
         if(dropdown.get_active() != 9): # not Custom
-          self.wTree.get_widget('customeffectsframe').hide()
-          if(dropdown.get_active() == 0):
-            effect = 15
-          else:
-            effect = dropdown.get_active() - 1
-          for i in range(5):
-            new_effects = new_effects << 4 | effect
-          self.client.set_int(group, key, new_effects)
-          print "effects set to: ", "%0.8X" % new_effects
-          self.refresh_effect_custom(group, key)
+            self.wTree.get_widget('customeffectsframe').hide()
+            if(dropdown.get_active() == 0):
+                effect = 15
+            else:
+                effect = dropdown.get_active() - 1
+            for i in range(5):
+                new_effects = new_effects << 4 | effect
+            self.client.set_int(group, key, new_effects)
+            print "effects set to: ", "%0.8X" % new_effects
+            self.refresh_effect_custom(group, key)
         else:
-          self.wTree.get_widget('customeffectsframe').show()
+            self.wTree.get_widget('customeffectsframe').show()
 
     def setup_autostart(self, group, key, check):
         """sets up checkboxes"""
@@ -407,76 +407,75 @@ class awnPreferences:
     def autostart_changed(self, check, groupkey):
         group, key = groupkey
         self.client.set_bool(group, key, check.get_active())
-	if check.get_active():
-		self.create_autostarter()
-	else:
-		self.delete_autostarter()
+        if check.get_active():
+            self.create_autostarter()
+        else:
+            self.delete_autostarter()
         print "toggled"
 
     def create_autostarter (self):
-	"""Create a .desktop-file for the awn-launcher in $HOME/.config/autostart."""
+        """Create a .desktop-file for the awn-launcher in $HOME/.config/autostart."""
 
-	# The following code is adapted from screenlets-manager.py
+        # The following code is adapted from screenlets-manager.py
 
-	if os.geteuid()==0: # we run as root, install system-wide
-		DIR_AUTOSTART   = '/etc/xdg/autostart'                  # TODO: use pyxdg here
- 	else: # we run as normal user, install into $HOME
- 	        if os.environ['DESKTOP_SESSION'].startswith('kde'):
-			DIR_AUTOSTART   = os.environ['HOME'] + '/.kde/Autostart/'
-		else:
-			DIR_AUTOSTART   = os.environ['HOME'] + '/.config/autostart/' 
+        if os.geteuid()==0: # we run as root, install system-wide
+            DIR_AUTOSTART   = '/etc/xdg/autostart'                  # TODO: use pyxdg here
+        else: # we run as normal user, install into $HOME
+            if os.environ['DESKTOP_SESSION'].startswith('kde'):
+                DIR_AUTOSTART   = os.environ['HOME'] + '/.kde/Autostart/'
+            else:
+                DIR_AUTOSTART   = os.environ['HOME'] + '/.config/autostart/'
 
-	if not os.path.isdir(DIR_AUTOSTART):
-		# create autostart directory, if not existent
-		#if screenlets.show_question(None, 
-		#	_("There is no existing autostart directory for your user account yet. Do you want me to automatically create it for you?"), 
-		#	_('Error')):
-		#	print "Auto-create autostart dir ..."
-		#	os.system('mkdir %s' % DIR_AUTOSTART)
-		#	if not os.path.isdir(DIR_AUTOSTART):
-		#		screenlets.show_error(None, _("Automatic creation failed. Please manually create the directory:\n%s") % DIR_AUTOSTART, _('Error'))
-		#		return False
-		#else:
-		#	screenlets.show_message(None, _("Please manually create the directory:\n%s") % DIR_AUTOSTART)
-		#	return False
-		#if name.endswith('Screenlet'):
-			#name = name[:-9]
-		print "Couldn't create autostarter for AWN"
-		return False
-	starter = '%s/awn.desktop' % (DIR_AUTOSTART)
-	if not os.path.isfile(starter):
-		print "Create autostarter for: avant-window-navigator"
-		code = ['[Desktop Entry]']
-		code.append('Name=Avant-Window-Navigator')
-		code.append('Encoding=UTF-8')
-		code.append('Version=1.0')
-		code.append('Type=Application')
-		code.append('Exec=avant-window-navigator')
-		code.append('X-GNOME-Autostart-enabled=true')
-		#print code
-		f = open(starter, 'w')
-		if f:
-			for l in code:
-				f.write(l + '\n')
-			f.close()
-			return True
-		print 'Failed to create autostarter for AWN.'
-		return False
-	else:
-		print "Starter already exists."
-		return True
-	
+        if not os.path.isdir(DIR_AUTOSTART):
+            # create autostart directory, if not existent
+            #if screenlets.show_question(None,
+            #       _("There is no existing autostart directory for your user account yet. Do you want me to automatically create it for you?"),
+            #       _('Error')):
+            #       print "Auto-create autostart dir ..."
+            #       os.system('mkdir %s' % DIR_AUTOSTART)
+            #       if not os.path.isdir(DIR_AUTOSTART):
+            #               screenlets.show_error(None, _("Automatic creation failed. Please manually create the directory:\n%s") % DIR_AUTOSTART, _('Error'))
+            #               return False
+            #else:
+            #       screenlets.show_message(None, _("Please manually create the directory:\n%s") % DIR_AUTOSTART)
+            #       return False
+            #if name.endswith('Screenlet'):
+                #name = name[:-9]
+            print "Couldn't create autostarter for AWN"
+            return False
+        starter = '%s/awn.desktop' % (DIR_AUTOSTART)
+        if not os.path.isfile(starter):
+            print "Create autostarter for: avant-window-navigator"
+            code = ['[Desktop Entry]']
+            code.append('Name=Avant-Window-Navigator')
+            code.append('Encoding=UTF-8')
+            code.append('Version=1.0')
+            code.append('Type=Application')
+            code.append('Exec=avant-window-navigator')
+            code.append('X-GNOME-Autostart-enabled=true')
+            #print code
+            f = open(starter, 'w')
+            if f:
+                for l in code:
+                    f.write(l + '\n')
+                f.close()
+                return True
+            print 'Failed to create autostarter for AWN.'
+            return False
+        else:
+            print "Starter already exists."
+            return True
+
     def delete_autostarter (self):
-	"""Delete the autostart for the given screenlet."""
+        """Delete the autostart for the given screenlet."""
 
-	if os.geteuid()==0: # we run as root, install system-wide
-		DIR_AUTOSTART   = '/etc/xdg/autostart'                  # TODO: use pyxdg here
- 	else: # we run as normal user, install into $HOME
- 	        if os.environ['DESKTOP_SESSION'].startswith('kde'):
-			DIR_AUTOSTART   = os.environ['HOME'] + '/.kde/Autostart/'
-		else:
-			DIR_AUTOSTART   = os.environ['HOME'] + '/.config/autostart/' 
+        if os.geteuid()==0: # we run as root, install system-wide
+            DIR_AUTOSTART   = '/etc/xdg/autostart'                  # TODO: use pyxdg here
+        else: # we run as normal user, install into $HOME
+            if os.environ['DESKTOP_SESSION'].startswith('kde'):
+                DIR_AUTOSTART   = os.environ['HOME'] + '/.kde/Autostart/'
+            else:
+                DIR_AUTOSTART   = os.environ['HOME'] + '/.config/autostart/'
 
-	print 'Delete autostarter for Avant-Window-Navigator.'
-	os.system('rm %s/awn.desktop' % (DIR_AUTOSTART))
-
+        print 'Delete autostarter for Avant-Window-Navigator.'
+        os.system('rm %s/awn.desktop' % (DIR_AUTOSTART))

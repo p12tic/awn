@@ -1,0 +1,204 @@
+<!-- ##### SECTION Title ##### -->
+awn-desktop-item
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT AwnDesktopItem ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO AWN_DESKTOP_ITEM ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_new ##### -->
+<para>
+
+</para>
+
+@filename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_copy ##### -->
+<para>
+
+</para>
+
+@item: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_get_filename ##### -->
+<para>
+
+</para>
+
+@item: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_get_item_type ##### -->
+<para>
+
+</para>
+
+@item: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_set_item_type ##### -->
+<para>
+
+</para>
+
+@item: 
+@item_type: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_get_icon ##### -->
+<para>
+
+</para>
+
+@item: 
+@icon_theme: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_set_icon ##### -->
+<para>
+
+</para>
+
+@item: 
+@icon: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_get_name ##### -->
+<para>
+
+</para>
+
+@item: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_set_name ##### -->
+<para>
+
+</para>
+
+@item: 
+@name: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_get_exec ##### -->
+<para>
+
+</para>
+
+@item: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_set_exec ##### -->
+<para>
+
+</para>
+
+@item: 
+@exec: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_get_string ##### -->
+<para>
+
+</para>
+
+@item: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_set_string ##### -->
+<para>
+
+</para>
+
+@item: 
+@key: 
+@value: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_get_localestring ##### -->
+<para>
+
+</para>
+
+@item: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_set_localestring ##### -->
+<para>
+
+</para>
+
+@item: 
+@key: 
+@locale: 
+@value: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_exists ##### -->
+<para>
+
+</para>
+
+@item: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_launch ##### -->
+<para>
+
+</para>
+
+@item: 
+@documents: 
+@err: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_desktop_item_save ##### -->
+<para>
+
+</para>
+
+@item: 
+@new_filename: 
+@err: 
+
+

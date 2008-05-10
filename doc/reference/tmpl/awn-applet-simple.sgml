@@ -1,0 +1,69 @@
+<!-- ##### SECTION Title ##### -->
+AwnAppletSimple
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT AwnAppletSimplePrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT AwnAppletSimple ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION awn_applet_simple_new ##### -->
+<para>
+
+</para>
+
+@uid: 
+@orient: 
+@height: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_applet_simple_set_icon ##### -->
+<para>
+
+</para>
+
+@simple: 
+@pixbuf: 
+
+
+<!-- ##### FUNCTION awn_applet_simple_set_temp_icon ##### -->
+<para>
+
+</para>
+
+@simple: 
+@pixbuf: 
+
+
+<!-- ##### FUNCTION awn_applet_simple_get_effects ##### -->
+<para>
+
+</para>
+
+@simple: 
+@Returns: 
+
+

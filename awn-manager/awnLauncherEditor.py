@@ -53,21 +53,21 @@ class awnLauncherEditor:
         self.desktop_entry = DesktopEntry(self.filename)
         self.client = awn.Config()
         if os.path.exists(self.filename):
-          self.glade.get_widget('entry_name').set_text(self.desktop_entry.get('Name'))
-          self.glade.get_widget('entry_description').set_text(self.desktop_entry.get('Comment'))
-          self.glade.get_widget('entry_command').set_text(self.desktop_entry.get('Exec'))
-          self.icon_path = self.desktop_entry.get('Icon')
-          image = self.glade.get_widget('image_icon')
-          if os.path.exists(self.icon_path):
-              icon = gdk.pixbuf_new_from_file_at_size (self.icon_path, 32, 32)
-              image.set_from_pixbuf(icon)
-          elif self.icon_path != '':
-              theme = gtk.icon_theme_get_default()
-              try:
-                  icon = theme.load_icon(self.icon_path, 32, 0)
-                  image.set_from_pixbuf(icon)
-              except gobject.GError:
-                  self.icon_path = None
+            self.glade.get_widget('entry_name').set_text(self.desktop_entry.get('Name'))
+            self.glade.get_widget('entry_description').set_text(self.desktop_entry.get('Comment'))
+            self.glade.get_widget('entry_command').set_text(self.desktop_entry.get('Exec'))
+            self.icon_path = self.desktop_entry.get('Icon')
+            image = self.glade.get_widget('image_icon')
+            if os.path.exists(self.icon_path):
+                icon = gdk.pixbuf_new_from_file_at_size (self.icon_path, 32, 32)
+                image.set_from_pixbuf(icon)
+            elif self.icon_path != '':
+                theme = gtk.icon_theme_get_default()
+                try:
+                    icon = theme.load_icon(self.icon_path, 32, 0)
+                    image.set_from_pixbuf(icon)
+                except gobject.GError:
+                    self.icon_path = None
         else:
             self.icon_path = None
         self.command_chooser = None

@@ -1,0 +1,57 @@
+<!-- ##### SECTION Title ##### -->
+awn-defines
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO AWN_GCONF_PATH ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO AWN_APPLET_GCONF_PATH ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO AWN_MAX_HEIGHT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO AWN_MIN_HEIGHT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### ENUM AwnOrientation ##### -->
+<para>
+
+</para>
+
+@AWN_ORIENTATION_BOTTOM: 
+@AWN_ORIENTATION_TOP: 
+@AWN_ORIENTATION_RIGHT: 
+@AWN_ORIENTATION_LEFT: 
+

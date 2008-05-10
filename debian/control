@@ -1,84 +1,145 @@
 Source: avant-window-navigator-trunk
-Section: universe/gnome
+Section: gnome
 Priority: optional
 Maintainer: Julien Lavergne <julien.lavergne@gmail.com>
-Build-Depends: debhelper (>= 5), cdbs, intltool, libwnck-dev, libgnome2-dev, libgnome-desktop-dev, libdbus-glib-1-dev, libxcomposite-dev, libxdamage-dev, python-central (>= 0.5.6), python, python-gnome2-dev, python-cairo-dev, gnome-pkg-tools, autotools-dev, gnome-common, automake,  gtk-doc-tools, valac ( >= 0.1.6~svn20070113)
-Standards-Version: 3.7.2
+Build-Depends: 	debhelper (>= 5),
+		cdbs,
+		intltool,
+		libwnck-dev,
+		libgnome2-dev,
+		libgnome-desktop-dev,
+		libdbus-glib-1-dev,
+		libxcomposite-dev,
+		libxdamage-dev,
+		python-central (>= 0.5.6),
+		python-dev,
+		python-all-dev (>= 2.4),
+		python-gtk2-dev,
+		python-gnome2-dev,
+		python-cairo-dev,
+		gtk-doc-tools, 
+		doc-base,
+		valac (>= 0.1.7),
+		python2.5 | python-lxml | python-celementtree | python-elementtree,
+		automake
+Standards-Version: 3.7.3
 Homepage: https://launchpad.net/avant-window-navigator/
-XS-Python-Version: current
+XS-Python-Version: >= 2.4
 
 Package: avant-window-navigator-trunk
-Section: universe/gnome
+Section: gnome
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: awn-manager-trunk (>= 0.2), python-awn-trunk
-Suggests: xcompmgr | compiz | xfwm4 (>= 4.4)
+Depends: 	${shlibs:Depends},
+		${misc:Depends},
+		avant-window-navigator-data-trunk (>= ${source:Version})
+Recommends:	awn-manager-trunk (>= 0.2),
+		dbus-x11 | dbus
+Suggests: 	metacity (>= 2.21.5) | xcompmgr | compiz | xfwm4 (>= 4.2)
 Conflicts: awn-window-navigator-bzr, awn-window-navigator, awn-window-navigator-testing
 Replaces: awn-window-navigator-bzr, awn-window-navigator, awn-window-navigator-testing
 Description: A MacOS X like panel for GNOME
  The avant-window-navigator is a MacOS X like panel for the GNOME Desktop
- written in C. Besides launchers that can be dragged onto the bar it features
- a task bar that behaves similar to the MacOSX dock. The window navigator
- uses the composite extension for transparency and other effects.
+ written in C.  In addition to launchers that can be dragged onto the bar, 
+ it features a taskbar that behaves similarly to the Mac OSX dock. The window 
+ navigator uses the composite extension for transparency and other effects.
+
+Package: avant-window-navigator-data-trunk
+Section: gnome
+Architecture: all
+Depends: 	avant-window-navigator-trunk (>= ${source:Version}),
+		${misc:Depends}
+Conflicts: avant-window-navigator (<= 0.2.1-dfsg1-1), avant-window-navigator-data, avant-window-navigator-data-testing, avant-window-navigator-data-bzr
+Replaces: avant-window-navigator (<= 0.2.1-dfsg1-1), avant-window-navigator-data, avant-window-navigator-data-testing, avant-window-navigator-data-bzr
+Description: Common files for avant-window-navigator
+ This package contains all images and locales for avant-windows-navigator.
 
 Package: libawn0-trunk
-Section: universe/libs
+Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Suggests: xcompmgr | compiz | xfwm4
+Depends: 	${shlibs:Depends},
+		${misc:Depends}
+Suggests: 	metacity (>= 2.21.5) | xcompmgr | compiz | xfwm4 (>= 4.2)
 Conflicts: libawn0-bzr, libawn-bzr, libawn, libawn0, libawn0-testing
 Replaces: libawn0-bzr, libawn-bzr, libawn, libawn0, libawn0-testing
 Description: library for avant-window-navigator
- This library is used by avant-window-navigator.
+ This library is used by avant-window-navigator and its applets. It provides 
+ functions to create the bar and the applets.
 
-Package: libawn0-trunk-dbg
-Section: universe/libs
-Architecture: any
-Depends: libawn0-trunk (= ${binary:Version}), ${misc:Depends}
-Suggests: xcompmgr | compiz | xfwm4
-Conflicts: libawn0-bzr-dbg, libawn-bzr-dbg, libawn-dbg, libawn0-dbg, libawn0-testing-dbg
-Replaces: libawn0-bzr-dbg, libawn-bzr-dbg, libawn-dbg, libawn0-dbg, libawn0-testing-dbg
-Description: library for avant-window-navigator - debug package
- This library is used by avant-window-navigator.
- .
- This package contain the debug symbols for libawn.
+Package: libawn-doc-trunk
+Section: doc
+Architecture: all
+Depends:	libawn0-trunk (>= ${source:Version})
+Conflicts: libawn0-doc-bzr, libawn-doc-bzr, libawn-doc, libawn0-doc, libawn0-doc-testing
+Replaces: libawn0-doc-bzr, libawn-doc-bzr, libawn-doc, libawn0-doc, libawn0-doc-testing
+Description: library for avant-window-navigator - development files
+ This package contains documentation for avant-window-navigator and its library
+ libawn to develop applets or the bar.
 
 Package: libawn-dev-trunk
-Section: universe/libdevel
+Section: libdevel
 Architecture: any
-Depends: libawn0-trunk (= ${binary:Version}), ${misc:Depends}, libgnome2-dev, libgtk2.0-dev
+Depends:	libawn0-trunk (= ${binary:Version}),
+		${shlibs:Depends},
+		${misc:Depends},
+		libgnome2-dev,
+		libgtk2.0-dev
 Conflicts: libawn-dev-bzr, libawn-dev, libawn-testing-dev
 Replaces: libawn-dev-bzr, libawn-dev, libawn-testing-dev
-Description: library for avant-window-navigator - developpement files
+Description: library for avant-window-navigator - development files
  This package provides the include files and static library for the
  avant-window-navigator library functions.
 
 Package: awn-manager-trunk
-Section: universe/gnome
-Architecture: any
-Depends: avant-window-navigator-trunk (>= 0.2 ), ${python:Depends}, python-gnome2, python-gnome2-desktop, python-awn-trunk
-Conflicts: awn-manager-bzr, awn-manager, awn-manager-testing
-Replaces: awn-manager-bzr, awn-manager, awn-manager-testing
+Section: gnome
+Architecture: all
+Depends:	${python:Depends}, 
+		avant-window-navigator-trunk (>= 0.2),
+		python-gnome2,
+		python-gnome2-desktop,
+		gnome-menus,
+		librsvg2-common,
+		python-awn-trunk,
+Conflicts: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4)
+Replaces: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4)
 XB-Python-Version: ${python:Versions}
-Description: A manager for the preferences of avant-window-navigator
- Awn-Manager provide a simple way to configure avant-window-navigator.
+Description: A preferences manager for avant-window-navigator
+ Awn-Manager provides a simple way to configure avant-window-navigator.
  You can manage preferences, themes, applets and launchers.
 
 Package: python-awn-trunk
-Section: universe/python
+Section: python
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Depends:	libawn0-trunk (= ${binary:Version}),
+		${shlibs:Depends},
+		${misc:Depends},
+		${python:Depends}
+Provides: ${python:Provides}
 Conflicts: python-libawn0, python-libawn, python-libawn-bzr, python-awn, python-awn-testing
 Replaces: python-libawn0, python-libawn, python-libawn-bzr, python-awn, python-awn-testing
 XB-Python-Version: ${python:Versions}
-Description: library for avant-window-navigator - Python bindings
- This library is used by avant-window-navigator.
+Description: Python bindings for avant-window-navigator library 
+ This library is used by avant-window-navigator. It provides Python bindings 
+ to create and use Python applets for avant-window-navigator.
 
 Package: vala-awn-trunk
-Section: universe/python
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Section: gnome
+Architecture: all
+Depends: 	libawn0-trunk (>= ${source:Version}),
+		${shlibs:Depends}, 
+		${misc:Depends},
+		valac (>= 0.1.7)
 Conflicts: vala-awn-testing, vala-awn
 Replaces: vala-awn-testing, vala-awn
-Description: library for avant-window-navigator - Vala bindings
- This library is used by avant-window-navigator. It provide Vala bindings for libawn.
+Description: Vala bindings for avant-window-navigator library 
+ This library is used by avant-window-navigator. It provides Vala bindings 
+ to create and use Vala applets for avant-window-navigator.
+
+Package: libawn0-dbg-trunk
+Section: libs
+Architecture: any
+Depends: 	libawn0-trunk (= ${binary:Version})
+Conflicts: libawn0-dbg-bzr, libawn-dbg-bzr, libawn-dbg, libawn0-dbg, libawn0-dbg-testing
+Replaces: libawn0-dbg-bzr, libawn-dbg-bzr, libawn-dbg, libawn0-dbg, libawn0-dbg-testing
+Description: library for avant-window-navigator - debug package
+ This library is used by avant-window-navigator and its applets. It provides 
+ functions to create the bar and the applets.

@@ -1,2 +1,2 @@
 version=3
-https://launchpad.net/awn/+download https://launchpad.net/awn/*/*/+download/avant-window-navigator-(.*)\.tar\.bz2
+https://launchpad.net/awn/+download https://launchpad.net/awn/.*/avant-window-navigator-(.+)\.tar.gz

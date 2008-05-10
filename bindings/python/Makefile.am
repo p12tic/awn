@@ -15,7 +15,7 @@ INCLUDES = \
 	$(NULL)
 
 # awn python extensions
-pyawnexecdir = $(PYTHON_SITE_PKG)/awn
+pyawnexecdir = $(PYTHON_PLATFORM_PKG)/awn
 pyawnexec_LTLIBRARIES = awn.la
 
 common_ldflags = -module -avoid-version

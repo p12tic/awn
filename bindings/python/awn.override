@@ -115,16 +115,23 @@ _wrap_awn_config_client_new (PyGBoxed *self, PyObject *args, PyObject *kwargs)
 {
   static char *kwlist[] = { "name", "uid", NULL };
   gchar *name = NULL;
+  PyObject *py_uid = NULL;
   gchar *uid = NULL;
 
-  if (!PyArg_ParseTupleAndKeywords (args, kwargs,"|ss:AwnConfigClient.__init__", kwlist, &name, &uid)) {
+  if (!PyArg_ParseTupleAndKeywords (args, kwargs,"|sO:AwnConfigClient.__init__", kwlist, &name, &py_uid)) {
     return -1;
   }
   self->gtype = AWN_TYPE_CONFIG_CLIENT;
   self->free_on_dealloc = FALSE;
   if (name) {
-    if (!uid) {
+    if (!py_uid) {
       PyErr_SetString (PyExc_ValueError, "The uid argument needs to be defined if the name argument is defined");
+      return -1;
+    }
+    if (PyString_Check (py_uid)) {
+      uid = PyString_AsString (py_uid);
+    } else if (py_uid != Py_None) {
+      PyErr_SetString (PyExc_TypeError, "The uid argument must be either a string or None");
       return -1;
     }
     self->boxed = awn_config_client_new_for_applet (name, uid);

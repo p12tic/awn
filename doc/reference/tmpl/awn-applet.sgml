@@ -1,0 +1,128 @@
+<!-- ##### SECTION Title ##### -->
+AwnApplet
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT AwnAppletPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT AwnApplet ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SIGNAL AwnApplet::applet-deleted ##### -->
+<para>
+
+</para>
+
+@awnapplet: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL AwnApplet::height-changed ##### -->
+<para>
+
+</para>
+
+@awnapplet: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL AwnApplet::orientation-changed ##### -->
+<para>
+
+</para>
+
+@awnapplet: the object which received the signal.
+@arg1: 
+
+<!-- ##### ARG AwnApplet:height ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG AwnApplet:orient ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG AwnApplet:uid ##### -->
+<para>
+
+</para>
+
+<!-- ##### USER_FUNCTION AwnAppletInitFunc ##### -->
+<para>
+
+</para>
+
+@applet: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION AwnAppletInitPFunc ##### -->
+<para>
+
+</para>
+
+@uid: 
+@orient: 
+@height: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_applet_new ##### -->
+<para>
+
+</para>
+
+@uid: 
+@orient: 
+@height: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_applet_get_orientation ##### -->
+<para>
+
+</para>
+
+@applet: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_applet_get_height ##### -->
+<para>
+
+</para>
+
+@applet: 
+@Returns: 
+
+
+<!-- ##### FUNCTION awn_applet_create_default_menu ##### -->
+<para>
+
+</para>
+
+@applet: 
+@Returns: 
+
+

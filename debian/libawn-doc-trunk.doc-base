@@ -1,0 +1,10 @@
+Document: libawn
+Title: Libawn Reference Manual
+Author: Neil Jagdish Patel
+Abstract: Libawn is a library to develop applets for Avant-window-navigator, a 
+ Mac OS X dock-like.
+Section: Games/Toys
+
+Format: HTML
+Index: /usr/share/doc/libawn-doc/libawn/index.html
+Files: /usr/share/doc/libawn-doc/libawn/*.html
