@@ -46,6 +46,73 @@
 extern GdkPixbuf *SPOTLIGHT_PIXBUF;
 
 
+#define EFFECT_BOUNCE 0
+#define EFFECT_FADE 1
+#define EFFECT_SPOTLIGHT 2
+#define EFFECT_ZOOM 3
+#define EFFECT_SQUISH 4
+#define EFFECT_TURN_3D 5
+#define EFFECT_TURN_3D_SPOTLIGHT 6
+#define EFFECT_GLOW 7
+
+// NOTE! Always make sure that all EFFECTS arrays have same number of elements
+static const GSourceFunc OPENING_EFFECTS[] = {
+  NULL,
+  (GSourceFunc) bounce_opening_effect,
+  (GSourceFunc) zoom_opening_effect,
+  (GSourceFunc) spotlight_opening_effect2,
+  (GSourceFunc) zoom_opening_effect,
+  (GSourceFunc) bounce_squish_opening_effect,
+  (GSourceFunc) turn_opening_effect,
+  (GSourceFunc) spotlight3D_opening_effect,
+  (GSourceFunc) glow_opening_effect
+};
+static const GSourceFunc CLOSING_EFFECTS[] = {
+  NULL,
+  (GSourceFunc) fade_out_effect,
+  (GSourceFunc) zoom_closing_effect,
+  (GSourceFunc) spotlight_closing_effect,
+  (GSourceFunc) zoom_closing_effect,
+  (GSourceFunc) bounce_squish_closing_effect,
+  (GSourceFunc) turn_closing_effect,
+  (GSourceFunc) spotlight3D_closing_effect,
+  (GSourceFunc) glow_closing_effect
+};
+static const GSourceFunc HOVER_EFFECTS[] = {
+  NULL,
+  (GSourceFunc) bounce_effect,
+  (GSourceFunc) fading_effect,
+  (GSourceFunc) spotlight_effect,
+  (GSourceFunc) zoom_effect,
+  (GSourceFunc) bounce_squish_effect,
+  (GSourceFunc) turn_hover_effect,
+  (GSourceFunc) spotlight3D_hover_effect,
+  (GSourceFunc) glow_effect
+};
+static const GSourceFunc LAUNCHING_EFFECTS[] = {
+  NULL,
+  (GSourceFunc) bounce_effect,
+  (GSourceFunc) fading_effect,
+  (GSourceFunc) spotlight_half_fade_effect,
+  (GSourceFunc) zoom_attention_effect,
+  (GSourceFunc) bounce_squish_effect,
+  (GSourceFunc) turn_hover_effect,
+  (GSourceFunc) spotlight_half_fade_effect,
+  (GSourceFunc) glow_attention_effect
+};
+static const GSourceFunc ATTENTION_EFFECTS[] = {
+  NULL,
+  (GSourceFunc) bounce_effect,
+  (GSourceFunc) fading_effect,
+  (GSourceFunc) spotlight_half_fade_effect,
+  (GSourceFunc) zoom_attention_effect,
+  (GSourceFunc) bounce_squish_attention_effect,
+  (GSourceFunc) turn_hover_effect,
+  (GSourceFunc) spotlight3D_hover_effect,
+  (GSourceFunc) glow_attention_effect
+};
+
+
 // effect functions
 static gboolean awn_on_enter_event (GtkWidget * widget,
 				    GdkEventCrossing * event, gpointer data);
@@ -269,72 +336,6 @@ main_effect_loop (AwnEffects * fx)
   if (fx->current_effect != AWN_EFFECT_NONE || fx->effect_queue == NULL)
     return;
 
-#define EFFECT_BOUNCE 0
-#define EFFECT_FADE 1
-#define EFFECT_SPOTLIGHT 2
-#define EFFECT_ZOOM 3
-#define EFFECT_SQUISH 4
-#define EFFECT_TURN_3D 5
-#define EFFECT_TURN_3D_SPOTLIGHT 6
-#define EFFECT_GLOW 7
-
-  // NOTE! Always make sure that all EFFECTS arrays have same number of elements
-  static const GSourceFunc OPENING_EFFECTS[] = {
-    NULL,
-    (GSourceFunc) bounce_opening_effect,
-    (GSourceFunc) zoom_opening_effect,
-    (GSourceFunc) spotlight_opening_effect2,
-    (GSourceFunc) zoom_opening_effect,
-    (GSourceFunc) bounce_squish_opening_effect,
-    (GSourceFunc) turn_opening_effect,
-    (GSourceFunc) spotlight3D_opening_effect,
-    (GSourceFunc) glow_opening_effect
-  };
-  static const GSourceFunc CLOSING_EFFECTS[] = {
-    NULL,
-    (GSourceFunc) fade_out_effect,
-    (GSourceFunc) zoom_closing_effect,
-    (GSourceFunc) spotlight_closing_effect,
-    (GSourceFunc) zoom_closing_effect,
-    (GSourceFunc) bounce_squish_closing_effect,
-    (GSourceFunc) turn_closing_effect,
-    (GSourceFunc) spotlight3D_closing_effect,
-    (GSourceFunc) glow_closing_effect
-  };
-  static const GSourceFunc HOVER_EFFECTS[] = {
-    NULL,
-    (GSourceFunc) bounce_effect,
-    (GSourceFunc) fading_effect,
-    (GSourceFunc) spotlight_effect,
-    (GSourceFunc) zoom_effect,
-    (GSourceFunc) bounce_squish_effect,
-    (GSourceFunc) turn_hover_effect,
-    (GSourceFunc) spotlight3D_hover_effect,
-    (GSourceFunc) glow_effect
-  };
-  static const GSourceFunc LAUNCHING_EFFECTS[] = {
-    NULL,
-    (GSourceFunc) bounce_effect,
-    (GSourceFunc) fading_effect,
-    (GSourceFunc) spotlight_half_fade_effect,
-    (GSourceFunc) zoom_attention_effect,
-    (GSourceFunc) bounce_squish_effect,
-    (GSourceFunc) turn_hover_effect,
-    (GSourceFunc) spotlight_half_fade_effect,
-    (GSourceFunc) glow_attention_effect
-  };
-  static const GSourceFunc ATTENTION_EFFECTS[] = {
-    NULL,
-    (GSourceFunc) bounce_effect,
-    (GSourceFunc) fading_effect,
-    (GSourceFunc) spotlight_half_fade_effect,
-    (GSourceFunc) zoom_attention_effect,
-    (GSourceFunc) bounce_squish_attention_effect,
-    (GSourceFunc) turn_hover_effect,
-    (GSourceFunc) spotlight3D_hover_effect,
-    (GSourceFunc) glow_attention_effect
-  };
-
   GSourceFunc animation = NULL;
   AwnEffectsPrivate *topEffect =
     (AwnEffectsPrivate *) (fx->effect_queue->data);
@@ -521,7 +522,7 @@ awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
 {
   if (!icon || fx->window_width <= 0 || fx->window_height <= 0)
     return;
-
+//  printf("in awn_draw_icons()\n");
   /* Apply the curves */
   if (fx->settings->bar_angle < 0)
   {
