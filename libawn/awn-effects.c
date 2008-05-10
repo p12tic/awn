@@ -330,35 +330,10 @@ awn_effect_stop (AwnEffects * fx, const AwnEffect effect)
   }
 }
 
-void
-main_effect_loop (AwnEffects * fx)
+static GSourceFunc get_animation(AwnEffectsPrivate *topEffect,gint effects[])
 {
-  if (fx->current_effect != AWN_EFFECT_NONE || fx->effect_queue == NULL)
-    return;
-
-  GSourceFunc animation = NULL;
-  AwnEffectsPrivate *topEffect =
-    (AwnEffectsPrivate *) (fx->effect_queue->data);
-  gint icon_effect = 0;
-#define EFFECT_TYPES_COUNT 5
-  gint effects[EFFECT_TYPES_COUNT] = { 0 };
-  if (fx->settings)
-  {
-    icon_effect = fx->settings->icon_effect;
-    gint i;
-    for (i = 0; i < EFFECT_TYPES_COUNT; i++)
-    {
-      gint effect = icon_effect & (0xF << (i * 4));
-      effect >>= i * 4;
-      if (effect >= sizeof (HOVER_EFFECTS) / sizeof (GSourceFunc))
-	      effect = -1;
-      // spotlight initialization
-      if (effect == EFFECT_SPOTLIGHT || effect == EFFECT_TURN_3D_SPOTLIGHT)
-	      spotlight_init ();
-      effects[i] = effect + 1;
-    }
-  }
-
+  GSourceFunc animation = NULL;  
+                                 
   switch (topEffect->this_effect)
   {
   case AWN_EFFECT_HOVER:
@@ -380,8 +355,41 @@ main_effect_loop (AwnEffects * fx)
     animation = (GSourceFunc) desaturate_effect; 	
     break;    
   default:
-    return;
+    break;
   }
+  return animation;
+}
+
+void
+main_effect_loop (AwnEffects * fx)
+{
+  if (fx->current_effect != AWN_EFFECT_NONE || fx->effect_queue == NULL)
+    return;
+  AwnEffectsPrivate *topEffect =
+    (AwnEffectsPrivate *) (fx->effect_queue->data);
+  GSourceFunc animation = NULL;
+  gint icon_effect = 0;
+#define EFFECT_TYPES_COUNT 5
+  gint effects[EFFECT_TYPES_COUNT] = { 0 };
+  if (fx->settings)
+  {    
+    icon_effect = fx->settings->icon_effect;
+    gint i;
+    for (i = 0; i < EFFECT_TYPES_COUNT; i++)
+    {
+      gint effect = icon_effect & (0xF << (i * 4));
+      effect >>= i * 4;
+      if (effect >= sizeof (HOVER_EFFECTS) / sizeof (GSourceFunc))
+	      effect = -1;
+      // spotlight initialization
+      if (effect == EFFECT_SPOTLIGHT || effect == EFFECT_TURN_3D_SPOTLIGHT)
+	      spotlight_init ();
+      effects[i] = effect + 1;
+    }
+  }
+
+  animation = get_animation(topEffect,effects);
+
   if (animation)
   {
     fx->timer_id = g_timeout_add (fx->effect_frame_rate, animation, topEffect);
