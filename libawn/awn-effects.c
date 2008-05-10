@@ -524,14 +524,8 @@ awn_draw_background (AwnEffects * fx, cairo_t * cr)
   }
 }
 
-void
-awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
-		GdkPixbuf * reflect)
-{
-  if (!icon || fx->window_width <= 0 || fx->window_height <= 0)
-    return;
-//  printf("in awn_draw_icons()\n");
-  /* Apply the curves */
+void apply_awn_curves(AwnEffects * fx)
+{                      
   if (fx->settings->bar_angle < 0)
   {
     int awn_bar_width = fx->settings->bar_width;
@@ -562,7 +556,18 @@ awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
   {
     fx->curve_offset = 0;
   }
+}
 
+void
+awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
+		GdkPixbuf * reflect)
+{
+  if (!icon || fx->window_width <= 0 || fx->window_height <= 0)
+    return;
+//  printf("in awn_draw_icons()\n");
+  /* Apply the curves */
+  apply_awn_curves(fx);
+  
   /* refresh icon info */
   fx->icon_width = gdk_pixbuf_get_width (icon);
   fx->icon_height = gdk_pixbuf_get_height (icon);
