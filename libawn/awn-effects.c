@@ -95,6 +95,8 @@ awn_effects_init (GObject * self, AwnEffects * fx)
   fx->enter_notify = 0;
   fx->leave_notify = 0;
   fx->timer_id = 0;
+  
+  fx->effect_frame_rate=AWN_FRAME_RATE;
 }
 
 void
@@ -348,10 +350,10 @@ main_effect_loop (AwnEffects * fx)
       gint effect = icon_effect & (0xF << (i * 4));
       effect >>= i * 4;
       if (effect >= sizeof (HOVER_EFFECTS) / sizeof (GSourceFunc))
-	effect = -1;
+	      effect = -1;
       // spotlight initialization
       if (effect == EFFECT_SPOTLIGHT || effect == EFFECT_TURN_3D_SPOTLIGHT)
-	spotlight_init ();
+	      spotlight_init ();
       effects[i] = effect + 1;
     }
   }
@@ -381,7 +383,7 @@ main_effect_loop (AwnEffects * fx)
   }
   if (animation)
   {
-    fx->timer_id = g_timeout_add (AWN_FRAME_RATE, animation, topEffect);
+    fx->timer_id = g_timeout_add (fx->effect_frame_rate, animation, topEffect);
     fx->current_effect = topEffect->this_effect;
     fx->effect_lock = FALSE;
   }
