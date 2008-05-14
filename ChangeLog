@@ -1,5 +1,11 @@
 2008-05-14  Rodney Cryderman <rcryderman@gmail.com>
 
+	* src/awn-x.c:
+	If wnck_window_get_icon() is used in awn_x_get_icon() then ref it
+	before returning.
+
+2008-05-14  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-effects.c:
 	Reverted previous commit (239).
 
