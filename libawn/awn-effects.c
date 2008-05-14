@@ -2101,11 +2101,8 @@ void awn_draw_icons(AwnEffects *fx, cairo_t *cr, GdkPixbuf *icon, GdkPixbuf *ref
 			// refresh reflection, icon was clipped
 			if (!fx->delta_width && !fx->delta_height) {
 				// don't create reflection if we're also scaling
-      	if (GDK_IS_PIXBUF (clippedIcon) )//sanity check
-        {
-				  reflect = gdk_pixbuf_flip(clippedIcon, FALSE);
-  			  free_reflect = TRUE;          
-        }          
+				reflect = gdk_pixbuf_flip(clippedIcon, FALSE);
+				free_reflect = TRUE;
 			}
 			// adjust offsets
 			x1 = (fx->window_width - current_width) / 2;

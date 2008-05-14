@@ -1,6 +1,11 @@
 2008-05-14  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects.c:
+	Reverted previous commit (239).
+
+2008-05-14  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects.c:
 	Testing a patch for bug #226725.  Added sanity test for valid
 	pixbuf.
 
