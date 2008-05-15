@@ -70,7 +70,9 @@ awn_x_get_icon (WnckWindow * window, gint width, gint height)
     }
   }
   //if we didn't get an icon above just fall back...
-  return wnck_window_get_icon (window);
+  icon=wnck_window_get_icon (window);
+  g_object_ref(icon);
+  return icon;
 }
 
 int num = 0;
