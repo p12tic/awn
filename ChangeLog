@@ -1,3 +1,30 @@
+2008-05-18  Rodney Cryderman <rcryderman@gmail.com>
+
+	*libawn/awn-effect-bounce.c
+	*libawn/awn-effect-bounce.h
+	*libawn/awn-effect-desaturate.c
+	*libawn/awn-effect-desaturate.h
+	*libawn/awn-effect-fade.c
+	*libawn/awn-effect-fade.h
+	*libawn/awn-effect-glow.c
+	*libawn/awn-effect-glow.h
+	*libawn/awn-effect-spotlight.c
+	*libawn/awn-effect-spotlight.h
+	*libawn/awn-effect-spotlight3d.c
+	*libawn/awn-effect-spotlight3d.h
+	*libawn/awn-effect-squish.c
+	*libawn/awn-effect-squish.h
+	*libawn/awn-effect-turn.c
+	*libawn/awn-effect-turn.h
+	*libawn/awn-effect-zoom.c
+	*libawn/awn-effect-zoom.h
+	*libawn/awn-effects-shared.c
+	*libawn/awn-effects-shared.h
+	Merged in changes from awn-cairo-effects branch.  Consisting of code
+	reorganization of awn-effects.c into multiple files and refactoring of
+	various large functions into more manageable units.  More work on this
+	is planned, this is mostly the low hanging fruit.
+
 2008-05-14  Rodney Cryderman <rcryderman@gmail.com>
 
 	* src/awn-x.c:
