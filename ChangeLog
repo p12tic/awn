@@ -1,3 +1,9 @@
+2008-05-24  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awnManager.py.in:
+	Fix crash fix colormap == None 
+	(see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=482030)
+
 2008-05-18  Rodney Cryderman <rcryderman@gmail.com>
 
 	*libawn/awn-applet-simple.c
