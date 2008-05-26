@@ -1,3 +1,8 @@
+2008-05-26  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/control:
+	Bump dbus-x11 | dbus as depends, usefull for KDE users.
+
 2008-05-24  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-manager/awnManager.py.in:
