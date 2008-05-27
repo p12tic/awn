@@ -151,6 +151,16 @@ AwnConfigClient *awn_config_client_new_for_applet (gchar *name, gchar *uid)
 	return client;
 }
 
+/**
+ * awn_config_client_query_backend :
+ *
+ * Returns: An enum value indicating the backend in use.
+ */
+AwnConfigBackend  awn_config_client_query_backend (void)
+{
+  return AWN_CONFIG_CLIENT_GKEYFILE;  
+}
+
 /* returns a newly allocated string */
 static gchar *awn_config_client_generate_key (AwnConfigClient *client, const gchar *group, const gchar *key)
 {

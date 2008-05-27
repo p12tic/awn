@@ -1,5 +1,14 @@
 2008-05-26  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-config-client-gconf.c
+	* libawn/awn-config-client-gkeyfile.c
+	* libawn/awn-config-client.h
+
+	Added awn_config_client_query_backend() to awn config client.  Allows
+	querying of configuration backend in use.  Ack'd by malept
+
+2008-05-26  Rodney Cryderman <rcryderman@gmail.com>
+
 	* data/awn.schema-ini.in:
 	Added shared config key applets/shared/allow_generic_config_edit.
 
