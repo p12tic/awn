@@ -27,87 +27,106 @@
 //
 // awn_cairo_rounded_rect - draws a rounded rectangle via cairo
 //
-void 
-awn_cairo_rounded_rect( cairo_t *cr, int x0, int y0, 
-                        int width, int height, 
-                        double radius, AwnCairoRoundCorners state ) {
-	double x1,y1;
+void
+awn_cairo_rounded_rect(cairo_t *cr, int x0, int y0,
+                       int width, int height,
+                       double radius, AwnCairoRoundCorners state)
+{
+  double x1, y1;
 
-	x1 = x0 + width;
-	y1 = y0 + height;
+  x1 = x0 + width;
+  y1 = y0 + height;
 
-	// top left corner
-	if ( (state & ROUND_TOP_LEFT) == ROUND_TOP_LEFT ) {
-		cairo_move_to( cr, x0, y0 + radius );
-		cairo_curve_to( cr, x0 , y0, x0 , y0, x0 + radius, y0 );
-	} else {
-		cairo_move_to( cr, x0, y0 );
-	}
+  // top left corner
 
-	// top right
-	if ( (state & ROUND_TOP_RIGHT) == ROUND_TOP_RIGHT ) {
-		cairo_line_to( cr, x1 - radius, y0 );
-		cairo_curve_to( cr, x1, y0, x1, y0, x1, y0 + radius );
-	} else {
-		cairo_line_to( cr, x1, y0 );
-	}
+  if ((state & ROUND_TOP_LEFT) == ROUND_TOP_LEFT)
+  {
+    cairo_move_to(cr, x0, y0 + radius);
+    cairo_curve_to(cr, x0 , y0, x0 , y0, x0 + radius, y0);
+  }
+  else
+  {
+    cairo_move_to(cr, x0, y0);
+  }
 
-	// bottom right
-	if ( (state & ROUND_BOTTOM_RIGHT) == ROUND_BOTTOM_RIGHT ) {
-		cairo_line_to( cr, x1 , y1 - radius );
-		cairo_curve_to( cr, x1, y1, x1, y1, x1 - radius, y1 );
-	} else {
-		cairo_line_to( cr, x1, y1 );
-	}
+  // top right
+  if ((state & ROUND_TOP_RIGHT) == ROUND_TOP_RIGHT)
+  {
+    cairo_line_to(cr, x1 - radius, y0);
+    cairo_curve_to(cr, x1, y0, x1, y0, x1, y0 + radius);
+  }
+  else
+  {
+    cairo_line_to(cr, x1, y0);
+  }
 
-	// bottom left
-	if ( (state & ROUND_BOTTOM_LEFT) == ROUND_BOTTOM_LEFT ) {
-		cairo_line_to( cr, x0 + radius, y1 );
-		cairo_curve_to( cr, x0, y1, x0, y1, x0, y1 - radius );
-	} else {
-		cairo_line_to( cr, x0, y1 );
-	}
+  // bottom right
+  if ((state & ROUND_BOTTOM_RIGHT) == ROUND_BOTTOM_RIGHT)
+  {
+    cairo_line_to(cr, x1 , y1 - radius);
+    cairo_curve_to(cr, x1, y1, x1, y1, x1 - radius, y1);
+  }
+  else
+  {
+    cairo_line_to(cr, x1, y1);
+  }
 
-   	cairo_close_path (cr);
+  // bottom left
+  if ((state & ROUND_BOTTOM_LEFT) == ROUND_BOTTOM_LEFT)
+  {
+    cairo_line_to(cr, x0 + radius, y1);
+    cairo_curve_to(cr, x0, y1, x0, y1, x0, y1 - radius);
+  }
+  else
+  {
+    cairo_line_to(cr, x0, y1);
+  }
+
+  cairo_close_path(cr);
 }
 
-static int 
+static int
 getdec(char hexchar)
 {
-   if ((hexchar >= '0') && (hexchar <= '9')) return hexchar - '0';
-   if ((hexchar >= 'A') && (hexchar <= 'F')) return hexchar - 'A' + 10;
-   if ((hexchar >= 'a') && (hexchar <= 'f')) return hexchar - 'a' + 10;
+  if ((hexchar >= '0') && (hexchar <= '9')) return hexchar - '0';
 
-   return -1; // Wrong character
+  if ((hexchar >= 'A') && (hexchar <= 'F')) return hexchar - 'A' + 10;
+
+  if ((hexchar >= 'a') && (hexchar <= 'f')) return hexchar - 'a' + 10;
+
+  return -1; // Wrong character
 
 }
 
-static void 
-hex2float (const char *HexColor, float *FloatColor)
+static void
+hex2float(const char *HexColor, float *FloatColor)
 {
-   const char *HexColorPtr = HexColor;
+  const char *HexColorPtr = HexColor;
 
-   int i = 0;
-   for (i = 0; i < 4; i++)
-   {
-     int IntColor = (getdec(HexColorPtr[0]) * 16) +
-                     getdec(HexColorPtr[1]);
+  int i = 0;
 
-     FloatColor[i] = (float) IntColor / 255.0;
-     HexColorPtr += 2;
-   }
+  for (i = 0; i < 4; i++)
+  {
+    int IntColor = (getdec(HexColorPtr[0]) * 16) +
+                   getdec(HexColorPtr[1]);
+
+    FloatColor[i] = (float) IntColor / 255.0;
+    HexColorPtr += 2;
+  }
 
 }
 
 void
-awn_cairo_string_to_color (const gchar *string, AwnColor *color)
+awn_cairo_string_to_color(const gchar *string, AwnColor *color)
 {
-        float colors[4];
+  float colors[4];
+  g_return_if_fail (string); 
+  g_return_if_fail (color); 
 
-        hex2float (string, colors);
-        color->red = colors[0];
-        color->green = colors[1];
-        color->blue = colors[2];
-        color->alpha = colors[3];
+  hex2float(string, colors);
+  color->red = colors[0];
+  color->green = colors[1];
+  color->blue = colors[2];
+  color->alpha = colors[3];
 }
 

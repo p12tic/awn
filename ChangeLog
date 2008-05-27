@@ -1,5 +1,12 @@
 2008-05-26  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-cairo-utils.c
+
+	Make awn_cairo_string_to_color() a bit more robust by checking for
+	to see if NULL have been passed.
+
+2008-05-26  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-config-client-gconf.c
 	* libawn/awn-config-client-gkeyfile.c
 	* libawn/awn-config-client.h
