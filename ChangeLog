@@ -1,3 +1,8 @@
+2008-05-26  Rodney Cryderman <rcryderman@gmail.com>
+
+	* data/awn.schema-ini.in:
+	Added shared config key applets/shared/allow_generic_config_edit.
+
 2008-05-26  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* debian/control:
