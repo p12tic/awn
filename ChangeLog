@@ -1,3 +1,9 @@
+2008-05-28  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnLauncherEditor.py:
+	Handle the case where the gkeyfile backend is being used and there are no
+	launchers.  Reported by a member of the forum via private message.
+
 2008-05-26  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-cairo-utils.c
