@@ -1,5 +1,10 @@
 2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-applet.c
+	Minor tidying of code.
+
+2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
+
 	* Changelog
 	Fixed minor issue with extraneous text.
 

@@ -42,7 +42,7 @@ G_DEFINE_TYPE(AwnApplet, awn_applet, GTK_TYPE_EVENT_BOX);
 static GtkEventBoxClass *parent_class;
 
 /* STRUCTS & ENUMS */
- 
+
 struct _AwnAppletPrivate
 {
   gchar *uid;
@@ -90,17 +90,18 @@ static void awn_applet_virtual_on_size_changed(AwnApplet *applet, gint x)
 
 
 /*Callback to start awn-manager.  See awn_applet_create_default_menu()*/
-static gboolean 
-_start_awn_manager(GtkMenuItem *menuitem,gpointer null)
+static gboolean
+_start_awn_manager(GtkMenuItem *menuitem, gpointer null)
 {
   GError *err = NULL;
   g_spawn_command_line_async("awn-manager", &err);
 
   if (err)
   {
-    g_warning("Failed to start awn-manager: %s\n",err->message);
+    g_warning("Failed to start awn-manager: %s\n", err->message);
     g_error_free(err);
   }
+
   return TRUE;
 }
 
@@ -110,7 +111,7 @@ awn_applet_create_default_menu(AwnApplet *applet)
 {
   AwnAppletPrivate *priv;
   GtkWidget *menu = NULL;
-	GtkWidget * item = NULL;
+  GtkWidget * item = NULL;
   /*GtkWidget *item = NULL;*/
 
   g_return_val_if_fail(AWN_IS_APPLET(applet), menu);
@@ -120,24 +121,24 @@ awn_applet_create_default_menu(AwnApplet *applet)
 
   /* The first separator  */
   item = gtk_separator_menu_item_new();
-	gtk_widget_show_all (item);	
+  gtk_widget_show_all(item);
   gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 
 
   /* The preferences (awn-manager) menu item  */
-	item = gtk_image_menu_item_new_with_label ("Dock Preferences");	
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
-                            		gtk_image_new_from_stock (GTK_STOCK_PREFERENCES,
-                              												GTK_ICON_SIZE_MENU));	
-	gtk_widget_show_all (item);	
+  item = gtk_image_menu_item_new_with_label("Dock Preferences");
+  gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
+                                gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
+                                                         GTK_ICON_SIZE_MENU));
+  gtk_widget_show_all(item);
   gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
   g_signal_connect(G_OBJECT(item), "activate",
                    G_CALLBACK(_start_awn_manager), NULL);
 
   /* The second separator  */
   item = gtk_separator_menu_item_new();
-	gtk_widget_show_all (item);  
-	gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+  gtk_widget_show_all(item);
+  gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 
 
   return menu;
