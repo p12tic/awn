@@ -1,17 +1,22 @@
-2008-05-30  Rodney yyCryderman <rcryderman@gmail.com>
+2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
+
+	* Changelog
+	Fixed minor issue with extraneous text.
+
+2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet.c
 	Changed signature for _start_awn_manager() as it now fires on activate
 	and not button press.
 
-2008-05-30  Rodney yyCryderman <rcryderman@gmail.com>
+2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet.c
 	* src/main.c
 	Changed Prerences menu item to say "Dock Preferences"
 	Also changed button-press signal on the menu item to activate event.
 
-2008-05-30  Rodney yyCryderman <rcryderman@gmail.com>
+2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet.c
 	awn_applet_create_default_menu() now has a menu item (Preferences)
