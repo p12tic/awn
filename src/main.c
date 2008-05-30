@@ -425,8 +425,11 @@ create_menu (void)
 	GtkWidget *item;
 	
 	menu = gtk_menu_new ();
-	
-	item = gtk_image_menu_item_new_from_stock (GTK_STOCK_PREFERENCES, NULL);
+
+	item = gtk_image_menu_item_new_with_label ("Dock Preferences");	
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
+                            		gtk_image_new_from_stock (GTK_STOCK_PREFERENCES,
+                              												GTK_ICON_SIZE_MENU));	  
 	gtk_menu_shell_append (GTK_MENU_SHELL(menu), item);
 	g_signal_connect (G_OBJECT(item), "activate", 
 	                  G_CALLBACK(prefs_function), NULL);

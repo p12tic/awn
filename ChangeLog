@@ -1,6 +1,13 @@
 2008-05-30  Rodney yyCryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet.c
+	* src/main.c
+	Changed Prerences menu item to say "Dock Preferences"
+	Also changed button-press signal on the menu item to activate event.
+
+2008-05-30  Rodney yyCryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet.c
 	awn_applet_create_default_menu() now has a menu item (Preferences)
 	that starts awn-manager.  Also used astyle to reformat source file to
 	awn coding style.
