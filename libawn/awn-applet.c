@@ -91,7 +91,7 @@ static void awn_applet_virtual_on_size_changed(AwnApplet *applet, gint x)
 
 /*Callback to start awn-manager.  See awn_applet_create_default_menu()*/
 static gboolean 
-_start_awn_manager(GtkWidget *widget, GdkEventButton *event, void * null)
+_start_awn_manager(GtkMenuItem *menuitem,gpointer null)
 {
   GError *err = NULL;
   g_spawn_command_line_async("awn-manager", &err);
