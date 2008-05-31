@@ -119,12 +119,6 @@ awn_applet_create_default_menu(AwnApplet *applet)
 
   menu = gtk_menu_new();
 
-  /* The first separator  */
-  item = gtk_separator_menu_item_new();
-  gtk_widget_show_all(item);
-  gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
-
-
   /* The preferences (awn-manager) menu item  */
   item = gtk_image_menu_item_new_with_label("Dock Preferences");
   gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
