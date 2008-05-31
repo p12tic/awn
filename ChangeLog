@@ -1,6 +1,11 @@
 2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
 
 	* src/awn-task.c
+	Added a missing variable declaration.
+
+2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-task.c
 	* src/awn-task.h
 	Formatted code using astyle to awn coding style.
 

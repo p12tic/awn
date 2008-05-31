@@ -635,7 +635,8 @@ awn_task_button_press(GtkWidget *task, GdkEventButton *event)
   static guint32 past_time; // 3v1n0 double-click (or more) prevention
   AwnTaskPrivate *priv;
   GtkWidget *menu = NULL;
-
+  GtkWidget * item = NULL;
+    
   priv = AWN_TASK_GET_PRIVATE(task);
 
 
