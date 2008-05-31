@@ -575,6 +575,22 @@ awn_task_launch (AwnTask *task, const char *arg_str)
 
 }
 
+/*Callback to start awn-manager. */
+static gboolean
+awn_start_awn_manager(GtkMenuItem *menuitem, gpointer null)
+{
+  GError *err = NULL;
+  g_spawn_command_line_async("awn-manager", &err);
+
+  if (err)
+  {
+    g_warning("Failed to start awn-manager: %s\n", err->message);
+    g_error_free(err);
+  }
+
+  return TRUE;
+}
+
 static gboolean
 awn_task_button_press (GtkWidget *task, GdkEventButton *event)
 {
@@ -606,6 +622,14 @@ awn_task_button_press (GtkWidget *task, GdkEventButton *event)
 			case 3:
 				menu = wnck_create_window_action_menu(priv->window);
 				awn_task_create_menu(AWN_TASK(task), GTK_MENU (menu));
+                item = gtk_image_menu_item_new_with_label("Dock Preferences");
+                gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
+                                                gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
+                                                                         GTK_ICON_SIZE_MENU));
+                gtk_widget_show_all(item);
+                gtk_menu_shell_prepend(GTK_MENU_SHELL(menu), item);
+                g_signal_connect(G_OBJECT(item), "activate",
+                                   G_CALLBACK(awn_start_awn_manager), NULL);                
 				gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL,
 						NULL, 3, event->time);
 				break;
@@ -627,6 +651,15 @@ awn_task_button_press (GtkWidget *task, GdkEventButton *event)
 // 					break;
 			case 3:
 				menu = gtk_menu_new();
+                item = gtk_image_menu_item_new_with_label("Dock Preferences");
+                gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
+                                                gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
+                                                                         GTK_ICON_SIZE_MENU));
+                gtk_widget_show_all(item);
+                gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+                g_signal_connect(G_OBJECT(item), "activate",
+                                   G_CALLBACK(awn_start_awn_manager), NULL);                
+                
 				awn_task_create_menu(AWN_TASK(task), GTK_MENU (menu));
 				gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL,
 						NULL, 3, event->time);

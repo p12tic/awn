@@ -1,5 +1,10 @@
 2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
 
+	* src/awn-task.c
+	Added Dock Preferences items to Launchers and Tasks.
+
+2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-applet.c
 	Minor tidying of code.
 
