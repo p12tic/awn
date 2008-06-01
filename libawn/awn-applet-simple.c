@@ -192,9 +192,8 @@ static gboolean
 _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 {
   AwnAppletSimplePrivate *priv;
-  static cairo_t *cr=NULL;
-  static gint old_width = -1;
-  static gint old_height = -1;
+  cairo_t *cr=NULL;
+
   
   gint width, height, bar_height;
 
@@ -223,20 +222,12 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   awn_draw_set_window_size(&priv->effects, width, height);
 
   bar_height = priv->bar_height;
-  if (!cr || ( (old_height!=height) || (old_width!=width) ))
-  {
-    if (cr)
-    {
-      cairo_destroy(cr);
-    }
-    cr = gdk_cairo_create(widget->window);
-  }
+
+  cr = gdk_cairo_create(widget->window);
 
   /* task back */
-  cairo_set_source_rgba(cr, 1, 0, 0, 0.0);
   cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
-  cairo_rectangle(cr, -1, -1, width + 1, height + 1);
-  cairo_fill(cr);
+  cairo_paint(cr);
   
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
@@ -245,7 +236,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   awn_draw_icons(&priv->effects, cr, priv->icon, priv->reflect);
   awn_draw_foreground(&priv->effects, cr);
 
-//  cairo_destroy(cr);
+  cairo_destroy(cr);
 
   return TRUE;
 }
