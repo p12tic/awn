@@ -1,25 +1,25 @@
-2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
+2008-05-31  Rodney Cryderman <rcryderman@gmail.com>
 
 	* src/awn-task.c
 	Moved Dock Preferences Item to the top of the menu
 
-2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
+2008-05-31  Rodney Cryderman <rcryderman@gmail.com>
 
 	* src/awn-task.c
 	Added a missing variable declaration.
 
-2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
+2008-05-31  Rodney Cryderman <rcryderman@gmail.com>
 
 	* src/awn-task.c
 	* src/awn-task.h
 	Formatted code using astyle to awn coding style.
 
-2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
+2008-05-31  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet.c
 	Removed top separator from default menu.
 
-2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
+2008-05-31  Rodney Cryderman <rcryderman@gmail.com>
 
 	* src/awn-task.c
 	Added Dock Preferences items to Launchers and Tasks.
