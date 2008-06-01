@@ -1,6 +1,11 @@
 2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
 
 	* src/awn-task.c
+	Moved Dock Preferences Item to the top of the menu
+
+2008-05-30  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-task.c
 	Added a missing variable declaration.
 
 2008-05-30  Rodney Cryderman <rcryderman@gmail.com>

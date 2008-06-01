@@ -635,7 +635,6 @@ awn_task_button_press(GtkWidget *task, GdkEventButton *event)
   static guint32 past_time; // 3v1n0 double-click (or more) prevention
   AwnTaskPrivate *priv;
   GtkWidget *menu = NULL;
-  GtkWidget * item = NULL;
     
   priv = AWN_TASK_GET_PRIVATE(task);
 
@@ -676,20 +675,6 @@ awn_task_button_press(GtkWidget *task, GdkEventButton *event)
         menu = wnck_create_window_action_menu(priv->window);
 
         awn_task_create_menu(AWN_TASK(task), GTK_MENU(menu));
-
-        item = gtk_image_menu_item_new_with_label("Dock Preferences");
-
-        gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
-                                      gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
-                                                               GTK_ICON_SIZE_MENU));
-
-        gtk_widget_show_all(item);
-
-        gtk_menu_shell_prepend(GTK_MENU_SHELL(menu), item);
-
-        g_signal_connect(G_OBJECT(item), "activate",
-                         G_CALLBACK(awn_start_awn_manager), NULL);
-
         gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL,
                        NULL, 3, event->time);
 
@@ -722,16 +707,8 @@ awn_task_button_press(GtkWidget *task, GdkEventButton *event)
 
       case 3:
         menu = gtk_menu_new();
-        item = gtk_image_menu_item_new_with_label("Dock Preferences");
-        gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
-                                      gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
-                                                               GTK_ICON_SIZE_MENU));
-        gtk_widget_show_all(item);
-        gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
-        g_signal_connect(G_OBJECT(item), "activate",
-                         G_CALLBACK(awn_start_awn_manager), NULL);
-
         awn_task_create_menu(AWN_TASK(task), GTK_MENU(menu));
+            
         gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL,
                        NULL, 3, event->time);
         break;
@@ -2033,8 +2010,7 @@ awn_task_create_menu(AwnTask *task, GtkMenu *menu)
   g_signal_connect(GTK_MENU_SHELL(menu), "selection-done",
                    G_CALLBACK(_shell_done), (gpointer)task);
 
-
-  if (priv->is_launcher && priv->window == NULL)
+    if (priv->is_launcher && priv->window == NULL)
   {
 
 
@@ -2100,6 +2076,16 @@ awn_task_create_menu(AwnTask *task, GtkMenu *menu)
 
     }
   }
+  item = gtk_image_menu_item_new_with_label("Dock Preferences");
+  gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
+                                gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
+                                                         GTK_ICON_SIZE_MENU));
+
+  gtk_widget_show_all(item);
+  gtk_menu_shell_prepend(GTK_MENU_SHELL(menu), item);
+  g_signal_connect(G_OBJECT(item), "activate",
+                   G_CALLBACK(awn_start_awn_manager), NULL);
+
 
 }
 
