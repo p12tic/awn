@@ -170,7 +170,10 @@ class awnLauncherEditor:
                 self.icon_path = "application-x-executable"
             self.desktop_entry.set('Icon', self.icon_path)
             self.desktop_entry.write()
-            uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
+            try:
+                uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
+            except gobject.GError:
+                uris = []
             if os.path.exists(self.filename):
                 uris.append(self.filename)
             self.client.set_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING, uris)

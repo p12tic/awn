@@ -157,10 +157,25 @@ typedef enum {
 	AWN_CONFIG_CLIENT_LIST_TYPE_STRING
 } AwnConfigListType;
 
+/**
+ * AwnConfigBackend:
+ * @AWN_CONFIG_CLIENT_GCONF: Indicates the configuration backend in use is 
+ * gconf.
+ * @AWN_CONFIG_CLIENT_GKEYFILE: Indicates the configuration backend in use is 
+ * gkeyfile.
+ *
+ * Indicates the configuration backend in use.
+ */
+typedef enum {
+  AWN_CONFIG_CLIENT_GCONF,
+  AWN_CONFIG_CLIENT_GKEYFILE
+} AwnConfigBackend;
+
 GType              awn_config_client_get_type                  (void);
 
 AwnConfigClient   *awn_config_client_new                       ();
 AwnConfigClient   *awn_config_client_new_for_applet            (gchar *name, gchar *uid);
+AwnConfigBackend  awn_config_client_query_backend              (void);
 
 void               awn_config_client_clear                     (AwnConfigClient *client, GError **err);
 
