@@ -85,7 +85,7 @@ awn_window_init( AwnWindow *window )
 	
 	
 	gtk_drag_dest_add_uri_targets (GTK_WIDGET (window));
-    awn_x_set_strut (GTK_WINDOW(window));
+	awn_x_set_strut (GTK_WINDOW(window));
 }
 
 static void
@@ -108,7 +108,7 @@ awn_window_new( AwnSettings *set )
         static gboolean type_registered = FALSE;
         settings = set;
         AwnWindow *this = g_object_new(AWN_WINDOW_TYPE, 
-        			    "type", GTK_WINDOW_TOPLEVEL,                                            
+        			    "type", GTK_WINDOW_TOPLEVEL,
         			    "type-hint", GDK_WINDOW_TYPE_HINT_DOCK,
         			    NULL);
 
@@ -116,7 +116,7 @@ awn_window_new( AwnSettings *set )
                 wnck_set_client_type (WNCK_CLIENT_TYPE_PAGER);
                 type_registered = TRUE;
         }
-	gtk_window_stick(GTK_WINDOW(this));
+
 	gtk_window_set_title(GTK_WINDOW(this), "awn_elements");
         _on_alpha_screen_changed (GTK_WIDGET(this), NULL, NULL);
         gtk_widget_set_app_paintable (GTK_WIDGET(this), TRUE);
