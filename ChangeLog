@@ -1,3 +1,10 @@
+2008-06-02  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/main.c
+	Possible fix for bug #231347.  Connect ot o widnow state change
+	sginals and set sticky if it gets removed.  A bit of a hack until a
+	better fix can be found.
+
 2008-05-31  Rodney Cryderman <rcryderman@gmail.com>
 
 	* src/awn-task.c

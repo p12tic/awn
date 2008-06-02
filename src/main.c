@@ -111,7 +111,18 @@ panel_atom_get (const char *atom_name)
 
 	return retval;
 }
-    
+
+static gboolean
+_window_state_change(GtkWidget *widget,GdkEventWindowState *event,gpointer user_data)
+{
+  if (!(event->new_window_state & GDK_WINDOW_STATE_STICKY) )
+  {
+    gtk_window_stick(GTK_WINDOW(widget));
+  }
+  
+  return FALSE;
+}
+
 int 
 main (int argc, char *argv[])
 {
@@ -279,7 +290,8 @@ main (int argc, char *argv[])
 					     G_OBJECT (applet_manager));
 	
 	composited_changed(screen, settings);
-	
+  g_signal_connect(GTK_WIDGET(settings->window),"window-state-event",
+                    G_CALLBACK(_window_state_change),NULL);  
 	gtk_main ();
 	
 	return 0;
