@@ -1,6 +1,12 @@
 2008-06-02  Rodney Cryderman <rcryderman@gmail.com>
 
 	* src/main.c
+	Additional fix for bug #231347.  Connect bar to state change signal
+	also.  Previous fix only partially resolved.
+
+2008-06-03  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/main.c
 	Applied patch for bug #236523 (Every option in the awn-manager should
 	change the awn-bar instantly) . Bug URL:
 	https://bugs.launchpad.net/awn/+bug/236523.  Submitted by:
@@ -9,7 +15,7 @@
 2008-06-02  Rodney Cryderman <rcryderman@gmail.com>
 
 	* src/main.c
-	Possible fix for bug #231347.  Connect ot o widnow state change
+	Possible fix for bug #231347.  Connect to window state change
 	sginals and set sticky if it gets removed.  A bit of a hack until a
 	better fix can be found.
 

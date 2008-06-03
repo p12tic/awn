@@ -298,6 +298,8 @@ main (int argc, char *argv[])
 	composited_changed(screen, settings);
   g_signal_connect(GTK_WIDGET(settings->window),"window-state-event",
                     G_CALLBACK(_window_state_change),NULL);  
+  g_signal_connect(GTK_WIDGET(settings->bar),"window-state-event",
+                    G_CALLBACK(_window_state_change),NULL);  
 	gtk_main ();
 	
 	return 0;
