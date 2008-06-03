@@ -49,6 +49,8 @@ struct _AwnAppletSimplePrivate
   gint offset;
   gint bar_height;
   gint bar_angle;
+  
+  gboolean effects_enabled;
 
 };
 
@@ -188,6 +190,38 @@ awn_applet_simple_set_temp_icon(AwnAppletSimple *simple, GdkPixbuf *pixbuf)
   adjust_icon(simple);
 }
 
+/*Adding the ability to start and stop the application of effects.
+ The underlying implementation may change at some point... instead of t
+ taking the current approach it might end up being best to shut off the 
+ timer when effects are off.*/
+
+/*
+ * awn_applet_simple_effects_on:
+ * @simple: The applet.
+ *
+ * Enables the applicaton of awn-effects to the applet's icon window.
+ */
+void awn_applet_simple_effects_on(AwnAppletSimple *simple)
+{
+  AwnAppletSimplePrivate *priv;
+  priv = simple->priv;
+  priv->effects_enabled=TRUE;    
+}
+
+/*
+ * awn_applet_simple_effects_off:
+ * @simple: The applet.
+ *
+ * Disables the applicaton of awn-effects to the applet's icon window.
+ */
+void awn_applet_simple_effects_off(AwnAppletSimple *simple)
+{
+  AwnAppletSimplePrivate *priv;
+  priv = simple->priv;
+  priv->effects_enabled=FALSE;  
+}
+
+
 static gboolean
 _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 {
@@ -196,9 +230,9 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   
   gint width, height, bar_height;
-
+  
   priv = AWN_APPLET_SIMPLE(widget)->priv;
-
+  
   /* For some reason, priv->reflect is not always a valid pixbuf.
      my suspicion is that we are seeing a gdk bug here. So... if
      priv->reflect isn't a good pixbuf well.. let's try making one from
@@ -232,10 +266,22 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
   /* content */
-  awn_draw_background(&priv->effects, cr);
-  awn_draw_icons(&priv->effects, cr, priv->icon, priv->reflect);
-  awn_draw_foreground(&priv->effects, cr);
+  if ( priv->effects_enabled)
+  {
+    awn_draw_background(&priv->effects, cr);
+    awn_draw_icons(&priv->effects, cr, priv->icon, priv->reflect);
+    awn_draw_foreground(&priv->effects, cr);
+  }
+  else
+  {
+    GtkWidget *child = NULL;    
+    child = gtk_bin_get_child(GTK_BIN(widget));
 
+    if (child)  //the propagate might not be needed?
+    {
+      gtk_container_propagate_expose(GTK_CONTAINER(widget), child,  expose);    
+    }
+  }
   cairo_destroy(cr);
 
   return TRUE;
@@ -302,6 +348,7 @@ awn_applet_simple_init(AwnAppletSimple *simple)
   priv->icon_height = 0;
   priv->icon_width = 0;
   priv->offset = 0;
+  priv->effects_enabled=TRUE;
 
   awn_effects_init(G_OBJECT(simple), &priv->effects);
   // register hover effects

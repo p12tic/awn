@@ -77,6 +77,12 @@ awn_applet_simple_set_temp_icon(AwnAppletSimple *simple, GdkPixbuf *pixbuf);
 AwnEffects*
 awn_applet_simple_get_effects(AwnAppletSimple *simple);
 
+void
+awn_applet_simple_effects_on(AwnAppletSimple *simple);
+
+void
+awn_applet_simple_effects_off(AwnAppletSimple *simple);
+
 G_END_DECLS
 
 #endif
