@@ -559,12 +559,19 @@ void apply_awn_curves(AwnEffects * fx)
 }
 
 void
+awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
+		GdkPixbuf * reflect)
+{
+    
+}
+
+void
 awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
 		GdkPixbuf * reflect)
 {
   if (!icon || fx->window_width <= 0 || fx->window_height <= 0)
     return;
-//  printf("in awn_draw_icons()\n");
+//  g_printf("in awn_draw_icons()\n");
   /* Apply the curves */
   apply_awn_curves(fx);
   
