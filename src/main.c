@@ -181,6 +181,12 @@ main (int argc, char *argv[])
 				      (AwnConfigClientNotifyFunc)bar_refresh, settings);
 	awn_config_client_notify_add (client, "bar", "rounded_corners",
 				      (AwnConfigClientNotifyFunc)bar_refresh, settings);
+	awn_config_client_notify_add (client, "bar", "show_separator",
+				      (AwnConfigClientNotifyFunc)bar_refresh, settings);
+	awn_config_client_notify_add (client, "bar", "render_pattern",
+				      (AwnConfigClientNotifyFunc)bar_refresh, settings);
+	awn_config_client_notify_add (client, "bar", "pattern_alpha",
+				      (AwnConfigClientNotifyFunc)bar_refresh, settings);
 	
 	settings->window = awn_window_new (settings);
 	
