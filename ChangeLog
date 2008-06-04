@@ -1,6 +1,14 @@
 2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
 
 	* src/awn-task.c
+	Applied patch for bug #228036 (custom icons cannot handle slash in
+	title).
+	Bug URL: https://bugs.launchpad.net/awn/+bug/228036
+	Submitted by black: https://launchpad.net/~blackborn
+
+2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-task.c
 	Did some cleanup on task_choose_custom_icon_performed(). Still not
 	pretty.
 

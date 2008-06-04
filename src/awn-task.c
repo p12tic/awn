@@ -1739,7 +1739,7 @@ static void _task_choose_custom_icon_performed(GtkWidget *dialog, gint res, File
   /* Replace spaces with dashs */
   for (i = 0; i < strlen(name); i++)
   {
-    if (name[i] == ' ')
+    if (name[i] == ' ' || name[i] == '/')
       name[i] = '-';
   }
 
