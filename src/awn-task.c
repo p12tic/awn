@@ -1663,12 +1663,12 @@ awn_task_set_check_item(AwnTask *task, gint id, gboolean active)
 
 typedef struct _FileChooserAndTask FileChooserAndTask;
 struct _FileChooserAndTask { 
-  GtkFileChooser *filechooser;
+  GtkWidget *filechooser;
   AwnTask *task;
 };
 
 
-static void _task_choose_custom_icon_performed(GtkDialog *dialog, gint res, FileChooserAndTask *fct)
+static void _task_choose_custom_icon_performed(GtkWidget *dialog, gint res, FileChooserAndTask *fct)
 {
 #define PIXBUF_SAVE_PATH ".config/awn/custom-icons"
   AwnTaskPrivate *priv;
@@ -1800,7 +1800,7 @@ _task_choose_custom_icon(AwnTask *task)
 #define PIXBUF_SAVE_PATH ".config/awn/custom-icons"
 
   AwnTaskPrivate *priv;
-  GtkFileChooser *file;
+  GtkWidget *file;
 
   g_return_if_fail(AWN_IS_TASK(task));
   priv = AWN_TASK_GET_PRIVATE(task);
@@ -1817,11 +1817,10 @@ _task_choose_custom_icon(AwnTask *task)
   fct->filechooser = file;
   fct->task = task;
 
-  GtkDialog *d = GTK_DIALOG(file);
-  g_signal_connect(d, "response", G_CALLBACK(_task_choose_custom_icon_performed), (gpointer)fct);
+  g_signal_connect(file, "response", G_CALLBACK(_task_choose_custom_icon_performed), (gpointer)fct);
 
   /* Run it */
-  gtk_widget_show_all (d);
+  gtk_widget_show_all (file);
 }
 
 static void
