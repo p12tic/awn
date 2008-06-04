@@ -1,4 +1,10 @@
 2008-06-03  Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs
+	Added python bindings for awn_applet_simple_effects_off() and
+	awn_applet_simple_effects_on().
+
+2008-06-03  Rodney Cryderman <rcryderman@gmail.com>
 	
 	* libawn/awn-applet-simple.c
 	* libawn/awn-applet-simple.h
