@@ -1,6 +1,12 @@
 2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
 
 	* src/awn-task.c
+	Did some cleanup on task_choose_custom_icon_performed(). Still not
+	pretty.
+
+2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-task.c
 	Cleaned some code from previous commit that was generating warnings
 
 2008-06-04  Rodney Cryderman <rcryderman@gmail.com>

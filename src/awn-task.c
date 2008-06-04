@@ -47,6 +47,7 @@ G_DEFINE_TYPE(AwnTask, awn_task, GTK_TYPE_DRAWING_AREA);
 
 #define  M_PI      3.14159265358979323846
 #define  AWN_CLICK_IDLE_TIME   450
+#define PIXBUF_SAVE_PATH ".config/awn/custom-icons"
 
 /* FORWARD DECLERATIONS */
 
@@ -1670,39 +1671,40 @@ struct _FileChooserAndTask {
 
 static void _task_choose_custom_icon_performed(GtkWidget *dialog, gint res, FileChooserAndTask *fct)
 {
-#define PIXBUF_SAVE_PATH ".config/awn/custom-icons"
+
   AwnTaskPrivate *priv;
   GdkPixbuf *pixbuf = NULL;
-  GdkPixbuf *old_icon = NULL;
-  GdkPixbuf *old_reflect = NULL;
   GError *err = NULL;
   gchar *filename = NULL;
   gchar *save = NULL;
-  gchar *name;
+  gchar *name = NULL;
   AwnTask *task = fct->task;
+  int i;
   
   g_return_if_fail(AWN_IS_TASK(task));
   priv = AWN_TASK_GET_PRIVATE(task);
   
-  /* If not accept, clean up and return */
+  filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(fct->filechooser));
+  g_free(fct);  
+  gtk_widget_hide(dialog);
+  gtk_widget_destroy(dialog);
 
+  /* If not accept, clean up and return */
   if (res != GTK_RESPONSE_ACCEPT)
   {
-    gtk_widget_hide(dialog);
-    gtk_widget_destroy(dialog);
     return;
   }
 
   /* Okay, the user has chosen a new icon, so lets load it up */
-  filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(fct->filechooser));
-  pixbuf = gdk_pixbuf_new_from_file_at_size(filename, priv->settings->bar_height, priv->settings->bar_height, NULL);
+  
+  pixbuf = gdk_pixbuf_new_from_file_at_size(filename, priv->settings->bar_height, priv->settings->bar_height, &err);
+  g_free(filename);
 
-  /* Check if is actually a pixbuf */
+  /* Check if is actually a pixbuf */  
   if (pixbuf == NULL)
   {
-    g_free(filename);
-    gtk_widget_hide(dialog);
-    gtk_widget_destroy(dialog);
+    g_warning("Failed to load pixbuf (%s)\n",err->message);
+    g_error_free(err);
     return;
   }
 
@@ -1716,7 +1718,6 @@ static void _task_choose_custom_icon_performed(GtkWidget *dialog, gint res, File
   {
     WnckApplication *app = NULL;
     app = wnck_window_get_application(priv->window);
-
     if (app == NULL)
     {
       name = NULL;
@@ -1732,15 +1733,10 @@ static void _task_choose_custom_icon_performed(GtkWidget *dialog, gint res, File
   if (name == NULL)
   {
     /* Somethings gone very wrong */
-    g_free(filename);
-    gtk_widget_hide(dialog);
-    gtk_widget_destroy(dialog);
     return;
   }
 
   /* Replace spaces with dashs */
-  int i = 0;
-
   for (i = 0; i < strlen(name); i++)
   {
     if (name[i] == ' ')
@@ -1754,44 +1750,24 @@ static void _task_choose_custom_icon_performed(GtkWidget *dialog, gint res, File
                           NULL);
 
   gdk_pixbuf_save(pixbuf, save, "png", &err, NULL);
-
+  g_free(save);
+  
   if (err)
   {
     g_print("%s\n", err->message);
     g_error_free(err);
-    g_free(filename);
-    g_free(save);
-    gtk_widget_destroy(dialog);
     return;
   }
 
   /* Now we have saved the new pixbuf, lets actually set it as the main
      pixbuf and refresh the view */
-  old_icon = priv->icon;
-
-  old_reflect = priv->reflect;
-
+  g_object_unref(G_OBJECT(priv->icon));
+  g_object_unref(G_OBJECT(priv->reflect));
   priv->icon = pixbuf;
-
   priv->reflect = gdk_pixbuf_flip(priv->icon, FALSE);
-
   awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
-
-  g_object_unref(G_OBJECT(old_icon));
-
-  g_object_unref(G_OBJECT(old_reflect));
-
   gtk_widget_queue_draw(GTK_WIDGET(task));
-
-  g_free(filename);
-
-  g_free(save);
-
   g_free(name);
-
-  gtk_widget_hide(dialog);
-
-  gtk_widget_destroy(dialog);
 }
 
 static void
