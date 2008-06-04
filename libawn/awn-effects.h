@@ -208,7 +208,7 @@ awn_effect_start_ex (AwnEffects * fx, const AwnEffect effect,
 
 void awn_draw_background (AwnEffects *, cairo_t *);
 void awn_draw_icons (AwnEffects *, cairo_t *, GdkPixbuf *, GdkPixbuf *);
-void awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,GdkPixbuf * reflect);
+void awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_surface_t * ,cairo_surface_t * );
 void awn_draw_foreground (AwnEffects *, cairo_t *);
 void awn_draw_set_window_size (AwnEffects *, const gint, const gint);
 void awn_draw_set_icon_size (AwnEffects *, const gint, const gint);

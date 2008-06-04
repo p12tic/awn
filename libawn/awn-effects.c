@@ -559,19 +559,37 @@ void apply_awn_curves(AwnEffects * fx)
 }
 
 void
-awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
-		GdkPixbuf * reflect)
+awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_surface_t *  icon,
+		cairo_surface_t * reflect)
 {
-    
+  apply_awn_curves(fx);    
+  
+  //assuming an image surface for the moment...  add different types later.
+	fx->icon_width = cairo_image_surface_get_width (icon);
+	fx->icon_height = cairo_image_surface_get_height (icon);
+  gint current_width = fx->icon_width;
+  gint current_height = fx->icon_height;
+
+  gint x1 = (fx->window_width - current_width) / 2;
+  gint y1 = (fx->window_height - current_height);	// sit on bottom by default
+  if (fx->settings)
+  {
+    y1 = fx->window_height - fx->settings->icon_offset - current_height -
+          fx->y_offset;
+  }
+  y1 -= fx->curve_offset;
+
+  cairo_set_source_surface (cr,icon,0.0,0.0);
+  cairo_paint_with_alpha(cr,fx->alpha);
 }
 
 void
-awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
+awn_draw_icons_pixbuf (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
 		GdkPixbuf * reflect)
 {
   if (!icon || fx->window_width <= 0 || fx->window_height <= 0)
     return;
-//  g_printf("in awn_draw_icons()\n");
+
   /* Apply the curves */
   apply_awn_curves(fx);
   
@@ -775,6 +793,13 @@ awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
     cairo_fill (cr);
     cairo_restore (cr);
   }
+}
+
+void
+awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
+		GdkPixbuf * reflect)
+{
+  awn_draw_icons_pixbuf (fx,cr,icon,reflect);
 }
 
 void
