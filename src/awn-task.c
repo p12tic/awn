@@ -1661,15 +1661,17 @@ awn_task_set_check_item(AwnTask *task, gint id, gboolean active)
 
 /********************* MISC FUNCTIONS *******************/
 
+typedef struct _FileChooserAndTask FileChooserAndTask;
+struct _FileChooserAndTask { 
+  GtkFileChooser *filechooser;
+  AwnTask *task;
+};
 
-static void
-_task_choose_custom_icon(AwnTask *task)
+
+static void _task_choose_custom_icon_performed(GtkDialog *dialog, gint res, FileChooserAndTask *fct)
 {
 #define PIXBUF_SAVE_PATH ".config/awn/custom-icons"
-
   AwnTaskPrivate *priv;
-  GtkWidget *dialog;
-  gint res = -1;
   GdkPixbuf *pixbuf = NULL;
   GdkPixbuf *old_icon = NULL;
   GdkPixbuf *old_reflect = NULL;
@@ -1677,21 +1679,11 @@ _task_choose_custom_icon(AwnTask *task)
   gchar *filename = NULL;
   gchar *save = NULL;
   gchar *name;
-
+  AwnTask *task = fct->task;
+  
   g_return_if_fail(AWN_IS_TASK(task));
   priv = AWN_TASK_GET_PRIVATE(task);
-
-  /* Create the dialog */
-  dialog = gtk_file_chooser_dialog_new("Choose New Image...",
-                                       GTK_WINDOW(priv->settings->window),
-                                       GTK_FILE_CHOOSER_ACTION_OPEN,
-                                       GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                       GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
-                                       NULL);
-
-  /* Run it and get the user response */
-  res = gtk_dialog_run(GTK_DIALOG(dialog));
-
+  
   /* If not accept, clean up and return */
 
   if (res != GTK_RESPONSE_ACCEPT)
@@ -1702,8 +1694,7 @@ _task_choose_custom_icon(AwnTask *task)
   }
 
   /* Okay, the user has chosen a new icon, so lets load it up */
-  filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-
+  filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(fct->filechooser));
   pixbuf = gdk_pixbuf_new_from_file_at_size(filename, priv->settings->bar_height, priv->settings->bar_height, NULL);
 
   /* Check if is actually a pixbuf */
@@ -1801,6 +1792,36 @@ _task_choose_custom_icon(AwnTask *task)
   gtk_widget_hide(dialog);
 
   gtk_widget_destroy(dialog);
+}
+
+static void
+_task_choose_custom_icon(AwnTask *task)
+{
+#define PIXBUF_SAVE_PATH ".config/awn/custom-icons"
+
+  AwnTaskPrivate *priv;
+  GtkFileChooser *file;
+
+  g_return_if_fail(AWN_IS_TASK(task));
+  priv = AWN_TASK_GET_PRIVATE(task);
+
+  /* Create the dialog */
+  file = gtk_file_chooser_dialog_new("Choose New Image...",
+                                       GTK_WINDOW(priv->settings->window),
+                                       GTK_FILE_CHOOSER_ACTION_OPEN,
+                                       GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                       GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                       NULL);
+
+  FileChooserAndTask *fct = g_new (FileChooserAndTask, 1);
+  fct->filechooser = file;
+  fct->task = task;
+
+  GtkDialog *d = GTK_DIALOG(file);
+  g_signal_connect(d, "response", G_CALLBACK(_task_choose_custom_icon_performed), (gpointer)fct);
+
+  /* Run it */
+  gtk_widget_show_all (d);
 }
 
 static void

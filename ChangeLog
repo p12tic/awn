@@ -1,3 +1,10 @@
+2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-task.c
+	Applied patch for bug #237068 (Make the 'change icon' window non-modal).
+	Bug URL: https://bugs.launchpad.net/awn/+bug/237068.
+	Submitted by: https://launchpad.net/~blackborn
+
 2008-06-03  Rodney Cryderman <rcryderman@gmail.com>
 
 	* bindings/python/awn.defs
