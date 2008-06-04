@@ -1,6 +1,11 @@
 2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
 
 	* src/awn-task.c
+	Source code cleanup using astyle.
+
+2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-task.c
 	Applied patch for bug #228036 (custom icons cannot handle slash in
 	title).
 	Bug URL: https://bugs.launchpad.net/awn/+bug/228036

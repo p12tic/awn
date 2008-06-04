@@ -636,7 +636,7 @@ awn_task_button_press(GtkWidget *task, GdkEventButton *event)
   static guint32 past_time; // 3v1n0 double-click (or more) prevention
   AwnTaskPrivate *priv;
   GtkWidget *menu = NULL;
-    
+
   priv = AWN_TASK_GET_PRIVATE(task);
 
 
@@ -676,6 +676,7 @@ awn_task_button_press(GtkWidget *task, GdkEventButton *event)
         menu = wnck_create_window_action_menu(priv->window);
 
         awn_task_create_menu(AWN_TASK(task), GTK_MENU(menu));
+
         gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL,
                        NULL, 3, event->time);
 
@@ -709,7 +710,7 @@ awn_task_button_press(GtkWidget *task, GdkEventButton *event)
       case 3:
         menu = gtk_menu_new();
         awn_task_create_menu(AWN_TASK(task), GTK_MENU(menu));
-            
+
         gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL,
                        NULL, 3, event->time);
         break;
@@ -1663,7 +1664,9 @@ awn_task_set_check_item(AwnTask *task, gint id, gboolean active)
 /********************* MISC FUNCTIONS *******************/
 
 typedef struct _FileChooserAndTask FileChooserAndTask;
-struct _FileChooserAndTask { 
+
+struct _FileChooserAndTask
+{
   GtkWidget *filechooser;
   AwnTask *task;
 };
@@ -1680,30 +1683,32 @@ static void _task_choose_custom_icon_performed(GtkWidget *dialog, gint res, File
   gchar *name = NULL;
   AwnTask *task = fct->task;
   int i;
-  
+
   g_return_if_fail(AWN_IS_TASK(task));
   priv = AWN_TASK_GET_PRIVATE(task);
-  
+
   filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(fct->filechooser));
-  g_free(fct);  
+  g_free(fct);
   gtk_widget_hide(dialog);
   gtk_widget_destroy(dialog);
 
   /* If not accept, clean up and return */
+
   if (res != GTK_RESPONSE_ACCEPT)
   {
     return;
   }
 
   /* Okay, the user has chosen a new icon, so lets load it up */
-  
+
   pixbuf = gdk_pixbuf_new_from_file_at_size(filename, priv->settings->bar_height, priv->settings->bar_height, &err);
+
   g_free(filename);
 
-  /* Check if is actually a pixbuf */  
+  /* Check if is actually a pixbuf */
   if (pixbuf == NULL)
   {
-    g_warning("Failed to load pixbuf (%s)\n",err->message);
+    g_warning("Failed to load pixbuf (%s)\n", err->message);
     g_error_free(err);
     return;
   }
@@ -1718,6 +1723,7 @@ static void _task_choose_custom_icon_performed(GtkWidget *dialog, gint res, File
   {
     WnckApplication *app = NULL;
     app = wnck_window_get_application(priv->window);
+
     if (app == NULL)
     {
       name = NULL;
@@ -1750,8 +1756,9 @@ static void _task_choose_custom_icon_performed(GtkWidget *dialog, gint res, File
                           NULL);
 
   gdk_pixbuf_save(pixbuf, save, "png", &err, NULL);
+
   g_free(save);
-  
+
   if (err)
   {
     g_print("%s\n", err->message);
@@ -1762,11 +1769,17 @@ static void _task_choose_custom_icon_performed(GtkWidget *dialog, gint res, File
   /* Now we have saved the new pixbuf, lets actually set it as the main
      pixbuf and refresh the view */
   g_object_unref(G_OBJECT(priv->icon));
+
   g_object_unref(G_OBJECT(priv->reflect));
+
   priv->icon = pixbuf;
+
   priv->reflect = gdk_pixbuf_flip(priv->icon, FALSE);
+
   awn_draw_set_icon_size(&priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
+
   gtk_widget_queue_draw(GTK_WIDGET(task));
+
   g_free(name);
 }
 
@@ -1783,20 +1796,20 @@ _task_choose_custom_icon(AwnTask *task)
 
   /* Create the dialog */
   file = gtk_file_chooser_dialog_new("Choose New Image...",
-                                       GTK_WINDOW(priv->settings->window),
-                                       GTK_FILE_CHOOSER_ACTION_OPEN,
-                                       GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                       GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
-                                       NULL);
+                                     GTK_WINDOW(priv->settings->window),
+                                     GTK_FILE_CHOOSER_ACTION_OPEN,
+                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                     GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                     NULL);
 
-  FileChooserAndTask *fct = g_new (FileChooserAndTask, 1);
+  FileChooserAndTask *fct = g_new(FileChooserAndTask, 1);
   fct->filechooser = file;
   fct->task = task;
 
   g_signal_connect(file, "response", G_CALLBACK(_task_choose_custom_icon_performed), (gpointer)fct);
 
   /* Run it */
-  gtk_widget_show_all (file);
+  gtk_widget_show_all(file);
 }
 
 static void
@@ -2006,7 +2019,7 @@ awn_task_create_menu(AwnTask *task, GtkMenu *menu)
   g_signal_connect(GTK_MENU_SHELL(menu), "selection-done",
                    G_CALLBACK(_shell_done), (gpointer)task);
 
-    if (priv->is_launcher && priv->window == NULL)
+  if (priv->is_launcher && priv->window == NULL)
   {
 
 
@@ -2072,7 +2085,9 @@ awn_task_create_menu(AwnTask *task, GtkMenu *menu)
 
     }
   }
+
   item = gtk_image_menu_item_new_with_label("Dock Preferences");
+
   gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
                                 gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
                                                          GTK_ICON_SIZE_MENU));
