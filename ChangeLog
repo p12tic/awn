@@ -1,5 +1,11 @@
 2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-applet-dialog.c
+	* libawn/awn-applet-dialog.h
+	Reformatted to awn coding style using astyle.
+
+2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
+
 	* src/awn-task.c
 	Source code cleanup using astyle.
 
