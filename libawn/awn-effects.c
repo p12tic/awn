@@ -579,7 +579,7 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_surface_t *  icon,
   }
   y1 -= fx->curve_offset;
 
-  cairo_set_source_surface (cr,icon,0.0,0.0);
+  cairo_set_source_surface (cr,icon,x1,y1);
   cairo_paint_with_alpha(cr,fx->alpha);
 }
 
