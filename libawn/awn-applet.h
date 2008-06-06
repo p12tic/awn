@@ -104,6 +104,13 @@ awn_applet_add_preferences (AwnApplet *applet,
 GtkWidget*
 awn_applet_create_default_menu (AwnApplet *applet);
 
+/*Returns a gtk menu item for the "Dock Preferences".
+
+Note: awn_applet_create_default_menu() adds this item to its menu.  This function 
+should only be used in cases where awn_applet_create_default_menu() cannot be 
+used */
+GtkWidget *
+awn_applet_create_pref_item(void);
 
 G_END_DECLS
 

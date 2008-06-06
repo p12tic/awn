@@ -1,4 +1,9 @@
 2008-06-06  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet.c
+	Exposed awn_applet_create_pref_item().
+
+2008-06-06  Rodney Cryderman <rcryderman@gmail.com>
 	
 	* libawn/awn-applet.c
 	Separated awn_applet_create_pref_item() from
