@@ -36,8 +36,14 @@ G_DEFINE_TYPE(AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET)
 struct _AwnAppletSimplePrivate
 {
   GdkPixbuf *org_icon;
+  
+  /*contemplate doing a union for icon and reflect but instead creating 
+  a separate member for the surface vars*/
   GdkPixbuf *icon;
   GdkPixbuf *reflect;
+  
+  cairo_surface_t *  icon_surface;
+  cairo_surface_t *  reflect_surface;
 
   AwnEffects effects;
 
@@ -118,6 +124,29 @@ adjust_icon(AwnAppletSimple *simple)
                               (priv->bar_height + 2) * 2);
 
   gtk_widget_queue_draw(GTK_WIDGET(simple));
+}
+
+/**
+ * awn_applet_simple_set_icon:
+ * @simple: The applet whose icon is being set.
+ * @pixbuf: The pixbuf image to use as the icon.
+ *
+ * Sets the applet icon to the pixbuf provided as an argument.  A private copy
+ * of the pixbuf argument is made by awn_applet_simple_set_icon() and the
+ * original argument is left unchanged.  The caller retains ownership of pixbuf
+ * and is required to unref it when it is no longer required.
+ */
+void
+awn_applet_simple_set_icon_surface(AwnAppletSimple *simple,
+                                   cairo_surface_t * surface)
+{
+  AwnAppletSimplePrivate *priv;
+
+  g_return_if_fail(AWN_IS_APPLET_SIMPLE(simple));
+  
+  priv = simple->priv;
+  priv->icon_surface=surface;
+  
 }
 
 /**
