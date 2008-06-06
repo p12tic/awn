@@ -1,3 +1,57 @@
+2008-06-06  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet.c
+	Exposed awn_applet_create_pref_item().
+
+2008-06-06  Rodney Cryderman <rcryderman@gmail.com>
+	
+	* libawn/awn-applet.c
+	Separated awn_applet_create_pref_item() from
+	awn_applet_create_default_menu().
+
+2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-dialog.c
+	* libawn/awn-applet-dialog.h
+	Reformatted to awn coding style using astyle.
+
+2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-task.c
+	Source code cleanup using astyle.
+
+2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-task.c
+	Applied patch for bug #228036 (custom icons cannot handle slash in
+	title).
+	Bug URL: https://bugs.launchpad.net/awn/+bug/228036
+	Submitted by black: https://launchpad.net/~blackborn
+
+2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-task.c
+	Did some cleanup on task_choose_custom_icon_performed(). Still not
+	pretty.
+
+2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-task.c
+	Cleaned some code from previous commit that was generating warnings
+
+2008-06-04  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-task.c
+	Applied patch for bug #237068 (Make the 'change icon' window non-modal).
+	Bug URL: https://bugs.launchpad.net/awn/+bug/237068.
+	Submitted by: https://launchpad.net/~blackborn
+
+2008-06-03  Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs
+	Added python bindings for awn_applet_simple_effects_off() and
+	awn_applet_simple_effects_on().
+
 2008-06-03  Rodney Cryderman <rcryderman@gmail.com>
 	
 	* libawn/awn-applet-simple.c

@@ -105,6 +105,20 @@ _start_awn_manager(GtkMenuItem *menuitem, gpointer null)
   return TRUE;
 }
 
+/*create a Dock Preferences menu item */
+GtkWidget *
+awn_applet_create_pref_item(void)
+{
+	GtkWidget * item = gtk_image_menu_item_new_with_label("Dock Preferences");
+  gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
+                                gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
+                                                         GTK_ICON_SIZE_MENU));
+  gtk_widget_show_all(item);
+  g_signal_connect(G_OBJECT(item), "activate",
+                   G_CALLBACK(_start_awn_manager), NULL);
+	return item;
+}
+
 /* MAIN FUNCTIONS */
 GtkWidget*
 awn_applet_create_default_menu(AwnApplet *applet)
@@ -120,14 +134,8 @@ awn_applet_create_default_menu(AwnApplet *applet)
   menu = gtk_menu_new();
 
   /* The preferences (awn-manager) menu item  */
-  item = gtk_image_menu_item_new_with_label("Dock Preferences");
-  gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
-                                gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
-                                                         GTK_ICON_SIZE_MENU));
-  gtk_widget_show_all(item);
+  item = awn_applet_create_pref_item();
   gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
-  g_signal_connect(G_OBJECT(item), "activate",
-                   G_CALLBACK(_start_awn_manager), NULL);
 
   /* The second separator  */
   item = gtk_separator_menu_item_new();

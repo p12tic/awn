@@ -35,40 +35,45 @@ G_BEGIN_DECLS
 #define AWN_TYPE_APPLET_DIALOG (awn_applet_dialog_get_type ())
 
 #define AWN_APPLET_DIALOG(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-        AWN_TYPE_APPLET_DIALOG, AwnAppletDialog))
+                                AWN_TYPE_APPLET_DIALOG, AwnAppletDialog))
 
 #define AWN_APPLET_DIALOG_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-        AWN_TYPE_APPLET_DIALOG, AwnAppletDialogClass))
+                                        AWN_TYPE_APPLET_DIALOG, AwnAppletDialogClass))
 
 #define AWN_IS_APPLET_DIALOG(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-        AWN_TYPE_APPLET_DIALOG))
+                                   AWN_TYPE_APPLET_DIALOG))
 
 #define AWN_IS_APPLET_DIALOG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-        AWN_TYPE_APPLET_DIALOG))
+    AWN_TYPE_APPLET_DIALOG))
 
 #define AWN_APPLET_DIALOG_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-        AWN_TYPE_APPLET_DIALOG, AwnAppletDialogClass))
+    AWN_TYPE_APPLET_DIALOG, AwnAppletDialogClass))
 
 
 /* AwnAppletDialog CLASS & TYPE */
+
 typedef struct _AwnAppletDialog AwnAppletDialog;
+
 typedef struct _AwnAppletDialogClass AwnAppletDialogClass;
+
 typedef struct _AwnAppletDialogPrivate AwnAppletDialogPrivate;
 
-struct _AwnAppletDialog {
- 	GtkWindow 		window;
-	AwnAppletDialogPrivate  *priv;
+struct _AwnAppletDialog
+{
+  GtkWindow   window;
+  AwnAppletDialogPrivate  *priv;
 };
 
-struct _AwnAppletDialogClass {
-	GtkWindowClass parent_class;
+struct _AwnAppletDialogClass
+{
+  GtkWindowClass parent_class;
 };
 
-GType awn_applet_dialog_get_type (void);
+GType awn_applet_dialog_get_type(void);
 
-GtkWidget* awn_applet_dialog_new (AwnApplet *applet);
+GtkWidget* awn_applet_dialog_new(AwnApplet *applet);
 
-void awn_applet_dialog_position_reset (AwnAppletDialog *dialog);
+void awn_applet_dialog_position_reset(AwnAppletDialog *dialog);
 
 G_END_DECLS
 
