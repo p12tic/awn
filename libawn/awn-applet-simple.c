@@ -146,7 +146,7 @@ awn_applet_simple_set_icon_surface(AwnAppletSimple *simple,
   
   priv = simple->priv;
   priv->icon_surface=surface;
-  
+  gtk_widget_queue_draw(GTK_WIDGET(simple)); 
 }
 
 /**
@@ -267,52 +267,55 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
      priv->reflect isn't a good pixbuf well.. let's try making one from
      priv->org_icon.  I'm not happy as I'm not exactly sure of the root
      cause of this...  but this does resolve the issue */
-
-  if (!GDK_IS_PIXBUF(priv->reflect))
-  {
-    priv->reflect = gdk_pixbuf_flip(priv->icon, FALSE);
-  }
-
-  if (!GDK_IS_PIXBUF(priv->reflect))
-  {
-    priv->reflect = gdk_pixbuf_flip(priv->org_icon, FALSE);
-  }
   
   width = widget->allocation.width;
-
   height = widget->allocation.height;
-
   awn_draw_set_window_size(&priv->effects, width, height);
-
   bar_height = priv->bar_height;
-
   cr = gdk_cairo_create(widget->window);
-
   /* task back */
   cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint(cr);
   
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
+  
+  awn_draw_background(&priv->effects, cr);    
 
-  /* content */
-  if ( priv->effects_enabled)
+  if (priv->icon_surface)
   {
-    awn_draw_background(&priv->effects, cr);
-    awn_draw_icons(&priv->effects, cr, priv->icon, priv->reflect);
-    awn_draw_foreground(&priv->effects, cr);
+    awn_draw_icons_cairo(&priv->effects,cr,priv->icon_surface,NULL);
   }
   else
   {
-    GtkWidget *child = NULL;    
-    child = gtk_bin_get_child(GTK_BIN(widget));
-
-    if (child)  //the propagate might not be needed?
+    if (!GDK_IS_PIXBUF(priv->reflect))
     {
-      gtk_container_propagate_expose(GTK_CONTAINER(widget), child,  expose);    
+      priv->reflect = gdk_pixbuf_flip(priv->icon, FALSE);
+    }
+
+    if (!GDK_IS_PIXBUF(priv->reflect))
+    {
+      priv->reflect = gdk_pixbuf_flip(priv->org_icon, FALSE);
+    }
+ 
+    /* content */
+    if ( priv->effects_enabled)
+    {
+      awn_draw_icons(&priv->effects, cr, priv->icon, priv->reflect);
+    }
+    else
+    {
+      GtkWidget *child = NULL;    
+      child = gtk_bin_get_child(GTK_BIN(widget));
+
+      if (child)  //the propagate might not be needed?
+      {
+        gtk_container_propagate_expose(GTK_CONTAINER(widget), child,  expose);    
+      }
     }
   }
+  awn_draw_foreground(&priv->effects, cr);      
   cairo_destroy(cr);
-
+  
   return TRUE;
 }
 
