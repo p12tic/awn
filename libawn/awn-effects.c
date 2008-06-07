@@ -38,6 +38,7 @@
 
 
 #define  M_PI	3.14159265358979323846
+#define  RADIANS_PER_DEGREE  0.0174532925
 
 #define  AWN_FRAME_RATE 			40
 
@@ -120,6 +121,83 @@ static gboolean awn_on_leave_event (GtkWidget * widget,
 				    GdkEventCrossing * event, gpointer data);
 
 static gdouble calc_curve_position (gdouble cx, gdouble a, gdouble b);
+
+
+//Following two functions are here temporarily.....
+
+/*
+GdkPixbuf * surface_2_pixbuf( GdkPixbuf * pixbuf, cairo_surface_t * surface)
+
+original code from abiword (http://www.abisource.com/)  go-image.c
+Function name:  static void pixbuf_to_cairo (GOImage *image);
+Copyright (C) 2004, 2005 Jody Goldberg (jody@gnome.org)
+
+modified by Rodney Cryderman (rcryderman@gmail.com).
+
+Send it a allocated pixbuff and cairo image surface.  the heights and width 
+must match.  Both must be ARGB.
+will copy from the surface to the pixbuf.
+
+*/
+
+static GdkPixbuf * surface_2_pixbuf( GdkPixbuf * pixbuf, cairo_surface_t * surface)
+{
+	guint i,j;
+	
+	guint src_rowstride,dst_rowstride;
+	guint src_height, src_width, dst_height, dst_width;
+	
+	unsigned char *src, *dst;
+	guint t;
+
+#define MULT(d,c,a,t) G_STMT_START { t = (a)? c * 255 / a: 0; d = t;} G_STMT_END
+
+	dst = gdk_pixbuf_get_pixels (pixbuf);
+	dst_rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+	dst_width=gdk_pixbuf_get_width (pixbuf);
+	dst_height= gdk_pixbuf_get_height (pixbuf);
+	src_width=cairo_image_surface_get_width (surface);
+	src_height=cairo_image_surface_get_height (surface);
+	src_rowstride=cairo_image_surface_get_stride (surface);
+	src = cairo_image_surface_get_data (surface);
+
+  g_return_val_if_fail( src_width == dst_width,NULL  );
+  g_return_val_if_fail( src_height == dst_height,NULL  );   
+  g_return_val_if_fail( cairo_image_surface_get_format(surface) == CAIRO_FORMAT_ARGB32,NULL);
+
+	for (i = 0; i < dst_height; i++) 
+	{
+		for (j = 0; j < dst_width; j++) {
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+			MULT(dst[0], src[2], src[3], t);
+			MULT(dst[1], src[1], src[3], t);
+			MULT(dst[2], src[0], src[3], t);
+			dst[3] = src[3];
+#else	  
+			MULT(dst[3], src[2], src[3], t);
+			MULT(dst[2], src[1], src[3], t);
+			MULT(dst[1], src[0], src[3], t);
+			dst[0] = src[3];
+#endif
+			src += 4;
+			dst += 4;
+		}
+		dst += dst_rowstride - dst_width * 4;
+		src += src_rowstride - src_width * 4;
+			
+	}
+#undef MULT
+    return pixbuf;
+}
+
+
+static GdkPixbuf * get_pixbuf_from_surface(cairo_surface_t * surface)
+{
+    GdkPixbuf *pixbuf;
+    pixbuf=gdk_pixbuf_new(GDK_COLORSPACE_RGB,TRUE,8,cairo_image_surface_get_width (surface),cairo_image_surface_get_height (surface));    
+    g_return_val_if_fail( pixbuf !=NULL,NULL);
+    return surface_2_pixbuf(pixbuf,surface);
+}
 
 
 
@@ -558,15 +636,19 @@ void apply_awn_curves(AwnEffects * fx)
   }
 }
 
+//currently falls back to pixbuf code in more places than not.
 void
 awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_surface_t *  icon,
 		cairo_surface_t * reflect)
 {
+  GdkPixbuf * pbuf_icon = get_pixbuf_from_surface(icon);
+  
   apply_awn_curves(fx);    
   
   //assuming an image surface for the moment...  add different types later.
 	fx->icon_width = cairo_image_surface_get_width (icon);
 	fx->icon_height = cairo_image_surface_get_height (icon);
+  printf("width = %d, height = %d\n",fx->icon_width, fx->icon_height);
   gint current_width = fx->icon_width;
   gint current_height = fx->icon_height;
 
@@ -581,6 +663,41 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_surface_t *  icon,
 
   cairo_set_source_surface (cr,icon,x1,y1);
   cairo_paint_with_alpha(cr,fx->alpha);
+
+  //------------------------------------------------------------------------
+  /* reflection */
+  
+
+  if (fx->y_offset >= 0)
+  {
+    GdkPixbuf * pbuf_reflect = NULL;
+
+    y1 += current_height + fx->y_offset * 2;
+
+    if (reflect)
+    {
+      cairo_set_source_surface (cr,reflect,x1,y1);            
+      /* icon depth  needs to be done...*/      
+    }
+    else
+    {
+      // create reflection automatically      
+      pbuf_reflect = gdk_pixbuf_flip (pbuf_icon, FALSE);     
+      /* icon depth */
+      if (fx->icon_depth)
+      {
+        apply_3d_illusion (fx, cr, pbuf_reflect, x1, y1, fx->alpha / 6);
+      }      
+      gdk_cairo_set_source_pixbuf (cr, pbuf_reflect, x1, y1);
+    }
+    cairo_paint_with_alpha (cr, fx->alpha / 3);
+    if(pbuf_reflect)
+    {
+      g_object_unref (reflect);    
+    }
+  }
+  //------------------------------------------------------------------------  
+
 }
 
 void
