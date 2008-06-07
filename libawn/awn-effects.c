@@ -641,19 +641,39 @@ void
 awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_surface_t *  icon,
 		cairo_surface_t * reflect)
 {
+  cairo_surface_t * icon_srfc = NULL;
+  cairo_surface_t * reflect_srfc = NULL;
+  cairo_t * icon_ctx = NULL;
+  cairo_t * reflect_ctx = NULL;
   GdkPixbuf * pbuf_icon = get_pixbuf_from_surface(icon);
+
+	fx->icon_width = cairo_image_surface_get_width (icon);
+	fx->icon_height = cairo_image_surface_get_height (icon);
+//  printf("width = %d, height = %d\n",fx->icon_width, fx->icon_height);
+  gint current_width = fx->icon_width;
+  gint current_height = fx->icon_height;
+  gint x1 = (fx->window_width - current_width) / 2;
+  gint y1 = (fx->window_height - current_height);	// sit on bottom by default
+
+  
+  icon_srfc = cairo_surface_create_similar(icon,CAIRO_CONTENT_COLOR_ALPHA,
+                                         current_width,current_height );
+  icon_ctx = cairo_create(icon_srfc);
+  cairo_set_operator(icon_ctx, CAIRO_OPERATOR_SOURCE);
+  
+  //use icon as the other... reflect can NULL.
+  reflect_srfc = cairo_surface_create_similar(icon,CAIRO_CONTENT_COLOR_ALPHA,
+                                         current_width,current_height );
+  reflect_ctx = cairo_create(reflect_srfc);
+
+  cairo_set_source_surface (icon_ctx,icon,0,0);  
+  cairo_paint(icon_ctx);
+  cairo_set_source_surface (reflect_ctx,icon,0,0);    
+  cairo_paint(reflect_ctx);
+//  printf("abc\n");
   
   apply_awn_curves(fx);    
   
-  //assuming an image surface for the moment...  add different types later.
-	fx->icon_width = cairo_image_surface_get_width (icon);
-	fx->icon_height = cairo_image_surface_get_height (icon);
-  printf("width = %d, height = %d\n",fx->icon_width, fx->icon_height);
-  gint current_width = fx->icon_width;
-  gint current_height = fx->icon_height;
-
-  gint x1 = (fx->window_width - current_width) / 2;
-  gint y1 = (fx->window_height - current_height);	// sit on bottom by default
   if (fx->settings)
   {
     y1 = fx->window_height - fx->settings->icon_offset - current_height -
@@ -661,9 +681,72 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_surface_t *  icon,
   }
   y1 -= fx->curve_offset;
 
-  cairo_set_source_surface (cr,icon,x1,y1);
+//------------------------------------------------------------------------  
+  /* scaling */
+  if (fx->delta_width || fx->delta_height)
+  {
+//    printf("SCALING\n");
+    GdkPixbuf *scaledIcon = NULL;
+    GdkPixbuf *pbuf_reflect = NULL;        
+    // sanity check
+    if (fx->delta_width <= -current_width
+          || fx->delta_height <= -current_height)
+    {
+      // we would display blank icon
+//      if (clippedIcon)
+//        g_object_unref (clippedIcon);
+      printf("insane\n");
+      return;
+    }
+    scaledIcon = gdk_pixbuf_scale_simple (pbuf_icon, current_width + fx->delta_width,
+			       current_height + fx->delta_height,
+			       GDK_INTERP_BILINEAR);
+    // update current w&h
+    current_width += fx->delta_width;
+    current_height += fx->delta_height;
+    // refresh reflection, we scaled icon
+    pbuf_reflect = gdk_pixbuf_flip (scaledIcon, FALSE);
+
+    // adjust offsets
+    x1 = (fx->window_width - current_width) / 2;
+    y1 -= fx->delta_height;
+    // override provided icon
+
+    cairo_destroy(icon_ctx);
+    cairo_surface_destroy(icon_srfc);
+    icon_srfc = cairo_surface_create_similar(icon,CAIRO_CONTENT_COLOR_ALPHA,
+                                         current_width,
+                                         current_height);
+    icon_ctx = cairo_create(icon_srfc);
+
+    cairo_destroy(reflect_ctx);
+    cairo_surface_destroy(reflect_srfc);
+    reflect_srfc = cairo_surface_create_similar(icon,CAIRO_CONTENT_COLOR_ALPHA,
+                                         current_width,
+                                         current_height);
+    reflect_ctx = cairo_create(reflect_srfc);
+        
+    cairo_set_operator(icon_ctx, CAIRO_OPERATOR_SOURCE);    
+    cairo_set_operator(reflect_ctx, CAIRO_OPERATOR_SOURCE);    
+    
+    gdk_cairo_set_source_pixbuf (icon_ctx, scaledIcon, 0, 0);
+    cairo_paint(icon_ctx);
+    if (reflect_ctx)
+    {
+      gdk_cairo_set_source_pixbuf (reflect_ctx, pbuf_reflect, 0, 0);
+      cairo_paint(reflect_ctx);
+    }    
+    g_object_unref(scaledIcon);
+    g_object_unref(pbuf_reflect);
+  }
+
+//------------------------------------------------------------------------  
+  
+  
+  cairo_set_source_surface (cr,icon_srfc,x1,y1);
   cairo_paint_with_alpha(cr,fx->alpha);
 
+//  printf("def\n");
   //------------------------------------------------------------------------
   /* reflection */
   
@@ -676,8 +759,8 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_surface_t *  icon,
 
     if (reflect)
     {
-      cairo_set_source_surface (cr,reflect,x1,y1);            
-      /* icon depth  needs to be done...*/      
+      cairo_set_source_surface (cr,reflect_srfc,x1,y1);            
+      // icon depth  needs to be done...
     }
     else
     {
@@ -693,11 +776,28 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_surface_t *  icon,
     cairo_paint_with_alpha (cr, fx->alpha / 3);
     if(pbuf_reflect)
     {
-      g_object_unref (reflect);    
+      g_object_unref (pbuf_reflect);    
     }
   }
+//  printf("ghi\n");  
   //------------------------------------------------------------------------  
-
+  /* 4px offset for 3D look */
+  if (fx->settings && fx->settings->bar_angle > 0)
+  {
+    cairo_save (cr);
+    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+    cairo_set_source_rgba (cr, 1, 1, 1, 0);
+    cairo_rectangle (cr, 0, ((fx->settings->bar_height * 2) - 4) +
+		     fx->settings->icon_offset, fx->window_width, 4);
+    cairo_fill (cr);
+    cairo_restore (cr);
+  }
+//  printf("jkl\n");  
+  cairo_destroy(icon_ctx);
+  cairo_destroy(reflect_ctx);
+  cairo_surface_destroy(icon_srfc);
+  cairo_surface_destroy(reflect_srfc);
+//  printf("mno\n");  
 }
 
 void

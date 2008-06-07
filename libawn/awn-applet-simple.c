@@ -146,6 +146,12 @@ awn_applet_simple_set_icon_surface(AwnAppletSimple *simple,
   
   priv = simple->priv;
   priv->icon_surface=surface;
+	priv->icon_width = cairo_image_surface_get_width (surface);
+	priv->icon_height = cairo_image_surface_get_height (surface);
+  
+  gtk_widget_set_size_request(GTK_WIDGET(simple),
+                              priv->icon_width *5 / 4,
+                              (priv->bar_height + 2) * 2);
   gtk_widget_queue_draw(GTK_WIDGET(simple)); 
 }
 
