@@ -293,11 +293,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   
   awn_draw_background(&priv->effects, cr);    
 
-  if (priv->icon_context)
-  {
-    awn_draw_icons_cairo(&priv->effects,cr,priv->icon_context,NULL);
-  }
-  else
+  if (!priv->icon_context)  
   {
     cairo_surface_t * srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
                                             gdk_pixbuf_get_width(priv->icon), 
@@ -308,22 +304,13 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
     gdk_cairo_set_source_pixbuf (priv->icon_context, priv->icon, 0, 0);
   
     cairo_paint(priv->icon_context);
-    awn_draw_icons_cairo(&priv->effects,cr,priv->icon_context,NULL);      
-    
-/*    if (!GDK_IS_PIXBUF(priv->reflect))
-    {
-      priv->reflect = gdk_pixbuf_flip(priv->icon, FALSE);
-    }
-
-    if (!GDK_IS_PIXBUF(priv->reflect))
-    {
-      priv->reflect = gdk_pixbuf_flip(priv->org_icon, FALSE);
-    }*/
- 
-    /* content */
-/*    if ( priv->effects_enabled)
-    {
-      awn_draw_icons(&priv->effects, cr, priv->icon, priv->reflect);
+  }
+  
+  if (priv->icon_context)
+  {
+    if ( priv->effects_enabled)
+    {    
+      awn_draw_icons_cairo(&priv->effects,cr,priv->icon_context,NULL);
     }
     else
     {
@@ -334,7 +321,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
       {
         gtk_container_propagate_expose(GTK_CONTAINER(widget), child,  expose);    
       }
-    }*/
+    }    
   }
   awn_draw_foreground(&priv->effects, cr);      
   cairo_destroy(cr);

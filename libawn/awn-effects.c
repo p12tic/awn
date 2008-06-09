@@ -581,24 +581,72 @@ apply_3d_illusion (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
 }
 
 void
-awn_draw_background (AwnEffects * fx, cairo_t * cr)
-{
+apply_spotlight (AwnEffects * fx, cairo_t * cr)
+{                
+  static cairo_t * unscaled_spot_ctx = NULL; //FIXME ?  
+  static gint scaled_width = -1;
+  static gint scaled_height = -1;
+  cairo_t * spot_ctx = NULL; //FIXME ?
+  cairo_surface_t * spot_srfc = NULL;
   gint x1 = 0;
   gint y1 = fx->window_height - fx->icon_height;
+  
   if (fx->settings)
     y1 = fx->window_height - fx->settings->icon_offset - fx->icon_height;
 
-  GdkPixbuf *spot = NULL;
+  if ( !spot_ctx )
+  {
+    cairo_surface_t * srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
+                                            gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF), 
+                                            gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF));
+    unscaled_spot_ctx=cairo_create(srfc);
+    gdk_cairo_set_source_pixbuf (unscaled_spot_ctx, SPOTLIGHT_PIXBUF, 0, 0);
+    cairo_paint(unscaled_spot_ctx);   
+  }
+
+  if ( (scaled_width != fx->window_width) || (scaled_height != fx->icon_height*1.2) ) 
+  {
+    if (spot_ctx)
+    {
+      cairo_surface_destroy(spot_srfc);
+      cairo_destroy(spot_ctx);      
+    }
+    scaled_width=fx->window_width;
+    scaled_height=fx->icon_height * 1.2;
+    spot_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
+                                            fx->window_width,
+			                                      fx->icon_height * 1.2);
+    spot_ctx=cairo_create (spot_srfc);  
+    cairo_save (spot_ctx);
+    cairo_scale (spot_ctx,
+                  fx->icon_width / (double) gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF)*1.2,
+                  fx->icon_height / (double) gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF)*1.2
+                  );      
+    cairo_set_source_surface (spot_ctx,cairo_get_target(unscaled_spot_ctx),0.0,0.0);
+    cairo_paint (spot_ctx);
+    cairo_scale (spot_ctx,
+                  (double) gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF) / fx->icon_width ,
+                  (double) gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF) / fx->icon_height 
+                  );  
+    cairo_restore (spot_ctx);
+  }    
   if (fx->spotlight && fx->spotlight_alpha > 0)
   {
-    y1 += fx->icon_height / 12;
-    spot =
-      gdk_pixbuf_scale_simple (SPOTLIGHT_PIXBUF, fx->window_width,
-			       fx->icon_height * 5 / 4, GDK_INTERP_BILINEAR);
-    gdk_cairo_set_source_pixbuf (cr, spot, x1, y1);
+    y1 = y1 + fx->icon_height / 12;
+    cairo_save(cr);
+    cairo_set_source_surface (cr,cairo_get_target(spot_ctx),x1,y1);      
     cairo_paint_with_alpha (cr, fx->spotlight_alpha);
-    // TODO: use spot also for foreground, will save one allocation and scale
-    g_object_unref (spot);
+    cairo_restore(cr);
+  }
+}
+
+
+void
+awn_draw_background (AwnEffects * fx, cairo_t * cr)
+{
+  if (fx->spotlight && fx->spotlight_alpha > 0)
+  {
+    apply_spotlight(fx,cr);
   }
 }
 
@@ -838,10 +886,13 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   
 }
 
+
+
 void
 awn_draw_icons_pixbuf (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
 		GdkPixbuf * reflect)
 {
+  g_assert(FALSE);  //making sure this code isn't being called...
   if (!icon || fx->window_width <= 0 || fx->window_height <= 0)
     return;
 
@@ -1078,22 +1129,11 @@ awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
 void
 awn_draw_foreground (AwnEffects * fx, cairo_t * cr)
 {
-  gint x1 = 0;
-  gint y1 = fx->window_height - fx->icon_height;
-  if (fx->settings)
-    y1 = fx->window_height - fx->settings->icon_offset - fx->icon_height;
-
-  GdkPixbuf *spot = NULL;
   if (fx->spotlight && fx->spotlight_alpha > 0)
   {
-    y1 += fx->icon_height / 12;
-    spot =
-      gdk_pixbuf_scale_simple (SPOTLIGHT_PIXBUF, fx->window_width,
-			       fx->icon_height * 5 / 4, GDK_INTERP_BILINEAR);
-    gdk_cairo_set_source_pixbuf (cr, spot, x1, y1);
-    cairo_paint_with_alpha (cr, fx->spotlight_alpha / 2);
-    g_object_unref (spot);
+    apply_spotlight(fx,cr);
   }
+
 }
 
 void
