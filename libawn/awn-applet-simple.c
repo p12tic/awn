@@ -42,8 +42,8 @@ struct _AwnAppletSimplePrivate
   GdkPixbuf *icon;
   GdkPixbuf *reflect;
   
-  cairo_surface_t *  icon_surface;
-  cairo_surface_t *  reflect_surface;
+  cairo_t * icon_context;
+  cairo_t * reflect_context;
 
   AwnEffects effects;
 
@@ -137,17 +137,17 @@ adjust_icon(AwnAppletSimple *simple)
  * and is required to unref it when it is no longer required.
  */
 void
-awn_applet_simple_set_icon_surface(AwnAppletSimple *simple,
-                                   cairo_surface_t * surface)
+awn_applet_simple_set_icon_context(AwnAppletSimple *simple,
+                                   cairo_t * cr)
 {
   AwnAppletSimplePrivate *priv;
 
   g_return_if_fail(AWN_IS_APPLET_SIMPLE(simple));
   
   priv = simple->priv;
-  priv->icon_surface=surface;
-	priv->icon_width = cairo_image_surface_get_width (surface);
-	priv->icon_height = cairo_image_surface_get_height (surface);
+  priv->icon_context=cr;
+	priv->icon_width = cairo_image_surface_get_width (cairo_get_target(cr));
+	priv->icon_height = cairo_image_surface_get_height (cairo_get_target(cr));
   
   gtk_widget_set_size_request(GTK_WIDGET(simple),
                               priv->icon_width *5 / 4,
@@ -287,9 +287,9 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   
   awn_draw_background(&priv->effects, cr);    
 
-  if (priv->icon_surface)
+  if (priv->icon_context)
   {
-    awn_draw_icons_cairo(&priv->effects,cr,priv->icon_surface,NULL);
+    awn_draw_icons_cairo(&priv->effects,cr,priv->icon_context,NULL);
   }
   else
   {
@@ -318,6 +318,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
         gtk_container_propagate_expose(GTK_CONTAINER(widget), child,  expose);    
       }
     }
+
   }
   awn_draw_foreground(&priv->effects, cr);      
   cairo_destroy(cr);
