@@ -71,6 +71,12 @@ adjust_icon(AwnAppletSimple *simple)
 
   old0 = priv->icon;
   old1 = priv->reflect;
+  if (priv->icon_context)
+  {
+    cairo_surface_destroy(cairo_get_target(priv->icon_context));
+    cairo_destroy(priv->icon_context);
+    priv->icon_context = NULL;
+  }
 
   if (priv->bar_height == priv->bar_height_on_icon_recieved)
   {
@@ -293,7 +299,18 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   }
   else
   {
-    if (!GDK_IS_PIXBUF(priv->reflect))
+    cairo_surface_t * srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
+                                            gdk_pixbuf_get_width(priv->icon), 
+                                            gdk_pixbuf_get_height(priv->icon));
+  
+    priv->icon_context = cairo_create(srfc);
+  
+    gdk_cairo_set_source_pixbuf (priv->icon_context, priv->icon, 0, 0);
+  
+    cairo_paint(priv->icon_context);
+    awn_draw_icons_cairo(&priv->effects,cr,priv->icon_context,NULL);      
+    
+/*    if (!GDK_IS_PIXBUF(priv->reflect))
     {
       priv->reflect = gdk_pixbuf_flip(priv->icon, FALSE);
     }
@@ -301,10 +318,10 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
     if (!GDK_IS_PIXBUF(priv->reflect))
     {
       priv->reflect = gdk_pixbuf_flip(priv->org_icon, FALSE);
-    }
+    }*/
  
     /* content */
-    if ( priv->effects_enabled)
+/*    if ( priv->effects_enabled)
     {
       awn_draw_icons(&priv->effects, cr, priv->icon, priv->reflect);
     }
@@ -317,8 +334,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
       {
         gtk_container_propagate_expose(GTK_CONTAINER(widget), child,  expose);    
       }
-    }
-
+    }*/
   }
   awn_draw_foreground(&priv->effects, cr);      
   cairo_destroy(cr);
