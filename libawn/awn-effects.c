@@ -1059,9 +1059,10 @@ awn_draw_icons (AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
     context / surfaces to be preserved unless the actuall icons change....
    
    */
+  
     cairo_surface_t * icon_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
-                                                        fx->icon_width, 
-                                                        fx->icon_height);
+                                            gdk_pixbuf_get_width(icon), 
+                                            gdk_pixbuf_get_height(icon));
   
     cairo_t * icon_context = cairo_create(icon_srfc);
   
