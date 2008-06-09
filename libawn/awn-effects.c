@@ -684,6 +684,7 @@ void apply_awn_curves(AwnEffects * fx)
   }
 }
 
+//FIXME
 static void
 saturate(cairo_t * icon_ctx,gfloat saturation)
 {
@@ -785,15 +786,15 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
     cairo_paint(icon_ctx);
   }
 
-  /* saturation */
+  /* saturation  */
   if (fx->saturation < 1.0)
   {
-    saturate(icon_ctx,fx->saturation);
+      printf("saturate disabled \n");   //FIXME WHAT USES saturate????
+//    saturate(icon_ctx,fx->saturation);
   }  
 
   if (fx->flip)
   {
-//    pbuf_icon = gdk_pixbuf_flip (pbuf_icon, TRUE);
     cairo_matrix_t matrix;
     cairo_matrix_init (&matrix,
                       -1,
@@ -814,20 +815,22 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
 //    lighten_pixbuf (pbuf_icon, fx->glow_amount);
     
   }
-/*  if (fx->x_offset)
+  if (fx->x_offset)
   {
     x1 += fx->x_offset;
-  }  */
+  }  
 
   /* icon depth */
-/*  if (fx->icon_depth)
+  if (fx->icon_depth)
   {
+    GdkPixbuf * pbuf_icon = get_pixbuf_from_surface(icon_srfc);        
     if (!fx->icon_depth_direction)
       x1 += fx->icon_depth / 2;
     else
       x1 -= fx->icon_depth / 2;
     apply_3d_illusion (fx, cr, pbuf_icon, x1, y1, fx->alpha);          
-  }    */
+    g_object_unref(pbuf_icon);
+  }    
   
 //  gdk_cairo_set_source_pixbuf (icon_ctx, pbuf_icon, 0, 0);      
 //  cairo_paint(icon_ctx);
