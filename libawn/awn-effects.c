@@ -703,8 +703,9 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   cairo_surface_t * icon;
   cairo_surface_t * reflect;
     
-  cairo_surface_t * icon_srfc = NULL;
-  cairo_t * icon_ctx = NULL;
+  static cairo_surface_t * icon_srfc = NULL;
+  static cairo_t * icon_ctx = NULL;
+
   cairo_surface_t * reflect_srfc = NULL;
   cairo_t * reflect_ctx = NULL;
 
@@ -741,8 +742,6 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
           || fx->delta_height <= -current_height)
     {
       // we would display blank icon
-//      if (clippedIcon)
-//        g_object_unref (clippedIcon);
       printf("insane\n");
       return;
     }
@@ -752,7 +751,13 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
     // adjust offsets
     x1 = (fx->window_width - current_width) / 2;
     y1 = y1 - fx->delta_height;
-
+    
+    if (icon_ctx)
+    {
+      cairo_surface_destroy(reflect_srfc);
+      cairo_destroy(reflect_ctx);
+    }
+    
     icon_srfc = cairo_surface_create_similar(icon,CAIRO_CONTENT_COLOR_ALPHA,
                                          current_width,
                                          current_height);
@@ -774,9 +779,23 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   }
   else
   {  
-    icon_srfc = cairo_surface_create_similar(icon,CAIRO_CONTENT_COLOR_ALPHA,
-                                         current_width,current_height );
-    icon_ctx = cairo_create(icon_srfc);
+    
+    gboolean up_flag;
+    up_flag = !icon_srfc?TRUE:
+            (cairo_image_surface_get_width(icon_srfc) != current_width) ||
+            (cairo_image_surface_get_height(icon_srfc) != current_height);
+    if ( up_flag )
+    {
+      if (icon_srfc)
+      {
+        cairo_surface_destroy(icon_srfc);
+        cairo_destroy(icon_ctx);
+      }
+      icon_srfc = cairo_surface_create_similar(icon,CAIRO_CONTENT_COLOR_ALPHA,
+                                           current_width,current_height );
+      icon_ctx = cairo_create(icon_srfc);
+    }
+    
     reflect_srfc = cairo_surface_create_similar(icon,CAIRO_CONTENT_COLOR_ALPHA,
                                          current_width,
                                          current_height);
@@ -790,7 +809,7 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   if (fx->saturation < 1.0)
   {
       printf("saturate disabled \n");   //FIXME WHAT USES saturate????
-//    saturate(icon_ctx,fx->saturation);
+    saturate(icon_ctx,fx->saturation);
   }  
 
   if (fx->flip)
@@ -832,9 +851,6 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
     g_object_unref(pbuf_icon);
   }    
   
-//  gdk_cairo_set_source_pixbuf (icon_ctx, pbuf_icon, 0, 0);      
-//  cairo_paint(icon_ctx);
-
   cairo_set_source_surface (cr,icon_srfc,x1,y1);
   cairo_paint_with_alpha(cr,fx->alpha);
 
@@ -864,7 +880,6 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
     cairo_paint_with_alpha(cr,fx->alpha/3);
     /* icon depth */
   }
-//  printf("ghi\n");  
   //------------------------------------------------------------------------  
 
   
@@ -879,13 +894,10 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
     cairo_fill (cr);
     cairo_restore (cr);
   }*/
-//  printf("jkl\n");  
-  cairo_destroy(icon_ctx);
-  cairo_surface_destroy(icon_srfc);
+
   cairo_destroy(reflect_ctx);
   cairo_surface_destroy(reflect_srfc);
   
-//  printf("mno\n");  
   
 }
 
