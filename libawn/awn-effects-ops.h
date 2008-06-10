@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com> 
+ *  Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,30 +21,54 @@
 #ifndef __AWN_EFFECTS_OPS_
 
 #define __AWN_EFFECTS_OPS_
-#include "awn-effects.h" 
+#include "awn-effects.h"
 
-gboolean awn_effect_op_scaling(   AwnEffects * fx,
-                                  DrawIconState * ds,
-                                  cairo_surface_t * icon,
-                                  cairo_surface_t ** picon_srfc,
-                                  cairo_t ** picon_ctx,
-                                  cairo_surface_t ** preflect_srfc,
-                                  cairo_t ** preflect_ctx
-                               )  ;
-                               
-gboolean awn_effect_op_saturate(   AwnEffects * fx,
-                                  DrawIconState * ds,
-                                  cairo_surface_t * icon_srfc,
-                                  cairo_t * icon_ctx,
-                                  gpointer null
-                               ) ;      
+gboolean awn_effect_op_scaling(AwnEffects * fx,
+                               DrawIconState * ds,
+                               cairo_surface_t * icon,
+                               cairo_surface_t ** picon_srfc,
+                               cairo_t ** picon_ctx,
+                               cairo_surface_t ** preflect_srfc,
+                               cairo_t ** preflect_ctx
+                              )  ;
 
-gboolean awn_effect_op_hflip(   AwnEffects * fx,
-                                  DrawIconState * ds,
-                                  cairo_surface_t * icon_srfc,
-                                  cairo_t * icon_ctx,
-                                  gpointer null
+gboolean awn_effect_op_depth(AwnEffects * fx,
+                             cairo_t * cr,
+                             DrawIconState * ds,
+                             cairo_surface_t * icon_srfc,
+                             cairo_t * icon_ctx,
+                             gpointer null
+                            );
+
+//--------------------------------------------------------
+
+gboolean awn_effect_op_saturate(AwnEffects * fx,
+                                DrawIconState * ds,
+                                cairo_surface_t * icon_srfc,
+                                cairo_t * icon_ctx,
+                                gpointer null
                                ) ;
+
+gboolean awn_effect_op_hflip(AwnEffects * fx,
+                             DrawIconState * ds,
+                             cairo_surface_t * icon_srfc,
+                             cairo_t * icon_ctx,
+                             gpointer null
+                            ) ;
+
+gboolean awn_effect_op_glow(AwnEffects * fx,
+                            DrawIconState * ds,
+                            cairo_surface_t * icon_srfc,
+                            cairo_t * icon_ctx,
+                            gpointer null
+                           ) ;
+
+gboolean awn_effect_move_x(AwnEffects * fx,
+                           DrawIconState * ds,
+                           cairo_surface_t * icon_srfc,
+                           cairo_t * icon_ctx,
+                           gpointer null
+                          ) ;
 
 GdkPixbuf * get_pixbuf_from_surface(cairo_surface_t * surface);
 
