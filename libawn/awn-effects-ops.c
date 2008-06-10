@@ -279,8 +279,10 @@ surface_saturate(cairo_surface_t * icon_srfc, gfloat saturation)
   surface_saturate_and_pixelate(icon_srfc,icon_srfc, saturation, FALSE);
 }
 
+
+/*There are a variety of issues here at the moment*/
 static inline void
-apply_3d_illusion(AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
+apply_3d_illusion(AwnEffects * fx, cairo_t * cr, cairo_surface_t * icon_srfc,
                   const gint x, const gint y, const gdouble alpha)
 {
   gint i;
@@ -288,9 +290,9 @@ apply_3d_illusion(AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
   for (i = 1; i < fx->icon_depth; i++)
   {
     if (fx->icon_depth_direction == 0)
-      gdk_cairo_set_source_pixbuf(cr, icon, x - fx->icon_depth + i, y);
+      cairo_set_source_surface(cr, icon_srfc, x - fx->icon_depth + i, y);
     else
-      gdk_cairo_set_source_pixbuf(cr, icon, x + fx->icon_depth - i, y);
+      cairo_set_source_surface(cr, icon_srfc, x + fx->icon_depth - i, y);
 
     cairo_paint_with_alpha(cr, alpha);
   }
@@ -316,7 +318,7 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
     {
       // we would display blank icon
       printf("insane\n");
-      return FALSE;
+//      return FALSE;  //let the insanity happen!
     }
 
     // update current w&h
@@ -401,17 +403,12 @@ gboolean awn_effect_op_depth(AwnEffects * fx,
   /* icon depth */
   if (fx->icon_depth)
   {
-    GdkPixbuf * pbuf_icon = get_pixbuf_from_surface(icon_srfc);
 
     if (!fx->icon_depth_direction)
       ds->x1 += fx->icon_depth / 2;
     else
       ds->x1 -= fx->icon_depth / 2;
-
-    apply_3d_illusion(fx, cr, pbuf_icon, ds->x1, ds->y1, fx->alpha);
-
-    g_object_unref(pbuf_icon);
-
+    apply_3d_illusion(fx, cr, icon_srfc, ds->x1, ds->y1, fx->alpha);
     return TRUE;
   }
 
