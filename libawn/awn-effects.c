@@ -670,23 +670,19 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
 //always first.
   awn_effect_op_scaling(fx, &ds, icon, &icon_srfc, &icon_ctx, &reflect_srfc, &reflect_ctx);
 
-//These will move into the configurable list.
+//These will move into the configurable list
+  
   awn_effect_op_saturate(fx, &ds, icon_srfc, icon_ctx, NULL);
-
   awn_effect_op_hflip(fx, &ds, icon_srfc, icon_ctx, NULL);
-
   awn_effect_op_glow(fx, &ds, icon_srfc, icon_ctx, NULL);
-
   awn_effect_move_x(fx, &ds, icon_srfc, icon_ctx, NULL);
-
+  
 //always last.
   awn_effect_op_depth(fx, cr, &ds, icon_srfc, icon_ctx, NULL);
 
   cairo_set_source_surface(cr, icon_srfc, ds.x1, ds.y1);
-
   cairo_paint_with_alpha(cr, fx->alpha);
 
-  //  printf("def\n");
   //------------------------------------------------------------------------
   /* reflection */
 
@@ -727,12 +723,8 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
       cairo_fill (cr);
       cairo_restore (cr);
     }*/
-
   cairo_destroy(reflect_ctx);
-
   cairo_surface_destroy(reflect_srfc);
-
-
 }
 
 void
