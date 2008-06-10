@@ -23,6 +23,7 @@
 #include "awn-effects-ops.h"
 
 #include <math.h>
+#include <string.h>
 #include <gtk/gtk.h>
 
 //Following two functions are here temporarily.....
@@ -110,10 +111,12 @@ inline guchar
 lighten_component(const guchar cur_value, const gfloat amount)
 {
   int new_value = cur_value;
-  if (cur_value <2) //arbitrary cutoff  FIXME?
+
+  if (cur_value < 2) //arbitrary cutoff  FIXME?
   {
     return cur_value;
   }
+
   new_value += (24 + (new_value >> 3)) * amount;
 
   if (new_value > 255)
@@ -132,12 +135,13 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
   guchar *target_pixels;
   guchar *pixsrc;
   
+  g_return_if_fail(src);
   has_alpha = TRUE;
-  width = cairo_image_surface_get_height(src);;
+  width = cairo_image_surface_get_width(src);
   height = cairo_image_surface_get_height(src);
   row_stride = cairo_image_surface_get_stride(src);
   target_pixels = cairo_image_surface_get_data(src);
-  
+
   for (i = 0; i < height; i++)
   {
     pixsrc = target_pixels + i * row_stride;
@@ -150,22 +154,129 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
       pixsrc++;
       *pixsrc = lighten_component(*pixsrc, amount);
       pixsrc++;
-     
+
       if (has_alpha)
         pixsrc++;
     }
   }
 }
 
+/**
+ * Modified from gdk_pixbuf_saturate_and_pixelate();
+ * Original copyright on gdk_pixbuf_saturate_and_pixelate() below
+ * Copyright (C) 1999 The Free Software Foundation
+ *
+ * Authors: Federico Mena-Quintero <federico@gimp.org>
+ *          Cody Russell  <bratsche@gnome.org
+ *
+ * surface_saturate_and_pixelate:
+ * @src: source surface
+ * @dest: place to write modified version of @src
+ * @saturation: saturation factor
+ * @pixelate: whether to pixelate
+ *
+ * Modifies saturation and optionally pixelates @src, placing the result in
+ * @dest. @src and @dest may be the same surface with no ill effects.  If
+ * @saturation is 1.0 then saturation is not changed. If it's less than 1.0,
+ * saturation is reduced (the image turns toward grayscale); if greater than
+ * 1.0, saturation is increased (the image gets more vivid colors). If @pixelate
+ * is %TRUE, then pixels are faded in a checkerboard pattern to create a
+ * pixelated image. @src and @dest must have the same image format, size, and
+ * rowstride.
+ *
+ **/
+void
+surface_saturate_and_pixelate(cairo_surface_t *src,
+                                 cairo_surface_t *dest,
+                                 gfloat saturation,
+                                 gboolean pixelate)
+{
+  /* NOTE that src and dest MAY be the same surface! */
+
+  g_return_if_fail(src);
+  g_return_if_fail(dest);
+  g_return_if_fail(cairo_image_surface_get_height(src) == cairo_image_surface_get_height(dest));
+  g_return_if_fail(cairo_image_surface_get_width(src) == cairo_image_surface_get_height(dest));
+
+  if (saturation == 1.0 && !pixelate)
+  {
+    if (dest != src)
+      memcpy(cairo_image_surface_get_data(dest),
+             cairo_image_surface_get_data(src),
+             cairo_image_surface_get_height(src) * cairo_image_surface_get_stride(src));
+  }
+  else
+  {
+    int i, j, t;
+    int width, height, has_alpha, src_rowstride, dest_rowstride, bytes_per_pixel;
+    guchar *src_line;
+    guchar *dest_line;
+    guchar *src_pixel;
+    guchar *dest_pixel;
+    guchar intensity;
+
+    has_alpha = TRUE;
+    bytes_per_pixel = has_alpha ? 4 : 3;
+    width = cairo_image_surface_get_width(src);
+    height = cairo_image_surface_get_height(src);
+    src_rowstride = cairo_image_surface_get_stride(src);
+    dest_rowstride = cairo_image_surface_get_stride(dest);
+
+    src_line = cairo_image_surface_get_data(src);
+    dest_line = cairo_image_surface_get_data(dest);
+
+#define DARK_FACTOR 0.7
+#define INTENSITY(r, g, b) ((r) * 0.30 + (g) * 0.59 + (b) * 0.11)
+#define CLAMP_UCHAR(v) (t = (v), CLAMP (t, 0, 255))
+#define SATURATE(v) ((1.0 - saturation) * intensity + saturation * (v))
+
+    for (i = 0 ; i < height ; i++)
+    {
+      src_pixel = src_line;
+      src_line += src_rowstride;
+      dest_pixel = dest_line;
+      dest_line += dest_rowstride;
+
+      for (j = 0 ; j < width ; j++)
+      {
+        intensity = INTENSITY(src_pixel[0], src_pixel[1], src_pixel[2]);
+
+        if (pixelate && (i + j) % 2 == 0)
+        {
+          dest_pixel[0] = intensity / 2 + 127;
+          dest_pixel[1] = intensity / 2 + 127;
+          dest_pixel[2] = intensity / 2 + 127;
+        }
+        else if (pixelate)
+        {
+          dest_pixel[0] = CLAMP_UCHAR((SATURATE(src_pixel[0])) * DARK_FACTOR);
+          dest_pixel[1] = CLAMP_UCHAR((SATURATE(src_pixel[1])) * DARK_FACTOR);
+          dest_pixel[2] = CLAMP_UCHAR((SATURATE(src_pixel[2])) * DARK_FACTOR);
+        }
+        else
+        {
+          dest_pixel[0] = CLAMP_UCHAR(SATURATE(src_pixel[0]));
+          dest_pixel[1] = CLAMP_UCHAR(SATURATE(src_pixel[1]));
+          dest_pixel[2] = CLAMP_UCHAR(SATURATE(src_pixel[2]));
+        }
+
+        if (has_alpha)
+          dest_pixel[3] = src_pixel[3];
+
+        src_pixel += bytes_per_pixel;
+
+        dest_pixel += bytes_per_pixel;
+      }
+    }
+  }
+}
+
+
 //FIXME
 static void
-saturate(cairo_t * icon_ctx, gfloat saturation)
+surface_saturate(cairo_surface_t * icon_srfc, gfloat saturation)
 {
-  GdkPixbuf * pbuf_icon = get_pixbuf_from_surface(cairo_get_target(icon_ctx));
-  gdk_pixbuf_saturate_and_pixelate(pbuf_icon, pbuf_icon, saturation, FALSE);
-  gdk_cairo_set_source_pixbuf(icon_ctx, pbuf_icon, 0, 0);
-  cairo_paint(icon_ctx);
-  g_object_unref(pbuf_icon);
+  surface_saturate_and_pixelate(icon_srfc,icon_srfc, saturation, FALSE);
 }
 
 static inline void
@@ -320,7 +431,8 @@ gboolean awn_effect_op_saturate(AwnEffects * fx,
   if (fx->saturation < 1.0)
   {
 //      printf("saturate disabled \n");   //FIXME WHAT USES saturate????
-    saturate(icon_ctx, fx->saturation);
+//    saturate(icon_ctx, fx->saturation);
+    surface_saturate(icon_srfc, fx->saturation);    
     return TRUE;
   }
 
@@ -366,7 +478,7 @@ gboolean awn_effect_op_glow(AwnEffects * fx,
 {
   if (fx->glow_amount > 0)
   {
-    lighten_surface(icon_srfc,fx->glow_amount);
+    lighten_surface(icon_srfc, fx->glow_amount);
     return TRUE;
   }
 
