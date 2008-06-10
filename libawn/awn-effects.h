@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2007 Michal Hruby <michal.mhr@gmail.com>
+ *  Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -120,6 +121,15 @@ struct _AwnEffects
   void *pad3;
   void *pad4;
 };
+
+typedef struct
+{
+  gint current_height;
+  gint current_width;
+  gint x1;
+  gint y1;	// sit on bottom by default
+}DrawIconState; 
+
 
 /**
  * awn_effects_init:
