@@ -757,7 +757,6 @@ awn_draw_icons(AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
   awn_draw_icons_cairo(fx, cr, icon_context, NULL);
   cairo_surface_destroy(icon_srfc);
   cairo_destroy(icon_context);
-//    awn_draw_icons_pixbuf (fx,cr,icon,reflect);
 }
 
 void

@@ -110,6 +110,10 @@ inline guchar
 lighten_component(const guchar cur_value, const gfloat amount)
 {
   int new_value = cur_value;
+  if (cur_value <2) //arbitrary cutoff  FIXME?
+  {
+    return cur_value;
+  }
   new_value += (24 + (new_value >> 3)) * amount;
 
   if (new_value > 255)
@@ -121,26 +125,19 @@ lighten_component(const guchar cur_value, const gfloat amount)
 }
 
 static void
-lighten_pixbuf(GdkPixbuf * src, const gfloat amount)
+lighten_surface(cairo_surface_t * src, const gfloat amount)
 {
   int i, j;
   int width, height, row_stride, has_alpha;
   guchar *target_pixels;
   guchar *pixsrc;
-
-  g_return_if_fail(gdk_pixbuf_get_colorspace(src) == GDK_COLORSPACE_RGB);
-  g_return_if_fail((!gdk_pixbuf_get_has_alpha(src)
-                    && gdk_pixbuf_get_n_channels(src) == 3)
-                   || (gdk_pixbuf_get_has_alpha(src)
-                       && gdk_pixbuf_get_n_channels(src) == 4));
-  g_return_if_fail(gdk_pixbuf_get_bits_per_sample(src) == 8);
-
-  has_alpha = gdk_pixbuf_get_has_alpha(src);
-  width = gdk_pixbuf_get_width(src);
-  height = gdk_pixbuf_get_height(src);
-  row_stride = gdk_pixbuf_get_rowstride(src);
-  target_pixels = gdk_pixbuf_get_pixels(src);
-
+  
+  has_alpha = TRUE;
+  width = cairo_image_surface_get_height(src);;
+  height = cairo_image_surface_get_height(src);
+  row_stride = cairo_image_surface_get_stride(src);
+  target_pixels = cairo_image_surface_get_data(src);
+  
   for (i = 0; i < height; i++)
   {
     pixsrc = target_pixels + i * row_stride;
@@ -153,7 +150,7 @@ lighten_pixbuf(GdkPixbuf * src, const gfloat amount)
       pixsrc++;
       *pixsrc = lighten_component(*pixsrc, amount);
       pixsrc++;
-
+     
       if (has_alpha)
         pixsrc++;
     }
@@ -369,12 +366,7 @@ gboolean awn_effect_op_glow(AwnEffects * fx,
 {
   if (fx->glow_amount > 0)
   {
-
-    GdkPixbuf * pbuf_icon = get_pixbuf_from_surface(cairo_get_target(icon_ctx));
-    lighten_pixbuf(pbuf_icon, fx->glow_amount);
-    gdk_cairo_set_source_pixbuf(icon_ctx, pbuf_icon, 0, 0);
-    cairo_paint(icon_ctx);
-    g_object_unref(pbuf_icon);
+    lighten_surface(icon_srfc,fx->glow_amount);
     return TRUE;
   }
 
