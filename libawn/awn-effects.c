@@ -656,9 +656,9 @@ awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   
   awn_effect_op_scaling(fx,&ds,icon,&icon_srfc,&icon_ctx,&reflect_srfc,&reflect_ctx);
 
-  awn_effect_op_saturate(fx,&ds,icon_srfc,icon_ctx);
+  awn_effect_op_saturate(fx,&ds,icon_srfc,icon_ctx,NULL);
 
-  awn_effect_op_hflip(fx,&ds,icon_srfc,icon_ctx);
+  awn_effect_op_hflip(fx,&ds,icon_srfc,icon_ctx,NULL);
   
 //  pbuf_icon = get_pixbuf_from_surface(icon_srfc);    
   /* glow */

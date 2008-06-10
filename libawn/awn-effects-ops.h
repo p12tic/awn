@@ -35,13 +35,15 @@ gboolean awn_effect_op_scaling(   AwnEffects * fx,
 gboolean awn_effect_op_saturate(   AwnEffects * fx,
                                   DrawIconState * ds,
                                   cairo_surface_t * icon_srfc,
-                                  cairo_t * icon_ctx
+                                  cairo_t * icon_ctx,
+                                  gpointer null
                                ) ;      
 
 gboolean awn_effect_op_hflip(   AwnEffects * fx,
                                   DrawIconState * ds,
                                   cairo_surface_t * icon_srfc,
-                                  cairo_t * icon_ctx
+                                  cairo_t * icon_ctx,
+                                  gpointer null
                                ) ;
 
 GdkPixbuf * get_pixbuf_from_surface(cairo_surface_t * surface);
