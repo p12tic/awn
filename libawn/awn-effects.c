@@ -157,7 +157,7 @@ awn_effects_init(GObject * self, AwnEffects * fx)
   fx->x_offset = 0;
   fx->y_offset = 0;
   fx->rotate_degrees = 0.0;
-  fx->alpha = 1.0;
+  fx->alpha = fx->settings->icon_alpha;
   fx->spotlight_alpha = 0.0;
   fx->saturation = 1.0;
   fx->glow_amount = 0.0;
@@ -495,23 +495,6 @@ awn_unregister_effects(AwnEffects * fx)
   fx->focus_window = NULL;
 }
 
-static inline void
-apply_3d_illusion(AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
-                  const gint x, const gint y, const gdouble alpha)
-{
-  gint i;
-
-  for (i = 1; i < fx->icon_depth; i++)
-  {
-    if (fx->icon_depth_direction == 0)
-      gdk_cairo_set_source_pixbuf(cr, icon, x - fx->icon_depth + i, y);
-    else
-      gdk_cairo_set_source_pixbuf(cr, icon, x + fx->icon_depth - i, y);
-
-    cairo_paint_with_alpha(cr, alpha);
-  }
-}
-
 void
 apply_spotlight(AwnEffects * fx, cairo_t * cr)
 {
@@ -678,7 +661,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   awn_effect_move_x(fx, &ds, icon_srfc, icon_ctx, NULL);
   
 //always last.
-  awn_effect_op_depth(fx, cr, &ds, icon_srfc, icon_ctx, NULL);
+  awn_effect_op_3dturn(fx, cr, &ds, icon_srfc, icon_ctx, NULL);
 
   cairo_set_source_surface(cr, icon_srfc, ds.x1, ds.y1);
   cairo_paint_with_alpha(cr, fx->alpha);

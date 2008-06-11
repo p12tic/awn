@@ -311,7 +311,7 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
   }
 }
 
-gboolean awn_effect_op_depth(AwnEffects * fx,
+gboolean awn_effect_op_3dturn(AwnEffects * fx,
                              cairo_t * cr,
                              DrawIconState * ds,
                              cairo_surface_t * icon_srfc,

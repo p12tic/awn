@@ -70,6 +70,7 @@
 #define ALPHA_EFFECT	"alpha_effect"		/*bool*/
 #define ICON_EFFECT	"icon_effect"		/*int*/
 #define HOVER_BOUNCE_EFFECT	"hover_bounce_effect"	/*bool*/
+#define ICON_ALPHA	"icon_alpha"		/*bool*/
 
 #define TITLE		"title"
 #define TEXT_COLOR	"text_color"		/*color*/
@@ -185,6 +186,7 @@ awn_settings_new()
 	awn_load_bool(client, APP, NAME_CHANGE_NOTIFY, &s->name_change_notify, FALSE);
 	awn_load_bool(client, APP, ALPHA_EFFECT, &s->alpha_effect, FALSE);
  	awn_load_int(client, APP, ICON_EFFECT, &s->icon_effect, 0);
+	awn_load_float(client, APP, ICON_ALPHA, &s->icon_alpha,1.0);  
 
 	/* Title settings */
 	awn_config_client_ensure_group (client, TITLE);

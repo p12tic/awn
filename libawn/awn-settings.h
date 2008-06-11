@@ -91,6 +91,7 @@ typedef struct {
 	gboolean name_change_notify;
 	gboolean alpha_effect;
 	gint icon_effect;
+	float icon_alpha;
 	
 	int icon_offset;
 	
