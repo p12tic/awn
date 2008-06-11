@@ -610,12 +610,12 @@ void
 awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
                      cairo_t * reflect_context)
 {
-  cairo_surface_t * icon;
+  cairo_surface_t * icon;       //Surfaces pulled from args.
   cairo_surface_t * reflect;
-  static cairo_surface_t * icon_srfc = NULL;
+  static cairo_surface_t * icon_srfc = NULL;      //Work surfaces/contexts
   static cairo_t * icon_ctx = NULL;
-  cairo_surface_t * reflect_srfc = NULL;
-  cairo_t * reflect_ctx = NULL;
+  static cairo_surface_t * reflect_srfc = NULL;
+  static cairo_t * reflect_ctx = NULL;
   DrawIconState  ds;
 
   icon = cairo_get_target(icon_context);
@@ -682,13 +682,14 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
                       (ds.current_width / 2.0)*(1 - (1)),
                       (ds.current_height / 2.0)*(1 - (-1))
                      );
-
+    cairo_save(reflect_ctx);
     cairo_transform(reflect_ctx, &matrix);
     cairo_set_source_surface(reflect_ctx, icon_srfc, 0, 0);
     cairo_paint(reflect_ctx);
 
     cairo_set_source_surface(cr, reflect_srfc, ds.x1, ds.y1);
     cairo_paint_with_alpha(cr, fx->alpha / 3);
+    cairo_restore(reflect_ctx);    
     /* icon depth */
   }
 
@@ -706,8 +707,6 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
       cairo_fill (cr);
       cairo_restore (cr);
     }*/
-  cairo_destroy(reflect_ctx);
-  cairo_surface_destroy(reflect_srfc);
 }
 
 void

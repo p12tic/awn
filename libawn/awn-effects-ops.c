@@ -281,10 +281,10 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
   {
 
     gboolean up_flag;
+    
     up_flag = !*picon_srfc ? TRUE :
               (cairo_image_surface_get_width(*picon_srfc) != ds->current_width) ||
               (cairo_image_surface_get_height(*picon_srfc) != ds->current_height);
-
     if (up_flag)
     {
       if (*picon_srfc)
@@ -292,18 +292,33 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
         cairo_surface_destroy(*picon_srfc);
         cairo_destroy(*picon_ctx);
       }
-
       *picon_srfc = cairo_surface_create_similar(icon, CAIRO_CONTENT_COLOR_ALPHA,
 
                     ds->current_width, ds->current_height);
       *picon_ctx = cairo_create(*picon_srfc);
     }
-
-    *preflect_srfc = cairo_surface_create_similar(icon, CAIRO_CONTENT_COLOR_ALPHA,
-
-                     ds->current_width,
-                     ds->current_height);
-    *preflect_ctx = cairo_create(*preflect_srfc);
+      
+    up_flag = !*preflect_srfc ? TRUE :
+              (cairo_image_surface_get_width(*preflect_srfc) != ds->current_width) ||
+              (cairo_image_surface_get_height(*preflect_srfc) != ds->current_height);      
+    if (up_flag)
+    {
+      if (*picon_srfc)
+      {
+        cairo_surface_destroy(*preflect_srfc);
+        cairo_destroy(*preflect_ctx);
+      }
+      *preflect_srfc = cairo_surface_create_similar(icon, CAIRO_CONTENT_COLOR_ALPHA,
+                       ds->current_width,
+                       ds->current_height);
+      *preflect_ctx = cairo_create(*preflect_srfc);
+    }
+    else
+    {
+      cairo_set_operator (*preflect_ctx, CAIRO_OPERATOR_CLEAR); 
+      cairo_paint(*preflect_ctx);
+    }
+    cairo_set_operator(*preflect_ctx, CAIRO_OPERATOR_SOURCE);
     cairo_set_operator(*picon_ctx, CAIRO_OPERATOR_SOURCE);
     cairo_set_source_surface(*picon_ctx, icon, 0, 0);
     cairo_paint(*picon_ctx);
