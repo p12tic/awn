@@ -718,7 +718,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
 
 
   /* 4px offset for 3D look */
-  /*  if (fx->settings && fx->settings->bar_angle > 0)
+    if (fx->settings && fx->settings->bar_angle > 0)
     {
       cairo_save (cr);
       cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
@@ -727,7 +727,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
          fx->settings->icon_offset, fx->window_width, 4);
       cairo_fill (cr);
       cairo_restore (cr);
-    }*/
+    }
 }
 
 void
