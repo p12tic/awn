@@ -239,7 +239,7 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
       printf("insane\n");
 //      return FALSE;  //let the insanity happen!
     }
-
+    
     // update current w&h
     ds->current_width = ds->current_width + fx->delta_width;
 

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2007 Neil Jagdish Patel <njpatel@gmail.com>
+ * Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -77,7 +78,13 @@ adjust_icon(AwnAppletSimple *simple)
     cairo_destroy(priv->icon_context);
     priv->icon_context = NULL;
   }
-
+  if (priv->reflect_context)
+  {
+    cairo_surface_destroy(cairo_get_target(priv->reflect_context));
+    cairo_destroy(priv->reflect_context);
+    priv->reflect_context = NULL;
+  }
+  
   if (priv->bar_height == priv->bar_height_on_icon_recieved)
   {
     priv->icon_height = gdk_pixbuf_get_height(priv->org_icon);
@@ -141,6 +148,9 @@ adjust_icon(AwnAppletSimple *simple)
  * of the pixbuf argument is made by awn_applet_simple_set_icon() and the
  * original argument is left unchanged.  The caller retains ownership of pixbuf
  * and is required to unref it when it is no longer required.
+ 
+ * NOTE: at the moment there is probably a memory leak there's a switch between
+ * pixbuf method and cairo method of setting icons.  FIXME
  */
 void
 awn_applet_simple_set_icon_context(AwnAppletSimple *simple,
@@ -154,6 +164,8 @@ awn_applet_simple_set_icon_context(AwnAppletSimple *simple,
   priv->icon_context=cr;
 	priv->icon_width = cairo_image_surface_get_width (cairo_get_target(cr));
 	priv->icon_height = cairo_image_surface_get_height (cairo_get_target(cr));
+  
+  priv->reflect_context=NULL;  
   
   gtk_widget_set_size_request(GTK_WIDGET(simple),
                               priv->icon_width *5 / 4,
@@ -298,19 +310,27 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
     cairo_surface_t * srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
                                             gdk_pixbuf_get_width(priv->icon), 
                                             gdk_pixbuf_get_height(priv->icon));
-  
-    priv->icon_context = cairo_create(srfc);
-  
+    priv->icon_context = cairo_create(srfc);  
     gdk_cairo_set_source_pixbuf (priv->icon_context, priv->icon, 0, 0);
-  
     cairo_paint(priv->icon_context);
+    
+    if ( priv->reflect && GDK_IS_PIXBUF(priv->reflect) )
+    {
+      srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
+                                            gdk_pixbuf_get_width(priv->reflect), 
+                                            gdk_pixbuf_get_height(priv->reflect));      
+      priv->reflect_context = cairo_create(srfc);  
+      gdk_cairo_set_source_pixbuf (priv->icon_context, priv->reflect, 0, 0);
+      cairo_paint(priv->reflect_context);
+      
+    }
   }
   
   if (priv->icon_context)
   {
     if ( priv->effects_enabled)
     {    
-      awn_draw_icons_cairo(&priv->effects,cr,priv->icon_context,NULL);
+      awn_draw_icons_cairo(&priv->effects,cr,priv->icon_context,priv->reflect_context);
     }
     else
     {
