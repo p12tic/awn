@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2007 Michal Hruby <michal.mhr@gmail.com>
+ *  Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -179,7 +180,7 @@ awn_effects_init(GObject * self, AwnEffects * fx)
   fx->leave_notify = 0;
   fx->timer_id = 0;
 
-  fx->effect_frame_rate = AWN_FRAME_RATE;
+  fx->effect_frame_rate = fx->settings->frame_rate;
   
   fx->op_list=g_malloc(sizeof(OP_LIST) );
   memcpy(fx->op_list,OP_LIST,sizeof(OP_LIST) );
@@ -455,7 +456,7 @@ main_effect_loop(AwnEffects * fx)
 
   if (animation)
   {
-    fx->timer_id = g_timeout_add(fx->effect_frame_rate, animation, topEffect);
+    fx->timer_id = g_timeout_add(1000/fx->effect_frame_rate, animation, topEffect);
     fx->current_effect = topEffect->this_effect;
     fx->effect_lock = FALSE;
   }
@@ -632,7 +633,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   DrawIconState  ds;
   gboolean icon_changed=FALSE;
   gint i;
-  
+printf("frame = %d\n",fx->settings->frame_rate);  
   icon = cairo_get_target(icon_context);
 
   if (reflect_context)
