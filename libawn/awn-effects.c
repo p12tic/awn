@@ -654,7 +654,6 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
         || fx->delta_height <= -ds.current_height)
     {
       // we would display blank icon
-      printf("insane\n");
       return;
     }
      
@@ -709,8 +708,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
       cairo_restore(reflect_ctx);    
     }
     else
-    {
-      printf("using stored provided reflection\n");      
+    {     
       cairo_set_source_surface(cr, reflect, ds.x1, ds.y1);      
       cairo_paint_with_alpha(cr, fx->alpha / 3);      
     }
