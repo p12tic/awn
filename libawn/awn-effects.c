@@ -121,6 +121,14 @@ static const GSourceFunc ATTENTION_EFFECTS[] =
 };
 
 
+static const AwnEffectsOp OP_LIST[5]={
+  {awn_effect_op_saturate, NULL},
+  {awn_effect_op_hflip,NULL},
+  {awn_effect_op_glow, NULL},
+  {awn_effect_move_x, NULL},
+  {(awn_effects_op_fn)NULL,NULL}
+};
+
 // effect functions
 static gboolean awn_on_enter_event(GtkWidget * widget,
                                    GdkEventCrossing * event, gpointer data);
@@ -172,6 +180,10 @@ awn_effects_init(GObject * self, AwnEffects * fx)
   fx->timer_id = 0;
 
   fx->effect_frame_rate = AWN_FRAME_RATE;
+  
+  fx->op_list=g_malloc(sizeof(OP_LIST) );
+  memcpy(fx->op_list,OP_LIST,sizeof(OP_LIST) );
+
 }
 
 void
@@ -205,6 +217,7 @@ awn_effects_finalize(AwnEffects * fx)
   awn_unregister_effects(fx);
   awn_effect_dispose_queue(fx);
   fx->self = NULL;
+  g_free(fx->op_list);
 }
 
 
@@ -618,7 +631,8 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   static cairo_t * reflect_ctx = NULL;
   DrawIconState  ds;
   gboolean icon_changed=FALSE;
-
+  gint i;
+  
   icon = cairo_get_target(icon_context);
 
   if (reflect_context)
@@ -663,17 +677,13 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
                                        &reflect_srfc, &reflect_ctx) || icon_changed;
 
 //These will move into the configurable list
-  
-  icon_changed = awn_effect_op_saturate(fx, &ds, icon_srfc, icon_ctx, NULL)
+
+  for (i=0;fx->op_list[i].fn;i++)
+  {
+    icon_changed = fx->op_list[i].fn(fx, &ds, icon_srfc, icon_ctx, fx->op_list[i].data)
                   || icon_changed;
-  icon_changed = awn_effect_op_hflip(fx, &ds, icon_srfc, icon_ctx, NULL)
-                  || icon_changed;
-  icon_changed = awn_effect_op_glow(fx, &ds, icon_srfc, icon_ctx, NULL)
-                  || icon_changed;
-  icon_changed = awn_effect_move_x(fx, &ds, icon_srfc, icon_ctx, NULL)
-                  || icon_changed;
-  
-//always last.
+  }
+  //always last.
   icon_changed = awn_effect_op_3dturn(fx, cr, &ds, icon_srfc, icon_ctx, NULL)
                   || icon_changed;
 

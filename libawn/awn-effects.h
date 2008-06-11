@@ -62,10 +62,29 @@ typedef enum
   AWN_EFFECT_SPOTLIGHT_OFF
 } AwnEffectSequence;
 
+typedef struct
+{
+  gint current_height;
+  gint current_width;
+  gint x1;
+  gint y1;	// sit on bottom by default
+}DrawIconState; 
+
 typedef const gchar *(*AwnTitleCallback) (GObject *);
 typedef void (*AwnEventNotify) (GObject *);
-
 typedef struct _AwnEffects AwnEffects;
+
+typedef gboolean (*awn_effects_op_fn)(AwnEffects * fx,
+                                DrawIconState * ds,
+                                cairo_surface_t * icon_srfc,
+                                cairo_t * icon_ctx,
+                                gpointer null);
+
+typedef struct
+{
+  awn_effects_op_fn   fn;
+  gpointer            data;
+}AwnEffectsOp;
 
 struct _AwnEffects
 {
@@ -114,6 +133,8 @@ struct _AwnEffects
   guint timer_id;
   
   guint effect_frame_rate;
+  
+  AwnEffectsOp  * op_list;
 
   /* padding so we dont break ABI compability every time */
   void *pad1;
@@ -121,14 +142,6 @@ struct _AwnEffects
   void *pad3;
   void *pad4;
 };
-
-typedef struct
-{
-  gint current_height;
-  gint current_width;
-  gint x1;
-  gint y1;	// sit on bottom by default
-}DrawIconState; 
 
 
 /**
