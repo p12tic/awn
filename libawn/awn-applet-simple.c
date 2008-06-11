@@ -320,7 +320,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
                                             gdk_pixbuf_get_width(priv->reflect), 
                                             gdk_pixbuf_get_height(priv->reflect));      
       priv->reflect_context = cairo_create(srfc);  
-      gdk_cairo_set_source_pixbuf (priv->icon_context, priv->reflect, 0, 0);
+      gdk_cairo_set_source_pixbuf (priv->reflect_context, priv->reflect, 0, 0);
       cairo_paint(priv->reflect_context);
       
     }
