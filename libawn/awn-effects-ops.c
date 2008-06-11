@@ -231,15 +231,6 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
 {
   if (fx->delta_width || fx->delta_height)
   {
-    // sanity check
-    if (fx->delta_width <= -ds->current_width
-        || fx->delta_height <= -ds->current_height)
-    {
-      // we would display blank icon
-      printf("insane\n");
-//      return FALSE;  //let the insanity happen!
-    }
-    
     // update current w&h
     ds->current_width = ds->current_width + fx->delta_width;
 

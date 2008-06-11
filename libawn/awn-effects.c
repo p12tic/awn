@@ -648,7 +648,15 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   {
     g_warning("Clipping ~\n");
   }
-
+    // sanity check
+    if (fx->delta_width <= -ds.current_width
+        || fx->delta_height <= -ds.current_height)
+    {
+      // we would display blank icon
+      printf("insane\n");
+      return;
+    }
+     
   /* scaling */
 //always first.
   awn_effect_op_scaling(fx, &ds, icon, &icon_srfc, &icon_ctx, &reflect_srfc, &reflect_ctx);
