@@ -16,15 +16,15 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 
 #ifndef __AWN_EFFECT_GLOW_H__
 #define __AWN_EFFECT_GLOW_H__
 
 #include "awn-effects-shared.h"
 
-gboolean glow_effect (AwnEffectsPrivate * priv);
-gboolean glow_opening_effect (AwnEffectsPrivate * priv);
-gboolean glow_closing_effect (AwnEffectsPrivate * priv);
-gboolean glow_attention_effect (AwnEffectsPrivate * priv);
+gboolean glow_effect(AwnEffectsPrivate * priv);
+gboolean glow_opening_effect(AwnEffectsPrivate * priv);
+gboolean glow_closing_effect(AwnEffectsPrivate * priv);
+gboolean glow_attention_effect(AwnEffectsPrivate * priv);
 #endif

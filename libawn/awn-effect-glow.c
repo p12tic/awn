@@ -30,47 +30,54 @@
 
 
 gboolean
-glow_effect (AwnEffectsPrivate * priv)
+glow_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
     // effect start initialize values
     fx->glow_amount = 1.0;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
 
   const gfloat GLOW_STEP = 0.08;
 
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
   // check for repeating
-  gboolean top = awn_effect_check_top_effect (priv, NULL);
+  gboolean top = awn_effect_check_top_effect(priv, NULL);
+
   if (top)
   {
     fx->glow_amount = 1.0;
-    return top;			// == TRUE
+    return top;   // == TRUE
   }
   else
   {
     fx->glow_amount -= GLOW_STEP;
+
     if (fx->glow_amount <= 0)
     {
       fx->glow_amount = 0.0;
-      gboolean repeat = awn_effect_handle_repeating (priv);
-      return repeat;		// == FALSE
+      gboolean repeat = awn_effect_handle_repeating(priv);
+      return repeat;  // == FALSE
     }
   }
+
   return TRUE;
 }
 
 gboolean
-glow_opening_effect (AwnEffectsPrivate * priv)
+glow_opening_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
@@ -78,100 +85,123 @@ glow_opening_effect (AwnEffectsPrivate * priv)
     fx->direction = AWN_EFFECT_DIR_UP;
     fx->alpha = 0.0;
     fx->glow_amount = 1.95;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
 
   const gdouble ALPHA_STEP = 0.04;
+
   const gdouble GLOW_STEP = 0.05;
 
   switch (fx->direction)
   {
-  case AWN_EFFECT_DIR_UP:
-    fx->alpha += ALPHA_STEP;
-    if (fx->alpha > 1)
-    {
-      fx->alpha = 1.0;
+
+    case AWN_EFFECT_DIR_UP:
+      fx->alpha += ALPHA_STEP;
+
+      if (fx->alpha > 1)
+      {
+        fx->alpha = 1.0;
+        fx->direction = AWN_EFFECT_DIR_DOWN;
+      }
+
+      break;
+
+    case AWN_EFFECT_DIR_DOWN:
+      fx->glow_amount -= GLOW_STEP;
+
+      if (fx->glow_amount < 0)
+      {
+        fx->glow_amount = 0.0;
+        fx->direction = AWN_EFFECT_DIR_NONE;
+      }
+
+      break;
+
+    default:
       fx->direction = AWN_EFFECT_DIR_DOWN;
-    }
-    break;
-  case AWN_EFFECT_DIR_DOWN:
-    fx->glow_amount -= GLOW_STEP;
-    if (fx->glow_amount < 0)
-    {
-      fx->glow_amount = 0.0;
-      fx->direction = AWN_EFFECT_DIR_NONE;
-    }
-    break;
-  default:
-    fx->direction = AWN_EFFECT_DIR_DOWN;
   }
 
   // repaint widget
-  if (fx->self && GTK_IS_WIDGET (fx->self))
+  if (fx->self && GTK_IS_WIDGET(fx->self))
   {
-    gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+    gtk_widget_queue_draw(GTK_WIDGET(fx->self));
   }
 
   gboolean repeat = TRUE;
+
   if (fx->direction == AWN_EFFECT_DIR_NONE)
   {
     // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
+    repeat = awn_effect_handle_repeating(priv);
   }
+
   return repeat;
 }
 
 gboolean
-glow_closing_effect (AwnEffectsPrivate * priv)
+glow_closing_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
     // effect start initialize values
     fx->direction = AWN_EFFECT_DIR_DOWN;
     fx->glow_amount = 0.8;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
 
   const gdouble ALPHA_STEP = 0.03;
+
   const gdouble GLOW_STEP = 0.085;
 
   switch (fx->direction)
   {
-  case AWN_EFFECT_DIR_DOWN:
-    fx->alpha -= ALPHA_STEP;
-    fx->glow_amount += GLOW_STEP;
-    if (fx->alpha < 0)
-    {
-      fx->alpha = 0.0;
-      fx->direction = AWN_EFFECT_DIR_NONE;
-    }
-    break;
-  default:
-    fx->direction = AWN_EFFECT_DIR_DOWN;
+
+    case AWN_EFFECT_DIR_DOWN:
+      fx->alpha -= ALPHA_STEP;
+      fx->glow_amount += GLOW_STEP;
+
+      if (fx->alpha < 0)
+      {
+        fx->alpha = 0.0;
+        fx->direction = AWN_EFFECT_DIR_NONE;
+      }
+
+      break;
+
+    default:
+      fx->direction = AWN_EFFECT_DIR_DOWN;
   }
 
   // repaint widget
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
   gboolean repeat = TRUE;
+
   if (fx->direction == AWN_EFFECT_DIR_NONE)
   {
     // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
+    repeat = awn_effect_handle_repeating(priv);
   }
+
   return repeat;
 }
 
 gboolean
-glow_attention_effect (AwnEffectsPrivate * priv)
+glow_attention_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
@@ -179,12 +209,15 @@ glow_attention_effect (AwnEffectsPrivate * priv)
     fx->count = 0;
     fx->direction = AWN_EFFECT_DIR_UP;
     fx->glow_amount = 0;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
 
   const gint PERIOD = 20;
+
   const gfloat MAX_GLOW = 1.5;
 
   if (fx->direction == AWN_EFFECT_DIR_UP)
@@ -200,17 +233,20 @@ glow_attention_effect (AwnEffectsPrivate * priv)
     fx->direction = AWN_EFFECT_DIR_DOWN;
   else if (fx->glow_amount <= 0.0)
     fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
+
   // repaint widget
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
   gboolean repeat = TRUE;
+
   if (fx->glow_amount <= 0)
   {
     fx->count = 0;
     fx->glow_amount = 0;
     fx->direction = AWN_EFFECT_DIR_UP;
     // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
+    repeat = awn_effect_handle_repeating(priv);
   }
+
   return repeat;
 }

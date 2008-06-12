@@ -16,16 +16,16 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 
 #ifndef __AWN_EFFECT_SQUISH_H__
 #define __AWN_EFFECT_SQUISH_H__
 
 #include "awn-effects-shared.h"
 
-gboolean bounce_squish_closing_effect (AwnEffectsPrivate * priv);
-gboolean bounce_squish_opening_effect (AwnEffectsPrivate * priv);
-gboolean bounce_squish_attention_effect (AwnEffectsPrivate * priv);
-gboolean bounce_squish_effect (AwnEffectsPrivate * priv);
+gboolean bounce_squish_closing_effect(AwnEffectsPrivate * priv);
+gboolean bounce_squish_opening_effect(AwnEffectsPrivate * priv);
+gboolean bounce_squish_attention_effect(AwnEffectsPrivate * priv);
+gboolean bounce_squish_effect(AwnEffectsPrivate * priv);
 
 #endif

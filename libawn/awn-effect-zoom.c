@@ -28,9 +28,10 @@
 #include <stdlib.h>
 
 gboolean
-zoom_effect (AwnEffectsPrivate * priv)
+zoom_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
@@ -40,63 +41,79 @@ zoom_effect (AwnEffectsPrivate * priv)
     fx->delta_height = 0;
     fx->y_offset = 0;
     fx->direction = AWN_EFFECT_DIR_UP;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
 
   switch (fx->direction)
   {
-  case AWN_EFFECT_DIR_UP:
-    if (fx->delta_width + fx->icon_width < fx->window_width)
-    {
-      fx->delta_width += 2;
-      fx->delta_height += 2;
-      fx->y_offset += 1;
-    }
-    gboolean top = awn_effect_check_top_effect (priv, NULL);
-    if (top)
-    {
-      gtk_widget_queue_draw (GTK_WIDGET (fx->self));
-      return top;
-    }
-    else
-      fx->direction = AWN_EFFECT_DIR_DOWN;
-    break;
-  case AWN_EFFECT_DIR_DOWN:
-    fx->delta_width -= 2;
-    fx->delta_height -= 2;
-    fx->y_offset -= 1;
-    if (fx->delta_width <= 0)
-    {
+
+    case AWN_EFFECT_DIR_UP:
+
+      if (fx->delta_width + fx->icon_width < fx->window_width)
+      {
+        fx->delta_width += 2;
+        fx->delta_height += 2;
+        fx->y_offset += 1;
+      }
+
+      gboolean top = awn_effect_check_top_effect(priv, NULL);
+
+      if (top)
+      {
+        gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+        return top;
+      }
+      else
+        fx->direction = AWN_EFFECT_DIR_DOWN;
+
+      break;
+
+    case AWN_EFFECT_DIR_DOWN:
+      fx->delta_width -= 2;
+
+      fx->delta_height -= 2;
+
+      fx->y_offset -= 1;
+
+      if (fx->delta_width <= 0)
+      {
+        fx->direction = AWN_EFFECT_DIR_UP;
+        fx->delta_width = 0;
+        fx->delta_height = 0;
+        fx->y_offset = 0;
+      }
+
+      break;
+
+    default:
       fx->direction = AWN_EFFECT_DIR_UP;
-      fx->delta_width = 0;
-      fx->delta_height = 0;
-      fx->y_offset = 0;
-    }
-    break;
-  default:
-    fx->direction = AWN_EFFECT_DIR_UP;
   }
 
   // repaint widget
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
   gboolean repeat = TRUE;
+
   if (fx->direction == AWN_EFFECT_DIR_UP && !fx->delta_width
       && !fx->delta_height)
   {
     fx->y_offset = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
+    repeat = awn_effect_handle_repeating(priv);
   }
+
   return repeat;
 }
 
 gboolean
-zoom_attention_effect (AwnEffectsPrivate * priv)
+zoom_attention_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
@@ -106,59 +123,71 @@ zoom_attention_effect (AwnEffectsPrivate * priv)
     fx->delta_height = 0;
     fx->y_offset = 0;
     fx->direction = AWN_EFFECT_DIR_UP;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
 
   switch (fx->direction)
   {
-  case AWN_EFFECT_DIR_UP:
-    if (fx->delta_width + fx->icon_width < fx->window_width)
-    {
-      fx->delta_width += 2;
-      fx->delta_height += 2;
-      fx->y_offset += 1;
-    }
-    else
-    {
-      fx->direction = AWN_EFFECT_DIR_DOWN;
-    }
-    break;
-  case AWN_EFFECT_DIR_DOWN:
-    fx->delta_width -= 2;
-    fx->delta_height -= 2;
-    fx->y_offset -= 1;
-    if (fx->delta_width <= 0)
-    {
+
+    case AWN_EFFECT_DIR_UP:
+
+      if (fx->delta_width + fx->icon_width < fx->window_width)
+      {
+        fx->delta_width += 2;
+        fx->delta_height += 2;
+        fx->y_offset += 1;
+      }
+      else
+      {
+        fx->direction = AWN_EFFECT_DIR_DOWN;
+      }
+
+      break;
+
+    case AWN_EFFECT_DIR_DOWN:
+      fx->delta_width -= 2;
+      fx->delta_height -= 2;
+      fx->y_offset -= 1;
+
+      if (fx->delta_width <= 0)
+      {
+        fx->direction = AWN_EFFECT_DIR_UP;
+        fx->delta_width = 0;
+        fx->delta_height = 0;
+        fx->y_offset = 0;
+      }
+
+      break;
+
+    default:
       fx->direction = AWN_EFFECT_DIR_UP;
-      fx->delta_width = 0;
-      fx->delta_height = 0;
-      fx->y_offset = 0;
-    }
-    break;
-  default:
-    fx->direction = AWN_EFFECT_DIR_UP;
   }
 
   // repaint widget
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
   gboolean repeat = TRUE;
+
   if (fx->direction == AWN_EFFECT_DIR_UP && !fx->delta_width
       && !fx->delta_height)
   {
     fx->y_offset = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
+    repeat = awn_effect_handle_repeating(priv);
   }
+
   return repeat;
 }
 
 gboolean
-zoom_opening_effect (AwnEffectsPrivate * priv)
+zoom_opening_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
@@ -169,23 +198,29 @@ zoom_opening_effect (AwnEffectsPrivate * priv)
     fx->alpha = 0.0;
     fx->y_offset = 0;
     fx->direction = AWN_EFFECT_DIR_UP;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
 
   const gint PERIOD = 20;
+
   fx->delta_width += (fx->icon_width) / PERIOD;
+
   fx->delta_height += (fx->icon_width) / PERIOD;
+
   fx->alpha += 1.0 / PERIOD;
 
   // repaint widget
-  if (fx->self && GTK_IS_WIDGET (fx->self))
+  if (fx->self && GTK_IS_WIDGET(fx->self))
   {
-    gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+    gtk_widget_queue_draw(GTK_WIDGET(fx->self));
   }
 
   gboolean repeat = TRUE;
+
   if (fx->delta_width > 0)
   {
     fx->y_offset = 0;
@@ -193,15 +228,17 @@ zoom_opening_effect (AwnEffectsPrivate * priv)
     fx->delta_width = 0;
     fx->delta_height = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
+    repeat = awn_effect_handle_repeating(priv);
   }
+
   return repeat;
 }
 
 gboolean
-zoom_closing_effect (AwnEffectsPrivate * priv)
+zoom_closing_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
@@ -212,27 +249,34 @@ zoom_closing_effect (AwnEffectsPrivate * priv)
     fx->alpha = 1.0;
     fx->y_offset = 0;
     fx->direction = AWN_EFFECT_DIR_UP;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
 
   const gint PERIOD = 20;
+
   fx->delta_width -= (fx->icon_width) / PERIOD;
+
   fx->delta_height -= (fx->icon_width) / PERIOD;
+
   fx->alpha -= 1.0 / PERIOD;
 
   // repaint widget
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
   gboolean repeat = TRUE;
+
   if (fx->alpha < 0.0)
   {
     fx->y_offset = 0;
     fx->alpha = 0.0;
     // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
+    repeat = awn_effect_handle_repeating(priv);
   }
+
   return repeat;
 }
 

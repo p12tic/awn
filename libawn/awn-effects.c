@@ -123,12 +123,13 @@ static const GSourceFunc ATTENTION_EFFECTS[] =
 
 
 //The default ops list that the existing effects expect.
-static const AwnEffectsOp OP_LIST[]={
+static const AwnEffectsOp OP_LIST[] =
+{
   {awn_effect_op_saturate, NULL},
-  {awn_effect_op_hflip,NULL},
+  {awn_effect_op_hflip, NULL},
   {awn_effect_op_glow, NULL},
   {awn_effect_move_x, NULL},
-  {(awn_effects_op_fn)NULL,NULL}
+  {(awn_effects_op_fn)NULL, NULL}
 };
 
 // effect functions
@@ -182,16 +183,16 @@ awn_effects_init(GObject * self, AwnEffects * fx)
   fx->timer_id = 0;
 
   //fx->effect_frame_rate = fx->settings->frame_rate;
-  
-  fx->op_list=g_malloc(sizeof(OP_LIST) );
-  memcpy(fx->op_list,OP_LIST,sizeof(OP_LIST) );
 
-  
+  fx->op_list = g_malloc(sizeof(OP_LIST));
+  memcpy(fx->op_list, OP_LIST, sizeof(OP_LIST));
+
+
   fx->icon_srfc = NULL;      //Work surfaces/contexts
   fx->icon_ctx = NULL;
   fx->reflect_srfc = NULL;
   fx->reflect_ctx = NULL;
-  
+
 }
 
 void
@@ -463,7 +464,7 @@ main_effect_loop(AwnEffects * fx)
 
   if (animation)
   {
-    fx->timer_id = g_timeout_add(1000/fx->settings->frame_rate, animation, topEffect);
+    fx->timer_id = g_timeout_add(1000 / fx->settings->frame_rate, animation, topEffect);
     fx->current_effect = topEffect->this_effect;
     fx->effect_lock = FALSE;
   }
@@ -632,11 +633,11 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
                      cairo_t * reflect_context)
 {
   cairo_surface_t * icon;       //Surfaces pulled from args.
-  cairo_surface_t * reflect=NULL;
+  cairo_surface_t * reflect = NULL;
   DrawIconState  ds;
-  gboolean icon_changed=FALSE;
+  gboolean icon_changed = FALSE;
   gint i;
- 
+
   icon = cairo_get_target(icon_context);
 
   if (reflect_context)
@@ -667,31 +668,34 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   {
 //    g_warning("Clipping ~\n");
   }
-    // sanity check
-    if (fx->delta_width <= -ds.current_width
-        || fx->delta_height <= -ds.current_height)
-    {
-      // we would display blank icon
-      return;
-    }
-     
+
+  // sanity check
+  if (fx->delta_width <= -ds.current_width
+      || fx->delta_height <= -ds.current_height)
+  {
+    // we would display blank icon
+    return;
+  }
+
   /* scaling */
 //always first.
-  icon_changed = awn_effect_op_scaling(fx, &ds, icon, &fx->icon_srfc, &fx->icon_ctx, 
+  icon_changed = awn_effect_op_scaling(fx, &ds, icon, &fx->icon_srfc, &fx->icon_ctx,
                                        &fx->reflect_srfc, &fx->reflect_ctx) || icon_changed;
 
 //These will move into the configurable list
 
-  for (i=0;fx->op_list[i].fn;i++)
+  for (i = 0;fx->op_list[i].fn;i++)
   {
     icon_changed = fx->op_list[i].fn(fx, &ds, fx->icon_srfc, fx->icon_ctx, fx->op_list[i].data)
-                  || icon_changed;
+                   || icon_changed;
   }
+
   //always last.
   icon_changed = awn_effect_op_3dturn(fx, cr, &ds, fx->icon_srfc, fx->icon_ctx, NULL)
-                  || icon_changed;
+                 || icon_changed;
 
   cairo_set_source_surface(cr, fx->icon_srfc, ds.x1, ds.y1);
+
   cairo_paint_with_alpha(cr, fx->settings->icon_alpha);
 
   //------------------------------------------------------------------------
@@ -700,8 +704,9 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
 
   if (fx->y_offset >= 0)
   {
-    ds.y1 += ds.current_height + fx->y_offset * 2;    
-    if ( icon_changed || !reflect )
+    ds.y1 += ds.current_height + fx->y_offset * 2;
+
+    if (icon_changed || !reflect)
     {
       cairo_matrix_t matrix;
       cairo_matrix_init(&matrix,
@@ -719,12 +724,12 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
 
       cairo_set_source_surface(cr, fx->reflect_srfc, ds.x1, ds.y1);
       cairo_paint_with_alpha(cr, fx->alpha / 3);
-      cairo_restore(fx->reflect_ctx);    
+      cairo_restore(fx->reflect_ctx);
     }
     else
-    {     
-      cairo_set_source_surface(cr, reflect, ds.x1, ds.y1);      
-      cairo_paint_with_alpha(cr, fx->settings->icon_alpha / 3);      
+    {
+      cairo_set_source_surface(cr, reflect, ds.x1, ds.y1);
+      cairo_paint_with_alpha(cr, fx->settings->icon_alpha / 3);
     }
   }
 
@@ -732,16 +737,16 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
 
 
   /* 4px offset for 3D look */
-    if (fx->settings && fx->settings->bar_angle > 0)
-    {
-      cairo_save (cr);
-      cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-      cairo_set_source_rgba (cr, 1, 1, 1, 0);
-      cairo_rectangle (cr, 0, ((fx->settings->bar_height * 2) - 4) +
-         fx->settings->icon_offset, fx->window_width, 4);
-      cairo_fill (cr);
-      cairo_restore (cr);
-    }
+  if (fx->settings && fx->settings->bar_angle > 0)
+  {
+    cairo_save(cr);
+    cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
+    cairo_set_source_rgba(cr, 1, 1, 1, 0);
+    cairo_rectangle(cr, 0, ((fx->settings->bar_height * 2) - 4) +
+                    fx->settings->icon_offset, fx->window_width, 4);
+    cairo_fill(cr);
+    cairo_restore(cr);
+  }
 }
 
 void

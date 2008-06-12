@@ -29,75 +29,91 @@
 #include <stdlib.h>
 
 gboolean
-fade_out_effect (AwnEffectsPrivate * priv)
+fade_out_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
     // effect start initialize values
     fx->count = 0;
     fx->alpha = 1.0;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
 
   const gdouble MAX_OFFSET = 50.0;
+
   const gint PERIOD = 20;
 
   fx->y_offset = ++fx->count * (MAX_OFFSET / PERIOD);
+
   fx->alpha = fx->count * (-1.0 / PERIOD) + 1;
 
   // repaint widget
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
   gboolean repeat = TRUE;
+
   if (fx->count >= PERIOD)
   {
     fx->count = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
+    repeat = awn_effect_handle_repeating(priv);
   }
+
   return repeat;
 }
 
 gboolean
-fading_effect (AwnEffectsPrivate * priv)
+fading_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
     // effect start initialize values
     fx->alpha = 1.0;
     fx->direction = AWN_EFFECT_DIR_DOWN;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
+
   const gdouble MIN_ALPHA = 0.35;
+
   const gdouble ALPHA_STEP = 0.05;
 
   gboolean repeat = TRUE;
+
   if (fx->direction == AWN_EFFECT_DIR_DOWN)
   {
     fx->alpha -= ALPHA_STEP;
+
     if (fx->alpha <= MIN_ALPHA)
       fx->direction = AWN_EFFECT_DIR_UP;
+
     // repaint widget
-    gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+    gtk_widget_queue_draw(GTK_WIDGET(fx->self));
   }
   else
   {
     fx->alpha += ALPHA_STEP * 1.5;
     // repaint widget
-    gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+    gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+
     if (fx->alpha >= 1)
     {
       fx->alpha = 1.0;
       fx->direction = AWN_EFFECT_DIR_DOWN;
-      repeat = awn_effect_handle_repeating (priv);
+      repeat = awn_effect_handle_repeating(priv);
     }
   }
 

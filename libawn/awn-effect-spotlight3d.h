@@ -16,13 +16,13 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 
 #ifndef __AWN_EFFECT_SPOTLIGHT3D_H__
 #define __AWN_EFFECT_SPOTLIGHT3D_H__
 
 #include "awn-effects-shared.h"
-gboolean spotlight3D_hover_effect (AwnEffectsPrivate * priv);
-gboolean spotlight3D_opening_effect (AwnEffectsPrivate * priv);
-gboolean spotlight3D_closing_effect (AwnEffectsPrivate * priv);
+gboolean spotlight3D_hover_effect(AwnEffectsPrivate * priv);
+gboolean spotlight3D_opening_effect(AwnEffectsPrivate * priv);
+gboolean spotlight3D_closing_effect(AwnEffectsPrivate * priv);
 #endif

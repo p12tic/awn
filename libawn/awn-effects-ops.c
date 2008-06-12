@@ -53,7 +53,7 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
   int width, height, row_stride, has_alpha;
   guchar *target_pixels;
   guchar *pixsrc;
-  
+
   g_return_if_fail(src);
   has_alpha = TRUE;
   width = cairo_image_surface_get_width(src);
@@ -106,9 +106,9 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
  **/
 void
 surface_saturate_and_pixelate(cairo_surface_t *src,
-                                 cairo_surface_t *dest,
-                                 gfloat saturation,
-                                 gboolean pixelate)
+                              cairo_surface_t *dest,
+                              gfloat saturation,
+                              gboolean pixelate)
 {
   /* NOTE that src and dest MAY be the same surface! */
 
@@ -152,9 +152,9 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
     for (i = 0 ; i < height ; i++)
     {
       src_pixel = src_line;
-      src_line += src_rowstride;
+      src_line = src_line + src_rowstride;
       dest_pixel = dest_line;
-      dest_line += dest_rowstride;
+      dest_line = dest_line + dest_rowstride;
 
       for (j = 0 ; j < width ; j++)
       {
@@ -182,9 +182,9 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
         if (has_alpha)
           dest_pixel[3] = src_pixel[3];
 
-        src_pixel += bytes_per_pixel;
+        src_pixel = src_pixel + bytes_per_pixel;
 
-        dest_pixel += bytes_per_pixel;
+        dest_pixel = dest_pixel + bytes_per_pixel;
       }
     }
   }
@@ -195,7 +195,7 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
 static void
 surface_saturate(cairo_surface_t * icon_srfc, gfloat saturation)
 {
-  surface_saturate_and_pixelate(icon_srfc,icon_srfc, saturation, FALSE);
+  surface_saturate_and_pixelate(icon_srfc, icon_srfc, saturation, FALSE);
 }
 
 
@@ -271,10 +271,11 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
   {
 
     gboolean up_flag;
-    
+
     up_flag = !*picon_srfc ? TRUE :
               (cairo_image_surface_get_width(*picon_srfc) != ds->current_width) ||
               (cairo_image_surface_get_height(*picon_srfc) != ds->current_height);
+
     if (up_flag)
     {
       if (*picon_srfc)
@@ -282,15 +283,18 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
         cairo_surface_destroy(*picon_srfc);
         cairo_destroy(*picon_ctx);
       }
+
       *picon_srfc = cairo_surface_create_similar(icon, CAIRO_CONTENT_COLOR_ALPHA,
 
                     ds->current_width, ds->current_height);
       *picon_ctx = cairo_create(*picon_srfc);
     }
-      
+
     up_flag = !*preflect_srfc ? TRUE :
+
               (cairo_image_surface_get_width(*preflect_srfc) != ds->current_width) ||
-              (cairo_image_surface_get_height(*preflect_srfc) != ds->current_height);      
+              (cairo_image_surface_get_height(*preflect_srfc) != ds->current_height);
+
     if (up_flag)
     {
       if (*picon_srfc)
@@ -298,17 +302,21 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
         cairo_surface_destroy(*preflect_srfc);
         cairo_destroy(*preflect_ctx);
       }
+
       *preflect_srfc = cairo_surface_create_similar(icon, CAIRO_CONTENT_COLOR_ALPHA,
+
                        ds->current_width,
                        ds->current_height);
       *preflect_ctx = cairo_create(*preflect_srfc);
     }
     else
     {
-      cairo_set_operator (*preflect_ctx, CAIRO_OPERATOR_CLEAR); 
+      cairo_set_operator(*preflect_ctx, CAIRO_OPERATOR_CLEAR);
       cairo_paint(*preflect_ctx);
     }
+
     cairo_set_operator(*preflect_ctx, CAIRO_OPERATOR_SOURCE);
+
     cairo_set_operator(*picon_ctx, CAIRO_OPERATOR_SOURCE);
     cairo_set_source_surface(*picon_ctx, icon, 0, 0);
     cairo_paint(*picon_ctx);
@@ -317,22 +325,28 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
 }
 
 gboolean awn_effect_op_3dturn(AwnEffects * fx,
-                             cairo_t * cr,
-                             DrawIconState * ds,
-                             cairo_surface_t * icon_srfc,
-                             cairo_t * icon_ctx,
-                             gpointer null
-                            )
+                              cairo_t * cr,
+                              DrawIconState * ds,
+                              cairo_surface_t * icon_srfc,
+                              cairo_t * icon_ctx,
+                              gpointer null
+                             )
 {
   /* icon depth */
   if (fx->icon_depth)
   {
 
     if (!fx->icon_depth_direction)
-      ds->x1 += fx->icon_depth / 2;
+    {
+      ds->x1 = ds->x1 + fx->icon_depth / 2;
+    }
     else
-      ds->x1 -= fx->icon_depth / 2;
+    {
+      ds->x1 = ds->x1 - fx->icon_depth / 2;
+    }
+
     apply_3d_illusion(fx, cr, icon_srfc, ds->x1, ds->y1, fx->alpha);
+
     return TRUE;
   }
 
@@ -353,7 +367,7 @@ gboolean awn_effect_op_saturate(AwnEffects * fx,
   {
 //      printf("saturate disabled \n");   //FIXME WHAT USES saturate????
 //    saturate(icon_ctx, fx->saturation);
-    surface_saturate(icon_srfc, fx->saturation);    
+    surface_saturate(icon_srfc, fx->saturation);
     return TRUE;
   }
 
@@ -408,29 +422,32 @@ gboolean awn_effect_op_glow(AwnEffects * fx,
 
 
 gboolean awn_effect_op_todest(AwnEffects * fx,
-                            DrawIconState * ds,
-                            cairo_surface_t * icon_srfc,
-                            cairo_t * icon_ctx,
-                            SourceToDest *data
-                           )
+                              DrawIconState * ds,
+                              cairo_surface_t * icon_srfc,
+                              cairo_t * icon_ctx,
+                              SourceToDest *data
+                             )
 {
-  gfloat alpha=1.0;
+  gfloat alpha = 1.0;
   cairo_surface_t * surface = icon_srfc;
   cairo_operator_t operator = CAIRO_OPERATOR_SOURCE;
-  
+
   if (data)
   {
     alpha = data->alpha;
     operator = data->operator;
+
     if (data->surface)
     {
-      surface=data->surface;
+      surface = data->surface;
     }
   }
-  cairo_set_operator(icon_ctx,operator);
+
+  cairo_set_operator(icon_ctx, operator);
+
   cairo_set_source_surface(icon_ctx, surface, 0, 0);
-  cairo_paint_with_alpha(icon_ctx,alpha);    
-  cairo_set_operator(icon_ctx,CAIRO_OPERATOR_SOURCE);
+  cairo_paint_with_alpha(icon_ctx, alpha);
+  cairo_set_operator(icon_ctx, CAIRO_OPERATOR_SOURCE);
   return TRUE;    //this function always changes the dest... or often enough not to matter.
 }
 
@@ -451,7 +468,7 @@ awn_effect_move_x(AwnEffects * fx,
 {
   if (fx->x_offset)
   {
-    ds->x1 += fx->x_offset;
+    ds->x1 = ds->x1 + fx->x_offset;
   }
 
   return FALSE;

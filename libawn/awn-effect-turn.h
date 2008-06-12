@@ -16,14 +16,14 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 
 #ifndef __AWN_EFFECT_TURN_H__
 #define __AWN_EFFECT_TURN_H__
 
 #include "awn-effects-shared.h"
 
-gboolean turn_hover_effect (AwnEffectsPrivate * priv);
-gboolean turn_opening_effect (AwnEffectsPrivate * priv);
-gboolean turn_closing_effect (AwnEffectsPrivate * priv);
+gboolean turn_hover_effect(AwnEffectsPrivate * priv);
+gboolean turn_opening_effect(AwnEffectsPrivate * priv);
+gboolean turn_closing_effect(AwnEffectsPrivate * priv);
 #endif

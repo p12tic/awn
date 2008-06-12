@@ -37,7 +37,7 @@ typedef enum
   AWN_EFFECT_HOVER,
   AWN_EFFECT_ATTENTION,
   AWN_EFFECT_CLOSING,
-  AWN_EFFECT_DESATURATE  
+  AWN_EFFECT_DESATURATE
 } AwnEffect;
 
 typedef enum
@@ -67,18 +67,19 @@ typedef struct
   gint current_height;
   gint current_width;
   gint x1;
-  gint y1;	// sit on bottom by default
-}DrawIconState; 
+  gint y1; // sit on bottom by default
+}DrawIconState;
 
-typedef const gchar *(*AwnTitleCallback) (GObject *);
-typedef void (*AwnEventNotify) (GObject *);
+typedef const gchar *(*AwnTitleCallback)(GObject *);
+typedef void (*AwnEventNotify)(GObject *);
+
 typedef struct _AwnEffects AwnEffects;
 
-typedef gboolean (*awn_effects_op_fn)(AwnEffects * fx,
-                                DrawIconState * ds,
-                                cairo_surface_t * icon_srfc,
-                                cairo_t * icon_ctx,
-                                gpointer null);
+typedef gboolean(*awn_effects_op_fn)(AwnEffects * fx,
+                                     DrawIconState * ds,
+                                     cairo_surface_t * icon_srfc,
+                                     cairo_t * icon_ctx,
+                                     gpointer null);
 
 typedef struct
 {
@@ -131,14 +132,14 @@ struct _AwnEffects
   guint enter_notify;
   guint leave_notify;
   guint timer_id;
-  
+
 //  guint effect_frame_rate;
-  
+
   cairo_surface_t * icon_srfc;      //Work surfaces/contexts
   cairo_t * icon_ctx;
   cairo_surface_t * reflect_srfc ;
   cairo_t * reflect_ctx;
-  
+
   AwnEffectsOp  * op_list;
 
   /* padding so we dont break ABI compability every time */
@@ -157,7 +158,7 @@ struct _AwnEffects
  *
  * Initializes #AwnEffects structure.
  */
-void awn_effects_init (GObject * obj, AwnEffects * fx);
+void awn_effects_init(GObject * obj, AwnEffects * fx);
 
 /**
  * awn_effects_finalize:
@@ -166,7 +167,7 @@ void awn_effects_init (GObject * obj, AwnEffects * fx);
  * Finalizes #AwnEffects usage and frees internally allocated memory.
  * (also calls awn_unregister_effects())
  */
-void awn_effects_finalize (AwnEffects * fx);
+void awn_effects_finalize(AwnEffects * fx);
 
 /**
  * awn_register_effects
@@ -176,7 +177,7 @@ void awn_effects_finalize (AwnEffects * fx);
  * Registers #GtkWidget::enter-notify-event and #GtkWidget::leave-notify-event
  * signals for the managed window.
  */
-void awn_register_effects (GObject * obj, AwnEffects * fx);
+void awn_register_effects(GObject * obj, AwnEffects * fx);
 
 /**
  * awn_unregister_effects:
@@ -184,7 +185,7 @@ void awn_register_effects (GObject * obj, AwnEffects * fx);
  *
  * Unregisters events for managed window.
  */
-void awn_unregister_effects (AwnEffects * fx);
+void awn_unregister_effects(AwnEffects * fx);
 
 /**
  * awn_effect_start:
@@ -194,7 +195,7 @@ void awn_unregister_effects (AwnEffects * fx);
  * Start a single effect. The effect will loop until awn_effect_stop()
  * is called.
  */
-void awn_effect_start (AwnEffects * fx, const AwnEffect effect);
+void awn_effect_start(AwnEffects * fx, const AwnEffect effect);
 
 /**
  * awn_effect_stop:
@@ -204,7 +205,7 @@ void awn_effect_start (AwnEffects * fx, const AwnEffect effect);
  * Stop a single effect.
  */
 
-void awn_effect_stop (AwnEffects * fx, const AwnEffect effect);
+void awn_effect_stop(AwnEffects * fx, const AwnEffect effect);
 
 /**
  * awn_effects_set_title:
@@ -215,8 +216,8 @@ void awn_effect_stop (AwnEffects * fx, const AwnEffect effect);
  * Makes #AwnTitle appear on #GtkWidget::enter-notify-event.
  */
 void
-awn_effects_set_title (AwnEffects * fx, AwnTitle * title,
-		       AwnTitleCallback title_func);
+awn_effects_set_title(AwnEffects * fx, AwnTitle * title,
+                      AwnTitleCallback title_func);
 
 /**
  * awn_effect_start_ex:
@@ -230,20 +231,20 @@ awn_effects_set_title (AwnEffects * fx, AwnTitle * title,
  * possibility to specify maximum number of loops.
  */
 void
-awn_effect_start_ex (AwnEffects * fx, const AwnEffect effect,
-		     AwnEventNotify start, AwnEventNotify stop,
-		     gint max_loops);
+awn_effect_start_ex(AwnEffects * fx, const AwnEffect effect,
+                    AwnEventNotify start, AwnEventNotify stop,
+                    gint max_loops);
 
-void awn_draw_background (AwnEffects *, cairo_t *);
-void awn_draw_icons (AwnEffects *, cairo_t *, GdkPixbuf *, GdkPixbuf *);
-void awn_draw_icons_cairo (AwnEffects * fx, cairo_t * cr, cairo_t * ,cairo_t * );
-void awn_draw_foreground (AwnEffects *, cairo_t *);
-void awn_draw_set_window_size (AwnEffects *, const gint, const gint);
-void awn_draw_set_icon_size (AwnEffects *, const gint, const gint);
+void awn_draw_background(AwnEffects *, cairo_t *);
+void awn_draw_icons(AwnEffects *, cairo_t *, GdkPixbuf *, GdkPixbuf *);
+void awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t * , cairo_t *);
+void awn_draw_foreground(AwnEffects *, cairo_t *);
+void awn_draw_set_window_size(AwnEffects *, const gint, const gint);
+void awn_draw_set_icon_size(AwnEffects *, const gint, const gint);
 
 G_END_DECLS
 
 //Move this somewhere else eventually
-void main_effect_loop (AwnEffects * fx);
+void main_effect_loop(AwnEffects * fx);
 
 #endif
