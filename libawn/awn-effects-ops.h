@@ -25,9 +25,10 @@
 
 typedef struct
 {
-  cairo_surface_t * surface;
+  cairo_surface_t * surface;    //if surface is NULL. then dest should be used.
+  cairo_operator_t operator;
   gfloat            alpha;  
-}AdditiveOP;
+}SourceToDest;
 
 gboolean awn_effect_op_scaling(AwnEffects * fx,
                                DrawIconState * ds,
@@ -73,7 +74,7 @@ gboolean awn_effect_op_additive(AwnEffects * fx,
                             DrawIconState * ds,
                             cairo_surface_t * icon_srfc,
                             cairo_t * icon_ctx,
-                            AdditiveOP * data
+                            SourceToDest * data
                            );                           
 
 gboolean awn_effect_move_x(AwnEffects * fx,
