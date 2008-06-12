@@ -185,6 +185,12 @@ awn_effects_init(GObject * self, AwnEffects * fx)
   fx->op_list=g_malloc(sizeof(OP_LIST) );
   memcpy(fx->op_list,OP_LIST,sizeof(OP_LIST) );
 
+  
+  fx->icon_srfc = NULL;      //Work surfaces/contexts
+  fx->icon_ctx = NULL;
+  fx->reflect_srfc = NULL;
+  fx->reflect_ctx = NULL;
+  
 }
 
 void
@@ -626,10 +632,6 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
 {
   cairo_surface_t * icon;       //Surfaces pulled from args.
   cairo_surface_t * reflect=NULL;
-  static cairo_surface_t * icon_srfc = NULL;      //Work surfaces/contexts
-  static cairo_t * icon_ctx = NULL;
-  static cairo_surface_t * reflect_srfc = NULL;
-  static cairo_t * reflect_ctx = NULL;
   DrawIconState  ds;
   gboolean icon_changed=FALSE;
   gint i;
@@ -674,21 +676,21 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
      
   /* scaling */
 //always first.
-  icon_changed = awn_effect_op_scaling(fx, &ds, icon, &icon_srfc, &icon_ctx, 
-                                       &reflect_srfc, &reflect_ctx) || icon_changed;
+  icon_changed = awn_effect_op_scaling(fx, &ds, icon, &fx->icon_srfc, &fx->icon_ctx, 
+                                       &fx->reflect_srfc, &fx->reflect_ctx) || icon_changed;
 
 //These will move into the configurable list
 
   for (i=0;fx->op_list[i].fn;i++)
   {
-    icon_changed = fx->op_list[i].fn(fx, &ds, icon_srfc, icon_ctx, fx->op_list[i].data)
+    icon_changed = fx->op_list[i].fn(fx, &ds, fx->icon_srfc, fx->icon_ctx, fx->op_list[i].data)
                   || icon_changed;
   }
   //always last.
-  icon_changed = awn_effect_op_3dturn(fx, cr, &ds, icon_srfc, icon_ctx, NULL)
+  icon_changed = awn_effect_op_3dturn(fx, cr, &ds, fx->icon_srfc, fx->icon_ctx, NULL)
                   || icon_changed;
 
-  cairo_set_source_surface(cr, icon_srfc, ds.x1, ds.y1);
+  cairo_set_source_surface(cr, fx->icon_srfc, ds.x1, ds.y1);
   cairo_paint_with_alpha(cr, fx->alpha);
 
   //------------------------------------------------------------------------
@@ -709,14 +711,14 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
                         (ds.current_width / 2.0)*(1 - (1)),
                         (ds.current_height / 2.0)*(1 - (-1))
                        );
-      cairo_save(reflect_ctx);
-      cairo_transform(reflect_ctx, &matrix);
-      cairo_set_source_surface(reflect_ctx, icon_srfc, 0, 0);
-      cairo_paint(reflect_ctx);
+      cairo_save(fx->reflect_ctx);
+      cairo_transform(fx->reflect_ctx, &matrix);
+      cairo_set_source_surface(fx->reflect_ctx, fx->icon_srfc, 0, 0);
+      cairo_paint(fx->reflect_ctx);
 
-      cairo_set_source_surface(cr, reflect_srfc, ds.x1, ds.y1);
+      cairo_set_source_surface(cr, fx->reflect_srfc, ds.x1, ds.y1);
       cairo_paint_with_alpha(cr, fx->alpha / 3);
-      cairo_restore(reflect_ctx);    
+      cairo_restore(fx->reflect_ctx);    
     }
     else
     {     
