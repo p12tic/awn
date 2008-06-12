@@ -323,3 +323,10 @@ turn_closing_effect(AwnEffectsPrivate * priv)
 
   return repeat;
 }
+
+gboolean
+turn_effect_finalize(AwnEffectsPrivate * priv)
+{
+  printf("turn_effect_finalize(AwnEffectsPrivate * priv)\n");
+  return TRUE;
+}

@@ -27,4 +27,5 @@ gboolean glow_effect(AwnEffectsPrivate * priv);
 gboolean glow_opening_effect(AwnEffectsPrivate * priv);
 gboolean glow_closing_effect(AwnEffectsPrivate * priv);
 gboolean glow_attention_effect(AwnEffectsPrivate * priv);
+gboolean glow_effect_finalize(AwnEffectsPrivate * priv);
 #endif

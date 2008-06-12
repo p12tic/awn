@@ -123,4 +123,9 @@ bounce_opening_effect(AwnEffectsPrivate * priv)
   return repeat;
 }
 
-
+gboolean
+bounce_effect_finalize(AwnEffectsPrivate * priv)
+{
+  printf("bounce_effect_finalize(AwnEffectsPrivate * priv)\n");
+  return TRUE;
+}

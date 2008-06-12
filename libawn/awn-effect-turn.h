@@ -26,4 +26,5 @@
 gboolean turn_hover_effect(AwnEffectsPrivate * priv);
 gboolean turn_opening_effect(AwnEffectsPrivate * priv);
 gboolean turn_closing_effect(AwnEffectsPrivate * priv);
+gboolean turn_effect_finalize(AwnEffectsPrivate * priv);
 #endif

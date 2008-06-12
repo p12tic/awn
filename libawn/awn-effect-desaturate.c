@@ -91,3 +91,9 @@ desaturate_effect(AwnEffectsPrivate * priv)
   return repeat;
 }
 
+gboolean
+desaturate_effect_finalize(AwnEffectsPrivate * priv)
+{
+
+  return TRUE;
+}

@@ -401,3 +401,9 @@ spotlight3D_closing_effect(AwnEffectsPrivate * priv)
   return repeat;
 }
 
+gboolean
+spotlight3D_effect_finalize(AwnEffectsPrivate * priv)
+{
+  printf("spotlight3d_effect_finalize(AwnEffectsPrivate * priv)\n");
+  return TRUE;
+}

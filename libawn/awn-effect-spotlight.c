@@ -322,3 +322,11 @@ spotlight_init()
 
   g_return_if_fail(error == NULL);
 }
+
+gboolean
+spotlight_effect_finalize(AwnEffectsPrivate * priv)
+{
+  printf("spotlight_effect_finalize(AwnEffectsPrivate * priv)\n");
+  return TRUE;
+}
+

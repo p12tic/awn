@@ -250,3 +250,10 @@ glow_attention_effect(AwnEffectsPrivate * priv)
 
   return repeat;
 }
+
+gboolean
+glow_effect_finalize(AwnEffectsPrivate * priv)
+{
+  printf("glow_effect_finalize(AwnEffectsPrivate * priv)\n");
+  return TRUE;
+}

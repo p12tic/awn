@@ -280,4 +280,11 @@ zoom_closing_effect(AwnEffectsPrivate * priv)
   return repeat;
 }
 
+gboolean
+zoom_effect_finalize(AwnEffectsPrivate * priv)
+{
+  printf("bounce_effect_finalize(AwnEffectsPrivate * priv)\n");
+  return TRUE;
+}
+
 

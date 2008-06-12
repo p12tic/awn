@@ -25,5 +25,6 @@
 
 gboolean bounce_effect(AwnEffectsPrivate * priv);
 gboolean bounce_opening_effect(AwnEffectsPrivate * priv);
+gboolean bounce_effect_finalize(AwnEffectsPrivate * priv);
 
 #endif

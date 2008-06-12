@@ -26,5 +26,5 @@ gboolean zoom_effect(AwnEffectsPrivate * priv);
 gboolean zoom_attention_effect(AwnEffectsPrivate * priv);
 gboolean zoom_opening_effect(AwnEffectsPrivate * priv);
 gboolean zoom_closing_effect(AwnEffectsPrivate * priv);
-
+gboolean zoom_effect_finalize(AwnEffectsPrivate * priv);
 #endif

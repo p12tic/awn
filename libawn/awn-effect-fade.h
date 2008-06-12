@@ -25,5 +25,6 @@
 
 gboolean fade_out_effect(AwnEffectsPrivate * priv);
 gboolean fading_effect(AwnEffectsPrivate * priv);
+gboolean fading_effect_finalize(AwnEffectsPrivate * priv);
 
 #endif

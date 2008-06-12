@@ -27,5 +27,6 @@ gboolean bounce_squish_closing_effect(AwnEffectsPrivate * priv);
 gboolean bounce_squish_opening_effect(AwnEffectsPrivate * priv);
 gboolean bounce_squish_attention_effect(AwnEffectsPrivate * priv);
 gboolean bounce_squish_effect(AwnEffectsPrivate * priv);
+gboolean bounce_squish_effect_finalize(AwnEffectsPrivate * priv);
 
 #endif

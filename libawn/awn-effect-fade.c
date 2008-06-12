@@ -120,3 +120,9 @@ fading_effect(AwnEffectsPrivate * priv)
   return repeat;
 }
 
+gboolean
+fading_effect_finalize(AwnEffectsPrivate * priv)
+{
+  printf("fading_effect_finalize(AwnEffectsPrivate * priv)\n");
+  return TRUE;
+}

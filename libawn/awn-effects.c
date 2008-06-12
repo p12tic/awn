@@ -120,7 +120,18 @@ static const GSourceFunc ATTENTION_EFFECTS[] =
   (GSourceFunc) spotlight3D_hover_effect,
   (GSourceFunc) glow_attention_effect
 };
-
+static const GSourceFunc FINALIZE_EFFECTS[] =
+{
+  NULL,
+  (GSourceFunc) bounce_effect_finalize,
+  (GSourceFunc) fading_effect_finalize,
+  (GSourceFunc) spotlight_effect_finalize,
+  (GSourceFunc) zoom_effect_finalize,
+  (GSourceFunc) bounce_squish_effect_finalize,
+  (GSourceFunc) turn_effect_finalize,
+  (GSourceFunc) spotlight3D_effect_finalize,
+  (GSourceFunc) glow_effect_finalize
+};
 
 //The default ops list that the existing effects expect.
 static const AwnEffectsOp OP_LIST[] =
@@ -413,6 +424,7 @@ static GSourceFunc get_animation(AwnEffectsPrivate *topEffect, gint effects[])
       break;
 
     case AWN_EFFECT_DESATURATE:
+//      g_assert(FALSE);    //let's find out when this is used.  I believe it is somewhere...
       animation = (GSourceFunc) desaturate_effect;
       break;
 
@@ -678,7 +690,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   }
 
   /* scaling */
-//always first.
+//first. will take care of the (re)allocate of the context/surfaces if needed.
   icon_changed = awn_effect_op_scaling(fx, &ds, icon, &fx->icon_srfc, &fx->icon_ctx,
                                        &fx->reflect_srfc, &fx->reflect_ctx) || icon_changed;
 

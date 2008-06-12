@@ -28,4 +28,5 @@ gboolean spotlight_half_fade_effect(AwnEffectsPrivate * priv);
 gboolean spotlight_opening_effect2(AwnEffectsPrivate * priv);
 gboolean spotlight_closing_effect(AwnEffectsPrivate * priv);
 void spotlight_init();
+gboolean spotlight_effect_finalize(AwnEffectsPrivate * priv);
 #endif

@@ -334,3 +334,10 @@ bounce_squish_closing_effect(AwnEffectsPrivate * priv)
 
   return repeat;
 }
+
+gboolean
+bounce_squish_effect_finalize(AwnEffectsPrivate * priv)
+{
+  printf("bounce_squish_effect_finalize(AwnEffectsPrivate * priv)\n");
+  return TRUE;
+}
