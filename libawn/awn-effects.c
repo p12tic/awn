@@ -633,7 +633,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   DrawIconState  ds;
   gboolean icon_changed=FALSE;
   gint i;
-printf("frame = %d\n",fx->settings->frame_rate);  
+ 
   icon = cairo_get_target(icon_context);
 
   if (reflect_context)
