@@ -180,7 +180,7 @@ awn_effects_init(GObject * self, AwnEffects * fx)
   fx->leave_notify = 0;
   fx->timer_id = 0;
 
-  fx->effect_frame_rate = fx->settings->frame_rate;
+  //fx->effect_frame_rate = fx->settings->frame_rate;
   
   fx->op_list=g_malloc(sizeof(OP_LIST) );
   memcpy(fx->op_list,OP_LIST,sizeof(OP_LIST) );
@@ -462,7 +462,7 @@ main_effect_loop(AwnEffects * fx)
 
   if (animation)
   {
-    fx->timer_id = g_timeout_add(1000/fx->effect_frame_rate, animation, topEffect);
+    fx->timer_id = g_timeout_add(1000/fx->settings->frame_rate, animation, topEffect);
     fx->current_effect = topEffect->this_effect;
     fx->effect_lock = FALSE;
   }
@@ -664,7 +664,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
 
   if (fx->clip)
   {
-    g_warning("Clipping ~\n");
+//    g_warning("Clipping ~\n");
   }
     // sanity check
     if (fx->delta_width <= -ds.current_width
@@ -691,7 +691,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
                   || icon_changed;
 
   cairo_set_source_surface(cr, fx->icon_srfc, ds.x1, ds.y1);
-  cairo_paint_with_alpha(cr, fx->alpha);
+  cairo_paint_with_alpha(cr, fx->settings->icon_alpha);
 
   //------------------------------------------------------------------------
   /* reflection */
@@ -723,7 +723,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
     else
     {     
       cairo_set_source_surface(cr, reflect, ds.x1, ds.y1);      
-      cairo_paint_with_alpha(cr, fx->alpha / 3);      
+      cairo_paint_with_alpha(cr, fx->settings->icon_alpha / 3);      
     }
   }
 

@@ -132,7 +132,7 @@ struct _AwnEffects
   guint leave_notify;
   guint timer_id;
   
-  guint effect_frame_rate;
+//  guint effect_frame_rate;
   
   cairo_surface_t * icon_srfc;      //Work surfaces/contexts
   cairo_t * icon_ctx;
