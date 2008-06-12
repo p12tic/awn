@@ -179,7 +179,7 @@ awn_effects_init(GObject * self, AwnEffects * fx)
   fx->x_offset = 0;
   fx->y_offset = 0;
   fx->rotate_degrees = 0.0;
-  fx->alpha = fx->settings->icon_alpha;
+  fx->alpha = 1.0;
   fx->spotlight_alpha = 0.0;
   fx->saturation = 1.0;
   fx->glow_amount = 0.0;
