@@ -23,6 +23,12 @@
 #define __AWN_EFFECTS_OPS_
 #include "awn-effects.h"
 
+typedef struct
+{
+  cairo_surface_t * surface;
+  gfloat            alpha;  
+}AdditiveOP;
+
 gboolean awn_effect_op_scaling(AwnEffects * fx,
                                DrawIconState * ds,
                                cairo_surface_t * icon,
@@ -62,6 +68,13 @@ gboolean awn_effect_op_glow(AwnEffects * fx,
                             cairo_t * icon_ctx,
                             gpointer null
                            ) ;
+                           
+gboolean awn_effect_op_additive(AwnEffects * fx,
+                            DrawIconState * ds,
+                            cairo_surface_t * icon_srfc,
+                            cairo_t * icon_ctx,
+                            AdditiveOP * data
+                           );                           
 
 gboolean awn_effect_move_x(AwnEffects * fx,
                            DrawIconState * ds,

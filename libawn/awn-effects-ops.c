@@ -219,7 +219,6 @@ apply_3d_illusion(AwnEffects * fx, cairo_t * cr, cairo_surface_t * icon_srfc,
 
 //-------------------------------------------------------------------
 
-
 gboolean awn_effect_op_scaling(AwnEffects * fx,
                                DrawIconState * ds,
                                cairo_surface_t * icon,
@@ -406,6 +405,38 @@ gboolean awn_effect_op_glow(AwnEffects * fx,
 
   return FALSE;
 }
+
+
+gboolean awn_effect_op_additive(AwnEffects * fx,
+                            DrawIconState * ds,
+                            cairo_surface_t * icon_srfc,
+                            cairo_t * icon_ctx,
+                            AdditiveOP *data
+                           )
+{
+  gfloat alpha=1.0;
+  cairo_surface_t * surface = icon_srfc;
+  
+  if (data)
+  {
+    alpha=data->alpha;
+    if (data->surface)
+    {
+      surface=data->surface;
+    }
+  }
+  cairo_set_operator(icon_ctx,CAIRO_OPERATOR_ADD);
+  cairo_set_source_surface(icon_ctx, surface, 0, 0);
+  cairo_paint_with_alpha(icon_ctx,alpha);    
+  cairo_set_operator(icon_ctx,CAIRO_OPERATOR_SOURCE);
+  return TRUE;    //this function always changes the dest... or often enough not to matter.
+}
+
+
+//------------------------------------------------------
+//possibly create ops for setting cairo source operator...  FIXME ?
+
+
 
 //========================================
 gboolean

@@ -122,7 +122,8 @@ static const GSourceFunc ATTENTION_EFFECTS[] =
 };
 
 
-static const AwnEffectsOp OP_LIST[5]={
+//The default ops list that the existing effects expect.
+static const AwnEffectsOp OP_LIST[]={
   {awn_effect_op_saturate, NULL},
   {awn_effect_op_hflip,NULL},
   {awn_effect_op_glow, NULL},
