@@ -70,7 +70,7 @@ gboolean awn_effect_op_glow(AwnEffects * fx,
                             gpointer null
                            ) ;
 
-gboolean awn_effect_op_additive(AwnEffects * fx,
+gboolean awn_effect_op_todest(AwnEffects * fx,
                                 DrawIconState * ds,
                                 cairo_surface_t * icon_srfc,
                                 cairo_t * icon_ctx,

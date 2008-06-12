@@ -708,7 +708,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
 
   cairo_set_source_surface(cr, fx->icon_srfc, ds.x1, ds.y1);
 
-  cairo_paint_with_alpha(cr, fx->settings->icon_alpha);
+  cairo_paint_with_alpha(cr, fx->settings->icon_alpha * fx->alpha);
 
   //------------------------------------------------------------------------
   /* reflection */
@@ -741,7 +741,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
     else
     {
       cairo_set_source_surface(cr, reflect, ds.x1, ds.y1);
-      cairo_paint_with_alpha(cr, fx->settings->icon_alpha / 3);
+      cairo_paint_with_alpha(cr, fx->settings->icon_alpha * fx->alpha / 3);
     }
   }
 
