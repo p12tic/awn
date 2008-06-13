@@ -284,9 +284,10 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
         cairo_destroy(*picon_ctx);
       }
 
-      *picon_srfc = cairo_surface_create_similar(icon, CAIRO_CONTENT_COLOR_ALPHA,
-
-                    ds->current_width, ds->current_height);
+      *picon_srfc = cairo_surface_create_similar(icon,
+                                                 CAIRO_CONTENT_COLOR_ALPHA,
+                                                 ds->current_width, 
+                                                 ds->current_height);
       *picon_ctx = cairo_create(*picon_srfc);
     }
 

@@ -307,7 +307,8 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   if (!priv->icon_context)  
   {
-    cairo_surface_t * srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
+    cairo_surface_t * srfc = cairo_surface_create_similar(cairo_get_target(cr),
+                                            CAIRO_CONTENT_COLOR_ALPHA,
                                             gdk_pixbuf_get_width(priv->icon), 
                                             gdk_pixbuf_get_height(priv->icon));
     priv->icon_context = cairo_create(srfc);  
@@ -316,9 +317,10 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
     
     if ( priv->reflect && GDK_IS_PIXBUF(priv->reflect) )
     {
-      srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
-                                            gdk_pixbuf_get_width(priv->reflect), 
-                                            gdk_pixbuf_get_height(priv->reflect));      
+      srfc = cairo_surface_create_similar(cairo_get_target(cr),
+                                        CAIRO_CONTENT_COLOR_ALPHA,
+                                        gdk_pixbuf_get_width(priv->reflect), 
+                                        gdk_pixbuf_get_height(priv->reflect));      
       priv->reflect_context = cairo_create(srfc);  
       gdk_cairo_set_source_pixbuf (priv->reflect_context, priv->reflect, 0, 0);
       cairo_paint(priv->reflect_context);
