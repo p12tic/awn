@@ -1,6 +1,7 @@
 /*
  *  Copyright (C) 2007 Michal Hruby <michal.mhr@gmail.com>
  *  Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
+ *  Copyright (C) 1999 The Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -49,6 +50,9 @@ lighten_component(const guchar cur_value, const gfloat amount)
   return (guchar) new_value;
 }
 
+/*
+ *    FIXME it would be nice to not have to use image surfaces for this effect
+ */
 static void
 lighten_surface(cairo_surface_t * src, const gfloat amount)
 {
@@ -58,17 +62,17 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
   guchar *pixsrc;
   cairo_surface_t * temp_srfc;
   cairo_t         * temp_ctx;
-  
+
   g_return_if_fail(src);
   has_alpha = TRUE;
-  temp_srfc = cairo_image_surface_create   (CAIRO_FORMAT_ARGB32,
-                                        cairo_xlib_surface_get_width(src),
-                                        cairo_xlib_surface_get_height(src)
+  temp_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
+                                         cairo_xlib_surface_get_width(src),
+                                         cairo_xlib_surface_get_height(src)
                                         );
   temp_ctx = cairo_create(temp_srfc);
-  cairo_set_source_surface(temp_ctx,src,0,0);
+  cairo_set_source_surface(temp_ctx, src, 0, 0);
   cairo_paint(temp_ctx);
-    
+
   width = cairo_image_surface_get_width(temp_srfc);
   height = cairo_image_surface_get_height(temp_srfc);
   row_stride = cairo_image_surface_get_stride(temp_srfc);
@@ -91,15 +95,19 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
         pixsrc++;
     }
   }
+
   cairo_destroy(temp_ctx);
+
   temp_ctx = cairo_create(src);
-  cairo_set_source_surface(temp_ctx,temp_srfc,0,0);  
+  cairo_set_source_surface(temp_ctx, temp_srfc, 0, 0);
   cairo_paint(temp_ctx);
   cairo_surface_destroy(temp_srfc);
-  cairo_destroy(temp_ctx);  
+  cairo_destroy(temp_ctx);
 }
 
 /**
+ *    FIXME it would be nice to not have to use image surfaces for this effect
+ *
  * Modified from gdk_pixbuf_saturate_and_pixelate();
  * Original copyright on gdk_pixbuf_saturate_and_pixelate() below
  * Copyright (C) 1999 The Free Software Foundation
@@ -137,18 +145,20 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
 
   g_return_if_fail(src);
   g_return_if_fail(dest);
-  g_return_if_fail(cairo_xlib_surface_get_height(src) == cairo_xlib_surface_get_height(dest));
-  g_return_if_fail(cairo_xlib_surface_get_width(src) == cairo_xlib_surface_get_height(dest));
+  g_return_if_fail(cairo_xlib_surface_get_height(src) ==
+                   cairo_xlib_surface_get_height(dest));
+  g_return_if_fail(cairo_xlib_surface_get_width(src) ==
+                   cairo_xlib_surface_get_height(dest));
 
-  temp_dest_srfc = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                        cairo_xlib_surface_get_width(dest),
-                                        cairo_xlib_surface_get_height(dest)
-                                        );
+  temp_dest_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
+                   cairo_xlib_surface_get_width(dest),
+                   cairo_xlib_surface_get_height(dest)
+                                             );
   temp_dest_ctx = cairo_create(temp_dest_srfc);
-  cairo_set_source_surface(temp_dest_ctx,dest,0,0);
+  cairo_set_source_surface(temp_dest_ctx, dest, 0, 0);
   cairo_paint(temp_dest_ctx);
   cairo_destroy(temp_dest_ctx);
-  
+
   if (src == dest)
   {
     temp_src_srfc = temp_dest_srfc;
@@ -156,26 +166,29 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
   else
   {
     temp_src_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
-                                          cairo_xlib_surface_get_width(src),
-                                          cairo_xlib_surface_get_height(src)
-                                          );
+                    cairo_xlib_surface_get_width(src),
+                    cairo_xlib_surface_get_height(src)
+                                              );
     temp_src_ctx = cairo_create(temp_src_srfc);
-    cairo_set_source_surface(temp_src_ctx,src,0,0);
+    cairo_set_source_surface(temp_src_ctx, src, 0, 0);
     cairo_paint(temp_src_ctx);
     cairo_destroy(temp_src_ctx);
   }
-  
+
   if (saturation == 1.0 && !pixelate)
   {
     if (dest != src)
       memcpy(cairo_image_surface_get_data(temp_dest_srfc),
              cairo_image_surface_get_data(temp_src_srfc),
-             cairo_image_surface_get_height(temp_src_srfc) * cairo_image_surface_get_stride(temp_src_srfc));
+             cairo_image_surface_get_height(temp_src_srfc) *
+             cairo_image_surface_get_stride(temp_src_srfc));
   }
   else
   {
     int i, j, t;
-    int width, height, has_alpha, src_rowstride, dest_rowstride, bytes_per_pixel;
+    int width, height;
+    int has_alpha, src_rowstride, dest_rowstride, bytes_per_pixel;
+
     guchar *src_line;
     guchar *dest_line;
     guchar *src_pixel;
@@ -236,11 +249,14 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
       }
     }
   }
+
   cairo_t * tmp;
+
   tmp = cairo_create(dest);
-  cairo_set_source_surface(tmp,temp_dest_srfc,0,0);  
+  cairo_set_source_surface(tmp, temp_dest_srfc, 0, 0);
   cairo_paint(tmp);
   cairo_destroy(tmp);
+
   if (temp_dest_srfc == temp_src_srfc)
   {
     cairo_surface_destroy(temp_dest_srfc);
@@ -248,7 +264,7 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
   else
   {
     cairo_surface_destroy(temp_dest_srfc);
-    cairo_surface_destroy(temp_src_srfc);    
+    cairo_surface_destroy(temp_src_srfc);
   }
 }
 
@@ -280,7 +296,14 @@ apply_3d_illusion(AwnEffects * fx, cairo_t * cr, cairo_surface_t * icon_srfc,
 }
 
 //-------------------------------------------------------------------
+/*
+ This will reuse surfaces if possible.  Create new surfaces if
+ ther is none. And destroy and create new surfaces if the size (scaling)
+ is changing
 
+ FIXME
+ The function name probably should be changed... not sure to what :-)
+ */
 gboolean awn_effect_op_scaling(AwnEffects * fx,
                                DrawIconState * ds,
                                cairo_surface_t * icon,
@@ -290,17 +313,17 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
                                cairo_t ** preflect_ctx
                               )
 {
-  if (fx->delta_width || fx->delta_height)
+  if (fx->delta_width || fx->delta_height) //is surface size changing?
   {
     // update current w&h
     ds->current_width = ds->current_width + fx->delta_width;
-
     ds->current_height = ds->current_height + fx->delta_height;
 
     // adjust offsets
     ds->x1 = (fx->window_width - ds->current_width) / 2;
-
     ds->y1 = ds->y1 - fx->delta_height;
+
+    //getting rid of the existing surfaces
 
     if (*picon_ctx)
     {
@@ -314,37 +337,53 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
       cairo_destroy(*preflect_ctx);
     }
 
-    *picon_srfc = cairo_surface_create_similar(icon, CAIRO_CONTENT_COLOR_ALPHA,
-
+    //new surfaces
+    *picon_srfc = cairo_surface_create_similar(icon,
+                  CAIRO_CONTENT_COLOR_ALPHA,
                   ds->current_width,
                   ds->current_height);
+
     *picon_ctx = cairo_create(*picon_srfc);
 
-    *preflect_srfc = cairo_surface_create_similar(icon, CAIRO_CONTENT_COLOR_ALPHA,
+    *preflect_srfc = cairo_surface_create_similar(icon,
+                     CAIRO_CONTENT_COLOR_ALPHA,
                      ds->current_width,
                      ds->current_height);
+
     *preflect_ctx = cairo_create(*preflect_srfc);
 
+    /*
+     Need to make a high resolution copy of the icon available somehow.
+     Probably a fn callback will be implemented as it's rarely needed and
+     it's best not to force the applet to provide it all the time especially
+     with dynamic icons
+     */
     cairo_set_operator(*picon_ctx, CAIRO_OPERATOR_SOURCE);
+
     cairo_save(*picon_ctx);
+
     cairo_scale(*picon_ctx,
-                (double)ds->current_width / ((double)ds->current_width - fx->delta_width),
-                (double)ds->current_height / ((double)ds->current_height - fx->delta_height));
+                ds->current_width  / ((double)ds->current_width - fx->delta_width),
+                ds->current_height / ((double)ds->current_height - fx->delta_height));
+
     cairo_set_source_surface(*picon_ctx, icon, 0, 0);
+
     cairo_paint(*picon_ctx);
+
     cairo_restore(*picon_ctx);
+
     return TRUE;
   }
-  else
+  else  //everything is "normal" size.
   {
-
     gboolean up_flag;
 
+    //has the size changed.  probably not
     up_flag = !*picon_srfc ? TRUE :
               (cairo_xlib_surface_get_width(*picon_srfc) != ds->current_width) ||
               (cairo_xlib_surface_get_height(*picon_srfc) != ds->current_height);
 
-    if (up_flag)
+    if (up_flag) //if it has then recreate the surface..
     {
       if (*picon_srfc)
       {
@@ -353,9 +392,10 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
       }
 
       *picon_srfc = cairo_surface_create_similar(icon,
-                                                 CAIRO_CONTENT_COLOR_ALPHA,
-                                                 ds->current_width, 
-                                                 ds->current_height);
+
+                    CAIRO_CONTENT_COLOR_ALPHA,
+                    ds->current_width,
+                    ds->current_height);
       *picon_ctx = cairo_create(*picon_srfc);
     }
 
@@ -372,8 +412,9 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
         cairo_destroy(*preflect_ctx);
       }
 
-      *preflect_srfc = cairo_surface_create_similar(icon, CAIRO_CONTENT_COLOR_ALPHA,
+      *preflect_srfc = cairo_surface_create_similar(icon,
 
+                       CAIRO_CONTENT_COLOR_ALPHA,
                        ds->current_width,
                        ds->current_height);
       *preflect_ctx = cairo_create(*preflect_srfc);
@@ -434,8 +475,7 @@ gboolean awn_effect_op_saturate(AwnEffects * fx,
   /* saturation  */
   if (fx->saturation < 1.0)
   {
-//      printf("saturate disabled \n");   //FIXME WHAT USES saturate????
-//    saturate(icon_ctx, fx->saturation);
+//      printf("saturate \n");   //FIXME WHAT USES saturate????
     surface_saturate(icon_srfc, fx->saturation);
     return TRUE;
   }
@@ -517,7 +557,7 @@ gboolean awn_effect_op_todest(AwnEffects * fx,
   cairo_set_source_surface(icon_ctx, surface, 0, 0);
   cairo_paint_with_alpha(icon_ctx, alpha);
   cairo_set_operator(icon_ctx, CAIRO_OPERATOR_SOURCE);
-  return TRUE;    //this function always changes the dest... or often enough not to matter.
+  return TRUE;
 }
 
 

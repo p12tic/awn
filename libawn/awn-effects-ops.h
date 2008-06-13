@@ -26,7 +26,7 @@
 typedef struct
 {
   cairo_surface_t * surface;    //if surface is NULL. then dest should be used.
-  cairo_operator_t operator;
+  cairo_operator_t  operator;
   gfloat            alpha;
 }SourceToDest;
 
@@ -71,11 +71,11 @@ gboolean awn_effect_op_glow(AwnEffects * fx,
                            ) ;
 
 gboolean awn_effect_op_todest(AwnEffects * fx,
-                                DrawIconState * ds,
-                                cairo_surface_t * icon_srfc,
-                                cairo_t * icon_ctx,
-                                SourceToDest * data
-                               );
+                              DrawIconState * ds,
+                              cairo_surface_t * icon_srfc,
+                              cairo_t * icon_ctx,
+                              SourceToDest * data
+                             );
 
 gboolean awn_effect_move_x(AwnEffects * fx,
                            DrawIconState * ds,
