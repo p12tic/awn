@@ -1,3 +1,11 @@
+2008-06-13  Rodney Cryderman <rcryderman@gmail.com>
+
+	* awn-applet-activation/main.c
+	Removed an error check from launch_python. Now error conditions are
+	handled the same for absolute and relative paths in python applet
+	desktop files.  This allows options to be specified in the applet
+	desktop file and passed to the python applet.
+
 2008-06-12  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* awn-manager/awnPreferences.py:

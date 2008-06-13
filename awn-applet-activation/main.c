@@ -274,7 +274,6 @@ launch_python (const gchar *file,
         
         
         if (g_path_is_absolute (module)) {
-                if (g_file_test (module, G_FILE_TEST_EXISTS))
                         exec = g_strdup (module);
         } else {
                 gchar *dir = g_path_get_dirname (file);
