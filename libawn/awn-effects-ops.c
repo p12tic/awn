@@ -304,6 +304,12 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
 
     if (*picon_ctx)
     {
+      cairo_surface_destroy(*picon_srfc);
+      cairo_destroy(*picon_ctx);
+    }
+
+    if (*preflect_ctx)
+    {
       cairo_surface_destroy(*preflect_srfc);
       cairo_destroy(*preflect_ctx);
     }
