@@ -28,6 +28,7 @@
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
+#include <cairo/cairo-xlib.h>
 
 #include "awn-effect-spotlight.h"
 #include "awn-effect-bounce.h"
@@ -535,7 +536,7 @@ apply_spotlight(AwnEffects * fx, cairo_t * cr)
   static cairo_t * unscaled_spot_ctx = NULL; //FIXME ?
   static gint scaled_width = -1;
   static gint scaled_height = -1;
-  cairo_t * spot_ctx = NULL; //FIXME ?
+  static cairo_t * spot_ctx = NULL; //FIXME ?
   cairo_surface_t * spot_srfc = NULL;
   gint x1 = 0;
   gint y1 = fx->window_height - fx->icon_height;
@@ -543,7 +544,7 @@ apply_spotlight(AwnEffects * fx, cairo_t * cr)
   if (fx->settings)
     y1 = fx->window_height - fx->settings->icon_offset - fx->icon_height;
 
-  if (!spot_ctx)
+  if (!unscaled_spot_ctx)
   {
     cairo_surface_t * srfc = cairo_surface_create_similar(cairo_get_target(cr),
                                       CAIRO_CONTENT_COLOR_ALPHA,
@@ -554,7 +555,7 @@ apply_spotlight(AwnEffects * fx, cairo_t * cr)
     cairo_paint(unscaled_spot_ctx);
   }
 
-  if ((scaled_width != fx->window_width) || (scaled_height != fx->icon_height*1.2))
+  if ((scaled_width != fx->window_width) || (scaled_height != fx->icon_height*5/4))
   {
     if (spot_ctx)
     {
@@ -564,11 +565,11 @@ apply_spotlight(AwnEffects * fx, cairo_t * cr)
 
     scaled_width = fx->window_width;
 
-    scaled_height = fx->icon_height * 1.2;
+    scaled_height = fx->icon_height * 5 / 4;
     spot_srfc = cairo_surface_create_similar(cairo_get_target(cr),
                                           CAIRO_CONTENT_COLOR_ALPHA,
                                           fx->window_width,
-                                          fx->icon_height * 1.2);
+                                          fx->icon_height * 5/4);
     spot_ctx = cairo_create(spot_srfc);
     cairo_save(spot_ctx);
     cairo_scale(spot_ctx,
