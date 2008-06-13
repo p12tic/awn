@@ -546,9 +546,9 @@ apply_spotlight(AwnEffects * fx, cairo_t * cr)
   if (!spot_ctx)
   {
     cairo_surface_t * srfc = cairo_surface_create_similar(cairo_get_target(cr),
-                                    CAIRO_CONTENT_COLOR_ALPHA,
-                                    gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF),
-                                    gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF));
+                                      CAIRO_CONTENT_COLOR_ALPHA,
+                                      gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF),
+                                      gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF));
     unscaled_spot_ctx = cairo_create(srfc);
     gdk_cairo_set_source_pixbuf(unscaled_spot_ctx, SPOTLIGHT_PIXBUF, 0, 0);
     cairo_paint(unscaled_spot_ctx);
@@ -566,9 +566,9 @@ apply_spotlight(AwnEffects * fx, cairo_t * cr)
 
     scaled_height = fx->icon_height * 1.2;
     spot_srfc = cairo_surface_create_similar(cairo_get_target(cr),
-                                            CAIRO_CONTENT_COLOR_ALPHA,
-                                            fx->window_width,
-                                            fx->icon_height * 1.2);
+                                          CAIRO_CONTENT_COLOR_ALPHA,
+                                          fx->window_width,
+                                          fx->icon_height * 1.2);
     spot_ctx = cairo_create(spot_srfc);
     cairo_save(spot_ctx);
     cairo_scale(spot_ctx,
@@ -659,9 +659,9 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
     reflect = cairo_get_target(reflect_context);
   }
 
-  fx->icon_width = cairo_image_surface_get_width(icon);
+  fx->icon_width = cairo_xlib_surface_get_width(icon);
 
-  fx->icon_height = cairo_image_surface_get_height(icon);
+  fx->icon_height = cairo_xlib_surface_get_height(icon);
 
   ds.current_width = fx->icon_width;
   ds.current_height = fx->icon_height;
@@ -774,9 +774,9 @@ awn_draw_icons(AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
    */
 
   cairo_surface_t * icon_srfc = cairo_surface_create_similar(cairo_get_target(cr),
-                                    CAIRO_CONTENT_COLOR_ALPHA,
-                                    gdk_pixbuf_get_width(icon),
-                                    gdk_pixbuf_get_height(icon));
+                                          CAIRO_CONTENT_COLOR_ALPHA,
+                                gdk_pixbuf_get_width(icon),
+                                gdk_pixbuf_get_height(icon));
 
   cairo_t * icon_context = cairo_create(icon_srfc);
 

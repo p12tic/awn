@@ -22,7 +22,9 @@
 #include <config.h>
 #endif
 
+
 #include <gtk/gtk.h>
+#include <cairo/cairo-xlib.h>
 
 #include "awn-applet.h"
 #include "awn-applet-simple.h"
@@ -45,6 +47,7 @@ struct _AwnAppletSimplePrivate
   
   cairo_t * icon_context;
   cairo_t * reflect_context;
+  gboolean icon_cxt_copied;
 
   AwnEffects effects;
 
@@ -159,12 +162,27 @@ awn_applet_simple_set_icon_context(AwnAppletSimple *simple,
   AwnAppletSimplePrivate *priv;
 
   g_return_if_fail(AWN_IS_APPLET_SIMPLE(simple));
-  
   priv = simple->priv;
-  priv->icon_context=cr;
-	priv->icon_width = cairo_image_surface_get_width (cairo_get_target(cr));
-	priv->icon_height = cairo_image_surface_get_height (cairo_get_target(cr));
+  if (priv->icon_cxt_copied)
+  {
+    cairo_surface_destroy(cairo_get_target(priv->icon_context));
+    cairo_destroy(priv->icon_context);
+  }
   
+  priv->icon_context=cr;
+  switch (cairo_surface_get_type(cairo_get_target(cr) ) )
+  {
+    case CAIRO_SURFACE_TYPE_IMAGE:
+	    priv->icon_width = cairo_image_surface_get_width  (cairo_get_target(cr));
+	    priv->icon_height = cairo_image_surface_get_height  (cairo_get_target(cr));
+      break;       
+    case CAIRO_SURFACE_TYPE_XLIB:
+	    priv->icon_width = cairo_xlib_surface_get_width  (cairo_get_target(cr));
+	    priv->icon_height = cairo_xlib_surface_get_height  (cairo_get_target(cr));
+      break;
+    default:
+      g_assert(FALSE);
+  }     
   priv->reflect_context=NULL;  
   
   gtk_widget_set_size_request(GTK_WIDGET(simple),
@@ -281,7 +299,6 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   AwnAppletSimplePrivate *priv;
   cairo_t *cr=NULL;
 
-  
   gint width, height, bar_height;
   
   priv = AWN_APPLET_SIMPLE(widget)->priv;
@@ -300,11 +317,11 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   /* task back */
   cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint(cr);
-  
+
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
   
   awn_draw_background(&priv->effects, cr);    
-
+  
   if (!priv->icon_context)  
   {
     cairo_surface_t * srfc = cairo_surface_create_similar(cairo_get_target(cr),
@@ -330,6 +347,30 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   
   if (priv->icon_context)
   {
+    switch (cairo_surface_get_type(cairo_get_target(priv->icon_context) ) )
+    {
+      case CAIRO_SURFACE_TYPE_IMAGE:
+        {
+          cairo_t * new_icon_ctx;
+          cairo_surface_t * new_icon_srfc = cairo_surface_create_similar(cairo_get_target(cr),
+                                            CAIRO_CONTENT_COLOR_ALPHA,
+                                            cairo_image_surface_get_width (cairo_get_target(priv->icon_context) ), 
+                                            cairo_image_surface_get_height (cairo_get_target(priv->icon_context) ));
+          new_icon_ctx = cairo_create(new_icon_srfc);
+          cairo_set_source_surface(new_icon_ctx,cairo_get_target(priv->icon_context),0,0);
+          cairo_paint(new_icon_ctx);
+//          cairo_destroy(priv->icon_context);
+          priv->icon_context=new_icon_ctx;
+          priv->icon_cxt_copied = TRUE;
+        }
+        break;
+      case CAIRO_SURFACE_TYPE_XLIB:
+        break;//we're good.
+      default:
+        g_warning("invalid surface type \n");
+        return TRUE;
+    }     
+
     if ( priv->effects_enabled)
     {    
       awn_draw_icons_cairo(&priv->effects,cr,priv->icon_context,priv->reflect_context);
@@ -406,6 +447,7 @@ awn_applet_simple_init(AwnAppletSimple *simple)
 
   priv = simple->priv = AWN_APPLET_SIMPLE_GET_PRIVATE(simple);
 
+  priv->icon_cxt_copied = FALSE;  
   priv->icon = NULL;
   priv->org_icon = NULL;
   priv->reflect = NULL;

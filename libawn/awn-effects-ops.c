@@ -20,11 +20,14 @@
 
 /* scaling */
 
+#include <gtk/gtk.h>
+#include <cairo/cairo-xlib.h>
 #include "awn-effects-ops.h"
 
 #include <math.h>
 #include <string.h>
-#include <gtk/gtk.h>
+
+
 
 inline guchar
 lighten_component(const guchar cur_value, const gfloat amount)
@@ -53,13 +56,23 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
   int width, height, row_stride, has_alpha;
   guchar *target_pixels;
   guchar *pixsrc;
-
+  cairo_surface_t * temp_srfc;
+  cairo_t         * temp_ctx;
+  
   g_return_if_fail(src);
   has_alpha = TRUE;
-  width = cairo_image_surface_get_width(src);
-  height = cairo_image_surface_get_height(src);
-  row_stride = cairo_image_surface_get_stride(src);
-  target_pixels = cairo_image_surface_get_data(src);
+  temp_srfc = cairo_image_surface_create   (CAIRO_FORMAT_ARGB32,
+                                        cairo_xlib_surface_get_width(src),
+                                        cairo_xlib_surface_get_height(src)
+                                        );
+  temp_ctx = cairo_create(temp_srfc);
+  cairo_set_source_surface(temp_ctx,src,0,0);
+  cairo_paint(temp_ctx);
+    
+  width = cairo_image_surface_get_width(temp_srfc);
+  height = cairo_image_surface_get_height(temp_srfc);
+  row_stride = cairo_image_surface_get_stride(temp_srfc);
+  target_pixels = cairo_image_surface_get_data(temp_srfc);
 
   for (i = 0; i < height; i++)
   {
@@ -78,6 +91,12 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
         pixsrc++;
     }
   }
+  cairo_destroy(temp_ctx);
+  temp_ctx = cairo_create(src);
+  cairo_set_source_surface(temp_ctx,temp_srfc,0,0);  
+  cairo_paint(temp_ctx);
+  cairo_surface_destroy(temp_srfc);
+  cairo_destroy(temp_ctx);  
 }
 
 /**
@@ -111,18 +130,47 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
                               gboolean pixelate)
 {
   /* NOTE that src and dest MAY be the same surface! */
+  cairo_t *temp_src_ctx;
+  cairo_surface_t * temp_src_srfc;
+  cairo_t *temp_dest_ctx;
+  cairo_surface_t * temp_dest_srfc;
 
   g_return_if_fail(src);
   g_return_if_fail(dest);
-  g_return_if_fail(cairo_image_surface_get_height(src) == cairo_image_surface_get_height(dest));
-  g_return_if_fail(cairo_image_surface_get_width(src) == cairo_image_surface_get_height(dest));
+  g_return_if_fail(cairo_xlib_surface_get_height(src) == cairo_xlib_surface_get_height(dest));
+  g_return_if_fail(cairo_xlib_surface_get_width(src) == cairo_xlib_surface_get_height(dest));
 
+  temp_dest_srfc = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                        cairo_xlib_surface_get_width(dest),
+                                        cairo_xlib_surface_get_height(dest)
+                                        );
+  temp_dest_ctx = cairo_create(temp_dest_srfc);
+  cairo_set_source_surface(temp_dest_ctx,dest,0,0);
+  cairo_paint(temp_dest_ctx);
+  cairo_destroy(temp_dest_ctx);
+  
+  if (src == dest)
+  {
+    temp_src_srfc = temp_dest_srfc;
+  }
+  else
+  {
+    temp_src_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
+                                          cairo_xlib_surface_get_width(src),
+                                          cairo_xlib_surface_get_height(src)
+                                          );
+    temp_src_ctx = cairo_create(temp_src_srfc);
+    cairo_set_source_surface(temp_src_ctx,src,0,0);
+    cairo_paint(temp_src_ctx);
+    cairo_destroy(temp_src_ctx);
+  }
+  
   if (saturation == 1.0 && !pixelate)
   {
     if (dest != src)
-      memcpy(cairo_image_surface_get_data(dest),
-             cairo_image_surface_get_data(src),
-             cairo_image_surface_get_height(src) * cairo_image_surface_get_stride(src));
+      memcpy(cairo_image_surface_get_data(temp_dest_srfc),
+             cairo_image_surface_get_data(temp_src_srfc),
+             cairo_image_surface_get_height(temp_src_srfc) * cairo_image_surface_get_stride(temp_src_srfc));
   }
   else
   {
@@ -136,13 +184,13 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
 
     has_alpha = TRUE;
     bytes_per_pixel = has_alpha ? 4 : 3;
-    width = cairo_image_surface_get_width(src);
-    height = cairo_image_surface_get_height(src);
-    src_rowstride = cairo_image_surface_get_stride(src);
-    dest_rowstride = cairo_image_surface_get_stride(dest);
+    width = cairo_image_surface_get_width(temp_src_srfc);
+    height = cairo_image_surface_get_height(temp_src_srfc);
+    src_rowstride = cairo_image_surface_get_stride(temp_src_srfc);
+    dest_rowstride = cairo_image_surface_get_stride(temp_dest_srfc);
 
-    src_line = cairo_image_surface_get_data(src);
-    dest_line = cairo_image_surface_get_data(dest);
+    src_line = cairo_image_surface_get_data(temp_src_srfc);
+    dest_line = cairo_image_surface_get_data(temp_dest_srfc);
 
 #define DARK_FACTOR 0.7
 #define INTENSITY(r, g, b) ((r) * 0.30 + (g) * 0.59 + (b) * 0.11)
@@ -187,6 +235,20 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
         dest_pixel = dest_pixel + bytes_per_pixel;
       }
     }
+  }
+  cairo_t * tmp;
+  tmp = cairo_create(dest);
+  cairo_set_source_surface(tmp,temp_dest_srfc,0,0);  
+  cairo_paint(tmp);
+  cairo_destroy(tmp);
+  if (temp_dest_srfc == temp_src_srfc)
+  {
+    cairo_surface_destroy(temp_dest_srfc);
+  }
+  else
+  {
+    cairo_surface_destroy(temp_dest_srfc);
+    cairo_surface_destroy(temp_src_srfc);    
   }
 }
 
@@ -273,8 +335,8 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
     gboolean up_flag;
 
     up_flag = !*picon_srfc ? TRUE :
-              (cairo_image_surface_get_width(*picon_srfc) != ds->current_width) ||
-              (cairo_image_surface_get_height(*picon_srfc) != ds->current_height);
+              (cairo_xlib_surface_get_width(*picon_srfc) != ds->current_width) ||
+              (cairo_xlib_surface_get_height(*picon_srfc) != ds->current_height);
 
     if (up_flag)
     {
@@ -293,8 +355,8 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
 
     up_flag = !*preflect_srfc ? TRUE :
 
-              (cairo_image_surface_get_width(*preflect_srfc) != ds->current_width) ||
-              (cairo_image_surface_get_height(*preflect_srfc) != ds->current_height);
+              (cairo_xlib_surface_get_width(*preflect_srfc) != ds->current_width) ||
+              (cairo_xlib_surface_get_height(*preflect_srfc) != ds->current_height);
 
     if (up_flag)
     {
