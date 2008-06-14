@@ -30,43 +30,50 @@
 
 // simple bounce effect based on sin function
 gboolean
-bounce_effect (AwnEffectsPrivate * priv)
+bounce_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
     // effect start initialize values
     fx->count = 0;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
 
   const gdouble MAX_BOUNCE_OFFSET = 15.0;
+
   const gint PERIOD = 20;
 
-  fx->y_offset = sin (++fx->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
+  fx->y_offset = sin(++fx->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
 
   // repaint widget
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
   gboolean repeat = TRUE;
+
   if (fx->count >= PERIOD)
   {
     fx->count = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
+    repeat = awn_effect_handle_repeating(priv);
   }
+
   return repeat;
 }
 
 
 
 gboolean
-bounce_opening_effect (AwnEffectsPrivate * priv)
+bounce_opening_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
@@ -78,13 +85,17 @@ bounce_opening_effect (AwnEffectsPrivate * priv)
     fx->clip_region.y = 0;
     fx->clip_region.width = fx->icon_width;
     fx->clip_region.height = 0;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
 
   const gint PERIOD1 = 15;
+
   const gint PERIOD2 = 20;
+
   const gint MAX_BOUNCE_OFFSET = 15;
 
   if (fx->count < PERIOD1)
@@ -93,21 +104,28 @@ bounce_opening_effect (AwnEffectsPrivate * priv)
   {
     fx->clip = FALSE;
     fx->y_offset =
-      sin ((++fx->count - PERIOD1) * M_PI / PERIOD2) * MAX_BOUNCE_OFFSET;
+      sin((++fx->count - PERIOD1) * M_PI / PERIOD2) * MAX_BOUNCE_OFFSET;
   }
 
   // repaint widget
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
   gboolean repeat = TRUE;
+
   if (fx->count >= PERIOD1 + PERIOD2)
   {
     fx->count = 0;
     fx->y_offset = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
+    repeat = awn_effect_handle_repeating(priv);
   }
+
   return repeat;
 }
 
-
+gboolean
+bounce_effect_finalize(AwnEffectsPrivate * priv)
+{
+  printf("bounce_effect_finalize(AwnEffectsPrivate * priv)\n");
+  return TRUE;
+}

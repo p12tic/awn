@@ -16,14 +16,15 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 
 #ifndef __AWN_EFFECT_BOUNCE_H__
 #define __AWN_EFFECT_BOUNCE_H__
 
 #include "awn-effects-shared.h"
 
-gboolean bounce_effect (AwnEffectsPrivate * priv);
-gboolean bounce_opening_effect (AwnEffectsPrivate * priv);
+gboolean bounce_effect(AwnEffectsPrivate * priv);
+gboolean bounce_opening_effect(AwnEffectsPrivate * priv);
+gboolean bounce_effect_finalize(AwnEffectsPrivate * priv);
 
 #endif

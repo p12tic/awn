@@ -28,6 +28,7 @@ source_h =			\
 	awn-config-client.h	\
 	awn-desktop-item.h	\
 	awn-effects.h		\
+	awn-effects-ops.h \
   awn-effects-shared.h \
   awn-effect-spotlight.h \
   awn-effect-bounce.h \
@@ -51,6 +52,7 @@ source_c =			\
 	awn-applet-simple.c	\
 	awn-cairo-utils.c	\
 	awn-effects.c		\
+	awn-effects-ops.c \
   awn-effects-shared.c \
   awn-effect-spotlight.c \
   awn-effect-bounce.c \

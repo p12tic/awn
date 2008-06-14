@@ -16,15 +16,15 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 
 #ifndef __AWN_EFFECT_ZOOM_H__
 #define __AWN_EFFECT_ZOOM_H__
 
 #include "awn-effects-shared.h"
-gboolean zoom_effect (AwnEffectsPrivate * priv);
-gboolean zoom_attention_effect (AwnEffectsPrivate * priv);
-gboolean zoom_opening_effect (AwnEffectsPrivate * priv);
-gboolean zoom_closing_effect (AwnEffectsPrivate * priv);
-
+gboolean zoom_effect(AwnEffectsPrivate * priv);
+gboolean zoom_attention_effect(AwnEffectsPrivate * priv);
+gboolean zoom_opening_effect(AwnEffectsPrivate * priv);
+gboolean zoom_closing_effect(AwnEffectsPrivate * priv);
+gboolean zoom_effect_finalize(AwnEffectsPrivate * priv);
 #endif

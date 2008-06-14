@@ -1,3 +1,38 @@
+2008-06-14  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects-ops.c
+	* libawn/awn-effects-ops.h
+	* libawn/Makefile.am
+	* libawn/awn-applet-simple.c
+	* libawn/awn-effect-bounce.c
+	* libawn/awn-effect-bounce.h
+	* libawn/awn-effect-desaturate.c
+	* libawn/awn-effect-desaturate.h
+	* libawn/awn-effect-fade.c
+	* libawn/awn-effect-fade.h
+	* libawn/awn-effect-glow.c
+	* libawn/awn-effect-glow.h
+	* libawn/awn-effect-spotlight.c
+	* libawn/awn-effect-spotlight.h
+	* libawn/awn-effect-spotlight3d.c
+	* libawn/awn-effect-spotlight3d.h
+	* libawn/awn-effect-squish.c
+	* libawn/awn-effect-squish.h
+	* libawn/awn-effect-turn.c
+	* libawn/awn-effect-turn.h
+	* libawn/awn-effect-zoom.c
+	* libawn/awn-effect-zoom.h
+	* libawn/awn-effects-shared.c
+	* libawn/awn-effects-shared.h
+	* libawn/awn-effects.c
+	* libawn/awn-effects.h
+	* libawn/awn-settings.c
+	* libawn/awn-settings.h
+	Merged rev 280 of lp:~rcryderman/awn/awn-cairo-effects.  Converts 
+	the awn-effects engine to using a (more or less) pure cairo core.
+	Code has been reorganized and converted to follow the core style 
+	guidelines more fully.  
+
 2008-06-13  Rodney Cryderman <rcryderman@gmail.com>
 
 	* awn-applet-activation/main.c

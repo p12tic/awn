@@ -20,38 +20,49 @@
 #include "awn-effects-shared.h"
 
 gboolean
-awn_effect_check_top_effect (AwnEffectsPrivate * priv, gboolean * stopped)
+awn_effect_check_top_effect(AwnEffectsPrivate * priv, gboolean * stopped)
 {
   if (stopped)
     *stopped = TRUE;
+
   AwnEffects *fx = priv->effects;
+
   GList *queue = fx->effect_queue;
+
   AwnEffectsPrivate *item;
+
   while (queue)
   {
     item = queue->data;
+
     if (item->this_effect == priv->this_effect)
     {
       if (stopped)
-	*stopped = FALSE;
+        *stopped = FALSE;
+
       break;
     }
-    queue = g_list_next (queue);
+
+    queue = g_list_next(queue);
   }
+
   if (!fx->effect_queue)
     return FALSE;
+
   item = fx->effect_queue->data;
+
   return item->this_effect == priv->this_effect;
 }
 
 
 gboolean
-awn_effect_handle_repeating (AwnEffectsPrivate * priv)
+awn_effect_handle_repeating(AwnEffectsPrivate * priv)
 {
   gboolean effect_stopped = TRUE;
-  gboolean max_reached = awn_effect_check_max_loops (priv);
+  gboolean max_reached = awn_effect_check_max_loops(priv);
   gboolean repeat = !max_reached
-    && awn_effect_check_top_effect (priv, &effect_stopped);
+                    && awn_effect_check_top_effect(priv, &effect_stopped);
+
   if (!repeat)
   {
     gboolean unregistered = FALSE;
@@ -59,30 +70,38 @@ awn_effect_handle_repeating (AwnEffectsPrivate * priv)
     fx->current_effect = AWN_EFFECT_NONE;
     fx->effect_lock = FALSE;
     fx->timer_id = 0;
+
     if (effect_stopped)
     {
       if (priv->stop)
-	priv->stop (fx->self);
+        priv->stop(fx->self);
+
       unregistered = fx->self == NULL;
-      g_free (priv);
+
+      g_free(priv);
     }
+
     if (!unregistered)
-      main_effect_loop (fx);
+      main_effect_loop(fx);
   }
+
   return repeat;
 }
 
 
 gboolean
-awn_effect_check_max_loops (AwnEffectsPrivate * priv)
+awn_effect_check_max_loops(AwnEffectsPrivate * priv)
 {
   gboolean max_reached = FALSE;
+
   if (priv->max_loops > 0)
   {
     priv->max_loops--;
     max_reached = priv->max_loops <= 0;
   }
+
   if (max_reached)
-    awn_effect_stop (priv->effects, priv->this_effect);
+    awn_effect_stop(priv->effects, priv->this_effect);
+
   return max_reached;
 }

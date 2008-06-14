@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2007 Neil Jagdish Patel <njpatel@gmail.com>
+ * Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,7 +22,9 @@
 #include <config.h>
 #endif
 
+
 #include <gtk/gtk.h>
+#include <cairo/cairo-xlib.h>
 
 #include "awn-applet.h"
 #include "awn-applet-simple.h"
@@ -36,8 +39,15 @@ G_DEFINE_TYPE(AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET)
 struct _AwnAppletSimplePrivate
 {
   GdkPixbuf *org_icon;
+  
+  /*contemplate doing a union for icon and reflect but instead creating 
+  a separate member for the surface vars*/
   GdkPixbuf *icon;
   GdkPixbuf *reflect;
+  
+  cairo_t * icon_context;
+  cairo_t * reflect_context;
+  gboolean icon_cxt_copied;
 
   AwnEffects effects;
 
@@ -65,7 +75,19 @@ adjust_icon(AwnAppletSimple *simple)
 
   old0 = priv->icon;
   old1 = priv->reflect;
-
+  if (priv->icon_context)
+  {
+    cairo_surface_destroy(cairo_get_target(priv->icon_context));
+    cairo_destroy(priv->icon_context);
+    priv->icon_context = NULL;
+  }
+  if (priv->reflect_context)
+  {
+    cairo_surface_destroy(cairo_get_target(priv->reflect_context));
+    cairo_destroy(priv->reflect_context);
+    priv->reflect_context = NULL;
+  }
+  
   if (priv->bar_height == priv->bar_height_on_icon_recieved)
   {
     priv->icon_height = gdk_pixbuf_get_height(priv->org_icon);
@@ -118,6 +140,55 @@ adjust_icon(AwnAppletSimple *simple)
                               (priv->bar_height + 2) * 2);
 
   gtk_widget_queue_draw(GTK_WIDGET(simple));
+}
+
+/**
+ * awn_applet_simple_set_icon:
+ * @simple: The applet whose icon is being set.
+ * @pixbuf: The pixbuf image to use as the icon.
+ *
+ * Sets the applet icon to the pixbuf provided as an argument.  A private copy
+ * of the pixbuf argument is made by awn_applet_simple_set_icon() and the
+ * original argument is left unchanged.  The caller retains ownership of pixbuf
+ * and is required to unref it when it is no longer required.
+ 
+ * NOTE: at the moment there is probably a memory leak there's a switch between
+ * pixbuf method and cairo method of setting icons.  FIXME
+ */
+void
+awn_applet_simple_set_icon_context(AwnAppletSimple *simple,
+                                   cairo_t * cr)
+{
+  AwnAppletSimplePrivate *priv;
+
+  g_return_if_fail(AWN_IS_APPLET_SIMPLE(simple));
+  priv = simple->priv;
+  if (priv->icon_cxt_copied)
+  {
+    cairo_surface_destroy(cairo_get_target(priv->icon_context));
+    cairo_destroy(priv->icon_context);
+  }
+  
+  priv->icon_context=cr;
+  switch (cairo_surface_get_type(cairo_get_target(cr) ) )
+  {
+    case CAIRO_SURFACE_TYPE_IMAGE:
+	    priv->icon_width = cairo_image_surface_get_width  (cairo_get_target(cr));
+	    priv->icon_height = cairo_image_surface_get_height  (cairo_get_target(cr));
+      break;       
+    case CAIRO_SURFACE_TYPE_XLIB:
+	    priv->icon_width = cairo_xlib_surface_get_width  (cairo_get_target(cr));
+	    priv->icon_height = cairo_xlib_surface_get_height  (cairo_get_target(cr));
+      break;
+    default:
+      g_assert(FALSE);
+  }     
+  priv->reflect_context=NULL;  
+  
+  gtk_widget_set_size_request(GTK_WIDGET(simple),
+                              priv->icon_width *5 / 4,
+                              (priv->bar_height + 2) * 2);
+  gtk_widget_queue_draw(GTK_WIDGET(simple)); 
 }
 
 /**
@@ -226,7 +297,8 @@ static gboolean
 _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 {
   AwnAppletSimplePrivate *priv;
-  cairo_t *cr;
+  cairo_t *cr=NULL;
+
   gint width, height, bar_height;
   
   priv = AWN_APPLET_SIMPLE(widget)->priv;
@@ -236,52 +308,87 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
      priv->reflect isn't a good pixbuf well.. let's try making one from
      priv->org_icon.  I'm not happy as I'm not exactly sure of the root
      cause of this...  but this does resolve the issue */
-
-  if (!GDK_IS_PIXBUF(priv->reflect))
-  {
-    priv->reflect = gdk_pixbuf_flip(priv->icon, FALSE);
-  }
-
-  if (!GDK_IS_PIXBUF(priv->reflect))
-  {
-    priv->reflect = gdk_pixbuf_flip(priv->org_icon, FALSE);
-  }
-
+  
   width = widget->allocation.width;
-
   height = widget->allocation.height;
-
   awn_draw_set_window_size(&priv->effects, width, height);
-
   bar_height = priv->bar_height;
-
   cr = gdk_cairo_create(widget->window);
-
   /* task back */
   cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint(cr);
-  
+
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
-
-  /* content */
-  if ( priv->effects_enabled)
+  
+  awn_draw_background(&priv->effects, cr);    
+  
+  if (!priv->icon_context)  
   {
-    awn_draw_background(&priv->effects, cr);
-    awn_draw_icons(&priv->effects, cr, priv->icon, priv->reflect);
-    awn_draw_foreground(&priv->effects, cr);
-  }
-  else
-  {
-    GtkWidget *child = NULL;    
-    child = gtk_bin_get_child(GTK_BIN(widget));
-
-    if (child)  //the propagate might not be needed?
+    cairo_surface_t * srfc = cairo_surface_create_similar(cairo_get_target(cr),
+                                            CAIRO_CONTENT_COLOR_ALPHA,
+                                            gdk_pixbuf_get_width(priv->icon), 
+                                            gdk_pixbuf_get_height(priv->icon));
+    priv->icon_context = cairo_create(srfc);  
+    gdk_cairo_set_source_pixbuf (priv->icon_context, priv->icon, 0, 0);
+    cairo_paint(priv->icon_context);
+    
+    if ( priv->reflect && GDK_IS_PIXBUF(priv->reflect) )
     {
-      gtk_container_propagate_expose(GTK_CONTAINER(widget), child,  expose);    
+      srfc = cairo_surface_create_similar(cairo_get_target(cr),
+                                        CAIRO_CONTENT_COLOR_ALPHA,
+                                        gdk_pixbuf_get_width(priv->reflect), 
+                                        gdk_pixbuf_get_height(priv->reflect));      
+      priv->reflect_context = cairo_create(srfc);  
+      gdk_cairo_set_source_pixbuf (priv->reflect_context, priv->reflect, 0, 0);
+      cairo_paint(priv->reflect_context);
+      
     }
   }
-  cairo_destroy(cr);
+  
+  if (priv->icon_context)
+  {
+    switch (cairo_surface_get_type(cairo_get_target(priv->icon_context) ) )
+    {
+      case CAIRO_SURFACE_TYPE_IMAGE:
+        {
+          cairo_t * new_icon_ctx;
+          cairo_surface_t * new_icon_srfc = cairo_surface_create_similar(cairo_get_target(cr),
+                                            CAIRO_CONTENT_COLOR_ALPHA,
+                                            cairo_image_surface_get_width (cairo_get_target(priv->icon_context) ), 
+                                            cairo_image_surface_get_height (cairo_get_target(priv->icon_context) ));
+          new_icon_ctx = cairo_create(new_icon_srfc);
+          cairo_set_source_surface(new_icon_ctx,cairo_get_target(priv->icon_context),0,0);
+          cairo_paint(new_icon_ctx);
+//          cairo_destroy(priv->icon_context);
+          priv->icon_context=new_icon_ctx;
+          priv->icon_cxt_copied = TRUE;
+        }
+        break;
+      case CAIRO_SURFACE_TYPE_XLIB:
+        break;//we're good.
+      default:
+        g_warning("invalid surface type \n");
+        return TRUE;
+    }     
 
+    if ( priv->effects_enabled)
+    {    
+      awn_draw_icons_cairo(&priv->effects,cr,priv->icon_context,priv->reflect_context);
+    }
+    else
+    {
+      GtkWidget *child = NULL;    
+      child = gtk_bin_get_child(GTK_BIN(widget));
+
+      if (child)  //the propagate might not be needed?
+      {
+        gtk_container_propagate_expose(GTK_CONTAINER(widget), child,  expose);    
+      }
+    }    
+  }
+  awn_draw_foreground(&priv->effects, cr);      
+  cairo_destroy(cr);
+  
   return TRUE;
 }
 
@@ -340,6 +447,7 @@ awn_applet_simple_init(AwnAppletSimple *simple)
 
   priv = simple->priv = AWN_APPLET_SIMPLE_GET_PRIVATE(simple);
 
+  priv->icon_cxt_copied = FALSE;  
   priv->icon = NULL;
   priv->org_icon = NULL;
   priv->reflect = NULL;

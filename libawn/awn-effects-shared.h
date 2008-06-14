@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 
 #ifndef __AWN_EFFECT_SHARED_H__
 #define __AWN_EFFECT_SHARED_H__
@@ -46,10 +46,10 @@ struct _AwnEffectsPrivate
 };
 
 
-gboolean awn_effect_check_top_effect (AwnEffectsPrivate * priv, gboolean * stopped);
-gboolean awn_effect_handle_repeating (AwnEffectsPrivate * priv);
-gboolean awn_effect_check_max_loops (AwnEffectsPrivate * priv);
-void main_effect_loop (AwnEffects * fx);
+gboolean awn_effect_check_top_effect(AwnEffectsPrivate * priv, gboolean * stopped);
+gboolean awn_effect_handle_repeating(AwnEffectsPrivate * priv);
+gboolean awn_effect_check_max_loops(AwnEffectsPrivate * priv);
+void main_effect_loop(AwnEffects * fx);
 
 
 #endif

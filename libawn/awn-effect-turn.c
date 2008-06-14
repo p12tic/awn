@@ -29,9 +29,10 @@
 #include <stdlib.h>
 
 gboolean
-turn_hover_effect (AwnEffectsPrivate * priv)
+turn_hover_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
@@ -41,8 +42,10 @@ turn_hover_effect (AwnEffectsPrivate * priv)
     fx->delta_width = 0;
     fx->icon_depth = 0;
     fx->icon_depth_direction = 0;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
 
@@ -50,7 +53,7 @@ turn_hover_effect (AwnEffectsPrivate * priv)
 
   gint prev_count = fx->count;
 
-  fx->count = sin (fx->count * M_PI / 2 / PERIOD) * PERIOD;
+  fx->count = sin(fx->count * M_PI / 2 / PERIOD) * PERIOD;
 
   if (fx->count < PERIOD / 4)
   {
@@ -81,13 +84,15 @@ turn_hover_effect (AwnEffectsPrivate * priv)
       fx->icon_width;
     fx->flip = FALSE;
   }
+
   fx->icon_depth = 10.00 * -fx->delta_width / fx->icon_width;
 
   fx->count = ++prev_count;
 
   // fix icon flickering
   const gint MIN_WIDTH = 4;
-  if (abs (fx->delta_width) >= fx->icon_width - MIN_WIDTH)
+
+  if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH)
   {
     if (fx->delta_width > 0)
       fx->delta_width = fx->icon_width - MIN_WIDTH;
@@ -96,9 +101,10 @@ turn_hover_effect (AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
   gboolean repeat = TRUE;
+
   if (fx->count >= PERIOD)
   {
     fx->count = 0;
@@ -108,15 +114,17 @@ turn_hover_effect (AwnEffectsPrivate * priv)
     fx->delta_width = 0;
     fx->flip = FALSE;
     // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
+    repeat = awn_effect_handle_repeating(priv);
   }
+
   return repeat;
 }
 
 gboolean
-turn_opening_effect (AwnEffectsPrivate * priv)
+turn_opening_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
@@ -131,17 +139,20 @@ turn_opening_effect (AwnEffectsPrivate * priv)
     fx->delta_width = 0;
     fx->icon_depth = 0;
     fx->icon_depth_direction = 0;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
 
   const gint PERIOD = 44;
+
   const gint MAX_OFFSET = fx->icon_height / 2;
 
   gint prev_count = fx->count;
 
-  fx->count = sin (fx->count * M_PI / 2 / PERIOD) * PERIOD;
+  fx->count = sin(fx->count * M_PI / 2 / PERIOD) * PERIOD;
 
   if (fx->count < PERIOD / 4)
   {
@@ -178,13 +189,15 @@ turn_opening_effect (AwnEffectsPrivate * priv)
       fx->icon_width;
     fx->flip = FALSE;
   }
+
   fx->icon_depth = 10.00 * -fx->delta_width / fx->icon_width;
 
   fx->count = ++prev_count;
 
   // fix icon flickering
   const gint MIN_WIDTH = 4;
-  if (abs (fx->delta_width) >= fx->icon_width - MIN_WIDTH)
+
+  if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH)
   {
     if (fx->delta_width > 0)
       fx->delta_width = fx->icon_width - MIN_WIDTH;
@@ -193,9 +206,10 @@ turn_opening_effect (AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
   gboolean repeat = TRUE;
+
   if (fx->count >= PERIOD)
   {
     fx->count = 0;
@@ -205,15 +219,17 @@ turn_opening_effect (AwnEffectsPrivate * priv)
     fx->delta_width = 0;
     fx->flip = FALSE;
     // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
+    repeat = awn_effect_handle_repeating(priv);
   }
+
   return repeat;
 }
 
 gboolean
-turn_closing_effect (AwnEffectsPrivate * priv)
+turn_closing_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
+
   if (!fx->effect_lock)
   {
     fx->effect_lock = TRUE;
@@ -223,19 +239,25 @@ turn_closing_effect (AwnEffectsPrivate * priv)
     fx->delta_width = 0;
     fx->icon_depth = 0;
     fx->icon_depth_direction = 0;
+
     if (priv->start)
-      priv->start (fx->self);
+      priv->start(fx->self);
+
     priv->start = NULL;
   }
 
   const gint PERIOD = 44;
+
   const gint MAX_OFFSET = fx->icon_height;
 
   gint prev_count = fx->count;
 
-  fx->count = sin (fx->count * M_PI / 2 / PERIOD) * PERIOD;
+  fx->count = sin(fx->count * M_PI / 2 / PERIOD) * PERIOD;
+
   fx->y_offset = fx->count * MAX_OFFSET / PERIOD;
+
   fx->alpha = 1.0 - fx->count * 1.0 / PERIOD;
+
   if (fx->count < PERIOD / 4)
   {
     fx->icon_depth_direction = 0;
@@ -266,13 +288,15 @@ turn_closing_effect (AwnEffectsPrivate * priv)
       fx->icon_width;
     fx->flip = FALSE;
   }
+
   fx->icon_depth = 10.00 * -fx->delta_width / fx->icon_width;
 
   fx->count = ++prev_count;
 
   // fix icon flickering
   const gint MIN_WIDTH = 4;
-  if (abs (fx->delta_width) >= fx->icon_width - MIN_WIDTH)
+
+  if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH)
   {
     if (fx->delta_width > 0)
       fx->delta_width = fx->icon_width - MIN_WIDTH;
@@ -281,9 +305,10 @@ turn_closing_effect (AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  gtk_widget_queue_draw (GTK_WIDGET (fx->self));
+  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
 
   gboolean repeat = TRUE;
+
   if (fx->count >= PERIOD)
   {
     fx->count = 0;
@@ -293,7 +318,15 @@ turn_closing_effect (AwnEffectsPrivate * priv)
     fx->delta_width = 0;
     fx->flip = FALSE;
     // check for repeating
-    repeat = awn_effect_handle_repeating (priv);
+    repeat = awn_effect_handle_repeating(priv);
   }
+
   return repeat;
+}
+
+gboolean
+turn_effect_finalize(AwnEffectsPrivate * priv)
+{
+  printf("turn_effect_finalize(AwnEffectsPrivate * priv)\n");
+  return TRUE;
 }
