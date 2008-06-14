@@ -283,7 +283,8 @@ apply_3d_illusion(AwnEffects * fx, cairo_t * cr, cairo_surface_t * icon_srfc,
                   const gint x, const gint y, const gdouble alpha)
 {
   gint i;
-
+  cairo_antialias_t  state = cairo_get_antialias( cr );
+  cairo_set_antialias (cr,CAIRO_ANTIALIAS_NONE);
   for (i = 1; i < fx->icon_depth; i++)
   {
     if (fx->icon_depth_direction == 0)
@@ -291,8 +292,9 @@ apply_3d_illusion(AwnEffects * fx, cairo_t * cr, cairo_surface_t * icon_srfc,
     else
       cairo_set_source_surface(cr, icon_srfc, x + fx->icon_depth - i, y);
 
-    cairo_paint_with_alpha(cr, alpha);
+    cairo_paint_with_alpha(cr, alpha * 0.5);
   }
+  cairo_set_antialias (cr,state);
 }
 
 //-------------------------------------------------------------------
@@ -438,7 +440,7 @@ gboolean awn_effect_op_3dturn(AwnEffects * fx,
                               cairo_t * cr,
                               DrawIconState * ds,
                               cairo_surface_t * icon_srfc,
-                              cairo_t * icon_ctx,
+                              cairo_t * icon_ctx,                              
                               gpointer null
                              )
 {

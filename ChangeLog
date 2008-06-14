@@ -1,6 +1,13 @@
 2008-06-14  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects-ops.c
+	* libawn/awn-effects.c
+	Removed an offset calculation that was applied to turn based on the the
+	depth being added
+
+2008-06-14  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects-ops.c
 	Temporarily disable the depth effect on 3d turn due to a graphical
 	glitch
 
