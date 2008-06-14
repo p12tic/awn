@@ -455,7 +455,7 @@ gboolean awn_effect_op_3dturn(AwnEffects * fx,
       ds->x1 = ds->x1 - fx->icon_depth / 2;
     }
 
-    apply_3d_illusion(fx, cr, icon_srfc, ds->x1, ds->y1, fx->alpha);
+//    apply_3d_illusion(fx, cr, icon_srfc, ds->x1, ds->y1, fx->alpha);
 
     return TRUE;
   }
