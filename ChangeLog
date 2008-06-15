@@ -1,6 +1,14 @@
 2008-06-15  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects-ops.c
+	* libawn/awn-effects.c
+	Still disabling the depth on turn... still trying to mitigate the
+	flicker on some icons when it is enabled.  Newest commit fixes the
+	centering issue that was occuring.
+
+2008-06-15  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects-ops.c
 	Set operator to SOURCE when creating image surfaces in
 	surface_saturate_and_pixelate()
 
