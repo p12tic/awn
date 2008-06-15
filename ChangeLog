@@ -1,5 +1,10 @@
 2008-06-15  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-effects-ops.c
+	Set operator to SOURCE in light_surface().
+
+2008-06-15  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-effects.c
 	Fix a small leak that effects core Launcher/Taskmanager.
 	Check that we're getting a valid pixbuf in calls to awn_draw_icons().

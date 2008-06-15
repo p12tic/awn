@@ -70,6 +70,7 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
                                          cairo_xlib_surface_get_height(src)
                                         );
   temp_ctx = cairo_create(temp_srfc);
+  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);  
   cairo_set_source_surface(temp_ctx, src, 0, 0);
   cairo_paint(temp_ctx);
 
@@ -99,6 +100,8 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
   cairo_destroy(temp_ctx);
 
   temp_ctx = cairo_create(src);
+  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
+  g_assert( cairo_get_operator(temp_ctx) == CAIRO_OPERATOR_SOURCE);
   cairo_set_source_surface(temp_ctx, temp_srfc, 0, 0);
   cairo_paint(temp_ctx);
   cairo_surface_destroy(temp_srfc);
