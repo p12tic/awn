@@ -394,11 +394,15 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
       }
 
       *picon_srfc = cairo_surface_create_similar(icon,
-
                     CAIRO_CONTENT_COLOR_ALPHA,
                     ds->current_width,
                     ds->current_height);
       *picon_ctx = cairo_create(*picon_srfc);
+    }
+    else
+    {
+      cairo_set_operator(*picon_ctx, CAIRO_OPERATOR_CLEAR);
+      cairo_paint(*picon_ctx);
     }
 
     up_flag = !*preflect_srfc ? TRUE :
@@ -415,7 +419,6 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
       }
 
       *preflect_srfc = cairo_surface_create_similar(icon,
-
                        CAIRO_CONTENT_COLOR_ALPHA,
                        ds->current_width,
                        ds->current_height);
@@ -427,6 +430,7 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
       cairo_paint(*preflect_ctx);
     }
 
+    cairo_set_operator(*picon_ctx, CAIRO_OPERATOR_SOURCE);      
     cairo_set_operator(*preflect_ctx, CAIRO_OPERATOR_SOURCE);
 
     cairo_set_operator(*picon_ctx, CAIRO_OPERATOR_SOURCE);
