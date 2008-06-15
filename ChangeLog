@@ -1,6 +1,12 @@
 2008-06-15  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects-ops.c
+	Set operator to SOURCE when creating image surfaces in
+	surface_saturate_and_pixelate()
+
+2008-06-15  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects-ops.c
 	Set operator to SOURCE in light_surface().
 
 2008-06-15  Rodney Cryderman <rcryderman@gmail.com>

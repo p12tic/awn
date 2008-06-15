@@ -157,8 +157,9 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
                    cairo_xlib_surface_get_width(dest),
                    cairo_xlib_surface_get_height(dest)
                                              );
-  temp_dest_ctx = cairo_create(temp_dest_srfc);
+  temp_dest_ctx = cairo_create(temp_dest_srfc);  
   cairo_set_source_surface(temp_dest_ctx, dest, 0, 0);
+  cairo_set_operator(temp_dest_ctx,CAIRO_OPERATOR_SOURCE);  
   cairo_paint(temp_dest_ctx);
   cairo_destroy(temp_dest_ctx);
 
@@ -174,6 +175,7 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
                                               );
     temp_src_ctx = cairo_create(temp_src_srfc);
     cairo_set_source_surface(temp_src_ctx, src, 0, 0);
+    cairo_set_operator(temp_src_ctx,CAIRO_OPERATOR_SOURCE);      
     cairo_paint(temp_src_ctx);
     cairo_destroy(temp_src_ctx);
   }
@@ -256,6 +258,7 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
   cairo_t * tmp;
 
   tmp = cairo_create(dest);
+  cairo_set_operator(tmp,CAIRO_OPERATOR_SOURCE);        
   cairo_set_source_surface(tmp, temp_dest_srfc, 0, 0);
   cairo_paint(tmp);
   cairo_destroy(tmp);
