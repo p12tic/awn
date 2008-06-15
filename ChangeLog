@@ -1,3 +1,8 @@
+2008-06-15  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects-ops.c
+	Lighten Component cutoff changed from 2 to 1.
+
 2008-06-14  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects-ops.c

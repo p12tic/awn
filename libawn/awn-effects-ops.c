@@ -35,12 +35,12 @@ lighten_component(const guchar cur_value, const gfloat amount)
 {
   int new_value = cur_value;
 
-  if (cur_value < 2) //arbitrary cutoff  FIXME?
+  if (cur_value < 1) //arbitrary cutoff  FIXME?
   {
     return cur_value;
   }
-
-  new_value += (24 + (new_value >> 3)) * amount;
+  
+  new_value = new_value + (24 + (new_value >> 3)) * amount;
 
   if (new_value > 255)
   {
