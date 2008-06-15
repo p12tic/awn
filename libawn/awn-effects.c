@@ -239,6 +239,31 @@ awn_effects_finalize(AwnEffects * fx)
 {
   awn_unregister_effects(fx);
   awn_effect_dispose_queue(fx);
+  
+  if (fx->icon_srfc)
+  {
+    cairo_surface_destroy(fx->icon_srfc);
+    fx->icon_srfc=NULL;
+  }
+
+  if (  fx->icon_ctx)
+  {
+    cairo_destroy(  fx->icon_ctx);
+    fx->icon_ctx=NULL;
+  }
+
+  if (fx->reflect_srfc)
+  {
+    cairo_surface_destroy(fx->reflect_srfc);
+    fx->reflect_srfc=NULL;
+  }
+  
+  if (   fx->reflect_ctx )
+  {
+    cairo_destroy(   fx->reflect_ctx );
+    fx->reflect_ctx=NULL;
+  }
+  
   fx->self = NULL;
   g_free(fx->op_list);
 }
@@ -807,6 +832,7 @@ awn_draw_icons(AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
   /*rather inefficient still...
     Only user of this AFAIK is core.
    */
+  g_return_if_fail(GDK_IS_PIXBUF(icon));
 
   cairo_surface_t * icon_srfc = cairo_surface_create_similar(
                                   cairo_get_target(cr),

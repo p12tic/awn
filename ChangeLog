@@ -1,5 +1,17 @@
 2008-06-15  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-effects.c
+	Fix a small leak that effects core Launcher/Taskmanager.
+	Check that we're getting a valid pixbuf in calls to awn_draw_icons().
+	Fixes a potential crash if the task manager code passes a bad pixbuf.
+
+2008-06-15  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects-ops.c
+	Make sure a reused icon_ctx is cleared
+
+2008-06-15  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-effects-ops.c
 	Lighten Component cutoff changed from 2 to 1.
 
