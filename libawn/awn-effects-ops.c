@@ -291,14 +291,21 @@ apply_3d_illusion(AwnEffects * fx, cairo_t * cr, cairo_surface_t * icon_srfc,
   gint i;
   cairo_antialias_t  state = cairo_get_antialias( cr );
   cairo_set_antialias (cr,CAIRO_ANTIALIAS_NONE);
-  for (i = 1; i < fx->icon_depth *2; i++)
+//  for (i = 1; i < fx->icon_depth *2; i++)
+  for (i = 1; i < fx->icon_depth; i++)  
   {
     if (fx->icon_depth_direction == 0)
-      cairo_set_source_surface(cr, icon_srfc, x - fx->icon_depth + i/2.0, y);
+    {
+//      cairo_set_source_surface(cr, icon_srfc, x - fx->icon_depth + i/2.0, y);
+      cairo_set_source_surface(cr, icon_srfc, x - fx->icon_depth + i, y);      
+    }
     else
-      cairo_set_source_surface(cr, icon_srfc, x + fx->icon_depth - i/2.0, y);
-
-    cairo_paint_with_alpha(cr, alpha/2.0);
+    {
+//      cairo_set_source_surface(cr, icon_srfc, x + fx->icon_depth - i/2.0, y);
+      cairo_set_source_surface(cr, icon_srfc, x + fx->icon_depth - i, y);      
+    }
+//    cairo_paint_with_alpha(cr, alpha/2.0);
+    cairo_paint_with_alpha(cr, alpha);    
   }
   cairo_set_antialias (cr,state);
 }
@@ -454,8 +461,7 @@ gboolean awn_effect_op_3dturn(AwnEffects * fx,
                               gpointer null
                              )
 {
-  //disabling.
-  return FALSE;
+//  return FALSE;
   /* icon depth */
   if (fx->icon_depth)
   {
