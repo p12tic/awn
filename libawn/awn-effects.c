@@ -736,13 +736,15 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
 
   ds.y1 -= fx->curve_offset;
 
-  /*
-   FIXME the clipping code was originally here...  Removed it.
-   Does it still serve a purpose?
-   */
-
+/*	if ( ! (	x >= 0 && x < fx->icon_width &&
+			w-x > 0 && w-x <= fx->icon_width &&
+			y >= 0 && x < fx->icon_height &&
+			h-y > 0 && h-y <= fx->icon_height) )
+  {
+    return;
+  }*/
+  
   // sanity check
-
   if (fx->delta_width <= -ds.current_width
       || fx->delta_height <= -ds.current_height)
   {

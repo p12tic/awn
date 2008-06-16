@@ -316,6 +316,9 @@ apply_3d_illusion(AwnEffects * fx, cairo_t * cr, cairo_surface_t * icon_srfc,
  ther is none. And destroy and create new surfaces if the size (scaling)
  is changing
 
+ This function in it's original form was relatively clean.  It has gotten a 
+ bit nasty in the quest to optimize.
+ 
  FIXME
  The function name probably should be changed... not sure to what :-)
  */
@@ -328,6 +331,33 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
                                cairo_t ** preflect_ctx
                               )
 {
+  gint  x,y,w,h;
+
+  /* clipping */
+	x = fx->clip_region.x;
+	y = fx->clip_region.y;
+	w = fx->clip_region.width;
+	h = fx->clip_region.height;    
+	if (fx->clip) 
+  {		
+		if (	x >= 0 && x < fx->icon_width &&
+			w-x > 0 && w-x <= fx->icon_width &&
+			y >= 0 && x < fx->icon_height &&
+			h-y > 0 && h-y <= fx->icon_height) 
+    {
+			// careful! new_subpixbuf shares original pixbuf, no copy!
+//			clippedIcon = gdk_pixbuf_new_subpixbuf(icon, x, y, w, h);
+			// update current w&h
+			ds->current_width = w - x;
+			ds->current_height = h - y;
+			// adjust offsets
+			ds->x1 = (fx->window_width - ds->current_width) / 2;
+			ds->y1 += fx->icon_height - ds->current_height;
+			// override provided icon
+		} 
+  }
+  
+  
   if (fx->delta_width || fx->delta_height) //is surface size changing?
   {
     // update current w&h
@@ -374,15 +404,28 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
      with dynamic icons
      */
     cairo_set_operator(*picon_ctx, CAIRO_OPERATOR_SOURCE);
+       
+    if (fx->clip)
+    {
+      cairo_set_source_surface(*picon_ctx, icon, x,y);      
+      cairo_rectangle(*picon_ctx,x,y,w-x,h-7);
+      cairo_fill(*picon_ctx);
+      cairo_save(*picon_ctx);
+      cairo_scale(*picon_ctx,
+                  ds->current_width  / ((double)ds->current_width - fx->delta_width),
+                  ds->current_height / ((double)ds->current_height - fx->delta_height));
+      cairo_set_source_surface(*picon_ctx, *picon_srfc, 0, 0);      
+    }
+    else
+    {
+      cairo_save(*picon_ctx);
 
-    cairo_save(*picon_ctx);
+      cairo_scale(*picon_ctx,
+                  ds->current_width  / ((double)ds->current_width - fx->delta_width),
+                  ds->current_height / ((double)ds->current_height - fx->delta_height));
 
-    cairo_scale(*picon_ctx,
-                ds->current_width  / ((double)ds->current_width - fx->delta_width),
-                ds->current_height / ((double)ds->current_height - fx->delta_height));
-
-    cairo_set_source_surface(*picon_ctx, icon, 0, 0);
-
+      cairo_set_source_surface(*picon_ctx, icon, 0, 0);
+    }    
     cairo_paint(*picon_ctx);
 
     cairo_restore(*picon_ctx);
@@ -419,7 +462,6 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
     }
 
     up_flag = !*preflect_srfc ? TRUE :
-
               (cairo_xlib_surface_get_width(*preflect_srfc) != ds->current_width) ||
               (cairo_xlib_surface_get_height(*preflect_srfc) != ds->current_height);
 
@@ -447,8 +489,20 @@ gboolean awn_effect_op_scaling(AwnEffects * fx,
     cairo_set_operator(*preflect_ctx, CAIRO_OPERATOR_SOURCE);
 
     cairo_set_operator(*picon_ctx, CAIRO_OPERATOR_SOURCE);
-    cairo_set_source_surface(*picon_ctx, icon, 0, 0);
-    cairo_paint(*picon_ctx);
+    cairo_save(*picon_ctx);
+    if (fx->clip)
+    {
+      cairo_set_source_surface(*picon_ctx, icon, x,y);  
+      cairo_rectangle(*picon_ctx,x,y,ds->current_width,ds->current_height);
+      cairo_fill(*picon_ctx);
+    }
+    else
+    {
+      cairo_set_source_surface(*picon_ctx, icon, 0, 0);
+      cairo_paint(*picon_ctx);      
+    }
+
+    cairo_restore(*picon_ctx);      
     return FALSE;
   }
 }

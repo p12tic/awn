@@ -1,3 +1,9 @@
+2008-06-16  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects-ops.c
+	* libawn/awn-effects.c
+	Enabled clipping again in awn-effects.
+
 2008-06-15  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects-ops.c
