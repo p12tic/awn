@@ -1,5 +1,10 @@
 2008-06-16  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-effects.c
+	Adjusting the scaling of the spotlight.
+
+2008-06-16  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-settings.c
 	* libawn/awn-settings.h
 	Added icon_depth_on config key in awn-settings.
