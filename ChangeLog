@@ -1,5 +1,12 @@
 2008-06-16  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-applet-simple.c
+	* libawn/awn-effects.c
+	Fixed issue with opening frame.  Bail for draw_icons if the clipping
+	makes no sense.
+
+2008-06-16  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-effects-ops.c
 	* libawn/awn-effects.c
 	* libawn/awn-effects.h

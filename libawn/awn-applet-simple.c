@@ -296,6 +296,7 @@ void awn_applet_simple_effects_off(AwnAppletSimple *simple)
 static gboolean
 _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 {
+  static gboolean done_once=FALSE;
   AwnAppletSimplePrivate *priv;
   cairo_t *cr=NULL;
 
@@ -342,6 +343,11 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
       gdk_cairo_set_source_pixbuf (priv->reflect_context, priv->reflect, 0, 0);
       cairo_paint(priv->reflect_context);
       
+    }
+    if (! done_once)
+    {
+      done_once = TRUE;
+      return TRUE;
     }
   }
   

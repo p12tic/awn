@@ -736,6 +736,21 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
 
   ds.y1 -= fx->curve_offset;
   
+	if (fx->clip) 
+  {
+		gint x = fx->clip_region.x;
+		gint y = fx->clip_region.y;
+		gint w = fx->clip_region.width;
+		gint h = fx->clip_region.height;  
+		if ( !(	x >= 0 && x < fx->icon_width &&
+			w-x > 0 && w-x <= fx->icon_width &&
+			y >= 0 && x < fx->icon_height &&
+			h-y > 0 && h-y <= fx->icon_height) )
+    {
+      return;
+    }
+  }
+  
   // sanity check
   if (fx->delta_width <= -ds.current_width
       || fx->delta_height <= -ds.current_height)
