@@ -72,6 +72,7 @@
 #define HOVER_BOUNCE_EFFECT	"hover_bounce_effect"	/*bool*/
 #define ICON_ALPHA	"icon_alpha"		/*float*/
 #define FRAME_RATE	"frame_rate"		/*int*/
+#define ICON_DEPTH_ON	"icon_depth_on"	/*bool*/
 
 #define TITLE		"title"
 #define TEXT_COLOR	"text_color"		/*color*/
@@ -189,7 +190,8 @@ awn_settings_new()
  	awn_load_int(client, APP, ICON_EFFECT, &s->icon_effect, 0);
 	awn_load_float(client, APP, ICON_ALPHA, &s->icon_alpha,1.0);  
 	awn_load_int(client, APP, FRAME_RATE, &s->frame_rate,25);
-  
+  awn_load_bool(client, APP, ICON_DEPTH_ON, &s->icon_depth_on,TRUE);
+               
 	/* Title settings */
 	awn_config_client_ensure_group (client, TITLE);
 	awn_load_color(client, TITLE, TEXT_COLOR, &s->text_color, "FFFFFFFF");

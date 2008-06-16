@@ -1,5 +1,11 @@
 2008-06-16  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-settings.c
+	* libawn/awn-settings.h
+	Added icon_depth_on config key in awn-settings.
+
+2008-06-16  Rodney Cryderman <rcryderman@gmail.com>
+
 	* data/awn.schema-ini.in
 	* libawn/awn-effects-ops.c
 	Added some to the schema-ini.  frame_rate, icon_alpha.

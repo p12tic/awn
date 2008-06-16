@@ -93,6 +93,7 @@ typedef struct {
 	gint icon_effect;
 	float icon_alpha;
 	gint frame_rate;
+	gboolean icon_depth_on;
 	
 	int icon_offset;
 	
