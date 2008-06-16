@@ -30,7 +30,7 @@ typedef struct
   gfloat            alpha;
 }SourceToDest;
 
-gboolean awn_effect_op_scaling(AwnEffects * fx,
+gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
                                DrawIconState * ds,
                                cairo_surface_t * icon,
                                cairo_surface_t ** picon_srfc,

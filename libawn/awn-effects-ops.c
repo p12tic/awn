@@ -322,7 +322,7 @@ apply_3d_illusion(AwnEffects * fx, cairo_t * cr, cairo_surface_t * icon_srfc,
  FIXME
  The function name probably should be changed... not sure to what :-)
  */
-gboolean awn_effect_op_scaling(AwnEffects * fx,
+gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
                                DrawIconState * ds,
                                cairo_surface_t * icon,
                                cairo_surface_t ** picon_srfc,

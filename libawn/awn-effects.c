@@ -735,14 +735,6 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   }
 
   ds.y1 -= fx->curve_offset;
-
-/*	if ( ! (	x >= 0 && x < fx->icon_width &&
-			w-x > 0 && w-x <= fx->icon_width &&
-			y >= 0 && x < fx->icon_height &&
-			h-y > 0 && h-y <= fx->icon_height) )
-  {
-    return;
-  }*/
   
   // sanity check
   if (fx->delta_width <= -ds.current_width
@@ -760,7 +752,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
    WARNING make no assumptions about fx->icon_srfc, fx->icon_ctx,
    fx->reflect_srfc, fx->reflect_ctx being correct before this call.
   */
-  icon_changed = awn_effect_op_scaling(fx, &ds, icon, &fx->icon_srfc, &fx->icon_ctx,
+  icon_changed = awn_effect_op_scale_and_clip(fx, &ds, icon, &fx->icon_srfc, &fx->icon_ctx,
                                        &fx->reflect_srfc, &fx->reflect_ctx) || icon_changed;
 
   for (i = 0;fx->op_list[i].fn;i++)
