@@ -345,15 +345,12 @@ gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
 			y >= 0 && x < fx->icon_height &&
 			h-y > 0 && h-y <= fx->icon_height) 
     {
-			// careful! new_subpixbuf shares original pixbuf, no copy!
-//			clippedIcon = gdk_pixbuf_new_subpixbuf(icon, x, y, w, h);
 			// update current w&h
 			ds->current_width = w - x;
 			ds->current_height = h - y;
 			// adjust offsets
 			ds->x1 = (fx->window_width - ds->current_width) / 2;
 			ds->y1 += fx->icon_height - ds->current_height;
-			// override provided icon
 		} 
   }
   

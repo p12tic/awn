@@ -1,5 +1,12 @@
 2008-06-16  Rodney Cryderman <rcryderman@gmail.com>
 
+	* data/awn.schema-ini.in
+	* libawn/awn-effects-ops.c
+	Added some to the schema-ini.  frame_rate, icon_alpha.
+	Removed a no longer relevant comment from awn-effects-ops.c.
+
+2008-06-16  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-applet-simple.c
 	* libawn/awn-effects.c
 	Fixed issue with opening frame.  Bail for draw_icons if the clipping

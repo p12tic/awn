@@ -152,6 +152,18 @@ description = Bitmask that stores which effects occur for each icon event type.
 type = bool
 default = False
 description = Determines whether the bounce effect occurs when an icon is hovered over by the mouse.
+[app/icon_alpha]
+type = float
+default = 1.0
+description = Alpha value to apply to icons.
+[app/frame_rate]
+type = int
+default = 25
+description = Frame rate for awn effects.
+[app/icon_depth_on]
+type = bool
+default = TRUE
+description = Enable dept on 3d type effects.
 [title/text_color]
 type = string
 default = FFFFFFFF
