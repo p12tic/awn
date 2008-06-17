@@ -549,7 +549,7 @@ gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
 gboolean awn_effect_op_3dturn(AwnEffects * fx,
                               cairo_t * cr,
                               DrawIconState * ds,
-                              cairo_surface_t * icon_srfc,
+                              cairo_surface_t * icon_srfc,                                
                               cairo_t * icon_ctx,                              
                               gpointer null
                              )
@@ -569,7 +569,7 @@ gboolean awn_effect_op_3dturn(AwnEffects * fx,
     }
 */     
 
-    apply_3d_illusion(fx, icon_ctx, icon_srfc, ds->x1, 0, fx->alpha);
+    apply_3d_illusion(fx,icon_ctx,icon_srfc,  ds->x1, 0, fx->alpha);
 
     return TRUE;
   }
@@ -581,7 +581,6 @@ gboolean awn_effect_op_3dturn(AwnEffects * fx,
 
 gboolean awn_effect_op_saturate(AwnEffects * fx,
                                 DrawIconState * ds,
-                                cairo_surface_t * icon_srfc,
                                 cairo_t * icon_ctx,
                                 gpointer null
                                )
@@ -590,7 +589,7 @@ gboolean awn_effect_op_saturate(AwnEffects * fx,
   if (fx->saturation < 1.0)
   {
 //      printf("saturate \n");   //FIXME WHAT USES saturate????
-    surface_saturate(icon_srfc, fx->saturation);
+    surface_saturate(cairo_get_target(icon_ctx), fx->saturation);
     return TRUE;
   }
 
@@ -599,7 +598,6 @@ gboolean awn_effect_op_saturate(AwnEffects * fx,
 
 gboolean awn_effect_op_hflip(AwnEffects * fx,
                              DrawIconState * ds,
-                             cairo_surface_t * icon_srfc,
                              cairo_t * icon_ctx,
                              gpointer null
                             )
@@ -619,7 +617,7 @@ gboolean awn_effect_op_hflip(AwnEffects * fx,
                       0);
     cairo_save(icon_ctx);
     cairo_transform(icon_ctx, &matrix);
-    cairo_set_source_surface(icon_ctx, icon_srfc, 0, 0);
+    cairo_set_source_surface(icon_ctx, cairo_get_target(icon_ctx), 0, 0);
     cairo_paint(icon_ctx);
     cairo_restore(icon_ctx);
     return TRUE;
@@ -633,14 +631,13 @@ gboolean awn_effect_op_hflip(AwnEffects * fx,
 
 gboolean awn_effect_op_glow(AwnEffects * fx,
                             DrawIconState * ds,
-                            cairo_surface_t * icon_srfc,
                             cairo_t * icon_ctx,
                             gpointer null
                            )
 {
   if (fx->glow_amount > 0)
   {
-    lighten_surface(icon_srfc, fx->glow_amount);
+    lighten_surface(cairo_get_target(icon_ctx), fx->glow_amount);
     return TRUE;
   }
 
@@ -650,13 +647,12 @@ gboolean awn_effect_op_glow(AwnEffects * fx,
 
 gboolean awn_effect_op_todest(AwnEffects * fx,
                               DrawIconState * ds,
-                              cairo_surface_t * icon_srfc,
                               cairo_t * icon_ctx,
                               SourceToDest *data
                              )
 {
   gfloat alpha = 1.0;
-  cairo_surface_t * surface = icon_srfc;
+  cairo_surface_t * surface = cairo_get_target( icon_ctx);
   cairo_operator_t operator = CAIRO_OPERATOR_SOURCE;
 
   if (data)
@@ -688,7 +684,6 @@ gboolean awn_effect_op_todest(AwnEffects * fx,
 gboolean
 awn_effect_move_x(AwnEffects * fx,
                   DrawIconState * ds,
-                  cairo_surface_t * icon_srfc,
                   cairo_t * icon_ctx,
                   gpointer null
                  )

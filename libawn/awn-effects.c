@@ -762,8 +762,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
 
   for (i = 0;fx->op_list[i].fn;i++)
   {
-    icon_changed = fx->op_list[i].fn(fx, &ds, cairo_get_target(fx->icon_ctx),
-                                     fx->icon_ctx, fx->op_list[i].data)
+    icon_changed = fx->op_list[i].fn(fx, &ds, fx->icon_ctx, fx->op_list[i].data)
                    || icon_changed;
   }
 

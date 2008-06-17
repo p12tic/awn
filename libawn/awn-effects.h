@@ -77,7 +77,6 @@ typedef struct _AwnEffects AwnEffects;
 
 typedef gboolean(*awn_effects_op_fn)(AwnEffects * fx,
                                      DrawIconState * ds,
-                                     cairo_surface_t * icon_srfc,
                                      cairo_t * icon_ctx,
                                      gpointer null);
 

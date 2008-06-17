@@ -49,35 +49,30 @@ gboolean awn_effect_op_3dturn(AwnEffects * fx,
 
 gboolean awn_effect_op_saturate(AwnEffects * fx,
                                 DrawIconState * ds,
-                                cairo_surface_t * icon_srfc,
                                 cairo_t * icon_ctx,
                                 gpointer null
                                ) ;
 
 gboolean awn_effect_op_hflip(AwnEffects * fx,
                              DrawIconState * ds,
-                             cairo_surface_t * icon_srfc,
                              cairo_t * icon_ctx,
                              gpointer null
                             ) ;
 
 gboolean awn_effect_op_glow(AwnEffects * fx,
                             DrawIconState * ds,
-                            cairo_surface_t * icon_srfc,
                             cairo_t * icon_ctx,
                             gpointer null
                            ) ;
 
 gboolean awn_effect_op_todest(AwnEffects * fx,
                               DrawIconState * ds,
-                              cairo_surface_t * icon_srfc,
                               cairo_t * icon_ctx,
                               SourceToDest * data
                              );
 
 gboolean awn_effect_move_x(AwnEffects * fx,
                            DrawIconState * ds,
-                           cairo_surface_t * icon_srfc,
                            cairo_t * icon_ctx,
                            gpointer null
                           ) ;
