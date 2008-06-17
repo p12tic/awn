@@ -1,6 +1,11 @@
 2008-06-17  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects-ops.c
+	3d turn no longer wobbles (again).
+
+2008-06-17  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects-ops.c
 	Fixed cropping of right side of icons during phases of flip/depth.
 
 2008-06-17  Rodney Cryderman <rcryderman@gmail.com>
