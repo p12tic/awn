@@ -275,7 +275,6 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
 }
 
 
-//FIXME
 static void
 surface_saturate(cairo_surface_t * icon_srfc, gfloat saturation)
 {
@@ -285,8 +284,7 @@ surface_saturate(cairo_surface_t * icon_srfc, gfloat saturation)
 
 /*There are a variety of issues here at the moment*/
 static void
-apply_3d_illusion(AwnEffects * fx, DrawIconState * ds,
-                  const gint x, const gint y, const gdouble alpha)
+apply_3d_illusion(AwnEffects * fx, DrawIconState * ds, const gdouble alpha)
 {
   gint i;
   cairo_surface_t * icon_srfc = cairo_get_target(fx->icon_ctx);
@@ -302,7 +300,6 @@ apply_3d_illusion(AwnEffects * fx, DrawIconState * ds,
   
   if (fx->icon_depth + ds->current_width > cairo_xlib_surface_get_width(icon_srfc) )
   {
-//    printf("Replacing\n");
     cairo_surface_t * replacement = cairo_surface_create_similar(
                            icon_srfc,
                            CAIRO_CONTENT_COLOR_ALPHA,
@@ -325,13 +322,11 @@ apply_3d_illusion(AwnEffects * fx, DrawIconState * ds,
   cairo_set_operator(fx->icon_ctx,CAIRO_OPERATOR_OVER);  
 
   //FIXME possibly use mask.
-   
-  
+    
   for (i = 0; i < fx->icon_depth; i++)  
   {
     if (fx->icon_depth_direction == 0)
     {
-//      printf("inc\n");
       cairo_save(fx->icon_ctx);
       cairo_translate(fx->icon_ctx,i,0);         
       cairo_set_source_surface(fx->icon_ctx, tmp_srfc,  0, 0);      
@@ -340,7 +335,6 @@ apply_3d_illusion(AwnEffects * fx, DrawIconState * ds,
     }
     else
     {
-//      printf("dec\n");
       cairo_save(fx->icon_ctx);
       cairo_translate(fx->icon_ctx,fx->icon_depth - 1 -i,0);         
       cairo_set_source_surface(fx->icon_ctx, tmp_srfc,  0, 0);      
@@ -569,13 +563,12 @@ gboolean awn_effect_op_3dturn(AwnEffects * fx,
                               gpointer null
                              )
 {
-//  return FALSE;
   /* icon depth */
   if (fx->icon_depth)
   {
     if ( fx->settings->icon_depth_on)
     {
-      apply_3d_illusion(fx, ds, ds->x1, 0, fx->alpha);
+      apply_3d_illusion(fx, ds,  fx->alpha);
     }
     return TRUE;
   }
@@ -605,11 +598,9 @@ gboolean awn_effect_op_hflip(AwnEffects * fx,
                              gpointer null
                             )
 {
- // printf("Check flip = %d\n",fx->flip);  
+
   if (fx->flip)
   {
-//     printf("IN flip = %d\n",fx->flip);
-
     cairo_matrix_t matrix;
     cairo_matrix_init(&matrix,
                       -1,

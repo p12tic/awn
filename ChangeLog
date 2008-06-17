@@ -1,4 +1,10 @@
 2008-06-17  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects-ops.c
+	Minor cleanup including removing unneeded parameters from
+	apply_3d_illusion(), and deletion of unused debug prints
+
+2008-06-17  Rodney Cryderman <rcryderman@gmail.com>
 	
 	* libawn/awn-effects.c
 	Applied patch from mhr3 for spotlight.  Added a few additional changes
