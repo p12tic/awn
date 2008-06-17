@@ -33,9 +33,7 @@ typedef struct
 gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
                                DrawIconState * ds,
                                cairo_surface_t * icon,
-                               cairo_surface_t ** picon_srfc,
                                cairo_t ** picon_ctx,
-                               cairo_surface_t ** preflect_srfc,
                                cairo_t ** preflect_ctx
                               )  ;
 

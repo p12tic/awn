@@ -135,9 +135,8 @@ struct _AwnEffects
 
 //  guint effect_frame_rate;
 
-  cairo_surface_t * icon_srfc;      //Work surfaces/contexts
+
   cairo_t * icon_ctx;
-  cairo_surface_t * reflect_srfc ;
   cairo_t * reflect_ctx;
 
   AwnEffectsOp  * op_list;

@@ -289,25 +289,57 @@ apply_3d_illusion(AwnEffects * fx, cairo_t * cr, cairo_surface_t * icon_srfc,
                   const gint x, const gint y, const gdouble alpha)
 {
   gint i;
+  
+  cairo_save(cr);
+  cairo_surface_t * tmp_srfc = cairo_surface_create_similar(icon_srfc,
+                             CAIRO_CONTENT_COLOR_ALPHA,
+                             fx->icon_width,
+                             fx->icon_height);
+  cairo_t * tmp_ctx = cairo_create(tmp_srfc);
+  cairo_set_source_surface(tmp_ctx,icon_srfc,0,0);
+  cairo_set_operator(tmp_ctx,CAIRO_OPERATOR_SOURCE);  
+  cairo_paint_with_alpha(tmp_ctx,alpha);
+  
   cairo_antialias_t  state = cairo_get_antialias( cr );
   cairo_set_antialias (cr,CAIRO_ANTIALIAS_NONE);
-//  for (i = 1; i < fx->icon_depth *2; i++)
-  for (i = 1; i < fx->icon_depth; i++)  
+  cairo_set_operator(cr,CAIRO_OPERATOR_OVER);  
+  cairo_set_source_rgba(cr,0.0,0.7,0.9,0.5);  
+  cairo_paint(cr);
+
+  cairo_set_operator(cr,CAIRO_OPERATOR_OVER);  
+
+  //FIXME possibly use mask.
+   
+  
+  for (i = 0; i < fx->icon_depth; i++)  
   {
     if (fx->icon_depth_direction == 0)
     {
-//      cairo_set_source_surface(cr, icon_srfc, x - fx->icon_depth + i/2.0, y);
-      cairo_set_source_surface(cr, icon_srfc, x - fx->icon_depth + i, y);      
+      printf("inc\n");
+      cairo_save(cr);
+      cairo_translate(cr,i,0);         
+      cairo_set_source_surface(cr, tmp_srfc,  0, 0);      
+      cairo_paint(cr);          
+//      cairo_translate(cr,-i,0);      
+      cairo_restore(cr);
     }
     else
     {
-//      cairo_set_source_surface(cr, icon_srfc, x + fx->icon_depth - i/2.0, y);
-      cairo_set_source_surface(cr, icon_srfc, x + fx->icon_depth - i, y);      
-    }
-//    cairo_paint_with_alpha(cr, alpha/2.0);
-    cairo_paint_with_alpha(cr, alpha);    
+      printf("dec\n");
+//      cairo_set_source_surface(cr, tmp_srfc,0,0 );      
+      cairo_translate(cr,-i,0);
+      cairo_paint(cr);          
+    }    
+//    cairo_rectangle(cr,0,0,40,40);      
+
+
   }
   cairo_set_antialias (cr,state);
+  cairo_set_operator(cr,CAIRO_OPERATOR_SOURCE);
+  
+  cairo_destroy(tmp_ctx);
+  cairo_surface_destroy(tmp_srfc);
+  cairo_restore(cr);
 }
 
 //-------------------------------------------------------------------
@@ -325,14 +357,24 @@ apply_3d_illusion(AwnEffects * fx, cairo_t * cr, cairo_surface_t * icon_srfc,
 gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
                                DrawIconState * ds,
                                cairo_surface_t * icon,
-                               cairo_surface_t ** picon_srfc,
                                cairo_t ** picon_ctx,
-                               cairo_surface_t ** preflect_srfc,
                                cairo_t ** preflect_ctx
                               )
 {
   gint  x,y,w,h;
+  cairo_surface_t * icon_srfc=NULL;
+  cairo_surface_t * reflect_srfc=NULL;
+  
+  if (*picon_ctx)
+  {
+    icon_srfc=cairo_get_target(*picon_ctx);
+  }
+  if (*preflect_ctx)
+  {
+    reflect_srfc=cairo_get_target(*preflect_ctx);
+  }
 
+  
   /* clipping */
 	x = fx->clip_region.x;
 	y = fx->clip_region.y;
@@ -369,30 +411,30 @@ gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
 
     if (*picon_ctx)
     {
-      cairo_surface_destroy(*picon_srfc);
+      cairo_surface_destroy(icon_srfc);
       cairo_destroy(*picon_ctx);
     }
 
     if (*preflect_ctx)
     {
-      cairo_surface_destroy(*preflect_srfc);
+      cairo_surface_destroy(reflect_srfc);
       cairo_destroy(*preflect_ctx);
     }
 
     //new surfaces
-    *picon_srfc = cairo_surface_create_similar(icon,
+    icon_srfc = cairo_surface_create_similar(icon,
                   CAIRO_CONTENT_COLOR_ALPHA,
                   ds->current_width,
                   ds->current_height);
 
-    *picon_ctx = cairo_create(*picon_srfc);
+    *picon_ctx = cairo_create(icon_srfc);
 
-    *preflect_srfc = cairo_surface_create_similar(icon,
+    reflect_srfc = cairo_surface_create_similar(icon,
                      CAIRO_CONTENT_COLOR_ALPHA,
                      ds->current_width,
                      ds->current_height);
 
-    *preflect_ctx = cairo_create(*preflect_srfc);
+    *preflect_ctx = cairo_create(reflect_srfc);
 
     /*
      Need to make a high resolution copy of the icon available somehow.
@@ -411,7 +453,7 @@ gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
       cairo_scale(*picon_ctx,
                   ds->current_width  / ((double)ds->current_width - fx->delta_width),
                   ds->current_height / ((double)ds->current_height - fx->delta_height));
-      cairo_set_source_surface(*picon_ctx, *picon_srfc, 0, 0);      
+      cairo_set_source_surface(*picon_ctx, icon_srfc, 0, 0);      
     }
     else
     {
@@ -434,23 +476,23 @@ gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
     gboolean up_flag;
 
     //has the size changed.  probably not
-    up_flag = !*picon_srfc ? TRUE :
-              (cairo_xlib_surface_get_width(*picon_srfc) != ds->current_width) ||
-              (cairo_xlib_surface_get_height(*picon_srfc) != ds->current_height);
+    up_flag = !icon_srfc ? TRUE :
+              (cairo_xlib_surface_get_width(icon_srfc) != ds->current_width) ||
+              (cairo_xlib_surface_get_height(icon_srfc) != ds->current_height);
 
     if (up_flag) //if it has then recreate the surface..
     {
-      if (*picon_srfc)
+      if (icon_srfc)
       {
-        cairo_surface_destroy(*picon_srfc);
+        cairo_surface_destroy(icon_srfc);
         cairo_destroy(*picon_ctx);
       }
 
-      *picon_srfc = cairo_surface_create_similar(icon,
+      icon_srfc = cairo_surface_create_similar(icon,
                     CAIRO_CONTENT_COLOR_ALPHA,
                     ds->current_width,
                     ds->current_height);
-      *picon_ctx = cairo_create(*picon_srfc);
+      *picon_ctx = cairo_create(icon_srfc);
     }
     else
     {
@@ -458,23 +500,23 @@ gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
       cairo_paint(*picon_ctx);
     }
 
-    up_flag = !*preflect_srfc ? TRUE :
-              (cairo_xlib_surface_get_width(*preflect_srfc) != ds->current_width) ||
-              (cairo_xlib_surface_get_height(*preflect_srfc) != ds->current_height);
+    up_flag = !reflect_srfc ? TRUE :
+              (cairo_xlib_surface_get_width(reflect_srfc) != ds->current_width) ||
+              (cairo_xlib_surface_get_height(reflect_srfc) != ds->current_height);
 
     if (up_flag)
     {
-      if (*picon_srfc)
+      if (icon_srfc)
       {
-        cairo_surface_destroy(*preflect_srfc);
+        cairo_surface_destroy(reflect_srfc);
         cairo_destroy(*preflect_ctx);
       }
 
-      *preflect_srfc = cairo_surface_create_similar(icon,
+      reflect_srfc = cairo_surface_create_similar(icon,
                        CAIRO_CONTENT_COLOR_ALPHA,
                        ds->current_width,
                        ds->current_height);
-      *preflect_ctx = cairo_create(*preflect_srfc);
+      *preflect_ctx = cairo_create(reflect_srfc);
     }
     else
     {
@@ -517,7 +559,7 @@ gboolean awn_effect_op_3dturn(AwnEffects * fx,
   if (fx->icon_depth)
   {
 
-    if (!fx->icon_depth_direction)
+/*    if (!fx->icon_depth_direction)
     {
       ds->x1 = ds->x1 + fx->icon_depth / 2;
     }
@@ -525,8 +567,9 @@ gboolean awn_effect_op_3dturn(AwnEffects * fx,
     {
       ds->x1 = ds->x1 - fx->icon_depth / 2;
     }
+*/     
 
-    apply_3d_illusion(fx, cr, icon_srfc, ds->x1, ds->y1, fx->alpha);
+    apply_3d_illusion(fx, icon_ctx, icon_srfc, ds->x1, 0, fx->alpha);
 
     return TRUE;
   }
@@ -561,8 +604,11 @@ gboolean awn_effect_op_hflip(AwnEffects * fx,
                              gpointer null
                             )
 {
+  printf("Check flip = %d\n",fx->flip);  
   if (fx->flip)
   {
+     printf("IN flip = %d\n",fx->flip);
+
     cairo_matrix_t matrix;
     cairo_matrix_init(&matrix,
                       -1,
@@ -571,10 +617,11 @@ gboolean awn_effect_op_hflip(AwnEffects * fx,
                       1,
                       (ds->current_width / 2.0)*(1 - (-1)),
                       0);
-
+    cairo_save(icon_ctx);
     cairo_transform(icon_ctx, &matrix);
     cairo_set_source_surface(icon_ctx, icon_srfc, 0, 0);
     cairo_paint(icon_ctx);
+    cairo_restore(icon_ctx);
     return TRUE;
   }
 

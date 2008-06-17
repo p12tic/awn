@@ -1,5 +1,14 @@
 2008-06-16  Rodney Cryderman <rcryderman@gmail.com>
 
+  	* libawn/awn-effects-ops.c
+    	* libawn/awn-effects-ops.h
+      	* libawn/awn-effects.c
+        * libawn/awn-effects.h
+	In the midst of restructing code to cope cleanly with the vagaries of
+	the depth operation used in 3d turn
+
+2008-06-16  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-effects.c
 	mmm... magic numbers.
 
