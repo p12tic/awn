@@ -285,7 +285,7 @@ surface_saturate(cairo_surface_t * icon_srfc, gfloat saturation)
 
 /*There are a variety of issues here at the moment*/
 static inline void
-apply_3d_illusion(AwnEffects * fx, 
+apply_3d_illusion(AwnEffects * fx, DrawIconState * ds,
                   const gint x, const gint y, const gdouble alpha)
 {
   gint i;
@@ -300,13 +300,13 @@ apply_3d_illusion(AwnEffects * fx,
   cairo_set_operator(tmp_ctx,CAIRO_OPERATOR_SOURCE);  
   cairo_paint_with_alpha(tmp_ctx,alpha);  
   
-  if (fx->icon_depth > cairo_xlib_surface_get_width(icon_srfc) )
+  if (fx->icon_depth + ds->current_width > cairo_xlib_surface_get_width(icon_srfc) )
   {
-//    printf("Replacing\n");
+    printf("Replacing\n");
     cairo_surface_t * replacement = cairo_surface_create_similar(
                            icon_srfc,
                            CAIRO_CONTENT_COLOR_ALPHA,
-                           fx->icon_depth,
+                           fx->icon_depth + ds->current_width,
                            cairo_xlib_surface_get_height(icon_srfc)
                            );
     cairo_surface_destroy (icon_srfc);
@@ -569,7 +569,7 @@ gboolean awn_effect_op_3dturn(AwnEffects * fx,
   /* icon depth */
   if (fx->icon_depth)
   {
-    apply_3d_illusion(fx, ds->x1, 0, fx->alpha);
+    apply_3d_illusion(fx, ds, ds->x1, 0, fx->alpha);
 
     return TRUE;
   }
