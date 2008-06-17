@@ -1,3 +1,10 @@
+2008-06-17  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects-ops.c
+	* libawn/awn-effects-ops.h
+	* libawn/awn-effects.c
+	Enable depth again.
+
 2008-06-16  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects-ops.c

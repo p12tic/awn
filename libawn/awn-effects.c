@@ -763,14 +763,12 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   for (i = 0;fx->op_list[i].fn;i++)
   {
     icon_changed = fx->op_list[i].fn(fx, &ds, fx->icon_ctx, fx->op_list[i].data)
-                   || icon_changed;
+                                    || icon_changed;
   }
 
   //always last op due to it's peculiar requirements.
   //should be rewrittent to be compliant.
-/*  icon_changed = awn_effect_op_3dturn(fx, cr, &ds,
-                                      cairo_get_target(fx->icon_ctx), fx->icon_ctx, NULL)
-                 || icon_changed;*/
+  icon_changed = awn_effect_op_3dturn(fx, cr, &ds, NULL) || icon_changed;
 
   //Update our displayed Icon.
   cairo_set_source_surface(cr, cairo_get_target(fx->icon_ctx), ds.x1, ds.y1);

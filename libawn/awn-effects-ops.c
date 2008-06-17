@@ -285,12 +285,12 @@ surface_saturate(cairo_surface_t * icon_srfc, gfloat saturation)
 
 /*There are a variety of issues here at the moment*/
 static inline void
-apply_3d_illusion(AwnEffects * fx, cairo_t * cr, cairo_surface_t * icon_srfc,
+apply_3d_illusion(AwnEffects * fx, 
                   const gint x, const gint y, const gdouble alpha)
 {
   gint i;
-  
-  cairo_save(cr);
+  cairo_surface_t * icon_srfc = cairo_get_target(fx->icon_ctx);
+
   cairo_surface_t * tmp_srfc = cairo_surface_create_similar(icon_srfc,
                              CAIRO_CONTENT_COLOR_ALPHA,
                              fx->icon_width,
@@ -298,15 +298,31 @@ apply_3d_illusion(AwnEffects * fx, cairo_t * cr, cairo_surface_t * icon_srfc,
   cairo_t * tmp_ctx = cairo_create(tmp_srfc);
   cairo_set_source_surface(tmp_ctx,icon_srfc,0,0);
   cairo_set_operator(tmp_ctx,CAIRO_OPERATOR_SOURCE);  
-  cairo_paint_with_alpha(tmp_ctx,alpha);
+  cairo_paint_with_alpha(tmp_ctx,alpha);  
   
-  cairo_antialias_t  state = cairo_get_antialias( cr );
-  cairo_set_antialias (cr,CAIRO_ANTIALIAS_NONE);
-  cairo_set_operator(cr,CAIRO_OPERATOR_OVER);  
-  cairo_set_source_rgba(cr,0.0,0.7,0.9,0.5);  
-  cairo_paint(cr);
-
-  cairo_set_operator(cr,CAIRO_OPERATOR_OVER);  
+  if (fx->icon_depth > cairo_xlib_surface_get_width(icon_srfc) )
+  {
+//    printf("Replacing\n");
+    cairo_surface_t * replacement = cairo_surface_create_similar(
+                           icon_srfc,
+                           CAIRO_CONTENT_COLOR_ALPHA,
+                           fx->icon_depth,
+                           cairo_xlib_surface_get_height(icon_srfc)
+                           );
+    cairo_surface_destroy (icon_srfc);
+    icon_srfc = replacement;
+    cairo_destroy (fx->icon_ctx);    
+    fx->icon_ctx = cairo_create(icon_srfc);
+    fx->icon_width = cairo_xlib_surface_get_height(icon_srfc);
+  }
+  
+  cairo_save(fx->icon_ctx);
+  
+  cairo_antialias_t  state = cairo_get_antialias( fx->icon_ctx );
+  cairo_set_antialias (fx->icon_ctx,CAIRO_ANTIALIAS_NONE);
+  cairo_set_operator(fx->icon_ctx,CAIRO_OPERATOR_CLEAR);  
+  cairo_paint(fx->icon_ctx);  
+  cairo_set_operator(fx->icon_ctx,CAIRO_OPERATOR_OVER);  
 
   //FIXME possibly use mask.
    
@@ -315,31 +331,29 @@ apply_3d_illusion(AwnEffects * fx, cairo_t * cr, cairo_surface_t * icon_srfc,
   {
     if (fx->icon_depth_direction == 0)
     {
-      printf("inc\n");
-      cairo_save(cr);
-      cairo_translate(cr,i,0);         
-      cairo_set_source_surface(cr, tmp_srfc,  0, 0);      
-      cairo_paint(cr);          
-//      cairo_translate(cr,-i,0);      
-      cairo_restore(cr);
+//      printf("inc\n");
+      cairo_save(fx->icon_ctx);
+      cairo_translate(fx->icon_ctx,i,0);         
+      cairo_set_source_surface(fx->icon_ctx, tmp_srfc,  0, 0);      
+      cairo_paint(fx->icon_ctx);            
+      cairo_restore(fx->icon_ctx);
     }
     else
     {
-      printf("dec\n");
-//      cairo_set_source_surface(cr, tmp_srfc,0,0 );      
-      cairo_translate(cr,-i,0);
-      cairo_paint(cr);          
+//      printf("dec\n");
+      cairo_save(fx->icon_ctx);
+      cairo_translate(fx->icon_ctx,fx->icon_depth - 1 -i,0);         
+      cairo_set_source_surface(fx->icon_ctx, tmp_srfc,  0, 0);      
+      cairo_paint(fx->icon_ctx);            
+      cairo_restore(fx->icon_ctx);
     }    
-//    cairo_rectangle(cr,0,0,40,40);      
-
-
   }
-  cairo_set_antialias (cr,state);
-  cairo_set_operator(cr,CAIRO_OPERATOR_SOURCE);
+  cairo_set_antialias (fx->icon_ctx,state);
+  cairo_set_operator(fx->icon_ctx,CAIRO_OPERATOR_SOURCE);
   
   cairo_destroy(tmp_ctx);
   cairo_surface_destroy(tmp_srfc);
-  cairo_restore(cr);
+  cairo_restore(fx->icon_ctx);
 }
 
 //-------------------------------------------------------------------
@@ -548,9 +562,7 @@ gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
 
 gboolean awn_effect_op_3dturn(AwnEffects * fx,
                               cairo_t * cr,
-                              DrawIconState * ds,
-                              cairo_surface_t * icon_srfc,                                
-                              cairo_t * icon_ctx,                              
+                              DrawIconState * ds,                             
                               gpointer null
                              )
 {
@@ -569,7 +581,7 @@ gboolean awn_effect_op_3dturn(AwnEffects * fx,
     }
 */     
 
-    apply_3d_illusion(fx,icon_ctx,icon_srfc,  ds->x1, 0, fx->alpha);
+    apply_3d_illusion(fx, ds->x1, 0, fx->alpha);
 
     return TRUE;
   }
@@ -602,10 +614,10 @@ gboolean awn_effect_op_hflip(AwnEffects * fx,
                              gpointer null
                             )
 {
-  printf("Check flip = %d\n",fx->flip);  
+ // printf("Check flip = %d\n",fx->flip);  
   if (fx->flip)
   {
-     printf("IN flip = %d\n",fx->flip);
+//     printf("IN flip = %d\n",fx->flip);
 
     cairo_matrix_t matrix;
     cairo_matrix_init(&matrix,
