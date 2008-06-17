@@ -573,7 +573,10 @@ gboolean awn_effect_op_3dturn(AwnEffects * fx,
   /* icon depth */
   if (fx->icon_depth)
   {
-    apply_3d_illusion(fx, ds, ds->x1, 0, fx->alpha);
+    if ( fx->settings->icon_depth_on)
+    {
+      apply_3d_illusion(fx, ds, ds->x1, 0, fx->alpha);
+    }
     return TRUE;
   }
 

@@ -1,6 +1,11 @@
 2008-06-17  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects-ops.c
+	Enabled the icon_depth_on key.
+
+2008-06-17  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects-ops.c
 	3d turn no longer wobbles (again).
 
 2008-06-17  Rodney Cryderman <rcryderman@gmail.com>
