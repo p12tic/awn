@@ -580,7 +580,7 @@ apply_spotlight(AwnEffects * fx, cairo_t * cr)
   static gint scaled_height = -1;
   static cairo_t * spot_ctx = NULL;
   cairo_surface_t * spot_srfc = NULL;
-  gint x1 = 0;
+//  gint x1 = 0;
   gint y1 = fx->window_height - fx->icon_height;
 
   if (fx->settings)
@@ -596,11 +596,11 @@ apply_spotlight(AwnEffects * fx, cairo_t * cr)
     gdk_cairo_set_source_pixbuf(unscaled_spot_ctx, SPOTLIGHT_PIXBUF, 0, 0);
     cairo_paint(unscaled_spot_ctx);
   }
-
+ // printf("window width = %d\n",fx->window_width);
   if ((scaled_width != fx->window_width) ||
-      (scaled_height != fx->icon_height))
+      (scaled_height != fx->icon_height*5/4))
   {
-    printf("rescale spot \n");
+  //  printf("rescale spot \n");
     if (spot_ctx)
     {
       cairo_surface_destroy(spot_srfc);
@@ -609,7 +609,7 @@ apply_spotlight(AwnEffects * fx, cairo_t * cr)
 
     scaled_width = fx->window_width;
 
-    scaled_height = fx->icon_height;
+    scaled_height = fx->icon_height*5/4;
     spot_srfc = cairo_surface_create_similar(cairo_get_target(cr),
                 CAIRO_CONTENT_COLOR_ALPHA,
                 scaled_width,
@@ -617,15 +617,16 @@ apply_spotlight(AwnEffects * fx, cairo_t * cr)
     spot_ctx = cairo_create(spot_srfc);
     cairo_save(spot_ctx);
     cairo_scale(spot_ctx,
-                fx->icon_width / (double) gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF)* 1.275,
-                fx->icon_height / (double) gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF)*1.2
-               );
+                fx->window_width / (double) gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF),
+                fx->icon_height*5/4 / (double) gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF)
+                );
+
     cairo_set_source_surface(spot_ctx, cairo_get_target(unscaled_spot_ctx),
                              0.0, 0.0);
     cairo_paint(spot_ctx);
     cairo_scale(spot_ctx,
-                (double) gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF) / fx->icon_width,
-                (double) gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF)*1.275 / fx->icon_height
+                (double) gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF) / fx->window_width,
+                (double) gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF) * 5/4 / fx->icon_height
                );
     cairo_restore(spot_ctx);
   }
@@ -634,7 +635,8 @@ apply_spotlight(AwnEffects * fx, cairo_t * cr)
   {
     y1 = y1 + fx->icon_height / 12;
     cairo_save(cr);
-    cairo_set_source_surface(cr, cairo_get_target(spot_ctx), x1, y1);
+    cairo_set_source_surface(cr, cairo_get_target(spot_ctx), 0, y1);
+//    cairo_rectangle(cr,0,0,fx->window_width,fx->window_height*5/4);
     cairo_paint_with_alpha(cr, fx->spotlight_alpha);
     cairo_restore(cr);
   }

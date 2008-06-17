@@ -1,4 +1,10 @@
 2008-06-17  Rodney Cryderman <rcryderman@gmail.com>
+	
+	* libawn/awn-effects.c
+	Applied patch from mhr3 for spotlight.  Added a few additional changes
+	that are needed with patch.
+
+2008-06-17  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects-ops.c
 	Enabled the icon_depth_on key.
