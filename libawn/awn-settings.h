@@ -62,6 +62,7 @@ typedef struct {
 	gboolean rounded_corners;
 	gfloat corner_radius;
 	gboolean render_pattern;
+	gboolean expand_bar;
 	
 	gchar *pattern_uri;
 	gfloat pattern_alpha;

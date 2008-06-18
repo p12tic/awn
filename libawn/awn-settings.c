@@ -38,6 +38,7 @@
 #define ROUNDED_CORNERS	"rounded_corners"	/*bool*/
 #define CORNER_RADIUS 	"corner_radius" 	/*float*/
 #define RENDER_PATTERN	"render_pattern"	/*bool*/
+#define EXPAND_BAR	"expand_bar"		/*bool*/
 #define PATTERN_URI	"pattern_uri"		/*string*/
 #define PATTERN_ALPHA 	"pattern_alpha" 	/*float*/
 #define GLASS_STEP_1	"glass_step_1"		/*string*/
@@ -156,6 +157,7 @@ awn_settings_new()
 	awn_load_bool(client, BAR, ROUNDED_CORNERS, &s->rounded_corners, TRUE);
 	awn_load_float(client, BAR, CORNER_RADIUS, &s->corner_radius, 10.0);	
 	awn_load_bool(client, BAR, RENDER_PATTERN, &s->render_pattern, FALSE);	
+	awn_load_bool(client, BAR, EXPAND_BAR, &s->expand_bar, FALSE);	
 	awn_load_string(client, BAR, PATTERN_URI, &s->pattern_uri, "~");
 	awn_load_float(client, BAR, PATTERN_ALPHA, &s->pattern_alpha, 1.0);
 	

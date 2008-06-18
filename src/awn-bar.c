@@ -366,7 +366,12 @@ static void
 render (AwnBar *bar, cairo_t *cr, gint x_width, gint height)
 {
 	AwnBarPrivate *priv = AWN_BAR_GET_PRIVATE (bar);
-        gint width = current_width;
+        gint width;
+	if( settings->expand_bar ) {
+		width = settings->monitor.width;
+	} else {
+		width = current_width;
+	}
 
 	height -= settings->icon_offset;
         if( settings->bar_angle != 0 ) {

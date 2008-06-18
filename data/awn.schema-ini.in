@@ -46,6 +46,10 @@ description = Enable/disable rounded corners on the dock bar.
 type = float
 default = 10.0
 description = The radius of the bar corners when rounded_corners is TRUE.
+[bar/expand_bar]
+type = bool
+default = False
+description = Expand the bar to the width of the monitor.
 [bar/render_pattern]
 type = bool
 default = False
