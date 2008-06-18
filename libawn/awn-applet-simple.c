@@ -417,7 +417,10 @@ bar_height_changed(AwnConfigClientNotifyEntry *entry, AwnAppletSimple *simple)
 
   priv = simple->priv;
   priv->bar_height = entry->value.int_val;
-  adjust_icon(simple);
+  if (priv->icon)
+  {
+    adjust_icon(simple);
+  }
   g_print("bar_height changed\n");
 }
 

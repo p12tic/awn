@@ -1,3 +1,9 @@
+2008-06-18  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c
+	Fix for crasher for applets using awn_applet_simple_set_icon_context()
+	on bar resize.
+
 2008-06-17  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects-ops.c
