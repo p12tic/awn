@@ -1,5 +1,10 @@
 2008-06-18  Rodney Cryderman <rcryderman@gmail.com>
 
+	* src/awn-bar.c
+	Reformatted code closer to awn coding style (using astyle).
+
+2008-06-18  Rodney Cryderman <rcryderman@gmail.com>
+
 	* data/awn.schema-ini.in
 	* libawn/awn-settings.c
 	* libawn/awn-settings.h
