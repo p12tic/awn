@@ -1,5 +1,13 @@
 2008-06-18  Rodney Cryderman <rcryderman@gmail.com>
 
+	* awn-manager/window.glade
+	* src/main.c
+	Applied 2nd patch for bug #36523.  Changes in awn-manager to task
+	arrrow setting need to be reflected in the bar immediately.
+	Submitter black ( ttps://launchpad.net/~blackborn )
+
+2008-06-18  Rodney Cryderman <rcryderman@gmail.com>
+
 	* src/awn-bar.c
 	Reformatted code closer to awn coding style (using astyle).
 

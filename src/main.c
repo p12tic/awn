@@ -79,6 +79,8 @@ static void
 icon_offset_changed (AwnConfigClientNotifyEntry *entry, AwnSettings *Settings);
 static void 
 bar_refresh (AwnConfigClientNotifyEntry *entry, AwnSettings *settings);
+static void 
+appman_refresh (AwnConfigClientNotifyEntry *entry, AwnSettings *settings);
 static void
 screen_size_changed (GdkScreen *screen, AwnSettings *s);
 static void 
@@ -187,6 +189,10 @@ main (int argc, char *argv[])
 				      (AwnConfigClientNotifyFunc)bar_refresh, settings);
 	awn_config_client_notify_add (client, "bar", "pattern_alpha",
 				      (AwnConfigClientNotifyFunc)bar_refresh, settings);
+	awn_config_client_notify_add (client, "app", "arrow_offset",
+				      (AwnConfigClientNotifyFunc)appman_refresh, settings);
+	awn_config_client_notify_add (client, "app", "tasks_have_arrows",
+				      (AwnConfigClientNotifyFunc)appman_refresh, settings);
 	
 	settings->window = awn_window_new (settings);
 	
@@ -525,6 +531,12 @@ static void
 bar_refresh (AwnConfigClientNotifyEntry *entry, AwnSettings *settings)
 {
 	resize (settings);
+}
+
+static void 
+appman_refresh (AwnConfigClientNotifyEntry *entry, AwnSettings *settings)
+{
+	gtk_widget_queue_draw(GTK_WIDGET(settings->appman));
 }
 
 static void
