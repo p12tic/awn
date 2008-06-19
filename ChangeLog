@@ -1,3 +1,10 @@
+2008-06-19  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-task.c
+	Applied patch (see bug) submitted by black for bug
+	https://bugs.launchpad.net/awn/+bug/240716
+	Bug description: "fix initial width of icon"
+
 2008-06-18  Rodney Cryderman <rcryderman@gmail.com>
 
 	* awn-manager/window.glade

@@ -62,6 +62,7 @@ awn_task_drag_leave(GtkWidget *widget, GdkDragContext *drag_context,
 static void awn_task_create_menu(AwnTask *task, GtkMenu *menu);
 
 static const gchar* awn_task_get_title(GObject *);
+static void _task_refresh(GObject *obj);
 
 
 /* STRUCTS & ENUMS */
@@ -197,8 +198,6 @@ awn_task_init(AwnTask *task)
 {
   gtk_widget_add_events(GTK_WIDGET(task), GDK_ALL_EVENTS_MASK);
 
-  gtk_widget_set_size_request(GTK_WIDGET(task), 60, 20);
-
   gtk_drag_dest_set(GTK_WIDGET(task),
                     GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
                     drop_types, n_drop_types,
@@ -261,6 +260,10 @@ _task_refresh(GObject *obj)
                               (priv->settings->task_width),
                               (priv->settings->bar_height + 2) * 2);
 
+  /*
+   Note: Timeout will only happen once.  awn_task_manager_refresh_box() always 
+   returns FALSE.
+   */
   g_timeout_add(50, (GSourceFunc)awn_task_manager_refresh_box,
                 priv->task_manager);
 }
@@ -2119,6 +2122,9 @@ awn_task_new(AwnTaskManager *task_manager, AwnSettings *settings)
                    G_CALLBACK(_task_drag_data_recieved), (gpointer)task);
   g_signal_connect(G_OBJECT(task), "drag-end",
                    G_CALLBACK(_task_drag_data_recieved), (gpointer)task);
+
+  _task_refresh(G_OBJECT(task));
+
   return task;
 }
 
