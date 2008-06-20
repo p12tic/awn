@@ -1,3 +1,9 @@
+2008-06-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnApplet.py:
+	Revert r309 (caused crashes and other strange behavior on other people's
+	systems).
+
 2008-06-20  Rodney Cryderman <rcryderman@gmail.com>
 
 	* awn-manager/awnTheme.py
