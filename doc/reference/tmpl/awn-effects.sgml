@@ -110,6 +110,9 @@ awn-effects
 @enter_notify: 
 @leave_notify: 
 @timer_id: 
+@icon_ctx: 
+@reflect_ctx: 
+@op_list: 
 @pad1: 
 @pad2: 
 @pad3: 

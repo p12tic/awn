@@ -64,6 +64,7 @@ doc/reference/libawn-decl-list.txt
 doc/reference/libawn-decl.txt
 doc/reference/libawn-overrides.txt
 doc/reference/libawn-sections.txt
+doc/reference/libawn-undeclared.txt
 doc/reference/libawn-undocumented.txt
 doc/reference/libawn-unused.txt
 doc/reference/libawn.args

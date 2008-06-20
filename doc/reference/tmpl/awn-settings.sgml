@@ -46,6 +46,7 @@ awn-settings
 @rounded_corners: 
 @corner_radius: 
 @render_pattern: 
+@expand_bar: 
 @pattern_uri: 
 @pattern_alpha: 
 @g_step_1: 
@@ -66,6 +67,9 @@ awn-settings
 @name_change_notify: 
 @alpha_effect: 
 @icon_effect: 
+@icon_alpha: 
+@frame_rate: 
+@icon_depth_on: 
 @icon_offset: 
 @text_color: 
 @shadow_color: 
