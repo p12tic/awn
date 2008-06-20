@@ -1,5 +1,11 @@
 2008-06-19  Mark Lee <avant-wn@lazymalevolence.com>
 
+	* awn-manager/awnApplet.py:
+	Add support for the applet list updating when the config option is
+	changed.
+
+2008-06-19  Mark Lee <avant-wn@lazymalevolence.com>
+
 	* .bzrignore:
 	* doc/reference/tmpl/awn-effects.sgml:
 	* doc/reference/tmpl/awn-settings.sgml:

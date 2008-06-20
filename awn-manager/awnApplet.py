@@ -295,6 +295,10 @@ class awnApplet:
             model.move_after (iterator, next)
         self._apply ()
 
+    def update_active_model(self, entry, data):
+        self.active_model.clear()
+        self.refresh_icon_list(entry['value'], self.active_model)
+
     def make_active_model (self):
         self.active_model = gtk.ListStore(gtk.gdk.Pixbuf, str, str, str)
         self.active_model.connect("row-changed", self.applet_reorder)
@@ -316,6 +320,8 @@ class awnApplet:
         applets = self.client.get_list(defs.AWN, defs.APPLET_LIST, awn.CONFIG_LIST_STRING)
 
         self.refresh_icon_list (applets, self.active_model)
+
+        self.client.notify_add(defs.AWN, defs.APPLET_LIST, self.update_active_model)
 
     def make_row (self, path):
         text = ""
