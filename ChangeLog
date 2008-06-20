@@ -1,3 +1,21 @@
+2008-06-20  Rodney Cryderman <rcryderman@gmail.com>
+
+	* awn-manager/awnTheme.py
+	Applied patch submitted by black for bug
+	https://bugs.launchpad.net/awn/+bug/237473.
+	Bug description: "awn-manager doesn't show anything when adding theme
+	until restart"
+
+2008-06-20  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/main.c
+	Applied 3rd patched submitted by black for bug
+	https://bugs.launchpad.net/awn/+bug/236523
+	Bug description: "Every option in the awn-manager should change the
+	awn-bar instantly"
+	This deals with bar angle changes.
+	Reformatted code to follow awn coding style guidelines more closely (astyle).
+
 2008-06-19  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* awn-manager/awnApplet.py:
@@ -24,7 +42,7 @@
 	* awn-manager/window.glade
 	* src/main.c
 	Applied 2nd patch for bug #36523.  Changes in awn-manager to task
-	arrrow setting need to be reflected in the bar immediately.
+	arrow setting need to be reflected in the bar immediately.
 	Submitter black ( ttps://launchpad.net/~blackborn )
 
 2008-06-18  Rodney Cryderman <rcryderman@gmail.com>

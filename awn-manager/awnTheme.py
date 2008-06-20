@@ -346,7 +346,7 @@ class AwnThemeManager:
             else:
                 self.pixbuf = None
 
-            row = self.model.append (None, (False, self.pixbuf, "Theme: %s\nVersion: %s\nAuthor: %s\nDate: " % (cfg['details']['name'], cfg['details']['version'], cfg['details']['author'], cfg['details']['date'])))
+            row = self.model.append (None, (False, self.pixbuf, "Theme: %s\nVersion: %s\nAuthor: %s\nDate: %s" % (cfg['details']['name'], cfg['details']['version'], cfg['details']['author'], cfg['details']['date'])))
             path = self.model.get_path(row)[0]
             self.theme_list[path] = {
                 'row': row,
