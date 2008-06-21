@@ -793,17 +793,21 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
                        );
       cairo_save(fx->reflect_ctx);
       cairo_transform(fx->reflect_ctx, &matrix);
-      cairo_set_source_surface(fx->reflect_ctx, cairo_get_target(fx->icon_ctx), 0, 0);
+      cairo_set_source_surface(fx->reflect_ctx, cairo_get_target(fx->icon_ctx), 
+                               0, 0);
       cairo_paint(fx->reflect_ctx);
 
-      cairo_set_source_surface(cr, cairo_get_target(fx->reflect_ctx), ds.x1, ds.y1);
+      cairo_set_source_surface(cr, cairo_get_target(fx->reflect_ctx), 
+                               ds.x1, ds.y1);
       cairo_paint_with_alpha(cr, fx->alpha / 3);
       cairo_restore(fx->reflect_ctx);
     }
     else
     {
       cairo_set_source_surface(cr, reflect, ds.x1, ds.y1);
-      cairo_paint_with_alpha(cr, fx->settings->icon_alpha * fx->alpha / 3);
+      cairo_paint_with_alpha(cr, fx->settings->icon_alpha * 
+                                  fx->alpha * 
+                                  fx->settings->reflection_alpha_mult);
     }
   }
 

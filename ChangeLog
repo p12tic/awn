@@ -1,3 +1,11 @@
+2008-06-20  Rodney Cryderman <rcryderman@gmail.com>
+
+	* data/awn.schema-ini.in:
+	* libawn/awn-effects.c:
+	* libawn/awn-settings.c:
+	* libawn/awn-settings.h:
+	Added config key:  app/reflection_alpha_multiplier.
+
 2008-06-20  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* awn-manager/awnApplet.py:

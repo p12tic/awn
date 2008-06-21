@@ -160,6 +160,10 @@ description = Determines whether the bounce effect occurs when an icon is hovere
 type = float
 default = 1.0
 description = Alpha value to apply to icons.
+[app/reflection_alpha_multiplier]
+type = float
+default = 0.33
+description = Reflection alpha is a multiple of the current alpha of the icon.
 [app/frame_rate]
 type = int
 default = 25
