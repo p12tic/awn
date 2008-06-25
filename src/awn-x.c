@@ -51,7 +51,7 @@
 GdkPixbuf *
 awn_x_get_icon (WnckWindow * window, gint width, gint height)
 {
-  GdkPixbuf *icon;
+  GdkPixbuf *icon, *icon_scaled;
   GdkPixbuf *mini_icon;
 
   icon = NULL;
@@ -71,8 +71,9 @@ awn_x_get_icon (WnckWindow * window, gint width, gint height)
   }
   //if we didn't get an icon above just fall back...
   icon=wnck_window_get_icon (window);
-  g_object_ref(icon);
-  return icon;
+  icon_scaled=gdk_pixbuf_scale_simple( icon, width, height, GDK_INTERP_BILINEAR);
+  g_object_ref(icon_scaled);
+  return icon_scaled;
 }
 
 int num = 0;

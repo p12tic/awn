@@ -1,3 +1,9 @@
+2008-06-25  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-x.c:
+	Applied patch submitted by black for "generic icon does not scale".
+	Bug: https://bugs.launchpad.net/awn/+bug/241950
+
 2008-06-20  Rodney Cryderman <rcryderman@gmail.com>
 
 	* data/awn.schema-ini.in:
