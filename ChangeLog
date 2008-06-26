@@ -1,5 +1,10 @@
 2008-06-25  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-applet-simple.h:
+	Added awn_applet_simple_set_icon_context() to awn-applet-simple.h.
+
+2008-06-25  Rodney Cryderman <rcryderman@gmail.com>
+
 	* src/awn-x.c:
 	Applied patch submitted by black for "generic icon does not scale".
 	Bug: https://bugs.launchpad.net/awn/+bug/241950
