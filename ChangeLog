@@ -1,4 +1,11 @@
 2008-06-25  Rodney Cryderman <rcryderman@gmail.com>
+	
+	* libawn/awn-applet-simple.h:
+	Corrected the description of awn_applet_simple_set_icon_context()
+	behaviour.
+	Unref/NULL out the pixbufs if awn_applet_simple_set_icon_context() called.
+
+2008-06-25  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.h:
 	Added awn_applet_simple_set_icon_context() to awn-applet-simple.h.

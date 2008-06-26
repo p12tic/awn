@@ -143,15 +143,14 @@ adjust_icon(AwnAppletSimple *simple)
 }
 
 /**
- * awn_applet_simple_set_icon:
+ * awn_applet_simple_set_icon_context:
  * @simple: The applet whose icon is being set.
- * @pixbuf: The pixbuf image to use as the icon.
+ * @cr: The context containing the icon surface.
  *
- * Sets the applet icon to the pixbuf provided as an argument.  A private copy
- * of the pixbuf argument is made by awn_applet_simple_set_icon() and the
- * original argument is left unchanged.  The caller retains ownership of pixbuf
- * and is required to unref it when it is no longer required.
- 
+ * Sets the applet icon to the contexts surface provided as an argument.  The 
+ * context is not copied.  Call this function with an updated context
+ * before destroying the existing context.  
+ *
  * NOTE: at the moment there is probably a memory leak there's a switch between
  * pixbuf method and cairo method of setting icons.  FIXME
  */
@@ -167,6 +166,17 @@ awn_applet_simple_set_icon_context(AwnAppletSimple *simple,
   {
     cairo_surface_destroy(cairo_get_target(priv->icon_context));
     cairo_destroy(priv->icon_context);
+  }
+
+  if (priv->icon)
+  {
+    g_object_unref(priv->icon);
+    priv->icon = NULL;
+  }
+  if (priv->reflect)
+  {
+    g_object_unref(priv->reflect);
+    priv->reflect = NULL;    
   }
   
   priv->icon_context=cr;
