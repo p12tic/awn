@@ -1,3 +1,9 @@
+2008-06-27  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	Renamed awn_effects_op_fn -> AwnEffectsOpfn.
+
 2008-06-25  Rodney Cryderman <rcryderman@gmail.com>
 	
 	* libawn/awn-applet-simple.h:

@@ -142,7 +142,7 @@ static const AwnEffectsOp OP_LIST[] =
   {awn_effect_op_glow, NULL},
   {awn_effect_move_x, NULL},
   {awn_effect_op_3dturn, NULL},
-  {(awn_effects_op_fn)NULL, NULL}
+  {(AwnEffectsOpfn)NULL, NULL}
 };
 
 // effect functions
