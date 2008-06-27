@@ -1,3 +1,8 @@
+2008-06-27  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-settings.h:
+	Remove unused function prototype.
+
 2008-06-27  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects.c:
