@@ -53,6 +53,7 @@
 #define BAR_ANGLE	"bar_angle"		/*int, between 0 and 90*/
 #define ICON_OFFSET	"icon_offset"		/*float*/
 #define BAR_POS		"bar_pos" 		/*float, between 0 and 1 */
+#define NO_BAR_RESIZE_ANI "no_bar_resize_animation" /*bool*/
 
 #define CURVES_SYMMETRY	 "curves_symmetry"	/*float, between 0 and 1*/
 #define CURVINESS		 "curviness"		/*float, between 0 and 1*/
@@ -154,6 +155,8 @@ awn_settings_new()
 	awn_load_int(client, BAR, BAR_HEIGHT, &s->bar_height,48);
 	awn_load_float(client, BAR, BAR_POS, &s->bar_pos,0.5);
 	awn_load_int(client, BAR, BAR_ANGLE, &s->bar_angle,0);
+  awn_load_bool(client, BAR, NO_BAR_RESIZE_ANI,&s->no_bar_resize_ani,FALSE);
+  
 	awn_load_int(client, BAR, ICON_OFFSET, &s->icon_offset,10);
 	awn_load_bool(client, BAR, ROUNDED_CORNERS, &s->rounded_corners, TRUE);
 	awn_load_float(client, BAR, CORNER_RADIUS, &s->corner_radius, 10.0);	

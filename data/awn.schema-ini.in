@@ -50,6 +50,10 @@ description = The radius of the bar corners when rounded_corners is TRUE.
 type = bool
 default = False
 description = Expand the bar to the width of the monitor.
+[bar/no_bar_resize_animation]
+type = bool
+default = False
+description = Disable bar resize animations (not the background).
 [bar/render_pattern]
 type = bool
 default = False
