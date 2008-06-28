@@ -1,9 +1,14 @@
 2008-06-27  Rodney Cryderman <rcryderman@gmail.com>
 
 	* data/awn.schema-ini.in:
+	Changed description for no_bar_resize_animation
+
+2008-06-27  Rodney Cryderman <rcryderman@gmail.com>
+
+	* data/awn.schema-ini.in:
 	* libawn/awn-settings.c:
 	Added the code to enable the
-	/apps/avant-window-navigator/no_bar_resize_animation config key.
+	/apps/avant-window-navigator/bar/no_bar_resize_animation config key.
 	Either it was never fully committed or, more likely, parts of it got
 	accidentally reverted.  
 
