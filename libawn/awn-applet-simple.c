@@ -354,8 +354,11 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
       cairo_paint(priv->reflect_context);
       
     }
+    //First time through the effects engine may not be properly initialize.
+    //so we'll skip the first frame.
     if (! done_once)
     {
+      gtk_widget_queue_draw(widget);
       done_once = TRUE;
       return TRUE;
     }

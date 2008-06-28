@@ -1,5 +1,10 @@
 2008-06-27  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-applet-simple.c:
+	Make sure we don't get stuck with a blank applet icon on startup.
+
+2008-06-27  Rodney Cryderman <rcryderman@gmail.com>
+
 	* data/awn.schema-ini.in:
 	Changed description for no_bar_resize_animation
 
