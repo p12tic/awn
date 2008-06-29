@@ -1,6 +1,12 @@
 2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:
+	Lowered delay before hiding title.  Fixed assert when title visibility
+	is set before the title.
+
+2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
 	Minor reorganization.  Moved a function call inside a condition.
 
 2008-06-29  Rodney Cryderman <rcryderman@gmail.com>

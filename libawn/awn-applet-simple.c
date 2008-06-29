@@ -478,8 +478,12 @@ awn_applet_simple_set_title(AwnAppletSimple *simple,const char * title_string)
   if (priv->title_string)
   {
     g_object_unref(priv->title_string) ;
+    priv->title_string = g_strdup(title_string);    
   }
-  priv->title_string = g_strdup(title_string);
+  else
+  {
+    priv->title_string = NULL;
+  }
   
 }
 
@@ -517,16 +521,18 @@ awn_applet_simple_set_title_visibility(AwnAppletSimple *simple, gboolean state)
 
   priv = simple->priv;  
   priv->title_visible = state;  
-  if (priv->title_visible)
+  if (priv->title)
   {
-    awn_title_show(priv->title, GTK_WIDGET(simple), priv->title_string);
-  }
-  else
-  {
-    g_timeout_add(500,awn_applet_simple_hide_title,simple);    
-    awn_title_hide(priv->title, GTK_WIDGET(simple));
-  }
-  
+    if (priv->title_visible)
+    {
+      awn_title_show(priv->title, GTK_WIDGET(simple), priv->title_string);
+    }
+    else
+    {
+      g_timeout_add(500,awn_applet_simple_hide_title,simple);    
+      awn_title_hide(priv->title, GTK_WIDGET(simple));
+    }
+  }  
 }
 
 static gboolean
@@ -538,7 +544,7 @@ awn_applet_simple_on_leave_event(GtkWidget * widget, GdkEventCrossing * event,
   if (priv->title && priv->title_string)
   {
     priv->title_visible = FALSE;
-    g_timeout_add(250,awn_applet_simple_hide_title,simple);
+    g_timeout_add(100,awn_applet_simple_hide_title,simple);
   }
   return FALSE;
 }
