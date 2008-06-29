@@ -470,7 +470,6 @@ awn_applet_simple_set_title(AwnAppletSimple *simple,const char * title_string)
 {
   g_return_if_fail(AWN_IS_APPLET_SIMPLE(simple));  
   AwnAppletSimplePrivate *priv;
-
   priv = simple->priv;  
   if (!priv->title)
   {
@@ -478,9 +477,8 @@ awn_applet_simple_set_title(AwnAppletSimple *simple,const char * title_string)
   }
   if (priv->title_string)
   {
-    g_object_unref(priv->title_string) ;
+    g_free(priv->title_string) ;
   }  
-  
   if (title_string)
   {
     priv->title_string = g_strdup(title_string);    
@@ -489,7 +487,6 @@ awn_applet_simple_set_title(AwnAppletSimple *simple,const char * title_string)
   {
     priv->title_string = NULL;
   }
-  
 }
 
 static gboolean

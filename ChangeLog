@@ -1,6 +1,11 @@
 2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:
+	Use a g_free() instead of g_object_unref()
+
+2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
 	Fixed up the logic in set_title().  Added some g_return_if_fail()
 	calls.
 
