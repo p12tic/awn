@@ -1,3 +1,9 @@
+2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
+
+	* awn-applet-activation/main.c
+	Reformatted source using astyle to more closely follow coding style
+	guidelines.
+
 2008-06-28  Rodney Cryderman <rcryderman@gmail.com>
 
 	* awn-manager/awnManager.py.in:
