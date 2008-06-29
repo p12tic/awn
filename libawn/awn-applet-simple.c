@@ -468,6 +468,7 @@ bar_angle_changed(AwnConfigClientNotifyEntry *entry, AwnAppletSimple *simple)
 void
 awn_applet_simple_set_title(AwnAppletSimple *simple,const char * title_string)
 {
+  g_return_if_fail(AWN_IS_APPLET_SIMPLE(simple));  
   AwnAppletSimplePrivate *priv;
 
   priv = simple->priv;  
@@ -478,6 +479,10 @@ awn_applet_simple_set_title(AwnAppletSimple *simple,const char * title_string)
   if (priv->title_string)
   {
     g_object_unref(priv->title_string) ;
+  }  
+  
+  if (title_string)
+  {
     priv->title_string = g_strdup(title_string);    
   }
   else
@@ -491,6 +496,7 @@ static gboolean
 awn_applet_simple_on_enter_event(GtkWidget * widget, GdkEventCrossing * event,
                    AwnAppletSimple *simple)
 {
+  
   AwnAppletSimplePrivate * priv = simple->priv;  
   
   if (priv->title && priv->title_string)
@@ -505,6 +511,7 @@ static
 gboolean awn_applet_simple_hide_title(gpointer data)
 {
   AwnAppletSimple *simple = data;
+  
   AwnAppletSimplePrivate * priv = simple->priv;    
   
   if (! priv->title_visible)
@@ -517,6 +524,7 @@ gboolean awn_applet_simple_hide_title(gpointer data)
 void
 awn_applet_simple_set_title_visibility(AwnAppletSimple *simple, gboolean state)
 {
+  g_return_if_fail(AWN_IS_APPLET_SIMPLE(simple));  
   AwnAppletSimplePrivate *priv;
 
   priv = simple->priv;  

@@ -1,6 +1,12 @@
 2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:
+	Fixed up the logic in set_title().  Added some g_return_if_fail()
+	calls.
+
+2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
 	Lowered delay before hiding title.  Fixed assert when title visibility
 	is set before the title.
 
