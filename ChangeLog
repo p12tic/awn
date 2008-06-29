@@ -1,5 +1,12 @@
 2008-06-28  Rodney Cryderman <rcryderman@gmail.com>
 
+	* awn-manager/awnManager.py.in:
+	Applied patch for:  https://bugs.edge.launchpad.net/awn/+bug/242214.
+	Bug Description:  Not all Awn Manager dialogs have app icon.
+	Provided by:  https://bugs.edge.launchpad.net/~sharkbaitbobby
+
+2008-06-28  Rodney Cryderman <rcryderman@gmail.com>
+
 	* bindings/python/awn.defs:
 	Added python bindings for awn_applet_create_pref_item() and
 	awn_applet_simple_set_icon_context().  

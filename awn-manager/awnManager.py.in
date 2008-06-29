@@ -80,7 +80,7 @@ class AwnManager:
                 icon = theme.load_icon('awn-manager', size, gtk.ICON_LOOKUP_USE_BUILTIN)
             icon_list.append(icon)
         if len(icon_list) > 0:
-            self.window.set_icon_list(*icon_list)
+            gtk.window_set_default_icon_list(*icon_list)
         self.window.connect("delete-event", gtk.main_quit)
 
         # Enable RGBA colormap
