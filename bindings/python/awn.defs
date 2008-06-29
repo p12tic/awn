@@ -474,7 +474,7 @@
   )
 )
 
-(define-method simple_set_title
+(define-method set_title
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_set_title")
   (return-type "none")
