@@ -453,6 +453,24 @@
   (return-type "none")
 )
 
+(define-method set_title_visibility
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_title_visibility")
+  (return-type "none")
+  (parameters
+    '("gboolean" "state")
+  )
+)
+
+(define-method simple_set_title
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_title")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "title_string")
+  )
+)
+
 (define-method get_effects
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_get_effects")
