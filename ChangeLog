@@ -1,3 +1,11 @@
+2008-06-28  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	Added an extremely simple interface to set the title that should also be
+	resistant to blinking when icon is clicked repeatedly.  API seems fine
+	though internal implementation may change.
+
 2008-06-27  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:

@@ -87,6 +87,12 @@ awn_applet_simple_effects_on(AwnAppletSimple *simple);
 void
 awn_applet_simple_effects_off(AwnAppletSimple *simple);
 
+void
+awn_applet_simple_set_title(AwnAppletSimple *simple,const char * title_string);
+
+void
+awn_applet_simple_set_title_visibility(AwnAppletSimple *simple, gboolean state);
+
 G_END_DECLS
 
 #endif

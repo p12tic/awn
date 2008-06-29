@@ -45,6 +45,10 @@ struct _AwnAppletSimplePrivate
   GdkPixbuf *icon;
   GdkPixbuf *reflect;
   
+  AwnTitle *title;  
+  gchar * title_string;
+  gboolean  title_visible;
+  
   cairo_t * icon_context;
   cairo_t * reflect_context;
   gboolean icon_cxt_copied;
@@ -461,6 +465,85 @@ bar_angle_changed(AwnConfigClientNotifyEntry *entry, AwnAppletSimple *simple)
   g_print("bar_angle changed\n");
 }
 
+void
+awn_applet_simple_set_title(AwnAppletSimple *simple,const char * title_string)
+{
+  AwnAppletSimplePrivate *priv;
+
+  priv = simple->priv;  
+  if (!priv->title)
+  {
+    priv->title = AWN_TITLE(awn_title_get_default());
+  }
+  if (priv->title_string)
+  {
+    g_object_unref(priv->title_string) ;
+  }
+  priv->title_string = g_strdup(title_string);
+  
+}
+
+static gboolean
+awn_applet_simple_on_enter_event(GtkWidget * widget, GdkEventCrossing * event,
+                   AwnAppletSimple *simple)
+{
+  AwnAppletSimplePrivate * priv = simple->priv;  
+  
+  if (priv->title && priv->title_string)
+  {
+    priv->title_visible = TRUE;
+    awn_title_show(priv->title, GTK_WIDGET(simple), priv->title_string);
+  }
+  return FALSE;
+}
+
+static
+gboolean awn_applet_simple_hide_title(gpointer data)
+{
+  AwnAppletSimple *simple = data;
+  AwnAppletSimplePrivate * priv = simple->priv;    
+  
+  if (! priv->title_visible)
+  {    
+    awn_title_hide(priv->title, GTK_WIDGET(simple));  
+  }
+  return FALSE;  
+}
+
+void
+awn_applet_simple_set_title_visibility(AwnAppletSimple *simple, gboolean state)
+{
+  AwnAppletSimplePrivate *priv;
+
+  priv = simple->priv;  
+  g_timeout_add(500,awn_applet_simple_hide_title,simple);
+  priv->title_visible = state;  
+  if (priv->title_visible)
+  {
+    awn_title_show(priv->title, GTK_WIDGET(simple), priv->title_string);
+  }
+  else
+  {
+    awn_title_hide(priv->title, GTK_WIDGET(simple));
+  }
+  
+}
+
+static gboolean
+awn_applet_simple_on_leave_event(GtkWidget * widget, GdkEventCrossing * event,
+                   AwnAppletSimple *simple)
+{
+  AwnAppletSimplePrivate * priv = simple->priv;    
+
+  if (priv->title && priv->title_string)
+  {
+    priv->title_visible = FALSE;
+    g_timeout_add(250,awn_applet_simple_hide_title,simple);
+  }
+  return FALSE;
+}
+
+
 static void
 awn_applet_simple_init(AwnAppletSimple *simple)
 {
@@ -477,7 +560,10 @@ awn_applet_simple_init(AwnAppletSimple *simple)
   priv->icon_width = 0;
   priv->offset = 0;
   priv->effects_enabled=TRUE;
-
+  priv->title = NULL;
+  priv->title_string = NULL;
+  priv->title_visible = FALSE;
+  
   awn_effects_init(G_OBJECT(simple), &priv->effects);
   // register hover effects
   awn_register_effects(G_OBJECT(simple), &priv->effects);
@@ -494,7 +580,12 @@ awn_applet_simple_init(AwnAppletSimple *simple)
   awn_config_client_notify_add(client, "bar", "bar_height",
                                (AwnConfigClientNotifyFunc)bar_height_changed, simple);
   awn_config_client_notify_add(client, "bar", "icon_offset",
-                               (AwnConfigClientNotifyFunc)icon_offset_changed, simple);
+                               (AwnConfigClientNotifyFunc)icon_offset_changed, simple);  
+  
+  g_signal_connect(GTK_WIDGET(simple), "enter-notify-event",
+                    G_CALLBACK(awn_applet_simple_on_enter_event), simple);
+  g_signal_connect(GTK_WIDGET(simple), "leave-notify-event",
+                    G_CALLBACK(awn_applet_simple_on_leave_event), simple);  
 }
 
 /**
