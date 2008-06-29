@@ -1,5 +1,10 @@
 2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-applet-simple.c:
+	Minor reorganization.  Moved a function call inside a condition.
+
+2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
+
 	* bindings/python/awn.defs:
 	Fixed name for python bindings (AppletSimple)  simple_set_title ->
 	set_title.

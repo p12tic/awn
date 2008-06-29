@@ -516,7 +516,6 @@ awn_applet_simple_set_title_visibility(AwnAppletSimple *simple, gboolean state)
   AwnAppletSimplePrivate *priv;
 
   priv = simple->priv;  
-  g_timeout_add(500,awn_applet_simple_hide_title,simple);
   priv->title_visible = state;  
   if (priv->title_visible)
   {
@@ -524,6 +523,7 @@ awn_applet_simple_set_title_visibility(AwnAppletSimple *simple, gboolean state)
   }
   else
   {
+    g_timeout_add(500,awn_applet_simple_hide_title,simple);    
     awn_title_hide(priv->title, GTK_WIDGET(simple));
   }
   
