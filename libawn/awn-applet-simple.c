@@ -487,6 +487,11 @@ awn_applet_simple_set_title(AwnAppletSimple *simple,const char * title_string)
   {
     priv->title_string = NULL;
   }
+  if (priv->title_string && priv->title_visible)
+  {
+    awn_title_show(priv->title, GTK_WIDGET(simple), priv->title_string);
+  }  
+  
 }
 
 static gboolean

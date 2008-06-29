@@ -1,6 +1,11 @@
 2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:
+	Update on a set title if the title is currently visible.
+
+2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
 	Use a g_free() instead of g_object_unref()
 
 2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
