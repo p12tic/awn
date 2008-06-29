@@ -1,6 +1,13 @@
 2008-06-28  Rodney Cryderman <rcryderman@gmail.com>
 
 	* bindings/python/awn.defs:
+	Added python bindings for awn_applet_create_pref_item() and
+	awn_applet_simple_set_icon_context().  
+	Courtesy of sharkbait.
+
+2008-06-28  Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
 	Added python bindings for awn_applet_simple_set_title() and
 	awn_applet_simple_set_title_visibility()
 

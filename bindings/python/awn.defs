@@ -403,7 +403,10 @@
   (return-type "GtkWidget*")
 )
 
-
+(define-function create_pref_item
+  (c-name "awn_applet_create_pref_item")
+  (return-type "GtkWidget*")
+)
 
 ;; From awn-applet-simple.h
 
@@ -438,6 +441,15 @@
   (return-type "none")
   (parameters
     '("GdkPixbuf*" "pixbuf")
+  )
+)
+
+(define-method set_icon_context
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_icon_context")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
   )
 )
 
