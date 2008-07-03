@@ -251,13 +251,13 @@ awn_icons_init (AwnIcons *self)
     g_mkdir(icon_dir,0775);
   }
   
-  gchar * awn_theme_dir = g_strdup_printf("%s/%s",AWN_ICONS_THEME_NAME,icon_dir);
+  gchar * awn_theme_dir = g_strdup_printf("%s/%s",icon_dir,AWN_ICONS_THEME_NAME);
   g_free(icon_dir);
   if ( !g_file_test(awn_theme_dir,G_FILE_TEST_IS_DIR) )
   {
     g_mkdir(awn_theme_dir,0775);
   }
-
+  
   gchar * awn_scalable_dir = g_strdup_printf("%s/scalable",awn_theme_dir);  
   g_free(awn_theme_dir);
   if ( !g_file_test(awn_scalable_dir,G_FILE_TEST_IS_DIR) )

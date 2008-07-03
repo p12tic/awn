@@ -1,6 +1,11 @@
 2008-07-02  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
+	Fixed the directory creation.
+
+2008-07-02  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
 	Moved the awn-theme dir layout creation into the init.
 
 2008-07-02  Rodney Cryderman <rcryderman@gmail.com>
