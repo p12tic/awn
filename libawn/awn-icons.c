@@ -20,7 +20,13 @@
 
 #include <string.h>
 
+#include <glib.h>
+#include <glib/gstdio.h>
+
+
 G_DEFINE_TYPE (AwnIcons, awn_icons, G_TYPE_OBJECT)
+
+#define AWN_ICONS_THEME_NAME "awn-theme"
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), LIBAWN_TYPE_AWN_ICONS, AwnIconsPrivate))
@@ -29,24 +35,24 @@ typedef struct _AwnIconsPrivate AwnIconsPrivate;
 
 struct _AwnIconsPrivate {
   GtkWindow *   icon_window;    //used if Non-NULL for drag and drop support
+
+  GtkIconTheme *  awn_theme;
   
   gchar **  states;
   gchar **  icon_names;
   gchar *   applet_name;
   gchar *   uid;
-  gchar *   theme_name;
   
   gint  height;
   gint  cur_icon;
   gint  count;
 };
 
-void awn_icons_set_icons_info(AwnIcons * icons,gchar * theme_name, 
+void awn_icons_set_icons_info(AwnIcons * icons, 
                              gchar * applet_name,gchar * uid,gint height,
                              gchar **states,gchar **icon_names)
 {
   g_return_if_fail(icons);
-  g_return_if_fail(theme_name);  
   g_return_if_fail(applet_name);
   g_return_if_fail(uid);
   g_return_if_fail(states);
@@ -82,12 +88,6 @@ void awn_icons_set_icons_info(AwnIcons * icons,gchar * theme_name,
   }
   priv->states[count] = NULL;
   priv->icon_names[count] = NULL;
-  
-  if (priv->theme_name)
-  {
-    g_free(priv->theme_name);
-  }
-  priv->theme_name = g_strdup(theme_name);
 
   if (priv->applet_name)
   {
@@ -101,9 +101,35 @@ void awn_icons_set_icons_info(AwnIcons * icons,gchar * theme_name,
   }
   priv->uid = g_strdup(uid);
   priv->height = height;
+  
+  //do we have our dir....
+  const gchar * home = g_getenv("HOME");
+  
+  gchar * icon_dir = g_strdup_printf("%s/.icons",home);
+  if ( !g_file_test(icon_dir,G_FILE_TEST_IS_DIR) )
+  {
+    g_mkdir(icon_dir,0775);
+  }
+  
+  gchar * awn_theme_dir = g_strdup_printf("%s/%s",AWN_ICONS_THEME_NAME,icon_dir);
+  g_free(icon_dir);
+  if ( !g_file_test(awn_theme_dir,G_FILE_TEST_IS_DIR) )
+  {
+    g_mkdir(awn_theme_dir,0775);
+  }
+
+  gchar * awn_scalable_dir = g_strdup_printf("%s/scalable",awn_theme_dir);  
+  g_free(awn_theme_dir);
+  if ( !g_file_test(awn_scalable_dir,G_FILE_TEST_IS_DIR) )
+  {
+    g_mkdir(awn_scalable_dir,0775);
+  }
+  
+  g_free(awn_scalable_dir);
+  gtk_icon_theme_rescan_if_needed(priv->awn_theme);
 }
 
-void awn_icons_set_icon_info(AwnIcons * icons,gchar * theme_name, 
+void awn_icons_set_icon_info(AwnIcons * icons,
                              gchar * applet_name,gchar * uid, gint height,
                              gchar *state,gchar *icon_name)
 {
@@ -112,7 +138,7 @@ void awn_icons_set_icon_info(AwnIcons * icons,gchar * theme_name,
   gchar *icon_names[] = {NULL,NULL};
   states[0] = state;
   icon_names[0] = icon_name;
-  awn_icons_set_icons_info(icons,theme_name,applet_name,
+  awn_icons_set_icons_info(icons,applet_name,
                            uid,height,states,icon_names);
   
 }
@@ -236,10 +262,12 @@ awn_icons_init (AwnIcons *self)
   priv->states = NULL;
   priv->icon_names = NULL;
   priv->uid = NULL;
-  priv->theme_name = NULL;
   priv->cur_icon = 0;
   priv->count = 0;  
   priv->height = 0;
+  
+  priv->awn_theme = gtk_icon_theme_new();
+  gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);
 }
 
 AwnIcons*

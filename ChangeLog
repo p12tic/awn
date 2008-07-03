@@ -1,4 +1,12 @@
 2008-07-02  Rodney Cryderman <rcryderman@gmail.com>
+	
+	* libawn/awn-icons.c:
+	Get rid of theme_name.  The awn_theme is used internally.  
+	Start code to deal with creation of awn-theme dirs.  Some
+	experimentation will be needed to determine the minimal layout
+	required.
+
+2008-07-02  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
 	* libawn/awn-icons.h:
