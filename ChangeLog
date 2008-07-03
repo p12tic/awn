@@ -1,3 +1,10 @@
+2008-07-02  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	* libawn/Makefile.am:
+	Some initial work implementing awn-icons.
+
 2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:
