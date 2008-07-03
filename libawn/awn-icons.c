@@ -102,30 +102,6 @@ void awn_icons_set_icons_info(AwnIcons * icons,
   priv->uid = g_strdup(uid);
   priv->height = height;
   
-  //do we have our dir....
-  const gchar * home = g_getenv("HOME");
-  
-  gchar * icon_dir = g_strdup_printf("%s/.icons",home);
-  if ( !g_file_test(icon_dir,G_FILE_TEST_IS_DIR) )
-  {
-    g_mkdir(icon_dir,0775);
-  }
-  
-  gchar * awn_theme_dir = g_strdup_printf("%s/%s",AWN_ICONS_THEME_NAME,icon_dir);
-  g_free(icon_dir);
-  if ( !g_file_test(awn_theme_dir,G_FILE_TEST_IS_DIR) )
-  {
-    g_mkdir(awn_theme_dir,0775);
-  }
-
-  gchar * awn_scalable_dir = g_strdup_printf("%s/scalable",awn_theme_dir);  
-  g_free(awn_theme_dir);
-  if ( !g_file_test(awn_scalable_dir,G_FILE_TEST_IS_DIR) )
-  {
-    g_mkdir(awn_scalable_dir,0775);
-  }
-  
-  g_free(awn_scalable_dir);
   gtk_icon_theme_rescan_if_needed(priv->awn_theme);
 }
 
@@ -265,6 +241,32 @@ awn_icons_init (AwnIcons *self)
   priv->cur_icon = 0;
   priv->count = 0;  
   priv->height = 0;
+
+  //do we have our dirs....
+  const gchar * home = g_getenv("HOME");
+  
+  gchar * icon_dir = g_strdup_printf("%s/.icons",home);
+  if ( !g_file_test(icon_dir,G_FILE_TEST_IS_DIR) )
+  {
+    g_mkdir(icon_dir,0775);
+  }
+  
+  gchar * awn_theme_dir = g_strdup_printf("%s/%s",AWN_ICONS_THEME_NAME,icon_dir);
+  g_free(icon_dir);
+  if ( !g_file_test(awn_theme_dir,G_FILE_TEST_IS_DIR) )
+  {
+    g_mkdir(awn_theme_dir,0775);
+  }
+
+  gchar * awn_scalable_dir = g_strdup_printf("%s/scalable",awn_theme_dir);  
+  g_free(awn_theme_dir);
+  if ( !g_file_test(awn_scalable_dir,G_FILE_TEST_IS_DIR) )
+  {
+    g_mkdir(awn_scalable_dir,0775);
+  }
+  
+  g_free(awn_scalable_dir);
+  
   
   priv->awn_theme = gtk_icon_theme_new();
   gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);
