@@ -1,5 +1,11 @@
 2008-07-03  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	Preparation for the awn-icons drag and drop support.
+
+2008-07-03  Rodney Cryderman <rcryderman@gmail.com>
+
 	* data/index.theme:
 	A skeletal index.theme that needs to be installed so it can be copied to
 	$HOME/.icons/awn-theme.

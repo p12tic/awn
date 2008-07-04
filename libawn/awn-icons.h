@@ -21,6 +21,7 @@
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
+#include <libawn/awn-applet.h>
 
 G_BEGIN_DECLS
 
@@ -55,6 +56,7 @@ AwnIcons* awn_icons_new (void);
 GdkPixbuf * awn_icons_get_icon_simple(AwnIcons * icons);
 
 void awn_icons_set_icon_info(AwnIcons * icons,
+                             GtkWidget * applet,
                              gchar * applet_name,
                              gchar * uid, 
                              gint height,

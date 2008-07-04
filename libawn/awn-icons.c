@@ -34,7 +34,7 @@ G_DEFINE_TYPE (AwnIcons, awn_icons, G_TYPE_OBJECT)
 typedef struct _AwnIconsPrivate AwnIconsPrivate;
 
 struct _AwnIconsPrivate {
-  GtkWindow *   icon_window;    //used if Non-NULL for drag and drop support
+  GtkWidget *   icon_widget;    //used if Non-NULL for drag and drop support
 
   GtkIconTheme *  awn_theme;
   
@@ -48,7 +48,7 @@ struct _AwnIconsPrivate {
   gint  count;
 };
 
-void awn_icons_set_icons_info(AwnIcons * icons, 
+void awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
                              gchar * applet_name,gchar * uid,gint height,
                              gchar **states,gchar **icon_names)
 {
@@ -60,7 +60,11 @@ void awn_icons_set_icons_info(AwnIcons * icons,
 
   int count;
   AwnIconsPrivate *priv=GET_PRIVATE(icons); 
-  
+ 
+  if (applet)
+  {
+    priv->icon_widget = GTK_WIDGET(applet);
+  }
   for (count=0;states[count];count++);
   priv->count = count;
   
@@ -106,6 +110,7 @@ void awn_icons_set_icons_info(AwnIcons * icons,
 }
 
 void awn_icons_set_icon_info(AwnIcons * icons,
+                             GtkWidget * applet,
                              gchar * applet_name,
                              gchar * uid, 
                              gint height,
@@ -115,7 +120,7 @@ void awn_icons_set_icon_info(AwnIcons * icons,
   gchar *states[] = {"__SINGULAR__",NULL};
   gchar *icon_names[] = {NULL,NULL};
   icon_names[0] = icon_name;
-  awn_icons_set_icons_info(icons,applet_name,
+  awn_icons_set_icons_info(icons,applet,applet_name,
                            uid,height,states,icon_names);
   
 }
@@ -259,7 +264,7 @@ static void
 awn_icons_init (AwnIcons *self)
 {
   AwnIconsPrivate *priv=GET_PRIVATE(self);
-  priv->icon_window = NULL;
+  priv->icon_widget = NULL;
   priv->states = NULL;
   priv->icon_names = NULL;
   priv->uid = NULL;
