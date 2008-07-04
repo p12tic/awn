@@ -106,13 +106,14 @@ void awn_icons_set_icons_info(AwnIcons * icons,
 }
 
 void awn_icons_set_icon_info(AwnIcons * icons,
-                             gchar * applet_name,gchar * uid, gint height,
-                             gchar *state,gchar *icon_name)
+                             gchar * applet_name,
+                             gchar * uid, 
+                             gint height,
+                             gchar *icon_name)
 {
   g_return_if_fail(icons);  
-  gchar *states[] = {NULL,NULL};
+  gchar *states[] = {"__SINGULAR__",NULL};
   gchar *icon_names[] = {NULL,NULL};
-  states[0] = state;
   icon_names[0] = icon_name;
   awn_icons_set_icons_info(icons,applet_name,
                            uid,height,states,icon_names);
@@ -132,45 +133,70 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, gchar * state)
   {
     if ( strcmp(state,priv->states[count]) == 0 )
     {
+      int i;
       gchar * name=NULL;
       priv->count = count;
-      name = g_strdup_printf("%s-%s-%s",priv->icon_names[count],priv->applet_name,
-                            priv->uid);
-      pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), name , 
-                                        priv->height, 0, NULL);
-      g_free(name);
-      if (pixbuf)
+      
+      for (i=0;i<6 ;i++)
       {
-        break;
-      }
-      name = g_strdup_printf("%s-%s",priv->icon_names[count],priv->applet_name);
-      pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), name , 
+        switch (i)
+        {
+          case  0:                
+            name = g_strdup_printf("%s-%s-%s",
+                                  priv->icon_names[count],
+                                  priv->applet_name,
+                                  priv->uid);
+            pixbuf = gtk_icon_theme_load_icon(priv->awn_theme, name , 
+                                              priv->height, 0, NULL);
+            break;
+          case  1:
+            name = g_strdup_printf("%s-%s",
+                                   priv->icon_names[count],
+                                   priv->applet_name);
+            pixbuf = gtk_icon_theme_load_icon(priv->awn_theme, name , 
                                         priv->height, 0, NULL);
-      g_free(name);
-      if (pixbuf)
-      {
-        break;
-      }
-      pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), 
+            break;
+          case  2:
+            pixbuf = gtk_icon_theme_load_icon(priv->awn_theme, 
                                         priv->icon_names[count],priv->height, 
                                         0, NULL);
-      if (pixbuf)
-      {
-        break;
+            break;
+          case  3:
+            pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), 
+                                    priv->icon_names[count],priv->height, 
+                                    0, NULL);
+            break;
+          case  4:
+            pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), 
+                                  "stock_stop",priv->height, 0, NULL);
+            break;
+          case  5:
+            pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, 
+                                    priv->height,priv->height);
+            gdk_pixbuf_fill(pixbuf, 0xee221155);
+            break;
+        }            
+        g_free(name);
+        name = NULL;
+        if (pixbuf)
+        {
+          if (gdk_pixbuf_get_height(pixbuf) != priv->height)
+          {
+            GdkPixbuf * new_pixbuf = gdk_pixbuf_scale_simple(pixbuf,                                                             
+                                     gdk_pixbuf_get_width(pixbuf)*
+                                     priv->height/gdk_pixbuf_get_height(pixbuf),
+                                     priv->height,                                                             
+                                     GDK_INTERP_HYPER
+                                     );
+            g_object_unref(pixbuf);
+            pixbuf = new_pixbuf;
+          }
+          break;
+        }
       }
-      pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), 
-                                        "stock_stop",priv->height, 0, NULL);
-      if (pixbuf)
-      {
-        break;
-      }
-      pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, 
-                              priv->height,priv->height);
-      gdk_pixbuf_fill(pixbuf, 0xee221155);
-      break;
-      
     }
   }
+  g_assert(pixbuf);  
   return pixbuf;
 }
 
@@ -179,8 +205,7 @@ GdkPixbuf * awn_icons_get_icon_simple(AwnIcons * icons)
 {
   g_return_val_if_fail(icons,NULL);
 
-  AwnIconsPrivate *priv=GET_PRIVATE(icons);  
-  return awn_icons_get_icon(icons,priv->states[priv->count]);
+  return awn_icons_get_icon(icons,"__SINGULAR__");
 }
 
 static void

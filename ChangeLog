@@ -1,3 +1,9 @@
+2008-07-03  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c
+	* libawn/awn-icons.h
+	Some of the awn-icons api is now functional.
+
 2008-07-02  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:

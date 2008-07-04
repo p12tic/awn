@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 #define LIBAWN_AWN_ICONS_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), LIBAWN_TYPE_AWN_ICONS, AwnIconsClass))
 
-typedef struct {
+typedef struct { 
   GObject parent;
 } AwnIcons;
 
@@ -52,6 +52,13 @@ typedef struct {
 GType awn_icons_get_type (void);
 
 AwnIcons* awn_icons_new (void);
+GdkPixbuf * awn_icons_get_icon_simple(AwnIcons * icons);
+
+void awn_icons_set_icon_info(AwnIcons * icons,
+                             gchar * applet_name,
+                             gchar * uid, 
+                             gint height,
+                             gchar *icon_name);
 
 G_END_DECLS
 
