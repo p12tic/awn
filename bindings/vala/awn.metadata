@@ -57,3 +57,7 @@ awn_register_effects cheader_filename="libawn/awn-effects.h"
 awn_unregister_effects cheader_filename="libawn/awn-effects.h"
 awn_vfs_get_pathlist_from_string cheader_filename="libawn/awn-vfs.h"
 awn_vfs_init cheader_filename="libawn/awn-vfs.h"
+
+awn_config_client_new_for_applet.uid nullable="1"
+awn_effect_start_ex.start nullable="1"
+awn_effect_start_ex.stop nullable="1"

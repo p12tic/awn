@@ -289,8 +289,8 @@ namespace Awn {
 		public static int key_lock_open (string group, string key);
 		public void load_defaults_from_schema () throws GLib.Error;
 		public ConfigClient ();
-		public ConfigClient.for_applet (string name, string uid);
-		public void notify_add (string group, string key, Awn.ConfigClientNotifyFunc callback, void* data);
+		public ConfigClient.for_applet (string name, string? uid);
+		public void notify_add (string group, string key, Awn.ConfigClientNotifyFunc callback);
 		public static Awn.ConfigBackend query_backend ();
 		public void set_bool (string group, string key, bool value) throws GLib.Error;
 		public void set_float (string group, string key, float value) throws GLib.Error;
@@ -366,7 +366,7 @@ namespace Awn {
 	[CCode (cheader_filename = "libawn/awn-config-client.h")]
 	public delegate void ConfigClientNotifyFunc (Awn.ConfigClientNotifyEntry entry);
 	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public static delegate bool EffectsOpfn (Awn.Effects fx, Awn.DrawIconState ds, void* null);
+	public delegate bool EffectsOpfn (Awn.Effects fx, Awn.DrawIconState ds);
 	[CCode (cheader_filename = "libawn/awn-effects.h")]
 	public static delegate void EventNotify (GLib.Object p1);
 	[CCode (cheader_filename = "libawn/awn-title.h")]
@@ -402,7 +402,7 @@ namespace Awn {
 	[CCode (cheader_filename = "libawn/awn-effects.h")]
 	public static void effect_start (Awn.Effects fx, Awn.Effect effect);
 	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public static void effect_start_ex (Awn.Effects fx, Awn.Effect effect, Awn.EventNotify start, Awn.EventNotify stop, int max_loops);
+	public static void effect_start_ex (Awn.Effects fx, Awn.Effect effect, Awn.EventNotify? start, Awn.EventNotify? stop, int max_loops);
 	[CCode (cheader_filename = "libawn/awn-effects.h")]
 	public static void effect_stop (Awn.Effects fx, Awn.Effect effect);
 	[CCode (cheader_filename = "libawn/awn-settings.h")]

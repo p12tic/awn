@@ -142,7 +142,7 @@
 			<return-type type="void"/>
 			<parameters>
 				<parameter name="entry" type="AwnConfigClientNotifyEntry*"/>
-				<parameter name="data" type="gpointer"/>
+				<parameter name="user_data" type="gpointer"/>
 			</parameters>
 		</callback>
 		<callback name="AwnEffectsOpfn">
@@ -150,7 +150,7 @@
 			<parameters>
 				<parameter name="fx" type="AwnEffects*"/>
 				<parameter name="ds" type="DrawIconState*"/>
-				<parameter name="null" type="gpointer"/>
+				<parameter name="user_data" type="gpointer"/>
 			</parameters>
 		</callback>
 		<callback name="AwnEventNotify">
@@ -613,7 +613,7 @@
 					<parameter name="group" type="gchar*"/>
 					<parameter name="key" type="gchar*"/>
 					<parameter name="callback" type="AwnConfigClientNotifyFunc"/>
-					<parameter name="data" type="gpointer"/>
+					<parameter name="user_data" type="gpointer"/>
 				</parameters>
 			</method>
 			<method name="query_backend" symbol="awn_config_client_query_backend">
