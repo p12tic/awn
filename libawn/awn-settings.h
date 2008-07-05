@@ -124,6 +124,4 @@ AwnSettings* awn_settings_new(void);
 /* returns singleton */
 AwnSettings* awn_get_settings(void);
 
-void awn_config_set_window_to_update(GtkWidget *window);
-
 #endif /* _AWN_SETTINGS_H */

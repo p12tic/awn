@@ -403,7 +403,10 @@
   (return-type "GtkWidget*")
 )
 
-
+(define-function create_pref_item
+  (c-name "awn_applet_create_pref_item")
+  (return-type "GtkWidget*")
+)
 
 ;; From awn-applet-simple.h
 
@@ -441,6 +444,15 @@
   )
 )
 
+(define-method set_icon_context
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_icon_context")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+  )
+)
+
 (define-method effects_off
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_effects_off")
@@ -451,6 +463,24 @@
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_effects_on")
   (return-type "none")
+)
+
+(define-method set_title_visibility
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_title_visibility")
+  (return-type "none")
+  (parameters
+    '("gboolean" "state")
+  )
+)
+
+(define-method set_title
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_title")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "title_string")
+  )
 )
 
 (define-method get_effects

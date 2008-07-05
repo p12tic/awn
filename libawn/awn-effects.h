@@ -75,13 +75,13 @@ typedef void (*AwnEventNotify)(GObject *);
 
 typedef struct _AwnEffects AwnEffects;
 
-typedef gboolean(*awn_effects_op_fn)(AwnEffects * fx,
+typedef gboolean(* AwnEffectsOpfn )(AwnEffects * fx,
                                      DrawIconState * ds,
                                      gpointer null);
 
 typedef struct
 {
-  awn_effects_op_fn   fn;
+  AwnEffectsOpfn      fn;
   gpointer            data;
 }AwnEffectsOp;
 

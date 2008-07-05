@@ -1,3 +1,148 @@
+2008-07-04  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Finished the basic logic for drag and drop in awn-icons
+
+2008-07-03  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	Preparation for the awn-icons drag and drop support.
+
+2008-07-03  Rodney Cryderman <rcryderman@gmail.com>
+
+	* data/index.theme:
+	A skeletal index.theme that needs to be installed so it can be copied to
+	$HOME/.icons/awn-theme.
+
+2008-07-03  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	Some of the awn-icons api is now functional.
+
+2008-07-02  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Fixed the directory creation.
+
+2008-07-02  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Moved the awn-theme dir layout creation into the init.
+
+2008-07-02  Rodney Cryderman <rcryderman@gmail.com>
+	
+	* libawn/awn-icons.c:
+	Get rid of theme_name.  The awn_theme is used internally.  
+	Start code to deal with creation of awn-theme dirs.  Some
+	experimentation will be needed to determine the minimal layout
+	required.
+
+2008-07-02  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	* libawn/Makefile.am:
+	Some initial work implementing awn-icons.
+
+2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Update on a set title if the title is currently visible.
+
+2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Use a g_free() instead of g_object_unref()
+
+2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Fixed up the logic in set_title().  Added some g_return_if_fail()
+	calls.
+
+2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Lowered delay before hiding title.  Fixed assert when title visibility
+	is set before the title.
+
+2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Minor reorganization.  Moved a function call inside a condition.
+
+2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Fixed name for python bindings (AppletSimple)  simple_set_title ->
+	set_title.
+
+2008-06-29  Rodney Cryderman <rcryderman@gmail.com>
+
+	* awn-applet-activation/main.c
+	Reformatted source using astyle to more closely follow coding style
+	guidelines.
+
+2008-06-28  Rodney Cryderman <rcryderman@gmail.com>
+
+	* awn-manager/awnManager.py.in:
+	Applied patch for:  https://bugs.edge.launchpad.net/awn/+bug/242214.
+	Bug Description:  Not all Awn Manager dialogs have app icon.
+	Provided by:  https://bugs.edge.launchpad.net/~sharkbaitbobby
+
+2008-06-28  Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Added python bindings for awn_applet_create_pref_item() and
+	awn_applet_simple_set_icon_context().  
+	Courtesy of sharkbait.
+
+2008-06-28  Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Added python bindings for awn_applet_simple_set_title() and
+	awn_applet_simple_set_title_visibility()
+
+2008-06-28  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	Added an extremely simple interface to set the title that should also be
+	resistant to blinking when icon is clicked repeatedly.  API seems fine
+	though internal implementation may change.
+
+2008-06-27  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Make sure we don't get stuck with a blank applet icon on startup.
+
+2008-06-27  Rodney Cryderman <rcryderman@gmail.com>
+
+	* data/awn.schema-ini.in:
+	Changed description for no_bar_resize_animation
+
+2008-06-27  Rodney Cryderman <rcryderman@gmail.com>
+
+	* data/awn.schema-ini.in:
+	* libawn/awn-settings.c:
+	Added the code to enable the
+	/apps/avant-window-navigator/bar/no_bar_resize_animation config key.
+	Either it was never fully committed or, more likely, parts of it got
+	accidentally reverted.  
+
+2008-06-27  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-settings.h:
+	Remove unused function prototype.
+
+2008-06-27  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	Renamed awn_effects_op_fn -> AwnEffectsOpfn.
+
 2008-06-25  Rodney Cryderman <rcryderman@gmail.com>
 	
 	* libawn/awn-applet-simple.h:
