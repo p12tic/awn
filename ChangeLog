@@ -1,4 +1,10 @@
 2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Fixed drag and drop issues with thunar (and other file managers I
+	would imagine).
+
+2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
 	
 	* libawn/awn-icons.c:
 	* libawn/awn-icons.h:

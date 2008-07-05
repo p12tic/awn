@@ -64,7 +64,9 @@ typedef struct AwnIconsDialogData
 
 static const GtkTargetEntry drop_types[] =
 {
-  { "STRING", 0, 0 }
+  { "STRING", 0, 0 },
+  { "text/plain", 0, 0},
+  { "text/uri-list", 0, 0}
 };
 static const gint n_drop_types = G_N_ELEMENTS(drop_types);
 
@@ -227,7 +229,7 @@ void awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
                        GTK_DEST_DEFAULT_ALL,
                        drop_types,
                        n_drop_types,
-                       GDK_ACTION_COPY);
+                       GDK_ACTION_COPY | GDK_ACTION_ASK);
     
     g_signal_connect(priv->icon_widget,"drag_data_received",
                      G_CALLBACK(awn_icons_drag_data_received),icons);
