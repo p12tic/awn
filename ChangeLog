@@ -1,5 +1,11 @@
 2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	Added Copyright.
+
+2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
+
 	* src/awn-hotspot.c:
 	* src/awn-panel.c:
 	* src/awn-task.c:
