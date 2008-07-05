@@ -1,3 +1,8 @@
+2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	awn-icons now has a minimal dialog on drag and drop.
+
 2008-07-04  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
