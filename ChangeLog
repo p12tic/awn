@@ -1,5 +1,10 @@
 2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
 
+	* data/Makefile.am:
+	Install index.theme
+
+2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-icons.c:
 	awn-icons now has a minimal dialog on drag and drop.
 
