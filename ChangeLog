@@ -1,5 +1,13 @@
 2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
 
+	* src/awn-hotspot.c:
+	* src/awn-panel.c:
+	* src/awn-task.c:
+	* src/awn-window.c:
+	Possible drag and drop fix for file managers that are not nautilus.
+
+2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-icons.c:
 	Force completely new icons to be recognized.
 
