@@ -1,4 +1,10 @@
 2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
+	
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	Implemented icon change callback.
+
+2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
 
 	* data/Makefile.am:
 	Install index.theme

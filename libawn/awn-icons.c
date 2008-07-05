@@ -16,6 +16,10 @@
  
 /* awn-icons.c */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "awn-icons.h"
 
 #include <string.h>
@@ -37,6 +41,9 @@ struct _AwnIconsPrivate {
   GtkWidget *   icon_widget;    //used if Non-NULL for drag and drop support
 
   GtkIconTheme *  awn_theme;
+  
+  AwnIconsChange    icon_change_cb;
+  gpointer          icon_change_cb_data;
   
   gchar **  states;
   gchar **  icon_names;
@@ -101,6 +108,11 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
       if ( g_file_set_contents(dest,contents,length,&err))
       {
         printf("Icon set %s\n",dest);
+        gtk_icon_theme_rescan_if_needed(priv->awn_theme);        
+        if (priv->icon_change_cb)
+        {
+          priv->icon_change_cb(dialog_data->awn_icons,priv->icon_change_cb_data);
+        }
         
       }
       else if (err)
@@ -108,6 +120,7 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
         g_warning("Failed to copy icon %s: %s\n",sdata,err->message);
         g_error_free (err);
       }
+      g_free(contents);
       g_free(new_basename);
       g_free(dest);
     }
@@ -192,6 +205,8 @@ awn_icons_drag_data_received (GtkWidget          *widget,
 
 //-----
 
+
+//TODO implement individual set functions where it makes sense...
 void awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
                              gchar * applet_name,gchar * uid,gint height,
                              gchar **states,gchar **icon_names)
@@ -277,6 +292,17 @@ void awn_icons_set_icon_info(AwnIcons * icons,
   
 }
 
+/*the callback could be more complicated if we wanted since we eventually deal 
+ with sets of icons.  But it really it isn't needed.*/
+void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer data)
+{
+  AwnIconsPrivate *priv=GET_PRIVATE(icons); 
+  
+  priv->icon_change_cb = fn;
+  priv->icon_change_cb_data = data;
+  
+}
+
 GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, gchar * state)
 {
   g_return_val_if_fail(icons,NULL);
@@ -332,7 +358,8 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, gchar * state)
                                     priv->height,priv->height);
             gdk_pixbuf_fill(pixbuf, 0xee221155);
             break;
-        }            
+        }       
+        printf("name = %s\n",name);
         g_free(name);
         name = NULL;
         if (pixbuf)
@@ -415,7 +442,12 @@ awn_icons_class_init (AwnIconsClass *klass)
 static void
 awn_icons_init (AwnIcons *self)
 {
+  gchar * contents;
+  gsize length;
+  GError *err=NULL;    
   AwnIconsPrivate *priv=GET_PRIVATE(self);
+  
+  
   priv->icon_widget = NULL;
   priv->states = NULL;
   priv->icon_names = NULL;
@@ -423,6 +455,8 @@ awn_icons_init (AwnIcons *self)
   priv->cur_icon = 0;
   priv->count = 0;  
   priv->height = 0;
+  priv->icon_change_cb = NULL;
+  priv->icon_change_cb_data = NULL;
 
   //do we have our dirs....
   const gchar * home = g_getenv("HOME");
@@ -451,10 +485,39 @@ awn_icons_init (AwnIcons *self)
   
   g_free(awn_scalable_dir);
   
+  gchar * index_theme_src = g_strdup_printf("%s/avant-window-navigator/index.theme",DATADIR);
+  gchar * index_theme_dest = g_strdup_printf("%s/%s/index.theme",icon_dir,
+                                             AWN_ICONS_THEME_NAME);
+  printf("Checking for index.them\n");
+  if (! g_file_test(index_theme_dest,G_FILE_TEST_EXISTS) )
+  {
+    printf("index.theme not found\n");
+    if (g_file_get_contents (index_theme_src,&contents,&length,&err))
+    {  
+      if ( g_file_set_contents(index_theme_dest,contents,length,&err))
+      {
+        printf("index.theme copied %s\n",index_theme_dest);
+        
+      }
+      else if (err)
+      {
+        g_warning("Failed to copy index.theme: %s\n",err->message);
+        g_error_free (err);
+      }
+      g_free(contents);
+    }
+    else if (err)
+    {
+      g_warning("Failed to copy index.theme : %s\n",err->message);
+      g_error_free (err);
+    }
+  }
+  g_free(index_theme_src);
+  g_free(index_theme_dest);
   
   priv->awn_theme = gtk_icon_theme_new();
   gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);
-}
+} 
 
 AwnIcons*
 awn_icons_new (void)
