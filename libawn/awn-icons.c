@@ -42,11 +42,109 @@ struct _AwnIconsPrivate {
   gchar **  icon_names;
   gchar *   applet_name;
   gchar *   uid;
+  gchar *   icon_dir;
   
   gint  height;
   gint  cur_icon;
   gint  count;
 };
+
+static const GtkTargetEntry drop_types[] =
+{
+  { "STRING", 0, 0 }
+};
+static const gint n_drop_types = G_N_ELEMENTS(drop_types);
+
+void  
+awn_icons_drag_data_received (GtkWidget          *widget,
+                    GdkDragContext     *drag_context,
+                    gint                x,
+                    gint                y,
+                    GtkSelectionData   *selection_data,
+                    guint               info,
+                    guint               time,
+                    AwnIcons            *icons)
+{
+  AwnIconsPrivate *priv=GET_PRIVATE(icons);   
+  printf("awn_icons_drag_data_received\n");
+  if((selection_data != NULL) && (selection_data-> length >= 0))
+  {
+    gchar * _sdata = (gchar*)selection_data-> data;
+    printf("dnd %s \n",_sdata);
+    if (_sdata)
+    {
+      for(;(*_sdata!='\0') && _sdata; _sdata++)
+      {
+        printf("char = %c \n",*_sdata);
+        if (*_sdata == ':' )
+        {
+          _sdata=_sdata+3;
+          break;
+        }
+      }
+      
+      printf("'%s' \n",_sdata);
+      g_strchomp (_sdata);
+      
+      if ( gdk_pixbuf_get_file_info (_sdata,NULL,NULL) )
+      {
+        gchar * contents;
+        gsize length;
+        gint  scope = 2;
+        GError *err=NULL;
+        printf("DND %s \n",_sdata);
+        printf("good pixbuf\n");
+        if (g_file_get_contents (_sdata,&contents,&length,&err))
+        {
+          gchar * new_basename;
+          switch (scope)
+          {
+            case  0:
+              new_basename=g_strdup_printf("%s.svg",priv->icon_names[priv->cur_icon]);
+              break;
+            case  1:
+              new_basename=g_strdup_printf("%s-%s.svg",priv->applet_name,
+                                           priv->icon_names[priv->cur_icon]);
+              break;
+            case  2:
+              new_basename=g_strdup_printf("%s-%s-%s.svg",
+                                           priv->icon_names[priv->cur_icon],
+                                           priv->applet_name,
+                                           priv->uid);
+              break;
+          }
+              
+          gchar * dest = g_strdup_printf("%s/awn-theme/scalable/%s",priv->icon_dir,new_basename);
+          if ( g_file_set_contents(dest,contents,length,&err))
+          {
+            
+            gtk_drag_finish (drag_context, TRUE, FALSE, time);
+          }
+          else if (err)
+          {
+            g_warning("Failed to copy icon %s: %s\n",_sdata,err->message);
+            g_error_free (err);
+          }
+          g_free(new_basename);
+          g_free(dest);
+        }
+        else if (err)
+        {
+          g_warning("Failed to copy icon %s: %s\n",_sdata,err->message);
+          g_error_free (err);
+        }
+        
+
+      }
+      return;
+    }
+  }
+      
+   gtk_drag_finish (drag_context, FALSE, FALSE, time);
+ }
+
+
+//-----
 
 void awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
                              gchar * applet_name,gchar * uid,gint height,
@@ -64,6 +162,14 @@ void awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
   if (applet)
   {
     priv->icon_widget = GTK_WIDGET(applet);
+    gtk_drag_dest_set (priv->icon_widget, 
+                       GTK_DEST_DEFAULT_ALL,
+                       drop_types,
+                       n_drop_types,
+                       GDK_ACTION_COPY);
+    
+    g_signal_connect(priv->icon_widget,"drag_data_received",
+                     G_CALLBACK(awn_icons_drag_data_received),icons);
   }
   for (count=0;states[count];count++);
   priv->count = count;
@@ -140,7 +246,7 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, gchar * state)
     {
       int i;
       gchar * name=NULL;
-      priv->count = count;
+      priv->cur_icon = count;
       
       for (i=0;i<6 ;i++)
       {
@@ -274,15 +380,17 @@ awn_icons_init (AwnIcons *self)
 
   //do we have our dirs....
   const gchar * home = g_getenv("HOME");
-  
+  //do not free icon_dir... saving it.
   gchar * icon_dir = g_strdup_printf("%s/.icons",home);
+  priv->icon_dir=icon_dir;
+  
   if ( !g_file_test(icon_dir,G_FILE_TEST_IS_DIR) )
   {
     g_mkdir(icon_dir,0775);
   }
   
   gchar * awn_theme_dir = g_strdup_printf("%s/%s",icon_dir,AWN_ICONS_THEME_NAME);
-  g_free(icon_dir);
+
   if ( !g_file_test(awn_theme_dir,G_FILE_TEST_IS_DIR) )
   {
     g_mkdir(awn_theme_dir,0775);

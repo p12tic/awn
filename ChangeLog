@@ -1,3 +1,8 @@
+2008-07-04  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Finished the basic logic for drag and drop in awn-icons
+
 2008-07-03  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
