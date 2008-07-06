@@ -371,6 +371,34 @@ class awnApplet:
                 except:
                     icon = None
         if icon is None:
+            dirs = [os.path.join(p, "share", "awn","applets")
+                    for p in ("/usr", "/usr/local", defs.PREFIX)]
+            for d in dirs:
+                n = name
+                if not name.endswith(".png"):
+                    n = name + ".png"
+                path = os.path.join (d, n)
+                try:
+                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
+                    if icon is not None:
+                        break
+                except:
+                    icon = None
+        if icon is None:
+            dirs = [os.path.join(p, "share", "awn","applets")
+                    for p in ("/usr", "/usr/local", defs.PREFIX)]
+            for d in dirs:
+                n = name
+                if not name.endswith(".svg"):
+                    n = name + ".svg"
+                path = os.path.join (d, n)
+                try:
+                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
+                    if icon is not None:
+                        break
+                except:
+                    icon = None
+        if icon is None:
             icon = theme.load_icon('gtk-execute', 32, 0)
         return icon
 
@@ -422,7 +450,7 @@ class awnApplet:
         model = self.appmodel
 
         prefixes = ["/usr/lib", "/usr/local/lib", "/usr/lib64", "/usr/local/lib64"]
-        install_prefix = os.path.join(defs.PREFIX, "lib")
+        install_prefix = os.path.join(defs.PREFIX, "share")
         if install_prefix not in prefixes:
             prefixes.append(install_prefix)
         prefixes.append(os.path.expanduser("~/.config"))

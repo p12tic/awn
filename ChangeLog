@@ -1,3 +1,11 @@
+2008-07-06  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awnApplet.py:
+	Allow awn-manager to list and launch applets in /usr/share
+ 
+	* debian/avant-window-navigator-data-trunk.install:
+	Update packaging with awn-icons stuff
+
 2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
