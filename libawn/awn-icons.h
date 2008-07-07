@@ -1,4 +1,6 @@
 /*
+ * Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -50,6 +52,8 @@ typedef struct {
   GObjectClass parent_class;
 } AwnIconsClass;
 
+typedef void(* AwnIconsChange )(AwnIcons * fx,gpointer data);
+
 GType awn_icons_get_type (void);
 
 AwnIcons* awn_icons_new (void);
@@ -61,6 +65,8 @@ void awn_icons_set_icon_info(AwnIcons * icons,
                              gchar * uid, 
                              gint height,
                              gchar *icon_name);
+                             
+void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer data);                             
 
 G_END_DECLS
 

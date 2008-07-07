@@ -10,7 +10,11 @@ icon_DATA =  \
 	avant-window-navigator-32.png	\
 	avant-window-navigator-48.png
 
+text_DATA = \
+	index.theme
+
 icondir = $(pkgdatadir)
+textdir = $(pkgdatadir)
 if USE_GCONF
 schemasdir       = @GCONF_SCHEMA_FILE_DIR@
 schemas_in_files = awn.schemas.in
@@ -30,12 +34,13 @@ schemadir = $(datadir)/avant-window-navigator/schemas
 schema_DATA = awn.schema-ini
 endif
 
+
 install-exec-local:
 	$(INSTALL) -m 755 awn-schema-to-gconf $(DESTDIR)$(bindir)/awn-schema-to-gconf
 
 uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-schema-to-gconf
 
-EXTRA_DIST = $(icon_DATA) $(desktop_DATA).in.in awn.schema-ini awn-schema-to-gconf
+EXTRA_DIST = $(icon_DATA) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini awn-schema-to-gconf
 
 CLEANFILES = $(desktop_DATA) $(desktop_DATA).in

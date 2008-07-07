@@ -148,7 +148,9 @@ static WnckWindow *last_active_window = NULL;       //Ceceppa
 
 static const GtkTargetEntry drop_types[] =
 {
-  { "STRING", 0, 0 }
+  { "STRING", 0, 0 },
+  { "text/plain", 0, 0},
+  { "text/uri-list", 0, 0}
 };
 static const gint n_drop_types = G_N_ELEMENTS(drop_types);
 

@@ -1,4 +1,6 @@
 /*
+ * Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -15,6 +17,10 @@
  */
  
 /* awn-icons.c */
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "awn-icons.h"
 
@@ -38,6 +44,9 @@ struct _AwnIconsPrivate {
 
   GtkIconTheme *  awn_theme;
   
+  AwnIconsChange    icon_change_cb;
+  gpointer          icon_change_cb_data;
+  
   gchar **  states;
   gchar **  icon_names;
   gchar *   applet_name;
@@ -49,11 +58,95 @@ struct _AwnIconsPrivate {
   gint  count;
 };
 
+typedef struct AwnIconsDialogData
+{
+  AwnIcons  *awn_icons;
+  gchar     *sdata;
+}AwnIconsDialogData;
+
 static const GtkTargetEntry drop_types[] =
 {
-  { "STRING", 0, 0 }
+  { "STRING", 0, 0 },
+  { "text/plain", 0, 0},
+  { "text/uri-list", 0, 0}
 };
 static const gint n_drop_types = G_N_ELEMENTS(drop_types);
+
+
+void _awn_icons_dialog_response(GtkDialog *dialog,
+                                  gint       response,
+                                  AwnIconsDialogData * dialog_data) 
+{
+  gchar * contents;
+  gsize length;
+  gint  scope = 2;
+  GError *err=NULL;  
+  gchar * sdata = dialog_data->sdata;
+  AwnIconsPrivate *priv=GET_PRIVATE(dialog_data->awn_icons);    
+  
+  if (response == GTK_RESPONSE_ACCEPT)
+  {
+    //determine what the scope is....  for now.
+    scope = 2;
+    if (g_file_get_contents (sdata,&contents,&length,&err))
+    {
+      gchar * new_basename;
+      switch (scope)
+      {
+        case  0:
+          new_basename=g_strdup_printf("%s.svg",priv->icon_names[priv->cur_icon]);
+          break;
+        case  1:
+          new_basename=g_strdup_printf("%s-%s.svg",priv->applet_name,
+                                       priv->icon_names[priv->cur_icon]);
+          break;
+        case  2:
+          new_basename=g_strdup_printf("%s-%s-%s.svg",
+                                       priv->icon_names[priv->cur_icon],
+                                       priv->applet_name,
+                                       priv->uid);
+          break;
+      }
+          
+      gchar * dest = g_strdup_printf("%s/awn-theme/scalable/%s",priv->icon_dir,new_basename);
+      if ( g_file_set_contents(dest,contents,length,&err))
+      {
+        printf("Icon set %s\n",dest);
+        //        gtk_icon_theme_rescan_if_needed(priv->awn_theme);        
+        //  This ^ does not seem to force an update. For now will just recreate 
+        // the damn thing.
+        
+        g_object_unref(priv->awn_theme);
+        priv->awn_theme = gtk_icon_theme_new();
+        gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);        
+        
+        if (priv->icon_change_cb)
+        {
+          priv->icon_change_cb(dialog_data->awn_icons,priv->icon_change_cb_data);
+        }
+        
+      }
+      else if (err)
+      {
+        g_warning("Failed to copy icon %s: %s\n",sdata,err->message);
+        g_error_free (err);
+      }
+      g_free(contents);
+      g_free(new_basename);
+      g_free(dest);
+    }
+    else if (err)
+    {
+      g_warning("Failed to copy icon %s: %s\n",sdata,err->message);
+      g_error_free (err);
+    }
+  }
+  g_free(dialog_data->sdata);
+  g_free(dialog_data);
+  gtk_widget_destroy(GTK_WIDGET(dialog));
+  printf("DONE DIALOG\n");
+}
+
 
 void  
 awn_icons_drag_data_received (GtkWidget          *widget,
@@ -65,7 +158,7 @@ awn_icons_drag_data_received (GtkWidget          *widget,
                     guint               time,
                     AwnIcons            *icons)
 {
-  AwnIconsPrivate *priv=GET_PRIVATE(icons);   
+//  AwnIconsPrivate *priv=GET_PRIVATE(icons);   
   printf("awn_icons_drag_data_received\n");
   if((selection_data != NULL) && (selection_data-> length >= 0))
   {
@@ -88,51 +181,28 @@ awn_icons_drag_data_received (GtkWidget          *widget,
       
       if ( gdk_pixbuf_get_file_info (_sdata,NULL,NULL) )
       {
-        gchar * contents;
-        gsize length;
-        gint  scope = 2;
-        GError *err=NULL;
+
         printf("DND %s \n",_sdata);
         printf("good pixbuf\n");
-        if (g_file_get_contents (_sdata,&contents,&length,&err))
-        {
-          gchar * new_basename;
-          switch (scope)
-          {
-            case  0:
-              new_basename=g_strdup_printf("%s.svg",priv->icon_names[priv->cur_icon]);
-              break;
-            case  1:
-              new_basename=g_strdup_printf("%s-%s.svg",priv->applet_name,
-                                           priv->icon_names[priv->cur_icon]);
-              break;
-            case  2:
-              new_basename=g_strdup_printf("%s-%s-%s.svg",
-                                           priv->icon_names[priv->cur_icon],
-                                           priv->applet_name,
-                                           priv->uid);
-              break;
-          }
-              
-          gchar * dest = g_strdup_printf("%s/awn-theme/scalable/%s",priv->icon_dir,new_basename);
-          if ( g_file_set_contents(dest,contents,length,&err))
-          {
-            
-            gtk_drag_finish (drag_context, TRUE, FALSE, time);
-          }
-          else if (err)
-          {
-            g_warning("Failed to copy icon %s: %s\n",_sdata,err->message);
-            g_error_free (err);
-          }
-          g_free(new_basename);
-          g_free(dest);
-        }
-        else if (err)
-        {
-          g_warning("Failed to copy icon %s: %s\n",_sdata,err->message);
-          g_error_free (err);
-        }
+        GtkWidget *dialog=NULL;         
+        AwnIconsDialogData * dialog_data = g_malloc(sizeof(AwnIconsDialogData));
+        dialog_data->sdata = g_strdup(_sdata);
+        dialog_data->awn_icons = icons;
+       
+        //TODO , add text, add scope options, display icon.
+        dialog = gtk_dialog_new_with_buttons ("Change Icon?",
+                                         NULL,
+                                         GTK_DIALOG_NO_SEPARATOR,
+                                         GTK_STOCK_CANCEL,
+                                         GTK_RESPONSE_NONE,
+                                         GTK_STOCK_OK,
+                                         GTK_RESPONSE_ACCEPT,
+                                         NULL);
+
+        g_signal_connect(dialog, "response",G_CALLBACK(_awn_icons_dialog_response),dialog_data);
+
+        gtk_widget_show(dialog);
+        gtk_drag_finish (drag_context, TRUE, FALSE, time); //good enough... we'll say all was well.
         
 
       }
@@ -146,6 +216,8 @@ awn_icons_drag_data_received (GtkWidget          *widget,
 
 //-----
 
+
+//TODO implement individual set functions where it makes sense...
 void awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
                              gchar * applet_name,gchar * uid,gint height,
                              gchar **states,gchar **icon_names)
@@ -166,7 +238,7 @@ void awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
                        GTK_DEST_DEFAULT_ALL,
                        drop_types,
                        n_drop_types,
-                       GDK_ACTION_COPY);
+                       GDK_ACTION_COPY | GDK_ACTION_ASK);
     
     g_signal_connect(priv->icon_widget,"drag_data_received",
                      G_CALLBACK(awn_icons_drag_data_received),icons);
@@ -231,6 +303,17 @@ void awn_icons_set_icon_info(AwnIcons * icons,
   
 }
 
+/*the callback could be more complicated if we wanted since we eventually deal 
+ with sets of icons.  But it really it isn't needed.*/
+void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer data)
+{
+  AwnIconsPrivate *priv=GET_PRIVATE(icons); 
+  
+  priv->icon_change_cb = fn;
+  priv->icon_change_cb_data = data;
+  
+}
+
 GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, gchar * state)
 {
   g_return_val_if_fail(icons,NULL);
@@ -286,7 +369,8 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, gchar * state)
                                     priv->height,priv->height);
             gdk_pixbuf_fill(pixbuf, 0xee221155);
             break;
-        }            
+        }       
+        printf("name = %s\n",name);
         g_free(name);
         name = NULL;
         if (pixbuf)
@@ -369,7 +453,12 @@ awn_icons_class_init (AwnIconsClass *klass)
 static void
 awn_icons_init (AwnIcons *self)
 {
+  gchar * contents;
+  gsize length;
+  GError *err=NULL;    
   AwnIconsPrivate *priv=GET_PRIVATE(self);
+  
+  
   priv->icon_widget = NULL;
   priv->states = NULL;
   priv->icon_names = NULL;
@@ -377,6 +466,8 @@ awn_icons_init (AwnIcons *self)
   priv->cur_icon = 0;
   priv->count = 0;  
   priv->height = 0;
+  priv->icon_change_cb = NULL;
+  priv->icon_change_cb_data = NULL;
 
   //do we have our dirs....
   const gchar * home = g_getenv("HOME");
@@ -405,10 +496,39 @@ awn_icons_init (AwnIcons *self)
   
   g_free(awn_scalable_dir);
   
+  gchar * index_theme_src = g_strdup_printf("%s/avant-window-navigator/index.theme",DATADIR);
+  gchar * index_theme_dest = g_strdup_printf("%s/%s/index.theme",icon_dir,
+                                             AWN_ICONS_THEME_NAME);
+  printf("Checking for index.them\n");
+  if (! g_file_test(index_theme_dest,G_FILE_TEST_EXISTS) )
+  {
+    printf("index.theme not found\n");
+    if (g_file_get_contents (index_theme_src,&contents,&length,&err))
+    {  
+      if ( g_file_set_contents(index_theme_dest,contents,length,&err))
+      {
+        printf("index.theme copied %s\n",index_theme_dest);
+        
+      }
+      else if (err)
+      {
+        g_warning("Failed to copy index.theme: %s\n",err->message);
+        g_error_free (err);
+      }
+      g_free(contents);
+    }
+    else if (err)
+    {
+      g_warning("Failed to copy index.theme : %s\n",err->message);
+      g_error_free (err);
+    }
+  }
+  g_free(index_theme_src);
+  g_free(index_theme_dest);
   
   priv->awn_theme = gtk_icon_theme_new();
   gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);
-}
+} 
 
 AwnIcons*
 awn_icons_new (void)

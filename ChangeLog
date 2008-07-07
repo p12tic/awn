@@ -1,3 +1,52 @@
+2008-07-06  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awnApplet.py:
+	Allow awn-manager to list and launch applets in /usr/share
+ 
+	* debian/avant-window-navigator-data-trunk.install:
+	Update packaging with awn-icons stuff
+
+2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	Added Copyright.
+
+2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-hotspot.c:
+	* src/awn-panel.c:
+	* src/awn-task.c:
+	* src/awn-window.c:
+	Possible drag and drop fix for file managers that are not nautilus.
+
+2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Force completely new icons to be recognized.
+
+2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Fixed drag and drop issues with thunar (and other file managers I
+	would imagine).
+
+2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
+	
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	Implemented icon change callback.
+
+2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
+
+	* data/Makefile.am:
+	Install index.theme
+
+2008-07-05  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	awn-icons now has a minimal dialog on drag and drop.
+
 2008-07-04  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
