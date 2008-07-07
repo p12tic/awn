@@ -159,6 +159,13 @@
 				<parameter name="p1" type="GObject*"/>
 			</parameters>
 		</callback>
+		<callback name="AwnIconsChange">
+			<return-type type="void"/>
+			<parameters>
+				<parameter name="fx" type="AwnIcons*"/>
+				<parameter name="user_data" type="gpointer"/>
+			</parameters>
+		</callback>
 		<callback name="AwnTitleCallback">
 			<return-type type="gchar*"/>
 			<parameters>
@@ -913,6 +920,50 @@
 				<parameters>
 					<parameter name="simple" type="AwnAppletSimple*"/>
 					<parameter name="pixbuf" type="GdkPixbuf*"/>
+				</parameters>
+			</method>
+			<method name="set_title" symbol="awn_applet_simple_set_title">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="simple" type="AwnAppletSimple*"/>
+					<parameter name="title_string" type="char*"/>
+				</parameters>
+			</method>
+			<method name="set_title_visibility" symbol="awn_applet_simple_set_title_visibility">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="simple" type="AwnAppletSimple*"/>
+					<parameter name="state" type="gboolean"/>
+				</parameters>
+			</method>
+		</object>
+		<object name="AwnIcons" parent="GObject" type-name="AwnIcons" get-type="awn_icons_get_type">
+			<method name="get_icon_simple" symbol="awn_icons_get_icon_simple">
+				<return-type type="GdkPixbuf*"/>
+				<parameters>
+					<parameter name="icons" type="AwnIcons*"/>
+				</parameters>
+			</method>
+			<constructor name="new" symbol="awn_icons_new">
+				<return-type type="AwnIcons*"/>
+			</constructor>
+			<method name="set_changed_cb" symbol="awn_icons_set_changed_cb">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icons" type="AwnIcons*"/>
+					<parameter name="fn" type="AwnIconsChange"/>
+					<parameter name="user_data" type="gpointer"/>
+				</parameters>
+			</method>
+			<method name="set_icon_info" symbol="awn_icons_set_icon_info">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icons" type="AwnIcons*"/>
+					<parameter name="applet" type="GtkWidget*"/>
+					<parameter name="applet_name" type="gchar*"/>
+					<parameter name="uid" type="gchar*"/>
+					<parameter name="height" type="gint"/>
+					<parameter name="icon_name" type="gchar*"/>
 				</parameters>
 			</method>
 		</object>

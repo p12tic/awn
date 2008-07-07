@@ -20,7 +20,7 @@ namespace Awn {
 		GCONF,
 		GKEYFILE
 	}
-	[CCode (cprefix = "AWN_CONFIG_CLIENT_LIST_TYPE_", cheader_filename = "awn.h")]
+	[CCode (cprefix = "AWN_CONFIG_CLIENT_LIST_TYPE_", cheader_filename = "libawn/awn-config-client.h")]
 	public enum ConfigListType {
 		BOOL,
 		FLOAT,
@@ -265,7 +265,7 @@ namespace Awn {
 		public void remove ();
 	}
 	[Compact]
-	[CCode (cheader_filename = "awn.h")]
+	[CCode (cheader_filename = "libawn/awn-effects.h")]
 	public class DrawIconState {
 		public int current_height;
 		public int current_width;
@@ -337,6 +337,15 @@ namespace Awn {
 		public void set_icon (Gdk.Pixbuf pixbuf);
 		public void set_icon_context (Cairo.Context cr);
 		public void set_temp_icon (Gdk.Pixbuf pixbuf);
+		public void set_title (string title_string);
+		public void set_title_visibility (bool state);
+	}
+	[CCode (cheader_filename = "libawn/awn-icons.h")]
+	public class Icons : GLib.Object {
+		public weak Gdk.Pixbuf get_icon_simple ();
+		public Icons ();
+		public void set_changed_cb (Awn.IconsChange fn);
+		public void set_icon_info (Gtk.Widget applet, string applet_name, string uid, int height, string icon_name);
 	}
 	[CCode (cheader_filename = "libawn/awn-plug.h")]
 	public class Plug : Gtk.Plug, Gtk.Buildable, Atk.Implementor {
@@ -369,6 +378,8 @@ namespace Awn {
 	public delegate bool EffectsOpfn (Awn.Effects fx, Awn.DrawIconState ds);
 	[CCode (cheader_filename = "libawn/awn-effects.h")]
 	public static delegate void EventNotify (GLib.Object p1);
+	[CCode (cheader_filename = "libawn/awn-icons.h")]
+	public delegate void IconsChange (Awn.Icons fx);
 	[CCode (cheader_filename = "libawn/awn-title.h")]
 	public static delegate weak string TitleCallback (GLib.Object p1);
 	[CCode (cheader_filename = "libawn/awn-vfs.h")]
