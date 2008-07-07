@@ -68,6 +68,7 @@ awn-settings
 @alpha_effect: 
 @icon_effect: 
 @icon_alpha: 
+@reflection_alpha_mult: 
 @frame_rate: 
 @icon_depth_on: 
 @icon_offset: 
@@ -98,13 +99,5 @@ awn-settings
 </para>
 
 @Returns: 
-
-
-<!-- ##### FUNCTION awn_config_set_window_to_update ##### -->
-<para>
-
-</para>
-
-@window: 
 
 

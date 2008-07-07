@@ -1,5 +1,11 @@
 2008-07-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* doc/reference/tmpl/awn-settings.sgml:
+	* doc/reference/tmpl/libawn-unused.sgml:
+	Update template doc files.
+
+2008-07-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/Makefile.am:
 	Only install the public headers.
 	Don't install or try to compile the .in files.
