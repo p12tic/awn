@@ -1,3 +1,11 @@
+2008-07-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/Makefile.am:
+	* data/awn.schema-ini.in:
+	* data/shared.schema-ini:
+	Move the shared configuration options to their own schema-ini file.
+	Needed for the gkeyfile backend to function properly.
+
 2008-07-07  Mark Lee <avant-wn@lazymalevolence.com>
 
 	* configure.in:

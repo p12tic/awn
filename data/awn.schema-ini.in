@@ -192,12 +192,4 @@ description = The background color of the title.
 type = string
 default = Sans 11
 description = The font details of the title.
-[applets/shared/dialog_focus_loss_behavior]
-type = bool
-default = true
-description = Whether to close dialogs on loss of focus.
-[applets/shared/allow_generic_config_edit]
-type = bool
-default = False
-description = Determines if generic configuration editor is allowed for applets that do not have a customized preferences dialog.
 ; vim: set ft=dosini :

@@ -17,10 +17,13 @@ icondir = $(pkgdatadir)
 textdir = $(pkgdatadir)
 if USE_GCONF
 schemasdir       = @GCONF_SCHEMA_FILE_DIR@
-schemas_in_files = awn.schemas.in
+schemas_in_files = awn.schemas.in awn-applets-shared.schemas.in
 schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
 
 awn.schemas.in: awn.schema-ini
+	$(top_srcdir)/data/awn-schema-to-gconf $< $@
+
+awn-applets-shared.schemas.in: shared.schema-ini
 	$(top_srcdir)/data/awn-schema-to-gconf $< $@
 
 @INTLTOOL_SCHEMAS_RULE@
@@ -31,7 +34,7 @@ install-data-local: $(schemas_DATA)
 endif
 else
 schemadir = $(datadir)/avant-window-navigator/schemas
-schema_DATA = awn.schema-ini
+schema_DATA = awn.schema-ini shared.schema-ini
 endif
 
 
@@ -41,6 +44,6 @@ install-exec-local:
 uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-schema-to-gconf
 
-EXTRA_DIST = $(icon_DATA) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini awn-schema-to-gconf
+EXTRA_DIST = $(icon_DATA) $(text_data) $(desktop_DATA).in.in awn.schema-ini awn-schema-to-gconf shared.schema-ini
 
 CLEANFILES = $(desktop_DATA) $(desktop_DATA).in
