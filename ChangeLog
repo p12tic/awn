@@ -1,5 +1,10 @@
 2008-07-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-config-client-gkeyfile.c (awn_config_client_new_for_applet):
+	Fix typo.
+
+2008-07-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/tmpl/awn-settings.sgml:
 	* doc/reference/tmpl/libawn-unused.sgml:
 	Update template doc files.

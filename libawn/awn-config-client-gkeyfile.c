@@ -134,7 +134,7 @@ AwnConfigClient *awn_config_client_new_for_applet (gchar *name, gchar *uid)
 {
 	AwnConfigClient *client;
 	gchar *config_dir = g_build_filename (g_get_user_config_dir (), "awn", "applets", NULL);
-	if (!g_file_test (client->path, G_FILE_TEST_EXISTS)) {
+	if (!g_file_test (config_dir, G_FILE_TEST_EXISTS)) {
 		g_mkdir (config_dir, 0755);
 	}
 	gchar *config_file;
