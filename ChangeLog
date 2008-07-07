@@ -1,3 +1,8 @@
+2008-07-07  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	Sort the generated files.
+
 2008-07-06  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:
