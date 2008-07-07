@@ -75,6 +75,20 @@ void
 awn_applet_simple_set_icon_context(AwnAppletSimple *simple, cairo_t * cr);
 
 
+void 
+awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
+                                    gchar * applet_name,
+                                    gchar * uid,
+                                    gchar *icon_name);
+                                    
+void 
+awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
+                                    gchar * applet_name,
+                                    gchar * uid,
+                                    gchar **states,
+                                    gchar **icon_names
+                                    );
+
 void
 awn_applet_simple_set_temp_icon(AwnAppletSimple *simple, GdkPixbuf *pixbuf);
 

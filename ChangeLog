@@ -1,3 +1,18 @@
+2008-07-06  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	There is now optional awn-icons support available in applet simple.
+	Works for the simple one icon case... multi icon needs testing.
+		
+
+2008-07-06  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-title.c:
+	Truncate title to a max of 120 characters.
+
 2008-07-06  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-manager/awnApplet.py:

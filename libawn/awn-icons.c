@@ -322,9 +322,11 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, gchar * state)
   gint count;
   GdkPixbuf * pixbuf = NULL;  
   AwnIconsPrivate *priv=GET_PRIVATE(icons);
-  
+  g_assert(priv->states[0]);
   for (count = 0; priv->states[count]; count++)
   {
+    printf(" check '%s'  == '%s' \n",state,priv->states[count]);
+    printf(" priv->height = %d\n",priv->height);
     if ( strcmp(state,priv->states[count]) == 0 )
     {
       int i;
