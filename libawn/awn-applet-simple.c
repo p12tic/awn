@@ -303,11 +303,11 @@ void awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
                               GTK_WIDGET(simple),
                               applet_name,
                               uid,
-                              priv->icon_height,
+                              priv->bar_height-2,
                               states,
                               icon_names);
   awn_icons_set_changed_cb(priv->awn_icons,(AwnIconsChange)_awn_applet_simple_icon_changed,simple); 
-  awn_applet_simple_set_temp_icon(simple, awn_icons_get_icon(priv->awn_icons,icon_names[0]));
+  awn_applet_simple_set_temp_icon(simple, awn_icons_get_icon(priv->awn_icons,states[0]));
   
 }
 
@@ -331,7 +331,15 @@ void awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
   awn_icons_set_changed_cb(priv->awn_icons,(AwnIconsChange)_awn_applet_simple_icon_changed,simple);  
   awn_applet_simple_set_temp_icon(simple, awn_icons_get_icon_simple(priv->awn_icons));  
 }
-                                    
+    
+void awn_applet_simple_set_awn_icon_state(AwnAppletSimple *simple, gchar * state)
+{
+  AwnAppletSimplePrivate *priv;  
+  priv = simple->priv;
+                                                                        
+  awn_applet_simple_set_temp_icon(simple,awn_icons_get_icon(priv->awn_icons,state));
+    
+}
 
 /*Adding the ability to start and stop the application of effects.
  The underlying implementation may change at some point... instead of t

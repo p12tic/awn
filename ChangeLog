@@ -2,6 +2,12 @@
 
 	* libawn/awn-applet-simple.c:
 	* libawn/awn-applet-simple.h:
+	Support in AppletSimple for using the awn-icons multiple icon APIs
+
+2008-07-06  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
 	* libawn/awn-icons.c:
 	* libawn/awn-icons.h:
 	There is now optional awn-icons support available in applet simple.

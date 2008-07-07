@@ -88,6 +88,9 @@ awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
                                     gchar **states,
                                     gchar **icon_names
                                     );
+                                    
+void 
+awn_applet_simple_set_awn_icon_state(AwnAppletSimple *simple, gchar * state);
 
 void
 awn_applet_simple_set_temp_icon(AwnAppletSimple *simple, GdkPixbuf *pixbuf);
