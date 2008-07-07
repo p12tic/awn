@@ -1,5 +1,12 @@
 2008-07-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/Makefile.am:
+	Only install the public headers.
+	Don't install or try to compile the .in files.
+	Whitespace cleanup.
+
+2008-07-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* data/Makefile.am:
 	* data/awn.schema-ini.in:
 	* data/shared.schema-ini:
