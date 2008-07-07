@@ -198,10 +198,16 @@ awn_icons_drag_data_received (GtkWidget          *widget,
                                          GTK_STOCK_OK,
                                          GTK_RESPONSE_ACCEPT,
                                          NULL);
+        GtkWidget * content_area =  GTK_DIALOG(dialog)->vbox;
+        
+        GtkWidget * label;
+        label = gtk_label_new ("Use this icon?");
+        
+        gtk_container_add (GTK_CONTAINER (content_area), label);
 
         g_signal_connect(dialog, "response",G_CALLBACK(_awn_icons_dialog_response),dialog_data);
 
-        gtk_widget_show(dialog);
+        gtk_widget_show_all(dialog);
         gtk_drag_finish (drag_context, TRUE, FALSE, time); //good enough... we'll say all was well.
         
 

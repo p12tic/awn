@@ -68,6 +68,7 @@ struct _AwnAppletSimplePrivate
   gboolean effects_enabled;
   
   AwnIcons  * awn_icons;
+  gchar     * current_state;
 
 };
 
@@ -283,7 +284,7 @@ void _awn_applet_simple_icon_changed(AwnIcons * awn_icons, AwnAppletSimple *simp
 {
   AwnAppletSimplePrivate *priv;  
   priv = simple->priv;  
-  awn_applet_simple_set_temp_icon(simple,awn_icons_get_icon_simple(priv->awn_icons));  
+  awn_applet_simple_set_temp_icon(simple,awn_icons_get_icon(priv->awn_icons,priv->current_state));  
 }
 
 void awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
@@ -306,6 +307,11 @@ void awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
                               priv->bar_height-2,
                               states,
                               icon_names);
+  if (priv->current_state)
+  {
+    g_free(priv->current_state);
+  }  
+  priv->current_state = g_strdup(states[0]);
   awn_icons_set_changed_cb(priv->awn_icons,(AwnIconsChange)_awn_applet_simple_icon_changed,simple); 
   awn_applet_simple_set_temp_icon(simple, awn_icons_get_icon(priv->awn_icons,states[0]));
   
@@ -314,7 +320,7 @@ void awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
 void awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
                                     gchar * applet_name,
                                     gchar * uid,
-                                    gchar *icon_name)
+                                    gchar * icon_name)
 {
   AwnAppletSimplePrivate *priv;  
   priv = simple->priv;
@@ -328,6 +334,11 @@ void awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
                               uid,
                               priv->bar_height-2,
                               icon_name);
+  if (priv->current_state)
+  {
+    g_free(priv->current_state);
+  }
+  priv->current_state = g_strdup("__SINGULAR__");
   awn_icons_set_changed_cb(priv->awn_icons,(AwnIconsChange)_awn_applet_simple_icon_changed,simple);  
   awn_applet_simple_set_temp_icon(simple, awn_icons_get_icon_simple(priv->awn_icons));  
 }
@@ -336,7 +347,11 @@ void awn_applet_simple_set_awn_icon_state(AwnAppletSimple *simple, gchar * state
 {
   AwnAppletSimplePrivate *priv;  
   priv = simple->priv;
-                                                                        
+  if (priv->current_state)
+  {
+    g_free(priv->current_state);
+  }
+  priv->current_state = g_strdup(state);                                                             
   awn_applet_simple_set_temp_icon(simple,awn_icons_get_icon(priv->awn_icons,state));
     
 }
@@ -646,6 +661,7 @@ awn_applet_simple_init(AwnAppletSimple *simple)
   priv->title_string = NULL;
   priv->title_visible = FALSE;
   priv->awn_icons = NULL;
+  priv->current_state = NULL;
   
   awn_effects_init(G_OBJECT(simple), &priv->effects);
   // register hover effects

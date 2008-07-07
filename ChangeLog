@@ -1,4 +1,10 @@
 2008-07-07  Mark Lee  <avant-wn@lazymalevolence.com>
+	
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-icons.c:
+	Fixed drag a drop with multi icon enable applet simple.
+
+2008-07-07  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-config-client-gkeyfile.c (awn_config_client_new_for_applet):
 	Fix typo.
@@ -29,7 +35,7 @@
 	* configure.in:
 	Sort the generated files.
 
-2008-07-06  Rodney Cryderman <rcryderman@gmail.com>
+2008-07-07  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:
 	* libawn/awn-applet-simple.h:
