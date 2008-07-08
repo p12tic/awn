@@ -214,6 +214,9 @@ AS_AC_EXPAND([LIBDIR], [$libdir])
 
 AC_OUTPUT([
 Makefile
+applets/Makefile
+awn.pc
+awn-applet-activation/Makefile
 awn-manager/Makefile
 awn-manager/awn-launcher-editor
 awn-manager/awn-manager.desktop.in
@@ -222,19 +225,16 @@ awn-manager/awnManager.py
 bindings/Makefile
 bindings/python/Makefile
 bindings/vala/Makefile
-doc/Makefile
-doc/reference/Makefile
-libawn/Makefile
-libawn/egg/Makefile
-src/Makefile
-awn-applet-activation/Makefile
-applets/Makefile
 data/Makefile
 data/active/Makefile
 data/avant-window-navigator.desktop.in
 data/awn.schema-ini
+doc/Makefile
+doc/reference/Makefile
+libawn/Makefile
+libawn/egg/Makefile
 po/Makefile.in
-awn.pc
+src/Makefile
 ])
 
 dnl ========================================================================

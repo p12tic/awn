@@ -1,3 +1,66 @@
+2008-07-07  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c
+	Make dialog more pretty/useful.
+
+2008-07-07  Rodney Cryderman <rcryderman@gmail.com>
+	
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-icons.c:
+	Fixed drag a drop with multi icon enable applet simple.
+
+2008-07-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-config-client-gkeyfile.c (awn_config_client_new_for_applet):
+	Fix typo.
+
+2008-07-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/tmpl/awn-settings.sgml:
+	* doc/reference/tmpl/libawn-unused.sgml:
+	Update template doc files.
+
+2008-07-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/Makefile.am:
+	Only install the public headers.
+	Don't install or try to compile the .in files.
+	Whitespace cleanup.
+
+2008-07-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/Makefile.am:
+	* data/awn.schema-ini.in:
+	* data/shared.schema-ini:
+	Move the shared configuration options to their own schema-ini file.
+	Needed for the gkeyfile backend to function properly.
+
+2008-07-07  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	Sort the generated files.
+
+2008-07-07  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	Support in AppletSimple for using the awn-icons multiple icon APIs
+
+2008-07-06  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	There is now optional awn-icons support available in applet simple.
+	Works for the simple one icon case... multi icon needs testing.
+		
+
+2008-07-06  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-title.c:
+	Truncate title to a max of 120 characters.
+
 2008-07-06  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-manager/awnApplet.py:
