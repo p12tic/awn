@@ -46,7 +46,10 @@ struct _AwnIconsPrivate {
   
   AwnIconsChange    icon_change_cb;
   gpointer          icon_change_cb_data;
-  
+  GtkWidget * scope_radio1;       //this just seems the easiest way to to deal
+  GtkWidget * scope_radio2;       //with the radio buttons in the dialog.
+  GtkWidget * scope_radio3;       //also seems wrong.
+ 
   gchar **  states;
   gchar **  icon_names;
   gchar *   applet_name;
@@ -86,11 +89,23 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
   
   if (response == GTK_RESPONSE_ACCEPT)
   {
-    //determine what the scope is....  for now.
-    scope = 2;
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(priv->scope_radio1) ))
+    {
+      scope = 2;  
+    }
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(priv->scope_radio2) ))
+    {
+      scope = 1;
+    }
+    else
+    {
+      scope = 0;
+    }
+    
     if (g_file_get_contents (sdata,&contents,&length,&err))
     {
       gchar * new_basename;
+      
       switch (scope)
       {
         case  0:
@@ -101,6 +116,7 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
                                        priv->icon_names[priv->cur_icon]);
           break;
         case  2:
+        default:  //supress a warning.
           new_basename=g_strdup_printf("%s-%s-%s.svg",
                                        priv->icon_names[priv->cur_icon],
                                        priv->applet_name,
@@ -158,7 +174,7 @@ awn_icons_drag_data_received (GtkWidget          *widget,
                     guint               time,
                     AwnIcons            *icons)
 {
-//  AwnIconsPrivate *priv=GET_PRIVATE(icons);   
+  AwnIconsPrivate *priv=GET_PRIVATE(icons);   
   printf("awn_icons_drag_data_received\n");
   if((selection_data != NULL) && (selection_data-> length >= 0))
   {
@@ -200,10 +216,48 @@ awn_icons_drag_data_received (GtkWidget          *widget,
                                          NULL);
         GtkWidget * content_area =  GTK_DIALOG(dialog)->vbox;
         
+        GtkWidget * icon;
+        GtkWidget * hbox;
+        GtkWidget * vbox;
         GtkWidget * label;
-        label = gtk_label_new ("Use this icon?");
+        GdkPixbuf * pixbuf;
         
-        gtk_container_add (GTK_CONTAINER (content_area), label);
+        pixbuf = gdk_pixbuf_new_from_file (_sdata,NULL);
+        icon = gtk_image_new_from_pixbuf(pixbuf);
+        g_object_unref(pixbuf);
+        
+
+        hbox = gtk_hbox_new(FALSE,1);
+        vbox = gtk_vbox_new(FALSE,1);   
+
+        if ( priv->count > 0)
+        {
+          label = gtk_label_new ("Use this icon?");
+          gtk_container_add (GTK_CONTAINER (vbox), label);        
+        }
+        else
+        {
+          label = gtk_label_new ("Use this icon?");
+          gtk_container_add (GTK_CONTAINER (vbox), label);        
+        }
+        
+        priv->scope_radio1 = gtk_radio_button_new (NULL);
+        GtkWidget *scope_label = gtk_label_new("Apply to this applet instance.");
+        gtk_container_add (GTK_CONTAINER (priv->scope_radio1),scope_label);
+        
+        priv->scope_radio2 = gtk_radio_button_new_with_label_from_widget
+                    (GTK_RADIO_BUTTON(priv->scope_radio1),"Apply to this applet type.");
+        priv->scope_radio3 = gtk_radio_button_new_with_label_from_widget
+                    (GTK_RADIO_BUTTON(priv->scope_radio1),"Apply to icon name.");
+
+        
+        gtk_container_add (GTK_CONTAINER (vbox), priv->scope_radio1);
+        gtk_container_add (GTK_CONTAINER (vbox), priv->scope_radio2);
+        gtk_container_add (GTK_CONTAINER (vbox), priv->scope_radio3);
+        
+        gtk_container_add (GTK_CONTAINER (hbox), icon);
+        gtk_container_add (GTK_CONTAINER (hbox), vbox);                
+        gtk_container_add (GTK_CONTAINER (content_area), hbox);
 
         g_signal_connect(dialog, "response",G_CALLBACK(_awn_icons_dialog_response),dialog_data);
 

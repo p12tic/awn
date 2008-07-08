@@ -1,4 +1,9 @@
 2008-07-07  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c
+	Make dialog more pretty/useful.
+
+2008-07-07  Rodney Cryderman <rcryderman@gmail.com>
 	
 	* libawn/awn-applet-simple.c:
 	* libawn/awn-icons.c:
