@@ -901,6 +901,32 @@
 					<parameter name="height" type="gint"/>
 				</parameters>
 			</constructor>
+			<method name="set_awn_icon" symbol="awn_applet_simple_set_awn_icon">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="simple" type="AwnAppletSimple*"/>
+					<parameter name="applet_name" type="gchar*"/>
+					<parameter name="uid" type="gchar*"/>
+					<parameter name="icon_name" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="set_awn_icon_state" symbol="awn_applet_simple_set_awn_icon_state">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="simple" type="AwnAppletSimple*"/>
+					<parameter name="state" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="set_awn_icons" symbol="awn_applet_simple_set_awn_icons">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="simple" type="AwnAppletSimple*"/>
+					<parameter name="applet_name" type="gchar*"/>
+					<parameter name="uid" type="gchar*"/>
+					<parameter name="states" type="gchar**"/>
+					<parameter name="icon_names" type="gchar**"/>
+				</parameters>
+			</method>
 			<method name="set_icon" symbol="awn_applet_simple_set_icon">
 				<return-type type="void"/>
 				<parameters>
@@ -938,6 +964,13 @@
 			</method>
 		</object>
 		<object name="AwnIcons" parent="GObject" type-name="AwnIcons" get-type="awn_icons_get_type">
+			<method name="get_icon" symbol="awn_icons_get_icon">
+				<return-type type="GdkPixbuf*"/>
+				<parameters>
+					<parameter name="icons" type="AwnIcons*"/>
+					<parameter name="state" type="gchar*"/>
+				</parameters>
+			</method>
 			<method name="get_icon_simple" symbol="awn_icons_get_icon_simple">
 				<return-type type="GdkPixbuf*"/>
 				<parameters>
@@ -964,6 +997,18 @@
 					<parameter name="uid" type="gchar*"/>
 					<parameter name="height" type="gint"/>
 					<parameter name="icon_name" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="set_icons_info" symbol="awn_icons_set_icons_info">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icons" type="AwnIcons*"/>
+					<parameter name="applet" type="GtkWidget*"/>
+					<parameter name="applet_name" type="gchar*"/>
+					<parameter name="uid" type="gchar*"/>
+					<parameter name="height" type="gint"/>
+					<parameter name="states" type="gchar**"/>
+					<parameter name="icon_names" type="gchar**"/>
 				</parameters>
 			</method>
 		</object>
