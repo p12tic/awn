@@ -1,3 +1,11 @@
+2008-07-08  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.am:
+	* data/Makefile.am:
+	* data/avant-window-navigator-48.png => data/avant-window-navigator.png:
+	Properly install the application icons, per the freedesktop.org icon
+	theme specification.
+
 2008-07-07  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c
