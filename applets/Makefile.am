@@ -1,4 +1,4 @@
-desktopdir = $(libdir)/awn/applets
+desktopdir = $(pkgdatadir)/applets
 
 desktop_DATA = \
 	taskman.desktop

@@ -1,3 +1,13 @@
+2008-07-09  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	reviewed by: sharkbait, triggerhapp in #awn (awn-manager only)
+
+	* applets/Makefile.am:
+	Install the taskman desktop file to the proper location.
+
+	* awn-manager/awnApplet.py:
+	Look for icons and desktop files in the proper location.
+
 2008-07-08  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* Makefile.am:
