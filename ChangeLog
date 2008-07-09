@@ -1,3 +1,10 @@
+2008-07-09  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/avant-window-navigator-data-trunk.install
+  	* debian/avant-window-navigator-trunk.install
+  	* debian/awn-manager-trunk.install
+	update package to new installation locations
+
 2008-07-09  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	reviewed by: sharkbait, triggerhapp in #awn (awn-manager only)
