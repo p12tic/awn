@@ -1,3 +1,9 @@
+2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	It seems some environments have an issue with changing extensions of
+	png files to svg.  So let us behave...
+
 2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
