@@ -128,6 +128,7 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
       gchar * dest = g_strdup_printf("%s/awn-theme/scalable/%s",priv->icon_dir,new_basename);
       if ( g_file_set_contents(dest,contents,length,&err))
       {
+        gchar * filename;
         printf("Icon set %s\n",dest);
         //        gtk_icon_theme_rescan_if_needed(priv->awn_theme);        
         //  This ^ does not seem to force an update. For now will just recreate 
@@ -135,7 +136,24 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
         
         g_object_unref(priv->awn_theme);
         priv->awn_theme = gtk_icon_theme_new();
-        gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);        
+        gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);  
+        
+        switch(scope)
+        {
+          case 0:
+            filename=g_strdup_printf("%s-%s.svg",
+                               priv->icon_names[priv->cur_icon],
+                               priv->applet_name);          
+            g_unlink(filename); 
+            g_free(filename);            
+          case 1:
+            filename=g_strdup_printf("%s-%s-%s.svg",
+                               priv->icon_names[priv->cur_icon],
+                               priv->applet_name,
+                               priv->uid);
+            g_unlink(filename);
+            g_free(filename);
+        }
         
         if (priv->icon_change_cb)
         {
