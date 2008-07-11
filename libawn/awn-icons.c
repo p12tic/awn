@@ -112,8 +112,9 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
           new_basename=g_strdup_printf("%s.svg",priv->icon_names[priv->cur_icon]);
           break;
         case  1:
-          new_basename=g_strdup_printf("%s-%s.svg",priv->applet_name,
-                                       priv->icon_names[priv->cur_icon]);
+          new_basename=g_strdup_printf("%s-%s.svg",
+                                       priv->icon_names[priv->cur_icon],
+                                       priv->applet_name);
           break;
         case  2:
         default:  //supress a warning.
