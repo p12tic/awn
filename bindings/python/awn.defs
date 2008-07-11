@@ -486,7 +486,7 @@
 (define-method set_awn_icon
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_set_awn_icon")
-  (return-type "none")
+  (return-type "GdkPixbuf*")
   (parameters
     '("const-gchar*" "applet_name")
     '("const-gchar*" "uid")
@@ -497,7 +497,7 @@
 (define-method set_awn_icons
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_set_awn_icons")
-  (return-type "none")
+  (return-type "GdkPixbuf*")
   (parameters
     '("const-gchar*" "applet_name")
     '("const-gchar*" "uid")
@@ -510,7 +510,7 @@
 (define-method set_awn_icon_state
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_set_awn_icon_state")
-  (return-type "none")
+  (return-type "GdkPixbuf*")
   (parameters
     '("const-gchar*" "state")
   )
