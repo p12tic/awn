@@ -1,6 +1,11 @@
 2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
+	Set the icon for the dialog.
+
+2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
 	More verbose error reporting on loading icons.
 
 2008-07-10  Rodney Cryderman <rcryderman@gmail.com>

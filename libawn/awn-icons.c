@@ -247,8 +247,6 @@ awn_icons_drag_data_received (GtkWidget          *widget,
         
         pixbuf = gdk_pixbuf_new_from_file (_sdata,NULL);
         icon = gtk_image_new_from_pixbuf(pixbuf);
-        g_object_unref(pixbuf);
-        
 
         hbox = gtk_hbox_new(FALSE,1);
         vbox = gtk_vbox_new(FALSE,1);   
@@ -281,13 +279,14 @@ awn_icons_drag_data_received (GtkWidget          *widget,
         gtk_container_add (GTK_CONTAINER (hbox), icon);
         gtk_container_add (GTK_CONTAINER (hbox), vbox);                
         gtk_container_add (GTK_CONTAINER (content_area), hbox);
-
+        gtk_window_set_icon (GTK_WINDOW(dialog), pixbuf);
+                             
         g_signal_connect(dialog, "response",G_CALLBACK(_awn_icons_dialog_response),dialog_data);
 
         gtk_widget_show_all(dialog);
         gtk_drag_finish (drag_context, TRUE, FALSE, time); //good enough... we'll say all was well.
         
-
+        g_object_unref(pixbuf);
       }
       return;
     }
