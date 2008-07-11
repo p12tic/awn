@@ -494,6 +494,19 @@
   )
 )
 
+(define-method set_awn_icons
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_awn_icons")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "applet_name")
+    '("const-gchar*" "uid")
+    '("const-gchar**" "states")
+    '("const-gchar**" "icon_names")
+  )
+)
+
+
 (define-method set_awn_icon_state
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_set_awn_icon_state")
