@@ -141,13 +141,15 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
         switch(scope)
         {
           case 0:
-            filename=g_strdup_printf("%s-%s.svg",
+            filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s.svg",
+                               priv->icon_dir,
                                priv->icon_names[priv->cur_icon],
                                priv->applet_name);          
             g_unlink(filename); 
             g_free(filename);            
           case 1:
-            filename=g_strdup_printf("%s-%s-%s.svg",
+            filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s-%s.svg",
+                               priv->icon_dir,                                     
                                priv->icon_names[priv->cur_icon],
                                priv->applet_name,
                                priv->uid);

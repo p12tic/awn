@@ -1,6 +1,11 @@
 2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
+	Added some code so the previous commit actually works.
+
+2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
 	When a broader scoped icon is being applied to an applet make sure we
 	remove any existing icons with a narrower scope for that instance.
 
