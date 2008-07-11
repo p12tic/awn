@@ -296,6 +296,7 @@ GdkPixbuf * awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
 {
   AwnAppletSimplePrivate *priv;  
   GdkPixbuf * pixbuf;
+  g_return_val_if_fail(simple,NULL);  
   priv = simple->priv;
   if ( !priv->awn_icons)
   {
@@ -326,6 +327,7 @@ GdkPixbuf * awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
 {
   AwnAppletSimplePrivate *priv;  
   GdkPixbuf * pixbuf;  
+  g_return_val_if_fail(simple,NULL);
   priv = simple->priv;
   if ( !priv->awn_icons)
   {
@@ -352,6 +354,7 @@ GdkPixbuf * awn_applet_simple_set_awn_icon_state(AwnAppletSimple *simple, gchar 
 {
   AwnAppletSimplePrivate *priv;  
   GdkPixbuf * pixbuf;  
+  g_return_val_if_fail(simple,NULL);  
   priv = simple->priv;
   if (priv->current_state)
   {
