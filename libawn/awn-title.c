@@ -129,11 +129,11 @@ show (gchar *text)
         
         if (priv->focus == NULL)
           return FALSE;
+        normal = g_markup_escape_text (text, -1);
 	if (strlen(text) > 120)
 	{
 		text[120]='\0';
-	}
-        normal = g_markup_escape_text (text, -1);
+	}	
         markup = g_strdup_printf ("<span foreground='#%s' font_desc='%s'>%s</span>",
                                   priv->text_col,
                                   priv->font,

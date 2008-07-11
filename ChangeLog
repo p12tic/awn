@@ -1,5 +1,11 @@
 2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-title.c:
+	Don't truncate the text until after escaping it.  Should resolve
+	https://bugs.launchpad.net/awn-extras/+bug/224635
+
+2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-icons.c:
 	It seems some environments have an issue with changing extensions of
 	png files to svg.  So let us behave...
