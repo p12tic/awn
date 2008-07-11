@@ -134,8 +134,10 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
         //  This ^ does not seem to force an update. For now will just recreate 
         // the damn thing.
         
-        g_object_unref(priv->awn_theme);
-        priv->awn_theme = gtk_icon_theme_new();
+//        g_object_unref(priv->awn_theme);
+//        priv->awn_theme = gtk_icon_theme_new();
+        
+        gtk_icon_theme_set_custom_theme(priv->awn_theme,NULL);
         gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);  
         
         switch(scope)
