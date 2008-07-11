@@ -403,7 +403,8 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, gchar * state)
   g_return_val_if_fail(state,NULL);
   
   gint count;
-  GdkPixbuf * pixbuf = NULL;  
+  GdkPixbuf * pixbuf = NULL;
+  GError *err=NULL;   
   AwnIconsPrivate *priv=GET_PRIVATE(icons);
   g_assert(priv->states[0]);
   for (count = 0; priv->states[count]; count++)
@@ -426,35 +427,42 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, gchar * state)
                                   priv->applet_name,
                                   priv->uid);
             pixbuf = gtk_icon_theme_load_icon(priv->awn_theme, name , 
-                                              priv->height, 0, NULL);
+                                              priv->height, 0, &err);
             break;
           case  1:
             name = g_strdup_printf("%s-%s",
                                    priv->icon_names[count],
                                    priv->applet_name);
             pixbuf = gtk_icon_theme_load_icon(priv->awn_theme, name , 
-                                        priv->height, 0, NULL);
+                                        priv->height, 0, &err);
             break;
           case  2:
             pixbuf = gtk_icon_theme_load_icon(priv->awn_theme, 
                                         priv->icon_names[count],priv->height, 
-                                        0, NULL);
+                                        0, &err);
             break;
           case  3:
             pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), 
                                     priv->icon_names[count],priv->height, 
-                                    0, NULL);
+                                    0, &err);
             break;
           case  4:
             pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), 
-                                  "stock_stop",priv->height, 0, NULL);
+                                  "stock_stop",priv->height, 0, &err);
             break;
           case  5:
             pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, 
                                     priv->height,priv->height);
             gdk_pixbuf_fill(pixbuf, 0xee221155);
             break;
-        }       
+        } 
+        
+        if (err)
+        {
+          g_warning("Failed loading icon: %s\n",err->message);
+          g_error_free (err);
+          err=NULL;
+        }        
         printf("name = %s\n",name);
         g_free(name);
         name = NULL;
@@ -584,7 +592,7 @@ awn_icons_init (AwnIcons *self)
   gchar * index_theme_src = g_strdup_printf("%s/avant-window-navigator/index.theme",DATADIR);
   gchar * index_theme_dest = g_strdup_printf("%s/%s/index.theme",icon_dir,
                                              AWN_ICONS_THEME_NAME);
-  printf("Checking for index.them\n");
+  printf("Checking for index.theme\n");
   if (! g_file_test(index_theme_dest,G_FILE_TEST_EXISTS) )
   {
     printf("index.theme not found\n");
