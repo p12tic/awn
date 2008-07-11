@@ -1,3 +1,9 @@
+2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.def
+	Python bindings for awn_applet_simple_set_awn_icon() and
+	awn_applet_simple_set_awn_icon_state().
+
 2008-07-09  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* debian/avant-window-navigator-data-trunk.install
