@@ -369,8 +369,11 @@ awn_icons_drag_data_received (GtkWidget          *widget,
 
 //TODO implement individual set functions where it makes sense...
 void awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
-                             gchar * applet_name,gchar * uid,gint height,
-                             gchar **states,gchar **icon_names)
+                              const gchar * applet_name,
+                              const gchar * uid,
+                              gint height,
+                              const gchar **states,
+                              const gchar **icon_names)
 {
   g_return_if_fail(icons);
   g_return_if_fail(applet_name);
@@ -439,10 +442,10 @@ void awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
 
 void awn_icons_set_icon_info(AwnIcons * icons,
                              GtkWidget * applet,
-                             gchar * applet_name,
-                             gchar * uid, 
+                             const gchar * applet_name,
+                             const gchar * uid, 
                              gint height,
-                             gchar *icon_name)
+                             const gchar *icon_name)
 {
   g_return_if_fail(icons);  
   gchar *states[] = {"__SINGULAR__",NULL};
@@ -464,7 +467,7 @@ void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer data)
   
 }
 
-GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, gchar * state)
+GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, const gchar * state)
 {
   g_return_val_if_fail(icons,NULL);
   g_return_val_if_fail(state,NULL);

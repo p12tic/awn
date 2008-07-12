@@ -313,12 +313,12 @@ static void _awn_applet_simple_icon_changed(AwnIcons * awn_icons, AwnAppletSimpl
  *
  * Returns: the currently used pixbuf.  The caller does NOT own a reference
  * to the pixbuf and should reference it if needed.
- */
+ */    
 GdkPixbuf * awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
-                                    gchar * applet_name,
-                                    gchar * uid,
-                                    gchar **states,
-                                    gchar **icon_names
+                                    const gchar * applet_name,
+                                    const gchar * uid,
+                                    const gchar **states,
+                                    const gchar **icon_names
                                     )
 {
   AwnAppletSimplePrivate *priv;  
@@ -366,12 +366,12 @@ GdkPixbuf * awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
  * to the pixbuf and should reference it if needed.
  */
 GdkPixbuf * awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
-                                    gchar * applet_name,
-                                    gchar * uid,
-                                    gchar * icon_name)
+                                    const gchar * applet_name,
+                                    const gchar * uid,
+                                    const gchar * icon_name)
 {
   AwnAppletSimplePrivate *priv;  
-  static GdkPixbuf * pixbuf;  
+  static GdkPixbuf * pixbuf = NULL;  
   g_return_val_if_fail(simple,NULL);
   priv = simple->priv;
   if (pixbuf)
@@ -411,10 +411,11 @@ GdkPixbuf * awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
  * Returns: the currently used pixbuf.  The caller does NOT own a reference
  * to the pixbuf and should reference it if needed.
  */
-GdkPixbuf * awn_applet_simple_set_awn_icon_state(AwnAppletSimple *simple, gchar * state)
+GdkPixbuf * awn_applet_simple_set_awn_icon_state(AwnAppletSimple *simple, 
+                                                 const gchar * state)
 {
   AwnAppletSimplePrivate *priv;  
-  static GdkPixbuf * pixbuf;  
+  static GdkPixbuf * pixbuf = NULL;  
   g_return_val_if_fail(simple,NULL);  
   priv = simple->priv;
   if (pixbuf)

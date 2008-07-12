@@ -1,6 +1,14 @@
 2008-07-12  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	Set some parameters as const.
+
+2008-07-12  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
 	Documented _awn_applet_simple_icon_changed(),
 	awn_applet_simple_set_awn_icons(), awn_applet_simple_set_awn_icon(),
 	awn_applet_simple_set_awn_icon_state().
