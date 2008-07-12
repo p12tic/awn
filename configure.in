@@ -56,7 +56,7 @@ dnl ==============================================
 AC_ARG_WITH(vala, AS_HELP_STRING([--without-vala],[Disables installation of the Vala bindings]),,[with_vala=yes])
 
 if test "$with_vala" != "no"; then
-  VALA_PROG_VALAC(0.1.6)
+  VALA_PROG_VALAC(0.3.4)
   AC_PATH_PROG(VAPIGEN, vapigen, vapigen, [])
 fi
 AM_CONDITIONAL(HAVE_VALA, test -n "$VALAC")
