@@ -282,9 +282,12 @@ awn_applet_simple_set_temp_icon(AwnAppletSimple *simple, GdkPixbuf *pixbuf)
 
 void _awn_applet_simple_icon_changed(AwnIcons * awn_icons, AwnAppletSimple *simple)
 {
-  AwnAppletSimplePrivate *priv;  
+  AwnAppletSimplePrivate *priv; 
+  GdkPixbuf * pixbuf;
   priv = simple->priv;  
-  awn_applet_simple_set_temp_icon(simple,awn_icons_get_icon(priv->awn_icons,priv->current_state));  
+  pixbuf = awn_icons_get_icon(priv->awn_icons,priv->current_state);
+  awn_applet_simple_set_icon(simple,pixbuf);  
+  g_object_unref(pixbuf);   
 }
 
 GdkPixbuf * awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
@@ -295,9 +298,14 @@ GdkPixbuf * awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
                                     )
 {
   AwnAppletSimplePrivate *priv;  
-  GdkPixbuf * pixbuf;
+  static GdkPixbuf * pixbuf = NULL;
   g_return_val_if_fail(simple,NULL);  
   priv = simple->priv;
+  if (pixbuf)
+  {
+    g_object_unref(pixbuf); 
+    pixbuf = NULL;
+  }
   if ( !priv->awn_icons)
   {
     priv->awn_icons = awn_icons_new();
@@ -326,9 +334,14 @@ GdkPixbuf * awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
                                     gchar * icon_name)
 {
   AwnAppletSimplePrivate *priv;  
-  GdkPixbuf * pixbuf;  
+  static GdkPixbuf * pixbuf;  
   g_return_val_if_fail(simple,NULL);
   priv = simple->priv;
+  if (pixbuf)
+  {
+    g_object_unref(pixbuf); 
+    pixbuf = NULL;
+  }  
   if ( !priv->awn_icons)
   {
     priv->awn_icons = awn_icons_new();
@@ -353,9 +366,14 @@ GdkPixbuf * awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
 GdkPixbuf * awn_applet_simple_set_awn_icon_state(AwnAppletSimple *simple, gchar * state)
 {
   AwnAppletSimplePrivate *priv;  
-  GdkPixbuf * pixbuf;  
+  static GdkPixbuf * pixbuf;  
   g_return_val_if_fail(simple,NULL);  
   priv = simple->priv;
+  if (pixbuf)
+  {
+    g_object_unref(pixbuf); 
+    pixbuf = NULL;
+  }    
   if (priv->current_state)
   {
     g_free(priv->current_state);

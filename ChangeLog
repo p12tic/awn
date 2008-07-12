@@ -1,6 +1,12 @@
 2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
+	* libawn/awn-applet-simple.c:
+	Tidy up some unrefs when dealing with awn-icons.
+
+2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
 	Connect to theme "changed" signal in awn-icons.
 
 2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
