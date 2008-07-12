@@ -2,4 +2,4 @@
 Type=C
 Name=Launcher/Taskmanager
 Comment=The main Awn Launcher/TaskManager applet
-Icon=@PKGDATADIR@/avant-window-navigator.svg
+Icon=avant-window-navigator
