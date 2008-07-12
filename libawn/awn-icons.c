@@ -563,6 +563,15 @@ GdkPixbuf * awn_icons_get_icon_simple(AwnIcons * icons)
   return awn_icons_get_icon(icons,"__SINGULAR__");
 }
 
+void _default_theme_changed(GtkIconTheme *icon_theme,AwnIcons * awn_icons) 
+{
+  AwnIconsPrivate *priv=GET_PRIVATE(awn_icons);  
+  if (priv->icon_change_cb)
+  {
+    priv->icon_change_cb(awn_icons,priv->icon_change_cb_data);
+  }  
+}
+
 static void
 awn_icons_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
@@ -688,6 +697,10 @@ awn_icons_init (AwnIcons *self)
   
   priv->awn_theme = gtk_icon_theme_new();
   gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);
+  
+  g_signal_connect(gtk_icon_theme_get_default(),"changed",
+                   G_CALLBACK(_default_theme_changed),
+                   self);
 } 
 
 AwnIcons*

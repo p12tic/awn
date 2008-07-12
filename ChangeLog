@@ -1,6 +1,11 @@
 2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
+	Connect to theme "changed" signal in awn-icons.
+
+2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
 	The Combo Box added in the previous commit is now used to select the
 	icon modified.
 
