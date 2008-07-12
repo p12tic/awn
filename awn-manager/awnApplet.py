@@ -371,7 +371,7 @@ class awnApplet:
                 except:
                     icon = None
         if icon is None:
-            dirs = [os.path.join(p, "share", "awn","applets")
+            dirs = [os.path.join(p, "share", "avant-window-navigator","applets")
                     for p in ("/usr", "/usr/local", defs.PREFIX)]
             for d in dirs:
                 n = name
@@ -385,7 +385,7 @@ class awnApplet:
                 except:
                     icon = None
         if icon is None:
-            dirs = [os.path.join(p, "share", "awn","applets")
+            dirs = [os.path.join(p, "share", "avant-window-navigator","applets")
                     for p in ("/usr", "/usr/local", defs.PREFIX)]
             for d in dirs:
                 n = name
@@ -450,11 +450,9 @@ class awnApplet:
         model = self.appmodel
 
         prefixes = ["/usr/lib", "/usr/local/lib", "/usr/lib64", "/usr/local/lib64"]
-        install_prefix = os.path.join(defs.PREFIX, "share")
-        if install_prefix not in prefixes:
-            prefixes.append(install_prefix)
         prefixes.append(os.path.expanduser("~/.config"))
         dirs = [os.path.join(prefix, "awn", "applets") for prefix in prefixes]
+        dirs.insert(0, os.path.join(defs.PREFIX, "share", "avant-window-navigator", "applets"))
         applets = []
         for d in dirs:
             if not os.path.exists (d):

@@ -1,3 +1,148 @@
+2008-07-12  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Fixed up some warnings due to const. 
+	Appended  PREFIX/share/avant-window-navigator/applets/APPLET_NAME/icons
+	to awn-theme icon search path.
+
+2008-07-12  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	Set some parameters as const.
+
+2008-07-12  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Documented _awn_applet_simple_icon_changed(),
+	awn_applet_simple_set_awn_icons(), awn_applet_simple_set_awn_icon(),
+	awn_applet_simple_set_awn_icon_state().
+
+2008-07-12  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	* libawn/awn-applet-simple.c:
+	Tidy up some unrefs when dealing with awn-icons.
+
+2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Connect to theme "changed" signal in awn-icons.
+
+2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	The Combo Box added in the previous commit is now used to select the
+	icon modified.
+
+2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Correct the logic to remove old icons when a new one is dragged into
+	applet.
+	Added Combo Box when more than one icon is managed.  Not used yet.
+
+2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Some additional error checks.  Make sure your AwnAppletSimple object
+	isn't NULL.
+
+2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-title.c:
+	Don't truncate the text until after escaping it.  Should resolve
+	https://bugs.launchpad.net/awn-extras/+bug/224635
+
+2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	It seems some environments have an issue with changing extensions of
+	png files to svg.  So let us behave...
+
+2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Set the icon for the dialog.
+
+2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	More verbose error reporting on loading icons.
+
+2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Alternate method to force a refresh of the awn-theme gtk icon info.
+
+2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Added some code so the previous commit actually works.
+
+2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	When a broader scoped icon is being applied to an applet make sure we
+	remove any existing icons with a narrower scope for that instance.
+
+2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Fixed icon naming.
+
+2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
+
+        * bindings/python/awn.def:
+	Modified bindings for awn_applet_simple_set_awn_icon(),
+	awn_applet_simple_set_awn_icons() and 
+	awn_applet_simple_set_awn_icon_state() to return GdkPixbuf. 
+
+2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	awn-icons related API in Applet Simple now returns a pointer to the
+	currently used pixbuf.
+
+2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
+
+        * bindings/python/awn.def
+	Python bindings for awn_applet_simple_set_awn_icons().
+
+2008-07-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.def
+	Python bindings for awn_applet_simple_set_awn_icon() and
+	awn_applet_simple_set_awn_icon_state().
+
+2008-07-09  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/avant-window-navigator-data-trunk.install
+  	* debian/avant-window-navigator-trunk.install
+  	* debian/awn-manager-trunk.install
+	update package to new installation locations
+
+2008-07-09  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	reviewed by: sharkbait, triggerhapp in #awn (awn-manager only)
+
+	* applets/Makefile.am:
+	Install the taskman desktop file to the proper location.
+
+	* awn-manager/awnApplet.py:
+	Look for icons and desktop files in the proper location.
+
+2008-07-08  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.am:
+	* data/Makefile.am:
+	* data/avant-window-navigator-48.png => data/avant-window-navigator.png:
+	Properly install the application icons, per the freedesktop.org icon
+	theme specification.
+
 2008-07-07  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c

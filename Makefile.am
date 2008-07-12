@@ -4,11 +4,11 @@ SUBDIRS =				\
 	libawn                          \
 	src				\
 	awn-applet-activation           \
-	data				\
+	awn-manager			\
 	applets                         \
 	po				\
 	bindings			\
-	awn-manager			\
+	data				\
 	doc				\
 	$(NULL)
 	

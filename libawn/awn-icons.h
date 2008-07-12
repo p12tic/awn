@@ -58,23 +58,23 @@ GType awn_icons_get_type (void);
 
 AwnIcons* awn_icons_new (void);
 
-GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, gchar * state);
+GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, const gchar * state);
 GdkPixbuf * awn_icons_get_icon_simple(AwnIcons * icons);
 
 void awn_icons_set_icons_info(AwnIcons * icons,
                               GtkWidget * applet,
-                              gchar * applet_name,
-                              gchar * uid,
+                              const gchar * applet_name,
+                              const gchar * uid,
                               gint height,
-                              gchar **states,
-                              gchar **icon_names);
+                              const gchar **states,
+                              const gchar **icon_names);
 
 void awn_icons_set_icon_info(AwnIcons * icons,
                              GtkWidget * applet,
-                             gchar * applet_name,
-                             gchar * uid, 
+                             const gchar * applet_name,
+                             const gchar * uid, 
                              gint height,
-                             gchar *icon_name);
+                             const gchar *icon_name);
                              
 void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer data);                             
 
