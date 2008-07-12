@@ -107,7 +107,8 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
     if (g_file_get_contents (sdata,&contents,&length,&err))
     {
       gchar * new_basename;
-      
+      gchar * filename;
+      gint  cur_icon = priv->cur_icon;      
       GdkPixbufFormat* pixbuf_info = gdk_pixbuf_get_file_info (sdata,NULL,NULL);
       g_return_if_fail(pixbuf_info);
       gchar ** extensions = gdk_pixbuf_format_get_extensions(pixbuf_info);
@@ -135,9 +136,65 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
       }
       g_strfreev(extensions);    
       gchar * dest = g_strdup_printf("%s/awn-theme/scalable/%s",priv->icon_dir,new_basename);
-      if ( g_file_set_contents(dest,contents,length,&err))
+      switch(scope)
       {
-        gchar * filename;
+        case 0:
+          filename=g_strdup_printf("%s.svg",priv->icon_names[cur_icon]);
+          g_unlink(filename); 
+          g_free(filename);  
+          filename=g_strdup_printf("%s.png",priv->icon_names[cur_icon]);
+          g_unlink(filename); 
+          g_free(filename);                
+          filename=g_strdup_printf("%s.xpm",priv->icon_names[cur_icon]);
+          g_unlink(filename); 
+          g_free(filename);                                                     
+        case 1:
+        //FIXME put this stuff in a loop though an array { "png","xpm","svg"}
+          filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s.svg",
+                             priv->icon_dir,
+                             priv->icon_names[cur_icon],
+                             priv->applet_name);          
+          g_unlink(filename); 
+          g_free(filename);        
+          filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s.png",
+                             priv->icon_dir,
+                             priv->icon_names[cur_icon],
+                             priv->applet_name);          
+          g_unlink(filename); 
+          g_free(filename);           
+          filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s.xpm",
+                             priv->icon_dir,
+                             priv->icon_names[cur_icon],
+                             priv->applet_name);          
+          g_unlink(filename); 
+          g_free(filename);                 
+        case 2:
+          filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s-%s.svg",
+                             priv->icon_dir,                                     
+                             priv->icon_names[cur_icon],
+                             priv->applet_name,
+                             priv->uid);
+          g_unlink(filename);
+          g_free(filename);
+          filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s-%s.png",
+                             priv->icon_dir,                                     
+                             priv->icon_names[cur_icon],
+                             priv->applet_name,
+                             priv->uid);
+          g_unlink(filename);
+          g_free(filename);            
+          filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s-%s.xpm",
+                             priv->icon_dir,                                     
+                             priv->icon_names[cur_icon],
+                             priv->applet_name,
+                             priv->uid);
+          g_unlink(filename);
+          g_free(filename);            
+          
+      }      
+      
+      if ( g_file_set_contents(dest,contents,length,&err))
+      {     
         printf("Icon set %s\n",dest);
         //        gtk_icon_theme_rescan_if_needed(priv->awn_theme);        
         //  This ^ does not seem to force an update. For now will just recreate 
@@ -148,53 +205,6 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
         
         gtk_icon_theme_set_custom_theme(priv->awn_theme,NULL);
         gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);  
-        
-        switch(scope)
-        {
-          case 0:
-          //FIXME put this stuff in a loop though an array { "png","xpm","svg"}
-            filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s.svg",
-                               priv->icon_dir,
-                               priv->icon_names[priv->cur_icon],
-                               priv->applet_name);          
-            g_unlink(filename); 
-            g_free(filename);        
-            filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s.png",
-                               priv->icon_dir,
-                               priv->icon_names[priv->cur_icon],
-                               priv->applet_name);          
-            g_unlink(filename); 
-            g_free(filename);           
-            filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s.xpm",
-                               priv->icon_dir,
-                               priv->icon_names[priv->cur_icon],
-                               priv->applet_name);          
-            g_unlink(filename); 
-            g_free(filename);                 
-          case 1:
-            filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s-%s.svg",
-                               priv->icon_dir,                                     
-                               priv->icon_names[priv->cur_icon],
-                               priv->applet_name,
-                               priv->uid);
-            g_unlink(filename);
-            g_free(filename);
-            filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s-%s.png",
-                               priv->icon_dir,                                     
-                               priv->icon_names[priv->cur_icon],
-                               priv->applet_name,
-                               priv->uid);
-            g_unlink(filename);
-            g_free(filename);            
-            filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s-%s.xpm",
-                               priv->icon_dir,                                     
-                               priv->icon_names[priv->cur_icon],
-                               priv->applet_name,
-                               priv->uid);
-            g_unlink(filename);
-            g_free(filename);            
-            
-        }
         
         if (priv->icon_change_cb)
         {
@@ -308,10 +318,21 @@ awn_icons_drag_data_received (GtkWidget          *widget,
         priv->scope_radio3 = gtk_radio_button_new_with_label_from_widget
                     (GTK_RADIO_BUTTON(priv->scope_radio1),"Apply to icon name.");
 
-        
         gtk_container_add (GTK_CONTAINER (vbox), priv->scope_radio1);
         gtk_container_add (GTK_CONTAINER (vbox), priv->scope_radio2);
         gtk_container_add (GTK_CONTAINER (vbox), priv->scope_radio3);
+        
+        if (priv->count >1 )
+        {
+          int i;
+          GtkWidget * combo = gtk_combo_box_new_text ();
+          gtk_container_add (GTK_CONTAINER (vbox), combo);
+          for (i=0; priv->states[i];i++)
+          {
+            gtk_combo_box_append_text(GTK_COMBO_BOX(combo), priv->states[i]);
+          }
+          gtk_combo_box_set_active (GTK_COMBO_BOX(combo),priv->cur_icon);
+        }
         
         gtk_container_add (GTK_CONTAINER (hbox), icon);
         gtk_container_add (GTK_CONTAINER (hbox), vbox);                

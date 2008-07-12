@@ -1,5 +1,12 @@
 2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-icons.c:
+	Correct the logic to remove old icons when a new one is dragged into
+	applet.
+	Added Combo Box when more than one icon is managed.  Not used yet.
+
+2008-07-11  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-applet-simple.c:
 	Some additional error checks.  Make sure your AwnAppletSimple object
 	isn't NULL.
