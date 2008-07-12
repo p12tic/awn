@@ -51,6 +51,7 @@ struct _AwnIconsPrivate {
   GtkWidget * scope_radio1;       //this just seems the easiest way to to deal
   GtkWidget * scope_radio2;       //with the radio buttons in the dialog.
   GtkWidget * scope_radio3;       //also seems wrong.
+  GtkWidget * combo;
  
   gchar **  states;
   gchar **  icon_names;
@@ -113,22 +114,27 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
       g_return_if_fail(pixbuf_info);
       gchar ** extensions = gdk_pixbuf_format_get_extensions(pixbuf_info);
       
+      if (priv->combo)
+      {
+        cur_icon=gtk_combo_box_get_active (GTK_COMBO_BOX(priv->combo));
+      }
+      
       switch (scope)
       {
         case  0:
-          new_basename=g_strdup_printf("%s.%s",priv->icon_names[priv->cur_icon],
+          new_basename=g_strdup_printf("%s.%s",priv->icon_names[cur_icon],
                                        extensions[0] );
           break;
         case  1:
           new_basename=g_strdup_printf("%s-%s.%s",
-                                       priv->icon_names[priv->cur_icon],
+                                       priv->icon_names[cur_icon],
                                        priv->applet_name,
                                        extensions[0]);
           break;
         case  2:
         default:  //supress a warning.
           new_basename=g_strdup_printf("%s-%s-%s.%s",
-                                       priv->icon_names[priv->cur_icon],
+                                       priv->icon_names[cur_icon],
                                        priv->applet_name,
                                        priv->uid,
                                        extensions[0]);
@@ -325,13 +331,17 @@ awn_icons_drag_data_received (GtkWidget          *widget,
         if (priv->count >1 )
         {
           int i;
-          GtkWidget * combo = gtk_combo_box_new_text ();
-          gtk_container_add (GTK_CONTAINER (vbox), combo);
+          priv->combo = gtk_combo_box_new_text ();
+          gtk_container_add (GTK_CONTAINER (vbox), priv->combo);
           for (i=0; priv->states[i];i++)
           {
-            gtk_combo_box_append_text(GTK_COMBO_BOX(combo), priv->states[i]);
+            gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo), priv->states[i]);
           }
-          gtk_combo_box_set_active (GTK_COMBO_BOX(combo),priv->cur_icon);
+          gtk_combo_box_set_active (GTK_COMBO_BOX(priv->combo),priv->cur_icon);
+        }
+        else
+        {
+          priv->combo=NULL;
         }
         
         gtk_container_add (GTK_CONTAINER (hbox), icon);
