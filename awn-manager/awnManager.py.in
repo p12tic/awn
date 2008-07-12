@@ -34,6 +34,7 @@ try:
 except:
     pass
 try:
+    import gobject
     import gtk
     import gtk.glade
     import gtk.gdk as gdk
@@ -64,20 +65,20 @@ class AwnManager:
         self.wTree = gtk.glade.XML(self.GLADE_PATH, domain=defs.I18N_DOMAIN)
 
         self.window = self.wTree.get_widget("awnManagerWindow")
-        theme = gtk.icon_theme_get_default()
+        self.theme = gtk.icon_theme_get_default()
         icon_search_path = os.path.join('@DATADIR@', 'icons')
-        if icon_search_path not in theme.get_search_path():
-            theme.append_search_path(icon_search_path)
+        if icon_search_path not in self.theme.get_search_path():
+            self.theme.append_search_path(icon_search_path)
         icon_list = []
-        icon_sizes = theme.get_icon_sizes('awn-manager')
+        icon_sizes = self.theme.get_icon_sizes('awn-manager')
         for size in icon_sizes:
             if size == -1: # scalable
                 if 128 not in icon_sizes:
-                    icon = theme.load_icon('awn-manager', 128, gtk.ICON_LOOKUP_USE_BUILTIN)
+                    icon = self.safe_load_icon('awn-manager', 128, gtk.ICON_LOOKUP_USE_BUILTIN)
                 else:
                     continue
             else:
-                icon = theme.load_icon('awn-manager', size, gtk.ICON_LOOKUP_USE_BUILTIN)
+                icon = self.safe_load_icon('awn-manager', size, gtk.ICON_LOOKUP_USE_BUILTIN)
             icon_list.append(icon)
         if len(icon_list) > 0:
             gtk.window_set_default_icon_list(*icon_list)
@@ -131,17 +132,29 @@ class AwnManager:
 
         self.window.show_all()
 
+    def safe_load_icon(self, name, size, flags = 0):
+        try:
+            icon = self.theme.load_icon(name, size, flags)
+        except gobject.GError:
+            msg = _('Could not load the "' + name + '" icon.  Make sure that ' + \
+                    'the SVG loader for Gtk+ is installed. It usually comes ' + \
+                    'with librsvg, or a package similarly named.')
+            dialog = gtk.MessageDialog(self.window, 0, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK, msg)
+            dialog.run()
+            dialog.destroy()
+            sys.exit(1)
+        return icon
+   
     def make_menu_model(self):
-        theme = gtk.icon_theme_get_default()
         self.menu_model = gtk.ListStore(str, gtk.gdk.Pixbuf)
 
-        pixbuf = theme.load_icon("gtk-preferences", 48, gtk.ICON_LOOKUP_FORCE_SVG)
+        pixbuf = self.safe_load_icon("gtk-preferences", 48, gtk.ICON_LOOKUP_FORCE_SVG)
         self.menu_model.append(['General', pixbuf])
-        pixbuf = theme.load_icon("gtk-sort-ascending", 48, gtk.ICON_LOOKUP_FORCE_SVG)
+        pixbuf = self.safe_load_icon("gtk-sort-ascending", 48, gtk.ICON_LOOKUP_FORCE_SVG)
         self.menu_model.append(['Applets', pixbuf])
-        pixbuf = theme.load_icon("gtk-fullscreen", 48, gtk.ICON_LOOKUP_FORCE_SVG)
+        pixbuf = self.safe_load_icon("gtk-fullscreen", 48, gtk.ICON_LOOKUP_FORCE_SVG)
         self.menu_model.append(['Launchers', pixbuf])
-        pixbuf = theme.load_icon("gtk-home", 48, gtk.ICON_LOOKUP_FORCE_SVG)
+        pixbuf = self.safe_load_icon("gtk-home", 48, gtk.ICON_LOOKUP_FORCE_SVG)
         self.menu_model.append(['Themes', pixbuf])
 
     def changeTab(self, iconView):
@@ -149,8 +162,7 @@ class AwnManager:
 
     def refresh(self, button):
         w = gtk.Window()
-        i = gtk.IconTheme()
-        w.set_icon(i.load_icon("gtk-refresh", 48, gtk.ICON_LOOKUP_FORCE_SVG))
+        w.set_icon(this.safe_load_icon("gtk-refresh", 48, gtk.ICON_LOOKUP_FORCE_SVG))
         v = gtk.VBox()
         l = gtk.Label("Refreshed")
         b = gtk.Button(stock="gtk-close")
@@ -186,7 +198,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA.''')
         self.about.set_wrap_license(True)
         self.about.set_website('https://launchpad.net/awn/')
-        self.about.set_logo(gtk.gdk.pixbuf_new_from_file_at_size(os.path.join(defs.PKGDATADIR, 'avant-window-navigator.svg'), 96, 96))
+        self.about.set_logo(self.safe_load_icon('avant-window-navigator', 96, gtk.ICON_LOOKUP_USE_BUILTIN))
         self.about.set_documenters(["More to come..."])
         self.about.set_artists(["More to come..."])
         #self.about.set_translator_credits()

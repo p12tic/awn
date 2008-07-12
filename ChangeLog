@@ -1,3 +1,13 @@
+2008-07-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	patch (partially) by: sharkbait <sharkbaitbobby+awn@gmail.com>
+
+	* awn-manager/awnManager.py.in:
+	Use the icon theme to access the Awn icon.
+	Convert all of the "load icon from theme" calls to use a safer version,
+	which shows an informative error dialog and exits the program when an icon
+	can't be loaded.
+
 2008-07-13  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* applets/taskman.desktop.in.in:
