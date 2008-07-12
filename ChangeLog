@@ -1,5 +1,14 @@
 2008-07-12  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/vala/awn.deps:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	* configure.in:
+	Update Vala bindings to work with Vala 0.3.4.
+
+2008-07-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-config-client-gconf.c:
 	* libawn/awn-config-client-gkeyfile.c:
 	* libawn/awn-config-client.h:
