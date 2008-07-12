@@ -1,3 +1,19 @@
+2008-07-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-config-client-gconf.c:
+	* libawn/awn-config-client-gkeyfile.c:
+	* libawn/awn-config-client.h:
+	* libawn/awn-effects.h:
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	Change the parameter names of callback user data so that they're more
+	bindings generator friendly.
+
+2008-07-12  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* data/gconf-migration.py
+	Add a simple python script to convert /lib to /share location
+
 2008-07-12  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:

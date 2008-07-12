@@ -52,7 +52,7 @@ typedef struct {
   GObjectClass parent_class;
 } AwnIconsClass;
 
-typedef void(* AwnIconsChange )(AwnIcons * fx,gpointer data);
+typedef void(* AwnIconsChange )(AwnIcons * fx,gpointer user_data);
 
 GType awn_icons_get_type (void);
 
@@ -76,7 +76,7 @@ void awn_icons_set_icon_info(AwnIcons * icons,
                              gint height,
                              const gchar *icon_name);
                              
-void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer data);                             
+void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer user_data);                             
 
 G_END_DECLS
 

@@ -91,7 +91,7 @@ typedef struct {
  *
  * The callback template for configuration change notification functions.
  */
-typedef void (*AwnConfigClientNotifyFunc) (AwnConfigClientNotifyEntry *entry, gpointer data);
+typedef void (*AwnConfigClientNotifyFunc) (AwnConfigClientNotifyEntry *entry, gpointer user_data);
 
 /**
  * AWN_CONFIG_CLIENT_DEFAULT_GROUP:
@@ -183,7 +183,7 @@ void               awn_config_client_ensure_group              (AwnConfigClient 
 
 void               awn_config_client_notify_add                (AwnConfigClient *client, const gchar *group,
                                                                 const gchar *key, AwnConfigClientNotifyFunc callback,
-                                                                gpointer data);
+                                                                gpointer user_data);
 gboolean           awn_config_client_entry_exists              (AwnConfigClient *client, const gchar *group,
                                                                 const gchar *key);
 void               awn_config_client_load_defaults_from_schema (AwnConfigClient *client, GError **err);

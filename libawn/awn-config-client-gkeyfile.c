@@ -488,11 +488,11 @@ void awn_config_client_ensure_group (AwnConfigClient *client, const gchar *group
  */
 void awn_config_client_notify_add (AwnConfigClient *client, const gchar *group, 
 				   const gchar *key, AwnConfigClientNotifyFunc callback,
-				   gpointer data)
+				   gpointer user_data)
 {
 	AwnConfigClientNotifyData *notify = g_new0 (AwnConfigClientNotifyData, 1);
 	notify->callback = callback;
-	notify->data = data;
+	notify->data = user_data;
 	gchar *full_key = awn_config_client_generate_key (client, group, key);
 	GQuark quark = g_quark_from_string (full_key);
 	GSList *funcs = g_datalist_id_get_data (&(client->notify_funcs), quark);
