@@ -469,12 +469,12 @@ void awn_icons_set_icon_info(AwnIcons * icons,
 
 /*the callback could be more complicated if we wanted since we eventually deal 
  with sets of icons.  But it really it isn't needed.*/
-void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer data)
+void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer user_data)
 {
   AwnIconsPrivate *priv=GET_PRIVATE(icons); 
   
   priv->icon_change_cb = fn;
-  priv->icon_change_cb_data = data;
+  priv->icon_change_cb_data = user_data;
   
 }
 

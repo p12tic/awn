@@ -77,7 +77,7 @@ typedef struct _AwnEffects AwnEffects;
 
 typedef gboolean(* AwnEffectsOpfn )(AwnEffects * fx,
                                      DrawIconState * ds,
-                                     gpointer null);
+                                     gpointer user_data);
 
 typedef struct
 {
