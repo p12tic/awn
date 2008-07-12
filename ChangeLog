@@ -1,5 +1,12 @@
 2008-07-12  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-icons.c:
+	Fixed up some warnings due to const. 
+	Appended  PREFIX/share/avant-window-navigator/applets/APPLET_NAME/icons
+	to awn-theme icon search path.
+
+2008-07-12  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-applet-simple.c:
 	* libawn/awn-applet-simple.h:
 	* libawn/awn-icons.c:

@@ -45,6 +45,7 @@ struct _AwnIconsPrivate {
   GtkWidget *   icon_widget;    //used if Non-NULL for drag and drop support
 
   GtkIconTheme *  awn_theme;
+  GtkIconTheme *  app_theme;
   
   AwnIconsChange    icon_change_cb;
   gpointer          icon_change_cb_data;
@@ -404,10 +405,10 @@ void awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
 
   if (priv->states)
   {
-    for(count=0;icon_names[count];count++)
+    for(count=0;priv->icon_names[count];count++)
     {
-      g_free(icon_names[count]);
-      g_free(states[count]);
+      g_free(priv->icon_names[count]);
+      g_free(priv->states[count]);
     }
     g_free(priv->states);
     g_free(priv->icon_names);
@@ -437,6 +438,14 @@ void awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
   priv->uid = g_strdup(uid);
   priv->height = height;
   
+  
+  gchar * applet_icon_dir = g_strdup_printf("%s/avant-window-navigator/applets/%s/icons",
+                                         DATADIR,
+                                         applet_name);
+  printf("appending '%s' to %s's awn-theme icon search path\n",applet_icon_dir,applet_name);
+  gtk_icon_theme_append_search_path (priv->awn_theme,applet_icon_dir);
+  g_free(applet_icon_dir);
+  
   gtk_icon_theme_rescan_if_needed(priv->awn_theme);
 }
 
@@ -450,9 +459,11 @@ void awn_icons_set_icon_info(AwnIcons * icons,
   g_return_if_fail(icons);  
   gchar *states[] = {"__SINGULAR__",NULL};
   gchar *icon_names[] = {NULL,NULL};
-  icon_names[0] = icon_name;
+  icon_names[0] = (gchar *)icon_name;
   awn_icons_set_icons_info(icons,applet,applet_name,
-                           uid,height,states,icon_names);
+                           uid,height,
+                           (const gchar **)states,
+                           (const gchar **)icon_names);
   
 }
 
@@ -704,6 +715,10 @@ awn_icons_init (AwnIcons *self)
   g_signal_connect(gtk_icon_theme_get_default(),"changed",
                    G_CALLBACK(_default_theme_changed),
                    self);
+  g_signal_connect(priv->awn_theme ,"changed",
+                   G_CALLBACK(_default_theme_changed),
+                   self);
+  
 } 
 
 AwnIcons*
