@@ -334,9 +334,9 @@ namespace Awn {
 		public void effects_on ();
 		public weak Awn.Effects get_effects ();
 		public AppletSimple (string uid, int orient, int height);
-		public void set_awn_icon (string applet_name, string uid, string icon_name);
-		public void set_awn_icon_state (string state);
-		public void set_awn_icons (string applet_name, string uid, string[] states, string[] icon_names);
+		public weak Gdk.Pixbuf set_awn_icon (string applet_name, string uid, string icon_name);
+		public weak Gdk.Pixbuf set_awn_icon_state (string state);
+		public weak Gdk.Pixbuf set_awn_icons (string applet_name, string uid, string[] states, string[] icon_names);
 		public void set_icon (Gdk.Pixbuf pixbuf);
 		public void set_icon_context (Cairo.Context cr);
 		public void set_temp_icon (Gdk.Pixbuf pixbuf);

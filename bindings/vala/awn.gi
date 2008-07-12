@@ -902,7 +902,7 @@
 				</parameters>
 			</constructor>
 			<method name="set_awn_icon" symbol="awn_applet_simple_set_awn_icon">
-				<return-type type="void"/>
+				<return-type type="GdkPixbuf*"/>
 				<parameters>
 					<parameter name="simple" type="AwnAppletSimple*"/>
 					<parameter name="applet_name" type="gchar*"/>
@@ -911,14 +911,14 @@
 				</parameters>
 			</method>
 			<method name="set_awn_icon_state" symbol="awn_applet_simple_set_awn_icon_state">
-				<return-type type="void"/>
+				<return-type type="GdkPixbuf*"/>
 				<parameters>
 					<parameter name="simple" type="AwnAppletSimple*"/>
 					<parameter name="state" type="gchar*"/>
 				</parameters>
 			</method>
 			<method name="set_awn_icons" symbol="awn_applet_simple_set_awn_icons">
-				<return-type type="void"/>
+				<return-type type="GdkPixbuf*"/>
 				<parameters>
 					<parameter name="simple" type="AwnAppletSimple*"/>
 					<parameter name="applet_name" type="gchar*"/>
