@@ -9,7 +9,7 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Library General Public License for more details.
+ * GNU Library General Public License for more details
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
@@ -237,7 +237,6 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
   g_free(dialog_data->sdata);
   g_free(dialog_data);
   gtk_widget_destroy(GTK_WIDGET(dialog));
-  printf("DONE DIALOG\n");
 }
 
 
@@ -252,31 +251,23 @@ awn_icons_drag_data_received (GtkWidget          *widget,
                     AwnIcons            *icons)
 {
   AwnIconsPrivate *priv=GET_PRIVATE(icons);   
-  printf("awn_icons_drag_data_received\n");
   if((selection_data != NULL) && (selection_data-> length >= 0))
   {
     gchar * _sdata = (gchar*)selection_data-> data;
-    printf("dnd %s \n",_sdata);
     if (_sdata)
     {
       for(;(*_sdata!='\0') && _sdata; _sdata++)
       {
-        printf("char = %c \n",*_sdata);
         if (*_sdata == ':' )
         {
           _sdata=_sdata+3;
           break;
         }
       }
-      
-      printf("'%s' \n",_sdata);
       g_strchomp (_sdata);
       
       if ( gdk_pixbuf_get_file_info (_sdata,NULL,NULL) )
       {
-
-        printf("DND %s \n",_sdata);
-        printf("good pixbuf\n");
         GtkWidget *dialog=NULL;         
         AwnIconsDialogData * dialog_data = g_malloc(sizeof(AwnIconsDialogData));
         dialog_data->sdata = g_strdup(_sdata);
@@ -442,7 +433,6 @@ void awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
   gchar * applet_icon_dir = g_strdup_printf("%s/avant-window-navigator/applets/%s/icons",
                                          DATADIR,
                                          applet_name);
-  printf("appending '%s' to %s's awn-theme icon search path\n",applet_icon_dir,applet_name);
   gtk_icon_theme_append_search_path (priv->awn_theme,applet_icon_dir);
   g_free(applet_icon_dir);
   
@@ -490,8 +480,6 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, const gchar * state)
   g_assert(priv->states[0]);
   for (count = 0; priv->states[count]; count++)
   {
-    printf(" check '%s'  == '%s' \n",state,priv->states[count]);
-    printf(" priv->height = %d\n",priv->height);
     if ( strcmp(state,priv->states[count]) == 0 )
     {
       int i;
@@ -540,11 +528,10 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, const gchar * state)
         
         if (err)
         {
-          g_warning("Failed loading icon: %s\n",err->message);
+//          g_warning("Failed loading icon: %s\n",err->message);
           g_error_free (err);
           err=NULL;
         }        
-        printf("name = %s\n",name);
         g_free(name);
         name = NULL;
         if (pixbuf)
@@ -682,10 +669,9 @@ awn_icons_init (AwnIcons *self)
   gchar * index_theme_src = g_strdup_printf("%s/avant-window-navigator/index.theme",DATADIR);
   gchar * index_theme_dest = g_strdup_printf("%s/%s/index.theme",icon_dir,
                                              AWN_ICONS_THEME_NAME);
-  printf("Checking for index.theme\n");
   if (! g_file_test(index_theme_dest,G_FILE_TEST_EXISTS) )
   {
-    printf("index.theme not found\n");
+    printf("indexe.theme not found\n");
     if (g_file_get_contents (index_theme_src,&contents,&length,&err))
     {  
       if ( g_file_set_contents(index_theme_dest,contents,length,&err))

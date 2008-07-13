@@ -1,3 +1,8 @@
+2008-07-13  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Removed some debug prints.
+
 2008-07-12  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* bindings/vala/awn.metadata:
