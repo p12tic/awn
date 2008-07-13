@@ -1,5 +1,13 @@
 2008-07-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/vala/Makefile.am:
+	* configure.in:
+	Add rule to update the introspection XML file.
+	Only enable the Vala bindings generation rules if maintainer mode is
+	enabled.
+
+2008-07-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/tmpl/awn-config-client.sgml:
 	* libawn/awn-config-client-gkeyfile.c:
 	Update docs.

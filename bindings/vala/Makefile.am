@@ -15,5 +15,10 @@ dist_noinst_DATA =	\
 	awn.namespace	\
 	$(NULL)
 
-awn.vapi: awn.gi awn.metadata
+if MAINTAINER_MODE
+awn.gi: awn.files awn.namespace
+	$(VALA_GEN_INTROSPECT) awn $(srcdir)
+
+awn.vapi: awn.gi awn.metadata awn.deps
 	$(VAPIGEN) --library=awn $<
+endif
