@@ -489,7 +489,6 @@
   (return-type "GdkPixbuf*")
   (parameters
     '("const-gchar*" "applet_name")
-    '("const-gchar*" "uid")
     '("const-gchar*" "icon_name")
   )
 )
@@ -500,7 +499,6 @@
   (return-type "GdkPixbuf*")
   (parameters
     '("const-gchar*" "applet_name")
-    '("const-gchar*" "uid")
     '("const-gchar**" "states")
     '("const-gchar**" "icon_names")
   )

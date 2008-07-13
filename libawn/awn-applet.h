@@ -91,6 +91,9 @@ awn_applet_get_orientation (AwnApplet *applet);
 guint
 awn_applet_get_height (AwnApplet *applet);
 
+gchar *
+awn_applet_get_uid(AwnApplet *applet);
+
 /*
 gchar*
 awn_applet_get_preferences_key (AwnApplet *applet);

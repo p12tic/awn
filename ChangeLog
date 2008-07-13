@@ -1,3 +1,15 @@
+2008-07-12  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/bindings/python/awn.def:
+	Removed uid from awn_applet_simple_set_awn_icons() and
+	awn_applet_simple_set_awn_icon() in AwnAppletSimple.
+	Added awn_applet_get_uid() to AwnApplet.
+	Adjusted python bindings.
+
 2008-07-12  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	patch (partially) by: sharkbait <sharkbaitbobby+awn@gmail.com>

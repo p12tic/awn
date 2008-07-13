@@ -168,6 +168,17 @@ awn_applet_get_height(AwnApplet *applet)
   return priv->height;
 }
 
+gchar *
+awn_applet_get_uid(AwnApplet *applet)
+{
+  AwnAppletPrivate *priv;
+
+  g_return_val_if_fail(AWN_IS_APPLET(applet), NULL);
+  priv = AWN_APPLET_GET_PRIVATE(applet);
+
+  return priv->uid;
+}
+
 #ifdef USE_GCONF
 static void
 awn_applet_associate_schemas_in_dir(GConfClient    *client,
@@ -481,7 +492,7 @@ awn_applet_class_init(AwnAppletClass *klass)
                  G_OBJECT_CLASS_TYPE(gobject_class),
                  G_SIGNAL_RUN_FIRST,
                  G_STRUCT_OFFSET(AwnAppletClass, deleted),
-                 NULL, NULL,
+								 NULL, NULL,
                  g_cclosure_marshal_VOID__STRING,
                  G_TYPE_NONE, 1, G_TYPE_STRING);
 

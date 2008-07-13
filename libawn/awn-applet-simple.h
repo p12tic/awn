@@ -78,13 +78,11 @@ awn_applet_simple_set_icon_context(AwnAppletSimple *simple, cairo_t * cr);
 GdkPixbuf * 
 awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
                                     const gchar * applet_name,
-                                    const gchar * uid,
                                     const gchar *icon_name);
                                     
 GdkPixbuf * 
 awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
                                     const gchar * applet_name,
-                                    const gchar * uid,
                                     const gchar **states,
                                     const gchar **icon_names
                                     );

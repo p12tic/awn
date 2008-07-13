@@ -316,7 +316,6 @@ static void _awn_applet_simple_icon_changed(AwnIcons * awn_icons, AwnAppletSimpl
  */    
 GdkPixbuf * awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
                                     const gchar * applet_name,
-                                    const gchar * uid,
                                     const gchar **states,
                                     const gchar **icon_names
                                     )
@@ -337,7 +336,7 @@ GdkPixbuf * awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
   awn_icons_set_icons_info(priv->awn_icons,
                               GTK_WIDGET(simple),
                               applet_name,
-                              uid,
+                              awn_applet_get_uid(AWN_APPLET(simple)),
                               priv->bar_height-2,
                               states,
                               icon_names);
@@ -367,7 +366,6 @@ GdkPixbuf * awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
  */
 GdkPixbuf * awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
                                     const gchar * applet_name,
-                                    const gchar * uid,
                                     const gchar * icon_name)
 {
   AwnAppletSimplePrivate *priv;  
@@ -386,7 +384,7 @@ GdkPixbuf * awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
   awn_icons_set_icon_info(priv->awn_icons,
                               GTK_WIDGET(simple),
                               applet_name,
-                              uid,
+                              awn_applet_get_uid(AWN_APPLET(simple)),
                               priv->bar_height-2,
                               icon_name);
   if (priv->current_state)
