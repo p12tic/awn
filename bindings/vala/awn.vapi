@@ -304,6 +304,7 @@ namespace Awn {
 		public static weak Gtk.Widget create_pref_item ();
 		public uint get_height ();
 		public Awn.Orientation get_orientation ();
+		public weak string get_uid ();
 		public Applet (string uid, int orient, int height);
 		[NoWrapper]
 		public virtual void deleted (string uid);
@@ -334,9 +335,9 @@ namespace Awn {
 		public void effects_on ();
 		public weak Awn.Effects get_effects ();
 		public AppletSimple (string uid, int orient, int height);
-		public weak Gdk.Pixbuf set_awn_icon (string applet_name, string uid, string icon_name);
+		public weak Gdk.Pixbuf set_awn_icon (string applet_name, string icon_name);
 		public weak Gdk.Pixbuf set_awn_icon_state (string state);
-		public weak Gdk.Pixbuf set_awn_icons (string applet_name, string uid, string[] states, string[] icon_names);
+		public weak Gdk.Pixbuf set_awn_icons (string applet_name, string[] states, string[] icon_names);
 		public void set_icon (Gdk.Pixbuf pixbuf);
 		public void set_icon_context (Cairo.Context cr);
 		public void set_temp_icon (Gdk.Pixbuf pixbuf);

@@ -1,3 +1,12 @@
+2008-07-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/vala/awn.metadata:
+	Fix typo.
+
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	Update bindings due to API changes in the previous commit.
+
 2008-07-12  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet.c:

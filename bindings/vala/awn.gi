@@ -792,6 +792,12 @@
 					<parameter name="applet" type="AwnApplet*"/>
 				</parameters>
 			</method>
+			<method name="get_uid" symbol="awn_applet_get_uid">
+				<return-type type="gchar*"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+				</parameters>
+			</method>
 			<constructor name="new" symbol="awn_applet_new">
 				<return-type type="AwnApplet*"/>
 				<parameters>
@@ -906,7 +912,6 @@
 				<parameters>
 					<parameter name="simple" type="AwnAppletSimple*"/>
 					<parameter name="applet_name" type="gchar*"/>
-					<parameter name="uid" type="gchar*"/>
 					<parameter name="icon_name" type="gchar*"/>
 				</parameters>
 			</method>
@@ -922,7 +927,6 @@
 				<parameters>
 					<parameter name="simple" type="AwnAppletSimple*"/>
 					<parameter name="applet_name" type="gchar*"/>
-					<parameter name="uid" type="gchar*"/>
 					<parameter name="states" type="gchar**"/>
 					<parameter name="icon_names" type="gchar**"/>
 				</parameters>
