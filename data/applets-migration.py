@@ -3,13 +3,11 @@
 import gconf
 import gtk
 import re
+import awn
 
-client = gconf.client_get_default ();
-   
-client.add_dir ("/apps/avant-window-navigator/app",
-                  gconf.CLIENT_PRELOAD_NONE)
+client = awn.Config()
 
-l = client.get_list('/apps/avant-window-navigator/applets_list', gconf.VALUE_STRING)
+l = client.get_list(awn.CONFIG_DEFAULT_GROUP,'applets_list', awn.CONFIG_LIST_STRING)
 l2 = []
 c = len(l)
 i=0
@@ -66,13 +64,12 @@ control = ('taskman.desktop',
 'media-icon-back.desktop',
 'tomboy-applet.desktop')
 
-
 while c > i:
-	if [l[i].find(elem) for elem in control].index(-1) <> 0:
+	if filter(lambda x: x+1,[l[i].find(elem) for elem in control]) <> []:
 		l2.append(l[i].replace('/lib/','/share/'))
 	else:
 		l2.append(l[i])
 	i=i+1
-print l2
 if l2 <> l:
-	client.set_list('/apps/avant-window-navigator/applets_list', gconf.VALUE_STRING, l2)
+	client.set_list(awn.CONFIG_DEFAULT_GROUP,"applets_list", awn.CONFIG_LIST_STRING, l2)
+	print l2
