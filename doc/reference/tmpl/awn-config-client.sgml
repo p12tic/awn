@@ -47,7 +47,7 @@ awn-config-client
 </para>
 
 @entry: 
-@data: 
+@user_data: 
 
 
 <!-- ##### MACRO AWN_CONFIG_CLIENT_DEFAULT_GROUP ##### -->
@@ -127,7 +127,7 @@ awn-config-client
 @group: 
 @key: 
 @callback: 
-@data: 
+@user_data: 
 
 
 <!-- ##### FUNCTION awn_config_client_entry_exists ##### -->

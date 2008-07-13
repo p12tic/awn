@@ -1,3 +1,9 @@
+2008-07-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/tmpl/awn-config-client.sgml:
+	* libawn/awn-config-client-gkeyfile.c:
+	Update docs.
+
 2008-07-13  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:

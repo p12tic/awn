@@ -481,7 +481,7 @@ void awn_config_client_ensure_group (AwnConfigClient *client, const gchar *group
  * @group: The name of the group.
  * @key: The name of the key.
  * @callback: The function that is called when the key value has been modified.
- * @data: Extra data that is passed to the callback.
+ * @user_data: Extra data that is passed to the callback.
  *
  * Associates a callback function with a group and a key, which is called
  * when that key's value has been modified in some way.
