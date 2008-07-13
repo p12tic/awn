@@ -593,10 +593,15 @@ bar_height_changed(AwnConfigClientNotifyEntry *entry, AwnAppletSimple *simple)
   priv->bar_height = entry->value.int_val;
   if (priv->icon)
   {
-    awn_icons_set_height(priv->awn_icons,priv->bar_height);
-    awn_applet_simple_set_icon(simple,awn_icons_get_icon_simple(priv->awn_icons));      
-    
-//    adjust_icon(simple);
+    if(priv->awn_icons)
+    {
+      awn_icons_set_height(priv->awn_icons,priv->bar_height);
+      awn_applet_simple_set_icon(simple,awn_icons_get_icon_simple(priv->awn_icons));      
+    }
+    else
+    {
+      adjust_icon(simple);
+    }
   }
   g_print("bar_height changed\n");
 }

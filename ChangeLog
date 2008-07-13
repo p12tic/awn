@@ -1,6 +1,11 @@
 2008-07-13  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:
+	Only refresh icons from file on bar height changes if we have awn-icons enabled
+
+2008-07-13  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
 	* libawn/awn-icons.c:
 	* libawn/awn-icons.h:
 	Refresh the icon from file when the bar height changes.
