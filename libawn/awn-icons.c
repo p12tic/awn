@@ -357,10 +357,16 @@ awn_icons_drag_data_received (GtkWidget          *widget,
 
 
 //-----
-
+void 
+awn_icons_set_height(AwnIcons * icons, gint height)
+{
+  AwnIconsPrivate *priv=GET_PRIVATE(icons); 
+  priv->height = height;
+}
 
 //TODO implement individual set functions where it makes sense...
-void awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
+void 
+awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
                               const gchar * applet_name,
                               const gchar * uid,
                               gint height,
@@ -560,8 +566,8 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, const gchar * state)
 GdkPixbuf * awn_icons_get_icon_simple(AwnIcons * icons)
 {
   g_return_val_if_fail(icons,NULL);
-
-  return awn_icons_get_icon(icons,"__SINGULAR__");
+  AwnIconsPrivate *priv=GET_PRIVATE(icons);
+  return awn_icons_get_icon(icons, priv->states[priv->cur_icon]);
 }
 
 void _default_theme_changed(GtkIconTheme *icon_theme,AwnIcons * awn_icons) 

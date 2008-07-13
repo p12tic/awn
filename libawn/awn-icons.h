@@ -58,8 +58,14 @@ GType awn_icons_get_type (void);
 
 AwnIcons* awn_icons_new (void);
 
-GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, const gchar * state);
-GdkPixbuf * awn_icons_get_icon_simple(AwnIcons * icons);
+GdkPixbuf * 
+awn_icons_get_icon(AwnIcons * icons, const gchar * state);
+
+GdkPixbuf * 
+awn_icons_get_icon_simple(AwnIcons * icons);
+
+void 
+awn_icons_set_height(AwnIcons * icons, gint height);
 
 void awn_icons_set_icons_info(AwnIcons * icons,
                               GtkWidget * applet,

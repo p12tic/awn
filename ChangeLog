@@ -1,3 +1,10 @@
+2008-07-13  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	Refresh the icon from file when the bar height changes.
+
 2008-07-13  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* data/gconf-migration.py:
