@@ -1,3 +1,8 @@
+2008-07-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/Makefile.am:
+	Fix typo in generating the shared config GConf schema.
+
 2008-07-13  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:

@@ -47,7 +47,7 @@ awn.schemas.in: awn.schema-ini
 	$(top_srcdir)/data/awn-schema-to-gconf $< $@
 
 awn-applets-shared.schemas.in: shared.schema-ini
-	$(top_srcdir)/data/awn-schema-to-gconf $< $@
+	$(top_srcdir)/data/awn-schema-to-gconf $< $@ shared
 
 @INTLTOOL_SCHEMAS_RULE@
 
