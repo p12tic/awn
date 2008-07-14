@@ -146,13 +146,13 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
       switch(scope)
       {
         case 0:
-          filename=g_strdup_printf("%s.svg",priv->icon_names[cur_icon]);
+          filename=g_strdup_printf("%s/awn-theme/scalable/%s.svg",priv->icon_dir,priv->icon_names[cur_icon]);
           g_unlink(filename); 
           g_free(filename);  
-          filename=g_strdup_printf("%s.png",priv->icon_names[cur_icon]);
+          filename=g_strdup_printf("%s/awn-theme/scalable/%s.png",priv->icon_dir,priv->icon_names[cur_icon]);
           g_unlink(filename); 
           g_free(filename);                
-          filename=g_strdup_printf("%s.xpm",priv->icon_names[cur_icon]);
+          filename=g_strdup_printf("%s/awn-theme/scalable/%s.xpm",priv->icon_dir,priv->icon_names[cur_icon]);
           g_unlink(filename); 
           g_free(filename);                                                     
         case 1:
@@ -468,7 +468,7 @@ void awn_icons_set_icon_info(AwnIcons * icons,
 void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer user_data)
 {
   AwnIconsPrivate *priv=GET_PRIVATE(icons); 
-  
+  printf("Theme_changed \n");
   priv->icon_change_cb = fn;
   priv->icon_change_cb_data = user_data;
   
@@ -570,7 +570,7 @@ GdkPixbuf * awn_icons_get_icon_simple(AwnIcons * icons)
   return awn_icons_get_icon(icons, priv->states[priv->cur_icon]);
 }
 
-void _default_theme_changed(GtkIconTheme *icon_theme,AwnIcons * awn_icons) 
+void _theme_changed(GtkIconTheme *icon_theme,AwnIcons * awn_icons) 
 {
   AwnIconsPrivate *priv=GET_PRIVATE(awn_icons);  
   if (priv->icon_change_cb)
@@ -705,10 +705,10 @@ awn_icons_init (AwnIcons *self)
   gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);
   
   g_signal_connect(gtk_icon_theme_get_default(),"changed",
-                   G_CALLBACK(_default_theme_changed),
+                   G_CALLBACK(_theme_changed),
                    self);
   g_signal_connect(priv->awn_theme ,"changed",
-                   G_CALLBACK(_default_theme_changed),
+                   G_CALLBACK(_theme_changed),
                    self);
   
 } 
