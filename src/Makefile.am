@@ -3,6 +3,7 @@ INCLUDES =				\
 	$(DOCK_CFLAGS)			\
 	-DLIBDIR=\""$(libdir)"\"	\
 	-I$(top_srcdir)/libawn		\
+	-Werror \
 	$(NULL)
 
 bin_PROGRAMS = avant-window-navigator

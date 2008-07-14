@@ -1,3 +1,22 @@
+2008-07-14  Neil J. Patel  <neil.patel@canonical.com>
+
+	* ChangeLog:
+	* src/Makefile.am:
+	* src/awn-monitor.c:
+	* src/awn-monitor.h:
+	Initial AwnMonitor implementation using properties.
+	Final implementation can only be done when we hook it up to the client
+	backed.
+
+2008-07-14  Neil J. Patel  <neil.patel@canonical.com>
+
+	reviewed by: <delete if not using a buddy>
+	patch by: <delete if not someone else's patch>
+
+	* src/Makefile.am:
+	* src/awn-monitor.c:
+	* src/awn-monitor.h:
+
 2008-07-14  Neil J. Patel  <njpatel@gmail.com>
 
 	* ChangeLog:
