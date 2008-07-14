@@ -1,3 +1,8 @@
+2008-07-14  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* data/Makefile.am:
+	Install migration script
+
 2008-07-14  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
