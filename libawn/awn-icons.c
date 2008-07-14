@@ -462,7 +462,7 @@ awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
   gchar * applet_icon_dir = g_strdup_printf("%s/avant-window-navigator/applets/%s/icons",
                                          DATADIR,
                                          applet_name);
-  gtk_icon_theme_append_search_path (priv->awn_theme,applet_icon_dir);
+  gtk_icon_theme_append_search_path (gtk_icon_theme_get_default(),applet_icon_dir);
   g_free(applet_icon_dir);
   
   gtk_icon_theme_rescan_if_needed(priv->awn_theme);

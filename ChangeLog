@@ -1,3 +1,9 @@
+2008-07-14  Rodney Cryderman <rcryderman@gmail.com>
+
+        * libawn/awn-icons.c:
+	Applet icons installed in the applet icons dir now given low
+	priority.
+
 2008-07-14  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* data/Makefile.am:
