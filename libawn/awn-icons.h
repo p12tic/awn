@@ -59,6 +59,9 @@ GType awn_icons_get_type (void);
 AwnIcons* awn_icons_new (void);
 
 GdkPixbuf * 
+awn_icons_get_icon_at_height(AwnIcons * icons, const gchar * state, gint height);
+
+GdkPixbuf * 
 awn_icons_get_icon(AwnIcons * icons, const gchar * state);
 
 GdkPixbuf * 

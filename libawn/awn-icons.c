@@ -497,11 +497,9 @@ void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer user_d
   
 }
 
-GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, const gchar * state)
+GdkPixbuf * 
+awn_icons_get_icon_at_height(AwnIcons * icons, const gchar * state, gint height)
 {
-  g_return_val_if_fail(icons,NULL);
-  g_return_val_if_fail(state,NULL);
-  
   gint count;
   GdkPixbuf * pixbuf = NULL;
   GError *err=NULL;   
@@ -525,32 +523,32 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, const gchar * state)
                                   priv->applet_name,
                                   priv->uid);
             pixbuf = gtk_icon_theme_load_icon(priv->awn_theme, name , 
-                                              priv->height, 0, &err);
+                                              height, 0, &err);
             break;
           case  1:
             name = g_strdup_printf("%s-%s",
                                    priv->icon_names[count],
                                    priv->applet_name);
             pixbuf = gtk_icon_theme_load_icon(priv->awn_theme, name , 
-                                        priv->height, 0, &err);
+                                        height, 0, &err);
             break;
           case  2:
             pixbuf = gtk_icon_theme_load_icon(priv->awn_theme, 
-                                        priv->icon_names[count],priv->height, 
+                                        priv->icon_names[count],height, 
                                         0, &err);
             break;
           case  3:
             pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), 
-                                    priv->icon_names[count],priv->height, 
+                                    priv->icon_names[count],height, 
                                     0, &err);
             break;
           case  4:
             pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), 
-                                  "stock_stop",priv->height, 0, &err);
+                                  "stock_stop",height, 0, &err);
             break;
           case  5:
             pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, 
-                                    priv->height,priv->height);
+                                    height,height);
             gdk_pixbuf_fill(pixbuf, 0xee221155);
             break;
         } 
@@ -565,12 +563,12 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, const gchar * state)
         name = NULL;
         if (pixbuf)
         {
-          if (gdk_pixbuf_get_height(pixbuf) != priv->height)
+          if (gdk_pixbuf_get_height(pixbuf) != height)
           {
             GdkPixbuf * new_pixbuf = gdk_pixbuf_scale_simple(pixbuf,                                                             
                                      gdk_pixbuf_get_width(pixbuf)*
-                                     priv->height/gdk_pixbuf_get_height(pixbuf),
-                                     priv->height,                                                             
+                                     height/gdk_pixbuf_get_height(pixbuf),
+                                     height,                                                             
                                      GDK_INTERP_HYPER
                                      );
             g_object_unref(pixbuf);
@@ -583,8 +581,16 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, const gchar * state)
   }
   g_assert(pixbuf);  
   return pixbuf;
-}
+}  
 
+GdkPixbuf * 
+awn_icons_get_icon(AwnIcons * icons, const gchar * state)
+{
+  g_return_val_if_fail(icons,NULL);
+  g_return_val_if_fail(state,NULL);
+  AwnIconsPrivate *priv=GET_PRIVATE(icons);
+  return awn_icons_get_icon_at_height(icons,state,priv->height);
+}
 
 GdkPixbuf * awn_icons_get_icon_simple(AwnIcons * icons)
 {
@@ -592,6 +598,8 @@ GdkPixbuf * awn_icons_get_icon_simple(AwnIcons * icons)
   AwnIconsPrivate *priv=GET_PRIVATE(icons);
   return awn_icons_get_icon(icons, priv->states[priv->cur_icon]);
 }
+
+
 
 void _theme_changed(GtkIconTheme *icon_theme,AwnIcons * awn_icons) 
 {
