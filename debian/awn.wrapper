@@ -1,0 +1,3 @@
+#!/bin/sh
+awn-applets-migration &&
+awn

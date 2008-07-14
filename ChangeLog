@@ -1,5 +1,12 @@
 2008-07-14  Julien Lavergne <julien.lavergne@gmail.com>
 
+	* debian/avant-window-navigator-trunk.install:
+	* debian/awn.wrapper:
+	* debian/rules:
+	Add the migration script to debian package, starting before awn.
+
+2008-07-14  Julien Lavergne <julien.lavergne@gmail.com>
+
 	* data/Makefile.am:
 	Install migration script
 
