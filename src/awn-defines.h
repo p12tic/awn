@@ -24,8 +24,10 @@
 #define _HAVE_AWN_DEFINES_H
 
 #define AWN_DBUS_NAMESPACE  "org.awn-project.Awn"
-#define AWN_DBUS_APP_PATH   "/org/awn-project/Awn/App"
-#define AWN_DBUS_PANEL_PATH "/org/awn-project/Awn/Panel"
+#define AWN_DBUS_PATH       "/org/awn-project/Awn"
+
+#define AWN_DBUS_APP_PATH   AWN_DBUS_PATH"/Awn"
+#define AWN_DBUS_PANEL_PATH AWN_DBUS_PATH"/Panel"
 
 #endif /*_HAVE_AWN_DEFINES_H */
 

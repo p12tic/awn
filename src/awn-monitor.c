@@ -41,7 +41,7 @@ G_DEFINE_TYPE (AwnMonitor, awn_monitor, G_TYPE_OBJECT)
 #define MONITOR_WIDTH   "monitor_width"
 #define MONITOR_HEIGHT  "monitor_height"
 #define MONITOR_XOFFSET "monitor_xoffset"
-#define MONITOR_XALIGN  "monitor_xalign"
+#define MONITOR_XALIGN  "monitor_align"
 
 struct _AwnMonitorPrivate
 {
@@ -93,8 +93,8 @@ update (AwnMonitor *monitor)
     monitor->xoffset = 0;
   }
 
-  g_debug ("Monitor changed: width=%d height=%d xoffset=%d xalign=%f\n", 
-           monitor->width, monitor->height, monitor->xoffset, monitor->xalign);
+  g_debug ("Monitor changed: width=%d height=%d xoffset=%d align=%f\n", 
+           monitor->width, monitor->height, monitor->xoffset, monitor->align);
 
   g_signal_emit (monitor, _monitor_signals[GEOMETRY_CHANGED], 0);
 }
@@ -167,14 +167,14 @@ on_xoffset_changed (AwnConfigClientNotifyEntry *entry, AwnMonitor *monitor)
 }
 
 static void
-on_xalign_changed (AwnConfigClientNotifyEntry *entry, AwnMonitor *monitor)
+on_align_changed (AwnConfigClientNotifyEntry *entry, AwnMonitor *monitor)
 {
   AwnMonitorPrivate *priv;
 
   g_return_if_fail (AWN_IS_MONITOR (monitor));
   priv = monitor->priv;
 
-  monitor->xalign = entry->value.int_val;
+  monitor->align = entry->value.int_val;
 
   g_signal_emit (monitor, _monitor_signals[GEOMETRY_CHANGED], 0);
 }
@@ -204,7 +204,7 @@ awn_monitor_set_client (AwnMonitor *monitor, AwnConfigClient *client)
   priv->forced_xoffset = awn_config_client_get_int (client,
                                                AWN_CONFIG_CLIENT_DEFAULT_GROUP,
                                                    MONITOR_XOFFSET, NULL);
-  monitor->xalign = awn_config_client_get_float (client,
+  monitor->align = awn_config_client_get_float (client,
                                                 AWN_CONFIG_CLIENT_DEFAULT_GROUP,
                                                  MONITOR_XALIGN, NULL);
   /* 
@@ -231,7 +231,7 @@ awn_monitor_set_client (AwnMonitor *monitor, AwnConfigClient *client)
                                 monitor);
   awn_config_client_notify_add (client, AWN_CONFIG_CLIENT_DEFAULT_GROUP, 
                                 MONITOR_XALIGN,
-                                (AwnConfigClientNotifyFunc)on_xalign_changed,
+                                (AwnConfigClientNotifyFunc)on_align_changed,
                                 monitor);
 
   update (monitor);

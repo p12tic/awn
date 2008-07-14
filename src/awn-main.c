@@ -55,14 +55,14 @@ GOptionEntry entries[] =
 gint 
 main (gint argc, gchar *argv[])
 {
-  AwnApp *app;
-  GOptionContext *context;
+  AwnApp          *app;
+  GOptionContext  *context;
   DBusGConnection *connection;
-  DBusGProxy *proxy;
-  GError *error = NULL;
-  guint32 ret;
+  DBusGProxy      *proxy;
+  GError          *error = NULL;
+  guint32          ret;
  
-  context = g_option_context_new ("- Avant Window Navigator " VERSION);
+  context = g_option_context_new ("- Avant Window Navigator" VERSION);
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, gtk_get_option_group (TRUE));
   g_option_context_parse (context, &argc, &argv, NULL);
@@ -105,22 +105,30 @@ main (gint argc, gchar *argv[])
     g_warning ("There was an error requesting the D-Bus name:%s\n",
                error->message);
     g_error_free (error);
+    g_object_unref (proxy); 
+    dbus_g_connection_unref (connection);  
     return EXIT_FAILURE;
   }
   /* Check the returned value */
   if (ret != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER)
   {
     g_warning ("Another instance of Awn is running\n");
+    g_object_unref (proxy); 
     dbus_g_connection_unref (connection);
     return EXIT_SUCCESS;
   }
 
   /* Launch Awn */
   app = awn_app_get_default ();
+  dbus_g_connection_register_g_object (connection, 
+                                       AWN_DBUS_APP_PATH,
+                                       G_OBJECT (app));
 
   gtk_main ();
 
-  g_object_unref (G_OBJECT (app));
-	
+  g_object_unref (app);
+  g_object_unref (proxy);
+  dbus_g_connection_unref (connection);
+
   return EXIT_SUCCESS;
 }

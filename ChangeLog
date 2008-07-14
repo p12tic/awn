@@ -1,3 +1,50 @@
+2008-07-14  Neil J. Patel  <njpatel@gmail.com>
+
+	* ChangeLog:
+	* src/Makefile.am:
+	* src/awn-app.c:
+	* src/awn-app.h:
+	* src/awn-applet-manager-dbus.xml:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-applet-proxy.c:
+	* src/awn-applet-proxy.h:
+	* src/awn-bar.c:
+	* src/awn-bar.h:
+	* src/awn-dbus.xml:
+	* src/awn-defines.h:
+	* src/awn-hotspot.c:
+	* src/awn-hotspot.h:
+	* src/awn-main.c:
+	* src/awn-marshallers.list:
+	* src/awn-monitor.c:
+	* src/awn-monitor.h:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	* src/awn-task-manager.c:
+	* src/awn-task-manager.h:
+	* src/awn-task.c:
+	* src/awn-task.h:
+	* src/awn-utils.c:
+	* src/awn-utils.h:
+	* src/awn-window.c:
+	* src/awn-window.h:
+	* src/icon-test.c:
+	* src/main.c:
+	Clean up source directory so it's easier to see what we're working with
+
+2008-07-13  Neil J. Patel  <njpatel@gmail.com>
+
+	* src/awn-app.c:
+	* src/awn-app.h:
+	* src/awn-defines.h:
+	* src/awn-main.c:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Cleaned up code
+	Started to sort out the individual parts of the panel code
+	Put the AwnApp object on DBus
+
 2008-07-13  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
@@ -52,6 +99,7 @@
 	* libawn/awn-icons.c:
 	Removed some debug prints.
 
+>>>>>>> MERGE-SOURCE
 2008-07-12  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* bindings/vala/awn.metadata:

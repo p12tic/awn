@@ -51,10 +51,10 @@ typedef struct _AwnMonitorPrivate AwnMonitorPrivate;
 struct _AwnMonitor {
   GObject parent;
 
-  gint width;
-  gint height;
-  gint xoffset;
-  gfloat xalign;
+  gint   width;
+  gint   height;
+  gint   xoffset;
+  gfloat align;
 
   /*< private >*/
   AwnMonitorPrivate *priv;

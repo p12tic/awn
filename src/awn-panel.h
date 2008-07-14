@@ -63,7 +63,7 @@ struct _AwnPanelClass
 
 GType       awn_panel_get_type          (void) G_GNUC_CONST;
 
-GtkWidget * awn_panel_new_from_config (AwnConfigClient *client);
+GtkWidget * awn_panel_new_from_config   (AwnConfigClient *client);
 
 G_END_DECLS
 

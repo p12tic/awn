@@ -25,8 +25,7 @@
  * correct settings.
  *
  * In the future, AwnApp will be responsible for launching each Awn panel 
- * separately, and making dealing with the configuration backend for each
- * panel.
+ * separately, and dealing with the configuration backend for each  panel.
  */
 
 #include <glib.h>
@@ -61,6 +60,8 @@ awn_app_finalize (GObject *app)
   g_return_if_fail (AWN_IS_APP (app));
   priv = AWN_APP (app)->priv;
 
+  awn_config_client_free (priv->client);
+
   G_OBJECT_CLASS (awn_app_parent_class)->finalize (app);
 }
 
@@ -90,7 +91,7 @@ awn_app_init (AwnApp *app)
   
   priv->panel = awn_panel_new_from_config (priv->client);
 
-  gtk_widget_show_all (priv->panel);
+  gtk_widget_show (priv->panel);
 }
 
 AwnApp*
