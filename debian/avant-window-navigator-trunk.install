@@ -1,5 +1,4 @@
 #usr/bin/avant-window-navigator
-usr/bin/awn-applets-migration
 usr/bin/awn-applet-activation
 usr/share/applications/avant-window-navigator.desktop
 usr/share/avant-window-navigator/applets/*.desktop

@@ -66,7 +66,6 @@ endif
 
 install-exec-local:
 	$(INSTALL) -m 755 awn-schema-to-gconf $(DESTDIR)$(bindir)/awn-schema-to-gconf
-	$(INSTALL) -m 755 awn-applets-migration.py $(DESTDIR)$(bindir)/awn-applets-migration
 
 # global
 
