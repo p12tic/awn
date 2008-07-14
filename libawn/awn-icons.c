@@ -35,6 +35,7 @@
 G_DEFINE_TYPE (AwnIcons, awn_icons, G_TYPE_OBJECT)
 
 #define AWN_ICONS_THEME_NAME "awn-theme"
+#define AWN_ICONS_RESPONSE_CLEAR 1
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), LIBAWN_TYPE_AWN_ICONS, AwnIconsPrivate))
@@ -79,6 +80,68 @@ static const GtkTargetEntry drop_types[] =
 };
 static const gint n_drop_types = G_N_ELEMENTS(drop_types);
 
+static void 
+awn_icons_file_cleanup(AwnIconsPrivate *priv, int scope)
+{
+  gchar *filename=NULL;  
+  gint  cur_icon = priv->cur_icon;   
+  switch(scope)
+  {
+    case 0:
+      filename=g_strdup_printf("%s/awn-theme/scalable/%s.svg",priv->icon_dir,priv->icon_names[cur_icon]);
+      g_unlink(filename); 
+      g_free(filename);  
+      filename=g_strdup_printf("%s/awn-theme/scalable/%s.png",priv->icon_dir,priv->icon_names[cur_icon]);
+      g_unlink(filename); 
+      g_free(filename);                
+      filename=g_strdup_printf("%s/awn-theme/scalable/%s.xpm",priv->icon_dir,priv->icon_names[cur_icon]);
+      g_unlink(filename); 
+      g_free(filename);                                                     
+    case 1:
+    //FIXME put this stuff in a loop though an array { "png","xpm","svg"}
+      filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s.svg",
+                         priv->icon_dir,
+                         priv->icon_names[cur_icon],
+                         priv->applet_name);          
+      g_unlink(filename); 
+      g_free(filename);        
+      filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s.png",
+                         priv->icon_dir,
+                         priv->icon_names[cur_icon],
+                         priv->applet_name);          
+      g_unlink(filename); 
+      g_free(filename);           
+      filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s.xpm",
+                         priv->icon_dir,
+                         priv->icon_names[cur_icon],
+                         priv->applet_name);          
+      g_unlink(filename); 
+      g_free(filename);                 
+    case 2:
+      filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s-%s.svg",
+                         priv->icon_dir,                                     
+                         priv->icon_names[cur_icon],
+                         priv->applet_name,
+                         priv->uid);
+      g_unlink(filename);
+      g_free(filename);
+      filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s-%s.png",
+                         priv->icon_dir,                                     
+                         priv->icon_names[cur_icon],
+                         priv->applet_name,
+                         priv->uid);
+      g_unlink(filename);
+      g_free(filename);            
+      filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s-%s.xpm",
+                         priv->icon_dir,                                     
+                         priv->icon_names[cur_icon],
+                         priv->applet_name,
+                         priv->uid);
+      g_unlink(filename);
+      g_free(filename);            
+      
+  }      
+}
 
 void _awn_icons_dialog_response(GtkDialog *dialog,
                                   gint       response,
@@ -109,7 +172,6 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
     if (g_file_get_contents (sdata,&contents,&length,&err))
     {
       gchar * new_basename;
-      gchar * filename;
       gint  cur_icon = priv->cur_icon;      
       GdkPixbufFormat* pixbuf_info = gdk_pixbuf_get_file_info (sdata,NULL,NULL);
       g_return_if_fail(pixbuf_info);
@@ -143,62 +205,9 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
       }
       g_strfreev(extensions);    
       gchar * dest = g_strdup_printf("%s/awn-theme/scalable/%s",priv->icon_dir,new_basename);
-      switch(scope)
-      {
-        case 0:
-          filename=g_strdup_printf("%s/awn-theme/scalable/%s.svg",priv->icon_dir,priv->icon_names[cur_icon]);
-          g_unlink(filename); 
-          g_free(filename);  
-          filename=g_strdup_printf("%s/awn-theme/scalable/%s.png",priv->icon_dir,priv->icon_names[cur_icon]);
-          g_unlink(filename); 
-          g_free(filename);                
-          filename=g_strdup_printf("%s/awn-theme/scalable/%s.xpm",priv->icon_dir,priv->icon_names[cur_icon]);
-          g_unlink(filename); 
-          g_free(filename);                                                     
-        case 1:
-        //FIXME put this stuff in a loop though an array { "png","xpm","svg"}
-          filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s.svg",
-                             priv->icon_dir,
-                             priv->icon_names[cur_icon],
-                             priv->applet_name);          
-          g_unlink(filename); 
-          g_free(filename);        
-          filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s.png",
-                             priv->icon_dir,
-                             priv->icon_names[cur_icon],
-                             priv->applet_name);          
-          g_unlink(filename); 
-          g_free(filename);           
-          filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s.xpm",
-                             priv->icon_dir,
-                             priv->icon_names[cur_icon],
-                             priv->applet_name);          
-          g_unlink(filename); 
-          g_free(filename);                 
-        case 2:
-          filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s-%s.svg",
-                             priv->icon_dir,                                     
-                             priv->icon_names[cur_icon],
-                             priv->applet_name,
-                             priv->uid);
-          g_unlink(filename);
-          g_free(filename);
-          filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s-%s.png",
-                             priv->icon_dir,                                     
-                             priv->icon_names[cur_icon],
-                             priv->applet_name,
-                             priv->uid);
-          g_unlink(filename);
-          g_free(filename);            
-          filename=g_strdup_printf("%s/awn-theme/scalable/%s-%s-%s.xpm",
-                             priv->icon_dir,                                     
-                             priv->icon_names[cur_icon],
-                             priv->applet_name,
-                             priv->uid);
-          g_unlink(filename);
-          g_free(filename);            
-          
-      }      
+
+      awn_icons_file_cleanup(priv,scope);
+      
       
       if ( g_file_set_contents(dest,contents,length,&err))
       {     
@@ -233,6 +242,18 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
       g_warning("Failed to copy icon %s: %s\n",sdata,err->message);
       g_error_free (err);
     }
+  }
+  else if (response == AWN_ICONS_RESPONSE_CLEAR)
+  {
+    scope = 0;
+    awn_icons_file_cleanup(priv,scope);
+    gtk_icon_theme_set_custom_theme(priv->awn_theme,NULL);
+    gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);  
+    
+    if (priv->icon_change_cb)
+    {
+      priv->icon_change_cb(dialog_data->awn_icons,priv->icon_change_cb_data);
+    }    
   }
   g_free(dialog_data->sdata);
   g_free(dialog_data);
@@ -277,6 +298,8 @@ awn_icons_drag_data_received (GtkWidget          *widget,
         dialog = gtk_dialog_new_with_buttons ("Change Icon?",
                                          NULL,
                                          GTK_DIALOG_NO_SEPARATOR,
+                                         GTK_STOCK_CLEAR,
+                                         AWN_ICONS_RESPONSE_CLEAR,
                                          GTK_STOCK_CANCEL,
                                          GTK_RESPONSE_NONE,
                                          GTK_STOCK_OK,
