@@ -500,6 +500,7 @@ void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer user_d
 GdkPixbuf * 
 awn_icons_get_icon_at_height(AwnIcons * icons, const gchar * state, gint height)
 {
+  g_return_val_if_fail(icons,NULL);  
   gint count;
   GdkPixbuf * pixbuf = NULL;
   GError *err=NULL;   
@@ -582,6 +583,15 @@ awn_icons_get_icon_at_height(AwnIcons * icons, const gchar * state, gint height)
   g_assert(pixbuf);  
   return pixbuf;
 }  
+
+GdkPixbuf * 
+awn_icons_get_icon_simple_at_height(AwnIcons * icons, const gchar * state, gint height)
+{
+  g_return_val_if_fail(icons,NULL);
+  AwnIconsPrivate *priv=GET_PRIVATE(icons);  
+  return awn_icons_get_icon_at_height(icons, priv->states[priv->cur_icon],height);
+}
+
 
 GdkPixbuf * 
 awn_icons_get_icon(AwnIcons * icons, const gchar * state)
