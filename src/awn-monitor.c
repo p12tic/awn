@@ -198,7 +198,7 @@ awn_monitor_class_init (AwnMonitorClass *klass)
     g_param_spec_int ("monitor-offset",
                       "Monitor Offset",
                       "An optional offset (for displays > 1)",
-                      0, G_MAXINT, 1920,
+                      0, G_MAXINT, 0,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,

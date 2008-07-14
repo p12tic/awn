@@ -51,6 +51,7 @@ struct _AwnPanelPrivate
 
   gint size;
   gint offset;
+  gint orient;
 
   gint old_width;
   gint old_height;
@@ -64,6 +65,7 @@ enum
   PROP_COMPOSITED,
   PROP_PANEL_MODE,
   PROP_OFFSET,
+  PROP_ORIENT,
   PROP_SIZE
 };
 
@@ -344,6 +346,8 @@ awn_panel_constructed (GObject *object)
 
   priv->monitor = awn_monitor_new_from_config (priv->client);
 
+  /* FIXME: Now is the time to hook our properties into priv->client */
+
   /* Composited checks/setup */
   screen = gtk_widget_get_screen (panel);
   priv->composited = gdk_screen_is_composited (screen);
@@ -357,10 +361,26 @@ awn_panel_constructed (GObject *object)
   g_signal_connect (panel, "configure-event",
                     G_CALLBACK (on_window_configure), NULL);
 
-  if (priv->composited)
-    gtk_window_resize (GTK_WINDOW (panel), 24, (2*priv->size)+priv->offset);
-  else
-    gtk_window_resize (GTK_WINDOW (panel), 24, priv->size + priv->offset);  
+  switch (priv->orient)
+  {
+    case AWN_ORIENT_TOP:
+    case AWN_ORIENT_BOTTOM:
+      gtk_window_resize (GTK_WINDOW (panel),
+                         24,
+                         priv->offset +
+                           (priv->composited ? 2 * priv->size : priv->size));
+      break;
+
+    case AWN_ORIENT_RIGHT:
+    case AWN_ORIENT_LEFT:
+      gtk_window_resize (GTK_WINDOW (panel),
+                         priv->offset +
+                           (priv->composited ? 2 * priv->size : priv->size),
+                           24);  
+      break;
+    default:
+      g_assert (0);
+  }
   position_window (AWN_PANEL (panel));
 }
 
@@ -389,6 +409,9 @@ awn_panel_get_property (GObject    *object,
       break;
     case PROP_OFFSET:
       g_value_set_int (value, priv->offset);
+      break;
+    case PROP_ORIENT:
+      g_value_set_int (value, priv->orient);
       break;
     case PROP_SIZE:
       g_value_set_int (value, priv->size);
@@ -422,6 +445,9 @@ awn_panel_set_property (GObject      *object,
       break;    
     case PROP_OFFSET:
       priv->offset = g_value_get_int (value);
+      break;
+    case PROP_ORIENT:
+      priv->orient = g_value_get_int (value);
       break;
     case PROP_SIZE:
       priv->size = g_value_get_int (value);
@@ -486,10 +512,18 @@ awn_panel_class_init (AwnPanelClass *klass)
     PROP_OFFSET,
     g_param_spec_int ("offset",
                       "Offset",
-                      "An offset for applets in the bar",
+                      "An offset for applets in the panel",
                       0, G_MAXINT, 0,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-  
+
+  g_object_class_install_property (obj_class,
+    PROP_ORIENT,
+    g_param_spec_int ("orient",
+                      "Orient",
+                      "The orientation of the panel",
+                      0, 3, AWN_ORIENT_BOTTOM,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+   
   g_object_class_install_property (obj_class,
     PROP_SIZE,
     g_param_spec_int ("size",
@@ -615,19 +649,56 @@ on_screen_changed (GtkWidget *widget,
  * receive events in the blank space above the main window
  */
 static void
-awn_panel_update_input_shape (GtkWidget *panel, gint width, gint height)
+awn_panel_update_input_shape (GtkWidget *panel, 
+                              gint       real_width, 
+                              gint       real_height)
 {
   AwnPanelPrivate *priv;
   GdkBitmap *shaped_bitmap;
   cairo_t *cr;
+  gint x, y, width, height;
 
   g_return_if_fail (AWN_IS_PANEL (panel));
   priv = AWN_PANEL (panel)->priv;
   
-  shaped_bitmap = (GdkBitmap*)gdk_pixmap_new (NULL, width, height, 1);
+  shaped_bitmap = (GdkBitmap*)gdk_pixmap_new (NULL, real_width, real_height, 1);
 
   if (!shaped_bitmap)
     return;
+
+  switch (priv->orient)
+  {
+    case AWN_ORIENT_TOP:
+      x = 0;
+      y = 0;
+      width = real_width;
+      height = priv->offset + priv->size;
+      break;
+    
+    case AWN_ORIENT_RIGHT:
+      x = priv->size;
+      y = 0;
+      width = priv->offset + priv->size;
+      height = real_height;
+      break;
+    
+    case AWN_ORIENT_BOTTOM:
+      x = 0;
+      y = priv->size;
+      width = real_width;
+      height = priv->size + priv->offset;
+      break;
+
+    case AWN_ORIENT_LEFT:
+      x = 0;
+      y = 0;
+      width = priv->offset + priv->size;
+      height = real_height;
+      break;
+    
+    default:
+      g_assert (0);
+  }
 
   cr = gdk_cairo_create (shaped_bitmap);
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
@@ -635,14 +706,13 @@ awn_panel_update_input_shape (GtkWidget *panel, gint width, gint height)
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   cairo_set_source_rgb (cr, 1.0f, 1.0f, 1.0f);
 
-  cairo_rectangle (cr, 0, (height/2)-priv->offset, 
-                   width, (height/2)+priv->offset);
-  
+  cairo_rectangle (cr, x, y, width, height);
+ 
   cairo_fill (cr);
   cairo_destroy (cr);
 
   gtk_widget_input_shape_combine_mask (panel, NULL, 0, 0);
-  gtk_widget_input_shape_combine_mask (panel, shaped_bitmap,0,0);
+  gtk_widget_input_shape_combine_mask (panel, shaped_bitmap, 0, 0);
 
   if (shaped_bitmap)
     g_object_unref (shaped_bitmap);
@@ -661,9 +731,33 @@ position_window (AwnPanel *panel)
 
   gtk_window_get_size (GTK_WINDOW (window), &ww, &hh);
 
-  x = (monitor->width - ww) * monitor->align;
-  y = monitor->height - priv->offset -
-      (priv->composited ? 2 * priv->size : priv->size);
+  /* FIXME: This has no idea about auto-hide */
+
+  switch (priv->orient)
+  {
+    case AWN_ORIENT_TOP:
+      x = ((monitor->width - ww) * monitor->align) + monitor->offset;
+      y = 0;
+      break;
+
+    case AWN_ORIENT_RIGHT:
+      x = monitor->width - ww;
+      y = ((monitor->height - hh) * monitor->align) + monitor->offset;
+      break;
+
+    case AWN_ORIENT_BOTTOM:
+      x = ((monitor->width - ww) * monitor->align) + monitor->offset;
+      y = monitor->height - hh;
+      break;
+
+    case AWN_ORIENT_LEFT:
+      x = 0;
+      y = ((monitor->height - hh) * monitor->align) + monitor->offset;
+      break;
+
+    default:
+      g_assert (0);
+  }
 
   gtk_window_move (window, x, y);
 

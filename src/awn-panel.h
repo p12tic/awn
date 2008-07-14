@@ -61,6 +61,14 @@ struct _AwnPanelClass
   GtkWindowClass parent_class;
 };
 
+typedef enum
+{
+  AWN_ORIENT_TOP = 0,
+  AWN_ORIENT_RIGHT,
+  AWN_ORIENT_BOTTOM,
+  AWN_ORIENT_LEFT
+} AwnOrientation;
+
 GType       awn_panel_get_type          (void) G_GNUC_CONST;
 
 GtkWidget * awn_panel_new_from_config   (AwnConfigClient *client);

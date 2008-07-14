@@ -1,3 +1,12 @@
+2008-07-14  Neil J. Patel  <njpatel@gmail.com>
+
+	* src/awn-monitor.c:
+	Fix default offset value
+
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Enable support for different orientations
+
 2008-07-14  Neil J. Patel  <neil.patel@canonical.com>
 
 	* ChangeLog:
