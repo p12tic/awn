@@ -1,3 +1,8 @@
+2008-07-14  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/__init__.py (check_dependencies):
+	Change the wiki link to a real, descriptive landing page.
+
 2008-07-14  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
