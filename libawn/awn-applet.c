@@ -28,6 +28,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <glib/gstdio.h>
+
 
 #ifdef USE_GCONF
 #include <gconf/gconf-client.h>
@@ -105,6 +107,79 @@ _start_awn_manager(GtkMenuItem *menuitem, gpointer null)
   return TRUE;
 }
 
+static void 
+_awn_applet_clear_icons(GtkDialog *dialog,
+                                  gint       response,
+                                  gpointer null)
+{
+	if (response == GTK_RESPONSE_ACCEPT)
+	{
+		const gchar * home = g_getenv("HOME");		
+		if (home)
+		{
+			GError *error = NULL;
+			gchar * dir_name = g_strdup_printf("%s/.icons/awn-theme/scalable",home);
+			if (dir_name)
+			{
+				GDir * pdir = g_dir_open(dir_name,0,&error);
+				if (!error)
+				{
+					const gchar* file_name = NULL;
+					do
+					{
+						file_name = g_dir_read_name( pdir);
+						if (file_name)
+						{
+							gchar * full_path = g_strdup_printf("%s/%s",dir_name,file_name);							
+							if (g_unlink(full_path) == -1)
+							{
+								g_warning("_awn_applet_clear_icons() failed to delete %s\n",
+													full_path);
+							}
+							g_free(full_path);
+						}
+					}while (file_name);
+				}
+				else
+				{
+					g_warning("_awn_applet_clear_icons() failed to open dir: %s\n",
+										error->message);
+					g_error_free (error);
+				}
+				if (pdir)
+				{
+					g_dir_close(pdir);
+				}				
+				g_free(dir_name);
+			}
+		}
+	}
+  gtk_widget_destroy(GTK_WIDGET(dialog));	
+}
+
+/*Callback to clear AwnIcons.  See awn_applet_create_default_menu()*/
+static gboolean
+_clear_awn_icons(GtkMenuItem *menuitem, gpointer null)
+{
+
+  GtkWidget *dialog = gtk_dialog_new_with_buttons ("Clear Custom Icons?",
+                                   NULL,
+                                   GTK_DIALOG_NO_SEPARATOR,
+                                   GTK_STOCK_CANCEL,
+                                   GTK_RESPONSE_NONE,
+                                   GTK_STOCK_OK,
+                                   GTK_RESPONSE_ACCEPT,
+                                   NULL);
+  GtkWidget * label = gtk_label_new ("Clear all custom (applet) icons?");
+  gtk_container_add (GTK_CONTAINER (GTK_DIALOG(dialog)->vbox),label);
+  g_signal_connect(dialog, 
+									 "response",
+									 G_CALLBACK(_awn_applet_clear_icons),
+									 NULL);	
+  gtk_widget_show_all (dialog);
+  return TRUE;
+}
+
 /*create a Dock Preferences menu item */
 GtkWidget *
 awn_applet_create_pref_item(void)
@@ -116,6 +191,20 @@ awn_applet_create_pref_item(void)
   gtk_widget_show_all(item);
   g_signal_connect(G_OBJECT(item), "activate",
                    G_CALLBACK(_start_awn_manager), NULL);
+	return item;
+}
+
+/*create a Dock Preferences menu item */
+static GtkWidget *
+awn_applet_clear_icons_item(void)
+{
+	GtkWidget * item = gtk_image_menu_item_new_with_label("Clear All Custom Icons");
+  gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
+                                gtk_image_new_from_stock(GTK_STOCK_CLEAR,
+                                                         GTK_ICON_SIZE_MENU));
+  gtk_widget_show_all(item);
+  g_signal_connect(G_OBJECT(item), "activate",
+                   G_CALLBACK(_clear_awn_icons), NULL);
 	return item;
 }
 
@@ -136,6 +225,9 @@ awn_applet_create_default_menu(AwnApplet *applet)
   /* The preferences (awn-manager) menu item  */
   item = awn_applet_create_pref_item();
   gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+	
+	item = awn_applet_clear_icons_item();
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 
   /* The second separator  */
   item = gtk_separator_menu_item_new();

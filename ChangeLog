@@ -4,6 +4,11 @@
 	Change the wiki link to a real, descriptive landing page.
 
 2008-07-14  Rodney Cryderman <rcryderman@gmail.com>
+	
+	* libawn/awn-applet.c:
+	Added a Clear Custom Icons option to default menu.
+
+2008-07-14  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
 	* libawn/awn-icons.h:
