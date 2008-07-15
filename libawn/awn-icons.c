@@ -585,7 +585,7 @@ awn_icons_get_icon_at_height(AwnIcons * icons, const gchar * state, gint height)
 }  
 
 GdkPixbuf * 
-awn_icons_get_icon_simple_at_height(AwnIcons * icons, const gchar * state, gint height)
+awn_icons_get_icon_simple_at_height(AwnIcons * icons, gint height)
 {
   g_return_val_if_fail(icons,NULL);
   AwnIconsPrivate *priv=GET_PRIVATE(icons);  

@@ -1,5 +1,11 @@
 2008-07-14  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	Removed unused parameter from awn_icons_get_icon_simple_at_height().
+
+2008-07-14  Rodney Cryderman <rcryderman@gmail.com>
+
         * libawn/awn-icons.c:
 	Applet icons installed in the applet icons dir now given low
 	priority.
