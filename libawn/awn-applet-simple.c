@@ -174,6 +174,7 @@ awn_applet_simple_set_icon_context(AwnAppletSimple *simple,
   {
     cairo_surface_destroy(cairo_get_target(priv->icon_context));
     cairo_destroy(priv->icon_context);
+    priv->icon_cxt_copied = FALSE;
   }
 
   if (priv->icon)
@@ -201,6 +202,91 @@ awn_applet_simple_set_icon_context(AwnAppletSimple *simple,
     default:
       g_assert(FALSE);
   }     
+  priv->reflect_context=NULL;  
+  
+  gtk_widget_set_size_request(GTK_WIDGET(simple),
+                              priv->icon_width *5 / 4,
+                              (priv->bar_height + 2) * 2);
+  gtk_widget_queue_draw(GTK_WIDGET(simple)); 
+}
+
+/**
+ * awn_applet_simple_set_icon_context_scaled:
+ * @simple: The applet whose icon is being set.
+ * @cr: The context containing the icon surface.
+ *
+ * Sets the applet icon to the contexts surface provided as an argument.  The 
+ * context is not copied.  Call this function with an updated context
+ * before destroying the existing context.  
+ *
+ * NOTE: at the moment there is probably a memory leak there's a switch between
+ * pixbuf method and cairo method of setting icons.  FIXME
+ */
+void
+awn_applet_simple_set_icon_context_scaled(AwnAppletSimple *simple,
+                                   cairo_t * cr)
+{
+  AwnAppletSimplePrivate *priv;
+
+  g_return_if_fail(AWN_IS_APPLET_SIMPLE(simple));
+  priv = simple->priv;
+  if (priv->icon_cxt_copied)
+  {
+    cairo_surface_destroy(cairo_get_target(priv->icon_context));
+    cairo_destroy(priv->icon_context);
+    priv->icon_cxt_copied=FALSE;
+  }
+
+  if (priv->icon)
+  {
+    g_object_unref(priv->icon);
+    priv->icon = NULL;
+  }
+  if (priv->reflect)
+  {
+    g_object_unref(priv->reflect);
+    priv->reflect = NULL;    
+  }
+  
+  priv->icon_context=cr;
+  switch (cairo_surface_get_type(cairo_get_target(cr) ) )
+  {
+    case CAIRO_SURFACE_TYPE_IMAGE:
+	    priv->icon_width = cairo_image_surface_get_width  (cairo_get_target(cr));
+	    priv->icon_height = cairo_image_surface_get_height  (cairo_get_target(cr));
+      break;       
+    case CAIRO_SURFACE_TYPE_XLIB:
+	    priv->icon_width = cairo_xlib_surface_get_width  (cairo_get_target(cr));
+	    priv->icon_height = cairo_xlib_surface_get_height  (cairo_get_target(cr));
+      break;
+    default:
+      g_assert(FALSE);
+  }     
+  
+  if (priv->icon_height != priv->bar_height)
+  {
+    cairo_t * new_icon_ctx;
+    cairo_surface_t * new_icon_srfc = cairo_surface_create_similar(cairo_get_target(cr),
+                                      CAIRO_CONTENT_COLOR_ALPHA,
+                                      priv->icon_width * priv->bar_height / priv->icon_height, 
+                                      priv->bar_height);
+
+    new_icon_ctx = cairo_create(new_icon_srfc);
+    printf("scaling from %d x %d\n",priv->icon_width, priv->icon_height);
+    cairo_save(new_icon_ctx);
+    cairo_scale(new_icon_ctx,
+                priv->bar_height / (double) priv->icon_height ,
+                priv->bar_height / (double) priv->icon_height );
+    priv->icon_width = priv->icon_width * priv->bar_height / priv->icon_height;
+    priv->icon_height = priv->bar_height;    
+    printf("scaled to %d x %d\n",priv->icon_width, priv->icon_height);
+    cairo_set_source_surface(new_icon_ctx,cairo_get_target(cr),0,0);
+    cairo_paint(new_icon_ctx);
+    cairo_restore(new_icon_ctx);    
+    priv->icon_context=new_icon_ctx;
+    priv->icon_cxt_copied = TRUE;    
+  }
+  
   priv->reflect_context=NULL;  
   
   gtk_widget_set_size_request(GTK_WIDGET(simple),
@@ -337,7 +423,7 @@ GdkPixbuf * awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
                               GTK_WIDGET(simple),
                               applet_name,
                               awn_applet_get_uid(AWN_APPLET(simple)),
-                              priv->bar_height-2,
+                              priv->bar_height,
                               states,
                               icon_names);
   if (priv->current_state)
@@ -385,7 +471,7 @@ GdkPixbuf * awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
                               GTK_WIDGET(simple),
                               applet_name,
                               awn_applet_get_uid(AWN_APPLET(simple)),
-                              priv->bar_height-2,
+                              priv->bar_height,
                               icon_name);
   if (priv->current_state)
   {
@@ -400,6 +486,7 @@ GdkPixbuf * awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
 
 /**
  * awn_applet_simple_set_awn_icon_state:
+ * @simple: The applet whose icon is being set.
  * @state: The new icon state.  Must exist in the states that were provided to
  *          awn_applet_simple_set_awn_icons().
  *
@@ -428,9 +515,9 @@ GdkPixbuf * awn_applet_simple_set_awn_icon_state(AwnAppletSimple *simple,
   priv->current_state = g_strdup(state);                                                             
   pixbuf = awn_icons_get_icon(priv->awn_icons,state);
   awn_applet_simple_set_icon(simple,pixbuf);
-  return pixbuf;
-    
+  return pixbuf;   
 }
+
 
 /*Adding the ability to start and stop the application of effects.
  The underlying implementation may change at some point... instead of t
@@ -531,6 +618,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
     {
       case CAIRO_SURFACE_TYPE_IMAGE:
         {
+
           cairo_t * new_icon_ctx;
           cairo_surface_t * new_icon_srfc = cairo_surface_create_similar(cairo_get_target(cr),
                                             CAIRO_CONTENT_COLOR_ALPHA,
@@ -540,6 +628,11 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
           cairo_set_source_surface(new_icon_ctx,cairo_get_target(priv->icon_context),0,0);
           cairo_paint(new_icon_ctx);
 //          cairo_destroy(priv->icon_context);
+          if (priv->icon_cxt_copied)
+          {
+            cairo_surface_destroy(cairo_get_target(priv->icon_context));
+            cairo_destroy(priv->icon_context);
+          }          
           priv->icon_context=new_icon_ctx;
           priv->icon_cxt_copied = TRUE;
         }

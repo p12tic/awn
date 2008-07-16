@@ -453,6 +453,15 @@
   )
 )
 
+(define-method set_icon_context_scaled
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_icon_context_scaled")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+  )
+)
+
 (define-method effects_off
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_effects_off")
