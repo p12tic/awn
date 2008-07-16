@@ -1,8 +1,13 @@
 2008-07-15  Rodney Cryderman <rcryderman@gmail.com>
 
-	* libawn/awn-applet-simple.c
-	* bindings/python/awn.def
-	* libawn/awn-applet-simple.h
+	* libawn/awn-applet-simple.c:
+	Removed a couple debug prints.
+
+2008-07-15  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* bindings/python/awn.def:
+	* libawn/awn-applet-simple.h:
 	Added awn_applet_simple_set_icon_context_scaled() with python binding.
 
 2008-07-14  Mark Lee  <avant-wn@lazymalevolence.com>

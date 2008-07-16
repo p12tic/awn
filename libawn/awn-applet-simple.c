@@ -272,14 +272,12 @@ awn_applet_simple_set_icon_context_scaled(AwnAppletSimple *simple,
                                       priv->bar_height);
 
     new_icon_ctx = cairo_create(new_icon_srfc);
-    printf("scaling from %d x %d\n",priv->icon_width, priv->icon_height);
     cairo_save(new_icon_ctx);
     cairo_scale(new_icon_ctx,
                 priv->bar_height / (double) priv->icon_height ,
                 priv->bar_height / (double) priv->icon_height );
     priv->icon_width = priv->icon_width * priv->bar_height / priv->icon_height;
     priv->icon_height = priv->bar_height;    
-    printf("scaled to %d x %d\n",priv->icon_width, priv->icon_height);
     cairo_set_source_surface(new_icon_ctx,cairo_get_target(cr),0,0);
     cairo_paint(new_icon_ctx);
     cairo_restore(new_icon_ctx);    
