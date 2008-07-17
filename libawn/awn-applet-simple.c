@@ -172,7 +172,6 @@ awn_applet_simple_set_icon_context(AwnAppletSimple *simple,
   priv = simple->priv;
   if (priv->icon_cxt_copied)
   {
-    cairo_surface_destroy(cairo_get_target(priv->icon_context));
     cairo_destroy(priv->icon_context);
     priv->icon_cxt_copied = FALSE;
   }
@@ -187,8 +186,9 @@ awn_applet_simple_set_icon_context(AwnAppletSimple *simple,
     g_object_unref(priv->reflect);
     priv->reflect = NULL;    
   }
-  
+
   priv->icon_context=cr;
+
   switch (cairo_surface_get_type(cairo_get_target(cr) ) )
   {
     case CAIRO_SURFACE_TYPE_IMAGE:
@@ -232,7 +232,6 @@ awn_applet_simple_set_icon_context_scaled(AwnAppletSimple *simple,
   priv = simple->priv;
   if (priv->icon_cxt_copied)
   {
-    cairo_surface_destroy(cairo_get_target(priv->icon_context));
     cairo_destroy(priv->icon_context);
     priv->icon_cxt_copied=FALSE;
   }
@@ -249,6 +248,7 @@ awn_applet_simple_set_icon_context_scaled(AwnAppletSimple *simple,
   }
   
   priv->icon_context=cr;
+
   switch (cairo_surface_get_type(cairo_get_target(cr) ) )
   {
     case CAIRO_SURFACE_TYPE_IMAGE:
@@ -272,6 +272,7 @@ awn_applet_simple_set_icon_context_scaled(AwnAppletSimple *simple,
                                       priv->bar_height);
 
     new_icon_ctx = cairo_create(new_icon_srfc);
+//    cairo_surface_destroy(new_icon_srfc);
     cairo_save(new_icon_ctx);
     cairo_scale(new_icon_ctx,
                 priv->bar_height / (double) priv->icon_height ,
@@ -586,6 +587,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
                                             gdk_pixbuf_get_width(priv->icon), 
                                             gdk_pixbuf_get_height(priv->icon));
     priv->icon_context = cairo_create(srfc);  
+    //cairo_surface_destroy(srfc);
     gdk_cairo_set_source_pixbuf (priv->icon_context, priv->icon, 0, 0);
     cairo_paint(priv->icon_context);
     
@@ -623,12 +625,12 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
                                             cairo_image_surface_get_width (cairo_get_target(priv->icon_context) ), 
                                             cairo_image_surface_get_height (cairo_get_target(priv->icon_context) ));
           new_icon_ctx = cairo_create(new_icon_srfc);
+         // cairo_surface_destroy(new_icon_srfc);
           cairo_set_source_surface(new_icon_ctx,cairo_get_target(priv->icon_context),0,0);
           cairo_paint(new_icon_ctx);
 //          cairo_destroy(priv->icon_context);
           if (priv->icon_cxt_copied)
           {
-            cairo_surface_destroy(cairo_get_target(priv->icon_context));
             cairo_destroy(priv->icon_context);
           }          
           priv->icon_context=new_icon_ctx;

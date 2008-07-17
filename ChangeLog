@@ -1,6 +1,12 @@
 2008-07-15  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:
+	Removed some cairo_surface_destroy() calls.  cairo_destroy() should
+	clean up.
+
+2008-07-15  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
 	Removed a couple debug prints.
 
 2008-07-15  Rodney Cryderman <rcryderman@gmail.com>
