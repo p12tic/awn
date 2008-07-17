@@ -1,10 +1,17 @@
+2008-07-17  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	 awn_applet_simple_set_icon_context_scaled() and
+	 awn_applet_simple_set_icon_context() now reference the contexts...  I
+	 _think_ I have it correct.
+
 2008-07-16  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* data/awn-applets-migration.py:
 	Fix replacement desktop file path.
 	Cleanup.
 
-2008-07-15  Rodney Cryderman <rcryderman@gmail.com>
+2008-07-16  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:
 	Removed some cairo_surface_destroy() calls.  cairo_destroy() should

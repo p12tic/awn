@@ -175,7 +175,12 @@ awn_applet_simple_set_icon_context(AwnAppletSimple *simple,
     cairo_destroy(priv->icon_context);
     priv->icon_cxt_copied = FALSE;
   }
-
+  else if (priv->icon_context)
+  {
+//    printf("_context %u \n",cairo_get_reference_count (priv->icon_context));
+    cairo_destroy(priv->icon_context);
+  }
+           
   if (priv->icon)
   {
     g_object_unref(priv->icon);
@@ -187,7 +192,9 @@ awn_applet_simple_set_icon_context(AwnAppletSimple *simple,
     priv->reflect = NULL;    
   }
 
+  
   priv->icon_context=cr;
+  cairo_reference(priv->icon_context);
 
   switch (cairo_surface_get_type(cairo_get_target(cr) ) )
   {
@@ -232,8 +239,14 @@ awn_applet_simple_set_icon_context_scaled(AwnAppletSimple *simple,
   priv = simple->priv;
   if (priv->icon_cxt_copied)
   {
+  //  printf("_context_scaled copied  %u \n",cairo_get_reference_count (priv->icon_context));      
     cairo_destroy(priv->icon_context);
     priv->icon_cxt_copied=FALSE;
+  }
+  else if (priv->icon_context)
+  {
+  //  printf("_context_scaled %u \n",cairo_get_reference_count (priv->icon_context));    
+    cairo_destroy(priv->icon_context);   
   }
 
   if (priv->icon)
@@ -248,7 +261,7 @@ awn_applet_simple_set_icon_context_scaled(AwnAppletSimple *simple,
   }
   
   priv->icon_context=cr;
-
+  cairo_reference(priv->icon_context);
   switch (cairo_surface_get_type(cairo_get_target(cr) ) )
   {
     case CAIRO_SURFACE_TYPE_IMAGE:
@@ -282,6 +295,8 @@ awn_applet_simple_set_icon_context_scaled(AwnAppletSimple *simple,
     cairo_set_source_surface(new_icon_ctx,cairo_get_target(cr),0,0);
     cairo_paint(new_icon_ctx);
     cairo_restore(new_icon_ctx);    
+ //   printf("_context_scaled scaling!  %u \n",cairo_get_reference_count (priv->icon_context));    
+    cairo_destroy(priv->icon_context);    
     priv->icon_context=new_icon_ctx;
     priv->icon_cxt_copied = TRUE;    
   }
@@ -628,11 +643,8 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
          // cairo_surface_destroy(new_icon_srfc);
           cairo_set_source_surface(new_icon_ctx,cairo_get_target(priv->icon_context),0,0);
           cairo_paint(new_icon_ctx);
-//          cairo_destroy(priv->icon_context);
-          if (priv->icon_cxt_copied)
-          {
-            cairo_destroy(priv->icon_context);
-          }          
+//          printf("_exposed %u \n",cairo_get_reference_count (priv->icon_context)); 
+          cairo_destroy(priv->icon_context);
           priv->icon_context=new_icon_ctx;
           priv->icon_cxt_copied = TRUE;
         }
