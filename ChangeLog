@@ -1,3 +1,11 @@
+2008-07-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/Makefile.am:
+	* debian/avant-window-navigator-trunk.install:
+	Install the schema-ini files, regardless of configuration backend. This is
+	needed for the future dynamically generated config dialogs, among other
+	things.
+
 2008-07-17  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:

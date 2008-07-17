@@ -2,4 +2,5 @@
 usr/bin/awn-applet-activation
 usr/share/applications/avant-window-navigator.desktop
 usr/share/avant-window-navigator/applets/*.desktop
+usr/share/avant-window-navigator/schemas/*.schema-ini
 etc/gconf

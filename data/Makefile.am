@@ -58,10 +58,10 @@ else
 install-gconf-schemas:
 endif
 else
-schemadir = $(datadir)/avant-window-navigator/schemas
-schema_DATA = awn.schema-ini shared.schema-ini
 install-gconf-schemas:
 endif
+schemadir = $(pkgdatadir)/schemas
+schema_DATA = awn.schema-ini shared.schema-ini
 
 
 install-exec-local:
