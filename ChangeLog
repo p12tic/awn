@@ -1,3 +1,8 @@
+2008-07-17  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Only hook up the drag and drop signals once.
+
 2008-07-16  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* data/Makefile.am:

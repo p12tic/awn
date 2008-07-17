@@ -402,10 +402,11 @@ awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
   g_return_if_fail(states);
   g_return_if_fail(icon_names);
 
+  static gboolean doneonce = FALSE;
   int count;
   AwnIconsPrivate *priv=GET_PRIVATE(icons); 
  
-  if (applet)
+  if (applet && !doneonce)
   {
     priv->icon_widget = GTK_WIDGET(applet);
     gtk_drag_dest_set (priv->icon_widget, 
@@ -466,6 +467,7 @@ awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
   g_free(applet_icon_dir);
   
   gtk_icon_theme_rescan_if_needed(priv->awn_theme);
+  doneonce = TRUE;
 }
 
 void awn_icons_set_icon_info(AwnIcons * icons,
@@ -718,7 +720,7 @@ awn_icons_init (AwnIcons *self)
                                              AWN_ICONS_THEME_NAME);
   if (! g_file_test(index_theme_dest,G_FILE_TEST_EXISTS) )
   {
-    printf("indexe.theme not found\n");
+    printf("index.theme not found\n");
     if (g_file_get_contents (index_theme_src,&contents,&length,&err))
     {  
       if ( g_file_set_contents(index_theme_dest,contents,length,&err))
