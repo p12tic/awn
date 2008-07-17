@@ -1,3 +1,9 @@
+2008-07-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/awn-applets-migration.py:
+	Fix replacement desktop file path.
+	Cleanup.
+
 2008-07-15  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:
