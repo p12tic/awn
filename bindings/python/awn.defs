@@ -50,6 +50,12 @@
   (release-func "awn_desktop_item_free")
 )
 
+(define-boxed Icons
+  (in-module "Awn")
+  (c-name "AwnIcons")
+  (gtype-id "LIBAWN_TYPE_AWN_ICONS")
+)
+
 ;; Enumerations and flags ...
 
 (define-enum CairoRoundCorners
@@ -857,7 +863,37 @@
   )
 )
 
+;; From awn-icons.h
 
+(define-function awn_icons_get_type
+  (c-name "awn_icons_get_type")
+  (return-type "GType")
+)
+
+(define-function awn_icons_new
+  (c-name "awn_icons_new")
+  (is-constructor-of "AwnIcons")
+  (return-type "AwnIcons*")
+)
+
+(define-method get_icon_at_height
+  (of-object "AwnIcons")
+  (c-name "awn_icons_get_icon_at_height")
+  (return-type "GdkPixbuf*")
+  (parameters
+    '("const-gchar*" "state")
+    '("gint" "height")
+  )
+)
+
+(define-method get_icon_simple_at_height
+  (of-object "AwnIcons")
+  (c-name "awn_icons_get_icon_simple_at_height")
+  (return-type "GdkPixbuf*")
+  (parameters
+    '("gint" "height")
+  )
+)
 
 ;; From awn-vfs.h
 

@@ -211,7 +211,6 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
       
       if ( g_file_set_contents(dest,contents,length,&err))
       {     
-        printf("Icon set %s\n",dest);
         //        gtk_icon_theme_rescan_if_needed(priv->awn_theme);        
         //  This ^ does not seem to force an update. For now will just recreate 
         // the damn thing.
@@ -493,7 +492,6 @@ void awn_icons_set_icon_info(AwnIcons * icons,
 void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer user_data)
 {
   AwnIconsPrivate *priv=GET_PRIVATE(icons); 
-  printf("Theme_changed \n");
   priv->icon_change_cb = fn;
   priv->icon_change_cb_data = user_data;
   
@@ -720,12 +718,10 @@ awn_icons_init (AwnIcons *self)
                                              AWN_ICONS_THEME_NAME);
   if (! g_file_test(index_theme_dest,G_FILE_TEST_EXISTS) )
   {
-    printf("index.theme not found\n");
     if (g_file_get_contents (index_theme_src,&contents,&length,&err))
     {  
       if ( g_file_set_contents(index_theme_dest,contents,length,&err))
       {
-        printf("index.theme copied %s\n",index_theme_dest);
         
       }
       else if (err)

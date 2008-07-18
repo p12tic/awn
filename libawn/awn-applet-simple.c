@@ -177,7 +177,6 @@ awn_applet_simple_set_icon_context(AwnAppletSimple *simple,
   }
   else if (priv->icon_context)
   {
-//    printf("_context %u \n",cairo_get_reference_count (priv->icon_context));
     cairo_destroy(priv->icon_context);
   }
            
@@ -238,14 +237,12 @@ awn_applet_simple_set_icon_context_scaled(AwnAppletSimple *simple,
   g_return_if_fail(AWN_IS_APPLET_SIMPLE(simple));
   priv = simple->priv;
   if (priv->icon_cxt_copied)
-  {
-  //  printf("_context_scaled copied  %u \n",cairo_get_reference_count (priv->icon_context));      
+  {    
     cairo_destroy(priv->icon_context);
     priv->icon_cxt_copied=FALSE;
   }
   else if (priv->icon_context)
-  {
-  //  printf("_context_scaled %u \n",cairo_get_reference_count (priv->icon_context));    
+  {   
     cairo_destroy(priv->icon_context);   
   }
 
@@ -285,7 +282,6 @@ awn_applet_simple_set_icon_context_scaled(AwnAppletSimple *simple,
                                       priv->bar_height);
 
     new_icon_ctx = cairo_create(new_icon_srfc);
-//    cairo_surface_destroy(new_icon_srfc);
     cairo_save(new_icon_ctx);
     cairo_scale(new_icon_ctx,
                 priv->bar_height / (double) priv->icon_height ,
@@ -294,8 +290,7 @@ awn_applet_simple_set_icon_context_scaled(AwnAppletSimple *simple,
     priv->icon_height = priv->bar_height;    
     cairo_set_source_surface(new_icon_ctx,cairo_get_target(cr),0,0);
     cairo_paint(new_icon_ctx);
-    cairo_restore(new_icon_ctx);    
- //   printf("_context_scaled scaling!  %u \n",cairo_get_reference_count (priv->icon_context));    
+    cairo_restore(new_icon_ctx);     
     cairo_destroy(priv->icon_context);    
     priv->icon_context=new_icon_ctx;
     priv->icon_cxt_copied = TRUE;    
@@ -657,10 +652,8 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
                                             cairo_image_surface_get_width (cairo_get_target(priv->icon_context) ), 
                                             cairo_image_surface_get_height (cairo_get_target(priv->icon_context) ));
           new_icon_ctx = cairo_create(new_icon_srfc);
-         // cairo_surface_destroy(new_icon_srfc);
           cairo_set_source_surface(new_icon_ctx,cairo_get_target(priv->icon_context),0,0);
           cairo_paint(new_icon_ctx);
-//          printf("_exposed %u \n",cairo_get_reference_count (priv->icon_context)); 
           cairo_destroy(priv->icon_context);
           priv->icon_context=new_icon_ctx;
           priv->icon_cxt_copied = TRUE;
@@ -725,7 +718,6 @@ bar_height_changed(AwnConfigClientNotifyEntry *entry, AwnAppletSimple *simple)
       adjust_icon(simple);
     }
   }
-  g_print("bar_height changed\n");
 }
 
 static void
@@ -736,7 +728,6 @@ icon_offset_changed(AwnConfigClientNotifyEntry *entry, AwnAppletSimple *simple)
   priv = simple->priv;
   priv->offset = entry->value.int_val;
   gtk_widget_queue_draw(GTK_WIDGET(simple));
-  g_print("icon_offset changed\n");
 }
 
 static void
@@ -748,8 +739,6 @@ bar_angle_changed(AwnConfigClientNotifyEntry *entry, AwnAppletSimple *simple)
   priv->bar_angle = entry->value.int_val;
 
   gtk_widget_queue_draw(GTK_WIDGET(simple));
-
-  g_print("bar_angle changed\n");
 }
 
 void

@@ -1,3 +1,10 @@
+2008-07-18  Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:	
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-icons.c:
+	Initial work on python bindings for AwnIcons.
+
 2008-07-17  Rodney Cryderman <rcryderman@gmail.com>
 
 	* bindings/python/awn.defs:
