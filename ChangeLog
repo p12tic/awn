@@ -1,5 +1,13 @@
 2008-07-17  Rodney Cryderman <rcryderman@gmail.com>
 
+	* bindings/python/awn.defs:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	Added accessor awn_applet_simple_get_awn_icons() to Applet Simple.
+	Included python binding.
+
+2008-07-17  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-icons.c:
 	Only hook up the drag and drop signals once.
 

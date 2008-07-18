@@ -523,6 +523,12 @@
   )
 )
 
+(define-method get_awn_icons
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_get_awn_icons")
+  (return-type "AwnIcons*")
+)
+
 (define-method get_effects
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_get_effects")

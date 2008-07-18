@@ -533,6 +533,23 @@ GdkPixbuf * awn_applet_simple_set_awn_icon_state(AwnAppletSimple *simple,
 }
 
 
+/**
+ * awn_applet_simple_get_awn_icons:
+ * @simple: The applet whose icon is being set.
+ *
+ * Get the AwnIcons object owned by AwnAppletSimple
+ *
+ * Returns: The AwnIcons object owned by AwnAppletSimple.  The caller does NOT 
+ * own a reference to this object.
+ */
+AwnIcons * awn_applet_simple_get_awn_icons(AwnAppletSimple *simple)
+{
+  AwnAppletSimplePrivate *priv;  
+  g_return_val_if_fail(simple,NULL);  
+  priv = simple->priv;
+  return priv->awn_icons;
+}
+
 /*Adding the ability to start and stop the application of effects.
  The underlying implementation may change at some point... instead of t
  taking the current approach it might end up being best to shut off the 
