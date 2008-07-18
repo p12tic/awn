@@ -21,6 +21,13 @@
   (gtype-id "AWN_TYPE_APPLET_SIMPLE")
 )
 
+(define-object Icons
+  (in-module "Awn")
+  (parent "GObject")
+  (c-name "AwnIcons")
+  (gtype-id "LIBAWN_TYPE_AWN_ICONS")
+)
+
 (define-object Plug
   (in-module "Awn")
   (parent "GtkPlug")
