@@ -27,22 +27,22 @@
 
 G_BEGIN_DECLS
 
-#define LIBAWN_TYPE_AWN_ICONS awn_icons_get_type()
+#define AWN_TYPE_ICONS awn_icons_get_type()
 
-#define LIBAWN_AWN_ICONS(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), LIBAWN_TYPE_AWN_ICONS, AwnIcons))
+#define AWN_ICONS(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_ICONS, AwnIcons))
 
-#define LIBAWN_AWN_ICONS_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), LIBAWN_TYPE_AWN_ICONS, AwnIconsClass))
+#define AWN_ICONS_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), AWN_TYPE_ICONS, AwnIconsClass))
 
-#define LIBAWN_IS_AWN_ICONS(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LIBAWN_TYPE_AWN_ICONS))
+#define AWN_IS_ICONS(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), AWN_TYPE_ICONS))
 
-#define LIBAWN_IS_AWN_ICONS_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), LIBAWN_TYPE_AWN_ICONS))
+#define AWN_IS_ICONS_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), AWN_TYPE_ICONS))
 
-#define LIBAWN_AWN_ICONS_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), LIBAWN_TYPE_AWN_ICONS, AwnIconsClass))
+#define AWN_ICONS_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_ICONS, AwnIconsClass))
 
 typedef struct { 
   GObject parent;

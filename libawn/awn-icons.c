@@ -38,7 +38,7 @@ G_DEFINE_TYPE (AwnIcons, awn_icons, G_TYPE_OBJECT)
 #define AWN_ICONS_RESPONSE_CLEAR 1
 
 #define GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), LIBAWN_TYPE_AWN_ICONS, AwnIconsPrivate))
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_ICONS, AwnIconsPrivate))
 
 typedef struct _AwnIconsPrivate AwnIconsPrivate;
 
@@ -755,7 +755,7 @@ awn_icons_init (AwnIcons *self)
 AwnIcons*
 awn_icons_new (void)
 {
-  return g_object_new (LIBAWN_TYPE_AWN_ICONS, NULL);
+  return g_object_new (AWN_TYPE_ICONS, NULL);
 }
 
 

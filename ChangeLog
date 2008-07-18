@@ -1,3 +1,10 @@
+2008-07-18  Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-icons.c:
+	* libawn/awn-icons.h:
+	Fixed up some naming to match the rest of awn.
+
 2008-07-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* bindings/python/awn.defs:
