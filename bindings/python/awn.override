@@ -91,6 +91,37 @@ _gslist_to_pylist (GSList *list, AwnConfigListType list_type) {
   }
   return py_list;
 }
+static gchar**
+_pysequence_to_gchar_array (PyObject *py_seq)
+{
+  gchar **seq;
+  if (PyList_Check (py_seq) || PyTuple_Check (py_seq))
+  {
+    Py_ssize_t len;
+    int i;
+    len = PySequence_Fast_GET_SIZE (py_seq);
+    seq = g_malloc (sizeof (gchar) * len);
+    for (i = 0; i < len; i++)
+    {
+      PyObject *item;
+      item = PySequence_Fast_GET_ITEM (py_seq, i);
+      if (PyString_Check (item))
+      {
+        seq[i] = PyString_AsString (item);
+      }
+      else
+      {
+        g_free (seq);
+        return NULL;
+      }
+    }
+  }
+  else
+  {
+    return NULL;
+  }
+  return seq;
+}
 %%
 modulename awn
 %%
@@ -437,4 +468,46 @@ _wrap_awn_config_client_key_lock_close (PyObject *self, PyObject *args, PyObject
     
     Py_INCREF(Py_None);
     return Py_None;
+}
+%%
+override awn_applet_simple_set_awn_icons kwargs
+static PyObject *
+_wrap_awn_applet_simple_set_awn_icons (PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  static char *kwlist[] = { "applet_name", "states", "icon_names", NULL };
+  gchar *applet_name;
+  PyObject *py_states;
+  PyObject *py_icon_names;
+  gchar **states = NULL;
+  gchar **icon_names = NULL;
+  GdkPixbuf *ret;
+
+  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "sOO:AwnAppletSimple.set_awn_icons", kwlist, &applet_name, &py_states, &py_icon_names))
+  {
+    return NULL;
+  }
+
+  states = _pysequence_to_gchar_array (py_states);
+  if (!states)
+  {
+    PyErr_SetString (PyExc_TypeError, "states argument must be a sequence only containing strings.");
+    return NULL;
+  }
+
+  icon_names = _pysequence_to_gchar_array (py_icon_names);
+  if (!icon_names)
+  {
+    PyErr_SetString (PyExc_TypeError, "icon_names argument must be a sequence only containing strings.");
+    return NULL;
+  }
+
+  ret = awn_applet_simple_set_awn_icons ((AwnAppletSimple*)pygobject_get (self),
+                                         (const gchar*)applet_name,
+                                         (const gchar**)states,
+                                         (const gchar**)icon_names);
+
+  g_free (states);
+  g_free (icon_names);
+
+  return pyg_boxed_new (GDK_TYPE_PIXBUF, ret, TRUE, TRUE);
 }

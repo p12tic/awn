@@ -1,3 +1,9 @@
+2008-07-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/awn.override:
+	Make sure that the Python binding for awn_applet_simple_set_awn_icons is
+	built, as there is no default mapping from a Python sequence to a gchar**.
+
 2008-07-18  Rodney Cryderman <rcryderman@gmail.com>
 
 	* bindings/python/awn.defs:
