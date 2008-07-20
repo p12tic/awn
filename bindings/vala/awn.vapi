@@ -333,6 +333,7 @@ namespace Awn {
 	public class AppletSimple : Awn.Applet, Gtk.Buildable, Atk.Implementor {
 		public void effects_off ();
 		public void effects_on ();
+		public weak Awn.Icons get_awn_icons ();
 		public weak Awn.Effects get_effects ();
 		public AppletSimple (string uid, int orient, int height);
 		public weak Gdk.Pixbuf set_awn_icon (string applet_name, string icon_name);
@@ -340,6 +341,7 @@ namespace Awn {
 		public weak Gdk.Pixbuf set_awn_icons (string applet_name, string[] states, string[] icon_names);
 		public void set_icon (Gdk.Pixbuf pixbuf);
 		public void set_icon_context (Cairo.Context cr);
+		public void set_icon_context_scaled (Cairo.Context cr);
 		public void set_temp_icon (Gdk.Pixbuf pixbuf);
 		public void set_title (string title_string);
 		public void set_title_visibility (bool state);
@@ -347,9 +349,12 @@ namespace Awn {
 	[CCode (cheader_filename = "libawn/awn-icons.h")]
 	public class Icons : GLib.Object {
 		public weak Gdk.Pixbuf get_icon (string state);
+		public weak Gdk.Pixbuf get_icon_at_height (string state, int height);
 		public weak Gdk.Pixbuf get_icon_simple ();
+		public weak Gdk.Pixbuf get_icon_simple_at_height (int height);
 		public Icons ();
 		public void set_changed_cb (Awn.IconsChange fn);
+		public void set_height (int height);
 		public void set_icon_info (Gtk.Widget applet, string applet_name, string uid, int height, string icon_name);
 		public void set_icons_info (Gtk.Widget applet, string applet_name, string uid, int height, string[] states, string[] icon_names);
 	}
