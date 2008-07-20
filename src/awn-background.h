@@ -26,6 +26,7 @@
 #include <gtk/gtk.h>
 
 #include <libawn/awn-cairo-utils.h>
+#include <libawn/awn-config-client.h>
 
 #include "awn-panel.h"
 
@@ -36,7 +37,7 @@ G_BEGIN_DECLS
 #define AWN_BACKGROUND(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_BACKGROUND, \
   AwnBackground))
 
-#define AWN_BACKGROUND_CLASS(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), AWN_BACKGROUND, \
+#define AWN_BACKGROUND_CLASS(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), AWN_TYPE_BACKGROUND, \
   AwnBackgroundClass))
 
 #define AWN_IS_BACKGROUND(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), AWN_TYPE_BACKGROUND))
@@ -54,6 +55,9 @@ struct _AwnBackground
 {
   GObject  parent;
 
+  AwnConfigClient *client;
+
+  /* Standard box drawing colours */
   AwnColor g_step_1;
   AwnColor g_step_2;
   AwnColor g_histep_1;
@@ -61,8 +65,21 @@ struct _AwnBackground
   AwnColor border_color;
   AwnColor hilight_color;
 
+  /* Separator options */
   gboolean show_sep;
   AwnColor sep_color;
+
+  /* Pattern options */
+  gboolean   enable_pattern;
+  gfloat     pattern_alpha;
+  GdkPixbuf *pattern;
+
+  /* Appearance options -- (some are backend specific) */
+  gboolean rounded_corners;
+  gfloat   corner_radius;
+  gint     panel_angle;
+  gfloat   curviness;
+  gfloat   curves_symmetry;  
 };
 
 struct _AwnBackgroundClass 

@@ -30,6 +30,8 @@
 
 #include "awn-panel.h"
 
+#include "awn-background.h"
+#include "awn-background-flat.h"
 #include "awn-monitor.h"
 #include "awn-x.h"
 
@@ -42,6 +44,8 @@ struct _AwnPanelPrivate
 {
   AwnConfigClient *client;
   AwnMonitor *monitor;
+
+  AwnBackground *bg;
 
   GtkWidget *alignment;
   GtkWidget *eventbox;
@@ -121,6 +125,9 @@ awn_panel_constructed (GObject *object)
 
   /* FIXME: Now is the time to hook our properties into priv->client */
 
+  /* Background drawing */
+  priv->bg = awn_background_flat_new (priv->client);
+
   /* Composited checks/setup */
   screen = gtk_widget_get_screen (panel);
   priv->composited = gdk_screen_is_composited (screen);
@@ -139,7 +146,7 @@ awn_panel_constructed (GObject *object)
     case AWN_ORIENT_TOP:
     case AWN_ORIENT_BOTTOM:
       gtk_window_resize (GTK_WINDOW (panel),
-                         24,
+                         48,
                          priv->offset +
                            (priv->composited ? 2 * priv->size : priv->size));
       break;
@@ -149,7 +156,7 @@ awn_panel_constructed (GObject *object)
       gtk_window_resize (GTK_WINDOW (panel),
                          priv->offset +
                            (priv->composited ? 2 * priv->size : priv->size),
-                           24);  
+                           48);  
       break;
     default:
       g_assert (0);
@@ -274,7 +281,7 @@ awn_panel_class_init (AwnPanelClass *klass)
                           G_PARAM_READWRITE));
   g_object_class_install_property (obj_class,
     PROP_PANEL_MODE,
-    g_param_spec_boolean ("panel-mode",
+    g_param_spec_boolean ("panel_mode",
                           "Panel Mode",
                           "The window sets the appropriete panel size hints",
                           TRUE,
@@ -292,7 +299,7 @@ awn_panel_class_init (AwnPanelClass *klass)
     g_param_spec_int ("orient",
                       "Orient",
                       "The orientation of the panel",
-                      0, 3, AWN_ORIENT_BOTTOM,
+                      0, 3, AWN_ORIENT_TOP,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
    
   g_object_class_install_property (obj_class,
@@ -594,7 +601,7 @@ on_eb_expose (GtkWidget      *widget,
               GtkWidget      *child)
 {
   cairo_t *cr;
-  
+
   if (!GDK_IS_DRAWABLE (widget->window))
   {
     g_debug ("!GDK_IS_DRAWABLE (widget->window) failed");
@@ -608,7 +615,7 @@ on_eb_expose (GtkWidget      *widget,
     g_debug ("Unable to create cairo context\n");
     return FALSE;
   }
-  
+
   /* The actual drawing of the background */
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (cr);
@@ -627,6 +634,7 @@ static gboolean
 awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
 {
   AwnPanelPrivate *priv;
+  gfloat           x=0, y=0;
   gint             width = 0, height = 0;
   cairo_t         *cr;
   GtkWidget       *child;
@@ -640,6 +648,38 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     return FALSE;
   }
 
+  /* Calculate correct values */
+  switch (priv->orient)
+  {
+    case AWN_ORIENT_TOP:
+      x = 0;
+      y = 0;
+      width = widget->allocation.width;
+      height = widget->allocation.height - (priv->composited ? priv->size : 0);
+      break;
+
+    case AWN_ORIENT_RIGHT:
+      x = (priv->composited ? priv->size : 0);
+      y = 0;
+      width = widget->allocation.width - (priv->composited ? priv->size : 0);
+      height = widget->allocation.height;
+      break;
+
+    case AWN_ORIENT_BOTTOM:
+      x = 0;
+      y = (priv->composited ? priv->size : 0);
+      width = widget->allocation.width;
+      height = widget->allocation.height - (priv->composited ? priv->size : 0);
+      break;
+
+    case AWN_ORIENT_LEFT:
+    default:
+      x = 0;
+      y = 0;
+      width = widget->allocation.width - (priv->composited ? priv->size : 0);
+      height = widget->allocation.height;
+  }
+
   /* Get our ctx */
   cr = gdk_cairo_create (widget->window);
   if (!cr)
@@ -647,16 +687,14 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     g_debug ("Unable to create cairo context\n");
     return FALSE;
   }
-  gtk_window_get_size (GTK_WINDOW (widget), &width, &height);
-
+  
   /* The actual drawing of the background */
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (cr);
 
-  /*awn_background_render (priv->bg, GTK_WIDGET (widget),
-                         cr, width, height, priv->composited);
-                         */
-  
+  awn_background_draw (priv->bg, cr, priv->orient, x, y, width, height);
+ 
+  /* Pass on the expose event to the child */
   child = gtk_bin_get_child (GTK_BIN (widget));
   if (!GTK_IS_WIDGET (child))
     return TRUE;

@@ -19,6 +19,8 @@ avant_window_navigator_SOURCES =	\
 	awn-app.h \
 	awn-background.c \
 	awn-background.h \
+	awn-background-flat.c \
+	awn-background-flat.h \
 	awn-defines.h \
 	awn-monitor.c \
 	awn-monitor.h \
