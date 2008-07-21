@@ -211,13 +211,7 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
       
       if ( g_file_set_contents(dest,contents,length,&err))
       {     
-        //        gtk_icon_theme_rescan_if_needed(priv->awn_theme);        
-        //  This ^ does not seem to force an update. For now will just recreate 
-        // the damn thing.
-        
-//        g_object_unref(priv->awn_theme);
-//        priv->awn_theme = gtk_icon_theme_new();
-        
+       
         gtk_icon_theme_set_custom_theme(priv->awn_theme,NULL);
         gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);  
         
@@ -556,7 +550,6 @@ awn_icons_get_icon_at_height(AwnIcons * icons, const gchar * state, gint height)
         
         if (err)
         {
-//          g_warning("Failed loading icon: %s\n",err->message);
           g_error_free (err);
           err=NULL;
         }        

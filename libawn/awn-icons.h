@@ -56,7 +56,8 @@ typedef void(* AwnIconsChange )(AwnIcons * fx,gpointer user_data);
 
 GType awn_icons_get_type (void);
 
-AwnIcons* awn_icons_new (void);
+AwnIcons* 
+awn_icons_new (void);
 
 GdkPixbuf * 
 awn_icons_get_icon_at_height(AwnIcons * icons, const gchar * state, gint height);
@@ -73,7 +74,8 @@ awn_icons_get_icon_simple(AwnIcons * icons);
 void 
 awn_icons_set_height(AwnIcons * icons, gint height);
 
-void awn_icons_set_icons_info(AwnIcons * icons,
+void 
+awn_icons_set_icons_info(AwnIcons * icons,
                               GtkWidget * applet,
                               const gchar * applet_name,
                               const gchar * uid,
@@ -81,14 +83,16 @@ void awn_icons_set_icons_info(AwnIcons * icons,
                               const gchar **states,
                               const gchar **icon_names);
 
-void awn_icons_set_icon_info(AwnIcons * icons,
+void 
+awn_icons_set_icon_info(AwnIcons * icons,
                              GtkWidget * applet,
                              const gchar * applet_name,
                              const gchar * uid, 
                              gint height,
                              const gchar *icon_name);
                              
-void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer user_data);                             
+void 
+awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer user_data);                             
 
 G_END_DECLS
 
