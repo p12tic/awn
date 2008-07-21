@@ -896,6 +896,30 @@
   )
 )
 
+(define-method get_icon
+  (of-object "AwnIcons")
+  (c-name "awn_icons_get_icon")
+  (return-type "GdkPixbuf*")
+  (parameters
+    '("const-gchar*" "state")
+  )
+)
+
+(define-method get_icon_simple
+  (of-object "AwnIcons")
+  (c-name "awn_icons_get_icon_simple")
+  (return-type "GdkPixbuf*")
+)
+
+(define-method set_height
+  (of-object "AwnIcons")
+  (c-name "awn_icons_set_height")
+  (return-type "none")
+  (parameters
+    '("gint" "height")
+  )
+)
+
 ;; From awn-vfs.h
 
 (define-function vfs_init
