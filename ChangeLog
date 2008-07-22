@@ -1,5 +1,11 @@
 2008-07-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/python/awn.override:
+	Fix the binding for awn_applet_simplet_set_awn_icons (with help from
+	sharkbaitbobby and moonbeam).
+
+2008-07-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/awn.defs:
 	Remove obsolete binding.
 

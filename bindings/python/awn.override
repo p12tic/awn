@@ -100,7 +100,7 @@ _pysequence_to_gchar_array (PyObject *py_seq)
     Py_ssize_t len;
     int i;
     len = PySequence_Fast_GET_SIZE (py_seq);
-    seq = g_malloc (sizeof (gchar) * len);
+    seq = g_malloc (sizeof (gchar*) * (len + 1));
     for (i = 0; i < len; i++)
     {
       PyObject *item;
@@ -115,6 +115,7 @@ _pysequence_to_gchar_array (PyObject *py_seq)
         return NULL;
       }
     }
+    seq[len] = NULL;
   }
   else
   {
@@ -487,6 +488,24 @@ _wrap_awn_applet_simple_set_awn_icons (PyObject *self, PyObject *args, PyObject 
     return NULL;
   }
 
+  if (!PySequence_Check (py_states))
+  {
+    PyErr_SetString (PyExc_TypeError, "states argument must be a sequence.");
+    return NULL;
+  }
+
+  if (!PySequence_Check (py_icon_names))
+  {
+    PyErr_SetString (PyExc_TypeError, "icon_names argument must be a sequence.");
+    return NULL;
+  }
+
+  if (PySequence_Size (py_states) != PySequence_Size (py_icon_names))
+  {
+    PyErr_SetString (PyExc_ValueError, "The states and icon names sequences must have the same number of elements.");
+    return NULL;
+  }
+
   states = _pysequence_to_gchar_array (py_states);
   if (!states)
   {
@@ -501,7 +520,13 @@ _wrap_awn_applet_simple_set_awn_icons (PyObject *self, PyObject *args, PyObject 
     return NULL;
   }
 
-  ret = awn_applet_simple_set_awn_icons ((AwnAppletSimple*)pygobject_get (self),
+  if (g_strv_length (states) != g_strv_length (icon_names))
+  {
+    PyErr_SetString (PyExc_ValueError, "The states and icon names arrays must have the same number of elements.");
+    return NULL;
+  }
+
+  ret = awn_applet_simple_set_awn_icons (AWN_APPLET_SIMPLE (pygobject_get (self)),
                                          (const gchar*)applet_name,
                                          (const gchar**)states,
                                          (const gchar**)icon_names);
@@ -509,5 +534,5 @@ _wrap_awn_applet_simple_set_awn_icons (PyObject *self, PyObject *args, PyObject 
   g_free (states);
   g_free (icon_names);
 
-  return pyg_boxed_new (GDK_TYPE_PIXBUF, ret, TRUE, TRUE);
+  return pygobject_new (G_OBJECT (ret));
 }
