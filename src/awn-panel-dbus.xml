@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<node name="/org/awn-project/Awn/Panel">
+<interface name="org.awn-project.Awn.Panel">
+  <annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_panel"/>
+  
+  <!-- Methods -->
+
+  <!-- Signals -->
+  <signal name="SizeChanged">
+    <arg type="d" name="size" />
+  </signal>
+
+  <signal name="OrientChanged" />
+    <arg type="d" name="orient" />
+  </signal>
+
+  <signal name="DestroyNotify"> </signal>
+
+  <signal name="DestroyApplet">
+
+</interface>
+</node>
+

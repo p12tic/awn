@@ -191,7 +191,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
     g_param_spec_string ("gstep1",
                          "GStep1",
                          "Gradient Step 1",
-                         "00000033",
+                         "FF0000FF",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -199,7 +199,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
     g_param_spec_string ("gstep2",
                          "GStep2",
                          "Gradient Step 2",
-                         "000000EE",
+                         "00FF00FF",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -223,7 +223,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
     g_param_spec_string ("border",
                          "Border",
                          "Border color",
-                         "00000055",
+                         "000000FF",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -231,7 +231,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
     g_param_spec_string ("hilight",
                          "Hilight",
                          "Internal border color",
-                         "FFFFFF11",
+                         "FFFFFFff",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   

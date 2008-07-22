@@ -106,6 +106,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_translate (cr, 0.5, 0.5);
 
   /* Draw the background */
   pat = cairo_pattern_create_linear (0, y, 0, y+height);
@@ -120,7 +121,10 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_step_2.blue, 
                                      bg->g_step_2.alpha);
 
-  draw_rect (bg, cr, orient, x, y, width-1, height-1);
+  if (orient == AWN_ORIENT_TOP)
+    draw_rect (bg, cr, orient, x+2, y, width-4, height-1);
+  else
+    draw_rect (bg, cr, orient, x+2, y+2, width-4, height-2);
   cairo_set_source (cr, pat);
   cairo_fill (cr);
   cairo_pattern_destroy (pat);
@@ -138,7 +142,10 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_histep_2.blue, 
                                      bg->g_histep_2.alpha);
 
-  draw_rect (bg, cr, orient, x, y, width, height/3);
+  if (orient == AWN_ORIENT_TOP)
+    draw_rect (bg, cr, orient, x+2, y, width-4, height/3);
+  else
+    draw_rect (bg, cr, orient, x+2, y+2, width-4, height/3);
   cairo_set_source (cr, pat);
   cairo_fill (cr);
   cairo_pattern_destroy (pat);
@@ -149,9 +156,9 @@ draw_top_bottom_background (AwnBackground  *bg,
                              bg->hilight_color.blue,
                              bg->hilight_color.alpha);
   if (orient == AWN_ORIENT_TOP)
-      draw_rect (bg, cr, orient, x+1, y-2, width-2, height+1);
+      draw_rect (bg, cr, orient, x+1, y-2, width-3, height+1);
   else
-      draw_rect (bg, cr, orient, x+1, y+1, width-2, height+3);
+      draw_rect (bg, cr, orient, x+1, y+1, width-3, height+3);
   cairo_stroke (cr);
 
   /* External border */
@@ -160,7 +167,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                              bg->border_color.blue,
                              bg->border_color.alpha);
   if (orient == AWN_ORIENT_TOP)
-      draw_rect (bg, cr, orient, x, y-1, width-1, height);
+      draw_rect (bg, cr, orient, x, y-3, width-1, height+3);
   else
       draw_rect (bg, cr, orient, x, y,  width-1, height+3);
    cairo_stroke (cr);
@@ -176,7 +183,7 @@ awn_background_flat_draw (AwnBackground  *bg,
                           gint            height)
 {
   cairo_save (cr);
-  cairo_translate (cr, 0.5, 0.5);
+  //cairo_translate (cr, 0.5, 0.5);
 
   switch (orient)
   {
