@@ -394,16 +394,6 @@
   (return-type "guint")
 )
 
-(define-method add_preferences
-  (of-object "AwnApplet")
-  (c-name "awn_applet_add_preferences")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "schema_dir")
-    '("GError**" "opt_error")
-  )
-)
-
 (define-method create_default_menu
   (of-object "AwnApplet")
   (c-name "awn_applet_create_default_menu")
