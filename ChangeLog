@@ -1,3 +1,8 @@
+2008-07-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/awn.schema-ini.in:
+	Fix path of the taskmanager/launcher desktop file.
+
 2008-07-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* bindings/python/awn.override:

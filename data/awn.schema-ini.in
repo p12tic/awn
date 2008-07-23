@@ -36,7 +36,7 @@ default = False
 description = Always keep AWN below all other windows.
 [DEFAULT/applets_list]
 type = list-string
-default = @LIBDIR@/awn/applets/taskman.desktop::1
+default = @DATADIR@/avant-window-navigator/applets/taskman.desktop::1
 description = The list of paths to the enabled applets, in order from left to right.
 [bar/rounded_corners]
 type = bool
