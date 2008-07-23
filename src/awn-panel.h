@@ -74,6 +74,9 @@ GType       awn_panel_get_type          (void) G_GNUC_CONST;
 
 GtkWidget * awn_panel_new_from_config   (AwnConfigClient *client);
 
+gboolean    awn_panel_delete_applet (AwnPanel  *panel,
+                                     gchar     *uid,
+                                     GError   **error);
 G_END_DECLS
 
 

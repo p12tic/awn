@@ -33,6 +33,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-bindings.h>
+
 #include <libawn/awn-config-client.h>
 
 #include "awn-app.h"
@@ -46,6 +49,7 @@ G_DEFINE_TYPE (AwnApp, awn_app, G_TYPE_OBJECT)
 
 struct _AwnAppPrivate
 {
+  DBusGConnection *connection;
   AwnConfigClient *client;
   
   GtkWidget *panel;
@@ -84,12 +88,26 @@ static void
 awn_app_init (AwnApp *app)
 {
   AwnAppPrivate *priv;
+  GError *error = NULL;
     
   priv = app->priv = AWN_APP_GET_PRIVATE (app);
 
   priv->client = awn_config_client_new ();
-  
+
+  /* Grab a connection to the bus */
+  priv->connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+  if (priv->connection == NULL)
+  {
+    g_warning ("Unable to make connection to the D-Bus session bus: %s",
+               error->message);
+    g_error_free (error);
+    gtk_main_quit ();
+  }
+   
   priv->panel = awn_panel_new_from_config (priv->client);
+  dbus_g_connection_register_g_object (priv->connection, 
+                                       AWN_DBUS_PANEL_PATH,
+                                       G_OBJECT (priv->panel));
 
   gtk_widget_show (priv->panel);
 }

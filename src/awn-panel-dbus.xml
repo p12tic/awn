@@ -1,23 +1,27 @@
 <?xml version="1.0"?>
 <node name="/org/awn-project/Awn/Panel">
-<interface name="org.awn-project.Awn.Panel">
-  <annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_panel"/>
+  <interface name="org.awn-project.Awn.Panel">
+    <annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_panel"/>
   
-  <!-- Methods -->
+    <!-- Methods -->
+	  <method name="DeleteApplet">
+		  <arg name="uid" type="s" direction="in" />
+	  </method>
 
-  <!-- Signals -->
-  <signal name="SizeChanged">
-    <arg type="d" name="size" />
-  </signal>
+    <!-- Signals -->
+    <signal name="SizeChanged">
+      <arg type="d" name="size" />
+    </signal>
 
-  <signal name="OrientChanged" />
-    <arg type="d" name="orient" />
-  </signal>
+    <signal name="OrientChanged">
+      <arg type="d" name="orient" />
+    </signal>
 
-  <signal name="DestroyNotify"> </signal>
+    <signal name="DestroyNotify"></signal>
 
-  <signal name="DestroyApplet">
+	  <signal name="DestroyApplet">
+		  <arg type="s" name="uid" />
+	  </signal>
 
-</interface>
+  </interface>
 </node>
-

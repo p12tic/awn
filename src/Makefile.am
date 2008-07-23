@@ -17,6 +17,7 @@ avant_window_navigator_SOURCES =	\
 	awn-main.c \
 	awn-app.c \
 	awn-app.h \
+	awn-app-glue.h \
 	awn-background.c \
 	awn-background.h \
 	awn-background-flat.c \
@@ -26,6 +27,7 @@ avant_window_navigator_SOURCES =	\
 	awn-monitor.h \
 	awn-panel.c \
 	awn-panel.h \
+	awn-panel-glue.h \
 	awn-x.h \
 	awn-x.c \
 	inlinepixbufs.h \
@@ -37,5 +39,17 @@ avant_window_navigator_SOURCES =	\
 awn-app-glue.h: awn-app-dbus.xml Makefile
 	$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=awn_app --mode=glib-server --output=$@ $<
 
+awn-panel-glue.h: awn-panel-dbus.xml Makefile
+	$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=awn_panel --mode=glib-server --output=$@ $<
+
+BUILT_SOURCES = \
+	awn-app-glue.h \
+	awn-panel-glue.h \
+	$(NULL)
+
+EXTRA_DIST = \
+	awn-app-dbus.xml \
+	awn-panel-dbus.xml \
+	$(NULL)
 
 # vim: set ts=8 sts=8 sw=8 :

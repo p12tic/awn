@@ -248,6 +248,8 @@ awn_panel_dispose (GObject *object)
   G_OBJECT_CLASS (awn_panel_parent_class)->dispose (object);
 }
 
+#include "awn-panel-glue.h"
+
 static void
 awn_panel_class_init (AwnPanelClass *klass)
 {
@@ -311,6 +313,9 @@ awn_panel_class_init (AwnPanelClass *klass)
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_type_class_add_private (obj_class, sizeof (AwnPanelPrivate));
+
+  dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass), 
+                                   &dbus_glib_awn_panel_object_info);
 }
 
 static void
@@ -773,4 +778,21 @@ awn_panel_set_offset  (AwnPanel *panel,
     default:
       gtk_alignment_set_padding (alignment, 0, 0, offset, 0);
   }
+}
+
+
+/*
+ * DBUS METHODS
+ */
+gboolean
+awn_panel_delete_applet (AwnPanel  *panel,
+                         gchar     *uid,
+                         GError   **error)
+{
+  AwnPanelPrivate *priv;
+  	
+	g_return_val_if_fail (AWN_IS_PANEL (panel), TRUE);
+	priv = panel->priv;
+
+  return TRUE;
 }
