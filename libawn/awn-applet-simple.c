@@ -172,6 +172,7 @@ awn_applet_simple_set_icon_context(AwnAppletSimple *simple,
   priv = simple->priv;
   if (priv->icon_cxt_copied)
   {
+    cairo_surface_destroy(cairo_get_target(priv->icon_context));
     cairo_destroy(priv->icon_context);
     priv->icon_cxt_copied = FALSE;
   }
@@ -654,6 +655,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
           new_icon_ctx = cairo_create(new_icon_srfc);
           cairo_set_source_surface(new_icon_ctx,cairo_get_target(priv->icon_context),0,0);
           cairo_paint(new_icon_ctx);
+//          printf("priv->icon_context  refs = %d \n", cairo_get_reference_count(new_icon_ctx));
           cairo_destroy(priv->icon_context);
           priv->icon_context=new_icon_ctx;
           priv->icon_cxt_copied = TRUE;
