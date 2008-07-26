@@ -130,14 +130,14 @@ show (gchar *text)
         if (priv->focus == NULL)
           return FALSE;
         normal = g_markup_escape_text (text, -1);
-	if (strlen(text) > 120)
-	{
-		text[120]='\0';
-	}	
         markup = g_strdup_printf ("<span foreground='#%s' font_desc='%s'>%s</span>",
                                   priv->text_col,
                                   priv->font,
-                                  normal);
+                                  normal
+				  );
+
+	gtk_label_set_max_width_chars(GTK_LABEL (priv->label),120);
+	gtk_label_set_ellipsize (GTK_LABEL (priv->label),PANGO_ELLIPSIZE_END);
 
         gtk_label_set_markup (GTK_LABEL (priv->label), markup);
     

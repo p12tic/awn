@@ -1,6 +1,12 @@
+2008-07-26  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-title.c:
+	Actually truncate the titles to 120 characters instead of not doing
+	so.
+
 2008-07-25  Rodney Cryderman <rcryderman@gmail.com>
 
-	* libawn/awn-applet-simple.c
+	* libawn/awn-applet-simple.c:
 	Potential fix for bug #251922. 
 
 2008-07-23  Mark Lee  <avant-wn@lazymalevolence.com>
