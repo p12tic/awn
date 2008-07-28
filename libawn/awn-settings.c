@@ -54,6 +54,9 @@
 #define ICON_OFFSET	"icon_offset"		/*float*/
 #define BAR_POS		"bar_pos" 		/*float, between 0 and 1 */
 #define NO_BAR_RESIZE_ANI "no_bar_resize_animation" /*bool*/
+#define SHOW_SHADOWS	"show_shadows"		/*bool*/
+#define REFLECTION_OFFSET "reflection_offset"  /*int*/
+#define BAR_DEPTH_SCALE "bar_depth_scale"  /*int*/
 
 #define CURVES_SYMMETRY	 "curves_symmetry"	/*float, between 0 and 1*/
 #define CURVINESS		 "curviness"		/*float, between 0 and 1*/
@@ -157,6 +160,8 @@ awn_settings_new()
 	awn_load_int(client, BAR, BAR_ANGLE, &s->bar_angle,0);
   awn_load_bool(client, BAR, NO_BAR_RESIZE_ANI,&s->no_bar_resize_ani,FALSE);
   
+  awn_load_int(client, BAR, REFLECTION_OFFSET, &s->reflection_offset, 0);
+  awn_load_int(client, BAR, BAR_DEPTH_SCALE, &s->bar_depth_scale, 1);
 	awn_load_int(client, BAR, ICON_OFFSET, &s->icon_offset,10);
 	awn_load_bool(client, BAR, ROUNDED_CORNERS, &s->rounded_corners, TRUE);
 	awn_load_float(client, BAR, CORNER_RADIUS, &s->corner_radius, 10.0);	
@@ -197,7 +202,8 @@ awn_settings_new()
 	awn_load_float(client, APP, ICON_ALPHA, &s->icon_alpha,1.0);  
 	awn_load_int(client, APP, FRAME_RATE, &s->frame_rate,25);
   awn_load_bool(client, APP, ICON_DEPTH_ON, &s->icon_depth_on,TRUE);
-	awn_load_float(client, APP, REFLECT_ALPHA_MULT, &s->reflection_alpha_mult,0.33);  
+	awn_load_float(client, APP, REFLECT_ALPHA_MULT, &s->reflection_alpha_mult,0.33);
+  awn_load_bool(client, APP, SHOW_SHADOWS, &s->show_shadows, FALSE);
   
 	/* Title settings */
 	awn_config_client_ensure_group (client, TITLE);
