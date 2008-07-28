@@ -688,6 +688,266 @@ void apply_awn_curves(AwnEffects * fx)
   }
 }
 
+void
+darken_surface(cairo_surface_t *src)
+{
+  int width, height, row_stride;
+  guchar *pixsrc, *target_pixels;
+  cairo_surface_t *temp_srfc;
+  cairo_t *temp_ctx;
+  
+  temp_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
+                                         cairo_xlib_surface_get_width(src),
+                                         cairo_xlib_surface_get_height(src)
+                                        );
+  temp_ctx = cairo_create(temp_srfc);
+  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);  
+  cairo_set_source_surface(temp_ctx, src, 0, 0);
+  cairo_paint(temp_ctx);
+  
+  width = cairo_image_surface_get_width(temp_srfc);
+  height = cairo_image_surface_get_height(temp_srfc);
+  row_stride = cairo_image_surface_get_stride(temp_srfc);
+  target_pixels = cairo_image_surface_get_data(temp_srfc);
+
+  // darken
+  int i, j;
+  for (i = 0; i < height; i++) {
+    pixsrc = target_pixels + i * row_stride;
+    for (j = 0; j < width; j++) {
+      *pixsrc = 0;
+      pixsrc++;
+      *pixsrc = 0;
+      pixsrc++;
+      *pixsrc = 0;
+      pixsrc++;
+      // alpha
+      pixsrc++;
+    }
+  }
+
+  // --
+  
+  cairo_destroy(temp_ctx);
+
+  temp_ctx = cairo_create(src);
+  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
+  g_assert( cairo_get_operator(temp_ctx) == CAIRO_OPERATOR_SOURCE);
+  cairo_set_source_surface(temp_ctx, temp_srfc, 0, 0);
+  cairo_paint(temp_ctx);
+  cairo_surface_destroy(temp_srfc);
+  cairo_destroy(temp_ctx);
+}
+/*
+void
+blur_surface(cairo_surface_t *src, const int radius)
+{
+  guchar * pixdest, * target_pixels_dest, * target_pixels, * pixsrc;
+  cairo_surface_t * temp_srfc, * temp_srfc_dest;
+  cairo_t         * temp_ctx, * temp_ctx_dest;
+
+  g_return_if_fail(src);
+  int width = cairo_xlib_surface_get_width(src);
+  int height = cairo_xlib_surface_get_height(src);
+  
+  // the original stuff
+  temp_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+  temp_ctx = cairo_create(temp_srfc);
+  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);  
+  cairo_set_source_surface(temp_ctx, src, 0, 0);
+  cairo_paint(temp_ctx);
+  
+  // the stuff we draw to
+  temp_srfc_dest = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+  temp_ctx_dest = cairo_create(temp_srfc_dest);
+  //---
+
+  int row_stride = cairo_image_surface_get_stride(temp_srfc);
+  target_pixels = cairo_image_surface_get_data(temp_srfc);
+  target_pixels_dest = cairo_image_surface_get_data(temp_srfc_dest);
+
+  // -- blur ---
+  int total_r, total_g, total_b, total_a;
+  int x, y, kx, ky;
+
+  for (y = 0; y < height; ++y)
+  {
+    for (x = 0; x < width; ++x)
+    {
+      total_r = total_g = total_b = total_a = 0;
+
+      for (ky = -radius; ky <= radius; ++ky) {
+        if ((y+ky)>0 && (y+ky)<height) {
+          for (kx = -radius; kx <= radius; ++kx) {
+            if((x+kx)>0 && (x+kx)<width) {
+              pixsrc = (target_pixels + (y+ky) * row_stride);
+              pixsrc += (x+kx)*4;
+              pixsrc += 3;
+              if(*pixsrc > 0) {
+                pixsrc -= 3;
+                total_r += *pixsrc; pixsrc++;
+                total_g += *pixsrc; pixsrc++;
+                total_b += *pixsrc; pixsrc++;
+                total_a += *pixsrc;
+              }
+            }
+          }
+        }
+      }
+  
+      total_r /= pow((radius<<1)|1,2);
+      total_g /= pow((radius<<1)|1,2);
+      total_b /= pow((radius<<1)|1,2);
+      total_a /= pow((radius<<1)|1,2);    
+
+      pixdest = (target_pixels_dest + y * row_stride);
+      pixdest += x*4;
+
+      *pixdest = (guchar) total_r; pixdest++;
+      *pixdest = (guchar) total_g; pixdest++;
+      *pixdest = (guchar) total_b; pixdest++;
+      *pixdest = (guchar) total_a;
+    }	
+  }
+  //----------
+  
+  cairo_set_operator(temp_ctx, CAIRO_OPERATOR_CLEAR);
+  cairo_paint(temp_ctx);
+  cairo_destroy(temp_ctx);
+
+  temp_ctx = cairo_create(src);
+  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
+  g_assert( cairo_get_operator(temp_ctx) == CAIRO_OPERATOR_SOURCE);
+  cairo_set_source_surface(temp_ctx, temp_srfc_dest, 0, 0);
+  cairo_paint(temp_ctx);
+  cairo_surface_destroy(temp_srfc);
+  cairo_surface_destroy(temp_srfc_dest);
+  cairo_destroy(temp_ctx);
+  cairo_destroy(temp_ctx_dest);
+}
+*/
+void
+blur_surface_shadow(cairo_surface_t *src, const int radius)
+{
+  guchar * pixdest, * target_pixels_dest, * target_pixels, * pixsrc;
+  cairo_surface_t * temp_srfc, * temp_srfc_dest;
+  cairo_t         * temp_ctx, * temp_ctx_dest;
+
+  g_return_if_fail(src);
+  int width = cairo_xlib_surface_get_width(src);
+  int height = cairo_xlib_surface_get_height(src);
+  
+  // the original stuff
+  temp_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+  temp_ctx = cairo_create(temp_srfc);
+  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);  
+  cairo_set_source_surface(temp_ctx, src, 0, 0);
+  cairo_paint(temp_ctx);
+  
+  // the stuff we draw to
+  temp_srfc_dest = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+  temp_ctx_dest = cairo_create(temp_srfc_dest);
+  //---
+
+  int row_stride = cairo_image_surface_get_stride(temp_srfc);
+  target_pixels = cairo_image_surface_get_data(temp_srfc);
+  target_pixels_dest = cairo_image_surface_get_data(temp_srfc_dest);
+
+  // -- blur ---
+  int total_a;
+  int x, y, kx, ky;
+
+  for (y = 0; y < height; ++y)
+  {
+    for (x = 0; x < width; ++x)
+    {
+			total_a = 0;
+
+      for (ky = -radius; ky <= radius; ++ky) {
+        if ((y+ky)>0 && (y+ky)<height) {
+          for (kx = -radius; kx <= radius; ++kx) {
+            if((x+kx)>0 && (x+kx)<width) {
+              pixsrc = (target_pixels + (y+ky) * row_stride) + ((x+kx)*4) + 3;
+
+              total_a += *pixsrc;
+            }
+          }
+        }
+      }
+  
+      total_a /= pow((radius<<1)|1,2);    
+
+      pixdest = (target_pixels_dest + y * row_stride);
+      pixdest += x*4;
+			pixdest += 3;
+      *pixdest = (guchar) total_a;
+    }	
+  }
+  //----------
+  
+  cairo_set_operator(temp_ctx, CAIRO_OPERATOR_CLEAR);
+  cairo_paint(temp_ctx);
+  cairo_destroy(temp_ctx);
+
+  temp_ctx = cairo_create(src);
+  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
+  g_assert( cairo_get_operator(temp_ctx) == CAIRO_OPERATOR_SOURCE);
+  cairo_set_source_surface(temp_ctx, temp_srfc_dest, 0, 0);
+  cairo_paint(temp_ctx);
+  cairo_surface_destroy(temp_srfc);
+  cairo_surface_destroy(temp_srfc_dest);
+  cairo_destroy(temp_ctx);
+  cairo_destroy(temp_ctx_dest);
+}
+
+void
+make_shadows(AwnEffects * fx, cairo_t * cr, int x1, int y1, int width, int height)
+{
+    cairo_surface_t * blur_s;
+    cairo_t * blur_c;
+
+    // icon shadow
+    blur_s = cairo_surface_create_similar(cairo_get_target(cr),CAIRO_CONTENT_COLOR_ALPHA, fx->icon_width+10, fx->icon_height+10);
+    blur_c = cairo_create(blur_s);
+	
+    cairo_set_operator(blur_c,CAIRO_OPERATOR_SOURCE);
+    cairo_set_source_surface(blur_c, cairo_get_target(fx->icon_ctx), 5, 5);
+    cairo_paint(blur_c);
+
+    darken_surface(blur_s);
+    blur_surface_shadow(blur_s, 4);
+  
+    cairo_set_source_surface(cr, blur_s, x1-5, y1-7);	
+    cairo_paint_with_alpha(cr, 0.5);
+
+    cairo_surface_destroy(blur_s);
+    cairo_destroy(blur_c);
+
+
+    // scaled shadow
+    cairo_rectangle(cr, 0, fx->window_height - fx->settings->bar_height + (fx->settings->bar_height / ( 2 * fx->settings->bar_depth_scale)) - 4, fx->window_width, fx->settings->bar_height);
+    cairo_clip(cr);
+    x1 = (fx->window_width - width) / 2;
+    y1 = fx->window_height - height - fx->settings->icon_offset;
+
+    blur_s = cairo_surface_create_similar(cairo_get_target(cr),CAIRO_CONTENT_COLOR_ALPHA, fx->icon_width+10, fx->icon_height+10);
+    blur_c = cairo_create(blur_s);
+	
+    cairo_set_operator(blur_c,CAIRO_OPERATOR_SOURCE);
+    cairo_scale(blur_c, 1, 0.5);
+    cairo_set_source_surface(blur_c, cairo_get_target(fx->icon_ctx), 5, 5);
+    cairo_paint(blur_c);
+
+    darken_surface(blur_s);
+    blur_surface_shadow(blur_s, 1);
+  
+    cairo_set_source_surface(cr, blur_s, x1-5, y1-5+(fx->icon_height/2));	
+    cairo_paint_with_alpha(cr, 0.2);
+
+    cairo_reset_clip(cr);
+    cairo_surface_destroy(blur_s);
+    cairo_destroy(blur_c);
+}
 
 /*
   The icon surface must be an xlib surface.  expose() in awn-applet-simple
@@ -769,6 +1029,12 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
                                     || icon_changed;
   }
 
+  // shadows
+  if (fx->settings && fx->settings->bar_angle > 0 && fx->settings->show_shadows)
+  {
+		make_shadows(fx, cr, ds.x1, ds.y1, ds.current_width, ds.current_height);
+  }
+	
   //Update our displayed Icon.
   cairo_set_source_surface(cr, cairo_get_target(fx->icon_ctx), ds.x1, ds.y1);
 
@@ -778,7 +1044,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
   /* reflection */
   if (fx->y_offset >= 0)
   {
-    ds.y1 += ds.current_height + fx->y_offset * 2;
+    ds.y1 += ds.current_height + fx->y_offset * 2 - ((fx->settings->reflection_offset > 30)? 30 : fx->settings->reflection_offset);
 
     if (icon_changed || !reflect)
     {
@@ -797,9 +1063,11 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
                                0, 0);
       cairo_paint(fx->reflect_ctx);
 
+      cairo_set_operator(cr,CAIRO_OPERATOR_DEST_OVER);
       cairo_set_source_surface(cr, cairo_get_target(fx->reflect_ctx), 
                                ds.x1, ds.y1);
-      cairo_paint_with_alpha(cr, fx->alpha / 3);
+      cairo_paint_with_alpha(cr, fx->alpha / 4);
+      cairo_set_operator(cr,CAIRO_OPERATOR_SOURCE);
       cairo_restore(fx->reflect_ctx);
     }
     else
