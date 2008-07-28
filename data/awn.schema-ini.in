@@ -110,6 +110,14 @@ description = In 3D mode, the angle (in degrees, between 0 and 90) that the bar 
 type = int
 default = 10
 description = The number of pixels between the bottom of the icons and the bottom of the dock.
+[bar/reflection_offset]
+type = int
+default = 0
+description = The number of pixels the reflections are moved up.
+[bar/bar_depth_scale]
+type = int
+default = 1
+description = Scale-factor for the bar-depth in 3d-look.
 [bar/bar_pos]
 type = float
 default = 0.5
@@ -176,6 +184,10 @@ description = Frame rate for awn effects.
 type = bool
 default = TRUE
 description = Enable dept on 3d type effects.
+[app/show_shadows]
+type = bool
+default = False
+description = Shows shadows for the icons.
 [title/text_color]
 type = string
 default = FFFFFFFF
