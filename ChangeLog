@@ -1,22 +1,27 @@
-2008-07-26  Rodney Cryderman <rcryderman@gmail.com>
+2008-07-28  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fixed a whitespace issue.
+
+2008-07-28  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-settings.[ch]:
 	Fixed a couple whitespace issues.
 
-2008-07-26  Rodney Cryderman <rcryderman@gmail.com>
+2008-07-28  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects.c:
 	Optional draws shadows for the icons, bar depth scale and reflections
 	offsets.
 	Provided by meek <torsten.haedrich@gmail.com>
 
-2008-07-26  Rodney Cryderman <rcryderman@gmail.com>
+2008-07-28  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-settings.[ch]:
 	Integrate new reflections offset config settings into awn-settings.
 	Provided by meek <torsten.haedrich@gmail.com>
 
-2008-07-26  Rodney Cryderman <rcryderman@gmail.com>
+2008-07-28  Rodney Cryderman <rcryderman@gmail.com>
 
 	* data/awn.schema-ini.in:
 	Portion of patch from #252642  that adds a config entry for
