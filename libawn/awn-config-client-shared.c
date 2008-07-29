@@ -73,7 +73,7 @@ int awn_config_client_key_lock_open (const gchar *group, const gchar *key)
 	gchar *data     = g_strdup_printf ("%s-%s", group, key);
 	gchar *checksum = g_compute_checksum_for_string (G_CHECKSUM_SHA256, data, strlen (data));
 	gchar *filename = g_strdup_printf ("%s/awn-lock%s.lock", g_get_tmp_dir (), checksum);
-	fd = open (filename, O_CREAT, S_IRWXU);
+	fd = open (filename, O_CREAT | O_RDWR, S_IRWXU);
 	g_free (checksum);
 	g_free (data);
 	g_free (filename);
