@@ -1,3 +1,16 @@
+2008-07-29  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-config-client-shared.c:
+	Replace flock() with fcntl() as fcntl() is POSIX.  Also has the
+	benefit that is works over NFS.
+	Patch courtesy of:  Henry Zhang <hua.zhang@sun.com>.
+
+2008-07-29  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-config-client-shared.c:
+	Open fd with write.  Needed for a switch from flock to fcntl for file
+	locking.
+
 2008-07-28  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects.c:
