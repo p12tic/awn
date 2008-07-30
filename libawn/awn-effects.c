@@ -1063,11 +1063,11 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
                                0, 0);
       cairo_paint(fx->reflect_ctx);
 
-      //cairo_set_operator(cr,CAIRO_OPERATOR_DEST_OVER);
+      cairo_set_operator(cr,CAIRO_OPERATOR_DEST_OVER);
       cairo_set_source_surface(cr, cairo_get_target(fx->reflect_ctx), 
                                ds.x1, ds.y1);
       cairo_paint_with_alpha(cr, fx->alpha / 4);
-      //cairo_set_operator(cr,CAIRO_OPERATOR_SOURCE);
+      cairo_set_operator(cr,CAIRO_OPERATOR_OVER);
       cairo_restore(fx->reflect_ctx);
     }
     else
