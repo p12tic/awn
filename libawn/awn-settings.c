@@ -56,7 +56,6 @@
 #define NO_BAR_RESIZE_ANI "no_bar_resize_animation" /*bool*/
 #define SHOW_SHADOWS "show_shadows"  /*bool*/
 #define REFLECTION_OFFSET "reflection_offset"  /*int*/
-#define BAR_DEPTH_SCALE "bar_depth_scale"  /*int*/
 
 #define CURVES_SYMMETRY  "curves_symmetry" /*float, between 0 and 1*/
 #define CURVINESS   "curviness"  /*float, between 0 and 1*/
@@ -178,8 +177,6 @@ awn_settings_new()
   awn_load_bool(client, BAR, NO_BAR_RESIZE_ANI, &s->no_bar_resize_ani, FALSE);
 
   awn_load_int(client, BAR, REFLECTION_OFFSET, &s->reflection_offset, 0);
-
-  awn_load_int(client, BAR, BAR_DEPTH_SCALE, &s->bar_depth_scale, 1);
 
   awn_load_int(client, BAR, ICON_OFFSET, &s->icon_offset, 10);
 

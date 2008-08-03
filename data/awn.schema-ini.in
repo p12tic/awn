@@ -114,10 +114,6 @@ description = The number of pixels between the bottom of the icons and the botto
 type = int
 default = 0
 description = The number of pixels the reflections are moved up.
-[bar/bar_depth_scale]
-type = int
-default = 1
-description = Scale-factor for the bar-depth in 3d-look.
 [bar/bar_pos]
 type = float
 default = 0.5

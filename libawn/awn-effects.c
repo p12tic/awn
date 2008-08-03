@@ -925,7 +925,7 @@ make_shadows(AwnEffects * fx, cairo_t * cr, int x1, int y1, int width, int heigh
 
 
     // scaled shadow
-    cairo_rectangle(cr, 0, fx->window_height - fx->settings->bar_height + (fx->settings->bar_height / ( 2 * fx->settings->bar_depth_scale)) - 4, fx->window_width, fx->settings->bar_height);
+    cairo_rectangle(cr, 0, fx->window_height - fx->settings->bar_height + (fx->settings->bar_height / 2) - 4, fx->window_width, fx->settings->bar_height);
     cairo_clip(cr);
     x1 = (fx->window_width - width) / 2;
     y1 = fx->window_height - height - fx->settings->icon_offset;

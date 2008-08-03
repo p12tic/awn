@@ -1,3 +1,21 @@
+2008-08-03  Rodney Cryderman <rcryderman@gmail.com>
+
+	* data/awn.schema-ini.in:
+	* libawn/awn-effects.c:
+	* libawn/awn-settings.c:
+	* libawn/awn-settings.h:
+	Remove  bar_depth_scale.
+
+2008-07-30  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects.c:
+	A better fix for the spotlight regression.
+
+2008-07-30  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fixed a regression when spotlight is used.
+
 2008-07-29  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-config-client-shared.c:

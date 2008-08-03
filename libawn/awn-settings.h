@@ -100,7 +100,6 @@ typedef struct
 
   int icon_offset;
   int reflection_offset;
-  int bar_depth_scale;
   gboolean show_shadows;
 
   /* Title settings */
