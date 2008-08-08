@@ -1,6 +1,11 @@
 2008-08-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* debian/control:
+	Fix the Replaces and Conflicts fields for avant-window-navigator-trunk.
+
+2008-08-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* debian/control:
 	Add python-awn-trunk to the dependencies for avant-window-navigator-trunk,
 	due to the applet migration script.
 

@@ -36,8 +36,8 @@ Depends: 	${shlibs:Depends},
 		dbus-x11 | dbus
 Recommends:	awn-manager-trunk (>= 0.2),
 Suggests: 	metacity (>= 2.21.5) | xcompmgr | compiz | xfwm4 (>= 4.2)
-Conflicts: awn-window-navigator-bzr, awn-window-navigator, awn-window-navigator-testing
-Replaces: awn-window-navigator-bzr, awn-window-navigator, awn-window-navigator-testing
+Conflicts: avant-window-navigator-bzr, avant-window-navigator, avant-window-navigator-testing
+Replaces: avant-window-navigator-bzr, avant-window-navigator, avant-window-navigator-testing
 Description: A MacOS X like panel for GNOME
  The avant-window-navigator is a MacOS X like panel for the GNOME Desktop
  written in C.  In addition to launchers that can be dragged onto the bar, 
