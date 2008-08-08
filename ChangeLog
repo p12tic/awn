@@ -1,3 +1,9 @@
+2008-08-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/tmpl/awn-settings.sgml:
+	* doc/reference/tmpl/libawn-unused.sgml:
+	Update gtk-doc templates.
+
 2008-08-07  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet.c:
