@@ -1,5 +1,10 @@
 2008-08-08  Rodney Cryderman <rcryderman@gmail.com>
 
+	* src/awn-title.c:
+	Reformated code to awn coding style.  Minor code cleanups.
+
+2008-08-08  Rodney Cryderman <rcryderman@gmail.com>
+
 	* src/awn-plug.c:
 	Reformatted to awn coding style (using astyle).
 
