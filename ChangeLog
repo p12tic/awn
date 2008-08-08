@@ -1,5 +1,11 @@
 2008-08-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* debian/control:
+	Add python-awn-trunk to the dependencies for avant-window-navigator-trunk,
+	due to the applet migration script.
+
+2008-08-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/tmpl/awn-settings.sgml:
 	* doc/reference/tmpl/libawn-unused.sgml:
 	Update gtk-doc templates.
