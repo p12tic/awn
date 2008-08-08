@@ -29,7 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <glib/gstdio.h>
-
+#include <glib/gi18n.h>
 
 #ifdef USE_GCONF
 #include <gconf/gconf-client.h>
@@ -162,7 +162,7 @@ static gboolean
 _clear_awn_icons(GtkMenuItem *menuitem, gpointer null)
 {
 
-  GtkWidget *dialog = gtk_dialog_new_with_buttons ("Clear Custom Icons?",
+  GtkWidget *dialog = gtk_dialog_new_with_buttons (_("Clear Custom Icons?"),
                                    NULL,
                                    GTK_DIALOG_NO_SEPARATOR,
                                    GTK_STOCK_CANCEL,
@@ -170,7 +170,7 @@ _clear_awn_icons(GtkMenuItem *menuitem, gpointer null)
                                    GTK_STOCK_OK,
                                    GTK_RESPONSE_ACCEPT,
                                    NULL);
-  GtkWidget * label = gtk_label_new ("Clear all custom (applet) icons?");
+  GtkWidget * label = gtk_label_new (_("Clear all custom (applet) icons?"));
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG(dialog)->vbox),label);
   g_signal_connect(dialog, 
 									 "response",
@@ -184,7 +184,7 @@ _clear_awn_icons(GtkMenuItem *menuitem, gpointer null)
 GtkWidget *
 awn_applet_create_pref_item(void)
 {
-	GtkWidget * item = gtk_image_menu_item_new_with_label("Dock Preferences");
+	GtkWidget * item = gtk_image_menu_item_new_with_label(_("Dock Preferences"));
   gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
                                 gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
                                                          GTK_ICON_SIZE_MENU));
@@ -198,7 +198,7 @@ awn_applet_create_pref_item(void)
 static GtkWidget *
 awn_applet_clear_icons_item(void)
 {
-	GtkWidget * item = gtk_image_menu_item_new_with_label("Clear All Custom Icons");
+	GtkWidget * item = gtk_image_menu_item_new_with_label(_("Clear All Custom Icons"));
   gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
                                 gtk_image_new_from_stock(GTK_STOCK_CLEAR,
                                                          GTK_ICON_SIZE_MENU));

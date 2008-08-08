@@ -1,3 +1,9 @@
+2008-08-07  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-icons.c:
+	Add some localization support for some strings.
+
 2008-08-03  Rodney Cryderman <rcryderman@gmail.com>
 
 	* data/awn.schema-ini.in:

@@ -29,7 +29,7 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-
+#include <glib/gi18n.h>
 
 
 G_DEFINE_TYPE (AwnIcons, awn_icons, G_TYPE_OBJECT)
@@ -288,7 +288,7 @@ awn_icons_drag_data_received (GtkWidget          *widget,
         dialog_data->awn_icons = icons;
        
         //TODO , add text, add scope options, display icon.
-        dialog = gtk_dialog_new_with_buttons ("Change Icon?",
+        dialog = gtk_dialog_new_with_buttons (_("Change Icon?"),
                                          NULL,
                                          GTK_DIALOG_NO_SEPARATOR,
                                          GTK_STOCK_CLEAR,
@@ -314,23 +314,23 @@ awn_icons_drag_data_received (GtkWidget          *widget,
 
         if ( priv->count > 0)
         {
-          label = gtk_label_new ("Use this icon?");
+          label = gtk_label_new (_("Use this icon?"));
           gtk_container_add (GTK_CONTAINER (vbox), label);        
         }
         else
         {
-          label = gtk_label_new ("Use this icon?");
+          label = gtk_label_new (_("Use this icon?"));
           gtk_container_add (GTK_CONTAINER (vbox), label);        
         }
         
         priv->scope_radio1 = gtk_radio_button_new (NULL);
-        GtkWidget *scope_label = gtk_label_new("Apply to this applet instance.");
+        GtkWidget *scope_label = gtk_label_new(_("Apply to this applet instance."));
         gtk_container_add (GTK_CONTAINER (priv->scope_radio1),scope_label);
         
         priv->scope_radio2 = gtk_radio_button_new_with_label_from_widget
-                    (GTK_RADIO_BUTTON(priv->scope_radio1),"Apply to this applet type.");
+                    (GTK_RADIO_BUTTON(priv->scope_radio1),_("Apply to this applet type."));
         priv->scope_radio3 = gtk_radio_button_new_with_label_from_widget
-                    (GTK_RADIO_BUTTON(priv->scope_radio1),"Apply to icon name.");
+                    (GTK_RADIO_BUTTON(priv->scope_radio1),_("Apply to icon name."));
 
         gtk_container_add (GTK_CONTAINER (vbox), priv->scope_radio1);
         gtk_container_add (GTK_CONTAINER (vbox), priv->scope_radio2);
