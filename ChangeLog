@@ -1,3 +1,9 @@
+2008-08-08  Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-icons.[ch]:
+	Convert some gchar ** to GStrv to make it easier to automatically
+	generate bindings.
+
 2008-08-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* debian/control:
@@ -24,7 +30,7 @@
 
 	* libawn/awn-applet.c:
 	* libawn/awn-icons.c:
-	Add some localization support for some strings.
+	Add localization support for some strings.
 
 2008-08-03  Rodney Cryderman <rcryderman@gmail.com>
 

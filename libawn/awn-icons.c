@@ -386,8 +386,8 @@ awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
                               const gchar * applet_name,
                               const gchar * uid,
                               gint height,
-                              const gchar **states,
-                              const gchar **icon_names)
+                              const GStrv states,
+                              const GStrv icon_names)
 {
   g_return_if_fail(icons);
   g_return_if_fail(applet_name);
