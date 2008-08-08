@@ -17,6 +17,11 @@
 
 2008-08-07  Rodney Cryderman <rcryderman@gmail.com>
 
+	* src/awn-task.c:
+	Added localization support for some strings.
+
+2008-08-07  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-applet.c:
 	* libawn/awn-icons.c:
 	Add some localization support for some strings.
