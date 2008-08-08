@@ -18,6 +18,10 @@ avant_window_navigator_SOURCES =	\
 	awn-app.c \
 	awn-app.h \
 	awn-app-glue.h \
+	awn-applet-manager.c \
+	awn-applet-manager.h \
+	awn-applet-proxy.c \
+	awn-applet-proxy.h \
 	awn-background.c \
 	awn-background.h \
 	awn-background-flat.c \

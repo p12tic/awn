@@ -59,6 +59,12 @@ struct _AwnPanel
 struct _AwnPanelClass 
 {
   GtkWindowClass parent_class;
+
+  /*< signals >*/
+  void (*size_changed)   (AwnPanel *panel, gint size);
+  void (*orient_changed) (AwnPanel *panel, gint orientation);
+  void (*destroy_notify) (AwnPanel *panel);
+  void (*destroy_applet) (AwnPanel *panel, const gchar *uid);
 };
 
 typedef enum

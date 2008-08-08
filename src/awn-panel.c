@@ -26,10 +26,9 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/shape.h>
 
-#include <libawn/awn-settings.h>
-
 #include "awn-panel.h"
 
+#include "awn-applet-manager.h"
 #include "awn-background.h"
 #include "awn-background-flat.h"
 #include "awn-monitor.h"
@@ -81,6 +80,17 @@ static const GtkTargetEntry drop_types[] =
   { "text/uri-list", 0, 0}
 };
 static const gint n_drop_types = G_N_ELEMENTS (drop_types);
+
+enum
+{
+  SIZE_CHANGED,
+  ORIENT_CHANGED,
+  DESTROY_NOTIFY,
+  DESTROY_APPLET,
+
+  LAST_SIGNAL
+};
+static guint _panel_signals[LAST_SIGNAL] = { 0 };
 
 /* 
  * FORWARDS
@@ -164,7 +174,9 @@ awn_panel_constructed (GObject *object)
   position_window (AWN_PANEL (panel));
 
   /* Contents */
-  gtk_container_add (GTK_CONTAINER (panel), gtk_label_new ("Hello\n"));
+  priv->applet_manager = awn_applet_manager_new_from_config (priv->client);
+  gtk_container_add (GTK_CONTAINER (panel), priv->applet_manager);
+  gtk_widget_show_all (priv->applet_manager);
 }
 
 
@@ -232,9 +244,11 @@ awn_panel_set_property (GObject      *object,
       break;
     case PROP_ORIENT:
       priv->orient = g_value_get_int (value);
+      g_signal_emit (object, _panel_signals[ORIENT_CHANGED], 0, priv->orient);
       break;
     case PROP_SIZE:
       priv->size = g_value_get_int (value);
+      g_signal_emit (object, _panel_signals[SIZE_CHANGED], 0, priv->size);
       break;    
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -288,20 +302,12 @@ awn_panel_class_init (AwnPanelClass *klass)
                           "The window sets the appropriete panel size hints",
                           TRUE,
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-  g_object_class_install_property (obj_class,
-    PROP_OFFSET,
-    g_param_spec_int ("offset",
-                      "Offset",
-                      "An offset for applets in the panel",
-                      0, G_MAXINT, 0,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (obj_class,
+ g_object_class_install_property (obj_class,
     PROP_ORIENT,
     g_param_spec_int ("orient",
                       "Orient",
                       "The orientation of the panel",
-                      0, 3, AWN_ORIENT_TOP,
+                      0, 3, AWN_ORIENT_BOTTOM,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
    
   g_object_class_install_property (obj_class,
@@ -311,6 +317,57 @@ awn_panel_class_init (AwnPanelClass *klass)
                       "The size of the panel",
                       0, G_MAXINT, 48,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  
+  g_object_class_install_property (obj_class,
+    PROP_OFFSET,
+    g_param_spec_int ("offset",
+                      "Offset",
+                      "An offset for applets in the panel",
+                      0, G_MAXINT, 0,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+ 
+
+  /* Add signals to the class */
+  _panel_signals[SIZE_CHANGED] =
+		g_signal_new ("size_changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (AwnPanelClass, size_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__INT, 
+			      G_TYPE_NONE,
+			      1, G_TYPE_INT);
+  
+  _panel_signals[ORIENT_CHANGED] =
+		g_signal_new ("orient_changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (AwnPanelClass, orient_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__INT, 
+			      G_TYPE_NONE,
+			      1, G_TYPE_INT);
+
+  _panel_signals[DESTROY_NOTIFY] =
+		g_signal_new ("destroy_notify",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (AwnPanelClass, destroy_notify),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE,
+			      0);
+
+  _panel_signals[DESTROY_APPLET] =
+		g_signal_new ("destroy_applet",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (AwnPanelClass, destroy_applet),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__STRING,
+			      G_TYPE_NONE,
+			      1, G_TYPE_STRING);
 
   g_type_class_add_private (obj_class, sizeof (AwnPanelPrivate));
 
@@ -760,24 +817,26 @@ awn_panel_set_offset  (AwnPanel *panel,
                        gint      offset)
 {
   AwnPanelPrivate *priv = panel->priv;
-  GtkAlignment *alignment = GTK_ALIGNMENT (priv->alignment);
-
+  
   priv->offset = offset;  
   
   switch (priv->orient)
   {
     case AWN_ORIENT_TOP:
-      gtk_alignment_set_padding (alignment, offset, 0, 0, 0);
+    case AWN_ORIENT_BOTTOM:
+      gtk_window_resize (GTK_WINDOW (panel),
+                         GTK_WIDGET (panel)->allocation.width, 
+                         offset 
+                          + (priv->composited ? 2 * priv->size : priv->size));
       break;
     case AWN_ORIENT_RIGHT:
-      gtk_alignment_set_padding (alignment, 0, 0, 0, offset);
-      break;
-    case AWN_ORIENT_BOTTOM:
-      gtk_alignment_set_padding (alignment, 0, offset, 0, 0);
-      break;
+    case AWN_ORIENT_LEFT:
     default:
-      gtk_alignment_set_padding (alignment, 0, 0, offset, 0);
-  }
+      gtk_window_resize (GTK_WINDOW (panel),
+                         offset 
+                          + (priv->composited ? 2 * priv->size : priv->size),
+                         GTK_WIDGET (panel)->allocation.height);
+   }
 }
 
 
