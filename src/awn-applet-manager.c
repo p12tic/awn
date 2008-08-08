@@ -23,6 +23,8 @@
 
 #include "awn-applet-manager.h"
 
+#include "awn-applet-proxy.h"
+
 G_DEFINE_TYPE (AwnAppletManager, awn_applet_manager, GTK_TYPE_BOX) 
 
 #define AWN_APPLET_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE (obj, \
@@ -32,9 +34,15 @@ struct _AwnAppletManagerPrivate
 {
   AwnConfigClient *client;
 
-  AwnOrientation orient;
+  AwnOrientation   orient;
+  GList           *applet_list;
 
-  GtkWidgetClass *klass;
+  GHashTable      *applets;
+  GQuark           touch_quark;
+
+
+  /* Current box class */
+  GtkWidgetClass  *klass;
 };
 
 enum 
@@ -42,7 +50,8 @@ enum
   PROP_0,
 
   PROP_CLIENT,
-  PROP_ORIENT
+  PROP_ORIENT,
+  PROP_APPLET_LIST
 };
 
 
@@ -51,6 +60,8 @@ enum
  */
 static void awn_applet_manager_set_orient (AwnAppletManager *manager, 
                                            gint              orient);
+static void free_list                     (GList *list);
+static void refresh_applets               (AwnAppletManager *manager);
 
 /*
  * GOBJECT CODE 
@@ -58,9 +69,13 @@ static void awn_applet_manager_set_orient (AwnAppletManager *manager,
 static void
 awn_applet_manager_constructed (GObject *object)
 {
+  AwnAppletManager        *manager;
   AwnAppletManagerPrivate *priv;
   
-  priv = AWN_APPLET_MANAGER_GET_PRIVATE (object); 
+  priv = AWN_APPLET_MANAGER_GET_PRIVATE (object);
+  manager = AWN_APPLET_MANAGER (object);
+
+  refresh_applets (manager);
 
   gtk_box_pack_start (GTK_BOX (object), gtk_label_new ("Applet 1"),
                       0, FALSE, FALSE);
@@ -103,6 +118,9 @@ awn_applet_manager_get_property (GObject    *object,
     case PROP_ORIENT:
       g_value_set_int (value, priv->orient);
       break;
+    case PROP_APPLET_LIST:
+      g_value_set_pointer (value, priv->applet_list);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -128,6 +146,11 @@ awn_applet_manager_set_property (GObject      *object,
     case PROP_ORIENT:
       awn_applet_manager_set_orient (manager, g_value_get_int (value));
       break;
+    case PROP_APPLET_LIST:
+      free_list (priv->applet_list);
+      priv->applet_list = g_value_get_pointer (value);
+      /* load_applets */
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -136,7 +159,11 @@ awn_applet_manager_set_property (GObject      *object,
 
 static void
 awn_applet_manager_dispose (GObject *object)
-{
+{ 
+  AwnAppletManagerPrivate *priv = AWN_APPLET_MANAGER_GET_PRIVATE (object);
+
+  g_hash_table_destroy (priv->applets);
+
   G_OBJECT_CLASS (awn_applet_manager_parent_class)->dispose (object);
 }
 
@@ -169,6 +196,13 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                       "The orientation of the panel",
                       0, 3, AWN_ORIENT_BOTTOM,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+    PROP_APPLET_LIST,
+    g_param_spec_pointer ("applet_list",
+                          "Applet List",
+                          "The list of applets for this panel",
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
  
   g_type_class_add_private (obj_class, sizeof (AwnAppletManagerPrivate));
 }
@@ -179,6 +213,10 @@ awn_applet_manager_init (AwnAppletManager *manager)
   AwnAppletManagerPrivate *priv;
 
   priv = manager->priv = AWN_APPLET_MANAGER_GET_PRIVATE (manager);
+
+  priv->touch_quark = g_quark_from_string ("applets-touch-quark");
+  priv->applets = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                         g_free, NULL);
 }
 
 GtkWidget *
@@ -226,4 +264,136 @@ awn_applet_manager_set_orient (AwnAppletManager *manager,
       priv->klass = NULL;
       break;
   }
+}
+
+/*
+ * UTIL
+ */
+static void
+free_list (GList *list)
+{
+  GList *l;
+
+  for (l = list; l; l = l->next)
+  {
+    g_free (l->data);
+  }
+}
+
+/*
+ * APPLET CONTROL
+ */
+static GtkWidget *
+create_applet (AwnAppletManager *manager, 
+               const gchar      *path,
+               const gchar      *uid)
+{
+  AwnAppletManagerPrivate *priv = manager->priv;
+  GtkWidget               *applet;
+
+  /*FIXME: Exception cases, i.e. separators */
+  
+  applet = awn_applet_proxy_new (path, uid, AWN_ORIENT_BOTTOM, 48);
+  gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
+  g_object_set_qdata (G_OBJECT (applet), 
+                      priv->touch_quark, GINT_TO_POINTER (0));
+  g_hash_table_insert (priv->applets, g_strdup (uid), applet);
+
+  return applet;
+}
+
+static void
+zero_applets (gpointer key, GtkWidget *applet, AwnAppletManager *manager)
+{
+  if (G_IS_OBJECT (applet))
+  {
+    g_object_set_qdata (G_OBJECT (applet), 
+                        manager->priv->touch_quark, GINT_TO_POINTER (0));
+  }
+}
+
+static void
+delete_applets (gpointer key, GtkWidget *applet, AwnAppletManager *manager)
+{
+  AwnAppletManagerPrivate *priv = manager->priv;
+  const gchar             *uid;
+  gint                     touched;
+  
+  if (!G_IS_OBJECT (applet))
+    return;
+  
+  touched = GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (applet),
+                                                 priv->touch_quark));
+
+  if (!touched) 
+  {
+    g_object_get (applet, "uid", &uid, NULL);
+    /* FIXME: Let the applet know it's about to be deleted ? */
+    gtk_widget_destroy (applet);
+  }
+}
+
+static void 
+refresh_applets (AwnAppletManager *manager)
+{
+  AwnAppletManagerPrivate *priv = manager->priv;
+  GList                   *a;
+  gint                     i = 0;
+
+  if (priv->applet_list == NULL)
+  {
+    g_debug ("No applets");
+    return;
+  }
+
+  /* Set each of the current apps as "untouched" */
+  g_hash_table_foreach (priv->applets, (GHFunc)zero_applets, manager);
+
+  /* Go through the list of applets. Re-order those that are already active, 
+   * and create those that are not
+   */
+  for (a = priv->applet_list; a; a = a->next)
+  {
+    GtkWidget *applet = NULL;
+    gchar     **tokens;
+
+    /* Get the two tokens from the saved string, where:
+     * tokens[0] == path to applet desktop file &
+     * tokens[1] == uid of applet
+     */
+    tokens = g_strsplit (a->data, "::", 2);
+
+    if (tokens == NULL || g_strv_length (tokens) != 2)
+    {
+      g_warning ("Bad applet key: %s", (gchar*)a->data);
+      continue;
+    }
+
+    /* See if the applet already exists */
+    applet = g_hash_table_lookup (priv->applets, tokens[1]);
+
+    /* If not, create it */
+    if (!AWN_IS_APPLET_PROXY (applet))
+    {
+      applet = create_applet (manager, tokens[0], tokens[1]);
+      if (!applet)
+      {
+        g_strfreev (tokens);
+        continue;
+      }
+    }
+
+    /* Order the applet correctly */
+    gtk_box_reorder_child (GTK_BOX (manager), applet, i);
+    
+    /* Make sure we don't kill it during clean up */
+    g_object_set_qdata (G_OBJECT (applet), 
+                        priv->touch_quark, GINT_TO_POINTER (1));
+    
+    g_strfreev (tokens);
+    i++;
+  }
+
+  /* Delete applets that have been removed from the list */
+  g_hash_table_foreach (priv->applets, (GHFunc)delete_applets, manager);
 }

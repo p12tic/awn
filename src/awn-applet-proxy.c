@@ -80,7 +80,7 @@ awn_applet_proxy_constructed (GObject *object)
   g_signal_connect (proxy, "plug-added", G_CALLBACK (on_plug_added), NULL);
   g_signal_connect (proxy, "plug-removed", G_CALLBACK (on_plug_removed), NULL);
 
-  g_debug ("Applet: %s %s", priv->path, priv->uid);
+  g_debug ("Loading Applet: %s %s", priv->path, priv->uid);
 
   /* Load the applet */
   screen = gtk_widget_get_screen (GTK_WIDGET (proxy));
@@ -94,7 +94,7 @@ awn_applet_proxy_constructed (GObject *object)
 
   if (error)
   {
-    g_warning ("Unable to activate applet %s: %s", priv->path, error->message);
+    g_warning ("Unable to load applet %s: %s", priv->path, error->message);
     g_error_free (error);
     g_signal_emit (proxy, _proxy_signals[APPLET_DELETED], 0, priv->uid);
   }
@@ -238,6 +238,24 @@ awn_applet_proxy_init (AwnAppletProxy *proxy)
   priv = proxy->priv = AWN_APPLET_PROXY_GET_PRIVATE (proxy);
 
   gtk_widget_realize (GTK_WIDGET (proxy));
+}
+
+
+GtkWidget *     
+awn_applet_proxy_new (const gchar *path,
+                      const gchar *uid,
+                      gint         orient,
+                      gint         size)
+{
+  GtkWidget *proxy;
+
+  proxy = g_object_new (AWN_TYPE_APPLET_PROXY,
+                        "path", path,
+                        "uid", uid,
+                        "orient", orient,
+                        "size", size,
+                        NULL);
+  return proxy;
 }
 
 /*
