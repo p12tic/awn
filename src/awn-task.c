@@ -1800,7 +1800,7 @@ _task_choose_custom_icon(AwnTask *task)
   priv = AWN_TASK_GET_PRIVATE(task);
 
   /* Create the dialog */
-  file = gtk_file_chooser_dialog_new("Choose New Image...",
+  file = gtk_file_chooser_dialog_new(_("Choose New Image..."),
                                      GTK_WINDOW(priv->settings->window),
                                      GTK_FILE_CHOOSER_ACTION_OPEN,
                                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -1892,10 +1892,10 @@ _task_show_prefs(GtkMenuItem *item, AwnTask *task)
   GtkWidget *image;
   GtkWidget *button, *label;
 
-  dialog = gtk_dialog_new_with_buttons("Preferences",
+  dialog = gtk_dialog_new_with_buttons(_("Preferences"),
                                        GTK_WINDOW(priv->settings->window),
                                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                                       "Change Icon...",
+                                       _("Change Icon..."),
                                        3,
                                        GTK_STOCK_CANCEL,
                                        GTK_RESPONSE_REJECT,
@@ -1907,7 +1907,7 @@ _task_show_prefs(GtkMenuItem *item, AwnTask *task)
 
   image = gtk_image_new_from_pixbuf(priv->icon);
 
-  button = gtk_button_new_with_label("Change Image...");
+  button = gtk_button_new_with_label(_("Change Image..."));
   gtk_button_set_image(GTK_BUTTON(button), image);
   gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, TRUE, 0);
 
@@ -2091,7 +2091,7 @@ awn_task_create_menu(AwnTask *task, GtkMenu *menu)
     }
   }
 
-  item = gtk_image_menu_item_new_with_label("Dock Preferences");
+  item = gtk_image_menu_item_new_with_label(_("Dock Preferences"));
 
   gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
                                 gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
