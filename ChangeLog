@@ -1,6 +1,11 @@
 2008-08-09  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/egg/eggdesktopfile.c:
+	Initialize a, potentially, unitialized pointer.
+
+2008-08-09  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/egg/eggdesktopfile.c:
 	Free the GPtrArray properly.
 
 2008-08-09  Rodney Cryderman <rcryderman@gmail.com>
