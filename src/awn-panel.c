@@ -485,7 +485,7 @@ on_composited_changed (GdkScreen *screen,
 
   client = panel->priv->client;
 
-  g_object_unref (panel);
+  gtk_widget_destroy (GTK_WIDGET (panel));
 
   awn_panel_new_from_config (client);
 }
@@ -645,6 +645,8 @@ position_window (AwnPanel *panel)
 
   gtk_window_move (window, x, y);
 
+  g_debug ("%d %d %d %d %d %d", x, y, ww, hh, monitor->width, monitor->height);
+
   return FALSE;
 }
 
@@ -743,38 +745,39 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     return FALSE;
   }
 
+  gtk_window_get_size (GTK_WINDOW (widget), &width, &height);
+
   /* Calculate correct values */
   switch (priv->orient)
   {
     case AWN_ORIENT_TOP:
       x = 0;
       y = 0;
-      width = widget->allocation.width;
-      height = widget->allocation.height - (priv->composited ? priv->size : 0);
+      width = width;
+      height = height - (priv->composited ? priv->size : 0);
       break;
 
     case AWN_ORIENT_RIGHT:
       x = (priv->composited ? priv->size : 0);
       y = 0;
-      width = widget->allocation.width - (priv->composited ? priv->size : 0);
-      height = widget->allocation.height;
+      width = width - (priv->composited ? priv->size : 0);
+      height = height;
       break;
 
     case AWN_ORIENT_BOTTOM:
       x = 0;
       y = (priv->composited ? priv->size : 0);
-      width = widget->allocation.width;
-      height = widget->allocation.height - (priv->composited ? priv->size : 0);
+      width = width;
+      height = height - (priv->composited ? priv->size : 0);
       break;
 
     case AWN_ORIENT_LEFT:
     default:
       x = 0;
       y = 0;
-      width = widget->allocation.width - (priv->composited ? priv->size : 0);
-      height = widget->allocation.height;
+      width = width - (priv->composited ? priv->size : 0);
+      height = height;
   }
-  g_debug ("%f %f %d %d", x, y, width, height);
 
   /* Get our ctx */
   cr = gdk_cairo_create (widget->window);

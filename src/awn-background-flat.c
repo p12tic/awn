@@ -183,8 +183,7 @@ awn_background_flat_draw (AwnBackground  *bg,
                           gint            height)
 {
   cairo_save (cr);
-  //cairo_translate (cr, 0.5, 0.5);
-
+  
   switch (orient)
   {
     case AWN_ORIENT_RIGHT:

@@ -21,7 +21,32 @@ description = The user-visible size of Awn (minus the offset)
 [panel/applet_list]
 type = list-string
 default = taskmanager.desktop::1
-description = The list of applets for this panel ordered from ltrttb.
+description = The list of applets for this panel ordered from ltr or ttb.
+
+[panel/monitor_force]
+type = bool
+default = False
+description = Force monitor geometry.
+
+[panel/monitor_height]
+type = int
+default = 1024
+description = The forced monitor height. Only used if force_monitor is True.
+
+[panel/monitor_width]
+type = int
+default = 768
+description = The forced monitor width. Only used if force_monitor is True.
+
+[panel/monitor_offset]
+type = int
+default = 0
+description = An optional offset when you have more than 1 monitors.
+
+[panel/monitor_align]
+type = float
+default = 0.5
+description = Alignment of a non-expanded panel on the monitor edge.
 
 [DEFAULT/force_monitor]
 type = bool
