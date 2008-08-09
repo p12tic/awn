@@ -1252,7 +1252,10 @@ egg_desktop_file_launchv(EggDesktopFile *desktop_file,
     startup_id = NULL;
 
 #endif /* HAVE_GDK_X11_DISPLAY_BROADCAST_STARTUP_MESSAGE */
-
+    
+    //GPtrArray s are not guaranteed to be NULL terminated...  
+    if (env)
+      g_ptr_array_add(env,NULL);
     current_success = g_spawn_async_with_pipes(directory,
                                argv,
                                env ? (char **)(env->pdata) : NULL,

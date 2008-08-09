@@ -1,6 +1,11 @@
 2008-08-09  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/egg/eggdesktopfile.c:
+	Possible Fix for bug #194018 (bad address) when using --with-desktop=xfce4.  
+
+2008-08-09  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/egg/eggdesktopfile.c:
 	Use astyle on the file.
 
 2008-08-08  Rodney Cryderman <rcryderman@gmail.com>
