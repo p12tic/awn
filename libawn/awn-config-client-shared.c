@@ -26,11 +26,7 @@
 
 #include <string.h>
 
-#if GLIB_CHECK_VERSION(2,15,0)
 #include <glib/gchecksum.h>
-#else
-#include "egg/eggchecksum.h"
-#endif
 
 static gpointer
 _awn_config_client_copy (gpointer boxed)

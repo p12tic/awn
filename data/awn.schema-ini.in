@@ -1,3 +1,8 @@
+[panel/panel_mode]
+type = bool
+default = True
+description = If True, maximised windows will not cover the panel.
+
 [DEFAULT/force_monitor]
 type = bool
 default = False

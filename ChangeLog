@@ -1,3 +1,28 @@
+2008-08-09  Neil J. Patel  <njpatel@gmail.com>
+
+	* INSTALL:
+	* configure.in:
+	* data/awn.schema-ini.in:
+	* libawn/Makefile.am:
+	* libawn/awn-config-client-gconf.c:
+	* libawn/awn-config-client-shared.c:
+	* libawn/awn-desktop-item-gnome.c:
+	* libawn/awn-vfs.c:
+	* libawn/awn-vfs.h:
+	* libawn/egg/Makefile.am:
+	* libawn/egg/eggchecksum.c:
+	* libawn/egg/eggchecksum.h:
+	* libawn/egg/eggdesktopfile.c:
+	* src/Makefile.am:
+	* src/awn-config-bridge.c:
+	* src/awn-config-bridge.h:
+	* src/awn-defines.h:
+	* src/awn-panel.c:
+	Remove thunar, gnome-vfs, gnome-desktop, eggchecksum code
+	Clean up libawn to not reference any of those libraries
+	Clean up configure.in to reflect that
+	Tidy up awn-vfs.c
+
 2008-07-14  Neil J. Patel  <njpatel@gmail.com>
 
 	* src/Makefile.am:

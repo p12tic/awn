@@ -31,6 +31,8 @@
 #include "awn-applet-manager.h"
 #include "awn-background.h"
 #include "awn-background-flat.h"
+#include "awn-defines.h"
+#include "awn-config-bridge.h"
 #include "awn-monitor.h"
 #include "awn-x.h"
 
@@ -125,6 +127,7 @@ static void
 awn_panel_constructed (GObject *object)
 {
   AwnPanelPrivate *priv;
+  AwnConfigBridge *bridge;
   GtkWidget       *panel;
   GdkScreen       *screen;
 
@@ -134,6 +137,11 @@ awn_panel_constructed (GObject *object)
   priv->monitor = awn_monitor_new_from_config (priv->client);
 
   /* FIXME: Now is the time to hook our properties into priv->client */
+  bridge = awn_config_bridge_get_default ();
+  
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_PANEL_MODE,
+                          object, "panel_mode");
 
   /* Background drawing */
   priv->bg = awn_background_flat_new (priv->client);

@@ -23,23 +23,15 @@
 #define _LIBAWN_AWN_VFS_H
 
 #include <glib.h>
-
+#include <gio/gio.h>
 /**
  * AwnVfsMonitor:
  *
  * A wrapper structure for the VFS libraries' file/directory monitoring
  * structure. In the case of the GIO implementation, it is an opaque structure.
  */
-#ifdef LIBAWN_USE_GNOME
-#include <libgnomevfs/gnome-vfs-monitor.h>
-typedef GnomeVFSMonitorHandle AwnVfsMonitor;
-#elif defined(LIBAWN_USE_XFCE)
-#include <thunar-vfs/thunar-vfs.h>
-typedef ThunarVfsMonitorHandle AwnVfsMonitor;
-#else
-#include <gio/gio.h>
 typedef struct _AwnVfsMonitor AwnVfsMonitor;
-#endif
+
 
 /**
  * AwnVfsMonitorEvent:

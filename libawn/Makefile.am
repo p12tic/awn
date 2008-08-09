@@ -77,11 +77,8 @@ source_c =				\
 	awn-vfs.c			\
 	$(NULL)
 
-if USE_GNOME
-source_c += awn-desktop-item-gnome.c
-else
+
 source_c += awn-desktop-item-egg.c
-endif
 
 if USE_GCONF
 source_c += awn-config-client-gconf.c
@@ -99,16 +96,9 @@ libawn_la_SOURCES =		\
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
 libawn_la_LDFLAGS = -version-info 0:1:0
 
-if USE_EGG
 libawn_la_LIBADD +=					\
 	$(top_builddir)/libawn/egg/libeggdesktopfile.la \
 	$(NULL)
-endif
-if USE_EGG_CHECKSUM
-libawn_la_LIBADD +=					\
-	$(top_builddir)/libawn/egg/libeggchecksum.la	\
-	$(NULL)
-endif
 
 awn-enum-types.h: stamp-awn-enum-types.h
 	@true

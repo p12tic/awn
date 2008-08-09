@@ -29,6 +29,10 @@
 #define AWN_DBUS_APP_PATH   AWN_DBUS_PATH"/Awn"
 #define AWN_DBUS_PANEL_PATH AWN_DBUS_PATH"/Panel"
 
+/* FIXME: Move some of these out into libawn when we can */
+#define AWN_GROUP_PANEL      "panel"
+#define AWN_PANEL_PANEL_MODE "panel_mode"
+
 #endif /*_HAVE_AWN_DEFINES_H */
 
 

@@ -30,11 +30,7 @@
 
 #include <gconf/gconf-client.h>
 
-#if GLIB_CHECK_VERSION(2,15,0)
 #include <glib/gchecksum.h>
-#else
-#include "egg/eggchecksum.h"
-#endif
 
 #include "libawn/awn-config-client.h"
 #include "libawn/awn-defines.h"

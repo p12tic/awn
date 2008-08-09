@@ -46,10 +46,13 @@ G_BEGIN_DECLS
 
 typedef struct _AwnConfigBridge AwnConfigBridge;
 typedef struct _AwnConfigBridgeClass AwnConfigBridgeClass;
+typedef struct _AwnConfigBridgePrivate AwnConfigBridgePrivate;
 
 struct _AwnConfigBridge 
 {
   GObject  parent;
+
+  AwnConfigBridgePrivate *priv;
 };
 
 struct _AwnConfigBridgeClass 
@@ -57,9 +60,16 @@ struct _AwnConfigBridgeClass
   GObjectClass parent_class;
 };
 
-GType awn_config_bridge_get_type (void) G_GNUC_CONST;
+GType             awn_config_bridge_get_type (void) G_GNUC_CONST;
 
-AwnConfigBridge * awn_bridge_get_default (AwnConfigClient *client);
+AwnConfigBridge * awn_config_bridge_get_default (void);
+
+void              awn_config_bridge_bind        (AwnConfigBridge *bridge,
+                                                 AwnConfigClient *client,
+                                                 const gchar     *group,
+                                                 const gchar     *key,
+                                                 GObject         *object,
+                                                const gchar     *property_name);
 
 G_END_DECLS
 
