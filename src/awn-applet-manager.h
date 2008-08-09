@@ -69,6 +69,8 @@ GType       awn_applet_manager_get_type          (void) G_GNUC_CONST;
 
 GtkWidget * awn_applet_manager_new_from_config   (AwnConfigClient *client);
 
+void        awn_applet_manager_refresh_applets  (AwnAppletManager *mananger);
+
 G_END_DECLS
 
 

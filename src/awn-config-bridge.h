@@ -69,7 +69,16 @@ void              awn_config_bridge_bind        (AwnConfigBridge *bridge,
                                                  const gchar     *group,
                                                  const gchar     *key,
                                                  GObject         *object,
-                                                const gchar     *property_name);
+                                                 const gchar     *prop_name);
+
+void              awn_config_bridge_bind_list   (AwnConfigBridge   *bridge,
+                                                 AwnConfigClient   *client,
+                                                 const gchar       *group,
+                                                 const gchar       *key,
+                                                 AwnConfigListType  list_type,
+                                                 GObject           *object,
+                                                 const gchar       *prop_name);
+
 
 G_END_DECLS
 

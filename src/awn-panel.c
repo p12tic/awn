@@ -50,7 +50,7 @@ struct _AwnPanelPrivate
 
   GtkWidget *alignment;
   GtkWidget *eventbox;
-  GtkWidget *applet_manager;
+  GtkWidget *manager;
   
   gboolean composited;
   gboolean panel_mode;
@@ -118,7 +118,10 @@ static void     awn_panel_add         (GtkContainer   *window,
 
 static void     awn_panel_set_offset  (AwnPanel *panel, 
                                        gint      offset);
-      
+static void     awn_panel_set_orient  (AwnPanel *panel,
+                                       gint      orient);
+static void     awn_panel_set_size    (AwnPanel *panel, 
+                                       gint      size);
 
 /*
  * GOBJECT CODE 
@@ -191,17 +194,16 @@ awn_panel_constructed (GObject *object)
   position_window (AWN_PANEL (panel));
 
   /* Contents */
-  priv->applet_manager = awn_applet_manager_new_from_config (priv->client);
-  gtk_container_add (GTK_CONTAINER (panel), priv->applet_manager);
-  gtk_widget_show_all (priv->applet_manager);
+  priv->manager = awn_applet_manager_new_from_config (priv->client);
+  gtk_container_add (GTK_CONTAINER (panel), priv->manager);
+  gtk_widget_show_all (priv->manager);
 }
-
 
 static void
 awn_panel_get_property (GObject    *object,
-                         guint       prop_id,
-                         GValue     *value,
-                         GParamSpec *pspec)
+                        guint       prop_id,
+                        GValue     *value,
+                        GParamSpec *pspec)
 {
   AwnPanelPrivate *priv;
 
@@ -235,9 +237,9 @@ awn_panel_get_property (GObject    *object,
 
 static void
 awn_panel_set_property (GObject      *object,
-                         guint         prop_id,
-                         const GValue *value,
-                         GParamSpec   *pspec)
+                        guint         prop_id,
+                        const GValue *value,
+                        GParamSpec   *pspec)
 {
   AwnPanel        *panel = AWN_PANEL (object);
   AwnPanelPrivate *priv;
@@ -260,18 +262,26 @@ awn_panel_set_property (GObject      *object,
       awn_panel_set_offset (panel, g_value_get_int (value));
       break;
     case PROP_ORIENT:
-      priv->orient = g_value_get_int (value);
-      g_signal_emit (object, _panel_signals[ORIENT_CHANGED], 0, priv->orient);
+      awn_panel_set_orient (panel, g_value_get_int (value));
       break;
     case PROP_SIZE:
-      priv->size = g_value_get_int (value);
-      g_signal_emit (object, _panel_signals[SIZE_CHANGED], 0, priv->size);
+      awn_panel_set_size (panel, g_value_get_int (value));
       break;    
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
 }
 
+static void
+awn_panel_show (GtkWidget *widget)
+{
+  GtkWidget *manager;
+
+  GTK_WIDGET_CLASS (awn_panel_parent_class)->show (widget);
+
+  manager = AWN_PANEL (widget)->priv->manager;
+  awn_applet_manager_refresh_applets (AWN_APPLET_MANAGER (manager));
+}
 
 static void
 awn_panel_dispose (GObject *object)
@@ -292,10 +302,11 @@ awn_panel_class_init (AwnPanelClass *klass)
   obj_class->dispose       = awn_panel_dispose;
   obj_class->get_property  = awn_panel_get_property;
   obj_class->set_property  = awn_panel_set_property;
-  
+    
   cont_class->add          = awn_panel_add;
   
   wid_class->expose_event  = awn_panel_expose;
+  wid_class->show          = awn_panel_show;
 
   /* Add properties to the class */
   g_object_class_install_property (obj_class,
@@ -599,6 +610,9 @@ position_window (AwnPanel *panel)
   AwnMonitor      *monitor = priv->monitor;
   gint             ww = 0, hh = 0, x = 0, y = 0;
 
+  if (!GTK_WIDGET_REALIZED (panel))
+    return FALSE;
+
   gtk_window_get_size (GTK_WINDOW (window), &ww, &hh);
 
   /* FIXME: This has no idea about auto-hide */
@@ -664,7 +678,9 @@ on_window_configure (GtkWidget          *panel,
   /* Update position */
   position_window (AWN_PANEL (panel));
 
-  return FALSE;
+  //gtk_widget_queue_draw (GTK_WIDGET (panel));
+
+  return TRUE;
 }
 
 /*
@@ -758,6 +774,7 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
       width = widget->allocation.width - (priv->composited ? priv->size : 0);
       height = widget->allocation.height;
   }
+  g_debug ("%f %f %d %d", x, y, width, height);
 
   /* Get our ctx */
   cr = gdk_cairo_create (widget->window);
@@ -856,6 +873,44 @@ awn_panel_set_offset  (AwnPanel *panel,
    }
 }
 
+static void
+awn_panel_set_orient (AwnPanel *panel, gint orient)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  priv->orient = orient;
+  g_signal_emit (panel, _panel_signals[ORIENT_CHANGED], 0, priv->orient);
+  position_window (panel);
+  gtk_widget_queue_draw (GTK_WIDGET (panel));
+}
+
+static void
+awn_panel_set_size (AwnPanel *panel, gint size)
+{
+  AwnPanelPrivate *priv = panel->priv;
+  
+  priv->size = size;
+  
+  switch (priv->orient)
+  {
+    case AWN_ORIENT_TOP:
+    case AWN_ORIENT_BOTTOM:
+      gtk_window_resize (GTK_WINDOW (panel),
+                         GTK_WIDGET (panel)->allocation.width, 
+                         priv->offset 
+                          + (priv->composited ? 2 * priv->size : priv->size));
+      break;
+    case AWN_ORIENT_RIGHT:
+    case AWN_ORIENT_LEFT:
+    default:
+      gtk_window_resize (GTK_WINDOW (panel),
+                         priv->offset 
+                          + (priv->composited ? 2 * priv->size : priv->size),
+                         GTK_WIDGET (panel)->allocation.height);
+   }
+
+  g_signal_emit (panel, _panel_signals[SIZE_CHANGED], 0, priv->size);
+}
 
 /*
  * DBUS METHODS

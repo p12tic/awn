@@ -65,44 +65,6 @@ static void on_plug_removed (AwnAppletProxy *proxy);
  * GOBJECT CODE 
  */
 static void
-awn_applet_proxy_constructed (GObject *object)
-{
-  AwnAppletProxyPrivate *priv;
-  GdkScreen             *screen;
-  GtkWidget             *proxy;
-  GError                *error = NULL;
-  gchar                 *exec;
-
-  priv = AWN_APPLET_PROXY_GET_PRIVATE (object);
-  proxy = GTK_WIDGET (object);
-
-  /* Connect to the socket signals */
-  g_signal_connect (proxy, "plug-added", G_CALLBACK (on_plug_added), NULL);
-  g_signal_connect (proxy, "plug-removed", G_CALLBACK (on_plug_removed), NULL);
-
-  g_debug ("Loading Applet: %s %s", priv->path, priv->uid);
-
-  /* Load the applet */
-  screen = gtk_widget_get_screen (GTK_WIDGET (proxy));
-  exec = g_strdup_printf (APPLET_EXEC,
-                          priv->path,
-                          priv->uid, 
-                          (long long)gtk_socket_get_id (GTK_SOCKET (proxy)),
-                          priv->orient,
-                          priv->size);
-  gdk_spawn_command_line_on_screen (screen, exec, &error);
-
-  if (error)
-  {
-    g_warning ("Unable to load applet %s: %s", priv->path, error->message);
-    g_error_free (error);
-    g_signal_emit (proxy, _proxy_signals[APPLET_DELETED], 0, priv->uid);
-  }
-
-  g_free (error);
-}
-
-static void
 awn_applet_proxy_get_property (GObject    *object,
                                guint       prop_id,
                                GValue     *value,
@@ -177,7 +139,6 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
 {
   GObjectClass *obj_class = G_OBJECT_CLASS (klass);
 
-  obj_class->constructed  = awn_applet_proxy_constructed;
   obj_class->dispose      = awn_applet_proxy_dispose;
   obj_class->set_property = awn_applet_proxy_set_property;
   obj_class->get_property = awn_applet_proxy_get_property;
@@ -236,8 +197,6 @@ awn_applet_proxy_init (AwnAppletProxy *proxy)
   AwnAppletProxyPrivate *priv;
 
   priv = proxy->priv = AWN_APPLET_PROXY_GET_PRIVATE (proxy);
-
-  gtk_widget_realize (GTK_WIDGET (proxy));
 }
 
 
@@ -279,3 +238,43 @@ on_plug_removed (AwnAppletProxy *proxy)
 
   g_signal_emit (proxy, _proxy_signals[APPLET_DELETED], 0, priv->uid);
 }
+
+void
+awn_applet_proxy_execute (AwnAppletProxy *proxy)
+{
+  AwnAppletProxyPrivate *priv;
+  GdkScreen             *screen;
+  GError                *error = NULL;
+  gchar                 *exec;
+
+  priv = AWN_APPLET_PROXY_GET_PRIVATE (proxy);
+
+  gtk_widget_realize (GTK_WIDGET (proxy));
+
+  /* Connect to the socket signals */
+  g_signal_connect (proxy, "plug-added", G_CALLBACK (on_plug_added), NULL);
+  g_signal_connect (proxy, "plug-removed", G_CALLBACK (on_plug_removed), NULL);
+
+  g_debug ("Loading Applet: %s %s", priv->path, priv->uid);
+
+  /* Load the applet */
+  screen = gtk_widget_get_screen (GTK_WIDGET (proxy));
+  exec = g_strdup_printf (APPLET_EXEC,
+                          priv->path,
+                          priv->uid, 
+                          (long long)gtk_socket_get_id (GTK_SOCKET (proxy)),
+                          priv->orient,
+                          priv->size);
+  gdk_spawn_command_line_on_screen (screen, exec, &error);
+
+  if (error)
+  {
+    g_warning ("Unable to load applet %s: %s", priv->path, error->message);
+    g_error_free (error);
+    g_signal_emit (proxy, _proxy_signals[APPLET_DELETED], 0, priv->uid);
+  }
+
+  g_free (error);
+}
+
+

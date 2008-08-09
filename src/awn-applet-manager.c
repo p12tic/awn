@@ -24,6 +24,8 @@
 #include "awn-applet-manager.h"
 
 #include "awn-applet-proxy.h"
+#include "awn-config-bridge.h"
+#include "awn-defines.h"
 
 G_DEFINE_TYPE (AwnAppletManager, awn_applet_manager, GTK_TYPE_BOX) 
 
@@ -35,7 +37,7 @@ struct _AwnAppletManagerPrivate
   AwnConfigClient *client;
 
   AwnOrientation   orient;
-  GList           *applet_list;
+  GSList           *applet_list;
 
   GHashTable      *applets;
   GQuark           touch_quark;
@@ -60,8 +62,7 @@ enum
  */
 static void awn_applet_manager_set_orient (AwnAppletManager *manager, 
                                            gint              orient);
-static void free_list                     (GList *list);
-static void refresh_applets               (AwnAppletManager *manager);
+static void free_list                     (GSList *list);
 
 /*
  * GOBJECT CODE 
@@ -71,12 +72,21 @@ awn_applet_manager_constructed (GObject *object)
 {
   AwnAppletManager        *manager;
   AwnAppletManagerPrivate *priv;
+  AwnConfigBridge         *bridge;
   
   priv = AWN_APPLET_MANAGER_GET_PRIVATE (object);
   manager = AWN_APPLET_MANAGER (object);
 
-  refresh_applets (manager);
+  /* Hook everything up the config client */
+  bridge = awn_config_bridge_get_default ();
 
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_ORIENT,
+                          object, "orient");
+  awn_config_bridge_bind_list (bridge, priv->client,
+                               AWN_GROUP_PANEL, AWN_PANEL_APPLET_LIST,
+                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                               object, "applet_list");
   gtk_box_pack_start (GTK_BOX (object), gtk_label_new ("Applet 1"),
                       0, FALSE, FALSE);
   gtk_box_pack_start (GTK_BOX (object), gtk_label_new ("Applet 2"),
@@ -149,7 +159,7 @@ awn_applet_manager_set_property (GObject      *object,
     case PROP_APPLET_LIST:
       free_list (priv->applet_list);
       priv->applet_list = g_value_get_pointer (value);
-      refresh_applets (manager);
+      awn_applet_manager_refresh_applets (manager);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -217,6 +227,8 @@ awn_applet_manager_init (AwnAppletManager *manager)
   priv->touch_quark = g_quark_from_string ("applets-touch-quark");
   priv->applets = g_hash_table_new_full (g_str_hash, g_str_equal,
                                          g_free, NULL);
+
+  gtk_widget_show_all (GTK_WIDGET (manager));
 }
 
 GtkWidget *
@@ -244,6 +256,7 @@ awn_applet_manager_set_orient (AwnAppletManager *manager,
                                gint              orient)
 {
   AwnAppletManagerPrivate *priv = manager->priv;
+  GList *children, *c;
 
   priv->orient = orient;
 
@@ -264,20 +277,41 @@ awn_applet_manager_set_orient (AwnAppletManager *manager,
       priv->klass = NULL;
       break;
   }
+
+  children = gtk_container_get_children (GTK_CONTAINER (manager));
+  for (c = children; c; c = c->next)
+  {
+    GtkWidget *widget = c->data;
+
+    if (orient == AWN_ORIENT_TOP || orient == AWN_ORIENT_BOTTOM)
+    {
+      gtk_widget_set_size_request (widget, 
+                                   -1,
+                                   widget->allocation.width);
+    }
+    else
+    {
+      gtk_widget_set_size_request (widget,
+                                   widget->allocation.height, 
+                                   -1);
+    }
+  }
+  g_list_free (children);
 }
 
 /*
  * UTIL
  */
 static void
-free_list (GList *list)
+free_list (GSList *list)
 {
-  GList *l;
+  GSList *l;
 
   for (l = list; l; l = l->next)
   {
     g_free (l->data);
   }
+  g_slist_free (list);
 }
 
 /*
@@ -298,6 +332,8 @@ create_applet (AwnAppletManager *manager,
   g_object_set_qdata (G_OBJECT (applet), 
                       priv->touch_quark, GINT_TO_POINTER (0));
   g_hash_table_insert (priv->applets, g_strdup (uid), applet);
+
+  awn_applet_proxy_execute (AWN_APPLET_PROXY (applet));
 
   return applet;
 }
@@ -333,12 +369,15 @@ delete_applets (gpointer key, GtkWidget *applet, AwnAppletManager *manager)
   }
 }
 
-static void 
-refresh_applets (AwnAppletManager *manager)
+void    
+awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
 {
   AwnAppletManagerPrivate *priv = manager->priv;
-  GList                   *a;
+  GSList                   *a;
   gint                     i = 0;
+
+  if (!GTK_WIDGET_REALIZED (manager))
+    return;
 
   if (priv->applet_list == NULL)
   {

@@ -35,8 +35,9 @@ struct _AwnConfigBridgePrivate
 
 typedef struct
 {
-  GObject *object;
-  gchar   *property_name;
+  GObject           *object;
+  gchar             *property_name;
+  AwnConfigListType  type;
 
 } AwnConfigBind;
 
@@ -50,6 +51,8 @@ static void on_float_key_changed   (AwnConfigClientNotifyEntry *entry,
 static void on_int_key_changed     (AwnConfigClientNotifyEntry *entry,
                                     gpointer                    data);
 static void on_string_key_changed  (AwnConfigClientNotifyEntry *entry,
+                                    gpointer                    data);
+static void on_list_key_changed    (AwnConfigClientNotifyEntry *entry,
                                     gpointer                    data);
 
 static void
@@ -180,6 +183,53 @@ awn_config_bridge_bind (AwnConfigBridge *bridge,
   priv->binds = g_list_append (priv->binds, bind);
 }
 
+void
+awn_config_bridge_bind_list   (AwnConfigBridge   *bridge,
+                               AwnConfigClient   *client,
+                               const gchar       *group,
+                               const gchar       *key,
+                               AwnConfigListType  list_type,
+                               GObject           *object,
+                               const gchar       *property_name)
+{
+  AwnConfigBridgePrivate *priv;
+  AwnConfigBind          *bind;
+  GParamSpec             *spec;
+  GSList                 *list;
+
+
+  g_return_if_fail (AWN_IS_CONFIG_BRIDGE (bridge));
+  g_return_if_fail (client);
+  g_return_if_fail (group);
+  g_return_if_fail (key);
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (property_name);
+  priv = bridge->priv;
+
+  bind = g_slice_new0 (AwnConfigBind);
+  bind->object = object;
+  bind->property_name = g_strdup (property_name);
+  bind->type = list_type;
+
+  spec = g_object_class_find_property (G_OBJECT_GET_CLASS (object),
+                                       property_name);
+
+  if (G_PARAM_SPEC_VALUE_TYPE (spec) != G_TYPE_POINTER)
+  {
+    g_warning ("Unable to bridge between lists and anything != G_TYPE_POINTER");
+    g_free (bind->property_name);
+    g_slice_free (AwnConfigBind, bind);
+    return;
+  }
+
+  list = awn_config_client_get_list (client, group, key, list_type, NULL);
+  g_object_set (object, property_name, list, NULL);
+
+  awn_config_client_notify_add (client, group, key, on_list_key_changed, bind);
+
+  priv->binds = g_list_append (priv->binds, bind);
+}
+
 static void
 on_boolean_key_changed (AwnConfigClientNotifyEntry *entry,
                         gpointer                    data)
@@ -238,4 +288,19 @@ on_string_key_changed (AwnConfigClientNotifyEntry *entry,
                 NULL);
 
   g_debug ("Value changed %s\n", entry->value.str_val);
+}
+
+static void
+on_list_key_changed (AwnConfigClientNotifyEntry *entry,
+                     gpointer                    data)
+{
+  AwnConfigBind *bind = (AwnConfigBind*)data;
+  
+  g_return_if_fail (bind);
+
+  g_object_set (bind->object, 
+                bind->property_name, entry->value.list_val, 
+                NULL);
+
+  g_debug ("Value changed %s\n", "list");
 }
