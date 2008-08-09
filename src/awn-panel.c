@@ -142,6 +142,15 @@ awn_panel_constructed (GObject *object)
   awn_config_bridge_bind (bridge, priv->client,
                           AWN_GROUP_PANEL, AWN_PANEL_PANEL_MODE,
                           object, "panel_mode");
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_ORIENT,
+                          object, "orient");
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_OFFSET,
+                          object, "offset");
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_SIZE,
+                          object, "size");
 
   /* Background drawing */
   priv->bg = awn_background_flat_new (priv->client);

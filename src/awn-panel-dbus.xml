@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<node name="/org/awn-project/Awn/Panel">
-  <interface name="org.awn-project.Awn.Panel">
+<node name="/org/awnproject/Awn/Panel">
+  <interface name="org.awnproject.Awn.Panel">
     <annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_panel"/>
   
     <!-- Methods -->

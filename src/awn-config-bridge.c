@@ -40,6 +40,18 @@ typedef struct
 
 } AwnConfigBind;
 
+/*
+ * FORWARDS
+ */
+static void on_boolean_key_changed (AwnConfigClientNotifyEntry *entry,
+                                    gpointer                    data);
+static void on_float_key_changed   (AwnConfigClientNotifyEntry *entry,
+                                    gpointer                    data);
+static void on_int_key_changed     (AwnConfigClientNotifyEntry *entry,
+                                    gpointer                    data);
+static void on_string_key_changed  (AwnConfigClientNotifyEntry *entry,
+                                    gpointer                    data);
+
 static void
 awn_config_bridge_dispose (GObject *object)
 {
@@ -104,6 +116,7 @@ awn_config_bridge_bind (AwnConfigBridge *bridge,
   AwnConfigBridgePrivate *priv;
   AwnConfigBind          *bind;
   GParamSpec             *spec;
+  gchar                  *string;
 
   g_return_if_fail (AWN_IS_CONFIG_BRIDGE (bridge));
   g_return_if_fail (client);
@@ -123,20 +136,38 @@ awn_config_bridge_bind (AwnConfigBridge *bridge,
   switch (G_PARAM_SPEC_VALUE_TYPE (spec))
   {
     case G_TYPE_BOOLEAN:
-      g_print ("boolean: %s\n", property_name);
+      g_object_set (object, property_name, 
+                    awn_config_client_get_bool (client, group, key, NULL), 
+                    NULL);
+      awn_config_client_notify_add (client, group, key,
+                                    on_boolean_key_changed, bind);
       break;
     
     case G_TYPE_FLOAT:
     case G_TYPE_DOUBLE:
-      g_print ("Float/double: %s\n", property_name);
+      g_object_set (object, property_name, 
+                    awn_config_client_get_float (client, group, key, NULL),
+                    NULL);
+      awn_config_client_notify_add (client, group, key,
+                                    on_float_key_changed, bind);
       break;
     
     case G_TYPE_INT:
-      g_print ("Int: %s\n", property_name);
+      g_object_set (object, property_name, 
+                    awn_config_client_get_int (client, group, key, NULL),
+                    NULL);
+      awn_config_client_notify_add (client, group, key,
+                                    on_int_key_changed, bind);
       break;
 
     case G_TYPE_STRING:
-      g_print ("String: %s\n", property_name);
+      string = awn_config_client_get_string (client, group, key, NULL);
+      g_object_set (object, property_name, 
+                    awn_config_client_get_string (client, group, key, NULL),
+                    NULL);
+      awn_config_client_notify_add (client, group, key,
+                                    on_string_key_changed, bind);
+      g_free (string);
       break;
 
     default:
@@ -147,4 +178,64 @@ awn_config_bridge_bind (AwnConfigBridge *bridge,
   }
 
   priv->binds = g_list_append (priv->binds, bind);
+}
+
+static void
+on_boolean_key_changed (AwnConfigClientNotifyEntry *entry,
+                        gpointer                    data)
+{
+  AwnConfigBind *bind = (AwnConfigBind*)data;
+  
+  g_return_if_fail (bind);
+
+  g_object_set (bind->object, 
+                bind->property_name, entry->value.bool_val, 
+                NULL);
+
+  g_debug ("Value changed %d\n", entry->value.bool_val);
+}
+
+static void
+on_float_key_changed (AwnConfigClientNotifyEntry *entry,
+                      gpointer                    data)
+{
+  AwnConfigBind *bind = (AwnConfigBind*)data;
+  
+  g_return_if_fail (bind);
+
+  g_object_set (bind->object, 
+                bind->property_name, entry->value.float_val, 
+                NULL);
+
+  g_debug ("Value changed %f\n", entry->value.float_val);
+}
+
+static void
+on_int_key_changed (AwnConfigClientNotifyEntry *entry,
+                    gpointer                    data)
+{
+  AwnConfigBind *bind = (AwnConfigBind*)data;
+  
+  g_return_if_fail (bind);
+
+  g_object_set (bind->object, 
+                bind->property_name, entry->value.int_val, 
+                NULL);
+
+  g_debug ("Value changed %d\n", entry->value.int_val);
+}
+
+static void
+on_string_key_changed (AwnConfigClientNotifyEntry *entry,
+                       gpointer                    data)
+{
+  AwnConfigBind *bind = (AwnConfigBind*)data;
+  
+  g_return_if_fail (bind);
+
+  g_object_set (bind->object, 
+                bind->property_name, entry->value.str_val, 
+                NULL);
+
+  g_debug ("Value changed %s\n", entry->value.str_val);
 }

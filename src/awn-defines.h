@@ -23,15 +23,18 @@
 #ifndef _HAVE_AWN_DEFINES_H
 #define _HAVE_AWN_DEFINES_H
 
-#define AWN_DBUS_NAMESPACE  "org.awn-project.Awn"
-#define AWN_DBUS_PATH       "/org/awn-project/Awn"
+#define AWN_DBUS_NAMESPACE  "org.awnproject.Awn"
+#define AWN_DBUS_PATH       "/org/awnproject/Awn"
 
-#define AWN_DBUS_APP_PATH   AWN_DBUS_PATH"/Awn"
+#define AWN_DBUS_APP_PATH   AWN_DBUS_PATH
 #define AWN_DBUS_PANEL_PATH AWN_DBUS_PATH"/Panel"
 
 /* FIXME: Move some of these out into libawn when we can */
 #define AWN_GROUP_PANEL      "panel"
 #define AWN_PANEL_PANEL_MODE "panel_mode"
+#define AWN_PANEL_ORIENT     "orient"
+#define AWN_PANEL_OFFSET     "offset"
+#define AWN_PANEL_SIZE       "size"
 
 #endif /*_HAVE_AWN_DEFINES_H */
 

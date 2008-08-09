@@ -3,6 +3,21 @@ type = bool
 default = True
 description = If True, maximised windows will not cover the panel.
 
+[panel/orient]
+type = int
+default = 2
+description = Orientation of Awn, top=0, right=1, bottom=2 and left=3
+
+[panel/offset]
+type = int
+default = 0
+description = Offset for icon reflections
+
+[panel/size]
+type = int
+default = 48
+description = The user-visible size of Awn (minus the offset)
+
 [DEFAULT/force_monitor]
 type = bool
 default = False
