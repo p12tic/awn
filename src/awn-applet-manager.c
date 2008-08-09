@@ -149,7 +149,7 @@ awn_applet_manager_set_property (GObject      *object,
     case PROP_APPLET_LIST:
       free_list (priv->applet_list);
       priv->applet_list = g_value_get_pointer (value);
-      /* load_applets */
+      refresh_applets (manager);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
