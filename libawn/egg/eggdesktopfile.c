@@ -1309,7 +1309,7 @@ out:
     /* this raises a segfault
     g_strfreev ((char **)env->pdata);
     */
-    g_ptr_array_free(env, FALSE);
+    g_ptr_array_free(env, TRUE);
   }
 
   free_document_list(translated_documents);
