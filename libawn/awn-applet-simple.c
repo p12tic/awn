@@ -65,8 +65,6 @@ struct _AwnAppletSimplePrivate
   gint bar_height;
   gint bar_angle;
   
-  gboolean effects_enabled;
-  
   AwnIcons  * awn_icons;
   gchar     * current_state;
 
@@ -412,8 +410,8 @@ static void _awn_applet_simple_icon_changed(AwnIcons * awn_icons, AwnAppletSimpl
  */    
 GdkPixbuf * awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
                                     const gchar * applet_name,
-                                    const gchar **states,
-                                    const gchar **icon_names
+                                    const GStrv states,
+                                    const GStrv icon_names
                                     )
 {
   AwnAppletSimplePrivate *priv;  
@@ -561,7 +559,7 @@ void awn_applet_simple_effects_on(AwnAppletSimple *simple)
 {
   AwnAppletSimplePrivate *priv;
   priv = simple->priv;
-  priv->effects_enabled=TRUE;    
+  awn_register_effects(G_OBJECT(simple), &priv->effects);
 }
 
 /*
@@ -573,8 +571,8 @@ void awn_applet_simple_effects_on(AwnAppletSimple *simple)
 void awn_applet_simple_effects_off(AwnAppletSimple *simple)
 {
   AwnAppletSimplePrivate *priv;
-  priv = simple->priv;
-  priv->effects_enabled=FALSE;  
+  priv = simple->priv; 
+  awn_unregister_effects(&priv->effects);    
 }
 
 
@@ -668,20 +666,8 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
         return TRUE;
     }     
 
-    if ( priv->effects_enabled)
-    {    
-      awn_draw_icons_cairo(&priv->effects,cr,priv->icon_context,priv->reflect_context);
-    }
-    else
-    {
-      GtkWidget *child = NULL;    
-      child = gtk_bin_get_child(GTK_BIN(widget));
+    awn_draw_icons_cairo(&priv->effects,cr,priv->icon_context,priv->reflect_context);
 
-      if (child)  //the propagate might not be needed?
-      {
-        gtk_container_propagate_expose(GTK_CONTAINER(widget), child,  expose);    
-      }
-    }    
   }
   awn_draw_foreground(&priv->effects, cr);      
   cairo_destroy(cr);
@@ -853,7 +839,6 @@ awn_applet_simple_init(AwnAppletSimple *simple)
   priv->icon_height = 0;
   priv->icon_width = 0;
   priv->offset = 0;
-  priv->effects_enabled=TRUE;
   priv->title = NULL;
   priv->title_string = NULL;
   priv->title_visible = FALSE;

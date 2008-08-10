@@ -87,8 +87,8 @@ awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
 GdkPixbuf * 
 awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
                                     const gchar * applet_name,
-                                    const gchar **states,
-                                    const gchar **icon_names
+                                    const GStrv states,
+                                    const GStrv icon_names
                                     );
                                     
 GdkPixbuf * 

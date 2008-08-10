@@ -1,3 +1,10 @@
+2008-08-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	Change gchar ** to GStrv.  Cleaned up
+	awn_applet_simple_effects_on/off().
+
 2008-08-09  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/egg/eggdesktopfile.c:
