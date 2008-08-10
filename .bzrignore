@@ -81,3 +81,7 @@ awn-manager/awn-launcher-editor
 data/awn.schema-ini
 src/awn
 src/awn-app-glue.h
+src/awn-panel-glue.h
+src/test
+data/awn-applets-shared.schemas
+data/awn-applets-shared.schemas.in
