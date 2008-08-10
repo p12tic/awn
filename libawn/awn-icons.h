@@ -80,8 +80,8 @@ awn_icons_set_icons_info(AwnIcons * icons,
                               const gchar * applet_name,
                               const gchar * uid,
                               gint height,
-                              const GStrv states,
-                              const GStrv icon_names);
+                              const gchar ** states,
+                              const gchar ** icon_names);
 
 void 
 awn_icons_set_icon_info(AwnIcons * icons,
