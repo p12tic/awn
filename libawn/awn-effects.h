@@ -133,6 +133,7 @@ struct _AwnEffects
 
 //  guint effect_frame_rate;
 
+  gboolean  do_reflections;
 
   cairo_t * icon_ctx;
   cairo_t * reflect_ctx;

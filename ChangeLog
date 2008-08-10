@@ -1,5 +1,10 @@
 2008-08-10  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-effects.[ch]:
+	Added first part of support to disable reflections.
+
+2008-08-10  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-applet-simple.c:
 	* libawn/awn-applet-simple.h:
 	Change gchar ** to GStrv.  Cleaned up

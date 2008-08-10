@@ -194,7 +194,7 @@ awn_effects_init(GObject * self, AwnEffects * fx)
   fx->enter_notify = 0;
   fx->leave_notify = 0;
   fx->timer_id = 0;
-
+  fx->do_reflections = TRUE;
   //fx->effect_frame_rate = fx->settings->frame_rate;
 
   fx->op_list = g_malloc(sizeof(OP_LIST));
@@ -1042,53 +1042,56 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
 
   //------------------------------------------------------------------------
   /* reflection */
-  if (fx->y_offset >= 0)
+  
+  if (fx->do_reflections)
   {
-    ds.y1 += ds.current_height + fx->y_offset * 2 - ((fx->settings->reflection_offset > 30)? 30 : fx->settings->reflection_offset);
-
-    if (icon_changed || !reflect)
+    if (fx->y_offset >= 0)
     {
-      cairo_matrix_t matrix;
-      cairo_matrix_init(&matrix,
-                        1,
-                        0,
-                        0,
-                        -1,
-                        (ds.current_width / 2.0)*(1 - (1)),
-                        (ds.current_height / 2.0)*(1 - (-1))
-                       );
-      cairo_save(fx->reflect_ctx);
-      cairo_transform(fx->reflect_ctx, &matrix);
-      cairo_set_source_surface(fx->reflect_ctx, cairo_get_target(fx->icon_ctx), 
-                               0, 0);
-      cairo_paint(fx->reflect_ctx);
+      ds.y1 += ds.current_height + fx->y_offset * 2 - ((fx->settings->reflection_offset > 30)? 30 : fx->settings->reflection_offset);
 
-      cairo_set_operator(cr,CAIRO_OPERATOR_DEST_OVER);
-      cairo_set_source_surface(cr, cairo_get_target(fx->reflect_ctx), 
-                               ds.x1, ds.y1);
-      cairo_paint_with_alpha(cr, fx->alpha / 4);
-      cairo_set_operator(cr,CAIRO_OPERATOR_OVER);
-      cairo_restore(fx->reflect_ctx);
+      if (icon_changed || !reflect)
+      {
+        cairo_matrix_t matrix;
+        cairo_matrix_init(&matrix,
+                          1,
+                          0,
+                          0,
+                          -1,
+                          (ds.current_width / 2.0)*(1 - (1)),
+                          (ds.current_height / 2.0)*(1 - (-1))
+                         );
+        cairo_save(fx->reflect_ctx);
+        cairo_transform(fx->reflect_ctx, &matrix);
+        cairo_set_source_surface(fx->reflect_ctx, cairo_get_target(fx->icon_ctx), 
+                                 0, 0);
+        cairo_paint(fx->reflect_ctx);
+
+        cairo_set_operator(cr,CAIRO_OPERATOR_DEST_OVER);
+        cairo_set_source_surface(cr, cairo_get_target(fx->reflect_ctx), 
+                                 ds.x1, ds.y1);
+        cairo_paint_with_alpha(cr, fx->alpha / 4);
+        cairo_set_operator(cr,CAIRO_OPERATOR_OVER);
+        cairo_restore(fx->reflect_ctx);
+      }
+      else
+      {
+        cairo_set_source_surface(cr, reflect, ds.x1, ds.y1);
+        cairo_paint_with_alpha(cr, fx->settings->icon_alpha * 
+                                    fx->alpha * 
+                                    fx->settings->reflection_alpha_mult);
+      }
     }
-    else
+    /* 4px offset for 3D look for reflection*/
+    if (fx->settings && fx->settings->bar_angle > 0)
     {
-      cairo_set_source_surface(cr, reflect, ds.x1, ds.y1);
-      cairo_paint_with_alpha(cr, fx->settings->icon_alpha * 
-                                  fx->alpha * 
-                                  fx->settings->reflection_alpha_mult);
-    }
-  }
-
-  /* 4px offset for 3D look for reflection*/
-  if (fx->settings && fx->settings->bar_angle > 0)
-  {
-    cairo_save(cr);
-    cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-    cairo_set_source_rgba(cr, 1, 1, 1, 0);
-    cairo_rectangle(cr, 0, ((fx->settings->bar_height * 2) - 4) +
-                    fx->settings->icon_offset, fx->window_width, 4);
-    cairo_fill(cr);
-    cairo_restore(cr);
+      cairo_save(cr);
+      cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
+      cairo_set_source_rgba(cr, 1, 1, 1, 0);
+      cairo_rectangle(cr, 0, ((fx->settings->bar_height * 2) - 4) +
+                      fx->settings->icon_offset, fx->window_width, 4);
+      cairo_fill(cr);
+      cairo_restore(cr);
+    }    
   }
 }
 
