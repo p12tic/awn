@@ -75,6 +75,7 @@ struct _AwnBackground
   GdkPixbuf *pattern;
 
   /* Appearance options -- (some are backend specific) */
+  gboolean gtk_theme_mode;
   gboolean rounded_corners;
   gfloat   corner_radius;
   gint     panel_angle;

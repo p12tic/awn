@@ -21,14 +21,12 @@
 
 #include "config.h"
 
-#include <gdk/gdkx.h>
 #include <libawn/awn-config-client.h>
 
-#include <X11/Xlib.h>
-#include <X11/extensions/shape.h>
-
 #include "awn-background.h"
-#include "awn-x.h"
+
+#include "awn-config-bridge.h"
+#include "awn-defines.h"
 
 G_DEFINE_ABSTRACT_TYPE (AwnBackground, awn_background, G_TYPE_OBJECT)
 
@@ -52,6 +50,7 @@ enum
   PROP_PATTERN_ALPHA,
   PROP_PATTERN_FILENAME,
 
+  PROP_GTK_THEME_MODE,
   PROP_ROUNDED_CORNERS,
   PROP_CORNER_RADIUS,
   PROP_PANEL_ANGLE,
@@ -62,10 +61,62 @@ enum
 static void
 awn_background_constructed (GObject *object)
 {
-  AwnBackground *bg = AWN_BACKGROUND (object);
+  AwnBackground   *bg = AWN_BACKGROUND (object);
+  AwnConfigBridge *bridge;
 
-  if (bg->client)
-    g_print ("Hook this up to the client Holmes!\n");
+  bridge = awn_config_bridge_get_default ();
+
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_GSTEP1,
+                          object, "gstep1");
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_GSTEP2,
+                          object, "gstep2");
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_GHISTEP1,
+                          object, "ghistep1");
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_GHISTEP2,
+                          object, "ghistep2");
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_BORDER,
+                          object, "border");
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_HILIGHT,
+                          object, "hilight");
+  
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_SHOW_SEP,
+                          object, "show_sep");
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_SEP_COLOR,
+                          object, "sep_color");
+  
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_DRAW_PATTERN,
+                          object, "draw_pattern");
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_PATTERN_ALPHA,
+                          object, "pattern_alpha");
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_PATTERN_FILENAME,
+                          object, "pattern_filename");
+
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_GTK_THEME_MODE,
+                          object, "gtk_theme_mode");
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_CORNER_RADIUS,
+                          object, "corner_radius");
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_PANEL_ANGLE,
+                          object, "panel_angle");
+  awn_config_bridge_bind (bridge, bg->client, 
+                          AWN_GROUP_THEME, AWN_THEME_CURVINESS, 
+                          object, "curviness");
+  awn_config_bridge_bind (bridge, bg->client,
+                          AWN_GROUP_THEME, AWN_THEME_CURVES_SYMMETRY,
+                          object, "curves_symmetry");
 }
 
 static void
@@ -147,6 +198,8 @@ awn_background_set_property (GObject      *object,
                                g_value_get_string (value), NULL);
       break;
 
+    case PROP_GTK_THEME_MODE:
+      bg->gtk_theme_mode = g_value_get_boolean (value);
     case PROP_ROUNDED_CORNERS:
       bg->rounded_corners = g_value_get_boolean (value);
       break;
@@ -276,6 +329,13 @@ awn_background_class_init (AwnBackgroundClass *klass)
                          "",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
+  g_object_class_install_property (obj_class,
+    PROP_GTK_THEME_MODE,
+    g_param_spec_boolean ("gtk_theme_mode",
+                          "Gtk theme mode",
+                          "Use colours from the current Gtk theme",
+                          TRUE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
   
   g_object_class_install_property (obj_class,
     PROP_ROUNDED_CORNERS,

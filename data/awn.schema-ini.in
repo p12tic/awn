@@ -2,51 +2,123 @@
 type = bool
 default = True
 description = If True, maximised windows will not cover the panel.
-
 [panel/orient]
 type = int
 default = 2
 description = Orientation of Awn, top=0, right=1, bottom=2 and left=3
-
 [panel/offset]
 type = int
 default = 0
 description = Offset for icon reflections
-
 [panel/size]
 type = int
 default = 48
 description = The user-visible size of Awn (minus the offset)
-
 [panel/applet_list]
 type = list-string
 default = taskmanager.desktop::1
 description = The list of applets for this panel ordered from ltr or ttb.
-
 [panel/monitor_force]
 type = bool
 default = False
 description = Force monitor geometry.
-
 [panel/monitor_height]
 type = int
 default = 1024
 description = The forced monitor height. Only used if force_monitor is True.
-
 [panel/monitor_width]
 type = int
 default = 768
 description = The forced monitor width. Only used if force_monitor is True.
-
 [panel/monitor_offset]
 type = int
 default = 0
 description = An optional offset when you have more than 1 monitors.
-
 [panel/monitor_align]
 type = float
 default = 0.5
 description = Alignment of a non-expanded panel on the monitor edge.
+
+
+[theme/gstep1]
+type = string
+default = 454545C8
+description = First gradient step color.
+
+[theme/gstep2]
+type = string
+default = 010101BE
+description = Second gradient step color.
+
+[theme/ghistep1]
+type = string
+default = FFFFFF0B
+description = First highlight gradient step color.
+
+[theme/ghistep2]
+type = string
+default = FFFFFF0A
+description = Second highlight gradient step color.
+
+[theme/border]
+type = string
+default = 000000CC
+description = Main border color.
+
+[theme/hilight]
+type = string
+default = FFFFFF11
+description = Internal border color.
+
+[theme/show_sep]
+type = bool
+default = True
+description = Draw separators.
+
+[theme/sep_color]
+type = string
+default = FFFFFF00
+description = Separator color.
+
+[theme/draw_pattern]
+type = bool
+default = False
+description = Enable drawing of a pattern.
+
+[theme/pattern_alpha]
+type = float
+default = 0.5
+description = The opacity of the pattern.
+
+[theme/pattern_filename]
+type = string
+default = None
+description = The location of the pattern to draw.
+
+[theme/gtk_theme_mode]
+type = bool
+default = TRUE
+description = Whether to use colors from the current Gtk theme.
+
+[theme/corner_radius]
+type = float
+default = 10.0
+description = Anything greater than 0 will draw a panel with corners. The greater the radius, the larger the corners.
+
+[theme/panel_angle]
+type = float
+default = 45.0
+description = The angle of the panel in 3D mode.
+
+[theme/curviness]
+type = float
+default = 10.0
+description = The curviness of the panel in Curves mode.
+
+[theme/curves_symmetry]
+type = float
+default = 0.5
+description = The symmetry of the curve in Curves mode.
 
 [DEFAULT/force_monitor]
 type = bool
@@ -86,7 +158,7 @@ default = False
 description = Always keep AWN below all other windows.
 [DEFAULT/applets_list]
 type = list-string
-default = @DATADIR@/avant-window-navigator/applets/taskman.desktop::1
+default = @LIBDIR@/awn/applets/taskman.desktop::1
 description = The list of paths to the enabled applets, in order from left to right.
 [bar/rounded_corners]
 type = bool
@@ -160,10 +232,6 @@ description = In 3D mode, the angle (in degrees, between 0 and 90) that the bar 
 type = int
 default = 10
 description = The number of pixels between the bottom of the icons and the bottom of the dock.
-[bar/reflection_offset]
-type = int
-default = 0
-description = The number of pixels the reflections are moved up.
 [bar/bar_pos]
 type = float
 default = 0.5
@@ -230,10 +298,6 @@ description = Frame rate for awn effects.
 type = bool
 default = TRUE
 description = Enable dept on 3d type effects.
-[app/show_shadows]
-type = bool
-default = False
-description = Shows shadows for the icons.
 [title/text_color]
 type = string
 default = FFFFFFFF

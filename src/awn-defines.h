@@ -42,6 +42,27 @@
 #define AWN_PANEL_MONITOR_OFFSET "monitor_offset"
 #define AWN_PANEL_MONITOR_ALIGN  "monitor_align"
 
+#define AWN_GROUP_THEME          "theme"
+#define AWN_THEME_GSTEP1         "gstep1"
+#define AWN_THEME_GSTEP2         "gstep2"
+#define AWN_THEME_GHISTEP1       "ghistep1"
+#define AWN_THEME_GHISTEP2       "ghistep2"
+#define AWN_THEME_BORDER         "border"
+#define AWN_THEME_HILIGHT        "hilight"
+
+#define AWN_THEME_SHOW_SEP       "show_sep"
+#define AWN_THEME_SEP_COLOR      "sep_color"
+
+#define AWN_THEME_DRAW_PATTERN     "draw_pattern"
+#define AWN_THEME_PATTERN_ALPHA    "pattern_alpha"
+#define AWN_THEME_PATTERN_FILENAME "pattern_filename"
+
+#define AWN_THEME_GTK_THEME_MODE   "gtk_theme_mode"
+#define AWN_THEME_CORNER_RADIUS    "corner_radius"
+#define AWN_THEME_PANEL_ANGLE      "panel_angle"
+#define AWN_THEME_CURVINESS        "curviness"
+#define AWN_THEME_CURVES_SYMMETRY  "curves_symmetry"
+
 #endif /*_HAVE_AWN_DEFINES_H */
 
 
