@@ -79,4 +79,4 @@ uninstall-local:
 
 EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini awn-schema-to-gconf shared.schema-ini awn-applets-migration.py
 
-CLEANFILES = $(desktop_DATA) $(desktop_DATA).in
+CLEANFILES = $(desktop_DATA) $(desktop_DATA).in awn.schemas awn.schemas.in
