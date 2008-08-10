@@ -342,6 +342,16 @@ awn_effect_get_priority(const AwnEffect effect)
   }
 }
 
+void awn_effects_reflection_off(AwnEffects * fx)
+{
+  fx->do_reflections = FALSE;  
+}
+void awn_effects_reflection_on(AwnEffects * fx)
+{
+  fx->do_reflections = TRUE; 
+}
+
+
 void
 awn_effect_start(AwnEffects * fx, const AwnEffect effect)
 {

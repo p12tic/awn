@@ -240,6 +240,9 @@ void awn_draw_foreground(AwnEffects *, cairo_t *);
 void awn_draw_set_window_size(AwnEffects *, const gint, const gint);
 void awn_draw_set_icon_size(AwnEffects *, const gint, const gint);
 
+void awn_effects_reflection_off(AwnEffects * fx);
+void awn_effects_reflection_on(AwnEffects * fx);
+
 G_END_DECLS
 
 //Move this somewhere else eventually
