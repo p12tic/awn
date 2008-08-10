@@ -101,7 +101,7 @@ def check_dependencies(scope, *modules):
         dialog.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK)
         dialog.set_alternative_button_order([gtk.RESPONSE_OK, RESPONSE_WIKI])
         if dialog.run() == RESPONSE_WIKI:
-            url = 'http://wiki.awn-project.org/'
+            url = 'http://wiki.awn-project.org/Applets:Dependencies'
             import webbrowser
             if hasattr(webbrowser, 'open_new_tab'):
                 webbrowser.open_new_tab(url)

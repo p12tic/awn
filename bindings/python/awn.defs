@@ -21,6 +21,13 @@
   (gtype-id "AWN_TYPE_APPLET_SIMPLE")
 )
 
+(define-object Icons
+  (in-module "Awn")
+  (parent "GObject")
+  (c-name "AwnIcons")
+  (gtype-id "AWN_TYPE_ICONS")
+)
+
 (define-object Plug
   (in-module "Awn")
   (parent "GtkPlug")
@@ -387,16 +394,6 @@
   (return-type "guint")
 )
 
-(define-method add_preferences
-  (of-object "AwnApplet")
-  (c-name "awn_applet_add_preferences")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "schema_dir")
-    '("GError**" "opt_error")
-  )
-)
-
 (define-method create_default_menu
   (of-object "AwnApplet")
   (c-name "awn_applet_create_default_menu")
@@ -447,6 +444,15 @@
 (define-method set_icon_context
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_set_icon_context")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+  )
+)
+
+(define-method set_icon_context_scaled
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_icon_context_scaled")
   (return-type "none")
   (parameters
     '("cairo_t*" "cr")
@@ -512,6 +518,12 @@
   (parameters
     '("const-gchar*" "state")
   )
+)
+
+(define-method get_awn_icons
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_get_awn_icons")
+  (return-type "AwnIcons*")
 )
 
 (define-method get_effects
@@ -842,7 +854,61 @@
   )
 )
 
+;; From awn-icons.h
 
+(define-function awn_icons_get_type
+  (c-name "awn_icons_get_type")
+  (return-type "GType")
+)
+
+(define-function awn_icons_new
+  (c-name "awn_icons_new")
+  (is-constructor-of "AwnIcons")
+  (return-type "AwnIcons*")
+)
+
+(define-method get_icon_at_height
+  (of-object "AwnIcons")
+  (c-name "awn_icons_get_icon_at_height")
+  (return-type "GdkPixbuf*")
+  (parameters
+    '("const-gchar*" "state")
+    '("gint" "height")
+  )
+)
+
+(define-method get_icon_simple_at_height
+  (of-object "AwnIcons")
+  (c-name "awn_icons_get_icon_simple_at_height")
+  (return-type "GdkPixbuf*")
+  (parameters
+    '("gint" "height")
+  )
+)
+
+(define-method get_icon
+  (of-object "AwnIcons")
+  (c-name "awn_icons_get_icon")
+  (return-type "GdkPixbuf*")
+  (parameters
+    '("const-gchar*" "state")
+  )
+)
+
+(define-method get_icon_simple
+  (of-object "AwnIcons")
+  (c-name "awn_icons_get_icon_simple")
+  (return-type "GdkPixbuf*")
+)
+
+(define-method set_height
+  (of-object "AwnIcons")
+  (c-name "awn_icons_set_height")
+  (return-type "none")
+  (parameters
+    '("gint" "height")
+  )
+)
 
 ;; From awn-vfs.h
 

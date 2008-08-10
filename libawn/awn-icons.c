@@ -29,7 +29,7 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-
+#include <glib/gi18n.h>
 
 
 G_DEFINE_TYPE (AwnIcons, awn_icons, G_TYPE_OBJECT)
@@ -38,7 +38,7 @@ G_DEFINE_TYPE (AwnIcons, awn_icons, G_TYPE_OBJECT)
 #define AWN_ICONS_RESPONSE_CLEAR 1
 
 #define GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), LIBAWN_TYPE_AWN_ICONS, AwnIconsPrivate))
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_ICONS, AwnIconsPrivate))
 
 typedef struct _AwnIconsPrivate AwnIconsPrivate;
 
@@ -211,14 +211,7 @@ void _awn_icons_dialog_response(GtkDialog *dialog,
       
       if ( g_file_set_contents(dest,contents,length,&err))
       {     
-        printf("Icon set %s\n",dest);
-        //        gtk_icon_theme_rescan_if_needed(priv->awn_theme);        
-        //  This ^ does not seem to force an update. For now will just recreate 
-        // the damn thing.
-        
-//        g_object_unref(priv->awn_theme);
-//        priv->awn_theme = gtk_icon_theme_new();
-        
+       
         gtk_icon_theme_set_custom_theme(priv->awn_theme,NULL);
         gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);  
         
@@ -295,7 +288,7 @@ awn_icons_drag_data_received (GtkWidget          *widget,
         dialog_data->awn_icons = icons;
        
         //TODO , add text, add scope options, display icon.
-        dialog = gtk_dialog_new_with_buttons ("Change Icon?",
+        dialog = gtk_dialog_new_with_buttons (_("Change Icon?"),
                                          NULL,
                                          GTK_DIALOG_NO_SEPARATOR,
                                          GTK_STOCK_CLEAR,
@@ -321,23 +314,23 @@ awn_icons_drag_data_received (GtkWidget          *widget,
 
         if ( priv->count > 0)
         {
-          label = gtk_label_new ("Use this icon?");
+          label = gtk_label_new (_("Use this icon?"));
           gtk_container_add (GTK_CONTAINER (vbox), label);        
         }
         else
         {
-          label = gtk_label_new ("Use this icon?");
+          label = gtk_label_new (_("Use this icon?"));
           gtk_container_add (GTK_CONTAINER (vbox), label);        
         }
         
         priv->scope_radio1 = gtk_radio_button_new (NULL);
-        GtkWidget *scope_label = gtk_label_new("Apply to this applet instance.");
+        GtkWidget *scope_label = gtk_label_new(_("Apply to this applet instance."));
         gtk_container_add (GTK_CONTAINER (priv->scope_radio1),scope_label);
         
         priv->scope_radio2 = gtk_radio_button_new_with_label_from_widget
-                    (GTK_RADIO_BUTTON(priv->scope_radio1),"Apply to this applet type.");
+                    (GTK_RADIO_BUTTON(priv->scope_radio1),_("Apply to this applet type."));
         priv->scope_radio3 = gtk_radio_button_new_with_label_from_widget
-                    (GTK_RADIO_BUTTON(priv->scope_radio1),"Apply to icon name.");
+                    (GTK_RADIO_BUTTON(priv->scope_radio1),_("Apply to icon name."));
 
         gtk_container_add (GTK_CONTAINER (vbox), priv->scope_radio1);
         gtk_container_add (GTK_CONTAINER (vbox), priv->scope_radio2);
@@ -393,8 +386,8 @@ awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
                               const gchar * applet_name,
                               const gchar * uid,
                               gint height,
-                              const gchar **states,
-                              const gchar **icon_names)
+                              const GStrv states,
+                              const GStrv icon_names)
 {
   g_return_if_fail(icons);
   g_return_if_fail(applet_name);
@@ -402,10 +395,11 @@ awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
   g_return_if_fail(states);
   g_return_if_fail(icon_names);
 
+  static gboolean doneonce = FALSE;
   int count;
   AwnIconsPrivate *priv=GET_PRIVATE(icons); 
  
-  if (applet)
+  if (applet && !doneonce)
   {
     priv->icon_widget = GTK_WIDGET(applet);
     gtk_drag_dest_set (priv->icon_widget, 
@@ -462,10 +456,11 @@ awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
   gchar * applet_icon_dir = g_strdup_printf("%s/avant-window-navigator/applets/%s/icons",
                                          DATADIR,
                                          applet_name);
-  gtk_icon_theme_append_search_path (priv->awn_theme,applet_icon_dir);
+  gtk_icon_theme_append_search_path (gtk_icon_theme_get_default(),applet_icon_dir);
   g_free(applet_icon_dir);
   
   gtk_icon_theme_rescan_if_needed(priv->awn_theme);
+  doneonce = TRUE;
 }
 
 void awn_icons_set_icon_info(AwnIcons * icons,
@@ -491,17 +486,15 @@ void awn_icons_set_icon_info(AwnIcons * icons,
 void awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer user_data)
 {
   AwnIconsPrivate *priv=GET_PRIVATE(icons); 
-  printf("Theme_changed \n");
   priv->icon_change_cb = fn;
   priv->icon_change_cb_data = user_data;
   
 }
 
-GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, const gchar * state)
+GdkPixbuf * 
+awn_icons_get_icon_at_height(AwnIcons * icons, const gchar * state, gint height)
 {
-  g_return_val_if_fail(icons,NULL);
-  g_return_val_if_fail(state,NULL);
-  
+  g_return_val_if_fail(icons,NULL);  
   gint count;
   GdkPixbuf * pixbuf = NULL;
   GError *err=NULL;   
@@ -525,39 +518,38 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, const gchar * state)
                                   priv->applet_name,
                                   priv->uid);
             pixbuf = gtk_icon_theme_load_icon(priv->awn_theme, name , 
-                                              priv->height, 0, &err);
+                                              height, 0, &err);
             break;
           case  1:
             name = g_strdup_printf("%s-%s",
                                    priv->icon_names[count],
                                    priv->applet_name);
             pixbuf = gtk_icon_theme_load_icon(priv->awn_theme, name , 
-                                        priv->height, 0, &err);
+                                        height, 0, &err);
             break;
           case  2:
             pixbuf = gtk_icon_theme_load_icon(priv->awn_theme, 
-                                        priv->icon_names[count],priv->height, 
+                                        priv->icon_names[count],height, 
                                         0, &err);
             break;
           case  3:
             pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), 
-                                    priv->icon_names[count],priv->height, 
+                                    priv->icon_names[count],height, 
                                     0, &err);
             break;
           case  4:
             pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), 
-                                  "stock_stop",priv->height, 0, &err);
+                                  "stock_stop",height, 0, &err);
             break;
           case  5:
             pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, 
-                                    priv->height,priv->height);
+                                    height,height);
             gdk_pixbuf_fill(pixbuf, 0xee221155);
             break;
         } 
         
         if (err)
         {
-//          g_warning("Failed loading icon: %s\n",err->message);
           g_error_free (err);
           err=NULL;
         }        
@@ -565,12 +557,12 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, const gchar * state)
         name = NULL;
         if (pixbuf)
         {
-          if (gdk_pixbuf_get_height(pixbuf) != priv->height)
+          if (gdk_pixbuf_get_height(pixbuf) != height)
           {
             GdkPixbuf * new_pixbuf = gdk_pixbuf_scale_simple(pixbuf,                                                             
                                      gdk_pixbuf_get_width(pixbuf)*
-                                     priv->height/gdk_pixbuf_get_height(pixbuf),
-                                     priv->height,                                                             
+                                     height/gdk_pixbuf_get_height(pixbuf),
+                                     height,                                                             
                                      GDK_INTERP_HYPER
                                      );
             g_object_unref(pixbuf);
@@ -583,8 +575,25 @@ GdkPixbuf * awn_icons_get_icon(AwnIcons * icons, const gchar * state)
   }
   g_assert(pixbuf);  
   return pixbuf;
+}  
+
+GdkPixbuf * 
+awn_icons_get_icon_simple_at_height(AwnIcons * icons, gint height)
+{
+  g_return_val_if_fail(icons,NULL);
+  AwnIconsPrivate *priv=GET_PRIVATE(icons);  
+  return awn_icons_get_icon_at_height(icons, priv->states[priv->cur_icon],height);
 }
 
+
+GdkPixbuf * 
+awn_icons_get_icon(AwnIcons * icons, const gchar * state)
+{
+  g_return_val_if_fail(icons,NULL);
+  g_return_val_if_fail(state,NULL);
+  AwnIconsPrivate *priv=GET_PRIVATE(icons);
+  return awn_icons_get_icon_at_height(icons,state,priv->height);
+}
 
 GdkPixbuf * awn_icons_get_icon_simple(AwnIcons * icons)
 {
@@ -592,6 +601,8 @@ GdkPixbuf * awn_icons_get_icon_simple(AwnIcons * icons)
   AwnIconsPrivate *priv=GET_PRIVATE(icons);
   return awn_icons_get_icon(icons, priv->states[priv->cur_icon]);
 }
+
+
 
 void _theme_changed(GtkIconTheme *icon_theme,AwnIcons * awn_icons) 
 {
@@ -700,12 +711,10 @@ awn_icons_init (AwnIcons *self)
                                              AWN_ICONS_THEME_NAME);
   if (! g_file_test(index_theme_dest,G_FILE_TEST_EXISTS) )
   {
-    printf("indexe.theme not found\n");
     if (g_file_get_contents (index_theme_src,&contents,&length,&err))
     {  
       if ( g_file_set_contents(index_theme_dest,contents,length,&err))
       {
-        printf("index.theme copied %s\n",index_theme_dest);
         
       }
       else if (err)
@@ -739,7 +748,7 @@ awn_icons_init (AwnIcons *self)
 AwnIcons*
 awn_icons_new (void)
 {
-  return g_object_new (LIBAWN_TYPE_AWN_ICONS, NULL);
+  return g_object_new (AWN_TYPE_ICONS, NULL);
 }
 
 

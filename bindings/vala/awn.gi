@@ -893,6 +893,12 @@
 					<parameter name="simple" type="AwnAppletSimple*"/>
 				</parameters>
 			</method>
+			<method name="get_awn_icons" symbol="awn_applet_simple_get_awn_icons">
+				<return-type type="AwnIcons*"/>
+				<parameters>
+					<parameter name="simple" type="AwnAppletSimple*"/>
+				</parameters>
+			</method>
 			<method name="get_effects" symbol="awn_applet_simple_get_effects">
 				<return-type type="AwnEffects*"/>
 				<parameters>
@@ -945,6 +951,13 @@
 					<parameter name="cr" type="cairo_t*"/>
 				</parameters>
 			</method>
+			<method name="set_icon_context_scaled" symbol="awn_applet_simple_set_icon_context_scaled">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="simple" type="AwnAppletSimple*"/>
+					<parameter name="cr" type="cairo_t*"/>
+				</parameters>
+			</method>
 			<method name="set_temp_icon" symbol="awn_applet_simple_set_temp_icon">
 				<return-type type="void"/>
 				<parameters>
@@ -975,10 +988,25 @@
 					<parameter name="state" type="gchar*"/>
 				</parameters>
 			</method>
+			<method name="get_icon_at_height" symbol="awn_icons_get_icon_at_height">
+				<return-type type="GdkPixbuf*"/>
+				<parameters>
+					<parameter name="icons" type="AwnIcons*"/>
+					<parameter name="state" type="gchar*"/>
+					<parameter name="height" type="gint"/>
+				</parameters>
+			</method>
 			<method name="get_icon_simple" symbol="awn_icons_get_icon_simple">
 				<return-type type="GdkPixbuf*"/>
 				<parameters>
 					<parameter name="icons" type="AwnIcons*"/>
+				</parameters>
+			</method>
+			<method name="get_icon_simple_at_height" symbol="awn_icons_get_icon_simple_at_height">
+				<return-type type="GdkPixbuf*"/>
+				<parameters>
+					<parameter name="icons" type="AwnIcons*"/>
+					<parameter name="height" type="gint"/>
 				</parameters>
 			</method>
 			<constructor name="new" symbol="awn_icons_new">
@@ -990,6 +1018,13 @@
 					<parameter name="icons" type="AwnIcons*"/>
 					<parameter name="fn" type="AwnIconsChange"/>
 					<parameter name="user_data" type="gpointer"/>
+				</parameters>
+			</method>
+			<method name="set_height" symbol="awn_icons_set_height">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icons" type="AwnIcons*"/>
+					<parameter name="height" type="gint"/>
 				</parameters>
 			</method>
 			<method name="set_icon_info" symbol="awn_icons_set_icon_info">

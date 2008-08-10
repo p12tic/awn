@@ -58,10 +58,10 @@ else
 install-gconf-schemas:
 endif
 else
-schemadir = $(datadir)/avant-window-navigator/schemas
-schema_DATA = awn.schema-ini shared.schema-ini
 install-gconf-schemas:
 endif
+schemadir = $(pkgdatadir)/schemas
+schema_DATA = awn.schema-ini shared.schema-ini
 
 
 install-exec-local:
@@ -72,10 +72,11 @@ install-exec-local:
 install-data-local: install-gconf-schemas install-icons
 
 uninstall-local:
+	rm -f $(DESTDIR)$(bindir)/awn-applets-migration
 	rm -f $(DESTDIR)$(bindir)/awn-schema-to-gconf
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/24x24/apps/avant-window-navigator.png
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/avant-window-navigator.png
 
-EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini awn-schema-to-gconf shared.schema-ini
+EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini awn-schema-to-gconf shared.schema-ini awn-applets-migration.py
 
 CLEANFILES = $(desktop_DATA) $(desktop_DATA).in

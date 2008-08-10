@@ -91,6 +91,38 @@ _gslist_to_pylist (GSList *list, AwnConfigListType list_type) {
   }
   return py_list;
 }
+static gchar**
+_pysequence_to_gchar_array (PyObject *py_seq)
+{
+  gchar **seq;
+  if (PyList_Check (py_seq) || PyTuple_Check (py_seq))
+  {
+    Py_ssize_t len;
+    int i;
+    len = PySequence_Fast_GET_SIZE (py_seq);
+    seq = g_malloc (sizeof (gchar*) * (len + 1));
+    for (i = 0; i < len; i++)
+    {
+      PyObject *item;
+      item = PySequence_Fast_GET_ITEM (py_seq, i);
+      if (PyString_Check (item))
+      {
+        seq[i] = PyString_AsString (item);
+      }
+      else
+      {
+        g_free (seq);
+        return NULL;
+      }
+    }
+    seq[len] = NULL;
+  }
+  else
+  {
+    return NULL;
+  }
+  return seq;
+}
 %%
 modulename awn
 %%
@@ -437,4 +469,70 @@ _wrap_awn_config_client_key_lock_close (PyObject *self, PyObject *args, PyObject
     
     Py_INCREF(Py_None);
     return Py_None;
+}
+%%
+override awn_applet_simple_set_awn_icons kwargs
+static PyObject *
+_wrap_awn_applet_simple_set_awn_icons (PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  static char *kwlist[] = { "applet_name", "states", "icon_names", NULL };
+  gchar *applet_name;
+  PyObject *py_states;
+  PyObject *py_icon_names;
+  gchar **states = NULL;
+  gchar **icon_names = NULL;
+  GdkPixbuf *ret;
+
+  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "sOO:AwnAppletSimple.set_awn_icons", kwlist, &applet_name, &py_states, &py_icon_names))
+  {
+    return NULL;
+  }
+
+  if (!PySequence_Check (py_states))
+  {
+    PyErr_SetString (PyExc_TypeError, "states argument must be a sequence.");
+    return NULL;
+  }
+
+  if (!PySequence_Check (py_icon_names))
+  {
+    PyErr_SetString (PyExc_TypeError, "icon_names argument must be a sequence.");
+    return NULL;
+  }
+
+  if (PySequence_Size (py_states) != PySequence_Size (py_icon_names))
+  {
+    PyErr_SetString (PyExc_ValueError, "The states and icon names sequences must have the same number of elements.");
+    return NULL;
+  }
+
+  states = _pysequence_to_gchar_array (py_states);
+  if (!states)
+  {
+    PyErr_SetString (PyExc_TypeError, "states argument must be a sequence only containing strings.");
+    return NULL;
+  }
+
+  icon_names = _pysequence_to_gchar_array (py_icon_names);
+  if (!icon_names)
+  {
+    PyErr_SetString (PyExc_TypeError, "icon_names argument must be a sequence only containing strings.");
+    return NULL;
+  }
+
+  if (g_strv_length (states) != g_strv_length (icon_names))
+  {
+    PyErr_SetString (PyExc_ValueError, "The states and icon names arrays must have the same number of elements.");
+    return NULL;
+  }
+
+  ret = awn_applet_simple_set_awn_icons (AWN_APPLET_SIMPLE (pygobject_get (self)),
+                                         (const gchar*)applet_name,
+                                         (const gchar**)states,
+                                         (const gchar**)icon_names);
+
+  g_free (states);
+  g_free (icon_names);
+
+  return pygobject_new (G_OBJECT (ret));
 }

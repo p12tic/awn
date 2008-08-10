@@ -25,6 +25,7 @@
 
 #include "awn-applet.h"
 #include "awn-effects.h"
+#include "awn-icons.h"
 
 G_BEGIN_DECLS
 
@@ -74,6 +75,9 @@ awn_applet_simple_set_icon(AwnAppletSimple *simple, GdkPixbuf *pixbuf);
 void
 awn_applet_simple_set_icon_context(AwnAppletSimple *simple, cairo_t * cr);
 
+void
+awn_applet_simple_set_icon_context_scaled(AwnAppletSimple *simple,cairo_t * cr);
+
 
 GdkPixbuf * 
 awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
@@ -89,6 +93,9 @@ awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
                                     
 GdkPixbuf * 
 awn_applet_simple_set_awn_icon_state(AwnAppletSimple *simple, const gchar * state);
+
+AwnIcons * 
+awn_applet_simple_get_awn_icons(AwnAppletSimple *simple);
 
 void
 awn_applet_simple_set_temp_icon(AwnAppletSimple *simple, GdkPixbuf *pixbuf);
