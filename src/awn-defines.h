@@ -30,12 +30,17 @@
 #define AWN_DBUS_PANEL_PATH AWN_DBUS_PATH"/Panel"
 
 /* FIXME: Move some of these out into libawn when we can */
-#define AWN_GROUP_PANEL       "panel"
-#define AWN_PANEL_PANEL_MODE  "panel_mode"
-#define AWN_PANEL_ORIENT      "orient"
-#define AWN_PANEL_OFFSET      "offset"
-#define AWN_PANEL_SIZE        "size"
-#define AWN_PANEL_APPLET_LIST "applet_list"
+#define AWN_GROUP_PANEL          "panel"
+#define AWN_PANEL_PANEL_MODE     "panel_mode"
+#define AWN_PANEL_ORIENT         "orient"
+#define AWN_PANEL_OFFSET         "offset"
+#define AWN_PANEL_SIZE           "size"
+#define AWN_PANEL_APPLET_LIST    "applet_list"
+#define AWN_PANEL_MONITOR_HEIGHT "monitor_height"
+#define AWN_PANEL_MONITOR_WIDTH  "monitor_width"
+#define AWN_PANEL_MONITOR_FORCE  "monitor_force"
+#define AWN_PANEL_MONITOR_OFFSET "monitor_offset"
+#define AWN_PANEL_MONITOR_ALIGN  "monitor_align"
 
 #endif /*_HAVE_AWN_DEFINES_H */
 

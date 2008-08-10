@@ -26,13 +26,10 @@
 #include <gdk/gdkx.h>
 #include <libawn/awn-config-client.h>
 
-#include <X11/Xlib.h>
-#include <X11/extensions/shape.h>
+#include "awn-monitor.h"
 
 #include "awn-config-bridge.h"
 #include "awn-defines.h"
-#include "awn-monitor.h"
-#include "awn-x.h"
 
 G_DEFINE_TYPE (AwnMonitor, awn_monitor, G_TYPE_OBJECT) 
 
@@ -56,6 +53,8 @@ enum
 
   PROP_CLIENT,
   PROP_FORCE_MONITOR,
+  PROP_HEIGHT,
+  PROP_WIDTH,
   PROP_OFFSET,
   PROP_ALIGN
 };
@@ -73,6 +72,33 @@ static void awn_monitor_set_force_monitor (AwnMonitor *monitor,
                                            gboolean    force_monitor);
 
 /* GObject stuff */
+static void
+awn_monitor_constructed (GObject *object)
+{
+  AwnMonitor        *monitor = AWN_MONITOR (object);
+  AwnMonitorPrivate *priv = monitor->priv;
+  AwnConfigBridge   *bridge = awn_config_bridge_get_default ();
+
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_MONITOR_HEIGHT,
+                          object, "monitor_height");
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_MONITOR_WIDTH,
+                          object, "monitor_width");
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_MONITOR_FORCE,
+                          object, "monitor_force");
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_MONITOR_FORCE,
+                          object, "monitor_force");
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_MONITOR_OFFSET,
+                          object, "monitor_offset");
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_MONITOR_ALIGN,
+                          object, "monitor_align");
+}
+
 static void
 awn_monitor_get_property (GObject    *object,
                          guint       prop_id,
@@ -95,6 +121,12 @@ awn_monitor_get_property (GObject    *object,
       break;
     case PROP_ALIGN:
       g_value_set_float (value, monitor->align);
+      break;
+    case PROP_HEIGHT:
+      g_value_set_int (value, monitor->height);
+      break;
+    case PROP_WIDTH:
+      g_value_set_int (value, monitor->width);
       break;
     case PROP_OFFSET:
       g_value_set_int (value, monitor->offset);
@@ -121,17 +153,22 @@ awn_monitor_set_property (GObject      *object,
     case PROP_CLIENT:
       priv->client = g_value_get_pointer (value);
       break;
-    case PROP_FORCE_MONITOR:
+   case PROP_FORCE_MONITOR:
       priv->force_monitor = g_value_get_boolean (value);
       awn_monitor_set_force_monitor (monitor, priv->force_monitor);
       break;    
-    case PROP_ALIGN:
+   case PROP_ALIGN:
       monitor->align = g_value_get_float (value);
       break;
-   case PROP_OFFSET:
+    case PROP_HEIGHT:
+      monitor->height = g_value_get_int (value);
+      break;
+    case PROP_WIDTH:
+      monitor->width = g_value_get_int (value);
+      break;
+    case PROP_OFFSET:
       monitor->offset = g_value_get_int (value);
-      break;   
-    default:
+      break;   default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
 }
@@ -143,6 +180,7 @@ awn_monitor_class_init (AwnMonitorClass *klass)
   
   obj_class->get_property = awn_monitor_get_property;
   obj_class->set_property = awn_monitor_set_property;
+  obj_class->constructed  = awn_monitor_constructed;
 
   /* Add properties to the class */
   g_object_class_install_property (obj_class,
@@ -150,16 +188,32 @@ awn_monitor_class_init (AwnMonitorClass *klass)
     g_param_spec_pointer ("client",
                           "Client",
                           "AwnConfigClient",
-                          G_PARAM_READWRITE));
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
- g_object_class_install_property (obj_class,
+  g_object_class_install_property (obj_class,
     PROP_FORCE_MONITOR,
     g_param_spec_boolean ("monitor_force",
                           "Monitor Force",
                           "Force the monitor geometry",
                           FALSE,
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
- 
+                          G_PARAM_READWRITE));
+
+  g_object_class_install_property (obj_class,
+    PROP_HEIGHT,
+    g_param_spec_int ("monitor_height",
+                      "Monitor Height",
+                      "Monitor Height",
+                      0, G_MAXINT, 1200,
+                      G_PARAM_READWRITE));
+
+  g_object_class_install_property (obj_class,
+    PROP_WIDTH,
+    g_param_spec_int ("monitor_width",
+                      "Monitor Width",
+                      "Monitor Width",
+                      0, G_MAXINT, 1920,
+                      G_PARAM_READWRITE));
+
   g_object_class_install_property (obj_class,
     PROP_OFFSET,
     g_param_spec_int ("monitor_offset",
@@ -221,9 +275,9 @@ on_screen_size_changed (GdkScreen *screen, AwnMonitor *monitor)
     return;
 
   g_object_set (monitor,
-                  "monitor-width", gdk_screen_get_width (screen),
-                  "monitor-height", gdk_screen_get_height (screen),
-                  NULL);                
+                "monitor-width", gdk_screen_get_width (screen),
+                "monitor-height", gdk_screen_get_height (screen),
+                NULL);                
 }
 
 static void 
@@ -234,15 +288,17 @@ awn_monitor_set_force_monitor (AwnMonitor *monitor,
   
   if (force_monitor)
   {
-    /* FIXME: We should load in the size of the monitor from the client */
+    if (priv->tag)
+      g_signal_handler_disconnect (priv->screen, priv->tag);
   }
   else
   {
-    /* FIXME: We should remove the hooks to the client (if set) */
     priv->tag = g_signal_connect (priv->screen, "size-changed",
                                   G_CALLBACK (on_screen_size_changed), monitor);
-    monitor->width = gdk_screen_get_width (priv->screen);
-    monitor->height = gdk_screen_get_height (priv->screen);
+    g_object_set (monitor,
+                  "monitor-width", gdk_screen_get_width (priv->screen),
+                  "monitor-height", gdk_screen_get_height (priv->screen),
+                  NULL);
   }
 }
 
