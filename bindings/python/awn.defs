@@ -746,6 +746,15 @@
 )
 
 
+(define-function awn_effect_stop
+  (c-name "awn_effect_stop")
+  (return-type "none")
+  (parameters
+    '("int" "fx")
+    '("AwnEffect" "effect")
+  )
+)
+
 (define-function reflection_off
   (c-name "awn_effects_reflection_off")
   (return-type "none")
