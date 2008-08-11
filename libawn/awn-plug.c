@@ -246,9 +246,9 @@ awn_plug_init(AwnPlug *plug)
   {
     priv->proxy = dbus_g_proxy_new_for_name(
                     priv->connection,
-                    "com.google.code.Awn.AppletManager",
-                    "/com/google/code/Awn/AppletManager",
-                    "com.google.code.Awn.AppletManager");
+                    "org.awnproject.Awn.Panel",
+                    "/org.awnproject.Awn.Panel",
+                    "org.awnproject.Awn.Panel");
 
     if (!priv->proxy)
     {
@@ -257,9 +257,8 @@ awn_plug_init(AwnPlug *plug)
     }
 
     dbus_g_proxy_add_signal(priv->proxy, "OrientChanged",
-
                             G_TYPE_INT, G_TYPE_INVALID);
-    dbus_g_proxy_add_signal(priv->proxy, "HeightChanged",
+    dbus_g_proxy_add_signal(priv->proxy, "SizeChanged",
                             G_TYPE_INT, G_TYPE_INVALID);
     dbus_g_proxy_add_signal(priv->proxy, "DestroyNotify",
                             G_TYPE_INVALID);
@@ -274,7 +273,7 @@ awn_plug_init(AwnPlug *plug)
                                 (gpointer)plug,
                                 NULL);
     dbus_g_proxy_connect_signal(priv->proxy,
-                                "HeightChanged",
+                                "SizeChanged",
                                 G_CALLBACK(on_height_changed),
                                 (gpointer)plug,
                                 NULL);

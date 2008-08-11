@@ -49,7 +49,6 @@ struct _AwnPanelPrivate
   AwnBackground *bg;
 
   GtkWidget *alignment;
-  GtkWidget *eventbox;
   GtkWidget *manager;
   
   gboolean composited;
@@ -108,9 +107,6 @@ static gboolean on_window_configure   (GtkWidget         *panel,
                                        GdkEventConfigure *event);
 static gboolean position_window       (AwnPanel *panel);
 
-static gboolean on_eb_expose          (GtkWidget      *eb, 
-                                       GdkEventExpose *event,
-                                       GtkWidget      *child);
 static gboolean awn_panel_expose      (GtkWidget      *widget, 
                                        GdkEventExpose *event);
 static void     awn_panel_add         (GtkContainer   *window, 
@@ -418,18 +414,11 @@ awn_panel_init (AwnPanel *panel)
 
   priv = panel->priv = AWN_PANEL_GET_PRIVATE (panel);
 
-  priv->eventbox = gtk_event_box_new ();
-  gtk_widget_set_app_paintable (priv->eventbox, TRUE);
-  GTK_CONTAINER_CLASS (awn_panel_parent_class)->add (GTK_CONTAINER (panel),
-                                                     priv->eventbox);
-  gtk_widget_show (priv->eventbox);
-  
   priv->alignment = gtk_alignment_new (0.5, 0.5, 1.0, 1.0);
-  gtk_container_add (GTK_CONTAINER (priv->eventbox), priv->alignment);
-  gtk_widget_show (priv->alignment);
+  GTK_CONTAINER_CLASS (awn_panel_parent_class)->add (GTK_CONTAINER (panel),
+                                                     priv->alignment);
 
-  g_signal_connect (priv->eventbox, "expose-event",
-                    G_CALLBACK (on_eb_expose), priv->alignment);
+  gtk_widget_show (priv->alignment);
 }
 
 GtkWidget *
@@ -707,41 +696,6 @@ on_geometry_changed   (AwnMonitor *monitor,
  */
 
 /*
- * Clear the eventboxes background
- */
-static gboolean 
-on_eb_expose (GtkWidget      *widget, 
-              GdkEventExpose *event,
-              GtkWidget      *child)
-{
-  cairo_t *cr;
-
-  if (!GDK_IS_DRAWABLE (widget->window))
-  {
-    g_debug ("!GDK_IS_DRAWABLE (widget->window) failed");
-    return FALSE;
-  }
-
-  /* Get our ctx */
-  cr = gdk_cairo_create (widget->window);
-  if (!cr)
-  {
-    g_debug ("Unable to create cairo context\n");
-    return FALSE;
-  }
-
-  /* The actual drawing of the background */
-  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_paint (cr);
-  cairo_destroy (cr);
-
-  gtk_container_propagate_expose (GTK_CONTAINER (widget),
-                                  child,
-                                  event);
-  return TRUE;
-}
-
-/*
  * Draw the panel 
  */
 static gboolean
@@ -805,6 +759,10 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   }
   
   /* The actual drawing of the background */
+
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (cr);
 
@@ -815,7 +773,8 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   if (!GTK_IS_WIDGET (child))
     return TRUE;
 
-  if (priv->composited)
+#if 0
+  if (priv->composited && 0)
   {
     GdkRegion *region;
     
@@ -831,7 +790,7 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
     cairo_paint_with_alpha (cr, 0.5);
   }
-
+#endif
   cairo_destroy (cr);
 
   gtk_container_propagate_expose (GTK_CONTAINER (widget),
@@ -855,11 +814,6 @@ awn_panel_add (GtkContainer *window, GtkWidget *widget)
   /* Add the widget to the internal alignment */
   gtk_container_add (GTK_CONTAINER (priv->alignment), widget);
   
-  /* Set up the eventbox for compositing (if necessary) */
-  gtk_widget_realize (priv->eventbox);
-  if (priv->composited)
-    gdk_window_set_composited (priv->eventbox->window, priv->composited);
-
   gtk_widget_show (widget);
 }
 

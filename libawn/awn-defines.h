@@ -41,9 +41,9 @@
 
 typedef enum
 {
-        AWN_ORIENTATION_BOTTOM =0,
-        AWN_ORIENTATION_TOP,
+        AWN_ORIENTATION_TOP=0,
         AWN_ORIENTATION_RIGHT,
+        AWN_ORIENTATION_BOTTOM,
         AWN_ORIENTATION_LEFT
 
 } AwnOrientation;

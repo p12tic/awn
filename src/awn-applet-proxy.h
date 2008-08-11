@@ -52,7 +52,7 @@ typedef struct _AwnAppletProxyPrivate AwnAppletProxyPrivate;
 
 struct _AwnAppletProxy 
 {
-  GtkSocket parent;
+  GtkEventBox parent;
 
   /*< private >*/
   AwnAppletProxyPrivate *priv;
@@ -60,7 +60,7 @@ struct _AwnAppletProxy
 
 struct _AwnAppletProxyClass 
 {
-  GtkSocketClass parent_class;
+  GtkEventBoxClass parent_class;
 
   /*< signals >*/
   void (*applet_deleted) (AwnAppletProxy *proxy, const gchar *uid);
