@@ -241,8 +241,6 @@ on_boolean_key_changed (AwnConfigClientNotifyEntry *entry,
   g_object_set (bind->object, 
                 bind->property_name, entry->value.bool_val, 
                 NULL);
-
-  g_debug ("Value changed %d\n", entry->value.bool_val);
 }
 
 static void
@@ -256,8 +254,6 @@ on_float_key_changed (AwnConfigClientNotifyEntry *entry,
   g_object_set (bind->object, 
                 bind->property_name, entry->value.float_val, 
                 NULL);
-
-  g_debug ("Value changed %f\n", entry->value.float_val);
 }
 
 static void
@@ -271,8 +267,6 @@ on_int_key_changed (AwnConfigClientNotifyEntry *entry,
   g_object_set (bind->object, 
                 bind->property_name, entry->value.int_val, 
                 NULL);
-
-  g_debug ("Value changed %d\n", entry->value.int_val);
 }
 
 static void
@@ -286,8 +280,6 @@ on_string_key_changed (AwnConfigClientNotifyEntry *entry,
   g_object_set (bind->object, 
                 bind->property_name, entry->value.str_val, 
                 NULL);
-
-  g_debug ("Value changed %s\n", entry->value.str_val);
 }
 
 static void
@@ -301,6 +293,4 @@ on_list_key_changed (AwnConfigClientNotifyEntry *entry,
   g_object_set (bind->object, 
                 bind->property_name, entry->value.list_val, 
                 NULL);
-
-  g_debug ("Value changed %s\n", "list");
 }

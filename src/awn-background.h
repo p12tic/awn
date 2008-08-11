@@ -56,6 +56,7 @@ struct _AwnBackground
   GObject  parent;
 
   AwnConfigClient *client;
+  AwnPanel        *panel;
 
   /* Standard box drawing colours */
   AwnColor g_step_1;
@@ -80,7 +81,10 @@ struct _AwnBackground
   gfloat   corner_radius;
   gint     panel_angle;
   gfloat   curviness;
-  gfloat   curves_symmetry;  
+  gfloat   curves_symmetry;
+
+  /* private */
+  guint    changed;
 };
 
 struct _AwnBackgroundClass 
@@ -96,6 +100,8 @@ struct _AwnBackgroundClass
                 gint            width,
                 gint            height);
 
+  /*< signals >*/
+  void (*changed) (AwnBackground *bg);
 };
 
 GType awn_background_get_type (void) G_GNUC_CONST;

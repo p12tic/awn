@@ -168,9 +168,12 @@ awn_monitor_set_property (GObject      *object,
       break;
     case PROP_OFFSET:
       monitor->offset = g_value_get_int (value);
-      break;   default:
+      break;   
+    default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
+  
+  g_signal_emit (object, _monitor_signals[GEOMETRY_CHANGED], 0);
 }
 
 static void

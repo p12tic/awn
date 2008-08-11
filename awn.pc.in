@@ -9,5 +9,5 @@ Name: libawn
 Description: Avant-Window-Navigator applets/plugin library
 Version: @VERSION@
 Libs: -L${libdir} -lawn
-Cflags: -I${includedir} @USE_DESKTOP@
+Cflags: -I${includedir}
 Requires: @LIBRARY_MODULES@

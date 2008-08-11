@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <glib/gprintf.h>
 #include <libawn/awn-config-client.h>
 
 #include "awn-background.h"
@@ -35,6 +36,7 @@ enum
   PROP_0,
 
   PROP_CLIENT,
+  PROP_PANEL,
 
   PROP_GSTEP1,
   PROP_GSTEP2,
@@ -57,6 +59,18 @@ enum
   PROP_CURVINESS,
   PROP_CURVES_SYMEMETRY
 };
+
+enum 
+{
+  CHANGED,
+
+  LAST_SIGNAL
+};
+static guint _bg_signals[LAST_SIGNAL] = { 0 };
+
+static void awn_background_set_gtk_theme_mode (AwnBackground *bg, 
+                                               gboolean       gtk_mode);
+
 
 static void
 awn_background_constructed (GObject *object)
@@ -159,6 +173,9 @@ awn_background_set_property (GObject      *object,
     case PROP_CLIENT:
       bg->client = g_value_get_pointer (value);
       break;
+    case PROP_PANEL:
+      bg->panel = g_value_get_pointer (value);
+      break;
 
     case PROP_GSTEP1:
       awn_cairo_string_to_color (g_value_get_string (value), &bg->g_step_1);
@@ -199,7 +216,8 @@ awn_background_set_property (GObject      *object,
       break;
 
     case PROP_GTK_THEME_MODE:
-      bg->gtk_theme_mode = g_value_get_boolean (value);
+      awn_background_set_gtk_theme_mode (bg, g_value_get_boolean (value));
+      break;
     case PROP_ROUNDED_CORNERS:
       bg->rounded_corners = g_value_get_boolean (value);
       break;
@@ -219,6 +237,8 @@ awn_background_set_property (GObject      *object,
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
+
+  g_signal_emit (object, _bg_signals[CHANGED], 0);
 }
 
 static void
@@ -238,6 +258,12 @@ awn_background_class_init (AwnBackgroundClass *klass)
                           "Awn Config Client",
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
+  g_object_class_install_property (obj_class,
+    PROP_PANEL,
+    g_param_spec_pointer ("panel",
+                          "panel",
+                          "AwnPanel associated with this background",
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_GSTEP1,
@@ -335,7 +361,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
                           "Gtk theme mode",
                           "Use colours from the current Gtk theme",
                           TRUE,
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                          G_PARAM_READWRITE));
   
   g_object_class_install_property (obj_class,
     PROP_ROUNDED_CORNERS,
@@ -376,6 +402,16 @@ awn_background_class_init (AwnBackgroundClass *klass)
                         "The symmetry of the curve",
                         0.0, 1.0, 0.5,
                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  /* Add signals to the class */
+  _bg_signals[CHANGED] = 
+    g_signal_new ("changed",
+                  G_OBJECT_CLASS_TYPE (obj_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (AwnBackgroundClass, changed),
+                  NULL, NULL, 
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 
@@ -403,5 +439,119 @@ awn_background_draw (AwnBackground  *bg,
 
   klass->draw (bg, cr, orient, x, y, width, height);
 }
+
+/*
+ * If we're in gtk theme mode, then load up the colours from the current gtk
+ * theme
+ */
+
+static void
+gdk_color_to_hex (gchar *string, GdkColor *color, gint alpha)
+{
+  /* Yes theres loss of info, but this will work for now */
+  g_sprintf (string, "%02X%02X%02X%02X",
+             (gint)((color->red/65535.0)*255),
+             (gint)((color->green/65535.0)*255),
+             (gint)((color->blue/65535.0)*255),
+             alpha);
+  string[8] = '\0';
+
+  /*g_debug ("%d %d %d = %s\n", 
+           (gint)((color->red/65535.0)*255),
+           (gint)((color->green/65535.0)*255),
+           (gint)((color->blue/65535.0)*255),
+           string);*/
+}
+
+
+static void
+load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
+{
+  AwnConfigClient *client = bg->client;
+  GtkStyle        *style;
+  gchar            temp[9];
+
+  style = gtk_widget_get_style (widget);
+
+  g_debug ("Updating gtk theme colours");
+
+  /* main colours */
+  gdk_color_to_hex (temp, &style->bg[GTK_STATE_NORMAL], 155);
+  awn_config_client_set_string (client,
+                                AWN_GROUP_THEME, AWN_THEME_GSTEP1,
+                                temp, NULL);
+
+  gdk_color_to_hex (temp, &style->bg[GTK_STATE_NORMAL], 200);
+  awn_config_client_set_string (client,
+                                AWN_GROUP_THEME, AWN_THEME_GSTEP2,
+                                temp, NULL);
+
+  awn_config_client_set_string (client,
+                                AWN_GROUP_THEME, AWN_THEME_GHISTEP1,
+                                "FFFFFF0C", NULL);
+  awn_config_client_set_string (client,
+                                AWN_GROUP_THEME, AWN_THEME_GHISTEP2,
+                                "FFFFFF0B", NULL);
+
+  gdk_color_to_hex (temp, &style->dark[GTK_STATE_ACTIVE], 200);
+  awn_config_client_set_string (client,
+                                AWN_GROUP_THEME, AWN_THEME_BORDER,
+                                temp, NULL);
+  gdk_color_to_hex (temp, &style->light[GTK_STATE_ACTIVE], 100);
+  awn_config_client_set_string (client,
+                                AWN_GROUP_THEME, AWN_THEME_HILIGHT,
+                                temp, NULL);
+
+  /* Don't draw patterns */
+  awn_config_client_set_bool (client,
+                              AWN_GROUP_THEME, AWN_THEME_DRAW_PATTERN, 
+                              FALSE, NULL);
+
+  /* Set up seperators to draw in the standard way */
+  awn_config_client_set_bool (client, 
+                              AWN_GROUP_THEME, AWN_THEME_SHOW_SEP,
+                              TRUE, NULL);
+  awn_config_client_set_string (client, 
+                                AWN_GROUP_THEME, AWN_THEME_SEP_COLOR,
+                                "FFFFFF00", NULL);
+
+  /* Misc settings */
+}
+
+static void
+on_widget_realized (GtkWidget *widget, AwnBackground *bg)
+{
+  load_colours_from_widget (bg, widget);
+}
+
+
+static void
+on_style_set (GtkWidget *widget, GtkStyle *old, AwnBackground *bg)
+{
+  load_colours_from_widget (bg, widget);
+}
+
+static void 
+awn_background_set_gtk_theme_mode (AwnBackground *bg, 
+                                   gboolean       gtk_mode)
+{
+  if (gtk_mode)
+  {
+    GtkWidget *widget = GTK_WIDGET (bg->panel);
+    
+    g_signal_connect (widget, "realize", G_CALLBACK (on_widget_realized), bg);
+
+    bg->changed = g_signal_connect (widget, "style-set", 
+                                     G_CALLBACK (on_style_set), bg);
+    
+  }
+  else
+  {
+    if (bg->changed)
+      g_signal_handler_disconnect (bg->panel, bg->changed);
+    bg->changed = 0;
+  }
+}
+
 
 /* vim: set et ts=2 sts=2 sw=2 : */

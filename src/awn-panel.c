@@ -123,6 +123,11 @@ static void     awn_panel_set_orient  (AwnPanel *panel,
 static void     awn_panel_set_size    (AwnPanel *panel, 
                                        gint      size);
 
+static void     on_geometry_changed   (AwnMonitor    *monitor,
+                                       AwnPanel      *panel);
+static void     on_theme_changed      (AwnBackground *bg,
+                                       AwnPanel      *panel);
+
 /*
  * GOBJECT CODE 
  */
@@ -138,6 +143,8 @@ awn_panel_constructed (GObject *object)
   panel = GTK_WIDGET (object);
 
   priv->monitor = awn_monitor_new_from_config (priv->client);
+  g_signal_connect (priv->monitor, "geometry_changed",
+                    G_CALLBACK (on_geometry_changed), panel);
 
   /* FIXME: Now is the time to hook our properties into priv->client */
   bridge = awn_config_bridge_get_default ();
@@ -156,7 +163,8 @@ awn_panel_constructed (GObject *object)
                           object, "size");
 
   /* Background drawing */
-  priv->bg = awn_background_flat_new (priv->client);
+  priv->bg = awn_background_flat_new (priv->client, AWN_PANEL (panel));
+  g_signal_connect (priv->bg, "changed", G_CALLBACK (on_theme_changed), panel);
 
   /* Composited checks/setup */
   screen = gtk_widget_get_screen (panel);
@@ -685,6 +693,15 @@ on_window_configure (GtkWidget          *panel,
   return TRUE;
 }
 
+static void   
+on_geometry_changed   (AwnMonitor *monitor,
+                       AwnPanel   *panel)
+{
+  g_return_if_fail (AWN_IS_PANEL (panel));
+
+  position_window (panel);
+}
+
 /*
  * PANEL BACKGROUND & EMBEDDING CODE
  */
@@ -844,6 +861,14 @@ awn_panel_add (GtkContainer *window, GtkWidget *widget)
     gdk_window_set_composited (priv->eventbox->window, priv->composited);
 
   gtk_widget_show (widget);
+}
+
+static void
+on_theme_changed (AwnBackground *bg, AwnPanel *panel)
+{
+  g_return_if_fail (AWN_IS_BACKGROUND (bg));
+
+  gtk_widget_queue_draw (GTK_WIDGET (panel));
 }
 
 /*

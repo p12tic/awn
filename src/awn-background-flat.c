@@ -56,12 +56,13 @@ awn_background_flat_init (AwnBackgroundFlat *bg)
 }
 
 AwnBackground * 
-awn_background_flat_new (AwnConfigClient *client)
+awn_background_flat_new (AwnConfigClient *client, AwnPanel *panel)
 {
   AwnBackground *bg;
 
   bg = g_object_new (AWN_TYPE_BACKGROUND_FLAT,
                      "client", client,
+                     "panel", panel,
                      NULL);
   return bg;
 }
@@ -122,9 +123,9 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_step_2.alpha);
 
   if (orient == AWN_ORIENT_TOP)
-    draw_rect (bg, cr, orient, x+2, y, width-4, height-1);
+    draw_rect (bg, cr, orient, x+1, y, width-2, height-1);
   else
-    draw_rect (bg, cr, orient, x+2, y+2, width-4, height-2);
+    draw_rect (bg, cr, orient, x+1, y+1, width-2, height-1);
   cairo_set_source (cr, pat);
   cairo_fill (cr);
   cairo_pattern_destroy (pat);
@@ -143,9 +144,9 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_histep_2.alpha);
 
   if (orient == AWN_ORIENT_TOP)
-    draw_rect (bg, cr, orient, x+2, y, width-4, height/3);
+    draw_rect (bg, cr, orient, x+1, y, width-2, height/3);
   else
-    draw_rect (bg, cr, orient, x+2, y+2, width-4, height/3);
+    draw_rect (bg, cr, orient, x+1, y+1, width-2, height/3);
   cairo_set_source (cr, pat);
   cairo_fill (cr);
   cairo_pattern_destroy (pat);
