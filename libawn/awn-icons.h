@@ -92,7 +92,7 @@ awn_icons_set_icon_info(AwnIcons * icons,
                              const gchar *icon_name);
                         
 /*
-* These callbacks be implemented as a signals
+* These callbacks should be implemented as a signals.
 */                             
 void 
 awn_icons_set_changed_cb(AwnIcons * icons,AwnIconsChange fn,gpointer user_data);                             
