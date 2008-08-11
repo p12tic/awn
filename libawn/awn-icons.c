@@ -43,27 +43,27 @@ G_DEFINE_TYPE (AwnIcons, awn_icons, G_TYPE_OBJECT)
 typedef struct _AwnIconsPrivate AwnIconsPrivate;
 
 struct _AwnIconsPrivate {
-  GtkWidget *   icon_widget;    //used if Non-NULL for drag and drop support
+  GtkWidget       *   icon_widget;    //used if Non-NULL for drag and drop support
 
-  GtkIconTheme *  awn_theme;
-  GtkIconTheme *  app_theme;
+  GtkIconTheme    *   awn_theme;
+  GtkIconTheme    *   app_theme;
   
-  AwnIconsChange    icon_change_cb;
-  gpointer          icon_change_cb_data;
-  GtkWidget * scope_radio1;       //this just seems the easiest way to to deal
-  GtkWidget * scope_radio2;       //with the radio buttons in the dialog.
-  GtkWidget * scope_radio3;       //also seems wrong.
-  GtkWidget * combo;
+  AwnIconsChange      icon_change_cb;
+  gpointer            icon_change_cb_data;
+  GtkWidget       *   scope_radio1;       //this just seems the easiest way to to deal
+  GtkWidget       *   scope_radio2;       //with the radio buttons in the dialog.
+  GtkWidget       *   scope_radio3;       //also seems wrong.
+  GtkWidget       *   combo;
  
-  gchar **  states;
-  gchar **  icon_names;
-  gchar *   applet_name;
-  gchar *   uid;
-  gchar *   icon_dir;
+  gchar           **  states;
+  gchar           **  icon_names;
+  gchar           *   applet_name;
+  gchar           *   uid;
+  gchar           *   icon_dir;
   
-  gint  height;
-  gint  cur_icon;
-  gint  count;
+  gint                height;
+  gint                cur_icon;
+  gint                count;
 };
 
 typedef struct AwnIconsDialogData

@@ -1,3 +1,8 @@
+2008-08-11  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.[ch]:
+	Minor cleanups.
+
 2008-08-10  Rodney Cryderman <rcryderman@gmail.com>
 
 	* bindings/python/awn.defs:
