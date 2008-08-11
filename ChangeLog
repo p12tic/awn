@@ -1,5 +1,10 @@
 2008-08-11  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-icons.c:
+	Fix a warning resulting from switch from gchar ** to GStrv.
+
+2008-08-11  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-icons.h:
 	Corrected a comment.
 

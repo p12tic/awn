@@ -476,8 +476,8 @@ void awn_icons_set_icon_info(AwnIcons * icons,
   icon_names[0] = (gchar *)icon_name;
   awn_icons_set_icons_info(icons,applet,applet_name,
                            uid,height,
-                           (const gchar **)states,
-                           (const gchar **)icon_names);
+                           (const GStrv)states,
+                           (const GStrv)icon_names);
   
 }
 
@@ -601,8 +601,6 @@ GdkPixbuf * awn_icons_get_icon_simple(AwnIcons * icons)
   AwnIconsPrivate *priv=GET_PRIVATE(icons);
   return awn_icons_get_icon(icons, priv->states[priv->cur_icon]);
 }
-
-
 
 void _theme_changed(GtkIconTheme *icon_theme,AwnIcons * awn_icons) 
 {
