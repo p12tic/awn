@@ -384,14 +384,12 @@ awn_icons_set_height(AwnIcons * icons, gint height)
 //TODO implement individual set functions where it makes sense...
 void 
 awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
-                              const gchar * applet_name,
                               const gchar * uid,
                               gint height,
                               const GStrv states,
                               const GStrv icon_names)
 {
   g_return_if_fail(icons);
-  g_return_if_fail(applet_name);
   g_return_if_fail(uid);
   g_return_if_fail(states);
   g_return_if_fail(icon_names);
@@ -440,12 +438,6 @@ awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
   priv->states[count] = NULL;
   priv->icon_names[count] = NULL;
 
-  if (priv->applet_name)
-  {
-    g_free(priv->applet_name);
-  }
-  priv->applet_name = g_strdup(applet_name);
-  
   if (priv->uid)
   {
     g_free(priv->uid);
@@ -456,7 +448,7 @@ awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
   
   gchar * applet_icon_dir = g_strdup_printf("%s/avant-window-navigator/applets/%s/icons",
                                          DATADIR,
-                                         applet_name);
+                                         priv->applet_name);
   gtk_icon_theme_append_search_path (gtk_icon_theme_get_default(),applet_icon_dir);
   g_free(applet_icon_dir);
   
@@ -466,7 +458,6 @@ awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
 
 void awn_icons_set_icon_info(AwnIcons * icons,
                              GtkWidget * applet,
-                             const gchar * applet_name,
                              const gchar * uid, 
                              gint height,
                              const gchar *icon_name)
@@ -475,7 +466,7 @@ void awn_icons_set_icon_info(AwnIcons * icons,
   gchar *states[] = {"__SINGULAR__",NULL};
   gchar *icon_names[] = {NULL,NULL};
   icon_names[0] = (gchar *)icon_name;
-  awn_icons_set_icons_info(icons,applet,applet_name,
+  awn_icons_set_icons_info(icons,applet,
                            uid,height,
                            (const GStrv)states,
                            (const GStrv)icon_names);
@@ -754,9 +745,13 @@ awn_icons_init (AwnIcons *self)
 } 
 
 AwnIcons*
-awn_icons_new (void)
+awn_icons_new (const gchar * applet_name)
 {
-  return g_object_new (AWN_TYPE_ICONS, NULL);
+  AwnIcons * obj = g_object_new (AWN_TYPE_ICONS, NULL);
+  AwnIconsPrivate *priv=GET_PRIVATE(obj);    
+  priv->applet_name = g_strdup(applet_name);
+    
+  return obj;
 }
 
 

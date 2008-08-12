@@ -425,11 +425,10 @@ GdkPixbuf * awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
   }
   if ( !priv->awn_icons)
   {
-    priv->awn_icons = awn_icons_new();
+    priv->awn_icons = awn_icons_new(applet_name);
   }
   awn_icons_set_icons_info(priv->awn_icons,
                               GTK_WIDGET(simple),
-                              applet_name,
                               awn_applet_get_uid(AWN_APPLET(simple)),
                               priv->bar_height,
                               states,
@@ -473,11 +472,10 @@ GdkPixbuf * awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
   }  
   if ( !priv->awn_icons)
   {
-    priv->awn_icons = awn_icons_new();
+    priv->awn_icons = awn_icons_new(applet_name);
   }
   awn_icons_set_icon_info(priv->awn_icons,
-                              GTK_WIDGET(simple),
-                              applet_name,
+                              GTK_WIDGET(simple),                              
                               awn_applet_get_uid(AWN_APPLET(simple)),
                               priv->bar_height,
                               icon_name);

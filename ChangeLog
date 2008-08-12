@@ -1,3 +1,17 @@
+2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.[ch]:
+	* libwwn/awn-applet-simple.c:
+	Added the applet name:  awn_icons_new (const gchar * applet_name).
+	Instead of the silly place it was being specified before.
+
+2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Added override_theme...  to allow applets to provide/use a custom
+	theme (only to be used when dealing with multiple related icons that
+	do not have good coverage in most themes).  Not functional yet..
+
 2008-08-11  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:
