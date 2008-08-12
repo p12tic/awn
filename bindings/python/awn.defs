@@ -914,6 +914,15 @@
   )
 )
 
+(define-method override_gtk_theme
+  (of-object "AwnIcons")
+  (c-name "awn_icons_override_gtk_theme")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "theme_name")
+  )
+)
+
 (define-method get_icon_simple
   (of-object "AwnIcons")
   (c-name "awn_icons_get_icon_simple")

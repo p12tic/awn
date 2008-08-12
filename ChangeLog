@@ -1,5 +1,10 @@
 2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
 
+        * bindings/python/awn.defs:
+	Python binding for awn_icons_override_gtk_theme().
+
+2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-icons.[ch]:
 	Added awn_icons_override_gtk_theme().
 
