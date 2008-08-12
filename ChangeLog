@@ -1,5 +1,10 @@
 2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
 
+	* bindings/python/awn.defs:
+	Update binding for  awn_icons_new ().
+
+2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-icons.c:
 	Additional work to implement ability to override theme.
 

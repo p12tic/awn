@@ -880,6 +880,9 @@
 (define-function awn_icons_new
   (c-name "awn_icons_new")
   (is-constructor-of "AwnIcons")
+  (parameters
+    '("const-gchar*" "applet_name")
+  )  
   (return-type "AwnIcons*")
 )
 
