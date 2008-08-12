@@ -445,13 +445,6 @@ awn_icons_set_icons_info(AwnIcons * icons,GtkWidget * applet,
   priv->uid = g_strdup(uid);
   priv->height = height;
   
-  
-  gchar * applet_icon_dir = g_strdup_printf("%s/avant-window-navigator/applets/%s/icons",
-                                         DATADIR,
-                                         priv->applet_name);
-  gtk_icon_theme_append_search_path (gtk_icon_theme_get_default(),applet_icon_dir);
-  g_free(applet_icon_dir);
-  
   gtk_icon_theme_rescan_if_needed(priv->awn_theme);
   doneonce = TRUE;
 }
@@ -741,7 +734,6 @@ awn_icons_init (AwnIcons *self)
   g_signal_connect(priv->awn_theme ,"changed",
                    G_CALLBACK(_theme_changed),
                    self);
-  
 } 
 
 AwnIcons*
@@ -750,7 +742,17 @@ awn_icons_new (const gchar * applet_name)
   AwnIcons * obj = g_object_new (AWN_TYPE_ICONS, NULL);
   AwnIconsPrivate *priv=GET_PRIVATE(obj);    
   priv->applet_name = g_strdup(applet_name);
-    
+  gchar * applet_icon_dir = g_strdup_printf("%s/avant-window-navigator/applets/%s/icons",
+                                         DATADIR,
+                                         priv->applet_name);
+  gtk_icon_theme_append_search_path (gtk_icon_theme_get_default(),applet_icon_dir);
+  g_free(applet_icon_dir);  
+  
+  applet_icon_dir = g_strdup_printf("%s/avant-window-navigator/applets/%s/themes",
+                                         DATADIR,
+                                         priv->applet_name);
+  gtk_icon_theme_prepend_search_path (gtk_icon_theme_get_default(),applet_icon_dir);
+  g_free(applet_icon_dir);      
   return obj;
 }
 

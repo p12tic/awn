@@ -1,5 +1,10 @@
 2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-icons.c:
+	Additional work to implement ability to override theme.
+
+2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
+
 	* libawn/awn-icons.[ch]:
 	* libwwn/awn-applet-simple.c:
 	Added the applet name:  awn_icons_new (const gchar * applet_name).
