@@ -148,12 +148,17 @@ PKG_CHECK_MODULES(AWN, [$LIBRARY_MODULES])
 PKG_CHECK_MODULES(DOCK, [$DOCK_MODULES])
 
 dnl =============================================
-dnl FIXME: Describe why we do this
+dnl Startup notification check
 dnl =============================================
+
 old_LIBS="$LIBS"
 LIBS="$LIBS $AWN_LIBS"
 AC_CHECK_FUNCS(gdk_x11_display_broadcast_startup_message)
 LIBS="$old_LIBS"
+
+dnl =============================================
+dnl Miscellaneous
+dnl =============================================
 
 AC_CHECK_LIB(m, sin)
 
