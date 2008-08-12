@@ -46,6 +46,7 @@ struct _AwnIconsPrivate {
   GtkWidget       *   icon_widget;    //used if Non-NULL for drag and drop support
 
   GtkIconTheme    *   awn_theme;
+  GtkIconTheme    *   override_theme;
   GtkIconTheme    *   app_theme;
   
   AwnIconsChange      icon_change_cb;
@@ -508,7 +509,7 @@ awn_icons_get_icon_at_height(AwnIcons * icons, const gchar * state, gint height)
       gchar * name=NULL;
       priv->cur_icon = count;
       
-      for (i=0;i<6 ;i++)
+      for (i=0;i<7 ;i++)
       {
         switch (i)
         {
@@ -533,15 +534,23 @@ awn_icons_get_icon_at_height(AwnIcons * icons, const gchar * state, gint height)
                                         0, &err);
             break;
           case  3:
+            pixbuf = NULL;
+            if (priv->override_theme)
+            {
+              pixbuf = gtk_icon_theme_load_icon(priv->override_theme,
+                                                priv->icon_names[count],height,
+                                                0,&err);
+            }
+          case  4:
             pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), 
                                     priv->icon_names[count],height, 
                                     0, &err);
             break;
-          case  4:
+          case  5:
             pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), 
                                   "stock_stop",height, 0, &err);
             break;
-          case  5:
+          case  6:
             pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, 
                                     height,height);
             gdk_pixbuf_fill(pixbuf, 0xee221155);
@@ -676,6 +685,7 @@ awn_icons_init (AwnIcons *self)
   priv->height = 0;
   priv->icon_change_cb = NULL;
   priv->icon_change_cb_data = NULL;
+  priv->override_theme = NULL;
 
   //do we have our dirs....
   const gchar * home = g_getenv("HOME");
@@ -732,7 +742,7 @@ awn_icons_init (AwnIcons *self)
   g_free(index_theme_dest);
   
   priv->awn_theme = gtk_icon_theme_new();
-  gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);
+  gtk_icon_theme_set_custom_theme(priv->awn_theme,AWN_ICONS_THEME_NAME);  
   
   g_signal_connect(gtk_icon_theme_get_default(),"changed",
                    G_CALLBACK(_theme_changed),
