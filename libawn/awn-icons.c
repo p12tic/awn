@@ -595,6 +595,27 @@ GdkPixbuf * awn_icons_get_icon_simple(AwnIcons * icons)
   return awn_icons_get_icon(icons, priv->states[priv->cur_icon]);
 }
 
+void awn_icons_override_gtk_theme(AwnIcons * icons,gchar * theme_name)
+{
+  g_return_if_fail(icons);
+  AwnIconsPrivate *priv=GET_PRIVATE(icons);
+
+  /*if NULL then remoe any override*/
+  if (!theme_name)
+  {
+    g_object_unref(priv->override_theme);
+    priv->override_theme = NULL;
+    return;
+  }
+  
+  if (!priv->override_theme)
+  {
+    priv->override_theme = gtk_icon_theme_new();
+  }
+  gtk_icon_theme_set_custom_theme(priv->override_theme,theme_name);  
+  
+}
+
 void _theme_changed(GtkIconTheme *icon_theme,AwnIcons * awn_icons) 
 {
   AwnIconsPrivate *priv=GET_PRIVATE(awn_icons);  

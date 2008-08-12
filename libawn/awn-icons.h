@@ -88,6 +88,9 @@ awn_icons_set_icon_info(AwnIcons * icons,
                              const gchar * uid, 
                              gint height,
                              const gchar *icon_name);
+
+void
+awn_icons_override_gtk_theme(AwnIcons * icons,gchar * theme_name);
                         
 /*
 * These callbacks should be implemented as a signals.
