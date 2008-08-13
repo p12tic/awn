@@ -525,6 +525,7 @@ awn_icons_get_icon_at_height(AwnIcons * icons, const gchar * state, gint height)
                                                 priv->icon_names[count],height,
                                                 0,&err);
             }
+            break;
           case  4:
             pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), 
                                     priv->icon_names[count],height, 
@@ -600,7 +601,7 @@ void awn_icons_override_gtk_theme(AwnIcons * icons,gchar * theme_name)
   g_return_if_fail(icons);
   AwnIconsPrivate *priv=GET_PRIVATE(icons);
 
-  /*if NULL then remoe any override*/
+  /*if NULL then remove any override*/
   if (!theme_name)
   {
     g_object_unref(priv->override_theme);
@@ -613,6 +614,10 @@ void awn_icons_override_gtk_theme(AwnIcons * icons,gchar * theme_name)
     priv->override_theme = gtk_icon_theme_new();
   }
   gtk_icon_theme_set_custom_theme(priv->override_theme,theme_name);  
+  if (priv->icon_change_cb)
+  {
+    priv->icon_change_cb(icons,priv->icon_change_cb_data);
+  }   
   
 }
 

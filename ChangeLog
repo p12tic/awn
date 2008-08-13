@@ -1,5 +1,12 @@
 2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
 
+	* libawn/awn-icons.c:
+	Fixed awn_icons_override_gtk_theme().  Generates a callback to
+	indicate icon change when set.  Also added a break into the icon
+	search so overridden icons will be used.
+
+2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
+
         * bindings/python/awn.defs:
 	Python binding for awn_icons_override_gtk_theme().
 
