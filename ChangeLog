@@ -1,3 +1,10 @@
+2008-08-17  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Add some additional checks for a valid pixbuf as either
+	gdk_pixbuf_get_file_info () is smart than I think or it's not as smart
+	as it thinks.
+
 2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:

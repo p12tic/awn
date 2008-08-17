@@ -284,7 +284,23 @@ awn_icons_drag_data_received (GtkWidget          *widget,
       if ( gdk_pixbuf_get_file_info (_sdata,NULL,NULL) )
       {
         GtkWidget *dialog=NULL;         
-        AwnIconsDialogData * dialog_data = g_malloc(sizeof(AwnIconsDialogData));
+        AwnIconsDialogData * dialog_data;
+        GtkWidget * icon;
+        GtkWidget * hbox;
+        GtkWidget * vbox;
+        GtkWidget * label;
+        GdkPixbuf * pixbuf;
+        
+        pixbuf = gdk_pixbuf_new_from_file (_sdata,NULL);
+        if (!pixbuf)
+        {
+          goto bad_gdk_pixbuf_get_file_info_bad;
+        }
+        if (! GDK_IS_PIXBUF(pixbuf))
+        {
+          goto bad_gdk_pixbuf_get_file_info_bad;
+        }
+        dialog_data = g_malloc(sizeof(AwnIconsDialogData));
         dialog_data->sdata = g_strdup(_sdata);
         dialog_data->awn_icons = icons;
        
@@ -300,15 +316,9 @@ awn_icons_drag_data_received (GtkWidget          *widget,
                                          GTK_RESPONSE_ACCEPT,
                                          NULL);
         GtkWidget * content_area =  GTK_DIALOG(dialog)->vbox;
-        
-        GtkWidget * icon;
-        GtkWidget * hbox;
-        GtkWidget * vbox;
-        GtkWidget * label;
-        GdkPixbuf * pixbuf;
-        
-        pixbuf = gdk_pixbuf_new_from_file (_sdata,NULL);
+
         icon = gtk_image_new_from_pixbuf(pixbuf);
+       
 
         hbox = gtk_hbox_new(FALSE,1);
         vbox = gtk_vbox_new(FALSE,1);   
@@ -368,7 +378,8 @@ awn_icons_drag_data_received (GtkWidget          *widget,
       return;
     }
   }
-      
+
+bad_gdk_pixbuf_get_file_info_bad:
    gtk_drag_finish (drag_context, FALSE, FALSE, time);
  }
 
