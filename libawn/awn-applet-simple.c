@@ -584,6 +584,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   static gboolean done_once=FALSE;
   AwnAppletSimplePrivate *priv;
   cairo_t *cr=NULL;
+  GdkRegion *region;
 
   gint width, height, bar_height;
   
@@ -600,6 +601,13 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   awn_draw_set_window_size(&priv->effects, width, height);
   bar_height = priv->bar_height;
   cr = gdk_cairo_create(widget->window);
+
+  region = gdk_region_rectangle (&widget->allocation);
+  gdk_cairo_region (cr, expose->region);
+  cairo_clip (cr);
+  gdk_region_destroy (region);
+ 
+
   /* task back */
   cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint(cr);

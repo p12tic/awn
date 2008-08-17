@@ -23,7 +23,7 @@
 
 #include "awn-applet-proxy.h"
 
-G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_EVENT_BOX) 
+G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_SOCKET) 
 
 #define AWN_APPLET_PROXY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE (obj, \
   AWN_TYPE_APPLET_PROXY, AwnAppletProxyPrivate))
@@ -32,8 +32,6 @@ G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_EVENT_BOX)
 
 struct _AwnAppletProxyPrivate
 {
-  GtkWidget *socket;
-
   gchar *path;
   gchar *uid;
   gint   orient;
@@ -60,6 +58,8 @@ static guint _proxy_signals[LAST_SIGNAL] = { 0 };
 /* 
  * FORWARDS
  */
+static void on_plug_added   (AwnAppletProxy *proxy);
+static void on_plug_removed (AwnAppletProxy *proxy);
 
 /*
  * GOBJECT CODE 
@@ -123,68 +123,6 @@ awn_applet_proxy_set_property (GObject      *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
 }
-
-static gboolean
-awn_applet_proxy_expose (GtkWidget *widget, GdkEventExpose *event)
-{
-  AwnAppletProxyPrivate *priv;
-  cairo_t         *cr;
-  GtkWidget       *child;
-
-  priv = AWN_APPLET_PROXY_GET_PRIVATE (widget);
-
-  if (!GDK_IS_DRAWABLE (widget->window))
-  {
-    g_debug ("!GDK_IS_DRAWABLE (widget->window) failed");
-    return FALSE;
-  }
-
-  /* Get our ctx */
-  cr = gdk_cairo_create (widget->window);
-  if (!cr)
-  {
-    g_debug ("Unable to create cairo context\n");
-    return FALSE;
-  }
-
-  gdk_cairo_region (cr, event->region);
-  cairo_clip (cr);
-  
-  /* The actual drawing of the background */
-  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_paint (cr);
- 
-  /* Pass on the expose event to the child */
-  child = gtk_bin_get_child (GTK_BIN (widget));
-  if (!GTK_IS_WIDGET (child))
-    return TRUE;
-
-  if (1)
-  {
-    GdkRegion *region;
-    
-    gdk_cairo_set_source_pixmap (cr, child->window,
-                                 child->allocation.x, 
-                                 child->allocation.y);
-
-    region = gdk_region_rectangle (&child->allocation);
-    gdk_region_intersect (region, event->region);
-    gdk_cairo_region (cr, region);
-    cairo_clip (cr);
-    
-    cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-    cairo_paint (cr);
-  }
-
-  cairo_destroy (cr);
-
-  gtk_container_propagate_expose (GTK_CONTAINER (widget),
-                                  child,
-                                  event);
-
-  return TRUE;
-}
-
 static void
 awn_applet_proxy_dispose (GObject *object)
 {
@@ -200,13 +138,10 @@ static void
 awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
 {
   GObjectClass *obj_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
 
   obj_class->dispose      = awn_applet_proxy_dispose;
   obj_class->set_property = awn_applet_proxy_set_property;
   obj_class->get_property = awn_applet_proxy_get_property;
-
-  wid_class->expose_event = awn_applet_proxy_expose;
 
   /* Install class properties */
   g_object_class_install_property (obj_class,
@@ -262,9 +197,6 @@ awn_applet_proxy_init (AwnAppletProxy *proxy)
   AwnAppletProxyPrivate *priv;
 
   priv = proxy->priv = AWN_APPLET_PROXY_GET_PRIVATE (proxy);
-
-  priv->socket = gtk_socket_new ();
-  gtk_container_add (GTK_CONTAINER (proxy), priv->socket);
 }
 
 
@@ -289,15 +221,15 @@ awn_applet_proxy_new (const gchar *path,
  * GtkSocket callbacks
  */
 static void 
-on_plug_added (GtkWidget *socket, AwnAppletProxy *proxy)
+on_plug_added (AwnAppletProxy *proxy)
 {
   g_return_if_fail (AWN_IS_APPLET_PROXY (proxy));
 
-  gtk_widget_show_all (GTK_WIDGET (proxy));
+  gtk_widget_show (GTK_WIDGET (proxy));
 }
 
 static void 
-on_plug_removed (GtkWidget *socket, AwnAppletProxy *proxy)
+on_plug_removed (AwnAppletProxy *proxy)
 {
   AwnAppletProxyPrivate *priv;
 
@@ -311,23 +243,17 @@ void
 awn_applet_proxy_execute (AwnAppletProxy *proxy)
 {
   AwnAppletProxyPrivate *priv;
-  GtkWidget             *socket;
   GdkScreen             *screen;
   GError                *error = NULL;
   gchar                 *exec;
 
   priv = AWN_APPLET_PROXY_GET_PRIVATE (proxy);
 
-  socket = priv->socket;
-
-  gtk_widget_realize (GTK_WIDGET (socket));
-  gdk_window_set_composited (priv->socket->window, TRUE);
+  gtk_widget_realize (GTK_WIDGET (proxy));
 
   /* Connect to the socket signals */
-  g_signal_connect (socket, "plug-added", 
-                    G_CALLBACK (on_plug_added), proxy);
-  g_signal_connect (socket, "plug-removed", 
-                    G_CALLBACK (on_plug_removed),proxy);
+  g_signal_connect (proxy, "plug-added", G_CALLBACK (on_plug_added), NULL);
+  g_signal_connect (proxy, "plug-removed", G_CALLBACK (on_plug_removed), NULL);
 
   g_debug ("Loading Applet: %s %s", priv->path, priv->uid);
 
@@ -336,7 +262,7 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   exec = g_strdup_printf (APPLET_EXEC,
                           priv->path,
                           priv->uid, 
-                          (long long)gtk_socket_get_id (GTK_SOCKET (socket)),
+                          (long long)gtk_socket_get_id (GTK_SOCKET (proxy)),
                           priv->orient,
                           priv->size);
   gdk_spawn_command_line_on_screen (screen, exec, &error);

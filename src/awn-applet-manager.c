@@ -87,11 +87,7 @@ awn_applet_manager_constructed (GObject *object)
                                AWN_GROUP_PANEL, AWN_PANEL_APPLET_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
                                object, "applet_list");
-  gtk_box_pack_start (GTK_BOX (object), gtk_label_new ("Applet 1"),
-                      0, FALSE, FALSE);
-  gtk_box_pack_start (GTK_BOX (object), gtk_label_new ("Applet 2"),
-                      0, FALSE, FALSE);
-  
+
 }
 
 static void

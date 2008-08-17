@@ -178,7 +178,7 @@ awn_settings_new()
 
   awn_load_int(client, BAR, REFLECTION_OFFSET, &s->reflection_offset, 0);
 
-  awn_load_int(client, BAR, ICON_OFFSET, &s->icon_offset, 10);
+  awn_load_int(client, "Panel", "offset", &s->icon_offset, 10);
 
   awn_load_bool(client, BAR, ROUNDED_CORNERS, &s->rounded_corners, TRUE);
 
