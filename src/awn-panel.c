@@ -652,9 +652,6 @@ position_window (AwnPanel *panel)
   }
 
   gtk_window_move (window, x, y);
-
-  g_debug ("%d %d %d %d %d %d", x, y, ww, hh, monitor->width, monitor->height);
-
   return FALSE;
 }
 

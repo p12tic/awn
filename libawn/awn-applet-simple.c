@@ -145,7 +145,7 @@ adjust_icon(AwnAppletSimple *simple)
   // awn-effects require the window to be 25% bigger than icon
   gtk_widget_set_size_request(GTK_WIDGET(simple),
                               priv->icon_width *5 / 4,
-                              (priv->bar_height + 2) * 2);
+                              (priv->bar_height) * 2);
 
   gtk_widget_queue_draw(GTK_WIDGET(simple));
 }

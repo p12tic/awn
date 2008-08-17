@@ -183,17 +183,26 @@ awn_background_flat_draw (AwnBackground  *bg,
                           gint            width,
                           gint            height)
 {
+  gint temp;
   cairo_save (cr);
   
   switch (orient)
   {
     case AWN_ORIENT_RIGHT:
-      cairo_translate (cr, y+height, x+width);
-      cairo_rotate (cr, -90 * M_PI/180); 
+      cairo_translate (cr, width/2, height/2);
+      cairo_rotate (cr, 270 * M_PI/180); 
+      temp = y;
+      y = width/2; x = -height/2;
+      temp = width;
+      width = height; height = temp;
       break;
     case AWN_ORIENT_LEFT:
-      cairo_translate (cr, x+width, y);
+      cairo_translate (cr, width/2, height/2);
       cairo_rotate (cr, 90 * M_PI/180);
+      temp = y;
+      y = 0; x = -height/2;
+      temp = width;
+      width = height; height = temp/2;
       break;
     default:
       break;
