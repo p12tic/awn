@@ -55,65 +55,56 @@ typedef struct _AwnAppletPrivate AwnAppletPrivate;
 struct _AwnApplet
 {
 	GtkEventBox parent;
+
+  AwnAppletPrivate *priv;
 };
 
 struct _AwnAppletClass
 {
 	GtkEventBoxClass parent_class;
 
-	void (*plug_embedded)  (AwnApplet *applet);
-	void (*orient_changed) (AwnApplet *applet, AwnOrientation oreint);
-	void (*height_changed) (AwnApplet *applet, guint height);
-	void (*deleted)        (AwnApplet *applet, const gchar *uid);
-	void (*size_changed)   (AwnApplet *applet, const gint x);
-        /* Future padding */
-        void (*_applet0) (void);
-        void (*_applet1) (void);
-        void (*_applet2) (void);
-        void (*_applet3) (void);
+  void (*plug_embedded)  (AwnApplet *applet);
+  void (*orient_changed) (AwnApplet *applet, AwnOrientation oreint);
+  void (*height_changed) (AwnApplet *applet, guint height);
+  void (*deleted)        (AwnApplet *applet, const gchar *uid);
+  void (*size_changed)   (AwnApplet *applet, const gint x);
+  
+  /* Future padding */
+  void (*_applet0) (void);
+  void (*_applet1) (void);
+  void (*_applet2) (void);
+  void (*_applet3) (void);
 };
 
 GType awn_applet_get_type (void);
 
 /* Hook to have an AWN Applet built for you */
-typedef gboolean (*AwnAppletInitFunc) ( AwnApplet *applet );
+typedef gboolean   (*AwnAppletInitFunc)           (AwnApplet *applet);
 /* Hook to build your own AWN Applet */
-typedef AwnApplet* (*AwnAppletInitPFunc) ( const gchar* uid, gint orient, gint height );
+typedef AwnApplet* (*AwnAppletInitPFunc)          (const gchar* uid, 
+                                                   gint         orient, 
+                                                   gint         height);
 
 
-AwnApplet *
-awn_applet_new ( const gchar* uid, gint orient, gint height );
+AwnApplet *        awn_applet_new                 (const gchar* uid, 
+                                                   gint         orient, 
+                                                   gint         height);
 
-AwnOrientation
-awn_applet_get_orientation (AwnApplet *applet);
+AwnOrientation     awn_applet_get_orientation     (AwnApplet *applet);
 
 /* This is the *visible* height, the height of the bar is always double this */
-guint
-awn_applet_get_height (AwnApplet *applet);
+guint              awn_applet_get_height          (AwnApplet *applet);
 
-gchar *
-awn_applet_get_uid(AwnApplet *applet);
+gchar *            awn_applet_get_uid             (AwnApplet *applet);
 
-/*
-gchar*
-awn_applet_get_preferences_key (AwnApplet *applet);
-
-void                
-awn_applet_add_preferences (AwnApplet *applet, 
-                            const gchar *schema_dir,
-                            GError **opt_error);
-*/
-
-GtkWidget*
-awn_applet_create_default_menu (AwnApplet *applet);
+GtkWidget*         awn_applet_create_default_menu (AwnApplet *applet);
 
 /*Returns a gtk menu item for the "Dock Preferences".
 
 Note: awn_applet_create_default_menu() adds this item to its menu.  This function 
 should only be used in cases where awn_applet_create_default_menu() cannot be 
 used */
-GtkWidget *
-awn_applet_create_pref_item(void);
+GtkWidget *        awn_applet_create_pref_item    (void);
 
 G_END_DECLS
 
