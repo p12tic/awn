@@ -142,7 +142,7 @@ class awnLauncherEditor:
             self.command_chooser = gtk.FileChooserDialog(_('Select an Executable File'), self.main_dialog, buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         self.command_chooser.show_all()
         if self.command_chooser.run() == gtk.RESPONSE_OK:
-            self.glade.get_widget('entry_command').set_text(fcd.get_filename())
+            self.glade.get_widget('entry_command').set_text(self.command_chooser.get_filename())
         self.command_chooser.hide_all()
 
     def on_dialog_desktop_item_response(self, dialog, response):
