@@ -1,5 +1,13 @@
 2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	patch by: black <https://launchpad.net/~blackborn>
+
+	* awn-manager/awnTheme.py:
+	Fix Launchpad bug #246967 (patterns must be manually disabled for themes
+	without them).
+
+2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	patch by: Takao Fujiwara <takao.fujiwara@sun.com>
 
 	* awn-manager/awn-manager.desktop.in.in:

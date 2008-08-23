@@ -25,8 +25,15 @@ import gobject
 import awn
 import awnDefs as defs
 
+def stringbool( value ):
+    if( value == "False"):
+        return False
+    else:
+        return bool(value)
+
 CONFIG_TYPE_MAP = {
     bool: 'bool',
+    stringbool: 'bool',
     float: 'float',
     int: 'int',
     str: 'string'
@@ -52,7 +59,6 @@ class Pref:
     def typecast(self, value):
         return self.ptype(value)
 
-
 class AwnThemeManager:
 
     def __init__(self, glade):
@@ -74,18 +80,18 @@ class AwnThemeManager:
         self.CONFIG = awn.Config()
         self.BUILD_DIR = "/tmp/awn_theme_build"
         self.THEME_PREFS = {
-            '': [Pref('autohide', bool)],
-            'app': [Pref('active_png', str), Pref('alpha_effect', bool),
-                    Pref('arrow_color', str),Pref('hover_bounce_effect', bool),
-                    Pref('tasks_have_arrows', bool)],
+            '': [Pref('autohide', stringbool)],
+            'app': [Pref('active_png', str), Pref('alpha_effect', stringbool),
+                    Pref('arrow_color', str),Pref('hover_bounce_effect', stringbool),
+                    Pref('tasks_have_arrows', stringbool)],
             'bar': [Pref('bar_angle', int), Pref('bar_height', int),
                     Pref('border_color', str), Pref('corner_radius', float),
                     Pref('glass_histep_1', str), Pref('glass_histep_2', str),
                     Pref('glass_step_1', str), Pref('glass_step_2', str),
                     Pref('hilight_color', str), Pref('icon_offset', int),
                     Pref('pattern_alpha', float), Pref('pattern_uri', str),
-                    Pref('render_pattern', bool), Pref('rounded_corners', bool),
-                    Pref('sep_color', str), Pref('show_separator', bool)],
+                    Pref('render_pattern', stringbool), Pref('rounded_corners', stringbool),
+                    Pref('sep_color', str), Pref('show_separator', stringbool)],
             'title': [Pref('background', str), Pref('font_face', str),
                       Pref('shadow_color', str), Pref('text_color', str)]
             }
