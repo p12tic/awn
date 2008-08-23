@@ -1,3 +1,8 @@
+2008-08-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* awn-manager/awnDefs.py.in: 
+	Modify awn-manager to edit panel/applet_list.
+
 2008-08-11  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* configure.in:

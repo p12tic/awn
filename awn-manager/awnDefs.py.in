@@ -78,7 +78,7 @@ BACKGROUND          = "background"         #color
 FONT_FACE           = "font_face"          #string
 
 APPLETS             = "applets"            #group
-APPLET_LIST         = "applets_list"       #list
+APPLET_LIST         = "panel/applet_list"       #list
 
 # i18n-related
 I18N_DOMAIN = "avant-window-navigator"
