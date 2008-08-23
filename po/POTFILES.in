@@ -1,4 +1,11 @@
 applets/taskman.desktop.in
+awn-manager/awn-manager.desktop.in.in
+awn-manager/awnLauncherEditor.py
+awn-manager/awnManager.py
+awn-manager/awnPreferences.py
+awn-manager/launcher-editor.glade
 awn-manager/window.glade
+data/avant-window-navigator.desktop.in.in
+data/awn.schemas.in
+libawn/egg/eggdesktopfile.c
 src/awn-task.c
-

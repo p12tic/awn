@@ -1,5 +1,19 @@
 2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	patch by: Takao Fujiwara <takao.fujiwara@sun.com>
+
+	* awn-manager/awn-manager.desktop.in.in:
+	* awn-manager/awnManager.py.in:
+	* awn-manager/awnPreferences.py:
+	* awn-manager/window.glade:
+	* data/avant-window-navigator.desktop.in.in:
+	* po/POTFILES.in:
+	* src/Makefile.am:
+	* src/main.c:
+	Fix Launchpad bug #251713 (avant includes several unlocalized strings).
+
+2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/vala/awn.gi:
 	* bindings/vala/awn.metadata:
 	* bindings/vala/awn.vapi:
