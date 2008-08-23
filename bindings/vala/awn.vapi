@@ -173,6 +173,7 @@ namespace Awn {
 		public uint enter_notify;
 		public uint leave_notify;
 		public uint timer_id;
+		public bool do_reflections;
 		public weak Cairo.Context icon_ctx;
 		public weak Cairo.Context reflect_ctx;
 		public weak Awn.EffectsOp op_list;
@@ -182,6 +183,8 @@ namespace Awn {
 		public void* pad4;
 		public void finalize ();
 		public static void init (GLib.Object obj, Awn.Effects fx);
+		public void reflection_off ();
+		public void reflection_on ();
 		public void set_title (Awn.Title title, Awn.TitleCallback title_func);
 	}
 	[Compact]
@@ -243,6 +246,8 @@ namespace Awn {
 		public int frame_rate;
 		public bool icon_depth_on;
 		public int icon_offset;
+		public int reflection_offset;
+		public bool show_shadows;
 		public weak Awn.Color text_color;
 		public weak Awn.Color shadow_color;
 		public weak Awn.Color background;
@@ -326,6 +331,7 @@ namespace Awn {
 	}
 	[CCode (cheader_filename = "libawn/awn-applet-dialog.h")]
 	public class AppletDialog : Gtk.Window, Gtk.Buildable, Atk.Implementor {
+		[CCode (type = "GtkWidget*")]
 		public AppletDialog (Awn.Applet applet);
 		public void position_reset ();
 	}
@@ -335,6 +341,7 @@ namespace Awn {
 		public void effects_on ();
 		public weak Awn.Icons get_awn_icons ();
 		public weak Awn.Effects get_effects ();
+		[CCode (type = "GtkWidget*")]
 		public AppletSimple (string uid, int orient, int height);
 		public weak Gdk.Pixbuf set_awn_icon (string applet_name, string icon_name);
 		public weak Gdk.Pixbuf set_awn_icon_state (string state);
@@ -352,15 +359,17 @@ namespace Awn {
 		public weak Gdk.Pixbuf get_icon_at_height (string state, int height);
 		public weak Gdk.Pixbuf get_icon_simple ();
 		public weak Gdk.Pixbuf get_icon_simple_at_height (int height);
-		public Icons ();
+		public Icons (string applet_name);
+		public void override_gtk_theme (string theme_name);
 		public void set_changed_cb (Awn.IconsChange fn);
 		public void set_height (int height);
-		public void set_icon_info (Gtk.Widget applet, string applet_name, string uid, int height, string icon_name);
-		public void set_icons_info (Gtk.Widget applet, string applet_name, string uid, int height, string[] states, string[] icon_names);
+		public void set_icon_info (Gtk.Widget applet, string uid, int height, string icon_name);
+		public void set_icons_info (Gtk.Widget applet, string uid, int height, string[] states, string[] icon_names);
 	}
 	[CCode (cheader_filename = "libawn/awn-plug.h")]
 	public class Plug : Gtk.Plug, Gtk.Buildable, Atk.Implementor {
 		public void @construct (Gdk.NativeWindow socket_id);
+		[CCode (type = "GtkWidget*")]
 		public Plug (Awn.Applet applet);
 		public virtual signal void applet_deleted (string uid);
 	}

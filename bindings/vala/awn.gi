@@ -340,6 +340,18 @@
 					<parameter name="fx" type="AwnEffects*"/>
 				</parameters>
 			</method>
+			<method name="reflection_off" symbol="awn_effects_reflection_off">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="fx" type="AwnEffects*"/>
+				</parameters>
+			</method>
+			<method name="reflection_on" symbol="awn_effects_reflection_on">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="fx" type="AwnEffects*"/>
+				</parameters>
+			</method>
 			<method name="set_title" symbol="awn_effects_set_title">
 				<return-type type="void"/>
 				<parameters>
@@ -382,6 +394,7 @@
 			<field name="enter_notify" type="guint"/>
 			<field name="leave_notify" type="guint"/>
 			<field name="timer_id" type="guint"/>
+			<field name="do_reflections" type="gboolean"/>
 			<field name="icon_ctx" type="cairo_t*"/>
 			<field name="reflect_ctx" type="cairo_t*"/>
 			<field name="op_list" type="AwnEffectsOp*"/>
@@ -448,6 +461,8 @@
 			<field name="frame_rate" type="gint"/>
 			<field name="icon_depth_on" type="gboolean"/>
 			<field name="icon_offset" type="int"/>
+			<field name="reflection_offset" type="int"/>
+			<field name="show_shadows" type="gboolean"/>
 			<field name="text_color" type="AwnColor"/>
 			<field name="shadow_color" type="AwnColor"/>
 			<field name="background" type="AwnColor"/>
@@ -933,8 +948,8 @@
 				<parameters>
 					<parameter name="simple" type="AwnAppletSimple*"/>
 					<parameter name="applet_name" type="gchar*"/>
-					<parameter name="states" type="gchar**"/>
-					<parameter name="icon_names" type="gchar**"/>
+					<parameter name="states" type="GStrv"/>
+					<parameter name="icon_names" type="GStrv"/>
 				</parameters>
 			</method>
 			<method name="set_icon" symbol="awn_applet_simple_set_icon">
@@ -1011,7 +1026,17 @@
 			</method>
 			<constructor name="new" symbol="awn_icons_new">
 				<return-type type="AwnIcons*"/>
+				<parameters>
+					<parameter name="applet_name" type="gchar*"/>
+				</parameters>
 			</constructor>
+			<method name="override_gtk_theme" symbol="awn_icons_override_gtk_theme">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icons" type="AwnIcons*"/>
+					<parameter name="theme_name" type="gchar*"/>
+				</parameters>
+			</method>
 			<method name="set_changed_cb" symbol="awn_icons_set_changed_cb">
 				<return-type type="void"/>
 				<parameters>
@@ -1032,7 +1057,6 @@
 				<parameters>
 					<parameter name="icons" type="AwnIcons*"/>
 					<parameter name="applet" type="GtkWidget*"/>
-					<parameter name="applet_name" type="gchar*"/>
 					<parameter name="uid" type="gchar*"/>
 					<parameter name="height" type="gint"/>
 					<parameter name="icon_name" type="gchar*"/>
@@ -1043,11 +1067,10 @@
 				<parameters>
 					<parameter name="icons" type="AwnIcons*"/>
 					<parameter name="applet" type="GtkWidget*"/>
-					<parameter name="applet_name" type="gchar*"/>
 					<parameter name="uid" type="gchar*"/>
 					<parameter name="height" type="gint"/>
-					<parameter name="states" type="gchar**"/>
-					<parameter name="icon_names" type="gchar**"/>
+					<parameter name="states" type="GStrv"/>
+					<parameter name="icon_names" type="GStrv"/>
 				</parameters>
 			</method>
 		</object>

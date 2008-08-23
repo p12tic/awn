@@ -1,3 +1,10 @@
+2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	Update Vala bindings.
+
 2008-08-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	patch by: Matt <sharkbaitbobby@gmail.com>
