@@ -316,7 +316,7 @@ awn_effect_sort(gconstpointer a, gconstpointer b)
   return (gint)(data1->priority - data2->priority);
 }
 
-inline AwnEffectPriority
+AwnEffectPriority
 awn_effect_get_priority(const AwnEffect effect)
 {
   switch (effect)

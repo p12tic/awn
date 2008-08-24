@@ -1,5 +1,14 @@
 2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	patch by: Henry Zhang <hua.zhang@sun.com>
+
+	* configure.in:
+	* libawn/awn-effects-ops.c:
+	* libawn/awn-effects.c:
+	Fix Launchpad bug #250720 (build error on Solaris).
+
+2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	patch by: black <https://launchpad.net/~blackborn>
 
 	* awn-manager/awnManager.py.in:

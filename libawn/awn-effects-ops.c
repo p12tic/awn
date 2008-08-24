@@ -30,7 +30,7 @@
 
 
 
-inline guchar
+guchar
 lighten_component(const guchar cur_value, const gfloat amount)
 {
   int new_value = cur_value;
