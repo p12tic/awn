@@ -1,5 +1,14 @@
 2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	reviewed by: Mike Rooney <launchpad@rowk.com>
+	patch by: black <https://launchpad.net/~blackborn>
+
+	* awn-manager/awnTheme.py:
+	Fix Launchpad bug #134397 (Cannot remove any theme in awn-manager except
+	the currently enabled one).
+
+2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	patch by: Henry Zhang <hua.zhang@sun.com>
 
 	* configure.in:
