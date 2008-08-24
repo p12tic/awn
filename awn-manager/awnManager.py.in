@@ -161,17 +161,11 @@ class AwnManager:
         self.notebook.set_current_page(iconView.get_cursor()[0][0])
 
     def refresh(self, button):
-        w = gtk.Window()
-        w.set_icon(this.safe_load_icon("gtk-refresh", 48, gtk.ICON_LOOKUP_FORCE_SVG))
-        v = gtk.VBox()
-        l = gtk.Label(_("Refreshed"))
-        b = gtk.Button(stock="gtk-close")
-        b.connect("clicked", self.win_destroy, w)
-        v.pack_start(l, True, True, 2)
-        v.pack_start(b)
-        w.add(v)
-        w.resize(200, 100)
-        w.show_all()
+        dialog = gtk.MessageDialog(self.window, 0, gtk.MESSAGE_INFO,
+                                   gtk.BUTTONS_OK,
+                                   _('AWN has been successfully refreshed'))
+        dialog.run()
+        dialog.hide()
 
     def about(self, button):
         self.about = gtk.AboutDialog()

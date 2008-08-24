@@ -1,5 +1,12 @@
 2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	patch by: black <https://launchpad.net/~blackborn>
+
+	* awn-manager/awnManager.py.in:
+	Fix Launchpad bug #241971 (Cleanup of the refresh dialog).
+
+2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	reviewed by: Mike Rooney <launchpad@rowk.com>
 	patch by: black <https://launchpad.net/~blackborn>
 
