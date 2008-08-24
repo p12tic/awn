@@ -2,6 +2,15 @@
 
 	patch by: black <https://launchpad.net/~blackborn>
 
+	* awn-manager/awnManager.py.in:
+	* awn-manager/awnPreferences.py:
+	Fix Launchpad bug #240396 (changing theme doesn't change the values of the
+	'general' tab).
+
+2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	patch by: black <https://launchpad.net/~blackborn>
+
 	* awn-manager/awnTheme.py:
 	Fix Launchpad bug #246967 (patterns must be manually disabled for themes
 	without them).

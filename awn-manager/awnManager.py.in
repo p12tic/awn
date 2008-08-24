@@ -118,9 +118,6 @@ class AwnManager:
         iconViewFrame.add(icon_view)
         iconViewFrame.show_all()
 
-        #theme
-        self.themeManager = AwnThemeManager(self.wTree)
-
         #applet
         self.appletManager = awnApplet(self.wTree)
 
@@ -129,6 +126,9 @@ class AwnManager:
 
         #preferences
         self.prefManager = awnPreferences(self.wTree)
+
+        #theme
+        self.themeManager = AwnThemeManager(self.wTree)
 
         self.window.show_all()
 
