@@ -40,8 +40,9 @@
 #include "awn-effect-spotlight3d.h"
 #include "awn-effect-desaturate.h"
 
-
+#ifndef M_PI
 #define  M_PI 3.14159265358979323846
+#endif
 #define  RADIANS_PER_DEGREE  0.0174532925
 
 #define  AWN_FRAME_RATE    40
@@ -49,7 +50,6 @@
 /* FORWARD DECLARATIONS */
 
 extern GdkPixbuf *SPOTLIGHT_PIXBUF;
-
 
 #define EFFECT_BOUNCE 0
 #define EFFECT_FADE 1
@@ -146,20 +146,61 @@ static const AwnEffectsOp OP_LIST[] =
 };
 
 // effect functions
-static gboolean awn_on_enter_event(GtkWidget * widget,
+static gboolean awn_effects_enter_event(GtkWidget * widget,
                                    GdkEventCrossing * event, gpointer data);
-static gboolean awn_on_leave_event(GtkWidget * widget,
+static gboolean awn_effects_leave_event(GtkWidget * widget,
                                    GdkEventCrossing * event, gpointer data);
 
 static gdouble calc_curve_position(gdouble cx, gdouble a, gdouble b);
 
+static gpointer _awn_effects_copy(gpointer boxed)
+{
+  return boxed;
+}
 
+static void _awn_effects_free(gpointer boxed)
+{
+  if (boxed)
+    awn_effects_free(AWN_EFFECTS(boxed));
+}
 
+void awn_effects_free(AwnEffects *fx)
+{
+  awn_effects_finalize(fx);
+  g_free(fx);
+}
+
+GType awn_effects_get_type(void)
+{
+  static GType type = 0;
+
+  if (type == 0) {
+    type = g_boxed_type_register_static("AwnEffects",
+                                        _awn_effects_copy,
+                                        _awn_effects_free);
+  }
+
+  return type;
+}
+
+AwnEffects* awn_effects_new()
+{
+  AwnEffects *fx = g_new(AwnEffects, 1);
+  awn_effects_init(fx, NULL);
+  return fx;
+}
+
+AwnEffects* awn_effects_new_for_widget(GtkWidget * widget)
+{
+  AwnEffects *fx = g_new(AwnEffects, 1);
+  awn_effects_init(fx, widget);
+  return fx;
+}
 
 void
-awn_effects_init(GObject * self, AwnEffects * fx)
+awn_effects_init(AwnEffects * fx, GtkWidget * widget)
 {
-  fx->self = self;
+  fx->self = widget;
   fx->settings = awn_get_settings();
   fx->focus_window = NULL;
   fx->title = NULL;
@@ -206,8 +247,8 @@ awn_effects_init(GObject * self, AwnEffects * fx)
 
 }
 
-void
-awn_effect_dispose_queue(AwnEffects * fx)
+static void
+awn_effects_dispose_queue(AwnEffects * fx)
 {
   if (fx->timer_id)
   {
@@ -236,8 +277,8 @@ awn_effect_dispose_queue(AwnEffects * fx)
 void
 awn_effects_finalize(AwnEffects * fx)
 {
-  awn_unregister_effects(fx);
-  awn_effect_dispose_queue(fx);
+  awn_effects_unregister(fx);
+  awn_effects_dispose_queue(fx);
   
 
   if (  fx->icon_ctx)
@@ -258,8 +299,6 @@ awn_effects_finalize(AwnEffects * fx)
   g_free(fx->op_list);
 }
 
-
-
 void
 awn_effects_set_title(AwnEffects * fx, AwnTitle * title,
                       AwnTitleCallback title_func)
@@ -269,7 +308,7 @@ awn_effects_set_title(AwnEffects * fx, AwnTitle * title,
 }
 
 static gboolean
-awn_on_enter_event(GtkWidget * widget, GdkEventCrossing * event,
+awn_effects_enter_event(GtkWidget * widget, GdkEventCrossing * event,
                    gpointer data)
 {
 
@@ -287,12 +326,12 @@ awn_on_enter_event(GtkWidget * widget, GdkEventCrossing * event,
 
   fx->hover = TRUE;
 
-  awn_effect_start(fx, AWN_EFFECT_HOVER);
+  awn_effects_start(fx, AWN_EFFECT_HOVER);
   return FALSE;
 }
 
 static gboolean
-awn_on_leave_event(GtkWidget * widget, GdkEventCrossing * event,
+awn_effects_leave_event(GtkWidget * widget, GdkEventCrossing * event,
                    gpointer data)
 {
   AwnEffects *fx = (AwnEffects *) data;
@@ -304,20 +343,20 @@ awn_on_leave_event(GtkWidget * widget, GdkEventCrossing * event,
 
   fx->hover = FALSE;
 
-  awn_effect_stop(fx, AWN_EFFECT_HOVER);
+  awn_effects_stop(fx, AWN_EFFECT_HOVER);
   return FALSE;
 }
 
 static gint
-awn_effect_sort(gconstpointer a, gconstpointer b)
+awn_effects_sort(gconstpointer a, gconstpointer b)
 {
   const AwnEffectsPrivate *data1 = (AwnEffectsPrivate *) a;
   const AwnEffectsPrivate *data2 = (AwnEffectsPrivate *) b;
   return (gint)(data1->priority - data2->priority);
 }
 
-AwnEffectPriority
-awn_effect_get_priority(const AwnEffect effect)
+static AwnEffectPriority
+awn_effects_get_priority(const AwnEffect effect)
 {
   switch (effect)
   {
@@ -353,13 +392,13 @@ void awn_effects_reflection_on(AwnEffects * fx)
 
 
 void
-awn_effect_start(AwnEffects * fx, const AwnEffect effect)
+awn_effects_start(AwnEffects * fx, const AwnEffect effect)
 {
-  awn_effect_start_ex(fx, effect, NULL, NULL, 0);
+  awn_effects_start_ex(fx, effect, NULL, NULL, 0);
 }
 
 void
-awn_effect_start_ex(AwnEffects * fx, const AwnEffect effect,
+awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect,
                     AwnEventNotify start, AwnEventNotify stop,
                     gint max_loops)
 {
@@ -390,18 +429,18 @@ awn_effect_start_ex(AwnEffects * fx, const AwnEffect effect,
 
   priv->effects = fx;
   priv->this_effect = effect;
-  priv->priority = awn_effect_get_priority(effect);
+  priv->priority = awn_effects_get_priority(effect);
   priv->max_loops = max_loops;
   priv->start = start;
   priv->stop = stop;
 
   fx->effect_queue = g_list_insert_sorted(fx->effect_queue, priv,
-                                          awn_effect_sort);
-  main_effect_loop(fx);
+                                          awn_effects_sort);
+  awn_effects_main_effect_loop(fx);
 }
 
 void
-awn_effect_stop(AwnEffects * fx, const AwnEffect effect)
+awn_effects_stop(AwnEffects * fx, const AwnEffect effect)
 {
   if (effect == AWN_EFFECT_NONE)
   {
@@ -478,7 +517,7 @@ static GSourceFunc get_animation(AwnEffectsPrivate *topEffect, gint effects[])
 }
 
 void
-main_effect_loop(AwnEffects * fx)
+awn_effects_main_effect_loop(AwnEffects * fx)
 {
   if (fx->current_effect != AWN_EFFECT_NONE || fx->effect_queue == NULL)
   {
@@ -543,28 +582,28 @@ main_effect_loop(AwnEffects * fx)
     }
 
     // dispose AwnEffectsPrivate
-    awn_effect_stop(fx, topEffect->this_effect);
+    awn_effects_stop(fx, topEffect->this_effect);
   }
 }
 
 void
-awn_register_effects(GObject * obj, AwnEffects * fx)
+awn_effects_register(AwnEffects * fx, GtkWidget * obj)
 {
   if (fx->focus_window)
   {
-    awn_unregister_effects(fx);
+    awn_effects_unregister(fx);
   }
 
-  fx->focus_window = GTK_WIDGET(obj);
+  fx->focus_window = obj;
 
-  fx->enter_notify = g_signal_connect(obj, "enter-notify-event",
-                                      G_CALLBACK(awn_on_enter_event), fx);
-  fx->leave_notify = g_signal_connect(obj, "leave-notify-event",
-                                      G_CALLBACK(awn_on_leave_event), fx);
+  fx->enter_notify = g_signal_connect(G_OBJECT(obj), "enter-notify-event",
+                                      G_CALLBACK(awn_effects_enter_event), fx);
+  fx->leave_notify = g_signal_connect(G_OBJECT(obj), "leave-notify-event",
+                                      G_CALLBACK(awn_effects_leave_event), fx);
 }
 
 void
-awn_unregister_effects(AwnEffects * fx)
+awn_effects_unregister(AwnEffects * fx)
 {
   if (fx->enter_notify)
   {
@@ -654,7 +693,7 @@ apply_spotlight(AwnEffects * fx, cairo_t * cr)
 
 
 void
-awn_draw_background(AwnEffects * fx, cairo_t * cr)
+awn_effects_draw_background(AwnEffects * fx, cairo_t * cr)
 {
   if (fx->spotlight && fx->spotlight_alpha > 0)
   {
@@ -965,7 +1004,7 @@ make_shadows(AwnEffects * fx, cairo_t * cr, int x1, int y1, int width, int heigh
   this function will need to handle it themselves.
 */
 void
-awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
+awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
                      cairo_t * reflect_context)
 {
   cairo_surface_t * icon;       //Surfaces pulled from args.
@@ -1106,7 +1145,7 @@ awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
 }
 
 void
-awn_draw_icons(AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
+awn_effects_draw_icons(AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
                GdkPixbuf * reflect)
 {
   /*rather inefficient still...
@@ -1123,14 +1162,14 @@ awn_draw_icons(AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
   gdk_cairo_set_source_pixbuf(icon_context, icon, 0, 0);
   cairo_paint(icon_context);
 
-  awn_draw_icons_cairo(fx, cr, icon_context, NULL);
+  awn_effects_draw_icons_cairo(fx, cr, icon_context, NULL);
 
   cairo_surface_destroy(icon_srfc);
   cairo_destroy(icon_context);
 }
 
 void
-awn_draw_foreground(AwnEffects * fx, cairo_t * cr)
+awn_effects_draw_foreground(AwnEffects * fx, cairo_t * cr)
 {
   if (fx->spotlight && fx->spotlight_alpha > 0)
   {
@@ -1140,14 +1179,14 @@ awn_draw_foreground(AwnEffects * fx, cairo_t * cr)
 }
 
 void
-awn_draw_set_icon_size(AwnEffects * fx, const gint width, const gint height)
+awn_effects_draw_set_icon_size(AwnEffects * fx, const gint width, const gint height)
 {
   fx->icon_width = width;
   fx->icon_height = height;
 }
 
 void
-awn_draw_set_window_size(AwnEffects * fx, const gint width,
+awn_effects_draw_set_window_size(AwnEffects * fx, const gint width,
                          const gint height)
 {
   fx->window_width = width;

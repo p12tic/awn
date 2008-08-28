@@ -18,9 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __AWN_EFFECTS_H__
-#define __AWN_EFFECTS_H__
+#ifndef _LIBAWN_AWN_EFFECTS_H
+#define _LIBAWN_AWN_EFFECTS_H
 
+#include <glib.h>
+#include <glib-object.h>
 #include <gtk/gtk.h>
 
 #include "awn-defines.h"
@@ -70,10 +72,20 @@ typedef struct
   gint y1; // sit on bottom by default
 }DrawIconState;
 
-typedef const gchar *(*AwnTitleCallback)(GObject *);
-typedef void (*AwnEventNotify)(GObject *);
+typedef const gchar *(*AwnTitleCallback)(GtkWidget *);
+typedef void (*AwnEventNotify)(GtkWidget *);
 
+/**
+ * AwnEffects:
+ *
+ * Structure containing all necessary variables for effects state for
+ * particular widget.
+ */
 typedef struct _AwnEffects AwnEffects;
+
+#define AWN_TYPE_EFFECTS (awn_effects_get_type())
+
+#define AWN_EFFECTS(obj) (G_TYPE_CHECK_INSTANCE_CAST((obj), AWN_TYPE_EFFECTS, AwnEffects))
 
 typedef gboolean(* AwnEffectsOpfn )(AwnEffects * fx,
                                      DrawIconState * ds,
@@ -83,11 +95,11 @@ typedef struct
 {
   AwnEffectsOpfn      fn;
   gpointer            data;
-}AwnEffectsOp;
+} AwnEffectsOp;
 
 struct _AwnEffects
 {
-  GObject *self;
+  GtkWidget *self;
   GtkWidget *focus_window;
   AwnSettings *settings;
   AwnTitle *title;
@@ -147,16 +159,22 @@ struct _AwnEffects
   void *pad4;
 };
 
+GType awn_effects_get_type(void);
+
+AwnEffects* awn_effects_new();
+
+AwnEffects* awn_effects_new_for_widget(GtkWidget * widget);
 
 /**
  * awn_effects_init:
+ * @fx: Pointer to #AwnEffects structure.
  * @obj: Object which will be passed to all callback functions, this object is
  * also passed to gtk_widget_queue_draw() during the animation.
- * @fx: Pointer to #AwnEffects structure.
  *
  * Initializes #AwnEffects structure.
  */
-void awn_effects_init(GObject * obj, AwnEffects * fx);
+void awn_effects_init(AwnEffects * fx, GtkWidget * widget);
+void awn_effects_free(AwnEffects * fx);
 
 /**
  * awn_effects_finalize:
@@ -168,42 +186,42 @@ void awn_effects_init(GObject * obj, AwnEffects * fx);
 void awn_effects_finalize(AwnEffects * fx);
 
 /**
- * awn_register_effects
- * @obj: Managed window to which the effects will apply.
+ * awn_effects_register:
  * @fx: Pointer to #AwnEffects structure.
+ * @obj: GtkWidget derived class providing enter-notify-event and leave-notify-event signals.
  *
  * Registers #GtkWidget::enter-notify-event and #GtkWidget::leave-notify-event
  * signals for the managed window.
  */
-void awn_register_effects(GObject * obj, AwnEffects * fx);
+void awn_effects_register(AwnEffects * fx, GtkWidget * obj);
 
 /**
- * awn_unregister_effects:
+ * awn_effects_unregister:
  * @fx: Pointer to #AwnEffects structure.
  *
  * Unregisters events for managed window.
  */
-void awn_unregister_effects(AwnEffects * fx);
+void awn_effects_unregister(AwnEffects * fx);
 
 /**
- * awn_effect_start:
+ * awn_effects_start:
  * @fx: Pointer to #AwnEffects structure.
  * @effect: #AwnEffect to schedule.
  *
  * Start a single effect. The effect will loop until awn_effect_stop()
  * is called.
  */
-void awn_effect_start(AwnEffects * fx, const AwnEffect effect);
+void awn_effects_start(AwnEffects * fx, const AwnEffect effect);
 
 /**
- * awn_effect_stop:
+ * awn_effects_stop:
  * @fx: Pointer to #AwnEffects structure.
  * @effect: #AwnEffect to stop.
  *
  * Stop a single effect.
  */
 
-void awn_effect_stop(AwnEffects * fx, const AwnEffect effect);
+void awn_effects_stop(AwnEffects * fx, const AwnEffect effect);
 
 /**
  * awn_effects_set_title:
@@ -218,7 +236,7 @@ awn_effects_set_title(AwnEffects * fx, AwnTitle * title,
                       AwnTitleCallback title_func);
 
 /**
- * awn_effect_start_ex:
+ * awn_effects_start_ex:
  * @fx: Pointer to #AwnEffects structure.
  * @effect: Effect to schedule.
  * @start: Function which will be called when animation starts.
@@ -229,16 +247,16 @@ awn_effects_set_title(AwnEffects * fx, AwnTitle * title,
  * possibility to specify maximum number of loops.
  */
 void
-awn_effect_start_ex(AwnEffects * fx, const AwnEffect effect,
+awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect,
                     AwnEventNotify start, AwnEventNotify stop,
                     gint max_loops);
 
-void awn_draw_background(AwnEffects *, cairo_t *);
-void awn_draw_icons(AwnEffects *, cairo_t *, GdkPixbuf *, GdkPixbuf *);
-void awn_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t * , cairo_t *);
-void awn_draw_foreground(AwnEffects *, cairo_t *);
-void awn_draw_set_window_size(AwnEffects *, const gint, const gint);
-void awn_draw_set_icon_size(AwnEffects *, const gint, const gint);
+void awn_effects_draw_background(AwnEffects *, cairo_t *);
+void awn_effects_draw_icons(AwnEffects *, cairo_t *, GdkPixbuf *, GdkPixbuf *);
+void awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t * , cairo_t *);
+void awn_effects_draw_foreground(AwnEffects *, cairo_t *);
+void awn_effects_draw_set_window_size(AwnEffects *, const gint, const gint);
+void awn_effects_draw_set_icon_size(AwnEffects *, const gint, const gint);
 
 void awn_effects_reflection_off(AwnEffects * fx);
 void awn_effects_reflection_on(AwnEffects * fx);
@@ -246,6 +264,6 @@ void awn_effects_reflection_on(AwnEffects * fx);
 G_END_DECLS
 
 //Move this somewhere else eventually
-void main_effect_loop(AwnEffects * fx);
+void awn_effects_main_effect_loop(AwnEffects * fx);
 
 #endif
