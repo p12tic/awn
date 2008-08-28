@@ -536,3 +536,16 @@ _wrap_awn_applet_simple_set_awn_icons (PyObject *self, PyObject *args, PyObject 
 
   return pygobject_new (G_OBJECT (ret));
 }
+%%
+override awn_applet_simple_get_effects
+static PyObject *
+_wrap_awn_applet_simple_get_effects (PyGObject *self)
+{
+    AwnEffects *ret;
+
+    ret = awn_applet_simple_get_effects(AWN_APPLET_SIMPLE(self->obj));
+
+    /* pyg_boxed_new handles NULL checking */
+    return pyg_boxed_new(AWN_TYPE_EFFECTS, ret, FALSE, FALSE);
+
+}

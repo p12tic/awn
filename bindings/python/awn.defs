@@ -536,6 +536,7 @@
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_get_effects")
   (return-type "AwnEffects*")
+  (caller-owns-return #t)
 )
 
 ;; From awn-cairo-utils.h
