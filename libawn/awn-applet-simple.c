@@ -54,7 +54,7 @@ struct _AwnAppletSimplePrivate
   cairo_t * reflect_context;
   gboolean icon_cxt_copied;
 
-  AwnEffects effects;
+  AwnEffects * effects;
 
   gint icon_width;
   gint icon_height;
@@ -557,7 +557,7 @@ void awn_applet_simple_effects_on(AwnAppletSimple *simple)
 {
   AwnAppletSimplePrivate *priv;
   priv = simple->priv;
-  awn_effects_register(&priv->effects, GTK_WIDGET(simple));
+  awn_effects_register(priv->effects, GTK_WIDGET(simple));
 }
 
 /*
@@ -570,7 +570,7 @@ void awn_applet_simple_effects_off(AwnAppletSimple *simple)
 {
   AwnAppletSimplePrivate *priv;
   priv = simple->priv; 
-  awn_effects_unregister(&priv->effects);
+  awn_effects_unregister(priv->effects);
 }
 
 
@@ -593,7 +593,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   
   width = widget->allocation.width;
   height = widget->allocation.height;
-  awn_effects_draw_set_window_size(&priv->effects, width, height);
+  awn_effects_draw_set_window_size(priv->effects, width, height);
   bar_height = priv->bar_height;
   cr = gdk_cairo_create(widget->window);
   /* task back */
@@ -602,7 +602,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
   
-  awn_effects_draw_background(&priv->effects, cr);    
+  awn_effects_draw_background(priv->effects, cr);    
   
   if (!priv->icon_context)  
   {
@@ -664,10 +664,10 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
         return TRUE;
     }     
 
-    awn_effects_draw_icons_cairo(&priv->effects,cr,priv->icon_context,priv->reflect_context);
+    awn_effects_draw_icons_cairo(priv->effects,cr,priv->icon_context,priv->reflect_context);
 
   }
-  awn_effects_draw_foreground(&priv->effects, cr);      
+  awn_effects_draw_foreground(priv->effects, cr);      
   cairo_destroy(cr);
   
   return TRUE;
@@ -842,12 +842,16 @@ awn_applet_simple_init(AwnAppletSimple *simple)
   priv->title_visible = FALSE;
   priv->awn_icons = NULL;
   priv->current_state = NULL;
-  
-  awn_effects_init(&priv->effects, GTK_WIDGET(simple));
+
+  /*
+   * FIXME: AwnEffects is allocated, but never freed -> write custom dispose
+   *  and finalize functions + register them in awn_applet_simple_class_init
+   */
+  priv->effects = awn_effects_new_for_widget(GTK_WIDGET(simple));
   // register hover effects
-  awn_effects_register(&priv->effects, GTK_WIDGET(simple));
+  awn_effects_register(priv->effects, GTK_WIDGET(simple));
   // start open effect
-  awn_effects_start_ex(&priv->effects, AWN_EFFECT_OPENING, 0, 0, 1);
+  awn_effects_start_ex(priv->effects, AWN_EFFECT_OPENING, 0, 0, 1);
 
   client = awn_config_client_new();
   awn_config_client_ensure_group(client, "bar");
@@ -879,7 +883,7 @@ AwnEffects*
 awn_applet_simple_get_effects(AwnAppletSimple *simple)
 {
   AwnAppletSimplePrivate *priv = simple->priv;
-  return &priv->effects;
+  return priv->effects;
 }
 
 /**

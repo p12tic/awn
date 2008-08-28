@@ -146,6 +146,17 @@ static const AwnEffectsOp OP_LIST[] =
 };
 
 // effect functions
+
+/**
+ * awn_effects_init:
+ * @fx: Pointer to #AwnEffects structure.
+ * @obj: Object which will be passed to all callback functions, this object is
+ * also passed to gtk_widget_queue_draw() during the animation.
+ *
+ * Initializes #AwnEffects structure.
+ */
+static void awn_effects_init(AwnEffects * fx, GtkWidget * widget);
+
 static gboolean awn_effects_enter_event(GtkWidget * widget,
                                    GdkEventCrossing * event, gpointer data);
 static gboolean awn_effects_leave_event(GtkWidget * widget,
@@ -167,6 +178,7 @@ static void _awn_effects_free(gpointer boxed)
 void awn_effects_free(AwnEffects *fx)
 {
   awn_effects_finalize(fx);
+  g_free(fx->op_list);
   g_free(fx);
 }
 
@@ -201,50 +213,56 @@ void
 awn_effects_init(AwnEffects * fx, GtkWidget * widget)
 {
   fx->self = widget;
-  fx->settings = awn_get_settings();
   fx->focus_window = NULL;
+  fx->settings = awn_get_settings();
   fx->title = NULL;
   fx->get_title = NULL;
   fx->effect_queue = NULL;
 
-  fx->window_width = 0;
-  fx->window_height = 0;
   fx->icon_width = 48;
   fx->icon_height = 48;
-  fx->delta_width = 0;
-  fx->delta_height = 0;
+  fx->window_width = 0;
+  fx->window_height = 0;
 
   /* EFFECT VARIABLES */
   fx->effect_lock = FALSE;
+  fx->current_effect = AWN_EFFECT_NONE;
   fx->direction = AWN_EFFECT_DIR_NONE;
   fx->count = 0;
 
   fx->x_offset = 0;
   fx->y_offset = 0;
+  fx->curve_offset = 0;
+
+  fx->delta_width = 0;
+  fx->delta_height = 0;
+
+  //fx->clip_region = ; // no need to init, there's a boolean guarding it
+
   fx->rotate_degrees = 0.0;
   fx->alpha = 1.0;
   fx->spotlight_alpha = 0.0;
   fx->saturation = 1.0;
   fx->glow_amount = 0.0;
 
+  fx->icon_depth = 0;
+  fx->icon_depth_direction = 0;
+
   fx->hover = FALSE;
   fx->clip = FALSE;
   fx->flip = FALSE;
   fx->spotlight = FALSE;
+  fx->do_reflections = TRUE;
 
   fx->enter_notify = 0;
   fx->leave_notify = 0;
   fx->timer_id = 0;
-  fx->do_reflections = TRUE;
-  //fx->effect_frame_rate = fx->settings->frame_rate;
-
-  fx->op_list = g_malloc(sizeof(OP_LIST));
-  memcpy(fx->op_list, OP_LIST, sizeof(OP_LIST));
-
 
   fx->icon_ctx = NULL;
   fx->reflect_ctx = NULL;
 
+  fx->op_list = g_malloc(sizeof(OP_LIST));
+  memcpy(fx->op_list, OP_LIST, sizeof(OP_LIST));
 }
 
 static void
@@ -269,7 +287,7 @@ awn_effects_dispose_queue(AwnEffects * fx)
     queue = g_list_next(queue);
   }
 
-  g_list_free(fx->effect_queue);
+  if (fx->effect_queue) g_list_free(fx->effect_queue);
 
   fx->effect_queue = NULL;
 }
@@ -296,7 +314,6 @@ awn_effects_finalize(AwnEffects * fx)
   }
   
   fx->self = NULL;
-  g_free(fx->op_list);
 }
 
 void
@@ -608,16 +625,15 @@ awn_effects_unregister(AwnEffects * fx)
   if (fx->enter_notify)
   {
     g_signal_handler_disconnect(G_OBJECT(fx->focus_window), fx->enter_notify);
+    fx->enter_notify = 0;
   }
 
   if (fx->leave_notify)
   {
     g_signal_handler_disconnect(G_OBJECT(fx->focus_window), fx->leave_notify);
+    fx->leave_notify = 0;
   }
 
-  fx->enter_notify = 0;
-
-  fx->leave_notify = 0;
   fx->focus_window = NULL;
 }
 

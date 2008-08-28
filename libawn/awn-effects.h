@@ -138,14 +138,11 @@ struct _AwnEffects
   gboolean clip;
   gboolean flip;
   gboolean spotlight;
+  gboolean do_reflections;
 
   guint enter_notify;
   guint leave_notify;
   guint timer_id;
-
-//  guint effect_frame_rate;
-
-  gboolean  do_reflections;
 
   cairo_t * icon_ctx;
   cairo_t * reflect_ctx;
@@ -161,19 +158,30 @@ struct _AwnEffects
 
 GType awn_effects_get_type(void);
 
+/**
+ * awn_effects_new:
+ *
+ * Creates and initializes new #AwnEffects structure. After using this
+ * constructor it is necessary to set 'self' member to be able to use effects
+ * properly.
+ */
 AwnEffects* awn_effects_new();
 
+/**
+ * awn_effects_new_for_widget:
+ * @widget: Object which will be passed to all callback functions, this object
+ * is also passed to gtk_widget_queue_draw() during the animation.
+ *
+ * Creates and initializes new #AwnEffects structure.
+ */
 AwnEffects* awn_effects_new_for_widget(GtkWidget * widget);
 
 /**
- * awn_effects_init:
+ * awn_effects_free:
  * @fx: Pointer to #AwnEffects structure.
- * @obj: Object which will be passed to all callback functions, this object is
- * also passed to gtk_widget_queue_draw() during the animation.
  *
- * Initializes #AwnEffects structure.
+ * Cleans up (by calling awn_effects_finalize) and frees #AwnEffects structure.
  */
-void awn_effects_init(AwnEffects * fx, GtkWidget * widget);
 void awn_effects_free(AwnEffects * fx);
 
 /**
@@ -181,7 +189,6 @@ void awn_effects_free(AwnEffects * fx);
  * @fx: Pointer to #AwnEffects structure.
  *
  * Finalizes #AwnEffects usage and frees internally allocated memory.
- * (also calls awn_unregister_effects())
  */
 void awn_effects_finalize(AwnEffects * fx);
 
