@@ -166,6 +166,7 @@ static gdouble calc_curve_position(gdouble cx, gdouble a, gdouble b);
 
 static gpointer _awn_effects_copy(gpointer boxed)
 {
+  // FIXME: should we really make a copy?
   return boxed;
 }
 

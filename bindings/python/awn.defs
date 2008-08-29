@@ -721,20 +721,21 @@
 
 ;; From awn-effects.h
 
-(define-function effects_new
-  (c-name "awn_effects_new")
+; This constructor is not much of use
+;(define-function effects_new
+;  (c-name "awn_effects_new")
+;  (is-constructor-of "AwnEffects")
+;  (return-type "AwnEffects*")
+;)
+
+(define-function effect_new_for_widget
+  (c-name "awn_effects_new_for_widget")
   (is-constructor-of "AwnEffects")
   (return-type "AwnEffects*")
+  (parameters
+    '("GtkWidget" "widget")
+  )
 )
-
-; FIXME: write override for effects_new, so it also supports new_for_widget
-;(define-function effect_new_for_widget
-;  (c-name "awn_effects_new_for_widget")
-;  (return-type "AwnEffects*")
-;  (parameters
-;    '("GtkWidget" "widget")
-;  )
-;)
 
 (define-method start
   (of-object "AwnEffects")
@@ -752,8 +753,8 @@
   (return-type "none")
   (parameters
     '("AwnEffect" "effect")
-    '("int" "start")
-    '("int" "stop")
+    '("int" "start" (default "0") (null-ok))
+    '("int" "stop" (default "0") (null-ok))
     '("int" "max_loops")
   )
 )
@@ -819,7 +820,7 @@
   (parameters
     '("cairo_t*" "cr")
     '("GdkPixbuf*" "icon")
-    '("GdkPixbuf*" "reflect")
+    '("GdkPixbuf*" "reflect" (default "NULL") (null-ok))
   )
 )
 
@@ -830,7 +831,7 @@
   (parameters
     '("cairo_t*" "cr")
     '("cairo_t*" "icon_context")
-    '("cairo_t*" "reflect_context")
+    '("cairo_t*" "reflect_context" (default "NULL") (null-ok))
   )
 )
 
