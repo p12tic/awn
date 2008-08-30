@@ -1,3 +1,12 @@
+2008-08-31  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	Added option to AwnEffects to turn off the 4px cut.
+	Fixed python binding for draw_icons_cairo which could cause SIGSEV
+
 2008-08-30  Michal Hruby <michal.mhr@gmail.com>
 
 	reviewed by: Rodney Cryderman <rcryderman@gmail.com>

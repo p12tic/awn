@@ -254,6 +254,7 @@ awn_effects_init(AwnEffects * fx, GtkWidget * widget)
   fx->flip = FALSE;
   fx->spotlight = FALSE;
   fx->do_reflections = TRUE;
+  fx->do_offset_cut = TRUE;
 
   fx->enter_notify = 0;
   fx->leave_notify = 0;
@@ -406,6 +407,10 @@ void awn_effects_reflection_off(AwnEffects * fx)
 void awn_effects_reflection_on(AwnEffects * fx)
 {
   fx->do_reflections = TRUE; 
+}
+void awn_effects_set_offset_cut(AwnEffects * fx, gboolean cut)
+{
+  fx->do_offset_cut = cut;
 }
 
 
@@ -1148,7 +1153,7 @@ awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_cont
       }
     }
     /* 4px offset for 3D look for reflection*/
-    if (fx->settings && fx->settings->bar_angle > 0)
+    if (fx->do_offset_cut && fx->settings && fx->settings->bar_angle > 0)
     {
       cairo_save(cr);
       cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
@@ -1157,7 +1162,7 @@ awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_cont
                       fx->settings->icon_offset, fx->window_width, 4);
       cairo_fill(cr);
       cairo_restore(cr);
-    }    
+    }
   }
 }
 

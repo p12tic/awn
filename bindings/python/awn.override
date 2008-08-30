@@ -549,3 +549,19 @@ _wrap_awn_applet_simple_get_effects (PyGObject *self)
     return pyg_boxed_new(AWN_TYPE_EFFECTS, ret, FALSE, FALSE);
 
 }
+%%
+override awn_effects_draw_icons_cairo kwargs
+static PyObject *
+_wrap_awn_effects_draw_icons_cairo(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "cr", "icon_context", "reflect_context", NULL };
+    PycairoContext *cr, *icon_context, *reflect_context = NULL;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!O!|O!:AwnEffects.draw_icons_cairo", kwlist, &PycairoContext_Type, &cr, &PycairoContext_Type, &icon_context, &PycairoContext_Type, &reflect_context))
+        return NULL;
+
+    awn_effects_draw_icons_cairo(pyg_boxed_get(self, AwnEffects), cr->ctx, icon_context->ctx, reflect_context ? reflect_context->ctx : NULL);
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}

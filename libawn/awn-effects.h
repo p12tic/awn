@@ -139,6 +139,7 @@ struct _AwnEffects
   gboolean flip;
   gboolean spotlight;
   gboolean do_reflections;
+  gboolean do_offset_cut;
 
   guint enter_notify;
   guint leave_notify;
@@ -267,6 +268,7 @@ void awn_effects_draw_set_icon_size(AwnEffects *, const gint, const gint);
 
 void awn_effects_reflection_off(AwnEffects * fx);
 void awn_effects_reflection_on(AwnEffects * fx);
+void awn_effects_set_offset_cut(AwnEffects * fx, gboolean cut);
 
 G_END_DECLS
 

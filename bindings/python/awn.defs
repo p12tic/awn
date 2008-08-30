@@ -780,6 +780,15 @@
   (return-type "none")
 )
 
+(define-method set_offset_cut
+  (of-object "AwnEffects")
+  (c-name "awn_effects_set_offset_cut")
+  (return-type "none")
+  (parameters
+    '("gboolean" "cut")
+  )
+)
+
 (define-method register
   (of-object "AwnEffects")
   (c-name "awn_effects_register")
