@@ -1,3 +1,10 @@
+2008-08-30  Michal Hruby <michal.mhr@gmail.com>
+
+	patch by: Matt <sharkbaitbobby@gmail.com>
+
+	* libawn/awn-applet-dialog.c:
+	Fixes LP #207860 (Applet dialogs have white backgrounds)
+
 2008-08-30  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* src/main.c:
