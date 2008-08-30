@@ -1,3 +1,8 @@
+2008-08-30  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awnPreferences.py:
+	Fix custom effects regression in awn-manager
+
 2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	patch by: black <https://launchpad.net/~blackborn>

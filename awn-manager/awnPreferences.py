@@ -400,6 +400,9 @@ class awnPreferences:
             d.add_attribute(cell,'text',0)
         self.load_effect_custom(group,key)
         self.client.notify_add(group, key, self.reload_effect_custom)
+        for drop in ['hover', 'open', 'close', 'launch', 'attention']:
+            d = self.wTree.get_widget('effect_'+drop)
+            d.connect("changed", self.effect_custom_changed, (group, key))
 
     def load_effect_custom(self, group, key):
         effect_settings = self.client.get_int(group, key)
