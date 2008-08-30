@@ -57,6 +57,12 @@
   (release-func "awn_desktop_item_free")
 )
 
+(define-boxed Effects
+  (in-module "Awn")
+  (c-name "AwnEffects")
+  (gtype-id "AWN_TYPE_EFFECTS")
+)
+
 ;; Enumerations and flags ...
 
 (define-enum CairoRoundCorners
@@ -529,18 +535,9 @@
 (define-method get_effects
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_get_effects")
-  (return-type "gint")
+  (return-type "AwnEffects*")
+  (caller-owns-return #t)
 )
-
-(define-method register_effects
-  (of-object "AwnAppletSimple")
-  (c-name "awn_register_effects")
-  (return-type "none")
-  (parameters
-    '("int" "fx")
-  )
-)
-
 
 ;; From awn-cairo-utils.h
 
@@ -724,74 +721,139 @@
 
 ;; From awn-effects.h
 
-(define-function awn_effect_start
-  (c-name "awn_effect_start")
+; This constructor is not much of use
+;(define-function effects_new
+;  (c-name "awn_effects_new")
+;  (is-constructor-of "AwnEffects")
+;  (return-type "AwnEffects*")
+;)
+
+(define-function effect_new_for_widget
+  (c-name "awn_effects_new_for_widget")
+  (is-constructor-of "AwnEffects")
+  (return-type "AwnEffects*")
+  (parameters
+    '("GtkWidget" "widget")
+  )
+)
+
+(define-method start
+  (of-object "AwnEffects")
+  (c-name "awn_effects_start")
   (return-type "none")
   (parameters
-    '("int" "fx")
     '("AwnEffect" "effect")
   )
 )
 
-(define-function awn_effect_start_ex
-  (c-name "awn_effect_start_ex")
+; FIXME: start and stop notify functions, define the type in override?!
+(define-method start_ex
+  (of-object "AwnEffects")
+  (c-name "awn_effects_start_ex")
   (return-type "none")
   (parameters
-    '("int" "fx")
     '("AwnEffect" "effect")
-    '("int" "start")
-    '("int" "stop")
+    '("int" "start" (default "0") (null-ok))
+    '("int" "stop" (default "0") (null-ok))
     '("int" "max_loops")
   )
 )
 
-
-(define-function awn_effect_stop
-  (c-name "awn_effect_stop")
+(define-method stop
+  (of-object "AwnEffects")
+  (c-name "awn_effects_stop")
   (return-type "none")
   (parameters
-    '("int" "fx")
     '("AwnEffect" "effect")
   )
 )
 
-(define-function reflection_off
+(define-method reflection_off
+  (of-object "AwnEffects")
   (c-name "awn_effects_reflection_off")
   (return-type "none")
-  (parameters
-    '("int" "fx")
-  )  
 )
 
-(define-function reflection_on
+(define-method reflection_on
+  (of-object "AwnEffects")
   (c-name "awn_effects_reflection_on")
   (return-type "none")
-  (parameters
-    '("int" "fx")
-  )  
 )
 
-;; Doesn't make sense to have awn_register_effects while AwnEffects do not have proper bindings
-;; - currently AppletSimple.register_effects can be used instead
-
-;;(define-function awn_register_effects
-;;  (c-name "awn_register_effects")
-;;  (return-type "none")
-;;  (parameters
-;;    '("GObject*" "obj")
-;;    '("int" "fx")
-;;  )
-;;)
-
-(define-function awn_unregister_effects
-  (c-name "awn_unregister_effects")
+(define-method register
+  (of-object "AwnEffects")
+  (c-name "awn_effects_register")
   (return-type "none")
   (parameters
-    '("int" "fx")
+    '("GtkWidget*" "obj")
   )
 )
 
+(define-method unregister
+  (of-object "AwnEffects")
+  (c-name "awn_effects_unregister")
+  (return-type "none")
+)
 
+(define-method draw_background
+  (of-object "AwnEffects")
+  (c-name "awn_effects_draw_background")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+  )
+)
+
+(define-method draw_foreground
+  (of-object "AwnEffects")
+  (c-name "awn_effects_draw_foreground")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+  )
+)
+
+(define-method draw_icons
+  (of-object "AwnEffects")
+  (c-name "awn_effects_draw_icons")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+    '("GdkPixbuf*" "icon")
+    '("GdkPixbuf*" "reflect" (default "NULL") (null-ok))
+  )
+)
+
+(define-method draw_icons_cairo
+  (of-object "AwnEffects")
+  (c-name "awn_effects_draw_icons_cairo")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+    '("cairo_t*" "icon_context")
+    '("cairo_t*" "reflect_context" (default "NULL") (null-ok))
+  )
+)
+
+(define-method draw_set_window_size
+  (of-object "AwnEffects")
+  (c-name "awn_effects_draw_set_window_size")
+  (return-type "none")
+  (parameters
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method draw_set_icon_size
+  (of-object "AwnEffects")
+  (c-name "awn_effects_draw_set_icon_size")
+  (return-type "none")
+  (parameters
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
 
 ;; From awn-enum-types.h
 

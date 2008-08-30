@@ -1,5 +1,19 @@
 2008-08-30  Michal Hruby <michal.mhr@gmail.com>
 
+	reviewed by: Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-effects-shared.c:
+	* libawn/awn-effects-shared.h:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* src/awn-task.c:
+	Merge of boxed-awn-effects branch
+
+2008-08-30  Michal Hruby <michal.mhr@gmail.com>
+
 	patch by: Matt <sharkbaitbobby@gmail.com>
 
 	* libawn/awn-applet-dialog.c:

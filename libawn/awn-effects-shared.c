@@ -82,7 +82,7 @@ awn_effect_handle_repeating(AwnEffectsPrivate * priv)
     }
 
     if (!unregistered)
-      main_effect_loop(fx);
+      awn_effects_main_effect_loop(fx);
   }
 
   return repeat;
@@ -101,7 +101,7 @@ awn_effect_check_max_loops(AwnEffectsPrivate * priv)
   }
 
   if (max_reached)
-    awn_effect_stop(priv->effects, priv->this_effect);
+    awn_effects_stop(priv->effects, priv->this_effect);
 
   return max_reached;
 }
