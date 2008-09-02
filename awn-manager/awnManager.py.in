@@ -88,7 +88,7 @@ class AwnManager:
         self.gtk_screen = self.window.get_screen()
         colormap = self.gtk_screen.get_rgba_colormap()
         if colormap == None:
-            colormap = self.screen.get_rgb_colormap()
+            colormap = self.gtk_screen.get_rgb_colormap()
         gtk.widget_set_default_colormap(colormap)
 
         self.notebook = self.wTree.get_widget("panelCategory")
