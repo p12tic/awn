@@ -430,6 +430,8 @@ awn_panel_init (AwnPanel *panel)
 
   g_signal_connect (priv->eventbox, "expose-event",
                     G_CALLBACK (on_eb_expose), priv->alignment);
+
+  gtk_window_set_policy (GTK_WINDOW (panel), FALSE, FALSE, TRUE);
 }
 
 GtkWidget *
@@ -910,8 +912,37 @@ awn_panel_set_orient (AwnPanel *panel, gint orient)
   AwnPanelPrivate *priv = panel->priv;
 
   priv->orient = orient;
+
+  switch (priv->orient)
+  {
+    case AWN_ORIENT_TOP:
+    case AWN_ORIENT_BOTTOM:
+        awn_applet_manager_set_real_size (AWN_APPLET_MANAGER (priv->manager),
+                                          -1,
+                                          priv->offset +
+                                          (priv->composited)?2*priv->size:priv->size);
+        gtk_window_resize (GTK_WINDOW (panel),
+                         GTK_WIDGET (panel)->allocation.width, 
+                         priv->offset 
+                          + (priv->composited ? 2 * priv->size : priv->size));
+      break;
+    case AWN_ORIENT_RIGHT:
+    case AWN_ORIENT_LEFT:
+    default:
+        awn_applet_manager_set_real_size (AWN_APPLET_MANAGER (priv->manager),
+                                          priv->offset +
+                                 (priv->composited)?2*priv->size:priv->size,
+                                 -1);
+        gtk_window_resize (GTK_WINDOW (panel),
+                         priv->offset 
+                          + (priv->composited ? 2 * priv->size : priv->size),
+                         GTK_WIDGET (panel)->allocation.height);
+  }
+ 
   g_signal_emit (panel, _panel_signals[ORIENT_CHANGED], 0, priv->orient);
+  
   position_window (panel);
+  
   gtk_widget_queue_draw (GTK_WIDGET (panel));
 }
 
@@ -926,7 +957,11 @@ awn_panel_set_size (AwnPanel *panel, gint size)
   {
     case AWN_ORIENT_TOP:
     case AWN_ORIENT_BOTTOM:
-      gtk_window_resize (GTK_WINDOW (panel),
+        awn_applet_manager_set_real_size (AWN_APPLET_MANAGER (priv->manager),
+                                          -1,
+                                          priv->offset +
+                                          (priv->composited)?2*priv->size:priv->size);
+        gtk_window_resize (GTK_WINDOW (panel),
                          GTK_WIDGET (panel)->allocation.width, 
                          priv->offset 
                           + (priv->composited ? 2 * priv->size : priv->size));
@@ -934,12 +969,16 @@ awn_panel_set_size (AwnPanel *panel, gint size)
     case AWN_ORIENT_RIGHT:
     case AWN_ORIENT_LEFT:
     default:
-      gtk_window_resize (GTK_WINDOW (panel),
+        awn_applet_manager_set_real_size (AWN_APPLET_MANAGER (priv->manager),
+                                          priv->offset +
+                                 (priv->composited)?2*priv->size:priv->size,
+                                 -1);
+        gtk_window_resize (GTK_WINDOW (panel),
                          priv->offset 
                           + (priv->composited ? 2 * priv->size : priv->size),
                          GTK_WIDGET (panel)->allocation.height);
-   }
-
+  }
+                                      
   g_signal_emit (panel, _panel_signals[SIZE_CHANGED], 0, priv->size);
 
   g_print ("Panel size= %d\n", priv->size);

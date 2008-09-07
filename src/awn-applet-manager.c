@@ -252,8 +252,7 @@ awn_applet_manager_set_orient (AwnAppletManager *manager,
                                gint              orient)
 {
   AwnAppletManagerPrivate *priv = manager->priv;
-  GList *children, *c;
-
+  
   priv->orient = orient;
 
   switch (priv->orient)
@@ -273,26 +272,6 @@ awn_applet_manager_set_orient (AwnAppletManager *manager,
       priv->klass = NULL;
       break;
   }
-
-  children = gtk_container_get_children (GTK_CONTAINER (manager));
-  for (c = children; c; c = c->next)
-  {
-    GtkWidget *widget = c->data;
-
-    if (orient == AWN_ORIENT_TOP || orient == AWN_ORIENT_BOTTOM)
-    {
-      gtk_widget_set_size_request (widget, 
-                                   -1,
-                                   widget->allocation.width);
-    }
-    else
-    {
-      gtk_widget_set_size_request (widget,
-                                   widget->allocation.height, 
-                                   -1);
-    }
-  }
-  g_list_free (children);
 }
 
 /*
@@ -325,6 +304,12 @@ create_applet (AwnAppletManager *manager,
   
   applet = awn_applet_proxy_new (path, uid, AWN_ORIENT_BOTTOM, 48);
   gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
+  
+  if (priv->orient == AWN_ORIENT_TOP || priv->orient == AWN_ORIENT_BOTTOM)
+    gtk_widget_set_size_request (applet, -1, 96);
+  else
+    gtk_widget_set_size_request (applet, 96, -1);
+
   g_object_set_qdata (G_OBJECT (applet), 
                       priv->touch_quark, GINT_TO_POINTER (0));
   g_hash_table_insert (priv->applets, g_strdup (uid), applet);
@@ -432,3 +417,20 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
   /* Delete applets that have been removed from the list */
   g_hash_table_foreach (priv->applets, (GHFunc)delete_applets, manager);
 }
+
+void 
+awn_applet_manager_set_real_size (AwnAppletManager *manager,
+                                  gint              width,
+                                  gint              height)
+{
+  GList *children, *c;
+
+  children = gtk_container_get_children (GTK_CONTAINER (manager));
+  for (c = children; c; c = c->next)
+  {
+    GtkWidget *widget = c->data;
+    gtk_widget_set_size_request (widget, width, height);
+  }
+  g_list_free (children);
+}
+

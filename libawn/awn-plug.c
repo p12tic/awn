@@ -89,8 +89,6 @@ on_orient_changed (DBusGProxy *proxy, gint orient, AwnPlug *plug)
   priv = plug->priv;
 
   awn_applet_set_orientation (priv->applet, orient);
-
-  g_debug ("Orient changed: %d\n", orient);
 }
 
 static void
@@ -102,8 +100,6 @@ on_size_changed (DBusGProxy *proxy, gint size, AwnPlug *plug)
   priv = plug->priv;
 
   awn_applet_set_size (priv->applet, size);
-
-  g_debug ("Size changed: %d\n", size);
 }
 
 static void
