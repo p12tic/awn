@@ -120,6 +120,44 @@ type = float
 default = 0.5
 description = The symmetry of the curve in Curves mode.
 
+
+
+[effects/reflection_offset]
+type = int
+default = 0
+description = The offset between the icon and it's reflection
+
+[effects/icon_effect]
+type = int
+default = 0
+description = A bitmask which stores the type of effect for each event
+
+[effects/icon_alpha]
+type = float
+default = 1.0
+description = The opacity of the icons, from 0.0 to 1.0
+
+[effects/frame_rate]
+type = int
+default = 25
+description = Animation frame-rate. 
+
+[effects/enable_icon_depth]
+type = bool
+default = True
+description = Whether icons have depth on 3D effects
+
+[effects/reflection_alpha_multiplier]
+type = float
+default = 0.3
+description = Reflection alpha as a multiple of the current alpha of the icon.
+
+[effects/show_shadows]
+type = bool
+default = FALSE
+description = Show shadows for icons.
+
+
 [DEFAULT/force_monitor]
 type = bool
 default = False

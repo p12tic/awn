@@ -913,6 +913,9 @@ awn_panel_set_orient (AwnPanel *panel, gint orient)
 
   priv->orient = orient;
 
+  if (!GTK_WIDGET_REALIZED (panel))
+    return;
+
   switch (priv->orient)
   {
     case AWN_ORIENT_TOP:
@@ -957,6 +960,7 @@ awn_panel_set_size (AwnPanel *panel, gint size)
   {
     case AWN_ORIENT_TOP:
     case AWN_ORIENT_BOTTOM:
+        if (priv->manager)
         awn_applet_manager_set_real_size (AWN_APPLET_MANAGER (priv->manager),
                                           -1,
                                           priv->offset +
@@ -969,6 +973,7 @@ awn_panel_set_size (AwnPanel *panel, gint size)
     case AWN_ORIENT_RIGHT:
     case AWN_ORIENT_LEFT:
     default:
+        if (priv->manager)
         awn_applet_manager_set_real_size (AWN_APPLET_MANAGER (priv->manager),
                                           priv->offset +
                                  (priv->composited)?2*priv->size:priv->size,

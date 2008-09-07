@@ -160,7 +160,7 @@ void
 awn_effects_init(GObject * self, AwnEffects * fx)
 {
   fx->self = self;
-  fx->settings = awn_get_settings();
+  fx->settings = awn_effects_settings_get_default ();
   fx->focus_window = NULL;
   fx->title = NULL;
   fx->get_title = NULL;
@@ -652,8 +652,10 @@ awn_draw_background(AwnEffects * fx, cairo_t * cr)
   }
 }
 
+
 void apply_awn_curves(AwnEffects * fx)
 {
+#if 0
   if (fx->settings->bar_angle < 0)
   {
     int awn_bar_width = fx->settings->bar_width;
@@ -686,6 +688,9 @@ void apply_awn_curves(AwnEffects * fx)
   {
     fx->curve_offset = 0;
   }
+#endif
+  if (0) calc_curve_position (0, 0, 0);
+  fx->curve_offset = 0;
 }
 
 void

@@ -24,7 +24,7 @@
 #include <gtk/gtk.h>
 
 #include "awn-defines.h"
-#include "awn-settings.h"
+#include "awn-effects-settings.h"
 #include "awn-title.h"
 
 G_BEGIN_DECLS
@@ -89,7 +89,7 @@ struct _AwnEffects
 {
   GObject *self;
   GtkWidget *focus_window;
-  AwnSettings *settings;
+  AwnEffectsSettings *settings;
   AwnTitle *title;
   AwnTitleCallback get_title;
   GList *effect_queue;

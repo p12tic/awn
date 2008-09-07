@@ -47,6 +47,7 @@ private_headers = \
 	awn-effect-turn.h		\
 	awn-effect-zoom.h		\
 	awn-effects-ops.h		\
+	awn-effects-settings.h \
 	awn-effects-shared.h		\
 	$(NULL)
 
@@ -68,6 +69,7 @@ source_c =				\
 	awn-effect-zoom.c		\
 	awn-effects.c			\
 	awn-effects-ops.c		\
+	awn-effects-settings.c \
 	awn-effects-shared.c		\
 	awn-enum-types.c		\
 	awn-icons.c			\
