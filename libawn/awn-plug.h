@@ -27,51 +27,48 @@
 
 G_BEGIN_DECLS
 
-typedef struct _AwnPlug         AwnPlug;
-typedef struct _AwnPlugClass	AwnPlugClass;
-typedef struct _AwnPlugPrivate  AwnPlugPrivate;
+#define AWN_TYPE_PLUG (awn_plug_get_type ())
 
-#define AWN_TYPE_PLUG		(awn_plug_get_type ())
+#define AWN_PLUG(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_PLUG,\
+                       AwnPlug))
 
-#define AWN_PLUG(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj),\
-                                AWN_TYPE_PLUG,\
-                                AwnPlug))
-
-#define AWN_PLUG_CLASS(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), \
-                                AWN_PLUG, \
-                                AwnPlugClass))
+#define AWN_PLUG_CLASS(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), AWN_PLUG, \
+                             AwnPlugClass))
                                 
-#define AWN_IS_PLUG(obj)	(G_TYPE_CHECK_INSTANCE_TYPE ((obj),\
-                                AWN_TYPE_PLUG))
+#define AWN_IS_PLUG(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), AWN_TYPE_PLUG))
 
 #define AWN_IS_PLUG_CLASS(obj) (G_TYPE_CHECK_CLASS_TYPE ((obj), \
-        AWN_TYPE_PLUG))
+                                AWN_TYPE_PLUG))
 
 #define AWN_PLUG_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), \
-                                AWN_TYPE_PLUG, \
-                                AwnPlugClass))
+                                AWN_TYPE_PLUG,  AwnPlugClass))
+
+typedef struct _AwnPlug AwnPlug;
+typedef struct _AwnPlugClass AwnPlugClass;
+typedef struct _AwnPlugPrivate AwnPlugPrivate;
 
 struct _AwnPlug
 {
-	GtkPlug parent;
+  GtkPlug parent;
+
+  /* < private >*/
+  AwnPlugPrivate *priv;
 };
 
 struct _AwnPlugClass
 {
-	GtkPlugClass parent_class;
-	
-	/* Signals */
-	void (*applet_deleted) (AwnPlug *plug, const gchar *uid);
+  GtkPlugClass parent_class;
+
+  /*< signals >*/
+  void (*applet_deleted) (AwnPlug *plug, const gchar *uid);
 
 };
 
-GType awn_plug_get_type (void);
+GType       awn_plug_get_type  (void);
 
-GtkWidget *
-awn_plug_new (AwnApplet *applet);
+GtkWidget * awn_plug_new       (AwnApplet *applet);
 
-void
-awn_plug_construct (AwnPlug *plug, GdkNativeWindow socket_id);
+void        awn_plug_construct (AwnPlug *plug, GdkNativeWindow socket_id);
 
 G_END_DECLS
 

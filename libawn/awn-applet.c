@@ -23,27 +23,24 @@
 #include <config.h>
 #endif
 
-#include "awn-applet.h"
-
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <glib/gstdio.h>
 #include <glib/gi18n.h>
+#include "awn-applet.h"
 
-G_DEFINE_TYPE(AwnApplet, awn_applet, GTK_TYPE_EVENT_BOX);
+G_DEFINE_TYPE (AwnApplet, awn_applet, GTK_TYPE_EVENT_BOX);
 
 #define AWN_APPLET_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
-                                     AWN_TYPE_APPLET, \
-                                     AwnAppletPrivate))
+                                     AWN_TYPE_APPLET, AwnAppletPrivate))
 
 struct _AwnAppletPrivate
 {
   gchar *uid;
   gchar *gconf_key;
   AwnOrientation orient;
-  guint height;
-
+  guint size;
 };
 
 enum
@@ -51,17 +48,17 @@ enum
   PROP_0,
   PROP_UID,
   PROP_ORIENT,
-  PROP_HEIGHT
+  PROP_SIZE
 };
 
 enum
 {
   ORIENT_CHANGED,
-  HEIGHT_CHANGED,
+  SIZE_CHANGED,
+  PLUG_EMBEDDED,
   DELETED,
   LAST_SIGNAL
 };
-
 static guint _applet_signals[LAST_SIGNAL] = { 0 };
 
 /* FORWARDS */
@@ -69,22 +66,9 @@ static void awn_applet_class_init (AwnAppletClass *klass);
 static void awn_applet_init       (AwnApplet      *applet);
 static void awn_applet_finalize   (GObject        *obj);
 
-/* VIRTUAL GOBJECT METHODS */
-
-static void 
-awn_applet_virtual_on_plug_embedded (AwnApplet *applet)
-{
-  ;
-}
-
-static void 
-awn_applet_virtual_on_size_changed (AwnApplet *applet, gint x)
-{
-  ;
-}
-
-
-/*Callback to start awn-manager.  See awn_applet_create_default_menu()*/
+/*
+ * Callback to start awn-manager.  See awn_applet_create_default_menu()
+ */
 static gboolean
 _start_awn_manager (GtkMenuItem *menuitem, gpointer null)
 {
@@ -108,47 +92,48 @@ _awn_applet_clear_icons (GtkDialog *dialog,
 {
 	if (response == GTK_RESPONSE_ACCEPT)
 	{
-		const gchar * home = g_getenv("HOME");		
+		const gchar * home = g_get_home_dir ();
 		if (home)
 		{
 			GError *error = NULL;
 			gchar * dir_name = g_strdup_printf("%s/.icons/awn-theme/scalable",home);
 			if (dir_name)
 			{
-				GDir * pdir = g_dir_open(dir_name,0,&error);
+				GDir * pdir = g_dir_open (dir_name,0,&error);
 				if (!error)
 				{
 					const gchar* file_name = NULL;
 					do
 					{
-						file_name = g_dir_read_name( pdir);
+						file_name = g_dir_read_name (pdir);
 						if (file_name)
 						{
-							gchar * full_path = g_strdup_printf("%s/%s",dir_name,file_name);							
-							if (g_unlink(full_path) == -1)
+							gchar * full_path = g_strdup_printf ("%s/%s",dir_name,file_name);							
+							if (g_unlink (full_path) == -1)
 							{
-								g_warning("_awn_applet_clear_icons() failed to delete %s\n",
-													full_path);
+								g_warning ("_awn_applet_clear_icons() failed to delete %s\n",
+													 full_path);
 							}
-							g_free(full_path);
+							g_free (full_path);
 						}
-					}while (file_name);
+					}
+          while (file_name);
 				}
 				else
 				{
-					g_warning("_awn_applet_clear_icons() failed to open dir: %s\n",
-										error->message);
+					g_warning ("_awn_applet_clear_icons() failed to open dir: %s\n",
+										 error->message);
 					g_error_free (error);
 				}
 				if (pdir)
 				{
-					g_dir_close(pdir);
+					g_dir_close (pdir);
 				}				
-				g_free(dir_name);
+				g_free (dir_name);
 			}
 		}
 	}
-  gtk_widget_destroy(GTK_WIDGET(dialog));	
+  gtk_widget_destroy (GTK_WIDGET (dialog));	
 }
 
 /*Callback to clear AwnIcons.  See awn_applet_create_default_menu()*/
@@ -167,7 +152,7 @@ _clear_awn_icons (GtkMenuItem *menuitem, gpointer null)
                                         GTK_RESPONSE_ACCEPT,
                                         NULL);
   label = gtk_label_new (_("Clear all custom (applet) icons?"));
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG(dialog)->vbox),label);
+  gtk_container_add (GTK_CONTAINER (GTK_DIALOG(dialog)->vbox), label);
   g_signal_connect(dialog,  "response",
 									 G_CALLBACK (_awn_applet_clear_icons), NULL);	
   gtk_widget_show_all (dialog);
@@ -182,11 +167,11 @@ awn_applet_create_pref_item (void)
 	GtkWidget *item;
   
   item = gtk_image_menu_item_new_with_label (_("Dock Preferences"));
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM(item),
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
                                  gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
                                                           GTK_ICON_SIZE_MENU));
-  gtk_widget_show_all(item);
-  g_signal_connect (G_OBJECT (item), "activate", 
+  gtk_widget_show_all (item);
+  g_signal_connect (item, "activate", 
                     G_CALLBACK (_start_awn_manager), NULL);
 	return item;
 }
@@ -208,6 +193,14 @@ awn_applet_clear_icons_item (void)
 }
 
 /* MAIN FUNCTIONS */
+void  
+awn_applet_plug_embedded (AwnApplet *applet)
+{
+  g_return_if_fail (AWN_IS_APPLET (applet));
+
+  g_signal_emit (applet, _applet_signals[PLUG_EMBEDDED], 0);
+}
+
 GtkWidget*
 awn_applet_create_default_menu (AwnApplet *applet)
 {
@@ -246,18 +239,44 @@ awn_applet_get_orientation (AwnApplet *applet)
   return priv->orient;
 }
 
+void
+awn_applet_set_orientation (AwnApplet *applet, guint orient)
+{
+  AwnAppletPrivate *priv;
+
+  g_return_if_fail (AWN_IS_APPLET (applet));
+  priv = applet->priv;
+
+  priv->orient = orient;
+
+  g_signal_emit (applet, _applet_signals[ORIENT_CHANGED], 0, orient);
+}
+
 guint
-awn_applet_get_height (AwnApplet *applet)
+awn_applet_get_size (AwnApplet *applet)
 {
   AwnAppletPrivate *priv;
 
   g_return_val_if_fail(AWN_IS_APPLET (applet), 48);
   priv = AWN_APPLET_GET_PRIVATE (applet);
 
-  return priv->height;
+  return priv->size;
 }
 
-gchar *
+void
+awn_applet_set_size (AwnApplet *applet, guint size)
+{
+  AwnAppletPrivate *priv;
+
+  g_return_if_fail (AWN_IS_APPLET (applet));
+  priv = applet->priv;
+
+  priv->size = size;
+
+  g_signal_emit (applet, _applet_signals[SIZE_CHANGED], 0, size);
+}
+
+const gchar *
 awn_applet_get_uid (AwnApplet *applet)
 {
   AwnAppletPrivate *priv;
@@ -266,6 +285,18 @@ awn_applet_get_uid (AwnApplet *applet)
   priv = AWN_APPLET_GET_PRIVATE (applet);
 
   return priv->uid;
+}
+
+void
+awn_applet_set_uid (AwnApplet *applet, const gchar *uid)
+{
+  AwnAppletPrivate *priv;
+
+  g_return_if_fail (AWN_IS_APPLET (applet));
+  g_return_if_fail (uid);
+  priv = applet->priv;
+
+  priv->uid = g_strdup (uid);
 }
 
 static gboolean
@@ -284,9 +315,7 @@ awn_applet_expose_event (GtkWidget *widget, GdkEventExpose *expose)
 
   /* Clear the background to transparent */
   cairo_set_source_rgba (cr, 1.0f, 1.0f, 1.0f, 0.0f);
-
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-
   cairo_paint (cr);
 
   /* Clean up */
@@ -308,28 +337,19 @@ awn_applet_set_property (GObject      *object,
                          const GValue *value,
                          GParamSpec   *pspec)
 {
-  AwnAppletPrivate *priv;
-
-  g_return_if_fail (AWN_IS_APPLET (object));
-  priv = AWN_APPLET_GET_PRIVATE (object);
-
+  AwnApplet *applet = AWN_APPLET (object);
+  
   switch (prop_id)
   {
     case PROP_UID:
-      g_free (priv->uid);
-      priv->uid = g_strdup (g_value_get_string (value));
+      awn_applet_set_uid (applet, g_value_get_string (value));
       break;
     case PROP_ORIENT:
-      priv->orient = g_value_get_int (value);
-
-      g_signal_emit (object, _applet_signals[ORIENT_CHANGED], 0, priv->orient);
+      awn_applet_set_orientation (applet, g_value_get_int (value));
       break;
-
-    case PROP_HEIGHT:
-      priv->height = g_value_get_int (value);
-      g_signal_emit (object, _applet_signals[HEIGHT_CHANGED], 0, priv->height);
+    case PROP_SIZE:
+      awn_applet_set_size (applet, g_value_get_int (value));
       break;
-
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -356,8 +376,8 @@ awn_applet_get_property (GObject    *object,
     case PROP_ORIENT:
       g_value_set_int (value, priv->orient);
 
-    case PROP_HEIGHT:
-      g_value_set_int (value, priv->height);
+    case PROP_SIZE:
+      g_value_set_int (value, priv->size);
       break;
 
     default:
@@ -371,9 +391,6 @@ awn_applet_class_init (AwnAppletClass *klass)
 {
   GObjectClass *gobject_class;
   GtkWidgetClass *widget_class;
-
-  klass->size_changed = awn_applet_virtual_on_size_changed;
-  klass->plug_embedded = awn_applet_virtual_on_plug_embedded;
 
   gobject_class = G_OBJECT_CLASS(klass);
   gobject_class->finalize = awn_applet_finalize;
@@ -398,14 +415,14 @@ awn_applet_class_init (AwnAppletClass *klass)
                      "Orientation",
                      "The current bar orientation",
                      0, 3, AWN_ORIENTATION_BOTTOM,
-                    G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
-   PROP_HEIGHT,
-   g_param_spec_int ("height",
+   PROP_SIZE,
+   g_param_spec_int ("size",
                      "Height",
-                     "The current visible height of the bar",
-                     AWN_MIN_HEIGHT, AWN_MAX_HEIGHT, 48,
+                     "The current visible size of the bar",
+                     0, G_MAXINT, 48,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   /* Class signals */
@@ -418,14 +435,23 @@ awn_applet_class_init (AwnAppletClass *klass)
                  g_cclosure_marshal_VOID__ENUM,
                  G_TYPE_NONE, 1, G_TYPE_INT);
 
-  _applet_signals[HEIGHT_CHANGED] =
-    g_signal_new("height-changed",
+  _applet_signals[SIZE_CHANGED] =
+    g_signal_new("size-changed",
                  G_OBJECT_CLASS_TYPE(gobject_class),
                  G_SIGNAL_RUN_FIRST,
-                 G_STRUCT_OFFSET(AwnAppletClass, height_changed),
+                 G_STRUCT_OFFSET(AwnAppletClass, size_changed),
                  NULL, NULL,
                  g_cclosure_marshal_VOID__INT,
                  G_TYPE_NONE, 1, G_TYPE_INT);
+
+  _applet_signals[PLUG_EMBEDDED] =
+    g_signal_new("plug-embedded",
+                 G_OBJECT_CLASS_TYPE(gobject_class),
+                 G_SIGNAL_RUN_FIRST,
+                 G_STRUCT_OFFSET(AwnAppletClass, plug_embedded),
+                 NULL, NULL,
+                 g_cclosure_marshal_VOID__VOID,
+                 G_TYPE_NONE, 0);
 
   _applet_signals[DELETED] =
     g_signal_new("applet-deleted",
@@ -454,14 +480,14 @@ awn_applet_finalize (GObject *obj)
 }
 
 AwnApplet *
-awn_applet_new (const gchar* uid, gint orient, gint height)
+awn_applet_new (const gchar* uid, gint orient, gint size)
 {
   AwnApplet *applet = g_object_new(AWN_TYPE_APPLET,
                                    "above-child", FALSE,
                                    "visible-window", TRUE,
                                    "uid", uid,
                                    "orient", orient,
-                                   "height", height,
+                                   "size", size,
                                    NULL);
   return applet;
 }

@@ -17,7 +17,7 @@ awn-vfs
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### TYPEDEF AwnVfsMonitor ##### -->
+<!-- ##### STRUCT AwnVfsMonitor ##### -->
 <para>
 
 </para>

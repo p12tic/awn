@@ -24,31 +24,26 @@
 #include <config.h>
 #endif
 
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-bindings.h>
+#include <string.h>
+
 #include "awn-plug.h"
 
 #include "awn-defines.h"
 #include "awn-applet.h"
 
-#include <dbus/dbus-glib.h>
-#include <dbus/dbus-glib-bindings.h>
-#include <string.h>
-
 G_DEFINE_TYPE(AwnPlug, awn_plug, GTK_TYPE_PLUG);
 
 #define AWN_PLUG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
-                                   AWN_TYPE_PLUG, \
-                                   AwnPlugPrivate))
-
-static GtkEventBoxClass *parent_class;
-
-/* STRUCTS & ENUMS */
+                                   AWN_TYPE_PLUG, AwnPlugPrivate))
 
 struct _AwnPlugPrivate
 {
-  AwnApplet        *applet;
+  AwnApplet *applet;
 
-  DBusGConnection        *connection;
-  DBusGProxy        *proxy;
+  DBusGConnection *connection;
+  DBusGProxy      *proxy;
 };
 
 enum
@@ -57,140 +52,112 @@ enum
 
   LAST_SIGNAL
 };
-
 static guint _plug_signals[LAST_SIGNAL] = { 0 };
 
 /* FORWARDS */
+static void awn_plug_class_init (AwnPlugClass *klass);
+static void awn_plug_init       (AwnPlug *plug);
+static void awn_plug_finalize   (GObject *obj);
 
-static void awn_plug_class_init(AwnPlugClass *klass);
-static void awn_plug_init(AwnPlug *plug);
-static void awn_plug_finalize(GObject *obj);
+void
+awn_plug_construct (AwnPlug *plug, GdkNativeWindow id)
+{
+  gtk_plug_construct (GTK_PLUG (plug), id);
+}
 
 /* CALLBACKS */
-void
-awn_plug_construct(AwnPlug *plug, GdkNativeWindow socket_id)
-{
-  gtk_plug_construct(GTK_PLUG(plug), socket_id);
-}
-
 static void
-on_plug_embedded(GtkPlug *lug, AwnPlug *plug)
+on_plug_embedded (AwnPlug *plug)
 {
   AwnPlugPrivate *priv;
 
-  g_return_if_fail(AWN_IS_PLUG(plug));
-  priv = AWN_PLUG_GET_PRIVATE(plug);
+  g_return_if_fail (AWN_IS_PLUG(plug));
+  priv = plug->priv;
 
-  /*
-    if (!(priv->init_func (AWN_APPLET (priv->applet)))) {
-    g_warning ("Unable to embed applet\n");
-    return;
-   }
-  */
-  gtk_widget_show_all(GTK_WIDGET(plug));
+  awn_applet_plug_embedded (priv->applet);
 
-  // notify the applet that we started
-// printf("[AWNPLUG] applet type =  %s\n", g_type_name(G_OBJECT_TYPE(priv->applet)));
-  AWN_APPLET_GET_CLASS(priv->applet)->plug_embedded(priv->applet);
+
+  gtk_widget_show_all (GTK_WIDGET (plug));
 }
 
 static void
-on_orient_changed(DBusGProxy *proxy, gint orient, AwnPlug *plug)
+on_orient_changed (DBusGProxy *proxy, gint orient, AwnPlug *plug)
 {
   AwnPlugPrivate *priv;
 
-  g_return_if_fail(AWN_IS_PLUG(plug));
-  priv = AWN_PLUG_GET_PRIVATE(plug);
+  g_return_if_fail (AWN_IS_PLUG (plug));
+  priv = plug->priv;
 
-  g_object_set(priv->applet, "orient", orient, NULL);
+  awn_applet_set_orientation (priv->applet, orient);
 }
 
 static void
-on_height_changed(DBusGProxy *proxy, gint height, AwnPlug *plug)
+on_size_changed (DBusGProxy *proxy, gint size, AwnPlug *plug)
 {
   AwnPlugPrivate *priv;
 
-  g_return_if_fail(AWN_IS_PLUG(plug));
-  priv = AWN_PLUG_GET_PRIVATE(plug);
+  g_return_if_fail (AWN_IS_PLUG (plug));
+  priv = plug->priv;
 
-  g_object_set(priv->applet, "height", height, NULL);
-}
-
-
-static void
-on_size_changed(DBusGProxy *proxy, gint x, AwnPlug *plug)
-{
-  AwnPlugPrivate *priv = AWN_PLUG_GET_PRIVATE(plug);
-  AWN_APPLET_GET_CLASS(priv->applet)->size_changed(priv->applet, x);
+  awn_applet_set_size (priv->applet, size);
 }
 
 static void
 on_delete_notify(DBusGProxy *proxy, AwnPlug *plug)
 {
-  gtk_main_quit();
+  gtk_main_quit ();
 }
 
 static void
-on_destroy_applet(DBusGProxy *proxy, gchar *id, AwnPlug *plug)
+on_destroy_applet (DBusGProxy *proxy, gchar *id, AwnPlug *plug)
 {
   AwnPlugPrivate *priv;
   const gchar *uid;
-  g_return_if_fail(AWN_IS_PLUG(plug));
-  priv = AWN_PLUG_GET_PRIVATE(plug);
+  g_return_if_fail (AWN_IS_PLUG (plug));
+  priv = plug->priv;
 
-  g_object_get(G_OBJECT(priv->applet), "uid", &uid, NULL);
+  uid = awn_applet_get_uid (priv->applet);
 
-  if (strcmp(uid, id) == 0)
-    on_delete_notify(NULL, plug);
+  if (strcmp (uid, id) == 0)
+    on_delete_notify (NULL, plug);
 }
-
-/*
-static void
-on_applet_deleted (AwnApplet *applet, gchar *uid, AwnPlug *plug)
-{
- ;
-}
-*/
 
 /*  GOBJECT STUFF */
-
 void
-on_alpha_screen_changed(GtkWidget* widget, GdkScreen* oscreen, gpointer null)
+on_alpha_screen_changed (GtkWidget* widget, GdkScreen* oscreen, gpointer null)
 {
-  GdkScreen* nscreen = gtk_widget_get_screen(widget);
-  GdkColormap* colormap = gdk_screen_get_rgba_colormap(nscreen);
+  GdkScreen* nscreen = gtk_widget_get_screen (widget);
+  GdkColormap* colormap = gdk_screen_get_rgba_colormap (nscreen);
 
   if (!colormap)
-    colormap = gdk_screen_get_rgb_colormap(nscreen);
+    colormap = gdk_screen_get_rgb_colormap (nscreen);
 
-  gtk_widget_set_colormap(widget, colormap);
+  gtk_widget_set_colormap (widget, colormap);
 }
 
 static gboolean
-awn_plug_expose_event(GtkWidget *widget, GdkEventExpose *expose)
+awn_plug_expose_event (GtkWidget *widget, GdkEventExpose *expose)
 {
   cairo_t *cr = NULL;
 
-  if (!GDK_IS_DRAWABLE(widget->window))
+  if (!GDK_IS_DRAWABLE (widget->window))
     return FALSE;
 
-  cr = gdk_cairo_create(widget->window);
+  cr = gdk_cairo_create (widget->window);
 
   if (!cr)
     return FALSE;
 
   /* Clear the background to transparent */
-  cairo_set_source_rgba(cr, 1.0f, 1.0f, 1.0f, 0.0f);
-
-  cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
-
-  cairo_paint(cr);
+  cairo_set_source_rgba (cr, 1.0f, 1.0f, 1.0f, 0.0f);
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
 
   /* Clean up */
-  cairo_destroy(cr);
+  cairo_destroy (cr);
 
-  gtk_container_propagate_expose(GTK_CONTAINER(widget),
-                                 gtk_bin_get_child(GTK_BIN(widget)),
+  gtk_container_propagate_expose(GTK_CONTAINER (widget),
+                                 gtk_bin_get_child (GTK_BIN (widget)),
                                  expose);
 
   return FALSE;
@@ -199,37 +166,34 @@ awn_plug_expose_event(GtkWidget *widget, GdkEventExpose *expose)
 static void
 awn_plug_class_init(AwnPlugClass *klass)
 {
-  GObjectClass *gobject_class;
-  GtkWidgetClass *widget_class;
+  GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent(klass);
+  obj_class->finalize = awn_plug_finalize;
 
-  gobject_class = G_OBJECT_CLASS(klass);
-  gobject_class->finalize = awn_plug_finalize;
+  wid_class->expose_event = awn_plug_expose_event;
 
-  widget_class = GTK_WIDGET_CLASS(klass);
-  widget_class->expose_event = awn_plug_expose_event;
-
+  /* Add signals */
   _plug_signals[APPLET_DELETED] =
-    g_signal_new("applet_deleted",
-                 G_OBJECT_CLASS_TYPE(klass),
-                 G_SIGNAL_RUN_LAST,
-                 G_STRUCT_OFFSET(AwnPlugClass, applet_deleted),
-                 NULL, NULL,
-                 g_cclosure_marshal_VOID__STRING,
-                 G_TYPE_NONE,
-                 1, G_TYPE_STRING);
+    g_signal_new ("applet_deleted",
+                  G_OBJECT_CLASS_TYPE (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (AwnPlugClass, applet_deleted),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE,
+                  1, G_TYPE_STRING);
 
-  g_type_class_add_private(gobject_class, sizeof(AwnPlugPrivate));
+  g_type_class_add_private (obj_class, sizeof (AwnPlugPrivate));
 }
 
 static void
 awn_plug_init(AwnPlug *plug)
 {
   AwnPlugPrivate *priv;
-  GError *error;
+  GError         *error;
 
-  priv = AWN_PLUG_GET_PRIVATE(plug);
+  priv = plug->priv = AWN_PLUG_GET_PRIVATE(plug);
 
   gtk_widget_set_app_paintable(GTK_WIDGET(plug), TRUE);
   on_alpha_screen_changed(GTK_WIDGET(plug), NULL, NULL);
@@ -239,91 +203,67 @@ awn_plug_init(AwnPlug *plug)
 
   if (error)
   {
+    g_warning ("%s", error->message);
     g_error_free(error);
+    gtk_main_quit ();
   }
-
-  if (priv->connection != NULL)
+  
+  priv->proxy = dbus_g_proxy_new_for_name (priv->connection,
+                                           "org.awnproject.Awn.Panel",
+                                           "/org.awnproject.Awn.Panel",
+                                           "org.awnproject.Awn.Panel");
+  if (!priv->proxy)
   {
-    priv->proxy = dbus_g_proxy_new_for_name(
-                    priv->connection,
-                    "org.awnproject.Awn.Panel",
-                    "/org.awnproject.Awn.Panel",
-                    "org.awnproject.Awn.Panel");
-
-    if (!priv->proxy)
-    {
-      g_warning("Could not connect to mothership! Bailing\n");
-      return;
-    }
-
-    dbus_g_proxy_add_signal(priv->proxy, "OrientChanged",
-                            G_TYPE_INT, G_TYPE_INVALID);
-    dbus_g_proxy_add_signal(priv->proxy, "SizeChanged",
-                            G_TYPE_INT, G_TYPE_INVALID);
-    dbus_g_proxy_add_signal(priv->proxy, "DestroyNotify",
-                            G_TYPE_INVALID);
-    dbus_g_proxy_add_signal(priv->proxy, "DestroyApplet",
-                            G_TYPE_STRING, G_TYPE_INVALID);
-    dbus_g_proxy_add_signal(priv->proxy, "SizeChanged",
-                            G_TYPE_INT, G_TYPE_INVALID);
-
-    dbus_g_proxy_connect_signal(priv->proxy,
-                                "OrientChanged",
-                                G_CALLBACK(on_orient_changed),
-                                (gpointer)plug,
-                                NULL);
-    dbus_g_proxy_connect_signal(priv->proxy,
-                                "SizeChanged",
-                                G_CALLBACK(on_height_changed),
-                                (gpointer)plug,
-                                NULL);
-    dbus_g_proxy_connect_signal(priv->proxy,
-                                "DestroyNotify",
-                                G_CALLBACK(on_delete_notify),
-                                (gpointer)plug,
-                                NULL);
-
-    dbus_g_proxy_connect_signal(priv->proxy,
-                                "DestroyApplet",
-                                G_CALLBACK(on_destroy_applet),
-                                (gpointer)plug,
-                                NULL);
-    dbus_g_proxy_connect_signal(priv->proxy,
-                                "SizeChanged",
-                                G_CALLBACK(on_size_changed),
-                                (gpointer)plug,
-                                NULL);
+    g_warning("Could not connect to mothership! Bailing\n");
+    gtk_main_quit ();
   }
+
+  dbus_g_proxy_add_signal (priv->proxy, "OrientChanged",
+                           G_TYPE_INT, G_TYPE_INVALID);
+  dbus_g_proxy_add_signal (priv->proxy, "SizeChanged",
+                           G_TYPE_INT, G_TYPE_INVALID);
+  dbus_g_proxy_add_signal (priv->proxy, "DestroyNotify",
+                           G_TYPE_INVALID, G_TYPE_INVALID);
+  dbus_g_proxy_add_signal (priv->proxy, "DestroyApplet",
+                           G_TYPE_STRING, G_TYPE_INVALID);
+  
+  dbus_g_proxy_connect_signal (priv->proxy, "OrientChanged",
+                               G_CALLBACK (on_orient_changed), plug, 
+                               NULL);
+  dbus_g_proxy_connect_signal (priv->proxy, "SizeChanged",
+                               G_CALLBACK (on_size_changed), plug,
+                               NULL);
+  dbus_g_proxy_connect_signal (priv->proxy, "DestroyNotify",
+                               G_CALLBACK (on_delete_notify), plug,
+                               NULL);
+  dbus_g_proxy_connect_signal (priv->proxy, "DestroyApplet",
+                               G_CALLBACK (on_destroy_applet), plug,
+                               NULL);
+
+  g_signal_connect (plug, "embedded",
+                    G_CALLBACK (on_plug_embedded), NULL);
 }
-
-
 
 static void
 awn_plug_finalize(GObject *obj)
 {
-  AwnPlug *plug;
+  AwnPlugPrivate *priv = AWN_PLUG_GET_PRIVATE (obj);
 
-  g_return_if_fail(obj != NULL);
-  g_return_if_fail(AWN_IS_PLUG(obj));
+  dbus_g_connection_unref (priv->connection);
+  g_object_unref (priv->proxy);
 
-  plug = AWN_PLUG(obj);
-
-  if (G_OBJECT_CLASS(parent_class)->finalize)
-    G_OBJECT_CLASS(parent_class)->finalize(obj);
+  G_OBJECT_CLASS (awn_plug_parent_class)->finalize (obj);
 }
 
 GtkWidget *
 awn_plug_new(AwnApplet *applet)
 {
-  AwnPlugPrivate *priv;
+  AwnPlug *plug;
 
-  GtkWidget *plug = g_object_new(AWN_TYPE_PLUG, NULL);
+  plug = g_object_new(AWN_TYPE_PLUG, NULL);
 
-  priv = AWN_PLUG_GET_PRIVATE(plug);
+  plug->priv->applet = applet;
 
-  priv->applet = applet;
-  g_signal_connect(GTK_PLUG(plug), "embedded",
-                   G_CALLBACK(on_plug_embedded), (gpointer)plug);
-  return plug;
+  return GTK_WIDGET (plug);
 }
 
