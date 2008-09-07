@@ -25,8 +25,15 @@ import gobject
 import awn
 import awnDefs as defs
 
+def stringbool( value ):
+    if( value == "False"):
+        return False
+    else:
+        return bool(value)
+
 CONFIG_TYPE_MAP = {
     bool: 'bool',
+    stringbool: 'bool',
     float: 'float',
     int: 'int',
     str: 'string'
@@ -52,7 +59,6 @@ class Pref:
     def typecast(self, value):
         return self.ptype(value)
 
-
 class AwnThemeManager:
 
     def __init__(self, glade):
@@ -74,22 +80,22 @@ class AwnThemeManager:
         self.CONFIG = awn.Config()
         self.BUILD_DIR = "/tmp/awn_theme_build"
         self.THEME_PREFS = {
-            '': [Pref('autohide', bool)],
-            'app': [Pref('active_png', str), Pref('alpha_effect', bool),
-                    Pref('arrow_color', str),Pref('hover_bounce_effect', bool),
-                    Pref('tasks_have_arrows', bool)],
+            '': [Pref('autohide', stringbool)],
+            'app': [Pref('active_png', str), Pref('alpha_effect', stringbool),
+                    Pref('arrow_color', str),Pref('hover_bounce_effect', stringbool),
+                    Pref('tasks_have_arrows', stringbool)],
             'bar': [Pref('bar_angle', int), Pref('bar_height', int),
                     Pref('border_color', str), Pref('corner_radius', float),
                     Pref('glass_histep_1', str), Pref('glass_histep_2', str),
                     Pref('glass_step_1', str), Pref('glass_step_2', str),
                     Pref('hilight_color', str), Pref('icon_offset', int),
                     Pref('pattern_alpha', float), Pref('pattern_uri', str),
-                    Pref('render_pattern', bool), Pref('rounded_corners', bool),
-                    Pref('sep_color', str), Pref('show_separator', bool)],
+                    Pref('render_pattern', stringbool), Pref('rounded_corners', stringbool),
+                    Pref('sep_color', str), Pref('show_separator', stringbool)],
             'title': [Pref('background', str), Pref('font_face', str),
                       Pref('shadow_color', str), Pref('text_color', str)]
             }
-        self.theme_list = {}
+        self.theme_list = []
         self.currItr = None
         self.model = None
         self.window = self.wTree.get_widget("main_window")
@@ -126,13 +132,11 @@ class AwnThemeManager:
 
                     row = model.append (None, (setRadio, self.pixbuf, "Theme: %s\nVersion: %s\nAuthor: %s\nDate: %s" % (cfg['details']['name'], cfg['details']['version'], cfg['details']['author'], cfg['details']['date'])))
 
-                    path = model.get_path(row)[0]
-                    self.theme_list[path] = {
-                        'row': row,
+                    self.theme_list.append({
                         'name': cfg['details']['name'],
                         'version': cfg['details']['version'],
                         'dir': d
-                        }
+                        })
                     if setRadio:
                         self.currItr = row
                     else:
@@ -141,6 +145,9 @@ class AwnThemeManager:
 
     def apply_theme(self, widget, data=None):
         if self.currItr is not None:
+            
+            self.model.foreach(self.update_radio)
+            
             index = self.model.get_path(self.currItr)[0]
             name = self.theme_list[index]['name']
             version = self.theme_list[index]['version']
@@ -309,6 +316,7 @@ class AwnThemeManager:
     def delete(self, widget, data=None):
         if self.currItr is not None:
             index = self.model.get_path(self.currItr)[0]
+            
             name = self.theme_list[index]['name']
             version = self.theme_list[index]['version']
             directory = self.theme_list[index]['dir']
@@ -331,7 +339,7 @@ class AwnThemeManager:
                         curr.write("")
                         curr.close()
 
-            del self.theme_list[index]
+            self.theme_list.pop(index)
             self.model.remove(self.currItr)
 
     def add_row(self, directory):
@@ -346,14 +354,12 @@ class AwnThemeManager:
             else:
                 self.pixbuf = None
 
-            row = self.model.append (None, (False, self.pixbuf, "Theme: %s\nVersion: %s\nAuthor: %s\nDate: %s" % (cfg['details']['name'], cfg['details']['version'], cfg['details']['author'], cfg['details']['date'])))
-            path = self.model.get_path(row)[0]
-            self.theme_list[path] = {
-                'row': row,
+            self.model.append (None, (False, self.pixbuf, "Theme: %s\nVersion: %s\nAuthor: %s\nDate: %s" % (cfg['details']['name'], cfg['details']['version'], cfg['details']['author'], cfg['details']['date'])))
+            self.theme_list.append({
                 'name': cfg['details']['name'],
                 'version': cfg['details']['version'],
                 'dir':directory
-                }
+                })
 
     def write(self, path):
         cfg = ConfigParser()
@@ -414,13 +420,13 @@ class AwnThemeManager:
         pb = pb.get_from_drawable(w,w.get_colormap(),x,y,0,0,150,75)
         return pb
 
-    def on_toggle(self, widget, event, data=None):
-        widget.foreach(self.update_radio, event)
+    def on_select(self, selection):
+        model, selection_iter = selection.get_selected()
+        self.currItr = selection_iter
 
-    def update_radio(self, model, path, iterator, data):
-        if path[0] == int(data):
+    def update_radio(self, model, path, iterator, data=None):
+        if path == self.model.get_path(self.currItr):
             model.set_value(iterator, 0, 1)
-            self.currItr = iterator
         else:
             model.set_value(iterator, 0, 0)
 
@@ -449,7 +455,8 @@ class AwnThemeManager:
         self.renderer = gtk.CellRendererToggle ()
         self.renderer.set_radio (True)
         self.renderer.set_property( 'activatable', True )
-        self.renderer.connect_object( 'toggled', self.on_toggle, self.theme_model )
+        selection = self.theme_treeview.get_selection()
+        selection.connect('changed', self.on_select)
 
         self.theme_treeview.insert_column_with_attributes (-1, 'Select', self.renderer, active=COL_SELECT)
         self.theme_treeview.insert_column_with_attributes (-1, 'Preview', gtk.CellRendererPixbuf (), pixbuf=COL_PREVIEW)

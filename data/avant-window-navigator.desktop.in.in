@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Name=Avant Window Navigator
-Comment=A dock-like window navigator.
+_Name=Avant Window Navigator
+_Comment=A dock-like window navigator.
 Exec=avant-window-navigator
 Icon=avant-window-navigator
 Categories=GNOME;Utility;

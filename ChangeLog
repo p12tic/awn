@@ -123,6 +123,215 @@
 	Started to sort out the individual parts of the panel code
 	Put the AwnApp object on DBus
 
+2008-08-31  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	reviewed by: Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	Update Vala bindings to reflect the AwnEffects changes.
+
+2008-08-31  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	Added option to AwnEffects to turn off the 4px cut.
+	Fixed python binding for draw_icons_cairo which could cause SIGSEV
+
+2008-08-30  Michal Hruby <michal.mhr@gmail.com>
+
+	reviewed by: Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-effects-shared.c:
+	* libawn/awn-effects-shared.h:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* src/awn-task.c:
+	Merge of boxed-awn-effects branch
+
+2008-08-30  Michal Hruby <michal.mhr@gmail.com>
+
+	patch by: Matt <sharkbaitbobby@gmail.com>
+
+	* libawn/awn-applet-dialog.c:
+	Fixes LP #207860 (Applet dialogs have white backgrounds)
+
+2008-08-30  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* src/main.c:
+	Fix warnings introduced by revision 470.
+
+2008-08-30  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awnPreferences.py:
+	Fix custom effects regression in awn-manager
+
+2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	patch by: black <https://launchpad.net/~blackborn>
+
+	* awn-manager/awnManager.py.in:
+	Fix Launchpad bug #241971 (Cleanup of the refresh dialog).
+
+2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	reviewed by: Mike Rooney <launchpad@rowk.com>
+	patch by: black <https://launchpad.net/~blackborn>
+
+	* awn-manager/awnTheme.py:
+	Fix Launchpad bug #134397 (Cannot remove any theme in awn-manager except
+	the currently enabled one).
+
+2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	patch by: Henry Zhang <hua.zhang@sun.com>
+
+	* configure.in:
+	* libawn/awn-effects-ops.c:
+	* libawn/awn-effects.c:
+	Fix Launchpad bug #250720 (build error on Solaris).
+
+2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	patch by: black <https://launchpad.net/~blackborn>
+
+	* awn-manager/awnManager.py.in:
+	* awn-manager/awnPreferences.py:
+	Fix Launchpad bug #240396 (changing theme doesn't change the values of the
+	'general' tab).
+
+2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	patch by: black <https://launchpad.net/~blackborn>
+
+	* awn-manager/awnTheme.py:
+	Fix Launchpad bug #246967 (patterns must be manually disabled for themes
+	without them).
+
+2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	patch by: Takao Fujiwara <takao.fujiwara@sun.com>
+
+	* awn-manager/awn-manager.desktop.in.in:
+	* awn-manager/awnManager.py.in:
+	* awn-manager/awnPreferences.py:
+	* awn-manager/window.glade:
+	* data/avant-window-navigator.desktop.in.in:
+	* po/POTFILES.in:
+	* src/Makefile.am:
+	* src/main.c:
+	Fix Launchpad bug #251713 (avant includes several unlocalized strings).
+
+2008-08-23  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	Update Vala bindings.
+
+2008-08-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	patch by: Matt <sharkbaitbobby@gmail.com>
+
+	* awn-manager/awnLauncherEditor.py:
+	Fix Launchpad bug #242463 (unable to add program to launcher).
+
+2008-08-17  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Add some additional checks for a valid pixbuf as either
+	gdk_pixbuf_get_file_info () is smart than I think or it's not as smart
+	as it thinks.
+
+2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Fixed awn_icons_override_gtk_theme().  Generates a callback to
+	indicate icon change when set.  Also added a break into the icon
+	search so overridden icons will be used.
+
+2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
+
+        * bindings/python/awn.defs:
+	Python binding for awn_icons_override_gtk_theme().
+
+2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.[ch]:
+	Added awn_icons_override_gtk_theme().
+
+2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Update binding for  awn_icons_new ().
+
+2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Additional work to implement ability to override theme.
+
+2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.[ch]:
+	* libwwn/awn-applet-simple.c:
+	Added the applet name:  awn_icons_new (const gchar * applet_name).
+	Instead of the silly place it was being specified before.
+
+2008-08-12  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Added override_theme...  to allow applets to provide/use a custom
+	theme (only to be used when dealing with multiple related icons that
+	do not have good coverage in most themes).  Not functional yet..
+
+2008-08-11  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.c:
+	Fix a warning resulting from switch from gchar ** to GStrv.
+
+2008-08-11  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.h:
+	Corrected a comment.
+
+2008-08-11  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-icons.[ch]:
+	Minor cleanups.
+
+2008-08-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Returned awn_effect_stop binding that was accidentally removed on the
+	previous commit.
+
+2008-08-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Python bindings for awn_effects_reflection_off/on().
+
+2008-08-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects.[ch]:
+	Added awn_effects_reflection_off/on().
+
+2008-08-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects.[ch]:
+	Added first part of support to disable reflections.
+
+2008-08-10  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	Change gchar ** to GStrv.  Cleaned up
+	awn_applet_simple_effects_on/off().
+
 2008-08-09  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/egg/eggdesktopfile.c:

@@ -138,54 +138,6 @@ namespace Awn {
 	}
 	[Compact]
 	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public class Effects {
-		public weak GLib.Object self;
-		public weak Gtk.Widget focus_window;
-		public weak Awn.Settings settings;
-		public weak Awn.Title title;
-		public weak Awn.TitleCallback get_title;
-		public weak GLib.List effect_queue;
-		public int icon_width;
-		public int icon_height;
-		public int window_width;
-		public int window_height;
-		public bool effect_lock;
-		public Awn.Effect current_effect;
-		public Awn.EffectSequence direction;
-		public int count;
-		public double x_offset;
-		public double y_offset;
-		public double curve_offset;
-		public int delta_width;
-		public int delta_height;
-		public Gtk.Allocation clip_region;
-		public double rotate_degrees;
-		public float alpha;
-		public float spotlight_alpha;
-		public float saturation;
-		public float glow_amount;
-		public int icon_depth;
-		public int icon_depth_direction;
-		public bool hover;
-		public bool clip;
-		public bool flip;
-		public bool spotlight;
-		public uint enter_notify;
-		public uint leave_notify;
-		public uint timer_id;
-		public weak Cairo.Context icon_ctx;
-		public weak Cairo.Context reflect_ctx;
-		public weak Awn.EffectsOp op_list;
-		public void* pad1;
-		public void* pad2;
-		public void* pad3;
-		public void* pad4;
-		public void finalize ();
-		public static void init (GLib.Object obj, Awn.Effects fx);
-		public void set_title (Awn.Title title, Awn.TitleCallback title_func);
-	}
-	[Compact]
-	[CCode (cheader_filename = "libawn/awn-effects.h")]
 	public class EffectsOp {
 		public weak Awn.EffectsOpfn fn;
 		public void* data;
@@ -243,6 +195,8 @@ namespace Awn {
 		public int frame_rate;
 		public bool icon_depth_on;
 		public int icon_offset;
+		public int reflection_offset;
+		public bool show_shadows;
 		public weak Awn.Color text_color;
 		public weak Awn.Color shadow_color;
 		public weak Awn.Color background;
@@ -298,8 +252,74 @@ namespace Awn {
 		public void set_list (string group, string key, Awn.ConfigListType list_type, GLib.SList value) throws GLib.Error;
 		public void set_string (string group, string key, string value) throws GLib.Error;
 	}
+	[Compact]
+	[CCode (cheader_filename = "libawn/awn-effects.h")]
+	public class Effects {
+		public weak Gtk.Widget self;
+		public weak Gtk.Widget focus_window;
+		public weak Awn.Settings settings;
+		public weak Awn.Title title;
+		public weak Awn.TitleCallback get_title;
+		public weak GLib.List effect_queue;
+		public int icon_width;
+		public int icon_height;
+		public int window_width;
+		public int window_height;
+		public bool effect_lock;
+		public Awn.Effect current_effect;
+		public Awn.EffectSequence direction;
+		public int count;
+		public double x_offset;
+		public double y_offset;
+		public double curve_offset;
+		public int delta_width;
+		public int delta_height;
+		public Gtk.Allocation clip_region;
+		public double rotate_degrees;
+		public float alpha;
+		public float spotlight_alpha;
+		public float saturation;
+		public float glow_amount;
+		public int icon_depth;
+		public int icon_depth_direction;
+		public bool hover;
+		public bool clip;
+		public bool flip;
+		public bool spotlight;
+		public bool do_reflections;
+		public bool do_offset_cut;
+		public uint enter_notify;
+		public uint leave_notify;
+		public uint timer_id;
+		public weak Cairo.Context icon_ctx;
+		public weak Cairo.Context reflect_ctx;
+		public weak Awn.EffectsOp op_list;
+		public void* pad1;
+		public void* pad2;
+		public void* pad3;
+		public void* pad4;
+		public void draw_background (Cairo.Context p2);
+		public void draw_foreground (Cairo.Context p2);
+		public void draw_icons (Cairo.Context p2, Gdk.Pixbuf p3, Gdk.Pixbuf p4);
+		public void draw_icons_cairo (Cairo.Context cr, Cairo.Context p3, Cairo.Context p4);
+		public void draw_set_icon_size (int p2, int p3);
+		public void draw_set_window_size (int p2, int p3);
+		public void finalize ();
+		public void main_effect_loop ();
+		public Effects ();
+		public Effects.for_widget (Gtk.Widget widget);
+		public void reflection_off ();
+		public void reflection_on ();
+		public void register (Gtk.Widget obj);
+		public void set_offset_cut (bool cut);
+		public void set_title (Awn.Title title, Awn.TitleCallback title_func);
+		public void start (Awn.Effect effect);
+		public void start_ex (Awn.Effect effect, Awn.EventNotify start, Awn.EventNotify stop, int max_loops);
+		public void stop (Awn.Effect effect);
+		public void unregister ();
+	}
 	[CCode (cheader_filename = "libawn/awn-applet.h")]
-	public class Applet : Gtk.EventBox, Gtk.Buildable, Atk.Implementor {
+	public class Applet : Gtk.EventBox, Atk.Implementor, Gtk.Buildable {
 		public weak Gtk.Widget create_default_menu ();
 		public static weak Gtk.Widget create_pref_item ();
 		public uint get_height ();
@@ -325,16 +345,18 @@ namespace Awn {
 		public virtual signal void orientation_changed (int p0);
 	}
 	[CCode (cheader_filename = "libawn/awn-applet-dialog.h")]
-	public class AppletDialog : Gtk.Window, Gtk.Buildable, Atk.Implementor {
+	public class AppletDialog : Gtk.Window, Atk.Implementor, Gtk.Buildable {
+		[CCode (type = "GtkWidget*")]
 		public AppletDialog (Awn.Applet applet);
 		public void position_reset ();
 	}
 	[CCode (cheader_filename = "libawn/awn-applet-simple.h")]
-	public class AppletSimple : Awn.Applet, Gtk.Buildable, Atk.Implementor {
+	public class AppletSimple : Awn.Applet, Atk.Implementor, Gtk.Buildable {
 		public void effects_off ();
 		public void effects_on ();
 		public weak Awn.Icons get_awn_icons ();
 		public weak Awn.Effects get_effects ();
+		[CCode (type = "GtkWidget*")]
 		public AppletSimple (string uid, int orient, int height);
 		public weak Gdk.Pixbuf set_awn_icon (string applet_name, string icon_name);
 		public weak Gdk.Pixbuf set_awn_icon_state (string state);
@@ -352,20 +374,22 @@ namespace Awn {
 		public weak Gdk.Pixbuf get_icon_at_height (string state, int height);
 		public weak Gdk.Pixbuf get_icon_simple ();
 		public weak Gdk.Pixbuf get_icon_simple_at_height (int height);
-		public Icons ();
+		public Icons (string applet_name);
+		public void override_gtk_theme (string theme_name);
 		public void set_changed_cb (Awn.IconsChange fn);
 		public void set_height (int height);
-		public void set_icon_info (Gtk.Widget applet, string applet_name, string uid, int height, string icon_name);
-		public void set_icons_info (Gtk.Widget applet, string applet_name, string uid, int height, string[] states, string[] icon_names);
+		public void set_icon_info (Gtk.Widget applet, string uid, int height, string icon_name);
+		public void set_icons_info (Gtk.Widget applet, string uid, int height, string[] states, string[] icon_names);
 	}
 	[CCode (cheader_filename = "libawn/awn-plug.h")]
-	public class Plug : Gtk.Plug, Gtk.Buildable, Atk.Implementor {
+	public class Plug : Gtk.Plug, Atk.Implementor, Gtk.Buildable {
 		public void @construct (Gdk.NativeWindow socket_id);
+		[CCode (type = "GtkWidget*")]
 		public Plug (Awn.Applet applet);
 		public virtual signal void applet_deleted (string uid);
 	}
 	[CCode (cheader_filename = "libawn/awn-title.h")]
-	public class Title : Gtk.Window, Gtk.Buildable, Atk.Implementor {
+	public class Title : Gtk.Window, Atk.Implementor, Gtk.Buildable {
 		public static weak Gtk.Widget get_default ();
 		public void hide (Gtk.Widget focus);
 		public void show (Gtk.Widget focus, string text);
@@ -388,11 +412,11 @@ namespace Awn {
 	[CCode (cheader_filename = "libawn/awn-effects.h")]
 	public delegate bool EffectsOpfn (Awn.Effects fx, Awn.DrawIconState ds);
 	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public static delegate void EventNotify (GLib.Object p1);
+	public static delegate void EventNotify (Gtk.Widget p1);
 	[CCode (cheader_filename = "libawn/awn-icons.h")]
 	public delegate void IconsChange (Awn.Icons fx);
 	[CCode (cheader_filename = "libawn/awn-title.h")]
-	public static delegate weak string TitleCallback (GLib.Object p1);
+	public static delegate weak string TitleCallback (Gtk.Widget p1);
 	[CCode (cheader_filename = "libawn/awn-vfs.h")]
 	public delegate void VfsMonitorFunc (Awn.VfsMonitor monitor, string monitor_path, string event_path, Awn.VfsMonitorEvent event);
 	[CCode (cheader_filename = "libawn/awn-defines.h")]
@@ -409,32 +433,8 @@ namespace Awn {
 	public static void cairo_rounded_rect (Cairo.Context cr, int x0, int y0, int width, int height, double radius, Awn.CairoRoundCorners state);
 	[CCode (cheader_filename = "libawn/awn-cairo-utils.h")]
 	public static void cairo_string_to_color (string str, Awn.Color color);
-	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public static void draw_background (Awn.Effects p1, Cairo.Context p2);
-	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public static void draw_foreground (Awn.Effects p1, Cairo.Context p2);
-	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public static void draw_icons (Awn.Effects p1, Cairo.Context p2, Gdk.Pixbuf p3, Gdk.Pixbuf p4);
-	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public static void draw_icons_cairo (Awn.Effects fx, Cairo.Context cr, Cairo.Context p3, Cairo.Context p4);
-	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public static void draw_set_icon_size (Awn.Effects p1, int p2, int p3);
-	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public static void draw_set_window_size (Awn.Effects p1, int p2, int p3);
-	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public static void effect_start (Awn.Effects fx, Awn.Effect effect);
-	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public static void effect_start_ex (Awn.Effects fx, Awn.Effect effect, Awn.EventNotify? start, Awn.EventNotify? stop, int max_loops);
-	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public static void effect_stop (Awn.Effects fx, Awn.Effect effect);
 	[CCode (cheader_filename = "libawn/awn-settings.h")]
 	public static weak Awn.Settings get_settings ();
-	[CCode (cname = "main_effect_loop", cheader_filename = "libawn/awn-effects.h")]
-	public static void main_effect_loop (Awn.Effects fx);
-	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public static void register_effects (GLib.Object obj, Awn.Effects fx);
-	[CCode (cheader_filename = "libawn/awn-effects.h")]
-	public static void unregister_effects (Awn.Effects fx);
 	[CCode (cheader_filename = "libawn/awn-vfs.h")]
 	public static weak GLib.SList vfs_get_pathlist_from_string (string paths) throws GLib.Error;
 	[CCode (cheader_filename = "libawn/awn-vfs.h")]

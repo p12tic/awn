@@ -88,7 +88,7 @@ class AwnManager:
         self.gtk_screen = self.window.get_screen()
         colormap = self.gtk_screen.get_rgba_colormap()
         if colormap == None:
-            colormap = self.screen.get_rgb_colormap()
+            colormap = self.gtk_screen.get_rgb_colormap()
         gtk.widget_set_default_colormap(colormap)
 
         self.notebook = self.wTree.get_widget("panelCategory")
@@ -118,9 +118,6 @@ class AwnManager:
         iconViewFrame.add(icon_view)
         iconViewFrame.show_all()
 
-        #theme
-        self.themeManager = AwnThemeManager(self.wTree)
-
         #applet
         self.appletManager = awnApplet(self.wTree)
 
@@ -129,6 +126,9 @@ class AwnManager:
 
         #preferences
         self.prefManager = awnPreferences(self.wTree)
+
+        #theme
+        self.themeManager = AwnThemeManager(self.wTree)
 
         self.window.show_all()
 
@@ -161,21 +161,15 @@ class AwnManager:
         self.notebook.set_current_page(iconView.get_cursor()[0][0])
 
     def refresh(self, button):
-        w = gtk.Window()
-        w.set_icon(this.safe_load_icon("gtk-refresh", 48, gtk.ICON_LOOKUP_FORCE_SVG))
-        v = gtk.VBox()
-        l = gtk.Label("Refreshed")
-        b = gtk.Button(stock="gtk-close")
-        b.connect("clicked", self.win_destroy, w)
-        v.pack_start(l, True, True, 2)
-        v.pack_start(b)
-        w.add(v)
-        w.resize(200, 100)
-        w.show_all()
+        dialog = gtk.MessageDialog(self.window, 0, gtk.MESSAGE_INFO,
+                                   gtk.BUTTONS_OK,
+                                   _('AWN has been successfully refreshed'))
+        dialog.run()
+        dialog.hide()
 
     def about(self, button):
         self.about = gtk.AboutDialog()
-        self.about.set_name("Avant Window Navigator")
+        self.about.set_name(_("Avant Window Navigator"))
         self.about.set_version('@VERSION@')
         self.about.set_copyright("Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>")
         self.about.set_authors([
@@ -189,13 +183,13 @@ class AwnManager:
             'Mark Lee <avant-wn@lazymalevolence.com>',
             'Rodney Cryderman <rcryderman@gmail.com>'
             ])
-        self.about.set_comments("Fully customisable dock-like window navigator for GNOME.")
-        self.about.set_license('''
-This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA.''')
+        self.about.set_comments(_("Fully customisable dock-like window navigator for GNOME."))
+        self.about.set_license(
+_("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.") +
+"\n\n" +
+_("This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.") +
+"\n\n" +
+_("You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."))
         self.about.set_wrap_license(True)
         self.about.set_website('https://launchpad.net/awn/')
         self.about.set_logo(self.safe_load_icon('avant-window-navigator', 96, gtk.ICON_LOOKUP_USE_BUILTIN))

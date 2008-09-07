@@ -54,7 +54,7 @@ struct _AwnAppletSimplePrivate
   cairo_t * reflect_context;
   gboolean icon_cxt_copied;
 
-  AwnEffects effects;
+  AwnEffects * effects;
 
   gint icon_width;
   gint icon_height;
@@ -64,8 +64,6 @@ struct _AwnAppletSimplePrivate
   gint offset;
   gint bar_height;
   gint bar_angle;
-  
-  gboolean effects_enabled;
   
   AwnIcons  * awn_icons;
   gchar     * current_state;
@@ -412,8 +410,8 @@ static void _awn_applet_simple_icon_changed(AwnIcons * awn_icons, AwnAppletSimpl
  */    
 GdkPixbuf * awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
                                     const gchar * applet_name,
-                                    const gchar **states,
-                                    const gchar **icon_names
+                                    const GStrv states,
+                                    const GStrv icon_names
                                     )
 {
   AwnAppletSimplePrivate *priv;  
@@ -427,11 +425,10 @@ GdkPixbuf * awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
   }
   if ( !priv->awn_icons)
   {
-    priv->awn_icons = awn_icons_new();
+    priv->awn_icons = awn_icons_new(applet_name);
   }
   awn_icons_set_icons_info(priv->awn_icons,
                               GTK_WIDGET(simple),
-                              applet_name,
                               awn_applet_get_uid(AWN_APPLET(simple)),
                               priv->bar_height,
                               states,
@@ -475,11 +472,10 @@ GdkPixbuf * awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
   }  
   if ( !priv->awn_icons)
   {
-    priv->awn_icons = awn_icons_new();
+    priv->awn_icons = awn_icons_new(applet_name);
   }
   awn_icons_set_icon_info(priv->awn_icons,
-                              GTK_WIDGET(simple),
-                              applet_name,
+                              GTK_WIDGET(simple),                              
                               awn_applet_get_uid(AWN_APPLET(simple)),
                               priv->bar_height,
                               icon_name);
@@ -561,7 +557,7 @@ void awn_applet_simple_effects_on(AwnAppletSimple *simple)
 {
   AwnAppletSimplePrivate *priv;
   priv = simple->priv;
-  priv->effects_enabled=TRUE;    
+  awn_effects_register(priv->effects, GTK_WIDGET(simple));
 }
 
 /*
@@ -573,8 +569,8 @@ void awn_applet_simple_effects_on(AwnAppletSimple *simple)
 void awn_applet_simple_effects_off(AwnAppletSimple *simple)
 {
   AwnAppletSimplePrivate *priv;
-  priv = simple->priv;
-  priv->effects_enabled=FALSE;  
+  priv = simple->priv; 
+  awn_effects_unregister(priv->effects);
 }
 
 
@@ -598,7 +594,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   
   width = widget->allocation.width;
   height = widget->allocation.height;
-  awn_draw_set_window_size(&priv->effects, width, height);
+  awn_effects_draw_set_window_size(priv->effects, width, height);
   bar_height = priv->bar_height;
   cr = gdk_cairo_create(widget->window);
 
@@ -614,7 +610,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
   
-  awn_draw_background(&priv->effects, cr);    
+  awn_effects_draw_background(priv->effects, cr);    
   
   if (!priv->icon_context)  
   {
@@ -676,22 +672,10 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
         return TRUE;
     }     
 
-    if ( priv->effects_enabled)
-    {    
-      awn_draw_icons_cairo(&priv->effects,cr,priv->icon_context,priv->reflect_context);
-    }
-    else
-    {
-      GtkWidget *child = NULL;    
-      child = gtk_bin_get_child(GTK_BIN(widget));
+    awn_effects_draw_icons_cairo(priv->effects,cr,priv->icon_context,priv->reflect_context);
 
-      if (child)  //the propagate might not be needed?
-      {
-        gtk_container_propagate_expose(GTK_CONTAINER(widget), child,  expose);    
-      }
-    }    
   }
-  awn_draw_foreground(&priv->effects, cr);      
+  awn_effects_draw_foreground(priv->effects, cr);      
   cairo_destroy(cr);
   
   return TRUE;
@@ -861,18 +845,21 @@ awn_applet_simple_init(AwnAppletSimple *simple)
   priv->icon_height = 0;
   priv->icon_width = 0;
   priv->offset = 0;
-  priv->effects_enabled=TRUE;
   priv->title = NULL;
   priv->title_string = NULL;
   priv->title_visible = FALSE;
   priv->awn_icons = NULL;
   priv->current_state = NULL;
-  
-  awn_effects_init(G_OBJECT(simple), &priv->effects);
+
+  /*
+   * FIXME: AwnEffects is allocated, but never freed -> write custom dispose
+   *  and finalize functions + register them in awn_applet_simple_class_init
+   */
+  priv->effects = awn_effects_new_for_widget(GTK_WIDGET(simple));
   // register hover effects
-  awn_register_effects(G_OBJECT(simple), &priv->effects);
+  awn_effects_register(priv->effects, GTK_WIDGET(simple));
   // start open effect
-  awn_effect_start_ex(&priv->effects, AWN_EFFECT_OPENING, 0, 0, 1);
+  awn_effects_start_ex(priv->effects, AWN_EFFECT_OPENING, 0, 0, 1);
 
   client = awn_config_client_new();
   awn_config_client_ensure_group(client, "bar");
@@ -904,7 +891,7 @@ AwnEffects*
 awn_applet_simple_get_effects(AwnAppletSimple *simple)
 {
   AwnAppletSimplePrivate *priv = simple->priv;
-  return &priv->effects;
+  return priv->effects;
 }
 
 /**

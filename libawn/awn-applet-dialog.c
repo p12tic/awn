@@ -134,7 +134,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   style = gtk_widget_get_style(widget);
 
-  bg = style->base[GTK_STATE_NORMAL];
+  bg = style->bg[GTK_STATE_NORMAL];
 
   border = style->bg[GTK_STATE_SELECTED];
 
@@ -257,7 +257,7 @@ on_title_expose(GtkWidget       *widget,
 
   style = gtk_widget_get_style(GTK_WIDGET(dialog));
 
-  bg = style->base[GTK_STATE_NORMAL];
+  bg = style->bg[GTK_STATE_NORMAL];
 
   border = style->bg[GTK_STATE_SELECTED];
 
