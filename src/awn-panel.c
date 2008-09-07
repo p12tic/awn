@@ -941,6 +941,8 @@ awn_panel_set_size (AwnPanel *panel, gint size)
    }
 
   g_signal_emit (panel, _panel_signals[SIZE_CHANGED], 0, priv->size);
+
+  g_print ("Panel size= %d\n", priv->size);
 }
 
 /*

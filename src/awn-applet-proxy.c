@@ -123,6 +123,7 @@ awn_applet_proxy_set_property (GObject      *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
 }
+
 static void
 awn_applet_proxy_dispose (GObject *object)
 {
@@ -130,6 +131,9 @@ awn_applet_proxy_dispose (GObject *object)
 
   g_free (priv->path);
   g_free (priv->uid);
+
+  priv->path = NULL;
+  priv->uid = NULL;
 
   G_OBJECT_CLASS (awn_applet_proxy_parent_class)->dispose (object);
 }
@@ -145,49 +149,49 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
 
   /* Install class properties */
   g_object_class_install_property (obj_class,
-    PROP_PATH,
-    g_param_spec_string ("path",
-                         "Path",
-                         "The path to the applets desktop file",
-                         NULL,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+      PROP_PATH,
+      g_param_spec_string ("path",
+        "Path",
+        "The path to the applets desktop file",
+        NULL,
+        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
-    PROP_UID,
-    g_param_spec_string ("uid",
-                         "UID",
-                         "The unique ID for this applet instance",
-                         NULL,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+      PROP_UID,
+      g_param_spec_string ("uid",
+        "UID",
+        "The unique ID for this applet instance",
+        NULL,
+        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
-    PROP_ORIENT,
-    g_param_spec_int ("orient",
-                      "Orient",
-                      "The panel orientation",
-                      0, 3, AWN_ORIENT_BOTTOM,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+      PROP_ORIENT,
+      g_param_spec_int ("orient",
+        "Orient",
+        "The panel orientation",
+        0, 3, AWN_ORIENT_BOTTOM,
+        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
-    PROP_SIZE,
-    g_param_spec_int ("size",
-                      "size",
-                      "The panel size",
-                      0, G_MAXINT, 48,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+      PROP_SIZE,
+      g_param_spec_int ("size",
+        "size",
+        "The panel size",
+        0, G_MAXINT, 48,
+        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   /* Class signals */
   _proxy_signals[APPLET_DELETED] =
-		g_signal_new ("applet_deleted",
-			      G_OBJECT_CLASS_TYPE (obj_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (AwnAppletProxyClass, applet_deleted),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__INT, 
-			      G_TYPE_NONE,
-			      1, G_TYPE_INT);
-  
-     
+    g_signal_new ("applet_deleted",
+        G_OBJECT_CLASS_TYPE (obj_class),
+        G_SIGNAL_RUN_LAST,
+        G_STRUCT_OFFSET (AwnAppletProxyClass, applet_deleted),
+        NULL, NULL,
+        g_cclosure_marshal_VOID__INT, 
+        G_TYPE_NONE,
+        1, G_TYPE_INT);
+
+
   g_type_class_add_private (obj_class, sizeof (AwnAppletProxyPrivate));
 }
 
@@ -202,18 +206,18 @@ awn_applet_proxy_init (AwnAppletProxy *proxy)
 
 GtkWidget *     
 awn_applet_proxy_new (const gchar *path,
-                      const gchar *uid,
-                      gint         orient,
-                      gint         size)
+    const gchar *uid,
+    gint         orient,
+    gint         size)
 {
   GtkWidget *proxy;
 
   proxy = g_object_new (AWN_TYPE_APPLET_PROXY,
-                        "path", path,
-                        "uid", uid,
-                        "orient", orient,
-                        "size", size,
-                        NULL);
+      "path", path,
+      "uid", uid,
+      "orient", orient,
+      "size", size,
+      NULL);
   return proxy;
 }
 

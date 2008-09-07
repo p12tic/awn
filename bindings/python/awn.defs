@@ -378,7 +378,7 @@
   (parameters
     '("const-gchar*" "uid")
     '("gint" "orient")
-    '("gint" "height")
+    '("gint" "size")
   )
 )
 
@@ -388,9 +388,9 @@
   (return-type "AwnOrientation")
 )
 
-(define-method get_height
+(define-method get_size
   (of-object "AwnApplet")
-  (c-name "awn_applet_get_height")
+  (c-name "awn_applet_get_size")
   (return-type "guint")
 )
 
@@ -419,7 +419,7 @@
   (parameters
     '("const-gchar*" "uid")
     '("gint" "orient")
-    '("gint" "height")
+    '("gint" "size")
   )
 )
 
@@ -552,7 +552,7 @@
     '("int" "x0")
     '("int" "y0")
     '("int" "width")
-    '("int" "height")
+    '("int" "size")
     '("double" "radius")
     '("AwnCairoRoundCorners" "state")
   )

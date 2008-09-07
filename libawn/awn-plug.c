@@ -89,6 +89,8 @@ on_orient_changed (DBusGProxy *proxy, gint orient, AwnPlug *plug)
   priv = plug->priv;
 
   awn_applet_set_orientation (priv->applet, orient);
+
+  g_debug ("Orient changed: %d\n", orient);
 }
 
 static void
@@ -100,10 +102,18 @@ on_size_changed (DBusGProxy *proxy, gint size, AwnPlug *plug)
   priv = plug->priv;
 
   awn_applet_set_size (priv->applet, size);
+
+  g_debug ("Size changed: %d\n", size);
 }
 
 static void
-on_delete_notify(DBusGProxy *proxy, AwnPlug *plug)
+on_delete_notify (DBusGProxy *proxy, AwnPlug *plug)
+{
+  gtk_main_quit ();
+}
+
+static void
+on_proxy_destroyed (GObject *object)
 {
   gtk_main_quit ();
 }
@@ -209,8 +219,8 @@ awn_plug_init(AwnPlug *plug)
   }
   
   priv->proxy = dbus_g_proxy_new_for_name (priv->connection,
-                                           "org.awnproject.Awn.Panel",
-                                           "/org.awnproject.Awn.Panel",
+                                           "org.awnproject.Awn",
+                                           "/org/awnproject/Awn/Panel",
                                            "org.awnproject.Awn.Panel");
   if (!priv->proxy)
   {
@@ -223,7 +233,7 @@ awn_plug_init(AwnPlug *plug)
   dbus_g_proxy_add_signal (priv->proxy, "SizeChanged",
                            G_TYPE_INT, G_TYPE_INVALID);
   dbus_g_proxy_add_signal (priv->proxy, "DestroyNotify",
-                           G_TYPE_INVALID, G_TYPE_INVALID);
+                           G_TYPE_INVALID);
   dbus_g_proxy_add_signal (priv->proxy, "DestroyApplet",
                            G_TYPE_STRING, G_TYPE_INVALID);
   
@@ -240,6 +250,8 @@ awn_plug_init(AwnPlug *plug)
                                G_CALLBACK (on_destroy_applet), plug,
                                NULL);
 
+  g_signal_connect (priv->proxy, "destroy", 
+                    G_CALLBACK (on_proxy_destroyed), NULL);
   g_signal_connect (plug, "embedded",
                     G_CALLBACK (on_plug_embedded), NULL);
 }

@@ -919,14 +919,14 @@ awn_applet_simple_get_effects(AwnAppletSimple *simple)
  * Returns: a new instance of an applet.
  */
 GtkWidget*
-awn_applet_simple_new(const gchar *uid, gint orient, gint height)
+awn_applet_simple_new(const gchar *uid, gint orient, gint size)
 {
   AwnAppletSimple *simple;
 
   simple = g_object_new(AWN_TYPE_APPLET_SIMPLE,
                         "uid", uid,
                         "orient", orient,
-                        "height", height,
+                        "size", size,
                         NULL);
 
   return GTK_WIDGET(simple);

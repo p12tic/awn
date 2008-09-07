@@ -67,7 +67,7 @@ struct _AwnAppletSimpleClass
 GType awn_applet_simple_get_type(void);
 
 GtkWidget*
-awn_applet_simple_new(const gchar *uid, gint orient, gint height);
+awn_applet_simple_new(const gchar *uid, gint orient, gint size);
 
 void
 awn_applet_simple_set_icon(AwnAppletSimple *simple, GdkPixbuf *pixbuf);
