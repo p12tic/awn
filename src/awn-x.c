@@ -41,8 +41,6 @@
 
 #include "inlinepixbufs.h"
 
-#include <libawn/awn-settings.h>
-
 /*	TODO:
 	This is a cut-and-paste job at the moment, I still need to bring over 
 	the error checking from wnck. However, I have been using it, and haven't
@@ -76,7 +74,7 @@ awn_x_get_icon (WnckWindow * window, gint width, gint height)
   return icon_scaled;
 }
 
-int num = 0;
+static int num = 0;
 void
 awn_x_set_strut (GtkWindow * window)
 {
@@ -84,14 +82,17 @@ awn_x_set_strut (GtkWindow * window)
   int y = 0;
   int width = 0;
   int height = 0;
-  AwnSettings *settings = awn_settings_new ();
+
+  if (!num)
+    g_warning ("%s needs to be updated for orientation support", G_STRLOC);
+  num++;
+  return;
 
   gtk_window_get_size (window, &width, &height);
   gtk_window_get_position (window, &x, &y);
 
   xutils_set_strut ((GTK_WIDGET (window)->window),
-		    (height - settings->icon_offset) / 2 +
-		    settings->icon_offset, x, x + width);
+		    (height) / 2, x, x + width);
   num++;
   if (num == 20)
   {
