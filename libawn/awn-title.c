@@ -408,8 +408,6 @@ awn_title_get_default(void)
                          "decorated", FALSE,
                          "skip-pager-hint", TRUE,
                          "skip-taskbar-hint", TRUE,
-                         //"allow-shrink", TRUE,
-                         //"allow-grow", TRUE,
                          NULL);
   }
   return title;
