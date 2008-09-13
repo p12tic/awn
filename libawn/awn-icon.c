@@ -31,9 +31,7 @@ struct _AwnIconPrivate
 {
   /* Info relating to the current icon */
   cairo_t *icon_ctx;
-  cairo_t *reflection_ctx;
-  gchar   *icon_name;
-
+  
   /* Things that can be displayed on the icon */
   gchar    *message;
   gfloat    progress;
@@ -44,6 +42,18 @@ struct _AwnIconPrivate
 static void
 awn_icon_dispose (GObject *object)
 {
+  AwnIconPrivate *priv;
+
+  g_return_if_fail (AWN_IS_ICON (object));
+  priv = AWN_ICON (object)->priv;
+
+  if (priv->icon_ctx)
+    cairo_destroy (priv->icon_ctx);
+  priv->icon_ctx = NULL;
+
+  if (priv->message)
+    g_free (priv->message);
+  priv->message = NULL;
 
   G_OBJECT_CLASS (awn_icon_parent_class)->dispose (object);
 }
@@ -64,6 +74,11 @@ awn_icon_init (AwnIcon *icon)
   AwnIconPrivate *priv;
     	
   priv = icon->priv = AWN_ICON_GET_PRIVATE (icon);
+
+  priv->icon_ctx = NULL;
+  priv->message = NULL;
+  priv->progress = 0;
+  priv->active = FALSE;
 }
 
 GtkWidget *
@@ -93,15 +108,8 @@ free_existing_icon (AwnIcon *icon)
 {
   AwnIconPrivate *priv = icon->priv;
 
-  if (priv->icon_name)
-    g_free (priv->icon_name);
-  priv->icon_name = NULL;
-
   cairo_destroy (priv->icon_ctx);
-  cairo_destroy (priv->reflection_ctx);
-
   priv->icon_ctx = NULL;
-  priv->reflection_ctx = NULL;
 }
 
 void 
@@ -134,18 +142,132 @@ awn_icon_set_icon_from_pixbuf (AwnIcon *icon, GdkPixbuf *pixbuf)
   gdk_cairo_set_source_pixbuf (priv->icon_ctx, pixbuf, 0, 0);
   cairo_paint (priv->icon_ctx);
 
-  /* Create the reflection surface */
-    
+  /* Queue a redraw */
+  gtk_widget_queue_draw (widget);
+
+  /* This should be valid according to the docs */
+  cairo_surface_destroy (surface);
 }
 
 void 
 awn_icon_set_icon_from_context (AwnIcon *icon, cairo_t *ctx)
 {
+  AwnIconPrivate       *priv;
+  cairo_surface_t      *current_surface;
+  cairo_surface_type_t  type;
+  
+  g_return_if_fail (AWN_IS_ICON (icon));
+  g_return_if_fail (ctx);
+  priv = icon->priv;
 
+  free_existing_icon (icon);
+
+  current_surface = cairo_get_target (ctx);
+  type = cairo_surface_get_type (current_surface);
+
+  if (type == CAIRO_SURFACE_TYPE_XLIB)
+  {
+    /* 'tis all good */
+    priv->icon_ctx = ctx;
+    cairo_reference (priv->icon_ctx);
+  }
+  else if (type == CAIRO_SURFACE_TYPE_IMAGE)
+  {
+    /* Let's convert it to an xlib surface */
+    GtkWidget       *widget;
+    GdkVisual       *visual;
+    cairo_surface_t *surface;
+    gint             width, height;
+
+    widget = GTK_WIDGET (icon);
+    visual = gtk_widget_get_visual (widget);
+
+    width = cairo_image_surface_get_width (current_surface);
+    height = cairo_image_surface_get_height (current_surface);
+    
+    surface = cairo_xlib_surface_create (GDK_DISPLAY (),
+                                         GDK_WINDOW_XID (widget->window),
+                                         GDK_VISUAL_XVISUAL (visual),
+                                         width, height);
+    priv->icon_ctx = cairo_create (surface);
+    cairo_set_source_surface (priv->icon_ctx, current_surface, 0, 0);
+    cairo_paint (priv->icon_ctx);
+
+    cairo_surface_destroy (surface);
+  }
+  else
+  {
+    g_warning ("Invalid surface type: Surfaces must be either xlib or image");
+    return;
+  }
+
+  gtk_widget_queue_draw (GTK_WIDGET (icon));
 }
 
-void 
-awn_icon_set_icon_from_named_icon (AwnIcon *icon, const gchar *icon_name)
-{
 
+/*
+ * ICON EMBLEMS
+ */
+
+void 
+awn_icon_set_message (AwnIcon *icon, const gchar  *message)
+{
+  AwnIconPrivate *priv;
+
+  g_return_if_fail (AWN_IS_ICON (icon));
+  priv = icon->priv;
+
+  if (priv->message)
+    g_free (priv->message);
+
+  if (message)
+    priv->message = g_strdup (message);
+  else
+    priv->message = NULL;
+
+  gtk_widget_queue_draw (GTK_WIDGET (icon));
+}
+
+const gchar * 
+awn_icon_get_message (AwnIcon *icon)
+{
+  g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
+
+  return icon->priv->message;
+}  
+
+void
+awn_icon_set_progress (AwnIcon *icon, gfloat progress)
+{
+  g_return_if_fail (AWN_IS_ICON (icon));
+
+  icon->priv->progress = progress;
+
+  gtk_widget_queue_draw (GTK_WIDGET (icon));
+}
+
+gfloat        
+awn_icon_get_progress (AwnIcon *icon)
+{
+  g_return_val_if_fail (AWN_IS_ICON (icon), 0.0);
+
+  return icon->priv->progress;
+}
+
+void
+awn_icon_set_is_active (AwnIcon *icon, gboolean is_active)
+{
+  g_return_if_fail (AWN_IS_ICON (icon));
+
+  icon->priv->active = is_active;
+
+  gtk_widget_queue_draw (GTK_WIDGET (icon));
+}
+
+gboolean      
+awn_icon_get_is_active (AwnIcon *icon)
+{
+  g_return_val_if_fail (AWN_IS_ICON (icon), FALSE);
+
+  return icon->priv->active;
 }
