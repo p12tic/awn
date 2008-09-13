@@ -31,7 +31,6 @@ public_headers =			\
 	awn-enum-types.h	\
 	awn-icons.h		\
 	awn-plug.h		\
-	awn-settings.h		\
 	awn-title.h		\
 	awn-vfs.h		\
 	$(NULL)
@@ -74,7 +73,6 @@ source_c =				\
 	awn-enum-types.c		\
 	awn-icons.c			\
 	awn-plug.c			\
-	awn-settings.c			\
 	awn-title.c			\
 	awn-vfs.c			\
 	$(NULL)
