@@ -29,6 +29,7 @@ public_headers =			\
 	awn-desktop-item.h	\
 	awn-effects.h		\
 	awn-enum-types.h	\
+	awn-icon.h \
 	awn-icons.h		\
 	awn-plug.h		\
 	awn-title.h		\
@@ -71,6 +72,7 @@ source_c =				\
 	awn-effects-settings.c \
 	awn-effects-shared.c		\
 	awn-enum-types.c		\
+	awn-icon.c \
 	awn-icons.c			\
 	awn-plug.c			\
 	awn-title.c			\
