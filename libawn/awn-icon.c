@@ -21,6 +21,8 @@
 
 #include "awn-icon.h"
 
+#include "awn-effects.h"
+
 G_DEFINE_TYPE (AwnIcon, awn_icon, GTK_TYPE_DRAWING_AREA);
 
 #define AWN_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -29,6 +31,9 @@ G_DEFINE_TYPE (AwnIcon, awn_icon, GTK_TYPE_DRAWING_AREA);
 
 struct _AwnIconPrivate
 {
+  AwnIconState  state;
+  AwnEffects   *effects;
+
   /* Info relating to the current icon */
   cairo_t *icon_ctx;
   
@@ -39,6 +44,40 @@ struct _AwnIconPrivate
 };
 
 /* GObject stuff */
+static gboolean
+awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
+{
+  AwnIconPrivate *priv = AWN_ICON (widget)->priv;
+  cairo_t        *cr;
+  gint            width, height;
+
+  width = widget->allocation.width;
+  height = widget->allocation.height;
+
+  /* Init() effects for the draw */
+  awn_effects_draw_set_window_size (priv->effects, width, height);
+
+  /* Grab the context and clip for the region we're redrawing */
+  cr = gdk_cairo_create (widget->window);
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
+  /* Clear the region */
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+ 
+  /* Let effects do its job */
+  awn_effects_draw_background (priv->effects, cr);
+  awn_effects_draw_icons_cairo (priv->effects, cr, priv->icon_ctx, NULL);
+  awn_effects_draw_foreground (priv->effects, cr);
+
+  cairo_destroy (cr);
+
+  return TRUE;
+}
+
 static void
 awn_icon_dispose (GObject *object)
 {
@@ -61,9 +100,11 @@ awn_icon_dispose (GObject *object)
 static void
 awn_icon_class_init (AwnIconClass *klass)
 {
-  GObjectClass        *obj_class = G_OBJECT_CLASS (klass);
+  GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
 
-  obj_class->dispose = awn_icon_dispose;
+  obj_class->dispose       = awn_icon_dispose;
+  wid_class->expose_event  = awn_icon_expose_event;
 
   g_type_class_add_private (obj_class, sizeof (AwnIconPrivate));
 }
@@ -79,6 +120,8 @@ awn_icon_init (AwnIcon *icon)
   priv->message = NULL;
   priv->progress = 0;
   priv->active = FALSE;
+
+  priv->effects = awn_effects_new_for_widget (GTK_WIDGET (icon));
 }
 
 GtkWidget *
@@ -203,7 +246,6 @@ awn_icon_set_icon_from_context (AwnIcon *icon, cairo_t *ctx)
 
   gtk_widget_queue_draw (GTK_WIDGET (icon));
 }
-
 
 /*
  * ICON EMBLEMS
