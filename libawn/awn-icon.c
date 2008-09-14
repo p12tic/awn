@@ -21,8 +21,6 @@
 
 #include "awn-icon.h"
 
-#include "awn-effects.h"
-
 G_DEFINE_TYPE (AwnIcon, awn_icon, GTK_TYPE_DRAWING_AREA);
 
 #define AWN_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -31,7 +29,6 @@ G_DEFINE_TYPE (AwnIcon, awn_icon, GTK_TYPE_DRAWING_AREA);
 
 struct _AwnIconPrivate
 {
-  AwnIconState  state;
   AwnEffects   *effects;
 
   /* Info relating to the current icon */
@@ -198,10 +195,12 @@ awn_icon_new (void)
   return icon;
 }
 
-void 
-awn_icon_set_state (AwnIcon *icon, AwnIconState  state)
+void  
+awn_icon_set_effect (AwnIcon *icon, AwnEffect effect)
 {
-  /*FIXME: Do something with AwnEffects */
+  g_return_if_fail (AWN_IS_ICON (icon));
+
+  awn_effects_start (icon->priv->effects, effect);
 }
 
 /*

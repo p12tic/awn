@@ -23,6 +23,8 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
+#include "awn-effects.h"
+
 #define AWN_TYPE_ICON (awn_icon_get_type ())
 
 #define AWN_ICON(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
@@ -57,18 +59,12 @@ struct _AwnIconClass
   GtkDrawingAreaClass parent_class;
 };
 
-enum _AwnIconState
-{
-  AWN_ICON_STATE_NORMAL,
-  AWN_ICON_STATE_ACTIVATE
-};
-
 GType         awn_icon_get_type                 (void) G_GNUC_CONST;
 
 GtkWidget *   awn_icon_new                      (void);
 
-void          awn_icon_set_state                (AwnIcon      *icon, 
-                                                 AwnIconState  state);
+void          awn_icon_set_effect               (AwnIcon      *icon, 
+                                                 AwnEffect     effect);
 
 void          awn_icon_set_icon_from_pixbuf     (AwnIcon      *icon,
                                                  GdkPixbuf    *pixbuf);
