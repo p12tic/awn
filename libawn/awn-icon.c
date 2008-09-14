@@ -10,7 +10,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
@@ -37,6 +37,10 @@ struct _AwnIconPrivate
   /* Info relating to the current icon */
   cairo_t *icon_ctx;
   
+  /* This is for when the icon is set before we've mapped */
+  cairo_t   *queue_ctx;
+  GdkPixbuf *queue_pixbuf;
+  
   /* Things that can be displayed on the icon */
   gchar    *message;
   gfloat    progress;
@@ -44,6 +48,26 @@ struct _AwnIconPrivate
 };
 
 /* GObject stuff */
+static gboolean
+awn_icon_enter_notify_event (GtkWidget *widget, GdkEventCrossing *event)
+{
+  AwnIconPrivate *priv = AWN_ICON (widget)->priv;
+
+  awn_effects_start (priv->effects, AWN_EFFECT_HOVER);
+
+  return FALSE;
+}
+
+static gboolean
+awn_icon_leave_notify_event (GtkWidget *widget, GdkEventCrossing *event)
+{
+  AwnIconPrivate *priv = AWN_ICON (widget)->priv;
+
+  awn_effects_stop (priv->effects, AWN_EFFECT_HOVER);
+
+  return FALSE;
+}
+
 static gboolean
 awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
 {
@@ -70,12 +94,40 @@ awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
  
   /* Let effects do its job */
   awn_effects_draw_background (priv->effects, cr);
-  awn_effects_draw_icons_cairo (priv->effects, cr, priv->icon_ctx, NULL);
+  
+  if (priv->icon_ctx)
+    awn_effects_draw_icons_cairo (priv->effects, cr, priv->icon_ctx, NULL);
+  
   awn_effects_draw_foreground (priv->effects, cr);
 
   cairo_destroy (cr);
 
-  return TRUE;
+  return FALSE;
+}
+
+static gboolean
+awn_icon_mapped (GtkWidget *widget, GdkEvent *event)
+{
+  AwnIcon *icon = AWN_ICON (widget);
+  AwnIconPrivate *priv;
+  
+  g_return_val_if_fail (AWN_IS_ICON (icon), FALSE);
+  priv = AWN_ICON (icon)->priv;
+
+  if (priv->queue_ctx)
+  {
+    awn_icon_set_icon_from_context (icon, priv->queue_ctx);
+    cairo_destroy (priv->queue_ctx);
+  }
+  if (priv->queue_pixbuf)
+  {
+    awn_icon_set_icon_from_pixbuf (icon, priv->queue_pixbuf);
+    g_object_unref (priv->queue_pixbuf);
+  }
+  priv->queue_pixbuf = NULL;
+  priv->queue_ctx = NULL;
+
+  return FALSE;
 }
 
 static void
@@ -103,8 +155,11 @@ awn_icon_class_init (AwnIconClass *klass)
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
 
-  obj_class->dispose       = awn_icon_dispose;
-  wid_class->expose_event  = awn_icon_expose_event;
+  obj_class->dispose = awn_icon_dispose;
+
+  wid_class->expose_event       = awn_icon_expose_event;
+  wid_class->enter_notify_event = awn_icon_enter_notify_event;
+  wid_class->leave_notify_event = awn_icon_leave_notify_event;
 
   g_type_class_add_private (obj_class, sizeof (AwnIconPrivate));
 }
@@ -113,15 +168,22 @@ static void
 awn_icon_init (AwnIcon *icon)
 {
   AwnIconPrivate *priv;
-    	
+
   priv = icon->priv = AWN_ICON_GET_PRIVATE (icon);
 
   priv->icon_ctx = NULL;
   priv->message = NULL;
   priv->progress = 0;
   priv->active = FALSE;
+  priv->queue_pixbuf = NULL;
+  priv->queue_ctx = NULL;
 
   priv->effects = awn_effects_new_for_widget (GTK_WIDGET (icon));
+
+  gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
+
+  g_signal_connect_after (icon, "map-event", 
+                          G_CALLBACK (awn_icon_mapped), NULL);
 }
 
 GtkWidget *
@@ -145,7 +207,6 @@ awn_icon_set_state (AwnIcon *icon, AwnIconState  state)
 /*
  * ICON SETTING FUNCTIONS 
  */
-
 static void
 free_existing_icon (AwnIcon *icon)
 {
@@ -160,7 +221,7 @@ awn_icon_set_icon_from_pixbuf (AwnIcon *icon, GdkPixbuf *pixbuf)
 {
   AwnIconPrivate  *priv;
   GtkWidget       *widget;
-  GdkVisual       *visual;
+  cairo_t         *temp_cr;
   cairo_surface_t *surface;
   gint             width, height;
 
@@ -168,19 +229,31 @@ awn_icon_set_icon_from_pixbuf (AwnIcon *icon, GdkPixbuf *pixbuf)
   g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
   priv = icon->priv;
 
+  /* If the widget isn't mapped, let's queue the pixbuf for when we are */
+  if (!GTK_WIDGET_MAPPED (GTK_WIDGET (icon)))
+  {
+    if (GDK_IS_PIXBUF (priv->queue_pixbuf))
+      g_object_unref (priv->queue_pixbuf);
+    if (priv->queue_ctx)
+      cairo_destroy (priv->queue_ctx);
+
+    priv->queue_pixbuf = gdk_pixbuf_copy (pixbuf);
+    return;
+  }
+
   free_existing_icon (icon);
 
   widget = GTK_WIDGET (icon);
-  visual = gtk_widget_get_visual (widget);
-  
+    
   width = gdk_pixbuf_get_width (pixbuf);
   height = gdk_pixbuf_get_height (pixbuf);
 
+  temp_cr = gdk_cairo_create (widget->window);
+
   /* Create the main icon context */
-  surface = cairo_xlib_surface_create (GDK_DISPLAY (),
-                                       GDK_WINDOW_XID (widget->window),
-                                       GDK_VISUAL_XVISUAL (visual),
-                                       width, height);
+  surface = cairo_surface_create_similar (cairo_get_target (temp_cr),
+                                          CAIRO_CONTENT_COLOR_ALPHA,
+                                          width, height);
   priv->icon_ctx = cairo_create (surface);
   gdk_cairo_set_source_pixbuf (priv->icon_ctx, pixbuf, 0, 0);
   cairo_paint (priv->icon_ctx);
@@ -189,6 +262,7 @@ awn_icon_set_icon_from_pixbuf (AwnIcon *icon, GdkPixbuf *pixbuf)
   gtk_widget_queue_draw (widget);
 
   /* This should be valid according to the docs */
+  cairo_destroy (temp_cr);
   cairo_surface_destroy (surface);
 }
 
@@ -203,6 +277,18 @@ awn_icon_set_icon_from_context (AwnIcon *icon, cairo_t *ctx)
   g_return_if_fail (ctx);
   priv = icon->priv;
 
+  /* If the widget isn't mapped, let's queue the ctx for when we are */
+  if (!GTK_WIDGET_MAPPED (GTK_WIDGET (icon)))
+  {
+    if (GDK_IS_PIXBUF (priv->queue_pixbuf))
+      g_object_unref (priv->queue_pixbuf);
+    if (priv->queue_ctx)
+      cairo_destroy (priv->queue_ctx);
+
+    priv->queue_ctx = ctx;
+    cairo_reference (ctx);
+    return;
+  }
   free_existing_icon (icon);
 
   current_surface = cairo_get_target (ctx);
@@ -218,24 +304,25 @@ awn_icon_set_icon_from_context (AwnIcon *icon, cairo_t *ctx)
   {
     /* Let's convert it to an xlib surface */
     GtkWidget       *widget;
-    GdkVisual       *visual;
+    cairo_t         *temp_cr;
     cairo_surface_t *surface;
     gint             width, height;
 
     widget = GTK_WIDGET (icon);
-    visual = gtk_widget_get_visual (widget);
+    
+    temp_cr = gdk_cairo_create (widget->window);
 
     width = cairo_image_surface_get_width (current_surface);
     height = cairo_image_surface_get_height (current_surface);
     
-    surface = cairo_xlib_surface_create (GDK_DISPLAY (),
-                                         GDK_WINDOW_XID (widget->window),
-                                         GDK_VISUAL_XVISUAL (visual),
-                                         width, height);
+    surface = cairo_surface_create_similar (cairo_get_target (temp_cr), 
+                                            CAIRO_CONTENT_COLOR_ALPHA,
+                                            width, height);
     priv->icon_ctx = cairo_create (surface);
     cairo_set_source_surface (priv->icon_ctx, current_surface, 0, 0);
     cairo_paint (priv->icon_ctx);
 
+    cairo_destroy (temp_cr);
     cairo_surface_destroy (surface);
   }
   else

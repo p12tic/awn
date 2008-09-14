@@ -1,15 +1,16 @@
 NULL = 
 
-SUBDIRS =				\
-	libawn                          \
-	src				\
-	awn-applet-activation           \
-	awn-manager			\
-	applets                         \
-	po				\
-	bindings			\
-	data				\
-	doc				\
+SUBDIRS =	\
+	libawn \
+	src \
+	awn-applet-activation \
+	awn-manager \
+	applets \
+	po \
+	bindings \
+	data \
+	tests \
+	doc \
 	$(NULL)
 	
 pkgconfigdir = $(libdir)/pkgconfig

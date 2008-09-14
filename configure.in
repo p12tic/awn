@@ -201,6 +201,7 @@ data/Makefile
 data/active/Makefile
 data/avant-window-navigator.desktop.in
 data/awn.schema-ini
+tests/Makefile
 doc/Makefile
 doc/reference/Makefile
 libawn/Makefile

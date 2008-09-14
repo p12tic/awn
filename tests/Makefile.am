@@ -1,9 +1,13 @@
-noinst_PROGRAMS = test-config-client
+noinst_PROGRAMS = \
+	test-awn-icon \
+	test-config-client
 
 INCLUDES = $(AWN_CFLAGS) -I$(top_srcdir)
 
-test_config_client_SOURCES = test-config-client.c
+test_awn_icon_SOURCES = test-awn-icon.c
+test_awn_icon_LDADD = $(top_builddir)/libawn/libawn.la
 
+test_config_client_SOURCES = test-config-client.c
 test_config_client_LDADD = $(top_builddir)/libawn/libawn.la
 
 if HAVE_VALA
