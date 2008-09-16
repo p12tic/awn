@@ -59,33 +59,33 @@ struct _AwnIconClass
   GtkDrawingAreaClass parent_class;
 };
 
-GType         awn_icon_get_type                 (void) G_GNUC_CONST;
+GType         awn_icon_get_type         (void) G_GNUC_CONST;
 
-GtkWidget *   awn_icon_new                      (void);
+GtkWidget *   awn_icon_new              (void);
 
-void          awn_icon_set_effect               (AwnIcon      *icon, 
-                                                 AwnEffect     effect);
+void          awn_icon_set_effect       (AwnIcon     *icon, 
+                                         AwnEffect    effect);
 
-void          awn_icon_set_icon_from_pixbuf     (AwnIcon      *icon,
-                                                 GdkPixbuf    *pixbuf);
+void          awn_icon_set_from_pixbuf  (AwnIcon     *icon,
+                                         GdkPixbuf   *pixbuf);
 
-void          awn_icon_set_icon_from_context    (AwnIcon      *icon,
-                                                 cairo_t      *ctx);
+void          awn_icon_set_from_context (AwnIcon     *icon,
+                                         cairo_t     *ctx);
 
-void          awn_icon_set_message              (AwnIcon      *icon,
-                                                 const gchar  *message);
+void          awn_icon_set_message      (AwnIcon     *icon,
+                                         const gchar *message);
 
-const gchar * awn_icon_get_message              (AwnIcon      *icon);
+const gchar * awn_icon_get_message      (AwnIcon     *icon);
 
-void          awn_icon_set_progress             (AwnIcon      *icon,
-                                                 gfloat        progress);
+void          awn_icon_set_progress     (AwnIcon     *icon,
+                                         gfloat       progress);
 
-gfloat        awn_icon_get_progress             (AwnIcon      *icon);
+gfloat        awn_icon_get_progress     (AwnIcon     *icon);
 
-void          awn_icon_set_is_active            (AwnIcon      *icon,
-                                                 gboolean      is_active);
+void          awn_icon_set_is_active    (AwnIcon     *icon,
+                                         gboolean     is_active);
 
-gboolean      awn_icon_get_is_active            (AwnIcon      *icon);
+gboolean      awn_icon_get_is_active    (AwnIcon     *icon);
 
 #endif /* _AWN_ICON_H_ */
 

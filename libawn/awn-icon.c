@@ -113,12 +113,12 @@ awn_icon_mapped (GtkWidget *widget, GdkEvent *event)
 
   if (priv->queue_ctx)
   {
-    awn_icon_set_icon_from_context (icon, priv->queue_ctx);
+    awn_icon_set_from_context (icon, priv->queue_ctx);
     cairo_destroy (priv->queue_ctx);
   }
   if (priv->queue_pixbuf)
   {
-    awn_icon_set_icon_from_pixbuf (icon, priv->queue_pixbuf);
+    awn_icon_set_from_pixbuf (icon, priv->queue_pixbuf);
     g_object_unref (priv->queue_pixbuf);
   }
   priv->queue_pixbuf = NULL;
@@ -216,7 +216,7 @@ free_existing_icon (AwnIcon *icon)
 }
 
 void 
-awn_icon_set_icon_from_pixbuf (AwnIcon *icon, GdkPixbuf *pixbuf)
+awn_icon_set_from_pixbuf (AwnIcon *icon, GdkPixbuf *pixbuf)
 {
   AwnIconPrivate  *priv;
   GtkWidget       *widget;
@@ -266,7 +266,7 @@ awn_icon_set_icon_from_pixbuf (AwnIcon *icon, GdkPixbuf *pixbuf)
 }
 
 void 
-awn_icon_set_icon_from_context (AwnIcon *icon, cairo_t *ctx)
+awn_icon_set_from_context (AwnIcon *icon, cairo_t *ctx)
 {
   AwnIconPrivate       *priv;
   cairo_surface_t      *current_surface;

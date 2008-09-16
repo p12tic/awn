@@ -32,7 +32,7 @@ pixbuf_icon (GtkWidget *parent)
   pixbuf = gdk_pixbuf_new_from_file_at_size (PICTURE_FILE, 50, 50, NULL);
 
   icon = awn_icon_new ();
-  awn_icon_set_icon_from_pixbuf (AWN_ICON (icon), pixbuf);
+  awn_icon_set_from_pixbuf (AWN_ICON (icon), pixbuf);
   gtk_container_add (GTK_CONTAINER (parent), icon);
   gtk_widget_show (icon);
  
@@ -66,7 +66,7 @@ cairo_icon (GtkWidget *parent)
   cairo_stroke (cr);
 
   icon = awn_icon_new ();
-  awn_icon_set_icon_from_context (AWN_ICON (icon), cr);
+  awn_icon_set_from_context (AWN_ICON (icon), cr);
   
   gtk_container_add (GTK_CONTAINER (parent), icon);
   gtk_widget_show (icon);
