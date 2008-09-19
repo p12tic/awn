@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 Neil Jagdish Patel
+ * Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
+ * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License version 
@@ -24,6 +25,8 @@
 #include <gtk/gtk.h>
 
 #include "awn-icon.h"
+
+G_BEGIN_DECLS
 
 #define AWN_TYPE_THEMED_ICON (awn_themed_icon_get_type ())
 
@@ -56,11 +59,42 @@ struct _AwnThemedIcon
 struct _AwnThemedIconClass
 {
   AwnIconClass parent_class;
+
+  /*< padding >*/
+  void (*_themed_icon_padding0) (AwnThemedIcon *icon);
+  void (*_themed_icon_padding1) (AwnThemedIcon *icon);
+  void (*_themed_icon_padding2) (AwnThemedIcon *icon);
+  void (*_themed_icon_padding3) (AwnThemedIcon *icon);
 };
 
-GType         awn_themed_icon_get_type (void) G_GNUC_CONST;
+GType         awn_themed_icon_get_type           (void) G_GNUC_CONST;
 
-GtkWidget *   awn_themed_icon_new      (void);
+GtkWidget *   awn_themed_icon_new                (void);
 
+void          awn_themed_icon_set_state          (AwnThemedIcon *icon,
+                                                  const gchar   *state);
+
+void          awn_themed_icon_set_size           (AwnThemedIcon *icon,
+                                                  gint           size);
+
+void          awn_themed_icon_set_info           (AwnThemedIcon  *icon,
+                                                  const gchar    *applet_name,
+                                                  const gchar    *uid,
+                                                  gchar         **states,
+                                                  gchar         **icon_names);
+
+void          awn_themed_icon_set_info_simple    (AwnThemedIcon  *icon,
+                                                  const gchar    *applet_name,
+                                                  const gchar    *uid,
+                                                  const gchar    *icon_name);
+
+void          awn_themed_icon_set_override_theme (AwnThemedIcon *icon,
+                                                  gboolean       override);
+
+GdkPixbuf *   awn_themed_icon_get_icon_at_size   (AwnThemedIcon *icon,
+                                                  const gchar   *state,
+                                                  guint          size);
+
+G_END_DECLS
 
 #endif /* _AWN_THEMED_ICON_H_ */

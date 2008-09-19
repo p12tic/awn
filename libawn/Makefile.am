@@ -15,6 +15,7 @@ INCLUDES = \
 	-I$(top_srcdir) \
 	-I$(top_builddir) \
 	-DDATADIR=\""$(datadir)"\" \
+	-DPKGDATADIR=\""$(pkgdatadir)"\"\
 	$(NULL)	
 
 libawnincdir = $(includedir)/libawn

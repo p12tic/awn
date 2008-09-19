@@ -25,6 +25,8 @@
 
 #include "awn-effects.h"
 
+G_BEGIN_DECLS
+
 #define AWN_TYPE_ICON (awn_icon_get_type ())
 
 #define AWN_ICON(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
@@ -86,6 +88,8 @@ void          awn_icon_set_is_active    (AwnIcon     *icon,
                                          gboolean     is_active);
 
 gboolean      awn_icon_get_is_active    (AwnIcon     *icon);
+
+G_END_DECLS
 
 #endif /* _AWN_ICON_H_ */
 
