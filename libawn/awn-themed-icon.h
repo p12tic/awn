@@ -97,6 +97,9 @@ GdkPixbuf *   awn_themed_icon_get_icon_at_size   (AwnThemedIcon *icon,
                                                   const gchar   *state,
                                                   guint          size);
 
+void          awn_themed_icon_clear_icons        (AwnThemedIcon *icon,
+                                                  gint           scope);
+
 G_END_DECLS
 
 #endif /* _AWN_THEMED_ICON_H_ */

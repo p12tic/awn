@@ -68,8 +68,8 @@ enum
 
 static const GtkTargetEntry drop_types[] =
 {
-  { "STRING", 0, 0 },
-  { "text/plain", 0, 0},
+//  { "STRING", 0, 0 },
+//  { "text/plain", 0, 0},
   { "text/uri-list", 0, 0}
 };
 static const gint n_drop_types = G_N_ELEMENTS(drop_types);
@@ -361,7 +361,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
                                               GDK_INTERP_HYPER);
             g_object_unref (temp);
           }
-          break;
+          return pixbuf;
         }
       }
 
@@ -572,6 +572,48 @@ awn_themed_icon_get_icon_at_size (AwnThemedIcon *icon,
   return get_pixbuf_at_size (icon, size, state);
 }
 
+void 
+awn_themed_icon_clear_icons (AwnThemedIcon *icon,
+                             gint           scope)
+{
+  AwnThemedIconPrivate *priv;
+  gchar *filename;
+
+  g_return_if_fail (AWN_IS_THEMED_ICON (icon));
+  priv = icon->priv;
+
+  switch (scope)
+  {
+    case -1: /* Clean up everything */
+    case SCOPE_AWN_THEME:
+      filename = g_strdup_printf ("%s/awn-theme/scalable/%s.png",
+                                  priv->icon_dir, 
+                                  priv->icon_names[priv->cur_icon]);
+      g_unlink (filename);
+      g_free (filename);
+      
+    case SCOPE_APPLET:
+      filename = g_strdup_printf ("%s/awn-theme/scalable/%s-%s.png",
+                                  priv->icon_dir,
+                                  priv->icon_names[priv->cur_icon],
+                                  priv->applet_name);
+      g_unlink (filename);
+      g_free (filename);
+
+    case SCOPE_UID:
+      filename = g_strdup_printf ("%s/awn-theme/scalable/%s-%s-%s.png",
+                                  priv->icon_dir,
+                                  priv->icon_names[priv->cur_icon],
+                                  priv->applet_name,
+                                  priv->uid);
+      g_unlink (filename);
+      g_free (filename);
+
+    default:
+      break;
+  }
+}
+
 /*
  * Callbacks 
  */
@@ -633,7 +675,7 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   sdata = sdata+7;
  
   /* Try and load the uri, to see if it's a pixbuf */
-  pixbuf = gdk_pixbuf_new_from_file_at_scale (sdata, 64, 64, TRUE, NULL);
+  pixbuf = gdk_pixbuf_new_from_file (sdata, NULL);
 
   if (!GDK_IS_PIXBUF (pixbuf))
     goto drag_out;
@@ -648,6 +690,7 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   combo = (GtkWidget *)gtk_builder_get_object (builder, "combobox1");
   
   gtk_image_set_from_pixbuf (GTK_IMAGE (image), pixbuf);
+  gtk_widget_set_size_request (image, 64, 64);
   gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 0);
 
   /* Run the dialog and get the user prefs */
@@ -664,7 +707,7 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
       break;
 
     case 2: /* Clear */
-      /*awn_themed_icon_clear_icons (icon, SCOPE_UID) */
+      awn_themed_icon_clear_icons (icon, -1);
       gtk_widget_destroy (dialog);
       goto drag_out;
       break;
@@ -686,20 +729,20 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
                                  priv->icon_names[priv->cur_icon],
                                  priv->applet_name,
                                  priv->uid,
-                                 extensions[0]);
+                                 "png");//extensions[0]);
   }
   else if (scope == SCOPE_APPLET)
   {
     base_name = g_strdup_printf ("%s-%s.%s",
                                   priv->icon_names[priv->cur_icon],
                                   priv->applet_name,
-                                  extensions[0]);
+                                  "png");//extensions[0]);
   }
   else //scope == SCOPE_AWN_THEME
   {
     base_name = g_strdup_printf ("%s.%s", 
                                  priv->icon_names[priv->cur_icon],
-                                 extensions[0]);
+                                 "png");//extensions[0]);
   }
 
   dest_filename = g_build_filename (priv->icon_dir,
@@ -707,10 +750,10 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
                                     base_name, NULL);
 
   /* Make sure we don't have any conflicting icons */
-  //awn_themed_icon_clear_icons (icon, scope);
+  awn_themed_icon_clear_icons (icon, scope);
   
-  gdk_pixbuf_save (pixbuf, dest_filename, extensions[0], 
-                   &error, "quality", "100", NULL);
+  gdk_pixbuf_save (pixbuf, dest_filename, "png", 
+                   &error, "compression", "0", NULL);
   if (error)
   {
     g_warning ("Unable to save %s: %s", dest_filename, error->message);
@@ -720,6 +763,8 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   /* Refresh icon-theme */
   gtk_icon_theme_set_custom_theme (priv->awn_theme, NULL);
   gtk_icon_theme_set_custom_theme (priv->awn_theme, AWN_ICON_THEME_NAME);
+
+  success = TRUE;
 
   /* Clean up */
   gtk_widget_destroy (dialog);
