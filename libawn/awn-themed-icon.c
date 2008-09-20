@@ -69,8 +69,6 @@ enum
 
 static const GtkTargetEntry drop_types[] =
 {
-//  { "STRING", 0, 0 },
-//  { "text/plain", 0, 0},
   { "text/uri-list", 0, 0}
 };
 static const gint n_drop_types = G_N_ELEMENTS(drop_types);
@@ -615,7 +613,9 @@ awn_themed_icon_clear_icons (AwnThemedIcon *icon,
                              gint           scope)
 {
   AwnThemedIconPrivate *priv;
-  gchar *filename;
+  gchar                *filename;
+  gchar                *types[] = { "png", "svg", NULL };
+  gint                  i;
 
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
   priv = icon->priv;
@@ -624,28 +624,40 @@ awn_themed_icon_clear_icons (AwnThemedIcon *icon,
   {
     case -1: /* Clean up everything */
     case SCOPE_AWN_THEME:
-      filename = g_strdup_printf ("%s/awn-theme/scalable/%s.png",
-                                  priv->icon_dir, 
-                                  priv->icon_names[priv->cur_icon]);
-      g_unlink (filename);
-      g_free (filename);
+      for (i=0; types[i]; i++)
+      {
+        filename = g_strdup_printf ("%s/awn-theme/scalable/%s.%s",
+                                    priv->icon_dir, 
+                                    priv->icon_names[priv->cur_icon],
+                                    types[i]);
+        g_unlink (filename);
+        g_free (filename);
+      }
       
     case SCOPE_APPLET:
-      filename = g_strdup_printf ("%s/awn-theme/scalable/%s-%s.png",
-                                  priv->icon_dir,
-                                  priv->icon_names[priv->cur_icon],
-                                  priv->applet_name);
-      g_unlink (filename);
-      g_free (filename);
+      for (i=0; types[i]; i++)
+      {
+        filename = g_strdup_printf ("%s/awn-theme/scalable/%s-%s.%s",
+                                    priv->icon_dir,
+                                    priv->icon_names[priv->cur_icon],
+                                    priv->applet_name,
+                                    types[i]);
+        g_unlink (filename);
+        g_free (filename);
+      }
 
     case SCOPE_UID:
-      filename = g_strdup_printf ("%s/awn-theme/scalable/%s-%s-%s.png",
-                                  priv->icon_dir,
-                                  priv->icon_names[priv->cur_icon],
-                                  priv->applet_name,
-                                  priv->uid);
-      g_unlink (filename);
-      g_free (filename);
+      for (i=0; types[i]; i++)
+      {
+        filename = g_strdup_printf ("%s/awn-theme/scalable/%s-%s-%s.%s",
+                                    priv->icon_dir,
+                                    priv->icon_names[priv->cur_icon],
+                                    priv->applet_name,
+                                    priv->uid,
+                                    types[i]);
+        g_unlink (filename);
+        g_free (filename);
+      }
 
     default:
       break;
@@ -677,7 +689,6 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   gboolean              success = FALSE;
   gchar                *sdata;
   GdkPixbuf            *pixbuf = NULL;
-  GdkPixbufFormat      *format;
   gchar               **extensions = NULL;
   GtkBuilder           *builder = NULL;
   GtkWidget            *dialog = NULL;
@@ -687,6 +698,8 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   gint                  scope;
   gchar                *base_name;
   gchar                *dest_filename;
+  gboolean              svg = FALSE;
+  const gchar          *suffix;
 
   if (!AWN_IS_THEMED_ICON (icon))
   {
@@ -711,6 +724,17 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   /* We only want the last dropped uri, and we want it in path form */
   sdata = g_strrstr (sdata, "file:///");
   sdata = sdata+7;
+
+  /* Check if svg, yes there are better ways */
+  if (strstr (sdata, ".svg"))
+  {
+    svg = TRUE;
+    suffix = "svg";
+  }
+  else
+  {
+    suffix = "png";
+  }
  
   /* Try and load the uri, to see if it's a pixbuf */
   pixbuf = gdk_pixbuf_new_from_file (sdata, NULL);
@@ -756,10 +780,6 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
       g_assert (0);
   }
 
-  /* Grab some info about the icon */
-  format = gdk_pixbuf_get_file_info (sdata, NULL, NULL);
-  extensions = gdk_pixbuf_format_get_extensions (format);
-
   /* If we are here, the user wants to apply this icon in some way */
   scope = gtk_combo_box_get_active (GTK_COMBO_BOX (combo));
 
@@ -769,20 +789,20 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
                                  priv->icon_names[priv->cur_icon],
                                  priv->applet_name,
                                  priv->uid,
-                                 "png");//extensions[0]);
+                                 suffix);
   }
   else if (scope == SCOPE_APPLET)
   {
     base_name = g_strdup_printf ("%s-%s.%s",
                                   priv->icon_names[priv->cur_icon],
                                   priv->applet_name,
-                                  "png");//extensions[0]);
+                                  suffix);
   }
   else //scope == SCOPE_AWN_THEME
   {
     base_name = g_strdup_printf ("%s.%s", 
                                  priv->icon_names[priv->cur_icon],
-                                 "png");//extensions[0]);
+                                 suffix);
   }
 
   dest_filename = g_build_filename (priv->icon_dir,
@@ -792,7 +812,10 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   /* Make sure we don't have any conflicting icons */
   awn_themed_icon_clear_icons (icon, scope);
   
-  gdk_pixbuf_save (pixbuf, dest_filename, "png", 
+  if (svg)
+    check_dest_or_copy (sdata, dest_filename);
+  else
+    gdk_pixbuf_save (pixbuf, dest_filename, "png", 
                    &error, "compression", "0", NULL);
   if (error)
   {
