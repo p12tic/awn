@@ -31,10 +31,11 @@ update-icon-cache:
 		echo "***   $(gtk_update_icon_cache)"; \
 	fi
 
-text_DATA = \
-	index.theme
+dist_pkg_DATA = \
+	awn-themed-icon-ui.xml \
+	index.theme 
 
-textdir = $(pkgdatadir)
+pkgdir = $(pkgdatadir)
 
 # config-related
 
@@ -77,6 +78,6 @@ uninstall-local:
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/24x24/apps/avant-window-navigator.png
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/avant-window-navigator.png
 
-EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini awn-schema-to-gconf shared.schema-ini awn-applets-migration.py
+EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini awn-schema-to-gconf shared.schema-ini awn-applets-migration.py awn-themed-icon-ui.glade
 
 CLEANFILES = $(desktop_DATA) $(desktop_DATA).in awn.schemas awn.schemas.in

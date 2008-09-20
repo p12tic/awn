@@ -52,8 +52,8 @@ main (gint argc, gchar **argv)
 
   icon = awn_themed_icon_new ();
   awn_themed_icon_set_info_simple (AWN_THEMED_ICON (icon),
-                                   "test-applet", "test-uid", 
-                                   GTK_STOCK_DIALOG_AUTHENTICATION);
+                                   "test-applet", "test-uid",
+                                   "../data/avant-window-navigator.svg");
   gtk_box_pack_start (GTK_BOX (hbox), icon, TRUE, TRUE, 0);
   gtk_widget_show (icon);
 

@@ -73,9 +73,11 @@ GtkWidget *   awn_themed_icon_new                (void);
 
 void          awn_themed_icon_set_state          (AwnThemedIcon *icon,
                                                   const gchar   *state);
+const gchar * awn_themed_icon_get_state          (AwnThemedIcon *icon);
 
 void          awn_themed_icon_set_size           (AwnThemedIcon *icon,
                                                   gint           size);
+gint          awn_themed_icon_get_size           (AwnThemedIcon *icon);
 
 void          awn_themed_icon_set_info           (AwnThemedIcon  *icon,
                                                   const gchar    *applet_name,
@@ -88,8 +90,8 @@ void          awn_themed_icon_set_info_simple    (AwnThemedIcon  *icon,
                                                   const gchar    *uid,
                                                   const gchar    *icon_name);
 
-void          awn_themed_icon_set_override_theme (AwnThemedIcon *icon,
-                                                  gboolean       override);
+void          awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
+                                                  const gchar   *theme_name);
 
 GdkPixbuf *   awn_themed_icon_get_icon_at_size   (AwnThemedIcon *icon,
                                                   const gchar   *state,
