@@ -21,35 +21,31 @@
 #define __AWN_APPLET_SIMPLE_H__
 
 #include <gtk/gtk.h>
-#include <stdlib.h>
 
 #include "awn-applet.h"
 #include "awn-effects.h"
-#include "awn-icons.h"
 
 G_BEGIN_DECLS
 
 #define AWN_TYPE_APPLET_SIMPLE (awn_applet_simple_get_type ())
 
 #define AWN_APPLET_SIMPLE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-                                AWN_TYPE_APPLET_SIMPLE, AwnAppletSimple))
+        AWN_TYPE_APPLET_SIMPLE, AwnAppletSimple))
 
 #define AWN_APPLET_SIMPLE_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-                                        AWN_TYPE_APPLET_SIMPLE, AwnAppletSimpleClass))
+        AWN_TYPE_APPLET_SIMPLE, AwnAppletSimpleClass))
 
 #define AWN_IS_APPLET_SIMPLE(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-                                   AWN_TYPE_APPLET_SIMPLE))
+        AWN_TYPE_APPLET_SIMPLE))
 
 #define AWN_IS_APPLET_SIMPLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-    AWN_TYPE_APPLET_SIMPLE))
+        AWN_TYPE_APPLET_SIMPLE))
 
 #define AWN_APPLET_SIMPLE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-    AWN_TYPE_APPLET_SIMPLE, AwnAppletSimpleClass))
+        AWN_TYPE_APPLET_SIMPLE, AwnAppletSimpleClass))
 
 typedef struct _AwnAppletSimple AwnAppletSimple;
-
 typedef struct _AwnAppletSimpleClass AwnAppletSimpleClass;
-
 typedef struct _AwnAppletSimplePrivate AwnAppletSimplePrivate;
 
 struct _AwnAppletSimple
@@ -62,58 +58,57 @@ struct _AwnAppletSimple
 struct _AwnAppletSimpleClass
 {
   AwnAppletClass parent_class;
+
+  /* padding */
+  void (*_simple_applet0) (void);
+  void (*_simple_applet1) (void);
+  void (*_simple_applet2) (void);
+  void (*_simple_applet3) (void);
 };
 
-GType awn_applet_simple_get_type(void);
+GType         awn_applet_simple_get_type         (void);
 
-GtkWidget*
-awn_applet_simple_new(const gchar *uid, gint orient, gint size);
+GtkWidget *   awn_applet_simple_new              (const gchar      *uid, 
+                                                  gint              orient, 
+                                                  gint              size);
 
-void
-awn_applet_simple_set_icon(AwnAppletSimple *simple, GdkPixbuf *pixbuf);
+void          awn_applet_simple_set_icon_pixbuf  (AwnAppletSimple  *applet,
+                                                  GdkPixbuf        *pixbuf);
 
-void
-awn_applet_simple_set_icon_context(AwnAppletSimple *simple, cairo_t * cr);
+void          awn_applet_simple_set_icon_context (AwnAppletSimple  *applet, 
+                                                  cairo_t          *cr);
 
-void
-awn_applet_simple_set_icon_context_scaled(AwnAppletSimple *simple,cairo_t * cr);
-
-
-GdkPixbuf * 
-awn_applet_simple_set_awn_icon(AwnAppletSimple *simple,
-                                    const gchar * applet_name,
-                                    const gchar *icon_name);
+void          awn_applet_simple_set_icon_name    (AwnAppletSimple  *applet,
+                                                  const gchar      *applet_name,
+                                                  const gchar      *icon_name);
                                     
-GdkPixbuf * 
-awn_applet_simple_set_awn_icons(AwnAppletSimple *simple,
-                                    const gchar * applet_name,
-                                    const GStrv states,
-                                    const GStrv icon_names
-                                    );
+void          awn_applet_simple_set_icon_info    (AwnAppletSimple  *applet,
+                                                  const gchar      *applet_name,
+                                                  gchar           **states,
+                                                  gchar           **icon_names);
                                     
-GdkPixbuf * 
-awn_applet_simple_set_awn_icon_state(AwnAppletSimple *simple, const gchar * state);
+void          awn_applet_simple_set_icon_state   (AwnAppletSimple  *applet,  
+                                                  const gchar      *state);
 
-AwnIcons * 
-awn_applet_simple_get_awn_icons(AwnAppletSimple *simple);
+void          awn_applet_simple_set_title        (AwnAppletSimple  *applet,
+                                                  const gchar      *title);
 
-void
-awn_applet_simple_set_temp_icon(AwnAppletSimple *simple, GdkPixbuf *pixbuf);
+const gchar * awn_applet_simple_get_title        (AwnAppletSimple  *applet);
 
-AwnEffects*
-awn_applet_simple_get_effects(AwnAppletSimple *simple);
+void          awn_applet_simple_set_message      (AwnAppletSimple  *applet,
+                                                  const gchar      *message);
 
-void
-awn_applet_simple_effects_on(AwnAppletSimple *simple);
+const gchar * awn_applet_simple_get_message      (AwnAppletSimple  *applet);
 
-void
-awn_applet_simple_effects_off(AwnAppletSimple *simple);
+void          awn_applet_simple_set_progress     (AwnAppletSimple  *applet,
+                                                  gfloat            progress);
 
-void
-awn_applet_simple_set_title(AwnAppletSimple *simple,const char * title_string);
+gfloat        awn_applet_simple_get_progress     (AwnAppletSimple  *applet);
 
-void
-awn_applet_simple_set_title_visibility(AwnAppletSimple *simple, gboolean state);
+GtkWidget *   awn_applet_simple_get_icon         (AwnAppletSimple  *applet);
+
+void          awn_applet_simple_set_effect       (AwnAppletSimple  *applet,
+                                                  AwnEffect         effect);
 
 G_END_DECLS
 
