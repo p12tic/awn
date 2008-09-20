@@ -49,6 +49,7 @@ struct _AwnThemedIconPrivate
 
   gchar  *current_state;
   gint    current_size;
+  gint    cur_icon;
 };
 
 enum
@@ -93,13 +94,17 @@ awn_themed_icon_dispose (GObject *object)
   g_return_if_fail (AWN_IS_THEMED_ICON (object));
   priv = AWN_THEMED_ICON (object)->priv;
 
-  g_strfreev (priv->states);
-  g_strfreev (priv->icon_names);
-  g_free (priv->applet_name);
-  g_free (priv->uid);
-  g_free (priv->current_state);
-  g_object_unref (priv->awn_theme);
-  g_free (priv->icon_dir);
+  g_strfreev (priv->states);       priv->states = NULL;
+  g_strfreev (priv->icon_names);   priv->icon_names = NULL;
+  g_free (priv->applet_name);      priv->applet_name = NULL;
+  g_free (priv->uid);              priv->uid = NULL;
+  g_free (priv->current_state);    priv->current_state = NULL;
+  g_free (priv->icon_dir);         priv->icon_dir = NULL;
+
+  if (G_IS_OBJECT (priv->awn_theme))
+    g_object_unref (priv->awn_theme);
+  if (G_IS_OBJECT (priv->override_theme))
+    g_object_unref (priv->override_theme);
 
   G_OBJECT_CLASS (awn_themed_icon_parent_class)->dispose (object);
 }
@@ -281,6 +286,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
       const gchar *uid;
       gint         i;
       
+      priv->cur_icon = index;
       applet_name = priv->applet_name;
       icon_name = priv->icon_names[index];
       uid = priv->uid;
@@ -587,9 +593,12 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
 {
   AwnThemedIcon        *icon = AWN_THEMED_ICON (widget);
   AwnThemedIconPrivate *priv;
+  GError               *error = NULL;
   gboolean              success = FALSE;
   gchar                *sdata;
   GdkPixbuf            *pixbuf = NULL;
+  GdkPixbufFormat      *format;
+  gchar               **extensions = NULL;
   GtkBuilder           *builder = NULL;
   GtkWidget            *dialog = NULL;
   GtkWidget            *image;
@@ -597,6 +606,7 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   gint                  res;
   gint                  scope;
   gchar                *base_name;
+  gchar                *dest_filename;
 
   if (!AWN_IS_THEMED_ICON (icon))
   {
@@ -663,11 +673,57 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
       g_assert (0);
   }
 
+  /* Grab some info about the icon */
+  format = gdk_pixbuf_get_file_info (sdata, NULL, NULL);
+  extensions = gdk_pixbuf_format_get_extensions (format);
+
   /* If we are here, the user wants to apply this icon in some way */
   scope = gtk_combo_box_get_active (GTK_COMBO_BOX (combo));
 
+  if (scope == SCOPE_UID)
+  {
+    base_name = g_strdup_printf ("%s-%s-%s.%s",
+                                 priv->icon_names[priv->cur_icon],
+                                 priv->applet_name,
+                                 priv->uid,
+                                 extensions[0]);
+  }
+  else if (scope == SCOPE_APPLET)
+  {
+    base_name = g_strdup_printf ("%s-%s.%s",
+                                  priv->icon_names[priv->cur_icon],
+                                  priv->applet_name,
+                                  extensions[0]);
+  }
+  else //scope == SCOPE_AWN_THEME
+  {
+    base_name = g_strdup_printf ("%s.%s", 
+                                 priv->icon_names[priv->cur_icon],
+                                 extensions[0]);
+  }
+
+  dest_filename = g_build_filename (priv->icon_dir,
+                                    "awn-theme", "scalable",
+                                    base_name, NULL);
+
+  /* Make sure we don't have any conflicting icons */
+  //awn_themed_icon_clear_icons (icon, scope);
+  
+  gdk_pixbuf_save (pixbuf, dest_filename, extensions[0], 
+                   &error, "quality", "100", NULL);
+  if (error)
+  {
+    g_warning ("Unable to save %s: %s", dest_filename, error->message);
+    g_error_free (error);
+  }
+
+  /* Refresh icon-theme */
+  gtk_icon_theme_set_custom_theme (priv->awn_theme, NULL);
+  gtk_icon_theme_set_custom_theme (priv->awn_theme, AWN_ICON_THEME_NAME);
+
   /* Clean up */
   gtk_widget_destroy (dialog);
+  g_strfreev (extensions);
 
 drag_out:
 
