@@ -45,6 +45,7 @@ struct _AwnThemedIconPrivate
   gchar  *uid;
   gchar **states;
   gchar **icon_names;
+  gchar **icon_names_orignal;
   gint    n_states;
 
   gchar  *current_state;
@@ -94,12 +95,13 @@ awn_themed_icon_dispose (GObject *object)
   g_return_if_fail (AWN_IS_THEMED_ICON (object));
   priv = AWN_THEMED_ICON (object)->priv;
 
-  g_strfreev (priv->states);       priv->states = NULL;
-  g_strfreev (priv->icon_names);   priv->icon_names = NULL;
-  g_free (priv->applet_name);      priv->applet_name = NULL;
-  g_free (priv->uid);              priv->uid = NULL;
-  g_free (priv->current_state);    priv->current_state = NULL;
-  g_free (priv->icon_dir);         priv->icon_dir = NULL;
+  g_strfreev (priv->states);             priv->states = NULL;
+  g_strfreev (priv->icon_names);         priv->icon_names = NULL;
+  g_strfreev (priv->icon_names_orignal); priv->icon_names_orignal = NULL;
+  g_free (priv->applet_name);            priv->applet_name = NULL;
+  g_free (priv->uid);                    priv->uid = NULL;
+  g_free (priv->current_state);          priv->current_state = NULL;
+  g_free (priv->icon_dir);               priv->icon_dir = NULL;
 
   if (G_IS_OBJECT (priv->awn_theme))
     g_object_unref (priv->awn_theme);
@@ -172,6 +174,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   priv->uid = NULL;
   priv->states = NULL;
   priv->icon_names = NULL;
+  priv->icon_names_orignal = NULL;
   priv->current_state = NULL;
   priv->current_size = 48;
 
@@ -328,7 +331,12 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             break;
 
           case SCOPE_FILENAME:
-            pixbuf = try_and_load_image_from_disk (icon_name, size);
+            pixbuf = NULL;
+            if (priv->icon_names_orignal)
+            {
+              gchar *real_name = priv->icon_names_orignal[index];
+              pixbuf = try_and_load_image_from_disk (real_name, size);
+            }
             break;
 
           case SCOPE_FALLBACK_STOP:
@@ -366,7 +374,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
       }
 
     }
-    g_warning ("state does not exist: %s", priv->current_state);
+    g_warning ("State does not exist: %s", priv->current_state);
   }
 
   return pixbuf;
@@ -445,6 +453,33 @@ awn_themed_icon_get_size (AwnThemedIcon *icon)
   return icon->priv->current_size;
 }
 
+/*
+ * Check if any of the icon names have a slash in them, if they do, then
+ * replace the slash with a '-' and copy the original names for the file
+ * loader
+ */
+static gchar **
+normalise_names (gchar **names)
+{
+  gchar **ret = NULL;
+  gint i;
+
+  for (i = 0; names[i]; i++)
+  {
+    gint j;
+    for (j = 0; names[i][j]; j++)
+    {
+      if (names[i][j] == '/')
+      {
+        if (!ret)
+          ret = g_strdupv (names);
+        names[i][j] = '-';
+      }
+    }
+  }
+  return ret;
+}
+
 void
 awn_themed_icon_set_info (AwnThemedIcon  *icon,
                           const gchar    *applet_name,
@@ -475,12 +510,15 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
   /* Free the old states & icon_names */
   g_strfreev (priv->states);
   g_strfreev (priv->icon_names);
+  g_strfreev (priv->icon_names_orignal);
   priv->states = NULL;
   priv->icon_names = NULL;
+  priv->icon_names_orignal = NULL;
 
   /* Copy states & icon_names internally */
   priv->states = g_strdupv (states);
   priv->icon_names = g_strdupv (icon_names);
+  priv->icon_names_orignal = normalise_names (priv->icon_names);
   priv->n_states = n_states;
   
   /* Now add the rest of the entries */
@@ -708,6 +746,8 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
 
     case 2: /* Clear */
       awn_themed_icon_clear_icons (icon, -1);
+      gtk_icon_theme_set_custom_theme (priv->awn_theme, NULL);
+      gtk_icon_theme_set_custom_theme (priv->awn_theme, AWN_ICON_THEME_NAME);
       gtk_widget_destroy (dialog);
       goto drag_out;
       break;
@@ -779,5 +819,8 @@ drag_out:
     g_object_unref (pixbuf);
   
   gtk_drag_finish (context, success, FALSE, time);
+
+  if (success)
+    ensure_icon (icon);
 }
 
