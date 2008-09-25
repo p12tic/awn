@@ -36,7 +36,7 @@ main (gint argc, gchar **argv)
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   if (map)
     gtk_widget_set_colormap (window, map);
-  gtk_window_resize (GTK_WINDOW (window), 120, 100);
+  gtk_window_resize (GTK_WINDOW (window), 50, 50);
   gtk_widget_show (window);
   
   hbox = gtk_hbox_new (TRUE, 0);
@@ -44,6 +44,7 @@ main (gint argc, gchar **argv)
   gtk_widget_show (hbox);
 
   icon = awn_themed_icon_new ();
+  awn_icon_set_size (AWN_ICON (icon), 50);
   awn_themed_icon_set_info_simple (AWN_THEMED_ICON (icon),
                                    "test-applet", "test-uid", 
                                    GTK_STOCK_DIALOG_INFO);
@@ -51,6 +52,7 @@ main (gint argc, gchar **argv)
   gtk_widget_show (icon);
 
   icon = awn_themed_icon_new ();
+  awn_icon_set_size (AWN_ICON (icon), 50);
   awn_themed_icon_set_info_simple (AWN_THEMED_ICON (icon),
                                    "test-applet", "test-uid",
                                    "../data/avant-window-navigator.svg");

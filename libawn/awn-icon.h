@@ -23,6 +23,7 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
+#include "awn-defines.h"
 #include "awn-effects.h"
 
 G_BEGIN_DECLS
@@ -59,40 +60,51 @@ struct _AwnIcon
 struct _AwnIconClass
 {
   GtkDrawingAreaClass parent_class;
+
+  /*< signal >*/
+void (*icon_size_changed) (AwnIcon *icon, gint size);
+
+
 };
 
 GType         awn_icon_get_type         (void) G_GNUC_CONST;
 
 GtkWidget *   awn_icon_new              (void);
 
-void          awn_icon_set_effect       (AwnIcon     *icon, 
-                                         AwnEffect    effect);
+void          awn_icon_set_size         (AwnIcon        *icon,
+                                         gint            size);
 
-void          awn_icon_set_from_pixbuf  (AwnIcon     *icon,
-                                         GdkPixbuf   *pixbuf);
+void          awn_icon_set_orientation  (AwnIcon        *icon,
+                                         AwnOrientation  orient);
 
-void          awn_icon_set_from_context (AwnIcon     *icon,
-                                         cairo_t     *ctx);
+void          awn_icon_set_effect       (AwnIcon        *icon, 
+                                         AwnEffect       effect);
 
-void          awn_icon_set_tooltip_text (AwnIcon     *icon,
-                                         const gchar *text);
+void          awn_icon_set_from_pixbuf  (AwnIcon        *icon,
+                                         GdkPixbuf      *pixbuf);
 
-const gchar * awn_icon_get_tooltip_text (AwnIcon     *icon);
+void          awn_icon_set_from_context (AwnIcon        *icon,
+                                         cairo_t        *ctx);
 
-void          awn_icon_set_message      (AwnIcon     *icon,
-                                         const gchar *message);
+void          awn_icon_set_tooltip_text (AwnIcon        *icon,
+                                         const gchar    *text);
 
-const gchar * awn_icon_get_message      (AwnIcon     *icon);
+const gchar * awn_icon_get_tooltip_text (AwnIcon        *icon);
 
-void          awn_icon_set_progress     (AwnIcon     *icon,
-                                         gfloat       progress);
+void          awn_icon_set_message      (AwnIcon        *icon,
+                                         const gchar    *message);
 
-gfloat        awn_icon_get_progress     (AwnIcon     *icon);
+const gchar * awn_icon_get_message      (AwnIcon        *icon);
 
-void          awn_icon_set_is_active    (AwnIcon     *icon,
-                                         gboolean     is_active);
+void          awn_icon_set_progress     (AwnIcon        *icon,
+                                         gfloat          progress);
 
-gboolean      awn_icon_get_is_active    (AwnIcon     *icon);
+gfloat        awn_icon_get_progress     (AwnIcon        *icon);
+
+void          awn_icon_set_is_active    (AwnIcon        *icon,
+                                         gboolean        is_active);
+
+gboolean      awn_icon_get_is_active    (AwnIcon        *icon);
 
 G_END_DECLS
 

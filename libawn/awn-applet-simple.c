@@ -58,42 +58,17 @@ enum
 static void
 awn_applet_simple_orient_changed (AwnApplet *applet, AwnOrientation orient)
 {
-  switch (orient)
-  {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
-      gtk_widget_set_size_request (GTK_WIDGET (applet), 
-                                   awn_applet_get_size (applet) * 1.20,
-                                   -1);
-      break;
-    default:
-      gtk_widget_set_size_request (GTK_WIDGET (applet),
-                                   -1,
-                                   awn_applet_get_size (applet) * 1.20);
-      break;
-  }
+  AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE (applet)->priv;
+
+  awn_icon_set_orientation (AWN_ICON (priv->icon), orient);
 }
 
 static void
 awn_applet_simple_size_changed (AwnApplet *applet, gint size)
 {
   AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE (applet)->priv;
-
-  switch (awn_applet_get_orientation (applet))
-  {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
-      gtk_widget_set_size_request (GTK_WIDGET (applet), 
-                                   awn_applet_get_size (applet) * 1.20,
-                                   -1);
-      break;
-    default:
-      gtk_widget_set_size_request (GTK_WIDGET (applet),
-                                   -1,
-                                   awn_applet_get_size (applet) * 1.20);
-      break;
-  }
-  awn_themed_icon_set_size (AWN_THEMED_ICON (priv->icon), size);
+ 
+  awn_icon_set_size (AWN_ICON (priv->icon), size);
 }
 
 static void
@@ -109,6 +84,10 @@ awn_applet_simple_constructed (GObject *object)
   AwnAppletSimplePrivate *priv = applet->priv;
   
   priv->icon = awn_themed_icon_new ();
+  awn_icon_set_orientation (AWN_ICON (priv->icon), 
+                            awn_applet_get_orientation (AWN_APPLET (object)));
+  awn_icon_set_size (AWN_ICON (priv->icon),
+                     awn_applet_get_size (AWN_APPLET (object)));
   gtk_container_add (GTK_CONTAINER (applet), priv->icon);
   gtk_widget_show (priv->icon);
 }

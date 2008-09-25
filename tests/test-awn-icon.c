@@ -32,6 +32,7 @@ pixbuf_icon (GtkWidget *parent)
   pixbuf = gdk_pixbuf_new_from_file_at_size (PICTURE_FILE, 50, 50, NULL);
 
   icon = awn_icon_new ();
+  awn_icon_set_size (AWN_ICON (icon), 50);
   awn_icon_set_from_pixbuf (AWN_ICON (icon), pixbuf);
   gtk_container_add (GTK_CONTAINER (parent), icon);
   gtk_widget_show (icon);
@@ -66,6 +67,7 @@ cairo_icon (GtkWidget *parent)
   cairo_stroke (cr);
 
   icon = awn_icon_new ();
+  awn_icon_set_size (AWN_ICON (icon), 50);
   awn_icon_set_from_context (AWN_ICON (icon), cr);
   
   gtk_container_add (GTK_CONTAINER (parent), icon);
@@ -91,7 +93,7 @@ main (gint argc, gchar **argv)
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   if (map)
     gtk_widget_set_colormap (window, map);
-  gtk_window_resize (GTK_WINDOW (window), 120, 100);
+  gtk_window_resize (GTK_WINDOW (window), 50, 50);
   gtk_widget_show (window);
   
   hbox = gtk_hbox_new (TRUE, 0);
