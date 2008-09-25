@@ -90,10 +90,10 @@ void          awn_applet_simple_set_icon_info    (AwnAppletSimple  *applet,
 void          awn_applet_simple_set_icon_state   (AwnAppletSimple  *applet,  
                                                   const gchar      *state);
 
-void          awn_applet_simple_set_title        (AwnAppletSimple  *applet,
-                                                  const gchar      *title);
+void          awn_applet_simple_set_tooltip_text (AwnAppletSimple  *applet,
+                                                  const gchar      *text);
 
-const gchar * awn_applet_simple_get_title        (AwnAppletSimple  *applet);
+const gchar * awn_applet_simple_get_tooltip_text (AwnAppletSimple  *applet);
 
 void          awn_applet_simple_set_message      (AwnAppletSimple  *applet,
                                                   const gchar      *message);

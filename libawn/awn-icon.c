@@ -334,6 +334,22 @@ awn_icon_set_from_context (AwnIcon *icon, cairo_t *ctx)
 }
 
 /*
+ * The tooltip 
+ */
+void   
+awn_icon_set_tooltip_text (AwnIcon     *icon,
+                           const gchar *text)
+{
+
+}
+
+const gchar * 
+awn_icon_get_tooltip_text (AwnIcon *icon)
+{
+  return NULL;
+}
+
+/*
  * ICON EMBLEMS
  */
 

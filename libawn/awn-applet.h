@@ -31,21 +31,21 @@ G_BEGIN_DECLS
 #define AWN_TYPE_APPLET (awn_applet_get_type ())
 
 #define AWN_APPLET(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_APPLET,\
-                         AwnApplet))
+        AwnApplet))
 
 #define AWN_APPLET_CLASS(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), \
-                               AWN_TYPE_APPLET, AwnAppletClass))
+        AWN_TYPE_APPLET, AwnAppletClass))
                                 
 #define AWN_IS_APPLET(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), AWN_TYPE_APPLET))
 
 #define AWN_IS_APPLET_CLASS(obj) (G_TYPE_CHECK_CLASS_TYPE ((obj), \
-                                  AWN_TYPE_APPLET))
+        AWN_TYPE_APPLET))
 
 #define AWN_APPLET_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), \
-                                AWN_TYPE_APPLET, AwnAppletClass))
+        AWN_TYPE_APPLET, AwnAppletClass))
 
 typedef struct _AwnApplet AwnApplet;
-typedef struct _AwnAppletClass	AwnAppletClass;
+typedef struct _AwnAppletClass AwnAppletClass;
 typedef struct _AwnAppletPrivate AwnAppletPrivate;
 
 struct _AwnApplet
@@ -65,6 +65,7 @@ struct _AwnAppletClass
   void (*orient_changed) (AwnApplet *applet, AwnOrientation orient);
   void (*size_changed)   (AwnApplet *applet, gint size);
   void (*deleted)        (AwnApplet *applet, const gchar *uid);
+  void (*menu_creation)  (AwnApplet *applet, GtkMenu *menu);
 
   /*< Future padding >*/
   void (*_applet0) (void);
@@ -76,31 +77,32 @@ struct _AwnAppletClass
 GType awn_applet_get_type (void);
 
 /* Hook to have an AWN Applet built for you */
-typedef gboolean   (*AwnAppletInitFunc)           (AwnApplet *applet);
+typedef gboolean   (*AwnAppletInitFunc)           (AwnApplet   *applet);
 /* Hook to build your own AWN Applet */
-typedef AwnApplet* (*AwnAppletInitPFunc)          (const gchar* uid, 
+typedef AwnApplet* (*AwnAppletInitPFunc)          (const gchar *uid, 
                                                    gint         orient, 
                                                    gint         height);
 
-AwnApplet *        awn_applet_new                 (const gchar* uid, 
+AwnApplet *        awn_applet_new                 (const gchar *uid, 
                                                    gint         orient, 
                                                    gint         height);
 
-AwnOrientation     awn_applet_get_orientation     (AwnApplet *applet);
-void               awn_applet_set_orientation     (AwnApplet *applet,
-                                                   guint      orient);
+AwnOrientation     awn_applet_get_orientation     (AwnApplet      *applet);
 
-guint              awn_applet_get_size            (AwnApplet *applet);
-void               awn_applet_set_size            (AwnApplet *applet,
-                                                   guint      size);
+void               awn_applet_set_orientation     (AwnApplet      *applet,
+                                                   AwnOrientation  orient);
 
-const gchar *      awn_applet_get_uid             (AwnApplet *applet);
-void               awn_applet_set_uid             (AwnApplet *applet,
-                                                   const gchar *uid);
+guint              awn_applet_get_size            (AwnApplet      *applet);
+void               awn_applet_set_size            (AwnApplet      *applet,
+                                                   gint           size);
 
-void               awn_applet_plug_embedded       (AwnApplet *applet);
+const gchar *      awn_applet_get_uid             (AwnApplet      *applet);
+void               awn_applet_set_uid             (AwnApplet      *applet,
+                                                   const gchar    *uid);
 
-GtkWidget*         awn_applet_create_default_menu (AwnApplet *applet);
+void               awn_applet_plug_embedded       (AwnApplet      *applet);
+
+GtkWidget*         awn_applet_create_default_menu (AwnApplet      *applet);
 
 /*
  * Returns a gtk menu item for the "Dock Preferences".

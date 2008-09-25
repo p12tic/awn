@@ -51,6 +51,57 @@ enum
 };
 
 /* GObject stuff */
+
+/*
+ * When the orientation changes, we need to update the size of the applet
+ */
+static void
+awn_applet_simple_orient_changed (AwnApplet *applet, AwnOrientation orient)
+{
+  switch (orient)
+  {
+    case AWN_ORIENTATION_TOP:
+    case AWN_ORIENTATION_BOTTOM:
+      gtk_widget_set_size_request (GTK_WIDGET (applet), 
+                                   awn_applet_get_size (applet) * 1.20,
+                                   -1);
+      break;
+    default:
+      gtk_widget_set_size_request (GTK_WIDGET (applet),
+                                   -1,
+                                   awn_applet_get_size (applet) * 1.20);
+      break;
+  }
+}
+
+static void
+awn_applet_simple_size_changed (AwnApplet *applet, gint size)
+{
+  AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE (applet)->priv;
+
+  switch (awn_applet_get_orientation (applet))
+  {
+    case AWN_ORIENTATION_TOP:
+    case AWN_ORIENTATION_BOTTOM:
+      gtk_widget_set_size_request (GTK_WIDGET (applet), 
+                                   awn_applet_get_size (applet) * 1.20,
+                                   -1);
+      break;
+    default:
+      gtk_widget_set_size_request (GTK_WIDGET (applet),
+                                   -1,
+                                   awn_applet_get_size (applet) * 1.20);
+      break;
+  }
+  awn_themed_icon_set_size (AWN_THEMED_ICON (priv->icon), size);
+}
+
+static void
+awn_applet_simple_menu_creation (AwnApplet *applet, GtkMenu *menu)
+{
+  /* FIXME: If last_icon_type == ICON_THEMED_*, add "Clear custom icons" */
+}
+
 static void
 awn_applet_simple_constructed (GObject *object)
 {
@@ -72,9 +123,14 @@ static void
 awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
 {
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
+  AwnAppletClass *app_class = AWN_APPLET_CLASS (klass);
       
   obj_class->dispose     = awn_applet_simple_dispose;
   obj_class->constructed = awn_applet_simple_constructed;
+
+  app_class->orient_changed = awn_applet_simple_orient_changed;
+  app_class->size_changed   = awn_applet_simple_size_changed;
+  app_class->menu_creation  = awn_applet_simple_menu_creation;
   
   g_type_class_add_private (obj_class, sizeof (AwnAppletSimplePrivate));
 }
@@ -122,23 +178,38 @@ void
 awn_applet_simple_set_icon_pixbuf (AwnAppletSimple  *applet,
                                    GdkPixbuf        *pixbuf)
 {
+  AwnAppletSimplePrivate *priv;
+
   g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
   g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+  priv = applet->priv;
 
-  applet->priv->last_set_icon = ICON_PIXBUF;
-  awn_icon_set_from_pixbuf (AWN_ICON (applet->priv->icon), pixbuf);
+  /* Make sure AwnThemedIcon doesn't update the icon of it's own accord */
+  if (priv->last_set_icon == ICON_THEMED_SIMPLE 
+      || priv->last_set_icon == ICON_THEMED_MANY)
+    awn_themed_icon_clear_info (AWN_THEMED_ICON (priv->icon));
+
+  priv->last_set_icon = ICON_PIXBUF;
+  awn_icon_set_from_pixbuf (AWN_ICON (priv->icon), pixbuf);
 }
 
 void 
 awn_applet_simple_set_icon_context (AwnAppletSimple  *applet, 
                                     cairo_t          *cr)
 {
+  AwnAppletSimplePrivate *priv;
+
   g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
   g_return_if_fail (cr);
+  priv = applet->priv;
 
-  applet->priv->last_set_icon = ICON_CAIRO;
-  awn_icon_set_from_context (AWN_ICON (applet->priv->icon), cr);
-}
+  /* Make sure AwnThemedIcon doesn't update the icon of it's own accord */
+  if (priv->last_set_icon == ICON_THEMED_SIMPLE 
+      || priv->last_set_icon == ICON_THEMED_MANY)
+    awn_themed_icon_clear_info (AWN_THEMED_ICON (priv->icon));
+
+  priv->last_set_icon = ICON_CAIRO;
+  awn_icon_set_from_context (AWN_ICON (priv->icon), cr);}
 
 void
 awn_applet_simple_set_icon_name (AwnAppletSimple  *applet,
@@ -156,31 +227,100 @@ awn_applet_simple_set_icon_name (AwnAppletSimple  *applet,
                                    icon_name);
 }
                                     
-void          awn_applet_simple_set_icon_info    (AwnAppletSimple  *applet,
-                                                  const gchar      *applet_name,
-                                                  gchar           **states,
-                                                  gchar           **icon_names);
+void   
+awn_applet_simple_set_icon_info (AwnAppletSimple  *applet,
+                                 const gchar      *applet_name,
+                                 gchar           **states,
+                                 gchar           **icon_names)
+{
+  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
+  g_return_if_fail (applet_name);
+  g_return_if_fail (states);
+  g_return_if_fail (icon_names);
+
+  applet->priv->last_set_icon = ICON_THEMED_MANY;
+  awn_themed_icon_set_info (AWN_THEMED_ICON (applet->priv->icon),
+                            applet_name,
+                            awn_applet_get_uid (AWN_APPLET (applet)),
+                            states,
+                            icon_names);
+}
                                     
-void          awn_applet_simple_set_icon_state   (AwnAppletSimple  *applet,  
-                                                  const gchar      *state);
+void 
+awn_applet_simple_set_icon_state   (AwnAppletSimple  *applet,  
+                                    const gchar      *state)
+{
+  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
+  g_return_if_fail (state);
 
-void          awn_applet_simple_set_title        (AwnAppletSimple  *applet,
-                                                  const gchar      *title);
+  if (applet->priv->last_set_icon == ICON_THEMED_MANY)
+    awn_themed_icon_set_state (AWN_THEMED_ICON (applet->priv->icon), state);
+}
 
-const gchar * awn_applet_simple_get_title        (AwnAppletSimple  *applet);
+void 
+awn_applet_simple_set_tooltip_text (AwnAppletSimple  *applet,
+                                    const gchar      *title)
+{
+  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
+  
+  awn_icon_set_tooltip_text (AWN_ICON (applet->priv->icon), title);
+}
 
-void          awn_applet_simple_set_message      (AwnAppletSimple  *applet,
-                                                  const gchar      *message);
+const gchar * 
+awn_applet_simple_get_tooltip_text (AwnAppletSimple  *applet)
+{
+  g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), NULL);
 
-const gchar * awn_applet_simple_get_message      (AwnAppletSimple  *applet);
+  return awn_icon_get_tooltip_text (AWN_ICON (applet->priv->icon));
+}
 
-void          awn_applet_simple_set_progress     (AwnAppletSimple  *applet,
-                                                  gfloat            progress);
+void 
+awn_applet_simple_set_message (AwnAppletSimple  *applet,
+                               const gchar      *message)
+{
+  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
 
-gfloat        awn_applet_simple_get_progress     (AwnAppletSimple  *applet);
+  awn_icon_set_message (AWN_ICON (applet->priv->icon), message);
+}
 
-GtkWidget *   awn_applet_simple_get_icon         (AwnAppletSimple  *applet);
+const gchar * 
+awn_applet_simple_get_message (AwnAppletSimple  *applet)
+{
+  g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), NULL);
 
-void          awn_applet_simple_set_effect       (AwnAppletSimple  *applet,
-                                                  AwnEffect         effect);
+  return awn_icon_get_message (AWN_ICON (applet->priv->icon));
+}
 
+void 
+awn_applet_simple_set_progress (AwnAppletSimple  *applet,
+                                gfloat            progress)
+{
+  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
+
+  awn_icon_set_progress (AWN_ICON (applet->priv->icon), progress);
+}
+
+gfloat  
+awn_applet_simple_get_progress (AwnAppletSimple  *applet)
+{
+  g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), 0.0);
+
+  return awn_icon_get_progress (AWN_ICON (applet->priv->icon));
+}
+
+GtkWidget *  
+awn_applet_simple_get_icon (AwnAppletSimple  *applet)
+{
+  g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), NULL);
+
+  return applet->priv->icon;
+}
+
+void  
+awn_applet_simple_set_effect (AwnAppletSimple  *applet,
+                              AwnEffect         effect)
+{
+  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
+
+  awn_icon_set_effect (AWN_ICON (applet->priv->icon), effect);
+}

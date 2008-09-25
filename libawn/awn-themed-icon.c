@@ -664,6 +664,23 @@ awn_themed_icon_clear_icons (AwnThemedIcon *icon,
   }
 }
 
+void  
+awn_themed_icon_clear_info (AwnThemedIcon *icon)
+{
+  AwnThemedIconPrivate *priv;
+
+  g_return_if_fail (AWN_IS_THEMED_ICON (icon));
+  priv = icon->priv;
+
+  /* Free the old states & icon_names */
+  g_strfreev (priv->states);
+  g_strfreev (priv->icon_names);
+  g_strfreev (priv->icon_names_orignal);
+  priv->states = NULL;
+  priv->icon_names = NULL;
+  priv->icon_names_orignal = NULL;
+
+}
 /*
  * Callbacks 
  */
