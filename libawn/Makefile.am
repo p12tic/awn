@@ -26,6 +26,7 @@ public_headers = \
 	awn-applet-dialog.h \
 	awn-applet-simple.h \
 	awn-cairo-utils.h \
+	awn-config-bridge.h \
 	awn-config-client.h \
 	awn-desktop-item.h \
 	awn-effects.h \
@@ -60,6 +61,7 @@ source_c = \
 	awn-applet-dialog.c \
 	awn-applet-simple.c \
 	awn-cairo-utils.c \
+	awn-config-bridge.c \
 	awn-effect-bounce.c \
 	awn-effect-desaturate.c \
 	awn-effect-fade.c \

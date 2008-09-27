@@ -115,7 +115,6 @@ awn_tooltip_position(AwnTooltip *tooltip)
 static gboolean
 on_prox_out(GtkWidget *focus, GdkEventCrossing *event, AwnTooltip *tooltip)
 {
-  awn_tooltip_hide(tooltip, focus);
   g_signal_handlers_disconnect_by_func(focus,on_prox_out,tooltip);
   return FALSE;
 }
@@ -123,7 +122,7 @@ on_prox_out(GtkWidget *focus, GdkEventCrossing *event, AwnTooltip *tooltip)
 static gboolean
 show(gchar *text)
 {
-  AwnTooltip *tooltip = AWN_TOOLTIP(awn_tooltip_get_default());
+  AwnTooltip *tooltip = AWN_TOOLTIP(awn_tooltip_new_for_widget (NULL));
   AwnTooltipPrivate *priv;
   gchar *normal;
   gchar *markup;
@@ -409,5 +408,11 @@ awn_tooltip_get_default(void)
                          NULL);
   }
   return tooltip;
+}
+
+GtkWidget *
+awn_tooltip_new_for_widget (GtkWidget *new)
+{
+  return NULL;
 }
 

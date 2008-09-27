@@ -24,11 +24,11 @@
 #include "config.h"
 
 #include <gdk/gdkx.h>
+#include <libawn/awn-config-bridge.h>
 #include <libawn/awn-config-client.h>
 
 #include "awn-monitor.h"
 
-#include "awn-config-bridge.h"
 #include "awn-defines.h"
 
 G_DEFINE_TYPE (AwnMonitor, awn_monitor, G_TYPE_OBJECT) 

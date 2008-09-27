@@ -21,10 +21,11 @@
 
 #include "config.h"
 
+#include <libawn/awn-config-bridge.h>
+
 #include "awn-applet-manager.h"
 
 #include "awn-applet-proxy.h"
-#include "awn-config-bridge.h"
 #include "awn-defines.h"
 
 G_DEFINE_TYPE (AwnAppletManager, awn_applet_manager, GTK_TYPE_BOX) 

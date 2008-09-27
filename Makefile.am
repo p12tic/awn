@@ -7,7 +7,6 @@ SUBDIRS =	\
 	awn-manager \
 	applets \
 	po \
-	bindings \
 	data \
 	tests \
 	doc \

@@ -26,13 +26,14 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/shape.h>
 
+#include <libawn/awn-config-bridge.h>
+
 #include "awn-panel.h"
 
 #include "awn-applet-manager.h"
 #include "awn-background.h"
 #include "awn-background-flat.h"
 #include "awn-defines.h"
-#include "awn-config-bridge.h"
 #include "awn-monitor.h"
 #include "awn-x.h"
 

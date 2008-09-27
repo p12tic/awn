@@ -23,10 +23,10 @@
 
 #include <glib/gprintf.h>
 #include <libawn/awn-config-client.h>
+#include <libawn/awn-config-bridge.h>
 
 #include "awn-background.h"
 
-#include "awn-config-bridge.h"
 #include "awn-defines.h"
 
 G_DEFINE_ABSTRACT_TYPE (AwnBackground, awn_background, G_TYPE_OBJECT)
