@@ -27,7 +27,6 @@
 
 #include "awn-defines.h"
 #include "awn-effects-settings.h"
-#include "awn-title.h"
 
 G_BEGIN_DECLS
 
@@ -102,7 +101,6 @@ struct _AwnEffects
   GtkWidget *self;
   GtkWidget *focus_window;
   AwnEffectsSettings *settings;
-  AwnTitle *title;
   AwnTitleCallback get_title;
   GList *effect_queue;
 
@@ -194,24 +192,6 @@ void awn_effects_free(AwnEffects * fx);
 void awn_effects_finalize(AwnEffects * fx);
 
 /**
- * awn_effects_register:
- * @fx: Pointer to #AwnEffects structure.
- * @obj: GtkWidget derived class providing enter-notify-event and leave-notify-event signals.
- *
- * Registers #GtkWidget::enter-notify-event and #GtkWidget::leave-notify-event
- * signals for the managed window.
- */
-void awn_effects_register(AwnEffects * fx, GtkWidget * obj);
-
-/**
- * awn_effects_unregister:
- * @fx: Pointer to #AwnEffects structure.
- *
- * Unregisters events for managed window.
- */
-void awn_effects_unregister(AwnEffects * fx);
-
-/**
  * awn_effects_start:
  * @fx: Pointer to #AwnEffects structure.
  * @effect: #AwnEffect to schedule.
@@ -230,18 +210,6 @@ void awn_effects_start(AwnEffects * fx, const AwnEffect effect);
  */
 
 void awn_effects_stop(AwnEffects * fx, const AwnEffect effect);
-
-/**
- * awn_effects_set_title:
- * @fx: Pointer to #AwnEffects structure.
- * @title: Pointer to #AwnTitle instance.
- * @title_func: Pointer to function which returns desired title text.
- *
- * Makes #AwnTitle appear on #GtkWidget::enter-notify-event.
- */
-void
-awn_effects_set_title(AwnEffects * fx, AwnTitle * title,
-                      AwnTitleCallback title_func);
 
 /**
  * awn_effects_start_ex:

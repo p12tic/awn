@@ -157,11 +157,6 @@ static const AwnEffectsOp OP_LIST[] =
  */
 static void awn_effects_init(AwnEffects * fx, GtkWidget * widget);
 
-static gboolean awn_effects_enter_event(GtkWidget * widget,
-                                   GdkEventCrossing * event, gpointer data);
-static gboolean awn_effects_leave_event(GtkWidget * widget,
-                                   GdkEventCrossing * event, gpointer data);
-
 static gdouble calc_curve_position(gdouble cx, gdouble a, gdouble b);
 
 static gpointer _awn_effects_copy(gpointer boxed)
@@ -216,7 +211,6 @@ awn_effects_init(AwnEffects * fx, GtkWidget * widget)
   fx->self = widget;
   fx->focus_window = NULL;
   fx->settings = awn_effects_settings_get_default ();
-  fx->title = NULL;
   fx->get_title = NULL;
   fx->effect_queue = NULL;
 
@@ -297,7 +291,6 @@ awn_effects_dispose_queue(AwnEffects * fx)
 void
 awn_effects_finalize(AwnEffects * fx)
 {
-  awn_effects_unregister(fx);
   awn_effects_dispose_queue(fx);
   
 
@@ -316,54 +309,6 @@ awn_effects_finalize(AwnEffects * fx)
   }
   
   fx->self = NULL;
-}
-
-void
-awn_effects_set_title(AwnEffects * fx, AwnTitle * title,
-                      AwnTitleCallback title_func)
-{
-  fx->title = title;
-  fx->get_title = title_func;
-}
-
-static gboolean
-awn_effects_enter_event(GtkWidget * widget, GdkEventCrossing * event,
-                   gpointer data)
-{
-
-  AwnEffects *fx = (AwnEffects *) data;
-
-  if (fx->settings)
-  {
-    fx->settings->hiding = FALSE;
-  }
-
-  if (fx->title && fx->get_title)
-  {
-    awn_title_show(fx->title, fx->focus_window, fx->get_title(fx->self));
-  }
-
-  fx->hover = TRUE;
-
-  awn_effects_start(fx, AWN_EFFECT_HOVER);
-  return FALSE;
-}
-
-static gboolean
-awn_effects_leave_event(GtkWidget * widget, GdkEventCrossing * event,
-                   gpointer data)
-{
-  AwnEffects *fx = (AwnEffects *) data;
-
-  if (fx->title)
-  {
-    awn_title_hide(fx->title, fx->focus_window);
-  }
-
-  fx->hover = FALSE;
-
-  awn_effects_stop(fx, AWN_EFFECT_HOVER);
-  return FALSE;
 }
 
 static gint
@@ -607,40 +552,6 @@ awn_effects_main_effect_loop(AwnEffects * fx)
     // dispose AwnEffectsPrivate
     awn_effects_stop(fx, topEffect->this_effect);
   }
-}
-
-void
-awn_effects_register(AwnEffects * fx, GtkWidget * obj)
-{
-  if (fx->focus_window)
-  {
-    awn_effects_unregister(fx);
-  }
-
-  fx->focus_window = obj;
-
-  fx->enter_notify = g_signal_connect(G_OBJECT(obj), "enter-notify-event",
-                                      G_CALLBACK(awn_effects_enter_event), fx);
-  fx->leave_notify = g_signal_connect(G_OBJECT(obj), "leave-notify-event",
-                                      G_CALLBACK(awn_effects_leave_event), fx);
-}
-
-void
-awn_effects_unregister(AwnEffects * fx)
-{
-  if (fx->enter_notify)
-  {
-    g_signal_handler_disconnect(G_OBJECT(fx->focus_window), fx->enter_notify);
-    fx->enter_notify = 0;
-  }
-
-  if (fx->leave_notify)
-  {
-    g_signal_handler_disconnect(G_OBJECT(fx->focus_window), fx->leave_notify);
-    fx->leave_notify = 0;
-  }
-
-  fx->focus_window = NULL;
 }
 
 void
