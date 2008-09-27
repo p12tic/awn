@@ -24,57 +24,55 @@
 #include <config.h>
 #endif
 
-#include "awn-title.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include "awn-tooltip.h"
 
 #include "awn-cairo-utils.h"
 #include "awn-config-client.h"
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
+G_DEFINE_TYPE (AwnTooltip, awn_tooltip, GTK_TYPE_WINDOW);
 
-G_DEFINE_TYPE(AwnTitle, awn_title, GTK_TYPE_WINDOW);
+#define AWN_TOOLTIP_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
+                                      AWN_TYPE_TOOLTIP, AwnTooltipPrivate))
 
-#define AWN_TITLE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
-                                    AWN_TYPE_TITLE, \
-                                    AwnTitlePrivate))
-
-#define TITLE         "title"
+#define TOOLTIP      "tooltip"
 #define TEXT_COLOR "text_color" /*color*/
 #define BACKGROUND "background" /*color*/
-#define FONT_FACE "font_face" /*bool*/
+#define FONT_FACE  "font_face" /*bool*/
 
 /* STRUCTS & ENUMS */
 
-struct _AwnTitlePrivate
+struct _AwnTooltipPrivate
 {
   GtkWidget *focus;
 
   GtkWidget *image;
   GtkWidget *label;
 
-  gchar *font;
-  AwnColor bg;
-  gchar *text_col;
-  gint offset;
+  gchar    *font;
+  AwnColor  bg;
+  gchar    *text_col;
+  gint      offset;
 
-  guint tag;
+  guint     tag;
 };
 
 /* Private */
 static void
-awn_title_position(AwnTitle *title)
+awn_tooltip_position(AwnTooltip *tooltip)
 {
-  AwnTitlePrivate *priv;
+  AwnTooltipPrivate *priv;
   gint x = 0, y = 0, w, h;
   gint fx, fy, fw, fh;
 
-  g_return_if_fail(AWN_IS_TITLE(title));
-  priv = title->priv;
+  g_return_if_fail(AWN_IS_TOOLTIP(tooltip));
+  priv = tooltip->priv;
 
   if (!GTK_IS_WIDGET(priv->focus))
   {
-    gtk_widget_hide(GTK_WIDGET(title));
+    gtk_widget_hide(GTK_WIDGET(tooltip));
     return;
   }
 
@@ -83,7 +81,7 @@ awn_title_position(AwnTitle *title)
 
   gtk_widget_size_request(GTK_WIDGET(priv->label), &req);
 
-  gtk_widget_size_request(GTK_WIDGET(title), &req2);
+  gtk_widget_size_request(GTK_WIDGET(tooltip), &req2);
 
   if (req2.width > req.width)
   {
@@ -109,28 +107,28 @@ awn_title_position(AwnTitle *title)
   {
     x = 0;
   }
-  gtk_window_move(GTK_WINDOW(title), x, y);
+  gtk_window_move(GTK_WINDOW(tooltip), x, y);
 }
 
 /* Public */
 
 static gboolean
-on_prox_out(GtkWidget *focus, GdkEventCrossing *event, AwnTitle *title)
+on_prox_out(GtkWidget *focus, GdkEventCrossing *event, AwnTooltip *tooltip)
 {
-  awn_title_hide(title, focus);
-  g_signal_handlers_disconnect_by_func(focus,on_prox_out,title);
+  awn_tooltip_hide(tooltip, focus);
+  g_signal_handlers_disconnect_by_func(focus,on_prox_out,tooltip);
   return FALSE;
 }
 
 static gboolean
 show(gchar *text)
 {
-  AwnTitle *title = AWN_TITLE(awn_title_get_default());
-  AwnTitlePrivate *priv;
+  AwnTooltip *tooltip = AWN_TOOLTIP(awn_tooltip_get_default());
+  AwnTooltipPrivate *priv;
   gchar *normal;
   gchar *markup;
 
-  priv = title->priv;
+  priv = tooltip->priv;
 
   if (priv->focus == NULL)
   {
@@ -148,11 +146,11 @@ show(gchar *text)
   gtk_label_set_ellipsize(GTK_LABEL(priv->label), PANGO_ELLIPSIZE_END);
   gtk_label_set_markup(GTK_LABEL(priv->label), markup);
 
-  awn_title_position(title);
+  awn_tooltip_position(tooltip);
 
-  gtk_widget_show_all(GTK_WIDGET(title));
+  gtk_widget_show_all(GTK_WIDGET(tooltip));
 
-  gtk_widget_queue_draw(GTK_WIDGET(title));
+  gtk_widget_queue_draw(GTK_WIDGET(tooltip));
 
   g_free(normal);
   g_free(markup);
@@ -162,42 +160,42 @@ show(gchar *text)
 }
 
 void
-awn_title_show(AwnTitle *title, GtkWidget *focus, const gchar *text)
+awn_tooltip_show(AwnTooltip *tooltip, GtkWidget *focus, const gchar *text)
 {
-  AwnTitlePrivate *priv;
+  AwnTooltipPrivate *priv;
 
-  g_return_if_fail(AWN_IS_TITLE(title));
+  g_return_if_fail(AWN_IS_TOOLTIP(tooltip));
   g_return_if_fail(GTK_IS_WIDGET(focus));
   g_return_if_fail(text);
   
-  priv = title->priv;
+  priv = tooltip->priv;
   priv->focus = focus;
 
   g_timeout_add(1, (GSourceFunc)show, g_strdup(text));
 }
 
 void
-awn_title_hide(AwnTitle *title, GtkWidget *focus)
+awn_tooltip_hide(AwnTooltip *tooltip, GtkWidget *focus)
 {
-  AwnTitlePrivate *priv;
+  AwnTooltipPrivate *priv;
 
-  g_return_if_fail(AWN_IS_TITLE(title));
+  g_return_if_fail(AWN_IS_TOOLTIP(tooltip));
   g_return_if_fail(GTK_IS_WIDGET(focus));
-  priv = title->priv;
+  priv = tooltip->priv;
 
   priv->focus = NULL;
-  gtk_widget_hide(GTK_WIDGET(title));
+  gtk_widget_hide(GTK_WIDGET(tooltip));
 }
 
 /* Overrides */
 static gboolean
-awn_title_expose_event(GtkWidget *widget, GdkEventExpose *expose)
+awn_tooltip_expose_event(GtkWidget *widget, GdkEventExpose *expose)
 {
-  AwnTitlePrivate *priv;
+  AwnTooltipPrivate *priv;
   cairo_t *cr = NULL;
   gint width, height;
 
-  priv = AWN_TITLE(widget)->priv;
+  priv = AWN_TOOLTIP(widget)->priv;
 
   if (!GDK_IS_DRAWABLE(widget->window))
   {
@@ -261,12 +259,12 @@ on_alpha_screen_changed(GtkWidget* pWidget,
 
 static void
 _notify_font(AwnConfigClientNotifyEntry *entry,
-             AwnTitle *title)
+             AwnTooltip *tooltip)
 {
-  AwnTitlePrivate *priv;
+  AwnTooltipPrivate *priv;
 
-  g_return_if_fail(AWN_IS_TITLE(title));
-  priv = title->priv;
+  g_return_if_fail(AWN_IS_TOOLTIP(tooltip));
+  priv = tooltip->priv;
 
   if (priv->font)
   {
@@ -277,24 +275,24 @@ _notify_font(AwnConfigClientNotifyEntry *entry,
 
 static void
 _notify_bg(AwnConfigClientNotifyEntry *entry,
-           AwnTitle *title)
+           AwnTooltip *tooltip)
 {
-  AwnTitlePrivate *priv;
+  AwnTooltipPrivate *priv;
 
-  g_return_if_fail(AWN_IS_TITLE(title));
-  priv = title->priv;
+  g_return_if_fail(AWN_IS_TOOLTIP(tooltip));
+  priv = tooltip->priv;
 
   awn_cairo_string_to_color( entry->value.str_val,&priv->bg);
 }
 
 static void
 _notify_text(AwnConfigClientNotifyEntry *entry,
-             AwnTitle *title)
+             AwnTooltip *tooltip)
 {
-  AwnTitlePrivate *priv;
+  AwnTooltipPrivate *priv;
 
-  g_return_if_fail(AWN_IS_TITLE(title));
-  priv = title->priv;
+  g_return_if_fail(AWN_IS_TOOLTIP(tooltip));
+  priv = tooltip->priv;
 
   if (priv->text_col)
   {
@@ -309,51 +307,51 @@ _notify_text(AwnConfigClientNotifyEntry *entry,
 /*  GOBJECT STUFF */
 
 static void
-awn_title_finalize(GObject *obj)
+awn_tooltip_finalize(GObject *obj)
 {
-  AwnTitle *title;
+  AwnTooltip *tooltip;
 
   g_return_if_fail(obj != NULL);
-  g_return_if_fail(AWN_IS_TITLE(obj));
+  g_return_if_fail(AWN_IS_TOOLTIP(obj));
 
-  title = AWN_TITLE(obj);
+  tooltip = AWN_TOOLTIP(obj);
 
-  G_OBJECT_CLASS(awn_title_parent_class)->finalize(obj);
+  G_OBJECT_CLASS(awn_tooltip_parent_class)->finalize(obj);
 }
 
 static void
-awn_title_class_init(AwnTitleClass *klass)
+awn_tooltip_class_init(AwnTooltipClass *klass)
 {
   GObjectClass *gobject_class;
   GtkWidgetClass *widget_class;
 
   gobject_class = G_OBJECT_CLASS(klass);
-  gobject_class->finalize = awn_title_finalize;
+  gobject_class->finalize = awn_tooltip_finalize;
 
   widget_class = GTK_WIDGET_CLASS(klass);
-  widget_class->expose_event = awn_title_expose_event;
+  widget_class->expose_event = awn_tooltip_expose_event;
 
-  g_type_class_add_private(gobject_class, sizeof(AwnTitlePrivate));
+  g_type_class_add_private(gobject_class, sizeof(AwnTooltipPrivate));
 
 }
 
 static void
-awn_title_init(AwnTitle *title)
+awn_tooltip_init(AwnTooltip *tooltip)
 {
-  AwnTitlePrivate *priv;
+  AwnTooltipPrivate *priv;
   GtkWidget *hbox;
   AwnConfigClient *client;
 
-  priv = title->priv = AWN_TITLE_GET_PRIVATE(title);
+  priv = tooltip->priv = AWN_TOOLTIP_GET_PRIVATE(tooltip);
 
-  on_alpha_screen_changed(GTK_WIDGET(title), NULL, NULL);
-  gtk_widget_set_app_paintable(GTK_WIDGET(title), TRUE);
-  gtk_container_set_border_width(GTK_CONTAINER(title), 4);
+  on_alpha_screen_changed(GTK_WIDGET(tooltip), NULL, NULL);
+  gtk_widget_set_app_paintable(GTK_WIDGET(tooltip), TRUE);
+  gtk_container_set_border_width(GTK_CONTAINER(tooltip), 4);
 
   priv->focus = NULL;
 
   hbox = gtk_hbox_new(FALSE, 0);
-  gtk_container_add(GTK_CONTAINER(title), hbox);
+  gtk_container_add(GTK_CONTAINER(tooltip), hbox);
 
   priv->image = NULL;
 
@@ -362,54 +360,54 @@ awn_title_init(AwnTitle *title)
   gtk_label_set_ellipsize(GTK_LABEL(priv->label), PANGO_ELLIPSIZE_NONE);
   gtk_box_pack_end(GTK_BOX(hbox), priv->label, TRUE, TRUE, 4);
 
-  gtk_window_set_policy(GTK_WINDOW(title), FALSE, FALSE, TRUE);
+  gtk_window_set_policy(GTK_WINDOW(tooltip), FALSE, FALSE, TRUE);
 
-  g_signal_connect(title, "leave-notify-event",
-                   G_CALLBACK(on_prox_out), (gpointer)title);
+  g_signal_connect(tooltip, "leave-notify-event",
+                   G_CALLBACK(on_prox_out), (gpointer)tooltip);
 
   /* AwnConfigClient stuff */
   client = awn_config_client_new();
 
   priv->font = g_strdup(
-                 awn_config_client_get_string(client, TITLE, FONT_FACE, NULL));
+                 awn_config_client_get_string(client, TOOLTIP, FONT_FACE, NULL));
   
-  awn_config_client_notify_add(client, TITLE, FONT_FACE,
+  awn_config_client_notify_add(client, TOOLTIP, FONT_FACE,
                                (AwnConfigClientNotifyFunc)_notify_font,
-                               title);
+                               tooltip);
 
   awn_cairo_string_to_color(
-    awn_config_client_get_string(client, TITLE, BACKGROUND, NULL),
+    awn_config_client_get_string(client, TOOLTIP, BACKGROUND, NULL),
     &priv->bg);
   
-  awn_config_client_notify_add(client, TITLE, BACKGROUND,
+  awn_config_client_notify_add(client, TOOLTIP, BACKGROUND,
                                (AwnConfigClientNotifyFunc)_notify_bg,
-                               title);
+                               tooltip);
 
   priv->text_col = g_strdup(
-         	   awn_config_client_get_string(client, TITLE, TEXT_COLOR, NULL)
+         	   awn_config_client_get_string(client, TOOLTIP, TEXT_COLOR, NULL)
 			);
   
   priv->text_col[6] = '\0';
-  awn_config_client_notify_add(client, TITLE, TEXT_COLOR,
+  awn_config_client_notify_add(client, TOOLTIP, TEXT_COLOR,
                                (AwnConfigClientNotifyFunc)_notify_text,
-                               title);
+                               tooltip);
   priv->offset = awn_config_client_get_int(client, "bar", "icon_offset", NULL);
 }
 
 GtkWidget *
-awn_title_get_default(void)
+awn_tooltip_get_default(void)
 {
-  static GtkWidget *title = NULL;
+  static GtkWidget *tooltip = NULL;
 
-  if (!title)
+  if (!tooltip)
   {
-    title = g_object_new(AWN_TYPE_TITLE,
+    tooltip = g_object_new(AWN_TYPE_TOOLTIP,
                          "type", GTK_WINDOW_POPUP,
                          "decorated", FALSE,
                          "skip-pager-hint", TRUE,
                          "skip-taskbar-hint", TRUE,
                          NULL);
   }
-  return title;
+  return tooltip;
 }
 
