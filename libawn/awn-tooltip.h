@@ -70,21 +70,31 @@ struct _AwnTooltipClass
   void (*_tooltip3) (void);
 };
 
-GType         awn_tooltip_get_type (void);
+GType         awn_tooltip_get_type             (void);
 
-GtkWidget *   awn_tooltip_new_for_widget  (GtkWidget   *widget);
+GtkWidget *   awn_tooltip_new_for_widget       (GtkWidget   *widget);
 
-void          awn_tooltip_set_text        (AwnTooltip  *tooltip,
-                                           const gchar *text);
+void          awn_tooltip_set_text             (AwnTooltip  *tooltip,
+                                                const gchar *text);
 
-const gchar * awn_tooltip_get_text        (AwnTooltip  *tooltip);
+const gchar * awn_tooltip_get_text             (AwnTooltip  *tooltip);
 
-void          awn_tooltip_set_orientation (AwnTooltip  *tooltip);
+void          awn_tooltip_set_focus_widget     (AwnTooltip *tooltip,
+                                                GtkWidget  *widget);
 
-void          awn_tooltip_set_delay       (AwnTooltip  *tooltip,
-                                           gint         msecs);
+void          awn_tooltip_set_font_name        (AwnTooltip *tooltip,
+                                                const gchar *font_name);
 
-gint          awn_tooltip_get_delay       (AwnTooltip  *tooltip);
+void          awn_tooltip_set_font_color       (AwnTooltip  *tooltip,
+                                                const gchar *font_color);
+
+void          awn_tooltip_set_background_color (AwnTooltip  *tooltip,
+                                                const gchar *bg_color);
+
+void          awn_tooltip_set_delay            (AwnTooltip  *tooltip,
+                                                gint         msecs);
+
+gint          awn_tooltip_get_delay            (AwnTooltip  *tooltip);
 
 G_END_DECLS
 

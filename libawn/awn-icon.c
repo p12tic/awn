@@ -30,6 +30,7 @@ G_DEFINE_TYPE (AwnIcon, awn_icon, GTK_TYPE_DRAWING_AREA);
 struct _AwnIconPrivate
 {
   AwnEffects   *effects;
+  GtkWidget    *tooltip;
   
   AwnOrientation orient;
   gint           size;
@@ -179,6 +180,7 @@ awn_icon_init (AwnIcon *icon)
   priv->queue_ctx = NULL;
   priv->orient = AWN_ORIENTATION_BOTTOM;
   priv->size = 50;
+  priv->tooltip = awn_tooltip_new_for_widget (GTK_WIDGET (icon));
 
   priv->effects = awn_effects_new_for_widget (GTK_WIDGET (icon));
 
@@ -405,13 +407,17 @@ void
 awn_icon_set_tooltip_text (AwnIcon     *icon,
                            const gchar *text)
 {
+  g_return_if_fail (AWN_IS_ICON (icon));
 
+  awn_tooltip_set_text (AWN_TOOLTIP (icon->priv->tooltip), text);
 }
 
 const gchar * 
 awn_icon_get_tooltip_text (AwnIcon *icon)
 {
-  return NULL;
+  g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
+
+  return awn_tooltip_get_text (AWN_TOOLTIP (icon->priv->tooltip));
 }
 
 /*

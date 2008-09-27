@@ -120,6 +120,21 @@ type = float
 default = 0.5
 description = The symmetry of the curve in Curves mode.
 
+[theme/tooltip_font_name]
+type = string
+default = Sans 8
+description = Font name of the tooltip
+
+[theme/tooltip_font_color]
+type = string
+default = FFFFFFFF
+description = Font color of the tooltip
+
+[theme/tooltip_bg_color]
+type = string
+default = 000000B3
+description = Background color of the tooltip
+
 
 
 [effects/reflection_offset]

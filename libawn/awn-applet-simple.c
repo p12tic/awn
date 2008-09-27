@@ -60,7 +60,8 @@ awn_applet_simple_orient_changed (AwnApplet *applet, AwnOrientation orient)
 {
   AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE (applet)->priv;
 
-  awn_icon_set_orientation (AWN_ICON (priv->icon), orient);
+  if (AWN_IS_ICON (priv->icon))
+    awn_icon_set_orientation (AWN_ICON (priv->icon), orient);
 }
 
 static void
@@ -204,6 +205,8 @@ awn_applet_simple_set_icon_name (AwnAppletSimple  *applet,
                                    applet_name,
                                    awn_applet_get_uid (AWN_APPLET (applet)),
                                    icon_name);
+  awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
+                            awn_applet_get_size (AWN_APPLET (applet)));
 }
                                     
 void   
@@ -223,6 +226,8 @@ awn_applet_simple_set_icon_info (AwnAppletSimple  *applet,
                             awn_applet_get_uid (AWN_APPLET (applet)),
                             states,
                             icon_names);
+  awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
+                            awn_applet_get_size (AWN_APPLET (applet)));
 }
                                     
 void 

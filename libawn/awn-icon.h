@@ -24,6 +24,7 @@
 #include <gtk/gtk.h>
 
 #include "awn-effects.h"
+#include "awn-tooltip.h"
 
 G_BEGIN_DECLS
 
