@@ -32,8 +32,8 @@ pixbuf_icon (GtkWidget *parent)
   pixbuf = gdk_pixbuf_new_from_file_at_size (PICTURE_FILE, 50, 50, NULL);
 
   icon = awn_icon_new ();
-  awn_icon_set_size (AWN_ICON (icon), 50);
   awn_icon_set_from_pixbuf (AWN_ICON (icon), pixbuf);
+  awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
   gtk_container_add (GTK_CONTAINER (parent), icon);
   gtk_widget_show (icon);
  
@@ -67,8 +67,8 @@ cairo_icon (GtkWidget *parent)
   cairo_stroke (cr);
 
   icon = awn_icon_new ();
-  awn_icon_set_size (AWN_ICON (icon), 50);
   awn_icon_set_from_context (AWN_ICON (icon), cr);
+  awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
   
   gtk_container_add (GTK_CONTAINER (parent), icon);
   gtk_widget_show (icon);
@@ -78,6 +78,43 @@ cairo_icon (GtkWidget *parent)
   return icon;
 }
 
+/*
+ * Make a wider image surface cairo drawing to test out the conversions & size
+ * requests
+ */
+static GtkWidget *
+cairo_icon2 (GtkWidget *parent)
+{
+  GtkWidget *icon;
+  cairo_surface_t *surface;
+  cairo_t *cr;
+
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 75, 50);
+  cr = cairo_create (surface);
+  cairo_surface_destroy (surface);
+  
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+
+  cairo_set_source_rgba (cr, 0.0, 1.0, 0.0, 0.5);
+  cairo_rectangle (cr, 0, 0, 75, 50);
+  cairo_fill_preserve (cr);
+  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.5);
+  cairo_stroke (cr);
+
+  icon = awn_icon_new ();
+  awn_icon_set_from_context (AWN_ICON (icon), cr);
+  awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
+  
+  gtk_container_add (GTK_CONTAINER (parent), icon);
+  gtk_widget_show (icon);
+
+  cairo_destroy (cr);
+
+  return icon;
+}
 gint
 main (gint argc, gchar **argv)
 {
@@ -93,15 +130,16 @@ main (gint argc, gchar **argv)
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   if (map)
     gtk_widget_set_colormap (window, map);
-  gtk_window_resize (GTK_WINDOW (window), 50, 50);
+  gtk_window_resize (GTK_WINDOW (window), 50, 100);
   gtk_widget_show (window);
   
-  hbox = gtk_hbox_new (TRUE, 0);
+  hbox = gtk_hbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (window), hbox);
   gtk_widget_show (hbox);
 
   pixbuf_icon (hbox);
   cairo_icon (hbox);
+  cairo_icon2 (hbox);
 
   gtk_main ();
   return 0;

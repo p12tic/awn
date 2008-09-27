@@ -30,7 +30,7 @@ G_DEFINE_TYPE (AwnIcon, awn_icon, GTK_TYPE_DRAWING_AREA);
 struct _AwnIconPrivate
 {
   AwnEffects   *effects;
-
+  
   AwnOrientation orient;
   gint           size;
 
@@ -46,14 +46,6 @@ struct _AwnIconPrivate
   gfloat    progress;
   gboolean  active;
 };
-
-enum
-{
-  ICON_SIZE_CHANGED,
-
-  LAST_SIGNAL
-};
-static guint32 _icon_signals[LAST_SIGNAL] = { 0 };
 
 /* GObject stuff */
 static gboolean
@@ -169,16 +161,6 @@ awn_icon_class_init (AwnIconClass *klass)
   wid_class->enter_notify_event = awn_icon_enter_notify_event;
   wid_class->leave_notify_event = awn_icon_leave_notify_event;
 
-  /* Class signals */
-  _icon_signals[ICON_SIZE_CHANGED] =
-    g_signal_new("icon-size-changed",
-                 G_OBJECT_CLASS_TYPE(obj_class),
-                 G_SIGNAL_RUN_FIRST,
-                 G_STRUCT_OFFSET(AwnIconClass, icon_size_changed),
-                 NULL, NULL,
-                 g_cclosure_marshal_VOID__INT,
-                 G_TYPE_NONE, 1, G_TYPE_INT);
-
   g_type_class_add_private (obj_class, sizeof (AwnIconPrivate));
 }
 
@@ -195,8 +177,8 @@ awn_icon_init (AwnIcon *icon)
   priv->active = FALSE;
   priv->queue_pixbuf = NULL;
   priv->queue_ctx = NULL;
-  priv->size = 48;
   priv->orient = AWN_ORIENTATION_BOTTOM;
+  priv->size = 50;
 
   priv->effects = awn_effects_new_for_widget (GTK_WIDGET (icon));
 
@@ -205,10 +187,6 @@ awn_icon_init (AwnIcon *icon)
   g_signal_connect_after (icon, "map-event", 
                           G_CALLBACK (awn_icon_mapped), NULL);
 }
-
-/*
- * Public Functions
- */
 
 GtkWidget *
 awn_icon_new (void)
@@ -222,66 +200,70 @@ awn_icon_new (void)
   return icon;
 }
 
-void
-awn_icon_set_size (AwnIcon *icon, gint size)
+void 
+awn_icon_set_orientation (AwnIcon        *icon,
+                          AwnOrientation  orient)
 {
   AwnIconPrivate *priv;
 
   g_return_if_fail (AWN_IS_ICON (icon));
   priv = icon->priv;
-
-  priv->size = size;
-
-  switch (priv->orient)
-  {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
-      gtk_widget_set_size_request (GTK_WIDGET (icon), 
-                                   priv->size * 1.20,
-                                   priv->size * 2);
-      break;
-    default:
-      gtk_widget_set_size_request (GTK_WIDGET (icon),
-                                   priv->size * 2,
-                                   priv->size * 1.20);
-      break;
-  }
-
-  g_signal_emit (icon, _icon_signals[ICON_SIZE_CHANGED], 0, size);
-}
-
-void
-awn_icon_set_orientation (AwnIcon *icon, AwnOrientation orient)
-{
-  AwnIconPrivate *priv;
-
-  g_return_if_fail (AWN_IS_ICON (icon));
-  priv = icon->priv;
-
+  
   priv->orient = orient;
 
   switch (orient)
   {
     case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
-      gtk_widget_set_size_request (GTK_WIDGET (icon), 
-                                   priv->size * 1.20,
-                                   priv->size * 2);
+    case AWN_ORIENTATION_RIGHT:
+      gtk_widget_set_size_request (GTK_WIDGET (icon), priv->size * 1.2, -1);
       break;
+      
     default:
-      gtk_widget_set_size_request (GTK_WIDGET (icon),
-                                   priv->size * 2,
-                                   priv->size * 1.20);
+      gtk_widget_set_size_request (GTK_WIDGET (icon), -1, priv->size *1.2);
       break;
+  }
+}
+
+static void
+update_widget_size (AwnIcon *icon)
+{
+  AwnIconPrivate  *priv = icon->priv;
+  cairo_surface_t *surface;
+  gint             width;
+  gint             height;
+
+  surface = cairo_get_target (priv->icon_ctx);
+  width = cairo_xlib_surface_get_width (surface);
+  height = cairo_xlib_surface_get_height (surface);
+
+  switch (priv->orient)
+  {
+    case AWN_ORIENTATION_TOP:
+    case AWN_ORIENTATION_BOTTOM:
+      priv->size = width;
+      gtk_widget_set_size_request (GTK_WIDGET (icon), width * 1.2, -1);
+      break;
+
+    default:
+      priv->size = height;
+      gtk_widget_set_size_request (GTK_WIDGET (icon), -1, height * 1.2);
   }
 }
 
 void  
 awn_icon_set_effect (AwnIcon *icon, AwnEffect effect)
-{
+{ 
   g_return_if_fail (AWN_IS_ICON (icon));
 
   awn_effects_start (icon->priv->effects, effect);
+}
+
+AwnEffects * 
+awn_icon_get_effects (AwnIcon *icon)
+{
+  g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
+
+  return icon->priv->effects;
 }
 
 /*
@@ -339,6 +321,7 @@ awn_icon_set_from_pixbuf (AwnIcon *icon, GdkPixbuf *pixbuf)
   cairo_paint (priv->icon_ctx);
 
   /* Queue a redraw */
+  update_widget_size (icon);
   gtk_widget_queue_draw (widget);
 
   /* This should be valid according to the docs */
@@ -411,6 +394,7 @@ awn_icon_set_from_context (AwnIcon *icon, cairo_t *ctx)
     return;
   }
 
+  update_widget_size (icon);
   gtk_widget_queue_draw (GTK_WIDGET (icon));
 }
 

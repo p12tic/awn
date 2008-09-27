@@ -83,8 +83,6 @@ void awn_themed_icon_drag_data_received (GtkWidget        *widget,
                                          GtkSelectionData *selection,
                                          guint             info,
                                          guint             time);
-static void awn_themed_icon_set_size    (AwnIcon           *icon,
-                                         gint               size);
 
 /* GObject stuff */
 static void
@@ -116,13 +114,10 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
 {
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
-  AwnIconClass   *icn_class = AWN_ICON_CLASS (klass);
   
   obj_class->dispose = awn_themed_icon_dispose;
   
   wid_class->drag_data_received = awn_themed_icon_drag_data_received;
-
-  icn_class->icon_size_changed = awn_themed_icon_set_size;
 
   g_type_class_add_private (obj_class, sizeof (AwnThemedIconPrivate));
 }
@@ -438,14 +433,22 @@ awn_themed_icon_get_state (AwnThemedIcon *icon)
   return icon->priv->current_state;
 }
 
-static void 
-awn_themed_icon_set_size (AwnIcon *icon,
-                          gint     size)
+void 
+awn_themed_icon_set_size (AwnThemedIcon *icon,
+                          gint           size)
 {
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
 
-  AWN_THEMED_ICON (icon)->priv->current_size = size;
-  ensure_icon (AWN_THEMED_ICON (icon));
+  icon->priv->current_size = size;
+  ensure_icon (icon);
+}
+
+gint
+awn_themed_icon_get_size (AwnThemedIcon *icon)
+{
+  g_return_val_if_fail (AWN_IS_THEMED_ICON (icon), 0);
+
+  return icon->priv->current_size;
 }
 
 /*

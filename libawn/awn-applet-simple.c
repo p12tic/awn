@@ -68,7 +68,9 @@ awn_applet_simple_size_changed (AwnApplet *applet, gint size)
 {
   AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE (applet)->priv;
  
-  awn_icon_set_size (AWN_ICON (priv->icon), size);
+  if (priv->last_set_icon == ICON_THEMED_SIMPLE
+      || priv->last_set_icon == ICON_THEMED_MANY)
+    awn_themed_icon_set_size (AWN_THEMED_ICON (priv->icon), size);
 }
 
 static void
@@ -86,8 +88,6 @@ awn_applet_simple_constructed (GObject *object)
   priv->icon = awn_themed_icon_new ();
   awn_icon_set_orientation (AWN_ICON (priv->icon), 
                             awn_applet_get_orientation (AWN_APPLET (object)));
-  awn_icon_set_size (AWN_ICON (priv->icon),
-                     awn_applet_get_size (AWN_APPLET (object)));
   gtk_container_add (GTK_CONTAINER (applet), priv->icon);
   gtk_widget_show (priv->icon);
 }
