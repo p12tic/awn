@@ -41,6 +41,8 @@ struct _AwnAppletPrivate
   gchar *gconf_key;
   AwnOrientation orient;
   guint size;
+
+  AwnAppletFlags flags;
 };
 
 enum
@@ -57,7 +59,8 @@ enum
   SIZE_CHANGED,
   PLUG_EMBEDDED,
   DELETED,
-  MENU_CREATION,  
+  MENU_CREATION,
+  FLAGS_CHANGED,
 
   LAST_SIGNAL
 };
@@ -244,6 +247,16 @@ awn_applet_class_init (AwnAppletClass *klass)
                  g_cclosure_marshal_VOID__OBJECT,
                  G_TYPE_NONE, 1, GTK_TYPE_MENU);
 
+  _applet_signals[FLAGS_CHANGED] =
+    g_signal_new("flags-changed",
+                 G_OBJECT_CLASS_TYPE (gobject_class),
+                 G_SIGNAL_RUN_FIRST,
+                 G_STRUCT_OFFSET (AwnAppletClass, flags_changed),
+								 NULL, NULL,
+                 g_cclosure_marshal_VOID__ENUM,
+                 G_TYPE_NONE, 1, GTK_TYPE_MENU);
+
+
 
   g_type_class_add_private(gobject_class, sizeof(AwnAppletPrivate));
 }
@@ -254,6 +267,8 @@ awn_applet_init (AwnApplet *applet)
   AwnAppletPrivate *priv;
 
   priv = applet->priv = AWN_APPLET_GET_PRIVATE(applet);
+
+  priv->flags = AWN_APPLET_FLAGS_NONE;
 }
 
 AwnApplet *
@@ -414,3 +429,25 @@ awn_applet_set_uid (AwnApplet *applet, const gchar *uid)
 
   priv->uid = g_strdup (uid);
 }
+
+void 
+awn_applet_set_flags (AwnApplet *applet, AwnAppletFlags flags)
+{
+  AwnAppletPrivate *priv;
+
+  g_return_if_fail (AWN_IS_APPLET (applet));
+  priv = applet->priv;
+
+  priv->flags = flags;
+
+  g_signal_emit (applet, _applet_signals[FLAGS_CHANGED], 0, flags);
+}
+
+AwnAppletFlags 
+awn_applet_get_flags (AwnApplet *applet)
+{
+  g_return_val_if_fail (AWN_IS_APPLET (applet), AWN_APPLET_FLAGS_NONE);
+
+  return applet->priv->flags;
+}
+

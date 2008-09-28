@@ -48,6 +48,15 @@ typedef struct _AwnApplet AwnApplet;
 typedef struct _AwnAppletClass AwnAppletClass;
 typedef struct _AwnAppletPrivate AwnAppletPrivate;
 
+typedef enum
+{
+  AWN_APPLET_FLAGS_NONE   = 0,
+  AWN_APPLET_EXPAND_MAJOR = 1 << 0,
+  AWN_APPLET_EXPAND_MINOR = 1 << 1,
+  AWN_APPLET_IS_SEPARATOR = 1 << 2
+
+} AwnAppletFlags;
+
 struct _AwnApplet
 {
   GtkEventBox parent;
@@ -66,6 +75,7 @@ struct _AwnAppletClass
   void (*size_changed)   (AwnApplet *applet, gint size);
   void (*deleted)        (AwnApplet *applet, const gchar *uid);
   void (*menu_creation)  (AwnApplet *applet, GtkMenu *menu);
+  void (*flags_changed)  (AwnApplet *applet, AwnAppletFlags flags);
 
   /*< Future padding >*/
   void (*_applet0) (void);
@@ -74,7 +84,6 @@ struct _AwnAppletClass
   void (*_applet3) (void);
 };
 
-GType awn_applet_get_type (void);
 
 /* Hook to have an AWN Applet built for you */
 typedef gboolean   (*AwnAppletInitFunc)           (AwnApplet   *applet);
@@ -82,6 +91,8 @@ typedef gboolean   (*AwnAppletInitFunc)           (AwnApplet   *applet);
 typedef AwnApplet* (*AwnAppletInitPFunc)          (const gchar *uid, 
                                                    gint         orient, 
                                                    gint         height);
+
+GType              awn_applet_get_type            (void);
 
 AwnApplet *        awn_applet_new                 (const gchar *uid, 
                                                    gint         orient, 
@@ -103,6 +114,11 @@ void               awn_applet_set_uid             (AwnApplet      *applet,
 void               awn_applet_plug_embedded       (AwnApplet      *applet);
 
 GtkWidget*         awn_applet_create_default_menu (AwnApplet      *applet);
+
+void               awn_applet_set_flags           (AwnApplet      *applet, 
+                                                   AwnAppletFlags  flags);
+
+AwnAppletFlags     awn_applet_get_flags           (AwnApplet      *applet);
 
 /*
  * Returns a gtk menu item for the "Dock Preferences".
