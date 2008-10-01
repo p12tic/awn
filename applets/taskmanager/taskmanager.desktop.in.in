@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Launcher/Taskmanager
+Comment=Launcher/Taskmanager applet
+Exec=@LIBDIR@/awn/applets/taskmanager/taskmanager.so
+Icon=avant-window-navigator
+X-AWN-AppletType=C
+X-AWN-AppletCategory=Utility

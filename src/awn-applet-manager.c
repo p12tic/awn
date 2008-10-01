@@ -202,7 +202,7 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
     g_param_spec_int ("orient",
                       "Orient",
                       "The orientation of the panel",
-                      0, 3, AWN_ORIENT_BOTTOM,
+                      0, 3, AWN_ORIENTATION_BOTTOM,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -259,13 +259,13 @@ awn_applet_manager_set_orient (AwnAppletManager *manager,
 
   switch (priv->orient)
   {
-    case AWN_ORIENT_TOP:
-    case AWN_ORIENT_BOTTOM:
+    case AWN_ORIENTATION_TOP:
+    case AWN_ORIENTATION_BOTTOM:
       priv->klass = GTK_WIDGET_CLASS (gtk_type_class (GTK_TYPE_HBOX));
       break;
     
-    case AWN_ORIENT_RIGHT:
-    case AWN_ORIENT_LEFT:
+    case AWN_ORIENTATION_RIGHT:
+    case AWN_ORIENTATION_LEFT:
       priv->klass = GTK_WIDGET_CLASS (gtk_type_class (GTK_TYPE_VBOX));
       break;
 
@@ -304,10 +304,10 @@ create_applet (AwnAppletManager *manager,
 
   /*FIXME: Exception cases, i.e. separators */
   
-  applet = awn_applet_proxy_new (path, uid, AWN_ORIENT_BOTTOM, 48);
+  applet = awn_applet_proxy_new (path, uid, AWN_ORIENTATION_BOTTOM, 48);
   gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
   
-  if (priv->orient == AWN_ORIENT_TOP || priv->orient == AWN_ORIENT_BOTTOM)
+  if (priv->orient == AWN_ORIENTATION_TOP || priv->orient == AWN_ORIENTATION_BOTTOM)
     gtk_widget_set_size_request (applet, -1, 96);
   else
     gtk_widget_set_size_request (applet, 96, -1);
@@ -430,9 +430,35 @@ awn_applet_manager_set_real_size (AwnAppletManager *manager,
   children = gtk_container_get_children (GTK_CONTAINER (manager));
   for (c = children; c; c = c->next)
   {
-    GtkWidget *widget = c->data;
-    gtk_widget_set_size_request (widget, width, height);
+    //GtkWidget *widget = c->data;
+    //gtk_widget_set_size_request (widget, width, height);
   }
   g_list_free (children);
 }
+
+void 
+awn_applet_manager_handle_applet_size_request (AwnAppletManager *manager,
+                                               const gchar      *uid,
+                                               gint              width, 
+                                               gint              height)
+{
+  AwnAppletManagerPrivate *priv;
+  GtkWidget *applet;
+
+  g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
+  priv = manager->priv;
+
+  /* See if the applet already exists */
+  applet = g_hash_table_lookup (priv->applets, uid);
+
+  if (GTK_IS_WIDGET (applet))
+  {
+    gtk_widget_set_size_request (GTK_WIDGET (applet), width, height);
+  }
+  else
+  {
+    g_warning ("Unable to find %s for size-request", uid);
+  }
+}
+
 

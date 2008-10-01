@@ -25,6 +25,7 @@
 #include <gtk/gtk.h>
 
 #include <libawn/awn-config-client.h>
+#include <libawn/awn-defines.h>
 
 G_BEGIN_DECLS
 
@@ -67,22 +68,25 @@ struct _AwnPanelClass
   void (*destroy_applet) (AwnPanel *panel, const gchar *uid);
 };
 
-typedef enum
-{
-  AWN_ORIENT_TOP = 0,
-  AWN_ORIENT_RIGHT,
-  AWN_ORIENT_BOTTOM,
-  AWN_ORIENT_LEFT
+GType       awn_panel_get_type            (void) G_GNUC_CONST;
 
-} AwnOrientation;
+GtkWidget * awn_panel_new_from_config     (AwnConfigClient *client);
 
-GType       awn_panel_get_type          (void) G_GNUC_CONST;
+gboolean    awn_panel_delete_applet       (AwnPanel        *panel,
+                                           gchar           *uid,
+                                           GError         **error);
 
-GtkWidget * awn_panel_new_from_config   (AwnConfigClient *client);
+gboolean    awn_panel_set_applet_flags    (AwnPanel         *panel,
+                                           const gchar      *uid,
+                                           gint              flags,
+                                           GError          **error);
 
-gboolean    awn_panel_delete_applet (AwnPanel  *panel,
-                                     gchar     *uid,
-                                     GError   **error);
+gboolean    awn_panel_applet_size_request (AwnPanel         *panel, 
+                                           const gchar      *uid,
+                                           gint              width, 
+                                           gint              height,
+                                           GError          **error);
+
 G_END_DECLS
 
 

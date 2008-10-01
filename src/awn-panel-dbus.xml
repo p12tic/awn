@@ -8,13 +8,24 @@
 		  <arg name="uid" type="s" direction="in" />
 	  </method>
 
+    <method name="SetAppletFlags">
+      <arg name="uid" type="s" direction="in" />
+      <arg name="flags" type="i" direction="in" />
+    </method>
+
+    <method name="AppletSizeRequest">
+      <arg name="uid" type="s" direction="in" />
+      <arg name="width" type="i" direction="in" />
+      <arg name="height" type="i" direction="in" />
+    </method>
+
     <!-- Signals -->
     <signal name="SizeChanged">
-      <arg type="d" name="size" />
+      <arg type="i" name="size" />
     </signal>
 
     <signal name="OrientChanged">
-      <arg type="d" name="orient" />
+      <arg type="i" name="orient" />
     </signal>
 
     <signal name="DestroyNotify"></signal>

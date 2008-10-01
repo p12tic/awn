@@ -253,8 +253,8 @@ awn_applet_class_init (AwnAppletClass *klass)
                  G_SIGNAL_RUN_FIRST,
                  G_STRUCT_OFFSET (AwnAppletClass, flags_changed),
 								 NULL, NULL,
-                 g_cclosure_marshal_VOID__ENUM,
-                 G_TYPE_NONE, 1, GTK_TYPE_MENU);
+                 g_cclosure_marshal_VOID__INT,
+                 G_TYPE_NONE, 1, G_TYPE_INT);
 
 
 

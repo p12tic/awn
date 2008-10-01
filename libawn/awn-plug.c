@@ -59,6 +59,10 @@ static void awn_plug_class_init (AwnPlugClass *klass);
 static void awn_plug_init       (AwnPlug *plug);
 static void awn_plug_finalize   (GObject *obj);
 
+static void on_applet_flags_changed (AwnApplet      *applet, 
+                                     AwnAppletFlags  flags, 
+                                     AwnPlug        *plug);
+
 void
 awn_plug_construct (AwnPlug *plug, GdkNativeWindow id)
 {
@@ -75,7 +79,6 @@ on_plug_embedded (AwnPlug *plug)
   priv = plug->priv;
 
   awn_applet_plug_embedded (priv->applet);
-
 
   gtk_widget_show_all (GTK_WIDGET (plug));
 }
@@ -127,6 +130,58 @@ on_destroy_applet (DBusGProxy *proxy, gchar *id, AwnPlug *plug)
   if (strcmp (uid, id) == 0)
     on_delete_notify (NULL, plug);
 }
+
+/*
+ * Size requisition stuff 
+ */
+static void
+on_child_size_request (GtkWidget *child, GtkRequisition *req, AwnPlug *plug)
+{
+  AwnPlugPrivate *priv;
+  GError *error = NULL;
+  gint width, height;
+
+  g_return_if_fail (AWN_IS_PLUG (plug));
+  priv = plug->priv;
+
+  width = req->width;
+  height = req->height;
+
+  g_print ("Before: %d %d\n", width, height);
+
+  if (width < 1)
+    width = 1;
+  if (height < 1)
+    height = 1;
+  g_print ("After: %d %d\n", width, height);
+
+  dbus_g_proxy_call (priv->proxy, "AppletSizeRequest", 
+                        &error,
+                        G_TYPE_STRING, awn_applet_get_uid (AWN_APPLET (child)), 
+                        G_TYPE_INT, width, 
+                        G_TYPE_INT, height,
+                        G_TYPE_INVALID, G_TYPE_INVALID);
+
+  if (error)
+  {
+    g_warning ("%s", error->message);
+    g_error_free (error);
+  }
+
+  gtk_window_resize (GTK_WINDOW (plug), width, height);
+
+  g_debug ("Applet request: %d %d", width, height);
+}
+
+static void
+on_child_added (GtkContainer *container, GtkWidget *child)
+{
+  AwnPlug *plug = AWN_PLUG (container);
+
+  g_signal_connect (child, "size-request", 
+                    G_CALLBACK (on_child_size_request), plug);
+}
+
 
 /*  GOBJECT STUFF */
 void
@@ -250,6 +305,7 @@ awn_plug_init(AwnPlug *plug)
                     G_CALLBACK (on_proxy_destroyed), NULL);
   g_signal_connect (plug, "embedded",
                     G_CALLBACK (on_plug_embedded), NULL);
+  g_signal_connect (plug, "add", G_CALLBACK (on_child_added), NULL);
 }
 
 static void
@@ -264,14 +320,41 @@ awn_plug_finalize(GObject *obj)
 }
 
 GtkWidget *
-awn_plug_new(AwnApplet *applet)
+awn_plug_new (AwnApplet *applet)
 {
   AwnPlug *plug;
 
-  plug = g_object_new(AWN_TYPE_PLUG, NULL);
+  plug = g_object_new (AWN_TYPE_PLUG, NULL);
 
+  /* This is ugly, we need to make the applet a property */
   plug->priv->applet = applet;
+  g_signal_connect (applet, "flags-changed", 
+                    G_CALLBACK (on_applet_flags_changed), plug);
+
+  on_applet_flags_changed (applet, awn_applet_get_flags (applet), plug);
 
   return GTK_WIDGET (plug);
 }
 
+static void
+on_applet_flags_changed (AwnApplet *applet, AwnAppletFlags flags, AwnPlug *plug)
+{
+  AwnPlugPrivate *priv;
+  GError *error = NULL;
+
+  g_return_if_fail (AWN_IS_PLUG (plug));
+  priv = plug->priv;
+
+  g_print ("Flags: %d\n", flags);
+
+  dbus_g_proxy_call (priv->proxy, "SetAppletFlags",
+                        &error,
+                        G_TYPE_STRING, awn_applet_get_uid (AWN_APPLET (applet)),                        G_TYPE_INT, flags, 
+                        G_TYPE_INVALID, G_TYPE_INVALID);
+
+  if (error)
+  {
+    g_warning ("%s", error->message);
+    g_error_free (error);
+  }
+}

@@ -1,5 +1,6 @@
-desktopdir = $(pkgdatadir)/applets
+SUBDIRS=taskmanager
 
+desktopdir = $(pkgdatadir)/applets
 desktop_DATA = \
 	taskman.desktop
 @INTLTOOL_DESKTOP_RULE@

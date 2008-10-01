@@ -132,6 +132,26 @@ awn_icon_mapped (GtkWidget *widget, GdkEvent *event)
 }
 
 static void
+awn_icon_size_request (GtkWidget *widget, GtkRequisition *req)
+{
+  AwnIconPrivate *priv = AWN_ICON_GET_PRIVATE (widget);
+
+  switch (priv->orient)
+  {
+    case AWN_ORIENTATION_TOP:
+    case AWN_ORIENTATION_BOTTOM:
+      req->width =  priv->size * 1.2;
+      req->height = -1;
+      break;
+      
+    default:
+      req->width = -1;
+      req->height = priv->size *1.2;
+      break;
+  }
+}
+
+static void
 awn_icon_dispose (GObject *object)
 {
   AwnIconPrivate *priv;
@@ -158,6 +178,7 @@ awn_icon_class_init (AwnIconClass *klass)
 
   obj_class->dispose = awn_icon_dispose;
 
+  wid_class->size_request       = awn_icon_size_request;
   wid_class->expose_event       = awn_icon_expose_event;
   wid_class->enter_notify_event = awn_icon_enter_notify_event;
   wid_class->leave_notify_event = awn_icon_leave_notify_event;
@@ -216,7 +237,7 @@ awn_icon_set_orientation (AwnIcon        *icon,
   switch (orient)
   {
     case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_RIGHT:
+    case AWN_ORIENTATION_BOTTOM:
       gtk_widget_set_size_request (GTK_WIDGET (icon), priv->size * 1.2, -1);
       break;
       

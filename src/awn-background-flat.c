@@ -84,7 +84,7 @@ draw_rect (AwnBackground  *bg,
 
   switch (orient)
   {
-    case AWN_ORIENT_TOP:
+    case AWN_ORIENTATION_TOP:
       state = ROUND_BOTTOM;
       break;
     default:
@@ -122,7 +122,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_step_2.blue, 
                                      bg->g_step_2.alpha);
 
-  if (orient == AWN_ORIENT_TOP)
+  if (orient == AWN_ORIENTATION_TOP)
     draw_rect (bg, cr, orient, x+1, y, width-2, height-1);
   else
     draw_rect (bg, cr, orient, x+1, y+1, width-2, height-1);
@@ -143,7 +143,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_histep_2.blue, 
                                      bg->g_histep_2.alpha);
 
-  if (orient == AWN_ORIENT_TOP)
+  if (orient == AWN_ORIENTATION_TOP)
     draw_rect (bg, cr, orient, x+1, y, width-2, height/3);
   else
     draw_rect (bg, cr, orient, x+1, y+1, width-2, height/3);
@@ -156,7 +156,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                              bg->hilight_color.green,
                              bg->hilight_color.blue,
                              bg->hilight_color.alpha);
-  if (orient == AWN_ORIENT_TOP)
+  if (orient == AWN_ORIENTATION_TOP)
       draw_rect (bg, cr, orient, x+1, y-2, width-3, height+1);
   else
       draw_rect (bg, cr, orient, x+1, y+1, width-3, height+3);
@@ -167,7 +167,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                              bg->border_color.green,
                              bg->border_color.blue,
                              bg->border_color.alpha);
-  if (orient == AWN_ORIENT_TOP)
+  if (orient == AWN_ORIENTATION_TOP)
       draw_rect (bg, cr, orient, x, y-3, width-1, height+3);
   else
       draw_rect (bg, cr, orient, x, y,  width-1, height+3);
@@ -188,7 +188,7 @@ awn_background_flat_draw (AwnBackground  *bg,
   
   switch (orient)
   {
-    case AWN_ORIENT_RIGHT:
+    case AWN_ORIENTATION_RIGHT:
       cairo_translate (cr, width/2, height/2);
       cairo_rotate (cr, 270 * M_PI/180); 
       temp = y;
@@ -196,7 +196,7 @@ awn_background_flat_draw (AwnBackground  *bg,
       temp = width;
       width = height; height = temp;
       break;
-    case AWN_ORIENT_LEFT:
+    case AWN_ORIENTATION_LEFT:
       cairo_translate (cr, width/2, height/2);
       cairo_rotate (cr, 90 * M_PI/180);
       temp = y;
