@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007 Neil J. Patel <njpatel@gmail.com>
+ * Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * Authors: Neil J. Patel <njpatel@gmail.com>
+ * Authors: Neil Jagdish Patel <njpatel@gmail.com>
  *
  */
 
@@ -55,10 +55,6 @@ enum
 static guint _plug_signals[LAST_SIGNAL] = { 0 };
 
 /* FORWARDS */
-static void awn_plug_class_init (AwnPlugClass *klass);
-static void awn_plug_init       (AwnPlug *plug);
-static void awn_plug_finalize   (GObject *obj);
-
 static void on_applet_flags_changed (AwnApplet      *applet, 
                                      AwnAppletFlags  flags, 
                                      AwnPlug        *plug);
@@ -147,14 +143,12 @@ on_child_size_request (GtkWidget *child, GtkRequisition *req, AwnPlug *plug)
   width = req->width;
   height = req->height;
 
-  g_print ("Before: %d %d\n", width, height);
-
+  /* Make sure it's valid otherwise everything will blow up */
   if (width < 1)
     width = 1;
   if (height < 1)
     height = 1;
-  g_print ("After: %d %d\n", width, height);
-
+  
   dbus_g_proxy_call (priv->proxy, "AppletSizeRequest", 
                         &error,
                         G_TYPE_STRING, awn_applet_get_uid (AWN_APPLET (child)), 
@@ -169,8 +163,6 @@ on_child_size_request (GtkWidget *child, GtkRequisition *req, AwnPlug *plug)
   }
 
   gtk_window_resize (GTK_WINDOW (plug), width, height);
-
-  g_debug ("Applet request: %d %d", width, height);
 }
 
 static void
@@ -223,6 +215,18 @@ awn_plug_expose_event (GtkWidget *widget, GdkEventExpose *expose)
 
   return FALSE;
 }
+
+static void
+awn_plug_finalize(GObject *obj)
+{
+  AwnPlugPrivate *priv = AWN_PLUG_GET_PRIVATE (obj);
+
+  dbus_g_connection_unref (priv->connection);
+  g_object_unref (priv->proxy);
+
+  G_OBJECT_CLASS (awn_plug_parent_class)->finalize (obj);
+}
+
 
 static void
 awn_plug_class_init(AwnPlugClass *klass)
@@ -306,17 +310,6 @@ awn_plug_init(AwnPlug *plug)
   g_signal_connect (plug, "embedded",
                     G_CALLBACK (on_plug_embedded), NULL);
   g_signal_connect (plug, "add", G_CALLBACK (on_child_added), NULL);
-}
-
-static void
-awn_plug_finalize(GObject *obj)
-{
-  AwnPlugPrivate *priv = AWN_PLUG_GET_PRIVATE (obj);
-
-  dbus_g_connection_unref (priv->connection);
-  g_object_unref (priv->proxy);
-
-  G_OBJECT_CLASS (awn_plug_parent_class)->finalize (obj);
 }
 
 GtkWidget *

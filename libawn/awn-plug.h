@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>
+ * Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- *  Author : Neil Jagdish Patel <njpatel@gmail.com>
+ * Author : Neil Jagdish Patel <njpatel@gmail.com>
 */
 
 #ifndef __AWN_PLUG_H__
@@ -61,7 +61,6 @@ struct _AwnPlugClass
 
   /*< signals >*/
   void (*applet_deleted) (AwnPlug *plug, const gchar *uid);
-
 };
 
 GType       awn_plug_get_type  (void);

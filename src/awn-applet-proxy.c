@@ -169,7 +169,7 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
       g_param_spec_int ("orient",
         "Orient",
         "The panel orientation",
-        0, 3, AWN_ORIENT_BOTTOM,
+        0, 3, AWN_ORIENTATION_BOTTOM,
         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
