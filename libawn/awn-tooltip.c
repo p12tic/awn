@@ -476,6 +476,9 @@ awn_tooltip_show (AwnTooltip *tooltip, GtkWidget *focus)
 {
   g_return_val_if_fail (AWN_IS_TOOLTIP (tooltip), FALSE);
 
+  if (!tooltip->priv->text)
+    return FALSE;
+
   awn_tooltip_position_and_show (tooltip);
 
   return FALSE;

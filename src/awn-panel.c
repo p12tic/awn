@@ -751,8 +751,7 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   gint             width = 0, height = 0;
   cairo_t         *cr;
   GtkWidget       *child;
-  GdkRegion       *region;
-
+  
   g_return_val_if_fail (AWN_IS_PANEL (widget), FALSE);
   priv = AWN_PANEL (widget)->priv;
 
@@ -805,10 +804,8 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   }
 
   /* Clip */
-  region = gdk_region_rectangle (&widget->allocation);
   gdk_cairo_region (cr, event->region);
   cairo_clip (cr);
-  gdk_region_destroy (region);
   
   /* The actual drawing of the background */
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
@@ -823,6 +820,7 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
 
   if (priv->composited)
   {
+    GdkRegion *region;
     gdk_cairo_set_source_pixmap (cr, child->window,
                                  child->allocation.x, 
                                  child->allocation.y);
@@ -978,13 +976,13 @@ awn_panel_set_applet_flags (AwnPanel         *panel,
   g_print ("Applet flags: %s %d: ", uid, flags);
   
   if (flags & AWN_APPLET_FLAGS_NONE)
-    g_print ("None\n");
+    g_print ("None ");
   if (flags & AWN_APPLET_EXPAND_MAJOR)
-    g_print ("Major\n");
+    g_print ("Major ");
   if (flags & AWN_APPLET_EXPAND_MINOR)
-    g_print ("Minor\n");
+    g_print ("Minor ");
   if (flags & AWN_APPLET_IS_SEPARATOR)
-    g_print ("Separator\n");
+    g_print ("Separator ");
 
   g_print ("\n");
   
@@ -1003,7 +1001,7 @@ awn_panel_applet_size_request (AwnPanel    *panel,
   g_return_val_if_fail (AWN_IS_PANEL (panel), TRUE);
   priv = panel->priv;
 
-  g_debug ("Applet size request: %d %d", width, height);
+  //g_debug ("Applet size request: %d %d", width, height);
 
   awn_applet_manager_handle_applet_size_request 
                   (AWN_APPLET_MANAGER (priv->manager), uid, width, height);

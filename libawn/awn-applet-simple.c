@@ -104,7 +104,8 @@ awn_applet_simple_size_changed (AwnApplet *applet, gint size)
       || priv->last_set_icon == ICON_THEMED_MANY)
     awn_themed_icon_set_size (AWN_THEMED_ICON (priv->icon), size);
 
-  awn_applet_simple_orient_changed (applet, awn_applet_get_orientation (applet));
+  awn_applet_simple_orient_changed (applet, 
+                                    awn_applet_get_orientation (applet));
 }
 
 static void
