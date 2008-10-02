@@ -90,8 +90,6 @@ awn_applet_simple_orient_changed (AwnApplet *applet, AwnOrientation orient)
   gtk_widget_set_size_request (GTK_WIDGET (applet), 
                                priv->last_size_req.width,
                                priv->last_size_req.height);
-  g_print ("awn-size: %d, %dx%d\n", awn_applet_get_size (applet),
-           priv->last_size_req.width, priv->last_size_req.height);
 }
 
 static void

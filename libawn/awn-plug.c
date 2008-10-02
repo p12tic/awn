@@ -338,8 +338,6 @@ on_applet_flags_changed (AwnApplet *applet, AwnAppletFlags flags, AwnPlug *plug)
   g_return_if_fail (AWN_IS_PLUG (plug));
   priv = plug->priv;
 
-  g_print ("Flags: %d\n", flags);
-
   dbus_g_proxy_call (priv->proxy, "SetAppletFlags",
                         &error,
                         G_TYPE_STRING, awn_applet_get_uid (AWN_APPLET (applet)),                        G_TYPE_INT, flags, 
