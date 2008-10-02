@@ -8,6 +8,7 @@ awn_applet_factory_initp ( gchar* uid, gint orient, gint height )
   applet = (AwnApplet*)awn_applet_simple_new ( uid, orient, height );
   awn_applet_simple_set_icon_name (AWN_APPLET_SIMPLE (applet), 
                                    "taskmanager", "gtk-close");
+  awn_applet_simple_set_tooltip_text (AWN_APPLET_SIMPLE (applet), "Hello");
 
   return applet;
 }

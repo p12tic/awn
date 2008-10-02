@@ -1,3 +1,8 @@
+2008-10-02  Neil Jagdish Patel  <njpatel@gmail.com>
+
+	* applets/taskmanager/applet.c:
+	Add a tooltip for testing
+
 2008-08-23  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* awn-manager/awnDefs.py.in: 
