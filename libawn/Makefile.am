@@ -91,10 +91,12 @@ endif
 
 libawninc_HEADERS =		\
 	$(public_headers)	\
+	awn-enum-types.h.in	\
 	$(NULL)
 libawn_la_SOURCES =		\
 	$(private_headers)	\
 	$(source_c)		\
+	awn-enum-types.c.in	\
 	$(NULL)
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
 libawn_la_LDFLAGS = -version-info 0:1:0

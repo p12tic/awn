@@ -1,3 +1,8 @@
+2008-10-09  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* libawn/Makefile.am:
+	Add 2 missing files for the make dist.
+
 2008-08-31  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	reviewed by: Rodney Cryderman <rcryderman@gmail.com>
