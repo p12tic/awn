@@ -1,3 +1,8 @@
+2008-10-12  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* src/main.c:
+	Add graphical warning when the screen is not composited.
+
 2008-10-09  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* libawn/Makefile.am:

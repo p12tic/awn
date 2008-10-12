@@ -667,9 +667,34 @@ static gboolean is_composited(GdkScreen *screen)
 static void
 composited_changed(GdkScreen *screen, AwnSettings *s)
 {
+  GtkDialog *dialog = NULL;
+  const char *str = "Error: Screen isn't composited. Please run compiz (-fusion) or another compositing manager.\n";
+  GtkWidget *label = gtk_label_new( str );
+
   if (!is_composited(screen))
-  {
-    g_print("Error: Screen isn't composited. Please run compiz (-fusion) or another compositing manager.\n");
+
+  { 
+    if (!dialog)
+    {
+	  dialog = gtk_dialog_new_with_buttons ("Screen is not composited",
+                                         GTK_WINDOW(s->window),
+                                         GTK_DIALOG_DESTROY_WITH_PARENT,
+                                         GTK_STOCK_OK,
+                                         GTK_RESPONSE_NONE,
+                                         NULL);
+    }
+    
+    gtk_widget_show_all  (dialog);
+
+    gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), label);
+    gtk_widget_show_all  (label);
+    
+    g_signal_connect_swapped (dialog,
+                             "response", 
+                             G_CALLBACK (gtk_widget_destroy),
+                             dialog);
+    g_print(str);
+
     gtk_widget_hide(s->bar);
     gtk_widget_hide(s->window);
     gtk_widget_hide(s->hot);
@@ -677,7 +702,11 @@ composited_changed(GdkScreen *screen, AwnSettings *s)
   else
   {
     g_print("Screen is composited.\n");
-
+    
+    if (dialog)
+    {
+      gtk_widget_hide(dialog);
+    }  
     if (!started)
     {
       //g_timeout_add (1000, (GSourceFunc)load_applets, applet_manager);
