@@ -1,5 +1,11 @@
 2008-10-12  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* doc/reference/tmpl/awn-effects.sgml:
+	* doc/reference/tmpl/libawn-unused.sgml:
+	Update gtk-doc templates.
+
+2008-10-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/Makefile.am:
 	Put the awn-enum-types-* files in the proper automake variable.
 

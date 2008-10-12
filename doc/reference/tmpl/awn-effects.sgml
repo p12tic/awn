@@ -107,6 +107,8 @@ awn-effects
 @clip: 
 @flip: 
 @spotlight: 
+@do_reflections: 
+@do_offset_cut: 
 @enter_notify: 
 @leave_notify: 
 @timer_id: 
@@ -118,56 +120,12 @@ awn-effects
 @pad3: 
 @pad4: 
 
-<!-- ##### FUNCTION awn_effects_init ##### -->
-<para>
-
-</para>
-
-@obj: 
-@fx: 
-
-
 <!-- ##### FUNCTION awn_effects_finalize ##### -->
 <para>
 
 </para>
 
 @fx: 
-
-
-<!-- ##### FUNCTION awn_register_effects ##### -->
-<para>
-
-</para>
-
-@obj: 
-@fx: 
-
-
-<!-- ##### FUNCTION awn_unregister_effects ##### -->
-<para>
-
-</para>
-
-@fx: 
-
-
-<!-- ##### FUNCTION awn_effect_start ##### -->
-<para>
-
-</para>
-
-@fx: 
-@effect: 
-
-
-<!-- ##### FUNCTION awn_effect_stop ##### -->
-<para>
-
-</para>
-
-@fx: 
-@effect: 
 
 
 <!-- ##### FUNCTION awn_effects_set_title ##### -->
@@ -178,66 +136,5 @@ awn-effects
 @fx: 
 @title: 
 @title_func: 
-
-
-<!-- ##### FUNCTION awn_effect_start_ex ##### -->
-<para>
-
-</para>
-
-@fx: 
-@effect: 
-@start: 
-@stop: 
-@max_loops: 
-
-
-<!-- ##### FUNCTION awn_draw_background ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-
-
-<!-- ##### FUNCTION awn_draw_icons ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-@Param3: 
-@Param4: 
-
-
-<!-- ##### FUNCTION awn_draw_foreground ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-
-
-<!-- ##### FUNCTION awn_draw_set_window_size ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-@Param3: 
-
-
-<!-- ##### FUNCTION awn_draw_set_icon_size ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-@Param3: 
 
 
