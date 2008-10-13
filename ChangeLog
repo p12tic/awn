@@ -1,6 +1,11 @@
 2008-10-13  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* src/main.c:
+	Fixed error from previous commit.
+
+2008-10-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* src/main.c:
 	Reset the static dialog variable to NULL when dialog is destroyed.
 
 2008-10-12  Mark Lee  <avant-wn@lazymalevolence.com>

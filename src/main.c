@@ -680,7 +680,6 @@ composited_changed(GdkScreen *screen, AwnSettings *s)
   if (!is_composited(screen))
   { 
     const char *str = "Error: Screen isn't composited. Please run compiz (-fusion) or another compositing manager.\n";
-
     GtkWidget *label = gtk_label_new( str );
 
     if (!dialog)
@@ -692,10 +691,8 @@ composited_changed(GdkScreen *screen, AwnSettings *s)
                                          GTK_RESPONSE_NONE,
                                          NULL);
     }
-    
-    gtk_widget_show_all  (dialog);
-
-    gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), label);
+    gtk_container_add (GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), label);
+    gtk_widget_show_all (dialog);
     
     g_signal_connect (dialog,
                              "response", 
