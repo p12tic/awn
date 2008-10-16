@@ -845,46 +845,44 @@ _position_window(GtkWidget *window)
 
 
 
-static gint resizing = 0;
-
-
-static gint step     = 3;
+static gboolean resizing = FALSE;
 
 static gboolean
 resize(GtkWidget *window)
 {
+  const gint STEP = 12;
   settings->bar_width = dest_width;
 
   if (dest_width == current_width)
   {
-    resizing = 0;
+    resizing = FALSE;
     return FALSE;
   }
 
   if (dest_width > current_width)
   {
-    if (dest_width - current_width < 2)
+    if (dest_width - current_width < STEP)
     {
       dest_width = current_width;
-      resizing = 0;
+      resizing = FALSE;
       gtk_widget_queue_draw(GTK_WIDGET(window));
       return FALSE;
     }
 
-    current_width += step;
+    current_width += STEP;
 
   }
   else
   {
-    if (current_width - dest_width < 2)
+    if (current_width - dest_width < STEP)
     {
       dest_width = current_width;
-      resizing = 0;
+      resizing = FALSE;
       gtk_widget_queue_draw(GTK_WIDGET(window));
       return FALSE;
     }
 
-    current_width -= step;
+    current_width -= STEP;
   }
 
   gtk_widget_queue_draw(GTK_WIDGET(window));
@@ -904,8 +902,8 @@ awn_bar_resize(GtkWidget *window, gint width)
   }
   else
   {
-    resizing = 1;
-    g_timeout_add(10, (GSourceFunc)resize, (gpointer)window);
+    resizing = TRUE;
+    g_timeout_add(40, (GSourceFunc)resize, (gpointer)window);
   }
 
 }

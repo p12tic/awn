@@ -1,3 +1,10 @@
+2008-10-16  Michal Hruby <michal.mhr@gmail.com>
+
+	reviewed by: Rodney Cryderman <rcryderman@gmail.com>
+
+	* src/awn-bar.c:
+	Make bar resize animation less CPU intensive.
+
 2008-10-13  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* src/main.c:
