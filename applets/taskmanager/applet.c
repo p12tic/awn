@@ -1,14 +1,34 @@
-#include <libawn/awn-applet-simple.h>
+/*
+ * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 3 as 
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authored by Neil Jagdish Patel <njpatel@gmail.com>
+ *
+ */
+
+#include <libawn/libawn.h>
+
+#include "task-manager.h"
 
 AwnApplet*
-awn_applet_factory_initp ( gchar* uid, gint orient, gint height )
+awn_applet_factory_initp (gchar* uid, gint orient, gint size)
 {
 	AwnApplet *applet;
   	
-  applet = (AwnApplet*)awn_applet_simple_new ( uid, orient, height );
-  awn_applet_simple_set_icon_name (AWN_APPLET_SIMPLE (applet), 
-                                   "taskmanager", "gtk-close");
-  awn_applet_simple_set_tooltip_text (AWN_APPLET_SIMPLE (applet), "Hello");
+  applet = task_manager_new (uid, orient, size);
+
+  gtk_widget_show_all (GTK_WIDGET (applet));
 
   return applet;
 }

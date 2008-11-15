@@ -3,17 +3,18 @@ INCLUDES = \
 	-I$(srcdir) \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
 	$(DISABLE_DEPRECATED_CFLAGS) \
-	$(AWN_CFLAGS) \
 	$(APPLET_CFLAGS) \
 	-DPREFIX=\"$(prefix)\" \
-	-DPKGDATADIR=\"$(pkgdatadir)\" 
+	-DPKGDATADIR=\"$(pkgdatadir)\" \
+	-DWNCK_I_KNOW_THIS_IS_UNSTABLE
 
 TASKMANAGER_SOURCES= \
-	applet.c
+	applet.c \
+	task-manager.c \
+	task-manager.h 
 
 TASKMANANGER_LDADD = \
-	$(top_builddir)/libawn/libawn.la
-	$(AWN_LIBS) \
+	$(top_builddir)/libawn/libawn.la \
   $(APPLET_LIBS)
 
 taskmanagerlibdir = $(libdir)/awn/applets/taskmanager

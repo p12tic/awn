@@ -36,6 +36,7 @@ public_headers = \
 	awn-themed-icon.h \
 	awn-tooltip.h \
 	awn-vfs.h \
+	libawn.h
 	$(NULL)
 
 private_headers = \
