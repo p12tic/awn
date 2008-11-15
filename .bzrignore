@@ -85,3 +85,10 @@ src/awn-panel-glue.h
 src/test
 data/awn-applets-shared.schemas
 data/awn-applets-shared.schemas.in
+bindings/python/awn.loT
+doc/reference/tmpl/awn-defines.sgml.bak
+doc/reference/tmpl/awn-vfs.sgml.bak
+tests/test-applet-simple
+tests/test-awn-icon
+tests/test-config-client
+tests/test-themed-icon

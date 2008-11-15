@@ -10,8 +10,14 @@ INCLUDES = \
 
 TASKMANAGER_SOURCES= \
 	applet.c \
+	task-icon.c \
+	task-icon.h \
+	task-launcher-icon.c \
+	task-launcher-icon.h \
 	task-manager.c \
-	task-manager.h 
+	task-manager.h \
+	task-window.c \
+	task-window.h 
 
 TASKMANANGER_LDADD = \
 	$(top_builddir)/libawn/libawn.la \
