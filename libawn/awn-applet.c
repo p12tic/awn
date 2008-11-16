@@ -196,7 +196,7 @@ awn_applet_class_init (AwnAppletClass *klass)
   g_object_class_install_property (gobject_class,
    PROP_SIZE,
    g_param_spec_int ("size",
-                     "Height",
+                     "Size",
                      "The current visible size of the bar",
                      0, G_MAXINT, 48,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
