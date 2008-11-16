@@ -1,6 +1,7 @@
 noinst_PROGRAMS = \
 	test-applet-simple \
 	test-awn-icon \
+	test-awn-icon-box \
 	test-config-client \
 	test-themed-icon
 
@@ -11,6 +12,9 @@ test_applet_simple_LDADD = $(top_builddir)/libawn/libawn.la
 
 test_awn_icon_SOURCES = test-awn-icon.c
 test_awn_icon_LDADD = $(top_builddir)/libawn/libawn.la
+
+test_awn_icon_box_SOURCES = test-awn-icon-box.c
+test_awn_icon_box_LDADD = $(top_builddir)/libawn/libawn.la
 
 test_config_client_SOURCES = test-config-client.c
 test_config_client_LDADD = $(top_builddir)/libawn/libawn.la

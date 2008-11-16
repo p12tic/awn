@@ -103,7 +103,9 @@ awn_icon_box_new (void)
 {
   GtkWidget *icon_box = NULL;
 
-  icon_box = g_object_new (AWN_TYPE_ICON_BOX, 
+  icon_box = g_object_new (AWN_TYPE_ICON_BOX,
+                           "homogeneous", FALSE,
+                           "spacing", 0,
                            NULL);
 
   return icon_box;
