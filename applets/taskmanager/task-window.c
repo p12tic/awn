@@ -35,14 +35,79 @@ G_DEFINE_TYPE (TaskWindow, task_window, G_TYPE_OBJECT);
 
 struct _TaskWindowPrivate
 {
-  WnckScreen *screen;
+  WnckWindow *window;
+  GList      *utilities;
+};
+
+enum
+{
+  PROP_0,
+  PROP_WINDOW
 };
 
 /* GObject stuff */
 static void
+task_window_get_property (GObject    *object,
+                          guint       prop_id,
+                          GValue     *value,
+                          GParamSpec *pspec)
+{
+  TaskWindow *taskwin = TASK_WINDOW (object);
+
+  switch (prop_id)
+  {
+    case PROP_WINDOW:
+      g_value_set_object (value, taskwin->priv->window); 
+      break;
+    
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
+task_window_set_property (GObject      *object,
+                          guint         prop_id,
+                          const GValue *value,
+                          GParamSpec   *pspec)
+{
+  TaskWindow *taskwin = TASK_WINDOW (object);
+
+  switch (prop_id)
+  {
+    case PROP_WINDOW:
+      taskwin->priv->window = g_value_get_object (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
+task_window_constructed (GObject *object)
+{
+  //TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;
+
+}
+
+static void
 task_window_class_init (TaskWindowClass *klass)
 {
-  GObjectClass        *obj_class = G_OBJECT_CLASS (klass);
+  GParamSpec   *pspec;
+  GObjectClass *obj_class = G_OBJECT_CLASS (klass);
+
+  obj_class->constructed  = task_window_constructed;
+  obj_class->set_property = task_window_set_property;
+  obj_class->get_property = task_window_get_property;
+
+  /* Install properties first */
+  pspec = g_param_spec_object ("window",
+                               "Window",
+                               "WnckWindow",
+                               WNCK_TYPE_WINDOW,
+                               G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_WINDOW, pspec);
 
   g_type_class_add_private (obj_class, sizeof (TaskWindowPrivate));
 }
@@ -61,8 +126,8 @@ task_window_new (WnckWindow *window)
   TaskWindow *win = NULL;
 
   window = g_object_new (TASK_TYPE_WINDOW,
-                           "window", window,
-                           NULL);
+                         "window", window,
+                         NULL);
 
   return win;
 }

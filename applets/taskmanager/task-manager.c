@@ -27,6 +27,10 @@
 
 #include "task-manager.h"
 
+#include "task-icon.h"
+#include "task-launcher-icon.h"
+#include "task-window.h"
+
 G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET);
 
 #define TASK_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -121,12 +125,120 @@ task_manager_new (const gchar *uid,
 /*
  * WNCK_SCREEN CALLBACKS
  */
+static void
+on_window_state_changed (WnckWindow      *window,
+                         WnckWindowState  changed_mask,
+                         WnckWindowState  new_state,
+                         TaskManager     *manager)
+{
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+
+  /* This signal is only connected for windows which were of type normal/utility
+   * and were initially "skip-tasklist". If they are not skip-tasklist anymore
+   * we treat them as newly opened windows
+   */
+  if (!wnck_window_is_skip_tasklist (window))
+  {
+    on_window_opened (NULL, window, manager);
+    return;
+  }
+}
+
+static gboolean
+try_to_place_window (TaskManager *manager, WnckWindow *window)
+{
+  /* FIXME: */
+  return FALSE;
+}
+
+static gboolean
+try_to_match_window_to_launcher (TaskManager *manager, TaskWindow *window)
+{
+  /* FIXME: */
+  return FALSE;
+}
+
+static gboolean
+try_to_match_window_to_sn_context (TaskManager *mananger, TaskWindow *window)
+{
+  /* FIXME: */
+  return FALSE;
+}
+
 static void 
 on_window_opened (WnckScreen    *screen, 
                   WnckWindow    *window,
-                  TaskManager   *taskman)
+                  TaskManager   *manager)
 {
-  g_print ("WINDOW OPENED: %s\n", wnck_window_get_name (window));
+  TaskManagerPrivate *priv;
+  TaskWindow         *taskwin;
+  WnckWindowType      type;
+
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  g_return_if_fail (WNCK_IS_WINDOW (window));
+  priv = manager->priv;
+
+  type = wnck_window_get_window_type (window);
+
+  switch (type)
+  {
+    case WNCK_WINDOW_DESKTOP:
+    case WNCK_WINDOW_DOCK:
+    case WNCK_WINDOW_TOOLBAR:
+    case WNCK_WINDOW_MENU:
+    case WNCK_WINDOW_SPLASHSCREEN:
+      return; /* No need to worry about these */
+
+    default:
+      break;
+  }
+
+  /* 
+   * If it's skip tasklist, connect to the state-changed signal and see if
+   * it ever becomes a normal window
+   */
+  if (wnck_window_is_skip_tasklist (window))
+  {
+    g_signal_connect (window, "state-changed", 
+                      G_CALLBACK (on_window_state_changed), manager);
+    return;
+  }
+
+  /*
+   * If it's a utility window, see if we can find it a home with another, 
+   * existing TaskWindow, so we don't have a ton of icons for no reason
+   */
+  if (type == WNCK_WINDOW_UTILITY && try_to_place_window (manager, window))
+  {
+    g_debug ("WINDOW PLACED: %s\n", wnck_window_get_name (window));
+    return;
+  }
+
+  /* 
+   * We couldn't append the window to a pre-existing TaskWindow, so we'll need
+   * to make a new one
+   */
+  taskwin = task_window_new (window);
+ 
+  /* Okay, time to check the launchers if we can get a match */
+  if (try_to_match_window_to_launcher (manager, taskwin))
+  {
+    g_debug ("WINDOW MATCHED: %s\n", wnck_window_get_name (window));
+    return;
+  }
+
+  /* Try the startup-notification windows */
+  if (try_to_match_window_to_sn_context (manager, taskwin))
+  {
+    g_debug ("WINDOW STARTUP: %s\n", wnck_window_get_name (window));
+    return;
+  }
+
+  /* If we've come this far, the window deserves a spot on the task-manager!
+   * Time to create a TaskIcon for it
+   */
+  
+  g_debug ("WINDOW OPENED: %s\n", wnck_window_get_name (window));
 }
 
 static void 
@@ -134,7 +246,7 @@ on_active_window_changed (WnckScreen    *screen,
                           WnckWindow    *old_window,
                           TaskManager   *taskman)
 {
-  g_print ("ACTIVE_WINDOW_CHANGED\n");
+  g_debug ("ACTIVE_WINDOW_CHANGED\n");
 }
 
 static void 
@@ -142,12 +254,12 @@ on_active_workspace_changed (WnckScreen    *screen,
                              WnckWorkspace *old_workspace,
                              TaskManager   *taskman)
 {
-  g_print ("ACTIVE_WORKSPACE_CHANGED\n");
+  g_debug ("ACTIVE_WORKSPACE_CHANGED\n");
 }
 
 static void 
 on_viewports_changed (WnckScreen    *screen,
                       TaskManager   *taskman)
 {
-  g_print ("VIEWPORTS_CHANGED\n");
+  g_debug ("VIEWPORTS_CHANGED\n");
 }

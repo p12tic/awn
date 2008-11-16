@@ -55,11 +55,62 @@ struct _TaskWindow
 struct _TaskWindowClass
 {
   GObjectClass   parent_class;
+
+  /*< signals >*/
+  void (*name_changed)      (TaskWindow *window, const gchar *name);
+  void (*icon_changed)      (TaskWindow *window, GdkPixbuf   *pixbuf);
+  void (*active_changed)    (TaskWindow *window, gboolean     is_active);
+  void (*needs_attention)   (TaskWindow *window, gboolean     needs_attention);
+  void (*workspace_changed) (TaskWindow *window);
+
+  void (*message_changed)   (TaskWindow *window, const gchar *message);
+  void (*progress_changed)  (TaskWindow *window, gfloat       progress);
+  void (*hidden_changed)    (TaskWindow *window, gboolean     hidden);
 };
 
-GType        task_window_get_type    (void) G_GNUC_CONST;
+GType           task_window_get_type          (void) G_GNUC_CONST;
 
-TaskWindow * task_window_new (WnckWindow *window);
+TaskWindow    * task_window_new               (WnckWindow    *window);
+
+gulong          task_window_get_xid           (TaskWindow    *window);
+
+gint            task_window_get_pid           (TaskWindow    *window);
+
+gboolean        task_window_get_wm_class      (TaskWindow    *window,
+                                               gchar        **res_name,
+                                               gchar        **class_name);
+
+const gchar   * task_window_get_name          (TaskWindow    *window);
+
+GdkPixbuf     * task_window_get_icon          (TaskWindow    *window);
+
+gboolean        task_window_is_active         (TaskWindow    *window);
+
+gboolean        task_window_needs_attention   (TaskWindow    *window);
+
+const gchar   * task_window_get_message       (TaskWindow    *window);
+
+gfloat          task_window_get_progress      (TaskWindow    *window);
+
+gboolean        task_window_is_hidden         (TaskWindow    *window);
+
+WnckWorkspace * task_window_get_workspace     (TaskWindow    *window);
+
+gboolean        task_window_is_on_workspace   (TaskWindow    *window,
+                                               WnckWorkspace *space);
+
+void            task_window_activate          (TaskWindow    *window,
+                                               guint32        timestamp);
+
+void            task_window_minimize          (TaskWindow    *window);
+
+void            task_window_close             (TaskWindow    *window);
+
+void            task_window_set_icon_geometry (TaskWindow    *window,
+                                               gint           x,
+                                               gint           y,
+                                               gint           width,
+                                               gint           height);
 
 #endif /* _TASK_WINDOW_H_ */
 
