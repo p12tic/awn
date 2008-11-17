@@ -242,8 +242,8 @@ _awn_plug_new(const gchar *path,
 
   if (module == NULL)
   {
-    g_warning("Unable to load module %s\n", path);
-    g_warning(g_module_error());
+    g_warning ("Unable to load module %s\n", path);
+    g_warning ("%s", g_module_error());
     return NULL;
   }
 
@@ -333,8 +333,8 @@ launch_python(const gchar *file,
 
   if (err)
   {
-    g_warning(err->message);
-    g_error_free(err);
+    g_warning ("%s", err->message);
+    g_error_free (err);
   }
 
   g_free(cmd);
