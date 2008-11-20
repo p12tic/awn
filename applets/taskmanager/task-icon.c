@@ -45,6 +45,10 @@ enum
   PROP_WINDOW
 };
 
+/* Forwards */
+static gboolean  task_icon_button_release_event (GtkWidget      *widget,
+                                                 GdkEventButton *event);
+
 /* GObject stuff */
 static void
 task_icon_get_property (GObject    *object,
@@ -96,13 +100,16 @@ task_icon_constructed (GObject *object)
 static void
 task_icon_class_init (TaskIconClass *klass)
 {
-  GParamSpec   *pspec;
-  GObjectClass *obj_class = G_OBJECT_CLASS (klass);
+  GParamSpec     *pspec;
+  GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
 
   obj_class->constructed  = task_icon_constructed;
   obj_class->set_property = task_icon_set_property;
   obj_class->get_property = task_icon_get_property;
 
+  wid_class->button_release_event = task_icon_button_release_event;
+  
   /* Install properties first */
   pspec = g_param_spec_object ("taskwindow",
                                "TaskWindow",
@@ -154,6 +161,26 @@ task_icon_is_in_viewport (TaskIcon *icon, WnckWorkspace *space)
   return TRUE;
 }
 
+static void
+window_closed (TaskIcon *icon, TaskWindow *old_window)
+{
+  TaskIconPrivate *priv;
+
+  g_return_if_fail (TASK_ICON (icon));
+  priv = icon->priv;
+
+  priv->windows = g_slist_remove (priv->windows, old_window);
+
+  if (g_slist_length (priv->windows) == 0)
+  {
+    gtk_widget_destroy (GTK_WIDGET (icon));
+  }
+  else
+  {
+    /* Load up with new icon etc */
+  }
+}
+
 void
 task_icon_append_window (TaskIcon      *icon,
                          TaskWindow    *window)
@@ -170,6 +197,7 @@ task_icon_append_window (TaskIcon      *icon,
     first_window = TRUE;
   
   priv->windows = g_slist_append (priv->windows, window);
+  g_object_weak_ref (G_OBJECT (window), (GWeakNotify)window_closed, icon);
 
   /* If it's the first window, let's set-up our icon accordingly */
   if (first_window)
@@ -239,4 +267,34 @@ task_icon_refresh_geometry (TaskIcon *icon)
   }
 }
 
+/*
+ * Widget callbacks
+ */
+static gboolean
+task_icon_button_release_event (GtkWidget      *widget,
+                                GdkEventButton *event)
+{
+  TaskIconPrivate *priv;
+  //GSList *w;
+  gint len;
 
+  g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
+  priv = TASK_ICON (widget)->priv;
+
+  if (event->button == 1)
+  {
+    len = g_slist_length (priv->windows);
+    if (len == 1)
+    {
+      TaskWindow *window = priv->windows->data;
+
+      if (task_window_is_active (window))
+        task_window_minimize (window);
+      else
+        task_window_activate (window, event->time);
+
+      return TRUE;
+    }
+  }
+  return FALSE;
+}

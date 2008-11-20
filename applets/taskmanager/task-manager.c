@@ -418,6 +418,8 @@ window_closed (TaskManager *manager, GObject *old_window)
   priv = manager->priv;
 
   priv->windows = g_slist_remove (priv->windows, old_window);
+
+  ensure_layout (manager);
 }
 
 static void
@@ -429,7 +431,10 @@ icon_closed (TaskManager *manager, GObject *old_icon)
   priv = manager->priv;
 
   priv->icons = g_slist_remove (priv->icons, old_icon);
+
+  ensure_layout (manager);
 }
+
 static void 
 on_window_opened (WnckScreen    *screen, 
                   WnckWindow    *window,
@@ -523,7 +528,7 @@ on_active_window_changed (WnckScreen    *screen,
                           WnckWindow    *old_window,
                           TaskManager   *manager)
 {
-  g_debug ("ACTIVE_WINDOW_CHANGED\n");
+  //g_debug ("ACTIVE_WINDOW_CHANGED\n");
 }
 
 static void 

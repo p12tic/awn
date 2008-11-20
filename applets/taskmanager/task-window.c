@@ -64,6 +64,9 @@ gboolean      _is_on_workspace (TaskWindow    *window,
 void          _activate        (TaskWindow    *window,
                                 guint32        timestamp);
 
+static void   task_window_set_window (TaskWindow *window,
+                                      WnckWindow *wnckwin);
+
 /* GObject stuff */
 static void
 task_window_get_property (GObject    *object,
@@ -95,7 +98,7 @@ task_window_set_property (GObject      *object,
   switch (prop_id)
   {
     case PROP_WINDOW:
-      taskwin->priv->window = g_value_get_object (value);
+      task_window_set_window (taskwin, g_value_get_object (value));
       break;
 
     default:
@@ -159,6 +162,29 @@ task_window_new (WnckWindow *window)
                          NULL);
 
   return win;
+}
+
+/*
+ * Handling of the main WnckWindow
+ */
+static void
+window_closed (TaskWindow *window, WnckWindow *old_window)
+{
+  g_object_unref (G_OBJECT (window));
+}
+
+static void
+task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
+{
+  TaskWindowPrivate *priv;
+
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  priv = window->priv;
+
+  priv->window = wnckwin;
+
+  g_object_weak_ref (G_OBJECT (priv->window), 
+                     (GWeakNotify)window_closed, window);
 }
 
 /*
