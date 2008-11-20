@@ -57,11 +57,28 @@ struct _TaskIcon
 struct _TaskIconClass
 {
   AwnIconClass   parent_class;
+
+  /*< vtable, not signals >*/
+  
+  /*< signals >*/
 };
 
-GType       task_icon_get_type    (void) G_GNUC_CONST;
+GType       task_icon_get_type        (void) G_GNUC_CONST;
 
-GtkWidget * task_icon_new (TaskWindow *window);
+GtkWidget * task_icon_new_for_window  (TaskWindow    *window);
+
+gboolean    task_icon_is_skip_taskbar (TaskIcon      *icon);
+
+gboolean    task_icon_is_in_viewport  (TaskIcon      *icon,
+                                       WnckWorkspace *space);
+
+void        task_icon_append_window   (TaskIcon      *icon,
+                                       TaskWindow    *window);
+gboolean    task_icon_is_launcher     (TaskIcon      *icon);
+
+void        task_icon_refresh_icon    (TaskIcon      *icon);
+
+void        task_icon_refresh_geometry (TaskIcon     *icon);
 
 #endif /* _TASK_ICON_H_ */
 

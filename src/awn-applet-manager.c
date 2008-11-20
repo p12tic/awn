@@ -438,6 +438,8 @@ awn_applet_manager_set_real_size (AwnAppletManager *manager,
 
 void 
 awn_applet_manager_handle_applet_size_request (AwnAppletManager *manager,
+                                               gint              panel_size,
+                                               AwnOrientation    orient,
                                                const gchar      *uid,
                                                gint              width, 
                                                gint              height)
@@ -453,7 +455,10 @@ awn_applet_manager_handle_applet_size_request (AwnAppletManager *manager,
 
   if (GTK_IS_WIDGET (applet))
   {
-    gtk_widget_set_size_request (GTK_WIDGET (applet), width, height);
+    if (orient == AWN_ORIENTATION_BOTTOM || orient == AWN_ORIENTATION_TOP)
+      gtk_widget_set_size_request (GTK_WIDGET (applet), width, panel_size);
+    else
+      gtk_widget_set_size_request (GTK_WIDGET (applet), panel_size, height);
   }
   else
   {

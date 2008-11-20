@@ -28,7 +28,7 @@
 #include "task-manager.h"
 
 #include "task-icon.h"
-#include "task-launcher-icon.h"
+#include "task-settings.h"
 #include "task-window.h"
 
 G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET);
@@ -39,58 +39,166 @@ G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET);
 
 struct _TaskManagerPrivate
 {
-  WnckScreen *screen;
+  AwnConfigClient *client;
+  TaskSettings    *settings;
+  WnckScreen      *screen;
 
   /* This is what the icons are packed into */
   GtkWidget *box;
+  GSList     *icons;
+  GSList     *windows;
+
+  /* Properties */
+  GSList   *launcher_paths;
+  gboolean  show_all_windows;
+  gboolean  only_show_launchers;
+};
+
+enum
+{
+  PROP_0,
+
+  PROP_SHOW_ALL_WORKSPACES,
+  PROP_ONLY_SHOW_LAUNCHERS,
+  PROP_LAUNCHER_PATHS
 };
 
 /* Forwards */
 static void on_window_opened            (WnckScreen    *screen, 
                                          WnckWindow    *window,
-                                         TaskManager   *taskman);
+                                         TaskManager   *manager);
 static void on_active_window_changed    (WnckScreen    *screen, 
                                          WnckWindow    *old_window,
-                                         TaskManager   *taskman);
+                                         TaskManager   *manager);
 static void on_active_workspace_changed (WnckScreen    *screen, 
                                          WnckWorkspace *old_workspace,
-                                         TaskManager   *taskman);
+                                         TaskManager   *manager);
 static void on_viewports_changed        (WnckScreen    *screen,
-                                         TaskManager   *taskman);
+                                         TaskManager   *manager);
+
+static void task_manager_set_show_all_windows    (TaskManager *manager,
+                                                  gboolean     show_all);
+static void task_manager_set_show_only_launchers (TaskManager *manager, 
+                                                  gboolean     show_only);
+static void task_manager_refresh_launcher_paths  (TaskManager *manager,
+                                                  gpointer     list);
+
+static void task_manager_orient_changed (AwnApplet *applet, 
+                                         AwnOrientation orient);
+static void task_manager_size_changed   (AwnApplet *applet,
+                                         gint       size);
 
 /* GObject stuff */
+static void
+task_manager_get_property (GObject    *object,
+                           guint       prop_id,
+                           GValue     *value,
+                           GParamSpec *pspec)
+{
+  TaskManager *manager = TASK_MANAGER (object);
+
+  switch (prop_id)
+  {
+    case PROP_SHOW_ALL_WORKSPACES:
+      g_value_set_boolean (value, manager->priv->show_all_windows); 
+      break;
+
+    case PROP_ONLY_SHOW_LAUNCHERS:
+      g_value_set_boolean (value, manager->priv->only_show_launchers); 
+      break;
+
+    case PROP_LAUNCHER_PATHS:
+      g_value_set_pointer (value, manager->priv->launcher_paths);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
+task_manager_set_property (GObject      *object,
+                          guint         prop_id,
+                          const GValue *value,
+                          GParamSpec   *pspec)
+{
+  TaskManager *manager = TASK_MANAGER (object);
+
+  switch (prop_id)
+  {
+    case PROP_SHOW_ALL_WORKSPACES:
+      task_manager_set_show_all_windows (manager, g_value_get_boolean (value));
+      break;
+
+    case PROP_ONLY_SHOW_LAUNCHERS:
+      task_manager_set_show_only_launchers (manager, 
+                                            g_value_get_boolean (value));
+      break;
+
+    case PROP_LAUNCHER_PATHS:
+      task_manager_refresh_launcher_paths (manager, 
+                                           g_value_get_pointer (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
 static void
 task_manager_constructed (GObject *object)
 {
   TaskManagerPrivate *priv;
   GtkWidget          *widget;
+  gchar              *uid = NULL;
   
   priv = TASK_MANAGER_GET_PRIVATE (object);
   widget = GTK_WIDGET (object);
 
-  /* Create the icon box */
-  priv->box = awn_icon_box_new ();
-  gtk_container_add (GTK_CONTAINER (widget), priv->box);
-  gtk_widget_show (priv->box);
+  priv->settings = task_settings_get_default ();
 
-  /* Get the WnckScreen and connect to the relevent signals */
-  priv->screen = wnck_screen_get_default ();
-  g_signal_connect (priv->screen, "window-opened", 
-                    G_CALLBACK (on_window_opened), object);
-  g_signal_connect (priv->screen, "active-window-changed",  
-                    G_CALLBACK (on_active_window_changed), object);
-  g_signal_connect (priv->screen, "active-workspace-changed",
-                    G_CALLBACK (on_active_workspace_changed), object);
-  g_signal_connect (priv->screen, "viewports-changed",
-                    G_CALLBACK (on_viewports_changed), object);
+  /* Load the uid */
+  g_object_get (object, "uid", &uid, NULL);
+  priv->client = awn_config_client_new_for_applet ("manager", uid);
+  g_free (uid);
+
+  awn_icon_box_set_orientation (AWN_ICON_BOX (priv->box), 
+                             awn_applet_get_orientation (AWN_APPLET (object)));
 }
 
 static void
 task_manager_class_init (TaskManagerClass *klass)
 {
-  GObjectClass        *obj_class = G_OBJECT_CLASS (klass);
+  GParamSpec     *pspec;
+  GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
+  AwnAppletClass *app_class = AWN_APPLET_CLASS (klass);
 
   obj_class->constructed = task_manager_constructed;
+  obj_class->set_property = task_manager_set_property;
+  obj_class->get_property = task_manager_get_property;
+
+  app_class->orient_changed = task_manager_orient_changed;
+  app_class->size_changed   = task_manager_size_changed;
+
+  /* Install properties first */
+  pspec = g_param_spec_boolean ("show_all_windows",
+                                "show-all-workspaces",
+                                "Show windows from all workspaces",
+                                TRUE,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_SHOW_ALL_WORKSPACES, pspec);
+
+  pspec = g_param_spec_boolean ("only_show_launchers",
+                                "only-show-launchers",
+                                "Only show launchers",
+                                FALSE,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_ONLY_SHOW_LAUNCHERS, pspec);
+
+  pspec = g_param_spec_pointer ("launcher_paths",
+                                "launcher-paths",
+                                "List of paths to launcher desktop files",
+                                G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_ONLY_SHOW_LAUNCHERS, pspec);
 
   g_type_class_add_private (obj_class, sizeof (TaskManagerPrivate));
 }
@@ -102,7 +210,24 @@ task_manager_init (TaskManager *manager)
   	
   priv = manager->priv = TASK_MANAGER_GET_PRIVATE (manager);
 
-  gtk_container_add (GTK_CONTAINER (manager), gtk_label_new ("Hello"));
+  priv->screen = wnck_screen_get_default ();
+  priv->launcher_paths = NULL;
+
+  /* Create the icon box */
+  priv->box = awn_icon_box_new ();
+  gtk_container_add (GTK_CONTAINER (manager), priv->box);
+  gtk_widget_set_size_request (priv->box, -1, 48);
+  gtk_widget_show (priv->box);
+
+  /* connect to the relevent WnckScreen signals */
+  g_signal_connect (priv->screen, "window-opened", 
+                    G_CALLBACK (on_window_opened), manager);
+  g_signal_connect (priv->screen, "active-window-changed",  
+                    G_CALLBACK (on_active_window_changed), manager);
+  g_signal_connect (priv->screen, "active-workspace-changed",
+                    G_CALLBACK (on_active_workspace_changed), manager);
+  g_signal_connect (priv->screen, "viewports-changed",
+                    G_CALLBACK (on_viewports_changed), manager);
 }
 
 AwnApplet *
@@ -123,6 +248,123 @@ task_manager_new (const gchar *uid,
 }
 
 /*
+ * AwnApplet stuff
+ */
+static void 
+task_manager_orient_changed (AwnApplet *applet, 
+                             AwnOrientation orient)
+{
+  TaskManager *manager = TASK_MANAGER (applet);
+
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+
+  awn_icon_box_set_orientation (AWN_ICON_BOX (manager->priv->box), orient);
+}
+
+static void 
+task_manager_size_changed   (AwnApplet *applet,
+                             gint       size)
+{
+  TaskManagerPrivate *priv;
+  GSList *i;
+
+  g_return_if_fail (TASK_IS_MANAGER (applet));
+  priv = TASK_MANAGER (applet)->priv;
+
+  if (priv->settings)
+    priv->settings->panel_size = size;
+
+  for (i = priv->icons; i; i = i->next)
+  {
+    TaskIcon *icon = i->data;
+
+    if (TASK_IS_ICON (icon))
+      task_icon_refresh_icon (icon);
+  }
+}
+
+
+/*
+ * The guts of the show or hide logic
+ */
+static gboolean
+update_icon_geometry (TaskManager *manager)
+{
+  TaskManagerPrivate *priv = manager->priv;
+  GSList *i;
+  
+  for (i = priv->icons; i; i = i->next)
+  {
+    TaskIcon *icon = i->data;
+
+    if (TASK_IS_ICON (icon))
+      task_icon_refresh_geometry (icon);
+  }
+  return FALSE;
+}
+
+static void
+ensure_layout (TaskManager *manager)
+{
+  TaskManagerPrivate *priv = manager->priv;
+  WnckWorkspace *space;
+  GSList         *i;
+
+  space = wnck_screen_get_active_workspace (priv->screen);
+
+  if (!WNCK_IS_WORKSPACE (space))
+  {
+    return;
+  }
+
+  /* Go through all the TaskIcons to make sure that they should be shown */
+  for (i = priv->icons; i; i = i->next)
+  {
+    TaskIcon *icon = i->data;
+    
+    if (!TASK_IS_ICON (icon))
+      continue;
+    
+    /* Show launchers regardless of workspace */
+    if (task_icon_is_launcher (icon))
+    {
+      gtk_widget_show (GTK_WIDGET (icon));
+      continue;
+    }
+
+    /* FIXME: Add support for start-up notification icons too */
+
+    /* 
+     * Only show normal window icons if a) the use wants to see them and b) if
+     * they are on the correct workspace
+     */
+    if (priv->only_show_launchers)
+    {
+      gtk_widget_hide (GTK_WIDGET (icon));
+    }
+    else if (task_icon_is_skip_taskbar (icon))
+    {
+      gtk_widget_hide (GTK_WIDGET (icon));
+    } 
+    else if (task_icon_is_in_viewport (icon, space))
+    {
+      gtk_widget_show (GTK_WIDGET (icon));
+    }
+    else if (priv->show_all_windows)
+    {
+      gtk_widget_show (GTK_WIDGET (icon));  
+    }
+    else
+    {
+      gtk_widget_hide (GTK_WIDGET (icon));
+    }
+  }
+  
+  /* We can update the window icon geometry in an idle */
+  g_idle_add ((GSourceFunc)update_icon_geometry, manager);
+}
+
+/*
  * WNCK_SCREEN CALLBACKS
  */
 static void
@@ -139,6 +381,8 @@ on_window_state_changed (WnckWindow      *window,
    */
   if (!wnck_window_is_skip_tasklist (window))
   {
+    g_signal_handlers_disconnect_by_func (window, 
+                                          on_window_state_changed, manager);
     on_window_opened (NULL, window, manager);
     return;
   }
@@ -165,12 +409,34 @@ try_to_match_window_to_sn_context (TaskManager *mananger, TaskWindow *window)
   return FALSE;
 }
 
+static void
+window_closed (TaskManager *manager, GObject *old_window)
+{
+  TaskManagerPrivate *priv;
+
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+
+  priv->windows = g_slist_remove (priv->windows, old_window);
+}
+
+static void
+icon_closed (TaskManager *manager, GObject *old_icon)
+{
+  TaskManagerPrivate *priv;
+
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+
+  priv->icons = g_slist_remove (priv->icons, old_icon);
+}
 static void 
 on_window_opened (WnckScreen    *screen, 
                   WnckWindow    *window,
                   TaskManager   *manager)
 {
   TaskManagerPrivate *priv;
+  GtkWidget          *icon;
   TaskWindow         *taskwin;
   WnckWindowType      type;
 
@@ -219,7 +485,9 @@ on_window_opened (WnckScreen    *screen,
    * to make a new one
    */
   taskwin = task_window_new (window);
- 
+  priv->windows = g_slist_append (priv->windows, taskwin);
+  g_object_weak_ref (G_OBJECT (taskwin), (GWeakNotify)window_closed, manager);
+     
   /* Okay, time to check the launchers if we can get a match */
   if (try_to_match_window_to_launcher (manager, taskwin))
   {
@@ -237,14 +505,23 @@ on_window_opened (WnckScreen    *screen,
   /* If we've come this far, the window deserves a spot on the task-manager!
    * Time to create a TaskIcon for it
    */
+  icon = task_icon_new_for_window (taskwin);
+  gtk_box_pack_start (GTK_BOX (priv->box), icon, FALSE, TRUE, 0);
+  gtk_widget_show (icon);
+
+  priv->icons = g_slist_append (priv->icons, icon);
+  g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);  
   
+  /* Finally, make sure all is well on the taskbar */
+  ensure_layout (manager);
+
   g_debug ("WINDOW OPENED: %s\n", wnck_window_get_name (window));
 }
 
 static void 
 on_active_window_changed (WnckScreen    *screen, 
                           WnckWindow    *old_window,
-                          TaskManager   *taskman)
+                          TaskManager   *manager)
 {
   g_debug ("ACTIVE_WINDOW_CHANGED\n");
 }
@@ -252,14 +529,51 @@ on_active_window_changed (WnckScreen    *screen,
 static void 
 on_active_workspace_changed (WnckScreen    *screen, 
                              WnckWorkspace *old_workspace,
-                             TaskManager   *taskman)
+                             TaskManager   *manager)
 {
   g_debug ("ACTIVE_WORKSPACE_CHANGED\n");
+  ensure_layout (manager);
 }
 
 static void 
 on_viewports_changed (WnckScreen    *screen,
-                      TaskManager   *taskman)
+                      TaskManager   *manager)
 {
   g_debug ("VIEWPORTS_CHANGED\n");
+  ensure_layout (manager);
+}
+
+/*
+ * PROPERTIES
+ */
+static void
+task_manager_set_show_all_windows (TaskManager *manager,
+                                   gboolean     show_all)
+{
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  manager->priv->show_all_windows = show_all;
+
+  ensure_layout (manager);
+}
+
+static void
+task_manager_set_show_only_launchers (TaskManager *manager, 
+                                      gboolean     show_only)
+{
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  manager->priv->only_show_launchers = show_only;
+
+  ensure_layout (manager);
+}
+
+static void 
+task_manager_refresh_launcher_paths (TaskManager *manager,
+                                     gpointer     list)
+{
+  TaskManagerPrivate *priv;
+
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+
+   
 }

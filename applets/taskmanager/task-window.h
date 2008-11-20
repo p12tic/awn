@@ -56,6 +56,17 @@ struct _TaskWindowClass
 {
   GObjectClass   parent_class;
 
+  /*< vtable >*/
+  gint          (*get_pid)         (TaskWindow    *window);
+  const gchar * (*get_name)        (TaskWindow    *window);
+  GdkPixbuf   * (*get_icon)        (TaskWindow    *window);
+  void          (*set_icon)        (TaskWindow    *window,
+                                    GdkPixbuf     *pixbuf);
+  gboolean      (*is_on_workspace) (TaskWindow    *window,
+                                    WnckWorkspace *space);
+  void          (*activate)        (TaskWindow    *window,
+                                    guint32        timestamp);
+
   /*< signals >*/
   void (*name_changed)      (TaskWindow *window, const gchar *name);
   void (*icon_changed)      (TaskWindow *window, GdkPixbuf   *pixbuf);
@@ -84,6 +95,9 @@ const gchar   * task_window_get_name          (TaskWindow    *window);
 
 GdkPixbuf     * task_window_get_icon          (TaskWindow    *window);
 
+void            task_window_set_icon          (TaskWindow    *window,
+                                               GdkPixbuf     *pixbuf);
+
 gboolean        task_window_is_active         (TaskWindow    *window);
 
 gboolean        task_window_needs_attention   (TaskWindow    *window);
@@ -94,8 +108,6 @@ gfloat          task_window_get_progress      (TaskWindow    *window);
 
 gboolean        task_window_is_hidden         (TaskWindow    *window);
 
-WnckWorkspace * task_window_get_workspace     (TaskWindow    *window);
-
 gboolean        task_window_is_on_workspace   (TaskWindow    *window,
                                                WnckWorkspace *space);
 
@@ -104,7 +116,8 @@ void            task_window_activate          (TaskWindow    *window,
 
 void            task_window_minimize          (TaskWindow    *window);
 
-void            task_window_close             (TaskWindow    *window);
+void            task_window_close             (TaskWindow    *window,
+                                               guint32        timestamp);
 
 void            task_window_set_icon_geometry (TaskWindow    *window,
                                                gint           x,

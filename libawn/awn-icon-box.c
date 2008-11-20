@@ -94,6 +94,7 @@ awn_icon_box_init (AwnIconBox *icon_box)
 
   priv = icon_box->priv = AWN_ICON_BOX_GET_PRIVATE (icon_box);
 
+  priv->orient = AWN_ORIENTATION_BOTTOM;
   priv->klass = GTK_WIDGET_CLASS (gtk_type_class (GTK_TYPE_HBOX));
 }
 

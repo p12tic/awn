@@ -35,14 +35,81 @@ G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_ICON);
 
 struct _TaskIconPrivate
 {
-  WnckScreen *screen;
+  GSList *windows;
+};
+
+enum
+{
+  PROP_0,
+
+  PROP_WINDOW
 };
 
 /* GObject stuff */
 static void
+task_icon_get_property (GObject    *object,
+                        guint       prop_id,
+                        GValue     *value,
+                        GParamSpec *pspec)
+{
+  TaskIcon        *icon = TASK_ICON (object);
+  TaskIconPrivate *priv = icon->priv;
+
+  switch (prop_id)
+  {
+    case PROP_WINDOW:
+      g_value_set_object (value, 
+                          priv->windows ? priv->windows->data : NULL); 
+      break;
+    
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
+task_icon_set_property (GObject      *object,
+                        guint         prop_id,
+                        const GValue *value,
+                        GParamSpec   *pspec)
+{
+  TaskIcon *icon = TASK_ICON (object);
+
+  switch (prop_id)
+  {
+    case PROP_WINDOW:
+      task_icon_append_window (icon, g_value_get_object (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
+task_icon_constructed (GObject *object)
+{
+  //TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;
+
+}
+
+static void
 task_icon_class_init (TaskIconClass *klass)
 {
-  GObjectClass        *obj_class = G_OBJECT_CLASS (klass);
+  GParamSpec   *pspec;
+  GObjectClass *obj_class = G_OBJECT_CLASS (klass);
+
+  obj_class->constructed  = task_icon_constructed;
+  obj_class->set_property = task_icon_set_property;
+  obj_class->get_property = task_icon_get_property;
+
+  /* Install properties first */
+  pspec = g_param_spec_object ("taskwindow",
+                               "TaskWindow",
+                               "TaskWindow",
+                               TASK_TYPE_WINDOW,
+                               G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_WINDOW, pspec);
 
   g_type_class_add_private (obj_class, sizeof (TaskIconPrivate));
 }
@@ -53,15 +120,123 @@ task_icon_init (TaskIcon *icon)
   TaskIconPrivate *priv;
   	
   priv = icon->priv = TASK_ICON_GET_PRIVATE (icon);
+
+  priv->windows = NULL;
+
+  awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
 }
 
 GtkWidget *
-task_icon_new (TaskWindow *window)
+task_icon_new_for_window (TaskWindow *window)
 {
   GtkWidget *icon = NULL;
 
+  g_return_val_if_fail (TASK_IS_WINDOW (window), NULL);
+
   icon = g_object_new (TASK_TYPE_ICON,
-                       "window", "window",
+                       "taskwindow", window,
                        NULL);
   return icon;
 }
+
+/*
+ * Public Functions
+ */
+gboolean 
+task_icon_is_skip_taskbar (TaskIcon *icon)
+{
+  return FALSE;
+}
+
+gboolean  
+task_icon_is_in_viewport (TaskIcon *icon, WnckWorkspace *space)
+{
+  return TRUE;
+}
+
+void
+task_icon_append_window (TaskIcon      *icon,
+                         TaskWindow    *window)
+{
+  TaskIconPrivate *priv;
+  gboolean first_window = FALSE;
+
+  g_return_if_fail (TASK_IS_ICON (icon));
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  priv = icon->priv;
+
+  /* Is this the first, main, window of this icon? */
+  if (priv->windows == NULL)
+    first_window = TRUE;
+  
+  priv->windows = g_slist_append (priv->windows, window);
+
+  /* If it's the first window, let's set-up our icon accordingly */
+  if (first_window)
+  {
+    awn_icon_set_from_pixbuf (AWN_ICON (icon), task_window_get_icon (window));
+    awn_icon_set_tooltip_text (AWN_ICON (icon), task_window_get_name (window));
+  }
+}
+
+gboolean 
+task_icon_is_launcher (TaskIcon      *icon)
+{
+  TaskIconPrivate *priv;
+
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
+  priv = icon->priv;
+
+  if (priv->windows)
+  {
+    //if (TASK_IS_LAUNCHER_WINDOW (priv->windows->data))
+    //return TRUE;
+  }
+  return FALSE;
+}
+
+void
+task_icon_refresh_icon (TaskIcon      *icon)
+{
+  TaskIconPrivate *priv;
+
+  g_return_if_fail (TASK_IS_ICON (icon));
+  priv = icon->priv;
+
+  if (priv->windows && priv->windows->data)
+    awn_icon_set_from_pixbuf (AWN_ICON (icon), 
+                              task_window_get_icon (priv->windows->data));
+}
+
+void
+task_icon_refresh_geometry (TaskIcon *icon)
+{
+  TaskIconPrivate *priv;
+  GtkWidget *widget;
+  GSList    *w;
+  gint      x, y, ww;
+  gint      i = 0, len = 0;
+
+  g_return_if_fail (TASK_IS_ICON (icon));
+  priv = icon->priv;
+
+  widget = GTK_WIDGET (icon);
+  gdk_window_get_origin (widget->window, &x, &y);
+
+  /* FIXME: Do something clever here to allow the user to "scrub" the icon
+   * for the windows.
+   */
+  len = g_slist_length (priv->windows);
+  ww = widget->allocation.width/len;
+  for (w = priv->windows; w; w = w->next)
+  {
+    TaskWindow *window = w->data;
+
+    task_window_set_icon_geometry (window, x, y, 
+                                   ww + (i*ww),
+                                   widget->allocation.height);
+    i++;
+  }
+}
+
+

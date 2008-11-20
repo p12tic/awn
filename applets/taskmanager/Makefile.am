@@ -6,18 +6,21 @@ INCLUDES = \
 	$(APPLET_CFLAGS) \
 	-DPREFIX=\"$(prefix)\" \
 	-DPKGDATADIR=\"$(pkgdatadir)\" \
-	-DWNCK_I_KNOW_THIS_IS_UNSTABLE
+	-DWNCK_I_KNOW_THIS_IS_UNSTABLE \
+	-Werror
 
 TASKMANAGER_SOURCES= \
 	applet.c \
 	task-icon.c \
 	task-icon.h \
-	task-launcher-icon.c \
-	task-launcher-icon.h \
 	task-manager.c \
 	task-manager.h \
+	task-settings.c \
+	task-settings.h \
 	task-window.c \
-	task-window.h 
+	task-window.h \
+	xutils.c \
+	xutils.h
 
 TASKMANANGER_LDADD = \
 	$(top_builddir)/libawn/libawn.la \

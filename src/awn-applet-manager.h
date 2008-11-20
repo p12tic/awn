@@ -75,10 +75,13 @@ void        awn_applet_manager_set_real_size    (AwnAppletManager *manager,
                                                  gint              width,
                                                  gint              height);
 
-void        awn_applet_manager_handle_applet_size_request (AwnAppletManager *m,
-                                                           const gchar *uid,
-                                                           gint         width, 
-                                                           gint         height);
+void        awn_applet_manager_handle_applet_size_request 
+                                                (AwnAppletManager *m,
+                                                 gint         panel_size,
+                                                 AwnOrientation orient,
+                                                 const gchar *uid,
+                                                 gint         width, 
+                                                 gint         height);
 
 G_END_DECLS
 

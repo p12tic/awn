@@ -26,8 +26,7 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/shape.h>
 
-#include <libawn/awn-config-bridge.h>
-#include <libawn/awn-applet.h>
+#include <libawn/libawn.h>
 
 #include "awn-panel.h"
 
@@ -171,6 +170,7 @@ awn_panel_constructed (GObject *object)
   /* Composited checks/setup */
   screen = gtk_widget_get_screen (panel);
   priv->composited = gdk_screen_is_composited (screen);
+  g_print ("Screen %s composited", priv->composited ? "is" : "isn't");
   load_correct_colormap (panel);
   g_signal_connect (screen, "composited-changed", 
                     G_CALLBACK (on_composited_changed), panel);
@@ -551,7 +551,7 @@ awn_panel_update_input_shape (GtkWidget *panel,
 
   g_return_if_fail (AWN_IS_PANEL (panel));
   priv = AWN_PANEL (panel)->priv;
-  
+    
   shaped_bitmap = (GdkBitmap*)gdk_pixmap_new (NULL, real_width, real_height, 1);
 
   if (!shaped_bitmap)
@@ -624,7 +624,7 @@ position_window (AwnPanel *panel)
     return FALSE;
 
   gtk_window_get_size (GTK_WINDOW (window), &ww, &hh);
-
+  
   /* FIXME: This has no idea about auto-hide */
 
   switch (priv->orient)
@@ -942,7 +942,9 @@ awn_panel_set_size (AwnPanel *panel, gint size)
                          (priv->composited ? 2 * priv->size : priv->size),
                          GTK_WIDGET (panel)->allocation.height);
   }
-                                      
+  gint ww, hh;
+  gtk_window_get_size (GTK_WINDOW (panel), &ww, &hh);
+                                        
   g_signal_emit (panel, _panel_signals[SIZE_CHANGED], 0, priv->size);
 }
 
@@ -1001,10 +1003,11 @@ awn_panel_applet_size_request (AwnPanel    *panel,
   g_return_val_if_fail (AWN_IS_PANEL (panel), TRUE);
   priv = panel->priv;
 
-  //g_debug ("Applet size request: %d %d", width, height);
-
   awn_applet_manager_handle_applet_size_request 
-                  (AWN_APPLET_MANAGER (priv->manager), uid, width, height);
+                  (AWN_APPLET_MANAGER (priv->manager), 
+               (priv->composited ? priv->size *2 : priv->size) + priv->offset, 
+                   priv->orient,
+                   uid, width, height);
   
   return TRUE;
  
