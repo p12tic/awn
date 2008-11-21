@@ -45,6 +45,14 @@ enum
   PROP_WINDOW
 };
 
+enum
+{
+  ENSURE_LAYOUT,
+
+  LAST_SIGNAL
+};
+static guint32 _icon_signals[LAST_SIGNAL] = { 0 };
+
 /* Forwards */
 static gboolean  task_icon_button_release_event (GtkWidget      *widget,
                                                  GdkEventButton *event);
@@ -118,6 +126,16 @@ task_icon_class_init (TaskIconClass *klass)
                                G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_WINDOW, pspec);
 
+  /* Install signals */
+  _icon_signals[ENSURE_LAYOUT] =
+		g_signal_new ("ensure-layout",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskIconClass, ensure_layout),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID, 
+			      G_TYPE_NONE, 0);
+
   g_type_class_add_private (obj_class, sizeof (TaskIconPrivate));
 }
 
@@ -152,12 +170,28 @@ task_icon_new_for_window (TaskWindow *window)
 gboolean 
 task_icon_is_skip_taskbar (TaskIcon *icon)
 {
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
+
+  //if (TASK_IS_LAUNCHER_WINDOW (icon->priv->windows->data))
+  //  return FALSE;
+
+  if (icon->priv->windows)
+    return task_window_is_hidden (icon->priv->windows->data);
+
   return FALSE;
 }
 
 gboolean  
 task_icon_is_in_viewport (TaskIcon *icon, WnckWorkspace *space)
 {
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
+
+  //if (TASK_IS_LAUNCHER_WINDOW (icon->priv->windows->data))
+  //  return TRUE;
+
+  if (icon->priv->windows)
+    return task_window_is_on_workspace (icon->priv->windows->data, space);
+
   return TRUE;
 }
 
@@ -173,12 +207,98 @@ window_closed (TaskIcon *icon, TaskWindow *old_window)
 
   if (g_slist_length (priv->windows) == 0)
   {
+
     gtk_widget_destroy (GTK_WIDGET (icon));
   }
   else
   {
     /* Load up with new icon etc */
   }
+}
+
+static void
+on_window_name_changed (TaskWindow  *window, 
+                        const gchar *name, 
+                        TaskIcon    *icon)
+{
+  g_return_if_fail (TASK_IS_ICON (icon));
+
+  awn_icon_set_tooltip_text (AWN_ICON (icon), name);
+}
+
+static void
+on_window_icon_changed (TaskWindow *window, 
+                        GdkPixbuf  *pixbuf, 
+                        TaskIcon   *icon)
+{
+  g_return_if_fail (TASK_IS_ICON (icon));
+  g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+
+  awn_icon_set_from_pixbuf (AWN_ICON (icon), pixbuf);
+}
+
+static void
+on_window_active_changed (TaskWindow *window, 
+                          gboolean    is_active, 
+                          TaskIcon   *icon)
+{
+  g_return_if_fail (TASK_IS_ICON (icon));
+
+  awn_icon_set_is_active (AWN_ICON (icon), is_active);
+}
+
+static void
+on_window_needs_attention_changed (TaskWindow *window,
+                                   gboolean    needs_attention,
+                                   TaskIcon   *icon)
+{
+  g_return_if_fail (TASK_IS_ICON (icon));
+
+  if (needs_attention)
+    awn_icon_set_effect (AWN_ICON (icon),AWN_EFFECT_ATTENTION);
+  else
+    awn_effects_stop (awn_icon_get_effects (AWN_ICON (icon)), 
+                      AWN_EFFECT_ATTENTION);
+}
+
+static void
+on_window_workspace_changed (TaskWindow    *window,  
+                             WnckWorkspace *space,
+                             TaskIcon      *icon)
+{
+  g_return_if_fail (TASK_IS_ICON (icon));
+  
+  g_signal_emit (icon, _icon_signals[ENSURE_LAYOUT], 0);
+}
+
+static void
+on_window_message_changed (TaskWindow  *window, 
+                           const gchar *message,
+                           TaskIcon    *icon)
+{
+  g_return_if_fail (TASK_IS_ICON (icon));
+
+  awn_icon_set_message (AWN_ICON (icon), message);
+}
+
+static void
+on_window_progress_changed (TaskWindow *window,
+                            gfloat      progress,
+                            TaskIcon   *icon)
+{
+  g_return_if_fail (TASK_IS_ICON (icon));
+
+  awn_icon_set_progress (AWN_ICON (icon), progress);
+}
+
+static void
+on_window_hidden_changed (TaskWindow *window,
+                          gboolean    is_hidden,
+                          TaskIcon   *icon)
+{
+  g_return_if_fail (TASK_IS_ICON (icon));
+
+  g_signal_emit (icon, _icon_signals[ENSURE_LAYOUT], 0);
 }
 
 void
@@ -202,8 +322,33 @@ task_icon_append_window (TaskIcon      *icon,
   /* If it's the first window, let's set-up our icon accordingly */
   if (first_window)
   {
-    awn_icon_set_from_pixbuf (AWN_ICON (icon), task_window_get_icon (window));
+    GdkPixbuf *pixbuf;
+
+    pixbuf = task_window_get_icon (window);
+    awn_icon_set_from_pixbuf (AWN_ICON (icon), pixbuf);
+    g_object_unref (pixbuf);
+
     awn_icon_set_tooltip_text (AWN_ICON (icon), task_window_get_name (window));
+    on_window_needs_attention_changed (window, 
+                                       task_window_needs_attention (window), 
+                                       icon);
+
+    g_signal_connect (window, "name-changed", 
+                      G_CALLBACK (on_window_name_changed), icon);
+    g_signal_connect (window, "icon-changed",
+                      G_CALLBACK (on_window_icon_changed), icon);
+    g_signal_connect (window, "active-changed",
+                      G_CALLBACK (on_window_active_changed), icon);
+    g_signal_connect (window, "needs-attention",
+                      G_CALLBACK (on_window_needs_attention_changed), icon);
+    g_signal_connect (window, "workspace-changed",
+                      G_CALLBACK (on_window_workspace_changed), icon);
+    g_signal_connect (window, "message-changed",
+                      G_CALLBACK (on_window_message_changed), icon);
+    g_signal_connect (window, "progress-changed",
+                      G_CALLBACK (on_window_progress_changed), icon);
+    g_signal_connect (window, "hidden-changed",
+                      G_CALLBACK (on_window_hidden_changed), icon);
   }
 }
 

@@ -3,6 +3,7 @@ noinst_PROGRAMS = \
 	test-awn-icon \
 	test-awn-icon-box \
 	test-config-client \
+	test-taskmanager \
 	test-themed-icon
 
 INCLUDES = $(AWN_CFLAGS) -I$(top_srcdir)
@@ -18,6 +19,9 @@ test_awn_icon_box_LDADD = $(top_builddir)/libawn/libawn.la
 
 test_config_client_SOURCES = test-config-client.c
 test_config_client_LDADD = $(top_builddir)/libawn/libawn.la
+
+test_taskmanager_SOURCES = test-taskmanager.c
+test_taskmanager_LDADD = $(top_builddir)/libawn/libawn.la
 
 test_themed_icon_SOURCES = test-themed-icon.c
 test_themed_icon_LDADD = $(top_builddir)/libawn/libawn.la

@@ -144,9 +144,11 @@ task_manager_set_property (GObject      *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
 }
+
 static void
 task_manager_constructed (GObject *object)
 {
+  TaskManager        *manager = TASK_MANAGER (object);
   TaskManagerPrivate *priv;
   GtkWidget          *widget;
   gchar              *uid = NULL;
@@ -161,8 +163,20 @@ task_manager_constructed (GObject *object)
   priv->client = awn_config_client_new_for_applet ("manager", uid);
   g_free (uid);
 
-  awn_icon_box_set_orientation (AWN_ICON_BOX (priv->box), 
-                             awn_applet_get_orientation (AWN_APPLET (object)));
+  /* Create the icon box */
+  priv->box = awn_icon_box_new_for_applet (AWN_APPLET (object));
+  gtk_container_add (GTK_CONTAINER (manager), priv->box);
+  gtk_widget_show (priv->box);
+
+  /* connect to the relevent WnckScreen signals */
+  g_signal_connect (priv->screen, "window-opened", 
+                    G_CALLBACK (on_window_opened), manager);
+  g_signal_connect (priv->screen, "active-window-changed",  
+                    G_CALLBACK (on_active_window_changed), manager);
+  g_signal_connect (priv->screen, "active-workspace-changed",
+                    G_CALLBACK (on_active_workspace_changed), manager);
+  g_signal_connect (priv->screen, "viewports-changed",
+                    G_CALLBACK (on_viewports_changed), manager);
 }
 
 static void
@@ -212,22 +226,6 @@ task_manager_init (TaskManager *manager)
 
   priv->screen = wnck_screen_get_default ();
   priv->launcher_paths = NULL;
-
-  /* Create the icon box */
-  priv->box = awn_icon_box_new ();
-  gtk_container_add (GTK_CONTAINER (manager), priv->box);
-  gtk_widget_set_size_request (priv->box, -1, 48);
-  gtk_widget_show (priv->box);
-
-  /* connect to the relevent WnckScreen signals */
-  g_signal_connect (priv->screen, "window-opened", 
-                    G_CALLBACK (on_window_opened), manager);
-  g_signal_connect (priv->screen, "active-window-changed",  
-                    G_CALLBACK (on_active_window_changed), manager);
-  g_signal_connect (priv->screen, "active-workspace-changed",
-                    G_CALLBACK (on_active_workspace_changed), manager);
-  g_signal_connect (priv->screen, "viewports-changed",
-                    G_CALLBACK (on_viewports_changed), manager);
 }
 
 AwnApplet *
@@ -243,7 +241,6 @@ task_manager_new (const gchar *uid,
                             "orient", orient,
                             "size", size,
                             NULL);
-
   return manager;
 }
 
@@ -258,7 +255,7 @@ task_manager_orient_changed (AwnApplet *applet,
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
-  awn_icon_box_set_orientation (AWN_ICON_BOX (manager->priv->box), orient);
+  //awn_icon_box_set_orientation (AWN_ICON_BOX (manager->priv->box), orient);
 }
 
 static void 
@@ -511,10 +508,12 @@ on_window_opened (WnckScreen    *screen,
    * Time to create a TaskIcon for it
    */
   icon = task_icon_new_for_window (taskwin);
-  gtk_box_pack_start (GTK_BOX (priv->box), icon, FALSE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (priv->box), icon);
   gtk_widget_show (icon);
 
   priv->icons = g_slist_append (priv->icons, icon);
+  g_signal_connect_swapped (icon, "ensure_layout", 
+                            G_CALLBACK (ensure_layout), manager);
   g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);  
   
   /* Finally, make sure all is well on the taskbar */

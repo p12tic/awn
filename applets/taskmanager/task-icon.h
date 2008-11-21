@@ -61,6 +61,7 @@ struct _TaskIconClass
   /*< vtable, not signals >*/
   
   /*< signals >*/
+  void (*ensure_layout) (TaskIcon *icon);
 };
 
 GType       task_icon_get_type        (void) G_GNUC_CONST;

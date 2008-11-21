@@ -48,6 +48,14 @@ struct _AwnIconPrivate
   gboolean  active;
 };
 
+enum
+{
+  SIZE_CHANGED,
+
+  LAST_SIGNAL
+};
+static guint32 _icon_signals[LAST_SIGNAL] = { 0 };
+
 /* GObject stuff */
 static gboolean
 awn_icon_enter_notify_event (GtkWidget *widget, GdkEventCrossing *event)
@@ -159,6 +167,8 @@ awn_icon_dispose (GObject *object)
   g_return_if_fail (AWN_IS_ICON (object));
   priv = AWN_ICON (object)->priv;
 
+  awn_effects_finalize (priv->effects);
+
   if (priv->icon_ctx)
     cairo_destroy (priv->icon_ctx);
   priv->icon_ctx = NULL;
@@ -182,6 +192,16 @@ awn_icon_class_init (AwnIconClass *klass)
   wid_class->expose_event       = awn_icon_expose_event;
   wid_class->enter_notify_event = awn_icon_enter_notify_event;
   wid_class->leave_notify_event = awn_icon_leave_notify_event;
+
+  /* Signals */
+	_icon_signals[SIZE_CHANGED] =
+		g_signal_new ("size-changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (AwnIconClass, size_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID, 
+			      G_TYPE_NONE, 0);
 
   g_type_class_add_private (obj_class, sizeof (AwnIconPrivate));
 }
@@ -254,10 +274,12 @@ update_widget_size (AwnIcon *icon)
   cairo_surface_t *surface;
   gint             width;
   gint             height;
+  gint             old_size;
 
   surface = cairo_get_target (priv->icon_ctx);
   width = cairo_xlib_surface_get_width (surface);
   height = cairo_xlib_surface_get_height (surface);
+  old_size = priv->size;
 
   switch (priv->orient)
   {
@@ -270,6 +292,11 @@ update_widget_size (AwnIcon *icon)
     default:
       priv->size = height;
       gtk_widget_set_size_request (GTK_WIDGET (icon), -1, height * 1.2);
+  }
+
+  if (old_size != priv->size)
+  {
+    g_signal_emit (icon, _icon_signals[SIZE_CHANGED], 0);
   }
 }
 

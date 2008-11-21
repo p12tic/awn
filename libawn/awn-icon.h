@@ -60,6 +60,14 @@ struct _AwnIcon
 struct _AwnIconClass
 {
   GtkDrawingAreaClass parent_class;
+
+  /*< signals >*/
+  void (*size_changed) (AwnIcon *icon);
+
+  void (*icon_padding0) (AwnIcon *icon);
+  void (*icon_padding1) (AwnIcon *icon);
+  void (*icon_padding2) (AwnIcon *icon);
+  void (*icon_padding3) (AwnIcon *icon);
 };
 
 GType         awn_icon_get_type         (void) G_GNUC_CONST;

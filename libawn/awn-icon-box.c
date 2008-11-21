@@ -57,6 +57,46 @@ awn_icon_box_dispose (GObject *object)
 }
 
 static void
+request_size (GtkWidget *widget, GtkRequisition *total_req)
+{
+  GtkRequisition req;
+
+  if (!GTK_WIDGET_VISIBLE (widget))
+    return;
+
+  gtk_widget_size_request (widget, &req);
+
+  total_req->width += req.width;
+  total_req->height += req.height;
+}
+
+static void
+ensure_layout (AwnIconBox *box)
+{
+  GtkRequisition total_req;
+
+  g_return_if_fail (AWN_IS_ICON_BOX (box));
+
+  total_req.width = 0;
+  total_req.height = 0;
+  
+  gtk_container_forall (GTK_CONTAINER (box), 
+                        (GtkCallback)request_size, &total_req);
+
+  switch (box->priv->orient)
+  {
+    case AWN_ORIENTATION_BOTTOM:
+    case AWN_ORIENTATION_TOP:
+      gtk_widget_set_size_request (GTK_WIDGET (box), total_req.width, -1);
+      break;
+
+    default:
+      gtk_widget_set_size_request (GTK_WIDGET (box), -1, total_req.height);
+      break;
+  }
+}
+
+static void
 awn_icon_box_add (GtkContainer *container, GtkWidget *child)
 {
   if (!AWN_IS_ICON (child))
@@ -65,9 +105,18 @@ awn_icon_box_add (GtkContainer *container, GtkWidget *child)
     return;
   }
 
+  gtk_box_set_child_packing (GTK_BOX (container), child, FALSE, FALSE, 0,
+                              GTK_PACK_START);
   awn_icon_set_orientation (AWN_ICON (child), 
                             AWN_ICON_BOX (container)->priv->orient);
-  GTK_CONTAINER_CLASS (awn_icon_box_parent_class)->add (container, child);
+  g_signal_connect_swapped (child, "size-request", 
+                            G_CALLBACK (ensure_layout), container);
+  g_signal_connect_swapped (child, "show", 
+                            G_CALLBACK (ensure_layout), container);
+  g_signal_connect_swapped (child, "hide", 
+                            G_CALLBACK (ensure_layout), container);
+  
+  g_object_weak_ref (G_OBJECT (child), (GWeakNotify)ensure_layout, container);
 }
 
 static void
@@ -75,14 +124,11 @@ awn_icon_box_class_init (AwnIconBoxClass *klass)
 {
   GObjectClass      *obj_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass    *wid_class = GTK_WIDGET_CLASS (klass);
-  GtkContainerClass *con_class = GTK_CONTAINER_CLASS (klass);
-
+    
   obj_class->dispose = awn_icon_box_dispose;
 
   wid_class->size_request  = awn_icon_box_size_request;
   wid_class->size_allocate = awn_icon_box_size_allocate;
-
-  con_class->add = awn_icon_box_add;
 
   g_type_class_add_private (obj_class, sizeof (AwnIconBoxPrivate));
 }
@@ -96,6 +142,9 @@ awn_icon_box_init (AwnIconBox *icon_box)
 
   priv->orient = AWN_ORIENTATION_BOTTOM;
   priv->klass = GTK_WIDGET_CLASS (gtk_type_class (GTK_TYPE_HBOX));
+
+  g_signal_connect_after (icon_box, "add", 
+                          G_CALLBACK (awn_icon_box_add), icon_box);
 }
 
 GtkWidget *
@@ -112,6 +161,43 @@ awn_icon_box_new (void)
   return icon_box;
 }
 
+static void
+on_panel_size_changed (AwnApplet *applet, gint size, AwnIconBox *box)
+{
+  ensure_layout (box);
+}
+
+static void
+on_panel_orient_changed (AwnApplet      *applet, 
+                         AwnOrientation  orient, 
+                         AwnIconBox     *box)
+{
+  awn_icon_box_set_orientation (box, orient);
+}
+
+GtkWidget *   
+awn_icon_box_new_for_applet (AwnApplet *applet)
+{
+  GtkWidget *box;
+
+  box = awn_icon_box_new ();
+  
+  if (AWN_IS_APPLET (applet))
+  {
+    g_signal_connect (applet, "size-changed", 
+                      G_CALLBACK (on_panel_size_changed), box);
+    g_signal_connect (applet, "orientation-changed", 
+                      G_CALLBACK (on_panel_orient_changed), box);  
+    awn_icon_box_set_orientation (AWN_ICON_BOX (box), 
+                                  awn_applet_get_orientation (applet));
+  }
+
+  return box;
+}
+
+/*
+ * Public functions 
+ */
 void 
 awn_icon_box_set_orientation (AwnIconBox     *icon_box,
                               AwnOrientation  orient)
@@ -152,4 +238,7 @@ awn_icon_box_set_orientation (AwnIconBox     *icon_box,
       awn_icon_set_orientation (icon, orient);
   }
   g_list_free (children);
+
+  ensure_layout (icon_box);
 }
+

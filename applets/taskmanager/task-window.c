@@ -45,6 +45,7 @@ struct _TaskWindowPrivate
   gchar   *message;
   gfloat   progress;
   gboolean hidden;
+  gboolean needs_attention;
 };
 
 enum
@@ -52,6 +53,21 @@ enum
   PROP_0,
   PROP_WINDOW
 };
+
+enum
+{
+  NAME_CHANGED,
+  ICON_CHANGED,
+  ACTIVE_CHANGED,
+  NEEDS_ATTENTION,
+  WORKSPACE_CHANGED,
+  MESSAGE_CHANGED,
+  PROGRESS_CHANGED,
+  HIDDEN_CHANGED,
+
+  LAST_SIGNAL
+};
+static guint32 _window_signals[LAST_SIGNAL] = { 0 };
 
 /* Forwards */
 gint          _get_pid         (TaskWindow    *window);
@@ -122,6 +138,7 @@ task_window_class_init (TaskWindowClass *klass)
   obj_class->set_property = task_window_set_property;
   obj_class->get_property = task_window_get_property;
 
+  /* We implement the necessary funtions for a normal window */
   klass->get_pid         = _get_pid;
   klass->get_name        = _get_name;
   klass->get_icon        = _get_icon;
@@ -129,7 +146,7 @@ task_window_class_init (TaskWindowClass *klass)
   klass->is_on_workspace = _is_on_workspace;
   klass->activate        = _activate;
 
-  /* Install properties first */
+  /* Install properties */
   pspec = g_param_spec_object ("taskwindow",
                                "Window",
                                "WnckWindow",
@@ -137,6 +154,87 @@ task_window_class_init (TaskWindowClass *klass)
                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_WINDOW, pspec);
 
+  /* Install signals */
+  _window_signals[NAME_CHANGED] =
+		g_signal_new ("name-changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskWindowClass, name_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__STRING, 
+			      G_TYPE_NONE,
+            1, G_TYPE_STRING); 
+
+  _window_signals[ICON_CHANGED] =
+		g_signal_new ("icon-changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskWindowClass, icon_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__OBJECT, 
+			      G_TYPE_NONE,
+            1, GDK_TYPE_PIXBUF); 
+  
+  _window_signals[ACTIVE_CHANGED] =
+		g_signal_new ("active-changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskWindowClass, active_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__BOOLEAN,
+			      G_TYPE_NONE,
+            1, G_TYPE_BOOLEAN); 
+
+  _window_signals[NEEDS_ATTENTION] =
+		g_signal_new ("needs-attention",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskWindowClass, needs_attention),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__BOOLEAN,
+			      G_TYPE_NONE,
+            1, G_TYPE_BOOLEAN);   
+
+  _window_signals[WORKSPACE_CHANGED] =
+		g_signal_new ("workspace-changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskWindowClass, workspace_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__OBJECT,
+			      G_TYPE_NONE,
+            1, WNCK_TYPE_WORKSPACE);
+
+  _window_signals[MESSAGE_CHANGED] =
+		g_signal_new ("message-changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskWindowClass, message_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__STRING,
+			      G_TYPE_NONE,
+            1, G_TYPE_STRING);
+
+  _window_signals[PROGRESS_CHANGED] =
+		g_signal_new ("progress-changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskWindowClass, progress_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__FLOAT,
+			      G_TYPE_NONE,
+            1, G_TYPE_FLOAT);
+
+  _window_signals[HIDDEN_CHANGED] =
+		g_signal_new ("hidden-changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskWindowClass, hidden_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__BOOLEAN,
+			      G_TYPE_NONE,
+            1, G_TYPE_BOOLEAN);
+  
   g_type_class_add_private (obj_class, sizeof (TaskWindowPrivate));
 }
 
@@ -150,6 +248,7 @@ task_window_init (TaskWindow *window)
   priv->message = NULL;
   priv->progress = 0;
   priv->hidden = FALSE;
+  priv->needs_attention = FALSE;
 }
 
 TaskWindow *
@@ -174,6 +273,87 @@ window_closed (TaskWindow *window, WnckWindow *old_window)
 }
 
 static void
+on_window_name_changed (WnckWindow *wnckwin, TaskWindow *window)
+{
+  TaskWindowPrivate *priv;
+
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
+  priv = window->priv;
+
+  g_signal_emit (window, _window_signals[NAME_CHANGED], 
+                 0, wnck_window_get_name (wnckwin));
+}
+
+static void
+on_window_icon_changed (WnckWindow *wnckwin, TaskWindow *window)
+{
+  TaskWindowPrivate *priv;
+  TaskWindowClass   *klass;
+  TaskSettings      *s = task_settings_get_default ();
+
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
+  priv = window->priv;
+  
+  klass = TASK_WINDOW_GET_CLASS (window);
+  g_return_if_fail (klass->set_icon);
+
+  klass->set_icon (window, _wnck_get_icon_at_size (wnckwin, 
+                                                   s->panel_size,
+                                                   s->panel_size));
+}
+
+static void
+on_window_workspace_changed (WnckWindow *wnckwin, TaskWindow *window)
+{
+  TaskWindowPrivate *priv;
+    
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
+  priv = window->priv;
+  
+  g_signal_emit (window, _window_signals[WORKSPACE_CHANGED], 
+                 0, wnck_window_get_workspace (wnckwin));
+}
+
+static void
+on_window_state_changed (WnckWindow      *wnckwin,
+                         WnckWindowState  changed_mask,
+                         WnckWindowState  state,
+                         TaskWindow      *window)
+{
+  TaskWindowPrivate *priv;
+  gboolean           hidden = FALSE;
+  gboolean           needs_attention = FALSE;
+    
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
+  priv = window->priv;
+
+  if (state & WNCK_WINDOW_STATE_SKIP_TASKLIST
+      || state & WNCK_WINDOW_STATE_HIDDEN)
+    hidden = TRUE;
+
+  if (priv->hidden != hidden)
+  {
+    priv->hidden = hidden;
+    g_signal_emit (window, _window_signals[HIDDEN_CHANGED], 0, hidden);
+  }
+
+  if (state & WNCK_WINDOW_STATE_DEMANDS_ATTENTION
+      || state & WNCK_WINDOW_STATE_URGENT)
+    needs_attention = TRUE;
+
+  if (priv->needs_attention != needs_attention)
+  {
+    priv->needs_attention = needs_attention;
+    g_signal_emit (window, _window_signals[NEEDS_ATTENTION], 
+                   0, needs_attention);
+  }
+}
+
+static void
 task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
 {
   TaskWindowPrivate *priv;
@@ -185,11 +365,31 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
 
   g_object_weak_ref (G_OBJECT (priv->window), 
                      (GWeakNotify)window_closed, window);
+
+  g_signal_connect (wnckwin, "name-changed", 
+                    G_CALLBACK (on_window_name_changed), window);
+  g_signal_connect (wnckwin, "icon-changed",
+                    G_CALLBACK (on_window_icon_changed), window);
+  g_signal_connect (wnckwin, "workspace-changed",
+                    G_CALLBACK (on_window_workspace_changed), window);
+  g_signal_connect (wnckwin, "state-changed", 
+                    G_CALLBACK (on_window_state_changed), window);
 }
 
 /*
  * Public functions
  */
+WnckScreen * 
+task_window_get_screen (TaskWindow    *window)
+{
+  g_return_val_if_fail (TASK_IS_WINDOW (window), wnck_screen_get_default ());
+
+  if (WNCK_IS_WINDOW (window->priv->window))
+    return wnck_window_get_screen (window->priv->window);
+  
+  return wnck_screen_get_default ();
+}
+
 gulong 
 task_window_get_xid (TaskWindow    *window)
 {
@@ -465,7 +665,10 @@ void
 _set_icon (TaskWindow    *window,
            GdkPixbuf     *pixbuf)
 {
-  /* g_signal_emit (window, _window_signals[ICON_CHANGED], 0, pixbuf) */
+  g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+
+  g_signal_emit (window, _window_signals[ICON_CHANGED], 0, pixbuf);
+  g_object_unref (pixbuf);
 }
 
 gboolean 

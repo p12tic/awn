@@ -21,7 +21,7 @@
 #define _AWN_ICON_BOX_H_
 
 #include <gtk/gtk.h>
-#include <libawn/awn-applet.h>
+#include <libawn/libawn.h>
 
 G_BEGIN_DECLS
 
@@ -62,8 +62,11 @@ GType         awn_icon_box_get_type         (void) G_GNUC_CONST;
 
 GtkWidget *   awn_icon_box_new              (void);
 
+GtkWidget *   awn_icon_box_new_for_applet   (AwnApplet *applet);
+
 void          awn_icon_box_set_orientation  (AwnIconBox     *icon_box,
                                              AwnOrientation  orient);
+
 G_END_DECLS
 
 #endif /* _AWN_ICON_BOX_H_ */

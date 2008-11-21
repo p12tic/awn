@@ -38,6 +38,7 @@ struct _AwnAppletManagerPrivate
   AwnConfigClient *client;
 
   AwnOrientation   orient;
+  gint             size;
   GSList           *applet_list;
 
   GHashTable      *applets;
@@ -54,6 +55,7 @@ enum
 
   PROP_CLIENT,
   PROP_ORIENT,
+  PROP_SIZE,
   PROP_APPLET_LIST
 };
 
@@ -84,6 +86,9 @@ awn_applet_manager_constructed (GObject *object)
   awn_config_bridge_bind (bridge, priv->client,
                           AWN_GROUP_PANEL, AWN_PANEL_ORIENT,
                           object, "orient");
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_SIZE,
+                          object, "size");
   awn_config_bridge_bind_list (bridge, priv->client,
                                AWN_GROUP_PANEL, AWN_PANEL_APPLET_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
@@ -126,6 +131,10 @@ awn_applet_manager_get_property (GObject    *object,
     case PROP_ORIENT:
       g_value_set_int (value, priv->orient);
       break;
+    case PROP_SIZE:
+      g_value_set_int (value, priv->size);
+      break;
+
     case PROP_APPLET_LIST:
       g_value_set_pointer (value, priv->applet_list);
       break;
@@ -153,6 +162,9 @@ awn_applet_manager_set_property (GObject      *object,
       break;
     case PROP_ORIENT:
       awn_applet_manager_set_orient (manager, g_value_get_int (value));
+      break;
+    case PROP_SIZE:
+      priv->size = g_value_get_int (value);
       break;
     case PROP_APPLET_LIST:
       free_list (priv->applet_list);
@@ -203,6 +215,14 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                       "Orient",
                       "The orientation of the panel",
                       0, 3, AWN_ORIENTATION_BOTTOM,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+    PROP_SIZE,
+    g_param_spec_int ("size",
+                      "Size",
+                      "The size of the panel",
+                      0, G_MAXINT, 48,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -304,7 +324,7 @@ create_applet (AwnAppletManager *manager,
 
   /*FIXME: Exception cases, i.e. separators */
   
-  applet = awn_applet_proxy_new (path, uid, AWN_ORIENTATION_BOTTOM, 48);
+  applet = awn_applet_proxy_new (path, uid, priv->orient, priv->size);
   gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
   
   if (priv->orient == AWN_ORIENTATION_TOP || priv->orient == AWN_ORIENTATION_BOTTOM)

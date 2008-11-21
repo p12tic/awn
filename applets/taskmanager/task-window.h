@@ -68,20 +68,22 @@ struct _TaskWindowClass
                                     guint32        timestamp);
 
   /*< signals >*/
-  void (*name_changed)      (TaskWindow *window, const gchar *name);
-  void (*icon_changed)      (TaskWindow *window, GdkPixbuf   *pixbuf);
-  void (*active_changed)    (TaskWindow *window, gboolean     is_active);
-  void (*needs_attention)   (TaskWindow *window, gboolean     needs_attention);
-  void (*workspace_changed) (TaskWindow *window);
+  void (*name_changed)      (TaskWindow *window, const gchar   *name);
+  void (*icon_changed)      (TaskWindow *window, GdkPixbuf     *pixbuf);
+  void (*active_changed)    (TaskWindow *window, gboolean       is_active);
+  void (*needs_attention)   (TaskWindow *window, gboolean      needs_attention);
+  void (*workspace_changed) (TaskWindow *window, WnckWorkspace *space;);
 
-  void (*message_changed)   (TaskWindow *window, const gchar *message);
-  void (*progress_changed)  (TaskWindow *window, gfloat       progress);
-  void (*hidden_changed)    (TaskWindow *window, gboolean     hidden);
+  void (*message_changed)   (TaskWindow *window, const gchar   *message);
+  void (*progress_changed)  (TaskWindow *window, gfloat         progress);
+  void (*hidden_changed)    (TaskWindow *window, gboolean       hidden);
 };
 
 GType           task_window_get_type          (void) G_GNUC_CONST;
 
 TaskWindow    * task_window_new               (WnckWindow    *window);
+
+WnckScreen    * task_window_get_screen        (TaskWindow    *window);
 
 gulong          task_window_get_xid           (TaskWindow    *window);
 

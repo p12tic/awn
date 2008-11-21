@@ -145,7 +145,7 @@ AM_CONDITIONAL(USE_GCONF, test "$with_gconf" != "no")
 
 LIBRARY_MODULES="glib-2.0 >= 2.8.0 gthread-2.0 gobject-2.0 gtk+-2.0 >= 2.12 gdk-2.0 >= 2.12 dbus-glib-1 gio-2.0 $CFG_MODULE"
 DOCK_MODULES="libwnck-1.0 x11 xproto xcomposite xrender"
-APPLET_MODULES="awn libwnck-1.0"
+APPLET_MODULES="libwnck-1.0"
 AC_SUBST(LIBRARY_MODULES)
 
 AC_DEFINE(HAVE_LIBWNCK_220, 1, [Have new libwnck])
