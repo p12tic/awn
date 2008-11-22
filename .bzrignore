@@ -93,3 +93,4 @@ tests/test-awn-icon
 tests/test-config-client
 tests/test-themed-icon
 tests/test-awn-icon-box
+./tests/test-taskmanager
