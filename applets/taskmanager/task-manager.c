@@ -76,7 +76,7 @@ static void task_manager_set_show_all_windows    (TaskManager *manager,
 static void task_manager_set_show_only_launchers (TaskManager *manager, 
                                                   gboolean     show_only);
 static void task_manager_refresh_launcher_paths  (TaskManager *manager,
-                                                  gpointer     list);
+                                                  GSList      *list);
 
 static void task_manager_orient_changed (AwnApplet *applet, 
                                          AwnOrientation orient);
@@ -145,6 +145,7 @@ task_manager_constructed (GObject *object)
 {
   TaskManager        *manager = TASK_MANAGER (object);
   TaskManagerPrivate *priv;
+  AwnConfigBridge    *bridge;
   GtkWidget          *widget;
   gchar              *uid = NULL;
   
@@ -154,9 +155,25 @@ task_manager_constructed (GObject *object)
   priv->settings = task_settings_get_default ();
 
   /* Load the uid */
+  /* FIXME: AwnConfigClient needs to associate the default schema when uid is
+   * used
+   */
   g_object_get (object, "uid", &uid, NULL);
-  priv->client = awn_config_client_new_for_applet ("manager", uid);
+  priv->client = awn_config_client_new_for_applet ("taskmanager", NULL);
   g_free (uid);
+
+  /* Connect up the important bits */
+  bridge = awn_config_bridge_get_default ();
+  awn_config_bridge_bind (bridge, priv->client, 
+                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "show_all_windows", 
+                          object, "show_all_windows");
+  awn_config_bridge_bind (bridge, priv->client, 
+                        AWN_CONFIG_CLIENT_DEFAULT_GROUP, "only_show_launchers", 
+                          object, "only_show_launchers");
+  awn_config_bridge_bind_list (bridge, priv->client, 
+                             AWN_CONFIG_CLIENT_DEFAULT_GROUP, "launcher_paths",
+                             AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                             object, "launcher_paths");
 
   /* Create the icon box */
   priv->box = awn_icon_box_new_for_applet (AWN_APPLET (object));
@@ -207,7 +224,7 @@ task_manager_class_init (TaskManagerClass *klass)
                                 "launcher-paths",
                                 "List of paths to launcher desktop files",
                                 G_PARAM_READWRITE);
-  g_object_class_install_property (obj_class, PROP_ONLY_SHOW_LAUNCHERS, pspec);
+  g_object_class_install_property (obj_class, PROP_LAUNCHER_PATHS, pspec);
 
   g_type_class_add_private (obj_class, sizeof (TaskManagerPrivate));
 }
@@ -516,7 +533,7 @@ on_window_opened (WnckScreen    *screen,
   /* Finally, make sure all is well on the taskbar */
   ensure_layout (manager);
 
-  g_debug ("WINDOW OPENED: %s\n", wnck_window_get_name (window));
+  //g_debug ("WINDOW OPENED: %s\n", wnck_window_get_name (window));
 }
 
 static void 
@@ -538,6 +555,8 @@ task_manager_set_show_all_windows (TaskManager *manager,
   manager->priv->show_all_windows = show_all;
 
   ensure_layout (manager);
+
+  g_debug ("%s\n", show_all ? "showing all windows":"not showing all windows");
 }
 
 static void
@@ -548,16 +567,20 @@ task_manager_set_show_only_launchers (TaskManager *manager,
   manager->priv->only_show_launchers = show_only;
 
   ensure_layout (manager);
+
+  g_debug ("%s\n", show_only ? "only show launchers":"show everything");
 }
 
 static void 
 task_manager_refresh_launcher_paths (TaskManager *manager,
-                                     gpointer     list)
+                                     GSList      *list)
 {
   TaskManagerPrivate *priv;
+  GSList *l;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
 
-   
+  for (l = list; l; l = l->next)
+    g_print ("LAUNCHER: %s\n", (gchar*)l->data);
 }

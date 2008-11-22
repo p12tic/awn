@@ -1,0 +1,14 @@
+[DEFAULT/only_show_launchers]
+type = bool
+default = false
+description = Only show and manager launcher windows
+
+[DEFAULT/show_all_windows]
+type = bool
+default = true
+description = Show windows from all workspaces
+
+[DEFAULT/launcher_paths]
+type = list-string
+default = /usr/share/applications/evolution.desktop;/usr/share/applications/thunderbird.desktop;/usr/share/applications/firefox.deskop;/usr/share/applications/rythmbox.desktop;/usr/share/applications/banshee-1.desktop;/usr/share/applications/pidgin.desktop;/usr/share/applications/empathy.desktop
+description = a list of paths to .desktop files from which the taskmanager should create it's launchers

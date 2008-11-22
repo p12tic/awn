@@ -120,6 +120,7 @@ awn_config_bridge_bind (AwnConfigBridge *bridge,
   AwnConfigBind          *bind;
   GParamSpec             *spec;
   gchar                  *string;
+  GError                 *error;
 
   g_return_if_fail (AWN_IS_CONFIG_BRIDGE (bridge));
   g_return_if_fail (client);
@@ -128,6 +129,8 @@ awn_config_bridge_bind (AwnConfigBridge *bridge,
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (property_name);
   priv = bridge->priv;
+
+  error = NULL;
 
   bind = g_slice_new0 (AwnConfigBind);
   bind->object = object;
@@ -140,7 +143,7 @@ awn_config_bridge_bind (AwnConfigBridge *bridge,
   {
     case G_TYPE_BOOLEAN:
       g_object_set (object, property_name, 
-                    awn_config_client_get_bool (client, group, key, NULL), 
+                    awn_config_client_get_bool (client, group, key, &error), 
                     NULL);
       awn_config_client_notify_add (client, group, key,
                                     on_boolean_key_changed, bind);
@@ -149,7 +152,7 @@ awn_config_bridge_bind (AwnConfigBridge *bridge,
     case G_TYPE_FLOAT:
     case G_TYPE_DOUBLE:
       g_object_set (object, property_name, 
-                    awn_config_client_get_float (client, group, key, NULL),
+                    awn_config_client_get_float (client, group, key, &error),
                     NULL);
       awn_config_client_notify_add (client, group, key,
                                     on_float_key_changed, bind);
@@ -157,7 +160,7 @@ awn_config_bridge_bind (AwnConfigBridge *bridge,
     
     case G_TYPE_INT:
       g_object_set (object, property_name, 
-                    awn_config_client_get_int (client, group, key, NULL),
+                    awn_config_client_get_int (client, group, key, &error),
                     NULL);
       awn_config_client_notify_add (client, group, key,
                                     on_int_key_changed, bind);
@@ -166,7 +169,7 @@ awn_config_bridge_bind (AwnConfigBridge *bridge,
     case G_TYPE_STRING:
       string = awn_config_client_get_string (client, group, key, NULL);
       g_object_set (object, property_name, 
-                    awn_config_client_get_string (client, group, key, NULL),
+                    awn_config_client_get_string (client, group, key, &error),
                     NULL);
       awn_config_client_notify_add (client, group, key,
                                     on_string_key_changed, bind);
@@ -178,6 +181,12 @@ awn_config_bridge_bind (AwnConfigBridge *bridge,
       g_free (bind->property_name);
       g_slice_free (AwnConfigBind, bind);
       return;
+  }
+  
+  if (error)
+  {
+    g_warning ("Error binding ConfigClient: %s\n", error->message);
+    g_error_free (error);
   }
 
   priv->binds = g_list_append (priv->binds, bind);

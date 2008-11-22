@@ -42,5 +42,30 @@ desktop_DATA = \
 $(desktop_DATA).in: $(desktop_DATA).in.in
 	sed -e "s|\@LIBDIR\@|$(libdir)|g" $< > $@
 
-EXTRA_DIST = $(desktop_DATA).in.in
-clean = $(desktop_DATA) $(desktop_DATA).in
+
+if USE_GCONF
+schemasdir       = @GCONF_SCHEMA_FILE_DIR@
+schemas_in_files = taskmanager.schemas.in
+schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
+
+taskmanager.schemas.in: taskmanager.schema-ini
+	$(top_srcdir)/data/awn-schema-to-gconf $< $@ "taskmanager"
+
+@INTLTOOL_SCHEMAS_RULE@
+
+if GCONF_SCHEMAS_INSTALL
+install-gconf-schemas: $(schemas_DATA)
+	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(schemas_DATA)
+else
+install-gconf-schemas:
+endif
+else
+install-gconf-schemas:
+endif
+schemadir = $(pkgdatadir)/schemas
+schema_DATA = taskmanager.schema-ini
+
+install-data-local: install-gconf-schemas
+
+EXTRA_DIST = $(desktop_DATA).in.in $(schema_DATA)
+CLEANFILES = $(desktop_DATA) $(desktop_DATA).in taskmanager.schemas taskmanager.schemas.in
