@@ -24,6 +24,8 @@
 #include <gtk/gtk.h>
 #include <libwnck/libwnck.h>
 
+#include "task-window-private.h"
+
 #define TASK_TYPE_WINDOW (task_window_get_type ())
 
 #define TASK_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj),\

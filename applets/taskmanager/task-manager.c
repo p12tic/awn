@@ -64,18 +64,13 @@ enum
 };
 
 /* Forwards */
+static void ensure_layout               (TaskManager   *manager);
 static void on_window_opened            (WnckScreen    *screen, 
                                          WnckWindow    *window,
                                          TaskManager   *manager);
 static void on_active_window_changed    (WnckScreen    *screen, 
                                          WnckWindow    *old_window,
                                          TaskManager   *manager);
-static void on_active_workspace_changed (WnckScreen    *screen, 
-                                         WnckWorkspace *old_workspace,
-                                         TaskManager   *manager);
-static void on_viewports_changed        (WnckScreen    *screen,
-                                         TaskManager   *manager);
-
 static void task_manager_set_show_all_windows    (TaskManager *manager,
                                                   gboolean     show_all);
 static void task_manager_set_show_only_launchers (TaskManager *manager, 
@@ -173,10 +168,10 @@ task_manager_constructed (GObject *object)
                     G_CALLBACK (on_window_opened), manager);
   g_signal_connect (priv->screen, "active-window-changed",  
                     G_CALLBACK (on_active_window_changed), manager);
-  g_signal_connect (priv->screen, "active-workspace-changed",
-                    G_CALLBACK (on_active_workspace_changed), manager);
-  g_signal_connect (priv->screen, "viewports-changed",
-                    G_CALLBACK (on_viewports_changed), manager);
+  g_signal_connect_swapped (priv->screen, "active-workspace-changed",
+                            G_CALLBACK (ensure_layout), manager);
+  g_signal_connect_swapped (priv->screen, "viewports-changed",
+                            G_CALLBACK (ensure_layout), manager);
 }
 
 static void
@@ -530,23 +525,6 @@ on_active_window_changed (WnckScreen    *screen,
                           TaskManager   *manager)
 {
   //g_debug ("ACTIVE_WINDOW_CHANGED\n");
-}
-
-static void 
-on_active_workspace_changed (WnckScreen    *screen, 
-                             WnckWorkspace *old_workspace,
-                             TaskManager   *manager)
-{
-  g_debug ("ACTIVE_WORKSPACE_CHANGED\n");
-  ensure_layout (manager);
-}
-
-static void 
-on_viewports_changed (WnckScreen    *screen,
-                      TaskManager   *manager)
-{
-  g_debug ("VIEWPORTS_CHANGED\n");
-  ensure_layout (manager);
 }
 
 /*

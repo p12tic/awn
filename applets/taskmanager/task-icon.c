@@ -431,13 +431,7 @@ task_icon_button_release_event (GtkWidget      *widget,
     len = g_slist_length (priv->windows);
     if (len == 1)
     {
-      TaskWindow *window = priv->windows->data;
-
-      if (task_window_is_active (window))
-        task_window_minimize (window);
-      else
-        task_window_activate (window, event->time);
-
+      task_window_activate (priv->windows->data, event->time);
       return TRUE;
     }
   }

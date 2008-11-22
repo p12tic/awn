@@ -32,42 +32,11 @@
 
 G_DEFINE_TYPE (TaskWindow, task_window, G_TYPE_OBJECT);
 
-#define TASK_WINDOW_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
-  TASK_TYPE_WINDOW, \
-  TaskWindowPrivate))
-
-struct _TaskWindowPrivate
-{
-  WnckWindow *window;
-  GSList     *utilities;
-
-  /* Properties */
-  gchar   *message;
-  gfloat   progress;
-  gboolean hidden;
-  gboolean needs_attention;
-};
-
 enum
 {
   PROP_0,
   PROP_WINDOW
 };
-
-enum
-{
-  NAME_CHANGED,
-  ICON_CHANGED,
-  ACTIVE_CHANGED,
-  NEEDS_ATTENTION,
-  WORKSPACE_CHANGED,
-  MESSAGE_CHANGED,
-  PROGRESS_CHANGED,
-  HIDDEN_CHANGED,
-
-  LAST_SIGNAL
-};
-static guint32 _window_signals[LAST_SIGNAL] = { 0 };
 
 /* Forwards */
 gint          _get_pid         (TaskWindow    *window);
@@ -682,6 +651,52 @@ _is_on_workspace (TaskWindow *window,
   return FALSE;
 }
 
+void
+really_activate (WnckWindow *window, guint32 timestamp)
+{
+  WnckWindowState  state;
+  WnckWorkspace   *active_ws;
+  WnckWorkspace   *window_ws;
+  WnckScreen      *screen;
+  gboolean         switch_workspace_on_unminimize = FALSE;
+
+  screen = wnck_window_get_screen (window);
+  state = wnck_window_get_state (window);
+  active_ws = wnck_screen_get_active_workspace (screen);
+  window_ws = wnck_window_get_workspace (window);
+	
+  if (state & WNCK_WINDOW_STATE_MINIMIZED)
+  {
+    if (window_ws &&
+        active_ws != window_ws &&
+        !switch_workspace_on_unminimize)
+      wnck_workspace_activate (window_ws, timestamp);
+
+    wnck_window_activate_transient (window, timestamp);
+  }
+  else
+  {
+    if ((wnck_window_is_active (window) ||
+         wnck_window_transient_is_most_recently_activated (window)) &&
+         (!window_ws || active_ws == window_ws))
+    {
+      wnck_window_minimize (window);
+      return;
+    }
+    else
+    {
+      /* FIXME: THIS IS SICK AND WRONG AND BUGGY. See the end of
+       * http://mail.gnome.org/archives/wm-spec-list/005-July/msg0003.html
+       * There should only be *one* activate call.
+       */
+      if (window_ws)
+        wnck_workspace_activate (window_ws, timestamp);
+     
+      wnck_window_activate_transient (window, timestamp);
+    }
+  } 
+}
+
 void   
 _activate (TaskWindow    *window,
            guint32        timestamp)
@@ -695,9 +710,8 @@ _activate (TaskWindow    *window,
    */
   if (WNCK_IS_WINDOW (priv->window))
   {
-    wnck_workspace_activate (wnck_window_get_workspace (priv->window),
-                             timestamp);
-    wnck_window_activate_transient (priv->window, timestamp+5);
+    really_activate (priv->window, timestamp);
+    wnck_window_activate_transient (priv->window, timestamp);
   }
 
   for (w = priv->utilities; w; w = w->next)
