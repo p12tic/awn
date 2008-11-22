@@ -226,6 +226,8 @@ task_manager_init (TaskManager *manager)
 
   priv->screen = wnck_screen_get_default ();
   priv->launcher_paths = NULL;
+
+  wnck_set_client_type (WNCK_CLIENT_TYPE_PAGER);
 }
 
 AwnApplet *

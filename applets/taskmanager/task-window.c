@@ -331,8 +331,7 @@ on_window_state_changed (WnckWindow      *wnckwin,
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
   priv = window->priv;
 
-  if (state & WNCK_WINDOW_STATE_SKIP_TASKLIST
-      || state & WNCK_WINDOW_STATE_HIDDEN)
+  if (state & WNCK_WINDOW_STATE_SKIP_TASKLIST)
     hidden = TRUE;
 
   if (priv->hidden != hidden)
@@ -695,13 +694,17 @@ _activate (TaskWindow    *window,
    * move window to this workspace)
    */
   if (WNCK_IS_WINDOW (priv->window))
-    wnck_window_activate (priv->window, timestamp);
+  {
+    wnck_workspace_activate (wnck_window_get_workspace (priv->window),
+                             timestamp);
+    wnck_window_activate_transient (priv->window, timestamp+5);
+  }
 
   for (w = priv->utilities; w; w = w->next)
   {
     WnckWindow *win = w->data;
 
     if (WNCK_IS_WINDOW (win))
-      wnck_window_activate (win, timestamp);
+      wnck_window_activate_transient (win, timestamp);
   }
 }
