@@ -26,7 +26,7 @@
 #include <libwnck/libwnck.h>
 
 #include "task-window.h"
-
+#include "task-launcher.h"
 #include "task-settings.h"
 #include "xutils.h"
 
@@ -54,15 +54,13 @@ enum
 static guint32 _window_signals[LAST_SIGNAL] = { 0 };
 
 /* Forwards */
-gint          _get_pid         (TaskWindow    *window);
-const gchar * _get_name        (TaskWindow    *window);
-GdkPixbuf   * _get_icon        (TaskWindow    *window);
-void          _set_icon        (TaskWindow    *window,
-                                GdkPixbuf     *pixbuf);
-gboolean      _is_on_workspace (TaskWindow    *window,
-                                  WnckWorkspace *space);
-void          _activate        (TaskWindow    *window,
-                                guint32        timestamp);
+static gint          _get_pid         (TaskWindow    *window);
+static const gchar * _get_name        (TaskWindow    *window);
+static GdkPixbuf   * _get_icon        (TaskWindow    *window);
+static gboolean      _is_on_workspace (TaskWindow    *window,
+                                       WnckWorkspace *space);
+static void          _activate        (TaskWindow    *window,
+                                       guint32        timestamp);
 
 static void   task_window_set_window (TaskWindow *window,
                                       WnckWindow *wnckwin);
@@ -126,7 +124,6 @@ task_window_class_init (TaskWindowClass *klass)
   klass->get_pid         = _get_pid;
   klass->get_name        = _get_name;
   klass->get_icon        = _get_icon;
-  klass->set_icon        = _set_icon;
   klass->is_on_workspace = _is_on_workspace;
   klass->activate        = _activate;
 
@@ -135,7 +132,7 @@ task_window_class_init (TaskWindowClass *klass)
                                "Window",
                                "WnckWindow",
                                WNCK_TYPE_WINDOW,
-                               G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+                               G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_WINDOW, pspec);
 
   /* Install signals */
@@ -272,20 +269,15 @@ on_window_name_changed (WnckWindow *wnckwin, TaskWindow *window)
 static void
 on_window_icon_changed (WnckWindow *wnckwin, TaskWindow *window)
 {
-  TaskWindowPrivate *priv;
-  TaskWindowClass   *klass;
-  TaskSettings      *s = task_settings_get_default ();
+  TaskSettings *s = task_settings_get_default ();
+  GdkPixbuf    *pixbuf;
 
   g_return_if_fail (TASK_IS_WINDOW (window));
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
-  priv = window->priv;
   
-  klass = TASK_WINDOW_GET_CLASS (window);
-  g_return_if_fail (klass->set_icon);
-
-  klass->set_icon (window, _wnck_get_icon_at_size (wnckwin, 
-                                                   s->panel_size,
-                                                   s->panel_size));
+  pixbuf = _wnck_get_icon_at_size (wnckwin, s->panel_size, s->panel_size);
+  task_window_update_icon (window, pixbuf);
+  g_object_unref (pixbuf);
 }
 
 static void
@@ -346,8 +338,10 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
 
   priv->window = wnckwin;
 
-  g_object_weak_ref (G_OBJECT (priv->window), 
-                     (GWeakNotify)window_closed, window);
+  /* We don't want to destroy ourselves if this is a launcher */
+  if (!TASK_IS_LAUNCHER (window)) 
+    g_object_weak_ref (G_OBJECT (priv->window), 
+                       (GWeakNotify)window_closed, window);
 
   g_signal_connect (wnckwin, "name-changed", 
                     G_CALLBACK (on_window_name_changed), window);
@@ -446,18 +440,13 @@ task_window_get_icon (TaskWindow    *window)
 }
 
 void
-task_window_set_icon (TaskWindow    *window,
-                      GdkPixbuf     *pixbuf)
+task_window_update_icon (TaskWindow    *window,
+                         GdkPixbuf     *pixbuf)
 {
-  TaskWindowClass *klass;
-
   g_return_if_fail (TASK_IS_WINDOW (window));
   g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
   
-  klass = TASK_WINDOW_GET_CLASS (window);
-  g_return_if_fail (klass->set_icon);
-
-  return klass->set_icon (window, pixbuf);
+  g_signal_emit (window, _window_signals[ICON_CHANGED], 0, pixbuf);
 }
 
 gboolean   
@@ -613,7 +602,7 @@ task_window_set_icon_geometry (TaskWindow    *window,
 /*
  * Implemented functions for a standard window without a launcher
  */
-gint 
+static gint 
 _get_pid (TaskWindow    *window)
 {
   if (WNCK_IS_WINDOW (window->priv->window))
@@ -622,7 +611,7 @@ _get_pid (TaskWindow    *window)
   return 0;
 }
 
-const gchar * 
+static const gchar * 
 _get_name (TaskWindow    *window)
 {
   if (WNCK_IS_WINDOW (window->priv->window))
@@ -631,7 +620,7 @@ _get_name (TaskWindow    *window)
   return NULL;
 }
 
-GdkPixbuf * 
+static GdkPixbuf * 
 _get_icon (TaskWindow    *window)
 {
   TaskSettings *s = task_settings_get_default ();
@@ -643,17 +632,7 @@ _get_icon (TaskWindow    *window)
   return NULL;
 }
 
-void  
-_set_icon (TaskWindow    *window,
-           GdkPixbuf     *pixbuf)
-{
-  g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
-
-  g_signal_emit (window, _window_signals[ICON_CHANGED], 0, pixbuf);
-  g_object_unref (pixbuf);
-}
-
-gboolean 
+static gboolean 
 _is_on_workspace (TaskWindow *window,
                   WnckWorkspace *space)
 {
@@ -668,7 +647,7 @@ _is_on_workspace (TaskWindow *window,
 /*
  * Lifted from libwnck/tasklist.c
  */
-void
+static void
 really_activate (WnckWindow *window, guint32 timestamp)
 {
   WnckWindowState  state;
@@ -714,7 +693,7 @@ really_activate (WnckWindow *window, guint32 timestamp)
   } 
 }
 
-void   
+static void
 _activate (TaskWindow    *window,
            guint32        timestamp)
 {

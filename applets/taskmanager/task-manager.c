@@ -28,6 +28,7 @@
 #include "task-manager.h"
 
 #include "task-icon.h"
+#include "task-launcher.h"
 #include "task-settings.h"
 #include "task-window.h"
 
@@ -47,6 +48,7 @@ struct _TaskManagerPrivate
   GtkWidget *box;
   GSList     *icons;
   GSList     *windows;
+  GSList     *launchers;
 
   /* Properties */
   GSList   *launcher_paths;
@@ -143,7 +145,6 @@ task_manager_set_property (GObject      *object,
 static void
 task_manager_constructed (GObject *object)
 {
-  TaskManager        *manager = TASK_MANAGER (object);
   TaskManagerPrivate *priv;
   AwnConfigBridge    *bridge;
   GtkWidget          *widget;
@@ -175,20 +176,6 @@ task_manager_constructed (GObject *object)
                              AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
                              object, "launcher_paths");
 
-  /* Create the icon box */
-  priv->box = awn_icon_box_new_for_applet (AWN_APPLET (object));
-  gtk_container_add (GTK_CONTAINER (manager), priv->box);
-  gtk_widget_show (priv->box);
-
-  /* connect to the relevent WnckScreen signals */
-  g_signal_connect (priv->screen, "window-opened", 
-                    G_CALLBACK (on_window_opened), manager);
-  g_signal_connect (priv->screen, "active-window-changed",  
-                    G_CALLBACK (on_active_window_changed), manager);
-  g_signal_connect_swapped (priv->screen, "active-workspace-changed",
-                            G_CALLBACK (ensure_layout), manager);
-  g_signal_connect_swapped (priv->screen, "viewports-changed",
-                            G_CALLBACK (ensure_layout), manager);
 }
 
 static void
@@ -240,6 +227,21 @@ task_manager_init (TaskManager *manager)
   priv->launcher_paths = NULL;
 
   wnck_set_client_type (WNCK_CLIENT_TYPE_PAGER);
+
+  /* Create the icon box */
+  priv->box = awn_icon_box_new_for_applet (AWN_APPLET (manager));
+  gtk_container_add (GTK_CONTAINER (manager), priv->box);
+  gtk_widget_show (priv->box);
+
+  /* connect to the relevent WnckScreen signals */
+  g_signal_connect (priv->screen, "window-opened", 
+                    G_CALLBACK (on_window_opened), manager);
+  g_signal_connect (priv->screen, "active-window-changed",  
+                    G_CALLBACK (on_active_window_changed), manager);
+  g_signal_connect_swapped (priv->screen, "active-workspace-changed",
+                            G_CALLBACK (ensure_layout), manager);
+  g_signal_connect_swapped (priv->screen, "viewports-changed",
+                            G_CALLBACK (ensure_layout), manager);
 }
 
 AwnApplet *
@@ -582,5 +584,27 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
   priv = manager->priv;
 
   for (l = list; l; l = l->next)
-    g_print ("LAUNCHER: %s\n", (gchar*)l->data);
+  {
+    GtkWidget    *icon;
+    TaskLauncher *launcher;
+
+    launcher = task_launcher_new_for_desktop_file (l->data);
+
+    if (!launcher)
+      continue;
+
+    priv->launchers = g_slist_append (priv->launchers, launcher);
+    
+    icon = task_icon_new_for_window (TASK_WINDOW (launcher));
+    gtk_container_add (GTK_CONTAINER (priv->box), icon);
+    gtk_widget_show (icon);
+
+    priv->icons = g_slist_append (priv->icons, icon);
+    g_signal_connect_swapped (icon, "ensure_layout", 
+                               G_CALLBACK (ensure_layout), manager);
+    g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
+  }
+
+  /* Finally, make sure all is well on the taskbar */
+  ensure_layout (manager);
 }

@@ -840,3 +840,110 @@ _wnck_get_icon_at_size (WnckWindow *window,
   g_object_unref (icon);
   return icon_scaled;
 }
+
+/*
+ * XUTILS_GET_NAMED_ICON
+ *
+ * Probably shouldn't be in here, but I'm not feeling like creating another
+ * source header and file for one function. Sue me. Well don't actually.
+ */
+
+static char *
+strip_extension (const char *file)
+{
+  char *stripped, *p;
+
+  stripped = g_strdup (file);
+
+  p = strrchr (stripped, '.');
+  if (p &&
+      (!strcmp (p, ".png") ||
+       !strcmp (p, ".svg") ||
+       !strcmp (p, ".xpm")))
+	  *p = 0;
+
+  return stripped;
+}
+
+/* Gets the pixbuf from a desktop file's icon name. Based on the same function
+ * from matchbox-desktop
+ */
+static GdkPixbuf *
+get_icon (const gchar *name, guint size)
+{
+  static GtkIconTheme *theme = NULL;
+  GdkPixbuf *pixbuf = NULL;
+  GError *error = NULL;
+  gchar *stripped = NULL;
+
+  gint width, height;
+
+  if (theme == NULL)
+    theme = gtk_icon_theme_get_default ();
+
+  if (name == NULL)
+  {
+    pixbuf = gtk_icon_theme_load_icon (theme, "application-x-executable",
+                                       size, 0, NULL);
+    return pixbuf;
+  }
+
+  if (g_path_is_absolute (name))
+  {
+    if (g_file_test (name, G_FILE_TEST_EXISTS))
+    {
+      pixbuf = gdk_pixbuf_new_from_file_at_scale (name, size, size, 
+                                                  TRUE, &error);
+      if (error)
+      {
+        /*g_warning ("Error loading icon: %s\n", error->message);*/
+        g_error_free (error);
+        error = NULL;
+     }
+      return pixbuf;
+    } 
+  }
+
+  stripped = strip_extension (name);
+  
+  pixbuf = gtk_icon_theme_load_icon (theme,
+                                     stripped,
+                                     size,
+                                     GTK_ICON_LOOKUP_FORCE_SVG, &error);
+  if (error)
+  {   
+    /*g_warning ("Error loading icon: %s\n", error->message);*/
+    g_error_free (error);
+    error = NULL;
+  }
+  
+  /* Always try and send back something */
+  if (pixbuf == NULL)
+    pixbuf = gtk_icon_theme_load_icon (theme, "stock_folder",
+                                       size, 0, NULL);
+  
+  width = gdk_pixbuf_get_width (pixbuf);
+  height = gdk_pixbuf_get_height (pixbuf);
+
+  if (width != size || height != size)
+  {
+    GdkPixbuf *temp = pixbuf;
+    pixbuf = gdk_pixbuf_scale_simple (temp, 
+                                      size,
+                                      size,
+                                      GDK_INTERP_HYPER);
+    g_object_unref (temp);
+  }
+
+  g_free (stripped);
+
+ return pixbuf;
+}
+
+GdkPixbuf *
+xutils_get_named_icon (const gchar *icon_name, 
+                       gint         width,
+                       gint         height)
+{
+  return get_icon (icon_name, width);
+}

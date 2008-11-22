@@ -13,6 +13,8 @@ TASKMANAGER_SOURCES= \
 	applet.c \
 	task-icon.c \
 	task-icon.h \
+	task-launcher.c \
+	task-launcher.h \
 	task-manager.c \
 	task-manager.h \
 	task-settings.c \

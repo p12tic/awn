@@ -45,6 +45,11 @@ _wnck_get_icon_at_size (WnckWindow *window,
                         gint        width,
                         gint        height);
 
+GdkPixbuf *
+xutils_get_named_icon (const gchar *icon_name, 
+                       gint         width,
+                       gint         height);
+
 G_END_DECLS
 
 #endif /* WNCK_XUTILS_H */

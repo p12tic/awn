@@ -62,8 +62,6 @@ struct _TaskWindowClass
   gint          (*get_pid)         (TaskWindow    *window);
   const gchar * (*get_name)        (TaskWindow    *window);
   GdkPixbuf   * (*get_icon)        (TaskWindow    *window);
-  void          (*set_icon)        (TaskWindow    *window,
-                                    GdkPixbuf     *pixbuf);
   gboolean      (*is_on_workspace) (TaskWindow    *window,
                                     WnckWorkspace *space);
   void          (*activate)        (TaskWindow    *window,
@@ -99,7 +97,7 @@ const gchar   * task_window_get_name          (TaskWindow    *window);
 
 GdkPixbuf     * task_window_get_icon          (TaskWindow    *window);
 
-void            task_window_set_icon          (TaskWindow    *window,
+void            task_window_update_icon       (TaskWindow    *window,
                                                GdkPixbuf     *pixbuf);
 
 gboolean        task_window_is_active         (TaskWindow    *window);
