@@ -38,6 +38,21 @@ enum
   PROP_WINDOW
 };
 
+enum
+{
+  NAME_CHANGED,
+  ICON_CHANGED,
+  ACTIVE_CHANGED,
+  NEEDS_ATTENTION,
+  WORKSPACE_CHANGED,
+  MESSAGE_CHANGED,
+  PROGRESS_CHANGED,
+  HIDDEN_CHANGED,
+
+  LAST_SIGNAL
+};
+static guint32 _window_signals[LAST_SIGNAL] = { 0 };
+
 /* Forwards */
 gint          _get_pid         (TaskWindow    *window);
 const gchar * _get_name        (TaskWindow    *window);
@@ -581,7 +596,6 @@ task_window_set_icon_geometry (TaskWindow    *window,
   /* FIXME: Do something interesting like dividing the width by the number of
    * WnckWindows so the user can scrub through them
    */
-
   if (WNCK_IS_WINDOW (priv->window))
     wnck_window_set_icon_geometry (priv->window, x, y, width, height);
 
@@ -651,6 +665,9 @@ _is_on_workspace (TaskWindow *window,
   return FALSE;
 }
 
+/*
+ * Lifted from libwnck/tasklist.c
+ */
 void
 really_activate (WnckWindow *window, guint32 timestamp)
 {

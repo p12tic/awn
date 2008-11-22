@@ -33,18 +33,3 @@ struct _TaskWindowPrivate
   gboolean needs_attention;
 };
 
-
-enum
-{
-  NAME_CHANGED,
-  ICON_CHANGED,
-  ACTIVE_CHANGED,
-  NEEDS_ATTENTION,
-  WORKSPACE_CHANGED,
-  MESSAGE_CHANGED,
-  PROGRESS_CHANGED,
-  HIDDEN_CHANGED,
-
-  LAST_SIGNAL
-};
-static guint32 _window_signals[LAST_SIGNAL] = { 0 };
