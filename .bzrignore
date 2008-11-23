@@ -94,3 +94,5 @@ tests/test-config-client
 tests/test-themed-icon
 tests/test-awn-icon-box
 ./tests/test-taskmanager
+applets/taskmanager/taskmanager.schemas
+applets/taskmanager/taskmanager.schemas.in
