@@ -72,7 +72,7 @@ struct _TaskWindowClass
   void (*icon_changed)      (TaskWindow *window, GdkPixbuf     *pixbuf);
   void (*active_changed)    (TaskWindow *window, gboolean       is_active);
   void (*needs_attention)   (TaskWindow *window, gboolean      needs_attention);
-  void (*workspace_changed) (TaskWindow *window, WnckWorkspace *space;);
+  void (*workspace_changed) (TaskWindow *window, WnckWorkspace *space);
 
   void (*message_changed)   (TaskWindow *window, const gchar   *message);
   void (*progress_changed)  (TaskWindow *window, gfloat         progress);
