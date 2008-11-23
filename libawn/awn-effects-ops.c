@@ -370,7 +370,8 @@ gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
                                DrawIconState * ds,
                                cairo_surface_t * icon,
                                cairo_t ** picon_ctx,
-                               cairo_t ** preflect_ctx
+                               cairo_t ** preflect_ctx,
+                               AwnOrientation orient
                               )
 {
   gint  x,y,w,h;
@@ -408,16 +409,31 @@ gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
 		} 
   }
   
-  
   if (fx->delta_width || fx->delta_height) //is surface size changing?
   {
-    // update current w&h
-    ds->current_width = ds->current_width + fx->delta_width;
-    ds->current_height = ds->current_height + fx->delta_height;
+    switch (orient)
+    {
+      case AWN_ORIENTATION_BOTTOM: 
+        // update current w&h
+        ds->current_width = ds->current_width + fx->delta_width;
+        ds->current_height = ds->current_height + fx->delta_height;
 
-    // adjust offsets
-    ds->x1 = (fx->window_width - ds->current_width) / 2;
-    ds->y1 = ds->y1 - fx->delta_height;
+        // adjust offsets
+        ds->x1 = (fx->window_width - ds->current_width) / 2;
+        ds->y1 = ds->y1 - fx->delta_height;
+        break;
+      case AWN_ORIENTATION_RIGHT:
+        ds->current_width =  ds->current_width + fx->delta_height;
+        ds->current_height = ds->current_height + fx->delta_width;
+       ds->x1 = fx->window_width - (ds->current_width - fx->delta_height) - fx->settings->icon_offset;
+        ds->y1 = (fx->window_height - ds->current_height)/2;
+        break;
+
+      case AWN_ORIENTATION_TOP:
+      case AWN_ORIENTATION_LEFT:
+      default:
+        break;
+    }  
 
     //getting rid of the existing surfaces
 
@@ -471,10 +487,17 @@ gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
     {
       cairo_save(*picon_ctx);
 
-      cairo_scale(*picon_ctx,
-                  ds->current_width  / ((double)ds->current_width - fx->delta_width),
-                  ds->current_height / ((double)ds->current_height - fx->delta_height));
+      if (orient == AWN_ORIENTATION_BOTTOM)
+        cairo_scale(*picon_ctx,
+   ds->current_width  / ((double)ds->current_width - fx->delta_width),
+               ds->current_height / ((double)ds->current_height - fx->delta_height)                                    );
 
+      else
+        cairo_scale(*picon_ctx,
+               ds->current_height / ((double)ds->current_height - fx->delta_height),
+               ds->current_width  / ((double)ds->current_width - fx->delta_width)
+);
+      
       cairo_set_source_surface(*picon_ctx, icon, 0, 0);
     }    
     cairo_paint(*picon_ctx);

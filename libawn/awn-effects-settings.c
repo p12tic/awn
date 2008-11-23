@@ -77,6 +77,7 @@ awn_effects_settings_get_default (void)
   s = g_new (AwnEffectsSettings, 1);
 
   settings = s;
+  s->bar_angle = 0;
 
   client = awn_config_client_new();
 

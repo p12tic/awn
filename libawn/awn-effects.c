@@ -942,15 +942,18 @@ make_shadows(AwnEffects * fx, cairo_t * cr, int x1, int y1, int width, int heigh
   this function will need to handle it themselves.
 */
 void
-awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
-                     cairo_t * reflect_context)
+awn_effects_draw_icons_cairo (AwnEffects     *fx, 
+                              cairo_t        *cr, 
+                              cairo_t        *icon_context,
+                              cairo_t        *reflect_context,
+                              AwnOrientation  orient)
 {
   cairo_surface_t * icon;       //Surfaces pulled from args.
   cairo_surface_t * reflect = NULL;
   DrawIconState  ds;
   gboolean icon_changed = FALSE;
   gint i;
-
+ 
   icon = cairo_get_target(icon_context);
 
   if (reflect_context)
@@ -959,20 +962,33 @@ awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_cont
   }
 
   fx->icon_width = cairo_xlib_surface_get_width(icon);
-
   fx->icon_height = cairo_xlib_surface_get_height(icon);
   ds.current_width = fx->icon_width;
   ds.current_height = fx->icon_height;
-  ds.x1 = (fx->window_width - ds.current_width) / 2;
-  ds.y1 = (fx->window_height - ds.current_height); // sit on bottom by default
+
+  switch (orient)
+  {
+    case AWN_ORIENTATION_BOTTOM:
+      ds.x1 = (fx->window_width - ds.current_width) / 2;
+      ds.y1 = fx->window_height - ds.current_height - 
+              fx->settings->icon_offset - fx->y_offset;
+      break;
+    case AWN_ORIENTATION_RIGHT:
+      ds.x1 = fx->window_width - ds.current_width 
+              - fx->settings->icon_offset - fx->y_offset;
+      ds.y1 = (fx->window_height - ds.current_height)/2;
+      break;
+    case AWN_ORIENTATION_LEFT:
+    case AWN_ORIENTATION_TOP:
+      ds.x1 = (fx->window_width - ds.current_width) / 2;
+      ds.y1 = (fx->window_height - ds.current_height);      
+      break;
+    default:
+      g_assert (0);
+      break;
+  }
 
   apply_awn_curves(fx); //hopefully I haven't broken awn-curves.
-
-  if (fx->settings)
-  {
-    ds.y1 = fx->window_height - fx->settings->icon_offset - ds.current_height -
-            fx->y_offset;
-  }
 
   ds.y1 -= fx->curve_offset;
   
@@ -1008,7 +1024,8 @@ awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_cont
    fx->reflect_srfc, fx->reflect_ctx being correct before this call.
   */
   icon_changed = awn_effect_op_scale_and_clip(fx, &ds, icon, &fx->icon_ctx,
-                                       &fx->reflect_ctx) || icon_changed;
+                                       &fx->reflect_ctx, orient)|| icon_changed;
+  
 
   for (i = 0;fx->op_list[i].fn;i++)
   {
@@ -1034,20 +1051,48 @@ awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_cont
   {
     if (fx->y_offset >= 0)
     {
-      ds.y1 += ds.current_height + fx->y_offset * 2 - ((fx->settings->reflection_offset > 30)? 30 : fx->settings->reflection_offset);
-
+      switch (orient)
+      {
+        case AWN_ORIENTATION_BOTTOM:
+          ds.y1 += ds.current_height + fx->y_offset * 2 - ((fx->settings->reflection_offset > 30)? 30 : fx->settings->reflection_offset);
+          break;
+        case AWN_ORIENTATION_RIGHT:
+          ds.x1 += ds.current_width + fx->y_offset * 2 - ((fx->settings->reflection_offset > 30) ? 30: fx->settings->reflection_offset);
+          break;
+        case AWN_ORIENTATION_LEFT:
+        case AWN_ORIENTATION_TOP:
+          ds.y1 += ds.current_height + fx->y_offset * 2 - ((fx->settings->reflection_offset > 30)? 30 : fx->settings->reflection_offset);
+          break;
+        default:
+          g_assert (0);
+          break;
+      }
+ 
       if (icon_changed || !reflect)
       {
         cairo_matrix_t matrix;
-        cairo_matrix_init(&matrix,
-                          1,
-                          0,
-                          0,
-                          -1,
-                          (ds.current_width / 2.0)*(1 - (1)),
-                          (ds.current_height / 2.0)*(1 - (-1))
-                         );
+        
+        if (orient == AWN_ORIENTATION_BOTTOM || orient == AWN_ORIENTATION_TOP)
+          cairo_matrix_init(&matrix,
+                            1,
+                            0,
+                            0,
+                            -1,
+                            (ds.current_width / 2.0)*(1 - (1)),
+                            (ds.current_height / 2.0)*(1 - (-1))
+                            );
+        else
+          cairo_matrix_init(&matrix,
+                            -1,
+                            0,
+                            0,
+                            1,
+                            (ds.current_width / 2.0)*(1 - (-1)),
+                            (ds.current_height / 2.0)*(1 - (1))
+                            );
+        
         cairo_save(fx->reflect_ctx);
+        
         cairo_transform(fx->reflect_ctx, &matrix);
         cairo_set_source_surface(fx->reflect_ctx, cairo_get_target(fx->icon_ctx), 
                                  0, 0);
@@ -1068,6 +1113,7 @@ awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_cont
                                     fx->settings->reflection_alpha_mult);
       }
     }
+    
     /* 4px offset for 3D look for reflection*/
     if (fx->do_offset_cut && fx->settings && fx->settings->bar_angle > 0)
     {
@@ -1100,7 +1146,7 @@ awn_effects_draw_icons(AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
   gdk_cairo_set_source_pixbuf(icon_context, icon, 0, 0);
   cairo_paint(icon_context);
 
-  awn_effects_draw_icons_cairo(fx, cr, icon_context, NULL);
+  awn_effects_draw_icons_cairo(fx, cr, icon_context, NULL, AWN_ORIENTATION_BOTTOM);
 
   cairo_surface_destroy(icon_srfc);
   cairo_destroy(icon_context);

@@ -34,7 +34,8 @@ gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
                                DrawIconState * ds,
                                cairo_surface_t * icon,
                                cairo_t ** picon_ctx,
-                               cairo_t ** preflect_ctx
+                               cairo_t ** preflect_ctx,
+                               AwnOrientation orientm
                               )  ;
 
 gboolean awn_effect_op_3dturn(AwnEffects * fx,

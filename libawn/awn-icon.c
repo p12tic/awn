@@ -105,7 +105,7 @@ awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
   awn_effects_draw_background (priv->effects, cr);
   
   if (priv->icon_ctx)
-    awn_effects_draw_icons_cairo (priv->effects, cr, priv->icon_ctx, NULL);
+    awn_effects_draw_icons_cairo (priv->effects, cr, priv->icon_ctx, NULL, priv->orient);
   
   awn_effects_draw_foreground (priv->effects, cr);
 

@@ -229,7 +229,7 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect,
 
 void awn_effects_draw_background(AwnEffects *, cairo_t *);
 void awn_effects_draw_icons(AwnEffects *, cairo_t *, GdkPixbuf *, GdkPixbuf *);
-void awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t * , cairo_t *);
+void awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t * , cairo_t *, AwnOrientation orient);
 void awn_effects_draw_foreground(AwnEffects *, cairo_t *);
 void awn_effects_draw_set_window_size(AwnEffects *, const gint, const gint);
 void awn_effects_draw_set_icon_size(AwnEffects *, const gint, const gint);

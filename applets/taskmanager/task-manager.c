@@ -544,21 +544,21 @@ on_window_opened (WnckScreen    *screen,
    */
   if (type == WNCK_WINDOW_UTILITY && try_to_place_window (manager, window))
   {
-    g_debug ("WINDOW PLACED: %s\n", wnck_window_get_name (window));
+    g_debug ("WINDOW PLACED: %s", wnck_window_get_name (window));
     return;
   }
  
   /* Okay, time to check the launchers if we can get a match */
   if (try_to_match_window_to_launcher (manager, window))
   {
-    g_debug ("WINDOW MATCHED: %s\n", wnck_window_get_name (window));
+    g_debug ("WINDOW MATCHED: %s", wnck_window_get_name (window));
     return;
   }
 
   /* Try the startup-notification windows */
   if (try_to_match_window_to_sn_context (manager, window))
   {
-    g_debug ("WINDOW STARTUP: %s\n", wnck_window_get_name (window));
+    g_debug ("WINDOW STARTUP: %s", wnck_window_get_name (window));
     return;
   }
 
@@ -584,8 +584,6 @@ on_window_opened (WnckScreen    *screen,
   
   /* Finally, make sure all is well on the taskbar */
   ensure_layout (manager);
-
-  //g_debug ("WINDOW OPENED: %s\n", wnck_window_get_name (window));
 }
 
 static void 
@@ -608,7 +606,7 @@ task_manager_set_show_all_windows (TaskManager *manager,
 
   ensure_layout (manager);
 
-  g_debug ("%s\n", show_all ? "showing all windows":"not showing all windows");
+  g_debug ("%s", show_all ? "showing all windows":"not showing all windows");
 }
 
 static void
@@ -620,7 +618,7 @@ task_manager_set_show_only_launchers (TaskManager *manager,
 
   ensure_layout (manager);
 
-  g_debug ("%s\n", show_only ? "only show launchers":"show everything");
+  g_debug ("%s", show_only ? "only show launchers":"show everything");
 }
 
 static void 
@@ -632,7 +630,11 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
-
+  
+  /* FIXME: I guess we should add something to check whether the user has
+   * removed a launcher. Make sure we don't remove a launcher which has a 
+   * window set, wait till the window is closed
+   */
   for (d = list; d; d = d->next)
   {
     GtkWidget    *icon;
