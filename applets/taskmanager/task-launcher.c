@@ -174,14 +174,14 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
 
   priv->path = g_strdup (path);
 
-  priv->item = awn_desktop_item_new (priv->path);
+  priv->item = awn_desktop_item_new (path);
 
   if (priv->item == NULL)
     return;
 
   priv->name = awn_desktop_item_get_name (priv->item);
   priv->exec = awn_desktop_item_get_exec (priv->item);
-  priv->icon_name = awn_desktop_item_get_string (priv->item, "Icon");
+  priv->icon_name = awn_desktop_item_get_icon_name (priv->item);
 
   g_debug ("LAUNCHER: %s", priv->name);
 }
@@ -232,8 +232,7 @@ _get_icon (TaskWindow    *window)
   }
   else
   {
-    return xutils_get_named_icon (launcher->priv->icon_name,
-                                  s->panel_size, s->panel_size);
+    return awn_desktop_item_get_icon (launcher->priv->item, s->panel_size);
   }
 }
 
