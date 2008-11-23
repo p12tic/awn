@@ -628,17 +628,35 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
                                      GSList      *list)
 {
   TaskManagerPrivate *priv;
-  GSList *l;
+  GSList *d;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
 
-  for (l = list; l; l = l->next)
+  for (d = list; d; d = d->next)
   {
     GtkWidget    *icon;
-    TaskLauncher *launcher;
+    TaskLauncher *launcher = NULL;
+    GSList        *l;
 
-    launcher = task_launcher_new_for_desktop_file (l->data);
+    for (l = priv->launchers; l; l = l->next)
+    {
+      TaskLauncher *launch = l->data;
+
+      if (!TASK_IS_LAUNCHER (launch))
+        continue;
+      
+      if (g_strcmp0 (d->data, task_launcher_get_destkop_path (launch)) == 0)
+      {
+        launcher = launch;
+        break;
+      }
+    }
+
+    if (TASK_IS_LAUNCHER (launcher))
+      continue;
+
+    launcher = task_launcher_new_for_desktop_file (d->data);
 
     if (!launcher)
       continue;
@@ -654,6 +672,8 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
                                G_CALLBACK (ensure_layout), manager);
     g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
   }
+  for (d = list; d; d = d->next)
+    g_free (d->data);
   g_slist_free (list);
 
   /* Finally, make sure all is well on the taskbar */

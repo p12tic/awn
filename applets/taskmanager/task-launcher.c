@@ -164,6 +164,14 @@ task_launcher_new_for_desktop_file (const gchar *path)
   return win;
 }
 
+const gchar   * 
+task_launcher_get_destkop_path     (TaskLauncher *launcher)
+{
+  g_return_val_if_fail (TASK_IS_LAUNCHER (launcher), NULL);
+
+  return launcher->priv->path;
+}
+
 static void
 task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
 {
