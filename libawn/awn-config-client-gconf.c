@@ -114,10 +114,10 @@ static void awn_config_client_notify_proxy (GConfClient *client, guint cid, GCon
 	g_free (awn_entry);
 }
 
-static AwnConfigClient *awn_config_client_new_with_path (gchar *path, gchar *name)
+static AwnConfigClient *awn_config_client_new_with_path (const gchar *path, const gchar *name)
 {
 	AwnConfigClient *client = g_new (AwnConfigClient, 1);
-	client->path = path;
+	client->path = g_strdup (path);
 	client->client = gconf_client_get_default ();
 	if (!gconf_client_dir_exists (client->client, client->path, NULL)) {
 		GError *err = NULL;
@@ -140,7 +140,7 @@ AwnConfigClient *awn_config_client_new ()
 	return awn_dock_config;
 }
 
-AwnConfigClient *awn_config_client_new_for_applet (gchar *name, gchar *uid)
+AwnConfigClient *awn_config_client_new_for_applet (const gchar *name, const gchar *uid)
 {
 	AwnConfigClient *client;
 	gchar *gconf_key = NULL;

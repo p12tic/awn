@@ -130,7 +130,7 @@ AwnConfigClient *awn_config_client_new ()
  * @uid is not defined, it is implied that the applet is a singleton.
  * Returns: an instance of #AwnConfigClient for the specified applet.
  */
-AwnConfigClient *awn_config_client_new_for_applet (gchar *name, gchar *uid)
+AwnConfigClient *awn_config_client_new_for_applet (const gchar *name, const gchar *uid)
 {
 	AwnConfigClient *client;
 	gchar *config_dir = g_build_filename (g_get_user_config_dir (), "awn", "applets", NULL);

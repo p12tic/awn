@@ -58,7 +58,8 @@ typedef struct _AwnConfigClient AwnConfigClient;
  * A union used to store a configuration value when it has changed and has
  * notify callbacks associated with it.
  */
-typedef union {
+typedef union 
+{
 	gboolean bool_val;
 	gfloat float_val;
 	gint int_val;
@@ -76,7 +77,8 @@ typedef union {
  * The structure used to transport data to the notification functions of
  * a configuration entry.
  */
-typedef struct {
+typedef struct 
+{
 	AwnConfigClient *client;
 	gchar *group;
 	gchar *key;
@@ -91,7 +93,8 @@ typedef struct {
  *
  * The callback template for configuration change notification functions.
  */
-typedef void (*AwnConfigClientNotifyFunc) (AwnConfigClientNotifyEntry *entry, gpointer user_data);
+typedef void (*AwnConfigClientNotifyFunc) (AwnConfigClientNotifyEntry *entry, 
+                                           gpointer                    data);
 
 /**
  * AWN_CONFIG_CLIENT_DEFAULT_GROUP:
@@ -124,7 +127,8 @@ typedef void (*AwnConfigClientNotifyFunc) (AwnConfigClientNotifyEntry *entry, gp
  *
  * Indicates the value type of a particular configuration entry.
  */
-typedef enum {
+typedef enum 
+{
 	AWN_CONFIG_VALUE_TYPE_NULL = -1,
 	AWN_CONFIG_VALUE_TYPE_BOOL,
 	AWN_CONFIG_VALUE_TYPE_FLOAT,
@@ -150,7 +154,8 @@ typedef enum {
  * Indicates the value type of every item in a configuration entry of
  * type "list".
  */
-typedef enum {
+typedef enum 
+{
 	AWN_CONFIG_CLIENT_LIST_TYPE_BOOL,
 	AWN_CONFIG_CLIENT_LIST_TYPE_FLOAT,
 	AWN_CONFIG_CLIENT_LIST_TYPE_INT,
@@ -166,58 +171,94 @@ typedef enum {
  *
  * Indicates the configuration backend in use.
  */
-typedef enum {
+typedef enum 
+{
   AWN_CONFIG_CLIENT_GCONF,
   AWN_CONFIG_CLIENT_GKEYFILE
 } AwnConfigBackend;
 
-GType              awn_config_client_get_type                  (void);
+GType              awn_config_client_get_type       (void);
 
-AwnConfigClient   *awn_config_client_new                       ();
-AwnConfigClient   *awn_config_client_new_for_applet            (gchar *name, gchar *uid);
-AwnConfigBackend  awn_config_client_query_backend              (void);
+AwnConfigClient *awn_config_client_new            (void);
+AwnConfigClient *awn_config_client_new_for_applet (const gchar *name, 
+                                                   const gchar *uid);
 
-void               awn_config_client_clear                     (AwnConfigClient *client, GError **err);
+AwnConfigBackend awn_config_client_query_backend (void);
 
-void               awn_config_client_ensure_group              (AwnConfigClient *client, const gchar *group);
+void             awn_config_client_clear         (AwnConfigClient *client, 
+                                                  GError         **err);
+void             awn_config_client_ensure_group  (AwnConfigClient *client, 
+                                                  const gchar     *group);
 
-void               awn_config_client_notify_add                (AwnConfigClient *client, const gchar *group,
-                                                                const gchar *key, AwnConfigClientNotifyFunc callback,
-                                                                gpointer user_data);
-gboolean           awn_config_client_entry_exists              (AwnConfigClient *client, const gchar *group,
-                                                                const gchar *key);
-void               awn_config_client_load_defaults_from_schema (AwnConfigClient *client, GError **err);
+void             awn_config_client_notify_add     (AwnConfigClient *client, 
+                                                   const gchar *group,
+                                                   const gchar *key, 
+                                                   AwnConfigClientNotifyFunc cb,
+                                                   gpointer     user_data);
+gboolean         awn_config_client_entry_exists   (AwnConfigClient *client, 
+                                                   const gchar     *group,
+                                                   const gchar     *key);
+void             awn_config_client_load_defaults_from_schema (AwnConfigClient *client, 
+                                                              GError **err);
 
-int                awn_config_client_key_lock_open             (const gchar *group, const gchar *key);
-int                awn_config_client_key_lock                  (int fd, int operation);
-int                awn_config_client_key_lock_close            (int fd);
+int                awn_config_client_key_lock_open  (const gchar *group, 
+                                                     const gchar *key);
+int                awn_config_client_key_lock       (gint         fd, 
+                                                     gint         operation);
+int                awn_config_client_key_lock_close (gint         fd);
 
-AwnConfigValueType awn_config_client_get_value_type            (AwnConfigClient *client, const gchar *group,
-                                                                const gchar *key, GError **err);
-
-gboolean           awn_config_client_get_bool                  (AwnConfigClient *client, const gchar *group,
-                                                                const gchar *key, GError **err);
-void               awn_config_client_set_bool                  (AwnConfigClient *client, const gchar *group,
-                                                                const gchar *key, gboolean value, GError **err);
-gfloat             awn_config_client_get_float                 (AwnConfigClient *client, const gchar *group,
-                                                                const gchar *key, GError **err);
-void               awn_config_client_set_float                 (AwnConfigClient *client, const gchar *group,
-                                                                const gchar *key, gfloat value, GError **err);
-gint               awn_config_client_get_int                   (AwnConfigClient *client, const gchar *group,
-                                                                const gchar *key, GError **err);
-void               awn_config_client_set_int                   (AwnConfigClient *client, const gchar *group,
-                                                                const gchar *key, gint value, GError **err);
-gchar             *awn_config_client_get_string                (AwnConfigClient *client, const gchar *group,
-                                                                const gchar *key, GError **err);
-void               awn_config_client_set_string                (AwnConfigClient *client, const gchar *group,
-                                                                const gchar *key, gchar *value, GError **err);
-GSList            *awn_config_client_get_list                  (AwnConfigClient *client, const gchar *group,
-                                                                const gchar *key, AwnConfigListType list_type,
-                                                                GError **err);
-void               awn_config_client_set_list                  (AwnConfigClient *client, const gchar *group,
-                                                                const gchar *key, AwnConfigListType list_type,
-                                                                GSList *value, GError **err);
-void               awn_config_client_free                      (AwnConfigClient *client);
+AwnConfigValueType awn_config_client_get_value_type (AwnConfigClient *client, 
+                                                     const gchar     *group,
+                                                     const gchar     *key, 
+                                                     GError         **err);
+gboolean           awn_config_client_get_bool       (AwnConfigClient *client, 
+                                                     const gchar     *group,
+                                                     const gchar     *key, 
+                                                     GError         **err);
+void               awn_config_client_set_bool       (AwnConfigClient *client, 
+                                                     const gchar     *group,
+                                                     const gchar     *key, 
+                                                     gboolean         value, 
+                                                     GError         **err);
+gfloat             awn_config_client_get_float      (AwnConfigClient *client, 
+                                                     const gchar     *group,
+                                                     const gchar     *key, 
+                                                     GError         **err);
+void               awn_config_client_set_float      (AwnConfigClient *client, 
+                                                     const gchar     *group,
+                                                     const gchar     *key, 
+                                                     gfloat           value, 
+                                                     GError         **err);
+gint               awn_config_client_get_int        (AwnConfigClient *client, 
+                                                     const gchar     *group,
+                                                     const gchar     *key, 
+                                                     GError         **err);
+void               awn_config_client_set_int        (AwnConfigClient *client, 
+                                                     const gchar     *group,
+                                                     const gchar     *key, 
+                                                     gint             value, 
+                                                     GError         **err);
+gchar            * awn_config_client_get_string     (AwnConfigClient *client, 
+                                                     const gchar     *group,
+                                                     const gchar     *key, 
+                                                     GError         **err);
+void               awn_config_client_set_string     (AwnConfigClient *client, 
+                                                     const gchar     *group,
+                                                     const gchar     *key,
+                                                     gchar           *value, 
+                                                     GError         **err);
+GSList            *awn_config_client_get_list       (AwnConfigClient *client, 
+                                                     const gchar     *group,
+                                                     const gchar     *key,
+                                                     AwnConfigListType type,
+                                                     GError         **err);
+void               awn_config_client_set_list       (AwnConfigClient *client, 
+                                                     const gchar     *group,
+                                                     const gchar     *key, 
+                                                     AwnConfigListType type,
+                                                     GSList          *value, 
+                                                     GError         **err);
+void               awn_config_client_free           (AwnConfigClient *client);
 
 #endif /* _LIBAWN_AWN_CONFIG_CLIENT_H */
 /* vim: set noet ts=8 sw=8 sts=8 : */
