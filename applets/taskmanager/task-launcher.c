@@ -183,7 +183,7 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   priv->exec = awn_desktop_item_get_exec (priv->item);
   priv->icon_name = awn_desktop_item_get_string (priv->item, "Icon");
 
-  g_debug ("LAUNCHER: %s\n", priv->name);
+  g_debug ("LAUNCHER: %s", priv->name);
 }
 
 /*
@@ -333,4 +333,54 @@ _activate (TaskWindow    *window,
     if (WNCK_IS_WINDOW (win))
       wnck_window_activate_transient (win, timestamp);
   }
+}
+
+/*
+ * Public functions
+ */
+gboolean   
+task_launcher_has_window (TaskLauncher *launcher)
+{
+  g_return_val_if_fail (TASK_IS_LAUNCHER (launcher), TRUE);
+
+  if (WNCK_IS_WINDOW (TASK_WINDOW (launcher)->priv->window))
+    return TRUE;
+  return FALSE;
+}
+
+gboolean   
+task_launcher_try_match (TaskLauncher *launcher,
+                         gint          pid,
+                         const gchar  *res_name,
+                         const gchar  *class_name)
+{
+  return FALSE; 
+}
+
+static void
+on_window_closed (TaskLauncher *launcher, WnckWindow *old_window)
+{
+  TaskSettings *s = task_settings_get_default ();
+  GdkPixbuf *pixbuf;
+
+  pixbuf = xutils_get_named_icon (launcher->priv->icon_name,
+                                  s->panel_size, s->panel_size);
+
+  task_window_update_icon (TASK_WINDOW (launcher), pixbuf);
+
+  g_object_unref (pixbuf);
+}
+
+void       
+task_launcher_set_window (TaskLauncher *launcher,
+                          WnckWindow   *window)
+{
+  g_return_if_fail (TASK_IS_LAUNCHER (launcher));
+  g_return_if_fail (WNCK_IS_WINDOW (window));
+
+  g_object_set (launcher, "taskwindow", window, NULL);
+
+  g_object_weak_ref (G_OBJECT (window), 
+                     (GWeakNotify)on_window_closed,
+                     launcher);
 }

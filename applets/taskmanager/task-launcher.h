@@ -65,9 +65,19 @@ struct _TaskLauncherClass
   void (*launcher3) (void);
 };
 
-GType           task_launcher_get_type          (void) G_GNUC_CONST;
+GType           task_launcher_get_type             (void) G_GNUC_CONST;
 
 TaskLauncher  * task_launcher_new_for_desktop_file (const gchar *path);
+
+gboolean        task_launcher_has_window           (TaskLauncher *launcher);
+
+gboolean        task_launcher_try_match            (TaskLauncher *launcher,
+                                                    gint          pid,
+                                                    const gchar  *res_name,
+                                                    const gchar  *class_name);
+
+void            task_launcher_set_window           (TaskLauncher *launcher,
+                                                    WnckWindow   *window);
 
 
 #endif /* _TASK_LAUNCHER_H_ */
