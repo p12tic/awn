@@ -31,6 +31,7 @@
 #include "task-launcher.h"
 #include "task-settings.h"
 #include "task-window.h"
+#include "xutils.h"
 
 G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET);
 
@@ -409,14 +410,63 @@ try_to_place_window (TaskManager *manager, WnckWindow *window)
 }
 
 static gboolean
-try_to_match_window_to_launcher (TaskManager *manager, TaskWindow *window)
+try_to_match_window_to_launcher (TaskManager *manager, WnckWindow *window)
 {
-  /* FIXME: */
-  return FALSE;
+  TaskManagerPrivate *priv = manager->priv;
+  GSList  *l;
+  gchar   *temp;
+  gchar   *res_name = NULL;
+  gchar   *class_name = NULL;
+  gint     pid;
+  gboolean res = FALSE;
+
+  /* Grab the appropriete info */
+  pid = wnck_window_get_pid (window);
+  _wnck_get_wmclass (wnck_window_get_xid (window), &res_name, &class_name);
+
+  if (res_name)
+  {
+    temp = res_name;
+    res_name = g_utf8_strdown (temp, -1);
+    g_free (temp);
+  }
+  
+  if (class_name)
+  {
+    temp = class_name;
+    class_name = g_utf8_strdown (temp, -1);
+    g_free (temp);
+  }
+
+  /* Try and match */
+  for (l = priv->launchers; l; l = l->next)
+  {
+    TaskLauncher *launcher = l->data;
+
+    if (!TASK_IS_LAUNCHER (launcher))
+      continue;
+
+    if (task_launcher_has_window (launcher))
+      continue;
+    
+    if (!task_launcher_try_match (launcher, pid, res_name, class_name))
+      continue;
+
+    /* As it matched this launcher, we can set the window to the launcher and
+     * get on with it
+     */
+    task_launcher_set_window (launcher, window);
+    res = TRUE;
+  }
+
+  g_free (res_name);
+  g_free (class_name);
+
+  return res;
 }
 
 static gboolean
-try_to_match_window_to_sn_context (TaskManager *mananger, TaskWindow *window)
+try_to_match_window_to_sn_context (TaskManager *mananger, WnckWindow *window)
 {
   /* FIXME: */
   return FALSE;
@@ -497,6 +547,20 @@ on_window_opened (WnckScreen    *screen,
     g_debug ("WINDOW PLACED: %s\n", wnck_window_get_name (window));
     return;
   }
+ 
+  /* Okay, time to check the launchers if we can get a match */
+  if (try_to_match_window_to_launcher (manager, window))
+  {
+    g_debug ("WINDOW MATCHED: %s\n", wnck_window_get_name (window));
+    return;
+  }
+
+  /* Try the startup-notification windows */
+  if (try_to_match_window_to_sn_context (manager, window))
+  {
+    g_debug ("WINDOW STARTUP: %s\n", wnck_window_get_name (window));
+    return;
+  }
 
   /* 
    * We couldn't append the window to a pre-existing TaskWindow, so we'll need
@@ -505,21 +569,7 @@ on_window_opened (WnckScreen    *screen,
   taskwin = task_window_new (window);
   priv->windows = g_slist_append (priv->windows, taskwin);
   g_object_weak_ref (G_OBJECT (taskwin), (GWeakNotify)window_closed, manager);
-     
-  /* Okay, time to check the launchers if we can get a match */
-  if (try_to_match_window_to_launcher (manager, taskwin))
-  {
-    g_debug ("WINDOW MATCHED: %s\n", wnck_window_get_name (window));
-    return;
-  }
-
-  /* Try the startup-notification windows */
-  if (try_to_match_window_to_sn_context (manager, taskwin))
-  {
-    g_debug ("WINDOW STARTUP: %s\n", wnck_window_get_name (window));
-    return;
-  }
-
+ 
   /* If we've come this far, the window deserves a spot on the task-manager!
    * Time to create a TaskIcon for it
    */
@@ -604,6 +654,7 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
                                G_CALLBACK (ensure_layout), manager);
     g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
   }
+  g_slist_free (list);
 
   /* Finally, make sure all is well on the taskbar */
   ensure_layout (manager);

@@ -307,7 +307,6 @@ _activate (TaskWindow    *window,
   if (WNCK_IS_WINDOW (priv->window))
   {
     really_activate (priv->window, timestamp);
-    wnck_window_activate_transient (priv->window, timestamp);
   }
   else
   {
@@ -330,7 +329,8 @@ _activate (TaskWindow    *window,
     WnckWindow *win = w->data;
 
     if (WNCK_IS_WINDOW (win))
-      wnck_window_activate_transient (win, timestamp);
+      ;/* FIXME: We need to know what happened to the main window, and do the
+          same */
   }
 }
 
@@ -353,6 +353,29 @@ task_launcher_try_match (TaskLauncher *launcher,
                          const gchar  *res_name,
                          const gchar  *class_name)
 {
+  TaskLauncherPrivate *priv;
+
+  g_return_val_if_fail (launcher, FALSE);
+  priv = launcher->priv;
+
+  /* Try simple pid-match first */
+  if (priv->pid == pid)
+    return TRUE;
+
+  /* Now try resource name, which should (hopefully) be 99% of the cases */
+  if (res_name && priv->exec)
+  {
+    if (g_strstr_len (priv->exec, strlen (priv->exec), res_name))
+      return TRUE;
+  }
+
+  /* Try a class_name to exec line match */
+  if (class_name && priv->exec)
+  {
+    if (g_strstr_len (priv->exec, strlen (priv->exec), class_name))
+      return TRUE;
+  }
+
   return FALSE; 
 }
 
