@@ -42,36 +42,54 @@ struct _AwnConfigClient
 	gchar *path; /* key prefix */
 };
 
-typedef struct {
+typedef struct 
+{
 	AwnConfigClient *client;
 	AwnConfigClientNotifyFunc callback;
 	gpointer data;
 } AwnConfigClientNotifyData;
 
 /* returns a newly allocated string */
-static gchar *awn_config_client_generate_key (AwnConfigClient *client, const gchar *group, const gchar *key)
+static gchar *
+awn_config_client_generate_key (AwnConfigClient *client, 
+                                const gchar     *group, 
+                                const gchar     *key)
 {
-	if (key == NULL) {
+	if (key == NULL) 
+  {
 		if (strcmp (group, AWN_CONFIG_CLIENT_DEFAULT_GROUP) == 0) {
 			return g_strdup (client->path);
-		} else {
+		} 
+    else 
+    {
 			return g_strconcat (client->path, "/", group, NULL);
 		}
-	} else {
-		if (strcmp (group, AWN_CONFIG_CLIENT_DEFAULT_GROUP) == 0) {
+	} 
+  else 
+  {
+		if (strcmp (group, AWN_CONFIG_CLIENT_DEFAULT_GROUP) == 0) 
+    {
 			return g_strconcat (client->path, "/", key, NULL);
-		} else {
+		} 
+    else 
+    {
 			return g_strconcat (client->path, "/", group, "/", key, NULL);
 		}
 	}
 }
 
-static void awn_config_client_notify_proxy (GConfClient *client, guint cid, GConfEntry *entry, AwnConfigClientNotifyData* notify)
+static void 
+awn_config_client_notify_proxy (GConfClient               *client, 
+                                guint                      cid, 
+                                GConfEntry                *entry, 
+                                AwnConfigClientNotifyData *notify)
 {
 	AwnConfigClientNotifyEntry *awn_entry = g_new (AwnConfigClientNotifyEntry, 1);
 	GConfValue *value = NULL;
 	value = gconf_entry_get_value (entry);
-	if (value) {
+
+	if (value) 
+  {
 		gchar **exploded = g_strsplit (gconf_entry_get_key (entry), "/", 0);
 		guint exploded_len = g_strv_length (exploded);
 		gchar **base_exploded = g_strsplit (notify->client->path, "/", 0);
@@ -79,14 +97,21 @@ static void awn_config_client_notify_proxy (GConfClient *client, guint cid, GCon
 		g_strfreev (base_exploded);
 		g_return_if_fail (exploded_len >= 2);
 		awn_entry->client = notify->client;
-		if (exploded_len - base_exploded_len == 1) { /* special case: top-level dock/applet keys */
+
+		if (exploded_len - base_exploded_len == 1) 
+    { 
+      /* special case: top-level dock/applet keys */
 			awn_entry->group = g_strdup (AWN_CONFIG_CLIENT_DEFAULT_GROUP);
-		} else {
+		} 
+    else 
+    {
 			awn_entry->group = g_strdup (exploded[exploded_len - 2]);
 		}
 		awn_entry->key = g_strdup (exploded[exploded_len - 1]);
 		g_strfreev (exploded);
-		switch (value->type) {
+		
+    switch (value->type) 
+    {
 			case GCONF_VALUE_BOOL:
 				awn_entry->value.bool_val = gconf_value_get_bool (value);
 				break;
@@ -114,15 +139,19 @@ static void awn_config_client_notify_proxy (GConfClient *client, guint cid, GCon
 	g_free (awn_entry);
 }
 
-static AwnConfigClient *awn_config_client_new_with_path (const gchar *path, const gchar *name)
+static AwnConfigClient *
+awn_config_client_new_with_path (const gchar *path, const gchar *name)
 {
 	AwnConfigClient *client = g_new (AwnConfigClient, 1);
 	client->path = g_strdup (path);
 	client->client = gconf_client_get_default ();
-	if (!gconf_client_dir_exists (client->client, client->path, NULL)) {
+	
+  if (!gconf_client_dir_exists (client->client, client->path, NULL)) 
+  {
 		GError *err = NULL;
 		awn_config_client_load_defaults_from_schema (client, &err);
-		if (err) {
+		if (err) 
+    {
 			g_error ("Error loading the schema: '%s'", err->message);
 			g_error_free (err);
 		}
@@ -131,27 +160,126 @@ static AwnConfigClient *awn_config_client_new_with_path (const gchar *path, cons
 	return client;
 }
 
-AwnConfigClient *awn_config_client_new ()
+AwnConfigClient *
+awn_config_client_new ()
 {
 	static AwnConfigClient *awn_dock_config = NULL;
-	if (!awn_dock_config) {
+	if (!awn_dock_config) 
+  {
 		awn_dock_config = awn_config_client_new_with_path (AWN_GCONF_PATH, NULL);
 	}
 	return awn_dock_config;
 }
 
-AwnConfigClient *awn_config_client_new_for_applet (const gchar *name, const gchar *uid)
+static void
+_associate_schemas_in_dir (GConfClient *client,
+                           const gchar *prefs_key,
+                           const gchar *schema_dir,
+                           GError **error)
+{
+  GSList *list, *l;
+
+  list = gconf_client_all_entries (client, schema_dir, error);
+
+  g_return_if_fail (*error == NULL);
+  
+  for (l = list; l; l = l->next) 
+  {
+    GConfEntry *entry = l->data;
+    gchar *key;
+    gchar *tmp;
+
+    tmp = g_path_get_basename (gconf_entry_get_key (entry));
+	
+    if (strchr (tmp, '-'))
+      g_warning ("Applet key '%s' contains a hyphen. Please "
+     	           "use underscores in gconf keys\n", tmp);
+	
+    key = g_strdup_printf ("%s/%s", prefs_key, tmp);
+	
+    g_free (tmp);
+
+    gconf_engine_associate_schema (
+      client->engine, key, gconf_entry_get_key (entry), error);
+    
+    g_free (key);
+	
+    gconf_entry_free (entry);
+	
+    if (*error) 
+    {
+    g_slist_free (list);
+      return;
+    }
+  }
+
+  g_slist_free (list);
+
+  list = gconf_client_all_dirs (client, schema_dir, error);
+ 	
+  for (l = list; l; l = l->next) 
+  {
+    gchar *subdir = l->data;
+    gchar *prefs_subdir;
+    gchar *schema_subdir;
+    gchar *tmp;
+	
+    tmp = g_path_get_basename (subdir);
+	
+    prefs_subdir = g_strdup_printf ("%s/%s", prefs_key, tmp);
+    schema_subdir = g_strdup_printf ("%s/%s", schema_dir, tmp);
+	
+    _associate_schemas_in_dir (
+    client, prefs_subdir, schema_subdir, error);
+	
+    g_free (prefs_subdir);
+    g_free (schema_subdir);
+    g_free (subdir);
+    g_free (tmp);
+	
+    if (*error) 
+    {
+      g_slist_free (list);
+      return;
+    }
+  }
+
+  g_slist_free (list);
+} 
+
+AwnConfigClient *
+awn_config_client_new_for_applet (const gchar *name, const gchar *uid)
 {
 	AwnConfigClient *client;
-	gchar *gconf_key = NULL;
-	if (uid) {
+  gchar *gconf_key = NULL;
+
+  g_return_val_if_fail (name, NULL);
+
+	if (uid) 
+  {
+    GConfClient *c;
+
 		gconf_key = g_strconcat (AWN_GCONF_PATH, "/applets/", uid, NULL);
-	} else {
+
+    /* Check if the dir exists, and if not, apply the applet schema to it */
+    c = gconf_client_get_default ();
+    if (!gconf_client_dir_exists (c, gconf_key, NULL))
+    {
+      gchar *schema_key =  g_strconcat (AWN_GCONF_PATH, "/applets/", name,NULL);
+      _associate_schemas_in_dir (c, gconf_key, schema_key, NULL);
+      g_free (schema_key);
+    }
+    g_object_unref (c);
+	} 
+  else 
+  {
 		gconf_key = g_strconcat (AWN_GCONF_PATH, "/applets/", name, NULL);
 	}
-	client = awn_config_client_new_with_path (g_strdup (gconf_key), name);
+  
+  client = awn_config_client_new_with_path (gconf_key, name);
 	g_free (gconf_key);
-	return client;
+	
+  return client;
 }
 
 /**
