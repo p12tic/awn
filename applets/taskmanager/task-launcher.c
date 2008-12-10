@@ -367,7 +367,7 @@ task_launcher_try_match (TaskLauncher *launcher,
   priv = launcher->priv;
 
   /* Try simple pid-match first */
-  if (priv->pid == pid)
+  if ( pid && (priv->pid == pid))
     return TRUE;
 
   /* Now try resource name, which should (hopefully) be 99% of the cases */
