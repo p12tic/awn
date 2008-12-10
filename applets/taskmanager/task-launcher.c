@@ -176,6 +176,8 @@ static void
 task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
 {
   TaskLauncherPrivate *priv;
+  gchar * exec_key = NULL;
+  gchar * needle = NULL;
  
   g_return_if_fail (TASK_IS_LAUNCHER (launcher));
   priv = launcher->priv;
@@ -188,7 +190,22 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
     return;
 
   priv->name = awn_desktop_item_get_name (priv->item);
-  priv->exec = awn_desktop_item_get_exec (priv->item);
+
+  exec_key = g_strstrip (awn_desktop_item_get_exec (priv->item) );
+  
+  /*do we have have any % chars? if so... then find the first one , 
+   and truncate
+   
+   There is an open question if we should remove any of other command line 
+   args... for now leaving things alone as long as their is no %
+   */
+  needle = strchr (exec_key,'%');
+  if ( needle )
+  {
+	*needle = '\0';
+	g_strstrip (exec_key);
+  }
+  priv->exec = exec_key;
   priv->icon_name = awn_desktop_item_get_icon_name (priv->item);
 
   g_debug ("LAUNCHER: %s", priv->name);
