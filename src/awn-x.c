@@ -43,7 +43,7 @@ awn_x_set_strut (GtkWindow * window)
   int height = 0;
 
   if (!num)
-    g_warning ("%s needs to be updated for orientation support", G_STRLOC);
+    g_print ("%s needs to be updated for orientation support", G_STRLOC);
   num++;
   return;
 

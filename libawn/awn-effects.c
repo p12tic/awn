@@ -706,7 +706,7 @@ awn_effects_main_effect_loop(AwnEffects * fx)
   effect >>= i * 4;
 
   // FIXME: do something with this init stuff (include in class' GPtrArray?)
-
+  
   // spotlight initialization
   if (effect == EFFECT_SPOTLIGHT || effect == EFFECT_TURN_3D_SPOTLIGHT)
   {

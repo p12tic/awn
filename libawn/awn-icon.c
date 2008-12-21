@@ -119,6 +119,11 @@ awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
   gdk_cairo_region (win_cr, event->region);
   cairo_clip (win_cr);
 
+  cairo_set_operator (win_cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (win_cr);
+
+  cairo_set_operator (win_cr, CAIRO_OPERATOR_OVER);
+  
   awn_effects_draw_get_window_context (priv->effects);
 
   cairo_set_source_surface (draw_cr, cairo_get_target (priv->icon_ctx), 0, 0);
