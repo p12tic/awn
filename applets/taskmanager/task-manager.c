@@ -50,6 +50,7 @@ struct _TaskManagerPrivate
   GSList     *icons;
   GSList     *windows;
   GSList     *launchers;
+  GHashTable *win_table;
 
   /* Properties */
   GSList   *launcher_paths;

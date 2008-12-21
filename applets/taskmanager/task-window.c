@@ -460,6 +460,13 @@ task_window_is_active (TaskWindow    *window)
   return FALSE;
 }
 
+void 
+task_window_set_is_active  (TaskWindow    *window,
+                            gboolean       is_active)
+{
+  
+}
+
 gboolean 
 task_window_needs_attention (TaskWindow    *window)
 {

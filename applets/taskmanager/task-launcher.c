@@ -200,10 +200,10 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
    args... for now leaving things alone as long as their is no %
    */
   needle = strchr (exec_key,'%');
-  if ( needle )
+  if (needle)
   {
-	*needle = '\0';
-	g_strstrip (exec_key);
+	  *needle = '\0';
+	  g_strstrip (exec_key);
   }
   priv->exec = exec_key;
   priv->icon_name = awn_desktop_item_get_icon_name (priv->item);

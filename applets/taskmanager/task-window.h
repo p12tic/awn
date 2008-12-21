@@ -101,6 +101,8 @@ void            task_window_update_icon       (TaskWindow    *window,
                                                GdkPixbuf     *pixbuf);
 
 gboolean        task_window_is_active         (TaskWindow    *window);
+void            task_window_set_is_active     (TaskWindow    *window,
+                                               gboolean       is_active);
 
 gboolean        task_window_needs_attention   (TaskWindow    *window);
 
