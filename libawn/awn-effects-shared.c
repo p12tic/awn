@@ -105,3 +105,14 @@ awn_effect_check_max_loops(AwnEffectsPrivate * priv)
 
   return max_reached;
 }
+
+gboolean
+awn_effect_suspend_animation(AwnEffectsPrivate * priv, GSourceFunc func)
+{
+  // will stop the animation timer, but keeps the animation in active state
+  AwnEffects *fx = priv->effects;
+  fx->sleeping_func = func;
+  fx->timer_id = 0;
+  return FALSE;
+}
+

@@ -80,7 +80,7 @@ bounce_squish_effect(AwnEffectsPrivate * priv)
       break;
 
     case AWN_EFFECT_DIR_NONE:
-      fx->y_offset = sin(++fx->count * M_PI * 2 / PERIOD) * MAX_BOUNCE_OFFSET;
+      fx->top_offset = sin(++fx->count * M_PI * 2 / PERIOD) * MAX_BOUNCE_OFFSET;
 
       if (fx->count >= PERIOD / 2)
         fx->direction = AWN_EFFECT_SQUISH_DOWN2;
@@ -92,7 +92,7 @@ bounce_squish_effect(AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
@@ -162,7 +162,7 @@ bounce_squish_attention_effect(AwnEffectsPrivate * priv)
       break;
 
     case AWN_EFFECT_DIR_NONE:
-      fx->y_offset = sin(++fx->count * M_PI * 2 / PERIOD) * MAX_BOUNCE_OFFSET;
+      fx->top_offset = sin(++fx->count * M_PI * 2 / PERIOD) * MAX_BOUNCE_OFFSET;
 
       fx->delta_width =
         sin(fx->count * M_PI * 2 / PERIOD) * (fx->icon_width * 1 / 6);
@@ -182,7 +182,7 @@ bounce_squish_attention_effect(AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
@@ -251,7 +251,7 @@ bounce_squish_opening_effect(AwnEffectsPrivate * priv)
       break;
 
     case AWN_EFFECT_DIR_NONE:
-      fx->y_offset = sin(++fx->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
+      fx->top_offset = sin(++fx->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
 
       if (fx->delta_width < 0)
         fx->delta_width += fx->icon_width * 2 / PERIOD;
@@ -262,7 +262,7 @@ bounce_squish_opening_effect(AwnEffectsPrivate * priv)
       if (fx->count == PERIOD)
       {
         fx->direction = AWN_EFFECT_SQUISH_DOWN;
-        fx->y_offset = 0;
+        fx->top_offset = 0;
         fx->delta_width = 0;
         fx->delta_height = 0;
       }
@@ -274,7 +274,7 @@ bounce_squish_opening_effect(AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
@@ -312,7 +312,7 @@ bounce_squish_closing_effect(AwnEffectsPrivate * priv)
 
   const gint PERIOD = 20;
 
-  fx->y_offset = ++fx->count * (MAX_OFFSET / PERIOD);
+  fx->top_offset = ++fx->count * (MAX_OFFSET / PERIOD);
 
   fx->alpha = fx->count * (-1.0 / PERIOD) + 1;
 
@@ -321,11 +321,11 @@ bounce_squish_closing_effect(AwnEffectsPrivate * priv)
   fx->delta_height = -fx->count * (fx->icon_height / PERIOD);
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
-  if (MAX_OFFSET == fx->y_offset)
+  if (MAX_OFFSET == fx->top_offset)
   {
     fx->count = 0;
     // check for repeating

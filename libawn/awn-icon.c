@@ -81,14 +81,15 @@ static gboolean
 awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
 {
   AwnIconPrivate *priv = AWN_ICON (widget)->priv;
-  cairo_t        *cr;
+  cairo_t        *draw_cr;
+  cairo_t        *win_cr;
   gint            width, height;
 
   width = widget->allocation.width;
   height = widget->allocation.height;
-
+#if 0
   /* Init() effects for the draw */
-  awn_effects_draw_set_window_size (priv->effects, width, height);
+  //awn_effects_draw_set_window_size (priv->effects, width, height);
 
   /* Grab the context and clip for the region we're redrawing */
   cr = gdk_cairo_create (widget->window);
@@ -102,14 +103,28 @@ awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
  
   /* Let effects do its job */
-  awn_effects_draw_background (priv->effects, cr);
+  //awn_effects_draw_background (priv->effects, cr);
   
-  if (priv->icon_ctx)
-    awn_effects_draw_icons_cairo (priv->effects, cr, priv->icon_ctx, NULL, priv->orient);
+  if (priv->icon_ctx && 0);
+    //awn_effects_draw_icons_cairo (priv->effects, cr, priv->icon_ctx, NULL);
   
-  awn_effects_draw_foreground (priv->effects, cr);
+  //awn_effects_draw_foreground (priv->effects, cr);
+#endif
 
-  cairo_destroy (cr);
+  awn_effects_draw_set_icon_size (priv->effects, priv->size, priv->size, FALSE);
+
+  draw_cr = awn_effects_draw_cairo_create (priv->effects);
+  win_cr = awn_effects_draw_get_window_context (priv->effects);
+
+  gdk_cairo_region (win_cr, event->region);
+  cairo_clip (win_cr);
+
+  awn_effects_draw_get_window_context (priv->effects);
+
+  cairo_set_source_surface (draw_cr, cairo_get_target (priv->icon_ctx), 0, 0);
+  cairo_paint (draw_cr);
+
+  awn_effects_draw_cairo_destroy (priv->effects);
 
   return FALSE;
 }
@@ -167,7 +182,8 @@ awn_icon_dispose (GObject *object)
   g_return_if_fail (AWN_IS_ICON (object));
   priv = AWN_ICON (object)->priv;
 
-  awn_effects_finalize (priv->effects);
+  //awn_effects_finalize (priv->effects);
+  g_object_unref (priv->effects);
 
   if (priv->icon_ctx)
     cairo_destroy (priv->icon_ctx);
@@ -224,6 +240,7 @@ awn_icon_init (AwnIcon *icon)
   priv->tooltip = awn_tooltip_new_for_widget (GTK_WIDGET (icon));
 
   priv->effects = awn_effects_new_for_widget (GTK_WIDGET (icon));
+  g_object_set (priv->effects, "orientation", AWN_ORIENTATION_BOTTOM, NULL);
 
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
 
@@ -253,6 +270,8 @@ awn_icon_set_orientation (AwnIcon        *icon,
   priv = icon->priv;
   
   priv->orient = orient;
+
+  g_object_set (priv->effects, "orientation", orient, NULL);
 
   switch (orient)
   {

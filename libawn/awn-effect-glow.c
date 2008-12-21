@@ -48,7 +48,7 @@ glow_effect(AwnEffectsPrivate * priv)
 
   const gfloat GLOW_STEP = 0.08;
 
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   // check for repeating
   gboolean top = awn_effect_check_top_effect(priv, NULL);
@@ -56,7 +56,7 @@ glow_effect(AwnEffectsPrivate * priv)
   if (top)
   {
     fx->glow_amount = 1.0;
-    return top;   // == TRUE
+    return awn_effect_suspend_animation(priv, (GSourceFunc)glow_effect);
   }
   else
   {
@@ -126,10 +126,7 @@ glow_opening_effect(AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  if (fx->self && GTK_IS_WIDGET(fx->self))
-  {
-    gtk_widget_queue_draw(GTK_WIDGET(fx->self));
-  }
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
@@ -184,7 +181,7 @@ glow_closing_effect(AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
@@ -235,7 +232,7 @@ glow_attention_effect(AwnEffectsPrivate * priv)
     fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 

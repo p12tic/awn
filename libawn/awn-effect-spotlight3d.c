@@ -38,7 +38,7 @@ spotlight3D_hover_effect(AwnEffectsPrivate * priv)
     fx->effect_lock = TRUE;
     // effect start initialize values
     fx->count = 0;
-    fx->y_offset = 0;
+    fx->top_offset = 0;
     fx->spotlight_alpha = 1.0;
     fx->spotlight = TRUE;
     fx->glow_amount = fx->spotlight_alpha;
@@ -125,7 +125,7 @@ spotlight3D_hover_effect(AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
@@ -133,7 +133,7 @@ spotlight3D_hover_effect(AwnEffectsPrivate * priv)
       && (fx->spotlight_alpha >= 1 || fx->spotlight_alpha <= 0))
   {
     fx->count = 0;
-    fx->y_offset = 0;
+    fx->top_offset = 0;
     fx->icon_depth = 0;
     fx->icon_depth_direction = 0;
     fx->delta_width = 0;
@@ -158,7 +158,7 @@ spotlight3D_opening_effect(AwnEffectsPrivate * priv)
     fx->effect_lock = TRUE;
     // effect start initialize values
     fx->count = 0;
-    fx->y_offset = 0;
+    fx->top_offset = 0;
     fx->spotlight_alpha = 1.0;
     fx->spotlight = TRUE;
     fx->glow_amount = fx->spotlight_alpha;
@@ -205,7 +205,7 @@ spotlight3D_opening_effect(AwnEffectsPrivate * priv)
   {
     fx->icon_depth_direction = 0;
     fx->clip = FALSE;
-    fx->y_offset = (fx->count - PERIOD / 2) * MAX_OFFSET / (PERIOD / 4);
+    fx->top_offset = (fx->count - PERIOD / 2) * MAX_OFFSET / (PERIOD / 4);
     fx->delta_width =
       -(fx->count - PERIOD / 2) * (fx->icon_width) / (PERIOD / 4);
     fx->flip = TRUE;
@@ -213,7 +213,7 @@ spotlight3D_opening_effect(AwnEffectsPrivate * priv)
   else
   {
     fx->icon_depth_direction = 1;
-    fx->y_offset =
+    fx->top_offset =
       MAX_OFFSET - (fx->count - PERIOD * 3 / 4) * MAX_OFFSET / (PERIOD / 4);
     fx->delta_width =
       (fx->count - PERIOD * 3 / 4) * (fx->icon_width) / (PERIOD / 4) -
@@ -241,14 +241,14 @@ spotlight3D_opening_effect(AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
   if (fx->count >= PERIOD)
   {
     fx->count = 0;
-    fx->y_offset = 0;
+    fx->top_offset = 0;
     fx->icon_depth = 0;
     fx->icon_depth_direction = 0;
     fx->delta_width = 0;
@@ -382,7 +382,7 @@ spotlight3D_closing_effect(AwnEffectsPrivate * priv)
   fx->glow_amount = fx->spotlight_alpha;
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 

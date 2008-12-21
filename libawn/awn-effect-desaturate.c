@@ -57,13 +57,14 @@ desaturate_effect(AwnEffectsPrivate * priv)
       if (fx->saturation < 0)
         fx->saturation = 0;
 
-      gboolean top = awn_effect_check_top_effect(priv, NULL);
-
-      // TODO: implement sleep function, so effect will stop the timer, but will be paused in middle of the animation and will finish when awn_effect_stop is called or higher priority effect is started
-      if (top)
+      if (awn_effect_check_top_effect(priv, NULL))
       {
-        gtk_widget_queue_draw(GTK_WIDGET(fx->self));
-        return top;
+        awn_effects_redraw(fx);
+        if (fx->saturation > 0) return TRUE;
+        else {
+          return awn_effect_suspend_animation(priv,
+                                              (GSourceFunc)desaturate_effect);
+        }
       }
       else
         fx->direction = AWN_EFFECT_DIR_UP;
@@ -77,13 +78,14 @@ desaturate_effect(AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
   if (fx->saturation >= 1.0)
   {
     fx->saturation = 1.0;
+    fx->direction = AWN_EFFECT_DIR_DOWN;
     // check for repeating
     repeat = awn_effect_handle_repeating(priv);
   }

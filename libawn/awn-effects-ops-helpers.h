@@ -1,5 +1,7 @@
 /*
  *  Copyright (C) 2007 Michal Hruby <michal.mhr@gmail.com>
+ *  Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
+ *  Copyright (C) 1999 The Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,38 +19,31 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifndef _AWN_EFFECTS_OPS_HELPERS_H
+#define _AWN_EFFECTS_OPS_HELPERS_H
 
-#ifndef __AWN_EFFECT_SHARED_H__
-#define __AWN_EFFECT_SHARED_H__
-
+#include <gtk/gtk.h>
+#include <cairo/cairo-xlib.h>
 #include "awn-effects.h"
 
-typedef enum
-{
-  AWN_EFFECT_PRIORITY_HIGHEST,
-  AWN_EFFECT_PRIORITY_HIGH,
-  AWN_EFFECT_PRIORITY_ABOVE_NORMAL,
-  AWN_EFFECT_PRIORITY_NORMAL,
-  AWN_EFFECT_PRIORITY_BELOW_NORMAL,
-  AWN_EFFECT_PRIORITY_LOW,
-  AWN_EFFECT_PRIORITY_LOWEST
-} AwnEffectPriority;
+#include <math.h>
+#include <string.h>
 
-typedef struct _AwnEffectsPrivate AwnEffectsPrivate;
+void
+lighten_surface(cairo_surface_t * src, const gfloat amount);
 
-struct _AwnEffectsPrivate
-{
-  AwnEffects *effects;
-  AwnEffect this_effect;
-  gint max_loops;
-  AwnEffectPriority priority;
-  AwnEventNotify start, stop;
-};
+void
+darken_surface(cairo_surface_t * src);
 
-gboolean awn_effect_check_top_effect(AwnEffectsPrivate * priv, gboolean * stopped);
-gboolean awn_effect_handle_repeating(AwnEffectsPrivate * priv);
-gboolean awn_effect_check_max_loops(AwnEffectsPrivate * priv);
-gboolean awn_effect_suspend_animation(AwnEffectsPrivate * priv, GSourceFunc func);
+void
+blur_surface_shadow(cairo_surface_t *src, const int radius);
 
+void
+surface_saturate(cairo_surface_t * icon_srfc, const gfloat saturation);
+
+// FIXME: remove once using purely new drawing API
+void
+apply_3d_illusion(AwnEffects * fx, GtkAllocation * ds, const gdouble alpha);
 
 #endif
+
