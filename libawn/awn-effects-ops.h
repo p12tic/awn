@@ -31,42 +31,41 @@ typedef struct
 }SourceToDest;
 
 gboolean awn_effect_op_scale_and_clip(AwnEffects * fx,
-                               DrawIconState * ds,
+                               GtkAllocation * ds,
                                cairo_surface_t * icon,
                                cairo_t ** picon_ctx,
-                               cairo_t ** preflect_ctx,
-                               AwnOrientation orientm
+                               cairo_t ** preflect_ctx
                               )  ;
 
 gboolean awn_effect_op_3dturn(AwnEffects * fx,
-                              DrawIconState * ds,
+                              GtkAllocation * ds,
                               gpointer null
                              );
 
 //--------------------------------------------------------
 
 gboolean awn_effect_op_saturate(AwnEffects * fx,
-                                DrawIconState * ds,
+                                GtkAllocation * ds,
                                 gpointer null
                                ) ;
 
 gboolean awn_effect_op_hflip(AwnEffects * fx,
-                             DrawIconState * ds,
+                             GtkAllocation * ds,
                              gpointer null
                             ) ;
 
 gboolean awn_effect_op_glow(AwnEffects * fx,
-                            DrawIconState * ds,
+                            GtkAllocation * ds,
                             gpointer null
                            ) ;
 
 gboolean awn_effect_op_todest(AwnEffects * fx,
-                              DrawIconState * ds,
+                              GtkAllocation * ds,
                               SourceToDest * data
                              );
 
 gboolean awn_effect_move_x(AwnEffects * fx,
-                           DrawIconState * ds,
+                           GtkAllocation * ds,
                            gpointer null
                           ) ;
 

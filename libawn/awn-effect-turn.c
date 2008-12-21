@@ -38,7 +38,7 @@ turn_hover_effect(AwnEffectsPrivate * priv)
     fx->effect_lock = TRUE;
     // effect start initialize values
     fx->count = 0;
-    fx->y_offset = 0;
+    fx->top_offset = 0;
     fx->delta_width = 0;
     fx->icon_depth = 0;
     fx->icon_depth_direction = 0;
@@ -101,14 +101,14 @@ turn_hover_effect(AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
   if (fx->count >= PERIOD)
   {
     fx->count = 0;
-    fx->y_offset = 0;
+    fx->top_offset = 0;
     fx->icon_depth = 0;
     fx->icon_depth_direction = 0;
     fx->delta_width = 0;
@@ -130,7 +130,7 @@ turn_opening_effect(AwnEffectsPrivate * priv)
     fx->effect_lock = TRUE;
     // effect start initialize values
     fx->count = 0;
-    fx->y_offset = 0;
+    fx->top_offset = 0;
     fx->clip = TRUE;
     fx->clip_region.x = 0;
     fx->clip_region.y = 0;
@@ -174,7 +174,7 @@ turn_opening_effect(AwnEffectsPrivate * priv)
   {
     fx->icon_depth_direction = 0;
     fx->clip = FALSE;
-    fx->y_offset = (fx->count - PERIOD / 2) * MAX_OFFSET / (PERIOD / 4);
+    fx->top_offset = (fx->count - PERIOD / 2) * MAX_OFFSET / (PERIOD / 4);
     fx->delta_width =
       -(fx->count - PERIOD / 2) * (fx->icon_width) / (PERIOD / 4);
     fx->flip = TRUE;
@@ -182,7 +182,7 @@ turn_opening_effect(AwnEffectsPrivate * priv)
   else
   {
     fx->icon_depth_direction = 1;
-    fx->y_offset =
+    fx->top_offset =
       MAX_OFFSET - (fx->count - PERIOD * 3 / 4) * MAX_OFFSET / (PERIOD / 4);
     fx->delta_width =
       (fx->count - PERIOD * 3 / 4) * (fx->icon_width) / (PERIOD / 4) -
@@ -206,14 +206,14 @@ turn_opening_effect(AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
   if (fx->count >= PERIOD)
   {
     fx->count = 0;
-    fx->y_offset = 0;
+    fx->top_offset = 0;
     fx->icon_depth = 0;
     fx->icon_depth_direction = 0;
     fx->delta_width = 0;
@@ -235,7 +235,7 @@ turn_closing_effect(AwnEffectsPrivate * priv)
     fx->effect_lock = TRUE;
     // effect start initialize values
     fx->count = 0;
-    fx->y_offset = 0;
+    fx->top_offset = 0;
     fx->delta_width = 0;
     fx->icon_depth = 0;
     fx->icon_depth_direction = 0;
@@ -254,7 +254,7 @@ turn_closing_effect(AwnEffectsPrivate * priv)
 
   fx->count = sin(fx->count * M_PI / 2 / PERIOD) * PERIOD;
 
-  fx->y_offset = fx->count * MAX_OFFSET / PERIOD;
+  fx->top_offset = fx->count * MAX_OFFSET / PERIOD;
 
   fx->alpha = 1.0 - fx->count * 1.0 / PERIOD;
 
@@ -305,14 +305,14 @@ turn_closing_effect(AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
   if (fx->count >= PERIOD)
   {
     fx->count = 0;
-    fx->y_offset = 0;
+    fx->top_offset = 0;
     fx->icon_depth = 0;
     fx->icon_depth_direction = 0;
     fx->delta_width = 0;

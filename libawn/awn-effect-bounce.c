@@ -50,10 +50,10 @@ bounce_effect(AwnEffectsPrivate * priv)
 
   const gint PERIOD = 20;
 
-  fx->y_offset = sin(++fx->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
+  fx->top_offset = sin(++fx->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
@@ -79,7 +79,7 @@ bounce_opening_effect(AwnEffectsPrivate * priv)
     fx->effect_lock = TRUE;
     // effect start initialize values
     fx->count = 0;
-    fx->y_offset = 0;
+    fx->top_offset = 0;
     fx->clip = TRUE;
     fx->clip_region.x = 0;
     fx->clip_region.y = 0;
@@ -103,19 +103,19 @@ bounce_opening_effect(AwnEffectsPrivate * priv)
   else if (fx->count < PERIOD1 + PERIOD2)
   {
     fx->clip = FALSE;
-    fx->y_offset =
+    fx->top_offset =
       sin((++fx->count - PERIOD1) * M_PI / PERIOD2) * MAX_BOUNCE_OFFSET;
   }
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
   if (fx->count >= PERIOD1 + PERIOD2)
   {
     fx->count = 0;
-    fx->y_offset = 0;
+    fx->top_offset = 0;
     // check for repeating
     repeat = awn_effect_handle_repeating(priv);
   }

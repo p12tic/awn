@@ -86,7 +86,7 @@ spotlight_effect(AwnEffectsPrivate * priv)
   fx->glow_amount = fx->spotlight_alpha;
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
@@ -144,7 +144,7 @@ spotlight_half_fade_effect(AwnEffectsPrivate * priv)
     fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
@@ -211,7 +211,7 @@ spotlight_opening_effect2(AwnEffectsPrivate * priv)
   }
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
@@ -292,7 +292,7 @@ spotlight_closing_effect(AwnEffectsPrivate * priv)
   fx->glow_amount = fx->spotlight_alpha;
 
   // repaint widget
-  gtk_widget_queue_draw(GTK_WIDGET(fx->self));
+  awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 

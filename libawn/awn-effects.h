@@ -26,18 +26,18 @@
 #include <gtk/gtk.h>
 
 #include "awn-defines.h"
-#include "awn-effects-settings.h"
+#include "awn-config-client.h"
 
 G_BEGIN_DECLS
 
 typedef enum
 {
-  AWN_EFFECT_NONE,
-  AWN_EFFECT_OPENING,
-  AWN_EFFECT_LAUNCHING,
-  AWN_EFFECT_HOVER,
-  AWN_EFFECT_ATTENTION,
-  AWN_EFFECT_CLOSING,
+  AWN_EFFECT_NONE = 0,
+  AWN_EFFECT_OPENING = 1,
+  AWN_EFFECT_CLOSING = 2,
+  AWN_EFFECT_HOVER = 3,
+  AWN_EFFECT_LAUNCHING = 4,
+  AWN_EFFECT_ATTENTION = 5,
   AWN_EFFECT_DESATURATE
 } AwnEffect;
 
@@ -63,16 +63,25 @@ typedef enum
   AWN_EFFECT_SPOTLIGHT_OFF
 } AwnEffectSequence;
 
-typedef struct
-{
-  gint current_height;
-  gint current_width;
-  gint x1;
-  gint y1; // sit on bottom by default
-}DrawIconState;
-
-typedef const gchar *(*AwnTitleCallback)(GtkWidget *);
 typedef void (*AwnEventNotify)(GtkWidget *);
+
+//GObject stuff
+#define AWN_TYPE_EFFECTS awn_effects_get_type()
+
+#define AWN_EFFECTS(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_EFFECTS, AwnEffects))
+
+#define AWN_EFFECTS_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), AWN_TYPE_EFFECTS, AwnEffectsClass))
+
+#define AWN_IS_EFFECTS(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), AWN_TYPE_EFFECTS))
+
+#define AWN_IS_EFFECTS_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), AWN_TYPE_EFFECTS))
+
+#define AWN_EFFECTS_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_EFFECTS, AwnEffectsClass))
 
 /**
  * AwnEffects:
@@ -81,13 +90,10 @@ typedef void (*AwnEventNotify)(GtkWidget *);
  * particular widget.
  */
 typedef struct _AwnEffects AwnEffects;
-
-#define AWN_TYPE_EFFECTS (awn_effects_get_type())
-
-#define AWN_EFFECTS(obj) (G_TYPE_CHECK_INSTANCE_CAST((obj), AWN_TYPE_EFFECTS, AwnEffects))
+typedef struct _AwnEffectsClass AwnEffectsClass;
 
 typedef gboolean(* AwnEffectsOpfn )(AwnEffects * fx,
-                                     DrawIconState * ds,
+                                     GtkAllocation * alloc,
                                      gpointer user_data);
 
 typedef struct
@@ -98,11 +104,14 @@ typedef struct
 
 struct _AwnEffects
 {
+  GObject parent;
+
+  AwnConfigClient *client;
+
   GtkWidget *self;
-  GtkWidget *focus_window;
-  AwnEffectsSettings *settings;
-  AwnTitleCallback get_title;
   GList *effect_queue;
+
+  GSourceFunc sleeping_func;
 
   gint icon_width, icon_height;
   gint window_width, window_height;
@@ -113,8 +122,8 @@ struct _AwnEffects
   AwnEffectSequence direction;
   gint count;
 
-  gdouble x_offset;
-  gdouble y_offset;
+  gdouble side_offset;
+  gdouble top_offset;
   gdouble curve_offset;
 
   gint delta_width;
@@ -136,35 +145,41 @@ struct _AwnEffects
   gboolean clip;
   gboolean flip;
   gboolean spotlight;
-  gboolean do_reflections;
-  gboolean do_offset_cut;
 
-  guint enter_notify;
-  guint leave_notify;
+  /* Properties */
+  gint orientation;
+  guint set_effects;
+  gint icon_offset;
+  gint refl_offset;
+  gfloat icon_alpha;
+  gfloat refl_alpha;
+  gboolean do_reflection;
+  gboolean make_shadow;
+  gboolean is_active;
+  gchar *label;
+  gint border_clip;
+  /* properties end */
+
   guint timer_id;
 
   cairo_t * icon_ctx;
   cairo_t * reflect_ctx;
 
-  AwnEffectsOp  * op_list;
+  AwnEffectsOp  *op_list;
 
   /* padding so we dont break ABI compability every time */
   void *pad1;
   void *pad2;
   void *pad3;
-  void *pad4;
+};
+
+struct _AwnEffectsClass {
+  GObjectClass parent_class;
+
+  GPtrArray *animations;
 };
 
 GType awn_effects_get_type(void);
-
-/**
- * awn_effects_new:
- *
- * Creates and initializes new #AwnEffects structure. After using this
- * constructor it is necessary to set 'self' member to be able to use effects
- * properly.
- */
-AwnEffects* awn_effects_new();
 
 /**
  * awn_effects_new_for_widget:
@@ -174,22 +189,6 @@ AwnEffects* awn_effects_new();
  * Creates and initializes new #AwnEffects structure.
  */
 AwnEffects* awn_effects_new_for_widget(GtkWidget * widget);
-
-/**
- * awn_effects_free:
- * @fx: Pointer to #AwnEffects structure.
- *
- * Cleans up (by calling awn_effects_finalize) and frees #AwnEffects structure.
- */
-void awn_effects_free(AwnEffects * fx);
-
-/**
- * awn_effects_finalize:
- * @fx: Pointer to #AwnEffects structure.
- *
- * Finalizes #AwnEffects usage and frees internally allocated memory.
- */
-void awn_effects_finalize(AwnEffects * fx);
 
 /**
  * awn_effects_start:
@@ -227,16 +226,27 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect,
                     AwnEventNotify start, AwnEventNotify stop,
                     gint max_loops);
 
-void awn_effects_draw_background(AwnEffects *, cairo_t *);
-void awn_effects_draw_icons(AwnEffects *, cairo_t *, GdkPixbuf *, GdkPixbuf *);
-void awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t * , cairo_t *, AwnOrientation orient);
-void awn_effects_draw_foreground(AwnEffects *, cairo_t *);
-void awn_effects_draw_set_window_size(AwnEffects *, const gint, const gint);
-void awn_effects_draw_set_icon_size(AwnEffects *, const gint, const gint);
+void awn_effects_draw_background(AwnEffects *, cairo_t *) G_GNUC_DEPRECATED;
+void awn_effects_draw_icons(AwnEffects *, cairo_t *, GdkPixbuf *, GdkPixbuf *) G_GNUC_DEPRECATED;
+void awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t * , cairo_t *) G_GNUC_DEPRECATED;
+void awn_effects_draw_foreground(AwnEffects *, cairo_t *) G_GNUC_DEPRECATED;
 
-void awn_effects_reflection_off(AwnEffects * fx);
-void awn_effects_reflection_on(AwnEffects * fx);
-void awn_effects_set_offset_cut(AwnEffects * fx, gboolean cut);
+void awn_effects_draw_set_window_size(AwnEffects *, const gint, const gint) G_GNUC_DEPRECATED;
+
+void awn_effects_draw_set_icon_size(AwnEffects *, const gint, const gint, gboolean requestSize);
+
+cairo_t *awn_effects_draw_cairo_create(AwnEffects *);
+cairo_t *awn_effects_draw_get_window_context(AwnEffects *);
+void awn_effects_draw_clear_window_context(AwnEffects *);
+void awn_effects_draw_cairo_destroy(AwnEffects *);
+
+void awn_effects_redraw(AwnEffects *);
+
+// we no longer need this, there are properties instead
+void awn_effects_reflection_off(AwnEffects * fx) G_GNUC_DEPRECATED;
+void awn_effects_reflection_on(AwnEffects * fx) G_GNUC_DEPRECATED;
+void awn_effects_set_reflection_visible(AwnEffects * fx, gboolean value) G_GNUC_DEPRECATED;
+void awn_effects_set_offset_cut(AwnEffects * fx, gboolean cut) G_GNUC_DEPRECATED;
 
 G_END_DECLS
 
