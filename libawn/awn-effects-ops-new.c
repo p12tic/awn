@@ -430,7 +430,7 @@ gboolean awn_effects_post_op_alpha(AwnEffects * fx,
                                gpointer user_data
                               )
 {
-  if (fx->alpha < 1) {
+  if (fx->alpha < 1 || fx->icon_alpha < 1) {
     cairo_surface_t *srfc = cairo_surface_create_similar(cairo_get_target(cr),
                                                          CAIRO_CONTENT_COLOR_ALPHA,
                                                          fx->window_width,
@@ -439,7 +439,7 @@ gboolean awn_effects_post_op_alpha(AwnEffects * fx,
     cairo_t *ctx = cairo_create(srfc);
     cairo_set_operator(ctx, CAIRO_OPERATOR_SOURCE);
     cairo_set_source_surface(ctx, cairo_get_target(cr), 0, 0);
-    cairo_paint_with_alpha(ctx, fx->alpha);
+    cairo_paint_with_alpha(ctx, fx->alpha * fx->icon_alpha);
     cairo_destroy(ctx);
 
     cairo_save(cr);

@@ -159,6 +159,7 @@ awn_config_bridge_bind (AwnConfigBridge *bridge,
       break;
     
     case G_TYPE_INT:
+    case G_TYPE_UINT:
       g_object_set (object, property_name, 
                     awn_config_client_get_int (client, group, key, &error),
                     NULL);

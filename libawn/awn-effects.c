@@ -311,7 +311,7 @@ awn_effects_constructed (GObject *object)
                           "effects", "reflection_offset",
                           object, "reflection-offset");
   awn_config_bridge_bind (bridge, client,
-                          "effects", "show_shadow",
+                          "effects", "show_shadows",
                           object, "make-shadow");
 }
 
@@ -704,8 +704,6 @@ awn_effects_main_effect_loop(AwnEffects * fx)
   gint i = topEffect->this_effect - 1;
   guint effect = fx->set_effects & (0xF << (i * 4));
   effect >>= i * 4;
-
-  effect = fx->set_effects;
 
   // FIXME: do something with this init stuff (include in class' GPtrArray?)
 
