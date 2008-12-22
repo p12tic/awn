@@ -146,7 +146,6 @@ awn_effects_finalize(GObject *object)
 
   if (fx->client)
   {
-    awn_config_client_free (fx->client);
     fx->client = NULL;
   }
 
