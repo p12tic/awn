@@ -1,4 +1,4 @@
-SUBDIRS = egg
+SUBDIRS = egg anims
 
 NULL = 
 
@@ -42,19 +42,8 @@ public_headers = \
 	$(NULL)
 
 private_headers = \
-	awn-effect-bounce.h \
-	awn-effect-desaturate.h \
-	awn-effect-fade.h \
-	awn-effect-glow.h	\
-	awn-effect-spotlight.h \
-	awn-effect-spotlight3d.h \
-	awn-effect-squish.h \
-	awn-effect-turn.h \
-	awn-effect-zoom.h	\
-	awn-effects-ops.h	\
 	awn-effects-ops-new.h \
 	awn-effects-ops-helpers.h \
-	awn-effects-shared.h \
 	$(NULL)
 
 source_h = $(public_headers) $(private_headers)
@@ -65,20 +54,9 @@ source_c = \
 	awn-applet-simple.c \
 	awn-cairo-utils.c \
 	awn-config-bridge.c \
-	awn-effect-bounce.c \
-	awn-effect-desaturate.c \
-	awn-effect-fade.c \
-	awn-effect-glow.c	\
-	awn-effect-spotlight.c \
-	awn-effect-spotlight3d.c \
-	awn-effect-squish.c \
-	awn-effect-turn.c \
-	awn-effect-zoom.c \
 	awn-effects.c \
-	awn-effects-ops.c \
 	awn-effects-ops-new.c \
 	awn-effects-ops-helpers.c \
-	awn-effects-shared.c \
 	awn-enum-types.c \
 	awn-icon.c \
 	awn-icon-box.c \
@@ -109,6 +87,7 @@ libawn_la_LDFLAGS = -version-info 0:1:0
 
 libawn_la_LIBADD += \
 	$(top_builddir)/libawn/egg/libeggdesktopfile.la \
+	$(top_builddir)/libawn/anims/libawn-effects-anims.la \
 	$(NULL)
 
 awn-enum-types.h: stamp-awn-enum-types.h

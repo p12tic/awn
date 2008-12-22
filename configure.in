@@ -208,6 +208,7 @@ tests/Makefile
 doc/Makefile
 doc/reference/Makefile
 libawn/Makefile
+libawn/anims/Makefile
 libawn/egg/Makefile
 po/Makefile.in
 src/Makefile

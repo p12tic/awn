@@ -18,12 +18,15 @@
  */
 
 
-#ifndef __AWN_EFFECT_SPOTLIGHT3D_H__
-#define __AWN_EFFECT_SPOTLIGHT3D_H__
+#ifndef __AWN_EFFECT_ZOOM_H__
+#define __AWN_EFFECT_ZOOM_H__
 
 #include "awn-effects-shared.h"
-gboolean spotlight3D_hover_effect(AwnEffectsPrivate * priv);
-gboolean spotlight3D_opening_effect(AwnEffectsPrivate * priv);
-gboolean spotlight3D_closing_effect(AwnEffectsPrivate * priv);
-gboolean spotlight3D_effect_finalize(AwnEffectsPrivate * priv);
+
+gboolean zoom_effect(AwnEffectsPrivate * priv);
+gboolean zoom_attention_effect(AwnEffectsPrivate * priv);
+gboolean zoom_opening_effect(AwnEffectsPrivate * priv);
+gboolean zoom_closing_effect(AwnEffectsPrivate * priv);
+gboolean zoom_effect_finalize(AwnEffectsPrivate * priv);
+
 #endif

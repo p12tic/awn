@@ -21,18 +21,7 @@
 #ifndef __AWN_EFFECT_SHARED_H__
 #define __AWN_EFFECT_SHARED_H__
 
-#include "awn-effects.h"
-
-typedef enum
-{
-  AWN_EFFECT_PRIORITY_HIGHEST,
-  AWN_EFFECT_PRIORITY_HIGH,
-  AWN_EFFECT_PRIORITY_ABOVE_NORMAL,
-  AWN_EFFECT_PRIORITY_NORMAL,
-  AWN_EFFECT_PRIORITY_BELOW_NORMAL,
-  AWN_EFFECT_PRIORITY_LOW,
-  AWN_EFFECT_PRIORITY_LOWEST
-} AwnEffectPriority;
+#include "../awn-effects.h"
 
 typedef struct _AwnEffectsPrivate AwnEffectsPrivate;
 
@@ -41,7 +30,6 @@ struct _AwnEffectsPrivate
   AwnEffects *effects;
   AwnEffect this_effect;
   gint max_loops;
-  AwnEffectPriority priority;
   AwnEventNotify start, stop;
 };
 
@@ -49,6 +37,5 @@ gboolean awn_effect_check_top_effect(AwnEffectsPrivate * priv, gboolean * stoppe
 gboolean awn_effect_handle_repeating(AwnEffectsPrivate * priv);
 gboolean awn_effect_check_max_loops(AwnEffectsPrivate * priv);
 gboolean awn_effect_suspend_animation(AwnEffectsPrivate * priv, GSourceFunc func);
-
 
 #endif

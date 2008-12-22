@@ -21,8 +21,7 @@
 #include <config.h>
 #endif
 
-#include "awn-effects.h"
-#include "awn-effects-shared.h"
+#include "awn-effect-bounce.h"
 
 #include <math.h>
 #include <string.h>

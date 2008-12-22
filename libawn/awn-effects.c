@@ -23,7 +23,6 @@
 #endif
 
 #include "awn-effects.h"
-#include "awn-effects-ops.h"
 #include "awn-effects-ops-new.h"
 
 #include <math.h>
@@ -31,18 +30,15 @@
 #include <stdlib.h>
 #include <cairo/cairo-xlib.h>
 
-#include "awn-effect-spotlight.h"
-#include "awn-effect-bounce.h"
-#include "awn-effect-glow.h"
-#include "awn-effect-zoom.h"
-#include "awn-effect-fade.h"
-#include "awn-effect-squish.h"
-#include "awn-effect-turn.h"
-#include "awn-effect-spotlight3d.h"
-#include "awn-effect-desaturate.h"
-
-// FIXME: remove this include, it should be only used in awn-effects-ops.c
-#include "awn-effects-ops-helpers.h"
+#include "anims/awn-effect-spotlight.h"
+#include "anims/awn-effect-bounce.h"
+#include "anims/awn-effect-glow.h"
+#include "anims/awn-effect-zoom.h"
+#include "anims/awn-effect-fade.h"
+#include "anims/awn-effect-squish.h"
+#include "anims/awn-effect-turn.h"
+#include "anims/awn-effect-spotlight3d.h"
+#include "anims/awn-effect-desaturate.h"
 
 #include "awn-config-client.h"
 #include "awn-config-bridge.h"
@@ -59,10 +55,6 @@ G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT);
 #define AWN_ANIMATIONS_PER_BUNDLE 5
 
 typedef gboolean (*_AwnAnimation)(AwnEffectsPrivate*);
-
-/* FORWARD DECLARATIONS */
-
-extern GdkPixbuf *SPOTLIGHT_PIXBUF;
 
 enum {
   PROP_0,
@@ -87,17 +79,6 @@ enum {
 #define EFFECT_TURN_3D 5
 #define EFFECT_TURN_3D_SPOTLIGHT 6
 #define EFFECT_GLOW 7
-
-//The default ops list that the existing effects expect.
-static const AwnEffectsOp OP_LIST[] =
-{
-  {awn_effect_op_saturate, NULL},
-  {awn_effect_op_hflip, NULL},
-  {awn_effect_op_glow, NULL},
-  {awn_effect_move_x, NULL},
-  {awn_effect_op_3dturn, NULL},
-  {(AwnEffectsOpfn)NULL, NULL}
-};
 
 static void
 awn_effects_finalize(GObject *object)
@@ -472,9 +453,6 @@ awn_effects_init(AwnEffects * fx)
 
   fx->alpha = 1.0;
   fx->saturation = 1.0;
-
-  fx->op_list = g_malloc(sizeof(OP_LIST));
-  memcpy(fx->op_list, OP_LIST, sizeof(OP_LIST));
 }
 
 AwnEffects* awn_effects_new_for_widget(GtkWidget * widget)
@@ -493,13 +471,17 @@ AwnEffects* awn_effects_new_for_widget(GtkWidget * widget)
   return fx;
 }
 
-static gint
-awn_effects_sort(gconstpointer a, gconstpointer b)
+// we don't really need to expose this enum
+typedef enum
 {
-  const AwnEffectsPrivate *data1 = (AwnEffectsPrivate *) a;
-  const AwnEffectsPrivate *data2 = (AwnEffectsPrivate *) b;
-  return (gint)(data1->priority - data2->priority);
-}
+  AWN_EFFECT_PRIORITY_HIGHEST,
+  AWN_EFFECT_PRIORITY_HIGH,
+  AWN_EFFECT_PRIORITY_ABOVE_NORMAL,
+  AWN_EFFECT_PRIORITY_NORMAL,
+  AWN_EFFECT_PRIORITY_BELOW_NORMAL,
+  AWN_EFFECT_PRIORITY_LOW,
+  AWN_EFFECT_PRIORITY_LOWEST
+} AwnEffectPriority;
 
 static AwnEffectPriority
 awn_effects_get_priority(const AwnEffect effect)
@@ -527,21 +509,13 @@ awn_effects_get_priority(const AwnEffect effect)
   }
 }
 
-void awn_effects_reflection_off(AwnEffects * fx)
+static gint
+awn_effects_sort(gconstpointer a, gconstpointer b)
 {
-  g_object_set(fx, "reflection-visible", FALSE, NULL);
-}
-void awn_effects_reflection_on(AwnEffects * fx)
-{
-  g_object_set(fx, "reflection-visible", TRUE, NULL);
-}
-void awn_effects_set_reflection_visible(AwnEffects * fx, gboolean value)
-{
-  g_object_set(fx, "reflection-visible", value, NULL);
-}
-void awn_effects_set_offset_cut(AwnEffects * fx, gboolean cut)
-{
-  g_object_set(fx, "border-clip", cut ? 4 : 0, NULL);
+  const AwnEffectsPrivate *data1 = (AwnEffectsPrivate *) a;
+  const AwnEffectsPrivate *data2 = (AwnEffectsPrivate *) b;
+  return (gint)(awn_effects_get_priority(data1->this_effect) - 
+    awn_effects_get_priority(data2->this_effect));
 }
 
 void
@@ -582,7 +556,6 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect,
 
   priv->effects = fx;
   priv->this_effect = effect;
-  priv->priority = awn_effects_get_priority(effect);
   priv->max_loops = max_loops;
   priv->start = start;
   priv->stop = stop;
@@ -739,350 +712,6 @@ awn_effects_main_effect_loop(AwnEffects * fx)
 }
 
 void
-apply_spotlight(AwnEffects * fx, cairo_t * cr)
-{
-  static cairo_t * unscaled_spot_ctx = NULL;
-  static gint scaled_width = -1;
-  static gint scaled_height = -1;
-  static cairo_t * spot_ctx = NULL;
-  cairo_surface_t * spot_srfc = NULL;
-
-  // FIXME: for different orientation icon_offset should affect X axis
-  //gint x1 = 0;
-  gint y1 = fx->window_height - fx->icon_height - fx->icon_offset;
-
-  if (!unscaled_spot_ctx)
-  {
-    cairo_surface_t * srfc = cairo_surface_create_similar(cairo_get_target(cr),
-                             CAIRO_CONTENT_COLOR_ALPHA,
-                             gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF),
-                             gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF));
-    unscaled_spot_ctx = cairo_create(srfc);
-    gdk_cairo_set_source_pixbuf(unscaled_spot_ctx, SPOTLIGHT_PIXBUF, 0, 0);
-    cairo_paint(unscaled_spot_ctx);
-  }
- // printf("window width = %d\n",fx->window_width);
-  if ((scaled_width != fx->window_width) ||
-      (scaled_height != fx->icon_height*5/4))
-  {
-  //  printf("rescale spot \n");
-    if (spot_ctx)
-    {
-      cairo_surface_destroy(spot_srfc);
-      cairo_destroy(spot_ctx);
-    }
-
-    scaled_width = fx->window_width;
-
-    scaled_height = fx->icon_height*5/4;
-    spot_srfc = cairo_surface_create_similar(cairo_get_target(cr),
-                CAIRO_CONTENT_COLOR_ALPHA,
-                scaled_width,
-                scaled_height);
-    spot_ctx = cairo_create(spot_srfc);
-    cairo_save(spot_ctx);
-    cairo_scale(spot_ctx,
-                fx->window_width / (double) gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF),
-                fx->icon_height*5/4 / (double) gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF)
-                );
-
-    cairo_set_source_surface(spot_ctx, cairo_get_target(unscaled_spot_ctx),
-                             0.0, 0.0);
-    cairo_paint(spot_ctx);
-    cairo_scale(spot_ctx,
-                (double) gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF) / fx->window_width,
-                (double) gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF) * 5/4 / fx->icon_height
-               );
-    cairo_restore(spot_ctx);
-  }
-
-  if (fx->spotlight && fx->spotlight_alpha > 0)
-  {
-    y1 = y1 + fx->icon_height / 12;
-    cairo_save(cr);
-    cairo_set_source_surface(cr, cairo_get_target(spot_ctx), 0, y1);
-//    cairo_rectangle(cr,0,0,fx->window_width,fx->window_height*5/4);
-    cairo_paint_with_alpha(cr, fx->spotlight_alpha);
-    cairo_restore(cr);
-  }
-}
-
-
-void
-awn_effects_draw_background(AwnEffects * fx, cairo_t * cr)
-{
-  if (fx->spotlight && fx->spotlight_alpha > 0)
-  {
-    apply_spotlight(fx, cr);
-  }
-}
-
-void apply_awn_curves(AwnEffects * fx)
-{
-  // FIXME: get rid of settings
-  /*
-  if (fx->settings->bar_angle < 0)
-  {
-    int awn_bar_width = fx->settings->bar_width;
-    double awn_curve_curviness = fx->settings->curviness;
-    int awn_monitor_width = fx->settings->monitor_width;
-
-    gint curvex = fx->self->allocation.x;
-
-    if (curvex == 0)  // is applet?
-    {
-      gint curvex1 = 0;
-      gdk_window_get_origin(fx->self->window, &curvex1, NULL);
-      curvex = curvex1 - (awn_monitor_width - awn_bar_width) / 2;
-    }
-
-    if (awn_curve_curviness)
-      fx->settings->curviness = awn_curve_curviness;
-
-    if (curvex > 0)
-      fx->curve_offset =
-        calc_curve_position(curvex + (fx->settings->task_width / 4),
-                            awn_bar_width,
-                            (fx->settings->bar_height *
-                             fx->settings->curviness) / 2.);
-    else
-      fx->curve_offset = 0;
-
-  }
-  else if (fx->curve_offset)
-  {*/
-    fx->curve_offset = 0;
-  //}
-}
-
-void
-make_shadows(AwnEffects * fx, cairo_t * cr, int x1, int y1, int width, int height)
-{
-    cairo_surface_t * blur_s;
-    cairo_t * blur_c;
-
-    // icon shadow
-    blur_s = cairo_surface_create_similar(cairo_get_target(cr),CAIRO_CONTENT_COLOR_ALPHA, fx->icon_width+10, fx->icon_height+10);
-    blur_c = cairo_create(blur_s);
-	
-    cairo_set_operator(blur_c,CAIRO_OPERATOR_SOURCE);
-    cairo_set_source_surface(blur_c, cairo_get_target(fx->icon_ctx), 5, 5);
-    cairo_paint(blur_c);
-
-    darken_surface(blur_s);
-    blur_surface_shadow(blur_s, 4);
-  
-    cairo_set_source_surface(cr, blur_s, x1-5, y1-7);	
-    cairo_paint_with_alpha(cr, 0.5);
-
-    cairo_surface_destroy(blur_s);
-    cairo_destroy(blur_c);
-
-
-    // scaled shadow
-    /*
-    cairo_rectangle(cr, 0, fx->window_height - fx->settings->bar_height + (fx->settings->bar_height / 2) - 4, fx->window_width, fx->settings->bar_height);
-    cairo_clip(cr);
-    */
-    x1 = (fx->window_width - width) / 2;
-    y1 = fx->window_height - height - fx->icon_offset;
-
-    blur_s = cairo_surface_create_similar(cairo_get_target(cr),CAIRO_CONTENT_COLOR_ALPHA, fx->icon_width+10, fx->icon_height+10);
-    blur_c = cairo_create(blur_s);
-	
-    cairo_set_operator(blur_c,CAIRO_OPERATOR_SOURCE);
-    cairo_scale(blur_c, 1, 0.5);
-    cairo_set_source_surface(blur_c, cairo_get_target(fx->icon_ctx), 5, 5);
-    cairo_paint(blur_c);
-
-    darken_surface(blur_s);
-    blur_surface_shadow(blur_s, 1);
-  
-    cairo_set_source_surface(cr, blur_s, x1-5, y1-5+(fx->icon_height/2));	
-    cairo_paint_with_alpha(cr, 0.2);
-
-    cairo_reset_clip(cr);
-    cairo_surface_destroy(blur_s);
-    cairo_destroy(blur_c);
-}
-
-/*
-  The icon surface must be an xlib surface.  expose() in awn-applet-simple
-  converts image surfaces to xlib surfaces if needed.  Direct callers of
-  this function will need to handle it themselves.
-*/
-void
-awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
-                     cairo_t * reflect_context)
-{
-  cairo_surface_t * icon;       //Surfaces pulled from args.
-  cairo_surface_t * reflect = NULL;
-  GtkAllocation ds;
-  gboolean icon_changed = FALSE;
-  gint i;
-
-  icon = cairo_get_target(icon_context);
-
-  if (reflect_context)
-  {
-    reflect = cairo_get_target(reflect_context);
-  }
-
-  fx->icon_width = cairo_xlib_surface_get_width(icon);
-
-  fx->icon_height = cairo_xlib_surface_get_height(icon);
-  ds.width = fx->icon_width;
-  ds.height = fx->icon_height;
-  ds.x = (fx->window_width - ds.width) / 2;
-  ds.y = fx->window_height - fx->icon_offset - ds.height - fx->top_offset;
-
-  apply_awn_curves(fx); //hopefully I haven't broken awn-curves.
-
-  ds.y -= fx->curve_offset;
-  
-	if (fx->clip) 
-  {
-		gint x = fx->clip_region.x;
-		gint y = fx->clip_region.y;
-		gint w = fx->clip_region.width;
-		gint h = fx->clip_region.height;  
-		if ( !(	x >= 0 && x < fx->icon_width &&
-			w-x > 0 && w-x <= fx->icon_width &&
-			y >= 0 && x < fx->icon_height &&
-			h-y > 0 && h-y <= fx->icon_height) )
-    {
-      return;
-    }
-  }
-  
-  // sanity check
-  if (fx->delta_width <= -ds.width
-      || fx->delta_height <= -ds.height)
-  {
-    // we would display blank icon
-    return;
-  }
-
-  /* scaling */
-  /*
-   first op. WARNING will take care of the (re)allocate of the context/surfaces
-   if needed.
-
-   WARNING make no assumptions about fx->icon_srfc, fx->icon_ctx,
-   fx->reflect_srfc, fx->reflect_ctx being correct before this call.
-  */
-  icon_changed = awn_effect_op_scale_and_clip(fx, &ds, icon, &fx->icon_ctx,
-                                       &fx->reflect_ctx) || icon_changed;
-
-  for (i = 0;fx->op_list[i].fn;i++)
-  {
-    icon_changed = fx->op_list[i].fn(fx, &ds, fx->op_list[i].data)
-                                    || icon_changed;
-  }
-
-  // shadows
-  if (fx->make_shadow)
-  {
-		make_shadows(fx, cr, ds.x, ds.y, ds.width, ds.height);
-  }
-	
-  //Update our displayed Icon.
-  cairo_set_source_surface(cr, cairo_get_target(fx->icon_ctx), ds.x, ds.y);
-
-  cairo_paint_with_alpha(cr, fx->alpha * fx->icon_alpha);
-
-  //------------------------------------------------------------------------
-  /* reflection */
-  
-  if (fx->do_reflection)
-  {
-    if (fx->top_offset >= 0)
-    {
-      ds.y += ds.height + fx->top_offset * 2;
-      ds.y -= (fx->refl_offset > 30)? 30 : fx->refl_offset;
-
-      if (icon_changed || !reflect)
-      {
-        cairo_matrix_t matrix;
-        cairo_matrix_init(&matrix,
-                          1,
-                          0,
-                          0,
-                          -1,
-                          (ds.width / 2.0)*(1 - (1)),
-                          (ds.height / 2.0)*(1 - (-1))
-                         );
-        cairo_save(fx->reflect_ctx);
-        cairo_transform(fx->reflect_ctx, &matrix);
-        cairo_set_source_surface(fx->reflect_ctx, cairo_get_target(fx->icon_ctx), 
-                                 0, 0);
-        cairo_paint(fx->reflect_ctx);
-
-        cairo_set_operator(cr,CAIRO_OPERATOR_DEST_OVER);
-        cairo_set_source_surface(cr, cairo_get_target(fx->reflect_ctx), 
-                                 ds.x, ds.y);
-        cairo_paint_with_alpha(cr, fx->alpha / 4);
-        cairo_set_operator(cr,CAIRO_OPERATOR_OVER);
-        cairo_restore(fx->reflect_ctx);
-      }
-      else
-      {
-        cairo_set_source_surface(cr, reflect, ds.x, ds.y);
-        cairo_paint_with_alpha(cr, fx->alpha * fx->refl_alpha);
-      }
-    }
-
-    // FIXME: get rid of settings
-    /* 4px offset for 3D look for reflection
-    if (fx->do_offset_cut)
-    {
-      cairo_save(cr);
-      cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-      cairo_set_source_rgba(cr, 1, 1, 1, 0);
-      cairo_rectangle(cr, 0, ((fx->settings->bar_height * 2) - 4) +
-                      fx->settings->icon_offset, fx->window_width, 4);
-      cairo_fill(cr);
-      cairo_restore(cr);
-    }
-    */
-  }
-}
-
-void
-awn_effects_draw_icons(AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
-               GdkPixbuf * reflect)
-{
-  /*rather inefficient still...
-    Only user of this AFAIK is core.
-   */
-  g_return_if_fail(GDK_IS_PIXBUF(icon));
-
-  cairo_surface_t * icon_srfc = cairo_surface_create_similar(
-                                  cairo_get_target(cr),
-                                  CAIRO_CONTENT_COLOR_ALPHA,
-                                  gdk_pixbuf_get_width(icon),
-                                  gdk_pixbuf_get_height(icon));
-  cairo_t * icon_context = cairo_create(icon_srfc);
-  gdk_cairo_set_source_pixbuf(icon_context, icon, 0, 0);
-  cairo_paint(icon_context);
-
-  //awn_effects_draw_icons_cairo(fx, cr, icon_context, NULL);
-
-  cairo_surface_destroy(icon_srfc);
-  cairo_destroy(icon_context);
-}
-
-void
-awn_effects_draw_foreground(AwnEffects * fx, cairo_t * cr)
-{
-  if (fx->spotlight && fx->spotlight_alpha > 0)
-  {
-    apply_spotlight(fx, cr);
-  }
-
-}
-
-void
 awn_effects_draw_set_icon_size(AwnEffects * fx, const gint width, const gint height, gboolean requestSize)
 {
   fx->icon_width = width;
@@ -1097,21 +726,6 @@ awn_effects_draw_set_icon_size(AwnEffects * fx, const gint width, const gint hei
     gtk_widget_set_size_request(fx->self, width*5/4, height*2+4);
   }
 }
-
-void
-awn_effects_draw_set_window_size(AwnEffects * fx, const gint width,
-                         const gint height)
-{
-  fx->window_width = width;
-  fx->window_height = height;
-}
-#if 0
-static gdouble
-calc_curve_position(gdouble cx, gdouble a, gdouble b)  // pos, width, height
-{
-  return a <= 0 ? 0 : sin(cx / a * M_PI) * b;
-}
-#endif
 
 cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
 {

@@ -21,13 +21,11 @@
 #include <config.h>
 #endif
 
-#include "awn-effects.h"
-#include "awn-effects-shared.h"
+#include "awn-effect-glow.h"
+
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
-
-
 
 gboolean
 glow_effect(AwnEffectsPrivate * priv)

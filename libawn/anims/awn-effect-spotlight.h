@@ -18,9 +18,16 @@
  */
 
 
-#ifndef __AWN_EFFECT_DESATURATE_H__
-#define __AWN_EFFECT_DESATURATE_H__
+#ifndef __AWN_EFFECT_SPOTLIGHT_H__
+#define __AWN_EFFECT_SPOTLIGHT_H__
 
-gboolean desaturate_effect(AwnEffectsPrivate * priv);
+#include "awn-effects-shared.h"
+
+gboolean spotlight_effect(AwnEffectsPrivate * priv);
+gboolean spotlight_half_fade_effect(AwnEffectsPrivate * priv);
+gboolean spotlight_opening_effect2(AwnEffectsPrivate * priv);
+gboolean spotlight_closing_effect(AwnEffectsPrivate * priv);
+void spotlight_init();
+gboolean spotlight_effect_finalize(AwnEffectsPrivate * priv);
 
 #endif

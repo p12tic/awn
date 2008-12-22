@@ -226,13 +226,6 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect,
                     AwnEventNotify start, AwnEventNotify stop,
                     gint max_loops);
 
-void awn_effects_draw_background(AwnEffects *, cairo_t *) G_GNUC_DEPRECATED;
-void awn_effects_draw_icons(AwnEffects *, cairo_t *, GdkPixbuf *, GdkPixbuf *) G_GNUC_DEPRECATED;
-void awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t * , cairo_t *) G_GNUC_DEPRECATED;
-void awn_effects_draw_foreground(AwnEffects *, cairo_t *) G_GNUC_DEPRECATED;
-
-void awn_effects_draw_set_window_size(AwnEffects *, const gint, const gint) G_GNUC_DEPRECATED;
-
 void awn_effects_draw_set_icon_size(AwnEffects *, const gint, const gint, gboolean requestSize);
 
 cairo_t *awn_effects_draw_cairo_create(AwnEffects *);
@@ -242,15 +235,9 @@ void awn_effects_draw_cairo_destroy(AwnEffects *);
 
 void awn_effects_redraw(AwnEffects *);
 
-// we no longer need this, there are properties instead
-void awn_effects_reflection_off(AwnEffects * fx) G_GNUC_DEPRECATED;
-void awn_effects_reflection_on(AwnEffects * fx) G_GNUC_DEPRECATED;
-void awn_effects_set_reflection_visible(AwnEffects * fx, gboolean value) G_GNUC_DEPRECATED;
-void awn_effects_set_offset_cut(AwnEffects * fx, gboolean cut) G_GNUC_DEPRECATED;
-
-G_END_DECLS
-
 //Move this somewhere else eventually
 void awn_effects_main_effect_loop(AwnEffects * fx);
+
+G_END_DECLS
 
 #endif

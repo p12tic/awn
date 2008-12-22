@@ -21,16 +21,14 @@
 #include <config.h>
 #endif
 
-#include "awn-effects.h"
-#include "awn-effects-shared.h"
+#include "awn-effect-spotlight.h"
+
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
 
-
 GdkPixbuf *SPOTLIGHT_PIXBUF = NULL;
-#include "../data/active/spotlight_png_inline.c"
-
+#include "../../data/active/spotlight_png_inline.c"
 
 gboolean
 spotlight_effect(AwnEffectsPrivate * priv)

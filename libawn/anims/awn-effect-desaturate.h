@@ -18,13 +18,11 @@
  */
 
 
-#ifndef __AWN_EFFECT_TURN_H__
-#define __AWN_EFFECT_TURN_H__
+#ifndef __AWN_EFFECT_DESATURATE_H__
+#define __AWN_EFFECT_DESATURATE_H__
 
 #include "awn-effects-shared.h"
 
-gboolean turn_hover_effect(AwnEffectsPrivate * priv);
-gboolean turn_opening_effect(AwnEffectsPrivate * priv);
-gboolean turn_closing_effect(AwnEffectsPrivate * priv);
-gboolean turn_effect_finalize(AwnEffectsPrivate * priv);
+gboolean desaturate_effect(AwnEffectsPrivate * priv);
+
 #endif

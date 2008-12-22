@@ -21,8 +21,8 @@
 #include <config.h>
 #endif
 
-#include "awn-effects.h"
-#include "awn-effects-shared.h"
+#include "awn-effect-squish.h"
+
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>

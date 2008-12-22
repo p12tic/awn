@@ -18,15 +18,15 @@
  */
 
 
-#ifndef __AWN_EFFECT_SPOTLIGHT_H__
-#define __AWN_EFFECT_SPOTLIGHT_H__
+#ifndef __AWN_EFFECT_GLOW_H__
+#define __AWN_EFFECT_GLOW_H__
 
 #include "awn-effects-shared.h"
 
-gboolean spotlight_effect(AwnEffectsPrivate * priv);
-gboolean spotlight_half_fade_effect(AwnEffectsPrivate * priv);
-gboolean spotlight_opening_effect2(AwnEffectsPrivate * priv);
-gboolean spotlight_closing_effect(AwnEffectsPrivate * priv);
-void spotlight_init();
-gboolean spotlight_effect_finalize(AwnEffectsPrivate * priv);
+gboolean glow_effect(AwnEffectsPrivate * priv);
+gboolean glow_opening_effect(AwnEffectsPrivate * priv);
+gboolean glow_closing_effect(AwnEffectsPrivate * priv);
+gboolean glow_attention_effect(AwnEffectsPrivate * priv);
+gboolean glow_effect_finalize(AwnEffectsPrivate * priv);
+
 #endif

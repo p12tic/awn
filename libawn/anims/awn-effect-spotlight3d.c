@@ -21,15 +21,14 @@
 #include <config.h>
 #endif
 
-#include "awn-effects.h"
-#include "awn-effects-shared.h"
+#include "awn-effect-spotlight3d.h"
 
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
 
 gboolean
-turn_hover_effect(AwnEffectsPrivate * priv)
+spotlight3D_hover_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
 
@@ -39,6 +38,9 @@ turn_hover_effect(AwnEffectsPrivate * priv)
     // effect start initialize values
     fx->count = 0;
     fx->top_offset = 0;
+    fx->spotlight_alpha = 1.0;
+    fx->spotlight = TRUE;
+    fx->glow_amount = fx->spotlight_alpha;
     fx->delta_width = 0;
     fx->icon_depth = 0;
     fx->icon_depth_direction = 0;
@@ -51,7 +53,28 @@ turn_hover_effect(AwnEffectsPrivate * priv)
 
   const gint PERIOD = 44;
 
+  const gdouble ALPHA_STEP = 0.04;
+
+  if (awn_effect_check_top_effect(priv, NULL))
+  {
+    fx->spotlight_alpha = 1.0;
+  }
+  else
+  {
+    fx->spotlight_alpha -= ALPHA_STEP;
+
+    if (fx->spotlight_alpha < 0)
+    {
+      fx->spotlight_alpha = 0;
+    }
+  }
+
+  fx->glow_amount = fx->spotlight_alpha;
+
   gint prev_count = fx->count;
+
+  if (prev_count > PERIOD)
+    prev_count = --fx->count;
 
   fx->count = sin(fx->count * M_PI / 2 / PERIOD) * PERIOD;
 
@@ -105,7 +128,8 @@ turn_hover_effect(AwnEffectsPrivate * priv)
 
   gboolean repeat = TRUE;
 
-  if (fx->count >= PERIOD)
+  if (fx->count >= PERIOD
+      && (fx->spotlight_alpha >= 1 || fx->spotlight_alpha <= 0))
   {
     fx->count = 0;
     fx->top_offset = 0;
@@ -115,13 +139,16 @@ turn_hover_effect(AwnEffectsPrivate * priv)
     fx->flip = FALSE;
     // check for repeating
     repeat = awn_effect_handle_repeating(priv);
+
+    if (!repeat)
+      fx->spotlight = FALSE;
   }
 
   return repeat;
 }
 
 gboolean
-turn_opening_effect(AwnEffectsPrivate * priv)
+spotlight3D_opening_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
 
@@ -131,6 +158,9 @@ turn_opening_effect(AwnEffectsPrivate * priv)
     // effect start initialize values
     fx->count = 0;
     fx->top_offset = 0;
+    fx->spotlight_alpha = 1.0;
+    fx->spotlight = TRUE;
+    fx->glow_amount = fx->spotlight_alpha;
     fx->clip = TRUE;
     fx->clip_region.x = 0;
     fx->clip_region.y = 0;
@@ -188,9 +218,13 @@ turn_opening_effect(AwnEffectsPrivate * priv)
       (fx->count - PERIOD * 3 / 4) * (fx->icon_width) / (PERIOD / 4) -
       fx->icon_width;
     fx->flip = FALSE;
+    fx->spotlight_alpha =
+      -(fx->count - PERIOD * 3 / 4) * 1.0 / (PERIOD / 4) + 1.0;
   }
 
   fx->icon_depth = 10.00 * -fx->delta_width / fx->icon_width;
+
+  fx->glow_amount = fx->spotlight_alpha;
 
   fx->count = ++prev_count;
 
@@ -218,6 +252,10 @@ turn_opening_effect(AwnEffectsPrivate * priv)
     fx->icon_depth_direction = 0;
     fx->delta_width = 0;
     fx->flip = FALSE;
+    fx->spotlight = FALSE;
+    fx->spotlight_alpha = 0.0;
+    fx->glow_amount = 0.0;
+    fx->clip = FALSE;
     // check for repeating
     repeat = awn_effect_handle_repeating(priv);
   }
@@ -226,7 +264,7 @@ turn_opening_effect(AwnEffectsPrivate * priv)
 }
 
 gboolean
-turn_closing_effect(AwnEffectsPrivate * priv)
+spotlight3D_closing_effect(AwnEffectsPrivate * priv)
 {
   AwnEffects *fx = priv->effects;
 
@@ -234,99 +272,137 @@ turn_closing_effect(AwnEffectsPrivate * priv)
   {
     fx->effect_lock = TRUE;
     // effect start initialize values
-    fx->count = 0;
-    fx->top_offset = 0;
-    fx->delta_width = 0;
-    fx->icon_depth = 0;
-    fx->icon_depth_direction = 0;
+    fx->spotlight_alpha = 0.0;
+    fx->spotlight = TRUE;
+    fx->glow_amount = fx->spotlight_alpha;
+    fx->clip = TRUE;
+    fx->clip_region.x = 0;
+    fx->clip_region.y = 0;
+    fx->clip_region.height = fx->icon_height;
+    fx->clip_region.width = fx->icon_width;
+    fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
 
     if (priv->start)
       priv->start(fx->self);
 
     priv->start = NULL;
-  }
 
-  const gint PERIOD = 44;
+    fx->count = 0;
 
-  const gint MAX_OFFSET = fx->icon_height;
+    fx->delta_width = 0;
 
-  gint prev_count = fx->count;
+    fx->icon_depth = 0;
 
-  fx->count = sin(fx->count * M_PI / 2 / PERIOD) * PERIOD;
-
-  fx->top_offset = fx->count * MAX_OFFSET / PERIOD;
-
-  fx->alpha = 1.0 - fx->count * 1.0 / PERIOD;
-
-  if (fx->count < PERIOD / 4)
-  {
     fx->icon_depth_direction = 0;
-    fx->delta_width = -fx->count * (fx->icon_width) / (PERIOD / 4);
-    fx->flip = FALSE;
   }
-  else if (fx->count < PERIOD / 2)
+
+  const gint PERIOD = 80;
+
+  const gint TURN_PERIOD = 20;
+
+  if (fx->direction == AWN_EFFECT_SPOTLIGHT_ON)
   {
-    fx->icon_depth_direction = 1;
-    fx->delta_width =
-      (fx->count - PERIOD / 4) * (fx->icon_width) / (PERIOD / 4) -
-      fx->icon_width;
-    fx->flip = TRUE;
+    fx->spotlight_alpha += 4.0 / PERIOD;
+
+    if (fx->spotlight_alpha >= 1)
+    {
+      fx->spotlight_alpha = 1;
+      fx->direction = AWN_EFFECT_DIR_NONE;
+    }
   }
-  else if (fx->count < PERIOD * 3 / 4)
+  else if (fx->direction == AWN_EFFECT_DIR_NONE)
   {
-    fx->icon_depth_direction = 0;
-    fx->clip = FALSE;
-    fx->delta_width =
-      -(fx->count - PERIOD / 2) * (fx->icon_width) / (PERIOD / 4);
-    fx->flip = TRUE;
+    fx->clip_region.height -= 2.0 * fx->icon_height / PERIOD;
+    fx->alpha -= 2.0 / PERIOD;
+
+    if (fx->count < TURN_PERIOD / 4)
+    {
+      fx->icon_depth_direction = 0;
+      fx->delta_width = -fx->count * (fx->icon_width) / (TURN_PERIOD / 4);
+      fx->flip = FALSE;
+    }
+    else if (fx->count < TURN_PERIOD / 2)
+    {
+      fx->icon_depth_direction = 1;
+      fx->delta_width =
+        (fx->count - TURN_PERIOD / 4) * (fx->icon_width) / (TURN_PERIOD / 4) -
+        fx->icon_width;
+      fx->flip = TRUE;
+    }
+    else if (fx->count < TURN_PERIOD * 3 / 4)
+    {
+      fx->icon_depth_direction = 0;
+      fx->delta_width =
+        -(fx->count - TURN_PERIOD / 2) * (fx->icon_width) / (TURN_PERIOD / 4);
+      fx->flip = TRUE;
+    }
+    else
+    {
+      fx->icon_depth_direction = 1;
+      fx->delta_width =
+        (fx->count -
+         TURN_PERIOD * 3 / 4) * (fx->icon_width) / (TURN_PERIOD / 4) -
+        fx->icon_width;
+      fx->flip = FALSE;
+    }
+
+    fx->icon_depth = 10.00 * -fx->delta_width / fx->icon_width;
+
+    // fix icon flickering
+    const gint MIN_WIDTH = 4;
+
+    if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH)
+    {
+      if (fx->delta_width > 0)
+        fx->delta_width = fx->icon_width - MIN_WIDTH;
+      else
+        fx->delta_width = -fx->icon_width + MIN_WIDTH;
+    }
+
+    if (fx->count++ > TURN_PERIOD)
+      fx->count = 0;
+
+    if (fx->alpha <= 0 || fx->clip_region.height <= 0)
+    {
+      fx->alpha = 0;
+      fx->direction = AWN_EFFECT_SPOTLIGHT_OFF;
+      fx->clip = FALSE;
+    }
+    else if (fx->alpha <= 0.5)
+    {
+      fx->spotlight_alpha -= 2.0 / PERIOD;
+    }
   }
   else
   {
-    fx->icon_depth_direction = 1;
-    fx->delta_width =
-      (fx->count - PERIOD * 3 / 4) * (fx->icon_width) / (PERIOD / 4) -
-      fx->icon_width;
-    fx->flip = FALSE;
+    fx->spotlight_alpha -= 2.0 / PERIOD;
   }
 
-  fx->icon_depth = 10.00 * -fx->delta_width / fx->icon_width;
-
-  fx->count = ++prev_count;
-
-  // fix icon flickering
-  const gint MIN_WIDTH = 4;
-
-  if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH)
-  {
-    if (fx->delta_width > 0)
-      fx->delta_width = fx->icon_width - MIN_WIDTH;
-    else
-      fx->delta_width = -fx->icon_width + MIN_WIDTH;
-  }
+  fx->glow_amount = fx->spotlight_alpha;
 
   // repaint widget
   awn_effects_redraw(fx);
 
   gboolean repeat = TRUE;
 
-  if (fx->count >= PERIOD)
+  if (fx->direction == AWN_EFFECT_SPOTLIGHT_OFF && fx->spotlight_alpha <= 0)
   {
-    fx->count = 0;
-    fx->top_offset = 0;
-    fx->icon_depth = 0;
-    fx->icon_depth_direction = 0;
-    fx->delta_width = 0;
-    fx->flip = FALSE;
+    fx->spotlight_alpha = 0;
+    fx->glow_amount = 0;
+    fx->direction = AWN_EFFECT_DIR_NONE;
     // check for repeating
     repeat = awn_effect_handle_repeating(priv);
+
+    if (!repeat)
+      fx->spotlight = FALSE;
   }
 
   return repeat;
 }
 
 gboolean
-turn_effect_finalize(AwnEffectsPrivate * priv)
+spotlight3D_effect_finalize(AwnEffectsPrivate * priv)
 {
-  printf("turn_effect_finalize(AwnEffectsPrivate * priv)\n");
+  printf("spotlight3d_effect_finalize(AwnEffectsPrivate * priv)\n");
   return TRUE;
 }
