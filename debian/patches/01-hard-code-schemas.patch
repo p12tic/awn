@@ -1,0 +1,13 @@
+=== modified file 'data/awn.schema-ini.in'
+--- data/awn.schema-ini.in	2008-09-27 22:37:52 +0000
++++ data/awn.schema-ini.in	2008-12-22 20:57:18 +0000
+@@ -16,7 +16,7 @@
+ description = The user-visible size of Awn (minus the offset)
+ [panel/applet_list]
+ type = list-string
+-default = taskmanager.desktop::1
++default = /usr/share/avant-window-navigator/applets/taskmanager.desktop::1
+ description = The list of applets for this panel ordered from ltr or ttb.
+ [panel/monitor_force]
+ type = bool
+
