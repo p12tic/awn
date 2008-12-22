@@ -129,9 +129,6 @@ awn_effects_finalize(GObject *object)
   {
     fx->client = NULL;
   }
-
-  g_free(fx->op_list);
-  fx->op_list = NULL;
 }
 
 static void
