@@ -714,7 +714,6 @@ _activate (TaskWindow    *window,
   if (WNCK_IS_WINDOW (priv->window))
   {
     really_activate (priv->window, timestamp);
-    wnck_window_activate_transient (priv->window, timestamp);
   }
 
   for (w = priv->utilities; w; w = w->next)
