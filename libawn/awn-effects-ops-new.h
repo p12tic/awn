@@ -112,4 +112,10 @@ gboolean awn_effects_post_op_reflection(AwnEffects * fx,
                                gpointer user_data
                               );
 
+gboolean awn_effects_post_op_progress(AwnEffects * fx,
+                               cairo_t * cr,
+                               GtkAllocation * ds,
+                               gpointer user_data
+                              );
+
 #endif

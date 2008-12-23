@@ -510,3 +510,63 @@ gboolean awn_effects_post_op_reflection(AwnEffects * fx,
   return FALSE;
 }
 
+gboolean awn_effects_post_op_progress(AwnEffects * fx,
+                               cairo_t * cr,
+                               GtkAllocation * ds,
+                               gpointer user_data
+                              )
+{
+  if (fx->progress < 1.0) {
+    double dx, dy; // center coordinates for the pie
+    switch (fx->orientation) {
+      case AWN_EFFECT_ORIENT_TOP:
+        dx = fx->window_width / 2.0;
+        dy = fx->icon_offset + fx->icon_height / 2.0;
+        break;
+      case AWN_EFFECT_ORIENT_BOTTOM:
+        dx = fx->window_width / 2.0;
+        dy = fx->window_height - fx->icon_offset - fx->icon_height / 2.0;
+        break;
+      case AWN_EFFECT_ORIENT_LEFT:
+        dx = fx->icon_offset + fx->icon_width / 2.0;
+        dy = fx->window_height / 2.0;
+        break;
+      case AWN_EFFECT_ORIENT_RIGHT:
+        dx = fx->window_width - fx->icon_offset - fx->icon_width / 2.0;
+        dy = fx->window_height / 2.0;
+        break;
+      default:
+        return FALSE;
+    }
+
+    cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
+
+    double radius = fx->icon_width >= fx->icon_height ?
+      fx->icon_height / 2.0 : fx->icon_width / 2.0;
+    radius *= 0.7; // the circle should be smaller than the icon
+    double alpha_mult = fx->alpha * fx->icon_alpha;
+
+    cairo_new_path(cr);
+    // first full circle background
+    cairo_move_to(cr, dx, dy);
+    // FIXME: how to define the colors ???
+    //  add property to effects? read from theme?
+    //  or read from the managed widget? <- sounds reasonable, but what exactly
+    cairo_set_source_rgba(cr, 0.2, 0.2, 0.2, 0.7 alpha_mult);
+
+    cairo_arc(cr, dx, dy, radius, 0, M_PI*2);
+    cairo_fill(cr);
+
+    // now the pie itself
+    cairo_move_to(cr, dx, dy);
+    cairo_set_source_rgba(cr, 1.0, 1.0, 1.0, 0.8 * alpha_mult);
+    // start at 270 degrees (north direction) <=> M_PI * 1.5
+    cairo_arc(cr, dx, dy, radius*0.85, M_PI*1.5,
+              (1.5 + fx->progress*2) * M_PI);
+    cairo_fill(cr);
+
+    return TRUE;
+  }
+  return FALSE;
+}
+

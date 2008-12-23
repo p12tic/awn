@@ -42,10 +42,13 @@ struct _AwnIconPrivate
   cairo_t   *queue_ctx;
   GdkPixbuf *queue_pixbuf;
   
-  /* Things that can be displayed on the icon */
-  gchar    *message;
-  gfloat    progress;
-  gboolean  active;
+  /* 
+   * Things that can be displayed on the icon are part of AwnEffects
+   * 
+   * gchar    *message;
+   * gfloat    progress;
+   * gboolean  active;
+   */
 };
 
 enum
@@ -83,52 +86,32 @@ awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
   AwnIconPrivate *priv = AWN_ICON (widget)->priv;
   cairo_t        *draw_cr;
   cairo_t        *win_cr;
-  gint            width, height;
 
-  width = widget->allocation.width;
-  height = widget->allocation.height;
-#if 0
-  /* Init() effects for the draw */
-  //awn_effects_draw_set_window_size (priv->effects, width, height);
-
-  /* Grab the context and clip for the region we're redrawing */
-  cr = gdk_cairo_create (widget->window);
-  gdk_cairo_region (cr, event->region);
-  cairo_clip (cr);
-
-  /* Clear the region */
-  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_paint (cr);
-
-  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
- 
-  /* Let effects do its job */
-  //awn_effects_draw_background (priv->effects, cr);
-  
-  if (priv->icon_ctx && 0);
-    //awn_effects_draw_icons_cairo (priv->effects, cr, priv->icon_ctx, NULL);
-  
-  //awn_effects_draw_foreground (priv->effects, cr);
-#endif
-
+  // FIXME: this shouldn't really be priv->size for both params, we support
+  //  also non-rectangular icons, no?!
   awn_effects_draw_set_icon_size (priv->effects, priv->size, priv->size, FALSE);
 
   draw_cr = awn_effects_draw_cairo_create (priv->effects);
   win_cr = awn_effects_draw_get_window_context (priv->effects);
 
+  // clip the drawing region, nvidia likes it
   gdk_cairo_region (win_cr, event->region);
   cairo_clip (win_cr);
 
+  // we want transparent background
+  // FIXME: use gdk_window_set_back_pixmap() instead (in after_realize callback
+  //  => g_signal_connect_after(icon, "realize", after_realize, NULL)
+  //  this will also prevent the white lines, and clear won't be necessary
+  //  (probably)
   cairo_set_operator (win_cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (win_cr);
 
   cairo_set_operator (win_cr, CAIRO_OPERATOR_OVER);
   
-  awn_effects_draw_get_window_context (priv->effects);
-
   cairo_set_source_surface (draw_cr, cairo_get_target (priv->icon_ctx), 0, 0);
   cairo_paint (draw_cr);
 
+  // let effects know we're finished
   awn_effects_draw_cairo_destroy (priv->effects);
 
   return FALSE;
@@ -194,10 +177,6 @@ awn_icon_dispose (GObject *object)
     cairo_destroy (priv->icon_ctx);
   priv->icon_ctx = NULL;
 
-  if (priv->message)
-    g_free (priv->message);
-  priv->message = NULL;
-
   G_OBJECT_CLASS (awn_icon_parent_class)->dispose (object);
 }
 
@@ -235,9 +214,6 @@ awn_icon_init (AwnIcon *icon)
   priv = icon->priv = AWN_ICON_GET_PRIVATE (icon);
 
   priv->icon_ctx = NULL;
-  priv->message = NULL;
-  priv->progress = 0;
-  priv->active = FALSE;
   priv->queue_pixbuf = NULL;
   priv->queue_ctx = NULL;
   priv->orient = AWN_ORIENTATION_BOTTOM;
@@ -499,38 +475,29 @@ awn_icon_get_tooltip_text (AwnIcon *icon)
 void 
 awn_icon_set_message (AwnIcon *icon, const gchar  *message)
 {
-  AwnIconPrivate *priv;
-
   g_return_if_fail (AWN_IS_ICON (icon));
-  priv = icon->priv;
 
-  if (priv->message)
-    g_free (priv->message);
-
-  if (message)
-    priv->message = g_strdup (message);
-  else
-    priv->message = NULL;
-
-  gtk_widget_queue_draw (GTK_WIDGET (icon));
+  g_object_set(icon->priv->effects, "label", message, NULL);
 }
 
-const gchar * 
+gchar * 
 awn_icon_get_message (AwnIcon *icon)
 {
   g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
 
-  return icon->priv->message;
-}  
+  gchar *result;
+
+  g_object_get(icon->priv->effects, "label", &result, NULL);
+  // caller gets a copy, so he's responsible for freeing it
+  return result;
+}
 
 void
 awn_icon_set_progress (AwnIcon *icon, gfloat progress)
 {
   g_return_if_fail (AWN_IS_ICON (icon));
 
-  icon->priv->progress = progress;
-
-  gtk_widget_queue_draw (GTK_WIDGET (icon));
+  g_object_set(icon->priv->effects, "progress", progress, NULL);
 }
 
 gfloat        
@@ -538,7 +505,11 @@ awn_icon_get_progress (AwnIcon *icon)
 {
   g_return_val_if_fail (AWN_IS_ICON (icon), 0.0);
 
-  return icon->priv->progress;
+  gfloat result;
+
+  g_object_get(icon->priv->effects, "progress", &result, NULL);
+
+  return result;
 }
 
 void
@@ -546,9 +517,7 @@ awn_icon_set_is_active (AwnIcon *icon, gboolean is_active)
 {
   g_return_if_fail (AWN_IS_ICON (icon));
 
-  icon->priv->active = is_active;
-
-  gtk_widget_queue_draw (GTK_WIDGET (icon));
+  g_object_set(icon->priv->effects, "active", is_active, NULL);
 }
 
 gboolean      
@@ -556,5 +525,10 @@ awn_icon_get_is_active (AwnIcon *icon)
 {
   g_return_val_if_fail (AWN_IS_ICON (icon), FALSE);
 
-  return icon->priv->active;
+  gboolean result;
+
+  g_object_get(icon->priv->effects, "active", &result, NULL);
+
+  return result;
 }
+

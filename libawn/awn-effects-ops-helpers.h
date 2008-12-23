@@ -41,9 +41,5 @@ blur_surface_shadow(cairo_surface_t *src, const int radius);
 void
 surface_saturate(cairo_surface_t * icon_srfc, const gfloat saturation);
 
-// FIXME: remove once using purely new drawing API
-void
-apply_3d_illusion(AwnEffects * fx, GtkAllocation * ds, const gdouble alpha);
-
 #endif
 

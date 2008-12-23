@@ -41,28 +41,6 @@ typedef enum
   AWN_EFFECT_DESATURATE
 } AwnEffect;
 
-typedef enum
-{
-  AWN_EFFECT_DIR_NONE,
-  AWN_EFFECT_DIR_STOP,
-  AWN_EFFECT_DIR_DOWN,
-  AWN_EFFECT_DIR_UP,
-  AWN_EFFECT_DIR_LEFT,
-  AWN_EFFECT_DIR_RIGHT,
-  AWN_EFFECT_SQUISH_DOWN,
-  AWN_EFFECT_SQUISH_DOWN2,
-  AWN_EFFECT_SQUISH_UP,
-  AWN_EFFECT_SQUISH_UP2,
-  AWN_EFFECT_TURN_1,
-  AWN_EFFECT_TURN_2,
-  AWN_EFFECT_TURN_3,
-  AWN_EFFECT_TURN_4,
-  AWN_EFFECT_SPOTLIGHT_ON,
-  AWN_EFFECT_SPOTLIGHT_TREMBLE_UP,
-  AWN_EFFECT_SPOTLIGHT_TREMBLE_DOWN,
-  AWN_EFFECT_SPOTLIGHT_OFF
-} AwnEffectSequence;
-
 typedef void (*AwnEventNotify)(GtkWidget *);
 
 //GObject stuff
@@ -119,7 +97,7 @@ struct _AwnEffects
   /* EFFECT VARIABLES */
   gboolean effect_lock;
   AwnEffect current_effect;
-  AwnEffectSequence direction;
+  gint direction;
   gint count;
 
   gdouble side_offset;
@@ -157,13 +135,14 @@ struct _AwnEffects
   gboolean make_shadow;
   gboolean is_active;
   gchar *label;
+  gfloat progress;
   gint border_clip;
   /* properties end */
 
   guint timer_id;
 
-  cairo_t * icon_ctx;
-  cairo_t * reflect_ctx;
+  cairo_t * window_ctx;
+  cairo_t * virtual_ctx;
 
   AwnEffectsOp  *op_list;
 
