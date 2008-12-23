@@ -552,7 +552,7 @@ gboolean awn_effects_post_op_progress(AwnEffects * fx,
     // FIXME: how to define the colors ???
     //  add property to effects? read from theme?
     //  or read from the managed widget? <- sounds reasonable, but what exactly
-    cairo_set_source_rgba(cr, 0.2, 0.2, 0.2, 0.7 alpha_mult);
+    cairo_set_source_rgba(cr, 0.2, 0.2, 0.2, 0.7 * alpha_mult);
 
     cairo_arc(cr, dx, dy, radius, 0, M_PI*2);
     cairo_fill(cr);
