@@ -39,6 +39,8 @@ G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET);
   TASK_TYPE_MANAGER, \
   TaskManagerPrivate))
 
+static GQuark win_quark = 0;
+
 struct _TaskManagerPrivate
 {
   AwnConfigClient *client;
@@ -230,6 +232,8 @@ task_manager_init (TaskManager *manager)
 
   wnck_set_client_type (WNCK_CLIENT_TYPE_PAGER);
 
+  win_quark = g_quark_from_string ("task-window-quark");
+
   /* Create the icon box */
   priv->box = awn_icon_box_new_for_applet (AWN_APPLET (manager));
   gtk_container_add (GTK_CONTAINER (manager), priv->box);
@@ -272,8 +276,6 @@ task_manager_orient_changed (AwnApplet *applet,
   TaskManager *manager = TASK_MANAGER (applet);
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
-
-  //awn_icon_box_set_orientation (AWN_ICON_BOX (manager->priv->box), orient);
 }
 
 static void 
@@ -297,7 +299,6 @@ task_manager_size_changed   (AwnApplet *applet,
       task_icon_refresh_icon (icon);
   }
 }
-
 
 /*
  * The guts of the show or hide logic
@@ -457,6 +458,7 @@ try_to_match_window_to_launcher (TaskManager *manager, WnckWindow *window)
      * get on with it
      */
     task_launcher_set_window (launcher, window);
+    g_object_set_qdata (G_OBJECT (window), win_quark, launcher);
     res = TRUE;
   }
 
@@ -469,7 +471,10 @@ try_to_match_window_to_launcher (TaskManager *manager, WnckWindow *window)
 static gboolean
 try_to_match_window_to_sn_context (TaskManager *mananger, WnckWindow *window)
 {
-  /* FIXME: */
+  /* FIXME: The window == UTILITY || DIALOG, so we should see if we can do
+   *        some smart placement to a already-existing window/launcher to 
+   *        avoid making a new icon for it
+   */
   return FALSE;
 }
 
@@ -570,7 +575,8 @@ on_window_opened (WnckScreen    *screen,
   taskwin = task_window_new (window);
   priv->windows = g_slist_append (priv->windows, taskwin);
   g_object_weak_ref (G_OBJECT (taskwin), (GWeakNotify)window_closed, manager);
- 
+  g_object_set_qdata (G_OBJECT (window), win_quark, taskwin); 
+  
   /* If we've come this far, the window deserves a spot on the task-manager!
    * Time to create a TaskIcon for it
    */
@@ -592,7 +598,25 @@ on_active_window_changed (WnckScreen    *screen,
                           WnckWindow    *old_window,
                           TaskManager   *manager)
 {
-  //g_debug ("ACTIVE_WINDOW_CHANGED\n");
+  TaskManagerPrivate *priv;
+  WnckWindow         *active = NULL;
+  TaskWindow         *taskwin = NULL;
+  TaskWindow         *old_taskwin = NULL;
+  
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+
+  active = wnck_screen_get_active_window (priv->screen);
+
+  if (WNCK_IS_WINDOW (old_window))
+    old_taskwin = (TaskWindow *)g_object_get_qdata (G_OBJECT (old_window),
+                                                    win_quark);
+  taskwin = (TaskWindow *)g_object_get_qdata (G_OBJECT (active), win_quark);
+
+  if (TASK_IS_WINDOW (old_taskwin))
+    task_window_set_is_active (old_taskwin, FALSE);
+  if (TASK_IS_WINDOW (taskwin))
+    task_window_set_is_active (taskwin, TRUE);
 }
 
 /*
@@ -649,7 +673,7 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
       if (!TASK_IS_LAUNCHER (launch))
         continue;
       
-      if (g_strcmp0 (d->data, task_launcher_get_destkop_path (launch)) == 0)
+      if (g_strcmp0 (d->data, task_launcher_get_desktop_path (launch)) == 0)
       {
         launcher = launch;
         break;

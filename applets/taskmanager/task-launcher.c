@@ -165,7 +165,7 @@ task_launcher_new_for_desktop_file (const gchar *path)
 }
 
 const gchar   * 
-task_launcher_get_destkop_path     (TaskLauncher *launcher)
+task_launcher_get_desktop_path     (TaskLauncher *launcher)
 {
   g_return_val_if_fail (TASK_IS_LAUNCHER (launcher), NULL);
 
@@ -253,11 +253,11 @@ _get_icon (TaskWindow    *window)
   if (WNCK_IS_WINDOW (window->priv->window))
   {
     return _wnck_get_icon_at_size (window->priv->window, 
-                                   s->panel_size, s->panel_size);
+                                   s->panel_size-2, s->panel_size-2);
   }
   else
   {
-    return awn_desktop_item_get_icon (launcher->priv->item, s->panel_size);
+    return awn_desktop_item_get_icon (launcher->priv->item, s->panel_size-2);
   }
 }
 

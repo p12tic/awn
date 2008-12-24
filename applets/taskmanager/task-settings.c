@@ -96,6 +96,7 @@ awn_notify_int (AwnConfigClientNotifyEntry *entry, gint* data)
 {
   *data = entry->value.int_val;
 }
+
 /*
 static void
 awn_load_bool (AwnConfigClient *client, 

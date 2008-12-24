@@ -69,7 +69,7 @@ GType           task_launcher_get_type             (void) G_GNUC_CONST;
 
 TaskLauncher  * task_launcher_new_for_desktop_file (const gchar *path);
 
-const gchar   * task_launcher_get_destkop_path     (TaskLauncher *launcher);
+const gchar   * task_launcher_get_desktop_path     (TaskLauncher *launcher);
 
 gboolean        task_launcher_has_window           (TaskLauncher *launcher);
 

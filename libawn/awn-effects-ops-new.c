@@ -22,6 +22,7 @@
 
 #include "awn-effects-ops-new.h"
 #include "awn-effects-ops-helpers.h"
+#include "awn-cairo-utils.h"
 
 #ifndef M_PI
  #define  M_PI 3.14159265358979323846
@@ -211,6 +212,23 @@ gboolean awn_effects_pre_op_flip(AwnEffects * fx,
   return FALSE;
 }
 
+gboolean awn_effects_pre_op_active(AwnEffects * fx,
+                                   cairo_t * cr,
+                                   GtkAllocation * ds,
+                                   gpointer user_data
+                                   )
+{
+#define PADDING 1
+  // currently we only have variable for hflip
+  if (fx->is_active) {
+    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
+    awn_cairo_rounded_rect (cr, -PADDING, -PADDING, 
+                            ds->width+(2*PADDING), ds->height+(2*PADDING),
+                            10.0, ROUND_ALL);
+    cairo_fill (cr);
+  }
+  return FALSE;
+}
 gboolean awn_effects_post_op_clip(AwnEffects * fx,
                                cairo_t * cr,
                                GtkAllocation * ds,

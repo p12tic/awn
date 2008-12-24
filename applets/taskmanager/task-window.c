@@ -230,6 +230,7 @@ task_window_init (TaskWindow *window)
   priv->progress = 0;
   priv->hidden = FALSE;
   priv->needs_attention = FALSE;
+  priv->is_active = FALSE;
 }
 
 TaskWindow *
@@ -275,7 +276,7 @@ on_window_icon_changed (WnckWindow *wnckwin, TaskWindow *window)
   g_return_if_fail (TASK_IS_WINDOW (window));
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
   
-  pixbuf = _wnck_get_icon_at_size (wnckwin, s->panel_size, s->panel_size);
+  pixbuf = _wnck_get_icon_at_size (wnckwin, s->panel_size-2, s->panel_size-2);
   task_window_update_icon (window, pixbuf);
   g_object_unref (pixbuf);
 }
@@ -464,7 +465,11 @@ void
 task_window_set_is_active  (TaskWindow    *window,
                             gboolean       is_active)
 {
-  
+  g_return_if_fail (TASK_IS_WINDOW (window));
+
+  window->priv->is_active = is_active;
+
+  g_signal_emit (window, _window_signals[ACTIVE_CHANGED], 0, is_active);
 }
 
 gboolean 
@@ -634,7 +639,7 @@ _get_icon (TaskWindow    *window)
 
   if (WNCK_IS_WINDOW (window->priv->window))
     return _wnck_get_icon_at_size (window->priv->window, 
-                                   s->panel_size, s->panel_size);
+                                   s->panel_size-2, s->panel_size-2);
 
   return NULL;
 }

@@ -102,7 +102,7 @@ awn_applet_simple_size_changed (AwnApplet *applet, gint size)
 
   if (priv->last_set_icon == ICON_THEMED_SIMPLE
       || priv->last_set_icon == ICON_THEMED_MANY)
-    awn_themed_icon_set_size (AWN_THEMED_ICON (priv->icon), size);
+    awn_themed_icon_set_size (AWN_THEMED_ICON (priv->icon), size-2);
 
   awn_applet_simple_orient_changed (applet, 
                                     awn_applet_get_orientation (applet));
@@ -256,7 +256,7 @@ awn_applet_simple_set_icon_name (AwnAppletSimple  *applet,
                                    awn_applet_get_uid (AWN_APPLET (applet)),
                                    icon_name);
   awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
-                            awn_applet_get_size (AWN_APPLET (applet)));
+                            awn_applet_get_size (AWN_APPLET (applet))-2);
 }
                                     
 void   
@@ -277,7 +277,7 @@ awn_applet_simple_set_icon_info (AwnAppletSimple  *applet,
                             states,
                             icon_names);
   awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
-                            awn_applet_get_size (AWN_APPLET (applet)));
+                            awn_applet_get_size (AWN_APPLET (applet))-2);
 }
                                     
 void 

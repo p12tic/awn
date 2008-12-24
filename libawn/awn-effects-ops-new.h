@@ -64,6 +64,11 @@ gboolean awn_effects_pre_op_flip(AwnEffects * fx,
                                gpointer user_data
                               );
 
+gboolean awn_effects_pre_op_active(AwnEffects * fx,
+                                   cairo_t * cr,
+                                   GtkAllocation * ds,
+                                   gpointer user_data
+                                   );
 gboolean awn_effects_post_op_clip(AwnEffects * fx,
                                cairo_t * cr,
                                GtkAllocation * ds,

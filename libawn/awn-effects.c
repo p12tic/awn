@@ -783,6 +783,7 @@ cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
   awn_effects_pre_op_scale(fx, cr, &ds, NULL);
   awn_effects_pre_op_rotate(fx, cr, &ds, NULL);
   awn_effects_pre_op_flip(fx, cr, &ds, NULL);
+  awn_effects_pre_op_active (fx, cr, &ds, NULL);
 
   return cr;
 }

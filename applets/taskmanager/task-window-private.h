@@ -31,5 +31,6 @@ struct _TaskWindowPrivate
   gfloat   progress;
   gboolean hidden;
   gboolean needs_attention;
+  gboolean is_active;
 };
 
