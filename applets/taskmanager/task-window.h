@@ -59,13 +59,15 @@ struct _TaskWindowClass
   GObjectClass   parent_class;
 
   /*< vtable >*/
-  gint          (*get_pid)         (TaskWindow    *window);
-  const gchar * (*get_name)        (TaskWindow    *window);
-  GdkPixbuf   * (*get_icon)        (TaskWindow    *window);
-  gboolean      (*is_on_workspace) (TaskWindow    *window,
-                                    WnckWorkspace *space);
-  void          (*activate)        (TaskWindow    *window,
-                                    guint32        timestamp);
+  gint          (*get_pid)         (TaskWindow     *window);
+  const gchar * (*get_name)        (TaskWindow     *window);
+  GdkPixbuf   * (*get_icon)        (TaskWindow     *window);
+  gboolean      (*is_on_workspace) (TaskWindow     *window,
+                                    WnckWorkspace  *space);
+  void          (*activate)        (TaskWindow     *window,
+                                    guint32         timestamp);
+  void          (*popup_menu)      (TaskWindow     *window,
+                                    GdkEventButton *event);
 
   /*< signals >*/
   void (*name_changed)      (TaskWindow *window, const gchar   *name);
@@ -123,11 +125,14 @@ void            task_window_minimize          (TaskWindow    *window);
 void            task_window_close             (TaskWindow    *window,
                                                guint32        timestamp);
 
-void            task_window_set_icon_geometry (TaskWindow    *window,
-                                               gint           x,
-                                               gint           y,
-                                               gint           width,
-                                               gint           height);
+void            task_window_popup_context_menu(TaskWindow     *window,
+                                               GdkEventButton *event);
+
+void            task_window_set_icon_geometry (TaskWindow     *window,
+                                               gint            x,
+                                               gint            y,
+                                               gint            width,
+                                               gint            height);
 
 #endif /* _TASK_WINDOW_H_ */
 

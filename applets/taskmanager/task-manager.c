@@ -611,7 +611,8 @@ on_active_window_changed (WnckScreen    *screen,
   if (WNCK_IS_WINDOW (old_window))
     old_taskwin = (TaskWindow *)g_object_get_qdata (G_OBJECT (old_window),
                                                     win_quark);
-  taskwin = (TaskWindow *)g_object_get_qdata (G_OBJECT (active), win_quark);
+  if (WNCK_IS_WINDOW (active))
+    taskwin = (TaskWindow *)g_object_get_qdata (G_OBJECT (active), win_quark);
 
   if (TASK_IS_WINDOW (old_taskwin))
     task_window_set_is_active (old_taskwin, FALSE);

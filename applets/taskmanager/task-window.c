@@ -54,13 +54,15 @@ enum
 static guint32 _window_signals[LAST_SIGNAL] = { 0 };
 
 /* Forwards */
-static gint          _get_pid         (TaskWindow    *window);
-static const gchar * _get_name        (TaskWindow    *window);
-static GdkPixbuf   * _get_icon        (TaskWindow    *window);
-static gboolean      _is_on_workspace (TaskWindow    *window,
-                                       WnckWorkspace *space);
-static void          _activate        (TaskWindow    *window,
-                                       guint32        timestamp);
+static gint          _get_pid         (TaskWindow     *window);
+static const gchar * _get_name        (TaskWindow     *window);
+static GdkPixbuf   * _get_icon        (TaskWindow     *window);
+static gboolean      _is_on_workspace (TaskWindow     *window,
+                                       WnckWorkspace  *space);
+static void          _activate        (TaskWindow     *window,
+                                       guint32         timestamp);
+static void          _popup_menu      (TaskWindow     *window,
+                                       GdkEventButton *event);
 
 static void   task_window_set_window (TaskWindow *window,
                                       WnckWindow *wnckwin);
@@ -126,6 +128,7 @@ task_window_class_init (TaskWindowClass *klass)
   klass->get_icon        = _get_icon;
   klass->is_on_workspace = _is_on_workspace;
   klass->activate        = _activate;
+  klass->popup_menu      = _popup_menu;
 
   /* Install properties */
   pspec = g_param_spec_object ("taskwindow",
@@ -581,6 +584,21 @@ task_window_close (TaskWindow    *window,
   }
 }
 
+void   
+task_window_popup_context_menu (TaskWindow     *window,
+                                GdkEventButton *event)
+{
+  TaskWindowClass *klass;
+
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  g_return_if_fail (event);
+
+  klass = TASK_WINDOW_GET_CLASS (window);
+  g_return_if_fail (klass->popup_menu);
+
+  klass->popup_menu (window, event);
+}
+
 void    
 task_window_set_icon_geometry (TaskWindow    *window,
                                gint           x,
@@ -729,3 +747,23 @@ _activate (TaskWindow    *window,
       wnck_window_activate_transient (win, timestamp);
   }
 }
+
+static void 
+_popup_menu (TaskWindow     *window,
+             GdkEventButton *event)
+{
+  TaskWindowPrivate *priv;
+  GtkWidget         *menu;
+
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  priv = window->priv;
+
+  if (!WNCK_IS_WINDOW (priv->window))
+    return;
+
+  menu = wnck_action_menu_new (priv->window);
+
+  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, 
+                  NULL, NULL, event->button, event->time);
+}
+

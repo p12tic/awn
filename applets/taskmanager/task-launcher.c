@@ -59,13 +59,15 @@ enum
 };
 
 /* Forwards */
-static gint          _get_pid         (TaskWindow    *window);
-static const gchar * _get_name        (TaskWindow    *window);
-static GdkPixbuf   * _get_icon        (TaskWindow    *window);
-static gboolean      _is_on_workspace (TaskWindow    *window,
-                                       WnckWorkspace *space);
-static void          _activate        (TaskWindow    *window,
-                                       guint32        timestamp);
+static gint          _get_pid         (TaskWindow     *window);
+static const gchar * _get_name        (TaskWindow     *window);
+static GdkPixbuf   * _get_icon        (TaskWindow     *window);
+static gboolean      _is_on_workspace (TaskWindow     *window,
+                                       WnckWorkspace  *space);
+static void          _activate        (TaskWindow     *window,
+                                       guint32         timestamp);
+static void          _popup_menu      (TaskWindow     *window,
+                                       GdkEventButton *event);
 
 static void   task_launcher_set_desktop_file (TaskLauncher *launcher,
                                               const gchar  *path);
@@ -125,6 +127,7 @@ task_launcher_class_init (TaskLauncherClass *klass)
   win_class->get_icon        = _get_icon;
   win_class->is_on_workspace = _is_on_workspace;
   win_class->activate        = _activate;
+  win_class->popup_menu      = _popup_menu;
 
 
   /* Install properties */
@@ -435,3 +438,23 @@ task_launcher_set_window (TaskLauncher *launcher,
                      (GWeakNotify)on_window_closed,
                      launcher);
 }
+
+static void 
+_popup_menu (TaskWindow     *window,
+             GdkEventButton *event)
+{
+  TaskWindowPrivate *priv;
+  GtkWidget         *menu;
+
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  priv = window->priv;
+
+  if (!WNCK_IS_WINDOW (priv->window))
+    return;
+
+  menu = wnck_action_menu_new (priv->window);
+
+  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, 
+                  NULL, NULL, event->button, event->time);
+}
+

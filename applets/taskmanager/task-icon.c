@@ -56,6 +56,8 @@ static guint32 _icon_signals[LAST_SIGNAL] = { 0 };
 /* Forwards */
 static gboolean  task_icon_button_release_event (GtkWidget      *widget,
                                                  GdkEventButton *event);
+static gboolean  task_icon_button_press_event   (GtkWidget      *widget,
+                                                 GdkEventButton *event);
 
 /* GObject stuff */
 static void
@@ -115,8 +117,9 @@ task_icon_class_init (TaskIconClass *klass)
   obj_class->constructed  = task_icon_constructed;
   obj_class->set_property = task_icon_set_property;
   obj_class->get_property = task_icon_get_property;
-
+  
   wid_class->button_release_event = task_icon_button_release_event;
+  wid_class->button_press_event   = task_icon_button_press_event;
   
   /* Install properties first */
   pspec = g_param_spec_object ("taskwindow",
@@ -434,6 +437,34 @@ task_icon_button_release_event (GtkWidget      *widget,
       task_window_activate (priv->windows->data, event->time);
       return TRUE;
     }
+  }
+  return FALSE;
+}
+
+static gboolean  
+task_icon_button_press_event (GtkWidget      *widget,
+                              GdkEventButton *event)
+{
+  TaskIconPrivate *priv;
+  guint len;
+
+  g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
+  priv = TASK_ICON (widget)->priv;
+
+  if (event->button != 3)
+    return FALSE;
+
+  len = g_slist_length (priv->windows);
+
+  if (len == 1)
+  {
+    /* We can just ask the window to popup as normal */
+    task_window_popup_context_menu (priv->windows->data, event);
+    return TRUE;
+  }
+  else
+  {
+    g_warning ("TaskIcon: FIXME: No support for multiple windows right-click");
   }
   return FALSE;
 }
