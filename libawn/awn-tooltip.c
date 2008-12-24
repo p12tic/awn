@@ -256,6 +256,21 @@ awn_tooltip_set_property (GObject      *object,
 }
 
 static void
+awn_tooltip_dispose(GObject *obj)
+{
+  AwnTooltipPrivate *priv = AWN_TOOLTIP_GET_PRIVATE (obj);
+
+  if (priv->focus)
+  {
+    g_signal_handler_disconnect (priv->focus, priv->enter_id);
+    g_signal_handler_disconnect (priv->focus, priv->leave_id);
+    priv->focus = NULL;
+  }
+
+  G_OBJECT_CLASS (awn_tooltip_parent_class)->dispose (obj);
+}
+
+static void
 awn_tooltip_finalize(GObject *obj)
 {
   AwnTooltipPrivate *priv = AWN_TOOLTIP_GET_PRIVATE (obj);
@@ -273,6 +288,7 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
 
+  obj_class->dispose      = awn_tooltip_dispose;
   obj_class->finalize     = awn_tooltip_finalize;
   obj_class->get_property = awn_tooltip_get_property;
   obj_class->set_property = awn_tooltip_set_property;
@@ -514,7 +530,6 @@ awn_tooltip_set_focus_widget (AwnTooltip *tooltip,
 
   priv->focus = widget;
 
-  // FIXME: these need to be disconnected in our dispose method
   priv->enter_id = g_signal_connect_swapped (widget, "enter-notify-event",
                                      G_CALLBACK (awn_tooltip_show), tooltip);
   priv->leave_id = g_signal_connect_swapped (widget, "leave-notify-event",

@@ -121,6 +121,7 @@ awn_config_bridge_bind (AwnConfigBridge *bridge,
   GParamSpec             *spec;
   gchar                  *string;
   GError                 *error;
+  gboolean               key_exists;
 
   g_return_if_fail (AWN_IS_CONFIG_BRIDGE (bridge));
   g_return_if_fail (client);
@@ -139,42 +140,52 @@ awn_config_bridge_bind (AwnConfigBridge *bridge,
   spec = g_object_class_find_property (G_OBJECT_GET_CLASS (object),
                                        property_name);
   
+  key_exists = awn_config_client_entry_exists(client, group, key);
+
   switch (G_PARAM_SPEC_VALUE_TYPE (spec))
   {
     case G_TYPE_BOOLEAN:
-      g_object_set (object, property_name, 
-                    awn_config_client_get_bool (client, group, key, &error), 
-                    NULL);
+      if (key_exists) {
+        g_object_set (object, property_name, 
+                      awn_config_client_get_bool (client, group, key, &error), 
+                      NULL);
+      }
       awn_config_client_notify_add (client, group, key,
                                     on_boolean_key_changed, bind);
       break;
     
     case G_TYPE_FLOAT:
     case G_TYPE_DOUBLE:
-      g_object_set (object, property_name, 
-                    awn_config_client_get_float (client, group, key, &error),
-                    NULL);
+      if (key_exists) {
+        g_object_set (object, property_name, 
+                      awn_config_client_get_float (client, group, key, &error),
+                      NULL);
+      }
       awn_config_client_notify_add (client, group, key,
                                     on_float_key_changed, bind);
       break;
     
     case G_TYPE_INT:
     case G_TYPE_UINT:
-      g_object_set (object, property_name, 
-                    awn_config_client_get_int (client, group, key, &error),
-                    NULL);
+      if (key_exists) {
+        g_object_set (object, property_name, 
+                      awn_config_client_get_int (client, group, key, &error),
+                      NULL);
+      }
       awn_config_client_notify_add (client, group, key,
                                     on_int_key_changed, bind);
       break;
 
     case G_TYPE_STRING:
-      string = awn_config_client_get_string (client, group, key, NULL);
-      g_object_set (object, property_name, 
-                    awn_config_client_get_string (client, group, key, &error),
-                    NULL);
+      string = awn_config_client_get_string (client, group, key, &error);
+      if (key_exists) {
+        g_object_set (object, property_name,
+                      string,
+                      NULL);
+      }
       awn_config_client_notify_add (client, group, key,
                                     on_string_key_changed, bind);
-      g_free (string);
+      if (string) g_free (string);
       break;
 
     default:
