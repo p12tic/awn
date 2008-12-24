@@ -36,6 +36,10 @@ G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_ICON);
 struct _TaskIconPrivate
 {
   GSList *windows;
+
+  guint    drag_tag;
+  gboolean drag_motion;
+  guint    drag_time;
 };
 
 enum
@@ -53,11 +57,32 @@ enum
 };
 static guint32 _icon_signals[LAST_SIGNAL] = { 0 };
 
+static const GtkTargetEntry drop_types[] = 
+{
+  { "STRING", 0, 0 },
+  { "text/plain", 0,  },
+  { "text/uri-list", 0, 0 }
+};
+static const gint n_drop_types = G_N_ELEMENTS (drop_types);
+
 /* Forwards */
 static gboolean  task_icon_button_release_event (GtkWidget      *widget,
                                                  GdkEventButton *event);
 static gboolean  task_icon_button_press_event   (GtkWidget      *widget,
                                                  GdkEventButton *event);
+static gboolean  task_icon_drag_motion          (GtkWidget      *widget,
+                                                 GdkDragContext *context,
+                                                 gint            x,
+                                                 gint            y,
+                                                 guint           t);
+static void      task_icon_drag_leave           (GtkWidget      *widget,
+                                                 GdkDragContext *context,
+                                                 guint           time);
+static gboolean  task_icon_drag_drop            (GtkWidget      *widget,
+                                                 GdkDragContext *context,
+                                                 gint            x,
+                                                 gint            y,
+                                                 guint           time);
 
 /* GObject stuff */
 static void
@@ -101,6 +126,20 @@ task_icon_set_property (GObject      *object,
 }
 
 static void
+task_icon_finalize (GObject *object)
+{
+  TaskIconPrivate *priv = TASK_ICON_GET_PRIVATE (object);
+
+  if (priv->windows)
+  {
+    g_slist_free (priv->windows);
+    priv->windows = NULL;
+  }
+
+  G_OBJECT_CLASS (task_icon_parent_class)->finalize (object);
+}
+
+static void
 task_icon_constructed (GObject *object)
 {
   //TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;
@@ -117,9 +156,13 @@ task_icon_class_init (TaskIconClass *klass)
   obj_class->constructed  = task_icon_constructed;
   obj_class->set_property = task_icon_set_property;
   obj_class->get_property = task_icon_get_property;
+  obj_class->finalize     = task_icon_finalize;
   
   wid_class->button_release_event = task_icon_button_release_event;
   wid_class->button_press_event   = task_icon_button_press_event;
+  wid_class->drag_motion          = task_icon_drag_motion;
+  wid_class->drag_leave           = task_icon_drag_leave;
+  wid_class->drag_drop            = task_icon_drag_drop;
   
   /* Install properties first */
   pspec = g_param_spec_object ("taskwindow",
@@ -150,8 +193,19 @@ task_icon_init (TaskIcon *icon)
   priv = icon->priv = TASK_ICON_GET_PRIVATE (icon);
 
   priv->windows = NULL;
+  priv->drag_tag = 0;
+  priv->drag_motion = FALSE;
 
   awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
+
+  /* D&D */
+  gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
+  gtk_drag_dest_set (GTK_WIDGET (icon), 
+                     GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
+                     drop_types, n_drop_types,
+                     GDK_ACTION_COPY);
+  gtk_drag_dest_add_uri_targets (GTK_WIDGET (icon));
+  gtk_drag_dest_add_text_targets (GTK_WIDGET (icon));
 }
 
 GtkWidget *
@@ -210,7 +264,6 @@ window_closed (TaskIcon *icon, TaskWindow *old_window)
 
   if (g_slist_length (priv->windows) == 0)
   {
-
     gtk_widget_destroy (GTK_WIDGET (icon));
   }
   else
@@ -318,7 +371,7 @@ task_icon_append_window (TaskIcon      *icon,
   /* Is this the first, main, window of this icon? */
   if (priv->windows == NULL)
     first_window = TRUE;
-  
+
   priv->windows = g_slist_append (priv->windows, window);
   g_object_weak_ref (G_OBJECT (window), (GWeakNotify)window_closed, icon);
 
@@ -466,5 +519,69 @@ task_icon_button_press_event (GtkWidget      *widget,
   {
     g_warning ("TaskIcon: FIXME: No support for multiple windows right-click");
   }
+  return FALSE;
+}
+
+static gboolean
+drag_timeout (TaskIcon *icon)
+{
+  TaskIconPrivate *priv;
+
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
+  priv = icon->priv;
+
+  if (priv->drag_motion == FALSE)
+    return FALSE;
+  else if (priv->windows->data)
+    task_window_activate (priv->windows->data, priv->drag_time);
+
+  return FALSE;
+}
+
+static gboolean
+task_icon_drag_motion (GtkWidget      *widget,
+                       GdkDragContext *context,
+                       gint            x,
+                       gint            y,
+                       guint           t)
+{
+  TaskIconPrivate *priv;
+
+  g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
+  priv = TASK_ICON (widget)->priv;
+
+  if (priv->drag_tag)
+    return TRUE;
+
+  priv->drag_motion = TRUE;
+  priv->drag_tag = g_timeout_add_seconds (1, (GSourceFunc)drag_timeout, widget);
+  priv->drag_time = t;
+
+  return FALSE;
+}
+
+static void   
+task_icon_drag_leave (GtkWidget      *widget,
+                      GdkDragContext *context,
+                      guint           time)
+{
+  TaskIconPrivate *priv;
+
+  g_return_if_fail (TASK_IS_ICON (widget));
+  priv = TASK_ICON (widget)->priv;
+
+  priv->drag_motion = FALSE;
+  g_source_remove (priv->drag_tag);
+  priv->drag_tag = 0;
+}
+
+static gboolean
+task_icon_drag_drop (GtkWidget      *widget,
+                     GdkDragContext *context,
+                     gint            x,
+                     gint            y,
+                     guint           time)
+{
+  g_debug ("Drag drop");
   return FALSE;
 }
