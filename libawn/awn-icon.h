@@ -96,7 +96,7 @@ const gchar * awn_icon_get_tooltip_text (AwnIcon     *icon);
 void          awn_icon_set_message      (AwnIcon     *icon,
                                          const gchar *message);
 
-const gchar * awn_icon_get_message      (AwnIcon     *icon);
+gchar *       awn_icon_get_message      (AwnIcon     *icon);
 
 void          awn_icon_set_progress     (AwnIcon     *icon,
                                          gfloat       progress);

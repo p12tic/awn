@@ -25,11 +25,15 @@
 #include "awn-effects.h"
 #include "awn-effects-ops-new.h"
 
+#include "awn-config-client.h"
+#include "awn-config-bridge.h"
+
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
 #include <cairo/cairo-xlib.h>
 
+#include "anims/awn-effects-shared.h"
 #include "anims/awn-effect-spotlight.h"
 #include "anims/awn-effect-bounce.h"
 #include "anims/awn-effect-glow.h"
@@ -39,9 +43,6 @@
 #include "anims/awn-effect-turn.h"
 #include "anims/awn-effect-spotlight3d.h"
 #include "anims/awn-effect-desaturate.h"
-
-#include "awn-config-client.h"
-#include "awn-config-bridge.h"
 
 G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT);
 
@@ -68,6 +69,7 @@ enum {
   PROP_MAKE_SHADOW,
   PROP_LABEL,
   PROP_IS_ACTIVE,
+  PROP_PROGRESS,
   PROP_BORDER_CLIP
 };
 
@@ -110,25 +112,12 @@ awn_effects_finalize(GObject *object)
     fx->label = NULL;
   }
 
-  // FIXME: can be removed, new effects API doesn't save contexts
-  if (fx->icon_ctx)
-  {
-    cairo_surface_destroy(cairo_get_target(fx->icon_ctx));
-    cairo_destroy( fx->icon_ctx);
-    fx->icon_ctx = NULL;
-  }
-
-  if (fx->reflect_ctx)
-  {
-    cairo_surface_destroy(cairo_get_target(fx->reflect_ctx));
-    cairo_destroy( fx->reflect_ctx );
-    fx->reflect_ctx = NULL;
-  }
-
   if (fx->client)
   {
     fx->client = NULL;
   }
+
+  G_OBJECT_CLASS (awn_effects_parent_class)->finalize(object);
 }
 
 static void
@@ -165,11 +154,13 @@ awn_effects_get_property (GObject      *object,
       g_value_set_boolean(value, fx->make_shadow);
       break;
     case PROP_LABEL:
-      g_assert(fx->label);
       g_value_set_string(value, fx->label);
       break;
     case PROP_IS_ACTIVE:
       g_value_set_boolean(value, fx->is_active);
+      break;
+    case PROP_PROGRESS:
+      g_value_set_float(value, fx->progress);
       break;
     case PROP_BORDER_CLIP:
       g_value_set_int(value, fx->border_clip);
@@ -190,7 +181,18 @@ awn_effects_set_property (GObject      *object,
 
   switch (prop_id) {
     case PROP_ORIENTATION:
-      fx->orientation = g_value_get_int(value);
+      // make sure we set correct orient
+      switch (g_value_get_int(value)) {
+        case AWN_EFFECT_ORIENT_TOP:
+        case AWN_EFFECT_ORIENT_RIGHT:
+        case AWN_EFFECT_ORIENT_BOTTOM:
+        case AWN_EFFECT_ORIENT_LEFT:
+          fx->orientation = g_value_get_int(value);
+          break;
+        default:
+          fx->orientation = AWN_EFFECT_ORIENT_BOTTOM;
+          break;
+      }
       break;
     case PROP_CURRENT_EFFECTS:
       fx->set_effects = g_value_get_uint(value);
@@ -219,6 +221,9 @@ awn_effects_set_property (GObject      *object,
       break;
     case PROP_IS_ACTIVE:
       fx->is_active = g_value_get_boolean(value);
+      break;
+    case PROP_PROGRESS:
+      fx->progress = g_value_get_float(value);
       break;
     case PROP_BORDER_CLIP:
       fx->border_clip = g_value_get_int(value);
@@ -303,7 +308,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
   obj_class->finalize = awn_effects_finalize;
   obj_class->constructed = awn_effects_constructed;
 
-  klass->animations = g_ptr_array_sized_new(40); // 5 animations per bundle, 8 effect bundles
+  klass->animations = g_ptr_array_sized_new(AWN_ANIMATIONS_PER_BUNDLE * 8); // 5 animations per bundle, 8 effect bundles
 
   awn_effects_register_effect_bundle(klass,
     bounce_opening_effect,
@@ -364,17 +369,18 @@ awn_effects_class_init(AwnEffectsClass *klass)
 
   g_object_class_install_property(
     obj_class, PROP_ORIENTATION,
+    // keep in sync with AwnOrientation
     g_param_spec_int("orientation",
                      "Orientation",
                      "Icon orientation",
-                     0, 3, 3, // keep in sync with AwnOrientation
+                     0, 3, AWN_EFFECT_ORIENT_BOTTOM,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   g_object_class_install_property(
     obj_class, PROP_CURRENT_EFFECTS,
     g_param_spec_uint("effects",
                       "Current effects",
                       "Active effects set for this instance",
-                      0, G_MAXUINT, 4, // set to classic (bouncing)
+                      0, G_MAXUINT, 0, // set to classic (bouncing)
                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   g_object_class_install_property(
     obj_class, PROP_ICON_OFFSET,
@@ -436,15 +442,24 @@ awn_effects_class_init(AwnEffectsClass *klass)
     obj_class, PROP_LABEL,
     g_param_spec_string("label",
                         "Label",
-                        "Extra label drawn on top of icon",
-                        "",
+                        "Extra label drawn on top of the icon",
+                        NULL,
                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  g_object_class_install_property(
+    obj_class, PROP_PROGRESS,
+    g_param_spec_float("progress",
+                       "Progress",
+                       "Value displayed on extra progress pie"
+                       " drawn on the icon",
+                       0.0, 1.0, 1.0,
+                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 }
 
 static void
 awn_effects_init(AwnEffects * fx)
 {
   // the entire structure is zeroed in allocation, define only non-zero vars
+  //  which are not properties
   fx->icon_width = 48;
   fx->icon_height = 48;
 
@@ -598,7 +613,9 @@ awn_effects_stop(AwnEffects * fx, const AwnEffect effect)
     if (dispose)
     {
       g_free(queue_item);
-    } else if (fx->sleeping_func) {
+    } 
+    else if (fx->sleeping_func)
+    {
       // wake up sleeping effect
       fx->timer_id = g_timeout_add(AWN_FRAME_RATE(fx),
                                    fx->sleeping_func, queue_item);
@@ -726,11 +743,10 @@ awn_effects_draw_set_icon_size(AwnEffects * fx, const gint width, const gint hei
 
 cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
 {
-  // FIXME: we're misusing fx->icon/reflect_ctx, rename those two
   g_return_val_if_fail(fx->self, NULL);
   cairo_t *cr = gdk_cairo_create(fx->self->window);
   g_return_val_if_fail(cairo_status(cr) == CAIRO_STATUS_SUCCESS, NULL);
-  fx->icon_ctx = cr;
+  fx->window_ctx = cr;
 
   cairo_surface_t *targetSurface = cairo_get_target(cr);
   if (cairo_surface_get_type(targetSurface) == CAIRO_SURFACE_TYPE_XLIB) {
@@ -748,7 +764,7 @@ cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
                                               );
   g_return_val_if_fail(cairo_surface_status(targetSurface) == CAIRO_STATUS_SUCCESS, NULL);
   cr = cairo_create(targetSurface);
-  fx->reflect_ctx = cr;
+  fx->virtual_ctx = cr;
 
   // FIXME: make GtkAllocation AwnEffects member, so it's accessible in both
   //  pre and post ops (can be then used for optimizations)
@@ -773,18 +789,19 @@ cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
 
 cairo_t *awn_effects_draw_get_window_context(AwnEffects *fx)
 {
-  return fx->icon_ctx;
+  return fx->window_ctx;
 }
 
 void awn_effects_draw_clear_window_context(AwnEffects *fx)
 {
-  if (fx->icon_ctx) {
-    awn_effects_pre_op_clear(fx, fx->icon_ctx, NULL, NULL);
+  if (fx->window_ctx) {
+    awn_effects_pre_op_clear(fx, fx->window_ctx, NULL, NULL);
   }
 }
+
 void awn_effects_draw_cairo_destroy(AwnEffects *fx)
 {
-  cairo_t *cr = fx->reflect_ctx;
+  cairo_t *cr = fx->virtual_ctx;
 
   cairo_reset_clip(cr);
   cairo_identity_matrix(cr);
@@ -799,15 +816,17 @@ void awn_effects_draw_cairo_destroy(AwnEffects *fx)
   awn_effects_post_op_alpha(fx, cr, NULL, NULL);
   awn_effects_post_op_reflection(fx, cr, NULL, NULL);
   awn_effects_post_op_spotlight(fx, cr, NULL, NULL);
+  awn_effects_post_op_progress(fx, cr, NULL, NULL);
+  // TODO: we're missing ops to paint label & active hint
 
-  cairo_set_source_surface(fx->icon_ctx, cairo_get_target(cr), 0, 0);
-  cairo_paint(fx->icon_ctx);
+  cairo_set_source_surface(fx->window_ctx, cairo_get_target(cr), 0, 0);
+  cairo_paint(fx->window_ctx);
 
   cairo_surface_destroy(cairo_get_target(cr));
-  cairo_destroy(fx->icon_ctx);
-  cairo_destroy(fx->reflect_ctx);
+  cairo_destroy(fx->window_ctx);
+  cairo_destroy(fx->virtual_ctx);
 
-  fx->icon_ctx = NULL;
-  fx->reflect_ctx = NULL;
+  fx->window_ctx = NULL;
+  fx->virtual_ctx = NULL;
 }
 

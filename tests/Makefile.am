@@ -1,5 +1,6 @@
 noinst_PROGRAMS = \
 	test-applet-simple \
+	test-awn-effects \
 	test-awn-icon \
 	test-awn-icon-box \
 	test-config-client \
@@ -10,6 +11,9 @@ INCLUDES = $(AWN_CFLAGS) -I$(top_srcdir)
 
 test_applet_simple_SOURCES = test-applet-simple.c
 test_applet_simple_LDADD = $(top_builddir)/libawn/libawn.la
+
+test_awn_effects_SOURCES = test-awn-effects.c
+test_awn_effects_LDADD = $(top_builddir)/libawn/libawn.la
 
 test_awn_icon_SOURCES = test-awn-icon.c
 test_awn_icon_LDADD = $(top_builddir)/libawn/libawn.la

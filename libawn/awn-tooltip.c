@@ -514,6 +514,7 @@ awn_tooltip_set_focus_widget (AwnTooltip *tooltip,
 
   priv->focus = widget;
 
+  // FIXME: these need to be disconnected in our dispose method
   priv->enter_id = g_signal_connect_swapped (widget, "enter-notify-event",
                                      G_CALLBACK (awn_tooltip_show), tooltip);
   priv->leave_id = g_signal_connect_swapped (widget, "leave-notify-event",
