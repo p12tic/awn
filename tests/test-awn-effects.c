@@ -28,12 +28,27 @@ static AwnOrientation orient = AWN_ORIENTATION_BOTTOM;
 static gboolean
 on_click (GtkWidget *widget, GdkEventButton *event, AwnIconBox *box)
 {
-  if (orient == AWN_ORIENTATION_BOTTOM)
-    orient = AWN_ORIENTATION_RIGHT;
-  else
-    orient = AWN_ORIENTATION_BOTTOM;
-
-  awn_icon_box_set_orientation (box, orient);
+  switch (event->button) {
+    // left click > test progress pie
+    case 1: {
+      AwnIcon *icon = AWN_ICON(widget);
+      float progress = awn_icon_get_progress(icon);
+      if (progress < 1.0) progress += 0.1; else progress = 0.0;
+      if (progress > 1.0) progress = 1.0;
+      awn_icon_set_progress(icon, progress);
+      break;
+    }
+    // middle click > destroy AwnIcon
+    case 2:
+      gtk_container_remove(GTK_CONTAINER(box), widget);
+      break;
+    // right click > change orientation
+    case 3:
+      orient++;
+      if (orient > AWN_ORIENTATION_LEFT) orient = AWN_ORIENTATION_TOP;
+      awn_icon_box_set_orientation (box, orient);
+      break;
+  }
   return TRUE;
 }
 

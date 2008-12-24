@@ -170,8 +170,13 @@ awn_icon_dispose (GObject *object)
   g_return_if_fail (AWN_IS_ICON (object));
   priv = AWN_ICON (object)->priv;
 
-  //awn_effects_finalize (priv->effects);
-  g_object_unref (priv->effects);
+  if (priv->effects)
+    g_object_unref (priv->effects);
+  priv->effects = NULL;
+
+  if (priv->tooltip)
+    g_object_unref (priv->tooltip);
+  priv->tooltip = NULL;
 
   if (priv->icon_ctx)
     cairo_destroy (priv->icon_ctx);
@@ -221,7 +226,6 @@ awn_icon_init (AwnIcon *icon)
   priv->tooltip = awn_tooltip_new_for_widget (GTK_WIDGET (icon));
 
   priv->effects = awn_effects_new_for_widget (GTK_WIDGET (icon));
-  g_object_set (priv->effects, "orientation", AWN_ORIENTATION_BOTTOM, NULL);
 
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
 

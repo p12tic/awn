@@ -116,6 +116,8 @@ awn_effects_finalize(GObject *object)
   {
     fx->client = NULL;
   }
+
+  G_OBJECT_CLASS (awn_effects_parent_class)->finalize(object);
 }
 
 static void
