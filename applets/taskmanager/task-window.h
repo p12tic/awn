@@ -67,7 +67,7 @@ struct _TaskWindowClass
   void          (*activate)        (TaskWindow     *window,
                                     guint32         timestamp);
   void          (*popup_menu)      (TaskWindow     *window,
-                                    GdkEventButton *event);
+                                    GtkMenu        *menu);
 
   /*< signals >*/
   void (*name_changed)      (TaskWindow *window, const gchar   *name);
@@ -96,6 +96,8 @@ gboolean        task_window_get_wm_class      (TaskWindow    *window,
                                                gchar        **class_name);
 
 const gchar   * task_window_get_name          (TaskWindow    *window);
+void            task_window_set_name          (TaskWindow    *window,
+                                               const gchar   *name);
 
 GdkPixbuf     * task_window_get_icon          (TaskWindow    *window);
 

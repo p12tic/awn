@@ -67,7 +67,7 @@ static gboolean      _is_on_workspace (TaskWindow     *window,
 static void          _activate        (TaskWindow     *window,
                                        guint32         timestamp);
 static void          _popup_menu      (TaskWindow     *window,
-                                       GdkEventButton *event);
+                                       GtkMenu        *menu);
 
 static void   task_launcher_set_desktop_file (TaskLauncher *launcher,
                                               const gchar  *path);
@@ -394,8 +394,7 @@ task_launcher_try_match (TaskLauncher *launcher,
   if (res_name && priv->exec)
   {
     if ( g_strstr_len (priv->exec, strlen (priv->exec), res_name) ||
-         g_strstr_len (res_name, strlen (res_name), priv->exec)
-       )
+         g_strstr_len (res_name, strlen (res_name), priv->exec))
     {
       return TRUE;
     }
@@ -414,9 +413,22 @@ task_launcher_try_match (TaskLauncher *launcher,
 static void
 on_window_closed (TaskLauncher *launcher, WnckWindow *old_window)
 {
+  TaskWindowPrivate *priv;
   TaskSettings *s = task_settings_get_default ();
   GdkPixbuf *pixbuf;
 
+  g_return_if_fail (TASK_IS_LAUNCHER (launcher));
+  priv = TASK_WINDOW (launcher)->priv;
+
+  /* NULLify the window pointer */
+  priv->window = NULL;
+  g_slist_free (priv->utilities);
+  priv->utilities = NULL;
+
+  /* Reset name */
+  task_window_set_name (TASK_WINDOW (launcher), launcher->priv->name);  
+
+  /* Reset icon */
   pixbuf = xutils_get_named_icon (launcher->priv->icon_name,
                                   s->panel_size, s->panel_size);
 
@@ -434,6 +446,8 @@ task_launcher_set_window (TaskLauncher *launcher,
 
   g_object_set (launcher, "taskwindow", window, NULL);
 
+  task_window_set_name (TASK_WINDOW (launcher), wnck_window_get_name (window));
+
   g_object_weak_ref (G_OBJECT (window), 
                      (GWeakNotify)on_window_closed,
                      launcher);
@@ -441,21 +455,20 @@ task_launcher_set_window (TaskLauncher *launcher,
 
 static void 
 _popup_menu (TaskWindow     *window,
-             GdkEventButton *event)
+             GtkMenu        *menu)
 {
   TaskWindowPrivate *priv;
-  GtkWidget         *menu;
-
+  GtkWidget         *item;
+  
   g_return_if_fail (TASK_IS_WINDOW (window));
   priv = window->priv;
 
   if (!WNCK_IS_WINDOW (priv->window))
-    return;
-
-  menu = wnck_action_menu_new (priv->window);
-
-  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, 
-                  NULL, NULL, event->button, event->time);
+  {
+    item = gtk_image_menu_item_new_from_stock (GTK_STOCK_EXECUTE, NULL);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    gtk_widget_show (item);
+  }
 }
 
 void 
