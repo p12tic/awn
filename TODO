@@ -65,6 +65,8 @@ libawn/
   - AwnTooltip
     - Orientation support
     - shadows?
+    - check the dispose/finalize code, there are some GLib errors when tooltip
+      is unreffed (middle click an icon in test-awn-effects to see it)
   - AwnAppletDialog
     - Rewrite to make it easier to manager
     - orientation support
@@ -73,6 +75,9 @@ libawn/
   - AwnConfigClient
     - Make sure GKeyFile and GConf backends are still working, check for any
       more mem leaks
+  - AwnConfigBridge
+    - Fix situation where object dies but config change callbacks are still
+      called with invalid pointer to the dead object
 
 applets/taskmananger
   - Complete simple window-managment
