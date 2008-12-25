@@ -421,11 +421,11 @@ awn_tooltip_position_and_show (AwnTooltip *tooltip)
 
   /* Get the dimesions of the widget we are focusing on */
   gdk_window_get_origin (priv->focus->window, &fx, &fy);
-  gtk_widget_get_size_request (priv->focus, &fw, &fh);
-
+  gdk_drawable_get_size (GDK_DRAWABLE (priv->focus->window), &fw, &fh);
+  
   /* Find and set our position */
   x = fx + (fw / 2) - (w / 2);
-  y = fy + (fh / 8) - h / 2;
+  y = fy + (fh / 5) - h / 2;
 
   if (x < 0)
   {

@@ -320,15 +320,15 @@ on_window_state_changed (WnckWindow      *wnckwin,
     g_signal_emit (window, _window_signals[HIDDEN_CHANGED], 0, hidden);
   }
 
-  if (state & WNCK_WINDOW_STATE_DEMANDS_ATTENTION
-      || state & WNCK_WINDOW_STATE_URGENT)
-    needs_attention = TRUE;
+  needs_attention = wnck_window_or_transient_needs_attention (wnckwin);
 
   if (priv->needs_attention != needs_attention)
   {
     priv->needs_attention = needs_attention;
     g_signal_emit (window, _window_signals[NEEDS_ATTENTION], 
                    0, needs_attention);
+    g_print ("%s needs attention: %s\n", wnck_window_get_name (wnckwin), 
+             needs_attention ? "yes":"no");
   }
 }
 
@@ -481,7 +481,11 @@ task_window_needs_attention (TaskWindow    *window)
   g_return_val_if_fail (TASK_IS_WINDOW (window), FALSE);
 
   if (WNCK_IS_WINDOW (window->priv->window))
-    return wnck_window_or_transient_needs_attention (window->priv->window);
+  {
+    window->priv->needs_attention = wnck_window_or_transient_needs_attention 
+                              (window->priv->window);
+    return window->priv->needs_attention;
+  }
 
   return FALSE;
 }
