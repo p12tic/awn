@@ -81,6 +81,8 @@ gboolean        task_launcher_try_match            (TaskLauncher *launcher,
 void            task_launcher_set_window           (TaskLauncher *launcher,
                                                     WnckWindow   *window);
 
+void            task_launcher_launch_with_data     (TaskLauncher *launcher,
+                                                    GSList       *list);
 
 #endif /* _TASK_LAUNCHER_H_ */
 

@@ -27,6 +27,8 @@
 
 #include "task-icon.h"
 
+#include "task-launcher.h"
+
 G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_ICON);
 
 #define TASK_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -78,10 +80,12 @@ static gboolean  task_icon_drag_motion          (GtkWidget      *widget,
 static void      task_icon_drag_leave           (GtkWidget      *widget,
                                                  GdkDragContext *context,
                                                  guint           time);
-static gboolean  task_icon_drag_drop            (GtkWidget      *widget,
+static void      task_icon_drag_data_received   (GtkWidget      *widget,
                                                  GdkDragContext *context,
                                                  gint            x,
                                                  gint            y,
+                                                 GtkSelectionData *data,
+                                                 guint           info,
                                                  guint           time);
 
 /* GObject stuff */
@@ -162,7 +166,7 @@ task_icon_class_init (TaskIconClass *klass)
   wid_class->button_press_event   = task_icon_button_press_event;
   wid_class->drag_motion          = task_icon_drag_motion;
   wid_class->drag_leave           = task_icon_drag_leave;
-  wid_class->drag_drop            = task_icon_drag_drop;
+  wid_class->drag_data_received   = task_icon_drag_data_received;
   
   /* Install properties first */
   pspec = g_param_spec_object ("taskwindow",
@@ -575,13 +579,65 @@ task_icon_drag_leave (GtkWidget      *widget,
   priv->drag_tag = 0;
 }
 
-static gboolean
-task_icon_drag_drop (GtkWidget      *widget,
-                     GdkDragContext *context,
-                     gint            x,
-                     gint            y,
-                     guint           time)
+static void
+task_icon_drag_data_received (GtkWidget      *widget,
+                              GdkDragContext *context,
+                              gint            x,
+                              gint            y,
+                              GtkSelectionData *sdata,
+                              guint           info,
+                              guint           time)
 {
-  g_debug ("Drag drop");
-  return FALSE;
+  TaskIconPrivate *priv;
+  GSList          *list;
+  GError          *error;
+  TaskLauncher    *launcher;
+
+  g_return_if_fail (TASK_IS_ICON (widget));
+  priv = TASK_ICON (widget)->priv;
+
+  /* If we are not a launcher, we don't care about this */
+  if (!priv->windows || !TASK_IS_LAUNCHER (priv->windows->data))
+  {
+    gtk_drag_finish (context, FALSE, FALSE, time);
+    return;
+  }
+
+  launcher = priv->windows->data;
+  
+  /* If we are dealing with a desktop file, then we want to do something else
+   * FIXME: This is a crude way of checking
+   * FIXME: Emit a signal or something to let the manager know that the user
+   * dropped a desktop file
+   */
+  if (strstr ((gchar*)sdata->data, ".desktop"))
+  {
+    /*g_signal_emit (icon, _icon_signals[DESKTOP_DROPPED],
+     *               0, sdata->data);
+     */
+    gtk_drag_finish (context, TRUE, FALSE, time);
+  }
+
+  /* We don't handle drops if the launcher already has a window associcated */
+  if (task_launcher_has_window (launcher))
+  {
+    gtk_drag_finish (context, FALSE, FALSE, time);
+  }
+  
+  error = NULL;
+  list = awn_vfs_get_pathlist_from_string ((gchar*)sdata->data, &error);
+  if (error)
+  {
+    g_warning ("Unable to handle drop: %s", error->message);
+    g_error_free (error);
+    gtk_drag_finish (context, FALSE, FALSE, time);
+    return;
+  }
+
+  task_launcher_launch_with_data (launcher, list);
+
+  g_slist_foreach (list, (GFunc)g_free, NULL);
+  g_slist_free (list);
+
+  gtk_drag_finish (context, TRUE, FALSE, time);
 }

@@ -458,3 +458,22 @@ _popup_menu (TaskWindow     *window,
                   NULL, NULL, event->button, event->time);
 }
 
+void 
+task_launcher_launch_with_data (TaskLauncher *launcher,
+                                GSList       *list)
+{
+  GError *error = NULL;
+  
+  g_return_if_fail (TASK_IS_LAUNCHER (launcher));
+
+  launcher->priv->pid = awn_desktop_item_launch (launcher->priv->item,
+                                                 list, &error);
+
+  if (error)
+  {
+    g_warning ("Unable to launch %s: %s", 
+               launcher->priv->name,
+               error->message);
+    g_error_free (error);
+  }
+}
