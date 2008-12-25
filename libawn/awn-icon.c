@@ -175,7 +175,7 @@ awn_icon_dispose (GObject *object)
   priv->effects = NULL;
 
   if (priv->tooltip)
-    g_object_unref (priv->tooltip);
+    gtk_widget_destroy (priv->tooltip);
   priv->tooltip = NULL;
 
   if (priv->icon_ctx)
