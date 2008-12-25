@@ -56,8 +56,8 @@ libawn/
     - metadata drawing
       - progress
       - message
-      - selected (active task window)
-      - active (arrows)
+      - active (active task window)
+      - running (arrows)
   - AwnAppletSimple
     - Write a test-case with lots of pixbuf, cairo_surface and icon-name swaps
       to make sure we are not leaking when doing switches
@@ -65,8 +65,6 @@ libawn/
   - AwnTooltip
     - Orientation support
     - shadows?
-    - check the dispose/finalize code, there are some GLib errors when tooltip
-      is unreffed (middle click an icon in test-awn-effects to see it)
   - AwnAppletDialog
     - Rewrite to make it easier to manager
     - orientation support
@@ -81,8 +79,6 @@ libawn/
 
 applets/taskmananger
   - Complete simple window-managment
-    - Right-click menus
-    - Drag-and-hold on an active TaskIcon
     - Utility window matching/transient window matching
     - D-Bus support
       - Add the necessary stuff to get TaskWindow's on dbus, so external
@@ -109,6 +105,7 @@ applets/taskmananger
       - Always/sometimes/never
     - Show all windows when clicked/scrubbing/show popup on right-click to
       choose windows
+    - Drag & Drop support for multiple windows
   - Preferences
     - For what?
       - Addition/removing of launchers can be done through drag-and-drop

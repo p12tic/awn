@@ -393,8 +393,8 @@ task_launcher_try_match (TaskLauncher *launcher,
   /* Now try resource name, which should (hopefully) be 99% of the cases */
   if (res_name && priv->exec)
   {
-    if ( g_strstr_len (priv->exec, strlen (priv->exec)-1, res_name) ||
-         g_strstr_len (res_name, strlen (res_name)-1, priv->exec)
+    if ( g_strstr_len (priv->exec, strlen (priv->exec), res_name) ||
+         g_strstr_len (res_name, strlen (res_name), priv->exec)
        )
     {
       return TRUE;
