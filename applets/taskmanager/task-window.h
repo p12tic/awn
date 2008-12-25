@@ -85,6 +85,9 @@ GType           task_window_get_type          (void) G_GNUC_CONST;
 
 TaskWindow    * task_window_new               (WnckWindow    *window);
 
+void            task_window_append_utility    (TaskWindow    *window,
+                                               WnckWindow    *wnckwin);
+
 WnckScreen    * task_window_get_screen        (TaskWindow    *window);
 
 gulong          task_window_get_xid           (TaskWindow    *window);

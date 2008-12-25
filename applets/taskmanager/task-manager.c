@@ -407,7 +407,42 @@ on_window_state_changed (WnckWindow      *window,
 static gboolean
 try_to_place_window (TaskManager *manager, WnckWindow *window)
 {
-  /* FIXME: */
+  TaskManagerPrivate *priv = manager->priv;
+  GSList *w;
+
+  /* FIXME: The window == UTILITY || DIALOG, so we should see if we can do
+   *        some smart placement to a already-existing window/launcher to 
+   *        avoid making a new icon for it
+   */
+  for (w = priv->windows; w; w = w->next)
+  {
+    TaskWindow *taskwin = w->data;
+
+    if (!TASK_IS_WINDOW (taskwin))
+      continue;
+
+    if (task_window_get_pid (taskwin) == wnck_window_get_pid (window))
+    {
+      task_window_append_utility (taskwin, window);
+      g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
+      return TRUE;
+    }
+  }
+
+  for (w = priv->launchers; w; w = w->next)
+  {
+    TaskWindow *taskwin = w->data;
+
+    if (!TASK_IS_WINDOW (taskwin))
+      continue;
+
+    if (task_window_get_pid (taskwin) == wnck_window_get_pid (window))
+    {
+      task_window_append_utility (taskwin, window);
+      g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
+      return TRUE;
+    }
+  }
   return FALSE;
 }
 
@@ -469,12 +504,8 @@ try_to_match_window_to_launcher (TaskManager *manager, WnckWindow *window)
 }
 
 static gboolean
-try_to_match_window_to_sn_context (TaskManager *mananger, WnckWindow *window)
+try_to_match_window_to_sn_context (TaskManager *manager, WnckWindow *window)
 {
-  /* FIXME: The window == UTILITY || DIALOG, so we should see if we can do
-   *        some smart placement to a already-existing window/launcher to 
-   *        avoid making a new icon for it
-   */
   return FALSE;
 }
 
@@ -533,6 +564,17 @@ on_window_opened (WnckScreen    *screen,
       break;
   }
 
+  /*
+   * If it's a utility window, see if we can find it a home with another, 
+   * existing TaskWindow, so we don't have a ton of icons for no reason
+   */
+  if ((type == WNCK_WINDOW_UTILITY || type == WNCK_WINDOW_DIALOG)
+       && try_to_place_window (manager, window))
+  {
+    g_debug ("WINDOW PLACED: %s", wnck_window_get_name (window));
+    return;
+  }
+
   /* 
    * If it's skip tasklist, connect to the state-changed signal and see if
    * it ever becomes a normal window
@@ -541,16 +583,6 @@ on_window_opened (WnckScreen    *screen,
   {
     g_signal_connect (window, "state-changed", 
                       G_CALLBACK (on_window_state_changed), manager);
-    return;
-  }
-
-  /*
-   * If it's a utility window, see if we can find it a home with another, 
-   * existing TaskWindow, so we don't have a ton of icons for no reason
-   */
-  if (type == WNCK_WINDOW_UTILITY && try_to_place_window (manager, window))
-  {
-    g_debug ("WINDOW PLACED: %s", wnck_window_get_name (window));
     return;
   }
  

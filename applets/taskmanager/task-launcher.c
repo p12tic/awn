@@ -271,94 +271,22 @@ _is_on_workspace (TaskWindow *window,
   return TRUE;
 }
 
-/*
- * Lifted from libwnck/tasklist.c
- */
-static void
-really_activate (WnckWindow *window, guint32 timestamp)
-{
-  WnckWindowState  state;
-  WnckWorkspace   *active_ws;
-  WnckWorkspace   *window_ws;
-  WnckScreen      *screen;
-  gboolean         switch_workspace_on_unminimize = FALSE;
-
-  screen = wnck_window_get_screen (window);
-  state = wnck_window_get_state (window);
-  active_ws = wnck_screen_get_active_workspace (screen);
-  window_ws = wnck_window_get_workspace (window);
-	
-  if (state & WNCK_WINDOW_STATE_MINIMIZED)
-  {
-    if (window_ws &&
-        active_ws != window_ws &&
-        !switch_workspace_on_unminimize)
-      wnck_workspace_activate (window_ws, timestamp);
-
-    wnck_window_activate_transient (window, timestamp);
-  }
-  else
-  {
-    if ((wnck_window_is_active (window) ||
-         wnck_window_transient_is_most_recently_activated (window)) &&
-         (!window_ws || active_ws == window_ws))
-    {
-      wnck_window_minimize (window);
-      return;
-    }
-    else
-    {
-      /* FIXME: THIS IS SICK AND WRONG AND BUGGY. See the end of
-       * http://mail.gnome.org/archives/wm-spec-list/005-July/msg0003.html
-       * There should only be *one* activate call.
-       */
-      if (window_ws)
-        wnck_workspace_activate (window_ws, timestamp);
-     
-      wnck_window_activate_transient (window, timestamp);
-    }
-  } 
-}
-
 static void   
 _activate (TaskWindow    *window,
            guint32        timestamp)
 {
-  TaskWindowPrivate *priv = window->priv;
   TaskLauncher *launcher = TASK_LAUNCHER (window);
-  GSList       *w;
+  GError *error = NULL;
 
-  /* FIXME: If the window(s) needed attention, we need to implement support
-   * for the user selecting what we do (normalactivate, move to workspace or
-   * move window to this workspace)
-   */
-  if (WNCK_IS_WINDOW (priv->window))
+  launcher->priv->pid = awn_desktop_item_launch (launcher->priv->item,
+                                                 NULL, &error);
+
+  if (error)
   {
-    really_activate (priv->window, timestamp);
-  }
-  else
-  {
-    GError *error = NULL;
-    launcher->priv->pid = awn_desktop_item_launch (launcher->priv->item,
-                                                   NULL, &error);
-
-    if (error)
-    {
-      g_warning ("Unable to launch %s: %s", 
-                 launcher->priv->name,
-                 error->message);
-      g_error_free (error);
-    }
-    return;
-  }
-
-  for (w = priv->utilities; w; w = w->next)
-  {
-    WnckWindow *win = w->data;
-
-    if (WNCK_IS_WINDOW (win))
-      ;/* FIXME: We need to know what happened to the main window, and do the
-          same */
+    g_warning ("Unable to launch %s: %s", 
+               launcher->priv->name,
+               error->message);
+    g_error_free (error);
   }
 }
 

@@ -59,9 +59,6 @@ static const gchar * _get_name        (TaskWindow     *window);
 static GdkPixbuf   * _get_icon        (TaskWindow     *window);
 static gboolean      _is_on_workspace (TaskWindow     *window,
                                        WnckWorkspace  *space);
-static void          _activate        (TaskWindow     *window,
-                                       guint32         timestamp);
-
 static void   task_window_set_window (TaskWindow *window,
                                       WnckWindow *wnckwin);
 
@@ -125,7 +122,7 @@ task_window_class_init (TaskWindowClass *klass)
   klass->get_name        = _get_name;
   klass->get_icon        = _get_icon;
   klass->is_on_workspace = _is_on_workspace;
-  klass->activate        = _activate;
+  klass->activate        = NULL;
   klass->popup_menu      = NULL;
 
   /* Install properties */
@@ -244,6 +241,18 @@ task_window_new (WnckWindow *window)
                          NULL);
 
   return win;
+}
+
+void
+task_window_append_utility (TaskWindow    *window,
+                            WnckWindow    *wnckwin)
+{
+  TaskWindowPrivate *priv;
+
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  priv = window->priv;
+
+  priv->utilities = g_slist_append (priv->utilities, wnckwin);
 }
 
 /*
@@ -536,18 +545,93 @@ task_window_is_on_workspace (TaskWindow    *window,
   return klass->is_on_workspace (window, space);
 }
 
+/*
+ * Lifted from libwnck/tasklist.c
+ */
+static gboolean
+really_activate (WnckWindow *window, guint32 timestamp)
+{
+  WnckWindowState  state;
+  WnckWorkspace   *active_ws;
+  WnckWorkspace   *window_ws;
+  WnckScreen      *screen;
+  gboolean         switch_workspace_on_unminimize = FALSE;
+  gboolean         was_minimised = FALSE;
+
+  screen = wnck_window_get_screen (window);
+  state = wnck_window_get_state (window);
+  active_ws = wnck_screen_get_active_workspace (screen);
+  window_ws = wnck_window_get_workspace (window);
+	
+  if (state & WNCK_WINDOW_STATE_MINIMIZED)
+  {
+    if (window_ws &&
+        active_ws != window_ws &&
+        !switch_workspace_on_unminimize)
+      wnck_workspace_activate (window_ws, timestamp);
+
+    wnck_window_activate_transient (window, timestamp);
+  }
+  else
+  {
+    if ((wnck_window_is_active (window) ||
+         wnck_window_transient_is_most_recently_activated (window)) &&
+         (!window_ws || active_ws == window_ws))
+    {
+      wnck_window_minimize (window);
+      was_minimised = TRUE;
+    }
+    else
+    {
+      /* FIXME: THIS IS SICK AND WRONG AND BUGGY. See the end of
+       * http://mail.gnome.org/archives/wm-spec-list/005-July/msg0003.html
+       * There should only be *one* activate call.
+       */
+      if (window_ws)
+        wnck_workspace_activate (window_ws, timestamp);
+     
+      wnck_window_activate_transient (window, timestamp);
+    }
+  } 
+  return was_minimised;
+}
+
 void 
 task_window_activate (TaskWindow    *window,
                       guint32        timestamp)
 {
   TaskWindowClass *klass;
+  TaskWindowPrivate *priv = window->priv;
+  GSList *w;
 
   g_return_if_fail (TASK_IS_WINDOW (window));
-  
-  klass = TASK_WINDOW_GET_CLASS (window);
-  g_return_if_fail (klass->activate);
 
-  klass->activate (window, timestamp);
+  klass = TASK_WINDOW_GET_CLASS (window);
+
+  if (WNCK_IS_WINDOW (priv->window))
+  {
+    gboolean was_minimised;
+
+    was_minimised = really_activate (priv->window, timestamp);
+
+    for (w = priv->utilities; w; w = w->next)
+    {
+      WnckWindow *win = w->data;
+
+      if (WNCK_IS_WINDOW (win))
+      {
+        if (was_minimised)
+          wnck_window_minimize (win);
+        else
+          wnck_window_activate_transient (win, timestamp);
+      }
+    }
+  }
+  else
+  {
+    if (klass->activate)
+      klass->activate (window, timestamp);
+  }
 }
 
 void  
@@ -708,78 +792,4 @@ _is_on_workspace (TaskWindow *window,
     return wnck_window_is_in_viewport (priv->window, space);
 
   return FALSE;
-}
-
-/*
- * Lifted from libwnck/tasklist.c
- */
-static void
-really_activate (WnckWindow *window, guint32 timestamp)
-{
-  WnckWindowState  state;
-  WnckWorkspace   *active_ws;
-  WnckWorkspace   *window_ws;
-  WnckScreen      *screen;
-  gboolean         switch_workspace_on_unminimize = FALSE;
-
-  screen = wnck_window_get_screen (window);
-  state = wnck_window_get_state (window);
-  active_ws = wnck_screen_get_active_workspace (screen);
-  window_ws = wnck_window_get_workspace (window);
-	
-  if (state & WNCK_WINDOW_STATE_MINIMIZED)
-  {
-    if (window_ws &&
-        active_ws != window_ws &&
-        !switch_workspace_on_unminimize)
-      wnck_workspace_activate (window_ws, timestamp);
-
-    wnck_window_activate_transient (window, timestamp);
-  }
-  else
-  {
-    if ((wnck_window_is_active (window) ||
-         wnck_window_transient_is_most_recently_activated (window)) &&
-         (!window_ws || active_ws == window_ws))
-    {
-      wnck_window_minimize (window);
-      return;
-    }
-    else
-    {
-      /* FIXME: THIS IS SICK AND WRONG AND BUGGY. See the end of
-       * http://mail.gnome.org/archives/wm-spec-list/005-July/msg0003.html
-       * There should only be *one* activate call.
-       */
-      if (window_ws)
-        wnck_workspace_activate (window_ws, timestamp);
-     
-      wnck_window_activate_transient (window, timestamp);
-    }
-  } 
-}
-
-static void
-_activate (TaskWindow    *window,
-           guint32        timestamp)
-{
-  TaskWindowPrivate *priv = window->priv;
-  GSList *w;
-
-  /* FIXME: If the window(s) needed attention, we need to implement support
-   * for the user selecting what we do (normalactivate, move to workspace or
-   * move window to this workspace)
-   */
-  if (WNCK_IS_WINDOW (priv->window))
-  {
-    really_activate (priv->window, timestamp);
-  }
-
-  for (w = priv->utilities; w; w = w->next)
-  {
-    WnckWindow *win = w->data;
-
-    if (WNCK_IS_WINDOW (win))
-      wnck_window_activate_transient (win, timestamp);
-  }
 }
