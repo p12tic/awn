@@ -255,10 +255,8 @@ awn_icon_set_orientation (AwnIcon        *icon,
 
   g_return_if_fail (AWN_IS_ICON (icon));
   priv = icon->priv;
-  
-  priv->orient = orient;
 
-  g_object_set (priv->effects, "orientation", orient, NULL);
+  priv->orient = orient;
 
   switch (orient)
   {
@@ -273,6 +271,12 @@ awn_icon_set_orientation (AwnIcon        *icon,
         GTK_WIDGET (icon), -1, APPLY_SIZE_MULTIPLIER(priv->size));
       break;
   }
+
+  g_object_set (priv->effects, "orientation", orient, NULL);
+
+  // FIXME: width / height instead of priv->size, plus this should be also
+  //  called on size (width / height) change
+  awn_tooltip_set_position_hint(AWN_TOOLTIP(priv->tooltip), orient, priv->size);
 }
 
 static void

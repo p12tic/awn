@@ -96,6 +96,10 @@ void          awn_tooltip_set_delay            (AwnTooltip  *tooltip,
 
 gint          awn_tooltip_get_delay            (AwnTooltip  *tooltip);
 
+void          awn_tooltip_set_position_hint    (AwnTooltip *tooltip,
+                                                AwnOrientation orient,
+                                                gint size);
+
 G_END_DECLS
 
 #endif

@@ -61,6 +61,9 @@ struct _AwnTooltipPrivate
 
   gint      delay;
 
+  AwnOrientation orient;
+  gint           size;
+
   gchar    *text;
 
   gulong enter_id;
@@ -360,6 +363,8 @@ awn_tooltip_init (AwnTooltip *tooltip)
   priv->text = NULL;
   priv->font_name = NULL;
   priv->font_color = NULL;
+  priv->orient = AWN_ORIENTATION_BOTTOM;
+  priv->size = 50;
 
   gtk_widget_set_app_paintable (GTK_WIDGET (tooltip), TRUE);
 
@@ -424,13 +429,31 @@ awn_tooltip_position_and_show (AwnTooltip *tooltip)
   gdk_drawable_get_size (GDK_DRAWABLE (priv->focus->window), &fw, &fh);
   
   /* Find and set our position */
-  x = fx + (fw / 2) - (w / 2);
-  y = fy + (fh / 5) - h / 2;
+  //x = fx + (fw / 2) - (w / 2);
+  //y = fy + (fh / 2) - h / 2;
 
-  if (x < 0)
-  {
-    x = 0;
+  #define TOOLTIP_OFFSET 16
+  switch (priv->orient) {
+    case AWN_ORIENTATION_TOP:
+      x = fx + (fw / 2) - (w / 2);
+      y = fy + priv->size + priv->icon_offset + TOOLTIP_OFFSET;
+      break;
+    case AWN_ORIENTATION_BOTTOM:
+      x = fx + (fw / 2) - (w / 2);
+      y = fy + fh - priv->size - priv->icon_offset - TOOLTIP_OFFSET - h;
+      break;
+    case AWN_ORIENTATION_RIGHT:
+      x = fx + fw - priv->size - priv->icon_offset - TOOLTIP_OFFSET - w;
+      y = fy + (fh / 2) - h / 2;
+      break;
+    case AWN_ORIENTATION_LEFT:
+      x = fx + priv->size + priv->icon_offset + TOOLTIP_OFFSET;
+      y = fy + (fh / 2) - h / 2;
+      break;
   }
+
+  if (x < 0) x = 0;
+  if (y < 0) y = 0;
 
   gtk_window_move (GTK_WINDOW (tooltip), x, y);
   gtk_widget_show_all (GTK_WIDGET (tooltip));
@@ -601,3 +624,15 @@ awn_tooltip_get_delay (AwnTooltip  *tooltip)
 
   return tooltip->priv->delay;
 }
+
+void
+awn_tooltip_set_position_hint(AwnTooltip *tooltip,
+                              AwnOrientation orient,
+                              gint size)
+{
+  g_return_if_fail (AWN_IS_TOOLTIP (tooltip));
+
+  tooltip->priv->orient = orient;
+  tooltip->priv->size = size;
+}
+
