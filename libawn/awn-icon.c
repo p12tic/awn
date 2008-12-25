@@ -21,6 +21,8 @@
 
 #include "awn-icon.h"
 
+#define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
+
 G_DEFINE_TYPE (AwnIcon, awn_icon, GTK_TYPE_DRAWING_AREA);
 
 #define AWN_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -151,13 +153,13 @@ awn_icon_size_request (GtkWidget *widget, GtkRequisition *req)
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
-      req->width =  priv->size * 1.2;
-      req->height = -1;
+      req->width = APPLY_SIZE_MULTIPLIER(priv->size);
+      req->height = priv->size + priv->effects->icon_offset;
       break;
       
     default:
-      req->width = -1;
-      req->height = priv->size *1.2;
+      req->width = priv->size + priv->effects->icon_offset;
+      req->height = APPLY_SIZE_MULTIPLIER(priv->size);
       break;
   }
 }
@@ -262,11 +264,13 @@ awn_icon_set_orientation (AwnIcon        *icon,
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
-      gtk_widget_set_size_request (GTK_WIDGET (icon), priv->size * 1.2, -1);
+      gtk_widget_set_size_request(
+        GTK_WIDGET (icon), APPLY_SIZE_MULTIPLIER(priv->size), -1);
       break;
       
     default:
-      gtk_widget_set_size_request (GTK_WIDGET (icon), -1, priv->size *1.2);
+      gtk_widget_set_size_request(
+        GTK_WIDGET (icon), -1, APPLY_SIZE_MULTIPLIER(priv->size));
       break;
   }
 }
@@ -290,12 +294,14 @@ update_widget_size (AwnIcon *icon)
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
       priv->size = width;
-      gtk_widget_set_size_request (GTK_WIDGET (icon), width * 1.2, -1);
+      gtk_widget_set_size_request(
+        GTK_WIDGET (icon), APPLY_SIZE_MULTIPLIER(width), -1);
       break;
 
     default:
       priv->size = height;
-      gtk_widget_set_size_request (GTK_WIDGET (icon), -1, height * 1.2);
+      gtk_widget_set_size_request(
+        GTK_WIDGET (icon), -1, APPLY_SIZE_MULTIPLIER(height));
   }
 
   if (old_size != priv->size)

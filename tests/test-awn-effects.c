@@ -25,6 +25,17 @@
 
 static AwnOrientation orient = AWN_ORIENTATION_BOTTOM;
 
+static AwnIcon *icons[4];
+
+static gboolean
+on_active_click(GtkWidget *widget, gpointer user_data)
+{
+  int i;
+  for (i=0; i<4; i++)
+    awn_icon_set_is_active(icons[i], !awn_icon_get_is_active(icons[i]));
+  return FALSE;
+}
+
 static gboolean
 on_click (GtkWidget *widget, GdkEventButton *event, AwnIconBox *box)
 {
@@ -117,7 +128,7 @@ cairo_icon (GtkWidget *parent)
 gint
 main (gint argc, gchar **argv)
 {
-  GtkWidget   *window, *box;
+  GtkWidget   *window, *icon_box, *vbox;
   GdkScreen   *screen;
   GdkColormap *map;
   
@@ -133,17 +144,24 @@ main (gint argc, gchar **argv)
 
   if (map)
     gtk_widget_set_colormap (window, map);
-  gtk_window_resize (GTK_WINDOW (window), 50, 100);
-  gtk_widget_show (window);
-  
-  box = awn_icon_box_new ();
-  gtk_container_add (GTK_CONTAINER (window), box);
-  gtk_widget_show (box);
 
-  pixbuf_icon (box);
-  cairo_icon (box);
-  pixbuf_icon (box);
-  cairo_icon (box);
+  vbox = gtk_vbox_new(FALSE, 0);
+  gtk_container_add( GTK_CONTAINER(window), vbox);
+
+  icon_box = awn_icon_box_new ();
+  gtk_container_add (GTK_CONTAINER (vbox), icon_box);
+
+  icons[0] = AWN_ICON(pixbuf_icon (icon_box));
+  icons[1] = AWN_ICON(cairo_icon (icon_box));
+  icons[2] = AWN_ICON(pixbuf_icon (icon_box));
+  icons[3] = AWN_ICON(cairo_icon (icon_box));
+
+  GtkWidget *button = gtk_button_new_with_label("Active");
+  g_signal_connect(G_OBJECT(button), "clicked", 
+                   G_CALLBACK(on_active_click), NULL);
+  gtk_container_add (GTK_CONTAINER(vbox), button);
+
+  gtk_widget_show_all (window);
 
   gtk_main ();
   return 0;
