@@ -49,7 +49,9 @@ src/
         - Simple applet list with way to add/remove/reorder/install/delete
   - Seperator support
   - Expander/spring support
-  - Accessability support!?! (not a critical, but we should have a plan)
+  - A11y support!?! (not a critical, but we should have a plan)
+    - keyboard navigation at minimum
+    - some sort of ATK support?
 
 libawn/
   - AwnIcon/AwnEffects
@@ -58,6 +60,8 @@ libawn/
       - message
       - active (active task window)
       - running (arrows)
+    - replace config bitfield for effects with a bunch of string-based options
+      (enum-like)
   - AwnAppletSimple
     - Write a test-case with lots of pixbuf, cairo_surface and icon-name swaps
       to make sure we are not leaking when doing switches
@@ -72,9 +76,15 @@ libawn/
   - AwnConfigClient
     - Make sure GKeyFile and GConf backends are still working, check for any
       more mem leaks
+    - [Nice-to-have] port to use libdesktop-agnostic
   - AwnConfigBridge
     - Fix situation where object dies but config change callbacks are still
       called with invalid pointer to the dead object
+    - [Nice-to-have] use libdesktop-agnostic's config bridge instead (which is
+      based on this code)
+  - AwnColor
+    - [Nice-to-have] replace with libdesktop-agnostic's color class (code should
+      be complete)
 
 applets/taskmananger
   - Complete simple window-managment
@@ -129,7 +139,3 @@ awn_applet_dialog_new needs to be re-done to work.
     '("AwnApplet*" "applet")
   )
 )
-
-awn_applet_gconf_set/get_value doesn't work as yet
-
-
