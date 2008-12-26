@@ -200,9 +200,9 @@ awn_background_flat_draw (AwnBackground  *bg,
       cairo_translate (cr, width/2, height/2);
       cairo_rotate (cr, 90 * M_PI/180);
       temp = y;
-      y = 0; x = -height/2;
+      y = -width/2; x = -height/2;
       temp = width;
-      width = height; height = temp/2;
+      width = height; height = temp;
       break;
     default:
       break;
