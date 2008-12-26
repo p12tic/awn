@@ -67,22 +67,25 @@ struct _TaskLauncherClass
 
 GType           task_launcher_get_type             (void) G_GNUC_CONST;
 
-TaskLauncher  * task_launcher_new_for_desktop_file (const gchar *path);
+TaskLauncher  * task_launcher_new_for_desktop_file (const gchar    *path);
 
-const gchar   * task_launcher_get_desktop_path     (TaskLauncher *launcher);
+const gchar   * task_launcher_get_desktop_path     (TaskLauncher   *launcher);
 
-gboolean        task_launcher_has_window           (TaskLauncher *launcher);
+gboolean        task_launcher_has_window           (TaskLauncher   *launcher);
 
-gboolean        task_launcher_try_match            (TaskLauncher *launcher,
-                                                    gint          pid,
-                                                    const gchar  *res_name,
-                                                    const gchar  *class_name);
+gboolean        task_launcher_try_match            (TaskLauncher   *launcher,
+                                                    gint            pid,
+                                                    const gchar    *res_name,
+                                                    const gchar    *class_name);
 
-void            task_launcher_set_window           (TaskLauncher *launcher,
-                                                    WnckWindow   *window);
+void            task_launcher_set_window           (TaskLauncher   *launcher,
+                                                    WnckWindow     *window);
 
-void            task_launcher_launch_with_data     (TaskLauncher *launcher,
-                                                    GSList       *list);
+void            task_launcher_launch_with_data     (TaskLauncher   *launcher,
+                                                    GSList         *list);
+
+void            task_launcher_middle_click         (TaskLauncher   *launcher, 
+                                                    GdkEventButton *event);
 
 #endif /* _TASK_LAUNCHER_H_ */
 

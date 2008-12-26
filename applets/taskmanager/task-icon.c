@@ -486,12 +486,21 @@ task_icon_button_release_event (GtkWidget      *widget,
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
   priv = TASK_ICON (widget)->priv;
 
+  len = g_slist_length (priv->windows);
+
   if (event->button == 1)
   {
-    len = g_slist_length (priv->windows);
     if (len == 1)
     {
       task_window_activate (priv->windows->data, event->time);
+      return TRUE;
+    }
+  }
+  else if (event->button == 2)
+  {
+    if (len == 1 && TASK_IS_LAUNCHER (priv->windows->data))
+    {
+      task_launcher_middle_click (priv->windows->data, event);
       return TRUE;
     }
   }

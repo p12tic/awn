@@ -418,3 +418,25 @@ task_launcher_launch_with_data (TaskLauncher *launcher,
     g_error_free (error);
   }
 }
+
+void 
+task_launcher_middle_click (TaskLauncher   *launcher, 
+                            GdkEventButton *event)
+{
+  TaskLauncherPrivate *priv;
+  GError *error = NULL;
+
+  g_return_if_fail (TASK_IS_LAUNCHER (launcher));
+  priv = launcher->priv;
+
+  if (WNCK_IS_WINDOW (TASK_WINDOW (launcher)->priv->window))
+    awn_desktop_item_launch (priv->item, NULL, &error);
+  else
+    priv->pid = awn_desktop_item_launch (priv->item, NULL, &error);
+
+  if (error)
+  {
+    g_warning ("Unable to launch %s: %s", priv->name, error->message);
+    g_error_free (error);
+  }
+}
