@@ -358,7 +358,7 @@ on_window_closed (TaskLauncher *launcher, WnckWindow *old_window)
 
   /* Reset icon */
   pixbuf = xutils_get_named_icon (launcher->priv->icon_name,
-                                  s->panel_size, s->panel_size);
+                                  s->panel_size-2, s->panel_size-2);
 
   task_window_update_icon (TASK_WINDOW (launcher), pixbuf);
 
