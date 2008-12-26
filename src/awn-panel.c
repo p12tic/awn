@@ -33,6 +33,7 @@
 #include "awn-applet-manager.h"
 #include "awn-background.h"
 #include "awn-background-flat.h"
+#include "awn-background-3d.h"
 #include "awn-defines.h"
 #include "awn-monitor.h"
 #include "awn-x.h"
