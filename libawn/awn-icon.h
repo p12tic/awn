@@ -88,6 +88,9 @@ void          awn_icon_set_from_pixbuf  (AwnIcon     *icon,
 void          awn_icon_set_from_context (AwnIcon     *icon,
                                          cairo_t     *ctx);
 
+void          awn_icon_set_from_surface (AwnIcon         *icon,
+                                         cairo_surface_t *surface);
+
 void          awn_icon_set_tooltip_text (AwnIcon     *icon,
                                          const gchar *text);
 

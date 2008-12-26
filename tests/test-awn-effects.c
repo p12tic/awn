@@ -25,13 +25,14 @@
 
 static AwnOrientation orient = AWN_ORIENTATION_BOTTOM;
 
-static AwnIcon *icons[4];
+#define NUM_ICONS 4
+static AwnIcon *icons[NUM_ICONS];
 
 static gboolean
 on_active_click(GtkWidget *widget, gpointer user_data)
 {
   int i;
-  for (i=0; i<4; i++)
+  for (i=0; i<NUM_ICONS; i++)
     awn_icon_set_is_active(icons[i], !awn_icon_get_is_active(icons[i]));
   return FALSE;
 }
@@ -73,7 +74,6 @@ pixbuf_icon (GtkWidget *parent)
 
   icon = awn_icon_new ();
   awn_icon_set_from_pixbuf (AWN_ICON (icon), pixbuf);
-  awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
   awn_icon_set_tooltip_text (AWN_ICON (icon), "Pixbuf Icon");
   gtk_container_add (GTK_CONTAINER (parent), icon);
   gtk_widget_show (icon);
@@ -111,7 +111,6 @@ cairo_icon (GtkWidget *parent)
 
   icon = awn_icon_new ();
   awn_icon_set_from_context (AWN_ICON (icon), cr);
-  awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
   awn_icon_set_tooltip_text (AWN_ICON (icon), "Cairo Icon");
   
   gtk_container_add (GTK_CONTAINER (parent), icon);
@@ -125,6 +124,83 @@ cairo_icon (GtkWidget *parent)
   return icon;
 }
 
+static GtkWidget *
+surface_icon (GtkWidget *parent)
+{
+  GtkWidget *icon;
+  cairo_surface_t *surface;
+  cairo_t *cr;
+
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 75, 50);
+
+  cr = cairo_create (surface);
+  
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+
+  cairo_set_source_rgba (cr, 0.0, 1.0, 0.0, 0.5);
+  cairo_rectangle (cr, 0, 0, 75, 50);
+  cairo_fill_preserve (cr);
+  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.5);
+  cairo_stroke (cr);
+
+  cairo_destroy (cr);
+
+  icon = awn_icon_new ();
+  awn_icon_set_from_surface (AWN_ICON (icon), surface);
+  awn_icon_set_tooltip_text (AWN_ICON (icon), "Surface Icon");
+  
+  gtk_container_add (GTK_CONTAINER (parent), icon);
+  gtk_widget_show (icon);
+
+  g_signal_connect (icon, "button-release-event", 
+                    G_CALLBACK (on_click), parent);
+
+  cairo_surface_destroy (surface);
+
+  return icon;
+}
+
+static GtkWidget *
+thin_surface_icon (GtkWidget *parent)
+{
+  GtkWidget *icon;
+  cairo_surface_t *surface;
+  cairo_t *cr;
+
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 25, 75);
+
+  cr = cairo_create (surface);
+  
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+
+  cairo_set_source_rgba (cr, 0.0, 0.0, 1.0, 0.5);
+  cairo_rectangle (cr, 0, 0, 25, 75);
+  cairo_fill_preserve (cr);
+  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.5);
+  cairo_stroke (cr);
+
+  cairo_destroy (cr);
+
+  icon = awn_icon_new ();
+  awn_icon_set_from_surface (AWN_ICON (icon), surface);
+  awn_icon_set_tooltip_text (AWN_ICON (icon), "Thin Surface Icon");
+  
+  gtk_container_add (GTK_CONTAINER (parent), icon);
+  gtk_widget_show (icon);
+
+  g_signal_connect (icon, "button-release-event", 
+                    G_CALLBACK (on_click), parent);
+
+  cairo_surface_destroy (surface);
+
+  return icon;
+}
 gint
 main (gint argc, gchar **argv)
 {
@@ -153,8 +229,8 @@ main (gint argc, gchar **argv)
 
   icons[0] = AWN_ICON(pixbuf_icon (icon_box));
   icons[1] = AWN_ICON(cairo_icon (icon_box));
-  icons[2] = AWN_ICON(pixbuf_icon (icon_box));
-  icons[3] = AWN_ICON(cairo_icon (icon_box));
+  icons[2] = AWN_ICON(surface_icon (icon_box));
+  icons[3] = AWN_ICON(thin_surface_icon (icon_box));
 
   GtkWidget *button = gtk_button_new_with_label("Active");
   g_signal_connect(G_OBJECT(button), "clicked", 

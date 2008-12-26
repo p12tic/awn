@@ -35,22 +35,12 @@ struct _AwnIconPrivate
   GtkWidget    *tooltip;
   
   AwnOrientation orient;
-  gint           size;
+  gint icon_width;
+  gint icon_height;
+  gint size;
 
   /* Info relating to the current icon */
-  cairo_t *icon_ctx;
-  
-  /* This is for when the icon is set before we've mapped */
-  cairo_t   *queue_ctx;
-  GdkPixbuf *queue_pixbuf;
-  
-  /* 
-   * Things that can be displayed on the icon are part of AwnEffects
-   * 
-   * gchar    *message;
-   * gfloat    progress;
-   * gboolean  active;
-   */
+  cairo_surface_t *icon_srfc;
 };
 
 enum
@@ -89,9 +79,7 @@ awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
   cairo_t        *draw_cr;
   cairo_t        *win_cr;
 
-  // FIXME: this shouldn't really be priv->size for both params, we support
-  //  also non-rectangular icons, no?!
-  awn_effects_draw_set_icon_size (priv->effects, priv->size, priv->size, FALSE);
+  awn_effects_draw_set_icon_size (priv->effects, priv->icon_width, priv->icon_height, FALSE);
 
   draw_cr = awn_effects_draw_cairo_create (priv->effects);
   win_cr = awn_effects_draw_get_window_context (priv->effects);
@@ -109,37 +97,15 @@ awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
   cairo_paint (win_cr);
 
   cairo_set_operator (win_cr, CAIRO_OPERATOR_OVER);
-  
-  cairo_set_source_surface (draw_cr, cairo_get_target (priv->icon_ctx), 0, 0);
-  cairo_paint (draw_cr);
+
+  if (priv->icon_srfc)
+  {
+    cairo_set_source_surface (draw_cr, priv->icon_srfc, 0, 0);
+    cairo_paint (draw_cr);
+  }
 
   // let effects know we're finished
   awn_effects_draw_cairo_destroy (priv->effects);
-
-  return FALSE;
-}
-
-static gboolean
-awn_icon_mapped (GtkWidget *widget, GdkEvent *event)
-{
-  AwnIcon *icon = AWN_ICON (widget);
-  AwnIconPrivate *priv;
-  
-  g_return_val_if_fail (AWN_IS_ICON (icon), FALSE);
-  priv = AWN_ICON (icon)->priv;
-
-  if (priv->queue_ctx)
-  {
-    awn_icon_set_from_context (icon, priv->queue_ctx);
-    cairo_destroy (priv->queue_ctx);
-  }
-  if (priv->queue_pixbuf)
-  {
-    awn_icon_set_from_pixbuf (icon, priv->queue_pixbuf);
-    g_object_unref (priv->queue_pixbuf);
-  }
-  priv->queue_pixbuf = NULL;
-  priv->queue_ctx = NULL;
 
   return FALSE;
 }
@@ -153,13 +119,13 @@ awn_icon_size_request (GtkWidget *widget, GtkRequisition *req)
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
-      req->width = APPLY_SIZE_MULTIPLIER(priv->size);
-      req->height = priv->size + priv->effects->icon_offset;
+      req->width = APPLY_SIZE_MULTIPLIER(priv->icon_width);
+      req->height = priv->icon_height + priv->effects->icon_offset;
       break;
       
     default:
-      req->width = priv->size + priv->effects->icon_offset;
-      req->height = APPLY_SIZE_MULTIPLIER(priv->size);
+      req->width = priv->icon_width + priv->effects->icon_offset;
+      req->height = APPLY_SIZE_MULTIPLIER(priv->icon_height);
       break;
   }
 }
@@ -180,9 +146,9 @@ awn_icon_dispose (GObject *object)
     gtk_widget_destroy (priv->tooltip);
   priv->tooltip = NULL;
 
-  if (priv->icon_ctx)
-    cairo_destroy (priv->icon_ctx);
-  priv->icon_ctx = NULL;
+  if (priv->icon_srfc)
+    cairo_surface_destroy (priv->icon_srfc);
+  priv->icon_srfc = NULL;
 
   G_OBJECT_CLASS (awn_icon_parent_class)->dispose (object);
 }
@@ -220,9 +186,7 @@ awn_icon_init (AwnIcon *icon)
 
   priv = icon->priv = AWN_ICON_GET_PRIVATE (icon);
 
-  priv->icon_ctx = NULL;
-  priv->queue_pixbuf = NULL;
-  priv->queue_ctx = NULL;
+  priv->icon_srfc = NULL;
   priv->orient = AWN_ORIENTATION_BOTTOM;
   priv->size = 50;
   priv->tooltip = awn_tooltip_new_for_widget (GTK_WIDGET (icon));
@@ -230,9 +194,6 @@ awn_icon_init (AwnIcon *icon)
   priv->effects = awn_effects_new_for_widget (GTK_WIDGET (icon));
 
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
-
-  g_signal_connect_after (icon, "map-event", 
-                          G_CALLBACK (awn_icon_mapped), NULL);
 }
 
 GtkWidget *
@@ -245,6 +206,33 @@ awn_icon_new (void)
                        NULL);
 
   return icon;
+}
+
+static void
+awn_icon_update_tooltip_pos(AwnIcon *icon)
+{
+  AwnIconPrivate *priv;
+
+  g_return_if_fail (AWN_IS_ICON (icon));
+  priv = icon->priv;
+
+  // we could set tooltip_offset = priv->effects->icon_offset, and use 
+  // different offset in AwnTooltip
+  //  (do we want different icon bar offset and tooltip offset?)
+  gint tooltip_offset = 0;
+
+  switch (priv->orient) {
+    case AWN_ORIENTATION_TOP:
+    case AWN_ORIENTATION_BOTTOM:
+      tooltip_offset += priv->icon_height;
+      break;
+    default:
+      tooltip_offset += priv->icon_width;
+      break;
+  }
+
+  awn_tooltip_set_position_hint(AWN_TOOLTIP(priv->tooltip),
+                                priv->orient, tooltip_offset);
 }
 
 void 
@@ -263,54 +251,67 @@ awn_icon_set_orientation (AwnIcon        *icon,
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
       gtk_widget_set_size_request(
-        GTK_WIDGET (icon), APPLY_SIZE_MULTIPLIER(priv->size), -1);
+        GTK_WIDGET (icon), APPLY_SIZE_MULTIPLIER(priv->icon_width), -1);
       break;
       
     default:
       gtk_widget_set_size_request(
-        GTK_WIDGET (icon), -1, APPLY_SIZE_MULTIPLIER(priv->size));
+        GTK_WIDGET (icon), -1, APPLY_SIZE_MULTIPLIER(priv->icon_height));
       break;
   }
 
   g_object_set (priv->effects, "orientation", orient, NULL);
 
-  // FIXME: width / height instead of priv->size, plus this should be also
-  //  called on size (width / height) change
-  awn_tooltip_set_position_hint(AWN_TOOLTIP(priv->tooltip), orient, priv->size);
+  awn_icon_update_tooltip_pos(icon);
 }
 
 static void
 update_widget_size (AwnIcon *icon)
 {
   AwnIconPrivate  *priv = icon->priv;
-  cairo_surface_t *surface;
-  gint             width;
-  gint             height;
-  gint             old_size;
+  gint old_size, old_width, old_height;
 
-  surface = cairo_get_target (priv->icon_ctx);
-  width = cairo_xlib_surface_get_width (surface);
-  height = cairo_xlib_surface_get_height (surface);
   old_size = priv->size;
+  old_width = priv->icon_width;
+  old_height = priv->icon_height;
+
+  switch (cairo_surface_get_type(priv->icon_srfc)) {
+    case CAIRO_SURFACE_TYPE_XLIB:
+      priv->icon_width = cairo_xlib_surface_get_width (priv->icon_srfc);
+      priv->icon_height = cairo_xlib_surface_get_height (priv->icon_srfc);
+      break;
+    case CAIRO_SURFACE_TYPE_IMAGE:
+      priv->icon_width = cairo_image_surface_get_width (priv->icon_srfc);
+      priv->icon_height = cairo_image_surface_get_height (priv->icon_srfc);
+      break;
+    default:
+      g_warning("Invalid surface type: Surfaces must be either xlib or image");
+      break;
+  }
 
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
-      priv->size = width;
+      priv->size = priv->icon_width;
       gtk_widget_set_size_request(
-        GTK_WIDGET (icon), APPLY_SIZE_MULTIPLIER(width), -1);
+        GTK_WIDGET (icon), APPLY_SIZE_MULTIPLIER(priv->icon_width), -1);
       break;
 
     default:
-      priv->size = height;
+      priv->size = priv->icon_height;
       gtk_widget_set_size_request(
-        GTK_WIDGET (icon), -1, APPLY_SIZE_MULTIPLIER(height));
+        GTK_WIDGET (icon), -1, APPLY_SIZE_MULTIPLIER(priv->icon_height));
   }
 
   if (old_size != priv->size)
   {
     g_signal_emit (icon, _icon_signals[SIZE_CHANGED], 0);
+  }
+
+  if (old_width != priv->icon_width || old_height != priv->icon_height)
+  {
+    awn_icon_update_tooltip_pos(icon);
   }
 }
 
@@ -338,128 +339,75 @@ free_existing_icon (AwnIcon *icon)
 {
   AwnIconPrivate *priv = icon->priv;
 
-  cairo_destroy (priv->icon_ctx);
-  priv->icon_ctx = NULL;
+  if (priv->icon_srfc == NULL) return;
+
+  cairo_surface_destroy (priv->icon_srfc);
+  priv->icon_srfc = NULL;
 }
 
 void 
 awn_icon_set_from_pixbuf (AwnIcon *icon, GdkPixbuf *pixbuf)
 {
   AwnIconPrivate  *priv;
-  GtkWidget       *widget;
   cairo_t         *temp_cr;
-  cairo_surface_t *surface;
   gint             width, height;
 
   g_return_if_fail (AWN_IS_ICON (icon));
   g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
   priv = icon->priv;
 
-  /* If the widget isn't mapped, let's queue the pixbuf for when we are */
-  if (!GTK_WIDGET_MAPPED (GTK_WIDGET (icon)))
-  {
-    if (GDK_IS_PIXBUF (priv->queue_pixbuf))
-      g_object_unref (priv->queue_pixbuf);
-    if (priv->queue_ctx)
-      cairo_destroy (priv->queue_ctx);
-
-    priv->queue_pixbuf = gdk_pixbuf_copy (pixbuf);
-    return;
-  }
-
   free_existing_icon (icon);
 
-  widget = GTK_WIDGET (icon);
-    
+  /* Render the pixbuf into a image surface */
   width = gdk_pixbuf_get_width (pixbuf);
   height = gdk_pixbuf_get_height (pixbuf);
 
-  temp_cr = gdk_cairo_create (widget->window);
+  priv->icon_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
+                                               width, height);
+  temp_cr = cairo_create (priv->icon_srfc);
 
-  /* Create the main icon context */
-  surface = cairo_surface_create_similar (cairo_get_target (temp_cr),
-                                          CAIRO_CONTENT_COLOR_ALPHA,
-                                          width, height);
-  priv->icon_ctx = cairo_create (surface);
-  gdk_cairo_set_source_pixbuf (priv->icon_ctx, pixbuf, 0, 0);
-  cairo_paint (priv->icon_ctx);
+  gdk_cairo_set_source_pixbuf (temp_cr, pixbuf, 0, 0);
+  cairo_paint (temp_cr);
+
+  cairo_destroy (temp_cr);
 
   /* Queue a redraw */
   update_widget_size (icon);
-  gtk_widget_queue_draw (widget);
+  gtk_widget_queue_draw (GTK_WIDGET(icon));
+}
 
-  /* This should be valid according to the docs */
-  cairo_destroy (temp_cr);
-  cairo_surface_destroy (surface);
+void 
+awn_icon_set_from_surface (AwnIcon *icon, cairo_surface_t *surface)
+{
+  AwnIconPrivate       *priv;
+  
+  g_return_if_fail (AWN_IS_ICON (icon));
+  g_return_if_fail (surface);
+  priv = icon->priv;
+
+  switch (cairo_surface_get_type(surface))
+  {
+    case CAIRO_SURFACE_TYPE_XLIB:
+    case CAIRO_SURFACE_TYPE_IMAGE:
+      free_existing_icon (icon);
+      priv->icon_srfc = cairo_surface_reference(surface);
+      break;
+    default:
+      g_warning("Invalid surface type: Surfaces must be either xlib or image");
+      return;
+  }
+
+  update_widget_size (icon);
+  gtk_widget_queue_draw (GTK_WIDGET (icon));
 }
 
 void 
 awn_icon_set_from_context (AwnIcon *icon, cairo_t *ctx)
 {
-  AwnIconPrivate       *priv;
-  cairo_surface_t      *current_surface;
-  cairo_surface_type_t  type;
-  
   g_return_if_fail (AWN_IS_ICON (icon));
   g_return_if_fail (ctx);
-  priv = icon->priv;
 
-  /* If the widget isn't mapped, let's queue the ctx for when we are */
-  if (!GTK_WIDGET_MAPPED (GTK_WIDGET (icon)))
-  {
-    if (GDK_IS_PIXBUF (priv->queue_pixbuf))
-      g_object_unref (priv->queue_pixbuf);
-    if (priv->queue_ctx)
-      cairo_destroy (priv->queue_ctx);
-
-    priv->queue_ctx = ctx;
-    cairo_reference (ctx);
-    return;
-  }
-  free_existing_icon (icon);
-
-  current_surface = cairo_get_target (ctx);
-  type = cairo_surface_get_type (current_surface);
-
-  if (type == CAIRO_SURFACE_TYPE_XLIB)
-  {
-    /* 'tis all good */
-    priv->icon_ctx = ctx;
-    cairo_reference (priv->icon_ctx);
-  }
-  else if (type == CAIRO_SURFACE_TYPE_IMAGE)
-  {
-    /* Let's convert it to an xlib surface */
-    GtkWidget       *widget;
-    cairo_t         *temp_cr;
-    cairo_surface_t *surface;
-    gint             width, height;
-
-    widget = GTK_WIDGET (icon);
-    
-    temp_cr = gdk_cairo_create (widget->window);
-
-    width = cairo_image_surface_get_width (current_surface);
-    height = cairo_image_surface_get_height (current_surface);
-    
-    surface = cairo_surface_create_similar (cairo_get_target (temp_cr), 
-                                            CAIRO_CONTENT_COLOR_ALPHA,
-                                            width, height);
-    priv->icon_ctx = cairo_create (surface);
-    cairo_set_source_surface (priv->icon_ctx, current_surface, 0, 0);
-    cairo_paint (priv->icon_ctx);
-
-    cairo_destroy (temp_cr);
-    cairo_surface_destroy (surface);
-  }
-  else
-  {
-    g_warning ("Invalid surface type: Surfaces must be either xlib or image");
-    return;
-  }
-
-  update_widget_size (icon);
-  gtk_widget_queue_draw (GTK_WIDGET (icon));
+  awn_icon_set_from_surface(icon, cairo_get_target(ctx));
 }
 
 /*
