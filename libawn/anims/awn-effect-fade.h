@@ -23,8 +23,8 @@
 
 #include "awn-effects-shared.h"
 
-gboolean fade_out_effect(AwnEffectsPrivate * priv);
-gboolean fading_effect(AwnEffectsPrivate * priv);
-gboolean fading_effect_finalize(AwnEffectsPrivate * priv);
+gboolean fade_out_effect(AwnEffectsAnimation * anim);
+gboolean fading_effect(AwnEffectsAnimation * anim);
+gboolean fading_effect_finalize(AwnEffectsAnimation * anim);
 
 #endif

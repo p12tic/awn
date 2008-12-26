@@ -60,6 +60,7 @@ struct _AwnTooltipPrivate
   gint      icon_offset;
 
   gint      delay;
+  guint     timer_id;
 
   AwnOrientation orient;
   gint           size;
@@ -365,6 +366,7 @@ awn_tooltip_init (AwnTooltip *tooltip)
   priv->font_color = NULL;
   priv->orient = AWN_ORIENTATION_BOTTOM;
   priv->size = 50;
+  priv->timer_id = 0;
 
   gtk_widget_set_app_paintable (GTK_WIDGET (tooltip), TRUE);
 
@@ -511,14 +513,34 @@ awn_tooltip_get_text (AwnTooltip  *tooltip)
 }
 
 static gboolean
+awn_tooltip_show_timer(gpointer data)
+{
+  g_return_val_if_fail (AWN_IS_TOOLTIP (data), FALSE);
+  AwnTooltip *tooltip = (AwnTooltip*)data;
+  
+  tooltip->priv->timer_id = 0;
+  awn_tooltip_position_and_show(tooltip);
+
+  return FALSE;
+}
+
+static gboolean
 awn_tooltip_show (AwnTooltip *tooltip, GtkWidget *focus)
 {
   g_return_val_if_fail (AWN_IS_TOOLTIP (tooltip), FALSE);
 
-  if (!tooltip->priv->text)
+  AwnTooltipPrivate *priv = tooltip->priv;
+
+  if (!priv->text || priv->timer_id)
     return FALSE;
 
-  awn_tooltip_position_and_show (tooltip);
+  // always use timer to show the widget, because there's a show/hide race
+  // condition when mouse moves on the tooltip, leave-notify-event is generated
+  // -> tooltip hides, then enter-notify-event from the widget is generated,
+  // tooltip shows, therefore looping in an infinite loop
+  //  with the timer X-server at least doesn't stall
+  gint delay = priv->delay > 0 ? priv->delay : 10;
+  priv->timer_id = g_timeout_add(delay, awn_tooltip_show_timer, tooltip);
 
   return FALSE;
 }
@@ -527,6 +549,15 @@ static gboolean
 awn_tooltip_hide (AwnTooltip *tooltip, GtkWidget *focus)
 {
   g_return_val_if_fail (AWN_IS_TOOLTIP (tooltip), FALSE);
+
+  AwnTooltipPrivate *priv = tooltip->priv;
+
+  if (priv->timer_id) {
+    GSource *s = g_main_context_find_source_by_id(NULL, priv->timer_id);
+    if (s) g_source_destroy(s);
+    priv->timer_id = 0;
+    return FALSE;
+  }
 
   gtk_widget_hide (GTK_WIDGET (tooltip));
 

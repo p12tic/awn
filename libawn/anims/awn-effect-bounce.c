@@ -29,38 +29,38 @@
 
 // simple bounce effect based on sin function
 gboolean
-bounce_effect(AwnEffectsPrivate * priv)
+bounce_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->count = 0;
+    priv->count = 0;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
   const gdouble MAX_BOUNCE_OFFSET = 15.0;
 
   const gint PERIOD = 20;
 
-  fx->top_offset = sin(++fx->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
+  priv->top_offset = sin(++priv->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (fx->count >= PERIOD)
+  if (priv->count >= PERIOD)
   {
-    fx->count = 0;
+    priv->count = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
   }
 
   return repeat;
@@ -69,26 +69,26 @@ bounce_effect(AwnEffectsPrivate * priv)
 
 
 gboolean
-bounce_opening_effect(AwnEffectsPrivate * priv)
+bounce_opening_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->count = 0;
-    fx->top_offset = 0;
-    fx->clip = TRUE;
-    fx->clip_region.x = 0;
-    fx->clip_region.y = 0;
-    fx->clip_region.width = fx->icon_width;
-    fx->clip_region.height = 0;
+    priv->count = 0;
+    priv->top_offset = 0;
+    priv->clip = TRUE;
+    priv->clip_region.x = 0;
+    priv->clip_region.y = 0;
+    priv->clip_region.width = priv->icon_width;
+    priv->clip_region.height = 0;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
   const gint PERIOD1 = 15;
@@ -97,34 +97,34 @@ bounce_opening_effect(AwnEffectsPrivate * priv)
 
   const gint MAX_BOUNCE_OFFSET = 15;
 
-  if (fx->count < PERIOD1)
-    fx->clip_region.height = fx->icon_height * ++fx->count / PERIOD1;
-  else if (fx->count < PERIOD1 + PERIOD2)
+  if (priv->count < PERIOD1)
+    priv->clip_region.height = priv->icon_height * ++priv->count / PERIOD1;
+  else if (priv->count < PERIOD1 + PERIOD2)
   {
-    fx->clip = FALSE;
-    fx->top_offset =
-      sin((++fx->count - PERIOD1) * M_PI / PERIOD2) * MAX_BOUNCE_OFFSET;
+    priv->clip = FALSE;
+    priv->top_offset =
+      sin((++priv->count - PERIOD1) * M_PI / PERIOD2) * MAX_BOUNCE_OFFSET;
   }
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (fx->count >= PERIOD1 + PERIOD2)
+  if (priv->count >= PERIOD1 + PERIOD2)
   {
-    fx->count = 0;
-    fx->top_offset = 0;
+    priv->count = 0;
+    priv->top_offset = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
   }
 
   return repeat;
 }
 
 gboolean
-bounce_effect_finalize(AwnEffectsPrivate * priv)
+bounce_effect_finalize(AwnEffectsAnimation * anim)
 {
-  printf("bounce_effect_finalize(AwnEffectsPrivate * priv)\n");
+  printf("bounce_effect_finalize(AwnEffectsAnimation * anim)\n");
   return TRUE;
 }

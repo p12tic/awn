@@ -28,41 +28,41 @@
 #include <stdlib.h>
 
 gboolean
-bounce_squish_effect(AwnEffectsPrivate * priv)
+bounce_squish_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->count = 0;
-    fx->delta_width = 0;
-    fx->delta_height = 0;
-    fx->direction = AWN_EFFECT_SQUISH_DOWN;
+    priv->count = 0;
+    priv->delta_width = 0;
+    priv->delta_height = 0;
+    priv->direction = AWN_EFFECT_SQUISH_DOWN;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
   const gdouble MAX_BOUNCE_OFFSET = 15.0;
 
   const gint PERIOD = 28;
 
-  switch (fx->direction)
+  switch (priv->direction)
   {
 
     case AWN_EFFECT_SQUISH_DOWN:
 
     case AWN_EFFECT_SQUISH_DOWN2:
-      fx->delta_width += (fx->icon_width * 3 / 4) / (PERIOD / 4);
-      fx->delta_height -= (fx->icon_height * 3 / 4) / (PERIOD / 4);
+      priv->delta_width += (priv->icon_width * 3 / 4) / (PERIOD / 4);
+      priv->delta_height -= (priv->icon_height * 3 / 4) / (PERIOD / 4);
 
-      if (fx->delta_height <= fx->icon_height * -1 / 4)
-        fx->direction =
-          fx->direction ==
+      if (priv->delta_height <= priv->icon_height * -1 / 4)
+        priv->direction =
+          priv->direction ==
           AWN_EFFECT_SQUISH_DOWN ? AWN_EFFECT_SQUISH_UP : AWN_EFFECT_SQUISH_UP2;
 
       break;
@@ -70,81 +70,81 @@ bounce_squish_effect(AwnEffectsPrivate * priv)
     case AWN_EFFECT_SQUISH_UP:
 
     case AWN_EFFECT_SQUISH_UP2:
-      fx->delta_width -= (fx->icon_width * 3 / 4) / (PERIOD / 4);
+      priv->delta_width -= (priv->icon_width * 3 / 4) / (PERIOD / 4);
 
-      fx->delta_height += (fx->icon_height * 3 / 4) / (PERIOD / 4);
+      priv->delta_height += (priv->icon_height * 3 / 4) / (PERIOD / 4);
 
-      if (fx->delta_height >= 0 && fx->direction == AWN_EFFECT_SQUISH_UP)
-        fx->direction = AWN_EFFECT_DIR_NONE;
+      if (priv->delta_height >= 0 && priv->direction == AWN_EFFECT_SQUISH_UP)
+        priv->direction = AWN_EFFECT_DIR_NONE;
 
       break;
 
     case AWN_EFFECT_DIR_NONE:
-      fx->top_offset = sin(++fx->count * M_PI * 2 / PERIOD) * MAX_BOUNCE_OFFSET;
+      priv->top_offset = sin(++priv->count * M_PI * 2 / PERIOD) * MAX_BOUNCE_OFFSET;
 
-      if (fx->count >= PERIOD / 2)
-        fx->direction = AWN_EFFECT_SQUISH_DOWN2;
+      if (priv->count >= PERIOD / 2)
+        priv->direction = AWN_EFFECT_SQUISH_DOWN2;
 
       break;
 
     default:
-      fx->direction = AWN_EFFECT_SQUISH_DOWN;
+      priv->direction = AWN_EFFECT_SQUISH_DOWN;
   }
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (fx->direction == AWN_EFFECT_SQUISH_UP2 && fx->delta_height >= 0)
+  if (priv->direction == AWN_EFFECT_SQUISH_UP2 && priv->delta_height >= 0)
   {
-    fx->direction = AWN_EFFECT_DIR_NONE;
-    fx->count = 0;
-    fx->delta_width = 0;
-    fx->delta_height = 0;
+    priv->direction = AWN_EFFECT_DIR_NONE;
+    priv->count = 0;
+    priv->delta_width = 0;
+    priv->delta_height = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
   }
 
   return repeat;
 }
 
 gboolean
-bounce_squish_attention_effect(AwnEffectsPrivate * priv)
+bounce_squish_attention_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->count = 0;
-    fx->delta_width = 0;
-    fx->delta_height = 0;
-    fx->direction = AWN_EFFECT_SQUISH_DOWN;
+    priv->count = 0;
+    priv->delta_width = 0;
+    priv->delta_height = 0;
+    priv->direction = AWN_EFFECT_SQUISH_DOWN;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
   const gdouble MAX_BOUNCE_OFFSET = 15.0;
 
   const gint PERIOD = 28;
 
-  switch (fx->direction)
+  switch (priv->direction)
   {
 
     case AWN_EFFECT_SQUISH_DOWN:
 
     case AWN_EFFECT_SQUISH_DOWN2:
-      fx->delta_width += (fx->icon_width * 3 / 4) / (PERIOD / 4);
-      fx->delta_height -= (fx->icon_height * 3 / 4) / (PERIOD / 4);
+      priv->delta_width += (priv->icon_width * 3 / 4) / (PERIOD / 4);
+      priv->delta_height -= (priv->icon_height * 3 / 4) / (PERIOD / 4);
 
-      if (fx->delta_height <= fx->icon_height * -1 / 4)
-        fx->direction =
-          fx->direction ==
+      if (priv->delta_height <= priv->icon_height * -1 / 4)
+        priv->direction =
+          priv->direction ==
           AWN_EFFECT_SQUISH_DOWN ? AWN_EFFECT_SQUISH_UP : AWN_EFFECT_SQUISH_UP2;
 
       break;
@@ -152,71 +152,71 @@ bounce_squish_attention_effect(AwnEffectsPrivate * priv)
     case AWN_EFFECT_SQUISH_UP:
 
     case AWN_EFFECT_SQUISH_UP2:
-      fx->delta_width -= (fx->icon_width * 3 / 4) / (PERIOD / 4);
+      priv->delta_width -= (priv->icon_width * 3 / 4) / (PERIOD / 4);
 
-      fx->delta_height += (fx->icon_height * 3 / 4) / (PERIOD / 4);
+      priv->delta_height += (priv->icon_height * 3 / 4) / (PERIOD / 4);
 
-      if (fx->delta_height >= 0 && fx->direction == AWN_EFFECT_SQUISH_UP)
-        fx->direction = AWN_EFFECT_DIR_NONE;
+      if (priv->delta_height >= 0 && priv->direction == AWN_EFFECT_SQUISH_UP)
+        priv->direction = AWN_EFFECT_DIR_NONE;
 
       break;
 
     case AWN_EFFECT_DIR_NONE:
-      fx->top_offset = sin(++fx->count * M_PI * 2 / PERIOD) * MAX_BOUNCE_OFFSET;
+      priv->top_offset = sin(++priv->count * M_PI * 2 / PERIOD) * MAX_BOUNCE_OFFSET;
 
-      fx->delta_width =
-        sin(fx->count * M_PI * 2 / PERIOD) * (fx->icon_width * 1 / 6);
+      priv->delta_width =
+        sin(priv->count * M_PI * 2 / PERIOD) * (priv->icon_width * 1 / 6);
 
-      fx->delta_height =
-        sin(fx->count * M_PI * 2 / PERIOD) * (fx->icon_width * 1 / 6);
+      priv->delta_height =
+        sin(priv->count * M_PI * 2 / PERIOD) * (priv->icon_width * 1 / 6);
 
-      if (fx->count >= PERIOD / 2)
+      if (priv->count >= PERIOD / 2)
       {
-        fx->direction = AWN_EFFECT_SQUISH_DOWN2;
+        priv->direction = AWN_EFFECT_SQUISH_DOWN2;
       }
 
       break;
 
     default:
-      fx->direction = AWN_EFFECT_SQUISH_DOWN;
+      priv->direction = AWN_EFFECT_SQUISH_DOWN;
   }
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (fx->direction == AWN_EFFECT_SQUISH_UP2 && fx->delta_height >= 0)
+  if (priv->direction == AWN_EFFECT_SQUISH_UP2 && priv->delta_height >= 0)
   {
-    fx->direction = AWN_EFFECT_DIR_NONE;
-    fx->count = 0;
-    fx->delta_width = 0;
-    fx->delta_height = 0;
+    priv->direction = AWN_EFFECT_DIR_NONE;
+    priv->count = 0;
+    priv->delta_width = 0;
+    priv->delta_height = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
   }
 
   return repeat;
 }
 
 gboolean
-bounce_squish_opening_effect(AwnEffectsPrivate * priv)
+bounce_squish_opening_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->count = 0;
-    fx->direction = AWN_EFFECT_DIR_NONE;
-    fx->delta_width = -fx->icon_width;
-    fx->delta_height = -fx->icon_height;
+    priv->count = 0;
+    priv->direction = AWN_EFFECT_DIR_NONE;
+    priv->delta_width = -priv->icon_width;
+    priv->delta_height = -priv->icon_height;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
   const gdouble MAX_BOUNCE_OFFSET = 15.0;
@@ -225,63 +225,63 @@ bounce_squish_opening_effect(AwnEffectsPrivate * priv)
 
   const gint PERIOD2 = 28;
 
-  switch (fx->direction)
+  switch (priv->direction)
   {
 
     case AWN_EFFECT_SQUISH_DOWN:
-      fx->delta_width += (fx->icon_width * 3 / 4) / (PERIOD2 / 4);
-      fx->delta_height -= (fx->icon_height * 3 / 4) / (PERIOD2 / 4);
+      priv->delta_width += (priv->icon_width * 3 / 4) / (PERIOD2 / 4);
+      priv->delta_height -= (priv->icon_height * 3 / 4) / (PERIOD2 / 4);
 
-      if (fx->delta_height <= fx->icon_height * -1 / 4)
-        fx->direction = AWN_EFFECT_SQUISH_UP;
+      if (priv->delta_height <= priv->icon_height * -1 / 4)
+        priv->direction = AWN_EFFECT_SQUISH_UP;
 
       break;
 
     case AWN_EFFECT_SQUISH_UP:
-      fx->delta_width -= (fx->icon_width * 3 / 4) / (PERIOD2 / 4);
+      priv->delta_width -= (priv->icon_width * 3 / 4) / (PERIOD2 / 4);
 
-      fx->delta_height += (fx->icon_height * 3 / 4) / (PERIOD2 / 4);
+      priv->delta_height += (priv->icon_height * 3 / 4) / (PERIOD2 / 4);
 
-      if (fx->delta_height >= 0)
+      if (priv->delta_height >= 0)
       {
-        fx->direction = AWN_EFFECT_DIR_NONE;
-        fx->count = 0;
+        priv->direction = AWN_EFFECT_DIR_NONE;
+        priv->count = 0;
       }
 
       break;
 
     case AWN_EFFECT_DIR_NONE:
-      fx->top_offset = sin(++fx->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
+      priv->top_offset = sin(++priv->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
 
-      if (fx->delta_width < 0)
-        fx->delta_width += fx->icon_width * 2 / PERIOD;
+      if (priv->delta_width < 0)
+        priv->delta_width += priv->icon_width * 2 / PERIOD;
 
-      if (fx->delta_height < 0)
-        fx->delta_height += fx->icon_height * 2 / PERIOD;
+      if (priv->delta_height < 0)
+        priv->delta_height += priv->icon_height * 2 / PERIOD;
 
-      if (fx->count == PERIOD)
+      if (priv->count == PERIOD)
       {
-        fx->direction = AWN_EFFECT_SQUISH_DOWN;
-        fx->top_offset = 0;
-        fx->delta_width = 0;
-        fx->delta_height = 0;
+        priv->direction = AWN_EFFECT_SQUISH_DOWN;
+        priv->top_offset = 0;
+        priv->delta_width = 0;
+        priv->delta_height = 0;
       }
 
       break;
 
     default:
-      fx->direction = AWN_EFFECT_DIR_NONE;
+      priv->direction = AWN_EFFECT_DIR_NONE;
   }
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (fx->direction == AWN_EFFECT_DIR_NONE && fx->count <= 0)
+  if (priv->direction == AWN_EFFECT_DIR_NONE && priv->count <= 0)
   {
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
   }
 
   return repeat;
@@ -289,55 +289,55 @@ bounce_squish_opening_effect(AwnEffectsPrivate * priv)
 
 
 gboolean
-bounce_squish_closing_effect(AwnEffectsPrivate * priv)
+bounce_squish_closing_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->count = 0;
-    fx->direction = AWN_EFFECT_DIR_UP;
-    fx->delta_width = -fx->icon_width;
-    fx->delta_height = -fx->icon_height;
+    priv->count = 0;
+    priv->direction = AWN_EFFECT_DIR_UP;
+    priv->delta_width = -priv->icon_width;
+    priv->delta_height = -priv->icon_height;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
   const gdouble MAX_OFFSET = 50.0;
 
   const gint PERIOD = 20;
 
-  fx->top_offset = ++fx->count * (MAX_OFFSET / PERIOD);
+  priv->top_offset = ++priv->count * (MAX_OFFSET / PERIOD);
 
-  fx->alpha = fx->count * (-1.0 / PERIOD) + 1;
+  priv->alpha = priv->count * (-1.0 / PERIOD) + 1;
 
-  fx->delta_width = -fx->count * (fx->icon_width / PERIOD);
+  priv->delta_width = -priv->count * (priv->icon_width / PERIOD);
 
-  fx->delta_height = -fx->count * (fx->icon_height / PERIOD);
+  priv->delta_height = -priv->count * (priv->icon_height / PERIOD);
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (MAX_OFFSET == fx->top_offset)
+  if (MAX_OFFSET == priv->top_offset)
   {
-    fx->count = 0;
+    priv->count = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
   }
 
   return repeat;
 }
 
 gboolean
-bounce_squish_effect_finalize(AwnEffectsPrivate * priv)
+bounce_squish_effect_finalize(AwnEffectsAnimation * anim)
 {
-  printf("bounce_squish_effect_finalize(AwnEffectsPrivate * priv)\n");
+  printf("bounce_squish_effect_finalize(AwnEffectsAnimation * anim)\n");
   return TRUE;
 }

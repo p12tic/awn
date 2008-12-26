@@ -69,6 +69,7 @@ typedef void (*AwnEventNotify)(GtkWidget *);
  */
 typedef struct _AwnEffects AwnEffects;
 typedef struct _AwnEffectsClass AwnEffectsClass;
+typedef struct _AwnEffectsPrivate AwnEffectsPrivate;
 
 typedef gboolean(* AwnEffectsOpfn )(AwnEffects * fx,
                                      GtkAllocation * alloc,
@@ -83,46 +84,6 @@ typedef struct
 struct _AwnEffects
 {
   GObject parent;
-
-  AwnConfigClient *client;
-
-  GtkWidget *self;
-  GList *effect_queue;
-
-  GSourceFunc sleeping_func;
-
-  gint icon_width, icon_height;
-  gint window_width, window_height;
-
-  /* EFFECT VARIABLES */
-  gboolean effect_lock;
-  AwnEffect current_effect;
-  gint direction;
-  gint count;
-
-  gdouble side_offset;
-  gdouble top_offset;
-  gdouble curve_offset;
-
-  gint delta_width;
-  gint delta_height;
-
-  GtkAllocation clip_region;
-
-  gdouble rotate_degrees;
-  gfloat alpha;
-  gfloat spotlight_alpha;
-  gfloat saturation;
-  gfloat glow_amount;
-
-  gint icon_depth;
-  gint icon_depth_direction;
-
-  /* State variables */
-  gboolean hover;
-  gboolean clip;
-  gboolean flip;
-  gboolean spotlight;
 
   /* Properties */
   gint orientation;
@@ -139,17 +100,10 @@ struct _AwnEffects
   gint border_clip;
   /* properties end */
 
-  guint timer_id;
-
   cairo_t * window_ctx;
   cairo_t * virtual_ctx;
 
-  AwnEffectsOp  *op_list;
-
-  /* padding so we dont break ABI compability every time */
-  void *pad1;
-  void *pad2;
-  void *pad3;
+  AwnEffectsPrivate *priv;
 };
 
 struct _AwnEffectsClass {

@@ -23,14 +23,56 @@
 
 #include "../awn-effects.h"
 
-typedef struct _AwnEffectsPrivate AwnEffectsPrivate;
+typedef struct _AwnEffectsAnimation AwnEffectsAnimation;
 
-struct _AwnEffectsPrivate
+struct _AwnEffectsAnimation
 {
   AwnEffects *effects;
   AwnEffect this_effect;
   gint max_loops;
   AwnEventNotify start, stop;
+};
+
+struct _AwnEffectsPrivate
+{
+  GtkWidget *self;
+  GList *effect_queue;
+
+  GSourceFunc sleeping_func;
+
+  gint icon_width, icon_height;
+  gint window_width, window_height;
+
+  /* EFFECT VARIABLES */
+  gboolean effect_lock;
+  AwnEffect current_effect;
+  gint direction;
+  gint count;
+
+  gdouble side_offset;
+  gdouble top_offset;
+  gdouble curve_offset;
+
+  gint delta_width;
+  gint delta_height;
+
+  GtkAllocation clip_region;
+
+  gdouble rotate_degrees;
+  gfloat alpha;
+  gfloat spotlight_alpha;
+  gfloat saturation;
+  gfloat glow_amount;
+
+  gint icon_depth;
+  gint icon_depth_direction;
+
+  /* State variables */
+  gboolean clip;
+  gboolean flip;
+  gboolean spotlight;
+
+  guint timer_id;
 };
 
 typedef enum
@@ -55,9 +97,14 @@ typedef enum
   AWN_EFFECT_SPOTLIGHT_OFF
 } AwnEffectSequence;
 
-gboolean awn_effect_check_top_effect(AwnEffectsPrivate * priv, gboolean * stopped);
-gboolean awn_effect_handle_repeating(AwnEffectsPrivate * priv);
-gboolean awn_effect_check_max_loops(AwnEffectsPrivate * priv);
-gboolean awn_effect_suspend_animation(AwnEffectsPrivate * priv, GSourceFunc func);
+gboolean awn_effect_check_top_effect   (AwnEffectsAnimation * anim,
+                                        gboolean * stopped);
+
+gboolean awn_effect_handle_repeating   (AwnEffectsAnimation * anim);
+
+gboolean awn_effect_check_max_loops    (AwnEffectsAnimation * anim);
+
+gboolean awn_effect_suspend_animation  (AwnEffectsAnimation * anim,
+                                        GSourceFunc func);
 
 #endif

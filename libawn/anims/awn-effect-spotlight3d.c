@@ -28,381 +28,381 @@
 #include <stdlib.h>
 
 gboolean
-spotlight3D_hover_effect(AwnEffectsPrivate * priv)
+spotlight3D_hover_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->count = 0;
-    fx->top_offset = 0;
-    fx->spotlight_alpha = 1.0;
-    fx->spotlight = TRUE;
-    fx->glow_amount = fx->spotlight_alpha;
-    fx->delta_width = 0;
-    fx->icon_depth = 0;
-    fx->icon_depth_direction = 0;
+    priv->count = 0;
+    priv->top_offset = 0;
+    priv->spotlight_alpha = 1.0;
+    priv->spotlight = TRUE;
+    priv->glow_amount = priv->spotlight_alpha;
+    priv->delta_width = 0;
+    priv->icon_depth = 0;
+    priv->icon_depth_direction = 0;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
   const gint PERIOD = 44;
 
   const gdouble ALPHA_STEP = 0.04;
 
-  if (awn_effect_check_top_effect(priv, NULL))
+  if (awn_effect_check_top_effect(anim, NULL))
   {
-    fx->spotlight_alpha = 1.0;
+    priv->spotlight_alpha = 1.0;
   }
   else
   {
-    fx->spotlight_alpha -= ALPHA_STEP;
+    priv->spotlight_alpha -= ALPHA_STEP;
 
-    if (fx->spotlight_alpha < 0)
+    if (priv->spotlight_alpha < 0)
     {
-      fx->spotlight_alpha = 0;
+      priv->spotlight_alpha = 0;
     }
   }
 
-  fx->glow_amount = fx->spotlight_alpha;
+  priv->glow_amount = priv->spotlight_alpha;
 
-  gint prev_count = fx->count;
+  gint prev_count = priv->count;
 
   if (prev_count > PERIOD)
-    prev_count = --fx->count;
+    prev_count = --priv->count;
 
-  fx->count = sin(fx->count * M_PI / 2 / PERIOD) * PERIOD;
+  priv->count = sin(priv->count * M_PI / 2 / PERIOD) * PERIOD;
 
-  if (fx->count < PERIOD / 4)
+  if (priv->count < PERIOD / 4)
   {
-    fx->icon_depth_direction = 0;
-    fx->delta_width = -fx->count * (fx->icon_width) / (PERIOD / 4);
-    fx->flip = FALSE;
+    priv->icon_depth_direction = 0;
+    priv->delta_width = -priv->count * (priv->icon_width) / (PERIOD / 4);
+    priv->flip = FALSE;
   }
-  else if (fx->count < PERIOD / 2)
+  else if (priv->count < PERIOD / 2)
   {
-    fx->icon_depth_direction = 1;
-    fx->delta_width =
-      (fx->count - PERIOD / 4) * (fx->icon_width) / (PERIOD / 4) -
-      fx->icon_width;
-    fx->flip = TRUE;
+    priv->icon_depth_direction = 1;
+    priv->delta_width =
+      (priv->count - PERIOD / 4) * (priv->icon_width) / (PERIOD / 4) -
+      priv->icon_width;
+    priv->flip = TRUE;
   }
-  else if (fx->count < PERIOD * 3 / 4)
+  else if (priv->count < PERIOD * 3 / 4)
   {
-    fx->icon_depth_direction = 0;
-    fx->delta_width =
-      -(fx->count - PERIOD / 2) * (fx->icon_width) / (PERIOD / 4);
-    fx->flip = TRUE;
+    priv->icon_depth_direction = 0;
+    priv->delta_width =
+      -(priv->count - PERIOD / 2) * (priv->icon_width) / (PERIOD / 4);
+    priv->flip = TRUE;
   }
   else
   {
-    fx->icon_depth_direction = 1;
-    fx->delta_width =
-      (fx->count - PERIOD * 3 / 4) * (fx->icon_width) / (PERIOD / 4) -
-      fx->icon_width;
-    fx->flip = FALSE;
+    priv->icon_depth_direction = 1;
+    priv->delta_width =
+      (priv->count - PERIOD * 3 / 4) * (priv->icon_width) / (PERIOD / 4) -
+      priv->icon_width;
+    priv->flip = FALSE;
   }
 
-  fx->icon_depth = 10.00 * -fx->delta_width / fx->icon_width;
+  priv->icon_depth = 10.00 * -priv->delta_width / priv->icon_width;
 
-  fx->count = ++prev_count;
+  priv->count = ++prev_count;
 
   // fix icon flickering
   const gint MIN_WIDTH = 4;
 
-  if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH)
+  if (abs(priv->delta_width) >= priv->icon_width - MIN_WIDTH)
   {
-    if (fx->delta_width > 0)
-      fx->delta_width = fx->icon_width - MIN_WIDTH;
+    if (priv->delta_width > 0)
+      priv->delta_width = priv->icon_width - MIN_WIDTH;
     else
-      fx->delta_width = -fx->icon_width + MIN_WIDTH;
+      priv->delta_width = -priv->icon_width + MIN_WIDTH;
   }
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (fx->count >= PERIOD
-      && (fx->spotlight_alpha >= 1 || fx->spotlight_alpha <= 0))
+  if (priv->count >= PERIOD
+      && (priv->spotlight_alpha >= 1 || priv->spotlight_alpha <= 0))
   {
-    fx->count = 0;
-    fx->top_offset = 0;
-    fx->icon_depth = 0;
-    fx->icon_depth_direction = 0;
-    fx->delta_width = 0;
-    fx->flip = FALSE;
+    priv->count = 0;
+    priv->top_offset = 0;
+    priv->icon_depth = 0;
+    priv->icon_depth_direction = 0;
+    priv->delta_width = 0;
+    priv->flip = FALSE;
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
 
     if (!repeat)
-      fx->spotlight = FALSE;
+      priv->spotlight = FALSE;
   }
 
   return repeat;
 }
 
 gboolean
-spotlight3D_opening_effect(AwnEffectsPrivate * priv)
+spotlight3D_opening_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->count = 0;
-    fx->top_offset = 0;
-    fx->spotlight_alpha = 1.0;
-    fx->spotlight = TRUE;
-    fx->glow_amount = fx->spotlight_alpha;
-    fx->clip = TRUE;
-    fx->clip_region.x = 0;
-    fx->clip_region.y = 0;
-    fx->clip_region.width = fx->icon_width;
-    fx->clip_region.height = 0;
-    fx->delta_width = 0;
-    fx->icon_depth = 0;
-    fx->icon_depth_direction = 0;
+    priv->count = 0;
+    priv->top_offset = 0;
+    priv->spotlight_alpha = 1.0;
+    priv->spotlight = TRUE;
+    priv->glow_amount = priv->spotlight_alpha;
+    priv->clip = TRUE;
+    priv->clip_region.x = 0;
+    priv->clip_region.y = 0;
+    priv->clip_region.width = priv->icon_width;
+    priv->clip_region.height = 0;
+    priv->delta_width = 0;
+    priv->icon_depth = 0;
+    priv->icon_depth_direction = 0;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
   const gint PERIOD = 44;
 
-  const gint MAX_OFFSET = fx->icon_height / 2;
+  const gint MAX_OFFSET = priv->icon_height / 2;
 
-  gint prev_count = fx->count;
+  gint prev_count = priv->count;
 
-  fx->count = sin(fx->count * M_PI / 2 / PERIOD) * PERIOD;
+  priv->count = sin(priv->count * M_PI / 2 / PERIOD) * PERIOD;
 
-  if (fx->count < PERIOD / 4)
+  if (priv->count < PERIOD / 4)
   {
-    fx->icon_depth_direction = 0;
-    fx->clip_region.height = fx->count * (fx->icon_height) / (PERIOD / 2);
-    fx->delta_width = -fx->count * (fx->icon_width) / (PERIOD / 4);
-    fx->flip = FALSE;
+    priv->icon_depth_direction = 0;
+    priv->clip_region.height = priv->count * (priv->icon_height) / (PERIOD / 2);
+    priv->delta_width = -priv->count * (priv->icon_width) / (PERIOD / 4);
+    priv->flip = FALSE;
   }
-  else if (fx->count < PERIOD / 2)
+  else if (priv->count < PERIOD / 2)
   {
-    fx->icon_depth_direction = 1;
-    fx->clip_region.height = (fx->count) * (fx->icon_height) / (PERIOD / 2);
-    fx->delta_width =
-      (fx->count - PERIOD / 4) * (fx->icon_width) / (PERIOD / 4) -
-      fx->icon_width;
-    fx->flip = TRUE;
+    priv->icon_depth_direction = 1;
+    priv->clip_region.height = (priv->count) * (priv->icon_height) / (PERIOD / 2);
+    priv->delta_width =
+      (priv->count - PERIOD / 4) * (priv->icon_width) / (PERIOD / 4) -
+      priv->icon_width;
+    priv->flip = TRUE;
   }
-  else if (fx->count < PERIOD * 3 / 4)
+  else if (priv->count < PERIOD * 3 / 4)
   {
-    fx->icon_depth_direction = 0;
-    fx->clip = FALSE;
-    fx->top_offset = (fx->count - PERIOD / 2) * MAX_OFFSET / (PERIOD / 4);
-    fx->delta_width =
-      -(fx->count - PERIOD / 2) * (fx->icon_width) / (PERIOD / 4);
-    fx->flip = TRUE;
+    priv->icon_depth_direction = 0;
+    priv->clip = FALSE;
+    priv->top_offset = (priv->count - PERIOD / 2) * MAX_OFFSET / (PERIOD / 4);
+    priv->delta_width =
+      -(priv->count - PERIOD / 2) * (priv->icon_width) / (PERIOD / 4);
+    priv->flip = TRUE;
   }
   else
   {
-    fx->icon_depth_direction = 1;
-    fx->top_offset =
-      MAX_OFFSET - (fx->count - PERIOD * 3 / 4) * MAX_OFFSET / (PERIOD / 4);
-    fx->delta_width =
-      (fx->count - PERIOD * 3 / 4) * (fx->icon_width) / (PERIOD / 4) -
-      fx->icon_width;
-    fx->flip = FALSE;
-    fx->spotlight_alpha =
-      -(fx->count - PERIOD * 3 / 4) * 1.0 / (PERIOD / 4) + 1.0;
+    priv->icon_depth_direction = 1;
+    priv->top_offset =
+      MAX_OFFSET - (priv->count - PERIOD * 3 / 4) * MAX_OFFSET / (PERIOD / 4);
+    priv->delta_width =
+      (priv->count - PERIOD * 3 / 4) * (priv->icon_width) / (PERIOD / 4) -
+      priv->icon_width;
+    priv->flip = FALSE;
+    priv->spotlight_alpha =
+      -(priv->count - PERIOD * 3 / 4) * 1.0 / (PERIOD / 4) + 1.0;
   }
 
-  fx->icon_depth = 10.00 * -fx->delta_width / fx->icon_width;
+  priv->icon_depth = 10.00 * -priv->delta_width / priv->icon_width;
 
-  fx->glow_amount = fx->spotlight_alpha;
+  priv->glow_amount = priv->spotlight_alpha;
 
-  fx->count = ++prev_count;
+  priv->count = ++prev_count;
 
   // fix icon flickering
   const gint MIN_WIDTH = 4;
 
-  if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH)
+  if (abs(priv->delta_width) >= priv->icon_width - MIN_WIDTH)
   {
-    if (fx->delta_width > 0)
-      fx->delta_width = fx->icon_width - MIN_WIDTH;
+    if (priv->delta_width > 0)
+      priv->delta_width = priv->icon_width - MIN_WIDTH;
     else
-      fx->delta_width = -fx->icon_width + MIN_WIDTH;
+      priv->delta_width = -priv->icon_width + MIN_WIDTH;
   }
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (fx->count >= PERIOD)
+  if (priv->count >= PERIOD)
   {
-    fx->count = 0;
-    fx->top_offset = 0;
-    fx->icon_depth = 0;
-    fx->icon_depth_direction = 0;
-    fx->delta_width = 0;
-    fx->flip = FALSE;
-    fx->spotlight = FALSE;
-    fx->spotlight_alpha = 0.0;
-    fx->glow_amount = 0.0;
-    fx->clip = FALSE;
+    priv->count = 0;
+    priv->top_offset = 0;
+    priv->icon_depth = 0;
+    priv->icon_depth_direction = 0;
+    priv->delta_width = 0;
+    priv->flip = FALSE;
+    priv->spotlight = FALSE;
+    priv->spotlight_alpha = 0.0;
+    priv->glow_amount = 0.0;
+    priv->clip = FALSE;
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
   }
 
   return repeat;
 }
 
 gboolean
-spotlight3D_closing_effect(AwnEffectsPrivate * priv)
+spotlight3D_closing_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->spotlight_alpha = 0.0;
-    fx->spotlight = TRUE;
-    fx->glow_amount = fx->spotlight_alpha;
-    fx->clip = TRUE;
-    fx->clip_region.x = 0;
-    fx->clip_region.y = 0;
-    fx->clip_region.height = fx->icon_height;
-    fx->clip_region.width = fx->icon_width;
-    fx->direction = AWN_EFFECT_SPOTLIGHT_ON;
+    priv->spotlight_alpha = 0.0;
+    priv->spotlight = TRUE;
+    priv->glow_amount = priv->spotlight_alpha;
+    priv->clip = TRUE;
+    priv->clip_region.x = 0;
+    priv->clip_region.y = 0;
+    priv->clip_region.height = priv->icon_height;
+    priv->clip_region.width = priv->icon_width;
+    priv->direction = AWN_EFFECT_SPOTLIGHT_ON;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
 
-    fx->count = 0;
+    priv->count = 0;
 
-    fx->delta_width = 0;
+    priv->delta_width = 0;
 
-    fx->icon_depth = 0;
+    priv->icon_depth = 0;
 
-    fx->icon_depth_direction = 0;
+    priv->icon_depth_direction = 0;
   }
 
   const gint PERIOD = 80;
 
   const gint TURN_PERIOD = 20;
 
-  if (fx->direction == AWN_EFFECT_SPOTLIGHT_ON)
+  if (priv->direction == AWN_EFFECT_SPOTLIGHT_ON)
   {
-    fx->spotlight_alpha += 4.0 / PERIOD;
+    priv->spotlight_alpha += 4.0 / PERIOD;
 
-    if (fx->spotlight_alpha >= 1)
+    if (priv->spotlight_alpha >= 1)
     {
-      fx->spotlight_alpha = 1;
-      fx->direction = AWN_EFFECT_DIR_NONE;
+      priv->spotlight_alpha = 1;
+      priv->direction = AWN_EFFECT_DIR_NONE;
     }
   }
-  else if (fx->direction == AWN_EFFECT_DIR_NONE)
+  else if (priv->direction == AWN_EFFECT_DIR_NONE)
   {
-    fx->clip_region.height -= 2.0 * fx->icon_height / PERIOD;
-    fx->alpha -= 2.0 / PERIOD;
+    priv->clip_region.height -= 2.0 * priv->icon_height / PERIOD;
+    priv->alpha -= 2.0 / PERIOD;
 
-    if (fx->count < TURN_PERIOD / 4)
+    if (priv->count < TURN_PERIOD / 4)
     {
-      fx->icon_depth_direction = 0;
-      fx->delta_width = -fx->count * (fx->icon_width) / (TURN_PERIOD / 4);
-      fx->flip = FALSE;
+      priv->icon_depth_direction = 0;
+      priv->delta_width = -priv->count * (priv->icon_width) / (TURN_PERIOD / 4);
+      priv->flip = FALSE;
     }
-    else if (fx->count < TURN_PERIOD / 2)
+    else if (priv->count < TURN_PERIOD / 2)
     {
-      fx->icon_depth_direction = 1;
-      fx->delta_width =
-        (fx->count - TURN_PERIOD / 4) * (fx->icon_width) / (TURN_PERIOD / 4) -
-        fx->icon_width;
-      fx->flip = TRUE;
+      priv->icon_depth_direction = 1;
+      priv->delta_width =
+        (priv->count - TURN_PERIOD / 4) * (priv->icon_width) / (TURN_PERIOD / 4) -
+        priv->icon_width;
+      priv->flip = TRUE;
     }
-    else if (fx->count < TURN_PERIOD * 3 / 4)
+    else if (priv->count < TURN_PERIOD * 3 / 4)
     {
-      fx->icon_depth_direction = 0;
-      fx->delta_width =
-        -(fx->count - TURN_PERIOD / 2) * (fx->icon_width) / (TURN_PERIOD / 4);
-      fx->flip = TRUE;
+      priv->icon_depth_direction = 0;
+      priv->delta_width =
+        -(priv->count - TURN_PERIOD / 2) * (priv->icon_width) / (TURN_PERIOD / 4);
+      priv->flip = TRUE;
     }
     else
     {
-      fx->icon_depth_direction = 1;
-      fx->delta_width =
-        (fx->count -
-         TURN_PERIOD * 3 / 4) * (fx->icon_width) / (TURN_PERIOD / 4) -
-        fx->icon_width;
-      fx->flip = FALSE;
+      priv->icon_depth_direction = 1;
+      priv->delta_width =
+        (priv->count -
+         TURN_PERIOD * 3 / 4) * (priv->icon_width) / (TURN_PERIOD / 4) -
+        priv->icon_width;
+      priv->flip = FALSE;
     }
 
-    fx->icon_depth = 10.00 * -fx->delta_width / fx->icon_width;
+    priv->icon_depth = 10.00 * -priv->delta_width / priv->icon_width;
 
     // fix icon flickering
     const gint MIN_WIDTH = 4;
 
-    if (abs(fx->delta_width) >= fx->icon_width - MIN_WIDTH)
+    if (abs(priv->delta_width) >= priv->icon_width - MIN_WIDTH)
     {
-      if (fx->delta_width > 0)
-        fx->delta_width = fx->icon_width - MIN_WIDTH;
+      if (priv->delta_width > 0)
+        priv->delta_width = priv->icon_width - MIN_WIDTH;
       else
-        fx->delta_width = -fx->icon_width + MIN_WIDTH;
+        priv->delta_width = -priv->icon_width + MIN_WIDTH;
     }
 
-    if (fx->count++ > TURN_PERIOD)
-      fx->count = 0;
+    if (priv->count++ > TURN_PERIOD)
+      priv->count = 0;
 
-    if (fx->alpha <= 0 || fx->clip_region.height <= 0)
+    if (priv->alpha <= 0 || priv->clip_region.height <= 0)
     {
-      fx->alpha = 0;
-      fx->direction = AWN_EFFECT_SPOTLIGHT_OFF;
-      fx->clip = FALSE;
+      priv->alpha = 0;
+      priv->direction = AWN_EFFECT_SPOTLIGHT_OFF;
+      priv->clip = FALSE;
     }
-    else if (fx->alpha <= 0.5)
+    else if (priv->alpha <= 0.5)
     {
-      fx->spotlight_alpha -= 2.0 / PERIOD;
+      priv->spotlight_alpha -= 2.0 / PERIOD;
     }
   }
   else
   {
-    fx->spotlight_alpha -= 2.0 / PERIOD;
+    priv->spotlight_alpha -= 2.0 / PERIOD;
   }
 
-  fx->glow_amount = fx->spotlight_alpha;
+  priv->glow_amount = priv->spotlight_alpha;
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (fx->direction == AWN_EFFECT_SPOTLIGHT_OFF && fx->spotlight_alpha <= 0)
+  if (priv->direction == AWN_EFFECT_SPOTLIGHT_OFF && priv->spotlight_alpha <= 0)
   {
-    fx->spotlight_alpha = 0;
-    fx->glow_amount = 0;
-    fx->direction = AWN_EFFECT_DIR_NONE;
+    priv->spotlight_alpha = 0;
+    priv->glow_amount = 0;
+    priv->direction = AWN_EFFECT_DIR_NONE;
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
 
     if (!repeat)
-      fx->spotlight = FALSE;
+      priv->spotlight = FALSE;
   }
 
   return repeat;
 }
 
 gboolean
-spotlight3D_effect_finalize(AwnEffectsPrivate * priv)
+spotlight3D_effect_finalize(AwnEffectsAnimation * anim)
 {
-  printf("spotlight3d_effect_finalize(AwnEffectsPrivate * priv)\n");
+  printf("spotlight3d_effect_finalize(AwnEffectsAnimation * anim)\n");
   return TRUE;
 }

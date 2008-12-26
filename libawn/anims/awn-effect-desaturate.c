@@ -28,72 +28,72 @@
 #include <stdlib.h>
 
 gboolean
-desaturate_effect(AwnEffectsPrivate * priv)
+desaturate_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->direction = AWN_EFFECT_DIR_DOWN;
-    fx->saturation = 1.0;
+    priv->direction = AWN_EFFECT_DIR_DOWN;
+    priv->saturation = 1.0;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
   const gdouble DESATURATION_STEP = 0.04;
 
-  switch (fx->direction)
+  switch (priv->direction)
   {
 
     case AWN_EFFECT_DIR_DOWN:
-      fx->saturation -= DESATURATION_STEP;
+      priv->saturation -= DESATURATION_STEP;
 
-      if (fx->saturation < 0)
-        fx->saturation = 0;
+      if (priv->saturation < 0)
+        priv->saturation = 0;
 
-      if (awn_effect_check_top_effect(priv, NULL))
+      if (awn_effect_check_top_effect(anim, NULL))
       {
-        awn_effects_redraw(fx);
-        if (fx->saturation > 0) return TRUE;
+        awn_effects_redraw(anim->effects);
+        if (priv->saturation > 0) return TRUE;
         else {
-          return awn_effect_suspend_animation(priv,
+          return awn_effect_suspend_animation(anim,
                                               (GSourceFunc)desaturate_effect);
         }
       }
       else
-        fx->direction = AWN_EFFECT_DIR_UP;
+        priv->direction = AWN_EFFECT_DIR_UP;
 
       break;
 
     case AWN_EFFECT_DIR_UP:
 
     default:
-      fx->saturation += DESATURATION_STEP;
+      priv->saturation += DESATURATION_STEP;
   }
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (fx->saturation >= 1.0)
+  if (priv->saturation >= 1.0)
   {
-    fx->saturation = 1.0;
-    fx->direction = AWN_EFFECT_DIR_DOWN;
+    priv->saturation = 1.0;
+    priv->direction = AWN_EFFECT_DIR_DOWN;
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
   }
 
   return repeat;
 }
 
 gboolean
-desaturate_effect_finalize(AwnEffectsPrivate * priv)
+desaturate_effect_finalize(AwnEffectsAnimation * anim)
 {
 
   return TRUE;

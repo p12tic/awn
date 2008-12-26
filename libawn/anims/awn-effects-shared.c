@@ -20,22 +20,22 @@
 #include "awn-effects-shared.h"
 
 gboolean
-awn_effect_check_top_effect(AwnEffectsPrivate * priv, gboolean * stopped)
+awn_effect_check_top_effect(AwnEffectsAnimation * anim, gboolean * stopped)
 {
   if (stopped)
     *stopped = TRUE;
 
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  GList *queue = fx->effect_queue;
+  GList *queue = priv->effect_queue;
 
-  AwnEffectsPrivate *item;
+  AwnEffectsAnimation *item;
 
   while (queue)
   {
     item = queue->data;
 
-    if (item->this_effect == priv->this_effect)
+    if (item->this_effect == anim->this_effect)
     {
       if (stopped)
         *stopped = FALSE;
@@ -46,39 +46,40 @@ awn_effect_check_top_effect(AwnEffectsPrivate * priv, gboolean * stopped)
     queue = g_list_next(queue);
   }
 
-  if (!fx->effect_queue)
+  if (!priv->effect_queue)
     return FALSE;
 
-  item = fx->effect_queue->data;
+  item = priv->effect_queue->data;
 
-  return item->this_effect == priv->this_effect;
+  return item->this_effect == anim->this_effect;
 }
 
 
 gboolean
-awn_effect_handle_repeating(AwnEffectsPrivate * priv)
+awn_effect_handle_repeating(AwnEffectsAnimation * anim)
 {
   gboolean effect_stopped = TRUE;
-  gboolean max_reached = awn_effect_check_max_loops(priv);
+  gboolean max_reached = awn_effect_check_max_loops(anim);
   gboolean repeat = !max_reached
-                    && awn_effect_check_top_effect(priv, &effect_stopped);
+                    && awn_effect_check_top_effect(anim, &effect_stopped);
 
   if (!repeat)
   {
     gboolean unregistered = FALSE;
-    AwnEffects *fx = priv->effects;
-    fx->current_effect = AWN_EFFECT_NONE;
-    fx->effect_lock = FALSE;
-    fx->timer_id = 0;
+    AwnEffects *fx = anim->effects;
+    AwnEffectsPrivate *priv = fx->priv;
+    priv->current_effect = AWN_EFFECT_NONE;
+    priv->effect_lock = FALSE;
+    priv->timer_id = 0;
 
     if (effect_stopped)
     {
-      if (priv->stop)
-        priv->stop(fx->self);
+      if (anim->stop)
+        anim->stop(priv->self);
 
-      unregistered = fx->self == NULL;
-
-      g_free(priv);
+      unregistered = priv->self == NULL;
+      
+      g_free(anim);
     }
 
     if (!unregistered)
@@ -90,29 +91,29 @@ awn_effect_handle_repeating(AwnEffectsPrivate * priv)
 
 
 gboolean
-awn_effect_check_max_loops(AwnEffectsPrivate * priv)
+awn_effect_check_max_loops(AwnEffectsAnimation * anim)
 {
   gboolean max_reached = FALSE;
 
-  if (priv->max_loops > 0)
+  if (anim->max_loops > 0)
   {
-    priv->max_loops--;
-    max_reached = priv->max_loops <= 0;
+    anim->max_loops--;
+    max_reached = anim->max_loops <= 0;
   }
 
   if (max_reached)
-    awn_effects_stop(priv->effects, priv->this_effect);
+    awn_effects_stop(anim->effects, anim->this_effect);
 
   return max_reached;
 }
 
 gboolean
-awn_effect_suspend_animation(AwnEffectsPrivate * priv, GSourceFunc func)
+awn_effect_suspend_animation(AwnEffectsAnimation * anim, GSourceFunc func)
 {
   // will stop the animation timer, but keeps the animation in active state
-  AwnEffects *fx = priv->effects;
-  fx->sleeping_func = func;
-  fx->timer_id = 0;
+  AwnEffectsPrivate *priv = anim->effects->priv;
+  priv->sleeping_func = func;
+  priv->timer_id = 0;
   return FALSE;
 }
 

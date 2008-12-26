@@ -23,9 +23,9 @@
 
 #include "awn-effects-shared.h"
 
-gboolean spotlight3D_hover_effect(AwnEffectsPrivate * priv);
-gboolean spotlight3D_opening_effect(AwnEffectsPrivate * priv);
-gboolean spotlight3D_closing_effect(AwnEffectsPrivate * priv);
-gboolean spotlight3D_effect_finalize(AwnEffectsPrivate * priv);
+gboolean spotlight3D_hover_effect(AwnEffectsAnimation * anim);
+gboolean spotlight3D_opening_effect(AwnEffectsAnimation * anim);
+gboolean spotlight3D_closing_effect(AwnEffectsAnimation * anim);
+gboolean spotlight3D_effect_finalize(AwnEffectsAnimation * anim);
 
 #endif

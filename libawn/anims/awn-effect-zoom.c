@@ -30,258 +30,258 @@
 // FIXME: because of orientation support the effect shouldn't use window_width
 
 gboolean
-zoom_effect(AwnEffectsPrivate * priv)
+zoom_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->count = 0;
-    fx->delta_width = 0;
-    fx->delta_height = 0;
-    fx->top_offset = 0;
-    fx->direction = AWN_EFFECT_DIR_UP;
+    priv->count = 0;
+    priv->delta_width = 0;
+    priv->delta_height = 0;
+    priv->top_offset = 0;
+    priv->direction = AWN_EFFECT_DIR_UP;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
-  switch (fx->direction)
+  switch (priv->direction)
   {
 
     case AWN_EFFECT_DIR_UP:
 
-      if (fx->delta_width + fx->icon_width < fx->window_width)
+      if (priv->delta_width + priv->icon_width < priv->window_width)
       {
-        fx->delta_width += fx->icon_width/8;
-        fx->delta_height += fx->icon_width/8;
+        priv->delta_width += priv->icon_width/8;
+        priv->delta_height += priv->icon_width/8;
       }
 
-      gboolean top = awn_effect_check_top_effect(priv, NULL);
+      gboolean top = awn_effect_check_top_effect(anim, NULL);
 
       if (top)
       {
-        awn_effects_redraw(fx);
-        if (fx->delta_width + fx->icon_width < fx->window_width)
+        awn_effects_redraw(anim->effects);
+        if (priv->delta_width + priv->icon_width < priv->window_width)
           return TRUE;
         else
-          return awn_effect_suspend_animation(priv, (GSourceFunc)zoom_effect);
+          return awn_effect_suspend_animation(anim, (GSourceFunc)zoom_effect);
       }
       else
-        fx->direction = AWN_EFFECT_DIR_DOWN;
+        priv->direction = AWN_EFFECT_DIR_DOWN;
 
       break;
 
     case AWN_EFFECT_DIR_DOWN:
-      fx->delta_width -= fx->icon_width/8;
-      fx->delta_height -= fx->icon_width/8;
+      priv->delta_width -= priv->icon_width/8;
+      priv->delta_height -= priv->icon_width/8;
 
-      if (fx->delta_width <= 0)
+      if (priv->delta_width <= 0)
       {
-        fx->direction = AWN_EFFECT_DIR_UP;
-        fx->delta_width = 0;
-        fx->delta_height = 0;
-        fx->top_offset = 0;
+        priv->direction = AWN_EFFECT_DIR_UP;
+        priv->delta_width = 0;
+        priv->delta_height = 0;
+        priv->top_offset = 0;
       }
 
       break;
 
     default:
-      fx->direction = AWN_EFFECT_DIR_UP;
+      priv->direction = AWN_EFFECT_DIR_UP;
   }
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (fx->direction == AWN_EFFECT_DIR_UP && !fx->delta_width
-      && !fx->delta_height)
+  if (priv->direction == AWN_EFFECT_DIR_UP && !priv->delta_width
+      && !priv->delta_height)
   {
-    fx->top_offset = 0;
+    priv->top_offset = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
   }
 
   return repeat;
 }
 
 gboolean
-zoom_attention_effect(AwnEffectsPrivate * priv)
+zoom_attention_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->count = 0;
-    fx->delta_width = 0;
-    fx->delta_height = 0;
-    fx->top_offset = 0;
-    fx->direction = AWN_EFFECT_DIR_UP;
+    priv->count = 0;
+    priv->delta_width = 0;
+    priv->delta_height = 0;
+    priv->top_offset = 0;
+    priv->direction = AWN_EFFECT_DIR_UP;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
-  switch (fx->direction)
+  switch (priv->direction)
   {
 
     case AWN_EFFECT_DIR_UP:
 
-      if (fx->delta_width + fx->icon_width < fx->window_width)
+      if (priv->delta_width + priv->icon_width < priv->window_width)
       {
-        fx->delta_width += 2;
-        fx->delta_height += 2;
-        fx->top_offset += 1;
+        priv->delta_width += 2;
+        priv->delta_height += 2;
+        priv->top_offset += 1;
       }
       else
       {
-        fx->direction = AWN_EFFECT_DIR_DOWN;
+        priv->direction = AWN_EFFECT_DIR_DOWN;
       }
 
       break;
 
     case AWN_EFFECT_DIR_DOWN:
-      fx->delta_width -= 2;
-      fx->delta_height -= 2;
-      fx->top_offset -= 1;
+      priv->delta_width -= 2;
+      priv->delta_height -= 2;
+      priv->top_offset -= 1;
 
-      if (fx->delta_width <= 0)
+      if (priv->delta_width <= 0)
       {
-        fx->direction = AWN_EFFECT_DIR_UP;
-        fx->delta_width = 0;
-        fx->delta_height = 0;
-        fx->top_offset = 0;
+        priv->direction = AWN_EFFECT_DIR_UP;
+        priv->delta_width = 0;
+        priv->delta_height = 0;
+        priv->top_offset = 0;
       }
 
       break;
 
     default:
-      fx->direction = AWN_EFFECT_DIR_UP;
+      priv->direction = AWN_EFFECT_DIR_UP;
   }
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (fx->direction == AWN_EFFECT_DIR_UP && !fx->delta_width
-      && !fx->delta_height)
+  if (priv->direction == AWN_EFFECT_DIR_UP && !priv->delta_width
+      && !priv->delta_height)
   {
-    fx->top_offset = 0;
+    priv->top_offset = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
   }
 
   return repeat;
 }
 
 gboolean
-zoom_opening_effect(AwnEffectsPrivate * priv)
+zoom_opening_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->count = 0;
-    fx->delta_width = -fx->icon_width;
-    fx->delta_height = -fx->icon_width;
-    fx->alpha = 0.0;
-    fx->top_offset = 0;
-    fx->direction = AWN_EFFECT_DIR_UP;
+    priv->count = 0;
+    priv->delta_width = -priv->icon_width;
+    priv->delta_height = -priv->icon_width;
+    priv->alpha = 0.0;
+    priv->top_offset = 0;
+    priv->direction = AWN_EFFECT_DIR_UP;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
   const gint PERIOD = 20;
 
-  fx->delta_width += (fx->icon_width) / PERIOD;
+  priv->delta_width += (priv->icon_width) / PERIOD;
 
-  fx->delta_height += (fx->icon_width) / PERIOD;
+  priv->delta_height += (priv->icon_width) / PERIOD;
 
-  fx->alpha += 1.0 / PERIOD;
+  priv->alpha += 1.0 / PERIOD;
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (fx->delta_width > 0)
+  if (priv->delta_width > 0)
   {
-    fx->top_offset = 0;
-    fx->alpha = 1.0;
-    fx->delta_width = 0;
-    fx->delta_height = 0;
+    priv->top_offset = 0;
+    priv->alpha = 1.0;
+    priv->delta_width = 0;
+    priv->delta_height = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
   }
 
   return repeat;
 }
 
 gboolean
-zoom_closing_effect(AwnEffectsPrivate * priv)
+zoom_closing_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->count = 0;
-    fx->delta_width = 0;
-    fx->delta_height = 0;
-    fx->alpha = 1.0;
-    fx->top_offset = 0;
-    fx->direction = AWN_EFFECT_DIR_UP;
+    priv->count = 0;
+    priv->delta_width = 0;
+    priv->delta_height = 0;
+    priv->alpha = 1.0;
+    priv->top_offset = 0;
+    priv->direction = AWN_EFFECT_DIR_UP;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
   const gint PERIOD = 20;
 
-  fx->delta_width -= (fx->icon_width) / PERIOD;
+  priv->delta_width -= (priv->icon_width) / PERIOD;
 
-  fx->delta_height -= (fx->icon_width) / PERIOD;
+  priv->delta_height -= (priv->icon_width) / PERIOD;
 
-  fx->alpha -= 1.0 / PERIOD;
+  priv->alpha -= 1.0 / PERIOD;
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (fx->alpha < 0.0)
+  if (priv->alpha < 0.0)
   {
-    fx->top_offset = 0;
-    fx->alpha = 0.0;
+    priv->top_offset = 0;
+    priv->alpha = 0.0;
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
   }
 
   return repeat;
 }
 
 gboolean
-zoom_effect_finalize(AwnEffectsPrivate * priv)
+zoom_effect_finalize(AwnEffectsAnimation * anim)
 {
-  printf("bounce_effect_finalize(AwnEffectsPrivate * priv)\n");
+  printf("bounce_effect_finalize(AwnEffectsAnimation * anim)\n");
   return TRUE;
 }
 

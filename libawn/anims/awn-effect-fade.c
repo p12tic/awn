@@ -28,62 +28,62 @@
 #include <stdlib.h>
 
 gboolean
-fade_out_effect(AwnEffectsPrivate * priv)
+fade_out_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->count = 0;
-    fx->alpha = 1.0;
+    priv->count = 0;
+    priv->alpha = 1.0;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
   const gdouble MAX_OFFSET = 50.0;
 
   const gint PERIOD = 20;
 
-  fx->top_offset = ++fx->count * (MAX_OFFSET / PERIOD);
+  priv->top_offset = ++priv->count * (MAX_OFFSET / PERIOD);
 
-  fx->alpha = fx->count * (-1.0 / PERIOD) + 1;
+  priv->alpha = priv->count * (-1.0 / PERIOD) + 1;
 
   // repaint widget
-  awn_effects_redraw(fx);
+  awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
-  if (fx->count >= PERIOD)
+  if (priv->count >= PERIOD)
   {
-    fx->count = 0;
+    priv->count = 0;
     // check for repeating
-    repeat = awn_effect_handle_repeating(priv);
+    repeat = awn_effect_handle_repeating(anim);
   }
 
   return repeat;
 }
 
 gboolean
-fading_effect(AwnEffectsPrivate * priv)
+fading_effect(AwnEffectsAnimation * anim)
 {
-  AwnEffects *fx = priv->effects;
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!fx->effect_lock)
+  if (!priv->effect_lock)
   {
-    fx->effect_lock = TRUE;
+    priv->effect_lock = TRUE;
     // effect start initialize values
-    fx->alpha = 1.0;
-    fx->direction = AWN_EFFECT_DIR_DOWN;
+    priv->alpha = 1.0;
+    priv->direction = AWN_EFFECT_DIR_DOWN;
 
-    if (priv->start)
-      priv->start(fx->self);
+    if (anim->start)
+      anim->start(priv->self);
 
-    priv->start = NULL;
+    anim->start = NULL;
   }
 
   const gdouble MIN_ALPHA = 0.35;
@@ -92,27 +92,27 @@ fading_effect(AwnEffectsPrivate * priv)
 
   gboolean repeat = TRUE;
 
-  if (fx->direction == AWN_EFFECT_DIR_DOWN)
+  if (priv->direction == AWN_EFFECT_DIR_DOWN)
   {
-    fx->alpha -= ALPHA_STEP;
+    priv->alpha -= ALPHA_STEP;
 
-    if (fx->alpha <= MIN_ALPHA)
-      fx->direction = AWN_EFFECT_DIR_UP;
+    if (priv->alpha <= MIN_ALPHA)
+      priv->direction = AWN_EFFECT_DIR_UP;
 
     // repaint widget
-    awn_effects_redraw(fx);
+    awn_effects_redraw(anim->effects);
   }
   else
   {
-    fx->alpha += ALPHA_STEP * 1.5;
+    priv->alpha += ALPHA_STEP * 1.5;
     // repaint widget
-    awn_effects_redraw(fx);
+    awn_effects_redraw(anim->effects);
 
-    if (fx->alpha >= 1)
+    if (priv->alpha >= 1)
     {
-      fx->alpha = 1.0;
-      fx->direction = AWN_EFFECT_DIR_DOWN;
-      repeat = awn_effect_handle_repeating(priv);
+      priv->alpha = 1.0;
+      priv->direction = AWN_EFFECT_DIR_DOWN;
+      repeat = awn_effect_handle_repeating(anim);
     }
   }
 
@@ -120,8 +120,8 @@ fading_effect(AwnEffectsPrivate * priv)
 }
 
 gboolean
-fading_effect_finalize(AwnEffectsPrivate * priv)
+fading_effect_finalize(AwnEffectsAnimation * anim)
 {
-  printf("fading_effect_finalize(AwnEffectsPrivate * priv)\n");
+  printf("fading_effect_finalize(AwnEffectsAnimation * anim)\n");
   return TRUE;
 }

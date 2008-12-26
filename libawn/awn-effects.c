@@ -46,6 +46,10 @@
 
 G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT);
 
+#define AWN_EFFECTS_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
+  AWN_TYPE_EFFECTS, \
+  AwnEffectsPrivate))
+
 #ifndef M_PI
 #define  M_PI 3.14159265358979323846
 #endif
@@ -55,7 +59,7 @@ G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT);
 #define AWN_FRAME_RATE(fx) (40)
 #define AWN_ANIMATIONS_PER_BUNDLE 5
 
-typedef gboolean (*_AwnAnimation)(AwnEffectsPrivate*);
+typedef gboolean (*_AwnAnimation)(AwnEffectsAnimation*);
 
 enum {
   PROP_0,
@@ -87,14 +91,14 @@ awn_effects_finalize(GObject *object)
 {
   AwnEffects * fx = AWN_EFFECTS(object);
   // destroy animation timer
-  if (fx->timer_id)
+  if (fx->priv->timer_id)
   {
-    GSource *s = g_main_context_find_source_by_id(NULL, fx->timer_id);
+    GSource *s = g_main_context_find_source_by_id(NULL, fx->priv->timer_id);
     if (s) g_source_destroy(s);
   }
 
   // free effect queue and associated AwnEffectsPriv
-  GList *queue = fx->effect_queue;
+  GList *queue = fx->priv->effect_queue;
   while (queue)
   {
     g_free(queue->data);
@@ -102,20 +106,15 @@ awn_effects_finalize(GObject *object)
     queue = g_list_next(queue);
   }
 
-  if (fx->effect_queue) g_list_free(fx->effect_queue);
-  fx->effect_queue = NULL;
+  if (fx->priv->effect_queue)
+    g_list_free(fx->priv->effect_queue);
+  fx->priv->effect_queue = NULL;
 
-  fx->self = NULL;
+  fx->priv->self = NULL;
 
-  if (fx->label) {
+  if (fx->label)
     g_free(fx->label);
-    fx->label = NULL;
-  }
-
-  if (fx->client)
-  {
-    fx->client = NULL;
-  }
+  fx->label = NULL;
 
   G_OBJECT_CLASS (awn_effects_parent_class)->finalize(object);
 }
@@ -245,8 +244,8 @@ awn_effects_prop_changed(GObject *object, GParamSpec *pspec)
 void
 awn_effects_redraw(AwnEffects *fx)
 {
-  if (fx->self && GTK_WIDGET_DRAWABLE(fx->self)) {
-    gtk_widget_queue_draw(fx->self);
+  if (fx->priv->self && GTK_WIDGET_DRAWABLE(fx->priv->self)) {
+    gtk_widget_queue_draw(fx->priv->self);
   }
 }
 
@@ -270,12 +269,11 @@ void awn_effects_register_effect_bundle(AwnEffectsClass *klass,
 static void
 awn_effects_constructed (GObject *object)
 {
-  AwnEffects      *effects = AWN_EFFECTS (object);
+  // FIXME: move this to AwnIcon, AwnEffects are more flexible without it
   AwnConfigClient *client;
   AwnConfigBridge *bridge = awn_config_bridge_get_default ();
 
-  effects->client = awn_config_client_new ();
-  client = effects->client;
+  client = awn_config_client_new ();
 
   awn_config_bridge_bind (bridge, client,
                           "effects", "icon_effect",
@@ -307,6 +305,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
   obj_class->notify = awn_effects_prop_changed;
   obj_class->finalize = awn_effects_finalize;
   obj_class->constructed = awn_effects_constructed;
+
+  g_type_class_add_private (obj_class, sizeof (AwnEffectsPrivate));
 
   klass->animations = g_ptr_array_sized_new(AWN_ANIMATIONS_PER_BUNDLE * 8); // 5 animations per bundle, 8 effect bundles
 
@@ -458,13 +458,15 @@ awn_effects_class_init(AwnEffectsClass *klass)
 static void
 awn_effects_init(AwnEffects * fx)
 {
+  fx->priv = AWN_EFFECTS_GET_PRIVATE(fx);
   // the entire structure is zeroed in allocation, define only non-zero vars
   //  which are not properties
-  fx->icon_width = 48;
-  fx->icon_height = 48;
 
-  fx->alpha = 1.0;
-  fx->saturation = 1.0;
+  fx->priv->icon_width = 48;
+  fx->priv->icon_height = 48;
+
+  fx->priv->alpha = 1.0;
+  fx->priv->saturation = 1.0;
 }
 
 AwnEffects* awn_effects_new_for_widget(GtkWidget * widget)
@@ -478,7 +480,7 @@ AwnEffects* awn_effects_new_for_widget(GtkWidget * widget)
    * to destroy us when it dies
    * though we could also ref the widget and unref it in our dispose
    */
-  fx->self = widget;
+  fx->priv->self = widget;
 
   return fx;
 }
@@ -524,8 +526,8 @@ awn_effects_get_priority(const AwnEffect effect)
 static gint
 awn_effects_sort(gconstpointer a, gconstpointer b)
 {
-  const AwnEffectsPrivate *data1 = (AwnEffectsPrivate *) a;
-  const AwnEffectsPrivate *data2 = (AwnEffectsPrivate *) b;
+  const AwnEffectsAnimation *data1 = (AwnEffectsAnimation *) a;
+  const AwnEffectsAnimation *data2 = (AwnEffectsAnimation *) b;
   return (gint)(awn_effects_get_priority(data1->this_effect) - 
     awn_effects_get_priority(data2->this_effect));
 }
@@ -541,14 +543,14 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect,
                     AwnEventNotify start, AwnEventNotify stop,
                     gint max_loops)
 {
-  if (effect == AWN_EFFECT_NONE || fx->self == NULL)
+  if (effect == AWN_EFFECT_NONE || fx->priv->self == NULL)
   {
     return;
   }
 
-  AwnEffectsPrivate *queue_item;
+  AwnEffectsAnimation *queue_item;
 
-  GList *queue = fx->effect_queue;
+  GList *queue = fx->priv->effect_queue;
 
   // dont start the effect if already in queue
 
@@ -564,16 +566,16 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect,
     queue = g_list_next(queue);
   }
 
-  AwnEffectsPrivate *priv = g_new(AwnEffectsPrivate, 1);
+  AwnEffectsAnimation *anim = g_new(AwnEffectsAnimation, 1);
 
-  priv->effects = fx;
-  priv->this_effect = effect;
-  priv->max_loops = max_loops;
-  priv->start = start;
-  priv->stop = stop;
+  anim->effects = fx;
+  anim->this_effect = effect;
+  anim->max_loops = max_loops;
+  anim->start = start;
+  anim->stop = stop;
 
-  fx->effect_queue = g_list_insert_sorted(fx->effect_queue, priv,
-                                          awn_effects_sort);
+  fx->priv->effect_queue = g_list_insert_sorted(fx->priv->effect_queue, anim,
+                                                awn_effects_sort);
   awn_effects_main_effect_loop(fx);
 }
 
@@ -585,9 +587,9 @@ awn_effects_stop(AwnEffects * fx, const AwnEffect effect)
     return;
   }
 
-  AwnEffectsPrivate *queue_item;
+  AwnEffectsAnimation *queue_item;
 
-  GList *queue = fx->effect_queue;
+  GList *queue = fx->priv->effect_queue;
 
   // find the effect in queue
 
@@ -607,24 +609,24 @@ awn_effects_stop(AwnEffects * fx, const AwnEffect effect)
   {
     // remove the effect from effect_queue and free the struct if the effect
     // is not in the middle of animation currently
-    gboolean dispose = queue_item->this_effect != fx->current_effect;
-    fx->effect_queue = g_list_remove(fx->effect_queue, queue_item);
+    gboolean dispose = queue_item->this_effect != fx->priv->current_effect;
+    fx->priv->effect_queue = g_list_remove(fx->priv->effect_queue, queue_item);
 
     if (dispose)
     {
       g_free(queue_item);
     } 
-    else if (fx->sleeping_func)
+    else if (fx->priv->sleeping_func)
     {
       // wake up sleeping effect
-      fx->timer_id = g_timeout_add(AWN_FRAME_RATE(fx),
-                                   fx->sleeping_func, queue_item);
-      fx->sleeping_func = NULL;
+      fx->priv->timer_id = g_timeout_add(AWN_FRAME_RATE(fx),
+                                         fx->priv->sleeping_func, queue_item);
+      fx->priv->sleeping_func = NULL;
     }
   }
 }
 
-static gpointer get_animation(AwnEffectsPrivate *topEffect, guint fxNum)
+static gpointer get_animation(AwnEffectsAnimation *topEffect, guint fxNum)
 {
   switch (topEffect->this_effect)
   {
@@ -648,39 +650,40 @@ static gpointer get_animation(AwnEffectsPrivate *topEffect, guint fxNum)
 void
 awn_effects_main_effect_loop(AwnEffects * fx)
 {
-  if (fx->current_effect != AWN_EFFECT_NONE || fx->effect_queue == NULL)
+  if (fx->priv->current_effect != AWN_EFFECT_NONE
+      || fx->priv->effect_queue == NULL)
   {
-    if (fx->sleeping_func && fx->effect_queue)
+    if (fx->priv->sleeping_func && fx->priv->effect_queue)
     {
       // check if sleeping effect is still on top
-      AwnEffectsPrivate *queue_item = fx->effect_queue->data;
-      if (fx->current_effect == queue_item->this_effect) return;
+      AwnEffectsAnimation *queue_item = fx->priv->effect_queue->data;
+      if (fx->priv->current_effect == queue_item->this_effect) return;
 
       // sleeping effect is not on top -> wake & play it
 
       // find correct effectsPrivate starting with the second item
-      GList *queue = g_list_next(fx->effect_queue);
+      GList *queue = g_list_next(fx->priv->effect_queue);
       while (queue)
       {
         queue_item = queue->data;
 
-        if (queue_item->this_effect == fx->current_effect) break;
+        if (queue_item->this_effect == fx->priv->current_effect) break;
 
         queue = g_list_next(queue);
       }
 
       g_return_if_fail(queue_item);
 
-      fx->timer_id = g_timeout_add(AWN_FRAME_RATE(fx),
-                                   fx->sleeping_func, queue_item);
-      fx->sleeping_func = NULL;
+      fx->priv->timer_id = g_timeout_add(AWN_FRAME_RATE(fx),
+                                         fx->priv->sleeping_func, queue_item);
+      fx->priv->sleeping_func = NULL;
     }
     return;
   }
 
-  AwnEffectsPrivate *topEffect =
+  AwnEffectsAnimation *topEffect =
 
-    (AwnEffectsPrivate *)(fx->effect_queue->data);
+    (AwnEffectsAnimation *)(fx->priv->effect_queue->data);
 
   /* FIXME: simplifing the index to (topEffect->thisEffect-1) changed
    *  the gconf key a bit -> update awn-manager's custom effect setting
@@ -703,24 +706,24 @@ awn_effects_main_effect_loop(AwnEffects * fx)
 
   if (animation)
   {
-    fx->timer_id = g_timeout_add(AWN_FRAME_RATE(fx),
-                                 animation, topEffect);
-    fx->current_effect = topEffect->this_effect;
-    fx->effect_lock = FALSE;
+    fx->priv->timer_id = g_timeout_add(AWN_FRAME_RATE(fx),
+                                       animation, topEffect);
+    fx->priv->current_effect = topEffect->this_effect;
+    fx->priv->effect_lock = FALSE;
   }
   else
   {
     if (topEffect->start)
     {
-      topEffect->start(fx->self);
+      topEffect->start(fx->priv->self);
     }
 
     if (topEffect->stop)
     {
-      topEffect->stop(fx->self);
+      topEffect->stop(fx->priv->self);
     }
 
-    // dispose AwnEffectsPrivate
+    // dispose AwnEffectsAnimation
     awn_effects_stop(fx, topEffect->this_effect);
   }
 }
@@ -728,30 +731,38 @@ awn_effects_main_effect_loop(AwnEffects * fx)
 void
 awn_effects_draw_set_icon_size(AwnEffects * fx, const gint width, const gint height, gboolean requestSize)
 {
-  fx->icon_width = width;
-  fx->icon_height = height;
-  if (requestSize && fx->self->allocation.width != width*5/4)
+  fx->priv->icon_width = width;
+  fx->priv->icon_height = height;
+  if (requestSize && fx->priv->self)
   {
-    // AwnTitle position depends on our height requisition!
-    // FIXME: come up with something better other than "height*2+4", it's here
-    //  only because AwnAppletSimple currently calculates it like this and we
-    //  want to have AwnTitle on the same Y-pos
-    // FIXME: add icon_offset to height
-    gtk_widget_set_size_request(fx->self, width*5/4, height*2+4);
+    // this should be only used without AwnIcon,
+    // AwnIcon handles size_requests well enough
+    switch (fx->orientation) {
+      case AWN_EFFECT_ORIENT_TOP:
+      case AWN_EFFECT_ORIENT_BOTTOM:
+        if (fx->priv->self->allocation.width < width*6/5)
+          gtk_widget_set_size_request(fx->priv->self, width*6/5, height);
+        break;
+      case AWN_EFFECT_ORIENT_RIGHT:
+      case AWN_EFFECT_ORIENT_LEFT:
+        if (fx->priv->self->allocation.height < height*6/5)
+          gtk_widget_set_size_request(fx->priv->self, width, height*6/5);
+        break;
+    }
   }
 }
 
 cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
 {
-  g_return_val_if_fail(fx->self, NULL);
-  cairo_t *cr = gdk_cairo_create(fx->self->window);
+  g_return_val_if_fail(fx->priv->self, NULL);
+  cairo_t *cr = gdk_cairo_create(fx->priv->self->window);
   g_return_val_if_fail(cairo_status(cr) == CAIRO_STATUS_SUCCESS, NULL);
   fx->window_ctx = cr;
 
   cairo_surface_t *targetSurface = cairo_get_target(cr);
   if (cairo_surface_get_type(targetSurface) == CAIRO_SURFACE_TYPE_XLIB) {
-    fx->window_width = cairo_xlib_surface_get_width(targetSurface);
-    fx->window_height = cairo_xlib_surface_get_height(targetSurface);
+    fx->priv->window_width = cairo_xlib_surface_get_width(targetSurface);
+    fx->priv->window_height = cairo_xlib_surface_get_height(targetSurface);
   } else {
     g_warning("AwnEffects: Drawing to non-xlib surface, unknown dimensions.");
   }
@@ -759,8 +770,8 @@ cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
   // we'll give to user virtual context and later paint everything on real one
   targetSurface = cairo_surface_create_similar(targetSurface,
                                                CAIRO_CONTENT_COLOR_ALPHA,
-                                               fx->window_width,
-                                               fx->window_height
+                                               fx->priv->window_width,
+                                               fx->priv->window_height
                                               );
   g_return_val_if_fail(cairo_surface_status(targetSurface) == CAIRO_STATUS_SUCCESS, NULL);
   cr = cairo_create(targetSurface);
@@ -770,10 +781,10 @@ cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
   //  pre and post ops (can be then used for optimizations)
   //  Then the param should be also removed from all ops functions.
   GtkAllocation ds;
-  ds.width = fx->icon_width;
-  ds.height = fx->icon_height;
-  ds.x = (fx->window_width - ds.width) / 2;
-  ds.y = (fx->window_height - ds.height); // sit on bottom by default
+  ds.width = fx->priv->icon_width;
+  ds.height = fx->priv->icon_height;
+  ds.x = (fx->priv->window_width - ds.width) / 2;
+  ds.y = (fx->priv->window_height - ds.height); // sit on bottom by default
 
   // put actual transformations here
   // FIXME: put the functions in some kind of list/array

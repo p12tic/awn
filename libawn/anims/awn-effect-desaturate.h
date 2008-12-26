@@ -23,6 +23,6 @@
 
 #include "awn-effects-shared.h"
 
-gboolean desaturate_effect(AwnEffectsPrivate * priv);
+gboolean desaturate_effect(AwnEffectsAnimation * anim);
 
 #endif
