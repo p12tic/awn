@@ -96,3 +96,4 @@ tests/test-awn-icon-box
 ./tests/test-taskmanager
 applets/taskmanager/taskmanager.schemas
 applets/taskmanager/taskmanager.schemas.in
+tests/test-awn-effects
