@@ -32,20 +32,12 @@ turn_hover_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->top_offset = 0;
     priv->delta_width = 0;
     priv->icon_depth = 0;
     priv->icon_depth_direction = 0;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gint PERIOD = 44;
@@ -124,10 +116,7 @@ turn_opening_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->top_offset = 0;
     priv->clip = TRUE;
@@ -138,11 +127,6 @@ turn_opening_effect(AwnEffectsAnimation * anim)
     priv->delta_width = 0;
     priv->icon_depth = 0;
     priv->icon_depth_direction = 0;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gint PERIOD = 44;
@@ -229,20 +213,12 @@ turn_closing_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->top_offset = 0;
     priv->delta_width = 0;
     priv->icon_depth = 0;
     priv->icon_depth_direction = 0;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gint PERIOD = 44;

@@ -74,10 +74,9 @@ awn_effect_handle_repeating(AwnEffectsAnimation * anim)
 
     if (effect_stopped)
     {
-      if (anim->stop)
-        anim->stop(priv->self);
+      awn_effect_emit_anim_end(anim);
 
-      unregistered = priv->self == NULL;
+      unregistered = fx->widget == NULL;
       
       g_free(anim);
     }
@@ -115,5 +114,21 @@ awn_effect_suspend_animation(AwnEffectsAnimation * anim, GSourceFunc func)
   priv->sleeping_func = func;
   priv->timer_id = 0;
   return FALSE;
+}
+
+void awn_effect_emit_anim_start(AwnEffectsAnimation *anim)
+{
+  if (anim->signal_start) {
+    awn_effects_emit_anim_start(anim->effects, anim->this_effect);
+    anim->signal_start = FALSE;
+  }
+}
+
+void awn_effect_emit_anim_end(AwnEffectsAnimation *anim)
+{
+  if (anim->signal_end) {
+    awn_effects_emit_anim_end(anim->effects, anim->this_effect);
+    anim->signal_end = FALSE;
+  }
 }
 

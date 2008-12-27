@@ -32,10 +32,7 @@ spotlight3D_hover_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->top_offset = 0;
     priv->spotlight_alpha = 1.0;
@@ -44,11 +41,6 @@ spotlight3D_hover_effect(AwnEffectsAnimation * anim)
     priv->delta_width = 0;
     priv->icon_depth = 0;
     priv->icon_depth_direction = 0;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gint PERIOD = 44;
@@ -152,10 +144,7 @@ spotlight3D_opening_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->top_offset = 0;
     priv->spotlight_alpha = 1.0;
@@ -169,11 +158,6 @@ spotlight3D_opening_effect(AwnEffectsAnimation * anim)
     priv->delta_width = 0;
     priv->icon_depth = 0;
     priv->icon_depth_direction = 0;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gint PERIOD = 44;
@@ -268,10 +252,7 @@ spotlight3D_closing_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->spotlight_alpha = 0.0;
     priv->spotlight = TRUE;
     priv->glow_amount = priv->spotlight_alpha;
@@ -282,17 +263,9 @@ spotlight3D_closing_effect(AwnEffectsAnimation * anim)
     priv->clip_region.width = priv->icon_width;
     priv->direction = AWN_EFFECT_SPOTLIGHT_ON;
 
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
-
     priv->count = 0;
-
     priv->delta_width = 0;
-
     priv->icon_depth = 0;
-
     priv->icon_depth_direction = 0;
   }
 

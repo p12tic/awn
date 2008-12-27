@@ -33,20 +33,9 @@ bounce_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
-    priv->count = 0;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
-  }
+  AWN_ANIMATION_INIT(anim) priv->count = 0;
 
   const gdouble MAX_BOUNCE_OFFSET = 15.0;
-
   const gint PERIOD = 20;
 
   priv->top_offset = sin(++priv->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
@@ -73,10 +62,7 @@ bounce_opening_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->top_offset = 0;
     priv->clip = TRUE;
@@ -84,17 +70,10 @@ bounce_opening_effect(AwnEffectsAnimation * anim)
     priv->clip_region.y = 0;
     priv->clip_region.width = priv->icon_width;
     priv->clip_region.height = 0;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gint PERIOD1 = 15;
-
   const gint PERIOD2 = 20;
-
   const gint MAX_BOUNCE_OFFSET = 15;
 
   if (priv->count < PERIOD1)

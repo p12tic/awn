@@ -35,26 +35,16 @@ spotlight_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->spotlight_alpha = 0;
     priv->spotlight = TRUE;
     priv->glow_amount = 0;
     priv->direction = AWN_EFFECT_SPOTLIGHT_ON;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gint PERIOD = 15;
-
   const gint TREMBLE_PERIOD = 5;
-
   const gfloat TREMBLE_HEIGHT = 0.4;
 
   gboolean busy = awn_effect_check_top_effect(anim, NULL);
@@ -109,18 +99,10 @@ spotlight_half_fade_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->direction = AWN_EFFECT_SPOTLIGHT_ON;
     priv->spotlight = TRUE;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gint PERIOD = 20;
@@ -166,10 +148,7 @@ spotlight_opening_effect2(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->spotlight_alpha = 1.0;
     priv->spotlight = TRUE;
@@ -180,11 +159,6 @@ spotlight_opening_effect2(AwnEffectsAnimation * anim)
     priv->clip_region.y = 0;
     priv->clip_region.height = 0;
     priv->clip_region.width = priv->icon_width;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gint PERIOD = 20;
@@ -233,10 +207,7 @@ spotlight_closing_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->spotlight_alpha = 0.0;
     priv->spotlight = TRUE;
     priv->glow_amount = priv->spotlight_alpha;
@@ -246,11 +217,6 @@ spotlight_closing_effect(AwnEffectsAnimation * anim)
     priv->clip_region.height = priv->icon_height;
     priv->clip_region.width = priv->icon_width;
     priv->direction = AWN_EFFECT_SPOTLIGHT_ON;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gint PERIOD = 40;

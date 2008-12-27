@@ -32,17 +32,9 @@ desaturate_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->direction = AWN_EFFECT_DIR_DOWN;
     priv->saturation = 1.0;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gdouble DESATURATION_STEP = 0.04;

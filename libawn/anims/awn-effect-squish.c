@@ -32,19 +32,11 @@ bounce_squish_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->delta_width = 0;
     priv->delta_height = 0;
     priv->direction = AWN_EFFECT_SQUISH_DOWN;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gdouble MAX_BOUNCE_OFFSET = 15.0;
@@ -114,19 +106,11 @@ bounce_squish_attention_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->delta_width = 0;
     priv->delta_height = 0;
     priv->direction = AWN_EFFECT_SQUISH_DOWN;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gdouble MAX_BOUNCE_OFFSET = 15.0;
@@ -204,19 +188,11 @@ bounce_squish_opening_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->direction = AWN_EFFECT_DIR_NONE;
     priv->delta_width = -priv->icon_width;
     priv->delta_height = -priv->icon_height;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gdouble MAX_BOUNCE_OFFSET = 15.0;
@@ -293,23 +269,14 @@ bounce_squish_closing_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->direction = AWN_EFFECT_DIR_UP;
     priv->delta_width = -priv->icon_width;
     priv->delta_height = -priv->icon_height;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gdouble MAX_OFFSET = 50.0;
-
   const gint PERIOD = 20;
 
   priv->top_offset = ++priv->count * (MAX_OFFSET / PERIOD);

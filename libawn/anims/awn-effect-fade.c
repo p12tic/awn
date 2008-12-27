@@ -32,17 +32,9 @@ fade_out_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->alpha = 1.0;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gdouble MAX_OFFSET = 50.0;
@@ -73,21 +65,12 @@ fading_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->alpha = 1.0;
     priv->direction = AWN_EFFECT_DIR_DOWN;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gdouble MIN_ALPHA = 0.35;
-
   const gdouble ALPHA_STEP = 0.05;
 
   gboolean repeat = TRUE;

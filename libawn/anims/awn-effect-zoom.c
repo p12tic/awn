@@ -34,20 +34,12 @@ zoom_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->delta_width = 0;
     priv->delta_height = 0;
     priv->top_offset = 0;
     priv->direction = AWN_EFFECT_DIR_UP;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   switch (priv->direction)
@@ -115,20 +107,12 @@ zoom_attention_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->delta_width = 0;
     priv->delta_height = 0;
     priv->top_offset = 0;
     priv->direction = AWN_EFFECT_DIR_UP;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   switch (priv->direction)
@@ -189,21 +173,13 @@ zoom_opening_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->delta_width = -priv->icon_width;
     priv->delta_height = -priv->icon_width;
     priv->alpha = 0.0;
     priv->top_offset = 0;
     priv->direction = AWN_EFFECT_DIR_UP;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gint PERIOD = 20;
@@ -237,21 +213,13 @@ zoom_closing_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
-  if (!priv->effect_lock)
-  {
-    priv->effect_lock = TRUE;
-    // effect start initialize values
+  AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->delta_width = 0;
     priv->delta_height = 0;
     priv->alpha = 1.0;
     priv->top_offset = 0;
     priv->direction = AWN_EFFECT_DIR_UP;
-
-    if (anim->start)
-      anim->start(priv->self);
-
-    anim->start = NULL;
   }
 
   const gint PERIOD = 20;

@@ -30,12 +30,11 @@ struct _AwnEffectsAnimation
   AwnEffects *effects;
   AwnEffect this_effect;
   gint max_loops;
-  AwnEventNotify start, stop;
+  gboolean signal_start, signal_end;
 };
 
 struct _AwnEffectsPrivate
 {
-  GtkWidget *self;
   GList *effect_queue;
 
   GSourceFunc sleeping_func;
@@ -97,6 +96,17 @@ typedef enum
   AWN_EFFECT_SPOTLIGHT_OFF
 } AwnEffectSequence;
 
+// Emits "animation-start" signal and initializes animation, extra 
+//  initialization can follow in a single expression or block of code.
+#define AWN_ANIMATION_INIT(anim)                     \
+          gboolean __done_lock = FALSE;              \
+          if (!anim->effects->priv->effect_lock) {   \
+            anim->effects->priv->effect_lock = TRUE; \
+            __done_lock = TRUE;                      \
+            awn_effect_emit_anim_start(anim);        \
+          }                                          \
+          if (__done_lock)
+
 gboolean awn_effect_check_top_effect   (AwnEffectsAnimation * anim,
                                         gboolean * stopped);
 
@@ -106,5 +116,8 @@ gboolean awn_effect_check_max_loops    (AwnEffectsAnimation * anim);
 
 gboolean awn_effect_suspend_animation  (AwnEffectsAnimation * anim,
                                         GSourceFunc func);
+
+void awn_effect_emit_anim_start        (AwnEffectsAnimation *anim);
+void awn_effect_emit_anim_end          (AwnEffectsAnimation *anim);
 
 #endif

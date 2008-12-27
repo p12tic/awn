@@ -48,7 +48,7 @@ G_BEGIN_DECLS
 typedef struct _AwnIcon        AwnIcon;
 typedef struct _AwnIconClass   AwnIconClass;
 typedef struct _AwnIconPrivate AwnIconPrivate;
-typedef enum   _AwnIconState   AwnIconState;
+//typedef enum   _AwnIconState   AwnIconState;
  
 struct _AwnIcon
 {

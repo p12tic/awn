@@ -86,6 +86,7 @@ struct _AwnEffects
   GObject parent;
 
   /* Properties */
+  GtkWidget *widget;
   gint orientation;
   guint set_effects;
   gint icon_offset;
@@ -108,6 +109,9 @@ struct _AwnEffects
 
 struct _AwnEffectsClass {
   GObjectClass parent_class;
+
+  void (*animation_start) (AwnEffects *fx, AwnEffect effect);
+  void (*animation_end) (AwnEffects *fx, AwnEffect effect);
 
   GPtrArray *animations;
 };
@@ -147,17 +151,18 @@ void awn_effects_stop(AwnEffects * fx, const AwnEffect effect);
  * awn_effects_start_ex:
  * @fx: Pointer to #AwnEffects structure.
  * @effect: Effect to schedule.
- * @start: Function which will be called when animation starts.
- * @stop: Function which will be called when animation finishes.
  * @max_loops: Number of maximum animation loops (0 for unlimited).
+ * @signal_start: Determines whether the animation should emit "animation-start"
+ *   signal when it starts.
+ * @signal_stop: Determines whether the animation should emit "animation-end"
+ *   signal when it finishes.
  *
  * Extended effect start, which provides callbacks for animation start, end and
  * possibility to specify maximum number of loops.
  */
 void
-awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect,
-                    AwnEventNotify start, AwnEventNotify stop,
-                    gint max_loops);
+awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
+                     gboolean signal_start, gboolean signal_end);
 
 void awn_effects_draw_set_icon_size(AwnEffects *, const gint, const gint, gboolean requestSize);
 
@@ -170,6 +175,8 @@ void awn_effects_redraw(AwnEffects *);
 
 //Move this somewhere else eventually
 void awn_effects_main_effect_loop(AwnEffects * fx);
+void awn_effects_emit_anim_start(AwnEffects *fx, AwnEffect effect);
+void awn_effects_emit_anim_end(AwnEffects *fx, AwnEffect effect);
 
 G_END_DECLS
 

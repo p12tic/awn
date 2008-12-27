@@ -24,6 +24,7 @@
 
 #include "awn-effects.h"
 #include "awn-effects-ops-new.h"
+#include "awn-enum-types.h"
 
 #include "awn-config-client.h"
 #include "awn-config-bridge.h"
@@ -60,6 +61,15 @@ G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT);
 #define AWN_ANIMATIONS_PER_BUNDLE 5
 
 typedef gboolean (*_AwnAnimation)(AwnEffectsAnimation*);
+
+enum
+{
+  ANIMATION_START,
+  ANIMATION_END,
+
+  LAST_SIGNAL
+};
+static guint32 _effects_signals[LAST_SIGNAL] = { 0 };
 
 enum {
   PROP_0,
@@ -110,7 +120,7 @@ awn_effects_finalize(GObject *object)
     g_list_free(fx->priv->effect_queue);
   fx->priv->effect_queue = NULL;
 
-  fx->priv->self = NULL;
+  fx->widget = NULL;
 
   if (fx->label)
     g_free(fx->label);
@@ -244,8 +254,8 @@ awn_effects_prop_changed(GObject *object, GParamSpec *pspec)
 void
 awn_effects_redraw(AwnEffects *fx)
 {
-  if (fx->priv->self && GTK_WIDGET_DRAWABLE(fx->priv->self)) {
-    gtk_widget_queue_draw(fx->priv->self);
+  if (fx->widget && GTK_WIDGET_DRAWABLE(fx->widget)) {
+    gtk_widget_queue_draw(fx->widget);
   }
 }
 
@@ -305,6 +315,23 @@ awn_effects_class_init(AwnEffectsClass *klass)
   obj_class->notify = awn_effects_prop_changed;
   obj_class->finalize = awn_effects_finalize;
   obj_class->constructed = awn_effects_constructed;
+
+  /* Signals */
+  _effects_signals[ANIMATION_START] =
+    g_signal_new ("animation-start", G_OBJECT_CLASS_TYPE(obj_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET(AwnEffectsClass, animation_start),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__ENUM,
+                  G_TYPE_NONE, 1, AWN_TYPE_EFFECT);
+
+  _effects_signals[ANIMATION_END] =
+    g_signal_new ("animation-end", G_OBJECT_CLASS_TYPE(obj_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET(AwnEffectsClass, animation_end),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__ENUM,
+                  G_TYPE_NONE, 1, AWN_TYPE_EFFECT);
 
   g_type_class_add_private (obj_class, sizeof (AwnEffectsPrivate));
 
@@ -480,7 +507,7 @@ AwnEffects* awn_effects_new_for_widget(GtkWidget * widget)
    * to destroy us when it dies
    * though we could also ref the widget and unref it in our dispose
    */
-  fx->priv->self = widget;
+  fx->widget = widget;
 
   return fx;
 }
@@ -535,15 +562,14 @@ awn_effects_sort(gconstpointer a, gconstpointer b)
 void
 awn_effects_start(AwnEffects * fx, const AwnEffect effect)
 {
-  awn_effects_start_ex(fx, effect, NULL, NULL, 0);
+  awn_effects_start_ex(fx, effect, 0, FALSE, FALSE);
 }
 
 void
-awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect,
-                    AwnEventNotify start, AwnEventNotify stop,
-                    gint max_loops)
+awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
+                     gboolean signal_start, gboolean signal_end)
 {
-  if (effect == AWN_EFFECT_NONE || fx->priv->self == NULL)
+  if (effect == AWN_EFFECT_NONE || fx->widget == NULL)
   {
     return;
   }
@@ -571,8 +597,8 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect,
   anim->effects = fx;
   anim->this_effect = effect;
   anim->max_loops = max_loops;
-  anim->start = start;
-  anim->stop = stop;
+  anim->signal_start = signal_start;
+  anim->signal_end = signal_end;
 
   fx->priv->effect_queue = g_list_insert_sorted(fx->priv->effect_queue, anim,
                                                 awn_effects_sort);
@@ -713,19 +739,23 @@ awn_effects_main_effect_loop(AwnEffects * fx)
   }
   else
   {
-    if (topEffect->start)
-    {
-      topEffect->start(fx->priv->self);
-    }
-
-    if (topEffect->stop)
-    {
-      topEffect->stop(fx->priv->self);
-    }
+    // emit the signals
+    awn_effect_emit_anim_start(topEffect);
+    awn_effect_emit_anim_end(topEffect);
 
     // dispose AwnEffectsAnimation
     awn_effects_stop(fx, topEffect->this_effect);
   }
+}
+
+void awn_effects_emit_anim_start(AwnEffects *fx, AwnEffect effect)
+{
+  g_signal_emit( fx, _effects_signals[ANIMATION_START], 0, effect);
+}
+
+void awn_effects_emit_anim_end(AwnEffects *fx, AwnEffect effect)
+{
+  g_signal_emit( fx, _effects_signals[ANIMATION_END], 0, effect);
 }
 
 void
@@ -733,20 +763,20 @@ awn_effects_draw_set_icon_size(AwnEffects * fx, const gint width, const gint hei
 {
   fx->priv->icon_width = width;
   fx->priv->icon_height = height;
-  if (requestSize && fx->priv->self)
+  if (requestSize && fx->widget)
   {
     // this should be only used without AwnIcon,
     // AwnIcon handles size_requests well enough
     switch (fx->orientation) {
       case AWN_EFFECT_ORIENT_TOP:
       case AWN_EFFECT_ORIENT_BOTTOM:
-        if (fx->priv->self->allocation.width < width*6/5)
-          gtk_widget_set_size_request(fx->priv->self, width*6/5, height);
+        if (fx->widget->allocation.width < width*6/5)
+          gtk_widget_set_size_request(fx->widget, width*6/5, height);
         break;
       case AWN_EFFECT_ORIENT_RIGHT:
       case AWN_EFFECT_ORIENT_LEFT:
-        if (fx->priv->self->allocation.height < height*6/5)
-          gtk_widget_set_size_request(fx->priv->self, width, height*6/5);
+        if (fx->widget->allocation.height < height*6/5)
+          gtk_widget_set_size_request(fx->widget, width, height*6/5);
         break;
     }
   }
@@ -754,8 +784,8 @@ awn_effects_draw_set_icon_size(AwnEffects * fx, const gint width, const gint hei
 
 cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
 {
-  g_return_val_if_fail(fx->priv->self, NULL);
-  cairo_t *cr = gdk_cairo_create(fx->priv->self->window);
+  g_return_val_if_fail(fx->widget, NULL);
+  cairo_t *cr = gdk_cairo_create(fx->widget->window);
   g_return_val_if_fail(cairo_status(cr) == CAIRO_STATUS_SUCCESS, NULL);
   fx->window_ctx = cr;
 

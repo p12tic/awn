@@ -79,6 +79,8 @@ awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
   cairo_t        *draw_cr;
   cairo_t        *win_cr;
 
+  g_return_val_if_fail(priv->icon_srfc, FALSE);
+
   awn_effects_draw_set_icon_size (priv->effects, priv->icon_width, priv->icon_height, FALSE);
 
   draw_cr = awn_effects_draw_cairo_create (priv->effects);
@@ -98,11 +100,8 @@ awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
 
   cairo_set_operator (win_cr, CAIRO_OPERATOR_OVER);
 
-  if (priv->icon_srfc)
-  {
-    cairo_set_source_surface (draw_cr, priv->icon_srfc, 0, 0);
-    cairo_paint (draw_cr);
-  }
+  cairo_set_source_surface (draw_cr, priv->icon_srfc, 0, 0);
+  cairo_paint (draw_cr);
 
   // let effects know we're finished
   awn_effects_draw_cairo_destroy (priv->effects);

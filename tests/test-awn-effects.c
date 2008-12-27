@@ -28,6 +28,15 @@ static AwnOrientation orient = AWN_ORIENTATION_BOTTOM;
 #define NUM_ICONS 4
 static AwnIcon *icons[NUM_ICONS];
 
+static char* effect_names[] = {
+  "AWN_EFFECT_NONE",
+  "AWN_EFFECT_OPENING",
+  "AWN_EFFECT_CLOSING",
+  "AWN_EFFECT_HOVER",
+  "AWN_EFFECT_LAUNCHING",
+  "AWN_EFFECT_ATTENTION",
+  "AWN_EFFECT_DESATURATE"};
+
 static gboolean
 on_active_click(GtkWidget *widget, gpointer user_data)
 {
@@ -36,6 +45,30 @@ on_active_click(GtkWidget *widget, gpointer user_data)
     awn_icon_set_is_active(icons[i], !awn_icon_get_is_active(icons[i]));
   return FALSE;
 }
+
+static void
+anim_started(AwnEffects *fx, AwnEffect effect, gpointer data)
+{
+  g_debug("Got animation-start signal (animation=%s).", effect_names[effect]);
+}
+
+static void
+anim_ended(AwnEffects *fx, AwnEffect effect, gpointer data)
+{
+  g_debug("Got animation-end signal (animation=%s).", effect_names[effect]);
+}
+
+static gboolean
+on_signal_click(GtkWidget *widget, gpointer user_data)
+{
+  AwnIcon *icon = AWN_ICON(icons[0]);
+
+  AwnEffects *fx = awn_icon_get_effects(icon);
+  awn_effects_start_ex(fx, AWN_EFFECT_OPENING, 1, TRUE, TRUE);
+
+  return FALSE;
+}
+
 
 static gboolean
 on_click (GtkWidget *widget, GdkEventButton *event, AwnIconBox *box)
@@ -75,6 +108,12 @@ pixbuf_icon (GtkWidget *parent)
   icon = awn_icon_new ();
   awn_icon_set_from_pixbuf (AWN_ICON (icon), pixbuf);
   awn_icon_set_tooltip_text (AWN_ICON (icon), "Pixbuf Icon");
+
+  // test the signals
+  AwnEffects *fx = awn_icon_get_effects(AWN_ICON(icon));
+  g_signal_connect(fx, "animation-start", (GCallback)anim_started, NULL);
+  g_signal_connect(fx, "animation-end", (GCallback)anim_ended, NULL);
+
   gtk_container_add (GTK_CONTAINER (parent), icon);
   gtk_widget_show (icon);
 
@@ -236,6 +275,11 @@ main (gint argc, gchar **argv)
   g_signal_connect(G_OBJECT(button), "clicked", 
                    G_CALLBACK(on_active_click), NULL);
   gtk_container_add (GTK_CONTAINER(vbox), button);
+
+  GtkWidget *button2 = gtk_button_new_with_label("Signal");
+  g_signal_connect(G_OBJECT(button2), "clicked", 
+                   G_CALLBACK(on_signal_click), NULL);
+  gtk_container_add (GTK_CONTAINER(vbox), button2);
 
   gtk_widget_show_all (window);
 
