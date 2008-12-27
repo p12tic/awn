@@ -83,6 +83,7 @@ enum {
   PROP_MAKE_SHADOW,
   PROP_LABEL,
   PROP_IS_ACTIVE,
+  PROP_IS_RUNNING,
   PROP_PROGRESS,
   PROP_BORDER_CLIP
 };
@@ -168,6 +169,9 @@ awn_effects_get_property (GObject      *object,
     case PROP_IS_ACTIVE:
       g_value_set_boolean(value, fx->is_active);
       break;
+    case PROP_IS_RUNNING:
+      g_value_set_boolean(value, fx->is_running);
+      break;
     case PROP_PROGRESS:
       g_value_set_float(value, fx->progress);
       break;
@@ -230,6 +234,9 @@ awn_effects_set_property (GObject      *object,
       break;
     case PROP_IS_ACTIVE:
       fx->is_active = g_value_get_boolean(value);
+      break;
+    case PROP_IS_RUNNING:
+      fx->is_running = g_value_get_boolean(value);
       break;
     case PROP_PROGRESS:
       fx->progress = g_value_get_float(value);
@@ -456,6 +463,13 @@ awn_effects_class_init(AwnEffectsClass *klass)
     g_param_spec_boolean("active",
                          "Active",
                          "Determines whether to draw active hint around icon",
+                         FALSE,
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  g_object_class_install_property(
+    obj_class, PROP_IS_RUNNING,
+    g_param_spec_boolean("running",
+                         "Running",
+                         "Determines whether to draw an arrow on the icon",
                          FALSE,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   g_object_class_install_property(
@@ -825,6 +839,7 @@ cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
   awn_effects_pre_op_rotate(fx, cr, &ds, NULL);
   awn_effects_pre_op_flip(fx, cr, &ds, NULL);
   awn_effects_pre_op_active (fx, cr, &ds, NULL);
+  awn_effects_pre_op_running (fx, cr, &ds, NULL);
 
   return cr;
 }

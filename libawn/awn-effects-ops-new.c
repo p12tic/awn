@@ -242,6 +242,60 @@ gboolean awn_effects_pre_op_active(AwnEffects * fx,
   }
   return FALSE;
 }
+
+gboolean awn_effects_pre_op_running(AwnEffects * fx,
+                                    cairo_t * cr,
+                                    GtkAllocation * ds,
+                                    gpointer user_data
+                                    )
+{
+#define ARROW_WIDTH 4
+  if (fx->is_running)
+  {
+    gint x0=0, y0=0, z0=0;
+    gint x1=0, y1=0, z1=0;
+
+    switch (fx->orientation)
+    {
+      case AWN_EFFECT_ORIENT_TOP:
+        x0 = ds->width/2 - ARROW_WIDTH; x1 = 0;
+        y0 = ds->width/2 + ARROW_WIDTH; y1 = 0;
+        z0 = ds->width/2;               z1 = ARROW_WIDTH;
+        break;
+
+      case AWN_EFFECT_ORIENT_BOTTOM:
+        x0 = ds->width/2 - ARROW_WIDTH; x1 = ds->height;
+        y0 = ds->width/2 + ARROW_WIDTH; y1 = ds->height;
+        z0 = ds->width/2;      z1 = ds->height - ARROW_WIDTH;
+        break;
+
+      case AWN_EFFECT_ORIENT_LEFT:
+        x0 = 0; x1 = ds->height/2 - ARROW_WIDTH;
+        y0 = 0; y1 = ds->height/2 + ARROW_WIDTH;
+        z0 = ARROW_WIDTH; z1 =ds->height/2;
+        break;
+
+      case AWN_EFFECT_ORIENT_RIGHT:
+        x0 = ds->width; x1 = ds->height/2 - ARROW_WIDTH;
+        y0 = ds->width; y1 = ds->height/2 + ARROW_WIDTH;
+        z0 = ds->width-ARROW_WIDTH; z1 = ds->height/2;
+        break;
+    }
+
+    cairo_set_line_width (cr, 1.0);
+    cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
+
+    cairo_move_to (cr, x0, x1);
+    cairo_line_to (cr, y0, y1);
+    cairo_line_to (cr, z0, z1);
+    cairo_close_path (cr);
+
+    cairo_fill (cr);
+  }
+
+  return FALSE;
+}
+
 gboolean awn_effects_post_op_clip(AwnEffects * fx,
                                cairo_t * cr,
                                GtkAllocation * ds,

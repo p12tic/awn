@@ -438,17 +438,17 @@ awn_icon_set_message (AwnIcon *icon, const gchar  *message)
 {
   g_return_if_fail (AWN_IS_ICON (icon));
 
-  g_object_set(icon->priv->effects, "label", message, NULL);
+  g_object_set (icon->priv->effects, "label", message, NULL);
 }
 
 gchar * 
 awn_icon_get_message (AwnIcon *icon)
 {
+  gchar *result = NULL;
+  
   g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
 
-  gchar *result;
-
-  g_object_get(icon->priv->effects, "label", &result, NULL);
+  g_object_get (icon->priv->effects, "label", &result, NULL);
   // caller gets a copy, so he's responsible for freeing it
   return result;
 }
@@ -464,11 +464,11 @@ awn_icon_set_progress (AwnIcon *icon, gfloat progress)
 gfloat        
 awn_icon_get_progress (AwnIcon *icon)
 {
+  gfloat result;
+  
   g_return_val_if_fail (AWN_IS_ICON (icon), 0.0);
 
-  gfloat result;
-
-  g_object_get(icon->priv->effects, "progress", &result, NULL);
+  g_object_get (icon->priv->effects, "progress", &result, NULL);
 
   return result;
 }
@@ -478,18 +478,38 @@ awn_icon_set_is_active (AwnIcon *icon, gboolean is_active)
 {
   g_return_if_fail (AWN_IS_ICON (icon));
 
-  g_object_set(icon->priv->effects, "active", is_active, NULL);
+  g_object_set (icon->priv->effects, "active", is_active, NULL);
 }
 
 gboolean      
 awn_icon_get_is_active (AwnIcon *icon)
 {
+  gboolean result;
+  
   g_return_val_if_fail (AWN_IS_ICON (icon), FALSE);
 
-  gboolean result;
-
-  g_object_get(icon->priv->effects, "active", &result, NULL);
+  g_object_get (icon->priv->effects, "active", &result, NULL);
 
   return result;
 }
 
+void    
+awn_icon_set_is_running (AwnIcon     *icon,
+                         gboolean     is_running)
+{
+  g_return_if_fail (AWN_IS_ICON (icon));
+
+  g_object_set (icon->priv->effects, "running", is_running, NULL);
+}
+
+gboolean
+awn_icon_get_is_running (AwnIcon     *icon)
+{
+  gboolean result;
+  
+  g_return_val_if_fail (AWN_IS_ICON (icon), FALSE);
+
+  g_object_get (icon->priv->effects, "running", &result, NULL);
+
+  return result;
+}

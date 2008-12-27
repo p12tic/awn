@@ -48,6 +48,7 @@ enum
   MESSAGE_CHANGED,
   PROGRESS_CHANGED,
   HIDDEN_CHANGED,
+  RUNNING_CHANGED,
 
   LAST_SIGNAL
 };
@@ -124,14 +125,6 @@ task_window_class_init (TaskWindowClass *klass)
   klass->is_on_workspace = _is_on_workspace;
   klass->activate        = NULL;
   klass->popup_menu      = NULL;
-
-  /* Install properties */
-  pspec = g_param_spec_object ("taskwindow",
-                               "Window",
-                               "WnckWindow",
-                               WNCK_TYPE_WINDOW,
-                               G_PARAM_READWRITE);
-  g_object_class_install_property (obj_class, PROP_WINDOW, pspec);
 
   /* Install signals */
   _window_signals[NAME_CHANGED] =
@@ -213,7 +206,25 @@ task_window_class_init (TaskWindowClass *klass)
 			      g_cclosure_marshal_VOID__BOOLEAN,
 			      G_TYPE_NONE,
             1, G_TYPE_BOOLEAN);
-  
+
+  _window_signals[RUNNING_CHANGED] =
+		g_signal_new ("running-changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskWindowClass, running_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__BOOLEAN,
+			      G_TYPE_NONE,
+            1, G_TYPE_BOOLEAN);
+
+
+  /* Install properties */
+  pspec = g_param_spec_object ("taskwindow",
+                               "Window",
+                               "WnckWindow",
+                               WNCK_TYPE_WINDOW,
+                               G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_WINDOW, pspec);  
   g_type_class_add_private (obj_class, sizeof (TaskWindowPrivate));
 }
 
@@ -261,7 +272,10 @@ task_window_append_utility (TaskWindow    *window,
 static void
 window_closed (TaskWindow *window, WnckWindow *old_window)
 {
-  g_object_unref (G_OBJECT (window));
+  g_signal_emit (window, _window_signals[RUNNING_CHANGED], 0, FALSE);
+  
+  if (!TASK_IS_LAUNCHER (window))
+    g_object_unref (G_OBJECT (window));
 }
 
 static void
@@ -334,8 +348,6 @@ on_window_state_changed (WnckWindow      *wnckwin,
     priv->needs_attention = needs_attention;
     g_signal_emit (window, _window_signals[NEEDS_ATTENTION], 
                    0, needs_attention);
-    g_print ("%s needs attention: %s\n", wnck_window_get_name (wnckwin), 
-             needs_attention ? "yes":"no");
   }
 }
 
@@ -349,10 +361,8 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
 
   priv->window = wnckwin;
 
-  /* We don't want to destroy ourselves if this is a launcher */
-  if (!TASK_IS_LAUNCHER (window)) 
-    g_object_weak_ref (G_OBJECT (priv->window), 
-                       (GWeakNotify)window_closed, window);
+  g_object_weak_ref (G_OBJECT (priv->window), 
+                     (GWeakNotify)window_closed, window);
 
   g_signal_connect (wnckwin, "name-changed", 
                     G_CALLBACK (on_window_name_changed), window);
@@ -362,6 +372,8 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
                     G_CALLBACK (on_window_workspace_changed), window);
   g_signal_connect (wnckwin, "state-changed", 
                     G_CALLBACK (on_window_state_changed), window);
+
+  g_signal_emit (window, _window_signals[RUNNING_CHANGED], 0, TRUE);
 }
 
 /*
@@ -748,6 +760,14 @@ task_window_set_icon_geometry (TaskWindow    *window,
   }
 }
 
+
+gboolean    
+task_window_get_is_running (TaskWindow *window)
+{
+  g_return_val_if_fail (TASK_IS_WINDOW (window), FALSE);
+
+  return WNCK_IS_WINDOW (window->priv->window);
+}
 
 /*
  * Implemented functions for a standard window without a launcher

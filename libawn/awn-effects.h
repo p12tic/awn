@@ -96,6 +96,7 @@ struct _AwnEffects
   gboolean do_reflection;
   gboolean make_shadow;
   gboolean is_active;
+  gboolean is_running;
   gchar *label;
   gfloat progress;
   gint border_clip;

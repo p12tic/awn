@@ -88,7 +88,6 @@ libawn/
 
 applets/taskmananger
   - Complete simple window-managment
-    - Utility window matching/transient window matching
     - D-Bus support
       - Add the necessary stuff to get TaskWindow's on dbus, so external
         processes can

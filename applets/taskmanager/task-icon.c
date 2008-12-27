@@ -361,6 +361,15 @@ on_window_hidden_changed (TaskWindow *window,
   g_signal_emit (icon, _icon_signals[ENSURE_LAYOUT], 0);
 }
 
+static void
+on_window_running_changed (TaskWindow *window, 
+                           gboolean    is_running,
+                           TaskIcon   *icon)
+{
+  g_return_if_fail (TASK_IS_ICON (icon));
+  awn_icon_set_is_running (AWN_ICON (icon), is_running);
+}
+
 void
 task_icon_append_window (TaskIcon      *icon,
                          TaskWindow    *window)
@@ -393,6 +402,9 @@ task_icon_append_window (TaskIcon      *icon,
                                        task_window_needs_attention (window), 
                                        icon);
 
+    awn_icon_set_is_running (AWN_ICON (icon), 
+                        task_window_get_is_running (window));
+
     g_signal_connect (window, "name-changed", 
                       G_CALLBACK (on_window_name_changed), icon);
     g_signal_connect (window, "icon-changed",
@@ -409,6 +421,8 @@ task_icon_append_window (TaskIcon      *icon,
                       G_CALLBACK (on_window_progress_changed), icon);
     g_signal_connect (window, "hidden-changed",
                       G_CALLBACK (on_window_hidden_changed), icon);
+    g_signal_connect (window, "running-changed",
+                      G_CALLBACK (on_window_running_changed), icon);
   }
 }
 

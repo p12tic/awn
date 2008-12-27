@@ -129,7 +129,6 @@ task_launcher_class_init (TaskLauncherClass *klass)
   win_class->activate        = _activate;
   win_class->popup_menu      = _popup_menu;
 
-
   /* Install properties */
   pspec = g_param_spec_string ("desktopfile",
                                "DesktopFile",
@@ -137,7 +136,7 @@ task_launcher_class_init (TaskLauncherClass *klass)
                                NULL,
                                G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_DESKTOP_FILE, pspec);
-  
+
   g_type_class_add_private (obj_class, sizeof (TaskLauncherPrivate));
 }
 

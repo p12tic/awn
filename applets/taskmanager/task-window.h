@@ -79,6 +79,7 @@ struct _TaskWindowClass
   void (*message_changed)   (TaskWindow *window, const gchar   *message);
   void (*progress_changed)  (TaskWindow *window, gfloat         progress);
   void (*hidden_changed)    (TaskWindow *window, gboolean       hidden);
+  void (*running_changed)   (TaskWindow *window, gboolean       is_running);
 };
 
 GType           task_window_get_type          (void) G_GNUC_CONST;
@@ -138,6 +139,8 @@ void            task_window_set_icon_geometry (TaskWindow     *window,
                                                gint            y,
                                                gint            width,
                                                gint            height);
+
+gboolean        task_window_get_is_running    (TaskWindow     *window);
 
 #endif /* _TASK_WINDOW_H_ */
 
