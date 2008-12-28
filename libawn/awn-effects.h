@@ -41,8 +41,6 @@ typedef enum
   AWN_EFFECT_DESATURATE
 } AwnEffect;
 
-typedef void (*AwnEventNotify)(GtkWidget *);
-
 //GObject stuff
 #define AWN_TYPE_EFFECTS awn_effects_get_type()
 
@@ -64,8 +62,7 @@ typedef void (*AwnEventNotify)(GtkWidget *);
 /**
  * AwnEffects:
  *
- * Structure containing all necessary variables for effects state for
- * particular widget.
+ * Class containing all necessary variables for effects state for particular widget.
  */
 typedef struct _AwnEffects AwnEffects;
 typedef struct _AwnEffectsClass AwnEffectsClass;
@@ -124,16 +121,16 @@ GType awn_effects_get_type(void);
 
 /**
  * awn_effects_new_for_widget:
- * @widget: Object which will be passed to all callback functions, this object
- * is also passed to gtk_widget_queue_draw() during the animation.
+ * @widget: Managed widget, computing window width and height is based on it and
+ * it is also passed to gtk_widget_queue_draw() during the animations.
  *
- * Creates and initializes new #AwnEffects structure.
+ * Creates new #AwnEffects instance.
  */
 AwnEffects* awn_effects_new_for_widget(GtkWidget * widget);
 
 /**
  * awn_effects_start:
- * @fx: Pointer to #AwnEffects structure.
+ * @fx: Pointer to #AwnEffects instance.
  * @effect: #AwnEffect to schedule.
  *
  * Start a single effect. The effect will loop until awn_effect_stop()
@@ -143,17 +140,16 @@ void awn_effects_start(AwnEffects * fx, const AwnEffect effect);
 
 /**
  * awn_effects_stop:
- * @fx: Pointer to #AwnEffects structure.
+ * @fx: Pointer to #AwnEffects instance.
  * @effect: #AwnEffect to stop.
  *
  * Stop a single effect.
  */
-
 void awn_effects_stop(AwnEffects * fx, const AwnEffect effect);
 
 /**
  * awn_effects_start_ex:
- * @fx: Pointer to #AwnEffects structure.
+ * @fx: Pointer to #AwnEffects instance.
  * @effect: Effect to schedule.
  * @max_loops: Number of maximum animation loops (0 for unlimited).
  * @signal_start: Determines whether the animation should emit "animation-start"
@@ -161,23 +157,66 @@ void awn_effects_stop(AwnEffects * fx, const AwnEffect effect);
  * @signal_stop: Determines whether the animation should emit "animation-end"
  *   signal when it finishes.
  *
- * Extended effect start, which provides callbacks for animation start, end and
- * possibility to specify maximum number of loops.
+ * Extended effect start, which provides a way to specify maximum number of loops
+ * and possibility to emit signals for animation start & end.
  */
 void
 awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
                      gboolean signal_start, gboolean signal_end);
 
-void awn_effects_draw_set_icon_size(AwnEffects *, const gint, const gint, gboolean requestSize);
+/**
+ * awn_effects_draw_set_icon_size:
+ * @fx: Pointer to #AwnEffects instance.
+ * @width: Width of drawn icon.
+ * @height: Height of drawn icon.
+ * @requestSize: Set to true to call gtk_widget_set_size_request
+ *   for the managed widget.
+ *
+ * Sets up correct offsets in managed window based on dimensions of drawn icon.
+ */
+void awn_effects_draw_set_icon_size(AwnEffects *fx, const gint width,
+                                    const gint height, gboolean requestSize);
 
-cairo_t *awn_effects_draw_cairo_create(AwnEffects *);
-cairo_t *awn_effects_draw_get_window_context(AwnEffects *);
-void awn_effects_draw_clear_window_context(AwnEffects *);
-void awn_effects_draw_cairo_destroy(AwnEffects *);
+/**
+ * awn_effects_draw_cairo_create:
+ * @fx: Pointer to #AwnEffects instance.
+ *
+ * Returns cairo context where an icon can be drawn. (the icon should have dimensions
+ * specified by a previous call to #awn_effects_draw_set_icon_size)
+ */
+cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx);
 
-void awn_effects_redraw(AwnEffects *);
+/**
+ * awn_effects_draw_get_window_context:
+ * @fx: Pointer to #AwnEffects instance.
+ *
+ * Returns the real cairo context of managed widget, but it is valid context only
+ * between calls to #awn_effects_draw_cairo_create and #awn_effects_draw_cairo_destroy.
+ * Can be used for clipping or drawing extra graphics which shouldn't be affected
+ * by the effect transformtions.
+ */
+cairo_t *awn_effects_draw_get_window_context(AwnEffects *fx);
 
-//Move this somewhere else eventually
+/**
+ * awn_effects_draw_clear_window_context:
+ * @fx: Pointer to #AwnEffects instance.
+ *
+ * Convenience method to clear the background of managed widget to transparent.
+ * Has effect only between call to #awn_effects_draw_cairo_create and
+ * #awn_effects_draw_cairo_destroy.
+ */
+void awn_effects_draw_clear_window_context(AwnEffects *fx);
+
+/**
+ * awn_effects_draw_cairo_destroy:
+ * @fx: Pointer to #AwnEffects instance.
+ *
+ * Finish drawing of the icon and run all post-ops.
+ */
+void awn_effects_draw_cairo_destroy(AwnEffects *fx);
+
+//Move this somewhere else eventually, these are used only internally
+void awn_effects_redraw(AwnEffects *fx);
 void awn_effects_main_effect_loop(AwnEffects * fx);
 void awn_effects_emit_anim_start(AwnEffects *fx, AwnEffect effect);
 void awn_effects_emit_anim_end(AwnEffects *fx, AwnEffect effect);

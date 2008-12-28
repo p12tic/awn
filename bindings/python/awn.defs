@@ -35,6 +35,13 @@
   (gtype-id "AWN_TYPE_TOOLTIP")
 )
 
+(define-object Effects
+  (in-module "Awn")
+  (parent "GObject")
+  (c-name "AwnEffects")
+  (gtype-id "AWN_TYPE_EFFECTS")
+)
+
 ;; Boxed types ...
 (define-boxed Config
   (in-module "Awn")
@@ -48,12 +55,6 @@
   (gtype-id "AWN_TYPE_DESKTOP_ITEM")
   (copy-func "awn_desktop_item_copy")
   (release-func "awn_desktop_item_free")
-)
-
-(define-boxed Effects
-  (in-module "Awn")
-  (c-name "AwnEffects")
-  (gtype-id "AWN_TYPE_EFFECTS")
 )
 
 ;; Enumerations and flags ...
@@ -613,14 +614,12 @@
 
 ;; From awn-effects.h
 
-; This constructor is not much of use
-;(define-function effects_new
-;  (c-name "awn_effects_new")
-;  (is-constructor-of "AwnEffects")
-;  (return-type "AwnEffects*")
-;)
+(define-function awn_effects_get_type
+  (c-name "awn_efffects_get_type")
+  (return-type "GType")
+)
 
-(define-function effect_new_for_widget
+(define-function effects_new_for_widget
   (c-name "awn_effects_new_for_widget")
   (is-constructor-of "AwnEffects")
   (return-type "AwnEffects*")
@@ -638,17 +637,15 @@
   )
 )
 
-; FIXME: start and stop notify functions, define the type in override?!
 (define-method start_ex
   (of-object "AwnEffects")
   (c-name "awn_effects_start_ex")
   (return-type "none")
   (parameters
-    '("AwnEffect*" "fx")
     '("AwnEffect" "effect")
-    '("AwnEventNotify" "start" (default "0") (null-ok))
-    '("AwnEventNotify" "stop" (default "0") (null-ok))
     '("int" "max_loops")
+    '("gboolean" "signal_start" (default "FALSE") (null-ok))
+    '("gboolean" "signal_end" (default "FALSE") (null-ok))
   )
 )
 
@@ -661,13 +658,37 @@
   )
 )
 
+(define-method draw_cairo_create
+  (of-object "AwnEffects")
+  (c-name "awn_effects_draw_cairo_create")
+  (return-type "cairo_t*")
+)
+
+(define-method draw_cairo_destroy
+  (of-object "AwnEffects")
+  (c-name "awn_effects_draw_cairo_destroy")
+  (return-type "none")
+)
+
+(define-method draw_get_window_context
+  (of-object "AwnEffects")
+  (c-name "awn_effects_draw_get_window_context")
+  (return-type "cairo_t*")
+)
+
+(define-method draw_clear_window_context
+  (of-object "AwnEffects")
+  (c-name "awn_effects_draw_clear_window_context")
+  (return-type "none")
+)
+
 (define-method draw_set_icon_size
   (of-object "AwnEffects")
   (c-name "awn_effects_draw_set_icon_size")
   (return-type "none")
   (parameters
-    '("const gint" "width")
-    '("const gint" "height")
+    '("gint" "width")
+    '("gint" "height")
     '("gboolean" "requestSize")
   )
 )

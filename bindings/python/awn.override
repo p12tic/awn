@@ -537,31 +537,15 @@ _wrap_awn_applet_simple_set_awn_icons (PyObject *self, PyObject *args, PyObject 
   return pygobject_new (G_OBJECT (ret));
 }
 %%
-override awn_applet_simple_get_effects
+override awn_effects_draw_cairo_create
 static PyObject *
-_wrap_awn_applet_simple_get_effects (PyGObject *self)
+_wrap_awn_effects_draw_cairo_create(PyGObject *self)
 {
-    AwnEffects *ret;
+    cairo_t *ret = awn_effects_draw_cairo_create(AWN_EFFECTS(self->obj));
 
-    ret = awn_applet_simple_get_effects(AWN_APPLET_SIMPLE(self->obj));
-
-    /* pyg_boxed_new handles NULL checking */
-    return pyg_boxed_new(AWN_TYPE_EFFECTS, ret, FALSE, FALSE);
-
-}
-%%
-override awn_effects_draw_icons_cairo kwargs
-static PyObject *
-_wrap_awn_effects_draw_icons_cairo(PyObject *self, PyObject *args, PyObject *kwargs)
-{
-    static char *kwlist[] = { "cr", "icon_context", "reflect_context", NULL };
-    PycairoContext *cr, *icon_context, *reflect_context = NULL;
-
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!O!|O!:AwnEffects.draw_icons_cairo", kwlist, &PycairoContext_Type, &cr, &PycairoContext_Type, &icon_context, &PycairoContext_Type, &reflect_context))
-        return NULL;
-
-    awn_effects_draw_icons_cairo(pyg_boxed_get(self, AwnEffects), cr->ctx, icon_context->ctx, reflect_context ? reflect_context->ctx : NULL);
-
-    Py_INCREF(Py_None);
-    return Py_None;
+    cairo_reference(ret);
+    // bug in pygtk-codegen > sets second parameter to NULL in call to
+    // PycairoContext_FromContext, which causes segmentation error in newer
+    // versions of pycairo
+    return PycairoContext_FromContext(ret, &PycairoContext_Type, NULL);
 }
