@@ -6,6 +6,7 @@ SUBDIRS =	\
 	awn-applet-activation \
 	awn-manager \
 	applets \
+	bindings \
 	po \
 	data \
 	tests \

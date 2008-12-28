@@ -38,7 +38,7 @@
 #include <libawn/awn-enum-types.h>
 #include <libawn/awn-effects.h>
 #include <libawn/awn-plug.h>
-#include <libawn/awn-title.h>
+#include <libawn/awn-tooltip.h>
 
 void pyawn_register_classes (PyObject *d);
 extern PyMethodDef pyawn_functions[];

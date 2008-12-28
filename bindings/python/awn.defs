@@ -21,13 +21,6 @@
   (gtype-id "AWN_TYPE_APPLET_SIMPLE")
 )
 
-(define-object Icons
-  (in-module "Awn")
-  (parent "GObject")
-  (c-name "AwnIcons")
-  (gtype-id "AWN_TYPE_ICONS")
-)
-
 (define-object Plug
   (in-module "Awn")
   (parent "GtkPlug")
@@ -38,8 +31,8 @@
 (define-object Title
   (in-module "Awn")
   (parent "GtkWindow")
-  (c-name "AwnTitle")
-  (gtype-id "AWN_TYPE_TITLE")
+  (c-name "AwnTooltip")
+  (gtype-id "AWN_TYPE_TOOLTIP")
 )
 
 ;; Boxed types ...
@@ -429,24 +422,6 @@
   )
 )
 
-(define-method set_icon
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_icon")
-  (return-type "none")
-  (parameters
-    '("GdkPixbuf*" "pixbuf")
-  )
-)
-
-(define-method set_temp_icon
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_temp_icon")
-  (return-type "none")
-  (parameters
-    '("GdkPixbuf*" "pixbuf")
-  )
-)
-
 (define-method set_icon_context
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_set_icon_context")
@@ -454,89 +429,6 @@
   (parameters
     '("cairo_t*" "cr")
   )
-)
-
-(define-method set_icon_context_scaled
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_icon_context_scaled")
-  (return-type "none")
-  (parameters
-    '("cairo_t*" "cr")
-  )
-)
-
-(define-method effects_off
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_effects_off")
-  (return-type "none")
-)
-
-(define-method effects_on
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_effects_on")
-  (return-type "none")
-)
-
-(define-method set_title_visibility
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_title_visibility")
-  (return-type "none")
-  (parameters
-    '("gboolean" "state")
-  )
-)
-
-(define-method set_title
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_title")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "title_string")
-  )
-)
-
-(define-method set_awn_icon
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_awn_icon")
-  (return-type "GdkPixbuf*")
-  (parameters
-    '("const-gchar*" "applet_name")
-    '("const-gchar*" "icon_name")
-  )
-)
-
-(define-method set_awn_icons
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_awn_icons")
-  (return-type "GdkPixbuf*")
-  (parameters
-    '("const-gchar*" "applet_name")
-    '("const-gchar**" "states")
-    '("const-gchar**" "icon_names")
-  )
-)
-
-
-(define-method set_awn_icon_state
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_awn_icon_state")
-  (return-type "GdkPixbuf*")
-  (parameters
-    '("const-gchar*" "state")
-  )
-)
-
-(define-method get_awn_icons
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_get_awn_icons")
-  (return-type "AwnIcons*")
-)
-
-(define-method get_effects
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_get_effects")
-  (return-type "AwnEffects*")
-  (caller-owns-return #t)
 )
 
 ;; From awn-cairo-utils.h
@@ -588,7 +480,7 @@
 (define-method get_filename
   (c-name "awn_desktop_item_get_filename")
   (of-object "AwnDesktopItem")
-  (return-type "gchar*")
+  (return-type "const gchar*")
 )
 
 (define-method get_item_type
@@ -609,14 +501,14 @@
 (define-method get_icon
   (c-name "awn_desktop_item_get_icon")
   (of-object "AwnDesktopItem")
-  (return-type "gchar*")
+  (return-type "GdkPixbuf*")
   (parameters
-    '("GtkIconTheme*" "icon_theme")
+    '("guint" "size")
   )
 )
 
 (define-method set_icon
-  (c-name "awn_desktop_item_set_icon")
+  (c-name "awn_desktop_item_set_icon_name")
   (of-object "AwnDesktopItem")
   (return-type "none")
   (parameters
@@ -752,9 +644,10 @@
   (c-name "awn_effects_start_ex")
   (return-type "none")
   (parameters
+    '("AwnEffect*" "fx")
     '("AwnEffect" "effect")
-    '("int" "start" (default "0") (null-ok))
-    '("int" "stop" (default "0") (null-ok))
+    '("AwnEventNotify" "start" (default "0") (null-ok))
+    '("AwnEventNotify" "stop" (default "0") (null-ok))
     '("int" "max_loops")
   )
 )
@@ -768,99 +661,14 @@
   )
 )
 
-(define-method reflection_off
-  (of-object "AwnEffects")
-  (c-name "awn_effects_reflection_off")
-  (return-type "none")
-)
-
-(define-method reflection_on
-  (of-object "AwnEffects")
-  (c-name "awn_effects_reflection_on")
-  (return-type "none")
-)
-
-(define-method set_offset_cut
-  (of-object "AwnEffects")
-  (c-name "awn_effects_set_offset_cut")
-  (return-type "none")
-  (parameters
-    '("gboolean" "cut")
-  )
-)
-
-(define-method register
-  (of-object "AwnEffects")
-  (c-name "awn_effects_register")
-  (return-type "none")
-  (parameters
-    '("GtkWidget*" "obj")
-  )
-)
-
-(define-method unregister
-  (of-object "AwnEffects")
-  (c-name "awn_effects_unregister")
-  (return-type "none")
-)
-
-(define-method draw_background
-  (of-object "AwnEffects")
-  (c-name "awn_effects_draw_background")
-  (return-type "none")
-  (parameters
-    '("cairo_t*" "cr")
-  )
-)
-
-(define-method draw_foreground
-  (of-object "AwnEffects")
-  (c-name "awn_effects_draw_foreground")
-  (return-type "none")
-  (parameters
-    '("cairo_t*" "cr")
-  )
-)
-
-(define-method draw_icons
-  (of-object "AwnEffects")
-  (c-name "awn_effects_draw_icons")
-  (return-type "none")
-  (parameters
-    '("cairo_t*" "cr")
-    '("GdkPixbuf*" "icon")
-    '("GdkPixbuf*" "reflect" (default "NULL") (null-ok))
-  )
-)
-
-(define-method draw_icons_cairo
-  (of-object "AwnEffects")
-  (c-name "awn_effects_draw_icons_cairo")
-  (return-type "none")
-  (parameters
-    '("cairo_t*" "cr")
-    '("cairo_t*" "icon_context")
-    '("cairo_t*" "reflect_context" (default "NULL") (null-ok))
-  )
-)
-
-(define-method draw_set_window_size
-  (of-object "AwnEffects")
-  (c-name "awn_effects_draw_set_window_size")
-  (return-type "none")
-  (parameters
-    '("gint" "width")
-    '("gint" "height")
-  )
-)
-
 (define-method draw_set_icon_size
   (of-object "AwnEffects")
   (c-name "awn_effects_draw_set_icon_size")
   (return-type "none")
   (parameters
-    '("gint" "width")
-    '("gint" "height")
+    '("const gint" "width")
+    '("const gint" "height")
+    '("gboolean" "requestSize")
   )
 )
 
@@ -908,105 +716,11 @@
   )
 )
 
-
-
-;; From awn-title.h
-
-(define-function awn_title_get_type
-  (c-name "awn_title_get_type")
-  (return-type "GType")
-)
-
-(define-function awn_title_get_default
-  (c-name "awn_title_get_default")
-  (return-type "GtkWidget*")
-)
-
-(define-method show
-  (of-object "AwnTitle")
-  (c-name "awn_title_show")
-  (return-type "none")
-  (parameters
-    '("GtkWidget*" "focus")
-    '("const-gchar*" "text")
-  )
-)
-
-(define-method hide
-  (of-object "AwnTitle")
-  (c-name "awn_title_hide")
-  (return-type "none")
-  (parameters
-    '("GtkWidget*" "focus")
-  )
-)
-
 ;; From awn-icons.h
 
-(define-function awn_icons_get_type
-  (c-name "awn_icons_get_type")
+(define-function awn_icon_get_type
+  (c-name "awn_icon_get_type")
   (return-type "GType")
-)
-
-(define-function awn_icons_new
-  (c-name "awn_icons_new")
-  (is-constructor-of "AwnIcons")
-  (parameters
-    '("const-gchar*" "applet_name")
-  )  
-  (return-type "AwnIcons*")
-)
-
-(define-method get_icon_at_height
-  (of-object "AwnIcons")
-  (c-name "awn_icons_get_icon_at_height")
-  (return-type "GdkPixbuf*")
-  (parameters
-    '("const-gchar*" "state")
-    '("gint" "height")
-  )
-)
-
-(define-method get_icon_simple_at_height
-  (of-object "AwnIcons")
-  (c-name "awn_icons_get_icon_simple_at_height")
-  (return-type "GdkPixbuf*")
-  (parameters
-    '("gint" "height")
-  )
-)
-
-(define-method get_icon
-  (of-object "AwnIcons")
-  (c-name "awn_icons_get_icon")
-  (return-type "GdkPixbuf*")
-  (parameters
-    '("const-gchar*" "state")
-  )
-)
-
-(define-method override_gtk_theme
-  (of-object "AwnIcons")
-  (c-name "awn_icons_override_gtk_theme")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "theme_name")
-  )
-)
-
-(define-method get_icon_simple
-  (of-object "AwnIcons")
-  (c-name "awn_icons_get_icon_simple")
-  (return-type "GdkPixbuf*")
-)
-
-(define-method set_height
-  (of-object "AwnIcons")
-  (c-name "awn_icons_set_height")
-  (return-type "none")
-  (parameters
-    '("gint" "height")
-  )
 )
 
 ;; From awn-vfs.h
