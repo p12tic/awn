@@ -64,16 +64,6 @@ gboolean awn_effects_pre_op_flip(AwnEffects * fx,
                                gpointer user_data
                               );
 
-gboolean awn_effects_pre_op_active(AwnEffects * fx,
-                                   cairo_t * cr,
-                                   GtkAllocation * ds,
-                                   gpointer user_data
-                                   );
-gboolean awn_effects_pre_op_running(AwnEffects * fx,
-                                    cairo_t * cr,
-                                    GtkAllocation * ds,
-                                    gpointer user_data
-                                    );
 gboolean awn_effects_post_op_clip(AwnEffects * fx,
                                cairo_t * cr,
                                GtkAllocation * ds,
@@ -121,6 +111,18 @@ gboolean awn_effects_post_op_reflection(AwnEffects * fx,
                                GtkAllocation * ds,
                                gpointer user_data
                               );
+
+gboolean awn_effects_post_op_active(AwnEffects * fx,
+                                    cairo_t * cr,
+                                    GtkAllocation * ds,
+                                    gpointer user_data
+                                   );
+
+gboolean awn_effects_post_op_running(AwnEffects * fx,
+                                     cairo_t * cr,
+                                     GtkAllocation * ds,
+                                     gpointer user_data
+                                    );
 
 gboolean awn_effects_post_op_progress(AwnEffects * fx,
                                cairo_t * cr,

@@ -85,7 +85,9 @@ enum {
   PROP_IS_ACTIVE,
   PROP_IS_RUNNING,
   PROP_PROGRESS,
-  PROP_BORDER_CLIP
+  PROP_BORDER_CLIP,
+  PROP_CUSTOM_ACTIVE_ICON,
+  PROP_CUSTOM_ARROW_ICON
 };
 
 #define EFFECT_BOUNCE 0
@@ -128,6 +130,31 @@ awn_effects_finalize(GObject *object)
   fx->label = NULL;
 
   G_OBJECT_CLASS (awn_effects_parent_class)->finalize(object);
+}
+
+static GQuark
+awn_effects_set_custom_icon(AwnEffects *fx, const gchar *path)
+{
+  if (path == NULL || path[0] == '\0') return 0;
+  else
+  {
+    GQuark q = g_quark_try_string(path);
+    if (!q) {
+      // needs to be added to class' custom_icons
+      q = g_quark_from_string(path);
+
+      cairo_surface_t *surface = cairo_image_surface_create_from_png(path);
+      if (cairo_surface_status(surface) != CAIRO_STATUS_SUCCESS) {
+        g_warning("Error while trying to read PNG icon \"%s\"", path);
+        cairo_surface_destroy(surface);
+        surface = NULL;
+      }
+      GData **icons = &(AWN_EFFECTS_GET_CLASS(fx)->custom_icons);
+
+      g_datalist_id_set_data(icons, q, surface);
+    }
+    return q;
+  }
 }
 
 static void
@@ -177,6 +204,12 @@ awn_effects_get_property (GObject      *object,
       break;
     case PROP_BORDER_CLIP:
       g_value_set_int(value, fx->border_clip);
+      break;
+    case PROP_CUSTOM_ACTIVE_ICON:
+      g_value_set_string(value, g_quark_to_string(fx->custom_active_icon));
+      break;
+    case PROP_CUSTOM_ARROW_ICON:
+      g_value_set_string(value, g_quark_to_string(fx->custom_arrow_icon));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -244,6 +277,15 @@ awn_effects_set_property (GObject      *object,
     case PROP_BORDER_CLIP:
       fx->border_clip = g_value_get_int(value);
       break;
+    case PROP_CUSTOM_ACTIVE_ICON:
+      fx->custom_active_icon = 
+        awn_effects_set_custom_icon(fx, g_value_get_string(value));
+      break;
+    case PROP_CUSTOM_ARROW_ICON: {
+      fx->custom_arrow_icon = 
+        awn_effects_set_custom_icon(fx, g_value_get_string(value));
+      break;
+    }
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -401,6 +443,9 @@ awn_effects_class_init(AwnEffectsClass *klass)
     glow_attention_effect
   );
 
+  // association between icon paths and cairo image surfaces
+  g_datalist_init(&klass->custom_icons);
+
   g_object_class_install_property(
     obj_class, PROP_ORIENTATION,
     // keep in sync with AwnOrientation
@@ -494,6 +539,20 @@ awn_effects_class_init(AwnEffectsClass *klass)
                        " drawn on the icon",
                        0.0, 1.0, 1.0,
                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  g_object_class_install_property(
+    obj_class, PROP_CUSTOM_ACTIVE_ICON,
+    g_param_spec_string("custom-active-png",
+                        "Custom active Icon",
+                        "Custom icon to draw when in active state",
+                        NULL,
+                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  g_object_class_install_property(
+    obj_class, PROP_CUSTOM_ARROW_ICON,
+    g_param_spec_string("custom-running-png",
+                        "Custom running Icon",
+                        "Custom icon to draw when in running state",
+                        NULL,
+                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 }
 
 static void
@@ -838,8 +897,6 @@ cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
   awn_effects_pre_op_scale(fx, cr, &ds, NULL);
   awn_effects_pre_op_rotate(fx, cr, &ds, NULL);
   awn_effects_pre_op_flip(fx, cr, &ds, NULL);
-  awn_effects_pre_op_active (fx, cr, &ds, NULL);
-  awn_effects_pre_op_running (fx, cr, &ds, NULL);
 
   return cr;
 }
@@ -872,9 +929,11 @@ void awn_effects_draw_cairo_destroy(AwnEffects *fx)
   awn_effects_post_op_glow(fx, cr, NULL, NULL);
   awn_effects_post_op_alpha(fx, cr, NULL, NULL);
   awn_effects_post_op_reflection(fx, cr, NULL, NULL);
+  awn_effects_post_op_active (fx, cr, NULL, NULL);
   awn_effects_post_op_spotlight(fx, cr, NULL, NULL);
+  awn_effects_post_op_running (fx, cr, NULL, NULL);
   awn_effects_post_op_progress(fx, cr, NULL, NULL);
-  // TODO: we're missing ops to paint label & active hint
+  // TODO: we're missing op to paint label
 
   cairo_set_source_surface(fx->window_ctx, cairo_get_target(cr), 0, 0);
   cairo_paint(fx->window_ctx);

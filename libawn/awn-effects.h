@@ -86,7 +86,7 @@ struct _AwnEffects
   GObject parent;
 
   /* Properties */
-  GtkWidget *widget;
+  GtkWidget *widget; // FIXME: add as property
   gint orientation;
   guint set_effects;
   gint icon_offset;
@@ -100,6 +100,8 @@ struct _AwnEffects
   gchar *label;
   gfloat progress;
   gint border_clip;
+  GQuark custom_active_icon;
+  GQuark custom_arrow_icon;
   /* properties end */
 
   cairo_t * window_ctx;
@@ -115,6 +117,7 @@ struct _AwnEffectsClass {
   void (*animation_end) (AwnEffects *fx, AwnEffect effect);
 
   GPtrArray *animations;
+  GData     *custom_icons;
 };
 
 GType awn_effects_get_type(void);

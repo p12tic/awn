@@ -32,6 +32,33 @@
 
 extern GdkPixbuf *SPOTLIGHT_PIXBUF;
 
+// returns top left coordinates of the icon (without clipping and offsets)
+static void
+awn_effects_get_base_coords(AwnEffects *fx, double *x, double *y)
+{
+  AwnEffectsPrivate *priv = fx->priv;
+
+  switch (fx->orientation)
+  {
+    case AWN_EFFECT_ORIENT_TOP:
+      *x = (priv->window_width - priv->icon_width) / 2.0;
+      *y = fx->icon_offset;
+      break;
+    case AWN_EFFECT_ORIENT_LEFT:
+      *x = fx->icon_offset;
+      *y = (priv->window_height - priv->icon_height) / 2.0;
+      break;
+    case AWN_EFFECT_ORIENT_RIGHT:
+      *x = priv->window_width - priv->icon_width - fx->icon_offset;
+      *y = (priv->window_height - priv->icon_height) / 2.0;
+      break;
+    default: // AWN_EFFECT_ORIENT_BOTTOM:
+      *x = (priv->window_width - priv->icon_width) / 2.0;
+      *y = priv->window_height - priv->icon_height - fx->icon_offset;
+      break;
+  }
+}
+
 gboolean awn_effects_pre_op_clear(AwnEffects * fx,
                                cairo_t * cr,
                                GtkAllocation * ds,
@@ -224,73 +251,159 @@ gboolean awn_effects_pre_op_flip(AwnEffects * fx,
   return FALSE;
 }
 
-gboolean awn_effects_pre_op_active(AwnEffects * fx,
+gboolean awn_effects_post_op_active(AwnEffects * fx,
                                    cairo_t * cr,
                                    GtkAllocation * ds,
                                    gpointer user_data
                                    )
 {
-#define PADDING 1
-  //AwnEffectsPrivate *priv = fx->priv;
+  #define PADDING 3
+  AwnEffectsPrivate *priv = fx->priv;
 
   if (fx->is_active) {
-    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
-    awn_cairo_rounded_rect (cr, -PADDING, -PADDING, 
-                            ds->width+(2*PADDING), ds->height+(2*PADDING),
-                            10.0, ROUND_ALL);
-    cairo_fill (cr);
+    double x,y;
+    awn_effects_get_base_coords(fx, &x, &y);
+    switch (fx->orientation)
+    {
+      case AWN_EFFECT_ORIENT_LEFT:
+        x += priv->top_offset;
+        break;
+      case AWN_EFFECT_ORIENT_RIGHT:
+        x -= priv->top_offset;
+        break;
+      case AWN_EFFECT_ORIENT_TOP:
+        y += priv->top_offset;
+        break;
+      default: // AWN_EFFECT_ORIENT_BOTTOM:
+        y -= priv->top_offset;
+        break;
+    }
+    cairo_set_operator(cr, CAIRO_OPERATOR_DEST_OVER);
+    if (!fx->custom_active_icon) {
+      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
+      awn_cairo_rounded_rect (cr, x-PADDING, y-PADDING,
+                              priv->icon_width+(2*PADDING),
+                              priv->icon_height+(2*PADDING),
+                              10.0, ROUND_ALL);
+      cairo_fill (cr);
+    } else {
+      cairo_save(cr);
+      // get the icon surface
+      GData **icons = &(AWN_EFFECTS_GET_CLASS(fx)->custom_icons);
+      cairo_surface_t *srfc = 
+        g_datalist_id_get_data(icons, fx->custom_active_icon);
+      if (srfc) {
+        float srfc_width = cairo_image_surface_get_width(srfc);
+        float srfc_height = cairo_image_surface_get_height(srfc);
+
+        double w_ratio = (priv->icon_width+(2*PADDING)) / srfc_width;
+        double h_ratio = (priv->icon_height+(2*PADDING)) / srfc_height;
+
+        cairo_translate(cr, x-PADDING, y-PADDING);
+        cairo_scale(cr, w_ratio, h_ratio);
+        cairo_set_source_surface(cr, srfc, 0, 0);
+        cairo_paint(cr);
+      }
+      cairo_restore(cr);
+    }
+    return TRUE;
   }
   return FALSE;
 }
 
-gboolean awn_effects_pre_op_running(AwnEffects * fx,
+gboolean awn_effects_post_op_running(AwnEffects * fx,
                                     cairo_t * cr,
                                     GtkAllocation * ds,
                                     gpointer user_data
                                     )
 {
-#define ARROW_WIDTH 4
+  #define ARROW_WIDTH 6
+  AwnEffectsPrivate *priv = fx->priv;
+
   if (fx->is_running)
   {
-    gint x0=0, y0=0, z0=0;
-    gint x1=0, y1=0, z1=0;
+    cairo_surface_t *srfc = NULL;
+    gint arrow_w = 0, arrow_h = 0;
+    if (fx->custom_arrow_icon) {
+      // get custom surface dimensions
+      GData **icons = &(AWN_EFFECTS_GET_CLASS(fx)->custom_icons);
+      srfc = g_datalist_id_get_data(icons, fx->custom_arrow_icon);
+      if (srfc) {
+        arrow_w = cairo_image_surface_get_width(srfc);
+        arrow_h = cairo_image_surface_get_height(srfc);
+      }
+    }
 
+    gdouble x, y, rotation;
+    awn_effects_get_base_coords(fx, &x, &y);
+    // get coordinates of bottom center (for BOTTOM) and equivalents
     switch (fx->orientation)
     {
       case AWN_EFFECT_ORIENT_TOP:
-        x0 = ds->width/2 - ARROW_WIDTH; x1 = 0;
-        y0 = ds->width/2 + ARROW_WIDTH; y1 = 0;
-        z0 = ds->width/2;               z1 = ARROW_WIDTH;
-        break;
-
-      case AWN_EFFECT_ORIENT_BOTTOM:
-        x0 = ds->width/2 - ARROW_WIDTH; x1 = ds->height;
-        y0 = ds->width/2 + ARROW_WIDTH; y1 = ds->height;
-        z0 = ds->width/2;      z1 = ds->height - ARROW_WIDTH;
+        x += priv->icon_width / 2.0;
+        x += arrow_w / 2.0;
+        y -= fx->icon_offset / 1.5;
+        y += arrow_h;
+        rotation = M_PI;
         break;
 
       case AWN_EFFECT_ORIENT_LEFT:
-        x0 = 0; x1 = ds->height/2 - ARROW_WIDTH;
-        y0 = 0; y1 = ds->height/2 + ARROW_WIDTH;
-        z0 = ARROW_WIDTH; z1 =ds->height/2;
+        x -= fx->icon_offset / 1.5;
+        x += arrow_h;
+        y += priv->icon_height / 2.0;
+        y -= arrow_w / 2.0;
+        rotation = M_PI * 0.5;
         break;
 
       case AWN_EFFECT_ORIENT_RIGHT:
-        x0 = ds->width; x1 = ds->height/2 - ARROW_WIDTH;
-        y0 = ds->width; y1 = ds->height/2 + ARROW_WIDTH;
-        z0 = ds->width-ARROW_WIDTH; z1 = ds->height/2;
+        x += priv->icon_width;
+        x += fx->icon_offset / 1.5;
+        x -= arrow_h;
+        y += priv->icon_height / 2.0;
+        y += arrow_w / 2.0;
+        rotation = M_PI * 1.5;
+        break;
+
+      default: //AWN_EFFECT_ORIENT_BOTTOM:
+        x += priv->icon_width / 2.0;
+        x -= arrow_w / 2.0;
+        y += priv->icon_height;
+        y += fx->icon_offset / 1.5;
+        y -= arrow_h;
+        rotation = 0;
         break;
     }
+    cairo_save(cr);
 
-    cairo_set_line_width (cr, 1.0);
-    cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
+    cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
+    cairo_translate(cr, x, y);
+    cairo_rotate(cr, rotation);
 
-    cairo_move_to (cr, x0, x1);
-    cairo_line_to (cr, y0, y1);
-    cairo_line_to (cr, z0, z1);
-    cairo_close_path (cr);
+    if (!fx->custom_arrow_icon)
+    {
+      cairo_set_line_width (cr, 1.0);
+      cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
 
-    cairo_fill (cr);
+      cairo_move_to (cr, -ARROW_WIDTH, 0);
+      cairo_line_to (cr, +ARROW_WIDTH, 0);
+      cairo_line_to (cr, 0, -ARROW_WIDTH);
+      cairo_close_path (cr);
+
+      cairo_fill_preserve (cr);
+
+      cairo_set_line_width (cr, 0.5);
+      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
+      cairo_stroke(cr);
+    }
+    else if (srfc)
+    {
+      cairo_set_source_surface(cr, srfc, 0, 0);
+      cairo_paint(cr);
+    }
+
+    cairo_restore(cr);
+
+    return TRUE;
   }
 
   return FALSE;

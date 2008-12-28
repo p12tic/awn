@@ -41,8 +41,10 @@ static gboolean
 on_active_click(GtkWidget *widget, gpointer user_data)
 {
   int i;
-  for (i=0; i<NUM_ICONS; i++)
+  for (i=0; i<NUM_ICONS; i++) {
+    awn_icon_set_is_running(icons[i], !awn_icon_get_is_running(icons[i]));
     awn_icon_set_is_active(icons[i], !awn_icon_get_is_active(icons[i]));
+  }
   return FALSE;
 }
 
@@ -65,6 +67,8 @@ on_signal_click(GtkWidget *widget, gpointer user_data)
 
   AwnEffects *fx = awn_icon_get_effects(icon);
   awn_effects_start_ex(fx, AWN_EFFECT_OPENING, 1, TRUE, TRUE);
+
+  g_object_set(fx, "custom-running-png", "/usr/share/gimp/2.0/themes/Default/images/preferences/folders-gradients-22.png", NULL);
 
   return FALSE;
 }
@@ -142,10 +146,10 @@ cairo_icon (GtkWidget *parent)
 
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
-  cairo_set_source_rgba (cr, 1.0, 0.0, 0.0, 0.5);
+  cairo_set_source_rgba (cr, 1.0, 0.0, 0.0, 0.8);
   cairo_rectangle (cr, 0, 0, 50, 50);
   cairo_fill_preserve (cr);
-  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.5);
+  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.8);
   cairo_stroke (cr);
 
   icon = awn_icon_new ();
@@ -179,10 +183,10 @@ surface_icon (GtkWidget *parent)
 
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
-  cairo_set_source_rgba (cr, 0.0, 1.0, 0.0, 0.5);
+  cairo_set_source_rgba (cr, 0.0, 1.0, 0.0, 0.8);
   cairo_rectangle (cr, 0, 0, 75, 50);
   cairo_fill_preserve (cr);
-  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.5);
+  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.8);
   cairo_stroke (cr);
 
   cairo_destroy (cr);
@@ -218,10 +222,10 @@ thin_surface_icon (GtkWidget *parent)
 
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
-  cairo_set_source_rgba (cr, 0.0, 0.0, 1.0, 0.5);
+  cairo_set_source_rgba (cr, 0.0, 0.0, 1.0, 0.8);
   cairo_rectangle (cr, 0, 0, 25, 75);
   cairo_fill_preserve (cr);
-  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.5);
+  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.8);
   cairo_stroke (cr);
 
   cairo_destroy (cr);
