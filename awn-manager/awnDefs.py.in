@@ -31,54 +31,53 @@ HOME_CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".config", "awn")
 HOME_APPLET_DIR = os.path.join(HOME_CONFIG_DIR, "applets")
 HOME_LAUNCHERS_DIR = os.path.join(HOME_CONFIG_DIR, "launchers")
 HOME_THEME_DIR = os.path.join(HOME_CONFIG_DIR, "themes")
+SYS_THEME_DIR = os.path.join (PREFIX, "share", "avant-window-navigator","themes")
 HOME_CUSTOM_ICONS_DIR = os.path.join(HOME_CONFIG_DIR, "custom-icons")
 
 
 # AwnConfigClient Groups/Keys
-AWN                 = DEFAULT_GROUP        #group
-AUTO_HIDE           = "auto_hide"          #bool
-PANEL_MODE          = "panel_mode"         #bool
-KEEP_BELOW          = "keep_below"         #bool
+AWN            		= DEFAULT_GROUP         #group
+PANEL			= "panel"		#group
+PANEL_MODE		= "panel_mode"		#bool
+ORIENT			= "orient"    		#int
+OFFSET		      	= "offset"      	#int
+SIZE			= "size"		#int
+APPLET_LIST		= "applet_list"		#list-string
+MONITOR_FORCE		= "monitor_force"	#bool
+MONITOR_HEIGHT		= "monitor_height"	#int
+MONITOR_WIDTH		= "monitor_width"	#int
+MONITOR_OFFSET		= "monitor_offset"	#int
+MONITOR_ALIGN		= "monitor_align"	#float
 
-BAR                 = "bar"                #group
-ROUNDED_CORNERS     = "rounded_corners"    #bool
-CORNER_RADIUS       = "corner_radius"      #float
-RENDER_PATTERN      = "render_pattern"     #bool
-PATTERN_URI         = "pattern_uri"        #string
-PATTERN_ALPHA       = "pattern_alpha"      #float
-GLASS_STEP_1        = "glass_step_1"       #string
-GLASS_STEP_2        = "glass_step_2"       #string
-GLASS_HISTEP_1      = "glass_histep_1"     #string
-GLASS_HISTEP_2      = "glass_histep_2"     #string
-BORDER_COLOR        = "border_color"       #string
-HILIGHT_COLOR       = "hilight_color"      #string
-SHOW_SEPARATOR      = "show_separator"     #bool
-SEP_COLOR           = "sep_color"
+THEME			= "theme"		#group
+GSTEP1			= "gstep1"		#string
+GSTEP2			= "gstep2"		#string
+GHISTEP1		= "ghistep1"		#string
+GHISTEP2		= "ghistep2"		#string
+BORDER			= "border"		#string
+HILIGHT			= "hilight"		#string
+SHOW_SEP		= "show_sep"		#bool
+SEP_COLOR		= "sep_color"		#string
+DRAW_PATTERN		= "draw_pattern"	#bool
+PATTERN_ALPHA		= "pattern_alpha"	#float
+PATTERN_FILENAME	= "pattern_filename"	#string
+GTK_THEME_MODE		= "gtk_theme_mode"	#bool
+CORNER_RADIUS		= "corner_radius"	#float
+PANEL_ANGLE		= "panel_angle"		#float
+CURVINESS		= "curviness"		#float
+CURVES_SYMMETRY		= "curves_symmetry"	#float
+TOOLTIP_FONT_NAME	= "tooltip_font_name"	#string
+TOOLTIP_FONT_COLOR	= "tooltip_font_color"	#string
+TOOLTIP_BG_COLOR	= "tooltip_bg_color"	#string
 
-BAR_HEIGHT          = "bar_height"         #int
-BAR_ANGLE           = "bar_angle"          #int
-ICON_OFFSET         = "icon_offset"        #int
-
-WINMAN              = "window_manager"     #group
-SHOW_ALL_WINS       = "show_all_windows"   #bool
-LAUNCHERS           = "launchers"          #list
-
-APP                 = "app"                #group
-ACTIVE_PNG          = "active_png"         #string
-ARROW_COLOR         = "arrow_color"        #color
-TASKS_H_ARROWS      = "tasks_have_arrows"  #bool
-ARROW_OFFSET        = "arrow_offset"
-ICON_EFFECT         = "icon_effect"        #int
-NAME_CHANGE_NOTIFY  = "name_change_notify" #bool
-
-TITLE               = "title"              #group
-TEXT_COLOR          = "text_color"         #color
-SHADOW_COLOR        = "shadow_color"       #color
-BACKGROUND          = "background"         #color
-FONT_FACE           = "font_face"          #string
-
-APPLETS             = "applets"            #group
-APPLET_LIST         = "panel/applet_list"       #list
+EFFECTS			= "effects"		#group
+REFLECTION_OFFSET	= "reflection_offset"	#int
+ICON_EFFECT		= "icon_effect"		#int
+ICON_ALPHA		= "icon_alpha"		#float
+FRAME_RATE		= "frame_rate"		#int
+ENABLE_ICON_DEPTH	= "enable_icon_depth"	#bool
+REFLECTION_A_MULTIPLIER	= "reflection_alpha_multiplier"	#float
+SHOW_SHADOWS		= "show_shadows"	#bool
 
 # i18n-related
 I18N_DOMAIN = "avant-window-navigator"

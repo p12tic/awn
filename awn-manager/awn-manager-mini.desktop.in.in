@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+_Name=Awn Manager Mini
+_Comment=Manage Awn preferences, launchers, applets and themes (Mini format)
+Exec=awn-manager-mini
+Icon=awn-manager
+Categories=Settings;DesktopSettings;GTK;
+

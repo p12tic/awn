@@ -3,27 +3,33 @@ include $(top_srcdir)/Makefile.app-icons
 
 pyfiles_DATA = \
 	awnApplet.py		\
+	awnClass.py		\
 	awnDefs.py		\
 	awnLauncher.py		\
 	awnLauncherEditor.py	\
 	awnPreferences.py	\
-	awnTheme.py		
+	awnTheme.py			
 pyfilesdir = $(pkgdatadir)/awn-manager
 
-glade_DATA = launcher-editor.glade window.glade
+glade_DATA = 	launcher-editor.glade 	\
+		window.glade 		\
+		awn-manager-mini.glade
 gladedir = $(pkgdatadir)/awn-manager
 
 desktopdir   = $(datadir)/applications
-desktop_DATA = awn-manager.desktop
+desktop_DATA = 	awn-manager.desktop	\
+		awn-manager-mini.desktop
 @INTLTOOL_DESKTOP_RULE@
 
 install-exec-local:
 	test -e "$(DESTDIR)$(bindir)" || mkdir -p "$(DESTDIR)$(bindir)"
 	$(INSTALL) -m 755 awnManager.py "$(DESTDIR)$(bindir)/awn-manager"
+	$(INSTALL) -m 755 awnManagerMini.py "$(DESTDIR)$(bindir)/awn-manager-mini"
 	$(INSTALL) -m 755 awn-launcher-editor "$(DESTDIR)$(bindir)"
 
 uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-manager
+	rm -f $(DESTDIR)$(bindir)/awn-manager-mini
 	rm -f $(DESTDIR)$(bindir)/awn-launcher-editor
 
 EXTRA_DIST +=			\
