@@ -42,8 +42,17 @@ on_active_click(GtkWidget *widget, gpointer user_data)
 {
   int i;
   for (i=0; i<NUM_ICONS; i++) {
-    awn_icon_set_is_running(icons[i], !awn_icon_get_is_running(icons[i]));
     awn_icon_set_is_active(icons[i], !awn_icon_get_is_active(icons[i]));
+  }
+  return FALSE;
+}
+
+static gboolean
+on_running_click(GtkWidget *widget, gpointer user_data)
+{
+  int i;
+  for (i=0; i<NUM_ICONS; i++) {
+    awn_icon_set_is_running(icons[i], !awn_icon_get_is_running(icons[i]));
   }
   return FALSE;
 }
@@ -68,7 +77,13 @@ on_signal_click(GtkWidget *widget, gpointer user_data)
   AwnEffects *fx = awn_icon_get_effects(icon);
   awn_effects_start_ex(fx, AWN_EFFECT_OPENING, 1, TRUE, TRUE);
 
-  g_object_set(fx, "custom-running-png", "/usr/share/gimp/2.0/themes/Default/images/preferences/folders-gradients-22.png", NULL);
+  gchar* png = NULL;
+  g_object_get(fx, "custom-running-png", &png, NULL);
+  if (!png) {
+    g_object_set(fx, "custom-running-png", "/usr/share/gimp/2.0/themes/Default/images/preferences/folders-gradients-22.png", NULL);
+    g_free(png);
+  } else
+    g_object_set(fx, "custom-running-png", NULL, NULL);
 
   return FALSE;
 }
@@ -280,10 +295,15 @@ main (gint argc, gchar **argv)
                    G_CALLBACK(on_active_click), NULL);
   gtk_container_add (GTK_CONTAINER(vbox), button);
 
-  GtkWidget *button2 = gtk_button_new_with_label("Signal");
+  GtkWidget *button2 = gtk_button_new_with_label("Running");
   g_signal_connect(G_OBJECT(button2), "clicked", 
-                   G_CALLBACK(on_signal_click), NULL);
+                   G_CALLBACK(on_running_click), NULL);
   gtk_container_add (GTK_CONTAINER(vbox), button2);
+
+  GtkWidget *button3 = gtk_button_new_with_label("Signal");
+  g_signal_connect(G_OBJECT(button3), "clicked", 
+                   G_CALLBACK(on_signal_click), NULL);
+  gtk_container_add (GTK_CONTAINER(vbox), button3);
 
   gtk_widget_show_all (window);
 

@@ -23,11 +23,6 @@
 
 #include "awn-effects.h"
 
-#define AWN_EFFECT_ORIENT_TOP 0
-#define AWN_EFFECT_ORIENT_RIGHT 1
-#define AWN_EFFECT_ORIENT_BOTTOM 2
-#define AWN_EFFECT_ORIENT_LEFT 3
-
 gboolean awn_effects_pre_op_clear(AwnEffects * fx,
                                cairo_t * cr,
                                GtkAllocation * ds,

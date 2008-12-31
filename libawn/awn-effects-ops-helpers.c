@@ -48,14 +48,13 @@ void
 lighten_surface(cairo_surface_t * src, const gfloat amount)
 {
   int i, j;
-  int width, height, row_stride, has_alpha;
+  int width, height, row_stride;
   guchar *target_pixels;
   guchar *pixsrc;
   cairo_surface_t * temp_srfc;
   cairo_t         * temp_ctx;
 
   g_return_if_fail(src);
-  has_alpha = TRUE;
   temp_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
                                          cairo_xlib_surface_get_width(src),
                                          cairo_xlib_surface_get_height(src)
@@ -85,8 +84,7 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
       *pixsrc = lighten_component(*pixsrc, amount);
       pixsrc++;
 
-      if (has_alpha)
-        pixsrc++;
+      pixsrc++; // ALPHA
     }
   }
   cairo_surface_mark_dirty(temp_srfc);
@@ -468,6 +466,8 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
       }
     }
   }
+  //----------
+  cairo_surface_mark_dirty(temp_dest_srfc);
 
   cairo_t * tmp;
 

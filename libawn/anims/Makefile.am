@@ -14,6 +14,7 @@ private_headers = \
         awn-effect-desaturate.h \
         awn-effect-fade.h \
         awn-effect-glow.h \
+        awn-effect-simple.h \
         awn-effect-spotlight.h \
         awn-effect-spotlight3d.h \
         awn-effect-squish.h \
@@ -29,6 +30,7 @@ source_c = \
         awn-effect-desaturate.c \
         awn-effect-fade.c \
         awn-effect-glow.c \
+        awn-effect-simple.c \
         awn-effect-spotlight.c \
         awn-effect-spotlight3d.c \
         awn-effect-squish.c \

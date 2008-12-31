@@ -260,7 +260,7 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
   #define PADDING 3
   AwnEffectsPrivate *priv = fx->priv;
 
-  if (fx->is_active) {
+  if (fx->is_active || priv->simple_rect) {
     double x,y;
     awn_effects_get_base_coords(fx, &x, &y);
     switch (fx->orientation)
@@ -279,8 +279,19 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
         break;
     }
     cairo_set_operator(cr, CAIRO_OPERATOR_DEST_OVER);
-    if (!fx->custom_active_icon) {
-      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
+    if (!fx->custom_active_icon || priv->simple_rect) {
+      if (priv->simple_rect) {
+        // get the color from style
+        // I wonder which style color is the one of background of selected text
+        if (fx->widget) {
+          GtkStyle *style = gtk_widget_get_style(fx->widget);
+          gdk_cairo_set_source_color(cr, &style->bg[GTK_STATE_SELECTED]);
+        } else {
+          cairo_set_source_rgba (cr, 1.0, 0.4, 0.0, 1.0);
+        }
+      } else {
+        cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
+      }
       awn_cairo_rounded_rect (cr, x-PADDING, y-PADDING,
                               priv->icon_width+(2*PADDING),
                               priv->icon_height+(2*PADDING),

@@ -35,15 +35,17 @@
 #include <cairo/cairo-xlib.h>
 
 #include "anims/awn-effects-shared.h"
-#include "anims/awn-effect-spotlight.h"
+
 #include "anims/awn-effect-bounce.h"
-#include "anims/awn-effect-glow.h"
-#include "anims/awn-effect-zoom.h"
+#include "anims/awn-effect-desaturate.h"
 #include "anims/awn-effect-fade.h"
+#include "anims/awn-effect-glow.h"
+#include "anims/awn-effect-simple.h"
+#include "anims/awn-effect-spotlight.h"
+#include "anims/awn-effect-spotlight3d.h"
 #include "anims/awn-effect-squish.h"
 #include "anims/awn-effect-turn.h"
-#include "anims/awn-effect-spotlight3d.h"
-#include "anims/awn-effect-desaturate.h"
+#include "anims/awn-effect-zoom.h"
 
 G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT);
 
@@ -384,8 +386,15 @@ awn_effects_class_init(AwnEffectsClass *klass)
 
   g_type_class_add_private (obj_class, sizeof (AwnEffectsPrivate));
 
-  klass->animations = g_ptr_array_sized_new(AWN_ANIMATIONS_PER_BUNDLE * 8); // 5 animations per bundle, 8 effect bundles
+  klass->animations = g_ptr_array_sized_new(AWN_ANIMATIONS_PER_BUNDLE * 9); // 5 animations per bundle, 9 effect bundles
 
+  awn_effects_register_effect_bundle(klass,
+    NULL,
+    NULL,
+    simple_hover_effect,
+    simple_attention_effect,
+    simple_attention_effect
+  );
   awn_effects_register_effect_bundle(klass,
     bounce_opening_effect,
     fade_out_effect,
