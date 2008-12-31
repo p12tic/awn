@@ -20,6 +20,15 @@
 #include "awn-effects-shared.h"
 
 gboolean
+awn_effect_force_timeout(AwnEffectsAnimation * anim, 
+                         const gint timeout, GSourceFunc func)
+{
+  AwnEffectsPrivate *priv = anim->effects->priv;
+  priv->timer_id = g_timeout_add(timeout, func, anim);
+  return FALSE;
+}
+
+gboolean
 awn_effect_check_top_effect(AwnEffectsAnimation * anim, gboolean * stopped)
 {
   if (stopped)

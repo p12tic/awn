@@ -58,19 +58,22 @@ simple_attention_effect(AwnEffectsAnimation * anim)
 
   AWN_ANIMATION_INIT(anim) {
     priv->simple_rect = TRUE;
+    awn_effects_redraw(anim->effects);
+    return awn_effect_force_timeout(anim, 750,
+             (GSourceFunc)simple_attention_effect);
   }
+
+  // blink
+  priv->simple_rect = !priv->simple_rect;
 
   // repaint widget
   awn_effects_redraw(anim->effects);
 
-  if (awn_effect_check_top_effect(anim, NULL))
-    return awn_effect_suspend_animation(anim,
-                                        (GSourceFunc)simple_attention_effect);
-  else
-    priv->simple_rect = FALSE;
-
-  // check for repeating, but it'll return FALSE anyway if we're here
+  // check for repeating
   gboolean repeat = awn_effect_handle_repeating(anim);
+  if (!repeat) {
+    priv->simple_rect = FALSE;
+  }
 
   return repeat;
 }

@@ -123,6 +123,10 @@ gboolean awn_effect_check_max_loops    (AwnEffectsAnimation * anim);
 gboolean awn_effect_suspend_animation  (AwnEffectsAnimation * anim,
                                         GSourceFunc func);
 
+gboolean awn_effect_force_timeout      (AwnEffectsAnimation * anim,
+                                        const gint timeout,
+                                        GSourceFunc func);
+
 void awn_effect_emit_anim_start        (AwnEffectsAnimation *anim);
 void awn_effect_emit_anim_end          (AwnEffectsAnimation *anim);
 

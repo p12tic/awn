@@ -27,7 +27,9 @@
 #include "awn-background-flat.h"
 #include "awn-x.h"
 
-#define M_PI 3.14159265
+#ifndef M_PI
+ #define M_PI 3.14159265358979323846
+#endif
 
 G_DEFINE_TYPE (AwnBackgroundFlat, awn_background_flat, AWN_TYPE_BACKGROUND)
 
@@ -83,10 +85,16 @@ draw_rect (AwnBackground  *bg,
   AwnCairoRoundCorners state = ROUND_NONE;
 
   switch (orient)
-  {
+  {/*
+    case AWN_ORIENTATION_LEFT:
+      state = ROUND_RIGHT;
+      break;
+    case AWN_ORIENTATION_RIGHT:
+      state = ROUND_LEFT;
+      break;
     case AWN_ORIENTATION_TOP:
       state = ROUND_BOTTOM;
-      break;
+      break;*/
     default:
       state = ROUND_TOP;
   }
@@ -107,10 +115,10 @@ draw_top_bottom_background (AwnBackground  *bg,
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-  cairo_translate (cr, 0.5, 0.5);
+  cairo_translate (cr, 0, 0.5);
 
   /* Draw the background */
-  pat = cairo_pattern_create_linear (0, y, 0, y+height);
+  pat = cairo_pattern_create_linear (0, -height, 0, 0);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 
                                      bg->g_step_1.red,
                                      bg->g_step_1.green,
@@ -122,16 +130,15 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_step_2.blue, 
                                      bg->g_step_2.alpha);
 
-  if (orient == AWN_ORIENTATION_TOP)
-    draw_rect (bg, cr, orient, x+1, y, width-2, height-1);
-  else
-    draw_rect (bg, cr, orient, x+1, y+1, width-2, height-1);
+  //draw_rect (bg, cr, orient, x+1, y+1, width-2, height-1);
+  draw_rect (bg, cr, orient, -width/2.0, -height, width, height);
+
   cairo_set_source (cr, pat);
   cairo_fill (cr);
   cairo_pattern_destroy (pat);
 
   /* Draw the hi-light */
-  pat = cairo_pattern_create_linear (0, y, 0, y + (height/3));
+  pat = cairo_pattern_create_linear (0, -height, 0, -height + (height/3));
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 
                                      bg->g_histep_1.red,
                                      bg->g_histep_1.green,
@@ -143,10 +150,9 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_histep_2.blue, 
                                      bg->g_histep_2.alpha);
 
-  if (orient == AWN_ORIENTATION_TOP)
-    draw_rect (bg, cr, orient, x+1, y, width-2, height/3);
-  else
-    draw_rect (bg, cr, orient, x+1, y+1, width-2, height/3);
+  //draw_rect (bg, cr, orient, x+1, y+1, width-2, height/3);
+  draw_rect (bg, cr, orient, -width/2.0, -height, width, height/3);
+
   cairo_set_source (cr, pat);
   cairo_fill (cr);
   cairo_pattern_destroy (pat);
@@ -156,10 +162,8 @@ draw_top_bottom_background (AwnBackground  *bg,
                              bg->hilight_color.green,
                              bg->hilight_color.blue,
                              bg->hilight_color.alpha);
-  if (orient == AWN_ORIENTATION_TOP)
-      draw_rect (bg, cr, orient, x+1, y-2, width-3, height+1);
-  else
-      draw_rect (bg, cr, orient, x+1, y+1, width-3, height+3);
+  //draw_rect (bg, cr, orient, x+1, y+1, width-3, height+3);
+  draw_rect (bg, cr, orient, -width/2.0, -height, width-1, height);
   cairo_stroke (cr);
 
   /* External border */
@@ -167,11 +171,9 @@ draw_top_bottom_background (AwnBackground  *bg,
                              bg->border_color.green,
                              bg->border_color.blue,
                              bg->border_color.alpha);
-  if (orient == AWN_ORIENTATION_TOP)
-      draw_rect (bg, cr, orient, x, y-3, width-1, height+3);
-  else
-      draw_rect (bg, cr, orient, x, y,  width-1, height+3);
-   cairo_stroke (cr);
+  //draw_rect (bg, cr, orient, x, y,  width-1, height+3);
+  draw_rect (bg, cr, orient, -width/2.0, -height, width, height);
+  cairo_stroke (cr);
 }
 
 static void 
@@ -185,26 +187,27 @@ awn_background_flat_draw (AwnBackground  *bg,
 {
   gint temp;
   cairo_save (cr);
-  
+
   switch (orient)
   {
     case AWN_ORIENTATION_RIGHT:
-      cairo_translate (cr, width/2, height/2);
-      cairo_rotate (cr, 270 * M_PI/180); 
-      temp = y;
-      y = width/2; x = -height/2;
+      cairo_translate (cr, x + width, y + height/2.0);
+      cairo_rotate (cr, M_PI * 1.5);
       temp = width;
       width = height; height = temp;
       break;
     case AWN_ORIENTATION_LEFT:
-      cairo_translate (cr, width/2, height/2);
-      cairo_rotate (cr, 90 * M_PI/180);
-      temp = y;
-      y = -width/2; x = -height/2;
+      cairo_translate (cr, x, y + height/2.0);
+      cairo_rotate (cr, M_PI * 0.5);
       temp = width;
       width = height; height = temp;
       break;
+    case AWN_ORIENTATION_TOP:
+      cairo_translate (cr, x + width/2.0, y);
+      cairo_rotate (cr, M_PI);
+      break;
     default:
+      cairo_translate (cr, x + width/2.0, y + height);
       break;
   }
 

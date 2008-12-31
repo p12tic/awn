@@ -38,6 +38,8 @@
 #include "awn-monitor.h"
 #include "awn-x.h"
 
+#define AWN_PANEL_BORDER 2
+
 G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW) 
 
 #define AWN_PANEL_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE (obj, \
@@ -109,6 +111,7 @@ static void     on_screen_changed     (GtkWidget *widget,
 static gboolean on_window_configure   (GtkWidget         *panel,
                                        GdkEventConfigure *event);
 static gboolean position_window       (AwnPanel *panel);
+static gboolean resize_window         (AwnPanel *panel);
 
 static gboolean on_eb_expose          (GtkWidget      *eb, 
                                        GdkEventExpose *event,
@@ -182,24 +185,7 @@ awn_panel_constructed (GObject *object)
   g_signal_connect (panel, "configure-event",
                     G_CALLBACK (on_window_configure), NULL);
 
-  switch (priv->orient)
-  {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
-      gtk_window_resize (GTK_WINDOW (panel),
-                         48,
-                         (priv->composited ? 2 * priv->size : priv->size));
-      break;
-
-    case AWN_ORIENTATION_RIGHT:
-    case AWN_ORIENTATION_LEFT:
-      gtk_window_resize (GTK_WINDOW (panel),
-                         (priv->composited ? 2 * priv->size : priv->size),
-                         48);  
-      break;
-    default:
-      g_assert (0);
-  }
+  resize_window (AWN_PANEL (panel));
   position_window (AWN_PANEL (panel));
 
   /* Contents */
@@ -432,7 +418,7 @@ awn_panel_init (AwnPanel *panel)
   g_signal_connect (priv->eventbox, "expose-event",
                     G_CALLBACK (on_eb_expose), priv->alignment);
 
-  gtk_window_set_policy (GTK_WINDOW (panel), FALSE, FALSE, TRUE);
+  gtk_window_set_resizable (GTK_WINDOW (panel), FALSE);
 }
 
 GtkWidget *
@@ -659,6 +645,38 @@ position_window (AwnPanel *panel)
 }
 
 /*
+ * Resize Awn's window
+ */
+static gboolean
+resize_window (AwnPanel *panel)
+{
+  GtkWidget       *widget  = GTK_WIDGET (panel);
+  AwnPanelPrivate *priv = panel->priv;
+
+  // shouldn't we call size_request on our child instead? (for non-composited)
+  gint size = priv->composited ? (2 * priv->size):(priv->size + priv->offset);
+  size += AWN_PANEL_BORDER;
+
+  switch (priv->orient)
+  {
+    case AWN_ORIENTATION_TOP:
+    case AWN_ORIENTATION_BOTTOM:
+      gtk_widget_set_size_request (widget,
+                                   -1,
+                                   size);
+      break;
+    case AWN_ORIENTATION_RIGHT:
+    case AWN_ORIENTATION_LEFT:
+    default:
+      gtk_widget_set_size_request (widget,
+                                   size,
+                                   -1);
+  }
+
+  return FALSE;
+}
+
+/*
  * We get a configure event when the windows size changes. This is a good as
  * a time as any to update the input shape of the window.
  */
@@ -767,32 +785,35 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   /* Calculate correct values */
   switch (priv->orient)
   {
+    /* if panel is composited, it's size is priv->size*2,
+     *  otherwise priv->size+priv->offset
+     */
     case AWN_ORIENTATION_TOP:
       x = 0;
       y = 0;
       width = width;
-      height = height - (priv->composited ? priv->size : 0) + priv->offset;
+      height -= priv->composited ? priv->size - priv->offset : 0;
       break;
 
     case AWN_ORIENTATION_RIGHT:
-      x = (priv->composited ? priv->size : 0) - priv->offset;
+      x = priv->composited ? priv->size - priv->offset : 0;
       y = 0;
-      width = width - (priv->composited ? priv->size : 0) + priv->offset;
+      width -= priv->composited ? priv->size - priv->offset : 0;
       height = height;
       break;
 
     case AWN_ORIENTATION_BOTTOM:
       x = 0;
-      y = (priv->composited ? priv->size : 0) - priv->offset;
+      y = priv->composited ? priv->size - priv->offset : 0;
       width = width;
-      height = height - (priv->composited ? priv->size : 0) + priv->offset;
+      height -= priv->composited ? priv->size - priv->offset : 0;
       break;
 
     case AWN_ORIENTATION_LEFT:
     default:
       x = 0;
       y = 0;
-      width = width - (priv->composited ? priv->size : 0) + priv->offset;
+      width -= priv->composited ? priv->size - priv->offset : 0;
       height = height;
   }
   
@@ -885,6 +906,9 @@ awn_panel_set_offset  (AwnPanel *panel,
   AwnPanelPrivate *priv = panel->priv;
   
   priv->offset = offset;
+
+  resize_window(panel);
+
   gtk_widget_queue_draw (GTK_WIDGET (panel));
 }
 
@@ -898,21 +922,7 @@ awn_panel_set_orient (AwnPanel *panel, gint orient)
   if (!GTK_WIDGET_REALIZED (panel))
     return;
 
-  switch (priv->orient)
-  {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
-      gtk_window_resize (GTK_WINDOW (panel),
-                         GTK_WIDGET (panel)->allocation.width, 
-                         (priv->composited ? 2 * priv->size : priv->size));
-      break;
-    case AWN_ORIENTATION_RIGHT:
-    case AWN_ORIENTATION_LEFT:
-    default:
-        gtk_window_resize (GTK_WINDOW (panel),
-                           (priv->composited ? 2 * priv->size : priv->size),
-                           GTK_WIDGET (panel)->allocation.height);
-  }
+  resize_window (panel);
  
   g_signal_emit (panel, _panel_signals[ORIENT_CHANGED], 0, priv->orient);
   
@@ -927,26 +937,17 @@ awn_panel_set_size (AwnPanel *panel, gint size)
   AwnPanelPrivate *priv = panel->priv;
   
   priv->size = size;
+
+  if (!GTK_WIDGET_REALIZED (panel))
+    return;
   
-  switch (priv->orient)
-  {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
-      gtk_window_resize (GTK_WINDOW (panel),
-                         GTK_WIDGET (panel)->allocation.width, 
-                         (priv->composited ? 2 * priv->size : priv->size));
-      break;
-    case AWN_ORIENTATION_RIGHT:
-    case AWN_ORIENTATION_LEFT:
-    default:
-      gtk_window_resize (GTK_WINDOW (panel),
-                         (priv->composited ? 2 * priv->size : priv->size),
-                         GTK_WIDGET (panel)->allocation.height);
-  }
-  gint ww, hh;
-  gtk_window_get_size (GTK_WINDOW (panel), &ww, &hh);
-                                        
+  resize_window (panel);
+
   g_signal_emit (panel, _panel_signals[SIZE_CHANGED], 0, priv->size);
+
+  position_window (panel);
+
+  gtk_widget_queue_draw (GTK_WIDGET (panel));
 }
 
 /*
