@@ -29,6 +29,7 @@ except:
 try:
     import gobject
     import gtk
+    import gtk.gdk as gdk
 except Exception, e:
     sys.stderr.write(str(e) + '\n')
     sys.exit(1)
@@ -36,6 +37,9 @@ from xdg.DesktopEntry import DesktopEntry
 
 import awn
 import awnDefs as defs
+from awnLauncherEditor import awnLauncherEditor
+
+#from bzrlib import bzrdir
 
 defs.i18nize(globals())
 
@@ -669,3 +673,196 @@ _("You should have received a copy of the GNU General Public License along with 
 
     def main(self):
         gtk.main()
+
+class awnLauncher:
+
+    def __init__(self, glade):
+        self.wTree = glade
+        if not os.path.exists(defs.HOME_LAUNCHERS_DIR):
+            os.makedirs(defs.HOME_LAUNCHERS_DIR)
+
+        self.load_finished = False
+
+        self.client = awn.Config()
+        self.client.ensure_group(defs.LAUNCHERS)
+
+        self.scrollwindow = self.wTree.get_widget("launcher_scrollwindow")
+        self.make_model()
+
+        self.applet_remove = self.wTree.get_widget("launcher_remove")
+        self.applet_remove.connect("clicked", self.remove)
+        self.applet_add = self.wTree.get_widget("launcher_add")
+        self.applet_add.connect("clicked", self.add)
+        self.launcher_edit = self.wTree.get_widget("launcher_edit")
+        self.launcher_edit.connect("clicked", self.edit)
+
+    def reordered(self, model, path, iterator, data=None):
+        cur_index = self.model.get_path(iterator)[0]
+        cur_uri = self.model.get_value (iterator, 2)
+        l = {}
+        it = self.model.get_iter_first ()
+        while (it):
+            uri = self.model.get_value (it, 2)
+            l[self.model.get_path(it)[0]] = uri
+            it = self.model.iter_next (it)
+
+        remove = None
+        for item in l:
+            if l[item] == cur_uri and cur_index != item:
+                remove = item
+                break
+        if remove >= 0:
+            del l[remove]
+
+        launchers = []
+        for item in l:
+            launchers.append(l[item])
+
+        if not None in launchers and self.load_finished:
+            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING, launchers)
+
+    def make_model (self):
+
+        self.treeview = gtk.TreeView()
+        self.treeview.set_reorderable(True)
+        self.treeview.set_headers_visible(False)
+
+        self.scrollwindow.add(self.treeview)
+
+        self.model = model = gtk.ListStore(gdk.Pixbuf, str, str)
+        self.treeview.set_model (model)
+
+        model.connect("row-changed", self.reordered)
+
+        ren = gtk.CellRendererPixbuf()
+        col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
+        self.treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        col = gtk.TreeViewColumn ("Name", ren, markup=1)
+        self.treeview.append_column (col)
+
+        self.treeview.show()
+
+        uris = []
+        if self.client.exists(defs.LAUNCHERS, defs.LAUNCHERS_LIST):
+            uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
+
+        self.refresh_tree(uris)
+
+        self.load_finished = True
+
+    def refresh_tree (self, uris):
+        self.model.clear()
+        for i in uris:
+            text = self.make_row (i)
+            if len(text) > 2:
+                row = self.model.append ()
+                self.model.set_value (row, 0, self.make_icon (i))
+                self.model.set_value (row, 1, text)
+                self.model.set_value (row, 2, i)
+
+    def make_row (self, uri):
+        try:
+            item = DesktopEntry (uri)
+            text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
+        except:
+            return ""
+        return text
+
+    def make_icon (self, uri):
+        icon = None
+        theme = gtk.icon_theme_get_default ()
+        try:
+            item = DesktopEntry (uri)
+            name = item.getIcon()
+            if name is None:
+                return icon
+        except:
+            return icon
+
+        try:
+            icon = theme.load_icon (name, 32, 0)
+        except:
+            icon = None
+        #Hack hack hack
+        if icon is None:
+            try:
+                i = gtk.image_new_from_stock (name, 32)
+                icon = i.get_pixbuf ()
+            except:
+                icon = None
+
+        if icon is None and "/" in name:
+            try:
+                icon = gdk.pixbuf_new_from_file_at_size (name, 32, 32)
+            except:
+                icon = None
+        if icon is None:
+            dirs = [os.path.join(p, "share", "pixmaps")
+                    for p in ("/usr", "/usr/local", defs.PREFIX)]
+            for d in dirs:
+                n = name
+                if not name.endswith(".png"):
+                    n = name + ".png"
+                path = os.path.join (d, n)
+                try:
+                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
+                    if icon is not None:
+                        break
+                except:
+                    icon = None
+        if icon is None and "pixmaps" in name:
+            for d in dirs:
+                path = os.path.join(d, name)
+                try:
+                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
+                    if icon is not None:
+                        break
+                except:
+                    icon = None
+        if icon is None:
+            icon = theme.load_icon('gtk-execute', 32, 0)
+        return icon
+
+
+    #   Code below taken from:
+    #   Alacarte Menu Editor - Simple fd.o Compliant Menu Editor
+    #   Copyright (C) 2006  Travis Watkins
+    #   Edited by Ryan Rushton
+
+    def edit(self, button):
+        selection = self.treeview.get_selection()
+        (model, iter) = selection.get_selected()
+        uri = model.get_value(iter, 2)
+        editor = awnLauncherEditor(uri, self)
+        editor.run()
+
+    def add(self, button):
+        file_path = os.path.join(defs.HOME_LAUNCHERS_DIR, self.getUniqueFileId('awn_launcher', '.desktop'))
+        editor = awnLauncherEditor(file_path, self)
+        editor.run()
+
+    def remove(self, button):
+        selection = self.treeview.get_selection()
+        (model, iter) = selection.get_selected()
+        uri = model.get_value(iter, 2)
+        if os.path.exists(uri):
+            uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
+            uris.remove(uri)
+            if uri.startswith(defs.HOME_LAUNCHERS_DIR):
+                os.remove(uri)
+            self.refresh_tree(uris)
+
+    def getUniqueFileId(self, name, extension):
+        append = 0
+        while 1:
+            if append == 0:
+                filename = name + extension
+            else:
+                filename = name + '-' + str(append) + extension
+            if extension == '.desktop':
+                if not os.path.isfile(os.path.join(defs.HOME_LAUNCHERS_DIR, filename)):
+                    break
+            append += 1
+        return filename

@@ -171,12 +171,12 @@ class awnLauncherEditor:
             self.desktop_entry.set('Icon', self.icon_path)
             self.desktop_entry.write()
             try:
-                uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
+                uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
             except gobject.GError:
                 uris = []
             if os.path.exists(self.filename):
                 uris.append(self.filename)
-            self.client.set_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING, uris)
+            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING, uris)
             if self.launcher is not None:
                 self.launcher.refresh_tree(uris)
         self.main_dialog.hide_all()

@@ -43,7 +43,7 @@ except Exception, e:
     sys.exit(1)
 
 #from awnTheme import AwnThemeManager
-from awnClass import awnPreferences, awnManager
+from awnClass import awnPreferences, awnManager, awnLauncher
 #from awnApplet import awnApplet
 #from awnLauncher import awnLauncher
 
@@ -68,6 +68,27 @@ class awnPreferencesMini(awnPreferences):
 	self.load_spin(defs.PANEL, defs.SIZE, self.wTree.get_widget("panelsize"))
 	self.load_orientation(defs.PANEL, defs.ORIENT, self.wTree.get_widget("orientationcombo"))
 
+class awnLauncherMini(awnLauncher):
+    def __init__(self, glade):
+        self.wTree = glade
+        if not os.path.exists(defs.HOME_LAUNCHERS_DIR):
+            os.makedirs(defs.HOME_LAUNCHERS_DIR)
+
+        self.load_finished = False
+
+        self.client = awn.Config()
+        self.client.ensure_group(defs.LAUNCHERS)
+
+        self.scrollwindow = self.wTree.get_widget("launchers_scroll_list")
+        self.make_model()
+
+        self.applet_remove = self.wTree.get_widget("launcher_remove")
+        self.applet_remove.connect("clicked", self.remove)
+        self.applet_add = self.wTree.get_widget("launcher_add")
+        self.applet_add.connect("clicked", self.add)
+        self.launcher_edit = self.wTree.get_widget("launcher_edit")
+        self.launcher_edit.connect("clicked", self.edit)
+
 
 class awnManagerMini(awnManager):
     def __init__(self):
@@ -77,6 +98,7 @@ class awnManagerMini(awnManager):
 
 	self.wTree = gtk.glade.XML(self.GLADE_PATH, domain=defs.I18N_DOMAIN)
 	self.prefManager = awnPreferencesMini(self.wTree)
+	self.prefLauncher = awnLauncherMini(self.wTree)
 
         self.window = self.wTree.get_widget("awnManagerWindow")
         self.theme = gtk.icon_theme_get_default()
