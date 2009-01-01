@@ -141,7 +141,7 @@ spotlight_half_fade_effect(AwnEffectsAnimation * anim)
 }
 
 gboolean
-spotlight_opening_effect2(AwnEffectsAnimation * anim)
+spotlight_opening_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 
@@ -150,7 +150,7 @@ spotlight_opening_effect2(AwnEffectsAnimation * anim)
     priv->spotlight_alpha = 1.0;
     priv->spotlight = TRUE;
     priv->glow_amount = priv->spotlight_alpha;
-    priv->delta_width = -priv->icon_width / 2;
+    priv->width_mod = 0.5;
     priv->clip = TRUE;
     priv->clip_region.x = 0;
     priv->clip_region.y = 0;
@@ -160,13 +160,14 @@ spotlight_opening_effect2(AwnEffectsAnimation * anim)
 
   const gint PERIOD = 20;
 
-  if (priv->delta_width < 0)
+  if (priv->width_mod < 1.0)
   {
     priv->clip_region.height += (3 / 2) * priv->icon_height / PERIOD;
-    priv->delta_width += (3 / 1) * (priv->icon_width / 2) * 1 / PERIOD;
+    priv->width_mod += 1. / PERIOD * 1.5;
   }
   else if (priv->clip_region.height < priv->icon_height)
   {
+    priv->width_mod = 1.0;
     priv->clip_region.height += (3 / 2) * priv->icon_height / PERIOD;
 
     if (priv->clip_region.height > priv->icon_height)
@@ -174,8 +175,9 @@ spotlight_opening_effect2(AwnEffectsAnimation * anim)
   }
   else
   {
+    priv->width_mod = 1.0;
     priv->clip = FALSE;
-    priv->spotlight_alpha -= (3 / 1) * 1.0 / PERIOD;
+    priv->spotlight_alpha -= 3.0 / PERIOD;
     priv->glow_amount = priv->spotlight_alpha;
   }
 
@@ -231,11 +233,12 @@ spotlight_closing_effect(AwnEffectsAnimation * anim)
   else if (priv->direction == AWN_EFFECT_DIR_NONE)
   {
     priv->clip_region.height -= 2 * priv->icon_height / PERIOD;
-    priv->delta_width -= 2 * priv->icon_width / PERIOD;
+    priv->width_mod -= 2.0 / PERIOD;
     priv->alpha -= 2.0 / PERIOD;
 
     if (priv->alpha <= 0)
     {
+      priv->width_mod = 1.0;
       priv->alpha = 0;
       priv->direction = AWN_EFFECT_SPOTLIGHT_OFF;
     }

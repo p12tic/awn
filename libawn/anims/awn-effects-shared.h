@@ -57,8 +57,8 @@ struct _AwnEffectsPrivate
   gdouble top_offset;
   gdouble curve_offset;
 
-  gint delta_width;
-  gint delta_height;
+  gfloat width_mod;
+  gfloat height_mod;
 
   GtkAllocation clip_region;
 

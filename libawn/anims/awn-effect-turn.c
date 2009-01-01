@@ -35,7 +35,7 @@ turn_hover_effect(AwnEffectsAnimation * anim)
   AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->top_offset = 0;
-    priv->delta_width = 0;
+    priv->width_mod = 1.0;
     priv->icon_depth = 0;
     priv->icon_depth_direction = 0;
   }
@@ -49,46 +49,42 @@ turn_hover_effect(AwnEffectsAnimation * anim)
   if (priv->count < PERIOD / 4)
   {
     priv->icon_depth_direction = 0;
-    priv->delta_width = -priv->count * (priv->icon_width) / (PERIOD / 4);
+    priv->width_mod = 1 - priv->count / (PERIOD / 4.);
     priv->flip = FALSE;
   }
   else if (priv->count < PERIOD / 2)
   {
     priv->icon_depth_direction = 1;
-    priv->delta_width =
-      (priv->count - PERIOD / 4) * (priv->icon_width) / (PERIOD / 4) -
-      priv->icon_width;
+    priv->width_mod = (priv->count - PERIOD / 4) / (PERIOD / 4.);
     priv->flip = TRUE;
   }
   else if (priv->count < PERIOD * 3 / 4)
   {
     priv->icon_depth_direction = 0;
-    priv->delta_width =
-      -(priv->count - PERIOD / 2) * (priv->icon_width) / (PERIOD / 4);
+    priv->width_mod = 1 - (priv->count - PERIOD / 2) / (PERIOD / 4.);
     priv->flip = TRUE;
   }
   else
   {
     priv->icon_depth_direction = 1;
-    priv->delta_width =
-      (priv->count - PERIOD * 3 / 4) * (priv->icon_width) / (PERIOD / 4) -
-      priv->icon_width;
+    priv->width_mod = (priv->count - PERIOD * 3 / 4) / (PERIOD / 4.);
     priv->flip = FALSE;
   }
 
-  priv->icon_depth = 10.00 * -priv->delta_width / priv->icon_width;
+  priv->icon_depth = 10.00 * (1 - priv->width_mod);
 
   priv->count = ++prev_count;
 
   // fix icon flickering
-  const gint MIN_WIDTH = 4;
+  const gfloat MIN_WIDTH = 0.1;
 
-  if (abs(priv->delta_width) >= priv->icon_width - MIN_WIDTH)
+  if (priv->width_mod < MIN_WIDTH)
   {
-    if (priv->delta_width > 0)
-      priv->delta_width = priv->icon_width - MIN_WIDTH;
-    else
-      priv->delta_width = -priv->icon_width + MIN_WIDTH;
+    priv->width_mod = MIN_WIDTH;
+  }
+  else if (priv->width_mod > 1.0)
+  {
+    priv->width_mod = 1.0;
   }
 
   // repaint widget
@@ -102,7 +98,7 @@ turn_hover_effect(AwnEffectsAnimation * anim)
     priv->top_offset = 0;
     priv->icon_depth = 0;
     priv->icon_depth_direction = 0;
-    priv->delta_width = 0;
+    priv->width_mod = 1.0;
     priv->flip = FALSE;
     // check for repeating
     repeat = awn_effect_handle_repeating(anim);
@@ -124,13 +120,12 @@ turn_opening_effect(AwnEffectsAnimation * anim)
     priv->clip_region.y = 0;
     priv->clip_region.width = priv->icon_width;
     priv->clip_region.height = 0;
-    priv->delta_width = 0;
+    priv->width_mod = 1.0;
     priv->icon_depth = 0;
     priv->icon_depth_direction = 0;
   }
 
   const gint PERIOD = 44;
-
   const gint MAX_OFFSET = priv->icon_height / 2;
 
   gint prev_count = priv->count;
@@ -141,16 +136,14 @@ turn_opening_effect(AwnEffectsAnimation * anim)
   {
     priv->icon_depth_direction = 0;
     priv->clip_region.height = priv->count * (priv->icon_height) / (PERIOD / 2);
-    priv->delta_width = -priv->count * (priv->icon_width) / (PERIOD / 4);
+    priv->width_mod = 1 - priv->count / (PERIOD / 4.);
     priv->flip = FALSE;
   }
   else if (priv->count < PERIOD / 2)
   {
     priv->icon_depth_direction = 1;
     priv->clip_region.height = (priv->count) * (priv->icon_height) / (PERIOD / 2);
-    priv->delta_width =
-      (priv->count - PERIOD / 4) * (priv->icon_width) / (PERIOD / 4) -
-      priv->icon_width;
+    priv->width_mod = (priv->count - PERIOD / 4) / (PERIOD / 4.);
     priv->flip = TRUE;
   }
   else if (priv->count < PERIOD * 3 / 4)
@@ -158,8 +151,7 @@ turn_opening_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
     priv->clip = FALSE;
     priv->top_offset = (priv->count - PERIOD / 2) * MAX_OFFSET / (PERIOD / 4);
-    priv->delta_width =
-      -(priv->count - PERIOD / 2) * (priv->icon_width) / (PERIOD / 4);
+    priv->width_mod = 1 - (priv->count - PERIOD / 2) / (PERIOD / 4.);
     priv->flip = TRUE;
   }
   else
@@ -167,25 +159,24 @@ turn_opening_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 1;
     priv->top_offset =
       MAX_OFFSET - (priv->count - PERIOD * 3 / 4) * MAX_OFFSET / (PERIOD / 4);
-    priv->delta_width =
-      (priv->count - PERIOD * 3 / 4) * (priv->icon_width) / (PERIOD / 4) -
-      priv->icon_width;
+    priv->width_mod = (priv->count - PERIOD * 3 / 4) / (PERIOD / 4.);
     priv->flip = FALSE;
   }
 
-  priv->icon_depth = 10.00 * -priv->delta_width / priv->icon_width;
+  priv->icon_depth = 10.00 * (1 - priv->width_mod);
 
   priv->count = ++prev_count;
 
   // fix icon flickering
-  const gint MIN_WIDTH = 4;
+  const gfloat MIN_WIDTH = 0.1;
 
-  if (abs(priv->delta_width) >= priv->icon_width - MIN_WIDTH)
+  if (priv->width_mod < MIN_WIDTH)
   {
-    if (priv->delta_width > 0)
-      priv->delta_width = priv->icon_width - MIN_WIDTH;
-    else
-      priv->delta_width = -priv->icon_width + MIN_WIDTH;
+    priv->width_mod = MIN_WIDTH;
+  }
+  else if (priv->width_mod > 1.0)
+  {
+    priv->width_mod = 1.0;
   }
 
   // repaint widget
@@ -199,7 +190,7 @@ turn_opening_effect(AwnEffectsAnimation * anim)
     priv->top_offset = 0;
     priv->icon_depth = 0;
     priv->icon_depth_direction = 0;
-    priv->delta_width = 0;
+    priv->width_mod = 1.0;
     priv->flip = FALSE;
     // check for repeating
     repeat = awn_effect_handle_repeating(anim);
@@ -216,7 +207,7 @@ turn_closing_effect(AwnEffectsAnimation * anim)
   AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
     priv->top_offset = 0;
-    priv->delta_width = 0;
+    priv->width_mod = 0;
     priv->icon_depth = 0;
     priv->icon_depth_direction = 0;
   }
@@ -228,55 +219,48 @@ turn_closing_effect(AwnEffectsAnimation * anim)
   gint prev_count = priv->count;
 
   priv->count = sin(priv->count * M_PI / 2 / PERIOD) * PERIOD;
-
   priv->top_offset = priv->count * MAX_OFFSET / PERIOD;
-
   priv->alpha = 1.0 - priv->count * 1.0 / PERIOD;
 
   if (priv->count < PERIOD / 4)
   {
     priv->icon_depth_direction = 0;
-    priv->delta_width = -priv->count * (priv->icon_width) / (PERIOD / 4);
+    priv->width_mod = 1 - priv->count / (PERIOD / 4.);
     priv->flip = FALSE;
   }
   else if (priv->count < PERIOD / 2)
   {
     priv->icon_depth_direction = 1;
-    priv->delta_width =
-      (priv->count - PERIOD / 4) * (priv->icon_width) / (PERIOD / 4) -
-      priv->icon_width;
+    priv->width_mod = (priv->count - PERIOD / 4) / (PERIOD / 4.);
     priv->flip = TRUE;
   }
   else if (priv->count < PERIOD * 3 / 4)
   {
     priv->icon_depth_direction = 0;
-    priv->clip = FALSE;
-    priv->delta_width =
-      -(priv->count - PERIOD / 2) * (priv->icon_width) / (PERIOD / 4);
+    priv->width_mod = 1 - (priv->count - PERIOD / 2) / (PERIOD / 4.);
     priv->flip = TRUE;
   }
   else
   {
     priv->icon_depth_direction = 1;
-    priv->delta_width =
-      (priv->count - PERIOD * 3 / 4) * (priv->icon_width) / (PERIOD / 4) -
-      priv->icon_width;
+    priv->width_mod = (priv->count - PERIOD * 3 / 4) / (PERIOD / 4.);
     priv->flip = FALSE;
   }
 
-  priv->icon_depth = 10.00 * -priv->delta_width / priv->icon_width;
+  priv->icon_depth = 10.00 * (1 - priv->width_mod);
 
   priv->count = ++prev_count;
 
   // fix icon flickering
-  const gint MIN_WIDTH = 4;
+  const gfloat MIN_WIDTH = 0.1;
 
-  if (abs(priv->delta_width) >= priv->icon_width - MIN_WIDTH)
+  if (priv->width_mod < MIN_WIDTH)
   {
-    if (priv->delta_width > 0)
-      priv->delta_width = priv->icon_width - MIN_WIDTH;
-    else
-      priv->delta_width = -priv->icon_width + MIN_WIDTH;
+    priv->width_mod = MIN_WIDTH;
+  }
+  else if (priv->width_mod > 1.0)
+  {
+    priv->width_mod = 1.0;
   }
 
   // repaint widget
@@ -290,7 +274,7 @@ turn_closing_effect(AwnEffectsAnimation * anim)
     priv->top_offset = 0;
     priv->icon_depth = 0;
     priv->icon_depth_direction = 0;
-    priv->delta_width = 0;
+    priv->width_mod = 1.0;
     priv->flip = FALSE;
     // check for repeating
     repeat = awn_effect_handle_repeating(anim);

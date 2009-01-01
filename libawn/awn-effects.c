@@ -53,12 +53,8 @@ G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT);
   AWN_TYPE_EFFECTS, \
   AwnEffectsPrivate))
 
-#ifndef M_PI
-#define  M_PI 3.14159265358979323846
-#endif
-#define  RADIANS_PER_DEGREE  0.0174532925
-
-// FIXME: add property for fps
+// if someone wants faster/slower animations add a speed multiplier
+//   property (and use it in the animations) but don't change fps
 #define AWN_FRAME_RATE(fx) (40)
 #define AWN_ANIMATIONS_PER_BUNDLE 5
 #define AWN_SPOTLIGHT_INTERNAL_NAME "__internal_spotlight__"
@@ -130,6 +126,7 @@ awn_effects_finalize(GObject *object)
 // it'd be so much easier if this wasn't compiled into AWN
 typedef struct _mem_reader_t {
   void *data;
+  size_t size;
   unsigned int offset;
 } mem_reader_t;
 
@@ -139,10 +136,14 @@ cairo_status_t internal_reader(void *closure, unsigned char *data,
   mem_reader_t *mem_reader = (mem_reader_t*)closure;
   unsigned char *in_data = mem_reader->data;
 
-  memcpy(data, in_data + mem_reader->offset, length);
-  mem_reader->offset += length;
+  if (mem_reader->offset + length <= mem_reader->size)
+  {
+    memcpy(data, in_data + mem_reader->offset, length);
+    mem_reader->offset += length;
+    return CAIRO_STATUS_SUCCESS;
+  }
 
-  return CAIRO_STATUS_SUCCESS;
+  return CAIRO_STATUS_READ_ERROR;
 }
 
 static GQuark
@@ -159,6 +160,7 @@ awn_effects_set_custom_icon(AwnEffects *fx, const gchar *path)
 
       mem_reader_t mem_reader;
       mem_reader.data = spotlight_bin_data;
+      mem_reader.size = sizeof(spotlight_bin_data);
       mem_reader.offset = 0;
 
       cairo_surface_t *surface = 
@@ -455,7 +457,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
     fading_effect
   );
   awn_effects_register_effect_bundle(klass,
-    spotlight_opening_effect2,
+    spotlight_opening_effect,
     spotlight_closing_effect,
     spotlight_effect,
     spotlight_half_fade_effect,
@@ -626,6 +628,8 @@ awn_effects_init(AwnEffects * fx)
   fx->priv->icon_width = 48;
   fx->priv->icon_height = 48;
 
+  fx->priv->width_mod = 1.0;
+  fx->priv->height_mod = 1.0;
   fx->priv->alpha = 1.0;
   fx->priv->saturation = 1.0;
 }
@@ -887,8 +891,27 @@ void awn_effects_emit_anim_end(AwnEffects *fx, AwnEffect effect)
 void
 awn_effects_draw_set_icon_size(AwnEffects * fx, const gint width, const gint height, gboolean requestSize)
 {
-  fx->priv->icon_width = width;
-  fx->priv->icon_height = height;
+  AwnEffectsPrivate *priv = fx->priv;
+
+  gint old_width = priv->icon_width;
+  gint old_height = priv->icon_height;
+
+  priv->icon_width = width;
+  priv->icon_height = height;
+
+  if (priv->clip)
+  {
+    // we're in middle of animation, let's update the clip region
+    priv->clip_region.x =
+      priv->clip_region.x / (float)old_width * width;
+    priv->clip_region.y =
+      priv->clip_region.y / (float)old_height * height;
+    priv->clip_region.width =
+      priv->clip_region.width / (float)old_width * width;
+    priv->clip_region.height =
+      priv->clip_region.height / (float)old_height * height;
+  }
+
   if (requestSize && fx->widget)
   {
     // this should be only used without AwnIcon,

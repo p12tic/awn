@@ -94,27 +94,27 @@ gboolean awn_effects_pre_op_translate(AwnEffects * fx,
 
   AwnEffectsPrivate *priv = fx->priv;
 
-  // delta_width/height is swapped when using LEFT/RIGHT orientations
+  // width/height_mod is swapped when using LEFT/RIGHT orientations
   switch (fx->orientation) {
     case AWN_EFFECT_ORIENT_TOP:
-      dx = (priv->window_width - priv->icon_width - priv->delta_width)/2.0 + priv->side_offset;
+      dx = (priv->window_width - priv->icon_width * priv->width_mod)/2.0 + priv->side_offset;
       dy = priv->top_offset;
       dy += fx->icon_offset;
       break;
     case AWN_EFFECT_ORIENT_RIGHT:
-      dx = (priv->window_width - priv->icon_width - priv->delta_height) - priv->top_offset;
+      dx = (priv->window_width - priv->icon_width * priv->height_mod) - priv->top_offset;
       dx -= fx->icon_offset;
-      dy = (priv->window_height - priv->icon_height - priv->delta_width)/2.0 - priv->side_offset;
+      dy = (priv->window_height - priv->icon_height * priv->width_mod)/2.0 - priv->side_offset;
       break;
     case AWN_EFFECT_ORIENT_BOTTOM:
-      dx = (priv->window_width - priv->icon_width - priv->delta_width)/2.0 - priv->side_offset;
-      dy = (priv->window_height - priv->icon_height - priv->delta_height) - priv->top_offset;
+      dx = (priv->window_width - priv->icon_width * priv->width_mod)/2.0 - priv->side_offset;
+      dy = (priv->window_height - priv->icon_height * priv->height_mod) - priv->top_offset;
       dy -= fx->icon_offset;
       break;
     case AWN_EFFECT_ORIENT_LEFT:
       dx = priv->top_offset;
       dx += fx->icon_offset;
-      dy = (priv->window_height - priv->icon_height - priv->delta_width)/2.0 + priv->side_offset;
+      dy = (priv->window_height - priv->icon_height * priv->width_mod)/2.0 + priv->side_offset;
       break;
     default:
       return FALSE;
@@ -196,19 +196,15 @@ gboolean awn_effects_pre_op_scale(AwnEffects * fx,
 {
   AwnEffectsPrivate *priv = fx->priv;
 
-  if (priv->delta_width || priv->delta_height)
+  if (priv->width_mod != 1.0 || priv->height_mod != 1.0)
     switch (fx->orientation) {
       case AWN_EFFECT_ORIENT_TOP:
       case AWN_EFFECT_ORIENT_BOTTOM:
-        cairo_scale(cr,
-          (priv->icon_width + priv->delta_width) / (double)priv->icon_width,
-          (priv->icon_height + priv->delta_height) / (double)priv->icon_height);
+        cairo_scale(cr, priv->width_mod, priv->height_mod);
         break;
       case AWN_EFFECT_ORIENT_RIGHT:
       case AWN_EFFECT_ORIENT_LEFT:
-        cairo_scale(cr,
-          (priv->icon_width + priv->delta_height) / (double)priv->icon_width,
-          (priv->icon_height + priv->delta_width) / (double)priv->icon_height);
+        cairo_scale(cr, priv->height_mod, priv->width_mod);
         break;
     }
   return FALSE;

@@ -36,8 +36,8 @@ zoom_effect(AwnEffectsAnimation * anim)
 
   AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
-    priv->delta_width = 0;
-    priv->delta_height = 0;
+    priv->width_mod = 1.0;
+    priv->height_mod = 1.0;
     priv->top_offset = 0;
     priv->direction = AWN_EFFECT_DIR_UP;
   }
@@ -54,15 +54,17 @@ zoom_effect(AwnEffectsAnimation * anim)
       break;
   }
 
+  const gfloat INCREMENT = 1./8;
+
   switch (priv->direction)
   {
 
     case AWN_EFFECT_DIR_UP:
 
-      if (priv->delta_width + priv->icon_width < max)
+      if (priv->icon_width * (priv->width_mod + INCREMENT) < max)
       {
-        priv->delta_width += priv->icon_width/8;
-        priv->delta_height += priv->icon_width/8;
+        priv->width_mod += INCREMENT;
+        priv->height_mod += INCREMENT;
       }
 
       gboolean top = awn_effect_check_top_effect(anim, NULL);
@@ -70,7 +72,7 @@ zoom_effect(AwnEffectsAnimation * anim)
       if (top)
       {
         awn_effects_redraw(anim->effects);
-        if (priv->delta_width + priv->icon_width < max)
+        if (priv->icon_width * (priv->width_mod + INCREMENT) < max)
           return TRUE;
         else
           return awn_effect_suspend_animation(anim, (GSourceFunc)zoom_effect);
@@ -81,15 +83,14 @@ zoom_effect(AwnEffectsAnimation * anim)
       break;
 
     case AWN_EFFECT_DIR_DOWN:
-      priv->delta_width -= priv->icon_width/8;
-      priv->delta_height -= priv->icon_width/8;
+      priv->width_mod -= INCREMENT;
+      priv->height_mod -= INCREMENT;
 
-      if (priv->delta_width <= 0)
+      if (priv->width_mod <= 1.0)
       {
         priv->direction = AWN_EFFECT_DIR_UP;
-        priv->delta_width = 0;
-        priv->delta_height = 0;
-        priv->top_offset = 0;
+        priv->width_mod = 1.0;
+        priv->height_mod = 1.0;
       }
 
       break;
@@ -103,10 +104,11 @@ zoom_effect(AwnEffectsAnimation * anim)
 
   gboolean repeat = TRUE;
 
-  if (priv->direction == AWN_EFFECT_DIR_UP && !priv->delta_width
-      && !priv->delta_height)
+  if (priv->direction == AWN_EFFECT_DIR_UP && priv->width_mod <= 1.0
+      && priv->height_mod <= 1.0)
   {
-    priv->top_offset = 0;
+    priv->width_mod = 1.0;
+    priv->height_mod = 1.0;
     // check for repeating
     repeat = awn_effect_handle_repeating(anim);
   }
@@ -121,8 +123,8 @@ zoom_attention_effect(AwnEffectsAnimation * anim)
 
   AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
-    priv->delta_width = 0;
-    priv->delta_height = 0;
+    priv->width_mod = 1.0;
+    priv->height_mod = 1.0;
     priv->top_offset = 0;
     priv->direction = AWN_EFFECT_DIR_UP;
   }
@@ -139,15 +141,17 @@ zoom_attention_effect(AwnEffectsAnimation * anim)
       break;
   }
 
+  const gfloat INCREMENT = 1./12;
+
   switch (priv->direction)
   {
 
     case AWN_EFFECT_DIR_UP:
 
-      if (priv->delta_width + priv->icon_width < max)
+      if (priv->icon_width * (priv->width_mod + INCREMENT) < max)
       {
-        priv->delta_width += 2;
-        priv->delta_height += 2;
+        priv->width_mod += INCREMENT;
+        priv->height_mod += INCREMENT;
         priv->top_offset += 1;
       }
       else
@@ -158,15 +162,15 @@ zoom_attention_effect(AwnEffectsAnimation * anim)
       break;
 
     case AWN_EFFECT_DIR_DOWN:
-      priv->delta_width -= 2;
-      priv->delta_height -= 2;
+      priv->width_mod -= INCREMENT;
+      priv->height_mod -= INCREMENT;
       priv->top_offset -= 1;
 
-      if (priv->delta_width <= 0)
+      if (priv->width_mod <= 1.0)
       {
         priv->direction = AWN_EFFECT_DIR_UP;
-        priv->delta_width = 0;
-        priv->delta_height = 0;
+        priv->width_mod = 1.0;
+        priv->height_mod = 1.0;
         priv->top_offset = 0;
       }
 
@@ -181,9 +185,11 @@ zoom_attention_effect(AwnEffectsAnimation * anim)
 
   gboolean repeat = TRUE;
 
-  if (priv->direction == AWN_EFFECT_DIR_UP && !priv->delta_width
-      && !priv->delta_height)
+  if (priv->direction == AWN_EFFECT_DIR_UP && priv->width_mod <= 1.0
+      && priv->height_mod <= 1.0)
   {
+    priv->width_mod = 1.0;
+    priv->height_mod = 1.0;
     priv->top_offset = 0;
     // check for repeating
     repeat = awn_effect_handle_repeating(anim);
@@ -199,19 +205,15 @@ zoom_opening_effect(AwnEffectsAnimation * anim)
 
   AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
-    priv->delta_width = -priv->icon_width;
-    priv->delta_height = -priv->icon_width;
+    priv->width_mod = 0.0;
+    priv->height_mod = 0.0;
     priv->alpha = 0.0;
-    priv->top_offset = 0;
-    priv->direction = AWN_EFFECT_DIR_UP;
   }
 
   const gint PERIOD = 20;
 
-  priv->delta_width += (priv->icon_width) / PERIOD;
-
-  priv->delta_height += (priv->icon_width) / PERIOD;
-
+  priv->width_mod += 1.0 / PERIOD;
+  priv->height_mod += 1.0 / PERIOD;
   priv->alpha += 1.0 / PERIOD;
 
   // repaint widget
@@ -219,12 +221,11 @@ zoom_opening_effect(AwnEffectsAnimation * anim)
 
   gboolean repeat = TRUE;
 
-  if (priv->delta_width > 0)
+  if (priv->width_mod >= 1.0)
   {
-    priv->top_offset = 0;
     priv->alpha = 1.0;
-    priv->delta_width = 0;
-    priv->delta_height = 0;
+    priv->width_mod = 1.0;
+    priv->height_mod = 1.0;
     // check for repeating
     repeat = awn_effect_handle_repeating(anim);
   }
@@ -239,19 +240,15 @@ zoom_closing_effect(AwnEffectsAnimation * anim)
 
   AWN_ANIMATION_INIT(anim) {
     priv->count = 0;
-    priv->delta_width = 0;
-    priv->delta_height = 0;
+    priv->width_mod = 1.0;
+    priv->height_mod = 1.0;
     priv->alpha = 1.0;
-    priv->top_offset = 0;
-    priv->direction = AWN_EFFECT_DIR_UP;
   }
 
   const gint PERIOD = 20;
 
-  priv->delta_width -= (priv->icon_width) / PERIOD;
-
-  priv->delta_height -= (priv->icon_width) / PERIOD;
-
+  priv->width_mod -= 1.0 / PERIOD;
+  priv->height_mod -= 1.0 / PERIOD;
   priv->alpha -= 1.0 / PERIOD;
 
   // repaint widget
@@ -259,10 +256,11 @@ zoom_closing_effect(AwnEffectsAnimation * anim)
 
   gboolean repeat = TRUE;
 
-  if (priv->alpha < 0.0)
+  if (priv->alpha <= 0.0)
   {
-    priv->top_offset = 0;
     priv->alpha = 0.0;
+    priv->width_mod = 1.0;
+    priv->height_mod = 1.0;
     // check for repeating
     repeat = awn_effect_handle_repeating(anim);
   }
