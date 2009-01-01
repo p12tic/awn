@@ -30,7 +30,15 @@
  #define  M_PI 3.14159265358979323846
 #endif
 
-extern GdkPixbuf *SPOTLIGHT_PIXBUF;
+static
+cairo_surface_t *awn_effects_quark_to_surface(AwnEffects *fx, GQuark quark)
+{
+  GData **icons = &(AWN_EFFECTS_GET_CLASS(fx)->custom_icons);
+  cairo_surface_t *surface = 
+    g_datalist_id_get_data(icons, quark);
+
+  return surface;
+}
 
 // returns top left coordinates of the icon (without clipping and offsets)
 static void
@@ -300,9 +308,8 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
     } else {
       cairo_save(cr);
       // get the icon surface
-      GData **icons = &(AWN_EFFECTS_GET_CLASS(fx)->custom_icons);
-      cairo_surface_t *srfc = 
-        g_datalist_id_get_data(icons, fx->custom_active_icon);
+      cairo_surface_t *srfc =
+        awn_effects_quark_to_surface(fx, fx->custom_active_icon);
       if (srfc) {
         float srfc_width = cairo_image_surface_get_width(srfc);
         float srfc_height = cairo_image_surface_get_height(srfc);
@@ -336,10 +343,9 @@ gboolean awn_effects_post_op_running(AwnEffects * fx,
     cairo_surface_t *srfc = NULL;
     gint arrow_w = 0, arrow_h = 0;
     if (fx->custom_arrow_icon) {
-      // get custom surface dimensions
-      GData **icons = &(AWN_EFFECTS_GET_CLASS(fx)->custom_icons);
-      srfc = g_datalist_id_get_data(icons, fx->custom_arrow_icon);
+      srfc = awn_effects_quark_to_surface(fx, fx->custom_arrow_icon);
       if (srfc) {
+        // get custom surface dimensions
         arrow_w = cairo_image_surface_get_width(srfc);
         arrow_h = cairo_image_surface_get_height(srfc);
       }
@@ -595,6 +601,13 @@ gboolean awn_effects_post_op_spotlight(AwnEffects * fx,
   AwnEffectsPrivate *priv = fx->priv;
 
   if (priv->spotlight && priv->spotlight_alpha > 0) {
+    cairo_surface_t *srfc =
+      awn_effects_quark_to_surface(fx, fx->spotlight_icon);
+    if (!srfc) return FALSE;
+
+    float srfc_width = cairo_image_surface_get_width(srfc);
+    float srfc_height = cairo_image_surface_get_height(srfc);
+
     cairo_save(cr);
     double x, y, rotate=0;
     switch (fx->orientation) {
@@ -627,13 +640,15 @@ gboolean awn_effects_post_op_spotlight(AwnEffects * fx,
     cairo_translate(cr, x, y);
     if (fx->orientation == AWN_EFFECT_ORIENT_TOP ||
         fx->orientation == AWN_EFFECT_ORIENT_BOTTOM) {
-      cairo_scale(cr, priv->window_width / (double) gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF), priv->icon_height*5/4 / (double) gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF));
+      cairo_scale(cr, priv->window_width / srfc_width,
+                      priv->icon_height*5/4 / srfc_height);
     } else {
-      cairo_scale(cr, priv->icon_height*5/4 / (double) gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF), priv->window_height / (double) gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF));
+      cairo_scale(cr, priv->icon_height*5/4 / srfc_height,
+                      priv->window_height / srfc_width);
     }
     cairo_rotate(cr, rotate);
 
-    gdk_cairo_set_source_pixbuf(cr, SPOTLIGHT_PIXBUF, 0, 0);
+    cairo_set_source_surface(cr, srfc, 0, 0);
     cairo_set_operator(cr, CAIRO_OPERATOR_DEST_OVER);
     cairo_paint_with_alpha(cr, priv->spotlight_alpha);
     cairo_set_operator(cr, CAIRO_OPERATOR_OVER);

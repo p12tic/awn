@@ -27,9 +27,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-GdkPixbuf *SPOTLIGHT_PIXBUF = NULL;
-#include "../../data/active/spotlight_png_inline.c"
-
 gboolean
 spotlight_effect(AwnEffectsAnimation * anim)
 {
@@ -278,6 +275,7 @@ spotlight_closing_effect(AwnEffectsAnimation * anim)
 void
 spotlight_init()
 {
+/*
   GError *error = NULL;
 
   if (!SPOTLIGHT_PIXBUF)
@@ -285,6 +283,7 @@ spotlight_init()
       gdk_pixbuf_new_from_inline(-1, spotlight1_png_inline, FALSE, NULL);
 
   g_return_if_fail(error == NULL);
+*/
 }
 
 gboolean

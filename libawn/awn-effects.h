@@ -97,6 +97,7 @@ struct _AwnEffects
   gchar *label;
   gfloat progress;
   gint border_clip;
+  GQuark spotlight_icon;
   GQuark custom_active_icon;
   GQuark custom_arrow_icon;
   /* properties end */

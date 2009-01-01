@@ -326,6 +326,7 @@ class awnPreferences:
 
     def setup_effect(self, group, key, dropdown):
         model = gtk.ListStore(str)
+        model.append([_("Simple")])
         model.append([_("Classic")])
         model.append([_("Fade")])
         model.append([_("Spotlight")])
@@ -386,6 +387,7 @@ class awnPreferences:
             self.effect_drop.append(d)
             model = gtk.ListStore(str)
             model.append([_("None")])
+            model.append([_("Simple")])
             model.append([_("Classic")])
             model.append([_("Fade")])
             model.append([_("Spotlight")])
@@ -441,6 +443,7 @@ class awnPreferences:
         self.effects_dd = dropdown
         model = gtk.ListStore(str)
         model.append([_("None")])
+        model.append([_("Simple")])
         model.append([_("Classic")])
         model.append([_("Fade")])
         model.append([_("Spotlight")])

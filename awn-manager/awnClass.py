@@ -241,6 +241,7 @@ class awnPreferences:
 
     def setup_effect(self, group, key, dropdown):
         model = gtk.ListStore(str)
+        model.append([_("Simple")])
         model.append([_("Classic")])
         model.append([_("Fade")])
         model.append([_("Spotlight")])
@@ -301,6 +302,7 @@ class awnPreferences:
             self.effect_drop.append(d)
             model = gtk.ListStore(str)
             model.append([_("None")])
+            model.append([_("Simple")])
             model.append([_("Classic")])
             model.append([_("Fade")])
             model.append([_("Spotlight")])
@@ -337,7 +339,7 @@ class awnPreferences:
     def effect_custom_changed(self, dropdown, groupkey):
         group, key = groupkey
         if (dropdown.get_active() != self.effects_dd.get_active()):
-            self.effects_dd.set_active(9) #Custom
+            self.effects_dd.set_active(10) #Custom
             new_effects = self.get_custom_effects()
             self.client.set_int(group, key, new_effects)
             print "effects set to: ", "%0.8X" % new_effects
@@ -356,6 +358,7 @@ class awnPreferences:
         self.effects_dd = dropdown
         model = gtk.ListStore(str)
         model.append([_("None")])
+        model.append([_("Simple")])
         model.append([_("Classic")])
         model.append([_("Fade")])
         model.append([_("Spotlight")])
@@ -391,7 +394,7 @@ class awnPreferences:
             else:
                 active = hover_effect+1
         else:
-            active = 9 #Custom
+            active = 10 #Custom
         #    self.wTree.get_widget('customeffectsframe').show()
 
         dropdown.set_active(int(active))
@@ -403,7 +406,7 @@ class awnPreferences:
         group, key = groupkey
         new_effects = 0
         effect = 0
-        if(dropdown.get_active() != 9): # not Custom
+        if(dropdown.get_active() != 10): # not Custom
 #            self.wTree.get_widget('customeffectsframe').hide()
             if(dropdown.get_active() == 0):
                 effect = 15

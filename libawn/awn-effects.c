@@ -61,6 +61,7 @@ G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT);
 // FIXME: add property for fps
 #define AWN_FRAME_RATE(fx) (40)
 #define AWN_ANIMATIONS_PER_BUNDLE 5
+#define AWN_SPOTLIGHT_INTERNAL_NAME "__internal_spotlight__"
 
 typedef gboolean (*_AwnAnimation)(AwnEffectsAnimation*);
 
@@ -88,18 +89,10 @@ enum {
   PROP_IS_RUNNING,
   PROP_PROGRESS,
   PROP_BORDER_CLIP,
+  PROP_SPOTLIGHT_ICON,
   PROP_CUSTOM_ACTIVE_ICON,
   PROP_CUSTOM_ARROW_ICON
 };
-
-#define EFFECT_BOUNCE 0
-#define EFFECT_FADE 1
-#define EFFECT_SPOTLIGHT 2
-#define EFFECT_ZOOM 3
-#define EFFECT_SQUISH 4
-#define EFFECT_TURN_3D 5
-#define EFFECT_TURN_3D_SPOTLIGHT 6
-#define EFFECT_GLOW 7
 
 static void
 awn_effects_finalize(GObject *object)
@@ -134,10 +127,56 @@ awn_effects_finalize(GObject *object)
   G_OBJECT_CLASS (awn_effects_parent_class)->finalize(object);
 }
 
+// it'd be so much easier if this wasn't compiled into AWN
+typedef struct _mem_reader_t {
+  void *data;
+  unsigned int offset;
+} mem_reader_t;
+
+cairo_status_t internal_reader(void *closure, unsigned char *data,
+                               unsigned int length)
+{
+  mem_reader_t *mem_reader = (mem_reader_t*)closure;
+  unsigned char *in_data = mem_reader->data;
+
+  memcpy(data, in_data + mem_reader->offset, length);
+  mem_reader->offset += length;
+
+  return CAIRO_STATUS_SUCCESS;
+}
+
 static GQuark
 awn_effects_set_custom_icon(AwnEffects *fx, const gchar *path)
 {
   if (path == NULL || path[0] == '\0') return 0;
+  else if (g_strcmp0(path, AWN_SPOTLIGHT_INTERNAL_NAME) == 0)
+  {
+    GQuark q = g_quark_try_string(path);
+    if (!q) {
+      #include "../data/active/spotlight_png_inline.c"
+
+      q = g_quark_from_string(path);
+
+      mem_reader_t mem_reader;
+      mem_reader.data = spotlight_bin_data;
+      mem_reader.offset = 0;
+
+      cairo_surface_t *surface = 
+        cairo_image_surface_create_from_png_stream(
+          internal_reader,
+          &mem_reader
+        );
+      if (cairo_surface_status(surface) != CAIRO_STATUS_SUCCESS) {
+        g_warning("Error while trying to read internal PNG icon!");
+        cairo_surface_destroy(surface);
+        surface = NULL;
+      }
+      GData **icons = &(AWN_EFFECTS_GET_CLASS(fx)->custom_icons);
+
+      g_datalist_id_set_data(icons, q, surface);
+    }
+    return q;
+  }
   else
   {
     GQuark q = g_quark_try_string(path);
@@ -206,6 +245,9 @@ awn_effects_get_property (GObject      *object,
       break;
     case PROP_BORDER_CLIP:
       g_value_set_int(value, fx->border_clip);
+      break;
+    case PROP_SPOTLIGHT_ICON:
+      g_value_set_string(value, g_quark_to_string(fx->spotlight_icon));
       break;
     case PROP_CUSTOM_ACTIVE_ICON:
       g_value_set_string(value, g_quark_to_string(fx->custom_active_icon));
@@ -279,6 +321,9 @@ awn_effects_set_property (GObject      *object,
     case PROP_BORDER_CLIP:
       fx->border_clip = g_value_get_int(value);
       break;
+    case PROP_SPOTLIGHT_ICON:
+      fx->spotlight_icon =
+        awn_effects_set_custom_icon(fx, g_value_get_string(value));
     case PROP_CUSTOM_ACTIVE_ICON:
       fx->custom_active_icon = 
         awn_effects_set_custom_icon(fx, g_value_get_string(value));
@@ -549,6 +594,13 @@ awn_effects_class_init(AwnEffectsClass *klass)
                        0.0, 1.0, 1.0,
                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   g_object_class_install_property(
+    obj_class, PROP_SPOTLIGHT_ICON,
+    g_param_spec_string("spotlight-png",
+                        "Spotlight Icon",
+                        "Icon to draw for the spotlight effect",
+                        AWN_SPOTLIGHT_INTERNAL_NAME,
+                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  g_object_class_install_property(
     obj_class, PROP_CUSTOM_ACTIVE_ICON,
     g_param_spec_string("custom-active-png",
                         "Custom active Icon",
@@ -801,14 +853,6 @@ awn_effects_main_effect_loop(AwnEffects * fx)
   gint i = topEffect->this_effect - 1;
   guint effect = fx->set_effects & (0xF << (i * 4));
   effect >>= i * 4;
-
-  // FIXME: do something with this init stuff (include in class' GPtrArray?)
-  
-  // spotlight initialization
-  if (effect == EFFECT_SPOTLIGHT || effect == EFFECT_TURN_3D_SPOTLIGHT)
-  {
-    spotlight_init();
-  }
 
   GSourceFunc animation = (GSourceFunc) get_animation(topEffect, effect);
 
