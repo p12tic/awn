@@ -933,6 +933,8 @@ awn_effects_draw_set_icon_size(AwnEffects * fx, const gint width, const gint hei
 
 cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
 {
+  AwnEffectsPrivate *priv = fx->priv;
+
   g_return_val_if_fail(fx->widget, NULL);
   cairo_t *cr = gdk_cairo_create(fx->widget->window);
   g_return_val_if_fail(cairo_status(cr) == CAIRO_STATUS_SUCCESS, NULL);
@@ -940,17 +942,21 @@ cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
 
   cairo_surface_t *targetSurface = cairo_get_target(cr);
   if (cairo_surface_get_type(targetSurface) == CAIRO_SURFACE_TYPE_XLIB) {
-    fx->priv->window_width = cairo_xlib_surface_get_width(targetSurface);
-    fx->priv->window_height = cairo_xlib_surface_get_height(targetSurface);
+    priv->window_width = cairo_xlib_surface_get_width(targetSurface);
+    priv->window_height = cairo_xlib_surface_get_height(targetSurface);
   } else {
     g_warning("AwnEffects: Drawing to non-xlib surface, unknown dimensions.");
   }
-
+#if 0
+  g_debug("Drawing... icon size: %dx%d, window size: %dx%d", 
+          priv->icon_width, priv->icon_height,
+          priv->window_width, priv->window_height);
+#endif
   // we'll give to user virtual context and later paint everything on real one
   targetSurface = cairo_surface_create_similar(targetSurface,
                                                CAIRO_CONTENT_COLOR_ALPHA,
-                                               fx->priv->window_width,
-                                               fx->priv->window_height
+                                               priv->window_width,
+                                               priv->window_height
                                               );
   g_return_val_if_fail(cairo_surface_status(targetSurface) == CAIRO_STATUS_SUCCESS, NULL);
   cr = cairo_create(targetSurface);
@@ -960,10 +966,10 @@ cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
   //  pre and post ops (can be then used for optimizations)
   //  Then the param should be also removed from all ops functions.
   GtkAllocation ds;
-  ds.width = fx->priv->icon_width;
-  ds.height = fx->priv->icon_height;
-  ds.x = (fx->priv->window_width - ds.width) / 2;
-  ds.y = (fx->priv->window_height - ds.height); // sit on bottom by default
+  ds.width = priv->icon_width;
+  ds.height = priv->icon_height;
+  ds.x = (priv->window_width - ds.width) / 2;
+  ds.y = (priv->window_height - ds.height); // sit on bottom by default
 
   // put actual transformations here
   // FIXME: put the functions in some kind of list/array
