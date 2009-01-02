@@ -24,6 +24,7 @@
 #include "awn-effects-shared.h"
 
 gboolean turn_hover_effect(AwnEffectsAnimation * anim);
+gboolean turn_effect(AwnEffectsAnimation * anim);
 gboolean turn_opening_effect(AwnEffectsAnimation * anim);
 gboolean turn_closing_effect(AwnEffectsAnimation * anim);
 gboolean turn_effect_finalize(AwnEffectsAnimation * anim);

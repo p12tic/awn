@@ -28,7 +28,7 @@
 #include <stdlib.h>
 
 gboolean
-spotlight_effect(AwnEffectsAnimation * anim)
+spotlight_hover_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
 

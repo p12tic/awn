@@ -24,6 +24,7 @@
 #include "awn-effects-shared.h"
 
 gboolean bounce_effect(AwnEffectsAnimation * anim);
+gboolean bounce_hover_effect(AwnEffectsAnimation * anim);
 gboolean bounce_opening_effect(AwnEffectsAnimation * anim);
 gboolean bounce_effect_finalize(AwnEffectsAnimation * anim);
 

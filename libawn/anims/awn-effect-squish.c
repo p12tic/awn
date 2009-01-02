@@ -28,6 +28,92 @@
 #include <stdlib.h>
 
 gboolean
+bounce_squish_hover_effect(AwnEffectsAnimation * anim)
+{
+  AwnEffectsPrivate *priv = anim->effects->priv;
+
+  AWN_ANIMATION_INIT(anim) {
+    priv->count = 0;
+    priv->width_mod = 1.0;
+    priv->height_mod = 1.0;
+    priv->direction = AWN_EFFECT_SQUISH_DOWN;
+  }
+
+  const gfloat MAX_BOUNCE_OFFSET =
+    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
+    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+      priv->icon_width / 3. : priv->icon_height / 3.;
+
+  const gint PERIOD = 28;
+
+  // repaint widget
+  awn_effects_redraw(anim->effects);
+
+  switch (priv->direction)
+  {
+
+    case AWN_EFFECT_SQUISH_DOWN:
+    case AWN_EFFECT_SQUISH_DOWN2:
+      priv->width_mod += 3. / PERIOD;
+      priv->height_mod -= 3. / PERIOD;
+
+      if (priv->height_mod <= 0.75)
+        priv->direction =
+          priv->direction ==
+          AWN_EFFECT_SQUISH_DOWN ? AWN_EFFECT_SQUISH_UP : AWN_EFFECT_SQUISH_UP2;
+
+      break;
+
+    case AWN_EFFECT_SQUISH_UP:
+    case AWN_EFFECT_SQUISH_UP2:
+      priv->width_mod -= 3. / PERIOD;
+      priv->height_mod += 3. / PERIOD;
+
+      if (priv->height_mod >= 1.0 && priv->direction == AWN_EFFECT_SQUISH_UP)
+      {
+        priv->width_mod = 1.0;
+        priv->height_mod = 1.0;
+        priv->direction = AWN_EFFECT_DIR_NONE;
+      }
+
+      break;
+
+    case AWN_EFFECT_DIR_NONE:
+      priv->top_offset = sin(++priv->count * M_PI * 2 / PERIOD) * MAX_BOUNCE_OFFSET;
+
+      if (priv->count == PERIOD / 4)
+      {
+        // suspend in middle
+        if (awn_effect_check_top_effect(anim, NULL))
+          return awn_effect_suspend_animation(anim,
+                   (GSourceFunc)bounce_squish_hover_effect);
+      }
+
+      if (priv->count >= PERIOD / 2)
+        priv->direction = AWN_EFFECT_SQUISH_DOWN2;
+
+      break;
+
+    default:
+      priv->direction = AWN_EFFECT_SQUISH_DOWN;
+  }
+
+  gboolean repeat = TRUE;
+
+  if (priv->direction == AWN_EFFECT_SQUISH_UP2 && priv->height_mod >= 1.0)
+  {
+    priv->direction = AWN_EFFECT_DIR_NONE;
+    priv->count = 0;
+    priv->width_mod = 1.0;
+    priv->height_mod = 1.0;
+    // check for repeating
+    repeat = awn_effect_handle_repeating(anim);
+  }
+
+  return repeat;
+}
+
+gboolean
 bounce_squish_effect(AwnEffectsAnimation * anim)
 {
   AwnEffectsPrivate *priv = anim->effects->priv;
@@ -39,7 +125,10 @@ bounce_squish_effect(AwnEffectsAnimation * anim)
     priv->direction = AWN_EFFECT_SQUISH_DOWN;
   }
 
-  const gdouble MAX_BOUNCE_OFFSET = 15.0;
+  const gfloat MAX_BOUNCE_OFFSET =
+    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
+    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+      priv->icon_width / 3. : priv->icon_height / 3.;
 
   const gint PERIOD = 28;
 
@@ -114,7 +203,10 @@ bounce_squish_attention_effect(AwnEffectsAnimation * anim)
     priv->direction = AWN_EFFECT_SQUISH_DOWN;
   }
 
-  const gdouble MAX_BOUNCE_OFFSET = 15.0;
+  const gfloat MAX_BOUNCE_OFFSET =
+    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
+    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+      priv->icon_width / 3. : priv->icon_height / 3.;
 
   const gint PERIOD = 28;
 
@@ -196,7 +288,11 @@ bounce_squish_opening_effect(AwnEffectsAnimation * anim)
     priv->height_mod = 0;
   }
 
-  const gdouble MAX_BOUNCE_OFFSET = 15.0;
+  const gfloat MAX_BOUNCE_OFFSET =
+    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
+    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+      priv->icon_width / 3. : priv->icon_height / 3.;
+
   const gint PERIOD = 20;
   const gint PERIOD2 = 28;
 
@@ -276,7 +372,11 @@ bounce_squish_closing_effect(AwnEffectsAnimation * anim)
     priv->height_mod = 1.0;
   }
 
-  const gfloat MAX_BOUNCE_OFFSET = 15.0;
+  const gfloat MAX_BOUNCE_OFFSET =
+    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
+    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+      priv->icon_width / 3. : priv->icon_height / 3.;
+
   const gint PERIOD = 20;
   const gint PERIOD2 = 28;
 

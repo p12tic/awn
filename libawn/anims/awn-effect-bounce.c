@@ -35,7 +35,10 @@ bounce_effect(AwnEffectsAnimation * anim)
 
   AWN_ANIMATION_INIT(anim) priv->count = 0;
 
-  const gdouble MAX_BOUNCE_OFFSET = 15.0;
+  const gfloat MAX_BOUNCE_OFFSET =
+    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
+    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+      priv->icon_width / 3. : priv->icon_height / 3.;
   const gint PERIOD = 20;
 
   priv->top_offset = sin(++priv->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
@@ -55,7 +58,42 @@ bounce_effect(AwnEffectsAnimation * anim)
   return repeat;
 }
 
+gboolean
+bounce_hover_effect(AwnEffectsAnimation * anim)
+{
+  AwnEffectsPrivate *priv = anim->effects->priv;
 
+  AWN_ANIMATION_INIT(anim) priv->count = 0;
+
+  const gfloat MAX_BOUNCE_OFFSET =
+    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
+    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+      priv->icon_width / 3. : priv->icon_height / 3.;
+  const gint PERIOD = 20;
+
+  // repaint widget
+  awn_effects_redraw(anim->effects);
+
+  priv->top_offset = sin(++priv->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
+  if (priv->count == PERIOD/2)
+  {
+    // suspend in middle
+    if (awn_effect_check_top_effect(anim, NULL))
+      return awn_effect_suspend_animation(anim, 
+                                          (GSourceFunc)bounce_hover_effect);
+  }
+
+  gboolean repeat = TRUE;
+
+  if (priv->count >= PERIOD)
+  {
+    priv->count = 0;
+    // check for repeating
+    repeat = awn_effect_handle_repeating(anim);
+  }
+
+  return repeat;
+}
 
 gboolean
 bounce_opening_effect(AwnEffectsAnimation * anim)
@@ -74,7 +112,10 @@ bounce_opening_effect(AwnEffectsAnimation * anim)
 
   const gint PERIOD1 = 15;
   const gint PERIOD2 = 20;
-  const gint MAX_BOUNCE_OFFSET = 15;
+  const gfloat MAX_BOUNCE_OFFSET =
+    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
+    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+      priv->icon_width / 3. : priv->icon_height / 3.;
 
   if (priv->count < PERIOD1)
     priv->clip_region.height = priv->icon_height * ++priv->count / PERIOD1;

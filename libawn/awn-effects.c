@@ -445,7 +445,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
   awn_effects_register_effect_bundle(klass,
     bounce_opening_effect,
     fade_out_effect,
-    bounce_effect,
+    bounce_hover_effect,
     bounce_effect,
     bounce_effect
   );
@@ -459,7 +459,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
   awn_effects_register_effect_bundle(klass,
     spotlight_opening_effect,
     spotlight_closing_effect,
-    spotlight_effect,
+    spotlight_hover_effect,
     spotlight_half_fade_effect,
     spotlight_half_fade_effect
   );
@@ -473,7 +473,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
   awn_effects_register_effect_bundle(klass,
     bounce_squish_opening_effect,
     bounce_squish_closing_effect,
-    bounce_squish_effect,
+    bounce_squish_hover_effect,
     bounce_squish_effect,
     bounce_squish_attention_effect
   );
@@ -481,15 +481,15 @@ awn_effects_class_init(AwnEffectsClass *klass)
     turn_opening_effect,
     turn_closing_effect,
     turn_hover_effect,
-    turn_hover_effect,
-    turn_hover_effect
+    turn_effect,
+    turn_effect
   );
   awn_effects_register_effect_bundle(klass,
     spotlight3D_opening_effect,
     spotlight3D_closing_effect,
     spotlight3D_hover_effect,
     spotlight_half_fade_effect,
-    spotlight3D_hover_effect
+    spotlight3D_effect
   );
   awn_effects_register_effect_bundle(klass,
     glow_opening_effect,

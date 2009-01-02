@@ -26,6 +26,7 @@
 gboolean bounce_squish_closing_effect(AwnEffectsAnimation * anim);
 gboolean bounce_squish_opening_effect(AwnEffectsAnimation * anim);
 gboolean bounce_squish_attention_effect(AwnEffectsAnimation * anim);
+gboolean bounce_squish_hover_effect(AwnEffectsAnimation * anim);
 gboolean bounce_squish_effect(AwnEffectsAnimation * anim);
 gboolean bounce_squish_effect_finalize(AwnEffectsAnimation * anim);
 

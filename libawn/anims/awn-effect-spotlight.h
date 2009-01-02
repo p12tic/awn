@@ -23,7 +23,7 @@
 
 #include "awn-effects-shared.h"
 
-gboolean spotlight_effect(AwnEffectsAnimation * anim);
+gboolean spotlight_hover_effect(AwnEffectsAnimation * anim);
 gboolean spotlight_half_fade_effect(AwnEffectsAnimation * anim);
 gboolean spotlight_opening_effect(AwnEffectsAnimation * anim);
 gboolean spotlight_closing_effect(AwnEffectsAnimation * anim);

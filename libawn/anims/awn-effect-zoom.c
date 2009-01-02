@@ -42,15 +42,15 @@ zoom_effect(AwnEffectsAnimation * anim)
     priv->direction = AWN_EFFECT_DIR_UP;
   }
 
-  gint max;
+  gfloat max;
   switch (anim->effects->orientation)
   {
     case AWN_EFFECT_ORIENT_LEFT:
     case AWN_EFFECT_ORIENT_RIGHT:
-      max = priv->window_height;
+      max = priv->window_height / (gfloat)priv->icon_height;
       break;
     default:
-      max = priv->window_width;
+      max = priv->window_width / (gfloat)priv->icon_width;
       break;
   }
 
@@ -61,7 +61,7 @@ zoom_effect(AwnEffectsAnimation * anim)
 
     case AWN_EFFECT_DIR_UP:
 
-      if (priv->icon_width * (priv->width_mod + INCREMENT) < max)
+      if (priv->width_mod + INCREMENT < max)
       {
         priv->width_mod += INCREMENT;
         priv->height_mod += INCREMENT;
@@ -72,7 +72,7 @@ zoom_effect(AwnEffectsAnimation * anim)
       if (top)
       {
         awn_effects_redraw(anim->effects);
-        if (priv->icon_width * (priv->width_mod + INCREMENT) < max)
+        if (priv->width_mod + INCREMENT < max)
           return TRUE;
         else
           return awn_effect_suspend_animation(anim, (GSourceFunc)zoom_effect);
@@ -129,15 +129,15 @@ zoom_attention_effect(AwnEffectsAnimation * anim)
     priv->direction = AWN_EFFECT_DIR_UP;
   }
 
-  gint max;
+  gfloat max;
   switch (anim->effects->orientation)
   {
     case AWN_EFFECT_ORIENT_LEFT:
     case AWN_EFFECT_ORIENT_RIGHT:
-      max = priv->window_height;
+      max = priv->window_height / (gfloat)priv->icon_height;
       break;
     default:
-      max = priv->window_width;
+      max = priv->window_width / (gfloat)priv->icon_width;
       break;
   }
 
@@ -148,7 +148,7 @@ zoom_attention_effect(AwnEffectsAnimation * anim)
 
     case AWN_EFFECT_DIR_UP:
 
-      if (priv->icon_width * (priv->width_mod + INCREMENT) < max)
+      if (priv->width_mod + INCREMENT < max)
       {
         priv->width_mod += INCREMENT;
         priv->height_mod += INCREMENT;
