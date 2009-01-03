@@ -63,10 +63,26 @@ class awnPreferencesMini(awnPreferences):
         self.setup_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_widget("iconeffects"))
 	self.setup_orientation(defs.PANEL, defs.ORIENT, self.wTree.get_widget("orientationcombo"))
 
+	#Advanced
+	self.setup_spin(defs.PANEL, defs.OFFSET, self.wTree.get_widget("offset_config"))
+	self.setup_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_widget("monitor_align"))
+	self.setup_bool(defs.PANEL, defs.MONITOR_FORCE, self.wTree.get_widget("force_monitor"))
+	self.setup_spin(defs.PANEL, defs.MONITOR_HEIGHT, self.wTree.get_widget("monitor_height"))
+	self.setup_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_widget("monitor_width"))
+	self.setup_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_widget("monitor_offset"))
+
     def reload(self):
         self.load_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_widget("iconeffects"))
 	self.load_spin(defs.PANEL, defs.SIZE, self.wTree.get_widget("panelsize"))
 	self.load_orientation(defs.PANEL, defs.ORIENT, self.wTree.get_widget("orientationcombo"))
+
+	#Advanced
+	self.load_spin(defs.PANEL, defs.OFFSET, self.wTree.get_widget("offset_config"))
+	self.load_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_widget("monitor_align"))
+	self.load_bool(defs.PANEL, defs.MONITOR_FORCE, self.wTree.get_widget("force_monitor"))
+	self.load_spin(defs.PANEL, defs.MONITOR_HEIGHT, self.wTree.get_widget("monitor_height"))
+	self.load_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_widget("monitor_width"))
+	self.load_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_widget("monitor_offset"))
 
 class awnLauncherMini(awnLauncher):
     def __init__(self, glade):

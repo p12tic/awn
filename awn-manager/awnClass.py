@@ -218,11 +218,11 @@ class awnPreferences:
     def bool_changed(self, check, groupkey):
         group, key = groupkey
         self.client.set_bool(group, key, check.get_active())
-        if key == defs.KEEP_BELOW:
-            self.wTree.get_widget('autohide').set_active(check.get_active())
-        elif key == defs.AUTO_HIDE:
-            if not check.get_active() and self.wTree.get_widget("keepbelow").get_active():
-                self.wTree.get_widget("keepbelow").set_active(False)
+#        if key == defs.KEEP_BELOW:
+#            self.wTree.get_widget('autohide').set_active(check.get_active())
+#        elif key == defs.AUTO_HIDE:
+#            if not check.get_active() and self.wTree.get_widget("keepbelow").get_active():
+#                self.wTree.get_widget("keepbelow").set_active(False)
 
     def setup_font(self, group, key, font_btn):
         """sets up font chooser"""
