@@ -156,20 +156,10 @@ draw_rect (AwnBackground  *bg,
   x10 = x + apply_perspective_x(width, bg->panel_angle, width-radius-offset, offset);
   x11 = x + apply_perspective_x(width, bg->panel_angle, radius+offset, offset);
 
-  switch (orient)
-  {
-    case AWN_ORIENTATION_TOP:
-      y0 = y + offset;
-      y1 = y + radius+offset;
-      y2 = y + height/2 - radius - offset;
-      y3 = y + height/2 - offset;
-      break;
-    default:
-      y0 = y + height - offset;
-      y1 = y + height - radius - offset;
-      y2 = y + height/2 + radius + offset;
-      y3 = y + height/2 + offset;
-  }
+  y0 = y + height - offset;
+  y1 = y + height - radius - offset;
+  y2 = y + height/2 + radius + offset;
+  y3 = y + height/2 + offset;
 
   cairo_move_to(cr, x2, y2);
   cairo_curve_to(cr, x3, y3, x3, y3, x4, y3);
@@ -202,7 +192,7 @@ draw_side (AwnBackground  *bg,
            gdouble         y,
            gint            width,
            gint            height,
-           gint            padding)
+           gdouble         side_space)
 {
   gint x0, x1, x2, x3, x4, x5,
        y0, y1;
@@ -236,16 +226,11 @@ draw_side (AwnBackground  *bg,
                              bg->border_color.green,
                              bg->border_color.blue,
                              bg->border_color.alpha);
-  if(orient==AWN_ORIENTATION_TOP)
-  	cairo_rectangle (cr, x+corner_x1,
-                         y-padding-0.5,
-                         width-2*corner_x1, 
-                         padding+corner_y);
-  else
-  	cairo_rectangle (cr, x+corner_x1, 
-                         y+height+0.5-corner_y, 
-                         width-2*corner_x1, 
-                         padding+corner_y);
+
+ 	cairo_rectangle (cr, x+corner_x1, 
+                       y+height+0.5-corner_y, 
+                       width-2*corner_x1, 
+                       side_space+corner_y);
 
   cairo_fill(cr);
   cairo_save (cr);
@@ -264,59 +249,50 @@ draw_top_bottom_background (AwnBackground  *bg,
                             gint            width,
                             gint            height)
 {
-  //TODO: set padding in background properties
-  gint padding = 3;
-
-  if(orient!=AWN_ORIENTATION_TOP)
-    y -= 2+padding;
-  else
-    y += padding;
-
-  cairo_pattern_t *pat;
+  /* The pixels to draw the side of the panel*/
+  gint side_space = 3;
 
   /* Basic set-up */
+  cairo_pattern_t *pat;
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   cairo_translate (cr, 0.5, 0.5);
 
   /* Draw the side of the bar */
-  draw_side(bg, cr, orient, x, y,  width, height, padding);
+  //the 0.5 extra space is to get no white space between edge of screen and bar
+  draw_side(bg, cr, orient, 0, -side_space,  width, height, side_space+0.5);
 
   /* Draw the background */
-  pat = cairo_pattern_create_linear (0, y, 0, y+height);
-  cairo_pattern_add_color_stop_rgba (pat, (orient==AWN_ORIENTATION_TOP)?1.0:0.0, 
+  pat = cairo_pattern_create_linear (0, 0, 0, height);
+  cairo_pattern_add_color_stop_rgba (pat, 0.0, 
                                      bg->g_step_1.red,
                                      bg->g_step_1.green,
                                      bg->g_step_1.blue,
                                      bg->g_step_1.alpha);
-  cairo_pattern_add_color_stop_rgba (pat, (orient==AWN_ORIENTATION_TOP)?0.0:1.0,
+  cairo_pattern_add_color_stop_rgba (pat, 1.0,
                                      bg->g_step_2.red, 
                                      bg->g_step_2.green,
                                      bg->g_step_2.blue, 
                                      bg->g_step_2.alpha);
 
-  draw_rect (bg, cr, orient, x, y, width, height, 0.5);
+  draw_rect (bg, cr, orient, 0, -side_space, width, height, 0.5);
   cairo_set_source (cr, pat);
   cairo_fill (cr);
   cairo_pattern_destroy (pat);
 
   /* Draw the hi-light */
-  pat = cairo_pattern_create_linear (0, y+height/3, 0, y+height*2/3);
-  cairo_pattern_add_color_stop_rgba (pat, (orient==AWN_ORIENTATION_TOP)?1.0:0.0, 
+  pat = cairo_pattern_create_linear (0, height/3, 0, height*2/3);
+  cairo_pattern_add_color_stop_rgba (pat, 0.0, 
                                      bg->g_histep_1.red,
                                      bg->g_histep_1.green,
                                      bg->g_histep_1.blue,
                                      bg->g_histep_1.alpha);
-  cairo_pattern_add_color_stop_rgba (pat, (orient==AWN_ORIENTATION_TOP)?0.0:1.0,
+  cairo_pattern_add_color_stop_rgba (pat, 1.0,
                                      bg->g_histep_2.red, 
                                      bg->g_histep_2.green,
                                      bg->g_histep_2.blue, 
                                      bg->g_histep_2.alpha);
-
-  if (orient == AWN_ORIENTATION_TOP)
-    draw_rect (bg, cr, orient, x+apply_perspective_x(width, bg->panel_angle, 0, height/3), y+height/3+2, get_width_on_height(width, bg->panel_angle, height/3), height/3, 1.5);
-  else
-    draw_rect (bg, cr, orient, x+apply_perspective_x(width, bg->panel_angle, 0, height/3), y+height/3, get_width_on_height(width, bg->panel_angle, height/3), height/3, 1.5);
+  draw_rect (bg, cr, orient, apply_perspective_x(width, bg->panel_angle, 0, height/3), -side_space+height/3, get_width_on_height(width, bg->panel_angle, height/3), height/3, 1.5);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
@@ -327,7 +303,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                              bg->hilight_color.green,
                              bg->hilight_color.blue,
                              bg->hilight_color.alpha);
-  draw_rect (bg, cr, orient, x, y, width, height, 1);
+  draw_rect (bg, cr, orient, 0, -side_space, width, height, 1);
   cairo_stroke (cr);
 
   /* External border */
@@ -335,46 +311,47 @@ draw_top_bottom_background (AwnBackground  *bg,
                              bg->border_color.green,
                              bg->border_color.blue,
                              bg->border_color.alpha);
-   draw_rect (bg, cr, orient, x, y,  width, height, 0.5);
+   draw_rect (bg, cr, orient, 0, -side_space,  width, height, 0.5);
    cairo_stroke (cr);
 
 }
 
 static void 
 awn_background_3d_draw (AwnBackground  *bg,
-                          cairo_t        *cr, 
-                          AwnOrientation  orient,
-                          gdouble         x,
-                          gdouble         y,
-                          gint            width,
-                          gint            height)
+                        cairo_t        *cr, 
+                        AwnOrientation  orient,
+                        gdouble         x,
+                        gdouble         y,
+                        gint            width,
+                        gint            height)
 {
   gint temp;
   cairo_save (cr);
-  
+
   switch (orient)
   {
     case AWN_ORIENTATION_RIGHT:
-      cairo_translate (cr, width/2, height/2);
-      cairo_rotate (cr, 270 * M_PI/180); 
-      temp = y;
-      y = width/2; x = -height/2;
+      cairo_translate (cr, x-2, y+height);
+      cairo_rotate (cr, M_PI * 1.5);
       temp = width;
       width = height; height = temp;
       break;
     case AWN_ORIENTATION_LEFT:
-      cairo_translate (cr, width/2, height/2);
-      cairo_rotate (cr, 90 * M_PI/180);
-      temp = y;
-      y = -width/2; x = -height/2;
+      cairo_translate (cr, x+width+1, y);
+      cairo_rotate (cr, M_PI * 0.5);
       temp = width;
       width = height; height = temp;
       break;
+    case AWN_ORIENTATION_TOP:
+      cairo_translate (cr, x+width, y+height+1);
+      cairo_rotate (cr, M_PI);
+      break;
     default:
+      cairo_translate (cr, x, y-2);
       break;
   }
 
-  draw_top_bottom_background (bg, cr, orient, x, y, width, height);
+  draw_top_bottom_background (bg, cr, orient, 0, 0, width, height);
 
   cairo_restore (cr);
 }
