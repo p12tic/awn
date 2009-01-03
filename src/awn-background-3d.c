@@ -198,39 +198,53 @@ draw_side (AwnBackground  *bg,
        y0, y1;
   gint corner_x1, corner_x2,
        corner_y;
+  double radius = bg->corner_radius;
 
-  /* Carefull: here (0,0) is in the top left corner of the screen
-   *               .-''''''''''''''''-.    
-   *              /                    \
-   *   (x1,y1)___/                      \___(x2,y1)
-   *             '.____________________.'
-   *  (x0,y0)-'´  |                   | `'-- (x3,y0)
-   *           (x5,y0)            (x4,y0)
-   */
+  if(radius<height/2-radius)
+  {
+    /* The rounded corners are drawn on the bottom */
 
-  x0 = apply_perspective_x(width, bg->panel_angle, 0.5, 0.5);
-  x1 = apply_perspective_x(width, bg->panel_angle, 0.5, bg->corner_radius);
-  x2 = apply_perspective_x(width, bg->panel_angle, width-0.5, bg->corner_radius);
-  x3 = apply_perspective_x(width, bg->panel_angle, width-0.5, 0.5);
-  x4 = apply_perspective_x(width, bg->panel_angle, width-bg->corner_radius, 0.5);
-  x5 = apply_perspective_x(width, bg->panel_angle, bg->corner_radius, 0.5);
+    /* Carefull: here (0,0) is in the top left corner of the screen
+     *               .-''''''''''''''''-.    
+     *              /                    \
+     *   (x1,y1)___/                      \___(x2,y1)
+     *             '.____________________.'
+     *  (x0,y0)-'´  |                   | `'-- (x3,y0)
+     *           (x5,y0)            (x4,y0)
+     */
 
-  y0 = 0;
-  y1 = bg->corner_radius;
+    x0 = apply_perspective_x(width, bg->panel_angle, 0.5, 0.5);
+    x1 = apply_perspective_x(width, bg->panel_angle, 0.5, bg->corner_radius);
+    x2 = apply_perspective_x(width, bg->panel_angle, width-0.5, bg->corner_radius);
+    x3 = apply_perspective_x(width, bg->panel_angle, width-0.5, 0.5);
+    x4 = apply_perspective_x(width, bg->panel_angle, width-bg->corner_radius, 0.5);
+    x5 = apply_perspective_x(width, bg->panel_angle, bg->corner_radius, 0.5);
 
-  corner_x1 = cubic_bezier_curve(x5, x0, x0, x1, 0.5);
-  corner_x2 = cubic_bezier_curve(x2, x3, x3, x4, 0.5);
-  corner_y = cubic_bezier_curve(y1,y0,y0,y0, 0.5); 
+    y0 = 0;
+    y1 = bg->corner_radius;
 
-  cairo_set_source_rgba (cr, bg->border_color.red,
-                             bg->border_color.green,
-                             bg->border_color.blue,
-                             bg->border_color.alpha);
+    corner_x1 = cubic_bezier_curve(x5, x0, x0, x1, 0.5);
+    corner_x2 = cubic_bezier_curve(x2, x3, x3, x4, 0.5);
+    corner_y = cubic_bezier_curve(y1,y0,y0,y0, 0.5); 
 
- 	cairo_rectangle (cr, x+corner_x1, 
-                       y+height+0.5-corner_y, 
-                       width-2*corner_x1, 
-                       side_space+corner_y);
+    cairo_set_source_rgba (cr, bg->border_color.red,
+                               bg->border_color.green,
+                               bg->border_color.blue,
+                               bg->border_color.alpha);
+
+   	cairo_rectangle (cr, x+corner_x1, 
+                         y+height+0.5-corner_y, 
+                         width-2*corner_x1, 
+                         side_space+corner_y);
+  }
+  else
+  {
+    /* the radius is to big, so there are no rounded corners on the bottom. */
+   	cairo_rectangle (cr, x, 
+                     y+height+0.5, 
+                     width, 
+                     side_space);
+  }
 
   cairo_fill(cr);
   cairo_save (cr);
