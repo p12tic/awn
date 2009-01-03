@@ -84,6 +84,8 @@ struct _AwnEffects
 
   /* Properties */
   GtkWidget *widget; // FIXME: add as property
+  gboolean no_clear;
+  gboolean indirect_paint;
   gint orientation;
   guint set_effects;
   gint icon_offset;
@@ -93,7 +95,7 @@ struct _AwnEffects
   gboolean do_reflection;
   gboolean make_shadow;
   gboolean is_active;
-  gboolean is_running;
+  gboolean show_arrow;
   gchar *label;
   gfloat progress;
   gint border_clip;
@@ -166,7 +168,7 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
                      gboolean signal_start, gboolean signal_end);
 
 /**
- * awn_effects_draw_set_icon_size:
+ * awn_effects_set_icon_size:
  * @fx: Pointer to #AwnEffects instance.
  * @width: Width of drawn icon.
  * @height: Height of drawn icon.
@@ -175,46 +177,36 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
  *
  * Sets up correct offsets in managed window based on dimensions of drawn icon.
  */
-void awn_effects_draw_set_icon_size(AwnEffects *fx, const gint width,
+void awn_effects_set_icon_size(AwnEffects *fx, const gint width,
                                     const gint height, gboolean requestSize);
 
 /**
- * awn_effects_draw_cairo_create:
+ * awn_effects_cairo_create:
  * @fx: Pointer to #AwnEffects instance.
  *
- * Returns cairo context where an icon can be drawn. (the icon should have dimensions
- * specified by a previous call to #awn_effects_draw_set_icon_size)
+ * Returns cairo context where an icon can be drawn. (the icon should have 
+ * dimensions specified by a previous call to #awn_effects_set_icon_size)
  */
-cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx);
+cairo_t *awn_effects_cairo_create(AwnEffects *fx);
 
 /**
- * awn_effects_draw_get_window_context:
+ * awn_effects_cairo_create_clipped:
  * @fx: Pointer to #AwnEffects instance.
+ * @region: A region the drawing will be clipped to.
  *
- * Returns the real cairo context of managed widget, but it is valid context only
- * between calls to #awn_effects_draw_cairo_create and #awn_effects_draw_cairo_destroy.
- * Can be used for clipping or drawing extra graphics which shouldn't be affected
- * by the effect transformtions.
+ * Returns cairo context where an icon can be drawn. (the icon should have
+ * dimensions specified by a previous call to #awn_effects_set_icon_size)
  */
-cairo_t *awn_effects_draw_get_window_context(AwnEffects *fx);
+cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
+                                               GdkRegion *region);
 
 /**
- * awn_effects_draw_clear_window_context:
- * @fx: Pointer to #AwnEffects instance.
- *
- * Convenience method to clear the background of managed widget to transparent.
- * Has effect only between call to #awn_effects_draw_cairo_create and
- * #awn_effects_draw_cairo_destroy.
- */
-void awn_effects_draw_clear_window_context(AwnEffects *fx);
-
-/**
- * awn_effects_draw_cairo_destroy:
+ * awn_effects_cairo_destroy:
  * @fx: Pointer to #AwnEffects instance.
  *
  * Finish drawing of the icon and run all post-ops.
  */
-void awn_effects_draw_cairo_destroy(AwnEffects *fx);
+void awn_effects_cairo_destroy(AwnEffects *fx);
 
 //Move this somewhere else eventually, these are used only internally
 void awn_effects_redraw(AwnEffects *fx);

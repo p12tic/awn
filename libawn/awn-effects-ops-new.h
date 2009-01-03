@@ -113,11 +113,11 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
                                     gpointer user_data
                                    );
 
-gboolean awn_effects_post_op_running(AwnEffects * fx,
-                                     cairo_t * cr,
-                                     GtkAllocation * ds,
-                                     gpointer user_data
-                                    );
+gboolean awn_effects_post_op_arrow(AwnEffects * fx,
+                                   cairo_t * cr,
+                                   GtkAllocation * ds,
+                                   gpointer user_data
+                                  );
 
 gboolean awn_effects_post_op_progress(AwnEffects * fx,
                                cairo_t * cr,

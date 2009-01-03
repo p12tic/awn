@@ -76,35 +76,26 @@ static gboolean
 awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
 {
   AwnIconPrivate *priv = AWN_ICON (widget)->priv;
-  cairo_t        *draw_cr;
-  cairo_t        *win_cr;
+  cairo_t        *cr;
 
   g_return_val_if_fail(priv->icon_srfc, FALSE);
 
-  awn_effects_draw_set_icon_size (priv->effects, priv->icon_width, priv->icon_height, FALSE);
-
-  draw_cr = awn_effects_draw_cairo_create (priv->effects);
-  win_cr = awn_effects_draw_get_window_context (priv->effects);
-
   // clip the drawing region, nvidia likes it
-  gdk_cairo_region (win_cr, event->region);
-  cairo_clip (win_cr);
+  cr = awn_effects_cairo_create_clipped (priv->effects, event->region);
 
-  // we want transparent background
+  // we want transparent background - effects' no-clear is set to FALSE
+  // FIXME: no-clear should be TRUE if we don't have RGBA visual
   // FIXME: use gdk_window_set_back_pixmap() instead (in after_realize callback
   //  => g_signal_connect_after(icon, "realize", after_realize, NULL)
   //  this will also prevent the white lines, and clear won't be necessary
   //  (probably)
-  cairo_set_operator (win_cr, CAIRO_OPERATOR_CLEAR);
-  cairo_paint (win_cr);
 
-  cairo_set_operator (win_cr, CAIRO_OPERATOR_OVER);
-
-  cairo_set_source_surface (draw_cr, priv->icon_srfc, 0, 0);
-  cairo_paint (draw_cr);
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_set_source_surface (cr, priv->icon_srfc, 0, 0);
+  cairo_paint (cr);
 
   // let effects know we're finished
-  awn_effects_draw_cairo_destroy (priv->effects);
+  awn_effects_cairo_destroy (priv->effects);
 
   return FALSE;
 }
@@ -310,6 +301,11 @@ update_widget_size (AwnIcon *icon)
 
   if (old_width != priv->icon_width || old_height != priv->icon_height)
   {
+    awn_effects_set_icon_size (priv->effects,
+                               priv->icon_width,
+                               priv->icon_height,
+                               FALSE);
+
     awn_icon_update_tooltip_pos(icon);
   }
 }
@@ -499,7 +495,7 @@ awn_icon_set_is_running (AwnIcon     *icon,
 {
   g_return_if_fail (AWN_IS_ICON (icon));
 
-  g_object_set (icon->priv->effects, "running", is_running, NULL);
+  g_object_set (icon->priv->effects, "show-arrow", is_running, NULL);
 }
 
 gboolean
@@ -509,7 +505,7 @@ awn_icon_get_is_running (AwnIcon     *icon)
   
   g_return_val_if_fail (AWN_IS_ICON (icon), FALSE);
 
-  g_object_get (icon->priv->effects, "running", &result, NULL);
+  g_object_get (icon->priv->effects, "show-arrow", &result, NULL);
 
   return result;
 }

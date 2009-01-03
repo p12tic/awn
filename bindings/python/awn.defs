@@ -623,8 +623,8 @@
   (c-name "awn_effects_new_for_widget")
   (is-constructor-of "AwnEffects")
   (return-type "AwnEffects*")
-  (parameters
-    '("GtkWidget" "widget")
+  (properties
+    '("widget" (argname "widget"))
   )
 )
 
@@ -658,33 +658,30 @@
   )
 )
 
-(define-method draw_cairo_create
+(define-method cairo_create
   (of-object "AwnEffects")
-  (c-name "awn_effects_draw_cairo_create")
+  (c-name "awn_effects_cairo_create")
   (return-type "cairo_t*")
 )
 
-(define-method draw_cairo_destroy
+(define-method cairo_create_clipped
   (of-object "AwnEffects")
-  (c-name "awn_effects_draw_cairo_destroy")
-  (return-type "none")
-)
-
-(define-method draw_get_window_context
-  (of-object "AwnEffects")
-  (c-name "awn_effects_draw_get_window_context")
+  (c-name "awn_effects_cairo_create_clipped")
+  (parameters
+    '("GdkRegion*" "region")
+  )
   (return-type "cairo_t*")
 )
 
-(define-method draw_clear_window_context
+(define-method cairo_destroy
   (of-object "AwnEffects")
-  (c-name "awn_effects_draw_clear_window_context")
+  (c-name "awn_effects_cairo_destroy")
   (return-type "none")
 )
 
-(define-method draw_set_icon_size
+(define-method set_icon_size
   (of-object "AwnEffects")
-  (c-name "awn_effects_draw_set_icon_size")
+  (c-name "awn_effects_set_icon_size")
   (return-type "none")
   (parameters
     '("gint" "width")

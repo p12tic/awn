@@ -72,6 +72,9 @@ static guint32 _effects_signals[LAST_SIGNAL] = { 0 };
 
 enum {
   PROP_0,
+  PROP_WIDGET,
+  PROP_NO_CLEAR,
+  PROP_INDIRECT_PAINT,
   PROP_ORIENTATION,
   PROP_CURRENT_EFFECTS,
   PROP_ICON_OFFSET,
@@ -82,7 +85,7 @@ enum {
   PROP_MAKE_SHADOW,
   PROP_LABEL,
   PROP_IS_ACTIVE,
-  PROP_IS_RUNNING,
+  PROP_SHOW_ARROW,
   PROP_PROGRESS,
   PROP_BORDER_CLIP,
   PROP_SPOTLIGHT_ICON,
@@ -209,6 +212,15 @@ awn_effects_get_property (GObject      *object,
   AwnEffects *fx = AWN_EFFECTS(object);
 
   switch (prop_id) {
+    case PROP_WIDGET:
+      g_value_set_object(value, fx->widget);
+      break;
+    case PROP_NO_CLEAR:
+      g_value_set_boolean(value, fx->no_clear);
+      break;
+    case PROP_INDIRECT_PAINT:
+      g_value_set_boolean(value, fx->indirect_paint);
+      break;
     case PROP_ORIENTATION:
       g_value_set_int(value, fx->orientation);
       break;
@@ -239,8 +251,8 @@ awn_effects_get_property (GObject      *object,
     case PROP_IS_ACTIVE:
       g_value_set_boolean(value, fx->is_active);
       break;
-    case PROP_IS_RUNNING:
-      g_value_set_boolean(value, fx->is_running);
+    case PROP_SHOW_ARROW:
+      g_value_set_boolean(value, fx->show_arrow);
       break;
     case PROP_PROGRESS:
       g_value_set_float(value, fx->progress);
@@ -272,6 +284,15 @@ awn_effects_set_property (GObject      *object,
   AwnEffects *fx = AWN_EFFECTS(object);
 
   switch (prop_id) {
+    case PROP_WIDGET:
+      fx->widget = g_value_get_object(value);
+      break;
+    case PROP_NO_CLEAR:
+      fx->no_clear = g_value_get_boolean(value);
+      break;
+    case PROP_INDIRECT_PAINT:
+      fx->indirect_paint = g_value_get_boolean(value);
+      break;
     case PROP_ORIENTATION:
       // make sure we set correct orient
       switch (g_value_get_int(value)) {
@@ -314,8 +335,8 @@ awn_effects_set_property (GObject      *object,
     case PROP_IS_ACTIVE:
       fx->is_active = g_value_get_boolean(value);
       break;
-    case PROP_IS_RUNNING:
-      fx->is_running = g_value_get_boolean(value);
+    case PROP_SHOW_ARROW:
+      fx->show_arrow = g_value_get_boolean(value);
       break;
     case PROP_PROGRESS:
       fx->progress = g_value_get_float(value);
@@ -502,6 +523,28 @@ awn_effects_class_init(AwnEffectsClass *klass)
   // association between icon paths and cairo image surfaces
   g_datalist_init(&klass->custom_icons);
 
+  g_object_class_install_property (
+    obj_class, PROP_WIDGET,
+    g_param_spec_object ("widget",
+                         "Widget",
+                         "Widget to draw to",
+                         GTK_TYPE_WIDGET,
+                         G_PARAM_READWRITE));
+  g_object_class_install_property(
+    obj_class, PROP_NO_CLEAR,
+    g_param_spec_boolean("no-clear",
+                         "No context clear",
+                         "Determines whether to clear the context when drawing",
+                         FALSE,
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  g_object_class_install_property(
+    obj_class, PROP_INDIRECT_PAINT,
+    g_param_spec_boolean("indirect-paint",
+                         "Indirect paint",
+                         "Determines whether to apply transforms directly on "
+                         "the window or paint to a buffer instead",
+                         TRUE,
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   g_object_class_install_property(
     obj_class, PROP_ORIENTATION,
     // keep in sync with AwnOrientation
@@ -567,9 +610,9 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          FALSE,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   g_object_class_install_property(
-    obj_class, PROP_IS_RUNNING,
-    g_param_spec_boolean("running",
-                         "Running",
+    obj_class, PROP_SHOW_ARROW,
+    g_param_spec_boolean("show-arrow",
+                         "Draw arrow",
                          "Determines whether to draw an arrow on the icon",
                          FALSE,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
@@ -611,8 +654,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   g_object_class_install_property(
     obj_class, PROP_CUSTOM_ARROW_ICON,
-    g_param_spec_string("custom-running-png",
-                        "Custom running Icon",
+    g_param_spec_string("custom-arrow-png",
+                        "Custom arrow Icon",
                         "Custom icon to draw when in running state",
                         NULL,
                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
@@ -638,14 +681,13 @@ AwnEffects* awn_effects_new_for_widget(GtkWidget * widget)
 {
   g_return_val_if_fail(GTK_IS_WIDGET(widget), NULL);
 
-  AwnEffects *fx = g_object_new(AWN_TYPE_EFFECTS, NULL);
+  AwnEffects *fx = g_object_new(AWN_TYPE_EFFECTS, "widget", widget, NULL);
 
   /*
-   * we will use weak reference, because we want the widget 
+   * we will use weak reference on the widget, because we want the widget
    * to destroy us when it dies
    * though we could also ref the widget and unref it in our dispose
    */
-  fx->widget = widget;
 
   return fx;
 }
@@ -889,7 +931,7 @@ void awn_effects_emit_anim_end(AwnEffects *fx, AwnEffect effect)
 }
 
 void
-awn_effects_draw_set_icon_size(AwnEffects * fx, const gint width, const gint height, gboolean requestSize)
+awn_effects_set_icon_size(AwnEffects * fx, const gint width, const gint height, gboolean requestSize)
 {
   AwnEffectsPrivate *priv = fx->priv;
 
@@ -931,11 +973,18 @@ awn_effects_draw_set_icon_size(AwnEffects * fx, const gint width, const gint hei
   }
 }
 
-cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
+cairo_t *awn_effects_cairo_create(AwnEffects *fx)
 {
+  return awn_effects_cairo_create_clipped(fx, NULL);
+}
+
+cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
+                                               GdkRegion *region)
+{
+  g_return_val_if_fail(AWN_IS_EFFECTS(fx) && fx->widget, NULL);
+
   AwnEffectsPrivate *priv = fx->priv;
 
-  g_return_val_if_fail(fx->widget, NULL);
   cairo_t *cr = gdk_cairo_create(fx->widget->window);
   g_return_val_if_fail(cairo_status(cr) == CAIRO_STATUS_SUCCESS, NULL);
   fx->window_ctx = cr;
@@ -947,19 +996,39 @@ cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
   } else {
     g_warning("AwnEffects: Drawing to non-xlib surface, unknown dimensions.");
   }
+
+  if (fx->no_clear == FALSE)
+    awn_effects_pre_op_clear(fx, cr, NULL, NULL);
+  if (region)
+  {
+    //g_debug("Region is empty: %d", gdk_region_empty(region));
+    // Python apps pass empty region... interesting, I guess they should use
+    //  cairo_create instead of cairo_create_clipped
+
+    // clip the region
+    gdk_cairo_region (cr, region);
+    cairo_clip (cr);
+  }
+
 #if 0
   g_debug("Drawing... icon size: %dx%d, window size: %dx%d", 
           priv->icon_width, priv->icon_height,
           priv->window_width, priv->window_height);
 #endif
-  // we'll give to user virtual context and later paint everything on real one
-  targetSurface = cairo_surface_create_similar(targetSurface,
-                                               CAIRO_CONTENT_COLOR_ALPHA,
-                                               priv->window_width,
-                                               priv->window_height
-                                              );
-  g_return_val_if_fail(cairo_surface_status(targetSurface) == CAIRO_STATUS_SUCCESS, NULL);
-  cr = cairo_create(targetSurface);
+
+  if (fx->indirect_paint)
+  {
+    // we'll give to user virtual context and later paint everything on real one
+    targetSurface = cairo_surface_create_similar(targetSurface,
+                                                 CAIRO_CONTENT_COLOR_ALPHA,
+                                                 priv->window_width,
+                                                 priv->window_height
+                                                );
+    g_return_val_if_fail(
+      cairo_surface_status(targetSurface) == CAIRO_STATUS_SUCCESS, NULL);
+    cr = cairo_create(targetSurface);
+  }
+  // if we're painting directly virtual_ctx == window_ctx
   fx->virtual_ctx = cr;
 
   // FIXME: make GtkAllocation AwnEffects member, so it's accessible in both
@@ -971,9 +1040,8 @@ cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
   ds.x = (priv->window_width - ds.width) / 2;
   ds.y = (priv->window_height - ds.height); // sit on bottom by default
 
-  // put actual transformations here
+  // put actual transformations here (no drawing)
   // FIXME: put the functions in some kind of list/array
-  awn_effects_pre_op_clear(fx, cr, &ds, NULL);
   awn_effects_pre_op_translate(fx, cr, &ds, NULL);
   awn_effects_pre_op_clip(fx, cr, &ds, NULL);
   awn_effects_pre_op_scale(fx, cr, &ds, NULL);
@@ -983,19 +1051,7 @@ cairo_t *awn_effects_draw_cairo_create(AwnEffects *fx)
   return cr;
 }
 
-cairo_t *awn_effects_draw_get_window_context(AwnEffects *fx)
-{
-  return fx->window_ctx;
-}
-
-void awn_effects_draw_clear_window_context(AwnEffects *fx)
-{
-  if (fx->window_ctx) {
-    awn_effects_pre_op_clear(fx, fx->window_ctx, NULL, NULL);
-  }
-}
-
-void awn_effects_draw_cairo_destroy(AwnEffects *fx)
+void awn_effects_cairo_destroy(AwnEffects *fx)
 {
   cairo_t *cr = fx->virtual_ctx;
 
@@ -1013,16 +1069,20 @@ void awn_effects_draw_cairo_destroy(AwnEffects *fx)
   awn_effects_post_op_reflection(fx, cr, NULL, NULL);
   awn_effects_post_op_active (fx, cr, NULL, NULL);
   awn_effects_post_op_spotlight(fx, cr, NULL, NULL);
-  awn_effects_post_op_running (fx, cr, NULL, NULL);
+  awn_effects_post_op_arrow (fx, cr, NULL, NULL);
   awn_effects_post_op_progress(fx, cr, NULL, NULL);
   // TODO: we're missing op to paint label
 
-  cairo_set_source_surface(fx->window_ctx, cairo_get_target(cr), 0, 0);
-  cairo_paint(fx->window_ctx);
+  if (fx->indirect_paint)
+  {
+    cairo_set_operator(fx->window_ctx, CAIRO_OPERATOR_OVER);
+    cairo_set_source_surface(fx->window_ctx, cairo_get_target(cr), 0, 0);
+    cairo_paint(fx->window_ctx);
 
-  cairo_surface_destroy(cairo_get_target(cr));
+    cairo_surface_destroy(cairo_get_target(cr));
+    cairo_destroy(fx->virtual_ctx);
+  }
   cairo_destroy(fx->window_ctx);
-  cairo_destroy(fx->virtual_ctx);
 
   fx->window_ctx = NULL;
   fx->virtual_ctx = NULL;

@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#coding=utf-8
 import pygtk
 import gtk
 import awn
@@ -11,8 +12,10 @@ class EffectedDA(gtk.DrawingArea):
     self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color(65535, 0, 32000))
     self.useSVG = True
     self.effects = awn.Effects(self)
+    # two ways to do the same set_property(name, value) or .props.name = value
     self.effects.set_property("effects", 0)
     self.effects.props.orientation = 0
+    self.effects.props.no_clear = True
     self.add_events(gtk.gdk.ALL_EVENTS_MASK)
     self.connect("expose-event", self.expose)
     self.svg = rsvg.Handle("../awn-manager/awn-manager.svg")
@@ -24,14 +27,14 @@ class EffectedDA(gtk.DrawingArea):
     if self.useSVG:
       widget.set_label("SVG")
     else:
-      widget.set_label("PNG")
+      widget.set_label(u"χρ") # Chi Rho == Cairo ;)
   def expose(self, widget, event):
 
-    self.effects.draw_set_icon_size(48, 48, False)
+    self.effects.set_icon_size(48, 48, False)
 
     if not self.useSVG:
-      self.effects.draw_set_icon_size(64, 48, False)
-    cr = self.effects.draw_cairo_create()
+      self.effects.set_icon_size(64, 48, False)
+    cr = self.effects.cairo_create()
 
     if not self.useSVG:
       cr.rectangle(0, 0, 64, 48)
@@ -41,16 +44,13 @@ class EffectedDA(gtk.DrawingArea):
       cr.stroke()
       cr.move_to(25, 35)
       cr.show_text("123")
-      #cr = gtk.gdk.CairoContext(cr)
-      #cr.set_source_pixbuf(self.pixbuf, 0, 0)
-      #cr.paint()
     else:
       cr = gtk.gdk.CairoContext(cr)
       cr.scale(0.75, 0.75)
       cr.set_source_pixbuf(self.pixbuf_large, 0, 0)
       cr.paint()
 
-    self.effects.draw_cairo_destroy()
+    self.effects.cairo_destroy()
     return True
     
 class Main:
@@ -82,7 +82,7 @@ class Main:
 
   self.vbox.pack_start(self.effectsHBox)
 
-  self.table = gtk.Table(1, 4)
+  self.table = gtk.Table(2, 3)
   self.quitButton = gtk.Button(stock='gtk-quit')
   self.quitButton.connect("clicked", self.OnQuit)
   self.svgButton = gtk.Button("SVG")
@@ -93,11 +93,17 @@ class Main:
   self.orientButton.connect("clicked", self.ChangeOrient)
   self.effButton = gtk.Button("Effects")
   self.effButton.connect("clicked", self.ChangeEffects)
+  self.clearButton = gtk.Button("No-clear")
+  self.clearButton.connect("clicked", self.ChangeNoClear)
+  self.indButton = gtk.Button("Indirect")
+  self.indButton.connect("clicked", self.ChangeIndirect)
   self.table.attach(self.svgButton, 0, 1, 0, 1)
   self.table.attach(self.effButton, 1, 2, 0, 1)
   self.table.attach(self.offsetButton, 2, 3, 0, 1)
   self.table.attach(self.orientButton, 3, 4, 0, 1)
-  self.table.attach(self.quitButton, 4, 5, 0, 1)
+  self.table.attach(self.clearButton, 1, 2, 1, 2)
+  self.table.attach(self.indButton, 2, 3, 1, 2)
+  self.table.attach(self.quitButton, 3, 4, 1, 2)
   self.vbox.pack_start(self.table, False)
   self.window.add(self.vbox)
 
@@ -113,6 +119,19 @@ class Main:
  def ChangeOrient(self, widget, *args, **kwargs):
   new_offset = (self.eda.effects.get_property("orientation")+1) % 4
   self.eda.effects.set_property("orientation", new_offset)
+ def ChangeNoClear(self, widget, *args, **kwargs):
+  self.eda.effects.props.no_clear = not self.eda.effects.props.no_clear
+  if self.eda.effects.props.no_clear:
+    widget.set_label("No clear")
+  else:
+    widget.set_label("Clearing")
+ def ChangeIndirect(self, widget, *args, **kwargs):
+  fx = self.eda.effects
+  fx.props.indirect_paint = not fx.props.indirect_paint
+  if self.eda.effects.props.indirect_paint:
+    widget.set_label("Indirect")
+  else:
+    widget.set_label("Direct")
  def OnMouseOver(self, widget, *args, **kwargs):
   self.eda.effects.start(self.testedEffect)
  def OnMouseOut(self, widget, *args, **kwargs):

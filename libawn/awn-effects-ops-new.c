@@ -325,16 +325,16 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
   return FALSE;
 }
 
-gboolean awn_effects_post_op_running(AwnEffects * fx,
-                                    cairo_t * cr,
-                                    GtkAllocation * ds,
-                                    gpointer user_data
-                                    )
+gboolean awn_effects_post_op_arrow(AwnEffects * fx,
+                                   cairo_t * cr,
+                                   GtkAllocation * ds,
+                                   gpointer user_data
+                                  )
 {
   #define ARROW_WIDTH 6
   AwnEffectsPrivate *priv = fx->priv;
 
-  if (fx->is_running)
+  if (fx->show_arrow)
   {
     cairo_surface_t *srfc = NULL;
     gint arrow_w = 0, arrow_h = 0;

@@ -12,6 +12,7 @@ class EffectedDA(gtk.DrawingArea):
     self.useSVG = True
     self.effects = awn.Effects(self)
     self.effects.props.effects = 0x44444
+    self.effects.props.no_clear = True
     self.add_events(gtk.gdk.ALL_EVENTS_MASK)
     self.connect("expose-event", self.expose)
     self.svg = rsvg.Handle("../awn-manager/awn-manager.svg")
@@ -23,10 +24,9 @@ class EffectedDA(gtk.DrawingArea):
     else:
       widget.set_label("PNG")
   def expose(self, widget, event):
+    self.effects.set_icon_size(48, 48, False)
 
-    self.effects.draw_set_icon_size(48, 48, False)
-
-    cr = self.effects.draw_cairo_create()
+    cr = self.effects.cairo_create()
 
     if not self.useSVG:
       pixbuf = self.svg.get_pixbuf()
@@ -39,7 +39,7 @@ class EffectedDA(gtk.DrawingArea):
       cr.scale(48 / float(svg_dimensions[0]), 48 / float(svg_dimensions[1]))
       self.svg.render_cairo(cr)
 
-    self.effects.draw_cairo_destroy()
+    self.effects.cairo_destroy()
     return True
     
 class Main:

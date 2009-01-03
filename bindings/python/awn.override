@@ -3,9 +3,9 @@ headers
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#define NO_IMPORT_PYGOBJECT
-#include "pygobject.h"
+#include <pygobject.h>
 #include <pycairo.h>
+#include <pygtk/pygtk.h>
 #ifdef USE_GCONF
 #include <gconf/gconf-value.h>
 #endif
@@ -22,6 +22,22 @@ headers
 #include <libawn/awn-desktop-item.h>
 #include <libawn/awn-vfs.h>
 extern Pycairo_CAPI_t *Pycairo_CAPI;
+
+/* Some hacking to get GdkRegion to work. */
+#ifndef PYGDK_TYPE_REGION
+GType pygdk_region_get_type (void) G_GNUC_CONST;
+#define PYGDK_TYPE_REGION (pygdk_region_get_type ())
+GType
+pygdk_region_get_type (void)
+{
+  static GType our_type = 0;
+  
+  if (our_type == 0)
+    /* GdkRegion is already taken by pygtk in its boxing of GdkRegion. */
+    our_type = g_type_from_name("GdkRegion");
+  return our_type;
+}
+#endif /* GDK_TYPE_REGION */
 
 static GSList *
 _pysequence_to_gslist (PyObject *seq, AwnConfigListType list_type)
@@ -537,11 +553,38 @@ _wrap_awn_applet_simple_set_awn_icons (PyObject *self, PyObject *args, PyObject 
   return pygobject_new (G_OBJECT (ret));
 }
 %%
-override awn_effects_draw_cairo_create
+override awn_effects_cairo_create
 static PyObject *
-_wrap_awn_effects_draw_cairo_create(PyGObject *self)
+_wrap_awn_effects_cairo_create(PyGObject *self)
 {
-    cairo_t *ret = awn_effects_draw_cairo_create(AWN_EFFECTS(self->obj));
+    cairo_t *ret = awn_effects_cairo_create(AWN_EFFECTS(self->obj));
+
+    cairo_reference(ret);
+    // bug in pygtk-codegen > sets second parameter to NULL in call to
+    // PycairoContext_FromContext, which causes segmentation error in newer
+    // versions of pycairo
+    return PycairoContext_FromContext(ret, &PycairoContext_Type, NULL);
+}
+%%
+override awn_effects_cairo_create_clipped
+static PyObject *
+_wrap_awn_effects_cairo_create_clipped(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "region", NULL };
+    PyObject *py_region;
+    cairo_t *ret;
+    GdkRegion *region = NULL;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:AwnEffects.cairo_create_clipped", kwlist, &py_region))
+        return NULL;
+    if (pyg_boxed_check(py_region, PYGDK_TYPE_REGION))
+        region = pyg_boxed_get(py_region, GdkRegion);
+    else {
+        PyErr_SetString(PyExc_TypeError, "region should be a GdkRegion");
+        return NULL;
+    }
+
+    ret = awn_effects_cairo_create_clipped(AWN_EFFECTS(self->obj), region);
 
     cairo_reference(ret);
     // bug in pygtk-codegen > sets second parameter to NULL in call to
