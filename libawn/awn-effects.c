@@ -435,7 +435,20 @@ awn_effects_class_init(AwnEffectsClass *klass)
   obj_class->finalize = awn_effects_finalize;
   obj_class->constructed = awn_effects_constructed;
 
-  /* Signals */
+  /**
+   * AwnEffects::animation-start:
+   *
+   * @fx: The #AwnEffects instance which received the signal.
+   * @effect: Effect type which was started.
+   *
+   * The ::animation-start signal is emitted when the animation starts playing
+   * (ie. all other animations queued before it finish playing).
+   * You also have to explicitely ask AwnEffects to emit this signal using 
+   * #awn_effects_start_ex method.
+   * Note: Signal is emitted only once even if another animation with higher
+   *  priority interrupts the animation and this animation is started again
+   *  later (ie. no signal on this second start).
+   */
   _effects_signals[ANIMATION_START] =
     g_signal_new ("animation-start", G_OBJECT_CLASS_TYPE(obj_class),
                   G_SIGNAL_RUN_FIRST,
@@ -443,7 +456,18 @@ awn_effects_class_init(AwnEffectsClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__ENUM,
                   G_TYPE_NONE, 1, AWN_TYPE_EFFECT);
-
+  /**
+   * AwnEffects::animation-end:
+   *
+   * @fx: The #AwnEffects instance which received the signal.
+   * @effect: Effect type which just finished.
+   *
+   * The ::animation-end signal is emitted when the animation finishes, and
+   * as ::animation-start signal is emitted only once for the entire
+   * animation (see the note in description for ::animation-start signal).
+   * You also have to explicitely ask AwnEffects to emit this signal using
+   * #awn_effects_start_ex method.
+   */
   _effects_signals[ANIMATION_END] =
     g_signal_new ("animation-end", G_OBJECT_CLASS_TYPE(obj_class),
                   G_SIGNAL_RUN_FIRST,
@@ -523,6 +547,11 @@ awn_effects_class_init(AwnEffectsClass *klass)
   // association between icon paths and cairo image surfaces
   g_datalist_init(&klass->custom_icons);
 
+  /**
+   * AwnEffects:widget:
+   *
+   * Determines which widget is animated by this instance of #AwnEffects.
+   */
   g_object_class_install_property (
     obj_class, PROP_WIDGET,
     g_param_spec_object ("widget",
@@ -530,6 +559,13 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          "Widget to draw to",
                          GTK_TYPE_WIDGET,
                          G_PARAM_READWRITE));
+  /**
+   * AwnEffects:no-clear:
+   *
+   * Whether the context should be cleared when painting.
+   * Set no-clear to FALSE to improve performace if you're using
+   * background of proper color on the widget.
+   */
   g_object_class_install_property(
     obj_class, PROP_NO_CLEAR,
     g_param_spec_boolean("no-clear",
@@ -537,6 +573,14 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          "Determines whether to clear the context when drawing",
                          FALSE,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:indirect-paint:
+   *
+   * Determines whether transformations are applied directly to the widget, or
+   * to an offscreen buffer before being painted to target widget.
+   * Set to FALSE to improve performance, but will cause artifacts if used on
+   * non-transparent window.
+   */
   g_object_class_install_property(
     obj_class, PROP_INDIRECT_PAINT,
     g_param_spec_boolean("indirect-paint",
@@ -545,6 +589,11 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          "the window or paint to a buffer instead",
                          TRUE,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:orientation:
+   *
+   * Determines orientation of the widget.
+   */
   g_object_class_install_property(
     obj_class, PROP_ORIENTATION,
     // keep in sync with AwnOrientation
@@ -553,6 +602,11 @@ awn_effects_class_init(AwnEffectsClass *klass)
                      "Icon orientation",
                      0, 3, AWN_EFFECT_ORIENT_BOTTOM,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:effects:
+   *
+   * Set a bitmask to specify which kind of effects are used on the widget.
+   */
   g_object_class_install_property(
     obj_class, PROP_CURRENT_EFFECTS,
     g_param_spec_uint("effects",
@@ -560,6 +614,11 @@ awn_effects_class_init(AwnEffectsClass *klass)
                       "Active effects set for this instance",
                       0, G_MAXUINT, 0, // set to classic (bouncing)
                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:icon-offset:
+   *
+   * Determines offset of the icon from border of the widget's window.
+   */
   g_object_class_install_property(
     obj_class, PROP_ICON_OFFSET,
     g_param_spec_int("icon-offset",
@@ -567,6 +626,11 @@ awn_effects_class_init(AwnEffectsClass *klass)
                      "Offset of drawn icon to window border",
                      G_MININT, G_MAXINT, 0,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:icon-alpha:
+   *
+   * Determines alpha value of the drawn icon.
+   */
   g_object_class_install_property(
     obj_class, PROP_ICON_ALPHA,
     g_param_spec_float("icon-alpha",
@@ -574,6 +638,11 @@ awn_effects_class_init(AwnEffectsClass *klass)
                        "Alpha value of drawn icon",
                        0.0, 1.0, 1.0,
                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:reflection-offset:
+   *
+   * Determines offset of the reflection from the drawn icon.
+   */
   g_object_class_install_property(
     obj_class, PROP_REFLECTION_OFFSET,
     g_param_spec_int("reflection-offset",
@@ -581,6 +650,11 @@ awn_effects_class_init(AwnEffectsClass *klass)
                      "Offset of drawn reflection to icon",
                      G_MININT, G_MAXINT, 0,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:reflection-alpha:
+   *
+   * Determines alpha value of the reflected icon.
+   */
   g_object_class_install_property(
     obj_class, PROP_REFLECTION_ALPHA,
     g_param_spec_float("reflection-alpha",
@@ -588,6 +662,11 @@ awn_effects_class_init(AwnEffectsClass *klass)
                        "Alpha value of drawn reflection",
                        0.0, 1.0, 0.25,
                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:reflection-visible:
+   *
+   * Determines whether the reflection is visible.
+   */
   g_object_class_install_property(
     obj_class, PROP_REFLECTION_VISIBLE,
     g_param_spec_boolean("reflection-visible",
@@ -595,6 +674,11 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          "Determines whether reflection is visible",
                          TRUE,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:make-shadow:
+   *
+   * Determines whether to draw a shadow around the icon.
+   */
   g_object_class_install_property(
     obj_class, PROP_MAKE_SHADOW,
     g_param_spec_boolean("make-shadow",
@@ -602,6 +686,11 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          "Determines whether shadow is drawn around icon",
                          FALSE,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:active:
+   *
+   * Determines whether to draw the active rectangle behind the icon.
+   */
   g_object_class_install_property(
     obj_class, PROP_IS_ACTIVE,
     g_param_spec_boolean("active",
@@ -609,6 +698,11 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          "Determines whether to draw active hint around icon",
                          FALSE,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:show-arrow:
+   *
+   * Determines whether to draw an arrow on the icon.
+   */
   g_object_class_install_property(
     obj_class, PROP_SHOW_ARROW,
     g_param_spec_boolean("show-arrow",
@@ -616,6 +710,12 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          "Determines whether to draw an arrow on the icon",
                          FALSE,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:border-clip:
+   *
+   * Determines amount of clipping of the icon edge. (suitable for offset
+   * on the 3D bar)
+   */
   g_object_class_install_property(
     obj_class, PROP_BORDER_CLIP,
     g_param_spec_int("border-clip",
@@ -623,6 +723,11 @@ awn_effects_class_init(AwnEffectsClass *klass)
                      "Clips border of the icon",
                      0, G_MAXINT, 0,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:label:
+   *
+   * The extra label painted on top of the icon.
+   */
   g_object_class_install_property(
     obj_class, PROP_LABEL,
     g_param_spec_string("label",
@@ -630,6 +735,12 @@ awn_effects_class_init(AwnEffectsClass *klass)
                         "Extra label drawn on top of the icon",
                         NULL,
                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:progress:
+   *
+   * Extra progress pie painted on the pie and percentage value it represents.
+   * Set to 1.0 to hide the progress pie.
+   */
   g_object_class_install_property(
     obj_class, PROP_PROGRESS,
     g_param_spec_float("progress",
@@ -638,6 +749,11 @@ awn_effects_class_init(AwnEffectsClass *klass)
                        " drawn on the icon",
                        0.0, 1.0, 1.0,
                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:spotlight-png:
+   *
+   * Path to png icon which will be used for the spotlight effect.
+   */
   g_object_class_install_property(
     obj_class, PROP_SPOTLIGHT_ICON,
     g_param_spec_string("spotlight-png",
@@ -645,6 +761,12 @@ awn_effects_class_init(AwnEffectsClass *klass)
                         "Icon to draw for the spotlight effect",
                         AWN_SPOTLIGHT_INTERNAL_NAME,
                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:custom-active-png:
+   *
+   * Path to a custom png icon which will be painted when the property
+   * #AwnEffects:active is set to TRUE.
+   */
   g_object_class_install_property(
     obj_class, PROP_CUSTOM_ACTIVE_ICON,
     g_param_spec_string("custom-active-png",
@@ -652,6 +774,12 @@ awn_effects_class_init(AwnEffectsClass *klass)
                         "Custom icon to draw when in active state",
                         NULL,
                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:custom-arrow-icon:
+   *
+   * Path to a custom png icon which will be painted when the property
+   * #AwnEffects:show-arrow is set to TRUE.
+   */
   g_object_class_install_property(
     obj_class, PROP_CUSTOM_ARROW_ICON,
     g_param_spec_string("custom-arrow-png",

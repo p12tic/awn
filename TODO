@@ -17,10 +17,6 @@ src/
     - Make sure AwnAppletManager respects the applets expand setting for
       expand major/minor
   - Fix the backgrounds
-    - Fix up the flat background to work properly for all orientations
-    - Ask someone to move over the old 3d background code to the new way
-      to draw the bg
-      - Initially only for orient==BOTTOM
     - Port over meek's work on png/svg backgrounds
       - Will need to add a small .desktop file to the theme directory so we can
         get:
@@ -56,10 +52,7 @@ src/
 libawn/
   - AwnIcon/AwnEffects
     - metadata drawing
-      - progress
       - message
-      - active (active task window)
-      - running (arrows)
     - replace config bitfield for effects with a bunch of string-based options
       (enum-like)
   - AwnAppletSimple
