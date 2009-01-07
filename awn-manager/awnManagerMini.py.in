@@ -43,7 +43,7 @@ except Exception, e:
     sys.exit(1)
 
 #from awnTheme import AwnThemeManager
-from awnClass import awnPreferences, awnManager, awnLauncher
+from awnClass import awnPreferences, awnManager, awnLauncher, awnApplet
 #from awnApplet import awnApplet
 #from awnLauncher import awnLauncher
 
@@ -110,6 +110,40 @@ class awnLauncherMini(awnLauncher):
         self.launcher_edit = self.wTree.get_widget("launcher_edit")
         self.launcher_edit.connect("clicked", self.edit)
 
+class awnAppletMini(awnApplet):
+    def __init__(self, glade):
+        if not os.path.isdir(defs.HOME_APPLET_DIR):
+            os.mkdir(defs.HOME_APPLET_DIR)
+
+        self.client = awn.Config()
+        self.client.ensure_group(defs.AWN)
+
+        self.treeview_current = None
+        self.load_finished = False
+
+        self.wTree = glade
+
+        self.scrollwindow = self.wTree.get_widget("appletScrollActive")
+        self.make_active_model()
+        self.treeview_available =  self.wTree.get_widget("appletTreeviewAvailable")
+
+        self.load_applets()
+
+        self.btn_deactivate = self.wTree.get_widget("appletDeactivate")
+        self.btn_deactivate.connect("clicked", self.deactivate_applet)
+
+        self.btn_activate = self.wTree.get_widget("appletActivate")
+        self.btn_activate.connect("clicked", self.activate_applet)
+
+        self.btn_delete = self.wTree.get_widget("appletDelete")
+        self.btn_delete.connect("clicked", self.delete_applet)
+
+        self.btn_install = self.wTree.get_widget("appletInstall")
+        self.btn_install.connect("clicked", self.install_applet)
+
+        self.treeview_available.enable_model_drag_dest([('text/plain', 0, 0)],
+                  gdk.ACTION_DEFAULT | gdk.ACTION_MOVE)
+        self.treeview_available.connect("drag_data_received", self.drag_data_received_data)
 
 class awnManagerMini(awnManager):
     def __init__(self):
@@ -118,8 +152,6 @@ class awnManagerMini(awnManager):
         gtk.glade.textdomain(defs.I18N_DOMAIN)
 
 	self.wTree = gtk.glade.XML(self.GLADE_PATH, domain=defs.I18N_DOMAIN)
-	self.prefManager = awnPreferencesMini(self.wTree)
-	self.prefLauncher = awnLauncherMini(self.wTree)
 
         self.window = self.wTree.get_widget("awnManagerWindow")
         self.theme = gtk.icon_theme_get_default()
@@ -140,6 +172,10 @@ class awnManagerMini(awnManager):
         if len(icon_list) > 0:
             gtk.window_set_default_icon_list(*icon_list)
         self.window.connect("delete-event", gtk.main_quit)
+
+	self.prefManager = awnPreferencesMini(self.wTree)
+	self.prefLauncher = awnLauncherMini(self.wTree)
+	self.appletManager = awnApplet(self.wTree)
 
         refresh = self.wTree.get_widget("buttonRefresh")
         refresh.connect("clicked", self.refresh)
