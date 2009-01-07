@@ -521,6 +521,83 @@ class awnPreferences:
 	group, key = groupkey
 	self.client.set_int(group, key, dropdown.get_active())
 
+    def setup_freeze(self, toggle, freezed, group, key, parameter, data=None):
+	'''	Setup a "linked" toggle button
+		toggle : the gtk.ToggleButton
+		freezed : the gtkWidget to freeze
+	'''
+	toggle.connect("toggled", self.freeze_changed, freezed, group, key, parameter)
+	
+    def freeze_changed(self, widget, freezed, group, key, parameter):
+	'''	Callback for the setup_freeze
+	'''
+	if widget.get_active() == True:
+		freezed.set_sensitive(False)
+		self.load_element_from_desktop(self.theme_desktop, parameter, group, key)
+	else:
+		freezed.set_sensitive(True)
+
+    def read_desktop(self, file_path):
+	'''	Read a desktop file and return a dictionnary with all field
+		API still unstable
+	'''
+
+	#API of the desktop file (unstable, WIP etc ...)
+	struct= {	'type': '',		# Applet or Theme
+			'location':'',		# Location of the bzr branch
+			'name': '',		# Name of the Type
+			'comment':'',		# Comments
+			'version':'',		# Version of the 
+			'copyright':'',		# Copyright
+			'author':'',		# Author
+			'licence_code':'',	# Licence for the code
+			'licence_icons':'',	# Licence for the icons
+			'icon':'',		# Icon for the type
+			# Applet specific
+			'exec':'',		# Execution path, for applet
+			'applet_type':'',	# Type of teh applet (C, Vala or Python)
+			'applet_category':'',	# Category for the applet
+			# Theme specific
+			'effects':'',
+			'orientation':'',
+			'size':'',
+			'gtk_theme_mode':'',	
+			'corner_radius':'',	
+			'panel_angle':'',	
+			'curviness':'',		
+		}
+
+	desktop_entry = DesktopEntry(file_path)
+	struct['type'] = desktop_entry.get('X-AWN-Type')
+	struct['location'] = desktop_entry.get('X-AWN-Location')
+	struct['name'] = desktop_entry.get('Name')
+	#TODO More to add
+	struct['icon'] = desktop_entry.get('Icon')
+	struct['exec'] = desktop_entry.get('Exec')
+	struct['applet_type'] = desktop_entry.get('X-AWN-AppletType')
+	struct['applet_category'] = desktop_entry.get('X-AWN-AppletCategory')
+	struct['effects'] = int(desktop_entry.get('X-AWN-ThemeEffects'))
+	struct['orientation'] = int(desktop_entry.get('X-AWN-ThemeOrientation'))
+	struct['size'] = int(desktop_entry.get('X-AWN-ThemeSize'))
+
+	return struct
+
+    def load_element_from_desktop(self, file_path, parameter, group, key):
+	'''	
+		Read a desktop file, and load the paramater setting.
+	'''
+	struct = self.read_desktop(file_path)
+	if struct['type'] == 'Theme':
+		#Read the settings
+		if not struct[parameter] == '':
+			if type(struct[parameter]) is int:
+				self.client.set_int(group, key, struct[parameter])
+			elif type(struct[parameter]) is float:
+				self.client.set_float(group, key, struct[parameter])
+	else: 
+		print "Error, the desktop file is not for a theme"
+		#TODO more type settings
+
 class awnManager:
 
     def __init__(self):

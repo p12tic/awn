@@ -11,6 +11,7 @@ SUBDIRS =	\
 	data \
 	tests \
 	doc \
+	themes	\
 	$(NULL)
 	
 pkgconfigdir = $(libdir)/pkgconfig

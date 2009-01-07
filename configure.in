@@ -214,6 +214,7 @@ libawn/anims/Makefile
 libawn/egg/Makefile
 po/Makefile.in
 src/Makefile
+themes/Makefile
 ])
 
 dnl ========================================================================

@@ -56,12 +56,17 @@ defs.i18nize(globals())
 class awnPreferencesMini(awnPreferences):
     def __init__(self, wTree):
         self.wTree = wTree
-
+	self.theme_desktop = os.path.join(defs.SYS_THEME_DIR,"awn-default.desktop")
 	self.client = awn.Config()
 
 	self.setup_spin(defs.PANEL, defs.SIZE, self.wTree.get_widget("panelsize"))
-        self.setup_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_widget("iconeffects"))
+	self.setup_freeze(self.wTree.get_widget("freezeSize"), self.wTree.get_widget("panelsize"),defs.PANEL, defs.SIZE,"size")
+
 	self.setup_orientation(defs.PANEL, defs.ORIENT, self.wTree.get_widget("orientationcombo"))
+	self.setup_freeze(self.wTree.get_widget("freezeOrient"), self.wTree.get_widget("orientationcombo"),defs.PANEL, defs.ORIENT,"orientation")
+
+        self.setup_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_widget("iconeffects"))
+	self.setup_freeze(self.wTree.get_widget("freezeEffects"), self.wTree.get_widget("iconeffects"),defs.EFFECTS, defs.ICON_EFFECT,"effects")
 
 	#Advanced
 	self.setup_spin(defs.PANEL, defs.OFFSET, self.wTree.get_widget("offset_config"))
