@@ -698,7 +698,7 @@ composited_changed(GdkScreen *screen, AwnSettings *s)
                              "response", 
                              G_CALLBACK (composited_off_dialog_closed_cb),
                              &dialog);
-    g_print(str);
+    g_print("%s",str);
 
     gtk_widget_hide(s->bar);
     gtk_widget_hide(s->window);
