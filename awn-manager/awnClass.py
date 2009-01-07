@@ -832,12 +832,13 @@ class awnLauncher:
     def refresh_tree (self, uris):
         self.model.clear()
         for i in uris:
-            text = self.make_row (i)
-            if len(text) > 2:
-                row = self.model.append ()
-                self.model.set_value (row, 0, self.make_icon (i))
-                self.model.set_value (row, 1, text)
-                self.model.set_value (row, 2, i)
+		if os.path.isfile(i):
+            		text = self.make_row (i)
+            		if len(text) > 2:
+                		row = self.model.append ()
+                		self.model.set_value (row, 0, self.make_icon (i))
+                		self.model.set_value (row, 1, text)
+                		self.model.set_value (row, 2, i)
 
     def make_row (self, uri):
         try:
