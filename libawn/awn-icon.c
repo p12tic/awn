@@ -73,6 +73,46 @@ awn_icon_leave_notify_event (GtkWidget *widget, GdkEventCrossing *event)
 }
 
 static gboolean
+awn_icon_make_transparent (GtkWidget *widget, gpointer data)
+{
+  AwnIconPrivate *priv = AWN_ICON (widget)->priv;
+
+  /*
+   * This is how we make sure that widget has transparent background
+   * all the time.
+   */
+  if (gtk_widget_is_composited(widget)) // FIXME: is is_composited correct here?
+  {
+    static GdkPixmap *pixmap = NULL;
+    if (pixmap == NULL)
+    {
+      pixmap = gdk_pixmap_new(widget->window, 1, 1, -1);
+      cairo_t *cr = gdk_cairo_create(pixmap);
+      cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
+      cairo_paint(cr);
+      cairo_destroy(cr);
+    }
+    gdk_window_set_back_pixmap(widget->window, pixmap, FALSE);
+
+    // optimize the render speed
+    g_object_set(priv->effects,
+                 "no-clear", TRUE,
+                 "indirect-paint", FALSE, NULL);
+  }
+  else
+  {
+    g_object_set(priv->effects,
+                 "effects", 0,
+                 "no-clear", TRUE,
+                 "indirect-paint", TRUE, NULL);
+    // we are also forcing icon-effects to "Simple", to prevent clipping
+    // the icon in our small window
+  }
+
+  return FALSE;
+}
+
+static gboolean
 awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
 {
   AwnIconPrivate *priv = AWN_ICON (widget)->priv;
@@ -83,12 +123,8 @@ awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
   // clip the drawing region, nvidia likes it
   cr = awn_effects_cairo_create_clipped (priv->effects, event->region);
 
-  // we want transparent background - effects' no-clear is set to FALSE
-  // FIXME: no-clear should be TRUE if we don't have RGBA visual
-  // FIXME: use gdk_window_set_back_pixmap() instead (in after_realize callback
-  //  => g_signal_connect_after(icon, "realize", after_realize, NULL)
-  //  this will also prevent the white lines, and clear won't be necessary
-  //  (probably)
+  // if we're RGBA we have transparent background (awn_icon_make_transparent),
+  //  otherwise default widget background color
 
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   cairo_set_source_surface (cr, priv->icon_srfc, 0, 0);
@@ -184,6 +220,9 @@ awn_icon_init (AwnIcon *icon)
   priv->effects = awn_effects_new_for_widget (GTK_WIDGET (icon));
 
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
+
+  g_signal_connect_after(G_OBJECT(icon), "realize",
+                         G_CALLBACK(awn_icon_make_transparent), NULL);
 }
 
 GtkWidget *

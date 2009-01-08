@@ -96,8 +96,8 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
   g_assert( cairo_get_operator(temp_ctx) == CAIRO_OPERATOR_SOURCE);
   cairo_set_source_surface(temp_ctx, temp_srfc, 0, 0);
   cairo_paint(temp_ctx);
-  cairo_surface_destroy(temp_srfc);
   cairo_destroy(temp_ctx);
+  cairo_surface_destroy(temp_srfc);
 }
 
 void
