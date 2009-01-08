@@ -1,5 +1,11 @@
 2009-01-08  h4writer <hv1989@gmail.com>
 
+  * awn-applet-activation/main.c:
+  Fixed some compiling warning
+  g_warning(str) to g_warning("%s", str)
+
+2009-01-08  h4writer <hv1989@gmail.com>
+
   * libawn/awn-applet-dialog.c:
   Fixed bug #297034: Alt-F4 breaks awn-applet-dialog
   So now the applet will close when pressing ALT-F4
