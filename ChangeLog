@@ -1,5 +1,12 @@
 2009-01-08  h4writer <hv1989@gmail.com>
 
+  * libawn/awn-applet-dialog.c:
+  Fixed bug #297034: Alt-F4 breaks awn-applet-dialog
+  So now the applet will close when pressing ALT-F4
+  Ty J. H. Cho for the patch
+
+2009-01-08  h4writer <hv1989@gmail.com>
+
 	* src/awn-bar.c:
 	Fixing bug #306364 introduced ugly moving effect (when window got opened or switched workspace)
   This is fixed now.

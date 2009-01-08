@@ -360,6 +360,13 @@ _on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer *data)
   return FALSE;
 }
 
+static gboolean
+_on_delete_event(GtkWidget *widget, GdkEventKey *event, gpointer *data)
+{
+  gtk_widget_hide(GTK_WIDGET(widget));
+  return TRUE;
+}
+
 static void
 _on_notify(GObject *dialog, GParamSpec *spec, gpointer null)
 {
@@ -414,7 +421,6 @@ awn_applet_dialog_remove(GtkContainer *dialog, GtkWidget *widget)
   g_return_if_fail(AWN_IS_APPLET_DIALOG(dialog));
   g_return_if_fail(GTK_IS_WIDGET(widget));
   priv = AWN_APPLET_DIALOG(dialog)->priv;
-
   gtk_container_remove(GTK_CONTAINER(priv->vbox), widget);
 }
 
@@ -469,6 +475,8 @@ awn_applet_dialog_init(AwnAppletDialog *dialog)
                    G_CALLBACK(_on_key_press_event), NULL);
   g_signal_connect(G_OBJECT(dialog), "size-request",
                    G_CALLBACK(_on_size_request), NULL);
+  g_signal_connect(G_OBJECT(dialog), "delete-event", 
+                   G_CALLBACK(_on_delete_event), NULL);
 
   /* See if the title has been set */
   g_signal_connect(dialog, "notify",
