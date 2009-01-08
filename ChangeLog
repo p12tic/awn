@@ -1,6 +1,12 @@
 2009-01-08  h4writer <hv1989@gmail.com>
 
 	* src/awn-bar.c:
+	Fixing bug #306364 introduced ugly moving effect (when window got opened or switched workspace)
+  This is fixed now.
+
+2009-01-08  h4writer <hv1989@gmail.com>
+
+	* src/awn-bar.c:
 	Fixed bug #306364: icons not symmetrically placed when bar_pos != 0.5
 
 2009-01-07  h4writer <hv1989@gmail.com>

@@ -414,12 +414,7 @@ render(AwnBar *bar, cairo_t *cr, gint x_width, gint height)
   //the background and the icons will not be on the same place when using a bar_pos other then 0.5
   gtk_window_get_size(GTK_WINDOW(settings->window), &ww, &wh);
   double x = (int)((settings->monitor.width - ww) * settings->bar_pos);
-  if (settings->bar_angle != 0)
-  {
-    //let the drawing start a bit earlier on the x axes
-    // the extra space on the left is used for the angles of the bar.
-    x -= apply_perspective_x(width, height / 4, 0);
-  }
+  x -= (width-ww)*0.5;
 
   if (settings->bar_angle > 0)
   {
