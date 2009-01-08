@@ -325,9 +325,8 @@ launch_python(const gchar *file,
   }
 
 
-  cmd = g_strdup_printf("python %s --uid=%s --window=%lld --orient=%d "
-
-                        "--height=%d",
+  cmd = g_strdup_printf("python %s --uid=%s --window=%" G_GINT64_FORMAT " "
+                        " --orient=%d --height=%d",
                         exec, uid, window, orient, height);
   g_spawn_command_line_async(cmd, &err);
 
