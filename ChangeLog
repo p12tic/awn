@@ -1,6 +1,14 @@
 2009-01-08  h4writer <hv1989@gmail.com>
 
   * awn-applet-activation/main.c:
+  Another fix for compiling warning. (Fixing also #311321)
+  Using now G_GINT64_FORMAT to print gint64 
+  instead of %lld (what was a wrong type)
+  and %lli (what is more cryptic then G_GINT64_FORMAT)
+
+2009-01-08  h4writer <hv1989@gmail.com>
+
+  * awn-applet-activation/main.c:
   Fixed some compiling warning
   g_warning(str) to g_warning("%s", str)
 
