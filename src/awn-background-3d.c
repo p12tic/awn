@@ -69,15 +69,17 @@ awn_background_3d_new (AwnConfigClient *client, AwnPanel *panel)
 
 
 /**
- * apply_perspective_x()
+ * apply_perspective_x:
  * @param width: the current width of the bar
  * @param angle: the angle the bar will have
  * @param x: the x pos in the flat dimension
- * @param y: the y pos in the flat dimension
- * @return: gives the x position back of the point (x,y) in the flat dimension brought back in the perspective
+ * @param y: the y pos in the perspective
  * 
+ * Calculates the x position of the point (x,y) in the flat dimension brought back in the perspective
  * note: - the bottom left corner is (0,0)
  *       - the bottom right corner should be (width, 0)
+ *
+ * Returns: gives the x position back of the point (x,y) in the flat dimension brought back in the perspective
  */
 static double
 apply_perspective_x( double width, double angle, double x, double y )
@@ -86,11 +88,14 @@ apply_perspective_x( double width, double angle, double x, double y )
 }
 
 /**
- * get_width_on_height()
+ * get_width_on_height:
  * @param width: the current width of the bar
  * @param angle: the angle the bar will have
- * @param y: the y pos in the flat dimension
- * @return: gives back the width of the bar on the given y-pos in pixels 
+ * @param y: the y pos in the perspective
+ *
+ * Calculates the width of the bar on a given y-pos (in the perspective)
+ *
+ * Returns: a double containing the width
  */
 static double
 get_width_on_height( double width, double angle, double y )
@@ -99,34 +104,50 @@ get_width_on_height( double width, double angle, double y )
 }
 
 /**
- * cubic_bezier_curve()
+ * cubic_bezier_curve:
  * @param point1: control point 1
  * @param point2: control point 2
  * @param point3: control point 3
  * @param point4: control point 4
  * @param t: the position between O and 1 (0 gives back point1, 1 gives back point4)
- * @return: gives back the position of the cubic bezier curve constructed with these control points 
+ *
  * This function is used to get back the left most position of the rounded corner,
  * to let the side of the bar begin there.
+ *
+ * - Note: Not used atm. Can be I need it later on, but for now it's commented out.
+ *
+ * Returns: gives back the position of the cubic bezier curve constructed with these control points 
  */
-double cubic_bezier_curve(double point1, double point2, double point3, double point4, double t)
+/*static double cubic_bezier_curve(double point1, double point2, double point3, double point4, double t)
 {
 	return (1-t)*(1-t)*(1-t)*point1 + 3*t*(1-t)*(1-t)*point2 + 3*t*t*(1-t)*point3 + t*t*t*point4;
-}
+}*/
 
 
 /*
  * Drawing functions
  */
+
+/**
+ * draw_rect_path:
+ * @param bg: AwnBackground
+ * @param cr: a cairo context 
+ * @param x: the begin x position to draw 
+ * @param y: the begin y position to draw
+ * @param width: the width for the drawing
+ * @param height: the height for the drawing
+ * @param offset: makes the path X amount of pixels smaller on every side
+ *
+ * This function draws the path of the bar in perspective.
+ */
 static void 
-draw_rect (AwnBackground  *bg,
-           cairo_t        *cr, 
-           AwnOrientation  orient,
-           gdouble         x,
-           gdouble         y,
-           gint            width,
-           gint            height,
-           gint            offset)
+draw_rect_path (AwnBackground  *bg,
+                cairo_t        *cr, 
+                gdouble         x,
+                gdouble         y,
+                gint            width,
+                gint            height,
+                gint            offset)
 {
   double x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11,
          y0, y1, y2, y3;
@@ -184,99 +205,97 @@ draw_rect (AwnBackground  *bg,
 
   cairo_close_path(cr);
 }
-static void 
-draw_side (AwnBackground  *bg,
-           cairo_t        *cr, 
-           AwnOrientation  orient,
-           gdouble         x,
-           gdouble         y,
-           gint            width,
-           gint            height,
-           gdouble         side_space)
-{
-  gint x0, x1, x2, x3, x4, x5,
-       y0, y1;
-  gint corner_x1, corner_x2,
-       corner_y;
-  double radius = bg->corner_radius;
 
-  if(radius<height/2-radius)
-  {
-    /* The rounded corners are drawn on the bottom */
-
-    /* Carefull: here (0,0) is in the top left corner of the screen
-     *               .-''''''''''''''''-.    
-     *              /                    \
-     *   (x1,y1)___/                      \___(x2,y1)
-     *             '.____________________.'
-     *  (x0,y0)-'´  |                   | `'-- (x3,y0)
-     *           (x5,y0)            (x4,y0)
-     */
-
-    x0 = apply_perspective_x(width, bg->panel_angle, 0.5, 0.5);
-    x1 = apply_perspective_x(width, bg->panel_angle, 0.5, bg->corner_radius);
-    x2 = apply_perspective_x(width, bg->panel_angle, width-0.5, bg->corner_radius);
-    x3 = apply_perspective_x(width, bg->panel_angle, width-0.5, 0.5);
-    x4 = apply_perspective_x(width, bg->panel_angle, width-bg->corner_radius, 0.5);
-    x5 = apply_perspective_x(width, bg->panel_angle, bg->corner_radius, 0.5);
-
-    y0 = 0;
-    y1 = bg->corner_radius;
-
-    corner_x1 = cubic_bezier_curve(x5, x0, x0, x1, 0.5);
-    corner_x2 = cubic_bezier_curve(x2, x3, x3, x4, 0.5);
-    corner_y = cubic_bezier_curve(y1,y0,y0,y0, 0.5); 
-
-    cairo_set_source_rgba (cr, bg->border_color.red,
-                               bg->border_color.green,
-                               bg->border_color.blue,
-                               bg->border_color.alpha);
-
-   	cairo_rectangle (cr, x+corner_x1, 
-                         y+height+0.5-corner_y, 
-                         width-2*corner_x1, 
-                         side_space+corner_y);
-  }
-  else
-  {
-    /* the radius is to big, so there are no rounded corners on the bottom. */
-   	cairo_rectangle (cr, x, 
-                     y+height+0.5, 
-                     width, 
-                     side_space);
-  }
-
-  cairo_fill(cr);
-  cairo_save (cr);
-	cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-	cairo_set_source_rgba (cr, 1, 1, 1, 0);
-  draw_rect (bg, cr, orient, x, y,  width, height, 0.5);
-  cairo_fill (cr);
-	cairo_restore (cr);
-}
+/**
+ * draw_top_bottom_background:
+ * @param bg: AwnBackground
+ * @param cr: a cairo context
+ * @param x: the begin x position to draw 
+ * @param y: the begin y position to draw
+ * @param width: the width for the drawing
+ * @param height: the height for the drawing
+ *
+ * Draws the bar in the bottom orientation on the cairo context &cr given 
+ * the &x position, &y position, &width and &height.
+ */
 static void
 draw_top_bottom_background (AwnBackground  *bg,
                             cairo_t        *cr,
-                            AwnOrientation  orient,
                             gdouble         x,
                             gdouble         y,
                             gint            width,
                             gint            height)
 {
+  int i;
+  cairo_pattern_t *pat;
+
   /* The pixels to draw the side of the panel*/
-  gint side_space = 3;
+  gint side_space = 4;
 
   /* Basic set-up */
-  cairo_pattern_t *pat;
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   cairo_translate (cr, 0.5, 0.5);
 
-  /* Draw the side of the bar */
-  //the 0.5 extra space is to get no white space between edge of screen and bar
-  draw_side(bg, cr, orient, 0, -side_space,  width, height, side_space+0.5);
+  /* Internal border (on the bottom) */
+  cairo_set_source_rgba (cr, bg->hilight_color.red,
+                             bg->hilight_color.green,
+                             bg->hilight_color.blue,
+                             bg->hilight_color.alpha);
+  draw_rect_path (bg, cr, 0, 0, width, height, 1);
+  cairo_stroke (cr);
 
-  /* Draw the background */
+  /* External border (on the bottom) */
+  cairo_set_source_rgba (cr, bg->border_color.red,
+                             bg->border_color.green,
+                             bg->border_color.blue,
+                             bg->border_color.alpha);
+  draw_rect_path (bg, cr, 0, 0,  width, height, 0.5);
+  cairo_stroke (cr);
+
+  /* Draw the background (on the bottom) */
+  //FIXME: I'm doubting if it is nicer with or without the bottom background drawn
+  /*pat = cairo_pattern_create_linear (0, 0, 0, height);
+  cairo_pattern_add_color_stop_rgba (pat, 0.0, 
+                                     bg->g_step_1.red,
+                                     bg->g_step_1.green,
+                                     bg->g_step_1.blue,
+                                     bg->g_step_1.alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 1.0,
+                                     bg->g_step_2.red, 
+                                     bg->g_step_2.green,
+                                     bg->g_step_2.blue, 
+                                     bg->g_step_2.alpha);
+
+  draw_rect_path (bg, cr, 0, 0, width, height, 0.5);
+  cairo_set_source (cr, pat);
+  cairo_fill (cr);
+
+  cairo_pattern_destroy (pat);*/
+
+  /* draw the side */
+  //TODO: if a side has no rounded corners, the border should be drawn.
+  pat = cairo_pattern_create_linear (0, 0, 0, height);
+  cairo_pattern_add_color_stop_rgba (pat, 0.0, 
+                                     bg->g_step_1.red,
+                                     bg->g_step_1.green,
+                                     bg->g_step_1.blue,
+                                     bg->g_step_1.alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 1.0,
+                                     bg->g_step_2.red, 
+                                     bg->g_step_2.green,
+                                     bg->g_step_2.blue, 
+                                     bg->g_step_2.alpha);
+  cairo_set_source (cr, pat);
+  for(i=1; i<side_space; i++)
+  {
+    draw_rect_path (bg, cr, 0, -i,  width, height, 0.5);
+    cairo_stroke (cr);
+  }
+
+  cairo_pattern_destroy (pat);
+
+  /* Draw the background (on the top) */
   pat = cairo_pattern_create_linear (0, 0, 0, height);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 
                                      bg->g_step_1.red,
@@ -289,12 +308,13 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_step_2.blue, 
                                      bg->g_step_2.alpha);
 
-  draw_rect (bg, cr, orient, 0, -side_space, width, height, 0.5);
+  draw_rect_path (bg, cr, 0, -side_space, width, height, 0.5);
   cairo_set_source (cr, pat);
   cairo_fill (cr);
+
   cairo_pattern_destroy (pat);
 
-  /* Draw the hi-light */
+  /* Draw the hi-light (on the top) */
   pat = cairo_pattern_create_linear (0, height/3, 0, height*2/3);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 
                                      bg->g_histep_1.red,
@@ -306,30 +326,43 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_histep_2.green,
                                      bg->g_histep_2.blue, 
                                      bg->g_histep_2.alpha);
-  draw_rect (bg, cr, orient, apply_perspective_x(width, bg->panel_angle, 0, height/3), -side_space+height/3, get_width_on_height(width, bg->panel_angle, height/3), height/3, 1.5);
+  draw_rect_path (bg, cr, apply_perspective_x(width, bg->panel_angle, 0, height/3), -side_space+height/3, get_width_on_height(width, bg->panel_angle, height/3), height/3, 1.5);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
   cairo_pattern_destroy (pat);
 
-  /* Internal border */
+  /* Internal border (on the top) */
   cairo_set_source_rgba (cr, bg->hilight_color.red,
                              bg->hilight_color.green,
                              bg->hilight_color.blue,
                              bg->hilight_color.alpha);
-  draw_rect (bg, cr, orient, 0, -side_space, width, height, 1);
+  draw_rect_path (bg, cr, 0, -side_space, width, height, 1);
   cairo_stroke (cr);
 
-  /* External border */
+  /* External border (on the top) */
   cairo_set_source_rgba (cr, bg->border_color.red,
                              bg->border_color.green,
                              bg->border_color.blue,
                              bg->border_color.alpha);
-   draw_rect (bg, cr, orient, 0, -side_space,  width, height, 0.5);
+   draw_rect_path (bg, cr, 0, -side_space,  width, height, 0.5);
    cairo_stroke (cr);
 
 }
 
+/**
+ * awn_background_3d_draw:
+ * @param bg: AwnBackground
+ * @param cr: a cairo context 
+ * @param orient: orientation of the bar
+ * @param x: the begin x position to draw 
+ * @param y: the begin y position to draw
+ * @param width: the width for the drawing
+ * @param height: the height for the drawing
+ *
+ * Draws the bar in the in the cairo context &cr given the orientation &orient,
+ * the &x and &y position and given &width and &height
+ */
 static void 
 awn_background_3d_draw (AwnBackground  *bg,
                         cairo_t        *cr, 
@@ -365,7 +398,7 @@ awn_background_3d_draw (AwnBackground  *bg,
       break;
   }
 
-  draw_top_bottom_background (bg, cr, orient, 0, 0, width, height);
+  draw_top_bottom_background (bg, cr, 0, 0, width, height);
 
   cairo_restore (cr);
 }
