@@ -34,6 +34,9 @@ HOME_THEME_DIR = os.path.join(HOME_CONFIG_DIR, "themes")
 SYS_THEME_DIR = os.path.join (PREFIX, "share", "avant-window-navigator","themes")
 HOME_CUSTOM_ICONS_DIR = os.path.join(HOME_CONFIG_DIR, "custom-icons")
 
+#TODO update to real branches when stable
+DEFAULT_SOURCES_LIST = [['lp:~gilir/+junk/config-theme','web-default'],[SYS_THEME_DIR,'local'],[HOME_THEME_DIR,'local']]
+
 
 # AwnConfigClient Groups/Keys
 AWN            		= DEFAULT_GROUP         #group

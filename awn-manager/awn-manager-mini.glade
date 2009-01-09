@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Wed Jan  7 22:04:31 2009 -->
+<!--Generated with glade3 3.4.5 on Fri Jan  9 20:10:43 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="awnManagerWindow">
     <property name="visible">True</property>
@@ -428,6 +428,18 @@ the theme ?</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
+                                <child>
+                                  <widget class="GtkCheckButton" id="use_bzr_theme">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="label" translatable="yes">Use Web themes repositories ?</property>
+                                    <property name="response_id">0</property>
+                                    <property name="draw_indicator">True</property>
+                                  </widget>
+                                  <packing>
+                                    <property name="position">2</property>
+                                  </packing>
+                                </child>
                               </widget>
                               <packing>
                                 <property name="expand">False</property>
@@ -837,7 +849,7 @@ the theme ?</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkImage" id="image4">
+              <widget class="GtkImage" id="image6">
                 <property name="visible">True</property>
                 <property name="stock">gtk-sort-ascending</property>
               </widget>

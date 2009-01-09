@@ -56,7 +56,14 @@ defs.i18nize(globals())
 class awnPreferencesMini(awnPreferences):
     def __init__(self, wTree):
         self.wTree = wTree
+	
+	#TODO Link the bzr stuff
 	self.theme_desktop = os.path.join(defs.SYS_THEME_DIR,"awn-default.desktop")
+
+	#Testing Bzr stuff
+	bzr_test = self.wTree.get_widget("use_bzr_theme")
+	bzr_test.connect("toggled", self.test_bzr_themes, bzr_test)
+
 	self.client = awn.Config()
 
 	self.setup_spin(defs.PANEL, defs.SIZE, self.wTree.get_widget("panelsize"))

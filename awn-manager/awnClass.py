@@ -40,7 +40,8 @@ import awnDefs as defs
 from awnLauncherEditor import awnLauncherEditor
 import tarfile
 
-#from bzrlib import bzrdir
+from bzrlib.builtins import cmd_branch, cmd_pull
+from bzrlib.plugins.launchpad.lp_directory import LaunchpadDirectory
 
 defs.i18nize(globals())
 
@@ -76,7 +77,238 @@ def make_color_string(color, alpha):
 
 EMPTY = "none";
 
-class awnPreferences:
+class awnBzr:
+	#Utils
+	def lp_path_normalize(self, path):
+		'''	Get a "lp:" format url and return a http url
+			path: a url from a branch
+			return: the http format of a lp: format, or the same url
+		'''
+		directory = LaunchpadDirectory()
+		return directory._resolve(path).replace("bzr+ssh","http")
+
+	def read_list(self, file_path):
+		'''	Read a flat file and return the content in a list
+			file_path : path of the file
+			return: a list of the elements of the file
+		'''
+		flat_list = []
+		f = open(file_path, 'r')
+		for line in f:
+			flat_list.append(line.strip())
+		f.close()
+		return flat_list
+
+	#Bzr
+	def create_branch(self, bzr_dir, path):
+		'''	Create a new bzr branch.
+			path: the path of the branch
+			bzr_dir: the location of the futur tree.
+		'''
+		if os.path.exists(path):
+			print ("Error, the path already exist")
+		else:
+			bzr_branch = cmd_branch()
+			bzr_branch.run(from_location=self.lp_path_normalize(bzr_dir), to_location=path)
+
+	def update_branch(self, path):
+		''' 	Update a local branch
+			path: Location of the branch
+		'''
+		bzr_pull = cmd_pull()
+		bzr_pull._setup_outf()
+		bzr_pull.run(directory=path)
+
+	def get_revision_from_path(self, path):
+		''' 	Return the last revision number of the branch 
+			specify with path parameter
+		'''
+		tree = branch.Branch.open(path)
+		revision_number, revision_id = tree.last_revision_info()
+		return revision_number
+	
+	#Sources.list
+	def dict_from_sources_list(self, config=defs.HOME_CONFIG_DIR):
+		'''
+		Return a dictionnay of the sources.list
+		config: the directory to read sources.list.
+		'''
+		sources_dict = {}
+		sources_list_path = os.path.join(config, "sources.list")
+		f = open(sources_list_path)
+		sources_list = f.readlines()
+		sources_list = [elem.replace("\n","") for elem in sources_list]
+		sources_list= [elem.split(" ") for elem in sources_list]
+		for i in sources_list:
+			sources_dict[i[0]] = i[1]
+		f.close()
+		return sources_dict
+
+	def list_from_sources_list(self, config=defs.HOME_CONFIG_DIR):
+		'''
+		Return a list for the sources.list. 
+		Each element of the list is another list of 2 elements ['sources','directory']
+		config: the directory to read sources.list.
+		'''
+		sources_list = []
+		sources_list_path = os.path.join(config, "sources.list")
+		f = open(sources_list_path)
+		sources_list = f.readlines()
+		sources_list = [elem.replace("\n","") for elem in sources_list]
+		sources_list= [elem.split(" ") for elem in sources_list]
+		f.close()
+		return sources_list
+
+	def create_sources_list(self, config = defs.HOME_CONFIG_DIR, default = defs.DEFAULT_SOURCES_LIST):
+		'''	Create a sources_list with all the sources (bzr branch or local files)
+			Should be unique for an installation
+			config: the directory to write sources.list.
+			default: the default content of the sources.list
+		'''
+		sources_list_path = os.path.join(config,"sources.list")
+		if not os.path.isfile(sources_list_path):
+			f = open(sources_list_path, 'w')
+			[f.write(i[0] + " " + i[1] + "\n") 
+				for i 
+				in default if i[0] <> '']
+			f.close()
+		else: print ("Error, a sources.list already exist")
+
+	def update_sources_list(self, directories = defs.HOME_THEME_DIR):
+		''' 	
+			Update all sources of the sources list
+			If the directory doesn't exist, a new branch will be create
+			directories = default locations of the local branches to update
+		'''
+		sources_list = self.list_from_sources_list()
+		sources_to_update = []
+		[ sources_to_update.append(elem) 
+			for elem in sources_list 
+			if not elem[0].startswith("/") or not elem[1] == "local" ]
+		
+		for elem in sources_to_update:
+			if not os.path.isdir(os.path.join(directories , elem[1])):
+				self.create_branch(elem[0], os.path.join(directories , elem[1]))
+			else:
+				self.update_branch(os.path.join(directories , elem[1]))		
+
+	def add_source(self, path, source_type="web", config = defs.HOME_CONFIG_DIR, directories = defs.HOME_THEME_DIR):
+		'''	Add a source to the sources list.
+			path: path to the branch
+			source_type: type of source web or local
+			config: the directory to write sources.list.
+			directories = the directory to write sources
+		'''
+		if source_type == "local":
+			path = path +" "+"local"+"\n"
+		elif source_type == "web":
+			number = len(os.listdir(directories))
+			path = path +" "+"web-sources-"+str(number)+"\n"
+		source = os.path.join(config,"sources.list")
+		f = open(source, 'a')
+		f.write(path)
+		f.close()
+
+	def create_branch_config_directory(self, source):
+		'''
+			Create the directory of a source in config directory.
+			source is a dictionnary of 1 entry {'url','directory'}.
+			source is 1 line of the sources list.
+		'''
+		if not source[0].startswith("/") or source[1] == "local":
+			self.create_branch((source[0], source[1]))
+		else:
+			print "Error, this is a local path"
+
+	#Desktop files
+    	def read_desktop(self, file_path):
+		'''	Read a desktop file and return a dictionnary with all fields
+			API still unstable
+		'''
+
+		#API of the desktop file (unstable, WIP etc ...)
+		struct= {	'type': '',		# Applet or Theme
+				'location':'',		# Location of the bzr branch
+				'name': '',		# Name of the Type
+				'comment':'',		# Comments
+				'version':'',		# Version of the 
+				'copyright':'',		# Copyright
+				'author':'',		# Author
+				'licence_code':'',	# Licence for the code
+				'licence_icons':'',	# Licence for the icons
+				'icon':'',		# Icon for the type
+				# Applet specific
+				'exec':'',		# Execution path, for applet
+				'applet_type':'',	# Type of teh applet (C, Vala or Python)
+				'applet_category':'',	# Category for the applet
+				# Theme specific
+				'effects':'',
+				'orientation':'',
+				'size':'',
+				'gtk_theme_mode':'',	
+				'corner_radius':'',	
+				'panel_angle':'',	
+				'curviness':'',		
+			}
+	
+		desktop_entry = DesktopEntry(file_path)
+		struct['type'] = desktop_entry.get('X-AWN-Type')
+		struct['location'] = desktop_entry.get('X-AWN-Location')
+		struct['name'] = desktop_entry.get('Name')
+		#TODO More to add
+		struct['icon'] = desktop_entry.get('Icon')
+		struct['exec'] = desktop_entry.get('Exec')
+		struct['applet_type'] = desktop_entry.get('X-AWN-AppletType')
+		struct['applet_category'] = desktop_entry.get('X-AWN-AppletCategory')
+		struct['effects'] = int(desktop_entry.get('X-AWN-ThemeEffects'))
+		struct['orientation'] = int(desktop_entry.get('X-AWN-ThemeOrientation'))
+		struct['size'] = int(desktop_entry.get('X-AWN-ThemeSize'))
+
+		return struct
+
+    	def load_element_from_desktop(self, file_path, parameter, group, key):
+		'''	
+			Read a desktop file, and load the paramater setting.
+		'''
+		struct = self.read_desktop(file_path)
+		if struct['type'] == 'Theme':
+			#Read the settings
+			if not struct[parameter] == '':
+				if type(struct[parameter]) is int:
+					self.client.set_int(group, key, struct[parameter])
+				elif type(struct[parameter]) is float:
+					self.client.set_float(group, key, struct[parameter])
+			#TODO more type settings
+		else: 
+			print "Error, the desktop file is not for a theme"
+
+
+	def read_desktop_files_from_source(self, source, directories = defs.HOME_THEME_DIR):
+		'''	Read all desktop file from a source
+			source is a list of 2 entries ('url','directory').
+			source is 1 line of the sources list.
+		'''
+		if source[1] == "local":
+			path = source[0]
+		else:
+			path= str(directories + "/" + source[1])
+		list_files = os.listdir(path)
+		desktops =  [path + "/" + elem for elem in list_files if os.path.splitext(elem)[1] =='.desktop']
+		return desktops
+
+	def catalog_from_sources_list(self):
+		'''	
+			Return a catalog (list of desktop files from the sources list)
+		'''
+		catalog=[]
+		sources_list = self.list_from_sources_list()
+		for elem in sources_list:
+			desktops = self.read_desktop_files_from_source(elem)
+			if not desktops == []:
+				[ catalog.append(i) for i in desktops ]
+		return catalog
+
+class awnPreferences(awnBzr):
     """This is the main class, duh"""
     def __init__(self, wTree):
         self.wTree = wTree
@@ -538,66 +770,13 @@ class awnPreferences:
 	else:
 		freezed.set_sensitive(True)
 
-    def read_desktop(self, file_path):
-	'''	Read a desktop file and return a dictionnary with all field
-		API still unstable
-	'''
-
-	#API of the desktop file (unstable, WIP etc ...)
-	struct= {	'type': '',		# Applet or Theme
-			'location':'',		# Location of the bzr branch
-			'name': '',		# Name of the Type
-			'comment':'',		# Comments
-			'version':'',		# Version of the 
-			'copyright':'',		# Copyright
-			'author':'',		# Author
-			'licence_code':'',	# Licence for the code
-			'licence_icons':'',	# Licence for the icons
-			'icon':'',		# Icon for the type
-			# Applet specific
-			'exec':'',		# Execution path, for applet
-			'applet_type':'',	# Type of teh applet (C, Vala or Python)
-			'applet_category':'',	# Category for the applet
-			# Theme specific
-			'effects':'',
-			'orientation':'',
-			'size':'',
-			'gtk_theme_mode':'',	
-			'corner_radius':'',	
-			'panel_angle':'',	
-			'curviness':'',		
-		}
-
-	desktop_entry = DesktopEntry(file_path)
-	struct['type'] = desktop_entry.get('X-AWN-Type')
-	struct['location'] = desktop_entry.get('X-AWN-Location')
-	struct['name'] = desktop_entry.get('Name')
-	#TODO More to add
-	struct['icon'] = desktop_entry.get('Icon')
-	struct['exec'] = desktop_entry.get('Exec')
-	struct['applet_type'] = desktop_entry.get('X-AWN-AppletType')
-	struct['applet_category'] = desktop_entry.get('X-AWN-AppletCategory')
-	struct['effects'] = int(desktop_entry.get('X-AWN-ThemeEffects'))
-	struct['orientation'] = int(desktop_entry.get('X-AWN-ThemeOrientation'))
-	struct['size'] = int(desktop_entry.get('X-AWN-ThemeSize'))
-
-	return struct
-
-    def load_element_from_desktop(self, file_path, parameter, group, key):
-	'''	
-		Read a desktop file, and load the paramater setting.
-	'''
-	struct = self.read_desktop(file_path)
-	if struct['type'] == 'Theme':
-		#Read the settings
-		if not struct[parameter] == '':
-			if type(struct[parameter]) is int:
-				self.client.set_int(group, key, struct[parameter])
-			elif type(struct[parameter]) is float:
-				self.client.set_float(group, key, struct[parameter])
-	else: 
-		print "Error, the desktop file is not for a theme"
-		#TODO more type settings
+    def test_bzr_themes(self, widget, data=None):
+		if widget.get_active() == True:
+			self.create_sources_list()
+			self.update_sources_list()
+			print self.catalog_from_sources_list()
+		else:
+			pass
 
 class awnManager:
 
