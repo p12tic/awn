@@ -58,8 +58,8 @@ static guint _proxy_signals[LAST_SIGNAL] = { 0 };
 /* 
  * FORWARDS
  */
-static void on_plug_added   (AwnAppletProxy *proxy);
-static void on_plug_removed (AwnAppletProxy *proxy);
+static void     on_plug_added   (AwnAppletProxy *proxy);
+static gboolean on_plug_removed (AwnAppletProxy *proxy);
 
 /*
  * GOBJECT CODE 
@@ -232,15 +232,17 @@ on_plug_added (AwnAppletProxy *proxy)
   gtk_widget_show (GTK_WIDGET (proxy));
 }
 
-static void 
+static gboolean
 on_plug_removed (AwnAppletProxy *proxy)
 {
   AwnAppletProxyPrivate *priv;
 
-  g_return_if_fail (AWN_IS_APPLET_PROXY (proxy));
+  g_return_val_if_fail (AWN_IS_APPLET_PROXY (proxy), FALSE);
   priv = proxy->priv;
 
   g_signal_emit (proxy, _proxy_signals[APPLET_DELETED], 0, priv->uid);
+
+  return FALSE;
 }
 
 void

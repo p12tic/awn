@@ -215,6 +215,8 @@ awn_icon_init (AwnIcon *icon)
   priv->icon_srfc = NULL;
   priv->orient = AWN_ORIENTATION_BOTTOM;
   priv->size = 50;
+  priv->icon_width = 0;
+  priv->icon_height = 0;
   priv->tooltip = awn_tooltip_new_for_widget (GTK_WIDGET (icon));
 
   priv->effects = awn_effects_new_for_widget (GTK_WIDGET (icon));
@@ -275,27 +277,15 @@ awn_icon_set_orientation (AwnIcon        *icon,
 
   priv->orient = orient;
 
-  switch (orient)
-  {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
-      gtk_widget_set_size_request(
-        GTK_WIDGET (icon), APPLY_SIZE_MULTIPLIER(priv->icon_width), -1);
-      break;
-      
-    default:
-      gtk_widget_set_size_request(
-        GTK_WIDGET (icon), -1, APPLY_SIZE_MULTIPLIER(priv->icon_height));
-      break;
-  }
-
   g_object_set (priv->effects, "orientation", orient, NULL);
+
+  gtk_widget_queue_resize (GTK_WIDGET(icon));
 
   awn_icon_update_tooltip_pos(icon);
 }
 
 static void
-update_widget_size (AwnIcon *icon)
+update_widget_to_size (AwnIcon *icon, gint width, gint height)
 {
   AwnIconPrivate  *priv = icon->priv;
   gint old_size, old_width, old_height;
@@ -304,33 +294,18 @@ update_widget_size (AwnIcon *icon)
   old_width = priv->icon_width;
   old_height = priv->icon_height;
 
-  switch (cairo_surface_get_type(priv->icon_srfc)) {
-    case CAIRO_SURFACE_TYPE_XLIB:
-      priv->icon_width = cairo_xlib_surface_get_width (priv->icon_srfc);
-      priv->icon_height = cairo_xlib_surface_get_height (priv->icon_srfc);
-      break;
-    case CAIRO_SURFACE_TYPE_IMAGE:
-      priv->icon_width = cairo_image_surface_get_width (priv->icon_srfc);
-      priv->icon_height = cairo_image_surface_get_height (priv->icon_srfc);
-      break;
-    default:
-      g_warning("Invalid surface type: Surfaces must be either xlib or image");
-      break;
-  }
+  priv->icon_width = width;
+  priv->icon_height = height;
 
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
       priv->size = priv->icon_width;
-      gtk_widget_set_size_request(
-        GTK_WIDGET (icon), APPLY_SIZE_MULTIPLIER(priv->icon_width), -1);
       break;
 
     default:
       priv->size = priv->icon_height;
-      gtk_widget_set_size_request(
-        GTK_WIDGET (icon), -1, APPLY_SIZE_MULTIPLIER(priv->icon_height));
   }
 
   if (old_size != priv->size)
@@ -340,6 +315,8 @@ update_widget_size (AwnIcon *icon)
 
   if (old_width != priv->icon_width || old_height != priv->icon_height)
   {
+    gtk_widget_queue_resize_no_redraw (GTK_WIDGET(icon));
+
     awn_effects_set_icon_size (priv->effects,
                                priv->icon_width,
                                priv->icon_height,
@@ -347,6 +324,29 @@ update_widget_size (AwnIcon *icon)
 
     awn_icon_update_tooltip_pos(icon);
   }
+}
+
+static void
+update_widget_size (AwnIcon *icon)
+{
+  AwnIconPrivate  *priv = icon->priv;
+  gint width, height;
+
+  switch (cairo_surface_get_type(priv->icon_srfc)) {
+    case CAIRO_SURFACE_TYPE_XLIB:
+      width = cairo_xlib_surface_get_width (priv->icon_srfc);
+      height = cairo_xlib_surface_get_height (priv->icon_srfc);
+      break;
+    case CAIRO_SURFACE_TYPE_IMAGE:
+      width = cairo_image_surface_get_width (priv->icon_srfc);
+      height = cairo_image_surface_get_height (priv->icon_srfc);
+      break;
+    default:
+      g_warning("Invalid surface type: Surfaces must be either xlib or image");
+      return;
+  }
+
+  update_widget_to_size (icon, width, height);
 }
 
 void  
@@ -442,6 +442,20 @@ awn_icon_set_from_context (AwnIcon *icon, cairo_t *ctx)
   g_return_if_fail (ctx);
 
   awn_icon_set_from_surface(icon, cairo_get_target(ctx));
+}
+
+void
+awn_icon_set_custom_paint (AwnIcon *icon, gint width, gint height)
+{
+  g_return_if_fail (AWN_IS_ICON (icon));
+
+  free_existing_icon (icon);
+
+  // this will set proper size requisition, tooltip position,
+  // params for effects and may emit size changed signal
+  // the only thing user needs is overriding expose-event
+  update_widget_to_size (icon, width, height);
+  gtk_widget_queue_draw (GTK_WIDGET (icon));
 }
 
 /*

@@ -1127,9 +1127,8 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
 
   if (fx->no_clear == FALSE)
     awn_effects_pre_op_clear(fx, cr, NULL, NULL);
-  if (region)
+  if (region && gdk_region_empty(region) == FALSE)
   {
-    //g_debug("Region is empty: %d", gdk_region_empty(region));
     // Python apps pass empty region... interesting, I guess they should use
     //  cairo_create instead of cairo_create_clipped
 

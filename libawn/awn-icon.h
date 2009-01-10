@@ -91,6 +91,9 @@ void          awn_icon_set_from_context (AwnIcon     *icon,
 void          awn_icon_set_from_surface (AwnIcon         *icon,
                                          cairo_surface_t *surface);
 
+void          awn_icon_set_custom_paint (AwnIcon *icon,
+                                         gint width, gint height);
+
 void          awn_icon_set_tooltip_text (AwnIcon     *icon,
                                          const gchar *text);
 
