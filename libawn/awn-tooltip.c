@@ -84,8 +84,12 @@ enum
 };
 
 /* Forwards */
-static gboolean awn_tooltip_show (AwnTooltip *tooltip, GtkWidget *widget);
-static gboolean awn_tooltip_hide (AwnTooltip *tooltip, GtkWidget *widget);
+static gboolean awn_tooltip_show (AwnTooltip *tooltip,
+                                  GdkEventCrossing *event,
+                                  GtkWidget *widget);
+static gboolean awn_tooltip_hide (AwnTooltip *tooltip,
+                                  GdkEventCrossing *event,
+                                  GtkWidget *widget);
 
 /* GObject Stuff */
 static gboolean
@@ -525,7 +529,9 @@ awn_tooltip_show_timer(gpointer data)
 }
 
 static gboolean
-awn_tooltip_show (AwnTooltip *tooltip, GtkWidget *focus)
+awn_tooltip_show (AwnTooltip *tooltip,
+                  GdkEventCrossing *event,
+                  GtkWidget *focus)
 {
   g_return_val_if_fail (AWN_IS_TOOLTIP (tooltip), FALSE);
 
@@ -546,7 +552,9 @@ awn_tooltip_show (AwnTooltip *tooltip, GtkWidget *focus)
 }
 
 static gboolean
-awn_tooltip_hide (AwnTooltip *tooltip, GtkWidget *focus)
+awn_tooltip_hide (AwnTooltip *tooltip,
+                  GdkEventCrossing *event,
+                  GtkWidget *focus)
 {
   g_return_val_if_fail (AWN_IS_TOOLTIP (tooltip), FALSE);
 

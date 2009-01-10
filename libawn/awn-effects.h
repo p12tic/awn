@@ -177,8 +177,8 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
  *
  * Sets up correct offsets in managed window based on dimensions of drawn icon.
  */
-void awn_effects_set_icon_size(AwnEffects *fx, const gint width,
-                                    const gint height, gboolean requestSize);
+void awn_effects_set_icon_size(AwnEffects *fx, gint width, gint height,
+                               gboolean requestSize);
 
 /**
  * awn_effects_cairo_create:

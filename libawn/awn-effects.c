@@ -1059,12 +1059,16 @@ void awn_effects_emit_anim_end(AwnEffects *fx, AwnEffect effect)
 }
 
 void
-awn_effects_set_icon_size(AwnEffects * fx, const gint width, const gint height, gboolean requestSize)
+awn_effects_set_icon_size(AwnEffects * fx, gint width, gint height,
+                          gboolean requestSize)
 {
   AwnEffectsPrivate *priv = fx->priv;
 
   gint old_width = priv->icon_width;
   gint old_height = priv->icon_height;
+
+  if (width <= 0) width = 1;
+  if (height <= 0) height = 1;
 
   priv->icon_width = width;
   priv->icon_height = height;
@@ -1107,7 +1111,7 @@ cairo_t *awn_effects_cairo_create(AwnEffects *fx)
 }
 
 cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
-                                               GdkRegion *region)
+                                          GdkRegion *region)
 {
   g_return_val_if_fail(AWN_IS_EFFECTS(fx) && fx->widget, NULL);
 

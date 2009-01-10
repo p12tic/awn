@@ -23,6 +23,25 @@
 
 #define PICTURE_FILE "../data/avant-window-navigator.png"
 
+static void
+print_info (GtkWidget *widget)
+{
+  g_return_if_fail(AWN_IS_ICON(widget));
+
+  AwnIcon *icon = AWN_ICON(widget);
+  gint w, h;
+
+  gchar *tooltip = awn_icon_get_tooltip_text(icon);
+  if (!tooltip) tooltip = "";
+
+  g_object_get(icon, "icon-width", &w, "icon-height", &h, NULL);
+
+  g_debug("AwnIcon > tooltip: [%s], dimensions: %dx%d",
+          tooltip, w, h);
+
+  if (tooltip) g_free(tooltip);
+}
+
 static GtkWidget *
 pixbuf_icon (GtkWidget *parent)
 {
@@ -140,9 +159,9 @@ main (gint argc, gchar **argv)
   gtk_container_add (GTK_CONTAINER (window), hbox);
   gtk_widget_show (hbox);
 
-  pixbuf_icon (hbox);
-  cairo_icon (hbox);
-  cairo_icon2 (hbox);
+  print_info (pixbuf_icon (hbox));
+  print_info (cairo_icon (hbox));
+  print_info (cairo_icon2 (hbox));
 
   gtk_main ();
   return 0;

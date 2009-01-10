@@ -45,6 +45,14 @@ struct _AwnIconPrivate
 
 enum
 {
+  PROP_0,
+
+  PROP_ICON_WIDTH,
+  PROP_ICON_HEIGHT
+};
+
+enum
+{
   SIZE_CHANGED,
 
   LAST_SIGNAL
@@ -157,6 +165,60 @@ awn_icon_size_request (GtkWidget *widget, GtkRequisition *req)
 }
 
 static void
+awn_icon_get_property (GObject    *object,
+                       guint       prop_id,
+                       GValue     *value,
+                       GParamSpec *pspec)
+{
+  AwnIcon *icon = AWN_ICON (object);
+  AwnIconPrivate *priv;
+
+  g_return_if_fail (AWN_IS_ICON (object));
+  priv = icon->priv;
+
+  switch (prop_id)
+  {
+    case PROP_ICON_WIDTH:
+      g_value_set_int (value, priv->icon_width);
+      break;
+    case PROP_ICON_HEIGHT:
+      g_value_set_int (value, priv->icon_height);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
+awn_icon_set_property (GObject      *object,
+                       guint         prop_id,
+                       const GValue *value,
+                       GParamSpec   *pspec)
+{
+  AwnIcon *icon = AWN_ICON (object);
+  AwnIconPrivate *priv;
+
+  g_return_if_fail (AWN_IS_ICON (object));
+  priv = icon->priv;
+
+  switch (prop_id)
+  {
+    case PROP_ICON_WIDTH:
+      awn_icon_set_custom_paint(icon,
+                                g_value_get_int (value),
+                                priv->icon_height);
+      break;
+    case PROP_ICON_HEIGHT:
+      awn_icon_set_custom_paint(icon,
+                                priv->icon_width,
+                                g_value_get_int (value));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
 awn_icon_dispose (GObject *object)
 {
   AwnIconPrivate *priv;
@@ -185,22 +247,41 @@ awn_icon_class_init (AwnIconClass *klass)
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
 
-  obj_class->dispose = awn_icon_dispose;
+  obj_class->get_property = awn_icon_get_property;
+  obj_class->set_property = awn_icon_set_property;
+  obj_class->dispose      = awn_icon_dispose;
 
   wid_class->size_request       = awn_icon_size_request;
   wid_class->expose_event       = awn_icon_expose_event;
   wid_class->enter_notify_event = awn_icon_enter_notify_event;
   wid_class->leave_notify_event = awn_icon_leave_notify_event;
 
+  /* Class properties */
+  g_object_class_install_property (obj_class,
+    PROP_ICON_WIDTH,
+    g_param_spec_int ("icon-width",
+                      "Icon width",
+                      "Current icon width",
+                      0, G_MAXINT, 0,
+                      G_PARAM_READWRITE));
+
+  g_object_class_install_property (obj_class,
+    PROP_ICON_HEIGHT,
+    g_param_spec_int ("icon-height",
+                      "Icon height",
+                      "Current icon height",
+                      0, G_MAXINT, 0,
+                      G_PARAM_READWRITE));
+
   /* Signals */
-	_icon_signals[SIZE_CHANGED] =
-		g_signal_new ("size-changed",
-			      G_OBJECT_CLASS_TYPE (obj_class),
-			      G_SIGNAL_RUN_FIRST,
-			      G_STRUCT_OFFSET (AwnIconClass, size_changed),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__VOID, 
-			      G_TYPE_NONE, 0);
+  _icon_signals[SIZE_CHANGED] =
+    g_signal_new ("size-changed",
+      G_OBJECT_CLASS_TYPE (obj_class),
+      G_SIGNAL_RUN_FIRST,
+      G_STRUCT_OFFSET (AwnIconClass, size_changed),
+      NULL, NULL,
+      g_cclosure_marshal_VOID__VOID, 
+      G_TYPE_NONE, 0);
 
   g_type_class_add_private (obj_class, sizeof (AwnIconPrivate));
 }
@@ -330,20 +411,24 @@ static void
 update_widget_size (AwnIcon *icon)
 {
   AwnIconPrivate  *priv = icon->priv;
-  gint width, height;
+  gint width = 0, height = 0;
 
-  switch (cairo_surface_get_type(priv->icon_srfc)) {
-    case CAIRO_SURFACE_TYPE_XLIB:
-      width = cairo_xlib_surface_get_width (priv->icon_srfc);
-      height = cairo_xlib_surface_get_height (priv->icon_srfc);
-      break;
-    case CAIRO_SURFACE_TYPE_IMAGE:
-      width = cairo_image_surface_get_width (priv->icon_srfc);
-      height = cairo_image_surface_get_height (priv->icon_srfc);
-      break;
-    default:
-      g_warning("Invalid surface type: Surfaces must be either xlib or image");
-      return;
+  if (priv->icon_srfc)
+  {
+    switch (cairo_surface_get_type(priv->icon_srfc))
+    {
+      case CAIRO_SURFACE_TYPE_XLIB:
+        width = cairo_xlib_surface_get_width (priv->icon_srfc);
+        height = cairo_xlib_surface_get_height (priv->icon_srfc);
+        break;
+      case CAIRO_SURFACE_TYPE_IMAGE:
+        width = cairo_image_surface_get_width (priv->icon_srfc);
+        height = cairo_image_surface_get_height (priv->icon_srfc);
+        break;
+      default:
+        g_warning("Invalid surface type: Surfaces must be either xlib or image");
+        return;
+    }
   }
 
   update_widget_to_size (icon, width, height);
@@ -449,7 +534,11 @@ awn_icon_set_custom_paint (AwnIcon *icon, gint width, gint height)
 {
   g_return_if_fail (AWN_IS_ICON (icon));
 
-  free_existing_icon (icon);
+  /*
+   * Don't free the icon, user may want to reuse it later
+   *  (if doing temporary connect to expose-event)
+   * free_existing_icon (icon);
+   */
 
   // this will set proper size requisition, tooltip position,
   // params for effects and may emit size changed signal
@@ -470,6 +559,9 @@ awn_icon_set_tooltip_text (AwnIcon     *icon,
   awn_tooltip_set_text (AWN_TOOLTIP (icon->priv->tooltip), text);
 }
 
+// FIXME: get_tooltip_text returns original string which shouldn't be modified,
+//        but get_message returns copy, which has to be freed by the caller.
+//        Both should return copy, so for example python can free the string.
 const gchar * 
 awn_icon_get_tooltip_text (AwnIcon *icon)
 {
