@@ -28,8 +28,8 @@
 // awn_cairo_rounded_rect - draws a rounded rectangle via cairo
 //
 void
-awn_cairo_rounded_rect(cairo_t *cr, int x0, int y0,
-                       int width, int height,
+awn_cairo_rounded_rect(cairo_t *cr, double x0, double y0,
+                       double width, double height,
                        double radius, AwnCairoRoundCorners state)
 {
   double x1, y1;

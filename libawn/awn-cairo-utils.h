@@ -51,8 +51,8 @@ typedef struct
 
 void 
 awn_cairo_rounded_rect (cairo_t *cr, 
-                        int x0, int y0, 
-                        int width, int height, 
+                        double x0, double y0,
+                        double width, double height,
                         double radius, AwnCairoRoundCorners state);
 
 
