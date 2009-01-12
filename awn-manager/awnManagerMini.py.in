@@ -61,8 +61,17 @@ class awnPreferencesMini(awnPreferences):
 	self.theme_desktop = os.path.join(defs.SYS_THEME_DIR,"awn-default.desktop")
 
 	#Testing Bzr stuff
-	bzr_test = self.wTree.get_widget("use_bzr_theme")
+	bzr_test = self.wTree.get_widget("use_bzr_repos")
 	bzr_test.connect("toggled", self.test_bzr_themes, bzr_test)
+
+	update_repo = self.wTree.get_widget("update_repo")
+	update_repo.connect("clicked", lambda data=None : self.update_sources_list())
+
+	add_repo = self.wTree.get_widget("add_repo")
+	add_repo.connect("clicked", self.add_repo_callback)
+
+	self.top_window_repo = self.wTree.get_widget("add_repository")
+	self.view_repo = self.wTree.get_widget("list_repos_view")
 
 	self.client = awn.Config()
 
@@ -95,6 +104,35 @@ class awnPreferencesMini(awnPreferences):
 	self.load_spin(defs.PANEL, defs.MONITOR_HEIGHT, self.wTree.get_widget("monitor_height"))
 	self.load_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_widget("monitor_width"))
 	self.load_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_widget("monitor_offset"))
+
+    def add_repo_callback(self, data=None):
+	if self.view_repo == None:
+		self.view_repo = self.wTree.get_widget("list_repos_view")
+	sources = self.sources_from_sources_list()
+	for elem in sources:
+		hbox = gtk.HBox()
+		button = gtk.Button(stock="gtk-delete")
+		label = gtk.Label()
+		label.set_text(elem)
+		hbox.pack_start(label, expand=False, fill=False)
+		button.connect("clicked", self.remove_repo_callback, elem)
+		hbox.pack_end(button, expand=False, fill=False)
+		self.view_repo.pack_start(hbox, expand=False, fill=False)
+	self.top_window_repo.show_all()
+
+    def remove_repo_callback(self, elem, data=None):
+	parent = elem.get_parent()
+	child = parent.get_children()
+	self.remove_source(child[0].get_text())
+
+    def quit_repo_window(self, data=None):
+	self.top_window_repo.hide_all()
+	
+	
+
+'''
+    def load_desktop_themes
+'''
 
 class awnLauncherMini(awnLauncher):
     def __init__(self, glade):

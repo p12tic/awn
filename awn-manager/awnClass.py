@@ -41,7 +41,6 @@ from awnLauncherEditor import awnLauncherEditor
 import tarfile
 
 from bzrlib.builtins import cmd_branch, cmd_pull
-from bzrlib.plugins.launchpad.lp_directory import LaunchpadDirectory
 
 defs.i18nize(globals())
 
@@ -79,14 +78,6 @@ EMPTY = "none";
 
 class awnBzr:
 	#Utils
-	def lp_path_normalize(self, path):
-		'''	Get a "lp:" format url and return a http url
-			path: a url from a branch
-			return: the http format of a lp: format, or the same url
-		'''
-		directory = LaunchpadDirectory()
-		return directory._resolve(path).replace("bzr+ssh","http")
-
 	def read_list(self, file_path):
 		'''	Read a flat file and return the content in a list
 			file_path : path of the file
@@ -109,7 +100,7 @@ class awnBzr:
 			print ("Error, the path already exist")
 		else:
 			bzr_branch = cmd_branch()
-			bzr_branch.run(from_location=self.lp_path_normalize(bzr_dir), to_location=path)
+			bzr_branch.run(from_location=bzr_dir, to_location=path)
 
 	def update_branch(self, path):
 		''' 	Update a local branch
@@ -159,6 +150,16 @@ class awnBzr:
 		f.close()
 		return sources_list
 
+	def sources_from_sources_list(self, config=defs.HOME_CONFIG_DIR):
+		'''
+		Return a list of all sources (without the directory)
+		config: the directory to read sources.list.
+		'''
+		list_sources = []
+		list_sources_list = self.list_from_sources_list(config)
+		[list_sources.append(elem[0]) for elem in list_sources_list]
+		return list_sources
+
 	def create_sources_list(self, config = defs.HOME_CONFIG_DIR, default = defs.DEFAULT_SOURCES_LIST):
 		'''	Create a sources_list with all the sources (bzr branch or local files)
 			Should be unique for an installation
@@ -199,15 +200,30 @@ class awnBzr:
 			config: the directory to write sources.list.
 			directories = the directory to write sources
 		'''
-		if source_type == "local":
-			path = path +" "+"local"+"\n"
-		elif source_type == "web":
-			number = len(os.listdir(directories))
-			path = path +" "+"web-sources-"+str(number)+"\n"
-		source = os.path.join(config,"sources.list")
-		f = open(source, 'a')
-		f.write(path)
-		f.close()
+		if not sources_list_check_double_path(path):
+			if source_type == "local":
+				path = path +" "+"local"+"\n"
+			elif source_type == "web":
+				number = len(os.listdir(directories))
+				path = path +" "+"web-sources-"+str(number)+"\n"
+			source = os.path.join(config,"sources.list")
+			f = open(source, 'a')
+			f.write(path)
+			f.close()
+		else:
+			print ("Error, the path already exist")
+
+	def remove_source(self, source):
+		'''	Remove a source from the sources.list
+			path is the path of the source (url or local path)
+		'''
+		list_sources = self.list_from_sources_list()
+		new_sources_list = []
+		for elem in list_sources :
+			if not elem[0] == source:
+				new_sources_list.append(elem)
+		print list_sources
+		print new_sources_list
 
 	def create_branch_config_directory(self, source):
 		'''
@@ -219,6 +235,20 @@ class awnBzr:
 			self.create_branch((source[0], source[1]))
 		else:
 			print "Error, this is a local path"
+
+	def sources_list_check_double_path(path):
+		''' 	Check if a path is already in the sources.list
+			path: location of the source
+			Return True if the path already in.
+		'''
+		sources_list = list_from_sources_list()
+		for elem in sources_list:
+			if sources[0] == elem:
+				return True
+				break
+			else:
+				return False
+
 
 	#Desktop files
     	def read_desktop(self, file_path):
@@ -307,6 +337,19 @@ class awnBzr:
 			if not desktops == []:
 				[ catalog.append(i) for i in desktops ]
 		return catalog
+
+	def type_catalog_from_sources_list(self, type_catalog="Theme"):
+		'''
+		Return a catalog of themes or applets (list of desktop files from the sources list)
+		type_catalog is the type of catalog (Theme of Applets)
+		'''
+		catalog = self.catalog_from_sources_list()
+		type_catalog = []
+		for elem in catalog:
+			desktop = DesktopEntry(elem)
+			if desktop.get('X-AWN-Type') == type_catalog:
+				type_catalog.append(elem)
+		return type_catalog
 
 class awnPreferences(awnBzr):
     """This is the main class, duh"""
