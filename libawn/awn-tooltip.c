@@ -561,8 +561,7 @@ awn_tooltip_hide (AwnTooltip *tooltip,
   AwnTooltipPrivate *priv = tooltip->priv;
 
   if (priv->timer_id) {
-    GSource *s = g_main_context_find_source_by_id(NULL, priv->timer_id);
-    if (s) g_source_destroy(s);
+    g_source_remove(priv->timer_id);
     priv->timer_id = 0;
     return FALSE;
   }

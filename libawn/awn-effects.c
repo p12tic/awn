@@ -97,11 +97,10 @@ static void
 awn_effects_finalize(GObject *object)
 {
   AwnEffects * fx = AWN_EFFECTS(object);
-  // destroy animation timer
+  // destroy animation timer - FIXME: should be moved to dispose method
   if (fx->priv->timer_id)
   {
-    GSource *s = g_main_context_find_source_by_id(NULL, fx->priv->timer_id);
-    if (s) g_source_destroy(s);
+    g_source_remove(fx->priv->timer_id);
   }
 
   // free effect queue and associated AwnEffectsPriv
