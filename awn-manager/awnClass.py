@@ -20,7 +20,7 @@
 #
 #  Notes: Avant Window Navigator preferences window
 
-import sys, os, time, urllib
+import sys, os, time, urllib, StringIO
 try:
     import pygtk
     pygtk.require("2.0")
@@ -41,6 +41,7 @@ from awnLauncherEditor import awnLauncherEditor
 import tarfile
 
 from bzrlib.builtins import cmd_branch, cmd_pull
+from bzrlib.plugins.launchpad.lp_directory import LaunchpadDirectory 
 
 defs.i18nize(globals())
 
@@ -78,6 +79,14 @@ EMPTY = "none";
 
 class awnBzr:
 	#Utils
+	def lp_path_normalize(self, path):
+		'''     Get a "lp:" format url and return a http url
+                        path: a url from a branch
+                        return: the http format of a lp: format, or the same url
+		'''
+                directory = LaunchpadDirectory()
+                return directory._resolve(path).replace("bzr+ssh","http") 
+
 	def read_list(self, file_path):
 		'''	Read a flat file and return the content in a list
 			file_path : path of the file
@@ -100,14 +109,18 @@ class awnBzr:
 			print ("Error, the path already exist")
 		else:
 			bzr_branch = cmd_branch()
-			bzr_branch.run(from_location=bzr_dir, to_location=path)
+			status = StringIO.StringIO()
+			status = bzr_branch._setup_outf()
+			bzr_branch.run(from_location=self.lp_path_normalize(bzr_dir), to_location=path) 
 
 	def update_branch(self, path):
 		''' 	Update a local branch
 			path: Location of the branch
+			Return the output of the command
 		'''
 		bzr_pull = cmd_pull()
-		bzr_pull._setup_outf()
+		status = StringIO.StringIO()
+		status = bzr_pull._setup_outf()
 		bzr_pull.run(directory=path)
 
 	def get_revision_from_path(self, path):
@@ -189,9 +202,9 @@ class awnBzr:
 		
 		for elem in sources_to_update:
 			if not os.path.isdir(os.path.join(directories , elem[1])):
-				self.create_branch(elem[0], os.path.join(directories , elem[1]))
+				print self.create_branch(elem[0], os.path.join(directories , elem[1]))
 			else:
-				self.update_branch(os.path.join(directories , elem[1]))		
+				print self.update_branch(os.path.join(directories , elem[1]))		
 
 	def add_source(self, path, source_type="web", config = defs.HOME_CONFIG_DIR, directories = defs.HOME_THEME_DIR):
 		'''	Add a source to the sources list.
@@ -200,7 +213,7 @@ class awnBzr:
 			config: the directory to write sources.list.
 			directories = the directory to write sources
 		'''
-		if not sources_list_check_double_path(path):
+		if not self.sources_list_check_double_path(path):
 			if source_type == "local":
 				path = path +" "+"local"+"\n"
 			elif source_type == "web":
@@ -213,17 +226,25 @@ class awnBzr:
 		else:
 			print ("Error, the path already exist")
 
-	def remove_source(self, source):
+	def remove_source(self, source, config = defs.HOME_CONFIG_DIR):
 		'''	Remove a source from the sources.list
 			path is the path of the source (url or local path)
 		'''
-		list_sources = self.list_from_sources_list()
+		list_sources = self.list_from_sources_list(config)
+		sources_list_path = os.path.join(config,"sources.list")
 		new_sources_list = []
 		for elem in list_sources :
 			if not elem[0] == source:
 				new_sources_list.append(elem)
+
 		print list_sources
 		print new_sources_list
+
+		f = open(sources_list_path, 'w')
+		[f.write(i[0] + " " + i[1] + "\n") 
+			for i 
+			in new_sources_list if i[0] <> '']
+		f.close()
 
 	def create_branch_config_directory(self, source):
 		'''
@@ -236,14 +257,14 @@ class awnBzr:
 		else:
 			print "Error, this is a local path"
 
-	def sources_list_check_double_path(path):
+	def sources_list_check_double_path(self, path):
 		''' 	Check if a path is already in the sources.list
 			path: location of the source
 			Return True if the path already in.
 		'''
-		sources_list = list_from_sources_list()
+		sources_list = self.list_from_sources_list()
 		for elem in sources_list:
-			if sources[0] == elem:
+			if elem[0] == path:
 				return True
 				break
 			else:

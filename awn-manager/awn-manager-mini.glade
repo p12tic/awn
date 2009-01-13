@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Jan 12 23:17:22 2009 -->
+<!--Generated with glade3 3.4.5 on Tue Jan 13 01:09:40 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="awnManagerWindow">
     <property name="visible">True</property>
@@ -975,6 +975,8 @@ the theme ?</property>
     </child>
   </widget>
   <widget class="GtkWindow" id="add_repository">
+    <property name="modal">True</property>
+    <property name="deletable">False</property>
     <child>
       <widget class="GtkVBox" id="vbox7">
         <property name="visible">True</property>
@@ -1019,13 +1021,13 @@ the theme ?</property>
           <widget class="GtkHBox" id="hbox19">
             <property name="visible">True</property>
             <child>
-              <widget class="GtkEntry" id="entry1">
+              <widget class="GtkEntry" id="add_repo_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
               </widget>
             </child>
             <child>
-              <widget class="GtkButton" id="button1">
+              <widget class="GtkButton" id="add_repo_plus">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -1037,6 +1039,20 @@ the theme ?</property>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkButton" id="repo_quit">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="label" translatable="yes">gtk-quit</property>
+                <property name="use_stock">True</property>
+                <property name="response_id">0</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </widget>

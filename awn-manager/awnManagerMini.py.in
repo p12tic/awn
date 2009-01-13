@@ -68,7 +68,15 @@ class awnPreferencesMini(awnPreferences):
 	update_repo.connect("clicked", lambda data=None : self.update_sources_list())
 
 	add_repo = self.wTree.get_widget("add_repo")
-	add_repo.connect("clicked", self.add_repo_callback)
+	add_repo.connect("clicked", self.add_repo_win_callback)
+
+	self.add_repo_get_entry = self.wTree.get_widget("add_repo_entry")
+
+	self.add_repo_plus = self.wTree.get_widget("add_repo_plus")
+	self.add_repo_plus.connect("clicked", self.add_repo_callback)
+
+	quit_repo = self.wTree.get_widget("repo_quit")
+	quit_repo.connect("clicked", self.quit_repo_window)
 
 	self.top_window_repo = self.wTree.get_widget("add_repository")
 	self.view_repo = self.wTree.get_widget("list_repos_view")
@@ -105,9 +113,7 @@ class awnPreferencesMini(awnPreferences):
 	self.load_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_widget("monitor_width"))
 	self.load_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_widget("monitor_offset"))
 
-    def add_repo_callback(self, data=None):
-	if self.view_repo == None:
-		self.view_repo = self.wTree.get_widget("list_repos_view")
+    def add_repo_win_callback(self, data=None):
 	sources = self.sources_from_sources_list()
 	for elem in sources:
 		hbox = gtk.HBox()
@@ -120,13 +126,22 @@ class awnPreferencesMini(awnPreferences):
 		self.view_repo.pack_start(hbox, expand=False, fill=False)
 	self.top_window_repo.show_all()
 
+
+    def quit_repo_window(self, data=None):
+	for elem in self.view_repo.get_children():
+		elem.destroy()
+	self.top_window_repo.hide_all()
+
     def remove_repo_callback(self, elem, data=None):
 	parent = elem.get_parent()
 	child = parent.get_children()
 	self.remove_source(child[0].get_text())
+	self.quit_repo_window()
 
-    def quit_repo_window(self, data=None):
-	self.top_window_repo.hide_all()
+    def add_repo_callback(self, data=None):
+	source = self.add_repo_get_entry.get_text()
+	self.add_source(source)
+	self.quit_repo_window()
 	
 	
 
