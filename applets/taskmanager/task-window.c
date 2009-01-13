@@ -775,10 +775,13 @@ task_window_get_is_running (TaskWindow *window)
 static gint 
 _get_pid (TaskWindow    *window)
 {
+	gint value = -1;
   if (WNCK_IS_WINDOW (window->priv->window))
-    return wnck_window_get_pid (window->priv->window);
-
-  return 0;
+	{
+    value = wnck_window_get_pid (window->priv->window);
+		value = value ? value : -1; 		//if the pid is 0 return -1.  Bad wnck! Bad! 		
+	}
+	return value;  
 }
 
 static const gchar * 
