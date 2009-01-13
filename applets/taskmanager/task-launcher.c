@@ -223,7 +223,10 @@ _get_pid (TaskWindow *window)
   
   if (WNCK_IS_WINDOW (window->priv->window))
   {
-    return wnck_window_get_pid (window->priv->window);
+		gint value = -1;
+    value = wnck_window_get_pid (window->priv->window);
+		value = value ? value : -1;
+		return value;
   }
   else
   {
