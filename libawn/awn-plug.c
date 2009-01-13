@@ -127,54 +127,6 @@ on_destroy_applet (DBusGProxy *proxy, gchar *id, AwnPlug *plug)
     on_delete_notify (NULL, plug);
 }
 
-/*
- * Size requisition stuff 
- */
-static void
-on_child_size_request (GtkWidget *child, GtkRequisition *req, AwnPlug *plug)
-{
-  AwnPlugPrivate *priv;
-  GError *error = NULL;
-  gint width, height;
-
-  g_return_if_fail (AWN_IS_PLUG (plug));
-  priv = plug->priv;
-
-  width = req->width;
-  height = req->height;
-
-  /* Make sure it's valid otherwise everything will blow up */
-  if (width < 1)
-    width = 1;
-  if (height < 1)
-    height = 1;
-  
-  dbus_g_proxy_call (priv->proxy, "AppletSizeRequest", 
-                        &error,
-                        G_TYPE_STRING, awn_applet_get_uid (AWN_APPLET (child)), 
-                        G_TYPE_INT, width, 
-                        G_TYPE_INT, height,
-                        G_TYPE_INVALID, G_TYPE_INVALID);
-
-  if (error)
-  {
-    g_warning ("%s", error->message);
-    g_error_free (error);
-  }
-
-  gtk_window_resize (GTK_WINDOW (plug), width, height);
-}
-
-static void
-on_child_added (GtkContainer *container, GtkWidget *child)
-{
-  AwnPlug *plug = AWN_PLUG (container);
-
-  g_signal_connect (child, "size-request", 
-                    G_CALLBACK (on_child_size_request), plug);
-}
-
-
 /*  GOBJECT STUFF */
 void
 on_alpha_screen_changed (GtkWidget* widget, GdkScreen* oscreen, gpointer null)
@@ -309,7 +261,6 @@ awn_plug_init(AwnPlug *plug)
                     G_CALLBACK (on_proxy_destroyed), NULL);
   g_signal_connect (plug, "embedded",
                     G_CALLBACK (on_plug_embedded), NULL);
-  g_signal_connect (plug, "add", G_CALLBACK (on_child_added), NULL);
 }
 
 GtkWidget *

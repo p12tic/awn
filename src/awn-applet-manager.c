@@ -327,11 +327,6 @@ create_applet (AwnAppletManager *manager,
   applet = awn_applet_proxy_new (path, uid, priv->orient, priv->size);
   gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
   
-  if (priv->orient == AWN_ORIENTATION_TOP || priv->orient == AWN_ORIENTATION_BOTTOM)
-    gtk_widget_set_size_request (applet, -1, 96);
-  else
-    gtk_widget_set_size_request (applet, 96, -1);
-
   g_object_set_qdata (G_OBJECT (applet), 
                       priv->touch_quark, GINT_TO_POINTER (0));
   g_hash_table_insert (priv->applets, g_strdup (uid), applet);
@@ -469,6 +464,9 @@ awn_applet_manager_handle_applet_size_request (AwnAppletManager *manager,
 
   g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
   priv = manager->priv;
+
+  // make sure noone calls this and afterwards FIXME: remove
+  g_assert_not_reached();
 
   /* See if the applet already exists */
   applet = g_hash_table_lookup (priv->applets, uid);
