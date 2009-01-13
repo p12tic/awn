@@ -406,12 +406,12 @@ task_window_get_pid (TaskWindow    *window)
 {
   TaskWindowClass *klass;
 
-  g_return_val_if_fail (TASK_IS_WINDOW (window), 0);
+	g_return_val_if_fail (TASK_IS_WINDOW (window), -1);
   
   klass = TASK_WINDOW_GET_CLASS (window);
-  g_return_val_if_fail (klass->get_pid, 0);
-
-  return klass->get_pid (window);
+  g_return_val_if_fail (klass->get_pid, -1);
+	
+	return klass->get_pid (window);
 }
 
 gboolean   
