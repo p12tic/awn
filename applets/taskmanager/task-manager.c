@@ -409,6 +409,7 @@ try_to_place_window (TaskManager *manager, WnckWindow *window)
 {
   TaskManagerPrivate *priv = manager->priv;
   GSList *w;
+	gint taskwin_pid = -1;
 
   /* FIXME: The window == UTILITY || DIALOG, so we should see if we can do
    *        some smart placement to a already-existing window/launcher to 
@@ -421,7 +422,8 @@ try_to_place_window (TaskManager *manager, WnckWindow *window)
     if (!TASK_IS_WINDOW (taskwin))
       continue;
 
-    if (task_window_get_pid (taskwin) == wnck_window_get_pid (window))
+		taskwin_pid = task_window_get_pid (taskwin);
+    if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
     {
       task_window_append_utility (taskwin, window);
       g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
@@ -436,7 +438,8 @@ try_to_place_window (TaskManager *manager, WnckWindow *window)
     if (!TASK_IS_WINDOW (taskwin))
       continue;
 
-    if (task_window_get_pid (taskwin) == wnck_window_get_pid (window))
+		taskwin_pid = task_window_get_pid (taskwin);
+    if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
     {
       task_window_append_utility (taskwin, window);
       g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
