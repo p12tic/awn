@@ -1120,20 +1120,20 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
   g_return_val_if_fail(cairo_status(cr) == CAIRO_STATUS_SUCCESS, NULL);
   fx->window_ctx = cr;
 
-  cairo_surface_t *targetSurface = cairo_get_target(cr);
-  if (cairo_surface_get_type(targetSurface) == CAIRO_SURFACE_TYPE_XLIB) {
-    priv->window_width = cairo_xlib_surface_get_width(targetSurface);
-    priv->window_height = cairo_xlib_surface_get_height(targetSurface);
-  } else {
-    g_warning("AwnEffects: Drawing to non-xlib surface, unknown dimensions.");
-  }
+  /* 
+   * Oh right, first we used cairo_xlib_surface_get_width/height, but we
+   * discovered that is causes artifacts, so now we use simple allocation
+   * which seems to work just fine.
+   */
+  priv->window_width = fx->widget->allocation.width;
+  priv->window_height = fx->widget->allocation.height;
 
   if (fx->no_clear == FALSE)
     awn_effects_pre_op_clear(fx, cr, NULL, NULL);
   if (region && gdk_region_empty(region) == FALSE)
   {
     // Python apps pass empty region... interesting, I guess they should use
-    //  cairo_create instead of cairo_create_clipped
+    //  cairo_create instead of cairo_create_clipped, but we'll be nice
 
     // clip the region
     gdk_cairo_region (cr, region);
@@ -1141,13 +1141,17 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
   }
 
 #if 0
-  g_debug("Drawing... icon size: %dx%d, window size: %dx%d", 
+  g_debug("Icon size: %dx%d, Surface size: %dx%d", 
           priv->icon_width, priv->icon_height,
           priv->window_width, priv->window_height);
+  g_debug("Allocation size: (%d,%d) (%dx%d)",
+          fx->widget->allocation.x, fx->widget->allocation.y,
+          fx->widget->allocation.width, fx->widget->allocation.height);
 #endif
 
   if (fx->indirect_paint)
   {
+    cairo_surface_t *targetSurface = cairo_get_target(cr);
     // we'll give to user virtual context and later paint everything on real one
     targetSurface = cairo_surface_create_similar(targetSurface,
                                                  CAIRO_CONTENT_COLOR_ALPHA,
