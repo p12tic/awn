@@ -1089,16 +1089,16 @@ awn_effects_set_icon_size(AwnEffects * fx, gint width, gint height,
   {
     // this should be only used without AwnIcon,
     // AwnIcon handles size_requests well enough
+
+    gint inc = fx->icon_offset;
     switch (fx->orientation) {
       case AWN_EFFECT_ORIENT_TOP:
       case AWN_EFFECT_ORIENT_BOTTOM:
-        if (fx->widget->allocation.width < width*6/5)
-          gtk_widget_set_size_request(fx->widget, width*6/5, height);
+        gtk_widget_set_size_request(fx->widget, width*6/5, height + inc);
         break;
       case AWN_EFFECT_ORIENT_RIGHT:
       case AWN_EFFECT_ORIENT_LEFT:
-        if (fx->widget->allocation.height < height*6/5)
-          gtk_widget_set_size_request(fx->widget, width, height*6/5);
+        gtk_widget_set_size_request(fx->widget, width + inc, height*6/5);
         break;
     }
   }
