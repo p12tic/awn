@@ -213,7 +213,7 @@ class awnBzr:
 			config: the directory to write sources.list.
 			directories = the directory to write sources
 		'''
-		if not self.sources_list_check_double_path(path):
+		if not self.sources_list_check_double_path(path) and path <> '':
 			if source_type == "local":
 				path = path +" "+"local"+"\n"
 			elif source_type == "web":
@@ -224,7 +224,7 @@ class awnBzr:
 			f.write(path)
 			f.close()
 		else:
-			print ("Error, the path already exist")
+			print ("Error, the path is empty or already exist")
 
 	def remove_source(self, source, config = defs.HOME_CONFIG_DIR):
 		'''	Remove a source from the sources.list
@@ -263,12 +263,14 @@ class awnBzr:
 			Return True if the path already in.
 		'''
 		sources_list = self.list_from_sources_list()
+		error = 0
 		for elem in sources_list:
 			if elem[0] == path:
-				return True
-				break
-			else:
-				return False
+				error=error+1
+		if error >= 1:
+			return True
+		else:
+			return False
 
 
 	#Desktop files
