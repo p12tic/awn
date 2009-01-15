@@ -188,23 +188,35 @@ class awnBzr:
 			f.close()
 		else: print ("Error, a sources.list already exist")
 
-	def update_sources_list(self, directories = defs.HOME_THEME_DIR):
+	def update_sources_list(self, directories = defs.HOME_THEME_DIR, progressbar = None):
 		''' 	
 			Update all sources of the sources list
 			If the directory doesn't exist, a new branch will be create
 			directories = default locations of the local branches to update
+			progress = A widget of a progress bar to update.
 		'''
+		progressbar.pulse()
+
 		sources_list = self.list_from_sources_list()
 		sources_to_update = []
+
 		[ sources_to_update.append(elem) 
 			for elem in sources_list 
 			if not elem[0].startswith("/") or not elem[1] == "local" ]
-		
+		total = len(sources_to_update)
+		counter = 0		
+
 		for elem in sources_to_update:
 			if not os.path.isdir(os.path.join(directories , elem[1])):
 				print self.create_branch(elem[0], os.path.join(directories , elem[1]))
+				
 			else:
-				print self.update_branch(os.path.join(directories , elem[1]))		
+				print self.update_branch(os.path.join(directories , elem[1]))
+			counter = counter+1
+			progressbar.set_fraction(int(counter) / int(total))
+
+
+	
 
 	def add_source(self, path, source_type="web", config = defs.HOME_CONFIG_DIR, directories = defs.HOME_THEME_DIR):
 		'''	Add a source to the sources list.

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Jan 13 01:09:40 2009 -->
+<!--Generated with glade3 3.4.5 on Thu Jan 15 19:24:05 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="awnManagerWindow">
     <property name="visible">True</property>
@@ -401,6 +401,38 @@ the theme ?</property>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
                                 <property name="position">5</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkHBox" id="hbox21">
+                                <property name="visible">True</property>
+                                <child>
+                                  <widget class="GtkLabel" id="label20">
+                                    <property name="visible">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Autohide</property>
+                                    <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                                    <property name="max_width_chars">0</property>
+                                  </widget>
+                                </child>
+                                <child>
+                                  <widget class="GtkSpinButton" id="autohide_config">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="adjustment">0 0 2 1 10 10</property>
+                                    <property name="numeric">True</property>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">6</property>
                               </packing>
                             </child>
                           </widget>
@@ -1060,6 +1092,57 @@ the theme ?</property>
             <property name="expand">False</property>
             <property name="fill">False</property>
             <property name="position">2</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="GtkWindow" id="update_repository">
+    <property name="window_position">GTK_WIN_POS_MOUSE</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <child>
+      <widget class="GtkVBox" id="vbox8">
+        <property name="visible">True</property>
+        <child>
+          <widget class="GtkLabel" id="label19">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">&lt;b&gt;The repositories are updated. Please wait.&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkHBox" id="hbox20">
+            <property name="visible">True</property>
+            <child>
+              <widget class="GtkProgressBar" id="update_progress">
+                <property name="visible">True</property>
+                <property name="text" translatable="yes"></property>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkButton" id="exit_update_win">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="label" translatable="yes">gtk-quit</property>
+                <property name="use_stock">True</property>
+                <property name="response_id">0</property>
+              </widget>
+              <packing>
+                <property name="pack_type">GTK_PACK_END</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </widget>

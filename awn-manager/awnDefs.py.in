@@ -51,6 +51,7 @@ MONITOR_HEIGHT		= "monitor_height"	#int
 MONITOR_WIDTH		= "monitor_width"	#int
 MONITOR_OFFSET		= "monitor_offset"	#int
 MONITOR_ALIGN		= "monitor_align"	#float
+AUTOHIDE		= "autohide"		#int
 
 THEME			= "theme"		#group
 GSTEP1			= "gstep1"		#string
