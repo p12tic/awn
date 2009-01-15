@@ -35,6 +35,7 @@
 #define AWN_PANEL_ORIENT         "orient"
 #define AWN_PANEL_OFFSET         "offset"
 #define AWN_PANEL_SIZE           "size"
+#define AWN_PANEL_AUTOHIDE       "autohide"
 #define AWN_PANEL_APPLET_LIST    "applet_list"
 #define AWN_PANEL_MONITOR_HEIGHT "monitor_height"
 #define AWN_PANEL_MONITOR_WIDTH  "monitor_width"

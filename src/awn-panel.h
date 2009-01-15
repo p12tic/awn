@@ -66,6 +66,9 @@ struct _AwnPanelClass
   void (*orient_changed) (AwnPanel *panel, gint orientation);
   void (*destroy_notify) (AwnPanel *panel);
   void (*destroy_applet) (AwnPanel *panel, const gchar *uid);
+
+  void (*autohide_start) (AwnPanel *panel);
+  void (*autohide_end)   (AwnPanel *panel);
 };
 
 GType       awn_panel_get_type            (void) G_GNUC_CONST;

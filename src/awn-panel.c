@@ -38,6 +38,7 @@
 #include "awn-monitor.h"
 #include "awn-x.h"
 
+// FIXME: getting this value should be a method of AwnBackground
 #define AWN_PANEL_BORDER 2
 
 G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW) 
@@ -63,8 +64,17 @@ struct _AwnPanelPrivate
   gint offset;
   gint orient;
 
+  gint autohide_type;
+
   gint old_width;
   gint old_height;
+
+  gint hide_counter;
+  guint hiding_timer_id;
+
+  guint mouse_poll_timer_id;
+  guint autohide_start_timer_id;
+  gboolean autohide_started;
 };
 
 enum 
@@ -76,7 +86,17 @@ enum
   PROP_PANEL_MODE,
   PROP_OFFSET,
   PROP_ORIENT,
-  PROP_SIZE
+  PROP_SIZE,
+  PROP_AUTOHIDE_TYPE
+};
+
+enum
+{
+  AUTOHIDE_TYPE_NONE = 0,
+  AUTOHIDE_TYPE_KEEP_BELOW,
+  AUTOHIDE_TYPE_FADE_OUT,
+
+  AUTOHIDE_TYPE_LAST
 };
 
 static const GtkTargetEntry drop_types[] = 
@@ -93,6 +113,8 @@ enum
   ORIENT_CHANGED,
   DESTROY_NOTIFY,
   DESTROY_APPLET,
+  AUTOHIDE_START,
+  AUTOHIDE_END,
 
   LAST_SIGNAL
 };
@@ -101,37 +123,44 @@ static guint _panel_signals[LAST_SIGNAL] = { 0 };
 /* 
  * FORWARDS
  */
-static void     load_correct_colormap (GtkWidget *panel);
-static void     on_composited_changed (GdkScreen *screen, 
-                                       AwnPanel  *panel);
-static void     on_screen_changed     (GtkWidget *widget, 
-                                       GdkScreen *screen,
-                                       AwnPanel  *panel);
+static void     load_correct_colormap       (GtkWidget *panel);
+static void     on_composited_changed       (GdkScreen *screen, 
+                                             AwnPanel  *panel);
+static void     on_screen_changed           (GtkWidget *widget, 
+                                             GdkScreen *screen,
+                                             AwnPanel  *panel);
 
-static gboolean on_window_configure   (GtkWidget         *panel,
-                                       GdkEventConfigure *event);
-static gboolean position_window       (AwnPanel *panel);
-static gboolean resize_window         (AwnPanel *panel);
+static gboolean on_window_configure         (GtkWidget         *panel,
+                                             GdkEventConfigure *event);
+static gboolean position_window             (AwnPanel *panel);
+static gboolean resize_window               (AwnPanel *panel);
 
-static gboolean on_eb_expose          (GtkWidget      *eb, 
-                                       GdkEventExpose *event,
-                                       GtkWidget      *child);
-static gboolean awn_panel_expose      (GtkWidget      *widget, 
-                                       GdkEventExpose *event);
-static void     awn_panel_add         (GtkContainer   *window, 
-                                       GtkWidget      *widget);
+static gboolean on_eb_expose                (GtkWidget      *eb, 
+                                             GdkEventExpose *event,
+                                             GtkWidget      *child);
+static gboolean awn_panel_expose            (GtkWidget      *widget, 
+                                             GdkEventExpose *event);
+static void     awn_panel_add               (GtkContainer   *window, 
+                                             GtkWidget      *widget);
 
-static void     awn_panel_set_offset  (AwnPanel *panel, 
-                                       gint      offset);
-static void     awn_panel_set_orient  (AwnPanel *panel,
-                                       gint      orient);
-static void     awn_panel_set_size    (AwnPanel *panel, 
-                                       gint      size);
+static void     awn_panel_set_offset        (AwnPanel *panel,
+                                             gint      offset);
+static void     awn_panel_set_orient        (AwnPanel *panel,
+                                             gint      orient);
+static void     awn_panel_set_size          (AwnPanel *panel,
+                                             gint      size);
+static void     awn_panel_set_autohide_type (AwnPanel *panel,
+                                             gint      type);
 
-static void     on_geometry_changed   (AwnMonitor    *monitor,
-                                       AwnPanel      *panel);
-static void     on_theme_changed      (AwnBackground *bg,
-                                       AwnPanel      *panel);
+static void     awn_panel_reset_autohide    (AwnPanel *panel);
+
+static void     on_geometry_changed         (AwnMonitor    *monitor,
+                                             AwnPanel      *panel);
+static void     on_theme_changed            (AwnBackground *bg,
+                                             AwnPanel      *panel);
+
+static gboolean awn_panel_check_mouse_pos   (AwnPanel *panel,
+                                             gboolean whole_window);
 
 /*
  * GOBJECT CODE 
@@ -166,6 +195,9 @@ awn_panel_constructed (GObject *object)
   awn_config_bridge_bind (bridge, priv->client,
                           AWN_GROUP_PANEL, AWN_PANEL_SIZE,
                           object, "size");
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_AUTOHIDE,
+                          object, "autohide-type");
 
   /* Background drawing */
   priv->bg = awn_background_flat_new (priv->client, AWN_PANEL (panel));
@@ -225,6 +257,9 @@ awn_panel_get_property (GObject    *object,
     case PROP_SIZE:
       g_value_set_int (value, priv->size);
       break;
+    case PROP_AUTOHIDE_TYPE:
+      g_value_set_int (value, priv->autohide_type);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -261,7 +296,10 @@ awn_panel_set_property (GObject      *object,
       break;
     case PROP_SIZE:
       awn_panel_set_size (panel, g_value_get_int (value));
-      break;    
+      break;
+    case PROP_AUTOHIDE_TYPE:
+      awn_panel_set_autohide_type (panel, g_value_get_int (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -278,9 +316,213 @@ awn_panel_show (GtkWidget *widget)
   awn_applet_manager_refresh_applets (AWN_APPLET_MANAGER (manager));
 }
 
+static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
+                                           gboolean whole_window)
+{
+  // returns TRUE if mouse is in the window / or on the edge (if !whole_window)
+  g_return_val_if_fail(AWN_IS_PANEL(panel), FALSE);
+
+  GtkWidget *widget = GTK_WIDGET (panel);
+  AwnPanelPrivate *priv = panel->priv;
+
+  gint x, y, window_x, window_y;
+  gdk_display_get_pointer (gdk_display_get_default (), NULL, &x, &y, NULL);
+  gdk_window_get_root_origin (widget->window, &window_x, &window_y);
+
+#if 0
+  g_debug ("mouse: %d,%d; window: %d,%d, %dx%d", x, y, window_x, window_y,
+    widget->allocation.width, widget->allocation.height);
+#endif
+
+  if (!whole_window)
+  {
+    // edge detection
+    switch (priv->orient)
+    {
+      case AWN_ORIENTATION_TOP:
+        return x >= window_x && x < window_x + widget->allocation.width &&
+               y == window_y;
+      case AWN_ORIENTATION_BOTTOM:
+        return x >= window_x && x < window_x + widget->allocation.width &&
+               y == window_y + widget->allocation.height - 1;
+      case AWN_ORIENTATION_LEFT:
+        return y >= window_y && y < window_y + widget->allocation.height &&
+               x == window_x;
+      case AWN_ORIENTATION_RIGHT:
+        return y >= window_y && y < window_y + widget->allocation.height &&
+               x == window_x + widget->allocation.width - 1;
+    }
+  }
+  else
+  {
+    if (!priv->composited)
+    {
+      return (x >= window_x && x < window_x + widget->allocation.width &&
+              y >= window_y && y < window_y + widget->allocation.height);
+    }
+    else
+    {
+      gint k = priv->size - priv->offset;
+      switch (priv->orient)
+      {
+        case AWN_ORIENTATION_TOP:
+          return x >= window_x && x < window_x + widget->allocation.width &&
+                 y >= window_y && y < window_y + widget->allocation.height - k;
+        case AWN_ORIENTATION_BOTTOM:
+          return x >= window_x && x < window_x + widget->allocation.width &&
+                 y >= window_y + k && y < window_y + widget->allocation.height;
+        case AWN_ORIENTATION_LEFT:
+          return y >= window_y && y < window_y + widget->allocation.height &&
+                 x >= window_x && x < window_x + widget->allocation.width - k;
+        case AWN_ORIENTATION_RIGHT:
+          return y >= window_y && y < window_y + widget->allocation.height &&
+                 x >= window_x + k && x < window_x + widget->allocation.width;
+      }
+    }
+  }
+  return FALSE;
+}
+
+/* Auto-hide fade out method */
+static gboolean 
+alpha_blend_hide (gpointer data)
+{
+  g_return_val_if_fail(AWN_IS_PANEL(data), FALSE);
+
+  AwnPanel *panel = AWN_PANEL (data);
+  AwnPanelPrivate *priv = panel->priv;
+
+  priv->hide_counter++;
+
+  gdk_window_set_opacity (
+    GTK_WIDGET (panel)->window, 1 - 0.05*priv->hide_counter);
+
+  if (priv->hide_counter == 20)
+  {
+    priv->hiding_timer_id = 0;
+    gtk_widget_hide (GTK_WIDGET (panel));
+    gdk_window_set_opacity (GTK_WIDGET(panel)->window, 1.0);
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+static void
+alpha_blend_start (AwnPanel *panel, gpointer data)
+{
+  AwnPanelPrivate *priv = panel->priv;
+  priv->hide_counter = 0;
+  priv->hiding_timer_id = g_timeout_add (30, alpha_blend_hide, panel);
+}
+
+static void
+alpha_blend_end (AwnPanel *panel, gpointer data)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->hiding_timer_id)
+  {
+    g_source_remove (priv->hiding_timer_id);
+    priv->hiding_timer_id = 0;
+    gdk_window_set_opacity (GTK_WIDGET(panel)->window, 1.0);
+  } else {
+    gtk_widget_show (GTK_WIDGET (panel));
+  }
+}
+
+/* Auto-hide keep below method */
+static void keep_below_start (AwnPanel *panel, gpointer data)
+{
+  gtk_window_set_decorated (GTK_WINDOW (panel), FALSE);
+  // wow, setting keep_below makes the border appear
+  gtk_window_set_keep_below (GTK_WINDOW (panel), TRUE);
+}
+
+static void keep_below_end (AwnPanel *panel, gpointer data)
+{
+  gtk_window_set_keep_below (GTK_WINDOW (panel), FALSE);
+}
+
+static gboolean
+autohide_start_timeout (gpointer data)
+{
+  g_return_val_if_fail(AWN_IS_PANEL(data), FALSE);
+
+  AwnPanel *panel = AWN_PANEL (data);
+  AwnPanelPrivate *priv = panel->priv;
+
+  priv->autohide_start_timer_id = 0;
+
+  // FIXME: if (! priv->autohide_inhibited)
+  priv->autohide_started = TRUE;
+  g_signal_emit (panel, _panel_signals[AUTOHIDE_START], 0);
+
+  return FALSE;
+}
+
+static gboolean
+poll_mouse_position (gpointer data)
+{
+  g_return_val_if_fail(AWN_IS_PANEL(data), FALSE);
+
+  GtkWidget *widget = GTK_WIDGET (data);
+  AwnPanel *panel = AWN_PANEL (data);
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (awn_panel_check_mouse_pos (panel, !priv->autohide_started))
+  {
+    // we are on the window or its edge
+    if (priv->autohide_start_timer_id)
+    {
+      g_source_remove (priv->autohide_start_timer_id);
+      priv->autohide_start_timer_id = 0;
+      return TRUE;
+    }
+    if (priv->autohide_started)
+    {
+      priv->autohide_started = FALSE;
+      g_signal_emit (panel, _panel_signals[AUTOHIDE_END], 0);
+    }
+  }
+  else if (GTK_WIDGET_MAPPED (widget))
+  {
+    // mouse is away, panel should start hiding
+    if (priv->autohide_start_timer_id == 0  && !priv->autohide_started)
+    {
+      // the timeout will emit autohide-start
+      priv->autohide_start_timer_id =
+        g_timeout_add (1000, autohide_start_timeout, panel);
+    }
+  }
+
+  return TRUE;
+}
+
 static void
 awn_panel_dispose (GObject *object)
 {
+  AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (object);
+
+  /* Destroy the timers */
+  if (priv->hiding_timer_id)
+  {
+    g_source_remove (priv->hiding_timer_id);
+    priv->hiding_timer_id = 0;
+  }
+
+  if (priv->mouse_poll_timer_id)
+  {
+    g_source_remove (priv->mouse_poll_timer_id);
+    priv->mouse_poll_timer_id = 0;
+  }
+
+  if (priv->autohide_start_timer_id)
+  {
+    g_source_remove (priv->autohide_start_timer_id);
+    priv->autohide_start_timer_id = 0;
+  }
+
   G_OBJECT_CLASS (awn_panel_parent_class)->dispose (object);
 }
 
@@ -349,6 +591,13 @@ awn_panel_class_init (AwnPanelClass *klass)
                       0, G_MAXINT, 0,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
+  g_object_class_install_property (obj_class,
+    PROP_AUTOHIDE_TYPE,
+    g_param_spec_int ("autohide-type",
+                      "Autohide type",
+                      "Type of used autohide",
+                      0, AUTOHIDE_TYPE_LAST - 1, 0,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
  
 
   /* Add signals to the class */
@@ -391,6 +640,26 @@ awn_panel_class_init (AwnPanelClass *klass)
 			      g_cclosure_marshal_VOID__STRING,
 			      G_TYPE_NONE,
 			      1, G_TYPE_STRING);
+
+  _panel_signals[AUTOHIDE_START] =
+		g_signal_new ("autohide_start",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (AwnPanelClass, autohide_start),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE,
+			      0);
+
+  _panel_signals[AUTOHIDE_END] =
+		g_signal_new ("autohide_end",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (AwnPanelClass, autohide_end),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE,
+			      0);
 
   g_type_class_add_private (obj_class, sizeof (AwnPanelPrivate));
 
@@ -922,6 +1191,8 @@ awn_panel_set_orient (AwnPanel *panel, gint orient)
   if (!GTK_WIDGET_REALIZED (panel))
     return;
 
+  awn_panel_reset_autohide (panel);
+
   resize_window (panel);
  
   g_signal_emit (panel, _panel_signals[ORIENT_CHANGED], 0, priv->orient);
@@ -948,6 +1219,80 @@ awn_panel_set_size (AwnPanel *panel, gint size)
   position_window (panel);
 
   gtk_widget_queue_draw (GTK_WIDGET (panel));
+}
+
+
+static void
+awn_panel_reset_autohide (AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->autohide_started)
+  {
+    priv->autohide_started = FALSE;
+    g_signal_emit (panel, _panel_signals[AUTOHIDE_END], 0);
+  }
+}
+
+static void
+awn_panel_set_autohide_type (AwnPanel *panel, gint type)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  priv->autohide_type = type;
+
+  awn_panel_reset_autohide(panel);
+
+  if (type == AUTOHIDE_TYPE_NONE)
+  {
+    // remove the timer if autohide if off
+    if (priv->mouse_poll_timer_id)
+    {
+      g_source_remove(priv->mouse_poll_timer_id);
+      priv->mouse_poll_timer_id = 0;
+    }
+  }
+  else
+  {
+    // run mouse position polling timer
+    if (priv->mouse_poll_timer_id == 0)
+    {
+      priv->mouse_poll_timer_id = 
+        g_timeout_add (750, poll_mouse_position, panel);
+    }
+  }
+
+  static gulong start_handler_id = 0;
+  static gulong end_handler_id = 0;
+  if (start_handler_id) {
+    g_signal_handler_disconnect (panel, start_handler_id);
+    start_handler_id = 0;
+  }
+  if (end_handler_id)
+  {
+    g_signal_handler_disconnect (panel, end_handler_id);
+    end_handler_id = 0;
+  }
+
+  // for all autohide types, just connect to autohide-start & end signals
+  // and do what you want to do in the callbacks
+  switch (priv->autohide_type)
+  {
+    case AUTOHIDE_TYPE_KEEP_BELOW:
+      start_handler_id = g_signal_connect (
+        panel, "autohide-start", G_CALLBACK (keep_below_start), NULL);
+      end_handler_id = g_signal_connect (
+        panel, "autohide-end", G_CALLBACK (keep_below_end), NULL);
+      break;
+    case AUTOHIDE_TYPE_FADE_OUT:
+      start_handler_id = g_signal_connect (
+        panel, "autohide-start", G_CALLBACK (alpha_blend_start), NULL);
+      end_handler_id = g_signal_connect (
+        panel, "autohide-end", G_CALLBACK (alpha_blend_end), NULL);
+      break;
+    default:
+      break;
+  }
 }
 
 /*
