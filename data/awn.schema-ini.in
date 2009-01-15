@@ -38,6 +38,10 @@ description = An optional offset when you have more than 1 monitors.
 type = float
 default = 0.5
 description = Alignment of a non-expanded panel on the monitor edge.
+[panel/autohide]
+type = int
+default = 0
+description = Auto hides the dock when the cursor is not on the dock.
 
 
 [theme/gstep1]
