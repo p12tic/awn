@@ -28,6 +28,7 @@
 #include "task-icon.h"
 
 #include "task-launcher.h"
+#include "task-settings.h"
 
 G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_ICON);
 
@@ -38,6 +39,9 @@ G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_ICON);
 struct _TaskIconPrivate
 {
   GSList *windows;
+  GdkPixbuf *icon;
+
+  gboolean gets_dragged;
 
   guint    drag_tag;
   gboolean drag_motion;
@@ -54,6 +58,9 @@ enum
 enum
 {
   ENSURE_LAYOUT,
+  DRAG_STARTED,
+  DRAG_ENDED,
+  DRAG_MOVE,
 
   LAST_SIGNAL
 };
@@ -63,15 +70,29 @@ static const GtkTargetEntry drop_types[] =
 {
   { "STRING", 0, 0 },
   { "text/plain", 0,  },
-  { "text/uri-list", 0, 0 }
+  { "text/uri-list", 0, 0 },
+  { "awn/task-icon", 0, 0 }
 };
 static const gint n_drop_types = G_N_ELEMENTS (drop_types);
+
+static const GtkTargetEntry task_icon_type[] = 
+{
+  { "awn/task-icon", 0, 0 }
+};
+static const gint n_task_icon_type = G_N_ELEMENTS (task_icon_type);
 
 /* Forwards */
 static gboolean  task_icon_button_release_event (GtkWidget      *widget,
                                                  GdkEventButton *event);
 static gboolean  task_icon_button_press_event   (GtkWidget      *widget,
                                                  GdkEventButton *event);
+static void      task_icon_drag_begin           (GtkWidget      *widget,
+                                                 GdkDragContext *context);
+static void      task_icon_drag_end             (GtkWidget      *widget,
+                                                 GdkDragContext *context);
+static gboolean  task_icon_drag_failed          (GtkWidget      *widget,
+                                                 GdkDragContext *drag_context,
+                                                 GtkDragResult   result);
 static gboolean  task_icon_drag_motion          (GtkWidget      *widget,
                                                  GdkDragContext *context,
                                                  gint            x,
@@ -164,6 +185,8 @@ task_icon_class_init (TaskIconClass *klass)
   
   wid_class->button_release_event = task_icon_button_release_event;
   wid_class->button_press_event   = task_icon_button_press_event;
+  wid_class->drag_begin           = task_icon_drag_begin;
+  wid_class->drag_end             = task_icon_drag_end;
   wid_class->drag_motion          = task_icon_drag_motion;
   wid_class->drag_leave           = task_icon_drag_leave;
   wid_class->drag_data_received   = task_icon_drag_data_received;
@@ -185,6 +208,31 @@ task_icon_class_init (TaskIconClass *klass)
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__VOID, 
 			      G_TYPE_NONE, 0);
+  _icon_signals[DRAG_STARTED] =
+		g_signal_new ("drag-started",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskIconClass, drag_started),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID, 
+			      G_TYPE_NONE, 0);
+  _icon_signals[DRAG_ENDED] =
+		g_signal_new ("drag-ended",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskIconClass, drag_ended),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID, 
+			      G_TYPE_NONE, 0);
+  _icon_signals[DRAG_MOVE] =
+		g_signal_new ("drag-move",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskIconClass, drag_move),
+			      NULL, NULL,
+			      gtk_marshal_NONE__INT_INT, 
+			      G_TYPE_NONE, 2,
+            G_TYPE_INT, G_TYPE_INT);
 
   g_type_class_add_private (obj_class, sizeof (TaskIconPrivate));
 }
@@ -196,20 +244,31 @@ task_icon_init (TaskIcon *icon)
   	
   priv = icon->priv = TASK_ICON_GET_PRIVATE (icon);
 
+  priv->icon = NULL;
   priv->windows = NULL;
   priv->drag_tag = 0;
   priv->drag_motion = FALSE;
+  priv->gets_dragged = FALSE;
 
   awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
 
-  /* D&D */
+  /* D&D accept dragged objs */
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
   gtk_drag_dest_set (GTK_WIDGET (icon), 
                      GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
                      drop_types, n_drop_types,
-                     GDK_ACTION_COPY);
+                     GDK_ACTION_COPY|GDK_ACTION_LINK);
   gtk_drag_dest_add_uri_targets (GTK_WIDGET (icon));
   gtk_drag_dest_add_text_targets (GTK_WIDGET (icon));
+
+  /* D&D support dragging itself */
+  gtk_drag_source_set (GTK_WIDGET (icon),
+                       GDK_BUTTON1_MASK,
+                       task_icon_type, n_task_icon_type,
+                       GDK_ACTION_LINK);
+  g_signal_connect (G_OBJECT (icon), "drag-failed",
+                    G_CALLBACK (task_icon_drag_failed), NULL);
+
 }
 
 GtkWidget *
@@ -291,10 +350,17 @@ on_window_icon_changed (TaskWindow *window,
                         GdkPixbuf  *pixbuf, 
                         TaskIcon   *icon)
 {
+  TaskIconPrivate *priv;
+
   g_return_if_fail (TASK_IS_ICON (icon));
   g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
 
-  awn_icon_set_from_pixbuf (AWN_ICON (icon), pixbuf);
+  priv = icon->priv;
+  g_object_unref (priv->icon);
+  g_object_ref(pixbuf);
+
+  priv->icon = pixbuf;
+  awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
 }
 
 static void
@@ -391,11 +457,8 @@ task_icon_append_window (TaskIcon      *icon,
   /* If it's the first window, let's set-up our icon accordingly */
   if (first_window)
   {
-    GdkPixbuf *pixbuf;
-
-    pixbuf = task_window_get_icon (window);
-    awn_icon_set_from_pixbuf (AWN_ICON (icon), pixbuf);
-    g_object_unref (pixbuf);
+    priv->icon = task_window_get_icon (window);
+    awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
 
     awn_icon_set_tooltip_text (AWN_ICON (icon), task_window_get_name (window));
     on_window_needs_attention_changed (window, 
@@ -436,10 +499,28 @@ task_icon_is_launcher (TaskIcon      *icon)
 
   if (priv->windows)
   {
-    //if (TASK_IS_LAUNCHER_WINDOW (priv->windows->data))
-    //return TRUE;
+    // For now do it this way ?!
+    if (TASK_IS_LAUNCHER (priv->windows->data))
+      return TRUE;
   }
   return FALSE;
+}
+
+TaskLauncher* 
+task_icon_get_launcher (TaskIcon      *icon)
+{
+  TaskIconPrivate *priv;
+
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
+  priv = icon->priv;
+
+  if (priv->windows)
+  {
+    // For now do it this way ?!
+    if (TASK_IS_LAUNCHER (priv->windows->data))
+      return TASK_LAUNCHER(priv->windows->data);
+  }
+  return NULL;
 }
 
 void
@@ -504,6 +585,12 @@ task_icon_button_release_event (GtkWidget      *widget,
 
   if (event->button == 1)
   {
+    if(priv->gets_dragged)
+    {
+      task_icon_drag_end (widget, NULL);
+      return FALSE;
+    }
+
     if (len == 1)
     {
       task_window_activate (priv->windows->data, event->time);
@@ -565,6 +652,56 @@ drag_timeout (TaskIcon *icon)
   return FALSE;
 }
 
+static void
+task_icon_drag_begin (GtkWidget      *widget,
+                      GdkDragContext *context)
+{
+  TaskIconPrivate *priv;
+  TaskSettings *settings;
+
+  g_return_if_fail (TASK_IS_ICON (widget));
+
+  priv = TASK_ICON (widget)->priv;
+  priv->gets_dragged = TRUE;
+
+  settings = task_settings_get_default ();
+
+  gtk_drag_set_icon_pixbuf (context, priv->icon, settings->panel_size/2, settings->panel_size/2);
+
+  g_signal_emit (TASK_ICON (widget), _icon_signals[DRAG_STARTED], 0);
+}
+
+static void
+task_icon_drag_end (GtkWidget      *widget,
+                    GdkDragContext *context)
+{
+  TaskIconPrivate *priv;
+
+  g_return_if_fail (TASK_IS_ICON (widget));
+
+  priv = TASK_ICON (widget)->priv;
+  priv->gets_dragged = FALSE;
+
+  g_signal_emit (TASK_ICON (widget), _icon_signals[DRAG_ENDED], 0);
+}
+
+static gboolean
+task_icon_drag_failed (GtkWidget      *widget,
+                       GdkDragContext *drag_context,
+                       GtkDragResult   result)
+{
+  TaskIconPrivate *priv;
+
+  g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
+
+  priv = TASK_ICON (widget)->priv;
+  priv->gets_dragged = FALSE;
+
+  g_signal_emit (TASK_ICON (widget), _icon_signals[DRAG_ENDED], 0);
+
+  return TRUE;
+}
+
 static gboolean
 task_icon_drag_motion (GtkWidget      *widget,
                        GdkDragContext *context,
@@ -573,18 +710,31 @@ task_icon_drag_motion (GtkWidget      *widget,
                        guint           t)
 {
   TaskIconPrivate *priv;
+  GdkAtom target;
+  gchar *target_name;
 
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
   priv = TASK_ICON (widget)->priv;
 
-  if (priv->drag_tag)
-    return TRUE;
+  target = gtk_drag_dest_find_target (widget, context, NULL);
+  target_name = gdk_atom_name (target);
 
-  priv->drag_motion = TRUE;
-  priv->drag_tag = g_timeout_add_seconds (1, (GSourceFunc)drag_timeout, widget);
-  priv->drag_time = t;
+  if (g_strcmp0("awn/task-icon", target_name) == 0)
+  {
+    g_signal_emit (TASK_ICON (widget), _icon_signals[DRAG_MOVE], 0, x, y);
+    return FALSE;
+  }
+  else
+  {
+    if (priv->drag_tag)
+      return TRUE;
 
-  return FALSE;
+    priv->drag_motion = TRUE;
+    priv->drag_tag = g_timeout_add_seconds (1, (GSourceFunc)drag_timeout, widget);
+    priv->drag_time = t;
+
+    return FALSE;
+  }
 }
 
 static void   
@@ -597,9 +747,12 @@ task_icon_drag_leave (GtkWidget      *widget,
   g_return_if_fail (TASK_IS_ICON (widget));
   priv = TASK_ICON (widget)->priv;
 
-  priv->drag_motion = FALSE;
-  g_source_remove (priv->drag_tag);
-  priv->drag_tag = 0;
+  if(priv->drag_motion)
+  {
+    priv->drag_motion = FALSE;
+    g_source_remove (priv->drag_tag);
+    priv->drag_tag = 0;
+  }
 }
 
 static void
@@ -615,9 +768,21 @@ task_icon_drag_data_received (GtkWidget      *widget,
   GSList          *list;
   GError          *error;
   TaskLauncher    *launcher;
+  GdkAtom         target;
+  gchar           *target_name;
 
   g_return_if_fail (TASK_IS_ICON (widget));
   priv = TASK_ICON (widget)->priv;
+
+  target = gtk_drag_dest_find_target (widget, context, NULL);
+  target_name = gdk_atom_name (target);
+
+  /* If it is dragging of the task icon, there is actually no data */
+  if (g_strcmp0("awn/task-icon", target_name) == 0)
+  {
+    gtk_drag_finish (context, FALSE, FALSE, time);
+    return;
+  }
 
   /* If we are not a launcher, we don't care about this */
   if (!priv->windows || !TASK_IS_LAUNCHER (priv->windows->data))

@@ -90,9 +90,10 @@ applets/taskmananger
           - Have a way to still reach the standard context menu if need be
     - "Create shortcut" support
   - TaskIcon
-    - Add support for re-arranging taskicons
     - Support for doing something clever when desktop files are dropped on the
       bar (like adding them).
+    - React when a launcher get removed. Now it just stays there.
+        (Could be a problem with D&D, cuzz all existing launchers get reset on drag)
   - Window grouping
     - Drag-and-drop of task-icons on top eachother to create arbitary groups
     - Application grouping
@@ -104,7 +105,9 @@ applets/taskmananger
     - For what?
       - Addition/removing of launchers can be done through drag-and-drop
       - Re-ordering of launchers can be done the same way
-
+  - D&D
+    - To many drag-ended signals for one drop
+    - Set that the drop worked, so it doesn't go back to original place
 
 misc
   - Python/Vala bindings

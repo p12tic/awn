@@ -25,6 +25,7 @@
 #include <libawn/libawn.h>
 
 #include "task-window.h"
+#include "task-launcher.h"
 
 #define TASK_TYPE_ICON (task_icon_get_type ())
 
@@ -62,24 +63,28 @@ struct _TaskIconClass
   
   /*< signals >*/
   void (*ensure_layout) (TaskIcon *icon);
+  void (*drag_started) (TaskIcon *icon);
+  void (*drag_ended) (TaskIcon *icon);
+  void (*drag_move) (TaskIcon *icon);
 };
 
-GType       task_icon_get_type        (void) G_GNUC_CONST;
+GType           task_icon_get_type        (void) G_GNUC_CONST;
 
-GtkWidget * task_icon_new_for_window  (TaskWindow    *window);
+GtkWidget*      task_icon_new_for_window  (TaskWindow    *window);
 
-gboolean    task_icon_is_skip_taskbar (TaskIcon      *icon);
+gboolean        task_icon_is_skip_taskbar (TaskIcon      *icon);
 
-gboolean    task_icon_is_in_viewport  (TaskIcon      *icon,
-                                       WnckWorkspace *space);
+gboolean        task_icon_is_in_viewport  (TaskIcon      *icon,
+                                           WnckWorkspace *space);
 
-void        task_icon_append_window   (TaskIcon      *icon,
-                                       TaskWindow    *window);
-gboolean    task_icon_is_launcher     (TaskIcon      *icon);
+void            task_icon_append_window   (TaskIcon      *icon,
+                                           TaskWindow    *window);
+gboolean        task_icon_is_launcher     (TaskIcon      *icon);
+TaskLauncher*   task_icon_get_launcher    (TaskIcon      *icon);
 
-void        task_icon_refresh_icon    (TaskIcon      *icon);
+void            task_icon_refresh_icon    (TaskIcon      *icon);
 
-void        task_icon_refresh_geometry (TaskIcon     *icon);
+void            task_icon_refresh_geometry (TaskIcon     *icon);
 
 #endif /* _TASK_ICON_H_ */
 

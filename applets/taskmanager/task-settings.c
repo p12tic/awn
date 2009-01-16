@@ -74,6 +74,7 @@ task_settings_get_default (void)
 
   awn_load_int(client, "panel", "size", &s->panel_size, 48);
   awn_load_int(client, "panel", "orient", &s->orient, 0);
+  awn_load_int(client, "panel", "offset", &s->offset, 0);
  
   return s;
 }

@@ -28,6 +28,7 @@ typedef struct
 {
   gint  panel_size;
   gint  orient;
+  gint  offset;
   
 } TaskSettings;
 

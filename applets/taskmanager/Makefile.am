@@ -11,6 +11,8 @@ INCLUDES = \
 
 TASKMANAGER_SOURCES= \
 	applet.c \
+  task-drag-indicator.c \
+  task-drag-indicator.h \
 	task-icon.c \
 	task-icon.h \
 	task-launcher.c \

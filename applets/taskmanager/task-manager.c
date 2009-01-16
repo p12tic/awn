@@ -27,6 +27,7 @@
 
 #include "task-manager.h"
 
+#include "task-drag-indicator.h"
 #include "task-icon.h"
 #include "task-launcher.h"
 #include "task-settings.h"
@@ -46,6 +47,9 @@ struct _TaskManagerPrivate
   AwnConfigClient *client;
   TaskSettings    *settings;
   WnckScreen      *screen;
+
+  TaskIcon          *dragged_icon;
+  TaskDragIndicator *drag_indicator;
 
   /* This is what the icons are packed into */
   GtkWidget *box;
@@ -88,6 +92,14 @@ static void task_manager_orient_changed (AwnApplet *applet,
                                          AwnOrientation orient);
 static void task_manager_size_changed   (AwnApplet *applet,
                                          gint       size);
+static void drag_started (TaskManager *manager, 
+                          TaskIcon *icon);
+static void drag_ended   (TaskManager *manager, 
+                          TaskIcon *icon);
+static void drag_move    (TaskManager *manager,
+                          gint x,
+                          gint y,
+                          TaskIcon *icon);
 
 /* GObject stuff */
 static void
@@ -239,6 +251,13 @@ task_manager_init (TaskManager *manager)
   gtk_container_add (GTK_CONTAINER (manager), priv->box);
   gtk_widget_show (priv->box);
 
+  /* Create drag indicator */
+  priv->drag_indicator = TASK_DRAG_INDICATOR(task_drag_indicator_new());
+  gtk_container_add (GTK_CONTAINER (priv->box), GTK_WIDGET(priv->drag_indicator));
+  gtk_widget_hide (GTK_WIDGET(priv->drag_indicator));
+  //TODO: free !!!
+  priv->dragged_icon = NULL;
+
   /* connect to the relevent WnckScreen signals */
   g_signal_connect (priv->screen, "window-opened", 
                     G_CALLBACK (on_window_opened), manager);
@@ -273,9 +292,15 @@ static void
 task_manager_orient_changed (AwnApplet *applet, 
                              AwnOrientation orient)
 {
-  TaskManager *manager = TASK_MANAGER (applet);
+  TaskManagerPrivate *priv;
 
-  g_return_if_fail (TASK_IS_MANAGER (manager));
+  g_return_if_fail (TASK_IS_MANAGER (applet));
+  priv = TASK_MANAGER (applet)->priv;
+
+  if (priv->settings)
+    priv->settings->orient = orient;
+
+  task_drag_indicator_refresh (priv->drag_indicator);
 }
 
 static void 
@@ -298,6 +323,8 @@ task_manager_size_changed   (AwnApplet *applet,
     if (TASK_IS_ICON (icon))
       task_icon_refresh_icon (icon);
   }
+
+  task_drag_indicator_refresh (priv->drag_indicator);
 }
 
 /*
@@ -376,6 +403,10 @@ ensure_layout (TaskManager *manager)
     }
   }
   
+  /* Hide drag_indicator if there is no AwnIcon currently dragged */
+  if(priv->dragged_icon == NULL)
+      gtk_widget_hide (GTK_WIDGET(priv->drag_indicator));
+
   /* We can update the window icon geometry in an idle */
   g_idle_add ((GSourceFunc)update_icon_geometry, manager);
 }
@@ -622,6 +653,12 @@ on_window_opened (WnckScreen    *screen,
   priv->icons = g_slist_append (priv->icons, icon);
   g_signal_connect_swapped (icon, "ensure_layout", 
                             G_CALLBACK (ensure_layout), manager);
+  g_signal_connect_swapped (icon, "drag_started", 
+                            G_CALLBACK (drag_started), manager);
+  g_signal_connect_swapped (icon, "drag_ended", 
+                            G_CALLBACK (drag_ended), manager);
+  g_signal_connect_swapped (icon, "drag_move", 
+                            G_CALLBACK (drag_move), manager);
   g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);  
   
   /* Finally, make sure all is well on the taskbar */
@@ -731,6 +768,12 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
     gtk_widget_show (icon);
 
     priv->icons = g_slist_append (priv->icons, icon);
+    g_signal_connect_swapped (icon, "drag_started", 
+                              G_CALLBACK (drag_started), manager);
+    g_signal_connect_swapped (icon, "drag_ended", 
+                              G_CALLBACK (drag_ended), manager);
+    g_signal_connect_swapped (icon, "drag_move", 
+                              G_CALLBACK (drag_move), manager);
     g_signal_connect_swapped (icon, "ensure_layout", 
                                G_CALLBACK (ensure_layout), manager);
     g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
@@ -742,3 +785,149 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
   /* Finally, make sure all is well on the taskbar */
   ensure_layout (manager);
 }
+
+/* Position Icons through dragging */
+static void drag_started(TaskManager *manager, TaskIcon *icon)
+{
+  TaskManagerPrivate *priv;
+  gint move_to;
+  GList* childs;
+  
+  priv = TASK_MANAGER_GET_PRIVATE (manager);
+  priv->dragged_icon = icon;
+
+  childs = gtk_container_get_children (GTK_CONTAINER(priv->box));
+  move_to = g_list_index (childs, GTK_WIDGET(icon));
+  gtk_box_reorder_child (GTK_BOX(priv->box), GTK_WIDGET(priv->drag_indicator), move_to);
+
+  gtk_widget_show (GTK_WIDGET(priv->drag_indicator));
+  gtk_widget_hide (GTK_WIDGET(icon));
+}
+
+static void drag_ended(TaskManager *manager, TaskIcon *icon)
+{
+  TaskManagerPrivate *priv;
+  gint move_to;
+  GList* childs;
+  GSList* d;
+  GSList* launchers = NULL;
+  TaskLauncher* launcher;
+  gchar* launcher_path;
+  GError *err = NULL;
+
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  g_return_if_fail (TASK_IS_ICON (icon));
+
+  priv = TASK_MANAGER_GET_PRIVATE (manager);
+  if(priv->dragged_icon == NULL)
+    return;
+
+  priv->dragged_icon = NULL;
+
+  if( !GTK_WIDGET_VISIBLE(priv->drag_indicator) )
+  {
+    g_print("Put Icon into the hovering icon\n");
+    //PUT INTO THE TASKICON
+  }
+  // TODO: FOR NOW ALWAYS ACT LIKE IT WAS ADDED BEFORE OR AFTER
+  // AND NOT INTO A AWNICON. WHEN AWNICON SUPPORTS MULTIPLE WINDOWS
+  // THIS WILL GET FIXED
+  //else
+  //{
+    childs = gtk_container_get_children (GTK_CONTAINER(priv->box));
+    move_to = g_list_index (childs, GTK_WIDGET (priv->drag_indicator));
+    gtk_box_reorder_child (GTK_BOX (priv->box), GTK_WIDGET (icon), move_to);
+
+    gtk_widget_hide (GTK_WIDGET (priv->drag_indicator));
+    gtk_widget_show (GTK_WIDGET (icon));
+
+    /* If it is a launcher the position in config should be adjusted too. */
+    if (task_icon_is_launcher (icon))
+    {
+      // get the updated list
+      childs = gtk_container_get_children (GTK_CONTAINER(priv->box));
+      while(childs)
+      {
+        if( TASK_IS_ICON(childs->data) && task_icon_is_launcher (TASK_ICON (childs->data)))
+        {
+          launcher = task_icon_get_launcher (TASK_ICON (childs->data));
+          launcher_path = g_strdup (task_launcher_get_desktop_path (launcher));
+          launchers = g_slist_prepend (launchers, launcher_path);
+        }
+        childs = childs->next;
+      }
+      launchers = g_slist_reverse(launchers);
+
+      awn_config_client_set_list (priv->client, 
+                                  AWN_CONFIG_CLIENT_DEFAULT_GROUP, 
+                                  "launcher_paths", 
+                                  AWN_CONFIG_CLIENT_LIST_TYPE_STRING, 
+                                  launchers, 
+                                  &err);
+      for (d = launchers; d; d = d->next)
+        g_free (d->data);
+      g_slist_free (launchers);
+
+      if (err) {
+	      g_warning ("Error: %s", err->message);
+	      return;
+      }
+    }
+  //}
+
+}
+
+static void drag_move(TaskManager *manager, gint x, gint y, TaskIcon *icon)
+{
+  gint move_to, moved;
+  GList* childs;
+  TaskManagerPrivate *priv;
+  AwnOrientation orient;
+  guint size;
+  double action;
+  
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+
+  priv = TASK_MANAGER_GET_PRIVATE (manager);
+
+  orient = awn_applet_get_orientation (AWN_APPLET(manager));
+  size = awn_applet_get_size (AWN_APPLET(manager));
+  childs = gtk_container_get_children (GTK_CONTAINER(priv->box));
+  move_to = g_list_index (childs, GTK_WIDGET(icon));
+  moved = g_list_index (childs, GTK_WIDGET(priv->drag_indicator));
+
+  g_return_if_fail (move_to != -1);
+  g_return_if_fail (moved != -1);
+
+  if(orient == AWN_ORIENTATION_TOP || orient == AWN_ORIENTATION_BOTTOM)
+    action = (double)x/size;
+  else
+    action = (double)y/size;
+
+  if(action < 0.25)
+  {
+    if(moved > move_to)
+    {
+      gtk_box_reorder_child (GTK_BOX(priv->box), GTK_WIDGET(priv->drag_indicator), move_to);
+    }
+    gtk_widget_show(GTK_WIDGET(priv->drag_indicator));
+  }
+  else if(action > 0.75)
+  {
+    if(moved < move_to)
+    {
+      gtk_box_reorder_child (GTK_BOX(priv->box), GTK_WIDGET(priv->drag_indicator), move_to);
+    }
+    gtk_widget_show(GTK_WIDGET(priv->drag_indicator));
+  }
+  else
+  {
+    // TODO: FOR NOW DON'T HIDE THE DRAG_INDICATOR
+    // WHEN AWNICON SUPPORTS MULTIPLE WINDOWS IT SHOULD GET HIDDEN, 
+    // BECAUSE IT THEN WILL BE ADDED INTO THE AWNICON
+    // THIS WILL GET FIXED
+    //gtk_widget_hide(GTK_WIDGET(priv->drag_indicator));
+  }
+}
+
+
