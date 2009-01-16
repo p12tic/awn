@@ -9,9 +9,7 @@ src/
   - Make the panel set the right hints for
     - Panel mode
     - Desktop mode
-  - Add autohide support with mouse-watching so we don't miss the mouse-out
-    event
-    - Add support through dbus to inhibit autohide
+  - Add DBus support to inhibit autohide
   - auto-resize support when panel runs out of space
   - Add expand mode support
     - Make sure AwnAppletManager respects the applets expand setting for
@@ -55,6 +53,7 @@ libawn/
       - message
     - replace config bitfield for effects with a bunch of string-based options
       (enum-like)
+    - [Nice-to-have] make speed of effects configurable
   - AwnAppletSimple
     - Write a test-case with lots of pixbuf, cairo_surface and icon-name swaps
       to make sure we are not leaking when doing switches

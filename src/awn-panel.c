@@ -79,6 +79,9 @@ struct _AwnPanelPrivate
   gboolean autohide_inhibited;
 };
 
+// FIXME: this timeout should be configurable I guess
+#define AUTOHIDE_DELAY 1000
+
 enum 
 {
   PROP_0,
@@ -532,8 +535,7 @@ poll_mouse_position (gpointer data)
     {
       // the timeout will emit autohide-start
       priv->autohide_start_timer_id =
-        g_timeout_add (1000, autohide_start_timeout, panel);
-      // FIXME: this timeout should be configurable I guess
+        g_timeout_add (AUTOHIDE_DELAY, autohide_start_timeout, panel);
     }
   }
 
@@ -1298,8 +1300,7 @@ on_mouse_out (GtkWidget *widget, GdkEventCrossing *event)
   {
     // the timeout will emit autohide-start
     priv->autohide_start_timer_id =
-      g_timeout_add (1000, autohide_start_timeout, panel);
-    // FIXME: this timeout should be configurable I guess
+      g_timeout_add (AUTOHIDE_DELAY, autohide_start_timeout, panel);
   }
 
   return FALSE;
