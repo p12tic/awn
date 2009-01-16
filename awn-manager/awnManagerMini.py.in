@@ -99,7 +99,7 @@ class awnPreferencesMini(awnPreferences):
 	self.setup_spin(defs.PANEL, defs.MONITOR_HEIGHT, self.wTree.get_widget("monitor_height"))
 	self.setup_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_widget("monitor_width"))
 	self.setup_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_widget("monitor_offset"))
-	self.setup_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_widget("autohide_config")
+	self.setup_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_widget("autohide_config"))
 
     def reload(self):
         self.load_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_widget("iconeffects"))
@@ -113,7 +113,7 @@ class awnPreferencesMini(awnPreferences):
 	self.load_spin(defs.PANEL, defs.MONITOR_HEIGHT, self.wTree.get_widget("monitor_height"))
 	self.load_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_widget("monitor_width"))
 	self.load_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_widget("monitor_offset"))
-	elf.load_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_widget("autohide_config"))
+	self.load_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_widget("autohide_config"))
 
     def add_repo_win_callback(self, data=None):
 	self.update_repo_view()

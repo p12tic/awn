@@ -75,6 +75,8 @@ struct _AwnPanelPrivate
   guint mouse_poll_timer_id;
   guint autohide_start_timer_id;
   gboolean autohide_started;
+  gboolean autohide_always_visible;
+  gboolean autohide_inhibited;
 };
 
 enum 
@@ -95,6 +97,7 @@ enum
   AUTOHIDE_TYPE_NONE = 0,
   AUTOHIDE_TYPE_KEEP_BELOW,
   AUTOHIDE_TYPE_FADE_OUT,
+  AUTOHIDE_TYPE_TRANSPARENTIZE,
 
   AUTOHIDE_TYPE_LAST
 };
@@ -129,6 +132,10 @@ static void     on_composited_changed       (GdkScreen *screen,
 static void     on_screen_changed           (GtkWidget *widget, 
                                              GdkScreen *screen,
                                              AwnPanel  *panel);
+static gboolean on_mouse_over               (GtkWidget *widget,
+                                             GdkEventCrossing *event);
+static gboolean on_mouse_out                (GtkWidget *widget,
+                                             GdkEventCrossing *event);
 
 static gboolean on_window_configure         (GtkWidget         *panel,
                                              GdkEventConfigure *event);
@@ -400,6 +407,7 @@ alpha_blend_hide (gpointer data)
   if (priv->hide_counter == 20)
   {
     priv->hiding_timer_id = 0;
+    priv->autohide_always_visible = FALSE; // see the note in start function
     gtk_widget_hide (GTK_WIDGET (panel));
     gdk_window_set_opacity (GTK_WIDGET(panel)->window, 1.0);
     return FALSE;
@@ -408,12 +416,18 @@ alpha_blend_hide (gpointer data)
   return TRUE;
 }
 
-static void
+static gboolean
 alpha_blend_start (AwnPanel *panel, gpointer data)
 {
   AwnPanelPrivate *priv = panel->priv;
   priv->hide_counter = 0;
-  priv->hiding_timer_id = g_timeout_add (30, alpha_blend_hide, panel);
+  priv->hiding_timer_id = g_timeout_add (40, alpha_blend_hide, panel);
+
+  // A hack: we will set autohide_always_visible ourselves
+  // when the animation's internal timer expires, so that while the window is
+  // in the process of hiding it can be interrupted by hovering over the window
+  // itself, but when it's hidden user needs to touch the edge
+  return TRUE;
 }
 
 static void
@@ -432,11 +446,15 @@ alpha_blend_end (AwnPanel *panel, gpointer data)
 }
 
 /* Auto-hide keep below method */
-static void keep_below_start (AwnPanel *panel, gpointer data)
+static gboolean keep_below_start (AwnPanel *panel, gpointer data)
 {
+  // wow, setting keep_below makes the border appear and unsticks us
   gtk_window_set_decorated (GTK_WINDOW (panel), FALSE);
-  // wow, setting keep_below makes the border appear
+  gtk_window_stick (GTK_WINDOW (panel));
+
   gtk_window_set_keep_below (GTK_WINDOW (panel), TRUE);
+
+  return FALSE;
 }
 
 static void keep_below_end (AwnPanel *panel, gpointer data)
@@ -444,19 +462,40 @@ static void keep_below_end (AwnPanel *panel, gpointer data)
   gtk_window_set_keep_below (GTK_WINDOW (panel), FALSE);
 }
 
+/* Auto-hide transparentize method */
+static gboolean transparentize_start (AwnPanel *panel, gpointer data)
+{
+  gdk_window_set_opacity (GTK_WIDGET (panel)->window, 0.4);
+
+  return TRUE;
+}
+
+static void transparentize_end (AwnPanel *panel, gpointer data)
+{
+  gdk_window_set_opacity (GTK_WIDGET (panel)->window, 1.0);
+}
+
+/* Auto-hide internal implementation */
 static gboolean
 autohide_start_timeout (gpointer data)
 {
   g_return_val_if_fail(AWN_IS_PANEL(data), FALSE);
+  gboolean signal_ret = FALSE;
 
   AwnPanel *panel = AWN_PANEL (data);
   AwnPanelPrivate *priv = panel->priv;
 
   priv->autohide_start_timer_id = 0;
 
-  // FIXME: if (! priv->autohide_inhibited)
+  if (priv->autohide_inhibited ||
+      awn_panel_check_mouse_pos (panel, TRUE))
+  {
+     return FALSE;
+  }
+
   priv->autohide_started = TRUE;
-  g_signal_emit (panel, _panel_signals[AUTOHIDE_START], 0);
+  g_signal_emit (panel, _panel_signals[AUTOHIDE_START], 0, &signal_ret);
+  priv->autohide_always_visible = signal_ret;
 
   return FALSE;
 }
@@ -470,7 +509,8 @@ poll_mouse_position (gpointer data)
   AwnPanel *panel = AWN_PANEL (data);
   AwnPanelPrivate *priv = panel->priv;
 
-  if (awn_panel_check_mouse_pos (panel, !priv->autohide_started))
+  if (awn_panel_check_mouse_pos (panel,
+        !priv->autohide_started || priv->autohide_always_visible))
   {
     // we are on the window or its edge
     if (priv->autohide_start_timer_id)
@@ -493,6 +533,7 @@ poll_mouse_position (gpointer data)
       // the timeout will emit autohide-start
       priv->autohide_start_timer_id =
         g_timeout_add (1000, autohide_start_timeout, panel);
+      // FIXME: this timeout should be configurable I guess
     }
   }
 
@@ -647,8 +688,8 @@ awn_panel_class_init (AwnPanelClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (AwnPanelClass, autohide_start),
 			      NULL, NULL,
-			      g_cclosure_marshal_VOID__VOID,
-			      G_TYPE_NONE,
+			      gtk_marshal_BOOLEAN__VOID,
+			      G_TYPE_BOOLEAN,
 			      0);
 
   _panel_signals[AUTOHIDE_END] =
@@ -686,6 +727,11 @@ awn_panel_init (AwnPanel *panel)
 
   g_signal_connect (priv->eventbox, "expose-event",
                     G_CALLBACK (on_eb_expose), priv->alignment);
+
+  g_signal_connect (panel, "enter-notify-event", 
+                    G_CALLBACK (on_mouse_over), NULL);
+  g_signal_connect (panel, "leave-notify-event", 
+                    G_CALLBACK (on_mouse_out), NULL);
 
   gtk_window_set_resizable (GTK_WINDOW (panel), FALSE);
 }
@@ -1221,6 +1267,43 @@ awn_panel_set_size (AwnPanel *panel, gint size)
   gtk_widget_queue_draw (GTK_WIDGET (panel));
 }
 
+/* This will help autohide, but i'd work even without it */
+static gboolean
+on_mouse_over (GtkWidget *widget, GdkEventCrossing *event)
+{
+  AwnPanel *panel = AWN_PANEL (widget);
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->autohide_start_timer_id)
+  {
+    g_source_remove (priv->autohide_start_timer_id);
+    priv->autohide_start_timer_id = 0;
+  }
+  if (priv->autohide_started)
+  {
+    priv->autohide_started = FALSE;
+    g_signal_emit (panel, _panel_signals[AUTOHIDE_END], 0);
+  }
+
+  return FALSE;
+}
+
+static gboolean
+on_mouse_out (GtkWidget *widget, GdkEventCrossing *event)
+{
+  AwnPanel *panel = AWN_PANEL (widget);
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->autohide_start_timer_id == 0  && !priv->autohide_started)
+  {
+    // the timeout will emit autohide-start
+    priv->autohide_start_timer_id =
+      g_timeout_add (1000, autohide_start_timeout, panel);
+    // FIXME: this timeout should be configurable I guess
+  }
+
+  return FALSE;
+}
 
 static void
 awn_panel_reset_autohide (AwnPanel *panel)
@@ -1276,6 +1359,8 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
 
   // for all autohide types, just connect to autohide-start & end signals
   // and do what you want to do in the callbacks
+  // The autohide-start should return FALSE if un-hiding requires to touch
+  // the display edge, and TRUE if it should react on whole AWN window
   switch (priv->autohide_type)
   {
     case AUTOHIDE_TYPE_KEEP_BELOW:
@@ -1289,6 +1374,12 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
         panel, "autohide-start", G_CALLBACK (alpha_blend_start), NULL);
       end_handler_id = g_signal_connect (
         panel, "autohide-end", G_CALLBACK (alpha_blend_end), NULL);
+      break;
+    case AUTOHIDE_TYPE_TRANSPARENTIZE:
+      start_handler_id = g_signal_connect (
+        panel, "autohide-start", G_CALLBACK (transparentize_start), NULL);
+      end_handler_id = g_signal_connect (
+        panel, "autohide-end", G_CALLBACK (transparentize_end), NULL);
       break;
     default:
       break;
