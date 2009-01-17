@@ -145,19 +145,21 @@ main(int argc, char *argv[])
   GError *error = NULL;
   guint32 ret;
 
-  GOptionContext *context;
-  gboolean version = FALSE;
-  GOptionEntry entries[] =
-  {
-    { "version", 'v', 0, G_OPTION_ARG_NONE, &version, "Prints the version number", NULL },
-    { NULL }
-  };
-
   textdomain (GETTEXT_PACKAGE);
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
-  context = g_option_context_new("- Starts the Avant Window Navigator dock");
+  GOptionContext *context;
+  gboolean version = FALSE;
+  GOptionEntry entries[] =
+  {
+    {
+      "version", 'v', 0, G_OPTION_ARG_NONE, &version, _("Prints the version number"), NULL
+    },
+    { NULL }
+  };
+
+  context = g_option_context_new(_("Starts the Avant Window Navigator dock"));
   g_option_context_add_main_entries(context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group(context, gtk_get_option_group(TRUE));
   g_option_context_parse(context, &argc, &argv, NULL);
@@ -310,7 +312,7 @@ main(int argc, char *argv[])
 
   if (connection == NULL)
   {
-    g_warning("Failed to make connection to session bus: %s",
+    g_warning(_("Failed to make connection to session bus: %s"),
               error->message);
     g_error_free(error);
     //exit(1);
@@ -325,7 +327,7 @@ main(int argc, char *argv[])
   if (!org_freedesktop_DBus_request_name(proxy, AWN_APPLET_NAMESPACE,
                                          0, &ret, &error))
   {
-    g_warning("There was an error requesting the name: %s",
+    g_warning(_("There was an error requesting the name: %s"),
               error->message);
     g_error_free(error);
     //exit(1);
@@ -512,7 +514,7 @@ create_menu(void)
 
   menu = gtk_menu_new();
 
-  item = gtk_image_menu_item_new_with_label("Dock Preferences");
+  item = gtk_image_menu_item_new_with_label(_("Dock Preferences"));
   gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
                                 gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
                                                          GTK_ICON_SIZE_MENU));
@@ -613,7 +615,6 @@ appman_refresh(AwnConfigClientNotifyEntry *entry, AwnSettings *settings)
 static void
 screen_size_changed(GdkScreen *screen, AwnSettings *s)
 {
-  g_print("Screen size changed\n");
   gdk_screen_get_monitor_geometry(screen,
                                   gdk_screen_get_monitor_at_window(screen, GTK_WIDGET(s->window)->window),
                                   &s->monitor);
@@ -692,7 +693,7 @@ composited_changed(GdkScreen *screen, AwnSettings *s)
   static AwnConfigClient *client = NULL;
   static GtkWidget* dialog = NULL;
   static GtkWidget* checkbutton = NULL;
-  static const gchar* str = "Warning: Screen isn't composited. Please run compiz (-fusion) or another compositing manager.";
+  static const gchar* str = _("Warning: Screen isn't composited. Please run compiz (-fusion) or another compositing manager.");
 
   if (!is_composited(screen))
   {
@@ -709,9 +710,9 @@ composited_changed(GdkScreen *screen, AwnSettings *s)
                                          GTK_BUTTONS_CLOSE,
                                          "%s",
                                          str);
-        gtk_window_set_title(GTK_WINDOW(dialog), "Starting avant-window-navigator");
+        gtk_window_set_title(GTK_WINDOW(dialog), _("Starting avant-window-navigator"));
 
-        checkbutton = gtk_check_button_new_with_label("Don't show this message again.");
+        checkbutton = gtk_check_button_new_with_label(_("Don't show this message again."));
         gtk_container_add (GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), checkbutton);
       }
       gtk_widget_show_all (dialog);
