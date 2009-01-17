@@ -693,7 +693,9 @@ composited_changed(GdkScreen *screen, AwnSettings *s)
   static AwnConfigClient *client = NULL;
   static GtkWidget* dialog = NULL;
   static GtkWidget* checkbutton = NULL;
-  static const gchar* str = _("Warning: Screen isn't composited. Please run compiz (-fusion) or another compositing manager.");
+  static const gchar* str = NULL;
+  if(!str)
+    str = _("Warning: Screen isn't composited. Please run compiz (-fusion) or another compositing manager.");
 
   if (!is_composited(screen))
   {

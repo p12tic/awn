@@ -169,7 +169,12 @@ class awnLauncherEditor:
             if self.icon_path is None:
                 self.icon_path = "application-x-executable"
             self.desktop_entry.set('Icon', self.icon_path)
-            self.desktop_entry.write()
+            try:
+                self.desktop_entry.write()
+            except IOError, e:
+                err_dialog(_('Couldn\'t save the launcher. Error: %s') % e)
+                self.main_dialog.hide_all()
+                return
             try:
                 uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
             except gobject.GError:
