@@ -33,6 +33,7 @@
 #define AUTO_HIDE "auto_hide"  /*bool*/
 #define AUTO_HIDE_DELAY "auto_hide_delay" /*int*/
 #define KEEP_BELOW "keep_below"  /*bool*/
+#define SHOW_DIALOG "show_dialog_if_non_composited" /*bool*/
 
 #define BAR  "bar"
 #define ROUNDED_CORNERS "rounded_corners" /*bool*/
@@ -162,6 +163,8 @@ awn_settings_new()
   awn_load_int(client, AWN_CONFIG_CLIENT_DEFAULT_GROUP, AUTO_HIDE_DELAY, &s->auto_hide_delay, 1000);
 
   awn_load_bool(client, AWN_CONFIG_CLIENT_DEFAULT_GROUP, KEEP_BELOW, &s->keep_below, FALSE);
+
+  awn_load_bool(client, AWN_CONFIG_CLIENT_DEFAULT_GROUP, SHOW_DIALOG, &s->show_dialog, TRUE);
 
   s->hidden = FALSE;
 

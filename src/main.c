@@ -664,41 +664,68 @@ static gboolean is_composited(GdkScreen *screen)
   return composited;
 }
 
-void composited_off_dialog_closed_cb(GtkDialog *dialog,
-                                     gint       response_id,
-                                     GtkWidget ** p_dialog)
+static void composited_off_dialog_closed_cb (GtkDialog *dialog,
+                                             gint       response_id,
+                                             GtkWidget ** p_dialog)
 {
     gtk_widget_destroy(GTK_WIDGET(dialog));
     *p_dialog = NULL;
 }
 
+static void composited_toggle_show_dialog_cb (GtkToggleButton *togglebutton)
+{
+  AwnConfigClient *client;
+
+  client = awn_config_client_new();
+
+  awn_config_client_ensure_group (client, AWN_CONFIG_CLIENT_DEFAULT_GROUP);
+  awn_config_client_set_bool (client, 
+                              AWN_CONFIG_CLIENT_DEFAULT_GROUP,
+                              "show_dialog_if_non_composited",
+                              !gtk_toggle_button_get_active (togglebutton),
+                              NULL);
+}
+
 static void
 composited_changed(GdkScreen *screen, AwnSettings *s)
 {
-  static GtkWidget * dialog = NULL;
-  
-  if (!is_composited(screen))
-  { 
-    const char *str = "Error: Screen isn't composited. Please run compiz (-fusion) or another compositing manager.\n";
-    GtkWidget *label = gtk_label_new( str );
+  static AwnConfigClient *client = NULL;
+  static GtkWidget* dialog = NULL;
+  static GtkWidget* checkbutton = NULL;
+  static const gchar* str = "Warning: Screen isn't composited. Please run compiz (-fusion) or another compositing manager.";
 
-    if (!dialog)
+  if (!is_composited(screen))
+  {
+    if(!client)
+      client = awn_config_client_new();
+
+    if(s->show_dialog)
     {
-	  dialog = gtk_dialog_new_with_buttons ("Screen is not composited",
-                                         GTK_WINDOW(s->window),
+      if (!dialog)
+      {
+	      dialog = gtk_message_dialog_new (GTK_WINDOW(s->window),
                                          GTK_DIALOG_DESTROY_WITH_PARENT,
-                                         GTK_STOCK_OK,
-                                         GTK_RESPONSE_NONE,
-                                         NULL);
+                                         GTK_MESSAGE_WARNING,
+                                         GTK_BUTTONS_CLOSE,
+                                         "%s",
+                                         str);
+        gtk_window_set_title(GTK_WINDOW(dialog), "Starting avant-window-navigator");
+
+        checkbutton = gtk_check_button_new_with_label("Don't show this message again.");
+        gtk_container_add (GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), checkbutton);
+      }
+      gtk_widget_show_all (dialog);
+      
+      g_signal_connect (dialog,
+                        "response", 
+                        G_CALLBACK (composited_off_dialog_closed_cb),
+                        &dialog);
+      g_signal_connect (GTK_TOGGLE_BUTTON (checkbutton),
+                        "toggled", 
+                        G_CALLBACK (composited_toggle_show_dialog_cb),
+                        NULL);
     }
-    gtk_container_add (GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), label);
-    gtk_widget_show_all (dialog);
-    
-    g_signal_connect (dialog,
-                             "response", 
-                             G_CALLBACK (composited_off_dialog_closed_cb),
-                             &dialog);
-    g_print("%s",str);
+    g_print("%s\n",str);
 
     gtk_widget_hide(s->bar);
     gtk_widget_hide(s->window);

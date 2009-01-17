@@ -1,3 +1,19 @@
+2009-01-17  h4writer <hv1989@gmail.com>
+
+  * libawn/awn-settings.c
+  * libawn/awn-settings.h
+  * data/awn.schema-ini.in
+  added the option "show_dialog_if_non_composited"
+
+  * src/main.c
+  changed 'dialog' to 'message_dialog'
+  show a check box to never show the dialog again.
+  (should solve #283345)
+
+  I don't know how the translation works, but I updated/added some text,
+  so I guess that needs to get updated too?
+  
+
 2009-01-08  h4writer <hv1989@gmail.com>
 
   * awn-applet-activation/main.c:

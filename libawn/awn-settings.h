@@ -40,6 +40,7 @@ typedef struct
   GtkWidget *appman;
   GtkWidget *hot;
   gint task_width;
+  gboolean show_dialog;
 
   /* monitor settings */
   GdkRectangle monitor;

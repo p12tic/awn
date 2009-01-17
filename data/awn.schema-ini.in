@@ -38,6 +38,10 @@ description = Always keep AWN below all other windows.
 type = list-string
 default = @DATADIR@/avant-window-navigator/applets/taskman.desktop::1
 description = The list of paths to the enabled applets, in order from left to right.
+[DEFAULT/show_dialog_if_non_composited]
+type = bool
+default = True
+description = Show a warning dialog if the screen isn't composited. 
 [bar/rounded_corners]
 type = bool
 default = True
