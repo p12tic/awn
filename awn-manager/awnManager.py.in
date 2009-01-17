@@ -23,10 +23,13 @@
 import sys, os, os.path, time
 
 PLAT_PKG = '@PY_PLAT_PKG@'
+SITE_PKG = '@PY_SITE_PKG@'
 AWN_MANAGER_DIR = os.path.join('@PKGDATADIR@', 'awn-manager')
 sys.path = [AWN_MANAGER_DIR] + sys.path
 if PLAT_PKG not in sys.path:
     sys.path = [PLAT_PKG] + sys.path
+if SITE_PKG not in sys.path:
+    sys.path = [SITE_PKG] + sys.path
 
 try:
     import pygtk
