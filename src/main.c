@@ -693,9 +693,7 @@ composited_changed(GdkScreen *screen, AwnSettings *s)
   static AwnConfigClient *client = NULL;
   static GtkWidget* dialog = NULL;
   static GtkWidget* checkbutton = NULL;
-  static const gchar* str = NULL;
-  if(!str)
-    str = _("Warning: Screen isn't composited. Please run compiz (-fusion) or another compositing manager.");
+  static const gchar* str = N_("Warning: Screen isn't composited. Please run compiz (-fusion) or another compositing manager.");
 
   if (!is_composited(screen))
   {
@@ -711,7 +709,7 @@ composited_changed(GdkScreen *screen, AwnSettings *s)
                                          GTK_MESSAGE_WARNING,
                                          GTK_BUTTONS_CLOSE,
                                          "%s",
-                                         str);
+                                         _(str));
         gtk_window_set_title(GTK_WINDOW(dialog), _("Starting avant-window-navigator"));
 
         checkbutton = gtk_check_button_new_with_label(_("Don't show this message again."));
@@ -728,7 +726,7 @@ composited_changed(GdkScreen *screen, AwnSettings *s)
                         G_CALLBACK (composited_toggle_show_dialog_cb),
                         NULL);
     }
-    g_print("%s\n",str);
+    g_print("%s\n",_(str));
 
     gtk_widget_hide(s->bar);
     gtk_widget_hide(s->window);
