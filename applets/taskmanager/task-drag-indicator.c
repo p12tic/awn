@@ -28,8 +28,21 @@
 
 G_DEFINE_TYPE (TaskDragIndicator, task_drag_indicator, AWN_TYPE_ICON);
 
+static const GtkTargetEntry drop_types[] = 
+{
+  { "awn/task-icon", 0, 0 }
+};
+static const gint n_drop_types = G_N_ELEMENTS (drop_types);
+
 /* FORWARDS */
 static gboolean task_drag_indicator_expose (GtkWidget *widget, GdkEventExpose *event);
+static void     task_drag_indicator_drag_data_received (GtkWidget      *widget,
+                                                        GdkDragContext *context,
+                                                        gint            x,
+                                                        gint            y,
+                                                        GtkSelectionData *data,
+                                                        guint           info,
+                                                        guint           time);
 
 enum
 {
@@ -58,7 +71,8 @@ task_drag_indicator_class_init (TaskDragIndicatorClass *klass)
   obj_class->constructed  = task_drag_indicator_constructed;
   obj_class->finalize     = task_drag_indicator_finalize;
 
-  wid_class->expose_event  = task_drag_indicator_expose;
+  wid_class->expose_event         = task_drag_indicator_expose;
+  wid_class->drag_data_received   = task_drag_indicator_drag_data_received;
 }
 
 static void
@@ -69,7 +83,16 @@ task_drag_indicator_init (TaskDragIndicator *drag_indicator)
   settings = task_settings_get_default ();
 
   awn_icon_set_orientation (AWN_ICON (drag_indicator), AWN_ORIENTATION_BOTTOM);
-  awn_icon_set_custom_paint (AWN_ICON (drag_indicator), 10, settings->panel_size); 
+  awn_icon_set_custom_paint (AWN_ICON (drag_indicator), 10, settings->panel_size);
+
+  /* D&D accept dragged objs */
+  gtk_widget_add_events (GTK_WIDGET (drag_indicator), GDK_ALL_EVENTS_MASK);
+  gtk_drag_dest_set (GTK_WIDGET (drag_indicator), 
+                     GTK_DEST_DEFAULT_MOTION,
+                     drop_types, n_drop_types,
+                     GDK_ACTION_LINK);
+  //gtk_drag_dest_add_uri_targets (GTK_WIDGET (icon));
+  //gtk_drag_dest_add_text_targets (GTK_WIDGET (icon));
 }
 
 GtkWidget *
@@ -151,7 +174,6 @@ task_drag_indicator_expose (GtkWidget *widget, GdkEventExpose *event)
 void
 task_drag_indicator_refresh (TaskDragIndicator      *drag_indicator)
 {
-  g_print("something changed\n");
   TaskSettings *settings;
 
   g_return_if_fail (TASK_IS_DRAG_INDICATOR (drag_indicator));
@@ -160,13 +182,22 @@ task_drag_indicator_refresh (TaskDragIndicator      *drag_indicator)
 
   if(settings->orient == AWN_ORIENTATION_TOP || settings->orient == AWN_ORIENTATION_BOTTOM)
   {
-    g_print("top/bottom\n");
     awn_icon_set_custom_paint (AWN_ICON (drag_indicator), 10, settings->panel_size+settings->offset);
   }
   else
   {
-    g_print("left/right\n");
     awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size+settings->offset, 10);
   }
 }
 
+static void
+task_drag_indicator_drag_data_received (GtkWidget      *widget,
+                                        GdkDragContext *context,
+                                        gint            x,
+                                        gint            y,
+                                        GtkSelectionData *sdata,
+                                        guint           info,
+                                        guint           time)
+{
+  gtk_drag_finish (context, TRUE, TRUE, time);
+}

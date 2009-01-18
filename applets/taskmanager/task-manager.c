@@ -904,7 +904,8 @@ static void drag_move(TaskManager *manager, gint x, gint y, TaskIcon *icon)
   else
     action = (double)y/size;
 
-  if(action < 0.25)
+  //if(action < 0.25)
+  if(action < 0.5)
   {
     if(moved > move_to)
     {
@@ -912,7 +913,8 @@ static void drag_move(TaskManager *manager, gint x, gint y, TaskIcon *icon)
     }
     gtk_widget_show(GTK_WIDGET(priv->drag_indicator));
   }
-  else if(action > 0.75)
+  //else if(action > 0.25)
+  else if(action >= 0.5)
   {
     if(moved < move_to)
     {

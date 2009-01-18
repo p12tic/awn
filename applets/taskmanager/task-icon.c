@@ -780,7 +780,7 @@ task_icon_drag_data_received (GtkWidget      *widget,
   /* If it is dragging of the task icon, there is actually no data */
   if (g_strcmp0("awn/task-icon", target_name) == 0)
   {
-    gtk_drag_finish (context, FALSE, FALSE, time);
+    gtk_drag_finish (context, TRUE, TRUE, time);
     return;
   }
 
