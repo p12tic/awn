@@ -1,3 +1,13 @@
+2009-01-18  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awnDefs.py.in:
+	* awn-manager/awnTheme.py:
+	* configure.in:
+	* data/Makefile.am:
+	* data/default-theme/Makefile.am:
+	* data/default-theme/theme.awn:
+	Fix Launchpad bug #134335 (default theme is now present in awn-manager)
+
 2009-01-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* autogen.sh:

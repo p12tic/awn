@@ -246,6 +246,7 @@ bindings/vala/Makefile
 data/Makefile
 data/active/Makefile
 data/avant-window-navigator.desktop.in
+data/default-theme/Makefile
 data/awn.schema-ini
 doc/Makefile
 doc/reference/Makefile

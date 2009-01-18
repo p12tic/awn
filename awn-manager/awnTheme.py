@@ -116,9 +116,16 @@ class AwnThemeManager:
         if not os.path.exists(defs.HOME_THEME_DIR) and not os.path.isdir(defs.HOME_THEME_DIR):
             os.makedirs(defs.HOME_THEME_DIR)
 
-        for d in self.list_dirs(defs.HOME_THEME_DIR):
-            theme_path = os.path.join(defs.HOME_THEME_DIR, d, self.AWN_CONFIG)
-            thumb_path = os.path.join(defs.HOME_THEME_DIR, d, self.AWN_THUMB)
+
+        theme_dirs = map(lambda x: os.path.join(defs.SYS_THEME_DIR, x),
+                         self.list_dirs(defs.SYS_THEME_DIR))
+        theme_dirs = theme_dirs + map(lambda x: 
+                     os.path.join(defs.HOME_THEME_DIR, x),
+                     self.list_dirs(defs.HOME_THEME_DIR))
+
+        for full_dir in theme_dirs:
+            theme_path = os.path.join(full_dir, self.AWN_CONFIG)
+            thumb_path = os.path.join(full_dir, self.AWN_THUMB)
 
             if os.path.exists(theme_path):
                 cfg = self.read(theme_path)
@@ -135,7 +142,7 @@ class AwnThemeManager:
                     self.theme_list.append({
                         'name': cfg['details']['name'],
                         'version': cfg['details']['version'],
-                        'dir': d
+                        'full-dir': full_dir
                         })
                     if setRadio:
                         self.currItr = row
@@ -151,14 +158,14 @@ class AwnThemeManager:
             index = self.model.get_path(self.currItr)[0]
             name = self.theme_list[index]['name']
             version = self.theme_list[index]['version']
-            directory = self.theme_list[index]['dir']
+            directory = self.theme_list[index]['full-dir']
 
             curr = open(self.AWN_CURRENT, 'w')
             curr.write(name+"\n")
             curr.write(version+"\n")
             curr.close()
 
-            theme_config = self.read(os.path.join(defs.HOME_THEME_DIR, directory, self.AWN_CONFIG))
+            theme_config = self.read(os.path.join(directory, self.AWN_CONFIG))
 
             for group, entries in theme_config.iteritems():
                 if group != 'details':
@@ -170,7 +177,7 @@ class AwnThemeManager:
                             getattr(self.CONFIG, get_typefunc(pref.ptype, 'set'))(group, key, pref.typecast(value))
 
             if self.CONFIG.get_bool(defs.BAR, defs.RENDER_PATTERN):
-                self.CONFIG.set_string(defs.BAR, defs.PATTERN_URI, os.path.join(defs.HOME_THEME_DIR, directory, "pattern.png"))
+                self.CONFIG.set_string(defs.BAR, defs.PATTERN_URI, os.path.join(directory, "pattern.png"))
 
     def add(self, widget, data=None):
         dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
@@ -210,7 +217,7 @@ class AwnThemeManager:
             else:
                 [tar.extract(f, defs.HOME_THEME_DIR) for f in tar.getnames()]
             tar.close()
-            self.add_row(path[0])
+            self.add_row(os.path.join(defs.HOME_THEME_DIR, path[0]))
             message = "Theme Successfully Added"
             message2 = ""
             success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_OK, message_format=message)
@@ -306,6 +313,10 @@ class AwnThemeManager:
             self.clean_tmp(self.BUILD_DIR)
 
             detailsWindow.destroy()
+
+            msg = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_INFO, buttons=gtk.BUTTONS_OK, message_format="The theme was saved to your Desktop folder as \"%s\"" % (foldername + ".tgz"))
+            msg.run()
+            msg.destroy()
         else:
             detailsWindow.destroy()
 
@@ -319,13 +330,13 @@ class AwnThemeManager:
             
             name = self.theme_list[index]['name']
             version = self.theme_list[index]['version']
-            directory = self.theme_list[index]['dir']
+            directory = self.theme_list[index]['full-dir']
 
-            self.clean_tmp(os.path.join(defs.HOME_THEME_DIR, directory))
-
-            #os.remove(os.path.join(defs.HOME_THEME_DIR, dir, self.AWN_THUMB))
-            #os.remove(os.path.join(defs.HOME_THEME_DIR, dir, self.AWN_CONFIG))
-            #os.rmdir(os.path.join(defs.HOME_THEME_DIR, dir))
+            try:
+                self.clean_tmp(directory)
+            except IOError, e:
+                err_dialog(_('Unable to remove the theme. Error: %s') % e)
+                return
 
             if os.path.exists(self.AWN_CURRENT):
                 curr = open(self.AWN_CURRENT, "rb")
@@ -343,8 +354,8 @@ class AwnThemeManager:
             self.model.remove(self.currItr)
 
     def add_row(self, directory):
-        theme_path = os.path.join(defs.HOME_THEME_DIR, directory, self.AWN_CONFIG)
-        thumb_path = os.path.join(defs.HOME_THEME_DIR, directory, self.AWN_THUMB)
+        theme_path = os.path.join(directory, self.AWN_CONFIG)
+        thumb_path = os.path.join(directory, self.AWN_THUMB)
 
         if os.path.exists(theme_path):
             cfg = self.read(theme_path)
@@ -358,7 +369,7 @@ class AwnThemeManager:
             self.theme_list.append({
                 'name': cfg['details']['name'],
                 'version': cfg['details']['version'],
-                'dir':directory
+                'full-dir':directory
                 })
 
     def write(self, path):
