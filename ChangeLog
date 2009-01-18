@@ -1,3 +1,9 @@
+2009-01-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* debian/rules:
+	Fix a bug where local Debian packaging broke (thanks to gilir for
+	reporting and testing).
+
 2009-01-18  Michal Hruby <michal.mhr@gmail.com>
 
 	* awn-manager/awnTheme.py:
