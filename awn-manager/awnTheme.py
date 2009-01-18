@@ -334,8 +334,10 @@ class AwnThemeManager:
 
             try:
                 self.clean_tmp(directory)
-            except IOError, e:
-                err_dialog(_('Unable to remove the theme. Error: %s') % e)
+            except (IOError, OSError), e:
+                dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK, 'Unable to remove the theme. Error: %s' % e)
+                dialog.run()
+                dialog.destroy()
                 return
 
             if os.path.exists(self.AWN_CURRENT):

@@ -1,5 +1,10 @@
 2009-01-18  Michal Hruby <michal.mhr@gmail.com>
 
+	* awn-manager/awnTheme.py:
+	Make the error dialog actually work.
+
+2009-01-18  Michal Hruby <michal.mhr@gmail.com>
+
 	* awn-manager/awnDefs.py.in:
 	* awn-manager/awnTheme.py:
 	* configure.in:
