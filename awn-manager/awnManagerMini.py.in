@@ -89,9 +89,11 @@ class awnPreferencesMini(awnPreferences):
 	self.view_repo = self.wTree.get_widget("list_repos_view")
 
 	self.load_themes_win = self.wTree.get_widget("choose_theme")
-	self.view_themes = self.wTree.get_widget("list_themes_view")
+	self.view_themes_scrol = self.wTree.get_widget("list_themes_scrol")
 	self.choose_themes_button = self.wTree.get_widget("choose_theme_button")
 	self.choose_themes_button.connect("clicked", self.choose_theme_win_callback)
+	self.apply_theme = self.wTree.get_widget("apply_theme")
+	self.apply_theme.connect("clicked", self.apply_theme_callback)
 
 	self.client = awn.Config()
 
@@ -166,26 +168,22 @@ class awnPreferencesMini(awnPreferences):
 	self.load_themes_win.show_all()
 
     def update_view_themes(self, data=None):
-	self.view_themes.hide_all()
+	self.view_themes_scrol.hide_all()
 
-	for elem in self.view_themes.get_children():
+	for elem in self.view_themes_scrol.get_children():
 		elem.destroy()
 
 	themes = self.type_catalog_from_sources_list()
+	self.treeview_themes = self.make_model(themes)
+	self.view_themes_scrol.add(self.treeview_themes)
+	self.view_themes_scrol.show_all()
 
-	for elem in themes:
-		desktop = DesktopEntry(elem)
-		hbox = gtk.HBox()
-		text = self.make_row(elem)
-		label = gtk.Label()
-		label.set_text(text)
-		icon = self.make_icon(elem)
-		image = gtk.Image()
-		image.set_from_pixbuf(icon)
-		hbox.pack_start(image, expand=False, fill=False)
-		hbox.pack_end(label, expand=False, fill=False)
-		self.view_themes.pack_start(hbox, expand=False, fill=False)
-	self.view_themes.show_all()
+    def apply_theme_callback(self, data=None):
+	model = self.treeview_themes.get_model()
+	selection = self.treeview_themes.get_selection()
+	select = selection.get_selected()
+	path = model.get(select[1], 2)
+	self.load_all_settings_from_desktop(path[0])
 
 
 class awnLauncherMini(awnLauncher):

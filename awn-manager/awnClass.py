@@ -332,11 +332,15 @@ class awnBzr:
 
 		return struct
 
-	def load_element_from_desktop(self, file_path, parameter, group, key):
+	def load_element_from_desktop(self, file_path, parameter, group, key, read=True):
 		'''	
 			Read a desktop file, and load the paramater setting.
+			file_path: the path of the desktop file or the read desktop file
 		'''
-		struct = self.read_desktop(file_path)
+		if read == True:
+			struct = self.read_desktop(file_path)
+		else:
+			struct = file_path
 		if struct['type'] == 'Theme':
 			#Read the settings
 			if not struct[parameter] == '':
@@ -386,6 +390,19 @@ class awnBzr:
 			if desktop.get('X-AWN-Type') == type_catalog:
 				final_catalog.append(elem)
 		return final_catalog
+
+	def load_all_settings_from_desktop(self, path):
+		'''	Load a desktop file and load all settings
+		'''
+		struct = self.read_desktop(path)
+		struct_items = struct.items()
+		if struct['type'] == 'Theme':
+			settings = [elem for elem in struct_items if elem[1] <> '']
+			new_struct = dict(settings)
+
+		self.load_element_from_desktop(new_struct, parameter, group, key, read=False)
+		
+				
 
 	def make_row (self, path):
 		''' 	Make a row for a list of applets or launchers
@@ -450,6 +467,42 @@ class awnBzr:
 					except:
 						icon = None
 		return icon
+
+	def make_model(self, uris):
+		treeview = gtk.TreeView()
+		treeview.set_headers_visible(False)
+
+		model = model = gtk.ListStore(gdk.Pixbuf, str, str)
+		treeview.set_model (model)
+
+		ren = gtk.CellRendererPixbuf()
+		col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
+		treeview.append_column (col)
+
+		ren = gtk.CellRendererText()
+		col = gtk.TreeViewColumn ("Name", ren, markup=1)
+		treeview.append_column (col)
+
+		ren = gtk.CellRendererText()
+		col = gtk.TreeViewColumn ("Desktop", ren, visible=False)
+		treeview.append_column (col)
+
+		self.refresh_tree(uris, model)
+
+		self.load_finished = True
+
+		return treeview
+
+	def refresh_tree (self, uris, model):
+        	model.clear()
+        	for i in uris:
+			if os.path.isfile(i):
+            			text = self.make_row (i)
+            			if len(text) > 2:
+                			row = model.append ()
+                			model.set_value (row, 0, self.make_icon (i))
+                			model.set_value (row, 1, text)
+                			model.set_value (row, 2, i)
 
 
 class awnPreferences(awnBzr):

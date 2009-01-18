@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Thu Jan 15 21:52:59 2009 -->
+<!--Generated with glade3 3.4.5 on Sun Jan 18 20:32:58 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="awnManagerWindow">
     <property name="visible">True</property>
@@ -1167,7 +1167,16 @@ the theme ?</property>
               <widget class="GtkVBox" id="list_themes_view">
                 <property name="visible">True</property>
                 <child>
-                  <placeholder/>
+                  <widget class="GtkScrolledWindow" id="list_themes_scrol">
+                    <property name="width_request">350</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </widget>
                 </child>
               </widget>
             </child>
@@ -1184,7 +1193,7 @@ the theme ?</property>
           </widget>
         </child>
         <child>
-          <widget class="GtkButton" id="button1">
+          <widget class="GtkButton" id="apply_theme">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>

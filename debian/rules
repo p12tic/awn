@@ -5,14 +5,19 @@ include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/gnome.mk
 include /usr/share/cdbs/1/rules/simple-patchsys.mk
 
-EXTRA_VERSION := -trunk-$(shell dpkg-parsechangelog | egrep '^Version:' | awk '{print $2}' | cut -d~ -f 2)
+ifeq ($(wildcard .bzr),)
+EXTRA_VERSION := -rewrite-$(shell dpkg-parsechangelog | egrep '^Version:' | awk '{print $2}' | cut -d~ -f 2)
+else
+EXTRA_VERSION := -rewrite-bzr$(shell bzr revno)-$(shell lsb_release -cs)1-1
+endif
+
 
 DEB_CONFIGURE_SCRIPT := $(CURDIR)/$(DEB_SRCDIR)/autogen.sh
 DEB_CONFIGURE_EXTRA_FLAGS += 	--disable-pymod-checks \
 				--with-desktop=gnome \
 				--with-gconf \
-				--without-vala
-				#--enable-extra-version=$(EXTRA_VERSION)
+				--without-vala \
+				--enable-extra-version=$(EXTRA_VERSION)
 
 #DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,-z,defs -Wl,--as-needed"
 
