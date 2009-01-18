@@ -1,5 +1,11 @@
 2009-01-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* autogen.sh:
+	Fix Launchpad bug #312960 (intltool-0.40.5 is stricter, causing a build
+	failure in po/).
+
+2009-01-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* awn-manager/awnManager.py.in:
 	* configure.in:
 	* debian/rules:
