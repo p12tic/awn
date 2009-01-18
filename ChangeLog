@@ -1,3 +1,12 @@
+2009-01-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnManager.py.in:
+	* configure.in:
+	* debian/rules:
+	* src/main.c:
+	Fix Launchpad bug #163178 (make version (release and/or bzr revno)
+	available to users).
+
 2009-01-18  h4writer <hv1989@gmail.com>
 
 	* src/main.c:

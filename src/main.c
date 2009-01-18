@@ -169,7 +169,7 @@ main(int argc, char *argv[])
   if (version)
   {
     g_print("Avant Window Navigator ");
-    g_print(VERSION);
+    g_print(VERSION EXTRA_VERSION);
     g_print("\n");
     return 0;
   }
