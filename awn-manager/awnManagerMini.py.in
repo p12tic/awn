@@ -179,7 +179,11 @@ class awnPreferencesMini(awnPreferences):
 		text = self.make_row(elem)
 		label = gtk.Label()
 		label.set_text(text)
-		hbox.pack_start(label, expand=False, fill=False)
+		icon = self.make_icon(elem)
+		image = gtk.Image()
+		image.set_from_pixbuf(icon)
+		hbox.pack_start(image, expand=False, fill=False)
+		hbox.pack_end(label, expand=False, fill=False)
 		self.view_themes.pack_start(hbox, expand=False, fill=False)
 	self.view_themes.show_all()
 

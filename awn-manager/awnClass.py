@@ -78,17 +78,6 @@ def make_color_string(color, alpha):
 EMPTY = "none";
 
 class awnBzr:
-	#Utils for all
-	def make_row (self, path):
-		text = ""
-		try:
-			item = DesktopEntry (path)
-			text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
-		except:
-			return None, ""
-		#return self.make_icon (item.getIcon()), text
-		return text
-
 	#Utils Bzr
 	def lp_path_normalize(self, path):
 		'''     Get a "lp:" format url and return a http url
@@ -397,6 +386,71 @@ class awnBzr:
 			if desktop.get('X-AWN-Type') == type_catalog:
 				final_catalog.append(elem)
 		return final_catalog
+
+	def make_row (self, path):
+		''' 	Make a row for a list of applets or launchers
+			path : path of the desktop file
+		'''
+		text = ""
+		try:
+			item = DesktopEntry (path)
+			text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
+		except:
+			return None, ""
+		#return self.make_icon (item.getIcon()), text
+		return text
+
+	def make_icon (self,icon_path):
+		''' Extract an icon from a desktop file
+		'''
+		icon_final = None
+		theme = gtk.icon_theme_get_default ()
+		name = DesktopEntry(icon_path).getIcon()
+		pixmaps_path = [os.path.join(p, "share", "pixmaps") for p in ("/usr", "/usr/local", defs.PREFIX)]
+		applets_path = [os.path.join(p, "share", "avant-window-navigator","applets") for p in ("/usr", "/usr/local", defs.PREFIX)]
+		list_icons = (
+			('theme icon', self.search_icon(name, type_icon="theme")),
+			('stock_icon', self.search_icon(name, type_icon="stock")),
+			('file_icon', self.search_icon(name)),
+			('pixmap_png_icon', self.search_icon(name, pixmaps_path, extension=".png")),
+			('pixmap_icon', self.search_icon(name, pixmaps_path)),
+			('applets_png_icon', self.search_icon(name, applets_path, extension=".png")),
+			('applets_svg_icon', self.search_icon(name, applets_path, extension=".svg"))
+				)
+
+		for i in list_icons:
+			if list_icons[1] is not None:
+				icon_final = i[1]
+				break
+		if icon_final is not None:
+			return icon_final
+		else:
+			return theme.load_icon('gtk-execute', 32, 0)
+
+	def search_icon (self, name, path="", extension="", type_icon="pixmap"):
+		''' Search a icon'''
+		theme = gtk.icon_theme_get_default ()
+		icon = None
+		if type_icon is "theme":
+			try:
+				icon = theme.load_icon (name, 32, 0)
+			except:
+				icon = None
+		elif type_icon is "stock":
+			try:
+				image = gtk.image_new_from_stock(name, 32)
+				icon = image.get_pixbuf()
+			except:
+				icon = None
+		elif type_icon is "pixmap":
+			for i in path:
+				if os.path.exists(str(i+name+extension)):
+					try: 
+						icon = gdk.pixbuf_new_from_file_at_size(str(i+name+extension), 32, 32)
+					except:
+						icon = None
+		return icon
+
 
 class awnPreferences(awnBzr):
     """This is the main class, duh"""
@@ -986,8 +1040,8 @@ class awnManager:
     def about(self, button):
         self.about = gtk.AboutDialog()
         self.about.set_name(_("Avant Window Navigator"))
-        version = '@VERSION@'
-        extra_version = '@EXTRA_VERSION@'
+        version = defs.VERSION
+        extra_version = defs.EXTRA_VERSION
         if len(extra_version) > 0:
             version += extra_version
         self.about.set_version(version)
