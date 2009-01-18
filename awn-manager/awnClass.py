@@ -293,6 +293,11 @@ class awnBzr:
 		'''
 
 		#API of the desktop file (unstable, WIP etc ...)
+		# keys should be a string of the type
+		# value could be 
+		#	'' if there is nothing,
+		#	a string when there is no settings 
+		#	a list when there is a setting : [value of the setting, group settings, key setting]
 		struct= {	'type': '',		# Applet or Theme
 				'location':'',		# Location of the bzr branch
 				'name': '',		# Name of the Type
@@ -326,13 +331,16 @@ class awnBzr:
 		struct['exec'] = desktop_entry.get('Exec')
 		struct['applet_type'] = desktop_entry.get('X-AWN-AppletType')
 		struct['applet_category'] = desktop_entry.get('X-AWN-AppletCategory')
-		struct['effects'] = int(desktop_entry.get('X-AWN-ThemeEffects'))
-		struct['orientation'] = int(desktop_entry.get('X-AWN-ThemeOrientation'))
-		struct['size'] = int(desktop_entry.get('X-AWN-ThemeSize'))
+		if desktop_entry.get('X-AWN-ThemeEffects') <> '':
+			struct['effects'] = [int(desktop_entry.get('X-AWN-ThemeEffects')), defs.EFFECTS, defs.ICON_EFFECT]
+		if desktop_entry.get('X-AWN-ThemeOrientation') <> '':
+			struct['orientation'] = [int(desktop_entry.get('X-AWN-ThemeOrientation')), defs.PANEL, defs.ORIENT]
+		if desktop_entry.get('X-AWN-ThemeSize') <> '':
+			struct['size'] = [int(desktop_entry.get('X-AWN-ThemeSize')), defs.PANEL, defs.SIZE]
 
 		return struct
 
-	def load_element_from_desktop(self, file_path, parameter, group, key, read=True):
+	def load_element_from_desktop(self, file_path, parameter, read=True):
 		'''	
 			Read a desktop file, and load the paramater setting.
 			file_path: the path of the desktop file or the read desktop file
@@ -343,11 +351,11 @@ class awnBzr:
 			struct = file_path
 		if struct['type'] == 'Theme':
 			#Read the settings
-			if not struct[parameter] == '':
-				if type(struct[parameter]) is int:
-					self.client.set_int(group, key, struct[parameter])
-				elif type(struct[parameter]) is float:
-					self.client.set_float(group, key, struct[parameter])
+			if not struct[parameter][0] == '':
+				if type(struct[parameter][0]) is int:
+					self.client.set_int(struct[parameter][1], struct[parameter][2], struct[parameter][0])
+				elif type(struct[parameter][0]) is float:
+					self.client.set_float(struct[parameter][1], struct[parameter][2], struct[parameter][0])
 			#TODO more type settings
 		else: 
 			print "Error, the desktop file is not for a theme"
@@ -397,12 +405,12 @@ class awnBzr:
 		struct = self.read_desktop(path)
 		struct_items = struct.items()
 		if struct['type'] == 'Theme':
-			settings = [elem for elem in struct_items if elem[1] <> '']
+			settings = [elem for elem in struct_items if elem[1] <> '' ]
 			new_struct = dict(settings)
 
-		self.load_element_from_desktop(new_struct, parameter, group, key, read=False)
+		for k, v in new_struct.iteritems():
+			self.load_element_from_desktop(new_struct, k, read=False)
 		
-				
 
 	def make_row (self, path):
 		''' 	Make a row for a list of applets or launchers
@@ -951,19 +959,19 @@ class awnPreferences(awnBzr):
 	group, key = groupkey
 	self.client.set_int(group, key, dropdown.get_active())
 
-    def setup_freeze(self, toggle, freezed, group, key, parameter, data=None):
+    def setup_freeze(self, toggle, freezed, parameter, data=None):
 	'''	Setup a "linked" toggle button
 		toggle : the gtk.ToggleButton
 		freezed : the gtkWidget to freeze
 	'''
-	toggle.connect("toggled", self.freeze_changed, freezed, group, key, parameter)
+	toggle.connect("toggled", self.freeze_changed, freezed, parameter)
 	
-    def freeze_changed(self, widget, freezed, group, key, parameter):
+    def freeze_changed(self, widget, freezed, parameter):
 	'''	Callback for the setup_freeze
 	'''
 	if widget.get_active() == True:
 		freezed.set_sensitive(False)
-		self.load_element_from_desktop(self.theme_desktop, parameter, group, key)
+		self.load_element_from_desktop(self.theme_desktop, parameter)
 	else:
 		freezed.set_sensitive(True)
 
