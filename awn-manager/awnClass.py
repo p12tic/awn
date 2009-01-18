@@ -78,7 +78,18 @@ def make_color_string(color, alpha):
 EMPTY = "none";
 
 class awnBzr:
-	#Utils
+	#Utils for all
+	def make_row (self, path):
+		text = ""
+		try:
+			item = DesktopEntry (path)
+			text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
+		except:
+			return None, ""
+		#return self.make_icon (item.getIcon()), text
+		return text
+
+	#Utils Bzr
 	def lp_path_normalize(self, path):
 		'''     Get a "lp:" format url and return a http url
                         path: a url from a branch
@@ -196,6 +207,7 @@ class awnBzr:
 			progress = A widget of a progress bar to update.
 		'''
 		progressbar.pulse()
+		progressbar.show()
 
 		sources_list = self.list_from_sources_list()
 		sources_to_update = []
@@ -286,7 +298,7 @@ class awnBzr:
 
 
 	#Desktop files
-    	def read_desktop(self, file_path):
+	def read_desktop(self, file_path):
 		'''	Read a desktop file and return a dictionnary with all fields
 			API still unstable
 		'''
@@ -331,7 +343,7 @@ class awnBzr:
 
 		return struct
 
-    	def load_element_from_desktop(self, file_path, parameter, group, key):
+	def load_element_from_desktop(self, file_path, parameter, group, key):
 		'''	
 			Read a desktop file, and load the paramater setting.
 		'''
@@ -373,18 +385,18 @@ class awnBzr:
 				[ catalog.append(i) for i in desktops ]
 		return catalog
 
-	def type_catalog_from_sources_list(self, type_catalog="Theme"):
+	def type_catalog_from_sources_list(self, type_catalog='Theme'):
 		'''
 		Return a catalog of themes or applets (list of desktop files from the sources list)
 		type_catalog is the type of catalog (Theme of Applets)
 		'''
 		catalog = self.catalog_from_sources_list()
-		type_catalog = []
+		final_catalog = []
 		for elem in catalog:
 			desktop = DesktopEntry(elem)
 			if desktop.get('X-AWN-Type') == type_catalog:
-				type_catalog.append(elem)
-		return type_catalog
+				final_catalog.append(elem)
+		return final_catalog
 
 class awnPreferences(awnBzr):
     """This is the main class, duh"""
@@ -974,7 +986,11 @@ class awnManager:
     def about(self, button):
         self.about = gtk.AboutDialog()
         self.about.set_name(_("Avant Window Navigator"))
-        self.about.set_version('@VERSION@')
+        version = '@VERSION@'
+        extra_version = '@EXTRA_VERSION@'
+        if len(extra_version) > 0:
+            version += extra_version
+        self.about.set_version(version)
         self.about.set_copyright("Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>")
         self.about.set_authors([
             'Neil Jagdish Patel <njpatel@gmail.com>',
@@ -1311,16 +1327,19 @@ class awnApplet:
         if applet_exists:
             message = "Applet Successfully Updated"
         else:
-            icon, text = self.make_row (appletpath)
+            icon, text, name = self.make_row (appletpath)
             if len (text) > 2:
                 row = model.append ()
                 model.set_value (row, 0, icon)
                 model.set_value (row, 1, text)
                 model.set_value (row, 2, appletpath)
-            if do_apply:
-                uid = "%d" % int(time.time())
-                self.model.set_value (row, 3, uid)
-                self._apply ()
+		if do_apply:
+                    uid = "%d" % int(time.time())
+                    self.model.set_value (row, 3, uid)
+                    self._apply ()
+                else:
+                    model.set_value (row, 3, name)     
+         
             if msg:
                 message = "Applet Successfully Added"
             else:
@@ -1338,7 +1357,7 @@ class awnApplet:
             return
         model, iterator = select.get_selected ()
         path = model.get_value (iterator, 2)
-        icon, text = self.make_row (path)
+        icon, text, name = self.make_row (path)
         uid = "%d" % int(time.time())
         if len (text) < 2:
             print "cannot load desktop file %s" % path
@@ -1483,12 +1502,14 @@ class awnApplet:
 
     def make_row (self, path):
         text = ""
+	name = ""
         try:
             item = DesktopEntry (path)
             text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
+            name = item.getName();
         except:
-            return None, ""
-        return self.make_icon (item.getIcon()), text
+            return None, "", ""
+        return self.make_icon (item.getIcon()), text, name
 
     def make_icon (self, name):
         icon = None
@@ -1571,7 +1592,7 @@ class awnApplet:
             tokens = a.split("::")
             path = tokens[0]
             uid = tokens[1]
-            icon, text = self.make_row(path)
+            icon, text, name = self.make_row(path)
             if len (text) < 2:
                 continue;
 
@@ -1582,7 +1603,7 @@ class awnApplet:
             tokens = a.split("::")
             path = tokens[0]
             uid = tokens[1]
-            icon, text = self.make_row(path)
+            icon, text, name = self.make_row(path)
             if len (text) < 2:
                 continue;
 
@@ -1594,9 +1615,10 @@ class awnApplet:
 
     def make_appmodel (self):
 
-        self.appmodel = model = gtk.ListStore(gdk.Pixbuf, str, str)
+        self.appmodel = model = gtk.ListStore(gdk.Pixbuf, str, str, str)
         self.appmodel.set_sort_column_id(1, gtk.SORT_ASCENDING)
         self.treeview_available.set_model (model)
+        self.treeview_available.set_search_column (3)
 
         ren = gtk.CellRendererPixbuf()
         col = gtk.TreeViewColumn ("Available Applets", ren, pixbuf=0)
@@ -1627,13 +1649,14 @@ class awnApplet:
             applets += [os.path.join(d, a) for a in os.listdir(d) if a.endswith(".desktop")]
 
         for a in applets:
-            icon, text = self.make_row (a)
+            icon, text, name = self.make_row (a)
             if len (text) < 2:
                 continue;
             row = model.append ()
             model.set_value (row, 0, icon)
             model.set_value (row, 1, text)
             model.set_value (row, 2, a)
+            model.set_value (row, 3, name)
         self.load_finished = True
 
     def popup_msg(self, message):

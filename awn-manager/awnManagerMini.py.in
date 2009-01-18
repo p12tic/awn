@@ -23,10 +23,13 @@
 import sys, os, os.path, time
 
 PLAT_PKG = '@PY_PLAT_PKG@'
+SITE_PKG = '@PY_SITE_PKG@'
 AWN_MANAGER_DIR = os.path.join('@PKGDATADIR@', 'awn-manager')
 sys.path = [AWN_MANAGER_DIR] + sys.path
 if PLAT_PKG not in sys.path:
     sys.path = [PLAT_PKG] + sys.path
+if SITE_PKG not in sys.path:
+    sys.path = [SITE_PKG] + sys.path
 
 try:
     import pygtk
@@ -41,6 +44,7 @@ try:
 except Exception, e:
     sys.stderr.write(str(e) + '\n')
     sys.exit(1)
+from xdg.DesktopEntry import DesktopEntry
 
 #from awnTheme import AwnThemeManager
 from awnClass import awnPreferences, awnManager, awnLauncher, awnApplet
@@ -70,6 +74,9 @@ class awnPreferencesMini(awnPreferences):
 	update_repo = self.wTree.get_widget("update_repo")
 	update_repo.connect("clicked", 	lambda data=None: update_win.show_all())
 
+	add_repo = self.wTree.get_widget("add_repo")
+	add_repo.connect("clicked", self.add_repo_win_callback)
+
 	self.add_repo_get_entry = self.wTree.get_widget("add_repo_entry")
 
 	self.add_repo_plus = self.wTree.get_widget("add_repo_plus")
@@ -80,6 +87,11 @@ class awnPreferencesMini(awnPreferences):
 
 	self.top_window_repo = self.wTree.get_widget("add_repository")
 	self.view_repo = self.wTree.get_widget("list_repos_view")
+
+	self.load_themes_win = self.wTree.get_widget("choose_theme")
+	self.view_themes = self.wTree.get_widget("list_themes_view")
+	self.choose_themes_button = self.wTree.get_widget("choose_theme_button")
+	self.choose_themes_button.connect("clicked", self.choose_theme_win_callback)
 
 	self.client = awn.Config()
 
@@ -135,7 +147,6 @@ class awnPreferencesMini(awnPreferences):
 		self.view_repo.pack_start(hbox, expand=False, fill=False)
 	self.view_repo.show_all()
 
-
     def quit_repo_window(self, data=None):
 	self.top_window_repo.hide_all()
 
@@ -149,11 +160,28 @@ class awnPreferencesMini(awnPreferences):
 	source = self.add_repo_get_entry.get_text()
 	self.add_source(source)
 	self.update_repo_view()
-	
 
-'''
-    def load_desktop_themes
-'''
+    def choose_theme_win_callback(self, data=None):
+	self.update_view_themes()
+	self.load_themes_win.show_all()
+
+    def update_view_themes(self, data=None):
+	self.view_themes.hide_all()
+
+	for elem in self.view_themes.get_children():
+		elem.destroy()
+
+	themes = self.type_catalog_from_sources_list()
+
+	for elem in themes:
+		desktop = DesktopEntry(elem)
+		hbox = gtk.HBox()
+		text = self.make_row(elem)
+		label = gtk.Label()
+		label.set_text(text)
+		hbox.pack_start(label, expand=False, fill=False)
+		self.view_themes.pack_start(hbox, expand=False, fill=False)
+	self.view_themes.show_all()
 
 
 class awnLauncherMini(awnLauncher):
