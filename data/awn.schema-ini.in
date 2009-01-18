@@ -9,7 +9,7 @@ description = Orientation of Awn, top=0, right=1, bottom=2 and left=3
 [panel/offset]
 type = int
 default = 0
-description = Offset for icon reflections
+description = Offset of the icons from window border
 [panel/size]
 type = int
 default = 48
@@ -156,16 +156,6 @@ type = float
 default = 1.0
 description = The opacity of the icons, from 0.0 to 1.0
 
-[effects/frame_rate]
-type = int
-default = 25
-description = Animation frame-rate. 
-
-[effects/enable_icon_depth]
-type = bool
-default = True
-description = Whether icons have depth on 3D effects
-
 [effects/reflection_alpha_multiplier]
 type = float
 default = 0.3
@@ -201,18 +191,6 @@ description = Set the panel alignment.
 type = bool
 default = False
 description = Sets the panel mode.  TRUE sets the panel to "3D" mode, FALSE sets the panel to "flat" mode.
-[DEFAULT/auto_hide]
-type = bool
-default = False
-description = Auto hides the dock when the cursor is not on the dock.
-[DEFAULT/auto_hide_delay]
-type = int
-default = 1000
-description = The time (in milliseconds) for the dock to wait to hide when the cursor leaves the dock.  Used only when auto_hide is TRUE.
-[DEFAULT/keep_below]
-type = bool
-default = False
-description = Always keep AWN below all other windows.
 [DEFAULT/applets_list]
 type = list-string
 default = @LIBDIR@/awn/applets/taskman.desktop::1
@@ -327,34 +305,6 @@ description = Determines whether tasks also have arrows beneath them.
 type = bool
 default = False
 description = Alert the user when the name of the window has changed.
-[app/alpha_effect]
-type = bool
-default = False
-description = Unused.
-[app/icon_effect]
-type = int
-default = 0
-description = Bitmask that stores which effects occur for each icon event type.
-[app/hover_bounce_effect]
-type = bool
-default = False
-description = Determines whether the bounce effect occurs when an icon is hovered over by the mouse.
-[app/icon_alpha]
-type = float
-default = 1.0
-description = Alpha value to apply to icons.
-[app/reflection_alpha_multiplier]
-type = float
-default = 0.33
-description = Reflection alpha is a multiple of the current alpha of the icon.
-[app/frame_rate]
-type = int
-default = 25
-description = Frame rate for awn effects.
-[app/icon_depth_on]
-type = bool
-default = TRUE
-description = Enable dept on 3d type effects.
 [title/text_color]
 type = string
 default = FFFFFFFF

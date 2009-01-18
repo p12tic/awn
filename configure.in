@@ -1,4 +1,4 @@
-AC_INIT([avant-window-navigator], [0.3.1], [])
+AC_INIT([avant-window-navigator], [0.3.9], [])
 
 EXTRA_VERSION=
 AC_ARG_ENABLE([extra-version],
