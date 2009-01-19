@@ -618,6 +618,8 @@ screen_size_changed(GdkScreen *screen, AwnSettings *s)
   gdk_screen_get_monitor_geometry(screen,
                                   gdk_screen_get_monitor_at_window(screen, GTK_WIDGET(s->window)->window),
                                   &s->monitor);
+	
+  resize (s);
 }
 
 static gboolean is_composited(GdkScreen *screen)

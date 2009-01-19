@@ -1,5 +1,12 @@
 2009-01-19  Julien Lavergne <julien.lavergne@gmail.com>
 
+	patch by: Martijn van Iersel
+
+	* src/main.c:
+	Update position when the resolution of the screen changed (bug #276734)
+
+2009-01-19  Julien Lavergne <julien.lavergne@gmail.com>
+
 	* debian/avant-window-navigator-data-trunk.install:
 	Update installed file to fix bug #318674 in debian packages also.
 
