@@ -116,9 +116,11 @@ class AwnThemeManager:
         if not os.path.exists(defs.HOME_THEME_DIR) and not os.path.isdir(defs.HOME_THEME_DIR):
             os.makedirs(defs.HOME_THEME_DIR)
 
+        theme_dirs = []
+        if os.path.exists(defs.SYS_THEME_DIR):
+            theme_dirs = map(lambda x: os.path.join(defs.SYS_THEME_DIR, x),
+                             self.list_dirs(defs.SYS_THEME_DIR))
 
-        theme_dirs = map(lambda x: os.path.join(defs.SYS_THEME_DIR, x),
-                         self.list_dirs(defs.SYS_THEME_DIR))
         theme_dirs = theme_dirs + map(lambda x: 
                      os.path.join(defs.HOME_THEME_DIR, x),
                      self.list_dirs(defs.HOME_THEME_DIR))
