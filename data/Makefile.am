@@ -71,6 +71,7 @@ schema_DATA = awn.schema-ini shared.schema-ini
 
 install-exec-local:
 	$(INSTALL) -m 755 awn-schema-to-gconf $(DESTDIR)$(bindir)/awn-schema-to-gconf
+	$(INSTALL) -m 755 awn-autostart $(DESTDIR)$(bindir)/awn-autostart
 
 # global
 
@@ -79,9 +80,10 @@ install-data-local: install-gconf-schemas install-icons
 uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-applets-migration
 	rm -f $(DESTDIR)$(bindir)/awn-schema-to-gconf
+	rm -f $(DESTDIR)$(bindir)/awn-autostart
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/24x24/apps/avant-window-navigator.png
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/avant-window-navigator.png
 
-EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini awn-schema-to-gconf shared.schema-ini awn-applets-migration.py
+EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini awn-schema-to-gconf awn-autostart shared.schema-ini awn-applets-migration.py
 
 CLEANFILES = $(desktop_DATA) $(desktop_DATA).in

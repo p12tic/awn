@@ -1,5 +1,6 @@
 #usr/bin/avant-window-navigator
 usr/bin/awn-applet-activation
+usr/bin/awn-autostart
 usr/share/applications/avant-window-navigator.desktop
 usr/share/avant-window-navigator/applets/*.desktop
 usr/share/avant-window-navigator/schemas/*.schema-ini
