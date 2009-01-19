@@ -1,3 +1,11 @@
+2009-01-19  h4writer <hv1989@gmail.com>
+
+	* libawn/awn-title.c:
+	Temporary fix for #148415: Minimize and Restore in tasklist frequently, made the icon "switched" to the rightmost
+	This fix will be used for 0.3.2 if the real bug isn't fixed by then.
+	It get's now added to see if the fix causes other bugs.
+	I'm still looking to fix the real cause.
+
 2009-01-19  Michal Hruby <michal.mhr@gmail.com>
 
 	* awn-manager/window.glade:

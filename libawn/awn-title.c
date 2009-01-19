@@ -173,7 +173,9 @@ awn_title_show(AwnTitle *title, GtkWidget *focus, const gchar *text)
   priv = title->priv;
   priv->focus = focus;
 
-  g_timeout_add(1, (GSourceFunc)show, g_strdup(text));
+  //TMP FIX.: if bug gets solved, this can go back to normal.
+  show(g_strdup(text));
+  //g_timeout_add(1, (GSourceFunc)show, g_strdup(text));
 }
 
 void
