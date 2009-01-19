@@ -913,7 +913,8 @@
                                                 </child>
                                                 <child>
                                                   <widget class="GtkHBox" id="expand_bar_holder">
-                                                    <property name="visible">True</property>
+                                                    <property name="visible">False</property>
+                                                    <property name="no_show_all">True</property>
                                                     <child>
                                                       <widget class="GtkCheckButton" id="expandbarcheck">
                                                         <property name="visible">True</property>

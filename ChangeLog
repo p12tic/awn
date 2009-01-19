@@ -1,5 +1,13 @@
 2009-01-19  Michal Hruby <michal.mhr@gmail.com>
 
+	* awn-manager/window.glade:
+	* po/POTFILES.skip:
+	Reverted the addition to awn-manager - the expand feature isn't very
+	stable.
+	Removed some files from the po skip file.
+
+2009-01-19  Michal Hruby <michal.mhr@gmail.com>
+
 	patch by: timonterbraak
 
 	* awn-manager/awnDefs.py.in:
