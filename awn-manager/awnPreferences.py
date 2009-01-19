@@ -90,6 +90,7 @@ class awnPreferences:
         self.setup_bool (defs.APP, defs.NAME_CHANGE_NOTIFY, self.wTree.get_widget("namechangenotify"))
         self.setup_bool (defs.BAR, defs.RENDER_PATTERN, self.wTree.get_widget("patterncheck"))
         self.setup_bool (defs.BAR, defs.ROUNDED_CORNERS, self.wTree.get_widget("roundedcornerscheck"))
+	self.setup_bool (defs.BAR, defs.EXPAND_BAR, self.wTree.get_widget("expandbarcheck"))
         self.setup_bool (defs.WINMAN, defs.SHOW_ALL_WINS, self.wTree.get_widget("allwindowscheck"))
 
         self.setup_bool (defs.BAR, defs.SHOW_SEPARATOR, self.wTree.get_widget("separatorcheck"))

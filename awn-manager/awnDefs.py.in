@@ -43,6 +43,7 @@ KEEP_BELOW          = "keep_below"         #bool
 
 BAR                 = "bar"                #group
 ROUNDED_CORNERS     = "rounded_corners"    #bool
+EXPAND_BAR	    = "expand_bar"         #bool
 CORNER_RADIUS       = "corner_radius"      #float
 RENDER_PATTERN      = "render_pattern"     #bool
 PATTERN_URI         = "pattern_uri"        #string

@@ -1,5 +1,14 @@
 2009-01-19  Michal Hruby <michal.mhr@gmail.com>
 
+	patch by: timonterbraak
+
+	* awn-manager/awnDefs.py.in:
+	* awn-manager/awnPreferences.py:
+	* awn-manager/window.glade:
+	Fix Launchpad bug #241558 (add the expand bar option to awn-manager)
+
+2009-01-19  Michal Hruby <michal.mhr@gmail.com>
+
 	* awn-manager/awnTheme.py:
 	Fix Launchpad bug #318674 (awn-manager crash if system theme folder
 	doesn't exist)
