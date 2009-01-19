@@ -1,3 +1,8 @@
+2009-01-19  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/avant-window-navigator-data-trunk.install:
+	Update installed file to fix bug #318674 in debian packages also.
+
 2009-01-19  h4writer <hv1989@gmail.com>
 
 	* libawn/awn-title.c:
