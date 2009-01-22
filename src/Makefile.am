@@ -2,7 +2,7 @@ NULL =
 INCLUDES =				\
 	$(AWN_CFLAGS)			\
 	$(DOCK_CFLAGS)			\
-	-DLIBDIR=\""$(libdir)"\"	\
+	-DDATADIR=\""$(datadir)"\"	\
 	-DLOCALEDIR=\""$(datadir)/locale"\"	\
 	-I$(top_srcdir)/libawn		\
 	$(NULL)

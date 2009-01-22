@@ -1603,7 +1603,20 @@ awn_task_manager_init (AwnTaskManager *task_manager)
                                      G_CALLBACK (on_height_changed),
                                      (gpointer)task_manager, 
                                      NULL);
-             
+}
+
+static void
+awn_task_manager_realized (GtkWidget *widget, gpointer user_data)
+{
+        AwnTaskManagerPrivate *priv = AWN_TASK_MANAGER_GET_PRIVATE (widget);
+
+        GList *l;
+        GList *list = wnck_screen_get_windows (priv->screen);
+        for (l = list; l != NULL; l = l->next) {
+                _task_manager_window_opened (priv->screen,
+                                             (WnckWindow*)l->data,
+                                             AWN_TASK_MANAGER(widget));
+        }
 }
 
 GtkWidget *
@@ -1679,6 +1692,14 @@ awn_task_manager_new (AwnSettings *settings)
 
 	g_signal_connect (G_OBJECT(priv->eb), "expose-event",
 			  G_CALLBACK(awn_bar_separator_expose_event), (gpointer)settings->bar);			  
+
+        // wnck hack -> it sends window-opened signal only the first time
+        static gboolean wnck_initialized = FALSE;
+        if (wnck_initialized) {
+                g_signal_connect_after (G_OBJECT(task_manager), "realize",
+                          G_CALLBACK (awn_task_manager_realized), NULL);
+        }
+        wnck_initialized = TRUE;
 
         #define A_NAMESPACE "com.google.code.Awn"
         #define A_OBJECT_PATH "/com/google/code/Awn"

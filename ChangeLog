@@ -1,3 +1,12 @@
+2009-01-23  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/Makefile.am:
+	We don't need LIBDIR macro, though we do need DATADIR
+	* src/awn-applet-manager.c:
+	Desktop files are for a while in DATADIR and not LIBDIR
+	* src/awn-task-manager.c:
+	Fix missing tasks after readding removed taskmanager - thanks h4writer
+
 2009-01-22  h4writer <hv1989@gmail.com>
 
 	* awn-manager/awnManager.py.in:

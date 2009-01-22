@@ -171,8 +171,8 @@ awn_applet_manager_load_applets (AwnAppletManager *manager)
                                            &err); 
 
         if (keys == NULL || err) {
-                keys = g_slist_append (keys, 
-                                       LIBDIR"/awn/applets/taskman.desktop::1");
+                #define TASKMAN_DESKTOP "avant-window-navigator/applets/taskman.desktop::1"
+                keys = g_slist_append (keys, DATADIR "/" TASKMAN_DESKTOP);
                 awn_config_client_set_list (client, AWN_CONFIG_CLIENT_DEFAULT_GROUP, APPLETS_LIST,
                                             AWN_CONFIG_CLIENT_LIST_TYPE_STRING, keys, NULL);
                 if (err) {
