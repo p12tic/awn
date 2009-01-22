@@ -95,13 +95,7 @@ awn_applet_manager_quit (AwnAppletManager *manager)
 static GtkWidget*
 _load_taskmanager (AwnAppletManager *manager)
 {
-#define A_NAMESPACE "com.google.code.Awn"
-#define A_OBJECT_PATH "/com/google/code/Awn"
         AwnAppletManagerPrivate *priv;      
-        DBusGConnection *connection;
-        DBusGProxy *proxy;
-        GError *error = NULL;
-        guint32 ret;
 
         GtkWidget *taskman;
         
@@ -109,33 +103,6 @@ _load_taskmanager (AwnAppletManager *manager)
 
         taskman = awn_task_manager_new (priv->settings);
         
-  	/* Get the connection and ensure the name is not used yet */
-	connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
-	if (connection == NULL) {
-		g_warning ("Failed to make connection to session bus: %s",
-			   error->message);
-		g_error_free (error);
-		return taskman;
-	}
-		
-	proxy = dbus_g_proxy_new_for_name (connection, DBUS_SERVICE_DBUS,
-					   DBUS_PATH_DBUS, DBUS_INTERFACE_DBUS);
-	if (!org_freedesktop_DBus_request_name (proxy, A_NAMESPACE,
-						0, &ret, &error)) {
-		g_warning ("There was an error requesting the name: %s",
-			   error->message);
-		g_error_free (error);
-		return taskman;
-	}
-	if (ret != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER) {
-		/* Someone else registered the name before us */
-		return taskman;
-	}
-	/* Register the task manager on the bus */
-	dbus_g_connection_register_g_object (connection,
-					     A_OBJECT_PATH,
-					     G_OBJECT (taskman));
-      
 	return taskman;
 }
 
@@ -153,12 +120,12 @@ _create_applet (AwnAppletManager *manager, const gchar *path, const gchar *uid)
 		applet = _load_taskmanager (manager);
 	} else {
 		applet = awn_applet_proxy_new (path, uid);
-	}
-        
-        g_object_set (G_OBJECT (applet), 
+                g_object_set (G_OBJECT (applet), 
                       "orient", AWN_ORIENTATION_BOTTOM,
                       "height", priv->settings->bar_height,
                       NULL);
+	}
+        
                 
         gtk_widget_set_size_request (applet, -1,
                                      priv->settings->bar_height *2);
@@ -284,6 +251,13 @@ _kill_applets (gpointer key, GtkWidget *applet, AwnAppletManager *manager)
                                         touch_quark));
         
         if (!touched) {
+                GParamSpec *spec = g_object_class_find_property (
+                        G_OBJECT_GET_CLASS (applet), "uid");
+                if (!spec) {
+                        // we're killing taskmanager
+                        gtk_widget_destroy (applet);
+                        return;
+                }
                 g_object_get (applet, "uid", &uid, NULL);
                 g_signal_emit (manager, _appman_signals[DELETE_APPLET], 0, uid);
                 gtk_widget_destroy (applet);

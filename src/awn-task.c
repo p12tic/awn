@@ -168,6 +168,24 @@ awn_task_dispose(GObject *obj)
 
   awn_effects_finalize(priv->effects);
 
+  if (priv->window) {
+    if (priv->icon_changed) {
+      g_signal_handler_disconnect((gpointer)priv->window,
+                                  priv->icon_changed);
+      priv->icon_changed = 0;
+    }
+    if (priv->state_changed) {
+      g_signal_handler_disconnect((gpointer)priv->window,
+                                  priv->state_changed);
+      priv->state_changed = 0;
+    }
+    if (priv->name_changed) {
+      g_signal_handler_disconnect((gpointer)priv->window,
+                                  priv->name_changed);
+      priv->name_changed = 0;
+    }
+  }
+
   G_OBJECT_CLASS(global_awn_task_parent_class)->dispose(obj);
 }
 
@@ -2168,12 +2186,21 @@ awn_task_close(AwnTask *task)
   AwnTaskPrivate *priv;
   priv = AWN_TASK_GET_PRIVATE(task);
 
-  g_signal_handler_disconnect((gpointer)priv->window,
+  if (priv->icon_changed) {
+    g_signal_handler_disconnect((gpointer)priv->window,
                               priv->icon_changed);
-  g_signal_handler_disconnect((gpointer)priv->window,
+    priv->icon_changed = 0;
+  }
+  if (priv->state_changed) {
+    g_signal_handler_disconnect((gpointer)priv->window,
                               priv->state_changed);
-  g_signal_handler_disconnect((gpointer)priv->window,
+    priv->state_changed = 0;
+  }
+  if (priv->name_changed) {
+    g_signal_handler_disconnect((gpointer)priv->window,
                               priv->name_changed);
+    priv->name_changed = 0;
+  }
 
   priv->window = NULL;
 

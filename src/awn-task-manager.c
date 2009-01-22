@@ -76,6 +76,10 @@ static void _task_manager_menu_item_clicked (AwnTask *task, guint id, AwnTaskMan
 static void _task_manager_check_item_clicked (AwnTask *task, guint id, gboolean active, AwnTaskManager *task_manager);
 static void _task_manager_check_width (AwnTaskManager *task_manager);
 
+static void
+on_height_changed (DBusGProxy *proxy, gint height, AwnTaskManager *manager);
+
+
 /* STRUCTS & ENUMS */
 
 typedef struct _AwnTaskManagerPrivate AwnTaskManagerPrivate;
@@ -97,6 +101,11 @@ struct _AwnTaskManagerPrivate
 	GtkWidget *eb;
 	
 	gboolean ignore_gconf;
+
+	DBusGConnection *applet_man_connection;
+	DBusGProxy *applet_man_proxy;
+
+	gulong signal_handlers[6];
 };
 
 enum
@@ -1400,12 +1409,52 @@ awn_task_manager_set_task_check_item_by_name (AwnTaskManager *task_manager,
 #include "awn-dbus-glue.h"
 
 static void
+awn_task_manager_dispose (GObject *object)
+{
+        AwnTaskManagerPrivate *priv;
+        priv = AWN_TASK_MANAGER_GET_PRIVATE (object);
+
+        if (priv->applet_man_proxy) {
+                dbus_g_proxy_disconnect_signal (priv->applet_man_proxy,
+                                               "HeightChanged",
+                                               G_CALLBACK (on_height_changed),
+                                               (gpointer)object);
+                priv->applet_man_proxy = NULL;
+        }
+        if (priv->applet_man_connection) {
+                dbus_g_connection_unref (priv->applet_man_connection);
+                priv->applet_man_connection = NULL;
+        }
+
+        // oh yea, this one is disgusting, but it basically only
+        //  disconnects a few signals
+        if (priv->signal_handlers[0]) {
+                gint i;
+                for (i = 0; i < G_N_ELEMENTS(priv->signal_handlers); i++) {
+                        gpointer instance = i <= 3 ? (priv->screen) : 
+                        (i == 4 ? priv->settings->window : (gpointer)gtk_icon_theme_get_default ());
+                        if (priv->signal_handlers[i]) {
+                                g_signal_handler_disconnect(instance,
+                                        priv->signal_handlers[i]);
+                                priv->signal_handlers[i] = 0;
+                        }
+                }
+        }
+
+	// hide the separator
+	awn_bar_set_draw_separator (priv->settings->bar, 0);
+
+	G_OBJECT_CLASS (awn_task_manager_parent_class)->dispose (object);
+}
+
+static void
 awn_task_manager_class_init (AwnTaskManagerClass *class)
 {
 	GObjectClass *obj_class;
 	GtkWidgetClass *widget_class;
 
 	obj_class = G_OBJECT_CLASS (class);
+	obj_class->dispose = awn_task_manager_dispose;
 	widget_class = GTK_WIDGET_CLASS (class);
 
 	g_type_class_add_private (obj_class, sizeof (AwnTaskManagerPrivate));
@@ -1537,6 +1586,7 @@ awn_task_manager_init (AwnTaskManager *task_manager)
 		}
                 return;
 	}
+        priv->applet_man_connection = connection;
 
         proxy = dbus_g_proxy_new_for_name (connection,
                                           "com.google.code.Awn.AppletManager",
@@ -1546,6 +1596,7 @@ awn_task_manager_init (AwnTaskManager *task_manager)
                 g_warning ("Cannot connect to applet manager\n");
                 return;
         }
+        priv->applet_man_proxy = proxy;
 	dbus_g_proxy_add_signal (proxy, "HeightChanged", G_TYPE_INT, G_TYPE_INVALID);
         dbus_g_proxy_connect_signal (proxy, 
                                      "HeightChanged",
@@ -1587,51 +1638,83 @@ awn_task_manager_new (AwnSettings *settings)
 	_task_manager_load_launchers(AWN_TASK_MANAGER (task_manager));
 
 	/* LIBWNCK SIGNALS */
-	g_signal_connect (G_OBJECT(priv->screen), "window-opened",
-	                  G_CALLBACK (_task_manager_window_opened),
-	                  (gpointer)task_manager);
+        priv->signal_handlers[0] =
+            g_signal_connect (G_OBJECT(priv->screen), "window-opened",
+	                      G_CALLBACK (_task_manager_window_opened),
+	                      (gpointer)task_manager);
 
-	g_signal_connect (G_OBJECT(priv->screen), "window-closed",
-	                  G_CALLBACK(_task_manager_window_closed),
-	                  (gpointer)task_manager);
+        priv->signal_handlers[1] =
+            g_signal_connect (G_OBJECT(priv->screen), "window-closed",
+	                      G_CALLBACK(_task_manager_window_closed),
+	                      (gpointer)task_manager);
 
-	g_signal_connect (G_OBJECT(priv->screen), "active-window-changed",
-	                  G_CALLBACK(_task_manager_window_activate),
-	                  (gpointer)task_manager);
+        priv->signal_handlers[2] =
+            g_signal_connect (G_OBJECT(priv->screen), "active-window-changed",
+	                      G_CALLBACK(_task_manager_window_activate),
+	                      (gpointer)task_manager);
 
 #ifdef HAVE_LIBWNCK_220
-	g_signal_connect (G_OBJECT(priv->screen), "viewports-changed",
-	                  G_CALLBACK(_task_manager_viewports_changed),
-	                  (gpointer)task_manager);
+        priv->signal_handlers[3] =
+            g_signal_connect (G_OBJECT(priv->screen), "viewports-changed",
+	                      G_CALLBACK(_task_manager_viewports_changed),
+	                      (gpointer)task_manager);
+#else
+        priv->signal_handlers[3] = 0;
 #endif
 
 	/* CONNECT D&D CODE */
 
-	g_signal_connect (G_OBJECT(settings->window), "drag-data-received",
-			  G_CALLBACK(_task_manager_drag_data_recieved), (gpointer)task_manager);
+        priv->signal_handlers[4] =
+            g_signal_connect (G_OBJECT(settings->window), "drag-data-received",
+                              G_CALLBACK(_task_manager_drag_data_recieved), (gpointer)task_manager);
 
 	/* THEME CHANGED CODE */
 	GtkIconTheme *theme = gtk_icon_theme_get_default ();
 
-	g_signal_connect (G_OBJECT(theme), "changed",
-			  G_CALLBACK(_task_manager_icon_theme_changed), (gpointer)task_manager);
+        priv->signal_handlers[5] =
+            g_signal_connect (G_OBJECT(theme), "changed",
+                              G_CALLBACK(_task_manager_icon_theme_changed), (gpointer)task_manager);
 
 	/* SEP EXPOSE EVENT */
 
 	g_signal_connect (G_OBJECT(priv->eb), "expose-event",
 			  G_CALLBACK(awn_bar_separator_expose_event), (gpointer)settings->bar);			  
 
+        #define A_NAMESPACE "com.google.code.Awn"
+        #define A_OBJECT_PATH "/com/google/code/Awn"
+        DBusGConnection *connection;
+        DBusGProxy *proxy;
+        GError *error = NULL;
+        guint32 ret;
+
+        /* Get the connection and ensure the name is not used yet */
+        connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+        if (connection == NULL) {
+                g_warning ("Failed to make connection to session bus: %s",
+                           error->message);
+                g_error_free (error);
+                return task_manager;
+        }
+
+        proxy = dbus_g_proxy_new_for_name (connection, DBUS_SERVICE_DBUS,
+                                           DBUS_PATH_DBUS, DBUS_INTERFACE_DBUS);
+        if (!org_freedesktop_DBus_request_name (proxy, A_NAMESPACE,
+                                                0, &ret, &error)) {
+                g_warning ("There was an error requesting the name: %s",
+                           error->message);
+                g_error_free (error);
+                return task_manager;
+        }
+        if (ret != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER) {
+                /* Someone else registered the name before us */
+                return task_manager;
+        }
+        /* Register the task manager on the bus */
+        dbus_g_connection_register_g_object (connection,
+                                             A_OBJECT_PATH,
+                                             G_OBJECT (task_manager));
+
 
 	return task_manager;
 }
-
-
-
-
-
-
-
-
-
-
 

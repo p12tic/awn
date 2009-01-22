@@ -1,3 +1,11 @@
+2009-01-22  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-applet-manager.c:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	After years of work... don't make AWN crash when taskmanager applet is
+	removed.
+
 2009-01-20  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-manager/awnPreferences.py:
