@@ -55,6 +55,10 @@ import awn
 awn.vfs_init()
 defs.i18nize(globals())
 
+if os.geteuid() == 0:
+    sys.stderr.write(_("Awn Manager can't be run as root.") + '\n')
+    sys.exit(1)
+
 class AwnManager:
 
     def __init__(self):
