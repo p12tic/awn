@@ -1,5 +1,10 @@
 2009-01-23  Michal Hruby <michal.mhr@gmail.com>
 
+	* src/awn-task-manager.c:
+	Fix drawing problem after restarting taskamanger
+
+2009-01-23  Michal Hruby <michal.mhr@gmail.com>
+
 	* src/Makefile.am:
 	We don't need LIBDIR macro, though we do need DATADIR
 	* src/awn-applet-manager.c:

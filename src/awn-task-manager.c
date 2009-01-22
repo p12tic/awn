@@ -1608,6 +1608,7 @@ awn_task_manager_init (AwnTaskManager *task_manager)
 static void
 awn_task_manager_realized (GtkWidget *widget, gpointer user_data)
 {
+        AwnTaskManager *task_manager = AWN_TASK_MANAGER(widget);
         AwnTaskManagerPrivate *priv = AWN_TASK_MANAGER_GET_PRIVATE (widget);
 
         GList *l;
@@ -1615,8 +1616,10 @@ awn_task_manager_realized (GtkWidget *widget, gpointer user_data)
         for (l = list; l != NULL; l = l->next) {
                 _task_manager_window_opened (priv->screen,
                                              (WnckWindow*)l->data,
-                                             AWN_TASK_MANAGER(widget));
+                                             task_manager);
         }
+        // fix the height
+        on_height_changed (NULL, priv->settings->bar_height, task_manager);
 }
 
 GtkWidget *
