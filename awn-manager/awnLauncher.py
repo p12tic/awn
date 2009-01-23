@@ -48,6 +48,7 @@ class awnLauncher:
             os.makedirs(defs.HOME_LAUNCHERS_DIR)
 
         self.load_finished = False
+        self.idle_id = 0
 
         self.client = awn.Config()
         self.client.ensure_group(defs.WINMAN)
@@ -84,9 +85,20 @@ class awnLauncher:
         for item in l:
             launchers.append(l[item])
 
-        if not None in launchers and self.load_finished:
-            self.client.set_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING, launchers)
+        launchers = filter(None, launchers)
 
+        if self.load_finished:
+            if (self.idle_id != 0):
+                gobject.source_remove(self.idle_id)
+            self.idle_id = gobject.idle_add(self.check_changes, launchers)
+
+    def check_changes (self, data):
+        self.idle_id = 0
+        if (self.last_uris != data):
+            self.last_uris = data[:]
+            self.client.set_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING, data)
+        
+        return False
     def make_model (self):
 
         self.treeview = gtk.TreeView()
@@ -113,10 +125,16 @@ class awnLauncher:
         uris = []
         if self.client.exists(defs.WINMAN, defs.LAUNCHERS):
             uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
+        self.last_uris = uris[:] # make a copy
+        self.client.notify_add(defs.WINMAN, defs.LAUNCHERS, self.refresh_launchers, self)
 
         self.refresh_tree(uris)
 
         self.load_finished = True
+
+    def refresh_launchers (self, entry, extra):
+        self.last_uris = entry['value']
+        self.refresh_tree (self.last_uris)
 
     def refresh_tree (self, uris):
         self.model.clear()
@@ -127,6 +145,10 @@ class awnLauncher:
                 self.model.set_value (row, 0, self.make_icon (i))
                 self.model.set_value (row, 1, text)
                 self.model.set_value (row, 2, i)
+        if len(uris) == 0:
+            if (self.idle_id != 0):
+                gobject.source_remove(self.idle_id)
+            self.idle_id = gobject.idle_add(self.check_changes, [])
 
     def make_row (self, uri):
         try:
@@ -214,7 +236,7 @@ class awnLauncher:
         (model, iter) = selection.get_selected()
         uri = model.get_value(iter, 2)
         if os.path.exists(uri):
-            uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
+            uris = self.last_uris[:]
             uris.remove(uri)
             if uri.startswith(defs.HOME_LAUNCHERS_DIR):
                 os.remove(uri)

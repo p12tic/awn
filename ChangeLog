@@ -1,5 +1,11 @@
 2009-01-23  Michal Hruby <michal.mhr@gmail.com>
 
+	* awn-manager/awnLauncher.py:
+	Fixed Launcher managing, should be working fine now - maybe "edit"
+	could use some kind of forced refresh.
+
+2009-01-23  Michal Hruby <michal.mhr@gmail.com>
+
 	* src/awn-task-manager.c:
 	* src/awn-task.c:
 	* src/awn-task.h:
