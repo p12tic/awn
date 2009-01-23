@@ -75,6 +75,7 @@ CURVES_SYMMETRY		= "curves_symmetry"	#float
 TOOLTIP_FONT_NAME	= "tooltip_font_name"	#string
 TOOLTIP_FONT_COLOR	= "tooltip_font_color"	#string
 TOOLTIP_BG_COLOR	= "tooltip_bg_color"	#string
+CURRENT_THEME		= "current_theme"	#string
 
 EFFECTS			= "effects"		#group
 REFLECTION_OFFSET	= "reflection_offset"	#int

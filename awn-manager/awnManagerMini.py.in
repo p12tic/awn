@@ -97,6 +97,8 @@ class awnPreferencesMini(awnPreferences):
 
 	self.client = awn.Config()
 
+	self.theme_desktop = self.client.get_string(defs.THEME, defs.CURRENT_THEME)
+
 	self.setup_spin(defs.PANEL, defs.SIZE, self.wTree.get_widget("panelsize"))
 	self.setup_freeze(self.wTree.get_widget("freezeSize"), self.wTree.get_widget("panelsize"),"size")
 
@@ -184,6 +186,7 @@ class awnPreferencesMini(awnPreferences):
 	select = selection.get_selected()
 	path = model.get(select[1], 2)
 	self.load_all_settings_from_desktop(path[0])
+	self.client.set_string(defs.THEME, defs.CURRENT_THEME, path[0])
 
 
 class awnLauncherMini(awnLauncher):

@@ -139,7 +139,10 @@ type = string
 default = 000000B3
 description = Background color of the tooltip
 
-
+[theme/current_theme]
+type = string
+default = @PKGDATADIR@/themes/awn-default.desktop
+description = Path to the current desktop file theme.
 
 [effects/reflection_offset]
 type = int
