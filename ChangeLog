@@ -1,3 +1,11 @@
+2009-01-24  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awnLauncherEditor.py:
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	Fixed Launcher editing - now the desktop items are reloaded
+	Fixes Launchpad bug #254536
+
 2009-01-23  Michal Hruby <michal.mhr@gmail.com>
 
 	* awn-manager/awnLauncher.py:

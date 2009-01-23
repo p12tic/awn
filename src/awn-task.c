@@ -1154,6 +1154,8 @@ awn_task_set_launcher(AwnTask *task, AwnDesktopItem *item)
   priv->is_launcher = item != NULL;
   if (item == NULL) return FALSE;
 
+  gboolean was_null = priv->item == NULL;
+
   icon_name = awn_desktop_item_get_icon(item, priv->settings->icon_theme);
   if (!icon_name)
     return FALSE;
@@ -1175,7 +1177,11 @@ awn_task_set_launcher(AwnTask *task, AwnDesktopItem *item)
 
   awn_effects_draw_set_icon_size(priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 
-  awn_effects_start_ex(priv->effects, AWN_EFFECT_OPENING, NULL, _task_refresh, 1);
+  if (was_null)
+  {
+    awn_effects_start_ex(priv->effects, AWN_EFFECT_OPENING, 
+                         NULL, _task_refresh, 1);
+  }
 
   return TRUE;
 }

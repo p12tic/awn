@@ -100,8 +100,6 @@ struct _AwnTaskManagerPrivate
 
 	GtkWidget *eb;
 	
-	gboolean ignore_gconf;
-
 	DBusGConnection *applet_man_connection;
 	DBusGProxy *applet_man_proxy;
 
@@ -1459,17 +1457,11 @@ awn_task_manager_refresh_launchers (AwnConfigClientNotifyEntry *entry,
 	GSList *list, *l;
 	GList *t;
 	GSList *launchers = NULL, *old_launchers;
-	
-	
+
 	priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
-        
-        if (priv->ignore_gconf) {
-                priv->ignore_gconf = FALSE;
-                return;
-        }
-        
+
         list = entry->value.list_val;
-        
+ 
         for (l = list; l != NULL; l = l->next) {
                 gchar *string = g_strdup ((gchar*) (l->data));
                 launchers = g_slist_append (launchers, string);
@@ -1482,20 +1474,27 @@ awn_task_manager_refresh_launchers (AwnConfigClientNotifyEntry *entry,
         for (l = launchers; l != NULL; l = l->next) {
                 AwnTask *task = NULL;
                 for (t = priv->launchers; t != NULL; t = t->next) {
-                        AwnDesktopItem *item;
+                        AwnDesktopItem *item, *old_item;
                         item = awn_task_get_item (AWN_TASK (t->data));
                         gchar *file = awn_desktop_item_get_filename (item);
                         if (strcmp (file, l->data) == 0) {
                                 task = AWN_TASK (t->data);
+                                g_free (file);
+                                // refresh the desktop item
+                                old_item = item;
+                                item = awn_desktop_item_new ((gchar*)l->data);
+                                if (item) {
+                                        awn_task_set_launcher(task, item);
+                                        awn_desktop_item_free(old_item);
+                                }
+                                break;
                         }
                         g_free (file);
-                        
                 }
                 if (task) {
                         gtk_box_reorder_child (GTK_BOX (priv->launcher_box),
                                                GTK_WIDGET (task),
-                                               i);
-                        i++;
+                                               i++);
                 } else {
 			// added launcher
 			GtkWidget *task;
@@ -1522,6 +1521,9 @@ awn_task_manager_refresh_launchers (AwnConfigClientNotifyEntry *entry,
 
 				priv->launchers = g_list_append(priv->launchers, (gpointer)task);
 				gtk_box_pack_start(GTK_BOX(priv->launcher_box), task, FALSE, FALSE, 0);
+                                gtk_box_reorder_child (GTK_BOX (priv->launcher_box),
+                                                       task,
+                                                       i++);
 				gtk_widget_show(task);
 			} else {
 				gtk_widget_destroy(task);
@@ -1576,6 +1578,8 @@ awn_task_manager_refresh_launchers (AwnConfigClientNotifyEntry *entry,
                                 gtk_widget_unref(w);
                         } else {
                                 // destroy completely
+                                awn_task_manager_remove_launcher (task_manager,
+                                                                  task);
                                 awn_task_remove (task);
                         }
                 }
@@ -1623,7 +1627,6 @@ awn_task_manager_init (AwnTaskManager *task_manager)
 	priv->title_window = NULL;
 	priv->launchers = NULL;
 	priv->tasks = NULL;
-	priv->ignore_gconf = FALSE;
 	
 	/* Setup GConf to notify us if the launchers list changes */
 	awn_config_client_notify_add (client, "window_manager", "launchers", 

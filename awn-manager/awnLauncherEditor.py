@@ -179,8 +179,12 @@ class awnLauncherEditor:
                 uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
             except gobject.GError:
                 uris = []
+            index = len(uris)
+            if self.filename in uris:
+                index = uris.index(self.filename)
+                uris.remove(self.filename)
             if os.path.exists(self.filename):
-                uris.append(self.filename)
+                uris.insert(index, self.filename)
             self.client.set_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING, uris)
             if self.launcher is not None:
                 self.launcher.refresh_tree(uris)
