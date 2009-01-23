@@ -262,7 +262,8 @@ awn_settings_new()
 
   awn_load_string(client, TITLE, FONT_FACE, &s->font_face, "Sans 11");
 
-  s->task_width = settings->bar_height + 12;
+  s->task_width = 12;
+  s->task_width += settings->bar_height > 0 ? settings->bar_height : 1;
 
   /* make the custom icons directory */
   gchar *path = g_build_filename(g_get_home_dir(),

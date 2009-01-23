@@ -1,5 +1,10 @@
 2009-01-24  Michal Hruby <michal.mhr@gmail.com>
 
+	* libawn/awn-settings.c:
+	Fix Launchpad bug #311160
+
+2009-01-24  Michal Hruby <michal.mhr@gmail.com>
+
 	* awn-manager/awnLauncherEditor.py:
 	* src/awn-task-manager.c:
 	* src/awn-task.c:
