@@ -94,6 +94,8 @@ void awn_task_refresh_icon_geometry(AwnTask *task);
 
 void awn_task_update_icon(AwnTask *task);
 
+void awn_task_remove(AwnTask *task);
+
 void awn_task_set_width(AwnTask *task, gint width);
 
 AwnDesktopItem* awn_task_get_item(AwnTask *task);

@@ -1,6 +1,14 @@
 2009-01-23  Michal Hruby <michal.mhr@gmail.com>
 
 	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	* src/awn-task.h:
+	Launchers now behave with more sanity (but still need fixing in
+	awn-manager).
+
+2009-01-23  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-task-manager.c:
 	Fix drawing problem after restarting taskamanger
 
 2009-01-23  Michal Hruby <michal.mhr@gmail.com>

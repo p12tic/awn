@@ -266,7 +266,7 @@ awn_task_init(AwnTask *task)
   AwnTaskPrivate *priv;
   priv = AWN_TASK_GET_PRIVATE(task);
 
-  priv->item = FALSE;
+  priv->item = NULL;
   priv->pid = -1;
   priv->application = NULL;
   priv->is_launcher = FALSE;
@@ -1151,9 +1151,10 @@ awn_task_set_launcher(AwnTask *task, AwnDesktopItem *item)
 
   priv = AWN_TASK_GET_PRIVATE(task);
 
-  priv->is_launcher = TRUE;
-  icon_name = awn_desktop_item_get_icon(item, priv->settings->icon_theme);
+  priv->is_launcher = item != NULL;
+  if (item == NULL) return FALSE;
 
+  icon_name = awn_desktop_item_get_icon(item, priv->settings->icon_theme);
   if (!icon_name)
     return FALSE;
 
@@ -2016,6 +2017,16 @@ _slist_foreach(char *uri, AwnListTerm *term)
   }
 }
 
+void awn_task_remove(AwnTask *task)
+{
+  AwnTaskPrivate *priv = AWN_TASK_GET_PRIVATE(task);
+
+  priv->window = NULL;
+  /* start closing effect */
+  awn_effects_start_ex(priv->effects, 
+                       AWN_EFFECT_CLOSING, NULL, _task_destroy, 1);
+}
+
 static void
 _task_remove_launcher(GtkMenuItem *item, AwnTask *task)
 {
@@ -2038,9 +2049,7 @@ _task_remove_launcher(GtkMenuItem *item, AwnTask *task)
   awn_config_client_set_list(client, "window_manager", "launchers",
                              AWN_CONFIG_CLIENT_LIST_TYPE_STRING, settings->launchers, NULL);
 
-  priv->window = NULL;
-  /* start closing effect */
-  awn_effects_start_ex(priv->effects, AWN_EFFECT_CLOSING, NULL, _task_destroy, 1);
+  awn_task_remove (task);
 }
 
 static void

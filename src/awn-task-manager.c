@@ -567,8 +567,6 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
         }
 
 	AwnTaskManagerPrivate *priv;
-	GtkWidget *task = NULL;
-	AwnDesktopItem *item = NULL;
 	GString *uri;
 	AwnSettings *settings;
 
@@ -587,54 +585,22 @@ _task_manager_drag_data_recieved (GtkWidget *widget, GdkDragContext *context,
 		uri = g_string_truncate(uri, res+1);
 
 
-  g_print("Desktop file: %s\n", uri->str);
-	item = awn_desktop_item_new (uri->str);
+	g_print("Desktop file: %s\n", uri->str);
 
-	if (item == NULL) {
-		g_print("Error : Could not load the desktop file!");
-		return;
+	/******* Add to config *********/
+	settings = priv->settings;
+	// careful shallow copy
+	GSList *launchers = g_slist_copy(settings->launchers);
+	launchers = g_slist_append(launchers, uri->str);
 
-	}
+	AwnConfigClient *client = awn_config_client_new ();
+	awn_config_client_set_list(client, "window_manager", "launchers",
+                                   AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                                   launchers, NULL);
 
-	task = awn_task_new(task_manager, priv->settings);
-	awn_task_set_title (AWN_TASK(task), AWN_TITLE(priv->title_window));
-	if (awn_task_set_launcher (AWN_TASK (task), item)) {
-
-		g_signal_connect (G_OBJECT(task), "drag-data-received",
-				  G_CALLBACK(_task_manager_drag_data_recieved), (gpointer)task_manager);
-		g_signal_connect (G_OBJECT(task), "menu_item_clicked",
-			  G_CALLBACK(_task_manager_menu_item_clicked), (gpointer)
-			  task_manager);
-		g_signal_connect (G_OBJECT(task), "check_item_clicked",
-			  G_CALLBACK(_task_manager_check_item_clicked), (gpointer)
-			  task_manager);
-
-		priv->launchers = g_list_append(priv->launchers, (gpointer)task);
-		gtk_box_pack_start(GTK_BOX(priv->launcher_box), task, FALSE, FALSE, 0);
-		gtk_widget_show(task);
-		_refresh_box (task_manager);
-		g_print("LOADED : %s\n", _sdata);
-
-		/******* Add to config *********/
-		priv->ignore_gconf = TRUE;
-		settings = priv->settings;
-		settings->launchers = g_slist_append(settings->launchers, g_strdup(uri->str));
-                
-		AwnConfigClient *client = awn_config_client_new ();
-		awn_config_client_set_list(client, "window_manager", "launchers",
-                                           AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                                           settings->launchers, NULL);
-		awn_task_manager_update_separator_position (task_manager);
-	} else {
-		gtk_widget_destroy(task);
-		awn_desktop_item_free (item);
-		g_print("FAILED : %s\n", _sdata);
-
-	}
+	g_slist_free (launchers);
 
 	g_string_free(uri, TRUE);
-	//awn_task_manager_update_separator_position (task_manager);
-       	_refresh_box(task_manager);
        	gtk_drag_finish (context, dnd_success, delete_selection_data, time);
 }
 
@@ -1492,7 +1458,7 @@ awn_task_manager_refresh_launchers (AwnConfigClientNotifyEntry *entry,
 	AwnTaskManagerPrivate *priv;
 	GSList *list, *l;
 	GList *t;
-	GSList *launchers = NULL;
+	GSList *launchers = NULL, *old_launchers;
 	
 	
 	priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
@@ -1509,7 +1475,7 @@ awn_task_manager_refresh_launchers (AwnConfigClientNotifyEntry *entry,
                 launchers = g_slist_append (launchers, string);
         }
         
-        g_slist_free (priv->settings->launchers);
+        old_launchers = priv->settings->launchers;
         priv->settings->launchers = launchers;
         
         gint i = 0;
@@ -1518,7 +1484,7 @@ awn_task_manager_refresh_launchers (AwnConfigClientNotifyEntry *entry,
                 for (t = priv->launchers; t != NULL; t = t->next) {
                         AwnDesktopItem *item;
                         item = awn_task_get_item (AWN_TASK (t->data));
-						gchar *file = awn_desktop_item_get_filename (item);
+                        gchar *file = awn_desktop_item_get_filename (item);
                         if (strcmp (file, l->data) == 0) {
                                 task = AWN_TASK (t->data);
                         }
@@ -1530,8 +1496,95 @@ awn_task_manager_refresh_launchers (AwnConfigClientNotifyEntry *entry,
                                                GTK_WIDGET (task),
                                                i);
                         i++;
+                } else {
+			// added launcher
+			GtkWidget *task;
+			AwnDesktopItem *item = awn_desktop_item_new (l->data);
+
+			if (item == NULL) {
+				g_print("Error : Could not load the desktop file!");
+				continue;
+			}
+			g_print("LOADED : %s\n", (char*)l->data);
+
+			task = awn_task_new(task_manager, priv->settings);
+			awn_task_set_title (AWN_TASK(task), AWN_TITLE(priv->title_window));
+			if (awn_task_set_launcher (AWN_TASK (task), item)) {
+
+				g_signal_connect (G_OBJECT(task), "drag-data-received",
+						  G_CALLBACK(_task_manager_drag_data_recieved), (gpointer)task_manager);
+				g_signal_connect (G_OBJECT(task), "menu_item_clicked",
+						  G_CALLBACK(_task_manager_menu_item_clicked), (gpointer)
+						  task_manager);
+				g_signal_connect (G_OBJECT(task), "check_item_clicked",
+						  G_CALLBACK(_task_manager_check_item_clicked), (gpointer)
+						  task_manager);
+
+				priv->launchers = g_list_append(priv->launchers, (gpointer)task);
+				gtk_box_pack_start(GTK_BOX(priv->launcher_box), task, FALSE, FALSE, 0);
+				gtk_widget_show(task);
+			} else {
+				gtk_widget_destroy(task);
+				awn_desktop_item_free (item);
+				g_print("FAILED : %s\n", (char*)l->data);
+			}
                 }
-        }    
+        }
+
+        // make a list of removed launchers
+        l = old_launchers;
+        while (l) {
+                gboolean found = FALSE;
+                for (list = launchers; list; list = list->next) {
+                        if (strcmp(list->data, l->data) == 0) {
+                                found = TRUE;
+                                break;
+                        }
+                }
+                if (found) {
+                        old_launchers = g_slist_delete_link(old_launchers, l);
+                        l = old_launchers;
+                } else {
+                        l = l->next;
+                }
+        }
+        // old_launchers now contains list of removed paths
+        for (l = old_launchers; l; l = l->next) {
+                AwnTask *task = NULL;
+                for (t = priv->launchers; t != NULL; t = t->next) {
+                        AwnDesktopItem *item;
+                        item = awn_task_get_item (AWN_TASK (t->data));
+                        gchar *file = awn_desktop_item_get_filename (item);
+                        if (strcmp (file, l->data) == 0) {
+                                task = AWN_TASK (t->data);
+                        }
+                        g_free (file);
+                        
+                }
+                if (task) {
+                        // remove from launchers
+		        g_print("REMOVED : %s\n", (char*)l->data);
+                        if (awn_task_get_window (task)) {
+                                // move to tasks
+                                GtkWidget *w = GTK_WIDGET (task);
+                                awn_task_manager_remove_launcher (task_manager, task);
+                                awn_task_set_launcher (task, NULL);
+                                priv->tasks = g_list_append(priv->tasks, (gpointer)task);
+                                gtk_widget_ref(w);
+                                gtk_container_remove(GTK_CONTAINER(priv->launcher_box), w);
+                                gtk_box_pack_start(GTK_BOX(priv->tasks_box), w, FALSE, FALSE, 0);
+                                gtk_widget_unref(w);
+                        } else {
+                                // destroy completely
+                                awn_task_remove (task);
+                        }
+                }
+        }
+
+        g_slist_free (old_launchers);
+        
+	awn_task_manager_update_separator_position (task_manager);
+       	_refresh_box(task_manager);
 }
 
 static void
