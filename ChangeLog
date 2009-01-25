@@ -1,5 +1,10 @@
 2009-01-25  Mark Lee <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-effects.h:
+	Do not use C++ comments in C files.
+
+2009-01-25  Mark Lee <avant-wn@lazymalevolence.com>
+
 	* data/Makefile.am:
 	Fix build system breakage introduced in trunk revision 505.
 
