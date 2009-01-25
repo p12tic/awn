@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2007, 2008 Mark Lee <avant-wn@lazymalevolence.com>
+ *  Copyright (C) 2007, 2008, 2009 Mark Lee <avant-wn@lazymalevolence.com>
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -144,7 +144,8 @@ AwnConfigClient *awn_config_client_new_for_applet (const gchar *name, const gcha
 		config_file = g_strconcat (name, ".ini", NULL);
 	}
 	gchar *config_path = g_build_filename (config_dir, config_file, NULL);
-	client = awn_config_client_new_with_path (g_strdup (config_path), name);
+	client = awn_config_client_new_with_path (g_strdup (config_path),
+	                                          (gchar*)name);
 	g_free (config_path);
 	g_free (config_file);
 	g_free (config_dir);

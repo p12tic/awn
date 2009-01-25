@@ -1,3 +1,8 @@
+2009-01-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-config-client-gkeyfile.c (awn_config_client_new_for_path):
+	Fix a casting-related compile warning.
+
 2008-10-02  Neil Jagdish Patel  <njpatel@gmail.com>
 
 	* applets/taskmanager/applet.c:
