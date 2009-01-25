@@ -76,7 +76,6 @@ awn_x_get_icon (WnckWindow * window, gint width, gint height)
   return icon_scaled;
 }
 
-int num = 0;
 void
 awn_x_set_strut (GtkWindow * window)
 {
@@ -89,14 +88,9 @@ awn_x_set_strut (GtkWindow * window)
   gtk_window_get_size (window, &width, &height);
   gtk_window_get_position (window, &x, &y);
 
-  xutils_set_strut ((GTK_WIDGET (window)->window),
-		    (height - settings->icon_offset) / 2 +
-		    settings->icon_offset, x, x + width);
-  num++;
-  if (num == 20)
-  {
-    num = 0;
-  }
+  xutils_set_strut ((GTK_WIDGET (window)->window), 
+                    (settings->bar_height+2)+settings->icon_offset,
+                    x, x + width);
 }
 
 GString *
