@@ -1,12 +1,10 @@
-NULL =
+APP_ICON_NAME = avant-window-navigator
+include $(top_srcdir)/Makefile.app-icons
 
 SUBDIRS =		\
         active		\
         default-theme	\
         $(NULL)
-
-APP_ICON_NAME = avant-window-navigator
-include $(top_srcdir)/Makefile.app-icons
 
 # desktop file
 

@@ -1,3 +1,8 @@
+2009-01-25  Mark Lee <avant-wn@lazymalevolence.com>
+
+	* data/Makefile.am:
+	Fix build system breakage introduced in trunk revision 505.
+
 2009-01-25  h4writer <hv1989@gmail.com>
 
 	* src/awn-x.c:
