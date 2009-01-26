@@ -21,7 +21,9 @@ Build-Depends: 	debhelper (>= 5),
 		doc-base,
 		valac (>= 0.1.7),
 		python2.5 | python-lxml | python-celementtree | python-elementtree,
-		automake
+		automake,
+		lsb-release,
+		bzr
 Standards-Version: 3.7.3
 Homepage: https://launchpad.net/avant-window-navigator/
 XS-Python-Version: >= 2.4

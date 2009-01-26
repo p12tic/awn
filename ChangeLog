@@ -1,3 +1,8 @@
+2009-01-26  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/control:
+	Add Build-Depends on bzr and lsb-release to generate the bzr revision in the version.
+
 2009-01-25  Michal Hruby <michal.mhr@gmail.com>
 
 	* doc/reference/libawn-sections.txt:
