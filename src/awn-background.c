@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include <glib/gprintf.h>
+#include <libdesktop-agnostic/color.h>
 #include <libawn/awn-config-client.h>
 #include <libawn/awn-config-bridge.h>
 
@@ -178,29 +179,29 @@ awn_background_set_property (GObject      *object,
       break;
 
     case PROP_GSTEP1:
-      awn_cairo_string_to_color (g_value_get_string (value), &bg->g_step_1);
+      bg->g_step_1 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       break;
     case PROP_GSTEP2:
-      awn_cairo_string_to_color (g_value_get_string (value), &bg->g_step_2);
+      bg->g_step_2 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       break;
     case PROP_GHISTEP1:
-      awn_cairo_string_to_color (g_value_get_string (value), &bg->g_histep_1);
+      bg->g_histep_1 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       break;
     case PROP_GHISTEP2:
-      awn_cairo_string_to_color (g_value_get_string (value), &bg->g_histep_2);
+      bg->g_histep_2 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       break;
     case PROP_BORDER:
-      awn_cairo_string_to_color (g_value_get_string (value), &bg->border_color);
+      bg->border_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       break;
     case PROP_HILIGHT:
-      awn_cairo_string_to_color (g_value_get_string (value),&bg->hilight_color);
+      bg->hilight_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       break;
     
     case PROP_SHOW_SEP:
       bg->show_sep = g_value_get_boolean (value);
       break;
     case PROP_SEP_COLOR:
-      awn_cairo_string_to_color (g_value_get_string (value),&bg->sep_color);
+      bg->sep_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       break;
     
     case PROP_ENABLE_PATTERN:
@@ -445,62 +446,53 @@ awn_background_draw (AwnBackground  *bg,
  * theme
  */
 
+/**
+ * alpha: between 0 and 255. Multiplied by 256 to get the "proper" alpha value.
+ */
 static void
-gdk_color_to_hex (gchar *string, GdkColor *color, gint alpha)
+set_cfg_from_theme (GdkColor        *color,
+                    gushort          alpha,
+                    AwnConfigClient *client,
+                    const gchar     *key)
 {
-  /* Yes theres loss of info, but this will work for now */
-  g_sprintf (string, "%02X%02X%02X%02X",
-             (gint)((color->red/65535.0)*255),
-             (gint)((color->green/65535.0)*255),
-             (gint)((color->blue/65535.0)*255),
-             alpha);
-  string[8] = '\0';
-
-  /*g_debug ("%d %d %d = %s\n", 
-           (gint)((color->red/65535.0)*255),
-           (gint)((color->green/65535.0)*255),
-           (gint)((color->blue/65535.0)*255),
-           string);*/
+  DesktopAgnosticColor *da_color;
+  gchar *hex_value;
+  da_color = desktop_agnostic_color_new (color, alpha * 256);
+  hex_value = desktop_agnostic_color_to_string (da_color);
+  awn_config_client_set_string (client,
+                                AWN_GROUP_THEME, key,
+                                hex_value, NULL);
+  g_free (hex_value);
+  g_object_unref (da_color);
 }
-
 
 static void
 load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
 {
   AwnConfigClient *client = bg->client;
   GtkStyle        *style;
-  gchar            temp[9];
 
   style = gtk_widget_get_style (widget);
 
   g_debug ("Updating gtk theme colours");
 
   /* main colours */
-  gdk_color_to_hex (temp, &style->bg[GTK_STATE_NORMAL], 155);
-  awn_config_client_set_string (client,
-                                AWN_GROUP_THEME, AWN_THEME_GSTEP1,
-                                temp, NULL);
-
-  gdk_color_to_hex (temp, &style->bg[GTK_STATE_NORMAL], 200);
-  awn_config_client_set_string (client,
-                                AWN_GROUP_THEME, AWN_THEME_GSTEP2,
-                                temp, NULL);
+  set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 155,
+                      client, AWN_THEME_GSTEP1);
+  set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 200,
+                      client, AWN_THEME_GSTEP2);
 
   awn_config_client_set_string (client,
                                 AWN_GROUP_THEME, AWN_THEME_GHISTEP1,
-                                "FFFFFF0C", NULL);
+                                "#FFFFFF0C", NULL);
   awn_config_client_set_string (client,
                                 AWN_GROUP_THEME, AWN_THEME_GHISTEP2,
-                                "FFFFFF0B", NULL);
+                                "#FFFFFF0B", NULL);
 
-  gdk_color_to_hex (temp, &style->dark[GTK_STATE_ACTIVE], 200);
-  awn_config_client_set_string (client,
-                                AWN_GROUP_THEME, AWN_THEME_BORDER,
-                                temp, NULL);
-  gdk_color_to_hex (temp, &style->light[GTK_STATE_ACTIVE], 100);
-  awn_config_client_set_string (client,
-                                AWN_GROUP_THEME, AWN_THEME_HILIGHT,
-                                temp, NULL);
+  set_cfg_from_theme (&style->dark[GTK_STATE_ACTIVE], 200,
+                      client, AWN_THEME_BORDER);
+  set_cfg_from_theme (&style->light[GTK_STATE_ACTIVE], 100,
+                      client, AWN_THEME_HILIGHT);
 
   /* Don't draw patterns */
   awn_config_client_set_bool (client,
@@ -513,7 +505,7 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
                               TRUE, NULL);
   awn_config_client_set_string (client, 
                                 AWN_GROUP_THEME, AWN_THEME_SEP_COLOR,
-                                "FFFFFF00", NULL);
+                                "#FFFFFF00", NULL);
 
   /* Misc settings */
 }

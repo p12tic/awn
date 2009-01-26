@@ -448,14 +448,6 @@
   )
 )
 
-(define-function rgba_string_to_dict
-  (c-name "awn_cairo_string_to_color")
-  (return-type "AwnColor*")
-  (parameters
-    '("const-gchar*" "string")
-  )
-)
-
 
 
 ;; From awn-defines.h

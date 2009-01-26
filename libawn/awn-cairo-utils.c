@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2007 Anthony Arobone <aarobone@gmail.com>
+ *  Copyright (C) 2009 Mark Lee <avant-wn@lazymalevolence.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,10 +18,10 @@
  * Boston, MA 02111-1307, USA.
  *
  *  Author : Anthony Arobone <aarobone@gmail.com>
+ *           (awn_cairo_rounded_rect)
+ *  Author : Mark Lee <avant-wn@lazymalevolence.com>
+ *           (awn_cairo_set_source_color)
 */
-
-
-#include <gtk/gtk.h>
 
 #include "awn-cairo-utils.h"
 
@@ -85,48 +86,28 @@ awn_cairo_rounded_rect(cairo_t *cr, double x0, double y0,
   cairo_close_path(cr);
 }
 
-static int
-getdec(char hexchar)
+
+void
+awn_cairo_set_source_color (cairo_t              *cr,
+                            DesktopAgnosticColor *color)
 {
-  if ((hexchar >= '0') && (hexchar <= '9')) return hexchar - '0';
-
-  if ((hexchar >= 'A') && (hexchar <= 'F')) return hexchar - 'A' + 10;
-
-  if ((hexchar >= 'a') && (hexchar <= 'f')) return hexchar - 'a' + 10;
-
-  return -1; // Wrong character
-
-}
-
-static void
-hex2float(const char *HexColor, float *FloatColor)
-{
-  const char *HexColorPtr = HexColor;
-
-  int i = 0;
-
-  for (i = 0; i < 4; i++)
-  {
-    int IntColor = (getdec(HexColorPtr[0]) * 16) +
-                   getdec(HexColorPtr[1]);
-
-    FloatColor[i] = (float) IntColor / 255.0;
-    HexColorPtr += 2;
-  }
-
+  cairo_set_source_rgba (cr,
+                         desktop_agnostic_color_get_red (color),
+                         desktop_agnostic_color_get_green (color),
+                         desktop_agnostic_color_get_blue (color),
+                         color->alpha);
 }
 
 void
-awn_cairo_string_to_color(const gchar *string, AwnColor *color)
+awn_cairo_pattern_add_color_stop_color (cairo_pattern_t      *pattern,
+                                        double                offset,
+                                        DesktopAgnosticColor *color)
 {
-  float colors[4];
-  g_return_if_fail (string); 
-  g_return_if_fail (color); 
-
-  hex2float(string, colors);
-  color->red = colors[0];
-  color->green = colors[1];
-  color->blue = colors[2];
-  color->alpha = colors[3];
+  cairo_pattern_add_color_stop_rgba (pattern, offset,
+                                     desktop_agnostic_color_get_red (color),
+                                     desktop_agnostic_color_get_green (color),
+                                     desktop_agnostic_color_get_blue (color),
+                                     color->alpha);
 }
 
+/* vim: set et ts=2 sts=2 sw=2 ai cindent : */

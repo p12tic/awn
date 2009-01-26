@@ -25,7 +25,8 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
-#include <libawn/awn-cairo-utils.h>
+#include <libdesktop-agnostic/color.h>
+
 #include <libawn/awn-config-client.h>
 
 #include "awn-panel.h"
@@ -59,16 +60,16 @@ struct _AwnBackground
   AwnPanel        *panel;
 
   /* Standard box drawing colours */
-  AwnColor g_step_1;
-  AwnColor g_step_2;
-  AwnColor g_histep_1;
-  AwnColor g_histep_2;
-  AwnColor border_color;
-  AwnColor hilight_color;
+  DesktopAgnosticColor* g_step_1;
+  DesktopAgnosticColor* g_step_2;
+  DesktopAgnosticColor* g_histep_1;
+  DesktopAgnosticColor* g_histep_2;
+  DesktopAgnosticColor* border_color;
+  DesktopAgnosticColor* hilight_color;
 
   /* Separator options */
   gboolean show_sep;
-  AwnColor sep_color;
+  DesktopAgnosticColor* sep_color;
 
   /* Pattern options */
   gboolean   enable_pattern;
