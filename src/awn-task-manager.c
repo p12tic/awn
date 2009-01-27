@@ -26,6 +26,7 @@
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
+#include <unistd.h>
 
 #include "config.h"
 
@@ -117,6 +118,7 @@ static guint awn_task_manager_signals[LAST_SIGNAL] = { 0 };
 
 /* GLOBALS */
 
+static int TASKMAN_OWN_PID = -1;
 
 static void
 _load_launchers_func (const char *uri, AwnTaskManager *task_manager)
@@ -387,6 +389,9 @@ _task_manager_window_opened (WnckScreen *screen, WnckWindow *window,
 	}
 	/* if not launcher & no starter, create new task */
 	if (task == NULL) {
+		// LP bug #258960 - always skip awn itself
+		if (wnck_window_get_pid(window) == TASKMAN_OWN_PID) return;
+
 		task = awn_task_new(task_manager, priv->settings);
 		if (awn_task_set_window (AWN_TASK (task), window))
 			;//g_print("Created for %s\n", wnck_window_get_name(window));
@@ -1681,6 +1686,8 @@ awn_task_manager_realized (GtkWidget *widget, gpointer user_data)
 GtkWidget *
 awn_task_manager_new (AwnSettings *settings)
 {
+	TASKMAN_OWN_PID = getpid();
+
 	GtkWidget *task_manager;
 	AwnTaskManagerPrivate *priv;
 
