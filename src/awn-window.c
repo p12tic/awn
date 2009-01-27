@@ -31,7 +31,9 @@
 #include <X11/extensions/shape.h>
 #include <gdk/gdkx.h>
 
-
+#if !GTK_CHECK_VERSION(2,14,0)
+#define g_timeout_add_seconds(seconds, callback, user_data) g_timeout_add(seconds * 1000, callback, user_data)
+#endif
 
 #include "awn-x.h"
 
@@ -101,7 +103,7 @@ void
 awn_window_force_repos ()
 {
 	stop_position = TRUE;
-	g_timeout_add(5000, (GSourceFunc)_position_timeout, NULL);
+	g_timeout_add_seconds(5, (GSourceFunc)_position_timeout, NULL);
 }
 
 GtkWidget *
@@ -137,7 +139,7 @@ awn_window_new( AwnSettings *set )
         _update_input_shape (GTK_WIDGET(this), AWN_WINDOW_DEFAULT_WIDTH, (set->bar_height + 2) * 2);
 #endif  
         
-      	g_timeout_add(5000, (GSourceFunc)_position_timeout, NULL);
+      	g_timeout_add_seconds(5, (GSourceFunc)_position_timeout, NULL);
         return GTK_WIDGET(this);
 }
 

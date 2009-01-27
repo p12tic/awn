@@ -1,3 +1,11 @@
+2009-01-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	patch by: Matt <sharkbaitbobby@gmail.com>
+
+	* src/awn-task.c:
+	* src/awn-window.c:
+	Fix Launchpad bug #307576 (Use g_timeout_add_seconds when possible).
+
 2009-01-27  Michal Hruby <michal.mhr@gmail.com>
 
 	* src/awn-task.c:

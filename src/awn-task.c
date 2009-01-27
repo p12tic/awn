@@ -31,6 +31,10 @@
 #include <glib/gi18n.h>
 #endif
 
+#if !GTK_CHECK_VERSION(2,14,0)
+#define g_timeout_add_seconds(seconds, callback, user_data) g_timeout_add(seconds * 1000, callback, user_data)
+#endif
+
 #include <libawn/awn-config-client.h>
 #include <libawn/awn-effects.h>
 #include <libawn/awn-vfs.h>
@@ -364,7 +368,7 @@ _shrink_widget(AwnTask *task)
     gdk_pixbuf_unref(priv->reflect);
   }
 
-  g_timeout_add(1000, (GSourceFunc)awn_task_manager_refresh_box,
+  g_timeout_add_seconds(1, (GSourceFunc)awn_task_manager_refresh_box,
 
                 priv->task_manager);
 
@@ -948,7 +952,7 @@ awn_task_drag_motion(GtkWidget *task,
     {
       priv->drag_hover = TRUE;
       priv->timestamp = gtk_get_current_event_time();
-      g_timeout_add(1000, (GSourceFunc)activate_window, (gpointer)task);
+      g_timeout_add_seconds(1, (GSourceFunc)activate_window, (gpointer)task);
     }
 
     awn_effects_start_ex(priv->effects, AWN_EFFECT_LAUNCHING, NULL, NULL, 1);
