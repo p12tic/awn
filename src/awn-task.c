@@ -1105,10 +1105,14 @@ awn_task_set_window(AwnTask *task, WnckWindow *window)
 
   if (!priv->is_launcher)
   {
+    gint size = priv->settings->task_width - 12;
+    if (size <= 0) size = 1;
     priv->icon = awn_x_get_icon_for_window(priv->window,
-                                           priv->settings->task_width - 12,
-                                           priv->settings->task_width - 12);
-    priv->reflect = gdk_pixbuf_flip(priv->icon, FALSE);
+                                           size, size);
+    if (GDK_IS_PIXBUF (priv->icon))
+      priv->reflect = gdk_pixbuf_flip(priv->icon, FALSE);
+    else
+      priv->reflect = NULL;
 
     awn_effects_draw_set_icon_size(priv->effects, gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 
