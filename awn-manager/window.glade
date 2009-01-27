@@ -975,7 +975,7 @@
                                                       <widget class="GtkSpinButton" id="barheight">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
-                                                        <property name="adjustment">1 0 100 1 10 10</property>
+                                                        <property name="adjustment">1 10 100 1 10 10</property>
                                                         <property name="climb_rate">1</property>
                                                         <property name="numeric">True</property>
                                                         <property name="update_policy">GTK_UPDATE_IF_VALID</property>

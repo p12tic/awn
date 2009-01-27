@@ -803,7 +803,7 @@ _task_manager_check_width (AwnTaskManager *task_manager)
 		} while (x + num * width + 50 < settings->monitor_width);
 	}
 
-	if (width < settings->task_width) {
+	if (width < settings->task_width && width >= AWN_MIN_BAR_HEIGHT) {
 		settings->task_width = width;
 		g_list_foreach(priv->launchers, (GFunc)_task_resize, GINT_TO_POINTER (settings->task_width));
 		g_list_foreach(priv->tasks, (GFunc)_task_resize, GINT_TO_POINTER (settings->task_width));

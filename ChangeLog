@@ -1,5 +1,17 @@
 2009-01-27  Michal Hruby <michal.mhr@gmail.com>
 
+	* awn-manager/awnManager.py.in:
+	Added window title.
+	* awn-manager/window.glade:
+	* libawn/awn-settings.c:
+	* libawn/awn-settings.h:
+	* src/awn-task-manager.c:
+	* src/main.c:
+	Bar height minimum set to 10, though when there are too many items on
+	the bar the setting is ignored (real ugly code to fix).
+
+2009-01-27  Michal Hruby <michal.mhr@gmail.com>
+
 	* src/awn-task-manager.c:
 	Fix Launchpad bug #258960 - always skip awn itself in task matching.
 

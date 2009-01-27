@@ -29,6 +29,8 @@
 
 #include <libawn/awn-cairo-utils.h>
 
+#define AWN_MIN_BAR_HEIGHT 10
+
 typedef struct
 {
 

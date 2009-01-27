@@ -72,6 +72,7 @@ class AwnManager:
         self.wTree = gtk.glade.XML(self.GLADE_PATH, domain=defs.I18N_DOMAIN)
 
         self.window = self.wTree.get_widget("awnManagerWindow")
+        self.window.set_title(_("Awn Manager"))
         self.theme = gtk.icon_theme_get_default()
         icon_search_path = os.path.join('@DATADIR@', 'icons')
         if icon_search_path not in self.theme.get_search_path():

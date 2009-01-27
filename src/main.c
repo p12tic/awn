@@ -580,7 +580,10 @@ resize(AwnSettings *settings)
 static void
 bar_height_changed(AwnConfigClientNotifyEntry *entry, AwnSettings *settings)
 {
-  settings->bar_height = entry->value.int_val;
+  if (entry->value.int_val < AWN_MIN_BAR_HEIGHT)
+    settings->bar_height = AWN_MIN_BAR_HEIGHT;
+  else
+    settings->bar_height = entry->value.int_val;
 
   resize(settings);
 }

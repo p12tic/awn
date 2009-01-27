@@ -172,6 +172,8 @@ awn_settings_new()
   awn_config_client_ensure_group(client, BAR);
 
   awn_load_int(client, BAR, BAR_HEIGHT, &s->bar_height, 48);
+  // make sure bar_height is >= AWN_MIN_BAR_HEIGHT
+  if (s->bar_height < AWN_MIN_BAR_HEIGHT) s->bar_height = AWN_MIN_BAR_HEIGHT;
 
   awn_load_float(client, BAR, BAR_POS, &s->bar_pos, 0.5);
 
@@ -263,7 +265,9 @@ awn_settings_new()
   awn_load_string(client, TITLE, FONT_FACE, &s->font_face, "Sans 11");
 
   s->task_width = 12;
-  s->task_width += settings->bar_height > 0 ? settings->bar_height : 1;
+  s->task_width += settings->bar_height >= AWN_MIN_BAR_HEIGHT ?
+      settings->bar_height :
+      AWN_MIN_BAR_HEIGHT;
 
   /* make the custom icons directory */
   gchar *path = g_build_filename(g_get_home_dir(),
