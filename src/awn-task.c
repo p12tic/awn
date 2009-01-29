@@ -129,6 +129,7 @@ struct _AwnTaskPrivate
   gulong icon_changed;
   gulong state_changed;
   gulong name_changed;
+  gulong geometry_changed;
 
   /* Ceceppa: old window position */
   gint old_x;
@@ -187,6 +188,11 @@ awn_task_dispose(GObject *obj)
       g_signal_handler_disconnect((gpointer)priv->window,
                                   priv->name_changed);
       priv->name_changed = 0;
+    }
+    if (priv->geometry_changed) {
+      g_signal_handler_disconnect((gpointer)priv->window,
+                                  priv->geometry_changed);
+      priv->geometry_changed = 0;
     }
   }
 
@@ -1084,6 +1090,47 @@ _task_wnck_state_changed(WnckWindow *window, WnckWindowState  old,
   }
 }
 
+gboolean updating = FALSE;
+static gboolean
+_viewport_changed_so_update(AwnTaskManager *task_manager)
+{
+  updating = FALSE;
+  awn_task_manager_refresh_box(task_manager);
+  return FALSE;
+}
+
+static void
+_task_wnck_geometry_changed(WnckWindow *window, AwnTask *task)
+{
+  AwnTaskPrivate *priv;
+  WnckScreen* screen;
+  int x,y,width,height;
+
+  g_return_if_fail(AWN_IS_TASK(task));
+
+  priv = AWN_TASK_GET_PRIVATE(task);
+
+  if (priv->window == NULL)
+    return;
+
+  screen = wnck_window_get_screen(priv->window);  
+  wnck_window_get_geometry(priv->window,
+                           &x,
+                           &y,
+                           &width,
+                           &height);
+
+  if( x <= -width || x >= wnck_screen_get_width(screen) )
+  {
+    /* Window is moved off viewport, so update the list of tasks */
+    if( !updating )
+    {
+      updating = TRUE;
+      g_timeout_add(50, (GSourceFunc)_viewport_changed_so_update, priv->task_manager);
+    }
+  }
+}
+
 /**********************Gets & Sets **********************/
 
 gboolean
@@ -1095,7 +1142,8 @@ awn_task_get_is_launcher(AwnTask *task)
 }
 
 gboolean
-awn_task_set_window(AwnTask *task, WnckWindow *window)
+awn_task_set_window(AwnTask *task, WnckWindow *window,
+                    gboolean connect_geom_signal)
 {
   g_return_val_if_fail(WNCK_IS_WINDOW(window), 0);
 
@@ -1131,6 +1179,12 @@ awn_task_set_window(AwnTask *task, WnckWindow *window)
 
   priv->name_changed = g_signal_connect(G_OBJECT(priv->window), "name_changed",
                                         G_CALLBACK(_task_wnck_name_changed), (gpointer)task);
+
+  if (connect_geom_signal)
+  {
+    priv->geometry_changed = g_signal_connect(G_OBJECT(priv->window), "geometry_changed",
+                                              G_CALLBACK(_task_wnck_geometry_changed), (gpointer)task);
+  }
 
   /* if launcher, set a launch_sequence
   else if starter, stop the launch_sequence, disable starter flag*/
@@ -2223,6 +2277,11 @@ awn_task_close(AwnTask *task)
     g_signal_handler_disconnect((gpointer)priv->window,
                               priv->name_changed);
     priv->name_changed = 0;
+  }
+  if (priv->geometry_changed) {
+    g_signal_handler_disconnect((gpointer)priv->window,
+                              priv->geometry_changed);
+    priv->geometry_changed = 0;
   }
 
   priv->window = NULL;

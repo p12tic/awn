@@ -70,7 +70,9 @@ void awn_task_close(AwnTask *task);
 
 gboolean awn_task_get_is_launcher(AwnTask *task);
 
-gboolean awn_task_set_window(AwnTask *task, WnckWindow *window);
+gboolean awn_task_set_window(AwnTask *task,
+                             WnckWindow *window,
+                             gboolean connect_geom_signal);
 WnckWindow * awn_task_get_window(AwnTask *task);
 
 gboolean awn_task_set_launcher(AwnTask *task, AwnDesktopItem *item);

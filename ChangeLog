@@ -1,3 +1,11 @@
+2009-01-29  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-task-manager.c:
+	* src/awn-task.c:
+	* src/awn-task.h:
+	Fix Launchpad bug #145722 (migrate program icon when it's viewport
+	changes).
+
 2009-01-27  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	patch by: Matt <sharkbaitbobby@gmail.com>

@@ -105,6 +105,8 @@ struct _AwnTaskManagerPrivate
 	DBusGProxy *applet_man_proxy;
 
 	gulong signal_handlers[6];
+
+	gboolean got_viewport;
 };
 
 enum
@@ -374,7 +376,7 @@ _task_manager_window_opened (WnckScreen *screen, WnckWindow *window,
 		task = _task_manager_window_has_launcher(task_manager, window);
 		if (task != NULL) {
 			//g_print("\n\n\nFound launcher for %s\n\n\n", wnck_window_get_name(window));
-			if (awn_task_set_window (AWN_TASK (task), window))
+			if (awn_task_set_window (AWN_TASK (task), window, priv->got_viewport))
 				awn_task_refresh_icon_geometry(AWN_TASK(task));
 			else
 				task = NULL;
@@ -384,7 +386,7 @@ _task_manager_window_opened (WnckScreen *screen, WnckWindow *window,
 		if (task == NULL) {
 			task = _task_manager_window_has_starter(window);
 			if (task)
-				awn_task_set_window (AWN_TASK (task), window);
+				awn_task_set_window (AWN_TASK (task), window, priv->got_viewport);
 		}
 	}
 	/* if not launcher & no starter, create new task */
@@ -393,7 +395,7 @@ _task_manager_window_opened (WnckScreen *screen, WnckWindow *window,
 		if (wnck_window_get_pid(window) == TASKMAN_OWN_PID) return;
 
 		task = awn_task_new(task_manager, priv->settings);
-		if (awn_task_set_window (AWN_TASK (task), window))
+		if (awn_task_set_window (AWN_TASK (task), window, priv->got_viewport))
 			;//g_print("Created for %s\n", wnck_window_get_name(window));
 		awn_task_set_title (AWN_TASK(task), AWN_TITLE(priv->title_window));
 		priv->tasks = g_list_append(priv->tasks, (gpointer)task);
@@ -428,8 +430,7 @@ _win_reparent (AwnTask *task, AwnTaskManager *task_manager)
 	new_task = AWN_TASK (_task_manager_window_has_launcher(task_manager, window));
 
 	if (new_task) {
-		if (awn_task_set_window (AWN_TASK (new_task), window)) {
-			//awn_task_set_window (task, NULL);
+		if (awn_task_set_window (AWN_TASK (new_task), window, priv->got_viewport)) {
 			awn_task_close(task);
 			awn_task_manager_remove_task (task_manager, task);
 			awn_task_refresh_icon_geometry(new_task);
@@ -1666,11 +1667,11 @@ awn_task_manager_init (AwnTaskManager *task_manager)
                                      NULL);
 }
 
-static void
-awn_task_manager_realized (GtkWidget *widget, gpointer user_data)
+static gboolean
+awn_task_manager_realized (gpointer data)
 {
-        AwnTaskManager *task_manager = AWN_TASK_MANAGER(widget);
-        AwnTaskManagerPrivate *priv = AWN_TASK_MANAGER_GET_PRIVATE (widget);
+        AwnTaskManager *task_manager = AWN_TASK_MANAGER(data);
+        AwnTaskManagerPrivate *priv = AWN_TASK_MANAGER_GET_PRIVATE (data);
 
         GList *l;
         GList *list = wnck_screen_get_windows (priv->screen);
@@ -1681,6 +1682,8 @@ awn_task_manager_realized (GtkWidget *widget, gpointer user_data)
         }
         // fix the height
         on_height_changed (NULL, priv->settings->bar_height, task_manager);
+
+        return FALSE;
 }
 
 GtkWidget *
@@ -1696,6 +1699,23 @@ awn_task_manager_new (AwnSettings *settings)
 			     "spacing", 0 ,
 			     NULL);
 	priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
+
+	// this must be here, so get_active_workspace doesn't return NULL
+	// but it makes us loose the window-opened signals, so we use
+	// g_idle_add to enumerate the windows
+	wnck_screen_force_update(priv->screen);
+	WnckWorkspace *wrksp = wnck_screen_get_active_workspace(priv->screen);
+	if (wrksp) priv->got_viewport = wnck_workspace_is_virtual(wrksp);
+
+	if (!priv->got_viewport &&
+		wnck_screen_get_window_manager_name(priv->screen))
+	{
+		if (strcmp(wnck_screen_get_window_manager_name(priv->screen), "compiz") == 0)
+		priv->got_viewport = TRUE;
+	}
+
+        // wnck hack -> we want the window-opened signal
+        g_idle_add (awn_task_manager_realized, task_manager);
 
 	priv->settings = settings;
 	priv->launcher_box = gtk_hbox_new(FALSE, 0);
@@ -1758,14 +1778,6 @@ awn_task_manager_new (AwnSettings *settings)
 
 	g_signal_connect (G_OBJECT(priv->eb), "expose-event",
 			  G_CALLBACK(awn_bar_separator_expose_event), (gpointer)settings->bar);			  
-
-        // wnck hack -> it sends window-opened signal only the first time
-        static gboolean wnck_initialized = FALSE;
-        if (wnck_initialized) {
-                g_signal_connect_after (G_OBJECT(task_manager), "realize",
-                          G_CALLBACK (awn_task_manager_realized), NULL);
-        }
-        wnck_initialized = TRUE;
 
         #define A_NAMESPACE "com.google.code.Awn"
         #define A_OBJECT_PATH "/com/google/code/Awn"
