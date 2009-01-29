@@ -1,3 +1,8 @@
+2009-01-30  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awnLauncher.py:
+	Allow removing invalid Launchers in awn-manager.
+
 2009-01-29  Michal Hruby <michal.mhr@gmail.com>
 
 	* src/awn-task-manager.c:
