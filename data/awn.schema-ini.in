@@ -122,6 +122,10 @@ description = The number of pixels the reflections are moved up.
 type = float
 default = 0.5
 description = The relative horizontal position of the bar.  0 is the left edge of the screen, 1 is the right edge.
+[window_manager/activate_behavior]
+type = int
+default = 0
+description = Behavior when window on a different workspace is activated. (0 for default, 1 - change active workspace, 2 - move to current workspace)
 [window_manager/show_all_windows]
 type = bool
 default = True

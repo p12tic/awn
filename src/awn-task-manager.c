@@ -100,13 +100,14 @@ struct _AwnTaskManagerPrivate
 	GList *tasks;
 
 	GtkWidget *eb;
-	
+
 	DBusGConnection *applet_man_connection;
 	DBusGProxy *applet_man_proxy;
 
 	gulong signal_handlers[6];
 
 	gboolean got_viewport;
+	gint activate_behavior;
 };
 
 enum
@@ -376,7 +377,7 @@ _task_manager_window_opened (WnckScreen *screen, WnckWindow *window,
 		task = _task_manager_window_has_launcher(task_manager, window);
 		if (task != NULL) {
 			//g_print("\n\n\nFound launcher for %s\n\n\n", wnck_window_get_name(window));
-			if (awn_task_set_window (AWN_TASK (task), window, priv->got_viewport))
+			if (awn_task_set_window (AWN_TASK (task), window))
 				awn_task_refresh_icon_geometry(AWN_TASK(task));
 			else
 				task = NULL;
@@ -386,7 +387,7 @@ _task_manager_window_opened (WnckScreen *screen, WnckWindow *window,
 		if (task == NULL) {
 			task = _task_manager_window_has_starter(window);
 			if (task)
-				awn_task_set_window (AWN_TASK (task), window, priv->got_viewport);
+				awn_task_set_window (AWN_TASK (task), window);
 		}
 	}
 	/* if not launcher & no starter, create new task */
@@ -395,7 +396,7 @@ _task_manager_window_opened (WnckScreen *screen, WnckWindow *window,
 		if (wnck_window_get_pid(window) == TASKMAN_OWN_PID) return;
 
 		task = awn_task_new(task_manager, priv->settings);
-		if (awn_task_set_window (AWN_TASK (task), window, priv->got_viewport))
+		if (awn_task_set_window (AWN_TASK (task), window))
 			;//g_print("Created for %s\n", wnck_window_get_name(window));
 		awn_task_set_title (AWN_TASK(task), AWN_TITLE(priv->title_window));
 		priv->tasks = g_list_append(priv->tasks, (gpointer)task);
@@ -430,7 +431,7 @@ _win_reparent (AwnTask *task, AwnTaskManager *task_manager)
 	new_task = AWN_TASK (_task_manager_window_has_launcher(task_manager, window));
 
 	if (new_task) {
-		if (awn_task_set_window (AWN_TASK (new_task), window, priv->got_viewport)) {
+		if (awn_task_set_window (AWN_TASK (new_task), window)) {
 			awn_task_close(task);
 			awn_task_manager_remove_task (task_manager, task);
 			awn_task_refresh_icon_geometry(new_task);
@@ -1464,6 +1465,7 @@ awn_task_manager_refresh_launchers (AwnConfigClientNotifyEntry *entry,
 	GList *t;
 	GSList *launchers = NULL, *old_launchers;
 
+        g_return_if_fail (AWN_IS_TASK_MANAGER (task_manager));
 	priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
 
         list = entry->value.list_val;
@@ -1597,6 +1599,40 @@ awn_task_manager_refresh_launchers (AwnConfigClientNotifyEntry *entry,
        	_refresh_box(task_manager);
 }
 
+gboolean
+awn_task_manager_screen_has_viewports (AwnTaskManager *task_manager)
+{
+        AwnTaskManagerPrivate *priv;
+
+        g_return_val_if_fail (AWN_IS_TASK_MANAGER (task_manager), FALSE);
+        priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
+
+	return priv->got_viewport;
+}
+
+static void 
+awn_task_manager_update_activate_behavior (AwnConfigClientNotifyEntry *entry,
+                                   AwnTaskManager *task_manager)
+{
+        AwnTaskManagerPrivate *priv;
+
+        g_return_if_fail (AWN_IS_TASK_MANAGER (task_manager));
+        priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
+
+	priv->activate_behavior = entry->value.int_val;
+}
+
+gint
+awn_task_manager_get_activate_behavior (AwnTaskManager *task_manager)
+{
+        AwnTaskManagerPrivate *priv;
+
+        g_return_val_if_fail (AWN_IS_TASK_MANAGER (task_manager), 0);
+        priv = AWN_TASK_MANAGER_GET_PRIVATE (task_manager);
+
+	return priv->activate_behavior;
+}
+
 static void
 on_height_changed (DBusGProxy *proxy, gint height, AwnTaskManager *manager)
 {
@@ -1638,6 +1674,13 @@ awn_task_manager_init (AwnTaskManager *task_manager)
 	awn_config_client_notify_add (client, "window_manager", "launchers", 
                 (AwnConfigClientNotifyFunc)awn_task_manager_refresh_launchers, 
                 task_manager);
+
+	priv->activate_behavior = awn_config_client_get_int (client,
+		"window_manager", "activate_behavior", NULL);
+	awn_config_client_notify_add (client,
+		"window_manager", "activate_behavior",
+		(AwnConfigClientNotifyFunc)
+		awn_task_manager_update_activate_behavior, task_manager);
 
         connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
         if (!connection) {

@@ -53,6 +53,13 @@ struct _AwnTaskManagerClass
 
 };
 
+typedef enum 
+{
+  AWN_ACTIVATE_DEFAULT,
+  AWN_ACTIVATE_MOVE_TO_TASK_VIEWPORT,
+  AWN_ACTIVATE_MOVE_TASK_TO_ACTIVE_VIEWPORT
+} AwnActivateBehavior;
+
 GtkWidget *awn_task_manager_new (AwnSettings *settings);
 
 void awn_task_manager_remove_launcher (AwnTaskManager *task_manager, gpointer task);
@@ -62,6 +69,10 @@ void awn_task_manager_remove_task     (AwnTaskManager *task_manager, gpointer ta
 gboolean awn_task_manager_refresh_box (AwnTaskManager *task_manager);
 
 gboolean awn_task_manager_get_windows (AwnTaskManager *task_manager, gdouble *number, GError **error);
+
+gboolean awn_task_manager_screen_has_viewports (AwnTaskManager *task_manager);
+
+gint awn_task_manager_get_activate_behavior (AwnTaskManager *task_manager);
 
 G_END_DECLS
 

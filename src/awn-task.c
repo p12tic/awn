@@ -695,6 +695,49 @@ awn_start_awn_manager(GtkMenuItem *menuitem, gpointer null)
   return TRUE;
 }
 
+static void
+awn_task_activate_transient (AwnTask *task, guint32 time)
+{
+  AwnTaskPrivate *priv = AWN_TASK_GET_PRIVATE(task);
+  WnckScreen *screen;
+  WnckWorkspace *active_workspace, *window_workspace;
+
+  if (!priv->window) return;
+
+  gint activate_behavior =
+    awn_task_manager_get_activate_behavior (priv->task_manager);
+
+  switch (activate_behavior)
+  {
+    case AWN_ACTIVATE_MOVE_TO_TASK_VIEWPORT:
+      screen = wnck_window_get_screen(priv->window);
+      active_workspace = wnck_screen_get_active_workspace (screen);
+      window_workspace = wnck_window_get_workspace (priv->window);
+
+      if (active_workspace && window_workspace &&
+            !wnck_window_is_on_workspace(priv->window, active_workspace))
+        wnck_workspace_activate(window_workspace, time);
+
+      break;
+
+    case AWN_ACTIVATE_MOVE_TASK_TO_ACTIVE_VIEWPORT:
+      screen = wnck_window_get_screen(priv->window);
+      active_workspace = wnck_screen_get_active_workspace (screen);
+
+      if (active_workspace &&
+            !wnck_window_is_on_workspace(priv->window, active_workspace))
+        wnck_window_move_to_workspace(priv->window, active_workspace);
+
+      break;
+
+    case AWN_ACTIVATE_DEFAULT:
+    default:
+      break;
+  }
+  // last step is always activating the window
+  wnck_window_activate_transient (priv->window, time);
+}
+
 static gboolean
 awn_task_button_press(GtkWidget *task, GdkEventButton *event)
 {
@@ -723,9 +766,7 @@ awn_task_button_press(GtkWidget *task, GdkEventButton *event)
             return TRUE;
           }
 
-          wnck_window_activate_transient(priv->window,
-
-                                         event->time);
+          awn_task_activate_transient (AWN_TASK (task), event->time);
         }
 
         break;
@@ -935,7 +976,7 @@ activate_window(AwnTask *task)
   priv = AWN_TASK_GET_PRIVATE(task);
 
   if (priv->drag_hover && !wnck_window_is_active(priv->window))
-    wnck_window_activate_transient(priv->window, priv->timestamp);
+    awn_task_activate_transient(task, priv->timestamp);
 
   return FALSE;
 }
@@ -1142,8 +1183,7 @@ awn_task_get_is_launcher(AwnTask *task)
 }
 
 gboolean
-awn_task_set_window(AwnTask *task, WnckWindow *window,
-                    gboolean connect_geom_signal)
+awn_task_set_window(AwnTask *task, WnckWindow *window)
 {
   g_return_val_if_fail(WNCK_IS_WINDOW(window), 0);
 
@@ -1152,6 +1192,9 @@ awn_task_set_window(AwnTask *task, WnckWindow *window,
 
   if (priv->window != NULL)
     return FALSE;
+
+  gboolean connect_geom_signal = 
+	awn_task_manager_screen_has_viewports (priv->task_manager);
 
   priv->window = window;
 
