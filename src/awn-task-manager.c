@@ -1750,12 +1750,14 @@ awn_task_manager_new (AwnSettings *settings)
 	WnckWorkspace *wrksp = wnck_screen_get_active_workspace(priv->screen);
 	if (wrksp) priv->got_viewport = wnck_workspace_is_virtual(wrksp);
 
+#ifdef HAVE_LIBWNCK_220
 	if (!priv->got_viewport &&
 		wnck_screen_get_window_manager_name(priv->screen))
 	{
 		if (strcmp(wnck_screen_get_window_manager_name(priv->screen), "compiz") == 0)
 		priv->got_viewport = TRUE;
 	}
+#endif
 
         // wnck hack -> we want the window-opened signal
         g_idle_add (awn_task_manager_realized, task_manager);
