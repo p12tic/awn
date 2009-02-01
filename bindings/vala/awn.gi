@@ -250,6 +250,7 @@
 			<field name="appman" type="GtkWidget*"/>
 			<field name="hot" type="GtkWidget*"/>
 			<field name="task_width" type="gint"/>
+			<field name="show_dialog" type="gboolean"/>
 			<field name="monitor" type="GdkRectangle"/>
 			<field name="force_monitor" type="gboolean"/>
 			<field name="monitor_height" type="int"/>
@@ -799,8 +800,8 @@
 		</enum>
 		<object name="AwnApplet" parent="GtkEventBox" type-name="AwnApplet" get-type="awn_applet_get_type">
 			<implements>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 			</implements>
 			<method name="create_default_menu" symbol="awn_applet_create_default_menu">
 				<return-type type="GtkWidget*"/>
@@ -891,8 +892,8 @@
 		</object>
 		<object name="AwnAppletDialog" parent="GtkWindow" type-name="AwnAppletDialog" get-type="awn_applet_dialog_get_type">
 			<implements>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 			</implements>
 			<constructor name="new" symbol="awn_applet_dialog_new">
 				<return-type type="GtkWidget*"/>
@@ -909,8 +910,8 @@
 		</object>
 		<object name="AwnAppletSimple" parent="AwnApplet" type-name="AwnAppletSimple" get-type="awn_applet_simple_get_type">
 			<implements>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 			</implements>
 			<method name="effects_off" symbol="awn_applet_simple_effects_off">
 				<return-type type="void"/>
@@ -1092,8 +1093,8 @@
 		</object>
 		<object name="AwnPlug" parent="GtkPlug" type-name="AwnPlug" get-type="awn_plug_get_type">
 			<implements>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 			</implements>
 			<method name="construct" symbol="awn_plug_construct">
 				<return-type type="void"/>
@@ -1118,8 +1119,8 @@
 		</object>
 		<object name="AwnTitle" parent="GtkWindow" type-name="AwnTitle" get-type="awn_title_get_type">
 			<implements>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 			</implements>
 			<method name="get_default" symbol="awn_title_get_default">
 				<return-type type="GtkWidget*"/>
@@ -1144,6 +1145,7 @@
 		<constant name="AWN_CONFIG_CLIENT_DEFAULT_GROUP" type="char*" value="DEFAULT"/>
 		<constant name="AWN_GCONF_PATH" type="char*" value="/apps/avant-window-navigator"/>
 		<constant name="AWN_MAX_HEIGHT" type="int" value="100"/>
+		<constant name="AWN_MIN_BAR_HEIGHT" type="int" value="10"/>
 		<constant name="AWN_MIN_HEIGHT" type="int" value="12"/>
 		<union name="AwnConfigClientValue">
 			<field name="bool_val" type="gboolean"/>
