@@ -78,13 +78,37 @@ def init_applet (applet):
     plug.construct (-1)
     plug.show_all ()
 
-def check_dependencies(scope, *modules):
+def check_dependencies(scope, *modules, **choice_modules):
     not_found_modules = []
-    for module in modules:
+    def add_module(module, name=None):
         try:
-            scope[module] = __import__(module, scope)
+            if '.' in module:
+                mod_split = module.split('.')
+                submod = mod_split[-1]
+                from_list = [submod]
+                if name is None:
+                    name = submod
+            else:
+                if name is None:
+                    name = module
+                from_list = []
+            scope[name] = __import__(module, scope, locals(), from_list)
+            return True
         except ImportError:
+            return False
+    for module in modules:
+        success = add_module(module)
+        if not success:
             not_found_modules.append(module)
+    for name, mods in choice_modules.iteritems():
+        found = False
+        for module in mods:
+            success = add_module(module, name)
+            if success:
+                found = True
+                break
+        if not found:
+            not_found_modules.append(' or '.join(mods))
     if len(not_found_modules) > 0:
         try:
             import pygtk

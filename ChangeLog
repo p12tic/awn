@@ -1,5 +1,15 @@
 2009-01-31  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/python/__init__.py (check_dependencies):
+	Add the ability to import the first available module from a list of modules
+	and give it a common name. For example, if one needed to use a module that
+	implemented the ElementTree module interface, one could write
+	awn.check_dependencies(globals(), ET=['lxml.etree',
+						   'xml.etree.cElementTree'])
+	(non-exhaustive list).
+
+2009-01-31  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* src/awn-task-manager.c:
 	Fix build breakage on Feisty.
 
