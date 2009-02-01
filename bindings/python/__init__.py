@@ -1,5 +1,5 @@
 # Copyright (c) 2007 Neil Jagdish Patel <njpatel@gmail.com>
-# Copyright (c) 2008 Mark Lee <avant-wn@lazymalevolence.com>
+# Copyright (c) 2008, 2009 Mark Lee <avant-wn@lazymalevolence.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -78,7 +78,7 @@ def init_applet (applet):
     plug.construct (-1)
     plug.show_all ()
 
-def check_dependencies(scope, *modules, **choice_modules):
+def check_dependencies(scope, exit_on_failure=True, *modules, **choice_modules):
     not_found_modules = []
     def add_module(module, name=None):
         try:
@@ -133,8 +133,9 @@ def check_dependencies(scope, *modules, **choice_modules):
                 webbrowser.open_new(url)
         dialog.hide_all()
         dialog.destroy()
-        import sys
-        sys.exit(RESPONSE_WIKI)
+        if exit_on_failure:
+            import sys
+            sys.exit(RESPONSE_WIKI)
 
 class ConfigLock:
     def __init__(self, group, key):
