@@ -1,5 +1,13 @@
 2009-02-02  Michal Hruby <michal.mhr@gmail.com>
 
+	* awn-manager/launcher-editor.glade:
+	Stock ids shouldn't be translatable.
+	* po/POTFILES.in:
+	* po/POTFILES.skip:
+	Updated list of translatable files and skipped files.
+
+2009-02-02  Michal Hruby <michal.mhr@gmail.com>
+
 	* awn-manager/awnManager.py.in:
 	Fix untranslatable string (LP bug #324237).
 
