@@ -1,3 +1,8 @@
+2009-02-02  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awnManager.py.in:
+	Fix untranslatable string (LP bug #324237).
+
 2009-01-31  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* bindings/vala/awn.gi:
