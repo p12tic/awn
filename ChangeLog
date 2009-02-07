@@ -1,3 +1,14 @@
+2009-02-07  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.override:
+	Fix compiler warnings.
+
+2009-02-07  Michal Hruby <michal.mhr@gmail.com>
+
+	* po/POTFILES.in:
+	* po/POTFILES.skip:
+	Move awn.schemas.in to POTFILES.skip file (because of distcheck).
+
 2009-02-02  Michal Hruby <michal.mhr@gmail.com>
 
 	* awn-manager/launcher-editor.glade:
