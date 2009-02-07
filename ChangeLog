@@ -1,5 +1,14 @@
 2009-02-07  Michal Hruby <michal.mhr@gmail.com>
 
+	patch by: onox
+
+	* awn-manager/awnApplet.py:
+	* awn-manager/launcher-editor.glade:
+	* awn-manager/window.glade:
+	Fix spacing and page sizes in the glade files.
+
+2009-02-07  Michal Hruby <michal.mhr@gmail.com>
+
 	reviewed by: malept
 
 	* Makefile.am:

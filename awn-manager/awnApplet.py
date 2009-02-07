@@ -54,7 +54,7 @@ class awnApplet:
 
         self.wTree = glade
 
-        self.scrollwindow = self.wTree.get_widget("appletScrollActive")
+        self.scrollwindow = self.wTree.get_widget("appletScrollActive1")
         self.make_active_model()
         self.treeview_available =  self.wTree.get_widget("appletTreeviewAvailable")
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.2.2 on Thu Oct  4 14:29:13 2007-->
+<!--Generated with glade3 3.4.5 on Sat Feb  7 22:47:09 2009 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog_desktop_item">
     <property name="visible">True</property>
@@ -52,10 +52,13 @@
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="n_rows">3</property>
                 <property name="n_columns">2</property>
+                <property name="column_spacing">6</property>
+                <property name="row_spacing">6</property>
                 <child>
                   <widget class="GtkHBox" id="hbox_command">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="spacing">6</property>
                     <child>
                       <widget class="GtkEntry" id="entry_command">
                         <property name="visible">True</property>
@@ -117,6 +120,7 @@
                   <widget class="GtkLabel" id="label_command">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="xalign">1</property>
                     <property name="label" translatable="yes">&lt;b&gt;Command:&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                     <property name="justify">GTK_JUSTIFY_RIGHT</property>
@@ -125,12 +129,14 @@
                   <packing>
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
+                    <property name="x_options">GTK_FILL</property>
                   </packing>
                 </child>
                 <child>
                   <widget class="GtkLabel" id="label_description">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="xalign">1</property>
                     <property name="label" translatable="yes">&lt;b&gt;Description:&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                     <property name="justify">GTK_JUSTIFY_RIGHT</property>
@@ -139,17 +145,22 @@
                   <packing>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
+                    <property name="x_options">GTK_FILL</property>
                   </packing>
                 </child>
                 <child>
                   <widget class="GtkLabel" id="label_name">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="xalign">1</property>
                     <property name="label" translatable="yes">&lt;b&gt;Name:&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                     <property name="justify">GTK_JUSTIFY_RIGHT</property>
                     <property name="width_chars">5</property>
                   </widget>
+                  <packing>
+                    <property name="x_options">GTK_FILL</property>
+                  </packing>
                 </child>
               </widget>
               <packing>
@@ -217,11 +228,13 @@
       <widget class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-        <property name="spacing">2</property>
+        <property name="spacing">6</property>
         <child>
           <widget class="GtkVBox" id="vbox1">
             <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+            <property name="border_width">5</property>
+            <property name="spacing">6</property>
             <child>
               <widget class="GtkHBox" id="hbox2">
                 <property name="visible">True</property>
@@ -259,10 +272,12 @@
               <widget class="GtkVBox" id="vbox_custom">
                 <property name="visible">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="spacing">6</property>
                 <child>
                   <widget class="GtkHBox" id="hbox1">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="spacing">6</property>
                     <child>
                       <widget class="GtkLabel" id="label1">
                         <property name="visible">True</property>
