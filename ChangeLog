@@ -1,3 +1,7 @@
+2009-02-07  Julien Lavergne <julien.lavergne@gmail.com>
+
+	Move content of docs to doc. 
+
 2009-02-07  Michal Hruby <michal.mhr@gmail.com>
 
 	* bindings/python/awn.override:
