@@ -32,5 +32,7 @@ EXTRA_DIST +=			\
 	$(desktop_DATA).in.in	\
 	$(NULL)
 
+DISTCLEANFILES = awn-manager.desktop
+
 clean:
 	rm -f *.pyo *.pyc *.bak *.gladep $(desktop_DATA) $(desktop_DATA).in

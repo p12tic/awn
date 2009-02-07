@@ -11,7 +11,9 @@ SUBDIRS =				\
 	data				\
 	doc				\
 	$(NULL)
-	
+
+DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
+
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = awn.pc
 

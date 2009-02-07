@@ -1,3 +1,16 @@
+2009-02-07  Michal Hruby <michal.mhr@gmail.com>
+
+	reviewed by: malept
+
+	* Makefile.am:
+	* applets/Makefile.am:
+	* awn-manager/Makefile.am:
+	* data/Makefile.am:
+	* libawn/Makefile.am:
+	* libawn/egg/Makefile.am:
+	* src/Makefile.am:
+	Fixes required for "make distcheck" to work.
+
 2009-02-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* bindings/python/__init__.py:

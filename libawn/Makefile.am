@@ -136,4 +136,7 @@ EXTRA_DIST =				\
 	awn-enum-types.c.in		\
 	awn-enum-types.h.in		\
 	$(NULL)
+
+DISTCLEANFILES = awn-enum-types.h awn-enum-types.c
+
 # vim: set ts=8 sts=8 sw=8 :

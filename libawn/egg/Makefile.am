@@ -55,3 +55,5 @@ EXTRA_DIST= \
 	eggdesktopfile.h
 
 CLEANFILES = $(STAMPFILES)
+
+DISTCLEANFILES = egg-enum-types.h egg-enum-types.c

@@ -8,3 +8,5 @@ $(desktop_DATA).in: $(desktop_DATA).in.in
 	sed -e "s|\@PKGDATADIR\@|$(pkgdatadir)|g" $< > $@
 
 EXTRA_DIST = $(desktop_DATA).in.in
+
+DISTCLEANFILES = taskman.desktop taskman.desktop.in

@@ -84,6 +84,8 @@ EXTRA_DIST =                            \
 				awn-app-dbus.xml
 	$(NULL)
 
+DISTCLEANFILES = awn-applet-manager-glue.h awn-dbus-glue.h awn-app-glue.h
+
 noinst_PROGRAMS =	\
 	icon-test	\
 	$(NULL)
