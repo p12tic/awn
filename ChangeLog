@@ -1,3 +1,9 @@
+2009-02-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/__init__.py:
+	Fix the implementation of the new optional parameter introduced, due to
+	backwards-compatibility concerns.
+
 2009-02-07  Julien Lavergne <julien.lavergne@gmail.com>
 
 	Move content of docs to doc. 

@@ -78,7 +78,15 @@ def init_applet (applet):
     plug.construct (-1)
     plug.show_all ()
 
-def check_dependencies(scope, exit_on_failure=True, *modules, **choice_modules):
+def check_dependencies(scope, *modules, **choice_modules):
+    '''
+    Special flag: exit_on_failure=bool
+    Makes the applet exit if a dependency is not found.
+    '''
+    exit_on_failure = True
+    if len(choice_modules) > 0 and 'exit_on_failure' in choice_modules:
+        exit_on_failure = bool(choice_modules['exit_on_failure'])
+        del choice_modules['exit_on_failure']
     not_found_modules = []
     def add_module(module, name=None):
         try:
