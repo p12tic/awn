@@ -2,3 +2,4 @@ applets/taskman.desktop.in.in
 awn-manager/awn-manager.desktop.in
 data/avant-window-navigator.desktop.in
 data/awn-applets-shared.schemas.in
+data/awn.schemas.in

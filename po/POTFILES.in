@@ -6,7 +6,6 @@ awn-manager/awnPreferences.py
 awn-manager/launcher-editor.glade
 awn-manager/window.glade
 data/avant-window-navigator.desktop.in.in
-data/awn.schemas.in
 libawn/egg/eggdesktopfile.c
 libawn/awn-applet.c
 libawn/awn-icons.c
