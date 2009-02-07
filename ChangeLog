@@ -1,3 +1,16 @@
+2009-02-08  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* data/Makefile.am:
+	* data/awn-applets-migration:
+	Add awn-applets-migration script properly to the build system.
+
+	* debian/avant-window-navigator-trunk.install:
+	* debian/awn-manager-trunk.install:
+	* debian/awn.wrapper:
+	* debian/control:
+	* debian/rules:
+	Adjust debian/ to the change of awn-applets-migration.
+
 2009-02-07  Michal Hruby <michal.mhr@gmail.com>
 
 	patch by: onox

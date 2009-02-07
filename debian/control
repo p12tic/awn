@@ -35,8 +35,8 @@ Depends: 	${shlibs:Depends},
 		${misc:Depends},
 		avant-window-navigator-data-trunk (>= ${source:Version}),
 		python-awn-trunk (>= ${source:Version}),
-		dbus-x11 | dbus
-Recommends:	awn-manager-trunk (>= 0.2),
+		dbus-x11 | dbus,
+		awn-manager-trunk (>= 0.2),
 Suggests: 	metacity (>= 2.21.5) | xcompmgr | compiz | xfwm4 (>= 4.2)
 Conflicts: avant-window-navigator-bzr, avant-window-navigator, avant-window-navigator-testing
 Replaces: avant-window-navigator-bzr, avant-window-navigator, avant-window-navigator-testing

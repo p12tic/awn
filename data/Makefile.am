@@ -66,18 +66,17 @@ endif
 schemadir = $(pkgdatadir)/schemas
 schema_DATA = awn.schema-ini shared.schema-ini
 
-dist_bin_SCRIPTS = awn-schema-to-gconf awn-autostart
+dist_bin_SCRIPTS = awn-schema-to-gconf awn-autostart awn-applets-migration
 
 # global
 
 install-data-local: install-gconf-schemas install-icons
 
 uninstall-local:
-	rm -f $(DESTDIR)$(bindir)/awn-applets-migration.py
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/24x24/apps/avant-window-navigator.png
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/avant-window-navigator.png
 
-EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini shared.schema-ini awn-applets-migration.py
+EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini shared.schema-ini
 
 CLEANFILES = $(desktop_DATA) $(desktop_DATA).in
 
