@@ -67,6 +67,32 @@ enum
 static guint _applet_signals[LAST_SIGNAL] = { 0 };
 
 /*  GOBJECT STUFF */
+
+static gboolean
+awn_applet_make_transparent (GtkWidget *widget, gpointer data)
+{
+  /*
+   * This is how we make sure that widget has transparent background
+   * all the time.
+   */
+  if (gtk_widget_is_composited(widget)) // FIXME: is is_composited correct here?
+  {
+    static GdkPixmap *pixmap = NULL;
+    if (pixmap == NULL)
+    {
+      pixmap = gdk_pixmap_new(widget->window, 1, 1, -1);
+      cairo_t *cr = gdk_cairo_create(pixmap);
+      cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
+      cairo_paint(cr);
+      cairo_destroy(cr);
+    }
+    gdk_window_set_back_pixmap(widget->window, pixmap, FALSE);
+
+  }
+
+  return FALSE;
+}
+
 static gboolean
 awn_applet_expose_event (GtkWidget *widget, GdkEventExpose *expose)
 {
@@ -269,6 +295,8 @@ awn_applet_init (AwnApplet *applet)
   priv = applet->priv = AWN_APPLET_GET_PRIVATE(applet);
 
   priv->flags = AWN_APPLET_FLAGS_NONE;
+  g_signal_connect_after(G_OBJECT(applet), "realize",
+                         G_CALLBACK(awn_applet_make_transparent), NULL);  
 }
 
 AwnApplet *
