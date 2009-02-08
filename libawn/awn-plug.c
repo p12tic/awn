@@ -141,6 +141,33 @@ on_alpha_screen_changed (GtkWidget* widget, GdkScreen* oscreen, gpointer null)
 }
 
 static gboolean
+awn_plug_make_transparent (GtkWidget *widget, gpointer data)
+{
+/*  AwnPlugPrivate *priv = AWN_PLUG (widget)->priv;*/
+
+  /*
+   * This is how we make sure that widget has transparent background
+   * all the time.
+   */
+  if (gtk_widget_is_composited(widget)) // FIXME: is is_composited correct here?
+  {
+    static GdkPixmap *pixmap = NULL;
+    if (pixmap == NULL)
+    {
+      pixmap = gdk_pixmap_new(widget->window, 1, 1, -1);
+      cairo_t *cr = gdk_cairo_create(pixmap);
+      cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
+      cairo_paint(cr);
+      cairo_destroy(cr);
+    }
+    gdk_window_set_back_pixmap(widget->window, pixmap, FALSE);
+
+  }
+
+  return FALSE;
+}
+
+static gboolean
 awn_plug_expose_event (GtkWidget *widget, GdkEventExpose *expose)
 {
   cairo_t *cr = NULL;
@@ -261,6 +288,8 @@ awn_plug_init(AwnPlug *plug)
                     G_CALLBACK (on_proxy_destroyed), NULL);
   g_signal_connect (plug, "embedded",
                     G_CALLBACK (on_plug_embedded), NULL);
+  g_signal_connect(G_OBJECT(plug), "realize",
+                         G_CALLBACK(awn_plug_make_transparent), NULL);  
 }
 
 GtkWidget *
