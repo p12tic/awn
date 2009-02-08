@@ -288,7 +288,7 @@ awn_plug_init(AwnPlug *plug)
                     G_CALLBACK (on_proxy_destroyed), NULL);
   g_signal_connect (plug, "embedded",
                     G_CALLBACK (on_plug_embedded), NULL);
-  g_signal_connect(G_OBJECT(plug), "realize",
+  g_signal_connect_after(G_OBJECT(plug), "realize",
                          G_CALLBACK(awn_plug_make_transparent), NULL);  
 }
 
