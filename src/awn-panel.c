@@ -971,7 +971,7 @@ resize_window (AwnPanel *panel)
   AwnPanelPrivate *priv = panel->priv;
 
   // shouldn't we call size_request on our child instead? (for non-composited)
-  gint size = priv->composited ? (2 * priv->size):(priv->size + priv->offset);
+  gint size = priv->composited ? (2 * priv->size + priv->offset):(priv->size + priv->offset);
   size += AWN_PANEL_BORDER;
 
   switch (priv->orient)
@@ -1102,35 +1102,35 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   /* Calculate correct values */
   switch (priv->orient)
   {
-    /* if panel is composited, it's size is priv->size*2,
+    /* if panel is composited, it's size is priv->size*2+priv->offset,
      *  otherwise priv->size+priv->offset
      */
     case AWN_ORIENTATION_TOP:
       x = 0;
       y = 0;
       width = width;
-      height -= priv->composited ? priv->size - priv->offset : 0;
+      height -= priv->composited ? priv->size: 0;
       break;
 
     case AWN_ORIENTATION_RIGHT:
-      x = priv->composited ? priv->size - priv->offset : 0;
+      x = priv->composited ? priv->size: 0;
       y = 0;
-      width -= priv->composited ? priv->size - priv->offset : 0;
+      width -= priv->composited ? priv->size: 0;
       height = height;
       break;
 
     case AWN_ORIENTATION_BOTTOM:
       x = 0;
-      y = priv->composited ? priv->size - priv->offset : 0;
+      y = priv->composited ? priv->size: 0;
       width = width;
-      height -= priv->composited ? priv->size - priv->offset : 0;
+      height -= priv->composited ? priv->size: 0;
       break;
 
     case AWN_ORIENTATION_LEFT:
     default:
       x = 0;
       y = 0;
-      width -= priv->composited ? priv->size - priv->offset : 0;
+      width -= priv->composited ? priv->size: 0;
       height = height;
   }
   

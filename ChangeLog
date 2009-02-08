@@ -1,3 +1,13 @@
+2009-02-08 h4writer <hv1989@gmail.com>
+
+	* src/awn-panel.c:
+	Updated the size of the bar when composited. (Added priv->offset).
+	- Solves drawing getting cut off when offset was larger then twice the panel size
+	Updated the height/width that panel sends to awn-background when composited.
+	(Don't add priv->offset, it is now already in it.)
+	- To draw the background on the right place
+	- Inputmap is now correctly on the four sides (as side effect :-D)
+
 2009-01-25  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* configure.in:
