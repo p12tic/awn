@@ -104,7 +104,7 @@ dnl ==============================================
 GETTEXT_PACKAGE=avant-window-navigator
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package])
-ALL_LINGUAS="af ar bn bg ca cs da de de_DE el en_AU en_CA en_GB es et eu fa fi fi_FI fr fr_FR ga gl gu he hi hr hu id it it_IT ja ka ko lt mr ms nb nl nn no_NO pl pt_BR pt ro ru ru_RU sk sl sq sr sv ta te th tr uk vi zh_CN zh_HK zh_TW"
+ALL_LINGUAS="af ar be bg bn bs ca csb cs da de el en_AU en_CA en_GB eo es et eu fa fi fr ga gl gu he hi hr hu id is it ja jv ka ko ku lt lv mk mr ms nb nds nl nn oc pl pt_BR pt ro ru sk sl sq sr sv ta te th tr uk vi zh_CN zh_HK zh_TW"
 
 IT_PROG_INTLTOOL([0.34])
 AM_GLIB_GNU_GETTEXT
