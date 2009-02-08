@@ -1,3 +1,9 @@
+2009-02-08  Michal Hruby <michal.mhr@gmail.com>
+
+	* po/ChangeLog:
+	* po/*.po:
+	Updated translations from Launchpad.
+
 2009-02-08  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* data/Makefile.am:
