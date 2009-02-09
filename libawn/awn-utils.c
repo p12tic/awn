@@ -18,10 +18,10 @@
  */
 #include <gdk/gdk.h>
 
-#include "awn-utility.h"
+#include "awn-utils.h"
 
 gboolean
-awn_utility_make_transparent (GtkWidget *widget)
+awn_utils_make_transparent (GtkWidget *widget)
 {   
   static GdkPixmap *pixmap = NULL;
   if (gtk_widget_is_composited(widget))  

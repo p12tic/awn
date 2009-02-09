@@ -23,6 +23,6 @@
 
 #include <gtk/gtk.h>
 
-gboolean awn_utility_make_transparent (GtkWidget *widget);
+gboolean awn_utils_make_transparent (GtkWidget *widget);
 
 #endif
