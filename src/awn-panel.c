@@ -1421,10 +1421,12 @@ static void
 awn_panel_set_style (AwnPanel *panel, gint style)
 {
   AwnPanelPrivate *priv = panel->priv;
+  AwnBackground *old_bg = NULL;
   
   // if the style hasn't changed and the background exist everything is done.
   if(priv->style == style && priv->bg) return;
 
+  old_bg = priv->bg;
   priv->style = style;
 
   switch (priv->style)
@@ -1438,6 +1440,8 @@ awn_panel_set_style (AwnPanel *panel, gint style)
     default:
       break;
   }
+
+  if (old_bg) g_object_unref(old_bg);
 
   g_signal_connect (priv->bg, "changed", G_CALLBACK (on_theme_changed), panel);
 
