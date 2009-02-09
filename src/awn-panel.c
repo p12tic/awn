@@ -373,7 +373,7 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
     }
     else
     {
-      gint k = priv->size - priv->offset;
+      gint k = priv->size;
       switch (priv->orient)
       {
         case AWN_ORIENTATION_TOP:
@@ -973,7 +973,7 @@ resize_window (AwnPanel *panel)
   AwnPanelPrivate *priv = panel->priv;
 
   // shouldn't we call size_request on our child instead? (for non-composited)
-  gint size = priv->composited ? (2 * priv->size + priv->offset):(priv->size + priv->offset);
+  gint size = (priv->composited ? priv->size *2 : priv->size) + priv->offset;
   size += AWN_PANEL_BORDER;
 
   switch (priv->orient)
