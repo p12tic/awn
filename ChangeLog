@@ -1,3 +1,11 @@
+2009-02-09  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/awn-applets-migration.1:
+	* debian/changelog:
+	* debian/control:
+	Backport some fixes from Debian packaging.
+	Bump the version.
+
 2009-02-08  Michal Hruby <michal.mhr@gmail.com>
 
 	* po/ChangeLog:

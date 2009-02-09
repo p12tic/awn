@@ -49,8 +49,7 @@ Description: A MacOS X like panel for GNOME
 Package: avant-window-navigator-data-trunk
 Section: gnome
 Architecture: all
-Depends: 	avant-window-navigator-trunk (>= ${source:Version}),
-		${misc:Depends}
+Depends: 	${misc:Depends}
 Conflicts: avant-window-navigator (<= 0.2.1-dfsg1-1), avant-window-navigator-data, avant-window-navigator-data-testing, avant-window-navigator-data-bzr
 Replaces: avant-window-navigator (<= 0.2.1-dfsg1-1), avant-window-navigator-data, avant-window-navigator-data-testing, avant-window-navigator-data-bzr
 Description: Common files for avant-window-navigator
@@ -71,7 +70,8 @@ Description: library for avant-window-navigator
 Package: libawn-doc-trunk
 Section: doc
 Architecture: all
-Depends:	libawn0-trunk (>= ${source:Version})
+Depends:	libawn0-trunk (>= ${source:Version}),
+		${misc:Depends}
 Conflicts: libawn0-doc-bzr, libawn-doc-bzr, libawn-doc, libawn0-doc, libawn0-doc-testing
 Replaces: libawn0-doc-bzr, libawn-doc-bzr, libawn-doc, libawn0-doc, libawn0-doc-testing
 Description: library for avant-window-navigator - development files
@@ -96,12 +96,14 @@ Package: awn-manager-trunk
 Section: gnome
 Architecture: all
 Depends:	${python:Depends}, 
+		${misc:Depends}
 		avant-window-navigator-trunk (>= 0.2),
 		python-gnome2,
 		python-gnome2-desktop,
 		gnome-menus,
 		librsvg2-common,
-		python-awn-trunk,
+		python-xdg
+		python-awn-trunk
 Conflicts: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4)
 Replaces: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4)
 XB-Python-Version: ${python:Versions}
