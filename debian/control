@@ -102,7 +102,7 @@ Depends:	${python:Depends},
 		python-gnome2-desktop,
 		gnome-menus,
 		librsvg2-common,
-		python-xdg
+		python-xdg,
 		python-awn-trunk
 Conflicts: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4)
 Replaces: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4)

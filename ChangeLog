@@ -1,3 +1,8 @@
+2009-02-10  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/control:
+	Fix typo in previous commit.
+
 2009-02-09  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* debian/awn-applets-migration.1:
