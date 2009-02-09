@@ -30,6 +30,7 @@
 #include <libawn/awn-applet.h>
 #include <libawn/awn-vfs.h>
 
+#include <libawn/awn-utils.h>
 /* Forwards */
 GtkWidget *
 _awn_plug_new(const gchar *path,
@@ -202,7 +203,7 @@ main(gint argc, gchar **argv)
     g_warning("Could not create plug\n");
     return 1;
   }
-
+  g_signal_connect (plug, "realize", G_CALLBACK(awn_utils_make_transparent), NULL);
   name = awn_desktop_item_get_name(item);
 
   if (name != NULL)

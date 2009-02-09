@@ -20,6 +20,7 @@
 #include <cairo/cairo-xlib.h>
 
 #include "awn-icon.h"
+#include "awn-utils.h"
 
 #define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
 
@@ -91,17 +92,7 @@ awn_icon_make_transparent (GtkWidget *widget, gpointer data)
    */
   if (gtk_widget_is_composited(widget)) // FIXME: is is_composited correct here?
   {
-    static GdkPixmap *pixmap = NULL;
-    if (pixmap == NULL)
-    {
-      pixmap = gdk_pixmap_new(widget->window, 1, 1, -1);
-      cairo_t *cr = gdk_cairo_create(pixmap);
-      cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
-      cairo_paint(cr);
-      cairo_destroy(cr);
-    }
-    gdk_window_set_back_pixmap(widget->window, pixmap, FALSE);
-
+    awn_utils_make_transparent (widget);
     // optimize the render speed
     g_object_set(priv->effects,
                  "no-clear", TRUE,
@@ -304,7 +295,7 @@ awn_icon_init (AwnIcon *icon)
 
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
 
-  g_signal_connect_after(G_OBJECT(icon), "realize",
+  g_signal_connect(G_OBJECT(icon), "realize",
                          G_CALLBACK(awn_icon_make_transparent), NULL);
 }
 

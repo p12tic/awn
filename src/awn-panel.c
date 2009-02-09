@@ -27,6 +27,7 @@
 #include <X11/extensions/shape.h>
 
 #include <libawn/libawn.h>
+#include <libawn/awn-utils.h>
 
 #include "awn-panel.h"
 
@@ -734,7 +735,8 @@ awn_panel_init (AwnPanel *panel)
                     G_CALLBACK (on_mouse_over), NULL);
   g_signal_connect (panel, "leave-notify-event", 
                     G_CALLBACK (on_mouse_out), NULL);
-
+  g_signal_connect_after (panel, "realize", 
+                    G_CALLBACK(awn_utils_make_transparent), NULL);
   gtk_window_set_resizable (GTK_WINDOW (panel), FALSE);
 }
 

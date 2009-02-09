@@ -18,6 +18,7 @@
  */
 #include "awn-icon-box.h"
 #include "awn-icon.h"
+#include "awn-utils.h"
 
 G_DEFINE_TYPE (AwnIconBox, awn_icon_box, GTK_TYPE_BOX);
 
@@ -136,8 +137,7 @@ awn_icon_box_class_init (AwnIconBoxClass *klass)
 static void
 awn_icon_box_init (AwnIconBox *icon_box)
 {
-  AwnIconBoxPrivate *priv;
-
+  AwnIconBoxPrivate *priv;;
   priv = icon_box->priv = AWN_ICON_BOX_GET_PRIVATE (icon_box);
 
   priv->orient = AWN_ORIENTATION_BOTTOM;
@@ -145,6 +145,8 @@ awn_icon_box_init (AwnIconBox *icon_box)
 
   g_signal_connect_after (icon_box, "add", 
                           G_CALLBACK (awn_icon_box_add), icon_box);
+  g_signal_connect_after(G_OBJECT(icon_box), "realize",
+                         G_CALLBACK(awn_utils_make_transparent), NULL);
 }
 
 GtkWidget *

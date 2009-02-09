@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include "awn-applet-proxy.h"
+#include "awn-utils.h"
 
 G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_SOCKET) 
 
@@ -260,7 +261,7 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   /* Connect to the socket signals */
   g_signal_connect (proxy, "plug-added", G_CALLBACK (on_plug_added), NULL);
   g_signal_connect (proxy, "plug-removed", G_CALLBACK (on_plug_removed), NULL);
-
+  g_signal_connect (proxy, "realize", G_CALLBACK(awn_utils_make_transparent), NULL);
   g_debug ("Loading Applet: %s %s", priv->path, priv->uid);
 
   /* Load the applet */

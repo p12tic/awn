@@ -41,6 +41,8 @@
 #include "awn-app.h"
 #include "awn-defines.h"
 #include "awn-panel.h"
+#include <libawn/awn-utils.h>
+
 
 G_DEFINE_TYPE (AwnApp, awn_app, G_TYPE_OBJECT)
 

@@ -28,6 +28,7 @@
 
 #include "awn-icon.h"
 #include "awn-themed-icon.h"
+#include "awn-utils.h"
 
 G_DEFINE_TYPE (AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET)
 
@@ -146,6 +147,9 @@ awn_applet_simple_init (AwnAppletSimple *simple)
   priv = simple->priv = AWN_APPLET_SIMPLE_GET_PRIVATE(simple);
 
   priv->last_set_icon = ICON_NONE;
+  
+  g_signal_connect(G_OBJECT(simple), "realize",
+                         G_CALLBACK(awn_utils_make_transparent), NULL);  
 }
 
 /**

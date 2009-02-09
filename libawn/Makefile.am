@@ -37,6 +37,7 @@ public_headers = \
 	awn-plug.h \
 	awn-themed-icon.h \
 	awn-tooltip.h \
+	awn-utils.h \
 	awn-vfs.h \
 	libawn.h
 	$(NULL)
@@ -63,6 +64,7 @@ source_c = \
 	awn-plug.c \
 	awn-themed-icon.c \
 	awn-tooltip.c \
+	awn-utils.c \
 	awn-vfs.c \
 	$(NULL)
 
