@@ -81,7 +81,7 @@ awn_icon_leave_notify_event (GtkWidget *widget, GdkEventCrossing *event)
   return FALSE;
 }
 
-static gboolean
+static void
 awn_icon_make_transparent (GtkWidget *widget, gpointer data)
 {
   AwnIconPrivate *priv = AWN_ICON (widget)->priv;
@@ -108,7 +108,6 @@ awn_icon_make_transparent (GtkWidget *widget, gpointer data)
     // the icon in our small window
   }
 
-  return FALSE;
 }
 
 static gboolean

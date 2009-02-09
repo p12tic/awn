@@ -20,7 +20,7 @@
 
 #include "awn-utils.h"
 
-gboolean
+void
 awn_utils_make_transparent (GtkWidget *widget)
 {   
   static GdkPixmap *pixmap = NULL;
@@ -36,5 +36,5 @@ awn_utils_make_transparent (GtkWidget *widget)
     }
     gdk_window_set_back_pixmap(widget->window, pixmap, FALSE);    
   }
-  return FALSE;
+ 
 }
