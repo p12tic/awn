@@ -64,6 +64,7 @@ struct _AwnPanelPrivate
   gint size;
   gint offset;
   gint orient;
+  gint style;
 
   gint autohide_type;
 
@@ -93,7 +94,8 @@ enum
   PROP_OFFSET,
   PROP_ORIENT,
   PROP_SIZE,
-  PROP_AUTOHIDE_TYPE
+  PROP_AUTOHIDE_TYPE,
+  PROP_STYLE
 };
 
 enum
@@ -104,6 +106,14 @@ enum
   AUTOHIDE_TYPE_TRANSPARENTIZE,
 
   AUTOHIDE_TYPE_LAST
+};
+
+enum
+{
+  STYLE_FLAT = 0,
+  STYLE_3D,
+
+  STYLE_LAST
 };
 
 static const GtkTargetEntry drop_types[] = 
@@ -162,6 +172,8 @@ static void     awn_panel_set_size          (AwnPanel *panel,
                                              gint      size);
 static void     awn_panel_set_autohide_type (AwnPanel *panel,
                                              gint      type);
+static void     awn_panel_set_style         (AwnPanel *panel,
+                                             gint      style);
 
 static void     awn_panel_reset_autohide    (AwnPanel *panel);
 
@@ -209,10 +221,12 @@ awn_panel_constructed (GObject *object)
   awn_config_bridge_bind (bridge, priv->client,
                           AWN_GROUP_PANEL, AWN_PANEL_AUTOHIDE,
                           object, "autohide-type");
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_STYLE,
+                          object, "style");
 
   /* Background drawing */
-  priv->bg = awn_background_flat_new (priv->client, AWN_PANEL (panel));
-  g_signal_connect (priv->bg, "changed", G_CALLBACK (on_theme_changed), panel);
+  awn_panel_set_style(AWN_PANEL (panel), priv->style);
 
   /* Composited checks/setup */
   screen = gtk_widget_get_screen (panel);
@@ -271,6 +285,9 @@ awn_panel_get_property (GObject    *object,
     case PROP_AUTOHIDE_TYPE:
       g_value_set_int (value, priv->autohide_type);
       break;
+    case PROP_STYLE:
+      g_value_set_int (value, priv->style);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -310,6 +327,9 @@ awn_panel_set_property (GObject      *object,
       break;
     case PROP_AUTOHIDE_TYPE:
       awn_panel_set_autohide_type (panel, g_value_get_int (value));
+      break;
+    case PROP_STYLE:
+      awn_panel_set_style (panel, g_value_get_int (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -643,6 +663,13 @@ awn_panel_class_init (AwnPanelClass *klass)
                       0, AUTOHIDE_TYPE_LAST - 1, 0,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
  
+  g_object_class_install_property (obj_class,
+    PROP_STYLE,
+    g_param_spec_int ("style",
+                      "Style",
+                      "Style of the bar",
+                      0, STYLE_LAST - 1, 0,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   /* Add signals to the class */
   _panel_signals[SIZE_CHANGED] =
@@ -1152,7 +1179,8 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (cr);
 
-  awn_background_draw (priv->bg, cr, priv->orient, x, y, width, height);
+  if(priv->bg)
+    awn_background_draw (priv->bg, cr, priv->orient, x, y, width, height);
  
   /* Pass on the expose event to the child */
   child = gtk_bin_get_child (GTK_BIN (widget));
@@ -1387,6 +1415,33 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
     default:
       break;
   }
+}
+
+static void
+awn_panel_set_style (AwnPanel *panel, gint style)
+{
+  AwnPanelPrivate *priv = panel->priv;
+  
+  // if the style hasn't changed and the background exist everything is done.
+  if(priv->style == style && priv->bg) return;
+
+  priv->style = style;
+
+  switch (priv->style)
+  {
+    case STYLE_FLAT:
+      priv->bg = awn_background_flat_new (priv->client, AWN_PANEL (panel));
+      break;
+    case STYLE_3D:
+      priv->bg = awn_background_3d_new (priv->client, AWN_PANEL (panel));
+      break;
+    default:
+      break;
+  }
+
+  g_signal_connect (priv->bg, "changed", G_CALLBACK (on_theme_changed), panel);
+
+  gtk_widget_queue_draw (GTK_WIDGET (panel));
 }
 
 /*
