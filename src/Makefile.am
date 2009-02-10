@@ -35,6 +35,8 @@ avant_window_navigator_SOURCES =	\
 	awn-panel.c \
 	awn-panel.h \
 	awn-panel-glue.h \
+	awn-throbber.c \
+	awn-throbber.h \
 	awn-x.h \
 	awn-x.c \
 	inlinepixbufs.h \

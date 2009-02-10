@@ -20,9 +20,12 @@
  */
 
 #include "config.h"
+#include <glib/gi18n.h>
+#include <libawn/awn-effects.h>
 
 #include "awn-applet-proxy.h"
 #include "awn-utils.h"
+#include "awn-throbber.h"
 
 G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_SOCKET) 
 
@@ -37,6 +40,10 @@ struct _AwnAppletProxyPrivate
   gchar *uid;
   gint   orient;
   gint   size;
+
+  gboolean running;
+  gboolean crashed;
+  GtkWidget *throbber;
 };
 
 enum
@@ -59,8 +66,9 @@ static guint _proxy_signals[LAST_SIGNAL] = { 0 };
 /* 
  * FORWARDS
  */
-static void     on_plug_added   (AwnAppletProxy *proxy);
-static gboolean on_plug_removed (AwnAppletProxy *proxy);
+static void     on_plug_added   (AwnAppletProxy *proxy, gpointer user_data);
+static gboolean on_plug_removed (AwnAppletProxy *proxy, gpointer user_data);
+static void     on_child_exit   (GPid pid, gint status, gpointer user_data);
 
 /*
  * GOBJECT CODE 
@@ -116,9 +124,12 @@ awn_applet_proxy_set_property (GObject      *object,
       break;
     case PROP_ORIENT:
       priv->orient = g_value_get_int (value);
+      awn_throbber_set_orientation (AWN_THROBBER (priv->throbber),
+                                    priv->orient);
       break;
     case PROP_SIZE:
       priv->size = g_value_get_int (value);
+      awn_throbber_set_size (AWN_THROBBER (priv->throbber), priv->size);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -135,6 +146,12 @@ awn_applet_proxy_dispose (GObject *object)
 
   priv->path = NULL;
   priv->uid = NULL;
+
+  if (priv->throbber)
+  {
+    gtk_widget_destroy (priv->throbber);
+    priv->throbber = NULL;
+  }
 
   G_OBJECT_CLASS (awn_applet_proxy_parent_class)->dispose (object);
 }
@@ -192,8 +209,50 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
         G_TYPE_NONE,
         1, G_TYPE_INT);
 
-
   g_type_class_add_private (obj_class, sizeof (AwnAppletProxyPrivate));
+}
+
+static gboolean
+throbber_click (GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+{
+  AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE(user_data);
+
+  if (!priv->running)
+  {
+    priv->crashed = FALSE;
+    awn_throbber_set_text (AWN_THROBBER (priv->throbber),
+                           _("Loading applet..."));
+    awn_throbber_set_type (AWN_THROBBER (priv->throbber),
+                           AWN_THROBBER_TYPE_NORMAL);
+    awn_applet_proxy_execute (AWN_APPLET_PROXY(user_data));
+  }
+  return FALSE;
+}
+
+static gboolean
+throbber_mouse_over (GtkWidget *widget,
+                     GdkEventCrossing *event, gpointer user_data)
+{
+  AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE(user_data);
+
+  if (priv->crashed)
+  {
+    AwnEffects *fx = awn_throbber_get_effects (AWN_THROBBER (priv->throbber));
+    awn_effects_start (fx, AWN_EFFECT_HOVER);
+  }
+  return FALSE;
+}
+
+static gboolean
+throbber_mouse_out (GtkWidget *widget,
+                    GdkEventCrossing *event, gpointer user_data)
+{
+  AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE(user_data);
+
+  AwnEffects *fx = awn_throbber_get_effects (AWN_THROBBER (priv->throbber));
+  awn_effects_stop (fx, AWN_EFFECT_HOVER);
+
+  return FALSE;
 }
 
 static void
@@ -202,8 +261,35 @@ awn_applet_proxy_init (AwnAppletProxy *proxy)
   AwnAppletProxyPrivate *priv;
 
   priv = proxy->priv = AWN_APPLET_PROXY_GET_PRIVATE (proxy);
+
+  /* Connect to the socket signals */
+  g_signal_connect (proxy, "plug-added", G_CALLBACK (on_plug_added), NULL);
+  g_signal_connect (proxy, "plug-removed", G_CALLBACK (on_plug_removed), NULL);
+  g_signal_connect (proxy, "realize", 
+                    G_CALLBACK (awn_utils_make_transparent), NULL);
+  /* Rest is for the crash notification window */
+  priv->running = TRUE;
+  priv->crashed = FALSE;
+
+  priv->throbber = awn_throbber_new ();
+
+  awn_throbber_set_text (AWN_THROBBER (priv->throbber), _("Loading applet..."));
+
+  g_signal_connect (priv->throbber, "button-release-event",
+                    G_CALLBACK (throbber_click), proxy);
+  g_signal_connect (priv->throbber, "enter-notify-event",
+                    G_CALLBACK (throbber_mouse_over), proxy);
+  g_signal_connect (priv->throbber, "leave-notify-event",
+                    G_CALLBACK (throbber_mouse_out), proxy);
 }
 
+GtkWidget*
+awn_applet_proxy_get_throbber(AwnAppletProxy *proxy)
+{
+  g_return_val_if_fail(AWN_IS_APPLET_PROXY(proxy), NULL);
+
+  return proxy->priv->throbber;
+}
 
 GtkWidget *     
 awn_applet_proxy_new (const gchar *path,
@@ -226,15 +312,16 @@ awn_applet_proxy_new (const gchar *path,
  * GtkSocket callbacks
  */
 static void 
-on_plug_added (AwnAppletProxy *proxy)
+on_plug_added (AwnAppletProxy *proxy, gpointer user_data)
 {
   g_return_if_fail (AWN_IS_APPLET_PROXY (proxy));
 
+  gtk_widget_hide (GTK_WIDGET (proxy->priv->throbber));
   gtk_widget_show (GTK_WIDGET (proxy));
 }
 
 static gboolean
-on_plug_removed (AwnAppletProxy *proxy)
+on_plug_removed (AwnAppletProxy *proxy, gpointer user_data)
 {
   AwnAppletProxyPrivate *priv;
 
@@ -243,7 +330,50 @@ on_plug_removed (AwnAppletProxy *proxy)
 
   g_signal_emit (proxy, _proxy_signals[APPLET_DELETED], 0, priv->uid);
 
-  return FALSE;
+  gtk_widget_hide (GTK_WIDGET (proxy));
+  // indicate that the applet crashed and allow restart
+  priv->running = FALSE;
+  priv->crashed = TRUE;
+  awn_throbber_set_text (AWN_THROBBER (priv->throbber),
+    _("Whoops! The applet crashed. Click to restart it."));
+  awn_throbber_set_type (AWN_THROBBER (priv->throbber),
+                         AWN_THROBBER_TYPE_SAD_FACE);
+  gtk_widget_show (priv->throbber);
+
+  return TRUE;
+}
+
+static void
+on_child_exit (GPid pid, gint status, gpointer user_data)
+{
+  if (AWN_IS_APPLET_PROXY (user_data))
+  {
+    AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE (user_data);
+
+    // FIXME: we could do something with the status var... nice error messages?!
+    /*
+    switch (status)
+    {
+      case ???:
+        awn_throbber_set_text (AWN_THROBBER (priv->throbber), _("..."));
+        break;
+      default:
+        awn_throbber_set_text (AWN_THROBBER (priv->throbber), _("..."));
+        break;
+    }
+    */
+
+    priv->running = FALSE;
+    priv->crashed = TRUE;
+
+    awn_throbber_set_type (AWN_THROBBER (priv->throbber),
+                           AWN_THROBBER_TYPE_SAD_FACE);
+    // we won't call gtk_widget_show - on_plug_removed does that
+    // and if the plug wasn't even added, the throbber widget is still visible
+    gtk_widget_queue_draw (priv->throbber);
+  }
+
+  g_spawn_close_pid(pid); // doesn't do anything on UNIX, but let's have it
 }
 
 void
@@ -253,16 +383,17 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   GdkScreen             *screen;
   GError                *error = NULL;
   gchar                 *exec;
+  gchar                **argv = NULL;
+  GPid                   pid;
+  GSpawnFlags            flags = G_SPAWN_SEARCH_PATH|G_SPAWN_DO_NOT_REAP_CHILD;
 
   priv = AWN_APPLET_PROXY_GET_PRIVATE (proxy);
 
   gtk_widget_realize (GTK_WIDGET (proxy));
 
-  /* Connect to the socket signals */
-  g_signal_connect (proxy, "plug-added", G_CALLBACK (on_plug_added), NULL);
-  g_signal_connect (proxy, "plug-removed", G_CALLBACK (on_plug_removed), NULL);
-  g_signal_connect (proxy, "realize", G_CALLBACK(awn_utils_make_transparent), NULL);
   g_debug ("Loading Applet: %s %s", priv->path, priv->uid);
+
+  // FIXME: update tooltip with name of the applet?!
 
   /* Load the applet */
   screen = gtk_widget_get_screen (GTK_WIDGET (proxy));
@@ -272,16 +403,26 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
                           (long long)gtk_socket_get_id (GTK_SOCKET (proxy)),
                           priv->orient,
                           priv->size);
-  gdk_spawn_command_line_on_screen (screen, exec, &error);
 
-  if (error)
+  
+  g_shell_parse_argv(exec, NULL, &argv, &error);
+  g_warn_if_fail(error == NULL);
+
+  if (gdk_spawn_on_screen (
+        screen, NULL, argv, NULL, flags, NULL, NULL, &pid, &error))
+  {
+    priv->running = TRUE;
+    g_child_watch_add(pid, on_child_exit, proxy);
+  }
+  else
   {
     g_warning ("Unable to load applet %s: %s", priv->path, error->message);
     g_error_free (error);
     g_signal_emit (proxy, _proxy_signals[APPLET_DELETED], 0, priv->uid);
   }
 
-  g_free (error);
+  g_strfreev (argv);
+  g_free (exec);
 }
 
 

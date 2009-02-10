@@ -357,6 +357,7 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
   AwnPanelPrivate *priv = panel->priv;
 
   gint x, y, window_x, window_y;
+  // FIXME: probably needs some love to work on multiple monitors
   gdk_display_get_pointer (gdk_display_get_default (), NULL, &x, &y, NULL);
   gdk_window_get_root_origin (widget->window, &window_x, &window_y);
 

@@ -23,10 +23,10 @@
 
 #include <libawn/awn-config-bridge.h>
 
+#include "awn-defines.h"
 #include "awn-applet-manager.h"
 
 #include "awn-applet-proxy.h"
-#include "awn-defines.h"
 
 G_DEFINE_TYPE (AwnAppletManager, awn_applet_manager, GTK_TYPE_BOX) 
 
@@ -63,6 +63,8 @@ enum
 /* 
  * FORWARDS
  */
+static void awn_applet_manager_set_size   (AwnAppletManager *manager,
+                                           gint              size);
 static void awn_applet_manager_set_orient (AwnAppletManager *manager, 
                                            gint              orient);
 static void free_list                     (GSList *list);
@@ -164,7 +166,7 @@ awn_applet_manager_set_property (GObject      *object,
       awn_applet_manager_set_orient (manager, g_value_get_int (value));
       break;
     case PROP_SIZE:
-      priv->size = g_value_get_int (value);
+      awn_applet_manager_set_size (manager, g_value_get_int (value));
       break;
     case PROP_APPLET_LIST:
       free_list (priv->applet_list);
@@ -266,6 +268,41 @@ awn_applet_manager_new_from_config (AwnConfigClient *client)
  * PROPERTY SETTERS
  */
 
+static void
+awn_manager_set_applets_size (gpointer key,
+                              GtkWidget *applet,
+                              AwnAppletManager *manager)
+{
+  if (G_IS_OBJECT (applet))
+  {
+    g_object_set (applet, "size", manager->priv->size, NULL);
+  }
+}
+
+static void
+awn_applet_manager_set_size (AwnAppletManager *manager,
+                             gint              size)
+{
+  AwnAppletManagerPrivate *priv = manager->priv;
+
+  priv->size = size;
+
+  // update size on all running applets (if they'd crash)
+  g_hash_table_foreach(priv->applets,
+                       (GHFunc)awn_manager_set_applets_size, manager);
+}
+
+static void
+awn_manager_set_applets_orient (gpointer key,
+                                GtkWidget *applet,
+                                AwnAppletManager *manager)
+{
+  if (G_IS_OBJECT (applet))
+  {
+    g_object_set (applet, "orient", manager->priv->orient, NULL);
+  }
+}
+
 /*
  * Update the box class
  */
@@ -294,6 +331,10 @@ awn_applet_manager_set_orient (AwnAppletManager *manager,
       priv->klass = NULL;
       break;
   }
+
+  // update orientation on all running applets (if they'd crash)
+  g_hash_table_foreach(priv->applets,
+                       (GHFunc)awn_manager_set_applets_orient, manager);
 }
 
 /*
@@ -321,12 +362,16 @@ create_applet (AwnAppletManager *manager,
 {
   AwnAppletManagerPrivate *priv = manager->priv;
   GtkWidget               *applet;
+  GtkWidget               *notifier;
 
   /*FIXME: Exception cases, i.e. separators */
   
   applet = awn_applet_proxy_new (path, uid, priv->orient, priv->size);
+  notifier = awn_applet_proxy_get_throbber(AWN_APPLET_PROXY(applet));
   gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
-  
+  gtk_box_pack_start (GTK_BOX (manager), notifier, FALSE, FALSE, 0);
+  gtk_widget_show(notifier);
+
   g_object_set_qdata (G_OBJECT (applet), 
                       priv->touch_quark, GINT_TO_POINTER (0));
   g_hash_table_insert (priv->applets, g_strdup (uid), applet);
@@ -421,14 +466,15 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
     }
 
     /* Order the applet correctly */
-    gtk_box_reorder_child (GTK_BOX (manager), applet, i);
+    gtk_box_reorder_child (GTK_BOX (manager), applet, i++);
+    gtk_box_reorder_child (GTK_BOX (manager),
+               awn_applet_proxy_get_throbber(AWN_APPLET_PROXY(applet)), i++);
     
     /* Make sure we don't kill it during clean up */
     g_object_set_qdata (G_OBJECT (applet), 
                         priv->touch_quark, GINT_TO_POINTER (1));
     
     g_strfreev (tokens);
-    i++;
   }
 
   /* Delete applets that have been removed from the list */

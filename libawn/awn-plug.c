@@ -264,7 +264,7 @@ awn_plug_init(AwnPlug *plug)
   g_signal_connect (plug, "embedded",
                     G_CALLBACK (on_plug_embedded), NULL);
   g_signal_connect (G_OBJECT(plug), "realize",
-                         G_CALLBACK(awn_utils_make_transparent), NULL);  
+                    G_CALLBACK(awn_utils_make_transparent), NULL);  
 }
 
 GtkWidget *
