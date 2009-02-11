@@ -1,13 +1,18 @@
-2009-02-11  hay veersch,,,  <Please set CHANGE_LOG_EMAIL_ADDRESS or EMAIL_ADDRESS environment variable>
-
-	reviewed by: <delete if not using a buddy>
-	patch by: <delete if not someone else's patch>
+2009-02-11  h4writer <hv1989@gmail.com>
 
 	* src/awn-panel.c:
+	Make the panel_mode work again.
+	The space located for the strut is right. It still overlaps the windows with 1px (top/left) and 2px (bottom/right),
+	but that's the fault of awn-background. That's next on my Todo list to solve.
+
 	* src/awn-x.c:
 	* src/awn-x.h:
+	Removed awn_x_set_strut. Now there is no function in this file anymore. 
+	So it can get removed.
+
 	* src/xutils.c:
-	* src/xutils.h:
+	* src/xutils.h: 
+	Updated xutils_set_strut to support multiple orientation 
 
 2009-02-11  Michal Hruby <michal.mhr@gmail.com>
 
