@@ -307,7 +307,7 @@ _start_awn_manager (GtkMenuItem *menuitem, gpointer null)
 {
   GError *err = NULL;
   
-  g_spawn_command_line_async("awn-manager", &err);
+  g_spawn_command_line_async("awn-manager-mini", &err);
 
   if (err)
   {
