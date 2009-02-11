@@ -32,12 +32,9 @@
 G_DEFINE_TYPE (AwnBackground3d, awn_background_3d, AWN_TYPE_BACKGROUND)
 
 static void awn_background_3d_draw (AwnBackground  *bg,
-                                      cairo_t        *cr,
-                                      AwnOrientation  orient,
-                                      gdouble         x,
-                                      gdouble         y,
-                                      gint            width,
-                                      gint            height);
+                                    cairo_t        *cr,
+                                    AwnOrientation  orient,
+                                    GdkRectangle   *area);
 
 
 static void
@@ -367,12 +364,11 @@ static void
 awn_background_3d_draw (AwnBackground  *bg,
                         cairo_t        *cr, 
                         AwnOrientation  orient,
-                        gdouble         x,
-                        gdouble         y,
-                        gint            width,
-                        gint            height)
+                        GdkRectangle   *area)
 {
   gint temp;
+  gint x = area->x, y = area->y;
+  gint width = area->width, height = area->height;
   cairo_save (cr);
 
   switch (orient)

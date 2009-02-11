@@ -158,9 +158,9 @@ static gboolean on_window_configure         (GtkWidget         *panel,
 static gboolean position_window             (AwnPanel *panel);
 static gboolean resize_window               (AwnPanel *panel);
 
-static gboolean on_eb_expose                (GtkWidget      *eb, 
+/*static gboolean on_eb_expose                (GtkWidget      *eb, 
                                              GdkEventExpose *event,
-                                             GtkWidget      *child);
+                                             GtkWidget      *child);*/
 static gboolean awn_panel_expose            (GtkWidget      *widget, 
                                              GdkEventExpose *event);
 static void     awn_panel_add               (GtkContainer   *window, 
@@ -763,14 +763,16 @@ awn_panel_init (AwnPanel *panel)
   gtk_container_add (GTK_CONTAINER (priv->eventbox), priv->alignment);
   gtk_widget_show (priv->alignment);
 
-  g_signal_connect (priv->eventbox, "expose-event",
-                    G_CALLBACK (on_eb_expose), priv->alignment);
+  //g_signal_connect (priv->eventbox, "expose-event",
+  //                  G_CALLBACK (on_eb_expose), priv->alignment);
+  g_signal_connect (priv->eventbox, "realize",
+                    G_CALLBACK(awn_utils_make_transparent), NULL);
 
   g_signal_connect (panel, "enter-notify-event", 
                     G_CALLBACK (on_mouse_over), NULL);
   g_signal_connect (panel, "leave-notify-event", 
                     G_CALLBACK (on_mouse_out), NULL);
-  g_signal_connect_after (panel, "realize", 
+  g_signal_connect (panel, "realize", 
                     G_CALLBACK(awn_utils_make_transparent), NULL);
   gtk_window_set_resizable (GTK_WINDOW (panel), FALSE);
 }
@@ -932,9 +934,24 @@ awn_panel_update_input_shape (GtkWidget *panel,
       g_assert (0);
   }
 
+  // clear the bitmap
   cr = gdk_cairo_create (shaped_bitmap);
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (cr);
+
+  if (priv->bg)
+  {
+    GdkRectangle area;
+    area.x = x; area.y = y;
+    area.width = width; area.height = height;
+    awn_background_get_input_shape_mask(priv->bg, cr, priv->orient, &area);
+  }
+
+  // paint over the applets
+  gtk_widget_translate_coordinates(priv->eventbox, panel, 0, 0, &x, &y);
+  width = priv->eventbox->allocation.width;
+  height = priv->eventbox->allocation.height;
+
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   cairo_set_source_rgb (cr, 1.0f, 1.0f, 1.0f);
 
@@ -1081,6 +1098,7 @@ on_geometry_changed   (AwnMonitor *monitor,
 /*
  * Clear the eventboxes background
  */
+/*
 static gboolean 
 on_eb_expose (GtkWidget      *widget, 
               GdkEventExpose *event,
@@ -1094,7 +1112,6 @@ on_eb_expose (GtkWidget      *widget,
     return FALSE;
   }
 
-  /* Get our ctx */
   cr = gdk_cairo_create (widget->window);
   if (!cr)
   {
@@ -1102,7 +1119,7 @@ on_eb_expose (GtkWidget      *widget,
     return FALSE;
   }
 
-  /* The actual drawing of the background */
+  // The actual drawing of the background
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (cr);
   cairo_destroy (cr);
@@ -1112,6 +1129,7 @@ on_eb_expose (GtkWidget      *widget,
                                   event);
   return TRUE;
 }
+*/
 
 /*
  * Draw the panel 
@@ -1187,8 +1205,13 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (cr);
 
-  if(priv->bg)
-    awn_background_draw (priv->bg, cr, priv->orient, x, y, width, height);
+  if (priv->bg)
+  {
+    GdkRectangle area;
+    area.x = x; area.y = y;
+    area.width = width; area.height = height;
+    awn_background_draw (priv->bg, cr, priv->orient, &area);
+  }
  
   /* Pass on the expose event to the child */
   child = gtk_bin_get_child (GTK_BIN (widget));
@@ -1464,7 +1487,7 @@ awn_panel_set_panel_mode (AwnPanel *panel, gboolean  panel_mode)
 
   if(priv->panel_mode)
   {
-    //Check if panel is already realized. So it has an GdbWindow. 
+    //Check if panel is already realized. So it has an GdkWindow.
     //If it's not, the strut will get set when the position and dimension get set. 
     if(GTK_WIDGET_REALIZED(panel))
       awn_panel_set_strut(panel);

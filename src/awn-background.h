@@ -95,10 +95,23 @@ struct _AwnBackgroundClass
   void (*draw) (AwnBackground  *bg,
                 cairo_t        *cr, 
                 AwnOrientation  orient,
-                gdouble         x,
-                gdouble         y,
-                gint            width,
-                gint            height);
+                GdkRectangle   *area);
+
+  void (*padding_request) (AwnBackground *bg,
+                           guint *padding_top,
+                           guint *padding_bottom,
+                           guint *padding_left,
+                           guint *padding_right);
+
+  void (*get_shape_mask) (AwnBackground *bg,
+                          cairo_t        *cr,
+                          AwnOrientation  orient,
+                          GdkRectangle   *area);
+
+  void (*get_input_shape_mask) (AwnBackground *bg,
+                                cairo_t        *cr,
+                                AwnOrientation  orient,
+                                GdkRectangle   *area);
 
   /*< signals >*/
   void (*changed) (AwnBackground *bg);
@@ -106,13 +119,26 @@ struct _AwnBackgroundClass
 
 GType awn_background_get_type (void) G_GNUC_CONST;
 
-void  awn_background_draw     (AwnBackground  *bg,
+void awn_background_draw      (AwnBackground  *bg,
                                cairo_t        *cr, 
                                AwnOrientation  orient,
-                               gdouble         x,
-                               gdouble         y,
-                               gint            width,
-                               gint            height);
+                               GdkRectangle   *area);
+
+void awn_background_padding_request (AwnBackground *bg,
+                                     guint *padding_top,
+                                     guint *padding_bottom,
+                                     guint *padding_left,
+                                     guint *padding_right);
+
+void awn_background_get_shape_mask (AwnBackground  *bg,
+                                    cairo_t        *cr,
+                                    AwnOrientation  orient,
+                                    GdkRectangle   *area);
+
+void awn_background_get_input_shape_mask (AwnBackground  *bg,
+                                          cairo_t        *cr,
+                                          AwnOrientation  orient,
+                                          GdkRectangle   *area);
 
 G_END_DECLS
 

@@ -71,6 +71,17 @@ static guint _bg_signals[LAST_SIGNAL] = { 0 };
 static void awn_background_set_gtk_theme_mode (AwnBackground *bg, 
                                                gboolean       gtk_mode);
 
+static void awn_background_padding_zero (AwnBackground *bg,
+                                         guint *padding_top,
+                                         guint *padding_bottom,
+                                         guint *padding_left,
+                                         guint *padding_right);
+
+static void awn_background_mask_none (AwnBackground  *bg,
+                                      cairo_t        *cr,
+                                      AwnOrientation  orient,
+                                      GdkRectangle   *area);
+
 
 static void
 awn_background_constructed (GObject *object)
@@ -246,9 +257,13 @@ awn_background_class_init (AwnBackgroundClass *klass)
 {
   GObjectClass *obj_class = G_OBJECT_CLASS (klass);
 
-  obj_class->constructed   = awn_background_constructed;
-  obj_class->get_property  = awn_background_get_property;
-  obj_class->set_property  = awn_background_set_property;
+  obj_class->constructed      = awn_background_constructed;
+  obj_class->get_property     = awn_background_get_property;
+  obj_class->set_property     = awn_background_set_property;
+
+  klass->padding_request      = awn_background_padding_zero;
+  klass->get_shape_mask       = awn_background_mask_none;
+  klass->get_input_shape_mask = awn_background_mask_none;
 
   /* Object properties */
   g_object_class_install_property (obj_class,
@@ -425,10 +440,7 @@ void
 awn_background_draw (AwnBackground  *bg,
                      cairo_t        *cr, 
                      AwnOrientation  orient,
-                     gdouble         x,
-                     gdouble         y,
-                     gint            width,
-                     gint            height)
+                     GdkRectangle   *area)
 {
   AwnBackgroundClass *klass;
 
@@ -437,7 +449,57 @@ awn_background_draw (AwnBackground  *bg,
   klass = AWN_BACKGROUND_GET_CLASS (bg);
   g_return_if_fail (klass->draw != NULL);
 
-  klass->draw (bg, cr, orient, x, y, width, height);
+  klass->draw (bg, cr, orient, area);
+}
+
+void 
+awn_background_padding_request (AwnBackground *bg,
+                                guint *padding_top,
+                                guint *padding_bottom,
+                                guint *padding_left,
+                                guint *padding_right)
+{
+  AwnBackgroundClass *klass;
+
+  g_return_if_fail (AWN_IS_BACKGROUND (bg));
+  
+  klass = AWN_BACKGROUND_GET_CLASS (bg);
+  g_return_if_fail (klass->padding_request != NULL);
+
+  klass->padding_request (bg, padding_top, padding_bottom,
+                          padding_left, padding_right);
+}
+
+void 
+awn_background_get_shape_mask (AwnBackground *bg,
+                               cairo_t        *cr,
+                               AwnOrientation  orient,
+                               GdkRectangle   *area)
+{
+  AwnBackgroundClass *klass;
+
+  g_return_if_fail (AWN_IS_BACKGROUND (bg));
+  
+  klass = AWN_BACKGROUND_GET_CLASS (bg);
+  g_return_if_fail (klass->get_shape_mask != NULL);
+
+  klass->get_shape_mask (bg, cr, orient, area);
+}
+
+void 
+awn_background_get_input_shape_mask (AwnBackground *bg,
+                                     cairo_t        *cr,
+                                     AwnOrientation  orient,
+                                     GdkRectangle   *area)
+{
+  AwnBackgroundClass *klass;
+
+  g_return_if_fail (AWN_IS_BACKGROUND (bg));
+  
+  klass = AWN_BACKGROUND_GET_CLASS (bg);
+  g_return_if_fail (klass->get_input_shape_mask != NULL);
+
+  klass->get_input_shape_mask (bg, cr, orient, area);
 }
 
 /*
@@ -553,5 +615,25 @@ awn_background_set_gtk_theme_mode (AwnBackground *bg,
   }
 }
 
+static void awn_background_padding_zero(AwnBackground *bg,
+                                        guint *padding_top,
+                                        guint *padding_bottom,
+                                        guint *padding_left,
+                                        guint *padding_right)
+{
+  *padding_top  = 0; *padding_bottom = 0;
+  *padding_left = 0; *padding_right  = 0;
+}
+
+static void awn_background_mask_none (AwnBackground *bg,
+                                      cairo_t        *cr,
+                                      AwnOrientation  orient,
+                                      GdkRectangle   *area)
+{
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
+  cairo_rectangle (cr, area->x, area->y, area->width, area->height);
+  cairo_fill (cr);
+}
 
 /* vim: set et ts=2 sts=2 sw=2 : */

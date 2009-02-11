@@ -36,10 +36,7 @@ G_DEFINE_TYPE (AwnBackgroundFlat, awn_background_flat, AWN_TYPE_BACKGROUND)
 static void awn_background_flat_draw (AwnBackground  *bg,
                                       cairo_t        *cr,
                                       AwnOrientation  orient,
-                                      gdouble         x,
-                                      gdouble         y,
-                                      gint            width,
-                                      gint            height);
+                                      GdkRectangle   *area);
 
 
 static void
@@ -188,12 +185,11 @@ static void
 awn_background_flat_draw (AwnBackground  *bg,
                           cairo_t        *cr, 
                           AwnOrientation  orient,
-                          gdouble         x,
-                          gdouble         y,
-                          gint            width,
-                          gint            height)
+                          GdkRectangle   *area)
 {
   gint temp;
+  gint x = area->x, y = area->y;
+  gint width = area->width, height = area->height;
   cairo_save (cr);
 
   switch (orient)
