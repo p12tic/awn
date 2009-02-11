@@ -33,29 +33,4 @@
 #include <string.h>
 
 
-static int num = 0;
-void
-awn_x_set_strut (GtkWindow * window)
-{
-  int x = 0;
-  int y = 0;
-  int width = 0;
-  int height = 0;
-
-  if (!num)
-    g_print ("%s needs to be updated for orientation support", G_STRLOC);
-  num++;
-  return;
-
-  gtk_window_get_size (window, &width, &height);
-  gtk_window_get_position (window, &x, &y);
-
-  xutils_set_strut ((GTK_WIDGET (window)->window),
-		    (height) / 2, x, x + width);
-  num++;
-  if (num == 20)
-  {
-    num = 0;
-  }
-}
 

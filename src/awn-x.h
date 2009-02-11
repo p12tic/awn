@@ -29,6 +29,4 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-void awn_x_set_strut (GtkWindow *window);
-
 #endif

@@ -44,42 +44,70 @@ enum {
 static Atom net_wm_strut              = 0;
 static Atom net_wm_strut_partial      = 0;
 
-//pulled out of xutils.c
+/* xutils_set_strut:
+ * @gdk_window: window to set struts on
+ * @orientation: orientation of the window, top=0, right=1, bottom=2, left=3
+ * @strut: the height of the strut
+ * @strut_start: the start position of the strut
+ * @strut_end: the end position of the strut
+ *
+ * Sets struts for a given @gdk_window on the specified @orientation. 
+ * To let a maximised window not cover the given struts
+ *
+ * - partially pulled out of xutils.c -
+ */
 void
 xutils_set_strut (GdkWindow        *gdk_window,
-			guint32           strut,
-			guint32           strut_start,
-			guint32           strut_end)
- {
-	Display *display;
-	Window   window;
-	gulong   struts [12] = { 0, };
+                  int               orientation,
+                  guint32           strut,
+                  guint32           strut_start,
+                  guint32           strut_end)
+{
+  Display *display;
+  Window   window;
+  gulong   struts [12] = { 0, };
 
-	if (!GDK_IS_DRAWABLE (gdk_window))
-		return;
-	if (!GDK_IS_WINDOW (gdk_window))
-		return;
+  g_return_if_fail (GDK_IS_WINDOW (gdk_window));
 
-	display = GDK_WINDOW_XDISPLAY (gdk_window);
-	window  = GDK_WINDOW_XWINDOW (gdk_window);
+  display = GDK_WINDOW_XDISPLAY (gdk_window);
+  window  = GDK_WINDOW_XWINDOW (gdk_window);
 
-	if (net_wm_strut == 0)
-		net_wm_strut = XInternAtom (display, "_NET_WM_STRUT", False);
-	if (net_wm_strut_partial == 0)
-		net_wm_strut_partial = XInternAtom (display, "_NET_WM_STRUT_PARTIAL", False);
+  if (net_wm_strut == None)
+    net_wm_strut = XInternAtom (display, "_NET_WM_STRUT", False);
+  if (net_wm_strut_partial == None)
+    net_wm_strut_partial = XInternAtom (display, "_NET_WM_STRUT_PARTIAL", False);
 
-	struts [STRUT_BOTTOM] = strut;
-	struts [STRUT_BOTTOM_START] = strut_start;
-	struts [STRUT_BOTTOM_END] = strut_end;
-	
-	gdk_error_trap_push ();
-	XChangeProperty (display, window, net_wm_strut,
-			 XA_CARDINAL, 32, PropModeReplace,
-			 (guchar *) &struts, 4);
-	XChangeProperty (display, window, net_wm_strut_partial,
-			 XA_CARDINAL, 32, PropModeReplace,
-			 (guchar *) &struts, 12);
-	gdk_error_trap_pop ();
+  switch (orientation) {
+    case 0:
+      struts [STRUT_TOP] = strut;
+      struts [STRUT_TOP_START] = strut_start;
+      struts [STRUT_TOP_END] = strut_end;
+      break;
+    case 1:
+      struts [STRUT_RIGHT] = strut;
+      struts [STRUT_RIGHT_START] = strut_start;
+      struts [STRUT_RIGHT_END] = strut_end;
+      break;
+    case 2:
+      struts [STRUT_BOTTOM] = strut;
+      struts [STRUT_BOTTOM_START] = strut_start;
+      struts [STRUT_BOTTOM_END] = strut_end;
+      break;
+    case 3:
+      struts [STRUT_LEFT] = strut;
+      struts [STRUT_LEFT_START] = strut_start;
+      struts [STRUT_LEFT_END] = strut_end;
+      break;
+  }
+
+  gdk_error_trap_push ();
+  XChangeProperty (display, window, net_wm_strut,
+                   XA_CARDINAL, 32, PropModeReplace,
+                   (guchar *) &struts, 4);
+  XChangeProperty (display, window, net_wm_strut_partial,
+                   XA_CARDINAL, 32, PropModeReplace,
+                   (guchar *) &struts, 12);
+  gdk_error_trap_pop ();
 }
 
 void

@@ -39,6 +39,8 @@
 #include "awn-monitor.h"
 #include "awn-x.h"
 
+#include "xutils.h"
+
 // FIXME: getting this value should be a method of AwnBackground
 #define AWN_PANEL_BORDER 2
 
@@ -174,6 +176,8 @@ static void     awn_panel_set_autohide_type (AwnPanel *panel,
                                              gint      type);
 static void     awn_panel_set_style         (AwnPanel *panel,
                                              gint      style);
+static void     awn_panel_set_panel_mode    (AwnPanel *panel,
+                                             gboolean  panel_mode);
 
 static void     awn_panel_reset_autohide    (AwnPanel *panel);
 
@@ -184,6 +188,9 @@ static void     on_theme_changed            (AwnBackground *bg,
 
 static gboolean awn_panel_check_mouse_pos   (AwnPanel *panel,
                                              gboolean whole_window);
+
+static void awn_panel_set_strut              (AwnPanel *panel);
+static void awn_panel_remove_strut           (AwnPanel *panel);
 
 /*
  * GOBJECT CODE 
@@ -314,7 +321,7 @@ awn_panel_set_property (GObject      *object,
       priv->composited = g_value_get_boolean (value);
       break;
     case PROP_PANEL_MODE:
-      priv->panel_mode = g_value_get_boolean (value);
+      awn_panel_set_panel_mode(panel, g_value_get_boolean (value));
       break;    
     case PROP_OFFSET:
       awn_panel_set_offset (panel, g_value_get_int (value));
@@ -1048,7 +1055,7 @@ on_window_configure (GtkWidget          *panel,
 
   /* Update the size hints if the panel_mode is set */
   if (priv->panel_mode)
-    awn_x_set_strut (GTK_WINDOW (panel));
+    awn_panel_set_strut (AWN_PANEL (panel));
   
   /* Update position */
   position_window (AWN_PANEL (panel));
@@ -1447,6 +1454,71 @@ awn_panel_set_style (AwnPanel *panel, gint style)
   g_signal_connect (priv->bg, "changed", G_CALLBACK (on_theme_changed), panel);
 
   gtk_widget_queue_draw (GTK_WIDGET (panel));
+}
+
+static void
+awn_panel_set_panel_mode (AwnPanel *panel, gboolean  panel_mode)
+{
+  AwnPanelPrivate *priv = panel->priv;
+  priv->panel_mode = panel_mode;
+
+  if(priv->panel_mode)
+  {
+    //Check if panel is already realized. So it has an GdbWindow. 
+    //If it's not, the strut will get set when the position and dimension get set. 
+    if(GTK_WIDGET_REALIZED(panel))
+      awn_panel_set_strut(panel);
+  }
+  else
+  {
+    if(GTK_WIDGET_REALIZED(panel))
+      awn_panel_remove_strut(panel);
+  }
+
+}
+
+static void
+awn_panel_set_strut (AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  int strut, strut_start, strut_end;
+  int width, height;
+  int x,y;
+
+  gtk_window_get_size (GTK_WINDOW (panel), &width, &height);
+  gtk_window_get_position (GTK_WINDOW (panel), &x, &y);
+
+  switch (priv->orient)
+  {
+    case AWN_ORIENTATION_TOP:
+      strut_start = x;
+      strut_end = x + width;
+      break;
+    case AWN_ORIENTATION_RIGHT:
+      strut_start = y;
+      strut_end = y + height;
+      break;
+    case AWN_ORIENTATION_BOTTOM:
+      strut_start = x;
+      strut_end = x + width;
+      break;
+    case AWN_ORIENTATION_LEFT:
+      strut_start = y;
+      strut_end = y + height;
+      break;
+    default:
+      g_assert (0);
+  }
+
+  strut = priv->offset + priv->size + AWN_PANEL_BORDER;
+  xutils_set_strut ((GTK_WIDGET (panel))->window, priv->orient, strut, strut_start, strut_end);
+}
+
+static void
+awn_panel_remove_strut (AwnPanel *panel)
+{
+  xutils_set_strut ((GTK_WIDGET (panel))->window, 0, 0, 0, 0);
 }
 
 /*
