@@ -215,8 +215,6 @@ awn_background_flat_draw (AwnBackground  *bg,
       break;
   }
 
-  height += 1;
-
   draw_top_bottom_background (bg, cr, orient, 0, 0, width, height);
 
   cairo_restore (cr);

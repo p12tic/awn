@@ -29,6 +29,17 @@
 
 #include <math.h>
 
+/* The pixels to draw the side of the panel*/
+#define SIDE_SPACE 4
+
+// Some defines for debugging
+#define DEBUG_DRAW_INTERNAL_BORDER_BOTTOM     TRUE
+#define DEBUG_DRAW_EXTERNAL_BORDER_BOTTOM     TRUE
+#define DEBUG_DRAW_SIDE                       TRUE
+#define DEBUG_DRAW_INTERNAL_BORDER_TOP        TRUE
+#define DEBUG_DRAW_EXTERNAL_BORDER_TOP        TRUE
+#define DEBUG_DRAW_HIGHLIGHT                  TRUE
+
 G_DEFINE_TYPE (AwnBackground3d, awn_background_3d, AWN_TYPE_BACKGROUND)
 
 static void awn_background_3d_draw (AwnBackground  *bg,
@@ -133,7 +144,7 @@ get_width_on_height( double width, double angle, double y )
  * @param y: the begin y position to draw
  * @param width: the width for the drawing
  * @param height: the height for the drawing
- * @param offset: makes the path X amount of pixels smaller on every side
+ * @param padding: makes the path X amount of pixels smaller on every side
  *
  * This function draws the path of the bar in perspective.
  */
@@ -144,7 +155,7 @@ draw_rect_path (AwnBackground  *bg,
                 gdouble         y,
                 gint            width,
                 gint            height,
-                gint            offset)
+                gint            padding)
 {
   double x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11,
          y0, y1, y2, y3;
@@ -161,23 +172,23 @@ draw_rect_path (AwnBackground  *bg,
    *           (x11,y0)            (x10,y0)
    */
 
-  x0 = x + apply_perspective_x(width, bg->panel_angle, offset, offset);
-  x1 = x + apply_perspective_x(width, bg->panel_angle, offset, radius+offset);
-  x2 = x + apply_perspective_x(width, bg->panel_angle, offset, height/2-radius-offset);
-  x3 = x + apply_perspective_x(width, bg->panel_angle, offset, height/2-offset);
-  x4 = x + apply_perspective_x(width, bg->panel_angle, radius+offset, height/2-offset);
-  x5 = x + apply_perspective_x(width, bg->panel_angle, width-radius-offset, height/2-offset);
-  x6 = x + apply_perspective_x(width, bg->panel_angle, width-offset, height/2-offset);
-  x7 = x + apply_perspective_x(width, bg->panel_angle, width-offset, height/2-radius-offset);
-  x8 = x + apply_perspective_x(width, bg->panel_angle, width-offset, radius+offset);
-  x9 = x + apply_perspective_x(width, bg->panel_angle, width-offset, offset);
-  x10 = x + apply_perspective_x(width, bg->panel_angle, width-radius-offset, offset);
-  x11 = x + apply_perspective_x(width, bg->panel_angle, radius+offset, offset);
+  x0 = x + apply_perspective_x(width, bg->panel_angle, padding, padding);
+  x1 = x + apply_perspective_x(width, bg->panel_angle, padding, radius+padding);
+  x2 = x + apply_perspective_x(width, bg->panel_angle, padding, height/2-radius-padding);
+  x3 = x + apply_perspective_x(width, bg->panel_angle, padding, height/2-padding);
+  x4 = x + apply_perspective_x(width, bg->panel_angle, radius+padding, height/2-padding);
+  x5 = x + apply_perspective_x(width, bg->panel_angle, width-radius-padding, height/2-padding);
+  x6 = x + apply_perspective_x(width, bg->panel_angle, width-padding, height/2-padding);
+  x7 = x + apply_perspective_x(width, bg->panel_angle, width-padding, height/2-radius-padding);
+  x8 = x + apply_perspective_x(width, bg->panel_angle, width-padding, radius+padding);
+  x9 = x + apply_perspective_x(width, bg->panel_angle, width-padding, padding);
+  x10 = x + apply_perspective_x(width, bg->panel_angle, width-radius-padding, padding);
+  x11 = x + apply_perspective_x(width, bg->panel_angle, radius+padding, padding);
 
-  y0 = y + height - offset;
-  y1 = y + height - radius - offset;
-  y2 = y + height/2 + radius + offset;
-  y3 = y + height/2 + offset;
+  y0 = y + height - padding;
+  y1 = y + height - radius - padding;
+  y2 = y + height/2 + radius + padding;
+  y3 = y + height/2 + padding;
 
   cairo_move_to(cr, x2, y2);
   cairo_curve_to(cr, x3, y3, x3, y3, x4, y3);
@@ -223,36 +234,64 @@ draw_top_bottom_background (AwnBackground  *bg,
                             gint            width,
                             gint            height)
 {
+#if DEBUG_DRAW_SIDE
   int i;
+#endif
   cairo_pattern_t *pat;
 
-  /* The pixels to draw the side of the panel*/
-  gint side_space = 4;
+  height -= SIDE_SPACE;
 
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   cairo_translate (cr, 0.5, 0.5);
 
+#if DEBUG_DRAW_INTERNAL_BORDER_BOTTOM
   /* Internal border (on the bottom) */
   cairo_set_source_rgba (cr, bg->hilight_color.red,
                              bg->hilight_color.green,
                              bg->hilight_color.blue,
                              bg->hilight_color.alpha);
-  draw_rect_path (bg, cr, 0, 0, width, height, 1);
+  draw_rect_path (bg, cr, 0, SIDE_SPACE, width, height, 1);
   cairo_stroke (cr);
+#endif
 
+#if DEBUG_DRAW_EXTERNAL_BORDER_BOTTOM
   /* External border (on the bottom) */
   cairo_set_source_rgba (cr, bg->border_color.red,
                              bg->border_color.green,
                              bg->border_color.blue,
                              bg->border_color.alpha);
-  draw_rect_path (bg, cr, 0, 0,  width, height, 0.5);
+  draw_rect_path (bg, cr, 0, SIDE_SPACE,  width, height, 0.5);
   cairo_stroke (cr);
+#endif
 
-  /* Draw the background (on the bottom) */
-  //FIXME: I'm doubting if it is nicer with or without the bottom background drawn
-  /*pat = cairo_pattern_create_linear (0, 0, 0, height);
+#if DEBUG_DRAW_SIDE
+  /* draw the side */
+  //TODO: if a side has no rounded corners, the border should be drawn.
+  pat = cairo_pattern_create_linear (0, 0, 0, height);
+  cairo_pattern_add_color_stop_rgba (pat, 0.0, 
+                                     bg->g_step_1.red,
+                                     bg->g_step_1.green,
+                                     bg->g_step_1.blue,
+                                     bg->g_step_1.alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 1.0,
+                                     bg->g_step_2.red, 
+                                     bg->g_step_2.green,
+                                     bg->g_step_2.blue, 
+                                     bg->g_step_2.alpha);
+  cairo_set_source (cr, pat);
+  for(i=SIDE_SPACE-1; i>0; i--)
+  {
+    draw_rect_path (bg, cr, 0, i,  width, height, 0.5);
+    cairo_stroke (cr);
+  }
+
+  cairo_pattern_destroy (pat);
+#endif
+
+  /* Draw the background (on the top) */
+  pat = cairo_pattern_create_linear (0, 0, 0, height);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 
                                      bg->g_step_1.red,
                                      bg->g_step_1.green,
@@ -268,49 +307,9 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_set_source (cr, pat);
   cairo_fill (cr);
 
-  cairo_pattern_destroy (pat);*/
-
-  /* draw the side */
-  //TODO: if a side has no rounded corners, the border should be drawn.
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  cairo_pattern_add_color_stop_rgba (pat, 0.0, 
-                                     bg->g_step_1.red,
-                                     bg->g_step_1.green,
-                                     bg->g_step_1.blue,
-                                     bg->g_step_1.alpha);
-  cairo_pattern_add_color_stop_rgba (pat, 1.0,
-                                     bg->g_step_2.red, 
-                                     bg->g_step_2.green,
-                                     bg->g_step_2.blue, 
-                                     bg->g_step_2.alpha);
-  cairo_set_source (cr, pat);
-  for(i=1; i<side_space; i++)
-  {
-    draw_rect_path (bg, cr, 0, -i,  width, height, 0.5);
-    cairo_stroke (cr);
-  }
-
   cairo_pattern_destroy (pat);
 
-  /* Draw the background (on the top) */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  cairo_pattern_add_color_stop_rgba (pat, 0.0, 
-                                     bg->g_step_1.red,
-                                     bg->g_step_1.green,
-                                     bg->g_step_1.blue,
-                                     bg->g_step_1.alpha);
-  cairo_pattern_add_color_stop_rgba (pat, 1.0,
-                                     bg->g_step_2.red, 
-                                     bg->g_step_2.green,
-                                     bg->g_step_2.blue, 
-                                     bg->g_step_2.alpha);
-
-  draw_rect_path (bg, cr, 0, -side_space, width, height, 0.5);
-  cairo_set_source (cr, pat);
-  cairo_fill (cr);
-
-  cairo_pattern_destroy (pat);
-
+#if DEBUG_DRAW_HIGHLIGHT
   /* Draw the hi-light (on the top) */
   pat = cairo_pattern_create_linear (0, height/3, 0, height*2/3);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 
@@ -323,27 +322,32 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_histep_2.green,
                                      bg->g_histep_2.blue, 
                                      bg->g_histep_2.alpha);
-  draw_rect_path (bg, cr, apply_perspective_x(width, bg->panel_angle, 0, height/3), -side_space+height/3, get_width_on_height(width, bg->panel_angle, height/3), height/3, 1.5);
+  draw_rect_path (bg, cr, apply_perspective_x(width, bg->panel_angle, 0, height/3), height/3, get_width_on_height(width, bg->panel_angle, height/3), height/3, 1.5);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
   cairo_pattern_destroy (pat);
+#endif
 
+#if DEBUG_DRAW_INTERNAL_BORDER_TOP
   /* Internal border (on the top) */
   cairo_set_source_rgba (cr, bg->hilight_color.red,
                              bg->hilight_color.green,
                              bg->hilight_color.blue,
                              bg->hilight_color.alpha);
-  draw_rect_path (bg, cr, 0, -side_space, width, height, 1);
+  draw_rect_path (bg, cr, 0, 0, width, height, 1);
   cairo_stroke (cr);
+#endif
 
+#if DEBUG_DRAW_EXTERNAL_BORDER_BOTTOM
   /* External border (on the top) */
   cairo_set_source_rgba (cr, bg->border_color.red,
                              bg->border_color.green,
                              bg->border_color.blue,
                              bg->border_color.alpha);
-   draw_rect_path (bg, cr, 0, -side_space,  width, height, 0.5);
+   draw_rect_path (bg, cr, 0, 0,  width, height, 0.5);
    cairo_stroke (cr);
+#endif
 
 }
 
