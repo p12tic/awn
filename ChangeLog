@@ -1,5 +1,11 @@
 2009-02-12  Julien Lavergne <julien.Lavergnegmail.com>
 
+	* awn-manager/awnClass.py
+	* awn-manager/awnManagerMini.py.in
+	Remove duplicated make_row and make_icon functions
+
+2009-02-12  Julien Lavergne <julien.Lavergnegmail.com>
+
 	* awn-manager/awn-manager-mini.glade
 	* awn-manager/awnDefs.py.in
   	* awn-manager/awnManagerMini.py.in

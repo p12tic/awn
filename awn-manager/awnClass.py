@@ -542,6 +542,7 @@ class awnBzr:
 						gobject.source_remove(self.idle_id)
 					self.idle_id = gobject.idle_add(self.check_changes, [])
 
+
 class awnPreferences(awnBzr):
     """This is the main class, duh"""
     def __init__(self, wTree):
@@ -1169,7 +1170,7 @@ _("You should have received a copy of the GNU General Public License along with 
     def main(self):
         gtk.main()
 
-class awnLauncher:
+class awnLauncher(awnBzr):
 
     def __init__(self, glade):
         self.wTree = glade
@@ -1225,8 +1226,8 @@ class awnLauncher:
         self.idle_id = 0
         if (self.last_uris != data):
             self.last_uris = data[:]
-            self.client.set_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING, data)
-        
+            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING, data)
+
         return False
 
     def make_model (self):
@@ -1240,7 +1241,8 @@ class awnLauncher:
         self.model = model = gtk.ListStore(gdk.Pixbuf, str, str)
         self.treeview.set_model (model)
 
-        model.connect("row-changed", self.reordered)
+	#TODO: Debug this.        
+	#model.connect("row-changed", self.reordered)
 
         ren = gtk.CellRendererPixbuf()
         col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
@@ -1272,79 +1274,16 @@ class awnLauncher:
         self.model.clear()
         for i in uris:
 		if os.path.isfile(i):
-            		text = self.make_row (i)
+            		icon, text, name = self.make_row (i)
             		if len(text) > 2:
                 		row = self.model.append ()
-                		self.model.set_value (row, 0, self.make_icon (i))
+                		self.model.set_value (row, 0, icon)
                 		self.model.set_value (row, 1, text)
-                		self.model.set_value (row, 2, i)
+                		self.model.set_value (row, 2, name)
         if len(uris) == 0:
             if (self.idle_id != 0):
                 gobject.source_remove(self.idle_id)
             self.idle_id = gobject.idle_add(self.check_changes, [])
-
-    def make_row (self, uri):
-        try:
-            item = DesktopEntry (uri)
-            text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
-        except:
-            return ""
-        return text
-
-    def make_icon (self, uri):
-        icon = None
-        theme = gtk.icon_theme_get_default ()
-        try:
-            item = DesktopEntry (uri)
-            name = item.getIcon()
-            if name is None:
-                return icon
-        except:
-            return icon
-
-        try:
-            icon = theme.load_icon (name, 32, 0)
-        except:
-            icon = None
-        #Hack hack hack
-        if icon is None:
-            try:
-                i = gtk.image_new_from_stock (name, 32)
-                icon = i.get_pixbuf ()
-            except:
-                icon = None
-
-        if icon is None and "/" in name:
-            try:
-                icon = gdk.pixbuf_new_from_file_at_size (name, 32, 32)
-            except:
-                icon = None
-        if icon is None:
-            dirs = [os.path.join(p, "share", "pixmaps")
-                    for p in ("/usr", "/usr/local", defs.PREFIX)]
-            for d in dirs:
-                n = name
-                if not name.endswith(".png"):
-                    n = name + ".png"
-                path = os.path.join (d, n)
-                try:
-                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
-                    if icon is not None:
-                        break
-                except:
-                    icon = None
-        if icon is None and "pixmaps" in name:
-            for d in dirs:
-                path = os.path.join(d, name)
-                try:
-                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
-                    if icon is not None:
-                        break
-                except:
-                    icon = None
-        if icon is None:
-            icon = theme.load_icon('gtk-execute', 32, 0)
-        return icon
 
 
     #   Code below taken from:
@@ -1388,7 +1327,7 @@ class awnLauncher:
             append += 1
         return filename
 
-class awnApplet:
+class awnApplet(awnBzr):
 
     def __init__(self, glade):
         # DIRS
@@ -1669,93 +1608,6 @@ class awnApplet:
         applets = self.client.get_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING)
 
         self.refresh_icon_list (applets, self.active_model)
-
-    def make_row (self, path):
-        text = ""
-	name = ""
-        try:
-            item = DesktopEntry (path)
-            text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
-            name = item.getName();
-        except:
-            return None, "", ""
-        return self.make_icon (item.getIcon()), text, name
-
-    def make_icon (self, name):
-        icon = None
-
-        theme = gtk.icon_theme_get_default ()
-        try:
-            icon = theme.load_icon (name, 32, 0)
-        except:
-            icon = None
-        #Hack hack hack
-        if icon is None:
-            try:
-                i = gtk.image_new_from_stock (name, 32)
-                icon = i.get_pixbuf ()
-            except:
-                icon = None
-
-        if icon is None and "/" in name and os.path.exists(name):
-            try:
-                icon = gdk.pixbuf_new_from_file_at_size (name, 32, 32)
-            except:
-                print "Error loading icon " + name
-        if icon is None:
-            dirs = [os.path.join(p, "share", "pixmaps")
-                    for p in ("/usr", "/usr/local", defs.PREFIX)]
-            for d in dirs:
-                n = name
-                if not name.endswith(".png"):
-                    n = name + ".png"
-                path = os.path.join (d, n)
-                try:
-                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
-                    if icon is not None:
-                        break
-                except:
-                    icon = None
-        if icon is None and "pixmaps" in name:
-            for d in dirs:
-                path = os.path.join(d, name)
-                try:
-                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
-                    if icon is not None:
-                        break
-                except:
-                    icon = None
-        if icon is None:
-            dirs = [os.path.join(p, "share", "avant-window-navigator","applets")
-                    for p in ("/usr", "/usr/local", defs.PREFIX)]
-            for d in dirs:
-                n = name
-                if not name.endswith(".png"):
-                    n = name + ".png"
-                path = os.path.join (d, n)
-                try:
-                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
-                    if icon is not None:
-                        break
-                except:
-                    icon = None
-        if icon is None:
-            dirs = [os.path.join(p, "share", "avant-window-navigator","applets")
-                    for p in ("/usr", "/usr/local", defs.PREFIX)]
-            for d in dirs:
-                n = name
-                if not name.endswith(".svg"):
-                    n = name + ".svg"
-                path = os.path.join (d, n)
-                try:
-                    icon = gdk.pixbuf_new_from_file_at_size (path, 32, 32)
-                    if icon is not None:
-                        break
-                except:
-                    icon = None
-        if icon is None:
-            icon = theme.load_icon('gtk-execute', 32, 0)
-        return icon
 
     def refresh_icon_list (self, applets, model):
         for a in applets:

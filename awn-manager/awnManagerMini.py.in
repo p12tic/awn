@@ -205,6 +205,8 @@ class awnLauncherMini(awnLauncher):
 
         self.load_finished = False
 
+	self.idle_id = 0
+
         self.client = awn.Config()
         self.client.ensure_group(defs.LAUNCHERS)
 
