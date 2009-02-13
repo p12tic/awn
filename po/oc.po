@@ -1,20 +1,20 @@
-# Greek translation for awn
-# Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
+# Occitan (post 1500) translation for awn
+# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
 # This file is distributed under the same license as the awn package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-01-19 16:36+0100\n"
-"PO-Revision-Date: 2008-04-16 12:16+0000\n"
-"Last-Translator: Yannis Kaskamanidis <ttnfy17@yahoo.gr>\n"
-"Language-Team: Greek <el@li.org>\n"
+"PO-Revision-Date: 2008-03-31 14:27+0000\n"
+"Last-Translator: Cédric VALMARY <Unknown>\n"
+"Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Launchpad-Export-Date: 2009-01-19 21:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
@@ -213,59 +213,59 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "<b>Ενεργό Εικονίδιο</b>"
+msgstr "<b>Icòna activa</b>"
 
 #: ../awn-manager/window.glade.h:2
 msgid "<b>Applet Preferences</b>"
-msgstr "<b>Προτιμήσεις μικροεφαρμογής</b>"
+msgstr "<b>Preferéncias de l'Applet</b>"
 
 #: ../awn-manager/window.glade.h:3
 msgid "<b>Arrows</b>"
-msgstr "<b>Βέλη:</b>"
+msgstr "<b>Sagetas</b>"
 
 #: ../awn-manager/window.glade.h:4
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>Συμπεριφορά μπάρας</b>"
+msgstr "<b>Comportament de la barra</b>"
 
 #: ../awn-manager/window.glade.h:5
 msgid "<b>Borders</b>"
-msgstr "<b>Όρια</b>"
+msgstr "<b>Bordaduras</b>"
 
 #: ../awn-manager/window.glade.h:6
 msgid "<b>Customize Effects</b>"
-msgstr "<b>Εξατομίκευση Εφέ</b>"
+msgstr "<b>Personalizar los Efièches</b>"
 
 #: ../awn-manager/window.glade.h:7
 msgid "<b>General Preferences</b>"
-msgstr "<b>Γενικές Επιλογές</b>"
+msgstr "<b>Preferéncias Generalas</b>"
 
 #: ../awn-manager/window.glade.h:8
 msgid "<b>Gradient</b>"
-msgstr "<b>Διαβάθμιση</b>"
+msgstr "<b>Degradat</b>"
 
 #: ../awn-manager/window.glade.h:9
 msgid "<b>Highlight</b>"
-msgstr "<b>Τονισμός</b>"
+msgstr "<b>Suslinhar</b>"
 
 #: ../awn-manager/window.glade.h:10
 msgid "<b>Icon Effects</b>"
-msgstr "<b>Εφέ Εικονιδίου</b>"
+msgstr "<b>Efièches de l'Icòna</b>"
 
 #: ../awn-manager/window.glade.h:11
 msgid "<b>Launcher Preferences</b>"
-msgstr "<b>Προτιμήσεις Εκκινητή</b>"
+msgstr "<b>Preferéncias de l'Aviaire</b>"
 
 #: ../awn-manager/window.glade.h:12
 msgid "<b>Look </b>"
-msgstr "<b>Εμφάνιση</b>"
+msgstr "<b>Aparéncia</b>"
 
 #: ../awn-manager/window.glade.h:13
 msgid "<b>Pattern</b>"
-msgstr "<b>Μοτίβο</b>"
+msgstr "<b>Motiu</b>"
 
 #: ../awn-manager/window.glade.h:14
 msgid "<b>Separator</b>"
-msgstr "<b>Διαχωριστής</b>"
+msgstr "<b>Separator</b>"
 
 #: ../awn-manager/window.glade.h:15
 msgid "<b>Startup behaviour</b>"
@@ -273,35 +273,35 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:16
 msgid "<b>Text</b>"
-msgstr "<b>Κείμενο</b>"
+msgstr "<b>Tèxt</b>"
 
 #: ../awn-manager/window.glade.h:17
 msgid "<b>Themes</b>"
-msgstr "<b>Θέματα</b>"
+msgstr "<b>Tèmas</b>"
 
 #: ../awn-manager/window.glade.h:18
 msgid "<b>Windows</b>"
-msgstr "<b>Παράθυρα</b>"
+msgstr "<b>Fenèstras</b>"
 
 #: ../awn-manager/window.glade.h:19
 msgid "Activate"
-msgstr "Ενεργοποίηση"
+msgstr "Activar"
 
 #: ../awn-manager/window.glade.h:20
 msgid "Add and remove applets"
-msgstr "Προσθήκη και αφαίρεση μικροεφαρμογών"
+msgstr "Apondre e levar d'applets"
 
 #: ../awn-manager/window.glade.h:21
 msgid "Add and remove launchers"
-msgstr "Προσθήκη και αφαίρεση εκκινητών"
+msgstr "Apondre e levar d'aviaires"
 
 #: ../awn-manager/window.glade.h:22
 msgid "Add, remove and save themes"
-msgstr "Προσθήκη, απομάκρυνση και αποθήκευση θεμάτων"
+msgstr "Apondre, levar e salvagardar de tèmas"
 
 #: ../awn-manager/window.glade.h:23
 msgid "Alert when application window updated"
-msgstr "Ειδοποίηση όταν έχει ενημερωθεί το παράθυρο της εφαρμογής"
+msgstr "Alertar quand la fenèstra de l'aplicacion es mesa a jorn"
 
 #: ../awn-manager/window.glade.h:24
 msgid "Arrow offset: "
@@ -309,11 +309,11 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:25
 msgid "Attention"
-msgstr "Προσοχή"
+msgstr "Atencion"
 
 #: ../awn-manager/window.glade.h:26
 msgid "Auto hide bar when not in use"
-msgstr "Αυτόματη απόκρυψη της μπάρας όταν δε χρησιμοποιείται"
+msgstr "Amagar la barra automaticament quand es inactiva"
 
 #: ../awn-manager/window.glade.h:27
 msgid "Automatically start AWN on login."
@@ -321,47 +321,47 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:28
 msgid "Background color:"
-msgstr "Χρώμα φόντου:"
+msgstr "Color de fons :"
 
 #: ../awn-manager/window.glade.h:29
 msgid "Bar Appearance"
-msgstr "Εμφάνιση Μπάρας"
+msgstr "Aparéncia de la barra"
 
 #: ../awn-manager/window.glade.h:30
 msgid "Bar angle: "
-msgstr "Γωνία Μπάρας: "
+msgstr "Angle de la barra : "
 
 #: ../awn-manager/window.glade.h:31
 msgid "Bar height: "
-msgstr "Ύψος μπάρας: "
+msgstr "Nautor de la barra : "
 
 #: ../awn-manager/window.glade.h:32
 msgid "Change the look and behaviour of the dock"
-msgstr "Αλλαγή εμφάνισης και συμπεριφοράς της αποβάθρας"
+msgstr "Cambiar l'aparéncia e lo comportament del dock"
 
 #: ../awn-manager/window.glade.h:33
 msgid "Closing"
-msgstr "Κλείσιμο"
+msgstr "Tampadura"
 
 #: ../awn-manager/window.glade.h:34
 msgid "Color:"
-msgstr "Χρώμα:"
+msgstr "Color :"
 
 #: ../awn-manager/window.glade.h:35
 msgid "Deactivate"
-msgstr "Απενεργοποίηση"
+msgstr "Desactivar"
 
 #: ../awn-manager/window.glade.h:36
 msgid "Delete"
-msgstr "Διαγραφή"
+msgstr "Suprimir"
 
 #: ../awn-manager/window.glade.h:37
 msgid "Enable pattern"
-msgstr "Ενεργοποίηση μοτίβου"
+msgstr "Utilizar un motiu"
 
 #: ../awn-manager/window.glade.h:38
 msgid "Enable rounded corners"
-msgstr "Ενεργοποίηση στρογγυλοποιημένων γωνιών"
+msgstr "Utilizar de caires arredondits"
 
 #: ../awn-manager/window.glade.h:39
 msgid "Expand bar to monitor width"
@@ -369,124 +369,123 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:40
 msgid "First step color:"
-msgstr "Χρώμα πρώτου βήματος"
+msgstr "Color de començament :"
 
 #: ../awn-manager/window.glade.h:41
 msgid "Font:"
-msgstr "Γραμματοσειρά:"
+msgstr "Poliça :"
 
 #: ../awn-manager/window.glade.h:42
 msgid "General"
-msgstr "Γενικά"
+msgstr "General"
 
 #: ../awn-manager/window.glade.h:43
 msgid "Glass Engine"
-msgstr "Μηχανή Glass"
+msgstr "Moteo de rendut translucid"
 
 #: ../awn-manager/window.glade.h:44
 msgid "Hover"
-msgstr "Μετεώρισμα"
+msgstr "Suspendre"
 
 #: ../awn-manager/window.glade.h:45
 msgid ""
 "Icon attention effect will be activated to alert user of updated windows."
 msgstr ""
-"Το εφέ προσοχής του εικονιδίου θα ενεργοποιηθεί για να ειδοποιεί το χρήστη "
-"όταν γίνεται ενημέρωση των παραθύρων."
+"L'efièch d'avertiment per icòna serà activat per prevenir l'utilizaire de "
+"fenèstras mesas a jorn."
 
 #: ../awn-manager/window.glade.h:46
 msgid "Icon offset: "
-msgstr "Μετατόπιση εικονιδίου: "
+msgstr "Escart de l'icòna : "
 
 #: ../awn-manager/window.glade.h:47
 msgid "Install"
-msgstr "Εγκατάσταση"
+msgstr "Installar"
 
 #: ../awn-manager/window.glade.h:48
 msgid "Internal border:"
-msgstr "Εσωτρικό όριο:"
+msgstr "Bordadura intèrna :"
 
 #: ../awn-manager/window.glade.h:49
 msgid "Keep below maximized windows when not in use"
-msgstr ""
-"Απόκρυψη κάτω από τα μεγιστοποιημένα παράθυρα όταν δεν είναι σε χρήση"
+msgstr "Gardar jos las fenèstras maximizadas se lo dock es inutilizat"
 
 #: ../awn-manager/window.glade.h:50
 msgid "Launching"
-msgstr "Εκκίνηση"
+msgstr "Aviada"
 
 #: ../awn-manager/window.glade.h:51
 msgid "Main border:"
-msgstr "Κύριο περίγραμμα:"
+msgstr "Bordadura principala :"
 
 #: ../awn-manager/window.glade.h:52
 msgid "Maximized windows don't cover the bar (requires restart)"
 msgstr ""
-"Τα μεγιστοποιημένα παράθυρα δεν καλύπτουν την μπάρα (απαιτείται επανεκκίνηση)"
+"Las fenèstras maximizadas cobrisson pas la barra (necessita un reamodatge)"
 
 #: ../awn-manager/window.glade.h:53
 msgid "Opening"
-msgstr "Ανοίγει"
+msgstr "Dobertura"
 
 #: ../awn-manager/window.glade.h:54
 msgid "Pattern Engine"
-msgstr "Μηχανή Μοτίβων"
+msgstr "Moter de rendut de motius"
 
 #: ../awn-manager/window.glade.h:55
 msgid "Second step color:"
-msgstr "Χρώμα δεύτερου βήματος"
+msgstr "Color de fin :"
 
 #: ../awn-manager/window.glade.h:56
 msgid "Separator color:"
-msgstr "Χρώμα διαχωριστή:"
+msgstr "Color del separator :"
 
 #: ../awn-manager/window.glade.h:57
 msgid "Shadow color:"
-msgstr "Χρώμα σκίασης:"
+msgstr "Color de l'ombra :"
 
 #: ../awn-manager/window.glade.h:58
 msgid "Show separator between launchers and tasks"
-msgstr "Εμφάνιση διαχωριστή μεταξύ εκκινητών και εργασιών"
+msgstr "Afichar lo separator entre los aviaires e los prètzfaches"
 
 #: ../awn-manager/window.glade.h:59
 msgid "Show windows from all viewports"
-msgstr "Εμφάνιση παραθύρων από όλες τις επιφάνειες"
+msgstr "Afichar las fenèstras de totes los espacis de trabalh"
 
 #: ../awn-manager/window.glade.h:60
 msgid "Task Appearance"
-msgstr "Εμφάνιση Εργασιών"
+msgstr "Aparéncia dels prètzfaches"
 
 #: ../awn-manager/window.glade.h:61
 msgid "Tasks have arrows"
-msgstr "Οι Εργασίες έχουν βελάκια"
+msgstr "Afichar de sagetas pels prètzfaches"
 
 #: ../awn-manager/window.glade.h:62
 msgid "The bar automatically hides when not used"
-msgstr "Η μπάρα αποκρύπτεται αυτόματα όταν δε χρησιμοποιείται"
+msgstr "La barra es amagada automaticament quand es inutilizada"
 
 #: ../awn-manager/window.glade.h:63
 msgid "Transparency:"
-msgstr "Διαφάνεια:"
+msgstr "Transparéncia :"
 
 #: ../awn-manager/window.glade.h:64
 msgid "Windows don't overlap the bar if this is set"
-msgstr "Με αυτή την επιλογή, τα παράθυρα δεν επικαλύπτουν τη μπάρα"
+msgstr "Las fenèstras desbordan pas sus la barra se activat"
 
 #: ../awn-manager/window.glade.h:65
 msgid "page 1"
-msgstr "σελίδα 1"
+msgstr "pagina 1"
 
 #: ../awn-manager/window.glade.h:66
 msgid "page 2"
-msgstr "σελίδα 2"
+msgstr "pagina 2"
 
 #: ../awn-manager/window.glade.h:67
 msgid "page 3"
-msgstr "σελίδα 3"
+msgstr "pagina 3"
 
 #: ../awn-manager/window.glade.h:68
 msgid "page 4"
-msgstr "σελίδα 4"
+msgstr "pagina 4"
 
 #: ../data/avant-window-navigator.desktop.in.in.h:1
 msgid "A dock-like window navigator."
@@ -546,7 +545,7 @@ msgstr ""
 
 #: ../src/awn-task.c:2076
 msgid "Change Icon"
-msgstr "Αλλαγή Εικονιδίου"
+msgstr "Cambiar l'icòna"
 
 #: ../src/awn-task.c:2126
 msgid "Dock Preferences"
