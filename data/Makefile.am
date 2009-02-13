@@ -16,8 +16,8 @@ icons = avant-window-navigator-24.png avant-window-navigator-32.png
 install-icons:
 	mkdir -p $(DESTDIR)$(datadir)/icons/hicolor/24x24/apps
 	mkdir -p $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps
-	$(INSTALL) -m644 avant-window-navigator-24.png $(DESTDIR)$(datadir)/icons/hicolor/24x24/apps/avant-window-navigator.png
-	$(INSTALL) -m644 avant-window-navigator-32.png $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/avant-window-navigator.png
+	$(INSTALL) -m644 $(srcdir)/avant-window-navigator-24.png $(DESTDIR)$(datadir)/icons/hicolor/24x24/apps/avant-window-navigator.png
+	$(INSTALL) -m644 $(srcdir)/avant-window-navigator-32.png $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/avant-window-navigator.png
 
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
 install-data-hook: update-icon-cache
@@ -64,20 +64,16 @@ endif
 schemadir = $(pkgdatadir)/schemas
 schema_DATA = awn.schema-ini shared.schema-ini
 
-
-install-exec-local:
-	$(INSTALL) -m 755 awn-schema-to-gconf $(DESTDIR)$(bindir)/awn-schema-to-gconf
+dist_bin_SCRIPTS = awn-schema-to-gconf awn-applets-migration
 
 # global
 
 install-data-local: install-gconf-schemas install-icons
 
 uninstall-local:
-	rm -f $(DESTDIR)$(bindir)/awn-applets-migration
-	rm -f $(DESTDIR)$(bindir)/awn-schema-to-gconf
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/24x24/apps/avant-window-navigator.png
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/avant-window-navigator.png
 
-EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini awn-schema-to-gconf shared.schema-ini awn-applets-migration.py awn-themed-icon-ui.glade
+EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini shared.schema-ini awn-themed-icon-ui.glade
 
 CLEANFILES = $(desktop_DATA) $(desktop_DATA).in awn.schemas awn.schemas.in

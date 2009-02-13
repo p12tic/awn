@@ -1,5 +1,5 @@
 # Copyright (c) 2007 Neil Jagdish Patel <njpatel@gmail.com>
-# Copyright (c) 2008 Mark Lee <avant-wn@lazymalevolence.com>
+# Copyright (c) 2008, 2009 Mark Lee <avant-wn@lazymalevolence.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -78,13 +78,45 @@ def init_applet (applet):
     plug.construct (-1)
     plug.show_all ()
 
-def check_dependencies(scope, *modules):
+def check_dependencies(scope, *modules, **choice_modules):
+    '''
+    Special flag: exit_on_failure=bool
+    Makes the applet exit if a dependency is not found.
+    '''
+    exit_on_failure = True
+    if len(choice_modules) > 0 and 'exit_on_failure' in choice_modules:
+        exit_on_failure = bool(choice_modules['exit_on_failure'])
+        del choice_modules['exit_on_failure']
     not_found_modules = []
-    for module in modules:
+    def add_module(module, name=None):
         try:
-            scope[module] = __import__(module, scope)
+            if '.' in module:
+                mod_split = module.split('.')
+                submod = mod_split[-1]
+                from_list = [submod]
+                if name is None:
+                    name = submod
+            else:
+                if name is None:
+                    name = module
+                from_list = []
+            scope[name] = __import__(module, scope, locals(), from_list)
+            return True
         except ImportError:
+            return False
+    for module in modules:
+        success = add_module(module)
+        if not success:
             not_found_modules.append(module)
+    for name, mods in choice_modules.iteritems():
+        found = False
+        for module in mods:
+            success = add_module(module, name)
+            if success:
+                found = True
+                break
+        if not found:
+            not_found_modules.append(' or '.join(mods))
     if len(not_found_modules) > 0:
         try:
             import pygtk
@@ -109,8 +141,9 @@ def check_dependencies(scope, *modules):
                 webbrowser.open_new(url)
         dialog.hide_all()
         dialog.destroy()
-        import sys
-        sys.exit(RESPONSE_WIKI)
+        if exit_on_failure:
+            import sys
+            sys.exit(RESPONSE_WIKI)
 
 class ConfigLock:
     def __init__(self, group, key):

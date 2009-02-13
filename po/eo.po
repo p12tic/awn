@@ -1,20 +1,20 @@
-# Vietnamese translation for awn
-# Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
+# Esperanto translation for awn
+# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
 # This file is distributed under the same license as the awn package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2009-01-18 07:25+0000\n"
-"Last-Translator: Thien Pham <Unknown>\n"
-"Language-Team: Vietnamese <vi@li.org>\n"
+"PO-Revision-Date: 2008-07-28 14:53+0000\n"
+"Last-Translator: صقر بن عبدالله <Unknown>\n"
+"Language-Team: Esperanto <eo@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
@@ -226,59 +226,59 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "<b>Kích hoạt biểu tượng</b>"
+msgstr "<b>Activa Bildsimbolo</b>"
 
 #: ../awn-manager/window.glade.h:2
 msgid "<b>Applet Preferences</b>"
-msgstr "<b>Tùy thích Applet</b>"
+msgstr "<b>Aplikaĵetaj Agordoj</b>"
 
 #: ../awn-manager/window.glade.h:3
 msgid "<b>Arrows</b>"
-msgstr "<b>Mũi tên</b>"
+msgstr "<b>Sagoj</b>"
 
 #: ../awn-manager/window.glade.h:4
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>Cách ứng xử</b>"
+msgstr "<b>Breta Konduto</b>"
 
 #: ../awn-manager/window.glade.h:5
 msgid "<b>Borders</b>"
-msgstr "<b>Đường viền</b>"
+msgstr "<b>Borderoj</b>"
 
 #: ../awn-manager/window.glade.h:6
 msgid "<b>Customize Effects</b>"
-msgstr "<b>Tùy biến hiệu ứng</b>"
+msgstr "<b>Tajlori Efektoj</b>"
 
 #: ../awn-manager/window.glade.h:7
 msgid "<b>General Preferences</b>"
-msgstr "<b>Tùy thích chung</b>"
+msgstr "<b>Ĝeneralaj Agordoj</b>"
 
 #: ../awn-manager/window.glade.h:8
 msgid "<b>Gradient</b>"
-msgstr "<b>Độ nghiêng</b>"
+msgstr "<b>Kolortransiro</b>"
 
 #: ../awn-manager/window.glade.h:9
 msgid "<b>Highlight</b>"
-msgstr "<b>Tô sáng</b>"
+msgstr "<b>Marki</b>"
 
 #: ../awn-manager/window.glade.h:10
 msgid "<b>Icon Effects</b>"
-msgstr "<b>Hiệu ứng biểu tượng</b>"
+msgstr "<b>Bildsimbolaj Efektoj</b>"
 
 #: ../awn-manager/window.glade.h:11
 msgid "<b>Launcher Preferences</b>"
-msgstr "<b>Tùy thích bộ khởi chạy</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:12
 msgid "<b>Look </b>"
-msgstr "<b>Nhìn</b>"
+msgstr "<b>Fasado </b>"
 
 #: ../awn-manager/window.glade.h:13
 msgid "<b>Pattern</b>"
-msgstr "<b>Mẫu</b>"
+msgstr "<b>Modelo</b>"
 
 #: ../awn-manager/window.glade.h:14
 msgid "<b>Separator</b>"
-msgstr "<b>Phân cách</b>"
+msgstr "<b>Apartigilo</b>"
 
 #: ../awn-manager/window.glade.h:15
 msgid "<b>Startup behaviour</b>"
@@ -286,35 +286,35 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:16
 msgid "<b>Text</b>"
-msgstr "<b>Chữ</b>"
+msgstr "<b>Teksto</b>"
 
 #: ../awn-manager/window.glade.h:17
 msgid "<b>Themes</b>"
-msgstr "<b>Diện mạo</b>"
+msgstr "<b>Etoso</b>"
 
 #: ../awn-manager/window.glade.h:18
 msgid "<b>Windows</b>"
-msgstr "<b>Cửa sổ</b>"
+msgstr "<b>Fenestro</b>"
 
 #: ../awn-manager/window.glade.h:19
 msgid "Activate"
-msgstr "Kích hoạt"
+msgstr "Aktivigu"
 
 #: ../awn-manager/window.glade.h:20
 msgid "Add and remove applets"
-msgstr "Thêm và gỡ bỏ applets"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:21
 msgid "Add and remove launchers"
-msgstr "Thêm và gỡ bỏ bộ khởi chạy"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:22
 msgid "Add, remove and save themes"
-msgstr "Thêm, gỡ bỏ và lưu các diện mạo"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:23
 msgid "Alert when application window updated"
-msgstr "Thông báo khi cửa sổ ứng dụng được cập nhật"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:24
 msgid "Arrow offset: "
@@ -322,11 +322,11 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:25
 msgid "Attention"
-msgstr "Chú ý"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:26
 msgid "Auto hide bar when not in use"
-msgstr "Tự động ẩn khi không sử dụng"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:27
 msgid "Automatically start AWN on login."
@@ -334,47 +334,47 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:28
 msgid "Background color:"
-msgstr "Màu nền"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:29
 msgid "Bar Appearance"
-msgstr "Diện mạo của thanh"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:30
 msgid "Bar angle: "
-msgstr "Góc của thanh: "
+msgstr ""
 
 #: ../awn-manager/window.glade.h:31
 msgid "Bar height: "
-msgstr "Chiều cao thanh: "
+msgstr ""
 
 #: ../awn-manager/window.glade.h:32
 msgid "Change the look and behaviour of the dock"
-msgstr "Thay đổi diện mạo và hành vi của dock"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:33
 msgid "Closing"
-msgstr "Đóng"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:34
 msgid "Color:"
-msgstr "Màu:"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:35
 msgid "Deactivate"
-msgstr "Bỏ kích hoạt"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:36
 msgid "Delete"
-msgstr "Xoá"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:37
 msgid "Enable pattern"
-msgstr "Cho phép dùng mẫu"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:38
 msgid "Enable rounded corners"
-msgstr "Cho phép bo tròn các góc"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:39
 msgid "Expand bar to monitor width"
@@ -382,90 +382,88 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:40
 msgid "First step color:"
-msgstr "Màu bước đầu tiên:"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:41
 msgid "Font:"
-msgstr "Phông chữ :"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:42
 msgid "General"
-msgstr "Tổng quát"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:43
 msgid "Glass Engine"
-msgstr "Cơ cấu trong suốt"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:44
 msgid "Hover"
-msgstr "Lượn"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:45
 msgid ""
 "Icon attention effect will be activated to alert user of updated windows."
 msgstr ""
-"Hiệu ứng gây chú ý vào biểu tượng được kích hoạt để thông báo cửa sổ đã được "
-"cập nhật."
 
 #: ../awn-manager/window.glade.h:46
 msgid "Icon offset: "
-msgstr "Rìa biểu tượng: "
+msgstr ""
 
 #: ../awn-manager/window.glade.h:47
 msgid "Install"
-msgstr "Cài đặt"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:48
 msgid "Internal border:"
-msgstr "Đường viền bên trong"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:49
 msgid "Keep below maximized windows when not in use"
-msgstr "Giữ bên dưới cửa sổ toàn màn hình khi không sử dụng"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:50
 msgid "Launching"
-msgstr "Đang khởi chạy"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:51
 msgid "Main border:"
-msgstr "Đường viền chính:"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:52
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "Cửa sổ cực đại không phủ lên thanh (yêu cầu khởi động lại)"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:53
 msgid "Opening"
-msgstr "Đang mở"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:54
 msgid "Pattern Engine"
-msgstr "Mẫu"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:55
 msgid "Second step color:"
-msgstr "Màu bước thứ hai"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:56
 msgid "Separator color:"
-msgstr "Màu phân cách"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:57
 msgid "Shadow color:"
-msgstr "Màu bóng:"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:58
 msgid "Show separator between launchers and tasks"
-msgstr "Hiện phân cách giữa launchers và tasks"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:59
 msgid "Show windows from all viewports"
-msgstr "Hiện cửa sổ từ tất cả các vùng"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:60
 msgid "Task Appearance"
-msgstr "Sửa diện mạo"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:61
 msgid "Tasks have arrows"
@@ -473,31 +471,31 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:62
 msgid "The bar automatically hides when not used"
-msgstr "Tự động ẩn thanh khi không sử dụng"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:63
 msgid "Transparency:"
-msgstr "Trong suốt:"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:64
 msgid "Windows don't overlap the bar if this is set"
-msgstr "Cửa sổ sẽ không che khuất thanh nếu cái này được đặt"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:65
 msgid "page 1"
-msgstr "trang 1"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:66
 msgid "page 2"
-msgstr "trang 2"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:67
 msgid "page 3"
-msgstr "trang 3"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:68
 msgid "page 4"
-msgstr "trang 4"
+msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.in.h:1
 msgid "A dock-like window navigator."
@@ -594,7 +592,7 @@ msgstr ""
 
 #: ../src/awn-task.c:2214
 msgid "Change Icon"
-msgstr "Thay biểu tượng"
+msgstr ""
 
 #: ../src/main.c:157
 msgid "Prints the version number"

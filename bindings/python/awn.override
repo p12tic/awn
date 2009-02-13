@@ -82,7 +82,7 @@ _gslist_to_pylist (GSList *list, AwnConfigListType list_type) {
   py_list = PyList_New ((Py_ssize_t)slist_len);
 
   for (i = 0; i < slist_len; i++) {
-    PyObject *py_data;
+    PyObject *py_data = NULL;
     gpointer data = g_slist_nth_data (list, i);
     if (data) {
       switch (list_type) {
@@ -544,8 +544,8 @@ _wrap_awn_applet_simple_set_awn_icons (PyObject *self, PyObject *args, PyObject 
 
   ret = awn_applet_simple_set_awn_icons (AWN_APPLET_SIMPLE (pygobject_get (self)),
                                          (const gchar*)applet_name,
-                                         (const gchar**)states,
-                                         (const gchar**)icon_names);
+                                         (const GStrv)states,
+                                         (const GStrv)icon_names);
 
   g_free (states);
   g_free (icon_names);

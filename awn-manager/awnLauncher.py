@@ -130,10 +130,12 @@ class awnLauncher:
 
     def make_row (self, uri):
         try:
+            if not os.path.exists(uri):
+                raise IOError("Desktop file does not exist!")
             item = DesktopEntry (uri)
             text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
         except:
-            return ""
+            return "<b>%s</b>" % _("Invalid launcher")
         return text
 
     def make_icon (self, uri):
@@ -213,6 +215,7 @@ class awnLauncher:
         selection = self.treeview.get_selection()
         (model, iter) = selection.get_selected()
         uri = model.get_value(iter, 2)
+        # TODO: don't check if it exists, perhaps it's invalid
         if os.path.exists(uri):
             uris = self.client.get_list(defs.WINMAN, defs.LAUNCHERS, awn.CONFIG_LIST_STRING)
             uris.remove(uri)
