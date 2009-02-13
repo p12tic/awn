@@ -7,160 +7,187 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-01-19 16:36+0100\n"
-"PO-Revision-Date: 2009-01-15 11:37+0000\n"
+"POT-Creation-Date: 2009-02-02 23:50+0100\n"
+"PO-Revision-Date: 2009-02-06 03:50+0000\n"
 "Last-Translator: Baldur <baldurpet@gmail.com>\n"
 "Language-Team: Icelandic <is@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-01-19 21:48+0000\n"
+"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:1
+#: ../awn-manager/awnManager.py:75
 msgid "Awn Manager"
-msgstr ""
+msgstr "Awn stika"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr ""
+"Haltu utan um forritin, ræsina og stillingarnar á Awn stillingar og breyttu "
+"því hvernig það lítur út"
+
+#: ../awn-manager/awnLauncher.py:160
+msgid "Invalid launcher"
+msgstr "Ógildur ræsir"
 
 #: ../awn-manager/awnLauncherEditor.py:142
 msgid "Select an Executable File"
-msgstr ""
+msgstr "Veldu keyranlega skrá"
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #, python-format
 msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr ""
+msgstr "Veldu nafn fyrir ræsinn í „%s“ svæðinu."
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #: ../awn-manager/launcher-editor.glade.h:3
 msgid "<b>Name:</b>"
-msgstr ""
+msgstr "<b>Nafn:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #, python-format
 msgid "Please provide a program to launch in the \"%s\" field."
-msgstr ""
+msgstr "Veldu forrit til að keyra í „%s“ svæðinu."
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #: ../awn-manager/launcher-editor.glade.h:1
 msgid "<b>Command:</b>"
-msgstr ""
+msgstr "<b>Skipun:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:175
 #, python-format
 msgid "Couldn't save the launcher. Error: %s"
-msgstr ""
+msgstr "Gat ekki vistað ræsi. Villa: %s"
 
-#: ../awn-manager/awnManager.py:142
-msgid "Could not load the \""
-msgstr ""
+#: ../awn-manager/awnManager.py:59
+msgid "Awn Manager can't be run as root."
+msgstr "Ekki er hægt að keyra Awn stikuna sem rót."
 
-#: ../awn-manager/awnManager.py:169
+#. must be on one line due to i18n
+#: ../awn-manager/awnManager.py:148
+#, python-format
+msgid ""
+"Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
+"installed. It usually comes with librsvg, or a package similarly named."
+msgstr ""
+"Gat ekki hlaðið inn „%s“ tákninu. Gakktu úr skugga um það að SVG hlaðinn "
+"fyrir Gtk+ sé inn á tölvunni þinni. Hann fylgir vanalega með librsvg, eða "
+"öðrum pakka sem heitir líku nafni."
+
+#: ../awn-manager/awnManager.py:173
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "Búið er að hressa upp á Awn"
 
-#: ../awn-manager/awnManager.py:175
+#: ../awn-manager/awnManager.py:179
 #: ../data/avant-window-navigator.desktop.in.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
-#: ../awn-manager/awnManager.py:193
+#: ../awn-manager/awnManager.py:197
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "Mjög fjölbreytileg stika fyrir GNOME."
 
-#: ../awn-manager/awnManager.py:195
+#: ../awn-manager/awnManager.py:199
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Þetta forrit er frjáls hugbúnaður; þú matt dreifa því og breyta því eins og "
+"þú vilt undir GNU General Public Licence sem er gefið út af Free Software "
+"Foundation; annað hvort skv. annari útgáfu eða einhverri seinni útgáfu."
 
-#: ../awn-manager/awnManager.py:197
+#: ../awn-manager/awnManager.py:201
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Þessu forriti er dreift í þeirri von að það verði þér að gagni en því fylgir "
+"EKKI ÁBYRGÐ; ekki einu sinni ábyrgð fyrir SELJANLEIKA eða NOTUNARLEIKA. "
+"Lestu GNU General Public License til að fá frekari upplýsingar."
 
-#: ../awn-manager/awnManager.py:199
+#: ../awn-manager/awnManager.py:203
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Þessu forriti ætti að fylgja afrit af GNU General Public License. Ef það "
+"fylgdi ekki með þá geturðu sent bréf til Free Software Foundation, Inc., 51 "
+"Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 
 #: ../awn-manager/awnPreferences.py:247
 msgid "PNG Files"
-msgstr ""
+msgstr "PNG skrár"
 
 #: ../awn-manager/awnPreferences.py:332 ../awn-manager/awnPreferences.py:392
 #: ../awn-manager/awnPreferences.py:447
 msgid "Classic"
-msgstr ""
+msgstr "Venjulegt"
 
 #: ../awn-manager/awnPreferences.py:333 ../awn-manager/awnPreferences.py:393
 #: ../awn-manager/awnPreferences.py:448
 msgid "Fade"
-msgstr ""
+msgstr "Hverfa"
 
 #: ../awn-manager/awnPreferences.py:334 ../awn-manager/awnPreferences.py:394
 #: ../awn-manager/awnPreferences.py:449
 msgid "Spotlight"
-msgstr ""
+msgstr "Ljós"
 
 #: ../awn-manager/awnPreferences.py:335 ../awn-manager/awnPreferences.py:395
 #: ../awn-manager/awnPreferences.py:450
 msgid "Zoom"
-msgstr ""
+msgstr "Stækka"
 
 #: ../awn-manager/awnPreferences.py:336 ../awn-manager/awnPreferences.py:396
 #: ../awn-manager/awnPreferences.py:451
 msgid "Squish"
-msgstr ""
+msgstr "Kremja"
 
 #: ../awn-manager/awnPreferences.py:337
 msgid "3D turn"
-msgstr ""
+msgstr "Snúast í þrívídd"
 
 #: ../awn-manager/awnPreferences.py:338
 msgid "3D turn with spotlight"
-msgstr ""
+msgstr "Snúast í þrívídd með ljósi"
 
 #: ../awn-manager/awnPreferences.py:339 ../awn-manager/awnPreferences.py:399
 #: ../awn-manager/awnPreferences.py:454
 msgid "Glow"
-msgstr ""
+msgstr "Lýsa"
 
 #: ../awn-manager/awnPreferences.py:361
 msgid "Flat bar"
-msgstr ""
+msgstr "Flöt stika"
 
 #: ../awn-manager/awnPreferences.py:362
 msgid "3D look"
-msgstr ""
+msgstr "Þrívíð stika"
 
 #: ../awn-manager/awnPreferences.py:391 ../awn-manager/awnPreferences.py:446
 msgid "None"
-msgstr ""
+msgstr "Ekkert"
 
 #: ../awn-manager/awnPreferences.py:397 ../awn-manager/awnPreferences.py:452
 msgid "3D Turn"
-msgstr ""
+msgstr "Snúast í þrívídd"
 
 #: ../awn-manager/awnPreferences.py:398 ../awn-manager/awnPreferences.py:453
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "Þrívíddar ljós sem snýst"
 
 #: ../awn-manager/awnPreferences.py:455
 #: ../awn-manager/launcher-editor.glade.h:4
 msgid "Custom"
-msgstr ""
+msgstr "Sérsniðið"
 
 #: ../awn-manager/awnPreferences.py:537
 #, python-format
@@ -168,44 +195,48 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Ekki tókst að búa til sjálfkrafa. Búðu möppuna til sjálfur:\n"
+"%s"
 
 #: ../awn-manager/awnPreferences.py:547
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Staðfesta að búa til möppu"
 
 #: ../awn-manager/awnPreferences.py:548
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Það er engin mappa sem keyrir sjálfkraga fyrir þennan notandaaðgang.\n"
+"Viltu að Awn búi til þannig möppu fyrir þig?"
 
 #: ../awn-manager/launcher-editor.glade.h:2
 msgid "<b>Description:</b>"
-msgstr ""
+msgstr "<b>Lýsing:</b>"
 
 #: ../awn-manager/launcher-editor.glade.h:5
 msgid "Directory:"
-msgstr ""
+msgstr "Mappa:"
 
 #: ../awn-manager/launcher-editor.glade.h:6
 msgid "Launcher Editor"
-msgstr ""
+msgstr "Breyta ræsum"
 
 #: ../awn-manager/launcher-editor.glade.h:7
 msgid "Launcher Icon"
-msgstr ""
+msgstr "Tákn fyrir ræsinn"
 
 #: ../awn-manager/launcher-editor.glade.h:8
 msgid "Open..."
-msgstr ""
+msgstr "Opna..."
 
 #: ../awn-manager/launcher-editor.glade.h:9
 msgid "Select A Folder"
-msgstr ""
+msgstr "Veldu möppu"
 
 #: ../awn-manager/launcher-editor.glade.h:10
 msgid "Select Icon"
-msgstr ""
+msgstr "Veldu tákn"
 
 #: ../awn-manager/launcher-editor.glade.h:11
 msgid "Stock/In Theme"
@@ -245,7 +276,7 @@ msgstr "<b>Stigull</b>"
 
 #: ../awn-manager/window.glade.h:9
 msgid "<b>Highlight</b>"
-msgstr ""
+msgstr "<b>Auðkenna</b>"
 
 #: ../awn-manager/window.glade.h:10
 msgid "<b>Icon Effects</b>"
@@ -253,7 +284,7 @@ msgstr "<b>Brellur á táknum</b>"
 
 #: ../awn-manager/window.glade.h:11
 msgid "<b>Launcher Preferences</b>"
-msgstr ""
+msgstr "<b>Stillingar ræsis</b>"
 
 #: ../awn-manager/window.glade.h:12
 msgid "<b>Look </b>"
@@ -269,7 +300,7 @@ msgstr "<b>Lína sem skiptir</b>"
 
 #: ../awn-manager/window.glade.h:15
 msgid "<b>Startup behaviour</b>"
-msgstr ""
+msgstr "<b>Hegðun forrist þegar opnast</b>"
 
 #: ../awn-manager/window.glade.h:16
 msgid "<b>Text</b>"
@@ -301,7 +332,7 @@ msgstr "Bæta við, vista eða fjarlægja þemu"
 
 #: ../awn-manager/window.glade.h:23
 msgid "Alert when application window updated"
-msgstr ""
+msgstr "Koma með áminningu þegar gluggi forrits uppfæris"
 
 #: ../awn-manager/window.glade.h:24
 msgid "Arrow offset: "
@@ -317,7 +348,7 @@ msgstr "Fela stikuna þegar hún er ekki í notkun"
 
 #: ../awn-manager/window.glade.h:27
 msgid "Automatically start AWN on login."
-msgstr ""
+msgstr "Ræsa AWN þegar þú skráir þig inn."
 
 #: ../awn-manager/window.glade.h:28
 msgid "Background color:"
@@ -410,7 +441,7 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:50
 msgid "Launching"
-msgstr ""
+msgstr "Ræsi"
 
 #: ../awn-manager/window.glade.h:51
 msgid "Main border:"
@@ -422,7 +453,7 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:53
 msgid "Opening"
-msgstr ""
+msgstr "Opna"
 
 #: ../awn-manager/window.glade.h:54
 msgid "Pattern Engine"
@@ -438,15 +469,15 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:57
 msgid "Shadow color:"
-msgstr ""
+msgstr "Litur skugga:"
 
 #: ../awn-manager/window.glade.h:58
 msgid "Show separator between launchers and tasks"
-msgstr ""
+msgstr "Hafa strik til að skilja á milli ræsa og forrita sem eru í gangi"
 
 #: ../awn-manager/window.glade.h:59
 msgid "Show windows from all viewports"
-msgstr ""
+msgstr "Sýna glugga frá öllum vinnusvæðum"
 
 #: ../awn-manager/window.glade.h:60
 msgid "Task Appearance"
@@ -462,7 +493,7 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:63
 msgid "Transparency:"
-msgstr ""
+msgstr "Gagnsæi:"
 
 #: ../awn-manager/window.glade.h:64
 msgid "Windows don't overlap the bar if this is set"
@@ -491,59 +522,124 @@ msgstr ""
 #: ../libawn/egg/eggdesktopfile.c:136
 #, c-format
 msgid "File is not a valid .desktop file"
-msgstr ""
+msgstr "Þessi skrá er ekki gild .desktop skrá"
 
 #: ../libawn/egg/eggdesktopfile.c:161
 #, c-format
 msgid "Unrecognized desktop file Version '%s'"
-msgstr ""
+msgstr "Óþekkt desktop skráarútgáfa ‚%s‘"
 
 #: ../libawn/egg/eggdesktopfile.c:953
 #, c-format
 msgid "Starting %s"
-msgstr ""
+msgstr "Ræsi %s"
 
 #: ../libawn/egg/eggdesktopfile.c:1095
 #, c-format
 msgid "Application does not accept documents on command line"
-msgstr ""
+msgstr "Þetta forrit tekur ekki á móti skrám á skipanalínunni"
 
 #: ../libawn/egg/eggdesktopfile.c:1191
 #, c-format
 msgid "Unrecognized launch option: %d"
-msgstr ""
+msgstr "Þessi valmöguleiki er ekki þekktur: %d"
 
 #: ../libawn/egg/eggdesktopfile.c:1410
 #, c-format
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
-msgstr ""
+msgstr "Get ekki látið veffang ganga til ‚Type=Link‘"
 
 #: ../libawn/egg/eggdesktopfile.c:1433
 #, c-format
 msgid "Not a launchable item"
+msgstr "Það er ekki hægt að keyra þennan hlut"
+
+#: ../libawn/awn-applet.c:165
+msgid "Clear Custom Icons?"
+msgstr "Eyða myndum sem þú hefur bætt við?"
+
+#: ../libawn/awn-applet.c:173
+msgid "Clear all custom (applet) icons?"
+msgstr "Eyða öllum myndum fyrir forrit sem þú hefur bætt við?"
+
+#: ../libawn/awn-applet.c:187 ../src/awn-task.c:2264 ../src/main.c:517
+msgid "Dock Preferences"
+msgstr "Stillingar fyrir stikuna"
+
+#: ../libawn/awn-applet.c:201
+msgid "Clear All Custom Icons"
+msgstr ""
+
+#. TODO , add text, add scope options, display icon.
+#: ../libawn/awn-icons.c:308
+msgid "Change Icon?"
+msgstr "Breyta mynd?"
+
+#: ../libawn/awn-icons.c:328 ../libawn/awn-icons.c:333
+msgid "Use this icon?"
+msgstr "Nota þessa mynd?"
+
+#: ../libawn/awn-icons.c:338
+msgid "Apply to this applet instance."
+msgstr ""
+
+#: ../libawn/awn-icons.c:342
+msgid "Apply to this applet type."
+msgstr ""
+
+#: ../libawn/awn-icons.c:344
+msgid "Apply to icon name."
 msgstr ""
 
 #. Create the dialog
-#: ../src/awn-task.c:1835
+#: ../src/awn-task.c:1965
 msgid "Choose New Image..."
-msgstr ""
+msgstr "Velja nýja mynd..."
 
-#: ../src/awn-task.c:1927
+#: ../src/awn-task.c:2057
 msgid "Preferences"
-msgstr ""
+msgstr "Stillingar"
 
-#: ../src/awn-task.c:1930
+#: ../src/awn-task.c:2060
 msgid "Change Icon..."
-msgstr ""
+msgstr "Breyta táknmynd..."
 
-#: ../src/awn-task.c:1942
+#: ../src/awn-task.c:2072
 msgid "Change Image..."
-msgstr ""
+msgstr "Breyta mynd..."
 
-#: ../src/awn-task.c:2076
+#: ../src/awn-task.c:2214
 msgid "Change Icon"
+msgstr "Breyta táknmynd"
+
+#: ../src/main.c:157
+msgid "Prints the version number"
+msgstr "Sýnir útgáfunúmer"
+
+#: ../src/main.c:162
+msgid "Starts the Avant Window Navigator dock"
+msgstr "Ræsir Avant Window Navigator stikuna"
+
+#: ../src/main.c:315
+#, c-format
+msgid "Failed to make connection to session bus: %s"
 msgstr ""
 
-#: ../src/awn-task.c:2126
-msgid "Dock Preferences"
+#: ../src/main.c:330
+#, c-format
+msgid "There was an error requesting the name: %s"
 msgstr ""
+
+#: ../src/main.c:701
+msgid ""
+"Warning: Screen isn't composited. Please run compiz (-fusion) or another "
+"compositing manager."
+msgstr ""
+
+#: ../src/main.c:718
+msgid "Starting avant-window-navigator"
+msgstr "Ræsi avant-window-navigator"
+
+#: ../src/main.c:720
+msgid "Don't show this message again."
+msgstr "Ekki sýna þessi skilaboð aftur."

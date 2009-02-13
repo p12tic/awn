@@ -7,160 +7,183 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-01-19 16:36+0100\n"
-"PO-Revision-Date: 2008-10-16 15:55+0000\n"
+"POT-Creation-Date: 2009-02-02 23:50+0100\n"
+"PO-Revision-Date: 2009-01-21 21:10+0000\n"
 "Last-Translator: Ermal Llanaj <ermalipavia@gmail.com>\n"
 "Language-Team: Albanian <sq@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-01-19 21:48+0000\n"
+"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:1
+#: ../awn-manager/awnManager.py:75
 msgid "Awn Manager"
-msgstr ""
+msgstr "Menaxheri Awn"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
+msgstr "Menaxho preferencat e Awn, leshuesve, applikacionet dhe temat"
+
+#: ../awn-manager/awnLauncher.py:160
+msgid "Invalid launcher"
 msgstr ""
 
 #: ../awn-manager/awnLauncherEditor.py:142
 msgid "Select an Executable File"
-msgstr ""
+msgstr "Zgjidh nje file te Ekzekutueshem"
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #, python-format
 msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr ""
+msgstr "Shkruani nje emer per leshuesin ne fushen \"%s\""
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #: ../awn-manager/launcher-editor.glade.h:3
 msgid "<b>Name:</b>"
-msgstr ""
+msgstr "<b>Emri:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #, python-format
 msgid "Please provide a program to launch in the \"%s\" field."
-msgstr ""
+msgstr "Mundeso nje program per te leshuar ne fushen \"%s\""
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #: ../awn-manager/launcher-editor.glade.h:1
 msgid "<b>Command:</b>"
-msgstr ""
+msgstr "<b>Komanda:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:175
 #, python-format
 msgid "Couldn't save the launcher. Error: %s"
+msgstr "Nuk mund te ruhej leshuesi. Gabim: %s"
+
+#: ../awn-manager/awnManager.py:59
+msgid "Awn Manager can't be run as root."
 msgstr ""
 
-#: ../awn-manager/awnManager.py:142
-msgid "Could not load the \""
+#. must be on one line due to i18n
+#: ../awn-manager/awnManager.py:148
+#, python-format
+msgid ""
+"Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
+"installed. It usually comes with librsvg, or a package similarly named."
 msgstr ""
 
-#: ../awn-manager/awnManager.py:169
+#: ../awn-manager/awnManager.py:173
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN u rifreskua me sukses"
 
-#: ../awn-manager/awnManager.py:175
+#: ../awn-manager/awnManager.py:179
 #: ../data/avant-window-navigator.desktop.in.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
-#: ../awn-manager/awnManager.py:193
+#: ../awn-manager/awnManager.py:197
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "Panel plotesisht i ndryshueshem per GNOME."
 
-#: ../awn-manager/awnManager.py:195
+#: ../awn-manager/awnManager.py:199
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Ky program eshte falas; ju mund ta rishperndani dhe/ose ta modifikoni nen "
+"termat e GNU Licenses Gjenerale Publike nga Free Software Foundation; dhe "
+"versionin 2 te Licenses, ose te versioneve te mevonshme."
 
-#: ../awn-manager/awnManager.py:197
+#: ../awn-manager/awnManager.py:201
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Ky program shpërndahet me dëshirën që të jetë i vlefshëm për ju, por PA "
+"ASNJË LLOJ GARANCIE; bile as pa garancinë e TREGTIMIT apo PËRDORIMIT PËR "
+"QËLLIME TË VEÇANTA.  Shiko Liçencën Publike të Përgjithshme GNU për hollësi "
+"të mëtejshme."
 
-#: ../awn-manager/awnManager.py:199
+#: ../awn-manager/awnManager.py:203
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Ju duhet te keni marre nje kopje te  Liçencës Publike të Përgjithshme GNU me "
+"kete program; nese jo, shkruajini Free Software Foundation, Inc., 51 "
+"Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-manager/awnPreferences.py:247
 msgid "PNG Files"
-msgstr ""
+msgstr "Dokumentat PNG"
 
 #: ../awn-manager/awnPreferences.py:332 ../awn-manager/awnPreferences.py:392
 #: ../awn-manager/awnPreferences.py:447
 msgid "Classic"
-msgstr ""
+msgstr "Klasik"
 
 #: ../awn-manager/awnPreferences.py:333 ../awn-manager/awnPreferences.py:393
 #: ../awn-manager/awnPreferences.py:448
 msgid "Fade"
-msgstr ""
+msgstr "Zbehje"
 
 #: ../awn-manager/awnPreferences.py:334 ../awn-manager/awnPreferences.py:394
 #: ../awn-manager/awnPreferences.py:449
 msgid "Spotlight"
-msgstr ""
+msgstr "Kendveshtrim"
 
 #: ../awn-manager/awnPreferences.py:335 ../awn-manager/awnPreferences.py:395
 #: ../awn-manager/awnPreferences.py:450
 msgid "Zoom"
-msgstr ""
+msgstr "Zmadho"
 
 #: ../awn-manager/awnPreferences.py:336 ../awn-manager/awnPreferences.py:396
 #: ../awn-manager/awnPreferences.py:451
 msgid "Squish"
-msgstr ""
+msgstr "Squish"
 
 #: ../awn-manager/awnPreferences.py:337
 msgid "3D turn"
-msgstr ""
+msgstr "Rrotullim 3D"
 
 #: ../awn-manager/awnPreferences.py:338
 msgid "3D turn with spotlight"
-msgstr ""
+msgstr "Rrotullim 3D me ndricim"
 
 #: ../awn-manager/awnPreferences.py:339 ../awn-manager/awnPreferences.py:399
 #: ../awn-manager/awnPreferences.py:454
 msgid "Glow"
-msgstr ""
+msgstr "Ndrico"
 
 #: ../awn-manager/awnPreferences.py:361
 msgid "Flat bar"
-msgstr ""
+msgstr "Panel i sheshte"
 
 #: ../awn-manager/awnPreferences.py:362
 msgid "3D look"
-msgstr ""
+msgstr "Pamje 3D"
 
 #: ../awn-manager/awnPreferences.py:391 ../awn-manager/awnPreferences.py:446
 msgid "None"
-msgstr ""
+msgstr "Asnje"
 
 #: ../awn-manager/awnPreferences.py:397 ../awn-manager/awnPreferences.py:452
 msgid "3D Turn"
-msgstr ""
+msgstr "Rrotullim 3D"
 
 #: ../awn-manager/awnPreferences.py:398 ../awn-manager/awnPreferences.py:453
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "Rrotullim 3D me ndricim"
 
 #: ../awn-manager/awnPreferences.py:455
 #: ../awn-manager/launcher-editor.glade.h:4
 msgid "Custom"
-msgstr ""
+msgstr "Personalizuar"
 
 #: ../awn-manager/awnPreferences.py:537
 #, python-format
@@ -168,48 +191,52 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Krijimi automatik nuk u krye. Ju lutem krijoni manualisht direktorine:\n"
+"%s"
 
 #: ../awn-manager/awnPreferences.py:547
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Konfirmo krijimin e direktorise"
 
 #: ../awn-manager/awnPreferences.py:548
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Nuk ka akoma direktori vetefillimi per perdoruesin tuaj.\n"
+"Doni te krijohet automatikisht?"
 
 #: ../awn-manager/launcher-editor.glade.h:2
 msgid "<b>Description:</b>"
-msgstr ""
+msgstr "<b>Përshkrimi:</b>"
 
 #: ../awn-manager/launcher-editor.glade.h:5
 msgid "Directory:"
-msgstr ""
+msgstr "Direktori:"
 
 #: ../awn-manager/launcher-editor.glade.h:6
 msgid "Launcher Editor"
-msgstr ""
+msgstr "Ndryshues Leshuesi"
 
 #: ../awn-manager/launcher-editor.glade.h:7
 msgid "Launcher Icon"
-msgstr ""
+msgstr "Ikona e Leshuesit"
 
 #: ../awn-manager/launcher-editor.glade.h:8
 msgid "Open..."
-msgstr ""
+msgstr "Hap..."
 
 #: ../awn-manager/launcher-editor.glade.h:9
 msgid "Select A Folder"
-msgstr ""
+msgstr "Zgjidh Një Dosje"
 
 #: ../awn-manager/launcher-editor.glade.h:10
 msgid "Select Icon"
-msgstr ""
+msgstr "Zgjidh Ikonen"
 
 #: ../awn-manager/launcher-editor.glade.h:11
 msgid "Stock/In Theme"
-msgstr ""
+msgstr "Stock/In Theme"
 
 #: ../awn-manager/window.glade.h:1
 msgid "<b>Active Icon</b>"
@@ -269,7 +296,7 @@ msgstr "<b>Ndares</b>"
 
 #: ../awn-manager/window.glade.h:15
 msgid "<b>Startup behaviour</b>"
-msgstr ""
+msgstr "<b>Startup behaviour</b>"
 
 #: ../awn-manager/window.glade.h:16
 msgid "<b>Text</b>"
@@ -305,7 +332,7 @@ msgstr "Lajmero kur dritarja e programit perditesohet"
 
 #: ../awn-manager/window.glade.h:24
 msgid "Arrow offset: "
-msgstr ""
+msgstr "Arrow offset: "
 
 #: ../awn-manager/window.glade.h:25
 msgid "Attention"
@@ -317,7 +344,7 @@ msgstr "Fshih automatikisht barin kur nuk eshte ne perdorim"
 
 #: ../awn-manager/window.glade.h:27
 msgid "Automatically start AWN on login."
-msgstr ""
+msgstr "Fillo AWN automatikisht ne hyrje."
 
 #: ../awn-manager/window.glade.h:28
 msgid "Background color:"
@@ -365,7 +392,7 @@ msgstr "Aktivizo kendet e rrumbullaket"
 
 #: ../awn-manager/window.glade.h:39
 msgid "Expand bar to monitor width"
-msgstr ""
+msgstr "Zgjero panelin ne permasat e monitorit"
 
 #: ../awn-manager/window.glade.h:40
 msgid "First step color:"
@@ -488,64 +515,130 @@ msgstr "faqja 4"
 
 #: ../data/avant-window-navigator.desktop.in.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Nje panel navigues dritaresh."
 
 #: ../libawn/egg/eggdesktopfile.c:136
 #, c-format
 msgid "File is not a valid .desktop file"
-msgstr ""
+msgstr "File nuk është një file i vlefshëm .desktop"
 
 #: ../libawn/egg/eggdesktopfile.c:161
 #, c-format
 msgid "Unrecognized desktop file Version '%s'"
-msgstr ""
+msgstr "Version i pasaktë file desktop '%s'"
 
 #: ../libawn/egg/eggdesktopfile.c:953
 #, c-format
 msgid "Starting %s"
-msgstr ""
+msgstr "Duke nisur %s"
 
 #: ../libawn/egg/eggdesktopfile.c:1095
 #, c-format
 msgid "Application does not accept documents on command line"
-msgstr ""
+msgstr "Aplikativi nuk pranon dokumente në rreshtin e komandës"
 
 #: ../libawn/egg/eggdesktopfile.c:1191
 #, c-format
 msgid "Unrecognized launch option: %d"
-msgstr ""
+msgstr "Opsion i pasaktë nisje: %d"
 
 #: ../libawn/egg/eggdesktopfile.c:1410
 #, c-format
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
 msgstr ""
+"Nuk mund t'i kalohen URLtë e dokumenteve një zëri desktop 'Type=Link'"
 
 #: ../libawn/egg/eggdesktopfile.c:1433
 #, c-format
 msgid "Not a launchable item"
+msgstr "Nuk është një element i ekzekutueshëm"
+
+#: ../libawn/awn-applet.c:165
+msgid "Clear Custom Icons?"
+msgstr ""
+
+#: ../libawn/awn-applet.c:173
+msgid "Clear all custom (applet) icons?"
+msgstr ""
+
+#: ../libawn/awn-applet.c:187 ../src/awn-task.c:2264 ../src/main.c:517
+msgid "Dock Preferences"
+msgstr "Preferencat e Panelit"
+
+#: ../libawn/awn-applet.c:201
+msgid "Clear All Custom Icons"
+msgstr ""
+
+#. TODO , add text, add scope options, display icon.
+#: ../libawn/awn-icons.c:308
+msgid "Change Icon?"
+msgstr ""
+
+#: ../libawn/awn-icons.c:328 ../libawn/awn-icons.c:333
+msgid "Use this icon?"
+msgstr ""
+
+#: ../libawn/awn-icons.c:338
+msgid "Apply to this applet instance."
+msgstr ""
+
+#: ../libawn/awn-icons.c:342
+msgid "Apply to this applet type."
+msgstr ""
+
+#: ../libawn/awn-icons.c:344
+msgid "Apply to icon name."
 msgstr ""
 
 #. Create the dialog
-#: ../src/awn-task.c:1835
+#: ../src/awn-task.c:1965
 msgid "Choose New Image..."
-msgstr ""
+msgstr "Zgjidh Imazh te Ri..."
 
-#: ../src/awn-task.c:1927
+#: ../src/awn-task.c:2057
 msgid "Preferences"
-msgstr ""
+msgstr "Preferencat"
 
-#: ../src/awn-task.c:1930
+#: ../src/awn-task.c:2060
 msgid "Change Icon..."
-msgstr ""
+msgstr "Nderro ikonen"
 
-#: ../src/awn-task.c:1942
+#: ../src/awn-task.c:2072
 msgid "Change Image..."
-msgstr ""
+msgstr "Ndrysho Imazhin..."
 
-#: ../src/awn-task.c:2076
+#: ../src/awn-task.c:2214
 msgid "Change Icon"
 msgstr "Ndrysho ikonen"
 
-#: ../src/awn-task.c:2126
-msgid "Dock Preferences"
+#: ../src/main.c:157
+msgid "Prints the version number"
+msgstr ""
+
+#: ../src/main.c:162
+msgid "Starts the Avant Window Navigator dock"
+msgstr ""
+
+#: ../src/main.c:315
+#, c-format
+msgid "Failed to make connection to session bus: %s"
+msgstr ""
+
+#: ../src/main.c:330
+#, c-format
+msgid "There was an error requesting the name: %s"
+msgstr ""
+
+#: ../src/main.c:701
+msgid ""
+"Warning: Screen isn't composited. Please run compiz (-fusion) or another "
+"compositing manager."
+msgstr ""
+
+#: ../src/main.c:718
+msgid "Starting avant-window-navigator"
+msgstr ""
+
+#: ../src/main.c:720
+msgid "Don't show this message again."
 msgstr ""
