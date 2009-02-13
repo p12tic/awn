@@ -436,6 +436,8 @@ class awnBzr:
 		text = ""
 		name = ""
 		try:
+			if not os.path.exists(path):
+				raise IOError("Desktop file does not exist!")
 			item = DesktopEntry (path)
 			text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
 			name = item.getName()
@@ -1097,9 +1099,8 @@ class awnManager:
         try:
             icon = self.theme.load_icon(name, size, flags)
         except gobject.GError:
-            msg = _('Could not load the "' + name + '" icon.  Make sure that ' + \
-                    'the SVG loader for Gtk+ is installed. It usually comes ' + \
-                    'with librsvg, or a package similarly named.')
+            # must be on one line due to i18n
+            msg = _('Could not load the "%s" icon.  Make sure that the SVG loader for Gtk+ is installed. It usually comes with librsvg, or a package similarly named.') % name
             dialog = gtk.MessageDialog(self.window, 0, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK, msg)
             dialog.run()
             dialog.destroy()
@@ -1307,6 +1308,7 @@ class awnLauncher(awnBzr):
         selection = self.treeview.get_selection()
         (model, iter) = selection.get_selected()
         uri = model.get_value(iter, 2)
+	# TODO: don't check if it exists, perhaps it's invalid
         if os.path.exists(uri):
             uris = self.last_uris[:]
             uris.remove(uri)
@@ -1442,12 +1444,12 @@ class awnApplet(awnBzr):
                 model.set_value (row, 0, icon)
                 model.set_value (row, 1, text)
                 model.set_value (row, 2, appletpath)
-		if do_apply:
+                if do_apply:
                     uid = "%d" % int(time.time())
                     self.model.set_value (row, 3, uid)
                     self._apply ()
                 else:
-                    model.set_value (row, 3, name)     
+                    model.set_value (row, 3, name)   
          
             if msg:
                 message = "Applet Successfully Added"

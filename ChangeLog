@@ -1,3 +1,8 @@
+2009-02-12  Julien Lavergne <julien.Lavergnegmail.com>
+
+	* awn-manager/awnClass.py
+	Backport changes from trunk also to awnClass.py
+
 2009-02-13  Michal Hruby <michal.mhr@gmail.com>
 
 	* maaany files...
