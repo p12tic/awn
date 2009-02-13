@@ -527,7 +527,7 @@ class awnPreferences:
 
     # The following code is adapted from screenlets-manager.py
     def get_autostart_file_path(self):
-        if os.environ['DESKTOP_SESSION'].startswith('kde'):
+        if os.environ.has_key('DESKTOP_SESSION') and os.environ['DESKTOP_SESSION'].startswith('kde'):
             autostart_dir = os.path.join(os.environ['HOME'], '.kde', 'Autostart')
         else:
             autostart_dir = os.path.join(os.environ['HOME'], '.config', 'autostart')
