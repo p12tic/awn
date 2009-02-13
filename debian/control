@@ -19,7 +19,7 @@ Build-Depends: 	debhelper (>= 5),
 		python-cairo-dev,
 		gtk-doc-tools, 
 		doc-base,
-		valac (>= 0.1.7),
+		valac (>= 0.5.4),
 		python2.5 | python-lxml | python-celementtree | python-elementtree,
 		automake
 Standards-Version: 3.7.3

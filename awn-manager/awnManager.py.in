@@ -143,9 +143,8 @@ class AwnManager:
         try:
             icon = self.theme.load_icon(name, size, flags)
         except gobject.GError:
-            msg = _('Could not load the "' + name + '" icon.  Make sure that ' + \
-                    'the SVG loader for Gtk+ is installed. It usually comes ' + \
-                    'with librsvg, or a package similarly named.')
+            # must be on one line due to i18n
+            msg = _('Could not load the "%s" icon.  Make sure that the SVG loader for Gtk+ is installed. It usually comes with librsvg, or a package similarly named.') % name
             dialog = gtk.MessageDialog(self.window, 0, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK, msg)
             dialog.run()
             dialog.destroy()
