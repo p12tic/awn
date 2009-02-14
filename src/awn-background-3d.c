@@ -63,6 +63,7 @@ awn_background_3d_class_init (AwnBackground3dClass *klass)
 
   bg_class->draw = awn_background_3d_draw;
   bg_class->padding_request = awn_background_3d_padding_request;
+  bg_class->get_input_shape_mask = awn_background_3d_draw;
 }
 
 

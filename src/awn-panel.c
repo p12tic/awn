@@ -1076,9 +1076,9 @@ on_screen_changed (GtkWidget *widget,
  * receive events in the blank space above the main window
  */
 static void
-awn_panel_update_input_shape (GtkWidget *panel, 
-                              gint       real_width, 
-                              gint       real_height)
+awn_panel_update_masks (GtkWidget *panel, 
+                        gint       real_width, 
+                        gint       real_height)
 {
   AwnPanelPrivate *priv;
   GdkBitmap       *shaped_bitmap;
@@ -1098,28 +1098,45 @@ awn_panel_update_input_shape (GtkWidget *panel,
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (cr);
 
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
   if (priv->bg)
   {
     GdkRectangle area;
     awn_panel_get_draw_rect (AWN_PANEL (panel), &area,
                              real_width, real_height);
-    awn_background_get_input_shape_mask (priv->bg, cr, priv->orient, &area);
+    /* Set the input shape of the window if the window is composited */
+    if (priv->composited)
+    {
+      awn_background_get_input_shape_mask (priv->bg, cr, priv->orient, &area);
+    }
+    /* If window is not composited set shape of the window */
+    else
+    {
+      awn_background_get_shape_mask (priv->bg, cr, priv->orient, &area);
+    }
   }
 
   // combine with applet's eventbox (with proper dimensions)
-  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_set_operator (cr, CAIRO_OPERATOR_ADD);
   cairo_set_source_rgb (cr, 1.0f, 1.0f, 1.0f);
-
   awn_panel_get_applet_rect (AWN_PANEL (panel), &applet_rect,
                              real_width, real_height);
   cairo_rectangle (cr, applet_rect.x, applet_rect.y,
                    applet_rect.width, applet_rect.height);
- 
   cairo_fill (cr);
+
   cairo_destroy (cr);
 
-  gtk_widget_input_shape_combine_mask (panel, NULL, 0, 0);
-  gtk_widget_input_shape_combine_mask (panel, shaped_bitmap, 0, 0);
+  if (priv->composited)
+  {
+    gtk_widget_input_shape_combine_mask (panel, NULL, 0, 0);
+    gtk_widget_input_shape_combine_mask (panel, shaped_bitmap, 0, 0);
+  }
+  else
+  {
+    gtk_widget_shape_combine_mask (panel, NULL, 0, 0);
+    gtk_widget_shape_combine_mask (panel, shaped_bitmap, 0, 0);
+  }
 
   if (shaped_bitmap)
     g_object_unref (shaped_bitmap);
@@ -1194,9 +1211,7 @@ on_window_configure (GtkWidget          *panel,
   priv->old_height = event->height;
   priv->old_orient = priv->orient;
 
-  /* Only set the shape of the window if the window is composited */
-  if (priv->composited)
-    awn_panel_update_input_shape (panel, event->width, event->height);
+  awn_panel_update_masks (panel, event->width, event->height);
 
   /* Update the size hints if the panel_mode is set */
   if (priv->panel_mode)

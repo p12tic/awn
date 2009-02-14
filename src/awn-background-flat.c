@@ -52,6 +52,10 @@ awn_background_flat_class_init (AwnBackgroundFlatClass *klass)
 
   bg_class->draw = awn_background_flat_draw;
   bg_class->padding_request = awn_background_flat_padding_request;
+  /* FIXME:
+   *  write a method that uses simple awn_cairo_rounded_rect for the mask 
+   */
+  bg_class->get_shape_mask = awn_background_flat_draw;
 }
 
 
