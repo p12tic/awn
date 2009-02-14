@@ -42,6 +42,14 @@
 
 G_DEFINE_TYPE (AwnBackground3d, awn_background_3d, AWN_TYPE_BACKGROUND)
 
+// FORWARDS
+static void awn_background_3d_padding_request (AwnBackground *bg,
+                                               AwnOrientation orient,
+                                               guint *padding_top,
+                                               guint *padding_bottom,
+                                               guint *padding_left,
+                                               guint *padding_right);
+
 static void awn_background_3d_draw (AwnBackground  *bg,
                                     cairo_t        *cr,
                                     AwnOrientation  orient,
@@ -54,6 +62,7 @@ awn_background_3d_class_init (AwnBackground3dClass *klass)
   AwnBackgroundClass *bg_class = AWN_BACKGROUND_CLASS (klass);
 
   bg_class->draw = awn_background_3d_draw;
+  bg_class->padding_request = awn_background_3d_padding_request;
 }
 
 
@@ -349,6 +358,38 @@ draw_top_bottom_background (AwnBackground  *bg,
    cairo_stroke (cr);
 #endif
 
+}
+
+static
+void awn_background_3d_padding_request (AwnBackground *bg,
+                                        AwnOrientation orient,
+                                        guint *padding_top,
+                                        guint *padding_bottom,
+                                        guint *padding_left,
+                                        guint *padding_right)
+{
+  // FIXME, pleeeeeease!
+  switch (orient)
+  {
+    case AWN_ORIENTATION_TOP:
+      *padding_top  = 4; *padding_bottom = 0;
+      *padding_left = 20; *padding_right  = 20;
+      break;
+    case AWN_ORIENTATION_BOTTOM:
+      *padding_top  = 0; *padding_bottom = 4;
+      *padding_left = 20; *padding_right  = 20;
+      break;
+    case AWN_ORIENTATION_LEFT:
+      *padding_top  = 20; *padding_bottom = 20;
+      *padding_left = 4; *padding_right  = 0;
+      break;
+    case AWN_ORIENTATION_RIGHT:
+      *padding_top  = 20; *padding_bottom = 20;
+      *padding_left = 0; *padding_right  = 4;
+      break;
+    default:
+      break;
+  }
 }
 
 /**

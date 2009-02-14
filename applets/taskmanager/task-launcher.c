@@ -258,11 +258,11 @@ _get_icon (TaskWindow    *window)
   if (WNCK_IS_WINDOW (window->priv->window))
   {
     return _wnck_get_icon_at_size (window->priv->window, 
-                                   s->panel_size-2, s->panel_size-2);
+                                   s->panel_size, s->panel_size);
   }
   else
   {
-    return awn_desktop_item_get_icon (launcher->priv->item, s->panel_size-2);
+    return awn_desktop_item_get_icon (launcher->priv->item, s->panel_size);
   }
 }
 
@@ -360,7 +360,7 @@ on_window_closed (TaskLauncher *launcher, WnckWindow *old_window)
 
   /* Reset icon */
   pixbuf = xutils_get_named_icon (launcher->priv->icon_name,
-                                  s->panel_size-2, s->panel_size-2);
+                                  s->panel_size, s->panel_size);
 
   task_window_update_icon (TASK_WINDOW (launcher), pixbuf);
 

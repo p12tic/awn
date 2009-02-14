@@ -63,6 +63,7 @@ enum
 enum 
 {
   CHANGED,
+  PADDING_CHANGED,
 
   LAST_SIGNAL
 };
@@ -72,6 +73,7 @@ static void awn_background_set_gtk_theme_mode (AwnBackground *bg,
                                                gboolean       gtk_mode);
 
 static void awn_background_padding_zero (AwnBackground *bg,
+                                         AwnOrientation orient,
                                          guint *padding_top,
                                          guint *padding_bottom,
                                          guint *padding_left,
@@ -427,6 +429,15 @@ awn_background_class_init (AwnBackgroundClass *klass)
                   NULL, NULL, 
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  _bg_signals[PADDING_CHANGED] =
+    g_signal_new ("padding-changed",
+                  G_OBJECT_CLASS_TYPE (obj_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (AwnBackgroundClass, padding_changed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 
@@ -454,6 +465,7 @@ awn_background_draw (AwnBackground  *bg,
 
 void 
 awn_background_padding_request (AwnBackground *bg,
+                                AwnOrientation orient,
                                 guint *padding_top,
                                 guint *padding_bottom,
                                 guint *padding_left,
@@ -466,7 +478,7 @@ awn_background_padding_request (AwnBackground *bg,
   klass = AWN_BACKGROUND_GET_CLASS (bg);
   g_return_if_fail (klass->padding_request != NULL);
 
-  klass->padding_request (bg, padding_top, padding_bottom,
+  klass->padding_request (bg, orient, padding_top, padding_bottom,
                           padding_left, padding_right);
 }
 
@@ -500,6 +512,14 @@ awn_background_get_input_shape_mask (AwnBackground *bg,
   g_return_if_fail (klass->get_input_shape_mask != NULL);
 
   klass->get_input_shape_mask (bg, cr, orient, area);
+}
+
+void
+awn_background_emit_padding_changed (AwnBackground *bg)
+{
+  g_return_if_fail (AWN_IS_BACKGROUND (bg));
+
+  g_signal_emit (bg, _bg_signals[PADDING_CHANGED], 0);
 }
 
 /*
@@ -616,6 +636,7 @@ awn_background_set_gtk_theme_mode (AwnBackground *bg,
 }
 
 static void awn_background_padding_zero(AwnBackground *bg,
+                                        AwnOrientation orient,
                                         guint *padding_top,
                                         guint *padding_bottom,
                                         guint *padding_left,

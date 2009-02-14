@@ -38,6 +38,12 @@ static void awn_background_flat_draw (AwnBackground  *bg,
                                       AwnOrientation  orient,
                                       GdkRectangle   *area);
 
+static void awn_background_flat_padding_request (AwnBackground *bg,
+                                                 AwnOrientation orient,
+                                                 guint *padding_top,
+                                                 guint *padding_bottom,
+                                                 guint *padding_left,
+                                                 guint *padding_right);
 
 static void
 awn_background_flat_class_init (AwnBackgroundFlatClass *klass)
@@ -45,6 +51,7 @@ awn_background_flat_class_init (AwnBackgroundFlatClass *klass)
   AwnBackgroundClass *bg_class = AWN_BACKGROUND_CLASS (klass);
 
   bg_class->draw = awn_background_flat_draw;
+  bg_class->padding_request = awn_background_flat_padding_request;
 }
 
 
@@ -179,6 +186,39 @@ draw_top_bottom_background (AwnBackground  *bg,
   //draw_rect (bg, cr, orient, x, y,  width-1, height+3);
   draw_rect (bg, cr, orient, -width/2.0, -height, width-1, height+3);
   cairo_stroke (cr);
+}
+
+static
+void awn_background_flat_padding_request (AwnBackground *bg,
+                                          AwnOrientation orient,
+                                          guint *padding_top,
+                                          guint *padding_bottom,
+                                          guint *padding_left,
+                                          guint *padding_right)
+{
+  #define SIDE_PADDING 6
+  #define TOP_PADDING 4
+  switch (orient)
+  {
+    case AWN_ORIENTATION_TOP:
+      *padding_top  = 0; *padding_bottom = TOP_PADDING;
+      *padding_left = SIDE_PADDING; *padding_right = SIDE_PADDING;
+      break;
+    case AWN_ORIENTATION_BOTTOM:
+      *padding_top  = TOP_PADDING; *padding_bottom = 0;
+      *padding_left = SIDE_PADDING; *padding_right = SIDE_PADDING;
+      break;
+    case AWN_ORIENTATION_LEFT:
+      *padding_top  = SIDE_PADDING; *padding_bottom = SIDE_PADDING;
+      *padding_left = 0; *padding_right = TOP_PADDING;
+      break;
+    case AWN_ORIENTATION_RIGHT:
+      *padding_top  = SIDE_PADDING; *padding_bottom = SIDE_PADDING;
+      *padding_left = TOP_PADDING; *padding_right = 0;
+      break;
+    default:
+      break;
+  }
 }
 
 static void 

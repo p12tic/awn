@@ -300,7 +300,7 @@ on_window_icon_changed (WnckWindow *wnckwin, TaskWindow *window)
   g_return_if_fail (TASK_IS_WINDOW (window));
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
   
-  pixbuf = _wnck_get_icon_at_size (wnckwin, s->panel_size-2, s->panel_size-2);
+  pixbuf = _wnck_get_icon_at_size (wnckwin, s->panel_size, s->panel_size);
   task_window_update_icon (window, pixbuf);
   g_object_unref (pixbuf);
 }
@@ -800,7 +800,7 @@ _get_icon (TaskWindow    *window)
 
   if (WNCK_IS_WINDOW (window->priv->window))
     return _wnck_get_icon_at_size (window->priv->window, 
-                                   s->panel_size-2, s->panel_size-2);
+                                   s->panel_size, s->panel_size);
 
   return NULL;
 }
