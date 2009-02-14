@@ -67,8 +67,10 @@ struct _AwnPanelPrivate
 
   gint autohide_type;
 
+  // for masks updating
   gint old_width;
   gint old_height;
+  gint old_orient;
 
   guint extra_padding;
 
@@ -398,9 +400,7 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
   AwnPanelPrivate *priv = panel->priv;
   guint top, left, bottom, right;
 
-  g_return_if_fail (priv->bg && AWN_IS_BACKGROUND (priv->bg));
-
-  g_debug ("Padding-request on orient %d", priv->orient);
+  if (!priv->bg || !AWN_IS_BACKGROUND (priv->bg)) return;
 
   // refresh the padding
   awn_background_padding_request (priv->bg, priv->orient,
@@ -463,13 +463,13 @@ void awn_panel_get_applet_rect (AwnPanel *panel,
 
     case AWN_ORIENTATION_BOTTOM:
       area->x = left;
-      area->y = height - paintable_size + bottom;
+      area->y = height - paintable_size + priv->extra_padding - bottom;
       area->width = width - left - right;
       area->height = paintable_size - bottom;
       break;
 
     case AWN_ORIENTATION_RIGHT:
-      area->x = width - paintable_size + right;
+      area->x = width - paintable_size + priv->extra_padding - right;
       area->y = top;
       area->width = paintable_size - right;
       area->height = height - top - bottom;
@@ -1186,11 +1186,13 @@ on_window_configure (GtkWidget          *panel,
   g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
   priv = AWN_PANEL (panel)->priv;
 
-  if (priv->old_width == event->width && priv->old_height == event->height)
+  if (priv->old_width == event->width && priv->old_height == event->height &&
+      priv->old_orient == priv->orient)
     return FALSE;
 
   priv->old_width = event->width;
   priv->old_height = event->height;
+  priv->old_orient = priv->orient;
 
   /* Only set the shape of the window if the window is composited */
   if (priv->composited)
@@ -1202,8 +1204,6 @@ on_window_configure (GtkWidget          *panel,
   
   /* Update position */
   position_window (AWN_PANEL (panel));
-
-  //gtk_widget_queue_draw (GTK_WIDGET (panel));
 
   return TRUE;
 }
@@ -1220,42 +1220,6 @@ on_geometry_changed   (AwnMonitor *monitor,
 /*
  * PANEL BACKGROUND & EMBEDDING CODE
  */
-
-/*
- * Clear the eventboxes background
- */
-/*
-static gboolean 
-on_eb_expose (GtkWidget      *widget, 
-              GdkEventExpose *event,
-              GtkWidget      *child)
-{
-  cairo_t *cr;
-
-  if (!GDK_IS_DRAWABLE (widget->window))
-  {
-    g_debug ("!GDK_IS_DRAWABLE (widget->window) failed");
-    return FALSE;
-  }
-
-  cr = gdk_cairo_create (widget->window);
-  if (!cr)
-  {
-    g_debug ("Unable to create cairo context\n");
-    return FALSE;
-  }
-
-  // The actual drawing of the background
-  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_paint (cr);
-  cairo_destroy (cr);
-
-  gtk_container_propagate_expose (GTK_CONTAINER (widget),
-                                  child,
-                                  event);
-  return TRUE;
-}
-*/
 
 /*
  * Draw the panel 
@@ -1286,18 +1250,6 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (cr);
 
-#ifdef DEBUG_DRAW_AREA
-  if (1)
-  {
-    GdkRectangle a;
-    cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-    awn_panel_get_draw_rect (AWN_PANEL (widget), &a, 0, 0);
-    cairo_set_source_rgb (cr, 0.0, 1.0, 0.0);
-    cairo_rectangle (cr, a.x, a.y, a.width, a.height);
-    cairo_stroke (cr);
-  }
-#endif
-
   if (priv->bg)
   {
     GdkRectangle area;
@@ -1327,26 +1279,53 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     cairo_paint (cr);
   }
 
+  cairo_destroy (cr);
+
+//#define DEBUG_DRAW_AREA
+//#define DEBUG_APPLET_AREA
+
+#ifdef DEBUG_DRAW_AREA
+  if (1)
+  {
+    // Calling gdk_draw_rectangle (window, gc, FALSE, 0, 0, 20, 20) results
+    // in an outlined rectangle with corners at (0, 0), (0, 20), (20, 20),
+    // and (20, 0), which makes it 21 pixels wide and 21 pixels high.
+    GdkRectangle a;
+    GdkColor color;
+
+    awn_panel_get_draw_rect (AWN_PANEL (widget), &a, 0, 0);
+    GdkGC *gc = gdk_gc_new (widget->window);
+    gdk_gc_set_line_attributes (gc, 1, GDK_LINE_ON_OFF_DASH, 
+                                GDK_CAP_NOT_LAST, GDK_JOIN_MITER);
+    gdk_color_parse ("#0F0", &color);
+    gdk_gc_set_rgb_fg_color (gc, &color);
+    gdk_draw_rectangle (widget->window, gc, FALSE, a.x, a.y,
+                        a.width-1, a.height-1); // minus 1 because ^^
+    g_object_unref (gc);
+  }
+#endif
+
 #ifdef DEBUG_APPLET_AREA
   if (1)
   {
     GdkRectangle a;
+    GdkColor color;
+
     awn_panel_get_applet_rect (AWN_PANEL (widget), &a, 0, 0);
-    cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-    cairo_set_source_rgb (cr, 0.0, 0.0, 1.0);
-    cairo_rectangle (cr, a.x, a.y, a.width, a.height);
-    cairo_stroke (cr);
+    GdkGC *gc = gdk_gc_new (widget->window);
+    gdk_gc_set_line_attributes (gc, 1, GDK_LINE_ON_OFF_DASH, 
+                                GDK_CAP_NOT_LAST, GDK_JOIN_MITER);
+    gdk_color_parse ("#00F", &color);
+    gdk_gc_set_rgb_fg_color (gc, &color);
+    gdk_draw_rectangle (widget->window, gc, FALSE, a.x, a.y,
+                        a.width-1, a.height-1); // minus 1 because ^^
+    g_object_unref (gc);
   }
 #endif
-
-  cairo_destroy (cr);
 
   gtk_container_propagate_expose (GTK_CONTAINER (widget),
                                   child,
                                   event);
-
-  priv->old_width = widget->allocation.width;
-  priv->old_height = widget->allocation.height;
 
   return TRUE;
 }
