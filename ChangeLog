@@ -1,5 +1,10 @@
 2009-02-14  Michal Hruby <michal.mhr@gmail.com>
 
+	* src/awn-panel.c:
+	Kill the evil set_size_request function calls.
+
+2009-02-14  Michal Hruby <michal.mhr@gmail.com>
+
 	* src/awn-background-3d.c:
 	* src/awn-background-flat.c:
 	* src/awn-background.c:
