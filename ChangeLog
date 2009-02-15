@@ -1,5 +1,10 @@
 2009-02-15  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* m4/vala.m4:
+	Update macro to a version in an automake git branch.
+
+2009-02-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* Makefile.am:
 	* acinclude.m4:
 	* m4/as-ac-expand.m4:
