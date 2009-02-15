@@ -592,6 +592,8 @@ on_window_opened (WnckScreen    *screen,
     case WNCK_WINDOW_TOOLBAR:
     case WNCK_WINDOW_MENU:
     case WNCK_WINDOW_SPLASHSCREEN:
+    case WNCK_WINDOW_UTILITY:
+    case WNCK_WINDOW_DIALOG:
       return; /* No need to worry about these */
 
     default:
@@ -602,13 +604,13 @@ on_window_opened (WnckScreen    *screen,
    * If it's a utility window, see if we can find it a home with another, 
    * existing TaskWindow, so we don't have a ton of icons for no reason
    */
+    
   if ((type == WNCK_WINDOW_UTILITY || type == WNCK_WINDOW_DIALOG)
        && try_to_place_window (manager, window))
   {
     g_debug ("WINDOW PLACED: %s", wnck_window_get_name (window));
     return;
   }
-
   /* 
    * If it's skip tasklist, connect to the state-changed signal and see if
    * it ever becomes a normal window
