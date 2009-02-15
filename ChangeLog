@@ -1,3 +1,14 @@
+2009-02-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.am:
+	* acinclude.m4:
+	* m4/as-ac-expand.m4:
+	* m4/gconf.m4:
+	* m4/python.m4:
+	* m4/vala.m4:
+	Replace acinclude.m4 with separate m4 files.
+	Remove JH_ADD_CFLAG, as it does not seem to be used.
+
 2009-02-14  Michal Hruby <michal.mhr@gmail.com>
 
 	* src/awn-background-3d.c:
