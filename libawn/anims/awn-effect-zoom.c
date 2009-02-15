@@ -27,7 +27,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-// FIXME: because of orientation support the effect shouldn't use window_width
+/* FIXME: because of orientation support the effect shouldn't use window_width */
 
 gboolean
 zoom_effect(AwnEffectsAnimation * anim)
@@ -99,7 +99,7 @@ zoom_effect(AwnEffectsAnimation * anim)
       priv->direction = AWN_EFFECT_DIR_UP;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -109,7 +109,7 @@ zoom_effect(AwnEffectsAnimation * anim)
   {
     priv->width_mod = 1.0;
     priv->height_mod = 1.0;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -180,7 +180,7 @@ zoom_attention_effect(AwnEffectsAnimation * anim)
       priv->direction = AWN_EFFECT_DIR_UP;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -191,7 +191,7 @@ zoom_attention_effect(AwnEffectsAnimation * anim)
     priv->width_mod = 1.0;
     priv->height_mod = 1.0;
     priv->top_offset = 0;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -216,7 +216,7 @@ zoom_opening_effect(AwnEffectsAnimation * anim)
   priv->height_mod += 1.0 / PERIOD;
   priv->alpha += 1.0 / PERIOD;
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -226,7 +226,7 @@ zoom_opening_effect(AwnEffectsAnimation * anim)
     priv->alpha = 1.0;
     priv->width_mod = 1.0;
     priv->height_mod = 1.0;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -251,7 +251,7 @@ zoom_closing_effect(AwnEffectsAnimation * anim)
   priv->height_mod -= 1.0 / PERIOD;
   priv->alpha -= 1.0 / PERIOD;
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -261,7 +261,7 @@ zoom_closing_effect(AwnEffectsAnimation * anim)
     priv->alpha = 0.0;
     priv->width_mod = 1.0;
     priv->height_mod = 1.0;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 

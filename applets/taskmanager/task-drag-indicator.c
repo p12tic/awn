@@ -91,8 +91,8 @@ task_drag_indicator_init (TaskDragIndicator *drag_indicator)
                      GTK_DEST_DEFAULT_MOTION,
                      drop_types, n_drop_types,
                      GDK_ACTION_LINK);
-  //gtk_drag_dest_add_uri_targets (GTK_WIDGET (icon));
-  //gtk_drag_dest_add_text_targets (GTK_WIDGET (icon));
+  /*gtk_drag_dest_add_uri_targets (GTK_WIDGET (icon));
+  gtk_drag_dest_add_text_targets (GTK_WIDGET (icon));*/
 }
 
 GtkWidget *

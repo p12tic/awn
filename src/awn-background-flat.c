@@ -121,8 +121,9 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_matrix_t matrix;
   cairo_pattern_t *pat;
 
-  /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
-  // so look to the translation part of the matrix and add till it gets 0.5
+  /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges)
+   * so look to the translation part of the matrix and add till it gets 0.5
+   */
   cairo_get_matrix (cr, &matrix);
   if(orient == AWN_ORIENTATION_RIGHT || orient == AWN_ORIENTATION_LEFT)
       cairo_translate (cr, 0.5 - matrix.y0 + (int)matrix.y0, 0.5 - matrix.x0 + (int)matrix.x0);
@@ -146,7 +147,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_step_2.blue, 
                                      bg->g_step_2.alpha);
 
-  //draw_rect (bg, cr, orient, x+1, y+1, width-2, height-1);
+  /*draw_rect (bg, cr, orient, x+1, y+1, width-2, height-1);*/
   draw_rect (bg, cr, orient, -width/2.0+1, -height+1, width-2, height-1);
 
   cairo_set_source (cr, pat);
@@ -166,7 +167,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_histep_2.blue, 
                                      bg->g_histep_2.alpha);
 
-  //draw_rect (bg, cr, orient, x+1, y+1, width-2, height/3);
+  /*draw_rect (bg, cr, orient, x+1, y+1, width-2, height/3);*/
   draw_rect (bg, cr, orient, -width/2.0+1, -height+1, width-2, height/3.0);
 
   cairo_set_source (cr, pat);
@@ -178,7 +179,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                              bg->hilight_color.green,
                              bg->hilight_color.blue,
                              bg->hilight_color.alpha);
-  //draw_rect (bg, cr, orient, x+1, y+1, width-3, height+3);
+  /*draw_rect (bg, cr, orient, x+1, y+1, width-3, height+3);*/
   draw_rect (bg, cr, orient, -width/2.0+1, -height+1, width-3, height+3);
   cairo_stroke (cr);
 
@@ -187,7 +188,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                              bg->border_color.green,
                              bg->border_color.blue,
                              bg->border_color.alpha);
-  //draw_rect (bg, cr, orient, x, y,  width-1, height+3);
+  /*draw_rect (bg, cr, orient, x, y,  width-1, height+3);*/
   draw_rect (bg, cr, orient, -width/2.0, -height, width-1, height+3);
   cairo_stroke (cr);
 }

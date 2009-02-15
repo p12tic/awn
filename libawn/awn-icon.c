@@ -90,10 +90,10 @@ awn_icon_make_transparent (GtkWidget *widget, gpointer data)
    * This is how we make sure that widget has transparent background
    * all the time.
    */
-  if (gtk_widget_is_composited(widget)) // FIXME: is is_composited correct here?
+  if (gtk_widget_is_composited(widget)) /* FIXME: is is_composited correct here? */
   {
     awn_utils_make_transparent (widget);
-    // optimize the render speed
+    /* optimize the render speed */
     g_object_set(priv->effects,
                  "no-clear", TRUE,
                  "indirect-paint", FALSE, NULL);
@@ -104,8 +104,9 @@ awn_icon_make_transparent (GtkWidget *widget, gpointer data)
                  "effects", 0,
                  "no-clear", TRUE,
                  "indirect-paint", TRUE, NULL);
-    // we are also forcing icon-effects to "Simple", to prevent clipping
-    // the icon in our small window
+    /* we are also forcing icon-effects to "Simple", to prevent clipping
+     * the icon in our small window
+     */
   }
 
 }
@@ -118,17 +119,18 @@ awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
 
   g_return_val_if_fail(priv->icon_srfc, FALSE);
 
-  // clip the drawing region, nvidia likes it
+  /* clip the drawing region, nvidia likes it */
   cr = awn_effects_cairo_create_clipped (priv->effects, event->region);
 
-  // if we're RGBA we have transparent background (awn_icon_make_transparent),
-  //  otherwise default widget background color
+  /* if we're RGBA we have transparent background (awn_icon_make_transparent),
+   * otherwise default widget background color
+   */
 
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   cairo_set_source_surface (cr, priv->icon_srfc, 0, 0);
   cairo_paint (cr);
 
-  // let effects know we're finished
+  /* let effects know we're finished */
   awn_effects_cairo_destroy (priv->effects);
 
   return FALSE;
@@ -318,9 +320,10 @@ awn_icon_update_tooltip_pos(AwnIcon *icon)
   g_return_if_fail (AWN_IS_ICON (icon));
   priv = icon->priv;
 
-  // we could set tooltip_offset = priv->effects->icon_offset, and use 
-  // different offset in AwnTooltip
-  //  (do we want different icon bar offset and tooltip offset?)
+  /* we could set tooltip_offset = priv->effects->icon_offset, and use 
+   * different offset in AwnTooltip
+   * (do we want different icon bar offset and tooltip offset?)
+   */
   gint tooltip_offset = 0;
 
   switch (priv->orient) {
@@ -530,9 +533,10 @@ awn_icon_set_custom_paint (AwnIcon *icon, gint width, gint height)
    * free_existing_icon (icon);
    */
 
-  // this will set proper size requisition, tooltip position,
-  // params for effects and may emit size changed signal
-  // the only thing user needs is overriding expose-event
+  /* this will set proper size requisition, tooltip position,
+   * params for effects and may emit size changed signal
+   * the only thing user needs is overriding expose-event
+   */
   update_widget_to_size (icon, width, height);
   gtk_widget_queue_draw (GTK_WIDGET (icon));
 }
@@ -549,9 +553,10 @@ awn_icon_set_tooltip_text (AwnIcon     *icon,
   awn_tooltip_set_text (AWN_TOOLTIP (icon->priv->tooltip), text);
 }
 
-// FIXME: get_tooltip_text returns original string which shouldn't be modified,
-//        but get_message returns copy, which has to be freed by the caller.
-//        Both should return copy, so for example python can free the string.
+/* FIXME: get_tooltip_text returns original string which shouldn't be modified,
+ *        but get_message returns copy, which has to be freed by the caller.
+ *        Both should return copy, so for example python can free the string.
+ */
 const gchar * 
 awn_icon_get_tooltip_text (AwnIcon *icon)
 {
@@ -580,7 +585,7 @@ awn_icon_get_message (AwnIcon *icon)
   g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
 
   g_object_get (icon->priv->effects, "label", &result, NULL);
-  // caller gets a copy, so he's responsible for freeing it
+  /* caller gets a copy, so he's responsible for freeing it */
   return result;
 }
 

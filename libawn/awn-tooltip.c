@@ -425,7 +425,7 @@ awn_tooltip_position_and_show (AwnTooltip *tooltip)
   }
   else
   {
-    // TODO: find better way than adding 8
+    /* TODO: find better way than adding 8 */
     w = req.width + 8;
     h = req.height + 8;
   }
@@ -435,8 +435,9 @@ awn_tooltip_position_and_show (AwnTooltip *tooltip)
   gdk_drawable_get_size (GDK_DRAWABLE (priv->focus->window), &fw, &fh);
   
   /* Find and set our position */
-  //x = fx + (fw / 2) - (w / 2);
-  //y = fy + (fh / 2) - h / 2;
+  /*x = fx + (fw / 2) - (w / 2);
+  y = fy + (fh / 2) - h / 2;*/
+
 
   #define TOOLTIP_OFFSET 16
   switch (priv->orient) {
@@ -540,11 +541,12 @@ awn_tooltip_show (AwnTooltip *tooltip,
   if (!priv->text || priv->timer_id)
     return FALSE;
 
-  // always use timer to show the widget, because there's a show/hide race
-  // condition when mouse moves on the tooltip, leave-notify-event is generated
-  // -> tooltip hides, then enter-notify-event from the widget is generated,
-  // tooltip shows, therefore looping in an infinite loop
-  //  with the timer X-server at least doesn't stall
+  /* always use timer to show the widget, because there's a show/hide race
+   * condition when mouse moves on the tooltip, leave-notify-event is generated
+   * -> tooltip hides, then enter-notify-event from the widget is generated,
+   * tooltip shows, therefore looping in an infinite loop
+   *  with the timer X-server at least doesn't stall
+   */
   gint delay = priv->delay > 0 ? priv->delay : 10;
   priv->timer_id = g_timeout_add(delay, awn_tooltip_show_timer, tooltip);
 

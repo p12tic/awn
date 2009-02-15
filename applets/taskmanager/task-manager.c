@@ -255,7 +255,7 @@ task_manager_init (TaskManager *manager)
   priv->drag_indicator = TASK_DRAG_INDICATOR(task_drag_indicator_new());
   gtk_container_add (GTK_CONTAINER (priv->box), GTK_WIDGET(priv->drag_indicator));
   gtk_widget_hide (GTK_WIDGET(priv->drag_indicator));
-  //TODO: free !!!
+  /* TODO: free !!! */
   priv->dragged_icon = NULL;
 
   /* connect to the relevent WnckScreen signals */
@@ -827,13 +827,14 @@ static void drag_ended(TaskManager *manager, TaskIcon *icon)
   if( !GTK_WIDGET_VISIBLE(priv->drag_indicator) )
   {
     g_print("Put Icon into the hovering icon\n");
-    //PUT INTO THE TASKICON
+    /* PUT INTO THE TASKICON */
   }
-  // TODO: FOR NOW ALWAYS ACT LIKE IT WAS ADDED BEFORE OR AFTER
-  // AND NOT INTO A AWNICON. WHEN AWNICON SUPPORTS MULTIPLE WINDOWS
-  // THIS WILL GET FIXED
-  //else
-  //{
+  /* TODO: FOR NOW ALWAYS ACT LIKE IT WAS ADDED BEFORE OR AFTER
+   * AND NOT INTO A AWNICON. WHEN AWNICON SUPPORTS MULTIPLE WINDOWS
+   * THIS WILL GET FIXED*/
+
+  /*else
+  {*/
     childs = gtk_container_get_children (GTK_CONTAINER(priv->box));
     move_to = g_list_index (childs, GTK_WIDGET (priv->drag_indicator));
     gtk_box_reorder_child (GTK_BOX (priv->box), GTK_WIDGET (icon), move_to);
@@ -844,7 +845,7 @@ static void drag_ended(TaskManager *manager, TaskIcon *icon)
     /* If it is a launcher the position in config should be adjusted too. */
     if (task_icon_is_launcher (icon))
     {
-      // get the updated list
+      /* get the updated list */
       childs = gtk_container_get_children (GTK_CONTAINER(priv->box));
       while(childs)
       {
@@ -873,7 +874,7 @@ static void drag_ended(TaskManager *manager, TaskIcon *icon)
 	      return;
       }
     }
-  //}
+  /*}*/
 
 }
 
@@ -904,7 +905,7 @@ static void drag_move(TaskManager *manager, gint x, gint y, TaskIcon *icon)
   else
     action = (double)y/size;
 
-  //if(action < 0.25)
+  /*if(action < 0.25)*/
   if(action < 0.5)
   {
     if(moved > move_to)
@@ -913,7 +914,7 @@ static void drag_move(TaskManager *manager, gint x, gint y, TaskIcon *icon)
     }
     gtk_widget_show(GTK_WIDGET(priv->drag_indicator));
   }
-  //else if(action > 0.25)
+  /*else if(action > 0.25)*/
   else if(action >= 0.5)
   {
     if(moved < move_to)
@@ -924,11 +925,12 @@ static void drag_move(TaskManager *manager, gint x, gint y, TaskIcon *icon)
   }
   else
   {
-    // TODO: FOR NOW DON'T HIDE THE DRAG_INDICATOR
-    // WHEN AWNICON SUPPORTS MULTIPLE WINDOWS IT SHOULD GET HIDDEN, 
-    // BECAUSE IT THEN WILL BE ADDED INTO THE AWNICON
-    // THIS WILL GET FIXED
-    //gtk_widget_hide(GTK_WIDGET(priv->drag_indicator));
+    /* TODO: FOR NOW DON'T HIDE THE DRAG_INDICATOR
+     * WHEN AWNICON SUPPORTS MULTIPLE WINDOWS IT SHOULD GET HIDDEN, 
+     * BECAUSE IT THEN WILL BE ADDED INTO THE AWNICON
+     * THIS WILL GET FIXED
+     */
+    /*gtk_widget_hide(GTK_WIDGET(priv->drag_indicator));*/
   }
 }
 

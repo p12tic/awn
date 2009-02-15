@@ -40,7 +40,7 @@ glow_effect(AwnEffectsAnimation * anim)
 
   awn_effects_redraw(anim->effects);
 
-  // check for repeating
+  /* check for repeating */
   gboolean top = awn_effect_check_top_effect(anim, NULL);
 
   if (top)
@@ -56,7 +56,7 @@ glow_effect(AwnEffectsAnimation * anim)
     {
       priv->glow_amount = 0.0;
       gboolean repeat = awn_effect_handle_repeating(anim);
-      return repeat;  // == FALSE
+      return repeat;  /* == FALSE */
     }
   }
 
@@ -107,14 +107,14 @@ glow_opening_effect(AwnEffectsAnimation * anim)
       priv->direction = AWN_EFFECT_DIR_DOWN;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
   if (priv->direction == AWN_EFFECT_DIR_NONE)
   {
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -154,14 +154,14 @@ glow_closing_effect(AwnEffectsAnimation * anim)
       priv->direction = AWN_EFFECT_DIR_DOWN;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
   if (priv->direction == AWN_EFFECT_DIR_NONE)
   {
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -197,7 +197,7 @@ glow_attention_effect(AwnEffectsAnimation * anim)
   else if (priv->glow_amount <= 0.0)
     priv->direction = AWN_EFFECT_SPOTLIGHT_ON;
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -207,7 +207,7 @@ glow_attention_effect(AwnEffectsAnimation * anim)
     priv->count = 0;
     priv->glow_amount = 0;
     priv->direction = AWN_EFFECT_DIR_UP;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 

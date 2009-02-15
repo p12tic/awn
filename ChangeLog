@@ -1,5 +1,45 @@
 2009-02-15  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-window.c:
+	* awn-applet-activation/main.c:
+	* bindings/python/awn.override:
+	* libawn/anims/awn-effect-bounce.c:
+	* libawn/anims/awn-effect-desaturate.c:
+	* libawn/anims/awn-effect-fade.c:
+	* libawn/anims/awn-effect-glow.c:
+	* libawn/anims/awn-effect-simple.c:
+	* libawn/anims/awn-effect-spotlight.c:
+	* libawn/anims/awn-effect-spotlight3d.c:
+	* libawn/anims/awn-effect-squish.c:
+	* libawn/anims/awn-effect-turn.c:
+	* libawn/anims/awn-effect-zoom.c:
+	* libawn/anims/awn-effects-shared.c:
+	* libawn/anims/awn-effects-shared.h:
+	* libawn/awn-applet-dialog.c:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-effects-ops-helpers.c:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-tooltip.c:
+	* libawn/egg/eggdesktopfile.c:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-background-3d.c:
+	* src/awn-background-flat.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	* tests/test-awn-effects.c:
+	Avoid using C++-style comments.
+
+2009-02-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-applet-dialog.c:
 	Remove duplicate function prototypes.
 

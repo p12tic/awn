@@ -105,7 +105,7 @@ task_window_set_property (GObject      *object,
 static void
 task_window_constructed (GObject *object)
 {
-  //TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;
+  /*TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;*/
 }
 
 static void
@@ -779,7 +779,7 @@ _get_pid (TaskWindow    *window)
   if (WNCK_IS_WINDOW (window->priv->window))
 	{
     value = wnck_window_get_pid (window->priv->window);
-		value = value ? value : -1; 		//if the pid is 0 return -1.  Bad wnck! Bad! 		
+		value = value ? value : -1; 		/* if the pid is 0 return -1.  Bad wnck! Bad! */
 	}
 	return value;  
 }

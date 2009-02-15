@@ -27,7 +27,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-// simple bounce effect based on sin function
+/* simple bounce effect based on sin function */
 gboolean
 bounce_effect(AwnEffectsAnimation * anim)
 {
@@ -43,7 +43,7 @@ bounce_effect(AwnEffectsAnimation * anim)
 
   priv->top_offset = sin(++priv->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -51,7 +51,7 @@ bounce_effect(AwnEffectsAnimation * anim)
   if (priv->count >= PERIOD)
   {
     priv->count = 0;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -71,13 +71,13 @@ bounce_hover_effect(AwnEffectsAnimation * anim)
       priv->icon_width / 3. : priv->icon_height / 3.;
   const gint PERIOD = 20;
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   priv->top_offset = sin(++priv->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
   if (priv->count == PERIOD/2)
   {
-    // suspend in middle
+    /* suspend in middle */
     if (awn_effect_check_top_effect(anim, NULL))
       return awn_effect_suspend_animation(anim, 
                                           (GSourceFunc)bounce_hover_effect);
@@ -88,7 +88,7 @@ bounce_hover_effect(AwnEffectsAnimation * anim)
   if (priv->count >= PERIOD)
   {
     priv->count = 0;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -126,7 +126,7 @@ bounce_opening_effect(AwnEffectsAnimation * anim)
       sin((++priv->count - PERIOD1) * M_PI / PERIOD2) * MAX_BOUNCE_OFFSET;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -135,7 +135,7 @@ bounce_opening_effect(AwnEffectsAnimation * anim)
   {
     priv->count = 0;
     priv->top_offset = 0;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 

@@ -133,19 +133,19 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   border = style->bg[GTK_STATE_SELECTED];
 
-  // Clear the background to transparent
+  /* Clear the background to transparent */
   cairo_set_source_rgba(cr, 1.0f, 1.0f, 1.0f, 0.0f);
 
   cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
 
   cairo_paint(cr);
 
-  // draw everything else over transparent background
+  /* draw everything else over transparent background */
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
   cairo_set_line_width(cr, 3.0);
 
-  // background shading
+  /* background shading */
   cairo_set_source_rgba(cr, bg.red / 65535.0,
                         bg.green / 65535.0,
                         bg.blue / 65535.0,
@@ -164,10 +164,10 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   cairo_stroke(cr);
 
-  // do some maths
+  /* do some maths */
   x = width / 2;
 
-  // draw arrow
+  /* draw arrow */
   cairo_set_source_rgba(cr, bg.red / 65535.0,
                         bg.green / 65535.0,
                         bg.blue / 65535.0,
@@ -179,7 +179,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   cairo_line_to(cr, x + 15, height - gap - BOR);
 
-  //cairo_line_to (cr, x-15, height - gap - BOR);
+  /*cairo_line_to (cr, x-15, height - gap - BOR);*/
   cairo_close_path(cr);
 
   cairo_fill_preserve(cr);
@@ -210,7 +210,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   cairo_stroke(cr);
 
-  // Clean up
+  /* Clean up */
   cairo_destroy(cr);
 
   awn_applet_dialog_position_reset(AWN_APPLET_DIALOG(widget));
@@ -256,7 +256,7 @@ on_title_expose(GtkWidget       *widget,
 
   border = style->bg[GTK_STATE_SELECTED];
 
-  // Clear the background to transparent
+  /* Clear the background to transparent */
   cairo_set_source_rgba(cr, 1.0f, 1.0f, 1.0f, 0.0f);
 
   cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
@@ -322,7 +322,7 @@ on_title_expose(GtkWidget       *widget,
 
   cairo_pattern_destroy(pat);
 
-  // Clean up
+  /* Clean up */
   cairo_destroy(cr);
 
   /* Propagate the signal */

@@ -252,9 +252,9 @@ _awn_plug_new(const gchar *path,
   if (g_module_symbol(module, "awn_applet_factory_init",
                       (gpointer *)&init_func))
   {
-    // create new applet
+    /* create new applet */
     applet = AWN_APPLET(awn_applet_new(uid, orient, height));
-    // send applet to factory method
+    /* send applet to factory method */
 
     if (!init_func(applet))
     {

@@ -167,7 +167,7 @@ task_icon_finalize (GObject *object)
 static void
 task_icon_constructed (GObject *object)
 {
-  //TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;
+  /*TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;*/
 
 }
 
@@ -292,8 +292,8 @@ task_icon_is_skip_taskbar (TaskIcon *icon)
 {
   g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
 
-  //if (TASK_IS_LAUNCHER_WINDOW (icon->priv->windows->data))
-  //  return FALSE;
+  /*if (TASK_IS_LAUNCHER_WINDOW (icon->priv->windows->data))
+    return FALSE;*/
 
   if (icon->priv->windows)
     return task_window_is_hidden (icon->priv->windows->data);
@@ -306,8 +306,8 @@ task_icon_is_in_viewport (TaskIcon *icon, WnckWorkspace *space)
 {
   g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
 
-  //if (TASK_IS_LAUNCHER_WINDOW (icon->priv->windows->data))
-  //  return TRUE;
+  /*if (TASK_IS_LAUNCHER_WINDOW (icon->priv->windows->data))
+    return TRUE;*/
 
   if (icon->priv->windows)
     return task_window_is_on_workspace (icon->priv->windows->data, space);
@@ -499,7 +499,7 @@ task_icon_is_launcher (TaskIcon      *icon)
 
   if (priv->windows)
   {
-    // For now do it this way ?!
+    /* For now do it this way ?! */
     if (TASK_IS_LAUNCHER (priv->windows->data))
       return TRUE;
   }
@@ -516,7 +516,7 @@ task_icon_get_launcher (TaskIcon      *icon)
 
   if (priv->windows)
   {
-    // For now do it this way ?!
+    /* For now do it this way ?! */
     if (TASK_IS_LAUNCHER (priv->windows->data))
       return TASK_LAUNCHER(priv->windows->data);
   }
@@ -575,7 +575,7 @@ task_icon_button_release_event (GtkWidget      *widget,
                                 GdkEventButton *event)
 {
   TaskIconPrivate *priv;
-  //GSList *w;
+  /*GSList *w;*/
   gint len;
 
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);

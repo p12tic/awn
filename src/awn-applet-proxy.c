@@ -331,7 +331,7 @@ on_plug_removed (AwnAppletProxy *proxy, gpointer user_data)
   g_signal_emit (proxy, _proxy_signals[APPLET_DELETED], 0, priv->uid);
 
   gtk_widget_hide (GTK_WIDGET (proxy));
-  // indicate that the applet crashed and allow restart
+  /* indicate that the applet crashed and allow restart */
   priv->running = FALSE;
   priv->crashed = TRUE;
   awn_throbber_set_text (AWN_THROBBER (priv->throbber),
@@ -350,7 +350,7 @@ on_child_exit (GPid pid, gint status, gpointer user_data)
   {
     AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE (user_data);
 
-    // FIXME: we could do something with the status var... nice error messages?!
+    /* FIXME: we could do something with the status var... nice error messages?! */
     /*
     switch (status)
     {
@@ -368,12 +368,13 @@ on_child_exit (GPid pid, gint status, gpointer user_data)
 
     awn_throbber_set_type (AWN_THROBBER (priv->throbber),
                            AWN_THROBBER_TYPE_SAD_FACE);
-    // we won't call gtk_widget_show - on_plug_removed does that
-    // and if the plug wasn't even added, the throbber widget is still visible
+    /* we won't call gtk_widget_show - on_plug_removed does that
+     * and if the plug wasn't even added, the throbber widget is still visible
+     */
     gtk_widget_queue_draw (priv->throbber);
   }
 
-  g_spawn_close_pid(pid); // doesn't do anything on UNIX, but let's have it
+  g_spawn_close_pid(pid); /* doesn't do anything on UNIX, but let's have it */
 }
 
 void
@@ -393,7 +394,7 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
 
   g_debug ("Loading Applet: %s %s", priv->path, priv->uid);
 
-  // FIXME: update tooltip with name of the applet?!
+  /* FIXME: update tooltip with name of the applet?! */
 
   /* Load the applet */
   screen = gtk_widget_get_screen (GTK_WIDGET (proxy));

@@ -93,7 +93,7 @@ static gboolean
 on_click (GtkWidget *widget, GdkEventButton *event, AwnIconBox *box)
 {
   switch (event->button) {
-    // left click > test progress pie
+    /* left click > test progress pie */
     case 1: {
       AwnIcon *icon = AWN_ICON(widget);
       float progress = awn_icon_get_progress(icon);
@@ -102,11 +102,11 @@ on_click (GtkWidget *widget, GdkEventButton *event, AwnIconBox *box)
       awn_icon_set_progress(icon, progress);
       break;
     }
-    // middle click > destroy AwnIcon
+    /* middle click > destroy AwnIcon */
     case 2:
       gtk_container_remove(GTK_CONTAINER(box), widget);
       break;
-    // right click > change orientation
+    /* right click > change orientation */
     case 3:
       orient++;
       if (orient > AWN_ORIENTATION_LEFT) orient = AWN_ORIENTATION_TOP;
@@ -128,7 +128,7 @@ pixbuf_icon (GtkWidget *parent)
   awn_icon_set_from_pixbuf (AWN_ICON (icon), pixbuf);
   awn_icon_set_tooltip_text (AWN_ICON (icon), "Pixbuf Icon");
 
-  // test the signals
+  /* test the signals */
   AwnEffects *fx = awn_icon_get_effects(AWN_ICON(icon));
   g_signal_connect(fx, "animation-start", (GCallback)anim_started, NULL);
   g_signal_connect(fx, "animation-end", (GCallback)anim_ended, NULL);

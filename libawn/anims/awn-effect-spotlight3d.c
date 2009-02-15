@@ -99,7 +99,7 @@ spotlight3D_hover_effect(AwnEffectsAnimation * anim)
 
   priv->count = ++prev_count;
 
-  // fix icon flickering
+  /* fix icon flickering */
   const gfloat MIN_WIDTH = 0.1;
 
   if (priv->width_mod < MIN_WIDTH)
@@ -111,12 +111,12 @@ spotlight3D_hover_effect(AwnEffectsAnimation * anim)
     priv->width_mod = 1.0;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   if (priv->count >= PERIOD)
   {
-    // suspend
+    /* suspend */
     if (awn_effect_check_top_effect(anim, NULL))
     {
       priv->width_mod = 1.0;
@@ -137,7 +137,7 @@ spotlight3D_hover_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
     priv->width_mod = 1.0;
     priv->flip = FALSE;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
 
     if (!repeat)
@@ -219,7 +219,7 @@ spotlight3D_effect(AwnEffectsAnimation * anim)
 
   priv->count = ++prev_count;
 
-  // fix icon flickering
+  /* fix icon flickering */
   const gfloat MIN_WIDTH = 0.1;
 
   if (priv->width_mod < MIN_WIDTH)
@@ -231,7 +231,7 @@ spotlight3D_effect(AwnEffectsAnimation * anim)
     priv->width_mod = 1.0;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -245,7 +245,7 @@ spotlight3D_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
     priv->width_mod = 1.0;
     priv->flip = FALSE;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
 
     if (!repeat)
@@ -323,7 +323,7 @@ spotlight3D_opening_effect(AwnEffectsAnimation * anim)
 
   priv->count = ++prev_count;
 
-  // fix icon flickering
+  /* fix icon flickering */
   const gfloat MIN_WIDTH = 0.1;
 
   if (priv->width_mod < MIN_WIDTH)
@@ -335,7 +335,7 @@ spotlight3D_opening_effect(AwnEffectsAnimation * anim)
     priv->width_mod = 1.0;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -352,7 +352,7 @@ spotlight3D_opening_effect(AwnEffectsAnimation * anim)
     priv->spotlight_alpha = 0.0;
     priv->glow_amount = 0.0;
     priv->clip = FALSE;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -427,7 +427,7 @@ spotlight3D_closing_effect(AwnEffectsAnimation * anim)
 
     priv->icon_depth = 10.00 * (1 - priv->width_mod);
 
-    // fix icon flickering
+    /* fix icon flickering */
     const gfloat MIN_WIDTH = 0.1;
 
     if (priv->width_mod < MIN_WIDTH)
@@ -460,7 +460,7 @@ spotlight3D_closing_effect(AwnEffectsAnimation * anim)
 
   priv->glow_amount = priv->spotlight_alpha;
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -470,7 +470,7 @@ spotlight3D_closing_effect(AwnEffectsAnimation * anim)
     priv->spotlight_alpha = 0;
     priv->glow_amount = 0;
     priv->direction = AWN_EFFECT_DIR_NONE;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
 
     if (!repeat)

@@ -67,7 +67,7 @@ struct _AwnPanelPrivate
 
   gint autohide_type;
 
-  // for masks updating
+  /* for masks updating */
   gint old_width;
   gint old_height;
   gint old_orient;
@@ -84,7 +84,7 @@ struct _AwnPanelPrivate
   gboolean autohide_inhibited;
 };
 
-// FIXME: this timeout should be configurable I guess
+/* FIXME: this timeout should be configurable I guess */
 #define AUTOHIDE_DELAY 1000
 
 enum 
@@ -402,11 +402,11 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
 
   if (!priv->bg || !AWN_IS_BACKGROUND (priv->bg)) return;
 
-  // refresh the padding
+  /* refresh the padding */
   awn_background_padding_request (priv->bg, priv->orient,
                                   &top, &bottom, &left, &right);
 
-  // never actually set the top padding, its only internal constant
+  /* never actually set the top padding, its only internal constant */
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
@@ -451,7 +451,7 @@ void awn_panel_get_applet_rect (AwnPanel *panel,
 
   gint paintable_size = priv->offset + priv->size + priv->extra_padding;
 
-  // this should work for both composited and non-composited
+  /* this should work for both composited and non-composited */
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
@@ -500,7 +500,7 @@ void awn_panel_get_draw_rect (AwnPanel *panel,
   if (!width) width = GTK_WIDGET (panel)->allocation.width;
   if (!height) height = GTK_WIDGET (panel)->allocation.height;
 
-  // if we're not composited the whole window is drawable
+  /* if we're not composited the whole window is drawable */
   if (priv->composited == FALSE)
   {
     area->x = 0; area->y = 0;
@@ -548,14 +548,14 @@ void awn_panel_get_draw_rect (AwnPanel *panel,
 static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
                                            gboolean whole_window)
 {
-  // returns TRUE if mouse is in the window / or on the edge (if !whole_window)
+  /* returns TRUE if mouse is in the window / or on the edge (if !whole_window) */
   g_return_val_if_fail(AWN_IS_PANEL(panel), FALSE);
 
   GtkWidget *widget = GTK_WIDGET (panel);
   AwnPanelPrivate *priv = panel->priv;
 
   gint x, y, window_x, window_y;
-  // FIXME: probably needs some love to work on multiple monitors
+  /* FIXME: probably needs some love to work on multiple monitors */
   gdk_display_get_pointer (gdk_display_get_default (), NULL, &x, &y, NULL);
   gdk_window_get_root_origin (widget->window, &window_x, &window_y);
 
@@ -566,7 +566,7 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
 
   if (!whole_window)
   {
-    // edge detection
+    /* edge detection */
     switch (priv->orient)
     {
       case AWN_ORIENTATION_TOP:
@@ -630,7 +630,7 @@ alpha_blend_hide (gpointer data)
   if (priv->hide_counter == 20)
   {
     priv->hiding_timer_id = 0;
-    priv->autohide_always_visible = FALSE; // see the note in start function
+    priv->autohide_always_visible = FALSE; /* see the note in start function */
     gtk_widget_hide (GTK_WIDGET (panel));
     gdk_window_set_opacity (GTK_WIDGET(panel)->window, 1.0);
     return FALSE;
@@ -646,10 +646,11 @@ alpha_blend_start (AwnPanel *panel, gpointer data)
   priv->hide_counter = 0;
   priv->hiding_timer_id = g_timeout_add (40, alpha_blend_hide, panel);
 
-  // A hack: we will set autohide_always_visible ourselves
-  // when the animation's internal timer expires, so that while the window is
-  // in the process of hiding it can be interrupted by hovering over the window
-  // itself, but when it's hidden user needs to touch the edge
+  /* A hack: we will set autohide_always_visible ourselves
+   * when the animation's internal timer expires, so that while the window is
+   * in the process of hiding it can be interrupted by hovering over the window
+   * itself, but when it's hidden user needs to touch the edge
+   */
   return TRUE;
 }
 
@@ -671,7 +672,7 @@ alpha_blend_end (AwnPanel *panel, gpointer data)
 /* Auto-hide keep below method */
 static gboolean keep_below_start (AwnPanel *panel, gpointer data)
 {
-  // wow, setting keep_below makes the border appear and unsticks us
+  /* wow, setting keep_below makes the border appear and unsticks us */
   gtk_window_set_decorated (GTK_WINDOW (panel), FALSE);
   gtk_window_stick (GTK_WINDOW (panel));
 
@@ -735,7 +736,7 @@ poll_mouse_position (gpointer data)
   if (awn_panel_check_mouse_pos (panel,
         !priv->autohide_started || priv->autohide_always_visible))
   {
-    // we are on the window or its edge
+    /* we are on the window or its edge */
     if (priv->autohide_start_timer_id)
     {
       g_source_remove (priv->autohide_start_timer_id);
@@ -750,10 +751,10 @@ poll_mouse_position (gpointer data)
   }
   else if (GTK_WIDGET_MAPPED (widget))
   {
-    // mouse is away, panel should start hiding
+    /* mouse is away, panel should start hiding */
     if (priv->autohide_start_timer_id == 0  && !priv->autohide_started)
     {
-      // the timeout will emit autohide-start
+      /* the timeout will emit autohide-start */
       priv->autohide_start_timer_id =
         g_timeout_add (AUTOHIDE_DELAY, autohide_start_timeout, panel);
     }
@@ -956,8 +957,8 @@ awn_panel_init (AwnPanel *panel)
   gtk_container_add (GTK_CONTAINER (priv->eventbox), priv->alignment);
   gtk_widget_show (priv->alignment);
 
-  //g_signal_connect (priv->eventbox, "expose-event",
-  //                  G_CALLBACK (on_eb_expose), priv->alignment);
+  /*g_signal_connect (priv->eventbox, "expose-event",
+                    G_CALLBACK (on_eb_expose), priv->alignment);*/
   g_signal_connect (priv->eventbox, "realize",
                     G_CALLBACK(awn_utils_make_transparent), NULL);
 
@@ -1093,7 +1094,7 @@ awn_panel_update_masks (GtkWidget *panel,
   if (!shaped_bitmap)
     return;
 
-  // clear the bitmap
+  /* clear the bitmap */
   cr = gdk_cairo_create (shaped_bitmap);
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (cr);
@@ -1116,7 +1117,7 @@ awn_panel_update_masks (GtkWidget *panel,
     }
   }
 
-  // combine with applet's eventbox (with proper dimensions)
+  /* combine with applet's eventbox (with proper dimensions) */
   cairo_set_operator (cr, CAIRO_OPERATOR_ADD);
   cairo_set_source_rgb (cr, 1.0f, 1.0f, 1.0f);
   awn_panel_get_applet_rect (AWN_PANEL (panel), &applet_rect,
@@ -1296,15 +1297,16 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
 
   cairo_destroy (cr);
 
-//#define DEBUG_DRAW_AREA
-//#define DEBUG_APPLET_AREA
+/*#define DEBUG_DRAW_AREA
+#define DEBUG_APPLET_AREA*/
 
 #ifdef DEBUG_DRAW_AREA
   if (1)
   {
-    // Calling gdk_draw_rectangle (window, gc, FALSE, 0, 0, 20, 20) results
-    // in an outlined rectangle with corners at (0, 0), (0, 20), (20, 20),
-    // and (20, 0), which makes it 21 pixels wide and 21 pixels high.
+    /* Calling gdk_draw_rectangle (window, gc, FALSE, 0, 0, 20, 20) results
+     * in an outlined rectangle with corners at (0, 0), (0, 20), (20, 20),
+     * and (20, 0), which makes it 21 pixels wide and 21 pixels high.
+     */
     GdkRectangle a;
     GdkColor color;
 
@@ -1315,7 +1317,7 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     gdk_color_parse ("#0F0", &color);
     gdk_gc_set_rgb_fg_color (gc, &color);
     gdk_draw_rectangle (widget->window, gc, FALSE, a.x, a.y,
-                        a.width-1, a.height-1); // minus 1 because ^^
+                        a.width-1, a.height-1); /* minus 1 because ^^ */
     g_object_unref (gc);
   }
 #endif
@@ -1333,7 +1335,7 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     gdk_color_parse ("#00F", &color);
     gdk_gc_set_rgb_fg_color (gc, &color);
     gdk_draw_rectangle (widget->window, gc, FALSE, a.x, a.y,
-                        a.width-1, a.height-1); // minus 1 because ^^
+                        a.width-1, a.height-1); /* minus 1 because ^^ */
     g_object_unref (gc);
   }
 #endif
@@ -1454,7 +1456,7 @@ on_mouse_out (GtkWidget *widget, GdkEventCrossing *event)
 
   if (priv->autohide_start_timer_id == 0  && !priv->autohide_started)
   {
-    // the timeout will emit autohide-start
+    /* the timeout will emit autohide-start */
     priv->autohide_start_timer_id =
       g_timeout_add (AUTOHIDE_DELAY, autohide_start_timeout, panel);
   }
@@ -1485,7 +1487,7 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
 
   if (type == AUTOHIDE_TYPE_NONE)
   {
-    // remove the timer if autohide if off
+    /* remove the timer if autohide if off */
     if (priv->mouse_poll_timer_id)
     {
       g_source_remove(priv->mouse_poll_timer_id);
@@ -1494,7 +1496,7 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
   }
   else
   {
-    // run mouse position polling timer
+    /* run mouse position polling timer */
     if (priv->mouse_poll_timer_id == 0)
     {
       priv->mouse_poll_timer_id = 
@@ -1514,10 +1516,11 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
     end_handler_id = 0;
   }
 
-  // for all autohide types, just connect to autohide-start & end signals
-  // and do what you want to do in the callbacks
-  // The autohide-start should return FALSE if un-hiding requires to touch
-  // the display edge, and TRUE if it should react on whole AWN window
+  /* for all autohide types, just connect to autohide-start & end signals
+   * and do what you want to do in the callbacks
+   * The autohide-start should return FALSE if un-hiding requires to touch
+   * the display edge, and TRUE if it should react on whole AWN window
+   */
   switch (priv->autohide_type)
   {
     case AUTOHIDE_TYPE_KEEP_BELOW:
@@ -1549,7 +1552,7 @@ awn_panel_set_style (AwnPanel *panel, gint style)
   AwnPanelPrivate *priv = panel->priv;
   AwnBackground *old_bg = NULL;
   
-  // if the style hasn't changed and the background exist everything is done.
+  /* if the style hasn't changed and the background exist everything is done. */
   if(priv->style == style && priv->bg) return;
 
   old_bg = priv->bg;
@@ -1586,8 +1589,9 @@ awn_panel_set_panel_mode (AwnPanel *panel, gboolean  panel_mode)
 
   if(priv->panel_mode)
   {
-    //Check if panel is already realized. So it has an GdkWindow.
-    //If it's not, the strut will get set when the position and dimension get set. 
+    /* Check if panel is already realized. So it has an GdkWindow.
+     * If it's not, the strut will get set when the position and dimension get set. 
+     */
     if(GTK_WIDGET_REALIZED(panel))
       awn_panel_set_strut(panel);
   }

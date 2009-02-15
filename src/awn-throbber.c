@@ -76,13 +76,14 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
   AwnThrobberPrivate *priv = AWN_THROBBER (widget)->priv;
   cairo_t *cr;
 
-  // clip the drawing region, nvidia likes it
+  /* clip the drawing region, nvidia likes it */
   cr = awn_effects_cairo_create_clipped (priv->effects, event->region);
 
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
-  // TODO: translate to event->area
-  // we'll paint to [0,0] - [1,1], so scale's needed
+  /* TODO: translate to event->area
+   * we'll paint to [0,0] - [1,1], so scale's needed
+   */
   cairo_scale(cr, priv->size, priv->size);
 
   switch (priv->type)
@@ -91,7 +92,7 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
     {
       const gdouble RADIUS = 0.0625;
       const gdouble DIST = 0.3;
-      const gdouble OTHER = DIST * 0.707106781; // sqrt(2)/2
+      const gdouble OTHER = DIST * 0.707106781; /* sqrt(2)/2 */
       const gint COUNT = 8;
       const gint counter = priv->counter;
 
@@ -135,7 +136,7 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
     {
       const gfloat EYE_SIZE = 0.04;
       gfloat EYE_POS_X, EYE_POS_Y;
-      // sad face
+      /* sad face */
       cairo_set_source_rgb(cr, 0.8, 0.8, 0.8);
       cairo_set_line_width(cr, 0.03);
 
@@ -144,7 +145,7 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
 
       EYE_POS_X = 0.25;
       EYE_POS_Y = 0.30;
-      // left eye
+      /* left eye */
       cairo_rectangle(cr, EYE_POS_X, EYE_POS_Y, EYE_SIZE, EYE_SIZE);
       cairo_fill(cr);
       cairo_rectangle(cr, EYE_POS_X, EYE_POS_Y + 2*EYE_SIZE, EYE_SIZE, EYE_SIZE);
@@ -157,7 +158,7 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
       cairo_fill(cr);
 
       EYE_POS_X = 0.65;
-      // right eye
+      /* right eye */
       cairo_rectangle(cr, EYE_POS_X, EYE_POS_Y, EYE_SIZE, EYE_SIZE);
       cairo_fill(cr);
       cairo_rectangle(cr, EYE_POS_X, EYE_POS_Y + 2*EYE_SIZE, EYE_SIZE, EYE_SIZE);
@@ -169,13 +170,13 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
       cairo_rectangle(cr, EYE_POS_X + 2*EYE_SIZE, EYE_POS_Y + 2*EYE_SIZE, EYE_SIZE, EYE_SIZE);
       cairo_fill(cr);
 
-      // nose
+      /* nose */
       cairo_curve_to(cr, 0.45, 0.48,
                          0.5, 0.53,
                          0.55, 0.48);
       cairo_stroke(cr);
 
-      // mouth
+      /* mouth */
       cairo_curve_to(cr, 0.25, 0.73,
                          0.5, 0.62,
                          0.77, 0.77);
@@ -186,7 +187,7 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
       break;
   }
 
-  // let effects know we're finished
+  /* let effects know we're finished */
   awn_effects_cairo_destroy(priv->effects);
 
   return TRUE;
@@ -220,7 +221,7 @@ awn_throbber_make_transparent (GtkWidget *widget, gpointer data)
   awn_utils_make_transparent (widget);
   if (gtk_widget_is_composited(widget))
   {
-    // optimize the render speed
+    /* optimize the render speed */
     g_object_set(priv->effects,
                  "no-clear", TRUE,
                  "indirect-paint", FALSE, NULL);
@@ -296,9 +297,10 @@ awn_throbber_init (AwnThrobber *throbber)
   priv->tooltip = awn_tooltip_new_for_widget (GTK_WIDGET (throbber));
 
   priv->effects = awn_effects_new_for_widget (GTK_WIDGET (throbber));
-  // FIXME: move the prop binding from AwnEffects to AwnIcon, we don't want
-  //  any notifications from the ConfigClient (orient and size is changed when
-  //  properties of AwnAppletProxy change), well except offset
+  /* FIXME: move the prop binding from AwnEffects to AwnIcon, we don't want
+   * any notifications from the ConfigClient (orient and size is changed when
+   * properties of AwnAppletProxy change), well except offset
+   */
   g_object_set (priv->effects, "effects", 0,
                 "reflection-visible", FALSE, NULL);
 

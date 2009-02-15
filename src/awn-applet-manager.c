@@ -287,7 +287,7 @@ awn_applet_manager_set_size (AwnAppletManager *manager,
 
   priv->size = size;
 
-  // update size on all running applets (if they'd crash)
+  /* update size on all running applets (if they'd crash) */
   g_hash_table_foreach(priv->applets,
                        (GHFunc)awn_manager_set_applets_size, manager);
 }
@@ -332,7 +332,7 @@ awn_applet_manager_set_orient (AwnAppletManager *manager,
       break;
   }
 
-  // update orientation on all running applets (if they'd crash)
+  /* update orientation on all running applets (if they'd crash) */
   g_hash_table_foreach(priv->applets,
                        (GHFunc)awn_manager_set_applets_orient, manager);
 }
@@ -491,8 +491,8 @@ awn_applet_manager_set_real_size (AwnAppletManager *manager,
   children = gtk_container_get_children (GTK_CONTAINER (manager));
   for (c = children; c; c = c->next)
   {
-    //GtkWidget *widget = c->data;
-    //gtk_widget_set_size_request (widget, width, height);
+    /*GtkWidget *widget = c->data;
+    gtk_widget_set_size_request (widget, width, height);*/
   }
   g_list_free (children);
 }
@@ -511,7 +511,7 @@ awn_applet_manager_handle_applet_size_request (AwnAppletManager *manager,
   g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
   priv = manager->priv;
 
-  // make sure noone calls this and afterwards FIXME: remove
+  /* make sure noone calls this and afterwards FIXME: remove */
   g_assert_not_reached();
 
   /* See if the applet already exists */

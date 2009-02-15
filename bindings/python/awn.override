@@ -560,9 +560,10 @@ _wrap_awn_effects_cairo_create(PyGObject *self)
     cairo_t *ret = awn_effects_cairo_create(AWN_EFFECTS(self->obj));
 
     cairo_reference(ret);
-    // bug in pygtk-codegen > sets second parameter to NULL in call to
-    // PycairoContext_FromContext, which causes segmentation error in newer
-    // versions of pycairo
+    /* bug in pygtk-codegen > sets second parameter to NULL in call to
+     * PycairoContext_FromContext, which causes segmentation error in newer
+     * versions of pycairo
+     */
     return PycairoContext_FromContext(ret, &PycairoContext_Type, NULL);
 }
 %%
@@ -587,8 +588,9 @@ _wrap_awn_effects_cairo_create_clipped(PyGObject *self, PyObject *args, PyObject
     ret = awn_effects_cairo_create_clipped(AWN_EFFECTS(self->obj), region);
 
     cairo_reference(ret);
-    // bug in pygtk-codegen > sets second parameter to NULL in call to
-    // PycairoContext_FromContext, which causes segmentation error in newer
-    // versions of pycairo
+    /* bug in pygtk-codegen > sets second parameter to NULL in call to
+     * PycairoContext_FromContext, which causes segmentation error in newer
+     * versions of pycairo
+     */
     return PycairoContext_FromContext(ret, &PycairoContext_Type, NULL);
 }

@@ -815,7 +815,7 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
                                   priv->applet_name,
                                   suffix);
   }
-  else //scope == SCOPE_AWN_THEME
+  else /* scope == SCOPE_AWN_THEME */
   {
     base_name = g_strdup_printf ("%s.%s", 
                                  priv->icon_names[priv->cur_icon],

@@ -32,7 +32,7 @@
 /* The pixels to draw the side of the panel*/
 #define SIDE_SPACE 4
 
-// Some defines for debugging
+/* Some defines for debugging */
 #define DEBUG_DRAW_INTERNAL_BORDER_BOTTOM     TRUE
 #define DEBUG_DRAW_EXTERNAL_BORDER_BOTTOM     TRUE
 #define DEBUG_DRAW_SIDE                       TRUE
@@ -42,7 +42,7 @@
 
 G_DEFINE_TYPE (AwnBackground3d, awn_background_3d, AWN_TYPE_BACKGROUND)
 
-// FORWARDS
+/* FORWARDS */
 static void awn_background_3d_padding_request (AwnBackground *bg,
                                                AwnOrientation orient,
                                                guint *padding_top,
@@ -278,7 +278,7 @@ draw_top_bottom_background (AwnBackground  *bg,
 
 #if DEBUG_DRAW_SIDE
   /* draw the side */
-  //TODO: if a side has no rounded corners, the border should be drawn.
+  /* TODO: if a side has no rounded corners, the border should be drawn. */
   pat = cairo_pattern_create_linear (0, 0, 0, height);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 
                                      bg->g_step_1.red,
@@ -369,7 +369,7 @@ void awn_background_3d_padding_request (AwnBackground *bg,
                                         guint *padding_left,
                                         guint *padding_right)
 {
-  // FIXME, pleeeeeease!
+  /* FIXME, pleeeeeease! */
   switch (orient)
   {
     case AWN_ORIENTATION_TOP:
