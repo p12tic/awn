@@ -51,11 +51,6 @@ struct _AwnAppletDialogPrivate
   gint offset;
 };
 
-/* PRIVATE CLASS METHODS */
-static void awn_applet_dialog_class_init(AwnAppletDialogClass *klass);
-static void awn_applet_dialog_init(AwnAppletDialog *dialog);
-/*static void awn_applet_dialog_finalize(GObject *obj); */
-
 static void
 _on_alpha_screen_changed(GtkWidget* pWidget,
                          GdkScreen* pOldScreen,
