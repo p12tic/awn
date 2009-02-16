@@ -1391,6 +1391,8 @@ awn_panel_set_offset  (AwnPanel *panel,
   
   priv->offset = offset;
 
+  awn_panel_refresh_padding (panel, NULL);
+
   gtk_widget_queue_resize (GTK_WIDGET (panel));
 }
 

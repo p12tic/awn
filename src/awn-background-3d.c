@@ -55,6 +55,8 @@ static void awn_background_3d_draw (AwnBackground  *bg,
                                     AwnOrientation  orient,
                                     GdkRectangle   *area);
 
+static void awn_background_3d_bar_angle_changed (AwnBackground *bg);
+
 
 static void
 awn_background_3d_class_init (AwnBackground3dClass *klass)
@@ -70,7 +72,7 @@ awn_background_3d_class_init (AwnBackground3dClass *klass)
 static void
 awn_background_3d_init (AwnBackground3d *bg)
 {
-  ;
+  g_signal_connect(bg, "notify::panel-angle", G_CALLBACK(awn_background_3d_bar_angle_changed), NULL);
 }
 
 AwnBackground * 
@@ -85,6 +87,18 @@ awn_background_3d_new (AwnConfigClient *client, AwnPanel *panel)
   return bg;
 }
 
+/**
+ * awn_background_3d_bar_angle_changed:
+ * @param bg: AwnBackground
+ * 
+ * This function get's called when the bar_angle has changed.
+ * It asks the awn_background to emit a signal that the padding has changed.
+ */
+static void 
+awn_background_3d_bar_angle_changed (AwnBackground *bg)
+{
+  awn_background_emit_padding_changed(bg);
+}
 
 /**
  * apply_perspective_x:
@@ -361,32 +375,54 @@ draw_top_bottom_background (AwnBackground  *bg,
 
 }
 
-static
-void awn_background_3d_padding_request (AwnBackground *bg,
-                                        AwnOrientation orient,
-                                        guint *padding_top,
-                                        guint *padding_bottom,
-                                        guint *padding_left,
-                                        guint *padding_right)
+/**
+ * awn_background_3d_padding_request:
+ * @param bg: AwnBackground
+ * @param orient: the orientation of the bar
+ * @param padding_top: the top padding 
+ * @param padding_bottom: the bottom padding
+ * @param padding_left: the left padding
+ * @param padding_right: the right padding
+ *
+ * Gives back the padding the background needs for drawing.
+ * The values get returned through &padding_top, &padding_bottom,
+ * &padding_left and &padding_right.
+ */
+static void 
+awn_background_3d_padding_request (AwnBackground *bg,
+                                   AwnOrientation orient,
+                                   guint *padding_top,
+                                   guint *padding_bottom,
+                                   guint *padding_left,
+                                   guint *padding_right)
 {
-  /* FIXME, pleeeeeease! */
+  gint offset, size;
+  guint padding;
+  g_object_get (bg->panel, "offset", &offset, NULL);
+  g_object_get (bg->panel, "size", &size, NULL);
+
+  if(offset > size)
+    padding = (size+offset)/2/tan((90-bg->panel_angle)*M_PI/180);
+  else
+    padding = offset/tan((90-bg->panel_angle)*M_PI/180);
+
   switch (orient)
   {
     case AWN_ORIENTATION_TOP:
-      *padding_top  = 4; *padding_bottom = 0;
-      *padding_left = 20; *padding_right  = 20;
+      *padding_top  = SIDE_SPACE+2; *padding_bottom = 0;
+      *padding_left = padding; *padding_right = padding;
       break;
     case AWN_ORIENTATION_BOTTOM:
-      *padding_top  = 0; *padding_bottom = 4;
-      *padding_left = 20; *padding_right  = 20;
+      *padding_top  = 0; *padding_bottom = SIDE_SPACE+2;
+      *padding_left = padding; *padding_right = padding;
       break;
     case AWN_ORIENTATION_LEFT:
-      *padding_top  = 20; *padding_bottom = 20;
-      *padding_left = 4; *padding_right  = 0;
+      *padding_top  = padding; *padding_bottom = padding;
+      *padding_left = SIDE_SPACE+2; *padding_right = 0;
       break;
     case AWN_ORIENTATION_RIGHT:
-      *padding_top  = 20; *padding_bottom = 20;
-      *padding_left = 0; *padding_right  = 4;
+      *padding_top  = padding; *padding_bottom = padding;
+      *padding_left = 0; *padding_right = SIDE_SPACE+2;
       break;
     default:
       break;
