@@ -72,8 +72,6 @@ struct _AwnPanelPrivate
   gint old_height;
   gint old_orient;
 
-  guint extra_padding;
-
   gint hide_counter;
   guint hiding_timer_id;
 
@@ -374,23 +372,28 @@ awn_panel_size_request (GtkWidget *widget, GtkRequisition *requisition)
 
   GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
   if (!GTK_IS_WIDGET (child))
+  {
+    requisition->width  = 1;
+    requisition->height = 1;
     return;
+  }
 
   gtk_widget_size_request (child, requisition);
 
-  switch (priv->orient)
+  if (priv->composited)
   {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
-      requisition->height = priv->composited ? priv->offset + priv->size*2 :
-        priv->size + priv->offset + priv->extra_padding;
-      break;
-    case AWN_ORIENTATION_LEFT:
-    case AWN_ORIENTATION_RIGHT:
-    default:
-      requisition->width = priv->composited ? priv->offset + priv->size*2 :
-        priv->size + priv->offset + priv->extra_padding;
-      break;
+    switch (priv->orient)
+    {
+      case AWN_ORIENTATION_TOP:
+      case AWN_ORIENTATION_BOTTOM:
+        requisition->height += priv->size;
+        break;
+      case AWN_ORIENTATION_LEFT:
+      case AWN_ORIENTATION_RIGHT:
+      default:
+        requisition->width += priv->size;
+        break;
+    }
   }
 }
 
@@ -406,26 +409,6 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
   awn_background_padding_request (priv->bg, priv->orient,
                                   &top, &bottom, &left, &right);
 
-  /* never actually set the top padding, its only internal constant */
-  switch (priv->orient)
-  {
-    case AWN_ORIENTATION_TOP:
-      priv->extra_padding = bottom + top;
-      bottom = 0;
-      break;
-    case AWN_ORIENTATION_BOTTOM:
-      priv->extra_padding = bottom + top;
-      top = 0;
-      break;
-    case AWN_ORIENTATION_LEFT:
-      priv->extra_padding = left + right;
-      right = 0;
-      break;
-    case AWN_ORIENTATION_RIGHT:
-      priv->extra_padding = left + right;
-      left = 0;
-      break;
-  }
   gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment),
                              top, bottom, left, right);
 }
@@ -445,16 +428,19 @@ void awn_panel_get_applet_rect (AwnPanel *panel,
   if (!width) width = GTK_WIDGET (panel)->allocation.width;
   if (!height) height = GTK_WIDGET (panel)->allocation.height;
 
+  gint paintable_size;
   guint top, bottom, left, right;
   gtk_alignment_get_padding (GTK_ALIGNMENT (priv->alignment),
                              &top, &bottom, &left, &right);
 
-  gint paintable_size = priv->offset + priv->size + priv->extra_padding;
+  GtkRequisition requisition;
+  gtk_widget_get_child_requisition (GTK_WIDGET (priv->eventbox), &requisition);
 
   /* this should work for both composited and non-composited */
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
+      paintable_size = requisition.height;
       area->x = left;
       area->y = top;
       area->width = width - left - right;
@@ -462,14 +448,16 @@ void awn_panel_get_applet_rect (AwnPanel *panel,
       break;
 
     case AWN_ORIENTATION_BOTTOM:
+      paintable_size = requisition.height;
       area->x = left;
-      area->y = height - paintable_size + priv->extra_padding - bottom;
+      area->y = height - paintable_size + top;
       area->width = width - left - right;
       area->height = paintable_size - bottom;
       break;
 
     case AWN_ORIENTATION_RIGHT:
-      area->x = width - paintable_size + priv->extra_padding - right;
+      paintable_size = requisition.width;
+      area->x = width - paintable_size + left;
       area->y = top;
       area->width = paintable_size - right;
       area->height = height - top - bottom;
@@ -477,6 +465,7 @@ void awn_panel_get_applet_rect (AwnPanel *panel,
 
     case AWN_ORIENTATION_LEFT:
     default:
+      paintable_size = requisition.width;
       area->x = left;
       area->y = top;
       area->width = paintable_size - left;
@@ -508,14 +497,14 @@ void awn_panel_get_draw_rect (AwnPanel *panel,
     return;
   }
 
-  gint paintable_size = priv->offset + priv->size + priv->extra_padding;
+  gint paintable_size;
+  GtkRequisition requisition;
+  gtk_widget_get_child_requisition (GTK_WIDGET (priv->eventbox), &requisition);
 
   switch (priv->orient)
   {
-    /* if panel is composited, it's size is priv->size*2+priv->offset,
-     *  otherwise priv->size+priv->offset
-     */
     case AWN_ORIENTATION_TOP:
+      paintable_size = requisition.height;
       area->x = 0;
       area->y = 0;
       area->width = width;
@@ -523,6 +512,7 @@ void awn_panel_get_draw_rect (AwnPanel *panel,
       break;
 
     case AWN_ORIENTATION_BOTTOM:
+      paintable_size = requisition.height;
       area->x = 0;
       area->y = height - paintable_size;
       area->width = width;
@@ -530,6 +520,7 @@ void awn_panel_get_draw_rect (AwnPanel *panel,
       break;
 
     case AWN_ORIENTATION_RIGHT:
+      paintable_size = requisition.width;
       area->x = width - paintable_size;
       area->y = 0;
       area->width = paintable_size;
@@ -538,6 +529,7 @@ void awn_panel_get_draw_rect (AwnPanel *panel,
 
     case AWN_ORIENTATION_LEFT:
     default:
+      paintable_size = requisition.width;
       area->x = 0;
       area->y = 0;
       area->width = paintable_size;
@@ -1297,8 +1289,10 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
 
   cairo_destroy (cr);
 
-/*#define DEBUG_DRAW_AREA
-#define DEBUG_APPLET_AREA*/
+/*
+#define DEBUG_DRAW_AREA
+#define DEBUG_APPLET_AREA
+*/
 
 #ifdef DEBUG_DRAW_AREA
   if (1)
@@ -1615,29 +1609,27 @@ awn_panel_set_strut (AwnPanel *panel)
   gtk_window_get_size (GTK_WINDOW (panel), &width, &height);
   gtk_window_get_position (GTK_WINDOW (panel), &x, &y);
 
+  GtkRequisition requisition;
+  gtk_widget_get_child_requisition (GTK_WIDGET (priv->eventbox), &requisition);
+
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
-      strut_start = x;
-      strut_end = x + width;
-      break;
-    case AWN_ORIENTATION_RIGHT:
-      strut_start = y;
-      strut_end = y + height;
-      break;
     case AWN_ORIENTATION_BOTTOM:
       strut_start = x;
       strut_end = x + width;
+      strut = requisition.height;
       break;
+    case AWN_ORIENTATION_RIGHT:
     case AWN_ORIENTATION_LEFT:
       strut_start = y;
       strut_end = y + height;
+      strut = requisition.width;
       break;
     default:
       g_assert (0);
   }
 
-  strut = priv->offset + priv->size + priv->extra_padding;
   xutils_set_strut ((GTK_WIDGET (panel))->window, priv->orient, strut, strut_start, strut_end);
 }
 
