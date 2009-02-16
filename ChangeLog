@@ -1,5 +1,10 @@
 2009-02-16  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-effects-ops-helpers.c:
+	Remove dead code.
+
+2009-02-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* .bzrignore:
 	Ignore m4 files brought in by the autogen script.
 
