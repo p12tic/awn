@@ -41,9 +41,6 @@ typedef enum
   AWN_EFFECT_DESATURATE
 } AwnEffect;
 
-// FIXME: eventually make this a ratio
-#define ACTIVE_RECT_PADDING 3
-
 /* GObject stuff */
 #define AWN_TYPE_EFFECTS awn_effects_get_type()
 

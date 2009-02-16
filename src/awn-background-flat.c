@@ -202,7 +202,7 @@ void awn_background_flat_padding_request (AwnBackground *bg,
                                           guint *padding_right)
 {
   #define SIDE_PADDING 6
-  #define TOP_PADDING 1
+  #define TOP_PADDING 4
   switch (orient)
   {
     case AWN_ORIENTATION_TOP:

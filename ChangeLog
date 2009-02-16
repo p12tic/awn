@@ -1,5 +1,9 @@
 2009-02-16  Michal Hruby <michal.mhr@gmail.com>
 
+	Reverted last commit, it caused more problems than it solved.
+
+2009-02-16  Michal Hruby <michal.mhr@gmail.com>
+
 	* libawn/awn-effects-ops-new.c:
 	* libawn/awn-effects.c:
 	* libawn/awn-effects.h:

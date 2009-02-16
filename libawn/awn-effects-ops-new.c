@@ -261,6 +261,7 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
                                    gpointer user_data
                                    )
 {
+  #define PADDING 3
   AwnEffectsPrivate *priv = fx->priv;
 
   if (fx->is_active || priv->simple_rect) {
@@ -296,9 +297,9 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
       } else {
         cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
       }
-      awn_cairo_rounded_rect (cr, x-ACTIVE_RECT_PADDING, y-ACTIVE_RECT_PADDING,
-                              priv->icon_width+(2*ACTIVE_RECT_PADDING),
-                              priv->icon_height+(2*ACTIVE_RECT_PADDING),
+      awn_cairo_rounded_rect (cr, x-PADDING, y-PADDING,
+                              priv->icon_width+(2*PADDING),
+                              priv->icon_height+(2*PADDING),
                               10.0, ROUND_ALL);
       cairo_fill (cr);
     } else {
@@ -310,10 +311,10 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
         float srfc_width = cairo_image_surface_get_width(srfc);
         float srfc_height = cairo_image_surface_get_height(srfc);
 
-        double w_ratio = (priv->icon_width+(2*ACTIVE_RECT_PADDING)) / srfc_width;
-        double h_ratio = (priv->icon_height+(2*ACTIVE_RECT_PADDING)) / srfc_height;
+        double w_ratio = (priv->icon_width+(2*PADDING)) / srfc_width;
+        double h_ratio = (priv->icon_height+(2*PADDING)) / srfc_height;
 
-        cairo_translate(cr, x-ACTIVE_RECT_PADDING, y-ACTIVE_RECT_PADDING);
+        cairo_translate(cr, x-PADDING, y-PADDING);
         cairo_scale(cr, w_ratio, h_ratio);
         cairo_set_source_surface(cr, srfc, 0, 0);
         cairo_paint(cr);

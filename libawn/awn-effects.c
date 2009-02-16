@@ -1094,7 +1094,7 @@ awn_effects_set_icon_size(AwnEffects * fx, gint width, gint height,
      * AwnIcon handles size_requests well enough
      */
 
-    gint inc = fx->icon_offset + ACTIVE_RECT_PADDING;
+    gint inc = fx->icon_offset;
     switch (fx->orientation) {
       case AWN_EFFECT_ORIENT_TOP:
       case AWN_EFFECT_ORIENT_BOTTOM:

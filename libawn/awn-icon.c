@@ -22,10 +22,7 @@
 #include "awn-icon.h"
 #include "awn-utils.h"
 
-/* ACTIVE_RECT_PADDING is defined in awn-effects.h */
-#define APPLY_SIDE_MULTIPLIER(size, offset)	((size) * 6/5)
-#define APPLY_FRONT_MULTIPLIER(size, offset)	(size + offset + \
-                                                 ACTIVE_RECT_PADDING)
+#define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
 
 G_DEFINE_TYPE (AwnIcon, awn_icon, GTK_TYPE_DRAWING_AREA);
 
@@ -148,17 +145,13 @@ awn_icon_size_request (GtkWidget *widget, GtkRequisition *req)
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
-      req->width  = APPLY_SIDE_MULTIPLIER  (priv->icon_width,
-                                            priv->effects->icon_offset);
-      req->height = APPLY_FRONT_MULTIPLIER (priv->icon_height,
-                                            priv->effects->icon_offset);
+      req->width = APPLY_SIZE_MULTIPLIER(priv->icon_width);
+      req->height = priv->icon_height + priv->effects->icon_offset;
       break;
       
     default:
-      req->width  = APPLY_FRONT_MULTIPLIER (priv->icon_width,
-                                            priv->effects->icon_offset);
-      req->height = APPLY_SIDE_MULTIPLIER  (priv->icon_height,
-                                            priv->effects->icon_offset);
+      req->width = priv->icon_width + priv->effects->icon_offset;
+      req->height = APPLY_SIZE_MULTIPLIER(priv->icon_height);
       break;
   }
 }
