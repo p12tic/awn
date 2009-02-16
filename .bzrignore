@@ -98,3 +98,5 @@ applets/taskmanager/taskmanager.schemas
 applets/taskmanager/taskmanager.schemas.in
 tests/test-awn-effects
 awn-manager/awnManagerMini.py
+m4/gtk-doc.m4
+m4/intltool.m4

@@ -1,3 +1,12 @@
+2009-02-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	Ignore m4 files brought in by the autogen script.
+
+	* Makefile.am:
+	* configure.in:
+	Fix m4 directory specification so that gnome-autogen.sh can use it, too.
+
 2009-02-11 Rodney Cryderman <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
