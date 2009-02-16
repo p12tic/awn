@@ -1,5 +1,11 @@
 2009-02-16  Michal Hruby <michal.mhr@gmail.com>
 
+	* src/awn-background-flat.c:
+	* src/awn-panel.c:
+	Add size of the active rectangle to AwnPanel's extra_padding.
+
+2009-02-16  Michal Hruby <michal.mhr@gmail.com>
+
 	Reverted last commit, it caused more problems than it solved.
 
 2009-02-16  Michal Hruby <michal.mhr@gmail.com>

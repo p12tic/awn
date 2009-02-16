@@ -87,6 +87,10 @@ struct _AwnPanelPrivate
 /* FIXME: this timeout should be configurable I guess */
 #define AUTOHIDE_DELAY 1000
 
+// padding for active_rect, yea it really isn't nice but so far it seems to
+// be the only feasible solution
+#define ACTIVE_RECT_PADDING 3
+
 enum 
 {
   PROP_0,
@@ -378,18 +382,18 @@ awn_panel_size_request (GtkWidget *widget, GtkRequisition *requisition)
 
   gtk_widget_size_request (child, requisition);
 
+  gint size = priv->size + priv->offset + priv->extra_padding;
+
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
-      requisition->height = priv->composited ? priv->offset + priv->size*2 :
-        priv->size + priv->offset + priv->extra_padding;
+      requisition->height = priv->composited ? size + priv->size : size;
       break;
     case AWN_ORIENTATION_LEFT:
     case AWN_ORIENTATION_RIGHT:
     default:
-      requisition->width = priv->composited ? priv->offset + priv->size*2 :
-        priv->size + priv->offset + priv->extra_padding;
+      requisition->width = priv->composited ? size + priv->size : size;
       break;
   }
 }
@@ -407,6 +411,7 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
                                   &top, &bottom, &left, &right);
 
   /* never actually set the top padding, its only internal constant */
+  /* well actually non-composited env could use also the top padding */
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
@@ -426,6 +431,9 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
       left = 0;
       break;
   }
+
+  priv->extra_padding += ACTIVE_RECT_PADDING;
+
   gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment),
                              top, bottom, left, right);
 }
@@ -512,9 +520,6 @@ void awn_panel_get_draw_rect (AwnPanel *panel,
 
   switch (priv->orient)
   {
-    /* if panel is composited, it's size is priv->size*2+priv->offset,
-     *  otherwise priv->size+priv->offset
-     */
     case AWN_ORIENTATION_TOP:
       area->x = 0;
       area->y = 0;
