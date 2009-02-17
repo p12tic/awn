@@ -1,3 +1,9 @@
+2009-02-17 Rodney Cryderman <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+
+	Utility/dialog windows should now appear on bar if there is no associated window already open.  Debugging/testing change.
+
 2009-02-17  Michal Hruby <michal.mhr@gmail.com>
 
 	* awn-manager/awn-manager-mini.glade:
