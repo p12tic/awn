@@ -753,10 +753,10 @@ task_window_set_icon_geometry (TaskWindow    *window,
   /* Minimize utility windows */
   for (w = priv->utilities; w; w = w->next)
   {
-    WnckWindow *win = w->data;
+    //WnckWindow *win = w->data;
 
-    if (WNCK_IS_WINDOW (win))
-      wnck_window_set_icon_geometry (win, x, y, width, height);
+    //if (WNCK_IS_WINDOW (win))
+      //wnck_window_set_icon_geometry (win, x, y, width, height);
   }
 }
 

@@ -1,3 +1,13 @@
+2009-02-18  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-window.c:
+	Make sure the position of the icon_geometry is always on it's place.
+	(icon_geometry = the pos. where compiz minimizes and shows the preview ...)
+	TaskIcon now makes sure it is set right on it's own, without using taskManager. 
+
 2009-02-17  h4writer <hv1989@gmail.com>
 
 	* applets/taskmanager/task-drag-indicator.c:

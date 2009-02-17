@@ -330,22 +330,6 @@ task_manager_size_changed   (AwnApplet *applet,
 /*
  * The guts of the show or hide logic
  */
-static gboolean
-update_icon_geometry (TaskManager *manager)
-{
-  TaskManagerPrivate *priv = manager->priv;
-  GSList *i;
-  
-  for (i = priv->icons; i; i = i->next)
-  {
-    TaskIcon *icon = i->data;
-
-    if (TASK_IS_ICON (icon))
-      task_icon_refresh_geometry (icon);
-  }
-  return FALSE;
-}
-
 static void
 ensure_layout (TaskManager *manager)
 {
@@ -406,9 +390,6 @@ ensure_layout (TaskManager *manager)
   /* Hide drag_indicator if there is no AwnIcon currently dragged */
   if(priv->dragged_icon == NULL)
       gtk_widget_hide (GTK_WIDGET(priv->drag_indicator));
-
-  /* We can update the window icon geometry in an idle */
-  g_idle_add ((GSourceFunc)update_icon_geometry, manager);
 }
 
 /*
