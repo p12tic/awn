@@ -110,60 +110,55 @@ task_drag_indicator_expose (GtkWidget *widget, GdkEventExpose *event)
 {
   cairo_t      *cr;
   TaskSettings *settings;
+  AwnEffects   *effects;
 
   settings = task_settings_get_default ();
-  cr = gdk_cairo_create (widget->window);
-
-  cairo_set_line_width (cr, 1.0);
-
-  if(settings->orient == AWN_ORIENTATION_TOP)
-    cairo_translate (cr, 0.0, settings->offset);
-  else if(settings->orient == AWN_ORIENTATION_LEFT)
-    cairo_translate (cr, settings->offset, 0.0);
-  else if(settings->orient == AWN_ORIENTATION_BOTTOM)
-    cairo_translate (cr, 0.0, settings->panel_size-settings->offset+2);
-  else
-    cairo_translate (cr, settings->panel_size-settings->offset+2, 0.0);
+  effects = awn_icon_get_effects (AWN_ICON (widget));
+  cr = awn_effects_cairo_create (effects);
 
   if(settings->orient == AWN_ORIENTATION_TOP || settings->orient == AWN_ORIENTATION_BOTTOM)
   {
+    cairo_scale (cr, settings->panel_size/4, settings->panel_size);
+
     cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
 
     cairo_move_to (cr, 0, 0);
-    cairo_line_to (cr, 10, 0);
-    cairo_line_to (cr, 5, 15);
+    cairo_line_to (cr, 1, 0);
+    cairo_line_to (cr, 0.5, 0.4);
     cairo_close_path (cr);
 
-    cairo_move_to (cr, 0,  settings->panel_size);
-    cairo_line_to (cr, 10, settings->panel_size);
-    cairo_line_to (cr, 5,  settings->panel_size-15);
+    cairo_move_to (cr, 0,  1);
+    cairo_line_to (cr, 1, 1);
+    cairo_line_to (cr, 0.5,  0.6);
     cairo_close_path (cr);
 
     cairo_fill_preserve (cr);
 
-    cairo_set_line_width (cr, 0.5);
+    cairo_set_line_width (cr, 0.03);
     cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
-    cairo_stroke(cr);
+    cairo_stroke (cr);
   }
   else
   {
+    cairo_scale (cr, settings->panel_size, settings->panel_size/4);
+
     cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
 
     cairo_move_to (cr, 0, 0);
-    cairo_line_to (cr, 0, 10);
-    cairo_line_to (cr, 15, 5);
+    cairo_line_to (cr, 0, 1);
+    cairo_line_to (cr, 0.4, 0.5);
     cairo_close_path (cr);
 
-    cairo_move_to (cr, settings->panel_size, 0);
-    cairo_line_to (cr, settings->panel_size, 10);
-    cairo_line_to (cr, settings->panel_size-15, 5);
+    cairo_move_to (cr, 1,  0);
+    cairo_line_to (cr, 1, 1);
+    cairo_line_to (cr, 0.6,  0.5);
     cairo_close_path (cr);
 
     cairo_fill_preserve (cr);
 
-    cairo_set_line_width (cr, 0.5);
+    cairo_set_line_width (cr, 0.03);
     cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
-    cairo_stroke(cr);
+    cairo_stroke (cr);
   }
 
   cairo_destroy (cr);
@@ -182,11 +177,11 @@ task_drag_indicator_refresh (TaskDragIndicator      *drag_indicator)
 
   if(settings->orient == AWN_ORIENTATION_TOP || settings->orient == AWN_ORIENTATION_BOTTOM)
   {
-    awn_icon_set_custom_paint (AWN_ICON (drag_indicator), 10, settings->panel_size+settings->offset);
+    awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size/4, settings->panel_size);
   }
   else
   {
-    awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size+settings->offset, 10);
+    awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size, settings->panel_size/4);
   }
 }
 
