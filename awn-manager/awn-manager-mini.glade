@@ -451,7 +451,7 @@ the theme ?</property>
                                   <widget class="GtkSpinButton" id="style_config">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="adjustment">0 0 1 1 10 10</property>
+                                    <property name="adjustment">0 0 2 1 10 10</property>
                                     <property name="numeric">True</property>
                                   </widget>
                                   <packing>

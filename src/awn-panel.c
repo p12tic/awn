@@ -117,7 +117,8 @@ enum
 
 enum
 {
-  STYLE_FLAT = 0,
+  STYLE_NONE = 0,
+  STYLE_FLAT,
   STYLE_3D,
 
   STYLE_LAST
@@ -404,7 +405,10 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
   AwnPanelPrivate *priv = panel->priv;
   guint top, left, bottom, right;
 
-  if (!priv->bg || !AWN_IS_BACKGROUND (priv->bg)) return;
+  if (!priv->bg || !AWN_IS_BACKGROUND (priv->bg)) {
+    gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment), 0, 0, 0, 0);
+    return;
+  }
 
   /* refresh the padding */
   awn_background_padding_request (priv->bg, priv->orient,
@@ -1567,6 +1571,9 @@ awn_panel_set_style (AwnPanel *panel, gint style)
 
   switch (priv->style)
   {
+    case STYLE_NONE:
+      priv->bg = NULL;
+      break;
     case STYLE_FLAT:
       priv->bg = awn_background_flat_new (priv->client, AWN_PANEL (panel));
       break;
@@ -1579,9 +1586,13 @@ awn_panel_set_style (AwnPanel *panel, gint style)
 
   if (old_bg) g_object_unref(old_bg);
 
-  g_signal_connect (priv->bg, "changed", G_CALLBACK (on_theme_changed), panel);
-  g_signal_connect_swapped (priv->bg, "padding-changed",
-                            G_CALLBACK (awn_panel_refresh_padding), panel);
+  if (priv->bg)
+  {
+    g_signal_connect (priv->bg, "changed", G_CALLBACK (on_theme_changed),
+                      panel);
+    g_signal_connect_swapped (priv->bg, "padding-changed",
+                              G_CALLBACK (awn_panel_refresh_padding), panel);
+  }
 
   awn_panel_refresh_padding (panel, NULL);
 
