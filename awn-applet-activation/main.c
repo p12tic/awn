@@ -26,17 +26,15 @@
 
 #include <libawn/awn-defines.h>
 #include <libawn/awn-desktop-item.h>
-#include <libawn/awn-plug.h>
 #include <libawn/awn-applet.h>
 #include <libawn/awn-vfs.h>
 
-#include <libawn/awn-utils.h>
 /* Forwards */
 GtkWidget *
-_awn_plug_new(const gchar *path,
-              const gchar *uid,
-              gint         orient,
-              gint         height);
+_awn_applet_new(const gchar *path,
+                const gchar *uid,
+                gint         orient,
+                gint         height);
 static void
 launch_python(const gchar *file,
               const gchar *module,
@@ -99,7 +97,7 @@ main(gint argc, gchar **argv)
   GError *error = NULL;
   GOptionContext *context;
   AwnDesktopItem *item = NULL;
-  GtkWidget *plug = NULL;
+  GtkWidget *applet = NULL;
   const gchar *exec;
   const gchar *name;
   const gchar *type;
@@ -196,29 +194,28 @@ main(gint argc, gchar **argv)
   }
 
   /* Create a GtkPlug for the applet */
-  plug = _awn_plug_new(exec, uid, orient, height);
+  applet = _awn_applet_new (exec, uid, orient, height);
 
-  if (plug == NULL)
+  if (applet == NULL)
   {
-    g_warning("Could not create plug\n");
+    g_warning ("Could not create applet\n");
     return 1;
   }
-  g_signal_connect (plug, "realize", G_CALLBACK(awn_utils_make_transparent), NULL);
-  name = awn_desktop_item_get_name(item);
+  name = awn_desktop_item_get_name (item);
 
   if (name != NULL)
   {
-    gtk_window_set_title(GTK_WINDOW(plug), name);
+    gtk_window_set_title (GTK_WINDOW (applet), name);
   }
 
   if (window)
   {
-    gtk_plug_construct(GTK_PLUG(plug), window);
+    gtk_plug_construct (GTK_PLUG (applet), window);
   }
   else
   {
-    gtk_plug_construct(GTK_PLUG(plug), -1);
-    gtk_widget_show_all(plug);
+    gtk_plug_construct (GTK_PLUG (applet), -1);
+    gtk_widget_show_all (applet);
   }
 
   gtk_main();
@@ -227,14 +224,13 @@ main(gint argc, gchar **argv)
 }
 
 GtkWidget *
-_awn_plug_new(const gchar *path,
-              const gchar *uid,
-              gint         orient,
-              gint         height)
+_awn_applet_new(const gchar *path,
+                const gchar *uid,
+                gint         orient,
+                gint         height)
 {
   GModule *module;
   AwnApplet *applet;
-  GtkWidget *plug;
   AwnAppletInitFunc init_func;
   AwnAppletInitPFunc initp_func;
 
@@ -293,11 +289,7 @@ _awn_plug_new(const gchar *path,
     }
   }
 
-  plug = awn_plug_new(applet);
-
-  gtk_container_add(GTK_CONTAINER(plug), GTK_WIDGET(applet));
-
-  return plug;
+  return GTK_WIDGET (applet);
 }
 
 

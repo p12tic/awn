@@ -34,7 +34,6 @@ public_headers = \
 	awn-enum-types.h \
 	awn-icon.h \
 	awn-icon-box.h \
-	awn-plug.h \
 	awn-themed-icon.h \
 	awn-tooltip.h \
 	awn-utils.h \
@@ -61,7 +60,6 @@ source_c = \
 	awn-enum-types.c \
 	awn-icon.c \
 	awn-icon-box.c \
-	awn-plug.c \
 	awn-themed-icon.c \
 	awn-tooltip.c \
 	awn-utils.c \

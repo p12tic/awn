@@ -59,7 +59,7 @@ typedef enum
 
 struct _AwnApplet
 {
-  GtkEventBox parent;
+  GtkPlug parent;
 
   /*< private >*/
   AwnAppletPrivate *priv;
@@ -67,7 +67,7 @@ struct _AwnApplet
 
 struct _AwnAppletClass
 {
-  GtkEventBoxClass parent_class;
+  GtkPlugClass parent_class;
 
   /*<signals >*/
   void (*plug_embedded)  (AwnApplet *applet);

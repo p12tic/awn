@@ -34,7 +34,6 @@
 #include <libawn/awn-effects.h>
 #include <libawn/awn-icon.h>
 #include <libawn/awn-icon-box.h>
-#include <libawn/awn-plug.h>
 #include <libawn/awn-themed-icon.h>
 #include <libawn/awn-tooltip.h>
 #include <libawn/awn-vfs.h>

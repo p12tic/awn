@@ -24,11 +24,9 @@
 AwnApplet*
 awn_applet_factory_initp (gchar* uid, gint orient, gint size)
 {
-	AwnApplet *applet;
-  	
-  applet = task_manager_new (uid, orient, size);
+  AwnApplet *applet;
 
-  gtk_widget_show_all (GTK_WIDGET (applet));
+  applet = task_manager_new (uid, orient, size);
 
   return applet;
 }

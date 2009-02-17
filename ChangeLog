@@ -1,3 +1,16 @@
+2009-02-17  Michal Hruby <michal.mhr@gmail.com>
+
+	* applets/taskmanager/applet.c:
+	Don't show the applet in init function.
+	* awn-applet-activation/main.c:
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* libawn/Makefile.am:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/libawn.h:
+	Rest in peace AwnPlug, AwnApplet now replaced you.
+
 2009-02-17 Rodney Cryderman <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:

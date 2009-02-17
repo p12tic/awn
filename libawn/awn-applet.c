@@ -23,15 +23,18 @@
 #include <config.h>
 #endif
 
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-bindings.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <glib/gstdio.h>
 #include <glib/gi18n.h>
+#include "awn-defines.h"
 #include "awn-applet.h"
 #include "awn-utils.h"
 
-G_DEFINE_TYPE (AwnApplet, awn_applet, GTK_TYPE_EVENT_BOX);
+G_DEFINE_TYPE (AwnApplet, awn_applet, GTK_TYPE_PLUG);
 
 #define AWN_APPLET_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
                                      AWN_TYPE_APPLET, AwnAppletPrivate))
@@ -44,6 +47,9 @@ struct _AwnAppletPrivate
   guint size;
 
   AwnAppletFlags flags;
+
+  DBusGConnection *connection;
+  DBusGProxy      *proxy;
 };
 
 enum
@@ -67,40 +73,57 @@ enum
 };
 static guint _applet_signals[LAST_SIGNAL] = { 0 };
 
+static void
+on_orient_changed (DBusGProxy *proxy, gint orient, AwnApplet *applet)
+{
+  g_return_if_fail (AWN_IS_APPLET (applet));
+
+  awn_applet_set_orientation (applet, orient);
+}
+
+static void
+on_size_changed (DBusGProxy *proxy, gint size, AwnApplet *applet)
+{
+  g_return_if_fail (AWN_IS_APPLET (applet));
+
+  awn_applet_set_size (applet, size);
+}
+
+static void
+on_delete_notify (DBusGProxy *proxy, AwnApplet *applet)
+{
+  gtk_main_quit ();
+}
+
+static void
+on_proxy_destroyed (GObject *object)
+{
+  gtk_main_quit ();
+}
+
+static void
+on_destroy_applet (DBusGProxy *proxy, gchar *id, AwnApplet *applet)
+{
+  AwnAppletPrivate *priv;
+  g_return_if_fail (AWN_IS_APPLET (applet));
+  priv = applet->priv;
+
+  if (strcmp (priv->uid, id) == 0)
+    on_delete_notify (NULL, applet);
+}
+
 /*  GOBJECT STUFF */
 
-static gboolean
-awn_applet_expose_event (GtkWidget *widget, GdkEventExpose *expose)
+void
+on_alpha_screen_changed (GtkWidget* widget, GdkScreen* oscreen, gpointer null)
 {
-  cairo_t   *cr = NULL;
-  GtkWidget *child = NULL;
+  GdkScreen* nscreen = gtk_widget_get_screen (widget);
+  GdkColormap* colormap = gdk_screen_get_rgba_colormap (nscreen);
 
-  if (!GDK_IS_DRAWABLE (widget->window))
-    return FALSE;
+  if (!colormap)
+    colormap = gdk_screen_get_rgb_colormap (nscreen);
 
-  cr = gdk_cairo_create (widget->window);
-
-  if (!cr)
-    return FALSE;
-
-  gdk_cairo_region (cr, expose->region);
-  cairo_clip (cr);
-
-  /* Clear the background to transparent */
-  cairo_set_source_rgba (cr, 1.0f, 1.0f, 1.0f, 0.0f);
-  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_paint (cr);
-
-  /* Clean up */
-  cairo_destroy (cr);
-
-  /* Propagate the signal */
-  child = gtk_bin_get_child (GTK_BIN (widget));
-
-  if (child)
-    gtk_container_propagate_expose (GTK_CONTAINER (widget), child,  expose);
-
-  return FALSE;
+  gtk_widget_set_colormap (widget, colormap);
 }
 
 static void
@@ -165,20 +188,33 @@ awn_applet_dispose (GObject *obj)
 }
 
 static void
+awn_applet_finalize (GObject *obj)
+{
+  AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (obj);
+
+  if (priv->connection)
+  {
+    dbus_g_connection_unref (priv->connection);
+    g_object_unref (priv->proxy);
+    priv->connection = NULL;
+    priv->proxy = NULL;
+  }
+
+  G_OBJECT_CLASS (awn_applet_parent_class)->finalize (obj);
+}
+
+static void
 awn_applet_class_init (AwnAppletClass *klass)
 {
   GObjectClass *gobject_class;
-  GtkWidgetClass *widget_class;
 
   gobject_class = G_OBJECT_CLASS(klass);
   gobject_class->dispose = awn_applet_dispose;
+  gobject_class->finalize = awn_applet_finalize;
   gobject_class->get_property = awn_applet_get_property;
   gobject_class->set_property = awn_applet_set_property;
 
-  widget_class = GTK_WIDGET_CLASS(klass);
-  widget_class->expose_event = awn_applet_expose_event;
-
-   /* Class properties */
+  /* Class properties */
   g_object_class_install_property (gobject_class,
     PROP_UID,
     g_param_spec_string ("uid",
@@ -267,20 +303,69 @@ static void
 awn_applet_init (AwnApplet *applet)
 {
   AwnAppletPrivate *priv;
+  GError         *error;
 
   priv = applet->priv = AWN_APPLET_GET_PRIVATE(applet);
 
+  gtk_widget_set_app_paintable(GTK_WIDGET(applet), TRUE);
+  on_alpha_screen_changed(GTK_WIDGET(applet), NULL, NULL);
+
   priv->flags = AWN_APPLET_FLAGS_NONE;
-  g_signal_connect (G_OBJECT(applet), "realize",
-                         G_CALLBACK(awn_utils_make_transparent), NULL);  
+
+  error = NULL;
+  priv->connection = dbus_g_bus_get(DBUS_BUS_SESSION, &error);
+
+  if (error)
+  {
+    g_warning ("%s", error->message);
+    g_error_free(error);
+    gtk_main_quit ();
+  }
+  
+  priv->proxy = dbus_g_proxy_new_for_name (priv->connection,
+                                           "org.awnproject.Awn",
+                                           "/org/awnproject/Awn/Panel",
+                                           "org.awnproject.Awn.Panel");
+  if (!priv->proxy)
+  {
+    g_warning("Could not connect to mothership! Bailing\n");
+    gtk_main_quit ();
+  }
+
+  dbus_g_proxy_add_signal (priv->proxy, "OrientChanged",
+                           G_TYPE_INT, G_TYPE_INVALID);
+  dbus_g_proxy_add_signal (priv->proxy, "SizeChanged",
+                           G_TYPE_INT, G_TYPE_INVALID);
+  dbus_g_proxy_add_signal (priv->proxy, "DestroyNotify",
+                           G_TYPE_INVALID);
+  dbus_g_proxy_add_signal (priv->proxy, "DestroyApplet",
+                           G_TYPE_STRING, G_TYPE_INVALID);
+  
+  dbus_g_proxy_connect_signal (priv->proxy, "OrientChanged",
+                               G_CALLBACK (on_orient_changed), applet, 
+                               NULL);
+  dbus_g_proxy_connect_signal (priv->proxy, "SizeChanged",
+                               G_CALLBACK (on_size_changed), applet,
+                               NULL);
+  dbus_g_proxy_connect_signal (priv->proxy, "DestroyNotify",
+                               G_CALLBACK (on_delete_notify), applet,
+                               NULL);
+  dbus_g_proxy_connect_signal (priv->proxy, "DestroyApplet",
+                               G_CALLBACK (on_destroy_applet), applet,
+                               NULL);
+
+  g_signal_connect (priv->proxy, "destroy", 
+                    G_CALLBACK (on_proxy_destroyed), NULL);
+  g_signal_connect (applet, "embedded",
+                    G_CALLBACK (awn_applet_plug_embedded), NULL);
+  g_signal_connect (applet, "realize",
+                    G_CALLBACK(awn_utils_make_transparent), NULL);
 }
 
 AwnApplet *
 awn_applet_new (const gchar* uid, gint orient, gint size)
 {
   AwnApplet *applet = g_object_new (AWN_TYPE_APPLET,
-                                    "above-child", FALSE,
-                                    "visible-window", TRUE,
                                     "uid", uid,
                                     "orient", orient,
                                     "size", size,
@@ -297,6 +382,9 @@ awn_applet_plug_embedded (AwnApplet *applet)
   g_return_if_fail (AWN_IS_APPLET (applet));
 
   g_signal_emit (applet, _applet_signals[PLUG_EMBEDDED], 0);
+
+  // FIXME: not sure about this one
+  gtk_widget_show_all (GTK_WIDGET (applet));
 }
 
 /*
@@ -438,13 +526,23 @@ void
 awn_applet_set_flags (AwnApplet *applet, AwnAppletFlags flags)
 {
   AwnAppletPrivate *priv;
+  GError *error = NULL;
 
   g_return_if_fail (AWN_IS_APPLET (applet));
   priv = applet->priv;
 
   priv->flags = flags;
 
-  g_signal_emit (applet, _applet_signals[FLAGS_CHANGED], 0, flags);
+  dbus_g_proxy_call (priv->proxy, "SetAppletFlags",
+                        &error,
+                        G_TYPE_STRING, awn_applet_get_uid (AWN_APPLET (applet)),                        G_TYPE_INT, flags, 
+                        G_TYPE_INVALID, G_TYPE_INVALID);
+
+  if (error)
+  {
+    g_warning ("%s", error->message);
+    g_error_free (error);
+  }
 }
 
 AwnAppletFlags 
