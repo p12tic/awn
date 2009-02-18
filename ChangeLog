@@ -1,3 +1,10 @@
+2009-02-19  Michal Hruby <michal.mhr@gmail.com>
+
+	* data/awn.schema-ini.in:
+	* src/awn-defines.h:
+	* src/awn-panel.c:
+	Added expand property to AwnPanel.
+
 2009-02-18  Michal Hruby <michal.mhr@gmail.com>
 
 	reviewed by: moonbeam

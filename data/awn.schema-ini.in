@@ -1,7 +1,11 @@
 [panel/panel_mode]
 type = bool
-default = True
+default = False
 description = If True, maximised windows will not cover the panel.
+[panel/expand]
+type = bool
+default = False
+description = If True, the panel will expand to full monitor width/height.
 [panel/orient]
 type = int
 default = 2

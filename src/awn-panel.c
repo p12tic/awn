@@ -59,6 +59,7 @@ struct _AwnPanelPrivate
   
   gboolean composited;
   gboolean panel_mode;
+  gboolean expand;
 
   gint size;
   gint offset;
@@ -98,6 +99,7 @@ enum
   PROP_CLIENT,
   PROP_COMPOSITED,
   PROP_PANEL_MODE,
+  PROP_EXPAND,
   PROP_OFFSET,
   PROP_ORIENT,
   PROP_SIZE,
@@ -235,6 +237,9 @@ awn_panel_constructed (GObject *object)
                           AWN_GROUP_PANEL, AWN_PANEL_PANEL_MODE,
                           object, "panel_mode");
   awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_EXPAND,
+                          object, "expand");
+  awn_config_bridge_bind (bridge, priv->client,
                           AWN_GROUP_PANEL, AWN_PANEL_ORIENT,
                           object, "orient");
   awn_config_bridge_bind (bridge, priv->client,
@@ -297,6 +302,9 @@ awn_panel_get_property (GObject    *object,
     case PROP_PANEL_MODE:
       g_value_set_boolean (value, priv->panel_mode);
       break;
+    case PROP_EXPAND:
+      g_value_set_boolean (value, priv->expand);
+      break;
     case PROP_OFFSET:
       g_value_set_int (value, priv->offset);
       break;
@@ -339,7 +347,11 @@ awn_panel_set_property (GObject      *object,
       break;
     case PROP_PANEL_MODE:
       awn_panel_set_panel_mode(panel, g_value_get_boolean (value));
-      break;    
+      break;
+    case PROP_EXPAND:
+      priv->expand = g_value_get_boolean (value);
+      gtk_widget_queue_resize (GTK_WIDGET (panel));
+      break;
     case PROP_OFFSET:
       awn_panel_set_offset (panel, g_value_get_int (value));
       break;
@@ -389,12 +401,14 @@ awn_panel_size_request (GtkWidget *widget, GtkRequisition *requisition)
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
+      if (priv->expand) requisition->width = priv->monitor->width;
       requisition->height = priv->composited ? size + priv->size : size;
       break;
     case AWN_ORIENTATION_LEFT:
     case AWN_ORIENTATION_RIGHT:
     default:
       requisition->width = priv->composited ? size + priv->size : size;
+      if (priv->expand) requisition->height = priv->monitor->height;
       break;
   }
 }
@@ -404,6 +418,19 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
 {
   AwnPanelPrivate *priv = panel->priv;
   guint top, left, bottom, right;
+
+  switch (priv->orient)
+  {
+    case AWN_ORIENTATION_TOP:
+    case AWN_ORIENTATION_BOTTOM:
+      gtk_alignment_set (GTK_ALIGNMENT (priv->alignment), 0.5, 0.5, 0.0, 1.0);
+      break;
+    case AWN_ORIENTATION_LEFT:
+    case AWN_ORIENTATION_RIGHT:
+    default:
+      gtk_alignment_set (GTK_ALIGNMENT (priv->alignment), 0.5, 0.5, 1.0, 0.0);
+      break;
+  }
 
   if (!priv->bg || !AWN_IS_BACKGROUND (priv->bg)) {
     gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment), 0, 0, 0, 0);
@@ -675,6 +702,7 @@ alpha_blend_end (AwnPanel *panel, gpointer data)
     gdk_window_set_opacity (GTK_WIDGET(panel)->window, 1.0);
   } else {
     gtk_widget_show (GTK_WIDGET (panel));
+    position_window (panel);
   }
 }
 
@@ -839,7 +867,15 @@ awn_panel_class_init (AwnPanelClass *klass)
     g_param_spec_boolean ("panel_mode",
                           "Panel Mode",
                           "The window sets the appropriete panel size hints",
-                          TRUE,
+                          FALSE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  g_object_class_install_property (obj_class,
+    PROP_EXPAND,
+    g_param_spec_boolean ("expand",
+                          "Expand",
+                          "The panel will expand to fill the entire "
+                          "width/height of the screen",
+                          FALSE,
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
  g_object_class_install_property (obj_class,
     PROP_ORIENT,

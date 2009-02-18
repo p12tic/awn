@@ -32,6 +32,7 @@
 /* FIXME: Move some of these out into libawn when we can */
 #define AWN_GROUP_PANEL          "panel"
 #define AWN_PANEL_PANEL_MODE     "panel_mode"
+#define AWN_PANEL_EXPAND         "expand"
 #define AWN_PANEL_ORIENT         "orient"
 #define AWN_PANEL_OFFSET         "offset"
 #define AWN_PANEL_SIZE           "size"
