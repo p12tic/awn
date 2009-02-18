@@ -116,7 +116,7 @@ awn_background_3d_bar_angle_changed (AwnBackground *bg)
 static double
 apply_perspective_x( double width, double angle, double x, double y )
 {
-		return (width/2-x)/(width/2*tan((90-angle)*M_PI/180))*y+x;
+		return (width/2.0-x)/(width/2.0*tan((90-angle)*M_PI/180))*y+x;
 }
 
 /**
@@ -198,12 +198,12 @@ draw_rect_path (AwnBackground  *bg,
 
   x0 = x + apply_perspective_x(width, bg->panel_angle, padding, padding);
   x1 = x + apply_perspective_x(width, bg->panel_angle, padding, radius+padding);
-  x2 = x + apply_perspective_x(width, bg->panel_angle, padding, height/2-radius-padding);
-  x3 = x + apply_perspective_x(width, bg->panel_angle, padding, height/2-padding);
-  x4 = x + apply_perspective_x(width, bg->panel_angle, radius+padding, height/2-padding);
-  x5 = x + apply_perspective_x(width, bg->panel_angle, width-radius-padding, height/2-padding);
-  x6 = x + apply_perspective_x(width, bg->panel_angle, width-padding, height/2-padding);
-  x7 = x + apply_perspective_x(width, bg->panel_angle, width-padding, height/2-radius-padding);
+  x2 = x + apply_perspective_x(width, bg->panel_angle, padding, height/2.0-radius-padding);
+  x3 = x + apply_perspective_x(width, bg->panel_angle, padding, height/2.0-padding);
+  x4 = x + apply_perspective_x(width, bg->panel_angle, radius+padding, height/2.0-padding);
+  x5 = x + apply_perspective_x(width, bg->panel_angle, width-radius-padding, height/2.0-padding);
+  x6 = x + apply_perspective_x(width, bg->panel_angle, width-padding, height/2.0-padding);
+  x7 = x + apply_perspective_x(width, bg->panel_angle, width-padding, height/2.0-radius-padding);
   x8 = x + apply_perspective_x(width, bg->panel_angle, width-padding, radius+padding);
   x9 = x + apply_perspective_x(width, bg->panel_angle, width-padding, padding);
   x10 = x + apply_perspective_x(width, bg->panel_angle, width-radius-padding, padding);
@@ -211,8 +211,8 @@ draw_rect_path (AwnBackground  *bg,
 
   y0 = y + height - padding;
   y1 = y + height - radius - padding;
-  y2 = y + height/2 + radius + padding;
-  y3 = y + height/2 + padding;
+  y2 = y + height/2.0 + radius + padding;
+  y3 = y + height/2.0 + padding;
 
   cairo_move_to(cr, x2, y2);
   cairo_curve_to(cr, x3, y3, x3, y3, x4, y3);
@@ -335,7 +335,7 @@ draw_top_bottom_background (AwnBackground  *bg,
 
 #if DEBUG_DRAW_HIGHLIGHT
   /* Draw the hi-light (on the top) */
-  pat = cairo_pattern_create_linear (0, height/3, 0, height*2/3);
+  pat = cairo_pattern_create_linear (0, height/3.0, 0, height*2.0/3.0);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 
                                      bg->g_histep_1.red,
                                      bg->g_histep_1.green,
@@ -346,7 +346,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_histep_2.green,
                                      bg->g_histep_2.blue, 
                                      bg->g_histep_2.alpha);
-  draw_rect_path (bg, cr, apply_perspective_x(width, bg->panel_angle, 0, height/3), height/3, get_width_on_height(width, bg->panel_angle, height/3), height/3, 1.5);
+  draw_rect_path (bg, cr, apply_perspective_x(width, bg->panel_angle, 0, height/3.0), height/3.0, get_width_on_height(width, bg->panel_angle, height/3.0), height/3.0, 1.5);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
@@ -402,7 +402,7 @@ awn_background_3d_padding_request (AwnBackground *bg,
   g_object_get (bg->panel, "size", &size, NULL);
 
   if(offset > size)
-    padding = (size+offset)/2/tan((90-bg->panel_angle)*M_PI/180);
+    padding = (size+offset)/2.0/tan((90-bg->panel_angle)*M_PI/180);
   else
     padding = offset/tan((90-bg->panel_angle)*M_PI/180);
 
@@ -456,7 +456,7 @@ awn_background_3d_draw (AwnBackground  *bg,
   switch (orient)
   {
     case AWN_ORIENTATION_RIGHT:
-      cairo_translate (cr, x-2, y+height);
+      cairo_translate (cr, x-1, y+height);
       cairo_rotate (cr, M_PI * 1.5);
       temp = width;
       width = height; height = temp;
@@ -472,7 +472,7 @@ awn_background_3d_draw (AwnBackground  *bg,
       cairo_rotate (cr, M_PI);
       break;
     default:
-      cairo_translate (cr, x, y-2);
+      cairo_translate (cr, x, y-1);
       break;
   }
 

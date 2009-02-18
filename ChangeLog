@@ -1,5 +1,11 @@
 2009-02-18  h4writer <hv1989@gmail.com>
 
+	* src/awn-background-3d.c:
+	Use of double's instead of ints (better drawing)
+	Positioning drawing on the right and bottom orientation
+
+2009-02-18  h4writer <hv1989@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	* applets/taskmanager/task-icon.h:
 	* applets/taskmanager/task-manager.c:
