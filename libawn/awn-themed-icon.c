@@ -344,7 +344,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             break;
 
           default:
-            pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 0, size, size);
+            pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, size, size);
             gdk_pixbuf_fill (pixbuf, 0xee221155);
             break;
         }
