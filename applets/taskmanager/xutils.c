@@ -837,7 +837,6 @@ _wnck_get_icon_at_size (WnckWindow *window,
   icon_scaled = gdk_pixbuf_scale_simple (icon, width, height, 
                                          GDK_INTERP_BILINEAR);
 
-  g_object_unref (icon);
   return icon_scaled;
 }
 
