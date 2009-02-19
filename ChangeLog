@@ -1,3 +1,9 @@
+2009-02-19 Rodney Cryderman <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+
+	On some apps the resource name and/or class name can be empty strings.  This disqualifies these resources as a basis for matchin when this occurs.
+
 2009-02-19 Julien Lavergne <julien.Lavergnegmail.com>
 
 	* awn-manager/awn-manager-mini.glade

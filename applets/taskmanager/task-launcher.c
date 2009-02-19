@@ -321,7 +321,7 @@ task_launcher_try_match (TaskLauncher *launcher,
     return TRUE;
 
   /* Now try resource name, which should (hopefully) be 99% of the cases */
-  if (res_name && priv->exec)
+  if ( strlen(res_name) && res_name && priv->exec)
   {
     if ( g_strstr_len (priv->exec, strlen (priv->exec), res_name) ||
          g_strstr_len (res_name, strlen (res_name), priv->exec))
@@ -331,7 +331,7 @@ task_launcher_try_match (TaskLauncher *launcher,
   }
   
   /* Try a class_name to exec line match */
-  if (class_name && priv->exec)
+  if ( strlen(class_name) && class_name && priv->exec)
   {
     if (g_strstr_len (priv->exec, strlen (priv->exec), class_name))
       return TRUE;
