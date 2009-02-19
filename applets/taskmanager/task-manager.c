@@ -874,6 +874,10 @@ static void drag_move(TaskManager *manager, gint x, gint y, TaskIcon *icon)
 
   priv = TASK_MANAGER_GET_PRIVATE (manager);
 
+  // dragging already ended
+  if(!priv->dragged_icon)
+    return;
+
   orient = awn_applet_get_orientation (AWN_APPLET(manager));
   size = awn_applet_get_size (AWN_APPLET(manager));
   childs = gtk_container_get_children (GTK_CONTAINER(priv->box));

@@ -1,5 +1,10 @@
 2009-02-19  h4writer <hv1989@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Fixed bug that drag_indicator didn't hide itself again.
+
+2009-02-19  h4writer <hv1989@gmail.com>
+
 	* src/awn-panel.c:
 	First update the position and afterwards set the struts
 	(The struts need the new position of the window)
