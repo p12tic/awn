@@ -1,5 +1,13 @@
 2009-02-19  h4writer <hv1989@gmail.com>
 
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	Use drag_data_get to call drag_data_set, 
+	that triggers drag_data_received what should call drag_finish.
+	Hopefully that solves the problem of awn crashing
+
+2009-02-19  h4writer <hv1989@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Fixed bug that drag_indicator didn't hide itself again.
 

@@ -82,9 +82,13 @@ static const GtkTargetEntry drop_types[] =
 };
 static const gint n_drop_types = G_N_ELEMENTS (drop_types);
 
+enum {
+        TARGET_TASK_ICON
+};
+
 static const GtkTargetEntry task_icon_type[] = 
 {
-  { "awn/task-icon", 0, 0 }
+  { "awn/task-icon", 0, TARGET_TASK_ICON }
 };
 static const gint n_task_icon_type = G_N_ELEMENTS (task_icon_type);
 
@@ -118,6 +122,12 @@ static void      task_icon_drag_data_received   (GtkWidget      *widget,
                                                  GtkSelectionData *data,
                                                  guint           info,
                                                  guint           time);
+static void      task_icon_drag_data_get        (GtkWidget *widget, 
+                                                 GdkDragContext *context, 
+                                                 GtkSelectionData *selection_data,
+                                                 guint target_type, 
+                                                 guint time);
+
 
 static gboolean _update_geometry(GtkWidget *widget);
 
@@ -230,7 +240,8 @@ task_icon_class_init (TaskIconClass *klass)
   wid_class->drag_motion          = task_icon_drag_motion;
   wid_class->drag_leave           = task_icon_drag_leave;
   wid_class->drag_data_received   = task_icon_drag_data_received;
-  
+  wid_class->drag_data_get        = task_icon_drag_data_get;
+
   /* Install properties first */
   pspec = g_param_spec_object ("taskwindow",
                                "TaskWindow",
@@ -934,4 +945,22 @@ task_icon_drag_data_received (GtkWidget      *widget,
   g_slist_free (list);
 
   gtk_drag_finish (context, TRUE, FALSE, time);
+}
+
+static void
+task_icon_drag_data_get (GtkWidget *widget, 
+                         GdkDragContext *context, 
+                         GtkSelectionData *selection_data,
+                         guint target_type, 
+                         guint time)
+{
+  switch(target_type)
+  {
+    case TARGET_TASK_ICON:
+      gtk_selection_data_set (selection_data, GDK_TARGET_STRING, 8, NULL, 0);
+      break;
+    default:
+      /* Default to some a safe target instead of fail. */
+      g_assert_not_reached ();
+  }
 }

@@ -28,9 +28,13 @@
 
 G_DEFINE_TYPE (TaskDragIndicator, task_drag_indicator, AWN_TYPE_ICON);
 
+enum {
+        TARGET_TASK_ICON
+};
+
 static const GtkTargetEntry drop_types[] = 
 {
-  { "awn/task-icon", 0, 0 }
+  { "awn/task-icon", 0, TARGET_TASK_ICON }
 };
 static const gint n_drop_types = G_N_ELEMENTS (drop_types);
 
@@ -43,6 +47,11 @@ static void     task_drag_indicator_drag_data_received (GtkWidget      *widget,
                                                         GtkSelectionData *data,
                                                         guint           info,
                                                         guint           time);
+static void     task_drag_indicator_drag_data_get (GtkWidget *widget, 
+                                                   GdkDragContext *context, 
+                                                   GtkSelectionData *selection_data,
+                                                   guint target_type, 
+                                                   guint time);
 
 enum
 {
@@ -73,6 +82,7 @@ task_drag_indicator_class_init (TaskDragIndicatorClass *klass)
 
   wid_class->expose_event         = task_drag_indicator_expose;
   wid_class->drag_data_received   = task_drag_indicator_drag_data_received;
+  wid_class->drag_data_get        = task_drag_indicator_drag_data_get;
 }
 
 static void
@@ -195,4 +205,22 @@ task_drag_indicator_drag_data_received (GtkWidget      *widget,
                                         guint           time)
 {
   gtk_drag_finish (context, TRUE, TRUE, time);
+}
+
+static void
+task_drag_indicator_drag_data_get (GtkWidget *widget, 
+                                   GdkDragContext *context, 
+                                   GtkSelectionData *selection_data,
+                                   guint target_type, 
+                                   guint time)
+{
+  switch(target_type)
+  {
+    case TARGET_TASK_ICON:
+      gtk_selection_data_set (selection_data, GDK_TARGET_STRING, 8, NULL, 0);
+      break;
+    default:
+      /* Default to some a safe target instead of fail. */
+      g_assert_not_reached ();
+  }
 }
