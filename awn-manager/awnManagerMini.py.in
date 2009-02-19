@@ -122,6 +122,7 @@ class awnPreferencesMini(awnPreferences):
 	self.setup_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_widget("autohide_config"))
 	self.setup_spin(defs.PANEL, defs.STYLE, self.wTree.get_widget("style_config"))
 	self.setup_bool(defs.PANEL, defs.PANEL_MODE, self.wTree.get_widget("panel_mode_config"))
+	self.setup_bool(defs.PANEL, defs.EXPAND, self.wTree.get_widget("expand_config"))
 
     def reload(self):
         self.load_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_widget("iconeffects"))
@@ -138,6 +139,7 @@ class awnPreferencesMini(awnPreferences):
 	self.load_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_widget("autohide_config"))
 	self.load_spin(defs.PANEL, defs.STYLE, self.wTree.get_widget("style_config"))
 	self.load_bool(defs.PANEL, defs.PANEL_MODE, self.wTree.get_widget("panel_mode_config"))
+	self.load_bool(defs.PANEL, defs.EXPAND, self.wTree.get_widget("expand_config"))
 
     def add_repo_win_callback(self, data=None):
 	self.update_repo_view()

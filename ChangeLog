@@ -1,3 +1,16 @@
+2009-02-19 Julien Lavergne <julien.Lavergnegmail.com>
+
+	* awn-manager/awn-manager-mini.glade
+	* awn-manager/awnDefs.py.in
+	* awn-manager/awnManagerMini.py.in
+	Add option for expand bar.
+
+	* awn-manager/awnClass.py
+	Continue to remove duplicated functions
+
+	* bindings/python/awnmodule.c
+	Remove libawn/awn-plug.h
+
 2009-02-19  Michal Hruby <michal.mhr@gmail.com>
 
 	* data/awn.schema-ini.in:
