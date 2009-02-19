@@ -1258,13 +1258,13 @@ on_window_configure (GtkWidget          *panel,
   priv->old_orient = priv->orient;
 
   awn_panel_update_masks (panel, event->width, event->height);
+  
+  /* Update position */
+  position_window (AWN_PANEL (panel));
 
   /* Update the size hints if the panel_mode is set */
   if (priv->panel_mode)
     awn_panel_set_strut (AWN_PANEL (panel));
-  
-  /* Update position */
-  position_window (AWN_PANEL (panel));
 
   return TRUE;
 }
