@@ -202,7 +202,7 @@ _update_geometry(GtkWidget *widget)
     task_icon_refresh_geometry (TASK_ICON (widget));
   }
 
-  return FALSE;
+  return TRUE;
 }
  
 
