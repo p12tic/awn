@@ -51,6 +51,8 @@ struct _TaskIconPrivate
   gint old_height;
   gint old_x;
   gint old_y;
+
+  guint update_geometry_id;
 };
 
 enum
@@ -171,17 +173,19 @@ task_icon_finalize (GObject *object)
     priv->windows = NULL;
   }
 
+  if(priv->update_geometry_id)
+    g_source_remove(priv->update_geometry_id);
+
   G_OBJECT_CLASS (task_icon_parent_class)->finalize (object);
 }
 
 static void
 task_icon_constructed (GObject *object)
 {
-  //TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;
+  TaskIconPrivate *priv = TASK_ICON (object)->priv;
   GtkWidget *widget = GTK_WIDGET(object);
  
-  //TODO: remove timeout when done
-  g_timeout_add_seconds (1, (GSourceFunc)_update_geometry, widget);
+  priv->update_geometry_id = g_timeout_add_seconds (1, (GSourceFunc)_update_geometry, widget);
 }
  
 static gboolean 
@@ -285,6 +289,7 @@ task_icon_init (TaskIcon *icon)
   priv->drag_tag = 0;
   priv->drag_motion = FALSE;
   priv->gets_dragged = FALSE;
+  priv->update_geometry_id = 0;
 
   awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
 

@@ -1,7 +1,12 @@
 2009-02-19  h4writer <hv1989@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
-  Make sure the geometry also gets updated when position of TaskIcon changes.
+	Stop the g_timeout_add_seconds properly.
+
+2009-02-19  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Make sure the geometry also gets updated when position of TaskIcon changes.
 
 2009-02-19 Rodney Cryderman <rcryderman@gmail.com>
 
