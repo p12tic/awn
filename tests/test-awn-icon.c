@@ -31,8 +31,9 @@ print_info (GtkWidget *widget)
   AwnIcon *icon = AWN_ICON(widget);
   gint w, h;
 
+  // get_tooltip_text returns a copy of the string, we need to free it
   gchar *tooltip = awn_icon_get_tooltip_text(icon);
-  if (!tooltip) tooltip = "";
+  if (!tooltip) tooltip = g_strdup("");
 
   g_object_get(icon, "icon-width", &w, "icon-height", &h, NULL);
 

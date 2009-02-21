@@ -557,11 +557,7 @@ awn_icon_set_tooltip_text (AwnIcon     *icon,
   awn_tooltip_set_text (AWN_TOOLTIP (icon->priv->tooltip), text);
 }
 
-/* FIXME: get_tooltip_text returns original string which shouldn't be modified,
- *        but get_message returns copy, which has to be freed by the caller.
- *        Both should return copy, so for example python can free the string.
- */
-const gchar * 
+gchar * 
 awn_icon_get_tooltip_text (AwnIcon *icon)
 {
   g_return_val_if_fail (AWN_IS_ICON (icon), NULL);

@@ -24,7 +24,7 @@
 gint
 main (gint argc, gchar **argv)
 {
-  GtkWidget   *window, *hbox, *icon;
+  GtkWidget   *window, *socket, *icon;
   GdkScreen   *screen;
   GdkColormap *map;
   
@@ -39,15 +39,14 @@ main (gint argc, gchar **argv)
   gtk_window_resize (GTK_WINDOW (window), 50, 100);
   gtk_widget_show (window);
   
-  hbox = gtk_hbox_new (TRUE, 0);
-  gtk_container_add (GTK_CONTAINER (window), hbox);
-  gtk_widget_show (hbox);
+  socket = gtk_socket_new ();
+  gtk_container_add (GTK_CONTAINER (window), socket);
+  gtk_widget_show (socket);
 
   icon = awn_applet_simple_new ("test-applet", AWN_ORIENTATION_BOTTOM, 50);
   awn_applet_simple_set_icon_name (AWN_APPLET_SIMPLE (icon), 
                                    "TestApplet", GTK_STOCK_APPLY);
-  gtk_box_pack_start (GTK_BOX (hbox), icon, TRUE, TRUE, 0);
-  gtk_widget_show (icon);
+  gtk_plug_construct (icon, gtk_socket_get_id (socket));
 
   gtk_main ();
   return 0;

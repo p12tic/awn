@@ -256,7 +256,7 @@ awn_background_flat_draw (AwnBackground  *bg,
       cairo_rotate (cr, M_PI);
       break;
     default:
-      cairo_translate (cr, x + width/2.0, y + height - 1);
+      cairo_translate (cr, x + width/2.0, y + height);
       break;
   }
 

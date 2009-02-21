@@ -620,11 +620,19 @@ awn_background_set_gtk_theme_mode (AwnBackground *bg,
   if (gtk_mode)
   {
     GtkWidget *widget = GTK_WIDGET (bg->panel);
-    
-    g_signal_connect (widget, "realize", G_CALLBACK (on_widget_realized), bg);
 
-    bg->changed = g_signal_connect (widget, "style-set", 
-                                     G_CALLBACK (on_style_set), bg);
+    if (GTK_WIDGET_REALIZED (widget))
+    {
+      load_colours_from_widget (bg, widget);
+    }
+    else
+    {
+      g_signal_connect (widget, "realize", G_CALLBACK (on_widget_realized), bg);
+    }
+
+    if (bg->changed == 0)
+      bg->changed = g_signal_connect (widget, "style-set", 
+                                      G_CALLBACK (on_style_set), bg);
     
   }
   else

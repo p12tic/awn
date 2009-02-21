@@ -97,7 +97,7 @@ void          awn_icon_set_custom_paint (AwnIcon *icon,
 void          awn_icon_set_tooltip_text (AwnIcon     *icon,
                                          const gchar *text);
 
-const gchar * awn_icon_get_tooltip_text (AwnIcon     *icon);
+gchar *       awn_icon_get_tooltip_text (AwnIcon     *icon);
 
 void          awn_icon_set_message      (AwnIcon     *icon,
                                          const gchar *message);

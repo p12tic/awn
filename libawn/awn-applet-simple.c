@@ -274,7 +274,7 @@ awn_applet_simple_set_tooltip_text (AwnAppletSimple  *applet,
   awn_icon_set_tooltip_text (AWN_ICON (applet->priv->icon), title);
 }
 
-const gchar * 
+gchar *
 awn_applet_simple_get_tooltip_text (AwnAppletSimple  *applet)
 {
   g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), NULL);
@@ -291,7 +291,7 @@ awn_applet_simple_set_message (AwnAppletSimple  *applet,
   awn_icon_set_message (AWN_ICON (applet->priv->icon), message);
 }
 
-const gchar * 
+gchar *
 awn_applet_simple_get_message (AwnAppletSimple  *applet)
 {
   g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), NULL);
