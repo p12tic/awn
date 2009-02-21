@@ -265,8 +265,7 @@ awn_applet_proxy_init (AwnAppletProxy *proxy)
   /* Connect to the socket signals */
   g_signal_connect (proxy, "plug-added", G_CALLBACK (on_plug_added), NULL);
   g_signal_connect (proxy, "plug-removed", G_CALLBACK (on_plug_removed), NULL);
-  g_signal_connect (proxy, "realize", 
-                    G_CALLBACK (awn_utils_make_transparent), NULL);
+  awn_utils_ensure_tranparent_bg (GTK_WIDGET (proxy));
   /* Rest is for the crash notification window */
   priv->running = TRUE;
   priv->crashed = FALSE;
@@ -368,10 +367,11 @@ on_child_exit (GPid pid, gint status, gpointer user_data)
 
     awn_throbber_set_type (AWN_THROBBER (priv->throbber),
                            AWN_THROBBER_TYPE_SAD_FACE);
+    awn_throbber_set_text (AWN_THROBBER (priv->throbber),
+      _("Whoops! The applet crashed. Click to restart it."));
     /* we won't call gtk_widget_show - on_plug_removed does that
      * and if the plug wasn't even added, the throbber widget is still visible
      */
-    gtk_widget_queue_draw (priv->throbber);
   }
 
   g_spawn_close_pid(pid); /* doesn't do anything on UNIX, but let's have it */

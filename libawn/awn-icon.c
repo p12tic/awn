@@ -86,13 +86,15 @@ awn_icon_make_transparent (GtkWidget *widget, gpointer data)
 {
   AwnIconPrivate *priv = AWN_ICON (widget)->priv;
 
+  if (!GTK_WIDGET_REALIZED (widget)) return;
+
   /*
    * This is how we make sure that widget has transparent background
    * all the time.
    */
   if (gtk_widget_is_composited(widget)) /* FIXME: is is_composited correct here? */
   {
-    awn_utils_make_transparent (widget);
+    awn_utils_make_transparent_bg (widget);
     /* optimize the render speed */
     g_object_set(priv->effects,
                  "no-clear", TRUE,
@@ -296,8 +298,10 @@ awn_icon_init (AwnIcon *icon)
 
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
 
-  g_signal_connect(G_OBJECT(icon), "realize",
-                         G_CALLBACK(awn_icon_make_transparent), NULL);
+  g_signal_connect (icon, "realize",
+                    G_CALLBACK(awn_icon_make_transparent), NULL);
+  g_signal_connect (icon, "style-set",
+                    G_CALLBACK(awn_icon_make_transparent), NULL);
 }
 
 GtkWidget *

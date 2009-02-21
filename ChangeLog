@@ -1,3 +1,18 @@
+2009-02-21  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	Added convenience function awn_utils_ensure_transparent_bg which also
+	connects to the signals.
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet.c:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-icon.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	Fix our transparent background to work also with theme change.
+
 2009-02-20 Rodney Cryderman <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-launcher.c:

@@ -358,8 +358,7 @@ awn_applet_init (AwnApplet *applet)
                     G_CALLBACK (on_proxy_destroyed), NULL);
   g_signal_connect (applet, "embedded",
                     G_CALLBACK (awn_applet_plug_embedded), NULL);
-  g_signal_connect (applet, "realize",
-                    G_CALLBACK(awn_utils_make_transparent), NULL);
+  awn_utils_ensure_tranparent_bg (GTK_WIDGET (applet));
 }
 
 AwnApplet *

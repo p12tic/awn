@@ -218,7 +218,9 @@ awn_throbber_make_transparent (GtkWidget *widget, gpointer data)
 {
   AwnThrobberPrivate *priv = AWN_THROBBER (widget)->priv;
 
-  awn_utils_make_transparent (widget);
+  if (!GTK_WIDGET_REALIZED (widget)) return;
+
+  awn_utils_make_transparent_bg (widget);
   if (gtk_widget_is_composited(widget))
   {
     /* optimize the render speed */
@@ -308,6 +310,8 @@ awn_throbber_init (AwnThrobber *throbber)
 
   g_signal_connect (throbber, "realize",
                     G_CALLBACK (awn_throbber_make_transparent), NULL);
+  g_signal_connect (throbber, "style-set",
+                    G_CALLBACK (awn_throbber_make_transparent), NULL);
   g_signal_connect (throbber, "show",
                     G_CALLBACK (awn_throbber_show), NULL);
   g_signal_connect (throbber, "hide",
@@ -358,8 +362,11 @@ void
 awn_throbber_set_type (AwnThrobber *throbber, AwnThrobberType type)
 {
   g_return_if_fail (AWN_IS_THROBBER (throbber));
+  gboolean needs_redraw = FALSE;
 
   AwnThrobberPrivate *priv = throbber->priv;
+
+  if (type != priv->type) needs_redraw = TRUE;
 
   priv->type = type;
   switch (type)
@@ -379,7 +386,8 @@ awn_throbber_set_type (AwnThrobber *throbber, AwnThrobberType type)
       break;
   }
 
-  gtk_widget_queue_draw (GTK_WIDGET (throbber));
+  if (needs_redraw)
+    gtk_widget_queue_draw (GTK_WIDGET (throbber));
 }
 
 void

@@ -145,8 +145,7 @@ awn_icon_box_init (AwnIconBox *icon_box)
 
   g_signal_connect_after (icon_box, "add", 
                           G_CALLBACK (awn_icon_box_add), icon_box);
-  g_signal_connect_after(G_OBJECT(icon_box), "realize",
-                         G_CALLBACK(awn_utils_make_transparent), NULL);
+  awn_utils_ensure_tranparent_bg (GTK_WIDGET (icon_box));
 }
 
 GtkWidget *

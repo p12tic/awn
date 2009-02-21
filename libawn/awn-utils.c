@@ -21,10 +21,13 @@
 #include "awn-utils.h"
 
 void
-awn_utils_make_transparent (GtkWidget *widget)
-{   
+awn_utils_make_transparent_bg (GtkWidget *widget)
+{
   static GdkPixmap *pixmap = NULL;
-  if (gtk_widget_is_composited(widget))  
+
+  g_return_if_fail (widget->window != NULL);
+
+  if (gtk_widget_is_composited(widget))
   {
     if (pixmap == NULL)
     {
@@ -34,7 +37,33 @@ awn_utils_make_transparent (GtkWidget *widget)
       cairo_paint(cr);
       cairo_destroy(cr);
     }
-    gdk_window_set_back_pixmap(widget->window, pixmap, FALSE);    
+    gdk_window_set_back_pixmap(widget->window, pixmap, FALSE);
   }
- 
 }
+
+static void
+on_style_set (GtkWidget *widget, GtkStyle *prev_style)
+{
+  if (GTK_WIDGET_REALIZED (widget))
+    awn_utils_make_transparent_bg (widget);
+}
+
+void
+awn_utils_ensure_tranparent_bg (GtkWidget *widget)
+{
+  if (GTK_WIDGET_REALIZED (widget))
+    awn_utils_ensure_tranparent_bg (widget);
+
+  // make sure we don't connect the handler multiple times
+  g_signal_handlers_disconnect_by_func (widget,
+                    G_CALLBACK (awn_utils_make_transparent_bg), NULL);
+  g_signal_handlers_disconnect_by_func (widget,
+                    G_CALLBACK (on_style_set), NULL);
+
+  g_signal_connect (widget, "realize",
+                    G_CALLBACK (awn_utils_make_transparent_bg), NULL);
+
+  g_signal_connect (widget, "style-set",
+                    G_CALLBACK (on_style_set), NULL);
+}
+

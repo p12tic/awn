@@ -261,7 +261,7 @@ awn_panel_constructed (GObject *object)
   /* Composited checks/setup */
   screen = gtk_widget_get_screen (panel);
   priv->composited = gdk_screen_is_composited (screen);
-  g_print ("Screen %s composited", priv->composited ? "is" : "isn't");
+  g_print ("Screen %s composited\n", priv->composited ? "is" : "isn't");
   load_correct_colormap (panel);
   g_signal_connect (screen, "composited-changed", 
                     G_CALLBACK (on_composited_changed), panel);
@@ -1004,15 +1004,13 @@ awn_panel_init (AwnPanel *panel)
 
   /*g_signal_connect (priv->eventbox, "expose-event",
                     G_CALLBACK (on_eb_expose), priv->alignment);*/
-  g_signal_connect (priv->eventbox, "realize",
-                    G_CALLBACK(awn_utils_make_transparent), NULL);
+  awn_utils_ensure_tranparent_bg (priv->eventbox);
 
   g_signal_connect (panel, "enter-notify-event", 
                     G_CALLBACK (on_mouse_over), NULL);
   g_signal_connect (panel, "leave-notify-event", 
                     G_CALLBACK (on_mouse_out), NULL);
-  g_signal_connect (panel, "realize", 
-                    G_CALLBACK(awn_utils_make_transparent), NULL);
+  awn_utils_ensure_tranparent_bg (GTK_WIDGET (panel));
   gtk_window_set_resizable (GTK_WINDOW (panel), FALSE);
 }
 
