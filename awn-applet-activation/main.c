@@ -34,21 +34,24 @@ GtkWidget *
 _awn_applet_new(const gchar *path,
                 const gchar *uid,
                 gint         orient,
-                gint         height);
+                gint         offset,
+                gint         size);
 static void
 launch_python(const gchar *file,
               const gchar *module,
               const gchar *uid,
               gint64 window,
               gint orient,
-              gint height);
+              gint offset,
+              gint size);
 
 /* Commmand line options */
 static gchar    *path = NULL;
 static gchar    *uid  = NULL;
 static gint64    window = 0;
 static gint      orient = AWN_ORIENTATION_BOTTOM;
-static gint      height = 50;
+static gint      offset = 0;
+static gint      size   = 50;
 
 
 static GOptionEntry entries[] =
@@ -81,11 +84,18 @@ static GOptionEntry entries[] =
      "Awns current orientation.",
      "0" },
 
-  {  "height",
-     'h', 0,
+  {  "offset",
+     'f', 0,
      G_OPTION_ARG_INT,
-     &height,
-     "Awns current height.",
+     &offset,
+     "Current icon offset of the panel.",
+     "0" },
+
+  {  "size",
+     's', 0,
+     G_OPTION_ARG_INT,
+     &size,
+     "Current size of the panel.",
      "50" },
 
   { NULL }
@@ -168,12 +178,7 @@ main(gint argc, gchar **argv)
   {
     if (strcmp(type, "Python") == 0)
     {
-      launch_python(path,
-                    exec,
-                    uid,
-                    window,
-                    orient,
-                    height);
+      launch_python(path, exec, uid, window, orient, offset, size);
       return 0;
     }
   }
@@ -194,7 +199,7 @@ main(gint argc, gchar **argv)
   }
 
   /* Create a GtkPlug for the applet */
-  applet = _awn_applet_new (exec, uid, orient, height);
+  applet = _awn_applet_new (exec, uid, orient, offset, size);
 
   if (applet == NULL)
   {
@@ -227,7 +232,8 @@ GtkWidget *
 _awn_applet_new(const gchar *path,
                 const gchar *uid,
                 gint         orient,
-                gint         height)
+                gint         offset,
+                gint         size)
 {
   GModule *module;
   AwnApplet *applet;
@@ -249,7 +255,7 @@ _awn_applet_new(const gchar *path,
                       (gpointer *)&init_func))
   {
     /* create new applet */
-    applet = AWN_APPLET(awn_applet_new(uid, orient, height));
+    applet = AWN_APPLET(awn_applet_new(uid, orient, offset, size));
     /* send applet to factory method */
 
     if (!init_func(applet))
@@ -267,7 +273,7 @@ _awn_applet_new(const gchar *path,
                         (gpointer *)&initp_func))
     {
       /* Create the applet */
-      applet = AWN_APPLET(initp_func(uid, orient, height));
+      applet = AWN_APPLET(initp_func(uid, orient, offset, size));
 
       if (applet == NULL)
       {
@@ -299,7 +305,8 @@ launch_python(const gchar *file,
               const gchar *uid,
               gint64 window,
               gint orient,
-              gint height)
+              gint offset,
+              gint size)
 {
   gchar *cmd = NULL;
   gchar *exec = NULL;
@@ -319,8 +326,8 @@ launch_python(const gchar *file,
 
 
   cmd = g_strdup_printf("python %s --uid=%s --window=%" G_GINT64_FORMAT " "
-                        " --orient=%d --height=%d",
-                        exec, uid, window, orient, height);
+                        " --orient=%d --offset=%d --size=%d",
+                        exec, uid, window, orient, offset, size);
   g_spawn_command_line_async(cmd, &err);
 
   if (err)

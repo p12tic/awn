@@ -77,6 +77,9 @@ GtkWidget *   awn_icon_new              (void);
 void          awn_icon_set_orientation  (AwnIcon        *icon,
                                          AwnOrientation  orient);
 
+void          awn_icon_set_offset       (AwnIcon        *icon,
+                                         gint            offset);
+
 void          awn_icon_set_effect       (AwnIcon     *icon, 
                                          AwnEffect    effect);
 

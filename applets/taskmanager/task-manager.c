@@ -272,6 +272,7 @@ task_manager_init (TaskManager *manager)
 AwnApplet *
 task_manager_new (const gchar *uid,
                   gint         orient,
+                  gint         offset,
                   gint         size)
 {
   static AwnApplet *manager = NULL;
@@ -280,6 +281,7 @@ task_manager_new (const gchar *uid,
     manager = g_object_new (TASK_TYPE_MANAGER,
                             "uid", uid,
                             "orient", orient,
+                            "offset", offset,
                             "size", size,
                             NULL);
   return manager;

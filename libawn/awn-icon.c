@@ -36,6 +36,7 @@ struct _AwnIconPrivate
   GtkWidget    *tooltip;
   
   AwnOrientation orient;
+  gint offset;
   gint icon_width;
   gint icon_height;
   gint size;
@@ -289,6 +290,7 @@ awn_icon_init (AwnIcon *icon)
 
   priv->icon_srfc = NULL;
   priv->orient = AWN_ORIENTATION_BOTTOM;
+  priv->offset = 0;
   priv->size = 50;
   priv->icon_width = 0;
   priv->icon_height = 0;
@@ -324,7 +326,7 @@ awn_icon_update_tooltip_pos(AwnIcon *icon)
   g_return_if_fail (AWN_IS_ICON (icon));
   priv = icon->priv;
 
-  /* we could set tooltip_offset = priv->effects->icon_offset, and use 
+  /* we could set tooltip_offset = priv->offset, and use 
    * different offset in AwnTooltip
    * (do we want different icon bar offset and tooltip offset?)
    */
@@ -342,6 +344,24 @@ awn_icon_update_tooltip_pos(AwnIcon *icon)
 
   awn_tooltip_set_position_hint(AWN_TOOLTIP(priv->tooltip),
                                 priv->orient, tooltip_offset);
+}
+
+void 
+awn_icon_set_offset (AwnIcon        *icon,
+                     gint            offset)
+{
+  AwnIconPrivate *priv;
+
+  g_return_if_fail (AWN_IS_ICON (icon));
+  priv = icon->priv;
+
+  priv->offset = offset;
+
+  g_object_set (priv->effects, "icon-offset", offset, NULL);
+
+  gtk_widget_queue_resize (GTK_WIDGET(icon));
+
+  awn_icon_update_tooltip_pos(icon);
 }
 
 void 

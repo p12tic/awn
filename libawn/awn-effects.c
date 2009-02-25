@@ -408,9 +408,6 @@ awn_effects_constructed (GObject *object)
                           "effects", "icon_effect",
                           object, "effects");
   awn_config_bridge_bind (bridge, client,
-                          "panel", "offset",
-                          object, "icon-offset");
-  awn_config_bridge_bind (bridge, client,
                           "effects", "icon_alpha",
                           object, "icon-alpha");
   awn_config_bridge_bind (bridge, client,

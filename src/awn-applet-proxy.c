@@ -32,13 +32,14 @@ G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_SOCKET)
 #define AWN_APPLET_PROXY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE (obj, \
   AWN_TYPE_APPLET_PROXY, AwnAppletProxyPrivate))
 
-#define APPLET_EXEC "awn-applet-activation -p %s -u %s -w %lld -o %d -h %d"
+#define APPLET_EXEC "awn-applet-activation -p %s -u %s -w %lld -o %d -f %d -s %d"
 
 struct _AwnAppletProxyPrivate
 {
   gchar *path;
   gchar *uid;
   gint   orient;
+  gint   offset;
   gint   size;
 
   gboolean running;
@@ -52,6 +53,7 @@ enum
   PROP_PATH,
   PROP_UID,
   PROP_ORIENT,
+  PROP_OFFSET,
   PROP_SIZE
 };
 
@@ -95,6 +97,9 @@ awn_applet_proxy_get_property (GObject    *object,
     case PROP_ORIENT:
       g_value_set_int (value, priv->orient);
       break;
+    case PROP_OFFSET:
+      g_value_set_int (value, priv->offset);
+      break;
     case PROP_SIZE:
       g_value_set_int (value, priv->size);
       break;
@@ -126,6 +131,10 @@ awn_applet_proxy_set_property (GObject      *object,
       priv->orient = g_value_get_int (value);
       awn_throbber_set_orientation (AWN_THROBBER (priv->throbber),
                                     priv->orient);
+      break;
+    case PROP_OFFSET:
+      priv->offset = g_value_get_int (value);
+      awn_throbber_set_offset (AWN_THROBBER (priv->throbber), priv->offset);
       break;
     case PROP_SIZE:
       priv->size = g_value_get_int (value);
@@ -188,6 +197,14 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
         "Orient",
         "The panel orientation",
         0, 3, AWN_ORIENTATION_BOTTOM,
+        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+      PROP_OFFSET,
+      g_param_spec_int ("offset",
+        "Offset",
+        "The panel icon offset",
+        0, G_MAXINT, 0,
         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -294,6 +311,7 @@ GtkWidget *
 awn_applet_proxy_new (const gchar *path,
     const gchar *uid,
     gint         orient,
+    gint         offset,
     gint         size)
 {
   GtkWidget *proxy;
@@ -302,6 +320,7 @@ awn_applet_proxy_new (const gchar *path,
       "path", path,
       "uid", uid,
       "orient", orient,
+      "offset", offset,
       "size", size,
       NULL);
   return proxy;
@@ -403,6 +422,7 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
                           priv->uid, 
                           (long long)gtk_socket_get_id (GTK_SOCKET (proxy)),
                           priv->orient,
+                          priv->offset,
                           priv->size);
 
   

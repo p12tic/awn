@@ -138,6 +138,7 @@ enum
 {
   SIZE_CHANGED,
   ORIENT_CHANGED,
+  OFFSET_CHANGED,
   DESTROY_NOTIFY,
   DESTROY_APPLET,
   AUTOHIDE_START,
@@ -938,6 +939,16 @@ awn_panel_class_init (AwnPanelClass *klass)
 			      G_TYPE_NONE,
 			      1, G_TYPE_INT);
 
+  _panel_signals[OFFSET_CHANGED] =
+		g_signal_new ("offset_changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (AwnPanelClass, offset_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__INT, 
+			      G_TYPE_NONE,
+			      1, G_TYPE_INT);
+
   _panel_signals[DESTROY_NOTIFY] =
 		g_signal_new ("destroy_notify",
 			      G_OBJECT_CLASS_TYPE (obj_class),
@@ -1430,6 +1441,8 @@ awn_panel_set_offset  (AwnPanel *panel,
   priv->offset = offset;
 
   awn_panel_refresh_padding (panel, NULL);
+
+  g_signal_emit (panel, _panel_signals[OFFSET_CHANGED], 0, priv->offset);
 
   gtk_widget_queue_resize (GTK_WIDGET (panel));
 }

@@ -44,6 +44,7 @@ struct _AwnAppletPrivate
   gchar *uid;
   gchar *gconf_key;
   AwnOrientation orient;
+  gint offset;
   guint size;
 
   AwnAppletFlags flags;
@@ -57,12 +58,14 @@ enum
   PROP_0,
   PROP_UID,
   PROP_ORIENT,
+  PROP_OFFSET,
   PROP_SIZE
 };
 
 enum
 {
   ORIENT_CHANGED,
+  OFFSET_CHANGED,
   SIZE_CHANGED,
   PLUG_EMBEDDED,
   DELETED,
@@ -79,6 +82,14 @@ on_orient_changed (DBusGProxy *proxy, gint orient, AwnApplet *applet)
   g_return_if_fail (AWN_IS_APPLET (applet));
 
   awn_applet_set_orientation (applet, orient);
+}
+
+static void
+on_offset_changed (DBusGProxy *proxy, gint offset, AwnApplet *applet)
+{
+  g_return_if_fail (AWN_IS_APPLET (applet));
+
+  awn_applet_set_offset (applet, offset);
 }
 
 static void
@@ -142,6 +153,9 @@ awn_applet_set_property (GObject      *object,
     case PROP_ORIENT:
       awn_applet_set_orientation (applet, g_value_get_int (value));
       break;
+    case PROP_OFFSET:
+      awn_applet_set_offset (applet, g_value_get_int (value));
+      break;
     case PROP_SIZE:
       awn_applet_set_size (applet, g_value_get_int (value));
       break;
@@ -170,6 +184,11 @@ awn_applet_get_property (GObject    *object,
 
     case PROP_ORIENT:
       g_value_set_int (value, priv->orient);
+      break;
+
+    case PROP_OFFSET:
+      g_value_set_int (value, priv->offset);
+      break;
 
     case PROP_SIZE:
       g_value_set_int (value, priv->size);
@@ -232,6 +251,14 @@ awn_applet_class_init (AwnAppletClass *klass)
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
+   PROP_OFFSET,
+   g_param_spec_int ("offset",
+                     "Offset",
+                     "Icon offset set on the bar",
+                     0, G_MAXINT, 0,
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+
+  g_object_class_install_property (gobject_class,
    PROP_SIZE,
    g_param_spec_int ("size",
                      "Size",
@@ -247,6 +274,15 @@ awn_applet_class_init (AwnAppletClass *klass)
                  G_STRUCT_OFFSET(AwnAppletClass, orient_changed),
                  NULL, NULL,
                  g_cclosure_marshal_VOID__ENUM,
+                 G_TYPE_NONE, 1, G_TYPE_INT);
+
+  _applet_signals[OFFSET_CHANGED] =
+    g_signal_new("offset-changed",
+                 G_OBJECT_CLASS_TYPE (gobject_class),
+                 G_SIGNAL_RUN_FIRST,
+                 G_STRUCT_OFFSET (AwnAppletClass, offset_changed),
+                 NULL, NULL,
+                 g_cclosure_marshal_VOID__INT,
                  G_TYPE_NONE, 1, G_TYPE_INT);
 
   _applet_signals[SIZE_CHANGED] =
@@ -272,7 +308,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                  G_OBJECT_CLASS_TYPE(gobject_class),
                  G_SIGNAL_RUN_FIRST,
                  G_STRUCT_OFFSET(AwnAppletClass, deleted),
-								 NULL, NULL,
+                 NULL, NULL,
                  g_cclosure_marshal_VOID__STRING,
                  G_TYPE_NONE, 1, G_TYPE_STRING);
 
@@ -334,6 +370,8 @@ awn_applet_init (AwnApplet *applet)
 
   dbus_g_proxy_add_signal (priv->proxy, "OrientChanged",
                            G_TYPE_INT, G_TYPE_INVALID);
+  dbus_g_proxy_add_signal (priv->proxy, "OffsetChanged",
+                           G_TYPE_INT, G_TYPE_INVALID);
   dbus_g_proxy_add_signal (priv->proxy, "SizeChanged",
                            G_TYPE_INT, G_TYPE_INVALID);
   dbus_g_proxy_add_signal (priv->proxy, "DestroyNotify",
@@ -343,6 +381,9 @@ awn_applet_init (AwnApplet *applet)
   
   dbus_g_proxy_connect_signal (priv->proxy, "OrientChanged",
                                G_CALLBACK (on_orient_changed), applet, 
+                               NULL);
+  dbus_g_proxy_connect_signal (priv->proxy, "OffsetChanged",
+                               G_CALLBACK (on_offset_changed), applet, 
                                NULL);
   dbus_g_proxy_connect_signal (priv->proxy, "SizeChanged",
                                G_CALLBACK (on_size_changed), applet,
@@ -362,11 +403,12 @@ awn_applet_init (AwnApplet *applet)
 }
 
 AwnApplet *
-awn_applet_new (const gchar* uid, gint orient, gint size)
+awn_applet_new (const gchar* uid, gint orient, gint offset, gint size)
 {
   AwnApplet *applet = g_object_new (AWN_TYPE_APPLET,
                                     "uid", uid,
                                     "orient", orient,
+                                    "offset", offset,
                                     "size", size,
                                     NULL);
   return applet;
@@ -420,7 +462,7 @@ awn_applet_create_pref_item (void)
   gtk_widget_show_all (item);
   g_signal_connect (item, "activate", 
                     G_CALLBACK (_start_awn_manager), NULL);
-	return item;
+  return item;
 }
 
 GtkWidget*
@@ -472,6 +514,30 @@ awn_applet_set_orientation (AwnApplet *applet, AwnOrientation orient)
   priv->orient = orient;
 
   g_signal_emit (applet, _applet_signals[ORIENT_CHANGED], 0, orient);
+}
+
+gint
+awn_applet_get_offset (AwnApplet *applet)
+{
+  AwnAppletPrivate *priv;
+
+  g_return_val_if_fail(AWN_IS_APPLET (applet), 0);
+  priv = AWN_APPLET_GET_PRIVATE (applet);
+
+  return priv->offset;
+}
+
+void
+awn_applet_set_offset (AwnApplet *applet, gint offset)
+{
+  AwnAppletPrivate *priv;
+
+  g_return_if_fail (AWN_IS_APPLET (applet));
+  priv = applet->priv;
+
+  priv->offset = offset;
+
+  g_signal_emit (applet, _applet_signals[OFFSET_CHANGED], 0, offset);
 }
 
 guint
@@ -534,7 +600,8 @@ awn_applet_set_flags (AwnApplet *applet, AwnAppletFlags flags)
 
   dbus_g_proxy_call (priv->proxy, "SetAppletFlags",
                         &error,
-                        G_TYPE_STRING, awn_applet_get_uid (AWN_APPLET (applet)),                        G_TYPE_INT, flags, 
+                        G_TYPE_STRING, awn_applet_get_uid (AWN_APPLET (applet)),
+                        G_TYPE_INT, flags,
                         G_TYPE_INVALID, G_TYPE_INVALID);
 
   if (error)

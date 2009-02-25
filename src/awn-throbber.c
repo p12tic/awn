@@ -37,6 +37,7 @@ struct _AwnThrobberPrivate
   GtkWidget      *tooltip;
   AwnOrientation  orient;
   AwnThrobberType type;
+  gint            offset;
   gint            size;
 
   gint        counter;
@@ -403,6 +404,17 @@ awn_throbber_set_size (AwnThrobber *throbber, gint size)
   gtk_widget_queue_resize (GTK_WIDGET(throbber));
 
   awn_throbber_update_tooltip_pos (throbber);
+}
+
+void
+awn_throbber_set_offset (AwnThrobber *throbber, gint o)
+{
+  g_return_if_fail (AWN_IS_THROBBER (throbber));
+
+  AwnThrobberPrivate *priv = throbber->priv;
+
+  priv->offset = o;
+  g_object_set (priv->effects, "icon-offset", o, NULL);
 }
 
 void

@@ -38,6 +38,7 @@ struct _AwnAppletManagerPrivate
   AwnConfigClient *client;
 
   AwnOrientation   orient;
+  gint             offset;
   gint             size;
   GSList           *applet_list;
 
@@ -55,6 +56,7 @@ enum
 
   PROP_CLIENT,
   PROP_ORIENT,
+  PROP_OFFSET,
   PROP_SIZE,
   PROP_APPLET_LIST
 };
@@ -67,6 +69,8 @@ static void awn_applet_manager_set_size   (AwnAppletManager *manager,
                                            gint              size);
 static void awn_applet_manager_set_orient (AwnAppletManager *manager, 
                                            gint              orient);
+static void awn_applet_manager_set_offset (AwnAppletManager *manager,
+                                           gint              offset);
 static void free_list                     (GSList *list);
 
 /*
@@ -91,6 +95,9 @@ awn_applet_manager_constructed (GObject *object)
   awn_config_bridge_bind (bridge, priv->client,
                           AWN_GROUP_PANEL, AWN_PANEL_SIZE,
                           object, "size");
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_OFFSET,
+                          object, "offset");
   awn_config_bridge_bind_list (bridge, priv->client,
                                AWN_GROUP_PANEL, AWN_PANEL_APPLET_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
@@ -133,6 +140,9 @@ awn_applet_manager_get_property (GObject    *object,
     case PROP_ORIENT:
       g_value_set_int (value, priv->orient);
       break;
+    case PROP_OFFSET:
+      g_value_set_int (value, priv->offset);
+      break;
     case PROP_SIZE:
       g_value_set_int (value, priv->size);
       break;
@@ -164,6 +174,9 @@ awn_applet_manager_set_property (GObject      *object,
       break;
     case PROP_ORIENT:
       awn_applet_manager_set_orient (manager, g_value_get_int (value));
+      break;
+    case PROP_OFFSET:
+      awn_applet_manager_set_offset (manager, g_value_get_int (value));
       break;
     case PROP_SIZE:
       awn_applet_manager_set_size (manager, g_value_get_int (value));
@@ -217,6 +230,14 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                       "Orient",
                       "The orientation of the panel",
                       0, 3, AWN_ORIENTATION_BOTTOM,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+    PROP_OFFSET,
+    g_param_spec_int ("offset",
+                      "Offset",
+                      "The icon offset of the panel",
+                      0, G_MAXINT, 0,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -293,6 +314,30 @@ awn_applet_manager_set_size (AwnAppletManager *manager,
 }
 
 static void
+awn_manager_set_applets_offset (gpointer key,
+                                GtkWidget *applet,
+                                AwnAppletManager *manager)
+{
+  if (G_IS_OBJECT (applet))
+  {
+    g_object_set (applet, "offset", manager->priv->offset, NULL);
+  }
+}
+
+static void
+awn_applet_manager_set_offset (AwnAppletManager *manager,
+                               gint              offset)
+{
+  AwnAppletManagerPrivate *priv = manager->priv;
+
+  priv->offset = offset;
+
+  /* update size on all running applets (if they'd crash) */
+  g_hash_table_foreach(priv->applets,
+                       (GHFunc)awn_manager_set_applets_offset, manager);
+}
+
+static void
 awn_manager_set_applets_orient (gpointer key,
                                 GtkWidget *applet,
                                 AwnAppletManager *manager)
@@ -366,7 +411,8 @@ create_applet (AwnAppletManager *manager,
 
   /*FIXME: Exception cases, i.e. separators */
   
-  applet = awn_applet_proxy_new (path, uid, priv->orient, priv->size);
+  applet = awn_applet_proxy_new (path, uid, priv->orient,
+                                 priv->offset, priv->size);
   notifier = awn_applet_proxy_get_throbber(AWN_APPLET_PROXY(applet));
   gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (manager), notifier, FALSE, FALSE, 0);

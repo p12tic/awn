@@ -68,6 +68,17 @@ awn_applet_simple_orient_changed (AwnApplet *applet, AwnOrientation orient)
 }
 
 static void
+awn_applet_simple_offset_changed (AwnApplet *applet, gint offset)
+{
+  AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE (applet)->priv;
+
+  if (AWN_IS_ICON (priv->icon))
+  {
+    awn_icon_set_offset (AWN_ICON (priv->icon), offset);
+  }
+}
+
+static void
 awn_applet_simple_size_changed (AwnApplet *applet, gint size)
 {
   AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE (applet)->priv;
@@ -110,6 +121,8 @@ awn_applet_simple_constructed (GObject *object)
   priv->icon = awn_themed_icon_new ();
   awn_icon_set_orientation (AWN_ICON (priv->icon), 
                             awn_applet_get_orientation (AWN_APPLET (object)));
+  awn_icon_set_offset (AWN_ICON (priv->icon),
+                       awn_applet_get_offset (AWN_APPLET (object)));
   gtk_container_add (GTK_CONTAINER (applet), priv->icon);
   gtk_widget_show (priv->icon);
 }
@@ -133,6 +146,7 @@ awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
   wid_class->size_request = awn_applet_simple_size_request;
 
   app_class->orient_changed = awn_applet_simple_orient_changed;
+  app_class->offset_changed = awn_applet_simple_offset_changed;
   app_class->size_changed   = awn_applet_simple_size_changed;
   app_class->menu_creation  = awn_applet_simple_menu_creation;
   

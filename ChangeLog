@@ -1,3 +1,29 @@
+2009-02-26  Michal Hruby <michal.mhr@gmail.com>
+
+	* applets/taskmanager/applet.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-manager.h:
+	* awn-applet-activation/main.c:
+	* bindings/python/awn.defs:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-effects.c:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-icon-box.h:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-applet-proxy.h:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	* src/awn-throbber.c:
+	* src/awn-throbber.h:
+	Offset is now property of AwnApplet and is propagated to applets via
+	DBus. (oh, btw this probably breaks all applets we have)
+
 2009-02-21  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-applet-simple.c:

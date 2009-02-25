@@ -75,6 +75,8 @@ GtkWidget *   awn_throbber_new              (void);
 void          awn_throbber_set_orientation  (AwnThrobber *throbber,
                                              AwnOrientation orient);
 
+void          awn_throbber_set_offset       (AwnThrobber *throbber, gint o);
+
 void          awn_throbber_set_type         (AwnThrobber *throbber,
                                              AwnThrobberType type);
 

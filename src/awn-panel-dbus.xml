@@ -4,9 +4,9 @@
     <annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_panel"/>
   
     <!-- Methods -->
-	  <method name="DeleteApplet">
-		  <arg name="uid" type="s" direction="in" />
-	  </method>
+    <method name="DeleteApplet">
+      <arg name="uid" type="s" direction="in" />
+    </method>
 
     <method name="SetAppletFlags">
       <arg name="uid" type="s" direction="in" />
@@ -28,11 +28,15 @@
       <arg type="i" name="orient" />
     </signal>
 
+    <signal name="OffsetChanged">
+      <arg type="i" name="offset" />
+    </signal>
+
     <signal name="DestroyNotify"></signal>
 
-	  <signal name="DestroyApplet">
-		  <arg type="s" name="uid" />
-	  </signal>
+    <signal name="DestroyApplet">
+      <arg type="s" name="uid" />
+    </signal>
 
   </interface>
 </node>
