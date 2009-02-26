@@ -176,13 +176,14 @@ awn_applet_simple_init (AwnAppletSimple *simple)
  * Returns: a new instance of an applet.
  */
 GtkWidget*
-awn_applet_simple_new (const gchar *uid, gint orient, gint size)
+awn_applet_simple_new (const gchar *uid, gint orient,gint offset, gint size)
 {
   AwnAppletSimple *simple;
 
   simple = g_object_new(AWN_TYPE_APPLET_SIMPLE,
                         "uid", uid,
                         "orient", orient,
+                        "offset",offset,
                         "size", size,
                         NULL);
 

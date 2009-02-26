@@ -413,6 +413,7 @@
   (parameters
     '("const-gchar*" "uid")
     '("gint" "orient")
+    '("gint" "offset")
     '("gint" "size")
   )
 )

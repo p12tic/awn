@@ -1,3 +1,11 @@
+2009-02-20 Rodney Cryderman <rcryderman@gmail.com>
+        * bindings/python/awn.defs:
+        * libawn/awn-applet-simple.c:
+  	* libawn/awn-applet-simple.h:
+        * tests/test-applet-simple.c:
+
+	Add offset to awn_applet_simple_new().
+
 2009-02-26  Michal Hruby <michal.mhr@gmail.com>
 
 	* applets/taskmanager/applet.c:
