@@ -1,5 +1,13 @@
 2009-02-27  h4writer <hv1989@gmail.com>
 
+	* src/awn-background-flat.c:
+	- Did better rotation, so coordinates in the drawing are easier (like in background-3d).
+	- Added a function to retrieve the shape mask.
+	- Removed orientation, x and y arguments of some functions.
+	- Removed the clever way to make sure cairo is drawing on the 0.5px. Isn't needed anymore!
+
+2009-02-27  h4writer <hv1989@gmail.com>
+
 	* src/awn-panel.c:
 	Set extra_padding to ACTIVE_RECT_PADDING in the invisible bar.
 
