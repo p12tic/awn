@@ -435,6 +435,7 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
 
   if (!priv->bg || !AWN_IS_BACKGROUND (priv->bg)) {
     gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment), 0, 0, 0, 0);
+    priv->extra_padding = ACTIVE_RECT_PADDING;
     return;
   }
 
