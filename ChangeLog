@@ -1,5 +1,10 @@
 2009-02-28  Michal Hruby <michal.mhr@gmail.com>
 
+	* libawn/awn-dialog.c:
+	Intermittent commit - more changes to AwnDialog.
+
+2009-02-28  Michal Hruby <michal.mhr@gmail.com>
+
 	* bindings/python/awn.defs:
 	* bindings/python/awn.override:
 	* libawn/Makefile.am:

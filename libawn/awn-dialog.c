@@ -44,7 +44,6 @@ G_DEFINE_TYPE(AwnDialog, awn_dialog, GTK_TYPE_WINDOW)
 struct _AwnDialogPrivate
 {
   GtkWidget *title;
-  GtkWidget *title_label;
   GtkWidget *vbox;
   GtkWidget *align;
 
@@ -137,122 +136,61 @@ awn_dialog_position_reset(AwnDialog *dialog)
 static gboolean
 _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 {
-#define BOR 4
+  #define BOR 4
   AwnDialog *dialog;
+  AwnDialogPrivate *priv;
+  GtkWidget *child;
   cairo_t *cr = NULL;
-  GtkWidget *child = NULL;
   gint width, height;
   gint gap = 20;
-  gint x;
-  GtkStyle *style;
-  GdkColor bg;
-  GdkColor border;
 
-  dialog = AWN_DIALOG(widget);
+  dialog = AWN_DIALOG (widget);
+  priv = dialog->priv;
 
   cr = gdk_cairo_create(widget->window);
 
   if (!cr)
     return FALSE;
 
-  gtk_window_get_size(GTK_WINDOW(widget), &width, &height);
-
-  style = gtk_widget_get_style(widget);
-
-  bg = style->bg[GTK_STATE_NORMAL];
-
-  border = style->bg[GTK_STATE_SELECTED];
+  width = widget->allocation.width;
+  height = widget->allocation.height;
 
   /* Clear the background to transparent */
-  cairo_set_source_rgba(cr, 1.0f, 1.0f, 1.0f, 0.0f);
-
   cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
-
   cairo_paint(cr);
 
   /* draw everything else over transparent background */
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
-
-  cairo_set_line_width(cr, 3.0);
+  cairo_set_line_width(cr, 2.0);
 
   /* background shading */
-  cairo_set_source_rgb(cr, bg.red / 65535.0,
-                        bg.green / 65535.0,
-                        bg.blue / 65535.0
-                        );
+  cairo_set_source_rgba (cr, priv->g_step_2.red,
+                         priv->g_step_2.green,
+                         priv->g_step_2.blue,
+                         priv->g_step_2.alpha);
 
   awn_cairo_rounded_rect(cr, BOR, BOR, width - (BOR*2),
                          height - (BOR*2) - gap,
                          15, ROUND_ALL);
-
   cairo_fill_preserve(cr);
 
-  cairo_set_source_rgb(cr, border.red / 65535.0,
-                        border.green / 65535.0,
-                        border.blue / 65535.0
-                      );
-
-  cairo_stroke(cr);
-
-  /* do some maths */
-  x = width / 2;
-
-  /* draw arrow */
-  cairo_set_source_rgb(cr, bg.red / 65535.0,
-                        bg.green / 65535.0,
-                        bg.blue / 65535.0
-                        );
-
-  cairo_move_to(cr, x - 15, height - gap - BOR);
-
-  cairo_line_to(cr, x, height);
-
-  cairo_line_to(cr, x + 15, height - gap - BOR);
-
-  /*cairo_line_to (cr, x-15, height - gap - BOR);*/
-  cairo_close_path(cr);
-
-  cairo_fill_preserve(cr);
-
-  cairo_set_source_rgb(cr, border.red / 65535.0,
-                        border.green / 65535.0,
-                        border.blue / 65535.0
-                        );
-
-  cairo_stroke(cr);
-
-  cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-
-  cairo_set_source_rgb(cr, bg.red / 65535.0,
-                        bg.green / 65535.0,
-                        bg.blue / 65535.0
-                      );
-
-  cairo_move_to(cr, x - 14, height - gap - (BOR*2));
-
-  cairo_line_to(cr, x, height - (BOR*2));
-
-  cairo_line_to(cr, x + 14, height - gap - (BOR*2));
-
-  cairo_close_path(cr);
-
-  cairo_fill_preserve(cr);
-
+  cairo_set_source_rgba (cr, priv->border_color.red,
+                         priv->border_color.green,
+                         priv->border_color.blue,
+                         priv->border_color.alpha);
   cairo_stroke(cr);
 
   /* Clean up */
   cairo_destroy(cr);
 
-  awn_dialog_position_reset(AWN_DIALOG(widget));
-
   /* Propagate the signal */
   child = gtk_bin_get_child(GTK_BIN(widget));
 
   if (child)
-    gtk_container_propagate_expose(GTK_CONTAINER(widget),
-                                   child, expose);
+    gtk_container_propagate_expose (GTK_CONTAINER (widget),
+                                    child, expose);
 
-  return FALSE;
+  return TRUE;
 }
 
 static gboolean
@@ -262,11 +200,8 @@ on_title_expose(GtkWidget       *widget,
 {
   cairo_t *cr = NULL;
   cairo_pattern_t *pat = NULL;
-  GtkWidget *child = NULL;
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (dialog);
   gint width, height;
-  GtkStyle *style;
-  GdkColor bg;
-  GdkColor border;
 
   cr = gdk_cairo_create(widget->window);
 
@@ -274,66 +209,43 @@ on_title_expose(GtkWidget       *widget,
     return FALSE;
 
   width = widget->allocation.width;
-
   height = widget->allocation.height;
 
-  style = gtk_widget_get_style(GTK_WIDGET(dialog));
+  gdk_cairo_region (cr, expose->region);
+  cairo_clip (cr);
 
-  bg = style->bg[GTK_STATE_NORMAL];
-
-  border = style->bg[GTK_STATE_SELECTED];
-
-  /* Clear the background to transparent */
-  cairo_set_source_rgba(cr, 1.0f, 1.0f, 1.0f, 0.0f);
-
-  cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
-
-  cairo_paint(cr);
+  cairo_translate (cr, expose->area.x, expose->area.y);
 
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
   cairo_set_line_width(cr, 1.0);
 
-  /* Paint the dialog background */
-  cairo_set_source_rgb(cr, bg.red / 65535.0,
-                        bg.green / 65535.0,
-                        bg.blue / 65535.0
-                        );
-
-  cairo_rectangle(cr, 0, 0, width, height);
-
-  cairo_fill(cr);
-
   /* Paint the background the border colour */
-  cairo_set_source_rgb(cr, border.red / 65535.0,
-                        border.green / 65535.0,
-                        border.blue / 65535.0
-                      );
+  pat = cairo_pattern_create_linear (0, 0, 0, height);
+  cairo_pattern_add_color_stop_rgba (pat, 0.0,
+                                     priv->g_histep_1.red,
+                                     priv->g_histep_1.green,
+                                     priv->g_histep_1.blue,
+                                     priv->g_histep_1.alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 1.0,
+                                     priv->g_histep_2.red,
+                                     priv->g_histep_2.green,
+                                     priv->g_histep_2.blue,
+                                     priv->g_histep_2.alpha);
 
-  awn_cairo_rounded_rect(cr, 0, 0, width, height, 15, ROUND_ALL);
+  awn_cairo_rounded_rect (cr, 0, 0, width, height, 15, ROUND_ALL);
+  cairo_set_source (cr, pat);
+  cairo_fill_preserve (cr);
+  cairo_pattern_destroy (pat);
 
-  cairo_fill(cr);
-
-  /* Make the background appear 'rounded' */
-  pat = cairo_pattern_create_linear(0, 0, 0, height);
-
-  cairo_pattern_add_color_stop_rgba(pat, 0, 1, 1, 1, 0.0);
-
-  cairo_pattern_add_color_stop_rgba(pat, 1, 0, 0, 0, 0.3);
-
-  awn_cairo_rounded_rect(cr, 0, 0, width, height, 15, ROUND_ALL);
-
-  cairo_set_source(cr, pat);
-
-  cairo_fill_preserve(cr);
-
-  cairo_pattern_destroy(pat);
-
-  cairo_set_source_rgba(cr, 0, 0, 0, 0.2);
-
-  cairo_stroke(cr);
+  cairo_set_source_rgba (cr, priv->hilight_color.red,
+                             priv->hilight_color.green,
+                             priv->hilight_color.blue,
+                             priv->hilight_color.alpha);
+  cairo_stroke (cr);
 
   /* Highlight */
+  /*
   pat = cairo_pattern_create_linear(0, 0, 0, (height / 5) * 2);
 
   cairo_pattern_add_color_stop_rgba(pat, 0, 1, 1, 1, 0.3);
@@ -348,18 +260,12 @@ on_title_expose(GtkWidget       *widget,
   cairo_fill(cr);
 
   cairo_pattern_destroy(pat);
+  */
 
   /* Clean up */
   cairo_destroy(cr);
 
-  /* Propagate the signal */
-  child = gtk_bin_get_child(GTK_BIN(widget));
-
-  if (child)
-    gtk_container_propagate_expose(GTK_CONTAINER(widget),
-                                   child, expose);
-
-  return TRUE;
+  return FALSE;
 }
 
 static gboolean
@@ -398,9 +304,8 @@ _on_title_notify(GObject *dialog, GParamSpec *spec, gpointer null)
   {
     gchar *markup = g_strdup_printf(
                       "<span size='x-large' weight='bold'>%s</span>", title);
-    gtk_label_set_markup(GTK_LABEL(priv->title_label), markup);
+    gtk_label_set_markup(GTK_LABEL(priv->title), markup);
     g_free(markup);
-    gtk_widget_show(priv->title_label);
     gtk_widget_show(priv->title);
   }
   else
@@ -525,21 +430,27 @@ awn_dialog_set_property (GObject      *object,
 
     case PROP_GSTEP1:
       awn_cairo_string_to_color (g_value_get_string (value), &priv->g_step_1);
+      gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_GSTEP2:
       awn_cairo_string_to_color (g_value_get_string (value), &priv->g_step_2);
+      gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_GHISTEP1:
       awn_cairo_string_to_color (g_value_get_string (value), &priv->g_histep_1);
+      gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_GHISTEP2:
       awn_cairo_string_to_color (g_value_get_string (value), &priv->g_histep_2);
+      gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_BORDER:
       awn_cairo_string_to_color (g_value_get_string (value), &priv->border_color);
+      gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_HILIGHT:
       awn_cairo_string_to_color (g_value_get_string (value),&priv->hilight_color);
+      gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
 
     default:
@@ -678,7 +589,7 @@ awn_dialog_init(AwnDialog *dialog)
 
   priv->align = gtk_alignment_new (0.5, 0.5, 1, 1);
   gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
-                             10, 30, 10, 10);
+                             15, 15, 15, 15);
 
   GTK_CONTAINER_CLASS (awn_dialog_parent_class)->add (GTK_CONTAINER (dialog),
                                                       priv->align);
@@ -686,17 +597,15 @@ awn_dialog_init(AwnDialog *dialog)
   priv->vbox = gtk_vbox_new (FALSE, 6);
   gtk_container_add (GTK_CONTAINER (priv->align), priv->vbox);
 
-  priv->title = gtk_event_box_new ();
+  priv->title = gtk_label_new ("");
   gtk_widget_set_no_show_all (priv->title, TRUE);
   gtk_box_pack_start (GTK_BOX (priv->vbox), priv->title, TRUE, TRUE, 0);
   g_signal_connect (priv->title, "expose-event",
                     G_CALLBACK (on_title_expose), dialog);
 
-  priv->title_label = gtk_label_new ("");
-  gtk_widget_set_state (priv->title_label, GTK_STATE_SELECTED);
-  gtk_misc_set_alignment (GTK_MISC (priv->title_label), 0.5, 0.5);
-  gtk_misc_set_padding (GTK_MISC (priv->title_label), 0, 4);
-  gtk_container_add (GTK_CONTAINER (priv->title), priv->title_label);
+  gtk_widget_set_state (priv->title, GTK_STATE_SELECTED);
+  gtk_misc_set_alignment (GTK_MISC (priv->title), 0.5, 0.5);
+  gtk_misc_set_padding (GTK_MISC (priv->title), 4, 4);
 }
 
 /**
