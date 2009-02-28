@@ -79,6 +79,9 @@ void          awn_applet_simple_set_icon_pixbuf  (AwnAppletSimple  *applet,
 void          awn_applet_simple_set_icon_context (AwnAppletSimple  *applet, 
                                                   cairo_t          *cr);
 
+void          awn_applet_simple_set_icon_surface (AwnAppletSimple  *applet,
+                                                  cairo_surface_t  *surface);
+
 void          awn_applet_simple_set_icon_name    (AwnAppletSimple  *applet,
                                                   const gchar      *applet_name,
                                                   const gchar      *icon_name);

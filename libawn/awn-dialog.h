@@ -71,8 +71,6 @@ GtkWidget* awn_dialog_new();
 
 GtkWidget* awn_dialog_new_for_widget(GtkWidget *widget);
 
-void awn_dialog_position_reset(AwnDialog *dialog);
-
 G_END_DECLS
 
 #endif

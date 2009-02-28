@@ -88,7 +88,7 @@ awn_applet_simple_size_changed (AwnApplet *applet, gint size)
 
   if (priv->last_set_icon == ICON_THEMED_SIMPLE
       || priv->last_set_icon == ICON_THEMED_MANY)
-    awn_themed_icon_set_size (AWN_THEMED_ICON (priv->icon), size-2);
+    awn_themed_icon_set_size (AWN_THEMED_ICON (priv->icon), size);
 
   awn_applet_simple_orient_changed (applet, 
                                     awn_applet_get_orientation (applet));
@@ -99,8 +99,9 @@ awn_applet_simple_size_request (GtkWidget *widget, GtkRequisition *req)
 {
   AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE_GET_PRIVATE (widget);
 
-  if (AWN_IS_ICON (priv->icon)) {
-    gtk_widget_size_request(priv->icon, req);
+  if (AWN_IS_ICON (priv->icon))
+  {
+    gtk_widget_size_request (priv->icon, req);
   }
 }
 
@@ -176,14 +177,14 @@ awn_applet_simple_init (AwnAppletSimple *simple)
  * Returns: a new instance of an applet.
  */
 GtkWidget*
-awn_applet_simple_new (const gchar *uid, gint orient,gint offset, gint size)
+awn_applet_simple_new (const gchar *uid, gint orient, gint offset, gint size)
 {
   AwnAppletSimple *simple;
 
   simple = g_object_new(AWN_TYPE_APPLET_SIMPLE,
                         "uid", uid,
                         "orient", orient,
-                        "offset",offset,
+                        "offset", offset,
                         "size", size,
                         NULL);
 
@@ -228,7 +229,27 @@ awn_applet_simple_set_icon_context (AwnAppletSimple  *applet,
     awn_themed_icon_clear_info (AWN_THEMED_ICON (priv->icon));
 
   priv->last_set_icon = ICON_CAIRO;
-  awn_icon_set_from_context (AWN_ICON (priv->icon), cr);}
+  awn_icon_set_from_context (AWN_ICON (priv->icon), cr);
+}
+
+void 
+awn_applet_simple_set_icon_surface (AwnAppletSimple  *applet,
+                                    cairo_surface_t  *surface)
+{
+  AwnAppletSimplePrivate *priv;
+
+  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
+  g_return_if_fail (surface);
+  priv = applet->priv;
+
+  /* Make sure AwnThemedIcon doesn't update the icon of it's own accord */
+  if (priv->last_set_icon == ICON_THEMED_SIMPLE
+      || priv->last_set_icon == ICON_THEMED_MANY)
+    awn_themed_icon_clear_info (AWN_THEMED_ICON (priv->icon));
+
+  priv->last_set_icon = ICON_CAIRO;
+  awn_icon_set_from_surface (AWN_ICON (priv->icon), surface);
+}
 
 void
 awn_applet_simple_set_icon_name (AwnAppletSimple  *applet,
@@ -245,7 +266,7 @@ awn_applet_simple_set_icon_name (AwnAppletSimple  *applet,
                                    awn_applet_get_uid (AWN_APPLET (applet)),
                                    icon_name);
   awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
-                            awn_applet_get_size (AWN_APPLET (applet))-2);
+                            awn_applet_get_size (AWN_APPLET (applet)));
 }
                                     
 void   
@@ -266,7 +287,7 @@ awn_applet_simple_set_icon_info (AwnAppletSimple  *applet,
                             states,
                             icon_names);
   awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
-                            awn_applet_get_size (AWN_APPLET (applet))-2);
+                            awn_applet_get_size (AWN_APPLET (applet)));
 }
                                     
 void 

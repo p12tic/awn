@@ -1,5 +1,14 @@
 2009-02-28  Michal Hruby <michal.mhr@gmail.com>
 
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	Don't use "size-2" on themed icons.
+	Added awn_applet_simple_set_from_surface method.
+	* libawn/awn-dialog.h:
+	Removed unneeded forward.
+
+2009-02-28  Michal Hruby <michal.mhr@gmail.com>
+
 	* libawn/awn-dialog.c:
 	* tests/test-awn-dialog.py:
 	AwnDialog almost finished.
