@@ -28,6 +28,7 @@
 #include <string.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+#include <math.h>
 
 #include "awn-dialog.h"
 #include "awn-cairo-utils.h"
@@ -133,16 +134,128 @@ awn_dialog_position_reset(AwnDialog *dialog)
 
 }
 
+static void
+awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
+                             gint width, gint height)
+{
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (dialog);
+
+  const int BORDER = 9;
+  const int ROUND_RADIUS = 15;
+
+  if (priv->anchor && priv->anchored)
+  {
+    GdkPoint halfway, a_center_point = { .x = 0, .y = 0 };
+    GdkPoint o_center_point = { .x = 0, .y = 0 };
+    gint temp, aw = 0, ah = 0;
+
+    /* Calculate position of the arrow point
+     *   1) get anchored window center point in root window coordinates
+     *   2) get our origin in root window coordinates
+     *   3) calc the difference
+     */
+    GdkWindow *win = dialog->priv->anchor->window;
+    g_warn_if_fail (win);
+    if (win)
+    {
+      gdk_window_get_origin (win, &a_center_point.x, &a_center_point.y);
+      gdk_drawable_get_size (GDK_DRAWABLE (win), &aw, &ah);
+    }
+    a_center_point.x += aw/2;
+    a_center_point.y += ah/2;
+
+    if (GTK_WIDGET_REALIZED (dialog))
+      gdk_window_get_origin (GTK_WIDGET (dialog)->window,
+                             &o_center_point.x, &o_center_point.y);
+
+    switch (priv->orient)
+    {
+      case AWN_ORIENTATION_LEFT:
+        cairo_translate (cr, width, 0.0);
+        cairo_rotate (cr, M_PI * 0.5);
+        temp = width;
+        width = height; height = temp;
+        // TODO: calc halfway point
+        break;
+      case AWN_ORIENTATION_RIGHT:
+        cairo_translate (cr, 0.0, height);
+        cairo_rotate (cr, M_PI * 1.5);
+        temp = width;
+        width = height; height = temp;
+        // TODO: calc halfway point
+        break;
+      case AWN_ORIENTATION_TOP:
+        cairo_translate (cr, width, height);
+        cairo_rotate (cr, M_PI);
+
+        halfway.x = CLAMP (a_center_point.x - o_center_point.x,
+                           BORDER*2 + ROUND_RADIUS,
+                           width - (BORDER*2 + ROUND_RADIUS));
+        halfway.y = height - BORDER;
+        break;
+      case AWN_ORIENTATION_BOTTOM:
+      default:
+        halfway.x = CLAMP (a_center_point.x - o_center_point.x,
+                           BORDER*2 + ROUND_RADIUS,
+                           width - (BORDER*2 + ROUND_RADIUS));
+        halfway.y = height - BORDER;
+        break;
+    }
+    GdkPoint top_left  = { .x = BORDER, .y = BORDER };
+    GdkPoint top_right = { .x = width - BORDER, .y = BORDER };
+    GdkPoint bot_left  = { .x = BORDER, .y = height - BORDER };
+    GdkPoint bot_right = { .x = width - BORDER, .y = height - BORDER };
+
+    /* start @ top-left curve */
+    cairo_move_to (cr, top_left.x, top_left.y + ROUND_RADIUS);
+    cairo_curve_to (cr, top_left.x, top_left.y, top_left.x, top_left.y, 
+                    top_left.x + ROUND_RADIUS, top_left.y);
+
+    /* line to top-right corner + curve */
+    cairo_line_to (cr, top_right.x - ROUND_RADIUS, top_right.y);
+    cairo_curve_to (cr, top_right.x, top_right.y, top_right.x, top_right.y,
+                    top_right.x, top_right.y + ROUND_RADIUS);
+
+    /* line to bottom-right corner + curve */
+    cairo_line_to (cr, bot_right.x, bot_right.y - ROUND_RADIUS);
+    cairo_curve_to (cr, bot_right.x, bot_right.y, bot_right.x, bot_right.y, 
+                    bot_right.x - ROUND_RADIUS, bot_right.y);
+
+    /* Painting the actual "arrow"
+     *   now we'll use BORDER for ROUND_RADIUS, because there's only BORDER
+     *   pixels between the line and window edge.
+     */
+    cairo_line_to (cr, halfway.x + BORDER, halfway.y);
+    cairo_curve_to (cr, halfway.x + BORDER, halfway.y, halfway.x, halfway.y,
+                    halfway.x, halfway.y + BORDER);
+    cairo_curve_to (cr, halfway.x, halfway.y + BORDER, halfway.x, halfway.y,
+                    halfway.x - BORDER, halfway.y);
+
+    /* line to bottom-left corner + curve */
+    cairo_line_to (cr, bot_left.x + ROUND_RADIUS, bot_left.y);
+    cairo_curve_to (cr, bot_left.x, bot_left.y, bot_left.x, bot_left.y,
+                    bot_left.x, bot_left.y - ROUND_RADIUS);
+
+    /* close the path */
+    cairo_close_path (cr);
+  }
+  else
+  {
+    /* If we're not anchored use a simple rounded rect */
+    awn_cairo_rounded_rect(cr, BORDER, BORDER,
+                           width - (BORDER*2), height - (BORDER*2),
+                           ROUND_RADIUS, ROUND_ALL);
+  }
+}
+
 static gboolean
 _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 {
-  #define BOR 4
   AwnDialog *dialog;
   AwnDialogPrivate *priv;
   GtkWidget *child;
   cairo_t *cr = NULL;
   gint width, height;
-  gint gap = 20;
 
   dialog = AWN_DIALOG (widget);
   priv = dialog->priv;
@@ -169,9 +282,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
                          priv->g_step_2.blue,
                          priv->g_step_2.alpha);
 
-  awn_cairo_rounded_rect(cr, BOR, BOR, width - (BOR*2),
-                         height - (BOR*2) - gap,
-                         15, ROUND_ALL);
+  awn_dialog_paint_border_path(dialog, cr, width, height);
   cairo_fill_preserve(cr);
 
   cairo_set_source_rgba (cr, priv->border_color.red,
@@ -184,7 +295,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   cairo_destroy(cr);
 
   /* Propagate the signal */
-  child = gtk_bin_get_child(GTK_BIN(widget));
+  child = gtk_bin_get_child (GTK_BIN (widget));
 
   if (child)
     gtk_container_propagate_expose (GTK_CONTAINER (widget),
@@ -383,7 +494,7 @@ awn_dialog_get_property (GObject    *object,
       g_value_set_boolean (value, priv->anchored);
       break;
     case PROP_ORIENT:
-      // TODO
+      g_value_set_int (value, priv->orient);
       break;
     case PROP_HIDE_ON_ESC:
       g_value_set_boolean (value, priv->esc_hide);
@@ -416,13 +527,15 @@ awn_dialog_set_property (GObject      *object,
   switch (prop_id)
   {
     case PROP_ANCHOR:
+      // FIXME: perhaps we should ref the object and unref it in our dispose
       priv->anchor = g_value_get_object (value);
       break;
     case PROP_ANCHORED:
       priv->anchored = g_value_get_boolean (value);
       break;
     case PROP_ORIENT:
-      // TODO: priv->orient = g_value_get_enum (value);
+      priv->orient = g_value_get_int (value);
+      gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_HIDE_ON_ESC:
       priv->esc_hide = g_value_get_boolean (value);
@@ -496,6 +609,14 @@ awn_dialog_class_init(AwnDialogClass *klass)
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
+    PROP_ORIENT,
+    g_param_spec_int ("orient",
+                      "Orient",
+                      "The orientation of the window",
+                      0, 3, AWN_ORIENTATION_BOTTOM,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
     PROP_HIDE_ON_ESC,
     g_param_spec_boolean ("hide-on-esc",
                           "Hide on Escape",
@@ -560,7 +681,7 @@ awn_dialog_class_init(AwnDialogClass *klass)
  *  init
  */
 static void
-awn_dialog_init(AwnDialog *dialog)
+awn_dialog_init (AwnDialog *dialog)
 {
   AwnDialogPrivate *priv;
 
@@ -571,21 +692,17 @@ awn_dialog_init(AwnDialog *dialog)
   gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
   gtk_window_stick (GTK_WINDOW (dialog));
 
-  _on_alpha_screen_changed( GTK_WIDGET (dialog), NULL, NULL);
-  gtk_widget_set_app_paintable( GTK_WIDGET (dialog), TRUE);
+  _on_alpha_screen_changed (GTK_WIDGET (dialog), NULL, NULL);
+  gtk_widget_set_app_paintable (GTK_WIDGET (dialog), TRUE);
 
   /*  events */
-  gtk_widget_add_events( GTK_WIDGET (dialog), GDK_ALL_EVENTS_MASK);
-  g_signal_connect (G_OBJECT (dialog), "key-press-event",
+  gtk_widget_add_events (GTK_WIDGET (dialog), GDK_ALL_EVENTS_MASK);
+  g_signal_connect (dialog, "key-press-event",
                     G_CALLBACK (_on_key_press_event), NULL);
-  g_signal_connect (G_OBJECT (dialog), "delete-event", 
+  g_signal_connect (dialog, "delete-event", 
                     G_CALLBACK (_on_delete_event), NULL);
-
-  /* See if the title has been set */
-  g_signal_connect (dialog, "notify::title",
-                    G_CALLBACK (_on_title_notify), NULL);
-
-  g_object_notify (G_OBJECT (dialog), "title");
+  // FIXME: temporary, use a static method instead
+  g_signal_connect (dialog, "configure-event", G_CALLBACK (gtk_widget_queue_draw), NULL);
 
   priv->align = gtk_alignment_new (0.5, 0.5, 1, 1);
   gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
@@ -606,6 +723,12 @@ awn_dialog_init(AwnDialog *dialog)
   gtk_widget_set_state (priv->title, GTK_STATE_SELECTED);
   gtk_misc_set_alignment (GTK_MISC (priv->title), 0.5, 0.5);
   gtk_misc_set_padding (GTK_MISC (priv->title), 4, 4);
+
+  /* See if the title has been set */
+  g_signal_connect (dialog, "notify::title",
+                    G_CALLBACK (_on_title_notify), NULL);
+
+  g_object_notify (G_OBJECT (dialog), "title");
 }
 
 /**
