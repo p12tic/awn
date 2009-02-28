@@ -164,6 +164,7 @@ awn_background_get_property (GObject    *object,
     case PROP_HILIGHT:
     case PROP_SHOW_SEP:
     case PROP_SEP_COLOR:
+      g_warning ("Background property get unimplemented!");
       g_value_set_string (value, "FFFFFFFF");
       break;
   default:

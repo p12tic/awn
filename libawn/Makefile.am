@@ -30,6 +30,7 @@ public_headers = \
 	awn-config-bridge.h \
 	awn-config-client.h \
 	awn-desktop-item.h \
+	awn-dialog.h \
 	awn-effects.h \
 	awn-enum-types.h \
 	awn-icon.h \
@@ -54,6 +55,7 @@ source_c = \
 	awn-applet-simple.c \
 	awn-cairo-utils.c \
 	awn-config-bridge.c \
+	awn-dialog.c \
 	awn-effects.c \
 	awn-effects-ops-new.c \
 	awn-effects-ops-helpers.c \

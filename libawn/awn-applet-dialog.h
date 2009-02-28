@@ -71,7 +71,7 @@ struct _AwnAppletDialogClass
 
 GType awn_applet_dialog_get_type(void);
 
-GtkWidget* awn_applet_dialog_new(AwnApplet *applet);
+GtkWidget* awn_applet_dialog_new(AwnApplet *applet) G_GNUC_DEPRECATED;
 
 void awn_applet_dialog_position_reset(AwnAppletDialog *dialog);
 
