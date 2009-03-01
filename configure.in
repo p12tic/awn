@@ -92,11 +92,11 @@ dnl CFLAGS
 dnl ==============================================
 
 if test "$USE_MAINTAINER_MODE" = "yes"; then
-  AS_COMPILER_FLAGS([WARNING_FLAGS], ["-Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wmissing-declarations -Wredundant-decls -Wmissing-noreturn -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Winline -Wformat-nonliteral -Wformat-security -Winit-self -Wmissing-include-dirs -Wundef -Waggregate-return -Wmissing-format-attribute -Wnested-externs -std=c99 -pedantic -fno-strict-aliasing -fmessage-length=0 -Wp,-D_FORTIFY_SOURCE=2"])
+  AS_COMPILER_FLAGS([WARNING_FLAGS], ["-Werror=all -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Werror=missing-declarations -Wredundant-decls -Wmissing-noreturn -Werror=shadow -Wpointer-arith -Wcast-align -Wwrite-strings -Werror=inline -Wformat -Wformat-nonliteral -Wformat-security -Winit-self -Werror=missing-include-dirs -Werror=undef -Werror=aggregate-return -Wmissing-format-attribute -Werror=nested-externs -std=c99 -pedantic -fno-strict-aliasing -fmessage-length=0 -Wp,-D_FORTIFY_SOURCE=2"])
 else
   AS_COMPILER_FLAGS([WARNING_FLAGS], ["-Wall -std=c99"])
 fi
-CFLAGS="$CFLAGS $WARNING_FLAGS"
+AC_SUBST(WARNING_FLAGS)
 
 dnl ==============================================
 dnl translation support

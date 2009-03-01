@@ -1,10 +1,10 @@
+AM_CFLAGS = $(WARNING_FLAGS)
 INCLUDES =				\
 	$(AWN_CFLAGS)			\
 	$(DOCK_CFLAGS)			\
 	-DLIBDIR=\""$(libdir)"\"	\
 	-DLOCALEDIR=\""$(datadir)/locale"\"	\
 	-I$(top_srcdir)/libawn		\
-	-Werror \
 	$(NULL)
 
 bin_PROGRAMS = avant-window-navigator

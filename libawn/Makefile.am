@@ -10,13 +10,13 @@ BUILT_SOURCES = $(ENUMFILES)
 
 lib_LTLIBRARIES = libawn.la
 
+AM_CFLAGS = $(WARNING_FLAGS)
 INCLUDES = \
 	$(AWN_CFLAGS) \
 	-I$(top_srcdir) \
 	-I$(top_builddir) \
 	-DDATADIR=\""$(datadir)"\" \
 	-DPKGDATADIR=\""$(pkgdatadir)"\"\
-	-Werror \
 	$(NULL)	
 
 libawnincdir = $(includedir)/libawn
