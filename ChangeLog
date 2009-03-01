@@ -1,3 +1,9 @@
+2009-02-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	* m4/as-compiler-flag.m4:
+	Enable several more gcc warning flags if building in maintainer mode.
+
 2009-02-28  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/task-icon.c:

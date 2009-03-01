@@ -91,12 +91,12 @@ dnl ==============================================
 dnl CFLAGS
 dnl ==============================================
 
-dnl Only use -Wall if we have gcc
-if test "x$GCC" = "xyes"; then
-  if test -z "`echo "$CFLAGS" | grep "\-Wall" 2> /dev/null`" ; then
-    CFLAGS="$CFLAGS -Wall -fno-strict-aliasing -fmessage-length=0 -D_FORTIFY_SOURCE=2"
-  fi
+if test "$USE_MAINTAINER_MODE" = "yes"; then
+  AS_COMPILER_FLAGS([WARNING_FLAGS], ["-Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wmissing-declarations -Wredundant-decls -Wmissing-noreturn -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Winline -Wformat-nonliteral -Wformat-security -Wswitch-enum -Wswitch-default -Winit-self -Wmissing-include-dirs -Wundef -Waggregate-return -Wmissing-format-attribute -Wnested-externs -std=c99 -pedantic -fno-strict-aliasing -fmessage-length=0 -Wp,-D_FORTIFY_SOURCE=2"])
+else
+  AS_COMPILER_FLAGS([WARNING_FLAGS], ["-Wall -std=c99"])
 fi
+CFLAGS="$CFLAGS $WARNING_FLAGS"
 
 dnl ==============================================
 dnl translation support
