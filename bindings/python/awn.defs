@@ -392,6 +392,14 @@
   )
 )
 
+(define-method applet_construct
+  (of-object "AwnApplet")
+  (c-name "gtk_plug_construct")
+  (parameters
+    '("GdkNativeWindow" "id")
+  )
+)
+
 (define-method get_orientation
   (of-object "AwnApplet")
   (c-name "awn_applet_get_orientation")
@@ -442,6 +450,26 @@
     '("cairo_t*" "cr")
   )
 )
+
+(define-method set_icon_surface
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_icon_surface")
+  (return-type "none")
+  (parameters
+    '("cairo_surface_t*" "surface")
+  )
+)
+
+(define-method set_icon_name
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_icon_name")
+  (return-type "none")
+  (parameters
+    '("gchar*" "applet_name")
+    '("gchar*" "icon_name")
+  )
+)
+
 
 ;; From awn-cairo-utils.h
 
