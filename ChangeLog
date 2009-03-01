@@ -1,3 +1,8 @@
+2009-02-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.am:
+	Fix build system regeneration via autoreconf.
+
 2009-03-01  Michal Hruby <michal.mhr@gmail.com>
 
 	* bindings/python/__init__.py:
