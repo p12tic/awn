@@ -75,10 +75,10 @@ static guint32 _icon_signals[LAST_SIGNAL] = { 0 };
 
 static const GtkTargetEntry drop_types[] = 
 {
-  { "STRING", 0, 0 },
-  { "text/plain", 0,  },
-  { "text/uri-list", 0, 0 },
-  { "awn/task-icon", 0, 0 }
+  { (gchar*)"STRING", 0, 0 },
+  { (gchar*)"text/plain", 0,  },
+  { (gchar*)"text/uri-list", 0, 0 },
+  { (gchar*)"awn/task-icon", 0, 0 }
 };
 static const gint n_drop_types = G_N_ELEMENTS (drop_types);
 
@@ -88,7 +88,7 @@ enum {
 
 static const GtkTargetEntry task_icon_type[] = 
 {
-  { "awn/task-icon", 0, TARGET_TASK_ICON }
+  { (gchar*)"awn/task-icon", 0, TARGET_TASK_ICON }
 };
 static const gint n_task_icon_type = G_N_ELEMENTS (task_icon_type);
 

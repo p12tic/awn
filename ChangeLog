@@ -1,5 +1,12 @@
 2009-02-28  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/taskmanager/task-icon.c:
+	* src/awn-background.c:
+	* src/awn-panel.c:
+	Explicitly cast strings to avoid warnings.
+
+2009-02-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/taskmanager/task-drag-indicator.c:
 	* applets/taskmanager/task-icon.c:
 	* applets/taskmanager/task-launcher.c:
