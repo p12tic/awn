@@ -1,3 +1,11 @@
+2009-03-02  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-applet-activation/main.c:
+	Python applets are now run synchronously for crash-notifier to work
+	properly.
+	* libawn/awn-dialog.c:
+	Some cosmetic changes to AwnDialog.
+
 2009-03-01  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* configure.in:

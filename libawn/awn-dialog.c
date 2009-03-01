@@ -56,6 +56,8 @@ struct _AwnDialogPrivate
   gboolean anchored;
   gboolean esc_hide;
 
+  gint window_offset;
+
   /* Standard box drawing colours */
   AwnColor g_step_1;
   AwnColor g_step_2;
@@ -65,6 +67,7 @@ struct _AwnDialogPrivate
   AwnColor hilight_color;
 
   gulong anchor_configure_id;
+  gulong orient_changed_id;
 
   gint old_x, old_y, old_w, old_h;
 };
@@ -76,6 +79,7 @@ enum
   PROP_ANCHOR,
   PROP_ANCHORED,
   PROP_ORIENT,
+  PROP_WINDOW_OFFSET,
   PROP_HIDE_ON_ESC,
 
   PROP_GSTEP1,
@@ -86,6 +90,9 @@ enum
   PROP_HILIGHT,
 };
 
+#define AWN_DIALOG_DEFAULT_OFFSET 15
+#define AWN_DIALOG_PADDING 15
+
 /* FORWARDS */
 
 static void awn_dialog_set_anchor_widget (AwnDialog *dialog,
@@ -93,6 +100,8 @@ static void awn_dialog_set_anchor_widget (AwnDialog *dialog,
 
 static void awn_dialog_set_orientation   (AwnDialog *dialog,
                                           AwnOrientation orient);
+
+static void awn_dialog_set_offset        (AwnDialog *dialog, gint offset);
 
 static void awn_dialog_refresh_position  (AwnDialog *dialog,
                                           gint width, gint height);
@@ -117,7 +126,7 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
 {
   AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (dialog);
 
-  const int BORDER = 9;
+  const int BORDER = 11;
   const int ROUND_RADIUS = 15;
 
   if (priv->anchor && priv->anchored)
@@ -503,6 +512,9 @@ awn_dialog_get_property (GObject    *object,
     case PROP_HIDE_ON_ESC:
       g_value_set_boolean (value, priv->esc_hide);
       break;
+    case PROP_WINDOW_OFFSET:
+      g_value_set_int (value, priv->window_offset);
+      break;
 
     case PROP_GSTEP1:
     case PROP_GSTEP2:
@@ -548,6 +560,9 @@ awn_dialog_set_property (GObject      *object,
     case PROP_ORIENT:
       awn_dialog_set_orientation (AWN_DIALOG (object),
                                   g_value_get_int (value));
+      break;
+    case PROP_WINDOW_OFFSET:
+      awn_dialog_set_offset (AWN_DIALOG (object), g_value_get_int(value));
       break;
     case PROP_HIDE_ON_ESC:
       priv->esc_hide = g_value_get_boolean (value);
@@ -626,6 +641,14 @@ awn_dialog_class_init(AwnDialogClass *klass)
                       "Orient",
                       "The orientation of the window",
                       0, 3, AWN_ORIENTATION_BOTTOM,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+    PROP_WINDOW_OFFSET,
+    g_param_spec_int ("window-offset",
+                      "Window offset",
+                      "The offset from window border",
+                      G_MININT, G_MAXINT, AWN_DIALOG_DEFAULT_OFFSET,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -719,7 +742,8 @@ awn_dialog_init (AwnDialog *dialog)
 
   priv->align = gtk_alignment_new (0.5, 0.5, 1, 1);
   gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
-                             15, 15, 15, 15);
+                             AWN_DIALOG_PADDING, AWN_DIALOG_PADDING,
+                             AWN_DIALOG_PADDING, AWN_DIALOG_PADDING);
 
   GTK_CONTAINER_CLASS (awn_dialog_parent_class)->add (GTK_CONTAINER (dialog),
                                                       priv->align);
@@ -766,7 +790,7 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
   gdk_window_get_origin (win, &ax, &ay);
   gdk_drawable_get_size (GDK_DRAWABLE (win), &aw, &ah);
 
-  const int OFFSET = 10;
+  const int OFFSET = priv->window_offset;
 
   switch (priv->orient)
   {
@@ -814,6 +838,12 @@ awn_dialog_set_anchor_widget (AwnDialog *dialog, GtkWidget *anchor)
   if (priv->anchor_configure_id)
   {
     g_signal_handler_disconnect (priv->anchor, priv->anchor_configure_id);
+    priv->anchor_configure_id = 0;
+  }
+  if (priv->orient_changed_id)
+  {
+    g_signal_handler_disconnect (priv->anchor, priv->orient_changed_id);
+    priv->orient_changed_id = 0;
   }
 
   // FIXME: perhaps we should ref the object and unref it in our dispose
@@ -827,8 +857,20 @@ awn_dialog_set_anchor_widget (AwnDialog *dialog, GtkWidget *anchor)
 
     if (AWN_IS_APPLET (anchor))
     {
-      priv->orient = awn_applet_get_orientation (AWN_APPLET (anchor));
-      // FIXME: connect to orient changed signal
+      /* special behaviour if we're anchoring to an AwnApplet */
+      AwnApplet *applet = AWN_APPLET (anchor);
+      /* get orientation from the applet and connect to its changed signal */
+      priv->orient = awn_applet_get_orientation (applet);
+      priv->orient_changed_id =
+        g_signal_connect_swapped (applet, "orientation-changed",
+                                  G_CALLBACK (awn_dialog_set_orientation),
+                                  dialog);
+      if (gtk_widget_is_composited (anchor))
+      {
+        // there's an extra space above AwnApplet, lets compensate it
+        priv->window_offset = awn_applet_get_size (applet) * -1;
+        priv->window_offset += AWN_DIALOG_DEFAULT_OFFSET;
+      }
     }
   }
 
@@ -853,6 +895,19 @@ awn_dialog_set_orientation (AwnDialog *dialog, AwnOrientation orient)
   gtk_widget_queue_draw (GTK_WIDGET (dialog));
 }
 
+static void
+awn_dialog_set_offset (AwnDialog *dialog, gint offset)
+{
+  g_return_if_fail (AWN_IS_DIALOG (dialog));
+  
+  AwnDialogPrivate *priv = dialog->priv;
+
+  if (offset == priv->window_offset) return;
+
+  priv->window_offset = offset;
+
+  awn_dialog_refresh_position (dialog, 0, 0);
+}
 /**
  * awn_dialog_new:
  *
