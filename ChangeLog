@@ -1,6 +1,11 @@
 2009-03-01  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* configure.in:
+	Remove the switch-related warning flags (-Wswitch is sufficient).
+
+2009-03-01  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
 	* m4/as-compiler-flag.m4:
 	Enable several more gcc warning flags if building in maintainer mode.
 
