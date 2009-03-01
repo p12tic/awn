@@ -1,5 +1,21 @@
 2009-02-28  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-window.c:
+	* libawn/awn-applet.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-icon.c:
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-tooltip.c:
+	* src/awn-throbber.c:
+	Remove excess semicolons from the G_DEFINE_TYPE macros.
+
+2009-02-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* Makefile.am:
 	Fix build system regeneration via autoreconf.
 

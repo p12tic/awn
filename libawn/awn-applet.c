@@ -34,7 +34,7 @@
 #include "awn-applet.h"
 #include "awn-utils.h"
 
-G_DEFINE_TYPE (AwnApplet, awn_applet, GTK_TYPE_PLUG);
+G_DEFINE_TYPE (AwnApplet, awn_applet, GTK_TYPE_PLUG)
 
 #define AWN_APPLET_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
                                      AWN_TYPE_APPLET, AwnAppletPrivate))

@@ -47,7 +47,7 @@
 #include "anims/awn-effect-turn.h"
 #include "anims/awn-effect-zoom.h"
 
-G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT);
+G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT)
 
 #define AWN_EFFECTS_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   AWN_TYPE_EFFECTS, \

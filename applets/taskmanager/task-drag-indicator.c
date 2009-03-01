@@ -26,7 +26,7 @@
 #include "task-drag-indicator.h"
 #include "task-settings.h"
 
-G_DEFINE_TYPE (TaskDragIndicator, task_drag_indicator, AWN_TYPE_ICON);
+G_DEFINE_TYPE (TaskDragIndicator, task_drag_indicator, AWN_TYPE_ICON)
 
 enum {
         TARGET_TASK_ICON

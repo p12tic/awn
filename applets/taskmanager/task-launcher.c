@@ -33,7 +33,7 @@
 #include "task-settings.h"
 #include "xutils.h"
 
-G_DEFINE_TYPE (TaskLauncher, task_launcher, TASK_TYPE_WINDOW);
+G_DEFINE_TYPE (TaskLauncher, task_launcher, TASK_TYPE_WINDOW)
 
 #define TASK_LAUNCHER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_LAUNCHER, \

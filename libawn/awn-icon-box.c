@@ -20,7 +20,7 @@
 #include "awn-icon.h"
 #include "awn-utils.h"
 
-G_DEFINE_TYPE (AwnIconBox, awn_icon_box, GTK_TYPE_BOX);
+G_DEFINE_TYPE (AwnIconBox, awn_icon_box, GTK_TYPE_BOX)
 
 #define AWN_ICON_BOX_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   AWN_TYPE_ICON_BOX, \

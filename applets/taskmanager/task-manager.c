@@ -34,7 +34,7 @@
 #include "task-window.h"
 #include "xutils.h"
 
-G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET);
+G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
 
 #define TASK_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_MANAGER, \

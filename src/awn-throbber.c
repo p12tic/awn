@@ -25,7 +25,7 @@
 
 #define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
 
-G_DEFINE_TYPE (AwnThrobber, awn_throbber, GTK_TYPE_DRAWING_AREA);
+G_DEFINE_TYPE (AwnThrobber, awn_throbber, GTK_TYPE_DRAWING_AREA)
 
 #define AWN_THROBBER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   AWN_TYPE_THROBBER, \

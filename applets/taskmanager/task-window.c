@@ -30,7 +30,7 @@
 #include "task-settings.h"
 #include "xutils.h"
 
-G_DEFINE_TYPE (TaskWindow, task_window, G_TYPE_OBJECT);
+G_DEFINE_TYPE (TaskWindow, task_window, G_TYPE_OBJECT)
 
 enum
 {

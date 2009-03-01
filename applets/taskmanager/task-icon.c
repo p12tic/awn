@@ -30,7 +30,7 @@
 #include "task-launcher.h"
 #include "task-settings.h"
 
-G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_ICON);
+G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_ICON)
 
 #define TASK_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_ICON, \

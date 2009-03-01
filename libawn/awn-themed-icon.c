@@ -24,7 +24,7 @@
 
 #include "awn-themed-icon.h"
 
-G_DEFINE_TYPE (AwnThemedIcon, awn_themed_icon, AWN_TYPE_ICON);
+G_DEFINE_TYPE (AwnThemedIcon, awn_themed_icon, AWN_TYPE_ICON)
 
 #define AWN_THEMED_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   AWN_TYPE_THEMED_ICON, \
