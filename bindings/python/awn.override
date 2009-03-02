@@ -10,7 +10,6 @@ headers
 #include <gconf/gconf-value.h>
 #endif
 #include <libawn/awn-applet.h>
-#include <libawn/awn-applet-dialog.h>
 #include <libawn/awn-applet-simple.h>
 #include <libawn/awn-cairo-utils.h>
 #include <libawn/awn-config-client.h>

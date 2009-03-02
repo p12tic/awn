@@ -7,13 +7,6 @@
   (gtype-id "AWN_TYPE_APPLET")
 )
 
-(define-object AppletDialog
-  (in-module "Awn")
-  (parent "GtkWindow")
-  (c-name "AwnAppletDialog")
-  (gtype-id "AWN_TYPE_APPLET_DIALOG")
-)
-
 (define-object Dialog
   (in-module "Awn")
   (parent "GtkWindow")
@@ -132,30 +125,6 @@
     '("list_string" "AWN_CONFIG_VALUE_TYPE_LIST_STRING")
   )
 )
-
-;; From awn-applet-dialog.h
-
-(define-function awn_applet_dialog_get_type
-  (c-name "awn_applet_dialog_get_type")
-  (return-type "GType")
-)
-
-(define-function dialog_new
-  (c-name "awn_applet_dialog_new")
-  (is-constructor-of "AwnAppletDialog")
-  (return-type "GtkWidget*")
-  (parameters
-    '("AwnApplet*" "applet")
-  )
-)
-
-(define-method position_reset
-  (of-object "AwnAppletDialog")
-  (c-name "awn_applet_dialog_position_reset")
-  (return-type "none")
-)
-
-
 
 ;; From awn-dialog.h
 

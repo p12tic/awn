@@ -23,7 +23,6 @@
 #ifndef __LIBAWN_H__
 #define __LIBAWN_H__
 
-#include <libawn/awn-applet-dialog.h>
 #include <libawn/awn-applet.h>
 #include <libawn/awn-applet-simple.h>
 #include <libawn/awn-cairo-utils.h>

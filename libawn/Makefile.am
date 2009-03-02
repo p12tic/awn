@@ -29,7 +29,6 @@ libawnincdir = $(includedir)/libawn
 public_headers = \
 	awn-defines.h \
 	awn-applet.h \
-	awn-applet-dialog.h \
 	awn-applet-simple.h \
 	awn-cairo-utils.h \
 	awn-config-bridge.h \
@@ -55,7 +54,6 @@ source_h = $(public_headers) $(private_headers)
 
 source_c = \
 	awn-applet.c \
-	awn-applet-dialog.c \
 	awn-applet-simple.c \
 	awn-cairo-utils.c \
 	awn-config-bridge.c \

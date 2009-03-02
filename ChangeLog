@@ -1,3 +1,13 @@
+2009-03-02  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* libawn/Makefile.am:
+	* libawn/libawn.h:
+	Removed AwnAppletDialog, use AwnDialog instead,
+	* tests/test-applet-simple.c:
+	Fixed compiler warning.
+
 2009-03-02  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/Makefile.am:

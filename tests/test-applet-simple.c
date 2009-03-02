@@ -46,7 +46,7 @@ main (gint argc, gchar **argv)
   icon = awn_applet_simple_new ("test-applet", AWN_ORIENTATION_BOTTOM,10, 50);
   awn_applet_simple_set_icon_name (AWN_APPLET_SIMPLE (icon), 
                                    "TestApplet", GTK_STOCK_APPLY);
-  gtk_plug_construct (icon, gtk_socket_get_id (socket));
+  gtk_plug_construct (GTK_PLUG (icon), gtk_socket_get_id (GTK_SOCKET (socket)));
 
   gtk_main ();
   return 0;
