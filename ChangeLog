@@ -1,3 +1,8 @@
+2009-03-02  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/python-awn-trunk.install:
+	Fix FTBFS in Jaunty
+
 2009-02-10  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* debian/control:
