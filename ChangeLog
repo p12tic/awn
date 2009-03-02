@@ -1,5 +1,15 @@
 2009-03-02  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/anims/awn-effect-desaturate.h:
+	* libawn/awn-applet.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-themed-icon.c:
+	* src/awn-app.c:
+	* src/awn-background-3d.c:
+	Various compiler warning related fixes.
+
+2009-03-02  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/taskmanager/Makefile.am:
 	* configure.in:
 	* libawn/Makefile.am:

@@ -182,18 +182,18 @@ draw_rect_path (AwnBackground  *bg,
                 gint            padding)
 {
   double x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11,
-         y0, y1, y2, y3;
+         cy0, cy1, cy2, cy3;
   double radius = bg->corner_radius;
 
   /* Carefull: here (0,0) is in the top left corner of the screen
-   *     (x3,y3)  (x4,y3)        (x5,y3) (x6,y3)
+   *    (x3,cy3)  (x4,cy3)      (x5,cy3) (x6,cy3)
    *           '-.,  |              | ,.-'
-   *     (x2,y2)___.-''''''''''''''''-.___(x7,y2)
+   *    (x2,cy2)___.-''''''''''''''''-.___(x7,cy2)
    *              /                    \
-   *   (x1,y1)___/                      \___(x8,y1)
+   *  (x1,cy1)___/                      \___(x8,cy1)
    *             '.____________________.'
-   *  (x0,y0)-'´  |                   | `'-- (x9,y0)
-   *           (x11,y0)            (x10,y0)
+   *  (x0,cy0)--'´|                   | `'--(x9,cy0)
+   *          (x11,cy0)           (x10,cy0)
    */
 
   x0 = x + apply_perspective_x(width, bg->panel_angle, padding, padding);
@@ -209,30 +209,30 @@ draw_rect_path (AwnBackground  *bg,
   x10 = x + apply_perspective_x(width, bg->panel_angle, width-radius-padding, padding);
   x11 = x + apply_perspective_x(width, bg->panel_angle, radius+padding, padding);
 
-  y0 = y + height - padding;
-  y1 = y + height - radius - padding;
-  y2 = y + height/2.0 + radius + padding;
-  y3 = y + height/2.0 + padding;
+  cy0 = y + height - padding;
+  cy1 = y + height - radius - padding;
+  cy2 = y + height/2.0 + radius + padding;
+  cy3 = y + height/2.0 + padding;
 
-  cairo_move_to(cr, x2, y2);
-  cairo_curve_to(cr, x3, y3, x3, y3, x4, y3);
-  cairo_line_to(cr, x5, y3);
-  cairo_curve_to(cr, x6, y3, x6, y3, x7, y2);
+  cairo_move_to(cr, x2, cy2);
+  cairo_curve_to(cr, x3, cy3, x3, cy3, x4, cy3);
+  cairo_line_to(cr, x5, cy3);
+  cairo_curve_to(cr, x6, cy3, x6, cy3, x7, cy2);
   if( x8 > x7 )
   {
     /* draw the rounded corners on the bottom too */
-    cairo_line_to(cr, x8, y1);
-    cairo_curve_to(cr, x9, y0, x9, y0, x10, y0);
-    cairo_line_to(cr, x11, y0);
-    cairo_curve_to(cr, x0, y0, x0, y0, x1, y1);
-    cairo_line_to(cr, x2, y2);
+    cairo_line_to(cr, x8, cy1);
+    cairo_curve_to(cr, x9, cy0, x9, cy0, x10, cy0);
+    cairo_line_to(cr, x11, cy0);
+    cairo_curve_to(cr, x0, cy0, x0, cy0, x1, cy1);
+    cairo_line_to(cr, x2, cy2);
   }
   else
   {
     /* the radius is to big, so only draw the rounded corners on the top. On the bottom just ordinary corners. */
-    cairo_line_to(cr, x9, y0);
-    cairo_line_to(cr, x0, y0);
-    cairo_line_to(cr, x2, y2);
+    cairo_line_to(cr, x9, cy0);
+    cairo_line_to(cr, x0, cy0);
+    cairo_line_to(cr, x2, cy2);
   }
 
   cairo_close_path(cr);

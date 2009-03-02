@@ -82,7 +82,7 @@ void awn_themed_icon_drag_data_received (GtkWidget        *widget,
                                          gint              y, 
                                          GtkSelectionData *selection,
                                          guint             info,
-                                         guint             time);
+                                         guint             evt_time);
 
 /* GObject stuff */
 static void
@@ -273,23 +273,23 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
 {
   AwnThemedIconPrivate *priv;
   GdkPixbuf            *pixbuf = NULL;
-  gint                  index;
+  gint                  idx;
 
   priv = icon->priv;
 
   /* Find the index of the current state in states */
-  for (index = 0; priv->states[index]; index++)
+  for (idx = 0; priv->states[idx]; idx++)
   {
-    if (strcmp (priv->states[index], state) == 0)
+    if (strcmp (priv->states[idx], state) == 0)
     {
       const gchar *applet_name;
       const gchar *icon_name;
       const gchar *uid;
       gint         i;
       
-      priv->cur_icon = index;
+      priv->cur_icon = idx;
       applet_name = priv->applet_name;
-      icon_name = priv->icon_names[index];
+      icon_name = priv->icon_names[idx];
       uid = priv->uid;
       
       /* Go through all the possible outcomes until we get a pixbuf */
@@ -332,7 +332,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             pixbuf = NULL;
             if (priv->icon_names_orignal)
             {
-              gchar *real_name = priv->icon_names_orignal[index];
+              gchar *real_name = priv->icon_names_orignal[idx];
               pixbuf = try_and_load_image_from_disk (real_name, size);
             }
             break;
@@ -698,7 +698,7 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
                                     gint              y, 
                                     GtkSelectionData *selection_data,
                                     guint             info,
-                                    guint             time)
+                                    guint             evt_time)
 {
   AwnThemedIcon        *icon = AWN_THEMED_ICON (widget);
   AwnThemedIconPrivate *priv;
@@ -720,7 +720,7 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
 
   if (!AWN_IS_THEMED_ICON (icon))
   {
-    gtk_drag_finish (context, FALSE, FALSE, time);
+    gtk_drag_finish (context, FALSE, FALSE, evt_time);
     return;
   }
   priv = icon->priv;
@@ -858,7 +858,7 @@ drag_out:
   if (pixbuf)
     g_object_unref (pixbuf);
   
-  gtk_drag_finish (context, success, FALSE, time);
+  gtk_drag_finish (context, success, FALSE, evt_time);
 
   if (success)
     ensure_icon (icon);

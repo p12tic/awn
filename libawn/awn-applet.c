@@ -125,7 +125,7 @@ on_destroy_applet (DBusGProxy *proxy, gchar *id, AwnApplet *applet)
 
 /*  GOBJECT STUFF */
 
-void
+static void
 on_alpha_screen_changed (GtkWidget* widget, GdkScreen* oscreen, gpointer null)
 {
   GdkScreen* nscreen = gtk_widget_get_screen (widget);
@@ -424,7 +424,7 @@ awn_applet_plug_embedded (AwnApplet *applet)
 
   g_signal_emit (applet, _applet_signals[PLUG_EMBEDDED], 0);
 
-  // FIXME: not sure about this one
+  /* FIXME: not sure about this one */
   gtk_widget_show_all (GTK_WIDGET (applet));
 }
 

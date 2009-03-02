@@ -133,7 +133,8 @@ typedef struct _mem_reader_t {
   unsigned int offset;
 } mem_reader_t;
 
-cairo_status_t internal_reader(void *closure, unsigned char *data,
+static cairo_status_t
+internal_reader(void *closure, unsigned char *data,
                                unsigned int length)
 {
   mem_reader_t *mem_reader = (mem_reader_t*)closure;
@@ -378,12 +379,13 @@ awn_effects_redraw(AwnEffects *fx)
   }
 }
 
-void awn_effects_register_effect_bundle(AwnEffectsClass *klass,
-                                        _AwnAnimation opening,
-                                        _AwnAnimation closing,
-                                        _AwnAnimation hover,
-                                        _AwnAnimation launching,
-                                        _AwnAnimation attention)
+static void
+awn_effects_register_effect_bundle(AwnEffectsClass *klass,
+                                   _AwnAnimation opening,
+                                   _AwnAnimation closing,
+                                   _AwnAnimation hover,
+                                   _AwnAnimation launching,
+                                   _AwnAnimation attention)
 {
   /* make sure there are exactly AWN_ANIMATIONS_PER_BUNDLE items */
   GPtrArray *anims = klass->animations;
