@@ -37,7 +37,6 @@ public_headers = \
 	awn-desktop-item.h \
 	awn-dialog.h \
 	awn-effects.h \
-	awn-enum-types.h \
 	awn-icon.h \
 	awn-icon-box.h \
 	awn-themed-icon.h \
@@ -87,6 +86,7 @@ libawninc_HEADERS = \
 	$(NULL)
 libawn_la_SOURCES = \
 	$(private_headers) \
+	awn-enum-types.h \
 	$(source_c) \
 	$(NULL)
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)

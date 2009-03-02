@@ -1,5 +1,10 @@
 2009-03-02  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/Makefile.am:
+	Remove circular make dependency.
+
+2009-03-02  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* configure.in:
 	* libawn/Makefile.am:
 	* libawn/egg/Makefile.am:
