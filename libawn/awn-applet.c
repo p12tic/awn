@@ -30,6 +30,8 @@
 #include <string.h>
 #include <glib/gstdio.h>
 #include <glib/gi18n.h>
+#include <X11/Xlib.h>
+
 #include "awn-defines.h"
 #include "awn-applet.h"
 #include "awn-utils.h"
@@ -51,6 +53,8 @@ struct _AwnAppletPrivate
 
   DBusGConnection *connection;
   DBusGProxy      *proxy;
+
+  GdkWindow *panel_window;
 };
 
 enum
@@ -68,6 +72,7 @@ enum
   OFFSET_CHANGED,
   SIZE_CHANGED,
   PLUG_EMBEDDED,
+  PANEL_CONFIGURE,
   DELETED,
   MENU_CREATION,
   FLAGS_CHANGED,
@@ -293,6 +298,16 @@ awn_applet_class_init (AwnAppletClass *klass)
                  NULL, NULL,
                  g_cclosure_marshal_VOID__INT,
                  G_TYPE_NONE, 1, G_TYPE_INT);
+
+  _applet_signals[PANEL_CONFIGURE] =
+    g_signal_new("panel-configure-event",
+                 G_OBJECT_CLASS_TYPE(gobject_class),
+                 G_SIGNAL_RUN_LAST,
+                 G_STRUCT_OFFSET(AwnAppletClass, panel_configure),
+                 NULL, NULL,
+                 g_cclosure_marshal_VOID__BOXED,
+                 G_TYPE_NONE, 1,
+                 GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   _applet_signals[PLUG_EMBEDDED] =
     g_signal_new("plug-embedded",
@@ -617,5 +632,47 @@ awn_applet_get_flags (AwnApplet *applet)
   g_return_val_if_fail (AWN_IS_APPLET (applet), AWN_APPLET_FLAGS_NONE);
 
   return applet->priv->flags;
+}
+
+static GdkFilterReturn
+_on_panel_configure (GdkXEvent *xevent, GdkEvent *event, gpointer data)
+{
+  g_return_val_if_fail (AWN_IS_APPLET (data), GDK_FILTER_CONTINUE);
+
+  AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (data);
+
+  XEvent *xe = (XEvent*)xevent;
+
+  if (xe->type == ConfigureNotify)
+  {
+    event->type = GDK_CONFIGURE;
+    event->configure.window = priv->panel_window;
+    event->configure.x = xe->xconfigure.x;
+    event->configure.y = xe->xconfigure.y;
+    event->configure.width = xe->xconfigure.width;
+    event->configure.height = xe->xconfigure.height;
+
+    g_signal_emit (data, _applet_signals[PANEL_CONFIGURE], 0, event);
+  }
+
+  return GDK_FILTER_CONTINUE;
+}
+
+void
+awn_applet_set_panel_window_id (AwnApplet *applet, GdkNativeWindow anid)
+{
+  g_return_if_fail (AWN_IS_APPLET (applet) && anid);
+
+  AwnAppletPrivate *priv = applet->priv;
+
+  if (priv->panel_window)
+  {
+    gdk_window_remove_filter (priv->panel_window, _on_panel_configure, applet);
+  }
+
+  priv->panel_window = gdk_window_foreign_new (anid);
+
+  gdk_window_set_events (priv->panel_window, GDK_STRUCTURE_MASK);
+  gdk_window_add_filter (priv->panel_window, _on_panel_configure, applet);
 }
 

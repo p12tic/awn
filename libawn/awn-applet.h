@@ -70,13 +70,14 @@ struct _AwnAppletClass
   GtkPlugClass parent_class;
 
   /*<signals >*/
-  void (*plug_embedded)  (AwnApplet *applet);
-  void (*orient_changed) (AwnApplet *applet, AwnOrientation orient);
-  void (*offset_changed) (AwnApplet *applet, gint offset);
-  void (*size_changed)   (AwnApplet *applet, gint size);
-  void (*deleted)        (AwnApplet *applet, const gchar *uid);
-  void (*menu_creation)  (AwnApplet *applet, GtkMenu *menu);
-  void (*flags_changed)  (AwnApplet *applet, AwnAppletFlags flags);
+  void (*plug_embedded)   (AwnApplet *applet);
+  void (*orient_changed)  (AwnApplet *applet, AwnOrientation orient);
+  void (*offset_changed)  (AwnApplet *applet, gint offset);
+  void (*size_changed)    (AwnApplet *applet, gint size);
+  void (*deleted)         (AwnApplet *applet, const gchar *uid);
+  void (*menu_creation)   (AwnApplet *applet, GtkMenu *menu);
+  void (*flags_changed)   (AwnApplet *applet, AwnAppletFlags flags);
+  void (*panel_configure) (AwnApplet *applet, GdkEventConfigure *event);
 
   /*< Future padding >*/
   void (*_applet0) (void);
@@ -126,6 +127,9 @@ void               awn_applet_set_flags           (AwnApplet      *applet,
                                                    AwnAppletFlags  flags);
 
 AwnAppletFlags     awn_applet_get_flags           (AwnApplet      *applet);
+
+void               awn_applet_set_panel_window_id (AwnApplet      *applet,
+                                                   GdkNativeWindow anid);
 
 /*
  * Returns a gtk menu item for the "Dock Preferences".

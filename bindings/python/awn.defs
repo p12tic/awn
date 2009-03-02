@@ -369,6 +369,14 @@
   )
 )
 
+(define-method set_panel_window_id
+  (of-object "AwnApplet")
+  (c-name "awn_applet_set_panel_window_id")
+  (parameters
+    '("GdkNativeWindow" "id")
+  )
+)
+
 (define-method get_orientation
   (of-object "AwnApplet")
   (c-name "awn_applet_get_orientation")

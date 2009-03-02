@@ -41,6 +41,7 @@ launch_python(const gchar *file,
               const gchar *module,
               const gchar *uid,
               gint64 window,
+              gint64 panel_win_id,
               gint orient,
               gint offset,
               gint size);
@@ -49,6 +50,7 @@ launch_python(const gchar *file,
 static gchar    *path = NULL;
 static gchar    *uid  = NULL;
 static gint64    window = 0;
+static gint64    awn_id = 0;
 static gint      orient = AWN_ORIENTATION_BOTTOM;
 static gint      offset = 0;
 static gint      size   = 50;
@@ -76,6 +78,13 @@ static GOptionEntry entries[] =
      &window,
      "The window to embed in.",
      "" },
+
+  {  "panel-window-id",
+     'i', 0,
+     G_OPTION_ARG_INT64,
+     &awn_id,
+     "The window XID of the toplevel of the window we're embedding into.",
+     "0" },
 
   {  "orient",
      'o', 0,
@@ -178,13 +187,13 @@ main(gint argc, gchar **argv)
   {
     if (strcmp(type, "Python") == 0)
     {
-      launch_python(path, exec, uid, window, orient, offset, size);
+      launch_python(path, exec, uid, window, awn_id, orient, offset, size);
       return 0;
     }
   }
 
   /* Process (re)naming */
-  /*FIXME: Actually make this work */
+  /* FIXME: Actually make this work */
   if (name != NULL)
   {
     gint len = strlen(argv[0]);
@@ -221,6 +230,11 @@ main(gint argc, gchar **argv)
   {
     gtk_plug_construct (GTK_PLUG (applet), -1);
     gtk_widget_show_all (applet);
+  }
+
+  if (awn_id && AWN_IS_APPLET (applet))
+  {
+    awn_applet_set_panel_window_id (AWN_APPLET (applet), awn_id);
   }
 
   gtk_main();
@@ -304,6 +318,7 @@ launch_python(const gchar *file,
               const gchar *module,
               const gchar *uid,
               gint64 window,
+              gint64 panel_win_id,
               gint orient,
               gint offset,
               gint size)
@@ -325,9 +340,13 @@ launch_python(const gchar *file,
   }
 
 
-  cmd = g_strdup_printf("python %s --uid=%s --window=%" G_GINT64_FORMAT " "
-                        " --orient=%d --offset=%d --size=%d",
-                        exec, uid, window, orient, offset, size);
+  cmd = g_strdup_printf("python %s --uid=%s "
+                        "--window=%" G_GINT64_FORMAT " "
+                        "--panel-window-id=%" G_GINT64_FORMAT " "
+                        "--orient=%d --offset=%d --size=%d",
+                        exec, uid, window, panel_win_id, orient, offset, size);
+
+  // FIXME: don't fork, use execv(p) instead
   g_spawn_command_line_sync(cmd, NULL, NULL, NULL, &err);
 
   if (err)

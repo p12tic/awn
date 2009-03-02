@@ -35,6 +35,7 @@ CONFIG_DEFAULT_GROUP = 'DEFAULT'
 
 uid = "0"
 window = 0
+awn_id = 0
 orient = 0
 offset = 0
 size = 0
@@ -42,13 +43,15 @@ size = 0
 def init (argv):
   global uid
   global window
+  global awn_id
   global orient
   global offset
   global size
 
   try: 
-    opts, args = getopt.getopt (argv, "u:w:o:f:s:", 
-                          ["uid=", "window=", "orient=", "offset=", "size="])
+    opts, args = getopt.getopt (argv, "u:w:i:o:f:s:", 
+                                ["uid=", "window=", "panel-window-id=", 
+                                 "orient=", "offset=", "size="])
   except getopt.GetoptError:
     print ("Unable to parse args")
     sys.exit (2)
@@ -60,6 +63,9 @@ def init (argv):
     elif opt in ("-w", "--window"):
       window = int (arg)
       #print "window = " + arg+ " " + str (type (window))
+    elif opt in ("-i", "--panel-window-id"):
+      awn_id = int (arg)
+      #print "panel-window-id = " + arg+ " " + str (type (awn_id))
     elif opt in ("-o", "--orient"):
       orient = int (arg)
       #print "orient = " + arg + " " + str (type (orient))
@@ -76,6 +82,8 @@ def init_applet (applet):
   global offset
   global size
   global window
+  global awn_id
+
   if (window):
     #applet.construct (window)
     applet.applet_construct (window)
@@ -83,6 +91,9 @@ def init_applet (applet):
     #applet.construct (-1)
     applet.applet_construct (-1)
     applet.show_all ()
+
+  if (awn_id):
+    applet.set_panel_window_id (awn_id)
 
 def check_dependencies(scope, *modules, **choice_modules):
     '''

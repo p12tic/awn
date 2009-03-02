@@ -70,6 +70,7 @@ struct _AwnDialogPrivate
   gulong orient_changed_id;
 
   gint old_x, old_y, old_w, old_h;
+  gint a_old_x, a_old_y, a_old_w, a_old_h;
 };
 
 enum
@@ -423,7 +424,10 @@ _on_configure_event (GtkWidget *widget, GdkEventConfigure *event)
 
   if (event->x == priv->old_x && event->y == priv->old_y &&
       event->width == priv->old_w && event->height == priv->old_h)
+  {
+    gtk_widget_queue_draw (widget);
     return FALSE;
+  }
 
   priv->old_x = event->x;     priv->old_y = event->y;
   priv->old_w = event->width; priv->old_h = event->height;
@@ -736,7 +740,6 @@ awn_dialog_init (AwnDialog *dialog)
                     G_CALLBACK (_on_key_press_event), NULL);
   g_signal_connect (dialog, "delete-event", 
                     G_CALLBACK (_on_delete_event), NULL);
-  // FIXME: temporary, use a static method instead
   g_signal_connect (dialog, "configure-event",
                     G_CALLBACK (_on_configure_event), NULL);
 
@@ -823,7 +826,20 @@ _on_anchor_configure_event (GtkWidget *widget, GdkEventConfigure *event,
 {
   g_return_val_if_fail (AWN_IS_DIALOG (dialog), FALSE);
 
+  AwnDialogPrivate *priv = dialog->priv;
+
+  if (event->x == priv->a_old_x && event->y == priv->a_old_y &&
+      event->width == priv->a_old_w && event->height == priv->a_old_h)
+  {
+    gtk_widget_queue_draw (widget);
+    return FALSE;
+  }
+
+  priv->a_old_x = event->x;     priv->a_old_y = event->y;
+  priv->a_old_w = event->width; priv->a_old_h = event->height;
   awn_dialog_refresh_position (dialog, 0, 0);
+
+  gtk_widget_queue_draw (GTK_WIDGET (dialog));
 
   return FALSE;
 }
@@ -851,26 +867,36 @@ awn_dialog_set_anchor_widget (AwnDialog *dialog, GtkWidget *anchor)
 
   if (anchor)
   {
-    priv->anchor_configure_id =
-      g_signal_connect (anchor, "configure-event",
-                        G_CALLBACK (_on_anchor_configure_event), dialog);
-
     if (AWN_IS_APPLET (anchor))
     {
       /* special behaviour if we're anchoring to an AwnApplet */
       AwnApplet *applet = AWN_APPLET (anchor);
+
+      /* connect to the special configure-event */
+      priv->anchor_configure_id =
+        g_signal_connect (applet, "panel-configure-event",
+                          G_CALLBACK (_on_anchor_configure_event), dialog);
+
       /* get orientation from the applet and connect to its changed signal */
       priv->orient = awn_applet_get_orientation (applet);
       priv->orient_changed_id =
         g_signal_connect_swapped (applet, "orientation-changed",
                                   G_CALLBACK (awn_dialog_set_orientation),
                                   dialog);
+
       if (gtk_widget_is_composited (anchor))
       {
         // there's an extra space above AwnApplet, lets compensate it
         priv->window_offset = awn_applet_get_size (applet) * -1;
         priv->window_offset += AWN_DIALOG_DEFAULT_OFFSET;
       }
+    }
+    else
+    {
+      // use normal configure event
+      priv->anchor_configure_id =
+        g_signal_connect (anchor, "configure-event",
+                          G_CALLBACK (_on_anchor_configure_event), dialog);
     }
   }
 

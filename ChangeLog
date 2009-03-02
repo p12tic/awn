@@ -1,3 +1,18 @@
+2009-03-03  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	Added "panel-configure-event" signal, which is called when the
+	toplevel window of an applet (AwnPanel) emits configure-event.
+	* libawn/awn-dialog.c:
+	Hooked to "panel-configure-event", so arrow is on correct place all
+	the time.
+	* awn-applet-activation/main.c:
+	* bindings/python/__init__.py:
+	* bindings/python/awn.defs:
+	* src/awn-applet-proxy.c:
+	Added panel-window-id parameter for the applets.
+
 2009-03-02  Michal Hruby <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:
