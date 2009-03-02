@@ -1,5 +1,10 @@
 SUBDIRS = egg anims
 
+# shave-related
+V         = @
+Q         = $(V:1=)
+QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
+
 NULL = 
 
 ENUMFILES = awn-enum-types.c awn-enum-types.h
@@ -95,7 +100,7 @@ libawn_la_LIBADD += \
 awn-enum-types.h: stamp-awn-enum-types.h
 	@true
 stamp-awn-enum-types.h: $(source_h) Makefile
-	( cd $(srcdir) && \
+	$(QUIET_GEN)( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	  	--template $(srcdir)/awn-enum-types.h.in \
 	  $(source_h) ) >> xgen-ceth && \
@@ -104,7 +109,7 @@ stamp-awn-enum-types.h: $(source_h) Makefile
 	echo timestamp > $(@F)
 
 awn-enum-types.c: awn-enum-types.h
-	( cd $(srcdir) && \
+	$(QUIET_GEN)( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	  	--template $(srcdir)/awn-enum-types.c.in \
 	  $(source_h) ) >> xgen-cetc && \

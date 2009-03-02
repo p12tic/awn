@@ -100,3 +100,5 @@ tests/test-awn-effects
 awn-manager/awnManagerMini.py
 m4/gtk-doc.m4
 m4/intltool.m4
+shave/shave
+shave/shave-libtool

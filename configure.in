@@ -197,6 +197,8 @@ AS_AC_EXPAND([PKGDATADIR], [$datadir/$PACKAGE_NAME])
 AS_AC_EXPAND([DATADIR], [$datadir])
 AS_AC_EXPAND([LIBDIR], [$libdir])
 
+SHAVE_INIT([shave], [enable])
+
 AC_OUTPUT([
 Makefile
 applets/Makefile
@@ -224,6 +226,8 @@ libawn/Makefile
 libawn/anims/Makefile
 libawn/egg/Makefile
 po/Makefile.in
+shave/shave
+shave/shave-libtool
 src/Makefile
 themes/Makefile
 ])
