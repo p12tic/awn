@@ -1,5 +1,11 @@
 2009-03-03  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-tooltip.c:
+	Replace the deprecated gtk_window_set_policy() with
+	gtk_window_set_resizable().
+
+2009-03-03  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-icon-box.c:
 	* src/awn-applet-manager.c:
 	Replace the deprecated gtk_type_class() with g_type_class_peek().

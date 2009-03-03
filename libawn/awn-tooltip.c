@@ -172,7 +172,7 @@ awn_tooltip_constructed (GObject *object)
   gtk_container_add (GTK_CONTAINER (align), priv->label);
   gtk_widget_show (priv->label);
 
-  gtk_window_set_policy (GTK_WINDOW (tooltip), FALSE, FALSE, TRUE);
+  gtk_window_set_resizable (GTK_WINDOW (tooltip), FALSE);
 
   g_signal_connect (tooltip, "leave-notify-event",
                     G_CALLBACK (awn_tooltip_hide), NULL);
