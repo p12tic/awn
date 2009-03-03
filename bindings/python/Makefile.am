@@ -1,7 +1,7 @@
 NULL = 
 
 # awn python scripts
-pyawndir = $(PYTHON_SITE_PKG)/awn
+pyawndir = $(PYTHON_PLATFORM_PKG)/awn
 pyawn_PYTHON = __init__.py
 
 INCLUDES = \
