@@ -31,7 +31,6 @@
 #endif
 #include <gtk/gtk.h>
 #include <libawn/awn-applet.h>
-#include <libawn/awn-applet-dialog.h>
 #include <libawn/awn-applet-simple.h>
 #include <libawn/awn-defines.h>
 #include <libawn/awn-cairo-utils.h>
