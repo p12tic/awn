@@ -1,3 +1,8 @@
+# shave-related
+V         = @
+Q         = $(V:1=)
+QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
+
 AM_CFLAGS = $(WARNING_FLAGS)
 INCLUDES =				\
 	$(AWN_CFLAGS)			\
@@ -5,6 +10,7 @@ INCLUDES =				\
 	-DLIBDIR=\""$(libdir)"\"	\
 	-DLOCALEDIR=\""$(datadir)/locale"\"	\
 	-I$(top_srcdir)/libawn		\
+	-I$(builddir)			\
 	$(NULL)
 
 bin_PROGRAMS = avant-window-navigator
@@ -30,6 +36,8 @@ avant_window_navigator_SOURCES =	\
 	awn-background-3d.c \
 	awn-background-3d.h \
 	awn-defines.h \
+	$(builddir)/awn-marshal.c \
+	$(builddir)/awn-marshal.h \
 	awn-monitor.c \
 	awn-monitor.h \
 	awn-panel.c \
@@ -43,6 +51,30 @@ avant_window_navigator_SOURCES =	\
 	xutils.h \
 	xutils.c \
 	$(NULL)
+
+# glib-genmarshal (from WebKit)
+AWN_MARSHAL = $(builddir)/awn-marshal
+AWN_MARSHAL_LIST = $(srcdir)/awnmarshal.list
+AWN_GENMARSHAL = $(GLIB_GENMARSHAL) --prefix=awn_marshal $(AWN_MARSHAL_LIST)
+
+$(AWN_MARSHAL).c: stamp-awnmarshal.c
+	@true
+
+$(AWN_MARSHAL).h: stamp-awnmarshal.h
+	@true
+
+stamp-awnmarshal.c: $(AWN_MARSHAL_LIST) stamp-awnmarshal.h
+	$(QUIET_GEN)( \
+		echo '#include "awn-marshal.h"' > $(AWN_MARSHAL).c && \
+		$(AWN_GENMARSHAL)  --body >> $(AWN_MARSHAL).c && \
+		echo timestamp > $(@F) \
+	)
+
+stamp-awnmarshal.h: $(AWN_MARSHAL_LIST)
+	$(QUIET_GEN)( \
+		$(AWN_GENMARSHAL) --header > $(AWN_MARSHAL).h && \
+		echo timestamp > $(@F) \
+	)
 
 # DBus glue
 awn-app-glue.h: awn-app-dbus.xml Makefile
@@ -59,6 +91,11 @@ BUILT_SOURCES = \
 EXTRA_DIST = \
 	awn-app-dbus.xml \
 	awn-panel-dbus.xml \
+	$(NULL)
+
+DISTCLEANFILES = \
+	stamp-awnmarshal.c \
+	stamp-awnmarshal.h \
 	$(NULL)
 
 # vim: set ts=8 sts=8 sw=8 :

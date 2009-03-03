@@ -36,6 +36,7 @@
 #include "awn-background-flat.h"
 #include "awn-background-3d.h"
 #include "awn-defines.h"
+#include "awn-marshal.h"
 #include "awn-monitor.h"
 #include "awn-x.h"
 
@@ -976,7 +977,7 @@ awn_panel_class_init (AwnPanelClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (AwnPanelClass, autohide_start),
 			      NULL, NULL,
-			      gtk_marshal_BOOLEAN__VOID,
+			      awn_marshal_BOOLEAN__VOID,
 			      G_TYPE_BOOLEAN,
 			      0);
 
