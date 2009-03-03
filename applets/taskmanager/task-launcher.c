@@ -33,7 +33,7 @@
 #include "task-settings.h"
 #include "xutils.h"
 
-G_DEFINE_TYPE (TaskLauncher, task_launcher, TASK_TYPE_WINDOW);
+G_DEFINE_TYPE (TaskLauncher, task_launcher, TASK_TYPE_WINDOW)
 
 #define TASK_LAUNCHER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_LAUNCHER, \
@@ -258,11 +258,11 @@ _get_icon (TaskWindow    *window)
   if (WNCK_IS_WINDOW (window->priv->window))
   {
     return _wnck_get_icon_at_size (window->priv->window, 
-                                   s->panel_size-2, s->panel_size-2);
+                                   s->panel_size, s->panel_size);
   }
   else
   {
-    return awn_desktop_item_get_icon (launcher->priv->item, s->panel_size-2);
+    return awn_desktop_item_get_icon (launcher->priv->item, s->panel_size);
   }
 }
 
@@ -321,7 +321,7 @@ task_launcher_try_match (TaskLauncher *launcher,
     return TRUE;
 
   /* Now try resource name, which should (hopefully) be 99% of the cases */
-  if (res_name && priv->exec)
+  if ( res_name && strlen(res_name) && priv->exec)
   {
     if ( g_strstr_len (priv->exec, strlen (priv->exec), res_name) ||
          g_strstr_len (res_name, strlen (res_name), priv->exec))
@@ -331,7 +331,7 @@ task_launcher_try_match (TaskLauncher *launcher,
   }
   
   /* Try a class_name to exec line match */
-  if (class_name && priv->exec)
+  if ( class_name && strlen(class_name) && priv->exec)
   {
     if (g_strstr_len (priv->exec, strlen (priv->exec), class_name))
       return TRUE;
@@ -360,7 +360,7 @@ on_window_closed (TaskLauncher *launcher, WnckWindow *old_window)
 
   /* Reset icon */
   pixbuf = xutils_get_named_icon (launcher->priv->icon_name,
-                                  s->panel_size-2, s->panel_size-2);
+                                  s->panel_size, s->panel_size);
 
   task_window_update_icon (TASK_WINDOW (launcher), pixbuf);
 

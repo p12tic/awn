@@ -20,10 +20,11 @@
 #include <cairo/cairo-xlib.h>
 
 #include "awn-icon.h"
+#include "awn-utils.h"
 
 #define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
 
-G_DEFINE_TYPE (AwnIcon, awn_icon, GTK_TYPE_DRAWING_AREA);
+G_DEFINE_TYPE (AwnIcon, awn_icon, GTK_TYPE_DRAWING_AREA)
 
 #define AWN_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   AWN_TYPE_ICON, \
@@ -35,6 +36,7 @@ struct _AwnIconPrivate
   GtkWidget    *tooltip;
   
   AwnOrientation orient;
+  gint offset;
   gint icon_width;
   gint icon_height;
   gint size;
@@ -80,29 +82,21 @@ awn_icon_leave_notify_event (GtkWidget *widget, GdkEventCrossing *event)
   return FALSE;
 }
 
-static gboolean
+static void
 awn_icon_make_transparent (GtkWidget *widget, gpointer data)
 {
   AwnIconPrivate *priv = AWN_ICON (widget)->priv;
+
+  if (!GTK_WIDGET_REALIZED (widget)) return;
 
   /*
    * This is how we make sure that widget has transparent background
    * all the time.
    */
-  if (gtk_widget_is_composited(widget)) // FIXME: is is_composited correct here?
+  if (gtk_widget_is_composited(widget)) /* FIXME: is is_composited correct here? */
   {
-    static GdkPixmap *pixmap = NULL;
-    if (pixmap == NULL)
-    {
-      pixmap = gdk_pixmap_new(widget->window, 1, 1, -1);
-      cairo_t *cr = gdk_cairo_create(pixmap);
-      cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
-      cairo_paint(cr);
-      cairo_destroy(cr);
-    }
-    gdk_window_set_back_pixmap(widget->window, pixmap, FALSE);
-
-    // optimize the render speed
+    awn_utils_make_transparent_bg (widget);
+    /* optimize the render speed */
     g_object_set(priv->effects,
                  "no-clear", TRUE,
                  "indirect-paint", FALSE, NULL);
@@ -113,11 +107,11 @@ awn_icon_make_transparent (GtkWidget *widget, gpointer data)
                  "effects", 0,
                  "no-clear", TRUE,
                  "indirect-paint", TRUE, NULL);
-    // we are also forcing icon-effects to "Simple", to prevent clipping
-    // the icon in our small window
+    /* we are also forcing icon-effects to "Simple", to prevent clipping
+     * the icon in our small window
+     */
   }
 
-  return FALSE;
 }
 
 static gboolean
@@ -128,17 +122,18 @@ awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
 
   g_return_val_if_fail(priv->icon_srfc, FALSE);
 
-  // clip the drawing region, nvidia likes it
+  /* clip the drawing region, nvidia likes it */
   cr = awn_effects_cairo_create_clipped (priv->effects, event->region);
 
-  // if we're RGBA we have transparent background (awn_icon_make_transparent),
-  //  otherwise default widget background color
+  /* if we're RGBA we have transparent background (awn_icon_make_transparent),
+   * otherwise default widget background color
+   */
 
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   cairo_set_source_surface (cr, priv->icon_srfc, 0, 0);
   cairo_paint (cr);
 
-  // let effects know we're finished
+  /* let effects know we're finished */
   awn_effects_cairo_destroy (priv->effects);
 
   return FALSE;
@@ -295,6 +290,7 @@ awn_icon_init (AwnIcon *icon)
 
   priv->icon_srfc = NULL;
   priv->orient = AWN_ORIENTATION_BOTTOM;
+  priv->offset = 0;
   priv->size = 50;
   priv->icon_width = 0;
   priv->icon_height = 0;
@@ -304,8 +300,10 @@ awn_icon_init (AwnIcon *icon)
 
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
 
-  g_signal_connect_after(G_OBJECT(icon), "realize",
-                         G_CALLBACK(awn_icon_make_transparent), NULL);
+  g_signal_connect (icon, "realize",
+                    G_CALLBACK(awn_icon_make_transparent), NULL);
+  g_signal_connect (icon, "style-set",
+                    G_CALLBACK(awn_icon_make_transparent), NULL);
 }
 
 GtkWidget *
@@ -328,9 +326,10 @@ awn_icon_update_tooltip_pos(AwnIcon *icon)
   g_return_if_fail (AWN_IS_ICON (icon));
   priv = icon->priv;
 
-  // we could set tooltip_offset = priv->effects->icon_offset, and use 
-  // different offset in AwnTooltip
-  //  (do we want different icon bar offset and tooltip offset?)
+  /* we could set tooltip_offset = priv->offset, and use 
+   * different offset in AwnTooltip
+   * (do we want different icon bar offset and tooltip offset?)
+   */
   gint tooltip_offset = 0;
 
   switch (priv->orient) {
@@ -345,6 +344,24 @@ awn_icon_update_tooltip_pos(AwnIcon *icon)
 
   awn_tooltip_set_position_hint(AWN_TOOLTIP(priv->tooltip),
                                 priv->orient, tooltip_offset);
+}
+
+void 
+awn_icon_set_offset (AwnIcon        *icon,
+                     gint            offset)
+{
+  AwnIconPrivate *priv;
+
+  g_return_if_fail (AWN_IS_ICON (icon));
+  priv = icon->priv;
+
+  priv->offset = offset;
+
+  g_object_set (priv->effects, "icon-offset", offset, NULL);
+
+  gtk_widget_queue_resize (GTK_WIDGET(icon));
+
+  awn_icon_update_tooltip_pos(icon);
 }
 
 void 
@@ -540,9 +557,10 @@ awn_icon_set_custom_paint (AwnIcon *icon, gint width, gint height)
    * free_existing_icon (icon);
    */
 
-  // this will set proper size requisition, tooltip position,
-  // params for effects and may emit size changed signal
-  // the only thing user needs is overriding expose-event
+  /* this will set proper size requisition, tooltip position,
+   * params for effects and may emit size changed signal
+   * the only thing user needs is overriding expose-event
+   */
   update_widget_to_size (icon, width, height);
   gtk_widget_queue_draw (GTK_WIDGET (icon));
 }
@@ -559,10 +577,7 @@ awn_icon_set_tooltip_text (AwnIcon     *icon,
   awn_tooltip_set_text (AWN_TOOLTIP (icon->priv->tooltip), text);
 }
 
-// FIXME: get_tooltip_text returns original string which shouldn't be modified,
-//        but get_message returns copy, which has to be freed by the caller.
-//        Both should return copy, so for example python can free the string.
-const gchar * 
+gchar * 
 awn_icon_get_tooltip_text (AwnIcon *icon)
 {
   g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
@@ -590,7 +605,7 @@ awn_icon_get_message (AwnIcon *icon)
   g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
 
   g_object_get (icon->priv->effects, "label", &result, NULL);
-  // caller gets a copy, so he's responsible for freeing it
+  /* caller gets a copy, so he's responsible for freeing it */
   return result;
 }
 

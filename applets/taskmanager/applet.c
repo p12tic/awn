@@ -22,13 +22,11 @@
 #include "task-manager.h"
 
 AwnApplet*
-awn_applet_factory_initp (gchar* uid, gint orient, gint size)
+awn_applet_factory_initp (gchar* uid, gint orient, gint offset, gint size)
 {
-	AwnApplet *applet;
-  	
-  applet = task_manager_new (uid, orient, size);
+  AwnApplet *applet;
 
-  gtk_widget_show_all (GTK_WIDGET (applet));
+  applet = task_manager_new (uid, orient, offset, size);
 
   return applet;
 }

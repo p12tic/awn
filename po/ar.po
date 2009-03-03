@@ -1,356 +1,643 @@
+# translation of _avant-window-navigator-ar.po to Arabic
 # Arabic translation for awn
 # Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
 # This file is distributed under the same license as the awn package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
 #
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
+# OsamaKhalid <osamak.wfm@gmail.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: awn\n"
+"Project-Id-Version: _avant-window-navigator-ar\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2007-07-25 23:46+0100\n"
-"PO-Revision-Date: 2008-02-12 19:23+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Arabic <ar@li.org>\n"
+"POT-Creation-Date: 2009-02-02 23:50+0100\n"
+"PO-Revision-Date: 2009-02-03 11:47+0000\n"
+"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
+"Language-Team: Arabic\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n == 2 ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2008-02-17 13:48+0000\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n % 100 >= "
+"3 && n % 100 <= 10 ? 3 : n % 100 >= 11 && n % 100 <= 99 ? 4 : 5;\n"
+"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-#: ../applets/switcher/applet.c:116
-msgid "Rows:"
-msgstr "الأسطر:"
+#: ../awn-manager/awn-manager.desktop.in.in.h:1
+#: ../awn-manager/awnManager.py:75
+msgid "Awn Manager"
+msgstr "المدير أون"
 
-#: ../applets/switcher/applet.c:128
-msgid "Width:"
-msgstr "العرض:"
+#: ../awn-manager/awn-manager.desktop.in.in.h:2
+msgid "Manage Awn preferences, launchers, applets and themes"
+msgstr "يدير تفضيلات ومطْلِقات وبريمجات وسمات أون"
 
-#: ../applets/switcher/applet.c:140
-msgid "Height:"
-msgstr "الإرتفاع:"
+#: ../awn-manager/awnLauncher.py:160
+msgid "Invalid launcher"
+msgstr "مُطْلِق غير صحيح"
 
-#: ../applets/trash/trashapplet.glade.h:1
-msgid "<b>From:</b>"
-msgstr "<b>مِن:</b>"
+#: ../awn-manager/awnLauncherEditor.py:142
+msgid "Select an Executable File"
+msgstr "اختر ملفا تنفيذيا"
 
-#: ../applets/trash/trashapplet.glade.h:2
-msgid "<big><b>Emptying the Trash</b></big>"
-msgstr "<big><b>إفراغ سلَة المهملات</b></big>"
+#: ../awn-manager/awnLauncherEditor.py:160
+#, python-format
+msgid "Please provide a name for the launcher in the \"%s\" field."
+msgstr "من فضلك ضع اسما للمطلق في خانة \"%s\"."
 
-#: ../applets/trash/trashapplet.glade.h:3
-msgid "Emptying the Trash"
-msgstr "جاري إفراغ سلة المهملات"
+#: ../awn-manager/awnLauncherEditor.py:160
+#: ../awn-manager/launcher-editor.glade.h:3
+msgid "<b>Name:</b>"
+msgstr "<b>الاسم:</b>"
 
-#: ../avant-preferences/window.glade.h:1
+#: ../awn-manager/awnLauncherEditor.py:163
+#, python-format
+msgid "Please provide a program to launch in the \"%s\" field."
+msgstr "من فضلك ضع برنامجا للتنفيذ في خانة \"%s\"."
+
+#: ../awn-manager/awnLauncherEditor.py:163
+#: ../awn-manager/launcher-editor.glade.h:1
+msgid "<b>Command:</b>"
+msgstr "<b>الأمر:</b>"
+
+#: ../awn-manager/awnLauncherEditor.py:175
+#, python-format
+msgid "Couldn't save the launcher. Error: %s"
+msgstr "تعذر حفظ المطلق. خطأ: %s"
+
+#: ../awn-manager/awnManager.py:59
+msgid "Awn Manager can't be run as root."
+msgstr "لا يمكن تشغيل أون بصلاحيات الجذر"
+
+#. must be on one line due to i18n
+#: ../awn-manager/awnManager.py:148
+#, python-format
+msgid ""
+"Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
+"installed. It usually comes with librsvg, or a package similarly named."
+msgstr ""
+
+#: ../awn-manager/awnManager.py:173
+msgid "AWN has been successfully refreshed"
+msgstr "نشط أون بنجاح"
+
+#: ../awn-manager/awnManager.py:179
+#: ../data/avant-window-navigator.desktop.in.in.h:2
+msgid "Avant Window Navigator"
+msgstr "ملاح النوفذة أفانت"
+
+#: ../awn-manager/awnManager.py:197
+msgid "Fully customisable dock-like window navigator for GNOME."
+msgstr "ملاح نوفذة كالمرساة قابل للتخصيص تماما لجنوم."
+
+#: ../awn-manager/awnManager.py:199
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version."
+msgstr ""
+"هذا البرنامج حر؛ تستطيع إعادة توزيعه و/أو تعديله تحت بنود رخصة جنو العمومية "
+"كما نشرت من مؤسسة البرمجيات الحرة، سواءً النسخة 2 من الرخصة، أو (على "
+"اختيارك) أي نسخة لاحقة."
+
+#: ../awn-manager/awnManager.py:201
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details."
+msgstr ""
+"يوزّع البرنامج على أمل أن يكون مفيدًا لمن يستخدمه دون أدنى مسؤولية؛ ولا حتى "
+"أي ضمان يضمن صلاحية العرض في السوق أو توافقه مع أي استخدام محدد. يمكنك "
+"مراجعة الرخصة العمومية العامة لجنو لمزيد من التفاصيل."
+
+#: ../awn-manager/awnManager.py:203
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
+msgstr ""
+"يجب أن تكون تلقيت نسخة من رخصة جنو العمومية مع هذا البرنامج، إذا لم تحصل، "
+"اكتب لمؤسسة البرمجيات الحرة المحدودة، 51 Franklin St, Fifth Floor, Boston, "
+"MA 02110-1301  USA."
+
+#: ../awn-manager/awnPreferences.py:247
+msgid "PNG Files"
+msgstr "ملفات بي إن جي"
+
+#: ../awn-manager/awnPreferences.py:332 ../awn-manager/awnPreferences.py:392
+#: ../awn-manager/awnPreferences.py:447
+msgid "Classic"
+msgstr "تقليدي"
+
+#: ../awn-manager/awnPreferences.py:333 ../awn-manager/awnPreferences.py:393
+#: ../awn-manager/awnPreferences.py:448
+msgid "Fade"
+msgstr "تضاؤل"
+
+#: ../awn-manager/awnPreferences.py:334 ../awn-manager/awnPreferences.py:394
+#: ../awn-manager/awnPreferences.py:449
+msgid "Spotlight"
+msgstr "دائرة ضوء"
+
+#: ../awn-manager/awnPreferences.py:335 ../awn-manager/awnPreferences.py:395
+#: ../awn-manager/awnPreferences.py:450
+msgid "Zoom"
+msgstr "تقريب"
+
+#: ../awn-manager/awnPreferences.py:336 ../awn-manager/awnPreferences.py:396
+#: ../awn-manager/awnPreferences.py:451
+msgid "Squish"
+msgstr "عصر"
+
+#: ../awn-manager/awnPreferences.py:337
+msgid "3D turn"
+msgstr "دوران ثلاثي الأبعاد"
+
+#: ../awn-manager/awnPreferences.py:338
+msgid "3D turn with spotlight"
+msgstr "دوران ثلاثي الأبعاد مع دائرة ضوء"
+
+#: ../awn-manager/awnPreferences.py:339 ../awn-manager/awnPreferences.py:399
+#: ../awn-manager/awnPreferences.py:454
+msgid "Glow"
+msgstr "توهج"
+
+#: ../awn-manager/awnPreferences.py:361
+msgid "Flat bar"
+msgstr "شريط مسطح"
+
+#: ../awn-manager/awnPreferences.py:362
+msgid "3D look"
+msgstr "مظهر ثلاثي الأبعاد"
+
+#: ../awn-manager/awnPreferences.py:391 ../awn-manager/awnPreferences.py:446
+msgid "None"
+msgstr "لا شيء"
+
+#: ../awn-manager/awnPreferences.py:397 ../awn-manager/awnPreferences.py:452
+msgid "3D Turn"
+msgstr "دوران ثلاثي الأبعاد"
+
+#: ../awn-manager/awnPreferences.py:398 ../awn-manager/awnPreferences.py:453
+msgid "3D Spotlight Turn"
+msgstr "دوران دائرة ضوء ثلاثي الأبعاد"
+
+#: ../awn-manager/awnPreferences.py:455
+#: ../awn-manager/launcher-editor.glade.h:4
+msgid "Custom"
+msgstr "مخصص"
+
+#: ../awn-manager/awnPreferences.py:537
+#, python-format
+msgid ""
+"Automatic creation failed. Please manually create the directory:\n"
+"%s"
+msgstr ""
+"فشل الإنشاء التلقائي. من فضلك أنشئ الدليل يدويا:\n"
+"%s"
+
+#: ../awn-manager/awnPreferences.py:547
+msgid "Confirm directory creation"
+msgstr "أكّد إنشاء الدليل"
+
+#: ../awn-manager/awnPreferences.py:548
+msgid ""
+"There is no existing autostart directory for your user account yet.\n"
+"Do you want me to automatically create it for you?"
+msgstr ""
+"لا يوجد دليل بدء تلقائي لحساب مستخدمك حتى الآن.\n"
+"أتريدني أن أنشئه تلقائيا لك؟"
+
+#: ../awn-manager/launcher-editor.glade.h:2
+msgid "<b>Description:</b>"
+msgstr "<b>الوصف:</b>"
+
+#: ../awn-manager/launcher-editor.glade.h:5
+msgid "Directory:"
+msgstr "الدليل:"
+
+#: ../awn-manager/launcher-editor.glade.h:6
+msgid "Launcher Editor"
+msgstr "محرر المطلق"
+
+#: ../awn-manager/launcher-editor.glade.h:7
+msgid "Launcher Icon"
+msgstr "أيقونة المطلق"
+
+#: ../awn-manager/launcher-editor.glade.h:8
+msgid "Open..."
+msgstr "افتح..."
+
+#: ../awn-manager/launcher-editor.glade.h:9
+msgid "Select A Folder"
+msgstr "اختر مجلدا"
+
+#: ../awn-manager/launcher-editor.glade.h:10
+msgid "Select Icon"
+msgstr "اختر أيقونة"
+
+#: ../awn-manager/launcher-editor.glade.h:11
+msgid "Stock/In Theme"
+msgstr "مخرون السمات"
+
+#: ../awn-manager/window.glade.h:1
 msgid "<b>Active Icon</b>"
 msgstr "<b>الأيقونة النشطة</b>"
 
-#: ../avant-preferences/window.glade.h:2
+#: ../awn-manager/window.glade.h:2
+msgid "<b>Applet Preferences</b>"
+msgstr "<b>تفضيلات البريمج</b>"
+
+#: ../awn-manager/window.glade.h:3
 msgid "<b>Arrows</b>"
 msgstr "<b>الأسهم</b>"
 
-#: ../avant-preferences/window.glade.h:3
+#: ../awn-manager/window.glade.h:4
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>تفاعلات الشريط</b>"
+msgstr "<b>سلوك الشريط</b>"
 
-#: ../avant-preferences/window.glade.h:4
+#: ../awn-manager/window.glade.h:5
 msgid "<b>Borders</b>"
 msgstr "<b>الحدود</b>"
 
-#: ../avant-preferences/window.glade.h:5
-msgid "<b>Corners</b>"
-msgstr "<b>الزوايا</b>"
+#: ../awn-manager/window.glade.h:6
+msgid "<b>Customize Effects</b>"
+msgstr "<b>خصّص التأثيرات</b>"
 
-#: ../avant-preferences/window.glade.h:6
+#: ../awn-manager/window.glade.h:7
+msgid "<b>General Preferences</b>"
+msgstr "<b>التفضيلات العامة</b>"
+
+#: ../awn-manager/window.glade.h:8
 msgid "<b>Gradient</b>"
 msgstr "<b>التدرج</b>"
 
-#: ../avant-preferences/window.glade.h:7
+#: ../awn-manager/window.glade.h:9
 msgid "<b>Highlight</b>"
-msgstr "<b>التظليل</b>"
+msgstr "<b>الإبراز</b>"
 
-#: ../avant-preferences/window.glade.h:8
+#: ../awn-manager/window.glade.h:10
+msgid "<b>Icon Effects</b>"
+msgstr "<b>تأثيرات الأيقونة</b>"
+
+#: ../awn-manager/window.glade.h:11
+msgid "<b>Launcher Preferences</b>"
+msgstr "<b>تفضيلات المُطلق</b>"
+
+#: ../awn-manager/window.glade.h:12
+msgid "<b>Look </b>"
+msgstr "<b>المظهر </b>"
+
+#: ../awn-manager/window.glade.h:13
 msgid "<b>Pattern</b>"
 msgstr "<b>نمط</b>"
 
-#: ../avant-preferences/window.glade.h:9
+#: ../awn-manager/window.glade.h:14
 msgid "<b>Separator</b>"
 msgstr "<b>فاصل</b>"
 
-#: ../avant-preferences/window.glade.h:10
+#: ../awn-manager/window.glade.h:15
+msgid "<b>Startup behaviour</b>"
+msgstr "<b>سلوك البدء</b>"
+
+#: ../awn-manager/window.glade.h:16
 msgid "<b>Text</b>"
 msgstr "<b>نص</b>"
 
-#: ../avant-preferences/window.glade.h:11
+#: ../awn-manager/window.glade.h:17
+msgid "<b>Themes</b>"
+msgstr "<b>السمات</b>"
+
+#: ../awn-manager/window.glade.h:18
 msgid "<b>Windows</b>"
-msgstr "<b>نوافذ</b>"
+msgstr "<b>النوافذ</b>"
 
-#: ../avant-preferences/window.glade.h:12
+#: ../awn-manager/window.glade.h:19
+msgid "Activate"
+msgstr "نشّط"
+
+#: ../awn-manager/window.glade.h:20
+msgid "Add and remove applets"
+msgstr "أضف وأزل البريمجات"
+
+#: ../awn-manager/window.glade.h:21
+msgid "Add and remove launchers"
+msgstr "أضف وأزل المُطْلِقات"
+
+#: ../awn-manager/window.glade.h:22
+msgid "Add, remove and save themes"
+msgstr "أضف وأزل واحفظ السمات"
+
+#: ../awn-manager/window.glade.h:23
+msgid "Alert when application window updated"
+msgstr "نبّه عندما تُحدث نافذة تطبيق"
+
+#: ../awn-manager/window.glade.h:24
+msgid "Arrow offset: "
+msgstr "إزاحة السهم: "
+
+#: ../awn-manager/window.glade.h:25
+msgid "Attention"
+msgstr "الانتباه"
+
+#: ../awn-manager/window.glade.h:26
 msgid "Auto hide bar when not in use"
-msgstr "إخفاء تلقائي للشريط في حالة  عدم الإستخدام"
+msgstr "أخفِ الشريط تلقائيا عندما لا يكون مستخدما"
 
-#: ../avant-preferences/window.glade.h:13
-#, fuzzy
-msgid "Avant Preferences"
-msgstr "خصائص Avant"
+#: ../awn-manager/window.glade.h:27
+msgid "Automatically start AWN on login."
+msgstr "ابدء أون تلقائيا عند الولوج"
 
-#: ../avant-preferences/window.glade.h:14
+#: ../awn-manager/window.glade.h:28
 msgid "Background color:"
 msgstr "لون الخلفية:"
 
-#: ../avant-preferences/window.glade.h:15
+#: ../awn-manager/window.glade.h:29
 msgid "Bar Appearance"
 msgstr "مظهر الشريط"
 
-#: ../avant-preferences/window.glade.h:16
-msgid "Bold"
-msgstr "سميك"
+#: ../awn-manager/window.glade.h:30
+msgid "Bar angle: "
+msgstr "زاوية الشريط: "
 
-#: ../avant-preferences/window.glade.h:17
+#: ../awn-manager/window.glade.h:31
+msgid "Bar height: "
+msgstr "ارتفاع الشريط: "
+
+#: ../awn-manager/window.glade.h:32
+msgid "Change the look and behaviour of the dock"
+msgstr "غيّر شكل وسلوك الإرساء"
+
+#: ../awn-manager/window.glade.h:33
+msgid "Closing"
+msgstr "يجري الإغلاق"
+
+#: ../awn-manager/window.glade.h:34
 msgid "Color:"
 msgstr "لون:"
 
-#: ../avant-preferences/window.glade.h:18
-#, fuzzy
+#: ../awn-manager/window.glade.h:35
+msgid "Deactivate"
+msgstr "بطّل"
+
+#: ../awn-manager/window.glade.h:36
+msgid "Delete"
+msgstr "احذف"
+
+#: ../awn-manager/window.glade.h:37
 msgid "Enable pattern"
-msgstr "تفعيل النمط"
+msgstr "مكّن النمط"
 
-#: ../avant-preferences/window.glade.h:19
+#: ../awn-manager/window.glade.h:38
 msgid "Enable rounded corners"
-msgstr "تفعيل الزوايا الدائرية"
+msgstr "مكّن الزوايا المدوّرة"
 
-#: ../avant-preferences/window.glade.h:20
-#, fuzzy
-msgid "Fade effect (experimental)"
-msgstr "مؤثر التلاشي (تجريبي)"
+#: ../awn-manager/window.glade.h:39
+msgid "Expand bar to monitor width"
+msgstr "مدد الشريط إلى عرض الشاشة"
 
-#: ../avant-preferences/window.glade.h:21
+#: ../awn-manager/window.glade.h:40
 msgid "First step color:"
-msgstr "لون الخطوة الاولى :"
+msgstr "لون الخطوة الأولى:"
 
-#: ../avant-preferences/window.glade.h:22
-msgid "Font size:"
-msgstr "حجم الخط:"
+#: ../awn-manager/window.glade.h:41
+msgid "Font:"
+msgstr "الخط:"
 
-#: ../avant-preferences/window.glade.h:23
+#: ../awn-manager/window.glade.h:42
 msgid "General"
 msgstr "عام"
 
-#: ../avant-preferences/window.glade.h:24
+#: ../awn-manager/window.glade.h:43
 msgid "Glass Engine"
 msgstr "المحرك الزجاجي"
 
-#: ../avant-preferences/window.glade.h:25
+#: ../awn-manager/window.glade.h:44
+msgid "Hover"
+msgstr "حوم"
+
+#: ../awn-manager/window.glade.h:45
+msgid ""
+"Icon attention effect will be activated to alert user of updated windows."
+msgstr "تأثير انتباه الأيقونة سينشط لتنبيه المستخدم عن النوافذ المحدثة."
+
+#: ../awn-manager/window.glade.h:46
+msgid "Icon offset: "
+msgstr "إزاحة الأيقونة: "
+
+#: ../awn-manager/window.glade.h:47
+msgid "Install"
+msgstr "ثبّت"
+
+#: ../awn-manager/window.glade.h:48
 msgid "Internal border:"
-msgstr "الفواصل الداخلية:"
+msgstr "الحد الداخلي:"
 
-#: ../avant-preferences/window.glade.h:26
-msgid "Italic"
-msgstr "مائل"
+#: ../awn-manager/window.glade.h:49
+msgid "Keep below maximized windows when not in use"
+msgstr "ضع تحت النوافذ المكبرة حين لا يستخدم"
 
-#: ../avant-preferences/window.glade.h:27
+#: ../awn-manager/window.glade.h:50
+msgid "Launching"
+msgstr "يجري التنفيذ"
+
+#: ../awn-manager/window.glade.h:51
 msgid "Main border:"
-msgstr "الفواصل الرئيسية:"
+msgstr "الحد الرئيسي:"
 
-#: ../avant-preferences/window.glade.h:28
+#: ../awn-manager/window.glade.h:52
 msgid "Maximized windows don't cover the bar (requires restart)"
 msgstr "النوافذ المكبرة ﻻ تغطي الشريط (تحتاج إعادة التشغيل)"
 
-#: ../avant-preferences/window.glade.h:29
+#: ../awn-manager/window.glade.h:53
+msgid "Opening"
+msgstr "يجري الفتح"
+
+#: ../awn-manager/window.glade.h:54
 msgid "Pattern Engine"
 msgstr "محرك الأنماط"
 
-#: ../avant-preferences/window.glade.h:30
+#: ../awn-manager/window.glade.h:55
 msgid "Second step color:"
 msgstr "لون الخطوة الثانية:"
 
-#: ../avant-preferences/window.glade.h:31
-msgid "Select A File"
-msgstr "اختر ملفاً"
-
-#: ../avant-preferences/window.glade.h:32
+#: ../awn-manager/window.glade.h:56
 msgid "Separator color:"
 msgstr "لون الفاصل:"
 
-#: ../avant-preferences/window.glade.h:33
+#: ../awn-manager/window.glade.h:57
 msgid "Shadow color:"
 msgstr "لون الظل:"
 
-#: ../avant-preferences/window.glade.h:34
+#: ../awn-manager/window.glade.h:58
 msgid "Show separator between launchers and tasks"
-msgstr "أظهر الفاصل بين المشغلات والمهام"
+msgstr "أظهر الفاصل بين المطلق والمهام"
 
-#: ../avant-preferences/window.glade.h:35
+#: ../awn-manager/window.glade.h:59
 msgid "Show windows from all viewports"
 msgstr "اعرض النوافذ من جميع منافذ العرض"
 
-#: ../avant-preferences/window.glade.h:36
+#: ../awn-manager/window.glade.h:60
 msgid "Task Appearance"
 msgstr "مظهر المهمة"
 
-#: ../avant-preferences/window.glade.h:37
+#: ../awn-manager/window.glade.h:61
 msgid "Tasks have arrows"
-msgstr "مؤشرات للمهام"
+msgstr "مهام لها أسهم"
 
-#: ../avant-preferences/window.glade.h:38
+#: ../awn-manager/window.glade.h:62
 msgid "The bar automatically hides when not used"
-msgstr "يختفي الشريط تلقائيا في حالة عدم الاستخدام"
+msgstr "يختفي الشريط تلقائيا عندما لا يستخدم"
 
-#: ../avant-preferences/window.glade.h:39
+#: ../awn-manager/window.glade.h:63
 msgid "Transparency:"
 msgstr "الشفافية:"
 
-#: ../avant-preferences/window.glade.h:40
-#, fuzzy
-msgid "Unused icons fade when mouse-over"
-msgstr "الأيقونات الغير مستخدمة تتلاشى عند مرور الماوس"
-
-#: ../avant-preferences/window.glade.h:41
+#: ../awn-manager/window.glade.h:64
 msgid "Windows don't overlap the bar if this is set"
-msgstr "لا تتداخل النواف مع الشريط اذا حدد هذا"
+msgstr "لا تتداخل النوافذ مع الشريط إلى ضبط هذا"
 
-#: ../avant-applets/avant-applets.glade.h:1
-msgid "Add Applet"
-msgstr "أضف بريمج"
+#: ../awn-manager/window.glade.h:65
+msgid "page 1"
+msgstr "صفحة 1"
 
-#: ../avant-applets/avant-applets.glade.h:2
-msgid "Avant Applet Preferences"
-msgstr "خصائص بريمج الشريط"
+#: ../awn-manager/window.glade.h:66
+msgid "page 2"
+msgstr "صفحة 2"
 
-#: ../avant-applets/avant-applets.glade.h:3
-#: ../avant-launchers/avant-launchers.glade.h:2
-msgid "Positions"
-msgstr "المواقع"
+#: ../awn-manager/window.glade.h:67
+msgid "page 3"
+msgstr "صفحة 3"
 
-#: ../avant-launchers/avant-launchers.glade.h:1
-msgid "Avant Launcher Preferences"
-msgstr "خصائص مشغل الشريط"
+#: ../awn-manager/window.glade.h:68
+msgid "page 4"
+msgstr "صفحة 4"
 
-#: ../applets/notification-area/eggtraymanager.c:146
-msgid "Orientation"
-msgstr "الاتجاه"
+#: ../data/avant-window-navigator.desktop.in.in.h:1
+msgid "A dock-like window navigator."
+msgstr "ملاح نوفذة كالمرساة."
 
-#: ../applets/notification-area/eggtraymanager.c:147
-msgid "The orientation of the tray."
-msgstr "اتجاه الحاوي."
-
-#: ../applets/switcher/switcher.schemas.in.h:1
-msgid "How many rows the switcher should have"
-msgstr "كم يجب للمحول من سطر"
-
-#: ../applets/switcher/switcher.schemas.in.h:2
-msgid "The height of the switcher"
-msgstr "إرتفاع المحول"
-
-#: ../applets/switcher/switcher.schemas.in.h:3
-msgid "The width of the switcher"
-msgstr "عرض المحول"
-
-#: ../applets/trash/trash.schemas.in.h:1
-msgid "Whether the trash applet should show a count on its icon"
-msgstr "هل للبريمج المهمل إظهار العد على إيقونته"
-
-#: ../applets/trash/trashapplet.c:153
+#: ../libawn/egg/eggdesktopfile.c:136
 #, c-format
-msgid "Unable to find the Trash directory: %s"
-msgstr "تعذّر العثور مجلد المهملات:  %s"
+msgid "File is not a valid .desktop file"
+msgstr "الملف ليس ملف .desktop صحيح"
 
-#: ../applets/trash/trashapplet.c:526
-msgid "No Items in Trash"
-msgstr "لا شيء في سلَة المهملات"
-
-#: ../applets/trash/trashapplet.c:530
+#: ../libawn/egg/eggdesktopfile.c:161
 #, c-format
-msgid "%d Item in Trash"
-msgid_plural "%d Items in Trash"
-msgstr[0] "%d عنصر واحد في سلة المهملات"
-msgstr[1] "%d عنصرين في سلة المهملات"
-msgstr[2] "%d عناصر في سلة المهملات"
+msgid "Unrecognized desktop file Version '%s'"
+msgstr "إصدار ملف سطح مكتب غير متعرف عليه '%s'"
 
-#: ../applets/trash/trashapplet.c:657
+#: ../libawn/egg/eggdesktopfile.c:953
 #, c-format
-msgid "Removing item %lu of %lu"
-msgstr "حذف العنصر %lu من %lu"
+msgid "Starting %s"
+msgstr "يجري بدء %s"
 
-#: ../applets/trash/trashapplet.c:683
-msgid "Removing:"
-msgstr "جاري الحذف:"
+#: ../libawn/egg/eggdesktopfile.c:1095
+#, c-format
+msgid "Application does not accept documents on command line"
+msgstr "التطبيق لا يقبل المستندات عن طريق سطر الأوامر"
 
-#: ../applets/trash/trashapplet.c:723
-msgid "Empty all of the items from the trash?"
-msgstr "إفراغ كلي لسلة المهملات؟"
+#: ../libawn/egg/eggdesktopfile.c:1191
+#, c-format
+msgid "Unrecognized launch option: %d"
+msgstr "خيار تنفيذ غير متعرف عليه: %d"
 
-#: ../applets/trash/trashapplet.c:726
-msgid ""
-"If you choose to empty the trash, all items in it will be permanently lost. "
-"Please note that you can also delete them separately."
+#: ../libawn/egg/eggdesktopfile.c:1410
+#, c-format
+msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
+msgstr "لا يمكن تمرير مسارات المستتد إلى مدخلة سطح المكتب 'Type=Link'"
+
+#: ../libawn/egg/eggdesktopfile.c:1433
+#, c-format
+msgid "Not a launchable item"
+msgstr "عنصر غير قابل للتنفيذ"
+
+#: ../libawn/awn-applet.c:165
+msgid "Clear Custom Icons?"
+msgstr "أأمسح الأيقونات المخصصة؟"
+
+#: ../libawn/awn-applet.c:173
+msgid "Clear all custom (applet) icons?"
+msgstr "أأمسح كل أيقونات البريمجات؟"
+
+#: ../libawn/awn-applet.c:187 ../src/awn-task.c:2264 ../src/main.c:517
+msgid "Dock Preferences"
+msgstr "تفضيلات الإرساء"
+
+#: ../libawn/awn-applet.c:201
+msgid "Clear All Custom Icons"
+msgstr "امسح الأيقونات المخصصة"
+
+#. TODO , add text, add scope options, display icon.
+#: ../libawn/awn-icons.c:308
+msgid "Change Icon?"
+msgstr "أأغير الأيقونة؟"
+
+#: ../libawn/awn-icons.c:328 ../libawn/awn-icons.c:333
+msgid "Use this icon?"
+msgstr "أأستخدم هذه الأيقونة؟"
+
+#: ../libawn/awn-icons.c:338
+msgid "Apply to this applet instance."
 msgstr ""
-"ستحذف العناصر نهائيا, إن اخترت إفراغ سلة المهملات. لاحظ أنك تستطيع أيضا حذف "
-"العناصر بشكل منفصل"
 
-#: ../applets/trash/trashapplet.c:746
-msgid "_Empty Trash"
-msgstr "_إفراغ سلة المهملات"
-
-#: ../applets/trash/trashapplet.c:825
-#, c-format
-msgid ""
-"Error while spawning nautilus:\n"
-"%s"
+#: ../libawn/awn-icons.c:342
+msgid "Apply to this applet type."
 msgstr ""
-"خطأ أثناء بدء نوتيلس:\n"
-"%s"
 
-#: ../applets/trash/trashapplet.c:845
-#, c-format
-msgid "There was an error displaying help: %s"
-msgstr "حدث خطأ أثناء عرض المساعدة: %s"
-
-#: ../applets/trash/trashapplet.c:868
-msgid "Trash Applet"
-msgstr "بريمج المهملات"
-
-#: ../applets/trash/trashapplet.c:871
-msgid ""
-"A GNOME trash bin that lives in your panel. You can use it to view the trash "
-"or drag and drop items into the trash."
+#: ../libawn/awn-icons.c:344
+msgid "Apply to icon name."
 msgstr ""
-"سلّة مهملات لجنوم تقطنُ في الشريط. يمكنك استخدامها لعرض المهملات أو لسحب "
-"وإلقاء العناصر إلى المهملات."
 
-#: ../applets/trash/trashapplet.c:876
-msgid "translator-credits"
-msgstr ""
-"Launchpad Contributions:\n"
-"  Chokri.ysf https://launchpad.net/~chokriyoussef\n"
-"  Nizar K https://launchpad.net/~nizarus\n"
-"  eHobayyeb https://launchpad.net/~ehobayyeb\n"
-"  mmm https://launchpad.net/~mmmnnn333\n"
-"  thamood https://launchpad.net/~thamood"
+#. Create the dialog
+#: ../src/awn-task.c:1965
+msgid "Choose New Image..."
+msgstr "اختر صورة جديدة"
 
-#: ../applets/trash/trashapplet.c:896
-msgid "Delete Immediately?"
-msgstr "حذف الآن؟"
+#: ../src/awn-task.c:2057
+msgid "Preferences"
+msgstr "التفضيلات"
 
-#: ../applets/trash/trashapplet.c:925
-msgid "Cannot move items to trash, do you want to delete them immediately?"
-msgstr "لا يمكن نقل العناصر إلى سلة المهملات، هل تريد حذفها فورا؟"
+#: ../src/awn-task.c:2060
+msgid "Change Icon..."
+msgstr "غيّر الأيقونة..."
 
-#: ../applets/trash/trashapplet.c:928
-msgid ""
-"Cannot move some items to trash, do you want to delete these immediately?"
-msgstr "لا يمكن نقل بعض العناصر إلى سلة المهملات، هل تريد حذفها فورا؟"
+#: ../src/awn-task.c:2072
+msgid "Change Image..."
+msgstr "غيّر الصورة..."
 
-#: ../applets/trash/trashapplet.c:1028 ../applets/trash/trashapplet.c:1045
-#, c-format
-msgid ""
-"Unable to move to trash:\n"
-"%s"
-msgstr ""
-"لا يمكن النقل إلى سلة المهملات:\n"
-"%s"
-
-#: ../src/awn-task.c:2279
+#: ../src/awn-task.c:2214
 msgid "Change Icon"
-msgstr "تغيير الأيقونة"
+msgstr "غيّر الأيقونة"
+
+#: ../src/main.c:157
+msgid "Prints the version number"
+msgstr ""
+
+#: ../src/main.c:162
+msgid "Starts the Avant Window Navigator dock"
+msgstr ""
+
+#: ../src/main.c:315
+#, c-format
+msgid "Failed to make connection to session bus: %s"
+msgstr ""
+
+#: ../src/main.c:330
+#, c-format
+msgid "There was an error requesting the name: %s"
+msgstr ""
+
+#: ../src/main.c:701
+msgid ""
+"Warning: Screen isn't composited. Please run compiz (-fusion) or another "
+"compositing manager."
+msgstr ""
+
+#: ../src/main.c:718
+msgid "Starting avant-window-navigator"
+msgstr "يبدأ ملاح النوافذ أفانت"
+
+#: ../src/main.c:720
+msgid "Don't show this message again."
+msgstr "لا تظهر هذه الرّسالة مجدّدًا."

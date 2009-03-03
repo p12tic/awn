@@ -13,7 +13,10 @@ SUBDIRS =	\
 	doc \
 	themes	\
 	$(NULL)
-	
+
+ACLOCAL_AMFLAGS = -I m4
+DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
+
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = awn.pc
 

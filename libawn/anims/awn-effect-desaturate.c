@@ -68,7 +68,7 @@ desaturate_effect(AwnEffectsAnimation * anim)
       priv->saturation += DESATURATION_STEP;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -77,7 +77,7 @@ desaturate_effect(AwnEffectsAnimation * anim)
   {
     priv->saturation = 1.0;
     priv->direction = AWN_EFFECT_DIR_DOWN;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 

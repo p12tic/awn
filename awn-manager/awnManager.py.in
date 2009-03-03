@@ -23,10 +23,13 @@
 import sys, os, os.path, time
 
 PLAT_PKG = '@PY_PLAT_PKG@'
+SITE_PKG = '@PY_SITE_PKG@'
 AWN_MANAGER_DIR = os.path.join('@PKGDATADIR@', 'awn-manager')
 sys.path = [AWN_MANAGER_DIR] + sys.path
 if PLAT_PKG not in sys.path:
     sys.path = [PLAT_PKG] + sys.path
+if SITE_PKG not in sys.path:
+    sys.path = [SITE_PKG] + sys.path
 
 try:
     import pygtk
@@ -51,6 +54,10 @@ import awn
 
 awn.vfs_init()
 defs.i18nize(globals())
+
+if os.geteuid() == 0:
+    sys.stderr.write(_("Awn Manager can't be run as root.") + '\n')
+    sys.exit(1)
 
 class AwnManager:
 
@@ -136,9 +143,8 @@ class AwnManager:
         try:
             icon = self.theme.load_icon(name, size, flags)
         except gobject.GError:
-            msg = _('Could not load the "' + name + '" icon.  Make sure that ' + \
-                    'the SVG loader for Gtk+ is installed. It usually comes ' + \
-                    'with librsvg, or a package similarly named.')
+            # must be on one line due to i18n
+            msg = _('Could not load the "%s" icon.  Make sure that the SVG loader for Gtk+ is installed. It usually comes with librsvg, or a package similarly named.') % name
             dialog = gtk.MessageDialog(self.window, 0, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK, msg)
             dialog.run()
             dialog.destroy()
@@ -170,7 +176,11 @@ class AwnManager:
     def about(self, button):
         self.about = gtk.AboutDialog()
         self.about.set_name(_("Avant Window Navigator"))
-        self.about.set_version('@VERSION@')
+        version = '@VERSION@'
+        extra_version = '@EXTRA_VERSION@'
+        if len(extra_version) > 0:
+            version += extra_version
+        self.about.set_version(version)
         self.about.set_copyright("Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>")
         self.about.set_authors([
             'Neil Jagdish Patel <njpatel@gmail.com>',

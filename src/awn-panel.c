@@ -27,6 +27,7 @@
 #include <X11/extensions/shape.h>
 
 #include <libawn/libawn.h>
+#include <libawn/awn-utils.h>
 
 #include "awn-panel.h"
 
@@ -38,8 +39,7 @@
 #include "awn-monitor.h"
 #include "awn-x.h"
 
-// FIXME: getting this value should be a method of AwnBackground
-#define AWN_PANEL_BORDER 2
+#include "xutils.h"
 
 G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW) 
 
@@ -59,15 +59,21 @@ struct _AwnPanelPrivate
   
   gboolean composited;
   gboolean panel_mode;
+  gboolean expand;
 
   gint size;
   gint offset;
   gint orient;
+  gint style;
 
   gint autohide_type;
 
+  /* for masks updating */
   gint old_width;
   gint old_height;
+  gint old_orient;
+
+  guint extra_padding;
 
   gint hide_counter;
   guint hiding_timer_id;
@@ -79,8 +85,12 @@ struct _AwnPanelPrivate
   gboolean autohide_inhibited;
 };
 
-// FIXME: this timeout should be configurable I guess
+/* FIXME: this timeout should be configurable I guess */
 #define AUTOHIDE_DELAY 1000
+
+// padding for active_rect, yea it really isn't nice but so far it seems to
+// be the only feasible solution
+#define ACTIVE_RECT_PADDING 3
 
 enum 
 {
@@ -89,10 +99,12 @@ enum
   PROP_CLIENT,
   PROP_COMPOSITED,
   PROP_PANEL_MODE,
+  PROP_EXPAND,
   PROP_OFFSET,
   PROP_ORIENT,
   PROP_SIZE,
-  PROP_AUTOHIDE_TYPE
+  PROP_AUTOHIDE_TYPE,
+  PROP_STYLE
 };
 
 enum
@@ -105,11 +117,20 @@ enum
   AUTOHIDE_TYPE_LAST
 };
 
+enum
+{
+  STYLE_NONE = 0,
+  STYLE_FLAT,
+  STYLE_3D,
+
+  STYLE_LAST
+};
+
 static const GtkTargetEntry drop_types[] = 
 {
-  { "STRING", 0, 0 },
-  { "text/plain", 0, 0},
-  { "text/uri-list", 0, 0}
+  { (gchar*)"STRING", 0, 0 },
+  { (gchar*)"text/plain", 0, 0 },
+  { (gchar*)"text/uri-list", 0, 0 }
 };
 static const gint n_drop_types = G_N_ELEMENTS (drop_types);
 
@@ -117,6 +138,7 @@ enum
 {
   SIZE_CHANGED,
   ORIENT_CHANGED,
+  OFFSET_CHANGED,
   DESTROY_NOTIFY,
   DESTROY_APPLET,
   AUTOHIDE_START,
@@ -143,13 +165,14 @@ static gboolean on_mouse_out                (GtkWidget *widget,
 static gboolean on_window_configure         (GtkWidget         *panel,
                                              GdkEventConfigure *event);
 static gboolean position_window             (AwnPanel *panel);
-static gboolean resize_window               (AwnPanel *panel);
 
-static gboolean on_eb_expose                (GtkWidget      *eb, 
+/*static gboolean on_eb_expose                (GtkWidget      *eb, 
                                              GdkEventExpose *event,
-                                             GtkWidget      *child);
+                                             GtkWidget      *child);*/
 static gboolean awn_panel_expose            (GtkWidget      *widget, 
                                              GdkEventExpose *event);
+static void     awn_panel_size_request      (GtkWidget *widget,
+                                             GtkRequisition *requisition);
 static void     awn_panel_add               (GtkContainer   *window, 
                                              GtkWidget      *widget);
 
@@ -161,6 +184,10 @@ static void     awn_panel_set_size          (AwnPanel *panel,
                                              gint      size);
 static void     awn_panel_set_autohide_type (AwnPanel *panel,
                                              gint      type);
+static void     awn_panel_set_style         (AwnPanel *panel,
+                                             gint      style);
+static void     awn_panel_set_panel_mode    (AwnPanel *panel,
+                                             gboolean  panel_mode);
 
 static void     awn_panel_reset_autohide    (AwnPanel *panel);
 
@@ -171,6 +198,20 @@ static void     on_theme_changed            (AwnBackground *bg,
 
 static gboolean awn_panel_check_mouse_pos   (AwnPanel *panel,
                                              gboolean whole_window);
+
+static void     awn_panel_get_draw_rect     (AwnPanel *panel,
+                                             GdkRectangle *area,
+                                             gint width, gint height);
+
+static void     awn_panel_get_applet_rect   (AwnPanel *panel,
+                                             GdkRectangle *area,
+                                             gint width, gint height);
+
+static void     awn_panel_refresh_padding   (AwnPanel *panel,
+                                             gpointer user_data);
+
+static void awn_panel_set_strut              (AwnPanel *panel);
+static void awn_panel_remove_strut           (AwnPanel *panel);
 
 /*
  * GOBJECT CODE 
@@ -197,6 +238,9 @@ awn_panel_constructed (GObject *object)
                           AWN_GROUP_PANEL, AWN_PANEL_PANEL_MODE,
                           object, "panel_mode");
   awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_EXPAND,
+                          object, "expand");
+  awn_config_bridge_bind (bridge, priv->client,
                           AWN_GROUP_PANEL, AWN_PANEL_ORIENT,
                           object, "orient");
   awn_config_bridge_bind (bridge, priv->client,
@@ -208,15 +252,17 @@ awn_panel_constructed (GObject *object)
   awn_config_bridge_bind (bridge, priv->client,
                           AWN_GROUP_PANEL, AWN_PANEL_AUTOHIDE,
                           object, "autohide-type");
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_STYLE,
+                          object, "style");
 
   /* Background drawing */
-  priv->bg = awn_background_flat_new (priv->client, AWN_PANEL (panel));
-  g_signal_connect (priv->bg, "changed", G_CALLBACK (on_theme_changed), panel);
+  awn_panel_set_style(AWN_PANEL (panel), priv->style);
 
   /* Composited checks/setup */
   screen = gtk_widget_get_screen (panel);
   priv->composited = gdk_screen_is_composited (screen);
-  g_print ("Screen %s composited", priv->composited ? "is" : "isn't");
+  g_print ("Screen %s composited\n", priv->composited ? "is" : "isn't");
   load_correct_colormap (panel);
   g_signal_connect (screen, "composited-changed", 
                     G_CALLBACK (on_composited_changed), panel);
@@ -227,7 +273,6 @@ awn_panel_constructed (GObject *object)
   g_signal_connect (panel, "configure-event",
                     G_CALLBACK (on_window_configure), NULL);
 
-  resize_window (AWN_PANEL (panel));
   position_window (AWN_PANEL (panel));
 
   /* Contents */
@@ -258,6 +303,9 @@ awn_panel_get_property (GObject    *object,
     case PROP_PANEL_MODE:
       g_value_set_boolean (value, priv->panel_mode);
       break;
+    case PROP_EXPAND:
+      g_value_set_boolean (value, priv->expand);
+      break;
     case PROP_OFFSET:
       g_value_set_int (value, priv->offset);
       break;
@@ -269,6 +317,9 @@ awn_panel_get_property (GObject    *object,
       break;
     case PROP_AUTOHIDE_TYPE:
       g_value_set_int (value, priv->autohide_type);
+      break;
+    case PROP_STYLE:
+      g_value_set_int (value, priv->style);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -296,8 +347,12 @@ awn_panel_set_property (GObject      *object,
       priv->composited = g_value_get_boolean (value);
       break;
     case PROP_PANEL_MODE:
-      priv->panel_mode = g_value_get_boolean (value);
-      break;    
+      awn_panel_set_panel_mode(panel, g_value_get_boolean (value));
+      break;
+    case PROP_EXPAND:
+      priv->expand = g_value_get_boolean (value);
+      gtk_widget_queue_resize (GTK_WIDGET (panel));
+      break;
     case PROP_OFFSET:
       awn_panel_set_offset (panel, g_value_get_int (value));
       break;
@@ -309,6 +364,9 @@ awn_panel_set_property (GObject      *object,
       break;
     case PROP_AUTOHIDE_TYPE:
       awn_panel_set_autohide_type (panel, g_value_get_int (value));
+      break;
+    case PROP_STYLE:
+      awn_panel_set_style (panel, g_value_get_int (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -326,16 +384,216 @@ awn_panel_show (GtkWidget *widget)
   awn_applet_manager_refresh_applets (AWN_APPLET_MANAGER (manager));
 }
 
+
+static void
+awn_panel_size_request (GtkWidget *widget, GtkRequisition *requisition)
+{
+  AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE(widget);
+
+  GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
+  if (!GTK_IS_WIDGET (child))
+    return;
+
+  gtk_widget_size_request (child, requisition);
+
+  gint size = priv->size + priv->offset + priv->extra_padding;
+
+  switch (priv->orient)
+  {
+    case AWN_ORIENTATION_TOP:
+    case AWN_ORIENTATION_BOTTOM:
+      if (priv->expand) requisition->width = priv->monitor->width;
+      requisition->height = priv->composited ? size + priv->size : size;
+      break;
+    case AWN_ORIENTATION_LEFT:
+    case AWN_ORIENTATION_RIGHT:
+    default:
+      requisition->width = priv->composited ? size + priv->size : size;
+      if (priv->expand) requisition->height = priv->monitor->height;
+      break;
+  }
+}
+
+static
+void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
+{
+  AwnPanelPrivate *priv = panel->priv;
+  guint top, left, bottom, right;
+
+  switch (priv->orient)
+  {
+    case AWN_ORIENTATION_TOP:
+    case AWN_ORIENTATION_BOTTOM:
+      gtk_alignment_set (GTK_ALIGNMENT (priv->alignment), 0.5, 0.5, 0.0, 1.0);
+      break;
+    case AWN_ORIENTATION_LEFT:
+    case AWN_ORIENTATION_RIGHT:
+    default:
+      gtk_alignment_set (GTK_ALIGNMENT (priv->alignment), 0.5, 0.5, 1.0, 0.0);
+      break;
+  }
+
+  if (!priv->bg || !AWN_IS_BACKGROUND (priv->bg)) {
+    gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment), 0, 0, 0, 0);
+    priv->extra_padding = ACTIVE_RECT_PADDING;
+    return;
+  }
+
+  /* refresh the padding */
+  awn_background_padding_request (priv->bg, priv->orient,
+                                  &top, &bottom, &left, &right);
+
+  /* never actually set the top padding, its only internal constant */
+  /* well actually non-composited env could use also the top padding */
+  switch (priv->orient)
+  {
+    case AWN_ORIENTATION_TOP:
+      priv->extra_padding = bottom + top;
+      bottom = 0;
+      break;
+    case AWN_ORIENTATION_BOTTOM:
+      priv->extra_padding = bottom + top;
+      top = 0;
+      break;
+    case AWN_ORIENTATION_LEFT:
+      priv->extra_padding = left + right;
+      right = 0;
+      break;
+    case AWN_ORIENTATION_RIGHT:
+      priv->extra_padding = left + right;
+      left = 0;
+      break;
+  }
+
+  priv->extra_padding += ACTIVE_RECT_PADDING;
+
+  gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment),
+                             top, bottom, left, right);
+}
+
+static
+void awn_panel_get_applet_rect (AwnPanel *panel,
+                                GdkRectangle *area,
+                                gint width, gint height)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  /*
+   * We provide a param for width & height, cause for example
+   * in the configure event callback allocation field is not yet updated.
+   * Otherwise zeroes can be used for width & height
+   */
+  if (!width) width = GTK_WIDGET (panel)->allocation.width;
+  if (!height) height = GTK_WIDGET (panel)->allocation.height;
+
+  guint top, bottom, left, right;
+  gtk_alignment_get_padding (GTK_ALIGNMENT (priv->alignment),
+                             &top, &bottom, &left, &right);
+
+  gint paintable_size = priv->offset + priv->size + priv->extra_padding;
+
+  /* this should work for both composited and non-composited */
+  switch (priv->orient)
+  {
+    case AWN_ORIENTATION_TOP:
+      area->x = left;
+      area->y = top;
+      area->width = width - left - right;
+      area->height = paintable_size - top;
+      break;
+
+    case AWN_ORIENTATION_BOTTOM:
+      area->x = left;
+      area->y = height - paintable_size + priv->extra_padding - bottom;
+      area->width = width - left - right;
+      area->height = paintable_size - bottom;
+      break;
+
+    case AWN_ORIENTATION_RIGHT:
+      area->x = width - paintable_size + priv->extra_padding - right;
+      area->y = top;
+      area->width = paintable_size - right;
+      area->height = height - top - bottom;
+      break;
+
+    case AWN_ORIENTATION_LEFT:
+    default:
+      area->x = left;
+      area->y = top;
+      area->width = paintable_size - left;
+      area->height = height - top - bottom;
+  }
+}
+
+
+static
+void awn_panel_get_draw_rect (AwnPanel *panel,
+                              GdkRectangle *area,
+                              gint width, gint height)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  /* 
+   * We provide a param for width & height, cause for example
+   * in the configure event callback allocation field is not yet updated.
+   * Otherwise zeroes can be used for width & height
+   */
+  if (!width) width = GTK_WIDGET (panel)->allocation.width;
+  if (!height) height = GTK_WIDGET (panel)->allocation.height;
+
+  /* if we're not composited the whole window is drawable */
+  if (priv->composited == FALSE)
+  {
+    area->x = 0; area->y = 0;
+    area->width = width; area->height = height;
+    return;
+  }
+
+  gint paintable_size = priv->offset + priv->size + priv->extra_padding;
+
+  switch (priv->orient)
+  {
+    case AWN_ORIENTATION_TOP:
+      area->x = 0;
+      area->y = 0;
+      area->width = width;
+      area->height = paintable_size;
+      break;
+
+    case AWN_ORIENTATION_BOTTOM:
+      area->x = 0;
+      area->y = height - paintable_size;
+      area->width = width;
+      area->height = paintable_size;
+      break;
+
+    case AWN_ORIENTATION_RIGHT:
+      area->x = width - paintable_size;
+      area->y = 0;
+      area->width = paintable_size;
+      area->height = height;
+      break;
+
+    case AWN_ORIENTATION_LEFT:
+    default:
+      area->x = 0;
+      area->y = 0;
+      area->width = paintable_size;
+      area->height = height;
+  }
+}
+
 static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
                                            gboolean whole_window)
 {
-  // returns TRUE if mouse is in the window / or on the edge (if !whole_window)
+  /* returns TRUE if mouse is in the window / or on the edge (if !whole_window) */
   g_return_val_if_fail(AWN_IS_PANEL(panel), FALSE);
 
   GtkWidget *widget = GTK_WIDGET (panel);
   AwnPanelPrivate *priv = panel->priv;
 
   gint x, y, window_x, window_y;
+  /* FIXME: probably needs some love to work on multiple monitors */
   gdk_display_get_pointer (gdk_display_get_default (), NULL, &x, &y, NULL);
   gdk_window_get_root_origin (widget->window, &window_x, &window_y);
 
@@ -346,7 +604,7 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
 
   if (!whole_window)
   {
-    // edge detection
+    /* edge detection */
     switch (priv->orient)
     {
       case AWN_ORIENTATION_TOP:
@@ -372,7 +630,7 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
     }
     else
     {
-      gint k = priv->size - priv->offset;
+      gint k = priv->size;
       switch (priv->orient)
       {
         case AWN_ORIENTATION_TOP:
@@ -410,7 +668,7 @@ alpha_blend_hide (gpointer data)
   if (priv->hide_counter == 20)
   {
     priv->hiding_timer_id = 0;
-    priv->autohide_always_visible = FALSE; // see the note in start function
+    priv->autohide_always_visible = FALSE; /* see the note in start function */
     gtk_widget_hide (GTK_WIDGET (panel));
     gdk_window_set_opacity (GTK_WIDGET(panel)->window, 1.0);
     return FALSE;
@@ -426,10 +684,11 @@ alpha_blend_start (AwnPanel *panel, gpointer data)
   priv->hide_counter = 0;
   priv->hiding_timer_id = g_timeout_add (40, alpha_blend_hide, panel);
 
-  // A hack: we will set autohide_always_visible ourselves
-  // when the animation's internal timer expires, so that while the window is
-  // in the process of hiding it can be interrupted by hovering over the window
-  // itself, but when it's hidden user needs to touch the edge
+  /* A hack: we will set autohide_always_visible ourselves
+   * when the animation's internal timer expires, so that while the window is
+   * in the process of hiding it can be interrupted by hovering over the window
+   * itself, but when it's hidden user needs to touch the edge
+   */
   return TRUE;
 }
 
@@ -445,13 +704,14 @@ alpha_blend_end (AwnPanel *panel, gpointer data)
     gdk_window_set_opacity (GTK_WIDGET(panel)->window, 1.0);
   } else {
     gtk_widget_show (GTK_WIDGET (panel));
+    position_window (panel);
   }
 }
 
 /* Auto-hide keep below method */
 static gboolean keep_below_start (AwnPanel *panel, gpointer data)
 {
-  // wow, setting keep_below makes the border appear and unsticks us
+  /* wow, setting keep_below makes the border appear and unsticks us */
   gtk_window_set_decorated (GTK_WINDOW (panel), FALSE);
   gtk_window_stick (GTK_WINDOW (panel));
 
@@ -515,7 +775,7 @@ poll_mouse_position (gpointer data)
   if (awn_panel_check_mouse_pos (panel,
         !priv->autohide_started || priv->autohide_always_visible))
   {
-    // we are on the window or its edge
+    /* we are on the window or its edge */
     if (priv->autohide_start_timer_id)
     {
       g_source_remove (priv->autohide_start_timer_id);
@@ -530,10 +790,10 @@ poll_mouse_position (gpointer data)
   }
   else if (GTK_WIDGET_MAPPED (widget))
   {
-    // mouse is away, panel should start hiding
+    /* mouse is away, panel should start hiding */
     if (priv->autohide_start_timer_id == 0  && !priv->autohide_started)
     {
-      // the timeout will emit autohide-start
+      /* the timeout will emit autohide-start */
       priv->autohide_start_timer_id =
         g_timeout_add (AUTOHIDE_DELAY, autohide_start_timeout, panel);
     }
@@ -587,6 +847,7 @@ awn_panel_class_init (AwnPanelClass *klass)
   
   wid_class->expose_event  = awn_panel_expose;
   wid_class->show          = awn_panel_show;
+  wid_class->size_request  = awn_panel_size_request;
 
   /* Add properties to the class */
   g_object_class_install_property (obj_class,
@@ -608,7 +869,15 @@ awn_panel_class_init (AwnPanelClass *klass)
     g_param_spec_boolean ("panel_mode",
                           "Panel Mode",
                           "The window sets the appropriete panel size hints",
-                          TRUE,
+                          FALSE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  g_object_class_install_property (obj_class,
+    PROP_EXPAND,
+    g_param_spec_boolean ("expand",
+                          "Expand",
+                          "The panel will expand to fill the entire "
+                          "width/height of the screen",
+                          FALSE,
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
  g_object_class_install_property (obj_class,
     PROP_ORIENT,
@@ -642,6 +911,13 @@ awn_panel_class_init (AwnPanelClass *klass)
                       0, AUTOHIDE_TYPE_LAST - 1, 0,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
  
+  g_object_class_install_property (obj_class,
+    PROP_STYLE,
+    g_param_spec_int ("style",
+                      "Style",
+                      "Style of the bar",
+                      0, STYLE_LAST - 1, 0,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   /* Add signals to the class */
   _panel_signals[SIZE_CHANGED] =
@@ -659,6 +935,16 @@ awn_panel_class_init (AwnPanelClass *klass)
 			      G_OBJECT_CLASS_TYPE (obj_class),
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (AwnPanelClass, orient_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__INT, 
+			      G_TYPE_NONE,
+			      1, G_TYPE_INT);
+
+  _panel_signals[OFFSET_CHANGED] =
+		g_signal_new ("offset_changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (AwnPanelClass, offset_changed),
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__INT, 
 			      G_TYPE_NONE,
@@ -717,6 +1003,7 @@ awn_panel_init (AwnPanel *panel)
 
   priv = panel->priv = AWN_PANEL_GET_PRIVATE (panel);
 
+
   priv->eventbox = gtk_event_box_new ();
   gtk_widget_set_app_paintable (priv->eventbox, TRUE);
   GTK_CONTAINER_CLASS (awn_panel_parent_class)->add (GTK_CONTAINER (panel),
@@ -727,14 +1014,15 @@ awn_panel_init (AwnPanel *panel)
   gtk_container_add (GTK_CONTAINER (priv->eventbox), priv->alignment);
   gtk_widget_show (priv->alignment);
 
-  g_signal_connect (priv->eventbox, "expose-event",
-                    G_CALLBACK (on_eb_expose), priv->alignment);
+  /*g_signal_connect (priv->eventbox, "expose-event",
+                    G_CALLBACK (on_eb_expose), priv->alignment);*/
+  awn_utils_ensure_tranparent_bg (priv->eventbox);
 
   g_signal_connect (panel, "enter-notify-event", 
                     G_CALLBACK (on_mouse_over), NULL);
   g_signal_connect (panel, "leave-notify-event", 
                     G_CALLBACK (on_mouse_out), NULL);
-
+  awn_utils_ensure_tranparent_bg (GTK_WIDGET (panel));
   gtk_window_set_resizable (GTK_WINDOW (panel), FALSE);
 }
 
@@ -844,14 +1132,14 @@ on_screen_changed (GtkWidget *widget,
  * receive events in the blank space above the main window
  */
 static void
-awn_panel_update_input_shape (GtkWidget *panel, 
-                              gint       real_width, 
-                              gint       real_height)
+awn_panel_update_masks (GtkWidget *panel, 
+                        gint       real_width, 
+                        gint       real_height)
 {
   AwnPanelPrivate *priv;
   GdkBitmap       *shaped_bitmap;
   cairo_t         *cr;
-  gint             x, y, width, height;
+  GdkRectangle     applet_rect;
 
   g_return_if_fail (AWN_IS_PANEL (panel));
   priv = AWN_PANEL (panel)->priv;
@@ -861,53 +1149,50 @@ awn_panel_update_input_shape (GtkWidget *panel,
   if (!shaped_bitmap)
     return;
 
-  switch (priv->orient)
-  {
-    case AWN_ORIENTATION_TOP:
-      x = 0;
-      y = 0;
-      width = real_width;
-      height = priv->offset + priv->size;
-      break;
-    
-    case AWN_ORIENTATION_RIGHT:
-      x = priv->size;
-      y = 0;
-      width = priv->offset + priv->size;
-      height = real_height;
-      break;
-    
-    case AWN_ORIENTATION_BOTTOM:
-      x = 0;
-      y = priv->size;
-      width = real_width;
-      height = priv->size + priv->offset;
-      break;
-
-    case AWN_ORIENTATION_LEFT:
-      x = 0;
-      y = 0;
-      width = priv->offset + priv->size;
-      height = real_height;
-      break;
-    
-    default:
-      g_assert (0);
-  }
-
+  /* clear the bitmap */
   cr = gdk_cairo_create (shaped_bitmap);
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-  cairo_set_source_rgb (cr, 1.0f, 1.0f, 1.0f);
 
-  cairo_rectangle (cr, x, y, width, height);
- 
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+  if (priv->bg)
+  {
+    GdkRectangle area;
+    awn_panel_get_draw_rect (AWN_PANEL (panel), &area,
+                             real_width, real_height);
+    /* Set the input shape of the window if the window is composited */
+    if (priv->composited)
+    {
+      awn_background_get_input_shape_mask (priv->bg, cr, priv->orient, &area);
+    }
+    /* If window is not composited set shape of the window */
+    else
+    {
+      awn_background_get_shape_mask (priv->bg, cr, priv->orient, &area);
+    }
+  }
+
+  /* combine with applet's eventbox (with proper dimensions) */
+  cairo_set_operator (cr, CAIRO_OPERATOR_ADD);
+  cairo_set_source_rgb (cr, 1.0f, 1.0f, 1.0f);
+  awn_panel_get_applet_rect (AWN_PANEL (panel), &applet_rect,
+                             real_width, real_height);
+  cairo_rectangle (cr, applet_rect.x, applet_rect.y,
+                   applet_rect.width, applet_rect.height);
   cairo_fill (cr);
+
   cairo_destroy (cr);
 
-  gtk_widget_input_shape_combine_mask (panel, NULL, 0, 0);
-  gtk_widget_input_shape_combine_mask (panel, shaped_bitmap, 0, 0);
+  if (priv->composited)
+  {
+    gtk_widget_input_shape_combine_mask (panel, NULL, 0, 0);
+    gtk_widget_input_shape_combine_mask (panel, shaped_bitmap, 0, 0);
+  }
+  else
+  {
+    gtk_widget_shape_combine_mask (panel, NULL, 0, 0);
+    gtk_widget_shape_combine_mask (panel, shaped_bitmap, 0, 0);
+  }
 
   if (shaped_bitmap)
     g_object_unref (shaped_bitmap);
@@ -962,38 +1247,6 @@ position_window (AwnPanel *panel)
 }
 
 /*
- * Resize Awn's window
- */
-static gboolean
-resize_window (AwnPanel *panel)
-{
-  GtkWidget       *widget  = GTK_WIDGET (panel);
-  AwnPanelPrivate *priv = panel->priv;
-
-  // shouldn't we call size_request on our child instead? (for non-composited)
-  gint size = priv->composited ? (2 * priv->size):(priv->size + priv->offset);
-  size += AWN_PANEL_BORDER;
-
-  switch (priv->orient)
-  {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
-      gtk_widget_set_size_request (widget,
-                                   -1,
-                                   size);
-      break;
-    case AWN_ORIENTATION_RIGHT:
-    case AWN_ORIENTATION_LEFT:
-    default:
-      gtk_widget_set_size_request (widget,
-                                   size,
-                                   -1);
-  }
-
-  return FALSE;
-}
-
-/*
  * We get a configure event when the windows size changes. This is a good as
  * a time as any to update the input shape of the window.
  */
@@ -1006,24 +1259,22 @@ on_window_configure (GtkWidget          *panel,
   g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
   priv = AWN_PANEL (panel)->priv;
 
-  if (priv->old_width == event->width && priv->old_height == event->height)
+  if (priv->old_width == event->width && priv->old_height == event->height &&
+      priv->old_orient == priv->orient)
     return FALSE;
 
   priv->old_width = event->width;
   priv->old_height = event->height;
+  priv->old_orient = priv->orient;
 
-  /* Only set the shape of the window if the window is composited */
-  if (priv->composited)
-    awn_panel_update_input_shape (panel, event->width, event->height);
-
-  /* Update the size hints if the panel_mode is set */
-  if (priv->panel_mode)
-    awn_x_set_strut (GTK_WINDOW (panel));
+  awn_panel_update_masks (panel, event->width, event->height);
   
   /* Update position */
   position_window (AWN_PANEL (panel));
 
-  //gtk_widget_queue_draw (GTK_WIDGET (panel));
+  /* Update the size hints if the panel_mode is set */
+  if (priv->panel_mode)
+    awn_panel_set_strut (AWN_PANEL (panel));
 
   return TRUE;
 }
@@ -1042,98 +1293,18 @@ on_geometry_changed   (AwnMonitor *monitor,
  */
 
 /*
- * Clear the eventboxes background
- */
-static gboolean 
-on_eb_expose (GtkWidget      *widget, 
-              GdkEventExpose *event,
-              GtkWidget      *child)
-{
-  cairo_t *cr;
-
-  if (!GDK_IS_DRAWABLE (widget->window))
-  {
-    g_debug ("!GDK_IS_DRAWABLE (widget->window) failed");
-    return FALSE;
-  }
-
-  /* Get our ctx */
-  cr = gdk_cairo_create (widget->window);
-  if (!cr)
-  {
-    g_debug ("Unable to create cairo context\n");
-    return FALSE;
-  }
-
-  /* The actual drawing of the background */
-  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_paint (cr);
-  cairo_destroy (cr);
-
-  gtk_container_propagate_expose (GTK_CONTAINER (widget),
-                                  child,
-                                  event);
-  return TRUE;
-}
-
-/*
  * Draw the panel 
  */
 static gboolean
 awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
 {
   AwnPanelPrivate *priv;
-  gfloat           x=0, y=0;
-  gint             width = 0, height = 0;
   cairo_t         *cr;
   GtkWidget       *child;
   
   g_return_val_if_fail (AWN_IS_PANEL (widget), FALSE);
   priv = AWN_PANEL (widget)->priv;
 
-  if (!GDK_IS_DRAWABLE (widget->window))
-  {
-    g_debug ("!GDK_IS_DRAWABLE (widget->window) failed");
-    return FALSE;
-  }
-
-  gtk_window_get_size (GTK_WINDOW (widget), &width, &height);
-
-  /* Calculate correct values */
-  switch (priv->orient)
-  {
-    /* if panel is composited, it's size is priv->size*2,
-     *  otherwise priv->size+priv->offset
-     */
-    case AWN_ORIENTATION_TOP:
-      x = 0;
-      y = 0;
-      width = width;
-      height -= priv->composited ? priv->size - priv->offset : 0;
-      break;
-
-    case AWN_ORIENTATION_RIGHT:
-      x = priv->composited ? priv->size - priv->offset : 0;
-      y = 0;
-      width -= priv->composited ? priv->size - priv->offset : 0;
-      height = height;
-      break;
-
-    case AWN_ORIENTATION_BOTTOM:
-      x = 0;
-      y = priv->composited ? priv->size - priv->offset : 0;
-      width = width;
-      height -= priv->composited ? priv->size - priv->offset : 0;
-      break;
-
-    case AWN_ORIENTATION_LEFT:
-    default:
-      x = 0;
-      y = 0;
-      width -= priv->composited ? priv->size - priv->offset : 0;
-      height = height;
-  }
-  
   /* Get our ctx */
   cr = gdk_cairo_create (widget->window);
   if (!cr)
@@ -1145,12 +1316,17 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   /* Clip */
   gdk_cairo_region (cr, event->region);
   cairo_clip (cr);
-  
+
   /* The actual drawing of the background */
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (cr);
 
-  awn_background_draw (priv->bg, cr, priv->orient, x, y, width, height);
+  if (priv->bg)
+  {
+    GdkRectangle area;
+    awn_panel_get_draw_rect (AWN_PANEL (widget), &area, 0, 0);
+    awn_background_draw (priv->bg, cr, priv->orient, &area);
+  }
  
   /* Pass on the expose event to the child */
   child = gtk_bin_get_child (GTK_BIN (widget));
@@ -1176,11 +1352,52 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
 
   cairo_destroy (cr);
 
+/*#define DEBUG_DRAW_AREA
+#define DEBUG_APPLET_AREA*/
+
+#ifdef DEBUG_DRAW_AREA
+  if (1)
+  {
+    /* Calling gdk_draw_rectangle (window, gc, FALSE, 0, 0, 20, 20) results
+     * in an outlined rectangle with corners at (0, 0), (0, 20), (20, 20),
+     * and (20, 0), which makes it 21 pixels wide and 21 pixels high.
+     */
+    GdkRectangle a;
+    GdkColor color;
+
+    awn_panel_get_draw_rect (AWN_PANEL (widget), &a, 0, 0);
+    GdkGC *gc = gdk_gc_new (widget->window);
+    gdk_gc_set_line_attributes (gc, 1, GDK_LINE_ON_OFF_DASH, 
+                                GDK_CAP_NOT_LAST, GDK_JOIN_MITER);
+    gdk_color_parse ("#0F0", &color);
+    gdk_gc_set_rgb_fg_color (gc, &color);
+    gdk_draw_rectangle (widget->window, gc, FALSE, a.x, a.y,
+                        a.width-1, a.height-1); /* minus 1 because ^^ */
+    g_object_unref (gc);
+  }
+#endif
+
+#ifdef DEBUG_APPLET_AREA
+  if (1)
+  {
+    GdkRectangle a;
+    GdkColor color;
+
+    awn_panel_get_applet_rect (AWN_PANEL (widget), &a, 0, 0);
+    GdkGC *gc = gdk_gc_new (widget->window);
+    gdk_gc_set_line_attributes (gc, 1, GDK_LINE_ON_OFF_DASH, 
+                                GDK_CAP_NOT_LAST, GDK_JOIN_MITER);
+    gdk_color_parse ("#00F", &color);
+    gdk_gc_set_rgb_fg_color (gc, &color);
+    gdk_draw_rectangle (widget->window, gc, FALSE, a.x, a.y,
+                        a.width-1, a.height-1); /* minus 1 because ^^ */
+    g_object_unref (gc);
+  }
+#endif
+
   gtk_container_propagate_expose (GTK_CONTAINER (widget),
                                   child,
                                   event);
-  priv->old_width = width;
-  priv->old_height = height;
 
   return TRUE;
 }
@@ -1224,9 +1441,11 @@ awn_panel_set_offset  (AwnPanel *panel,
   
   priv->offset = offset;
 
-  resize_window(panel);
+  awn_panel_refresh_padding (panel, NULL);
 
-  gtk_widget_queue_draw (GTK_WIDGET (panel));
+  g_signal_emit (panel, _panel_signals[OFFSET_CHANGED], 0, priv->offset);
+
+  gtk_widget_queue_resize (GTK_WIDGET (panel));
 }
 
 static void
@@ -1236,18 +1455,18 @@ awn_panel_set_orient (AwnPanel *panel, gint orient)
 
   priv->orient = orient;
 
+  awn_panel_refresh_padding (panel, NULL);
+
   if (!GTK_WIDGET_REALIZED (panel))
     return;
 
   awn_panel_reset_autohide (panel);
 
-  resize_window (panel);
- 
   g_signal_emit (panel, _panel_signals[ORIENT_CHANGED], 0, priv->orient);
   
   position_window (panel);
   
-  gtk_widget_queue_draw (GTK_WIDGET (panel));
+  gtk_widget_queue_resize (GTK_WIDGET (panel));
 }
 
 static void
@@ -1260,13 +1479,11 @@ awn_panel_set_size (AwnPanel *panel, gint size)
   if (!GTK_WIDGET_REALIZED (panel))
     return;
   
-  resize_window (panel);
-
   g_signal_emit (panel, _panel_signals[SIZE_CHANGED], 0, priv->size);
 
   position_window (panel);
 
-  gtk_widget_queue_draw (GTK_WIDGET (panel));
+  gtk_widget_queue_resize (GTK_WIDGET (panel));
 }
 
 /* This will help autohide, but i'd work even without it */
@@ -1298,7 +1515,7 @@ on_mouse_out (GtkWidget *widget, GdkEventCrossing *event)
 
   if (priv->autohide_start_timer_id == 0  && !priv->autohide_started)
   {
-    // the timeout will emit autohide-start
+    /* the timeout will emit autohide-start */
     priv->autohide_start_timer_id =
       g_timeout_add (AUTOHIDE_DELAY, autohide_start_timeout, panel);
   }
@@ -1329,7 +1546,7 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
 
   if (type == AUTOHIDE_TYPE_NONE)
   {
-    // remove the timer if autohide if off
+    /* remove the timer if autohide if off */
     if (priv->mouse_poll_timer_id)
     {
       g_source_remove(priv->mouse_poll_timer_id);
@@ -1338,7 +1555,7 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
   }
   else
   {
-    // run mouse position polling timer
+    /* run mouse position polling timer */
     if (priv->mouse_poll_timer_id == 0)
     {
       priv->mouse_poll_timer_id = 
@@ -1358,10 +1575,11 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
     end_handler_id = 0;
   }
 
-  // for all autohide types, just connect to autohide-start & end signals
-  // and do what you want to do in the callbacks
-  // The autohide-start should return FALSE if un-hiding requires to touch
-  // the display edge, and TRUE if it should react on whole AWN window
+  /* for all autohide types, just connect to autohide-start & end signals
+   * and do what you want to do in the callbacks
+   * The autohide-start should return FALSE if un-hiding requires to touch
+   * the display edge, and TRUE if it should react on whole AWN window
+   */
   switch (priv->autohide_type)
   {
     case AUTOHIDE_TYPE_KEEP_BELOW:
@@ -1385,6 +1603,114 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
     default:
       break;
   }
+}
+
+static void
+awn_panel_set_style (AwnPanel *panel, gint style)
+{
+  AwnPanelPrivate *priv = panel->priv;
+  AwnBackground *old_bg = NULL;
+  
+  /* if the style hasn't changed and the background exist everything is done. */
+  if(priv->style == style && priv->bg) return;
+
+  old_bg = priv->bg;
+  priv->style = style;
+
+  switch (priv->style)
+  {
+    case STYLE_NONE:
+      priv->bg = NULL;
+      break;
+    case STYLE_FLAT:
+      priv->bg = awn_background_flat_new (priv->client, AWN_PANEL (panel));
+      break;
+    case STYLE_3D:
+      priv->bg = awn_background_3d_new (priv->client, AWN_PANEL (panel));
+      break;
+    default:
+      g_assert_not_reached();
+  }
+
+  if (old_bg) g_object_unref(old_bg);
+
+  if (priv->bg)
+  {
+    g_signal_connect (priv->bg, "changed", G_CALLBACK (on_theme_changed),
+                      panel);
+    g_signal_connect_swapped (priv->bg, "padding-changed",
+                              G_CALLBACK (awn_panel_refresh_padding), panel);
+  }
+
+  awn_panel_refresh_padding (panel, NULL);
+
+  gtk_widget_queue_draw (GTK_WIDGET (panel));
+}
+
+static void
+awn_panel_set_panel_mode (AwnPanel *panel, gboolean  panel_mode)
+{
+  AwnPanelPrivate *priv = panel->priv;
+  priv->panel_mode = panel_mode;
+
+  if(priv->panel_mode)
+  {
+    /* Check if panel is already realized. So it has an GdkWindow.
+     * If it's not, the strut will get set when the position and dimension get set. 
+     */
+    if(GTK_WIDGET_REALIZED(panel))
+      awn_panel_set_strut(panel);
+  }
+  else
+  {
+    if(GTK_WIDGET_REALIZED(panel))
+      awn_panel_remove_strut(panel);
+  }
+
+}
+
+static void
+awn_panel_set_strut (AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  int strut, strut_start, strut_end;
+  int width, height;
+  int x,y;
+
+  gtk_window_get_size (GTK_WINDOW (panel), &width, &height);
+  gtk_window_get_position (GTK_WINDOW (panel), &x, &y);
+
+  switch (priv->orient)
+  {
+    case AWN_ORIENTATION_TOP:
+      strut_start = x;
+      strut_end = x + width;
+      break;
+    case AWN_ORIENTATION_RIGHT:
+      strut_start = y;
+      strut_end = y + height;
+      break;
+    case AWN_ORIENTATION_BOTTOM:
+      strut_start = x;
+      strut_end = x + width;
+      break;
+    case AWN_ORIENTATION_LEFT:
+      strut_start = y;
+      strut_end = y + height;
+      break;
+    default:
+      g_assert (0);
+  }
+
+  strut = priv->offset + priv->size + priv->extra_padding;
+  xutils_set_strut ((GTK_WIDGET (panel))->window, priv->orient, strut, strut_start, strut_end);
+}
+
+static void
+awn_panel_remove_strut (AwnPanel *panel)
+{
+  xutils_set_strut ((GTK_WIDGET (panel))->window, 0, 0, 0, 0);
 }
 
 /*

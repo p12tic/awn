@@ -1,5 +1,10 @@
 SUBDIRS = egg anims
 
+# shave-related
+V         = @
+Q         = $(V:1=)
+QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
+
 NULL = 
 
 ENUMFILES = awn-enum-types.c awn-enum-types.h
@@ -10,13 +15,13 @@ BUILT_SOURCES = $(ENUMFILES)
 
 lib_LTLIBRARIES = libawn.la
 
+AM_CFLAGS = $(WARNING_FLAGS)
 INCLUDES = \
 	$(AWN_CFLAGS) \
 	-I$(top_srcdir) \
 	-I$(top_builddir) \
 	-DDATADIR=\""$(datadir)"\" \
 	-DPKGDATADIR=\""$(pkgdatadir)"\"\
-	-Werror \
 	$(NULL)	
 
 libawnincdir = $(includedir)/libawn
@@ -24,19 +29,18 @@ libawnincdir = $(includedir)/libawn
 public_headers = \
 	awn-defines.h \
 	awn-applet.h \
-	awn-applet-dialog.h \
 	awn-applet-simple.h \
 	awn-cairo-utils.h \
 	awn-config-bridge.h \
 	awn-config-client.h \
 	awn-desktop-item.h \
+	awn-dialog.h \
 	awn-effects.h \
-	awn-enum-types.h \
 	awn-icon.h \
 	awn-icon-box.h \
-	awn-plug.h \
 	awn-themed-icon.h \
 	awn-tooltip.h \
+	awn-utils.h \
 	awn-vfs.h \
 	libawn.h
 	$(NULL)
@@ -50,19 +54,19 @@ source_h = $(public_headers) $(private_headers)
 
 source_c = \
 	awn-applet.c \
-	awn-applet-dialog.c \
 	awn-applet-simple.c \
 	awn-cairo-utils.c \
 	awn-config-bridge.c \
+	awn-dialog.c \
 	awn-effects.c \
 	awn-effects-ops-new.c \
 	awn-effects-ops-helpers.c \
 	awn-enum-types.c \
 	awn-icon.c \
 	awn-icon-box.c \
-	awn-plug.c \
 	awn-themed-icon.c \
 	awn-tooltip.c \
+	awn-utils.c \
 	awn-vfs.c \
 	$(NULL)
 
@@ -80,6 +84,7 @@ libawninc_HEADERS = \
 	$(NULL)
 libawn_la_SOURCES = \
 	$(private_headers) \
+	awn-enum-types.h \
 	$(source_c) \
 	$(NULL)
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
@@ -93,7 +98,7 @@ libawn_la_LIBADD += \
 awn-enum-types.h: stamp-awn-enum-types.h
 	@true
 stamp-awn-enum-types.h: $(source_h) Makefile
-	( cd $(srcdir) && \
+	$(QUIET_GEN)( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	  	--template $(srcdir)/awn-enum-types.h.in \
 	  $(source_h) ) >> xgen-ceth && \
@@ -102,7 +107,7 @@ stamp-awn-enum-types.h: $(source_h) Makefile
 	echo timestamp > $(@F)
 
 awn-enum-types.c: awn-enum-types.h
-	( cd $(srcdir) && \
+	$(QUIET_GEN)( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	  	--template $(srcdir)/awn-enum-types.c.in \
 	  $(source_h) ) >> xgen-cetc && \

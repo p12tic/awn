@@ -30,7 +30,7 @@
 #include "task-launcher.h"
 #include "task-settings.h"
 
-G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_ICON);
+G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_ICON)
 
 #define TASK_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_ICON, \
@@ -46,6 +46,13 @@ struct _TaskIconPrivate
   guint    drag_tag;
   gboolean drag_motion;
   guint    drag_time;
+
+  gint old_width;
+  gint old_height;
+  gint old_x;
+  gint old_y;
+
+  guint update_geometry_id;
 };
 
 enum
@@ -68,20 +75,27 @@ static guint32 _icon_signals[LAST_SIGNAL] = { 0 };
 
 static const GtkTargetEntry drop_types[] = 
 {
-  { "STRING", 0, 0 },
-  { "text/plain", 0,  },
-  { "text/uri-list", 0, 0 },
-  { "awn/task-icon", 0, 0 }
+  { (gchar*)"STRING", 0, 0 },
+  { (gchar*)"text/plain", 0,  },
+  { (gchar*)"text/uri-list", 0, 0 },
+  { (gchar*)"awn/task-icon", 0, 0 }
 };
 static const gint n_drop_types = G_N_ELEMENTS (drop_types);
 
+enum {
+        TARGET_TASK_ICON
+};
+
 static const GtkTargetEntry task_icon_type[] = 
 {
-  { "awn/task-icon", 0, 0 }
+  { (gchar*)"awn/task-icon", 0, TARGET_TASK_ICON }
 };
 static const gint n_task_icon_type = G_N_ELEMENTS (task_icon_type);
 
 /* Forwards */
+
+static gboolean  task_icon_configure_event      (GtkWidget          *widget, 
+                                                 GdkEventConfigure  *event);
 static gboolean  task_icon_button_release_event (GtkWidget      *widget,
                                                  GdkEventButton *event);
 static gboolean  task_icon_button_press_event   (GtkWidget      *widget,
@@ -108,6 +122,14 @@ static void      task_icon_drag_data_received   (GtkWidget      *widget,
                                                  GtkSelectionData *data,
                                                  guint           info,
                                                  guint           time);
+static void      task_icon_drag_data_get        (GtkWidget *widget, 
+                                                 GdkDragContext *context, 
+                                                 GtkSelectionData *selection_data,
+                                                 guint target_type, 
+                                                 guint time);
+
+
+static gboolean _update_geometry(GtkWidget *widget);
 
 /* GObject stuff */
 static void
@@ -161,15 +183,42 @@ task_icon_finalize (GObject *object)
     priv->windows = NULL;
   }
 
+  if(priv->update_geometry_id)
+    g_source_remove(priv->update_geometry_id);
+
   G_OBJECT_CLASS (task_icon_parent_class)->finalize (object);
 }
 
 static void
 task_icon_constructed (GObject *object)
 {
-  //TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;
-
+  TaskIconPrivate *priv = TASK_ICON (object)->priv;
+  GtkWidget *widget = GTK_WIDGET(object);
+ 
+  priv->update_geometry_id = g_timeout_add_seconds (1, (GSourceFunc)_update_geometry, widget);
 }
+ 
+static gboolean 
+_update_geometry(GtkWidget *widget)
+{
+  gint x,y;
+  TaskIconPrivate *priv;
+
+  g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
+
+  priv = TASK_ICON (widget)->priv;
+
+  gdk_window_get_origin (widget->window, &x, &y);
+  if(priv->old_x != x || priv->old_y != y)
+  {
+    priv->old_x = x;
+    priv->old_y = y;
+    task_icon_refresh_geometry (TASK_ICON (widget));
+  }
+
+  return TRUE;
+}
+ 
 
 static void
 task_icon_class_init (TaskIconClass *klass)
@@ -182,7 +231,8 @@ task_icon_class_init (TaskIconClass *klass)
   obj_class->set_property = task_icon_set_property;
   obj_class->get_property = task_icon_get_property;
   obj_class->finalize     = task_icon_finalize;
-  
+
+  wid_class->configure_event      = task_icon_configure_event;
   wid_class->button_release_event = task_icon_button_release_event;
   wid_class->button_press_event   = task_icon_button_press_event;
   wid_class->drag_begin           = task_icon_drag_begin;
@@ -190,7 +240,8 @@ task_icon_class_init (TaskIconClass *klass)
   wid_class->drag_motion          = task_icon_drag_motion;
   wid_class->drag_leave           = task_icon_drag_leave;
   wid_class->drag_data_received   = task_icon_drag_data_received;
-  
+  wid_class->drag_data_get        = task_icon_drag_data_get;
+
   /* Install properties first */
   pspec = g_param_spec_object ("taskwindow",
                                "TaskWindow",
@@ -249,6 +300,7 @@ task_icon_init (TaskIcon *icon)
   priv->drag_tag = 0;
   priv->drag_motion = FALSE;
   priv->gets_dragged = FALSE;
+  priv->update_geometry_id = 0;
 
   awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
 
@@ -292,8 +344,8 @@ task_icon_is_skip_taskbar (TaskIcon *icon)
 {
   g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
 
-  //if (TASK_IS_LAUNCHER_WINDOW (icon->priv->windows->data))
-  //  return FALSE;
+  /*if (TASK_IS_LAUNCHER_WINDOW (icon->priv->windows->data))
+    return FALSE;*/
 
   if (icon->priv->windows)
     return task_window_is_hidden (icon->priv->windows->data);
@@ -306,8 +358,8 @@ task_icon_is_in_viewport (TaskIcon *icon, WnckWorkspace *space)
 {
   g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
 
-  //if (TASK_IS_LAUNCHER_WINDOW (icon->priv->windows->data))
-  //  return TRUE;
+  /*if (TASK_IS_LAUNCHER_WINDOW (icon->priv->windows->data))
+    return TRUE;*/
 
   if (icon->priv->windows)
     return task_window_is_on_workspace (icon->priv->windows->data, space);
@@ -499,7 +551,7 @@ task_icon_is_launcher (TaskIcon      *icon)
 
   if (priv->windows)
   {
-    // For now do it this way ?!
+    /* For now do it this way ?! */
     if (TASK_IS_LAUNCHER (priv->windows->data))
       return TRUE;
   }
@@ -516,7 +568,7 @@ task_icon_get_launcher (TaskIcon      *icon)
 
   if (priv->windows)
   {
-    // For now do it this way ?!
+    /* For now do it this way ?! */
     if (TASK_IS_LAUNCHER (priv->windows->data))
       return TASK_LAUNCHER(priv->windows->data);
   }
@@ -536,46 +588,111 @@ task_icon_refresh_icon (TaskIcon      *icon)
                               task_window_get_icon (priv->windows->data));
 }
 
-void
+gboolean
 task_icon_refresh_geometry (TaskIcon *icon)
 {
+  TaskSettings *settings;
   TaskIconPrivate *priv;
   GtkWidget *widget;
   GSList    *w;
-  gint      x, y, ww;
+  gint      x, y, ww, width, height;
   gint      i = 0, len = 0;
 
-  g_return_if_fail (TASK_IS_ICON (icon));
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
   priv = icon->priv;
 
   widget = GTK_WIDGET (icon);
+
+  //get the position of the widget
   gdk_window_get_origin (widget->window, &x, &y);
+
+  settings = task_settings_get_default ();
+
+  switch (settings->orient)
+  {
+    case AWN_ORIENTATION_RIGHT:
+      x += settings->panel_size;
+      ww = GTK_WIDGET (icon)->allocation.height;
+      break;
+    case AWN_ORIENTATION_LEFT:
+      //x += settings->offset;
+      ww = GTK_WIDGET (icon)->allocation.height;
+      break;
+    case AWN_ORIENTATION_TOP:
+      //y += settings->offset;
+      ww = GTK_WIDGET (icon)->allocation.width;
+      break;
+    default:
+      y += settings->panel_size;
+      ww = GTK_WIDGET (icon)->allocation.width;
+      break;
+  }
 
   /* FIXME: Do something clever here to allow the user to "scrub" the icon
    * for the windows.
    */
   len = g_slist_length (priv->windows);
-  ww = widget->allocation.width/len;
+  ww = ww/len;
   for (w = priv->windows; w; w = w->next)
   {
     TaskWindow *window = w->data;
-
+    switch (settings->orient)
+    {
+      case AWN_ORIENTATION_RIGHT:
+        width = settings->panel_size+settings->offset;
+        height = ww + (i*ww);
+        break;
+      case AWN_ORIENTATION_LEFT:
+        width = settings->panel_size+settings->offset;
+        height = ww + (i*ww);
+        break;
+      case AWN_ORIENTATION_TOP:
+        width = ww + (i*ww);
+        height = settings->panel_size+settings->offset;
+        break;
+      default:
+        width = ww + (i*ww);
+        height = settings->panel_size+settings->offset;
+        break;
+    }
     task_window_set_icon_geometry (window, x, y, 
-                                   ww + (i*ww),
-                                   widget->allocation.height);
+                                   width,
+                                   height);
     i++;
   }
+
+  return FALSE;
 }
 
 /*
  * Widget callbacks
  */
 static gboolean
+task_icon_configure_event (GtkWidget          *widget,
+                           GdkEventConfigure  *event)
+{
+  TaskIconPrivate *priv;
+
+  g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
+  priv = TASK_ICON (widget)->priv;
+
+  if (priv->old_width == event->width && priv->old_height == event->height)
+    return FALSE;
+
+  priv->old_width = event->width;
+  priv->old_height = event->height;
+
+  g_idle_add ((GSourceFunc)task_icon_refresh_geometry, TASK_ICON (widget));
+
+  return TRUE;
+}
+
+static gboolean
 task_icon_button_release_event (GtkWidget      *widget,
                                 GdkEventButton *event)
 {
   TaskIconPrivate *priv;
-  //GSList *w;
+  /*GSList *w;*/
   gint len;
 
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
@@ -828,4 +945,22 @@ task_icon_drag_data_received (GtkWidget      *widget,
   g_slist_free (list);
 
   gtk_drag_finish (context, TRUE, FALSE, time);
+}
+
+static void
+task_icon_drag_data_get (GtkWidget *widget, 
+                         GdkDragContext *context, 
+                         GtkSelectionData *selection_data,
+                         guint target_type, 
+                         guint time)
+{
+  switch(target_type)
+  {
+    case TARGET_TASK_ICON:
+      gtk_selection_data_set (selection_data, GDK_TARGET_STRING, 8, NULL, 0);
+      break;
+    default:
+      /* Default to some a safe target instead of fail. */
+      g_assert_not_reached ();
+  }
 }

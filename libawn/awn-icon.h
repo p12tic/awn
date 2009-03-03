@@ -48,7 +48,7 @@ G_BEGIN_DECLS
 typedef struct _AwnIcon        AwnIcon;
 typedef struct _AwnIconClass   AwnIconClass;
 typedef struct _AwnIconPrivate AwnIconPrivate;
-//typedef enum   _AwnIconState   AwnIconState;
+/*typedef enum   _AwnIconState   AwnIconState;*/
  
 struct _AwnIcon
 {
@@ -77,6 +77,9 @@ GtkWidget *   awn_icon_new              (void);
 void          awn_icon_set_orientation  (AwnIcon        *icon,
                                          AwnOrientation  orient);
 
+void          awn_icon_set_offset       (AwnIcon        *icon,
+                                         gint            offset);
+
 void          awn_icon_set_effect       (AwnIcon     *icon, 
                                          AwnEffect    effect);
 
@@ -97,7 +100,7 @@ void          awn_icon_set_custom_paint (AwnIcon *icon,
 void          awn_icon_set_tooltip_text (AwnIcon     *icon,
                                          const gchar *text);
 
-const gchar * awn_icon_get_tooltip_text (AwnIcon     *icon);
+gchar *       awn_icon_get_tooltip_text (AwnIcon     *icon);
 
 void          awn_icon_set_message      (AwnIcon     *icon,
                                          const gchar *message);

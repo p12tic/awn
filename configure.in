@@ -1,4 +1,4 @@
-AC_INIT([avant-window-navigator], [0.3.9], [])
+AC_INIT([avant-window-navigator], [0.3.9], [https://bugs.launchpad.net/awn])
 
 EXTRA_VERSION=
 AC_ARG_ENABLE([extra-version],
@@ -9,7 +9,7 @@ AC_SUBST(EXTRA_VERSION)
 AC_DEFINE_UNQUOTED([EXTRA_VERSION], ["$EXTRA_VERSION"],
                    [Extra version metadata provided by ./configure])
 
-
+AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([.])
 AC_CONFIG_HEADERS([config.h])
 
@@ -26,7 +26,10 @@ AC_PROG_CC
 AC_STDC_HEADERS
 AM_PROG_LIBTOOL
 
-dnl check for gtk-doc
+dnl ==============================================
+dnl GTK-Doc
+dnl ==============================================
+
 GTK_DOC_CHECK(1.4)
 
 dnl ==============================================
@@ -39,7 +42,7 @@ PLATFORM=`$PYTHON -c "from distutils import util; print util.get_platform()"`
 AC_SUBST(PLATFORM)
 
 dnl ==============================================
-dnl check for pygtk
+dnl PyGTK
 dnl ==============================================
 PKG_CHECK_MODULES(PYGTK, gtk+-2.0 pygtk-2.0 >= pygtk_required_version)
 AC_SUBST(PYGTK_CFLAGS)
@@ -66,7 +69,7 @@ dnl ==============================================
 AC_ARG_WITH(vala, AS_HELP_STRING([--without-vala],[Disables installation of the Vala bindings]),,[with_vala=yes])
 
 if test "$with_vala" != "no"; then
-  VALA_PROG_VALAC(0.3.4)
+  VALA_PROG_VALAC(0.5.4)
   if test $USE_MAINTAINER_MODE = yes; then
     AC_PATH_PROG(VALA_GEN_INTROSPECT, vala-gen-introspect, vala-gen-introspect, [])
     AC_PATH_PROG(VAPIGEN, vapigen, vapigen, [])
@@ -75,12 +78,12 @@ fi
 AM_CONDITIONAL(HAVE_VALA, test -n "$VALAC")
 
 dnl ==============================================
-dnl check for others python modules
+dnl Check for Python modules
 dnl ==============================================
 AC_ARG_ENABLE(pymod_checks, 
               AC_HELP_STRING([--disable-pymod-checks], [Disable checks for Python modules]),
               enable_pymod_checks=$enableval,
-	      enable_pymod_checks=yes)
+              enable_pymod_checks=yes)
               
 if test x${enable_pymod_checks} = xyes; then
   AM_CHECK_PYMOD(gtk.glade,,,AC_MSG_ERROR([pygtk's gtk.glade module is needed for awn-manager's user interface]))
@@ -91,12 +94,12 @@ dnl ==============================================
 dnl CFLAGS
 dnl ==============================================
 
-dnl Only use -Wall if we have gcc
-if test "x$GCC" = "xyes"; then
-  if test -z "`echo "$CFLAGS" | grep "\-Wall" 2> /dev/null`" ; then
-    CFLAGS="$CFLAGS -Wall -fno-strict-aliasing -fmessage-length=0 -D_FORTIFY_SOURCE=2"
-  fi
+if test "$USE_MAINTAINER_MODE" = "yes"; then
+  AS_COMPILER_FLAGS([WARNING_FLAGS], ["-Werror=all -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Werror=missing-declarations -Wredundant-decls -Wmissing-noreturn -Werror=shadow -Wpointer-arith -Wcast-align -Wwrite-strings -Werror=inline -Wformat -Wformat-nonliteral -Wformat-security -Winit-self -Werror=missing-include-dirs -Werror=undef -Werror=aggregate-return -Wmissing-format-attribute -Werror=nested-externs -std=c99 -pedantic -fno-strict-aliasing -fmessage-length=0 -Wp,-D_FORTIFY_SOURCE=2"])
+else
+  AS_COMPILER_FLAGS([WARNING_FLAGS], ["-Wall -std=c99"])
 fi
+AC_SUBST(WARNING_FLAGS)
 
 dnl ==============================================
 dnl translation support
@@ -105,7 +108,7 @@ dnl ==============================================
 GETTEXT_PACKAGE=avant-window-navigator
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package])
-ALL_LINGUAS="af ar bn bg ca cs da de de_DE el en_AU en_CA en_GB es et eu fa fi fi_FI fr fr_FR ga gl gu he hi hr hu id it it_IT ja ka ko lt mr ms nb nl nn no_NO pl pt_BR pt ro ru ru_RU sk sl sq sr sv ta te th tr uk vi zh_CN zh_HK zh_TW"
+ALL_LINGUAS="af ar be bg bn bs ca csb cs da de el en_AU en_CA en_GB eo es et eu fa fi fr ga gl gu he hi hr hu id is it ja jv ka ko ku lt lv mk mr ms nb nds nl nn oc pl pt_BR pt ro ru sk sl sq sr sv ta te th tr uk vi zh_CN zh_HK zh_TW"
 
 IT_PROG_INTLTOOL([0.34])
 AM_GLIB_GNU_GETTEXT
@@ -114,16 +117,11 @@ slicelocaledir='${prefix}/${DATADIRNAME}/locale'
 AC_SUBST(slicelocaledir)
 
 dnl ==============================================
-dnl Check that we meet the  dependencies
+dnl Check that we meet the dependencies
 dnl ==============================================
 AM_PATH_GLIB_2_0(2.8.0,,,gobject)
 
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, glib-genmarshal)
-
-AC_MSG_CHECKING([for specific desktop support])
-
-old_CPPFLAGS="$CPPFLAGS"
-CPPFLAGS="-D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE $CPPFLAGS"
 
 dnl ==============================================
 dnl Configuration backend
@@ -165,7 +163,7 @@ PKG_CHECK_MODULES(DOCK, [$DOCK_MODULES])
 PKG_CHECK_MODULES(APPLET, [$LIBRARY_MODULES $APPLET_MODULES])
 
 dnl =============================================
-dnl Startup notification check
+dnl Startup notification check (eggdesktopfile)
 dnl =============================================
 
 old_LIBS="$LIBS"
@@ -173,14 +171,8 @@ LIBS="$LIBS $AWN_LIBS"
 AC_CHECK_FUNCS(gdk_x11_display_broadcast_startup_message)
 LIBS="$old_LIBS"
 
-dnl =============================================
-dnl Miscellaneous
-dnl =============================================
-
-AC_CHECK_LIB(m, sin)
-
 dnl ==============================================
-dnl DBUS
+dnl DBus
 dnl ==============================================
 
 DBUS_GLIB_BIN="`$PKG_CONFIG --variable=exec_prefix dbus-glib-1`/bin"
@@ -191,12 +183,23 @@ dnl GConf
 dnl ==============================================
 AM_GCONF_SOURCE_2
 
+dnl ==============================================
+dnl Miscellaneous
+dnl ==============================================
+
 AS_AC_EXPAND([PY_SITE_PKG], [$PYTHON_SITE_PKG])
 AS_AC_EXPAND([PY_PLAT_PKG], [$PYTHON_PLATFORM_PKG])
 AS_AC_EXPAND([PKGDATADIR], [$datadir/$PACKAGE_NAME])
 AS_AC_EXPAND([DATADIR], [$datadir])
 AS_AC_EXPAND([LIBDIR], [$libdir])
 
+SHAVE_INIT([shave], [enable])
+
+dnl ==============================================
+dnl Output
+dnl ==============================================
+
+dnl Please keep alphabetized (case-sensitive)
 AC_OUTPUT([
 Makefile
 applets/Makefile
@@ -217,14 +220,16 @@ data/Makefile
 data/active/Makefile
 data/avant-window-navigator.desktop.in
 data/awn.schema-ini
-tests/Makefile
 doc/Makefile
 doc/reference/Makefile
 libawn/Makefile
 libawn/anims/Makefile
 libawn/egg/Makefile
 po/Makefile.in
+shave/shave
+shave/shave-libtool
 src/Makefile
+tests/Makefile
 themes/Makefile
 ])
 

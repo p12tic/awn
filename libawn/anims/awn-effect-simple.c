@@ -36,7 +36,7 @@ simple_hover_effect(AwnEffectsAnimation * anim)
     priv->glow_amount = 1.0;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   if (awn_effect_check_top_effect(anim, NULL))
@@ -45,7 +45,7 @@ simple_hover_effect(AwnEffectsAnimation * anim)
   else
     priv->glow_amount = 0.0;
 
-  // check for repeating, but it'll return FALSE anyway if we're here
+  /* check for repeating, but it'll return FALSE anyway if we're here */
   gboolean repeat = awn_effect_handle_repeating(anim);
 
   return repeat;
@@ -63,13 +63,13 @@ simple_attention_effect(AwnEffectsAnimation * anim)
              (GSourceFunc)simple_attention_effect);
   }
 
-  // blink
+  /* blink */
   priv->simple_rect = !priv->simple_rect;
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
-  // check for repeating
+  /* check for repeating */
   gboolean repeat = awn_effect_handle_repeating(anim);
   if (!repeat) {
     priv->simple_rect = FALSE;

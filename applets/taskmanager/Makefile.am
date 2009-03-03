@@ -1,4 +1,6 @@
 # Applet shared lib
+NULL =
+AM_CFLAGS = $(WARNING_FLAGS)
 INCLUDES = \
 	-I$(srcdir) \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
@@ -7,7 +9,7 @@ INCLUDES = \
 	-DPREFIX=\"$(prefix)\" \
 	-DPKGDATADIR=\"$(pkgdatadir)\" \
 	-DWNCK_I_KNOW_THIS_IS_UNSTABLE \
-	-Werror
+	$(NULL)
 
 TASKMANAGER_SOURCES= \
 	applet.c \

@@ -25,9 +25,10 @@
 
 #include "awn-cairo-utils.h"
 
-//
-// awn_cairo_rounded_rect - draws a rounded rectangle via cairo
-//
+/**
+ * awn_cairo_rounded_rect:
+ * draws a rounded rectangle via cairo.
+ */
 void
 awn_cairo_rounded_rect(cairo_t *cr, double x0, double y0,
                        double width, double height,
@@ -38,7 +39,7 @@ awn_cairo_rounded_rect(cairo_t *cr, double x0, double y0,
   x1 = x0 + width;
   y1 = y0 + height;
 
-  // top left corner
+  /* top left corner */
 
   if ((state & ROUND_TOP_LEFT) == ROUND_TOP_LEFT)
   {
@@ -50,7 +51,7 @@ awn_cairo_rounded_rect(cairo_t *cr, double x0, double y0,
     cairo_move_to(cr, x0, y0);
   }
 
-  // top right
+  /* top right */
   if ((state & ROUND_TOP_RIGHT) == ROUND_TOP_RIGHT)
   {
     cairo_line_to(cr, x1 - radius, y0);
@@ -61,7 +62,7 @@ awn_cairo_rounded_rect(cairo_t *cr, double x0, double y0,
     cairo_line_to(cr, x1, y0);
   }
 
-  // bottom right
+  /* bottom right */
   if ((state & ROUND_BOTTOM_RIGHT) == ROUND_BOTTOM_RIGHT)
   {
     cairo_line_to(cr, x1 , y1 - radius);
@@ -72,7 +73,7 @@ awn_cairo_rounded_rect(cairo_t *cr, double x0, double y0,
     cairo_line_to(cr, x1, y1);
   }
 
-  // bottom left
+  /* bottom left */
   if ((state & ROUND_BOTTOM_LEFT) == ROUND_BOTTOM_LEFT)
   {
     cairo_line_to(cr, x0 + radius, y1);

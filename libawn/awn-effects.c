@@ -47,14 +47,15 @@
 #include "anims/awn-effect-turn.h"
 #include "anims/awn-effect-zoom.h"
 
-G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT);
+G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT)
 
 #define AWN_EFFECTS_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   AWN_TYPE_EFFECTS, \
   AwnEffectsPrivate))
 
-// if someone wants faster/slower animations add a speed multiplier
-//   property (and use it in the animations) but don't change fps
+/* if someone wants faster/slower animations add a speed multiplier
+ * property (and use it in the animations) but don't change fps
+ */
 #define AWN_FRAME_RATE(fx) (40)
 #define AWN_ANIMATIONS_PER_BUNDLE 5
 #define AWN_SPOTLIGHT_INTERNAL_NAME "__internal_spotlight__"
@@ -97,13 +98,13 @@ static void
 awn_effects_finalize(GObject *object)
 {
   AwnEffects * fx = AWN_EFFECTS(object);
-  // destroy animation timer - FIXME: should be moved to dispose method
+  /* destroy animation timer - FIXME: should be moved to dispose method */
   if (fx->priv->timer_id)
   {
     g_source_remove(fx->priv->timer_id);
   }
 
-  // free effect queue and associated AwnEffectsPriv
+  /* free effect queue and associated AwnEffectsPriv */
   GList *queue = fx->priv->effect_queue;
   while (queue)
   {
@@ -125,14 +126,15 @@ awn_effects_finalize(GObject *object)
   G_OBJECT_CLASS (awn_effects_parent_class)->finalize(object);
 }
 
-// it'd be so much easier if this wasn't compiled into AWN
+/* it'd be so much easier if this wasn't compiled into AWN */
 typedef struct _mem_reader_t {
   void *data;
   size_t size;
   unsigned int offset;
 } mem_reader_t;
 
-cairo_status_t internal_reader(void *closure, unsigned char *data,
+static cairo_status_t
+internal_reader(void *closure, unsigned char *data,
                                unsigned int length)
 {
   mem_reader_t *mem_reader = (mem_reader_t*)closure;
@@ -185,7 +187,7 @@ awn_effects_set_custom_icon(AwnEffects *fx, const gchar *path)
   {
     GQuark q = g_quark_try_string(path);
     if (!q) {
-      // needs to be added to class' custom_icons
+      /* needs to be added to class' custom_icons */
       q = g_quark_from_string(path);
 
       cairo_surface_t *surface = cairo_image_surface_create_from_png(path);
@@ -293,7 +295,7 @@ awn_effects_set_property (GObject      *object,
       fx->indirect_paint = g_value_get_boolean(value);
       break;
     case PROP_ORIENTATION:
-      // make sure we set correct orient
+      /* make sure we set correct orient */
       switch (g_value_get_int(value)) {
         case AWN_EFFECT_ORIENT_TOP:
         case AWN_EFFECT_ORIENT_RIGHT:
@@ -377,14 +379,15 @@ awn_effects_redraw(AwnEffects *fx)
   }
 }
 
-void awn_effects_register_effect_bundle(AwnEffectsClass *klass,
-                                        _AwnAnimation opening,
-                                        _AwnAnimation closing,
-                                        _AwnAnimation hover,
-                                        _AwnAnimation launching,
-                                        _AwnAnimation attention)
+static void
+awn_effects_register_effect_bundle(AwnEffectsClass *klass,
+                                   _AwnAnimation opening,
+                                   _AwnAnimation closing,
+                                   _AwnAnimation hover,
+                                   _AwnAnimation launching,
+                                   _AwnAnimation attention)
 {
-  // make sure there are exactly AWN_ANIMATIONS_PER_BUNDLE items
+  /* make sure there are exactly AWN_ANIMATIONS_PER_BUNDLE items */
   GPtrArray *anims = klass->animations;
 
   g_ptr_array_add(anims, opening);
@@ -397,7 +400,7 @@ void awn_effects_register_effect_bundle(AwnEffectsClass *klass,
 static void
 awn_effects_constructed (GObject *object)
 {
-  // FIXME: move this to AwnIcon, AwnEffects are more flexible without it
+  /* FIXME: move this to AwnIcon, AwnEffects are more flexible without it */
   AwnConfigClient *client;
   AwnConfigBridge *bridge = awn_config_bridge_get_default ();
 
@@ -406,9 +409,6 @@ awn_effects_constructed (GObject *object)
   awn_config_bridge_bind (bridge, client,
                           "effects", "icon_effect",
                           object, "effects");
-  awn_config_bridge_bind (bridge, client,
-                          "panel", "offset",
-                          object, "icon-offset");
   awn_config_bridge_bind (bridge, client,
                           "effects", "icon_alpha",
                           object, "icon-alpha");
@@ -477,7 +477,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
 
   g_type_class_add_private (obj_class, sizeof (AwnEffectsPrivate));
 
-  klass->animations = g_ptr_array_sized_new(AWN_ANIMATIONS_PER_BUNDLE * 9); // 5 animations per bundle, 9 effect bundles
+  klass->animations = g_ptr_array_sized_new(AWN_ANIMATIONS_PER_BUNDLE * 9); /* 5 animations per bundle, 9 effect bundles */
 
   awn_effects_register_effect_bundle(klass,
     NULL,
@@ -543,7 +543,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
     glow_attention_effect
   );
 
-  // association between icon paths and cairo image surfaces
+  /* association between icon paths and cairo image surfaces */
   g_datalist_init(&klass->custom_icons);
 
   /**
@@ -595,7 +595,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
    */
   g_object_class_install_property(
     obj_class, PROP_ORIENTATION,
-    // keep in sync with AwnOrientation
+    /* keep in sync with AwnOrientation */
     g_param_spec_int("orientation",
                      "Orientation",
                      "Icon orientation",
@@ -611,7 +611,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
     g_param_spec_uint("effects",
                       "Current effects",
                       "Active effects set for this instance",
-                      0, G_MAXUINT, 0, // set to classic (bouncing)
+                      0, G_MAXUINT, 0, /* set to classic (bouncing) */
                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   /**
    * AwnEffects:icon-offset:
@@ -792,8 +792,9 @@ static void
 awn_effects_init(AwnEffects * fx)
 {
   fx->priv = AWN_EFFECTS_GET_PRIVATE(fx);
-  // the entire structure is zeroed in allocation, define only non-zero vars
-  //  which are not properties
+  /* the entire structure is zeroed in allocation, define only non-zero vars
+   * which are not properties
+   */
 
   fx->priv->icon_width = 48;
   fx->priv->icon_height = 48;
@@ -819,7 +820,7 @@ AwnEffects* awn_effects_new_for_widget(GtkWidget * widget)
   return fx;
 }
 
-// we don't really need to expose this enum
+/* we don't really need to expose this enum */
 typedef enum
 {
   AWN_EFFECT_PRIORITY_HIGHEST,
@@ -885,7 +886,7 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
 
   GList *queue = fx->priv->effect_queue;
 
-  // dont start the effect if already in queue
+  /* dont start the effect if already in queue */
 
   while (queue)
   {
@@ -924,7 +925,7 @@ awn_effects_stop(AwnEffects * fx, const AwnEffect effect)
 
   GList *queue = fx->priv->effect_queue;
 
-  // find the effect in queue
+  /* find the effect in queue */
 
   while (queue)
   {
@@ -940,8 +941,9 @@ awn_effects_stop(AwnEffects * fx, const AwnEffect effect)
 
   if (queue)
   {
-    // remove the effect from effect_queue and free the struct if the effect
-    // is not in the middle of animation currently
+    /* remove the effect from effect_queue and free the struct if the effect */
+
+    /* is not in the middle of animation currently */
     gboolean dispose = queue_item->this_effect != fx->priv->current_effect;
     fx->priv->effect_queue = g_list_remove(fx->priv->effect_queue, queue_item);
 
@@ -951,7 +953,7 @@ awn_effects_stop(AwnEffects * fx, const AwnEffect effect)
     } 
     else if (fx->priv->sleeping_func)
     {
-      // wake up sleeping effect
+      /* wake up sleeping effect */
       fx->priv->timer_id = g_timeout_add(AWN_FRAME_RATE(fx),
                                          fx->priv->sleeping_func, queue_item);
       fx->priv->sleeping_func = NULL;
@@ -988,13 +990,13 @@ awn_effects_main_effect_loop(AwnEffects * fx)
   {
     if (fx->priv->sleeping_func && fx->priv->effect_queue)
     {
-      // check if sleeping effect is still on top
+      /* check if sleeping effect is still on top */
       AwnEffectsAnimation *queue_item = fx->priv->effect_queue->data;
       if (fx->priv->current_effect == queue_item->this_effect) return;
 
-      // sleeping effect is not on top -> wake & play it
+      /* sleeping effect is not on top -> wake & play it */
 
-      // find correct effectsPrivate starting with the second item
+      /* find correct effectsPrivate starting with the second item */
       GList *queue = g_list_next(fx->priv->effect_queue);
       while (queue)
       {
@@ -1038,11 +1040,11 @@ awn_effects_main_effect_loop(AwnEffects * fx)
   }
   else
   {
-    // emit the signals
+    /* emit the signals */
     awn_effect_emit_anim_start(topEffect);
     awn_effect_emit_anim_end(topEffect);
 
-    // dispose AwnEffectsAnimation
+    /* dispose AwnEffectsAnimation */
     awn_effects_stop(fx, topEffect->this_effect);
   }
 }
@@ -1074,7 +1076,7 @@ awn_effects_set_icon_size(AwnEffects * fx, gint width, gint height,
 
   if (priv->clip)
   {
-    // we're in middle of animation, let's update the clip region
+    /* we're in middle of animation, let's update the clip region */
     priv->clip_region.x =
       priv->clip_region.x / (float)old_width * width;
     priv->clip_region.y =
@@ -1087,8 +1089,9 @@ awn_effects_set_icon_size(AwnEffects * fx, gint width, gint height,
 
   if (requestSize && fx->widget)
   {
-    // this should be only used without AwnIcon,
-    // AwnIcon handles size_requests well enough
+    /* this should be only used without AwnIcon,
+     * AwnIcon handles size_requests well enough
+     */
 
     gint inc = fx->icon_offset;
     switch (fx->orientation) {
@@ -1132,10 +1135,11 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
     awn_effects_pre_op_clear(fx, cr, NULL, NULL);
   if (region && gdk_region_empty(region) == FALSE)
   {
-    // Python apps pass empty region... interesting, I guess they should use
-    //  cairo_create instead of cairo_create_clipped, but we'll be nice
+    /* Python apps pass empty region... interesting, I guess they should use
+     * cairo_create instead of cairo_create_clipped, but we'll be nice
+     */
 
-    // clip the region
+    /* clip the region */
     gdk_cairo_region (cr, region);
     cairo_clip (cr);
   }
@@ -1152,7 +1156,7 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
   if (fx->indirect_paint)
   {
     cairo_surface_t *targetSurface = cairo_get_target(cr);
-    // we'll give to user virtual context and later paint everything on real one
+    /* we'll give to user virtual context and later paint everything on real one */
     targetSurface = cairo_surface_create_similar(targetSurface,
                                                  CAIRO_CONTENT_COLOR_ALPHA,
                                                  priv->window_width,
@@ -1162,20 +1166,22 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
       cairo_surface_status(targetSurface) == CAIRO_STATUS_SUCCESS, NULL);
     cr = cairo_create(targetSurface);
   }
-  // if we're painting directly virtual_ctx == window_ctx
+  /* if we're painting directly virtual_ctx == window_ctx */
   fx->virtual_ctx = cr;
 
-  // FIXME: make GtkAllocation AwnEffects member, so it's accessible in both
-  //  pre and post ops (can be then used for optimizations)
-  //  Then the param should be also removed from all ops functions.
+  /* FIXME: make GtkAllocation AwnEffects member, so it's accessible in both
+   * pre and post ops (can be then used for optimizations)
+   * Then the param should be also removed from all ops functions.
+   */
   GtkAllocation ds;
   ds.width = priv->icon_width;
   ds.height = priv->icon_height;
   ds.x = (priv->window_width - ds.width) / 2;
-  ds.y = (priv->window_height - ds.height); // sit on bottom by default
+  ds.y = (priv->window_height - ds.height); /* sit on bottom by default */
 
-  // put actual transformations here (no drawing)
-  // FIXME: put the functions in some kind of list/array
+  /* put actual transformations here (no drawing)
+   * FIXME: put the functions in some kind of list/array
+   */
   awn_effects_pre_op_translate(fx, cr, &ds, NULL);
   awn_effects_pre_op_clip(fx, cr, &ds, NULL);
   awn_effects_pre_op_scale(fx, cr, &ds, NULL);
@@ -1192,8 +1198,9 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
   cairo_reset_clip(cr);
   cairo_identity_matrix(cr);
 
-  // put surface operations here
-  // FIXME: put the functions in some kind of list/array
+  /* put surface operations here
+   * FIXME: put the functions in some kind of list/array
+   */
   awn_effects_post_op_clip(fx, cr, NULL, NULL);
   awn_effects_post_op_depth(fx, cr, NULL, NULL);
   awn_effects_post_op_shadow(fx, cr, NULL, NULL);
@@ -1205,7 +1212,7 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
   awn_effects_post_op_spotlight(fx, cr, NULL, NULL);
   awn_effects_post_op_arrow (fx, cr, NULL, NULL);
   awn_effects_post_op_progress(fx, cr, NULL, NULL);
-  // TODO: we're missing op to paint label
+  /* TODO: we're missing op to paint label */
 
   if (fx->indirect_paint)
   {

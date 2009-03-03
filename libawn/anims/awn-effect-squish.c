@@ -46,7 +46,7 @@ bounce_squish_hover_effect(AwnEffectsAnimation * anim)
 
   const gint PERIOD = 28;
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   switch (priv->direction)
@@ -83,7 +83,7 @@ bounce_squish_hover_effect(AwnEffectsAnimation * anim)
 
       if (priv->count == PERIOD / 4)
       {
-        // suspend in middle
+        /* suspend in middle */
         if (awn_effect_check_top_effect(anim, NULL))
           return awn_effect_suspend_animation(anim,
                    (GSourceFunc)bounce_squish_hover_effect);
@@ -106,7 +106,7 @@ bounce_squish_hover_effect(AwnEffectsAnimation * anim)
     priv->count = 0;
     priv->width_mod = 1.0;
     priv->height_mod = 1.0;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -173,7 +173,7 @@ bounce_squish_effect(AwnEffectsAnimation * anim)
       priv->direction = AWN_EFFECT_SQUISH_DOWN;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -184,7 +184,7 @@ bounce_squish_effect(AwnEffectsAnimation * anim)
     priv->count = 0;
     priv->width_mod = 1.0;
     priv->height_mod = 1.0;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -258,7 +258,7 @@ bounce_squish_attention_effect(AwnEffectsAnimation * anim)
       priv->direction = AWN_EFFECT_SQUISH_DOWN;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -269,7 +269,7 @@ bounce_squish_attention_effect(AwnEffectsAnimation * anim)
     priv->count = 0;
     priv->width_mod = 1.0;
     priv->height_mod = 1.0;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -345,14 +345,14 @@ bounce_squish_opening_effect(AwnEffectsAnimation * anim)
       priv->direction = AWN_EFFECT_DIR_NONE;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
   if (priv->direction == AWN_EFFECT_DIR_NONE && priv->count <= 0)
   {
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -422,7 +422,7 @@ bounce_squish_closing_effect(AwnEffectsAnimation * anim)
 
       break;
 
-    case AWN_EFFECT_DIR_NONE: // reset cycle
+    case AWN_EFFECT_DIR_NONE: /* reset cycle */
     default:
       priv->direction = AWN_EFFECT_SQUISH_DOWN;
       priv->count = 0;
@@ -432,14 +432,14 @@ bounce_squish_closing_effect(AwnEffectsAnimation * anim)
       break;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
 
   if (priv->direction == AWN_EFFECT_DIR_NONE && priv->count == PERIOD)
   {
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 

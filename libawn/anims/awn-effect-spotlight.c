@@ -70,7 +70,7 @@ spotlight_hover_effect(AwnEffectsAnimation * anim)
 
   priv->glow_amount = priv->spotlight_alpha;
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -80,7 +80,7 @@ spotlight_hover_effect(AwnEffectsAnimation * anim)
     priv->direction = AWN_EFFECT_SPOTLIGHT_ON;
     priv->spotlight_alpha = 0;
     priv->glow_amount = 0;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
 
     if (!repeat)
@@ -120,7 +120,7 @@ spotlight_half_fade_effect(AwnEffectsAnimation * anim)
   else if (priv->spotlight_alpha <= 0.0)
     priv->direction = AWN_EFFECT_SPOTLIGHT_ON;
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -130,7 +130,7 @@ spotlight_half_fade_effect(AwnEffectsAnimation * anim)
     priv->count = 0;
     priv->spotlight_alpha = 0;
     priv->glow_amount = 0;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
 
     if (!repeat)
@@ -181,7 +181,7 @@ spotlight_opening_effect(AwnEffectsAnimation * anim)
     priv->glow_amount = priv->spotlight_alpha;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -191,7 +191,7 @@ spotlight_opening_effect(AwnEffectsAnimation * anim)
     priv->count = 0;
     priv->spotlight_alpha = 0;
     priv->glow_amount = 0;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
 
     if (!repeat)
@@ -255,7 +255,7 @@ spotlight_closing_effect(AwnEffectsAnimation * anim)
 
   priv->glow_amount = priv->spotlight_alpha;
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -265,7 +265,7 @@ spotlight_closing_effect(AwnEffectsAnimation * anim)
     priv->spotlight_alpha = 0;
     priv->glow_amount = 0;
     priv->direction = AWN_EFFECT_DIR_NONE;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
 
     if (!repeat)

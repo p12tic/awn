@@ -45,7 +45,7 @@ fade_out_effect(AwnEffectsAnimation * anim)
 
   priv->alpha = priv->count * (-1.0 / PERIOD) + 1;
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -53,7 +53,7 @@ fade_out_effect(AwnEffectsAnimation * anim)
   if (priv->count >= PERIOD)
   {
     priv->count = 0;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -82,13 +82,13 @@ fading_effect(AwnEffectsAnimation * anim)
     if (priv->alpha <= MIN_ALPHA)
       priv->direction = AWN_EFFECT_DIR_UP;
 
-    // repaint widget
+    /* repaint widget */
     awn_effects_redraw(anim->effects);
   }
   else
   {
     priv->alpha += ALPHA_STEP * 1.5;
-    // repaint widget
+    /* repaint widget */
     awn_effects_redraw(anim->effects);
 
     if (priv->alpha >= 1)

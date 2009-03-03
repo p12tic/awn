@@ -41,7 +41,7 @@ typedef enum
   AWN_EFFECT_DESATURATE
 } AwnEffect;
 
-//GObject stuff
+/* GObject stuff */
 #define AWN_TYPE_EFFECTS awn_effects_get_type()
 
 #define AWN_EFFECTS(obj) \
@@ -83,7 +83,7 @@ struct _AwnEffects
   GObject parent;
 
   /* Properties */
-  GtkWidget *widget; // FIXME: add as property
+  GtkWidget *widget; /* FIXME: add as property */
   gboolean no_clear;
   gboolean indirect_paint;
   gint orientation;
@@ -208,7 +208,7 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
  */
 void awn_effects_cairo_destroy(AwnEffects *fx);
 
-//Move this somewhere else eventually, these are used only internally
+/* Move this somewhere else eventually, these are used only internally */
 void awn_effects_redraw(AwnEffects *fx);
 void awn_effects_main_effect_loop(AwnEffects * fx);
 void awn_effects_emit_anim_start(AwnEffects *fx, AwnEffect effect);

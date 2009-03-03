@@ -77,7 +77,7 @@ GtkWidget *   awn_tooltip_new_for_widget       (GtkWidget   *widget);
 void          awn_tooltip_set_text             (AwnTooltip  *tooltip,
                                                 const gchar *text);
 
-const gchar * awn_tooltip_get_text             (AwnTooltip  *tooltip);
+gchar *       awn_tooltip_get_text             (AwnTooltip  *tooltip);
 
 void          awn_tooltip_set_focus_widget     (AwnTooltip *tooltip,
                                                 GtkWidget  *widget);

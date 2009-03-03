@@ -75,7 +75,7 @@ turn_hover_effect(AwnEffectsAnimation * anim)
 
   priv->count = ++prev_count;
 
-  // fix icon flickering
+  /* fix icon flickering */
   const gfloat MIN_WIDTH = 0.1;
 
   if (priv->width_mod < MIN_WIDTH)
@@ -87,7 +87,7 @@ turn_hover_effect(AwnEffectsAnimation * anim)
     priv->width_mod = 1.0;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -100,7 +100,7 @@ turn_hover_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
     priv->width_mod = 1.0;
     priv->flip = FALSE;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -155,7 +155,7 @@ turn_effect(AwnEffectsAnimation * anim)
 
   priv->count = ++prev_count;
 
-  // fix icon flickering
+  /* fix icon flickering */
   const gfloat MIN_WIDTH = 0.1;
 
   if (priv->width_mod < MIN_WIDTH)
@@ -167,7 +167,7 @@ turn_effect(AwnEffectsAnimation * anim)
     priv->width_mod = 1.0;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -180,7 +180,7 @@ turn_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
     priv->width_mod = 1.0;
     priv->flip = FALSE;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -247,7 +247,7 @@ turn_opening_effect(AwnEffectsAnimation * anim)
 
   priv->count = ++prev_count;
 
-  // fix icon flickering
+  /* fix icon flickering */
   const gfloat MIN_WIDTH = 0.1;
 
   if (priv->width_mod < MIN_WIDTH)
@@ -259,7 +259,7 @@ turn_opening_effect(AwnEffectsAnimation * anim)
     priv->width_mod = 1.0;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -272,7 +272,7 @@ turn_opening_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
     priv->width_mod = 1.0;
     priv->flip = FALSE;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 
@@ -331,7 +331,7 @@ turn_closing_effect(AwnEffectsAnimation * anim)
 
   priv->count = ++prev_count;
 
-  // fix icon flickering
+  /* fix icon flickering */
   const gfloat MIN_WIDTH = 0.1;
 
   if (priv->width_mod < MIN_WIDTH)
@@ -343,7 +343,7 @@ turn_closing_effect(AwnEffectsAnimation * anim)
     priv->width_mod = 1.0;
   }
 
-  // repaint widget
+  /* repaint widget */
   awn_effects_redraw(anim->effects);
 
   gboolean repeat = TRUE;
@@ -356,7 +356,7 @@ turn_closing_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
     priv->width_mod = 1.0;
     priv->flip = FALSE;
-    // check for repeating
+    /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
 

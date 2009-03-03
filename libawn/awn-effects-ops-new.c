@@ -40,7 +40,7 @@ cairo_surface_t *awn_effects_quark_to_surface(AwnEffects *fx, GQuark quark)
   return surface;
 }
 
-// returns top left coordinates of the icon (without clipping and offsets)
+/* returns top left coordinates of the icon (without clipping and offsets) */
 static void
 awn_effects_get_base_coords(AwnEffects *fx, double *x, double *y)
 {
@@ -60,7 +60,7 @@ awn_effects_get_base_coords(AwnEffects *fx, double *x, double *y)
       *x = priv->window_width - priv->icon_width - fx->icon_offset;
       *y = (priv->window_height - priv->icon_height) / 2.0;
       break;
-    default: // AWN_EFFECT_ORIENT_BOTTOM:
+    default: /* AWN_EFFECT_ORIENT_BOTTOM: */
       *x = (priv->window_width - priv->icon_width) / 2.0;
       *y = priv->window_height - priv->icon_height - fx->icon_offset;
       break;
@@ -87,14 +87,14 @@ gboolean awn_effects_pre_op_translate(AwnEffects * fx,
                                gpointer user_data
                               )
 {
-  // this should be always the first op executed, will set correct
-  // coordinates, so the icon can be painted at [0,0]
+  /* this should be always the first op executed, will set correct */
+  /* coordinates, so the icon can be painted at [0,0] */
   double dx;
   double dy;
 
   AwnEffectsPrivate *priv = fx->priv;
 
-  // width/height_mod is swapped when using LEFT/RIGHT orientations
+  /* width/height_mod is swapped when using LEFT/RIGHT orientations */
   switch (fx->orientation) {
     case AWN_EFFECT_ORIENT_TOP:
       dx = (priv->window_width - priv->icon_width * priv->width_mod)/2.0 + priv->side_offset;
@@ -121,7 +121,7 @@ gboolean awn_effects_pre_op_translate(AwnEffects * fx,
   }
 
   cairo_translate(cr, (int)dx, (int)dy);
-  return FALSE; // ?
+  return FALSE; /* ? */
 }
 
 gboolean awn_effects_pre_op_clip(AwnEffects * fx,
@@ -135,7 +135,7 @@ gboolean awn_effects_pre_op_clip(AwnEffects * fx,
   if (priv->clip) {
     gint m_w, m_h, m_x, m_y;
     double dx, dy;
-    // translate, so the icon will still be painted on bottom even if clipped
+    /* translate, so the icon will still be painted on bottom even if clipped */
     switch (fx->orientation) {
       case AWN_EFFECT_ORIENT_TOP:
         dx = priv->clip_region.width - priv->clip_region.x;
@@ -153,7 +153,7 @@ gboolean awn_effects_pre_op_clip(AwnEffects * fx,
         cairo_rectangle(cr, priv->clip_region.x, priv->clip_region.y,
                         priv->clip_region.width, priv->clip_region.height);
         break;
-      // we have to map the clipping coordinates when using left/right orients
+      /* we have to map the clipping coordinates when using left/right orients */
       case AWN_EFFECT_ORIENT_RIGHT:
         m_w = (float)priv->clip_region.height/priv->icon_height * priv->icon_width;
         m_h = (float)priv->clip_region.width/priv->icon_width * priv->icon_height;
@@ -231,7 +231,7 @@ gboolean awn_effects_pre_op_flip(AwnEffects * fx,
 {
   AwnEffectsPrivate *priv = fx->priv;
 
-  // currently we only have variable for hflip
+  /* currently we only have variable for hflip */
   if (priv->flip) {
     cairo_matrix_t matrix;
     switch (fx->orientation) {
@@ -278,15 +278,16 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
       case AWN_EFFECT_ORIENT_TOP:
         y += priv->top_offset;
         break;
-      default: // AWN_EFFECT_ORIENT_BOTTOM:
+      default: /* AWN_EFFECT_ORIENT_BOTTOM: */
         y -= priv->top_offset;
         break;
     }
     cairo_set_operator(cr, CAIRO_OPERATOR_DEST_OVER);
     if (!fx->custom_active_icon || priv->simple_rect) {
       if (priv->simple_rect) {
-        // get the color from style
-        // I wonder which style color is the one of background of selected text
+        /* get the color from style
+         * I wonder which style color is the one of background of selected text
+         */
         if (fx->widget) {
           GtkStyle *style = gtk_widget_get_style(fx->widget);
           gdk_cairo_set_source_color(cr, &style->bg[GTK_STATE_SELECTED]);
@@ -303,7 +304,7 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
       cairo_fill (cr);
     } else {
       cairo_save(cr);
-      // get the icon surface
+      /* get the icon surface */
       cairo_surface_t *srfc =
         awn_effects_quark_to_surface(fx, fx->custom_active_icon);
       if (srfc) {
@@ -341,7 +342,7 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
     if (fx->custom_arrow_icon) {
       srfc = awn_effects_quark_to_surface(fx, fx->custom_arrow_icon);
       if (srfc) {
-        // get custom surface dimensions
+        /* get custom surface dimensions */
         arrow_w = cairo_image_surface_get_width(srfc);
         arrow_h = cairo_image_surface_get_height(srfc);
       }
@@ -349,7 +350,7 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
 
     gdouble x, y, rotation;
     awn_effects_get_base_coords(fx, &x, &y);
-    // get coordinates of bottom center (for BOTTOM) and equivalents
+    /* get coordinates of bottom center (for BOTTOM) and equivalents */
     switch (fx->orientation)
     {
       case AWN_EFFECT_ORIENT_TOP:
@@ -377,7 +378,7 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
         rotation = M_PI * 1.5;
         break;
 
-      default: //AWN_EFFECT_ORIENT_BOTTOM:
+      default: /* AWN_EFFECT_ORIENT_BOTTOM: */
         x += priv->icon_width / 2.0;
         x -= arrow_w / 2.0;
         y += priv->icon_height;
@@ -430,8 +431,9 @@ gboolean awn_effects_post_op_clip(AwnEffects * fx,
 {
   AwnEffectsPrivate *priv = fx->priv;
 
-  // any previous clipping should be reset by now
-  /* 4px offset for 3D look for reflection*/
+  /* any previous clipping should be reset by now
+   * 4px offset for 3D look for reflection
+   */
   if (fx->border_clip) {
     switch (fx->orientation) {
       case AWN_EFFECT_ORIENT_TOP:
@@ -499,8 +501,9 @@ gboolean awn_effects_post_op_depth(AwnEffects * fx,
     double x = priv->icon_depth;
     x /= priv->icon_depth_direction ? -2 : 2;
     cairo_surface_flush(cairo_get_target(cr));
-    // FIXME: we really could use the GtkAllocation here for optimization
-    // copy current surface look into temp one
+    /* FIXME: we really could use the GtkAllocation here for optimization
+     * copy current surface look into temp one
+     */
     cairo_surface_t *srfc = cairo_surface_create_similar(cairo_get_target(cr),
                                                          CAIRO_CONTENT_COLOR_ALPHA,
                                                          priv->window_width,
@@ -709,7 +712,7 @@ gboolean awn_effects_post_op_reflection(AwnEffects * fx,
     cairo_matrix_t matrix;
     switch (fx->orientation) {
       case AWN_EFFECT_ORIENT_TOP:
-        dy *= -1; // careful no break here
+        dy *= -1; /* careful no break here */
       case AWN_EFFECT_ORIENT_BOTTOM:
         dx = 0;
         cairo_matrix_init(&matrix,
@@ -718,7 +721,7 @@ gboolean awn_effects_post_op_reflection(AwnEffects * fx,
                           0, priv->window_height);
         break;
       case AWN_EFFECT_ORIENT_LEFT:
-        dx *= -1; // careful no break here
+        dx *= -1; /* careful no break here */
       case AWN_EFFECT_ORIENT_RIGHT:
         dy = 0;
         cairo_matrix_init(&matrix,
@@ -755,7 +758,7 @@ gboolean awn_effects_post_op_progress(AwnEffects * fx,
   AwnEffectsPrivate *priv = fx->priv;
 
   if (fx->progress < 1.0) {
-    double dx, dy; // center coordinates for the pie
+    double dx, dy; /* center coordinates for the pie */
     switch (fx->orientation) {
       case AWN_EFFECT_ORIENT_TOP:
         dx = priv->window_width / 2.0;
@@ -781,24 +784,25 @@ gboolean awn_effects_post_op_progress(AwnEffects * fx,
 
     double radius = priv->icon_width >= priv->icon_height ?
       priv->icon_height / 2.0 : priv->icon_width / 2.0;
-    radius *= 0.7; // the circle should be smaller than the icon
+    radius *= 0.7; /* the circle should be smaller than the icon */
     double alpha_mult = priv->alpha * fx->icon_alpha;
 
     cairo_new_path(cr);
-    // first full circle background
+    /* first full circle background */
     cairo_move_to(cr, dx, dy);
-    // FIXME: how to define the colors ???
-    //  add property to effects? read from theme?
-    //  or read from the managed widget? <- sounds reasonable, but what exactly
+    /* FIXME: how to define the colors ??? 
+     * add property to effects? read from theme?
+     * or read from the managed widget? <- sounds reasonable, but what exactly
+     */
     cairo_set_source_rgba(cr, 0.2, 0.2, 0.2, 0.7 * alpha_mult);
 
     cairo_arc(cr, dx, dy, radius, 0, M_PI*2);
     cairo_fill(cr);
 
-    // now the pie itself
+    /* now the pie itself */
     cairo_move_to(cr, dx, dy);
     cairo_set_source_rgba(cr, 1.0, 1.0, 1.0, 0.8 * alpha_mult);
-    // start at 270 degrees (north direction) <=> M_PI * 1.5
+    /* start at 270 degrees (north direction) <=> M_PI * 1.5 */
     cairo_arc(cr, dx, dy, radius*0.85, M_PI*1.5,
               (1.5 + fx->progress*2) * M_PI);
     cairo_fill(cr);

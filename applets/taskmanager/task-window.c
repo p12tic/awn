@@ -30,7 +30,7 @@
 #include "task-settings.h"
 #include "xutils.h"
 
-G_DEFINE_TYPE (TaskWindow, task_window, G_TYPE_OBJECT);
+G_DEFINE_TYPE (TaskWindow, task_window, G_TYPE_OBJECT)
 
 enum
 {
@@ -105,7 +105,7 @@ task_window_set_property (GObject      *object,
 static void
 task_window_constructed (GObject *object)
 {
-  //TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;
+  /*TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;*/
 }
 
 static void
@@ -300,7 +300,7 @@ on_window_icon_changed (WnckWindow *wnckwin, TaskWindow *window)
   g_return_if_fail (TASK_IS_WINDOW (window));
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
   
-  pixbuf = _wnck_get_icon_at_size (wnckwin, s->panel_size-2, s->panel_size-2);
+  pixbuf = _wnck_get_icon_at_size (wnckwin, s->panel_size, s->panel_size);
   task_window_update_icon (window, pixbuf);
   g_object_unref (pixbuf);
 }
@@ -753,10 +753,10 @@ task_window_set_icon_geometry (TaskWindow    *window,
   /* Minimize utility windows */
   for (w = priv->utilities; w; w = w->next)
   {
-    WnckWindow *win = w->data;
+    //WnckWindow *win = w->data;
 
-    if (WNCK_IS_WINDOW (win))
-      wnck_window_set_icon_geometry (win, x, y, width, height);
+    //if (WNCK_IS_WINDOW (win))
+      //wnck_window_set_icon_geometry (win, x, y, width, height);
   }
 }
 
@@ -779,7 +779,7 @@ _get_pid (TaskWindow    *window)
   if (WNCK_IS_WINDOW (window->priv->window))
 	{
     value = wnck_window_get_pid (window->priv->window);
-		value = value ? value : -1; 		//if the pid is 0 return -1.  Bad wnck! Bad! 		
+		value = value ? value : -1; 		/* if the pid is 0 return -1.  Bad wnck! Bad! */
 	}
 	return value;  
 }
@@ -800,7 +800,7 @@ _get_icon (TaskWindow    *window)
 
   if (WNCK_IS_WINDOW (window->priv->window))
     return _wnck_get_icon_at_size (window->priv->window, 
-                                   s->panel_size-2, s->panel_size-2);
+                                   s->panel_size, s->panel_size);
 
   return NULL;
 }

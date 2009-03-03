@@ -23,7 +23,6 @@
 #ifndef __LIBAWN_H__
 #define __LIBAWN_H__
 
-#include <libawn/awn-applet-dialog.h>
 #include <libawn/awn-applet.h>
 #include <libawn/awn-applet-simple.h>
 #include <libawn/awn-cairo-utils.h>
@@ -31,10 +30,10 @@
 #include <libawn/awn-config-client.h>
 #include <libawn/awn-defines.h>
 #include <libawn/awn-desktop-item.h>
+#include <libawn/awn-dialog.h>
 #include <libawn/awn-effects.h>
 #include <libawn/awn-icon.h>
 #include <libawn/awn-icon-box.h>
-#include <libawn/awn-plug.h>
 #include <libawn/awn-themed-icon.h>
 #include <libawn/awn-tooltip.h>
 #include <libawn/awn-vfs.h>

@@ -29,6 +29,7 @@ PKGDATADIR = '@PKGDATADIR@'
 
 HOME_CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".config", "awn")
 HOME_APPLET_DIR = os.path.join(HOME_CONFIG_DIR, "applets")
+SYS_APPLET_DIR = os.path.join (PREFIX, "share", "avant-window-navigator","applets")
 HOME_LAUNCHERS_DIR = os.path.join(HOME_CONFIG_DIR, "launchers")
 HOME_THEME_DIR = os.path.join(HOME_CONFIG_DIR, "themes")
 SYS_THEME_DIR = os.path.join (PREFIX, "share", "avant-window-navigator","themes")
@@ -37,7 +38,7 @@ VERSION = '@VERSION@'
 EXTRA_VERSION = '@EXTRA_VERSION@'
 
 #TODO update to real branches when stable
-DEFAULT_SOURCES_LIST = [['lp:~gilir/+junk/config-theme','web-default'],[SYS_THEME_DIR,'local'],[HOME_THEME_DIR,'local']]
+DEFAULT_SOURCES_LIST = [['lp:~gilir/+junk/config-theme','web-default'],[SYS_THEME_DIR,'local'],[HOME_THEME_DIR,'local'], [SYS_APPLET_DIR,'local']]
 
 
 # AwnConfigClient Groups/Keys
@@ -54,6 +55,8 @@ MONITOR_WIDTH		= "monitor_width"	#int
 MONITOR_OFFSET		= "monitor_offset"	#int
 MONITOR_ALIGN		= "monitor_align"	#float
 AUTOHIDE		= "autohide"		#int
+STYLE			= "style"		#int
+EXPAND			= "expand"		#bool
 
 THEME			= "theme"		#group
 GSTEP1			= "gstep1"		#string

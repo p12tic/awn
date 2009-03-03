@@ -102,8 +102,9 @@ typedef enum
   AWN_EFFECT_SPOTLIGHT_OFF
 } AwnEffectSequence;
 
-// Emits "animation-start" signal and initializes animation, extra 
-//  initialization can follow in a single expression or block of code.
+/* Emits "animation-start" signal and initializes animation, extra 
+ * initialization can follow in a single expression or block of code.
+ */
 #define AWN_ANIMATION_INIT(anim)                     \
           gboolean __done_lock = FALSE;              \
           if (!anim->effects->priv->effect_lock) {   \

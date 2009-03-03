@@ -64,6 +64,7 @@ enum
 enum 
 {
   CHANGED,
+  PADDING_CHANGED,
 
   LAST_SIGNAL
 };
@@ -71,6 +72,18 @@ static guint _bg_signals[LAST_SIGNAL] = { 0 };
 
 static void awn_background_set_gtk_theme_mode (AwnBackground *bg, 
                                                gboolean       gtk_mode);
+
+static void awn_background_padding_zero (AwnBackground *bg,
+                                         AwnOrientation orient,
+                                         guint *padding_top,
+                                         guint *padding_bottom,
+                                         guint *padding_left,
+                                         guint *padding_right);
+
+static void awn_background_mask_none (AwnBackground  *bg,
+                                      cairo_t        *cr,
+                                      AwnOrientation  orient,
+                                      GdkRectangle   *area);
 
 
 static void
@@ -152,6 +165,7 @@ awn_background_get_property (GObject    *object,
     case PROP_HILIGHT:
     case PROP_SHOW_SEP:
     case PROP_SEP_COLOR:
+      g_warning ("Background property get unimplemented!");
       g_value_set_string (value, "FFFFFFFF");
       break;
   default:
@@ -247,9 +261,13 @@ awn_background_class_init (AwnBackgroundClass *klass)
 {
   GObjectClass *obj_class = G_OBJECT_CLASS (klass);
 
-  obj_class->constructed   = awn_background_constructed;
-  obj_class->get_property  = awn_background_get_property;
-  obj_class->set_property  = awn_background_set_property;
+  obj_class->constructed      = awn_background_constructed;
+  obj_class->get_property     = awn_background_get_property;
+  obj_class->set_property     = awn_background_set_property;
+
+  klass->padding_request      = awn_background_padding_zero;
+  klass->get_shape_mask       = awn_background_mask_none;
+  klass->get_input_shape_mask = awn_background_mask_none;
 
   /* Object properties */
   g_object_class_install_property (obj_class,
@@ -413,6 +431,15 @@ awn_background_class_init (AwnBackgroundClass *klass)
                   NULL, NULL, 
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  _bg_signals[PADDING_CHANGED] =
+    g_signal_new ("padding-changed",
+                  G_OBJECT_CLASS_TYPE (obj_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (AwnBackgroundClass, padding_changed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 
@@ -426,10 +453,7 @@ void
 awn_background_draw (AwnBackground  *bg,
                      cairo_t        *cr, 
                      AwnOrientation  orient,
-                     gdouble         x,
-                     gdouble         y,
-                     gint            width,
-                     gint            height)
+                     GdkRectangle   *area)
 {
   AwnBackgroundClass *klass;
 
@@ -438,7 +462,66 @@ awn_background_draw (AwnBackground  *bg,
   klass = AWN_BACKGROUND_GET_CLASS (bg);
   g_return_if_fail (klass->draw != NULL);
 
-  klass->draw (bg, cr, orient, x, y, width, height);
+  klass->draw (bg, cr, orient, area);
+}
+
+void 
+awn_background_padding_request (AwnBackground *bg,
+                                AwnOrientation orient,
+                                guint *padding_top,
+                                guint *padding_bottom,
+                                guint *padding_left,
+                                guint *padding_right)
+{
+  AwnBackgroundClass *klass;
+
+  g_return_if_fail (AWN_IS_BACKGROUND (bg));
+  
+  klass = AWN_BACKGROUND_GET_CLASS (bg);
+  g_return_if_fail (klass->padding_request != NULL);
+
+  klass->padding_request (bg, orient, padding_top, padding_bottom,
+                          padding_left, padding_right);
+}
+
+void 
+awn_background_get_shape_mask (AwnBackground *bg,
+                               cairo_t        *cr,
+                               AwnOrientation  orient,
+                               GdkRectangle   *area)
+{
+  AwnBackgroundClass *klass;
+
+  g_return_if_fail (AWN_IS_BACKGROUND (bg));
+  
+  klass = AWN_BACKGROUND_GET_CLASS (bg);
+  g_return_if_fail (klass->get_shape_mask != NULL);
+
+  klass->get_shape_mask (bg, cr, orient, area);
+}
+
+void 
+awn_background_get_input_shape_mask (AwnBackground *bg,
+                                     cairo_t        *cr,
+                                     AwnOrientation  orient,
+                                     GdkRectangle   *area)
+{
+  AwnBackgroundClass *klass;
+
+  g_return_if_fail (AWN_IS_BACKGROUND (bg));
+  
+  klass = AWN_BACKGROUND_GET_CLASS (bg);
+  g_return_if_fail (klass->get_input_shape_mask != NULL);
+
+  klass->get_input_shape_mask (bg, cr, orient, area);
+}
+
+void
+awn_background_emit_padding_changed (AwnBackground *bg)
+{
+  g_return_if_fail (AWN_IS_BACKGROUND (bg));
+
+  g_signal_emit (bg, _bg_signals[PADDING_CHANGED], 0);
 }
 
 /*
@@ -484,10 +567,10 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
 
   awn_config_client_set_string (client,
                                 AWN_GROUP_THEME, AWN_THEME_GHISTEP1,
-                                "#FFFFFF0C", NULL);
+                                (gchar*)"#FFFFFF0C", NULL);
   awn_config_client_set_string (client,
                                 AWN_GROUP_THEME, AWN_THEME_GHISTEP2,
-                                "#FFFFFF0B", NULL);
+                                (gchar*)"#FFFFFF0B", NULL);
 
   set_cfg_from_theme (&style->dark[GTK_STATE_ACTIVE], 200,
                       client, AWN_THEME_BORDER);
@@ -505,7 +588,7 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
                               TRUE, NULL);
   awn_config_client_set_string (client, 
                                 AWN_GROUP_THEME, AWN_THEME_SEP_COLOR,
-                                "#FFFFFF00", NULL);
+                                (gchar*)"#FFFFFF00", NULL);
 
   /* Misc settings */
 }
@@ -530,11 +613,19 @@ awn_background_set_gtk_theme_mode (AwnBackground *bg,
   if (gtk_mode)
   {
     GtkWidget *widget = GTK_WIDGET (bg->panel);
-    
-    g_signal_connect (widget, "realize", G_CALLBACK (on_widget_realized), bg);
 
-    bg->changed = g_signal_connect (widget, "style-set", 
-                                     G_CALLBACK (on_style_set), bg);
+    if (GTK_WIDGET_REALIZED (widget))
+    {
+      load_colours_from_widget (bg, widget);
+    }
+    else
+    {
+      g_signal_connect (widget, "realize", G_CALLBACK (on_widget_realized), bg);
+    }
+
+    if (bg->changed == 0)
+      bg->changed = g_signal_connect (widget, "style-set", 
+                                      G_CALLBACK (on_style_set), bg);
     
   }
   else
@@ -545,5 +636,26 @@ awn_background_set_gtk_theme_mode (AwnBackground *bg,
   }
 }
 
+static void awn_background_padding_zero(AwnBackground *bg,
+                                        AwnOrientation orient,
+                                        guint *padding_top,
+                                        guint *padding_bottom,
+                                        guint *padding_left,
+                                        guint *padding_right)
+{
+  *padding_top  = 0; *padding_bottom = 0;
+  *padding_left = 0; *padding_right  = 0;
+}
+
+static void awn_background_mask_none (AwnBackground *bg,
+                                      cairo_t        *cr,
+                                      AwnOrientation  orient,
+                                      GdkRectangle   *area)
+{
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
+  cairo_rectangle (cr, area->x, area->y, area->width, area->height);
+  cairo_fill (cr);
+}
 
 /* vim: set et ts=2 sts=2 sw=2 : */

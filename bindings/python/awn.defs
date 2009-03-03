@@ -2,16 +2,16 @@
 ; object definitions ...
 (define-object Applet
   (in-module "Awn")
-  (parent "GtkEventBox")
+  (parent "GtkPlug")
   (c-name "AwnApplet")
   (gtype-id "AWN_TYPE_APPLET")
 )
 
-(define-object AppletDialog
+(define-object Dialog
   (in-module "Awn")
   (parent "GtkWindow")
-  (c-name "AwnAppletDialog")
-  (gtype-id "AWN_TYPE_APPLET_DIALOG")
+  (c-name "AwnDialog")
+  (gtype-id "AWN_TYPE_DIALOG")
 )
 
 (define-object AppletSimple
@@ -19,13 +19,6 @@
   (parent "AwnApplet")
   (c-name "AwnAppletSimple")
   (gtype-id "AWN_TYPE_APPLET_SIMPLE")
-)
-
-(define-object Plug
-  (in-module "Awn")
-  (parent "GtkPlug")
-  (c-name "AwnPlug")
-  (gtype-id "AWN_TYPE_PLUG")
 )
 
 (define-object Title
@@ -133,31 +126,16 @@
   )
 )
 
-;; From awn-applet-dialog.h
-
-(define-function awn_applet_dialog_get_type
-  (c-name "awn_applet_dialog_get_type")
-  (return-type "GType")
-)
+;; From awn-dialog.h
 
 (define-function dialog_new
-  (c-name "awn_applet_dialog_new")
-  (is-constructor-of "AwnAppletDialog")
+  (is-constructor-of "AwnDialog")
+  (c-name "awn_dialog_new")
   (return-type "GtkWidget*")
-  (parameters
-    '("AwnApplet*" "applet")
+  (properties
+    '("anchor" (optional) (argname "anchor"))
   )
 )
-
-
-
-
-(define-method position_reset
-  (of-object "AwnAppletDialog")
-  (c-name "awn_applet_dialog_position_reset")
-  (return-type "none")
-)
-
 
 
 ;; From awn-config-client.h
@@ -378,7 +356,16 @@
   (parameters
     '("const-gchar*" "uid")
     '("gint" "orient")
+    '("gint" "offset")
     '("gint" "size")
+  )
+)
+
+(define-method applet_construct
+  (of-object "AwnApplet")
+  (c-name "gtk_plug_construct")
+  (parameters
+    '("GdkNativeWindow" "id")
   )
 )
 
@@ -419,6 +406,7 @@
   (parameters
     '("const-gchar*" "uid")
     '("gint" "orient")
+    '("gint" "offset")
     '("gint" "size")
   )
 )
@@ -431,6 +419,26 @@
     '("cairo_t*" "cr")
   )
 )
+
+(define-method set_icon_surface
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_icon_surface")
+  (return-type "none")
+  (parameters
+    '("cairo_surface_t*" "surface")
+  )
+)
+
+(define-method set_icon_name
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_icon_name")
+  (return-type "none")
+  (parameters
+    '("gchar*" "applet_name")
+    '("gchar*" "icon_name")
+  )
+)
+
 
 ;; From awn-cairo-utils.h
 
@@ -697,33 +705,6 @@
 (define-function awn_effect_get_type
   (c-name "awn_effect_get_type")
   (return-type "GType")
-)
-
-
-
-;; From awn-plug.h
-
-(define-function awn_plug_get_type
-  (c-name "awn_plug_get_type")
-  (return-type "GType")
-)
-
-(define-function awn_plug_new
-  (c-name "awn_plug_new")
-  (is-constructor-of "AwnPlug")
-  (return-type "GtkWidget*")
-  (parameters
-    '("AwnApplet*" "applet")
-  )
-)
-
-(define-method construct
-  (of-object "AwnPlug")
-  (c-name "awn_plug_construct")
-  (return-type "none")
-  (parameters
-    '("GdkNativeWindow" "socket_id")
-  )
 )
 
 ;; From awn-icons.h

@@ -1,3 +1,591 @@
+2009-03-02  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* libawn/Makefile.am:
+	* libawn/libawn.h:
+	Removed AwnAppletDialog, use AwnDialog instead,
+	* tests/test-applet-simple.c:
+	Fixed compiler warning.
+
+2009-03-02  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/Makefile.am:
+	Remove circular make dependency.
+
+2009-03-02  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/egg/Makefile.am:
+	* m4/shave.m4:
+	* shave/shave-libtool.in:
+	* shave/shave.in:
+	Add shave support (generates much less verbose autotools output).
+
+2009-03-02  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/anims/awn-effect-desaturate.h:
+	* libawn/awn-applet.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-themed-icon.c:
+	* src/awn-app.c:
+	* src/awn-background-3d.c:
+	Various compiler warning related fixes.
+
+2009-03-02  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/Makefile.am:
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/anims/Makefile.am:
+	* src/Makefile.am:
+	Only force certain warning flags to become errors. Requires gcc >= 4.2.
+
+2009-03-02  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-applet-activation/main.c:
+	Python applets are now run synchronously for crash-notifier to work
+	properly.
+	* libawn/awn-dialog.c:
+	Some cosmetic changes to AwnDialog.
+
+2009-03-01  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	Remove the switch-related warning flags (-Wswitch is sufficient).
+
+2009-03-01  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	* m4/as-compiler-flag.m4:
+	Enable several more gcc warning flags if building in maintainer mode.
+
+2009-02-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon.c:
+	* src/awn-background.c:
+	* src/awn-panel.c:
+	Explicitly cast strings to avoid warnings.
+
+2009-02-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-window.c:
+	* libawn/awn-applet.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-icon.c:
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-tooltip.c:
+	* src/awn-throbber.c:
+	Remove excess semicolons from the G_DEFINE_TYPE macros.
+
+2009-02-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.am:
+	Fix build system regeneration via autoreconf.
+
+2009-03-01  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/__init__.py:
+	* bindings/python/awn.defs:
+	Make the python bindings at least partially work.
+
+2009-02-28  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	Don't use "size-2" on themed icons.
+	Added awn_applet_simple_set_from_surface method.
+	* libawn/awn-dialog.h:
+	Removed unneeded forward.
+
+2009-02-28  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	* tests/test-awn-dialog.py:
+	AwnDialog almost finished.
+
+2009-02-28  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-dialog.c:
+	Few more changes to AwnDialog.
+	* tests/test-awn-dialog.py:
+	Added test for AwnDialog.
+
+2009-02-28  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Intermittent commit - more changes to AwnDialog.
+
+2009-02-28  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* libawn/Makefile.am:
+	* libawn/awn-applet-dialog.h:
+	* libawn/awn-dialog.c:
+	* libawn/awn-dialog.h:
+	* libawn/libawn.h:
+	* src/awn-background.c:
+	Started writing new AwnAppletDialog -> now AwnDialog.
+
+2009-02-27  h4writer <hv1989@gmail.com>
+
+	* src/awn-background-flat.c:
+	- Did better rotation, so coordinates in the drawing are easier (like in background-3d).
+	- Added a function to retrieve the shape mask.
+	- Removed orientation, x and y arguments of some functions.
+	- Removed the clever way to make sure cairo is drawing on the 0.5px. Isn't needed anymore!
+
+2009-02-27  h4writer <hv1989@gmail.com>
+
+	* src/awn-panel.c:
+	Set extra_padding to ACTIVE_RECT_PADDING in the invisible bar.
+
+2009-02-20 Rodney Cryderman <rcryderman@gmail.com>
+        * bindings/python/awn.defs:
+        * libawn/awn-applet-simple.c:
+  	* libawn/awn-applet-simple.h:
+        * tests/test-applet-simple.c:
+
+	Add offset to awn_applet_simple_new().
+
+2009-02-26  Michal Hruby <michal.mhr@gmail.com>
+
+	* applets/taskmanager/applet.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-manager.h:
+	* awn-applet-activation/main.c:
+	* bindings/python/awn.defs:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-effects.c:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-icon-box.h:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-applet-proxy.h:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	* src/awn-throbber.c:
+	* src/awn-throbber.h:
+	Offset is now property of AwnApplet and is propagated to applets via
+	DBus. (oh, btw this probably breaks all applets we have)
+
+2009-02-21  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	All methods that return string now return a copy which needs to be
+	freed by the caller.
+	* libawn/awn-tooltip.c:
+	* libawn/awn-tooltip.h:
+	Position properly after property changes.
+	* src/awn-background-flat.c:
+	Fix wrong offset on bottom orient.
+	* src/awn-background.c:
+	React immediately on gtk_theme_mode change.
+	* tests/test-applet-simple.c:
+	Adapted due to new AwnApplet base class.
+	* tests/test-awn-icon.c:
+	Fix double free.
+
+2009-02-21  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	Added convenience function awn_utils_ensure_transparent_bg which also
+	connects to the signals.
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet.c:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-icon.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	Fix our transparent background to work also with theme change.
+
+2009-02-20 Rodney Cryderman <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+
+	Deal with res_name and/or class_name being NULL. 
+
+2009-02-19  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	Use drag_data_get to call drag_data_set, 
+	that triggers drag_data_received what should call drag_finish.
+	Hopefully that solves the problem of awn crashing
+
+2009-02-19  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Fixed bug that drag_indicator didn't hide itself again.
+
+2009-02-19  h4writer <hv1989@gmail.com>
+
+	* src/awn-panel.c:
+	First update the position and afterwards set the struts
+	(The struts need the new position of the window)
+
+2009-02-19  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Stop the g_timeout_add_seconds properly.
+
+2009-02-19  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Make sure the geometry also gets updated when position of TaskIcon changes.
+
+2009-02-19 Rodney Cryderman <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+
+	On some apps the resource name and/or class name can be empty strings.  This disqualifies these resources as a basis for matchin when this occurs.
+
+2009-02-19 Julien Lavergne <julien.Lavergnegmail.com>
+
+	* awn-manager/awn-manager-mini.glade
+	* awn-manager/awnDefs.py.in
+	* awn-manager/awnManagerMini.py.in
+	Add option for expand bar.
+
+	* awn-manager/awnClass.py
+	Continue to remove duplicated functions
+
+	* bindings/python/awnmodule.c
+	Remove libawn/awn-plug.h
+
+2009-02-19  Michal Hruby <michal.mhr@gmail.com>
+
+	* data/awn.schema-ini.in:
+	* src/awn-defines.h:
+	* src/awn-panel.c:
+	Added expand property to AwnPanel.
+
+2009-02-18  Michal Hruby <michal.mhr@gmail.com>
+
+	reviewed by: moonbeam
+
+	* applets/taskmanager/xutils.c:
+	Don't unref the icon returned by wnck_window_get_icon.
+
+2009-02-18  h4writer <hv1989@gmail.com>
+
+	* src/awn-background-3d.c:
+	Use of double's instead of ints (better drawing)
+	Positioning drawing on the right and bottom orientation
+
+2009-02-18  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-window.c:
+	Make sure the position of the icon_geometry is always on it's place.
+	(icon_geometry = the pos. where compiz minimizes and shows the preview ...)
+	TaskIcon now makes sure it is set right on it's own, without using taskManager. 
+
+2009-02-17  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-drag-indicator.c:
+	Improved the drag-indicator
+
+2009-02-17  Michal Hruby <michal.mhr@gmail.com>
+
+	* applets/taskmanager/applet.c:
+	Don't show the applet in init function.
+	* awn-applet-activation/main.c:
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* libawn/Makefile.am:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/libawn.h:
+	Rest in peace AwnPlug, AwnApplet now replaced you.
+
+2009-02-17 Rodney Cryderman <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+
+	Utility/dialog windows should now appear on bar if there is no associated window already open.  Debugging/testing change.
+
+2009-02-17  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	* src/awn-panel.c:
+	Allow using none background.
+
+2009-02-17  h4writer <hv1989@gmail.com>
+
+	* src/awn-background-3d.c:
+	* src/awn-panel.c:
+	Let awn-background-3d use the padding.
+
+2009-02-16  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background-flat.c:
+	* src/awn-panel.c:
+	Add size of the active rectangle to AwnPanel's extra_padding.
+
+2009-02-16  Michal Hruby <michal.mhr@gmail.com>
+
+	Reverted last commit, it caused more problems than it solved.
+
+2009-02-16  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	Exposed the ACTIVE_RECT_PADDING macro.
+	* libawn/awn-icon.c:
+	Size request now takes ACTIVE_RECT_PADDING into account.
+	* src/awn-background-flat.c:
+	* src/awn-panel.c:
+	Simplified size requesting and got rid of extra_padding variable.
+
+2009-02-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-effects-ops-helpers.c:
+	Remove dead code.
+
+2009-02-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	Ignore m4 files brought in by the autogen script.
+
+	* Makefile.am:
+	* configure.in:
+	Fix m4 directory specification so that gnome-autogen.sh can use it, too.
+
+2009-02-11 Rodney Cryderman <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+
+	_Temporarily_ disabling the claiming of utility/dialog windows.
+
+
+2009-02-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-window.c:
+	* awn-applet-activation/main.c:
+	* bindings/python/awn.override:
+	* libawn/anims/awn-effect-bounce.c:
+	* libawn/anims/awn-effect-desaturate.c:
+	* libawn/anims/awn-effect-fade.c:
+	* libawn/anims/awn-effect-glow.c:
+	* libawn/anims/awn-effect-simple.c:
+	* libawn/anims/awn-effect-spotlight.c:
+	* libawn/anims/awn-effect-spotlight3d.c:
+	* libawn/anims/awn-effect-squish.c:
+	* libawn/anims/awn-effect-turn.c:
+	* libawn/anims/awn-effect-zoom.c:
+	* libawn/anims/awn-effects-shared.c:
+	* libawn/anims/awn-effects-shared.h:
+	* libawn/awn-applet-dialog.c:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-effects-ops-helpers.c:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-tooltip.c:
+	* libawn/egg/eggdesktopfile.c:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-background-3d.c:
+	* src/awn-background-flat.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	* tests/test-awn-effects.c:
+	Avoid using C++-style comments.
+
+2009-02-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-applet-dialog.c:
+	Remove duplicate function prototypes.
+
+2009-02-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* m4/vala.m4:
+	Update macro to a version in an automake git branch.
+
+2009-02-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.am:
+	* acinclude.m4:
+	* m4/as-ac-expand.m4:
+	* m4/gconf.m4:
+	* m4/python.m4:
+	* m4/vala.m4:
+	Replace acinclude.m4 with separate m4 files.
+	Remove JH_ADD_CFLAG, as it does not seem to be used.
+
+2009-02-14  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background-3d.c:
+	* src/awn-background-flat.c:
+	* src/awn-panel.c:
+	Actually use AwnBackground's get_shape_mask method when we're
+	non-composited and get_input_shape_mask when we are.
+
+2009-02-14  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Fixed a miscalculation in the get_applet_rect function.
+	Fixed input mask not updating when it should.
+	Changed the debug paint of background rect - use pure gdk to get rid
+	of the antialiasing.
+
+2009-02-14  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Kill the evil set_size_request function calls.
+
+2009-02-14  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background-3d.c:
+	* src/awn-background-flat.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	* src/awn-panel.c:
+	Allow setting padding by the background class.
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/task-window.c:
+	Revert the icon size = panel size - 2, proper fix is setting
+	padding of the background.
+
+2009-02-12  Julien Lavergne <julien.Lavergnegmail.com>
+
+	* awn-manager/awnClass.py
+	Backport changes from trunk also to awnClass.py
+
+2009-02-13  Michal Hruby <michal.mhr@gmail.com>
+
+	* maaany files...
+	Merged selected revisions from trunk. I wonder what did I break...
+
+2009-02-12  Julien Lavergne <julien.Lavergnegmail.com>
+
+	* awn-manager/awnClass.py
+	* awn-manager/awnManagerMini.py.in
+	Remove duplicated make_row and make_icon functions
+
+2009-02-12  Julien Lavergne <julien.Lavergnegmail.com>
+
+	* awn-manager/awn-manager-mini.glade
+	* awn-manager/awnDefs.py.in
+  	* awn-manager/awnManagerMini.py.in
+	Add panel_mode and style in awn-manager-mini advanced options.
+
+2009-02-12  h4writer <hv1989@gmail.com>
+
+	* src/awn-background-3d.c:
+	Changed the variable 'offset' to 'padding'.
+	Added some defines to draw only parts of panel for easier debugging (atleast for me).
+	Made side_space a define instead of a variable.
+	Substracted the SIDE_SPACE from the height to make the code more logical.
+	(There is no change visual visible.)
+
+	* src/awn-background-flat.c:
+	Remove hack to add 1 extra pixel to height. Problem isn't awn-background-flat. 
+	The active rectangle is just 1 pixel to big. It should get solved there.
+	- This solves awn-panel drawing 1 extra pixel.
+	- Result is also that the panel isn't bigger anymore then the struts.
+		(At least on left and top orientation. Bottom is still 1px. Right too, but not anymore?!)
+
+2009-02-12  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background-3d.c:
+	* src/awn-background-flat.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	* src/awn-panel.c:
+	Added methods to AwnBackground to specify masks and padding (doesn't
+	work yet).
+
+2009-02-11 Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-applet.c:
+
+	Point the Dock Preferences menu item to point at awn-manager-mini for now.
+
+2009-02-11  h4writer <hv1989@gmail.com>
+
+	* src/awn-panel.c:
+	Make the panel_mode work again.
+	The space located for the strut is right. It still overlaps the windows with 1px (top/left) and 2px (bottom/right),
+	but that's the fault of awn-background. That's next on my Todo list to solve.
+
+	* src/awn-x.c:
+	* src/awn-x.h:
+	Removed awn_x_set_strut. Now there is no function in this file anymore. 
+	So it can get removed.
+
+	* src/xutils.c:
+	* src/xutils.h: 
+	Updated xutils_set_strut to support multiple orientation 
+
+2009-02-11  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-plug.c:
+	* src/Makefile.am:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-applet-proxy.h:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	* src/awn-throbber.h:
+	Added the crash notifier.
+
+2009-02-10  h4writer <hv1989@gmail.com>
+
+	* src/awn-panel.c:
+	Fixed a memory leak introduced in my previous commit :-(
+
+2009-02-10  h4writer <hv1989@gmail.com>
+
+	* data/awn.schema-ini.in:
+	* src/awn-defines.h:
+	* src/awn-panel.c:
+	Added an option to change between styles of the panel (flat/3d).
+
+2009-02-09  h4writer <hv1989@gmail.com>
+
+	* src/awn-panel.c:
+	Updated the awn_panel_check_mouse_pos function. 
+	(priv->offset is already in size of window, so doesn't need to get added again)
+
+2009-02-08 h4writer <hv1989@gmail.com>
+
+	* src/awn-panel.c:
+	Updated the size of the bar when composited. (Added priv->offset).
+	- Solves drawing getting cut off when offset was larger then twice the panel size
+	Updated the height/width that panel sends to awn-background when composited.
+	(Don't add priv->offset, it is now already in it.)
+	- To draw the background on the right place
+	- Inputmap is now correctly on the four sides (as side effect :-D)
+
 2009-01-25  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* bindings/python/awn.defs:

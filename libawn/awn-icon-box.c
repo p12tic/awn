@@ -18,8 +18,9 @@
  */
 #include "awn-icon-box.h"
 #include "awn-icon.h"
+#include "awn-utils.h"
 
-G_DEFINE_TYPE (AwnIconBox, awn_icon_box, GTK_TYPE_BOX);
+G_DEFINE_TYPE (AwnIconBox, awn_icon_box, GTK_TYPE_BOX)
 
 #define AWN_ICON_BOX_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   AWN_TYPE_ICON_BOX, \
@@ -28,6 +29,7 @@ G_DEFINE_TYPE (AwnIconBox, awn_icon_box, GTK_TYPE_BOX);
 struct _AwnIconBoxPrivate
 {
   AwnOrientation orient;
+  gint           offset;
 
   /* Current box class */
   GtkWidgetClass  *klass;
@@ -107,6 +109,8 @@ awn_icon_box_add (GtkContainer *container, GtkWidget *child)
 
   gtk_box_set_child_packing (GTK_BOX (container), child, FALSE, FALSE, 0,
                               GTK_PACK_START);
+  awn_icon_set_offset      (AWN_ICON (child),
+                            AWN_ICON_BOX (container)->priv->offset);
   awn_icon_set_orientation (AWN_ICON (child), 
                             AWN_ICON_BOX (container)->priv->orient);
   g_signal_connect_swapped (child, "size-request", 
@@ -137,14 +141,15 @@ static void
 awn_icon_box_init (AwnIconBox *icon_box)
 {
   AwnIconBoxPrivate *priv;
-
   priv = icon_box->priv = AWN_ICON_BOX_GET_PRIVATE (icon_box);
 
   priv->orient = AWN_ORIENTATION_BOTTOM;
+  priv->offset = 0;
   priv->klass = GTK_WIDGET_CLASS (gtk_type_class (GTK_TYPE_HBOX));
 
   g_signal_connect_after (icon_box, "add", 
                           G_CALLBACK (awn_icon_box_add), icon_box);
+  awn_utils_ensure_tranparent_bg (GTK_WIDGET (icon_box));
 }
 
 GtkWidget *
@@ -175,6 +180,14 @@ on_panel_orient_changed (AwnApplet      *applet,
   awn_icon_box_set_orientation (box, orient);
 }
 
+static void
+on_panel_offset_changed (AwnApplet  *applet, 
+                         gint        offset, 
+                         AwnIconBox *box)
+{
+  awn_icon_box_set_offset (box, offset);
+}
+
 GtkWidget *   
 awn_icon_box_new_for_applet (AwnApplet *applet)
 {
@@ -187,9 +200,13 @@ awn_icon_box_new_for_applet (AwnApplet *applet)
     g_signal_connect (applet, "size-changed", 
                       G_CALLBACK (on_panel_size_changed), box);
     g_signal_connect (applet, "orientation-changed", 
-                      G_CALLBACK (on_panel_orient_changed), box);  
+                      G_CALLBACK (on_panel_orient_changed), box);
+    g_signal_connect (applet, "offset-changed",
+                      G_CALLBACK (on_panel_offset_changed), box);
     awn_icon_box_set_orientation (AWN_ICON_BOX (box), 
                                   awn_applet_get_orientation (applet));
+    awn_icon_box_set_offset (AWN_ICON_BOX (box),
+                             awn_applet_get_offset (applet));
   }
 
   return box;
@@ -236,6 +253,32 @@ awn_icon_box_set_orientation (AwnIconBox     *icon_box,
 
     if (AWN_IS_ICON (icon))
       awn_icon_set_orientation (icon, orient);
+  }
+  g_list_free (children);
+
+  ensure_layout (icon_box);
+}
+
+void 
+awn_icon_box_set_offset (AwnIconBox *icon_box,
+                         gint        offset)
+{
+  AwnIconBoxPrivate *priv;
+  GList *children, *c;
+
+  g_return_if_fail (AWN_IS_ICON_BOX (icon_box));
+  priv = icon_box->priv;
+
+  priv->offset = offset;
+ 
+  /* Update the children with the new orientation */
+  children = gtk_container_get_children (GTK_CONTAINER (icon_box));
+  for (c = children; c; c = c->next)
+  {
+    AwnIcon *icon = c->data;
+
+    if (AWN_IS_ICON (icon))
+      awn_icon_set_offset (icon, offset);
   }
   g_list_free (children);
 

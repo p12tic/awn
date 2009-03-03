@@ -36,7 +36,7 @@
 #include "awn-config-bridge.h"
 #include "awn-config-client.h"
 
-G_DEFINE_TYPE (AwnTooltip, awn_tooltip, GTK_TYPE_WINDOW);
+G_DEFINE_TYPE (AwnTooltip, awn_tooltip, GTK_TYPE_WINDOW)
 
 #define AWN_TOOLTIP_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
                                       AWN_TYPE_TOOLTIP, AwnTooltipPrivate))
@@ -282,9 +282,21 @@ awn_tooltip_finalize(GObject *obj)
 {
   AwnTooltipPrivate *priv = AWN_TOOLTIP_GET_PRIVATE (obj);
  
-  g_free (priv->text);       priv->text = NULL;
-  g_free (priv->font_name);  priv->font_name = NULL;
-  g_free (priv->font_color); priv->font_color = NULL;
+  if (priv->text)
+  {
+    g_free (priv->text);
+    priv->text = NULL;
+  }
+  if (priv->font_name)
+  {
+    g_free (priv->font_name);
+    priv->font_name = NULL;
+  }
+  if (priv->font_color)
+  {
+    g_free (priv->font_color);
+    priv->font_color = NULL;
+  }
 
   G_OBJECT_CLASS (awn_tooltip_parent_class)->finalize (obj);
 }
@@ -397,46 +409,27 @@ awn_tooltip_new_for_widget (GtkWidget *widget)
 
 /* POSITIONING */
 static void
-awn_tooltip_position_and_show (AwnTooltip *tooltip)
+awn_tooltip_position (AwnTooltip *tooltip)
 {
   AwnTooltipPrivate *priv;
-  GtkRequisition req, req2;
+  GtkRequisition req;
   gint x = 0, y = 0, w, h;
   gint fx, fy, fw, fh;
 
   g_return_if_fail (AWN_IS_TOOLTIP (tooltip));
   priv = tooltip->priv;
 
-  if (!GTK_IS_WIDGET (priv->focus))
-  {
-    gtk_widget_hide (GTK_WIDGET (tooltip));
-    return;
-  }
-
   /* Get our dimensions */
-  gtk_widget_size_request (GTK_WIDGET (priv->label), &req);
-  gtk_widget_size_request (GTK_WIDGET (tooltip), &req2);
+  gtk_widget_size_request (GTK_WIDGET (tooltip), &req);
 
-  if (req2.width > req.width)
-  {
-    w = req2.width;
-    h = req2.height;
-  }
-  else
-  {
-    // TODO: find better way than adding 8
-    w = req.width + 8;
-    h = req.height + 8;
-  }
+  w = req.width;
+  h = req.height;
 
   /* Get the dimesions of the widget we are focusing on */
   gdk_window_get_origin (priv->focus->window, &fx, &fy);
   gdk_drawable_get_size (GDK_DRAWABLE (priv->focus->window), &fw, &fh);
   
   /* Find and set our position */
-  //x = fx + (fw / 2) - (w / 2);
-  //y = fy + (fh / 2) - h / 2;
-
   #define TOOLTIP_OFFSET 16
   switch (priv->orient) {
     case AWN_ORIENTATION_TOP:
@@ -457,10 +450,34 @@ awn_tooltip_position_and_show (AwnTooltip *tooltip)
       break;
   }
 
+  if (gtk_widget_has_screen (GTK_WIDGET (tooltip)))
+  {
+    GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (tooltip));
+    gint screen_w = gdk_screen_get_width (screen);
+    if (x + w > screen_w) x -= x + w - screen_w;
+  }
+
   if (x < 0) x = 0;
   if (y < 0) y = 0;
 
   gtk_window_move (GTK_WINDOW (tooltip), x, y);
+}
+
+static void
+awn_tooltip_position_and_show (AwnTooltip *tooltip)
+{
+  AwnTooltipPrivate *priv;
+
+  g_return_if_fail (AWN_IS_TOOLTIP (tooltip));
+  priv = tooltip->priv;
+
+  if (!GTK_IS_WIDGET (priv->focus))
+  {
+    gtk_widget_hide (GTK_WIDGET (tooltip));
+    return;
+  }
+
+  awn_tooltip_position (tooltip);
   gtk_widget_show_all (GTK_WIDGET (tooltip));
 }
 
@@ -488,6 +505,11 @@ ensure_tooltip (AwnTooltip *tooltip)
 
   g_free (normal);
   g_free (markup);
+
+  if (GTK_WIDGET_MAPPED (tooltip) && GTK_IS_WIDGET (priv->focus))
+  {
+    awn_tooltip_position (tooltip);
+  }
 }
 
 void  
@@ -507,12 +529,12 @@ awn_tooltip_set_text (AwnTooltip  *tooltip,
   ensure_tooltip (tooltip);
 }
 
-const gchar * 
+gchar *
 awn_tooltip_get_text (AwnTooltip  *tooltip)
 {
   g_return_val_if_fail (AWN_IS_TOOLTIP (tooltip), NULL);
 
-  return tooltip->priv->text;
+  return tooltip->priv->text ? g_strdup(tooltip->priv->text) : NULL;
 }
 
 static gboolean
@@ -539,11 +561,12 @@ awn_tooltip_show (AwnTooltip *tooltip,
   if (!priv->text || priv->timer_id)
     return FALSE;
 
-  // always use timer to show the widget, because there's a show/hide race
-  // condition when mouse moves on the tooltip, leave-notify-event is generated
-  // -> tooltip hides, then enter-notify-event from the widget is generated,
-  // tooltip shows, therefore looping in an infinite loop
-  //  with the timer X-server at least doesn't stall
+  /* always use timer to show the widget, because there's a show/hide race
+   * condition when mouse moves on the tooltip, leave-notify-event is generated
+   * -> tooltip hides, then enter-notify-event from the widget is generated,
+   * tooltip shows, therefore looping in an infinite loop
+   *  with the timer X-server at least doesn't stall
+   */
   gint delay = priv->delay > 0 ? priv->delay : 10;
   priv->timer_id = g_timeout_add(delay, awn_tooltip_show_timer, tooltip);
 

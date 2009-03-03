@@ -2,6 +2,11 @@ desktopfile_lib = libeggdesktopfile.la
 
 noinst_LTLIBRARIES = $(checksum_lib) $(desktopfile_lib)
 
+# shave-related
+V         = @
+Q         = $(V:1=)
+QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
+
 NULL = 
 ENUMFILES = egg-enum-types.c egg-enum-types.h
 STAMPFILES = stamp-egg-enum-types.h
@@ -23,7 +28,7 @@ libeggdesktopfile_la_LIBADD = $(AWN_LIBS)
 egg-enum-types.h: stamp-egg-enum-types.h
 	@true
 stamp-egg-enum-types.h: $(source_h) Makefile
-	( cd $(srcdir) && \
+	$(QUIET_GEN)( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	  	--template $(srcdir)/egg-enum-types.h.in \
 	  $(source_h) ) >> xgen-ceth && \
@@ -32,7 +37,7 @@ stamp-egg-enum-types.h: $(source_h) Makefile
 	echo timestamp > $(@F)
 
 egg-enum-types.c: egg-enum-types.h
-	( cd $(srcdir) && \
+	$(QUIET_GEN)( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	  	--template $(srcdir)/$@.in \
 	  $(source_h) ) >> xgen-cetc && \
@@ -46,3 +51,5 @@ EXTRA_DIST= \
 	eggdesktopfile.h
 
 CLEANFILES = $(STAMPFILES)
+
+DISTCLEANFILES = egg-enum-types.h egg-enum-types.c

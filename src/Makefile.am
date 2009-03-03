@@ -1,10 +1,10 @@
+AM_CFLAGS = $(WARNING_FLAGS)
 INCLUDES =				\
 	$(AWN_CFLAGS)			\
 	$(DOCK_CFLAGS)			\
 	-DLIBDIR=\""$(libdir)"\"	\
 	-DLOCALEDIR=\""$(datadir)/locale"\"	\
 	-I$(top_srcdir)/libawn		\
-	-Werror \
 	$(NULL)
 
 bin_PROGRAMS = avant-window-navigator
@@ -35,6 +35,8 @@ avant_window_navigator_SOURCES =	\
 	awn-panel.c \
 	awn-panel.h \
 	awn-panel-glue.h \
+	awn-throbber.c \
+	awn-throbber.h \
 	awn-x.h \
 	awn-x.c \
 	inlinepixbufs.h \

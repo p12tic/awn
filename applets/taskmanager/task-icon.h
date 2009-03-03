@@ -84,7 +84,7 @@ TaskLauncher*   task_icon_get_launcher    (TaskIcon      *icon);
 
 void            task_icon_refresh_icon    (TaskIcon      *icon);
 
-void            task_icon_refresh_geometry (TaskIcon     *icon);
+gboolean        task_icon_refresh_geometry (TaskIcon     *icon);
 
 #endif /* _TASK_ICON_H_ */
 

@@ -24,5 +24,6 @@
 #include "awn-effects-shared.h"
 
 gboolean desaturate_effect(AwnEffectsAnimation * anim);
+gboolean desaturate_effect_finalize(AwnEffectsAnimation * anim);
 
 #endif

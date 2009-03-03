@@ -59,7 +59,7 @@ typedef enum
 
 struct _AwnApplet
 {
-  GtkEventBox parent;
+  GtkPlug parent;
 
   /*< private >*/
   AwnAppletPrivate *priv;
@@ -67,11 +67,12 @@ struct _AwnApplet
 
 struct _AwnAppletClass
 {
-  GtkEventBoxClass parent_class;
+  GtkPlugClass parent_class;
 
   /*<signals >*/
   void (*plug_embedded)  (AwnApplet *applet);
   void (*orient_changed) (AwnApplet *applet, AwnOrientation orient);
+  void (*offset_changed) (AwnApplet *applet, gint offset);
   void (*size_changed)   (AwnApplet *applet, gint size);
   void (*deleted)        (AwnApplet *applet, const gchar *uid);
   void (*menu_creation)  (AwnApplet *applet, GtkMenu *menu);
@@ -89,19 +90,25 @@ struct _AwnAppletClass
 typedef gboolean   (*AwnAppletInitFunc)           (AwnApplet   *applet);
 /* Hook to build your own AWN Applet */
 typedef AwnApplet* (*AwnAppletInitPFunc)          (const gchar *uid, 
-                                                   gint         orient, 
-                                                   gint         height);
+                                                   gint         orient,
+                                                   gint         offset,
+                                                   gint         size);
 
 GType              awn_applet_get_type            (void);
 
 AwnApplet *        awn_applet_new                 (const gchar *uid, 
-                                                   gint         orient, 
-                                                   gint         height);
+                                                   gint         orient,
+                                                   gint         offset,
+                                                   gint         size);
 
 AwnOrientation     awn_applet_get_orientation     (AwnApplet      *applet);
 
 void               awn_applet_set_orientation     (AwnApplet      *applet,
                                                    AwnOrientation  orient);
+
+gint               awn_applet_get_offset          (AwnApplet      *applet);
+void               awn_applet_set_offset          (AwnApplet      *applet,
+                                                   gint           offset);
 
 guint              awn_applet_get_size            (AwnApplet      *applet);
 void               awn_applet_set_size            (AwnApplet      *applet,

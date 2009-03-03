@@ -10,14 +10,13 @@ headers
 #include <gconf/gconf-value.h>
 #endif
 #include <libawn/awn-applet.h>
-#include <libawn/awn-applet-dialog.h>
 #include <libawn/awn-applet-simple.h>
 #include <libawn/awn-cairo-utils.h>
 #include <libawn/awn-config-client.h>
 #include <libawn/awn-defines.h>
+#include <libawn/awn-dialog.h>
 #include <libawn/awn-effects.h>
 #include <libawn/awn-enum-types.h>
-#include <libawn/awn-plug.h>
 #include <libawn/awn-tooltip.h>
 #include <libawn/awn-desktop-item.h>
 #include <libawn/awn-vfs.h>
@@ -82,7 +81,7 @@ _gslist_to_pylist (GSList *list, AwnConfigListType list_type) {
   py_list = PyList_New ((Py_ssize_t)slist_len);
 
   for (i = 0; i < slist_len; i++) {
-    PyObject *py_data;
+    PyObject *py_data = NULL;
     gpointer data = g_slist_nth_data (list, i);
     if (data) {
       switch (list_type) {
@@ -517,8 +516,8 @@ _wrap_awn_applet_simple_set_awn_icons (PyObject *self, PyObject *args, PyObject 
 
   ret = awn_applet_simple_set_awn_icons (AWN_APPLET_SIMPLE (pygobject_get (self)),
                                          (const gchar*)applet_name,
-                                         (const gchar**)states,
-                                         (const gchar**)icon_names);
+                                         (const GStrv)states,
+                                         (const GStrv)icon_names);
 
   g_free (states);
   g_free (icon_names);
@@ -533,9 +532,10 @@ _wrap_awn_effects_cairo_create(PyGObject *self)
     cairo_t *ret = awn_effects_cairo_create(AWN_EFFECTS(self->obj));
 
     cairo_reference(ret);
-    // bug in pygtk-codegen > sets second parameter to NULL in call to
-    // PycairoContext_FromContext, which causes segmentation error in newer
-    // versions of pycairo
+    /* bug in pygtk-codegen > sets second parameter to NULL in call to
+     * PycairoContext_FromContext, which causes segmentation error in newer
+     * versions of pycairo
+     */
     return PycairoContext_FromContext(ret, &PycairoContext_Type, NULL);
 }
 %%
@@ -560,8 +560,9 @@ _wrap_awn_effects_cairo_create_clipped(PyGObject *self, PyObject *args, PyObject
     ret = awn_effects_cairo_create_clipped(AWN_EFFECTS(self->obj), region);
 
     cairo_reference(ret);
-    // bug in pygtk-codegen > sets second parameter to NULL in call to
-    // PycairoContext_FromContext, which causes segmentation error in newer
-    // versions of pycairo
+    /* bug in pygtk-codegen > sets second parameter to NULL in call to
+     * PycairoContext_FromContext, which causes segmentation error in newer
+     * versions of pycairo
+     */
     return PycairoContext_FromContext(ret, &PycairoContext_Type, NULL);
 }

@@ -70,6 +70,7 @@ GType         awn_applet_simple_get_type         (void);
 
 GtkWidget *   awn_applet_simple_new              (const gchar      *uid, 
                                                   gint              orient, 
+						  gint              offset,
                                                   gint              size);
 
 void          awn_applet_simple_set_icon_pixbuf  (AwnAppletSimple  *applet,
@@ -77,6 +78,9 @@ void          awn_applet_simple_set_icon_pixbuf  (AwnAppletSimple  *applet,
 
 void          awn_applet_simple_set_icon_context (AwnAppletSimple  *applet, 
                                                   cairo_t          *cr);
+
+void          awn_applet_simple_set_icon_surface (AwnAppletSimple  *applet,
+                                                  cairo_surface_t  *surface);
 
 void          awn_applet_simple_set_icon_name    (AwnAppletSimple  *applet,
                                                   const gchar      *applet_name,
@@ -93,12 +97,12 @@ void          awn_applet_simple_set_icon_state   (AwnAppletSimple  *applet,
 void          awn_applet_simple_set_tooltip_text (AwnAppletSimple  *applet,
                                                   const gchar      *text);
 
-const gchar * awn_applet_simple_get_tooltip_text (AwnAppletSimple  *applet);
+gchar *       awn_applet_simple_get_tooltip_text (AwnAppletSimple  *applet);
 
 void          awn_applet_simple_set_message      (AwnAppletSimple  *applet,
                                                   const gchar      *message);
 
-const gchar * awn_applet_simple_get_message      (AwnAppletSimple  *applet);
+gchar *       awn_applet_simple_get_message      (AwnAppletSimple  *applet);
 
 void          awn_applet_simple_set_progress     (AwnAppletSimple  *applet,
                                                   gfloat            progress);
