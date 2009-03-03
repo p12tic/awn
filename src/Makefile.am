@@ -3,7 +3,7 @@ V         = @
 Q         = $(V:1=)
 QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
-AM_CFLAGS = $(WARNING_FLAGS)
+AM_CFLAGS = $(WARNING_FLAGS) $(DISABLE_DEPRECATED_FLAGS)
 INCLUDES =				\
 	$(AWN_CFLAGS)			\
 	$(DOCK_CFLAGS)			\

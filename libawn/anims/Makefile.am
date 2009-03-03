@@ -4,7 +4,7 @@ noinst_LTLIBRARIES = $(animations_lib)
 
 NULL = 
 
-AM_CFLAGS = $(WARNING_FLAGS)
+AM_CFLAGS = $(WARNING_FLAGS) $(DISABLE_DEPRECATED_FLAGS)
 INCLUDES = $(AWN_CFLAGS)
 
 public_headers = $(NULL)

@@ -1,6 +1,6 @@
 # Applet shared lib
 NULL =
-AM_CFLAGS = $(WARNING_FLAGS)
+AM_CFLAGS = $(WARNING_FLAGS) $(DISABLE_DEPRECATED_FLAGS)
 INCLUDES = \
 	-I$(srcdir) \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \

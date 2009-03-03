@@ -1,5 +1,15 @@
 2009-03-03  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/taskmanager/Makefile.am:
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/anims/Makefile.am:
+	* src/Makefile.am:
+	Add the various symbols which disables deprecated functions and compile
+	behaviors for GLib, GDK, GDK Pixbuf, and GTK+.
+
+2009-03-03  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* src/Makefile.am:
 	* src/awn-panel.c:
 	* src/awnmarshal.list:
