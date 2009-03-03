@@ -1294,7 +1294,7 @@ on_window_configure (GtkWidget          *panel,
     if (priv->panel_mode)
       awn_panel_set_strut (AWN_PANEL (panel));
 
-    return TRUE;
+    return FALSE;
   }
   return FALSE;
 }

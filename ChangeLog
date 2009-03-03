@@ -1,3 +1,8 @@
+2009-03-03  hay veersch,,,  <Please set CHANGE_LOG_EMAIL_ADDRESS or EMAIL_ADDRESS environment variable>
+
+	* src/awn-panel.c:
+	Fixes a bug introduced in r671 (compiz only).
+
 2009-03-03  h4writer <hv1989@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
