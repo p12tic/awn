@@ -1,3 +1,10 @@
+2009-03-03  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	patch by: foolish (Fedora) and AdamW (RedHat/Mandriva) on IRC (freenode)
+
+	* bindings/python/Makefile.am:
+	Fix installation of the Python bindings on 64bit systems.
+
 2009-03-03  Michal Hruby <michal.mhr@gmail.com>
 
 	reviewed by: moonbeam
