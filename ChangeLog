@@ -1,3 +1,8 @@
+2009-03-04  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-applet-activation/main.c:
+	Don't fork the python applets, exec them directly.
+
 2009-03-03  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	patch by: foolish (Fedora) and AdamW (RedHat/Mandriva) on IRC (freenode)
