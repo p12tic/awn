@@ -69,10 +69,14 @@ struct _AwnPanelPrivate
 
   gint autohide_type;
 
-  /* for masks updating */
+  /* for masks/strut updating */
   gint old_width;
   gint old_height;
   gint old_orient;
+
+  /* for strut updating */
+  gint old_x;
+  gint old_y;
 
   guint extra_padding;
 
@@ -1249,7 +1253,7 @@ position_window (AwnPanel *panel)
 
 /*
  * We get a configure event when the windows size changes. This is a good as
- * a time as any to update the input shape of the window.
+ * a time as any to update the input shape and the strut of the window.
  */
 static gboolean
 on_window_configure (GtkWidget          *panel,
@@ -1260,31 +1264,49 @@ on_window_configure (GtkWidget          *panel,
   g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
   priv = AWN_PANEL (panel)->priv;
 
-  if (priv->old_width == event->width && priv->old_height == event->height &&
-      priv->old_orient == priv->orient)
-    return FALSE;
 
-  priv->old_width = event->width;
-  priv->old_height = event->height;
-  priv->old_orient = priv->orient;
+  if (priv->old_width != event->width || priv->old_height != event->height ||
+      priv->old_orient != priv->orient)
+  {
+    priv->old_width = event->width;
+    priv->old_height = event->height;
+    priv->old_orient = priv->orient;
+    priv->old_x = event->x;
+    priv->old_y = event->y;
 
-  awn_panel_update_masks (panel, event->width, event->height);
-  
-  /* Update position */
-  position_window (AWN_PANEL (panel));
+    awn_panel_update_masks (panel, event->width, event->height);
 
-  /* Update the size hints if the panel_mode is set */
-  if (priv->panel_mode)
-    awn_panel_set_strut (AWN_PANEL (panel));
+    /* Update position */
+    position_window (AWN_PANEL (panel));
 
-  return TRUE;
+    /* Update the strut if the panel_mode is set */
+    if (priv->panel_mode)
+      awn_panel_set_strut (AWN_PANEL (panel));
+
+    return TRUE;
+  }
+  if (priv->old_x != event->x || priv->old_y != event->y)
+  {
+    priv->old_x = event->x;
+    priv->old_y = event->y;
+
+    /* Update the strut if the panel_mode is set */
+    if (priv->panel_mode)
+      awn_panel_set_strut (AWN_PANEL (panel));
+
+    return TRUE;
+  }
+  return FALSE;
 }
 
 static void   
 on_geometry_changed   (AwnMonitor *monitor,
                        AwnPanel   *panel)
 {
+  AwnPanelPrivate *priv;
+
   g_return_if_fail (AWN_IS_PANEL (panel));
+  priv = AWN_PANEL (panel)->priv;
 
   position_window (panel);
 }
