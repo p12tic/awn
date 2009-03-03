@@ -94,6 +94,8 @@ applets/taskmananger
       bar (like adding them).
     - React when a launcher get removed. Now it just stays there.
         (Could be a problem with D&D, cuzz all existing launchers get reset on drag)
+        h4writer: This is probably the fault of the function "ensure_layout" in task-manager.c
+                  This gets also called when opening/closing window. So it will happen then too.
   - Window grouping
     - Drag-and-drop of task-icons on top eachother to create arbitary groups
     - Application grouping

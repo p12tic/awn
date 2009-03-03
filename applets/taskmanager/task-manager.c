@@ -354,6 +354,13 @@ ensure_layout (TaskManager *manager)
     if (!TASK_IS_ICON (icon))
       continue;
     
+    /* If the icon gets dragged, it shouldn't be shown */
+    if( icon == priv->dragged_icon )
+    {
+      gtk_widget_hide (GTK_WIDGET (icon));
+      continue;
+    }
+
     /* Show launchers regardless of workspace */
     if (task_icon_is_launcher (icon))
     {
@@ -391,7 +398,7 @@ ensure_layout (TaskManager *manager)
   
   /* Hide drag_indicator if there is no AwnIcon currently dragged */
   if(priv->dragged_icon == NULL)
-      gtk_widget_hide (GTK_WIDGET(priv->drag_indicator));
+    gtk_widget_hide (GTK_WIDGET(priv->drag_indicator));
 }
 
 /*

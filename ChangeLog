@@ -1,5 +1,12 @@
 2009-03-03  h4writer <hv1989@gmail.com>
 
+	* TODO:
+	added a comment (about d&d)
+	* applets/taskmanager/task-manager.c:
+	Make sure if ensure_layout gets called when dragging the dragged icon stays hidden.
+
+2009-03-03  h4writer <hv1989@gmail.com>
+
 	* src/awn-panel.c:
 	Update the strut also when the panel get's moved
 
