@@ -199,6 +199,12 @@ awn_applet_manager_dispose (GObject *object)
 
   g_hash_table_destroy (priv->applets);
 
+  if (priv->klass)
+  {
+    g_type_class_unref (priv->klass);
+    priv->klass = NULL;
+  }
+
   G_OBJECT_CLASS (awn_applet_manager_parent_class)->dispose (object);
 }
 
@@ -359,16 +365,22 @@ awn_applet_manager_set_orient (AwnAppletManager *manager,
   
   priv->orient = orient;
 
+  if (priv->klass)
+  {
+    g_type_class_unref (priv->klass);
+    priv->klass = NULL;
+  }
+
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
-      priv->klass = GTK_WIDGET_CLASS (g_type_class_peek (GTK_TYPE_HBOX));
+      priv->klass = GTK_WIDGET_CLASS (g_type_class_ref (GTK_TYPE_HBOX));
       break;
     
     case AWN_ORIENTATION_RIGHT:
     case AWN_ORIENTATION_LEFT:
-      priv->klass = GTK_WIDGET_CLASS (g_type_class_peek (GTK_TYPE_VBOX));
+      priv->klass = GTK_WIDGET_CLASS (g_type_class_ref (GTK_TYPE_VBOX));
       break;
 
     default:

@@ -1,3 +1,9 @@
+2009-03-03  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-icon-box.c:
+	* src/awn-applet-manager.c:
+	Fix segfault after switch to g_type_class_peek.
+
 2009-03-03  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/Makefile.am:
