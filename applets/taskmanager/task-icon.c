@@ -151,7 +151,7 @@ task_icon_get_property (GObject    *object,
       break;
 
     case PROP_DRAGGABLE:
-      g_value_set_bool (value, priv->draggable); 
+      g_value_set_boolean (value, priv->draggable); 
       break;
     
     default:

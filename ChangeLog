@@ -1,3 +1,8 @@
+2009-03-03  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix typo.
+
 2009-03-03  hay veersch,,,  <Please set CHANGE_LOG_EMAIL_ADDRESS or EMAIL_ADDRESS environment variable>
 
 	* src/awn-panel.c:
