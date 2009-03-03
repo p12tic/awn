@@ -1,5 +1,11 @@
 2009-03-03  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-icon-box.c:
+	* src/awn-applet-manager.c:
+	Replace the deprecated gtk_type_class() with g_type_class_peek().
+
+2009-03-03  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-config-client-gconf.c:
 	* libawn/awn-config-client-gkeyfile.c:
 	* libawn/awn-config-client-shared.c:

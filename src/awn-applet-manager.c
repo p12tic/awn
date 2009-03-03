@@ -363,12 +363,12 @@ awn_applet_manager_set_orient (AwnAppletManager *manager,
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
-      priv->klass = GTK_WIDGET_CLASS (gtk_type_class (GTK_TYPE_HBOX));
+      priv->klass = GTK_WIDGET_CLASS (g_type_class_peek (GTK_TYPE_HBOX));
       break;
     
     case AWN_ORIENTATION_RIGHT:
     case AWN_ORIENTATION_LEFT:
-      priv->klass = GTK_WIDGET_CLASS (gtk_type_class (GTK_TYPE_VBOX));
+      priv->klass = GTK_WIDGET_CLASS (g_type_class_peek (GTK_TYPE_VBOX));
       break;
 
     default:

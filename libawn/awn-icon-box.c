@@ -16,6 +16,7 @@
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
  *
  */
+
 #include "awn-icon-box.h"
 #include "awn-icon.h"
 #include "awn-utils.h"
@@ -145,7 +146,7 @@ awn_icon_box_init (AwnIconBox *icon_box)
 
   priv->orient = AWN_ORIENTATION_BOTTOM;
   priv->offset = 0;
-  priv->klass = GTK_WIDGET_CLASS (gtk_type_class (GTK_TYPE_HBOX));
+  priv->klass = GTK_WIDGET_CLASS (g_type_class_peek (GTK_TYPE_HBOX));
 
   g_signal_connect_after (icon_box, "add", 
                           G_CALLBACK (awn_icon_box_add), icon_box);
@@ -231,12 +232,12 @@ awn_icon_box_set_orientation (AwnIconBox     *icon_box,
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
-      priv->klass = GTK_WIDGET_CLASS (gtk_type_class (GTK_TYPE_HBOX));
+      priv->klass = GTK_WIDGET_CLASS (g_type_class_peek (GTK_TYPE_HBOX));
       break;
     
     case AWN_ORIENTATION_RIGHT:
     case AWN_ORIENTATION_LEFT:
-      priv->klass = GTK_WIDGET_CLASS (gtk_type_class (GTK_TYPE_VBOX));
+      priv->klass = GTK_WIDGET_CLASS (g_type_class_peek (GTK_TYPE_VBOX));
       break;
 
     default:
