@@ -1,5 +1,11 @@
 2009-03-03  Michal Hruby <michal.mhr@gmail.com>
 
+	* libawn/awn-dialog.c:
+	A few drawing changes to AwnDialog (arrow should be painted more
+	accurately now).
+
+2009-03-03  Michal Hruby <michal.mhr@gmail.com>
+
 	* libawn/awn-icon-box.c:
 	* src/awn-applet-manager.c:
 	Fix segfault after switch to g_type_class_peek.

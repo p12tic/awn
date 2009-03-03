@@ -68,6 +68,7 @@ struct _AwnDialogPrivate
 
   gulong anchor_configure_id;
   gulong orient_changed_id;
+  guint  idle_id;
 
   gint old_x, old_y, old_w, old_h;
   gint a_old_x, a_old_y, a_old_w, a_old_h;
@@ -130,7 +131,11 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
   const int BORDER = 11;
   const int ROUND_RADIUS = 15;
 
-  if (priv->anchor && priv->anchored)
+  /* FIXME: mhr3: I couldn't get the shape mask to work in non-composited env,
+   *  so I disabled the arrow painting there, anyone feel free to fix it :)
+   */
+  if (priv->anchor && priv->anchored && priv->anchor->window
+      && gtk_widget_is_composited (GTK_WIDGET (dialog)))
   {
     GdkPoint arrow;
     GdkPoint a_center_point = { .x = 0, .y = 0 };
@@ -142,13 +147,11 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
      *   2) get our origin in root window coordinates
      *   3) calc the difference (which is different for each orient)
      */
-    GdkWindow *win = dialog->priv->anchor->window;
-    g_warn_if_fail (win);
-    if (win)
-    {
-      gdk_window_get_origin (win, &a_center_point.x, &a_center_point.y);
-      gdk_drawable_get_size (GDK_DRAWABLE (win), &aw, &ah);
-    }
+    GdkWindow *win = priv->anchor->window;
+
+    gdk_window_get_origin (win, &a_center_point.x, &a_center_point.y);
+    gdk_drawable_get_size (GDK_DRAWABLE (win), &aw, &ah);
+
     a_center_point.x += aw/2;
     a_center_point.y += ah/2;
 
@@ -252,19 +255,21 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   cr = gdk_cairo_create(widget->window);
 
-  if (!cr)
-    return FALSE;
+  g_return_val_if_fail (cr, FALSE);
 
   width = widget->allocation.width;
   height = widget->allocation.height;
+
+  gdk_cairo_region (cr, expose->region);
+  cairo_clip (cr);
 
   /* Clear the background to transparent */
   cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint(cr);
 
   /* draw everything else over transparent background */
-  cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
-  cairo_set_line_width(cr, 2.0);
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_set_line_width (cr, 2.0);
 
   /* background shading */
   cairo_set_source_rgba (cr, priv->g_step_2.red,
@@ -272,8 +277,8 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
                          priv->g_step_2.blue,
                          priv->g_step_2.alpha);
 
-  awn_dialog_paint_border_path(dialog, cr, width, height);
-  cairo_fill_preserve(cr);
+  awn_dialog_paint_border_path (dialog, cr, width, height);
+  cairo_fill_preserve (cr);
 
   cairo_set_source_rgba (cr, priv->border_color.red,
                          priv->border_color.green,
@@ -306,8 +311,7 @@ on_title_expose(GtkWidget       *widget,
 
   cr = gdk_cairo_create(widget->window);
 
-  if (!cr)
-    return FALSE;
+  g_return_val_if_fail (cr, FALSE);
 
   width = widget->allocation.width;
   height = widget->allocation.height;
@@ -416,6 +420,48 @@ _on_title_notify(GObject *dialog, GParamSpec *spec, gpointer null)
 }
 
 static gboolean
+_schedule_redraw (gpointer data)
+{
+  g_return_val_if_fail (AWN_IS_DIALOG (data), FALSE);
+
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (data);
+
+  priv->idle_id = 0;
+
+  gtk_widget_queue_draw (GTK_WIDGET (data));
+
+  return FALSE;
+}
+
+static void
+awn_dialog_set_shape_mask (GtkWidget *widget, gint width, gint height)
+{
+  GdkBitmap *shaped_bitmap;
+  shaped_bitmap = (GdkBitmap*) gdk_pixmap_new (NULL, width, height, 1);
+
+  if (shaped_bitmap)
+  {
+    cairo_t *cr = gdk_cairo_create (shaped_bitmap);
+
+    cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+    cairo_paint (cr);
+
+    cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+    cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
+    awn_dialog_paint_border_path (AWN_DIALOG (widget), cr, width, height);
+
+    cairo_fill (cr);
+
+    cairo_destroy (cr);
+
+    gtk_widget_shape_combine_mask (widget, NULL, 0, 0);
+    gtk_widget_shape_combine_mask (widget, shaped_bitmap, 0, 0);
+
+    g_object_unref (shaped_bitmap);
+  }
+}
+
+static gboolean
 _on_configure_event (GtkWidget *widget, GdkEventConfigure *event)
 {
   g_return_val_if_fail (AWN_IS_DIALOG (widget), FALSE);
@@ -425,7 +471,8 @@ _on_configure_event (GtkWidget *widget, GdkEventConfigure *event)
   if (event->x == priv->old_x && event->y == priv->old_y &&
       event->width == priv->old_w && event->height == priv->old_h)
   {
-    gtk_widget_queue_draw (widget);
+    if (!priv->idle_id)
+      priv->idle_id = g_idle_add (_schedule_redraw, widget);
     return FALSE;
   }
 
@@ -436,8 +483,10 @@ _on_configure_event (GtkWidget *widget, GdkEventConfigure *event)
                                event->width, event->height);
 
   // TODO: input mask / shape mask ?
-
-  gtk_widget_queue_draw (widget);
+  if (!gtk_widget_is_composited (widget))
+  {
+    awn_dialog_set_shape_mask (widget, event->width, event->height);
+  }
 
   return FALSE;
 }
@@ -556,10 +605,7 @@ awn_dialog_set_property (GObject      *object,
       {
         awn_dialog_refresh_position (AWN_DIALOG (object), 0, 0);
       }
-      else
-      {
-        gtk_widget_queue_draw (GTK_WIDGET (object));
-      }
+      gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_ORIENT:
       awn_dialog_set_orientation (AWN_DIALOG (object),
@@ -771,6 +817,8 @@ awn_dialog_init (AwnDialog *dialog)
   g_object_notify (G_OBJECT (dialog), "title");
 }
 
+// FIXME: we're still missing dispose method
+
 static void
 awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
 {
@@ -815,9 +863,21 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
       y = ay - height - OFFSET;
       break;
   }
-  // TODO: fits to screen?
+
+  /* fits to screen? */
+  if (gtk_widget_has_screen (GTK_WIDGET (dialog)))
+  {
+    GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (dialog));
+    gint screen_w = gdk_screen_get_width (screen);
+    gint screen_h = gdk_screen_get_height (screen);
+    if (x + width > screen_w) x -= x + width - screen_w;
+    if (x < 0) x = 0;
+    if (y + height > screen_h) y -= y + height -screen_h;
+    if (y < 0) y = 0;
+  }
 
   gtk_window_move (GTK_WINDOW (dialog), x, y);
+
 }
 
 static gboolean
@@ -831,15 +891,14 @@ _on_anchor_configure_event (GtkWidget *widget, GdkEventConfigure *event,
   if (event->x == priv->a_old_x && event->y == priv->a_old_y &&
       event->width == priv->a_old_w && event->height == priv->a_old_h)
   {
-    gtk_widget_queue_draw (widget);
+    if (!priv->idle_id)
+      priv->idle_id = g_idle_add (_schedule_redraw, dialog);
     return FALSE;
   }
 
   priv->a_old_x = event->x;     priv->a_old_y = event->y;
   priv->a_old_w = event->width; priv->a_old_h = event->height;
   awn_dialog_refresh_position (dialog, 0, 0);
-
-  gtk_widget_queue_draw (GTK_WIDGET (dialog));
 
   return FALSE;
 }
