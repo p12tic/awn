@@ -17,6 +17,8 @@ headers
 #include <libawn/awn-dialog.h>
 #include <libawn/awn-effects.h>
 #include <libawn/awn-enum-types.h>
+#include <libawn/awn-icon.h>
+#include <libawn/awn-themed-icon.h>
 #include <libawn/awn-tooltip.h>
 #include <libawn/awn-desktop-item.h>
 #include <libawn/awn-vfs.h>
@@ -152,6 +154,7 @@ import gtk.VBox as PyGtkVBox_Type
 import gtk.Widget as PyGtkWidget_Type
 import gtk.Window as PyGtkWindow_Type
 import gtk.gdk.Pixbuf as PyGdkPixbuf_Type
+import gtk.DrawingArea as PyGtkDrawingArea_Type
 %%
 ignore-glob
   *_get_type

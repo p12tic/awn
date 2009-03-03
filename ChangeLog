@@ -1,3 +1,11 @@
+2009-03-03  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Updated python bindings. (most of the methods are covered now)
+	* TODO:
+	Small update.
+
 2009-03-03  h4writer <hv1989@gmail.com>
 
 	* TODO:
