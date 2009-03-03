@@ -30,7 +30,6 @@
 #include <string.h>
 
 #include <glib/gstdio.h>
-#include <glib/gutils.h>
 
 /**
  * SECTION: awn-config-client

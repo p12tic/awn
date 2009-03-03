@@ -30,8 +30,6 @@
 
 #include <gconf/gconf-client.h>
 
-#include <glib/gchecksum.h>
-
 #include "libawn/awn-config-client.h"
 #include "libawn/awn-defines.h"
 #include "awn-config-client-shared.c"

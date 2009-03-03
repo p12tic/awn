@@ -26,8 +26,6 @@
 
 #include <string.h>
 
-#include <glib/gchecksum.h>
-
 #ifndef LOCK_SH
 #define   LOCK_SH   1    /* shared lock */
 #define   LOCK_EX   2    /* exclusive lock */

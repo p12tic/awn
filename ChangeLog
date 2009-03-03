@@ -1,5 +1,12 @@
 2009-03-03  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-config-client-gconf.c:
+	* libawn/awn-config-client-gkeyfile.c:
+	* libawn/awn-config-client-shared.c:
+	Remove unnecessary #includes.
+
+2009-03-03  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/awnmodule.c:
 	Remove reference to the now-removed awn-applet-dialog.h.
 
