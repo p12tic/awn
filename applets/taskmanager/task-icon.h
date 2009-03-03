@@ -86,5 +86,8 @@ void            task_icon_refresh_icon    (TaskIcon      *icon);
 
 gboolean        task_icon_refresh_geometry (TaskIcon     *icon);
 
+void            task_icon_set_draggable   (TaskIcon      *icon, 
+                                           gboolean       draggable);
+
 #endif /* _TASK_ICON_H_ */
 

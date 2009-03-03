@@ -62,6 +62,7 @@ struct _TaskManagerPrivate
   GSList   *launcher_paths;
   gboolean  show_all_windows;
   gboolean  only_show_launchers;
+  gboolean  drag_and_drop;
 };
 
 enum
@@ -70,7 +71,8 @@ enum
 
   PROP_SHOW_ALL_WORKSPACES,
   PROP_ONLY_SHOW_LAUNCHERS,
-  PROP_LAUNCHER_PATHS
+  PROP_LAUNCHER_PATHS,
+  PROP_DRAG_AND_DROP
 };
 
 /* Forwards */
@@ -87,6 +89,8 @@ static void task_manager_set_show_only_launchers (TaskManager *manager,
                                                   gboolean     show_only);
 static void task_manager_refresh_launcher_paths  (TaskManager *manager,
                                                   GSList      *list);
+static void task_manager_set_drag_and_drop (TaskManager *manager, 
+                                            gboolean     drag_and_drop);
 
 static void task_manager_orient_changed (AwnApplet *applet, 
                                          AwnOrientation orient);
@@ -124,6 +128,10 @@ task_manager_get_property (GObject    *object,
       g_value_set_pointer (value, manager->priv->launcher_paths);
       break;
 
+    case PROP_DRAG_AND_DROP:
+      g_value_set_boolean (value, manager->priv->drag_and_drop);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -151,6 +159,11 @@ task_manager_set_property (GObject      *object,
     case PROP_LAUNCHER_PATHS:
       task_manager_refresh_launcher_paths (manager, 
                                            g_value_get_pointer (value));
+      break;
+
+    case PROP_DRAG_AND_DROP:
+      task_manager_set_drag_and_drop (manager, 
+                                      g_value_get_boolean (value));
       break;
 
     default:
@@ -191,6 +204,9 @@ task_manager_constructed (GObject *object)
                              AWN_CONFIG_CLIENT_DEFAULT_GROUP, "launcher_paths",
                              AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
                              object, "launcher_paths");
+  awn_config_bridge_bind (bridge, priv->client, 
+                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "drag_and_drop",
+                          object, "drag_and_drop");
 
 }
 
@@ -228,6 +244,13 @@ task_manager_class_init (TaskManagerClass *klass)
                                 "List of paths to launcher desktop files",
                                 G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_LAUNCHER_PATHS, pspec);
+
+  pspec = g_param_spec_boolean ("drag_and_drop",
+                                "drag-and-drop",
+                                "Show windows from all workspaces",
+                                TRUE,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_DRAG_AND_DROP, pspec);
 
   g_type_class_add_private (obj_class, sizeof (TaskManagerPrivate));
 }
@@ -645,12 +668,16 @@ on_window_opened (WnckScreen    *screen,
   priv->icons = g_slist_append (priv->icons, icon);
   g_signal_connect_swapped (icon, "ensure_layout", 
                             G_CALLBACK (ensure_layout), manager);
-  g_signal_connect_swapped (icon, "drag_started", 
-                            G_CALLBACK (drag_started), manager);
-  g_signal_connect_swapped (icon, "drag_ended", 
-                            G_CALLBACK (drag_ended), manager);
-  g_signal_connect_swapped (icon, "drag_move", 
-                            G_CALLBACK (drag_move), manager);
+  if (priv->drag_and_drop)
+  {
+    g_signal_connect_swapped (icon, "drag_started", 
+                              G_CALLBACK (drag_started), manager);
+    g_signal_connect_swapped (icon, "drag_ended", 
+                              G_CALLBACK (drag_ended), manager);
+    g_signal_connect_swapped (icon, "drag_move", 
+                              G_CALLBACK (drag_move), manager);
+  }
+  g_object_set(icon, "draggable", priv->drag_and_drop, NULL);
   g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);  
   
   /* Finally, make sure all is well on the taskbar */
@@ -760,12 +787,16 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
     gtk_widget_show (icon);
 
     priv->icons = g_slist_append (priv->icons, icon);
-    g_signal_connect_swapped (icon, "drag_started", 
-                              G_CALLBACK (drag_started), manager);
-    g_signal_connect_swapped (icon, "drag_ended", 
-                              G_CALLBACK (drag_ended), manager);
-    g_signal_connect_swapped (icon, "drag_move", 
-                              G_CALLBACK (drag_move), manager);
+    if(priv->drag_and_drop)
+    {
+      g_signal_connect_swapped (icon, "drag_started", 
+                                G_CALLBACK (drag_started), manager);
+      g_signal_connect_swapped (icon, "drag_ended", 
+                                G_CALLBACK (drag_ended), manager);
+      g_signal_connect_swapped (icon, "drag_move", 
+                                G_CALLBACK (drag_move), manager);
+    }
+    g_object_set(icon, "draggable", priv->drag_and_drop, NULL);
     g_signal_connect_swapped (icon, "ensure_layout", 
                                G_CALLBACK (ensure_layout), manager);
     g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
@@ -776,6 +807,59 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
 
   /* Finally, make sure all is well on the taskbar */
   ensure_layout (manager);
+}
+
+static void
+task_manager_set_drag_and_drop (TaskManager *manager, 
+                                gboolean     drag_and_drop)
+{
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+
+  TaskManagerPrivate *priv = manager->priv;
+  GSList         *i;
+
+  priv->drag_and_drop = drag_and_drop;
+
+  if(drag_and_drop)
+  {
+    //connect to the dragging signals
+    for (i = priv->icons; i; i = i->next)
+    {
+      TaskIcon *icon = i->data;
+      
+      if (!TASK_IS_ICON (icon))
+        continue;
+
+      g_signal_connect_swapped (icon, "drag_started", 
+                                G_CALLBACK (drag_started), manager);
+      g_signal_connect_swapped (icon, "drag_ended", 
+                                G_CALLBACK (drag_ended), manager);
+      g_signal_connect_swapped (icon, "drag_move", 
+                                G_CALLBACK (drag_move), manager);
+      g_object_set(icon, "draggable", TRUE, NULL);
+    }
+  }
+  else
+  {
+    //disconnect the dragging signals
+    for (i = priv->icons; i; i = i->next)
+    {
+      TaskIcon *icon = i->data;
+      
+      if (!TASK_IS_ICON (icon))
+        continue;
+
+      g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (drag_move), manager);
+      g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (drag_started), manager);
+      g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (drag_ended), manager);
+
+      g_object_set(icon, "draggable", FALSE, NULL);
+    }
+
+    //FIXME: Stop any ongoing move
+  }
+
+  g_debug("%s", drag_and_drop?"D&D is on":"D&D is off");
 }
 
 /* Position Icons through dragging */

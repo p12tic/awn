@@ -41,6 +41,7 @@ struct _TaskIconPrivate
   GSList *windows;
   GdkPixbuf *icon;
 
+  gboolean draggable;
   gboolean gets_dragged;
 
   guint    drag_tag;
@@ -59,7 +60,8 @@ enum
 {
   PROP_0,
 
-  PROP_WINDOW
+  PROP_WINDOW,
+  PROP_DRAGGABLE
 };
 
 enum
@@ -147,6 +149,10 @@ task_icon_get_property (GObject    *object,
       g_value_set_object (value, 
                           priv->windows ? priv->windows->data : NULL); 
       break;
+
+    case PROP_DRAGGABLE:
+      g_value_set_bool (value, priv->draggable); 
+      break;
     
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -165,6 +171,10 @@ task_icon_set_property (GObject      *object,
   {
     case PROP_WINDOW:
       task_icon_append_window (icon, g_value_get_object (value));
+      break;
+
+    case PROP_DRAGGABLE:
+      task_icon_set_draggable (icon, g_value_get_boolean (value));
       break;
 
     default:
@@ -249,6 +259,13 @@ task_icon_class_init (TaskIconClass *klass)
                                TASK_TYPE_WINDOW,
                                G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_WINDOW, pspec);
+
+  pspec = g_param_spec_boolean ("draggable",
+                                "Draggable",
+                                "TaskIcon is draggable?",
+                                TRUE,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_DRAGGABLE, pspec);
 
   /* Install signals */
   _icon_signals[ENSURE_LAYOUT] =
@@ -753,6 +770,36 @@ task_icon_button_press_event (GtkWidget      *widget,
   return FALSE;
 }
 
+/*
+ * Drag and Drop code
+ * - code to drop things on icons
+ * - code to reorder icons through dragging
+ */
+
+void
+task_icon_set_draggable (TaskIcon *icon, gboolean draggable)
+{
+  TaskIconPrivate *priv;
+
+  g_return_if_fail (TASK_IS_ICON (icon));
+  priv = icon->priv;
+
+  priv->draggable = draggable;
+
+  if(draggable)
+  {
+    gtk_drag_source_set (GTK_WIDGET (icon),
+                         GDK_BUTTON1_MASK,
+                         task_icon_type, n_task_icon_type,
+                         GDK_ACTION_LINK);
+  }
+  else
+  {
+    gtk_drag_source_unset(GTK_WIDGET (icon));
+  }
+  //g_debug("draggable:%d", draggable);
+}
+
 static gboolean
 drag_timeout (TaskIcon *icon)
 {
@@ -777,8 +824,10 @@ task_icon_drag_begin (GtkWidget      *widget,
   TaskSettings *settings;
 
   g_return_if_fail (TASK_IS_ICON (widget));
-
   priv = TASK_ICON (widget)->priv;
+
+  if(!priv->draggable) return;
+
   priv->gets_dragged = TRUE;
 
   settings = task_settings_get_default ();
@@ -795,8 +844,10 @@ task_icon_drag_end (GtkWidget      *widget,
   TaskIconPrivate *priv;
 
   g_return_if_fail (TASK_IS_ICON (widget));
-
   priv = TASK_ICON (widget)->priv;
+
+  if(!priv->draggable) return;
+
   priv->gets_dragged = FALSE;
 
   g_signal_emit (TASK_ICON (widget), _icon_signals[DRAG_ENDED], 0);
@@ -810,10 +861,13 @@ task_icon_drag_failed (GtkWidget      *widget,
   TaskIconPrivate *priv;
 
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
-
   priv = TASK_ICON (widget)->priv;
+
+  if(!priv->draggable) return TRUE;
+
   priv->gets_dragged = FALSE;
 
+  //FIXME: use a signal DRAG_FAILED
   g_signal_emit (TASK_ICON (widget), _icon_signals[DRAG_ENDED], 0);
 
   return TRUE;
@@ -838,6 +892,8 @@ task_icon_drag_motion (GtkWidget      *widget,
 
   if (g_strcmp0("awn/task-icon", target_name) == 0)
   {
+    if(!priv->draggable) return FALSE;
+
     g_signal_emit (TASK_ICON (widget), _icon_signals[DRAG_MOVE], 0, x, y);
     return FALSE;
   }
