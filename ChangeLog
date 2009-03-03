@@ -3,7 +3,7 @@
 	* applets/taskmanager/task-icon.c:
 	Fix typo.
 
-2009-03-03  hay veersch,,,  <Please set CHANGE_LOG_EMAIL_ADDRESS or EMAIL_ADDRESS environment variable>
+2009-03-03  hay veersch  <hv1989@gmail.com>
 
 	* src/awn-panel.c:
 	Fixes a bug introduced in r671 (compiz only).
