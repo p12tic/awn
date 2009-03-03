@@ -1,3 +1,13 @@
+2009-03-03  Michal Hruby <michal.mhr@gmail.com>
+
+	reviewed by: moonbeam
+
+	* bindings/python/awn.defs:
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-themed-icon.h:
+	Swapped parameters for awn_themed_icon_get_icon_at_size, and state can
+	be left NULL which means to use current state.
+
 2009-03-03  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/task-icon.c:

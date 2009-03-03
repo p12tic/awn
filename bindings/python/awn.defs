@@ -1147,8 +1147,8 @@
   (c-name "awn_themed_icon_get_icon_at_size")
   (return-type "GdkPixbuf*")
   (parameters
-    '("const-gchar*" "state")
     '("guint" "size")
+    '("const-gchar*" "state" (default "NULL") (null-ok))
   )
 )
 

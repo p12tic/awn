@@ -280,7 +280,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
   /* Find the index of the current state in states */
   for (idx = 0; priv->states[idx]; idx++)
   {
-    if (strcmp (priv->states[idx], state) == 0)
+    if (strcmp (priv->states[idx], state ? state : priv->current_state) == 0)
     {
       const gchar *applet_name;
       const gchar *icon_name;
@@ -600,8 +600,8 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
 
 GdkPixbuf * 
 awn_themed_icon_get_icon_at_size (AwnThemedIcon *icon,
-                                  const gchar   *state,
-                                  guint          size)
+                                  guint          size,
+                                  const gchar   *state)
 {
   g_return_val_if_fail (AWN_IS_THEMED_ICON (icon), NULL);
   

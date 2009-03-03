@@ -94,8 +94,8 @@ void          awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
                                                   const gchar   *theme_name);
 
 GdkPixbuf *   awn_themed_icon_get_icon_at_size   (AwnThemedIcon *icon,
-                                                  const gchar   *state,
-                                                  guint          size);
+                                                  guint          size,
+                                                  const gchar   *state);
 
 void          awn_themed_icon_clear_icons        (AwnThemedIcon *icon,
                                                   gint           scope);
