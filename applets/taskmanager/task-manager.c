@@ -862,7 +862,10 @@ task_manager_set_drag_and_drop (TaskManager *manager,
   g_debug("%s", drag_and_drop?"D&D is on":"D&D is off");
 }
 
-/* Position Icons through dragging */
+/*
+ * Position Icons through dragging
+ */
+
 static void drag_started(TaskManager *manager, TaskIcon *icon)
 {
   TaskManagerPrivate *priv;

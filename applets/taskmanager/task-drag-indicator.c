@@ -98,7 +98,7 @@ task_drag_indicator_init (TaskDragIndicator *drag_indicator)
   /* D&D accept dragged objs */
   gtk_widget_add_events (GTK_WIDGET (drag_indicator), GDK_ALL_EVENTS_MASK);
   gtk_drag_dest_set (GTK_WIDGET (drag_indicator), 
-                     GTK_DEST_DEFAULT_MOTION,
+                     GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
                      drop_types, n_drop_types,
                      GDK_ACTION_MOVE);
   /*gtk_drag_dest_add_uri_targets (GTK_WIDGET (icon));

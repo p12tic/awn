@@ -2,6 +2,13 @@
 
 	* applets/taskmanager/task-drag-indicator.c:
 	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-manager.c:
+	Various small fixes to D&D
+
+2009-03-04  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
 	Use GDK_ACTION_MOVE instead of GDK_ACTION_LINK
 
 2009-03-04  Michal Hruby <michal.mhr@gmail.com>

@@ -324,7 +324,7 @@ task_icon_init (TaskIcon *icon)
   /* D&D accept dragged objs */
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
   gtk_drag_dest_set (GTK_WIDGET (icon), 
-                     GTK_DEST_DEFAULT_DROP,
+                     GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
                      drop_types, n_drop_types,
                      GDK_ACTION_COPY | GDK_ACTION_MOVE);
   gtk_drag_dest_add_uri_targets (GTK_WIDGET (icon));
@@ -721,7 +721,6 @@ task_icon_button_release_event (GtkWidget      *widget,
   {
     if(priv->gets_dragged)
     {
-      task_icon_drag_end (widget, NULL);
       return FALSE;
     }
 
@@ -791,7 +790,7 @@ task_icon_set_draggable (TaskIcon *icon, gboolean draggable)
     gtk_drag_source_set (GTK_WIDGET (icon),
                          GDK_BUTTON1_MASK,
                          task_icon_type, n_task_icon_type,
-                         GDK_ACTION_LINK);
+                         GDK_ACTION_MOVE);
   }
   else
   {
@@ -847,6 +846,7 @@ task_icon_drag_end (GtkWidget      *widget,
   priv = TASK_ICON (widget)->priv;
 
   if(!priv->draggable) return;
+  if(!priv->gets_dragged) return;
 
   priv->gets_dragged = FALSE;
 
@@ -864,6 +864,7 @@ task_icon_drag_failed (GtkWidget      *widget,
   priv = TASK_ICON (widget)->priv;
 
   if(!priv->draggable) return TRUE;
+  if(!priv->gets_dragged) return TRUE;
 
   priv->gets_dragged = FALSE;
 
