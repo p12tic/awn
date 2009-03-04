@@ -901,6 +901,12 @@
   )
 )
 
+(define-method get_tooltip
+  (of-object "AwnIcon")
+  (c-name "awn_icon_get_tooltip")
+  (return-type "AwnTooltip*")
+)
+
 (define-method set_tooltip_text
   (of-object "AwnIcon")
   (c-name "awn_icon_set_tooltip_text")

@@ -97,6 +97,8 @@ void          awn_icon_set_from_surface (AwnIcon         *icon,
 void          awn_icon_set_custom_paint (AwnIcon *icon,
                                          gint width, gint height);
 
+AwnTooltip*   awn_icon_get_tooltip      (AwnIcon *icon);
+
 void          awn_icon_set_tooltip_text (AwnIcon     *icon,
                                          const gchar *text);
 

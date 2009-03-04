@@ -467,6 +467,14 @@ awn_icon_get_effects (AwnIcon *icon)
   return icon->priv->effects;
 }
 
+AwnTooltip *
+awn_icon_get_tooltip (AwnIcon *icon)
+{
+  g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
+
+  return AWN_TOOLTIP(icon->priv->tooltip);
+}
+
 /*
  * ICON SETTING FUNCTIONS 
  */
