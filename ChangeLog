@@ -1,3 +1,10 @@
+2009-03-04  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	reviewed by: Julien Lavergne <julien.lavergne@gmail.com>
+
+	* debian/control:
+	Update dependencies.
+
 2009-03-03  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	patch by: foolish (Fedora) and AdamW (RedHat/Mandriva) on IRC (freenode)
