@@ -324,9 +324,9 @@ task_icon_init (TaskIcon *icon)
   /* D&D accept dragged objs */
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
   gtk_drag_dest_set (GTK_WIDGET (icon), 
-                     GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
+                     GTK_DEST_DEFAULT_DROP,
                      drop_types, n_drop_types,
-                     GDK_ACTION_COPY|GDK_ACTION_LINK);
+                     GDK_ACTION_COPY | GDK_ACTION_MOVE);
   gtk_drag_dest_add_uri_targets (GTK_WIDGET (icon));
   gtk_drag_dest_add_text_targets (GTK_WIDGET (icon));
 
@@ -334,7 +334,7 @@ task_icon_init (TaskIcon *icon)
   gtk_drag_source_set (GTK_WIDGET (icon),
                        GDK_BUTTON1_MASK,
                        task_icon_type, n_task_icon_type,
-                       GDK_ACTION_LINK);
+                       GDK_ACTION_MOVE);
   g_signal_connect (G_OBJECT (icon), "drag-failed",
                     G_CALLBACK (task_icon_drag_failed), NULL);
 
