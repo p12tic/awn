@@ -72,6 +72,7 @@ struct _AwnDialogPrivate
 
   gint old_x, old_y, old_w, old_h;
   gint a_old_x, a_old_y, a_old_w, a_old_h;
+  gint origin_x, origin_y;
 };
 
 enum
@@ -841,6 +842,9 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
   gdk_window_get_origin (win, &ax, &ay);
   gdk_drawable_get_size (GDK_DRAWABLE (win), &aw, &ah);
 
+  priv->origin_x = ax;
+  priv->origin_y = ay;
+
   const int OFFSET = priv->window_offset;
 
   switch (priv->orient)
@@ -888,8 +892,25 @@ _on_anchor_configure_event (GtkWidget *widget, GdkEventConfigure *event,
 
   AwnDialogPrivate *priv = dialog->priv;
 
-  if (event->x == priv->a_old_x && event->y == priv->a_old_y &&
-      event->width == priv->a_old_w && event->height == priv->a_old_h)
+  if (!GTK_WIDGET_MAPPED (widget)) return FALSE;
+
+  gboolean origin_changed = FALSE;
+
+  if (GTK_IS_PLUG (widget))
+  {
+    gint x,y;
+    gdk_window_get_origin (widget->window, &x, &y);
+    if (priv->origin_x != x || priv->origin_y != y)
+    {
+      priv->origin_x = x;
+      priv->origin_y = y;
+      origin_changed = TRUE;
+    }
+  }
+
+  if (origin_changed == FALSE
+      && event->x == priv->a_old_x && event->y == priv->a_old_y
+      && event->width == priv->a_old_w && event->height == priv->a_old_h)
   {
     if (!priv->idle_id)
       priv->idle_id = g_idle_add (_schedule_redraw, dialog);

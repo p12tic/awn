@@ -1,3 +1,12 @@
+2009-03-05  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-dialog.c:
+	* src/awn-applet-proxy.c:
+	Send an XClientMessage to notify the applet that it's position
+	changed.
+	AwnDialog now updates properly everytime its needed.
+
 2009-03-04  Michal Hruby <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:

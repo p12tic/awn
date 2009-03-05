@@ -128,6 +128,32 @@ on_destroy_applet (DBusGProxy *proxy, gchar *id, AwnApplet *applet)
     on_delete_notify (NULL, applet);
 }
 
+static GdkFilterReturn
+on_client_message (GdkXEvent *xevent, GdkEvent *event, gpointer data)
+{
+  g_return_val_if_fail (AWN_IS_APPLET (data), GDK_FILTER_CONTINUE);
+
+  AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (data);
+
+  if (priv->panel_window == NULL) return GDK_FILTER_CONTINUE;
+
+  /* We're ignoring the actual [x,y] params in the message, FIXME? */
+
+  // FIXME: emit origin-changed signal instead
+
+  event->type = GDK_CONFIGURE;
+  event->configure.window = priv->panel_window;
+  gdk_window_get_position (priv->panel_window,
+                           &event->configure.x, &event->configure.y);
+  gdk_drawable_get_size (GDK_DRAWABLE (priv->panel_window),
+                         &event->configure.width,
+                         &event->configure.height);
+
+  g_signal_emit (data, _applet_signals[PANEL_CONFIGURE], 0, event);
+
+  return GDK_FILTER_REMOVE;
+}
+
 /*  GOBJECT STUFF */
 
 static void
@@ -415,6 +441,12 @@ awn_applet_init (AwnApplet *applet)
   g_signal_connect (applet, "embedded",
                     G_CALLBACK (awn_applet_plug_embedded), NULL);
   awn_utils_ensure_tranparent_bg (GTK_WIDGET (applet));
+
+  GdkAtom atom = gdk_atom_intern_static_string ("_AWN_APPLET_POS_CHANGE");
+  gdk_display_add_client_message_filter (gdk_display_get_default (),
+                                         atom,
+                                         on_client_message,
+                                         applet);
 }
 
 AwnApplet *

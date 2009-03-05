@@ -46,6 +46,8 @@ struct _AwnAppletProxyPrivate
   gboolean running;
   gboolean crashed;
   GtkWidget *throbber;
+
+  gint old_x, old_y;
 };
 
 enum
@@ -71,6 +73,7 @@ static guint _proxy_signals[LAST_SIGNAL] = { 0 };
  */
 static void     on_plug_added   (AwnAppletProxy *proxy, gpointer user_data);
 static gboolean on_plug_removed (AwnAppletProxy *proxy, gpointer user_data);
+static void     on_size_alloc   (AwnAppletProxy *proxy, GtkAllocation *a);
 static void     on_child_exit   (GPid pid, gint status, gpointer user_data);
 
 /*
@@ -283,6 +286,7 @@ awn_applet_proxy_init (AwnAppletProxy *proxy)
   /* Connect to the socket signals */
   g_signal_connect (proxy, "plug-added", G_CALLBACK (on_plug_added), NULL);
   g_signal_connect (proxy, "plug-removed", G_CALLBACK (on_plug_removed), NULL);
+  g_signal_connect (proxy, "size-allocate", G_CALLBACK (on_size_alloc), NULL);
   awn_utils_ensure_tranparent_bg (GTK_WIDGET (proxy));
   /* Rest is for the crash notification window */
   priv->running = TRUE;
@@ -360,6 +364,49 @@ on_plug_removed (AwnAppletProxy *proxy, gpointer user_data)
   gtk_widget_show (priv->throbber);
 
   return TRUE;
+}
+
+/* FIXME: should we schedule the event or not?
+static gboolean
+schedule_send_client_event (gpointer data)
+{
+  GdkEvent *event = (GdkEvent*) data;
+
+  gdk_event_send_client_message (event, GDK_WINDOW_XID (event->client.window));
+
+  gdk_event_free (event);
+
+  return FALSE;
+}
+*/
+static void on_size_alloc (AwnAppletProxy *proxy, GtkAllocation *alloc)
+{
+  AwnAppletProxyPrivate *priv;
+
+  g_return_if_fail (AWN_IS_APPLET_PROXY (proxy));
+  priv = proxy->priv;
+
+  if (alloc->x == priv->old_x && alloc->y == priv->old_y) return;
+
+  priv->old_x = alloc->y;
+  priv->old_y = alloc->y;
+
+  GdkWindow *plug_win = gtk_socket_get_plug_window (GTK_SOCKET(proxy));
+  if (plug_win)
+  {
+    GdkAtom msg_type = gdk_atom_intern("_AWN_APPLET_POS_CHANGE", FALSE);
+    GdkEvent *event = gdk_event_new (GDK_CLIENT_EVENT);
+    event->client.window = g_object_ref (plug_win);
+    event->client.data_format = 32;
+    event->client.message_type = msg_type;
+    event->client.data.l[0] = alloc->x;
+    event->client.data.l[1] = alloc->y;
+
+    gdk_event_send_client_message (event, GDK_WINDOW_XID (plug_win));
+
+    gdk_event_free (event);
+    /* g_idle_add (schedule_send_client_event, event); */
+  }
 }
 
 static void
