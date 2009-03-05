@@ -66,6 +66,7 @@ struct _TaskIconClass
   void (*drag_started) (TaskIcon *icon);
   void (*drag_ended) (TaskIcon *icon);
   void (*drag_move) (TaskIcon *icon);
+  void (*drag_fails) (TaskIcon *icon);
 };
 
 GType           task_icon_get_type        (void) G_GNUC_CONST;

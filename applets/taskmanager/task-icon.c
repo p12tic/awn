@@ -70,6 +70,7 @@ enum
   DRAG_STARTED,
   DRAG_ENDED,
   DRAG_MOVE,
+  DRAG_FAILS,
 
   LAST_SIGNAL
 };
@@ -129,7 +130,6 @@ static void      task_icon_drag_data_get        (GtkWidget *widget,
                                                  GtkSelectionData *selection_data,
                                                  guint target_type, 
                                                  guint time);
-
 
 static gboolean _update_geometry(GtkWidget *widget);
 
@@ -301,6 +301,14 @@ task_icon_class_init (TaskIconClass *klass)
 			      gtk_marshal_NONE__INT_INT, 
 			      G_TYPE_NONE, 2,
             G_TYPE_INT, G_TYPE_INT);
+  _icon_signals[DRAG_FAILS] =
+		g_signal_new ("drag-fails",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskIconClass, drag_fails),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID, 
+			      G_TYPE_NONE, 0);
 
   g_type_class_add_private (obj_class, sizeof (TaskIconPrivate));
 }
@@ -868,8 +876,7 @@ task_icon_drag_failed (GtkWidget      *widget,
 
   priv->gets_dragged = FALSE;
 
-  //FIXME: use a signal DRAG_FAILED
-  g_signal_emit (TASK_ICON (widget), _icon_signals[DRAG_ENDED], 0);
+  g_signal_emit (TASK_ICON (widget), _icon_signals[DRAG_FAILS], 0);
 
   return TRUE;
 }

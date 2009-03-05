@@ -48,6 +48,8 @@ struct _TaskManagerPrivate
   TaskSettings    *settings;
   WnckScreen      *screen;
 
+
+  /* Dragging properties */
   TaskIcon          *dragged_icon;
   TaskDragIndicator *drag_indicator;
 
@@ -96,6 +98,14 @@ static void task_manager_orient_changed (AwnApplet *applet,
                                          AwnOrientation orient);
 static void task_manager_size_changed   (AwnApplet *applet,
                                          gint       size);
+
+/* D&D Forwards */
+static void _drag_add_signals (TaskManager *manager, 
+                               TaskIcon *icon);
+static void _drag_remove_signals (TaskManager *manager, 
+                                  TaskIcon *icon);
+static void drag_started (TaskManager *manager, 
+                          TaskIcon *icon);
 static void drag_started (TaskManager *manager, 
                           TaskIcon *icon);
 static void drag_ended   (TaskManager *manager, 
@@ -103,6 +113,8 @@ static void drag_ended   (TaskManager *manager,
 static void drag_move    (TaskManager *manager,
                           gint x,
                           gint y,
+                          TaskIcon *icon);
+static void drag_fails   (TaskManager *manager,
                           TaskIcon *icon);
 
 /* GObject stuff */
@@ -668,16 +680,11 @@ on_window_opened (WnckScreen    *screen,
   priv->icons = g_slist_append (priv->icons, icon);
   g_signal_connect_swapped (icon, "ensure_layout", 
                             G_CALLBACK (ensure_layout), manager);
-  if (priv->drag_and_drop)
-  {
-    g_signal_connect_swapped (icon, "drag_started", 
-                              G_CALLBACK (drag_started), manager);
-    g_signal_connect_swapped (icon, "drag_ended", 
-                              G_CALLBACK (drag_ended), manager);
-    g_signal_connect_swapped (icon, "drag_move", 
-                              G_CALLBACK (drag_move), manager);
-  }
-  g_object_set(icon, "draggable", priv->drag_and_drop, NULL);
+
+  /* reordening through D&D */
+  if(priv->drag_and_drop)
+    _drag_add_signals(manager, TASK_ICON(icon));
+
   g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);  
   
   /* Finally, make sure all is well on the taskbar */
@@ -787,19 +794,14 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
     gtk_widget_show (icon);
 
     priv->icons = g_slist_append (priv->icons, icon);
-    if(priv->drag_and_drop)
-    {
-      g_signal_connect_swapped (icon, "drag_started", 
-                                G_CALLBACK (drag_started), manager);
-      g_signal_connect_swapped (icon, "drag_ended", 
-                                G_CALLBACK (drag_ended), manager);
-      g_signal_connect_swapped (icon, "drag_move", 
-                                G_CALLBACK (drag_move), manager);
-    }
-    g_object_set(icon, "draggable", priv->drag_and_drop, NULL);
     g_signal_connect_swapped (icon, "ensure_layout", 
                                G_CALLBACK (ensure_layout), manager);
     g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
+
+    /* reordening through D&D */
+    if(priv->drag_and_drop)
+      _drag_add_signals(manager, TASK_ICON(icon));
+
   }
   for (d = list; d; d = d->next)
     g_free (d->data);
@@ -827,16 +829,9 @@ task_manager_set_drag_and_drop (TaskManager *manager,
     {
       TaskIcon *icon = i->data;
       
-      if (!TASK_IS_ICON (icon))
-        continue;
+      if (!TASK_IS_ICON (icon)) continue;
 
-      g_signal_connect_swapped (icon, "drag_started", 
-                                G_CALLBACK (drag_started), manager);
-      g_signal_connect_swapped (icon, "drag_ended", 
-                                G_CALLBACK (drag_ended), manager);
-      g_signal_connect_swapped (icon, "drag_move", 
-                                G_CALLBACK (drag_move), manager);
-      g_object_set(icon, "draggable", TRUE, NULL);
+      _drag_add_signals (manager, icon);
     }
   }
   else
@@ -846,14 +841,9 @@ task_manager_set_drag_and_drop (TaskManager *manager,
     {
       TaskIcon *icon = i->data;
       
-      if (!TASK_IS_ICON (icon))
-        continue;
+      if (!TASK_IS_ICON (icon)) continue;
 
-      g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (drag_move), manager);
-      g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (drag_started), manager);
-      g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (drag_ended), manager);
-
-      g_object_set(icon, "draggable", FALSE, NULL);
+      _drag_remove_signals (manager, icon);
     }
 
     //FIXME: Stop any ongoing move
@@ -903,58 +893,62 @@ static void drag_ended(TaskManager *manager, TaskIcon *icon)
 
   priv->dragged_icon = NULL;
 
-  if( !GTK_WIDGET_VISIBLE(priv->drag_indicator) )
+  /* Move the AwnIcon to the dropped place */
+  childs = gtk_container_get_children (GTK_CONTAINER(priv->box));
+  move_to = g_list_index (childs, GTK_WIDGET (priv->drag_indicator));
+  gtk_box_reorder_child (GTK_BOX (priv->box), GTK_WIDGET (icon), move_to);
+
+  /* Hide the DragIndicator and show AwnIcon again */
+  gtk_widget_hide (GTK_WIDGET (priv->drag_indicator));
+  gtk_widget_show (GTK_WIDGET (icon));
+
+  /* If workspace isn't the same as the active one,
+     it means you switched to another workspace when dragging.
+     This means you want the window on that screen.
+     FIXME: Make a way to get the WnckWindow out of AwnIcon
+   */
+  /*screen = wnck_window_get_screen(priv->window);
+  active_workspace = wnck_screen_get_active_workspace (screen);
+
+  if (active_workspace && !wnck_window_is_on_workspace(priv->window, active_workspace))
+    wnck_window_move_to_workspace(priv->window, active_workspace);
+  */
+
+
+  /* Update the position in the config (Gconf) if the AwnIcon is a launcher.
+     FIXME: support multiple launchers in one AwnIcon?
+   */
+  if (task_icon_is_launcher (icon))
   {
-    g_print("Put Icon into the hovering icon\n");
-    /* PUT INTO THE TASKICON */
-  }
-  /* TODO: FOR NOW ALWAYS ACT LIKE IT WAS ADDED BEFORE OR AFTER
-   * AND NOT INTO A AWNICON. WHEN AWNICON SUPPORTS MULTIPLE WINDOWS
-   * THIS WILL GET FIXED*/
-
-  /*else
-  {*/
+    /* get the updated list */
     childs = gtk_container_get_children (GTK_CONTAINER(priv->box));
-    move_to = g_list_index (childs, GTK_WIDGET (priv->drag_indicator));
-    gtk_box_reorder_child (GTK_BOX (priv->box), GTK_WIDGET (icon), move_to);
-
-    gtk_widget_hide (GTK_WIDGET (priv->drag_indicator));
-    gtk_widget_show (GTK_WIDGET (icon));
-
-    /* If it is a launcher the position in config should be adjusted too. */
-    if (task_icon_is_launcher (icon))
+    while(childs)
     {
-      /* get the updated list */
-      childs = gtk_container_get_children (GTK_CONTAINER(priv->box));
-      while(childs)
+      if( TASK_IS_ICON(childs->data) && task_icon_is_launcher (TASK_ICON (childs->data)))
       {
-        if( TASK_IS_ICON(childs->data) && task_icon_is_launcher (TASK_ICON (childs->data)))
-        {
-          launcher = task_icon_get_launcher (TASK_ICON (childs->data));
-          launcher_path = g_strdup (task_launcher_get_desktop_path (launcher));
-          launchers = g_slist_prepend (launchers, launcher_path);
-        }
-        childs = childs->next;
+        launcher = task_icon_get_launcher (TASK_ICON (childs->data));
+        launcher_path = g_strdup (task_launcher_get_desktop_path (launcher));
+        launchers = g_slist_prepend (launchers, launcher_path);
       }
-      launchers = g_slist_reverse(launchers);
-
-      awn_config_client_set_list (priv->client, 
-                                  AWN_CONFIG_CLIENT_DEFAULT_GROUP, 
-                                  "launcher_paths", 
-                                  AWN_CONFIG_CLIENT_LIST_TYPE_STRING, 
-                                  launchers, 
-                                  &err);
-      for (d = launchers; d; d = d->next)
-        g_free (d->data);
-      g_slist_free (launchers);
-
-      if (err) {
-	      g_warning ("Error: %s", err->message);
-	      return;
-      }
+      childs = childs->next;
     }
-  /*}*/
+    launchers = g_slist_reverse(launchers);
 
+    awn_config_client_set_list (priv->client, 
+                                AWN_CONFIG_CLIENT_DEFAULT_GROUP, 
+                                "launcher_paths", 
+                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING, 
+                                launchers, 
+                                &err);
+    for (d = launchers; d; d = d->next)
+      g_free (d->data);
+    g_slist_free (launchers);
+
+    if (err) {
+      g_warning ("Error: %s", err->message);
+      return;
+    }
+  }
 }
 
 static void drag_move(TaskManager *manager, gint x, gint y, TaskIcon *icon)
@@ -970,9 +964,8 @@ static void drag_move(TaskManager *manager, gint x, gint y, TaskIcon *icon)
 
   priv = TASK_MANAGER_GET_PRIVATE (manager);
 
-  // dragging already ended
-  if(!priv->dragged_icon)
-    return;
+  /* dragging already ended */
+  if(!priv->dragged_icon) return;
 
   orient = awn_applet_get_orientation (AWN_APPLET(manager));
   size = awn_applet_get_size (AWN_APPLET(manager));
@@ -1017,4 +1010,43 @@ static void drag_move(TaskManager *manager, gint x, gint y, TaskIcon *icon)
   }
 }
 
+static void drag_fails(TaskManager *manager, TaskIcon *icon)
+{
+  g_return_if_fail (TASK_IS_MANAGER (manager));
 
+  TaskManagerPrivate *priv = TASK_MANAGER_GET_PRIVATE (manager);
+
+  if(!priv->dragged_icon) return;
+
+  gtk_widget_hide (GTK_WIDGET (priv->drag_indicator));
+  gtk_widget_show (GTK_WIDGET (priv->dragged_icon));
+  priv->dragged_icon = NULL;
+}
+
+static void 
+_drag_add_signals (TaskManager *manager, TaskIcon *icon)
+{
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  g_return_if_fail (TASK_IS_ICON (icon));
+
+  g_signal_connect_swapped (icon, "drag_started", G_CALLBACK (drag_started), manager);
+  g_signal_connect_swapped (icon, "drag_ended",   G_CALLBACK (drag_ended),   manager);
+  g_signal_connect_swapped (icon, "drag_move",    G_CALLBACK (drag_move),    manager);
+  g_signal_connect_swapped (icon, "drag_fails",   G_CALLBACK (drag_fails),   manager);
+
+  g_object_set(icon, "draggable", TRUE, NULL);
+}
+
+static void 
+_drag_remove_signals (TaskManager *manager, TaskIcon *icon)
+{
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  g_return_if_fail (TASK_IS_ICON (icon));
+
+  g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (drag_move), manager);
+  g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (drag_started), manager);
+  g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (drag_ended), manager);
+  g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (drag_fails), manager);
+
+  g_object_set(icon, "draggable", FALSE, NULL);
+}
