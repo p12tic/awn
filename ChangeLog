@@ -1,3 +1,13 @@
+2009-03-05  h4writer <hv1989@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	* data/awn.schema-ini.in:
+	* src/Makefile.am:
+	* src/awn-background-curves.c:
+	* src/awn-background-curves.h:
+	* src/awn-panel.c:
+	Initial commit of the curved variant of the bar
+
 2009-03-05   h4writer <hv1989@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

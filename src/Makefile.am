@@ -35,6 +35,8 @@ avant_window_navigator_SOURCES =	\
 	awn-background-flat.h \
 	awn-background-3d.c \
 	awn-background-3d.h \
+	awn-background-curves.c \
+	awn-background-curves.h \
 	awn-defines.h \
 	$(builddir)/awn-marshal.c \
 	$(builddir)/awn-marshal.h \

@@ -49,7 +49,7 @@ description = Auto hides the dock when the cursor is not on the dock.
 [panel/style]
 type = int
 default = 1
-description = The style of the bar, none=0, flat bar=1, 3d bar=2
+description = The style of the bar, none=0, flat bar=1, 3d bar=2, curved bar=3
 
 [theme/gstep1]
 type = string

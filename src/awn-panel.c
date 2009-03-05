@@ -35,6 +35,7 @@
 #include "awn-background.h"
 #include "awn-background-flat.h"
 #include "awn-background-3d.h"
+#include "awn-background-curves.h"
 #include "awn-defines.h"
 #include "awn-marshal.h"
 #include "awn-monitor.h"
@@ -127,6 +128,7 @@ enum
   STYLE_NONE = 0,
   STYLE_FLAT,
   STYLE_3D,
+  STYLE_CURVES,
 
   STYLE_LAST
 };
@@ -1650,6 +1652,9 @@ awn_panel_set_style (AwnPanel *panel, gint style)
       break;
     case STYLE_3D:
       priv->bg = awn_background_3d_new (priv->client, AWN_PANEL (panel));
+      break;
+    case STYLE_CURVES:
+      priv->bg = awn_background_curves_new (priv->client, AWN_PANEL (panel));
       break;
     default:
       g_assert_not_reached();
