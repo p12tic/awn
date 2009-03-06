@@ -110,6 +110,8 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
+  if (gtk_widget_is_composited (bg->panel) == FALSE) goto paint_lines;
+
   /* Draw the background */
   pat = cairo_pattern_create_linear (0, 0, 0, height);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 
@@ -146,6 +148,8 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_fill (cr);
   cairo_pattern_destroy (pat);
 
+  paint_lines:
+
   /* Internal border */
   cairo_set_source_rgba (cr, bg->hilight_color.red,
                              bg->hilight_color.green,
@@ -172,7 +176,7 @@ void awn_background_flat_padding_request (AwnBackground *bg,
                                           guint *padding_right)
 {
   #define SIDE_PADDING 6
-  #define TOP_PADDING 1
+  #define TOP_PADDING 2
   switch (orient)
   {
     case AWN_ORIENTATION_TOP:

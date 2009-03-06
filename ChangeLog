@@ -1,3 +1,9 @@
+2009-03-07  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background-flat.c:
+	* src/awn-panel.c:
+	Allow background border painting in non-composited mode.
+
 2009-03-06  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-dialog.c:

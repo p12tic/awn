@@ -169,9 +169,9 @@ static gboolean on_window_configure         (GtkWidget         *panel,
                                              GdkEventConfigure *event);
 static gboolean position_window             (AwnPanel *panel);
 
-/*static gboolean on_eb_expose                (GtkWidget      *eb, 
+static gboolean on_eb_expose                (GtkWidget      *eb, 
                                              GdkEventExpose *event,
-                                             GtkWidget      *child);*/
+                                             AwnPanel       *panel);
 static gboolean awn_panel_expose            (GtkWidget      *widget, 
                                              GdkEventExpose *event);
 static void     awn_panel_size_request      (GtkWidget *widget,
@@ -451,19 +451,19 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
   {
     case AWN_ORIENTATION_TOP:
       priv->extra_padding = bottom + top;
-      bottom = 0;
+      if (priv->composited) bottom = 0;
       break;
     case AWN_ORIENTATION_BOTTOM:
       priv->extra_padding = bottom + top;
-      top = 0;
+      if (priv->composited) top = 0;
       break;
     case AWN_ORIENTATION_LEFT:
       priv->extra_padding = left + right;
-      right = 0;
+      if (priv->composited) right = 0;
       break;
     case AWN_ORIENTATION_RIGHT:
       priv->extra_padding = left + right;
-      left = 0;
+      if (priv->composited) left = 0;
       break;
   }
 
@@ -1017,8 +1017,8 @@ awn_panel_init (AwnPanel *panel)
   gtk_container_add (GTK_CONTAINER (priv->eventbox), priv->alignment);
   gtk_widget_show (priv->alignment);
 
-  /*g_signal_connect (priv->eventbox, "expose-event",
-                    G_CALLBACK (on_eb_expose), priv->alignment);*/
+  g_signal_connect (priv->eventbox, "expose-event",
+                    G_CALLBACK (on_eb_expose), panel);
   awn_utils_ensure_transparent_bg (priv->eventbox);
 
   g_signal_connect (panel, "enter-notify-event", 
@@ -1090,6 +1090,8 @@ on_composited_changed (GtkWidget *widget, gpointer data)
     gtk_widget_input_shape_combine_mask (widget, NULL, 0, 0);
     gdk_window_set_composited (priv->eventbox->window, priv->composited);
   }
+
+  awn_panel_refresh_padding (AWN_PANEL (widget), NULL);
 /*
   gtk_widget_destroy (GTK_WIDGET (panel));
 
@@ -1284,6 +1286,32 @@ on_geometry_changed   (AwnMonitor *monitor,
  * PANEL BACKGROUND & EMBEDDING CODE
  */
 
+static gboolean
+on_eb_expose (GtkWidget *eb, GdkEventExpose *event, AwnPanel *panel)
+{
+  cairo_t         *cr;
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->composited) return FALSE;
+
+  /* Get our ctx */
+  cr = gdk_cairo_create (eb->window);
+  g_return_val_if_fail (cr, FALSE);
+
+  /* Clip */
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
+  if (priv->bg)
+  {
+    GdkRectangle area;
+    awn_panel_get_draw_rect (panel, &area, 0, 0);
+    awn_background_draw (priv->bg, cr, priv->orient, &area);
+  }
+
+  return FALSE;
+}
+
 /*
  * Draw the panel 
  */
@@ -1293,9 +1321,19 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   AwnPanelPrivate *priv;
   cairo_t         *cr;
   GtkWidget       *child;
-  
+
   g_return_val_if_fail (AWN_IS_PANEL (widget), FALSE);
   priv = AWN_PANEL (widget)->priv;
+
+  if (priv->composited == FALSE)
+  {
+    /* we dont need to paint anything, it will be overlayed by the eventbox */
+    child = gtk_bin_get_child (GTK_BIN (widget));
+    if (!GTK_IS_WIDGET (child))
+      return TRUE;
+
+    goto propagate;
+  }
 
   /* Get our ctx */
   cr = gdk_cairo_create (widget->window);
@@ -1309,9 +1347,9 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   gdk_cairo_region (cr, event->region);
   cairo_clip (cr);
 
-  /* The actual drawing of the background */
+  /* The actual drawing of the background 
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_paint (cr);
+  cairo_paint (cr); */
 
   if (priv->bg)
   {
@@ -1386,6 +1424,8 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     g_object_unref (gc);
   }
 #endif
+
+  propagate:
 
   gtk_container_propagate_expose (GTK_CONTAINER (widget),
                                   child,
