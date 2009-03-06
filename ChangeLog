@@ -1,5 +1,10 @@
 2009-03-06  Michal Hruby <michal.mhr@gmail.com>
 
+	* libawn/awn-tooltip.c:
+	Added "smart-behavior" and "hide-on-click" properties. (ON by default)
+
+2009-03-06  Michal Hruby <michal.mhr@gmail.com>
+
 	* libawn/awn-applet.c:
 	* libawn/awn-icon-box.c:
 	* src/awn-applet-manager.c:
