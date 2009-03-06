@@ -246,11 +246,17 @@ awn_icon_box_set_orientation (AwnIconBox     *icon_box,
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
+#if GTK_CHECK_VERSION(2, 15, 0)
+      gtk_orientable_set_orientation (GTK_ORIENTABLE (icon_box), GTK_ORIENTATION_HORIZONTAL);
+#endif
       priv->klass = GTK_WIDGET_CLASS (g_type_class_ref (GTK_TYPE_HBOX));
       break;
     
     case AWN_ORIENTATION_RIGHT:
     case AWN_ORIENTATION_LEFT:
+#if GTK_CHECK_VERSION(2, 15, 0)
+      gtk_orientable_set_orientation (GTK_ORIENTABLE (icon_box), GTK_ORIENTATION_VERTICAL);
+#endif
       priv->klass = GTK_WIDGET_CLASS (g_type_class_ref (GTK_TYPE_VBOX));
       break;
 

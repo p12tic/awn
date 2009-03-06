@@ -35,6 +35,7 @@
 #include "awn-defines.h"
 #include "awn-applet.h"
 #include "awn-utils.h"
+#include "awn-enum-types.h"
 
 G_DEFINE_TYPE (AwnApplet, awn_applet, GTK_TYPE_PLUG)
 
@@ -306,7 +307,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                  G_STRUCT_OFFSET(AwnAppletClass, orient_changed),
                  NULL, NULL,
                  g_cclosure_marshal_VOID__ENUM,
-                 G_TYPE_NONE, 1, G_TYPE_INT);
+                 G_TYPE_NONE, 1, AWN_TYPE_ORIENTATION);
 
   _applet_signals[OFFSET_CHANGED] =
     g_signal_new("offset-changed",
