@@ -83,29 +83,20 @@ awn_icon_leave_notify_event (GtkWidget *widget, GdkEventCrossing *event)
 }
 
 static void
-awn_icon_make_transparent (GtkWidget *widget, gpointer data)
+awn_icon_update_effects (GtkWidget *widget, gpointer data)
 {
   AwnIconPrivate *priv = AWN_ICON (widget)->priv;
 
-  if (!GTK_WIDGET_REALIZED (widget)) return;
-
-  /*
-   * This is how we make sure that widget has transparent background
-   * all the time.
-   */
-  if (gtk_widget_is_composited(widget)) /* FIXME: is is_composited correct here? */
+  if (gtk_widget_is_composited(widget))
   {
-    awn_utils_make_transparent_bg (widget);
     /* optimize the render speed */
     g_object_set(priv->effects,
-                 "no-clear", TRUE,
                  "indirect-paint", FALSE, NULL);
   }
   else
   {
     g_object_set(priv->effects,
                  "effects", 0,
-                 "no-clear", TRUE,
                  "indirect-paint", TRUE, NULL);
     /* we are also forcing icon-effects to "Simple", to prevent clipping
      * the icon in our small window
@@ -300,10 +291,11 @@ awn_icon_init (AwnIcon *icon)
 
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
 
+  awn_utils_ensure_transparent_bg (GTK_WIDGET (icon));
   g_signal_connect (icon, "realize",
-                    G_CALLBACK(awn_icon_make_transparent), NULL);
-  g_signal_connect (icon, "style-set",
-                    G_CALLBACK(awn_icon_make_transparent), NULL);
+                    G_CALLBACK(awn_icon_update_effects), NULL);
+  g_signal_connect (icon, "composited-changed",
+                    G_CALLBACK(awn_icon_update_effects), NULL);
 }
 
 GtkWidget *

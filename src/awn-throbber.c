@@ -215,24 +215,19 @@ awn_throbber_size_request (GtkWidget *widget, GtkRequisition *req)
 }
 
 static void
-awn_throbber_make_transparent (GtkWidget *widget, gpointer data)
+awn_throbber_update_effects (GtkWidget *widget, gpointer data)
 {
   AwnThrobberPrivate *priv = AWN_THROBBER (widget)->priv;
 
-  if (!GTK_WIDGET_REALIZED (widget)) return;
-
-  awn_utils_make_transparent_bg (widget);
   if (gtk_widget_is_composited(widget))
   {
     /* optimize the render speed */
     g_object_set(priv->effects,
-                 "no-clear", TRUE,
                  "indirect-paint", FALSE, NULL);
   }
   else
   {
     g_object_set(priv->effects,
-                 "no-clear", TRUE,
                  "indirect-paint", TRUE, NULL);
   }
 }
@@ -309,10 +304,11 @@ awn_throbber_init (AwnThrobber *throbber)
 
   gtk_widget_add_events (GTK_WIDGET (throbber), GDK_ALL_EVENTS_MASK);
 
+  awn_utils_ensure_transparent_bg (GTK_WIDGET (throbber));
   g_signal_connect (throbber, "realize",
-                    G_CALLBACK (awn_throbber_make_transparent), NULL);
-  g_signal_connect (throbber, "style-set",
-                    G_CALLBACK (awn_throbber_make_transparent), NULL);
+                    G_CALLBACK (awn_throbber_update_effects), NULL);
+  g_signal_connect (throbber, "composited-changed",
+                    G_CALLBACK (awn_throbber_update_effects), NULL);
   g_signal_connect (throbber, "show",
                     G_CALLBACK (awn_throbber_show), NULL);
   g_signal_connect (throbber, "hide",

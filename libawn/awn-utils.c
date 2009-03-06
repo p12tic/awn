@@ -48,22 +48,39 @@ on_style_set (GtkWidget *widget, GtkStyle *prev_style)
     awn_utils_make_transparent_bg (widget);
 }
 
+static void
+on_composited_change (GtkWidget *widget, gpointer data)
+{
+  if (gtk_widget_is_composited (widget))
+  {
+    awn_utils_make_transparent_bg (widget);
+  }
+  else
+  {
+    // use standard background
+    gtk_widget_modify_bg (widget, GTK_STATE_NORMAL, NULL);
+  }
+}
+
 void
-awn_utils_ensure_tranparent_bg (GtkWidget *widget)
+awn_utils_ensure_transparent_bg (GtkWidget *widget)
 {
   if (GTK_WIDGET_REALIZED (widget))
-    awn_utils_ensure_tranparent_bg (widget);
+    awn_utils_make_transparent_bg (widget);
 
   // make sure we don't connect the handler multiple times
   g_signal_handlers_disconnect_by_func (widget,
                     G_CALLBACK (awn_utils_make_transparent_bg), NULL);
   g_signal_handlers_disconnect_by_func (widget,
                     G_CALLBACK (on_style_set), NULL);
+  g_signal_handlers_disconnect_by_func (widget,
+                    G_CALLBACK (on_composited_change), NULL);
 
   g_signal_connect (widget, "realize",
                     G_CALLBACK (awn_utils_make_transparent_bg), NULL);
-
   g_signal_connect (widget, "style-set",
                     G_CALLBACK (on_style_set), NULL);
+  g_signal_connect (widget, "composited-changed",
+                    G_CALLBACK (on_composited_change), NULL);
 }
 

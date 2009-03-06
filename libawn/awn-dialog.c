@@ -72,7 +72,6 @@ struct _AwnDialogPrivate
 
   gint old_x, old_y, old_w, old_h;
   gint a_old_x, a_old_y, a_old_w, a_old_h;
-  gint origin_x, origin_y;
 };
 
 enum
@@ -121,6 +120,15 @@ _on_alpha_screen_changed(GtkWidget* pWidget,
     pColormap = gdk_screen_get_rgb_colormap(pScreen);
 
   gtk_widget_set_colormap(pWidget, pColormap);
+}
+
+static void
+_on_composited_changed (GtkWidget *widget, gpointer data)
+{
+  if (gtk_widget_is_composited (widget))
+  {
+    gtk_widget_shape_combine_mask (widget, NULL, 0, 0);
+  }
 }
 
 static void
@@ -451,7 +459,9 @@ awn_dialog_set_shape_mask (GtkWidget *widget, gint width, gint height)
     cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
     awn_dialog_paint_border_path (AWN_DIALOG (widget), cr, width, height);
 
-    cairo_fill (cr);
+    cairo_fill_preserve (cr);
+    cairo_set_line_width (cr, 2.0);
+    cairo_stroke (cr);
 
     cairo_destroy (cr);
 
@@ -789,6 +799,8 @@ awn_dialog_init (AwnDialog *dialog)
                     G_CALLBACK (_on_delete_event), NULL);
   g_signal_connect (dialog, "configure-event",
                     G_CALLBACK (_on_configure_event), NULL);
+  g_signal_connect (dialog, "composited-changed",
+                    G_CALLBACK (_on_composited_changed), NULL);
 
   priv->align = gtk_alignment_new (0.5, 0.5, 1, 1);
   gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
@@ -842,9 +854,6 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
   gdk_window_get_origin (win, &ax, &ay);
   gdk_drawable_get_size (GDK_DRAWABLE (win), &aw, &ah);
 
-  priv->origin_x = ax;
-  priv->origin_y = ay;
-
   const int OFFSET = priv->window_offset;
 
   switch (priv->orient)
@@ -884,6 +893,22 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
 
 }
 
+static void
+_on_origin_changed (AwnApplet *applet, GdkRectangle *rect, AwnDialog *dialog)
+{
+  g_return_if_fail (AWN_IS_DIALOG (dialog));
+
+  AwnDialogPrivate *priv = dialog->priv;
+
+  if (!GTK_WIDGET_VISIBLE (dialog)) return;
+
+  awn_dialog_refresh_position (dialog, 0, 0);
+
+  /* FIXME: refresh_position should be smart and call queue_draw if necessary */
+  if (priv->anchor && priv->anchored)
+    gtk_widget_queue_draw (GTK_WIDGET (dialog));
+}
+
 static gboolean
 _on_anchor_configure_event (GtkWidget *widget, GdkEventConfigure *event,
                             AwnDialog *dialog)
@@ -892,24 +917,9 @@ _on_anchor_configure_event (GtkWidget *widget, GdkEventConfigure *event,
 
   AwnDialogPrivate *priv = dialog->priv;
 
-  if (!GTK_WIDGET_MAPPED (widget)) return FALSE;
+  if (!GTK_WIDGET_VISIBLE (widget)) return FALSE;
 
-  gboolean origin_changed = FALSE;
-
-  if (GTK_IS_PLUG (widget))
-  {
-    gint x,y;
-    gdk_window_get_origin (widget->window, &x, &y);
-    if (priv->origin_x != x || priv->origin_y != y)
-    {
-      priv->origin_x = x;
-      priv->origin_y = y;
-      origin_changed = TRUE;
-    }
-  }
-
-  if (origin_changed == FALSE
-      && event->x == priv->a_old_x && event->y == priv->a_old_y
+  if (event->x == priv->a_old_x && event->y == priv->a_old_y
       && event->width == priv->a_old_w && event->height == priv->a_old_h)
   {
     if (!priv->idle_id)
@@ -954,8 +964,8 @@ awn_dialog_set_anchor_widget (AwnDialog *dialog, GtkWidget *anchor)
 
       /* connect to the special configure-event */
       priv->anchor_configure_id =
-        g_signal_connect (applet, "panel-configure-event",
-                          G_CALLBACK (_on_anchor_configure_event), dialog);
+        g_signal_connect (applet, "origin-changed",
+                          G_CALLBACK (_on_origin_changed), dialog);
 
       /* get orientation from the applet and connect to its changed signal */
       priv->orient = awn_applet_get_orientation (applet);

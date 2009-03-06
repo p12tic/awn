@@ -49,6 +49,8 @@ struct _AwnAppletPrivate
   gint offset;
   guint size;
 
+  gint origin_x, origin_y;
+
   AwnAppletFlags flags;
 
   DBusGConnection *connection;
@@ -73,6 +75,7 @@ enum
   SIZE_CHANGED,
   PLUG_EMBEDDED,
   PANEL_CONFIGURE,
+  ORIGIN_CHANGED,
   DELETED,
   MENU_CREATION,
   FLAGS_CHANGED,
@@ -135,21 +138,19 @@ on_client_message (GdkXEvent *xevent, GdkEvent *event, gpointer data)
 
   AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (data);
 
-  if (priv->panel_window == NULL) return GDK_FILTER_CONTINUE;
+  if (GTK_WIDGET(data)->window == NULL) return GDK_FILTER_CONTINUE;
 
   /* We're ignoring the actual [x,y] params in the message, FIXME? */
+  gint x, y;
+  gdk_window_get_origin (GTK_WIDGET(data)->window, &x, &y);
 
-  // FIXME: emit origin-changed signal instead
+  if (priv->origin_x == x && priv->origin_y == y) return GDK_FILTER_REMOVE;
 
-  event->type = GDK_CONFIGURE;
-  event->configure.window = priv->panel_window;
-  gdk_window_get_position (priv->panel_window,
-                           &event->configure.x, &event->configure.y);
-  gdk_drawable_get_size (GDK_DRAWABLE (priv->panel_window),
-                         &event->configure.width,
-                         &event->configure.height);
+  priv->origin_x = x;
+  priv->origin_y = y;
 
-  g_signal_emit (data, _applet_signals[PANEL_CONFIGURE], 0, event);
+  GdkRectangle rect = { .x = x, .y = y };
+  g_signal_emit (data, _applet_signals[ORIGIN_CHANGED], 0, &rect);
 
   return GDK_FILTER_REMOVE;
 }
@@ -335,6 +336,15 @@ awn_applet_class_init (AwnAppletClass *klass)
                  G_TYPE_NONE, 1,
                  GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
+  _applet_signals[ORIGIN_CHANGED] =
+    g_signal_new("origin-changed",
+                 G_OBJECT_CLASS_TYPE(gobject_class),
+                 G_SIGNAL_RUN_LAST,
+                 G_STRUCT_OFFSET(AwnAppletClass, origin_changed),
+                 NULL, NULL,
+                 g_cclosure_marshal_VOID__BOXED,
+                 G_TYPE_NONE, 1, GDK_TYPE_RECTANGLE);
+
   _applet_signals[PLUG_EMBEDDED] =
     g_signal_new("plug-embedded",
                  G_OBJECT_CLASS_TYPE(gobject_class),
@@ -440,7 +450,7 @@ awn_applet_init (AwnApplet *applet)
                     G_CALLBACK (on_proxy_destroyed), NULL);
   g_signal_connect (applet, "embedded",
                     G_CALLBACK (awn_applet_plug_embedded), NULL);
-  awn_utils_ensure_tranparent_bg (GTK_WIDGET (applet));
+  awn_utils_ensure_transparent_bg (GTK_WIDGET (applet));
 
   GdkAtom atom = gdk_atom_intern_static_string ("_AWN_APPLET_POS_CHANGE");
   gdk_display_add_client_message_filter (gdk_display_get_default (),
@@ -678,13 +688,30 @@ _on_panel_configure (GdkXEvent *xevent, GdkEvent *event, gpointer data)
   if (xe->type == ConfigureNotify)
   {
     event->type = GDK_CONFIGURE;
-    event->configure.window = priv->panel_window;
+    event->configure.send_event = xe->xconfigure.send_event;
     event->configure.x = xe->xconfigure.x;
     event->configure.y = xe->xconfigure.y;
     event->configure.width = xe->xconfigure.width;
     event->configure.height = xe->xconfigure.height;
 
     g_signal_emit (data, _applet_signals[PANEL_CONFIGURE], 0, event);
+
+    if (GTK_WIDGET (data)->window != NULL)
+    {
+      gint x, y;
+      gdk_window_get_origin (GTK_WIDGET (data)->window, &x, &y);
+
+      if (priv->origin_x == x && priv->origin_y == y)
+        return GDK_FILTER_TRANSLATE;
+
+      priv->origin_x = x;
+      priv->origin_y = y;
+
+      GdkRectangle rect = { .x = x, .y = y };
+      g_signal_emit (data, _applet_signals[ORIGIN_CHANGED], 0, &rect);
+    }
+
+    return GDK_FILTER_TRANSLATE;
   }
 
   return GDK_FILTER_CONTINUE;

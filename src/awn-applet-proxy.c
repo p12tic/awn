@@ -287,7 +287,7 @@ awn_applet_proxy_init (AwnAppletProxy *proxy)
   g_signal_connect (proxy, "plug-added", G_CALLBACK (on_plug_added), NULL);
   g_signal_connect (proxy, "plug-removed", G_CALLBACK (on_plug_removed), NULL);
   g_signal_connect (proxy, "size-allocate", G_CALLBACK (on_size_alloc), NULL);
-  awn_utils_ensure_tranparent_bg (GTK_WIDGET (proxy));
+  awn_utils_ensure_transparent_bg (GTK_WIDGET (proxy));
   /* Rest is for the crash notification window */
   priv->running = TRUE;
   priv->crashed = FALSE;

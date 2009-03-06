@@ -78,6 +78,7 @@ struct _AwnAppletClass
   void (*menu_creation)   (AwnApplet *applet, GtkMenu *menu);
   void (*flags_changed)   (AwnApplet *applet, AwnAppletFlags flags);
   void (*panel_configure) (AwnApplet *applet, GdkEventConfigure *event);
+  void (*origin_changed)  (AwnApplet *applet, GdkRectangle *rect);
 
   /*< Future padding >*/
   void (*_applet0) (void);

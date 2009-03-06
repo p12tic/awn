@@ -197,7 +197,11 @@ awn_applet_manager_dispose (GObject *object)
 { 
   AwnAppletManagerPrivate *priv = AWN_APPLET_MANAGER_GET_PRIVATE (object);
 
-  g_hash_table_destroy (priv->applets);
+  if (priv->applets)
+  {
+    g_hash_table_destroy (priv->applets);
+    priv->applets = NULL;
+  }
 
   if (priv->klass)
   {

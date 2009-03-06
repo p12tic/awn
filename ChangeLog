@@ -1,3 +1,23 @@
+2009-03-06  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	Added "origin-changed" signal.
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-icon.c:
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	Fixed typo in function name.
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	Awn should now correctly handle switch from composited to
+	non-composited (even without restarting panel itself).
+	Well, it does on my box. :)
+
 2009-03-05  h4writer <hv1989@gmail.com>
 
 	* awn-manager/awn-manager-mini.glade:

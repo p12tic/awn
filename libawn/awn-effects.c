@@ -570,7 +570,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
     g_param_spec_boolean("no-clear",
                          "No context clear",
                          "Determines whether to clear the context when drawing",
-                         FALSE,
+                         TRUE,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   /**
    * AwnEffects:indirect-paint:

@@ -159,11 +159,7 @@ static guint _panel_signals[LAST_SIGNAL] = { 0 };
  * FORWARDS
  */
 static void     load_correct_colormap       (GtkWidget *panel);
-static void     on_composited_changed       (GdkScreen *screen, 
-                                             AwnPanel  *panel);
-static void     on_screen_changed           (GtkWidget *widget, 
-                                             GdkScreen *screen,
-                                             AwnPanel  *panel);
+static void     on_composited_changed       (GtkWidget *widget, gpointer data);
 static gboolean on_mouse_over               (GtkWidget *widget,
                                              GdkEventCrossing *event);
 static gboolean on_mouse_out                (GtkWidget *widget,
@@ -271,10 +267,9 @@ awn_panel_constructed (GObject *object)
   priv->composited = gdk_screen_is_composited (screen);
   g_print ("Screen %s composited\n", priv->composited ? "is" : "isn't");
   load_correct_colormap (panel);
-  g_signal_connect (screen, "composited-changed", 
-                    G_CALLBACK (on_composited_changed), panel);
-  g_signal_connect (panel, "screen-changed",
-                    G_CALLBACK (on_screen_changed), panel);
+
+  g_signal_connect (panel, "composited-changed",
+                    G_CALLBACK (on_composited_changed), NULL);
 
   /* Size and position */
   g_signal_connect (panel, "configure-event",
@@ -1010,6 +1005,7 @@ awn_panel_init (AwnPanel *panel)
 
   priv = panel->priv = AWN_PANEL_GET_PRIVATE (panel);
 
+  gtk_widget_set_app_paintable (GTK_WIDGET (panel), TRUE);
 
   priv->eventbox = gtk_event_box_new ();
   gtk_widget_set_app_paintable (priv->eventbox, TRUE);
@@ -1023,13 +1019,13 @@ awn_panel_init (AwnPanel *panel)
 
   /*g_signal_connect (priv->eventbox, "expose-event",
                     G_CALLBACK (on_eb_expose), priv->alignment);*/
-  awn_utils_ensure_tranparent_bg (priv->eventbox);
+  awn_utils_ensure_transparent_bg (priv->eventbox);
 
   g_signal_connect (panel, "enter-notify-event", 
                     G_CALLBACK (on_mouse_over), NULL);
   g_signal_connect (panel, "leave-notify-event", 
                     G_CALLBACK (on_mouse_out), NULL);
-  awn_utils_ensure_tranparent_bg (GTK_WIDGET (panel));
+  awn_utils_ensure_transparent_bg (GTK_WIDGET (panel));
   gtk_window_set_resizable (GTK_WINDOW (panel), FALSE);
 }
 
@@ -1059,22 +1055,15 @@ load_correct_colormap (GtkWidget *panel)
 
   screen = gtk_widget_get_screen (panel);
 
-  if (priv->composited)
+  /* First try loading the RGBA colormap */
+  colormap = gdk_screen_get_rgba_colormap (screen);
+  if (!colormap)
   {
-    /* First try loading the RGBA colormap */
-    colormap = gdk_screen_get_rgba_colormap (screen);
-
-    if (!colormap)
-    {
       /* Use the RGB colormap and set composited to FALSE */
       colormap = gdk_screen_get_rgb_colormap (screen);
       priv->composited = FALSE;
-    }
   }
-  else
-  {
-    colormap = gdk_screen_get_rgb_colormap (screen);
-  }
+
   gtk_widget_set_colormap (panel, colormap);
 }
 
@@ -1082,52 +1071,30 @@ load_correct_colormap (GtkWidget *panel)
  * At the moment, we just want to restart the panel on composited state changes
  */
 static void 
-on_composited_changed (GdkScreen *screen, 
-                       AwnPanel  *panel)
+on_composited_changed (GtkWidget *widget, gpointer data)
 {
-  AwnConfigClient *client;
 
-  g_return_if_fail (AWN_IS_PANEL (panel));
+  g_return_if_fail (AWN_IS_PANEL (widget));
 
-  if (gdk_screen_is_composited (screen) == panel->priv->composited)
-    return;
+  AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (widget);
 
-  client = panel->priv->client;
+  priv->composited = gtk_widget_is_composited (widget);
 
-  gtk_widget_destroy (GTK_WIDGET (panel));
-
-  awn_panel_new_from_config (client);
-}
-
-static void 
-on_screen_changed (GtkWidget *widget, 
-                   GdkScreen *screen,
-                   AwnPanel  *panel)
-{
-  AwnPanelPrivate *priv;
-  GdkScreen       *new_screen;
-  gboolean         new_is_composited;
-  
-  g_return_if_fail (AWN_IS_PANEL (panel));
-  priv = panel->priv;
-  
-  new_screen = gtk_widget_get_screen (GTK_WIDGET (panel));
-  new_is_composited = gdk_screen_is_composited (screen);
-
-  /* If they are the same, then return */
-  if (new_is_composited == priv->composited)
+  if (priv->composited)
   {
-    g_signal_handlers_disconnect_by_func (screen,
-                                          on_composited_changed,
-                                          panel);
-    g_signal_connect (screen, "composited-changed", 
-                      G_CALLBACK (on_composited_changed), panel);
-    return;
+    gtk_widget_shape_combine_mask (widget, NULL, 0, 0);
+    gdk_window_set_composited (priv->eventbox->window, priv->composited);
   }
   else
   {
-    on_composited_changed (new_screen, panel);
+    gtk_widget_input_shape_combine_mask (widget, NULL, 0, 0);
+    gdk_window_set_composited (priv->eventbox->window, priv->composited);
   }
+/*
+  gtk_widget_destroy (GTK_WIDGET (panel));
+
+  awn_panel_new_from_config (client);
+*/
 }
 
 /*

@@ -24,13 +24,13 @@
 #include <gtk/gtk.h>
 
 /*
- * awn_utils_ensure_tranparent_bg:
+ * awn_utils_ensure_transparent_bg:
  * @widget: Widget which should have transparent background.
  *
  * Ensures that the widget has transparent background all the time
  * by connecting to the GtkWidget::realize and GtkWidget::style-set signals.
  */
-void awn_utils_ensure_tranparent_bg (GtkWidget *widget);
+void awn_utils_ensure_transparent_bg (GtkWidget *widget);
 
 /*
  * awn_utils_make_transparent_bg:
