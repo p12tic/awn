@@ -72,6 +72,8 @@ struct _AwnDialogPrivate
 
   gint old_x, old_y, old_w, old_h;
   gint a_old_x, a_old_y, a_old_w, a_old_h;
+
+  gint last_x, last_y;
 };
 
 enum
@@ -428,20 +430,6 @@ _on_title_notify(GObject *dialog, GParamSpec *spec, gpointer null)
   }
 }
 
-static gboolean
-_schedule_redraw (gpointer data)
-{
-  g_return_val_if_fail (AWN_IS_DIALOG (data), FALSE);
-
-  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (data);
-
-  priv->idle_id = 0;
-
-  gtk_widget_queue_draw (GTK_WIDGET (data));
-
-  return FALSE;
-}
-
 static void
 awn_dialog_set_shape_mask (GtkWidget *widget, gint width, gint height)
 {
@@ -482,8 +470,6 @@ _on_configure_event (GtkWidget *widget, GdkEventConfigure *event)
   if (event->x == priv->old_x && event->y == priv->old_y &&
       event->width == priv->old_w && event->height == priv->old_h)
   {
-    if (!priv->idle_id)
-      priv->idle_id = g_idle_add (_schedule_redraw, widget);
     return FALSE;
   }
 
@@ -889,8 +875,65 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
     if (y < 0) y = 0;
   }
 
-  gtk_window_move (GTK_WINDOW (dialog), x, y);
+  if (GTK_WIDGET (dialog)->window)
+  {
+    gdk_window_get_position (GTK_WIDGET (dialog)->window,
+                             &priv->last_x, &priv->last_y);
+  }
 
+  if (priv->last_x != x || priv->last_y != y)
+  {
+    /* 
+     * some optimization, we dont want to move the window on every small
+     *  change 
+     */
+    gboolean both_axes = priv->last_x != x && priv->last_y != y;
+    gboolean huge_delta = FALSE;
+    if (!both_axes)
+    {
+      gint delta = abs(priv->last_x - x) + abs(priv->last_y - y);
+      switch (priv->orient)
+      {
+        case AWN_ORIENTATION_LEFT:
+        case AWN_ORIENTATION_RIGHT:
+          huge_delta = delta >= height / 10;
+          break;
+        default:
+          huge_delta = delta >= width / 10;
+          break;
+      }
+    }
+    if (both_axes || huge_delta)
+    {
+      priv->last_x = x;
+      priv->last_y = y;
+      gtk_window_move (GTK_WINDOW (dialog), x, y);
+    }
+  }
+
+  /* Invalidate part of the window where the arrow is */
+  switch (priv->orient)
+  {
+    case AWN_ORIENTATION_TOP:
+      gtk_widget_queue_draw_area (GTK_WIDGET (dialog), 0, 0,
+                                  width, AWN_DIALOG_PADDING);
+      break;
+    case AWN_ORIENTATION_LEFT:
+      gtk_widget_queue_draw_area (GTK_WIDGET (dialog), 0, 0,
+                                  AWN_DIALOG_PADDING, height);
+      break;
+    case AWN_ORIENTATION_RIGHT:
+      gtk_widget_queue_draw_area (GTK_WIDGET (dialog), 
+                                  width - AWN_DIALOG_PADDING, 0, 
+                                  AWN_DIALOG_PADDING, height);
+      break;
+    case AWN_ORIENTATION_BOTTOM:
+    default:
+      gtk_widget_queue_draw_area (GTK_WIDGET (dialog),
+                                  0, height - AWN_DIALOG_PADDING,
+                                  width, AWN_DIALOG_PADDING);
+      break;
+  }
 }
 
 static void
@@ -903,10 +946,6 @@ _on_origin_changed (AwnApplet *applet, GdkRectangle *rect, AwnDialog *dialog)
   if (!GTK_WIDGET_VISIBLE (dialog)) return;
 
   awn_dialog_refresh_position (dialog, 0, 0);
-
-  /* FIXME: refresh_position should be smart and call queue_draw if necessary */
-  if (priv->anchor && priv->anchored)
-    gtk_widget_queue_draw (GTK_WIDGET (dialog));
 }
 
 static gboolean
@@ -922,8 +961,6 @@ _on_anchor_configure_event (GtkWidget *widget, GdkEventConfigure *event,
   if (event->x == priv->a_old_x && event->y == priv->a_old_y
       && event->width == priv->a_old_w && event->height == priv->a_old_h)
   {
-    if (!priv->idle_id)
-      priv->idle_id = g_idle_add (_schedule_redraw, dialog);
     return FALSE;
   }
 
