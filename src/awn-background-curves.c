@@ -57,7 +57,7 @@ awn_background_curves_class_init (AwnBackgroundCurvesClass *klass)
 static void
 awn_background_curves_init (AwnBackgroundCurves *bg)
 {
-  //g_signal_connect(bg, "notify::panel-angle", G_CALLBACK(awn_background_curves_bar_angle_changed), NULL);
+
 }
 
 AwnBackground * 
@@ -86,7 +86,7 @@ awn_background_curves_new (AwnConfigClient *client, AwnPanel *panel)
  * @param height: the height for the drawing
  * @param padding: makes the path X amount of pixels smaller on every side
  *
- * This function draws the path of the bar in perspective.
+ * This function draws the curved path of the bar
  */
 static void 
 draw_rect_path (AwnBackground  *bg,
@@ -97,7 +97,17 @@ draw_rect_path (AwnBackground  *bg,
                 gint            height,
                 gint            padding)
 {
-  ;
+  gdouble cx = width/2.0;
+
+  cairo_save (cr);
+
+  cairo_translate (cr, x+width/2.0, y);
+  cairo_scale (cr, width/2.0, height);
+
+  cairo_move_to (cr, 0.0, 1.0);
+  cairo_arc_negative (cr, 0.0, 1.0, 1.0, 0.0, M_PI);
+
+  cairo_restore (cr);
 }
 
 /**
@@ -120,13 +130,49 @@ draw_top_bottom_background (AwnBackground  *bg,
                             gint            width,
                             gint            height)
 {
+  //TODO: let the height depend on curviness and struts
+
   cairo_pattern_t *pat;
 
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   cairo_translate (cr, 0.5, 0.5);
+  width -= 1;
 
+  /* Drawing outer ellips */
+  pat = cairo_pattern_create_linear (0, 0, 0, height);
+  cairo_pattern_add_color_stop_rgba (pat, 0.0, 
+                                     bg->g_step_1.red,
+                                     bg->g_step_1.green,
+                                     bg->g_step_1.blue,
+                                     bg->g_step_1.alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 1.0,
+                                     bg->g_step_2.red, 
+                                     bg->g_step_2.green,
+                                     bg->g_step_2.blue, 
+                                     bg->g_step_2.alpha);
+
+  draw_rect_path (bg, cr, 0, 0, width, height, 0.5);
+  cairo_set_source (cr, pat);
+  cairo_fill (cr);
+
+  /* External border */
+  cairo_set_source_rgba (cr, bg->border_color.red,
+                             bg->border_color.green,
+                             bg->border_color.blue,
+                             bg->border_color.alpha);
+  draw_rect_path (bg, cr, 0, 0,  width, height, 0.5);
+  cairo_stroke (cr);
+
+  /* Drawing inner ellips */
+  gint width_inner = 0.8375*width;
+  cairo_set_source_rgba (cr, bg->g_step_1.red,
+                             bg->g_step_1.green,
+                             bg->g_step_1.blue,
+                             bg->g_step_1.alpha);
+  draw_rect_path (bg, cr, (width-width_inner)*bg->curves_symmetry, height/2.0,  width_inner, height/2.0, 0.5);
+  cairo_fill (cr); 
 }
 
 /**
@@ -150,22 +196,24 @@ awn_background_curves_padding_request (AwnBackground *bg,
                                    guint *padding_left,
                                    guint *padding_right)
 {
+  gint padding = 10;
+
   switch (orient)
   {
     case AWN_ORIENTATION_TOP:
       *padding_top  = 0; *padding_bottom = 0;
-      *padding_left = 0; *padding_right = 0;
+      *padding_left = padding; *padding_right = padding;
       break;
     case AWN_ORIENTATION_BOTTOM:
       *padding_top  = 0; *padding_bottom = 0;
-      *padding_left = 0; *padding_right = 0;
+      *padding_left = padding; *padding_right = padding;
       break;
     case AWN_ORIENTATION_LEFT:
-      *padding_top  = 0; *padding_bottom = 0;
+      *padding_top  = padding; *padding_bottom = padding;
       *padding_left = 0; *padding_right = 0;
       break;
     case AWN_ORIENTATION_RIGHT:
-      *padding_top  = 0; *padding_bottom = 0;
+      *padding_top  = padding; *padding_bottom = padding;
       *padding_left = 0; *padding_right = 0;
       break;
     default:
@@ -200,23 +248,23 @@ awn_background_curves_draw (AwnBackground  *bg,
   switch (orient)
   {
     case AWN_ORIENTATION_RIGHT:
-      cairo_translate (cr, x-1, y+height);
+      cairo_translate (cr, x, y+height);
       cairo_rotate (cr, M_PI * 1.5);
       temp = width;
       width = height; height = temp;
       break;
     case AWN_ORIENTATION_LEFT:
-      cairo_translate (cr, x+width+1, y);
+      cairo_translate (cr, x+width, y);
       cairo_rotate (cr, M_PI * 0.5);
       temp = width;
       width = height; height = temp;
       break;
     case AWN_ORIENTATION_TOP:
-      cairo_translate (cr, x+width, y+height+1);
+      cairo_translate (cr, x+width, y+height);
       cairo_rotate (cr, M_PI);
       break;
     default:
-      cairo_translate (cr, x, y-1);
+      cairo_translate (cr, x, y);
       break;
   }
 
