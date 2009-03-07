@@ -580,7 +580,7 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
   awn_config_client_set_string (client,
                                 AWN_GROUP_THEME, AWN_THEME_BORDER,
                                 temp, NULL);
-  gdk_color_to_hex (temp, &style->light[GTK_STATE_ACTIVE], 100);
+  gdk_color_to_hex (temp, &style->bg[GTK_STATE_PRELIGHT], 100);
   awn_config_client_set_string (client,
                                 AWN_GROUP_THEME, AWN_THEME_HILIGHT,
                                 temp, NULL);

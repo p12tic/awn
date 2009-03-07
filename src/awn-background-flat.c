@@ -110,7 +110,10 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
-  if (gtk_widget_is_composited (bg->panel) == FALSE) goto paint_lines;
+  if (gtk_widget_is_composited (GTK_WIDGET (bg->panel)) == FALSE)
+  {
+    goto paint_lines;
+  }
 
   /* Draw the background */
   pat = cairo_pattern_create_linear (0, 0, 0, height);
@@ -273,7 +276,7 @@ awn_background_flat_get_shape_mask (AwnBackground  *bg,
       break;
   }
 
-  draw_rect (bg, cr, 0, 0, width-1, height+3);
+  draw_rect (bg, cr, 0, 0, width, height+3);
   cairo_fill (cr);
 
   cairo_restore (cr);
