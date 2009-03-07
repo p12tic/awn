@@ -636,7 +636,7 @@ task_icon_refresh_geometry (TaskIcon *icon)
   switch (settings->orient)
   {
     case AWN_ORIENTATION_RIGHT:
-      x += settings->panel_size;
+      //x += settings->panel_size;
       ww = GTK_WIDGET (icon)->allocation.height;
       break;
     case AWN_ORIENTATION_LEFT:
@@ -648,7 +648,7 @@ task_icon_refresh_geometry (TaskIcon *icon)
       ww = GTK_WIDGET (icon)->allocation.width;
       break;
     default:
-      y += settings->panel_size;
+      //y += settings->panel_size;
       ww = GTK_WIDGET (icon)->allocation.width;
       break;
   }

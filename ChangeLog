@@ -1,5 +1,10 @@
 2009-03-07  h4writer <hv1989@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Fix for the icon geometry hints of the windows on the right and bottom
+
+2009-03-07  h4writer <hv1989@gmail.com>
+
 	* src/awn-background-curves.c:
 	Added the drawing of the curved bar
 
