@@ -1720,19 +1720,19 @@ awn_panel_set_strut (AwnPanel *panel)
   {
     case AWN_ORIENTATION_TOP:
       strut_start = x;
-      strut_end = x + width;
+      strut_end = x + width - 1;
       break;
     case AWN_ORIENTATION_RIGHT:
       strut_start = y;
-      strut_end = y + height;
+      strut_end = y + height - 1;
       break;
     case AWN_ORIENTATION_BOTTOM:
       strut_start = x;
-      strut_end = x + width;
+      strut_end = x + width - 1;
       break;
     case AWN_ORIENTATION_LEFT:
       strut_start = y;
-      strut_end = y + height;
+      strut_end = y + height - 1;
       break;
     default:
       g_assert (0);

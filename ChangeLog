@@ -1,5 +1,10 @@
 2009-03-07  h4writer <hv1989@gmail.com>
 
+	* src/awn-panel.c:
+	Make the (partial) struts 1px smaller, so they are right. 
+
+2009-03-07  h4writer <hv1989@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	- Removing the predefined dragging when moving and let task-icon do the stuff itself.
 	- Make sure window only get's activated (after 1s when dragging something on it) when it isn't already activated
