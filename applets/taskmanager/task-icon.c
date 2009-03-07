@@ -332,7 +332,7 @@ task_icon_init (TaskIcon *icon)
   /* D&D accept dragged objs */
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
   gtk_drag_dest_set (GTK_WIDGET (icon), 
-                     GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
+                     GTK_DEST_DEFAULT_DROP,
                      drop_types, n_drop_types,
                      GDK_ACTION_COPY | GDK_ACTION_MOVE);
   gtk_drag_dest_add_uri_targets (GTK_WIDGET (icon));
@@ -818,7 +818,8 @@ drag_timeout (TaskIcon *icon)
   if (priv->drag_motion == FALSE)
     return FALSE;
   else if (priv->windows->data)
-    task_window_activate (priv->windows->data, priv->drag_time);
+    if (!task_window_is_active(priv->windows->data))
+      task_window_activate (priv->windows->data, priv->drag_time);
 
   return FALSE;
 }
@@ -902,13 +903,23 @@ task_icon_drag_motion (GtkWidget      *widget,
   {
     if(!priv->draggable) return FALSE;
 
+    gdk_drag_status (context, GDK_ACTION_MOVE, t);
+
     g_signal_emit (TASK_ICON (widget), _icon_signals[DRAG_MOVE], 0, x, y);
-    return FALSE;
+    return TRUE;
   }
   else
   {
     if (priv->drag_tag)
+    {
+      /* If it is a launcher it should show that it accepts the drag.
+         Else only the the timeout should get set to activate the window. */
+      if (!priv->windows || !TASK_IS_LAUNCHER (priv->windows->data))
+        gdk_drag_status (context, GDK_ACTION_DEFAULT, t);
+      else
+        gdk_drag_status (context, GDK_ACTION_COPY, t);
       return TRUE;
+    }
 
     priv->drag_motion = TRUE;
     priv->drag_tag = g_timeout_add_seconds (1, (GSourceFunc)drag_timeout, widget);
@@ -988,6 +999,9 @@ task_icon_drag_data_received (GtkWidget      *widget,
   }
 
   /* We don't handle drops if the launcher already has a window associcated */
+  //FIXME: I think this function returns always FALSE (haytjes)
+  // and I also think this isn't a bad idea to allow too.
+  // I often drop a url on firefox, even when it is already open.
   if (task_launcher_has_window (launcher))
   {
     gtk_drag_finish (context, FALSE, FALSE, time);
@@ -1021,6 +1035,7 @@ task_icon_drag_data_get (GtkWidget *widget,
   switch(target_type)
   {
     case TARGET_TASK_ICON:
+      //FIXME: give the data, so another taskmanager can accept this drop
       gtk_selection_data_set (selection_data, GDK_TARGET_STRING, 8, NULL, 0);
       break;
     default:

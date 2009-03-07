@@ -23,6 +23,12 @@
 
 #define PICTURE_FILE "../data/avant-window-navigator.png"
 
+static void 
+destroy( GtkWidget *widget )
+{
+    gtk_main_quit ();
+}
+
 static void
 needs_attention (GtkToggleButton *button, GtkWindow *window)
 {
@@ -53,7 +59,7 @@ change_title (GtkToggleButton *button, GtkWindow *window)
   static gint i = 1;
   gchar *title;
 
-  title = g_strdup_printf ("Window title - Changed %d times", i);
+  title = g_strdup_printf ("Window Title - Changed %d times", i);
   gtk_window_set_title (window, title);
   g_free (title);
   i++;
@@ -67,6 +73,7 @@ main (gint argc, gchar **argv)
   gtk_init (&argc, &argv);
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  g_signal_connect (G_OBJECT (window), "destroy", G_CALLBACK (destroy), NULL);
   gtk_window_set_title (GTK_WINDOW (window), "Window Title - Changed 0 times");
   gtk_window_set_icon_name (GTK_WINDOW (window), "gtk-apply");
   gtk_container_set_border_width (GTK_CONTAINER (window), 12);
