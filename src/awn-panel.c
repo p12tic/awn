@@ -36,6 +36,7 @@
 #include "awn-background-flat.h"
 #include "awn-background-3d.h"
 #include "awn-background-curves.h"
+#include "awn-background-edgy.h"
 #include "awn-defines.h"
 #include "awn-marshal.h"
 #include "awn-monitor.h"
@@ -130,6 +131,7 @@ enum
   STYLE_FLAT,
   STYLE_3D,
   STYLE_CURVES,
+  STYLE_EDGY,
 
   STYLE_LAST
 };
@@ -442,6 +444,8 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
   if (!priv->bg || !AWN_IS_BACKGROUND (priv->bg)) {
     gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment), 0, 0, 0, 0);
     priv->extra_padding = ACTIVE_RECT_PADDING;
+
+    gtk_widget_queue_draw (GTK_WIDGET (panel));
     return;
   }
 
@@ -475,6 +479,8 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
 
   gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment),
                              top, bottom, left, right);
+
+  gtk_widget_queue_draw (GTK_WIDGET (panel));
 }
 
 static
@@ -1103,11 +1109,6 @@ on_composited_changed (GtkWidget *widget, gpointer data)
   }
 
   awn_panel_refresh_padding (AWN_PANEL (widget), NULL);
-/*
-  gtk_widget_destroy (GTK_WIDGET (panel));
-
-  awn_panel_new_from_config (client);
-*/
 }
 
 /*
@@ -1666,13 +1667,16 @@ awn_panel_set_style (AwnPanel *panel, gint style)
       priv->bg = NULL;
       break;
     case STYLE_FLAT:
-      priv->bg = awn_background_flat_new (priv->client, AWN_PANEL (panel));
+      priv->bg = awn_background_flat_new (priv->client, panel);
       break;
     case STYLE_3D:
-      priv->bg = awn_background_3d_new (priv->client, AWN_PANEL (panel));
+      priv->bg = awn_background_3d_new (priv->client, panel);
       break;
     case STYLE_CURVES:
-      priv->bg = awn_background_curves_new (priv->client, AWN_PANEL (panel));
+      priv->bg = awn_background_curves_new (priv->client, panel);
+      break;
+    case STYLE_EDGY:
+      priv->bg = awn_background_edgy_new (priv->client, panel);
       break;
     default:
       g_assert_not_reached();
@@ -1689,8 +1693,6 @@ awn_panel_set_style (AwnPanel *panel, gint style)
   }
 
   awn_panel_refresh_padding (panel, NULL);
-
-  gtk_widget_queue_draw (GTK_WIDGET (panel));
 }
 
 static void
