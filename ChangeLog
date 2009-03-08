@@ -1,3 +1,12 @@
+2009-03-08  h4writer <hv1989@gmail.com>
+
+	* src/awn-background-flat.c:
+	Listen to changes in expand/monitor_align and draw bar with these variables in mind.
+	* src/awn-background.c:
+	* src/awn-background.h:
+	Added a function to let an derived AwnBackground inform AwnBackground there is a variable changed 
+	and it needs to redraw the panel.
+
 2009-03-08  Michal Hruby <michal.mhr@gmail.com>
 
 	* src/awn-background-curves.c:

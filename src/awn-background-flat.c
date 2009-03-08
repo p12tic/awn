@@ -50,9 +50,66 @@ static void awn_background_flat_padding_request (AwnBackground *bg,
                                                  guint *padding_right);
 
 static void
+awn_background_flat_expand_changed (AwnBackground *bg) // has more params...
+{
+  awn_background_emit_changed(bg);
+}
+
+static void
+awn_background_flat_align_changed (AwnBackground *bg) // has more params...
+{
+  awn_background_emit_changed(bg);
+}
+
+
+static void
+awn_background_flat_constructed (GObject *object)
+{
+  AwnBackground *bg = AWN_BACKGROUND (object);
+  gpointer monitor = NULL;
+
+  G_OBJECT_CLASS (awn_background_flat_parent_class)->constructed (object);
+
+  g_return_if_fail (bg->panel);
+
+  g_signal_connect_swapped (bg->panel, "notify::expand",
+                            G_CALLBACK (awn_background_flat_expand_changed),
+                            object);
+
+  g_object_get (bg->panel, "monitor", &monitor, NULL);
+
+  g_return_if_fail (monitor);
+
+  g_signal_connect_swapped (monitor, "notify::monitor-align",
+                            G_CALLBACK (awn_background_flat_align_changed),
+                            object);
+}
+
+static void
+awn_background_flat_dispose (GObject *object)
+{
+  gpointer monitor = NULL;
+  if (AWN_BACKGROUND (object)->panel)
+    g_object_get (AWN_BACKGROUND (object)->panel, "monitor", &monitor, NULL);
+
+  if (monitor)
+    g_signal_handlers_disconnect_by_func (monitor, 
+        G_CALLBACK (awn_background_flat_align_changed), object);
+
+  g_signal_handlers_disconnect_by_func (AWN_BACKGROUND (object)->panel, 
+        G_CALLBACK (awn_background_flat_expand_changed), object);
+
+  G_OBJECT_CLASS (awn_background_flat_parent_class)->dispose (object);
+}
+
+static void
 awn_background_flat_class_init (AwnBackgroundFlatClass *klass)
 {
   AwnBackgroundClass *bg_class = AWN_BACKGROUND_CLASS (klass);
+  GObjectClass       *obj_class = G_OBJECT_CLASS (klass);
+
+  obj_class->constructed  = awn_background_flat_constructed;
+  obj_class->dispose = awn_background_flat_dispose;
 
   bg_class->draw = awn_background_flat_draw;
   bg_class->padding_request = awn_background_flat_padding_request;
@@ -91,6 +148,15 @@ draw_rect (AwnBackground  *bg,
            gint            height)
 {
   AwnCairoRoundCorners state = ROUND_TOP;
+  gfloat align = awn_background_get_panel_alignment (bg);
+
+  gboolean expand = FALSE;
+
+  g_object_get (bg->panel, "expand", &expand, NULL);
+
+  if (expand) state = ROUND_NONE;
+  else if (align == 0.0f) state = ROUND_TOP_RIGHT;
+  else if(align == 1.0f) state = ROUND_TOP_LEFT;
 
   awn_cairo_rounded_rect (cr, x, y, width, height, bg->corner_radius, state);
 }

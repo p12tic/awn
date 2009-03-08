@@ -523,6 +523,14 @@ awn_background_emit_padding_changed (AwnBackground *bg)
   g_signal_emit (bg, _bg_signals[PADDING_CHANGED], 0);
 }
 
+void
+awn_background_emit_changed (AwnBackground *bg)
+{
+  g_return_if_fail (AWN_IS_BACKGROUND (bg));
+
+  g_signal_emit (bg, _bg_signals[CHANGED], 0);
+}
+
 gfloat
 awn_background_get_panel_alignment (AwnBackground *bg)
 {

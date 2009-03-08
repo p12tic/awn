@@ -143,8 +143,9 @@ void awn_background_get_input_shape_mask (AwnBackground  *bg,
                                           AwnOrientation  orient,
                                           GdkRectangle   *area);
 
-/* This one should be "protected" (used only be derived classes) */
+/* These should be "protected" (used only by derived classes) */
 void awn_background_emit_padding_changed (AwnBackground *bg);
+void awn_background_emit_changed (AwnBackground *bg);
 
 gfloat awn_background_get_panel_alignment (AwnBackground *bg);
 
