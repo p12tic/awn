@@ -1,5 +1,10 @@
 2009-03-08  Michal Hruby <michal.mhr@gmail.com>
 
+	* libawn/awn-dialog.c:
+	Now setting also input shape mask if we're composited.
+
+2009-03-08  Michal Hruby <michal.mhr@gmail.com>
+
 	* src/awn-background.c:
 	* src/awn-background.h:
 	* src/awn-panel.c:

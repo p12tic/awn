@@ -131,6 +131,10 @@ _on_composited_changed (GtkWidget *widget, gpointer data)
   {
     gtk_widget_shape_combine_mask (widget, NULL, 0, 0);
   }
+  else
+  {
+    gtk_widget_input_shape_combine_mask (widget, NULL, 0, 0);
+  }
 }
 
 static void
@@ -431,7 +435,7 @@ _on_title_notify(GObject *dialog, GParamSpec *spec, gpointer null)
 }
 
 static void
-awn_dialog_set_shape_mask (GtkWidget *widget, gint width, gint height)
+awn_dialog_set_masks (GtkWidget *widget, gint width, gint height)
 {
   GdkBitmap *shaped_bitmap;
   shaped_bitmap = (GdkBitmap*) gdk_pixmap_new (NULL, width, height, 1);
@@ -453,8 +457,16 @@ awn_dialog_set_shape_mask (GtkWidget *widget, gint width, gint height)
 
     cairo_destroy (cr);
 
-    gtk_widget_shape_combine_mask (widget, NULL, 0, 0);
-    gtk_widget_shape_combine_mask (widget, shaped_bitmap, 0, 0);
+    if (gtk_widget_is_composited (widget))
+    {
+      gtk_widget_input_shape_combine_mask (widget, NULL, 0, 0);
+      gtk_widget_input_shape_combine_mask (widget, shaped_bitmap, 0, 0);
+    }
+    else
+    {
+      gtk_widget_shape_combine_mask (widget, NULL, 0, 0);
+      gtk_widget_shape_combine_mask (widget, shaped_bitmap, 0, 0);
+    }
 
     g_object_unref (shaped_bitmap);
   }
@@ -479,11 +491,7 @@ _on_configure_event (GtkWidget *widget, GdkEventConfigure *event)
   awn_dialog_refresh_position (AWN_DIALOG (widget),
                                event->width, event->height);
 
-  // TODO: input mask / shape mask ?
-  if (!gtk_widget_is_composited (widget))
-  {
-    awn_dialog_set_shape_mask (widget, event->width, event->height);
-  }
+  awn_dialog_set_masks (widget, event->width, event->height);
 
   return FALSE;
 }
