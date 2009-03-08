@@ -86,14 +86,18 @@ struct _AwnPanelPrivate
   guint hiding_timer_id;
 
   guint mouse_poll_timer_id;
+  
   guint autohide_start_timer_id;
   gboolean autohide_started;
   gboolean autohide_always_visible;
   gboolean autohide_inhibited;
+
+  gboolean click_through;
 };
 
 /* FIXME: this timeout should be configurable I guess */
 #define AUTOHIDE_DELAY 1000
+#define MOUSE_POLL_TIMER_DELAY 500
 
 // padding for active_rect, yea it really isn't nice but so far it seems to
 // be the only feasible solution
@@ -175,6 +179,7 @@ static gboolean position_window             (AwnPanel *panel);
 static gboolean on_eb_expose                (GtkWidget      *eb, 
                                              GdkEventExpose *event,
                                              AwnPanel       *panel);
+static gboolean poll_mouse_position         (gpointer data);
 static gboolean awn_panel_expose            (GtkWidget      *widget, 
                                              GdkEventExpose *event);
 static void     awn_panel_size_request      (GtkWidget *widget,
@@ -215,6 +220,10 @@ static void     awn_panel_get_applet_rect   (AwnPanel *panel,
 
 static void     awn_panel_refresh_padding   (AwnPanel *panel,
                                              gpointer user_data);
+
+static void     awn_panel_update_masks      (GtkWidget *panel, 
+                                             gint real_width, 
+                                             gint real_height);
 
 static void awn_panel_set_strut              (AwnPanel *panel);
 static void awn_panel_remove_strut           (AwnPanel *panel);
@@ -279,7 +288,7 @@ awn_panel_constructed (GObject *object)
                     G_CALLBACK (on_window_configure), NULL);
 
   position_window (AWN_PANEL (panel));
-
+  
   /* Contents */
   priv->manager = awn_applet_manager_new_from_config (priv->client);
   gtk_container_add (GTK_CONTAINER (panel), priv->manager);
@@ -784,33 +793,72 @@ poll_mouse_position (gpointer data)
   AwnPanel *panel = AWN_PANEL (data);
   AwnPanelPrivate *priv = panel->priv;
 
-  if (awn_panel_check_mouse_pos (panel,
-        !priv->autohide_started || priv->autohide_always_visible))
-  {
-    /* we are on the window or its edge */
-    if (priv->autohide_start_timer_id)
+  /* Auto-Hide stuff */
+  if( priv->autohide_type != AUTOHIDE_TYPE_NONE )
+  { 
+    if (awn_panel_check_mouse_pos (panel,
+          !priv->autohide_started || priv->autohide_always_visible))
     {
-      g_source_remove (priv->autohide_start_timer_id);
-      priv->autohide_start_timer_id = 0;
-      return TRUE;
+      /* we are on the window or its edge */
+      if (priv->autohide_start_timer_id)
+      {
+        g_source_remove (priv->autohide_start_timer_id);
+        priv->autohide_start_timer_id = 0;
+        return TRUE;
+      }
+      if (priv->autohide_started)
+      {
+        priv->autohide_started = FALSE;
+        g_signal_emit (panel, _panel_signals[AUTOHIDE_END], 0);
+      }
     }
-    if (priv->autohide_started)
+    else if (GTK_WIDGET_MAPPED (widget))
     {
-      priv->autohide_started = FALSE;
-      g_signal_emit (panel, _panel_signals[AUTOHIDE_END], 0);
-    }
-  }
-  else if (GTK_WIDGET_MAPPED (widget))
-  {
-    /* mouse is away, panel should start hiding */
-    if (priv->autohide_start_timer_id == 0  && !priv->autohide_started)
-    {
-      /* the timeout will emit autohide-start */
-      priv->autohide_start_timer_id =
-        g_timeout_add (AUTOHIDE_DELAY, autohide_start_timeout, panel);
+      /* mouse is away, panel should start hiding */
+      if (priv->autohide_start_timer_id == 0  && !priv->autohide_started)
+      {
+        /* the timeout will emit autohide-start */
+        priv->autohide_start_timer_id =
+          g_timeout_add (AUTOHIDE_DELAY, autohide_start_timeout, panel);
+      }
     }
   }
 
+  /* Clickthrough on CTRL */
+  if( awn_panel_check_mouse_pos (panel,TRUE) )
+  {
+    GdkModifierType mask; 
+    gdk_display_get_pointer (gdk_display_get_default (), NULL, NULL, NULL, &mask);
+
+    if( !priv->click_through && (mask & GDK_CONTROL_MASK) )
+    { 
+      GdkBitmap* empty_input_shape = gdk_pixmap_new(NULL,1,1,1);
+      gdk_window_input_shape_combine_mask (GTK_WIDGET(panel)->window, empty_input_shape,0,0 );
+      g_object_unref( empty_input_shape );
+
+      gdk_window_set_opacity (GTK_WIDGET(panel)->window, 0.3);
+      priv->click_through = TRUE;
+    }
+    else if( priv->click_through && !(mask & GDK_CONTROL_MASK) )
+    {
+      awn_panel_update_masks (widget, priv->old_width, priv->old_height);
+      gdk_window_set_opacity (GTK_WIDGET(panel)->window, 1.0);
+      priv->click_through = FALSE;
+    }
+  }
+  else if( priv->click_through == TRUE )
+  {
+    awn_panel_update_masks (widget, priv->old_width, priv->old_height);
+    gdk_window_set_opacity (GTK_WIDGET(panel)->window, 1.0);
+    priv->click_through = FALSE;
+  }
+
+  /* Stop the polling when unnecessary */
+  if( !awn_panel_check_mouse_pos (panel,TRUE) && priv->autohide_type == AUTOHIDE_TYPE_NONE )
+  {
+    g_source_remove ( priv->mouse_poll_timer_id );
+    priv->mouse_poll_timer_id = 0;
+  }
   return TRUE;
 }
 
@@ -826,9 +874,8 @@ awn_panel_dispose (GObject *object)
     priv->hiding_timer_id = 0;
   }
 
-  if (priv->mouse_poll_timer_id)
-  {
-    g_source_remove (priv->mouse_poll_timer_id);
+  if( priv->mouse_poll_timer_id != 0 ){
+    g_source_remove ( priv->mouse_poll_timer_id );
     priv->mouse_poll_timer_id = 0;
   }
 
@@ -1258,7 +1305,7 @@ on_window_configure (GtkWidget          *panel,
     priv->old_y = event->y;
 
     awn_panel_update_masks (panel, event->width, event->height);
-
+    
     /* Update position */
     position_window (AWN_PANEL (panel));
 
@@ -1548,6 +1595,9 @@ on_mouse_over (GtkWidget *widget, GdkEventCrossing *event)
     g_signal_emit (panel, _panel_signals[AUTOHIDE_END], 0);
   }
 
+  if( priv->mouse_poll_timer_id == 0 )
+      priv->mouse_poll_timer_id = g_timeout_add (MOUSE_POLL_TIMER_DELAY, poll_mouse_position, panel);
+
   return FALSE;
 }
 
@@ -1588,24 +1638,9 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
 
   awn_panel_reset_autohide(panel);
 
-  if (type == AUTOHIDE_TYPE_NONE)
-  {
-    /* remove the timer if autohide if off */
-    if (priv->mouse_poll_timer_id)
-    {
-      g_source_remove(priv->mouse_poll_timer_id);
-      priv->mouse_poll_timer_id = 0;
-    }
-  }
-  else
-  {
-    /* run mouse position polling timer */
-    if (priv->mouse_poll_timer_id == 0)
-    {
-      priv->mouse_poll_timer_id = 
-        g_timeout_add (750, poll_mouse_position, panel);
-    }
-  }
+  if( priv->autohide_type != AUTOHIDE_TYPE_NONE && priv->mouse_poll_timer_id == 0 )
+    priv->mouse_poll_timer_id = g_timeout_add (MOUSE_POLL_TIMER_DELAY, poll_mouse_position, panel);
+
 
   static gulong start_handler_id = 0;
   static gulong end_handler_id = 0;
