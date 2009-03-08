@@ -523,6 +523,21 @@ awn_background_emit_padding_changed (AwnBackground *bg)
   g_signal_emit (bg, _bg_signals[PADDING_CHANGED], 0);
 }
 
+gfloat
+awn_background_get_panel_alignment (AwnBackground *bg)
+{
+  gfloat alignment = 0.5;
+  g_return_val_if_fail (AWN_IS_BACKGROUND (bg) && bg->panel, alignment);
+
+  gpointer monitor = NULL;
+  g_object_get (bg->panel, "monitor", &monitor, NULL);
+  g_return_val_if_fail (monitor, alignment);
+
+  g_object_get (monitor, "monitor_align", &alignment, NULL);
+
+  return alignment;
+}
+
 /*
  * If we're in gtk theme mode, then load up the colours from the current gtk
  * theme

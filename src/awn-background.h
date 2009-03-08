@@ -146,6 +146,8 @@ void awn_background_get_input_shape_mask (AwnBackground  *bg,
 /* This one should be "protected" (used only be derived classes) */
 void awn_background_emit_padding_changed (AwnBackground *bg);
 
+gfloat awn_background_get_panel_alignment (AwnBackground *bg);
+
 G_END_DECLS
 
 #endif /* _AWN_BACKGROUND_H */

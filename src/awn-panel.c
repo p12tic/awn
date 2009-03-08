@@ -103,6 +103,7 @@ enum
   PROP_0,
 
   PROP_CLIENT,
+  PROP_MONITOR,
   PROP_COMPOSITED,
   PROP_PANEL_MODE,
   PROP_EXPAND,
@@ -298,6 +299,9 @@ awn_panel_get_property (GObject    *object,
   {
     case PROP_CLIENT:
       g_value_set_pointer (value, priv->client);
+      break;
+    case PROP_MONITOR:
+      g_value_set_pointer (value, priv->monitor);
       break;
     case PROP_COMPOSITED:
       g_value_set_boolean (value, priv->composited);
@@ -858,6 +862,13 @@ awn_panel_class_init (AwnPanelClass *klass)
                           "Client",
                           "The AwnConfigClient",
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+    PROP_MONITOR,
+    g_param_spec_pointer ("monitor",
+                          "Monitor",
+                          "The AwnMonitor",
+                          G_PARAM_READABLE));
 
   g_object_class_install_property (obj_class,
     PROP_COMPOSITED,
