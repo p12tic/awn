@@ -1,5 +1,10 @@
 2009-03-08  Michal Hruby <michal.mhr@gmail.com>
 
+	* src/awn-background-curves.c:
+	React to curves-symmetry key.
+
+2009-03-08  Michal Hruby <michal.mhr@gmail.com>
+
 	* libawn/awn-dialog.c:
 	Fix redraw problem.
 	* libawn/awn-themed-icon.c:

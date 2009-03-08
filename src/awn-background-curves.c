@@ -97,15 +97,20 @@ draw_rect_path (AwnBackground  *bg,
                 gint            height,
                 gint            padding)
 {
-  gdouble cx = width/2.0;
+  const gdouble SIZE = 0.625;
 
   cairo_save (cr);
 
-  cairo_translate (cr, x+width/2.0, y);
-  cairo_scale (cr, width/2.0, height);
+  cairo_translate (cr, x+width/2.0, y + height * (1-SIZE));
+  cairo_scale (cr, width/2.0, height * SIZE);
 
-  cairo_move_to (cr, 0.0, 1.0);
-  cairo_arc_negative (cr, 0.0, 1.0, 1.0, 0.0, M_PI);
+  gdouble midpoint = bg->curves_symmetry * 2 - 1.0;
+
+  cairo_move_to (cr, 1.0, 1.0);
+  cairo_curve_to (cr, 1.0, 1.0, bg->curves_symmetry * 0.5 + 0.5, 0.0,
+                  midpoint, 0.0);
+  cairo_curve_to (cr, midpoint, 0.0, (1-bg->curves_symmetry)*-0.5 - 0.5, 0.0,
+                  -1.0, 1.0);
 
   cairo_restore (cr);
 }
@@ -196,7 +201,7 @@ awn_background_curves_padding_request (AwnBackground *bg,
                                    guint *padding_left,
                                    guint *padding_right)
 {
-  gint padding = 10;
+  gint padding = 20;
 
   switch (orient)
   {
