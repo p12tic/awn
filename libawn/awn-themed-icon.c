@@ -214,8 +214,9 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   /*
    * Initate drag_drop 
    */
-  gtk_drag_dest_set (GTK_WIDGET (icon), GTK_DEST_DEFAULT_ALL, 
-                     drop_types, n_drop_types, 
+  gtk_drag_dest_set (GTK_WIDGET (icon),
+                     GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
+                     drop_types, n_drop_types,
                      GDK_ACTION_COPY | GDK_ACTION_ASK);
 }
 

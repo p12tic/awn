@@ -1,5 +1,14 @@
 2009-03-08  Michal Hruby <michal.mhr@gmail.com>
 
+	* libawn/awn-dialog.c:
+	Fix redraw problem.
+	* libawn/awn-themed-icon.c:
+	Disable default D&D highlight.
+	* src/awn-background-edgy.c:
+	Fix swapped params.
+
+2009-03-08  Michal Hruby <michal.mhr@gmail.com>
+
 	* awn-manager/awn-manager-mini.glade:
 	* src/Makefile.am:
 	* src/awn-background-edgy.c:

@@ -179,7 +179,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_step_1.green,
                                      bg->g_step_1.blue,
                                      bg->g_step_1.alpha);
-  draw_path(cr, height, width, height - 1.0, bottom_left);
+  draw_path(cr, height - 1.0, width, height, bottom_left);
   cairo_line_to (cr, bottom_left ? 0.0 : width, height);
 
   cairo_set_source (cr, pat);
@@ -211,7 +211,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                              bg->hilight_color.green,
                              bg->hilight_color.blue,
                              bg->hilight_color.alpha);
-  draw_path(cr, height, width, height - 2.0, bottom_left);
+  draw_path(cr, height - 2.0, width, height, bottom_left);
   cairo_stroke (cr);
 
   /* External border */
@@ -219,7 +219,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                              bg->border_color.green,
                              bg->border_color.blue,
                              bg->border_color.alpha);
-  draw_path(cr, height, width, height - 1.0, bottom_left);
+  draw_path(cr, height - 1.0, width, height, bottom_left);
   cairo_stroke (cr);
 }
 

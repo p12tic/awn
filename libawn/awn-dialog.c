@@ -485,6 +485,9 @@ _on_configure_event (GtkWidget *widget, GdkEventConfigure *event)
     return FALSE;
   }
 
+  gboolean dimensions_changed =
+    event->width != priv->old_w || event->height != priv->old_h;
+
   priv->old_x = event->x;     priv->old_y = event->y;
   priv->old_w = event->width; priv->old_h = event->height;
 
@@ -492,6 +495,8 @@ _on_configure_event (GtkWidget *widget, GdkEventConfigure *event)
                                event->width, event->height);
 
   awn_dialog_set_masks (widget, event->width, event->height);
+
+  if (dimensions_changed) gtk_widget_queue_draw (widget);
 
   return FALSE;
 }
