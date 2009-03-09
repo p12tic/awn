@@ -106,6 +106,7 @@ awn_themed_icon_dispose (GObject *object)
   if (G_IS_OBJECT (priv->override_theme))
     g_object_unref (priv->override_theme);
 
+  g_signal_handlers_disconnect_by_func(priv->gtk_theme, on_icon_theme_changed, object );
   G_OBJECT_CLASS (awn_themed_icon_parent_class)->dispose (object);
 }
 

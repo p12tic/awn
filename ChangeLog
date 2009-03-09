@@ -1,3 +1,9 @@
+2009-03-08  Rodney Cryderman <rcryderman@gmail.c>
+
+	* libawn/awn-themed-icon.c:
+
+	Disconnect signal on default gtk icon theme when awn themed icon is disposed.
+
 2009-03-08  h4writer <hv1989@gmail.com>
 
 	* src/awn-background-flat.c:
