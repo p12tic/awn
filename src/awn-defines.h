@@ -44,6 +44,7 @@
 #define AWN_PANEL_MONITOR_OFFSET "monitor_offset"
 #define AWN_PANEL_MONITOR_ALIGN  "monitor_align"
 #define AWN_PANEL_STYLE          "style"
+#define AWN_PANEL_CLICKTHROUGH   "clickthrough"
 
 #define AWN_GROUP_THEME          "theme"
 #define AWN_THEME_GSTEP1         "gstep1"
