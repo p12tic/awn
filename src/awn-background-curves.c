@@ -97,20 +97,13 @@ draw_rect_path (AwnBackground  *bg,
                 gint            height,
                 gint            padding)
 {
-  const gdouble SIZE = 0.625;
-
   cairo_save (cr);
 
-  cairo_translate (cr, x+width/2.0, y + height * (1-SIZE));
-  cairo_scale (cr, width/2.0, height * SIZE);
+  cairo_translate (cr, x+width/2.0, y);
+  cairo_scale (cr, width/2.0, height);
 
-  gdouble midpoint = bg->curves_symmetry * 2 - 1.0;
-
-  cairo_move_to (cr, 1.0, 1.0);
-  cairo_curve_to (cr, 1.0, 1.0, bg->curves_symmetry * 0.5 + 0.5, 0.0,
-                  midpoint, 0.0);
-  cairo_curve_to (cr, midpoint, 0.0, (1-bg->curves_symmetry)*-0.5 - 0.5, 0.0,
-                  -1.0, 1.0);
+  cairo_move_to (cr, 0.0, 1.0);
+  cairo_arc_negative (cr, 0.0, 1.0, 1.0, 0.0, M_PI);
 
   cairo_restore (cr);
 }
@@ -135,18 +128,20 @@ draw_top_bottom_background (AwnBackground  *bg,
                             gint            width,
                             gint            height)
 {
-  //TODO: let the height depend on curviness and struts
-
   cairo_pattern_t *pat;
+  gdouble curves_height;
 
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   cairo_translate (cr, 0.5, 0.5);
   width -= 1;
+  curves_height = height;
+  if(bg->curviness < 1)
+    curves_height = height*bg->curviness;
 
   /* Drawing outer ellips */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
+  pat = cairo_pattern_create_linear (0, height-curves_height, 0, height);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 
                                      bg->g_step_1.red,
                                      bg->g_step_1.green,
@@ -158,26 +153,36 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_step_2.blue, 
                                      bg->g_step_2.alpha);
 
-  draw_rect_path (bg, cr, 0, 0, width, height, 0.5);
+  draw_rect_path (bg, cr, 0, height-curves_height, width, curves_height, 0.5);
   cairo_set_source (cr, pat);
   cairo_fill (cr);
+  cairo_pattern_destroy (pat);
 
   /* External border */
   cairo_set_source_rgba (cr, bg->border_color.red,
                              bg->border_color.green,
                              bg->border_color.blue,
                              bg->border_color.alpha);
-  draw_rect_path (bg, cr, 0, 0,  width, height, 0.5);
+  draw_rect_path (bg, cr, 0, height-curves_height,  width, curves_height, 0.5);
   cairo_stroke (cr);
 
   /* Drawing inner ellips */
-  gint width_inner = 0.8375*width;
-  cairo_set_source_rgba (cr, bg->g_step_1.red,
-                             bg->g_step_1.green,
-                             bg->g_step_1.blue,
-                             bg->g_step_1.alpha);
-  draw_rect_path (bg, cr, (width-width_inner)*bg->curves_symmetry, height/2.0,  width_inner, height/2.0, 0.5);
+  gint width_inner = width*(1-bg->curves_symmetry*0.2);
+  pat = cairo_pattern_create_linear (0, height-curves_height/2.0, 0, height);
+  cairo_pattern_add_color_stop_rgba (pat, 0.0, 
+                                     bg->g_histep_1.red,
+                                     bg->g_histep_1.green,
+                                     bg->g_histep_1.blue,
+                                     bg->g_histep_1.alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 1.0,
+                                     bg->g_histep_2.red, 
+                                     bg->g_histep_2.green,
+                                     bg->g_histep_2.blue, 
+                                     bg->g_histep_2.alpha);
+  draw_rect_path (bg, cr, (width-width_inner)*bg->curves_symmetry*0.8, height-curves_height/2.0,  width_inner, curves_height/2.0, 0.5);
+  cairo_set_source (cr, pat);
   cairo_fill (cr); 
+  cairo_pattern_destroy (pat);
 }
 
 /**

@@ -1,3 +1,8 @@
+2009-03-10  h4writer <hv1989@gmail.com>
+
+	* src/awn-background-curves.c:
+	Awn-curves done right
+
 2009-03-09  Michal Hruby <michal.mhr@gmail.com>
 
 	reviewed by: <delete if not using a buddy>
