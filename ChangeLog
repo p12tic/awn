@@ -1,3 +1,13 @@
+2009-03-09  Michal Hruby <michal.mhr@gmail.com>
+
+	reviewed by: <delete if not using a buddy>
+	patch by: dolfje
+
+	* data/awn.schema-ini.in:
+	* src/awn-defines.h:
+	* src/awn-panel.c:
+	Merged dolfje's work on click-through behaviour.
+
 2009-03-08  Rodney Cryderman <rcryderman@gmail.c>
 
 	* libawn/awn-themed-icon.c:

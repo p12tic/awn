@@ -86,14 +86,21 @@ struct _AwnPanelPrivate
   guint hiding_timer_id;
 
   guint mouse_poll_timer_id;
+  
   guint autohide_start_timer_id;
   gboolean autohide_started;
   gboolean autohide_always_visible;
   gboolean autohide_inhibited;
+
+  gboolean clickthrough;
+  gint clickthrough_type;
 };
 
 /* FIXME: this timeout should be configurable I guess */
 #define AUTOHIDE_DELAY 1000
+#define MOUSE_POLL_TIMER_DELAY 500
+
+#define CLICKTHROUGH_OPACITY 0.3
 
 // padding for active_rect, yea it really isn't nice but so far it seems to
 // be the only feasible solution
@@ -112,7 +119,8 @@ enum
   PROP_ORIENT,
   PROP_SIZE,
   PROP_AUTOHIDE_TYPE,
-  PROP_STYLE
+  PROP_STYLE,
+  PROP_CLICKTHROUGH
 };
 
 enum
@@ -123,6 +131,15 @@ enum
   AUTOHIDE_TYPE_TRANSPARENTIZE,
 
   AUTOHIDE_TYPE_LAST
+};
+
+enum
+{
+  CLICKTHROUGH_NEVER = 0,
+  CLICKTHROUGH_ON_CTRL,
+  CLICKTHROUGH_ON_NOCTRL,
+  
+  CLICKTHROUGH_LAST
 };
 
 enum
@@ -175,6 +192,7 @@ static gboolean position_window             (AwnPanel *panel);
 static gboolean on_eb_expose                (GtkWidget      *eb, 
                                              GdkEventExpose *event,
                                              AwnPanel       *panel);
+static gboolean poll_mouse_position         (gpointer data);
 static gboolean awn_panel_expose            (GtkWidget      *widget, 
                                              GdkEventExpose *event);
 static void     awn_panel_size_request      (GtkWidget *widget,
@@ -194,6 +212,8 @@ static void     awn_panel_set_style         (AwnPanel *panel,
                                              gint      style);
 static void     awn_panel_set_panel_mode    (AwnPanel *panel,
                                              gboolean  panel_mode);
+static void     awn_panel_set_clickthrough_type(AwnPanel *panel,
+                                             gint      type);
 
 static void     awn_panel_reset_autohide    (AwnPanel *panel);
 
@@ -215,6 +235,10 @@ static void     awn_panel_get_applet_rect   (AwnPanel *panel,
 
 static void     awn_panel_refresh_padding   (AwnPanel *panel,
                                              gpointer user_data);
+
+static void     awn_panel_update_masks      (GtkWidget *panel, 
+                                             gint real_width, 
+                                             gint real_height);
 
 static void awn_panel_set_strut              (AwnPanel *panel);
 static void awn_panel_remove_strut           (AwnPanel *panel);
@@ -261,7 +285,10 @@ awn_panel_constructed (GObject *object)
   awn_config_bridge_bind (bridge, priv->client,
                           AWN_GROUP_PANEL, AWN_PANEL_STYLE,
                           object, "style");
-
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_GROUP_PANEL, AWN_PANEL_CLICKTHROUGH,
+                          object, "clickthrough_type");
+  
   /* Background drawing */
   awn_panel_set_style(AWN_PANEL (panel), priv->style);
 
@@ -329,6 +356,9 @@ awn_panel_get_property (GObject    *object,
     case PROP_STYLE:
       g_value_set_int (value, priv->style);
       break;
+    case PROP_CLICKTHROUGH:
+      g_value_set_int (value, priv->clickthrough_type);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -375,6 +405,9 @@ awn_panel_set_property (GObject      *object,
       break;
     case PROP_STYLE:
       awn_panel_set_style (panel, g_value_get_int (value));
+      break;
+    case PROP_CLICKTHROUGH:
+      awn_panel_set_clickthrough_type (panel, g_value_get_int (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -784,34 +817,109 @@ poll_mouse_position (gpointer data)
   AwnPanel *panel = AWN_PANEL (data);
   AwnPanelPrivate *priv = panel->priv;
 
-  if (awn_panel_check_mouse_pos (panel,
-        !priv->autohide_started || priv->autohide_always_visible))
-  {
-    /* we are on the window or its edge */
-    if (priv->autohide_start_timer_id)
+  /* Auto-Hide stuff */
+  if (priv->autohide_type != AUTOHIDE_TYPE_NONE)
+  { 
+    if (awn_panel_check_mouse_pos (panel,
+          !priv->autohide_started || priv->autohide_always_visible))
     {
-      g_source_remove (priv->autohide_start_timer_id);
-      priv->autohide_start_timer_id = 0;
-      return TRUE;
+      /* we are on the window or its edge */
+      if (priv->autohide_start_timer_id)
+      {
+        g_source_remove (priv->autohide_start_timer_id);
+        priv->autohide_start_timer_id = 0;
+        return TRUE;
+      }
+      if (priv->autohide_started)
+      {
+        priv->autohide_started = FALSE;
+        g_signal_emit (panel, _panel_signals[AUTOHIDE_END], 0);
+      }
     }
-    if (priv->autohide_started)
+    else if (GTK_WIDGET_MAPPED (widget))
     {
-      priv->autohide_started = FALSE;
-      g_signal_emit (panel, _panel_signals[AUTOHIDE_END], 0);
-    }
-  }
-  else if (GTK_WIDGET_MAPPED (widget))
-  {
-    /* mouse is away, panel should start hiding */
-    if (priv->autohide_start_timer_id == 0  && !priv->autohide_started)
-    {
-      /* the timeout will emit autohide-start */
-      priv->autohide_start_timer_id =
-        g_timeout_add (AUTOHIDE_DELAY, autohide_start_timeout, panel);
+      /* mouse is away, panel should start hiding */
+      if (priv->autohide_start_timer_id == 0  && !priv->autohide_started)
+      {
+        /* the timeout will emit autohide-start */
+        priv->autohide_start_timer_id =
+          g_timeout_add (AUTOHIDE_DELAY, autohide_start_timeout, panel);
+      }
     }
   }
 
-  return TRUE;
+  /* Clickthrough on CTRL */
+  GdkModifierType mask; 
+  gdk_display_get_pointer (gdk_display_get_default (), NULL, NULL, NULL, &mask);
+
+  /* specialstate is TRUE whenever someone hovers Awn while holding
+   *  the ctrl-key
+   */
+  gboolean specialstate = (mask & GDK_CONTROL_MASK) &&
+                          awn_panel_check_mouse_pos (panel, TRUE);
+
+  switch (priv->clickthrough_type )
+  {
+    case CLICKTHROUGH_NEVER:
+      if (priv->clickthrough)
+      {
+        priv->clickthrough = FALSE;
+        awn_panel_update_masks (widget, priv->old_width, priv->old_height);
+        gdk_window_set_opacity (GTK_WIDGET(panel)->window, 1.0);
+      }
+      break;
+    case CLICKTHROUGH_ON_CTRL:
+      if (priv->clickthrough && !specialstate)
+      {
+        priv->clickthrough = FALSE;
+        awn_panel_update_masks (widget, priv->old_width, priv->old_height);
+        gdk_window_set_opacity (GTK_WIDGET(panel)->window, 1.0);
+      }
+      else if (!priv->clickthrough && specialstate)
+      {
+        priv->clickthrough = TRUE;
+        awn_panel_update_masks (widget, priv->old_width, priv->old_height);
+        gdk_window_set_opacity (GTK_WIDGET (panel)->window,
+                                CLICKTHROUGH_OPACITY);
+      }
+      break;
+    case CLICKTHROUGH_ON_NOCTRL:
+      if (priv->clickthrough && specialstate)
+      {
+        priv->clickthrough = FALSE;
+        awn_panel_update_masks (widget, priv->old_width, priv->old_height);
+        gdk_window_set_opacity (GTK_WIDGET(panel)->window, 1.0);
+      }
+      else if (!priv->clickthrough && !specialstate)
+      {
+        priv->clickthrough = TRUE;
+        awn_panel_update_masks (widget, priv->old_width, priv->old_height);
+        gdk_window_set_opacity (GTK_WIDGET (panel)->window,
+                                CLICKTHROUGH_OPACITY);
+      }
+      break;
+  }
+
+  /* DETERMINE WHEN TO STOP POLLING */
+  
+  /* Keep on polling when autohide */
+  if (priv->autohide_type != AUTOHIDE_TYPE_NONE)
+    return TRUE;
+  
+  /* Keep on polling on noctrl clickthrough */
+  if (priv->clickthrough_type == CLICKTHROUGH_ON_NOCTRL)
+    return TRUE;
+
+  /* Keep on polling when hovering the panel and ctrl clickthrough
+   *  is activated
+   */
+  if (awn_panel_check_mouse_pos (panel, TRUE) &&
+      priv->clickthrough_type == CLICKTHROUGH_ON_CTRL)
+    return TRUE;
+
+  /* In other cases, the polling may end */
+  priv->mouse_poll_timer_id = 0;
+  return FALSE;
 }
 
 static void
@@ -936,6 +1044,14 @@ awn_panel_class_init (AwnPanelClass *klass)
                       "Style",
                       "Style of the bar",
                       0, STYLE_LAST - 1, 0,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+    PROP_CLICKTHROUGH,
+    g_param_spec_int ("clickthrough-type",
+                      "Clickthrough type",
+                      "Type of clickthrough action",
+                      0, CLICKTHROUGH_LAST - 1, 0,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   /* Add signals to the class */
@@ -1132,58 +1248,67 @@ awn_panel_update_masks (GtkWidget *panel,
   g_return_if_fail (AWN_IS_PANEL (panel));
   priv = AWN_PANEL (panel)->priv;
     
-  shaped_bitmap = (GdkBitmap*)gdk_pixmap_new (NULL, real_width, real_height, 1);
-
-  if (!shaped_bitmap)
-    return;
-
-  /* clear the bitmap */
-  cr = gdk_cairo_create (shaped_bitmap);
-  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_paint (cr);
-
-  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-  if (priv->bg)
+  if (priv->clickthrough && priv->composited)
   {
-    GdkRectangle area;
-    awn_panel_get_draw_rect (AWN_PANEL (panel), &area,
-                             real_width, real_height);
-    /* Set the input shape of the window if the window is composited */
-    if (priv->composited)
-    {
-      awn_background_get_input_shape_mask (priv->bg, cr, priv->orient, &area);
-    }
-    /* If window is not composited set shape of the window */
-    else
-    {
-      awn_background_get_shape_mask (priv->bg, cr, priv->orient, &area);
-    }
-  }
-
-  /* combine with applet's eventbox (with proper dimensions) */
-  cairo_set_operator (cr, CAIRO_OPERATOR_ADD);
-  cairo_set_source_rgb (cr, 1.0f, 1.0f, 1.0f);
-  awn_panel_get_applet_rect (AWN_PANEL (panel), &applet_rect,
-                             real_width, real_height);
-  cairo_rectangle (cr, applet_rect.x, applet_rect.y,
-                   applet_rect.width, applet_rect.height);
-  cairo_fill (cr);
-
-  cairo_destroy (cr);
-
-  if (priv->composited)
-  {
-    gtk_widget_input_shape_combine_mask (panel, NULL, 0, 0);
-    gtk_widget_input_shape_combine_mask (panel, shaped_bitmap, 0, 0);
+    GdkRegion *region = gdk_region_new ();
+    gdk_window_input_shape_combine_region (GTK_WIDGET (panel)->window,
+                                           region, 0, 0);
+    gdk_region_destroy (region);
   }
   else
   {
-    gtk_widget_shape_combine_mask (panel, NULL, 0, 0);
-    gtk_widget_shape_combine_mask (panel, shaped_bitmap, 0, 0);
-  }
+    shaped_bitmap = (GdkBitmap*)gdk_pixmap_new (NULL,
+                                                real_width, real_height, 1);
 
-  if (shaped_bitmap)
+    g_return_if_fail (shaped_bitmap);
+
+    /* clear the bitmap */
+    cr = gdk_cairo_create (shaped_bitmap);
+    cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+    cairo_paint (cr);
+
+    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+    if (priv->bg)
+    {
+      GdkRectangle area;
+      awn_panel_get_draw_rect (AWN_PANEL (panel), &area,
+                               real_width, real_height);
+      /* Set the input shape of the window if the window is composited */
+      if (priv->composited)
+      {
+        awn_background_get_input_shape_mask (priv->bg, cr, priv->orient, &area);
+      }
+      /* If window is not composited set shape of the window */
+      else
+      {
+        awn_background_get_shape_mask (priv->bg, cr, priv->orient, &area);
+      }
+    }
+
+    /* combine with applet's eventbox (with proper dimensions) */
+    cairo_set_operator (cr, CAIRO_OPERATOR_ADD);
+    cairo_set_source_rgb (cr, 1.0f, 1.0f, 1.0f);
+    awn_panel_get_applet_rect (AWN_PANEL (panel), &applet_rect,
+                               real_width, real_height);
+    cairo_rectangle (cr, applet_rect.x, applet_rect.y,
+                     applet_rect.width, applet_rect.height);
+    cairo_fill (cr);
+
+    cairo_destroy (cr);
+
+    if (priv->composited)
+    {
+      gtk_widget_input_shape_combine_mask (panel, NULL, 0, 0);
+      gtk_widget_input_shape_combine_mask (panel, shaped_bitmap, 0, 0);
+    }
+    else
+    {
+      gtk_widget_shape_combine_mask (panel, NULL, 0, 0);
+      gtk_widget_shape_combine_mask (panel, shaped_bitmap, 0, 0);
+    }
+
     g_object_unref (shaped_bitmap);
+  }
 }
 
 /*
@@ -1548,6 +1673,12 @@ on_mouse_over (GtkWidget *widget, GdkEventCrossing *event)
     g_signal_emit (panel, _panel_signals[AUTOHIDE_END], 0);
   }
 
+  if (priv->mouse_poll_timer_id == 0 && poll_mouse_position (panel))
+  {
+    priv->mouse_poll_timer_id = g_timeout_add (MOUSE_POLL_TIMER_DELAY,
+                                               poll_mouse_position, panel);
+  }
+
   return FALSE;
 }
 
@@ -1586,30 +1717,17 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
 
   priv->autohide_type = type;
 
-  awn_panel_reset_autohide(panel);
+  awn_panel_reset_autohide (panel);
 
-  if (type == AUTOHIDE_TYPE_NONE)
-  {
-    /* remove the timer if autohide if off */
-    if (priv->mouse_poll_timer_id)
-    {
-      g_source_remove(priv->mouse_poll_timer_id);
-      priv->mouse_poll_timer_id = 0;
-    }
-  }
-  else
-  {
-    /* run mouse position polling timer */
-    if (priv->mouse_poll_timer_id == 0)
-    {
-      priv->mouse_poll_timer_id = 
-        g_timeout_add (750, poll_mouse_position, panel);
-    }
-  }
+  if (priv->autohide_type != AUTOHIDE_TYPE_NONE
+      && priv->mouse_poll_timer_id == 0)
+    priv->mouse_poll_timer_id = g_timeout_add (MOUSE_POLL_TIMER_DELAY,
+                                               poll_mouse_position, panel);
 
   static gulong start_handler_id = 0;
   static gulong end_handler_id = 0;
-  if (start_handler_id) {
+  if (start_handler_id)
+  {
     g_signal_handler_disconnect (panel, start_handler_id);
     start_handler_id = 0;
   }
@@ -1715,6 +1833,26 @@ awn_panel_set_panel_mode (AwnPanel *panel, gboolean  panel_mode)
       awn_panel_remove_strut(panel);
   }
 
+}
+
+static void     
+awn_panel_set_clickthrough_type(AwnPanel *panel, gint type)
+{
+  AwnPanelPrivate *priv = panel->priv;
+  priv->clickthrough_type = type;
+
+  if (priv->clickthrough_type != CLICKTHROUGH_NEVER
+      && priv->mouse_poll_timer_id == 0 )
+    priv->mouse_poll_timer_id = g_timeout_add (MOUSE_POLL_TIMER_DELAY,
+                                               poll_mouse_position, panel);
+
+  if (priv->clickthrough_type == CLICKTHROUGH_NEVER && priv->clickthrough)
+  {
+    priv->clickthrough = FALSE;
+    awn_panel_update_masks (GTK_WIDGET(panel),
+                            priv->old_width, priv->old_height);
+    gdk_window_set_opacity (GTK_WIDGET(panel)->window, 1.0);
+  }
 }
 
 static void
