@@ -592,18 +592,20 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
                                 AWN_GROUP_THEME, AWN_THEME_GSTEP2,
                                 temp, NULL);
 
+  gdk_color_to_hex (temp, &style->light[GTK_STATE_NORMAL], 220);
   awn_config_client_set_string (client,
                                 AWN_GROUP_THEME, AWN_THEME_GHISTEP1,
-                                (gchar*)"FFFFFF0C", NULL);
+                                temp, NULL);
+  gdk_color_to_hex (temp, &style->light[GTK_STATE_PRELIGHT], 32);
   awn_config_client_set_string (client,
                                 AWN_GROUP_THEME, AWN_THEME_GHISTEP2,
-                                (gchar*)"FFFFFF0B", NULL);
+                                temp, NULL);
 
   gdk_color_to_hex (temp, &style->dark[GTK_STATE_ACTIVE], 200);
   awn_config_client_set_string (client,
                                 AWN_GROUP_THEME, AWN_THEME_BORDER,
                                 temp, NULL);
-  gdk_color_to_hex (temp, &style->bg[GTK_STATE_PRELIGHT], 100);
+  gdk_color_to_hex (temp, &style->dark[GTK_STATE_SELECTED], 100);
   awn_config_client_set_string (client,
                                 AWN_GROUP_THEME, AWN_THEME_HILIGHT,
                                 temp, NULL);
