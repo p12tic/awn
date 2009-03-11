@@ -284,7 +284,8 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   /* draw everything else over transparent background */
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-  cairo_set_line_width (cr, 2.0);
+  cairo_set_line_width (cr, 1.0);
+  cairo_translate (cr, 0.5, 0.5);
 
   /* background shading */
   cairo_set_source_rgba (cr, priv->g_step_2.red,
@@ -299,7 +300,15 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
                          priv->border_color.green,
                          priv->border_color.blue,
                          priv->border_color.alpha);
-  cairo_stroke(cr);
+  cairo_stroke (cr);
+
+  cairo_set_source_rgba (cr, priv->hilight_color.red,
+                         priv->hilight_color.green,
+                         priv->hilight_color.blue,
+                         priv->hilight_color.alpha);
+  cairo_translate (cr, 1.0, 1.0);
+  awn_dialog_paint_border_path (dialog, cr, width-2, height-2);
+  cairo_stroke (cr);
 
   /* Clean up */
   cairo_destroy(cr);
@@ -336,9 +345,10 @@ on_title_expose(GtkWidget       *widget,
 
   cairo_translate (cr, expose->area.x, expose->area.y);
 
-  cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
-  cairo_set_line_width(cr, 1.0);
+  cairo_set_line_width (cr, 1.0);
+  cairo_translate (cr, 0.5, 0.5);
 
   /* Paint the background the border colour */
   pat = cairo_pattern_create_linear (0, 0, 0, height);
@@ -353,34 +363,50 @@ on_title_expose(GtkWidget       *widget,
                                      priv->g_histep_2.blue,
                                      priv->g_histep_2.alpha);
 
-  awn_cairo_rounded_rect (cr, 0, 0, width, height, 15, ROUND_ALL);
+  awn_cairo_rounded_rect (cr, 0, 0, width-1, height-0.5, 15, ROUND_ALL);
   cairo_set_source (cr, pat);
   cairo_fill_preserve (cr);
   cairo_pattern_destroy (pat);
 
-  cairo_set_source_rgba (cr, priv->hilight_color.red,
-                             priv->hilight_color.green,
-                             priv->hilight_color.blue,
-                             priv->hilight_color.alpha);
+  /* border */
+  pat = cairo_pattern_create_linear (0, 0, 0, height);
+  cairo_pattern_add_color_stop_rgba (pat, 0.0,
+                                     priv->border_color.red,
+                                     priv->border_color.green,
+                                     priv->border_color.blue,
+                                     priv->border_color.alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 0.75,
+                                     priv->border_color.red,
+                                     priv->border_color.green,
+                                     priv->border_color.blue,
+                                     priv->border_color.alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.25);
+
+  cairo_set_source (cr, pat);
   cairo_stroke (cr);
 
-  /* Highlight */
-  /*
-  pat = cairo_pattern_create_linear(0, 0, 0, (height / 5) * 2);
+  cairo_pattern_destroy (pat);
 
-  cairo_pattern_add_color_stop_rgba(pat, 0, 1, 1, 1, 0.3);
+  /* hilight */
+  pat = cairo_pattern_create_linear (0, 0, 0, height);
+  cairo_pattern_add_color_stop_rgba (pat, 0.0,
+                                     priv->hilight_color.red,
+                                     priv->hilight_color.green,
+                                     priv->hilight_color.blue,
+                                     priv->hilight_color.alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 0.75,
+                                     priv->hilight_color.red,
+                                     priv->hilight_color.green,
+                                     priv->hilight_color.blue,
+                                     priv->hilight_color.alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.0);
 
-  cairo_pattern_add_color_stop_rgba(pat, 1, 1, 1, 1, 0.1);
+  cairo_set_operator (cr, CAIRO_OPERATOR_XOR);
+  awn_cairo_rounded_rect (cr, 1, 1, width-3, height-1.5, 15, ROUND_ALL);
+  cairo_set_source (cr, pat);
+  cairo_stroke (cr);
 
-  awn_cairo_rounded_rect(cr, 1, 1, width - 2, (height / 5)*2,
-                         15, ROUND_TOP);
-
-  cairo_set_source(cr, pat);
-
-  cairo_fill(cr);
-
-  cairo_pattern_destroy(pat);
-  */
+  cairo_pattern_destroy (pat);
 
   /* Clean up */
   cairo_destroy(cr);

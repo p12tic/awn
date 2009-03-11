@@ -1,3 +1,8 @@
+2009-03-12  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Adjusted painting of AwnDialog.
+
 2009-03-11  Michal Hruby <michal.mhr@gmail.com>
 
 	* src/awn-background.c:
