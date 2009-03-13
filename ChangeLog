@@ -1,3 +1,8 @@
+2009-03-13  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Possible fix for painting problems.
+
 2009-03-12  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-dialog.c:

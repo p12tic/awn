@@ -263,6 +263,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   AwnDialogPrivate *priv;
   GtkWidget *child;
   cairo_t *cr = NULL;
+  cairo_path_t *path = NULL;
   gint width, height;
 
   dialog = AWN_DIALOG (widget);
@@ -300,6 +301,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
                          priv->border_color.green,
                          priv->border_color.blue,
                          priv->border_color.alpha);
+  path = cairo_copy_path (cr);
   cairo_stroke (cr);
 
   cairo_set_source_rgba (cr, priv->hilight_color.red,
@@ -307,8 +309,11 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
                          priv->hilight_color.blue,
                          priv->hilight_color.alpha);
   cairo_translate (cr, 1.0, 1.0);
-  awn_dialog_paint_border_path (dialog, cr, width-2, height-2);
+  cairo_scale (cr, (width-2) / (double)width, (height-2) / (double)height);
+  cairo_append_path (cr, path);
   cairo_stroke (cr);
+
+  cairo_path_destroy (path);
 
   /* Clean up */
   cairo_destroy(cr);
