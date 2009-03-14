@@ -1063,6 +1063,12 @@
   (return-type "gint")
 )
 
+(define-method update_position
+  (of-object "AwnTooltip")
+  (c-name "awn_tooltip_update_position")
+  (return-type "none")
+)
+
 (define-method set_position_hint
   (of-object "AwnTooltip")
   (c-name "awn_tooltip_set_position_hint")

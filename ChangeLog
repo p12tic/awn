@@ -1,3 +1,15 @@
+2009-03-14  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Added AwnTooltip.update_position() method.
+	* libawn/awn-tooltip.c:
+	* libawn/awn-tooltip.h:
+	Changed AwnTooltip "hide-on-click" property to "toggle-on-click",
+	because	that's what is does now.
+
+	* tests/test-awn-tooltip.py:
+	Added AwnTooltip test.
+
 2009-03-13  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-dialog.c:

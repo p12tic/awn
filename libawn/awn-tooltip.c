@@ -59,11 +59,12 @@ struct _AwnTooltipPrivate
   gchar    *font_color;
   gint      icon_offset;
 
-  gboolean  smart_behavior, hide_on_click;
+  gboolean  smart_behavior, toggle_on_click;
   gboolean  inhibit_show;
 
   gint      delay;
-  guint     timer_id;
+  guint     show_timer_id;
+  guint     hide_timer_id;
 
   AwnOrientation orient;
   gint           size;
@@ -85,7 +86,7 @@ enum
   PROP_DELAY,
 
   PROP_SMART_BEHAVIOUR,
-  PROP_HIDE_ON_CLICK
+  PROP_TOGGLE_ON_CLICK
 };
 
 /* Forwards */
@@ -224,8 +225,8 @@ awn_tooltip_get_property (GObject    *object,
       g_value_set_boolean (value, priv->smart_behavior);
       break;
 
-    case PROP_HIDE_ON_CLICK:
-      g_value_set_boolean (value, priv->hide_on_click);
+    case PROP_TOGGLE_ON_CLICK:
+      g_value_set_boolean (value, priv->toggle_on_click);
       break;
     
     default:
@@ -275,8 +276,8 @@ awn_tooltip_set_property (GObject      *object,
       priv->smart_behavior = g_value_get_boolean (value);
       break;
 
-    case PROP_HIDE_ON_CLICK:
-      priv->hide_on_click = g_value_get_boolean (value);
+    case PROP_TOGGLE_ON_CLICK:
+      priv->toggle_on_click = g_value_get_boolean (value);
       break;
 
     default:
@@ -295,6 +296,18 @@ awn_tooltip_dispose(GObject *obj)
     g_signal_handler_disconnect (priv->focus, priv->leave_id);
     g_signal_handler_disconnect (priv->focus, priv->press_id);
     priv->focus = NULL;
+  }
+
+  if (priv->show_timer_id)
+  {
+    g_source_remove (priv->show_timer_id);
+    priv->show_timer_id = 0;
+  }
+
+  if (priv->hide_timer_id)
+  {
+    g_source_remove (priv->hide_timer_id);
+    priv->hide_timer_id = 0;
   }
 
   G_OBJECT_CLASS (awn_tooltip_parent_class)->dispose (obj);
@@ -397,10 +410,10 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
-    PROP_HIDE_ON_CLICK,
-    g_param_spec_boolean ("hide-on-click",
-                          "Hide on click",
-                          "Hides the tooltip after clicking on the focus widget",
+    PROP_TOGGLE_ON_CLICK,
+    g_param_spec_boolean ("toggle-on-click",
+                          "Toggle on click",
+                          "Toggles tooltip visibility on click",
                           TRUE,
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
@@ -421,7 +434,8 @@ awn_tooltip_init (AwnTooltip *tooltip)
   priv->font_color = NULL;
   priv->orient = AWN_ORIENTATION_BOTTOM;
   priv->size = 50;
-  priv->timer_id = 0;
+  priv->show_timer_id = 0;
+  priv->hide_timer_id = 0;
 
   gtk_widget_set_app_paintable (GTK_WIDGET (tooltip), TRUE);
 
@@ -448,8 +462,8 @@ awn_tooltip_new_for_widget (GtkWidget *widget)
 }
 
 /* POSITIONING */
-static void
-awn_tooltip_position (AwnTooltip *tooltip)
+void
+awn_tooltip_update_position (AwnTooltip *tooltip)
 {
   AwnTooltipPrivate *priv;
   GtkRequisition req;
@@ -517,7 +531,7 @@ awn_tooltip_position_and_show (AwnTooltip *tooltip)
     return;
   }
 
-  awn_tooltip_position (tooltip);
+  awn_tooltip_update_position (tooltip);
   gtk_widget_show_all (GTK_WIDGET (tooltip));
 }
 
@@ -548,7 +562,7 @@ ensure_tooltip (AwnTooltip *tooltip)
 
   if (GTK_WIDGET_MAPPED (tooltip) && GTK_IS_WIDGET (priv->focus))
   {
-    awn_tooltip_position (tooltip);
+    awn_tooltip_update_position (tooltip);
   }
 }
 
@@ -583,7 +597,7 @@ awn_tooltip_show_timer(gpointer data)
   g_return_val_if_fail (AWN_IS_TOOLTIP (data), FALSE);
   AwnTooltip *tooltip = (AwnTooltip*)data;
   
-  tooltip->priv->timer_id = 0;
+  tooltip->priv->show_timer_id = 0;
 
   if (tooltip->priv->inhibit_show) return FALSE;
 
@@ -601,8 +615,18 @@ awn_tooltip_show (AwnTooltip *tooltip,
 
   AwnTooltipPrivate *priv = tooltip->priv;
 
-  if (!priv->text || priv->timer_id || !priv->smart_behavior || priv->inhibit_show)
+  if (!priv->text || priv->show_timer_id || !priv->smart_behavior
+      || priv->inhibit_show)
     return FALSE;
+
+  if (priv->hide_timer_id)
+  {
+    g_source_remove (priv->hide_timer_id);
+    priv->hide_timer_id = 0;
+    return FALSE;
+  }
+
+  if (GTK_WIDGET_VISIBLE (tooltip)) return FALSE;
 
   /* always use timer to show the widget, because there's a show/hide race
    * condition when mouse moves on the tooltip, leave-notify-event is generated
@@ -610,8 +634,24 @@ awn_tooltip_show (AwnTooltip *tooltip,
    * tooltip shows, therefore looping in an infinite loop
    *  with the timer X-server at least doesn't stall
    */
-  gint delay = priv->delay > 0 ? priv->delay : 10;
-  priv->timer_id = g_timeout_add(delay, awn_tooltip_show_timer, tooltip);
+  if (!priv->show_timer_id)
+  {
+    gint delay = priv->delay > 0 ? priv->delay : 10;
+    priv->show_timer_id = g_timeout_add(delay, awn_tooltip_show_timer, tooltip);
+  }
+
+  return FALSE;
+}
+
+static gboolean
+awn_tooltip_hide_timer(gpointer data)
+{
+  g_return_val_if_fail (AWN_IS_TOOLTIP (data), FALSE);
+  AwnTooltip *tooltip = (AwnTooltip*)data;
+
+  tooltip->priv->hide_timer_id = 0;
+
+  gtk_widget_hide (GTK_WIDGET (tooltip));
 
   return FALSE;
 }
@@ -629,13 +669,18 @@ awn_tooltip_hide (AwnTooltip *tooltip,
 
   if (!priv->smart_behavior) return FALSE;
 
-  if (priv->timer_id) {
-    g_source_remove(priv->timer_id);
-    priv->timer_id = 0;
+  /* remove show timer */
+  if (priv->show_timer_id) {
+    g_source_remove(priv->show_timer_id);
+    priv->show_timer_id = 0;
     return FALSE;
   }
 
-  gtk_widget_hide (GTK_WIDGET (tooltip));
+  /* start hide timer */
+  if (!priv->hide_timer_id)
+  {
+    priv->hide_timer_id = g_timeout_add (50, awn_tooltip_hide_timer, tooltip);
+  }
 
   return FALSE;
 }
@@ -647,24 +692,26 @@ on_button_press (GtkWidget *widget, GdkEventCrossing *event, AwnTooltip *tooltip
 
   AwnTooltipPrivate *priv = tooltip->priv;
 
-  if (!priv->hide_on_click) return FALSE;
+  if (!priv->toggle_on_click) return FALSE;
 
   priv->inhibit_show = !priv->inhibit_show;
 
-  if (GTK_WIDGET_VISIBLE (tooltip))
+  /* 
+   * This if is a bit of voodoo, will hide the tooltip on first click and show
+   * it again on second click. Yay it was damn hard to make it work this way!
+   */
+  if (priv->show_timer_id)
+  {
+    g_source_remove (priv->show_timer_id);
+    priv->show_timer_id = 0;
+  }
+  else if (GTK_WIDGET_VISIBLE (tooltip))
   {
     gtk_widget_hide (GTK_WIDGET (tooltip));
   }
-  else if (priv->timer_id)
-  {
-    g_source_remove (priv->timer_id);
-    priv->timer_id = 0;
-  }
   else
   {
-    /* This branch is probably never called because of the way events are delivered
-     * (though maybe after double click)... */
-    awn_tooltip_show (tooltip, NULL, priv->focus);
+    awn_tooltip_position_and_show(tooltip);
   }
 
   return FALSE;
@@ -772,7 +819,14 @@ awn_tooltip_set_position_hint(AwnTooltip *tooltip,
 {
   g_return_if_fail (AWN_IS_TOOLTIP (tooltip));
 
-  tooltip->priv->orient = orient;
-  tooltip->priv->size = size;
+  AwnTooltipPrivate *priv = tooltip->priv;
+
+  priv->orient = orient;
+  priv->size = size;
+
+  if (GTK_WIDGET_MAPPED (tooltip) && GTK_IS_WIDGET (priv->focus))
+  {
+    awn_tooltip_update_position (tooltip);
+  }
 }
 
