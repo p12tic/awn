@@ -404,8 +404,8 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
     PROP_SMART_BEHAVIOUR,
     g_param_spec_boolean ("smart-behavior",
                           "Smart behavior",
-                          "Will show the tooltip on enter-notify-event and hide "
-                          "on leave-notify-event",
+                          "Will show the tooltip on enter-notify-event and "
+                          "hide on leave-notify-event",
                           TRUE,
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 

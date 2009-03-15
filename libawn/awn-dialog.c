@@ -295,21 +295,27 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
                          priv->g_step_2.alpha);
 
   awn_dialog_paint_border_path (dialog, cr, width, height);
-  cairo_fill_preserve (cr);
-
-  cairo_set_source_rgba (cr, priv->border_color.red,
-                         priv->border_color.green,
-                         priv->border_color.blue,
-                         priv->border_color.alpha);
   path = cairo_copy_path (cr);
-  cairo_stroke (cr);
+  cairo_fill (cr);
 
+  cairo_save (cr);
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
   cairo_set_source_rgba (cr, priv->hilight_color.red,
                          priv->hilight_color.green,
                          priv->hilight_color.blue,
                          priv->hilight_color.alpha);
   cairo_translate (cr, 1.0, 1.0);
   cairo_scale (cr, (width-2) / (double)width, (height-2) / (double)height);
+  cairo_append_path (cr, path);
+  cairo_stroke (cr);
+
+  cairo_restore (cr);
+
+  cairo_set_source_rgba (cr, priv->border_color.red,
+                         priv->border_color.green,
+                         priv->border_color.blue,
+                         priv->border_color.alpha);
   cairo_append_path (cr, path);
   cairo_stroke (cr);
 
@@ -480,10 +486,11 @@ awn_dialog_set_masks (GtkWidget *widget, gint width, gint height)
 
     cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
     cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
+    cairo_translate (cr, 0.5, 0.5);
     awn_dialog_paint_border_path (AWN_DIALOG (widget), cr, width, height);
 
     cairo_fill_preserve (cr);
-    cairo_set_line_width (cr, 2.0);
+    cairo_set_line_width (cr, 1.0);
     cairo_stroke (cr);
 
     cairo_destroy (cr);
@@ -525,9 +532,12 @@ _on_configure_event (GtkWidget *widget, GdkEventConfigure *event)
   awn_dialog_refresh_position (AWN_DIALOG (widget),
                                event->width, event->height);
 
-  awn_dialog_set_masks (widget, event->width, event->height);
+  if (dimensions_changed)
+  {
+    awn_dialog_set_masks (widget, event->width, event->height);
 
-  if (dimensions_changed) gtk_widget_queue_draw (widget);
+    gtk_widget_queue_draw (widget);
+  }
 
   return FALSE;
 }

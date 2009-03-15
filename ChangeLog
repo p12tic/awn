@@ -1,3 +1,9 @@
+2009-03-16  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-tooltip.c:
+	* libawn/awn-dialog.c:
+	Change the drawing a bit, fix mask setting.
+
 2009-03-14  Michal Hruby <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:
