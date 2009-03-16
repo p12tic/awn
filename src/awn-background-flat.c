@@ -145,18 +145,15 @@ draw_rect (AwnBackground  *bg,
            gdouble         x,
            gdouble         y,
            gint            width,
-           gint            height)
+           gint            height,
+           gfloat          align,
+           gboolean        expand)
 {
   AwnCairoRoundCorners state = ROUND_TOP;
-  gfloat align = awn_background_get_panel_alignment (bg);
 
-  gboolean expand = FALSE;
-
-  g_object_get (bg->panel, "expand", &expand, NULL);
-
-  if (expand) state = ROUND_NONE;
-  else if (align == 0.0f) state = ROUND_TOP_RIGHT;
-  else if(align == 1.0f) state = ROUND_TOP_LEFT;
+  if (expand){ state = ROUND_NONE; x-=2; width+=4; }
+  else if (align == 0.0f){ state = ROUND_TOP_RIGHT; x-=2; width+=2; }
+  else if(align == 1.0f){ state = ROUND_TOP_LEFT; width+=2; }
 
   awn_cairo_rounded_rect (cr, x, y, width, height, bg->corner_radius, state);
 }
@@ -168,6 +165,8 @@ draw_top_bottom_background (AwnBackground  *bg,
                             gint            height)
 {
   cairo_pattern_t *pat;
+  gfloat   align = 0.5;
+  gboolean expand = FALSE;
 
   /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
   cairo_translate (cr, 0.5, 0.5);
@@ -175,6 +174,9 @@ draw_top_bottom_background (AwnBackground  *bg,
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+
+  align = awn_background_get_panel_alignment (bg);
+  g_object_get (bg->panel, "expand", &expand, NULL);
 
   if (gtk_widget_is_composited (GTK_WIDGET (bg->panel)) == FALSE)
   {
@@ -193,7 +195,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_step_2.green,
                                      bg->g_step_2.blue, 
                                      bg->g_step_2.alpha);
-  draw_rect (bg, cr, 1, 1, width-2, height-1);
+  draw_rect (bg, cr, 1, 1, width-2, height-1, align, expand);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
@@ -211,7 +213,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                                      bg->g_histep_2.green,
                                      bg->g_histep_2.blue, 
                                      bg->g_histep_2.alpha);
-  draw_rect (bg, cr, 1, 1, width-2, height/3.0);
+  draw_rect (bg, cr, 1, 1, width-2, height/3.0, align, expand);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
@@ -224,7 +226,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                              bg->hilight_color.green,
                              bg->hilight_color.blue,
                              bg->hilight_color.alpha);
-  draw_rect (bg, cr, 1, 1, width-3, height+3);
+  draw_rect (bg, cr, 1, 1, width-3, height+3, align, expand);
   cairo_stroke (cr);
 
   /* External border */
@@ -232,7 +234,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                              bg->border_color.green,
                              bg->border_color.blue,
                              bg->border_color.alpha);
-  draw_rect (bg, cr, 0, 0, width-1, height+3);
+  draw_rect (bg, cr, 0, 0, width-1, height+3, align, expand);
   cairo_stroke (cr);
 }
 
@@ -317,7 +319,13 @@ awn_background_flat_get_shape_mask (AwnBackground  *bg,
   gint temp;
   gint x = area->x, y = area->y;
   gint width = area->width, height = area->height;
+  gfloat   align = 0.5;
+  gboolean expand = FALSE;
+
   cairo_save (cr);
+
+  align = awn_background_get_panel_alignment (bg);
+  g_object_get (bg->panel, "expand", &expand, NULL);
 
   switch (orient)
   {
@@ -342,7 +350,7 @@ awn_background_flat_get_shape_mask (AwnBackground  *bg,
       break;
   }
 
-  draw_rect (bg, cr, 0, 0, width, height+3);
+  draw_rect (bg, cr, 0, 0, width, height+3, align, expand);
   cairo_fill (cr);
 
   cairo_restore (cr);
