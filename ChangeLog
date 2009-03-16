@@ -1,5 +1,12 @@
 2009-03-16  Michal Hruby <michal.mhr@gmail.com>
 
+	* libawn/awn-dialog.c:
+	Fix mask setting on composited-change.
+	* libawn/awn-tooltip.c:
+	Fix FTBFS.
+
+2009-03-16  Michal Hruby <michal.mhr@gmail.com>
+
 	* libawn/awn-applet.c:
 	Hook onto delete-event & quit the applet when it's received.
 	* libawn/awn-dialog.c:

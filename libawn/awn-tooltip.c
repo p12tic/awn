@@ -205,7 +205,7 @@ _on_composited_changed (GtkWidget *widget)
   if (gtk_widget_is_composited (widget) == FALSE)
   {
     GtkAllocation *a = &widget->allocation;
-    awn_tooltip_set_mask (tooltip, a->width, a->height);
+    awn_tooltip_set_mask (AWN_TOOLTIP (widget), a->width, a->height);
   }
   else
   {

@@ -110,6 +110,9 @@ static void awn_dialog_set_offset        (AwnDialog *dialog, gint offset);
 static void awn_dialog_refresh_position  (AwnDialog *dialog,
                                           gint width, gint height);
 
+static void awn_dialog_set_masks         (GtkWidget *widget,
+                                          gint width, gint height);
+
 static void
 _on_alpha_screen_changed(GtkWidget* pWidget,
                          GdkScreen* pOldScreen,
@@ -135,6 +138,9 @@ _on_composited_changed (GtkWidget *widget, gpointer data)
   {
     gtk_widget_input_shape_combine_mask (widget, NULL, 0, 0);
   }
+
+  awn_dialog_set_masks (widget,
+                        widget->allocation.width, widget->allocation.height);
 }
 
 static void
