@@ -306,7 +306,18 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
                          priv->hilight_color.blue,
                          priv->hilight_color.alpha);
   cairo_translate (cr, 1.0, 1.0);
-  cairo_scale (cr, (width-2) / (double)width, (height-2) / (double)height);
+  switch (priv->orient)
+  {
+    case AWN_ORIENTATION_LEFT:
+    case AWN_ORIENTATION_RIGHT:
+      cairo_scale (cr, (height-2) / (double)height, (width-2) / (double)width);
+      break;
+    case AWN_ORIENTATION_TOP:
+    case AWN_ORIENTATION_BOTTOM:
+    default:
+      cairo_scale (cr, (width-2) / (double)width, (height-2) / (double)height);
+      break;
+  }
   cairo_append_path (cr, path);
   cairo_stroke (cr);
 

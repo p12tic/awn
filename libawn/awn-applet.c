@@ -50,6 +50,9 @@ struct _AwnAppletPrivate
   gint offset;
   guint size;
 
+  gboolean show_all_on_embed;
+  gboolean quit_on_delete;
+
   gint origin_x, origin_y;
 
   AwnAppletFlags flags;
@@ -119,6 +122,21 @@ static void
 on_proxy_destroyed (GObject *object)
 {
   gtk_main_quit ();
+}
+
+static gboolean
+on_plug_deleted (GObject *object)
+{
+  AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (object);
+
+  if (priv->quit_on_delete)
+  {
+    gtk_main_quit ();
+
+    return TRUE;
+  }
+
+  return FALSE;
 }
 
 static void
@@ -399,6 +417,9 @@ awn_applet_init (AwnApplet *applet)
   on_alpha_screen_changed(GTK_WIDGET(applet), NULL, NULL);
 
   priv->flags = AWN_APPLET_FLAGS_NONE;
+  // FIXME: turn into proper properties
+  priv->show_all_on_embed = TRUE;
+  priv->quit_on_delete = TRUE;
 
   error = NULL;
   priv->connection = dbus_g_bus_get(DBUS_BUS_SESSION, &error);
@@ -447,8 +468,11 @@ awn_applet_init (AwnApplet *applet)
                                G_CALLBACK (on_destroy_applet), applet,
                                NULL);
 
-  g_signal_connect (priv->proxy, "destroy", 
+  g_signal_connect (priv->proxy, "destroy",
                     G_CALLBACK (on_proxy_destroyed), NULL);
+
+  g_signal_connect (applet, "delete-event",
+                    G_CALLBACK (on_plug_deleted), NULL);
   g_signal_connect (applet, "embedded",
                     G_CALLBACK (awn_applet_plug_embedded), NULL);
   awn_utils_ensure_transparent_bg (GTK_WIDGET (applet));
@@ -480,10 +504,11 @@ awn_applet_plug_embedded (AwnApplet *applet)
 {
   g_return_if_fail (AWN_IS_APPLET (applet));
 
+  AwnAppletPrivate *priv = applet->priv;
+
   g_signal_emit (applet, _applet_signals[PLUG_EMBEDDED], 0);
 
-  /* FIXME: not sure about this one */
-  gtk_widget_show_all (GTK_WIDGET (applet));
+  if (priv->show_all_on_embed) gtk_widget_show_all (GTK_WIDGET (applet));
 }
 
 /*

@@ -47,6 +47,8 @@ G_DEFINE_TYPE (AwnTooltip, awn_tooltip, GTK_TYPE_WINDOW)
 #define AWN_PANEL_GROUP "panel"
 #define ICON_OFFSET     "offset"
 
+#define TOOLTIP_ROUND_RADIUS 15.0
+
 struct _AwnTooltipPrivate
 {
   AwnConfigClient *client;
@@ -72,6 +74,7 @@ struct _AwnTooltipPrivate
   gchar    *text;
 
   gulong enter_id, leave_id, press_id;
+  gint old_w, old_h;
 };
 
 enum
@@ -129,7 +132,8 @@ awn_tooltip_expose_event (GtkWidget *widget, GdkEventExpose *expose)
                          priv->bg.blue,
                          priv->bg.alpha);
 
-  awn_cairo_rounded_rect (cr, 0, 0, width, height, 15.0, ROUND_ALL);
+  awn_cairo_rounded_rect (cr, 0, 0, width, height,
+                          TOOLTIP_ROUND_RADIUS, ROUND_ALL);
   cairo_fill (cr);
 
   /* Clean up */
@@ -140,6 +144,73 @@ awn_tooltip_expose_event (GtkWidget *widget, GdkEventExpose *expose)
                                   expose);
 
   return TRUE;
+}
+
+static void
+awn_tooltip_set_mask (AwnTooltip *tooltip, gint width, gint height)
+{
+  GtkWidget *widget = GTK_WIDGET (tooltip);
+
+  if (gtk_widget_is_composited (widget) == FALSE)
+  {
+    GdkBitmap *shaped_bitmap;
+    shaped_bitmap = (GdkBitmap*) gdk_pixmap_new (NULL, width, height, 1);
+
+    if (shaped_bitmap)
+    {
+      cairo_t *cr = gdk_cairo_create (shaped_bitmap);
+
+      cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+      cairo_paint (cr);
+
+      cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+      cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
+      cairo_translate (cr, 0.5, 0.5);
+
+      
+      awn_cairo_rounded_rect (cr, 0, 0, width, height,
+                              TOOLTIP_ROUND_RADIUS, ROUND_ALL);
+      cairo_fill (cr);
+
+      cairo_destroy (cr);
+
+      gtk_widget_shape_combine_mask (widget, NULL, 0, 0);
+      gtk_widget_shape_combine_mask (widget, shaped_bitmap, 0, 0);
+
+      g_object_unref (shaped_bitmap);
+    }
+  }
+}
+
+static gboolean
+_on_configure_event (AwnTooltip *tooltip, GdkEventConfigure *event)
+{
+  AwnTooltipPrivate *priv = AWN_TOOLTIP_GET_PRIVATE (tooltip);
+
+  if (event->width == priv->old_w && event->height == priv->old_h)
+  {
+    return FALSE;
+  }
+
+  priv->old_w = event->width; priv->old_h = event->height;
+
+  awn_tooltip_set_mask (tooltip, event->width, event->height);
+
+  return FALSE;
+}
+
+static void
+_on_composited_changed (GtkWidget *widget)
+{
+  if (gtk_widget_is_composited (widget) == FALSE)
+  {
+    GtkAllocation *a = &widget->allocation;
+    awn_tooltip_set_mask (tooltip, a->width, a->height);
+  }
+  else
+  {
+    gtk_widget_shape_combine_mask (widget, NULL, 0, 0);
+  }
 }
 
 static void
@@ -439,6 +510,11 @@ awn_tooltip_init (AwnTooltip *tooltip)
 
   gtk_widget_set_app_paintable (GTK_WIDGET (tooltip), TRUE);
 
+  g_signal_connect (tooltip, "configure-event",
+                    G_CALLBACK (_on_configure_event), NULL);
+  g_signal_connect (tooltip, "composited-changed",
+                    G_CALLBACK (_on_composited_changed), NULL);
+
   screen = gdk_screen_get_default ();
   if (gdk_screen_get_rgba_colormap (screen))
     gtk_widget_set_colormap (GTK_WIDGET (tooltip),
@@ -709,7 +785,7 @@ on_button_press (GtkWidget *widget, GdkEventCrossing *event, AwnTooltip *tooltip
   {
     gtk_widget_hide (GTK_WIDGET (tooltip));
   }
-  else
+  else if (priv->text)
   {
     awn_tooltip_position_and_show(tooltip);
   }
