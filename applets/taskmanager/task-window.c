@@ -567,7 +567,7 @@ really_activate (WnckWindow *window, guint32 timestamp)
   WnckWorkspace   *active_ws;
   WnckWorkspace   *window_ws;
   WnckScreen      *screen;
-  gboolean         switch_workspace_on_unminimize = FALSE;
+  gboolean         switch_workspace_on_unminimize = TRUE;
   gboolean         was_minimised = FALSE;
 
   screen = wnck_window_get_screen (window);
@@ -579,9 +579,10 @@ really_activate (WnckWindow *window, guint32 timestamp)
   {
     if (window_ws &&
         active_ws != window_ws &&
-        !switch_workspace_on_unminimize)
+        switch_workspace_on_unminimize)
+    {
       wnck_workspace_activate (window_ws, timestamp);
-
+    }
     wnck_window_activate_transient (window, timestamp);
   }
   else
