@@ -1,5 +1,12 @@
 2009-03-16  Rodney Cryderman <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Window Management bug can still trigger related to Dialog/utility 
+	windows.  Attempting to determine if cause is related to 
+	task_window_append_utility() or g_object_set_qdata().
+
+2009-03-16  Rodney Cryderman <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	Seemingly the code should apply regardless of whether the
 	list length is >=1.
