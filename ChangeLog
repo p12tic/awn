@@ -1,5 +1,11 @@
 2009-03-16  Rodney Cryderman <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Return to previous code logic.  Testing whether other changes 
+	have fixed taskmanager issues with Dialog and utility windows
+
+2009-03-16  Rodney Cryderman <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-window.c
 	Changed the logic of switch_workspace_on_unminimize.
 

@@ -481,8 +481,7 @@ try_to_place_window (TaskManager *manager, WnckWindow *window)
 		taskwin_pid = task_window_get_pid (taskwin);
     if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
     {
-      return TRUE;
-      task_window_append_utility (taskwin, window);
+      task_window_append_utility (taskwin, window);    
       g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
       return TRUE;
     }
@@ -498,7 +497,6 @@ try_to_place_window (TaskManager *manager, WnckWindow *window)
 		taskwin_pid = task_window_get_pid (taskwin);
     if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
     {
-      return TRUE;
       task_window_append_utility (taskwin, window);
       g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
       return TRUE;
@@ -636,6 +634,7 @@ on_window_opened (WnckScreen    *screen,
     g_debug ("WINDOW PLACED: %s", wnck_window_get_name (window));
     return;
   }
+  
   /* 
    * If it's skip tasklist, connect to the state-changed signal and see if
    * it ever becomes a normal window
@@ -643,7 +642,7 @@ on_window_opened (WnckScreen    *screen,
   if (wnck_window_is_skip_tasklist (window))
   {
     g_signal_connect (window, "state-changed", 
-                      G_CALLBACK (on_window_state_changed), manager);
+                      G_CALLBACK (on_window_state_changed), manager);    
     return;
   }
  
