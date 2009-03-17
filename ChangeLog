@@ -1,5 +1,11 @@
 2009-03-16  Rodney Cryderman <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Seemingly the code should apply regardless of whether the
+	list length is >=1.
+
+2009-03-16  Rodney Cryderman <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Return to previous code logic.  Testing whether other changes 
 	have fixed taskmanager issues with Dialog and utility windows

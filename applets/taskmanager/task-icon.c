@@ -732,7 +732,7 @@ task_icon_button_release_event (GtkWidget      *widget,
       return FALSE;
     }
 
-    if (len == 1)
+    if (len >= 1)
     {
       task_window_activate (priv->windows->data, event->time);
       return TRUE;
@@ -740,7 +740,7 @@ task_icon_button_release_event (GtkWidget      *widget,
   }
   else if (event->button == 2)
   {
-    if (len == 1 && TASK_IS_LAUNCHER (priv->windows->data))
+    if (len >= 1 && TASK_IS_LAUNCHER (priv->windows->data))
     {
       task_launcher_middle_click (priv->windows->data, event);
       return TRUE;
