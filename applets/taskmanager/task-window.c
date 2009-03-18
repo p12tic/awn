@@ -636,22 +636,26 @@ task_window_activate (TaskWindow    *window,
 
   if (WNCK_IS_WINDOW (priv->window))
   {
-    gboolean was_minimised;
+    gboolean is_minimised;
 
-    was_minimised = really_activate (priv->window, timestamp);
-
-    for (w = priv->utilities; w; w = w->next)
+    is_minimised = wnck_window_get_state (priv->window) & WNCK_WINDOW_STATE_MINIMIZED ;
+    /* 
+     do this just in case dialog/utility windows have gotten minimized somehow
+     We do _NOT_ minimize these windows.
+     */
+    if (is_minimised)
     {
-      WnckWindow *win = w->data;
-
-      if (WNCK_IS_WINDOW (win))
+      for (w = priv->utilities; w; w = w->next)
       {
-        if (was_minimised)
-          wnck_window_minimize (win);
-        else
-          wnck_window_activate_transient (win, timestamp);
+        WnckWindow *win = w->data;
+
+        if (WNCK_IS_WINDOW (win))
+        {
+          wnck_window_unminimize (win, timestamp);
+        }
       }
     }
+    really_activate (priv->window, timestamp);
   }
   else
   {
