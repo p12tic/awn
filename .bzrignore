@@ -43,6 +43,8 @@ compile
 py-compile
 mkinstalldirs
 libawn/*awn-enum-types.*
+libawn/*libawnmarshal.*
+libawn/libawn-marshal.*
 libawn/egg/*egg-enum-types.*
 bindings/python/awn.c
 awn-manager/awnDefs.py

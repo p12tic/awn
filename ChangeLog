@@ -1,3 +1,15 @@
+2009-03-18  Michal Hruby <michal.mhr@gmail.com>
+
+	* .bzrignore:
+	* libawn/Makefile.am:
+	* libawn/awn-applet.c:
+	* libawn/libawnmarshal.list:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	* src/awnmarshal.list:
+	Added PropertyChanged DBus signal.
+
 2009-03-18  Rodney Cryderman <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:

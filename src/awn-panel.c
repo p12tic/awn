@@ -166,6 +166,7 @@ enum
   SIZE_CHANGED,
   ORIENT_CHANGED,
   OFFSET_CHANGED,
+  PROPERTY_CHANGED,
   DESTROY_NOTIFY,
   DESTROY_APPLET,
   AUTOHIDE_START,
@@ -1084,6 +1085,16 @@ awn_panel_class_init (AwnPanelClass *klass)
 			      g_cclosure_marshal_VOID__INT, 
 			      G_TYPE_NONE,
 			      1, G_TYPE_INT);
+
+  _panel_signals[PROPERTY_CHANGED] =
+		g_signal_new ("property-changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (AwnPanelClass, property_changed),
+			      NULL, NULL,
+			      awn_marshal_VOID__STRING_STRING_BOXED,
+			      G_TYPE_NONE,
+			      3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_VALUE);
 
   _panel_signals[DESTROY_NOTIFY] =
 		g_signal_new ("destroy_notify",

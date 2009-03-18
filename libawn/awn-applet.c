@@ -36,6 +36,7 @@
 #include "awn-applet.h"
 #include "awn-utils.h"
 #include "awn-enum-types.h"
+#include "libawn-marshal.h"
 
 G_DEFINE_TYPE (AwnApplet, awn_applet, GTK_TYPE_PLUG)
 
@@ -110,6 +111,15 @@ on_size_changed (DBusGProxy *proxy, gint size, AwnApplet *applet)
   g_return_if_fail (AWN_IS_APPLET (applet));
 
   awn_applet_set_size (applet, size);
+}
+
+static void
+on_prop_changed (DBusGProxy *proxy, const gchar *uid, const gchar *prop_name,
+                 GValue *value, AwnApplet *applet)
+{
+  g_return_if_fail (AWN_IS_APPLET (applet));
+
+  g_debug ("(%s) PropertyChanged signal for \"%s\", value: %d", uid, prop_name, g_value_get_int (value));
 }
 
 static void
@@ -387,7 +397,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                  G_OBJECT_CLASS_TYPE (gobject_class),
                  G_SIGNAL_RUN_FIRST,
                  G_STRUCT_OFFSET (AwnAppletClass, menu_creation),
-								 NULL, NULL,
+                 NULL, NULL,
                  g_cclosure_marshal_VOID__OBJECT,
                  G_TYPE_NONE, 1, GTK_TYPE_MENU);
 
@@ -441,12 +451,20 @@ awn_applet_init (AwnApplet *applet)
     gtk_main_quit ();
   }
 
+  dbus_g_object_register_marshaller (libawn_marshal_VOID__STRING_STRING_BOXED,
+                                     G_TYPE_NONE, G_TYPE_STRING,
+                                     G_TYPE_STRING, G_TYPE_VALUE,
+                                     G_TYPE_INVALID);
+
   dbus_g_proxy_add_signal (priv->proxy, "OrientChanged",
                            G_TYPE_INT, G_TYPE_INVALID);
   dbus_g_proxy_add_signal (priv->proxy, "OffsetChanged",
                            G_TYPE_INT, G_TYPE_INVALID);
   dbus_g_proxy_add_signal (priv->proxy, "SizeChanged",
                            G_TYPE_INT, G_TYPE_INVALID);
+  dbus_g_proxy_add_signal (priv->proxy, "PropertyChanged",
+                           G_TYPE_STRING, G_TYPE_STRING,
+                           G_TYPE_VALUE, G_TYPE_INVALID);
   dbus_g_proxy_add_signal (priv->proxy, "DestroyNotify",
                            G_TYPE_INVALID);
   dbus_g_proxy_add_signal (priv->proxy, "DestroyApplet",
@@ -460,6 +478,9 @@ awn_applet_init (AwnApplet *applet)
                                NULL);
   dbus_g_proxy_connect_signal (priv->proxy, "SizeChanged",
                                G_CALLBACK (on_size_changed), applet,
+                               NULL);
+  dbus_g_proxy_connect_signal (priv->proxy, "PropertyChanged",
+                               G_CALLBACK (on_prop_changed), applet,
                                NULL);
   dbus_g_proxy_connect_signal (priv->proxy, "DestroyNotify",
                                G_CALLBACK (on_delete_notify), applet,

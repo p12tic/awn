@@ -21,21 +21,27 @@
 
     <!-- Signals -->
     <signal name="SizeChanged">
-      <arg type="i" name="size" />
+      <arg name="size" type="i" />
     </signal>
 
     <signal name="OrientChanged">
-      <arg type="i" name="orient" />
+      <arg name="orient" type="i" />
     </signal>
 
     <signal name="OffsetChanged">
-      <arg type="i" name="offset" />
+      <arg name="offset" type="i" />
+    </signal>
+
+    <signal name="PropertyChanged">
+      <arg name="uid" type="s" />
+      <arg name="prop-name" type="s" />
+      <arg name="value" type="v" />
     </signal>
 
     <signal name="DestroyNotify"></signal>
 
     <signal name="DestroyApplet">
-      <arg type="s" name="uid" />
+      <arg name="uid" type="s" />
     </signal>
 
   </interface>

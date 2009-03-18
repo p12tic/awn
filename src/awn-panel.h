@@ -62,11 +62,13 @@ struct _AwnPanelClass
   GtkWindowClass parent_class;
 
   /*< signals >*/
-  void (*size_changed)   (AwnPanel *panel, gint size);
-  void (*orient_changed) (AwnPanel *panel, gint orientation);
-  void (*offset_changed) (AwnPanel *panel, gint offset);
-  void (*destroy_notify) (AwnPanel *panel);
-  void (*destroy_applet) (AwnPanel *panel, const gchar *uid);
+  void (*size_changed)    (AwnPanel *panel, gint size);
+  void (*orient_changed)  (AwnPanel *panel, gint orientation);
+  void (*offset_changed)  (AwnPanel *panel, gint offset);
+  void (*property_changed)(AwnPanel *panel, const gchar *uid,
+                           const gchar *prop_name, GValue *value);
+  void (*destroy_notify)  (AwnPanel *panel);
+  void (*destroy_applet)  (AwnPanel *panel, const gchar *uid);
 
   gboolean (*autohide_start) (AwnPanel *panel);
   void     (*autohide_end)   (AwnPanel *panel);

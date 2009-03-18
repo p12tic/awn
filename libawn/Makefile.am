@@ -8,10 +8,17 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 NULL = 
 
 ENUMFILES = awn-enum-types.c awn-enum-types.h
-STAMPFILES = stamp-awn-marshal.h stamp-awn-enum-types.h
+MARSHALFILES = libawn-marshal.c libawn-marshal.h
+STAMPFILES = \
+	stamp-awn-marshal.h \
+	stamp-awn-enum-types.h \
+	stamp-libawnmarshal.c \
+	stamp-libawnmarshal.h \
+	$(NULL)
+
 GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 
-BUILT_SOURCES = $(ENUMFILES)
+BUILT_SOURCES = $(ENUMFILES) $(MARSHALFILES)
 
 lib_LTLIBRARIES = libawn.la
 
@@ -61,7 +68,6 @@ source_c = \
 	awn-effects.c \
 	awn-effects-ops-new.c \
 	awn-effects-ops-helpers.c \
-	awn-enum-types.c \
 	awn-icon.c \
 	awn-icon-box.c \
 	awn-themed-icon.c \
@@ -69,7 +75,6 @@ source_c = \
 	awn-utils.c \
 	awn-vfs.c \
 	$(NULL)
-
 
 source_c += awn-desktop-item-egg.c
 
@@ -84,7 +89,7 @@ libawninc_HEADERS = \
 	$(NULL)
 libawn_la_SOURCES = \
 	$(private_headers) \
-	awn-enum-types.h \
+	$(BUILT_SOURCES) \
 	$(source_c) \
 	$(NULL)
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
@@ -94,6 +99,31 @@ libawn_la_LIBADD += \
 	$(top_builddir)/libawn/egg/libeggdesktopfile.la \
 	$(top_builddir)/libawn/anims/libawn-effects-anims.la \
 	$(NULL)
+
+# glib-genmarshal (from WebKit)
+LIBAWN_MARSHAL = $(builddir)/libawn-marshal
+LIBAWN_MARSHAL_LIST = $(srcdir)/libawnmarshal.list
+LIBAWN_GENMARSHAL = \
+	$(GLIB_GENMARSHAL) --prefix=libawn_marshal $(LIBAWN_MARSHAL_LIST)
+
+$(LIBAWN_MARSHAL).c: stamp-libawnmarshal.c
+	@true
+
+$(LIBAWN_MARSHAL).h: stamp-libawnmarshal.h
+	@true
+
+stamp-libawnmarshal.c: $(LIBAWN_MARSHAL_LIST) stamp-libawnmarshal.h
+	$(QUIET_GEN)( \
+		echo '#include "libawn-marshal.h"' > $(LIBAWN_MARSHAL).c && \
+		$(LIBAWN_GENMARSHAL)  --body >> $(LIBAWN_MARSHAL).c && \
+		echo timestamp > $(@F) \
+	)
+
+stamp-libawnmarshal.h: $(LIBAWN_MARSHAL_LIST)
+	$(QUIET_GEN)( \
+		$(LIBAWN_GENMARSHAL) --header > $(LIBAWN_MARSHAL).h && \
+		echo timestamp > $(@F) \
+	)
 
 awn-enum-types.h: stamp-awn-enum-types.h
 	@true
@@ -117,4 +147,5 @@ awn-enum-types.c: awn-enum-types.h
 CLEANFILES = $(STAMPFILES)
 
 EXTRA_DIST=awn-config-client-shared.c
+
 # vim: set ts=8 sts=8 sw=8 :
