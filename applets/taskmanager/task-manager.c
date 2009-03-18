@@ -643,6 +643,17 @@ on_window_opened (WnckScreen    *screen,
     default:
       break;
   }
+  
+  /* 
+   * If it's skip tasklist, connect to the state-changed signal and see if
+   * it ever becomes a normal window
+   */
+  if (wnck_window_is_skip_tasklist (window))
+  {
+    g_signal_connect (window, "state-changed", 
+                      G_CALLBACK (on_window_state_changed), manager);    
+    return;
+  }
 
   /*
    * If it's a utility window, see if we can find it a home with another, 
@@ -653,17 +664,6 @@ on_window_opened (WnckScreen    *screen,
        && try_to_place_window (manager,window))
   {
     g_debug ("WINDOW PLACED: %s", wnck_window_get_name (window));
-    return;
-  }
-  
-  /* 
-   * If it's skip tasklist, connect to the state-changed signal and see if
-   * it ever becomes a normal window
-   */
-  if (wnck_window_is_skip_tasklist (window))
-  {
-    g_signal_connect (window, "state-changed", 
-                      G_CALLBACK (on_window_state_changed), manager);    
     return;
   }
  

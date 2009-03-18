@@ -1,6 +1,12 @@
 2009-03-18  Rodney Cryderman <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-window.c:
+	Check for skip tasklist before checking if it is a utility/dialog
+	window.
+
+2009-03-18  Rodney Cryderman <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
         Don't try to minmize utility/dialog windows that have been subsumed
         into an existing task-window.
 
