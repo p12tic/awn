@@ -485,8 +485,8 @@ void
 awn_themed_icon_set_info (AwnThemedIcon  *icon,
                           const gchar    *applet_name,
                           const gchar    *uid,
-                          gchar         **states,
-                          gchar         **icon_names)
+                          GStrv          states,
+                          GStrv          icon_names)
 {
   AwnThemedIconPrivate *priv;
   gint n_states;

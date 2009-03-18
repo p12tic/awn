@@ -272,8 +272,8 @@ awn_applet_simple_set_icon_name (AwnAppletSimple  *applet,
 void   
 awn_applet_simple_set_icon_info (AwnAppletSimple  *applet,
                                  const gchar      *applet_name,
-                                 gchar           **states,
-                                 gchar           **icon_names)
+                                 GStrv            states,
+                                 GStrv            icon_names)
 {
   g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
   g_return_if_fail (applet_name);
