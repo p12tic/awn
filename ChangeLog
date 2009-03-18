@@ -1,6 +1,11 @@
 2009-03-18  Rodney Cryderman <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Hook up the "closed-window" signal in a more reasonable place.
+
+2009-03-18  Rodney Cryderman <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
  	* applets/taskmanager/task-window.c:
   	* applets/taskmanager/task-window.h:
 

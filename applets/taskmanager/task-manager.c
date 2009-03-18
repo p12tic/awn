@@ -85,6 +85,9 @@ static void on_window_opened            (WnckScreen    *screen,
 static void on_active_window_changed    (WnckScreen    *screen, 
                                          WnckWindow    *old_window,
                                          TaskManager   *manager);
+static void on_wnck_window_closed (WnckScreen *screen, 
+                                   WnckWindow *window, 
+                                   TaskManager *manager);
 static void task_manager_set_show_all_windows    (TaskManager *manager,
                                                   gboolean     show_all);
 static void task_manager_set_show_only_launchers (TaskManager *manager, 
@@ -302,6 +305,8 @@ task_manager_init (TaskManager *manager)
                             G_CALLBACK (ensure_layout), manager);
   g_signal_connect_swapped (priv->screen, "viewports-changed",
                             G_CALLBACK (ensure_layout), manager);
+  g_signal_connect (priv->screen, "window-closed",
+                    G_CALLBACK(on_wnck_window_closed),manager);        
 }
 
 AwnApplet *
@@ -459,6 +464,7 @@ on_window_state_changed (WnckWindow      *window,
     return;
   }
 }
+
 static void 
 on_wnck_window_closed (WnckScreen *screen, WnckWindow *window, TaskManager *manager)
 {
@@ -496,7 +502,6 @@ try_to_place_window (TaskManager *manager, WnckWindow *window)
 		taskwin_pid = task_window_get_pid (taskwin);
     if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
     {
-      g_signal_connect (priv->screen, "window-closed", G_CALLBACK(on_wnck_window_closed),manager);      
       task_window_append_utility (taskwin, window);    
       g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
       return TRUE;
@@ -513,7 +518,6 @@ try_to_place_window (TaskManager *manager, WnckWindow *window)
 		taskwin_pid = task_window_get_pid (taskwin);
     if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
     {
-      g_signal_connect (priv->screen, "window-closed",G_CALLBACK(on_wnck_window_closed),manager);      
       task_window_append_utility (taskwin, window);   
       g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
       return TRUE;
