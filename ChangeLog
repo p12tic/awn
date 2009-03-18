@@ -1,3 +1,9 @@
+2009-03-18  Rodney Cryderman <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Updated to reflect some changes in the awn themed icon related
+	prototypes.
+
 2009-03-17  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:

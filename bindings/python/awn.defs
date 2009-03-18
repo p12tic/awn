@@ -475,8 +475,8 @@
   (return-type "none")
   (parameters
     '("const-gchar*" "applet_name")
-    '("gchar**" "states")
-    '("gchar**" "icon_names")
+    '("GStrv" "states")
+    '("GStrv" "icon_names")
   )
 )
 
@@ -1129,8 +1129,8 @@
   (parameters
     '("const-gchar*" "applet_name")
     '("const-gchar*" "uid")
-    '("gchar**" "states")
-    '("gchar**" "icon_names")
+    '("GStrv" "states")
+    '("GStrv" "icon_names")
   )
 )
 
