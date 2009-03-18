@@ -1,5 +1,10 @@
 2009-03-18  Rodney Cryderman <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	return to a more functional state while I continue bug hunting.
+
+2009-03-18  Rodney Cryderman <rcryderman@gmail.com>
+
 	* bindings/python/awn.defs:
 	Updated to reflect some changes in the awn themed icon related
 	prototypes.

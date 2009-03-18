@@ -481,8 +481,8 @@ try_to_place_window (TaskManager *manager, WnckWindow *window)
 		taskwin_pid = task_window_get_pid (taskwin);
     if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
     {
+      return TRUE;   
       task_window_append_utility (taskwin, window);    
-      return TRUE;      
       g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
       return TRUE;
     }
@@ -498,8 +498,8 @@ try_to_place_window (TaskManager *manager, WnckWindow *window)
 		taskwin_pid = task_window_get_pid (taskwin);
     if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
     {
-      task_window_append_utility (taskwin, window);
-      return TRUE;      
+      return TRUE;         
+      task_window_append_utility (taskwin, window);   
       g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
       return TRUE;
     }
