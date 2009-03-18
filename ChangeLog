@@ -1,3 +1,11 @@
+2009-03-17  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c
+	If awn_themed_icon_get_icon_at_size() and awn themed icon 
+	support is currently inactive (the icon has been explictly
+	set with a pixbuf or surface for example) then return
+	NULL.
+
 2009-03-16  Rodney Cryderman <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:

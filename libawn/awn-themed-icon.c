@@ -280,6 +280,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
   priv = icon->priv;
 
   /* Find the index of the current state in states */
+  g_return_val_if_fail(priv->states,NULL);	
   for (idx = 0; priv->states[idx]; idx++)
   {
     if (strcmp (priv->states[idx], state ? state : priv->current_state) == 0)
@@ -605,7 +606,10 @@ awn_themed_icon_get_icon_at_size (AwnThemedIcon *icon,
                                   guint          size,
                                   const gchar   *state)
 {
+  AwnThemedIconPrivate *priv;
   g_return_val_if_fail (AWN_IS_THEMED_ICON (icon), NULL);
+  priv = icon->priv;
+  g_return_val_if_fail (priv->states,NULL);
   
   return get_pixbuf_at_size (icon, size, state);
 }
