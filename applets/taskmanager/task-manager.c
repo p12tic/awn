@@ -459,6 +459,21 @@ on_window_state_changed (WnckWindow      *window,
     return;
   }
 }
+static void 
+on_wnck_window_closed (WnckScreen *screen, WnckWindow *window, TaskManager *manager)
+{
+  GSList *w;  
+  g_debug ("Window Closed: %p\n",window);
+  TaskManagerPrivate *priv = manager->priv;  
+  for (w = priv->windows; w; w = w->next)
+  {
+    TaskWindow *taskwin = w->data;
+    if (!TASK_IS_WINDOW (taskwin))
+      continue;
+    task_window_remove_utility (taskwin, window);        
+  }
+  
+}
 
 static gboolean
 try_to_place_window (TaskManager *manager, WnckWindow *window)
@@ -481,7 +496,7 @@ try_to_place_window (TaskManager *manager, WnckWindow *window)
 		taskwin_pid = task_window_get_pid (taskwin);
     if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
     {
-      return TRUE;   
+      g_signal_connect (priv->screen, "window-closed", G_CALLBACK(on_wnck_window_closed),manager);      
       task_window_append_utility (taskwin, window);    
       g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
       return TRUE;
@@ -498,7 +513,7 @@ try_to_place_window (TaskManager *manager, WnckWindow *window)
 		taskwin_pid = task_window_get_pid (taskwin);
     if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
     {
-      return TRUE;         
+      g_signal_connect (priv->screen, "window-closed",G_CALLBACK(on_wnck_window_closed),manager);      
       task_window_append_utility (taskwin, window);   
       g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
       return TRUE;
@@ -631,7 +646,7 @@ on_window_opened (WnckScreen    *screen,
    */
     
   if ((type == WNCK_WINDOW_UTILITY || type == WNCK_WINDOW_DIALOG)
-       && try_to_place_window (manager, window))
+       && try_to_place_window (manager,window))
   {
     g_debug ("WINDOW PLACED: %s", wnck_window_get_name (window));
     return;

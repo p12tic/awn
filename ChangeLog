@@ -1,6 +1,15 @@
 2009-03-18  Rodney Cryderman <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+ 	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+
+	Remove windows for the ->utilities list when they closed.  
+	Looks like Wnck reuses these objects for different windows.
+
+2009-03-18  Rodney Cryderman <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	return to a more functional state while I continue bug hunting.
 
 2009-03-18  Rodney Cryderman <rcryderman@gmail.com>

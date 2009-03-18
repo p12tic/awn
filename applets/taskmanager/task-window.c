@@ -255,6 +255,19 @@ task_window_new (WnckWindow *window)
 }
 
 void
+task_window_remove_utility (TaskWindow    *window,
+                            WnckWindow    *wnckwin)
+{
+  TaskWindowPrivate *priv;
+
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  priv = window->priv;
+
+  priv->utilities = g_slist_remove (priv->utilities, wnckwin);
+}
+
+
+void
 task_window_append_utility (TaskWindow    *window,
                             WnckWindow    *wnckwin)
 {

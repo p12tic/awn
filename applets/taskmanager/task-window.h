@@ -86,6 +86,9 @@ GType           task_window_get_type          (void) G_GNUC_CONST;
 
 TaskWindow    * task_window_new               (WnckWindow    *window);
 
+void            task_window_remove_utility    (TaskWindow    *window,
+                                                WnckWindow   *wnckwin);
+
 void            task_window_append_utility    (TaskWindow    *window,
                                                WnckWindow    *wnckwin);
 
