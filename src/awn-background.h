@@ -27,6 +27,7 @@
 
 #include <libawn/awn-cairo-utils.h>
 #include <libawn/awn-config-client.h>
+#include <libawn/awn-defines.h>
 
 #include "awn-panel.h"
 
@@ -114,12 +115,17 @@ struct _AwnBackgroundClass
                                 AwnOrientation  orient,
                                 GdkRectangle   *area);
 
+  AwnPathType (*get_path_type) (AwnBackground *bg,
+                                gint *max_offset);
+
   /*< signals >*/
   void (*changed) (AwnBackground *bg);
   void (*padding_changed) (AwnBackground *bg);
 };
 
 GType awn_background_get_type (void) G_GNUC_CONST;
+
+AwnPathType awn_background_get_path_type (AwnBackground *bg, gint *max_offset);
 
 void awn_background_draw      (AwnBackground  *bg,
                                cairo_t        *cr, 

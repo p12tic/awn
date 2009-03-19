@@ -38,6 +38,9 @@ static void awn_background_curves_padding_request (AwnBackground *bg,
                                                    guint *padding_left,
                                                    guint *padding_right);
 
+static AwnPathType awn_background_curves_get_path_type (AwnBackground *bg,
+                                                        gint *max_offset);
+
 static void awn_background_curves_draw (AwnBackground  *bg,
                                         cairo_t        *cr,
                                         AwnOrientation  orient,
@@ -51,6 +54,7 @@ awn_background_curves_class_init (AwnBackgroundCurvesClass *klass)
   bg_class->draw = awn_background_curves_draw;
   bg_class->padding_request = awn_background_curves_padding_request;
   bg_class->get_input_shape_mask = awn_background_curves_draw;
+  bg_class->get_path_type = awn_background_curves_get_path_type;
 }
 
 
@@ -229,6 +233,20 @@ awn_background_curves_padding_request (AwnBackground *bg,
     default:
       break;
   }
+}
+
+static
+AwnPathType awn_background_curves_get_path_type (AwnBackground *bg,
+                                                 gint *max_offset)
+{
+  gint offset;
+
+  g_return_val_if_fail (AWN_IS_BACKGROUND (bg) && max_offset, AWN_PATH_LINEAR);
+
+  g_object_get (bg->panel, "offset", &offset, NULL);
+
+  *max_offset = offset * 2;
+  return AWN_PATH_ELLIPSE;
 }
 
 /**

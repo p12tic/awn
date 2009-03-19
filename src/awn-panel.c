@@ -1783,7 +1783,9 @@ awn_panel_set_style (AwnPanel *panel, gint style)
 {
   AwnPanelPrivate *priv = panel->priv;
   AwnBackground *old_bg = NULL;
-  
+  AwnPathType path = AWN_PATH_LINEAR;
+  gint max_offset = 0;
+
   /* if the style hasn't changed and the background exist everything is done. */
   if(priv->style == style && priv->bg) return;
 
@@ -1819,7 +1821,24 @@ awn_panel_set_style (AwnPanel *panel, gint style)
                       panel);
     g_signal_connect_swapped (priv->bg, "padding-changed",
                               G_CALLBACK (awn_panel_refresh_padding), panel);
+    path = awn_background_get_path_type (priv->bg, &max_offset);
   }
+
+  GValue value = {0};
+  g_value_init (&value, G_TYPE_INT);
+
+  /* Emit max-offset & path-type properties via DBus */
+  if (max_offset)
+  {
+    g_value_set_int (&value, max_offset);
+    
+    g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, 
+                   "", "max-offset", &value);
+  }
+
+  g_value_set_int (&value, path);
+  g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, 
+                 "", "path-type", &value);
 
   awn_panel_refresh_padding (panel, NULL);
 }

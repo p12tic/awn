@@ -31,6 +31,7 @@
 #include <glib/gstdio.h>
 #include <glib/gi18n.h>
 #include <X11/Xlib.h>
+#include <math.h>
 
 #include "awn-defines.h"
 #include "awn-applet.h"
@@ -48,13 +49,16 @@ struct _AwnAppletPrivate
   gchar *uid;
   gchar *gconf_key;
   AwnOrientation orient;
-  gint offset;
+  AwnPathType path_type;
+  gint offset, max_offset;
   guint size;
 
   gboolean show_all_on_embed;
   gboolean quit_on_delete;
 
   gint origin_x, origin_y;
+  gint pos_x, pos_y;
+  gint panel_width, panel_height;
 
   AwnAppletFlags flags;
 
@@ -70,7 +74,9 @@ enum
   PROP_UID,
   PROP_ORIENT,
   PROP_OFFSET,
-  PROP_SIZE
+  PROP_MAX_OFFSET,
+  PROP_SIZE,
+  PROP_PATH_TYPE
 };
 
 enum
@@ -78,7 +84,6 @@ enum
   ORIENT_CHANGED,
   OFFSET_CHANGED,
   SIZE_CHANGED,
-  PLUG_EMBEDDED,
   PANEL_CONFIGURE,
   ORIGIN_CHANGED,
   DELETED,
@@ -117,9 +122,14 @@ static void
 on_prop_changed (DBusGProxy *proxy, const gchar *uid, const gchar *prop_name,
                  GValue *value, AwnApplet *applet)
 {
-  g_return_if_fail (AWN_IS_APPLET (applet));
+  AwnAppletPrivate *priv;
+  g_return_if_fail (AWN_IS_APPLET (applet) && uid);
+  priv = applet->priv;
 
-  g_debug ("(%s) PropertyChanged signal for \"%s\", value: %d", uid, prop_name, g_value_get_int (value));
+  if (strcmp (priv->uid, uid) == 0 || uid[0] == '\0')
+  {
+    g_object_set_property (G_OBJECT (applet), prop_name, value);
+  }
 }
 
 static void
@@ -132,6 +142,16 @@ static void
 on_proxy_destroyed (GObject *object)
 {
   gtk_main_quit ();
+}
+
+static void
+awn_applet_plug_embedded (AwnApplet *applet)
+{
+  g_return_if_fail (AWN_IS_APPLET (applet));
+
+  AwnAppletPrivate *priv = applet->priv;
+
+  if (priv->show_all_on_embed) gtk_widget_show_all (GTK_WIDGET (applet));
 }
 
 static gboolean
@@ -169,7 +189,21 @@ on_client_message (GdkXEvent *xevent, GdkEvent *event, gpointer data)
 
   if (GTK_WIDGET(data)->window == NULL) return GDK_FILTER_CONTINUE;
 
-  /* We're ignoring the actual [x,y] params in the message, FIXME? */
+  /* Panel sends us our relative position on it */
+  XEvent *xe = (XEvent*) xevent;
+  gint pos_x = xe->xclient.data.l[0], pos_y = xe->xclient.data.l[1];
+
+  if (priv->pos_x != pos_x || priv->pos_y != pos_y)
+  {
+    priv->pos_x = xe->xclient.data.l[0];
+    priv->pos_y = xe->xclient.data.l[1];
+
+    if (priv->path_type != AWN_PATH_LINEAR)
+    {
+      g_signal_emit (data, _applet_signals[OFFSET_CHANGED], 0, priv->offset);
+    }
+  }
+
   gint x, y;
   gdk_window_get_origin (GTK_WIDGET(data)->window, &x, &y);
 
@@ -217,8 +251,14 @@ awn_applet_set_property (GObject      *object,
     case PROP_OFFSET:
       awn_applet_set_offset (applet, g_value_get_int (value));
       break;
+    case PROP_MAX_OFFSET:
+      AWN_APPLET_GET_PRIVATE(applet)->max_offset = g_value_get_int (value);
+      break;
     case PROP_SIZE:
       awn_applet_set_size (applet, g_value_get_int (value));
+      break;
+    case PROP_PATH_TYPE:
+      awn_applet_set_path_type (applet, g_value_get_int (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -251,8 +291,16 @@ awn_applet_get_property (GObject    *object,
       g_value_set_int (value, priv->offset);
       break;
 
+    case PROP_MAX_OFFSET:
+      g_value_set_int (value, priv->max_offset);
+      break;
+
     case PROP_SIZE:
       g_value_set_int (value, priv->size);
+      break;
+
+    case PROP_PATH_TYPE:
+      g_value_set_int (value, priv->path_type);
       break;
 
     default:
@@ -320,11 +368,27 @@ awn_applet_class_init (AwnAppletClass *klass)
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
+   PROP_MAX_OFFSET,
+   g_param_spec_int ("max-offset",
+                     "Max offset",
+                     "Extra offset for non-linear path types",
+                     0, G_MAXINT, 0,
+                     G_PARAM_READWRITE));
+
+  g_object_class_install_property (gobject_class,
    PROP_SIZE,
    g_param_spec_int ("size",
                      "Size",
                      "The current visible size of the bar",
                      0, G_MAXINT, 48,
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+
+  g_object_class_install_property (gobject_class,
+   PROP_PATH_TYPE,
+   g_param_spec_int ("path-type",
+                     "Path type",
+                     "Path used on the panel",
+                     0, AWN_PATH_LAST-1, AWN_PATH_LINEAR,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   /* Class signals */
@@ -374,15 +438,6 @@ awn_applet_class_init (AwnAppletClass *klass)
                  g_cclosure_marshal_VOID__BOXED,
                  G_TYPE_NONE, 1, GDK_TYPE_RECTANGLE);
 
-  _applet_signals[PLUG_EMBEDDED] =
-    g_signal_new("plug-embedded",
-                 G_OBJECT_CLASS_TYPE(gobject_class),
-                 G_SIGNAL_RUN_FIRST,
-                 G_STRUCT_OFFSET(AwnAppletClass, plug_embedded),
-                 NULL, NULL,
-                 g_cclosure_marshal_VOID__VOID,
-                 G_TYPE_NONE, 0);
-
   _applet_signals[DELETED] =
     g_signal_new("applet-deleted",
                  G_OBJECT_CLASS_TYPE(gobject_class),
@@ -427,6 +482,7 @@ awn_applet_init (AwnApplet *applet)
   on_alpha_screen_changed(GTK_WIDGET(applet), NULL, NULL);
 
   priv->flags = AWN_APPLET_FLAGS_NONE;
+  priv->max_offset = 0;
   // FIXME: turn into proper properties
   priv->show_all_on_embed = TRUE;
   priv->quit_on_delete = TRUE;
@@ -492,10 +548,11 @@ awn_applet_init (AwnApplet *applet)
   g_signal_connect (priv->proxy, "destroy",
                     G_CALLBACK (on_proxy_destroyed), NULL);
 
-  g_signal_connect (applet, "delete-event",
-                    G_CALLBACK (on_plug_deleted), NULL);
   g_signal_connect (applet, "embedded",
                     G_CALLBACK (awn_applet_plug_embedded), NULL);
+  g_signal_connect (applet, "delete-event",
+                    G_CALLBACK (on_plug_deleted), NULL);
+
   awn_utils_ensure_transparent_bg (GTK_WIDGET (applet));
 
   GdkAtom atom = gdk_atom_intern_static_string ("_AWN_APPLET_POS_CHANGE");
@@ -520,18 +577,6 @@ awn_applet_new (const gchar* uid, gint orient, gint offset, gint size)
 /*
  * Public funcs
  */
-void  
-awn_applet_plug_embedded (AwnApplet *applet)
-{
-  g_return_if_fail (AWN_IS_APPLET (applet));
-
-  AwnAppletPrivate *priv = applet->priv;
-
-  g_signal_emit (applet, _applet_signals[PLUG_EMBEDDED], 0);
-
-  if (priv->show_all_on_embed) gtk_widget_show_all (GTK_WIDGET (applet));
-}
-
 /*
  * Callback to start awn-manager.  See awn_applet_create_default_menu()
  */
@@ -620,6 +665,33 @@ awn_applet_set_orientation (AwnApplet *applet, AwnOrientation orient)
   g_signal_emit (applet, _applet_signals[ORIENT_CHANGED], 0, orient);
 }
 
+AwnPathType
+awn_applet_get_path_type (AwnApplet *applet)
+{
+  AwnAppletPrivate *priv;
+
+  g_return_val_if_fail(AWN_IS_APPLET (applet), AWN_PATH_LINEAR);
+  priv = AWN_APPLET_GET_PRIVATE (applet);
+
+  return priv->path_type;
+}
+
+void
+awn_applet_set_path_type (AwnApplet *applet, AwnPathType path)
+{
+  AwnAppletPrivate *priv;
+
+  g_return_if_fail (AWN_IS_APPLET (applet));
+  priv = applet->priv;
+
+  if (priv->path_type != path)
+  {
+    priv->path_type = path;
+
+    g_signal_emit (applet, _applet_signals[OFFSET_CHANGED], 0, priv->offset);
+  }
+}
+
 gint
 awn_applet_get_offset (AwnApplet *applet)
 {
@@ -639,9 +711,46 @@ awn_applet_set_offset (AwnApplet *applet, gint offset)
   g_return_if_fail (AWN_IS_APPLET (applet));
   priv = applet->priv;
 
-  priv->offset = offset;
+  if (priv->offset != offset)
+  {
+    priv->offset = offset;
 
-  g_signal_emit (applet, _applet_signals[OFFSET_CHANGED], 0, offset);
+    // make sure max_offset-offset is >= 0
+    if (priv->max_offset < offset) priv->max_offset = offset;
+
+    g_signal_emit (applet, _applet_signals[OFFSET_CHANGED], 0, offset);
+  }
+}
+
+gint
+awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
+{
+  AwnAppletPrivate *priv;
+  gint result;
+
+  g_return_val_if_fail (AWN_IS_APPLET (applet), 0);
+  priv = applet->priv;
+
+  switch (priv->path_type)
+  {
+    case AWN_PATH_ELLIPSE:
+      switch (priv->orient)
+      {
+        case AWN_ORIENTATION_LEFT:
+        case AWN_ORIENTATION_RIGHT:
+          result = round (sin (M_PI * (priv->pos_y + y) / priv->panel_height)
+                          * (priv->max_offset - priv->offset));
+          break;
+        default:
+          result = round (sin (M_PI * (priv->pos_x + x) / priv->panel_width)
+                          * (priv->max_offset - priv->offset));
+          break;
+      }
+      g_debug ("%s: sin(PI*(%d+%d)/%d) * (%d - %d) = %d", __func__, priv->pos_x, x, priv->panel_width, priv->max_offset, priv->offset, result);
+      return result + priv->offset;
+    default:
+      return priv->offset;
+  }
 }
 
 guint
@@ -741,6 +850,9 @@ _on_panel_configure (GdkXEvent *xevent, GdkEvent *event, gpointer data)
     event->configure.width = xe->xconfigure.width;
     event->configure.height = xe->xconfigure.height;
 
+    priv->panel_width = xe->xconfigure.width;
+    priv->panel_height = xe->xconfigure.height;
+
     g_signal_emit (data, _applet_signals[PANEL_CONFIGURE], 0, event);
 
     if (GTK_WIDGET (data)->window != NULL)
@@ -777,6 +889,8 @@ awn_applet_set_panel_window_id (AwnApplet *applet, GdkNativeWindow anid)
   }
 
   priv->panel_window = gdk_window_foreign_new (anid);
+  gdk_window_get_geometry (priv->panel_window, NULL, NULL,
+                           &priv->panel_width, &priv->panel_height, NULL);
 
   gdk_window_set_events (priv->panel_window, GDK_STRUCTURE_MASK);
   gdk_window_add_filter (priv->panel_window, _on_panel_configure, applet);

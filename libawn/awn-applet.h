@@ -70,7 +70,6 @@ struct _AwnAppletClass
   GtkPlugClass parent_class;
 
   /*<signals >*/
-  void (*plug_embedded)   (AwnApplet *applet);
   void (*orient_changed)  (AwnApplet *applet, AwnOrientation orient);
   void (*offset_changed)  (AwnApplet *applet, gint offset);
   void (*size_changed)    (AwnApplet *applet, gint size);
@@ -104,11 +103,17 @@ AwnApplet *        awn_applet_new                 (const gchar *uid,
                                                    gint         size);
 
 AwnOrientation     awn_applet_get_orientation     (AwnApplet      *applet);
-
 void               awn_applet_set_orientation     (AwnApplet      *applet,
                                                    AwnOrientation  orient);
 
+AwnPathType        awn_applet_get_path_type       (AwnApplet *applet);
+void               awn_applet_set_path_type       (AwnApplet *applet,
+                                                   AwnPathType path);
+
 gint               awn_applet_get_offset          (AwnApplet      *applet);
+gint               awn_applet_get_offset_at       (AwnApplet      *applet,
+                                                   gint           x,
+                                                   gint           y);
 void               awn_applet_set_offset          (AwnApplet      *applet,
                                                    gint           offset);
 
@@ -120,14 +125,11 @@ const gchar *      awn_applet_get_uid             (AwnApplet      *applet);
 void               awn_applet_set_uid             (AwnApplet      *applet,
                                                    const gchar    *uid);
 
-void               awn_applet_plug_embedded       (AwnApplet      *applet);
-
-GtkWidget*         awn_applet_create_default_menu (AwnApplet      *applet);
-
+AwnAppletFlags     awn_applet_get_flags           (AwnApplet      *applet);
 void               awn_applet_set_flags           (AwnApplet      *applet, 
                                                    AwnAppletFlags  flags);
 
-AwnAppletFlags     awn_applet_get_flags           (AwnApplet      *applet);
+GtkWidget*         awn_applet_create_default_menu (AwnApplet      *applet);
 
 void               awn_applet_set_panel_window_id (AwnApplet      *applet,
                                                    GdkNativeWindow anid);
