@@ -85,7 +85,7 @@ static void awn_background_mask_none (AwnBackground  *bg,
                                       GdkRectangle   *area);
 
 static AwnPathType awn_background_path_default (AwnBackground *bg,
-                                                gint *max_offset);
+                                                gfloat *offset_mod);
 
 static void
 awn_background_constructed (GObject *object)
@@ -520,7 +520,7 @@ awn_background_get_input_shape_mask (AwnBackground *bg,
 
 AwnPathType
 awn_background_get_path_type (AwnBackground *bg,
-                              gint *max_offset)
+                              gfloat *offset_mod)
 {
   AwnBackgroundClass *klass;
 
@@ -529,7 +529,7 @@ awn_background_get_path_type (AwnBackground *bg,
   klass = AWN_BACKGROUND_GET_CLASS (bg);
   g_return_val_if_fail (klass->get_path_type, AWN_PATH_LINEAR);
 
-  return klass->get_path_type (bg, max_offset);
+  return klass->get_path_type (bg, offset_mod);
 }
 
 void
@@ -709,7 +709,7 @@ static void awn_background_mask_none (AwnBackground *bg,
 }
 
 static AwnPathType awn_background_path_default (AwnBackground *bg,
-                                                gint *max_offset)
+                                                gfloat *offset_mod)
 {
   return AWN_PATH_LINEAR;
 }

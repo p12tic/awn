@@ -116,7 +116,7 @@ struct _AwnBackgroundClass
                                 GdkRectangle   *area);
 
   AwnPathType (*get_path_type) (AwnBackground *bg,
-                                gint *max_offset);
+                                gfloat *offset_mod);
 
   /*< signals >*/
   void (*changed) (AwnBackground *bg);
@@ -124,8 +124,6 @@ struct _AwnBackgroundClass
 };
 
 GType awn_background_get_type (void) G_GNUC_CONST;
-
-AwnPathType awn_background_get_path_type (AwnBackground *bg, gint *max_offset);
 
 void awn_background_draw      (AwnBackground  *bg,
                                cairo_t        *cr, 
@@ -148,6 +146,9 @@ void awn_background_get_input_shape_mask (AwnBackground  *bg,
                                           cairo_t        *cr,
                                           AwnOrientation  orient,
                                           GdkRectangle   *area);
+
+AwnPathType awn_background_get_path_type (AwnBackground *bg,
+                                          gfloat *offset_mod);
 
 /* These should be "protected" (used only by derived classes) */
 void awn_background_emit_padding_changed (AwnBackground *bg);

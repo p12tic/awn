@@ -39,7 +39,7 @@ static void awn_background_curves_padding_request (AwnBackground *bg,
                                                    guint *padding_right);
 
 static AwnPathType awn_background_curves_get_path_type (AwnBackground *bg,
-                                                        gint *max_offset);
+                                                        gfloat *offset_mod);
 
 static void awn_background_curves_draw (AwnBackground  *bg,
                                         cairo_t        *cr,
@@ -237,15 +237,11 @@ awn_background_curves_padding_request (AwnBackground *bg,
 
 static
 AwnPathType awn_background_curves_get_path_type (AwnBackground *bg,
-                                                 gint *max_offset)
+                                                 gfloat *offset_mod)
 {
-  gint offset;
+  g_return_val_if_fail (AWN_IS_BACKGROUND (bg) && offset_mod, AWN_PATH_LINEAR);
 
-  g_return_val_if_fail (AWN_IS_BACKGROUND (bg) && max_offset, AWN_PATH_LINEAR);
-
-  g_object_get (bg->panel, "offset", &offset, NULL);
-
-  *max_offset = offset * 5 / 2;
+  *offset_mod = 1.5;
   return AWN_PATH_ELLIPSE;
 }
 

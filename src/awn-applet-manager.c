@@ -102,8 +102,6 @@ awn_applet_manager_constructed (GObject *object)
                                AWN_GROUP_PANEL, AWN_PANEL_APPLET_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
                                object, "applet_list");
-
-
 }
 
 static void

@@ -1784,7 +1784,7 @@ awn_panel_set_style (AwnPanel *panel, gint style)
   AwnPanelPrivate *priv = panel->priv;
   AwnBackground *old_bg = NULL;
   AwnPathType path = AWN_PATH_LINEAR;
-  gint max_offset = 0;
+  gfloat offset_mod = 1.0;
 
   /* if the style hasn't changed and the background exist everything is done. */
   if(priv->style == style && priv->bg) return;
@@ -1821,29 +1821,31 @@ awn_panel_set_style (AwnPanel *panel, gint style)
                       panel);
     g_signal_connect_swapped (priv->bg, "padding-changed",
                               G_CALLBACK (awn_panel_refresh_padding), panel);
-    path = awn_background_get_path_type (priv->bg, &max_offset);
+    path = awn_background_get_path_type (priv->bg, &offset_mod);
+  }
+
+  awn_panel_refresh_padding (panel, NULL);
+
+  /* Emit offset-modifier & path-type properties via DBus */
+  if (offset_mod != 1.0)
+  {
+    GValue mod_value = {0};
+    g_value_init (&mod_value, G_TYPE_FLOAT);
+    /* FIXME: we also need to calculate our dimensions based on max_offset and
+     * not offset
+     */
+    g_value_set_float (&mod_value, offset_mod);
+    
+    g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, "",
+                   "offset-modifier", &mod_value);
   }
 
   GValue value = {0};
   g_value_init (&value, G_TYPE_INT);
 
-  /* Emit max-offset & path-type properties via DBus */
-  if (max_offset)
-  {
-    /* FIXME: we also need to calculate our dimensions based on max_offset and
-     * not offset
-     */
-    g_value_set_int (&value, max_offset);
-    
-    g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, 
-                   "", "max-offset", &value);
-  }
-
   g_value_set_int (&value, path);
-  g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, 
-                 "", "path-type", &value);
-
-  awn_panel_refresh_padding (panel, NULL);
+  g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, "",
+                 "path-type", &value);
 }
 
 static void

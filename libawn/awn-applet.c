@@ -50,7 +50,8 @@ struct _AwnAppletPrivate
   gchar *gconf_key;
   AwnOrientation orient;
   AwnPathType path_type;
-  gint offset, max_offset;
+  gint offset;
+  gfloat offset_modifier;
   guint size;
 
   gboolean show_all_on_embed;
@@ -74,7 +75,7 @@ enum
   PROP_UID,
   PROP_ORIENT,
   PROP_OFFSET,
-  PROP_MAX_OFFSET,
+  PROP_OFFSET_MOD,
   PROP_SIZE,
   PROP_PATH_TYPE
 };
@@ -251,8 +252,9 @@ awn_applet_set_property (GObject      *object,
     case PROP_OFFSET:
       awn_applet_set_offset (applet, g_value_get_int (value));
       break;
-    case PROP_MAX_OFFSET:
-      AWN_APPLET_GET_PRIVATE(applet)->max_offset = g_value_get_int (value);
+    case PROP_OFFSET_MOD:
+      // FIXME: method!
+      AWN_APPLET_GET_PRIVATE(applet)->offset_modifier = g_value_get_float (value);
       break;
     case PROP_SIZE:
       awn_applet_set_size (applet, g_value_get_int (value));
@@ -291,8 +293,8 @@ awn_applet_get_property (GObject    *object,
       g_value_set_int (value, priv->offset);
       break;
 
-    case PROP_MAX_OFFSET:
-      g_value_set_int (value, priv->max_offset);
+    case PROP_OFFSET_MOD:
+      g_value_set_float (value, priv->offset_modifier);
       break;
 
     case PROP_SIZE:
@@ -368,12 +370,12 @@ awn_applet_class_init (AwnAppletClass *klass)
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
-   PROP_MAX_OFFSET,
-   g_param_spec_int ("max-offset",
-                     "Max offset",
-                     "Extra offset for non-linear path types",
-                     0, G_MAXINT, 0,
-                     G_PARAM_READWRITE));
+   PROP_OFFSET_MOD,
+   g_param_spec_float ("offset-modifier",
+                       "Offset modifier",
+                       "Offset modifier for non-linear path types",
+                       -G_MAXFLOAT, G_MAXFLOAT, 1.0,
+                       G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
    PROP_SIZE,
@@ -482,7 +484,7 @@ awn_applet_init (AwnApplet *applet)
   on_alpha_screen_changed(GTK_WIDGET(applet), NULL, NULL);
 
   priv->flags = AWN_APPLET_FLAGS_NONE;
-  priv->max_offset = 0;
+  priv->offset_modifier = 1.0;
   // FIXME: turn into proper properties
   priv->show_all_on_embed = TRUE;
   priv->quit_on_delete = TRUE;
@@ -715,9 +717,6 @@ awn_applet_set_offset (AwnApplet *applet, gint offset)
   {
     priv->offset = offset;
 
-    // make sure max_offset-offset is >= 0
-    if (priv->max_offset < offset) priv->max_offset = offset;
-
     g_signal_emit (applet, _applet_signals[OFFSET_CHANGED], 0, offset);
   }
 }
@@ -739,11 +738,11 @@ awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
         case AWN_ORIENTATION_LEFT:
         case AWN_ORIENTATION_RIGHT:
           result = round (sin (M_PI * (priv->pos_y + y) / priv->panel_height)
-                          * (priv->max_offset - priv->offset));
+                          * (priv->offset_modifier * priv->offset));
           break;
         default:
           result = round (sin (M_PI * (priv->pos_x + x) / priv->panel_width)
-                          * (priv->max_offset - priv->offset));
+                          * (priv->offset_modifier * priv->offset));
           break;
       }
 /*
@@ -858,6 +857,12 @@ _on_panel_configure (GdkXEvent *xevent, GdkEvent *event, gpointer data)
     priv->panel_height = xe->xconfigure.height;
 
     g_signal_emit (data, _applet_signals[PANEL_CONFIGURE], 0, event);
+
+    /* Emit offset-changed, so we still have nice ellipsis */
+    if (priv->path_type != AWN_PATH_LINEAR)
+    {
+      g_signal_emit (data, _applet_signals[OFFSET_CHANGED], 0, priv->offset);
+    }
 
     if (GTK_WIDGET (data)->window != NULL)
     {
