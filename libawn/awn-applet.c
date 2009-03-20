@@ -746,7 +746,11 @@ awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
                           * (priv->max_offset - priv->offset));
           break;
       }
-      g_debug ("%s: sin(PI*(%d+%d)/%d) * (%d - %d) = %d", __func__, priv->pos_x, x, priv->panel_width, priv->max_offset, priv->offset, result);
+/*
+      g_debug ("%s: sin(PI*(%d+%d)/%d) * (%d - %d) = %d",
+               __func__, priv->pos_x, x, priv->panel_width,
+               priv->max_offset, priv->offset, result);
+*/
       return result + priv->offset;
     default:
       return priv->offset;

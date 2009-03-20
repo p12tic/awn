@@ -32,6 +32,8 @@ struct _AwnIconBoxPrivate
   AwnOrientation orient;
   gint           offset;
 
+  AwnApplet     *applet;
+
   /* Current box class */
   GtkWidgetClass  *klass;
 };
@@ -41,7 +43,7 @@ static void
 awn_icon_box_size_request (GtkWidget *widget, GtkRequisition *requisition)
 {
   AwnIconBoxPrivate *priv = AWN_ICON_BOX (widget)->priv;
-  
+
   priv->klass->size_request (widget, requisition);
 }
 
@@ -49,8 +51,23 @@ static void
 awn_icon_box_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 {
   AwnIconBoxPrivate *priv = AWN_ICON_BOX (widget)->priv;
-   
+
   priv->klass->size_allocate (widget, allocation);
+}
+
+static void
+awn_icon_box_child_size_allocate (GtkWidget *widget,
+                                  GtkAllocation *alloc,
+                                  AwnIconBox *box)
+{
+  AwnIconBoxPrivate *priv = AWN_ICON_BOX (box)->priv;
+
+  g_return_if_fail (AWN_IS_ICON (widget));
+
+  gint x = alloc->x + alloc->width / 2;
+  gint y = alloc->y + alloc->height / 2;
+  gint offset = awn_applet_get_offset_at (priv->applet, x, y);
+  awn_icon_set_offset (AWN_ICON (widget), offset);
 }
 
 static void
@@ -68,46 +85,6 @@ awn_icon_box_dispose (GObject *object)
 }
 
 static void
-request_size (GtkWidget *widget, GtkRequisition *total_req)
-{
-  GtkRequisition req;
-
-  if (!GTK_WIDGET_VISIBLE (widget))
-    return;
-
-  gtk_widget_size_request (widget, &req);
-
-  total_req->width += req.width;
-  total_req->height += req.height;
-}
-
-static void
-ensure_layout (AwnIconBox *box)
-{
-  GtkRequisition total_req;
-
-  g_return_if_fail (AWN_IS_ICON_BOX (box));
-
-  total_req.width = 0;
-  total_req.height = 0;
-  
-  gtk_container_forall (GTK_CONTAINER (box), 
-                        (GtkCallback)request_size, &total_req);
-
-  switch (box->priv->orient)
-  {
-    case AWN_ORIENTATION_BOTTOM:
-    case AWN_ORIENTATION_TOP:
-      gtk_widget_set_size_request (GTK_WIDGET (box), total_req.width, -1);
-      break;
-
-    default:
-      gtk_widget_set_size_request (GTK_WIDGET (box), -1, total_req.height);
-      break;
-  }
-}
-
-static void
 awn_icon_box_add (GtkContainer *container, GtkWidget *child)
 {
   if (!AWN_IS_ICON (child))
@@ -122,14 +99,8 @@ awn_icon_box_add (GtkContainer *container, GtkWidget *child)
                             AWN_ICON_BOX (container)->priv->offset);
   awn_icon_set_orientation (AWN_ICON (child), 
                             AWN_ICON_BOX (container)->priv->orient);
-  g_signal_connect_swapped (child, "size-request", 
-                            G_CALLBACK (ensure_layout), container);
-  g_signal_connect_swapped (child, "show", 
-                            G_CALLBACK (ensure_layout), container);
-  g_signal_connect_swapped (child, "hide", 
-                            G_CALLBACK (ensure_layout), container);
-  
-  g_object_weak_ref (G_OBJECT (child), (GWeakNotify)ensure_layout, container);
+  g_signal_connect (child, "size-allocate",
+                    G_CALLBACK (awn_icon_box_child_size_allocate), container);
 }
 
 static void
@@ -158,6 +129,7 @@ awn_icon_box_init (AwnIconBox *icon_box)
 
   g_signal_connect_after (icon_box, "add", 
                           G_CALLBACK (awn_icon_box_add), icon_box);
+
   awn_utils_ensure_transparent_bg (GTK_WIDGET (icon_box));
 }
 
@@ -178,7 +150,7 @@ awn_icon_box_new (void)
 static void
 on_panel_size_changed (AwnApplet *applet, gint size, AwnIconBox *box)
 {
-  ensure_layout (box);
+  // FIXME: why doesn't this set size of the icons?
 }
 
 static void
@@ -206,6 +178,8 @@ awn_icon_box_new_for_applet (AwnApplet *applet)
   
   if (AWN_IS_APPLET (applet))
   {
+    AWN_ICON_BOX(box)->priv->applet = applet;
+
     g_signal_connect (applet, "size-changed", 
                       G_CALLBACK (on_panel_size_changed), box);
     g_signal_connect (applet, "orientation-changed", 
@@ -276,8 +250,6 @@ awn_icon_box_set_orientation (AwnIconBox     *icon_box,
       awn_icon_set_orientation (icon, orient);
   }
   g_list_free (children);
-
-  ensure_layout (icon_box);
 }
 
 void 
@@ -299,10 +271,14 @@ awn_icon_box_set_offset (AwnIconBox *icon_box,
     AwnIcon *icon = c->data;
 
     if (AWN_IS_ICON (icon))
+    {
+      GtkAllocation *alloc = &(GTK_WIDGET (icon)->allocation);
+      gint x = alloc->x + alloc->width / 2;
+      gint y = alloc->y + alloc->height / 2;
+      offset = awn_applet_get_offset_at (priv->applet, x, y);
       awn_icon_set_offset (icon, offset);
+    }
   }
   g_list_free (children);
-
-  ensure_layout (icon_box);
 }
 

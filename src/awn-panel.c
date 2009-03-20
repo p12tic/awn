@@ -1830,6 +1830,9 @@ awn_panel_set_style (AwnPanel *panel, gint style)
   /* Emit max-offset & path-type properties via DBus */
   if (max_offset)
   {
+    /* FIXME: we also need to calculate our dimensions based on max_offset and
+     * not offset
+     */
     g_value_set_int (&value, max_offset);
     
     g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, 

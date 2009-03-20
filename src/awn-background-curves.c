@@ -245,7 +245,7 @@ AwnPathType awn_background_curves_get_path_type (AwnBackground *bg,
 
   g_object_get (bg->panel, "offset", &offset, NULL);
 
-  *max_offset = offset * 2;
+  *max_offset = offset * 5 / 2;
   return AWN_PATH_ELLIPSE;
 }
 

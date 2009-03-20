@@ -322,7 +322,7 @@ awn_icon_update_tooltip_pos(AwnIcon *icon)
    * different offset in AwnTooltip
    * (do we want different icon bar offset and tooltip offset?)
    */
-  gint tooltip_offset = 0;
+  gint tooltip_offset = priv->offset;
 
   switch (priv->orient) {
     case AWN_ORIENTATION_TOP:
@@ -347,13 +347,16 @@ awn_icon_set_offset (AwnIcon        *icon,
   g_return_if_fail (AWN_IS_ICON (icon));
   priv = icon->priv;
 
-  priv->offset = offset;
+  if (priv->offset != offset)
+  {
+    priv->offset = offset;
 
-  g_object_set (priv->effects, "icon-offset", offset, NULL);
+    g_object_set (priv->effects, "icon-offset", offset, NULL);
 
-  gtk_widget_queue_resize (GTK_WIDGET(icon));
+    gtk_widget_queue_resize (GTK_WIDGET(icon));
 
-  awn_icon_update_tooltip_pos(icon);
+    awn_icon_update_tooltip_pos(icon);
+  }
 }
 
 void 

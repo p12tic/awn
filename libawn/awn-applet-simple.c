@@ -107,7 +107,7 @@ awn_applet_simple_size_allocate (GtkWidget *widget, GtkAllocation *alloc)
   {
     gint x = alloc->x + alloc->width / 2;
     gint y = alloc->y + alloc->height / 2;
-    offset = awn_applet_get_offset_at (applet, x, y);
+    gint offset = awn_applet_get_offset_at (AWN_APPLET (widget), x, y);
     awn_icon_set_offset (AWN_ICON (priv->icon), offset);
   }
 }
