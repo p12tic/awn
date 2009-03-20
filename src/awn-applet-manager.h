@@ -63,6 +63,7 @@ struct _AwnAppletManagerClass
   GtkBoxClass parent_class;
 
   /*< signals >*/
+  void (*applet_embedded) (AwnAppletManager *manager, GtkWidget *applet);
 };
 
 GType       awn_applet_manager_get_type          (void) G_GNUC_CONST;

@@ -61,6 +61,13 @@ enum
   PROP_APPLET_LIST
 };
 
+enum
+{
+  APPLET_EMBEDDED,
+
+  LAST_SIGNAL
+};
+static guint _applet_manager_signals[LAST_SIGNAL] = { 0 };
 
 /* 
  * FORWARDS
@@ -262,6 +269,16 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                           "Applet List",
                           "The list of applets for this panel",
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  /* Class signals */
+  _applet_manager_signals[APPLET_EMBEDDED] =
+    g_signal_new("applet-embedded",
+                 G_OBJECT_CLASS_TYPE(obj_class),
+                 G_SIGNAL_RUN_FIRST,
+                 G_STRUCT_OFFSET(AwnAppletManagerClass, applet_embedded),
+                 NULL, NULL,
+                 g_cclosure_marshal_VOID__OBJECT,
+                 G_TYPE_NONE, 1, GTK_TYPE_WIDGET);
  
   g_type_class_add_private (obj_class, sizeof (AwnAppletManagerPrivate));
 }
@@ -420,6 +437,14 @@ free_list (GSList *list)
 /*
  * APPLET CONTROL
  */
+static void
+_applet_plug_added (AwnAppletManager *manager, GtkWidget *applet)
+{
+  g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
+
+  g_signal_emit (manager, _applet_manager_signals[APPLET_EMBEDDED], 0, applet);
+}
+
 static GtkWidget *
 create_applet (AwnAppletManager *manager, 
                const gchar      *path,
@@ -433,7 +458,10 @@ create_applet (AwnAppletManager *manager,
   
   applet = awn_applet_proxy_new (path, uid, priv->orient,
                                  priv->offset, priv->size);
-  notifier = awn_applet_proxy_get_throbber(AWN_APPLET_PROXY(applet));
+  g_signal_connect_swapped (applet, "plug-added",
+                            G_CALLBACK (_applet_plug_added), manager);
+  notifier = awn_applet_proxy_get_throbber (AWN_APPLET_PROXY (applet));
+
   gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (manager), notifier, FALSE, FALSE, 0);
   gtk_widget_show(notifier);

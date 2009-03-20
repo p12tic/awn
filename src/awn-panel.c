@@ -66,7 +66,9 @@ struct _AwnPanelPrivate
 
   gint size;
   gint offset;
+  gfloat offset_mod;
   gint orient;
+  gint path_type;
   gint style;
 
   gint autohide_type;
@@ -181,6 +183,9 @@ static guint _panel_signals[LAST_SIGNAL] = { 0 };
  */
 static void     load_correct_colormap       (GtkWidget *panel);
 static void     on_composited_changed       (GtkWidget *widget, gpointer data);
+static void     on_applet_embedded          (AwnPanel  *panel,
+                                             GtkWidget *applet);
+
 static gboolean on_mouse_over               (GtkWidget *widget,
                                              GdkEventCrossing *event);
 static gboolean on_mouse_out                (GtkWidget *widget,
@@ -310,6 +315,8 @@ awn_panel_constructed (GObject *object)
 
   /* Contents */
   priv->manager = awn_applet_manager_new_from_config (priv->client);
+  g_signal_connect_swapped (priv->manager, "applet-embedded",
+                            G_CALLBACK (on_applet_embedded), panel);
   gtk_container_add (GTK_CONTAINER (panel), priv->manager);
   gtk_widget_show_all (priv->manager);
 }
@@ -1149,6 +1156,9 @@ awn_panel_init (AwnPanel *panel)
 
   priv = panel->priv = AWN_PANEL_GET_PRIVATE (panel);
 
+  priv->path_type = AWN_PATH_LINEAR;
+  priv->offset_mod = 1.0;
+
   gtk_widget_set_app_paintable (GTK_WIDGET (panel), TRUE);
 
   priv->eventbox = gtk_event_box_new ();
@@ -1485,11 +1495,7 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
 
   /* Get our ctx */
   cr = gdk_cairo_create (widget->window);
-  if (!cr)
-  {
-    g_debug ("Unable to create cairo context\n");
-    return FALSE;
-  }
+  g_return_val_if_fail (cr, FALSE);
 
   /* Clip */
   gdk_cairo_region (cr, event->region);
@@ -1779,6 +1785,41 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
 }
 
 static void
+on_applet_embedded (AwnPanel  *panel, GtkWidget *applet)
+{
+  g_return_if_fail (AWN_IS_PANEL (panel) && GTK_IS_SOCKET (applet));
+
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->path_type != AWN_PATH_LINEAR)
+  {
+    /* the applet is most likely AwnAppletProxy - get uid */
+    gchar *uid = NULL;
+    g_object_get (applet, "uid", &uid, NULL);
+
+    g_return_if_fail (uid);
+
+    /* update applet's offset-modifier */
+    GValue mod_value = {0};
+    g_value_init (&mod_value, G_TYPE_FLOAT);
+    g_value_set_float (&mod_value, priv->offset_mod);
+    
+    g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, uid,
+                   "offset-modifier", &mod_value);
+
+    /* update applet's path-type */
+    GValue value = {0};
+    g_value_init (&value, G_TYPE_INT);
+
+    g_value_set_int (&value, priv->path_type);
+    g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, uid,
+                   "path-type", &value);
+
+    g_free (uid);
+  }
+}
+
+static void
 awn_panel_set_style (AwnPanel *panel, gint style)
 {
   AwnPanelPrivate *priv = panel->priv;
@@ -1831,10 +1872,10 @@ awn_panel_set_style (AwnPanel *panel, gint style)
   {
     GValue mod_value = {0};
     g_value_init (&mod_value, G_TYPE_FLOAT);
-    /* FIXME: we also need to calculate our dimensions based on max_offset and
-     * not offset
-     */
+    /* FIXME: we also need to calculate our dimensions based on offset_mod */
     g_value_set_float (&mod_value, offset_mod);
+
+    priv->offset_mod = offset_mod;
     
     g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, "",
                    "offset-modifier", &mod_value);
@@ -1844,6 +1885,9 @@ awn_panel_set_style (AwnPanel *panel, gint style)
   g_value_init (&value, G_TYPE_INT);
 
   g_value_set_int (&value, path);
+
+  priv->path_type = path;
+
   g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, "",
                  "path-type", &value);
 }
