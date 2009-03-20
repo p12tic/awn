@@ -1,3 +1,21 @@
+2009-03-20  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-defines.h:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-icon.c:
+	* libawn/awn-tooltip.c:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-applet-proxy.c:
+	* src/awn-background-curves.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	* src/awn-panel.c:
+	First version of the non-linear path support.
+
 2009-03-18  Rodney Cryderman <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-window.c:

@@ -84,6 +84,8 @@ static void awn_background_mask_none (AwnBackground  *bg,
                                       AwnOrientation  orient,
                                       GdkRectangle   *area);
 
+static AwnPathType awn_background_path_default (AwnBackground *bg,
+                                                gfloat *offset_mod);
 
 static void
 awn_background_constructed (GObject *object)
@@ -267,6 +269,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
   klass->padding_request      = awn_background_padding_zero;
   klass->get_shape_mask       = awn_background_mask_none;
   klass->get_input_shape_mask = awn_background_mask_none;
+  klass->get_path_type        = awn_background_path_default;
 
   /* Object properties */
   g_object_class_install_property (obj_class,
@@ -515,6 +518,20 @@ awn_background_get_input_shape_mask (AwnBackground *bg,
   klass->get_input_shape_mask (bg, cr, orient, area);
 }
 
+AwnPathType
+awn_background_get_path_type (AwnBackground *bg,
+                              gfloat *offset_mod)
+{
+  AwnBackgroundClass *klass;
+
+  g_return_val_if_fail (AWN_IS_BACKGROUND (bg), AWN_PATH_LINEAR);
+  
+  klass = AWN_BACKGROUND_GET_CLASS (bg);
+  g_return_val_if_fail (klass->get_path_type, AWN_PATH_LINEAR);
+
+  return klass->get_path_type (bg, offset_mod);
+}
+
 void
 awn_background_emit_padding_changed (AwnBackground *bg)
 {
@@ -689,6 +706,12 @@ static void awn_background_mask_none (AwnBackground *bg,
   cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
   cairo_rectangle (cr, area->x, area->y, area->width, area->height);
   cairo_fill (cr);
+}
+
+static AwnPathType awn_background_path_default (AwnBackground *bg,
+                                                gfloat *offset_mod)
+{
+  return AWN_PATH_LINEAR;
 }
 
 /* vim: set et ts=2 sts=2 sw=2 : */

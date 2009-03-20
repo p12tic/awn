@@ -48,4 +48,13 @@ typedef enum
 
 } AwnOrientation;
 
+typedef enum
+{
+	AWN_PATH_LINEAR=0,
+	AWN_PATH_ELLIPSE,
+
+	AWN_PATH_LAST
+
+} AwnPathType;
+
 #endif

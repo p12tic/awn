@@ -27,6 +27,7 @@
 
 #include <libawn/awn-cairo-utils.h>
 #include <libawn/awn-config-client.h>
+#include <libawn/awn-defines.h>
 
 #include "awn-panel.h"
 
@@ -114,6 +115,9 @@ struct _AwnBackgroundClass
                                 AwnOrientation  orient,
                                 GdkRectangle   *area);
 
+  AwnPathType (*get_path_type) (AwnBackground *bg,
+                                gfloat *offset_mod);
+
   /*< signals >*/
   void (*changed) (AwnBackground *bg);
   void (*padding_changed) (AwnBackground *bg);
@@ -142,6 +146,9 @@ void awn_background_get_input_shape_mask (AwnBackground  *bg,
                                           cairo_t        *cr,
                                           AwnOrientation  orient,
                                           GdkRectangle   *area);
+
+AwnPathType awn_background_get_path_type (AwnBackground *bg,
+                                          gfloat *offset_mod);
 
 /* These should be "protected" (used only by derived classes) */
 void awn_background_emit_padding_changed (AwnBackground *bg);

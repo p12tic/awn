@@ -233,10 +233,6 @@ awn_tooltip_constructed (GObject *object)
                           AWN_THEME_GROUP, BACKGROUND,
                           object, BACKGROUND);
 
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_PANEL_GROUP, ICON_OFFSET,
-                          object, ICON_OFFSET);
-
   /* Setup internal widgets */
   align = gtk_alignment_new (0.5, 0.5, 1.0, 1.0);
   gtk_alignment_set_padding (GTK_ALIGNMENT (align), 5, 3, 8, 8);

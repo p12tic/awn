@@ -96,7 +96,7 @@ awn_applet_proxy_get_property (GObject    *object,
       g_value_set_string (value, priv->path);
       break;
     case PROP_UID:
-      g_value_set_string (value, priv->path);
+      g_value_set_string (value, priv->uid);
       break;
     case PROP_ORIENT:
       g_value_set_int (value, priv->orient);
@@ -314,10 +314,10 @@ awn_applet_proxy_get_throbber(AwnAppletProxy *proxy)
 
 GtkWidget *     
 awn_applet_proxy_new (const gchar *path,
-    const gchar *uid,
-    gint         orient,
-    gint         offset,
-    gint         size)
+                      const gchar *uid,
+                      gint         orient,
+                      gint         offset,
+                      gint         size)
 {
   GtkWidget *proxy;
 
