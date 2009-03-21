@@ -1,3 +1,12 @@
+2009-03-21  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/Makefile.am:
+	* libawn/awn-alignment.c:
+	* libawn/awn-alignment.h:
+	* libawn/libawn.h:
+	Added AwnAlignment - helper class making sure applet has correct
+	offset (for non-AppletSimple based applet).
+
 2009-03-20  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-applet-simple.c:
