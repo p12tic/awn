@@ -40,6 +40,7 @@ struct _AwnAlignmentPrivate
   AwnApplet *applet;
 
   AwnOrientation orient;
+  gint offset_modifier;
   gint last_offset;
 
   gulong orient_changed_id;
@@ -50,12 +51,14 @@ enum
 {
   PROP_0,
 
-  PROP_APPLET
+  PROP_APPLET,
+  PROP_OFFSET_MOD
 };
 
 /* Forwards */
 static void awn_alignment_set_applet (AwnAlignment *alignment,
                                       AwnApplet *applet);
+
 static void ensure_alignment         (AwnAlignment *alignment);
 
 /* GObject Stuff */
@@ -74,6 +77,9 @@ awn_alignment_get_property (GObject    *object,
   {
     case PROP_APPLET:
       g_value_set_object (value, priv->applet);
+      break;
+    case PROP_OFFSET_MOD:
+      g_value_set_int (value, priv->offset_modifier);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -97,6 +103,10 @@ awn_alignment_set_property (GObject      *object,
     case PROP_APPLET:
       awn_alignment_set_applet (AWN_ALIGNMENT (object),
                                 AWN_APPLET (g_value_get_object (value)));
+      break;
+    case PROP_OFFSET_MOD:
+      awn_alignment_set_offset_modifier (AWN_ALIGNMENT (object),
+                                         g_value_get_int (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -133,7 +143,7 @@ awn_alignment_class_init (AwnAlignmentClass *klass)
   obj_class->set_property = awn_alignment_set_property;
   obj_class->dispose      = awn_alignment_dispose;
 
-  /* Class property */
+  /* Class properties */
   g_object_class_install_property (obj_class,
     PROP_APPLET,
     g_param_spec_object ("applet",
@@ -141,6 +151,18 @@ awn_alignment_class_init (AwnAlignmentClass *klass)
                          "Applet",
                          AWN_TYPE_APPLET,
                          G_PARAM_READWRITE));
+
+  /*
+   *  Can be set to negative value to get some extra space where you can paint,
+   *  or positive value for extra padding besides the offset.
+   */
+  g_object_class_install_property (obj_class,
+    PROP_OFFSET_MOD,
+    g_param_spec_int ("offset-modifier",
+                      "Offset modifier",
+                      "Offset modifier",
+                      G_MININT, G_MAXINT, 0,
+                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   g_type_class_add_private (obj_class, sizeof (AwnAlignmentPrivate));
 }
@@ -237,6 +259,27 @@ awn_alignment_set_applet (AwnAlignment *alignment,
   on_orient_changed (alignment, priv->orient);
 }
 
+gint
+awn_alignment_get_offset_modifier (AwnAlignment *alignment)
+{
+  g_return_val_if_fail (AWN_IS_ALIGNMENT (alignment), 0);
+
+  return alignment->priv->offset_modifier;
+}
+
+void
+awn_alignment_set_offset_modifier (AwnAlignment *alignment, gint modifier)
+{
+  AwnAlignmentPrivate *priv;
+
+  g_return_if_fail (AWN_IS_ALIGNMENT (alignment));
+  priv = alignment->priv;
+
+  priv->offset_modifier = modifier;
+
+  ensure_alignment (alignment);
+}
+
 static void
 ensure_alignment (AwnAlignment *alignment)
 {
@@ -253,7 +296,9 @@ ensure_alignment (AwnAlignment *alignment)
 
   x = alloc->x + alloc->width / 2;
   y = alloc->y + alloc->height / 2;
-  offset = awn_applet_get_offset_at (priv->applet, x, y);
+  offset = awn_applet_get_offset_at (priv->applet, x, y)
+             + priv->offset_modifier;
+  if (offset < 0) offset = 0;
 
   /* 
    * Make sure we don't set the offset multiple times, otherwise we'll end up
