@@ -62,7 +62,7 @@ struct _AwnAppClass
 {
   /*< private >*/
   GObjectClass    parent_class;
-  
+
   /*< private >*/
   void (*_awn_app_1) (void);
   void (*_awn_app_2) (void);
@@ -74,6 +74,7 @@ GType    awn_app_get_type    (void) G_GNUC_CONST;
 
 AwnApp * awn_app_get_default (void);
 
+gboolean awn_app_get_panels  (AwnApp *app, GPtrArray **panels);
 
 G_END_DECLS
 

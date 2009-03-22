@@ -501,7 +501,7 @@ awn_applet_init (AwnApplet *applet)
   
   priv->proxy = dbus_g_proxy_new_for_name (priv->connection,
                                            "org.awnproject.Awn",
-                                           "/org/awnproject/Awn/Panel",
+                                           "/org/awnproject/Awn/Panel1",
                                            "org.awnproject.Awn.Panel");
   if (!priv->proxy)
   {
