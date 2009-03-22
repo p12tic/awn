@@ -87,12 +87,6 @@ gboolean    awn_panel_set_applet_flags    (AwnPanel         *panel,
                                            gint              flags,
                                            GError          **error);
 
-gboolean    awn_panel_applet_size_request (AwnPanel         *panel, 
-                                           const gchar      *uid,
-                                           gint              width, 
-                                           gint              height,
-                                           GError          **error);
-
 G_END_DECLS
 
 

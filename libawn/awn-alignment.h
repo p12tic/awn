@@ -75,6 +75,11 @@ GType         awn_alignment_get_type             (void);
 
 GtkWidget *   awn_alignment_new_for_applet       (AwnApplet *applet);
 
+gint          awn_alignment_get_offset_modifier  (AwnAlignment *alignment);
+
+void          awn_alignment_set_offset_modifier  (AwnAlignment *alignment, 
+                                                  gint modifier);
+
 G_END_DECLS
 
 #endif

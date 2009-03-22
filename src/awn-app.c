@@ -41,6 +41,7 @@
 #include "awn-app.h"
 #include "awn-defines.h"
 #include "awn-panel.h"
+#include "awn-app-glue.h"
 #include <libawn/awn-utils.h>
 
 
@@ -53,8 +54,8 @@ struct _AwnAppPrivate
 {
   DBusGConnection *connection;
   AwnConfigClient *client;
-  
-  GtkWidget *panel;
+
+  GHashTable *panels;
 };
 
 /* GObject functions */
@@ -78,16 +79,22 @@ awn_app_class_init (AwnAppClass *klass)
 
   obj_class->finalize = awn_app_finalize;
 
-  g_type_class_add_private (obj_class, sizeof (AwnAppPrivate)); 
+  g_type_class_add_private (obj_class, sizeof (AwnAppPrivate));
+  
+  dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass), 
+                                   &dbus_glib_awn_app_object_info);
 }
 
 static void
 awn_app_init (AwnApp *app)
 {
   AwnAppPrivate *priv;
+  GtkWidget *panel;
   GError *error = NULL;
     
   priv = app->priv = AWN_APP_GET_PRIVATE (app);
+
+  priv->panels = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
   priv->client = awn_config_client_new ();
 
@@ -100,13 +107,43 @@ awn_app_init (AwnApp *app)
     g_error_free (error);
     gtk_main_quit ();
   }
-   
-  priv->panel = awn_panel_new_from_config (priv->client);
-  dbus_g_connection_register_g_object (priv->connection, 
-                                       AWN_DBUS_PANEL_PATH,
-                                       G_OBJECT (priv->panel));
 
-  gtk_widget_show (priv->panel);
+  panel = awn_panel_new_from_config (priv->client);
+
+  gchar *object_path = g_strdup_printf (AWN_DBUS_PANEL_PATH "%u",
+                                        g_hash_table_size (priv->panels) + 1);
+
+  dbus_g_connection_register_g_object (priv->connection, 
+                                       object_path, G_OBJECT (panel));
+
+  g_hash_table_insert (priv->panels, object_path, panel);
+
+  gtk_widget_show (panel);
+}
+
+gboolean
+awn_app_get_panels (AwnApp *app, GPtrArray **panels)
+{
+  AwnAppPrivate *priv;
+  GList *list, *l;
+  guint size;
+
+  priv = app->priv;
+
+  *panels = g_ptr_array_sized_new (g_hash_table_size (priv->panels));
+
+  list = l = g_hash_table_get_keys (priv->panels); // list should be freed
+
+  while (list)
+  {
+    g_ptr_array_add (*panels, g_strdup (list->data));
+
+    list = list->next;
+  }
+
+  g_list_free (l);
+
+  return TRUE;
 }
 
 AwnApp*
@@ -120,3 +157,4 @@ awn_app_get_default (void)
 
   return app;
 }
+

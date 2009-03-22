@@ -1,3 +1,21 @@
+2009-03-23  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-alignment.c:
+	* libawn/awn-alignment.h:
+	AwnAlignment: Added offset-modifier property.
+	* libawn/awn-applet.c:
+	* src/awn-app-dbus.xml:
+	* src/awn-app.c:
+	* src/awn-app.h:
+	AwnApp: Get it on DBus. Panels have now numbered object paths.
+	* libawn/awn-icon-box.c:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Spring cleaning - removed methods that are no longer used.
+
 2009-03-22  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-dialog.c:

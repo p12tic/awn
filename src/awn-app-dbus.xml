@@ -2,7 +2,11 @@
 <node name="/org/awnproject/Awn/App">
 <interface name="org.awnproject.Awn.App">
   <annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_app"/>
-  
+
+  <method name="GetPanels">
+    <arg name="panels" type="ao" direction="out" />
+  </method>
+
 </interface>
 </node>
 
