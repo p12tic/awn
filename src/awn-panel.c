@@ -755,9 +755,11 @@ alpha_blend_end (AwnPanel *panel, gpointer data)
     g_source_remove (priv->hiding_timer_id);
     priv->hiding_timer_id = 0;
     gdk_window_set_opacity (GTK_WIDGET(panel)->window, 1.0);
-  } else {
-    gtk_widget_show (GTK_WIDGET (panel));
+  }
+  else
+  {
     position_window (panel);
+    gtk_widget_show (GTK_WIDGET (panel));
   }
 }
 
@@ -1988,8 +1990,8 @@ awn_panel_delete_applet (AwnPanel  *panel,
 {
   AwnPanelPrivate *priv;
   	
-	g_return_val_if_fail (AWN_IS_PANEL (panel), TRUE);
-	priv = panel->priv;
+  g_return_val_if_fail (AWN_IS_PANEL (panel), TRUE);
+  priv = panel->priv;
 
   return TRUE;
 }
@@ -2019,27 +2021,5 @@ awn_panel_set_applet_flags (AwnPanel         *panel,
   g_print ("\n");
   
   return TRUE;
-}
-
-gboolean 
-awn_panel_applet_size_request (AwnPanel    *panel,
-                               const gchar *uid,
-                               gint         width, 
-                               gint         height,
-                               GError     **error)
-{
-  AwnPanelPrivate *priv;
-
-  g_return_val_if_fail (AWN_IS_PANEL (panel), TRUE);
-  priv = panel->priv;
-
-  awn_applet_manager_handle_applet_size_request 
-                  (AWN_APPLET_MANAGER (priv->manager), 
-               (priv->composited ? priv->size *2 : priv->size) + priv->offset, 
-                   priv->orient,
-                   uid, width, height);
-  
-  return TRUE;
- 
 }
 

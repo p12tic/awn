@@ -64,6 +64,8 @@ awn_icon_box_child_size_allocate (GtkWidget *widget,
 
   g_return_if_fail (AWN_IS_ICON (widget));
 
+  if (priv->applet == NULL) return;
+
   gint x = alloc->x + alloc->width / 2;
   gint y = alloc->y + alloc->height / 2;
   gint offset = awn_applet_get_offset_at (priv->applet, x, y);
@@ -114,6 +116,8 @@ awn_icon_box_class_init (AwnIconBoxClass *klass)
   wid_class->size_request  = awn_icon_box_size_request;
   wid_class->size_allocate = awn_icon_box_size_allocate;
 
+  /* FIXME: applet should be property as well as offset and orient */
+
   g_type_class_add_private (obj_class, sizeof (AwnIconBoxPrivate));
 }
 
@@ -125,6 +129,7 @@ awn_icon_box_init (AwnIconBox *icon_box)
 
   priv->orient = AWN_ORIENTATION_BOTTOM;
   priv->offset = 0;
+  priv->applet = NULL;
   priv->klass = GTK_WIDGET_CLASS (g_type_class_ref (GTK_TYPE_HBOX));
 
   g_signal_connect_after (icon_box, "add", 
@@ -272,10 +277,13 @@ awn_icon_box_set_offset (AwnIconBox *icon_box,
 
     if (AWN_IS_ICON (icon))
     {
-      GtkAllocation *alloc = &(GTK_WIDGET (icon)->allocation);
-      gint x = alloc->x + alloc->width / 2;
-      gint y = alloc->y + alloc->height / 2;
-      offset = awn_applet_get_offset_at (priv->applet, x, y);
+      if (priv->applet)
+      {
+        GtkAllocation *alloc = &(GTK_WIDGET (icon)->allocation);
+        gint x = alloc->x + alloc->width / 2;
+        gint y = alloc->y + alloc->height / 2;
+        offset = awn_applet_get_offset_at (priv->applet, x, y);
+      }
       awn_icon_set_offset (icon, offset);
     }
   }

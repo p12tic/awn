@@ -13,12 +13,6 @@
       <arg name="flags" type="i" direction="in" />
     </method>
 
-    <method name="AppletSizeRequest">
-      <arg name="uid" type="s" direction="in" />
-      <arg name="width" type="i" direction="in" />
-      <arg name="height" type="i" direction="in" />
-    </method>
-
     <!-- Signals -->
     <signal name="SizeChanged">
       <arg name="size" type="i" />
@@ -43,6 +37,11 @@
     <signal name="DestroyApplet">
       <arg name="uid" type="s" />
     </signal>
+
+    <!-- Properties -->
+    <property name="Size" type="i" access="read" />
+    <property name="Orient" type="i" access="read" />
+    <property name="Offset" type="i" access="read" />
 
   </interface>
 </node>
