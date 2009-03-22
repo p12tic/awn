@@ -324,7 +324,8 @@ awn_icon_update_tooltip_pos(AwnIcon *icon)
    */
   gint tooltip_offset = priv->offset;
 
-  switch (priv->orient) {
+  switch (priv->orient)
+  {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
       tooltip_offset += priv->icon_height;

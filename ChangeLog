@@ -1,3 +1,11 @@
+2009-03-22  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	* libawn/awn-icon.c:
+	* src/awn-applet-manager.c:
+	* src/awn-throbber.c:
+	Miscellaneous fixes.
+
 2009-03-21  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/Makefile.am:

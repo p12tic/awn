@@ -876,7 +876,7 @@ awn_dialog_init (AwnDialog *dialog)
   g_signal_connect (priv->title, "expose-event",
                     G_CALLBACK (on_title_expose), dialog);
 
-  gtk_widget_set_state (priv->title, GTK_STATE_SELECTED);
+  gtk_widget_set_state (priv->title, GTK_STATE_PRELIGHT);
   gtk_misc_set_alignment (GTK_MISC (priv->title), 0.5, 0.5);
   gtk_misc_set_padding (GTK_MISC (priv->title), 4, 4);
 
@@ -1144,9 +1144,9 @@ awn_dialog_new()
 {
   AwnDialog *dialog;
 
-  dialog = g_object_new(AWN_TYPE_DIALOG, NULL);
+  dialog = g_object_new (AWN_TYPE_DIALOG, NULL);
 
-  return GTK_WIDGET(dialog);
+  return GTK_WIDGET (dialog);
 }
 
 /**
@@ -1158,16 +1158,16 @@ awn_dialog_new()
  * the dialog is no longer being used.
  */
 GtkWidget*
-awn_dialog_new_for_widget(GtkWidget *widget)
+awn_dialog_new_for_widget (GtkWidget *widget)
 {
   AwnDialog *dialog;
 
-  g_return_val_if_fail(GTK_IS_WIDGET(widget), NULL);
+  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
 
-  dialog = g_object_new(AWN_TYPE_DIALOG,
-                        "anchor", widget,
-                        NULL);
+  dialog = g_object_new (AWN_TYPE_DIALOG,
+                         "anchor", widget,
+                         NULL);
 
-  return GTK_WIDGET(dialog);
+  return GTK_WIDGET (dialog);
 }
 

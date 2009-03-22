@@ -334,7 +334,7 @@ awn_throbber_update_tooltip_pos (AwnThrobber *throbber)
   priv = throbber->priv;
 
   awn_tooltip_set_position_hint (AWN_TOOLTIP (priv->tooltip),
-                                 priv->orient, priv->size);
+                                 priv->orient, priv->size + priv->offset);
 }
 
 void 

@@ -485,7 +485,7 @@ zero_applets (gpointer key, GtkWidget *applet, AwnAppletManager *manager)
   }
 }
 
-static void
+static gboolean
 delete_applets (gpointer key, GtkWidget *applet, AwnAppletManager *manager)
 {
   AwnAppletManagerPrivate *priv = manager->priv;
@@ -493,17 +493,21 @@ delete_applets (gpointer key, GtkWidget *applet, AwnAppletManager *manager)
   gint                     touched;
   
   if (!G_IS_OBJECT (applet))
-    return;
+    return TRUE;
   
   touched = GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (applet),
                                                  priv->touch_quark));
 
-  if (!touched) 
+  if (!touched)
   {
     g_object_get (applet, "uid", &uid, NULL);
     /* FIXME: Let the applet know it's about to be deleted ? */
     gtk_widget_destroy (applet);
+
+    return TRUE; /* remove from hash table */
   }
+
+  return FALSE;
 }
 
 void    
@@ -572,7 +576,7 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
   }
 
   /* Delete applets that have been removed from the list */
-  g_hash_table_foreach (priv->applets, (GHFunc)delete_applets, manager);
+  g_hash_table_foreach_remove (priv->applets, (GHRFunc)delete_applets, manager);
 }
 
 void 
