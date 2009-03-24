@@ -61,6 +61,7 @@ struct _TaskWindowClass
   /*< vtable >*/
   gint          (*get_pid)         (TaskWindow     *window);
   const gchar * (*get_name)        (TaskWindow     *window);
+  WnckApplication * (*get_application) (TaskWindow *window);
   GdkPixbuf   * (*get_icon)        (TaskWindow     *window);
   gboolean      (*is_on_workspace) (TaskWindow     *window,
                                     WnckWorkspace  *space);
@@ -86,12 +87,6 @@ GType           task_window_get_type          (void) G_GNUC_CONST;
 
 TaskWindow    * task_window_new               (WnckWindow    *window);
 
-void            task_window_remove_utility    (TaskWindow    *window,
-                                                WnckWindow   *wnckwin);
-
-void            task_window_append_utility    (TaskWindow    *window,
-                                               WnckWindow    *wnckwin);
-
 WnckScreen    * task_window_get_screen        (TaskWindow    *window);
 
 gulong          task_window_get_xid           (TaskWindow    *window);
@@ -101,6 +96,7 @@ gint            task_window_get_pid           (TaskWindow    *window);
 gboolean        task_window_get_wm_class      (TaskWindow    *window,
                                                gchar        **res_name,
                                                gchar        **class_name);
+WnckApplication*task_window_get_application   (TaskWindow    *window);
 
 const gchar   * task_window_get_name          (TaskWindow    *window);
 void            task_window_set_name          (TaskWindow    *window,

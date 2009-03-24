@@ -40,6 +40,7 @@ struct _TaskIconPrivate
 {
   GSList *windows;
   GdkPixbuf *icon;
+  GtkWidget *dialog;
 
   gboolean draggable;
   gboolean gets_dragged;
@@ -103,6 +104,9 @@ static gboolean  task_icon_button_release_event (GtkWidget      *widget,
                                                  GdkEventButton *event);
 static gboolean  task_icon_button_press_event   (GtkWidget      *widget,
                                                  GdkEventButton *event);
+static gboolean  task_icon_dialog_unfocus       (GtkWidget      *widget,
+                                                GdkEventFocus   *event,
+                                                gpointer        null);
 static void      task_icon_drag_begin           (GtkWidget      *widget,
                                                  GdkDragContext *context);
 static void      task_icon_drag_end             (GtkWidget      *widget,
@@ -320,6 +324,11 @@ task_icon_init (TaskIcon *icon)
   	
   priv = icon->priv = TASK_ICON_GET_PRIVATE (icon);
 
+  priv->dialog = awn_dialog_new_for_widget(GTK_WIDGET(icon));
+  gtk_widget_show_all (priv->dialog); /*FIXME*/
+  gtk_widget_hide (priv->dialog);
+  g_signal_connect (G_OBJECT (priv->dialog),"focus-out-event",
+                    G_CALLBACK (task_icon_dialog_unfocus),NULL);  
   priv->icon = NULL;
   priv->windows = NULL;
   priv->drag_tag = 0;
@@ -397,10 +406,14 @@ window_closed (TaskIcon *icon, TaskWindow *old_window)
 {
   TaskIconPrivate *priv;
 
-  g_return_if_fail (TASK_ICON (icon));
+  g_return_if_fail (TASK_IS_ICON (icon));
+  g_return_if_fail (TASK_IS_WINDOW (old_window));
   priv = icon->priv;
 
-  priv->windows = g_slist_remove (priv->windows, old_window);
+  if (! TASK_IS_LAUNCHER(old_window))
+  {
+    priv->windows = g_slist_remove (priv->windows, old_window);
+  }
 
   if (g_slist_length (priv->windows) == 0)
   {
@@ -514,12 +527,64 @@ on_window_running_changed (TaskWindow *window,
 }
 
 void
+task_icon_remove_window (TaskIcon      *icon,
+                         WnckWindow    *window)
+{
+  GSList *  w;
+  TaskIconPrivate *priv;
+  gboolean first_window = FALSE;
+  static recursing = FALSE;
+
+  g_return_if_fail (TASK_IS_ICON (icon));
+  g_return_if_fail (WNCK_IS_WINDOW (window));
+  priv = icon->priv;
+  for (w = priv->windows;w;w=w->next)
+  {
+    TaskWindow * task_win = w->data;
+    if (! TASK_IS_WINDOW(task_win) )
+    {
+      continue;
+    }
+    if (task_win->priv->window == window)
+    {
+      g_assert (TASK_IS_WINDOW(task_win));
+      if (! TASK_IS_LAUNCHER(task_win) )
+      {
+        priv->windows = g_slist_remove (priv->windows, task_win);
+      }
+    }
+  }
+}
+
+/*
+ FIXME   2nd arg isn't the WnckWindow
+ */
+static void
+_task_icon_launcher_change (TaskLauncher * launcher,
+                            WnckWindow   * wnck_win,
+                            TaskIcon    *  icon)
+{
+  GtkWidget * grouped_icon = NULL;  
+  if (wnck_win)
+  {
+    TaskWindow * taskwin = task_window_new (TASK_WINDOW(launcher)->priv->window);    
+    grouped_icon = task_icon_new_for_window (taskwin);
+    gtk_widget_show (grouped_icon);    
+    gtk_container_add (GTK_CONTAINER(icon->priv->dialog),grouped_icon);
+  }
+  
+}
+
+void
 task_icon_append_window (TaskIcon      *icon,
                          TaskWindow    *window)
 {
   TaskIconPrivate *priv;
   gboolean first_window = FALSE;
-
+  static recursing = FALSE;
+  
+  g_assert (window);
+  g_assert (icon);
   g_return_if_fail (TASK_IS_ICON (icon));
   g_return_if_fail (TASK_IS_WINDOW (window));
   priv = icon->priv;
@@ -564,6 +629,35 @@ task_icon_append_window (TaskIcon      *icon,
     g_signal_connect (window, "running-changed",
                       G_CALLBACK (on_window_running_changed), icon);
   }
+
+  if (!recursing)
+  {
+    recursing = TRUE;
+    GtkWidget * grouped_icon = NULL;
+    if (!TASK_IS_LAUNCHER(window))
+    {
+      g_assert (window->priv->window);
+      grouped_icon = task_icon_new_for_window (window);
+    }
+    else if (TASK_IS_LAUNCHER(window) )
+    {
+      TaskWindowPrivate *priv = window->priv;
+      g_signal_connect (G_OBJECT(window),"notify::taskwindow",
+                        G_CALLBACK(_task_icon_launcher_change),icon);
+      if (priv->window)
+      {
+        TaskWindow * taskwin = task_window_new (priv->window);
+        grouped_icon = task_icon_new_for_window (taskwin);
+      }
+    }
+    if (grouped_icon)
+    {
+      gtk_container_add (GTK_CONTAINER(priv->dialog),grouped_icon);
+    }
+//    g_object_weak_ref (G_OBJECT (window), (GWeakNotify)window_closed, grouped_icon);    
+    gtk_widget_show (grouped_icon);
+  }
+  recursing = FALSE;
 }
 
 gboolean 
@@ -599,6 +693,24 @@ task_icon_get_launcher (TaskIcon      *icon)
   }
   return NULL;
 }
+
+TaskWindow* 
+task_icon_get_window (TaskIcon      *icon)
+{
+  TaskIconPrivate *priv;
+
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
+  priv = icon->priv;
+
+  if (priv->windows)
+  {
+    /* For now do it this way ?! */
+//    if (TASK_IS_WINDOW (priv->windows->data))
+      return TASK_WINDOW(priv->windows->data);
+  }
+  return NULL;
+}
+
 
 void
 task_icon_refresh_icon (TaskIcon      *icon)
@@ -717,7 +829,6 @@ task_icon_button_release_event (GtkWidget      *widget,
                                 GdkEventButton *event)
 {
   TaskIconPrivate *priv;
-  /*GSList *w;*/
   gint len;
 
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
@@ -731,11 +842,21 @@ task_icon_button_release_event (GtkWidget      *widget,
     {
       return FALSE;
     }
-
-    if (len >= 1)
+    if (len == 1)
     {
       task_window_activate (priv->windows->data, event->time);
       return TRUE;
+    }
+    else if (len > 1)
+    {
+      if (GTK_WIDGET_VISIBLE(priv->dialog) )
+      {
+        gtk_widget_hide (priv->dialog);
+      }
+      else
+      {
+        gtk_widget_show_all (priv->dialog);  
+      }
     }
   }
   else if (event->button == 2)
@@ -776,6 +897,17 @@ task_icon_button_press_event (GtkWidget      *widget,
   }
   return FALSE;
 }
+
+static gboolean  
+task_icon_dialog_unfocus (GtkWidget      *widget,
+                         GdkEventFocus  *event,
+                         gpointer       null)
+{
+  g_return_val_if_fail (GTK_IS_WIDGET(widget),FALSE);
+  gtk_widget_hide (widget);
+  return FALSE;
+}
+
 
 /*
  * Drag and Drop code

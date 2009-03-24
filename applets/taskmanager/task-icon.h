@@ -80,8 +80,11 @@ gboolean        task_icon_is_in_viewport  (TaskIcon      *icon,
 
 void            task_icon_append_window   (TaskIcon      *icon,
                                            TaskWindow    *window);
+void            task_icon_remove_window   (TaskIcon      *icon,
+                                          WnckWindow    *window);
 gboolean        task_icon_is_launcher     (TaskIcon      *icon);
 TaskLauncher*   task_icon_get_launcher    (TaskIcon      *icon);
+TaskWindow*     task_icon_get_window      (TaskIcon      *icon);
 
 void            task_icon_refresh_icon    (TaskIcon      *icon);
 

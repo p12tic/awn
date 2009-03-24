@@ -24,7 +24,6 @@
 struct _TaskWindowPrivate
 {
   WnckWindow *window;
-  GSList     *utilities;
 
   /* Properties */
   gchar   *message;

@@ -1,3 +1,17 @@
+2009-03-24  Rodney Cryderman <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-window-private.h:
+	* applets/taskmanager/task-window.c:
+	* applets/taskmanager/task-window.h:
+	* applets/taskmanager/taskmanager.schema-ini:
+
+	Initial commit of window grouping code.  Still in a rough state.  
+	set /applets/taskmanager/grouping_mode to 4 to fully enable.
+
 2009-03-23  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-alignment.c:

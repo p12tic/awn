@@ -352,8 +352,6 @@ on_window_closed (TaskLauncher *launcher, WnckWindow *old_window)
 
   /* NULLify the window pointer */
   priv->window = NULL;
-  g_slist_free (priv->utilities);
-  priv->utilities = NULL;
 
   /* Reset name */
   task_window_set_name (TASK_WINDOW (launcher), launcher->priv->name);  

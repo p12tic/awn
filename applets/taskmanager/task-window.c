@@ -55,6 +55,7 @@ enum
 static guint32 _window_signals[LAST_SIGNAL] = { 0 };
 
 /* Forwards */
+static WnckApplication * _get_application (TaskWindow *window);
 static gint          _get_pid         (TaskWindow     *window);
 static const gchar * _get_name        (TaskWindow     *window);
 static GdkPixbuf   * _get_icon        (TaskWindow     *window);
@@ -119,6 +120,7 @@ task_window_class_init (TaskWindowClass *klass)
   obj_class->get_property = task_window_get_property;
 
   /* We implement the necessary funtions for a normal window */
+  klass->get_application = _get_application;
   klass->get_pid         = _get_pid;
   klass->get_name        = _get_name;
   klass->get_icon        = _get_icon;
@@ -254,30 +256,6 @@ task_window_new (WnckWindow *window)
   return win;
 }
 
-void
-task_window_remove_utility (TaskWindow    *window,
-                            WnckWindow    *wnckwin)
-{
-  TaskWindowPrivate *priv;
-
-  g_return_if_fail (TASK_IS_WINDOW (window));
-  priv = window->priv;
-
-  priv->utilities = g_slist_remove (priv->utilities, wnckwin);
-}
-
-
-void
-task_window_append_utility (TaskWindow    *window,
-                            WnckWindow    *wnckwin)
-{
-  TaskWindowPrivate *priv;
-
-  g_return_if_fail (TASK_IS_WINDOW (window));
-  priv = window->priv;
-
-  priv->utilities = g_slist_append (priv->utilities, wnckwin);
-}
 
 /*
  * Handling of the main WnckWindow
@@ -426,6 +404,20 @@ task_window_get_pid (TaskWindow    *window)
 	
 	return klass->get_pid (window);
 }
+
+WnckApplication *
+task_window_get_application (TaskWindow    *window)
+{
+  TaskWindowClass *klass;
+
+        g_return_val_if_fail (TASK_IS_WINDOW (window), NULL);
+  
+  klass = TASK_WINDOW_GET_CLASS (window);
+  g_return_val_if_fail (klass->get_application, NULL);
+        
+        return klass->get_application (window);
+}
+
 
 gboolean   
 task_window_get_wm_class (TaskWindow    *window,
@@ -636,25 +628,6 @@ task_window_activate (TaskWindow    *window,
 
   if (WNCK_IS_WINDOW (priv->window))
   {
-    gboolean is_minimised;
-
-    is_minimised = wnck_window_get_state (priv->window) & WNCK_WINDOW_STATE_MINIMIZED ;
-    /* 
-     do this just in case dialog/utility windows have gotten minimized somehow
-     We do _NOT_ minimize these windows.
-     */
-    if (is_minimised)
-    {
-      for (w = priv->utilities; w; w = w->next)
-      {
-        WnckWindow *win = w->data;
-
-        if (WNCK_IS_WINDOW (win))
-        {
-          wnck_window_unminimize (win, timestamp);
-        }
-      }
-    }
     really_activate (priv->window, timestamp);
   }
   else
@@ -676,14 +649,6 @@ task_window_minimize (TaskWindow    *window)
   if (WNCK_IS_WINDOW (window->priv->window))
     wnck_window_minimize (window->priv->window);
 
-  /* Minimize utility windows */
-  for (w = priv->utilities; w; w = w->next)
-  {
-    WnckWindow *win = w->data;
-
-    if (WNCK_IS_WINDOW (win))
-      wnck_window_minimize (win);
-  }
 }
 
 void     
@@ -699,14 +664,6 @@ task_window_close (TaskWindow    *window,
   if (WNCK_IS_WINDOW (priv->window))
     wnck_window_close (priv->window, timestamp);
 
-  /* Minimize utility windows */
-  for (w = priv->utilities; w; w = w->next)
-  {
-    WnckWindow *win = w->data;
-
-    if (WNCK_IS_WINDOW (win))
-      wnck_window_close (win, timestamp);
-  }
 }
 
 void   
@@ -768,14 +725,6 @@ task_window_set_icon_geometry (TaskWindow    *window,
   if (WNCK_IS_WINDOW (priv->window))
     wnck_window_set_icon_geometry (priv->window, x, y, width, height);
 
-  /* Minimize utility windows */
-  for (w = priv->utilities; w; w = w->next)
-  {
-    //WnckWindow *win = w->data;
-
-    //if (WNCK_IS_WINDOW (win))
-      //wnck_window_set_icon_geometry (win, x, y, width, height);
-  }
 }
 
 
@@ -790,6 +739,19 @@ task_window_get_is_running (TaskWindow *window)
 /*
  * Implemented functions for a standard window without a launcher
  */
+
+static WnckApplication * 
+_get_application (TaskWindow    *window)
+{
+  WnckApplication * value = NULL;
+  if (WNCK_IS_WINDOW (window->priv->window))
+  {
+    value = wnck_window_get_application (window->priv->window);
+  }
+  return value;  
+}
+
+
 static gint 
 _get_pid (TaskWindow    *window)
 {

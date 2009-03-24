@@ -4,7 +4,7 @@
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as 
  * published by the Free Software Foundation.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -65,6 +65,7 @@ struct _TaskManagerPrivate
   gboolean  show_all_windows;
   gboolean  only_show_launchers;
   gboolean  drag_and_drop;
+  gint      grouping_mode;
 };
 
 enum
@@ -74,7 +75,18 @@ enum
   PROP_SHOW_ALL_WORKSPACES,
   PROP_ONLY_SHOW_LAUNCHERS,
   PROP_LAUNCHER_PATHS,
-  PROP_DRAG_AND_DROP
+  PROP_DRAG_AND_DROP,
+  PROP_GROUPING_MODE
+};
+
+enum
+{
+  GROUPING_NONE,
+  GROUPING_UTIL,
+  GROUPING_PID,
+  GROUPING_WNCK_APP,
+  GROUPING_WMCLASS,
+  GROUPING_END
 };
 
 /* Forwards */
@@ -96,6 +108,9 @@ static void task_manager_refresh_launcher_paths  (TaskManager *manager,
                                                   GSList      *list);
 static void task_manager_set_drag_and_drop (TaskManager *manager, 
                                             gboolean     drag_and_drop);
+
+static void task_manager_set_grouping_mode (TaskManager *manager, 
+                                            gint     drag_and_drop);
 
 static void task_manager_orient_changed (AwnApplet *applet, 
                                          AwnOrientation orient);
@@ -146,6 +161,10 @@ task_manager_get_property (GObject    *object,
     case PROP_DRAG_AND_DROP:
       g_value_set_boolean (value, manager->priv->drag_and_drop);
       break;
+      
+    case PROP_GROUPING_MODE:
+      g_value_set_int (value, manager->priv->grouping_mode);
+      break;
 
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -180,7 +199,13 @@ task_manager_set_property (GObject      *object,
       task_manager_set_drag_and_drop (manager, 
                                       g_value_get_boolean (value));
       break;
+    
+    case PROP_GROUPING_MODE:
+      task_manager_set_grouping_mode (manager, 
+                                      g_value_get_int (value));
+      break;
 
+      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -222,7 +247,9 @@ task_manager_constructed (GObject *object)
   awn_config_bridge_bind (bridge, priv->client, 
                           AWN_CONFIG_CLIENT_DEFAULT_GROUP, "drag_and_drop",
                           object, "drag_and_drop");
-
+  awn_config_bridge_bind (bridge, priv->client, 
+                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "grouping_mode",
+                          object, "grouping_mode");
 }
 
 static void
@@ -267,6 +294,15 @@ task_manager_class_init (TaskManagerClass *klass)
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_DRAG_AND_DROP, pspec);
 
+  pspec = g_param_spec_int ("grouping_mode",
+                                "grouping_mode",
+                                "Window Grouping Mode",
+                                0,
+                                GROUPING_END-1,
+                                0,
+                                G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_GROUPING_MODE, pspec);
+  
   g_type_class_add_private (obj_class, sizeof (TaskManagerPrivate));
 }
 
@@ -468,69 +504,231 @@ on_window_state_changed (WnckWindow      *window,
 static void 
 on_wnck_window_closed (WnckScreen *screen, WnckWindow *window, TaskManager *manager)
 {
-  GSList *w;  
-  g_debug ("Window Closed: %p\n",window);
+  GSList *i;  
   TaskManagerPrivate *priv = manager->priv;  
-  for (w = priv->windows; w; w = w->next)
+  for (i = priv->icons; i; i = i->next)
   {
-    TaskWindow *taskwin = w->data;
-    if (!TASK_IS_WINDOW (taskwin))
+    TaskIcon *taskicon = i->data;
+    if (!TASK_IS_ICON (taskicon))
       continue;
-    task_window_remove_utility (taskwin, window);        
+    task_icon_remove_window (taskicon, window);            
   }
-  
 }
 
 static gboolean
-try_to_place_window (TaskManager *manager, WnckWindow *window)
+check_wmclass(TaskWindow *taskwin,gchar * win_res_name, gchar *win_class_name)
 {
-  TaskManagerPrivate *priv = manager->priv;
-  GSList *w;
-	gint taskwin_pid = -1;
+  gboolean result;
+  gchar   *temp;
+  gchar   *res_name = NULL;
+  gchar   *class_name = NULL;
 
-  /* FIXME: The window == UTILITY || DIALOG, so we should see if we can do
-   *        some smart placement to a already-existing window/launcher to 
-   *        avoid making a new icon for it
-   */
-  for (w = priv->windows; w; w = w->next)
+  _wnck_get_wmclass (task_window_get_xid (taskwin), &res_name, &class_name);
+  if (res_name)
   {
-    TaskWindow *taskwin = w->data;
+    temp = res_name;
+    res_name = g_utf8_strdown (temp, -1);
+    g_free (temp);
+  }
+  
+  if (class_name)
+  {
+    temp = class_name;
+    class_name = g_utf8_strdown (temp, -1);
+    g_free (temp);
+  }
+  result =  ( 
+              (g_strcmp0 (res_name,win_res_name)==0) 
+              ||
+              (g_strcmp0 (class_name,win_class_name)==0)
+             );
+  g_free (res_name);
+  g_free (class_name);
 
-    if (!TASK_IS_WINDOW (taskwin))
+  return result;
+}
+
+static gboolean
+try_to_place_window_by_wmclass (TaskManager *manager, WnckWindow *window)
+{
+  GSList *i;
+  WnckApplication *taskwin_app;
+  TaskManagerPrivate *priv = manager->priv;
+  gboolean result = FALSE;
+  gchar   *temp;
+  gchar   *res_name = NULL;
+  gchar   *class_name = NULL;
+
+  /* Grab the appropriete info */
+  _wnck_get_wmclass (wnck_window_get_xid (window), &res_name, &class_name);
+
+  if (res_name)
+  { 
+    temp = res_name;
+    res_name = g_utf8_strdown (temp, -1);
+    g_free (temp);
+  }
+  
+  if (class_name)
+  {
+    temp = class_name;
+    class_name = g_utf8_strdown (temp, -1);
+    g_free (temp);
+  }
+  
+  for (i = priv->icons; i; i = i->next)
+  {
+    TaskIcon *taskicon = i->data;
+    TaskWindow *taskwin = NULL;
+    
+    if (!TASK_IS_ICON (taskicon))
       continue;
+    
+    taskwin = task_icon_get_window(taskicon);
 
-		taskwin_pid = task_window_get_pid (taskwin);
-    if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
+    if ( check_wmclass (taskwin,res_name,class_name) )
     {
-      task_window_append_utility (taskwin, window);    
+      task_icon_append_window (taskicon, task_window_new (window));
       g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
+      g_free (res_name);
+      g_free (class_name);
       return TRUE;
     }
   }
 
-  for (w = priv->launchers; w; w = w->next)
+  g_free (res_name);
+  g_free (class_name);
+  return FALSE;  
+}
+
+static gboolean
+try_to_place_window_by_wnck_app (TaskManager *manager, WnckWindow *window)
+{
+  TaskManagerPrivate *priv = manager->priv;
+  GSList *i;
+  WnckApplication *taskwin_app;
+
+  for (i = priv->icons; i; i = i->next)
   {
-    TaskWindow *taskwin = w->data;
-
-    if (!TASK_IS_WINDOW (taskwin))
+    TaskIcon *taskicon = i->data;
+    TaskWindow *taskwin = NULL;
+    
+    if (!TASK_IS_ICON (taskicon))
       continue;
+    
+    taskwin = task_icon_get_window(taskicon);
+		taskwin_app = task_window_get_application (taskwin);
+    if ( taskwin_app && (taskwin_app == wnck_window_get_application (window)))
+    {
+      task_icon_append_window (taskicon, task_window_new (window));
+      g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
+      return TRUE;
+    }
+  }
+  
+  return FALSE;  
+}
 
+static gboolean
+try_to_place_window_by_pid (TaskManager *manager, WnckWindow *window)
+{
+  TaskManagerPrivate *priv = manager->priv;
+  GSList *i;
+	gint taskwin_pid = -1;
+  gint matches = 0;
+
+  for (i = priv->icons; i; i = i->next)
+  {
+    TaskIcon *taskicon = i->data;
+    TaskWindow *taskwin = NULL;
+    
+    if (!TASK_IS_ICON (taskicon))
+      continue;
+    
+    taskwin = task_icon_get_window(taskicon);
 		taskwin_pid = task_window_get_pid (taskwin);
     if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
     {
-      task_window_append_utility (taskwin, window);   
-      g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
-      return TRUE;
+      if (matches)
+      {
+        task_icon_append_window (taskicon, task_window_new (window));
+        g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
+        return TRUE;
+      }
+      matches++;
     }
   }
   return FALSE;
 }
 
 static gboolean
+try_to_place_util_window (TaskManager *manager, WnckWindow *window)
+{
+  WnckWindowType type = wnck_window_get_window_type (window);
+  TaskManagerPrivate *priv = manager->priv;
+  GSList *w;
+  gint taskwin_pid = -1;
+  gint matches = 0;
+  
+  if ( (type !=  WNCK_WINDOW_UTILITY) && (type != WNCK_WINDOW_DIALOG) )
+  {
+    return FALSE;
+  }
+  
+  for (w = priv->icons; w; w = w->next)
+  {
+    TaskIcon *taskicon = w->data;
+    TaskWindow *taskwin = NULL;
+    
+    if (!TASK_IS_ICON (taskicon))
+      continue;
+    
+    taskwin = task_icon_get_window(taskicon);
+    taskwin_pid = task_window_get_pid (taskwin);
+    if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
+    {
+      if (matches)
+      {
+        task_icon_append_window (taskicon, task_window_new (window));
+        g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
+        return TRUE;
+      }
+      matches++;
+    }
+  } 
+  return FALSE;
+} 
+
+static gboolean
+try_to_place_window (TaskManager *manager, WnckWindow *window)
+{
+  TaskManagerPrivate *priv = manager->priv;
+  gboolean result = FALSE;
+  switch(priv->grouping_mode)
+  {
+    case GROUPING_WMCLASS:  /*Fall through*/
+      result =result?result:try_to_place_window_by_wmclass(manager,window);
+    case GROUPING_WNCK_APP:/*Fall through*/
+      result =result?result:try_to_place_window_by_wnck_app(manager,window);      
+    case GROUPING_PID: /*Don't Fall through*/
+      result =result?result:try_to_place_window_by_pid(manager,window);
+      break;
+    case GROUPING_UTIL:/*Don't Fall through*/
+      result =result?result:try_to_place_util_window(manager,window);
+      break;
+    case GROUPING_NONE:
+      break;
+    default:
+      g_assert_not_reached();
+  }
+  return result;
+}
+
+static gboolean
 try_to_match_window_to_launcher (TaskManager *manager, WnckWindow *window)
 {
   TaskManagerPrivate *priv = manager->priv;
-  GSList  *l;
+  GSList  *l,*i;
   gchar   *temp;
   gchar   *res_name = NULL;
   gchar   *class_name = NULL;
@@ -576,7 +774,6 @@ try_to_match_window_to_launcher (TaskManager *manager, WnckWindow *window)
     g_object_set_qdata (G_OBJECT (window), win_quark, launcher);
     res = TRUE;
   }
-
   g_free (res_name);
   g_free (class_name);
 
@@ -656,12 +853,9 @@ on_window_opened (WnckScreen    *screen,
   }
 
   /*
-   * If it's a utility window, see if we can find it a home with another, 
-   * existing TaskWindow, so we don't have a ton of icons for no reason
    */
     
-  if ((type == WNCK_WINDOW_UTILITY || type == WNCK_WINDOW_DIALOG)
-       && try_to_place_window (manager,window))
+  if ( priv->grouping_mode && try_to_place_window (manager,window))
   {
     g_debug ("WINDOW PLACED: %s", wnck_window_get_name (window));
     return;
@@ -828,6 +1022,16 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
   g_slist_free (list);
 
   /* Finally, make sure all is well on the taskbar */
+  ensure_layout (manager);
+}
+
+static void
+task_manager_set_grouping_mode (TaskManager *manager,
+                                   gint grouping_mode)
+{
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  manager->priv->grouping_mode = grouping_mode;
+
   ensure_layout (manager);
 }
 
