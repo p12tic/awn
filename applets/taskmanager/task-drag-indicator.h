@@ -52,6 +52,12 @@ struct _TaskDragIndicator
 struct _TaskDragIndicatorClass
 {
   AwnIconClass   parent_class;
+
+  /*< signals >*/
+  void (*dest_drag_motion) (TaskDragIndicator *icon);
+  void (*dest_drag_leave) (TaskDragIndicator *icon);
+  void (*dest_drag_fail) (TaskDragIndicator *icon);
+  void (*dest_drag_drop) (TaskDragIndicator *icon);
 };
 
 GType       task_drag_indicator_get_type        (void) G_GNUC_CONST;

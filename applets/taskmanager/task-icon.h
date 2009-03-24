@@ -63,10 +63,11 @@ struct _TaskIconClass
   
   /*< signals >*/
   void (*ensure_layout) (TaskIcon *icon);
-  void (*drag_started) (TaskIcon *icon);
-  void (*drag_ended) (TaskIcon *icon);
-  void (*drag_move) (TaskIcon *icon);
-  void (*drag_fails) (TaskIcon *icon);
+  void (*dest_drag_motion) (TaskIcon *icon);
+  void (*dest_drag_leave) (TaskIcon *icon);
+  void (*dest_drag_fail) (TaskIcon *icon);
+  void (*dest_drag_drop) (TaskIcon *icon);
+
 };
 
 GType           task_icon_get_type        (void) G_GNUC_CONST;
