@@ -21,4 +21,4 @@ description = Enable reordering of windows by drag and drop
 [DEFAULT/grouping_mode]
 type = int
 default = 0
-description = Window Grouping Mode. 0-5... the higher the value the more aggressive the matching.
+description = Window Grouping Mode. 0-4... the higher the value the more aggressive the matching.

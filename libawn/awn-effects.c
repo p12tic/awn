@@ -58,7 +58,12 @@ G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT)
  */
 #define AWN_FRAME_RATE(fx) (40)
 #define AWN_ANIMATIONS_PER_BUNDLE 5
-#define AWN_SPOTLIGHT_INTERNAL_NAME "__internal_spotlight__"
+
+#define AWN_INTERNAL_ICON "__awn_internal_"
+
+#define AWN_INTERNAL_SPOTLIGHT	AWN_INTERNAL_ICON "spotlight"
+#define AWN_INTERNAL_ARROW1	AWN_INTERNAL_ICON "arrow1"
+#define AWN_INTERNAL_ARROW2	AWN_INTERNAL_ICON "arrow2"
 
 typedef gboolean (*_AwnAnimation)(AwnEffectsAnimation*);
 
@@ -90,8 +95,9 @@ enum {
   PROP_PROGRESS,
   PROP_BORDER_CLIP,
   PROP_SPOTLIGHT_ICON,
-  PROP_CUSTOM_ACTIVE_ICON,
-  PROP_CUSTOM_ARROW_ICON
+  PROP_ARROW_ICON,
+  PROP_ARROW_COUNT,
+  PROP_CUSTOM_ACTIVE_ICON
 };
 
 static void
@@ -154,33 +160,45 @@ static GQuark
 awn_effects_set_custom_icon(AwnEffects *fx, const gchar *path)
 {
   if (path == NULL || path[0] == '\0') return 0;
-  else if (g_strcmp0(path, AWN_SPOTLIGHT_INTERNAL_NAME) == 0)
+  /* handle Awn's internal icons */
+  else if (g_str_has_prefix (path, AWN_INTERNAL_ICON))
   {
-    GQuark q = g_quark_try_string(path);
-    if (!q) {
-      #include "../data/active/spotlight_png_inline.c"
+    /* did we already initialize data for this string? */
+    GQuark q = g_quark_try_string (path);
+    if (q)
+    {
+      if (q == g_quark_try_string (AWN_INTERNAL_ARROW1))
+        fx->priv->arrow_type = AWN_ARROW_TYPE_1;
+      else if (q == g_quark_try_string (AWN_INTERNAL_ARROW2))
+        fx->priv->arrow_type = AWN_ARROW_TYPE_2;
+      return q;
+    }
 
-      q = g_quark_from_string(path);
+    q = g_quark_from_string(path);
+    cairo_surface_t *surface = NULL;
+
+    if (g_strcmp0(path, AWN_INTERNAL_SPOTLIGHT) == 0)
+    {
+      #include "../data/active/spotlight_png_inline.c"
 
       mem_reader_t mem_reader;
       mem_reader.data = spotlight_bin_data;
       mem_reader.size = sizeof(spotlight_bin_data);
       mem_reader.offset = 0;
 
-      cairo_surface_t *surface = 
-        cairo_image_surface_create_from_png_stream(
-          internal_reader,
-          &mem_reader
-        );
+      surface = cairo_image_surface_create_from_png_stream (internal_reader,
+                                                            &mem_reader);
       if (cairo_surface_status(surface) != CAIRO_STATUS_SUCCESS) {
         g_warning("Error while trying to read internal PNG icon!");
         cairo_surface_destroy(surface);
         surface = NULL;
       }
-      GData **icons = &(AWN_EFFECTS_GET_CLASS(fx)->custom_icons);
-
-      g_datalist_id_set_data(icons, q, surface);
     }
+
+    GData **icons = &(AWN_EFFECTS_GET_CLASS(fx)->custom_icons);
+
+    g_datalist_id_set_data(icons, q, surface);
+
     return q;
   }
   else
@@ -264,11 +282,11 @@ awn_effects_get_property (GObject      *object,
     case PROP_SPOTLIGHT_ICON:
       g_value_set_string(value, g_quark_to_string(fx->spotlight_icon));
       break;
+    case PROP_ARROW_ICON:
+      g_value_set_string(value, g_quark_to_string(fx->arrow_icon));
+      break;
     case PROP_CUSTOM_ACTIVE_ICON:
       g_value_set_string(value, g_quark_to_string(fx->custom_active_icon));
-      break;
-    case PROP_CUSTOM_ARROW_ICON:
-      g_value_set_string(value, g_quark_to_string(fx->custom_arrow_icon));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -347,16 +365,18 @@ awn_effects_set_property (GObject      *object,
       break;
     case PROP_SPOTLIGHT_ICON:
       fx->spotlight_icon =
-        awn_effects_set_custom_icon(fx, g_value_get_string(value));
+        awn_effects_set_custom_icon (fx, g_value_get_string (value));
+    case PROP_ARROW_ICON:
+      /* arrow_type will get set by set_custom_icon if we use internal icon */
+      fx->priv->arrow_type = AWN_ARROW_TYPE_CUSTOM;
+      fx->arrow_icon = 
+        awn_effects_set_custom_icon (fx, g_value_get_string (value));
+      break;
     case PROP_CUSTOM_ACTIVE_ICON:
       fx->custom_active_icon = 
-        awn_effects_set_custom_icon(fx, g_value_get_string(value));
+        awn_effects_set_custom_icon (fx, g_value_get_string (value));
       break;
-    case PROP_CUSTOM_ARROW_ICON: {
-      fx->custom_arrow_icon = 
-        awn_effects_set_custom_icon(fx, g_value_get_string(value));
-      break;
-    }
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -398,32 +418,6 @@ awn_effects_register_effect_bundle(AwnEffectsClass *klass,
 }
 
 static void
-awn_effects_constructed (GObject *object)
-{
-  /* FIXME: move this to AwnIcon, AwnEffects are more flexible without it */
-  AwnConfigClient *client;
-  AwnConfigBridge *bridge = awn_config_bridge_get_default ();
-
-  client = awn_config_client_new ();
-
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "icon_effect",
-                          object, "effects");
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "icon_alpha",
-                          object, "icon-alpha");
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "reflection_alpha_multiplier",
-                          object, "reflection-alpha");
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "reflection_offset",
-                          object, "reflection-offset");
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "show_shadows",
-                          object, "make-shadow");
-}
-
-static void
 awn_effects_class_init(AwnEffectsClass *klass)
 {
   GObjectClass *obj_class = G_OBJECT_CLASS(klass);
@@ -432,7 +426,6 @@ awn_effects_class_init(AwnEffectsClass *klass)
   obj_class->get_property = awn_effects_get_property;
   obj_class->notify = awn_effects_prop_changed;
   obj_class->finalize = awn_effects_finalize;
-  obj_class->constructed = awn_effects_constructed;
 
   /**
    * AwnEffects::animation-start:
@@ -758,7 +751,20 @@ awn_effects_class_init(AwnEffectsClass *klass)
     g_param_spec_string("spotlight-png",
                         "Spotlight Icon",
                         "Icon to draw for the spotlight effect",
-                        AWN_SPOTLIGHT_INTERNAL_NAME,
+                        AWN_INTERNAL_SPOTLIGHT,
+                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:arrow-icon:
+   *
+   * Path to a png icon which will be painted when the property
+   * #AwnEffects:show-arrow is set to TRUE.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_ARROW_ICON,
+    g_param_spec_string("arrow-png",
+                        "Arrow Icon",
+                        "Icon to draw when show-arrow is enabled",
+                        AWN_INTERNAL_ARROW1,
                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   /**
    * AwnEffects:custom-active-png:
@@ -771,19 +777,6 @@ awn_effects_class_init(AwnEffectsClass *klass)
     g_param_spec_string("custom-active-png",
                         "Custom active Icon",
                         "Custom icon to draw when in active state",
-                        NULL,
-                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
-  /**
-   * AwnEffects:custom-arrow-icon:
-   *
-   * Path to a custom png icon which will be painted when the property
-   * #AwnEffects:show-arrow is set to TRUE.
-   */
-  g_object_class_install_property(
-    obj_class, PROP_CUSTOM_ARROW_ICON,
-    g_param_spec_string("custom-arrow-png",
-                        "Custom arrow Icon",
-                        "Custom icon to draw when in running state",
                         NULL,
                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 }

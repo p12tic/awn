@@ -1,3 +1,18 @@
+2009-03-25  Michal Hruby <michal.mhr@gmail.com>
+
+	* applets/taskmanager/taskmanager.schema-ini:
+	Fixed field description.
+	* data/awn.schema-ini.in:
+	* libawn/anims/awn-effects-shared.h:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* libawn/awn-icon.c:
+	* src/awn-throbber.c:
+	Bound the AwnEffects' arrow-png property to config client.
+	Added new arrow type (glowing dot).
+	Moved getting AwnEffects' config values to AwnIcon.
+
 2009-03-24  h4writer <hv1989@gmail.com>
 
 	* applets/taskmanager/task-drag-indicator.c:

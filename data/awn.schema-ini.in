@@ -55,6 +55,11 @@ type = int
 default = 1
 description = Provides possibility to click on windows behind the panel. 0 - never click through, 1 - click through when holding CTRL, 2 - always click through and interact with panel only when holding CTRL
 
+[panels/panel_list]
+type = list-string
+default = 1
+description = The list of panels.
+
 [theme/gstep1]
 type = string
 default = 454545C8
@@ -179,6 +184,11 @@ description = Reflection alpha as a multiple of the current alpha of the icon.
 type = bool
 default = FALSE
 description = Show shadows for icons.
+
+[effects/arrow_icon]
+type = string
+default = __awn_internal_arrow1
+description = Path to the png containing the arrow icon.
 
 
 [DEFAULT/force_monitor]

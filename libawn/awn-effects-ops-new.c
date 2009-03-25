@@ -332,20 +332,17 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
                                    gpointer user_data
                                   )
 {
-  #define ARROW_WIDTH 6
   AwnEffectsPrivate *priv = fx->priv;
 
   if (fx->show_arrow)
   {
     cairo_surface_t *srfc = NULL;
     gint arrow_w = 0, arrow_h = 0;
-    if (fx->custom_arrow_icon) {
-      srfc = awn_effects_quark_to_surface(fx, fx->custom_arrow_icon);
-      if (srfc) {
-        /* get custom surface dimensions */
-        arrow_w = cairo_image_surface_get_width(srfc);
-        arrow_h = cairo_image_surface_get_height(srfc);
-      }
+    srfc = awn_effects_quark_to_surface(fx, fx->arrow_icon);
+    if (srfc) {
+      /* get custom surface dimensions */
+      arrow_w = cairo_image_surface_get_width(srfc);
+      arrow_h = cairo_image_surface_get_height(srfc);
     }
 
     gdouble x, y, rotation;
@@ -393,23 +390,64 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
     cairo_translate(cr, x, y);
     cairo_rotate(cr, rotation);
 
-    if (!fx->custom_arrow_icon)
+    if (srfc == NULL)
     {
       cairo_set_line_width (cr, 1.0);
-      cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
 
-      cairo_move_to (cr, -ARROW_WIDTH, 0);
-      cairo_line_to (cr, +ARROW_WIDTH, 0);
-      cairo_line_to (cr, 0, -ARROW_WIDTH);
-      cairo_close_path (cr);
+      switch (fx->priv->arrow_type)
+      {
+        case AWN_ARROW_TYPE_1:
+        {
+          /* Paint the triangular arrow */
+          const double ARROW_WIDTH = 6.0;
 
-      cairo_fill_preserve (cr);
+          cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
 
-      cairo_set_line_width (cr, 0.5);
-      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
-      cairo_stroke(cr);
+          cairo_move_to (cr, -ARROW_WIDTH, 0);
+          cairo_line_to (cr, +ARROW_WIDTH, 0);
+          cairo_line_to (cr, 0, -ARROW_WIDTH);
+          cairo_close_path (cr);
+
+          cairo_fill_preserve (cr);
+
+          cairo_set_line_width (cr, 0.5);
+          cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
+          cairo_stroke(cr);
+          break;
+        }
+        case AWN_ARROW_TYPE_2:
+        {
+          /* Paint the dot */
+          const double DOT_RADIUS = 9.0;
+          cairo_pattern_t *pat;
+          double r = 1.0, g = 1.0, b = 1.0;
+
+          if (fx->widget)
+          {
+            GdkColor c = gtk_widget_get_style (fx->widget)
+                           ->light[GTK_STATE_SELECTED];
+            r = c.red / 65535.0; g = c.green / 65535.0; b = c.blue / 65535.0;
+          }
+
+          cairo_set_source_rgb (cr, r, g, b);
+          cairo_arc (cr, 0.0, 0.0, DOT_RADIUS / 6, 0.0, 2*M_PI);
+          cairo_fill (cr);
+
+          pat = cairo_pattern_create_radial (0.0, 0.0, 0.01,
+                                             0.0, 0.0, DOT_RADIUS);
+          cairo_pattern_add_color_stop_rgba (pat, 0.0, r, g, b, 0.5);
+          cairo_pattern_add_color_stop_rgba (pat, 1.0, r, g, b, 0.0);
+
+          cairo_set_source (cr, pat);
+
+          cairo_arc (cr, 0.0, 0.0, DOT_RADIUS, 0.0, 2*M_PI);
+          cairo_fill (cr);
+          cairo_pattern_destroy (pat);
+          break;
+        }
+      }
     }
-    else if (srfc)
+    else
     {
       cairo_set_source_surface(cr, srfc, 0, 0);
       cairo_paint(cr);

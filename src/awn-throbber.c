@@ -136,9 +136,15 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
     case AWN_THROBBER_TYPE_SAD_FACE:
     {
       const gfloat EYE_SIZE = 0.04;
+
+      GdkColor c = gtk_widget_get_style (widget)->fg[GTK_STATE_NORMAL];
+      double r = c.red / 65535.0;
+      double g = c.green / 65535.0;
+      double b = c.blue / 65535.0;
+
       gfloat EYE_POS_X, EYE_POS_Y;
       /* sad face */
-      cairo_set_source_rgb(cr, 0.8, 0.8, 0.8);
+      cairo_set_source_rgb(cr, r, g, b);
       cairo_set_line_width(cr, 0.03);
 
       awn_cairo_rounded_rect(cr, 0.05, 0.05, 0.9, 0.9, 0.05, ROUND_ALL);

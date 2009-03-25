@@ -100,8 +100,8 @@ struct _AwnEffects
   gfloat progress;
   gint border_clip;
   GQuark spotlight_icon;
+  GQuark arrow_icon;
   GQuark custom_active_icon;
-  GQuark custom_arrow_icon;
   /* properties end */
 
   cairo_t * window_ctx;

@@ -28,6 +28,15 @@
 #define AWN_EFFECT_ORIENT_BOTTOM 2
 #define AWN_EFFECT_ORIENT_LEFT 3
 
+typedef enum
+{
+  AWN_ARROW_TYPE_CUSTOM = 0,
+  AWN_ARROW_TYPE_1,
+  AWN_ARROW_TYPE_2,
+
+  AWN_ARROW_TYPE_LAST
+} AwnArrowType;
+
 typedef struct _AwnEffectsAnimation AwnEffectsAnimation;
 
 struct _AwnEffectsAnimation
@@ -70,6 +79,8 @@ struct _AwnEffectsPrivate
 
   gint icon_depth;
   gint icon_depth_direction;
+
+  AwnArrowType arrow_type;
 
   /* State variables */
   gboolean clip;

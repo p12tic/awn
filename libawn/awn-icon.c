@@ -19,6 +19,7 @@
 #include <gdk/gdkx.h>
 #include <cairo/cairo-xlib.h>
 
+#include "awn-config-bridge.h"
 #include "awn-icon.h"
 #include "awn-utils.h"
 
@@ -277,6 +278,9 @@ awn_icon_init (AwnIcon *icon)
 {
   AwnIconPrivate *priv;
 
+  AwnConfigClient *client = awn_config_client_new ();
+  AwnConfigBridge *bridge = awn_config_bridge_get_default ();
+
   priv = icon->priv = AWN_ICON_GET_PRIVATE (icon);
 
   priv->icon_srfc = NULL;
@@ -288,6 +292,26 @@ awn_icon_init (AwnIcon *icon)
   priv->tooltip = awn_tooltip_new_for_widget (GTK_WIDGET (icon));
 
   priv->effects = awn_effects_new_for_widget (GTK_WIDGET (icon));
+  GObject *object = G_OBJECT (priv->effects);
+
+  awn_config_bridge_bind (bridge, client,
+                          "effects", "icon_effect",
+                          object, "effects");
+  awn_config_bridge_bind (bridge, client,
+                          "effects", "icon_alpha",
+                          object, "icon-alpha");
+  awn_config_bridge_bind (bridge, client,
+                          "effects", "reflection_alpha_multiplier",
+                          object, "reflection-alpha");
+  awn_config_bridge_bind (bridge, client,
+                          "effects", "reflection_offset",
+                          object, "reflection-offset");
+  awn_config_bridge_bind (bridge, client,
+                          "effects", "show_shadows",
+                          object, "make-shadow");
+  awn_config_bridge_bind (bridge, client,
+                          "effects", "arrow_icon",
+                          object, "arrow_png");
 
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
 
