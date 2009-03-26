@@ -21,7 +21,138 @@
 
 #include "awn-effects-ops-helpers.h"
 
-static guchar
+void
+paint_arrow_triangle (cairo_t *cr, double size, gint count)
+{
+  switch (count)
+  {
+    case 3:
+      /* one triangle on the left */
+      cairo_move_to (cr, -size * 2.75, 0);
+      cairo_line_to (cr, -size * 0.75, 0);
+      cairo_line_to (cr, -size * 1.75, -size);
+      cairo_close_path (cr);
+
+      cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
+      cairo_fill_preserve (cr);
+
+      cairo_set_line_width (cr, 0.5);
+      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
+      cairo_stroke (cr);
+
+      /* one triangle on the right */
+      cairo_move_to (cr, size * 0.75, 0);
+      cairo_line_to (cr, size * 2.75, 0);
+      cairo_line_to (cr, size * 1.75, -size);
+      cairo_close_path (cr);
+
+      cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
+      cairo_fill_preserve (cr);
+
+      cairo_set_line_width (cr, 0.5);
+      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
+      cairo_stroke (cr);
+
+      cairo_set_line_width (cr, 1.0);
+      /* fall through */
+    case 1:
+      cairo_move_to (cr, -size, 0);
+      cairo_line_to (cr, +size, 0);
+      cairo_line_to (cr, 0, -size);
+      cairo_close_path (cr);
+
+      cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
+      cairo_fill_preserve (cr);
+
+      cairo_set_line_width (cr, 0.5);
+      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
+      cairo_stroke (cr);
+      break;
+    case 2:
+      cairo_move_to (cr, -size * 1.75, 0);
+      cairo_line_to (cr, +size * 1.75, 0);
+      cairo_line_to (cr, +size*3/4, -size);
+      cairo_line_to (cr, 0.0, -size*1/4);
+      cairo_line_to (cr, -size*3/4, -size);
+      cairo_close_path (cr);
+
+      cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
+      cairo_fill_preserve (cr);
+
+      cairo_set_line_width (cr, 0.5);
+      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
+      cairo_stroke (cr);
+      break;
+  default:
+    break;
+  }
+}
+
+void
+paint_arrow_dot (cairo_t *cr, double size, gint count,
+                 double r, double g, double b)
+{
+  cairo_pattern_t *pat = NULL;
+
+  switch (count)
+  {
+    case 3:
+      // TODO: finish!
+    case 1:
+      cairo_set_source_rgb (cr, r, g, b);
+      cairo_arc (cr, 0.0, 0.0, size / 6, 0.0, 2*M_PI);
+      cairo_fill (cr);
+
+      pat = cairo_pattern_create_radial (0.0, 0.0, 0.01,
+                                         0.0, 0.0, size);
+      cairo_pattern_add_color_stop_rgba (pat, 0.0, r, g, b, 0.5);
+      cairo_pattern_add_color_stop_rgba (pat, 1.0, r, g, b, 0.0);
+
+      cairo_set_source (cr, pat);
+
+      cairo_arc (cr, 0.0, 0.0, size, 0.0, 2*M_PI);
+      cairo_fill (cr);
+      cairo_pattern_destroy (pat);
+      break;
+    case 2:
+      cairo_set_source_rgb (cr, r, g, b);
+      cairo_translate (cr, -size / 3, 0.0);
+      cairo_arc (cr, 0.0, 0.0, size / 6, 0.0, 2*M_PI);
+      cairo_fill (cr);
+
+      pat = cairo_pattern_create_radial (0.0, 0.0, 0.01,
+                                         0.0, 0.0, size);
+      cairo_pattern_add_color_stop_rgba (pat, 0.0, r, g, b, 0.5);
+      cairo_pattern_add_color_stop_rgba (pat, 1.0, r, g, b, 0.0);
+
+      cairo_set_source (cr, pat);
+
+      cairo_arc (cr, 0.0, 0.0, size, 0.0, 2*M_PI);
+      cairo_fill (cr);
+      cairo_pattern_destroy (pat);
+
+      cairo_set_source_rgb (cr, r, g, b);
+      cairo_translate (cr, +size / 3 * 2, 0.0);
+      cairo_arc (cr, 0.0, 0.0, size / 6, 0.0, 2*M_PI);
+      cairo_fill (cr);
+
+      pat = cairo_pattern_create_radial (0.0, 0.0, 0.01,
+                                         0.0, 0.0, size);
+      cairo_pattern_add_color_stop_rgba (pat, 0.0, r, g, b, 0.5);
+      cairo_pattern_add_color_stop_rgba (pat, 1.0, r, g, b, 0.0);
+
+      cairo_set_source (cr, pat);
+
+      cairo_arc (cr, 0.0, 0.0, size, 0.0, 2*M_PI);
+      cairo_fill (cr);
+      cairo_pattern_destroy (pat);
+      break;
+    default:
+      break;
+  }
+}
+
+guchar
 lighten_component(const guchar cur_value, const gfloat amount)
 {
   int new_value = cur_value;

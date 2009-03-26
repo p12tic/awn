@@ -277,7 +277,7 @@ awn_alignment_set_offset_modifier (AwnAlignment *alignment, gint modifier)
 
   priv->offset_modifier = modifier;
 
-  ensure_alignment (alignment);
+  if (priv->applet) ensure_alignment (alignment);
 }
 
 static void

@@ -1,3 +1,20 @@
+2009-03-27  Michal Hruby,,,  <Please set CHANGE_LOG_EMAIL_ADDRESS or EMAIL_ADDRESS environment variable>
+
+	* applets/taskmanager/task-icon.c:
+	* libawn/awn-alignment.c:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-effects-ops-helpers.c:
+	* libawn/awn-effects-ops-helpers.h:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	* tests/test-awn-effects.c:
+	AwnEffects > replace show-arrow with arrow-count. This lead to
+	interface changes in AwnIcon.
+
 2009-03-25  Michal Hruby <michal.mhr@gmail.com>
 
 	* applets/taskmanager/taskmanager.schema-ini:

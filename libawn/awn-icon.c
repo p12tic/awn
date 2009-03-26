@@ -678,22 +678,21 @@ awn_icon_get_is_active (AwnIcon *icon)
 }
 
 void    
-awn_icon_set_is_running (AwnIcon     *icon,
-                         gboolean     is_running)
+awn_icon_set_indicator_count (AwnIcon *icon, gint count)
 {
   g_return_if_fail (AWN_IS_ICON (icon));
 
-  g_object_set (icon->priv->effects, "show-arrow", is_running, NULL);
+  g_object_set (icon->priv->effects, "arrows-count", count, NULL);
 }
 
-gboolean
-awn_icon_get_is_running (AwnIcon     *icon)
+gint
+awn_icon_get_indicator_count (AwnIcon *icon)
 {
-  gboolean result;
+  gint result;
   
-  g_return_val_if_fail (AWN_IS_ICON (icon), FALSE);
+  g_return_val_if_fail (AWN_IS_ICON (icon), 0);
 
-  g_object_get (icon->priv->effects, "show-arrow", &result, NULL);
+  g_object_get (icon->priv->effects, "arrows-count", &result, NULL);
 
   return result;
 }

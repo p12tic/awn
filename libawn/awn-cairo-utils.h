@@ -55,6 +55,9 @@ awn_cairo_rounded_rect (cairo_t *cr,
                         double width, double height,
                         double radius, AwnCairoRoundCorners state);
 
+void
+awn_cairo_set_source_gdk_color (cairo_t *cr, const GdkColor *color,
+                                double alpha);
 
 /* takes a string of RRGGBBAA and converts to AwnColor */
 void

@@ -52,7 +52,10 @@ on_running_click(GtkWidget *widget, gpointer user_data)
 {
   int i;
   for (i=0; i<NUM_ICONS; i++) {
-    awn_icon_set_is_running(icons[i], !awn_icon_get_is_running(icons[i]));
+    awn_icon_set_indicator_count(icons[i], awn_icon_get_indicator_count(icons[i])+1);
+    // reset
+    if (awn_icon_get_indicator_count(icons[i]) > 3)
+      awn_icon_set_indicator_count (icons[i], 0);
   }
   return FALSE;
 }
@@ -170,6 +173,8 @@ cairo_icon (GtkWidget *parent)
   icon = awn_icon_new ();
   awn_icon_set_from_context (AWN_ICON (icon), cr);
   awn_icon_set_tooltip_text (AWN_ICON (icon), "Cairo Icon");
+  
+  awn_icon_set_offset (AWN_ICON (icon), 8);
   
   gtk_container_add (GTK_CONTAINER (parent), icon);
   gtk_widget_show (icon);

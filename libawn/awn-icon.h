@@ -119,10 +119,10 @@ void          awn_icon_set_is_active    (AwnIcon     *icon,
 
 gboolean      awn_icon_get_is_active    (AwnIcon     *icon);
 
-void          awn_icon_set_is_running   (AwnIcon     *icon,
-                                         gboolean     is_running);
+void          awn_icon_set_indicator_count (AwnIcon *icon, gint count);
 
-gboolean      awn_icon_get_is_running   (AwnIcon     *icon);
+gint          awn_icon_get_indicator_count (AwnIcon *icon);
+
 G_END_DECLS
 
 #endif /* _AWN_ICON_H_ */

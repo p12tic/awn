@@ -91,12 +91,11 @@ enum {
   PROP_MAKE_SHADOW,
   PROP_LABEL,
   PROP_IS_ACTIVE,
-  PROP_SHOW_ARROW,
   PROP_PROGRESS,
   PROP_BORDER_CLIP,
   PROP_SPOTLIGHT_ICON,
   PROP_ARROW_ICON,
-  PROP_ARROW_COUNT,
+  PROP_ARROWS_COUNT,
   PROP_CUSTOM_ACTIVE_ICON
 };
 
@@ -270,8 +269,8 @@ awn_effects_get_property (GObject      *object,
     case PROP_IS_ACTIVE:
       g_value_set_boolean(value, fx->is_active);
       break;
-    case PROP_SHOW_ARROW:
-      g_value_set_boolean(value, fx->show_arrow);
+    case PROP_ARROWS_COUNT:
+      g_value_set_int(value, fx->arrows_count);
       break;
     case PROP_PROGRESS:
       g_value_set_float(value, fx->progress);
@@ -354,8 +353,8 @@ awn_effects_set_property (GObject      *object,
     case PROP_IS_ACTIVE:
       fx->is_active = g_value_get_boolean(value);
       break;
-    case PROP_SHOW_ARROW:
-      fx->show_arrow = g_value_get_boolean(value);
+    case PROP_ARROWS_COUNT:
+      fx->arrows_count = g_value_get_int(value);
       break;
     case PROP_PROGRESS:
       fx->progress = g_value_get_float(value);
@@ -367,7 +366,7 @@ awn_effects_set_property (GObject      *object,
       fx->spotlight_icon =
         awn_effects_set_custom_icon (fx, g_value_get_string (value));
     case PROP_ARROW_ICON:
-      /* arrow_type will get set by set_custom_icon if we use internal icon */
+      /* arrow_type will be set by set_custom_icon if we use internal icon */
       fx->priv->arrow_type = AWN_ARROW_TYPE_CUSTOM;
       fx->arrow_icon = 
         awn_effects_set_custom_icon (fx, g_value_get_string (value));
@@ -691,17 +690,17 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          FALSE,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   /**
-   * AwnEffects:show-arrow:
+   * AwnEffects:arrows-count:
    *
-   * Determines whether to draw an arrow on the icon.
+   * Determines the number of arrows drawn.
    */
   g_object_class_install_property(
-    obj_class, PROP_SHOW_ARROW,
-    g_param_spec_boolean("show-arrow",
-                         "Draw arrow",
-                         "Determines whether to draw an arrow on the icon",
-                         FALSE,
-                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+    obj_class, PROP_ARROWS_COUNT,
+    g_param_spec_int("arrows-count",
+                     "Arrows count",
+                     "Number of arrows to draw",
+                     0, G_MAXINT, 0,
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   /**
    * AwnEffects:border-clip:
    *
@@ -757,13 +756,13 @@ awn_effects_class_init(AwnEffectsClass *klass)
    * AwnEffects:arrow-icon:
    *
    * Path to a png icon which will be painted when the property
-   * #AwnEffects:show-arrow is set to TRUE.
+   * #AwnEffects:arrows-count is more than 0.
    */
   g_object_class_install_property(
     obj_class, PROP_ARROW_ICON,
     g_param_spec_string("arrow-png",
                         "Arrow Icon",
-                        "Icon to draw when show-arrow is enabled",
+                        "Icon to draw when arrows-count is more than 0",
                         AWN_INTERNAL_ARROW1,
                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   /**

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2007-2008 Michal Hruby <michal.mhr@gmail.com>
+ *  Copyright (C) 2007-2009 Michal Hruby <michal.mhr@gmail.com>
  *  Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
  *  Copyright (C) 1999 The Free Software Foundation
  *
@@ -283,31 +283,45 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
         break;
     }
     cairo_set_operator(cr, CAIRO_OPERATOR_DEST_OVER);
-    if (!fx->custom_active_icon || priv->simple_rect) {
-      if (priv->simple_rect) {
-        /* get the color from style
-         * I wonder which style color is the one of background of selected text
-         */
-        if (fx->widget) {
-          GtkStyle *style = gtk_widget_get_style(fx->widget);
-          gdk_cairo_set_source_color(cr, &style->bg[GTK_STATE_SELECTED]);
-        } else {
+    if (!fx->custom_active_icon || priv->simple_rect)
+    {
+      GtkStyle *style = NULL;
+      if (fx->widget) {
+        style = gtk_widget_get_style (fx->widget);
+      }
+
+      if (priv->simple_rect)
+      {
+        /* Get the color from style */
+        if (style)
+          gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
+        else
           cairo_set_source_rgba (cr, 1.0, 0.4, 0.0, 1.0);
+      }
+      else
+      {
+        if (style)
+        {
+          awn_cairo_set_source_gdk_color (cr, &style->dark[GTK_STATE_ACTIVE],
+                                          0.4);
         }
-      } else {
-        cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
+        else
+          cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
       }
       awn_cairo_rounded_rect (cr, x-PADDING, y-PADDING,
                               priv->icon_width+(2*PADDING),
                               priv->icon_height+(2*PADDING),
                               10.0, ROUND_ALL);
       cairo_fill (cr);
-    } else {
+    }
+    else
+    {
       cairo_save(cr);
       /* get the icon surface */
       cairo_surface_t *srfc =
         awn_effects_quark_to_surface(fx, fx->custom_active_icon);
-      if (srfc) {
+      if (srfc)
+      {
         float srfc_width = cairo_image_surface_get_width(srfc);
         float srfc_height = cairo_image_surface_get_height(srfc);
 
@@ -332,9 +346,12 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
                                    gpointer user_data
                                   )
 {
+  const int MAX_ARROWS = 3;
   AwnEffectsPrivate *priv = fx->priv;
+  int arrow_num, arrows_count = fx->arrows_count > MAX_ARROWS ?
+                                      MAX_ARROWS : fx->arrows_count;
 
-  if (fx->show_arrow)
+  if (arrows_count > 0)
   {
     cairo_surface_t *srfc = NULL;
     gint arrow_w = 0, arrow_h = 0;
@@ -399,27 +416,14 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
         case AWN_ARROW_TYPE_1:
         {
           /* Paint the triangular arrow */
-          const double ARROW_WIDTH = 6.0;
-
-          cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
-
-          cairo_move_to (cr, -ARROW_WIDTH, 0);
-          cairo_line_to (cr, +ARROW_WIDTH, 0);
-          cairo_line_to (cr, 0, -ARROW_WIDTH);
-          cairo_close_path (cr);
-
-          cairo_fill_preserve (cr);
-
-          cairo_set_line_width (cr, 0.5);
-          cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
-          cairo_stroke(cr);
+          const double ARROW_SIZE = 6.0;
+          paint_arrow_triangle (cr, ARROW_SIZE, arrows_count);
           break;
         }
         case AWN_ARROW_TYPE_2:
         {
           /* Paint the dot */
           const double DOT_RADIUS = 9.0;
-          cairo_pattern_t *pat;
           double r = 1.0, g = 1.0, b = 1.0;
 
           if (fx->widget)
@@ -427,22 +431,16 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
             GdkColor c = gtk_widget_get_style (fx->widget)
                            ->light[GTK_STATE_SELECTED];
             r = c.red / 65535.0; g = c.green / 65535.0; b = c.blue / 65535.0;
+
+            if (priv->glow_amount > 0.0)
+            {
+              r = lighten_component (r * 255, priv->glow_amount) / 255.0;
+              g = lighten_component (g * 255, priv->glow_amount) / 255.0;
+              b = lighten_component (b * 255, priv->glow_amount) / 255.0;
+            }
           }
 
-          cairo_set_source_rgb (cr, r, g, b);
-          cairo_arc (cr, 0.0, 0.0, DOT_RADIUS / 6, 0.0, 2*M_PI);
-          cairo_fill (cr);
-
-          pat = cairo_pattern_create_radial (0.0, 0.0, 0.01,
-                                             0.0, 0.0, DOT_RADIUS);
-          cairo_pattern_add_color_stop_rgba (pat, 0.0, r, g, b, 0.5);
-          cairo_pattern_add_color_stop_rgba (pat, 1.0, r, g, b, 0.0);
-
-          cairo_set_source (cr, pat);
-
-          cairo_arc (cr, 0.0, 0.0, DOT_RADIUS, 0.0, 2*M_PI);
-          cairo_fill (cr);
-          cairo_pattern_destroy (pat);
+          paint_arrow_dot (cr, DOT_RADIUS, arrows_count, r, g ,b);
           break;
         }
       }

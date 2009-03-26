@@ -86,6 +86,16 @@ awn_cairo_rounded_rect(cairo_t *cr, double x0, double y0,
   cairo_close_path(cr);
 }
 
+void
+awn_cairo_set_source_gdk_color (cairo_t *cr, const GdkColor *color,
+                                double alpha)
+{
+  double r = color->red / 65535.0;
+  double g = color->green / 65535.0;
+  double b = color->blue / 65535.0;
+  cairo_set_source_rgba (cr, r, g, b, alpha);
+}
+
 static int
 getdec(char hexchar)
 {

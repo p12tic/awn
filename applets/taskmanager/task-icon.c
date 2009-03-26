@@ -531,7 +531,7 @@ on_window_running_changed (TaskWindow *window,
                            TaskIcon   *icon)
 {
   g_return_if_fail (TASK_IS_ICON (icon));
-  awn_icon_set_is_running (AWN_ICON (icon), is_running);
+  awn_icon_set_indicator_count (AWN_ICON (icon), is_running ? 1 : 0);
 }
 
 void
@@ -615,8 +615,8 @@ task_icon_append_window (TaskIcon      *icon,
                                        task_window_needs_attention (window), 
                                        icon);
 
-    awn_icon_set_is_running (AWN_ICON (icon), 
-                        task_window_get_is_running (window));
+    awn_icon_set_indicator_count (AWN_ICON (icon), 
+                        task_window_get_is_running (window) ? 1 : 0);
 
     g_signal_connect (window, "name-changed", 
                       G_CALLBACK (on_window_name_changed), icon);

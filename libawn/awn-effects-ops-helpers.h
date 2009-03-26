@@ -30,6 +30,16 @@
 #include <string.h>
 
 void
+paint_arrow_triangle (cairo_t *cr, double size, gint count);
+
+void
+paint_arrow_dot (cairo_t *cr, double size, gint count,
+                 double r, double g, double b);
+
+guchar
+lighten_component(const guchar cur_value, const gfloat amount);
+
+void
 lighten_surface(cairo_surface_t * src, const gfloat amount);
 
 void
