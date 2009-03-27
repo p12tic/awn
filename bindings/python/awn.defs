@@ -967,19 +967,19 @@
   (return-type "gboolean")
 )
 
-(define-method set_is_running
+(define-method set_indicator_count
   (of-object "AwnIcon")
-  (c-name "awn_icon_set_is_running")
+  (c-name "awn_icon_set_indicator_count")
   (return-type "none")
   (parameters
-    '("gboolean" "is_running")
+    '("gint" "count")
   )
 )
 
-(define-method get_is_running
+(define-method get_indicator_count
   (of-object "AwnIcon")
-  (c-name "awn_icon_get_is_running")
-  (return-type "gboolean")
+  (c-name "awn_icon_get_indicator_count")
+  (return-type "gint")
 )
 
 ;; From awn-tooltip.h

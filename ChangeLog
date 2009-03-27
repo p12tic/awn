@@ -1,4 +1,9 @@
-2009-03-27  Michal Hruby,,,  <Please set CHANGE_LOG_EMAIL_ADDRESS or EMAIL_ADDRESS environment variable>
+2009-03-27  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Fixed python bindings.
+
+2009-03-27  Michal Hruby <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
 	* libawn/awn-alignment.c:
