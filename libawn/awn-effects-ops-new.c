@@ -704,24 +704,15 @@ gboolean awn_effects_post_op_alpha(AwnEffects * fx,
   AwnEffectsPrivate *priv = fx->priv;
 
   if (priv->alpha < 1 || fx->icon_alpha < 1) {
-    cairo_surface_t *srfc = cairo_surface_create_similar(cairo_get_target(cr),
-                                                         CAIRO_CONTENT_COLOR_ALPHA,
-                                                         priv->window_width,
-                                                         priv->window_height
-                                                        );
-    cairo_t *ctx = cairo_create(srfc);
-    cairo_set_operator(ctx, CAIRO_OPERATOR_SOURCE);
-    cairo_set_source_surface(ctx, cairo_get_target(cr), 0, 0);
-    cairo_paint_with_alpha(ctx, priv->alpha * fx->icon_alpha);
-    cairo_destroy(ctx);
+    cairo_save (cr);
 
-    cairo_save(cr);
-    cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-    cairo_set_source_surface(cr, srfc, 0, 0);
-    cairo_paint(cr);
-    cairo_restore(cr);
+    cairo_set_operator (cr, CAIRO_OPERATOR_DEST_OUT);
+    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0 - priv->alpha*fx->icon_alpha);
+    cairo_translate (cr, 0.5, 0.5);
+    cairo_rectangle (cr, 0.0, 0.0, priv->window_width, priv->window_height);
+    cairo_fill (cr);
 
-    cairo_surface_destroy(srfc);
+    cairo_restore (cr);
     return TRUE;
   }
   return FALSE;
