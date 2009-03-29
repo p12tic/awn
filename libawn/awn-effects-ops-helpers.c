@@ -186,10 +186,22 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
   cairo_t         * temp_ctx;
 
   g_return_if_fail(src);
-  temp_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
-                                         cairo_xlib_surface_get_width(src),
-                                         cairo_xlib_surface_get_height(src)
-                                        );
+
+  switch (cairo_surface_get_type (src))
+  {
+    case CAIRO_SURFACE_TYPE_XLIB:
+      i = cairo_xlib_surface_get_width (src);
+      j = cairo_xlib_surface_get_height (src);
+      break;
+    case CAIRO_SURFACE_TYPE_IMAGE:
+      i = cairo_image_surface_get_width (src);
+      j = cairo_image_surface_get_height (src);
+      break;
+    default:
+      g_return_if_reached ();
+  }
+
+  temp_srfc = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, i, j);
   temp_ctx = cairo_create(temp_srfc);
   cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);  
   cairo_set_source_surface(temp_ctx, src, 0, 0);

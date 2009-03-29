@@ -1,5 +1,10 @@
 2009-03-29  Michal Hruby <michal.mhr@gmail.com>
 
+	* libawn/awn-effects-ops-helpers.c:
+	Fix the glow operator when using indirect painting.
+
+2009-03-29  Michal Hruby <michal.mhr@gmail.com>
+
 	* libawn/awn-effects-ops-new.c:
 	Optimized post alpha op.
 
