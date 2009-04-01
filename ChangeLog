@@ -1,3 +1,9 @@
+2009-03-24  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-effects.c:
+	Change AWN_FRAME_RATE to AWN_FRAMES_PER_SECOND and make the value actually
+	be the frames per second.
+
 2009-03-29  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-effects-ops-helpers.c:

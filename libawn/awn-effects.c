@@ -56,7 +56,7 @@ G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT)
 /* if someone wants faster/slower animations add a speed multiplier
  * property (and use it in the animations) but don't change fps
  */
-#define AWN_FRAME_RATE(fx) (40)
+#define AWN_FRAMES_PER_SECOND(fx) (25)
 #define AWN_ANIMATIONS_PER_BUNDLE 5
 
 #define AWN_INTERNAL_ICON "__awn_internal_"
@@ -946,7 +946,7 @@ awn_effects_stop(AwnEffects * fx, const AwnEffect effect)
     else if (fx->priv->sleeping_func)
     {
       /* wake up sleeping effect */
-      fx->priv->timer_id = g_timeout_add(AWN_FRAME_RATE(fx),
+      fx->priv->timer_id = g_timeout_add(1000 / AWN_FRAMES_PER_SECOND(fx),
                                          fx->priv->sleeping_func, queue_item);
       fx->priv->sleeping_func = NULL;
     }
@@ -1001,7 +1001,7 @@ awn_effects_main_effect_loop(AwnEffects * fx)
 
       g_return_if_fail(queue_item);
 
-      fx->priv->timer_id = g_timeout_add(AWN_FRAME_RATE(fx),
+      fx->priv->timer_id = g_timeout_add(1000 / AWN_FRAMES_PER_SECOND(fx),
                                          fx->priv->sleeping_func, queue_item);
       fx->priv->sleeping_func = NULL;
     }
@@ -1025,7 +1025,7 @@ awn_effects_main_effect_loop(AwnEffects * fx)
 
   if (animation)
   {
-    fx->priv->timer_id = g_timeout_add(AWN_FRAME_RATE(fx),
+    fx->priv->timer_id = g_timeout_add(1000 / AWN_FRAMES_PER_SECOND(fx),
                                        animation, topEffect);
     fx->priv->current_effect = topEffect->this_effect;
     fx->priv->effect_lock = FALSE;
