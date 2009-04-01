@@ -1,3 +1,9 @@
+2009-04-01  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects.c:
+	Fix internal arrow_type setting.
+
 2009-03-24  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-effects.c:

@@ -348,7 +348,7 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
 {
   const int MAX_ARROWS = 3;
   AwnEffectsPrivate *priv = fx->priv;
-  int arrow_num, arrows_count = fx->arrows_count > MAX_ARROWS ?
+  int arrows_count = fx->arrows_count > MAX_ARROWS ?
                                       MAX_ARROWS : fx->arrows_count;
 
   if (arrows_count > 0)
@@ -439,7 +439,6 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
               b = lighten_component (b * 255, priv->glow_amount) / 255.0;
             }
           }
-
           paint_arrow_dot (cr, DOT_RADIUS, arrows_count, r, g ,b);
           break;
         }

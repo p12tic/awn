@@ -162,16 +162,14 @@ awn_effects_set_custom_icon(AwnEffects *fx, const gchar *path)
   /* handle Awn's internal icons */
   else if (g_str_has_prefix (path, AWN_INTERNAL_ICON))
   {
+    if (g_strcmp0 (path, AWN_INTERNAL_ARROW1) == 0)
+      fx->priv->arrow_type = AWN_ARROW_TYPE_1;
+    else if (g_strcmp0 (path, AWN_INTERNAL_ARROW2) == 0)
+      fx->priv->arrow_type = AWN_ARROW_TYPE_2;
+
     /* did we already initialize data for this string? */
     GQuark q = g_quark_try_string (path);
-    if (q)
-    {
-      if (q == g_quark_try_string (AWN_INTERNAL_ARROW1))
-        fx->priv->arrow_type = AWN_ARROW_TYPE_1;
-      else if (q == g_quark_try_string (AWN_INTERNAL_ARROW2))
-        fx->priv->arrow_type = AWN_ARROW_TYPE_2;
-      return q;
-    }
+    if (q) return q;
 
     q = g_quark_from_string(path);
     cairo_surface_t *surface = NULL;
