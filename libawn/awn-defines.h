@@ -57,4 +57,17 @@ typedef enum
 
 } AwnPathType;
 
+typedef enum
+{
+  AWN_GRAVITY_CENTRE = 0,
+  AWN_GRAVITY_N,
+  AWN_GRAVITY_NE,
+  AWN_GRAVITY_E,
+  AWN_GRAVITY_SE,
+  AWN_GRAVITY_S,
+  AWN_GRAVITY_SW,
+  AWN_GRAVITY_W,
+  AWN_GRAVITY_NW
+} AwnGravity;
+
 #endif
