@@ -1,3 +1,10 @@
+2009-04-03  Julien Lavergne <julien.lavergne@gmail.com>
+
+	reviewed by: mhr3
+
+	* libawn/awn-plug.c:
+	Comment size_changed signal, not used and can cause some crashes (see bug #351433)
+
 2009-03-28  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* configure.in:

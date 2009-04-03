@@ -121,7 +121,8 @@ static void
 on_size_changed(DBusGProxy *proxy, gint x, AwnPlug *plug)
 {
   AwnPlugPrivate *priv = AWN_PLUG_GET_PRIVATE(plug);
-  AWN_APPLET_GET_CLASS(priv->applet)->size_changed(priv->applet, x);
+/* Disable size_changed (see LP bug https://launchpad.net/bugs/351433 )
+  AWN_APPLET_GET_CLASS(priv->applet)->size_changed(priv->applet, x); */
 }
 
 static void
