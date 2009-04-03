@@ -1485,7 +1485,7 @@ awn_task_manager_refresh_launchers (AwnConfigClientNotifyEntry *entry,
                         AwnDesktopItem *item, *old_item;
                         item = awn_task_get_item (AWN_TASK (t->data));
                         gchar *file = awn_desktop_item_get_filename (item);
-                        if (strcmp (file, l->data) == 0) {
+                        if (g_strcmp0 (file, l->data) == 0) {
                                 task = AWN_TASK (t->data);
                                 g_free (file);
                                 // refresh the desktop item

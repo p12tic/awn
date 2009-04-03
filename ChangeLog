@@ -1,3 +1,10 @@
+2009-04-03  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	reviewed by: moonbeam_
+
+	* src/awn-task-manager.c:
+	Use g_strcmp0 instead of strcmp to avoid crash (see bug #352950)
+
 2009-04-03  Julien Lavergne <julien.lavergne@gmail.com>
 
 	reviewed by: mhr3
