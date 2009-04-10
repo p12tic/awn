@@ -1,3 +1,10 @@
+2009-04-10  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/__init__.py:
+	Added EFFECT_* enums to awn namespace.
+	* libawn/awn-effects-ops-helpers.c:
+	Finished the implementation of dot painting.
+
 2009-04-01  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-effects-ops-new.c:
