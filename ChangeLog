@@ -1,3 +1,10 @@
+2009-04-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	tested by: sharkbait
+
+	* src/awn-applet-proxy.c:
+	Add GTK+-2.12-compatible fix.
+
 2009-04-10  Michal Hruby <michal.mhr@gmail.com>
 
 	* bindings/python/__init__.py:
