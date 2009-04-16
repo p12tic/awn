@@ -8,7 +8,10 @@ STAMPFILES = stamp-awn-enum-types.h
 
 GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 
-BUILT_SOURCES = $(ENUMFILES) $(MARSHALFILES)
+BUILT_SOURCES = $(ENUMFILES) \
+	$(builddir)/libawn-marshal.c \
+	$(builddir)/libawn-marshal.h \
+	$(NULL)
 
 lib_LTLIBRARIES = libawn.la
 

@@ -1,5 +1,11 @@
 2009-04-16  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/Makefile.am:
+	Fix automake+marshal-related typo (Note: never use variables for source
+	file base names).
+
+2009-04-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* Makefile.marshal:
 	* applets/taskmanager/Makefile.am:
 	* libawn/Makefile.am:
