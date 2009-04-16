@@ -1,9 +1,6 @@
-# shave-related
-V         = @
-Q         = $(V:1=)
-QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
+MARSHAL_PREFIX = taskmanager
+include $(top_srcdir)/Makefile.marshal
 
-NULL =
 AM_CFLAGS = $(WARNING_FLAGS)
 AM_CPPFLAGS = \
 	-I$(srcdir) \
@@ -39,21 +36,6 @@ taskmanager_la_LIBADD = \
 taskmanager_la_CFLAGS = $(TASKMANAGER_CFLAGS)
 taskmanager_la_LDFLAGS = -module -avoid-version
 
-# glib-genmarshal (based on WebKit's build system)
-
-MARSHAL = taskmanager-marshal
-MARSHAL_LIST = $(srcdir)/$(MARSHAL).list
-GENMARSHAL = $(GLIB_GENMARSHAL) --prefix=taskmanager_marshal $(MARSHAL_LIST)
-
-$(builddir)/$(MARSHAL).h: $(MARSHAL_LIST)
-	$(QUIET_GEN)$(GENMARSHAL) --header > $@
-
-$(builddir)/$(MARSHAL).c: $(MARSHAL_LIST) $(MARSHAL).h
-	$(QUIET_GEN)( \
-		echo '#include "taskmanager-marshal.h"' > $@ && \
-		$(GENMARSHAL)  --body >> $@ \
-	)
-
 # Desktop file
 desktopdir = $(pkgdatadir)/applets
 desktop_DATA = taskmanager.desktop
@@ -83,6 +65,6 @@ schema_DATA = taskmanager.schema-ini
 
 install-data-local: install-gconf-schemas
 
-BUILT_SOURCES = $(builddir)/$(MARSHAL).c $(builddir)/$(MARSHAL).h
+BUILT_SOURCES = $(MARSHALFILES)
 EXTRA_DIST = $(desktop_DATA).in.in $(schema_DATA)
 CLEANFILES = $(desktop_DATA) $(shemas_in_files) $(schemas_DATA) $(BUILT_SOURCES)

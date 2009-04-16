@@ -1,0 +1,28 @@
+# shave-related
+V         = @
+Q         = $(V:1=)
+QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
+
+NULL = 
+
+# glib-genmarshal (based on WebKit's build system)
+
+MARSHAL = $(MARSHAL_PREFIX)-marshal
+MARSHAL_LIST = $(srcdir)/$(MARSHAL).list
+GENMARSHAL = $(GLIB_GENMARSHAL) --prefix=$(MARSHAL_PREFIX)_marshal $(MARSHAL_LIST)
+
+MARSHALFILES = \
+	$(builddir)/$(MARSHAL).c \
+	$(builddir)/$(MARSHAL).h \
+	$(NULL)
+
+$(builddir)/$(MARSHAL).h: $(MARSHAL_LIST)
+	$(QUIET_GEN)$(GENMARSHAL) --header > $@
+
+$(builddir)/$(MARSHAL).c: $(MARSHAL_LIST) $(MARSHAL).h
+	$(QUIET_GEN)( \
+		echo "#include \"$(MARSHAL_PREFIX)-marshal.h\"" > $@ && \
+		$(GENMARSHAL)  --body >> $@ \
+	)
+
+# vim: set ft=automake ts=8 sts=8 sw=8 noet :

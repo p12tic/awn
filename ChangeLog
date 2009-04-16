@@ -1,3 +1,11 @@
+2009-04-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.marshal:
+	* applets/taskmanager/Makefile.am:
+	* libawn/Makefile.am:
+	* src/Makefile.am:
+	Consolidate the marshal-related automake code.
+
 2009-04-15  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/Makefile.am:
