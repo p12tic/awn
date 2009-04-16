@@ -1,20 +1,18 @@
 # Applet shared lib
 NULL =
-AM_CFLAGS = $(WARNING_FLAGS) $(DISABLE_DEPRECATED_FLAGS)
-INCLUDES = \
+AM_CFLAGS = $(WARNING_FLAGS)
+AM_CPPFLAGS = \
 	-I$(srcdir) \
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
-	$(DISABLE_DEPRECATED_CFLAGS) \
-	$(APPLET_CFLAGS) \
-	-DPREFIX=\"$(prefix)\" \
-	-DPKGDATADIR=\"$(pkgdatadir)\" \
 	-DWNCK_I_KNOW_THIS_IS_UNSTABLE \
+	$(DISABLE_DEPRECATED_FLAGS) \
 	$(NULL)
 
-TASKMANAGER_SOURCES= \
+appletdir = $(APPLETDIR)/taskmanager
+applet_LTLIBRARIES = taskmanager.la
+taskmanager_la_SOURCES = \
 	applet.c \
-  task-drag-indicator.c \
-  task-drag-indicator.h \
+	task-drag-indicator.c \
+	task-drag-indicator.h \
 	task-icon.c \
 	task-icon.h \
 	task-launcher.c \
@@ -26,28 +24,19 @@ TASKMANAGER_SOURCES= \
 	task-window.c \
 	task-window.h \
 	xutils.c \
-	xutils.h
-
-TASKMANANGER_LDADD = \
+	xutils.h \
+	$(NULL)
+taskmanager_la_LIBADD = \
 	$(top_builddir)/libawn/libawn.la \
-  $(APPLET_LIBS)
-
-taskmanagerlibdir = $(libdir)/awn/applets/taskmanager
-taskmanagerlib_LTLIBRARIES = taskmanager.la
-taskmanager_la_SOURCES = $(TASKMANAGER_SOURCES)
-taskmanager_la_LIBADD = $(TASKMANANGER_LDADD)
+	$(TASKMANAGER_LIBS) \
+	$(NULL)
+taskmanager_la_CFLAGS = $(TASKMANAGER_CFLAGS)
 taskmanager_la_LDFLAGS = -module -avoid-version
-taskmanager_la_CFLAGS = 
 
 # Desktop file
 desktopdir = $(pkgdatadir)/applets
-desktop_DATA = \
-	taskmanager.desktop
+desktop_DATA = taskmanager.desktop
 @INTLTOOL_DESKTOP_RULE@
-
-$(desktop_DATA).in: $(desktop_DATA).in.in
-	sed -e "s|\@LIBDIR\@|$(libdir)|g" $< > $@
-
 
 if USE_GCONF
 schemasdir       = @GCONF_SCHEMA_FILE_DIR@
@@ -74,4 +63,4 @@ schema_DATA = taskmanager.schema-ini
 install-data-local: install-gconf-schemas
 
 EXTRA_DIST = $(desktop_DATA).in.in $(schema_DATA)
-CLEANFILES = $(desktop_DATA) $(desktop_DATA).in taskmanager.schemas taskmanager.schemas.in
+CLEANFILES = $(desktop_DATA) $(shemas_in_files) $(schemas_DATA)
