@@ -1,5 +1,10 @@
 2009-04-15  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* src/awn-throbber.c:
+	Fix #include.
+
+2009-04-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	tested by: sharkbait
 
 	* src/awn-applet-proxy.c:

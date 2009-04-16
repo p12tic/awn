@@ -20,7 +20,7 @@
 #include <math.h>
 
 #include "awn-throbber.h"
-#include <libawn/awn-utils.c>
+#include <libawn/awn-utils.h>
 #include <libawn/awn-cairo-utils.h>
 
 #define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
