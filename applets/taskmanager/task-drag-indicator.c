@@ -23,6 +23,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 
+#include "taskmanager-marshal.h"
 #include "task-drag-indicator.h"
 #include "task-settings.h"
 
@@ -122,7 +123,7 @@ task_drag_indicator_class_init (TaskDragIndicatorClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (TaskDragIndicatorClass, dest_drag_motion),
 			      NULL, NULL,
-			      gtk_marshal_NONE__INT_INT, 
+			      taskmanager_marshal_VOID__INT_INT, 
 			      G_TYPE_NONE, 2,
             G_TYPE_INT, G_TYPE_INT);
   _icon_signals[DEST_DRAG_LEAVE] =

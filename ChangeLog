@@ -1,6 +1,14 @@
 2009-04-15  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/Makefile.am:
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	Replace deprecated GTK marshal symbols with ones generated with
+	glib-genmarshal.
+
+2009-04-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/Makefile.am:
 	* applets/taskmanager/taskmanager.desktop.in.in:
 	* configure.in:
 	Clean up the build system portions for the taskmanager applet.

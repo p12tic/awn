@@ -25,6 +25,7 @@
 
 #include <libwnck/libwnck.h>
 
+#include "taskmanager-marshal.h"
 #include "task-icon.h"
 
 #include "task-launcher.h"
@@ -301,7 +302,7 @@ task_icon_class_init (TaskIconClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (TaskIconClass, dest_drag_motion),
 			      NULL, NULL,
-			      gtk_marshal_NONE__INT_INT, 
+			      taskmanager_marshal_VOID__INT_INT, 
 			      G_TYPE_NONE, 2,
             G_TYPE_INT, G_TYPE_INT);
   _icon_signals[DEST_DRAG_LEAVE] =
