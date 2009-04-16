@@ -224,12 +224,18 @@ _update_geometry(GtkWidget *widget)
 {
   gint x,y;
   TaskIconPrivate *priv;
+  GdkWindow *win;
 
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
 
   priv = TASK_ICON (widget)->priv;
 
-  gdk_window_get_origin (widget->window, &x, &y);
+#ifdef GSEAL
+  win = gtk_widget_get_window (widget);
+#else
+  win = widget->window;
+#endif
+  gdk_window_get_origin (win, &x, &y);
   if(priv->old_x != x || priv->old_y != y)
   {
     priv->old_x = x;
@@ -739,6 +745,7 @@ task_icon_refresh_geometry (TaskIcon *icon)
   TaskSettings *settings;
   TaskIconPrivate *priv;
   GtkWidget *widget;
+  GdkWindow *win;
   GSList    *w;
   gint      x, y, ww, width, height;
   gint      i = 0, len = 0;
@@ -749,7 +756,12 @@ task_icon_refresh_geometry (TaskIcon *icon)
   widget = GTK_WIDGET (icon);
 
   //get the position of the widget
-  gdk_window_get_origin (widget->window, &x, &y);
+#ifdef GSEAL
+  win = gtk_widget_get_window (widget);
+#else
+  win = widget->window;
+#endif
+  gdk_window_get_origin (win, &x, &y);
 
   settings = task_settings_get_default ();
 
@@ -1138,6 +1150,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   TaskLauncher    *launcher;
   GdkAtom         target;
   gchar           *target_name;
+  gchar           *sdata_data;
 
   g_return_if_fail (TASK_IS_ICON (widget));
   priv = TASK_ICON (widget)->priv;
@@ -1160,13 +1173,19 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   }
 
   launcher = priv->windows->data;
+
+#ifdef GSEAL
+  sdata_data = (gchar*)gtk_selection_data_get_data (sdata);
+#else
+  sdata_data = (gchar*)sdata->data;
+#endif
   
   /* If we are dealing with a desktop file, then we want to do something else
    * FIXME: This is a crude way of checking
    * FIXME: Emit a signal or something to let the manager know that the user
    * dropped a desktop file
    */
-  if (strstr ((gchar*)sdata->data, ".desktop"))
+  if (strstr (sdata_data, ".desktop"))
   {
     /*g_signal_emit (icon, _icon_signals[DESKTOP_DROPPED],
      *               0, sdata->data);
@@ -1184,7 +1203,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   }
   
   error = NULL;
-  list = awn_vfs_get_pathlist_from_string ((gchar*)sdata->data, &error);
+  list = awn_vfs_get_pathlist_from_string (sdata_data, &error);
   if (error)
   {
     g_warning ("Unable to handle drop: %s", error->message);

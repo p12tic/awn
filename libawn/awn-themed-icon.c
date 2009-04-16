@@ -732,13 +732,23 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   priv = icon->priv;
 
   /* First check we have valid data */
-  if (selection_data == NULL || selection_data->length == 0)
+  if (selection_data == NULL ||
+#ifdef GSEAL
+      gtk_selection_data_get_length (selection_data) == 0
+#else
+      selection_data->length == 0
+#endif
+      )
   {
     goto drag_out;
   }
 
   /* We have a valid selection, so let's process it */
+#ifdef GSEAL
+  sdata = (gchar*)gtk_selection_data_get_data (selection_data);
+#else
   sdata = (gchar*)selection_data->data;
+#endif
   if (!sdata)
     goto drag_out;
 

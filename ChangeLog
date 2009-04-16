@@ -1,5 +1,18 @@
 2009-04-15  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/taskmanager/task-icon.c:
+	* libawn/awn-applet.c:
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-tooltip.c:
+	* libawn/awn-utils.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	Make some GSEAL-related compatibility fixes.
+
+2009-04-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* src/awn-throbber.c:
 	Fix #include.
 

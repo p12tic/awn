@@ -473,8 +473,14 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   screen = gtk_widget_get_screen (GTK_WIDGET (proxy));
   gint64 socket_id = (gint64)
     gtk_socket_get_id (GTK_SOCKET (proxy));
-  gint64 panel_window_id = (gint64)
-    GDK_WINDOW_XID (gtk_widget_get_toplevel (GTK_WIDGET(proxy))->window);
+  GtkWidget *proxy_widget = gtk_widget_get_toplevel (GTK_WIDGET(proxy));
+  GdkWindow *proxy_win;
+#ifdef GSEAL
+  proxy_win = gtk_widget_get_window (proxy_widget);
+#else
+  proxy_win = proxy_widget->window;
+#endif
+  gint64 panel_window_id = (gint64)GDK_WINDOW_XID (proxy_win);
 
   exec = g_strdup_printf (APPLET_EXEC,
                           priv->path,

@@ -1108,8 +1108,13 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
   g_return_val_if_fail(AWN_IS_EFFECTS(fx) && fx->widget, NULL);
 
   AwnEffectsPrivate *priv = fx->priv;
+  cairo_t *cr;
 
-  cairo_t *cr = gdk_cairo_create(fx->widget->window);
+#ifdef GSEAL
+  cr = gdk_cairo_create (gtk_widget_get_window (fx->widget));
+#else
+  cr = gdk_cairo_create (fx->widget->window);
+#endif
   g_return_val_if_fail(cairo_status(cr) == CAIRO_STATUS_SUCCESS, NULL);
   fx->window_ctx = cr;
 
