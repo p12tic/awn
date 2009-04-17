@@ -20,7 +20,7 @@ default = 48
 description = The user-visible size of Awn (minus the offset)
 [panel/applet_list]
 type = list-string
-default = taskmanager.desktop::1
+default = @APPLETDATADIR@/taskmanager.desktop::1
 description = The list of applets for this panel ordered from ltr or ttb.
 [panel/monitor_force]
 type = bool
