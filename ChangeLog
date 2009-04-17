@@ -1,6 +1,11 @@
 2009-04-16  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* configure.in:
+	Fix help string typo.
+
+2009-04-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
 	Disable building Vala bindings by default (until the API settles down).
 
 2009-04-16  Mark Lee  <avant-wn@lazymalevolence.com>
