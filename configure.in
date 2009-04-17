@@ -63,7 +63,7 @@ dnl ==============================================
 dnl Vala support
 dnl ==============================================
 
-AC_ARG_WITH(vala, AS_HELP_STRING([--without-vala],[Disables installation of the Vala bindings]),,[with_vala=yes])
+AC_ARG_WITH(vala, AS_HELP_STRING([--with-vala],[Enables installation of the Vala bindings]),,[with_vala=no])
 
 if test "$with_vala" != "no"; then
   VALA_PROG_VALAC(0.5.4)

@@ -1,5 +1,10 @@
 2009-04-16  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* configure.in:
+	Disable building Vala bindings by default (until the API settles down).
+
+2009-04-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/Makefile.am:
 	Fix automake+marshal-related typo (Note: never use variables for source
 	file base names).
