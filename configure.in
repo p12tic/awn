@@ -2,7 +2,7 @@ AC_INIT([avant-window-navigator], [0.3.3], [])
 
 EXTRA_VERSION=
 AC_ARG_ENABLE([extra-version],
-              AS_HELP_STRING([--enable-extra_version],
+              AS_HELP_STRING([--enable-extra-version],
                              [Adds a custom string to the end of the version. Useful for packagers.]),
               [EXTRA_VERSION="$enableval"])
 AC_SUBST(EXTRA_VERSION)
