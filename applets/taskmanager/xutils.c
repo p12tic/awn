@@ -25,6 +25,7 @@
 #include "xutils.h"
 #include <string.h>
 #include <stdio.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <libwnck/libwnck.h>
 
 void
@@ -827,7 +828,7 @@ _wnck_get_icon_at_size (WnckWindow *window,
   if (res)
   {
     if (mini_icon)
-      gdk_pixbuf_unref (mini_icon);
+      g_object_unref (mini_icon);
 
     if (icon)
       return icon;

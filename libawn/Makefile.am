@@ -15,9 +15,8 @@ BUILT_SOURCES = $(ENUMFILES) \
 
 lib_LTLIBRARIES = libawn.la
 
-AM_CFLAGS = $(WARNING_FLAGS) $(DISABLE_DEPRECATED_FLAGS)
-AM_CPPFLAGS = $(STANDARD_CPPFLAGS)
-INCLUDES = \
+AM_CPPFLAGS = $(STANDARD_CPPFLAGS) \
+	$(DISABLE_DEPRECATED_FLAGS) \
 	$(AWN_CFLAGS) \
 	-I$(top_srcdir) \
 	-I$(top_builddir) \
@@ -88,6 +87,7 @@ libawn_la_SOURCES = \
 	$(BUILT_SOURCES) \
 	$(source_c) \
 	$(NULL)
+libawn_la_CFLAGS = $(WARNING_FLAGS)
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
 libawn_la_LDFLAGS = -version-info 0:1:0
 

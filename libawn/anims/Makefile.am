@@ -4,9 +4,7 @@ noinst_LTLIBRARIES = $(animations_lib)
 
 NULL = 
 
-AM_CFLAGS = $(WARNING_FLAGS) $(DISABLE_DEPRECATED_FLAGS)
-AM_CPPFLAGS = $(STANDARD_CPPFLAGS)
-INCLUDES = $(AWN_CFLAGS)
+AM_CPPFLAGS = $(STANDARD_CPPFLAGS) $(DISABLE_DEPRECATED_FLAGS) $(AWN_CFLAGS)
 
 public_headers = $(NULL)
 
@@ -45,4 +43,5 @@ libawn_effects_anims_la_SOURCES =	\
 	$(source_c)			\
 	$(NULL)
 
+libawn_effects_anims_la_CFLAGS = $(WARNING_FLAGS)
 libawn_effects_anims_la_LIBADD = $(AWN_LIBS)
