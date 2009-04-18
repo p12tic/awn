@@ -8,20 +8,20 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2009-02-01 22:57+0000\n"
-"Last-Translator: José Lou C. <knight4light@gmail.com>\n"
+"PO-Revision-Date: 2009-04-01 03:49+0000\n"
+"Last-Translator: Naoharu Ito <naoharu.itou@gmail.com>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2009-04-18 19:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:1
 #: ../awn-manager/awnManager.py:75
 msgid "Awn Manager"
-msgstr "Awn マネージャー"
+msgstr "Awn設定マネージャ"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
@@ -29,16 +29,16 @@ msgstr "Awnの設定、ランチャー、アプレットやテーマを管理す
 
 #: ../awn-manager/awnLauncher.py:160
 msgid "Invalid launcher"
-msgstr ""
+msgstr "無効なランチャー"
 
 #: ../awn-manager/awnLauncherEditor.py:142
 msgid "Select an Executable File"
-msgstr "実行ファイルを選んでください"
+msgstr "実行ファイルを選択してください"
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #, python-format
 msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr "ラーンチャの名を\"%s\"フィールドに書いてください"
+msgstr "ランチャー名を\"%s\"フィールドに入力してください"
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #: ../awn-manager/launcher-editor.glade.h:3
@@ -48,7 +48,7 @@ msgstr "<b>名前:</b>"
 #: ../awn-manager/awnLauncherEditor.py:163
 #, python-format
 msgid "Please provide a program to launch in the \"%s\" field."
-msgstr "ラーンチャを明けるためプログラムを\"%s\"フィールドに書いてください"
+msgstr "ランチャープログラムを\"%s\"フィールドに入力してください"
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #: ../awn-manager/launcher-editor.glade.h:1
@@ -58,11 +58,11 @@ msgstr "<b>コマンド:</b>"
 #: ../awn-manager/awnLauncherEditor.py:175
 #, python-format
 msgid "Couldn't save the launcher. Error: %s"
-msgstr "ラーンチャをセーブ出来ませんでした。エラー：%s"
+msgstr "ランチャーを保存できませんでした エラー：%s"
 
 #: ../awn-manager/awnManager.py:59
 msgid "Awn Manager can't be run as root."
-msgstr ""
+msgstr "Awn マネージャーは root ユーザで実行できません"
 
 #. must be on one line due to i18n
 #: ../awn-manager/awnManager.py:148
@@ -71,19 +71,21 @@ msgid ""
 "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
 "installed. It usually comes with librsvg, or a package similarly named."
 msgstr ""
+"\"%s\" アイコンが読み込めません。Gtk+ 用の SVG ローダーがインストールされているか確認してください。通常、SVG ローダーは "
+"librsvg またはそれに似たパッケージ名です。"
 
 #: ../awn-manager/awnManager.py:173
 msgid "AWN has been successfully refreshed"
-msgstr "AWNのリフレッシ成功です"
+msgstr "Awn のリフレッシュに成功しました"
 
 #: ../awn-manager/awnManager.py:179
 #: ../data/avant-window-navigator.desktop.in.in.h:2
 msgid "Avant Window Navigator"
-msgstr "Avant ウィンドウ・ナビゲーター"
+msgstr "Avant Window Navigator"
 
 #: ../awn-manager/awnManager.py:197
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "自由にカスタマイズできるドックライクな GNOME 用ウィンドウナビゲーター"
 
 #: ../awn-manager/awnManager.py:199
 msgid ""
@@ -103,8 +105,8 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
-"このプログラムは有用であることを願って頒布されますが、* 全くの無保証* "
-"です。商業可能性の保証や特定の目的への適合性は、言外に示されたものも含め全く存在しません。詳しくはGNU 一般公衆利用許諾契約書をご覧ください。"
+"このプログラムは有用であることを願って頒布されますが、 *全くの無保証* です。*商業可能性の保証* や *特定の目的への適合性* "
+"は、言外に示されたものも含め全く存在しません。詳しくはGNU一般公衆利用許諾契約書をご覧ください。"
 
 #: ../awn-manager/awnManager.py:203
 msgid ""
@@ -112,10 +114,13 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"あなたはこのプログラムと共に、GNU一般公衆利用許諾契約書の複製を一部受け取ったはずです。もし受け取っていなければ、フリーソフトウェア財団まで請求してくだ"
+"さい(宛先は the Free Software Foundation,Inc., 51 Franklin St, Fifth Floor, "
+"Boston, MA 02110-1301 USA)。"
 
 #: ../awn-manager/awnPreferences.py:247
 msgid "PNG Files"
-msgstr "PNG　ファイル"
+msgstr "PNG ファイル"
 
 #: ../awn-manager/awnPreferences.py:332 ../awn-manager/awnPreferences.py:392
 #: ../awn-manager/awnPreferences.py:447
@@ -125,7 +130,7 @@ msgstr "クラシック"
 #: ../awn-manager/awnPreferences.py:333 ../awn-manager/awnPreferences.py:393
 #: ../awn-manager/awnPreferences.py:448
 msgid "Fade"
-msgstr ""
+msgstr "フェード"
 
 #: ../awn-manager/awnPreferences.py:334 ../awn-manager/awnPreferences.py:394
 #: ../awn-manager/awnPreferences.py:449
@@ -135,50 +140,50 @@ msgstr "スポットライト"
 #: ../awn-manager/awnPreferences.py:335 ../awn-manager/awnPreferences.py:395
 #: ../awn-manager/awnPreferences.py:450
 msgid "Zoom"
-msgstr ""
+msgstr "ズーム"
 
 #: ../awn-manager/awnPreferences.py:336 ../awn-manager/awnPreferences.py:396
 #: ../awn-manager/awnPreferences.py:451
 msgid "Squish"
-msgstr ""
+msgstr "スプラッシュ"
 
 #: ../awn-manager/awnPreferences.py:337
 msgid "3D turn"
-msgstr ""
+msgstr "3D ターン"
 
 #: ../awn-manager/awnPreferences.py:338
 msgid "3D turn with spotlight"
-msgstr ""
+msgstr "スポットライト付き 3D ターン"
 
 #: ../awn-manager/awnPreferences.py:339 ../awn-manager/awnPreferences.py:399
 #: ../awn-manager/awnPreferences.py:454
 msgid "Glow"
-msgstr ""
+msgstr "発光"
 
 #: ../awn-manager/awnPreferences.py:361
 msgid "Flat bar"
-msgstr ""
+msgstr "フラット"
 
 #: ../awn-manager/awnPreferences.py:362
 msgid "3D look"
-msgstr ""
+msgstr "3D"
 
 #: ../awn-manager/awnPreferences.py:391 ../awn-manager/awnPreferences.py:446
 msgid "None"
-msgstr ""
+msgstr "なし"
 
 #: ../awn-manager/awnPreferences.py:397 ../awn-manager/awnPreferences.py:452
 msgid "3D Turn"
-msgstr ""
+msgstr "3D ターン"
 
 #: ../awn-manager/awnPreferences.py:398 ../awn-manager/awnPreferences.py:453
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "スポットライト付き 3D ターン"
 
 #: ../awn-manager/awnPreferences.py:455
 #: ../awn-manager/launcher-editor.glade.h:4
 msgid "Custom"
-msgstr ""
+msgstr "カスタム"
 
 #: ../awn-manager/awnPreferences.py:537
 #, python-format
@@ -189,7 +194,7 @@ msgstr ""
 
 #: ../awn-manager/awnPreferences.py:547
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "ディレクトリ作成の確認"
 
 #: ../awn-manager/awnPreferences.py:548
 msgid ""
@@ -199,11 +204,11 @@ msgstr ""
 
 #: ../awn-manager/launcher-editor.glade.h:2
 msgid "<b>Description:</b>"
-msgstr ""
+msgstr "<b>説明:</b>"
 
 #: ../awn-manager/launcher-editor.glade.h:5
 msgid "Directory:"
-msgstr ""
+msgstr "ディレクトリ:"
 
 #: ../awn-manager/launcher-editor.glade.h:6
 msgid "Launcher Editor"
@@ -211,19 +216,19 @@ msgstr ""
 
 #: ../awn-manager/launcher-editor.glade.h:7
 msgid "Launcher Icon"
-msgstr ""
+msgstr "ランチャーアイコン"
 
 #: ../awn-manager/launcher-editor.glade.h:8
 msgid "Open..."
-msgstr ""
+msgstr "開く..."
 
 #: ../awn-manager/launcher-editor.glade.h:9
 msgid "Select A Folder"
-msgstr ""
+msgstr "フォルダの選択"
 
 #: ../awn-manager/launcher-editor.glade.h:10
 msgid "Select Icon"
-msgstr ""
+msgstr "アイコンの選択"
 
 #: ../awn-manager/launcher-editor.glade.h:11
 msgid "Stock/In Theme"
@@ -251,11 +256,11 @@ msgstr "<b>境界</b>"
 
 #: ../awn-manager/window.glade.h:6
 msgid "<b>Customize Effects</b>"
-msgstr "<b>特撮設定</b>"
+msgstr "<b>エフェクト設定</b>"
 
 #: ../awn-manager/window.glade.h:7
 msgid "<b>General Preferences</b>"
-msgstr "<b>設定</b>"
+msgstr "<b>一般設定</b>"
 
 #: ../awn-manager/window.glade.h:8
 msgid "<b>Gradient</b>"
@@ -263,7 +268,7 @@ msgstr "グラデーション"
 
 #: ../awn-manager/window.glade.h:9
 msgid "<b>Highlight</b>"
-msgstr "<b>光沢</b>"
+msgstr "ハイライト"
 
 #: ../awn-manager/window.glade.h:10
 msgid "<b>Icon Effects</b>"
@@ -287,7 +292,7 @@ msgstr "<b>区切り</b>"
 
 #: ../awn-manager/window.glade.h:15
 msgid "<b>Startup behaviour</b>"
-msgstr ""
+msgstr "<b>スタートアップ時の動作</b>"
 
 #: ../awn-manager/window.glade.h:16
 msgid "<b>Text</b>"
@@ -319,11 +324,11 @@ msgstr "テーマの追加と削除"
 
 #: ../awn-manager/window.glade.h:23
 msgid "Alert when application window updated"
-msgstr "アプリケーションウィンドウが更新されたら警告"
+msgstr "アプリケーションウィンドウが更新されたら警告する"
 
 #: ../awn-manager/window.glade.h:24
 msgid "Arrow offset: "
-msgstr ""
+msgstr "矢印 オフセット "
 
 #: ../awn-manager/window.glade.h:25
 msgid "Attention"
@@ -335,7 +340,7 @@ msgstr "使わないときバーを自動的に隠す"
 
 #: ../awn-manager/window.glade.h:27
 msgid "Automatically start AWN on login."
-msgstr ""
+msgstr "ログイン時に Awn を自動起動する。"
 
 #: ../awn-manager/window.glade.h:28
 msgid "Background color:"
@@ -355,7 +360,7 @@ msgstr "バーの高さ: "
 
 #: ../awn-manager/window.glade.h:32
 msgid "Change the look and behaviour of the dock"
-msgstr "Dockの外観と動作を変更します"
+msgstr "ドックの外観と動作を変更します"
 
 #: ../awn-manager/window.glade.h:33
 msgid "Closing"
@@ -379,7 +384,7 @@ msgstr "パターンを有効にする"
 
 #: ../awn-manager/window.glade.h:38
 msgid "Enable rounded corners"
-msgstr "Dockの角を丸める"
+msgstr "ドックの角を丸める"
 
 #: ../awn-manager/window.glade.h:39
 msgid "Expand bar to monitor width"
@@ -387,7 +392,7 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:40
 msgid "First step color:"
-msgstr "最初の段の色"
+msgstr "一段目の色"
 
 #: ../awn-manager/window.glade.h:41
 msgid "Font:"
@@ -395,7 +400,7 @@ msgstr "フォント:"
 
 #: ../awn-manager/window.glade.h:42
 msgid "General"
-msgstr "全般"
+msgstr "一般"
 
 #: ../awn-manager/window.glade.h:43
 msgid "Glass Engine"
@@ -412,7 +417,7 @@ msgstr "アイコンエフェクトを更新されたウィンドウに対して
 
 #: ../awn-manager/window.glade.h:46
 msgid "Icon offset: "
-msgstr "アイコン偏り： "
+msgstr "アイコンのオフセット: "
 
 #: ../awn-manager/window.glade.h:47
 msgid "Install"
@@ -488,7 +493,7 @@ msgstr "ウィンドウをバーの上に表示させない"
 
 #: ../awn-manager/window.glade.h:65
 msgid "page 1"
-msgstr "ページ1"
+msgstr "ページ 1"
 
 #: ../awn-manager/window.glade.h:66
 msgid "page 2"
@@ -504,46 +509,46 @@ msgstr "ページ 4"
 
 #: ../data/avant-window-navigator.desktop.in.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "ドックライクなウィンドウナビゲーター"
 
 #: ../libawn/egg/eggdesktopfile.c:136
 #, c-format
 msgid "File is not a valid .desktop file"
-msgstr ""
+msgstr "無効な .desktop ファイルです"
 
 #: ../libawn/egg/eggdesktopfile.c:161
 #, c-format
 msgid "Unrecognized desktop file Version '%s'"
-msgstr ""
+msgstr ".desktop ファイルのバージョンが '%s' ではないようです"
 
 #: ../libawn/egg/eggdesktopfile.c:953
 #, c-format
 msgid "Starting %s"
-msgstr ""
+msgstr "%s の起動中"
 
 #: ../libawn/egg/eggdesktopfile.c:1095
 #, c-format
 msgid "Application does not accept documents on command line"
-msgstr ""
+msgstr "コマンドラインからドキュメントを指定できません"
 
 #: ../libawn/egg/eggdesktopfile.c:1191
 #, c-format
 msgid "Unrecognized launch option: %d"
-msgstr ""
+msgstr "不明な起動オプションです: %d"
 
 #: ../libawn/egg/eggdesktopfile.c:1410
 #, c-format
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
-msgstr ""
+msgstr "'Type=Link' のエントリにはドキュメントの URI を指定できません"
 
 #: ../libawn/egg/eggdesktopfile.c:1433
 #, c-format
 msgid "Not a launchable item"
-msgstr ""
+msgstr "起動可能なアイテムではありません"
 
 #: ../libawn/awn-applet.c:165
 msgid "Clear Custom Icons?"
-msgstr ""
+msgstr "カスタムアイコンをクリアしますか？"
 
 #: ../libawn/awn-applet.c:173
 msgid "Clear all custom (applet) icons?"
@@ -551,7 +556,7 @@ msgstr ""
 
 #: ../libawn/awn-applet.c:187 ../src/awn-task.c:2264 ../src/main.c:517
 msgid "Dock Preferences"
-msgstr ""
+msgstr "ドック設定"
 
 #: ../libawn/awn-applet.c:201
 msgid "Clear All Custom Icons"
@@ -560,11 +565,11 @@ msgstr ""
 #. TODO , add text, add scope options, display icon.
 #: ../libawn/awn-icons.c:308
 msgid "Change Icon?"
-msgstr ""
+msgstr "アイコンを変更しますか？"
 
 #: ../libawn/awn-icons.c:328 ../libawn/awn-icons.c:333
 msgid "Use this icon?"
-msgstr ""
+msgstr "このアイコンを使用しますか？"
 
 #: ../libawn/awn-icons.c:338
 msgid "Apply to this applet instance."
@@ -581,19 +586,19 @@ msgstr ""
 #. Create the dialog
 #: ../src/awn-task.c:1965
 msgid "Choose New Image..."
-msgstr ""
+msgstr "新しいイメージを選択..."
 
 #: ../src/awn-task.c:2057
 msgid "Preferences"
-msgstr ""
+msgstr "設定"
 
 #: ../src/awn-task.c:2060
 msgid "Change Icon..."
-msgstr ""
+msgstr "アイコンを変更..."
 
 #: ../src/awn-task.c:2072
 msgid "Change Image..."
-msgstr ""
+msgstr "イメージを変更..."
 
 #: ../src/awn-task.c:2214
 msgid "Change Icon"
@@ -601,16 +606,16 @@ msgstr "アイコンを変更する"
 
 #: ../src/main.c:157
 msgid "Prints the version number"
-msgstr ""
+msgstr "バージョンを表示する"
 
 #: ../src/main.c:162
 msgid "Starts the Avant Window Navigator dock"
-msgstr ""
+msgstr "Avant Window Navigator dock 起動"
 
 #: ../src/main.c:315
 #, c-format
 msgid "Failed to make connection to session bus: %s"
-msgstr ""
+msgstr "セッションバスの接続に失敗しました。: %s"
 
 #: ../src/main.c:330
 #, c-format
@@ -621,12 +626,12 @@ msgstr ""
 msgid ""
 "Warning: Screen isn't composited. Please run compiz (-fusion) or another "
 "compositing manager."
-msgstr ""
+msgstr "警告: 視覚効果が有効になっていません。compiz (-fusion) または、その他の視覚効果マネージャーを起動してください。"
 
 #: ../src/main.c:718
 msgid "Starting avant-window-navigator"
-msgstr ""
+msgstr "avant-window-navigator 起動中"
 
 #: ../src/main.c:720
 msgid "Don't show this message again."
-msgstr ""
+msgstr "再度、このメッセージを表示しない"

@@ -8,37 +8,37 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2009-01-24 15:59+0000\n"
-"Last-Translator: Mohd Syukor Abdul <msyukor@gmail.com>\n"
+"PO-Revision-Date: 2009-02-13 17:21+0000\n"
+"Last-Translator: myromance123 <Unknown>\n"
 "Language-Team: Malay <ms@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2009-04-18 19:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:1
 #: ../awn-manager/awnManager.py:75
 msgid "Awn Manager"
-msgstr ""
+msgstr "Pengurus AWN"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Uruskan tetapan Awn, pelancar Awn, applet Awn, dan tema Awn"
 
 #: ../awn-manager/awnLauncher.py:160
 msgid "Invalid launcher"
-msgstr ""
+msgstr "Pelancar tidak sah"
 
 #: ../awn-manager/awnLauncherEditor.py:142
 msgid "Select an Executable File"
-msgstr ""
+msgstr "Pilih Fail yang boleh Dilaksanakan"
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #, python-format
 msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr ""
+msgstr "Sila nyatakan nama bagi pelancar dalam medan \"%s\""
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #: ../awn-manager/launcher-editor.glade.h:3
@@ -49,20 +49,21 @@ msgstr "<b>Nama:</b>"
 #, python-format
 msgid "Please provide a program to launch in the \"%s\" field."
 msgstr ""
+"Sila nyatakan satu program yang hendak dilancarkan dalam medan \"%s\""
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #: ../awn-manager/launcher-editor.glade.h:1
 msgid "<b>Command:</b>"
-msgstr ""
+msgstr "<b>Arahan:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:175
 #, python-format
 msgid "Couldn't save the launcher. Error: %s"
-msgstr ""
+msgstr "Tidak dapat menyimpan pelancar. Kesalahan: %s"
 
 #: ../awn-manager/awnManager.py:59
 msgid "Awn Manager can't be run as root."
-msgstr ""
+msgstr "Pengurus Awn tidak dapat dijalankan sebagai root."
 
 #. must be on one line due to i18n
 #: ../awn-manager/awnManager.py:148
@@ -71,19 +72,24 @@ msgid ""
 "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
 "installed. It usually comes with librsvg, or a package similarly named."
 msgstr ""
+"Tidak dapat memuat ikon \"%s\".  Pastikan pemuat SVG untuk Gtk+ telah "
+"dipasang. Ia biasanya didapati bersama librsvg, atau bungkusan yang namanya "
+"serupa."
 
 #: ../awn-manager/awnManager.py:173
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN telah berjaya dijernihkan"
 
 #: ../awn-manager/awnManager.py:179
 #: ../data/avant-window-navigator.desktop.in.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Pengemudi Tetingkap Avant"
 
 #: ../awn-manager/awnManager.py:197
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
+"Pengemudi tetingkap yang seperti dock yang dapat diubahsuai mengikut "
+"citarasa anda untuk GNOME."
 
 #: ../awn-manager/awnManager.py:199
 msgid ""
@@ -92,6 +98,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Program ini merupakan perisian percuma; and boleh mengedarkannya dan/atau "
+"mengubahnya dibawah terma GNU Genaral Public License sebagimana yang telah "
+"dikeluarkan oleh Free Software Foundation; samada versi ke-2 lesen, atau "
+"(mengikut pilihan anda) sebarang versi terkemudian."
 
 #: ../awn-manager/awnManager.py:201
 msgid ""
@@ -100,6 +110,10 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Program ini diedarkan dengan harapan ianya berguna tetapi TANPA SEBARANG "
+"JAMINAN; tanpa sebarang implakasi jaminan KEBOLEHDAGANGAN atau KESESUAIAN "
+"UNTUK SESUATU TUJUAN. Sila rujuk GNU General Public LIcense untuk keterangan "
+"lanjut."
 
 #: ../awn-manager/awnManager.py:203
 msgid ""
@@ -107,10 +121,13 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Anda sepatutnya telah menerima satu salinan GNU General Public License "
+"bersama-sama dengan program ini. Jika tidak, sila tulis kepada Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-manager/awnPreferences.py:247
 msgid "PNG Files"
-msgstr ""
+msgstr "Fail PNG"
 
 #: ../awn-manager/awnPreferences.py:332 ../awn-manager/awnPreferences.py:392
 #: ../awn-manager/awnPreferences.py:447
@@ -120,60 +137,60 @@ msgstr "Klasik"
 #: ../awn-manager/awnPreferences.py:333 ../awn-manager/awnPreferences.py:393
 #: ../awn-manager/awnPreferences.py:448
 msgid "Fade"
-msgstr ""
+msgstr "Pudar"
 
 #: ../awn-manager/awnPreferences.py:334 ../awn-manager/awnPreferences.py:394
 #: ../awn-manager/awnPreferences.py:449
 msgid "Spotlight"
-msgstr ""
+msgstr "Lampu Sorot"
 
 #: ../awn-manager/awnPreferences.py:335 ../awn-manager/awnPreferences.py:395
 #: ../awn-manager/awnPreferences.py:450
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 #: ../awn-manager/awnPreferences.py:336 ../awn-manager/awnPreferences.py:396
 #: ../awn-manager/awnPreferences.py:451
 msgid "Squish"
-msgstr ""
+msgstr "Merembes"
 
 #: ../awn-manager/awnPreferences.py:337
 msgid "3D turn"
-msgstr ""
+msgstr "Putar 3D"
 
 #: ../awn-manager/awnPreferences.py:338
 msgid "3D turn with spotlight"
-msgstr ""
+msgstr "Putar 3D dengan Lampu Sorot"
 
 #: ../awn-manager/awnPreferences.py:339 ../awn-manager/awnPreferences.py:399
 #: ../awn-manager/awnPreferences.py:454
 msgid "Glow"
-msgstr ""
+msgstr "Seri"
 
 #: ../awn-manager/awnPreferences.py:361
 msgid "Flat bar"
-msgstr ""
+msgstr "Papan leper"
 
 #: ../awn-manager/awnPreferences.py:362
 msgid "3D look"
-msgstr ""
+msgstr "Rupa 3D"
 
 #: ../awn-manager/awnPreferences.py:391 ../awn-manager/awnPreferences.py:446
 msgid "None"
-msgstr ""
+msgstr "Tiada"
 
 #: ../awn-manager/awnPreferences.py:397 ../awn-manager/awnPreferences.py:452
 msgid "3D Turn"
-msgstr ""
+msgstr "Putar 3D"
 
 #: ../awn-manager/awnPreferences.py:398 ../awn-manager/awnPreferences.py:453
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "Putaran Lampu Sorot 3D"
 
 #: ../awn-manager/awnPreferences.py:455
 #: ../awn-manager/launcher-editor.glade.h:4
 msgid "Custom"
-msgstr ""
+msgstr "Buatan sendiri"
 
 #: ../awn-manager/awnPreferences.py:537
 #, python-format
@@ -181,48 +198,53 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Penciptaan secara automatik gagal. Sila cipta direktori secara manual:\n"
+"%s"
 
 #: ../awn-manager/awnPreferences.py:547
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Sahkan penciptaan direktori"
 
 #: ../awn-manager/awnPreferences.py:548
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Masih tidak wujuk apa-apa direktori bermula secara automatik untuk akaun "
+"pengguna anda.\n"
+"Adakah anda ingin saya meciptakan satu untuk anda secara automatik?"
 
 #: ../awn-manager/launcher-editor.glade.h:2
 msgid "<b>Description:</b>"
-msgstr ""
+msgstr "<b>Keterangan:</b>"
 
 #: ../awn-manager/launcher-editor.glade.h:5
 msgid "Directory:"
-msgstr ""
+msgstr "Direktori:"
 
 #: ../awn-manager/launcher-editor.glade.h:6
 msgid "Launcher Editor"
-msgstr ""
+msgstr "Pengedit Pelancar"
 
 #: ../awn-manager/launcher-editor.glade.h:7
 msgid "Launcher Icon"
-msgstr ""
+msgstr "Ikon Pelancar"
 
 #: ../awn-manager/launcher-editor.glade.h:8
 msgid "Open..."
-msgstr ""
+msgstr "Buka ..."
 
 #: ../awn-manager/launcher-editor.glade.h:9
 msgid "Select A Folder"
-msgstr ""
+msgstr "Pilih Folder"
 
 #: ../awn-manager/launcher-editor.glade.h:10
 msgid "Select Icon"
-msgstr ""
+msgstr "Pilih Ikon"
 
 #: ../awn-manager/launcher-editor.glade.h:11
 msgid "Stock/In Theme"
-msgstr ""
+msgstr "Tema Stok/Masuk"
 
 #: ../awn-manager/window.glade.h:1
 msgid "<b>Active Icon</b>"
@@ -230,7 +252,7 @@ msgstr "<b>Ikon Aktif</b>"
 
 #: ../awn-manager/window.glade.h:2
 msgid "<b>Applet Preferences</b>"
-msgstr "Pilihan-pilihan Applet"
+msgstr "<b>Pilihan-pilihan Applet</b>"
 
 #: ../awn-manager/window.glade.h:3
 msgid "<b>Arrows</b>"
@@ -282,7 +304,7 @@ msgstr "<b>Pembahagi</b>"
 
 #: ../awn-manager/window.glade.h:15
 msgid "<b>Startup behaviour</b>"
-msgstr ""
+msgstr "<b>Tingkah Laku Permulaan</b>"
 
 #: ../awn-manager/window.glade.h:16
 msgid "<b>Text</b>"
@@ -318,7 +340,7 @@ msgstr "Waspada apabila tetingkap aplikasi dikemaskini"
 
 #: ../awn-manager/window.glade.h:24
 msgid "Arrow offset: "
-msgstr ""
+msgstr "Pengimbangan Anak Panah: "
 
 #: ../awn-manager/window.glade.h:25
 msgid "Attention"
@@ -330,7 +352,7 @@ msgstr "Sembunyikan bar secara auto apabila tidak digunakan"
 
 #: ../awn-manager/window.glade.h:27
 msgid "Automatically start AWN on login."
-msgstr ""
+msgstr "Mulakan Awn secara automatik pada log masuk."
 
 #: ../awn-manager/window.glade.h:28
 msgid "Background color:"
@@ -354,7 +376,7 @@ msgstr "Tukar wajah dan sifat dock"
 
 #: ../awn-manager/window.glade.h:33
 msgid "Closing"
-msgstr "Tutup"
+msgstr "Menutup"
 
 #: ../awn-manager/window.glade.h:34
 msgid "Color:"
@@ -378,7 +400,7 @@ msgstr "Aktifkan hujung berbentuk bulat"
 
 #: ../awn-manager/window.glade.h:39
 msgid "Expand bar to monitor width"
-msgstr ""
+msgstr "Besarkan papan kepada kelebaran monitor"
 
 #: ../awn-manager/window.glade.h:40
 msgid "First step color:"
@@ -479,7 +501,7 @@ msgstr "Bar secara automatik disembunyikan apabila tidak digunakan"
 
 #: ../awn-manager/window.glade.h:63
 msgid "Transparency:"
-msgstr "Transparensi:"
+msgstr "Kehalusan:"
 
 #: ../awn-manager/window.glade.h:64
 msgid "Windows don't overlap the bar if this is set"
@@ -503,96 +525,98 @@ msgstr "halaman 4"
 
 #: ../data/avant-window-navigator.desktop.in.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Pengemudi tetingkap macam dock."
 
 #: ../libawn/egg/eggdesktopfile.c:136
 #, c-format
 msgid "File is not a valid .desktop file"
-msgstr ""
+msgstr "Fail ini bukan fail .desktop yang sah"
 
 #: ../libawn/egg/eggdesktopfile.c:161
 #, c-format
 msgid "Unrecognized desktop file Version '%s'"
-msgstr ""
+msgstr "Versi '%s' fail desktop yang tidak dikenali"
 
 #: ../libawn/egg/eggdesktopfile.c:953
 #, c-format
 msgid "Starting %s"
-msgstr ""
+msgstr "Memulakan %s"
 
 #: ../libawn/egg/eggdesktopfile.c:1095
 #, c-format
 msgid "Application does not accept documents on command line"
-msgstr ""
+msgstr "Aplikasi tidak menerima dokumen-dokumen pada command line"
 
 #: ../libawn/egg/eggdesktopfile.c:1191
 #, c-format
 msgid "Unrecognized launch option: %d"
-msgstr ""
+msgstr "Opsyen pelancaran yang tidak dikenali: %dG"
 
 #: ../libawn/egg/eggdesktopfile.c:1410
 #, c-format
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
 msgstr ""
+"Tidak dapat menghantarkan dokumen-dokumen URI kepada entri desktop "
+"'Type=Link'"
 
 #: ../libawn/egg/eggdesktopfile.c:1433
 #, c-format
 msgid "Not a launchable item"
-msgstr ""
+msgstr "Item yang tak boleh dilancarkan"
 
 #: ../libawn/awn-applet.c:165
 msgid "Clear Custom Icons?"
-msgstr ""
+msgstr "Buangkan Ikon Buatan sendiri?"
 
 #: ../libawn/awn-applet.c:173
 msgid "Clear all custom (applet) icons?"
-msgstr ""
+msgstr "Buangkan (applet) Ikon Buatan sendiri?"
 
 #: ../libawn/awn-applet.c:187 ../src/awn-task.c:2264 ../src/main.c:517
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Tetapan Dock"
 
 #: ../libawn/awn-applet.c:201
 msgid "Clear All Custom Icons"
-msgstr ""
+msgstr "Buangkan Semua Ikon Buatan Sendiri"
 
 #. TODO , add text, add scope options, display icon.
 #: ../libawn/awn-icons.c:308
 msgid "Change Icon?"
-msgstr ""
+msgstr "Tukarkan Ikon?"
 
 #: ../libawn/awn-icons.c:328 ../libawn/awn-icons.c:333
 msgid "Use this icon?"
-msgstr ""
+msgstr "Guna Ikon ini?"
 
 #: ../libawn/awn-icons.c:338
 msgid "Apply to this applet instance."
-msgstr ""
+msgstr "Gunakan pada applet ini."
 
 #: ../libawn/awn-icons.c:342
 msgid "Apply to this applet type."
-msgstr ""
+msgstr "Gunakan pada applet jenis ini."
 
 #: ../libawn/awn-icons.c:344
 msgid "Apply to icon name."
-msgstr ""
+msgstr "Gunakan pada nama ikon."
 
 #. Create the dialog
 #: ../src/awn-task.c:1965
 msgid "Choose New Image..."
-msgstr ""
+msgstr "Pilih Imej Baru..."
 
 #: ../src/awn-task.c:2057
 msgid "Preferences"
-msgstr ""
+msgstr "Tetapan"
 
 #: ../src/awn-task.c:2060
 msgid "Change Icon..."
-msgstr ""
+msgstr "Tukarkan Ikon..."
 
 #: ../src/awn-task.c:2072
 msgid "Change Image..."
-msgstr ""
+msgstr "Tukarkan Imej..."
 
 #: ../src/awn-task.c:2214
 msgid "Change Icon"
@@ -600,32 +624,34 @@ msgstr "Tukar Ikon"
 
 #: ../src/main.c:157
 msgid "Prints the version number"
-msgstr ""
+msgstr "Memaparkan nombor versi"
 
 #: ../src/main.c:162
 msgid "Starts the Avant Window Navigator dock"
-msgstr ""
+msgstr "Memulakan dock Pengemudi Tetingkap Avant"
 
 #: ../src/main.c:315
 #, c-format
 msgid "Failed to make connection to session bus: %s"
-msgstr ""
+msgstr "Gagal jadikan penyambungan kepada sesi bus : %s"
 
 #: ../src/main.c:330
 #, c-format
 msgid "There was an error requesting the name: %s"
-msgstr ""
+msgstr "Ada kesalahan mendapatkan nama: %s"
 
 #: ../src/main.c:701
 msgid ""
 "Warning: Screen isn't composited. Please run compiz (-fusion) or another "
 "compositing manager."
 msgstr ""
+"Amaran: Skrin tidak diselaraskan. Sila jalankan compiz (-fusion) atau "
+"pengurus gabungan lain."
 
 #: ../src/main.c:718
 msgid "Starting avant-window-navigator"
-msgstr ""
+msgstr "Memulakan pengemudi-tetingkap-avant"
 
 #: ../src/main.c:720
 msgid "Don't show this message again."
-msgstr ""
+msgstr "Jangan tunjukkan mesej ini lagi."

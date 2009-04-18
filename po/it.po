@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2008-12-29 01:55+0000\n"
-"Last-Translator: Alessio Treglia <quadrispro@ubuntu.com>\n"
+"PO-Revision-Date: 2009-03-02 21:37+0000\n"
+"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2009-04-18 19:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:1
@@ -33,7 +33,7 @@ msgstr ""
 
 #: ../awn-manager/awnLauncherEditor.py:142
 msgid "Select an Executable File"
-msgstr ""
+msgstr "Selezionare un file eseguibile"
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #, python-format
@@ -43,7 +43,7 @@ msgstr ""
 #: ../awn-manager/awnLauncherEditor.py:160
 #: ../awn-manager/launcher-editor.glade.h:3
 msgid "<b>Name:</b>"
-msgstr ""
+msgstr "<b>Nome:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #, python-format
@@ -53,7 +53,7 @@ msgstr ""
 #: ../awn-manager/awnLauncherEditor.py:163
 #: ../awn-manager/launcher-editor.glade.h:1
 msgid "<b>Command:</b>"
-msgstr ""
+msgstr "<b>Comando:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:175
 #, python-format
@@ -79,7 +79,7 @@ msgstr ""
 #: ../awn-manager/awnManager.py:179
 #: ../data/avant-window-navigator.desktop.in.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
 #: ../awn-manager/awnManager.py:197
 msgid "Fully customisable dock-like window navigator for GNOME."
@@ -110,7 +110,7 @@ msgstr ""
 
 #: ../awn-manager/awnPreferences.py:247
 msgid "PNG Files"
-msgstr ""
+msgstr "File PNG"
 
 #: ../awn-manager/awnPreferences.py:332 ../awn-manager/awnPreferences.py:392
 #: ../awn-manager/awnPreferences.py:447
@@ -194,11 +194,11 @@ msgstr ""
 
 #: ../awn-manager/launcher-editor.glade.h:2
 msgid "<b>Description:</b>"
-msgstr ""
+msgstr "<b>Descrizione:</b>"
 
 #: ../awn-manager/launcher-editor.glade.h:5
 msgid "Directory:"
-msgstr ""
+msgstr "Directory:"
 
 #: ../awn-manager/launcher-editor.glade.h:6
 msgid "Launcher Editor"
@@ -557,7 +557,7 @@ msgstr ""
 #. TODO , add text, add scope options, display icon.
 #: ../libawn/awn-icons.c:308
 msgid "Change Icon?"
-msgstr ""
+msgstr "Cambiare icona?"
 
 #: ../libawn/awn-icons.c:328 ../libawn/awn-icons.c:333
 msgid "Use this icon?"
@@ -573,7 +573,7 @@ msgstr ""
 
 #: ../libawn/awn-icons.c:344
 msgid "Apply to icon name."
-msgstr ""
+msgstr "Applica al nome dell'icona."
 
 #. Create the dialog
 #: ../src/awn-task.c:1965
@@ -582,7 +582,7 @@ msgstr ""
 
 #: ../src/awn-task.c:2057
 msgid "Preferences"
-msgstr ""
+msgstr "Preferenze"
 
 #: ../src/awn-task.c:2060
 msgid "Change Icon..."
@@ -590,7 +590,7 @@ msgstr ""
 
 #: ../src/awn-task.c:2072
 msgid "Change Image..."
-msgstr ""
+msgstr "Cambia Immagine..."
 
 #: ../src/awn-task.c:2214
 msgid "Change Icon"
@@ -598,7 +598,7 @@ msgstr "Cambia icona"
 
 #: ../src/main.c:157
 msgid "Prints the version number"
-msgstr ""
+msgstr "Stampa il numero di versione"
 
 #: ../src/main.c:162
 msgid "Starts the Avant Window Navigator dock"
@@ -626,4 +626,4 @@ msgstr ""
 
 #: ../src/main.c:720
 msgid "Don't show this message again."
-msgstr ""
+msgstr "Non mostrare più questo messaggio."

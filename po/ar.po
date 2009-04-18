@@ -10,15 +10,15 @@ msgstr ""
 "Project-Id-Version: _avant-window-navigator-ar\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2009-02-03 11:47+0000\n"
-"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
+"PO-Revision-Date: 2009-03-12 05:33+0000\n"
+"Last-Translator: Osama <osamak.wfm@gmail.com>\n"
 "Language-Team: Arabic\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n % 100 >= "
 "3 && n % 100 <= 10 ? 3 : n % 100 >= 11 && n % 100 <= 99 ? 4 : 5;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2009-04-18 19:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:1
@@ -74,6 +74,8 @@ msgid ""
 "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
 "installed. It usually comes with librsvg, or a package similarly named."
 msgstr ""
+"تعذّر تحميل الأيقونة \"%s\". تأكد أن مُحمّل SVG لجتك+ مثبّت. يأتي عادة مع "
+"librsvg، أو حزمة شبيهة الاسم."
 
 #: ../awn-manager/awnManager.py:173
 msgid "AWN has been successfully refreshed"
@@ -579,15 +581,15 @@ msgstr "أأستخدم هذه الأيقونة؟"
 
 #: ../libawn/awn-icons.c:338
 msgid "Apply to this applet instance."
-msgstr ""
+msgstr "طبّق على هيئة البُريمج هذا."
 
 #: ../libawn/awn-icons.c:342
 msgid "Apply to this applet type."
-msgstr ""
+msgstr "طبّق على نوع البُريمج هذا."
 
 #: ../libawn/awn-icons.c:344
 msgid "Apply to icon name."
-msgstr ""
+msgstr "طبّق على اسم الأيقونة."
 
 #. Create the dialog
 #: ../src/awn-task.c:1965
@@ -612,27 +614,28 @@ msgstr "غيّر الأيقونة"
 
 #: ../src/main.c:157
 msgid "Prints the version number"
-msgstr ""
+msgstr "يطبق رقم الإصدارة"
 
 #: ../src/main.c:162
 msgid "Starts the Avant Window Navigator dock"
-msgstr ""
+msgstr "يبدأ مرساة ملاح النوفذة أفانت"
 
 #: ../src/main.c:315
 #, c-format
 msgid "Failed to make connection to session bus: %s"
-msgstr ""
+msgstr "فشل في الاتصال بمعبر الجلسة: %s"
 
 #: ../src/main.c:330
 #, c-format
 msgid "There was an error requesting the name: %s"
-msgstr ""
+msgstr "يوجد خطأ يتطلب الاسم: %s"
 
 #: ../src/main.c:701
 msgid ""
 "Warning: Screen isn't composited. Please run compiz (-fusion) or another "
 "compositing manager."
 msgstr ""
+"تحذير: الشاشة ليست مركّبة. من فضلك شغلcompiz (-fusion) أو مدير تركيب آخر."
 
 #: ../src/main.c:718
 msgid "Starting avant-window-navigator"

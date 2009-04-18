@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2009-01-25 11:27+0000\n"
-"Last-Translator: Elias Julkunen <elias.julkunen@gmail.com>\n"
+"PO-Revision-Date: 2009-04-08 15:11+0000\n"
+"Last-Translator: Saku Laukkanen <nollapiste@nettikirje.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2009-04-18 19:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:1
@@ -62,7 +62,7 @@ msgstr "Käynnistintä ei voitu tallentaa. Virhe: %s"
 
 #: ../awn-manager/awnManager.py:59
 msgid "Awn Manager can't be run as root."
-msgstr ""
+msgstr "Awn Manageria ei voida suorittaa pääkäyttäjän oikeuksilla."
 
 #. must be on one line due to i18n
 #: ../awn-manager/awnManager.py:148

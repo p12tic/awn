@@ -1,16 +1,16 @@
-# Esperanto translation for awn
-# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# Asturian translation for awn
+# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the awn package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2008-07-28 14:53+0000\n"
-"Last-Translator: صقر بن عبدالله <Unknown>\n"
-"Language-Team: Esperanto <eo@li.org>\n"
+"PO-Revision-Date: 2009-02-12 00:20+0000\n"
+"Last-Translator: Astur <malditoastur@gmail.com>\n"
+"Language-Team: Asturian <ast@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,48 +21,48 @@ msgstr ""
 #: ../awn-manager/awn-manager.desktop.in.in.h:1
 #: ../awn-manager/awnManager.py:75
 msgid "Awn Manager"
-msgstr ""
+msgstr "Xestor Awn"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Xestione preferencies Awn, llanzadores, aplicaciones y temes"
 
 #: ../awn-manager/awnLauncher.py:160
 msgid "Invalid launcher"
-msgstr ""
+msgstr "Invalid launcher"
 
 #: ../awn-manager/awnLauncherEditor.py:142
 msgid "Select an Executable File"
-msgstr ""
+msgstr "Seleicione un Ficheru Executable"
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #, python-format
 msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr ""
+msgstr "Please provide a name for the launcher in the \"%s\" field."
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #: ../awn-manager/launcher-editor.glade.h:3
 msgid "<b>Name:</b>"
-msgstr ""
+msgstr "<b>Nome:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #, python-format
 msgid "Please provide a program to launch in the \"%s\" field."
-msgstr ""
+msgstr "Por favor, conseñe un programa a llanzar na caxella \"%s\"."
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #: ../awn-manager/launcher-editor.glade.h:1
 msgid "<b>Command:</b>"
-msgstr ""
+msgstr "<b>Comandu:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:175
 #, python-format
 msgid "Couldn't save the launcher. Error: %s"
-msgstr ""
+msgstr "Nun pudo guardase'l llanzador. Error: %s"
 
 #: ../awn-manager/awnManager.py:59
 msgid "Awn Manager can't be run as root."
-msgstr ""
+msgstr "Awn Manager nun pudo executase como alministrador."
 
 #. must be on one line due to i18n
 #: ../awn-manager/awnManager.py:148
@@ -71,19 +71,21 @@ msgid ""
 "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
 "installed. It usually comes with librsvg, or a package similarly named."
 msgstr ""
+"Nun pudo cargase l'iconu \"%s\". Tea seguru de que'l cargador SVG pa Gtk+ ta "
+"instaláu. Davezu suel venir con librsvg, o un paquete con nome asemeyáu."
 
 #: ../awn-manager/awnManager.py:173
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "L'AWN refrescóse correcho"
 
 #: ../awn-manager/awnManager.py:179
 #: ../data/avant-window-navigator.desktop.in.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
 #: ../awn-manager/awnManager.py:197
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "Dock completamente personalitzable como xestor de ventanes pa GNOME"
 
 #: ../awn-manager/awnManager.py:199
 msgid ""
@@ -92,6 +94,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version."
 
 #: ../awn-manager/awnManager.py:201
 msgid ""
@@ -100,6 +106,10 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details."
 
 #: ../awn-manager/awnManager.py:203
 msgid ""
@@ -107,73 +117,76 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 
 #: ../awn-manager/awnPreferences.py:247
 msgid "PNG Files"
-msgstr ""
+msgstr "Ficheros PNG"
 
 #: ../awn-manager/awnPreferences.py:332 ../awn-manager/awnPreferences.py:392
 #: ../awn-manager/awnPreferences.py:447
 msgid "Classic"
-msgstr ""
+msgstr "Clásicu"
 
 #: ../awn-manager/awnPreferences.py:333 ../awn-manager/awnPreferences.py:393
 #: ../awn-manager/awnPreferences.py:448
 msgid "Fade"
-msgstr ""
+msgstr "Chisbar"
 
 #: ../awn-manager/awnPreferences.py:334 ../awn-manager/awnPreferences.py:394
 #: ../awn-manager/awnPreferences.py:449
 msgid "Spotlight"
-msgstr ""
+msgstr "Focu de lluz"
 
 #: ../awn-manager/awnPreferences.py:335 ../awn-manager/awnPreferences.py:395
 #: ../awn-manager/awnPreferences.py:450
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 #: ../awn-manager/awnPreferences.py:336 ../awn-manager/awnPreferences.py:396
 #: ../awn-manager/awnPreferences.py:451
 msgid "Squish"
-msgstr ""
+msgstr "Rebotante"
 
 #: ../awn-manager/awnPreferences.py:337
 msgid "3D turn"
-msgstr ""
+msgstr "3D"
 
 #: ../awn-manager/awnPreferences.py:338
 msgid "3D turn with spotlight"
-msgstr ""
+msgstr "Xirar 3D con lluz"
 
 #: ../awn-manager/awnPreferences.py:339 ../awn-manager/awnPreferences.py:399
 #: ../awn-manager/awnPreferences.py:454
 msgid "Glow"
-msgstr ""
+msgstr "Rellumu"
 
 #: ../awn-manager/awnPreferences.py:361
 msgid "Flat bar"
-msgstr ""
+msgstr "Barra plana"
 
 #: ../awn-manager/awnPreferences.py:362
 msgid "3D look"
-msgstr ""
+msgstr "Aspeutu 3D"
 
 #: ../awn-manager/awnPreferences.py:391 ../awn-manager/awnPreferences.py:446
 msgid "None"
-msgstr ""
+msgstr "Dengún"
 
 #: ../awn-manager/awnPreferences.py:397 ../awn-manager/awnPreferences.py:452
 msgid "3D Turn"
-msgstr ""
+msgstr "Xirar 3D"
 
 #: ../awn-manager/awnPreferences.py:398 ../awn-manager/awnPreferences.py:453
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "Xirar 3D con lluz"
 
 #: ../awn-manager/awnPreferences.py:455
 #: ../awn-manager/launcher-editor.glade.h:4
 msgid "Custom"
-msgstr ""
+msgstr "Personalizáu"
 
 #: ../awn-manager/awnPreferences.py:537
 #, python-format
@@ -181,44 +194,49 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Falló la criación automática del direutoriu. Por favor, tente facela "
+"manualmente:\n"
+"%s"
 
 #: ../awn-manager/awnPreferences.py:547
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Confirma la creación de la carpeta"
 
 #: ../awn-manager/awnPreferences.py:548
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Entá nun esiste un direutoriu d'entamu pa la to cuenta d'usuariu.\n"
+"Quies que se faiga una automáticamente?"
 
 #: ../awn-manager/launcher-editor.glade.h:2
 msgid "<b>Description:</b>"
-msgstr ""
+msgstr "<b>Descripción:</b>"
 
 #: ../awn-manager/launcher-editor.glade.h:5
 msgid "Directory:"
-msgstr ""
+msgstr "Direutoriu:"
 
 #: ../awn-manager/launcher-editor.glade.h:6
 msgid "Launcher Editor"
-msgstr ""
+msgstr "Editor de llanzadores"
 
 #: ../awn-manager/launcher-editor.glade.h:7
 msgid "Launcher Icon"
-msgstr ""
+msgstr "Llanzador d'Iconu"
 
 #: ../awn-manager/launcher-editor.glade.h:8
 msgid "Open..."
-msgstr ""
+msgstr "Abrir..."
 
 #: ../awn-manager/launcher-editor.glade.h:9
 msgid "Select A Folder"
-msgstr ""
+msgstr "Seleicione una carpeta"
 
 #: ../awn-manager/launcher-editor.glade.h:10
 msgid "Select Icon"
-msgstr ""
+msgstr "Seleicione iconu"
 
 #: ../awn-manager/launcher-editor.glade.h:11
 msgid "Stock/In Theme"
@@ -226,340 +244,343 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "<b>Activa Bildsimbolo</b>"
+msgstr "<b>Iconu Activu</b>"
 
 #: ../awn-manager/window.glade.h:2
 msgid "<b>Applet Preferences</b>"
-msgstr "<b>Aplikaĵetaj Agordoj</b>"
+msgstr "<b>Preferencies de la Miniaplicación</b>"
 
 #: ../awn-manager/window.glade.h:3
 msgid "<b>Arrows</b>"
-msgstr "<b>Sagoj</b>"
+msgstr "<b>Fleches</b>"
 
 #: ../awn-manager/window.glade.h:4
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>Breta Konduto</b>"
+msgstr "<b>Comportamientu de la barra</b>"
 
 #: ../awn-manager/window.glade.h:5
 msgid "<b>Borders</b>"
-msgstr "<b>Borderoj</b>"
+msgstr "<b>Berbesos</b>"
 
 #: ../awn-manager/window.glade.h:6
 msgid "<b>Customize Effects</b>"
-msgstr "<b>Tajlori Efektoj</b>"
+msgstr "<b>Personalizar Efeutos</b>"
 
 #: ../awn-manager/window.glade.h:7
 msgid "<b>General Preferences</b>"
-msgstr "<b>Ĝeneralaj Agordoj</b>"
+msgstr "<b>Preferencies Xenerales</b>"
 
 #: ../awn-manager/window.glade.h:8
 msgid "<b>Gradient</b>"
-msgstr "<b>Kolortransiro</b>"
+msgstr "<b>Dilíu</b>"
 
 #: ../awn-manager/window.glade.h:9
 msgid "<b>Highlight</b>"
-msgstr "<b>Marki</b>"
+msgstr "<b>Resaltar</b>"
 
 #: ../awn-manager/window.glade.h:10
 msgid "<b>Icon Effects</b>"
-msgstr "<b>Bildsimbolaj Efektoj</b>"
+msgstr "<b>Efeutos de los iconos</b>"
 
 #: ../awn-manager/window.glade.h:11
 msgid "<b>Launcher Preferences</b>"
-msgstr ""
+msgstr "<b>Preferencies del Llanzador</b>"
 
 #: ../awn-manager/window.glade.h:12
 msgid "<b>Look </b>"
-msgstr "<b>Fasado </b>"
+msgstr "<b>Aspeutu</b>"
 
 #: ../awn-manager/window.glade.h:13
 msgid "<b>Pattern</b>"
-msgstr "<b>Modelo</b>"
+msgstr "<b>Patrón</b>"
 
 #: ../awn-manager/window.glade.h:14
 msgid "<b>Separator</b>"
-msgstr "<b>Apartigilo</b>"
+msgstr "<b>Separtador</b>"
 
 #: ../awn-manager/window.glade.h:15
 msgid "<b>Startup behaviour</b>"
-msgstr ""
+msgstr "<b>Comportamentu anicial</b>"
 
 #: ../awn-manager/window.glade.h:16
 msgid "<b>Text</b>"
-msgstr "<b>Teksto</b>"
+msgstr "<b>Testu</b>"
 
 #: ../awn-manager/window.glade.h:17
 msgid "<b>Themes</b>"
-msgstr "<b>Etoso</b>"
+msgstr "<b>Temes</b>"
 
 #: ../awn-manager/window.glade.h:18
 msgid "<b>Windows</b>"
-msgstr "<b>Fenestro</b>"
+msgstr "<b>Ventanes</b>"
 
 #: ../awn-manager/window.glade.h:19
 msgid "Activate"
-msgstr "Aktivigu"
+msgstr "Activar"
 
 #: ../awn-manager/window.glade.h:20
 msgid "Add and remove applets"
-msgstr ""
+msgstr "Amestar y desaniciar miniaplicaciones"
 
 #: ../awn-manager/window.glade.h:21
 msgid "Add and remove launchers"
-msgstr ""
+msgstr "Amestar y desaniciar llanzadores"
 
 #: ../awn-manager/window.glade.h:22
 msgid "Add, remove and save themes"
-msgstr ""
+msgstr "Amestar, desaniciar y guardar temes"
 
 #: ../awn-manager/window.glade.h:23
 msgid "Alert when application window updated"
-msgstr ""
+msgstr "Avisar cuando la ventana de l'aplicación s'anove"
 
 #: ../awn-manager/window.glade.h:24
 msgid "Arrow offset: "
-msgstr ""
+msgstr "Separtación de fleches: "
 
 #: ../awn-manager/window.glade.h:25
 msgid "Attention"
-msgstr ""
+msgstr "Atención"
 
 #: ../awn-manager/window.glade.h:26
 msgid "Auto hide bar when not in use"
-msgstr ""
+msgstr "Anubrir la barra automáticamente cuando nun te n'usu"
 
 #: ../awn-manager/window.glade.h:27
 msgid "Automatically start AWN on login."
-msgstr ""
+msgstr "Aniciar automáticamente l'AWN al entamar sesión"
 
 #: ../awn-manager/window.glade.h:28
 msgid "Background color:"
-msgstr ""
+msgstr "Color del fondu:"
 
 #: ../awn-manager/window.glade.h:29
 msgid "Bar Appearance"
-msgstr ""
+msgstr "Aspeutu de la Barra"
 
 #: ../awn-manager/window.glade.h:30
 msgid "Bar angle: "
-msgstr ""
+msgstr "Ángulu de la barra: "
 
 #: ../awn-manager/window.glade.h:31
 msgid "Bar height: "
-msgstr ""
+msgstr "Altor de la barra: "
 
 #: ../awn-manager/window.glade.h:32
 msgid "Change the look and behaviour of the dock"
-msgstr ""
+msgstr "Camudar l'aspeutu y comportamientu de la barra"
 
 #: ../awn-manager/window.glade.h:33
 msgid "Closing"
-msgstr ""
+msgstr "Zarrando"
 
 #: ../awn-manager/window.glade.h:34
 msgid "Color:"
-msgstr ""
+msgstr "Color:"
 
 #: ../awn-manager/window.glade.h:35
 msgid "Deactivate"
-msgstr ""
+msgstr "Desactivar"
 
 #: ../awn-manager/window.glade.h:36
 msgid "Delete"
-msgstr ""
+msgstr "Desaniciar"
 
 #: ../awn-manager/window.glade.h:37
 msgid "Enable pattern"
-msgstr ""
+msgstr "Habilitar patrón"
 
 #: ../awn-manager/window.glade.h:38
 msgid "Enable rounded corners"
-msgstr ""
+msgstr "Habilitar esquines redondeaes"
 
 #: ../awn-manager/window.glade.h:39
 msgid "Expand bar to monitor width"
-msgstr ""
+msgstr "Espander barra al anchor del monitor"
 
 #: ../awn-manager/window.glade.h:40
 msgid "First step color:"
-msgstr ""
+msgstr "Primer color:"
 
 #: ../awn-manager/window.glade.h:41
 msgid "Font:"
-msgstr ""
+msgstr "Fonte:"
 
 #: ../awn-manager/window.glade.h:42
 msgid "General"
-msgstr ""
+msgstr "Xeneral"
 
 #: ../awn-manager/window.glade.h:43
 msgid "Glass Engine"
-msgstr ""
+msgstr "Motor Cristal"
 
 #: ../awn-manager/window.glade.h:44
 msgid "Hover"
-msgstr ""
+msgstr "Hover"
 
 #: ../awn-manager/window.glade.h:45
 msgid ""
 "Icon attention effect will be activated to alert user of updated windows."
 msgstr ""
+"L'efeutu d'atención de iconos activaráse  p'avisar al usuariu d'anovamientos "
+"nes ventanes."
 
 #: ../awn-manager/window.glade.h:46
 msgid "Icon offset: "
-msgstr ""
+msgstr "Desplazamientu de los iconos: "
 
 #: ../awn-manager/window.glade.h:47
 msgid "Install"
-msgstr ""
+msgstr "Instalar"
 
 #: ../awn-manager/window.glade.h:48
 msgid "Internal border:"
-msgstr ""
+msgstr "Berbesu internu:"
 
 #: ../awn-manager/window.glade.h:49
 msgid "Keep below maximized windows when not in use"
-msgstr ""
+msgstr "Caltener debaxo les ventanes maximizaes cuando nun te n'usu"
 
 #: ../awn-manager/window.glade.h:50
 msgid "Launching"
-msgstr ""
+msgstr "Llanzando"
 
 #: ../awn-manager/window.glade.h:51
 msgid "Main border:"
-msgstr ""
+msgstr "Berbesu principal:"
 
 #: ../awn-manager/window.glade.h:52
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr ""
+msgstr "Les ventanes maximizaes nun tapecen la barra (requier reaniciar)"
 
 #: ../awn-manager/window.glade.h:53
 msgid "Opening"
-msgstr ""
+msgstr "Abriendo"
 
 #: ../awn-manager/window.glade.h:54
 msgid "Pattern Engine"
-msgstr ""
+msgstr "Motor de Patrones"
 
 #: ../awn-manager/window.glade.h:55
 msgid "Second step color:"
-msgstr ""
+msgstr "Color del segundu planu:"
 
 #: ../awn-manager/window.glade.h:56
 msgid "Separator color:"
-msgstr ""
+msgstr "Color del separtador"
 
 #: ../awn-manager/window.glade.h:57
 msgid "Shadow color:"
-msgstr ""
+msgstr "Color de la solombra:"
 
 #: ../awn-manager/window.glade.h:58
 msgid "Show separator between launchers and tasks"
-msgstr ""
+msgstr "Amosar separtador ente llanzadores y xeres"
 
 #: ../awn-manager/window.glade.h:59
 msgid "Show windows from all viewports"
-msgstr ""
+msgstr "Amosar les ventanes de tolos espacios de trabayu"
 
 #: ../awn-manager/window.glade.h:60
 msgid "Task Appearance"
-msgstr ""
+msgstr "Aspeutu de les xeres"
 
 #: ../awn-manager/window.glade.h:61
 msgid "Tasks have arrows"
-msgstr ""
+msgstr "Les xeres tienen fleches"
 
 #: ../awn-manager/window.glade.h:62
 msgid "The bar automatically hides when not used"
-msgstr ""
+msgstr "La barra anúbrese de mou automáticu cuando nun te n'usu"
 
 #: ../awn-manager/window.glade.h:63
 msgid "Transparency:"
-msgstr ""
+msgstr "Tresparencia:"
 
 #: ../awn-manager/window.glade.h:64
 msgid "Windows don't overlap the bar if this is set"
-msgstr ""
+msgstr "Les ventanes nun se superponen a la barra si esto ta activo"
 
 #: ../awn-manager/window.glade.h:65
 msgid "page 1"
-msgstr ""
+msgstr "páxina 1"
 
 #: ../awn-manager/window.glade.h:66
 msgid "page 2"
-msgstr ""
+msgstr "páxina 2"
 
 #: ../awn-manager/window.glade.h:67
 msgid "page 3"
-msgstr ""
+msgstr "páxina 3"
 
 #: ../awn-manager/window.glade.h:68
 msgid "page 4"
-msgstr ""
+msgstr "páxina 4"
 
 #: ../data/avant-window-navigator.desktop.in.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Un restolador de ventanes tipu panel."
 
 #: ../libawn/egg/eggdesktopfile.c:136
 #, c-format
 msgid "File is not a valid .desktop file"
-msgstr ""
+msgstr "El ficheru nun ye un ficheru .desktop válidu"
 
 #: ../libawn/egg/eggdesktopfile.c:161
 #, c-format
 msgid "Unrecognized desktop file Version '%s'"
-msgstr ""
+msgstr "Versión '%s' del ficheru desktop non reconocida"
 
 #: ../libawn/egg/eggdesktopfile.c:953
 #, c-format
 msgid "Starting %s"
-msgstr ""
+msgstr "Entamando %s"
 
 #: ../libawn/egg/eggdesktopfile.c:1095
 #, c-format
 msgid "Application does not accept documents on command line"
-msgstr ""
+msgstr "L'aplicación nun aceuta documentos na llinia de comandos"
 
 #: ../libawn/egg/eggdesktopfile.c:1191
 #, c-format
 msgid "Unrecognized launch option: %d"
-msgstr ""
+msgstr "Opción de llanzamientu non reconocida: %d"
 
 #: ../libawn/egg/eggdesktopfile.c:1410
 #, c-format
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
 msgstr ""
+"Nun se pueden pasar los URIs de documentos a entraes d'escritoriu 'Type=Link'"
 
 #: ../libawn/egg/eggdesktopfile.c:1433
 #, c-format
 msgid "Not a launchable item"
-msgstr ""
+msgstr "Nun ye un elementu llanzable"
 
 #: ../libawn/awn-applet.c:165
 msgid "Clear Custom Icons?"
-msgstr ""
+msgstr "Llimpiar Iconos personalizaos?"
 
 #: ../libawn/awn-applet.c:173
 msgid "Clear all custom (applet) icons?"
-msgstr ""
+msgstr "Llimpiar tolos iconos (applet) personalizaos?"
 
 #: ../libawn/awn-applet.c:187 ../src/awn-task.c:2264 ../src/main.c:517
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Preferencies del Dock"
 
 #: ../libawn/awn-applet.c:201
 msgid "Clear All Custom Icons"
-msgstr ""
+msgstr "Llimpiar tolos iconos personalizaos"
 
 #. TODO , add text, add scope options, display icon.
 #: ../libawn/awn-icons.c:308
 msgid "Change Icon?"
-msgstr ""
+msgstr "Camudar iconu?"
 
 #: ../libawn/awn-icons.c:328 ../libawn/awn-icons.c:333
 msgid "Use this icon?"
-msgstr ""
+msgstr "Utilizar esti iconu?"
 
 #: ../libawn/awn-icons.c:338
 msgid "Apply to this applet instance."
@@ -567,50 +588,50 @@ msgstr ""
 
 #: ../libawn/awn-icons.c:342
 msgid "Apply to this applet type."
-msgstr ""
+msgstr "Aplicar a estos tipos d'applet"
 
 #: ../libawn/awn-icons.c:344
 msgid "Apply to icon name."
-msgstr ""
+msgstr "Aplicar al nome del iconu"
 
 #. Create the dialog
 #: ../src/awn-task.c:1965
 msgid "Choose New Image..."
-msgstr ""
+msgstr "Escoyer Nueva Imaxe..."
 
 #: ../src/awn-task.c:2057
 msgid "Preferences"
-msgstr ""
+msgstr "Preferencies"
 
 #: ../src/awn-task.c:2060
 msgid "Change Icon..."
-msgstr ""
+msgstr "Camudar iconu..."
 
 #: ../src/awn-task.c:2072
 msgid "Change Image..."
-msgstr ""
+msgstr "Camudar Imaxe..."
 
 #: ../src/awn-task.c:2214
 msgid "Change Icon"
-msgstr ""
+msgstr "Camudar iconu"
 
 #: ../src/main.c:157
 msgid "Prints the version number"
-msgstr ""
+msgstr "Amuesa'l númberu de versión"
 
 #: ../src/main.c:162
 msgid "Starts the Avant Window Navigator dock"
-msgstr ""
+msgstr "Anicia'l dock d'Avant Window Navigator"
 
 #: ../src/main.c:315
 #, c-format
 msgid "Failed to make connection to session bus: %s"
-msgstr ""
+msgstr "Nun pudo criase la conexón col bus de la sesión: %s"
 
 #: ../src/main.c:330
 #, c-format
 msgid "There was an error requesting the name: %s"
-msgstr ""
+msgstr "Hebo un fallu solicitando'l nome: %s"
 
 #: ../src/main.c:701
 msgid ""
@@ -620,8 +641,8 @@ msgstr ""
 
 #: ../src/main.c:718
 msgid "Starting avant-window-navigator"
-msgstr ""
+msgstr "Aniciando'l avant-window-navigator"
 
 #: ../src/main.c:720
 msgid "Don't show this message again."
-msgstr ""
+msgstr "Nun amosar otra vegada esti mensax."

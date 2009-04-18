@@ -1,16 +1,16 @@
-# Esperanto translation for awn
-# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# Nepali translation for awn
+# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the awn package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2008-07-28 14:53+0000\n"
-"Last-Translator: صقر بن عبدالله <Unknown>\n"
-"Language-Team: Esperanto <eo@li.org>\n"
+"PO-Revision-Date: 2009-02-13 10:57+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Nepali <ne@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -226,43 +226,43 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:1
 msgid "<b>Active Icon</b>"
-msgstr "<b>Activa Bildsimbolo</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:2
 msgid "<b>Applet Preferences</b>"
-msgstr "<b>Aplikaĵetaj Agordoj</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:3
 msgid "<b>Arrows</b>"
-msgstr "<b>Sagoj</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:4
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>Breta Konduto</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:5
 msgid "<b>Borders</b>"
-msgstr "<b>Borderoj</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:6
 msgid "<b>Customize Effects</b>"
-msgstr "<b>Tajlori Efektoj</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:7
 msgid "<b>General Preferences</b>"
-msgstr "<b>Ĝeneralaj Agordoj</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:8
 msgid "<b>Gradient</b>"
-msgstr "<b>Kolortransiro</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:9
 msgid "<b>Highlight</b>"
-msgstr "<b>Marki</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:10
 msgid "<b>Icon Effects</b>"
-msgstr "<b>Bildsimbolaj Efektoj</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:11
 msgid "<b>Launcher Preferences</b>"
@@ -270,15 +270,15 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:12
 msgid "<b>Look </b>"
-msgstr "<b>Fasado </b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:13
 msgid "<b>Pattern</b>"
-msgstr "<b>Modelo</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:14
 msgid "<b>Separator</b>"
-msgstr "<b>Apartigilo</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:15
 msgid "<b>Startup behaviour</b>"
@@ -286,19 +286,19 @@ msgstr ""
 
 #: ../awn-manager/window.glade.h:16
 msgid "<b>Text</b>"
-msgstr "<b>Teksto</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:17
 msgid "<b>Themes</b>"
-msgstr "<b>Etoso</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:18
 msgid "<b>Windows</b>"
-msgstr "<b>Fenestro</b>"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:19
 msgid "Activate"
-msgstr "Aktivigu"
+msgstr ""
 
 #: ../awn-manager/window.glade.h:20
 msgid "Add and remove applets"

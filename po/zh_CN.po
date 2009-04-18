@@ -9,61 +9,61 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2008-09-14 00:54+0000\n"
-"Last-Translator: Aron Xu <Unknown>\n"
+"PO-Revision-Date: 2009-04-03 06:10+0000\n"
+"Last-Translator: Timothy Qiu <Unknown>\n"
 "Language-Team: Simplified Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2009-04-18 19:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:1
 #: ../awn-manager/awnManager.py:75
 msgid "Awn Manager"
-msgstr ""
+msgstr "Awn 管理器"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "管理 Awn 首选项、启动器、小程序和主题"
 
 #: ../awn-manager/awnLauncher.py:160
 msgid "Invalid launcher"
-msgstr ""
+msgstr "无效的启动器"
 
 #: ../awn-manager/awnLauncherEditor.py:142
 msgid "Select an Executable File"
-msgstr ""
+msgstr "选择可执行文件"
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #, python-format
 msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr ""
+msgstr "请在“%s”字段中为启动器提供一个名字。"
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #: ../awn-manager/launcher-editor.glade.h:3
 msgid "<b>Name:</b>"
-msgstr ""
+msgstr "<b>名称：</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #, python-format
 msgid "Please provide a program to launch in the \"%s\" field."
-msgstr ""
+msgstr "请在“%s”字段中提供一个需要启动的程序。"
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #: ../awn-manager/launcher-editor.glade.h:1
 msgid "<b>Command:</b>"
-msgstr ""
+msgstr "<b>命令：</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:175
 #, python-format
 msgid "Couldn't save the launcher. Error: %s"
-msgstr ""
+msgstr "无法保存该启动器。错误：%s"
 
 #: ../awn-manager/awnManager.py:59
 msgid "Awn Manager can't be run as root."
-msgstr ""
+msgstr "Awn 管理器无法以 root 身份运行。"
 
 #. must be on one line due to i18n
 #: ../awn-manager/awnManager.py:148
@@ -71,20 +71,20 @@ msgstr ""
 msgid ""
 "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
 "installed. It usually comes with librsvg, or a package similarly named."
-msgstr ""
+msgstr "无法加载“%s”图标，请确认已安装 SVG 的 GTK+ 加载器，它通常位于 librsvg 或名称相似的软件包中。"
 
 #: ../awn-manager/awnManager.py:173
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN 刷新成功"
 
 #: ../awn-manager/awnManager.py:179
 #: ../data/avant-window-navigator.desktop.in.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant 窗口导航器"
 
 #: ../awn-manager/awnManager.py:197
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "为 GNOME 设计的完全可定制的 Dock 式窗口导航器。"
 
 #: ../awn-manager/awnManager.py:199
 msgid ""
@@ -92,7 +92,7 @@ msgid ""
 "under the terms of the GNU General Public License as published by the Free "
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
-msgstr ""
+msgstr "该程序是自由软件；您可以在自由软件基金会 GNU 通用公共许可证版本 2 (或其后继版本)的条款下重新分发或修改它。"
 
 #: ../awn-manager/awnManager.py:201
 msgid ""
@@ -101,6 +101,8 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"本程序发布的目的是希望它能够对您有用，但我们没有任何保证；对于以任何用途使用它所造成的任何直接或间接后果都不承担任何责任。请参看 GNU GPL "
+"协议中的细节。"
 
 #: ../awn-manager/awnManager.py:203
 msgid ""
@@ -108,73 +110,75 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"您应该收到与本程序在一起的一份 GNU 通用公共许可证；如果没有，请致信美国马萨诸塞州 02110-1301 波士顿富兰克林大街 51 号 5 "
+"层自由软件基金会。"
 
 #: ../awn-manager/awnPreferences.py:247
 msgid "PNG Files"
-msgstr ""
+msgstr "PNG 文件"
 
 #: ../awn-manager/awnPreferences.py:332 ../awn-manager/awnPreferences.py:392
 #: ../awn-manager/awnPreferences.py:447
 msgid "Classic"
-msgstr ""
+msgstr "经典"
 
 #: ../awn-manager/awnPreferences.py:333 ../awn-manager/awnPreferences.py:393
 #: ../awn-manager/awnPreferences.py:448
 msgid "Fade"
-msgstr ""
+msgstr "淡入淡出"
 
 #: ../awn-manager/awnPreferences.py:334 ../awn-manager/awnPreferences.py:394
 #: ../awn-manager/awnPreferences.py:449
 msgid "Spotlight"
-msgstr ""
+msgstr "聚光灯"
 
 #: ../awn-manager/awnPreferences.py:335 ../awn-manager/awnPreferences.py:395
 #: ../awn-manager/awnPreferences.py:450
 msgid "Zoom"
-msgstr ""
+msgstr "缩放"
 
 #: ../awn-manager/awnPreferences.py:336 ../awn-manager/awnPreferences.py:396
 #: ../awn-manager/awnPreferences.py:451
 msgid "Squish"
-msgstr ""
+msgstr "弹跳"
 
 #: ../awn-manager/awnPreferences.py:337
 msgid "3D turn"
-msgstr ""
+msgstr "3D 旋转"
 
 #: ../awn-manager/awnPreferences.py:338
 msgid "3D turn with spotlight"
-msgstr ""
+msgstr "3D 旋转+聚光灯"
 
 #: ../awn-manager/awnPreferences.py:339 ../awn-manager/awnPreferences.py:399
 #: ../awn-manager/awnPreferences.py:454
 msgid "Glow"
-msgstr ""
+msgstr "光晕"
 
 #: ../awn-manager/awnPreferences.py:361
 msgid "Flat bar"
-msgstr ""
+msgstr "平面展台"
 
 #: ../awn-manager/awnPreferences.py:362
 msgid "3D look"
-msgstr ""
+msgstr "3D 展台"
 
 #: ../awn-manager/awnPreferences.py:391 ../awn-manager/awnPreferences.py:446
 msgid "None"
-msgstr ""
+msgstr "无"
 
 #: ../awn-manager/awnPreferences.py:397 ../awn-manager/awnPreferences.py:452
 msgid "3D Turn"
-msgstr ""
+msgstr "3D 旋转"
 
 #: ../awn-manager/awnPreferences.py:398 ../awn-manager/awnPreferences.py:453
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "3D 旋转+聚光灯"
 
 #: ../awn-manager/awnPreferences.py:455
 #: ../awn-manager/launcher-editor.glade.h:4
 msgid "Custom"
-msgstr ""
+msgstr "自定义"
 
 #: ../awn-manager/awnPreferences.py:537
 #, python-format
@@ -182,44 +186,48 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"自动创建目录失败，请手动创建：\n"
+"%s"
 
 #: ../awn-manager/awnPreferences.py:547
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "确定建立目录"
 
 #: ../awn-manager/awnPreferences.py:548
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"当前用户无自启动目录。\n"
+"需要我为您自动创建吗？"
 
 #: ../awn-manager/launcher-editor.glade.h:2
 msgid "<b>Description:</b>"
-msgstr ""
+msgstr "<b>描述：</b>"
 
 #: ../awn-manager/launcher-editor.glade.h:5
 msgid "Directory:"
-msgstr ""
+msgstr "目录："
 
 #: ../awn-manager/launcher-editor.glade.h:6
 msgid "Launcher Editor"
-msgstr ""
+msgstr "启动器编辑器"
 
 #: ../awn-manager/launcher-editor.glade.h:7
 msgid "Launcher Icon"
-msgstr ""
+msgstr "启动器图标"
 
 #: ../awn-manager/launcher-editor.glade.h:8
 msgid "Open..."
-msgstr ""
+msgstr "打开..."
 
 #: ../awn-manager/launcher-editor.glade.h:9
 msgid "Select A Folder"
-msgstr ""
+msgstr "选择文件夹"
 
 #: ../awn-manager/launcher-editor.glade.h:10
 msgid "Select Icon"
-msgstr ""
+msgstr "选择图标"
 
 #: ../awn-manager/launcher-editor.glade.h:11
 msgid "Stock/In Theme"
@@ -283,7 +291,7 @@ msgstr "<b>分割线</b>"
 
 #: ../awn-manager/window.glade.h:15
 msgid "<b>Startup behaviour</b>"
-msgstr ""
+msgstr "<b>启动行为</b>"
 
 #: ../awn-manager/window.glade.h:16
 msgid "<b>Text</b>"
@@ -299,15 +307,15 @@ msgstr "<b>窗口</b>"
 
 #: ../awn-manager/window.glade.h:19
 msgid "Activate"
-msgstr "添加到栏上"
+msgstr "启动"
 
 #: ../awn-manager/window.glade.h:20
 msgid "Add and remove applets"
-msgstr "添加/移除applets"
+msgstr "添加/删除 applets"
 
 #: ../awn-manager/window.glade.h:21
 msgid "Add and remove launchers"
-msgstr "添加/移除快速启动器"
+msgstr "添加/删除快速启动器"
 
 #: ../awn-manager/window.glade.h:22
 msgid "Add, remove and save themes"
@@ -319,7 +327,7 @@ msgstr "当应用窗口更新后提示"
 
 #: ../awn-manager/window.glade.h:24
 msgid "Arrow offset: "
-msgstr ""
+msgstr "箭头偏移量: "
 
 #: ../awn-manager/window.glade.h:25
 msgid "Attention"
@@ -331,7 +339,7 @@ msgstr "不使用时自动隐藏"
 
 #: ../awn-manager/window.glade.h:27
 msgid "Automatically start AWN on login."
-msgstr ""
+msgstr "登录时自动启动 AWN"
 
 #: ../awn-manager/window.glade.h:28
 msgid "Background color:"
@@ -379,7 +387,7 @@ msgstr "启用圆化边角"
 
 #: ../awn-manager/window.glade.h:39
 msgid "Expand bar to monitor width"
-msgstr ""
+msgstr "工具栏扩展为显示器宽度"
 
 #: ../awn-manager/window.glade.h:40
 msgid "First step color:"
@@ -500,96 +508,96 @@ msgstr "第4页"
 
 #: ../data/avant-window-navigator.desktop.in.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Dock样式的窗口导航"
 
 #: ../libawn/egg/eggdesktopfile.c:136
 #, c-format
 msgid "File is not a valid .desktop file"
-msgstr ""
+msgstr "文件不是有效的.desktop文件"
 
 #: ../libawn/egg/eggdesktopfile.c:161
 #, c-format
 msgid "Unrecognized desktop file Version '%s'"
-msgstr ""
+msgstr "不可识别的桌面文件版本‘%s’"
 
 #: ../libawn/egg/eggdesktopfile.c:953
 #, c-format
 msgid "Starting %s"
-msgstr ""
+msgstr "正在启动 %s"
 
 #: ../libawn/egg/eggdesktopfile.c:1095
 #, c-format
 msgid "Application does not accept documents on command line"
-msgstr ""
+msgstr "应用程序在命令行中不接受文档"
 
 #: ../libawn/egg/eggdesktopfile.c:1191
 #, c-format
 msgid "Unrecognized launch option: %d"
-msgstr ""
+msgstr "不可识别的启动选项：%d"
 
 #: ../libawn/egg/eggdesktopfile.c:1410
 #, c-format
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
-msgstr ""
+msgstr "无法将文档URLs传递给类型为Link的桌面项"
 
 #: ../libawn/egg/eggdesktopfile.c:1433
 #, c-format
 msgid "Not a launchable item"
-msgstr ""
+msgstr "不是一个可启动项"
 
 #: ../libawn/awn-applet.c:165
 msgid "Clear Custom Icons?"
-msgstr ""
+msgstr "清除自定义图标?"
 
 #: ../libawn/awn-applet.c:173
 msgid "Clear all custom (applet) icons?"
-msgstr ""
+msgstr "清除所有自定义(applet)图标?"
 
 #: ../libawn/awn-applet.c:187 ../src/awn-task.c:2264 ../src/main.c:517
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Dock首选项"
 
 #: ../libawn/awn-applet.c:201
 msgid "Clear All Custom Icons"
-msgstr ""
+msgstr "清除所有自定义图标"
 
 #. TODO , add text, add scope options, display icon.
 #: ../libawn/awn-icons.c:308
 msgid "Change Icon?"
-msgstr ""
+msgstr "改变图标?"
 
 #: ../libawn/awn-icons.c:328 ../libawn/awn-icons.c:333
 msgid "Use this icon?"
-msgstr ""
+msgstr "使用此图标?"
 
 #: ../libawn/awn-icons.c:338
 msgid "Apply to this applet instance."
-msgstr ""
+msgstr "应用于此小程序实例。"
 
 #: ../libawn/awn-icons.c:342
 msgid "Apply to this applet type."
-msgstr ""
+msgstr "应用于此小程序类型。"
 
 #: ../libawn/awn-icons.c:344
 msgid "Apply to icon name."
-msgstr ""
+msgstr "应用于图标名。"
 
 #. Create the dialog
 #: ../src/awn-task.c:1965
 msgid "Choose New Image..."
-msgstr ""
+msgstr "选择新的图片..."
 
 #: ../src/awn-task.c:2057
 msgid "Preferences"
-msgstr ""
+msgstr "首选项"
 
 #: ../src/awn-task.c:2060
 msgid "Change Icon..."
-msgstr ""
+msgstr "更改图标..."
 
 #: ../src/awn-task.c:2072
 msgid "Change Image..."
-msgstr ""
+msgstr "更改图片...."
 
 #: ../src/awn-task.c:2214
 msgid "Change Icon"
@@ -597,35 +605,35 @@ msgstr "更改图标"
 
 #: ../src/main.c:157
 msgid "Prints the version number"
-msgstr ""
+msgstr "打印版本序号"
 
 #: ../src/main.c:162
 msgid "Starts the Avant Window Navigator dock"
-msgstr ""
+msgstr "启动Avant Window Navigator Dock"
 
 #: ../src/main.c:315
 #, c-format
 msgid "Failed to make connection to session bus: %s"
-msgstr ""
+msgstr "连接到会话总线失败: %s"
 
 #: ../src/main.c:330
 #, c-format
 msgid "There was an error requesting the name: %s"
-msgstr ""
+msgstr "请求该名称时出错: %s"
 
 #: ../src/main.c:701
 msgid ""
 "Warning: Screen isn't composited. Please run compiz (-fusion) or another "
 "compositing manager."
-msgstr ""
+msgstr "警告:没有使用复合窗口管理器.请运行compiz (-fusion)或者其他的复合管理器."
 
 #: ../src/main.c:718
 msgid "Starting avant-window-navigator"
-msgstr ""
+msgstr "正在启动 avant-window-navigator"
 
 #: ../src/main.c:720
 msgid "Don't show this message again."
-msgstr ""
+msgstr "不再显示此消息"
 
 #~ msgid "Arrow offset (requires restart): "
 #~ msgstr "箭头偏移(需要重启程序)： "

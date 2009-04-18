@@ -8,20 +8,20 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2008-12-22 10:01+0000\n"
-"Last-Translator: Fakhrul Rijal <frijal@gmail.com>\n"
+"PO-Revision-Date: 2009-02-15 15:46+0000\n"
+"Last-Translator: Arief Setiadi Wibowo <Unknown>\n"
 "Language-Team: Javanese <jv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 0;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2009-04-18 19:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:1
 #: ../awn-manager/awnManager.py:75
 msgid "Awn Manager"
-msgstr ""
+msgstr "Awn Manager"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
@@ -43,7 +43,7 @@ msgstr ""
 #: ../awn-manager/awnLauncherEditor.py:160
 #: ../awn-manager/launcher-editor.glade.h:3
 msgid "<b>Name:</b>"
-msgstr ""
+msgstr "<b>Jeneng:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #, python-format
@@ -53,7 +53,7 @@ msgstr ""
 #: ../awn-manager/awnLauncherEditor.py:163
 #: ../awn-manager/launcher-editor.glade.h:1
 msgid "<b>Command:</b>"
-msgstr ""
+msgstr "<b>Perintah:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:175
 #, python-format
@@ -79,7 +79,7 @@ msgstr ""
 #: ../awn-manager/awnManager.py:179
 #: ../data/avant-window-navigator.desktop.in.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
 #: ../awn-manager/awnManager.py:197
 msgid "Fully customisable dock-like window navigator for GNOME."
@@ -110,12 +110,12 @@ msgstr ""
 
 #: ../awn-manager/awnPreferences.py:247
 msgid "PNG Files"
-msgstr ""
+msgstr "Berkas PNG"
 
 #: ../awn-manager/awnPreferences.py:332 ../awn-manager/awnPreferences.py:392
 #: ../awn-manager/awnPreferences.py:447
 msgid "Classic"
-msgstr ""
+msgstr "Klasik"
 
 #: ../awn-manager/awnPreferences.py:333 ../awn-manager/awnPreferences.py:393
 #: ../awn-manager/awnPreferences.py:448
@@ -160,7 +160,7 @@ msgstr ""
 
 #: ../awn-manager/awnPreferences.py:391 ../awn-manager/awnPreferences.py:446
 msgid "None"
-msgstr ""
+msgstr "Ora ana"
 
 #: ../awn-manager/awnPreferences.py:397 ../awn-manager/awnPreferences.py:452
 msgid "3D Turn"
@@ -194,11 +194,11 @@ msgstr ""
 
 #: ../awn-manager/launcher-editor.glade.h:2
 msgid "<b>Description:</b>"
-msgstr ""
+msgstr "<b>Katrangan:</b>"
 
 #: ../awn-manager/launcher-editor.glade.h:5
 msgid "Directory:"
-msgstr ""
+msgstr "Direktori:"
 
 #: ../awn-manager/launcher-editor.glade.h:6
 msgid "Launcher Editor"
@@ -210,7 +210,7 @@ msgstr ""
 
 #: ../awn-manager/launcher-editor.glade.h:8
 msgid "Open..."
-msgstr ""
+msgstr "Buka..."
 
 #: ../awn-manager/launcher-editor.glade.h:9
 msgid "Select A Folder"

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2009-02-06 03:50+0000\n"
+"PO-Revision-Date: 2009-03-16 02:47+0000\n"
 "Last-Translator: Baldur <baldurpet@gmail.com>\n"
 "Language-Team: Icelandic <is@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2009-04-18 19:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:1
@@ -60,11 +60,11 @@ msgstr "<b>Skipun:</b>"
 #: ../awn-manager/awnLauncherEditor.py:175
 #, python-format
 msgid "Couldn't save the launcher. Error: %s"
-msgstr "Gat ekki vistað ræsi. Villa: %s"
+msgstr "Gat ekki vistað ræsinn. Villa: %s"
 
 #: ../awn-manager/awnManager.py:59
 msgid "Awn Manager can't be run as root."
-msgstr "Ekki er hægt að keyra Awn stikuna sem rót."
+msgstr "Ekki er hægt að keyra Awn sem rót."
 
 #. must be on one line due to i18n
 #: ../awn-manager/awnManager.py:148
@@ -73,13 +73,13 @@ msgid ""
 "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
 "installed. It usually comes with librsvg, or a package similarly named."
 msgstr ""
-"Gat ekki hlaðið inn „%s“ tákninu. Gakktu úr skugga um það að SVG hlaðinn "
+"Gat ekki hlaðið inn „%s“ tákninu. Gakktu úr skugga um það að SVG loader "
 "fyrir Gtk+ sé inn á tölvunni þinni. Hann fylgir vanalega með librsvg, eða "
 "öðrum pakka sem heitir líku nafni."
 
 #: ../awn-manager/awnManager.py:173
 msgid "AWN has been successfully refreshed"
-msgstr "Búið er að hressa upp á Awn"
+msgstr "Awn er uppfært"
 
 #: ../awn-manager/awnManager.py:179
 #: ../data/avant-window-navigator.desktop.in.in.h:2
@@ -153,11 +153,11 @@ msgstr "Kremja"
 
 #: ../awn-manager/awnPreferences.py:337
 msgid "3D turn"
-msgstr "Snúast í þrívídd"
+msgstr "Snúast"
 
 #: ../awn-manager/awnPreferences.py:338
 msgid "3D turn with spotlight"
-msgstr "Snúast í þrívídd með ljósi"
+msgstr "Snúast með ljósi"
 
 #: ../awn-manager/awnPreferences.py:339 ../awn-manager/awnPreferences.py:399
 #: ../awn-manager/awnPreferences.py:454
@@ -166,7 +166,7 @@ msgstr "Lýsa"
 
 #: ../awn-manager/awnPreferences.py:361
 msgid "Flat bar"
-msgstr "Flöt stika"
+msgstr "Venjuleg stika"
 
 #: ../awn-manager/awnPreferences.py:362
 msgid "3D look"
@@ -178,16 +178,16 @@ msgstr "Ekkert"
 
 #: ../awn-manager/awnPreferences.py:397 ../awn-manager/awnPreferences.py:452
 msgid "3D Turn"
-msgstr "Snúast í þrívídd"
+msgstr "Snúast"
 
 #: ../awn-manager/awnPreferences.py:398 ../awn-manager/awnPreferences.py:453
 msgid "3D Spotlight Turn"
-msgstr "Þrívíddar ljós sem snýst"
+msgstr "Snúast með ljósi"
 
 #: ../awn-manager/awnPreferences.py:455
 #: ../awn-manager/launcher-editor.glade.h:4
 msgid "Custom"
-msgstr "Sérsniðið"
+msgstr "Þú ræður"
 
 #: ../awn-manager/awnPreferences.py:537
 #, python-format
@@ -195,7 +195,7 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
-"Ekki tókst að búa til sjálfkrafa. Búðu möppuna til sjálfur:\n"
+"Ekki tókst að búa möppuna til sjálfkrafa. Þú verður að gera það sjálfur:\n"
 "%s"
 
 #: ../awn-manager/awnPreferences.py:547
@@ -207,7 +207,7 @@ msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
-"Það er engin mappa sem keyrir sjálfkraga fyrir þennan notandaaðgang.\n"
+"Það er engin mappa sem keyrir sjálfkrafa fyrir þennan notandaaðgang.\n"
 "Viltu að Awn búi til þannig möppu fyrir þig?"
 
 #: ../awn-manager/launcher-editor.glade.h:2
@@ -240,7 +240,7 @@ msgstr "Veldu tákn"
 
 #: ../awn-manager/launcher-editor.glade.h:11
 msgid "Stock/In Theme"
-msgstr ""
+msgstr "Samansafn tákna"
 
 #: ../awn-manager/window.glade.h:1
 msgid "<b>Active Icon</b>"
@@ -256,7 +256,7 @@ msgstr "<b>Örvar</b>"
 
 #: ../awn-manager/window.glade.h:4
 msgid "<b>Bar behaviour</b>"
-msgstr "<b>Högun stikunnar</b>"
+msgstr "<b>Hvernig stikan á að hegða sér</b>"
 
 #: ../awn-manager/window.glade.h:5
 msgid "<b>Borders</b>"
@@ -276,15 +276,15 @@ msgstr "<b>Stigull</b>"
 
 #: ../awn-manager/window.glade.h:9
 msgid "<b>Highlight</b>"
-msgstr "<b>Auðkenna</b>"
+msgstr "<b>Auðkenning</b>"
 
 #: ../awn-manager/window.glade.h:10
 msgid "<b>Icon Effects</b>"
-msgstr "<b>Brellur á táknum</b>"
+msgstr "<b>Hegðun táknanna</b>"
 
 #: ../awn-manager/window.glade.h:11
 msgid "<b>Launcher Preferences</b>"
-msgstr "<b>Stillingar ræsis</b>"
+msgstr "<b>Stillingar á ræsum</b>"
 
 #: ../awn-manager/window.glade.h:12
 msgid "<b>Look </b>"
@@ -296,7 +296,7 @@ msgstr "<b>Mynstur</b>"
 
 #: ../awn-manager/window.glade.h:14
 msgid "<b>Separator</b>"
-msgstr "<b>Lína sem skiptir</b>"
+msgstr "<b>Strik sem skilur að</b>"
 
 #: ../awn-manager/window.glade.h:15
 msgid "<b>Startup behaviour</b>"
@@ -304,7 +304,7 @@ msgstr "<b>Hegðun forrist þegar opnast</b>"
 
 #: ../awn-manager/window.glade.h:16
 msgid "<b>Text</b>"
-msgstr "<b>Texti</b>"
+msgstr "<b>Textinn</b>"
 
 #: ../awn-manager/window.glade.h:17
 msgid "<b>Themes</b>"
@@ -320,7 +320,7 @@ msgstr "Virkja"
 
 #: ../awn-manager/window.glade.h:20
 msgid "Add and remove applets"
-msgstr "Bæta við og fjarlægja forritum"
+msgstr "Bæta við og fjarlægja forrit"
 
 #: ../awn-manager/window.glade.h:21
 msgid "Add and remove launchers"
@@ -332,11 +332,11 @@ msgstr "Bæta við, vista eða fjarlægja þemu"
 
 #: ../awn-manager/window.glade.h:23
 msgid "Alert when application window updated"
-msgstr "Koma með áminningu þegar gluggi forrits uppfæris"
+msgstr "Minna mig á þegar gluggi einhvers forrits er uppfærður"
 
 #: ../awn-manager/window.glade.h:24
 msgid "Arrow offset: "
-msgstr ""
+msgstr "Hliðrun örvanna: "
 
 #: ../awn-manager/window.glade.h:25
 msgid "Attention"
@@ -368,7 +368,7 @@ msgstr "Hæð stikunnar: "
 
 #: ../awn-manager/window.glade.h:32
 msgid "Change the look and behaviour of the dock"
-msgstr "Breyta útliti og hegðun á stikunni"
+msgstr "Breyta því hvernig stikan lítur út og hegðar sér"
 
 #: ../awn-manager/window.glade.h:33
 msgid "Closing"
@@ -388,19 +388,19 @@ msgstr "Eyða"
 
 #: ../awn-manager/window.glade.h:37
 msgid "Enable pattern"
-msgstr "Leyfa mynstur"
+msgstr "Nota mynstur"
 
 #: ../awn-manager/window.glade.h:38
 msgid "Enable rounded corners"
-msgstr "Leyfa hringlótt horn"
+msgstr "Gera hornin mýkri"
 
 #: ../awn-manager/window.glade.h:39
 msgid "Expand bar to monitor width"
-msgstr ""
+msgstr "Láta stikuna vera jafn breiða og skjáinn"
 
 #: ../awn-manager/window.glade.h:40
 msgid "First step color:"
-msgstr ""
+msgstr "Litur fyrsta skrefs:"
 
 #: ../awn-manager/window.glade.h:41
 msgid "Font:"
@@ -412,11 +412,11 @@ msgstr "Almennt"
 
 #: ../awn-manager/window.glade.h:43
 msgid "Glass Engine"
-msgstr ""
+msgstr "Gler"
 
 #: ../awn-manager/window.glade.h:44
 msgid "Hover"
-msgstr ""
+msgstr "Svífa"
 
 #: ../awn-manager/window.glade.h:45
 msgid ""
@@ -433,11 +433,11 @@ msgstr "Setja upp"
 
 #: ../awn-manager/window.glade.h:48
 msgid "Internal border:"
-msgstr ""
+msgstr "Innri lína:"
 
 #: ../awn-manager/window.glade.h:49
 msgid "Keep below maximized windows when not in use"
-msgstr ""
+msgstr "Láta stikuna fara undir hámarkaða glugga þegar hún er óvirk"
 
 #: ../awn-manager/window.glade.h:50
 msgid "Launching"
@@ -445,11 +445,11 @@ msgstr "Ræsi"
 
 #: ../awn-manager/window.glade.h:51
 msgid "Main border:"
-msgstr ""
+msgstr "Aðallína:"
 
 #: ../awn-manager/window.glade.h:52
 msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr ""
+msgstr "Hámarkaðir gluggar hylja ekki stikuna (þarfnast endurræsingar)"
 
 #: ../awn-manager/window.glade.h:53
 msgid "Opening"
@@ -457,23 +457,23 @@ msgstr "Opna"
 
 #: ../awn-manager/window.glade.h:54
 msgid "Pattern Engine"
-msgstr ""
+msgstr "Mynstur"
 
 #: ../awn-manager/window.glade.h:55
 msgid "Second step color:"
-msgstr ""
+msgstr "Litur annars skrefs:"
 
 #: ../awn-manager/window.glade.h:56
 msgid "Separator color:"
-msgstr ""
+msgstr "Litur striksins:"
 
 #: ../awn-manager/window.glade.h:57
 msgid "Shadow color:"
-msgstr "Litur skugga:"
+msgstr "Litur skuggans:"
 
 #: ../awn-manager/window.glade.h:58
 msgid "Show separator between launchers and tasks"
-msgstr "Hafa strik til að skilja á milli ræsa og forrita sem eru í gangi"
+msgstr "Hafa strik á milli ræsa og þeirra forrita sem eru í gangi"
 
 #: ../awn-manager/window.glade.h:59
 msgid "Show windows from all viewports"
@@ -481,15 +481,15 @@ msgstr "Sýna glugga frá öllum vinnusvæðum"
 
 #: ../awn-manager/window.glade.h:60
 msgid "Task Appearance"
-msgstr ""
+msgstr "Útlit"
 
 #: ../awn-manager/window.glade.h:61
 msgid "Tasks have arrows"
-msgstr ""
+msgstr "Hafa örvar undir táknum"
 
 #: ../awn-manager/window.glade.h:62
 msgid "The bar automatically hides when not used"
-msgstr ""
+msgstr "Láta stikuna hverfa þegar hún er ekki í notkun"
 
 #: ../awn-manager/window.glade.h:63
 msgid "Transparency:"
@@ -497,7 +497,7 @@ msgstr "Gagnsæi:"
 
 #: ../awn-manager/window.glade.h:64
 msgid "Windows don't overlap the bar if this is set"
-msgstr ""
+msgstr "Lætur glugga ekki skarast við stikuna"
 
 #: ../awn-manager/window.glade.h:65
 msgid "page 1"
@@ -517,7 +517,7 @@ msgstr "síða 4"
 
 #: ../data/avant-window-navigator.desktop.in.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Stika sem hægt er að stilla."
 
 #: ../libawn/egg/eggdesktopfile.c:136
 #, c-format
@@ -560,7 +560,7 @@ msgstr "Eyða myndum sem þú hefur bætt við?"
 
 #: ../libawn/awn-applet.c:173
 msgid "Clear all custom (applet) icons?"
-msgstr "Eyða öllum myndum fyrir forrit sem þú hefur bætt við?"
+msgstr "Viltu eyða öllum táknum fyrir forrit sem þú hefur bætt við?"
 
 #: ../libawn/awn-applet.c:187 ../src/awn-task.c:2264 ../src/main.c:517
 msgid "Dock Preferences"
@@ -568,16 +568,16 @@ msgstr "Stillingar fyrir stikuna"
 
 #: ../libawn/awn-applet.c:201
 msgid "Clear All Custom Icons"
-msgstr ""
+msgstr "Eyða öllum táknum sem þú hefur gert"
 
 #. TODO , add text, add scope options, display icon.
 #: ../libawn/awn-icons.c:308
 msgid "Change Icon?"
-msgstr "Breyta mynd?"
+msgstr "Breyta tákni?"
 
 #: ../libawn/awn-icons.c:328 ../libawn/awn-icons.c:333
 msgid "Use this icon?"
-msgstr "Nota þessa mynd?"
+msgstr "Viltu nota þetta tákn?"
 
 #: ../libawn/awn-icons.c:338
 msgid "Apply to this applet instance."
@@ -602,7 +602,7 @@ msgstr "Stillingar"
 
 #: ../src/awn-task.c:2060
 msgid "Change Icon..."
-msgstr "Breyta táknmynd..."
+msgstr "Breyta tákni..."
 
 #: ../src/awn-task.c:2072
 msgid "Change Image..."
@@ -610,7 +610,7 @@ msgstr "Breyta mynd..."
 
 #: ../src/awn-task.c:2214
 msgid "Change Icon"
-msgstr "Breyta táknmynd"
+msgstr "Breyta tákninu"
 
 #: ../src/main.c:157
 msgid "Prints the version number"
@@ -628,13 +628,15 @@ msgstr ""
 #: ../src/main.c:330
 #, c-format
 msgid "There was an error requesting the name: %s"
-msgstr ""
+msgstr "Villa kom upp við að biðja um nafnið: %s"
 
 #: ../src/main.c:701
 msgid ""
 "Warning: Screen isn't composited. Please run compiz (-fusion) or another "
 "compositing manager."
 msgstr ""
+"Aðvörun: Skjárnin er ekki samsettur. Reyndu að keyra compiz (-fusion) eða "
+"önnur lík forrit."
 
 #: ../src/main.c:718
 msgid "Starting avant-window-navigator"

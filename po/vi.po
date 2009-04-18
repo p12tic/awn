@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2009-01-18 07:25+0000\n"
-"Last-Translator: Thien Pham <Unknown>\n"
+"PO-Revision-Date: 2009-03-18 17:15+0000\n"
+"Last-Translator: khanh_coltech <phantrongkhanh87@gmail.com>\n"
 "Language-Team: Vietnamese <vi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2009-04-18 19:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:1
@@ -25,44 +25,44 @@ msgstr ""
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Quản lý tùy chỉnh, bộ khởi chạy, tiểu dụng và diện mạo"
 
 #: ../awn-manager/awnLauncher.py:160
 msgid "Invalid launcher"
-msgstr ""
+msgstr "Bộ khởi chạy không hợp lệ"
 
 #: ../awn-manager/awnLauncherEditor.py:142
 msgid "Select an Executable File"
-msgstr ""
+msgstr "Chọn một tệp Có thể thực thi"
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #, python-format
 msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr ""
+msgstr "Vui lòng đặt tên cho bộ khởi chạy ở ô \"%s\"."
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #: ../awn-manager/launcher-editor.glade.h:3
 msgid "<b>Name:</b>"
-msgstr ""
+msgstr "<b>Tên:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #, python-format
 msgid "Please provide a program to launch in the \"%s\" field."
-msgstr ""
+msgstr "Vui lòng cung cấp một chương trình để chạy trong ô \"%s\"."
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #: ../awn-manager/launcher-editor.glade.h:1
 msgid "<b>Command:</b>"
-msgstr ""
+msgstr "<b>Lệnh:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:175
 #, python-format
 msgid "Couldn't save the launcher. Error: %s"
-msgstr ""
+msgstr "Không thể lưu bộ khởi chạy. Lỗi: %s"
 
 #: ../awn-manager/awnManager.py:59
 msgid "Awn Manager can't be run as root."
-msgstr ""
+msgstr "Awn Manager không thể chạy với quyền root."
 
 #. must be on one line due to i18n
 #: ../awn-manager/awnManager.py:148

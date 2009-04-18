@@ -8,61 +8,61 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2008-03-09 17:14+0000\n"
-"Last-Translator: Tiago Silva <Unknown>\n"
+"PO-Revision-Date: 2009-04-05 16:54+0000\n"
+"Last-Translator: Dark_Webster <pedro_flores_16@hotmail.com>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2009-04-18 19:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:1
 #: ../awn-manager/awnManager.py:75
 msgid "Awn Manager"
-msgstr ""
+msgstr "Gestor do Awn"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Gerir as preferências, iniciadores, applets e temas do Awn"
 
 #: ../awn-manager/awnLauncher.py:160
 msgid "Invalid launcher"
-msgstr ""
+msgstr "Iniciador inválido"
 
 #: ../awn-manager/awnLauncherEditor.py:142
 msgid "Select an Executable File"
-msgstr ""
+msgstr "Seleccione um ficheiro executável"
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #, python-format
 msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr ""
+msgstr "Por favor, insira um nome para o iniciador no campo \"%s\"."
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #: ../awn-manager/launcher-editor.glade.h:3
 msgid "<b>Name:</b>"
-msgstr ""
+msgstr "<b>Nome:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #, python-format
 msgid "Please provide a program to launch in the \"%s\" field."
-msgstr ""
+msgstr "Por favor, indique um programa a iniciar no campo \"%s\"."
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #: ../awn-manager/launcher-editor.glade.h:1
 msgid "<b>Command:</b>"
-msgstr ""
+msgstr "<b>Comando:</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:175
 #, python-format
 msgid "Couldn't save the launcher. Error: %s"
-msgstr ""
+msgstr "Não foi possível salvar o iniciador. Erro: %s"
 
 #: ../awn-manager/awnManager.py:59
 msgid "Awn Manager can't be run as root."
-msgstr ""
+msgstr "O Gestor do Awn não pode ser corrido como root."
 
 #. must be on one line due to i18n
 #: ../awn-manager/awnManager.py:148
@@ -79,7 +79,7 @@ msgstr ""
 #: ../awn-manager/awnManager.py:179
 #: ../data/avant-window-navigator.desktop.in.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
 #: ../awn-manager/awnManager.py:197
 msgid "Fully customisable dock-like window navigator for GNOME."
@@ -92,6 +92,9 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Esta aplicação é livre; pode ser redistribuída e/ou modificada sob os termos "
+"da Licença Pública Geral GNU tal como publicada pela Free Software "
+"Foundation; na sua versão 2 ou (a seu critério) em qualquer versão posterior."
 
 #: ../awn-manager/awnManager.py:201
 msgid ""
@@ -100,6 +103,10 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Esta aplicação é distribuída na expectativa de que seja útil, mas SEM "
+"QUALQUER GARANTIA; sem mesmo a garantia implícita de COMERCIABILIDADE ou "
+"ADEQUAÇÃO A UM DETERMINADO PROPÓSITO.  Consulte a Licença Pública Genérica "
+"GNU para mais detalhes."
 
 #: ../awn-manager/awnManager.py:203
 msgid ""
@@ -110,17 +117,17 @@ msgstr ""
 
 #: ../awn-manager/awnPreferences.py:247
 msgid "PNG Files"
-msgstr ""
+msgstr "Ficheiros PNG"
 
 #: ../awn-manager/awnPreferences.py:332 ../awn-manager/awnPreferences.py:392
 #: ../awn-manager/awnPreferences.py:447
 msgid "Classic"
-msgstr ""
+msgstr "Clássico"
 
 #: ../awn-manager/awnPreferences.py:333 ../awn-manager/awnPreferences.py:393
 #: ../awn-manager/awnPreferences.py:448
 msgid "Fade"
-msgstr ""
+msgstr "Desvanecer"
 
 #: ../awn-manager/awnPreferences.py:334 ../awn-manager/awnPreferences.py:394
 #: ../awn-manager/awnPreferences.py:449
@@ -130,16 +137,16 @@ msgstr ""
 #: ../awn-manager/awnPreferences.py:335 ../awn-manager/awnPreferences.py:395
 #: ../awn-manager/awnPreferences.py:450
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 #: ../awn-manager/awnPreferences.py:336 ../awn-manager/awnPreferences.py:396
 #: ../awn-manager/awnPreferences.py:451
 msgid "Squish"
-msgstr ""
+msgstr "Espremer"
 
 #: ../awn-manager/awnPreferences.py:337
 msgid "3D turn"
-msgstr ""
+msgstr "Rotação 3D"
 
 #: ../awn-manager/awnPreferences.py:338
 msgid "3D turn with spotlight"
@@ -148,23 +155,23 @@ msgstr ""
 #: ../awn-manager/awnPreferences.py:339 ../awn-manager/awnPreferences.py:399
 #: ../awn-manager/awnPreferences.py:454
 msgid "Glow"
-msgstr ""
+msgstr "Brilho"
 
 #: ../awn-manager/awnPreferences.py:361
 msgid "Flat bar"
-msgstr ""
+msgstr "Barra lisa"
 
 #: ../awn-manager/awnPreferences.py:362
 msgid "3D look"
-msgstr ""
+msgstr "Aspecto 3D"
 
 #: ../awn-manager/awnPreferences.py:391 ../awn-manager/awnPreferences.py:446
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
 #: ../awn-manager/awnPreferences.py:397 ../awn-manager/awnPreferences.py:452
 msgid "3D Turn"
-msgstr ""
+msgstr "Rotação 3D"
 
 #: ../awn-manager/awnPreferences.py:398 ../awn-manager/awnPreferences.py:453
 msgid "3D Spotlight Turn"
@@ -173,7 +180,7 @@ msgstr ""
 #: ../awn-manager/awnPreferences.py:455
 #: ../awn-manager/launcher-editor.glade.h:4
 msgid "Custom"
-msgstr ""
+msgstr "Personalizado"
 
 #: ../awn-manager/awnPreferences.py:537
 #, python-format
@@ -191,10 +198,13 @@ msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Ainda não existe nenhuma pasta de arranque automático para a sua conta de "
+"utilizador.\n"
+"Deseja que seja criada uma automaticamente?"
 
 #: ../awn-manager/launcher-editor.glade.h:2
 msgid "<b>Description:</b>"
-msgstr ""
+msgstr "<b>Descrição:</b>"
 
 #: ../awn-manager/launcher-editor.glade.h:5
 msgid "Directory:"
@@ -206,11 +216,11 @@ msgstr ""
 
 #: ../awn-manager/launcher-editor.glade.h:7
 msgid "Launcher Icon"
-msgstr ""
+msgstr "Ícone do Iniciador"
 
 #: ../awn-manager/launcher-editor.glade.h:8
 msgid "Open..."
-msgstr ""
+msgstr "Abrir..."
 
 #: ../awn-manager/launcher-editor.glade.h:9
 msgid "Select A Folder"
@@ -330,7 +340,7 @@ msgstr "Ocultar automaticamente"
 
 #: ../awn-manager/window.glade.h:27
 msgid "Automatically start AWN on login."
-msgstr ""
+msgstr "Carregar automaticamente o AWN ao fazer login"
 
 #: ../awn-manager/window.glade.h:28
 msgid "Background color:"
@@ -378,7 +388,7 @@ msgstr "Activar cantos arredondados"
 
 #: ../awn-manager/window.glade.h:39
 msgid "Expand bar to monitor width"
-msgstr ""
+msgstr "Expandir barra até á largura do ecrã"
 
 #: ../awn-manager/window.glade.h:40
 msgid "First step color:"
@@ -507,7 +517,7 @@ msgstr ""
 #: ../libawn/egg/eggdesktopfile.c:136
 #, c-format
 msgid "File is not a valid .desktop file"
-msgstr ""
+msgstr "Este ficheiro não é um ficheiro .desktop válido"
 
 #: ../libawn/egg/eggdesktopfile.c:161
 #, c-format
@@ -517,17 +527,17 @@ msgstr ""
 #: ../libawn/egg/eggdesktopfile.c:953
 #, c-format
 msgid "Starting %s"
-msgstr ""
+msgstr "A iniciar %s"
 
 #: ../libawn/egg/eggdesktopfile.c:1095
 #, c-format
 msgid "Application does not accept documents on command line"
-msgstr ""
+msgstr "A aplicação não aceita documentos na linha de comandos"
 
 #: ../libawn/egg/eggdesktopfile.c:1191
 #, c-format
 msgid "Unrecognized launch option: %d"
-msgstr ""
+msgstr "Opção de iniciação não reconhecida: %d"
 
 #: ../libawn/egg/eggdesktopfile.c:1410
 #, c-format
@@ -537,7 +547,7 @@ msgstr ""
 #: ../libawn/egg/eggdesktopfile.c:1433
 #, c-format
 msgid "Not a launchable item"
-msgstr ""
+msgstr "Não é um item iniciável"
 
 #: ../libawn/awn-applet.c:165
 msgid "Clear Custom Icons?"
@@ -549,7 +559,7 @@ msgstr ""
 
 #: ../libawn/awn-applet.c:187 ../src/awn-task.c:2264 ../src/main.c:517
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Preferências da dock"
 
 #: ../libawn/awn-applet.c:201
 msgid "Clear All Custom Icons"
@@ -558,7 +568,7 @@ msgstr ""
 #. TODO , add text, add scope options, display icon.
 #: ../libawn/awn-icons.c:308
 msgid "Change Icon?"
-msgstr ""
+msgstr "Alterar ícone?"
 
 #: ../libawn/awn-icons.c:328 ../libawn/awn-icons.c:333
 msgid "Use this icon?"
@@ -583,7 +593,7 @@ msgstr ""
 
 #: ../src/awn-task.c:2057
 msgid "Preferences"
-msgstr ""
+msgstr "Preferências"
 
 #: ../src/awn-task.c:2060
 msgid "Change Icon..."
@@ -627,4 +637,4 @@ msgstr ""
 
 #: ../src/main.c:720
 msgid "Don't show this message again."
-msgstr ""
+msgstr "Não apresentar esta mensagem novamente."

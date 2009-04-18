@@ -9,61 +9,63 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2008-10-05 20:26+0000\n"
-"Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
+"PO-Revision-Date: 2009-04-11 23:07+0000\n"
+"Last-Translator: Pierre Slamich <pierre.slamich@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2009-04-18 19:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:1
 #: ../awn-manager/awnManager.py:75
 msgid "Awn Manager"
-msgstr ""
+msgstr "Gestionnaire Awn"
 
 #: ../awn-manager/awn-manager.desktop.in.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr ""
+"Permet de gérer les préférences, les lanceurs, les applets et les thèmes Awn"
 
 #: ../awn-manager/awnLauncher.py:160
 msgid "Invalid launcher"
-msgstr ""
+msgstr "Lanceur invalide"
 
 #: ../awn-manager/awnLauncherEditor.py:142
 msgid "Select an Executable File"
-msgstr ""
+msgstr "Sélectionner un Fichier Exécutable"
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #, python-format
 msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr ""
+msgstr "Merci de fournir un nom pour le lanceur dans le champ \"%s\"."
 
 #: ../awn-manager/awnLauncherEditor.py:160
 #: ../awn-manager/launcher-editor.glade.h:3
 msgid "<b>Name:</b>"
-msgstr ""
+msgstr "<b>Nom :</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #, python-format
 msgid "Please provide a program to launch in the \"%s\" field."
-msgstr ""
+msgstr "Merci de fournir un programme à lancer dans le champ \"%s\"."
 
 #: ../awn-manager/awnLauncherEditor.py:163
 #: ../awn-manager/launcher-editor.glade.h:1
 msgid "<b>Command:</b>"
-msgstr ""
+msgstr "<b>Commande :</b>"
 
 #: ../awn-manager/awnLauncherEditor.py:175
 #, python-format
 msgid "Couldn't save the launcher. Error: %s"
-msgstr ""
+msgstr "Impossible de sauver le lanceur. Erreur : %s"
 
 #: ../awn-manager/awnManager.py:59
 msgid "Awn Manager can't be run as root."
 msgstr ""
+"Le gestionnaire Awn ne peut pas être lancé avec les droits d'administration."
 
 #. must be on one line due to i18n
 #: ../awn-manager/awnManager.py:148
@@ -72,19 +74,24 @@ msgid ""
 "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
 "installed. It usually comes with librsvg, or a package similarly named."
 msgstr ""
+"Impossible de charger l'icône \"%s\". Assurez vous que le chargeur SVG pour "
+"Gtk+ est installé. Il l'est habituellement avec librsvg, ou un paquet au nom "
+"similaire."
 
 #: ../awn-manager/awnManager.py:173
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN a été rafraichi avec succès."
 
 #: ../awn-manager/awnManager.py:179
 #: ../data/avant-window-navigator.desktop.in.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
 #: ../awn-manager/awnManager.py:197
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
+"Navigateur de fenêtres de type \"dock\" entièrement personnalisable pour "
+"GNOME."
 
 #: ../awn-manager/awnManager.py:199
 msgid ""
@@ -93,6 +100,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Ce logiciel est un logiciel libre ; vous pouvez le diffuser et/ou le "
+"modifier suivant les termes de la Licence Publique Générale GNU telle que "
+"publiée par la Free Software Foundation ; soit la version 2 de cette "
+"licence, soit (à votre convenance) une version ultérieure."
 
 #: ../awn-manager/awnManager.py:201
 msgid ""
@@ -101,6 +112,10 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Ce programme est diffusé dans l'espoir qu'il sera utile, mais SANS AUCUNE "
+"GARANTIE ; sans même une garantie implicite de COMMERCIALISATION ou "
+"d'ADÉQUATION À UN USAGE PARTICULIER. Voyez la Licence Publique Générale GNU "
+"pour plus de détails."
 
 #: ../awn-manager/awnManager.py:203
 msgid ""
@@ -108,73 +123,76 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Vous devriez avoir reçu une copie de la Licence Public Générale (GPL) GNU "
+"avec ce programme ; Si ce n'est pas le cas, écrivez à la Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-manager/awnPreferences.py:247
 msgid "PNG Files"
-msgstr ""
+msgstr "Fichiers PNG"
 
 #: ../awn-manager/awnPreferences.py:332 ../awn-manager/awnPreferences.py:392
 #: ../awn-manager/awnPreferences.py:447
 msgid "Classic"
-msgstr ""
+msgstr "Classique"
 
 #: ../awn-manager/awnPreferences.py:333 ../awn-manager/awnPreferences.py:393
 #: ../awn-manager/awnPreferences.py:448
 msgid "Fade"
-msgstr ""
+msgstr "Fondu"
 
 #: ../awn-manager/awnPreferences.py:334 ../awn-manager/awnPreferences.py:394
 #: ../awn-manager/awnPreferences.py:449
 msgid "Spotlight"
-msgstr ""
+msgstr "Projecteur"
 
 #: ../awn-manager/awnPreferences.py:335 ../awn-manager/awnPreferences.py:395
 #: ../awn-manager/awnPreferences.py:450
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 #: ../awn-manager/awnPreferences.py:336 ../awn-manager/awnPreferences.py:396
 #: ../awn-manager/awnPreferences.py:451
 msgid "Squish"
-msgstr ""
+msgstr "Rebonds"
 
 #: ../awn-manager/awnPreferences.py:337
 msgid "3D turn"
-msgstr ""
+msgstr "Rotation 3D"
 
 #: ../awn-manager/awnPreferences.py:338
 msgid "3D turn with spotlight"
-msgstr ""
+msgstr "Rotation 3D avec projecteur"
 
 #: ../awn-manager/awnPreferences.py:339 ../awn-manager/awnPreferences.py:399
 #: ../awn-manager/awnPreferences.py:454
 msgid "Glow"
-msgstr ""
+msgstr "Halo"
 
 #: ../awn-manager/awnPreferences.py:361
 msgid "Flat bar"
-msgstr ""
+msgstr "Barre plate"
 
 #: ../awn-manager/awnPreferences.py:362
 msgid "3D look"
-msgstr ""
+msgstr "Aspect 3D"
 
 #: ../awn-manager/awnPreferences.py:391 ../awn-manager/awnPreferences.py:446
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 #: ../awn-manager/awnPreferences.py:397 ../awn-manager/awnPreferences.py:452
 msgid "3D Turn"
-msgstr ""
+msgstr "Rotation 3D"
 
 #: ../awn-manager/awnPreferences.py:398 ../awn-manager/awnPreferences.py:453
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "Rotation 3D avec projecteur"
 
 #: ../awn-manager/awnPreferences.py:455
 #: ../awn-manager/launcher-editor.glade.h:4
 msgid "Custom"
-msgstr ""
+msgstr "Personnalisé"
 
 #: ../awn-manager/awnPreferences.py:537
 #, python-format
@@ -182,48 +200,52 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"La création automatique a échoué. Veuillez créer manuellement le dossier:\n"
+"%s"
 
 #: ../awn-manager/awnPreferences.py:547
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Confirmer la création du dossier"
 
 #: ../awn-manager/awnPreferences.py:548
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Il n'y a pas de répertoire autostart pré-existant pour votre compte.\n"
+"Voulez-vous que je vous le crée automatiquement ?"
 
 #: ../awn-manager/launcher-editor.glade.h:2
 msgid "<b>Description:</b>"
-msgstr ""
+msgstr "<b>Description :</b>"
 
 #: ../awn-manager/launcher-editor.glade.h:5
 msgid "Directory:"
-msgstr ""
+msgstr "Dossier :"
 
 #: ../awn-manager/launcher-editor.glade.h:6
 msgid "Launcher Editor"
-msgstr ""
+msgstr "Éditeur de lanceur"
 
 #: ../awn-manager/launcher-editor.glade.h:7
 msgid "Launcher Icon"
-msgstr ""
+msgstr "Icône du lanceur"
 
 #: ../awn-manager/launcher-editor.glade.h:8
 msgid "Open..."
-msgstr ""
+msgstr "Ouvrir…"
 
 #: ../awn-manager/launcher-editor.glade.h:9
 msgid "Select A Folder"
-msgstr ""
+msgstr "Sélectionnez un répertoire"
 
 #: ../awn-manager/launcher-editor.glade.h:10
 msgid "Select Icon"
-msgstr ""
+msgstr "Sélectionnez une Icône"
 
 #: ../awn-manager/launcher-editor.glade.h:11
 msgid "Stock/In Theme"
-msgstr ""
+msgstr "Icônes Standards/du thème"
 
 #: ../awn-manager/window.glade.h:1
 msgid "<b>Active Icon</b>"
@@ -283,7 +305,7 @@ msgstr "<b>Séparateur</b>"
 
 #: ../awn-manager/window.glade.h:15
 msgid "<b>Startup behaviour</b>"
-msgstr ""
+msgstr "<b>Comportement au démarrage</b>"
 
 #: ../awn-manager/window.glade.h:16
 msgid "<b>Text</b>"
@@ -331,7 +353,7 @@ msgstr "Masquer automatiquement la barre lorsqu'elle n'est pas utilisée"
 
 #: ../awn-manager/window.glade.h:27
 msgid "Automatically start AWN on login."
-msgstr ""
+msgstr "Démarrer automatiquement AWN à l'ouverture de la session."
 
 #: ../awn-manager/window.glade.h:28
 msgid "Background color:"
@@ -379,7 +401,7 @@ msgstr "Utiliser des coins arrondis"
 
 #: ../awn-manager/window.glade.h:39
 msgid "Expand bar to monitor width"
-msgstr ""
+msgstr "Étirer la barre sur toute la largeur de l'écran"
 
 #: ../awn-manager/window.glade.h:40
 msgid "First step color:"
@@ -503,17 +525,17 @@ msgstr "page 4"
 
 #: ../data/avant-window-navigator.desktop.in.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Une barre des tâches de type Dock"
 
 #: ../libawn/egg/eggdesktopfile.c:136
 #, c-format
 msgid "File is not a valid .desktop file"
-msgstr ""
+msgstr "Le fichier n'est pas un fichier .desktop valide."
 
 #: ../libawn/egg/eggdesktopfile.c:161
 #, c-format
 msgid "Unrecognized desktop file Version '%s'"
-msgstr ""
+msgstr "Version « %s » du fichier .desktop non reconnue"
 
 #: ../libawn/egg/eggdesktopfile.c:953
 #, c-format
@@ -528,71 +550,73 @@ msgstr ""
 #: ../libawn/egg/eggdesktopfile.c:1191
 #, c-format
 msgid "Unrecognized launch option: %d"
-msgstr ""
+msgstr "Option de lancement non reconnue : %d"
 
 #: ../libawn/egg/eggdesktopfile.c:1410
 #, c-format
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
 msgstr ""
+"Impossible de transmettre des URI de documents à une entrée de bureau "
+"« Type=Link »"
 
 #: ../libawn/egg/eggdesktopfile.c:1433
 #, c-format
 msgid "Not a launchable item"
-msgstr ""
+msgstr "L'élément ne peut pas être lancé"
 
 #: ../libawn/awn-applet.c:165
 msgid "Clear Custom Icons?"
-msgstr ""
+msgstr "Supprimer les icônes personnalisées ?"
 
 #: ../libawn/awn-applet.c:173
 msgid "Clear all custom (applet) icons?"
-msgstr ""
+msgstr "Supprimer toutes les icônes personnalisées des applets ?"
 
 #: ../libawn/awn-applet.c:187 ../src/awn-task.c:2264 ../src/main.c:517
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Préférences du Dock"
 
 #: ../libawn/awn-applet.c:201
 msgid "Clear All Custom Icons"
-msgstr ""
+msgstr "Supprimer toutes les icônes personnalisées"
 
 #. TODO , add text, add scope options, display icon.
 #: ../libawn/awn-icons.c:308
 msgid "Change Icon?"
-msgstr ""
+msgstr "Changer l'icône ?"
 
 #: ../libawn/awn-icons.c:328 ../libawn/awn-icons.c:333
 msgid "Use this icon?"
-msgstr ""
+msgstr "Utiliser cette icône ?"
 
 #: ../libawn/awn-icons.c:338
 msgid "Apply to this applet instance."
-msgstr ""
+msgstr "Appliquer à l'instance de cet applet."
 
 #: ../libawn/awn-icons.c:342
 msgid "Apply to this applet type."
-msgstr ""
+msgstr "Appliquer à ce type d'applet."
 
 #: ../libawn/awn-icons.c:344
 msgid "Apply to icon name."
-msgstr ""
+msgstr "Appliquer au nom de l'icône"
 
 #. Create the dialog
 #: ../src/awn-task.c:1965
 msgid "Choose New Image..."
-msgstr ""
+msgstr "Choisissez une nouvelle image…"
 
 #: ../src/awn-task.c:2057
 msgid "Preferences"
-msgstr ""
+msgstr "Préférences"
 
 #: ../src/awn-task.c:2060
 msgid "Change Icon..."
-msgstr ""
+msgstr "Changer l'icône…"
 
 #: ../src/awn-task.c:2072
 msgid "Change Image..."
-msgstr ""
+msgstr "Changer l'image..."
 
 #: ../src/awn-task.c:2214
 msgid "Change Icon"
@@ -600,32 +624,34 @@ msgstr "Changer l'icône"
 
 #: ../src/main.c:157
 msgid "Prints the version number"
-msgstr ""
+msgstr "Afficher le numéro de version."
 
 #: ../src/main.c:162
 msgid "Starts the Avant Window Navigator dock"
-msgstr ""
+msgstr "Démarre le dock Avant Window Navigator"
 
 #: ../src/main.c:315
 #, c-format
 msgid "Failed to make connection to session bus: %s"
-msgstr ""
+msgstr "Erreur lors de la connection au bus de session: %s"
 
 #: ../src/main.c:330
 #, c-format
 msgid "There was an error requesting the name: %s"
-msgstr ""
+msgstr "Une erreur est survenue lors de la demande du nom : %s"
 
 #: ../src/main.c:701
 msgid ""
 "Warning: Screen isn't composited. Please run compiz (-fusion) or another "
 "compositing manager."
 msgstr ""
+"Attention: votre affichage n'est pas composé. Lancez compiz (-fusion) ou un "
+"autre gestionnaire de composite."
 
 #: ../src/main.c:718
 msgid "Starting avant-window-navigator"
-msgstr ""
+msgstr "Démarrage de avant-window-navigator"
 
 #: ../src/main.c:720
 msgid "Don't show this message again."
-msgstr ""
+msgstr "Ne plus afficher ce message."
