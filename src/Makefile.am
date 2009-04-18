@@ -2,6 +2,7 @@ MARSHAL_PREFIX = awn
 include $(top_srcdir)/Makefile.marshal
 
 AM_CFLAGS = $(WARNING_FLAGS) $(DISABLE_DEPRECATED_FLAGS)
+AM_CPPFLAGS = $(STANDARD_CPPFLAGS)
 INCLUDES =				\
 	$(AWN_CFLAGS)			\
 	$(DOCK_CFLAGS)			\

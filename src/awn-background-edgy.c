@@ -27,10 +27,6 @@
 
 #include "awn-background-edgy.h"
 
-#ifndef M_PI
- #define M_PI 3.14159265358979323846
-#endif
-
 G_DEFINE_TYPE (AwnBackgroundEdgy, awn_background_edgy, AWN_TYPE_BACKGROUND)
 
 static void awn_background_edgy_draw (AwnBackground  *bg,

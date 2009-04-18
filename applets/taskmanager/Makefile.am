@@ -3,6 +3,7 @@ include $(top_srcdir)/Makefile.marshal
 
 AM_CFLAGS = $(WARNING_FLAGS)
 AM_CPPFLAGS = \
+	$(STANDARD_CPPFLAGS) \
 	-I$(srcdir) \
 	-DWNCK_I_KNOW_THIS_IS_UNSTABLE \
 	$(DISABLE_DEPRECATED_FLAGS) \
