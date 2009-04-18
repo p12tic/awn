@@ -406,33 +406,6 @@ _wrap_awn_desktop_item_launch (PyGBoxed *self, PyObject *args, PyObject *kwargs)
     return PyInt_FromLong (pid);
 }
 %%
-override awn_cairo_string_to_color kwargs
-static PyObject *
-_wrap_awn_cairo_string_to_color (PyObject *self, PyObject *args, PyObject *kwargs)
-{
-    static char *kwlist[] = { "color_string", NULL };
-
-    const gchar *color_string;
-    AwnColor *color = g_malloc (sizeof (AwnColor));
-    PyObject *color_dict;
-
-    if (!PyArg_ParseTupleAndKeywords (args, kwargs, "s:cairo_string_to_color", kwlist, &color_string)) {
-        return NULL;
-    }
-
-    awn_cairo_string_to_color (color_string, color);
-
-    color_dict = PyDict_New ();
-    PyDict_SetItemString (color_dict, "red", PyFloat_FromDouble (color->red));
-    PyDict_SetItemString (color_dict, "green", PyFloat_FromDouble (color->green));
-    PyDict_SetItemString (color_dict, "blue", PyFloat_FromDouble (color->blue));
-    PyDict_SetItemString (color_dict, "alpha", PyFloat_FromDouble (color->alpha));
-
-    g_free (color);
-
-    return color_dict;
-}
-%%
 override awn_config_client_key_lock_open kwargs
 static PyObject *
 _wrap_awn_config_client_key_lock_open(PyObject *self, PyObject *args, PyObject *kwargs)

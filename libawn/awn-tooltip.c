@@ -28,6 +28,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <libdesktop-agnostic/color.h>
+
 #include "awn-tooltip.h"
 
 #include "awn-cairo-utils.h"
@@ -56,7 +58,7 @@ struct _AwnTooltipPrivate
   GtkWidget *focus;
   GtkWidget *label;
 
-  AwnColor  bg;
+  DesktopAgnosticColor  *bg;
   gchar    *font_name;
   gchar    *font_color;
   gint      icon_offset;
@@ -131,10 +133,7 @@ awn_tooltip_expose_event (GtkWidget *widget, GdkEventExpose *expose)
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   
   /* Draw */
-  cairo_set_source_rgba (cr, priv->bg.red,
-                         priv->bg.green,
-                         priv->bg.blue,
-                         priv->bg.alpha);
+  awn_cairo_set_source_color (cr, priv->bg);
 
   awn_cairo_rounded_rect (cr, 0, 0, width, height,
                           TOOLTIP_ROUND_RADIUS, ROUND_ALL);
@@ -874,7 +873,8 @@ awn_tooltip_set_background_color (AwnTooltip  *tooltip,
   g_return_if_fail (bg_color);
   priv = tooltip->priv;
   
-  awn_cairo_string_to_color (bg_color, &priv->bg);
+  /* FIXME handle error */
+  priv->bg = desktop_agnostic_color_new_from_string (bg_color, NULL);
 }
 
 void    

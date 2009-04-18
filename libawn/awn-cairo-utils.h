@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2007 Anthony Arobone <aarobone@gmail.com>
+ *  Copyright (C) 2009 Mark Lee <avant-wn@lazymalevolence.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,14 +18,18 @@
  * Boston, MA 02111-1307, USA.
  *
  *  Author : Anthony Arobone <aarobone@gmail.com>
+ *           (awn_cairo_rounded_rect)
+ *  Author : Mark Lee <avant-wn@lazymalevolence.com>
+ *           (awn_cairo_set_source_color,
+ *            awn_cairo_pattern_add_color_stop_color)
 */
 
 
 #ifndef __AWN_CAIRO_UTILS_H__
 #define __AWN_CAIRO_UTILS_H__
 
-#include <gtk/gtk.h>
-
+#include <cairo.h>
+#include <libdesktop-agnostic/color.h>
 
 typedef enum
 {
@@ -40,15 +45,6 @@ typedef enum
 	ROUND_ALL		= ROUND_LEFT | ROUND_RIGHT
 } AwnCairoRoundCorners;
 
-typedef struct
-{
-        gfloat red;
-        gfloat green;
-        gfloat blue;
-        gfloat alpha;
-} AwnColor;
-
-
 void 
 awn_cairo_rounded_rect (cairo_t *cr, 
                         double x0, double y0,
@@ -56,12 +52,13 @@ awn_cairo_rounded_rect (cairo_t *cr,
                         double radius, AwnCairoRoundCorners state);
 
 void
-awn_cairo_set_source_gdk_color (cairo_t *cr, const GdkColor *color,
-                                double alpha);
+awn_cairo_set_source_color (cairo_t              *cr,
+                            DesktopAgnosticColor *color);
 
-/* takes a string of RRGGBBAA and converts to AwnColor */
 void
-awn_cairo_string_to_color (const gchar *string, AwnColor *color);
+awn_cairo_pattern_add_color_stop_color (cairo_pattern_t      *pattern,
+                                        double                offset,
+                                        DesktopAgnosticColor *color);
 
 #endif
 

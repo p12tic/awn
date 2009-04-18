@@ -21,7 +21,7 @@
 
 #include "config.h"
 
-#include <gdk/gdk.h>
+#include <libawn/awn-cairo-utils.h>
 #include <libawn/awn-config-client.h>
 
 #include "awn-background-flat.h"
@@ -185,16 +185,8 @@ draw_top_bottom_background (AwnBackground  *bg,
 
   /* Draw the background */
   pat = cairo_pattern_create_linear (0, 0, 0, height);
-  cairo_pattern_add_color_stop_rgba (pat, 0.0, 
-                                     bg->g_step_1.red,
-                                     bg->g_step_1.green,
-                                     bg->g_step_1.blue,
-                                     bg->g_step_1.alpha);
-  cairo_pattern_add_color_stop_rgba (pat, 1.0,
-                                     bg->g_step_2.red, 
-                                     bg->g_step_2.green,
-                                     bg->g_step_2.blue, 
-                                     bg->g_step_2.alpha);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
+  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
   draw_rect (bg, cr, 1, 1, width-2, height-1, align, expand);
 
   cairo_set_source (cr, pat);
@@ -203,16 +195,8 @@ draw_top_bottom_background (AwnBackground  *bg,
 
   /* Draw the hi-light */
   pat = cairo_pattern_create_linear (0, 0, 0, (height/3.0));
-  cairo_pattern_add_color_stop_rgba (pat, 0.0, 
-                                     bg->g_histep_1.red,
-                                     bg->g_histep_1.green,
-                                     bg->g_histep_1.blue,
-                                     bg->g_histep_1.alpha);
-  cairo_pattern_add_color_stop_rgba (pat, 1.0,
-                                     bg->g_histep_2.red, 
-                                     bg->g_histep_2.green,
-                                     bg->g_histep_2.blue, 
-                                     bg->g_histep_2.alpha);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
+  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
   draw_rect (bg, cr, 1, 1, width-2, height/3.0, align, expand);
 
   cairo_set_source (cr, pat);
@@ -222,18 +206,12 @@ draw_top_bottom_background (AwnBackground  *bg,
   paint_lines:
 
   /* Internal border */
-  cairo_set_source_rgba (cr, bg->hilight_color.red,
-                             bg->hilight_color.green,
-                             bg->hilight_color.blue,
-                             bg->hilight_color.alpha);
+  awn_cairo_set_source_color (cr, bg->hilight_color);
   draw_rect (bg, cr, 1, 1, width-3, height+3, align, expand);
   cairo_stroke (cr);
 
   /* External border */
-  cairo_set_source_rgba (cr, bg->border_color.red,
-                             bg->border_color.green,
-                             bg->border_color.blue,
-                             bg->border_color.alpha);
+  awn_cairo_set_source_color (cr, bg->border_color);
   draw_rect (bg, cr, 0, 0, width-1, height+3, align, expand);
   cairo_stroke (cr);
 }

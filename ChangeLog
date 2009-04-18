@@ -1261,6 +1261,21 @@
 
 2009-01-25  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* configure.in:
+	* data/awn.schema-ini.in:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-tooltip.c:
+	* src/awn-background-3d.c:
+	* src/awn-background-flat.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	Replace AwnColor and associated functions with DesktopAgnosticColor.
+
+2009-01-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* configure.in:
 	Fix building with the -Wl,--no-undefined LDFLAG.
 
