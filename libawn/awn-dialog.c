@@ -28,6 +28,7 @@
 #include <string.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+#include <libdesktop-agnostic/color.h>
 #include <math.h>
 
 #include "awn-applet.h"
@@ -59,12 +60,12 @@ struct _AwnDialogPrivate
   gint window_offset;
 
   /* Standard box drawing colours */
-  AwnColor g_step_1;
-  AwnColor g_step_2;
-  AwnColor g_histep_1;
-  AwnColor g_histep_2;
-  AwnColor border_color;
-  AwnColor hilight_color;
+  DesktopAgnosticColor *g_step_1;
+  DesktopAgnosticColor *g_step_2;
+  DesktopAgnosticColor *g_histep_1;
+  DesktopAgnosticColor *g_histep_2;
+  DesktopAgnosticColor *border_color;
+  DesktopAgnosticColor *hilight_color;
 
   gulong anchor_configure_id;
   gulong orient_changed_id;
@@ -316,10 +317,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   cairo_translate (cr, 0.5, 0.5);
 
   /* background shading */
-  cairo_set_source_rgba (cr, priv->g_step_2.red,
-                         priv->g_step_2.green,
-                         priv->g_step_2.blue,
-                         priv->g_step_2.alpha);
+  awn_cairo_set_source_color (cr, priv->g_step_2);
 
   awn_dialog_paint_border_path (dialog, cr, width, height);
   path = cairo_copy_path (cr);
@@ -328,10 +326,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   cairo_save (cr);
 
   cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-  cairo_set_source_rgba (cr, priv->hilight_color.red,
-                         priv->hilight_color.green,
-                         priv->hilight_color.blue,
-                         priv->hilight_color.alpha);
+  awn_cairo_set_source_color (cr, priv->hilight_color);
   cairo_translate (cr, 1.0, 1.0);
   switch (priv->orient)
   {
@@ -350,10 +345,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   cairo_restore (cr);
 
-  cairo_set_source_rgba (cr, priv->border_color.red,
-                         priv->border_color.green,
-                         priv->border_color.blue,
-                         priv->border_color.alpha);
+  awn_cairo_set_source_color (cr, priv->border_color);
   cairo_append_path (cr, path);
   cairo_stroke (cr);
 
@@ -405,16 +397,8 @@ on_title_expose(GtkWidget       *widget,
 
   /* Paint the background the border colour */
   pat = cairo_pattern_create_linear (0, 0, 0, height);
-  cairo_pattern_add_color_stop_rgba (pat, 0.0,
-                                     priv->g_histep_1.red,
-                                     priv->g_histep_1.green,
-                                     priv->g_histep_1.blue,
-                                     priv->g_histep_1.alpha);
-  cairo_pattern_add_color_stop_rgba (pat, 1.0,
-                                     priv->g_histep_2.red,
-                                     priv->g_histep_2.green,
-                                     priv->g_histep_2.blue,
-                                     priv->g_histep_2.alpha);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->g_histep_1);
+  awn_cairo_pattern_add_color_stop_color (pat, 1.0, priv->g_histep_2);
 
   awn_cairo_rounded_rect (cr, 0, 0, width-1, height-0.5, 15, ROUND_ALL);
   cairo_set_source (cr, pat);
@@ -423,16 +407,8 @@ on_title_expose(GtkWidget       *widget,
 
   /* border */
   pat = cairo_pattern_create_linear (0, 0, 0, height);
-  cairo_pattern_add_color_stop_rgba (pat, 0.0,
-                                     priv->border_color.red,
-                                     priv->border_color.green,
-                                     priv->border_color.blue,
-                                     priv->border_color.alpha);
-  cairo_pattern_add_color_stop_rgba (pat, 0.75,
-                                     priv->border_color.red,
-                                     priv->border_color.green,
-                                     priv->border_color.blue,
-                                     priv->border_color.alpha);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->border_color);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.75, priv->border_color);
   cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.25);
 
   cairo_set_source (cr, pat);
@@ -442,16 +418,8 @@ on_title_expose(GtkWidget       *widget,
 
   /* hilight */
   pat = cairo_pattern_create_linear (0, 0, 0, height);
-  cairo_pattern_add_color_stop_rgba (pat, 0.0,
-                                     priv->hilight_color.red,
-                                     priv->hilight_color.green,
-                                     priv->hilight_color.blue,
-                                     priv->hilight_color.alpha);
-  cairo_pattern_add_color_stop_rgba (pat, 0.75,
-                                     priv->hilight_color.red,
-                                     priv->hilight_color.green,
-                                     priv->hilight_color.blue,
-                                     priv->hilight_color.alpha);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->hilight_color);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.75, priv->hilight_color);
   cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.0);
 
   cairo_set_operator (cr, CAIRO_OPERATOR_XOR);
@@ -712,27 +680,27 @@ awn_dialog_set_property (GObject      *object,
       break;
 
     case PROP_GSTEP1:
-      awn_cairo_string_to_color (g_value_get_string (value), &priv->g_step_1);
+      priv->g_step_1 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_GSTEP2:
-      awn_cairo_string_to_color (g_value_get_string (value), &priv->g_step_2);
+      priv->g_step_2 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_GHISTEP1:
-      awn_cairo_string_to_color (g_value_get_string (value), &priv->g_histep_1);
+      priv->g_histep_1 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_GHISTEP2:
-      awn_cairo_string_to_color (g_value_get_string (value), &priv->g_histep_2);
+      priv->g_histep_2 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_BORDER:
-      awn_cairo_string_to_color (g_value_get_string (value), &priv->border_color);
+      priv->border_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_HILIGHT:
-      awn_cairo_string_to_color (g_value_get_string (value),&priv->hilight_color);
+      priv->hilight_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
 
