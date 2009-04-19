@@ -94,12 +94,14 @@ dnl ==============================================
 dnl CFLAGS
 dnl ==============================================
 
+STANDARD_CPPFLAGS="-std=c99 -D_XOPEN_SOURCE -D_GNU_SOURCE"
 if test "$USE_MAINTAINER_MODE" = "yes"; then
-  AS_COMPILER_FLAGS([WARNING_FLAGS], ["-Werror=all -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Werror=missing-declarations -Wredundant-decls -Wmissing-noreturn -Werror=shadow -Wpointer-arith -Wcast-align -Wwrite-strings -Werror=inline -Wformat -Wformat-nonliteral -Wformat-security -Winit-self -Werror=missing-include-dirs -Werror=undef -Werror=aggregate-return -Wmissing-format-attribute -Werror=nested-externs -std=c99 -pedantic -fno-strict-aliasing -fmessage-length=0 -Wp,-D_FORTIFY_SOURCE=2"])
+  AS_COMPILER_FLAGS([WARNING_FLAGS], ["-Werror=all -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Werror=missing-declarations -Wredundant-decls -Wmissing-noreturn -Werror=shadow -Wpointer-arith -Wcast-align -Wwrite-strings -Werror=inline -Wformat -Wformat-nonliteral -Wformat-security -Winit-self -Werror=missing-include-dirs -Werror=undef -Werror=aggregate-return -Wmissing-format-attribute -Werror=nested-externs -pedantic -fno-strict-aliasing -fmessage-length=0 -Wp,-D_FORTIFY_SOURCE=2"])
   DISABLE_DEPRECATED_FLAGS="-DG_DISABLE_DEPRECATED -DG_DISABLE_SINGLE_INCLUDES -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_DEPRECATED -DGTK_DISABLE_SINGLE_INCLUDES"
 else
-  AS_COMPILER_FLAGS([WARNING_FLAGS], ["-Wall -std=c99"])
+  AS_COMPILER_FLAGS([WARNING_FLAGS], ["-Wall"])
 fi
+AC_SUBST(STANDARD_CPPFLAGS)
 AC_SUBST(WARNING_FLAGS)
 AC_SUBST(DISABLE_DEPRECATED_FLAGS)
 

@@ -69,7 +69,7 @@ enum
 
 static const GtkTargetEntry drop_types[] =
 {
-  { "text/uri-list", 0, 0}
+  { (gchar*)"text/uri-list", 0, 0}
 };
 static const gint n_drop_types = G_N_ELEMENTS(drop_types);
 
@@ -489,7 +489,7 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
                           GStrv          icon_names)
 {
   AwnThemedIconPrivate *priv;
-  gint n_states;
+  guint n_states;
 
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
   g_return_if_fail (applet_name);
@@ -559,7 +559,7 @@ awn_themed_icon_set_info_simple (AwnThemedIcon  *icon,
                                  const gchar    *uid,
                                  const gchar    *icon_name)
 {
-  gchar *states[]   = { "__SINGULAR__", NULL };
+  gchar *states[]   = { (gchar*)"__SINGULAR__", NULL };
   gchar *icon_names[] = { NULL, NULL };
 
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
@@ -620,7 +620,7 @@ awn_themed_icon_clear_icons (AwnThemedIcon *icon,
 {
   AwnThemedIconPrivate *priv;
   gchar                *filename;
-  gchar                *types[] = { "png", "svg", NULL };
+  const gchar          *types[] = { "png", "svg", NULL };
   gint                  i;
 
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));

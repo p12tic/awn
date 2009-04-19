@@ -26,10 +26,6 @@
 
 #include "anims/awn-effects-shared.h"
 
-#ifndef M_PI
- #define  M_PI 3.14159265358979323846
-#endif
-
 static
 cairo_surface_t *awn_effects_quark_to_surface(AwnEffects *fx, GQuark quark)
 {

@@ -21,14 +21,11 @@
 
 #include "config.h"
 
+#include <math.h>
 #include <libawn/awn-cairo-utils.h>
 #include <libawn/awn-config-client.h>
 
 #include "awn-background-flat.h"
-
-#ifndef M_PI
- #define M_PI 3.14159265358979323846
-#endif
 
 G_DEFINE_TYPE (AwnBackgroundFlat, awn_background_flat, AWN_TYPE_BACKGROUND)
 

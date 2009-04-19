@@ -21,6 +21,9 @@
 
 #include "task-manager.h"
 
+AwnApplet* awn_applet_factory_initp (gchar* uid, gint orient, gint offset,
+                                     gint size);
+
 AwnApplet*
 awn_applet_factory_initp (gchar* uid, gint orient, gint offset, gint size)
 {

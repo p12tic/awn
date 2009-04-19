@@ -1,8 +1,8 @@
 MARSHAL_PREFIX = taskmanager
 include $(top_srcdir)/Makefile.marshal
 
-AM_CFLAGS = $(WARNING_FLAGS)
 AM_CPPFLAGS = \
+	$(STANDARD_CPPFLAGS) \
 	-I$(srcdir) \
 	-DWNCK_I_KNOW_THIS_IS_UNSTABLE \
 	$(DISABLE_DEPRECATED_FLAGS) \
@@ -33,7 +33,7 @@ taskmanager_la_LIBADD = \
 	$(top_builddir)/libawn/libawn.la \
 	$(TASKMANAGER_LIBS) \
 	$(NULL)
-taskmanager_la_CFLAGS = $(TASKMANAGER_CFLAGS)
+taskmanager_la_CFLAGS = $(WARNING_FLAGS) $(TASKMANAGER_CFLAGS)
 taskmanager_la_LDFLAGS = -module -avoid-version
 
 # Desktop file

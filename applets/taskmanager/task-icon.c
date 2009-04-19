@@ -548,7 +548,7 @@ task_icon_remove_window (TaskIcon      *icon,
   GSList *  w;
   TaskIconPrivate *priv;
   gboolean first_window = FALSE;
-  static recursing = FALSE;
+  static gboolean recursing = FALSE;
 
   g_return_if_fail (TASK_IS_ICON (icon));
   g_return_if_fail (WNCK_IS_WINDOW (window));
@@ -596,7 +596,7 @@ task_icon_append_window (TaskIcon      *icon,
 {
   TaskIconPrivate *priv;
   gboolean first_window = FALSE;
-  static recursing = FALSE;
+  static gboolean recursing = FALSE;
   
   g_assert (window);
   g_assert (icon);
@@ -656,12 +656,12 @@ task_icon_append_window (TaskIcon      *icon,
     }
     else if (TASK_IS_LAUNCHER(window) )
     {
-      TaskWindowPrivate *priv = window->priv;
+      TaskWindowPrivate *win_priv = window->priv;
       g_signal_connect (G_OBJECT(window),"notify::taskwindow",
                         G_CALLBACK(_task_icon_launcher_change),icon);
-      if (priv->window)
+      if (win_priv->window)
       {
-        TaskWindow * taskwin = task_window_new (priv->window);
+        TaskWindow * taskwin = task_window_new (win_priv->window);
         grouped_icon = task_icon_new_for_window (taskwin);
       }
     }
@@ -1016,7 +1016,7 @@ task_icon_drag_data_get (GtkWidget *widget,
                          GdkDragContext *context, 
                          GtkSelectionData *selection_data,
                          guint target_type, 
-                         guint time)
+                         guint time_)
 {
   switch(target_type)
   {
@@ -1102,7 +1102,7 @@ task_icon_dest_drag_fail (GtkWidget      *widget,
 static void   
 task_icon_dest_drag_leave (GtkWidget      *widget,
                            GdkDragContext *context,
-                           guint           time)
+                           guint           time_)
 {
   TaskIconPrivate *priv;
 
@@ -1124,11 +1124,11 @@ task_icon_dest_drag_drop (GtkWidget      *widget,
                           GdkDragContext *drag_context,
                           gint            x,
                           gint            y,
-                          guint           time)
+                          guint           time_)
 {
   TaskIconPrivate *priv;
 
-  g_return_if_fail (TASK_IS_ICON (widget));
+  g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
   priv = TASK_ICON (widget)->priv;
 
   g_signal_emit (TASK_ICON (widget), _icon_signals[DEST_DRAG_DROP], 0);
@@ -1143,7 +1143,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
                                    gint            y,
                                    GtkSelectionData *sdata,
                                    guint           info,
-                                   guint           time)
+                                   guint           time_)
 {
   TaskIconPrivate *priv;
   GSList          *list;
@@ -1162,14 +1162,14 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   /* If it is dragging of the task icon, there is actually no data */
   if (g_strcmp0("awn/task-icon", target_name) == 0)
   {
-    gtk_drag_finish (context, TRUE, TRUE, time);
+    gtk_drag_finish (context, TRUE, TRUE, time_);
     return;
   }
 
   /* If we are not a launcher, we don't care about this */
   if (!priv->windows || !TASK_IS_LAUNCHER (priv->windows->data))
   {
-    gtk_drag_finish (context, FALSE, FALSE, time);
+    gtk_drag_finish (context, FALSE, FALSE, time_);
     return;
   }
 
@@ -1191,7 +1191,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
     /*g_signal_emit (icon, _icon_signals[DESKTOP_DROPPED],
      *               0, sdata->data);
      */
-    gtk_drag_finish (context, TRUE, FALSE, time);
+    gtk_drag_finish (context, TRUE, FALSE, time_);
   }
 
   /* We don't handle drops if the launcher already has a window associcated */
@@ -1200,7 +1200,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   // I often drop a url on firefox, even when it is already open.
   if (task_launcher_has_window (launcher))
   {
-    gtk_drag_finish (context, FALSE, FALSE, time);
+    gtk_drag_finish (context, FALSE, FALSE, time_);
   }
   
   error = NULL;
@@ -1209,7 +1209,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   {
     g_warning ("Unable to handle drop: %s", error->message);
     g_error_free (error);
-    gtk_drag_finish (context, FALSE, FALSE, time);
+    gtk_drag_finish (context, FALSE, FALSE, time_);
     return;
   }
 
@@ -1218,5 +1218,5 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   g_slist_foreach (list, (GFunc)g_free, NULL);
   g_slist_free (list);
 
-  gtk_drag_finish (context, TRUE, FALSE, time);
+  gtk_drag_finish (context, TRUE, FALSE, time_);
 }

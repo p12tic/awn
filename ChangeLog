@@ -1,3 +1,34 @@
+2009-04-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/Makefile.am:
+	* libawn/Makefile.am:
+	* libawn/anims/Makefile.am:
+	* src/Makefile.am:
+	Clean up the CFLAGS/CPPFLAGS situation.
+
+	* applets/taskmanager/applet.c:
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-settings.c:
+	* applets/taskmanager/xutils.c:
+	* applets/taskmanager/xutils.h:
+	* libawn/awn-themed-icon.c:
+	Fix various errors and warnings.
+
+2009-04-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/Makefile.am:
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/anims/Makefile.am:
+	* libawn/awn-effects-ops-new.c:
+	* src/Makefile.am:
+	* src/awn-background-edgy.c:
+	* src/awn-background-flat.c:
+	* tests/Makefile.am:
+	Ensure that M_PI is defined, without defining it ourselves.
+
 2009-04-16  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* configure.in:
