@@ -1,3 +1,8 @@
+2009-04-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	Update LINGUAS.
+
 2009-04-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* src/awn-task-manager.c:
