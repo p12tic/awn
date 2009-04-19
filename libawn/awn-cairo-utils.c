@@ -91,6 +91,8 @@ void
 awn_cairo_set_source_color (cairo_t              *cr,
                             DesktopAgnosticColor *color)
 {
+  g_return_if_fail (color);
+
   cairo_set_source_rgba (cr,
                          desktop_agnostic_color_get_red (color),
                          desktop_agnostic_color_get_green (color),
@@ -103,6 +105,8 @@ awn_cairo_pattern_add_color_stop_color (cairo_pattern_t      *pattern,
                                         double                offset,
                                         DesktopAgnosticColor *color)
 {
+  g_return_if_fail (color);
+
   cairo_pattern_add_color_stop_rgba (pattern, offset,
                                      desktop_agnostic_color_get_red (color),
                                      desktop_agnostic_color_get_green (color),

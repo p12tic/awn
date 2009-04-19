@@ -868,13 +868,18 @@ awn_tooltip_set_background_color (AwnTooltip  *tooltip,
                                   const gchar *bg_color)
 {
   AwnTooltipPrivate *priv;
+  GError *err = NULL;
 
   g_return_if_fail (AWN_TOOLTIP (tooltip));
   g_return_if_fail (bg_color);
   priv = tooltip->priv;
   
-  /* FIXME handle error */
-  priv->bg = desktop_agnostic_color_new_from_string (bg_color, NULL);
+  priv->bg = desktop_agnostic_color_new_from_string (bg_color, &err);
+  if (err)
+  {
+    g_critical ("awn_tooltip_set_background_color: %s", err->message);
+    g_error_free (err);
+  }
 }
 
 void    
