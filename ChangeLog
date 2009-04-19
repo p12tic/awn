@@ -1,5 +1,11 @@
 2009-04-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* src/awn-task-manager.c:
+	Include a static version of g_strcmp0 if the version of GLib compiling
+	Awn does not have it.
+
+2009-04-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* configure.in:
 	Fix typo in flag help entry.
 

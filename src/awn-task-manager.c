@@ -42,6 +42,31 @@
 #include <libawn/awn-desktop-item.h>
 #include <libawn/awn-title.h>
 
+#if !GLIB_CHECK_VERSION(2, 16, 0)
+/**
+ * g_strcmp0:
+ * @str1: a C string or %NULL
+ * @str2: another C string or %NULL
+ *
+ * Compares @str1 and @str2 like strcmp(). Handles %NULL 
+ * gracefully by sorting it before non-%NULL strings.
+ *
+ * Returns: -1, 0 or 1, if @str1 is <, == or > than @str2.
+ *
+ * Since: 2.16
+ */
+static int
+g_strcmp0 (const char     *str1,
+           const char     *str2)
+{
+  if (!str1)
+    return -(str1 != str2);
+  if (!str2)
+    return str1 != str2;
+  return strcmp (str1, str2);
+}
+#endif
+
 #define AWN_TASK_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), AWN_TYPE_TASK_MANAGER, AwnTaskManagerPrivate))
 
 G_DEFINE_TYPE (AwnTaskManager, awn_task_manager, GTK_TYPE_HBOX);
