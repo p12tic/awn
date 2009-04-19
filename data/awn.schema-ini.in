@@ -147,7 +147,7 @@ description = Font name of the tooltip
 
 [theme/tooltip_font_color]
 type = string
-default = FFFFFFFF
+default = #FFFFFFFF
 description = Font color of the tooltip
 
 [theme/tooltip_bg_color]

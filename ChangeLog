@@ -1,5 +1,12 @@
 2009-04-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* data/awn.schema-ini.in:
+	* libawn/awn-tooltip.c (awn_tooltip_get_property,
+	  awn_tooltip_class_init, ensure_tooltip, awn_tooltip_set_font_color):
+	Fix tooltip handling of colors with DesktopAgnosticColor.
+
+2009-04-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-cairo-utils.c (awn_cairo_set_source_color,
 	  awn_cairo_pattern_add_color_stop_color):
 	* libawn/awn-tooltip.c (awn_tooltip_set_background_color):

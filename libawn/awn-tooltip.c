@@ -280,7 +280,7 @@ awn_tooltip_get_property (GObject    *object,
       break;
 
     case PROP_BG:
-      g_value_set_string (value, "FFFFFFFF");
+      g_value_set_string (value, "#FFFFFFFF");
       break;
 
     case PROP_ICON_OFFSET:
@@ -443,7 +443,7 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
     g_param_spec_string ("tooltip_font_color",
                          "tooltip-font-color",
                          "Tooltip Font Color",
-                         "FFFFFF00",
+                         "#FFFFFF00",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -451,7 +451,7 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
     g_param_spec_string ("tooltip_bg_color",
                          "tooltip-bg-color",
                          "Tooltip Background Color",
-                         "000000B3",
+                         "#000000B3",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -629,7 +629,7 @@ ensure_tooltip (AwnTooltip *tooltip)
     return;
 
   normal = g_markup_escape_text (priv->text, -1);
-  markup = g_strdup_printf ("<span foreground='#%s' font_desc='%s'>%s</span>",
+  markup = g_strdup_printf ("<span foreground='%s' font_desc='%s'>%s</span>",
                             priv->font_color,
                             priv->font_name,
                             normal);
@@ -858,7 +858,7 @@ awn_tooltip_set_font_color (AwnTooltip  *tooltip,
   if (priv->font_color)
     g_free (priv->font_color);
 
-  priv->font_color = g_strndup (font_color, 6);
+  priv->font_color = g_strndup (font_color, 7);
 
   ensure_tooltip (tooltip);
 }
