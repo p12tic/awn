@@ -17,11 +17,6 @@
 
 2009-04-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
-	* libawn/awn-cairo-utils.h:
-	Fix the AWN_RGBA_SCALE_REFACTOR value.
-
-2009-04-19  Mark Lee  <avant-wn@lazymalevolence.com>
-
 	* libawn/awn-cairo-utils.c:
 	Make sure that DesktopAgnosticColor attributes are correctly converted to
 	cairo color attributes.

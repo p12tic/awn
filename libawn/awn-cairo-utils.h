@@ -52,7 +52,7 @@ awn_cairo_rounded_rect (cairo_t *cr,
                         double width, double height,
                         double radius, AwnCairoRoundCorners state);
 
-#define AWN_RGBA_SCALE_FACTOR (double)(G_MAXUSHORT + 1)
+#define AWN_RGBA_SCALE_FACTOR (double)(G_MAXUSHORT)
 
 void
 awn_cairo_set_source_color (cairo_t              *cr,
