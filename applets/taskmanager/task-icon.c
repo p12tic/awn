@@ -668,9 +668,9 @@ task_icon_append_window (TaskIcon      *icon,
     if (grouped_icon)
     {
       gtk_container_add (GTK_CONTAINER(priv->dialog),grouped_icon);
-    }
 //    g_object_weak_ref (G_OBJECT (window), (GWeakNotify)window_closed, grouped_icon);    
-    gtk_widget_show (grouped_icon);
+      gtk_widget_show (grouped_icon);
+    }
   }
   recursing = FALSE;
 }

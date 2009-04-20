@@ -1,3 +1,10 @@
+2009-04-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	reviewed by: R. Cryderman <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c (task_icon_append_window):
+	Don't try to show the grouped icon when not in grouped mode.
+
 2009-04-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/Makefile.am:
