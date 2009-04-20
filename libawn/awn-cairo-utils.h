@@ -64,6 +64,12 @@ awn_cairo_set_source_color_with_alpha_multiplier (cairo_t              *cr,
                                                   gdouble               multiplier);
 
 void
+awn_cairo_set_source_color_with_multipliers (cairo_t              *cr,
+                                             DesktopAgnosticColor *color,
+                                             gdouble               color_multiplier,
+                                             gdouble               alpha_multiplier);
+
+void
 awn_cairo_pattern_add_color_stop_color (cairo_pattern_t      *pattern,
                                         double                offset,
                                         DesktopAgnosticColor *color);

@@ -118,6 +118,21 @@ awn_cairo_set_source_color_with_alpha_multiplier (cairo_t              *cr,
 }
 
 void
+awn_cairo_set_source_color_with_multipliers (cairo_t              *cr,
+                                             DesktopAgnosticColor *color,
+                                             gdouble               color_multiplier,
+                                             gdouble               alpha_multiplier)
+{
+  g_return_if_fail (color);
+
+  cairo_set_source_rgba (cr,
+                         desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR * color_multiplier,
+                         desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR * color_multiplier,
+                         desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR * color_multiplier,
+                         color->alpha / AWN_RGBA_SCALE_FACTOR * alpha_multiplier);
+}
+
+void
 awn_cairo_pattern_add_color_stop_color (cairo_pattern_t      *pattern,
                                         double                offset,
                                         DesktopAgnosticColor *color)

@@ -1,6 +1,14 @@
 2009-04-20  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-cairo-utils.c
+	  (awn_cairo_set_source_color_with_multipliers):
+	* libawn/awn-cairo-utils.h:
+	Add awn_cairo_set_source_color_with_multipliers, needed for
+	awn-notification-daemon.
+
+2009-04-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-cairo-utils.c
 	  (awn_cairo_set_source_color_with_alpha_multiplier,
 	  awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier):
 	* libawn/awn-cairo-utils.h:
