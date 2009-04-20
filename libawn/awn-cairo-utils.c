@@ -20,7 +20,9 @@
  *  Author : Anthony Arobone <aarobone@gmail.com>
  *           (awn_cairo_rounded_rect)
  *  Author : Mark Lee <avant-wn@lazymalevolence.com>
- *           (awn_cairo_set_source_color)
+ *           (awn_cairo_set_source_color,
+ *            awn_cairo_set_source_color_with_alpha_multiplier,
+ *            awn_cairo_pattern_add_color_stop_color)
 */
 
 #include "awn-cairo-utils.h"
@@ -101,6 +103,21 @@ awn_cairo_set_source_color (cairo_t              *cr,
 }
 
 void
+awn_cairo_set_source_color_with_alpha_multiplier (cairo_t              *cr,
+                                                  DesktopAgnosticColor *color,
+                                                  gdouble               multiplier)
+{
+  g_return_if_fail (color);
+  g_return_if_fail (multiplier >= 0 && multiplier <= 1.0);
+
+  cairo_set_source_rgba (cr,
+                         desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
+                         desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
+                         desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
+                         color->alpha / AWN_RGBA_SCALE_FACTOR * multiplier);
+}
+
+void
 awn_cairo_pattern_add_color_stop_color (cairo_pattern_t      *pattern,
                                         double                offset,
                                         DesktopAgnosticColor *color)
@@ -112,6 +129,22 @@ awn_cairo_pattern_add_color_stop_color (cairo_pattern_t      *pattern,
                                      desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
                                      desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
                                      color->alpha / AWN_RGBA_SCALE_FACTOR);
+}
+
+void
+awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier (cairo_pattern_t      *pattern,
+                                                              double                offset,
+                                                              DesktopAgnosticColor *color,
+                                                              gdouble               multiplier)
+{
+  g_return_if_fail (color);
+  g_return_if_fail (multiplier >= 0 && multiplier <= 1.0);
+
+  cairo_pattern_add_color_stop_rgba (pattern, offset,
+                                     desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
+                                     desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
+                                     desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
+                                     color->alpha / AWN_RGBA_SCALE_FACTOR * multiplier);
 }
 
 /* vim: set et ts=2 sts=2 sw=2 ai cindent : */

@@ -21,6 +21,7 @@
  *           (awn_cairo_rounded_rect)
  *  Author : Mark Lee <avant-wn@lazymalevolence.com>
  *           (awn_cairo_set_source_color,
+ *            awn_cairo_set_source_color_with_alpha_multiplier,
  *            awn_cairo_pattern_add_color_stop_color)
 */
 
@@ -58,9 +59,20 @@ awn_cairo_set_source_color (cairo_t              *cr,
                             DesktopAgnosticColor *color);
 
 void
+awn_cairo_set_source_color_with_alpha_multiplier (cairo_t              *cr,
+                                                  DesktopAgnosticColor *color,
+                                                  gdouble               multiplier);
+
+void
 awn_cairo_pattern_add_color_stop_color (cairo_pattern_t      *pattern,
                                         double                offset,
                                         DesktopAgnosticColor *color);
+
+void
+awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier (cairo_pattern_t      *pattern,
+                                                              double                offset,
+                                                              DesktopAgnosticColor *color,
+                                                              gdouble               multiplier);
 
 #endif
 
