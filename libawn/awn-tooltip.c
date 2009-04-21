@@ -28,6 +28,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <libdesktop-agnostic/color.h>
+
 #include "awn-tooltip.h"
 
 #include "awn-cairo-utils.h"
@@ -56,7 +58,7 @@ struct _AwnTooltipPrivate
   GtkWidget *focus;
   GtkWidget *label;
 
-  AwnColor  bg;
+  DesktopAgnosticColor  *bg;
   gchar    *font_name;
   gchar    *font_color;
   gint      icon_offset;
@@ -131,10 +133,7 @@ awn_tooltip_expose_event (GtkWidget *widget, GdkEventExpose *expose)
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   
   /* Draw */
-  cairo_set_source_rgba (cr, priv->bg.red,
-                         priv->bg.green,
-                         priv->bg.blue,
-                         priv->bg.alpha);
+  awn_cairo_set_source_color (cr, priv->bg);
 
   awn_cairo_rounded_rect (cr, 0, 0, width, height,
                           TOOLTIP_ROUND_RADIUS, ROUND_ALL);
@@ -281,7 +280,7 @@ awn_tooltip_get_property (GObject    *object,
       break;
 
     case PROP_BG:
-      g_value_set_string (value, "FFFFFFFF");
+      g_value_set_string (value, "#FFFFFFFF");
       break;
 
     case PROP_ICON_OFFSET:
@@ -444,7 +443,7 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
     g_param_spec_string ("tooltip_font_color",
                          "tooltip-font-color",
                          "Tooltip Font Color",
-                         "FFFFFF00",
+                         "#FFFFFF00",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -452,7 +451,7 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
     g_param_spec_string ("tooltip_bg_color",
                          "tooltip-bg-color",
                          "Tooltip Background Color",
-                         "000000B3",
+                         "#000000B3",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -630,7 +629,7 @@ ensure_tooltip (AwnTooltip *tooltip)
     return;
 
   normal = g_markup_escape_text (priv->text, -1);
-  markup = g_strdup_printf ("<span foreground='#%s' font_desc='%s'>%s</span>",
+  markup = g_strdup_printf ("<span foreground='%s' font_desc='%s'>%s</span>",
                             priv->font_color,
                             priv->font_name,
                             normal);
@@ -859,7 +858,7 @@ awn_tooltip_set_font_color (AwnTooltip  *tooltip,
   if (priv->font_color)
     g_free (priv->font_color);
 
-  priv->font_color = g_strndup (font_color, 6);
+  priv->font_color = g_strndup (font_color, 7);
 
   ensure_tooltip (tooltip);
 }
@@ -869,12 +868,18 @@ awn_tooltip_set_background_color (AwnTooltip  *tooltip,
                                   const gchar *bg_color)
 {
   AwnTooltipPrivate *priv;
+  GError *err = NULL;
 
   g_return_if_fail (AWN_TOOLTIP (tooltip));
   g_return_if_fail (bg_color);
   priv = tooltip->priv;
   
-  awn_cairo_string_to_color (bg_color, &priv->bg);
+  priv->bg = desktop_agnostic_color_new_from_string (bg_color, &err);
+  if (err)
+  {
+    g_critical ("awn_tooltip_set_background_color: %s", err->message);
+    g_error_free (err);
+  }
 }
 
 void    

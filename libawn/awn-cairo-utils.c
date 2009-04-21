@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2007 Anthony Arobone <aarobone@gmail.com>
+ *  Copyright (C) 2009 Mark Lee <avant-wn@lazymalevolence.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,10 +18,12 @@
  * Boston, MA 02111-1307, USA.
  *
  *  Author : Anthony Arobone <aarobone@gmail.com>
+ *           (awn_cairo_rounded_rect)
+ *  Author : Mark Lee <avant-wn@lazymalevolence.com>
+ *           (awn_cairo_set_source_color,
+ *            awn_cairo_set_source_color_with_alpha_multiplier,
+ *            awn_cairo_pattern_add_color_stop_color)
 */
-
-
-#include <gtk/gtk.h>
 
 #include "awn-cairo-utils.h"
 
@@ -87,57 +90,76 @@ awn_cairo_rounded_rect(cairo_t *cr, double x0, double y0,
 }
 
 void
-awn_cairo_set_source_gdk_color (cairo_t *cr, const GdkColor *color,
-                                double alpha)
+awn_cairo_set_source_color (cairo_t              *cr,
+                            DesktopAgnosticColor *color)
 {
-  double r = color->red / 65535.0;
-  double g = color->green / 65535.0;
-  double b = color->blue / 65535.0;
-  cairo_set_source_rgba (cr, r, g, b, alpha);
-}
+  g_return_if_fail (color);
 
-static int
-getdec(char hexchar)
-{
-  if ((hexchar >= '0') && (hexchar <= '9')) return hexchar - '0';
-
-  if ((hexchar >= 'A') && (hexchar <= 'F')) return hexchar - 'A' + 10;
-
-  if ((hexchar >= 'a') && (hexchar <= 'f')) return hexchar - 'a' + 10;
-
-  return -1; /* Wrong character */
-
-}
-
-static void
-hex2float(const char *HexColor, float *FloatColor)
-{
-  const char *HexColorPtr = HexColor;
-
-  int i = 0;
-
-  for (i = 0; i < 4; i++)
-  {
-    int IntColor = (getdec(HexColorPtr[0]) * 16) +
-                   getdec(HexColorPtr[1]);
-
-    FloatColor[i] = (float) IntColor / 255.0;
-    HexColorPtr += 2;
-  }
-
+  cairo_set_source_rgba (cr,
+                         desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
+                         desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
+                         desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
+                         color->alpha / AWN_RGBA_SCALE_FACTOR);
 }
 
 void
-awn_cairo_string_to_color(const gchar *string, AwnColor *color)
+awn_cairo_set_source_color_with_alpha_multiplier (cairo_t              *cr,
+                                                  DesktopAgnosticColor *color,
+                                                  gdouble               multiplier)
 {
-  float colors[4];
-  g_return_if_fail (string); 
-  g_return_if_fail (color); 
+  g_return_if_fail (color);
+  g_return_if_fail (multiplier >= 0 && multiplier <= 1.0);
 
-  hex2float(string, colors);
-  color->red = colors[0];
-  color->green = colors[1];
-  color->blue = colors[2];
-  color->alpha = colors[3];
+  cairo_set_source_rgba (cr,
+                         desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
+                         desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
+                         desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
+                         color->alpha / AWN_RGBA_SCALE_FACTOR * multiplier);
 }
 
+void
+awn_cairo_set_source_color_with_multipliers (cairo_t              *cr,
+                                             DesktopAgnosticColor *color,
+                                             gdouble               color_multiplier,
+                                             gdouble               alpha_multiplier)
+{
+  g_return_if_fail (color);
+
+  cairo_set_source_rgba (cr,
+                         desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR * color_multiplier,
+                         desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR * color_multiplier,
+                         desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR * color_multiplier,
+                         color->alpha / AWN_RGBA_SCALE_FACTOR * alpha_multiplier);
+}
+
+void
+awn_cairo_pattern_add_color_stop_color (cairo_pattern_t      *pattern,
+                                        double                offset,
+                                        DesktopAgnosticColor *color)
+{
+  g_return_if_fail (color);
+
+  cairo_pattern_add_color_stop_rgba (pattern, offset,
+                                     desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
+                                     desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
+                                     desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
+                                     color->alpha / AWN_RGBA_SCALE_FACTOR);
+}
+
+void
+awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier (cairo_pattern_t      *pattern,
+                                                              double                offset,
+                                                              DesktopAgnosticColor *color,
+                                                              gdouble               multiplier)
+{
+  g_return_if_fail (color);
+  g_return_if_fail (multiplier >= 0 && multiplier <= 1.0);
+
+  cairo_pattern_add_color_stop_rgba (pattern, offset,
+                                     desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
+                                     desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
+                                     desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
+                                     color->alpha / AWN_RGBA_SCALE_FACTOR * multiplier);
+}
+
+/* vim: set et ts=2 sts=2 sw=2 ai cindent : */

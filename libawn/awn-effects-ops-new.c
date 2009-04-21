@@ -298,8 +298,12 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
       {
         if (style)
         {
-          awn_cairo_set_source_gdk_color (cr, &style->dark[GTK_STATE_ACTIVE],
-                                          0.4);
+          DesktopAgnosticColor *color;
+          
+          color = desktop_agnostic_color_new (&style->dark[GTK_STATE_ACTIVE],
+                                              0.4);
+          awn_cairo_set_source_color (cr, color);
+          g_object_unref (color);
         }
         else
           cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);

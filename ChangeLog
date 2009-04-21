@@ -5,6 +5,54 @@
 	* applets/taskmanager/task-icon.c (task_icon_append_window):
 	Don't try to show the grouped icon when not in grouped mode.
 
+2009-04-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-cairo-utils.c
+	  (awn_cairo_set_source_color_with_multipliers):
+	* libawn/awn-cairo-utils.h:
+	Add awn_cairo_set_source_color_with_multipliers, needed for
+	awn-notification-daemon.
+
+2009-04-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-cairo-utils.c
+	  (awn_cairo_set_source_color_with_alpha_multiplier,
+	  awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier):
+	* libawn/awn-cairo-utils.h:
+	Implement versions of the Awn cairo color utility functions with
+	alpha multiplier parameters.
+
+2009-04-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-cairo-utils.c:
+	Make sure that DesktopAgnosticColor attributes are correctly converted to
+	cairo color attributes.
+	* libawn/awn-cairo-utils.h:
+	Introduce a new constant, AWN_RGBA_SCALE_REFACTOR, used in converting
+	DesktopAgnosticColor attributes to cairo color attributes and vice versa.
+
+2009-04-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/awn.schema-ini.in:
+	* libawn/awn-tooltip.c (awn_tooltip_get_property,
+	  awn_tooltip_class_init, ensure_tooltip, awn_tooltip_set_font_color):
+	Fix tooltip handling of colors with DesktopAgnosticColor.
+
+2009-04-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-cairo-utils.c (awn_cairo_set_source_color,
+	  awn_cairo_pattern_add_color_stop_color):
+	* libawn/awn-tooltip.c (awn_tooltip_set_background_color):
+	Add error checks.
+
+2009-04-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects-ops-new.c:
+	* src/awn-background-curves.c:
+	* src/awn-background-edgy.c:
+	Replace AwnColor and associated functions with DesktopAgnosticColor.
+
 2009-04-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/Makefile.am:
@@ -1296,6 +1344,21 @@
 	(Don't add priv->offset, it is now already in it.)
 	- To draw the background on the right place
 	- Inputmap is now correctly on the four sides (as side effect :-D)
+
+2009-01-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* configure.in:
+	* data/awn.schema-ini.in:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-tooltip.c:
+	* src/awn-background-3d.c:
+	* src/awn-background-flat.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	Replace AwnColor and associated functions with DesktopAgnosticColor.
 
 2009-01-25  Mark Lee  <avant-wn@lazymalevolence.com>
 
