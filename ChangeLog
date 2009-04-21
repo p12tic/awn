@@ -1,5 +1,11 @@
 2009-04-21  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-config-client-gkeyfile.c:
+	Convert to use the libdesktop-agnostic VFS implementation. Only tested
+	to see if it compiled correctly.
+
+2009-04-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* src/awn-main.c:
 	Convert to use the libdesktop-agnostic VFS implementation (currently
 	used only if the gkeyfile config backend is used).

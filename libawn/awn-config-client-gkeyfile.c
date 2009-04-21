@@ -31,6 +31,11 @@
 
 #include <glib/gstdio.h>
 
+#include <libdesktop-agnostic/module.h>
+#include <libdesktop-agnostic/vfs.h>
+#include <libdesktop-agnostic/vfs-file.h>
+#include <libdesktop-agnostic/vfs-file-monitor.h>
+
 /**
  * SECTION: awn-config-client
  * @short_description: The configuration API for both Awn proper and
@@ -41,14 +46,13 @@
  * a GKeyFile-based backend.  Used for both Awn proper and its applets.
  */
 #include "libawn/awn-config-client.h"
-#include "libawn/awn-vfs.h"
 #include "awn-config-client-shared.c"
 
 struct _AwnConfigClient
 {
 	GKeyFile *client;
 	GData *notify_funcs;
-	AwnVfsMonitor *file_monitor;
+	DesktopAgnosticVFSFileMonitor *file_monitor;
 	gchar *checksum;
 	GKeyFile *schema;
 	gchar *path; /* .ini path */
@@ -71,7 +75,11 @@ typedef struct {
 static void awn_config_client_gkeyfile_new_schema (AwnConfigClient *client, gchar *base_name);
 static void awn_config_client_load_data (AwnConfigClient *client);
 static void awn_config_client_save (AwnConfigClient *client, GError **err);
-static void awn_config_client_reload (AwnVfsMonitor *monitor, gchar *monitor_path, gchar *event_path, AwnVfsMonitorEvent event, AwnConfigClient *client);
+static void awn_config_client_reload (DesktopAgnosticVFSFileMonitor      *monitor,
+                                      DesktopAgnosticVFSFileBackend      *monitor_path,
+                                      DesktopAgnosticVFSFileBackend      *event_path,
+                                      DesktopAgnosticVFSFileMonitorEvent  event,
+                                      AwnConfigClient                    *client);
 
 static AwnConfigClient *awn_config_client_new_with_path (gchar *path, gchar *name)
 {
@@ -95,8 +103,21 @@ static AwnConfigClient *awn_config_client_new_with_path (gchar *path, gchar *nam
 			g_error_free (err);
 		}
 	}
-	client->file_monitor = awn_vfs_monitor_add (client->path, AWN_VFS_MONITOR_FILE,
-	                                            (AwnVfsMonitorFunc)awn_config_client_reload, client);
+	DesktopAgnosticVFSImplementation *vfs = desktop_agnostic_vfs_get_default (&err);
+	if (err) {
+		g_warning ("Could not load the VFS implementation: %s",
+		           err->message);
+		g_error_free (err);
+		return NULL;
+	} else if (!vfs) {
+		g_warning ("Could not load the VFS implementation.");
+		return NULL;
+	}
+	DesktopAgnosticVFSFileBackend *file = g_object_new (desktop_agnostic_vfs_implementation_get_file_type (vfs),
+	                                                    "path", client->path,
+	                                                    NULL);
+	client->file_monitor = desktop_agnostic_vfs_file_backend_monitor (file);
+	g_signal_connect (client->file_monitor, "changed", G_CALLBACK (awn_config_client_reload), client);
 	g_datalist_init (&(client->notify_funcs));
 	return client;
 }
@@ -361,11 +382,15 @@ static void awn_config_client_do_notify (AwnConfigClient *client, const gchar *g
 	} else {
 	}
 }
-static void awn_config_client_reload (AwnVfsMonitor *monitor, gchar *monitor_path, gchar *event_path, AwnVfsMonitorEvent event, AwnConfigClient *client)
+static void awn_config_client_reload (DesktopAgnosticVFSFileMonitor      *monitor,
+                                      DesktopAgnosticVFSFileBackend      *file,
+                                      DesktopAgnosticVFSFileBackend      *other,
+                                      DesktopAgnosticVFSFileMonitorEvent  event,
+                                      AwnConfigClient                    *client)
 {
 	switch (event) {
-		case AWN_VFS_MONITOR_EVENT_CREATED:
-		case AWN_VFS_MONITOR_EVENT_CHANGED: {
+		case DESKTOP_AGNOSTIC_VFS_FILE_MONITOR_EVENT_CREATED:
+		case DESKTOP_AGNOSTIC_VFS_FILE_MONITOR_EVENT_CHANGED: {
 			gchar *old_checksum = client->checksum;
 			GKeyFile *old_client = client->client;
 			client->client = g_key_file_new ();
@@ -429,8 +454,11 @@ static void awn_config_client_reload (AwnVfsMonitor *monitor, gchar *monitor_pat
 			g_key_file_free (old_client);
 			g_free (old_checksum);
 			break;
-		} case AWN_VFS_MONITOR_EVENT_DELETED: {
+		} case DESKTOP_AGNOSTIC_VFS_FILE_MONITOR_EVENT_DELETED: {
 			g_warning ("Your configuration file was deleted.");
+			break;
+		} default: {
+			/* do nothing */
 			break;
 		}
 	}
@@ -877,7 +905,8 @@ void awn_config_client_free (AwnConfigClient *client)
 {
 	g_key_file_free (client->schema);
 	g_datalist_clear (&(client->notify_funcs));
-	awn_vfs_monitor_remove (client->file_monitor);
+	desktop_agnostic_vfs_file_monitor_cancel (client->file_monitor);
+	g_object_unref (client->file_monitor);
 	g_key_file_free (client->client);
 	g_free (client->path);
 	g_free (client);
