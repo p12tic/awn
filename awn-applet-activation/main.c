@@ -28,7 +28,8 @@
 #include <libawn/awn-defines.h>
 #include <libawn/awn-desktop-item.h>
 #include <libawn/awn-applet.h>
-#include <libawn/awn-vfs.h>
+#include <libdesktop-agnostic/module.h>
+#include <libdesktop-agnostic/vfs.h>
 
 /* Forwards */
 GtkWidget *
@@ -127,6 +128,7 @@ main(gint argc, gchar **argv)
 {
   GError *error = NULL;
   GOptionContext *context;
+  DesktopAgnosticVFSImplementation *vfs;
   AwnDesktopItem *item = NULL;
   GtkWidget *applet = NULL;
   const gchar *exec;
@@ -149,7 +151,20 @@ main(gint argc, gchar **argv)
 
   if (!g_thread_supported()) g_thread_init(NULL);
 
-  awn_vfs_init();
+  vfs = desktop_agnostic_vfs_get_default (&error);
+  if (error)
+  {
+    g_critical ("An error occurred when trying to create the VFS object: %s",
+                error->message);
+    g_error_free (error);
+    return 1;
+  }
+  else if (!vfs)
+  {
+    g_critical ("Could not create the VFS object.");
+    return 1;
+  }
+  desktop_agnostic_vfs_implementation_init (vfs);
 
   gtk_init(&argc, &argv);
 
@@ -250,6 +265,8 @@ main(gint argc, gchar **argv)
   }
 
   gtk_main();
+
+  desktop_agnostic_vfs_implementation_shutdown (vfs);
 
   return 0;
 }

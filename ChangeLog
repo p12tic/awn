@@ -1,3 +1,8 @@
+2009-04-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-applet-activation/main.c:
+	Convert to use the libdesktop-agnostic VFS implementation.
+
 2009-04-20  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	reviewed by: R. Cryderman <rcryderman@gmail.com>
