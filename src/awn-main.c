@@ -31,7 +31,10 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
-#include <libawn/awn-vfs.h>
+#include <libdesktop-agnostic/module.h>
+#ifndef USE_GCONF
+#include <libdesktop-agnostic/vfs.h>
+#endif
 
 #include "awn-app.h"
 #include "awn-defines.h"
@@ -57,6 +60,9 @@ main (gint argc, gchar *argv[])
 {
   AwnApp          *app;
   GOptionContext  *context;
+#ifndef USE_GCONF
+  DesktopAgnosticVFSImplementation *vfs;
+#endif
   DBusGConnection *connection;
   DBusGProxy      *proxy;
   GError          *error = NULL;
@@ -81,7 +87,23 @@ main (gint argc, gchar *argv[])
   dbus_g_thread_init ();
   g_type_init ();
   gtk_init (&argc, &argv);
-  awn_vfs_init ();
+
+#ifndef USE_GCONF
+  vfs = desktop_agnostic_vfs_get_default (&error);
+  if (error)
+  {
+    g_critical ("An error occurred when trying to create the VFS object: %s",
+                error->message);
+    g_error_free (error);
+    return EXIT_FAILURE;
+  }
+  else if (!vfs)
+  {
+    g_critical ("Could not create the VFS object.");
+    return EXIT_FAILURE;
+  }
+  desktop_agnostic_vfs_implementation_init (vfs);
+#endif
 
   /* Single instance checking; first get the D-Bus connection */
   connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
@@ -129,6 +151,10 @@ main (gint argc, gchar *argv[])
   g_object_unref (app);
   g_object_unref (proxy);
   dbus_g_connection_unref (connection);
+
+#ifndef USE_GCONF
+  desktop_agnostic_vfs_implementation_shutdown (vfs);
+#endif
 
   return EXIT_SUCCESS;
 }
