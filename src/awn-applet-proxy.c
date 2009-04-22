@@ -231,6 +231,7 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
         1, G_TYPE_INT);
 
   g_type_class_add_private (obj_class, sizeof (AwnAppletProxyPrivate));
+
 }
 
 static gboolean
@@ -302,6 +303,7 @@ awn_applet_proxy_init (AwnAppletProxy *proxy)
                     G_CALLBACK (throbber_mouse_over), proxy);
   g_signal_connect (priv->throbber, "leave-notify-event",
                     G_CALLBACK (throbber_mouse_out), proxy);
+
 }
 
 GtkWidget*
@@ -511,5 +513,3 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   g_strfreev (argv);
   g_free (exec);
 }
-
-

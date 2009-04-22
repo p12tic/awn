@@ -22,6 +22,9 @@
 #include "config.h"
 
 #include <libawn/awn-config-bridge.h>
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-bindings.h>
+
 
 #include "awn-defines.h"
 #include "awn-applet-manager.h"
@@ -217,6 +220,8 @@ awn_applet_manager_dispose (GObject *object)
   G_OBJECT_CLASS (awn_applet_manager_parent_class)->dispose (object);
 }
 
+#include "awn-applet-manager-glue.h"
+
 static void
 awn_applet_manager_class_init (AwnAppletManagerClass *klass)
 {
@@ -281,12 +286,18 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                  G_TYPE_NONE, 1, GTK_TYPE_WIDGET);
  
   g_type_class_add_private (obj_class, sizeof (AwnAppletManagerPrivate));
+
+  dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass), 
+                                   &dbus_glib_awn_ua_object_info);
+
 }
 
 static void
 awn_applet_manager_init (AwnAppletManager *manager)
 {
   AwnAppletManagerPrivate *priv;
+  DBusGConnection *connection;
+  GError                *error = NULL;
 
   priv = manager->priv = AWN_APPLET_MANAGER_GET_PRIVATE (manager);
 
@@ -295,6 +306,21 @@ awn_applet_manager_init (AwnAppletManager *manager)
                                          g_free, NULL);
 
   gtk_widget_show_all (GTK_WIDGET (manager));
+
+  /* Grab a connection to the bus */
+  connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+  if (connection == NULL)
+  {
+    g_warning ("Unable to make connection to the D-Bus session bus: %s",
+               error->message);
+    g_error_free (error);
+    gtk_main_quit ();
+  }
+
+ dbus_g_connection_register_g_object (connection, 
+                                       AWN_DBUS_MANAGER_PATH, 
+					G_OBJECT (GTK_WIDGET (manager)));
+
 }
 
 GtkWidget *
@@ -579,3 +605,21 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
   g_hash_table_foreach_remove (priv->applets, (GHRFunc)delete_applets, manager);
 }
 
+/*DBUS*/
+
+gboolean
+awn_ua_listen_uid (	AwnAppletManager *manager,
+                         gchar     *uid,
+			 gchar *path,
+                         GError   **error)
+{
+ GtkWidget *applet;
+
+ g_print ("Applet : %s : ", uid);
+
+ /*applet = create_applet (manager, *path, *uid)*/
+
+return TRUE;
+}
+
+/*End DBUS*/

@@ -110,3 +110,9 @@ src/stamp-awnmarshal.c
 src/stamp-awnmarshal.h
 applets/taskmanager/taskmanager-marshal.c
 applets/taskmanager/taskmanager-marshal.h
+debian/patches/*.log
+debian/stamp*
+debian/libawn*/*
+debian/avant-*/*
+debian/python*/*
+debian/awn*/*

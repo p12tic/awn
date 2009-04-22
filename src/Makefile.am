@@ -27,6 +27,7 @@ avant_window_navigator_SOURCES =	\
 	awn-app-glue.h \
 	awn-applet-manager.c \
 	awn-applet-manager.h \
+	awn-applet-manager-glue.h \
 	awn-applet-proxy.c \
 	awn-applet-proxy.h \
 	awn-background.c \
@@ -63,9 +64,13 @@ awn-app-glue.h: awn-app-dbus.xml Makefile
 awn-panel-glue.h: awn-panel-dbus.xml Makefile
 	$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=awn_panel --mode=glib-server --output=$@ $<
 
+awn-applet-manager-glue.h: awn-applet-manager-dbus.xml Makefile
+	$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=awn_ua --mode=glib-server --output=$@ $<
+
 BUILT_SOURCES = \
 	awn-app-glue.h \
 	awn-panel-glue.h \
+	awn-applet-manager-glue.h \
 	$(MARSHALFILES) \
 	$(NULL)
 
@@ -74,6 +79,7 @@ CLEANFILES = $(BUILT_SOURCES)
 EXTRA_DIST = \
 	awn-app-dbus.xml \
 	awn-panel-dbus.xml \
+	awn-applet-manager-dbus.xml \
 	$(NULL)
 
 # vim: set ts=8 sts=8 sw=8 :
