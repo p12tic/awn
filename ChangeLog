@@ -1,3 +1,8 @@
+2009-04-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* debian/control:
+	Add libdesktop-agnostic dependencies.
+
 2009-04-21  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-config-client-gkeyfile.c:

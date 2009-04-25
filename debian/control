@@ -21,7 +21,8 @@ Build-Depends: 	debhelper (>= 5),
 		doc-base,
 		valac (>= 0.5.4),
 		python2.5 | python-lxml | python-celementtree | python-elementtree,
-		automake
+		automake,
+		libdesktop-agnostic-dev,
 Standards-Version: 3.7.3
 Homepage: https://launchpad.net/avant-window-navigator/
 XS-Python-Version: >= 2.4
@@ -33,6 +34,7 @@ Depends: 	${shlibs:Depends},
 		${misc:Depends},
 		avant-window-navigator-data-trunk (>= ${source:Version}),
 		python-awn-trunk (>= ${source:Version}),
+		libdesktop-agnostic-vfs,
 		dbus-x11 | dbus
 Recommends:	awn-manager-trunk (>= 0.2),
 Suggests: 	metacity (>= 2.21.5) | xcompmgr | compiz | xfwm4 (>= 4.2)
@@ -58,7 +60,8 @@ Package: libawn0-trunk
 Section: libs
 Architecture: any
 Depends: 	${shlibs:Depends},
-		${misc:Depends}
+		${misc:Depends},
+		libdesktop-agnostic0,
 Suggests: 	metacity (>= 2.21.5) | xcompmgr | compiz | xfwm4 (>= 4.2)
 Conflicts: libawn0-bzr, libawn-bzr, libawn, libawn0, libawn0-testing
 Replaces: libawn0-bzr, libawn-bzr, libawn, libawn0, libawn0-testing
@@ -83,7 +86,8 @@ Depends:	libawn0-trunk (= ${binary:Version}),
 		${shlibs:Depends},
 		${misc:Depends},
 		libgnome2-dev,
-		libgtk2.0-dev
+		libgtk2.0-dev,
+		libdesktop-agnostic-dev,
 Conflicts: libawn-dev-bzr, libawn-dev, libawn-testing-dev
 Replaces: libawn-dev-bzr, libawn-dev, libawn-testing-dev
 Description: library for avant-window-navigator - development files
