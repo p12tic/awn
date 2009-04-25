@@ -28,7 +28,7 @@
 #include <string.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
-#include <libdesktop-agnostic/color.h>
+#include <libdesktop-agnostic/desktop-agnostic.h>
 #include <math.h>
 
 #include "awn-applet.h"

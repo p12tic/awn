@@ -1,5 +1,19 @@
 2009-04-25  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/taskmanager/task-icon.c:
+	* awn-applet-activation/main.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-config-client-gkeyfile.c:
+	* libawn/awn-dialog.c:
+	* libawn/awn-tooltip.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	* src/awn-main.c:
+	The libdesktop-agnostic headers have been consolidated into a single
+	header; use that instead.
+
+2009-04-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* debian/control:
 	Add libdesktop-agnostic dependencies.
 

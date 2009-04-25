@@ -31,10 +31,7 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
-#include <libdesktop-agnostic/module.h>
-#ifndef USE_GCONF
-#include <libdesktop-agnostic/vfs.h>
-#endif
+#include <libdesktop-agnostic/desktop-agnostic.h>
 
 #include "awn-app.h"
 #include "awn-defines.h"

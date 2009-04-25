@@ -31,10 +31,7 @@
 
 #include <glib/gstdio.h>
 
-#include <libdesktop-agnostic/module.h>
-#include <libdesktop-agnostic/vfs.h>
-#include <libdesktop-agnostic/vfs-file.h>
-#include <libdesktop-agnostic/vfs-file-monitor.h>
+#include <libdesktop-agnostic/desktop-agnostic.h>
 
 /**
  * SECTION: awn-config-client

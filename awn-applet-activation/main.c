@@ -28,8 +28,7 @@
 #include <libawn/awn-defines.h>
 #include <libawn/awn-desktop-item.h>
 #include <libawn/awn-applet.h>
-#include <libdesktop-agnostic/module.h>
-#include <libdesktop-agnostic/vfs.h>
+#include <libdesktop-agnostic/desktop-agnostic.h>
 
 /* Forwards */
 GtkWidget *

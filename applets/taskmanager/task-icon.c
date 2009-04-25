@@ -25,8 +25,7 @@
 
 #include <libwnck/libwnck.h>
 
-#include <libdesktop-agnostic/module.h>
-#include <libdesktop-agnostic/vfs.h>
+#include <libdesktop-agnostic/desktop-agnostic.h>
 
 #include "taskmanager-marshal.h"
 #include "task-icon.h"
