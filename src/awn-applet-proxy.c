@@ -27,6 +27,7 @@
 #include "awn-applet-proxy.h"
 #include "awn-utils.h"
 #include "awn-throbber.h"
+#include "gseal-transition.h"
 
 G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_SOCKET) 
 
@@ -393,11 +394,7 @@ static void on_size_alloc (AwnAppletProxy *proxy, GtkAllocation *alloc)
   priv->old_y = alloc->y;
 
   /* Only directly access the struct member if we have to. */
-#ifdef GSEAL
   plug_win = gtk_socket_get_plug_window (GTK_SOCKET (proxy));
-#else
-  plug_win = GTK_SOCKET (proxy)->plug_window;
-#endif
   if (plug_win)
   {
     GdkAtom msg_type = gdk_atom_intern("_AWN_APPLET_POS_CHANGE", FALSE);
@@ -475,11 +472,7 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
     gtk_socket_get_id (GTK_SOCKET (proxy));
   GtkWidget *proxy_widget = gtk_widget_get_toplevel (GTK_WIDGET(proxy));
   GdkWindow *proxy_win;
-#ifdef GSEAL
   proxy_win = gtk_widget_get_window (proxy_widget);
-#else
-  proxy_win = proxy_widget->window;
-#endif
   gint64 panel_window_id = (gint64)GDK_WINDOW_XID (proxy_win);
 
   exec = g_strdup_printf (APPLET_EXEC,

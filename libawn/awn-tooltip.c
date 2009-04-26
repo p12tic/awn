@@ -36,6 +36,8 @@
 #include "awn-config-bridge.h"
 #include "awn-config-client.h"
 
+#include "gseal-transition.h"
+
 G_DEFINE_TYPE (AwnTooltip, awn_tooltip, GTK_TYPE_WINDOW)
 
 #define AWN_TOOLTIP_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -115,11 +117,7 @@ awn_tooltip_expose_event (GtkWidget *widget, GdkEventExpose *expose)
   width = widget->allocation.width;
   height = widget->allocation.height;
 
-#ifdef GSEAL
   cr = gdk_cairo_create (gtk_widget_get_window (widget));
-#else
-  cr = gdk_cairo_create (widget->window);
-#endif
 
   if (!cr)
   {
@@ -556,11 +554,7 @@ awn_tooltip_update_position (AwnTooltip *tooltip)
   h = req.height;
 
   /* Get the dimesions of the widget we are focusing on */
-#ifdef GSEAL
   focus_win = gtk_widget_get_window (priv->focus);
-#else
-  focus_win = priv->focus->window;
-#endif
   gdk_window_get_origin (focus_win, &fx, &fy);
   gdk_drawable_get_size (GDK_DRAWABLE (focus_win), &fw, &fh);
   
