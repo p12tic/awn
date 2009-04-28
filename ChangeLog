@@ -1,3 +1,9 @@
+2009-04-27  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+
+	Decode the icon names received through drag and drop.  Spaces are now ok.  Something odd (unrelated to this issue) is still happening with drag and drop though.
+
 2009-04-25  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/task-icon.c:

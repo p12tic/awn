@@ -712,7 +712,8 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   AwnThemedIconPrivate *priv;
   GError               *error = NULL;
   gboolean              success = FALSE;
-  gchar                *sdata;
+  gchar                *sdata = NULL;
+  gchar                *decoded = NULL;
   GdkPixbuf            *pixbuf = NULL;
   gchar               **extensions = NULL;
   GtkBuilder           *builder = NULL;
@@ -745,10 +746,16 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   if (!sdata)
     goto drag_out;
 
-  sdata = g_strchomp (sdata);
-
+  decoded = sdata = g_uri_unescape_string (sdata,NULL);
+  if (!sdata)
+    goto drag_out;  
+  sdata = g_strchomp (sdata);  
+  if (!sdata)
+    goto drag_out;
   /* We only want the last dropped uri, and we want it in path form */
   sdata = g_strrstr (sdata, "file:///");
+  if (!sdata)
+    goto drag_out;                     
   sdata = sdata+7;
 
   /* Check if svg, yes there are better ways */
@@ -761,7 +768,6 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   {
     suffix = "png";
   }
- 
   /* Try and load the uri, to see if it's a pixbuf */
   pixbuf = gdk_pixbuf_new_from_file (sdata, NULL);
 
@@ -860,6 +866,8 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   g_strfreev (extensions);
 
 drag_out:
+
+  g_free (decoded);
 
   if (builder)
     g_object_unref (builder);
