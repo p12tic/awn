@@ -1,3 +1,8 @@
+2009-04-30  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-icons.c:
+	Fix typo in the last commit.
+
 2008-04-29  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:

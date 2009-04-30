@@ -82,7 +82,7 @@ static const GtkTargetEntry drop_types[] =
 static const gint n_drop_types = G_N_ELEMENTS(drop_types);
 
 
-#ifndef GLIB_CHECK_VERSION(2,16,0) 
+#if !GLIB_CHECK_VERSION(2,16,0) 
 
 /*
  The following licensing and copyrights apply to 
