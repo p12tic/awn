@@ -87,7 +87,8 @@ static const gint n_drop_types = G_N_ELEMENTS(drop_types);
 /*
  The following licensing and copyrights apply to 
  
- g_uri_unescape_segment()
+ unescape_character(),
+ g_uri_unescape_segment(),
  and
  g_uri_unescape_string()
  
@@ -111,9 +112,27 @@ GIO - GLib Input, Output and Streaming Library
  * Boston, MA 02111-1307, USA.
  *
  * Author: Alexander Larsson <alexl@redhat.com>
+ */
 
-*/
-char *
+static int
+unescape_character (const char *scanner)
+{
+  int first_digit;
+  int second_digit;
+
+  first_digit = g_ascii_xdigit_value (*scanner++);
+  if (first_digit < 0)
+    return -1;
+
+  second_digit = g_ascii_xdigit_value (*scanner++);
+  if (second_digit < 0)
+    return -1;
+
+  return (first_digit << 4) | second_digit;
+}
+
+
+static char *
 g_uri_unescape_segment (const char *escaped_string,
 			const char *escaped_string_end,
                         const char *illegal_characters)
@@ -121,33 +140,33 @@ g_uri_unescape_segment (const char *escaped_string,
   const char *in;
   char *out, *result;
   gint character;
-  
+
   if (escaped_string == NULL)
     return NULL;
-  
+
   if (escaped_string_end == NULL)
     escaped_string_end = escaped_string + strlen (escaped_string);
-  
+
   result = g_malloc (escaped_string_end - escaped_string + 1);
-  
+
   out = result;
   for (in = escaped_string; in < escaped_string_end; in++)
     {
       character = *in;
-      
+
       if (*in == '%')
 	{
 	  in++;
-	  
+
 	  if (escaped_string_end - in < 2)
 	    {
 	      /* Invalid escaped char (to short) */
 	      g_free (result);
 	      return NULL;
 	    }
-	  
+
 	  character = unescape_character (in);
-	  
+
 	  /* Check for an illegal character. We consider '\0' illegal here. */
 	  if (character <= 0 ||
 	      (illegal_characters != NULL &&
@@ -156,14 +175,14 @@ g_uri_unescape_segment (const char *escaped_string,
 	      g_free (result);
 	      return NULL;
 	    }
-	  
+
 	  in++; /* The other char will be eaten in the loop header */
 	}
       *out++ = (char)character;
     }
-  
+
   *out = '\0';
-  
+
   return result;
 }
 
@@ -185,7 +204,7 @@ g_uri_unescape_segment (const char *escaped_string,
  *
  * Since: 2.16
  **/
-char *
+static char *
 g_uri_unescape_string (const char *escaped_string,
 		       const char *illegal_characters)
 {

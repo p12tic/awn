@@ -1,3 +1,10 @@
+2009-05-01  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-icons.c:
+	Add a missing function.
+	Make sure the added function are static.
+	Whitespace fixes.
+
 2009-04-30  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-icons.c:
