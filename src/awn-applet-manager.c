@@ -622,4 +622,230 @@ awn_ua_listen_uid (	AwnAppletManager *manager,
 return TRUE;
 }
 
+gboolean
+awn_ua_add_applet (	AwnAppletManager *manager,
+                         gchar     *uid,
+			 gchar *path,
+                         GError   **error)
+{
+ GtkWidget *applet;
+
+ g_print ("Applet : %s : ", uid);
+
+ applet = create_applet (manager, *path, *uid);
+
+return TRUE;
+}
+
+/*TODO
+
+	@action(IFACE)
+	def add_applet (self, id, plug_id, width, height, size_type, desktop_path):
+		"""
+		Add an applet.
+		
+		id: A unique string used to identify the applet.
+		plug_id: The applet's gtk.Plug's xid.
+		width: A recommended width. This will be interpreted according to size_type.
+		height A recommended height. This will be interpreted according to size_type.
+		size_type: Determines the meaning of width and height.
+			May be one of the following values:
+			"scalable"- The applet may be resized as long as the width/height ratio is kept.
+			"static"- The applet should be displayed at exactly the size requested.
+			"static-width"-	The applet's width should remain static, and the server may change the height.
+			"static-height"- The applet's height should remain static, and the server may change the width.
+			"dynamic"- The applet may be resized to any size.
+		desktop_path: Path to the desktop file.
+		"""
+		# NOTE: Melange currently ignores the size_type parameter.
+		container = ToplevelContainer(plug_id, id, self, width, height,
+			size_type, backend=self.backend)
+		self.containers.append(container)
+	
+	@action(IFACE)
+	def add_applet_with_group (self, applet_id, group_id, plug_id, width, height, size_type):
+		"""
+		Add an applet as part of an applet group. Applet groups may be used by the server
+		to group multiple 'views' of the same applet together.
+		
+		If the group name is the id of an existing applet, this applet will be added to
+		that applets group. If the group doesn't already exist it will be created.
+		
+		applet_id: A unique string used to identify the applet.
+		group_id: A unique string used to identify the applet's group.
+		plug_id: The applet's gtk.Plug's xid.
+		width: A recommended width. This will be interpreted according to size_type.
+		height A recommended height. This will be interpreted according to size_type.
+		size_type: Determines the meaning of width and height.
+			May be one of the following values:
+			"scalable"- The applet may be resized as long as the width/height ratio is kept.
+			"static"- The applet should be displayed at exactly the size requested.
+			"static-width"-	The applet's width should remain static, and the server may change the height.
+			"static-height"- The applet's height should remain static, and the server may change the width.
+			"dynamic"- The applet may be resized to any size.
+		"""
+		# Just add the applet like usual, and do nothing special.
+		# Other servers may handle this differently.
+		self.add_applet (applet_id, plug_id, width, height, size_type)
+	
+	@action(IFACE)
+	def get_applet_size (self, id):
+		"""
+		Returns a tuple containing an applet's width, height, and size_type.
+		
+		If no applet with id exists then None will be returned.
+		"""
+		container = self.get_container_by_id(id)
+		if container is not None:
+			return (container.width, container.height, container.size_type)
+		else:
+			return ()
+			
+	@action(IFACE)
+	def get_all_server_flags (self, id):
+		"""
+		Request a dictionary of all flags and their values from the server.
+		
+		See get_server_flag for additional documentation.
+		"""
+		# TODO: Fix flag names to fit their descriptions better.
+		
+		# The AppletView class currently pays attention to the following flags:
+		# "supports-shaping": if True, AppletView sets the applet's GtkPlug's window/input shape
+		
+		# "send-button-press-event":	the applet should ungrab the pointer and send the server a message on unhandled button-press-events
+		# "send-enter-notify-event":	the applet should send the server a message on enter-notify-events
+		# "send-focus-in-event":		the applet should send the server a message on focus-in-events
+		# "send-leave-notify-event":	the applet should send the server a message on leave-notify-events
+		# "send-shape-changed":			the applet should send the server a message when it changes it's window/input shape
+		
+		flags = {}
+		for key in self.flags:
+			flags[key] = True
+		return flags
+	
+	@action(IFACE)
+	def get_server_flag (self, id, name):
+		"""
+		Request a flag from the server that may contain extra information
+		that's not available from the other methods in the server API.
+		
+		Note: Flags are returned on a per-applet basis. A flag's value may
+		differ depending on the applet.
+		"""
+		
+		if name in self.flags:
+			return True
+	
+	@action(IFACE)
+	def get_server_location_description (self):
+		"""
+		Get a description of the location where the server displays applets.
+		This description is used to display the user with a menu that reads 
+		"Move to DESCRIPTION."  
+		""" 
+		return self.LOCATION_DESCRIPTION
+		
+	@action(IFACE)
+	def get_server_name (self):
+		"""
+		Get the name of the server.
+		"""
+		return self.APP_NAME
+		
+	@action(IFACE)
+	def get_server_version (self):
+		"""
+		Get the server's version number.
+		"""
+		return self.APP_VERSION
+			
+	@action(IFACE)
+	def send_message (self, id, message, data):
+		"""
+		Send a message to the server. The server may decide to take an action based
+		on the message.
+		
+		Note: This method is mainly used to notify the server about unhandled XEvents.
+		If you're using it for that purpose, do not forward unhandled XEvents that the
+		server isn't interested in receiving. You may use the function get_all_server_flags
+		to check which XEvents the server would like to know about.
+		"""
+		log.debug("Melange: Recieved message %s: %s: %s" % (message, id, data))
+		container = self.get_container_by_id(id)
+		
+		if container is not None:
+			if message == "button-press-event":
+				container.button_press_event(None, None)
+			elif message == "enter-notify-event":
+				container.enter_notify_event(None, None)
+			elif message == "focus-in-event":
+				container.focus_in_event(None, None)
+			elif message == "leave-notify-event":
+				container.leave_notify_event(None, None)
+			elif message == "shape-changed":
+				container.update_shape()
+	
+	@action(IFACE)
+	def set_applet_size (self, id, width, height, size_type):
+		"""
+		Sets an applet's size and/or size type.
+		
+		width: A recommended width or -1 to preserve the current width. This will be
+			interpreted according to size_type.
+		height A recommended height or -1 to preserve the current height. This will be
+			interpreted according to size_type.
+		size_type: Determines the meaning of width and height. The below values are all
+			acceptable, or "" may be given to preserve the current size type:
+			"scalable"- The applet may be resized as long as the width/height ratio is kept.
+			"static"- The applet should be displayed at exactly the size requested.
+			"static-width"-	The applet's width should remain static, and the server may change the height.
+			"static-height"- The applet's height should remain static, and the server may change the width.
+			"dynamic"- The applet may be resized to any size.
+		"""
+		container = self.get_container_by_id(id)
+		if container is not None:
+			container.set_size(width, height, size_type)
+	
+	#--------------------------------------------------------------------------------
+	# DBUS Signals
+	#
+	# All of the below signals will be part of the Universal Applets 0.1 server API.
+	#--------------------------------------------------------------------------------
+	
+	@signal(IFACE)
+	def flag_changed (self, id, signal_name, state):
+		"""
+		This signal is emitted when one of the server's flags changes
+		for a given applet.
+		"""
+	
+	@signal(IFACE)
+	def button_release_event (self, id, x, y, state, button, x_root, y_root):
+		"""
+		This signal is emitted when the server recieves a button-release-event
+		which it wishes to forward to the applet identified by id.
+		"""
+	
+	
+	#--------------------------------------------------------------------------------
+	# The Universal Applets API ends here.
+	#
+	# Other unrelated DBUS methods are below.
+	#--------------------------------------------------------------------------------
+	
+	@action(IFACE)
+	def quit (self):
+		"""
+		This method is used internally in order to implement the --replace
+		command line option.		
+		
+		Do not call this from your application. To remove an applet,
+		just destroy the applet's gtk.Plug.
+		"""
+		gtk.main_quit()
+
+
+*/
+
 /*End DBUS*/

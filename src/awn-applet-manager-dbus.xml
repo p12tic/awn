@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<node name="/org/awnproject/Awn/UA">
+  <interface name="org.awnproject.Awn.UA">
+    <annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_ua"/>
+  
+    <!-- Methods -->
+    <method name="ListenUid">
+      <arg name="uid" type="s" direction="in" />
+      <arg name="path" type="s" direction="in" />
+    </method>
+
+    <method name="add_applet">
+      <arg name="uid" type="s" direction="in" />
+      <arg name="path" type="s" direction="in" />
+    </method>
+  </interface>
+</node>

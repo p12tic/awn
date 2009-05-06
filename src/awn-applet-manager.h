@@ -77,6 +77,11 @@ gboolean    awn_ua_listen_uid                   (AwnAppletManager *manager,
 			                         gchar *path,
                                                  GError   **error);
 
+gboolean    awn_ua_add_applet                   (AwnAppletManager *manager,
+                                                 gchar     *uid,
+			                         gchar *path,
+                                                 GError   **error);
+
 G_END_DECLS
 
 
