@@ -373,11 +373,20 @@ class awnBzr:
 			struct = file_path
 		if struct['type'] == 'Theme':
 			#Read the settings
-			if not struct[parameter][0] == '':
-				if type(struct[parameter][0]) is int:
-					self.client.set_int(struct[parameter][1], struct[parameter][2], struct[parameter][0])
-				elif type(struct[parameter][0]) is float:
-					self.client.set_float(struct[parameter][1], struct[parameter][2], struct[parameter][0])
+			try:
+				if not struct[parameter][0] == '':
+					if type(struct[parameter][0]) is int:
+						self.client.set_int(struct[parameter][1], 
+									struct[parameter][2], 
+									struct[parameter][0])
+					elif type(struct[parameter][0]) is float:
+						self.client.set_float(struct[parameter][1], 
+									struct[parameter][2], 
+									struct[parameter][0])
+			except IndexError:
+				# The key is not in the desktop file, just skip it.
+				pass
+
 			#TODO more type settings
 		else: 
 			print "Error, the desktop file is not for a theme"
@@ -472,7 +481,7 @@ class awnBzr:
 				)
 
 		for i in list_icons:
-			if list_icons[1] is not None:
+			if i[1] is not None:
 				icon_final = i[1]
 				break
 		if icon_final is not None:
@@ -497,9 +506,9 @@ class awnBzr:
 				icon = None
 		elif type_icon is "pixmap":
 			for i in path:
-				if os.path.exists(str(i+name+extension)):
+				if os.path.exists(os.path.join(i,name+extension)):
 					try: 
-						icon = gdk.pixbuf_new_from_file_at_size(str(i+name+extension), 32, 32)
+						icon = gdk.pixbuf_new_from_file_at_size(os.path.join(i,name+extension), 32, 32)
 					except:
 						icon = None
 		return icon

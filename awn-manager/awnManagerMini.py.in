@@ -116,6 +116,8 @@ class awnPreferencesMini(awnPreferences):
 	self.setup_style(defs.PANEL, defs.STYLE, self.wTree.get_widget("stylecombo"))
 	self.setup_freeze(self.wTree.get_widget("freezeStyle"), self.wTree.get_widget("stylecombo"), "style")
 
+	self.setup_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_widget("monitor_align_hscale"))
+
 	#Advanced
 	self.setup_spin(defs.PANEL, defs.OFFSET, self.wTree.get_widget("offset_config"))
 	self.setup_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_widget("monitor_align"))

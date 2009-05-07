@@ -4,6 +4,8 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="awnManagerWindow">
     <property name="visible">True</property>
+    <property name="icon">awn-manager</property>
+    <property name="icon_name">awn-manager</property>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -265,6 +267,36 @@ the theme ?</property>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
                                 <property name="position">5</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkHBox" id="hbox6">
+                                <property name="visible">True</property>
+                                <child>
+                                  <widget class="GtkLabel" id="label5">
+                                    <property name="visible">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Position on the screen</property>
+                                    <property name="max_width_chars">0</property>
+                                  </widget>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="GtkHScale" id="monitor_align_hscale">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="adjustment">0 0 1 1 0 0</property>
+                                    <property name="draw_value">False</property>
+                                  </widget>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="position">6</property>
                               </packing>
                             </child>
                           </widget>
@@ -751,7 +783,7 @@ the theme ?</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">&#x25CF;</property>
-                                    <property name="adjustment">0 0 1 0.01 1 1</property>
+                                    <property name="adjustment">0 0 1 0.01 0 0</property>
                                     <property name="digits">3</property>
                                     <property name="numeric">True</property>
                                   </widget>
