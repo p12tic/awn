@@ -326,6 +326,7 @@ class awnBzr:
 				'licence_code':'',	# Licence for the code
 				'licence_icons':'',	# Licence for the icons
 				'icon':'',		# Icon for the type
+				'style':'',		# Style of the bar
 				# Applet specific
 				'exec':'',		# Execution path, for applet
 				'applet_type':'',	# Type of teh applet (C, Vala or Python)
@@ -338,7 +339,7 @@ class awnBzr:
 				'gtk_theme_mode':'',	
 				'corner_radius':'',	
 				'panel_angle':'',	
-				'curviness':'',		
+				'curviness':''			
 			}
 	
 		desktop_entry = DesktopEntry(file_path)
@@ -356,6 +357,8 @@ class awnBzr:
 			struct['orientation'] = [int(desktop_entry.get('X-AWN-ThemeOrientation')), defs.PANEL, defs.ORIENT]
 		if desktop_entry.get('X-AWN-ThemeSize') <> '':
 			struct['size'] = [int(desktop_entry.get('X-AWN-ThemeSize')), defs.PANEL, defs.SIZE]
+		if desktop_entry.get('X-AWN-Style') <> '':
+			struct['style'] = [int(desktop_entry.get('X-AWN-Style')), defs.PANEL, defs.STYLE]
 
 		return struct
 
