@@ -1,5 +1,10 @@
 2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
 
+	* debian/changelog:
+	Update the version to 0.3.9
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
 	* awn-manager/awnClass.py:
 	Manage the style key in desktop files.
 
