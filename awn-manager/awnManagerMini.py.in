@@ -113,6 +113,9 @@ class awnPreferencesMini(awnPreferences):
         self.setup_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_widget("iconeffects"))
 	self.setup_freeze(self.wTree.get_widget("freezeEffects"), self.wTree.get_widget("iconeffects"), "effects")
 
+	self.setup_style(defs.PANEL, defs.STYLE, self.wTree.get_widget("stylecombo"))
+	self.setup_freeze(self.wTree.get_widget("freezeStyle"), self.wTree.get_widget("stylecombo"), "style")
+
 	#Advanced
 	self.setup_spin(defs.PANEL, defs.OFFSET, self.wTree.get_widget("offset_config"))
 	self.setup_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_widget("monitor_align"))
@@ -129,6 +132,7 @@ class awnPreferencesMini(awnPreferences):
         self.load_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_widget("iconeffects"))
 	self.load_spin(defs.PANEL, defs.SIZE, self.wTree.get_widget("panelsize"))
 	self.load_orientation(defs.PANEL, defs.ORIENT, self.wTree.get_widget("orientationcombo"))
+	self.load_style(defs.PANEL, defs.STYLE, self.wTree.get_widget("stylecombo"))
 
 	#Advanced
 	self.load_spin(defs.PANEL, defs.OFFSET, self.wTree.get_widget("offset_config"))

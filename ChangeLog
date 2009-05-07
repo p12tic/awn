@@ -1,5 +1,14 @@
 2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
 
+	* awn-manager/awnClass.py:
+	Make progress bar optionnel when the sources.list is updated.
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnManagerMini.py.in:
+	Add Style Combobox.
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
 	* awn-manager/awn-manager-mini.glade:
 	Change the icons position.
 

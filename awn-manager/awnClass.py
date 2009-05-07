@@ -195,8 +195,9 @@ class awnBzr:
 			directories = default locations of the local branches to update
 			progress = A widget of a progress bar to update.
 		'''
-		progressbar.pulse()
-		progressbar.show()
+		if progressbar is not None:
+			progressbar.pulse()
+			progressbar.show()
 
 		sources_list = self.list_from_sources_list()
 		sources_to_update = []
@@ -214,7 +215,8 @@ class awnBzr:
 			else:
 				print self.update_branch(os.path.join(directories , elem[1]))
 			counter = counter+1
-			progressbar.set_fraction(int(counter) / int(total))
+			if progressbar is not None:
+				progressbar.set_fraction(int(counter) / int(total))
 
 
 	
@@ -962,6 +964,8 @@ class awnPreferences(awnBzr):
         '''Delete the autostart entry for the dock.'''
         os.remove(self.get_autostart_file_path())
 
+#TODO Factorize *_orientation and *_style
+
     def setup_orientation(self, group, key, dropdown):
         self.effects_dd = dropdown
         model = gtk.ListStore(str)
@@ -988,6 +992,35 @@ class awnPreferences(awnBzr):
         self.load_orientation(entry['group'], entry['key'], dropdown)
 
     def orientation_changed(self, dropdown, groupkey):
+	group, key = groupkey
+	self.client.set_int(group, key, dropdown.get_active())
+
+    def setup_style(self, group, key, dropdown):
+        self.effects_dd = dropdown
+        model = gtk.ListStore(str)
+        model.append([_("None")])
+        model.append([_("Flat")])
+        model.append([_("3d")])
+        model.append([_("Curved")])
+        dropdown.set_model(model)
+        cell = gtk.CellRendererText()
+        dropdown.pack_start(cell)
+        dropdown.add_attribute(cell,'text',0)
+
+        self.load_style(group,key,dropdown)
+
+        dropdown.connect("changed", self.style_changed, (group, key))
+        #self.setup_effect_custom(group, key)
+        self.client.notify_add(group, key, self.reload_style, dropdown)
+
+    def load_style(self, group, key, dropdown):
+        style_settings = self.client.get_int(group, key)
+        dropdown.set_active(int(style_settings))
+
+    def reload_style(self, entry, dropdown):
+        self.load_style(entry['group'], entry['key'], dropdown)
+
+    def style_changed(self, dropdown, groupkey):
 	group, key = groupkey
 	self.client.set_int(group, key, dropdown.get_active())
 
