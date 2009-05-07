@@ -127,6 +127,21 @@ class awnPreferencesMini(awnPreferences):
 	self.setup_spin(defs.PANEL, defs.STYLE, self.wTree.get_widget("style_config"))
 	self.setup_bool(defs.PANEL, defs.PANEL_MODE, self.wTree.get_widget("panel_mode_config"))
 	self.setup_bool(defs.PANEL, defs.EXPAND, self.wTree.get_widget("expand_config"))
+	self.setup_spin(defs.PANEL, defs.CLICKTHROUGH, self.wTree.get_widget("clickthrough_config"))
+
+	self.setup_bool(defs.LAUNCHERS, defs.ONLY_LAUNCHERS, self.wTree.get_widget("only_launchers_config"))
+	self.setup_bool(defs.LAUNCHERS, defs.ALL_WINDOWS, self.wTree.get_widget("show_all_windows_config"))
+	self.setup_bool(defs.LAUNCHERS, defs.DRAG_AND_DROP, self.wTree.get_widget("drag_and_drop_config"))
+	self.setup_spin(defs.LAUNCHERS, defs.GROUPING_MODE, self.wTree.get_widget("grouping_mode_config"))
+
+	self.setup_spin(defs.EFFECTS, defs.REFLECTION_OFFSET, self.wTree.get_widget("reflection_offset_config"))
+	self.setup_spin(defs.EFFECTS, defs.ICON_ALPHA, self.wTree.get_widget("icon_alpha_config"))
+	self.setup_spin(defs.EFFECTS, defs.REFLECTION_A_MULTIPLIER, self.wTree.get_widget("reflection_alpha_multiplier_config"))
+	self.setup_bool(defs.EFFECTS, defs.SHOW_SHADOWS, self.wTree.get_widget("show_shadows_config"))
+
+	#TODO Need a combobox or setup_string
+	#self.setup_spin(defs.EFFECTS, defs.ARROW_ICON, self.wTree.get_widget("arrow_icon_config"))
+
 
     def reload(self):
         self.load_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_widget("iconeffects"))
@@ -145,6 +160,20 @@ class awnPreferencesMini(awnPreferences):
 	self.load_spin(defs.PANEL, defs.STYLE, self.wTree.get_widget("style_config"))
 	self.load_bool(defs.PANEL, defs.PANEL_MODE, self.wTree.get_widget("panel_mode_config"))
 	self.load_bool(defs.PANEL, defs.EXPAND, self.wTree.get_widget("expand_config"))
+	self.load_spin(defs.PANEL, defs.CLICKTHROUGH, self.wTree.get_widget("clickthrough_config"))
+
+	self.load_bool(defs.LAUNCHERS, defs.ONLY_LAUNCHERS, self.wTree.get_widget("only_launchers_config"))
+	self.load_bool(defs.LAUNCHERS, defs.ALL_WINDOWS, self.wTree.get_widget("show_all_windows_config"))
+	self.load_bool(defs.LAUNCHERS, defs.DRAG_AND_DROP, self.wTree.get_widget("drag_and_drop_config"))
+	self.load_spin(defs.LAUNCHERS, defs.GROUPING_MODE, self.wTree.get_widget("grouping_mode_config"))
+
+	self.load_spin(defs.EFFECTS, defs.REFLECTION_OFFSET, self.wTree.get_widget("reflection_offset_config"))
+	self.load_spin(defs.EFFECTS, defs.ICON_ALPHA, self.wTree.get_widget("icon_alpha_config"))
+	self.load_spin(defs.EFFECTS, defs.REFLECTION_A_MULTIPLIER, self.wTree.get_widget("reflection_alpha_multiplier_config"))
+	self.load_bool(defs.EFFECTS, defs.SHOW_SHADOWS, self.wTree.get_widget("show_shadows_config"))
+
+	#TODO Need a combobox or load_string
+	#self.load_spin(defs.EFFECTS, defs.ARROW_ICON, self.wTree.get_widget("arrow_icon_config"))
 
     def add_repo_win_callback(self, data=None):
 	self.update_repo_view()
