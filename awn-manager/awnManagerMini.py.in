@@ -64,11 +64,12 @@ if os.geteuid() == 0:
 class awnPreferencesMini(awnPreferences):
     def __init__(self, wTree):
         self.wTree = wTree
-	
-	#Testing Bzr stuff
-	bzr_test = self.wTree.get_widget("use_bzr_repos")
-	bzr_test.connect("toggled", self.test_bzr_themes, bzr_test)
 
+	# If the sources.list doesn't exist, create one
+	if not os.path.isfile(os.path.join(defs.HOME_CONFIG_DIR,"sources.list")):
+		self.create_sources_list()
+		self.update_sources_list()
+	
 	update_win = self.wTree.get_widget("update_repository")
 	exit_button = self.wTree.get_widget("exit_update_win")
 	exit_button.connect("clicked", lambda data=None:  update_win.hide_all())

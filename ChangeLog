@@ -1,3 +1,11 @@
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	Change the icons position.
+
+	* awn-manager/awnManagerMini.py.in:
+	Make the the use of sources.list mandatory, as it deal also with local directories.
+
 2009-04-27  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
