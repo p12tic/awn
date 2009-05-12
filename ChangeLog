@@ -1,3 +1,9 @@
+2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* src/awn-background.c:
+	Fix the default values of the color properties to use the
+	libdesktop-agnostic syntax.
+
 2009-05-08  Julien Lavergne  <julien.lavergne@gmail.com>
 
 	* awn-manager/awn-manager-mini.glade:

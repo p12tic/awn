@@ -292,7 +292,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
     g_param_spec_string ("gstep1",
                          "GStep1",
                          "Gradient Step 1",
-                         "FF0000FF",
+                         "#FF0000FF",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -300,7 +300,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
     g_param_spec_string ("gstep2",
                          "GStep2",
                          "Gradient Step 2",
-                         "00FF00FF",
+                         "#00FF00FF",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -308,7 +308,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
     g_param_spec_string ("ghistep1",
                          "GHiStep1",
                          "Hilight Gradient Step 1",
-                         "FFFFFF44",
+                         "#FFFFFF44",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -316,7 +316,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
     g_param_spec_string ("ghistep2",
                          "GHiStep2",
                          "Hilight Gradient Step 2",
-                         "FFFFFF11",
+                         "#FFFFFF11",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -324,7 +324,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
     g_param_spec_string ("border",
                          "Border",
                          "Border color",
-                         "000000FF",
+                         "#000000FF",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -332,7 +332,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
     g_param_spec_string ("hilight",
                          "Hilight",
                          "Internal border color",
-                         "FFFFFFff",
+                         "#FFFFFFff",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   
@@ -349,7 +349,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
     g_param_spec_string ("sep_color",
                          "Separator color",
                          "Separator color",
-                         "00000000",
+                         "#00000000",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
 
