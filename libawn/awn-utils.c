@@ -19,6 +19,7 @@
 #include <gdk/gdk.h>
 
 #include "awn-utils.h"
+#include "gseal-transition.h"
 
 void
 awn_utils_make_transparent_bg (GtkWidget *widget)
@@ -26,11 +27,7 @@ awn_utils_make_transparent_bg (GtkWidget *widget)
   static GdkPixmap *pixmap = NULL;
   GdkWindow *win;
 
-#ifdef GSEAL
   win = gtk_widget_get_window (widget);
-#else
-  win = widget->window;
-#endif
   g_return_if_fail (win != NULL);
 
   if (gtk_widget_is_composited(widget))

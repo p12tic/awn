@@ -1,3 +1,65 @@
+2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* src/awn-background.c:
+	Fix the default values of the color properties to use the
+	libdesktop-agnostic syntax.
+
+2009-05-08  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnClass.py:
+	* awn-manager/awnManagerMini.py.in:
+	Fix applet icons searching.
+	Connect the position chooser.
+	Put the real icon for awn-manager-mini.
+	Fix a crash for empty keys in the desktop file.
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* debian/changelog:
+	Update the version to 0.3.9
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	Manage the style key in desktop files.
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	Reorganize the icons and menus. 
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnDefs.py.in:
+	* awn-manager/awnManagerMini.py.in:
+	Add all missings options.
+	Fix some spin buttons.
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	Make progress bar optionnel when the sources.list is updated.
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnManagerMini.py.in:
+	Add Style Combobox.
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	Change the icons position.
+
+	* awn-manager/awnManagerMini.py.in:
+	Make the the use of sources.list mandatory, as it deal also with local directories.
+
+2009-04-27  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+
+	Decode the icon names received through drag and drop.  Spaces are now ok.  Something odd (unrelated to this issue) is still happening with drag and drop though.
+
 2009-04-25  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/task-icon.c:
@@ -16,6 +78,26 @@
 
 	* debian/control:
 	Add libdesktop-agnostic dependencies.
+
+2009-04-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon.c:
+	* libawn/Makefile.am:
+	* libawn/awn-applet.c:
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-tooltip.c:
+	* libawn/awn-utils.c:
+	* libawn/gseal-transition.h:
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	Make the GSEAL transition code saner by using an aliases header.
+
+2009-04-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-cairo-utils.c:
+	Fix variable shadowing errors.
 
 2009-04-21  Mark Lee  <avant-wn@lazymalevolence.com>
 

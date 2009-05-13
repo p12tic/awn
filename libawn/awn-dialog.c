@@ -38,6 +38,8 @@
 #include "awn-config-client.h"
 #include "awn-defines.h"
 
+#include "gseal-transition.h"
+
 G_DEFINE_TYPE(AwnDialog, awn_dialog, GTK_TYPE_WINDOW)
 
 #define AWN_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -157,11 +159,7 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
    *  so I disabled the arrow painting there, anyone feel free to fix it :)
    */
   if (priv->anchor && priv->anchored &&
-#ifdef GSEAL
       gtk_widget_get_window (priv->anchor) &&
-#else
-      priv->anchor->window &&
-#endif
       gtk_widget_is_composited (GTK_WIDGET (dialog)))
   {
     GdkPoint arrow;
@@ -175,11 +173,7 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
      *   2) get our origin in root window coordinates
      *   3) calc the difference (which is different for each orient)
      */
-#ifdef GSEAL
     win = gtk_widget_get_window (priv->anchor);
-#else
-    win = priv->anchor->window;
-#endif
 
     gdk_window_get_origin (win, &a_center_point.x, &a_center_point.y);
     gdk_drawable_get_size (GDK_DRAWABLE (win), &aw, &ah);
@@ -189,12 +183,7 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
 
     if (GTK_WIDGET_REALIZED (dialog))
     {
-      gdk_window_get_origin (
-#ifdef GSEAL
-                             gtk_widget_get_window (GTK_WIDGET (dialog)),
-#else
-                             GTK_WIDGET (dialog)->window,
-#endif
+      gdk_window_get_origin (gtk_widget_get_window (GTK_WIDGET (dialog)),
                              &o_center_point.x, &o_center_point.y);
     }
 
@@ -293,11 +282,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   dialog = AWN_DIALOG (widget);
   priv = dialog->priv;
 
-#ifdef GSEAL
   cr = gdk_cairo_create(gtk_widget_get_window (widget));
-#else
-  cr = gdk_cairo_create(widget->window);
-#endif
 
   g_return_val_if_fail (cr, FALSE);
 
@@ -374,11 +359,7 @@ on_title_expose(GtkWidget       *widget,
   AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (dialog);
   gint width, height;
 
-#ifdef GSEAL
   cr = gdk_cairo_create(gtk_widget_get_window (widget));
-#else
-  cr = gdk_cairo_create(widget->window);
-#endif
 
   g_return_val_if_fail (cr, FALSE);
 
@@ -898,11 +879,7 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
   if (!width)  width  = GTK_WIDGET (dialog)->allocation.width;
   if (!height) height = GTK_WIDGET (dialog)->allocation.height;
 
-#ifdef GSEAL
     win = gtk_widget_get_window (priv->anchor);
-#else
-    win = priv->anchor->window;
-#endif
 
   if (!win) return; // widget might not be realized yet
 
@@ -944,11 +921,7 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
     if (y < 0) y = 0;
   }
 
-#ifdef GSEAL
-    dialog_win = gtk_widget_get_window (GTK_WIDGET (dialog));
-#else
-    dialog_win = GTK_WIDGET (dialog)->window;
-#endif
+  dialog_win = gtk_widget_get_window (GTK_WIDGET (dialog));
 
   if (dialog_win)
   {

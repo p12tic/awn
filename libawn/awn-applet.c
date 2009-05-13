@@ -37,6 +37,7 @@
 #include "awn-applet.h"
 #include "awn-utils.h"
 #include "awn-enum-types.h"
+#include "gseal-transition.h"
 #include "libawn-marshal.h"
 
 G_DEFINE_TYPE (AwnApplet, awn_applet, GTK_TYPE_PLUG)
@@ -189,11 +190,7 @@ on_client_message (GdkXEvent *xevent, GdkEvent *event, gpointer data)
   AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (data);
   GdkWindow *window;
 
-#ifdef GSEAL
   window = gtk_widget_get_window (GTK_WIDGET (data));
-#else
-  window = GTK_WIDGET (data)->window;
-#endif
 
   if (!window)
   {
@@ -853,11 +850,7 @@ _on_panel_configure (GdkXEvent *xevent, GdkEvent *event, gpointer data)
   AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (data);
   GdkWindow *window;
 
-#ifdef GSEAL
   window = gtk_widget_get_window (GTK_WIDGET (data));
-#else
-  window = GTK_WIDGET (data)->window;
-#endif
 
   XEvent *xe = (XEvent*)xevent;
 

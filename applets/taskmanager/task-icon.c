@@ -26,6 +26,7 @@
 #include <libwnck/libwnck.h>
 
 #include <libdesktop-agnostic/desktop-agnostic.h>
+#include "libawn/gseal-transition.h"
 
 #include "taskmanager-marshal.h"
 #include "task-icon.h"
@@ -233,11 +234,7 @@ _update_geometry(GtkWidget *widget)
 
   priv = TASK_ICON (widget)->priv;
 
-#ifdef GSEAL
   win = gtk_widget_get_window (widget);
-#else
-  win = widget->window;
-#endif
   gdk_window_get_origin (win, &x, &y);
   if(priv->old_x != x || priv->old_y != y)
   {
@@ -759,11 +756,7 @@ task_icon_refresh_geometry (TaskIcon *icon)
   widget = GTK_WIDGET (icon);
 
   //get the position of the widget
-#ifdef GSEAL
   win = gtk_widget_get_window (widget);
-#else
-  win = widget->window;
-#endif
   gdk_window_get_origin (win, &x, &y);
 
   settings = task_settings_get_default ();
@@ -1178,11 +1171,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
 
   launcher = priv->windows->data;
 
-#ifdef GSEAL
   sdata_data = (gchar*)gtk_selection_data_get_data (sdata);
-#else
-  sdata_data = (gchar*)sdata->data;
-#endif
   
   /* If we are dealing with a desktop file, then we want to do something else
    * FIXME: This is a crude way of checking

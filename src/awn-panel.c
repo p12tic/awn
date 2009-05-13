@@ -42,6 +42,7 @@
 #include "awn-monitor.h"
 #include "awn-x.h"
 
+#include "gseal-transition.h"
 #include "xutils.h"
 
 G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW) 
@@ -649,11 +650,7 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
   gint x, y, window_x, window_y;
   /* FIXME: probably needs some love to work on multiple monitors */
   gdk_display_get_pointer (gdk_display_get_default (), NULL, &x, &y, NULL);
-#ifdef GSEAL
   panel_win = gtk_widget_get_window (widget);
-#else
-  panel_win = widget->window;
-#endif
   gdk_window_get_root_origin (panel_win, &window_x, &window_y);
 
 #if 0
@@ -722,11 +719,7 @@ alpha_blend_hide (gpointer data)
 
   priv->hide_counter++;
 
-#ifdef GSEAL
   win = gtk_widget_get_window (GTK_WIDGET (panel));
-#else
-  win = GTK_WIDGET (panel)->window;
-#endif
 
   gdk_window_set_opacity (win, 1 - 0.05 * priv->hide_counter);
 
@@ -765,11 +758,7 @@ alpha_blend_end (AwnPanel *panel, gpointer data)
   if (priv->hiding_timer_id)
   {
     GdkWindow *win;
-#ifdef GSEAL
     win = gtk_widget_get_window (GTK_WIDGET (panel));
-#else
-    win = GTK_WIDGET(panel)->window;
-#endif
     g_source_remove (priv->hiding_timer_id);
     priv->hiding_timer_id = 0;
     gdk_window_set_opacity (win, 1.0);
@@ -802,11 +791,7 @@ static void keep_below_end (AwnPanel *panel, gpointer data)
 static gboolean transparentize_start (AwnPanel *panel, gpointer data)
 {
   GdkWindow *win;
-#ifdef GSEAL
   win = gtk_widget_get_window (GTK_WIDGET (panel));
-#else
-  win = GTK_WIDGET(panel)->window;
-#endif
   gdk_window_set_opacity (win, 0.4);
 
   return TRUE;
@@ -815,11 +800,7 @@ static gboolean transparentize_start (AwnPanel *panel, gpointer data)
 static void transparentize_end (AwnPanel *panel, gpointer data)
 {
   GdkWindow *win;
-#ifdef GSEAL
   win = gtk_widget_get_window (GTK_WIDGET (panel));
-#else
-  win = GTK_WIDGET(panel)->window;
-#endif
   gdk_window_set_opacity (win, 1.0);
 }
 
@@ -899,11 +880,7 @@ poll_mouse_position (gpointer data)
                           awn_panel_check_mouse_pos (panel, TRUE);
 
   GdkWindow *win;
-#ifdef GSEAL
   win = gtk_widget_get_window (GTK_WIDGET (panel));
-#else
-  win = GTK_WIDGET(panel)->window;
-#endif
   switch (priv->clickthrough_type )
   {
     case CLICKTHROUGH_NEVER:
@@ -1268,11 +1245,7 @@ on_composited_changed (GtkWidget *widget, gpointer data)
 
   AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (widget);
   GdkWindow *win;
-#ifdef GSEAL
   win = gtk_widget_get_window (priv->eventbox);
-#else
-  win = priv->eventbox->window;
-#endif
 
   priv->composited = gtk_widget_is_composited (widget);
 
@@ -1315,11 +1288,7 @@ awn_panel_update_masks (GtkWidget *panel,
   {
     GdkRegion *region = gdk_region_new ();
     GdkWindow *win;
-#ifdef GSEAL
     win = gtk_widget_get_window (GTK_WIDGET (panel));
-#else
-    win = GTK_WIDGET (panel)->window;
-#endif
     gdk_window_input_shape_combine_region (win, region, 0, 0);
     gdk_region_destroy (region);
   }
@@ -1500,11 +1469,7 @@ on_eb_expose (GtkWidget *eb, GdkEventExpose *event, AwnPanel *panel)
   if (priv->composited) return FALSE;
 
   /* Get our ctx */
-#ifdef GSEAL
   cr = gdk_cairo_create (gtk_widget_get_window (eb));
-#else
-  cr = gdk_cairo_create (eb->window);
-#endif
   g_return_val_if_fail (cr, FALSE);
 
   /* Clip */
@@ -1545,11 +1510,7 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     goto propagate;
   }
 
-#ifdef GSEAL
   win = gtk_widget_get_window (widget);
-#else
-  win = widget->window;
-#endif
 
   /* Get our ctx */
   cr = gdk_cairo_create (win);
@@ -1579,11 +1540,7 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   {
     GdkRegion *region;
     gdk_cairo_set_source_pixmap (cr,
-#ifdef GSEAL
                                  gtk_widget_get_window (child),
-#else
-                                 child->window,
-#endif
                                  child->allocation.x, 
                                  child->allocation.y);
 
@@ -1666,11 +1623,7 @@ awn_panel_add (GtkContainer *window, GtkWidget *widget)
   
   /* Set up the eventbox for compositing (if necessary) */
   gtk_widget_realize (priv->eventbox);
-#ifdef GSEAL
   win = gtk_widget_get_window (priv->eventbox);
-#else
-  win = priv->eventbox->window;
-#endif
   if (priv->composited)
     gdk_window_set_composited (win, priv->composited);
 
@@ -1997,11 +1950,7 @@ awn_panel_set_clickthrough_type(AwnPanel *panel, gint type)
   if (priv->clickthrough_type == CLICKTHROUGH_NEVER && priv->clickthrough)
   {
     GdkWindow *win;
-#ifdef GSEAL
     win = gtk_widget_get_window (GTK_WIDGET(panel));
-#else
-    win = GTK_WIDGET(panel)->window;
-#endif
     priv->clickthrough = FALSE;
     awn_panel_update_masks (GTK_WIDGET(panel),
                             priv->old_width, priv->old_height);
@@ -2044,11 +1993,7 @@ awn_panel_set_strut (AwnPanel *panel)
       g_assert (0);
   }
 
-#ifdef GSEAL
   win = gtk_widget_get_window (GTK_WIDGET (panel));
-#else
-  win = GTK_WIDGET (panel)->window;
-#endif
 
   strut = priv->offset + priv->size + priv->extra_padding;
   xutils_set_strut (win, priv->orient, strut, strut_start, strut_end);
@@ -2058,11 +2003,7 @@ static void
 awn_panel_remove_strut (AwnPanel *panel)
 {
   GdkWindow *win;
-#ifdef GSEAL
   win = gtk_widget_get_window (GTK_WIDGET (panel));
-#else
-  win = GTK_WIDGET (panel)->window;
-#endif
   xutils_set_strut (win, 0, 0, 0, 0);
 }
 

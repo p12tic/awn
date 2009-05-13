@@ -34,6 +34,8 @@
 #include <stdlib.h>
 #include <cairo/cairo-xlib.h>
 
+#include "gseal-transition.h"
+
 #include "anims/awn-effects-shared.h"
 
 #include "anims/awn-effect-bounce.h"
@@ -1110,11 +1112,7 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
   AwnEffectsPrivate *priv = fx->priv;
   cairo_t *cr;
 
-#ifdef GSEAL
   cr = gdk_cairo_create (gtk_widget_get_window (fx->widget));
-#else
-  cr = gdk_cairo_create (fx->widget->window);
-#endif
   g_return_val_if_fail(cairo_status(cr) == CAIRO_STATUS_SUCCESS, NULL);
   fx->window_ctx = cr;
 
