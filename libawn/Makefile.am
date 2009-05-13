@@ -4,11 +4,14 @@ MARSHAL_PREFIX = libawn
 include $(top_srcdir)/Makefile.marshal
 
 ENUMFILES = awn-enum-types.c awn-enum-types.h
+GIRFILES = Awn-0.4.gir
 STAMPFILES = stamp-awn-enum-types.h
 
 GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 
 BUILT_SOURCES = $(ENUMFILES) \
+	$(GIRFILES) \
+	$(typelibs_DATA) \
 	$(builddir)/libawn-marshal.c \
 	$(builddir)/libawn-marshal.h \
 	$(NULL)
@@ -94,6 +97,45 @@ libawn_la_LIBADD += \
 	$(top_builddir)/libawn/egg/libeggdesktopfile.la \
 	$(top_builddir)/libawn/anims/libawn-effects-anims.la \
 	$(NULL)
+
+if HAVE_INTROSPECTION
+# INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to install
+# thing - we need to install inside our prefix.
+girdir = $(datadir)/gir-1.0
+gir_DATA = $(GIRFILES)
+
+Awn-0.4.gir: $(INTROSPECTION_SCANNER) libawn.la
+	$(Q)$(INTROSPECTION_SCANNER) \
+	-I $(top_srcdir) \
+	--include=GObject-2.0 \
+	--include=Gio-2.0 \
+	--include=GdkPixbuf-2.0 \
+	--include=Atk-1.0 \
+	--include=cairo-1.0 \
+	--include=Pango-1.0 \
+	--include=Gdk-2.0 \
+	--include=Gtk-2.0 \
+	--include=DBus-1.0 \
+	--include=DesktopAgnostic-1.0 \
+	--library=awn \
+	--namespace=Awn --nsversion=0.4 \
+	--pkg gobject-2.0 \
+	--pkg gio-2.0 \
+	--pkg gdk-pixbuf-2.0 \
+	--pkg gdk-2.0 \
+	--pkg gtk+-2.0 \
+	--pkg dbus-glib-1 \
+	--pkg desktop-agnostic \
+	--c-include=libawn/libawn.h \
+	$(source_c) $(public_headers) \
+	--output $@
+
+typelibsdir = $(libdir)/girepository-1.0
+typelibs_DATA = $(GIRFILES:.gir=.typelib)
+
+%.typelib: %.gir $(INTROSPECTION_COMPILER)
+	$(QUIET_GEN)$(INTROSPECTION_COMPILER) --includedir=$(srcdir) --includedir=. $(INTROSPECTION_COMPILER_OPTS) $< -o $(@F)
+endif
 
 awn-enum-types.h: stamp-awn-enum-types.h
 	@true

@@ -1,5 +1,13 @@
 2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* .bzrignore:
+	* configure.in:
+	* libawn/Makefile.am:
+	* m4/introspection.m4:
+	Add GObject Introspection support.
+
+2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-vfs.c:
 	* libawn/awn-vfs.h:
 	Removed (obsoleted by libdesktop-agnostic).
