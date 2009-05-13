@@ -42,7 +42,6 @@ public_headers = \
 	awn-themed-icon.h \
 	awn-tooltip.h \
 	awn-utils.h \
-	awn-vfs.h \
 	libawn.h
 	$(NULL)
 
@@ -69,7 +68,6 @@ source_c = \
 	awn-themed-icon.c \
 	awn-tooltip.c \
 	awn-utils.c \
-	awn-vfs.c \
 	$(NULL)
 
 source_c += awn-desktop-item-egg.c

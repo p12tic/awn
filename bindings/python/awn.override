@@ -21,7 +21,6 @@ headers
 #include <libawn/awn-themed-icon.h>
 #include <libawn/awn-tooltip.h>
 #include <libawn/awn-desktop-item.h>
-#include <libawn/awn-vfs.h>
 extern Pycairo_CAPI_t *Pycairo_CAPI;
 
 /* Some hacking to get GdkRegion to work. */

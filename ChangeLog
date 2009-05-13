@@ -1,5 +1,17 @@
 2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-vfs.c:
+	* libawn/awn-vfs.h:
+	Removed (obsoleted by libdesktop-agnostic).
+
+	* bindings/python/awn.override:
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/libawn.h:
+	Remove references of the removed files and their dependencies.
+
+2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* src/awn-background.c:
 	Fix the default values of the color properties to use the
 	libdesktop-agnostic syntax.

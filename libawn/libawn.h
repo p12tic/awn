@@ -37,7 +37,6 @@
 #include <libawn/awn-icon-box.h>
 #include <libawn/awn-themed-icon.h>
 #include <libawn/awn-tooltip.h>
-#include <libawn/awn-vfs.h>
 
 #endif /* < __LIBAWN_H__ /> */
 
