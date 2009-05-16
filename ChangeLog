@@ -1,3 +1,8 @@
+2009-05-15  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-effects-ops-new.c:
+	Fixed the active rectangle after switch to desktop-agnostic color.
+
 2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* .bzrignore:
