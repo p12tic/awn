@@ -1,3 +1,8 @@
+2009-05-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/Makefile.am:
+	Add workaround for a bug in the GObject Introspection scanner.
+
 2009-05-15  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-effects-ops-new.c:

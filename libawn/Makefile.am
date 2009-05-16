@@ -129,6 +129,7 @@ Awn-0.4.gir: $(INTROSPECTION_SCANNER) libawn.la
 	--c-include=libawn/libawn.h \
 	$(source_c) $(public_headers) \
 	--output $@
+	$(SED) -i -e 's:\(Atk\.Implementor\)Iface:\1:g' $@
 
 typelibsdir = $(libdir)/girepository-1.0
 typelibs_DATA = $(GIRFILES:.gir=.typelib)
