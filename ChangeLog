@@ -1,3 +1,9 @@
+2009-05-19  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	* libawn/awn-dialog.h:
+	Make the padding configurable. (step towards fully transparent dialog)
+
 2009-05-15  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-effects-ops-new.c:

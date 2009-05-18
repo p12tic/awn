@@ -54,12 +54,14 @@ struct _AwnDialogPrivate
 
   /* Properties */
   GtkWidget *anchor;
+  AwnApplet *anchor_owner;
 
   AwnOrientation orient;
   gboolean anchored;
   gboolean esc_hide;
 
   gint window_offset;
+  gint window_padding;
 
   /* Standard box drawing colours */
   DesktopAgnosticColor *g_step_1;
@@ -84,9 +86,11 @@ enum
   PROP_0,
 
   PROP_ANCHOR,
+  PROP_ANCHOR_OWNER,
   PROP_ANCHORED,
   PROP_ORIENT,
   PROP_WINDOW_OFFSET,
+  PROP_WINDOW_PADDING,
   PROP_HIDE_ON_ESC,
 
   PROP_GSTEP1,
@@ -98,7 +102,6 @@ enum
 };
 
 #define AWN_DIALOG_DEFAULT_OFFSET 15
-#define AWN_DIALOG_PADDING 15
 
 /* FORWARDS */
 
@@ -152,8 +155,8 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
 {
   AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (dialog);
 
-  const int BORDER = 11;
-  const int ROUND_RADIUS = 15;
+  const int BORDER = priv->window_padding * 3/4;
+  const int ROUND_RADIUS = priv->window_padding;
 
   /* FIXME: mhr3: I couldn't get the shape mask to work in non-composited env,
    *  so I disabled the arrow painting there, anyone feel free to fix it :)
@@ -610,6 +613,9 @@ awn_dialog_get_property (GObject    *object,
     case PROP_WINDOW_OFFSET:
       g_value_set_int (value, priv->window_offset);
       break;
+    case PROP_WINDOW_PADDING:
+      g_value_set_int (value, priv->window_padding);
+      break;
 
     case PROP_GSTEP1:
     case PROP_GSTEP2:
@@ -654,7 +660,10 @@ awn_dialog_set_property (GObject      *object,
                                   g_value_get_int (value));
       break;
     case PROP_WINDOW_OFFSET:
-      awn_dialog_set_offset (AWN_DIALOG (object), g_value_get_int(value));
+      awn_dialog_set_offset (AWN_DIALOG (object), g_value_get_int (value));
+      break;
+    case PROP_WINDOW_PADDING:
+      awn_dialog_set_padding (AWN_DIALOG (object), g_value_get_int (value));
       break;
     case PROP_HIDE_ON_ESC:
       priv->esc_hide = g_value_get_boolean (value);
@@ -741,6 +750,14 @@ awn_dialog_class_init(AwnDialogClass *klass)
                       "Window offset",
                       "The offset from window border",
                       G_MININT, G_MAXINT, AWN_DIALOG_DEFAULT_OFFSET,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+    PROP_WINDOW_PADDING,
+    g_param_spec_int ("window-padding",
+                      "Window padding",
+                      "The padding from window border",
+                      0, G_MAXINT, 15,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -834,9 +851,6 @@ awn_dialog_init (AwnDialog *dialog)
                     G_CALLBACK (_on_composited_changed), NULL);
 
   priv->align = gtk_alignment_new (0.5, 0.5, 1, 1);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
-                             AWN_DIALOG_PADDING, AWN_DIALOG_PADDING,
-                             AWN_DIALOG_PADDING, AWN_DIALOG_PADDING);
 
   GTK_CONTAINER_CLASS (awn_dialog_parent_class)->add (GTK_CONTAINER (dialog),
                                                       priv->align);
@@ -964,22 +978,22 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
   {
     case AWN_ORIENTATION_TOP:
       gtk_widget_queue_draw_area (GTK_WIDGET (dialog), 0, 0,
-                                  width, AWN_DIALOG_PADDING);
+                                  width, priv->window_padding);
       break;
     case AWN_ORIENTATION_LEFT:
       gtk_widget_queue_draw_area (GTK_WIDGET (dialog), 0, 0,
-                                  AWN_DIALOG_PADDING, height);
+                                  priv->window_padding, height);
       break;
     case AWN_ORIENTATION_RIGHT:
       gtk_widget_queue_draw_area (GTK_WIDGET (dialog), 
-                                  width - AWN_DIALOG_PADDING, 0, 
-                                  AWN_DIALOG_PADDING, height);
+                                  width - priv->window_padding, 0,
+                                  priv->window_padding, height);
       break;
     case AWN_ORIENTATION_BOTTOM:
     default:
       gtk_widget_queue_draw_area (GTK_WIDGET (dialog),
-                                  0, height - AWN_DIALOG_PADDING,
-                                  width, AWN_DIALOG_PADDING);
+                                  0, height - priv->window_padding,
+                                  width, priv->window_padding);
       break;
   }
 }
@@ -1109,6 +1123,18 @@ awn_dialog_set_offset (AwnDialog *dialog, gint offset)
 
   awn_dialog_refresh_position (dialog, 0, 0);
 }
+
+void
+awn_dialog_set_padding (AwnDialog *dialog, gint padding)
+{
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (dialog);
+
+  priv->window_padding = padding;
+
+  gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
+                             padding, padding, padding, padding);
+}
+
 /**
  * awn_dialog_new:
  *
