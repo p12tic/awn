@@ -23,7 +23,7 @@
 
 #include <gtk/gtk.h>
 
-/*
+/**
  * awn_utils_ensure_transparent_bg:
  * @widget: Widget which should have transparent background.
  *
@@ -32,7 +32,7 @@
  */
 void awn_utils_ensure_transparent_bg (GtkWidget *widget);
 
-/*
+/**
  * awn_utils_make_transparent_bg:
  * @widget: Widget which background will be modified.
  *
