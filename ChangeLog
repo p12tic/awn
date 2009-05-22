@@ -1,5 +1,10 @@
 2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* INSTALL:
+	Update.
+
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-utils.h:
 	Fix doc comments.
 
