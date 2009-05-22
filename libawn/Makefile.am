@@ -1,4 +1,4 @@
-SUBDIRS = egg anims
+SUBDIRS = anims
 
 MARSHAL_PREFIX = libawn
 include $(top_srcdir)/Makefile.marshal
@@ -34,7 +34,6 @@ public_headers = \
 	awn-cairo-utils.h \
 	awn-config-bridge.h \
 	awn-config-client.h \
-	awn-desktop-item.h \
 	awn-dialog.h \
 	awn-effects.h \
 	awn-icon.h \
@@ -70,8 +69,6 @@ source_c = \
 	awn-utils.c \
 	$(NULL)
 
-source_c += awn-desktop-item-egg.c
-
 if USE_GCONF
 source_c += awn-config-client-gconf.c
 else
@@ -91,7 +88,6 @@ libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
 libawn_la_LDFLAGS = -version-info 0:1:0
 
 libawn_la_LIBADD += \
-	$(top_builddir)/libawn/egg/libeggdesktopfile.la \
 	$(top_builddir)/libawn/anims/libawn-effects-anims.la \
 	$(NULL)
 

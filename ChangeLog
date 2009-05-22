@@ -1,3 +1,18 @@
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-launcher.c:
+	* awn-applet-activation/main.c:
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/awn-desktop-item.h:
+	* libawn/awn-desktop-item-egg.c:
+	* libawn/egg/:
+	* libawn/libawn.h:
+	Replace AwnDesktopItem/EggDesktopFile with the equivalent API in
+	libdesktop-agnostic.
+
 2009-05-15  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-effects-ops-new.c:

@@ -231,7 +231,6 @@ doc/Makefile
 doc/reference/Makefile
 libawn/Makefile
 libawn/anims/Makefile
-libawn/egg/Makefile
 po/Makefile.in
 shave/shave
 shave/shave-libtool

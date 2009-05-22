@@ -30,7 +30,6 @@
 #include <libawn/awn-config-bridge.h>
 #include <libawn/awn-config-client.h>
 #include <libawn/awn-defines.h>
-#include <libawn/awn-desktop-item.h>
 #include <libawn/awn-dialog.h>
 #include <libawn/awn-effects.h>
 #include <libawn/awn-icon.h>
