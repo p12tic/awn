@@ -1,5 +1,13 @@
 2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/python/awn.defs:
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	Re-add awn_vfs_init () until one can access libdesktop-agnostic
+	from Python.
+
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/taskmanager/task-launcher.c:
 	* awn-applet-activation/main.c:
 	* bindings/python/awn.defs:

@@ -1013,7 +1013,7 @@
   (return-type "none")
 )
 
-;; From awn-vfs.h
+;; From awn-utils.h
 
 (define-function vfs_init
   (c-name "awn_vfs_init")

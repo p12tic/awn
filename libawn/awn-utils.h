@@ -41,4 +41,11 @@ void awn_utils_ensure_transparent_bg (GtkWidget *widget);
  */
 void awn_utils_make_transparent_bg  (GtkWidget *widget);
 
+/**
+ * awn_vfs_init:
+ *
+ * Starts up the VFS library routines that Awn uses, if necessary.
+ */
+void awn_vfs_init (void);
+
 #endif
