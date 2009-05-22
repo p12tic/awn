@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2009 Michal Hruby <michal.mhr@gmail.com>
+ *  Copyright (C) 2009 Mark Lee <avant-wn@lazymalevolence.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,8 +16,13 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
+ *
+ * Authors: Michal Hruby (awn_utils_ensure_transparent_bg,
+ *                        awn_utils_make_transparent_bg)
+ *          Mark Lee     (awn_vfs_init)
  */
 #include <gdk/gdk.h>
+#include <libdesktop-agnostic/desktop-agnostic.h>
 
 #include "awn-utils.h"
 #include "gseal-transition.h"
@@ -85,5 +91,23 @@ awn_utils_ensure_transparent_bg (GtkWidget *widget)
                     G_CALLBACK (on_style_set), NULL);
   g_signal_connect (widget, "composited-changed",
                     G_CALLBACK (on_composited_change), NULL);
+}
+
+void
+awn_vfs_init ()
+{
+  GError *error = NULL;
+  DesktopAgnosticVFSImplementation* vfs;
+  
+  vfs = desktop_agnostic_vfs_get_default (&error);
+
+  if (error)
+  {
+    g_critical ("Error initializing VFS subsystem: %s", error->message);
+    g_error_free (error);
+    return;
+  }
+
+  desktop_agnostic_vfs_implementation_init (vfs);
 }
 

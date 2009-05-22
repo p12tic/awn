@@ -20,7 +20,6 @@ headers
 #include <libawn/awn-icon.h>
 #include <libawn/awn-themed-icon.h>
 #include <libawn/awn-tooltip.h>
-#include <libawn/awn-desktop-item.h>
 extern Pycairo_CAPI_t *Pycairo_CAPI;
 
 /* Some hacking to get GdkRegion to work. */
@@ -367,42 +366,6 @@ _wrap_awn_config_client_notify_add (PyGBoxed *self, PyObject *args, PyObject *kw
 
     Py_INCREF (Py_None);
     return Py_None;
-}
-%%
-override awn_desktop_item_launch kwargs
-static PyObject *
-_wrap_awn_desktop_item_launch (PyGBoxed *self, PyObject *args, PyObject *kwargs)
-{
-    static char *kwlist[] = { "documents", NULL };
-    PyObject *py_documents = NULL;
-    GSList *documents = NULL;
-    GError *opt_error = NULL;
-    gint pid;
-
-    if (!PyArg_ParseTupleAndKeywords (args, kwargs, "|O:AwnDesktopItem.launch", kwlist, &py_documents)) {
-        return NULL;
-    }
-
-    if (py_documents) {
-        if (PyList_Check (py_documents) || PyTuple_Check (py_documents)) {
-            /* abuse the utility function */
-            documents = _pysequence_to_gslist (py_documents, AWN_CONFIG_CLIENT_LIST_TYPE_STRING);
-        } else if (PyString_Check (py_documents)) {
-            /* only one argument */
-            documents = g_slist_append (documents, PyString_AsString (py_documents));
-        } else {
-            PyErr_SetString (PyExc_TypeError, "Argument is not a sequence");
-            return NULL;
-        }
-    }
-
-    pid = awn_desktop_item_launch (pyg_boxed_get (self, AwnDesktopItem), documents, &opt_error);
-
-    if (pyg_error_check (&opt_error)) {
-        return NULL;
-    }
-
-    return PyInt_FromLong (pid);
 }
 %%
 override awn_config_client_key_lock_open kwargs

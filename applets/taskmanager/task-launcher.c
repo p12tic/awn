@@ -43,13 +43,13 @@ G_DEFINE_TYPE (TaskLauncher, task_launcher, TASK_TYPE_WINDOW)
 
 struct _TaskLauncherPrivate
 {
-  gchar          *path;
-  AwnDesktopItem *item;
+  gchar *path;
+  DesktopAgnosticDesktopEntryBackend *entry;
 
-  gchar *name;
-  gchar *exec;
-  gchar *icon_name;
-  gint   pid;
+  const gchar *name;
+  const gchar *exec;
+  const gchar *icon_name;
+  GPid   pid;
 };
 
 enum
@@ -59,7 +59,7 @@ enum
 };
 
 /* Forwards */
-static gint          _get_pid         (TaskWindow     *window);
+static GPid          _get_pid         (TaskWindow     *window);
 static const gchar * _get_name        (TaskWindow     *window);
 static GdkPixbuf   * _get_icon        (TaskWindow     *window);
 static gboolean      _is_on_workspace (TaskWindow     *window,
@@ -148,7 +148,7 @@ task_launcher_init (TaskLauncher *launcher)
   priv = launcher->priv = TASK_LAUNCHER_GET_PRIVATE (launcher);
   
   priv->path = NULL;
-  priv->item = NULL;
+  priv->entry = NULL;
 }
 
 TaskLauncher   * 
@@ -178,7 +178,7 @@ static void
 task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
 {
   TaskLauncherPrivate *priv;
-  gchar * exec_key = NULL;
+  GError *error = NULL;
   gchar * needle = NULL;
  
   g_return_if_fail (TASK_IS_LAUNCHER (launcher));
@@ -186,29 +186,25 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
 
   priv->path = g_strdup (path);
 
-  priv->item = awn_desktop_item_new (path);
+  priv->entry = desktop_agnostic_desktop_entry_new_for_filename (path, &error);
 
-  if (priv->item == NULL)
-    return;
-
-  priv->name = awn_desktop_item_get_name (priv->item);
-
-  exec_key = g_strstrip (awn_desktop_item_get_exec (priv->item) );
-  
-  /*do we have have any % chars? if so... then find the first one , 
-   and truncate
-   
-   There is an open question if we should remove any of other command line 
-   args... for now leaving things alone as long as their is no %
-   */
-  needle = strchr (exec_key,'%');
-  if (needle)
+  if (error)
   {
-	  *needle = '\0';
-	  g_strstrip (exec_key);
+    g_critical ("Error when trying to load the launcher: %s", error->message);
+    g_error_free (error);
+    return;
   }
-  priv->exec = exec_key;
-  priv->icon_name = awn_desktop_item_get_icon_name (priv->item);
+
+  if (priv->entry == NULL)
+  {
+    return;
+  }
+
+  priv->name = desktop_agnostic_desktop_entry_backend_get_name (priv->entry);
+
+  priv->exec = g_strstrip (desktop_agnostic_desktop_entry_backend_get_string (priv->entry, "Exec"));
+  
+  priv->icon_name = desktop_agnostic_desktop_entry_backend_get_icon (priv->entry);
 
   g_debug ("LAUNCHER: %s", priv->name);
 }
@@ -216,7 +212,7 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
 /*
  * Implemented functions for a standard window without a launcher
  */
-static gint 
+static GPid
 _get_pid (TaskWindow *window)
 {
   TaskLauncher *launcher = TASK_LAUNCHER (window);
@@ -226,7 +222,7 @@ _get_pid (TaskWindow *window)
 		gint value = -1;
     value = wnck_window_get_pid (window->priv->window);
 		value = value ? value : -1;
-		return value;
+		return (GPid)value;
   }
   else
   {
@@ -253,17 +249,38 @@ static GdkPixbuf *
 _get_icon (TaskWindow    *window)
 {
   TaskLauncher *launcher = TASK_LAUNCHER (window);
+  TaskLauncherPrivate *priv = launcher->priv;
   TaskSettings *s = task_settings_get_default ();
+  GError *error = NULL;
+  GdkPixbuf *pixbuf = NULL;
+
 
   if (WNCK_IS_WINDOW (window->priv->window))
   {
     return _wnck_get_icon_at_size (window->priv->window, 
                                    s->panel_size, s->panel_size);
   }
+  else if (g_path_is_absolute (priv->icon_name))
+  {
+    pixbuf = gdk_pixbuf_new_from_file_at_scale (priv->icon_name,
+                                                s->panel_size, s->panel_size,
+                                                TRUE, &error);
+  }
   else
   {
-    return awn_desktop_item_get_icon (launcher->priv->item, s->panel_size);
+    GtkIconTheme *icon_theme = gtk_icon_theme_get_default ();
+
+    pixbuf = gtk_icon_theme_load_icon (icon_theme, priv->icon_name,
+                                       s->panel_size, 0, &error);
   }
+  if (error)
+  {
+    g_warning ("The launcher '%s' could not load the icon '%s': %s",
+               priv->path, priv->icon_name, error->message);
+    g_error_free (error);
+    return NULL;
+  }
+  return pixbuf;
 }
 
 static gboolean 
@@ -280,8 +297,9 @@ _activate (TaskWindow    *window,
   TaskLauncher *launcher = TASK_LAUNCHER (window);
   GError *error = NULL;
 
-  launcher->priv->pid = awn_desktop_item_launch (launcher->priv->item,
-                                                 NULL, &error);
+  launcher->priv->pid =
+    desktop_agnostic_desktop_entry_backend_launch (launcher->priv->entry,
+                                                   0, NULL, &error);
 
   if (error)
   {
@@ -307,7 +325,7 @@ task_launcher_has_window (TaskLauncher *launcher)
 
 gboolean   
 task_launcher_try_match (TaskLauncher *launcher,
-                         gint          pid,
+                         GPid          pid,
                          const gchar  *res_name,
                          const gchar  *class_name)
 {
@@ -407,8 +425,9 @@ task_launcher_launch_with_data (TaskLauncher *launcher,
   
   g_return_if_fail (TASK_IS_LAUNCHER (launcher));
 
-  launcher->priv->pid = awn_desktop_item_launch (launcher->priv->item,
-                                                 list, &error);
+  launcher->priv->pid =
+    desktop_agnostic_desktop_entry_backend_launch (launcher->priv->entry,
+                                                   0, list, &error);
 
   if (error)
   {
@@ -430,9 +449,14 @@ task_launcher_middle_click (TaskLauncher   *launcher,
   priv = launcher->priv;
 
   if (WNCK_IS_WINDOW (TASK_WINDOW (launcher)->priv->window))
-    awn_desktop_item_launch (priv->item, NULL, &error);
+  {
+    desktop_agnostic_desktop_entry_backend_launch (priv->entry, 0, NULL, &error);
+  }
   else
-    priv->pid = awn_desktop_item_launch (priv->item, NULL, &error);
+  {
+    priv->pid = desktop_agnostic_desktop_entry_backend_launch (priv->entry, 0,
+                                                               NULL, &error);
+  }
 
   if (error)
   {

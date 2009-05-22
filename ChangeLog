@@ -1,3 +1,47 @@
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	Re-add awn_vfs_init () until one can access libdesktop-agnostic
+	from Python.
+
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-launcher.c:
+	* awn-applet-activation/main.c:
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/awn-desktop-item.h:
+	* libawn/awn-desktop-item-egg.c:
+	* libawn/egg/:
+	* libawn/libawn.h:
+	Replace AwnDesktopItem/EggDesktopFile with the equivalent API in
+	libdesktop-agnostic.
+
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* INSTALL:
+	Update.
+
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-utils.h:
+	Fix doc comments.
+
+2009-05-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/Makefile.am:
+	Make sure that the gseal header is included properly.
+
+2009-05-19  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	* libawn/awn-dialog.h:
+	Make the padding configurable. (step towards fully transparent dialog)
+
 2009-05-15  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/Makefile.am:
