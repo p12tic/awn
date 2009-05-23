@@ -112,3 +112,4 @@ applets/taskmanager/taskmanager-marshal.c
 applets/taskmanager/taskmanager-marshal.h
 *.gir
 *.typelib
+bindings/vala/awn.vapi

@@ -1,5 +1,20 @@
 2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* .bzrignore:
+	* bindings/vala/Makefile.am:
+	* bindings/vala/awn.deps:
+	* configure.in:
+	Use the files generated via the GObject Introspection toolchain to
+	generate the Vala vapi file. 
+
+	* bindings/vala/awn.files:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.namespace:
+	* bindings/vala/awn.vapi:
+	Remove.
+
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/awn.defs:
 	* libawn/awn-utils.c:
 	* libawn/awn-utils.h:
