@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include <gdk/gdk.h>
+#include <libawn/awn-cairo-utils.h>
 #include <libawn/awn-config-client.h>
 
 #include "awn-background-curves.h"
@@ -146,16 +147,8 @@ draw_top_bottom_background (AwnBackground  *bg,
 
   /* Drawing outer ellips */
   pat = cairo_pattern_create_linear (0, height-curves_height, 0, height);
-  cairo_pattern_add_color_stop_rgba (pat, 0.0, 
-                                     bg->g_step_1.red,
-                                     bg->g_step_1.green,
-                                     bg->g_step_1.blue,
-                                     bg->g_step_1.alpha);
-  cairo_pattern_add_color_stop_rgba (pat, 1.0,
-                                     bg->g_step_2.red, 
-                                     bg->g_step_2.green,
-                                     bg->g_step_2.blue, 
-                                     bg->g_step_2.alpha);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
+  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
 
   draw_rect_path (bg, cr, 0, height-curves_height, width, curves_height, 0.5);
   cairo_set_source (cr, pat);
@@ -163,26 +156,15 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_pattern_destroy (pat);
 
   /* External border */
-  cairo_set_source_rgba (cr, bg->border_color.red,
-                             bg->border_color.green,
-                             bg->border_color.blue,
-                             bg->border_color.alpha);
+  awn_cairo_set_source_color (cr, bg->border_color);
   draw_rect_path (bg, cr, 0, height-curves_height,  width, curves_height, 0.5);
   cairo_stroke (cr);
 
   /* Drawing inner ellips */
   gint width_inner = width*(1-bg->curves_symmetry*0.2);
   pat = cairo_pattern_create_linear (0, height-curves_height/2.0, 0, height);
-  cairo_pattern_add_color_stop_rgba (pat, 0.0, 
-                                     bg->g_histep_1.red,
-                                     bg->g_histep_1.green,
-                                     bg->g_histep_1.blue,
-                                     bg->g_histep_1.alpha);
-  cairo_pattern_add_color_stop_rgba (pat, 1.0,
-                                     bg->g_histep_2.red, 
-                                     bg->g_histep_2.green,
-                                     bg->g_histep_2.blue, 
-                                     bg->g_histep_2.alpha);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
+  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
   draw_rect_path (bg, cr, (width-width_inner)*bg->curves_symmetry*0.8, height-curves_height/2.0,  width_inner, curves_height/2.0, 0.5);
   cairo_set_source (cr, pat);
   cairo_fill (cr); 

@@ -29,18 +29,18 @@ static AwnConfigClient    *client   = NULL;
 /* prototypes */
 
 /*
-static void awn_load_bool  (AwnConfigClient *client, 
+static void awn_load_bool  (AwnConfigClient *lclient, 
                             const gchar     *group,
                             const gchar     *key, 
                             gboolean        *data, 
                             gboolean         def);
-static void awn_load_float (AwnConfigClient *client, 
+static void awn_load_float (AwnConfigClient *lclient, 
                             const gchar     *group,
                             const gchar     *key, 
                             gfloat          *data, 
                             gfloat           def);
                             */
-static void awn_load_int  (AwnConfigClient  *client, 
+static void awn_load_int  (AwnConfigClient  *lclient, 
                            const gchar      *group,
                            const gchar      *key, 
                            gint             *data, 
@@ -100,70 +100,70 @@ awn_notify_int (AwnConfigClientNotifyEntry *entry, gint* data)
 
 /*
 static void
-awn_load_bool (AwnConfigClient *client, 
+awn_load_bool (AwnConfigClient *lclient, 
                const gchar     *group, 
                const gchar     *key, 
                gboolean        *data, 
                gboolean         def)
 {
-  if (awn_config_client_entry_exists(client, group, key))
+  if (awn_config_client_entry_exists(lclient, group, key))
   {
-    *data = awn_config_client_get_bool(client, group, key, NULL);
+    *data = awn_config_client_get_bool(lclient, group, key, NULL);
   }
   else
   {
     g_print("%s unset, setting now\n", key);
-    awn_config_client_set_bool(client, group, key, def, NULL);
+    awn_config_client_set_bool(lclient, group, key, def, NULL);
     *data = def;
   }
 
-  awn_config_client_notify_add(client, group, key, 
+  awn_config_client_notify_add(lclient, group, key, 
                                (AwnConfigClientNotifyFunc)awn_notify_bool, 
                                data);
 }
 
 static void
-awn_load_float (AwnConfigClient *client, 
+awn_load_float (AwnConfigClient *lclient, 
                 const gchar     *group, 
                 const gchar     *key, 
                 gfloat          *data, 
                 gfloat           def)
 {
-  if (awn_config_client_entry_exists(client, group, key))
+  if (awn_config_client_entry_exists(lclient, group, key))
   {
-    *data = awn_config_client_get_float(client, group, key, NULL);
+    *data = awn_config_client_get_float(lclient, group, key, NULL);
   }
   else
   {
     g_print("%s unset, setting now\n", key);
-    awn_config_client_set_float(client, group, key, def, NULL);
+    awn_config_client_set_float(lclient, group, key, def, NULL);
     *data = def;
   }
 
-  awn_config_client_notify_add (client, group, key, 
+  awn_config_client_notify_add (lclient, group, key, 
                                 (AwnConfigClientNotifyFunc)awn_notify_float, 
                                 data);
 }
 */
 static void
-awn_load_int (AwnConfigClient *client, 
+awn_load_int (AwnConfigClient *lclient, 
               const gchar     *group, 
               const gchar     *key, 
               gint            *data, 
               gint             def)
 {
-  if (awn_config_client_entry_exists(client, group, key))
+  if (awn_config_client_entry_exists(lclient, group, key))
   {
-    *data = awn_config_client_get_int(client, group, key, NULL);
+    *data = awn_config_client_get_int(lclient, group, key, NULL);
   }
   else
   {
     g_print("%s unset, setting now\n", key);
-    awn_config_client_set_int(client, group, key, def, NULL);
+    awn_config_client_set_int(lclient, group, key, def, NULL);
     *data = def;
   }
 
-  awn_config_client_notify_add (client, group, key, 
+  awn_config_client_notify_add (lclient, group, key, 
                                 (AwnConfigClientNotifyFunc)awn_notify_int, 
                                 data);
 }

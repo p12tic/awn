@@ -179,7 +179,10 @@ _associate_schemas_in_dir (GConfClient *client,
 
   list = gconf_client_all_entries (client, schema_dir, error);
 
-  g_return_if_fail (*error == NULL);
+  if (error)
+  {
+    g_return_if_fail (*error == NULL);
+  }
   
   for (l = list; l; l = l->next) 
   {
@@ -204,7 +207,7 @@ _associate_schemas_in_dir (GConfClient *client,
 	
     gconf_entry_free (entry);
 	
-    if (*error) 
+    if (error && *error)
     {
     g_slist_free (list);
       return;
@@ -235,7 +238,7 @@ _associate_schemas_in_dir (GConfClient *client,
     g_free (subdir);
     g_free (tmp);
 	
-    if (*error) 
+    if (error && *error)
     {
       g_slist_free (list);
       return;

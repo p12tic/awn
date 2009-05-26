@@ -24,6 +24,8 @@
 
 #include "awn-themed-icon.h"
 
+#include "gseal-transition.h"
+
 G_DEFINE_TYPE (AwnThemedIcon, awn_themed_icon, AWN_TYPE_ICON)
 
 #define AWN_THEMED_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -69,7 +71,7 @@ enum
 
 static const GtkTargetEntry drop_types[] =
 {
-  { "text/uri-list", 0, 0}
+  { (gchar*)"text/uri-list", 0, 0}
 };
 static const gint n_drop_types = G_N_ELEMENTS(drop_types);
 
@@ -489,7 +491,7 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
                           GStrv          icon_names)
 {
   AwnThemedIconPrivate *priv;
-  gint n_states;
+  guint n_states;
 
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
   g_return_if_fail (applet_name);
@@ -559,7 +561,7 @@ awn_themed_icon_set_info_simple (AwnThemedIcon  *icon,
                                  const gchar    *uid,
                                  const gchar    *icon_name)
 {
-  gchar *states[]   = { "__SINGULAR__", NULL };
+  gchar *states[]   = { (gchar*)"__SINGULAR__", NULL };
   gchar *icon_names[] = { NULL, NULL };
 
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
@@ -620,7 +622,7 @@ awn_themed_icon_clear_icons (AwnThemedIcon *icon,
 {
   AwnThemedIconPrivate *priv;
   gchar                *filename;
-  gchar                *types[] = { "png", "svg", NULL };
+  const gchar          *types[] = { "png", "svg", NULL };
   gint                  i;
 
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
@@ -710,7 +712,8 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   AwnThemedIconPrivate *priv;
   GError               *error = NULL;
   gboolean              success = FALSE;
-  gchar                *sdata;
+  gchar                *sdata = NULL;
+  gchar                *decoded = NULL;
   GdkPixbuf            *pixbuf = NULL;
   gchar               **extensions = NULL;
   GtkBuilder           *builder = NULL;
@@ -732,20 +735,27 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   priv = icon->priv;
 
   /* First check we have valid data */
-  if (selection_data == NULL || selection_data->length == 0)
+  if (selection_data == NULL ||
+      gtk_selection_data_get_length (selection_data) == 0)
   {
     goto drag_out;
   }
 
   /* We have a valid selection, so let's process it */
-  sdata = (gchar*)selection_data->data;
+  sdata = (gchar*)gtk_selection_data_get_data (selection_data);
   if (!sdata)
     goto drag_out;
 
-  sdata = g_strchomp (sdata);
-
+  decoded = sdata = g_uri_unescape_string (sdata,NULL);
+  if (!sdata)
+    goto drag_out;  
+  sdata = g_strchomp (sdata);  
+  if (!sdata)
+    goto drag_out;
   /* We only want the last dropped uri, and we want it in path form */
   sdata = g_strrstr (sdata, "file:///");
+  if (!sdata)
+    goto drag_out;                     
   sdata = sdata+7;
 
   /* Check if svg, yes there are better ways */
@@ -758,7 +768,6 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   {
     suffix = "png";
   }
- 
   /* Try and load the uri, to see if it's a pixbuf */
   pixbuf = gdk_pixbuf_new_from_file (sdata, NULL);
 
@@ -857,6 +866,8 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   g_strfreev (extensions);
 
 drag_out:
+
+  g_free (decoded);
 
   if (builder)
     g_object_unref (builder);

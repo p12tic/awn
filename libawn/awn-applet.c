@@ -37,6 +37,7 @@
 #include "awn-applet.h"
 #include "awn-utils.h"
 #include "awn-enum-types.h"
+#include "gseal-transition.h"
 #include "libawn-marshal.h"
 
 G_DEFINE_TYPE (AwnApplet, awn_applet, GTK_TYPE_PLUG)
@@ -187,8 +188,14 @@ on_client_message (GdkXEvent *xevent, GdkEvent *event, gpointer data)
   g_return_val_if_fail (AWN_IS_APPLET (data), GDK_FILTER_CONTINUE);
 
   AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (data);
+  GdkWindow *window;
 
-  if (GTK_WIDGET(data)->window == NULL) return GDK_FILTER_CONTINUE;
+  window = gtk_widget_get_window (GTK_WIDGET (data));
+
+  if (!window)
+  {
+    return GDK_FILTER_CONTINUE;
+  }
 
   /* Panel sends us our relative position on it */
   XEvent *xe = (XEvent*) xevent;
@@ -206,7 +213,7 @@ on_client_message (GdkXEvent *xevent, GdkEvent *event, gpointer data)
   }
 
   gint x, y;
-  gdk_window_get_origin (GTK_WIDGET(data)->window, &x, &y);
+  gdk_window_get_origin (window, &x, &y);
 
   if (priv->origin_x == x && priv->origin_y == y) return GDK_FILTER_REMOVE;
 
@@ -841,6 +848,9 @@ _on_panel_configure (GdkXEvent *xevent, GdkEvent *event, gpointer data)
   g_return_val_if_fail (AWN_IS_APPLET (data), GDK_FILTER_CONTINUE);
 
   AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (data);
+  GdkWindow *window;
+
+  window = gtk_widget_get_window (GTK_WIDGET (data));
 
   XEvent *xe = (XEvent*)xevent;
 
@@ -864,10 +874,10 @@ _on_panel_configure (GdkXEvent *xevent, GdkEvent *event, gpointer data)
       g_signal_emit (data, _applet_signals[OFFSET_CHANGED], 0, priv->offset);
     }
 
-    if (GTK_WIDGET (data)->window != NULL)
+    if (window != NULL)
     {
       gint x, y;
-      gdk_window_get_origin (GTK_WIDGET (data)->window, &x, &y);
+      gdk_window_get_origin (window, &x, &y);
 
       if (priv->origin_x == x && priv->origin_y == y)
         return GDK_FILTER_TRANSLATE;

@@ -20,7 +20,7 @@ default = 48
 description = The user-visible size of Awn (minus the offset)
 [panel/applet_list]
 type = list-string
-default = taskmanager.desktop::1
+default = @APPLETDATADIR@/taskmanager.desktop::1
 description = The list of applets for this panel ordered from ltr or ttb.
 [panel/monitor_force]
 type = bool
@@ -62,32 +62,32 @@ description = The list of panels.
 
 [theme/gstep1]
 type = string
-default = 454545C8
+default = #454545C8
 description = First gradient step color.
 
 [theme/gstep2]
 type = string
-default = 010101BE
+default = #010101BE
 description = Second gradient step color.
 
 [theme/ghistep1]
 type = string
-default = FFFFFF0B
+default = #FFFFFF0B
 description = First highlight gradient step color.
 
 [theme/ghistep2]
 type = string
-default = FFFFFF0A
+default = #FFFFFF0A
 description = Second highlight gradient step color.
 
 [theme/border]
 type = string
-default = 000000CC
+default = #000000CC
 description = Main border color.
 
 [theme/hilight]
 type = string
-default = FFFFFF11
+default = #FFFFFF11
 description = Internal border color.
 
 [theme/show_sep]
@@ -97,7 +97,7 @@ description = Draw separators.
 
 [theme/sep_color]
 type = string
-default = FFFFFF00
+default = #FFFFFF00
 description = Separator color.
 
 [theme/draw_pattern]
@@ -147,12 +147,12 @@ description = Font name of the tooltip
 
 [theme/tooltip_font_color]
 type = string
-default = FFFFFFFF
+default = #FFFFFFFF
 description = Font color of the tooltip
 
 [theme/tooltip_bg_color]
 type = string
-default = 000000B3
+default = #000000B3
 description = Background color of the tooltip
 
 [theme/current_theme]
@@ -249,27 +249,27 @@ default = 1.0
 description = The opacity of the background pattern (between 0 and 1), if render_pattern is TRUE.
 [bar/glass_step_1]
 type = string
-default = 454545C8
+default = #454545C8
 description = The first step color for the glass engine's gradient.
 [bar/glass_step_2]
 type = string
-default = 010101BE
+default = #010101BE
 description = The second step color for the glass engine's gradient.
 [bar/glass_histep_1]
 type = string
-default = FFFFFF0B
+default = #FFFFFF0B
 description = The first step color for the glass engine's highlighting.
 [bar/glass_histep_2]
 type = string
-default = FFFFFF0A
+default = #FFFFFF0A
 description = The second step color for the glass engine's highlighting.
 [bar/border_color]
 type = string
-default = 000000CC
+default = #000000CC
 description = The color of the bar's border.
 [bar/hilight_color]
 type = string
-default = FFFFFF11
+default = #FFFFFF11
 description = The color of the internal border of the bar.
 [bar/show_separator]
 type = bool
@@ -277,7 +277,7 @@ default = True
 description = Show a separator between the launchers and the task manager.
 [bar/sep_color]
 type = string
-default = FFFFFF00
+default = #FFFFFF00
 description = The color of the separator between the launchers and the task manager, if show_separator is TRUE.
 [bar/bar_height]
 type = int
@@ -313,7 +313,7 @@ default = False
 description = Unused.
 [app/arrow_color]
 type = string
-default = FFFFFF66
+default = #FFFFFF66
 description = The color of the launcher arrows.
 description[en_CA] = The colour of the launcher arrows.
 description[en_GB] = The colour of the launcher arrows.
@@ -331,15 +331,15 @@ default = False
 description = Alert the user when the name of the window has changed.
 [title/text_color]
 type = string
-default = FFFFFFFF
+default = #FFFFFFFF
 description = The color of the title's text.
 [title/shadow_color]
 type = string
-default = 1B3B12E1
+default = #1B3B12E1
 description = The color of the shadow of the title.
 [title/background]
 type = string
-default = 000000AA
+default = #000000AA
 description = The background color of the title.
 [title/font_face]
 type = string

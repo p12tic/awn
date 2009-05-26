@@ -37,7 +37,7 @@ paint_arrow_triangle (cairo_t *cr, double size, gint count)
       cairo_fill_preserve (cr);
 
       cairo_set_line_width (cr, 0.5);
-      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
+      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0);
       cairo_stroke (cr);
 
       /* one triangle on the right */
@@ -50,7 +50,7 @@ paint_arrow_triangle (cairo_t *cr, double size, gint count)
       cairo_fill_preserve (cr);
 
       cairo_set_line_width (cr, 0.5);
-      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
+      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0);
       cairo_stroke (cr);
 
       cairo_set_line_width (cr, 1.0);
@@ -65,7 +65,7 @@ paint_arrow_triangle (cairo_t *cr, double size, gint count)
       cairo_fill_preserve (cr);
 
       cairo_set_line_width (cr, 0.5);
-      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
+      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0);
       cairo_stroke (cr);
       break;
     case 2:
@@ -80,7 +80,7 @@ paint_arrow_triangle (cairo_t *cr, double size, gint count)
       cairo_fill_preserve (cr);
 
       cairo_set_line_width (cr, 0.5);
-      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
+      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0);
       cairo_stroke (cr);
       break;
   default:
@@ -97,8 +97,43 @@ paint_arrow_dot (cairo_t *cr, double size, gint count,
   switch (count)
   {
     case 3:
-      // TODO: finish!
+      /* left dot */
+      cairo_set_source_rgb (cr, r, g, b);
+      cairo_translate (cr, -size / 1.5, 0.0);
+      cairo_arc (cr, 0.0, 0.0, size / 6, 0.0, 2*M_PI);
+      cairo_fill (cr);
+
+      pat = cairo_pattern_create_radial (0.0, 0.0, 0.01,
+                                         0.0, 0.0, size);
+      cairo_pattern_add_color_stop_rgba (pat, 0.0, r, g, b, 0.5);
+      cairo_pattern_add_color_stop_rgba (pat, 1.0, r, g, b, 0.0);
+
+      cairo_set_source (cr, pat);
+
+      cairo_arc (cr, 0.0, 0.0, size, 0.0, 2*M_PI);
+      cairo_fill (cr);
+      cairo_pattern_destroy (pat);
+
+      /* right dot */
+      cairo_set_source_rgb (cr, r, g, b);
+      cairo_translate (cr, +size / 1.5 * 2, 0.0);
+      cairo_arc (cr, 0.0, 0.0, size / 6, 0.0, 2*M_PI);
+      cairo_fill (cr);
+
+      pat = cairo_pattern_create_radial (0.0, 0.0, 0.01,
+                                         0.0, 0.0, size);
+      cairo_pattern_add_color_stop_rgba (pat, 0.0, r, g, b, 0.5);
+      cairo_pattern_add_color_stop_rgba (pat, 1.0, r, g, b, 0.0);
+
+      cairo_set_source (cr, pat);
+
+      cairo_arc (cr, 0.0, 0.0, size, 0.0, 2*M_PI);
+      cairo_fill (cr);
+      cairo_pattern_destroy (pat);
+
+      cairo_translate (cr, -size / 1.5, 0.0);
     case 1:
+      /* center dot */
       cairo_set_source_rgb (cr, r, g, b);
       cairo_arc (cr, 0.0, 0.0, size / 6, 0.0, 2*M_PI);
       cairo_fill (cr);
@@ -115,6 +150,7 @@ paint_arrow_dot (cairo_t *cr, double size, gint count,
       cairo_pattern_destroy (pat);
       break;
     case 2:
+      /* left dot */
       cairo_set_source_rgb (cr, r, g, b);
       cairo_translate (cr, -size / 3, 0.0);
       cairo_arc (cr, 0.0, 0.0, size / 6, 0.0, 2*M_PI);
@@ -131,6 +167,7 @@ paint_arrow_dot (cairo_t *cr, double size, gint count,
       cairo_fill (cr);
       cairo_pattern_destroy (pat);
 
+      /* right dot */
       cairo_set_source_rgb (cr, r, g, b);
       cairo_translate (cr, +size / 3 * 2, 0.0);
       cairo_arc (cr, 0.0, 0.0, size / 6, 0.0, 2*M_PI);

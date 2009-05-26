@@ -1,3 +1,275 @@
+2009-05-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	reviewed by: Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-config-client-gconf.c:
+	Fix potential GError-related crashers.
+
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* INSTALL:
+	Update.
+
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-utils.h:
+	Fix doc comments.
+
+2009-05-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/Makefile.am:
+	Make sure that the gseal header is included properly.
+
+2009-05-19  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	* libawn/awn-dialog.h:
+	Make the padding configurable. (step towards fully transparent dialog)
+
+2009-05-15  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-effects-ops-new.c:
+	Fixed the active rectangle after switch to desktop-agnostic color.
+
+2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* src/awn-background.c:
+	Fix the default values of the color properties to use the
+	libdesktop-agnostic syntax.
+
+2009-05-08  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnClass.py:
+	* awn-manager/awnManagerMini.py.in:
+	Fix applet icons searching.
+	Connect the position chooser.
+	Put the real icon for awn-manager-mini.
+	Fix a crash for empty keys in the desktop file.
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* debian/changelog:
+	Update the version to 0.3.9
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	Manage the style key in desktop files.
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	Reorganize the icons and menus. 
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnDefs.py.in:
+	* awn-manager/awnManagerMini.py.in:
+	Add all missings options.
+	Fix some spin buttons.
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	Make progress bar optionnel when the sources.list is updated.
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnManagerMini.py.in:
+	Add Style Combobox.
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	Change the icons position.
+
+	* awn-manager/awnManagerMini.py.in:
+	Make the the use of sources.list mandatory, as it deal also with local directories.
+
+2009-04-27  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+
+	Decode the icon names received through drag and drop.  Spaces are now ok.  Something odd (unrelated to this issue) is still happening with drag and drop though.
+
+2009-04-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon.c:
+	* libawn/Makefile.am:
+	* libawn/awn-applet.c:
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-tooltip.c:
+	* libawn/awn-utils.c:
+	* libawn/gseal-transition.h:
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	Make the GSEAL transition code saner by using an aliases header.
+
+2009-04-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-cairo-utils.c:
+	Fix variable shadowing errors.
+
+2009-04-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	reviewed by: R. Cryderman <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c (task_icon_append_window):
+	Don't try to show the grouped icon when not in grouped mode.
+
+2009-04-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-cairo-utils.c
+	  (awn_cairo_set_source_color_with_multipliers):
+	* libawn/awn-cairo-utils.h:
+	Add awn_cairo_set_source_color_with_multipliers, needed for
+	awn-notification-daemon.
+
+2009-04-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-cairo-utils.c
+	  (awn_cairo_set_source_color_with_alpha_multiplier,
+	  awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier):
+	* libawn/awn-cairo-utils.h:
+	Implement versions of the Awn cairo color utility functions with
+	alpha multiplier parameters.
+
+2009-04-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-cairo-utils.c:
+	Make sure that DesktopAgnosticColor attributes are correctly converted to
+	cairo color attributes.
+	* libawn/awn-cairo-utils.h:
+	Introduce a new constant, AWN_RGBA_SCALE_REFACTOR, used in converting
+	DesktopAgnosticColor attributes to cairo color attributes and vice versa.
+
+2009-04-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/awn.schema-ini.in:
+	* libawn/awn-tooltip.c (awn_tooltip_get_property,
+	  awn_tooltip_class_init, ensure_tooltip, awn_tooltip_set_font_color):
+	Fix tooltip handling of colors with DesktopAgnosticColor.
+
+2009-04-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-cairo-utils.c (awn_cairo_set_source_color,
+	  awn_cairo_pattern_add_color_stop_color):
+	* libawn/awn-tooltip.c (awn_tooltip_set_background_color):
+	Add error checks.
+
+2009-04-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects-ops-new.c:
+	* src/awn-background-curves.c:
+	* src/awn-background-edgy.c:
+	Replace AwnColor and associated functions with DesktopAgnosticColor.
+
+2009-04-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/Makefile.am:
+	* libawn/Makefile.am:
+	* libawn/anims/Makefile.am:
+	* src/Makefile.am:
+	Clean up the CFLAGS/CPPFLAGS situation.
+
+	* applets/taskmanager/applet.c:
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-settings.c:
+	* applets/taskmanager/xutils.c:
+	* applets/taskmanager/xutils.h:
+	* libawn/awn-themed-icon.c:
+	Fix various errors and warnings.
+
+2009-04-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/Makefile.am:
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/anims/Makefile.am:
+	* libawn/awn-effects-ops-new.c:
+	* src/Makefile.am:
+	* src/awn-background-edgy.c:
+	* src/awn-background-flat.c:
+	* tests/Makefile.am:
+	Ensure that M_PI is defined, without defining it ourselves.
+
+2009-04-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	Fix help string typo.
+
+2009-04-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	Disable building Vala bindings by default (until the API settles down).
+
+2009-04-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/Makefile.am:
+	Fix automake+marshal-related typo (Note: never use variables for source
+	file base names).
+
+2009-04-16  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.marshal:
+	* applets/taskmanager/Makefile.am:
+	* libawn/Makefile.am:
+	* src/Makefile.am:
+	Consolidate the marshal-related automake code.
+
+2009-04-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/Makefile.am:
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	Replace deprecated GTK marshal symbols with ones generated with
+	glib-genmarshal.
+
+2009-04-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/Makefile.am:
+	* applets/taskmanager/taskmanager.desktop.in.in:
+	* configure.in:
+	Clean up the build system portions for the taskmanager applet.
+
+2009-04-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon.c:
+	* libawn/awn-applet.c:
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-tooltip.c:
+	* libawn/awn-utils.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	Make some GSEAL-related compatibility fixes.
+
+2009-04-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* src/awn-throbber.c:
+	Fix #include.
+
+2009-04-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	tested by: sharkbait
+
+	* src/awn-applet-proxy.c:
+	Add GTK+-2.12-compatible fix.
+
+2009-04-10  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/__init__.py:
+	Added EFFECT_* enums to awn namespace.
+	* libawn/awn-effects-ops-helpers.c:
+	Finished the implementation of dot painting.
+
 2009-04-01  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-effects-ops-new.c:
@@ -1187,6 +1459,21 @@
 	(Don't add priv->offset, it is now already in it.)
 	- To draw the background on the right place
 	- Inputmap is now correctly on the four sides (as side effect :-D)
+
+2009-01-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* configure.in:
+	* data/awn.schema-ini.in:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-tooltip.c:
+	* src/awn-background-3d.c:
+	* src/awn-background-flat.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	Replace AwnColor and associated functions with DesktopAgnosticColor.
 
 2009-01-25  Mark Lee  <avant-wn@lazymalevolence.com>
 

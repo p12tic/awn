@@ -1,29 +1,22 @@
 SUBDIRS = egg anims
 
-# shave-related
-V         = @
-Q         = $(V:1=)
-QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
-
-NULL = 
+MARSHAL_PREFIX = libawn
+include $(top_srcdir)/Makefile.marshal
 
 ENUMFILES = awn-enum-types.c awn-enum-types.h
-MARSHALFILES = libawn-marshal.c libawn-marshal.h
-STAMPFILES = \
-	stamp-awn-marshal.h \
-	stamp-awn-enum-types.h \
-	stamp-libawnmarshal.c \
-	stamp-libawnmarshal.h \
-	$(NULL)
+STAMPFILES = stamp-awn-enum-types.h
 
 GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 
-BUILT_SOURCES = $(ENUMFILES) $(MARSHALFILES)
+BUILT_SOURCES = $(ENUMFILES) \
+	$(builddir)/libawn-marshal.c \
+	$(builddir)/libawn-marshal.h \
+	$(NULL)
 
 lib_LTLIBRARIES = libawn.la
 
-AM_CFLAGS = $(WARNING_FLAGS) $(DISABLE_DEPRECATED_FLAGS)
-INCLUDES = \
+AM_CPPFLAGS = $(STANDARD_CPPFLAGS) \
+	$(DISABLE_DEPRECATED_FLAGS) \
 	$(AWN_CFLAGS) \
 	-I$(top_srcdir) \
 	-I$(top_builddir) \
@@ -57,6 +50,7 @@ public_headers = \
 private_headers = \
 	awn-effects-ops-new.h \
 	awn-effects-ops-helpers.h \
+	gseal-transition.h \
 	$(NULL)
 
 source_h = $(public_headers) $(private_headers)
@@ -96,6 +90,7 @@ libawn_la_SOURCES = \
 	$(BUILT_SOURCES) \
 	$(source_c) \
 	$(NULL)
+libawn_la_CFLAGS = $(WARNING_FLAGS)
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
 libawn_la_LDFLAGS = -version-info 0:1:0
 
@@ -103,31 +98,6 @@ libawn_la_LIBADD += \
 	$(top_builddir)/libawn/egg/libeggdesktopfile.la \
 	$(top_builddir)/libawn/anims/libawn-effects-anims.la \
 	$(NULL)
-
-# glib-genmarshal (from WebKit)
-LIBAWN_MARSHAL = $(builddir)/libawn-marshal
-LIBAWN_MARSHAL_LIST = $(srcdir)/libawnmarshal.list
-LIBAWN_GENMARSHAL = \
-	$(GLIB_GENMARSHAL) --prefix=libawn_marshal $(LIBAWN_MARSHAL_LIST)
-
-$(LIBAWN_MARSHAL).c: stamp-libawnmarshal.c
-	@true
-
-$(LIBAWN_MARSHAL).h: stamp-libawnmarshal.h
-	@true
-
-stamp-libawnmarshal.c: $(LIBAWN_MARSHAL_LIST) stamp-libawnmarshal.h
-	$(QUIET_GEN)( \
-		echo '#include "libawn-marshal.h"' > $(LIBAWN_MARSHAL).c && \
-		$(LIBAWN_GENMARSHAL)  --body >> $(LIBAWN_MARSHAL).c && \
-		echo timestamp > $(@F) \
-	)
-
-stamp-libawnmarshal.h: $(LIBAWN_MARSHAL_LIST)
-	$(QUIET_GEN)( \
-		$(LIBAWN_GENMARSHAL) --header > $(LIBAWN_MARSHAL).h && \
-		echo timestamp > $(@F) \
-	)
 
 awn-enum-types.h: stamp-awn-enum-types.h
 	@true
@@ -148,7 +118,7 @@ awn-enum-types.c: awn-enum-types.h
 	cp xgen-cetc awn-enum-types.c && \
 	rm -f xgen-cetc
 
-CLEANFILES = $(STAMPFILES)
+CLEANFILES = $(STAMPFILES) $(BUILT_SOURCES)
 
 EXTRA_DIST=awn-config-client-shared.c
 

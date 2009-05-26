@@ -57,6 +57,7 @@ MONITOR_ALIGN		= "monitor_align"	#float
 AUTOHIDE		= "autohide"		#int
 STYLE			= "style"		#int
 EXPAND			= "expand"		#bool
+CLICKTHROUGH		= "clickthrough"	#int
 
 THEME			= "theme"		#group
 GSTEP1			= "gstep1"		#string
@@ -84,15 +85,18 @@ EFFECTS			= "effects"		#group
 REFLECTION_OFFSET	= "reflection_offset"	#int
 ICON_EFFECT		= "icon_effect"		#int
 ICON_ALPHA		= "icon_alpha"		#float
-FRAME_RATE		= "frame_rate"		#int
-ENABLE_ICON_DEPTH	= "enable_icon_depth"	#bool
 REFLECTION_A_MULTIPLIER	= "reflection_alpha_multiplier"	#float
 SHOW_SHADOWS		= "show_shadows"	#bool
+ARROW_ICON		= "arrow_icon"		#string
+#FRAME_RATE		= "frame_rate"		#int
+#ENABLE_ICON_DEPTH	= "enable_icon_depth"	#bool
 
 LAUNCHERS		= "applets/taskmanager"	#group
 LAUNCHERS_LIST		= "launcher_paths"	#list-string
 ONLY_LAUNCHERS		= "only_show_launchers"	#bool
 ALL_WINDOWS		= "show_all_windows"	#bool
+DRAG_AND_DROP		= "drag_and_drop"	#bool
+GROUPING_MODE		= "grouping_mode"	#int
 
 # i18n-related
 I18N_DOMAIN = "avant-window-navigator"

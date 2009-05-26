@@ -28,6 +28,7 @@
 #include <string.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+#include <libdesktop-agnostic/color.h>
 #include <math.h>
 
 #include "awn-applet.h"
@@ -36,6 +37,8 @@
 #include "awn-config-bridge.h"
 #include "awn-config-client.h"
 #include "awn-defines.h"
+
+#include "gseal-transition.h"
 
 G_DEFINE_TYPE(AwnDialog, awn_dialog, GTK_TYPE_WINDOW)
 
@@ -51,20 +54,22 @@ struct _AwnDialogPrivate
 
   /* Properties */
   GtkWidget *anchor;
+  AwnApplet *anchor_owner;
 
   AwnOrientation orient;
   gboolean anchored;
   gboolean esc_hide;
 
   gint window_offset;
+  gint window_padding;
 
   /* Standard box drawing colours */
-  AwnColor g_step_1;
-  AwnColor g_step_2;
-  AwnColor g_histep_1;
-  AwnColor g_histep_2;
-  AwnColor border_color;
-  AwnColor hilight_color;
+  DesktopAgnosticColor *g_step_1;
+  DesktopAgnosticColor *g_step_2;
+  DesktopAgnosticColor *g_histep_1;
+  DesktopAgnosticColor *g_histep_2;
+  DesktopAgnosticColor *border_color;
+  DesktopAgnosticColor *hilight_color;
 
   gulong anchor_configure_id;
   gulong orient_changed_id;
@@ -81,9 +86,11 @@ enum
   PROP_0,
 
   PROP_ANCHOR,
+  PROP_ANCHOR_OWNER,
   PROP_ANCHORED,
   PROP_ORIENT,
   PROP_WINDOW_OFFSET,
+  PROP_WINDOW_PADDING,
   PROP_HIDE_ON_ESC,
 
   PROP_GSTEP1,
@@ -95,7 +102,6 @@ enum
 };
 
 #define AWN_DIALOG_DEFAULT_OFFSET 15
-#define AWN_DIALOG_PADDING 15
 
 /* FORWARDS */
 
@@ -149,26 +155,28 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
 {
   AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (dialog);
 
-  const int BORDER = 11;
-  const int ROUND_RADIUS = 15;
+  const int BORDER = priv->window_padding * 3/4;
+  const int ROUND_RADIUS = priv->window_padding;
 
   /* FIXME: mhr3: I couldn't get the shape mask to work in non-composited env,
    *  so I disabled the arrow painting there, anyone feel free to fix it :)
    */
-  if (priv->anchor && priv->anchored && priv->anchor->window
-      && gtk_widget_is_composited (GTK_WIDGET (dialog)))
+  if (priv->anchor && priv->anchored &&
+      gtk_widget_get_window (priv->anchor) &&
+      gtk_widget_is_composited (GTK_WIDGET (dialog)))
   {
     GdkPoint arrow;
     GdkPoint a_center_point = { .x = 0, .y = 0 };
     GdkPoint o_center_point = { .x = 0, .y = 0 };
     gint temp, aw = 0, ah = 0;
+    GdkWindow *win;
 
     /* Calculate position of the arrow point
      *   1) get anchored window center point in root window coordinates
      *   2) get our origin in root window coordinates
      *   3) calc the difference (which is different for each orient)
      */
-    GdkWindow *win = priv->anchor->window;
+    win = gtk_widget_get_window (priv->anchor);
 
     gdk_window_get_origin (win, &a_center_point.x, &a_center_point.y);
     gdk_drawable_get_size (GDK_DRAWABLE (win), &aw, &ah);
@@ -177,8 +185,10 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
     a_center_point.y += ah/2;
 
     if (GTK_WIDGET_REALIZED (dialog))
-      gdk_window_get_origin (GTK_WIDGET (dialog)->window,
+    {
+      gdk_window_get_origin (gtk_widget_get_window (GTK_WIDGET (dialog)),
                              &o_center_point.x, &o_center_point.y);
+    }
 
     switch (priv->orient)
     {
@@ -275,7 +285,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   dialog = AWN_DIALOG (widget);
   priv = dialog->priv;
 
-  cr = gdk_cairo_create(widget->window);
+  cr = gdk_cairo_create(gtk_widget_get_window (widget));
 
   g_return_val_if_fail (cr, FALSE);
 
@@ -295,10 +305,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   cairo_translate (cr, 0.5, 0.5);
 
   /* background shading */
-  cairo_set_source_rgba (cr, priv->g_step_2.red,
-                         priv->g_step_2.green,
-                         priv->g_step_2.blue,
-                         priv->g_step_2.alpha);
+  awn_cairo_set_source_color (cr, priv->g_step_2);
 
   awn_dialog_paint_border_path (dialog, cr, width, height);
   path = cairo_copy_path (cr);
@@ -307,10 +314,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   cairo_save (cr);
 
   cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-  cairo_set_source_rgba (cr, priv->hilight_color.red,
-                         priv->hilight_color.green,
-                         priv->hilight_color.blue,
-                         priv->hilight_color.alpha);
+  awn_cairo_set_source_color (cr, priv->hilight_color);
   cairo_translate (cr, 1.0, 1.0);
   switch (priv->orient)
   {
@@ -329,10 +333,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   cairo_restore (cr);
 
-  cairo_set_source_rgba (cr, priv->border_color.red,
-                         priv->border_color.green,
-                         priv->border_color.blue,
-                         priv->border_color.alpha);
+  awn_cairo_set_source_color (cr, priv->border_color);
   cairo_append_path (cr, path);
   cairo_stroke (cr);
 
@@ -361,7 +362,7 @@ on_title_expose(GtkWidget       *widget,
   AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (dialog);
   gint width, height;
 
-  cr = gdk_cairo_create(widget->window);
+  cr = gdk_cairo_create(gtk_widget_get_window (widget));
 
   g_return_val_if_fail (cr, FALSE);
 
@@ -380,16 +381,8 @@ on_title_expose(GtkWidget       *widget,
 
   /* Paint the background the border colour */
   pat = cairo_pattern_create_linear (0, 0, 0, height);
-  cairo_pattern_add_color_stop_rgba (pat, 0.0,
-                                     priv->g_histep_1.red,
-                                     priv->g_histep_1.green,
-                                     priv->g_histep_1.blue,
-                                     priv->g_histep_1.alpha);
-  cairo_pattern_add_color_stop_rgba (pat, 1.0,
-                                     priv->g_histep_2.red,
-                                     priv->g_histep_2.green,
-                                     priv->g_histep_2.blue,
-                                     priv->g_histep_2.alpha);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->g_histep_1);
+  awn_cairo_pattern_add_color_stop_color (pat, 1.0, priv->g_histep_2);
 
   awn_cairo_rounded_rect (cr, 0, 0, width-1, height-0.5, 15, ROUND_ALL);
   cairo_set_source (cr, pat);
@@ -398,16 +391,8 @@ on_title_expose(GtkWidget       *widget,
 
   /* border */
   pat = cairo_pattern_create_linear (0, 0, 0, height);
-  cairo_pattern_add_color_stop_rgba (pat, 0.0,
-                                     priv->border_color.red,
-                                     priv->border_color.green,
-                                     priv->border_color.blue,
-                                     priv->border_color.alpha);
-  cairo_pattern_add_color_stop_rgba (pat, 0.75,
-                                     priv->border_color.red,
-                                     priv->border_color.green,
-                                     priv->border_color.blue,
-                                     priv->border_color.alpha);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->border_color);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.75, priv->border_color);
   cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.25);
 
   cairo_set_source (cr, pat);
@@ -417,16 +402,8 @@ on_title_expose(GtkWidget       *widget,
 
   /* hilight */
   pat = cairo_pattern_create_linear (0, 0, 0, height);
-  cairo_pattern_add_color_stop_rgba (pat, 0.0,
-                                     priv->hilight_color.red,
-                                     priv->hilight_color.green,
-                                     priv->hilight_color.blue,
-                                     priv->hilight_color.alpha);
-  cairo_pattern_add_color_stop_rgba (pat, 0.75,
-                                     priv->hilight_color.red,
-                                     priv->hilight_color.green,
-                                     priv->hilight_color.blue,
-                                     priv->hilight_color.alpha);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->hilight_color);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.75, priv->hilight_color);
   cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.0);
 
   cairo_set_operator (cr, CAIRO_OPERATOR_XOR);
@@ -636,6 +613,9 @@ awn_dialog_get_property (GObject    *object,
     case PROP_WINDOW_OFFSET:
       g_value_set_int (value, priv->window_offset);
       break;
+    case PROP_WINDOW_PADDING:
+      g_value_set_int (value, priv->window_padding);
+      break;
 
     case PROP_GSTEP1:
     case PROP_GSTEP2:
@@ -680,34 +660,37 @@ awn_dialog_set_property (GObject      *object,
                                   g_value_get_int (value));
       break;
     case PROP_WINDOW_OFFSET:
-      awn_dialog_set_offset (AWN_DIALOG (object), g_value_get_int(value));
+      awn_dialog_set_offset (AWN_DIALOG (object), g_value_get_int (value));
+      break;
+    case PROP_WINDOW_PADDING:
+      awn_dialog_set_padding (AWN_DIALOG (object), g_value_get_int (value));
       break;
     case PROP_HIDE_ON_ESC:
       priv->esc_hide = g_value_get_boolean (value);
       break;
 
     case PROP_GSTEP1:
-      awn_cairo_string_to_color (g_value_get_string (value), &priv->g_step_1);
+      priv->g_step_1 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_GSTEP2:
-      awn_cairo_string_to_color (g_value_get_string (value), &priv->g_step_2);
+      priv->g_step_2 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_GHISTEP1:
-      awn_cairo_string_to_color (g_value_get_string (value), &priv->g_histep_1);
+      priv->g_histep_1 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_GHISTEP2:
-      awn_cairo_string_to_color (g_value_get_string (value), &priv->g_histep_2);
+      priv->g_histep_2 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_BORDER:
-      awn_cairo_string_to_color (g_value_get_string (value), &priv->border_color);
+      priv->border_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_HILIGHT:
-      awn_cairo_string_to_color (g_value_get_string (value),&priv->hilight_color);
+      priv->hilight_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
 
@@ -767,6 +750,14 @@ awn_dialog_class_init(AwnDialogClass *klass)
                       "Window offset",
                       "The offset from window border",
                       G_MININT, G_MAXINT, AWN_DIALOG_DEFAULT_OFFSET,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+    PROP_WINDOW_PADDING,
+    g_param_spec_int ("window-padding",
+                      "Window padding",
+                      "The padding from window border",
+                      0, G_MAXINT, 15,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -860,9 +851,6 @@ awn_dialog_init (AwnDialog *dialog)
                     G_CALLBACK (_on_composited_changed), NULL);
 
   priv->align = gtk_alignment_new (0.5, 0.5, 1, 1);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
-                             AWN_DIALOG_PADDING, AWN_DIALOG_PADDING,
-                             AWN_DIALOG_PADDING, AWN_DIALOG_PADDING);
 
   GTK_CONTAINER_CLASS (awn_dialog_parent_class)->add (GTK_CONTAINER (dialog),
                                                       priv->align);
@@ -894,6 +882,7 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
 {
   gint ax, ay, aw, ah;
   gint x = 0, y = 0;
+  GdkWindow *win, *dialog_win;
 
   g_return_if_fail (AWN_IS_DIALOG (dialog));
 
@@ -904,7 +893,7 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
   if (!width)  width  = GTK_WIDGET (dialog)->allocation.width;
   if (!height) height = GTK_WIDGET (dialog)->allocation.height;
 
-  GdkWindow *win = priv->anchor->window;
+    win = gtk_widget_get_window (priv->anchor);
 
   if (!win) return; // widget might not be realized yet
 
@@ -946,9 +935,11 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
     if (y < 0) y = 0;
   }
 
-  if (GTK_WIDGET (dialog)->window)
+  dialog_win = gtk_widget_get_window (GTK_WIDGET (dialog));
+
+  if (dialog_win)
   {
-    gdk_window_get_position (GTK_WIDGET (dialog)->window,
+    gdk_window_get_position (dialog_win,
                              &priv->last_x, &priv->last_y);
   }
 
@@ -987,22 +978,22 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
   {
     case AWN_ORIENTATION_TOP:
       gtk_widget_queue_draw_area (GTK_WIDGET (dialog), 0, 0,
-                                  width, AWN_DIALOG_PADDING);
+                                  width, priv->window_padding);
       break;
     case AWN_ORIENTATION_LEFT:
       gtk_widget_queue_draw_area (GTK_WIDGET (dialog), 0, 0,
-                                  AWN_DIALOG_PADDING, height);
+                                  priv->window_padding, height);
       break;
     case AWN_ORIENTATION_RIGHT:
       gtk_widget_queue_draw_area (GTK_WIDGET (dialog), 
-                                  width - AWN_DIALOG_PADDING, 0, 
-                                  AWN_DIALOG_PADDING, height);
+                                  width - priv->window_padding, 0,
+                                  priv->window_padding, height);
       break;
     case AWN_ORIENTATION_BOTTOM:
     default:
       gtk_widget_queue_draw_area (GTK_WIDGET (dialog),
-                                  0, height - AWN_DIALOG_PADDING,
-                                  width, AWN_DIALOG_PADDING);
+                                  0, height - priv->window_padding,
+                                  width, priv->window_padding);
       break;
   }
 }
@@ -1132,6 +1123,18 @@ awn_dialog_set_offset (AwnDialog *dialog, gint offset)
 
   awn_dialog_refresh_position (dialog, 0, 0);
 }
+
+void
+awn_dialog_set_padding (AwnDialog *dialog, gint padding)
+{
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (dialog);
+
+  priv->window_padding = padding;
+
+  gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align),
+                             padding, padding, padding, padding);
+}
+
 /**
  * awn_dialog_new:
  *

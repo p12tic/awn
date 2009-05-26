@@ -27,6 +27,7 @@
 #include "awn-applet-proxy.h"
 #include "awn-utils.h"
 #include "awn-throbber.h"
+#include "gseal-transition.h"
 
 G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_SOCKET) 
 
@@ -382,6 +383,7 @@ schedule_send_client_event (gpointer data)
 static void on_size_alloc (AwnAppletProxy *proxy, GtkAllocation *alloc)
 {
   AwnAppletProxyPrivate *priv;
+  GdkWindow *plug_win;
 
   g_return_if_fail (AWN_IS_APPLET_PROXY (proxy));
   priv = proxy->priv;
@@ -391,7 +393,8 @@ static void on_size_alloc (AwnAppletProxy *proxy, GtkAllocation *alloc)
   priv->old_x = alloc->y;
   priv->old_y = alloc->y;
 
-  GdkWindow *plug_win = gtk_socket_get_plug_window (GTK_SOCKET(proxy));
+  /* Only directly access the struct member if we have to. */
+  plug_win = gtk_socket_get_plug_window (GTK_SOCKET (proxy));
   if (plug_win)
   {
     GdkAtom msg_type = gdk_atom_intern("_AWN_APPLET_POS_CHANGE", FALSE);
@@ -467,8 +470,10 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   screen = gtk_widget_get_screen (GTK_WIDGET (proxy));
   gint64 socket_id = (gint64)
     gtk_socket_get_id (GTK_SOCKET (proxy));
-  gint64 panel_window_id = (gint64)
-    GDK_WINDOW_XID (gtk_widget_get_toplevel (GTK_WIDGET(proxy))->window);
+  GtkWidget *proxy_widget = gtk_widget_get_toplevel (GTK_WIDGET(proxy));
+  GdkWindow *proxy_win;
+  proxy_win = gtk_widget_get_window (proxy_widget);
+  gint64 panel_window_id = (gint64)GDK_WINDOW_XID (proxy_win);
 
   exec = g_strdup_printf (APPLET_EXEC,
                           priv->path,

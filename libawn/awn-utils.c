@@ -19,25 +19,28 @@
 #include <gdk/gdk.h>
 
 #include "awn-utils.h"
+#include "gseal-transition.h"
 
 void
 awn_utils_make_transparent_bg (GtkWidget *widget)
 {
   static GdkPixmap *pixmap = NULL;
+  GdkWindow *win;
 
-  g_return_if_fail (widget->window != NULL);
+  win = gtk_widget_get_window (widget);
+  g_return_if_fail (win != NULL);
 
   if (gtk_widget_is_composited(widget))
   {
     if (pixmap == NULL)
     {
-      pixmap = gdk_pixmap_new(widget->window, 1, 1, -1);
+      pixmap = gdk_pixmap_new (win, 1, 1, -1);
       cairo_t *cr = gdk_cairo_create(pixmap);
       cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
       cairo_paint(cr);
       cairo_destroy(cr);
     }
-    gdk_window_set_back_pixmap(widget->window, pixmap, FALSE);
+    gdk_window_set_back_pixmap (win, pixmap, FALSE);
   }
 }
 

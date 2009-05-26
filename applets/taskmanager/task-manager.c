@@ -1174,7 +1174,7 @@ _drag_dest_leave (TaskManager *manager, GtkWidget *icon)
 static gboolean
 drag_leaves_task_manager (TaskManager *manager)
 {
-  g_return_if_fail (TASK_IS_MANAGER (manager));
+  g_return_val_if_fail (TASK_IS_MANAGER (manager), FALSE);
 
   TaskManagerPrivate *priv = TASK_MANAGER_GET_PRIVATE (manager);
 
