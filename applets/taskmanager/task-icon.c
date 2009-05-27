@@ -74,10 +74,10 @@ enum
 
   SOURCE_DRAG_FAIL,
   SOURCE_DRAG_BEGIN,
+  SOURCE_DRAG_END,
 
   DEST_DRAG_MOVE,
   DEST_DRAG_LEAVE,
-  DEST_DRAG_DROP,
 
   LAST_SIGNAL
 };
@@ -114,8 +114,6 @@ static gboolean  task_icon_dialog_unfocus       (GtkWidget      *widget,
                                                 GdkEventFocus   *event,
                                                 gpointer        null);
 /* Dnd 'source' forwards */
-static void      task_icon_drag_end             (GtkWidget      *widget,
-                                                 GdkDragContext *context);
 static void      task_icon_drag_data_get        (GtkWidget *widget, 
                                                  GdkDragContext *context, 
                                                  GtkSelectionData *selection_data,
@@ -129,6 +127,8 @@ static gboolean  task_icon_source_drag_fail     (GtkWidget      *widget,
                                                  GtkDragResult   result);
 static void      task_icon_source_drag_begin    (GtkWidget      *widget,
                                                  GdkDragContext *context);
+static void      task_icon_source_drag_end      (GtkWidget      *widget,
+                                                 GdkDragContext *context);
 
 /* DnD 'destination' forwards */
 static gboolean  task_icon_dest_drag_motion         (GtkWidget      *widget,
@@ -138,11 +138,6 @@ static gboolean  task_icon_dest_drag_motion         (GtkWidget      *widget,
                                                      guint           t);
 static void      task_icon_dest_drag_leave          (GtkWidget      *widget,
                                                      GdkDragContext *context,
-                                                     guint           time);
-static gboolean  task_icon_dest_drag_drop           (GtkWidget      *widget,
-                                                     GdkDragContext *drag_context,
-                                                     gint            x,
-                                                     gint            y,
                                                      guint           time);
 static void      task_icon_dest_drag_data_received  (GtkWidget      *widget,
                                                      GdkDragContext *context,
@@ -269,11 +264,10 @@ task_icon_class_init (TaskIconClass *klass)
   wid_class->button_release_event = task_icon_button_release_event;
   wid_class->button_press_event   = task_icon_button_press_event;
   wid_class->drag_begin           = task_icon_source_drag_begin;
-  wid_class->drag_end             = task_icon_drag_end;
+  wid_class->drag_end             = task_icon_source_drag_end;
   wid_class->drag_data_get        = task_icon_drag_data_get;
   wid_class->drag_motion          = task_icon_dest_drag_motion;
   wid_class->drag_leave           = task_icon_dest_drag_leave;
-  wid_class->drag_drop            = task_icon_dest_drag_drop;
   wid_class->drag_data_received   = task_icon_dest_drag_data_received;
 
 
@@ -317,6 +311,14 @@ task_icon_class_init (TaskIconClass *klass)
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__VOID, 
 			      G_TYPE_NONE, 0);
+  _icon_signals[SOURCE_DRAG_END] =
+		g_signal_new ("source-drag-end",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskIconClass, source_drag_end),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID, 
+			      G_TYPE_NONE, 0);
   _icon_signals[DEST_DRAG_MOVE] =
 		g_signal_new ("dest-drag-motion",
 			      G_OBJECT_CLASS_TYPE (obj_class),
@@ -331,14 +333,6 @@ task_icon_class_init (TaskIconClass *klass)
 			      G_OBJECT_CLASS_TYPE (obj_class),
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (TaskIconClass, dest_drag_leave),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__VOID, 
-			      G_TYPE_NONE, 0);
-  _icon_signals[DEST_DRAG_DROP] =
-		g_signal_new ("dest-drag-drop",
-			      G_OBJECT_CLASS_TYPE (obj_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (TaskIconClass, dest_drag_drop),
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__VOID, 
 			      G_TYPE_NONE, 0);
@@ -987,21 +981,6 @@ drag_timeout (TaskIcon *icon)
 }
 
 static void
-task_icon_drag_end (GtkWidget      *widget,
-                    GdkDragContext *context)
-{
-  TaskIconPrivate *priv;
-
-  g_return_if_fail (TASK_IS_ICON (widget));
-  priv = TASK_ICON (widget)->priv;
-
-  if(!priv->draggable) return;
-  if(!priv->gets_dragged) return;
-
-  priv->gets_dragged = FALSE;
-}
-
-static void
 task_icon_drag_data_get (GtkWidget *widget, 
                          GdkDragContext *context, 
                          GtkSelectionData *selection_data,
@@ -1024,7 +1003,7 @@ task_icon_drag_data_get (GtkWidget *widget,
 
 static void
 task_icon_source_drag_begin (GtkWidget      *widget,
-                      GdkDragContext *context)
+                             GdkDragContext *context)
 {
   TaskIconPrivate *priv;
   TaskSettings *settings;
@@ -1041,6 +1020,21 @@ task_icon_source_drag_begin (GtkWidget      *widget,
   gtk_drag_set_icon_pixbuf (context, priv->icon, settings->panel_size/2, settings->panel_size/2);
 
   g_signal_emit (TASK_ICON (widget), _icon_signals[SOURCE_DRAG_BEGIN], 0);
+}
+
+static void
+task_icon_source_drag_end (GtkWidget      *widget,
+                           GdkDragContext *drag_context)
+{
+  TaskIconPrivate *priv;
+
+  g_return_if_fail (TASK_IS_ICON (widget));
+  priv = TASK_ICON (widget)->priv;
+
+  if(!priv->gets_dragged) return;
+
+  priv->gets_dragged = FALSE;
+  g_signal_emit (TASK_ICON (widget), _icon_signals[SOURCE_DRAG_END], 0);
 }
 
 static gboolean
@@ -1130,23 +1124,6 @@ task_icon_dest_drag_leave (GtkWidget      *widget,
   }
 
   g_signal_emit (TASK_ICON (widget), _icon_signals[DEST_DRAG_LEAVE], 0);
-}
-
-static gboolean
-task_icon_dest_drag_drop (GtkWidget      *widget,
-                          GdkDragContext *drag_context,
-                          gint            x,
-                          gint            y,
-                          guint           time_)
-{
-  TaskIconPrivate *priv;
-
-  g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
-  priv = TASK_ICON (widget)->priv;
-
-  g_signal_emit (TASK_ICON (widget), _icon_signals[DEST_DRAG_DROP], 0);
-
-  return TRUE;
 }
 
 static void

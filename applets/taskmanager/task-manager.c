@@ -125,9 +125,11 @@ static void _drag_dest_motion (TaskManager *manager,
                                GtkWidget *icon);
 static void _drag_dest_leave   (TaskManager *manager,
                                GtkWidget *icon);
-static void _drag_dest_fail    (TaskManager *manager,
+static void _drag_source_fail  (TaskManager *manager,
                                 GtkWidget *icon);
-static void _drag_dest_drop    (TaskManager *manager, 
+static void _drag_source_begin (TaskManager *manager, 
+                                GtkWidget *icon);
+static void _drag_source_end   (TaskManager *manager, 
                                 GtkWidget *icon);
 //static gboolean drag_leaves_task_manager (TaskManager *manager);
 static void _drag_add_signals (TaskManager *manager, 
@@ -1177,7 +1179,7 @@ _drag_source_fail(TaskManager *manager, GtkWidget *icon)
   //priv->dragged_icon = NULL;
 
   // Handle a fail like a drop for now
-  _drag_dest_drop(manager, NULL);
+  _drag_source_end(manager, NULL);
 }
 
 static void 
@@ -1205,7 +1207,7 @@ _drag_dest_leave (TaskManager *manager, GtkWidget *icon)
 //}
 
 static void 
-_drag_dest_drop(TaskManager *manager, GtkWidget *icon)
+_drag_source_end(TaskManager *manager, GtkWidget *icon)
 {
   TaskManagerPrivate *priv;
   gint move_to;
@@ -1291,14 +1293,17 @@ _drag_add_signals (TaskManager *manager, GtkWidget *icon)
   g_return_if_fail (TASK_IS_MANAGER (manager));
   g_return_if_fail (TASK_IS_ICON (icon)||TASK_IS_DRAG_INDICATOR (icon));
 
-  g_signal_connect_swapped (icon, "source_drag_begin", G_CALLBACK (_drag_source_begin), manager);
-  g_signal_connect_swapped (icon, "source_drag_fail", G_CALLBACK (_drag_source_fail), manager);
+  // listen to signals of 'source' start getting dragged, only if it is an icon
+  if(TASK_IS_ICON (icon))
+  {
+    g_object_set(icon, "draggable", TRUE, NULL);
+    g_signal_connect_swapped (icon, "source_drag_begin", G_CALLBACK (_drag_source_begin), manager);
+    g_signal_connect_swapped (icon, "source_drag_end", G_CALLBACK (_drag_source_end), manager);
+    g_signal_connect_swapped (icon, "source_drag_fail", G_CALLBACK (_drag_source_fail), manager);
+  }
+
   g_signal_connect_swapped (icon, "dest_drag_motion", G_CALLBACK (_drag_dest_motion), manager);
   g_signal_connect_swapped (icon, "dest_drag_leave", G_CALLBACK (_drag_dest_leave), manager);
-  g_signal_connect_swapped (icon, "dest_drag_drop", G_CALLBACK (_drag_dest_drop), manager);
-
-  if (TASK_IS_ICON (icon))
-    g_object_set(icon, "draggable", TRUE, NULL);
 }
 
 static void 
@@ -1307,12 +1312,14 @@ _drag_remove_signals (TaskManager *manager, GtkWidget *icon)
   g_return_if_fail (TASK_IS_MANAGER (manager));
   g_return_if_fail (TASK_IS_ICON (icon)||TASK_IS_DRAG_INDICATOR (icon));
 
-  g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (_drag_source_begin), manager);
-  g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (_drag_source_fail), manager);
+  if(TASK_IS_ICON (icon))
+  {
+    g_object_set(icon, "draggable", FALSE, NULL);
+    g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (_drag_source_begin), manager);
+    g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (_drag_source_end), manager);
+    g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (_drag_source_fail), manager);
+  }
+
   g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (_drag_dest_motion), manager);
   g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (_drag_dest_leave), manager);
-  g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (_drag_dest_drop), manager);
-
-  if (TASK_IS_ICON (icon))
-    g_object_set(icon, "draggable", FALSE, NULL);
 }

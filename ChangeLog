@@ -1,6 +1,17 @@
 2009-05-27  h4writer <hv1989@gmail.com>
 
 	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-drag-indicator.h:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-manager.c:
+	- Renamed some function
+	- Removed signals of task-drag-indicator that are about dragging the indicator itself.
+	  It can't be dragged, so they aren't needed.
+
+2009-05-27  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-drag-indicator.c:
 	* applets/taskmanager/task-icon.c:
 	* applets/taskmanager/task-icon.h:
 	* applets/taskmanager/task-manager.c:

@@ -55,14 +55,6 @@ static gboolean  task_drag_indicator_dest_drag_motion         (GtkWidget      *w
 static void      task_drag_indicator_dest_drag_leave          (GtkWidget      *widget,
                                                                GdkDragContext *context,
                                                                guint           time_);
-static gboolean  task_drag_indicator_dest_drag_fail           (GtkWidget      *widget,
-                                                               GdkDragContext *drag_context,
-                                                               GtkDragResult   result);
-static gboolean  task_drag_indicator_dest_drag_drop           (GtkWidget      *widget,
-                                                               GdkDragContext *drag_context,
-                                                               gint            x,
-                                                               gint            y,
-                                                               guint           time_);
 static void      task_drag_indicator_dest_drag_data_received  (GtkWidget      *widget,
                                                                GdkDragContext *context,
                                                                gint            x,
@@ -80,8 +72,6 @@ enum
 {
   DEST_DRAG_MOVE,
   DEST_DRAG_LEAVE,
-  DEST_DRAG_FAIL,
-  DEST_DRAG_DROP,
 
   LAST_SIGNAL
 };
@@ -113,7 +103,6 @@ task_drag_indicator_class_init (TaskDragIndicatorClass *klass)
   wid_class->drag_data_get        = task_drag_indicator_drag_data_get;
   wid_class->drag_data_received   = task_drag_indicator_dest_drag_data_received;
   wid_class->drag_motion          = task_drag_indicator_dest_drag_motion;
-  wid_class->drag_drop            = task_drag_indicator_dest_drag_drop;
   wid_class->drag_leave           = task_drag_indicator_dest_drag_leave;
 
   /* Install signals */
@@ -131,22 +120,6 @@ task_drag_indicator_class_init (TaskDragIndicatorClass *klass)
 			      G_OBJECT_CLASS_TYPE (obj_class),
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (TaskDragIndicatorClass, dest_drag_leave),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__VOID, 
-			      G_TYPE_NONE, 0);
-  _icon_signals[DEST_DRAG_FAIL] =
-		g_signal_new ("dest-drag-fail",
-			      G_OBJECT_CLASS_TYPE (obj_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (TaskDragIndicatorClass, dest_drag_fail),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__VOID, 
-			      G_TYPE_NONE, 0);
-  _icon_signals[DEST_DRAG_DROP] =
-		g_signal_new ("dest-drag-drop",
-			      G_OBJECT_CLASS_TYPE (obj_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (TaskDragIndicatorClass, dest_drag_drop),
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__VOID, 
 			      G_TYPE_NONE, 0);
@@ -168,8 +141,6 @@ task_drag_indicator_init (TaskDragIndicator *drag_indicator)
                      GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
                      drop_types, n_drop_types,
                      GDK_ACTION_MOVE);
-  g_signal_connect (G_OBJECT (drag_indicator), "drag-failed",
-                    G_CALLBACK (task_drag_indicator_dest_drag_fail), NULL);
   /*gtk_drag_dest_add_uri_targets (GTK_WIDGET (icon));
   gtk_drag_dest_add_text_targets (GTK_WIDGET (icon));*/
 }
@@ -264,18 +235,6 @@ task_drag_indicator_dest_drag_motion (GtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
-task_drag_indicator_dest_drag_fail (GtkWidget      *widget,
-                                    GdkDragContext *drag_context,
-                                    GtkDragResult   result)
-{
-  g_return_val_if_fail (TASK_IS_DRAG_INDICATOR (widget), FALSE);
-
-  g_signal_emit (TASK_DRAG_INDICATOR (widget), _icon_signals[DEST_DRAG_FAIL], 0);
-
-  return TRUE;
-}
-
 static void   
 task_drag_indicator_dest_drag_leave (GtkWidget      *widget,
                            GdkDragContext *context,
@@ -284,20 +243,6 @@ task_drag_indicator_dest_drag_leave (GtkWidget      *widget,
   g_return_if_fail (TASK_IS_DRAG_INDICATOR (widget));
 
   g_signal_emit (TASK_DRAG_INDICATOR (widget), _icon_signals[DEST_DRAG_LEAVE], 0);
-}
-
-static gboolean
-task_drag_indicator_dest_drag_drop (GtkWidget      *widget,
-                                    GdkDragContext *drag_context,
-                                    gint            x,
-                                    gint            y,
-                                    guint           time_)
-{
-  g_return_val_if_fail (TASK_IS_DRAG_INDICATOR (widget), FALSE);
-
-  g_signal_emit (TASK_DRAG_INDICATOR (widget), _icon_signals[DEST_DRAG_DROP], 0);
-
-  return TRUE;
 }
 
 static void
