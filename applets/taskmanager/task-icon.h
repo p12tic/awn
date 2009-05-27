@@ -63,9 +63,10 @@ struct _TaskIconClass
   
   /*< signals >*/
   void (*ensure_layout) (TaskIcon *icon);
+  void (*source_drag_fail) (TaskIcon *icon);
+  void (*source_drag_begin) (TaskIcon *icon);
   void (*dest_drag_motion) (TaskIcon *icon);
   void (*dest_drag_leave) (TaskIcon *icon);
-  void (*dest_drag_fail) (TaskIcon *icon);
   void (*dest_drag_drop) (TaskIcon *icon);
 
 };

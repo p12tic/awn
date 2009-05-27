@@ -1,3 +1,11 @@
+2009-05-27  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-manager.c:
+	Altered the way DnD works. Should also be more reliable.
+
 2009-05-24  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	reviewed by: Rodney Cryderman <rcryderman@gmail.com>

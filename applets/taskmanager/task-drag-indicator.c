@@ -160,7 +160,7 @@ task_drag_indicator_init (TaskDragIndicator *drag_indicator)
   settings = task_settings_get_default ();
 
   awn_icon_set_orientation (AWN_ICON (drag_indicator), AWN_ORIENTATION_BOTTOM);
-  awn_icon_set_custom_paint (AWN_ICON (drag_indicator), 10, settings->panel_size);
+  awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size, settings->panel_size);
 
   /* D&D accept dragged objs */
   gtk_widget_add_events (GTK_WIDGET (drag_indicator), GDK_ALL_EVENTS_MASK);
@@ -184,61 +184,23 @@ task_drag_indicator_new ()
   return drag_indicator;
 }
 
+/**
+ * task_drag_indicator_expose
+ * 
+ * This function draws nothing atm,
+ * but it will draw the AwnIcon with an opacity of 0.5.
+ *
+ * @return: TRUE to stop other handlers from being invoked for the event. 
+ *          FALSE to propagate the event further. 
+ */
 static gboolean
 task_drag_indicator_expose (GtkWidget *widget, GdkEventExpose *event)
 {
   cairo_t      *cr;
-  TaskSettings *settings;
   AwnEffects   *effects;
 
-  settings = task_settings_get_default ();
   effects = awn_icon_get_effects (AWN_ICON (widget));
   cr = awn_effects_cairo_create (effects);
-
-  if(settings->orient == AWN_ORIENTATION_TOP || settings->orient == AWN_ORIENTATION_BOTTOM)
-  {
-    cairo_scale (cr, settings->panel_size/4, settings->panel_size);
-
-    cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
-
-    cairo_move_to (cr, 0, 0);
-    cairo_line_to (cr, 1, 0);
-    cairo_line_to (cr, 0.5, 0.4);
-    cairo_close_path (cr);
-
-    cairo_move_to (cr, 0,  1);
-    cairo_line_to (cr, 1, 1);
-    cairo_line_to (cr, 0.5,  0.6);
-    cairo_close_path (cr);
-
-    cairo_fill_preserve (cr);
-
-    cairo_set_line_width (cr, 0.03);
-    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
-    cairo_stroke (cr);
-  }
-  else
-  {
-    cairo_scale (cr, settings->panel_size, settings->panel_size/4);
-
-    cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
-
-    cairo_move_to (cr, 0, 0);
-    cairo_line_to (cr, 0, 1);
-    cairo_line_to (cr, 0.4, 0.5);
-    cairo_close_path (cr);
-
-    cairo_move_to (cr, 1,  0);
-    cairo_line_to (cr, 1, 1);
-    cairo_line_to (cr, 0.6,  0.5);
-    cairo_close_path (cr);
-
-    cairo_fill_preserve (cr);
-
-    cairo_set_line_width (cr, 0.03);
-    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
-    cairo_stroke (cr);
-  }
 
   cairo_destroy (cr);
 
@@ -254,14 +216,7 @@ task_drag_indicator_refresh (TaskDragIndicator      *drag_indicator)
 
   settings = task_settings_get_default ();
 
-  if(settings->orient == AWN_ORIENTATION_TOP || settings->orient == AWN_ORIENTATION_BOTTOM)
-  {
-    awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size/4, settings->panel_size);
-  }
-  else
-  {
-    awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size, settings->panel_size/4);
-  }
+  awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size, settings->panel_size);
 }
 
 static void
