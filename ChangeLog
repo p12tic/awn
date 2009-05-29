@@ -1,3 +1,16 @@
+2009-05-29  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-tooltip.c:
+	Changed the way rounded rectangle is painted.
+	Added function which draws shadow around a (rounded) rectangle to 
+	cairo utils.
+	Added shadow to AwnDialog.
+
 2009-05-27  h4writer <hv1989@gmail.com>
 
 	* applets/taskmanager/task-drag-indicator.c:
