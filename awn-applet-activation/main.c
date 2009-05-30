@@ -127,6 +127,7 @@ main(gint argc, gchar **argv)
   GError *error = NULL;
   GOptionContext *context;
   DesktopAgnosticVFSImplementation *vfs;
+  DesktopAgnosticVFSFileBackend *desktop_file = NULL;
   DesktopAgnosticDesktopEntryBackend *entry = NULL;
   GtkWidget *applet = NULL;
   const gchar *exec;
@@ -173,7 +174,23 @@ main(gint argc, gchar **argv)
   }
 
   /* Try and load the desktop file */
-  entry = desktop_agnostic_desktop_entry_new_for_filename (path, &error);
+  desktop_file = desktop_agnostic_vfs_file_new_for_path (path, &error);
+
+  if (error)
+  {
+    g_critical ("Error: %s", error->message);
+    g_error_free (error);
+    return 1;
+  }
+
+  if (desktop_file == NULL ||
+      ~desktop_agnostic_vfs_file_backend_get_exists (desktop_file))
+  {
+    g_warning ("This desktop file '%s' does not exist.", path);
+    return 1;
+  }
+
+  entry = desktop_agnostic_desktop_entry_new_for_file (desktop_file, &error);
 
   if (error)
   {

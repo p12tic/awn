@@ -1,3 +1,10 @@
+2009-05-30  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-launcher.c:
+	* awn-applet-activation/main.c:
+	* libawn/awn-config-client-gkeyfile.c:
+	Use the updated libdesktop-agnostic API.
+
 2009-05-30  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-cairo-utils.c:

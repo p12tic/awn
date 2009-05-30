@@ -178,6 +178,7 @@ static void
 task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
 {
   TaskLauncherPrivate *priv;
+  DesktopAgnosticVFSFileBackend *file;
   GError *error = NULL;
   gchar * needle = NULL;
  
@@ -186,7 +187,22 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
 
   priv->path = g_strdup (path);
 
-  priv->entry = desktop_agnostic_desktop_entry_new_for_filename (path, &error);
+  file = desktop_agnostic_vfs_file_new_for_path (path, &error);
+
+  if (error)
+  {
+    g_critical ("Error when trying to load the launcher: %s", error->message);
+    g_error_free (error);
+    return;
+  }
+
+  if (file == NULL || !desktop_agnostic_vfs_file_backend_get_exists (file))
+  {
+    g_critical ("File not found: '%s'", path);
+    return;
+  }
+
+  priv->entry = desktop_agnostic_desktop_entry_new_for_file (file, &error);
 
   if (error)
   {
