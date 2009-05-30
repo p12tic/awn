@@ -40,6 +40,9 @@ awn_cairo_rounded_rect(cairo_t *cr, double rx0, double ry0,
   const double rx1 = rx0 + width;
   const double ry1 = ry0 + height;
 
+  /* arc with radius == 0.0 doesn't paint anything */
+  if (radius == 0.0) state = ROUND_NONE;
+
   cairo_move_to (cr, rx0, ry1 - radius);
 
   /* top left corner */

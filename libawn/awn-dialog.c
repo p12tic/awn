@@ -48,6 +48,7 @@ G_DEFINE_TYPE(AwnDialog, awn_dialog, GTK_TYPE_WINDOW)
 
 struct _AwnDialogPrivate
 {
+  GtkWidget *hbox;
   GtkWidget *title;
   GtkWidget *vbox;
   GtkWidget *align;
@@ -220,9 +221,15 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
         break;
     }
     /* Make sure we paint the arrow in our window */
-    arrow.x = CLAMP (arrow.x,
-                     BORDER + ROUND_RADIUS,
-                     width - (BORDER + ROUND_RADIUS));
+    if (BORDER*2 + ROUND_RADIUS > width - (BORDER*2 + ROUND_RADIUS))
+    {
+      arrow.x = width / 2;
+    }
+    else
+    {
+      arrow.x = CLAMP (arrow.x, BORDER*2 + ROUND_RADIUS,
+                       width - (BORDER*2 + ROUND_RADIUS));
+    }
     arrow.y = height - BORDER;
 
     GdkPoint top_left  = { .x = BORDER, .y = BORDER };
@@ -247,11 +254,11 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
      *   now we'll use BORDER for ROUND_RADIUS, because there's only BORDER
      *   pixels between the line and window edge.
      */
-    cairo_line_to (cr, arrow.x + BORDER, arrow.y);
-    cairo_curve_to (cr, arrow.x + BORDER, arrow.y, arrow.x, arrow.y,
-                    arrow.x, arrow.y + BORDER);
-    cairo_curve_to (cr, arrow.x, arrow.y + BORDER, arrow.x, arrow.y,
-                    arrow.x - BORDER, arrow.y);
+
+    cairo_arc_negative (cr, arrow.x + BORDER, arrow.y + BORDER,
+                        BORDER, M_PI * 1.5, M_PI);
+    cairo_arc_negative (cr, arrow.x - BORDER, arrow.y + BORDER,
+                        BORDER, 0.0, M_PI * 1.5);
 
     /* line to bottom-left corner + curve */
     cairo_arc (cr, bot_left.x + ROUND_RADIUS, bot_left.y - ROUND_RADIUS,
@@ -310,6 +317,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   cairo_save (cr);
 
+  /* inner border, which is 2 pixels smaller */
   cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
   awn_cairo_set_source_color (cr, priv->hilight_color);
   cairo_translate (cr, 1.0, 1.0);
@@ -330,6 +338,41 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   cairo_restore (cr);
 
+  // make sure the constants here equal the ones in paint_border_path method!
+  const int BORDER = priv->window_padding * 3/4;
+  const int ROUND_RADIUS = priv->window_padding / 2;
+
+  /* fill for the titlebar */
+  GtkRequisition hbox_req;
+  gtk_widget_size_request (priv->hbox, &hbox_req);
+  if (hbox_req.height > 0)
+  {
+    cairo_save (cr);
+
+    cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+    awn_cairo_set_source_color (cr, priv->g_histep_1);
+
+    const int inner_w = width - 2*BORDER - 4;
+    const int inner_h = hbox_req.height + (priv->window_padding - BORDER);
+
+    awn_cairo_rounded_rect (cr, BORDER + 2, BORDER + 2,
+                            inner_w, inner_h,
+                            priv->window_padding / 2, ROUND_ALL);
+    cairo_fill_preserve (cr);
+    cairo_stroke (cr);
+
+    const int SHADOW_RADIUS = 4;
+    cairo_rectangle (cr, BORDER + 2,
+                     BORDER + 2 + inner_h - priv->window_padding / 2,
+                     inner_w, priv->window_padding / 2 + SHADOW_RADIUS);
+    cairo_clip (cr);
+    awn_cairo_rounded_rect_shadow (cr, BORDER + 2, BORDER + 2,
+                                   inner_w, inner_h,
+                                   priv->window_padding / 2, ROUND_ALL,
+                                   SHADOW_RADIUS, 0.4);
+    cairo_restore (cr);
+  }
+
   awn_cairo_set_source_color (cr, priv->border_color);
   cairo_append_path (cr, path);
   cairo_stroke (cr);
@@ -338,10 +381,6 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   // FIXME: add property to disable it? (setting padding to <= 1 will do it now)
   if (gtk_widget_is_composited (widget) && priv->window_padding > 1)
   {
-    // make sure the constants here equal the ones in paint_border_path method!
-    const int BORDER = priv->window_padding * 3/4;
-    const int ROUND_RADIUS = priv->window_padding / 2;
-
     const double SHADOW_RADIUS = MIN (priv->window_padding / 2, 15);
 
     int w, h;
@@ -393,16 +432,16 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 }
 
 static gboolean
-on_title_expose(GtkWidget       *widget,
-                GdkEventExpose  *expose,
-                AwnDialog *dialog)
+on_hbox_expose(GtkWidget       *widget,
+               GdkEventExpose  *expose,
+               AwnDialog *dialog)
 {
   cairo_t *cr = NULL;
   cairo_pattern_t *pat = NULL;
   AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (dialog);
   gint width, height;
 
-  cr = gdk_cairo_create(gtk_widget_get_window (widget));
+  cr = gdk_cairo_create (gtk_widget_get_window (widget));
 
   g_return_val_if_fail (cr, FALSE);
 
@@ -890,23 +929,28 @@ awn_dialog_init (AwnDialog *dialog)
   g_signal_connect (dialog, "composited-changed",
                     G_CALLBACK (_on_composited_changed), NULL);
 
+  /* alignment for dialog's border */
   priv->align = gtk_alignment_new (0.5, 0.5, 1, 1);
 
   GTK_CONTAINER_CLASS (awn_dialog_parent_class)->add (GTK_CONTAINER (dialog),
                                                       priv->align);
 
+  /* main container for widgets */
   priv->vbox = gtk_vbox_new (FALSE, 6);
   gtk_container_add (GTK_CONTAINER (priv->align), priv->vbox);
 
+  /* titlebar */
+  priv->hbox = gtk_hbox_new (FALSE, 2);
+  gtk_box_pack_start (GTK_BOX(priv->vbox), priv->hbox, TRUE, TRUE, 0);
+
+  /* title widget itself */
   priv->title = gtk_label_new ("");
   gtk_widget_set_no_show_all (priv->title, TRUE);
-  gtk_box_pack_start (GTK_BOX (priv->vbox), priv->title, TRUE, TRUE, 0);
-  g_signal_connect (priv->title, "expose-event",
-                    G_CALLBACK (on_title_expose), dialog);
-
   gtk_widget_set_state (priv->title, GTK_STATE_PRELIGHT);
   gtk_misc_set_alignment (GTK_MISC (priv->title), 0.5, 0.5);
   gtk_misc_set_padding (GTK_MISC (priv->title), 4, 4);
+
+  gtk_box_pack_start (GTK_BOX (priv->hbox), priv->title, TRUE, TRUE, 0);
 
   /* See if the title has been set */
   g_signal_connect (dialog, "notify::title",

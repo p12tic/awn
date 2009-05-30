@@ -1,3 +1,9 @@
+2009-05-30  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-dialog.c:
+	Few more changes to dialog drawing.
+
 2009-05-29  Michal Hruby <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:
