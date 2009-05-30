@@ -1,3 +1,9 @@
+2009-05-31  Michal Hruby <michal.mhr@gmail.com>
+
+	* TODO:
+	* libawn/awn-dialog.c:
+	Fix issue with titlebar spacing.
+
 2009-05-30  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-cairo-utils.c:
