@@ -55,14 +55,6 @@ static gboolean  task_drag_indicator_dest_drag_motion         (GtkWidget      *w
 static void      task_drag_indicator_dest_drag_leave          (GtkWidget      *widget,
                                                                GdkDragContext *context,
                                                                guint           time_);
-static gboolean  task_drag_indicator_dest_drag_fail           (GtkWidget      *widget,
-                                                               GdkDragContext *drag_context,
-                                                               GtkDragResult   result);
-static gboolean  task_drag_indicator_dest_drag_drop           (GtkWidget      *widget,
-                                                               GdkDragContext *drag_context,
-                                                               gint            x,
-                                                               gint            y,
-                                                               guint           time_);
 static void      task_drag_indicator_dest_drag_data_received  (GtkWidget      *widget,
                                                                GdkDragContext *context,
                                                                gint            x,
@@ -80,8 +72,6 @@ enum
 {
   DEST_DRAG_MOVE,
   DEST_DRAG_LEAVE,
-  DEST_DRAG_FAIL,
-  DEST_DRAG_DROP,
 
   LAST_SIGNAL
 };
@@ -113,7 +103,6 @@ task_drag_indicator_class_init (TaskDragIndicatorClass *klass)
   wid_class->drag_data_get        = task_drag_indicator_drag_data_get;
   wid_class->drag_data_received   = task_drag_indicator_dest_drag_data_received;
   wid_class->drag_motion          = task_drag_indicator_dest_drag_motion;
-  wid_class->drag_drop            = task_drag_indicator_dest_drag_drop;
   wid_class->drag_leave           = task_drag_indicator_dest_drag_leave;
 
   /* Install signals */
@@ -134,22 +123,6 @@ task_drag_indicator_class_init (TaskDragIndicatorClass *klass)
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__VOID, 
 			      G_TYPE_NONE, 0);
-  _icon_signals[DEST_DRAG_FAIL] =
-		g_signal_new ("dest-drag-fail",
-			      G_OBJECT_CLASS_TYPE (obj_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (TaskDragIndicatorClass, dest_drag_fail),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__VOID, 
-			      G_TYPE_NONE, 0);
-  _icon_signals[DEST_DRAG_DROP] =
-		g_signal_new ("dest-drag-drop",
-			      G_OBJECT_CLASS_TYPE (obj_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (TaskDragIndicatorClass, dest_drag_drop),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__VOID, 
-			      G_TYPE_NONE, 0);
 }
 
 static void
@@ -160,7 +133,7 @@ task_drag_indicator_init (TaskDragIndicator *drag_indicator)
   settings = task_settings_get_default ();
 
   awn_icon_set_orientation (AWN_ICON (drag_indicator), AWN_ORIENTATION_BOTTOM);
-  awn_icon_set_custom_paint (AWN_ICON (drag_indicator), 10, settings->panel_size);
+  awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size, settings->panel_size);
 
   /* D&D accept dragged objs */
   gtk_widget_add_events (GTK_WIDGET (drag_indicator), GDK_ALL_EVENTS_MASK);
@@ -168,8 +141,6 @@ task_drag_indicator_init (TaskDragIndicator *drag_indicator)
                      GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
                      drop_types, n_drop_types,
                      GDK_ACTION_MOVE);
-  g_signal_connect (G_OBJECT (drag_indicator), "drag-failed",
-                    G_CALLBACK (task_drag_indicator_dest_drag_fail), NULL);
   /*gtk_drag_dest_add_uri_targets (GTK_WIDGET (icon));
   gtk_drag_dest_add_text_targets (GTK_WIDGET (icon));*/
 }
@@ -184,61 +155,23 @@ task_drag_indicator_new ()
   return drag_indicator;
 }
 
+/**
+ * task_drag_indicator_expose
+ * 
+ * This function draws nothing atm,
+ * but it will draw the AwnIcon with an opacity of 0.5.
+ *
+ * @return: TRUE to stop other handlers from being invoked for the event. 
+ *          FALSE to propagate the event further. 
+ */
 static gboolean
 task_drag_indicator_expose (GtkWidget *widget, GdkEventExpose *event)
 {
   cairo_t      *cr;
-  TaskSettings *settings;
   AwnEffects   *effects;
 
-  settings = task_settings_get_default ();
   effects = awn_icon_get_effects (AWN_ICON (widget));
   cr = awn_effects_cairo_create (effects);
-
-  if(settings->orient == AWN_ORIENTATION_TOP || settings->orient == AWN_ORIENTATION_BOTTOM)
-  {
-    cairo_scale (cr, settings->panel_size/4, settings->panel_size);
-
-    cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
-
-    cairo_move_to (cr, 0, 0);
-    cairo_line_to (cr, 1, 0);
-    cairo_line_to (cr, 0.5, 0.4);
-    cairo_close_path (cr);
-
-    cairo_move_to (cr, 0,  1);
-    cairo_line_to (cr, 1, 1);
-    cairo_line_to (cr, 0.5,  0.6);
-    cairo_close_path (cr);
-
-    cairo_fill_preserve (cr);
-
-    cairo_set_line_width (cr, 0.03);
-    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
-    cairo_stroke (cr);
-  }
-  else
-  {
-    cairo_scale (cr, settings->panel_size, settings->panel_size/4);
-
-    cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
-
-    cairo_move_to (cr, 0, 0);
-    cairo_line_to (cr, 0, 1);
-    cairo_line_to (cr, 0.4, 0.5);
-    cairo_close_path (cr);
-
-    cairo_move_to (cr, 1,  0);
-    cairo_line_to (cr, 1, 1);
-    cairo_line_to (cr, 0.6,  0.5);
-    cairo_close_path (cr);
-
-    cairo_fill_preserve (cr);
-
-    cairo_set_line_width (cr, 0.03);
-    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.6);
-    cairo_stroke (cr);
-  }
 
   cairo_destroy (cr);
 
@@ -254,14 +187,7 @@ task_drag_indicator_refresh (TaskDragIndicator      *drag_indicator)
 
   settings = task_settings_get_default ();
 
-  if(settings->orient == AWN_ORIENTATION_TOP || settings->orient == AWN_ORIENTATION_BOTTOM)
-  {
-    awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size/4, settings->panel_size);
-  }
-  else
-  {
-    awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size, settings->panel_size/4);
-  }
+  awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size, settings->panel_size);
 }
 
 static void
@@ -309,18 +235,6 @@ task_drag_indicator_dest_drag_motion (GtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
-task_drag_indicator_dest_drag_fail (GtkWidget      *widget,
-                                    GdkDragContext *drag_context,
-                                    GtkDragResult   result)
-{
-  g_return_val_if_fail (TASK_IS_DRAG_INDICATOR (widget), FALSE);
-
-  g_signal_emit (TASK_DRAG_INDICATOR (widget), _icon_signals[DEST_DRAG_FAIL], 0);
-
-  return TRUE;
-}
-
 static void   
 task_drag_indicator_dest_drag_leave (GtkWidget      *widget,
                            GdkDragContext *context,
@@ -329,20 +243,6 @@ task_drag_indicator_dest_drag_leave (GtkWidget      *widget,
   g_return_if_fail (TASK_IS_DRAG_INDICATOR (widget));
 
   g_signal_emit (TASK_DRAG_INDICATOR (widget), _icon_signals[DEST_DRAG_LEAVE], 0);
-}
-
-static gboolean
-task_drag_indicator_dest_drag_drop (GtkWidget      *widget,
-                                    GdkDragContext *drag_context,
-                                    gint            x,
-                                    gint            y,
-                                    guint           time_)
-{
-  g_return_val_if_fail (TASK_IS_DRAG_INDICATOR (widget), FALSE);
-
-  g_signal_emit (TASK_DRAG_INDICATOR (widget), _icon_signals[DEST_DRAG_DROP], 0);
-
-  return TRUE;
 }
 
 static void

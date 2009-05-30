@@ -557,6 +557,22 @@
   )
 )
 
+(define-function awn_cairo_rounded_rect_shadow
+  (c-name "awn_cairo_rounded_rect_shadow")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+    '("double" "x0")
+    '("double" "y0")
+    '("double" "width")
+    '("double" "height")
+    '("double" "radius")
+    '("AwnCairoRoundCorners" "state")
+    '("double" "shadow_radius")
+    '("double" "shadow_alpha")
+  )
+)
+
 
 
 ;; From awn-defines.h

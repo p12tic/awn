@@ -1,3 +1,48 @@
+2009-05-30  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-dialog.c:
+	Few more changes to dialog drawing.
+
+2009-05-29  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-tooltip.c:
+	Changed the way rounded rectangle is painted.
+	Added function which draws shadow around a (rounded) rectangle to 
+	cairo utils.
+	Added shadow to AwnDialog.
+
+2009-05-27  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-drag-indicator.h:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-manager.c:
+	- Renamed some function
+	- Removed signals of task-drag-indicator that are about dragging the indicator itself.
+	  It can't be dragged, so they aren't needed.
+
+2009-05-27  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-manager.c:
+	Altered the way DnD works. Should also be more reliable.
+
+2009-05-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	reviewed by: Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-config-client-gconf.c:
+	Fix potential GError-related crashers.
+
 2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* bindings/python/awn.defs:
