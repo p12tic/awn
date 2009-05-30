@@ -59,7 +59,6 @@ libawn/
   - AwnTooltip
     - shadows?
   - AwnDialog
-    - shadows?
     - Inhibit autohide on the panel if dialog is showing
   - AwnConfigClient
     - Make sure GKeyFile and GConf backends are still working, check for any
@@ -70,9 +69,6 @@ libawn/
       called with invalid pointer to the dead object
     - [Nice-to-have] use libdesktop-agnostic's config bridge instead (which is
       based on this code)
-  - AwnColor
-    - [Nice-to-have] replace with libdesktop-agnostic's color class (code should
-      be complete)
 
 applets/taskmananger
   - Complete simple window-managment
