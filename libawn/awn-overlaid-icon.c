@@ -60,6 +60,22 @@ awn_overlaid_icon_class_init (AwnOverlaidIconClass *klass)
   g_type_class_add_private (obj_class, sizeof (AwnOverlaidIconPrivate));
 }
 
+static gboolean
+_awn_overlaid_icon_expose (GtkWidget *widget,
+                           GdkEventExpose *event,
+                           gpointer null)
+{
+  AwnEffects * effects = awn_icon_get_effects (AWN_ICON(widget));
+  
+  cairo_t * ctx = awn_effects_cairo_create(effects);
+  
+  cairo_set_source_rgba (ctx,0.5,0.5,0,0.5);
+  cairo_paint (ctx);
+  
+  cairo_destroy (ctx);
+//  awn_effects_cairo_destroy()
+  return FALSE;
+}
 
 static void
 awn_overlaid_icon_init (AwnOverlaidIcon *icon)
@@ -67,6 +83,8 @@ awn_overlaid_icon_init (AwnOverlaidIcon *icon)
   AwnOverlaidIconPrivate *priv;
 
   priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
+  
+  g_signal_connect (icon, "expose-event", G_CALLBACK(_awn_overlaid_icon_expose),NULL);
 
 }
 

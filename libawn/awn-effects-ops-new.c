@@ -311,7 +311,7 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
       awn_cairo_rounded_rect (cr, x-PADDING, y-PADDING,
                               priv->icon_width+(2*PADDING),
                               priv->icon_height+(2*PADDING),
-                              10.0, ROUND_ALL);
+                              priv->icon_width / 8.0, ROUND_ALL);
       cairo_fill (cr);
     }
     else
