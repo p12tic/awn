@@ -32,6 +32,9 @@ G_DEFINE_TYPE (AwnOverlaidIcon, awn_overlaid_icon, AWN_TYPE_THEMED_ICON)
 struct _AwnOverlaidIconPrivate
 {
   gpointer * padding;
+  double x_per;
+  double y_per;
+  
 };
 
 
@@ -59,6 +62,7 @@ awn_overlaid_icon_class_init (AwnOverlaidIconClass *klass)
   obj_class->dispose = awn_overlaid_icon_dispose;
   
   g_type_class_add_private (obj_class, sizeof (AwnOverlaidIconPrivate));
+  
 }
 
 static gboolean
@@ -69,25 +73,24 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
   int srfc_height;
   int srfc_width;
   int icon_height;
-  int icon_width;
-  double x_per = 0.5;
-  double y_per = 0.5;
+  int icon_width;  
+  AwnOverlaidIconPrivate *priv;
+
+  priv = AWN_OVERLAID_ICON_GET_PRIVATE (AWN_OVERLAID_ICON(widget));
+  
   AwnEffects * effects = awn_icon_get_effects (AWN_ICON(widget));
   
   g_return_val_if_fail (effects,FALSE);
   
   cairo_t * ctx = awn_effects_cairo_create(effects);
 /*
+  //need to determine if this or the allocation method is best.
   srfc_height = cairo_xlib_surface_get_height (cairo_get_target(ctx));
   srfc_width = cairo_xlib_surface_get_width (cairo_get_target(ctx));
 */
   srfc_height = widget->allocation.height;
   srfc_width = widget->allocation.width;
   
-/*  g_debug ("widget == %d  srfc = %d\n",widget->allocation.width, srfc_width);
-  g_assert (widget->allocation.width == srfc_width);
-  g_assert (widget->allocation.height == srfc_height);  
- */ 
   g_debug ("srf_height = %d, srfc_width = %d\n",srfc_height,srfc_width);  
   /*need to deal with orientation ?*/
   icon_height = srfc_height * 50 / 116  ;
@@ -95,10 +98,14 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
   
   g_debug ("height = %d, width = %d\n",icon_height,icon_width);
   cairo_set_source_rgba (ctx,0.5,0.5,0,0.6);
-  cairo_rectangle (ctx, 0, icon_height*y_per,icon_width*x_per,icon_height*y_per);
+  cairo_rectangle (ctx, 
+                   0, 
+                   icon_height*priv->y_per,
+                   icon_width*priv->x_per,
+                   icon_height*priv->y_per);
   cairo_fill (ctx);
   
-  cairo_destroy (ctx);
+  awn_effects_cairo_destroy (effects);
 //  awn_effects_cairo_destroy()
   return FALSE;
 }
@@ -112,6 +119,9 @@ awn_overlaid_icon_init (AwnOverlaidIcon *icon)
   
   g_signal_connect_after (icon, "expose-event", G_CALLBACK(_awn_overlaid_icon_expose),NULL);
 
+  priv->x_per = 0.5;
+  priv->y_per = 0.5;
+  
 }
 
 GtkWidget *
