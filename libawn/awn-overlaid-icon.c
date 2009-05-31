@@ -77,12 +77,17 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
   g_return_val_if_fail (effects,FALSE);
   
   cairo_t * ctx = awn_effects_cairo_create(effects);
+/*
   srfc_height = cairo_xlib_surface_get_height (cairo_get_target(ctx));
   srfc_width = cairo_xlib_surface_get_width (cairo_get_target(ctx));
-
+*/
+  srfc_height = widget->allocation.height;
+  srfc_width = widget->allocation.width;
+  
+/*  g_debug ("widget == %d  srfc = %d\n",widget->allocation.width, srfc_width);
   g_assert (widget->allocation.width == srfc_width);
   g_assert (widget->allocation.height == srfc_height);  
-  
+ */ 
   g_debug ("srf_height = %d, srfc_width = %d\n",srfc_height,srfc_width);  
   /*need to deal with orientation ?*/
   icon_height = srfc_height * 50 / 116  ;
