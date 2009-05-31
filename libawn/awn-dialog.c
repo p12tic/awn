@@ -343,9 +343,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   const int ROUND_RADIUS = priv->window_padding / 2;
 
   /* fill for the titlebar */
-  GtkRequisition hbox_req;
-  gtk_widget_size_request (priv->hbox, &hbox_req);
-  if (hbox_req.height > 0)
+  if (GTK_WIDGET_VISIBLE (priv->title))
   {
     cairo_save (cr);
 
@@ -353,7 +351,8 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
     awn_cairo_set_source_color (cr, priv->g_histep_1);
 
     const int inner_w = width - 2*BORDER - 4;
-    const int inner_h = hbox_req.height + (priv->window_padding - BORDER);
+    const int inner_h = priv->title->allocation.height
+                        + (priv->window_padding - BORDER);
 
     awn_cairo_rounded_rect (cr, BORDER + 2, BORDER + 2,
                             inner_w, inner_h,
@@ -940,8 +939,8 @@ awn_dialog_init (AwnDialog *dialog)
   gtk_container_add (GTK_CONTAINER (priv->align), priv->vbox);
 
   /* titlebar */
-  priv->hbox = gtk_hbox_new (FALSE, 2);
-  gtk_box_pack_start (GTK_BOX(priv->vbox), priv->hbox, TRUE, TRUE, 0);
+  //priv->hbox = gtk_hbox_new (FALSE, 2);
+  //gtk_box_pack_start (GTK_BOX(priv->vbox), priv->hbox, TRUE, TRUE, 0);
 
   /* title widget itself */
   priv->title = gtk_label_new ("");
@@ -950,7 +949,7 @@ awn_dialog_init (AwnDialog *dialog)
   gtk_misc_set_alignment (GTK_MISC (priv->title), 0.5, 0.5);
   gtk_misc_set_padding (GTK_MISC (priv->title), 4, 4);
 
-  gtk_box_pack_start (GTK_BOX (priv->hbox), priv->title, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (priv->vbox), priv->title, TRUE, TRUE, 0);
 
   /* See if the title has been set */
   g_signal_connect (dialog, "notify::title",
