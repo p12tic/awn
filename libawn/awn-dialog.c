@@ -276,8 +276,17 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
   }
 }
 
+static void
+_real_show (GtkWidget *widget)
+{
+  awn_dialog_refresh_position (AWN_DIALOG (widget), 0, 0);
+
+  /* in Vala terms: base.show(); */
+  GTK_WIDGET_CLASS (awn_dialog_parent_class)->show (widget);
+}
+
 static gboolean
-_expose_event(GtkWidget *widget, GdkEventExpose *expose)
+_expose_event (GtkWidget *widget, GdkEventExpose *expose)
 {
   AwnDialog *dialog;
   AwnDialogPrivate *priv;
@@ -793,6 +802,7 @@ awn_dialog_class_init(AwnDialogClass *klass)
 
   widget_class = GTK_WIDGET_CLASS (klass);
   widget_class->expose_event = _expose_event;
+  widget_class->show = _real_show;
 
   cont_class = GTK_CONTAINER_CLASS (klass);
   cont_class->add = awn_dialog_add;
@@ -976,7 +986,7 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
   if (!width)  width  = GTK_WIDGET (dialog)->allocation.width;
   if (!height) height = GTK_WIDGET (dialog)->allocation.height;
 
-    win = gtk_widget_get_window (priv->anchor);
+  win = gtk_widget_get_window (priv->anchor);
 
   if (!win) return; // widget might not be realized yet
 
@@ -1028,27 +1038,42 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
 
   if (priv->last_x != x || priv->last_y != y)
   {
-    /* 
+    /*
      * some optimization, we dont want to move the window on every small
      *  change 
      */
-    gboolean both_axes = priv->last_x != x && priv->last_y != y;
-    gboolean huge_delta = FALSE;
-    if (!both_axes)
+    gboolean dominant_axis_changed = FALSE;
+    switch (priv->orient)
     {
-      gint delta = abs(priv->last_x - x) + abs(priv->last_y - y);
+      case AWN_ORIENTATION_LEFT:
+      case AWN_ORIENTATION_RIGHT:
+        dominant_axis_changed = priv->last_x != x;
+        break;
+      default:
+        dominant_axis_changed = priv->last_y != y;
+        break;
+    }
+
+    /*g_debug ("last != current; last [%d, %d], now [%d, %d], (%d x %d)",
+             priv->last_x, priv->last_y, x, y, width, height);*/
+
+    gboolean huge_delta = FALSE;
+    if (!dominant_axis_changed)
+    {
       switch (priv->orient)
       {
         case AWN_ORIENTATION_LEFT:
         case AWN_ORIENTATION_RIGHT:
-          huge_delta = delta >= height / 10;
+          huge_delta = !(y >= priv->last_y - height/3
+                         && y <= priv->last_y + height/3);
           break;
         default:
-          huge_delta = delta >= width / 10;
+          huge_delta = !(x >= priv->last_x - width/3
+                         && x <= priv->last_x + width/3);
           break;
       }
     }
-    if (both_axes || huge_delta)
+    if (dominant_axis_changed || huge_delta)
     {
       priv->last_x = x;
       priv->last_y = y;
