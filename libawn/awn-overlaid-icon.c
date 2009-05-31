@@ -19,6 +19,7 @@
 #include <glib/gstdio.h>
 #include <string.h>
 #include <gio/gio.h>
+#include <cairo/cairo-xlib.h>
 
 #include "awn-overlaid-icon.h"
 
@@ -65,12 +66,26 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
                            GdkEventExpose *event,
                            gpointer null)
 {
+  int srfc_height;
+  int srfc_width;
+  int icon_height;
+  int icon_width;
+  double x_per = 0.5;
+  double y_per = 0.5;
   AwnEffects * effects = awn_icon_get_effects (AWN_ICON(widget));
   
   cairo_t * ctx = awn_effects_cairo_create(effects);
+  srfc_height = cairo_xlib_surface_get_height (cairo_get_target(ctx));
+  srfc_width = cairo_xlib_surface_get_width (cairo_get_target(ctx));
+  g_debug ("srf_height = %d, srfc_width = %d\n",srfc_height,srfc_width);  
+  /*need to deal with orientation ?*/
+  icon_height = srfc_height * 50 / 116  ;
+  icon_width = srfc_width * 5 / 6;
   
-  cairo_set_source_rgba (ctx,0.5,0.5,0,0.5);
-  cairo_paint (ctx);
+  g_debug ("height = %d, width = %d\n",icon_height,icon_width);
+  cairo_set_source_rgba (ctx,0.5,0.5,0,0.6);
+  cairo_rectangle (ctx, 0, icon_height*y_per,icon_width*x_per,icon_height*y_per);
+  cairo_fill (ctx);
   
   cairo_destroy (ctx);
 //  awn_effects_cairo_destroy()
@@ -84,7 +99,7 @@ awn_overlaid_icon_init (AwnOverlaidIcon *icon)
 
   priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
   
-  g_signal_connect (icon, "expose-event", G_CALLBACK(_awn_overlaid_icon_expose),NULL);
+  g_signal_connect_after (icon, "expose-event", G_CALLBACK(_awn_overlaid_icon_expose),NULL);
 
 }
 
