@@ -195,21 +195,45 @@ awn_background_set_property (GObject      *object,
       break;
 
     case PROP_GSTEP1:
+      if (bg->g_step_1)
+      {
+        bg->g_step_1 = (g_object_unref (bg->g_step_1), NULL);
+      }
       bg->g_step_1 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       break;
     case PROP_GSTEP2:
+      if (bg->g_step_2)
+      {
+        bg->g_step_2 = (g_object_unref (bg->g_step_2), NULL);
+      }
       bg->g_step_2 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       break;
     case PROP_GHISTEP1:
+      if (bg->g_histep_1)
+      {
+        bg->g_histep_1 = (g_object_unref (bg->g_histep_1), NULL);
+      }
       bg->g_histep_1 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       break;
     case PROP_GHISTEP2:
+      if (bg->g_histep_2)
+      {
+        bg->g_histep_2 = (g_object_unref (bg->g_histep_2), NULL);
+      }
       bg->g_histep_2 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       break;
     case PROP_BORDER:
+      if (bg->border_color)
+      {
+        bg->border_color = (g_object_unref (bg->border_color), NULL);
+      }
       bg->border_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       break;
     case PROP_HILIGHT:
+      if (bg->hilight_color)
+      {
+        bg->hilight_color = (g_object_unref (bg->hilight_color), NULL);
+      }
       bg->hilight_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       break;
     
@@ -217,6 +241,10 @@ awn_background_set_property (GObject      *object,
       bg->show_sep = g_value_get_boolean (value);
       break;
     case PROP_SEP_COLOR:
+      if (bg->sep_color)
+      {
+        bg->sep_color = (g_object_unref (bg->sep_color), NULL);
+      }
       bg->sep_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       break;
     
@@ -253,9 +281,28 @@ awn_background_set_property (GObject      *object,
 
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      return;
   }
 
   g_signal_emit (object, _bg_signals[CHANGED], 0);
+}
+
+static void
+awn_background_finalize (GObject *object)
+{
+  g_return_if_fail (AWN_IS_BACKGROUND (object));
+
+  AwnBackground *bg = AWN_BACKGROUND (object);
+
+  if (bg->g_step_1) g_object_unref (bg->g_step_1);
+  if (bg->g_step_2) g_object_unref (bg->g_step_2);
+  if (bg->g_histep_1) g_object_unref (bg->g_histep_1);
+  if (bg->g_histep_2) g_object_unref (bg->g_histep_2);
+  if (bg->border_color) g_object_unref (bg->border_color);
+  if (bg->hilight_color) g_object_unref (bg->hilight_color);
+  if (bg->sep_color) g_object_unref (bg->sep_color);
+
+  G_OBJECT_CLASS (awn_background_parent_class)->finalize (object);
 }
 
 static void
@@ -266,6 +313,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
   obj_class->constructed      = awn_background_constructed;
   obj_class->get_property     = awn_background_get_property;
   obj_class->set_property     = awn_background_set_property;
+  obj_class->finalize         = awn_background_finalize;
 
   klass->padding_request      = awn_background_padding_zero;
   klass->get_shape_mask       = awn_background_mask_none;
@@ -449,7 +497,13 @@ awn_background_class_init (AwnBackgroundClass *klass)
 static void
 awn_background_init (AwnBackground *bg)
 {
-  ;
+  bg->g_step_1 = NULL;
+  bg->g_step_2 = NULL;
+  bg->g_histep_1 = NULL;
+  bg->g_histep_2 = NULL;
+  bg->border_color = NULL;
+  bg->hilight_color = NULL;
+  bg->sep_color = NULL;
 }
 
 void 

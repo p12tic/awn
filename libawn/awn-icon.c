@@ -35,6 +35,9 @@ struct _AwnIconPrivate
 {
   AwnEffects   *effects;
   GtkWidget    *tooltip;
+
+  guint effects_backup;
+  gboolean effects_backup_set;
   
   AwnOrientation orient;
   gint offset;
@@ -88,17 +91,24 @@ awn_icon_update_effects (GtkWidget *widget, gpointer data)
 {
   AwnIconPrivate *priv = AWN_ICON (widget)->priv;
 
-  if (gtk_widget_is_composited(widget))
+  if (gtk_widget_is_composited (widget))
   {
     /* optimize the render speed */
-    g_object_set(priv->effects,
-                 "indirect-paint", FALSE, NULL);
+    g_object_set (priv->effects, "indirect-paint", FALSE, NULL);
+    if (priv->effects_backup_set)
+    {
+      g_object_set (priv->effects, "effects", priv->effects_backup, NULL);
+    }
   }
   else
   {
-    g_object_set(priv->effects,
-                 "effects", 0,
-                 "indirect-paint", TRUE, NULL);
+    /* remember which effects did we use */
+    g_object_get (priv->effects, "effects", &priv->effects_backup, NULL);
+    priv->effects_backup_set = TRUE;
+
+    g_object_set (priv->effects,
+                  "effects", 0,
+                  "indirect-paint", TRUE, NULL);
     /* we are also forcing icon-effects to "Simple", to prevent clipping
      * the icon in our small window
      */

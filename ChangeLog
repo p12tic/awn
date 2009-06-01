@@ -1,3 +1,14 @@
+2009-06-01  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background.c:
+	Fixed couple of leaks in AwnBackground.
+	* libawn/awn-effects.c:
+	Reverted changes to squish hover animation.
+	* libawn/awn-icon.c:
+	Effects are now set back after composited->non->composited switch.
+	* libawn/awn-dialog.c:
+	Fixed painting of the title background on non-bottom orients.
+
 2009-05-31  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-dialog.c:
