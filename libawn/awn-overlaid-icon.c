@@ -30,18 +30,37 @@ G_DEFINE_TYPE (AwnOverlaidIcon, awn_overlaid_icon, AWN_TYPE_THEMED_ICON)
   AWN_TYPE_OVERLAID_ICON, \
   AwnOverlaidIconPrivate))
 
+
+/*
+   I guess I could turn these into objects and simplify this source file.
+   At this time I think that is unecessary.  If it goes over 1000 SLOC then..maybe
+   */
 typedef struct
 {
   AwnOverlayType  overlay_type;  
+  
+  union
+  {
+    gchar           * text;
+    gchar           * icon_name;
+    cairo_surface_t * srfc;
+  }data;    
+  
+  union
+  {
+    int dummy;
+  }cached_info;
+
+  AwnGravity  gravity;
+  double      x_per;      /*size in % of x axis*/
+  double      y_per;      /*size in % of y axis*/
   
 }AwnOverlay;
 
 struct _AwnOverlaidIconPrivate
 {
-  gpointer * padding;
-  double x_per;
-  double y_per;
-  
+  gpointer  * padding;
+  GList     * overlays;
 };
 
 
@@ -80,6 +99,7 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
   int icon_height;
   int icon_width;  
   int orientation;
+  GList * iter = NULL;
   
   AwnOverlaidIconPrivate *priv;
 
@@ -113,13 +133,26 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
                 "icon_height", &icon_height,
                 "icon_width", &icon_width,
                 NULL);      
+  for (iter = g_list_first (priv->overlays); iter; iter = g_list_next (priv->overlays))
+  {
+    AwnOverlay * overlay = iter->data;
+    switch ( overlay->overlay_type)
+    {
+      case  AWN_OVERLAY_TEXT:
+        awn_overlaid_icon_render_text (widget,
+        break;
+      default:
+        g_assert_not_reached();
+    }
+  }
 //  g_debug ("height = %d, width = %d\n",icon_height,icon_width);
+  
   cairo_set_source_rgba (ctx,0.5,0.5,0,0.6);
   cairo_rectangle (ctx, 
                    0, 
-                   icon_height*priv->y_per,
-                   icon_width*priv->x_per,
-                   icon_height*priv->y_per);
+                   icon_height*0.5,
+                   icon_width*0.5,
+                   icon_height*0.5);
   cairo_fill (ctx);
   
   awn_effects_cairo_destroy (effects);
@@ -135,9 +168,7 @@ awn_overlaid_icon_init (AwnOverlaidIcon *icon)
   
   g_signal_connect_after (icon, "expose-event", G_CALLBACK(_awn_overlaid_icon_expose),NULL);
 
-  priv->x_per = 0.5;
-  priv->y_per = 0.5;
-  
+  priv->overlays = NULL;  
 }
 
 GtkWidget *
