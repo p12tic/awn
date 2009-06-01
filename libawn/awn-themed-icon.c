@@ -214,13 +214,6 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   g_free (scalable_dir);
   g_free (theme_dir);
 
-  /*
-   * Initate drag_drop 
-   */
-  gtk_drag_dest_set (GTK_WIDGET (icon),
-                     GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
-                     drop_types, n_drop_types,
-                     GDK_ACTION_COPY | GDK_ACTION_ASK);
 }
 
 GtkWidget *
@@ -553,6 +546,14 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
   /*FIXME: Should we ensure_icon here? The current_state variable is probably
    * invalid at this moment...
    */
+  /*
+   * Initate drag_drop 
+   */
+  gtk_drag_dest_set (GTK_WIDGET (icon),
+                     GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
+                     drop_types, n_drop_types,
+                     GDK_ACTION_COPY | GDK_ACTION_ASK);
+  
 }
 
 void
@@ -687,7 +688,7 @@ awn_themed_icon_clear_info (AwnThemedIcon *icon)
   priv->states = NULL;
   priv->icon_names = NULL;
   priv->icon_names_orignal = NULL;
-
+  gtk_drag_dest_unset (GTK_WIDGET(icon));
 }
 /*
  * Callbacks 
