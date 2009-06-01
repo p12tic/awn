@@ -1,3 +1,9 @@
+2009-06-02  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Set AwnIcon to active state when the dialog is activated (if we're
+	connected to AppletSimple)
+
 2009-06-01  Michal Hruby <michal.mhr@gmail.com>
 
 	* src/awn-background.c:
