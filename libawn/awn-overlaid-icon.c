@@ -30,6 +30,12 @@ G_DEFINE_TYPE (AwnOverlaidIcon, awn_overlaid_icon, AWN_TYPE_THEMED_ICON)
   AWN_TYPE_OVERLAID_ICON, \
   AwnOverlaidIconPrivate))
 
+typedef struct
+{
+  AwnOverlayType  overlay_type;  
+  
+}AwnOverlay;
+
 struct _AwnOverlaidIconPrivate
 {
   gpointer * padding;
