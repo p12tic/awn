@@ -91,6 +91,12 @@ awn_overlaid_icon_class_init (AwnOverlaidIconClass *klass)
   
 }
 
+static void
+awn_overlaid_icon_render_text (GtkWidget * widget, AwnOverlay * overlay)
+{
+  
+}
+
 static gboolean
 _awn_overlaid_icon_expose (GtkWidget *widget,
                            GdkEventExpose *event,
@@ -113,22 +119,6 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
   
   g_return_val_if_fail (ctx,FALSE);
   
-  g_object_get (effects, 
-                "orientation", &orientation, 
-                NULL);    
-  switch (orientation)
-  {
-    case AWN_ORIENTATION_TOP:      
-    case AWN_ORIENTATION_BOTTOM:
-      break;
-    case AWN_ORIENTATION_RIGHT:
-    case AWN_ORIENTATION_LEFT:
-      break;
-    default:      
-      g_debug ("orientation = %d\n",orientation);
-      g_assert_not_reached();
-  }
-  
   g_object_get (widget, 
                 "icon_height", &icon_height,
                 "icon_width", &icon_width,
@@ -139,7 +129,7 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
     switch ( overlay->overlay_type)
     {
       case  AWN_OVERLAY_TEXT:
-        awn_overlaid_icon_render_text (widget,
+        awn_overlaid_icon_render_text (widget,overlay);
         break;
       default:
         g_assert_not_reached();
