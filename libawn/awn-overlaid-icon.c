@@ -92,9 +92,16 @@ awn_overlaid_icon_class_init (AwnOverlaidIconClass *klass)
 }
 
 static void
-awn_overlaid_icon_render_text (GtkWidget * widget, AwnOverlay * overlay)
+awn_overlaid_icon_render_text (cairo_t * cr, AwnOverlaidIcon * icon, AwnOverlay * overlay)
 {
-  
+  AwnOverlaidIconPrivate *priv;
+
+  priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
+
+  cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+
+  cairo_set_font_size(cr, 10);
+
 }
 
 static gboolean
@@ -129,7 +136,7 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
     switch ( overlay->overlay_type)
     {
       case  AWN_OVERLAY_TEXT:
-        awn_overlaid_icon_render_text (widget,overlay);
+        awn_overlaid_icon_render_text (ctx, AWN_OVERLAID_ICON(widget),overlay);
         break;
       default:
         g_assert_not_reached();
