@@ -32,7 +32,9 @@
 #include <math.h>
 
 #include "awn-applet.h"
+#include "awn-applet-simple.h"
 #include "awn-dialog.h"
+#include "awn-icon.h"
 #include "awn-cairo-utils.h"
 #include "awn-config-bridge.h"
 #include "awn-config-client.h"
@@ -555,6 +557,21 @@ _on_title_notify(GObject *dialog, GParamSpec *spec, gpointer null)
 }
 
 static void
+_on_active_changed(GObject *dialog, GParamSpec *spec, gpointer null)
+{
+  AwnDialogPrivate *priv;
+
+  priv = AWN_DIALOG(dialog)->priv;
+
+  if (!AWN_IS_APPLET_SIMPLE (priv->anchor)) return; // FIXME later
+
+  AwnAppletSimple *simple = AWN_APPLET_SIMPLE (priv->anchor);
+
+  awn_icon_set_is_active (AWN_ICON (awn_applet_simple_get_icon (simple)),
+                          gtk_window_is_active (GTK_WINDOW (dialog)));
+}
+
+static void
 awn_dialog_set_masks (GtkWidget *widget, gint width, gint height)
 {
   GdkBitmap *shaped_bitmap;
@@ -968,6 +985,9 @@ awn_dialog_init (AwnDialog *dialog)
                     G_CALLBACK (_on_title_notify), NULL);
 
   g_object_notify (G_OBJECT (dialog), "title");
+
+  g_signal_connect (dialog, "notify::is-active",
+                    G_CALLBACK (_on_active_changed), NULL);
 }
 
 // FIXME: we're still missing dispose method
