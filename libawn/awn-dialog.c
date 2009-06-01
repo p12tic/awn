@@ -356,6 +356,8 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
   {
     cairo_save (cr);
 
+    cairo_identity_matrix (cr);
+    cairo_translate (cr, 0.5, 0.5);
     cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
     awn_cairo_set_source_color (cr, priv->g_histep_1);
 
