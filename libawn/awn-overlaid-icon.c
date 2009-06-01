@@ -20,6 +20,7 @@
 #include <string.h>
 #include <gio/gio.h>
 #include <cairo/cairo-xlib.h>
+#include <math.h>
 
 #include "awn-overlaid-icon.h"
 
@@ -70,10 +71,10 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
                            GdkEventExpose *event,
                            gpointer null)
 {
-  int srfc_height;
-  int srfc_width;
   int icon_height;
   int icon_width;  
+  int orientation;
+  
   AwnOverlaidIconPrivate *priv;
 
   priv = AWN_OVERLAID_ICON_GET_PRIVATE (AWN_OVERLAID_ICON(widget));
@@ -83,19 +84,29 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
   g_return_val_if_fail (effects,FALSE);
   
   cairo_t * ctx = awn_effects_cairo_create(effects);
-/*
-  //need to determine if this or the allocation method is best.
-  srfc_height = cairo_xlib_surface_get_height (cairo_get_target(ctx));
-  srfc_width = cairo_xlib_surface_get_width (cairo_get_target(ctx));
-*/
-  srfc_height = widget->allocation.height;
-  srfc_width = widget->allocation.width;
   
-  g_debug ("srf_height = %d, srfc_width = %d\n",srfc_height,srfc_width);  
-  /*need to deal with orientation ?*/
-  icon_height = srfc_height * 50 / 116  ;
-  icon_width = srfc_width * 5 / 6;
+  g_return_val_if_fail (ctx,FALSE);
   
+  g_object_get (effects, 
+                "orientation", &orientation, 
+                NULL);    
+  switch (orientation)
+  {
+    case AWN_ORIENTATION_TOP:      
+    case AWN_ORIENTATION_BOTTOM:
+      break;
+    case AWN_ORIENTATION_RIGHT:
+    case AWN_ORIENTATION_LEFT:
+      break;
+    default:      
+      g_debug ("orientation = %d\n",orientation);
+      g_assert_not_reached();
+  }
+  
+  g_object_get (widget, 
+                "icon_height", &icon_height,
+                "icon_width", &icon_width,
+                NULL);      
   g_debug ("height = %d, width = %d\n",icon_height,icon_width);
   cairo_set_source_rgba (ctx,0.5,0.5,0,0.6);
   cairo_rectangle (ctx, 
@@ -106,7 +117,6 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
   cairo_fill (ctx);
   
   awn_effects_cairo_destroy (effects);
-//  awn_effects_cairo_destroy()
   return FALSE;
 }
 
