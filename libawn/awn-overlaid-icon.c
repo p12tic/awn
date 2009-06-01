@@ -107,7 +107,7 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
                 "icon_height", &icon_height,
                 "icon_width", &icon_width,
                 NULL);      
-  g_debug ("height = %d, width = %d\n",icon_height,icon_width);
+//  g_debug ("height = %d, width = %d\n",icon_height,icon_width);
   cairo_set_source_rgba (ctx,0.5,0.5,0,0.6);
   cairo_rectangle (ctx, 
                    0, 
