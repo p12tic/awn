@@ -70,4 +70,10 @@ typedef enum
   AWN_GRAVITY_NW
 } AwnGravity;
 
+typedef enum
+{
+  AWN_OVERLAY_TEXT,
+  AWN_OVERLAY_SURFACE,
+  AWN_OVERLAY_ICON
+}AwnOverlayType;
 #endif
