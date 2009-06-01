@@ -509,7 +509,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
   awn_effects_register_effect_bundle(klass,
     bounce_squish_opening_effect,
     bounce_squish_closing_effect,
-    bounce_squish_hover_effect,
+    /*bounce_squish_hover_effect,*/
+    bounce_squish_effect,
     bounce_squish_effect,
     bounce_squish_attention_effect
   );

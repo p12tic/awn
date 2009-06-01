@@ -2,6 +2,8 @@
 
 	* src/awn-background.c:
 	Fixed couple of leaks in AwnBackground.
+	* libawn/awn-effects.c:
+	Reverted changes to squish hover animation.
 
 2009-05-31  Michal Hruby <michal.mhr@gmail.com>
 
