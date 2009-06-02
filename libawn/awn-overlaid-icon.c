@@ -178,11 +178,10 @@ awn_overlaid_icon_render_text (cairo_t * cr,
                                AwnOverlayPriv* overlay)
 {
   AwnOverlaidIconPrivate *priv;
-  DesktopAgnosticColor * text_colour;
+  DesktopAgnosticColor * text_colour; /*FIXME*/
 
   text_colour = desktop_agnostic_color_new(&GTK_WIDGET(icon)->style->fg[GTK_STATE_ACTIVE], G_MAXUSHORT);
   awn_cairo_set_source_color (cr,text_colour);
-//  cairo_set_source_rgb (cr, 0.1, 0.6, 1.0);
   cairo_text_extents_t extents;
   priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
   cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
@@ -228,6 +227,9 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
                                        icon_height,
                                        overlay);
         break;
+      case AWN_OVERLAY_SURFACE:
+      case AWN_OVERLAY_PIXBUF:  
+      case AWN_OVERLAY_ICON:        
       default:
         g_assert_not_reached();
     }
@@ -283,7 +285,7 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,AwnOverlayType  type,
       overlay->gravity = grav;     
       break;
     case AWN_OVERLAY_SURFACE:
-  
+    case AWN_OVERLAY_PIXBUF:  
     case AWN_OVERLAY_ICON:
       
     default:
@@ -305,7 +307,7 @@ AwnOverlay   awn_overlaid_icon_change_overlay_data (AwnOverlaidIcon * icon,
       overlay->data.text = g_strdup ((gchar*)new_data);
       break;
     case AWN_OVERLAY_SURFACE:
-  
+    case AWN_OVERLAY_PIXBUF:  
     case AWN_OVERLAY_ICON:
       
     default:
