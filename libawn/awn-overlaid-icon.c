@@ -38,6 +38,28 @@ G_DEFINE_TYPE (AwnOverlaidIcon, awn_overlaid_icon, AWN_TYPE_THEMED_ICON)
    I guess I could turn these into objects and simplify this source file.
    At this time I think that is unecessary.  If it goes over 1000 SLOC then..maybe
    */
+
+typedef struct
+{
+  gdouble sizing;  
+}TextOverlay ;
+    
+typedef struct
+{
+  GdkPixbuf * themed_pixbuf;
+}IconOverlay;
+
+typedef struct
+{
+  gint dummy;
+}SurfaceOverlay;
+
+typedef struct
+{
+  gint dummy;
+}PixbufOverlay;
+
+
 typedef struct
 {
   AwnOverlayType  overlay_type;  
@@ -47,6 +69,7 @@ typedef struct
     gchar           * text;
     gchar           * icon_name;
     cairo_surface_t * srfc;
+    GdkPixbuf       * pixbuf;
   }data;
 
   union
@@ -62,7 +85,13 @@ typedef struct
   double      x_per;      /*size in % of x axis*/
   double      y_per;      /*size in % of y axis*/
 
-  double      sizing;   /*FIXME probably should go into a union... not likely to apply to all overlay types*/  
+  union
+  {
+    TextOverlay text_data;
+    IconOverlay icon_data;
+    SurfaceOverlay surface_data;
+    PixbufOverlay pixbuf_data;
+  }type_specific;  /*overlay type specific data */
 }AwnOverlayPriv;
 
 
@@ -185,11 +214,41 @@ awn_overlaid_icon_render_text (cairo_t * cr,
   cairo_text_extents_t extents;
   priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
   cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
-  cairo_set_font_size(cr, overlay->sizing * width / 48.0);
+  cairo_set_font_size(cr, overlay->type_specific.text_data.sizing * width / 48.0);
   cairo_text_extents(cr, overlay->data.text, &extents);  
   awn_overlaid_icon_move_to (cr, overlay, width, height,extents.width,extents.height,MOVE_FLAGS_TEXT);
   cairo_show_text(cr, overlay->data.text);
   g_object_unref (text_colour);  
+}
+
+static void
+awn_overlaid_icon_render_surface (cairo_t * cr, 
+                               AwnOverlaidIcon * icon, 
+                               gint width,
+                               gint height,
+                               AwnOverlayPriv* overlay)
+{
+  
+}
+
+static void
+awn_overlaid_icon_render_pixbuf (cairo_t * cr, 
+                               AwnOverlaidIcon * icon, 
+                               gint width,
+                               gint height,
+                               AwnOverlayPriv* overlay)
+{
+  
+}
+
+static void
+awn_overlaid_icon_render_icon (cairo_t * cr, 
+                               AwnOverlaidIcon * icon, 
+                               gint width,
+                               gint height,
+                               AwnOverlayPriv* overlay)
+{
+  
 }
 
 static gboolean
@@ -228,8 +287,23 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
                                        overlay);
         break;
       case AWN_OVERLAY_SURFACE:
+        awn_overlaid_icon_render_surface (ctx, AWN_OVERLAID_ICON(widget), 
+                                       icon_width,
+                                       icon_height,
+                                       overlay);
+        break;        
       case AWN_OVERLAY_PIXBUF:  
-      case AWN_OVERLAY_ICON:        
+        awn_overlaid_icon_render_pixbuf (ctx, AWN_OVERLAID_ICON(widget), 
+                                       icon_width,
+                                       icon_height,
+                                       overlay);
+        break;        
+      case AWN_OVERLAY_ICON:
+        awn_overlaid_icon_render_icon (ctx, AWN_OVERLAID_ICON(widget), 
+                                       icon_width,
+                                       icon_height,
+                                       overlay);
+        break;
       default:
         g_assert_not_reached();
     }
@@ -277,20 +351,28 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,AwnOverlayType  type,
   overlay->align = AWN_OVERLAY_ALIGN_RIGHT;
   overlay->x_adj = 0.3;
   overlay->y_adj = 0.0;
-  overlay->sizing = AWN_FONT_SIZE_MEDIUM;
+  overlay->overlay_type = type;
   switch (type)
   {
     case AWN_OVERLAY_TEXT:
+      overlay->type_specific.text_data.sizing = AWN_FONT_SIZE_MEDIUM;
       overlay->data.text = g_strdup (data);
-      overlay->gravity = grav;     
       break;
     case AWN_OVERLAY_SURFACE:
+      overlay->data.srfc = data;
+      cairo_surface_reference (overlay->data.srfc);
+      break;
     case AWN_OVERLAY_PIXBUF:  
+      overlay->data.pixbuf = data;
+      g_object_ref (overlay->data.pixbuf);
+      break;
     case AWN_OVERLAY_ICON:
-      
+      overlay->data.icon_name = g_strdup (data);
+      break;
     default:
       g_assert_not_reached();
   }
+  overlay->gravity = grav;       
   priv->overlays = g_list_append (priv->overlays,overlay);   
   return overlay;
 }
@@ -307,13 +389,21 @@ AwnOverlay   awn_overlaid_icon_change_overlay_data (AwnOverlaidIcon * icon,
       overlay->data.text = g_strdup ((gchar*)new_data);
       break;
     case AWN_OVERLAY_SURFACE:
+      cairo_surface_destroy (overlay->data.srfc);
+      overlay->data.srfc = new_data;
+      cairo_surface_reference (overlay->data.srfc);
+      break;      
     case AWN_OVERLAY_PIXBUF:  
+      g_object_unref (overlay->data.pixbuf);
+      overlay->data.pixbuf = new_data;
+      g_object_ref (overlay->data.pixbuf);
+      break;      
     case AWN_OVERLAY_ICON:
-      
+      overlay->data.icon_name = g_strdup (new_data);
+      break;      
     default:
       g_assert_not_reached();
   }
-  
   return overlay;
 }
 
