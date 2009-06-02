@@ -624,7 +624,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
 /*TODO Write a function who create the applet
  applet = create_applet_ua (manager, *uid);
 
-/* Example of sending data from an applet
+Example of sending data from an applet
 ('ACPIBattery3', 54547090L, 100, 50, 'scalable', 'None')*/
 return TRUE;
 }
