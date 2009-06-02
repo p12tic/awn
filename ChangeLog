@@ -1,3 +1,10 @@
+2009-06-02  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Use transparent background.
+	* src/awn-panel.c:
+	Autohide type 3 now uses clickthrough internally.
+
 2009-06-02  h4writer <hv1989@gmail.com>
 
 	* src/awn-background-flat.c:

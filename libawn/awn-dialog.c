@@ -39,6 +39,7 @@
 #include "awn-config-bridge.h"
 #include "awn-config-client.h"
 #include "awn-defines.h"
+#include "awn-utils.h"
 
 #include "gseal-transition.h"
 
@@ -956,6 +957,8 @@ awn_dialog_init (AwnDialog *dialog)
                     G_CALLBACK (_on_configure_event), NULL);
   g_signal_connect (dialog, "composited-changed",
                     G_CALLBACK (_on_composited_changed), NULL);
+
+  awn_utils_ensure_transparent_bg (GTK_WIDGET (dialog));
 
   /* alignment for dialog's border */
   priv->align = gtk_alignment_new (0.5, 0.5, 1, 1);
