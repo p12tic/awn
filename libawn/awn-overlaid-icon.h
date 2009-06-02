@@ -59,45 +59,20 @@ struct _AwnOverlaidIconClass
   AwnThemedIconClass parent_class;
 };
 
-typedef struct
-{
-  AwnOverlayType  overlay_type;  
-  
-  union
-  {
-    gchar           * text;
-    gchar           * icon_name;
-    cairo_surface_t * srfc;
-  }data;
-
-  union
-  {
-    int dummy;
-  }cached_info;
-
-  AwnGravity  gravity;
-  AwnOverlayAlign align;
-
-  double      x_adj;
-  double      y_adj;
-  double      x_per;      /*size in % of x axis*/
-  double      y_per;      /*size in % of y axis*/
-
-  double      sizing;   /*FIXME probably should go into a union... not likely to apply to all overlay types*/  
-}AwnOverlay;
+typedef gpointer AwnOverlay;
 
 
 GType         awn_overlaid_icon_get_type           (void) G_GNUC_CONST;
 
 GtkWidget *   awn_overlaid_icon_new                (void);
 
-AwnOverlay *  awn_overlaid_icon_append_overlay     (AwnOverlaidIcon * icon,
+AwnOverlay   awn_overlaid_icon_append_overlay     (AwnOverlaidIcon * icon,
                                                     AwnOverlayType  type,
                                                     AwnGravity      grav,
                                                     gpointer        data);
-AwnOverlay *  awn_overlaid_icon_change_overlay_data (AwnOverlaidIcon * icon,
-                                                    AwnOverlay * overlay,
-                                                    gpointer * new_data);
+AwnOverlay   awn_overlaid_icon_change_overlay_data (AwnOverlaidIcon * icon,
+                                                    AwnOverlay overlay,
+                                                    gpointer new_data);
 
 
 G_END_DECLS
