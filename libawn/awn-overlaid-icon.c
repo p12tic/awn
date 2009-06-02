@@ -21,6 +21,7 @@
 #include <gio/gio.h>
 #include <cairo/cairo-xlib.h>
 #include <math.h>
+#include <awn-cairo-utils.h>
 
 #include "awn-overlaid-icon.h"
 
@@ -177,6 +178,11 @@ awn_overlaid_icon_render_text (cairo_t * cr,
                                AwnOverlayPriv* overlay)
 {
   AwnOverlaidIconPrivate *priv;
+  DesktopAgnosticColor * text_colour;
+
+  text_colour = desktop_agnostic_color_new(&GTK_WIDGET(icon)->style->fg[GTK_STATE_ACTIVE], G_MAXUSHORT);
+  awn_cairo_set_source_color (cr,text_colour);
+//  cairo_set_source_rgb (cr, 0.1, 0.6, 1.0);
   cairo_text_extents_t extents;
   priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
   cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
@@ -184,7 +190,7 @@ awn_overlaid_icon_render_text (cairo_t * cr,
   cairo_text_extents(cr, overlay->data.text, &extents);  
   awn_overlaid_icon_move_to (cr, overlay, width, height,extents.width,extents.height,MOVE_FLAGS_TEXT);
   cairo_show_text(cr, overlay->data.text);
-
+  g_object_unref (text_colour);  
 }
 
 static gboolean
