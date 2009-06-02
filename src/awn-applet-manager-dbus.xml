@@ -4,14 +4,12 @@
     <annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_ua"/>
   
     <!-- Methods -->
-    <method name="ListenUid">
-      <arg name="uid" type="s" direction="in" />
-      <arg name="path" type="s" direction="in" />
-    </method>
-
     <method name="add_applet">
-      <arg name="uid" type="s" direction="in" />
-      <arg name="path" type="s" direction="in" />
+      <arg name="name" type="s" direction="in" />
+      <arg name="uid" type="x" direction="in" />
+      <arg name="width" type="i" direction="in" />
+      <arg name="height" type="i" direction="in" />
+      <arg name="size_type" type="s" direction="in" />
     </method>
   </interface>
 </node>

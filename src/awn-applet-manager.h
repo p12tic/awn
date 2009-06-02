@@ -72,15 +72,14 @@ GtkWidget * awn_applet_manager_new_from_config   (AwnConfigClient *client);
 
 void        awn_applet_manager_refresh_applets  (AwnAppletManager *manager);
 
-gboolean    awn_ua_listen_uid                   (AwnAppletManager *manager,
-                                                 gchar     *uid,
-			                         gchar *path,
-                                                 GError   **error);
-
-gboolean    awn_ua_add_applet                   (AwnAppletManager *manager,
-                                                 gchar     *uid,
-			                         gchar *path,
-                                                 GError   **error);
+gboolean    awn_ua_add_applet 			(AwnAppletManager *manager,
+						gchar     *name,
+                         			gchar     *uid,
+			 			gint64		*xid,
+						gint	*width,
+						gint height,
+						gchar size_type,
+                         			GError   **error)
 
 G_END_DECLS
 

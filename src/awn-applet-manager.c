@@ -608,32 +608,25 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
 /*DBUS*/
 
 gboolean
-awn_ua_listen_uid (	AwnAppletManager *manager,
-                         gchar     *uid,
-			 gchar *path,
-                         GError   **error)
-{
- GtkWidget *applet;
-
- g_print ("Applet : %s : ", uid);
-
- /*applet = create_applet (manager, *path, *uid)*/
-
-return TRUE;
-}
-
-gboolean
 awn_ua_add_applet (	AwnAppletManager *manager,
+			gchar     *name,
                          gchar     *uid,
-			 gchar *path,
+			 gint64		*xid,
+			gint	*width,
+			gint height,
+			gchar size_type,
                          GError   **error)
 {
  GtkWidget *applet;
 
  g_print ("Applet : %s : ", uid);
 
- applet = create_applet (manager, *path, *uid);
 
+/*TODO Write a function who create the applet
+ applet = create_applet_ua (manager, *uid);
+
+/* Example of sending data from an applet
+('ACPIBattery3', 54547090L, 100, 50, 'scalable', 'None')*/
 return TRUE;
 }
 
