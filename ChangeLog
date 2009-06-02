@@ -1,3 +1,9 @@
+2009-06-02  h4writer <hv1989@gmail.com>
+
+	* src/awn-panel.c:
+	Fixed a bug with jaunty and awn not coming back out of hide properly.
+	Looks like jaunty doesn't listen to opacity changes when hidden.
+
 2009-06-02  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-dialog.c:

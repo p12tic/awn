@@ -728,8 +728,8 @@ alpha_blend_hide (gpointer data)
   {
     priv->hiding_timer_id = 0;
     priv->autohide_always_visible = FALSE; /* see the note in start function */
-    gtk_widget_hide (GTK_WIDGET (panel));
     gdk_window_set_opacity (win, 1.0);
+    gtk_widget_hide (GTK_WIDGET (panel));
     return FALSE;
   }
 
