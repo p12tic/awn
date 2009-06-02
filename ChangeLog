@@ -1,3 +1,21 @@
+2009-06-02  h4writer <hv1989@gmail.com>
+
+	* src/awn-panel.c:
+	Fixed a bug with jaunty and awn not coming back out of hide properly.
+	Looks like jaunty doesn't listen to opacity changes when hidden.
+
+2009-06-02  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Use transparent background.
+	* src/awn-panel.c:
+	Autohide type 3 now uses clickthrough internally.
+
+2009-06-02  h4writer <hv1989@gmail.com>
+
+	* src/awn-background-flat.c:
+	Fixed bug with position top or right and align 0 or 1.
+
 2009-06-02  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-dialog.c:

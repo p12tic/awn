@@ -97,6 +97,7 @@ struct _AwnPanelPrivate
 
   gboolean clickthrough;
   gint clickthrough_type;
+  gint last_clickthrough_type;
 };
 
 /* FIXME: this timeout should be configurable I guess */
@@ -727,8 +728,8 @@ alpha_blend_hide (gpointer data)
   {
     priv->hiding_timer_id = 0;
     priv->autohide_always_visible = FALSE; /* see the note in start function */
-    gtk_widget_hide (GTK_WIDGET (panel));
     gdk_window_set_opacity (win, 1.0);
+    gtk_widget_hide (GTK_WIDGET (panel));
     return FALSE;
   }
 
@@ -790,18 +791,19 @@ static void keep_below_end (AwnPanel *panel, gpointer data)
 /* Auto-hide transparentize method */
 static gboolean transparentize_start (AwnPanel *panel, gpointer data)
 {
-  GdkWindow *win;
-  win = gtk_widget_get_window (GTK_WIDGET (panel));
-  gdk_window_set_opacity (win, 0.4);
+  AwnPanelPrivate *priv = panel->priv;
 
-  return TRUE;
+  priv->last_clickthrough_type = priv->clickthrough_type;
+  awn_panel_set_clickthrough_type (panel, CLICKTHROUGH_ON_NOCTRL);
+
+  return FALSE;
 }
 
 static void transparentize_end (AwnPanel *panel, gpointer data)
 {
-  GdkWindow *win;
-  win = gtk_widget_get_window (GTK_WIDGET (panel));
-  gdk_window_set_opacity (win, 1.0);
+  AwnPanelPrivate *priv = panel->priv;
+
+  awn_panel_set_clickthrough_type (panel, priv->last_clickthrough_type);
 }
 
 /* Auto-hide internal implementation */
