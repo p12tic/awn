@@ -37,27 +37,6 @@ G_DEFINE_TYPE (AwnOverlaidIcon, awn_overlaid_icon, AWN_TYPE_THEMED_ICON)
    I guess I could turn these into objects and simplify this source file.
    At this time I think that is unecessary.  If it goes over 1000 SLOC then..maybe
    */
-typedef struct
-{
-  AwnOverlayType  overlay_type;  
-  
-  union
-  {
-    gchar           * text;
-    gchar           * icon_name;
-    cairo_surface_t * srfc;
-  }data;    
-  
-  union
-  {
-    int dummy;
-  }cached_info;
-
-  AwnGravity  gravity;
-  double      x_per;      /*size in % of x axis*/
-  double      y_per;      /*size in % of y axis*/
-  
-}AwnOverlay;
 
 struct _AwnOverlaidIconPrivate
 {
@@ -105,39 +84,59 @@ awn_overlaid_icon_move_to (cairo_t * cr,
                            guint flags)
 {
   gint yoffset = 0;
+  gdouble xoffset;
   if (flags & MOVE_FLAGS_TEXT) /*text rendered top left hand corner of the text is not where one would expect it to be */
   {
     yoffset = overlay_height / 2.0 + 2; /*Magic is bad FIXME*/
   }
+  switch (overlay->align)
+  {
+    case AWN_OVERLAY_ALIGN_CENTRE:
+      xoffset = 0;
+      break;
+    case AWN_OVERLAY_ALIGN_LEFT:
+      xoffset = overlay_width / 2.0;
+      break;
+    case AWN_OVERLAY_ALIGN_RIGHT:
+      xoffset = -1 * overlay_width / 2.0;      
+      break;
+    default:
+      g_assert_not_reached();
+  }
+  xoffset = xoffset + (overlay->x_adj * icon_width);
+  yoffset = yoffset + (overlay->y_adj * icon_height);
   switch (overlay->gravity)
   {
     case AWN_GRAVITY_CENTRE:
-      cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0, icon_height / 2.0 - overlay_height/2.0 + yoffset);  
+      cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0 + xoffset, icon_height / 2.0 - overlay_height/2.0 + yoffset);  
       break;
     case AWN_GRAVITY_N:
-      cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0, 1 + icon_height / 20 + yoffset);  
+      cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0 + xoffset, 1 + icon_height / 20 + yoffset);  
       break;      
     case AWN_GRAVITY_NE:
-      cairo_move_to (cr, 1 + icon_width /20, 1 + icon_height / 20 + yoffset);  
+      cairo_move_to (cr, 1 + icon_width /20+ xoffset, 1 + icon_height / 20 + yoffset);  
       break;
     case AWN_GRAVITY_E:
-      cairo_move_to (cr, 1 + icon_width /20, icon_height / 2.0 - overlay_height/2.0 + yoffset);
+      cairo_move_to (cr, 1 + icon_width /20+ xoffset, icon_height / 2.0 - overlay_height/2.0 + yoffset);
       break;      
     case AWN_GRAVITY_SE:
-      cairo_move_to (cr, 1 + icon_width /20, icon_height - overlay_height -1+ yoffset);      
+      cairo_move_to (cr, 1 + icon_width /20+ xoffset, icon_height - overlay_height -1+ yoffset);      
       break;
     case AWN_GRAVITY_S:
-      cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0, icon_height - overlay_height -1+ yoffset);
+      cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0+ xoffset, icon_height - overlay_height -1+ yoffset);
       break;
     case AWN_GRAVITY_SW:
-      cairo_move_to (cr, icon_width - 1 - overlay_width, icon_height - overlay_height -1+ yoffset);
+      cairo_move_to (cr, icon_width - 1 - overlay_width+ xoffset, icon_height - overlay_height -1+ yoffset);
       break;
     case AWN_GRAVITY_W:
-      cairo_move_to (cr, icon_width - 1 - overlay_width, icon_height / 2.0 - overlay_height/2.0 + yoffset);
+      cairo_move_to (cr, icon_width - 1 - overlay_width+ xoffset, icon_height / 2.0 - overlay_height/2.0 + yoffset);
       break;
     case AWN_GRAVITY_NW:
-      cairo_move_to (cr, icon_width - 1 - overlay_width, 1 + icon_height / 20 + yoffset);  
+      cairo_move_to (cr, icon_width - 1 - overlay_width+ xoffset, 1 + icon_height / 20 + yoffset);  
       break;
+    default:
+      g_assert_not_reached();
+      
   }
 
 }
@@ -172,22 +171,20 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
   GList * iter = NULL;
   
   AwnOverlaidIconPrivate *priv;
-
+  cairo_t * ctx;
+  AwnEffects * effects;
+  
   priv = AWN_OVERLAID_ICON_GET_PRIVATE (AWN_OVERLAID_ICON(widget));
   
-  AwnEffects * effects = awn_icon_get_effects (AWN_ICON(widget));
-  
+  effects = awn_icon_get_effects (AWN_ICON(widget));
   g_return_val_if_fail (effects,FALSE);
-  
-  cairo_t * ctx = awn_effects_cairo_create(effects);
-  
+  ctx = awn_effects_cairo_create(effects);
   g_return_val_if_fail (ctx,FALSE);
-  
   g_object_get (widget, 
                 "icon_height", &icon_height,
                 "icon_width", &icon_width,
                 NULL);      
-  for (iter = g_list_first (priv->overlays); iter; iter = g_list_next (priv->overlays))
+  for(iter=g_list_first (priv->overlays);iter;iter=g_list_next (priv->overlays))
   {
     AwnOverlay * overlay = iter->data;
     switch ( overlay->overlay_type)
@@ -202,15 +199,6 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
         g_assert_not_reached();
     }
   }
-//  g_debug ("height = %d, width = %d\n",icon_height,icon_width);
-  
-  cairo_set_source_rgba (ctx,0.5,0.5,0,0.6);
-  cairo_rectangle (ctx, 
-                   0, 
-                   icon_height*0.5,
-                   icon_width*0.5,
-                   icon_height*0.5);
-  cairo_fill (ctx);
   
   awn_effects_cairo_destroy (effects);
   return FALSE;
@@ -225,13 +213,7 @@ awn_overlaid_icon_init (AwnOverlaidIcon *icon)
   
   g_signal_connect_after (icon, "expose-event", G_CALLBACK(_awn_overlaid_icon_expose),NULL);
 
-  priv->overlays = NULL;  
-  
-  AwnOverlay * overlay = g_malloc0(sizeof(AwnOverlay));
-  
-  overlay->data.text = g_strdup ("Testing");
-  overlay->gravity = AWN_GRAVITY_S;
-  priv->overlays = g_list_append (priv->overlays,overlay);
+  priv->overlays = NULL;
 }
 
 GtkWidget *
@@ -239,7 +221,7 @@ awn_overlaid_icon_new (void)
 
 {
   GtkWidget *overlaid_icon = NULL;
-
+  
   overlaid_icon = g_object_new (AWN_TYPE_OVERLAID_ICON, 
                               NULL);
 
@@ -247,5 +229,55 @@ awn_overlaid_icon_new (void)
 }
 
 
+AwnOverlay *
+awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,AwnOverlayType  type,
+                                                      AwnGravity      grav,
+                                                      gpointer        data)
+{
+  AwnOverlaidIconPrivate *priv;
+  AwnOverlay * overlay;
+  
+  priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
+  overlay = g_malloc0(sizeof(AwnOverlay));
+  overlay->align = AWN_OVERLAY_ALIGN_RIGHT;
+  overlay->x_adj = 0.3;
+  overlay->y_adj = 0.0;
+  
+  switch (type)
+  {
+    case AWN_OVERLAY_TEXT:
+      overlay->data.text = g_strdup (data);
+      overlay->gravity = grav;     
+      break;
+    case AWN_OVERLAY_SURFACE:
+  
+    case AWN_OVERLAY_ICON:
+      
+    default:
+      g_assert_not_reached();
+  }
+  priv->overlays = g_list_append (priv->overlays,overlay);   
+  return overlay;
+}
 
+AwnOverlay *  awn_overlaid_icon_change_overlay_data (AwnOverlaidIcon * icon,
+                                                    AwnOverlay * overlay,
+                                                    gpointer * new_data)
+{
+  switch (overlay->overlay_type)
+  {
+    case AWN_OVERLAY_TEXT:
+      g_free (overlay->data.text);
+      overlay->data.text = g_strdup ((gchar*)new_data);
+      break;
+    case AWN_OVERLAY_SURFACE:
+  
+    case AWN_OVERLAY_ICON:
+      
+    default:
+      g_assert_not_reached();
+  }
+  
+  return overlay;
+}
 

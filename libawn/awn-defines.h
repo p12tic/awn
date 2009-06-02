@@ -76,4 +76,11 @@ typedef enum
   AWN_OVERLAY_SURFACE,
   AWN_OVERLAY_ICON
 }AwnOverlayType;
+
+typedef enum
+{
+  AWN_OVERLAY_ALIGN_CENTRE,
+  AWN_OVERLAY_ALIGN_LEFT,
+  AWN_OVERLAY_ALIGN_RIGHT
+}AwnOverlayAlign;
 #endif
