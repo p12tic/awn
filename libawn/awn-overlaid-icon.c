@@ -105,9 +105,9 @@ awn_overlaid_icon_move_to (cairo_t * cr,
                            guint flags)
 {
   gint yoffset = 0;
-  if (flags && MOVE_FLAGS_TEXT)
+  if (flags & MOVE_FLAGS_TEXT) /*text rendered top left hand corner of the text is not where one would expect it to be */
   {
-    yoffset = overlay_height / 2.0 + 2;
+    yoffset = overlay_height / 2.0 + 2; /*Magic is bad FIXME*/
   }
   switch (overlay->gravity)
   {
@@ -152,15 +152,10 @@ awn_overlaid_icon_render_text (cairo_t * cr,
 {
   AwnOverlaidIconPrivate *priv;
   cairo_text_extents_t extents;
-
   priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
-
   cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
-
   cairo_set_font_size(cr, 10);
-
-  cairo_text_extents(cr, overlay->data.text, &extents);
-  
+  cairo_text_extents(cr, overlay->data.text, &extents);  
   awn_overlaid_icon_move_to (cr, overlay, width, height,extents.width,extents.height,MOVE_FLAGS_TEXT);
   cairo_show_text(cr, overlay->data.text);
 
@@ -252,10 +247,5 @@ awn_overlaid_icon_new (void)
 }
 
 
-
-
-/*
- * Public functions
- */
 
 
