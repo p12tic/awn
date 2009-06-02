@@ -153,7 +153,7 @@ awn_overlaid_icon_render_text (cairo_t * cr,
   cairo_text_extents_t extents;
   priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
   cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
-  cairo_set_font_size(cr, 10);
+  cairo_set_font_size(cr, overlay->sizing * width / 48.0);
   cairo_text_extents(cr, overlay->data.text, &extents);  
   awn_overlaid_icon_move_to (cr, overlay, width, height,extents.width,extents.height,MOVE_FLAGS_TEXT);
   cairo_show_text(cr, overlay->data.text);
@@ -242,7 +242,7 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,AwnOverlayType  type,
   overlay->align = AWN_OVERLAY_ALIGN_RIGHT;
   overlay->x_adj = 0.3;
   overlay->y_adj = 0.0;
-  
+  overlay->sizing = AWN_FONT_SIZE_MEDIUM;
   switch (type)
   {
     case AWN_OVERLAY_TEXT:

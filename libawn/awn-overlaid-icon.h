@@ -68,8 +68,8 @@ typedef struct
     gchar           * text;
     gchar           * icon_name;
     cairo_surface_t * srfc;
-  }data;    
-  
+  }data;
+
   union
   {
     int dummy;
@@ -82,7 +82,8 @@ typedef struct
   double      y_adj;
   double      x_per;      /*size in % of x axis*/
   double      y_per;      /*size in % of y axis*/
-  
+
+  double      sizing;   /*FIXME probably should go into a union... not likely to apply to all overlay types*/  
 }AwnOverlay;
 
 
