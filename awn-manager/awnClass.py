@@ -195,8 +195,9 @@ class awnBzr:
 			directories = default locations of the local branches to update
 			progress = A widget of a progress bar to update.
 		'''
-		progressbar.pulse()
-		progressbar.show()
+		if progressbar is not None:
+			progressbar.pulse()
+			progressbar.show()
 
 		sources_list = self.list_from_sources_list()
 		sources_to_update = []
@@ -214,7 +215,8 @@ class awnBzr:
 			else:
 				print self.update_branch(os.path.join(directories , elem[1]))
 			counter = counter+1
-			progressbar.set_fraction(int(counter) / int(total))
+			if progressbar is not None:
+				progressbar.set_fraction(int(counter) / int(total))
 
 
 	
@@ -324,6 +326,7 @@ class awnBzr:
 				'licence_code':'',	# Licence for the code
 				'licence_icons':'',	# Licence for the icons
 				'icon':'',		# Icon for the type
+				'style':'',		# Style of the bar
 				# Applet specific
 				'exec':'',		# Execution path, for applet
 				'applet_type':'',	# Type of teh applet (C, Vala or Python)
@@ -336,7 +339,7 @@ class awnBzr:
 				'gtk_theme_mode':'',	
 				'corner_radius':'',	
 				'panel_angle':'',	
-				'curviness':'',		
+				'curviness':''			
 			}
 	
 		desktop_entry = DesktopEntry(file_path)
@@ -354,6 +357,8 @@ class awnBzr:
 			struct['orientation'] = [int(desktop_entry.get('X-AWN-ThemeOrientation')), defs.PANEL, defs.ORIENT]
 		if desktop_entry.get('X-AWN-ThemeSize') <> '':
 			struct['size'] = [int(desktop_entry.get('X-AWN-ThemeSize')), defs.PANEL, defs.SIZE]
+		if desktop_entry.get('X-AWN-Style') <> '':
+			struct['style'] = [int(desktop_entry.get('X-AWN-Style')), defs.PANEL, defs.STYLE]
 
 		return struct
 
@@ -368,11 +373,20 @@ class awnBzr:
 			struct = file_path
 		if struct['type'] == 'Theme':
 			#Read the settings
-			if not struct[parameter][0] == '':
-				if type(struct[parameter][0]) is int:
-					self.client.set_int(struct[parameter][1], struct[parameter][2], struct[parameter][0])
-				elif type(struct[parameter][0]) is float:
-					self.client.set_float(struct[parameter][1], struct[parameter][2], struct[parameter][0])
+			try:
+				if not struct[parameter][0] == '':
+					if type(struct[parameter][0]) is int:
+						self.client.set_int(struct[parameter][1], 
+									struct[parameter][2], 
+									struct[parameter][0])
+					elif type(struct[parameter][0]) is float:
+						self.client.set_float(struct[parameter][1], 
+									struct[parameter][2], 
+									struct[parameter][0])
+			except IndexError:
+				# The key is not in the desktop file, just skip it.
+				pass
+
 			#TODO more type settings
 		else: 
 			print "Error, the desktop file is not for a theme"
@@ -467,7 +481,7 @@ class awnBzr:
 				)
 
 		for i in list_icons:
-			if list_icons[1] is not None:
+			if i[1] is not None:
 				icon_final = i[1]
 				break
 		if icon_final is not None:
@@ -492,9 +506,9 @@ class awnBzr:
 				icon = None
 		elif type_icon is "pixmap":
 			for i in path:
-				if os.path.exists(str(i+name+extension)):
+				if os.path.exists(os.path.join(i,name+extension)):
 					try: 
-						icon = gdk.pixbuf_new_from_file_at_size(str(i+name+extension), 32, 32)
+						icon = gdk.pixbuf_new_from_file_at_size(os.path.join(i,name+extension), 32, 32)
 					except:
 						icon = None
 		return icon
@@ -962,6 +976,8 @@ class awnPreferences(awnBzr):
         '''Delete the autostart entry for the dock.'''
         os.remove(self.get_autostart_file_path())
 
+#TODO Factorize *_orientation and *_style
+
     def setup_orientation(self, group, key, dropdown):
         self.effects_dd = dropdown
         model = gtk.ListStore(str)
@@ -988,6 +1004,35 @@ class awnPreferences(awnBzr):
         self.load_orientation(entry['group'], entry['key'], dropdown)
 
     def orientation_changed(self, dropdown, groupkey):
+	group, key = groupkey
+	self.client.set_int(group, key, dropdown.get_active())
+
+    def setup_style(self, group, key, dropdown):
+        self.effects_dd = dropdown
+        model = gtk.ListStore(str)
+        model.append([_("None")])
+        model.append([_("Flat")])
+        model.append([_("3d")])
+        model.append([_("Curved")])
+        dropdown.set_model(model)
+        cell = gtk.CellRendererText()
+        dropdown.pack_start(cell)
+        dropdown.add_attribute(cell,'text',0)
+
+        self.load_style(group,key,dropdown)
+
+        dropdown.connect("changed", self.style_changed, (group, key))
+        #self.setup_effect_custom(group, key)
+        self.client.notify_add(group, key, self.reload_style, dropdown)
+
+    def load_style(self, group, key, dropdown):
+        style_settings = self.client.get_int(group, key)
+        dropdown.set_active(int(style_settings))
+
+    def reload_style(self, entry, dropdown):
+        self.load_style(entry['group'], entry['key'], dropdown)
+
+    def style_changed(self, dropdown, groupkey):
 	group, key = groupkey
 	self.client.set_int(group, key, dropdown.get_active())
 

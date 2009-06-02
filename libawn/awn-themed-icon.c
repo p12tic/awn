@@ -24,6 +24,8 @@
 
 #include "awn-themed-icon.h"
 
+#include "gseal-transition.h"
+
 G_DEFINE_TYPE (AwnThemedIcon, awn_themed_icon, AWN_TYPE_ICON)
 
 #define AWN_THEMED_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -710,7 +712,8 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   AwnThemedIconPrivate *priv;
   GError               *error = NULL;
   gboolean              success = FALSE;
-  gchar                *sdata;
+  gchar                *sdata = NULL;
+  gchar                *decoded = NULL;
   GdkPixbuf            *pixbuf = NULL;
   gchar               **extensions = NULL;
   GtkBuilder           *builder = NULL;
@@ -733,29 +736,26 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
 
   /* First check we have valid data */
   if (selection_data == NULL ||
-#ifdef GSEAL
-      gtk_selection_data_get_length (selection_data) == 0
-#else
-      selection_data->length == 0
-#endif
-      )
+      gtk_selection_data_get_length (selection_data) == 0)
   {
     goto drag_out;
   }
 
   /* We have a valid selection, so let's process it */
-#ifdef GSEAL
   sdata = (gchar*)gtk_selection_data_get_data (selection_data);
-#else
-  sdata = (gchar*)selection_data->data;
-#endif
   if (!sdata)
     goto drag_out;
 
-  sdata = g_strchomp (sdata);
-
+  decoded = sdata = g_uri_unescape_string (sdata,NULL);
+  if (!sdata)
+    goto drag_out;  
+  sdata = g_strchomp (sdata);  
+  if (!sdata)
+    goto drag_out;
   /* We only want the last dropped uri, and we want it in path form */
   sdata = g_strrstr (sdata, "file:///");
+  if (!sdata)
+    goto drag_out;                     
   sdata = sdata+7;
 
   /* Check if svg, yes there are better ways */
@@ -768,7 +768,6 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   {
     suffix = "png";
   }
- 
   /* Try and load the uri, to see if it's a pixbuf */
   pixbuf = gdk_pixbuf_new_from_file (sdata, NULL);
 
@@ -867,6 +866,8 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   g_strfreev (extensions);
 
 drag_out:
+
+  g_free (decoded);
 
   if (builder)
     g_object_unref (builder);

@@ -301,7 +301,7 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
           DesktopAgnosticColor *color;
           
           color = desktop_agnostic_color_new (&style->dark[GTK_STATE_ACTIVE],
-                                              0.4);
+                                              0.4 * G_MAXUSHORT);
           awn_cairo_set_source_color (cr, color);
           g_object_unref (color);
         }
@@ -311,7 +311,7 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
       awn_cairo_rounded_rect (cr, x-PADDING, y-PADDING,
                               priv->icon_width+(2*PADDING),
                               priv->icon_height+(2*PADDING),
-                              10.0, ROUND_ALL);
+                              priv->icon_width / 8.0, ROUND_ALL);
       cairo_fill (cr);
     }
     else

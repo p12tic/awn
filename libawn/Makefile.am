@@ -49,6 +49,7 @@ public_headers = \
 private_headers = \
 	awn-effects-ops-new.h \
 	awn-effects-ops-helpers.h \
+	gseal-transition.h \
 	$(NULL)
 
 source_h = $(public_headers) $(private_headers)

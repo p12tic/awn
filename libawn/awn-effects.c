@@ -34,6 +34,8 @@
 #include <stdlib.h>
 #include <cairo/cairo-xlib.h>
 
+#include "gseal-transition.h"
+
 #include "anims/awn-effects-shared.h"
 
 #include "anims/awn-effect-bounce.h"
@@ -507,7 +509,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
   awn_effects_register_effect_bundle(klass,
     bounce_squish_opening_effect,
     bounce_squish_closing_effect,
-    bounce_squish_hover_effect,
+    /*bounce_squish_hover_effect,*/
+    bounce_squish_effect,
     bounce_squish_effect,
     bounce_squish_attention_effect
   );
@@ -1110,11 +1113,7 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
   AwnEffectsPrivate *priv = fx->priv;
   cairo_t *cr;
 
-#ifdef GSEAL
   cr = gdk_cairo_create (gtk_widget_get_window (fx->widget));
-#else
-  cr = gdk_cairo_create (fx->widget->window);
-#endif
   g_return_val_if_fail(cairo_status(cr) == CAIRO_STATUS_SUCCESS, NULL);
   fx->window_ctx = cr;
 

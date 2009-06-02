@@ -1,3 +1,196 @@
+2009-06-02  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Use transparent background.
+	* src/awn-panel.c:
+	Autohide type 3 now uses clickthrough internally.
+
+2009-06-02  h4writer <hv1989@gmail.com>
+
+	* src/awn-background-flat.c:
+	Fixed bug with position top or right and align 0 or 1.
+
+2009-06-02  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Set AwnIcon to active state when the dialog is activated (if we're
+	connected to AppletSimple)
+
+2009-06-01  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background.c:
+	Fixed couple of leaks in AwnBackground.
+	* libawn/awn-effects.c:
+	Reverted changes to squish hover animation.
+	* libawn/awn-icon.c:
+	Effects are now set back after composited->non->composited switch.
+	* libawn/awn-dialog.c:
+	Fixed painting of the title background on non-bottom orients.
+
+2009-05-31  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Fix dialog positioning - still not perfect, but getting there...
+
+2009-05-31  Michal Hruby <michal.mhr@gmail.com>
+
+	* TODO:
+	* libawn/awn-dialog.c:
+	Fix issue with titlebar spacing.
+
+2009-05-30  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-dialog.c:
+	Few more changes to dialog drawing.
+
+2009-05-29  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-tooltip.c:
+	Changed the way rounded rectangle is painted.
+	Added function which draws shadow around a (rounded) rectangle to 
+	cairo utils.
+	Added shadow to AwnDialog.
+
+2009-05-27  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-drag-indicator.h:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-manager.c:
+	- Renamed some function
+	- Removed signals of task-drag-indicator that are about dragging the indicator itself.
+	  It can't be dragged, so they aren't needed.
+
+2009-05-27  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-manager.c:
+	Altered the way DnD works. Should also be more reliable.
+
+2009-05-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	reviewed by: Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-config-client-gconf.c:
+	Fix potential GError-related crashers.
+
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* INSTALL:
+	Update.
+
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-utils.h:
+	Fix doc comments.
+
+2009-05-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/Makefile.am:
+	Make sure that the gseal header is included properly.
+
+2009-05-19  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	* libawn/awn-dialog.h:
+	Make the padding configurable. (step towards fully transparent dialog)
+
+2009-05-15  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-effects-ops-new.c:
+	Fixed the active rectangle after switch to desktop-agnostic color.
+
+2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* src/awn-background.c:
+	Fix the default values of the color properties to use the
+	libdesktop-agnostic syntax.
+
+2009-05-08  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnClass.py:
+	* awn-manager/awnManagerMini.py.in:
+	Fix applet icons searching.
+	Connect the position chooser.
+	Put the real icon for awn-manager-mini.
+	Fix a crash for empty keys in the desktop file.
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* debian/changelog:
+	Update the version to 0.3.9
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	Manage the style key in desktop files.
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	Reorganize the icons and menus. 
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnDefs.py.in:
+	* awn-manager/awnManagerMini.py.in:
+	Add all missings options.
+	Fix some spin buttons.
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	Make progress bar optionnel when the sources.list is updated.
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnManagerMini.py.in:
+	Add Style Combobox.
+
+2009-05-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	Change the icons position.
+
+	* awn-manager/awnManagerMini.py.in:
+	Make the the use of sources.list mandatory, as it deal also with local directories.
+
+2009-04-27  Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+
+	Decode the icon names received through drag and drop.  Spaces are now ok.  Something odd (unrelated to this issue) is still happening with drag and drop though.
+
+2009-04-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon.c:
+	* libawn/Makefile.am:
+	* libawn/awn-applet.c:
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-tooltip.c:
+	* libawn/awn-utils.c:
+	* libawn/gseal-transition.h:
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	Make the GSEAL transition code saner by using an aliases header.
+
+2009-04-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-cairo-utils.c:
+	Fix variable shadowing errors.
+
 2009-04-20  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	reviewed by: R. Cryderman <rcryderman@gmail.com>

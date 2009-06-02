@@ -52,6 +52,12 @@ awn_cairo_rounded_rect (cairo_t *cr,
                         double width, double height,
                         double radius, AwnCairoRoundCorners state);
 
+void
+awn_cairo_rounded_rect_shadow(cairo_t *cr, double rx0, double ry0,
+                              double width, double height,
+                              double radius, AwnCairoRoundCorners state,
+                              double shadow_radius, double shadow_alpha);
+
 #define AWN_RGBA_SCALE_FACTOR (double)(G_MAXUSHORT)
 
 void
