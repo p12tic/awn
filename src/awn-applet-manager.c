@@ -629,6 +629,20 @@ Example of sending data from an applet
 return TRUE;
 }
 
+
+gboolean
+awn_ua_get_all_server_flags (	AwnAppletManager *manager,
+				GHashTable *hash,
+				gchar     *name,
+				GError   **error)
+{
+/* Furtur function to return capability of the server
+For now, it return nothing*/
+hash = g_hash_table_new (NULL, NULL);
+return TRUE;
+
+}
+
 /*TODO
 
 	@action(IFACE)

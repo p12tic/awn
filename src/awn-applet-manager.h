@@ -80,6 +80,11 @@ gboolean    awn_ua_add_applet 			(AwnAppletManager *manager,
 						gchar size_type,
                          			GError   **error);
 
+gboolean    awn_ua_get_all_server_flags 	(AwnAppletManager *manager,
+						GHashTable *hash,
+						gchar     *name,
+						GError   **error);
+
 G_END_DECLS
 
 

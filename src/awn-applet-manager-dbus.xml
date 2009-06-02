@@ -11,5 +11,11 @@
       <arg name="height" type="i" direction="in" />
       <arg name="size_type" type="s" direction="in" />
     </method>
+
+    <method name="get_all_server_flags">
+      <arg name="name" type="s" direction="in" />
+      <arg name="hash" type="a{ss}" direction="out" />
+    </method>
+
   </interface>
 </node>
