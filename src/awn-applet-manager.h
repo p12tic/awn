@@ -74,7 +74,6 @@ void        awn_applet_manager_refresh_applets  (AwnAppletManager *manager);
 
 gboolean    awn_ua_add_applet 			(AwnAppletManager *manager,
 						gchar     *name,
-                         			gchar     *uid,
 			 			gint64		*xid,
 						gint	*width,
 						gint height,

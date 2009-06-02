@@ -610,7 +610,6 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
 gboolean
 awn_ua_add_applet (	AwnAppletManager *manager,
 			gchar     *name,
-                         gchar     *uid,
 			 gint64		*xid,
 			gint	*width,
 			gint height,
@@ -619,7 +618,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
 {
  GtkWidget *applet;
 
- g_print ("Applet : %s : ", uid);
+ g_print ("Applet : %lu : ", xid);
 
 
 /*TODO Write a function who create the applet
@@ -633,7 +632,7 @@ return TRUE;
 /*TODO
 
 	@action(IFACE)
-	def add_applet (self, id, plug_id, width, height, size_type, desktop_path):
+	def add_applet (self, id, plug_id, width, height, size_type):
 		"""
 		Add an applet.
 		
