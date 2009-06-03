@@ -1,5 +1,10 @@
 2009-06-04  Julien Lavergne  <julien.lavergne@gmail.com>
 
+	* themes/awn-default.desktop.in.in:
+	Add all the new keys with default values.
+
+2009-06-04  Julien Lavergne  <julien.lavergne@gmail.com>
+
 	* awn-manager/awnClass.py:
 	Add more item to the desktop API to read more items from themes
 	Stock the path in the model for treeview
