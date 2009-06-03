@@ -23,6 +23,7 @@
 #include <gtk/gtk.h>
 
 #include "awn-themed-icon.h"
+#include "awn-overlay.h"
 
 G_BEGIN_DECLS
 
@@ -59,19 +60,16 @@ struct _AwnOverlaidIconClass
   AwnThemedIconClass parent_class;
 };
 
-typedef gpointer AwnOverlay;
-
-
 GType         awn_overlaid_icon_get_type           (void) G_GNUC_CONST;
 
 GtkWidget *   awn_overlaid_icon_new                (void);
 
-AwnOverlay   awn_overlaid_icon_append_overlay     (AwnOverlaidIcon * icon,
+AwnOverlay*   awn_overlaid_icon_append_overlay     (AwnOverlaidIcon * icon,
                                                     AwnOverlayType  type,
                                                     AwnGravity      grav,
                                                     gpointer        data);
-AwnOverlay   awn_overlaid_icon_change_overlay_data (AwnOverlaidIcon * icon,
-                                                    AwnOverlay overlay,
+AwnOverlay*   awn_overlaid_icon_change_overlay_data (AwnOverlaidIcon * icon,
+                                                    AwnOverlay *overlay,
                                                     gpointer new_data);
 
 

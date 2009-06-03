@@ -34,66 +34,6 @@ G_DEFINE_TYPE (AwnOverlaidIcon, awn_overlaid_icon, AWN_TYPE_THEMED_ICON)
 #define MOVE_FLAGS_NONE 0x00
 #define MOVE_FLAGS_TEXT 0x01
 
-/*
-   I guess I could turn these into objects and simplify this source file.
-   At this time I think that is unecessary.  If it goes over 1000 SLOC then..maybe
-   */
-
-typedef struct
-{
-  gdouble sizing;  
-}TextOverlay ;
-    
-typedef struct
-{
-  GdkPixbuf * themed_pixbuf;
-}IconOverlay;
-
-typedef struct
-{
-  gint dummy;
-}SurfaceOverlay;
-
-typedef struct
-{
-  gint dummy;
-}PixbufOverlay;
-
-
-typedef struct
-{
-  AwnOverlayType  overlay_type;  
-  
-  union
-  {
-    gchar           * text;
-    gchar           * icon_name;
-    cairo_surface_t * srfc;
-    GdkPixbuf       * pixbuf;
-  }data;
-
-  union
-  {
-    int dummy;
-  }cached_info;
-
-  AwnGravity  gravity;
-  AwnOverlayAlign align;
-
-  double      x_adj;
-  double      y_adj;
-  double      x_per;      /*size in % of x axis*/
-  double      y_per;      /*size in % of y axis*/
-
-  union
-  {
-    TextOverlay text_data;
-    IconOverlay icon_data;
-    SurfaceOverlay surface_data;
-    PixbufOverlay pixbuf_data;
-  }type_specific;  /*overlay type specific data */
-}AwnOverlayPriv;
-
 
 struct _AwnOverlaidIconPrivate
 {
@@ -133,7 +73,7 @@ awn_overlaid_icon_class_init (AwnOverlaidIconClass *klass)
 
 static void
 awn_overlaid_icon_move_to (cairo_t * cr,
-                           AwnOverlayPriv* overlay,
+                           AwnOverlay* overlay,
                            gint   icon_width,
                            gint   icon_height,
                            gint   overlay_width,
@@ -204,7 +144,7 @@ awn_overlaid_icon_render_text (cairo_t * cr,
                                AwnOverlaidIcon * icon, 
                                gint width,
                                gint height,
-                               AwnOverlayPriv* overlay)
+                               AwnOverlay* overlay)
 {
   AwnOverlaidIconPrivate *priv;
   DesktopAgnosticColor * text_colour; /*FIXME*/
@@ -226,7 +166,7 @@ awn_overlaid_icon_render_surface (cairo_t * cr,
                                AwnOverlaidIcon * icon, 
                                gint width,
                                gint height,
-                               AwnOverlayPriv* overlay)
+                               AwnOverlay* overlay)
 {
   
 }
@@ -236,7 +176,7 @@ awn_overlaid_icon_render_pixbuf (cairo_t * cr,
                                AwnOverlaidIcon * icon, 
                                gint width,
                                gint height,
-                               AwnOverlayPriv* overlay)
+                               AwnOverlay* overlay)
 {
   
 }
@@ -246,7 +186,7 @@ awn_overlaid_icon_render_icon (cairo_t * cr,
                                AwnOverlaidIcon * icon, 
                                gint width,
                                gint height,
-                               AwnOverlayPriv* overlay)
+                               AwnOverlay* overlay)
 {
   
 }
@@ -277,7 +217,7 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
                 NULL);      
   for(iter=g_list_first (priv->overlays);iter;iter=g_list_next (priv->overlays))
   {
-    AwnOverlayPriv* overlay = iter->data;
+    AwnOverlay* overlay = iter->data;
     switch ( overlay->overlay_type)
     {
       case  AWN_OVERLAY_TEXT:
@@ -338,16 +278,16 @@ awn_overlaid_icon_new (void)
 }
 
 
-AwnOverlay
+AwnOverlay *
 awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,AwnOverlayType  type,
                                                       AwnGravity      grav,
                                                       gpointer        data)
 {
   AwnOverlaidIconPrivate *priv;
-  AwnOverlayPriv* overlay;
+  AwnOverlay* overlay;
   
   priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
-  overlay = g_malloc0(sizeof(AwnOverlayPriv));
+  overlay = g_new0(AwnOverlay,1);
   overlay->align = AWN_OVERLAY_ALIGN_RIGHT;
   overlay->x_adj = 0.3;
   overlay->y_adj = 0.0;
@@ -377,11 +317,10 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,AwnOverlayType  type,
   return overlay;
 }
 
-AwnOverlay   awn_overlaid_icon_change_overlay_data (AwnOverlaidIcon * icon,
-                                                    AwnOverlay  _overlay,
+AwnOverlay *  awn_overlaid_icon_change_overlay_data (AwnOverlaidIcon * icon,
+                                                    AwnOverlay  *overlay,
                                                     gpointer new_data)
 {
-  AwnOverlayPriv * overlay = _overlay;
   switch (overlay->overlay_type)
   {
     case AWN_OVERLAY_TEXT:
