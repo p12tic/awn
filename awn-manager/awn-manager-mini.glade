@@ -1596,7 +1596,9 @@ the theme ?</property>
     </child>
   </widget>
   <widget class="GtkWindow" id="choose_theme">
-    <property name="modal">True</property>
+    <property name="window_position">mouse</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
     <child>
       <widget class="GtkVBox" id="vbox9">
         <property name="visible">True</property>
@@ -1641,12 +1643,36 @@ the theme ?</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkButton" id="apply_theme">
-            <property name="label" translatable="yes">gtk-apply</property>
+          <widget class="GtkHButtonBox" id="hbuttonbox1">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_stock">True</property>
+            <child>
+              <widget class="GtkButton" id="apply_theme">
+                <property name="label" translatable="yes">gtk-apply</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkButton" id="exit_theme_select">
+                <property name="label" translatable="yes">gtk-quit</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="expand">False</property>
