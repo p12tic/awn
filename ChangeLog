@@ -1,3 +1,10 @@
+2009-06-04  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	Add more item to the desktop API to read more items from themes
+	Stock the path in the model for treeview
+	
+
 2009-06-03  Michal Hruby <michal.mhr@gmail.com>
 
 	* data/awn.schema-ini.in:
