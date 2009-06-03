@@ -1455,6 +1455,8 @@ on_geometry_changed   (AwnMonitor *monitor,
   g_return_if_fail (AWN_IS_PANEL (panel));
   priv = AWN_PANEL (panel)->priv;
 
+  awn_panel_reset_autohide (panel);
+
   position_window (panel);
 }
 
