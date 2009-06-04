@@ -48,50 +48,11 @@ G_BEGIN_DECLS
 
 #define AWN_OVERLAY_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_OVERLAY, AwnOverlayClass))
-typedef struct
-{
-  gdouble sizing;  
-}TextOverlay ;
-    
-typedef struct
-{
-  GdkPixbuf * themed_pixbuf;
-}IconOverlay;
 
-typedef struct
-{
-  gint dummy;
-}SurfaceOverlay;
-
-typedef struct
-{
-  gint dummy;
-}PixbufOverlay;
 
 typedef struct {
   GObject parent;
   AwnOverlayType  overlay_type;  
-  
-  union
-  {
-    gchar           * text;
-    gchar           * icon_name;
-    cairo_surface_t * srfc;
-    GdkPixbuf       * pixbuf;
-  }data;
-
-  union
-  {
-    int dummy;
-  }cached_info;    
-
-  union
-  {
-    TextOverlay text_data;
-    IconOverlay icon_data;
-    SurfaceOverlay surface_data;
-    PixbufOverlay pixbuf_data;
-  }type_specific;  
 } AwnOverlay;
 
 typedef struct {
@@ -115,7 +76,7 @@ void awn_overlay_render_overlay    (AwnOverlay* overlay,
                                         gint height);
 
 
-GdkGravity awn_overlay_get_gravity (AwnOverlay * overlay);
+GdkGravity  awn_overlay_get_gravity (AwnOverlay * overlay);
 
 void awn_overlay_move_to (cairo_t * cr,
                            AwnOverlay* overlay,

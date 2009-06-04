@@ -64,14 +64,8 @@ GType         awn_overlaid_icon_get_type           (void) G_GNUC_CONST;
 
 GtkWidget *   awn_overlaid_icon_new                (void);
 
-AwnOverlay*   awn_overlaid_icon_append_overlay     (AwnOverlaidIcon * icon,
-                                                    AwnOverlayType  type,
-                                                    GdkGravity      grav,
-                                                    gpointer        data);
-AwnOverlay*   awn_overlaid_icon_change_overlay_data (AwnOverlaidIcon * icon,
-                                                    AwnOverlay *overlay,
-                                                    gpointer new_data);
-
+void   awn_overlaid_icon_append_overlay     (AwnOverlaidIcon * icon,
+                                                    AwnOverlay *overlay);
 
 G_END_DECLS
 

@@ -102,7 +102,7 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
   {
     AwnOverlay* overlay = iter->data;
 
-    awn_overlay_render_overlay (overlay,AWN_ICON(widget),ctx,icon_width,icon_height);
+    awn_overlay_render_overlay (overlay,AWN_THEMED_ICON(widget),ctx,icon_width,icon_height);
   }
   
   awn_effects_cairo_destroy (effects);
@@ -134,11 +134,17 @@ awn_overlaid_icon_new (void)
 }
 
 
-AwnOverlay *
-awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,AwnOverlayType  type,
-                                                      GdkGravity      grav,
-                                                      gpointer        data)
+void 
+awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,
+                                  AwnOverlay * overlay
+                                  )
 {
+  AwnOverlaidIconPrivate *priv;
+
+  priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
+  priv->overlays = g_list_append (priv->overlays,overlay);   
+  
+  /*
   AwnOverlaidIconPrivate *priv;
   AwnOverlay* overlay;
   guint align;
@@ -177,35 +183,8 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,AwnOverlayType  type,
       g_assert_not_reached();
   }
   priv->overlays = g_list_append (priv->overlays,overlay);   
-  return overlay;
+*/   
 }
 
-AwnOverlay *  awn_overlaid_icon_change_overlay_data (AwnOverlaidIcon * icon,
-                                                    AwnOverlay  *overlay,
-                                                    gpointer new_data)
-{
-  switch (overlay->overlay_type)
-  {
-    case AWN_OVERLAY_TEXT:
-      g_free (overlay->data.text);
-      overlay->data.text = g_strdup ((gchar*)new_data);
-      break;
-    case AWN_OVERLAY_SURFACE:
-      cairo_surface_destroy (overlay->data.srfc);
-      overlay->data.srfc = new_data;
-      cairo_surface_reference (overlay->data.srfc);
-      break;      
-    case AWN_OVERLAY_PIXBUF:  
-      g_object_unref (overlay->data.pixbuf);
-      overlay->data.pixbuf = new_data;
-      g_object_ref (overlay->data.pixbuf);
-      break;      
-    case AWN_OVERLAY_ICON:
-      overlay->data.icon_name = g_strdup (new_data);
-      break;      
-    default:
-      g_assert_not_reached();
-  }
-  return overlay;
-}
+
 
