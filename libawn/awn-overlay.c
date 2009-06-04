@@ -194,15 +194,14 @@ awn_overlay_get_gravity (AwnOverlay * overlay)
   return priv->gravity;
 }  
 
-__attribute__((noreturn))  static void 
+static void 
 _awn_overlay_render_overlay (AwnOverlay* overlay,
                                         AwnThemedIcon * icon,
                                         cairo_t * cr,                                 
                                         gint width,
                                         gint height)
 {
-  
-  g_assert_not_reached ();
+  g_warning ("Overlay has not overriden render_overlay member in base (AwnOverlay) \n");
 }
 
 void awn_overlay_render_overlay (AwnOverlay* overlay,
