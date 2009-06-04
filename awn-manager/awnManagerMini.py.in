@@ -328,9 +328,6 @@ class awnManagerMini(awnManager):
 	self.prefLauncher = awnLauncherMini(self.wTree)
 	self.appletManager = awnApplet(self.wTree)
 
-        refresh = self.wTree.get_widget("buttonRefresh")
-        refresh.connect("clicked", self.refresh)
-
         about = self.wTree.get_widget("buttonAbout")
         about.connect("clicked", self.about)
 
