@@ -286,7 +286,7 @@ on_screen_size_changed (GdkScreen *screen, AwnMonitor *monitor)
   monitor->width = gdk_screen_get_width (screen);
   monitor->height = gdk_screen_get_height (screen);
 
-  g_signal_emit (object, _monitor_signals[GEOMETRY_CHANGED], 0);
+  g_signal_emit (monitor, _monitor_signals[GEOMETRY_CHANGED], 0);
 }
 
 static void 
@@ -310,10 +310,10 @@ awn_monitor_set_force_monitor (AwnMonitor *monitor,
     priv->tag = g_signal_connect (priv->screen, "size-changed",
                                   G_CALLBACK (on_screen_size_changed), monitor);
 
-    monitor->width = gdk_screen_get_width (screen);
-    monitor->height = gdk_screen_get_height (screen);
+    monitor->width = gdk_screen_get_width (priv->screen);
+    monitor->height = gdk_screen_get_height (priv->screen);
 
-    g_signal_emit (object, _monitor_signals[GEOMETRY_CHANGED], 0);
+    g_signal_emit (monitor, _monitor_signals[GEOMETRY_CHANGED], 0);
   }
 }
 
