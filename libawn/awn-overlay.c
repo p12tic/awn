@@ -53,6 +53,8 @@ enum
   PROP_Y_ADJUST
 };
 
+static void
+_awn_overlay_render_overlay (AwnOverlay * overlay);
 
 static void
 awn_overlay_get_property (GObject *object, guint property_id,
@@ -62,7 +64,7 @@ awn_overlay_get_property (GObject *object, guint property_id,
   priv = AWN_OVERLAY_GET_PRIVATE (object);
   switch (property_id) {
     case PROP_GRAVITY:
-        g_value_set_int (value,priv->gravity);
+        g_value_set_enum (value,priv->gravity);
         break;
     case PROP_ALIGN:
         g_value_set_int (value,priv->align);
@@ -87,7 +89,7 @@ awn_overlay_set_property (GObject *object, guint property_id,
   switch (property_id) 
   {
     case PROP_GRAVITY:
-      priv->gravity = g_value_get_int (value);
+      priv->gravity = g_value_get_enum (value);
       break;
     case PROP_ALIGN:
       priv->align = g_value_get_int (value);
@@ -126,11 +128,12 @@ awn_overlay_class_init (AwnOverlayClass *klass)
   object_class->dispose = awn_overlay_dispose;
   object_class->finalize = awn_overlay_finalize;
   
-  pspec = g_param_spec_int ("gravity",
+  klass->render_overlay = _awn_overlay_render_overlay;  
+  
+  pspec = g_param_spec_enum ("gravity",
                                "Gravity",
                                "Gravity",
-                               GDK_GRAVITY_NORTH_WEST,
-                               GDK_GRAVITY_SOUTH_EAST,
+                               GDK_TYPE_GRAVITY,
                                GDK_GRAVITY_CENTER,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_GRAVITY, pspec);  
@@ -184,3 +187,10 @@ awn_overlay_get_gravity (AwnOverlay * overlay)
   priv = AWN_OVERLAY_GET_PRIVATE (overlay);
   return priv->gravity;
 }  
+
+static void 
+_awn_overlay_render_overlay (AwnOverlay * overlay)
+{
+  
+  g_assert_not_reached ();
+}
