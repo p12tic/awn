@@ -194,7 +194,7 @@ awn_overlay_get_gravity (AwnOverlay * overlay)
   return priv->gravity;
 }  
 
-static void 
+__attribute__((noreturn))  static void 
 _awn_overlay_render_overlay (AwnOverlay* overlay,
                                         AwnThemedIcon * icon,
                                         cairo_t * cr,                                 

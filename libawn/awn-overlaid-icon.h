@@ -60,12 +60,15 @@ struct _AwnOverlaidIconClass
   AwnThemedIconClass parent_class;
 };
 
-GType         awn_overlaid_icon_get_type           (void) G_GNUC_CONST;
+GType         awn_overlaid_icon_get_type            (void) G_GNUC_CONST;
 
-GtkWidget *   awn_overlaid_icon_new                (void);
+GtkWidget *   awn_overlaid_icon_new                 (void);
 
-void   awn_overlaid_icon_append_overlay     (AwnOverlaidIcon * icon,
+void          awn_overlaid_icon_append_overlay      (AwnOverlaidIcon * icon,
                                                     AwnOverlay *overlay);
+
+void          awn_overlaid_icon_remove_overlay      (AwnOverlaidIcon * icon,
+                                                    AwnOverlay * overlay);
 
 G_END_DECLS
 

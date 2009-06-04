@@ -133,5 +133,20 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,
   priv->overlays = g_list_append (priv->overlays,overlay);   
 }
 
+void 
+awn_overlaid_icon_remove_overlay (AwnOverlaidIcon * icon,
+                                  AwnOverlay * overlay
+                                  )
+{
+  AwnOverlaidIconPrivate *priv;
+  priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
+
+  priv->overlays = g_list_remove (priv->overlays,overlay);     
+  /* if it's the last overlay _then_ we disconnect the signal*/
+  if (!priv->overlays)
+  {
+    g_signal_handler_disconnect (icon,priv->sig_id);
+  }
+}
 
 
