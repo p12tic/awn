@@ -117,7 +117,6 @@ awn_overlaid_icon_init (AwnOverlaidIcon *icon)
   priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
   
   g_signal_connect_after (icon, "expose-event", G_CALLBACK(_awn_overlaid_icon_expose),NULL);
-
   priv->overlays = NULL;
 }
 
@@ -129,10 +128,8 @@ awn_overlaid_icon_new (void)
   
   overlaid_icon = g_object_new (AWN_TYPE_OVERLAID_ICON, 
                               NULL);
-
   return overlaid_icon;
 }
-
 
 void 
 awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,
@@ -144,46 +141,6 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,
   priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
   priv->overlays = g_list_append (priv->overlays,overlay);   
   
-  /*
-  AwnOverlaidIconPrivate *priv;
-  AwnOverlay* overlay;
-  guint align;
-  GdkGravity gravity;
-  gint x_adj;
-  gint y_adj;
-
-  priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
-  overlay = AWN_OVERLAY(awn_overlay_text_new());
-
-  g_object_set (overlay,
-               "align", AWN_OVERLAY_ALIGN_RIGHT,
-               "gravity", grav,
-                "x_adj", 0.3,
-                "y_adj", 0.0,
-               NULL);
-  
-  switch (type)
-  {
-    case AWN_OVERLAY_TEXT:
-      overlay->type_specific.text_data.sizing = AWN_FONT_SIZE_MEDIUM;
-      overlay->data.text = g_strdup (data);
-      break;
-    case AWN_OVERLAY_SURFACE:
-      overlay->data.srfc = data;
-      cairo_surface_reference (overlay->data.srfc);
-      break;
-    case AWN_OVERLAY_PIXBUF:  
-      overlay->data.pixbuf = data;
-      g_object_ref (overlay->data.pixbuf);
-      break;
-    case AWN_OVERLAY_ICON:
-      overlay->data.icon_name = g_strdup (data);
-      break;
-    default:
-      g_assert_not_reached();
-  }
-  priv->overlays = g_list_append (priv->overlays,overlay);   
-*/   
 }
 
 
