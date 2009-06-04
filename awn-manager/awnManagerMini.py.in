@@ -88,13 +88,18 @@ class awnPreferencesMini(awnPreferences):
 	self.add_repo_plus.connect("clicked", self.add_repo_callback)
 
 	quit_repo = self.wTree.get_widget("repo_quit")
-	quit_repo.connect("clicked", self.quit_repo_window)
+	quit_repo.connect("clicked", lambda data=None: self.top_window_repo.hide_all())
 
 	self.top_window_repo = self.wTree.get_widget("add_repository")
 	self.view_repo = self.wTree.get_widget("list_repos_view")
 
+	exit_theme_button = self.wTree.get_widget("exit_theme_select")
+	exit_theme_button.connect("clicked", lambda data=None:  self.load_themes_win.hide_all())
+
 	self.load_themes_win = self.wTree.get_widget("choose_theme")
 	self.view_themes_scrol = self.wTree.get_widget("list_themes_scrol")
+
+
 	self.choose_themes_button = self.wTree.get_widget("choose_theme_button")
 	self.choose_themes_button.connect("clicked", self.choose_theme_win_callback)
 	self.apply_theme = self.wTree.get_widget("apply_theme")
@@ -197,8 +202,6 @@ class awnPreferencesMini(awnPreferences):
 		self.view_repo.pack_start(hbox, expand=False, fill=False)
 	self.view_repo.show_all()
 
-    def quit_repo_window(self, data=None):
-	self.top_window_repo.hide_all()
 
     def remove_repo_callback(self, elem, data=None):
 	parent = elem.get_parent()

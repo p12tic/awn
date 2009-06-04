@@ -45,7 +45,7 @@ description = Alignment of a non-expanded panel on the monitor edge.
 [panel/autohide]
 type = int
 default = 0
-description = Auto hides the dock when the cursor is not on the dock.
+description = Auto hides the dock when the cursor is not on the dock. (shouldn't be used together with panel_mode) none=0, keep below=1, fade out=2, see through=3
 [panel/style]
 type = int
 default = 1

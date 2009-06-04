@@ -339,9 +339,19 @@ class awnBzr:
 				'gtk_theme_mode':'',	
 				'corner_radius':'',	
 				'panel_angle':'',	
-				'curviness':''			
+				'curviness':''	,
+				'curves_symmetry':'',
+				'gstep1':'',	
+				'gstep2':'',	
+				'ghistep1':'',
+				'ghistep2':'',
+				'border':'',
+				'hilight':'',
+				'corner_radius':'',
+				'panel_angle':'',
 			}
-	
+
+
 		desktop_entry = DesktopEntry(file_path)
 		struct['type'] = desktop_entry.get('X-AWN-Type')
 		struct['location'] = desktop_entry.get('X-AWN-Location')
@@ -351,14 +361,62 @@ class awnBzr:
 		struct['exec'] = desktop_entry.get('Exec')
 		struct['applet_type'] = desktop_entry.get('X-AWN-AppletType')
 		struct['applet_category'] = desktop_entry.get('X-AWN-AppletCategory')
+
 		if desktop_entry.get('X-AWN-ThemeEffects') <> '':
-			struct['effects'] = [int(desktop_entry.get('X-AWN-ThemeEffects')), defs.EFFECTS, defs.ICON_EFFECT]
+			struct['effects'] = [int(desktop_entry.get('X-AWN-ThemeEffects')), 
+						defs.EFFECTS, defs.ICON_EFFECT]
+
 		if desktop_entry.get('X-AWN-ThemeOrientation') <> '':
-			struct['orientation'] = [int(desktop_entry.get('X-AWN-ThemeOrientation')), defs.PANEL, defs.ORIENT]
+			struct['orientation'] = [int(desktop_entry.get('X-AWN-ThemeOrientation')), 
+							defs.PANEL, defs.ORIENT]
+
 		if desktop_entry.get('X-AWN-ThemeSize') <> '':
-			struct['size'] = [int(desktop_entry.get('X-AWN-ThemeSize')), defs.PANEL, defs.SIZE]
-		if desktop_entry.get('X-AWN-Style') <> '':
-			struct['style'] = [int(desktop_entry.get('X-AWN-Style')), defs.PANEL, defs.STYLE]
+			struct['size'] = [int(desktop_entry.get('X-AWN-ThemeSize')), 
+						defs.PANEL, defs.SIZE]
+
+		if desktop_entry.get('X-AWN-ThemeStyle') <> '':
+			struct['style'] = [int(desktop_entry.get('X-AWN-ThemeStyle')), 
+						defs.PANEL, defs.STYLE]
+
+		if desktop_entry.get('X-AWN-ThemeGstep1') <> '':
+			struct['gstep1'] = [desktop_entry.get('X-AWN-ThemeGstep1'), 
+						defs.THEME, defs.GSTEP1]
+
+		if desktop_entry.get('X-AWN-ThemeGstep2') <> '':
+			struct['gstep2'] = [desktop_entry.get('X-AWN-ThemeGstep2'), 
+						defs.THEME, defs.GSTEP2]
+
+		if desktop_entry.get('X-AWN-ThemeGhistep1') <> '':
+			struct['ghistep1'] = [desktop_entry.get('X-AWN-ThemeGhistep1'), 
+						defs.THEME, defs.GHISTEP1]
+
+		if desktop_entry.get('X-AWN-ThemeGhistep2') <> '':
+			struct['ghistep2'] = [desktop_entry.get('X-AWN-ThemeGhistep2'), 
+						defs.THEME, defs.GHISTEP2]
+
+		if desktop_entry.get('X-AWN-ThemeBorder') <> '':
+			struct['border'] = [desktop_entry.get('X-AWN-ThemeBorder'), 
+						defs.THEME, defs.BORDER]
+
+		if desktop_entry.get('X-AWN-ThemeHilight') <> '':
+			struct['hilight'] = [desktop_entry.get('X-AWN-ThemeHilight'), 
+						defs.THEME, defs.HILIGHT]
+
+		if desktop_entry.get('X-AWN-ThemeCornerRadius') <> '':
+			struct['corner_radius'] = [float(desktop_entry.get('X-AWN-ThemeCornerRadius')), 
+						defs.THEME, defs.CORNER_RADIUS]
+
+		if desktop_entry.get('X-AWN-ThemePanelAngle') <> '':
+			struct['panel_angle'] = [float(desktop_entry.get('X-AWN-ThemePanelAngle')), 
+						defs.THEME, defs.PANEL_ANGLE]
+
+		if desktop_entry.get('X-AWN-ThemeCurvesSymmetry') <> '':
+			struct['curves_symmetry'] = [float(desktop_entry.get('X-AWN-ThemeCurvesSymmetry')), 
+						defs.THEME, defs.CURVES_SYMMETRY]
+
+		if desktop_entry.get('X-AWN-ThemeCurviness') <> '':
+			struct['curviness'] = [float(desktop_entry.get('X-AWN-ThemeCurviness')), 
+						defs.THEME, defs.CURVINESS]
 
 		return struct
 
@@ -381,6 +439,9 @@ class awnBzr:
 									struct[parameter][0])
 					elif type(struct[parameter][0]) is float:
 						self.client.set_float(struct[parameter][1], 
+									struct[parameter][2], 
+									struct[parameter][0])
+					else: self.client.set_string(struct[parameter][1], 
 									struct[parameter][2], 
 									struct[parameter][0])
 			except IndexError:
@@ -454,7 +515,7 @@ class awnBzr:
 				raise IOError("Desktop file does not exist!")
 			item = DesktopEntry (path)
 			text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
-			name = item.getName()
+			name = path
 			icon_name = item.getIcon()
 			icon = self.make_icon(path)
 		except:
