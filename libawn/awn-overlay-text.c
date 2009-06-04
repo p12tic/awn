@@ -88,3 +88,11 @@ awn_overlay_text_new (void)
   return g_object_new (AWN_TYPE_OVERLAY_TEXT, NULL);
 }
 
+void static 
+_awn_overlaid_text_render ( AwnOverlay* overlay,
+                               cairo_t * cr,                                 
+                               gint width,
+                               gint height)
+{
+  
+}

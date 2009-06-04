@@ -97,7 +97,10 @@ typedef struct {
 typedef struct {
   GObjectClass parent_class;
 
-  void          (*render_overlay)         (AwnOverlay * overlay);
+  void          (*render_overlay)         (AwnOverlay* overlay,
+                                          cairo_t * cr,                                 
+                                          gint width,
+                                          gint height);
 } AwnOverlayClass;
 
 GType awn_overlay_get_type (void);
