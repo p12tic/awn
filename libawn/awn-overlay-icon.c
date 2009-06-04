@@ -16,6 +16,12 @@
  *
  */
  
+/* awn-overlay-icon.c */
+
+#include "awn-overlay-icon.h"
+
+G_DEFINE_TYPE (AwnOverlayIcon, awn_overlay_icon, AWN_TYPE_OVERLAY)
+
  #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY_ICON, AwnOverlayIconPrivate))
 
