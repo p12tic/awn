@@ -1,3 +1,11 @@
+2009-06-04  Michal Hruby <michal.mhr@gmail.com>
+
+	* data/awn.schema-ini.in:
+	Removed config keys which are no longer used.
+	* src/awn-monitor.c:
+	Make sure that monitor width & height are not updated from config
+	client if force_monitor key is not set.
+
 2009-06-04  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* .bzrignore:
