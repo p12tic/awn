@@ -22,6 +22,7 @@
 #define _AWN_OVERLAY_TEXT
 
 #include <glib-object.h>
+#include "awn-overlay.h"
 
 G_BEGIN_DECLS
 
