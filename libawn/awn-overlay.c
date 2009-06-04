@@ -217,3 +217,76 @@ void awn_overlay_render_overlay (AwnOverlay* overlay,
 
   klass->render_overlay (overlay,icon,cr,width,height);
 }
+
+void
+awn_overlay_move_to (cairo_t * cr,
+                           AwnOverlay* overlay,
+                           gint   icon_width,
+                           gint   icon_height,
+                           gint   overlay_width,
+                           gint   overlay_height
+                           )
+{
+  gint yoffset = 0;
+  gdouble xoffset;
+  gint align;
+  GdkGravity gravity;
+  gdouble x_adj;
+  gdouble y_adj;
+
+  g_object_get (overlay,
+               "align", &align,
+               "gravity", &gravity,
+                "x_adj", &x_adj,
+                "y_adj", &y_adj,
+               NULL);
+  
+  switch (align)
+  {
+    case AWN_OVERLAY_ALIGN_CENTRE:
+      xoffset = 0;
+      break;
+    case AWN_OVERLAY_ALIGN_LEFT:
+      xoffset = overlay_width / 2.0;
+      break;
+    case AWN_OVERLAY_ALIGN_RIGHT:
+      xoffset = -1 * overlay_width / 2.0;      
+      break;
+    default:
+      g_assert_not_reached();
+  }
+  xoffset = xoffset + (x_adj * icon_width);
+  yoffset = yoffset + (y_adj * icon_height);
+  switch (gravity)
+  {
+    case GDK_GRAVITY_CENTER:
+      cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0 + xoffset, icon_height / 2.0 - overlay_height/2.0 + yoffset);  
+      break;
+    case GDK_GRAVITY_NORTH:
+      cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0 + xoffset, 1 + icon_height / 20 + yoffset);  
+      break;      
+    case GDK_GRAVITY_NORTH_EAST:
+      cairo_move_to (cr, 1 + icon_width /20+ xoffset, 1 + icon_height / 20 + yoffset);  
+      break;
+    case GDK_GRAVITY_EAST:
+      cairo_move_to (cr, 1 + icon_width /20+ xoffset, icon_height / 2.0 - overlay_height/2.0 + yoffset);
+      break;      
+    case GDK_GRAVITY_SOUTH_EAST:
+      cairo_move_to (cr, 1 + icon_width /20+ xoffset, icon_height - overlay_height -1+ yoffset);      
+      break;
+    case GDK_GRAVITY_SOUTH:
+      cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0+ xoffset, icon_height - overlay_height -1+ yoffset);
+      break;
+    case GDK_GRAVITY_SOUTH_WEST:
+      cairo_move_to (cr, icon_width - 1 - overlay_width+ xoffset, icon_height - overlay_height -1+ yoffset);
+      break;
+    case GDK_GRAVITY_WEST:
+      cairo_move_to (cr, icon_width - 1 - overlay_width+ xoffset, icon_height / 2.0 - overlay_height/2.0 + yoffset);
+      break;
+    case GDK_GRAVITY_NORTH_WEST:
+      cairo_move_to (cr, icon_width - 1 - overlay_width+ xoffset, 1 + icon_height / 20 + yoffset);  
+      break;
+    default:
+      g_assert_not_reached();   
+  }
+}

@@ -115,10 +115,15 @@ void awn_overlay_render_overlay    (AwnOverlay* overlay,
                                         gint height);
 
 
-GdkGravity 
-awn_overlay_get_gravity (AwnOverlay * overlay);
+GdkGravity awn_overlay_get_gravity (AwnOverlay * overlay);
 
-
+void awn_overlay_move_to (cairo_t * cr,
+                           AwnOverlay* overlay,
+                           gint   icon_width,
+                           gint   icon_height,
+                           gint   overlay_width,
+                           gint   overlay_height
+                           );
 G_END_DECLS
 
 #endif /* _AWN_OVERLAY */
