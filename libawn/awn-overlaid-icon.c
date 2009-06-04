@@ -82,11 +82,22 @@ awn_overlaid_icon_move_to (cairo_t * cr,
 {
   gint yoffset = 0;
   gdouble xoffset;
+  gint align;
+  AwnGravity gravity;
+  gdouble x_adj;
+  gdouble y_adj;
+
+  g_object_get (overlay,
+               "align", &align,
+               "gravity", &gravity,
+                "x_adj", &x_adj,
+                "y_adj", &y_adj,
+               NULL);
   if (flags & MOVE_FLAGS_TEXT) /*text rendered top left hand corner of the text is not where one would expect it to be */
   {
     yoffset = overlay_height / 2.0 + 2; /*Magic is bad FIXME*/
   }
-  switch (overlay->align)
+  switch (align)
   {
     case AWN_OVERLAY_ALIGN_CENTRE:
       xoffset = 0;
@@ -100,9 +111,9 @@ awn_overlaid_icon_move_to (cairo_t * cr,
     default:
       g_assert_not_reached();
   }
-  xoffset = xoffset + (overlay->x_adj * icon_width);
-  yoffset = yoffset + (overlay->y_adj * icon_height);
-  switch (overlay->gravity)
+  xoffset = xoffset + (x_adj * icon_width);
+  yoffset = yoffset + (y_adj * icon_height);
+  switch (gravity)
   {
     case AWN_GRAVITY_CENTRE:
       cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0 + xoffset, icon_height / 2.0 - overlay_height/2.0 + yoffset);  
@@ -214,7 +225,7 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
   g_object_get (widget, 
                 "icon_height", &icon_height,
                 "icon_width", &icon_width,
-                NULL);      
+                NULL);     
   for(iter=g_list_first (priv->overlays);iter;iter=g_list_next (priv->overlays))
   {
     AwnOverlay* overlay = iter->data;
@@ -285,13 +296,21 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,AwnOverlayType  type,
 {
   AwnOverlaidIconPrivate *priv;
   AwnOverlay* overlay;
-  
+  guint align;
+  AwnGravity gravity;
+  gint x_adj;
+  gint y_adj;
+
   priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
-  overlay = g_new0(AwnOverlay,1);
-  overlay->align = AWN_OVERLAY_ALIGN_RIGHT;
-  overlay->x_adj = 0.3;
-  overlay->y_adj = 0.0;
-  overlay->overlay_type = type;
+  overlay = awn_overlay_new();
+
+  g_object_set (overlay,
+               "align", AWN_OVERLAY_ALIGN_RIGHT,
+               "gravity", grav,
+                "x_adj", 0.3,
+                "y_adj", 0.0,
+               NULL);
+  
   switch (type)
   {
     case AWN_OVERLAY_TEXT:
@@ -312,7 +331,6 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,AwnOverlayType  type,
     default:
       g_assert_not_reached();
   }
-  overlay->gravity = grav;       
   priv->overlays = g_list_append (priv->overlays,overlay);   
   return overlay;
 }

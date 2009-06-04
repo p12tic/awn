@@ -82,15 +82,7 @@ typedef struct {
   union
   {
     int dummy;
-  }cached_info;
-
-  AwnGravity  gravity;
-  AwnOverlayAlign align;
-
-  double      x_adj;
-  double      y_adj;
-  double      x_per;      
-  double      y_per;      
+  }cached_info;    
 
   union
   {
@@ -108,6 +100,10 @@ typedef struct {
 GType awn_overlay_get_type (void);
 
 AwnOverlay* awn_overlay_new (void);
+
+AwnGravity 
+awn_overlay_get_gravity (AwnOverlay * overlay);
+
 
 G_END_DECLS
 
