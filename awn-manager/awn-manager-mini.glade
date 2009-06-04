@@ -1258,7 +1258,7 @@ the theme ?</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">&#x25CF;</property>
-                                    <property name="adjustment">0 0 1 0.01 1 1</property>
+                                    <property name="adjustment">0 0 1 0.01 0 0</property>
                                     <property name="digits">3</property>
                                     <property name="numeric">True</property>
                                   </widget>
