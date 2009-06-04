@@ -579,6 +579,47 @@ awn_themed_icon_set_info_simple (AwnThemedIcon  *icon,
 }
 
 void
+awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
+                                 const gchar    *icon_name,
+                                 const gchar    * state)
+{
+  GStrv icon_names;
+  GStrv states;
+  AwnThemedIconPrivate *priv;  
+  gchar * applet_name;
+  gchar * uid;
+  
+  g_return_if_fail (AWN_IS_THEMED_ICON (icon));
+
+  priv = icon->priv;
+
+  applet_name = g_strdup (priv->applet_name);
+  uid = g_strdup (priv->uid);
+  
+  icon_names = g_strdupv (priv->icon_names_orignal);
+  states = g_strdupv (priv->states);
+  
+  icon_names = g_realloc (icon_names, sizeof (gchar *) * (priv->n_states+2));
+  states = g_realloc (priv->states,sizeof (gchar *) * (priv->n_states+2) );
+  
+  icon_names[priv->n_states+1] = NULL;
+  icon_names[priv->n_states] = g_strdup (icon_name);
+  
+  states [priv->n_states+1] = NULL;
+  states [priv->n_states] = g_strdup (state);
+ 
+  
+  awn_themed_icon_set_info (icon,applet_name,uid,states,icon_names);
+  g_strfreev (icon_names);
+  g_strfreev (states);
+  g_free (uid);
+  g_free (applet_name);
+  
+}
+
+
+
+void
 awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
                                     const gchar   *theme_name)
 {
