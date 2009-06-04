@@ -20,7 +20,7 @@ X-AWN-ThemeStyle=1
 X-AWN-ThemeGstep1=#efefebebe7e79b00
 
 #Second gradient step color.
-X-AWN-ThemeGstep2#efefebebe7e7c800
+X-AWN-ThemeGstep2=#efefebebe7e7c800
 
 #First highlight gradient step color.
 X-AWN-ThemeGhistep1=#ffffffffffffdc00

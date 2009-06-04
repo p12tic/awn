@@ -1075,6 +1075,7 @@ class awnPreferences(awnBzr):
         model.append([_("Flat")])
         model.append([_("3d")])
         model.append([_("Curved")])
+	model.append([_("Edgy")])
         dropdown.set_model(model)
         cell = gtk.CellRendererText()
         dropdown.pack_start(cell)
