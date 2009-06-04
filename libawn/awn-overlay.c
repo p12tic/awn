@@ -21,6 +21,8 @@
 
 #include "awn-overlay.h"
 #include "awn-defines.h"
+#include "awn-overlaid-icon.h"
+
 #include <gdk/gdk.h>
 #include <glib-object.h>
 
@@ -54,7 +56,11 @@ enum
 };
 
 static void
-_awn_overlay_render_overlay (AwnOverlay * overlay);
+_awn_overlay_render_overlay (AwnOverlay* overlay,
+                                        AwnThemedIcon * icon,
+                                        cairo_t * cr,                                 
+                                        gint width,
+                                        gint height);
 
 static void
 awn_overlay_get_property (GObject *object, guint property_id,
@@ -189,8 +195,25 @@ awn_overlay_get_gravity (AwnOverlay * overlay)
 }  
 
 static void 
-_awn_overlay_render_overlay (AwnOverlay * overlay)
+_awn_overlay_render_overlay (AwnOverlay* overlay,
+                                        AwnThemedIcon * icon,
+                                        cairo_t * cr,                                 
+                                        gint width,
+                                        gint height)
 {
   
   g_assert_not_reached ();
+}
+
+void awn_overlay_render_overlay (AwnOverlay* overlay,
+                                        AwnThemedIcon * icon,
+                                        cairo_t * cr,                                 
+                                        gint width,
+                                        gint height)
+{
+  AwnOverlayClass *klass;
+
+  klass = AWN_OVERLAY_GET_CLASS (overlay);
+
+  klass->render_overlay (overlay,icon,cr,width,height);
 }

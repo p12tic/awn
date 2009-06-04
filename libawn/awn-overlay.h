@@ -28,6 +28,7 @@
 #include <gdk/gdk.h>
 
 #include "awn-defines.h"
+#include "awn-themed-icon.h"
 
 G_BEGIN_DECLS
 
@@ -67,7 +68,6 @@ typedef struct
   gint dummy;
 }PixbufOverlay;
 
-
 typedef struct {
   GObject parent;
   AwnOverlayType  overlay_type;  
@@ -98,6 +98,7 @@ typedef struct {
   GObjectClass parent_class;
 
   void          (*render_overlay)         (AwnOverlay* overlay,
+                                          AwnThemedIcon * icon,
                                           cairo_t * cr,                                 
                                           gint width,
                                           gint height);
@@ -106,6 +107,13 @@ typedef struct {
 GType awn_overlay_get_type (void);
 
 AwnOverlay* awn_overlay_new (void);
+
+void awn_overlay_render_overlay    (AwnOverlay* overlay,
+                                        AwnThemedIcon * icon,
+                                        cairo_t * cr,                                 
+                                        gint width,
+                                        gint height);
+
 
 GdkGravity 
 awn_overlay_get_gravity (AwnOverlay * overlay);

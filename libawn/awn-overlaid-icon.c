@@ -24,6 +24,7 @@
 #include <awn-cairo-utils.h>
 
 #include "awn-overlaid-icon.h"
+#include "awn-overlay-text.h"
 
 G_DEFINE_TYPE (AwnOverlaidIcon, awn_overlaid_icon, AWN_TYPE_THEMED_ICON)
 
@@ -229,7 +230,9 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
   for(iter=g_list_first (priv->overlays);iter;iter=g_list_next (priv->overlays))
   {
     AwnOverlay* overlay = iter->data;
-    switch ( overlay->overlay_type)
+
+    awn_overlay_render_overlay (overlay,AWN_ICON(widget),ctx,icon_width,icon_height);
+    /*switch ( overlay->overlay_type)
     {
       case  AWN_OVERLAY_TEXT:
         awn_overlaid_icon_render_text (ctx, AWN_OVERLAID_ICON(widget), 
@@ -257,7 +260,7 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
         break;
       default:
         g_assert_not_reached();
-    }
+    }*/
   }
   
   awn_effects_cairo_destroy (effects);
@@ -302,7 +305,7 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,AwnOverlayType  type,
   gint y_adj;
 
   priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
-  overlay = awn_overlay_new();
+  overlay = AWN_OVERLAY(awn_overlay_text_new());
 
   g_object_set (overlay,
                "align", AWN_OVERLAY_ALIGN_RIGHT,

@@ -16,8 +16,8 @@
  *
  */
 
-#ifndef _AWN_OVERLAID_ICON_H_
-#define _AWN_OVERLAID_ICON_H_
+#ifndef _AWN_OVERLAID_ICON_H__
+#define _AWN_OVERLAID_ICON_H__
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
