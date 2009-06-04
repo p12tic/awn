@@ -40,6 +40,7 @@ struct _AwnOverlaidIconPrivate
 {
   gpointer  * padding;
   GList     * overlays;
+  gulong    sig_id;
 };
 
 
@@ -115,8 +116,6 @@ awn_overlaid_icon_init (AwnOverlaidIcon *icon)
   AwnOverlaidIconPrivate *priv;
 
   priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
-  
-  g_signal_connect_after (icon, "expose-event", G_CALLBACK(_awn_overlaid_icon_expose),NULL);
   priv->overlays = NULL;
 }
 
@@ -137,10 +136,14 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,
                                   )
 {
   AwnOverlaidIconPrivate *priv;
-
   priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
-  priv->overlays = g_list_append (priv->overlays,overlay);   
   
+  /* if it's the first overlay _then_ we connect the signal*/
+  if (!priv->overlays)
+  {
+    priv->sig_id = g_signal_connect_after (icon, "expose-event", G_CALLBACK(_awn_overlaid_icon_expose),NULL);    
+  }
+  priv->overlays = g_list_append (priv->overlays,overlay);   
 }
 
 
