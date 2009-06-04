@@ -35,7 +35,7 @@ typedef struct _AwnOverlayPrivate AwnOverlayPrivate;
 
 struct _AwnOverlayPrivate 
 {
-  AwnGravity  gravity;
+  GdkGravity  gravity;
   AwnOverlayAlign align;
 
   double      x_adj;
@@ -129,9 +129,9 @@ awn_overlay_class_init (AwnOverlayClass *klass)
   pspec = g_param_spec_int ("gravity",
                                "Gravity",
                                "Gravity",
-                               AWN_GRAVITY_CENTRE,
-                               AWN_GRAVITY_NW,
-                               AWN_GRAVITY_CENTRE,
+                               GDK_GRAVITY_NORTH_WEST,
+                               GDK_GRAVITY_SOUTH_EAST,
+                               GDK_GRAVITY_CENTER,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_GRAVITY, pspec);  
 
@@ -177,7 +177,7 @@ awn_overlay_new (void)
   return g_object_new (AWN_TYPE_OVERLAY, NULL);
 }
 
-AwnGravity 
+GdkGravity 
 awn_overlay_get_gravity (AwnOverlay * overlay)
 {
   AwnOverlayPrivate * priv;

@@ -25,6 +25,7 @@
 #include <glib-object.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <cairo/cairo-xlib.h>
+#include <gdk/gdk.h>
 
 #include "awn-defines.h"
 
@@ -101,7 +102,7 @@ GType awn_overlay_get_type (void);
 
 AwnOverlay* awn_overlay_new (void);
 
-AwnGravity 
+GdkGravity 
 awn_overlay_get_gravity (AwnOverlay * overlay);
 
 

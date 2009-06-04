@@ -83,7 +83,7 @@ awn_overlaid_icon_move_to (cairo_t * cr,
   gint yoffset = 0;
   gdouble xoffset;
   gint align;
-  AwnGravity gravity;
+  GdkGravity gravity;
   gdouble x_adj;
   gdouble y_adj;
 
@@ -115,31 +115,31 @@ awn_overlaid_icon_move_to (cairo_t * cr,
   yoffset = yoffset + (y_adj * icon_height);
   switch (gravity)
   {
-    case AWN_GRAVITY_CENTRE:
+    case GDK_GRAVITY_CENTER:
       cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0 + xoffset, icon_height / 2.0 - overlay_height/2.0 + yoffset);  
       break;
-    case AWN_GRAVITY_N:
+    case GDK_GRAVITY_NORTH:
       cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0 + xoffset, 1 + icon_height / 20 + yoffset);  
       break;      
-    case AWN_GRAVITY_NE:
+    case GDK_GRAVITY_NORTH_EAST:
       cairo_move_to (cr, 1 + icon_width /20+ xoffset, 1 + icon_height / 20 + yoffset);  
       break;
-    case AWN_GRAVITY_E:
+    case GDK_GRAVITY_EAST:
       cairo_move_to (cr, 1 + icon_width /20+ xoffset, icon_height / 2.0 - overlay_height/2.0 + yoffset);
       break;      
-    case AWN_GRAVITY_SE:
+    case GDK_GRAVITY_SOUTH_EAST:
       cairo_move_to (cr, 1 + icon_width /20+ xoffset, icon_height - overlay_height -1+ yoffset);      
       break;
-    case AWN_GRAVITY_S:
+    case GDK_GRAVITY_SOUTH:
       cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0+ xoffset, icon_height - overlay_height -1+ yoffset);
       break;
-    case AWN_GRAVITY_SW:
+    case GDK_GRAVITY_SOUTH_WEST:
       cairo_move_to (cr, icon_width - 1 - overlay_width+ xoffset, icon_height - overlay_height -1+ yoffset);
       break;
-    case AWN_GRAVITY_W:
+    case GDK_GRAVITY_WEST:
       cairo_move_to (cr, icon_width - 1 - overlay_width+ xoffset, icon_height / 2.0 - overlay_height/2.0 + yoffset);
       break;
-    case AWN_GRAVITY_NW:
+    case GDK_GRAVITY_NORTH_WEST:
       cairo_move_to (cr, icon_width - 1 - overlay_width+ xoffset, 1 + icon_height / 20 + yoffset);  
       break;
     default:
@@ -291,13 +291,13 @@ awn_overlaid_icon_new (void)
 
 AwnOverlay *
 awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,AwnOverlayType  type,
-                                                      AwnGravity      grav,
+                                                      GdkGravity      grav,
                                                       gpointer        data)
 {
   AwnOverlaidIconPrivate *priv;
   AwnOverlay* overlay;
   guint align;
-  AwnGravity gravity;
+  GdkGravity gravity;
   gint x_adj;
   gint y_adj;
 
