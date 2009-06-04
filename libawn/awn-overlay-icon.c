@@ -22,7 +22,7 @@
 
 G_DEFINE_TYPE (AwnOverlayIcon, awn_overlay_icon, AWN_TYPE_OVERLAY)
 
- #define GET_PRIVATE(o) \
+ #define AWN_OVERLAY_ICON_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY_ICON, AwnOverlayIconPrivate))
 
 typedef struct _AwnOverlayIconPrivate AwnOverlayIconPrivate;
@@ -30,6 +30,13 @@ typedef struct _AwnOverlayIconPrivate AwnOverlayIconPrivate;
 struct _AwnOverlayIconPrivate {
     int dummy;
 };
+
+static void 
+_awn_overlay_icon_render ( AwnOverlay* _overlay,
+                               AwnThemedIcon * icon,
+                               cairo_t * cr,                                 
+                               gint width,
+                               gint height);
 
 static void
 awn_overlay_icon_get_property (GObject *object, guint property_id,
@@ -74,6 +81,10 @@ awn_overlay_icon_class_init (AwnOverlayIconClass *klass)
   object_class->set_property = awn_overlay_icon_set_property;
   object_class->dispose = awn_overlay_icon_dispose;
   object_class->finalize = awn_overlay_icon_finalize;
+  
+  AWN_OVERLAY_CLASS(klass)->render_overlay = _awn_overlay_icon_render;
+  
+  
 }
 
 static void
@@ -87,3 +98,18 @@ awn_overlay_icon_new (void)
   return g_object_new (AWN_TYPE_OVERLAY_ICON, NULL);
 }
 
+static void 
+_awn_overlay_icon_render ( AwnOverlay* _overlay,
+                               AwnThemedIcon * icon,
+                               cairo_t * cr,                                 
+                               gint width,
+                               gint height)
+{
+  AwnOverlayIcon *overlay = AWN_OVERLAY_ICON(_overlay);
+  AwnOverlayIconPrivate *priv;
+
+  priv =  AWN_OVERLAY_ICON_GET_PRIVATE (overlay); 
+  
+
+  
+}
