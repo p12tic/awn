@@ -24,7 +24,6 @@
 #include <awn-cairo-utils.h>
 
 #include "awn-overlaid-icon.h"
-#include "awn-overlay-text.h"
 
 G_DEFINE_TYPE (AwnOverlaidIcon, awn_overlaid_icon, AWN_TYPE_THEMED_ICON)
 
@@ -32,17 +31,12 @@ G_DEFINE_TYPE (AwnOverlaidIcon, awn_overlaid_icon, AWN_TYPE_THEMED_ICON)
   AWN_TYPE_OVERLAID_ICON, \
   AwnOverlaidIconPrivate))
 
-#define MOVE_FLAGS_NONE 0x00
-#define MOVE_FLAGS_TEXT 0x01
-
-
 struct _AwnOverlaidIconPrivate
 {
   gpointer  * padding;
   GList     * overlays;
   gulong    sig_id;
 };
-
 
 /* Forwards */
 
@@ -67,13 +61,8 @@ awn_overlaid_icon_class_init (AwnOverlaidIconClass *klass)
   
   obj_class->dispose = awn_overlaid_icon_dispose;
   
-  g_type_class_add_private (obj_class, sizeof (AwnOverlaidIconPrivate));
-  
+  g_type_class_add_private (obj_class, sizeof (AwnOverlaidIconPrivate));  
 }
-
-
-                           
-
 
 static gboolean
 _awn_overlaid_icon_expose (GtkWidget *widget,
@@ -84,7 +73,6 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
   int icon_width;  
   int orientation;
   GList * iter = NULL;
-  
   AwnOverlaidIconPrivate *priv;
   cairo_t * ctx;
   AwnEffects * effects;
@@ -125,8 +113,7 @@ awn_overlaid_icon_new (void)
 {
   GtkWidget *overlaid_icon = NULL;
   
-  overlaid_icon = g_object_new (AWN_TYPE_OVERLAID_ICON, 
-                              NULL);
+  overlaid_icon = g_object_new (AWN_TYPE_OVERLAID_ICON, NULL);
   return overlaid_icon;
 }
 
