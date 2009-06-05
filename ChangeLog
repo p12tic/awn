@@ -1,5 +1,10 @@
 2009-06-05  Michal Hruby <michal.mhr@gmail.com>
 
+	* src/awn-background-edgy.c:
+	Some code cleanup plus make the masks work.
+
+2009-06-05  Michal Hruby <michal.mhr@gmail.com>
+
 	* libawn/anims/awn-effect-bounce.c:
 	* libawn/anims/awn-effect-fade.c:
 	* libawn/anims/awn-effect-squish.c:
