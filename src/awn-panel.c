@@ -116,6 +116,7 @@ enum
 
   PROP_CLIENT,
   PROP_MONITOR,
+  PROP_APPLET_MANAGER,
   PROP_COMPOSITED,
   PROP_PANEL_MODE,
   PROP_EXPAND,
@@ -269,6 +270,22 @@ awn_panel_constructed (GObject *object)
   g_signal_connect (priv->monitor, "geometry_changed",
                     G_CALLBACK (on_geometry_changed), panel);
 
+  /* Composited checks/setup */
+  screen = gtk_widget_get_screen (panel);
+  priv->composited = gdk_screen_is_composited (screen);
+  g_print ("Screen %s composited\n", priv->composited ? "is" : "isn't");
+  load_correct_colormap (panel);
+
+  g_signal_connect (panel, "composited-changed",
+                    G_CALLBACK (on_composited_changed), NULL);
+
+  /* Contents */
+  priv->manager = awn_applet_manager_new_from_config (priv->client);
+  g_signal_connect_swapped (priv->manager, "applet-embedded",
+                            G_CALLBACK (on_applet_embedded), panel);
+  gtk_container_add (GTK_CONTAINER (panel), priv->manager);
+  gtk_widget_show_all (priv->manager);
+  
   /* FIXME: Now is the time to hook our properties into priv->client */
   bridge = awn_config_bridge_get_default ();
   
@@ -296,31 +313,15 @@ awn_panel_constructed (GObject *object)
   awn_config_bridge_bind (bridge, priv->client,
                           AWN_GROUP_PANEL, AWN_PANEL_CLICKTHROUGH,
                           object, "clickthrough_type");
-  
+
   /* Background drawing */
   awn_panel_set_style(AWN_PANEL (panel), priv->style);
-
-  /* Composited checks/setup */
-  screen = gtk_widget_get_screen (panel);
-  priv->composited = gdk_screen_is_composited (screen);
-  g_print ("Screen %s composited\n", priv->composited ? "is" : "isn't");
-  load_correct_colormap (panel);
-
-  g_signal_connect (panel, "composited-changed",
-                    G_CALLBACK (on_composited_changed), NULL);
 
   /* Size and position */
   g_signal_connect (panel, "configure-event",
                     G_CALLBACK (on_window_configure), NULL);
 
   position_window (AWN_PANEL (panel));
-
-  /* Contents */
-  priv->manager = awn_applet_manager_new_from_config (priv->client);
-  g_signal_connect_swapped (priv->manager, "applet-embedded",
-                            G_CALLBACK (on_applet_embedded), panel);
-  gtk_container_add (GTK_CONTAINER (panel), priv->manager);
-  gtk_widget_show_all (priv->manager);
 }
 
 static void
@@ -341,6 +342,9 @@ awn_panel_get_property (GObject    *object,
       break;
     case PROP_MONITOR:
       g_value_set_pointer (value, priv->monitor);
+      break;
+    case PROP_APPLET_MANAGER:
+      g_value_set_pointer (value, priv->manager);
       break;
     case PROP_COMPOSITED:
       g_value_set_boolean (value, priv->composited);
@@ -1005,6 +1009,13 @@ awn_panel_class_init (AwnPanelClass *klass)
     g_param_spec_pointer ("monitor",
                           "Monitor",
                           "The AwnMonitor",
+                          G_PARAM_READABLE));
+
+  g_object_class_install_property (obj_class,
+    PROP_APPLET_MANAGER,
+    g_param_spec_pointer ("applet-manager",
+                          "Applet manager",
+                          "The AwnAppletManager",
                           G_PARAM_READABLE));
 
   g_object_class_install_property (obj_class,
@@ -1880,7 +1891,7 @@ awn_panel_set_style (AwnPanel *panel, gint style)
       g_assert_not_reached();
   }
 
-  if (old_bg) g_object_unref(old_bg);
+  if (old_bg) g_object_unref (old_bg);
 
   if (priv->bg)
   {

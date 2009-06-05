@@ -25,7 +25,7 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
-#include "awn-background.h"
+#include "awn-background-flat.h"
 
 G_BEGIN_DECLS
 
@@ -47,15 +47,20 @@ G_BEGIN_DECLS
 
 typedef struct _AwnBackgroundEdgy AwnBackgroundEdgy;
 typedef struct _AwnBackgroundEdgyClass AwnBackgroundEdgyClass;
+typedef struct _AwnBackgroundEdgyPrivate AwnBackgroundEdgyPrivate;
 
-struct _AwnBackgroundEdgy 
+struct _AwnBackgroundEdgy
 {
-  AwnBackground  parent;
+  AwnBackgroundFlat parent;
+
+  gint size_offset;
+
+  AwnBackgroundEdgyPrivate *priv;
 };
 
 struct _AwnBackgroundEdgyClass 
 {
-  AwnBackgroundClass parent_class;
+  AwnBackgroundFlatClass parent_class;
 };
 
 GType           awn_background_edgy_get_type (void) G_GNUC_CONST;
