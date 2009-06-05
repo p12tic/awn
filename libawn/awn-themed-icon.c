@@ -214,13 +214,6 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   g_free (scalable_dir);
   g_free (theme_dir);
 
-  /*
-   * Initate drag_drop 
-   */
-  gtk_drag_dest_set (GTK_WIDGET (icon),
-                     GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
-                     drop_types, n_drop_types,
-                     GDK_ACTION_COPY | GDK_ACTION_ASK);
 }
 
 GtkWidget *
@@ -553,6 +546,14 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
   /*FIXME: Should we ensure_icon here? The current_state variable is probably
    * invalid at this moment...
    */
+  /*
+   * Initate drag_drop 
+   */
+  gtk_drag_dest_set (GTK_WIDGET (icon),
+                     GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
+                     drop_types, n_drop_types,
+                     GDK_ACTION_COPY | GDK_ACTION_ASK);
+  
 }
 
 void
@@ -576,6 +577,80 @@ awn_themed_icon_set_info_simple (AwnThemedIcon  *icon,
   /* Set the state to __SINGULAR__, to keeps things easy for simple applets */
   awn_themed_icon_set_state (icon, states[0]);
 }
+
+void
+awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
+                                 const gchar    *icon_name,
+                                 const gchar    * state)
+{
+  GStrv icon_names;
+  GStrv states;
+  AwnThemedIconPrivate *priv;  
+  gchar * applet_name;
+  gchar * uid;
+  
+  g_return_if_fail (AWN_IS_THEMED_ICON (icon));
+
+  priv = icon->priv;
+
+  applet_name = g_strdup (priv->applet_name?priv->applet_name:"__unknown__");
+  uid = g_strdup (priv->uid?priv->uid:"__invisible__");
+  
+  icon_names = g_strdupv (priv->icon_names_orignal);
+  states = g_strdupv (priv->states);
+  
+  icon_names = g_realloc (icon_names, sizeof (gchar *) * (priv->n_states+2));
+  states = g_realloc (priv->states,sizeof (gchar *) * (priv->n_states+2) );
+  
+  icon_names[priv->n_states+1] = NULL;
+  icon_names[priv->n_states] = g_strdup (icon_name);
+  
+  states [priv->n_states+1] = NULL;
+  states [priv->n_states] = g_strdup (state);
+ 
+  
+  awn_themed_icon_set_info (icon,applet_name,uid,states,icon_names);
+  g_strfreev (icon_names);
+  g_strfreev (states);
+  g_free (uid);
+  g_free (applet_name);
+  
+}
+
+void
+awn_themed_icon_set_applet_info (AwnThemedIcon  *icon,
+                                 const gchar    *applet_name,
+                                 const gchar    *uid)
+{
+  AwnThemedIconPrivate *priv;
+  priv = icon->priv;
+  
+  g_free (priv->uid);
+  priv->uid = g_strdup (uid);
+
+  /* Finally set-up the applet name & theme information */
+  if (priv->applet_name && strcmp (priv->applet_name, applet_name) == 0)
+  {
+    /* Already appended the search path to the GtkIconTheme, so we skip this */
+  }
+  else
+  {
+    gchar *search_dir;
+
+    g_free (priv->applet_name);
+    priv->applet_name = g_strdup (applet_name);
+
+    /* Add the applet's system-wide icon dir first */
+    search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", applet_name);
+    gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
+    g_free (search_dir);
+
+    search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/themes", applet_name);
+    gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
+    g_free (search_dir); 
+  }  
+}
+
 
 void
 awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
@@ -687,7 +762,7 @@ awn_themed_icon_clear_info (AwnThemedIcon *icon)
   priv->states = NULL;
   priv->icon_names = NULL;
   priv->icon_names_orignal = NULL;
-
+  gtk_drag_dest_unset (GTK_WIDGET(icon));
 }
 /*
  * Callbacks 

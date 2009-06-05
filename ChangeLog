@@ -1,3 +1,30 @@
+2009-06-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+  	* libawn/awn-overlaid-icon.c:
+  	* libawn/awn-overlaid-icon.h:
+  	* libawn/awn-overlay-icon.c:
+  	* libawn/awn-overlay-icon.h:
+  	* libawn/awn-overlay-text.c:
+  	* libawn/awn-overlay-text.h:
+  	* libawn/awn-overlay.c:
+  	* libawn/awn-overlay.h:
+	New Files for AwnOverlaidIcon.  
+
+  	* libawn/Makefile.am:
+	Add new files to build system
+
+  	* libawn/awn-applet-simple.c:
+	Change from using AwnThemedIcon to using AwnOverlaidIcon
+  
+	* libawn/awn-defines.h:
+	Added some defines for AwnOverlaidIcon use.  These may change/move.
+  
+	* libawn/awn-themed-icon.c:
+  	* libawn/awn-themed-icon.h:
+	Various changes needed by AwnOverlaidIcon.
+
+	Seems stable enough to merge into rewrite trunk and continue work.
+
 2009-06-05  Michal Hruby <michal.mhr@gmail.com>
 
 	* src/awn-background-edgy.c:

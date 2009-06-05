@@ -90,6 +90,14 @@ void          awn_themed_icon_set_info_simple    (AwnThemedIcon  *icon,
                                                   const gchar    *uid,
                                                   const gchar    *icon_name);
 
+void          awn_themed_icon_set_info_append     (AwnThemedIcon  *icon,
+                                                  const gchar    *icon_name,
+                                                  const gchar    * state);
+
+void          awn_themed_icon_set_applet_info     (AwnThemedIcon  *icon,
+                                                  const gchar    *applet_name,
+                                                  const gchar    *uid);
+
 void          awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
                                                   const gchar   *theme_name);
 
