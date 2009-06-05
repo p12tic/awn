@@ -148,7 +148,9 @@ awn_overlay_text_init (AwnOverlayText *self)
 AwnOverlayText*
 awn_overlay_text_new (void)
 {
-  return g_object_new (AWN_TYPE_OVERLAY_TEXT, NULL);
+  return g_object_new (AWN_TYPE_OVERLAY_TEXT, 
+                       "gravity", GDK_GRAVITY_CENTER,
+                       NULL);
 }
 
 
