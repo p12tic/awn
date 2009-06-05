@@ -46,6 +46,9 @@ struct _AwnOverlayPrivate
   double      y_per;
   
   gboolean    active;  /*if false then the overlay_render will not run*/
+  
+  gdouble     x_override;
+  gdouble     y_override;
 };
 
 enum
@@ -55,7 +58,9 @@ enum
   PROP_ALIGN,
   PROP_X_ADJUST,
   PROP_Y_ADJUST,
-  PROP_ACTIVE
+  PROP_ACTIVE,
+  PROP_X_OVERRIDE,
+  PROP_Y_OVERRIDE
 };
 
 static void
@@ -87,6 +92,12 @@ awn_overlay_get_property (GObject *object, guint property_id,
     case PROP_ACTIVE:
         g_value_set_boolean (value, priv->active);
         break;
+    case PROP_X_OVERRIDE:
+        g_value_set_double (value, priv->x_override);
+        break;      
+    case PROP_Y_OVERRIDE:
+        g_value_set_double (value, priv->y_override);
+        break;      
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -114,6 +125,12 @@ awn_overlay_set_property (GObject *object, guint property_id,
       break;
     case PROP_ACTIVE:
       priv->active = g_value_get_boolean (value);
+      break;      
+    case PROP_X_OVERRIDE:
+      priv->x_override = g_value_get_double (value);
+      break;
+    case PROP_Y_OVERRIDE:
+      priv->y_override = g_value_get_double (value);
       break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -186,7 +203,25 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                TRUE,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ACTIVE, pspec);  
-    
+
+  pspec = g_param_spec_double ("x_override",
+                               "X Override",
+                               "X Override",
+                               -10000.0,
+                               1000.0,
+                               -10000.0,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_X_OVERRIDE, pspec);  
+
+  pspec = g_param_spec_double ("y_override",
+                               "Y Override",
+                               "Y Override",
+                               -10000.0,
+                               1000.0,
+                               -10000.0,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_Y_OVERRIDE, pspec);  
+  
   g_type_class_add_private (klass, sizeof (AwnOverlayPrivate));
   
 }
@@ -255,6 +290,9 @@ awn_overlay_move_to (cairo_t * cr,
   gdouble x_adj;
   gdouble y_adj;
   AwnOverlayCoord  coord;
+  AwnOverlayPrivate * priv;
+  
+  priv = AWN_OVERLAY_GET_PRIVATE (overlay);
 
   g_object_get (overlay,
                "align", &align,
@@ -319,6 +357,14 @@ awn_overlay_move_to (cairo_t * cr,
       break;
     default:
       g_assert_not_reached();   
+  }
+  if (priv->x_override > -1000.0)
+  {
+    coord.x = priv->x_override * icon_width / 48.0;
+  }
+  if (priv->y_override > -1000.)
+  {
+    coord.y = priv->y_override * icon_width / 48.0;
   }
   cairo_move_to (cr, coord.x, coord.y);  
   if (coord_req)
