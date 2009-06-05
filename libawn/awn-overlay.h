@@ -65,6 +65,13 @@ typedef struct {
                                           gint height);
 } AwnOverlayClass;
 
+typedef struct
+{
+  gdouble x;
+  gdouble y;
+} AwnOverlayCoord;
+
+
 GType awn_overlay_get_type (void);
 
 AwnOverlay* awn_overlay_new (void);
@@ -83,7 +90,8 @@ void awn_overlay_move_to (cairo_t * cr,
                            gint   icon_width,
                            gint   icon_height,
                            gint   overlay_width,
-                           gint   overlay_height
+                           gint   overlay_height,
+                           AwnOverlayCoord * coord_req 
                            );
 G_END_DECLS
 

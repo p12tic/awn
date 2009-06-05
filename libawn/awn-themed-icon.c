@@ -593,8 +593,8 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
 
   priv = icon->priv;
 
-  applet_name = g_strdup (priv->applet_name);
-  uid = g_strdup (priv->uid);
+  applet_name = g_strdup (priv->applet_name?priv->applet_name:"__unknown__");
+  uid = g_strdup (priv->uid?priv->uid:"__invisible__");
   
   icon_names = g_strdupv (priv->icon_names_orignal);
   states = g_strdupv (priv->states);
@@ -617,6 +617,39 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
   
 }
 
+void
+awn_themed_icon_set_applet_info (AwnThemedIcon  *icon,
+                                 const gchar    *applet_name,
+                                 const gchar    *uid)
+{
+  AwnThemedIconPrivate *priv;
+  priv = icon->priv;
+  
+  g_free (priv->uid);
+  priv->uid = g_strdup (uid);
+
+  /* Finally set-up the applet name & theme information */
+  if (priv->applet_name && strcmp (priv->applet_name, applet_name) == 0)
+  {
+    /* Already appended the search path to the GtkIconTheme, so we skip this */
+  }
+  else
+  {
+    gchar *search_dir;
+
+    g_free (priv->applet_name);
+    priv->applet_name = g_strdup (applet_name);
+
+    /* Add the applet's system-wide icon dir first */
+    search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", applet_name);
+    gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
+    g_free (search_dir);
+
+    search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/themes", applet_name);
+    gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
+    g_free (search_dir); 
+  }  
+}
 
 
 void

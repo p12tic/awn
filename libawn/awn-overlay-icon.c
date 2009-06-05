@@ -32,6 +32,9 @@ struct _AwnOverlayIconPrivate
     gdouble alpha;
     gchar * icon_name;
     gchar * icon_state;
+    gdouble scale;
+  
+    GdkPixbuf * pixbuf;
 };
 
 enum
@@ -39,7 +42,8 @@ enum
   PROP_0,
   PROP_ALPHA,
   PROP_ICON_NAME,
-  PROP_ICON_STATE
+  PROP_ICON_STATE,
+  PROP_SCALE
 };
 
 static void 
@@ -61,6 +65,9 @@ awn_overlay_icon_get_property (GObject *object, guint property_id,
     case PROP_ALPHA:
       g_value_set_double (value,priv->alpha);
       break;
+    case PROP_SCALE:
+      g_value_set_double (value,priv->scale);
+      break;      
     case PROP_ICON_NAME:
       g_value_set_string (value,priv->icon_name);
       break;
@@ -84,6 +91,9 @@ awn_overlay_icon_set_property (GObject *object, guint property_id,
     case PROP_ALPHA:
       priv->alpha = g_value_get_double (value);
       break;
+    case PROP_SCALE:
+      priv->scale = g_value_get_double (value);
+      break;      
     case PROP_ICON_NAME:
       g_free(priv->icon_name);
       priv->icon_name = g_value_dup_string (value);
@@ -130,6 +140,15 @@ awn_overlay_icon_class_init (AwnOverlayIconClass *klass)
                                0.9,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ALPHA, pspec);   
+
+  pspec = g_param_spec_double ("scale",
+                               "scale",
+                               "Scale",
+                               0.0,
+                               1.0,
+                               0.3,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_SCALE, pspec);   
   
   pspec = g_param_spec_string ("icon_name",
                                "Icon name",
@@ -151,6 +170,10 @@ awn_overlay_icon_class_init (AwnOverlayIconClass *klass)
 static void
 awn_overlay_icon_init (AwnOverlayIcon *self)
 {
+  AwnOverlayIconPrivate * priv;
+  priv = AWN_OVERLAY_ICON_GET_PRIVATE (self);
+
+  priv->pixbuf = NULL;
 }
 
 AwnOverlayIcon*
@@ -167,11 +190,15 @@ awn_overlay_icon_new (AwnThemedIcon * icon, const gchar * icon_name, const gchar
     created_state = g_strdup_printf ("__AWN_OVERLAY_ICON_STATE_NAME_FOR_%s",icon_name);
     state = created_state;
   }
+  
   ret = g_object_new (AWN_TYPE_OVERLAY_ICON, 
                       "icon_name",icon_name,
                       "icon_state",state,
+                      "gravity",GDK_GRAVITY_SOUTH_EAST,
                       NULL);
-  
+/* some of this probably should be done in constructed() */
+  awn_themed_icon_set_info_append (icon,icon_name,state);
+    
   if (created_state)
   {
     g_free (created_state);
@@ -188,8 +215,20 @@ _awn_overlay_icon_render ( AwnOverlay* _overlay,
 {
   AwnOverlayIcon *overlay = AWN_OVERLAY_ICON(_overlay);
   AwnOverlayIconPrivate *priv;
-
+  AwnOverlayCoord coord;
+  
   priv =  AWN_OVERLAY_ICON_GET_PRIVATE (overlay); 
+/* probably should cache the surface FIXME */
+/* put in logic to catch changes in overlay size... and get a new pixbuf at size FIXME */
+/* after ^ should think about caching the various sized pixbuf/surfaces*/
   
-  
+  if (!priv->pixbuf)
+  {
+    priv->pixbuf = awn_themed_icon_get_icon_at_size (icon, 
+                                                     width>height?width:height * priv->scale,
+                                                     priv->icon_state);
+  } 
+  awn_overlay_move_to (cr,AWN_OVERLAY(overlay),width,height,width *priv->scale,height *priv->scale,&coord);  
+  gdk_cairo_set_source_pixbuf (cr,priv->pixbuf,coord.x,coord.y);  
+  cairo_paint_with_alpha (cr,priv->alpha);
 }
