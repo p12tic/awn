@@ -87,7 +87,7 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
                 "icon_height", &icon_height,
                 "icon_width", &icon_width,
                 NULL);     
-  for(iter=g_list_first (priv->overlays);iter;iter=g_list_next (priv->overlays))
+  for(iter=g_list_first (priv->overlays);iter;iter=g_list_next (iter))
   {
     AwnOverlay* overlay = iter->data;
 
