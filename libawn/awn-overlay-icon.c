@@ -209,7 +209,7 @@ awn_overlay_icon_new (AwnThemedIcon * icon, const gchar * icon_name, const gchar
                       "icon_state",state,
                       "gravity",GDK_GRAVITY_SOUTH_EAST,
                       NULL);
-/* some of this probably should be done in constructed() */
+/* some of this probably should be done in constructed() FIXME*/
   awn_themed_icon_set_info_append (icon,icon_name,state);
     
   if (created_state)
@@ -232,9 +232,6 @@ _awn_overlay_icon_render ( AwnOverlay* _overlay,
   GdkPixbuf * pixbuf = NULL;
   
   priv =  AWN_OVERLAY_ICON_GET_PRIVATE (overlay); 
-/* probably should cache the surface FIXME */
-/* put in logic to catch changes in overlay size... and get a new pixbuf at size FIXME */
-/* after ^ should think about caching the various sized pixbuf/surfaces*/
   
   gchar * key = g_strdup_printf ("%dx%d@%lf",width,height,priv->scale);
  
