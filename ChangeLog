@@ -1,6 +1,11 @@
 2009-06-05  Michal Hruby <michal.mhr@gmail.com>
 
 	* src/awn-background-edgy.c:
+	Too much cleanup in last commit.
+
+2009-06-05  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background-edgy.c:
 	Some code cleanup plus make the masks work.
 
 2009-06-05  Michal Hruby <michal.mhr@gmail.com>

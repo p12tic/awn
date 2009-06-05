@@ -387,13 +387,18 @@ awn_background_edgy_translate_for_flat (AwnBackground *bg,
   {
     case AWN_ORIENTATION_RIGHT:
       area->x += modifier - left;
-    case AWN_ORIENTATION_LEFT:
       area->width -= modifier - left;
       break;
-    case AWN_ORIENTATION_BOTTOM:
-      area->y += modifier - top;
+    case AWN_ORIENTATION_LEFT:
+      area->width -= modifier - right;
+      break;
     case AWN_ORIENTATION_TOP:
       area->height -= modifier - bot;
+      break;
+    case AWN_ORIENTATION_BOTTOM:
+    default:
+      area->y += modifier - top;
+      area->height -= modifier - top;
       break;
   }
 }
