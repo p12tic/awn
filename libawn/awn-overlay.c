@@ -268,15 +268,15 @@ awn_overlay_move_to (cairo_t * cr,
       coord.x = icon_width/2.0 - overlay_width / 2.0 + xoffset; 
       coord.y = 1 + icon_height / 20 + yoffset;  
       break;      
-    case GDK_GRAVITY_NORTH_EAST:
+    case GDK_GRAVITY_NORTH_WEST:
       coord.x = 1 + icon_width /20+ xoffset;
       coord.y = 1 + icon_height / 20 + yoffset;
       break;
-    case GDK_GRAVITY_EAST:
+    case GDK_GRAVITY_WEST:
       coord.x = 1 + icon_width /20+ xoffset;
       coord.y = icon_height / 2.0 - overlay_height/2.0 + yoffset;
       break;      
-    case GDK_GRAVITY_SOUTH_EAST:
+    case GDK_GRAVITY_SOUTH_WEST:
       coord.x = 1 + icon_width /20+ xoffset;
       coord.y = icon_height - overlay_height -1+ yoffset;
       break;
@@ -284,15 +284,15 @@ awn_overlay_move_to (cairo_t * cr,
       coord.x = icon_width/2.0 - overlay_width / 2.0+ xoffset;
       coord.y = icon_height - overlay_height -1+ yoffset;
       break;
-    case GDK_GRAVITY_SOUTH_WEST:
+    case GDK_GRAVITY_SOUTH_EAST:
       coord.x = icon_width - 1 - overlay_width+ xoffset;
       coord.y = icon_height - overlay_height -1+ yoffset;
       break;
-    case GDK_GRAVITY_WEST:
+    case GDK_GRAVITY_EAST:
       coord.x = icon_width - 1 - overlay_width+ xoffset;
       coord.y = icon_height / 2.0 - overlay_height/2.0 + yoffset;
       break;
-    case GDK_GRAVITY_NORTH_WEST:
+    case GDK_GRAVITY_NORTH_EAST:
       coord.x = icon_width - 1 - overlay_width+ xoffset; 
       coord.y = 1 + icon_height / 20 + yoffset;  
       break;
