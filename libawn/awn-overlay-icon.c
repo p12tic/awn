@@ -31,13 +31,15 @@ struct _AwnOverlayIconPrivate
 {
     gdouble alpha;
     gchar * icon_name;
+    gchar * icon_state;
 };
 
 enum
 {
   PROP_0,
   PROP_ALPHA,
-  PROP_ICON_NAME
+  PROP_ICON_NAME,
+  PROP_ICON_STATE
 };
 
 static void 
@@ -62,6 +64,9 @@ awn_overlay_icon_get_property (GObject *object, guint property_id,
     case PROP_ICON_NAME:
       g_value_set_string (value,priv->icon_name);
       break;
+    case PROP_ICON_STATE:
+      g_value_set_string (value,priv->icon_state);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -83,6 +88,10 @@ awn_overlay_icon_set_property (GObject *object, guint property_id,
       g_free(priv->icon_name);
       priv->icon_name = g_value_dup_string (value);
       break;
+    case PROP_ICON_STATE:
+      g_free(priv->icon_state);
+      priv->icon_state = g_value_dup_string (value);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -128,6 +137,13 @@ awn_overlay_icon_class_init (AwnOverlayIconClass *klass)
                                "",
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ICON_NAME, pspec);   
+
+  pspec = g_param_spec_string ("icon_state",
+                               "Icon state",
+                               "Icon state",
+                               "",
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_ICON_STATE, pspec);   
   
   g_type_class_add_private (klass, sizeof (AwnOverlayIconPrivate));  
 }
@@ -138,9 +154,29 @@ awn_overlay_icon_init (AwnOverlayIcon *self)
 }
 
 AwnOverlayIcon*
-awn_overlay_icon_new (void)
+awn_overlay_icon_new (AwnThemedIcon * icon, const gchar * icon_name, const gchar * state)
 {
-  return g_object_new (AWN_TYPE_OVERLAY_ICON, NULL);
+  AwnOverlayIcon * ret;
+  gchar * created_state = NULL;
+  
+  g_return_val_if_fail (icon_name,NULL);
+  g_return_val_if_fail (icon,NULL);
+  
+  if (!state)
+  {
+    created_state = g_strdup_printf ("__AWN_OVERLAY_ICON_STATE_NAME_FOR_%s",icon_name);
+    state = created_state;
+  }
+  ret = g_object_new (AWN_TYPE_OVERLAY_ICON, 
+                      "icon_name",icon_name,
+                      "icon_state",state,
+                      NULL);
+  
+  if (created_state)
+  {
+    g_free (created_state);
+  }
+  return ret;
 }
 
 static void 
@@ -155,6 +191,5 @@ _awn_overlay_icon_render ( AwnOverlay* _overlay,
 
   priv =  AWN_OVERLAY_ICON_GET_PRIVATE (overlay); 
   
-
   
 }
