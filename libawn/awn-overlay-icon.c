@@ -18,6 +18,14 @@
  
 /* awn-overlay-icon.c */
 
+/*
+ FIXME
+ hook up to theme changes... clear pixbufs when this happens.
+ 
+ the caching of pixbufs may be a bit excessive if scale,width,height are going crazy.
+ 
+ */
+
 #include "awn-overlay-icon.h"
 
 G_DEFINE_TYPE (AwnOverlayIcon, awn_overlay_icon, AWN_TYPE_OVERLAY)
@@ -34,7 +42,7 @@ struct _AwnOverlayIconPrivate
     gchar * icon_state;
     gdouble scale;
   
-    GdkPixbuf * pixbuf;
+    GHashTable *pixbufs;
 };
 
 enum
@@ -110,7 +118,12 @@ awn_overlay_icon_set_property (GObject *object, guint property_id,
 static void
 awn_overlay_icon_dispose (GObject *object)
 {
+  AwnOverlayIconPrivate * priv;
+  priv = AWN_OVERLAY_ICON_GET_PRIVATE (object);
+  
   G_OBJECT_CLASS (awn_overlay_icon_parent_class)->dispose (object);
+  
+  g_hash_table_destroy (priv->pixbufs);
 }
 
 static void
@@ -173,7 +186,7 @@ awn_overlay_icon_init (AwnOverlayIcon *self)
   AwnOverlayIconPrivate * priv;
   priv = AWN_OVERLAY_ICON_GET_PRIVATE (self);
 
-  priv->pixbuf = NULL;
+  priv->pixbufs = g_hash_table_new_full (g_str_hash,g_str_equal, g_free, g_object_unref);
 }
 
 AwnOverlayIcon*
@@ -216,19 +229,29 @@ _awn_overlay_icon_render ( AwnOverlay* _overlay,
   AwnOverlayIcon *overlay = AWN_OVERLAY_ICON(_overlay);
   AwnOverlayIconPrivate *priv;
   AwnOverlayCoord coord;
+  GdkPixbuf * pixbuf = NULL;
   
   priv =  AWN_OVERLAY_ICON_GET_PRIVATE (overlay); 
 /* probably should cache the surface FIXME */
 /* put in logic to catch changes in overlay size... and get a new pixbuf at size FIXME */
 /* after ^ should think about caching the various sized pixbuf/surfaces*/
   
-  if (!priv->pixbuf)
+  gchar * key = g_strdup_printf ("%dx%d@%lf",width,height,priv->scale);
+ 
+  pixbuf = g_hash_table_lookup (priv->pixbufs,key);
+  
+  if (! pixbuf)
   {
-    priv->pixbuf = awn_themed_icon_get_icon_at_size (icon, 
-                                                     width>height?width:height * priv->scale,
-                                                     priv->icon_state);
-  } 
+    pixbuf = awn_themed_icon_get_icon_at_size (icon, 
+                                                   width>height?width:height * priv->scale,
+                                                   priv->icon_state);
+    g_hash_table_insert (priv->pixbufs, key, pixbuf);
+  }
+  else
+  {
+    g_free (key);
+  }
   awn_overlay_move_to (cr,AWN_OVERLAY(overlay),width,height,width *priv->scale,height *priv->scale,&coord);  
-  gdk_cairo_set_source_pixbuf (cr,priv->pixbuf,coord.x,coord.y);  
+  gdk_cairo_set_source_pixbuf (cr,pixbuf,coord.x,coord.y);  
   cairo_paint_with_alpha (cr,priv->alpha);
 }
