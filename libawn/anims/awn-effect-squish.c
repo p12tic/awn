@@ -44,7 +44,7 @@ bounce_squish_hover_effect(AwnEffectsAnimation * anim)
     anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
 
-  const gint PERIOD = 28;
+  const gint PERIOD = 25;
 
   /* repaint widget */
   awn_effects_redraw(anim->effects);
@@ -102,6 +102,7 @@ bounce_squish_hover_effect(AwnEffectsAnimation * anim)
 
   if (priv->direction == AWN_EFFECT_SQUISH_UP2 && priv->height_mod >= 1.0)
   {
+    priv->top_offset = 0;
     priv->direction = AWN_EFFECT_DIR_NONE;
     priv->count = 0;
     priv->width_mod = 1.0;
@@ -130,7 +131,7 @@ bounce_squish_effect(AwnEffectsAnimation * anim)
     anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
 
-  const gint PERIOD = 28;
+  const gint PERIOD = 25;
 
   switch (priv->direction)
   {
@@ -180,6 +181,7 @@ bounce_squish_effect(AwnEffectsAnimation * anim)
 
   if (priv->direction == AWN_EFFECT_SQUISH_UP2 && priv->height_mod >= 1.0)
   {
+    priv->top_offset = 0;
     priv->direction = AWN_EFFECT_DIR_NONE;
     priv->count = 0;
     priv->width_mod = 1.0;
@@ -208,7 +210,7 @@ bounce_squish_attention_effect(AwnEffectsAnimation * anim)
     anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
 
-  const gint PERIOD = 28;
+  const gint PERIOD = 25;
 
   switch (priv->direction)
   {
@@ -265,6 +267,7 @@ bounce_squish_attention_effect(AwnEffectsAnimation * anim)
 
   if (priv->direction == AWN_EFFECT_SQUISH_UP2 && priv->height_mod >= 1.0)
   {
+    priv->top_offset = 0;
     priv->direction = AWN_EFFECT_DIR_NONE;
     priv->count = 0;
     priv->width_mod = 1.0;
@@ -293,8 +296,8 @@ bounce_squish_opening_effect(AwnEffectsAnimation * anim)
     anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
 
-  const gint PERIOD = 20;
-  const gint PERIOD2 = 28;
+  const gint PERIOD = 18;
+  const gint PERIOD2 = 25;
 
   switch (priv->direction)
   {
@@ -352,6 +355,7 @@ bounce_squish_opening_effect(AwnEffectsAnimation * anim)
 
   if (priv->direction == AWN_EFFECT_DIR_NONE && priv->count <= 0)
   {
+    priv->top_offset = 0;
     /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
@@ -377,8 +381,8 @@ bounce_squish_closing_effect(AwnEffectsAnimation * anim)
     anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
 
-  const gint PERIOD = 20;
-  const gint PERIOD2 = 28;
+  const gint PERIOD = 18;
+  const gint PERIOD2 = 25;
 
   switch (priv->direction)
   {
@@ -439,6 +443,7 @@ bounce_squish_closing_effect(AwnEffectsAnimation * anim)
 
   if (priv->direction == AWN_EFFECT_DIR_NONE && priv->count == PERIOD)
   {
+    priv->top_offset = 0;
     /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
