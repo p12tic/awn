@@ -43,7 +43,9 @@ struct _AwnOverlayPrivate
   double      x_adj;
   double      y_adj;
   double      x_per;      
-  double      y_per;  
+  double      y_per;
+  
+  gboolean    active;  /*if false then the overlay_render will not run*/
 };
 
 enum
@@ -52,7 +54,8 @@ enum
   PROP_GRAVITY,
   PROP_ALIGN,
   PROP_X_ADJUST,
-  PROP_Y_ADJUST
+  PROP_Y_ADJUST,
+  PROP_ACTIVE
 };
 
 static void
@@ -81,6 +84,9 @@ awn_overlay_get_property (GObject *object, guint property_id,
     case PROP_Y_ADJUST:
         g_value_set_double (value, priv->y_adj);
         break;
+    case PROP_ACTIVE:
+        g_value_set_boolean (value, priv->active);
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -106,6 +112,9 @@ awn_overlay_set_property (GObject *object, guint property_id,
     case PROP_Y_ADJUST:
       priv->y_adj = g_value_get_double (value);
       break;
+    case PROP_ACTIVE:
+      priv->active = g_value_get_boolean (value);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -170,6 +179,13 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                0.0,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_Y_ADJUST, pspec);  
+
+  pspec = g_param_spec_boolean ("active",
+                               "Active",
+                               "Active",
+                               TRUE,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_ACTIVE, pspec);  
     
   g_type_class_add_private (klass, sizeof (AwnOverlayPrivate));
   
@@ -211,10 +227,15 @@ void awn_overlay_render_overlay (AwnOverlay* overlay,
                                         gint height)
 {
   AwnOverlayClass *klass;
-
+  AwnOverlayPrivate * priv;
+  
+  priv = AWN_OVERLAY_GET_PRIVATE (overlay);
   klass = AWN_OVERLAY_GET_CLASS (overlay);
 
-  klass->render_overlay (overlay,icon,cr,width,height);
+  if (priv->active)
+  {
+    klass->render_overlay (overlay,icon,cr,width,height);
+  }
 }
 
 void
