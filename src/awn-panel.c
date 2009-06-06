@@ -549,7 +549,7 @@ void awn_panel_get_applet_rect (AwnPanel *panel,
   gtk_alignment_get_padding (GTK_ALIGNMENT (priv->alignment),
                              &top, &bottom, &left, &right);
 
-  gint paintable_size = priv->offset + priv->size + priv->extra_padding;
+  gint paintable_size = priv->offset + priv->size;
 
   /* this should work for both composited and non-composited */
   switch (priv->orient)
@@ -558,20 +558,20 @@ void awn_panel_get_applet_rect (AwnPanel *panel,
       area->x = left;
       area->y = top;
       area->width = width - left - right;
-      area->height = paintable_size - top;
+      area->height = paintable_size;
       break;
 
     case AWN_ORIENTATION_BOTTOM:
       area->x = left;
-      area->y = height - paintable_size + priv->extra_padding - bottom;
+      area->y = height - paintable_size - bottom;
       area->width = width - left - right;
-      area->height = paintable_size - bottom;
+      area->height = paintable_size;
       break;
 
     case AWN_ORIENTATION_RIGHT:
-      area->x = width - paintable_size + priv->extra_padding - right;
+      area->x = width - paintable_size - right;
       area->y = top;
-      area->width = paintable_size - right;
+      area->width = paintable_size;
       area->height = height - top - bottom;
       break;
 
@@ -579,7 +579,7 @@ void awn_panel_get_applet_rect (AwnPanel *panel,
     default:
       area->x = left;
       area->y = top;
-      area->width = paintable_size - left;
+      area->width = paintable_size;
       area->height = height - top - bottom;
   }
 }
@@ -1340,6 +1340,8 @@ awn_panel_update_masks (GtkWidget *panel,
     cairo_set_source_rgb (cr, 1.0f, 1.0f, 1.0f);
     awn_panel_get_applet_rect (AWN_PANEL (panel), &applet_rect,
                                real_width, real_height);
+    cairo_identity_matrix (cr);
+    cairo_new_path (cr);
     cairo_rectangle (cr, applet_rect.x, applet_rect.y,
                      applet_rect.width, applet_rect.height);
     cairo_fill (cr);
@@ -1978,39 +1980,43 @@ awn_panel_set_strut (AwnPanel *panel)
 {
   AwnPanelPrivate *priv = panel->priv;
 
-  int strut, strut_start, strut_end;
-  int width, height;
-  int x,y;
+  gint strut, strut_start, strut_end;
   GdkWindow *win;
+  GdkRectangle area;
 
-  gtk_window_get_size (GTK_WINDOW (panel), &width, &height);
-  gtk_window_get_position (GTK_WINDOW (panel), &x, &y);
+  gtk_window_get_size (GTK_WINDOW (panel), &area.width, &area.height);
+  gtk_window_get_position (GTK_WINDOW (panel), &area.x, &area.y);
 
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
-      strut_start = x;
-      strut_end = x + width - 1;
+      strut_start = area.x;
+      strut_end = area.x + area.width - 1;
       break;
     case AWN_ORIENTATION_RIGHT:
-      strut_start = y;
-      strut_end = y + height - 1;
+      strut_start = area.y;
+      strut_end = area.y + area.height - 1;
       break;
     case AWN_ORIENTATION_BOTTOM:
-      strut_start = x;
-      strut_end = x + width - 1;
+      strut_start = area.x;
+      strut_end = area.x + area.width - 1;
       break;
     case AWN_ORIENTATION_LEFT:
-      strut_start = y;
-      strut_end = y + height - 1;
+      strut_start = area.y;
+      strut_end = area.y + area.height - 1;
       break;
     default:
-      g_assert (0);
+      g_assert_not_reached ();
   }
+  strut = priv->offset + priv->size + priv->extra_padding;
+
+  /* allow AwnBackground to change the strut */
+  if (priv->bg != NULL)
+    awn_background_get_strut_offsets (priv->bg, priv->orient, &area,
+                                      &strut, &strut_start, &strut_end);
 
   win = gtk_widget_get_window (GTK_WIDGET (panel));
 
-  strut = priv->offset + priv->size + priv->extra_padding;
   xutils_set_strut (win, priv->orient, strut, strut_start, strut_end);
 }
 

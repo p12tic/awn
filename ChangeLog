@@ -1,3 +1,14 @@
+2009-06-06  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background-edgy.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	Added virtual method to AwnBackground which allows it to change the
+	strut for panel mode.
+	* src/awn-panel.c:
+	Use the new virtual method of AwnBackground.
+	Fixed a bug in get_applet_rect method.
+
 2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-surface.h:

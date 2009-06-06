@@ -62,6 +62,13 @@ static void awn_background_edgy_padding_request (AwnBackground *bg,
                                                  guint *padding_left,
                                                  guint *padding_right);
 
+static void awn_background_edgy_get_strut_offsets (AwnBackground *bg,
+                                                   AwnOrientation orient,
+                                                   GdkRectangle *area,
+                                                   gint *strut,
+                                                   gint *strut_start,
+                                                   gint *strut_end);
+
 static void
 awn_background_edgy_update_panel_size (AwnBackgroundEdgy *bg)
 {
@@ -204,6 +211,7 @@ awn_background_edgy_class_init (AwnBackgroundEdgyClass *klass)
   bg_class->padding_request = awn_background_edgy_padding_request;
   bg_class->get_shape_mask = awn_background_edgy_get_shape_mask;
   bg_class->get_input_shape_mask = awn_background_edgy_get_shape_mask;
+  bg_class->get_strut_offsets = awn_background_edgy_get_strut_offsets;
 
   g_type_class_add_private (obj_class, sizeof (AwnBackgroundEdgyPrivate));
 }
@@ -373,6 +381,23 @@ void awn_background_edgy_padding_request (AwnBackground *bg,
 }
 
 static void
+awn_background_edgy_get_strut_offsets (AwnBackground *bg,
+                                       AwnOrientation orient,
+                                       GdkRectangle *area,
+                                       gint *strut,
+                                       gint *strut_start,
+                                       gint *strut_end)
+{
+  AwnBackgroundEdgy *edgy = AWN_BACKGROUND_EDGY (bg);
+
+  /* FIXME: magic constant!
+   *   it's ACTIVE_RECT_PADDING (defined in awn-panel.c)
+   *   + flat bg top padding (for bottom orient)
+   */
+  *strut = edgy->priv->radius - edgy->priv->top_pad + 5;
+}
+
+static void
 awn_background_edgy_translate_for_flat (AwnBackground *bg,
                                         AwnOrientation orient,
                                         GdkRectangle *area)
@@ -536,8 +561,8 @@ awn_background_edgy_get_shape_mask (AwnBackground  *bg,
     awn_background_edgy_prepare_context (AWN_BACKGROUND_EDGY (bg),
                                          cr, orient, area, &width, &height);
 
-    cairo_move_to (cr, bottom_left ? 0.0 : width, height);
     draw_path (cr, height - 1.0, width, height, bottom_left);
+    cairo_line_to (cr, bottom_left ? 0.0 : width, height);
 
     cairo_fill_preserve (cr);
     cairo_stroke (cr);
