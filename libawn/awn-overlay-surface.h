@@ -54,6 +54,13 @@ typedef struct {
 
 GType awn_overlay_surface_get_type (void);
 
+/*
+This is a convenience.  In general it is best to avoid using this object.  
+ Instead you probably want to either use AwnOverlayIcon (if you're trying to 
+ overlay an icon) or you want subclass AwnOverlay yourself.  Thse _will_ give
+ better results... though you may not believe it until zoom gets reimplemented
+ and makes your overlaid surface look kind of crappy.
+*/
 AwnOverlaySurface* awn_overlay_surface_new (void);
 
 G_END_DECLS

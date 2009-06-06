@@ -42,8 +42,7 @@ public_headers = \
 	awn-overlaid-icon.h \
 	awn-overlay.h \
 	awn-overlay-icon.h \
-  awn-overlay-surface.h \
-  awn-overlay-text.h \
+  	awn-overlay-text.h \
 	awn-themed-icon.h \
 	awn-tooltip.h \
 	awn-utils.h \
@@ -74,7 +73,6 @@ source_c = \
 	awn-overlaid-icon.c \
 	awn-overlay.c \
 	awn-overlay-icon.c \
-  awn-overlay-surface.c \
 	awn-overlay-text.c \
 	awn-themed-icon.c \
 	awn-tooltip.c \

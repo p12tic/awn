@@ -22,13 +22,13 @@
 
 G_DEFINE_TYPE (AwnOverlaySurface, awn_overlay_surface, AWN_TYPE_OVERLAY)
 
-#define GET_PRIVATE(o) \
+#define AWN_OVERLAY_SURFACE_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY_SURFACE, AwnOverlaySurfacePrivate))
 
 typedef struct _AwnOverlaySurfacePrivate AwnOverlaySurfacePrivate;
 
 struct _AwnOverlaySurfacePrivate {
-    int dummy;
+    cairo_surface_t * surface;
 };
 
 static void
@@ -75,12 +75,19 @@ awn_overlay_surface_class_init (AwnOverlaySurfaceClass *klass)
   object_class->dispose = awn_overlay_surface_dispose;
   object_class->finalize = awn_overlay_surface_finalize;
 }
-
+ 
 static void
 awn_overlay_surface_init (AwnOverlaySurface *self)
 {
 }
 
+/*
+This is a convenience.  In general it is best to avoid using this object.  
+ Instead you probably want to either use AwnOverlayIcon (if you're trying to 
+ overlay an icon) or you want subclass AwnOverlay yourself.  Thse _will_ give
+ better results... though you may not believe it until zoom gets reimplemented
+ and makes your overlaid surface look kind of crappy.
+*/
 AwnOverlaySurface*
 awn_overlay_surface_new (void)
 {

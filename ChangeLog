@@ -1,6 +1,13 @@
 2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-surface.h:
+	* libawn/awn-overlay-surface.c:
+	* libawn/Makefile.am:
+	Had third thoughts about implementing AwnOverlaySurface.  Removing (at least for now).
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-surface.h:
 	include awn-cairo-utils.h not awn-cairo-utils.
 
 2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
