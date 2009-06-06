@@ -1,6 +1,12 @@
 2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-surface.h:
+        * libawn/awn-overlay-surface.c:
+	Actually remove the files from the repository (See previous commit).
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-surface.h:
 	* libawn/awn-overlay-surface.c:
 	* libawn/Makefile.am:
 	Had third thoughts about implementing AwnOverlaySurface.  Removing (at least for now).
