@@ -1,5 +1,10 @@
 2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-surface.h:
+	include awn-cairo-utils.h not awn-cairo-utils.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlaid-icon.c:
   	* libawn/awn-overlay-surface.h:
   	* libawn/awn-overlay-text.c:
