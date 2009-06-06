@@ -1,5 +1,11 @@
 2009-06-05  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-icon.c:
+	* libawn/awn-themed-icon.c:
+  	Introduce the concept of ::invisible:: prefix in the state string.  OverlayIcon defaults to this 
+
+2009-06-05  Rodney Cryderman  <rcryderman@gmail.com>
+
   	* libawn/awn-overlaid-icon.c:
   	* libawn/awn-overlaid-icon.h:
   	* libawn/awn-overlay-icon.c:
