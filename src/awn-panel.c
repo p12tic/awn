@@ -242,6 +242,8 @@ static void     awn_panel_get_applet_rect   (AwnPanel *panel,
                                              GdkRectangle *area,
                                              gint width, gint height);
 
+static void     awn_panel_refresh_alignment (AwnPanel *panel);
+
 static void     awn_panel_refresh_padding   (AwnPanel *panel,
                                              gpointer user_data);
 
@@ -269,6 +271,9 @@ awn_panel_constructed (GObject *object)
   priv->monitor = awn_monitor_new_from_config (priv->client);
   g_signal_connect (priv->monitor, "geometry_changed",
                     G_CALLBACK (on_geometry_changed), panel);
+
+  g_signal_connect_swapped (priv->monitor, "notify::monitor-align",
+                            G_CALLBACK (awn_panel_refresh_alignment), panel);
 
   /* Composited checks/setup */
   screen = gtk_widget_get_screen (panel);
@@ -470,25 +475,35 @@ awn_panel_size_request (GtkWidget *widget, GtkRequisition *requisition)
 }
 
 static
-void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
+void awn_panel_refresh_alignment (AwnPanel *panel)
 {
   AwnPanelPrivate *priv = panel->priv;
-  guint top, left, bottom, right;
+  gfloat align = priv->monitor ? priv->monitor->align : 0.5;
 
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
-      gtk_alignment_set (GTK_ALIGNMENT (priv->alignment), 0.5, 0.5, 0.0, 1.0);
+      gtk_alignment_set (GTK_ALIGNMENT (priv->alignment),
+                         align, 0.5, 0.0, 1.0);
       break;
     case AWN_ORIENTATION_LEFT:
     case AWN_ORIENTATION_RIGHT:
     default:
-      gtk_alignment_set (GTK_ALIGNMENT (priv->alignment), 0.5, 0.5, 1.0, 0.0);
+      gtk_alignment_set (GTK_ALIGNMENT (priv->alignment),
+                         0.5, align, 1.0, 0.0);
       break;
   }
+}
 
-  if (!priv->bg || !AWN_IS_BACKGROUND (priv->bg)) {
+static
+void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
+{
+  AwnPanelPrivate *priv = panel->priv;
+  guint top, left, bottom, right;
+
+  if (!priv->bg || !AWN_IS_BACKGROUND (priv->bg))
+  {
     gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment), 0, 0, 0, 0);
     priv->extra_padding = ACTIVE_RECT_PADDING;
 
@@ -1247,9 +1262,6 @@ load_correct_colormap (GtkWidget *panel)
   gtk_widget_set_colormap (panel, colormap);
 }
 
-/*
- * At the moment, we just want to restart the panel on composited state changes
- */
 static void 
 on_composited_changed (GtkWidget *widget, gpointer data)
 {
@@ -1265,13 +1277,12 @@ on_composited_changed (GtkWidget *widget, gpointer data)
   if (priv->composited)
   {
     gtk_widget_shape_combine_mask (widget, NULL, 0, 0);
-    gdk_window_set_composited (win, priv->composited);
   }
   else
   {
     gtk_widget_input_shape_combine_mask (widget, NULL, 0, 0);
-    gdk_window_set_composited (win, priv->composited);
   }
+  gdk_window_set_composited (win, priv->composited);
 
   awn_panel_refresh_padding (AWN_PANEL (widget), NULL);
 }
@@ -1666,7 +1677,7 @@ awn_panel_set_offset  (AwnPanel *panel,
   
   priv->offset = offset;
 
-  awn_panel_refresh_padding (panel, NULL);
+  //awn_panel_refresh_padding (panel, NULL);
 
   g_signal_emit (panel, _panel_signals[OFFSET_CHANGED], 0, priv->offset);
 
@@ -1679,6 +1690,8 @@ awn_panel_set_orient (AwnPanel *panel, gint orient)
   AwnPanelPrivate *priv = panel->priv;
 
   priv->orient = orient;
+
+  awn_panel_refresh_alignment (panel);
 
   awn_panel_refresh_padding (panel, NULL);
 
