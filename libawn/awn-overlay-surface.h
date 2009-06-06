@@ -21,7 +21,9 @@
 #ifndef _AWN_OVERLAY_SURFACE
 #define _AWN_OVERLAY_SURFACE
 
-#include <awn-overlay.h>
+#include "awn-cairo-utils"
+#include "awn-overlay.h"
+
 
 G_BEGIN_DECLS
 

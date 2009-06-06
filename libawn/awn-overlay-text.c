@@ -19,9 +19,11 @@
 
 /* awn-overlay-text.c */
 
-#include "awn-overlay-text.h"
-#include <awn-cairo-utils.h>
 #include <gtk/gtk.h>
+
+#include "awn-overlay-text.h"
+#include "awn-cairo-utils.h"
+
 
 
 G_DEFINE_TYPE (AwnOverlayText, awn_overlay_text, AWN_TYPE_OVERLAY)

@@ -1,5 +1,12 @@
 2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlaid-icon.c:
+  	* libawn/awn-overlay-surface.h:
+  	* libawn/awn-overlay-text.c:
+	Fix some #includes.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/Makefile.am
 	Add AwnOverlaySurface source files into build system.
 

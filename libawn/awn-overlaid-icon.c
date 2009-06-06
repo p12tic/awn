@@ -21,8 +21,8 @@
 #include <gio/gio.h>
 #include <cairo/cairo-xlib.h>
 #include <math.h>
-#include <awn-cairo-utils.h>
 
+#include "awn-cairo-utils.h"
 #include "awn-overlaid-icon.h"
 
 G_DEFINE_TYPE (AwnOverlaidIcon, awn_overlaid_icon, AWN_TYPE_THEMED_ICON)
