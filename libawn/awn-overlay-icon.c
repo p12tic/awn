@@ -200,7 +200,7 @@ awn_overlay_icon_new (AwnThemedIcon * icon, const gchar * icon_name, const gchar
   
   if (!state)
   {
-    created_state = g_strdup_printf ("__AWN_OVERLAY_ICON_STATE_NAME_FOR_%s",icon_name);
+    created_state = g_strdup_printf ("::invisible::__AWN_OVERLAY_ICON_STATE_NAME_FOR_%s",icon_name);
     state = created_state;
   }
   

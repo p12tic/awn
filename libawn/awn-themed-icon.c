@@ -485,7 +485,8 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
 {
   AwnThemedIconPrivate *priv;
   guint n_states;
-
+  gchar ** iter;
+  
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
   g_return_if_fail (applet_name);
   g_return_if_fail (uid);
@@ -549,11 +550,17 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
   /*
    * Initate drag_drop 
    */
-  gtk_drag_dest_set (GTK_WIDGET (icon),
+  for (iter = priv->states; *iter; iter++)
+  {
+    if (g_strstr_len (*iter,-1, "::invisible::") !=  *iter)
+    {
+      gtk_drag_dest_set (GTK_WIDGET (icon),
                      GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
                      drop_types, n_drop_types,
                      GDK_ACTION_COPY | GDK_ACTION_ASK);
-  
+      break;
+    }
+  }
 }
 
 void
@@ -606,7 +613,7 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
   icon_names[priv->n_states] = g_strdup (icon_name);
   
   states [priv->n_states+1] = NULL;
-  states [priv->n_states] = g_strdup (state);
+  states [priv->n_states] = g_strdup (state?state:"::invisible::unknown");
  
   
   awn_themed_icon_set_info (icon,applet_name,uid,states,icon_names);
@@ -773,6 +780,18 @@ on_icon_theme_changed (GtkIconTheme *theme, AwnThemedIcon *icon)
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
   ensure_icon (icon);
 }
+
+/*
+ FIXME among other things:
+ 
+ Needs to be made aware of the concept of ::invisible:: mixed with normal states.
+ 
+ I expect it does not deal with multiple icons currently beyond assuming the 
+ drag and drop is for the currently selected stated.  Should provide a drop down
+ of all icons that do not have ::invisible:: states default the choice to the 
+ currently selected state.
+ 
+ */
 
 void 
 awn_themed_icon_drag_data_received (GtkWidget        *widget, 
