@@ -1,7 +1,7 @@
 2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
 	
 	* libawn/awn-overlay-text.c:
-        Choose a reasonable call from the current gtkstyle unless a text-color has been provided.
+        Choose a reasonable colour from the current gtkstyle unless a text-color has been provided.
 
 2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
 
