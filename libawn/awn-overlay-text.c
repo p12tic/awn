@@ -20,6 +20,7 @@
 /* awn-overlay-text.c */
 
 #include <gtk/gtk.h>
+#include <pango/pangocairo.h>
 
 #include "awn-overlay-text.h"
 #include "awn-cairo-utils.h"
@@ -36,6 +37,8 @@ typedef struct _AwnOverlayTextPrivate AwnOverlayTextPrivate;
 struct _AwnOverlayTextPrivate {
     gchar * text;
     gdouble font_sizing;
+    PangoFontDescription *font_description;
+  
 };
 
 enum
@@ -107,6 +110,20 @@ awn_overlay_text_finalize (GObject *object)
 }
 
 static void
+awn_overlay_text_constructed (GObject *object)
+{
+  AwnOverlayTextPrivate *priv;
+
+  priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object); 
+
+  /*FIXME...  make into properties and hook up a signal for prop changes*/
+  
+  priv->font_description = pango_font_description_new ();
+  pango_font_description_set_family (priv->font_description, "serif");
+  pango_font_description_set_weight (priv->font_description, PANGO_WEIGHT_BOLD);
+}
+
+static void
 awn_overlay_text_class_init (AwnOverlayTextClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -116,6 +133,7 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
   object_class->set_property = awn_overlay_text_set_property;
   object_class->dispose = awn_overlay_text_dispose;
   object_class->finalize = awn_overlay_text_finalize;
+  object_class->constructed = awn_overlay_text_constructed;
   
   AWN_OVERLAY_CLASS(klass)->render_overlay = _awn_overlay_text_render;
   
@@ -145,6 +163,7 @@ awn_overlay_text_init (AwnOverlayText *self)
 
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (self); 
   priv->text = NULL;  
+
 }
 
 AwnOverlayText*
@@ -154,85 +173,6 @@ awn_overlay_text_new (void)
                        "gravity", GDK_GRAVITY_CENTER,
                        NULL);
 }
-
-
-static void
-awn_overlay_text_move_to (cairo_t * cr,
-                           AwnOverlay* overlay,
-                           gint   icon_width,
-                           gint   icon_height,
-                           gint   overlay_width,
-                           gint   overlay_height
-                           )
-{
-  gint yoffset = 0;
-  gdouble xoffset;
-  gint align;
-  GdkGravity gravity;
-  gdouble x_adj;
-  gdouble y_adj;
-
-  g_object_get (overlay,
-               "align", &align,
-               "gravity", &gravity,
-                "x_adj", &x_adj,
-                "y_adj", &y_adj,
-               NULL);
-  
-  yoffset = overlay_height / 2.0 + 2; /*Magic is bad FIXME*/
-
-  switch (align)
-  {
-    case AWN_OVERLAY_ALIGN_CENTRE:
-      xoffset = 0;
-      break;
-    case AWN_OVERLAY_ALIGN_LEFT:
-      xoffset = overlay_width / 2.0;
-      break;
-    case AWN_OVERLAY_ALIGN_RIGHT:
-      xoffset = -1 * overlay_width / 2.0;      
-      break;
-    default:
-      g_assert_not_reached();
-  }
-  xoffset = xoffset + (x_adj * icon_width);
-  yoffset = yoffset + (y_adj * icon_height);
-  switch (gravity)
-  {
-    case GDK_GRAVITY_CENTER:
-      cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0 + xoffset, icon_height / 2.0 - overlay_height/2.0 + yoffset);  
-      break;
-    case GDK_GRAVITY_NORTH:
-      cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0 + xoffset, 1 + icon_height / 20 + yoffset);  
-      break;      
-    case GDK_GRAVITY_NORTH_EAST:
-      cairo_move_to (cr, 1 + icon_width /20+ xoffset, 1 + icon_height / 20 + yoffset);  
-      break;
-    case GDK_GRAVITY_EAST:
-      cairo_move_to (cr, 1 + icon_width /20+ xoffset, icon_height / 2.0 - overlay_height/2.0 + yoffset);
-      break;      
-    case GDK_GRAVITY_SOUTH_EAST:
-      cairo_move_to (cr, 1 + icon_width /20+ xoffset, icon_height - overlay_height -1+ yoffset);      
-      break;
-    case GDK_GRAVITY_SOUTH:
-      cairo_move_to (cr, icon_width/2.0 - overlay_width / 2.0+ xoffset, icon_height - overlay_height -1+ yoffset);
-      break;
-    case GDK_GRAVITY_SOUTH_WEST:
-      cairo_move_to (cr, icon_width - 1 - overlay_width+ xoffset, icon_height - overlay_height -1+ yoffset);
-      break;
-    case GDK_GRAVITY_WEST:
-      cairo_move_to (cr, icon_width - 1 - overlay_width+ xoffset, icon_height / 2.0 - overlay_height/2.0 + yoffset);
-      break;
-    case GDK_GRAVITY_NORTH_WEST:
-      cairo_move_to (cr, icon_width - 1 - overlay_width+ xoffset, 1 + icon_height / 20 + yoffset);  
-      break;
-    default:
-      g_assert_not_reached();
-      
-  }
-
-}
-
 
 static void 
 _awn_overlay_text_render ( AwnOverlay* _overlay,
@@ -244,17 +184,26 @@ _awn_overlay_text_render ( AwnOverlay* _overlay,
   AwnOverlayText *overlay = AWN_OVERLAY_TEXT(_overlay);
   DesktopAgnosticColor * text_colour; /*FIXME*/
   AwnOverlayTextPrivate *priv;
+  gint layout_width;
+  gint layout_height;
+  PangoLayout *layout;
 
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (overlay); 
-  
+ 
   text_colour = desktop_agnostic_color_new(&GTK_WIDGET(icon)->style->fg[GTK_STATE_ACTIVE], G_MAXUSHORT);
   awn_cairo_set_source_color (cr,text_colour);
-  cairo_text_extents_t extents;
-  cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
-  cairo_set_font_size(cr, priv->font_sizing * width / 48.0);
-  cairo_text_extents(cr, priv->text, &extents);  
-  awn_overlay_text_move_to (cr, _overlay, width, height,extents.width,extents.height);
-  cairo_show_text(cr, priv->text);
+
+  layout = pango_cairo_create_layout (cr);
+  pango_font_description_set_absolute_size (priv->font_description, 
+                                            priv->font_sizing * PANGO_SCALE * height / 48.0);
+  pango_layout_set_font_description (layout, priv->font_description);
+
+  pango_layout_set_text (layout, priv->text, -1);  
+  pango_layout_get_pixel_size (layout,&layout_width,&layout_height);
+  awn_overlay_move_to (cr, _overlay, width, height,layout_width,layout_height,NULL);
+  pango_cairo_show_layout (cr, layout);
+
+  g_object_unref (layout);
   g_object_unref (text_colour);  
   
 }

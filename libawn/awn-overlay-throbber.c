@@ -33,7 +33,7 @@ typedef struct _AwnOverlayThrobberPrivate AwnOverlayThrobberPrivate;
 struct _AwnOverlayThrobberPrivate 
 {
   AwnIcon *   icon;
-  gint counter;
+  gint        counter;
   guint       timer_id;  
   guint       timeout;
   
