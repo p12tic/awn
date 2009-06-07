@@ -23,7 +23,7 @@
  * @short_description: Base object for overlays used with AwnOverlaidIcon.
  * @see_also: #AwnOverlaidIcon, #AwnOverlayText, #AwnOverlayIcon, #AwnOverlayThrobber
  * @stability: Unstable
- * @include: libawn/awn-overlay.h
+ * @include: libawn/libawn.h
  *
  * Base object for overlays used with AwnOverlaidIcon.  This object is only useful
  * as a base class from which others are derived.
