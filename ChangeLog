@@ -1,3 +1,14 @@
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/Makefile.am:
+	Add awn-overlay-throbber.[ch] into build system.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
+	* libawn/awn-overlay-throbber.h:
+	Initial pull of the awn throbber code from src into AwnOverlayThrobber.
+
 2009-06-07  Michal Hruby <michal.mhr@gmail.com>
 
 	* src/awn-panel.c:
