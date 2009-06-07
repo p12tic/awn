@@ -35,13 +35,15 @@ struct _AwnOverlayThrobberPrivate
   AwnIcon *   icon;
   gint counter;
   guint       timer_id;  
+  guint       timeout;
   
 };
 
 enum
 {
   PROP_0,
-  PROP_ICON
+  PROP_ICON,
+  PROP_TIMEOUT
 };
 
 static void 
@@ -62,6 +64,9 @@ awn_overlay_throbber_get_property (GObject *object, guint property_id,
     case PROP_ICON:
       g_value_set_object (value,priv->icon);
       break;    
+    case PROP_TIMEOUT:
+      g_value_set_uint (value,priv->timeout);
+      break;          
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -80,6 +85,9 @@ awn_overlay_throbber_set_property (GObject *object, guint property_id,
       }
       priv->icon = g_value_get_object (value);
       break;    
+    case PROP_TIMEOUT:
+      priv->timeout = g_value_get_uint (value);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -124,7 +132,7 @@ _awn_overlay_throbber_active_changed (GObject    *pspec,
   {
     if (!priv->timer_id)
     {
-      priv->timer_id = g_timeout_add(100, _awn_overlay_throbber_timeout, throbber);      
+      priv->timer_id = g_timeout_add(priv->timeout, _awn_overlay_throbber_timeout, throbber);      
     }
   }
   else
@@ -151,8 +159,6 @@ awn_overlay_throbber_class_init (AwnOverlayThrobberClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GParamSpec   *pspec;    
 
-  g_type_class_add_private (klass, sizeof (AwnOverlayThrobberPrivate));
-
   object_class->get_property = awn_overlay_throbber_get_property;
   object_class->set_property = awn_overlay_throbber_set_property;
   object_class->dispose = awn_overlay_throbber_dispose;
@@ -168,6 +174,16 @@ awn_overlay_throbber_class_init (AwnOverlayThrobberClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ICON, pspec);   
 
+  pspec = g_param_spec_uint ("timeout",
+                               "Timeout",
+                               "Timeout",
+                               50,
+                               10000,
+                               100,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_TIMEOUT, pspec);   
+
+  g_type_class_add_private (klass, sizeof (AwnOverlayThrobberPrivate));
   
 }
 
