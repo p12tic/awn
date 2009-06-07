@@ -40,11 +40,11 @@ struct _AwnAppletManagerPrivate
   AwnOrientation   orient;
   gint             offset;
   gint             size;
-  GSList           *applet_list;
+  GSList          *applet_list;
 
   GHashTable      *applets;
+  GHashTable      *extra_widgets;
   GQuark           touch_quark;
-
 
   /* Current box class */
   GtkWidgetClass  *klass;
@@ -208,6 +208,12 @@ awn_applet_manager_dispose (GObject *object)
     priv->applets = NULL;
   }
 
+  if (priv->extra_widgets)
+  {
+    g_hash_table_destroy (priv->extra_widgets);
+    priv->extra_widgets = NULL;
+  }
+
   if (priv->klass)
   {
     g_type_class_unref (priv->klass);
@@ -293,6 +299,7 @@ awn_applet_manager_init (AwnAppletManager *manager)
   priv->touch_quark = g_quark_from_string ("applets-touch-quark");
   priv->applets = g_hash_table_new_full (g_str_hash, g_str_equal,
                                          g_free, NULL);
+  priv->extra_widgets = g_hash_table_new (g_direct_hash, g_direct_equal);
 
   gtk_widget_show_all (GTK_WIDGET (manager));
 }
@@ -514,8 +521,10 @@ void
 awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
 {
   AwnAppletManagerPrivate *priv = manager->priv;
-  GSList                   *a;
+  GSList                  *a;
+  GList                   *w;
   gint                     i = 0;
+  gint                     applet_num = 0;
 
   if (!GTK_WIDGET_REALIZED (manager))
     return;
@@ -526,9 +535,14 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
     return;
   }
 
+  guint applet_count = g_slist_length (priv->applet_list);
+  gint back_pos = (gint)applet_count;
+  back_pos = -back_pos;
+
   /* Set each of the current apps as "untouched" */
   g_hash_table_foreach (priv->applets, (GHFunc)zero_applets, manager);
 
+  GList *widgets = g_hash_table_get_keys (priv->extra_widgets);
   /* Go through the list of applets. Re-order those that are already active, 
    * and create those that are not
    */
@@ -563,6 +577,26 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
       }
     }
 
+    /* insert extra widgets on correct position */
+    w = widgets;
+    while (w)
+    {
+      gint pos = GPOINTER_TO_INT (g_hash_table_lookup (priv->extra_widgets,
+                                                       w->data));
+
+      if (pos == applet_num || pos == back_pos)
+      {
+        gtk_box_reorder_child (GTK_BOX (manager), w->data, i++);
+        /* widget placed, remove from list */
+        widgets = g_list_remove (widgets, w->data);
+        w = widgets;
+        continue;
+      }
+
+      w = w->next;
+    }
+    applet_num++; back_pos++;
+
     /* Order the applet correctly */
     gtk_box_reorder_child (GTK_BOX (manager), applet, i++);
     gtk_box_reorder_child (GTK_BOX (manager),
@@ -571,11 +605,41 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
     /* Make sure we don't kill it during clean up */
     g_object_set_qdata (G_OBJECT (applet), 
                         priv->touch_quark, GINT_TO_POINTER (1));
-    
+
     g_strfreev (tokens);
   }
 
+  g_list_free (widgets);
+
   /* Delete applets that have been removed from the list */
   g_hash_table_foreach_remove (priv->applets, (GHRFunc)delete_applets, manager);
+}
+
+void
+awn_applet_manager_add_widget (AwnAppletManager *manager,
+                               GtkWidget *widget, gint pos)
+{
+  gpointer key, val;
+  AwnAppletManagerPrivate *priv = manager->priv;
+
+  if (!g_hash_table_lookup_extended (priv->extra_widgets, widget, &key, &val))
+  {
+    gtk_box_pack_start (GTK_BOX (manager), widget, FALSE, FALSE, 0);
+    /* called is supposed to call gtk_widget_show! */
+  }
+  g_hash_table_replace (priv->extra_widgets, widget, GINT_TO_POINTER (pos));
+
+  awn_applet_manager_refresh_applets (manager);
+}
+
+void
+awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
+{
+  AwnAppletManagerPrivate *priv = manager->priv;
+
+  if (g_hash_table_remove (priv->extra_widgets, widget))
+  {
+    gtk_container_remove (GTK_CONTAINER (manager), widget);
+  }
 }
 

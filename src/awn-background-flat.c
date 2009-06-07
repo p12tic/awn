@@ -139,6 +139,7 @@ awn_background_flat_new (AwnConfigClient *client, AwnPanel *panel)
 static void 
 draw_rect (AwnBackground  *bg,
            cairo_t        *cr,
+           AwnOrientation orient,
            gdouble         x,
            gdouble         y,
            gint            width,
@@ -149,14 +150,32 @@ draw_rect (AwnBackground  *bg,
   AwnCairoRoundCorners state = ROUND_TOP;
 
   if (expand){ state = ROUND_NONE; x-=2; width+=4; }
-  else if (align == 0.0f){ state = ROUND_TOP_RIGHT; x-=2; width+=2; }
-  else if(align == 1.0f){ state = ROUND_TOP_LEFT; width+=2; }
+  else
+  {
+    switch (orient)
+    {
+      case AWN_ORIENTATION_BOTTOM:
+      case AWN_ORIENTATION_LEFT:
+        if (align == 0.0f){ state = ROUND_TOP_RIGHT; x-=2; width+=2; }
+        else if(align == 1.0f){ state = ROUND_TOP_LEFT; width+=2; }
+        break;
+      case AWN_ORIENTATION_TOP:
+      case AWN_ORIENTATION_RIGHT:
+        if (align == 0.0f){ state = ROUND_TOP_LEFT; width+=2; }
+        else if(align == 1.0f){ state = ROUND_TOP_RIGHT; x-=2; width+=2; }
+        break;
+      default:
+        break;
+    }
+
+  }
 
   awn_cairo_rounded_rect (cr, x, y, width, height, bg->corner_radius, state);
 }
 
 static void
 draw_top_bottom_background (AwnBackground  *bg,
+                            AwnOrientation orient,
                             cairo_t        *cr,
                             gint            width,
                             gint            height)
@@ -184,7 +203,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   pat = cairo_pattern_create_linear (0, 0, 0, height);
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
-  draw_rect (bg, cr, 1, 1, width-2, height-1, align, expand);
+  draw_rect (bg, cr, orient, 1, 1, width-2, height-1, align, expand);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
@@ -194,7 +213,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   pat = cairo_pattern_create_linear (0, 0, 0, (height/3.0));
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
-  draw_rect (bg, cr, 1, 1, width-2, height/3.0, align, expand);
+  draw_rect (bg, cr, orient, 1, 1, width-2, height/3.0, align, expand);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
@@ -204,12 +223,12 @@ draw_top_bottom_background (AwnBackground  *bg,
 
   /* Internal border */
   awn_cairo_set_source_color (cr, bg->hilight_color);
-  draw_rect (bg, cr, 1, 1, width-3, height+3, align, expand);
+  draw_rect (bg, cr, orient, 1, 1, width-3, height+3, align, expand);
   cairo_stroke (cr);
 
   /* External border */
   awn_cairo_set_source_color (cr, bg->border_color);
-  draw_rect (bg, cr, 0, 0, width-1, height+3, align, expand);
+  draw_rect (bg, cr, orient, 0, 0, width-1, height+3, align, expand);
   cairo_stroke (cr);
 }
 
@@ -280,7 +299,7 @@ awn_background_flat_draw (AwnBackground  *bg,
       break;
   }
 
-  draw_top_bottom_background (bg, cr, width, height);
+  draw_top_bottom_background (bg, orient, cr, width, height);
 
   cairo_restore (cr);
 }
@@ -325,7 +344,7 @@ awn_background_flat_get_shape_mask (AwnBackground  *bg,
       break;
   }
 
-  draw_rect (bg, cr, 0, 0, width, height+3, align, expand);
+  draw_rect (bg, cr, orient, 0, 0, width, height+3, align, expand);
   cairo_fill (cr);
 
   cairo_restore (cr);

@@ -32,11 +32,14 @@
 #include <math.h>
 
 #include "awn-applet.h"
+#include "awn-applet-simple.h"
 #include "awn-dialog.h"
+#include "awn-icon.h"
 #include "awn-cairo-utils.h"
 #include "awn-config-bridge.h"
 #include "awn-config-client.h"
 #include "awn-defines.h"
+#include "awn-utils.h"
 
 #include "gseal-transition.h"
 
@@ -276,8 +279,17 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
   }
 }
 
+static void
+_real_show (GtkWidget *widget)
+{
+  awn_dialog_refresh_position (AWN_DIALOG (widget), 0, 0);
+
+  /* in Vala terms: base.show(); */
+  GTK_WIDGET_CLASS (awn_dialog_parent_class)->show (widget);
+}
+
 static gboolean
-_expose_event(GtkWidget *widget, GdkEventExpose *expose)
+_expose_event (GtkWidget *widget, GdkEventExpose *expose)
 {
   AwnDialog *dialog;
   AwnDialogPrivate *priv;
@@ -343,17 +355,18 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
   const int ROUND_RADIUS = priv->window_padding / 2;
 
   /* fill for the titlebar */
-  GtkRequisition hbox_req;
-  gtk_widget_size_request (priv->hbox, &hbox_req);
-  if (hbox_req.height > 0)
+  if (GTK_WIDGET_VISIBLE (priv->title))
   {
     cairo_save (cr);
 
+    cairo_identity_matrix (cr);
+    cairo_translate (cr, 0.5, 0.5);
     cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
     awn_cairo_set_source_color (cr, priv->g_histep_1);
 
     const int inner_w = width - 2*BORDER - 4;
-    const int inner_h = hbox_req.height + (priv->window_padding - BORDER);
+    const int inner_h = priv->title->allocation.height
+                        + (priv->window_padding - BORDER);
 
     awn_cairo_rounded_rect (cr, BORDER + 2, BORDER + 2,
                             inner_w, inner_h,
@@ -542,6 +555,21 @@ _on_title_notify(GObject *dialog, GParamSpec *spec, gpointer null)
   {
     gtk_widget_hide(priv->title);
   }
+}
+
+static void
+_on_active_changed(GObject *dialog, GParamSpec *spec, gpointer null)
+{
+  AwnDialogPrivate *priv;
+
+  priv = AWN_DIALOG(dialog)->priv;
+
+  if (!AWN_IS_APPLET_SIMPLE (priv->anchor)) return; // FIXME later
+
+  AwnAppletSimple *simple = AWN_APPLET_SIMPLE (priv->anchor);
+
+  awn_icon_set_is_active (AWN_ICON (awn_applet_simple_get_icon (simple)),
+                          gtk_window_is_active (GTK_WINDOW (dialog)));
 }
 
 static void
@@ -794,6 +822,7 @@ awn_dialog_class_init(AwnDialogClass *klass)
 
   widget_class = GTK_WIDGET_CLASS (klass);
   widget_class->expose_event = _expose_event;
+  widget_class->show = _real_show;
 
   cont_class = GTK_CONTAINER_CLASS (klass);
   cont_class->add = awn_dialog_add;
@@ -929,6 +958,8 @@ awn_dialog_init (AwnDialog *dialog)
   g_signal_connect (dialog, "composited-changed",
                     G_CALLBACK (_on_composited_changed), NULL);
 
+  awn_utils_ensure_transparent_bg (GTK_WIDGET (dialog));
+
   /* alignment for dialog's border */
   priv->align = gtk_alignment_new (0.5, 0.5, 1, 1);
 
@@ -940,8 +971,8 @@ awn_dialog_init (AwnDialog *dialog)
   gtk_container_add (GTK_CONTAINER (priv->align), priv->vbox);
 
   /* titlebar */
-  priv->hbox = gtk_hbox_new (FALSE, 2);
-  gtk_box_pack_start (GTK_BOX(priv->vbox), priv->hbox, TRUE, TRUE, 0);
+  //priv->hbox = gtk_hbox_new (FALSE, 2);
+  //gtk_box_pack_start (GTK_BOX(priv->vbox), priv->hbox, TRUE, TRUE, 0);
 
   /* title widget itself */
   priv->title = gtk_label_new ("");
@@ -950,13 +981,16 @@ awn_dialog_init (AwnDialog *dialog)
   gtk_misc_set_alignment (GTK_MISC (priv->title), 0.5, 0.5);
   gtk_misc_set_padding (GTK_MISC (priv->title), 4, 4);
 
-  gtk_box_pack_start (GTK_BOX (priv->hbox), priv->title, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (priv->vbox), priv->title, TRUE, TRUE, 0);
 
   /* See if the title has been set */
   g_signal_connect (dialog, "notify::title",
                     G_CALLBACK (_on_title_notify), NULL);
 
   g_object_notify (G_OBJECT (dialog), "title");
+
+  g_signal_connect (dialog, "notify::is-active",
+                    G_CALLBACK (_on_active_changed), NULL);
 }
 
 // FIXME: we're still missing dispose method
@@ -977,7 +1011,7 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
   if (!width)  width  = GTK_WIDGET (dialog)->allocation.width;
   if (!height) height = GTK_WIDGET (dialog)->allocation.height;
 
-    win = gtk_widget_get_window (priv->anchor);
+  win = gtk_widget_get_window (priv->anchor);
 
   if (!win) return; // widget might not be realized yet
 
@@ -1029,27 +1063,42 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
 
   if (priv->last_x != x || priv->last_y != y)
   {
-    /* 
+    /*
      * some optimization, we dont want to move the window on every small
      *  change 
      */
-    gboolean both_axes = priv->last_x != x && priv->last_y != y;
-    gboolean huge_delta = FALSE;
-    if (!both_axes)
+    gboolean dominant_axis_changed = FALSE;
+    switch (priv->orient)
     {
-      gint delta = abs(priv->last_x - x) + abs(priv->last_y - y);
+      case AWN_ORIENTATION_LEFT:
+      case AWN_ORIENTATION_RIGHT:
+        dominant_axis_changed = priv->last_x != x;
+        break;
+      default:
+        dominant_axis_changed = priv->last_y != y;
+        break;
+    }
+
+    /*g_debug ("last != current; last [%d, %d], now [%d, %d], (%d x %d)",
+             priv->last_x, priv->last_y, x, y, width, height);*/
+
+    gboolean huge_delta = FALSE;
+    if (!dominant_axis_changed)
+    {
       switch (priv->orient)
       {
         case AWN_ORIENTATION_LEFT:
         case AWN_ORIENTATION_RIGHT:
-          huge_delta = delta >= height / 10;
+          huge_delta = !(y >= priv->last_y - height/3
+                         && y <= priv->last_y + height/3);
           break;
         default:
-          huge_delta = delta >= width / 10;
+          huge_delta = !(x >= priv->last_x - width/3
+                         && x <= priv->last_x + width/3);
           break;
       }
     }
-    if (both_axes || huge_delta)
+    if (dominant_axis_changed || huge_delta)
     {
       priv->last_x = x;
       priv->last_y = y;
