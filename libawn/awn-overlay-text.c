@@ -38,6 +38,7 @@ struct _AwnOverlayTextPrivate {
     gchar * text;
     gdouble font_sizing;
     PangoFontDescription *font_description;
+    DesktopAgnosticColor * text_color;
   
 };
 
@@ -45,7 +46,8 @@ enum
 {
   PROP_0,
   PROP_FONT_SIZING,
-  PROP_TEXT 
+  PROP_TEXT,
+  PROP_TEXT_COLOR
 };
 
 static void 
@@ -71,6 +73,9 @@ awn_overlay_text_get_property (GObject *object, guint property_id,
     case PROP_TEXT:
       g_value_set_string (value,priv->text);
       break;
+    case PROP_TEXT_COLOR:
+      g_value_set_object (value,priv->text_color);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -91,6 +96,13 @@ awn_overlay_text_set_property (GObject *object, guint property_id,
     case PROP_TEXT:
       g_free(priv->text);
       priv->text = g_value_dup_string (value);
+      break;
+    case PROP_TEXT_COLOR:
+      if (priv->text_color)
+      {
+        g_object_unref (priv->text_color);
+      }
+      priv->text_color = g_value_get_object (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -120,7 +132,8 @@ awn_overlay_text_constructed (GObject *object)
   
   priv->font_description = pango_font_description_new ();
   pango_font_description_set_family (priv->font_description, "sans");
-  pango_font_description_set_weight (priv->font_description, PANGO_WEIGHT_BOLD);
+  pango_font_description_set_weight (priv->font_description, PANGO_WEIGHT_SEMIBOLD);
+  pango_font_description_set_stretch (priv->font_description, PANGO_STRETCH_CONDENSED);  
 }
 
 static void
@@ -152,7 +165,14 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
                                "",
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_TEXT, pspec);   
-    
+
+  pspec = g_param_spec_object ("text-color",
+                               "Text Colour",
+                               "Text Colour",
+                               DESKTOP_AGNOSTIC_TYPE_COLOR,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_TEXT_COLOR, pspec);   
+  
   g_type_class_add_private (klass, sizeof (AwnOverlayTextPrivate));  
 
 }
@@ -190,10 +210,19 @@ _awn_overlay_text_render ( AwnOverlay* _overlay,
   PangoLayout *layout;
 
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (overlay); 
- 
-  text_colour = desktop_agnostic_color_new(&GTK_WIDGET(icon)->style->fg[GTK_STATE_ACTIVE], G_MAXUSHORT);
-  awn_cairo_set_source_color (cr,text_colour);
 
+  if (priv->text_color)
+  {
+    text_colour = priv->text_color;
+    g_object_ref (text_colour);
+  }
+  else
+  {
+    text_colour = desktop_agnostic_color_new(&GTK_WIDGET(icon)->style->fg[GTK_STATE_ACTIVE], G_MAXUSHORT);
+  }
+  awn_cairo_set_source_color (cr,text_colour);
+  g_object_unref (text_colour);       
+  
   layout = pango_cairo_create_layout (cr);
   pango_font_description_set_absolute_size (priv->font_description, 
                                             priv->font_sizing * PANGO_SCALE * height / 48.0);
@@ -204,5 +233,4 @@ _awn_overlay_text_render ( AwnOverlay* _overlay,
   pango_cairo_show_layout (cr, layout);
 
   g_object_unref (layout);
-  g_object_unref (text_colour);   
 }
