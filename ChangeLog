@@ -1,5 +1,10 @@
 2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-text.c:
+	Switch font family to sans
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-defines.h:
   	* libawn/awn-overlay-icon.c:
   	* libawn/awn-overlay-text.c:

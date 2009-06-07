@@ -119,7 +119,7 @@ awn_overlay_text_constructed (GObject *object)
   /*FIXME...  make into properties and hook up a signal for prop changes*/
   
   priv->font_description = pango_font_description_new ();
-  pango_font_description_set_family (priv->font_description, "serif");
+  pango_font_description_set_family (priv->font_description, "sans");
   pango_font_description_set_weight (priv->font_description, PANGO_WEIGHT_BOLD);
 }
 
