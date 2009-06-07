@@ -1,5 +1,11 @@
 2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	Update, given the libdesktop-agnostic-related changes.
+
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/tmpl/awn-applet-dialog.sgml:
 	* doc/reference/tmpl/awn-applet-simple.sgml:
 	* doc/reference/tmpl/awn-applet.sgml:
