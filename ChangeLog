@@ -1,3 +1,25 @@
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/tmpl/awn-applet-dialog.sgml:
+	* doc/reference/tmpl/awn-applet-simple.sgml:
+	* doc/reference/tmpl/awn-applet.sgml:
+	* doc/reference/tmpl/awn-cairo-utils.sgml:
+	* doc/reference/tmpl/awn-config-client.sgml:
+	* doc/reference/tmpl/awn-defines.sgml:
+	* doc/reference/tmpl/awn-desktop-item.sgml:
+	* doc/reference/tmpl/awn-effects.sgml:
+	* doc/reference/tmpl/awn-plug.sgml:
+	* doc/reference/tmpl/awn-settings.sgml:
+	* doc/reference/tmpl/awn-title.sgml:
+	* doc/reference/tmpl/awn-vfs.sgml:
+	* doc/reference/tmpl/libawn-unused.sgml:
+	Remove.
+
+	* .bzrignore:
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	Fix gtk-doc generation.
+
 2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay.c

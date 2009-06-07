@@ -60,7 +60,6 @@ doc/reference/sgml-build.stamp
 doc/reference/sgml.stamp
 doc/reference/tmpl-build.stamp
 doc/reference/tmpl.stamp
-doc/reference/tmpl
 doc/reference/xml
 doc/reference/libawn-decl-list.txt
 doc/reference/libawn-decl.txt
@@ -74,8 +73,10 @@ doc/reference/libawn.hierarchy
 doc/reference/libawn.interfaces
 doc/reference/libawn.prerequisites
 doc/reference/libawn.signals
-doc/reference/libawn.types
 doc/reference/*.bak
+doc/reference/tmpl/*.sgml
+doc/reference/tmpl/*.sgml.bak
+doc/reference/*-scan.c
 data/awn.schemas*
 config.h.in
 test/vala-test
@@ -88,8 +89,6 @@ src/test
 data/awn-applets-shared.schemas
 data/awn-applets-shared.schemas.in
 bindings/python/awn.loT
-doc/reference/tmpl/awn-defines.sgml.bak
-doc/reference/tmpl/awn-vfs.sgml.bak
 tests/test-applet-simple
 tests/test-awn-icon
 tests/test-config-client
