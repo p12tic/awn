@@ -1,6 +1,11 @@
 2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
 
-	* libawn/awn-overlay-throbber.c
+	* libawn/awn-overlay-throbber.c:
+	Make sure to change the timeout signal when the timeout value is changed.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
 	Add a timeout property.
 
 2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>

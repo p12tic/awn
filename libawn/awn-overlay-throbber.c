@@ -146,11 +146,36 @@ _awn_overlay_throbber_active_changed (GObject    *pspec,
 }
 
 static void
+_awn_overlay_throbber_timeout_changed (GObject    *pspec,
+                                      GParamSpec *gobject,
+                                      gpointer * throbber)
+{
+  gboolean active_val;
+
+  AwnOverlayThrobberPrivate *priv = AWN_OVERLAY_THROBBER_GET_PRIVATE (throbber);
+  
+  g_object_get (G_OBJECT(throbber),
+                "active", &active_val,
+                NULL);
+  if (active_val)
+  {
+    if (priv->timer_id)
+    {
+      g_source_remove(priv->timer_id);
+    }
+    priv->timer_id = g_timeout_add(priv->timeout, _awn_overlay_throbber_timeout, throbber);          
+  }
+}
+
+static void
 awn_overlay_throbber_constructed (GObject * object)
 {  
   g_signal_connect (object, "notify::active",
                   G_CALLBACK(_awn_overlay_throbber_active_changed),
                   object);
+  g_signal_connect (object, "notify::timeout",
+                  G_CALLBACK(_awn_overlay_throbber_timeout_changed),
+                  object);  
 }
 
 static void
@@ -260,7 +285,6 @@ _awn_overlay_throbber_render (AwnOverlay* overlay,
   cairo_set_source_rgba(cr, 1, 1, 1, ((counter+7) % COUNT) / (float)COUNT);
   cairo_arc(cr, -OTHER, OTHER, RADIUS, 0, 2*M_PI);
   cairo_fill(cr);
-
 
   cairo_restore (cr);
 }
