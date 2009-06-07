@@ -179,7 +179,7 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ALIGN, pspec);  
   
-  pspec = g_param_spec_double ("x_adj",
+  pspec = g_param_spec_double ("x-adj",
                                "X adjust",
                                "X adjust",
                                -1000.0,
@@ -188,7 +188,7 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_X_ADJUST, pspec);  
 
-  pspec = g_param_spec_double ("y_adj",
+  pspec = g_param_spec_double ("y-adj",
                                "Y adjust",
                                "Y adjust",
                                -1000.0,
@@ -204,7 +204,7 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ACTIVE, pspec);  
 
-  pspec = g_param_spec_double ("x_override",
+  pspec = g_param_spec_double ("x-override",
                                "X Override",
                                "X Override",
                                -10000.0,
@@ -213,7 +213,7 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_X_OVERRIDE, pspec);  
 
-  pspec = g_param_spec_double ("y_override",
+  pspec = g_param_spec_double ("y-override",
                                "Y Override",
                                "Y Override",
                                -10000.0,

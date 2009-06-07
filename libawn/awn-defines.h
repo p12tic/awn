@@ -72,9 +72,9 @@ typedef enum
   AWN_OVERLAY_ALIGN_RIGHT
 }AwnOverlayAlign;
 
-#define AWN_FONT_SIZE_EXTRA_SMALL 4.0
-#define AWN_FONT_SIZE_SMALL       6.0
-#define AWN_FONT_SIZE_MEDIUM      9.0
-#define AWN_FONT_SIZE_LARGE       12.0
-#define AWN_FONT_SIZE_EXTRA_LARGE 15.0
+#define AWN_FONT_SIZE_EXTRA_SMALL 6.0
+#define AWN_FONT_SIZE_SMALL       9.0
+#define AWN_FONT_SIZE_MEDIUM      12.0
+#define AWN_FONT_SIZE_LARGE       15.0
+#define AWN_FONT_SIZE_EXTRA_LARGE 18.0
 #endif

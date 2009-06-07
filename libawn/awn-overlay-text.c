@@ -137,7 +137,7 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
   
   AWN_OVERLAY_CLASS(klass)->render_overlay = _awn_overlay_text_render;
   
-  pspec = g_param_spec_double ("font_sizing",
+  pspec = g_param_spec_double ("font-sizing",
                                "Font Sizing",
                                "Font Sizing",
                                1.0,
@@ -154,6 +154,7 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
   g_object_class_install_property (object_class, PROP_TEXT, pspec);   
     
   g_type_class_add_private (klass, sizeof (AwnOverlayTextPrivate));  
+
 }
 
 static void
@@ -163,7 +164,7 @@ awn_overlay_text_init (AwnOverlayText *self)
 
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (self); 
   priv->text = NULL;  
-
+  
 }
 
 AwnOverlayText*
@@ -197,13 +198,11 @@ _awn_overlay_text_render ( AwnOverlay* _overlay,
   pango_font_description_set_absolute_size (priv->font_description, 
                                             priv->font_sizing * PANGO_SCALE * height / 48.0);
   pango_layout_set_font_description (layout, priv->font_description);
-
   pango_layout_set_text (layout, priv->text, -1);  
   pango_layout_get_pixel_size (layout,&layout_width,&layout_height);
   awn_overlay_move_to (cr, _overlay, width, height,layout_width,layout_height,NULL);
   pango_cairo_show_layout (cr, layout);
 
   g_object_unref (layout);
-  g_object_unref (text_colour);  
-  
+  g_object_unref (text_colour);   
 }

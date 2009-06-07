@@ -163,14 +163,14 @@ awn_overlay_icon_class_init (AwnOverlayIconClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_SCALE, pspec);   
   
-  pspec = g_param_spec_string ("icon_name",
+  pspec = g_param_spec_string ("icon-name",
                                "Icon name",
                                "Icon gtk theme name",
                                "",
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ICON_NAME, pspec);   
 
-  pspec = g_param_spec_string ("icon_state",
+  pspec = g_param_spec_string ("icon-state",
                                "Icon state",
                                "Icon state",
                                "",
@@ -205,8 +205,8 @@ awn_overlay_icon_new (AwnThemedIcon * icon, const gchar * icon_name, const gchar
   }
   
   ret = g_object_new (AWN_TYPE_OVERLAY_ICON, 
-                      "icon_name",icon_name,
-                      "icon_state",state,
+                      "icon-name",icon_name,
+                      "icon-state",state,
                       "gravity",GDK_GRAVITY_SOUTH_EAST,
                       NULL);
 /* some of this probably should be done in constructed() FIXME*/
