@@ -52,8 +52,20 @@ G_BEGIN_DECLS
 
 typedef struct {
   GObject parent;
-  AwnOverlayType  overlay_type;  
 } AwnOverlay;
+
+
+/**
+ * AwnOverlayClass:
+ * @render_overlay: Virtual function of the form 
+ *  void render_overlay((AwnOverlay* overlay,
+ *                                        AwnThemedIcon * icon,
+ *                                        cairo_t * cr,                                 
+ *                                        gint width,
+ *                                        gint height)
+ *
+ * Of interest to implementors of #AwnOverlay subclasses.
+ */
 
 typedef struct {
   GObjectClass parent_class;
@@ -65,12 +77,32 @@ typedef struct {
                                           gint height);
 } AwnOverlayClass;
 
+/**
+ * AwnOverlayCoord:
+ * @x: Horizontal position as a #gdouble.
+ * @x: Vertical position as a #gdboule.
+ *
+ * Structure contains x,y coordinates.
+ */
 typedef struct
 {
   gdouble x;
   gdouble y;
 } AwnOverlayCoord;
 
+/**
+ * AwnOverlayAlign:
+ *
+ * An enum for horizontal alignment relative to the #GdkGravity specified for
+ * an #AwnOverlay.  Possible values are %AWN_OVERLAY_ALIGN_CENTRE,
+ * %AWN_OVERLAY_ALIGN_LEFT and %AWN_OVERLAY_ALIGN_RIGHT
+ */
+typedef enum
+{
+  AWN_OVERLAY_ALIGN_CENTRE,
+  AWN_OVERLAY_ALIGN_LEFT,
+  AWN_OVERLAY_ALIGN_RIGHT
+}AwnOverlayAlign;
 
 GType awn_overlay_get_type (void);
 
@@ -81,9 +113,6 @@ void awn_overlay_render_overlay    (AwnOverlay* overlay,
                                         cairo_t * cr,                                 
                                         gint width,
                                         gint height);
-
-
-GdkGravity  awn_overlay_get_gravity (AwnOverlay * overlay);
 
 void awn_overlay_move_to (cairo_t * cr,
                            AwnOverlay* overlay,

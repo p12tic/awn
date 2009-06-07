@@ -1,4 +1,12 @@
 2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-defines.h:
+  	* libawn/awn-overlay.c:
+  	* libawn/awn-overlay.h:
+	gtk-doc documentation of public API of AwnOverlay.  Also moved a couple definitions 
+	and adjusted some Min. and Max. values for properties.
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
 	
 	* libawn/awn-overlay-text.c:
         Choose a reasonable colour from the current gtkstyle unless a text-color has been provided.
