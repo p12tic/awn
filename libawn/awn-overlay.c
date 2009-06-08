@@ -20,12 +20,12 @@
 
 /**
  * SECTION:AwnOverlay
- * @short_description: Base object for overlays used with AwnOverlaidIcon.
+ * @short_description: Base object for overlays used with #AwnOverlaidIcon.
  * @see_also: #AwnOverlaidIcon, #AwnOverlayText, #AwnOverlayIcon, #AwnOverlayThrobber
  * @stability: Unstable
  * @include: libawn/libawn.h
  *
- * Base object for overlays used with AwnOverlaidIcon.  This object is only useful
+ * Base object for overlays used with #AwnOverlaidIcon.  This object is only useful
  * as a base class from which others are derived.
  */
 
@@ -42,7 +42,7 @@
 
 
 
-G_DEFINE_TYPE (AwnOverlay, awn_overlay, G_TYPE_OBJECT)
+G_DEFINE_ABSTRACT_TYPE (AwnOverlay, awn_overlay, G_TYPE_OBJECT)
 
 #define AWN_OVERLAY_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY, AwnOverlayPrivate))
