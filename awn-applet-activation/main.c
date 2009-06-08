@@ -184,7 +184,7 @@ main(gint argc, gchar **argv)
   }
 
   if (desktop_file == NULL ||
-      ~desktop_agnostic_vfs_file_backend_get_exists (desktop_file))
+      !desktop_agnostic_vfs_file_backend_get_exists (desktop_file))
   {
     g_warning ("This desktop file '%s' does not exist.", path);
     return 1;

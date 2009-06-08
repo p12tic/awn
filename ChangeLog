@@ -1,5 +1,10 @@
 2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* awn-applet-activation/main.c:
+	Fix typo.
+
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/libawn-docs.sgml:
 	Update/reorganize the table of contents.
 
