@@ -67,7 +67,7 @@ struct _AwnDialogClass
 
 GType awn_dialog_get_type(void);
 
-GtkWidget* awn_dialog_new();
+GtkWidget* awn_dialog_new(void);
 
 GtkWidget* awn_dialog_new_for_widget(GtkWidget *widget);
 

@@ -1,5 +1,10 @@
 2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-dialog.[ch]
+	Fix definition for awn_dialog_new(void).
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay.c:
 	Change to G_DEFINE_ABSTRACT_TYPE() from G_DEFINE_TYPE().
 
