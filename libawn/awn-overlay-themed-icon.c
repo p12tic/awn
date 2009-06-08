@@ -16,7 +16,7 @@
  *
  */
  
-/* awn-overlay-icon.c */
+/* awn-overlay-themed-icon.c */
 
 /*
  FIXME
@@ -26,16 +26,16 @@
  
  */
 
-#include "awn-overlay-icon.h"
+#include "awn-overlay-themed-icon.h"
 
-G_DEFINE_TYPE (AwnOverlayIcon, awn_overlay_icon, AWN_TYPE_OVERLAY)
+G_DEFINE_TYPE (AwnOverlayThemedIcon, awn_overlay_themed_icon, AWN_TYPE_OVERLAY)
 
- #define AWN_OVERLAY_ICON_GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY_ICON, AwnOverlayIconPrivate))
+ #define AWN_OVERLAY_THEMED_ICON_GET_PRIVATE(o) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY_THEMED_ICON, AwnOverlayThemedIconPrivate))
 
-typedef struct _AwnOverlayIconPrivate AwnOverlayIconPrivate;
+typedef struct _AwnOverlayThemedIconPrivate AwnOverlayThemedIconPrivate;
 
-struct _AwnOverlayIconPrivate 
+struct _AwnOverlayThemedIconPrivate 
 {
     gdouble alpha;
     gchar * icon_name;
@@ -55,18 +55,18 @@ enum
 };
 
 static void 
-_awn_overlay_icon_render ( AwnOverlay* _overlay,
+_awn_overlay_themed_icon_render ( AwnOverlay* _overlay,
                                AwnThemedIcon * icon,
                                cairo_t * cr,                                 
                                gint width,
                                gint height);
 
 static void
-awn_overlay_icon_get_property (GObject *object, guint property_id,
+awn_overlay_themed_icon_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
-  AwnOverlayIconPrivate * priv;
-  priv = AWN_OVERLAY_ICON_GET_PRIVATE (object);
+  AwnOverlayThemedIconPrivate * priv;
+  priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (object);
 
   switch (property_id) 
   {
@@ -88,11 +88,11 @@ awn_overlay_icon_get_property (GObject *object, guint property_id,
 }
 
 static void
-awn_overlay_icon_set_property (GObject *object, guint property_id,
+awn_overlay_themed_icon_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
-  AwnOverlayIconPrivate * priv;
-  priv = AWN_OVERLAY_ICON_GET_PRIVATE (object);
+  AwnOverlayThemedIconPrivate * priv;
+  priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (object);
 
   switch (property_id) 
   {
@@ -116,34 +116,34 @@ awn_overlay_icon_set_property (GObject *object, guint property_id,
 }
 
 static void
-awn_overlay_icon_dispose (GObject *object)
+awn_overlay_themed_icon_dispose (GObject *object)
 {
-  AwnOverlayIconPrivate * priv;
-  priv = AWN_OVERLAY_ICON_GET_PRIVATE (object);
+  AwnOverlayThemedIconPrivate * priv;
+  priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (object);
   
-  G_OBJECT_CLASS (awn_overlay_icon_parent_class)->dispose (object);
+  G_OBJECT_CLASS (awn_overlay_themed_icon_parent_class)->dispose (object);
   
   g_hash_table_destroy (priv->pixbufs);
 }
 
 static void
-awn_overlay_icon_finalize (GObject *object)
+awn_overlay_themed_icon_finalize (GObject *object)
 {
-  G_OBJECT_CLASS (awn_overlay_icon_parent_class)->finalize (object);
+  G_OBJECT_CLASS (awn_overlay_themed_icon_parent_class)->finalize (object);
 }
 
 static void
-awn_overlay_icon_class_init (AwnOverlayIconClass *klass)
+awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GParamSpec   *pspec;      
 
-  object_class->get_property = awn_overlay_icon_get_property;
-  object_class->set_property = awn_overlay_icon_set_property;
-  object_class->dispose = awn_overlay_icon_dispose;
-  object_class->finalize = awn_overlay_icon_finalize;
+  object_class->get_property = awn_overlay_themed_icon_get_property;
+  object_class->set_property = awn_overlay_themed_icon_set_property;
+  object_class->dispose = awn_overlay_themed_icon_dispose;
+  object_class->finalize = awn_overlay_themed_icon_finalize;
   
-  AWN_OVERLAY_CLASS(klass)->render_overlay = _awn_overlay_icon_render;
+  AWN_OVERLAY_CLASS(klass)->render_overlay = _awn_overlay_themed_icon_render;
   
   pspec = g_param_spec_double ("alpha",
                                "alpha",
@@ -177,22 +177,22 @@ awn_overlay_icon_class_init (AwnOverlayIconClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ICON_STATE, pspec);   
   
-  g_type_class_add_private (klass, sizeof (AwnOverlayIconPrivate));  
+  g_type_class_add_private (klass, sizeof (AwnOverlayThemedIconPrivate));  
 }
 
 static void
-awn_overlay_icon_init (AwnOverlayIcon *self)
+awn_overlay_themed_icon_init (AwnOverlayThemedIcon *self)
 {
-  AwnOverlayIconPrivate * priv;
-  priv = AWN_OVERLAY_ICON_GET_PRIVATE (self);
+  AwnOverlayThemedIconPrivate * priv;
+  priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (self);
 
   priv->pixbufs = g_hash_table_new_full (g_str_hash,g_str_equal, g_free, g_object_unref);
 }
 
-AwnOverlayIcon*
-awn_overlay_icon_new (AwnThemedIcon * icon, const gchar * icon_name, const gchar * state)
+AwnOverlayThemedIcon*
+awn_overlay_themed_icon_new (AwnThemedIcon * icon, const gchar * icon_name, const gchar * state)
 {
-  AwnOverlayIcon * ret;
+  AwnOverlayThemedIcon * ret;
   gchar * created_state = NULL;
   
   g_return_val_if_fail (icon_name,NULL);
@@ -200,11 +200,11 @@ awn_overlay_icon_new (AwnThemedIcon * icon, const gchar * icon_name, const gchar
   
   if (!state)
   {
-    created_state = g_strdup_printf ("::invisible::__AWN_OVERLAY_ICON_STATE_NAME_FOR_%s",icon_name);
+    created_state = g_strdup_printf ("::invisible::__AWN_OVERLAY_THEMED_ICON_STATE_NAME_FOR_%s",icon_name);
     state = created_state;
   }
   
-  ret = g_object_new (AWN_TYPE_OVERLAY_ICON, 
+  ret = g_object_new (AWN_TYPE_OVERLAY_THEMED_ICON, 
                       "icon-name",icon_name,
                       "icon-state",state,
                       "gravity",GDK_GRAVITY_SOUTH_EAST,
@@ -220,18 +220,18 @@ awn_overlay_icon_new (AwnThemedIcon * icon, const gchar * icon_name, const gchar
 }
 
 static void 
-_awn_overlay_icon_render ( AwnOverlay* _overlay,
+_awn_overlay_themed_icon_render ( AwnOverlay* _overlay,
                                AwnThemedIcon * icon,
                                cairo_t * cr,                                 
                                gint width,
                                gint height)
 {
-  AwnOverlayIcon *overlay = AWN_OVERLAY_ICON(_overlay);
-  AwnOverlayIconPrivate *priv;
+  AwnOverlayThemedIcon *overlay = AWN_OVERLAY_THEMED_ICON(_overlay);
+  AwnOverlayThemedIconPrivate *priv;
   AwnOverlayCoord coord;
   GdkPixbuf * pixbuf = NULL;
   
-  priv =  AWN_OVERLAY_ICON_GET_PRIVATE (overlay); 
+  priv =  AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (overlay); 
   
   gchar * key = g_strdup_printf ("%dx%d@%lf",width,height,priv->scale);
  
