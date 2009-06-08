@@ -213,7 +213,8 @@ awn_overlay_class_init (AwnOverlayClass *klass)
  *
  * An property of type #gdouble that allows the adjustment of the horizontal
  * position of the #AwnOverlay.  Range of -1.0...1.0.  The amount of adjustment is
- * this x-adj * width of the #AwnIcon.
+ * this x-adj * width of the #AwnIcon.  A value of 0.0 indicates that gravity 
+ * and align will solely determine the x position.
  */      
   pspec = g_param_spec_double ("x-adj",
                                "X adjust",
@@ -229,7 +230,8 @@ awn_overlay_class_init (AwnOverlayClass *klass)
  *
  * An property of type #gdouble that allows the adjustment of the vertical
  * position of the #AwnOverlay.  Range of -1.0...1.0.  The amount of adjustment is
- * this y-adj * height of the #AwnIcon.
+ * this y-adj * height of the #AwnIcon.  A value of 0.0 indicates that gravity 
+ * and align will solely determine the y position.
  */        
   pspec = g_param_spec_double ("y-adj",
                                "Y adjust",

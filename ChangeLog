@@ -1,3 +1,8 @@
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay.c:
+	Slight mod of docs for x-adj and y-adj props.
+
 2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* doc/reference/tmpl/awn-applet-dialog.sgml:
@@ -22,12 +27,12 @@
 
 2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
 
-	* libawn/awn-overlay.c
+	* libawn/awn-overlay.c:
 	change @include for AwnOverlay docs to libawn/libawn.h
 
 2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
 
-	* libawn/libawn.h
+	* libawn/libawn.h:
 	Added AnwOverlaidIcon.h and AwnOverlay*.h to libawn.h
 
 2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
