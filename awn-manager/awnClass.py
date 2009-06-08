@@ -108,10 +108,13 @@ class awnBzr:
 		if os.path.exists(path):
 			print ("Error, the path already exist")
 		else:
-			bzr_branch = cmd_branch()
-			status = StringIO.StringIO()
-			status = bzr_branch._setup_outf()
-			bzr_branch.run(from_location=self.lp_path_normalize(bzr_dir), to_location=path) 
+			try:
+				bzr_branch = cmd_branch()
+				status = StringIO.StringIO()
+				status = bzr_branch._setup_outf()
+				bzr_branch.run(from_location=self.lp_path_normalize(bzr_dir), to_location=path)
+			except socket.gaierror:
+				print 'Socket error, could not create branch.'
 
 	def update_branch(self, path):
 		''' 	Update a local branch

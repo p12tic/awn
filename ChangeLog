@@ -1,3 +1,8 @@
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnClass.py:
+	Don't die if there's no network connection.
+
 2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-dialog.[ch]
