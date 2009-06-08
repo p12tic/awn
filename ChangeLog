@@ -1,5 +1,10 @@
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-themed-icon.h:
+	Correct #include due to file rename.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-themed-icon.c:
   	* libawn/awn-overlay-themed-icon.h:
   	* libawn/Makefile.am:
