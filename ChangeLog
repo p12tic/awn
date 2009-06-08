@@ -1,5 +1,35 @@
 2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* doc/reference/libawn-docs.sgml:
+	Update/reorganize the table of contents.
+
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnClass.py:
+	Don't die if there's no network connection.
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-dialog.[ch]
+	Fix definition for awn_dialog_new(void).
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay.c:
+	Change to G_DEFINE_ABSTRACT_TYPE() from G_DEFINE_TYPE().
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay.h:
+	Modification of AwnOverlayAlign docs.
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay.c:
+	Slight mod of docs for x-adj and y-adj props.
+
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/libawn-sections.txt:
 	* doc/reference/libawn.types:
 	Update, given the libdesktop-agnostic-related changes.
@@ -28,12 +58,12 @@
 
 2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
 
-	* libawn/awn-overlay.c
+	* libawn/awn-overlay.c:
 	change @include for AwnOverlay docs to libawn/libawn.h
 
 2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
 
-	* libawn/libawn.h
+	* libawn/libawn.h:
 	Added AnwOverlaidIcon.h and AwnOverlay*.h to libawn.h
 
 2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>

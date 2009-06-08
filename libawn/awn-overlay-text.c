@@ -16,6 +16,15 @@
  *
  */
 
+/**
+ * SECTION:AwnOverlayText
+ * @short_description: Text overlay for use with #AwnOverlaidIcon.
+ * @see_also: #AwnOverlaidIcon, #AwnOverlay, #AwnOverlayIcon, #AwnOverlayThrobber
+ * @stability: Unstable
+ * @include: libawn/libawn.h
+ *
+ * Text overlay used with #AwnOverlaidIcon.
+ */
 
 /* awn-overlay-text.c */
 

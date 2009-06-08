@@ -111,3 +111,5 @@ applets/taskmanager/taskmanager-marshal.c
 applets/taskmanager/taskmanager-marshal.h
 doltcompile
 doltlibtool
+m4/lt*.m4
+m4/libtool.m4

@@ -3,23 +3,45 @@
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
   <bookinfo>
-    <title>libawn Reference Manual</title>
+    <title>Awn Reference Manual</title>
   </bookinfo>
 
   <chapter>
-    <title>Table of Contents</title>
-    <xi:include href="xml/awn-applet-dialog.xml"/>
-    <xi:include href="xml/awn-applet-simple.xml"/>
-    <xi:include href="xml/awn-plug.xml"/>
-    <xi:include href="xml/awn-title.xml"/>
-    <xi:include href="xml/awn-applet.xml"/>
-    <xi:include href="xml/awn-vfs.xml"/>
-    <xi:include href="xml/awn-settings.xml"/>
-    <xi:include href="xml/awn-config-client.xml"/>
-    <xi:include href="xml/awn-defines.xml"/>
-    <xi:include href="xml/awn-desktop-item.xml"/>
-    <xi:include href="xml/awn-effects.xml"/>
-    <xi:include href="xml/awn-cairo-utils.xml"/>
+    <title>API Reference</title>
+    <chapter>
+      <title>Applets</title>
+      <xi:include href="xml/awn-applet.xml"/>
+      <xi:include href="xml/awn-applet-simple.xml"/>
+    </chapter>
+    <chapter>
+      <title>Base Components</title>
+      <xi:include href="xml/awn-config-bridge.xml"/>
+      <xi:include href="xml/awn-config-client.xml"/>
+      <xi:include href="xml/awn-dialog.xml"/>
+      <xi:include href="xml/awn-effects.xml"/>
+      <xi:include href="xml/awn-tooltip.xml"/>
+    </chapter>
+    <chapter>
+      <title>Icons</title>
+      <xi:include href="xml/awn-icon.xml"/>
+      <xi:include href="xml/awn-themed-icon.xml"/>
+      <xi:include href="xml/awn-overlaid-icon.xml"/>
+      <xi:include href="xml/awn-icon-box.xml"/>
+    </chapter>
+    <chapter>
+      <title>Icon Overlays</title>
+      <xi:include href="xml/awn-overlay.xml"/>
+      <xi:include href="xml/awn-overlay-icon.xml"/>
+      <xi:include href="xml/awn-overlay-text.xml"/>
+      <xi:include href="xml/awn-overlay-throbber.xml"/>
+    </chapter>
+    <chapter>
+      <title>Utilities</title>
+      <xi:include href="xml/awn-alignment.xml"/>
+      <xi:include href="xml/awn-defines.xml"/>
+      <xi:include href="xml/awn-cairo-utils.xml"/>
+      <xi:include href="xml/awn-utils.xml"/>
+    </chapter>
   </chapter>
 </book>
-<!-- vim: set ft=xml : -->
+<!-- vim: set ft=xml ts=2 sts=2 sw=2 : -->

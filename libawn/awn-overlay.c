@@ -20,12 +20,12 @@
 
 /**
  * SECTION:AwnOverlay
- * @short_description: Base object for overlays used with AwnOverlaidIcon.
+ * @short_description: Base object for overlays used with #AwnOverlaidIcon.
  * @see_also: #AwnOverlaidIcon, #AwnOverlayText, #AwnOverlayIcon, #AwnOverlayThrobber
  * @stability: Unstable
  * @include: libawn/libawn.h
  *
- * Base object for overlays used with AwnOverlaidIcon.  This object is only useful
+ * Base object for overlays used with #AwnOverlaidIcon.  This object is only useful
  * as a base class from which others are derived.
  */
 
@@ -42,7 +42,7 @@
 
 
 
-G_DEFINE_TYPE (AwnOverlay, awn_overlay, G_TYPE_OBJECT)
+G_DEFINE_ABSTRACT_TYPE (AwnOverlay, awn_overlay, G_TYPE_OBJECT)
 
 #define AWN_OVERLAY_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY, AwnOverlayPrivate))
@@ -213,7 +213,8 @@ awn_overlay_class_init (AwnOverlayClass *klass)
  *
  * An property of type #gdouble that allows the adjustment of the horizontal
  * position of the #AwnOverlay.  Range of -1.0...1.0.  The amount of adjustment is
- * this x-adj * width of the #AwnIcon.
+ * this x-adj * width of the #AwnIcon.  A value of 0.0 indicates that gravity 
+ * and align will solely determine the x position.
  */      
   pspec = g_param_spec_double ("x-adj",
                                "X adjust",
@@ -229,7 +230,8 @@ awn_overlay_class_init (AwnOverlayClass *klass)
  *
  * An property of type #gdouble that allows the adjustment of the vertical
  * position of the #AwnOverlay.  Range of -1.0...1.0.  The amount of adjustment is
- * this y-adj * height of the #AwnIcon.
+ * this y-adj * height of the #AwnIcon.  A value of 0.0 indicates that gravity 
+ * and align will solely determine the y position.
  */        
   pspec = g_param_spec_double ("y-adj",
                                "Y adjust",

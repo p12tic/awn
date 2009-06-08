@@ -1276,7 +1276,7 @@ awn_dialog_set_padding (AwnDialog *dialog, gint padding)
  * the dialog is no longer being used.
  */
 GtkWidget*
-awn_dialog_new()
+awn_dialog_new(void)
 {
   AwnDialog *dialog;
 
