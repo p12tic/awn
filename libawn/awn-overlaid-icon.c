@@ -130,7 +130,13 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,
   {
     priv->sig_id = g_signal_connect_after (icon, "expose-event", G_CALLBACK(_awn_overlaid_icon_expose),NULL);    
   }
-  priv->overlays = g_list_append (priv->overlays,overlay);   
+  /*don't add the overlay again if it's already in the list.*/
+  
+  if (!g_list_find (priv->overlays, overlay)) 
+  {  
+    g_object_ref (overlay);
+    priv->overlays = g_list_append (priv->overlays,overlay);   
+  }
 }
 
 void 
@@ -141,7 +147,12 @@ awn_overlaid_icon_remove_overlay (AwnOverlaidIcon * icon,
   AwnOverlaidIconPrivate *priv;
   priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
 
-  priv->overlays = g_list_remove (priv->overlays,overlay);     
+  /* only unref if it's in the list*/
+  if (g_list_find (priv->overlays, overlay)) 
+  {  
+    priv->overlays = g_list_remove (priv->overlays,overlay);
+    g_object_unref (overlay);    
+  }
   /* if it's the last overlay _then_ we disconnect the signal*/
   if (!priv->overlays)
   {

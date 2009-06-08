@@ -1,5 +1,11 @@
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlaid-icon.c:
+	Make the  append overlay and remove overlay functions a bit 
+	more robust.  Including taking and releasing a ref.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-themed-icon.h:
 	Correct #include due to file rename.
 
@@ -9,7 +15,8 @@
   	* libawn/awn-overlay-themed-icon.h:
   	* libawn/Makefile.am:
 	Moved awn-overlay-icon.[ch] -> awn-overlay-themed-icon.[ch].
-	Renamed AwnOverlayIcon -> AwnOverlayThemedIcon to reduce chance of confusing with AwnOverlaidIcon.
+	Renamed AwnOverlayIcon -> AwnOverlayThemedIcon to reduce chance 
+	of confusing with AwnOverlaidIcon.
 
 2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
