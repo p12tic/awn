@@ -92,6 +92,9 @@ typedef struct
 
 /**
  * AwnOverlayAlign:
+ * @AWN_OVERLAY_ALIGN_CENTRE: Centre alignment.
+ * @AWN_OVERLAY_ALIGN_LEFT: Left alignment.
+ * @AWN_OVERLAY_ALIGN_RIGHT: Right alignment.
  *
  * An enum for horizontal alignment relative to the #GdkGravity specified for
  * an #AwnOverlay.  Possible values are %AWN_OVERLAY_ALIGN_CENTRE,

@@ -1,5 +1,10 @@
 2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay.h:
+	Modification of AwnOverlayAlign docs.
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay.c:
 	Slight mod of docs for x-adj and y-adj props.
 
