@@ -33,7 +33,6 @@ G_DEFINE_TYPE (AwnOverlaidIcon, awn_overlaid_icon, AWN_TYPE_THEMED_ICON)
 
 struct _AwnOverlaidIconPrivate
 {
-  gpointer  * padding;
   GList     * overlays;
   gulong    sig_id;
 };
@@ -54,12 +53,35 @@ awn_overlaid_icon_dispose (GObject *object)
 }
 
 static void
+awn_overlaid_icon_finalize (GObject *object)
+{
+  AwnOverlaidIconPrivate *priv;
+  GList * iter = NULL;
+  
+  priv = AWN_OVERLAID_ICON_GET_PRIVATE (object);
+
+  if (!priv->overlays)
+  {
+    g_signal_handler_disconnect (object,priv->sig_id);
+  }
+  
+  for(iter=g_list_first (priv->overlays);iter;iter=g_list_next (iter))
+  {
+    AwnOverlay* overlay = iter->data;
+
+    g_object_unref (overlay);
+  }
+  g_list_free (priv->overlays);  
+}
+
+static void
 awn_overlaid_icon_class_init (AwnOverlaidIconClass *klass)
 {
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
   
   obj_class->dispose = awn_overlaid_icon_dispose;
+  obj_class->finalize = awn_overlaid_icon_finalize;
   
   g_type_class_add_private (obj_class, sizeof (AwnOverlaidIconPrivate));  
 }
@@ -137,6 +159,10 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,
     g_object_ref (overlay);
     priv->overlays = g_list_append (priv->overlays,overlay);   
   }
+  else
+  {
+    g_warning ("AwnOverlaidIcon:: awn_overlaid_icon_append_overlay(): Attempt to append Overlay that is already in overlays list\n");    
+  }
 }
 
 void 
@@ -152,6 +178,10 @@ awn_overlaid_icon_remove_overlay (AwnOverlaidIcon * icon,
   {  
     priv->overlays = g_list_remove (priv->overlays,overlay);
     g_object_unref (overlay);    
+  }
+  else
+  {
+    g_warning ("AwnOverlaidIcon:: awn_overlaid_icon_remove_overlay(): Attempt to remove Overlay that is not in overlays list\n");
   }
   /* if it's the last overlay _then_ we disconnect the signal*/
   if (!priv->overlays)

@@ -1,6 +1,11 @@
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlaid-icon.c:
+	Do what's needed in finalize().  Add a couple g_warning().
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
 	Make the  append overlay and remove overlay functions a bit 
 	more robust.  Including taking and releasing a ref.
 
