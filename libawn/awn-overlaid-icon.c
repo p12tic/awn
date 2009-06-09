@@ -59,7 +59,8 @@ awn_overlaid_icon_finalize (GObject *object)
   GList * iter = NULL;
   
   priv = AWN_OVERLAID_ICON_GET_PRIVATE (object);
-
+  G_OBJECT_CLASS (awn_overlaid_icon_parent_class)->finalize (object);  
+  
   if (!priv->overlays)
   {
     g_signal_handler_disconnect (object,priv->sig_id);
