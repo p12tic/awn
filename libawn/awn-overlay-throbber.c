@@ -88,8 +88,8 @@ awn_overlay_throbber_set_property (GObject *object, guint property_id,
     case PROP_TIMEOUT:
       priv->timeout = g_value_get_uint (value);
       break;
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
 }
 
@@ -102,7 +102,13 @@ awn_overlay_throbber_dispose (GObject *object)
 static void
 awn_overlay_throbber_finalize (GObject *object)
 {
+  AwnOverlayThrobberPrivate *priv = AWN_OVERLAY_THROBBER_GET_PRIVATE(overlay);
+  
   G_OBJECT_CLASS (awn_overlay_throbber_parent_class)->finalize (object);
+  if (priv->icon)
+  {
+    g_object_unref (priv->icon);
+  }
 }
 
 static gboolean
