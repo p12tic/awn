@@ -1,6 +1,11 @@
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-themed-icon.c:
+	Correct error/Changelog in previous commit.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
 	Unref the icon on finalize.
 
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
