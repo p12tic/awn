@@ -19,10 +19,16 @@
 
 gboolean awn_applet_factory_init (AwnApplet *applet);
 
+static void on_embedded (AwnApplet *applet)
+{
+  awn_applet_set_flags (applet, AWN_APPLET_IS_EXPANDER);
+}
+
 gboolean
 awn_applet_factory_init (AwnApplet *applet)
 {
-  awn_applet_set_flags (applet, AWN_APPLET_IS_EXPANDER);
+  // we should let the applet fully initialize, then we can set the flag
+  g_signal_connect_after (applet, "embedded", G_CALLBACK (on_embedded), NULL);
 
   return TRUE;
 }

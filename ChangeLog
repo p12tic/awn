@@ -1,5 +1,10 @@
 2009-06-09  Michal Hruby <michal.mhr@gmail.com>
 
+	* applets/expander/applet.c:
+	Let the applet initialization finish before destroying it.
+
+2009-06-09  Michal Hruby <michal.mhr@gmail.com>
+
 	* configure.in:
 	* applets/Makefile.am:
 	* applets/expander/Makefile.am:
