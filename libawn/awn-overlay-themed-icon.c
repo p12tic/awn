@@ -123,13 +123,21 @@ awn_overlay_themed_icon_dispose (GObject *object)
   
   G_OBJECT_CLASS (awn_overlay_themed_icon_parent_class)->dispose (object);
   
-  g_hash_table_destroy (priv->pixbufs);
+
 }
 
 static void
 awn_overlay_themed_icon_finalize (GObject *object)
 {
+  AwnOverlayThemedIconPrivate * priv;
+  priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (object);
+  
   G_OBJECT_CLASS (awn_overlay_themed_icon_parent_class)->finalize (object);
+
+  g_free (priv->icon_name);
+  g_free (priv->icon_state);
+  g_hash_table_destroy (priv->pixbufs);  
+  
 }
 
 static void

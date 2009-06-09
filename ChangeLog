@@ -1,5 +1,10 @@
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-themed-icon.c
+	Fixup finalize.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-text.c
 	Do what needs to be done in AwnOverlayText finalize().
 
