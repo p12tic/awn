@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Expander
+Comment=Fills space on the panel in expand mode
+Exec=@APPLETDIR@/expander/expander.so
+Icon=gtk-justify-fill
+X-AWN-Type=Applet
+X-AWN-AppletType=C
+X-AWN-AppletCategory=Utility

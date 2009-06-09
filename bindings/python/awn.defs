@@ -84,6 +84,19 @@
   )
 )
 
+(define-flags AppletFlags
+  (in-module "Awn")
+  (c-name "AwnAppletFlags")
+  (gtype-id "AWN_TYPE_APPLET_FLAGS")
+  (values
+    '("flags-none" "AWN_APPLET_FLAGS_NONE")
+    '("expand-minor" "AWN_APPLET_EXPAND_MINOR")
+    '("expand-major" "AWN_APPLET_EXPAND_MAJOR")
+    '("is-expander" "AWN_APPLET_IS_EXPANDER")
+    '("is-separator" "AWN_APPLET_IS_SEPARATOR")
+  )
+)
+
 (define-enum Orientation
   (in-module "Awn")
   (c-name "AwnOrientation")
@@ -374,6 +387,62 @@
   )
 )
 
+(define-method get_orientation
+  (of-object "AwnApplet")
+  (c-name "awn_applet_get_orientation")
+  (return-type "AwnOrientation")
+)
+
+(define-method set_orientation
+  (of-object "AwnApplet")
+  (c-name "awn_applet_set_orientation")
+  (parameters
+    '("AwnOrientation" "orient")
+  )
+)
+
+(define-method get_offset
+  (of-object "AwnApplet")
+  (c-name "awn_applet_get_offset")
+  (return-type "gint")
+)
+
+(define-method get_offset_at
+  (of-object "AwnApplet")
+  (c-name "awn_applet_get_offset_at")
+  (parameters
+    '("gint" "x")
+    '("gint" "y")
+  )
+  (return-type "gint")
+)
+
+(define-method get_size
+  (of-object "AwnApplet")
+  (c-name "awn_applet_get_size")
+  (return-type "guint")
+)
+
+(define-method get_uid
+  (of-object "AwnApplet")
+  (c-name "awn_applet_get_uid")
+  (return-type "const-gchar*")
+)
+
+(define-method get_flags
+  (of-object "AwnApplet")
+  (c-name "awn_applet_get_flags")
+  (return-type "AwnAppletFlags")
+)
+
+(define-method set_flags
+  (of-object "AwnApplet")
+  (c-name "awn_applet_set_flags")
+  (parameters
+    '("AwnAppletFlags" "flags")
+  )
+)
+
 (define-method applet_construct
   (of-object "AwnApplet")
   (c-name "gtk_plug_construct")
@@ -388,18 +457,6 @@
   (parameters
     '("GdkNativeWindow" "id")
   )
-)
-
-(define-method get_orientation
-  (of-object "AwnApplet")
-  (c-name "awn_applet_get_orientation")
-  (return-type "AwnOrientation")
-)
-
-(define-method get_size
-  (of-object "AwnApplet")
-  (c-name "awn_applet_get_size")
-  (return-type "guint")
 )
 
 (define-method create_default_menu

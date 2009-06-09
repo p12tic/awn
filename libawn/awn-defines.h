@@ -50,6 +50,16 @@ typedef enum
 
 typedef enum
 {
+  AWN_APPLET_FLAGS_NONE   = 0,
+  AWN_APPLET_EXPAND_MINOR = 1 << 0,
+  AWN_APPLET_EXPAND_MAJOR = 1 << 1,
+  AWN_APPLET_IS_EXPANDER  = 1 << 2,
+  AWN_APPLET_IS_SEPARATOR = 1 << 3
+
+} AwnAppletFlags;
+
+typedef enum
+{
 	AWN_PATH_LINEAR=0,
 	AWN_PATH_ELLIPSE,
 

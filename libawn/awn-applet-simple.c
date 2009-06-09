@@ -135,8 +135,6 @@ awn_applet_simple_constructed (GObject *object)
   AwnAppletSimple        *applet = AWN_APPLET_SIMPLE (object);
   AwnAppletSimplePrivate *priv = applet->priv;
 
-  awn_applet_set_flags (AWN_APPLET (applet), AWN_APPLET_EXPAND_MINOR);
-  
   priv->icon = awn_overlaid_icon_new ();
   awn_icon_set_orientation (AWN_ICON (priv->icon), 
                             awn_applet_get_orientation (AWN_APPLET (object)));
@@ -162,7 +160,7 @@ awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
   obj_class->dispose     = awn_applet_simple_dispose;
   obj_class->constructed = awn_applet_simple_constructed;
 
-  wid_class->size_request   = awn_applet_simple_size_request;
+  //wid_class->size_request   = awn_applet_simple_size_request;
 
   app_class->orient_changed = awn_applet_simple_orient_changed;
   app_class->offset_changed = awn_applet_simple_offset_changed;

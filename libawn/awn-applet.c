@@ -341,18 +341,48 @@ awn_applet_finalize (GObject *obj)
 }
 
 static void
+awn_applet_size_request (GtkWidget *widget, GtkRequisition *req)
+{
+  AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (widget);
+
+  GTK_WIDGET_CLASS (awn_applet_parent_class)->size_request (widget, req);
+
+  gint modifier = 0;
+  if (priv->flags & AWN_APPLET_EXPAND_MINOR) modifier += 1; // + 25% size
+  if (priv->flags & AWN_APPLET_EXPAND_MAJOR) modifier += 2; // + 50% size
+
+  if (modifier > 0)
+  {
+    switch (priv->orient)
+    {
+      case AWN_ORIENTATION_BOTTOM:
+      case AWN_ORIENTATION_TOP:
+        req->width += req->width * modifier / 4;
+        break;
+      default:
+        req->height += req->height * modifier / 4;
+        break;
+    }
+  }
+}
+
+static void
 awn_applet_class_init (AwnAppletClass *klass)
 {
-  GObjectClass *gobject_class;
+  GObjectClass *g_object_class;
+  GtkWidgetClass *gtk_widget_class;
 
-  gobject_class = G_OBJECT_CLASS(klass);
-  gobject_class->dispose = awn_applet_dispose;
-  gobject_class->finalize = awn_applet_finalize;
-  gobject_class->get_property = awn_applet_get_property;
-  gobject_class->set_property = awn_applet_set_property;
+  g_object_class = G_OBJECT_CLASS (klass);
+  g_object_class->dispose = awn_applet_dispose;
+  g_object_class->finalize = awn_applet_finalize;
+  g_object_class->get_property = awn_applet_get_property;
+  g_object_class->set_property = awn_applet_set_property;
+
+  gtk_widget_class = GTK_WIDGET_CLASS (klass);
+  gtk_widget_class->size_request = awn_applet_size_request;
 
   /* Class properties */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (g_object_class,
     PROP_UID,
     g_param_spec_string ("uid",
                          "wid",
@@ -360,7 +390,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                          NULL,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (g_object_class,
    PROP_ORIENT,
    g_param_spec_int ("orient",
                      "Orientation",
@@ -368,7 +398,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                      0, 3, AWN_ORIENTATION_BOTTOM,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (g_object_class,
    PROP_OFFSET,
    g_param_spec_int ("offset",
                      "Offset",
@@ -376,7 +406,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                      0, G_MAXINT, 0,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (g_object_class,
    PROP_OFFSET_MOD,
    g_param_spec_float ("offset-modifier",
                        "Offset modifier",
@@ -384,7 +414,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                        -G_MAXFLOAT, G_MAXFLOAT, 1.0,
                        G_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (g_object_class,
    PROP_SIZE,
    g_param_spec_int ("size",
                      "Size",
@@ -392,7 +422,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                      0, G_MAXINT, 48,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (g_object_class,
    PROP_PATH_TYPE,
    g_param_spec_int ("path-type",
                      "Path type",
@@ -403,16 +433,16 @@ awn_applet_class_init (AwnAppletClass *klass)
   /* Class signals */
   _applet_signals[ORIENT_CHANGED] =
     g_signal_new("orientation-changed",
-                 G_OBJECT_CLASS_TYPE(gobject_class),
+                 G_OBJECT_CLASS_TYPE (g_object_class),
                  G_SIGNAL_RUN_FIRST,
-                 G_STRUCT_OFFSET(AwnAppletClass, orient_changed),
+                 G_STRUCT_OFFSET (AwnAppletClass, orient_changed),
                  NULL, NULL,
                  g_cclosure_marshal_VOID__ENUM,
                  G_TYPE_NONE, 1, AWN_TYPE_ORIENTATION);
 
   _applet_signals[OFFSET_CHANGED] =
     g_signal_new("offset-changed",
-                 G_OBJECT_CLASS_TYPE (gobject_class),
+                 G_OBJECT_CLASS_TYPE (g_object_class),
                  G_SIGNAL_RUN_FIRST,
                  G_STRUCT_OFFSET (AwnAppletClass, offset_changed),
                  NULL, NULL,
@@ -421,18 +451,18 @@ awn_applet_class_init (AwnAppletClass *klass)
 
   _applet_signals[SIZE_CHANGED] =
     g_signal_new("size-changed",
-                 G_OBJECT_CLASS_TYPE(gobject_class),
+                 G_OBJECT_CLASS_TYPE (g_object_class),
                  G_SIGNAL_RUN_FIRST,
-                 G_STRUCT_OFFSET(AwnAppletClass, size_changed),
+                 G_STRUCT_OFFSET (AwnAppletClass, size_changed),
                  NULL, NULL,
                  g_cclosure_marshal_VOID__INT,
                  G_TYPE_NONE, 1, G_TYPE_INT);
 
   _applet_signals[PANEL_CONFIGURE] =
     g_signal_new("panel-configure-event",
-                 G_OBJECT_CLASS_TYPE(gobject_class),
+                 G_OBJECT_CLASS_TYPE (g_object_class),
                  G_SIGNAL_RUN_LAST,
-                 G_STRUCT_OFFSET(AwnAppletClass, panel_configure),
+                 G_STRUCT_OFFSET (AwnAppletClass, panel_configure),
                  NULL, NULL,
                  g_cclosure_marshal_VOID__BOXED,
                  G_TYPE_NONE, 1,
@@ -440,25 +470,25 @@ awn_applet_class_init (AwnAppletClass *klass)
 
   _applet_signals[ORIGIN_CHANGED] =
     g_signal_new("origin-changed",
-                 G_OBJECT_CLASS_TYPE(gobject_class),
+                 G_OBJECT_CLASS_TYPE (g_object_class),
                  G_SIGNAL_RUN_LAST,
-                 G_STRUCT_OFFSET(AwnAppletClass, origin_changed),
+                 G_STRUCT_OFFSET (AwnAppletClass, origin_changed),
                  NULL, NULL,
                  g_cclosure_marshal_VOID__BOXED,
                  G_TYPE_NONE, 1, GDK_TYPE_RECTANGLE);
 
   _applet_signals[DELETED] =
     g_signal_new("applet-deleted",
-                 G_OBJECT_CLASS_TYPE(gobject_class),
+                 G_OBJECT_CLASS_TYPE (g_object_class),
                  G_SIGNAL_RUN_FIRST,
-                 G_STRUCT_OFFSET(AwnAppletClass, deleted),
+                 G_STRUCT_OFFSET (AwnAppletClass, deleted),
                  NULL, NULL,
                  g_cclosure_marshal_VOID__STRING,
                  G_TYPE_NONE, 1, G_TYPE_STRING);
 
   _applet_signals[MENU_CREATION] =
     g_signal_new("menu-creation",
-                 G_OBJECT_CLASS_TYPE (gobject_class),
+                 G_OBJECT_CLASS_TYPE (g_object_class),
                  G_SIGNAL_RUN_FIRST,
                  G_STRUCT_OFFSET (AwnAppletClass, menu_creation),
                  NULL, NULL,
@@ -467,7 +497,7 @@ awn_applet_class_init (AwnAppletClass *klass)
 
   _applet_signals[FLAGS_CHANGED] =
     g_signal_new("flags-changed",
-                 G_OBJECT_CLASS_TYPE (gobject_class),
+                 G_OBJECT_CLASS_TYPE (g_object_class),
                  G_SIGNAL_RUN_FIRST,
                  G_STRUCT_OFFSET (AwnAppletClass, flags_changed),
 								 NULL, NULL,
@@ -476,7 +506,7 @@ awn_applet_class_init (AwnAppletClass *klass)
 
 
 
-  g_type_class_add_private(gobject_class, sizeof(AwnAppletPrivate));
+  g_type_class_add_private (g_object_class, sizeof (AwnAppletPrivate));
 }
 
 static void
@@ -826,6 +856,11 @@ awn_applet_set_flags (AwnApplet *applet, AwnAppletFlags flags)
                         G_TYPE_STRING, awn_applet_get_uid (AWN_APPLET (applet)),
                         G_TYPE_INT, flags,
                         G_TYPE_INVALID, G_TYPE_INVALID);
+
+  if (flags & (AWN_APPLET_EXPAND_MINOR | AWN_APPLET_EXPAND_MAJOR))
+  {
+    gtk_widget_queue_resize (GTK_WIDGET (applet));
+  }
 
   if (error)
   {

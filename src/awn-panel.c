@@ -288,6 +288,8 @@ awn_panel_constructed (GObject *object)
   priv->manager = awn_applet_manager_new_from_config (priv->client);
   g_signal_connect_swapped (priv->manager, "applet-embedded",
                             G_CALLBACK (on_applet_embedded), panel);
+  g_signal_connect_swapped (priv->manager, "notify::expands",
+                            G_CALLBACK (awn_panel_refresh_alignment), panel);
   gtk_container_add (GTK_CONTAINER (panel), priv->manager);
   gtk_widget_show_all (priv->manager);
   
@@ -479,19 +481,21 @@ void awn_panel_refresh_alignment (AwnPanel *panel)
 {
   AwnPanelPrivate *priv = panel->priv;
   gfloat align = priv->monitor ? priv->monitor->align : 0.5;
+  gfloat expand = priv->manager &&
+    awn_applet_manager_get_expands (priv->manager) ? 1.0 : 0.0;
 
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
       gtk_alignment_set (GTK_ALIGNMENT (priv->alignment),
-                         align, 0.5, 0.0, 1.0);
+                         align, 0.5, expand, 1.0);
       break;
     case AWN_ORIENTATION_LEFT:
     case AWN_ORIENTATION_RIGHT:
     default:
       gtk_alignment_set (GTK_ALIGNMENT (priv->alignment),
-                         0.5, align, 1.0, 0.0);
+                         0.5, align, 1.0, expand);
       break;
   }
 }
@@ -2068,18 +2072,22 @@ awn_panel_set_applet_flags (AwnPanel         *panel,
   g_return_val_if_fail (AWN_IS_PANEL (panel), TRUE);
   priv = panel->priv;
 
-  g_print ("Applet flags: %s %d: ", uid, flags);
+  g_print ("Applet [%s] flags: %d: ", uid, flags);
   
   if (flags & AWN_APPLET_FLAGS_NONE)
     g_print ("None ");
-  if (flags & AWN_APPLET_EXPAND_MAJOR)
-    g_print ("Major ");
   if (flags & AWN_APPLET_EXPAND_MINOR)
     g_print ("Minor ");
+  if (flags & AWN_APPLET_EXPAND_MAJOR)
+    g_print ("Major ");
+  if (flags & AWN_APPLET_IS_EXPANDER)
+    g_print ("Expander ");
   if (flags & AWN_APPLET_IS_SEPARATOR)
     g_print ("Separator ");
 
   g_print ("\n");
+
+  awn_applet_manager_set_applet_flags (priv->manager, uid, flags);
   
   return TRUE;
 }

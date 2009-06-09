@@ -1,3 +1,28 @@
+2009-06-09  Michal Hruby <michal.mhr@gmail.com>
+
+	* configure.in:
+	* applets/Makefile.am:
+	* applets/expander/Makefile.am:
+	* applets/expander/applet.c:
+	* applets/expander/expander.desktop.in.in:
+	Added (semi-dummy) expander applet.
+	* bindings/python/awn.defs:
+	Added bindings for a couple of missing AwnApplet methods.
+	* libawn/awn-applet-simple.c:
+	Removed the size_request method, now uses parent's.
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-defines.h:
+	Implemented support for AwnAppletFlags:
+	 EXPAND_MINOR & MAJOR now increase the requisition size for the applet.
+	 IS_EXPANDER replaces the applet with an expander widget in core.
+	  Note that this destroys the socket widget.
+	 IS_SEPARATOR remains unimplemented.
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-panel.c:
+	Necessary changes for expander support.
+
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-themed-icon.c:
