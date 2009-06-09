@@ -48,7 +48,6 @@ struct _AwnOverlayTextPrivate {
     gdouble font_sizing;
     PangoFontDescription *font_description;
     DesktopAgnosticColor * text_color;
-  
 };
 
 enum
@@ -127,7 +126,23 @@ awn_overlay_text_dispose (GObject *object)
 static void
 awn_overlay_text_finalize (GObject *object)
 {
-  G_OBJECT_CLASS (awn_overlay_text_parent_class)->finalize (object);
+
+  AwnOverlayTextPrivate *priv;
+  priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object); 
+  G_OBJECT_CLASS (awn_overlay_text_parent_class)->finalize (object);  
+  if (priv->text)
+  {
+    g_free (priv->text);
+  }
+  if (priv->text_color)
+  {
+    g_object_unref (priv->text_color);
+  }
+  if (priv->font_description)
+  {
+    pango_font_description_free (priv->font_description);
+  }
+
 }
 
 static void

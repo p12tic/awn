@@ -1,5 +1,15 @@
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-text.c
+	Do what needs to be done in AwnOverlayText finalize().
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+        Chain to parent class finalize().
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlaid-icon.c:
 	Do what's needed in finalize().  Add a couple g_warning().
 
