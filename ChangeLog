@@ -1,4 +1,9 @@
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Modified binding for awn_overlay_themed_icon_new().
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 	
 	* bindings/python/awn.defs:
 	Attempt to do Python bindings for awn_overlay_move_to().  Broken

@@ -1093,7 +1093,7 @@
 (define-method append_overlay
   (of-object "AwnOverlaidIcon")
   (c-name "awn_overlaid_icon_append_overlay")
-GtkWidget  (return-type "none")
+  (return-type "none")
   (parameters
     '("AwnOverlay*" "overlay")
   )
@@ -1161,6 +1161,10 @@ GtkWidget  (return-type "none")
     '("const gchar*" "icon_state")
   )
   (return-type "AwnOverlayThemedIcon*")
+  (properties
+    '("icon-name" (argname "icon_name"))
+    '("icon-state" (argname "icon_state"))
+  )
 )
 
 ;; From awn-overlay-throbber.h
