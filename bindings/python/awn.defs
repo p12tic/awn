@@ -1128,6 +1128,48 @@ GtkWidget  (return-type "none")
   )
 )
 
+(define-method move_to
+  (of-object "AwnOverlay")
+  (c-name "awn_overlay_move_to")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+    '("gint" "icon_width")
+    '("gint" "icon_height")
+    '("gint" "overlay_width")
+    '("gint" "overlay_height")
+    '("AwnOverlayCoord*" "coord")
+  )
+)
+
+;; From awn-overlay-text.h
+
+(define-function awn_overlay_text_new
+  (c-name "awn_overlay_text_new")
+  (is-constructor-of "AwnOverlayText")
+  (return-type "AwnOverlayText*")
+)
+
+;; From awn-overlay-themed-icon.h
+
+(define-function awn_overlay_themed_icon_new
+  (c-name "awn_overlay_themed_icon_new")
+  (is-constructor-of "AwnOverlayThemedIcon")
+  (parameters
+    '("AwnThemedIcon*" "icon")
+    '("const gchar*" "icon_name")
+    '("const gchar*" "icon_state")
+  )
+  (return-type "AwnOverlayThemedIcon*")
+)
+
+;; From awn-overlay-throbber.h
+
+(define-function awn_overlay_throbber_new
+  (c-name "awn_overlay_throbber_new")
+  (is-constructor-of "AwnOverlayThrobber")
+  (return-type "AwnOverlayThrobber*")
+)
 ;; From awn-tooltip.h
 
 (define-function awn_tooltip_get_type

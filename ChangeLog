@@ -1,4 +1,12 @@
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+	
+	* bindings/python/awn.defs:
+	Attempt to do Python bindings for awn_overlay_move_to().  Broken
+	at the moment.
+	Python bindings for AwnOverlayText, AwnOverlayThemedIcon and
+	AwnOverlayThrobber.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-text.c:
   	* libawn/awn-overlay-themed-icon.c:
