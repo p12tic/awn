@@ -1,6 +1,11 @@
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* bindings/python/awn.defs:
+	Partial bindings for AwnOverlay.  Need to fix a C function before finishing.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
 	Python bindings for AwnOverlaidIcon.
 
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>

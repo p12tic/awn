@@ -1093,9 +1093,9 @@
 (define-method append_overlay
   (of-object "AwnOverlaidIcon")
   (c-name "awn_overlaid_icon_append_overlay")
-  (return-type "none")
+GtkWidget  (return-type "none")
   (parameters
-    '("AwnOverlay" "overlay")
+    '("AwnOverlay*" "overlay")
   )
 )
 
@@ -1104,7 +1104,27 @@
   (c-name "awn_overlaid_icon_remove_overlay")
   (return-type "none")
   (parameters
-    '("AwnOverlay" "overlay")
+    '("AwnOverlay*" "overlay")
+  )
+)
+
+;; From awn-overlay.h
+
+(define-function awn_overlay_new
+  (c-name "awn_overlay_new")
+  (is-constructor-of "AwnOverlay")
+  (return-type "AwnOverlay*")
+)
+
+(define-method render_overlay
+  (of-object "AwnOverlay")
+  (c-name "awn_overlay_render_overlay")
+  (return-type "none")
+  (parameters
+    '("AwnThemedIcon*" "icon")
+    '("cairo_t*" "cr")
+    '("gint" "width")
+    '("gint" "height")
   )
 )
 
