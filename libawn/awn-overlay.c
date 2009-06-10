@@ -370,8 +370,8 @@ awn_overlay_render_overlay (AwnOverlay* overlay,
  * 
  */
 void
-awn_overlay_move_to (cairo_t * cr,
-                           AwnOverlay* overlay,
+awn_overlay_move_to (      AwnOverlay* overlay,
+                           cairo_t * cr,
                            gint   icon_width,
                            gint   icon_height,
                            gint   overlay_width,

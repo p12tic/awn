@@ -253,7 +253,7 @@ _awn_overlay_text_render ( AwnOverlay* _overlay,
   pango_layout_set_font_description (layout, priv->font_description);
   pango_layout_set_text (layout, priv->text, -1);  
   pango_layout_get_pixel_size (layout,&layout_width,&layout_height);
-  awn_overlay_move_to (cr, _overlay, width, height,layout_width,layout_height,NULL);
+  awn_overlay_move_to (_overlay,cr,  width, height,layout_width,layout_height,NULL);
   pango_cairo_show_layout (cr, layout);
 
   g_object_unref (layout);

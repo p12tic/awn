@@ -256,7 +256,7 @@ _awn_overlay_themed_icon_render ( AwnOverlay* _overlay,
   {
     g_free (key);
   }
-  awn_overlay_move_to (cr,AWN_OVERLAY(overlay),width,height,width *priv->scale,height *priv->scale,&coord);  
+  awn_overlay_move_to (AWN_OVERLAY(overlay),cr,width,height,width *priv->scale,height *priv->scale,&coord);  
   gdk_cairo_set_source_pixbuf (cr,pixbuf,coord.x,coord.y);  
   cairo_paint_with_alpha (cr,priv->alpha);
 }

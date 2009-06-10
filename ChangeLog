@@ -1,5 +1,13 @@
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-text.c:
+  	* libawn/awn-overlay-themed-icon.c:
+  	* libawn/awn-overlay.c:
+  	* libawn/awn-overlay.h:
+	Make the parameter order for awn_overlay_move_to() more sensible.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* bindings/python/awn.defs:
 	Partial bindings for AwnOverlay.  Need to fix a C function before finishing.
 
