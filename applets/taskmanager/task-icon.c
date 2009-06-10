@@ -199,6 +199,20 @@ task_icon_set_property (GObject      *object,
 }
 
 static void
+task_icon_dispose (GObject *object)
+{
+  TaskIconPrivate *priv = TASK_ICON_GET_PRIVATE (object);
+  /*this needs to be done in dispose, not finalize, due to idiosyncracies of 
+   AwnDialog*/
+  if (priv->dialog)
+  {
+    gtk_widget_destroy (priv->dialog);
+    priv->dialog = NULL;
+  }
+  G_OBJECT_CLASS (task_icon_parent_class)->dispose (object);  
+}
+
+static void
 task_icon_finalize (GObject *object)
 {
   TaskIconPrivate *priv = TASK_ICON_GET_PRIVATE (object);
@@ -206,24 +220,9 @@ task_icon_finalize (GObject *object)
   /* FIXME  Check to see if icon needs to be unreffed */
   if (priv->windows)
   {
-    
-/*  This should not be necessary as destroying the dialog _should_
-     take care of any icons inside?  */
-/*    GSList * iter = NULL;     
-    for (iter = priv->windows; iter; iter = g_slist_next(iter))
-    {
-      gtk_container_remove (GTK_CONTAINER(priv->dialog), GTK_WIDGET (iter->data));
-      gtk_widget_destroy (GTK_WIDGET(iter->data));
-    }*/
     g_slist_free (priv->windows);
     priv->windows = NULL;
   }
-  if (priv->dialog)
-  {
-    gtk_widget_destroy (priv->dialog);
-    priv->dialog = NULL;
-  }
-
   if(priv->update_geometry_id)
     g_source_remove(priv->update_geometry_id);
 
@@ -273,6 +272,7 @@ task_icon_class_init (TaskIconClass *klass)
   obj_class->constructed  = task_icon_constructed;
   obj_class->set_property = task_icon_set_property;
   obj_class->get_property = task_icon_get_property;
+  obj_class->dispose     = task_icon_dispose;
   obj_class->finalize     = task_icon_finalize;
 
   wid_class->configure_event      = task_icon_configure_event;

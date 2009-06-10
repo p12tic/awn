@@ -1,3 +1,9 @@
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Move the destruction of the dialog into dispose.  Causes some 
+	nasty warnings when placed in finalize().
+
 2009-06-10  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-dialog.c:
