@@ -203,10 +203,25 @@ task_icon_finalize (GObject *object)
 {
   TaskIconPrivate *priv = TASK_ICON_GET_PRIVATE (object);
 
+  /* FIXME  Check to see if icon needs to be unreffed */
   if (priv->windows)
   {
+    
+/*  This should not be necessary as destroying the dialog _should_
+     take care of any icons inside?  */
+/*    GSList * iter = NULL;     
+    for (iter = priv->windows; iter; iter = g_slist_next(iter))
+    {
+      gtk_container_remove (GTK_CONTAINER(priv->dialog), GTK_WIDGET (iter->data));
+      gtk_widget_destroy (GTK_WIDGET(iter->data));
+    }*/
     g_slist_free (priv->windows);
     priv->windows = NULL;
+  }
+  if (priv->dialog)
+  {
+    gtk_widget_destroy (priv->dialog);
+    priv->dialog = NULL;
   }
 
   if(priv->update_geometry_id)

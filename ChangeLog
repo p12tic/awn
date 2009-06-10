@@ -1,3 +1,10 @@
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/task-icon.c
+	Destroy the dialog on finalize.  There's some interesting assertions
+	and Warnings generated when doing so. Possible related to some signals
+	that need to be disconnected?
+
 2009-06-10  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:
