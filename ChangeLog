@@ -1,3 +1,11 @@
+2009-06-10  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Fix constructor of AwnOverlayThemedIcon.
+	* src/awn-panel.c:
+	* tests/test-awn-effects.c:
+	Fix compiler warnings.
+
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* bindings/python/awn.defs:

@@ -1157,13 +1157,8 @@
   (is-constructor-of "AwnOverlayThemedIcon")
   (parameters
     '("AwnThemedIcon*" "icon")
-    '("const gchar*" "icon_name")
-    '("const gchar*" "icon_state")
-  )
-  (return-type "AwnOverlayThemedIcon*")
-  (properties
-    '("icon-name" (argname "icon_name"))
-    '("icon-state" (argname "icon_state"))
+    '("const-gchar*" "icon_name")
+    '("const-gchar*" "icon_state")
   )
 )
 

@@ -482,7 +482,8 @@ void awn_panel_refresh_alignment (AwnPanel *panel)
   AwnPanelPrivate *priv = panel->priv;
   gfloat align = priv->monitor ? priv->monitor->align : 0.5;
   gfloat expand = priv->manager &&
-    awn_applet_manager_get_expands (priv->manager) ? 1.0 : 0.0;
+    awn_applet_manager_get_expands (AWN_APPLET_MANAGER (priv->manager)) ?
+      1.0 : 0.0;
 
   switch (priv->orient)
   {
@@ -2087,8 +2088,9 @@ awn_panel_set_applet_flags (AwnPanel         *panel,
 
   g_print ("\n");
 
-  awn_applet_manager_set_applet_flags (priv->manager, uid, flags);
-  
+  awn_applet_manager_set_applet_flags (AWN_APPLET_MANAGER (priv->manager),
+                                       uid, flags);
+
   return TRUE;
 }
 
