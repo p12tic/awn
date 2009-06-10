@@ -1,3 +1,278 @@
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Move the destruction of the dialog into dispose.  Causes some 
+	nasty warnings when placed in finalize().
+
+2009-06-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	One more fix to the finalization of AwnDialog.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/task-icon.c
+	Destroy the dialog on finalize.  There's some interesting assertions
+	and Warnings generated when doing so. Possible related to some signals
+	that need to be disconnected?
+
+2009-06-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-dialog.c:
+	* libawn/awn-dialog.h:
+	Finalize AwnDialog correctly.
+	Provide new contruction method: awn_dialog_new_for_widget_with_applet
+	 - can be used for AwnIcons inside an AwnApplet (should fix the issues
+	   in taskamanger)
+
+2009-06-10  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Fix constructor of AwnOverlayThemedIcon.
+	* src/awn-panel.c:
+	* tests/test-awn-effects.c:
+	Fix compiler warnings.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Modified binding for awn_overlay_themed_icon_new().
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+	
+	* bindings/python/awn.defs:
+	Attempt to do Python bindings for awn_overlay_move_to().  Broken
+	at the moment.
+	Python bindings for AwnOverlayText, AwnOverlayThemedIcon and
+	AwnOverlayThrobber.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+  	* libawn/awn-overlay-themed-icon.c:
+  	* libawn/awn-overlay.c:
+  	* libawn/awn-overlay.h:
+	Make the parameter order for awn_overlay_move_to() more sensible.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Partial bindings for AwnOverlay.  Need to fix a C function before finishing.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Python bindings for AwnOverlaidIcon.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+  	* bindings/python/awn.override:
+	Working on Python bindings for AwnOverlay*, AwnOverlaidIcon.
+
+2009-06-09  Michal Hruby <michal.mhr@gmail.com>
+
+	* applets/expander/applet.c:
+	Let the applet initialization finish before destroying it.
+
+2009-06-09  Michal Hruby <michal.mhr@gmail.com>
+
+	* configure.in:
+	* applets/Makefile.am:
+	* applets/expander/Makefile.am:
+	* applets/expander/applet.c:
+	* applets/expander/expander.desktop.in.in:
+	Added (semi-dummy) expander applet.
+	* bindings/python/awn.defs:
+	Added bindings for a couple of missing AwnApplet methods.
+	* libawn/awn-applet-simple.c:
+	Removed the size_request method, now uses parent's.
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-defines.h:
+	Implemented support for AwnAppletFlags:
+	 EXPAND_MINOR & MAJOR now increase the requisition size for the applet.
+	 IS_EXPANDER replaces the applet with an expander widget in core.
+	  Note that this destroys the socket widget.
+	 IS_SEPARATOR remains unimplemented.
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-panel.c:
+	Necessary changes for expander support.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Correct error/Changelog in previous commit.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
+	Unref the icon on finalize.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Fixup finalize.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+	Do what needs to be done in AwnOverlayText finalize().
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+        Chain to parent class finalize().
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+	Do what's needed in finalize().  Add a couple g_warning().
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+	Make the  append overlay and remove overlay functions a bit 
+	more robust.  Including taking and releasing a ref.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.h:
+	Correct #include due to file rename.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+  	* libawn/awn-overlay-themed-icon.h:
+  	* libawn/Makefile.am:
+	Moved awn-overlay-icon.[ch] -> awn-overlay-themed-icon.[ch].
+	Renamed AwnOverlayIcon -> AwnOverlayThemedIcon to reduce chance 
+	of confusing with AwnOverlaidIcon.
+
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-docs.sgml:
+	Update/reorganize the table of contents.
+
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnClass.py:
+	Don't die if there's no network connection.
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-dialog.[ch]
+	Fix definition for awn_dialog_new(void).
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay.c:
+	Change to G_DEFINE_ABSTRACT_TYPE() from G_DEFINE_TYPE().
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay.h:
+	Modification of AwnOverlayAlign docs.
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay.c:
+	Slight mod of docs for x-adj and y-adj props.
+
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/tmpl/awn-applet-dialog.sgml:
+	* doc/reference/tmpl/awn-applet-simple.sgml:
+	* doc/reference/tmpl/awn-applet.sgml:
+	* doc/reference/tmpl/awn-cairo-utils.sgml:
+	* doc/reference/tmpl/awn-config-client.sgml:
+	* doc/reference/tmpl/awn-defines.sgml:
+	* doc/reference/tmpl/awn-desktop-item.sgml:
+	* doc/reference/tmpl/awn-effects.sgml:
+	* doc/reference/tmpl/awn-plug.sgml:
+	* doc/reference/tmpl/awn-settings.sgml:
+	* doc/reference/tmpl/awn-title.sgml:
+	* doc/reference/tmpl/awn-vfs.sgml:
+	* doc/reference/tmpl/libawn-unused.sgml:
+	Remove.
+
+	* .bzrignore:
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	Fix gtk-doc generation.
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay.c:
+	change @include for AwnOverlay docs to libawn/libawn.h
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/libawn.h:
+	Added AnwOverlaidIcon.h and AwnOverlay*.h to libawn.h
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-defines.h:
+  	* libawn/awn-overlay.c:
+  	* libawn/awn-overlay.h:
+	gtk-doc documentation of public API of AwnOverlay.  Also moved a couple definitions 
+	and adjusted some Min. and Max. values for properties.
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+	
+	* libawn/awn-overlay-text.c:
+        Choose a reasonable colour from the current gtkstyle unless a text-color has been provided.
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+	Switch font family to sans
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-defines.h:
+  	* libawn/awn-overlay-icon.c:
+  	* libawn/awn-overlay-text.c:
+  	* libawn/awn-overlay.c:
+	Convert properties to use hypens instead of underscore.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+  	* libawn/awn-defines.h:
+  	* libawn/awn-overlay-text.c:
+  	* libawn/awn-overlay-throbber.c:
+  	* libawn/awn-overlay.c:
+	Convert from using cairo toy font api to pango in AwnOverlayText.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
+	Make sure to change the timeout signal when the timeout value is changed.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
+	Add a timeout property.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/Makefile.am:
+	Add awn-overlay-throbber.[ch] into build system.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
+	* libawn/awn-overlay-throbber.h:
+	Initial pull of the awn throbber code from src into AwnOverlayThrobber.
+
+2009-06-07  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Honour monitor alignment also in expand mode.
+
 2009-06-06  Michal Hruby <michal.mhr@gmail.com>
 
 	* src/awn-background-edgy.c:

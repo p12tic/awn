@@ -28,7 +28,7 @@ static AwnOrientation orient = AWN_ORIENTATION_BOTTOM;
 #define NUM_ICONS 4
 static AwnIcon *icons[NUM_ICONS];
 
-static char* effect_names[] = {
+const char* effect_names[] = {
   "AWN_EFFECT_NONE",
   "AWN_EFFECT_OPENING",
   "AWN_EFFECT_CLOSING",

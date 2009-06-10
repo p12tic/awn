@@ -210,6 +210,8 @@ dnl Please keep alphabetized (case-sensitive)
 AC_OUTPUT([
 Makefile
 applets/Makefile
+applets/expander/Makefile
+applets/expander/expander.desktop.in
 applets/taskmanager/Makefile
 applets/taskmanager/taskmanager.desktop.in
 awn.pc

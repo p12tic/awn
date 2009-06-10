@@ -58,13 +58,14 @@ struct _AwnDialogPrivate
 
   /* Properties */
   GtkWidget *anchor;
-  AwnApplet *anchor_owner;
+  AwnApplet *anchor_applet;
 
   AwnOrientation orient;
   gboolean anchored;
   gboolean esc_hide;
 
   gint window_offset;
+  gint window_offset_pub;
   gint window_padding;
 
   /* Standard box drawing colours */
@@ -76,8 +77,10 @@ struct _AwnDialogPrivate
   DesktopAgnosticColor *hilight_color;
 
   gulong anchor_configure_id;
+  gulong applet_configure_id;
+  gulong applet_comp_id;
+  gulong applet_size_id;
   gulong orient_changed_id;
-  guint  idle_id;
 
   gint old_x, old_y, old_w, old_h;
   gint a_old_x, a_old_y, a_old_w, a_old_h;
@@ -111,6 +114,9 @@ enum
 
 static void awn_dialog_set_anchor_widget (AwnDialog *dialog,
                                           GtkWidget *anchor);
+
+static void awn_dialog_set_anchor_applet (AwnDialog *dialog,
+                                          AwnApplet *applet);
 
 static void awn_dialog_set_orientation   (AwnDialog *dialog,
                                           AwnOrientation orient);
@@ -181,6 +187,7 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
      *   3) calc the difference (which is different for each orient)
      */
     win = gtk_widget_get_window (priv->anchor);
+    g_return_if_fail (win);
 
     gdk_window_get_origin (win, &a_center_point.x, &a_center_point.y);
     gdk_drawable_get_size (GDK_DRAWABLE (win), &aw, &ah);
@@ -648,11 +655,11 @@ awn_dialog_add(GtkContainer *dialog, GtkWidget *widget)
 {
   AwnDialogPrivate *priv;
 
-  g_return_if_fail(AWN_IS_DIALOG(dialog));
-  g_return_if_fail(GTK_IS_WIDGET(widget));
-  priv = AWN_DIALOG(dialog)->priv;
+  g_return_if_fail (AWN_IS_DIALOG (dialog));
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+  priv = AWN_DIALOG (dialog)->priv;
 
-  gtk_box_pack_start(GTK_BOX(priv->vbox), widget, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (priv->vbox), widget, TRUE, TRUE, 0);
 }
 
 static void
@@ -660,10 +667,21 @@ awn_dialog_remove(GtkContainer *dialog, GtkWidget *widget)
 {
   AwnDialogPrivate *priv;
 
-  g_return_if_fail(AWN_IS_DIALOG(dialog));
-  g_return_if_fail(GTK_IS_WIDGET(widget));
-  priv = AWN_DIALOG(dialog)->priv;
-  gtk_container_remove(GTK_CONTAINER(priv->vbox), widget);
+  g_return_if_fail (AWN_IS_DIALOG (dialog));
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+  priv = AWN_DIALOG (dialog)->priv;
+
+  if (widget == priv->align)
+  {
+    /* the alignment was added using the base method,
+         so it also has to be removed using that way */
+    GtkContainerClass *klass = GTK_CONTAINER_CLASS (awn_dialog_parent_class);
+    klass->remove (GTK_CONTAINER (dialog), widget);
+  }
+  else
+  {
+    gtk_container_remove (GTK_CONTAINER (priv->vbox), widget);
+  }
 }
 
 static void
@@ -718,7 +736,7 @@ awn_dialog_get_property (GObject    *object,
       g_value_set_boolean (value, priv->esc_hide);
       break;
     case PROP_WINDOW_OFFSET:
-      g_value_set_int (value, priv->window_offset);
+      g_value_set_int (value, priv->window_offset_pub);
       break;
     case PROP_WINDOW_PADDING:
       g_value_set_int (value, priv->window_padding);
@@ -753,6 +771,10 @@ awn_dialog_set_property (GObject      *object,
     case PROP_ANCHOR:
       awn_dialog_set_anchor_widget (AWN_DIALOG (object),
                                     GTK_WIDGET (g_value_get_object (value)));
+      break;
+    case PROP_ANCHOR_OWNER:
+      awn_dialog_set_anchor_applet (AWN_DIALOG (object),
+                                    AWN_APPLET (g_value_get_object (value)));
       break;
     case PROP_ANCHORED:
       priv->anchored = g_value_get_boolean (value);
@@ -805,11 +827,50 @@ awn_dialog_set_property (GObject      *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
 }
+
+static void
+awn_dialog_finalize (GObject *object)
+{
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (object);
+
+  if (priv->anchor_configure_id)
+  {
+    g_signal_handler_disconnect (priv->anchor, priv->anchor_configure_id);
+    priv->anchor_configure_id = 0;
+  }
+
+  if (priv->applet_configure_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->applet_configure_id);
+    priv->applet_configure_id = 0;
+  }
+
+  if (priv->orient_changed_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->orient_changed_id);
+    priv->orient_changed_id = 0;
+  }
+
+  if (priv->applet_comp_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->applet_comp_id);
+    priv->applet_comp_id = 0;
+  }
+
+  if (priv->applet_size_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->applet_size_id);
+    priv->applet_size_id = 0;
+  }
+
+  G_OBJECT_CLASS (awn_dialog_parent_class)->finalize (object);
+}
+
 /*
  * class init
  */
 static void
-awn_dialog_class_init(AwnDialogClass *klass)
+awn_dialog_class_init (AwnDialogClass *klass)
 {
   GObjectClass *obj_class;
   GtkWidgetClass *widget_class;
@@ -819,6 +880,8 @@ awn_dialog_class_init(AwnDialogClass *klass)
   obj_class->constructed  = awn_dialog_constructed;
   obj_class->get_property = awn_dialog_get_property;
   obj_class->set_property = awn_dialog_set_property;
+
+  obj_class->finalize = awn_dialog_finalize;
 
   widget_class = GTK_WIDGET_CLASS (klass);
   widget_class->expose_event = _expose_event;
@@ -834,6 +897,14 @@ awn_dialog_class_init(AwnDialogClass *klass)
                          "Anchor",
                          "Widget this window is attached to",
                          GTK_TYPE_WIDGET,
+                         G_PARAM_WRITABLE));
+
+  g_object_class_install_property (obj_class,
+    PROP_ANCHOR_OWNER,
+    g_param_spec_object ("anchor-applet",
+                         "Anchor applet",
+                         "AwnApplet this window is attached to",
+                         AWN_TYPE_APPLET,
                          G_PARAM_WRITABLE));
 
   g_object_class_install_property (obj_class,
@@ -938,6 +1009,9 @@ awn_dialog_init (AwnDialog *dialog)
   AwnDialogPrivate *priv;
 
   priv = dialog->priv = AWN_DIALOG_GET_PRIVATE (dialog);
+
+  priv->anchor = NULL;
+  priv->anchor_applet = NULL;
 
   gtk_window_set_skip_taskbar_hint (GTK_WINDOW (dialog), TRUE);
   gtk_window_set_decorated (GTK_WINDOW (dialog), FALSE);
@@ -1143,6 +1217,78 @@ _on_origin_changed (AwnApplet *applet, GdkRectangle *rect, AwnDialog *dialog)
   awn_dialog_refresh_position (dialog, 0, 0);
 }
 
+static void
+_applet_on_size_changed (AwnDialog *dialog)
+{
+  g_return_if_fail (AWN_IS_DIALOG (dialog));
+
+  AwnDialogPrivate *priv = dialog->priv;
+
+  awn_dialog_set_offset (dialog, priv->window_offset_pub);
+}
+
+static void
+awn_dialog_set_anchor_applet (AwnDialog *dialog, AwnApplet *applet)
+{
+  g_return_if_fail (AWN_IS_DIALOG (dialog));
+
+  AwnDialogPrivate *priv = dialog->priv;
+
+  if (priv->applet_configure_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->applet_configure_id);
+    priv->applet_configure_id = 0;
+  }
+
+  if (priv->orient_changed_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->orient_changed_id);
+    priv->orient_changed_id = 0;
+  }
+
+  if (priv->applet_comp_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->applet_comp_id);
+    priv->applet_comp_id = 0;
+  }
+
+  if (priv->applet_size_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->applet_size_id);
+    priv->applet_size_id = 0;
+  }
+
+  if (applet) g_return_if_fail (AWN_IS_APPLET (applet));
+
+  priv->anchor_applet = applet;
+
+  if (applet)
+  {
+    /* get orientation from the applet and connect to its changed signal */
+    priv->orient = awn_applet_get_orientation (applet);
+
+    /* connect to the special configure-event and other relevant signals*/
+    priv->applet_configure_id =
+      g_signal_connect (applet, "origin-changed",
+                        G_CALLBACK (_on_origin_changed), dialog);
+
+    priv->orient_changed_id =
+      g_signal_connect_swapped (applet, "orientation-changed",
+                                G_CALLBACK (awn_dialog_set_orientation),
+                                dialog);
+
+    priv->applet_comp_id = 
+      g_signal_connect_swapped (applet, "composited-changed",
+                        G_CALLBACK (_applet_on_size_changed), dialog);
+
+    priv->applet_size_id = 
+      g_signal_connect_swapped (applet, "size-changed",
+                        G_CALLBACK (_applet_on_size_changed), dialog);
+
+    awn_dialog_set_offset (dialog, priv->window_offset_pub);
+  }
+}
+
 static gboolean
 _on_anchor_configure_event (GtkWidget *widget, GdkEventConfigure *event,
                             AwnDialog *dialog)
@@ -1161,6 +1307,7 @@ _on_anchor_configure_event (GtkWidget *widget, GdkEventConfigure *event,
 
   priv->a_old_x = event->x;     priv->a_old_y = event->y;
   priv->a_old_w = event->width; priv->a_old_h = event->height;
+
   awn_dialog_refresh_position (dialog, 0, 0);
 
   return FALSE;
@@ -1178,11 +1325,6 @@ awn_dialog_set_anchor_widget (AwnDialog *dialog, GtkWidget *anchor)
     g_signal_handler_disconnect (priv->anchor, priv->anchor_configure_id);
     priv->anchor_configure_id = 0;
   }
-  if (priv->orient_changed_id)
-  {
-    g_signal_handler_disconnect (priv->anchor, priv->orient_changed_id);
-    priv->orient_changed_id = 0;
-  }
 
   // FIXME: perhaps we should ref the object and unref it in our dispose
   priv->anchor = anchor;
@@ -1192,26 +1334,7 @@ awn_dialog_set_anchor_widget (AwnDialog *dialog, GtkWidget *anchor)
     if (AWN_IS_APPLET (anchor))
     {
       /* special behaviour if we're anchoring to an AwnApplet */
-      AwnApplet *applet = AWN_APPLET (anchor);
-
-      /* connect to the special configure-event */
-      priv->anchor_configure_id =
-        g_signal_connect (applet, "origin-changed",
-                          G_CALLBACK (_on_origin_changed), dialog);
-
-      /* get orientation from the applet and connect to its changed signal */
-      priv->orient = awn_applet_get_orientation (applet);
-      priv->orient_changed_id =
-        g_signal_connect_swapped (applet, "orientation-changed",
-                                  G_CALLBACK (awn_dialog_set_orientation),
-                                  dialog);
-
-      if (gtk_widget_is_composited (anchor))
-      {
-        // there's an extra space above AwnApplet, lets compensate it
-        priv->window_offset = awn_applet_get_size (applet) * -1;
-        priv->window_offset += AWN_DIALOG_DEFAULT_OFFSET;
-      }
+      awn_dialog_set_anchor_applet (dialog, AWN_APPLET (anchor));
     }
     else
     {
@@ -1250,9 +1373,15 @@ awn_dialog_set_offset (AwnDialog *dialog, gint offset)
   
   AwnDialogPrivate *priv = dialog->priv;
 
-  if (offset == priv->window_offset) return;
-
+  priv->window_offset_pub = offset;
   priv->window_offset = offset;
+
+  if (priv->anchor_applet && gtk_widget_is_composited (
+        GTK_WIDGET (priv->anchor_applet)))
+  {
+    // there's an extra space above AwnApplet, lets compensate it
+    priv->window_offset += awn_applet_get_size (priv->anchor_applet) * -1;
+  }
 
   awn_dialog_refresh_position (dialog, 0, 0);
 }
@@ -1276,7 +1405,7 @@ awn_dialog_set_padding (AwnDialog *dialog, gint padding)
  * the dialog is no longer being used.
  */
 GtkWidget*
-awn_dialog_new()
+awn_dialog_new(void)
 {
   AwnDialog *dialog;
 
@@ -1302,6 +1431,30 @@ awn_dialog_new_for_widget (GtkWidget *widget)
 
   dialog = g_object_new (AWN_TYPE_DIALOG,
                          "anchor", widget,
+                         NULL);
+
+  return GTK_WIDGET (dialog);
+}
+
+/**
+ * awn_dialog_new_for_widget_with_applet:
+ * @widget: The widget to which to associate the dialog.
+ * @applet: AwnApplet associated with @widget.
+ *
+ * Creates a new toplevel window that is "attached" to the @widget.
+ * Returns: a new dialog.  Caller is responsible for freeing the memory when
+ * the dialog is no longer being used.
+ */
+GtkWidget*
+awn_dialog_new_for_widget_with_applet (GtkWidget *widget, AwnApplet *applet)
+{
+  AwnDialog *dialog;
+
+  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+
+  dialog = g_object_new (AWN_TYPE_DIALOG,
+                         "anchor", widget,
+                         "anchor-applet", applet,
                          NULL);
 
   return GTK_WIDGET (dialog);

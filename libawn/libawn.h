@@ -38,6 +38,11 @@
 #include <libawn/awn-themed-icon.h>
 #include <libawn/awn-tooltip.h>
 #include <libawn/awn-vfs.h>
+#include <libawn/awn-overlaid-icon.h>
+#include <libawn/awn-overlay.h>
+#include <libawn/awn-overlay-themed-icon.h>
+#include <libawn/awn-overlay-text.h>
+#include <libawn/awn-overlay-throbber.h>
 
 #endif /* < __LIBAWN_H__ /> */
 

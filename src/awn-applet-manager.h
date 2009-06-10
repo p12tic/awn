@@ -79,6 +79,17 @@ void        awn_applet_manager_add_widget        (AwnAppletManager *manager,
 void        awn_applet_manager_remove_widget     (AwnAppletManager *manager,
                                                   GtkWidget *widget);
 
+gboolean    awn_applet_manager_get_expands       (AwnAppletManager *manager);
+
+void        awn_applet_manager_set_applet_flags  (AwnAppletManager *manager,
+                                                  const gchar *uid,
+                                                  AwnAppletFlags flags);
+
+gboolean    awn_ua_get_all_server_flags 	(AwnAppletManager *manager,
+						GHashTable *hash,
+						gchar     *name,
+						GError   **error);
+
 gboolean    awn_ua_add_applet 			(AwnAppletManager *manager,
 						gchar     *name,
 			 			gint64		*xid,
@@ -86,11 +97,6 @@ gboolean    awn_ua_add_applet 			(AwnAppletManager *manager,
 						gint height,
 						gchar size_type,
                          			GError   **error);
-
-gboolean    awn_ua_get_all_server_flags 	(AwnAppletManager *manager,
-						GHashTable *hash,
-						gchar     *name,
-						GError   **error);
 
 G_END_DECLS
 

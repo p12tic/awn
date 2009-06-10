@@ -48,15 +48,6 @@ typedef struct _AwnApplet AwnApplet;
 typedef struct _AwnAppletClass AwnAppletClass;
 typedef struct _AwnAppletPrivate AwnAppletPrivate;
 
-typedef enum
-{
-  AWN_APPLET_FLAGS_NONE   = 0,
-  AWN_APPLET_EXPAND_MAJOR = 1 << 0,
-  AWN_APPLET_EXPAND_MINOR = 1 << 1,
-  AWN_APPLET_IS_SEPARATOR = 1 << 2
-
-} AwnAppletFlags;
-
 struct _AwnApplet
 {
   GtkPlug parent;

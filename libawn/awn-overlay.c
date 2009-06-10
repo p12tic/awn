@@ -17,6 +17,20 @@
  */
 
 
+
+/**
+ * SECTION:AwnOverlay
+ * @short_description: Base object for overlays used with #AwnOverlaidIcon.
+ * @see_also: #AwnOverlaidIcon, #AwnOverlayText, #AwnOverlayIcon, #AwnOverlayThrobber
+ * @stability: Unstable
+ * @include: libawn/libawn.h
+ *
+ * Base object for overlays used with #AwnOverlaidIcon.  This object is only useful
+ * as a base class from which others are derived.
+ */
+
+
+
 /* awn-overlay.c */
 
 #include "awn-overlay.h"
@@ -28,7 +42,7 @@
 
 
 
-G_DEFINE_TYPE (AwnOverlay, awn_overlay, G_TYPE_OBJECT)
+G_DEFINE_ABSTRACT_TYPE (AwnOverlay, awn_overlay, G_TYPE_OBJECT)
 
 #define AWN_OVERLAY_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY, AwnOverlayPrivate))
@@ -162,6 +176,12 @@ awn_overlay_class_init (AwnOverlayClass *klass)
   
   klass->render_overlay = _awn_overlay_render_overlay;  
   
+/**
+ * AwnOverlay:gravity:
+ *
+ * A property that controls placement of the overlay of type #GdkGravity.  
+ * GDK_GRAVITY_STATIC is NOT a valid value.
+ */  
   pspec = g_param_spec_enum ("gravity",
                                "Gravity",
                                "Gravity",
@@ -170,6 +190,15 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_GRAVITY, pspec);  
 
+/**
+ * AwnOverlay:align:
+ *
+ * An #AwnOverlayAlign property that controls horizontal alignment of the overlay 
+ * relative to it's position as specified by the gravity property.  Often used 
+ * with #AwnOverlayText overlays.  Setting to AWN_OVERLAY_ALIGN_RIGHT or 
+ * AWN_OVERLAY_ALIGN_LEFT will allow for a fixed right or left position for the 
+ * overlay.
+ */    
   pspec = g_param_spec_int ("align",
                                "Align",
                                "Align",
@@ -178,25 +207,50 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                AWN_OVERLAY_ALIGN_CENTRE,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ALIGN, pspec);  
-  
-  pspec = g_param_spec_double ("x_adj",
+
+/**
+ * AwnOverlay:x-adj:
+ *
+ * An property of type #gdouble that allows the adjustment of the horizontal
+ * position of the #AwnOverlay.  Range of -1.0...1.0.  The amount of adjustment is
+ * this x-adj * width of the #AwnIcon.  A value of 0.0 indicates that gravity 
+ * and align will solely determine the x position.
+ */      
+  pspec = g_param_spec_double ("x-adj",
                                "X adjust",
                                "X adjust",
-                               -1000.0,
-                               1000.0,
+                               -1.0,
+                               1.0,
                                0.0,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_X_ADJUST, pspec);  
 
-  pspec = g_param_spec_double ("y_adj",
+/**
+ * AwnOverlay:y-adj:
+ *
+ * An property of type #gdouble that allows the adjustment of the vertical
+ * position of the #AwnOverlay.  Range of -1.0...1.0.  The amount of adjustment is
+ * this y-adj * height of the #AwnIcon.  A value of 0.0 indicates that gravity 
+ * and align will solely determine the y position.
+ */        
+  pspec = g_param_spec_double ("y-adj",
                                "Y adjust",
                                "Y adjust",
-                               -1000.0,
-                               1000.0,
+                               -1.0,
+                               1.0,
                                0.0,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_Y_ADJUST, pspec);  
 
+/**
+ * AwnOverlay:active:
+ *
+ * The active property controls if the render_overlay virtual method of
+ * #AwnOverlayClass is invoked when awn_overlay_render_overlay() .  If set to 
+ * FALSE the overlay is not rendered.  Subclass implementors should monitor this_effect
+ * property for changes if it is appropriate to disengage timers etc when set to
+ * FALSE.
+ */        
   pspec = g_param_spec_boolean ("active",
                                "Active",
                                "Active",
@@ -204,7 +258,13 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ACTIVE, pspec);  
 
-  pspec = g_param_spec_double ("x_override",
+/**
+ * AwnOverlay:x-override:
+ *
+ * Overrides the x coordinates.  In most cases if you're using this then you 
+ * are probably doing something wrong.
+ */          
+  pspec = g_param_spec_double ("x-override",
                                "X Override",
                                "X Override",
                                -10000.0,
@@ -213,7 +273,13 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_X_OVERRIDE, pspec);  
 
-  pspec = g_param_spec_double ("y_override",
+/**
+ * AwnOverlay:y-override:
+ *
+ * Overrides the y coordinates.  In most cases if you're using this then you 
+ * are probably doing something wrong.
+ */            
+  pspec = g_param_spec_double ("y-override",
                                "Y Override",
                                "Y Override",
                                -10000.0,
@@ -231,19 +297,17 @@ awn_overlay_init (AwnOverlay *self)
 {
 }
 
+/**
+ * awn_overlay_new:
+ *
+ * Creates a new instance of #AwnOverlay.
+ * Returns: an instance of #AwnOverlay.
+ */
 AwnOverlay*
 awn_overlay_new (void)
 {
   return g_object_new (AWN_TYPE_OVERLAY, NULL);
 }
-
-GdkGravity 
-awn_overlay_get_gravity (AwnOverlay * overlay)
-{
-  AwnOverlayPrivate * priv;
-  priv = AWN_OVERLAY_GET_PRIVATE (overlay);
-  return priv->gravity;
-}  
 
 static void 
 _awn_overlay_render_overlay (AwnOverlay* overlay,
@@ -255,7 +319,21 @@ _awn_overlay_render_overlay (AwnOverlay* overlay,
   g_warning ("Overlay has not overriden render_overlay member in base (AwnOverlay) \n");
 }
 
-void awn_overlay_render_overlay (AwnOverlay* overlay,
+/**
+ * awn_overlay_render_overlay:
+ * @overlay: An pointer to an #AwnOverlay (or subclass) object.
+ * @icon: The #AwnThemedIcon that is being overlaid.
+ * @cr: Pointer to cairo context ( #cairo_t ) for the surface being overlaid. 
+ * @width: The width of the #AwnThemedIcon as #gint.
+ * @height: The height of the #AwnThemedIcon as #gint.
+ *
+ * A virtual function invoked by #AwnOverlaidIcon for each overlay it contains, 
+ * on #AwnOverlaidIcon::expose.  This should be implemented by subclasses of 
+ * #AwnOverlay.  
+ * 
+ */
+void 
+awn_overlay_render_overlay (AwnOverlay* overlay,
                                         AwnThemedIcon * icon,
                                         cairo_t * cr,                                 
                                         gint width,
@@ -273,9 +351,27 @@ void awn_overlay_render_overlay (AwnOverlay* overlay,
   }
 }
 
+
+/**
+ * awn_overlay_move_to:
+ * @cr: Pointer to Cairo context ( #cairo_t) for the surface being overlaid.  Poi
+ * @overlay: An pointer to an #AwnOverlay (or subclass) object.
+ * @icon_width: The width of the #AwnIcon as #gint.
+ * @icon_height: The height of the #AwnIcon as #gint.
+ * @overlay_width: The width of the #AwnOverlay as #gint.
+ * @overlay_height: The height of the #AwnOverlay as #gint.
+ * @coord_req: Address of a #AwnOverlayCoord structure or NULL.  The x,y coords
+ * will be returned in the structure if one is provided so they can be used
+ * a later time if needed.
+ *
+ * A convenience function for subclasses of #AwnOverlay.  For most cases will
+ * provide correct placement of the overlay within the surface.  Only of 
+ * interest for those implementing #AwnOverlay subclass.
+ * 
+ */
 void
-awn_overlay_move_to (cairo_t * cr,
-                           AwnOverlay* overlay,
+awn_overlay_move_to (      AwnOverlay* overlay,
+                           cairo_t * cr,
                            gint   icon_width,
                            gint   icon_height,
                            gint   overlay_width,
@@ -325,35 +421,35 @@ awn_overlay_move_to (cairo_t * cr,
       break;
     case GDK_GRAVITY_NORTH:
       coord.x = icon_width/2.0 - overlay_width / 2.0 + xoffset; 
-      coord.y = 1 + icon_height / 20 + yoffset;  
+      coord.y = yoffset;  
       break;      
     case GDK_GRAVITY_NORTH_WEST:
-      coord.x = 1 + icon_width /20+ xoffset;
-      coord.y = 1 + icon_height / 20 + yoffset;
+      coord.x = xoffset;
+      coord.y = yoffset;
       break;
     case GDK_GRAVITY_WEST:
-      coord.x = 1 + icon_width /20+ xoffset;
+      coord.x = xoffset;
       coord.y = icon_height / 2.0 - overlay_height/2.0 + yoffset;
       break;      
     case GDK_GRAVITY_SOUTH_WEST:
-      coord.x = 1 + icon_width /20+ xoffset;
-      coord.y = icon_height - overlay_height -1+ yoffset;
+      coord.x = xoffset;
+      coord.y = icon_height - overlay_height + yoffset;
       break;
     case GDK_GRAVITY_SOUTH:
       coord.x = icon_width/2.0 - overlay_width / 2.0+ xoffset;
-      coord.y = icon_height - overlay_height -1+ yoffset;
+      coord.y = icon_height - overlay_height + yoffset;
       break;
     case GDK_GRAVITY_SOUTH_EAST:
-      coord.x = icon_width - 1 - overlay_width+ xoffset;
-      coord.y = icon_height - overlay_height -1+ yoffset;
+      coord.x = icon_width - overlay_width+ xoffset;
+      coord.y = icon_height - overlay_height + yoffset;
       break;
     case GDK_GRAVITY_EAST:
-      coord.x = icon_width - 1 - overlay_width+ xoffset;
+      coord.x = icon_width - overlay_width+ xoffset;
       coord.y = icon_height / 2.0 - overlay_height/2.0 + yoffset;
       break;
     case GDK_GRAVITY_NORTH_EAST:
-      coord.x = icon_width - 1 - overlay_width+ xoffset; 
-      coord.y = 1 + icon_height / 20 + yoffset;  
+      coord.x = icon_width - overlay_width+ xoffset; 
+      coord.y = yoffset;  
       break;
     default:
       g_assert_not_reached();   
