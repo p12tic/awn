@@ -1,3 +1,186 @@
+2009-06-06  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background-edgy.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	Added virtual method to AwnBackground which allows it to change the
+	strut for panel mode.
+	* src/awn-panel.c:
+	Use the new virtual method of AwnBackground.
+	Fixed a bug in get_applet_rect method.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-surface.h:
+        * libawn/awn-overlay-surface.c:
+	Actually remove the files from the repository (See previous commit).
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-surface.h:
+	* libawn/awn-overlay-surface.c:
+	* libawn/Makefile.am:
+	Had third thoughts about implementing AwnOverlaySurface.  Removing (at least for now).
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-surface.h:
+	include awn-cairo-utils.h not awn-cairo-utils.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+  	* libawn/awn-overlay-surface.h:
+  	* libawn/awn-overlay-text.c:
+	Fix some #includes.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/Makefile.am
+	Add AwnOverlaySurface source files into build system.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-surface.c:
+	* libawn/awn-overlay-surface.h:
+	Boilerplate code for AwnOverlaySurface.
+
+2009-06-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-icon.c:
+	* libawn/awn-themed-icon.c:
+  	Introduce the concept of ::invisible:: prefix in the state string.  OverlayIcon defaults to this 
+
+2009-06-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+  	* libawn/awn-overlaid-icon.c:
+  	* libawn/awn-overlaid-icon.h:
+  	* libawn/awn-overlay-icon.c:
+  	* libawn/awn-overlay-icon.h:
+  	* libawn/awn-overlay-text.c:
+  	* libawn/awn-overlay-text.h:
+  	* libawn/awn-overlay.c:
+  	* libawn/awn-overlay.h:
+	New Files for AwnOverlaidIcon.  
+
+  	* libawn/Makefile.am:
+	Add new files to build system
+
+  	* libawn/awn-applet-simple.c:
+	Change from using AwnThemedIcon to using AwnOverlaidIcon
+  
+	* libawn/awn-defines.h:
+	Added some defines for AwnOverlaidIcon use.  These may change/move.
+  
+	* libawn/awn-themed-icon.c:
+  	* libawn/awn-themed-icon.h:
+	Various changes needed by AwnOverlaidIcon.
+
+	Seems stable enough to merge into rewrite trunk and continue work.
+
+2009-06-05  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background-edgy.c:
+	Too much cleanup in last commit.
+
+2009-06-05  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background-edgy.c:
+	Some code cleanup plus make the masks work.
+
+2009-06-05  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effect-bounce.c:
+	* libawn/anims/awn-effect-fade.c:
+	* libawn/anims/awn-effect-squish.c:
+	Increased speed of the effects by 10-20%.
+	Fixed offset bug on squish.
+
+2009-06-05  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-background-edgy.c:
+	* src/awn-background-edgy.h:
+	* src/awn-monitor.c:
+	* src/awn-panel.c:
+	Rewritten Edgy background, now looks really cool. :)
+
+2009-06-05  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	Fix selection of icon_alpha
+
+2009-06-04  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	Add Edgy style to awn-manager-mini
+
+	* themes/awn-default.desktop.in.in:
+	Fix a typo.
+
+2009-06-04  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awnManagerMini.py.in:
+	Fixed mini.
+
+2009-06-04  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-monitor.c:
+	Stupid copy & paste error.
+
+2009-06-04  Michal Hruby <michal.mhr@gmail.com>
+
+	* data/awn.schema-ini.in:
+	Removed config keys which are no longer used.
+	* src/awn-monitor.c:
+	Make sure that monitor width & height are not updated from config
+	client if force_monitor key is not set.
+
+2009-06-04  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	* configure.in:
+	* m4/dolt.m4:
+	Add dolt support to the build system. This removes an average of 30
+	seconds from compile time on my machine.
+
+2009-06-04  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	Remove the Refresh button.
+
+2009-06-04  Julien Lavergne,,,  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnManagerMini.py.in:
+	Add an exit button to theme window.
+
+2009-06-04  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* themes/awn-default.desktop.in.in:
+	Add all the new keys with default values.
+
+2009-06-04  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	Add more item to the desktop API to read more items from themes
+	Stock the path in the model for treeview
+	
+
+2009-06-03  Michal Hruby <michal.mhr@gmail.com>
+
+	* data/awn.schema-ini.in:
+	Updated description for autohide.
+	* src/awn-panel.c:
+	Reset autohide when monitor geometry change.
+
+2009-06-02  h4writer <hv1989@gmail.com>
+
+	* src/awn-panel.c:
+	Fixed a bug with jaunty and awn not coming back out of hide properly.
+	Looks like jaunty doesn't listen to opacity changes when hidden.
+
 2009-06-02  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-dialog.c:

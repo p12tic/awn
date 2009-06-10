@@ -319,6 +319,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
   klass->get_shape_mask       = awn_background_mask_none;
   klass->get_input_shape_mask = awn_background_mask_none;
   klass->get_path_type        = awn_background_path_default;
+  klass->get_strut_offsets    = NULL;
 
   /* Object properties */
   g_object_class_install_property (obj_class,
@@ -585,6 +586,23 @@ awn_background_get_path_type (AwnBackground *bg,
   g_return_val_if_fail (klass->get_path_type, AWN_PATH_LINEAR);
 
   return klass->get_path_type (bg, offset_mod);
+}
+
+void
+awn_background_get_strut_offsets (AwnBackground *bg,
+                                  AwnOrientation orient,
+                                  GdkRectangle *area,
+                                  gint *strut,
+                                  gint *strut_start, gint *strut_end)
+{
+  AwnBackgroundClass *klass;
+
+  g_return_if_fail (AWN_IS_BACKGROUND (bg));
+
+  klass = AWN_BACKGROUND_GET_CLASS (bg);
+  if (klass->get_strut_offsets == NULL) return;
+
+  klass->get_strut_offsets (bg, orient, area, strut, strut_start, strut_end);
 }
 
 void

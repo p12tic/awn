@@ -116,3 +116,5 @@ debian/libawn*/*
 debian/avant-*/*
 debian/python*/*
 debian/awn*/*
+doltcompile
+doltlibtool

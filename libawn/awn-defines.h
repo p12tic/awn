@@ -57,4 +57,24 @@ typedef enum
 
 } AwnPathType;
 
+typedef enum
+{
+  AWN_OVERLAY_TEXT,
+  AWN_OVERLAY_SURFACE,
+  AWN_OVERLAY_PIXBUF,
+  AWN_OVERLAY_ICON
+}AwnOverlayType;
+
+typedef enum
+{
+  AWN_OVERLAY_ALIGN_CENTRE,
+  AWN_OVERLAY_ALIGN_LEFT,
+  AWN_OVERLAY_ALIGN_RIGHT
+}AwnOverlayAlign;
+
+#define AWN_FONT_SIZE_EXTRA_SMALL 6.0
+#define AWN_FONT_SIZE_SMALL       9.0
+#define AWN_FONT_SIZE_MEDIUM      12.0
+#define AWN_FONT_SIZE_LARGE       15.0
+#define AWN_FONT_SIZE_EXTRA_LARGE 18.0
 #endif
