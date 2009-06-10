@@ -1,3 +1,8 @@
+2009-06-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	One more fix to the finalization of AwnDialog.
+
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/task-icon.c

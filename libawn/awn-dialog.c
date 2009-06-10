@@ -655,11 +655,11 @@ awn_dialog_add(GtkContainer *dialog, GtkWidget *widget)
 {
   AwnDialogPrivate *priv;
 
-  g_return_if_fail(AWN_IS_DIALOG(dialog));
-  g_return_if_fail(GTK_IS_WIDGET(widget));
-  priv = AWN_DIALOG(dialog)->priv;
+  g_return_if_fail (AWN_IS_DIALOG (dialog));
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+  priv = AWN_DIALOG (dialog)->priv;
 
-  gtk_box_pack_start(GTK_BOX(priv->vbox), widget, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (priv->vbox), widget, TRUE, TRUE, 0);
 }
 
 static void
@@ -667,10 +667,21 @@ awn_dialog_remove(GtkContainer *dialog, GtkWidget *widget)
 {
   AwnDialogPrivate *priv;
 
-  g_return_if_fail(AWN_IS_DIALOG(dialog));
-  g_return_if_fail(GTK_IS_WIDGET(widget));
-  priv = AWN_DIALOG(dialog)->priv;
-  gtk_container_remove(GTK_CONTAINER(priv->vbox), widget);
+  g_return_if_fail (AWN_IS_DIALOG (dialog));
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+  priv = AWN_DIALOG (dialog)->priv;
+
+  if (widget == priv->align)
+  {
+    /* the alignment was added using the base method,
+         so it also has to be removed using that way */
+    GtkContainerClass *klass = GTK_CONTAINER_CLASS (awn_dialog_parent_class);
+    klass->remove (GTK_CONTAINER (dialog), widget);
+  }
+  else
+  {
+    gtk_container_remove (GTK_CONTAINER (priv->vbox), widget);
+  }
 }
 
 static void
