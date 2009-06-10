@@ -42,6 +42,41 @@
   (gtype-id "AWN_TYPE_THEMED_ICON")
 )
 
+(define-object OverlaidIcon
+  (in-module "Awn")
+  (parent "AwnThemedIcon")
+  (c-name "AwnOverlaidIcon")
+  (gtype-id "AWN_TYPE_OVERLAID_ICON")
+)
+
+(define-object Overlay
+  (in-module "Awn")
+  (parent "GObject")
+  (c-name "AwnOverlay")
+  (gtype-id "AWN_TYPE_OVERLAY")
+)
+
+(define-object OverlayThemedIcon
+  (in-module "Awn")
+  (parent "AwnOverlay")
+  (c-name "AwnOverlayThemedIcon")
+  (gtype-id "AWN_TYPE_OVERLAY_THEMED_ICON")
+)
+
+(define-object OverlayText
+  (in-module "Awn")
+  (parent "AwnOverlay")
+  (c-name "AwnOverlayText")
+  (gtype-id "AWN_TYPE_OVERLAY_TEXT")
+)
+
+(define-object OverlayThrobber
+  (in-module "Awn")
+  (parent "AwnOverlay")
+  (c-name "AwnOverlayThrobber")
+  (gtype-id "AWN_TYPE_OVERLAY_THROBBER")
+)
+
 (define-object Tooltip
   (in-module "Awn")
   (parent "GtkWindow")
