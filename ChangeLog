@@ -1,5 +1,10 @@
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-throbber.c:
+	Add scaling to AwnOverlayThrobber.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	Move the destruction of the dialog into dispose.  Causes some 
 	nasty warnings when placed in finalize().

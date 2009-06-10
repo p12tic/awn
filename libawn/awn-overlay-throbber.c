@@ -36,14 +36,15 @@ struct _AwnOverlayThrobberPrivate
   gint        counter;
   guint       timer_id;  
   guint       timeout;
-  
+  gdouble     scale;  
 };
 
 enum
 {
   PROP_0,
   PROP_ICON,
-  PROP_TIMEOUT
+  PROP_TIMEOUT,
+  PROP_SCALE
 };
 
 static void 
@@ -66,7 +67,10 @@ awn_overlay_throbber_get_property (GObject *object, guint property_id,
       break;    
     case PROP_TIMEOUT:
       g_value_set_uint (value,priv->timeout);
-      break;          
+      break;
+    case PROP_SCALE:
+      g_value_set_double (value,priv->scale);
+      break;            
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -88,6 +92,9 @@ awn_overlay_throbber_set_property (GObject *object, guint property_id,
     case PROP_TIMEOUT:
       priv->timeout = g_value_get_uint (value);
       break;
+    case PROP_SCALE:
+      priv->scale = g_value_get_double (value);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -214,6 +221,15 @@ awn_overlay_throbber_class_init (AwnOverlayThrobberClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_TIMEOUT, pspec);   
 
+  pspec = g_param_spec_double ("scale",
+                               "scale",
+                               "Scale",
+                               0.0,
+                               1.0,
+                               0.6,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_SCALE, pspec);   
+  
   g_type_class_add_private (klass, sizeof (AwnOverlayThrobberPrivate));
   
 }
@@ -237,27 +253,42 @@ static void
 _awn_overlay_throbber_render (AwnOverlay* overlay,
                                         AwnThemedIcon * icon,
                                         cairo_t * cr,                                 
-                                        gint width,
-                                        gint height)
+                                        gint icon_width,
+                                        gint icon_height)
 {
   AwnOverlayThrobberPrivate *priv = AWN_OVERLAY_THROBBER_GET_PRIVATE (overlay);
-
-  cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
-
-  /* TODO: translate to event->area
-   * we'll paint to [0,0] - [1,1], so scale's needed
- 
-   */
-  cairo_save (cr);
-  cairo_scale(cr, width, height);
 
   const gdouble RADIUS = 0.0625;
   const gdouble DIST = 0.3;
   const gdouble OTHER = DIST * 0.707106781; /* sqrt(2)/2 */
   const gint COUNT = 8;
   const gint counter = priv->counter;
+  gdouble scale;
+  AwnOverlayCoord coord;
+  gdouble scaled_height;
+  gdouble scaled_width;
 
-  cairo_translate(cr, 0.5, 0.5);
+  g_object_get (overlay,
+                "scale", &scale,
+                NULL);
+  
+  scaled_height = icon_height * scale;
+  scaled_width = icon_width * scale;
+  cairo_save (cr);
+  cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
+  cairo_save (cr);
+  awn_overlay_move_to (overlay, 
+                       cr, 
+                       icon_width,
+                       icon_height,
+                       scaled_width,
+                       scaled_height,
+                       &coord);
+  cairo_restore(cr);
+  cairo_translate(cr, coord.x  , coord.y  );
+  cairo_scale(cr, scaled_width, scaled_height);
+  
+  cairo_translate(cr, 0.50, 0.50 );
   cairo_scale(cr, 1, -1);
 
   cairo_set_source_rgba(cr, 1, 1, 1, ((counter+0) % COUNT) / (float)COUNT);
