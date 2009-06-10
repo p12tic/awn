@@ -1,3 +1,13 @@
+2009-06-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-dialog.c:
+	* libawn/awn-dialog.h:
+	Finalize AwnDialog correctly.
+	Provide new contruction method: awn_dialog_new_for_widget_with_applet
+	 - can be used for AwnIcons inside an AwnApplet (should fix the issues
+	   in taskamanger)
+
 2009-06-10  Michal Hruby <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:

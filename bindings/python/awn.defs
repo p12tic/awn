@@ -196,6 +196,7 @@
   (return-type "GtkWidget*")
   (properties
     '("anchor" (optional) (argname "anchor"))
+    '("anchor-applet" (optional) (argname "anchor-applet"))
   )
 )
 
