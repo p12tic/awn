@@ -1082,6 +1082,32 @@
   (return-type "gint")
 )
 
+;; From awn-overlaid-icon.h
+
+(define-function awn_overlaid_icon_new
+  (c-name "awn_overlaid_icon_new")
+  (is-constructor-of "AwnOverlaidIcon")
+  (return-type "GtkWidget*")
+)
+
+(define-method append_overlay
+  (of-object "AwnOverlaidIcon")
+  (c-name "awn_overlaid_icon_append_overlay")
+  (return-type "none")
+  (parameters
+    '("AwnOverlay" "overlay")
+  )
+)
+
+(define-method remove_overlay
+  (of-object "AwnOverlaidIcon")
+  (c-name "awn_overlaid_icon_remove_overlay")
+  (return-type "none")
+  (parameters
+    '("AwnOverlay" "overlay")
+  )
+)
+
 ;; From awn-tooltip.h
 
 (define-function awn_tooltip_get_type

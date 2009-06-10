@@ -1,8 +1,12 @@
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* bindings/python/awn.defs:
-  	* bindings/python/awn.override:
+	Python bindings for AwnOverlaidIcon.
 
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+  	* bindings/python/awn.override:
 	Working on Python bindings for AwnOverlay*, AwnOverlaidIcon.
 
 2009-06-09  Michal Hruby <michal.mhr@gmail.com>
