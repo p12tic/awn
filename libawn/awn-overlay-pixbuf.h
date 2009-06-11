@@ -23,7 +23,7 @@
 #define _AWN_OVERLAY_PIXBUF
 
 #include <glib-object.h>
-#include <awn-overlay.h>
+#include "awn-overlay.h"
 #include <gdk/gdk.h>
 
 G_BEGIN_DECLS
@@ -56,6 +56,8 @@ typedef struct {
 GType awn_overlay_pixbuf_get_type (void);
 
 AwnOverlayPixbuf* awn_overlay_pixbuf_new (void);
+
+AwnOverlayPixbuf* awn_overlay_pixbuf_new_with_pixbuf (GdkPixbuf * pixbuf);
 
 G_END_DECLS
 

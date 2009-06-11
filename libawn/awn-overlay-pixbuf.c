@@ -32,27 +32,58 @@
  * 
  */
 
+#include <math.h>
 
 #include "awn-overlay-pixbuf.h"
 
-G_DEFINE_TYPE (AwnOverlayPixbuf, awn_overlay_pixbuf, AWN_TYPE_OVERLAY_PIXBUF)
+enum
+{
+  PROP_0,
+  PROP_PIXBUF,
+  PROP_SCALE,
+  PROP_ALPHA
+};
 
-#define GET_PRIVATE(o) \
+G_DEFINE_TYPE (AwnOverlayPixbuf, awn_overlay_pixbuf, AWN_TYPE_OVERLAY)
+
+#define AWN_OVERLAY_PIXBUF_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY_PIXBUF, AwnOverlayPixbufPrivate))
 
 typedef struct _AwnOverlayPixbufPrivate AwnOverlayPixbufPrivate;
 
 struct _AwnOverlayPixbufPrivate {
-    int dummy;
+    GdkPixbuf * pixbuf;
+    GdkPixbuf * scaled_pixbuf;  
+    gdouble scale;  
+    gdouble alpha;
 };
+
+
+static void 
+_awn_overlay_pixbuf_render ( AwnOverlay* _overlay,
+                               AwnThemedIcon * icon,
+                               cairo_t * cr,                                 
+                               gint width,
+                               gint height);
 
 static void
 awn_overlay_pixbuf_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
-  switch (property_id) {
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  AwnOverlayPixbufPrivate *priv = AWN_OVERLAY_PIXBUF_GET_PRIVATE (object);  
+  switch (property_id) 
+  {
+    case PROP_PIXBUF:
+      g_value_set_object (value,priv->pixbuf);
+      break;
+    case PROP_SCALE:
+      g_value_set_double (value,priv->scale);
+      break;      
+    case PROP_ALPHA:
+      g_value_set_double (value,priv->alpha);
+      break;            
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
 }
 
@@ -60,9 +91,24 @@ static void
 awn_overlay_pixbuf_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
-  switch (property_id) {
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  AwnOverlayPixbufPrivate *priv = AWN_OVERLAY_PIXBUF_GET_PRIVATE (object);    
+  switch (property_id) 
+  {
+    case PROP_PIXBUF:
+      if (priv->pixbuf)
+      {
+        g_object_unref (priv->pixbuf);
+      }
+      priv->pixbuf = g_value_dup_object (value);
+      break;    
+    case PROP_SCALE:
+      priv->scale = g_value_get_double (value);
+      break;      
+    case PROP_ALPHA:
+      priv->alpha = g_value_get_double (value);
+      break;            
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
 }
 
@@ -75,30 +121,139 @@ awn_overlay_pixbuf_dispose (GObject *object)
 static void
 awn_overlay_pixbuf_finalize (GObject *object)
 {
+  AwnOverlayPixbufPrivate *priv = AWN_OVERLAY_PIXBUF_GET_PRIVATE (object);    
   G_OBJECT_CLASS (awn_overlay_pixbuf_parent_class)->finalize (object);
+  if (priv->pixbuf)
+  {
+    g_object_unref (priv->pixbuf);
+  }
 }
 
 static void
 awn_overlay_pixbuf_class_init (AwnOverlayPixbufClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (AwnOverlayPixbufPrivate));
+  GParamSpec   *pspec;      
 
   object_class->get_property = awn_overlay_pixbuf_get_property;
   object_class->set_property = awn_overlay_pixbuf_set_property;
   object_class->dispose = awn_overlay_pixbuf_dispose;
   object_class->finalize = awn_overlay_pixbuf_finalize;
+ 
+  AWN_OVERLAY_CLASS(klass)->render_overlay = _awn_overlay_pixbuf_render;
+  
+  pspec = g_param_spec_object ("pixbuf",
+                               "Pixbuf",
+                               "GdkPixbuf object",
+                               GDK_TYPE_PIXBUF,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_PIXBUF, pspec);   
+  
+  pspec = g_param_spec_double ("scale",
+                               "scale",
+                               "Scale",
+                               0.0,
+                               1.0,
+                               0.5,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_SCALE, pspec);   
+
+  pspec = g_param_spec_double ("alpha",
+                               "Alpha",
+                               "Alpha",
+                               0.0,
+                               1.0,
+                               0.9,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_ALPHA, pspec);   
+  
+  g_type_class_add_private (klass, sizeof (AwnOverlayPixbufPrivate));  
 }
 
 static void
 awn_overlay_pixbuf_init (AwnOverlayPixbuf *self)
 {
+  AwnOverlayPixbufPrivate *priv = AWN_OVERLAY_PIXBUF_GET_PRIVATE (self);
+  
+  priv->scaled_pixbuf = NULL;
 }
 
 AwnOverlayPixbuf*
 awn_overlay_pixbuf_new (void)
 {
+  g_debug ("aopn\n");
   return g_object_new (AWN_TYPE_OVERLAY_PIXBUF, NULL);
 }
 
+
+AwnOverlayPixbuf*
+awn_overlay_pixbuf_new_with_pixbuf (GdkPixbuf * pixbuf)
+{
+  AwnOverlayPixbuf* ret;
+  if (!pixbuf)
+  {
+    ret = awn_overlay_pixbuf_new ();
+    g_debug ("aopnwp 1\n");
+  }
+  else
+  {
+    ret = g_object_new (AWN_TYPE_OVERLAY_PIXBUF, 
+                       "pixbuf", pixbuf,
+                       NULL);
+  }
+  return ret;
+}
+
+static void 
+_awn_overlay_pixbuf_render ( AwnOverlay* _overlay,
+                               AwnThemedIcon * icon,
+                               cairo_t * cr,                                 
+                               gint icon_width,
+                               gint icon_height)
+{
+  AwnOverlayPixbuf *overlay = AWN_OVERLAY_PIXBUF(_overlay);
+  AwnOverlayPixbufPrivate *priv;
+  gdouble pixbuf_width;
+  gdouble pixbuf_height;
+  gint scaled_width;
+  gint scaled_height;
+  AwnOverlayCoord coord;  
+  
+  priv = AWN_OVERLAY_PIXBUF_GET_PRIVATE (overlay);
+  g_return_if_fail (priv->pixbuf);
+ 
+  cairo_save (cr);
+  pixbuf_width = gdk_pixbuf_get_width (priv->pixbuf);
+  pixbuf_height = gdk_pixbuf_get_height (priv->pixbuf);
+ 
+  scaled_width = lround (icon_width * priv->scale);  
+  scaled_height = lround (pixbuf_height * scaled_width / pixbuf_width);
+
+  /* Why do we do this?  Well the gdk pixbuf scaling gives a better result than
+   the cairo scaling when dealing with a source pixbuf */
+  if ( !priv->scaled_pixbuf || (scaled_width != gdk_pixbuf_get_width (priv->scaled_pixbuf) ) || 
+        (scaled_height != gdk_pixbuf_get_height (priv->scaled_pixbuf) ) )
+  {
+    if (priv->scaled_pixbuf)
+    {
+      g_object_unref (priv->scaled_pixbuf);
+    }
+    if ( (scaled_width == pixbuf_width) && (scaled_height==pixbuf_height))
+    {
+      g_object_ref (priv->pixbuf);
+      priv->scaled_pixbuf = priv->pixbuf;
+    }
+    else
+    {
+      priv->scaled_pixbuf = gdk_pixbuf_scale_simple  (priv->pixbuf,
+                                                    scaled_width,
+                                                    scaled_height,
+                                                    GDK_INTERP_BILINEAR);
+    }
+  }
+    
+  awn_overlay_move_to (AWN_OVERLAY(overlay),cr,icon_width,icon_height,scaled_width,scaled_height,&coord);
+  gdk_cairo_set_source_pixbuf (cr,priv->scaled_pixbuf,coord.x,coord.y);
+  cairo_paint_with_alpha (cr,priv->alpha);
+  cairo_restore (cr);
+}
