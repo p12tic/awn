@@ -113,17 +113,6 @@ awn_applet_simple_size_allocate (GtkWidget *widget, GtkAllocation *alloc)
 }
 
 static void
-awn_applet_simple_size_request (GtkWidget *widget, GtkRequisition *req)
-{
-  AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE_GET_PRIVATE (widget);
-
-  if (AWN_IS_ICON (priv->icon))
-  {
-    gtk_widget_size_request (priv->icon, req);
-  }
-}
-
-static void
 awn_applet_simple_menu_creation (AwnApplet *applet, GtkMenu *menu)
 {
   /* FIXME: If last_icon_type == ICON_THEMED_*, add "Clear custom icons" */
@@ -154,13 +143,10 @@ static void
 awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
 {
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
   AwnAppletClass *app_class = AWN_APPLET_CLASS (klass);
       
   obj_class->dispose     = awn_applet_simple_dispose;
   obj_class->constructed = awn_applet_simple_constructed;
-
-  //wid_class->size_request   = awn_applet_simple_size_request;
 
   app_class->orient_changed = awn_applet_simple_orient_changed;
   app_class->offset_changed = awn_applet_simple_offset_changed;

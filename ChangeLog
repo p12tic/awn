@@ -1,5 +1,21 @@
 2009-06-10  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* configure.in:
+	Tweak the CFLAGS and the warning-related CFLAGS.
+
+	* applets/taskmanager/task-icon.c (task_icon_remove_window):
+	* applets/taskmanager/task-manager.c (try_to_place_window_by_wmclass,
+	  try_to_match_window_to_launcher, _drag_dest_leave):
+	* applets/taskmanager/task-window.c (task_window_set_icon_geometry):
+	* libawn/awn-applet-simple.c (awn_applet_simple_class_init):
+	* libawn/awn-dialog.c (_on_origin_changed):
+	* libawn/awn-overlaid-icon.c (_awn_overlaid_icon_expose):
+	* src/awn-app.c (awn_app_get_panels):
+	* src/awn-applet-manager.c (awn_applet_manager_set_applet_flags):
+	Fix various compiler warnings/errors.
+
+2009-06-10  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/Makefile.am:
 	* doc/reference/libawn-sections.txt:
 	* doc/reference/libawn.types:

@@ -344,7 +344,7 @@ awn_applet_manager_set_applet_flags (AwnAppletManager *manager,
 
   // FIXME: separators!
   //if (flags & (AWN_APPLET_IS_SEPARATOR | AWN_APPLET_IS_EXPANDER) == 0) return;
-  if (flags & AWN_APPLET_IS_EXPANDER == 0) return;
+  if ((flags & AWN_APPLET_IS_EXPANDER) == 0) return;
 
   priv = manager->priv;
 

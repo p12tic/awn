@@ -79,7 +79,6 @@ static void
 awn_overlaid_icon_class_init (AwnOverlaidIconClass *klass)
 {
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
   
   obj_class->dispose = awn_overlaid_icon_dispose;
   obj_class->finalize = awn_overlaid_icon_finalize;
@@ -94,7 +93,6 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
 {
   int icon_height;
   int icon_width;  
-  int orientation;
   GList * iter = NULL;
   AwnOverlaidIconPrivate *priv;
   cairo_t * ctx;

@@ -569,8 +569,6 @@ task_icon_remove_window (TaskIcon      *icon,
 {
   GSList *  w;
   TaskIconPrivate *priv;
-  gboolean first_window = FALSE;
-  static gboolean recursing = FALSE;
 
   g_return_if_fail (TASK_IS_ICON (icon));
   g_return_if_fail (WNCK_IS_WINDOW (window));

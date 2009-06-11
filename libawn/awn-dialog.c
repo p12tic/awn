@@ -452,73 +452,6 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
 }
 
 static gboolean
-on_hbox_expose(GtkWidget       *widget,
-               GdkEventExpose  *expose,
-               AwnDialog *dialog)
-{
-  cairo_t *cr = NULL;
-  cairo_pattern_t *pat = NULL;
-  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (dialog);
-  gint width, height;
-
-  cr = gdk_cairo_create (gtk_widget_get_window (widget));
-
-  g_return_val_if_fail (cr, FALSE);
-
-  width = widget->allocation.width;
-  height = widget->allocation.height;
-
-  gdk_cairo_region (cr, expose->region);
-  cairo_clip (cr);
-
-  cairo_translate (cr, expose->area.x, expose->area.y);
-
-  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-
-  cairo_set_line_width (cr, 1.0);
-  cairo_translate (cr, 0.5, 0.5);
-
-  /* Paint the background the border colour */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->g_histep_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, priv->g_histep_2);
-
-  awn_cairo_rounded_rect (cr, 0, 0, width-1, height-0.5, 15, ROUND_ALL);
-  cairo_set_source (cr, pat);
-  cairo_fill_preserve (cr);
-  cairo_pattern_destroy (pat);
-
-  /* border */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->border_color);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.75, priv->border_color);
-  cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.25);
-
-  cairo_set_source (cr, pat);
-  cairo_stroke (cr);
-
-  cairo_pattern_destroy (pat);
-
-  /* hilight */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->hilight_color);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.75, priv->hilight_color);
-  cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.0);
-
-  cairo_set_operator (cr, CAIRO_OPERATOR_XOR);
-  awn_cairo_rounded_rect (cr, 1, 1, width-3, height-1.5, 15, ROUND_ALL);
-  cairo_set_source (cr, pat);
-  cairo_stroke (cr);
-
-  cairo_pattern_destroy (pat);
-
-  /* Clean up */
-  cairo_destroy(cr);
-
-  return FALSE;
-}
-
-static gboolean
 _on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer *data)
 {
   g_return_val_if_fail (AWN_IS_DIALOG (widget), FALSE);
@@ -1209,8 +1142,6 @@ static void
 _on_origin_changed (AwnApplet *applet, GdkRectangle *rect, AwnDialog *dialog)
 {
   g_return_if_fail (AWN_IS_DIALOG (dialog));
-
-  AwnDialogPrivate *priv = dialog->priv;
 
   if (!GTK_WIDGET_VISIBLE (dialog)) return;
 

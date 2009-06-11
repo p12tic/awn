@@ -557,9 +557,7 @@ static gboolean
 try_to_place_window_by_wmclass (TaskManager *manager, WnckWindow *window)
 {
   GSList *i;
-  WnckApplication *taskwin_app;
   TaskManagerPrivate *priv = manager->priv;
-  gboolean result = FALSE;
   gchar   *temp;
   gchar   *res_name = NULL;
   gchar   *class_name = NULL;
@@ -733,7 +731,7 @@ static gboolean
 try_to_match_window_to_launcher (TaskManager *manager, WnckWindow *window)
 {
   TaskManagerPrivate *priv = manager->priv;
-  GSList  *l,*i;
+  GSList  *l;
   gchar   *temp;
   gchar   *res_name = NULL;
   gchar   *class_name = NULL;
@@ -1187,11 +1185,13 @@ _drag_dest_leave (TaskManager *manager, GtkWidget *icon)
 {
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
+  /*
   TaskManagerPrivate *priv = TASK_MANAGER_GET_PRIVATE (manager);
 
   //FIXME: REMOVE OLD TIMER AND SET NEW ONE
-  //if(!priv->drag_timeout)
-  //  priv->drag_timeout = g_timeout_add (200, (GSourceFunc)drag_leaves_task_manager, manager);
+  if(!priv->drag_timeout)
+    priv->drag_timeout = g_timeout_add (200, (GSourceFunc)drag_leaves_task_manager, manager);
+  */
 }
 
 //static gboolean
