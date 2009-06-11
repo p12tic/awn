@@ -25,27 +25,13 @@ AWN_TOOLTIP_GET_CLASS
 </SECTION>
 
 <SECTION>
-<FILE>awn-overlay-icon</FILE>
-<TITLE>AwnOverlayIcon</TITLE>
-AwnOverlayIcon
-awn_overlay_icon_new
-<SUBSECTION Standard>
-AWN_OVERLAY_ICON
-AWN_IS_OVERLAY_ICON
-AWN_TYPE_OVERLAY_ICON
-awn_overlay_icon_get_type
-AWN_OVERLAY_ICON_CLASS
-AWN_IS_OVERLAY_ICON_CLASS
-AWN_OVERLAY_ICON_GET_CLASS
-</SECTION>
-
-<SECTION>
 <FILE>awn-dialog</FILE>
 AwnDialogPrivate
 <TITLE>AwnDialog</TITLE>
 AwnDialog
 awn_dialog_new
 awn_dialog_new_for_widget
+awn_dialog_new_for_widget_with_applet
 awn_dialog_set_padding
 <SUBSECTION Standard>
 AWN_DIALOG
@@ -55,6 +41,21 @@ awn_dialog_get_type
 AWN_DIALOG_CLASS
 AWN_IS_DIALOG_CLASS
 AWN_DIALOG_GET_CLASS
+</SECTION>
+
+<SECTION>
+<FILE>awn-overlay-themed-icon</FILE>
+<TITLE>AwnOverlayThemedIcon</TITLE>
+AwnOverlayThemedIcon
+awn_overlay_themed_icon_new
+<SUBSECTION Standard>
+AWN_OVERLAY_THEMED_ICON
+AWN_IS_OVERLAY_THEMED_ICON
+AWN_TYPE_OVERLAY_THEMED_ICON
+awn_overlay_themed_icon_get_type
+AWN_OVERLAY_THEMED_ICON_CLASS
+AWN_IS_OVERLAY_THEMED_ICON_CLASS
+AWN_OVERLAY_THEMED_ICON_GET_CLASS
 </SECTION>
 
 <SECTION>
@@ -201,7 +202,6 @@ AWN_OVERLAY_THROBBER_GET_CLASS
 <SECTION>
 <FILE>awn-applet</FILE>
 AwnAppletPrivate
-AwnAppletFlags
 <TITLE>AwnApplet</TITLE>
 AwnApplet
 AwnAppletInitFunc
@@ -335,6 +335,18 @@ AWN_OVERLAY_GET_CLASS
 </SECTION>
 
 <SECTION>
+<FILE>stamp-awn-enum-types</FILE>
+</SECTION>
+
+<SECTION>
+<FILE>stamp-egg-enum-types</FILE>
+</SECTION>
+
+<SECTION>
+<FILE>libawn</FILE>
+</SECTION>
+
+<SECTION>
 <FILE>gseal-transition</FILE>
 gtk_selection_data_get_data
 gtk_selection_data_get_length
@@ -395,10 +407,10 @@ awn_config_client_free
 <FILE>awn-enum-types</FILE>
 awn_orientation_get_type
 AWN_TYPE_ORIENTATION
-awn_path_type_get_type
-AWN_TYPE_PATH_TYPE
 awn_applet_flags_get_type
 AWN_TYPE_APPLET_FLAGS
+awn_path_type_get_type
+AWN_TYPE_PATH_TYPE
 awn_cairo_round_corners_get_type
 AWN_TYPE_CAIRO_ROUND_CORNERS
 awn_config_value_type_get_type
@@ -449,6 +461,7 @@ AWN_APPLET_GCONF_PATH
 AWN_MAX_HEIGHT
 AWN_MIN_HEIGHT
 AwnOrientation
+AwnAppletFlags
 AwnPathType
 AWN_FONT_SIZE_EXTRA_SMALL
 AWN_FONT_SIZE_SMALL
