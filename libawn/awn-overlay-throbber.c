@@ -103,19 +103,21 @@ awn_overlay_throbber_set_property (GObject *object, guint property_id,
 static void
 awn_overlay_throbber_dispose (GObject *object)
 {
+  AwnOverlayThrobberPrivate *priv = AWN_OVERLAY_THROBBER_GET_PRIVATE(object);
+  
   G_OBJECT_CLASS (awn_overlay_throbber_parent_class)->dispose (object);
+  
+  if (priv->icon)
+  {
+    g_object_unref (priv->icon);
+  }
+  
 }
 
 static void
 awn_overlay_throbber_finalize (GObject *object)
 {
-  AwnOverlayThrobberPrivate *priv = AWN_OVERLAY_THROBBER_GET_PRIVATE(object);
-  
   G_OBJECT_CLASS (awn_overlay_throbber_parent_class)->finalize (object);
-  if (priv->icon)
-  {
-    g_object_unref (priv->icon);
-  }
 }
 
 static gboolean
