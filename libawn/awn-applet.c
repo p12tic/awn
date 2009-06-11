@@ -763,6 +763,7 @@ awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
 {
   AwnAppletPrivate *priv;
   gint result;
+  gdouble temp;
 
   g_return_val_if_fail (AWN_IS_APPLET (applet), 0);
   priv = applet->priv;
@@ -774,12 +775,14 @@ awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
       {
         case AWN_ORIENTATION_LEFT:
         case AWN_ORIENTATION_RIGHT:
-          result = round (sin (M_PI * (priv->pos_y + y) / priv->panel_height)
-                          * (priv->offset_modifier * priv->offset));
+          temp = sin (M_PI * (priv->pos_y + y) / priv->panel_height);
+          temp = temp * temp;
+          result = round (temp * (priv->offset_modifier * priv->offset));
           break;
         default:
-          result = round (sin (M_PI * (priv->pos_x + x) / priv->panel_width)
-                          * (priv->offset_modifier * priv->offset));
+          temp = sin (M_PI * (priv->pos_x + x) / priv->panel_width);
+          temp = temp * temp;
+          result = round (temp * (priv->offset_modifier * priv->offset));
           break;
       }
 /*
