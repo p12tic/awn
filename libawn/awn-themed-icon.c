@@ -60,7 +60,7 @@ struct _AwnThemedIconPrivate
   gchar  *uid;
   gchar **states;
   gchar **icon_names;
-  gchar **icon_names_orignal;
+  gchar **icon_names_original;
   gint    n_states;
 
   gchar  *current_state;
@@ -110,7 +110,7 @@ awn_themed_icon_dispose (GObject *object)
 
   g_strfreev (priv->states);             priv->states = NULL;
   g_strfreev (priv->icon_names);         priv->icon_names = NULL;
-  g_strfreev (priv->icon_names_orignal); priv->icon_names_orignal = NULL;
+  g_strfreev (priv->icon_names_original); priv->icon_names_original = NULL;
   g_free (priv->applet_name);            priv->applet_name = NULL;
   g_free (priv->uid);                    priv->uid = NULL;
   g_free (priv->current_state);          priv->current_state = NULL;
@@ -188,7 +188,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   priv->uid = NULL;
   priv->states = NULL;
   priv->icon_names = NULL;
-  priv->icon_names_orignal = NULL;
+  priv->icon_names_original = NULL;
   priv->current_state = NULL;
   priv->current_size = 48;
 
@@ -348,9 +348,9 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
 
           case SCOPE_FILENAME:
             pixbuf = NULL;
-            if (priv->icon_names_orignal)
+            if (priv->icon_names_original)
             {
-              gchar *real_name = priv->icon_names_orignal[idx];
+              gchar *real_name = priv->icon_names_original[idx];
               pixbuf = try_and_load_image_from_disk (real_name, size);
             }
             break;
@@ -572,15 +572,15 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
   /* Free the old states & icon_names */
   g_strfreev (priv->states);
   g_strfreev (priv->icon_names);
-  g_strfreev (priv->icon_names_orignal);
+  g_strfreev (priv->icon_names_original);
   priv->states = NULL;
   priv->icon_names = NULL;
-  priv->icon_names_orignal = NULL;
+  priv->icon_names_original = NULL;
 
   /* Copy states & icon_names internally */
   priv->states = g_strdupv (states);
   priv->icon_names = g_strdupv (icon_names);
-  priv->icon_names_orignal = normalise_names (priv->icon_names);
+  priv->icon_names_original = normalise_names (priv->icon_names);
   priv->n_states = n_states;
   
   /* Now add the rest of the entries */
@@ -689,7 +689,7 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
   applet_name = g_strdup (priv->applet_name?priv->applet_name:"__unknown__");
   uid = g_strdup (priv->uid?priv->uid:"__invisible__");
   
-  icon_names = g_strdupv (priv->icon_names_orignal);
+  icon_names = g_strdupv (priv->icon_names_original);
   states = g_strdupv (priv->states);
   
   icon_names = g_realloc (icon_names, sizeof (gchar *) * (priv->n_states+2));
@@ -893,10 +893,10 @@ awn_themed_icon_clear_info (AwnThemedIcon *icon)
   /* Free the old states & icon_names */
   g_strfreev (priv->states);
   g_strfreev (priv->icon_names);
-  g_strfreev (priv->icon_names_orignal);
+  g_strfreev (priv->icon_names_original);
   priv->states = NULL;
   priv->icon_names = NULL;
-  priv->icon_names_orignal = NULL;
+  priv->icon_names_original = NULL;
   gtk_drag_dest_unset (GTK_WIDGET(icon));
 }
 
