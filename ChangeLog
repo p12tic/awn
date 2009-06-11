@@ -1,6 +1,11 @@
 2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
+	Don't try to copy original_icon_names if it is NULL.
+
+2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
 	Spelling:  orignal -> original
 
 2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>

@@ -629,7 +629,7 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
 }
 
 /**
- * awn_themed_icon_set_info_info:
+ * awn_themed_icon_set_info_simple:
  * @icon: A pointer to an #AwnThemedIcon object.
  * @applet_name: The applet name.
  * @uid: The applet's UID.
@@ -686,10 +686,12 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
 
   priv = icon->priv;
 
+  /*Conditional operator in use*/
   applet_name = g_strdup (priv->applet_name?priv->applet_name:"__unknown__");
-  uid = g_strdup (priv->uid?priv->uid:"__invisible__");
+  uid = g_strdup (priv->uid?priv->uid:"__invisible__");  
+  icon_names = g_strdupv (priv->icon_names_original?priv->icon_names_original:priv->icon_names);
+  /*End of Conditional operator in use*/
   
-  icon_names = g_strdupv (priv->icon_names_original);
   states = g_strdupv (priv->states);
   
   icon_names = g_realloc (icon_names, sizeof (gchar *) * (priv->n_states+2));
@@ -700,8 +702,7 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
   
   states [priv->n_states+1] = NULL;
   states [priv->n_states] = g_strdup (state?state:"::invisible::unknown");
- 
-  
+   
   awn_themed_icon_set_info (icon,applet_name,uid,states,icon_names);
   g_strfreev (icon_names);
   g_strfreev (states);
