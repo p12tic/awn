@@ -1,6 +1,11 @@
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
+	A bit more documentation.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
 	More documentation.
 
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>

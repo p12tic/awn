@@ -25,6 +25,19 @@
 #include "awn-themed-icon.h"
 
 #include "gseal-transition.h"
+ 
+/**
+ * SECTION:AwnThemedIcon
+ * @short_description: A AwnIcon subclass that provides gtk themed icon support
+ * @see_also: #AwnIcon, #AwnOverlaidIcon, #GtkIconTheme
+ * @stability: Unstable
+ * @include: libawn/libawn.h
+ *
+ * Provides convenient support for one or more themed icons using lists of 
+ * of icon names / icon states.  Includes support of transparent (to applet)
+ * modification of displayed icons through drag and drop.
+ * 
+ */
 
 G_DEFINE_TYPE (AwnThemedIcon, awn_themed_icon, AWN_TYPE_ICON)
 
