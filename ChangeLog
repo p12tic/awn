@@ -5,34 +5,34 @@
 	* doc/reference/libawn.types:
 	Fix docs again.
 
-2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+2009-06-10  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
 	A bit more documentation.
 
-2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+2009-06-10  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
 	More documentation.
 
-2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+2009-06-10  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
 	* libawn/awn-overlay-themed-icon.c:
 	Change order of parameters of awn_themed_icon_set_info_append() 
 	to be consistent with other functions.
 
-2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+2009-06-10  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
 	Some documentation.
 
-2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+2009-06-10  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-throbber.c:
 	Add scaling to AwnOverlayThrobber.
 
-2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+2009-06-10  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
 	Move the destruction of the dialog into dispose.  Causes some 
