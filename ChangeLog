@@ -1,5 +1,10 @@
 2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-icon-throbber.c:
+	Take a reference on the Icon when the icon property is set.
+
+2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-icon-file.c:
 	* libawn/awn-overlay-icon-file.h:
 	* libawn/Makefile.am:

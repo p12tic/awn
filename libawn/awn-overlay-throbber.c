@@ -87,7 +87,7 @@ awn_overlay_throbber_set_property (GObject *object, guint property_id,
       {
         g_object_unref (priv->icon);
       }
-      priv->icon = g_value_get_object (value);
+      priv->icon = g_value_dup_object (value);
       break;    
     case PROP_TIMEOUT:
       priv->timeout = g_value_get_uint (value);
