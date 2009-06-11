@@ -661,7 +661,7 @@ awn_themed_icon_set_info_simple (AwnThemedIcon  *icon,
 void
 awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
                                  const gchar    * state,                                 
-                                 const gchar    *icon_name)                         )
+                                 const gchar    *icon_name)
 {
   GStrv icon_names;
   GStrv states;
@@ -697,6 +697,15 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
   
 }
 
+/**
+ * awn_themed_icon_set_info_append:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ * @applet_name: The applet name.  
+ * @uid: The UID of the applet instance.
+ *
+ * Sets the applet name / uid pair for the icon.  If an existing applet 
+ * name has previously been set then the value will not be modified.
+ */
 void
 awn_themed_icon_set_applet_info (AwnThemedIcon  *icon,
                                  const gchar    *applet_name,
@@ -731,6 +740,13 @@ awn_themed_icon_set_applet_info (AwnThemedIcon  *icon,
   }  
 }
 
+/**
+ * awn_themed_icon_override_gtk_theme:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ * @theme_name: A icon theme name.
+ *
+ * Overrides the default icon theme with a different icon theme.
+ */
 
 void
 awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
@@ -758,6 +774,17 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
   ensure_icon (icon);
 }
 
+/**
+ * awn_themed_icon_get_icon_at_size:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ * @size: A icon theme name.
+ * @state: The desired icon state.
+ *
+ * Retrieve an icon as a #GdkPixbuf at a specific size and for a specific
+ * icon state.  Note that this will not change the currently displayed icon.
+ * The caller is responsible of unreffing the pixbuf.
+ */
+
 GdkPixbuf * 
 awn_themed_icon_get_icon_at_size (AwnThemedIcon *icon,
                                   guint          size,
@@ -770,6 +797,14 @@ awn_themed_icon_get_icon_at_size (AwnThemedIcon *icon,
   
   return get_pixbuf_at_size (icon, size, state);
 }
+
+/**
+ * awn_themed_icon_clear_icons:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ * @size: Scope to clear. One of SCOPE_AWN_THEME, SCOPE_AWN_APPLET, SCOPE_AWN_UID.
+ *
+ * Delete icons from the custom awn-theme in $HOME/.icons/awn-theme
+ */
 
 void 
 awn_themed_icon_clear_icons (AwnThemedIcon *icon,
@@ -827,6 +862,13 @@ awn_themed_icon_clear_icons (AwnThemedIcon *icon,
   }
 }
 
+/**
+ * awn_themed_icon_clear_info:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ *
+ * Clears any icon names and icon states that have been set for the Icon.
+ */
+
 void  
 awn_themed_icon_clear_info (AwnThemedIcon *icon)
 {
@@ -844,6 +886,7 @@ awn_themed_icon_clear_info (AwnThemedIcon *icon)
   priv->icon_names_orignal = NULL;
   gtk_drag_dest_unset (GTK_WIDGET(icon));
 }
+
 /*
  * Callbacks 
  */
