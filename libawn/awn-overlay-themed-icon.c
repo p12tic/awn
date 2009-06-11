@@ -198,7 +198,7 @@ awn_overlay_themed_icon_init (AwnOverlayThemedIcon *self)
 }
 
 AwnOverlayThemedIcon*
-awn_overlay_themed_icon_new (AwnThemedIcon * icon, const gchar * icon_name, const gchar * state)
+awn_overlay_themed_icon_new (AwnOverlaidIcon * icon, const gchar * icon_name, const gchar * state)
 {
   AwnOverlayThemedIcon * ret;
   gchar * created_state = NULL;

@@ -1157,7 +1157,7 @@
   (c-name "awn_overlay_themed_icon_new")
   (is-constructor-of "AwnOverlayThemedIcon")
   (parameters
-    '("AwnThemedIcon*" "icon")
+    '("AwnOverlaidIcon*" "icon")
     '("const-gchar*" "icon_name")
     '("const-gchar*" "icon_state")
   )

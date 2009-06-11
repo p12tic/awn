@@ -1,3 +1,10 @@
+2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-overlay-themed-icon.c:
+	* libawn/awn-overlay-themed-icon.h:
+	Correct the def of awn_overlay_themed_icon_new() to required an AnwOverlaidIcon instead of AwnThemedIcon.
+
 2009-06-10  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* configure.in:

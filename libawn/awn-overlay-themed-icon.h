@@ -24,6 +24,7 @@
 #include <glib-object.h>
 
 #include "awn-overlay.h"
+#include "awn-overlaid-icon.h"
 
 G_BEGIN_DECLS
 
@@ -54,7 +55,7 @@ typedef struct {
 
 GType awn_overlay_themed_icon_get_type (void);
 
-AwnOverlayThemedIcon* awn_overlay_themed_icon_new (AwnThemedIcon * icon, const gchar * icon_name, const gchar * state);
+AwnOverlayThemedIcon* awn_overlay_themed_icon_new (AwnOverlaidIcon * icon, const gchar * icon_name, const gchar * state);
 
 G_END_DECLS
 
