@@ -660,8 +660,8 @@ awn_themed_icon_set_info_simple (AwnThemedIcon  *icon,
 
 void
 awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
-                                 const gchar    *icon_name,
-                                 const gchar    * state                                 )
+                                 const gchar    * state,                                 
+                                 const gchar    *icon_name)                         )
 {
   GStrv icon_names;
   GStrv states;

@@ -218,7 +218,7 @@ awn_overlay_themed_icon_new (AwnThemedIcon * icon, const gchar * icon_name, cons
                       "gravity",GDK_GRAVITY_SOUTH_EAST,
                       NULL);
 /* some of this probably should be done in constructed() FIXME*/
-  awn_themed_icon_set_info_append (icon,icon_name,state);
+  awn_themed_icon_set_info_append (icon,state,icon_name);
     
   if (created_state)
   {

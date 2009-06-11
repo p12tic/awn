@@ -1,6 +1,13 @@
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
+	* libawn/awn-overlay-themed-icon.c:
+	Change order of parameters of awn_themed_icon_set_info_append() 
+	to be consistent with other functions.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
 	Some documentation.
 
 2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
