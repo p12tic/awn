@@ -216,6 +216,13 @@ awn_themed_icon_init (AwnThemedIcon *icon)
 
 }
 
+/**
+ * awn_themed_icon_new:
+ *
+ * Creates a new instance of #AwnThemedIcon.  
+ * Returns: an instance of #AwnThemedIcon
+ */
+
 GtkWidget *
 awn_themed_icon_new (void)
 
@@ -407,6 +414,15 @@ ensure_icon (AwnThemedIcon *icon)
  * Public functions
  */
 
+/**
+ * awn_themed_icon_set_state:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ * @state: The icon state that is to be enabled.
+ *
+ * Switches to the icon state specificed.  This will switch the displayed icon
+ * to the corresponding themed icon.
+ */
+
 void  
 awn_themed_icon_set_state (AwnThemedIcon *icon,
                            const gchar   *state)
@@ -423,6 +439,14 @@ awn_themed_icon_set_state (AwnThemedIcon *icon,
   ensure_icon (icon);
 }
 
+/**
+ * awn_themed_icon_get_state:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ *
+ * Get the current icon state of the #AwnThemedIcon.
+ * Returns: a pointer to the current icon state string.
+ */
+
 const gchar *
 awn_themed_icon_get_state (AwnThemedIcon *icon)
 {
@@ -430,6 +454,14 @@ awn_themed_icon_get_state (AwnThemedIcon *icon)
 
   return icon->priv->current_state;
 }
+
+/**
+ * awn_themed_icon_set_size:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ * @size: An icon size
+ *
+ * Set the Icon size.
+ */
 
 void 
 awn_themed_icon_set_size (AwnThemedIcon *icon,
@@ -441,6 +473,13 @@ awn_themed_icon_set_size (AwnThemedIcon *icon,
   ensure_icon (icon);
 }
 
+/**
+ * awn_themed_icon_get_size:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ *
+ * Get the current icon size.
+ * Returns: the current icon size.
+ */
 gint
 awn_themed_icon_get_size (AwnThemedIcon *icon)
 {
@@ -475,6 +514,19 @@ normalise_names (gchar **names)
   }
   return ret;
 }
+
+/**
+ * awn_themed_icon_set_info:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ * @applet_name: The applet name.
+ * @uid: The applet's UID.
+ * @states: A NULL terminated list of icon states.
+ * @icon_names: A NULL terminated list of theme icon names that corresponds to
+ * the states arra.
+ *
+ * Sets a list of Icon names and Icon states for the specific Applet name / UID 
+ * instance.
+ */
 
 void
 awn_themed_icon_set_info (AwnThemedIcon  *icon,
@@ -563,6 +615,18 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
   }
 }
 
+/**
+ * awn_themed_icon_set_info_info:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ * @applet_name: The applet name.
+ * @uid: The applet's UID.
+ * @icon_n
+ * instance.ame: A themed icon name.
+ *
+ * Sets icon name for a specific Applet name / UID instance.  Used for Icons
+ * that only have one icon. 
+ */
+
 void
 awn_themed_icon_set_info_simple (AwnThemedIcon  *icon,
                                  const gchar    *applet_name,
@@ -585,10 +649,19 @@ awn_themed_icon_set_info_simple (AwnThemedIcon  *icon,
   awn_themed_icon_set_state (icon, states[0]);
 }
 
+/**
+ * awn_themed_icon_set_info_append:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ * @state: An Icon state.  
+ * @icon_names: A icon name.
+ *
+ * Appends a icon state/ icon name pair to the existing list of themed icons.
+ */
+
 void
 awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
                                  const gchar    *icon_name,
-                                 const gchar    * state)
+                                 const gchar    * state                                 )
 {
   GStrv icon_names;
   GStrv states;
