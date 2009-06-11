@@ -3,12 +3,12 @@
 	* libawn/awn-overlay-pixbuf.c:
         * libawn/awn-overlay-pixbuf.h:
 	Initial implementation of AwnOverlayPixbuf.
-	* libawn/libawn.h
+	* libawn/libawn.h:
 	Add AwnOverlayPixbuf header files.
 
 2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
 
-	* libawn/awn-overlay-throbber.c
+	* libawn/awn-overlay-throbber.c:
 	Move unref of Icon into dispose.
 
 2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
