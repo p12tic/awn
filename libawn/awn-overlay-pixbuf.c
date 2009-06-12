@@ -59,7 +59,7 @@ struct _AwnOverlayPixbufPrivate {
 };
 
 
-static void 
+void 
 _awn_overlay_pixbuf_render ( AwnOverlay* _overlay,
                                AwnThemedIcon * icon,
                                cairo_t * cr,                                 
@@ -122,11 +122,11 @@ static void
 awn_overlay_pixbuf_finalize (GObject *object)
 {
   AwnOverlayPixbufPrivate *priv = AWN_OVERLAY_PIXBUF_GET_PRIVATE (object);    
-  G_OBJECT_CLASS (awn_overlay_pixbuf_parent_class)->finalize (object);
   if (priv->pixbuf)
   {
     g_object_unref (priv->pixbuf);
   }
+  G_OBJECT_CLASS (awn_overlay_pixbuf_parent_class)->finalize (object);  
 }
 
 static void
@@ -204,7 +204,7 @@ awn_overlay_pixbuf_new_with_pixbuf (GdkPixbuf * pixbuf)
   return ret;
 }
 
-static void 
+void 
 _awn_overlay_pixbuf_render ( AwnOverlay* _overlay,
                                AwnThemedIcon * icon,
                                cairo_t * cr,                                 

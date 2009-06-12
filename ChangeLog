@@ -1,5 +1,10 @@
 2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-pixbuf.c:
+	Move call to parent dispose() to the end of dispose().
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-pixbuf-file.h:
 	Updated header for AwnOverlayPixbufFile.
 
