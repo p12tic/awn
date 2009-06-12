@@ -390,9 +390,11 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
       }
 
     }
+  }
+  if (!pixbuf)
+  {
     g_warning ("State does not exist: %s", priv->current_state);
   }
-
   return pixbuf;
 }
 
