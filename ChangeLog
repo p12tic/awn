@@ -1,3 +1,8 @@
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+ 	* libawn/awn-overlay-text.c:
+        Document the props for AwnOverlayText.
+
 2009-06-12  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-overlay-pixbuf-file.c:

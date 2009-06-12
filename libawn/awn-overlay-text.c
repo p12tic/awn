@@ -177,6 +177,19 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
   object_class->constructed = awn_overlay_text_constructed;
   
   AWN_OVERLAY_CLASS(klass)->render_overlay = _awn_overlay_text_render;
+ 
+
+/**
+ * AwnOverlayText:font-sizing:
+ *
+ * The Absolute font size as defined for use with #PangoFontDescription at 
+ * %PANGO_SCALE at an #AwnIcon height of 48 pixels.  The following standard 
+ * awn font sizes are predefined:  %AWN_FONT_SIZE_EXTRA_SMALL, 
+ * %AWN_FONT_SIZE_SMALL, %AWN_FONT_SIZE_MEDIUM, %AWN_FONT_SIZE_LARGE, 
+ * %AWN_FONT_SIZE_EXTRA_LARGE.  The default size is %AWN_FONT_SIZE_MEDIUM.  
+ * Standard doubles can be used but all attempts should be made to use one of 
+ * the standard awn font sizes.
+ */        
   
   pspec = g_param_spec_double ("font-sizing",
                                "Font Sizing",
@@ -187,6 +200,13 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_FONT_SIZING, pspec);   
   
+
+/**
+ * AwnOverlayText:text:
+ *
+ * The text to display as a string.
+ */        
+    
   pspec = g_param_spec_string ("text",
                                "Text",
                                "Text Data",
@@ -194,6 +214,15 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_TEXT, pspec);   
 
+
+/**
+ * AwnOverlayText:text-color:
+ *
+ * Text color to use as a #DesktopAgnosticColor.  The default value is %NULL.
+ * If NULL then the current GTK+ Themes foreground #GTK_ACTIVE_STATE color 
+ * will be used.
+ */        
+    
   pspec = g_param_spec_object ("text-color",
                                "Text Colour",
                                "Text Colour",
@@ -215,6 +244,12 @@ awn_overlay_text_init (AwnOverlayText *self)
   
 }
 
+/**
+ * awn_overlay_text_new:
+ *
+ * Creates a new instance of #AwnOverlayText.
+ * Returns: an instance of #AwnOverlayText.
+ */
 AwnOverlayText*
 awn_overlay_text_new (void)
 {
