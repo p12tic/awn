@@ -1,6 +1,11 @@
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	A rather ugly fix....  Needs to be cleaned up after some testing.
+
 2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
 
-	* libawn/awn-overlaid-icon.c
+	* libawn/awn-overlaid-icon.c:
 	Disconnect the signal handler in finalize if it _is_ attached.
 
 2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>

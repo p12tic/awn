@@ -676,6 +676,9 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
                                  const gchar    * state,                                 
                                  const gchar    *icon_name)
 {
+  /*  
+   FIXME  This function needs to have some sanity imposed.
+   */.
   GStrv icon_names;
   GStrv states;
   AwnThemedIconPrivate *priv;  
@@ -683,7 +686,10 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
   gchar * uid;
   
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
-
+  if (state)
+  {
+    g_return_if_fail (strlen(state) != 0);
+  }
   priv = icon->priv;
 
   /*Conditional operator in use*/
@@ -692,10 +698,23 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
   icon_names = g_strdupv (priv->icon_names_original?priv->icon_names_original:priv->icon_names);
   /*End of Conditional operator in use*/
   
-  states = g_strdupv (priv->states);
+  if (priv->states)
+  {
+    states = g_strdupv (priv->states);
+  }
+  else
+  {
+    gchar ** tmp = g_malloc ( sizeof(gchar *) * (priv->n_states+1) );
+    int i;
+    for (i = 0; i< priv->n_states; i++)
+    {
+      tmp[i] = NULL;
+    }      
+    states = g_strdupv (tmp);
+  }
   
   icon_names = g_realloc (icon_names, sizeof (gchar *) * (priv->n_states+2));
-  states = g_realloc (priv->states,sizeof (gchar *) * (priv->n_states+2) );
+  states = g_realloc (states,sizeof (gchar *) * (priv->n_states+2) );
   
   icon_names[priv->n_states+1] = NULL;
   icon_names[priv->n_states] = g_strdup (icon_name);
