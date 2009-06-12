@@ -56,9 +56,7 @@ struct _AwnOverlayPrivate
 
   double      x_adj;
   double      y_adj;
-  double      x_per;      
-  double      y_per;
-  
+
   gboolean    active;  /*if false then the overlay_render will not run*/
   
   gdouble     x_override;
