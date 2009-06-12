@@ -77,8 +77,8 @@ static int test_option_string (AwnConfigClient *client)
 {
 	GError *err = NULL;
 	g_print ("* set_string...");
-	gchar *str_val = "My dog has fleas.";
-	awn_config_client_set_string (client, GROUP, "str", str_val, &err);
+	const gchar *str_val = "My dog has fleas.";
+	awn_config_client_set_string (client, GROUP, "str", (gchar*)str_val, &err);
 	ERROR_CHECK (err);
 	g_print ("done.\n* get_string...");
 	str_val = NULL;
@@ -114,7 +114,7 @@ static int test_option_list_bool (AwnConfigClient *client)
 			gboolean set_val = *(gboolean*)g_slist_nth_data (list_val, i);
 			gboolean get_val = *(gboolean*)g_slist_nth_data (get_list_val, i);
 			if (set_val != get_val) {
-				g_warning ("The lists differ at list index %d; get='%d', set='%d'\n", i, get_val, set_val);
+				g_warning ("The lists differ at list index %zu; get='%d', set='%d'\n", i, get_val, set_val);
 				retval = 1;
 			}
 		}
@@ -149,7 +149,7 @@ static int test_option_list_float (AwnConfigClient *client)
 			gfloat set_val = *(gfloat*)g_slist_nth_data (list_val, i);
 			gfloat get_val = *(gfloat*)g_slist_nth_data (get_list_val, i);
 			if (set_val != get_val) {
-				g_warning ("The lists differ at list index %d; get='%f', set='%f'\n", i, get_val, set_val);
+				g_warning ("The lists differ at list index %zu; get='%f', set='%f'\n", i, get_val, set_val);
 				retval = 1;
 			}
 		}
@@ -184,7 +184,7 @@ static int test_option_list_int (AwnConfigClient *client)
 			gint set_val = *(gint*)g_slist_nth_data (list_val, i);
 			gint get_val = *(gint*)g_slist_nth_data (get_list_val, i);
 			if (set_val != get_val) {
-				g_warning ("The lists differ at list index %d; get='%d', set='%d'\n", i, get_val, set_val);
+				g_warning ("The lists differ at list index %zu; get='%d', set='%d'\n", i, get_val, set_val);
 				retval = 1;
 			}
 		}
@@ -197,9 +197,9 @@ static int test_option_list_string (AwnConfigClient *client)
 	GError *err = NULL;
 	g_print ("* set_list (string)...");
 	GSList *list_val = NULL;
-	list_val = g_slist_append (list_val, "One");
-	list_val = g_slist_append (list_val, "Two");
-	list_val = g_slist_append (list_val, "Three");
+	list_val = g_slist_append (list_val, (gpointer)"One");
+	list_val = g_slist_append (list_val, (gpointer)"Two");
+	list_val = g_slist_append (list_val, (gpointer)"Three");
 	awn_config_client_set_list (client, GROUP, "list_str", AWN_CONFIG_CLIENT_LIST_TYPE_STRING, list_val, &err);
 	ERROR_CHECK (err);
 	g_print ("done.\n* get_list (string)...");
@@ -216,7 +216,7 @@ static int test_option_list_string (AwnConfigClient *client)
 			gchar *set_val = (gchar*)g_slist_nth_data (list_val, i);
 			gchar *get_val = (gchar*)g_slist_nth_data (get_list_val, i);
 			if (strcmp (set_val, get_val) != 0) {
-				g_warning ("The lists differ at list index %d; get='%s', set='%s'\n", i, get_val, set_val);
+				g_warning ("The lists differ at list index %zu; get='%s', set='%s'\n", i, get_val, set_val);
 				retval = 1;
 			}
 		}
@@ -233,7 +233,7 @@ static void test_notify (AwnConfigClientNotifyEntry *entry, gchar* data)
 static void test_option_notify (AwnConfigClient *client)
 {
 	awn_config_client_notify_add (client, GROUP, "str", (AwnConfigClientNotifyFunc)test_notify,
-				      "This string is the user_data.");
+				      (gpointer)"This string is the user_data.");
 }
 
 static int test_option_types (AwnConfigClient *client)
