@@ -1,3 +1,18 @@
+2009-06-13  Michal Hruby  <michal.mhr@gmail.com>
+
+	* tests/test-overlays.py:
+	Added small overlay test.
+	* bindings/python/awn.defs:
+	Fixed OverlayThrobber python binding.
+	* libawn/awn-effects.c:
+	Fixed missing break.
+	* libawn/awn-overlaid-icon.c:
+	Added redraw when overlay is added/removed.
+	* libawn/awn-overlay-throbber.c:
+	Fixed crash upon object destruction.
+	* tests/test-awn-effects.c:
+	Updated prop name.
+
 2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-throbber.c:

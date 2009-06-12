@@ -365,6 +365,7 @@ awn_effects_set_property (GObject      *object,
     case PROP_SPOTLIGHT_ICON:
       fx->spotlight_icon =
         awn_effects_set_custom_icon (fx, g_value_get_string (value));
+      break;
     case PROP_ARROW_ICON:
       /* arrow_type will be set by set_custom_icon if we use internal icon */
       fx->priv->arrow_type = AWN_ARROW_TYPE_CUSTOM;

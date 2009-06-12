@@ -159,7 +159,9 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,
   /* if it's the first overlay _then_ we connect the signal*/
   if (!priv->overlays)
   {
-    priv->sig_id = g_signal_connect_after (icon, "expose-event", G_CALLBACK(_awn_overlaid_icon_expose),NULL);    
+    priv->sig_id =
+      g_signal_connect_after (icon, "expose-event",
+                              G_CALLBACK (_awn_overlaid_icon_expose), NULL);
   }
   /*don't add the overlay again if it's already in the list.*/
   
@@ -168,8 +170,10 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,
     g_object_ref (overlay);
     priv->overlays = g_list_append (priv->overlays,overlay);   
     g_signal_connect (overlay, "notify",
-                  G_CALLBACK(_awn_overlaid_icon_overlay_prop_changed),
-                  icon);    
+                      G_CALLBACK(_awn_overlaid_icon_overlay_prop_changed),
+                      icon);
+
+    gtk_widget_queue_draw (GTK_WIDGET (icon));
   }
   else
   {
@@ -186,13 +190,15 @@ awn_overlaid_icon_remove_overlay (AwnOverlaidIcon * icon,
   priv = icon->priv = AWN_OVERLAID_ICON_GET_PRIVATE (icon);
 
   /* only unref if it's in the list*/
-  if (g_list_find (priv->overlays, overlay)) 
-  {  
+  if (g_list_find (priv->overlays, overlay))
+  {
     g_signal_handlers_disconnect_by_func(overlay, 
                                          _awn_overlaid_icon_overlay_prop_changed, 
                                          icon);
     priv->overlays = g_list_remove (priv->overlays,overlay);
-    g_object_unref (overlay);    
+    g_object_unref (overlay);
+
+    gtk_widget_queue_draw (GTK_WIDGET (icon));
   }
   else
   {

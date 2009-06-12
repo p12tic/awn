@@ -80,13 +80,7 @@ on_signal_click(GtkWidget *widget, gpointer user_data)
   AwnEffects *fx = awn_icon_get_effects(icon);
   awn_effects_start_ex(fx, AWN_EFFECT_OPENING, 1, TRUE, TRUE);
 
-  gchar* png = NULL;
-  g_object_get(fx, "custom-arrow-png", &png, NULL);
-  if (!png) {
-    g_object_set(fx, "custom-arrow-png", "/usr/share/gimp/2.0/themes/Default/images/preferences/folders-gradients-22.png", NULL);
-    g_free(png);
-  } else
-    g_object_set(fx, "custom-arrow-png", NULL, NULL);
+  g_object_set(fx, "arrow-png", "/usr/share/gimp/2.0/themes/Default/images/preferences/folders-gradients-22.png", NULL);
 
   return FALSE;
 }
