@@ -140,12 +140,11 @@ awn_overlaid_icon_new (void)
 
 
 static void
-_awn_overlaid_icon_overlay_active_changed(GObject *pspec,
+_awn_overlaid_icon_overlay_prop_changed(GObject *pspec,
                                       GParamSpec *gobject,
                                       AwnOverlaidIcon * icon)
 {
   g_return_if_fail (AWN_IS_OVERLAID_ICON (icon));
-  
   gtk_widget_queue_draw (GTK_WIDGET(icon));
 }
 
@@ -168,8 +167,8 @@ awn_overlaid_icon_append_overlay (AwnOverlaidIcon * icon,
   {  
     g_object_ref (overlay);
     priv->overlays = g_list_append (priv->overlays,overlay);   
-    g_signal_connect (overlay, "notify::active",
-                  G_CALLBACK(_awn_overlaid_icon_overlay_active_changed),
+    g_signal_connect (overlay, "notify",
+                  G_CALLBACK(_awn_overlaid_icon_overlay_prop_changed),
                   icon);    
   }
   else
@@ -190,7 +189,7 @@ awn_overlaid_icon_remove_overlay (AwnOverlaidIcon * icon,
   if (g_list_find (priv->overlays, overlay)) 
   {  
     g_signal_handlers_disconnect_by_func(overlay, 
-                                         _awn_overlaid_icon_overlay_active_changed, 
+                                         _awn_overlaid_icon_overlay_prop_changed, 
                                          icon);
     priv->overlays = g_list_remove (priv->overlays,overlay);
     g_object_unref (overlay);    
