@@ -105,13 +105,11 @@ awn_overlay_throbber_dispose (GObject *object)
 {
   AwnOverlayThrobberPrivate *priv = AWN_OVERLAY_THROBBER_GET_PRIVATE(object);
   
-  G_OBJECT_CLASS (awn_overlay_throbber_parent_class)->dispose (object);
-  
   if (priv->icon)
   {
     g_object_unref (priv->icon);
   }
-  
+  G_OBJECT_CLASS (awn_overlay_throbber_parent_class)->dispose (object);
 }
 
 static void

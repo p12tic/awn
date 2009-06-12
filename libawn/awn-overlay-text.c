@@ -128,8 +128,7 @@ awn_overlay_text_finalize (GObject *object)
 {
 
   AwnOverlayTextPrivate *priv;
-  priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object); 
-  G_OBJECT_CLASS (awn_overlay_text_parent_class)->finalize (object);  
+  priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object);  
   if (priv->text)
   {
     g_free (priv->text);
@@ -142,7 +141,7 @@ awn_overlay_text_finalize (GObject *object)
   {
     pango_font_description_free (priv->font_description);
   }
-
+  G_OBJECT_CLASS (awn_overlay_text_parent_class)->finalize (object); 
 }
 
 static void

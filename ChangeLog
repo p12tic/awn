@@ -1,3 +1,10 @@
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+  	* libawn/awn-overlay-themed-icon.c:
+  	* libawn/awn-overlay-throbber.c:
+	Moved calls to parent dispose/finalize to end of functions.
+
 2009-06-12  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* tests/test-config-client.c:
