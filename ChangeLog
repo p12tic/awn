@@ -1,5 +1,10 @@
 2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlaid-icon.c:
+	Missed moving a call to parent finalize.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-text.c:
   	* libawn/awn-overlay-themed-icon.c:
   	* libawn/awn-overlay-throbber.c:

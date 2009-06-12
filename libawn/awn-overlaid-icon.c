@@ -59,7 +59,6 @@ awn_overlaid_icon_finalize (GObject *object)
   GList * iter = NULL;
   
   priv = AWN_OVERLAID_ICON_GET_PRIVATE (object);
-  G_OBJECT_CLASS (awn_overlaid_icon_parent_class)->finalize (object);  
   
   if (priv->overlays)
   {
@@ -73,6 +72,7 @@ awn_overlaid_icon_finalize (GObject *object)
     g_object_unref (overlay);
   }
   g_list_free (priv->overlays);  
+  G_OBJECT_CLASS (awn_overlaid_icon_parent_class)->finalize (object);    
 }
 
 static void
