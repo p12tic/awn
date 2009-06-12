@@ -151,7 +151,12 @@ awn_overlay_text_constructed (GObject *object)
   AwnOverlayTextPrivate *priv;
 
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object); 
-
+  
+  if (G_OBJECT_CLASS (awn_overlay_text_parent_class)->constructed )
+  {
+    G_OBJECT_CLASS (awn_overlay_text_parent_class)->constructed (object);    
+  }
+  
   /*FIXME...  make into properties and hook up a signal for prop changes*/
   
   priv->font_description = pango_font_description_new ();

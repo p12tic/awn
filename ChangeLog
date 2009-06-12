@@ -1,5 +1,11 @@
 2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-throbber.c:
+	* libawn/awn-overlay-text.c:
+	Chain up to parent constructed() if there is one.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlaid-icon.c:
 	Queue a draw whenever any props in AwnOverlay changes.
 

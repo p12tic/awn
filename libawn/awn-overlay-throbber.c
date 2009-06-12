@@ -185,6 +185,12 @@ _awn_overlay_throbber_timeout_changed (GObject    *pspec,
 static void
 awn_overlay_throbber_constructed (GObject * object)
 {  
+
+  if (G_OBJECT_CLASS (awn_overlay_throbber_parent_class)->constructed)
+  {
+    G_OBJECT_CLASS (awn_overlay_throbber_parent_class)->constructed (object);
+  }
+  
   g_signal_connect (object, "notify::active",
                   G_CALLBACK(_awn_overlay_throbber_active_changed),
                   object);
