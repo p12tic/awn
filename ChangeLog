@@ -1,6 +1,11 @@
 2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
+	Add an additonal check of data and remove a stray period.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
 	A rather ugly fix....  Needs to be cleaned up after some testing.
 
 2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>

@@ -561,7 +561,8 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
 
   /* Check number of strings>0 and n_strings (states)==n_strings (icon_names)*/
   n_states = g_strv_length (states);
-  if (n_states < 1 || n_states != g_strv_length (icon_names))
+  if (n_states < 1 || n_states != g_strv_length (icon_names) || 
+      n_states != g_strv_length (states) )
   {
     g_warning ("%s", n_states ? 
                        "Length of states must match length of icon_names" 
@@ -678,7 +679,7 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
 {
   /*  
    FIXME  This function needs to have some sanity imposed.
-   */.
+   */
   GStrv icon_names;
   GStrv states;
   AwnThemedIconPrivate *priv;  
