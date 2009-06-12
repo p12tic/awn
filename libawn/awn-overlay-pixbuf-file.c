@@ -18,6 +18,8 @@
 
 /* awn-overlay-pixbuf-file.c */
 
+#include <math.h>
+
 #include "awn-overlay-pixbuf-file.h"
 
 G_DEFINE_TYPE (AwnOverlayPixbufFile, awn_overlay_pixbuf_file, AWN_TYPE_OVERLAY_PIXBUF)
