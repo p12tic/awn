@@ -1,3 +1,8 @@
+2009-06-12  h4writer <hv1989@gmail.com>
+
+	* src/awn-background-3d.c:
+	Adjust the padding when offset or size of panel changed (of 3d look).
+
 2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
