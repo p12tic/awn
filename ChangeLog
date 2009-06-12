@@ -1,5 +1,11 @@
 2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlaid-icon.c
+	Queue a draw whenever the active property of any overlay changes.
+	Should consider monitoring some of the other props?
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay.c:
 	Removed x_per and y_per.  This type of thing should be handled
 	in subclasses as not all necessarily need something like this and
