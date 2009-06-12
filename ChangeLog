@@ -1,5 +1,10 @@
 2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlaid-icon.c
+	Disconnect the signal handler in finalize if it _is_ attached.
+
+2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-icon-file.c => libawn/awn-overlay-pixbuf-file.c:
   	* libawn/awn-overlay-icon-file.h => libawn/awn-overlay-pixbuf-file.h:
   	* libawn/Makefile.am:
