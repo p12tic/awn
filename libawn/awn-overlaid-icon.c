@@ -49,6 +49,11 @@ awn_overlaid_icon_dispose (GObject *object)
   g_return_if_fail (AWN_IS_OVERLAID_ICON (object));
   priv = AWN_OVERLAID_ICON (object)->priv;
 
+  if (priv->overlays)
+  {
+    g_signal_handler_disconnect (object,priv->sig_id);
+  }
+
   G_OBJECT_CLASS (awn_overlaid_icon_parent_class)->dispose (object);
 }
 
@@ -59,12 +64,7 @@ awn_overlaid_icon_finalize (GObject *object)
   GList * iter = NULL;
   
   priv = AWN_OVERLAID_ICON_GET_PRIVATE (object);
-  
-  if (priv->overlays)
-  {
-    g_signal_handler_disconnect (object,priv->sig_id);
-  }
-  
+    
   for(iter=g_list_first (priv->overlays);iter;iter=g_list_next (iter))
   {
     AwnOverlay* overlay = iter->data;

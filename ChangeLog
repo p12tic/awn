@@ -1,6 +1,11 @@
 2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlaid-icon.c:
+	It's best to disconnect signals in dispose() not finalize.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
 	Missed moving a call to parent finalize.
 
 2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
