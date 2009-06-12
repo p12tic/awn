@@ -141,6 +141,32 @@ awn_overlay_themed_icon_finalize (GObject *object)
 }
 
 static void
+_awn_overlaid_themed_icon_clear_hash (GObject *pspec,
+                                      GParamSpec *gobject,
+                                      AwnOverlayThemedIcon* overlay)
+{
+  AwnOverlayThemedIconPrivate * priv;
+  priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (overlay);
+
+  /*clear the hash table... the icon has changed in some fundamental way*/
+  g_hash_table_remove_all (priv->pixbufs);
+  
+}
+
+static void
+awn_overlay_themed_icon_constructed (GObject *object)
+{
+  if ( G_OBJECT_CLASS( awn_overlay_themed_icon_parent_class)->constructed)
+  {
+    G_OBJECT_CLASS (awn_overlay_themed_icon_parent_class)->constructed (object);
+  }
+  
+  /*FIXME need to clear the hash table on theme changes also */
+  g_signal_connect (object, "notify::icon-name",
+                  G_CALLBACK(_awn_overlaid_themed_icon_clear_hash),
+                  object);   
+}
+static void
 awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -150,6 +176,7 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
   object_class->set_property = awn_overlay_themed_icon_set_property;
   object_class->dispose = awn_overlay_themed_icon_dispose;
   object_class->finalize = awn_overlay_themed_icon_finalize;
+  object_class->constructed = awn_overlay_themed_icon_constructed;
   
   AWN_OVERLAY_CLASS(klass)->render_overlay = _awn_overlay_themed_icon_render;
   
@@ -218,7 +245,7 @@ awn_overlay_themed_icon_new (AwnOverlaidIcon * icon, const gchar * icon_name, co
                       "gravity",GDK_GRAVITY_SOUTH_EAST,
                       NULL);
 /* some of this probably should be done in constructed() FIXME*/
-  awn_themed_icon_set_info_append (icon,state,icon_name);
+  awn_themed_icon_set_info_append (AWN_THEMED_ICON(icon),state,icon_name);
     
   if (created_state)
   {
