@@ -53,7 +53,7 @@ typedef struct {
 
 GType awn_overlay_pixbuf_file_get_type (void);
 
-AwnOverlayPixbufFile* awn_overlay_pixbuf_file_new (void);
+AwnOverlayPixbufFile* awn_overlay_pixbuf_file_new (gchar * file_name);
 
 G_END_DECLS
 

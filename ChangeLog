@@ -1,6 +1,11 @@
 2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
 
-	* libawn/awn-overlay-pixbuf-file.c
+	* libawn/awn-overlay-pixbuf-file.h:
+	Updated header for AwnOverlayPixbufFile.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf-file.c:
 	Initial implementation of AwnOverlayPixbufFile.  Does not cache
 	pixbufs yet.
 
