@@ -23,6 +23,17 @@
 
 #include "awn-overlay-throbber.h"
 
+/**
+ * SECTION:AwnOverlayThrobber
+ * @short_description: Throbber overlay.
+ * @see_also: #AwnOverlaidIcon, #AwnOverlay, #AwnOverlayIcon, #AwnOverlayText,
+ * #AwnOverlayPixbuf, #AwnOverlayPixbufFile
+ * @stability: Unstable
+ * @include: libawn/libawn.h
+ *
+ * Throbber overlay used with #AwnOverlaidIcon.
+ */
+
 G_DEFINE_TYPE (AwnOverlayThrobber, awn_overlay_throbber, AWN_TYPE_OVERLAY)
 
 #define AWN_OVERLAY_THROBBER_GET_PRIVATE(o) \
@@ -188,7 +199,7 @@ awn_overlay_throbber_constructed (GObject * object)
   {
     G_OBJECT_CLASS (awn_overlay_throbber_parent_class)->constructed (object);
   }
-  
+    
   g_signal_connect (object, "notify::active",
                   G_CALLBACK(_awn_overlay_throbber_active_changed),
                   object);
@@ -211,6 +222,12 @@ awn_overlay_throbber_class_init (AwnOverlayThrobberClass *klass)
   
   AWN_OVERLAY_CLASS(klass)->render_overlay = _awn_overlay_throbber_render;  
   
+/**
+ * AwnOverlayThrobber:icon:
+ *
+ * #AwnOverlaidIcon on which the throbber is displayed.
+ */        
+  
   pspec = g_param_spec_object ("icon",
                                "Icon",
                                "Icon",
@@ -218,6 +235,11 @@ awn_overlay_throbber_class_init (AwnOverlayThrobberClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ICON, pspec);   
 
+/**
+ * AwnOverlayThrobber:timeout:
+ *
+ * The time in milliseconds between throbber updates.
+ */          
   pspec = g_param_spec_uint ("timeout",
                                "Timeout",
                                "Timeout",
@@ -227,10 +249,18 @@ awn_overlay_throbber_class_init (AwnOverlayThrobberClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_TIMEOUT, pspec);   
 
+/**
+ * AwnOverlayThrobber:scale:
+ *
+ * Determines the size of the #AwnOverlayThrobber scaled against the dimensions
+ * of the #AwnIcon.   A scale of 0.5 would result in an overlay that covers 
+ * 25% of the Icon.
+ */        
+  
   pspec = g_param_spec_double ("scale",
                                "scale",
                                "Scale",
-                               0.0,
+                               0.01,
                                1.0,
                                0.6,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
@@ -246,6 +276,15 @@ awn_overlay_throbber_init (AwnOverlayThrobber *self)
 {
 }
 
+
+
+/**
+ * awn_overlay_throbber_new:
+ * @icon: The #AwnOverlaidIcon onto which the #AwnOverlayThrobber is rendered.
+ *
+ * Creates a new instance of #AwnOverlayThrobber.
+ * Returns: an instance of #AwnOverlayThrobber.
+ */
 GtkWidget*
 awn_overlay_throbber_new (AwnIcon * icon)
 {
