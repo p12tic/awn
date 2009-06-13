@@ -1,3 +1,9 @@
+2009-06-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+	Use awn_effects_cairo_create_clipped()... may help deranged
+	Nvidia drivers.
+
 2009-06-13  Michal Hruby  <michal.mhr@gmail.com>
 
 	* tests/test-overlays.py:

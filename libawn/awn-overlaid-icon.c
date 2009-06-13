@@ -102,7 +102,7 @@ _awn_overlaid_icon_expose (GtkWidget *widget,
   
   effects = awn_icon_get_effects (AWN_ICON(widget));
   g_return_val_if_fail (effects,FALSE);
-  ctx = awn_effects_cairo_create(effects);
+  ctx = awn_effects_cairo_create_clipped (effects, event->region);
   g_return_val_if_fail (ctx,FALSE);
   g_object_get (widget, 
                 "icon_height", &icon_height,
