@@ -755,7 +755,7 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
 gboolean
 awn_ua_add_applet (	AwnAppletManager *manager,
 			gchar     *name,
-			 guint32		xid,
+			 guint32		*xid,
 			gint	*width,
 			gint height,
 			gchar size_type,
