@@ -732,6 +732,7 @@ awn_applet_manager_add_widget (AwnAppletManager *manager,
     gtk_box_pack_start (GTK_BOX (manager), widget, FALSE, FALSE, 0);
     /* called is supposed to call gtk_widget_show! */
   }
+  g_print ("Gint : %i : ", pos);
   g_hash_table_replace (priv->extra_widgets, widget, GINT_TO_POINTER (pos));
 
   awn_applet_manager_refresh_applets (manager);
@@ -754,15 +755,31 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
 gboolean
 awn_ua_add_applet (	AwnAppletManager *manager,
 			gchar     *name,
-			 gint64		*xid,
+			 guint32		xid,
 			gint	*width,
 			gint height,
 			gchar size_type,
                          GError   **error)
 {
- GtkWidget *applet;
 
- g_print ("Applet : %lu : ", xid);
+ GtkSocket *socket = gtk_socket_new ();
+ gint *pos = 1;
+ GdkWindow* plugwin; 
+
+ GdkNativeWindow native_window = (GdkNativeWindow) xid;
+
+ gtk_socket_add_id (GTK_SOCKET(socket), native_window);
+
+  plugwin = gtk_socket_get_plug_window (socket);
+  g_print ("plug : %i : ", plugwin);
+
+ awn_applet_manager_add_widget(manager, GTK_WIDGET (socket), pos);
+
+ gtk_widget_show_all (GTK_WIDGET (socket));
+
+ g_print ("Applet : %i : ", xid);
+ g_print ("Width : %i : ", width);
+ g_print ("Height : %i : ", height);
 
 
 /*TODO Write a function who create the applet
@@ -782,10 +799,11 @@ awn_ua_get_all_server_flags (	AwnAppletManager *manager,
 {
 /* Furtur function to return capability of the server
 For now, it return nothing*/
-hash = g_hash_table_new (NULL, NULL);
+/*hash = g_hash_table_new (NULL, NULL);*/
 return TRUE;
 
 }
+
 
 /*TODO
 

@@ -81,9 +81,7 @@ void        awn_applet_manager_remove_widget     (AwnAppletManager *manager,
 
 gboolean    awn_applet_manager_get_expands       (AwnAppletManager *manager);
 
-void        awn_applet_manager_set_applet_flags  (AwnAppletManager *manager,
-                                                  const gchar *uid,
-                                                  AwnAppletFlags flags);
+
 
 gboolean    awn_ua_get_all_server_flags 	(AwnAppletManager *manager,
 						GHashTable *hash,
@@ -92,7 +90,7 @@ gboolean    awn_ua_get_all_server_flags 	(AwnAppletManager *manager,
 
 gboolean    awn_ua_add_applet 			(AwnAppletManager *manager,
 						gchar     *name,
-			 			gint64		*xid,
+			 			guint32		xid,
 						gint	*width,
 						gint height,
 						gchar size_type,
