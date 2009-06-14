@@ -1,3 +1,10 @@
+2009-06-15  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Fixed bindings for pixbuf overlays.
+	* tests/test-overlays.py:
+	Added pixbuf overlays test.
+
 2009-06-14  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* bindings/python/awn.defs:

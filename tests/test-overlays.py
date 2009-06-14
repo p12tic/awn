@@ -40,10 +40,17 @@ class Main:
   self.throOvrly.connect("toggled", self.ThrobberOverlay)
   self.thioOvrly = gtk.ToggleButton("ThemedIcon overlay")
   self.thioOvrly.connect("toggled", self.ThemedIconOverlay)
+  self.pixbOvrly = gtk.ToggleButton("Pixbuf overlay")
+  self.pixbOvrly.connect("toggled", self.PixbufOverlay)
+  self.pixfOvrly = gtk.ToggleButton("Pixbuf file overlay")
+  self.pixfOvrly.connect("toggled", self.PixbufFileOverlay)
 
   self.table.attach(self.textOvrly, 0, 1, 0, 1)
   self.table.attach(self.throOvrly, 1, 2, 0, 1)
   self.table.attach(self.thioOvrly, 2, 3, 0, 1)
+
+  self.table.attach(self.pixbOvrly, 0, 1, 1, 2)
+  self.table.attach(self.pixfOvrly, 1, 2, 1, 2)
 
   self.table.attach(self.quitButton, 2, 3, 1, 2)
 
@@ -76,6 +83,22 @@ class Main:
   elif self.thioOverlay != None:
     self.icon.get_effects().remove_overlay(self.thioOverlay)
     self.thioOverlay = None
+
+ def PixbufOverlay(self, widget, *args, **kwargs):
+  if widget.get_active():
+    self.pixbOverlay = awn.OverlayPixbuf(self.icon.get_icon_at_size(24))
+    self.icon.get_effects().add_overlay(self.pixbOverlay)
+  elif self.pixbOverlay != None:
+    self.icon.get_effects().remove_overlay(self.pixbOverlay)
+    self.pixbOverlay = None
+
+ def PixbufFileOverlay(self, widget, *args, **kwargs):
+  if widget.get_active():
+    self.pixfOverlay = awn.OverlayPixbufFile("/usr/share/icons/gnome/22x22/actions/window-new.png")
+    self.icon.get_effects().add_overlay(self.pixfOverlay)
+  elif self.pixfOverlay != None:
+    self.icon.get_effects().remove_overlay(self.pixfOverlay)
+    self.pixfOverlay = None
 
  def OnMouseOver(self, widget, *args, **kwargs):
   pass

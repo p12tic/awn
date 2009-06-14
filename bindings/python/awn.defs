@@ -1179,15 +1179,9 @@
   (c-name "awn_overlay_pixbuf_new")
   (is-constructor-of "AwnOverlayPixbuf")
   (return-type "AwnOverlayPixbuf*")
-)
-
-(define-function awn_overlay_pixbuf_new_with_pixbuf
-  (c-name "awn_overlay_pixbuf_new_with_pixbuf")
-  (is-constructor-of "AwnOverlayPixbuf")
-  (return-type "AwnOverlayPixbuf*")
-  (parameters
-    '("GdkPixbuf*" "pixbuf")
-  ) 
+  (properties
+    '("pixbuf" (optional) (argname "pixbuf"))
+  )
 )
 
 ;; From awn-overlay-pixbuf-file.h
@@ -1196,9 +1190,9 @@
   (c-name "awn_overlay_pixbuf_file_new")
   (is-constructor-of "AwnOverlayPixbufFile")
   (return-type "AwnOverlayPixbufFile*")
-  (parameters
-    '("gchar*" "file_name")
-  ) 
+  (properties
+    '("file-name" (optional) (argname "file-name"))
+  )
 )
 
 ;; From awn-tooltip.h
