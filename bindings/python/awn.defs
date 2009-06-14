@@ -42,13 +42,6 @@
   (gtype-id "AWN_TYPE_THEMED_ICON")
 )
 
-(define-object OverlaidIcon
-  (in-module "Awn")
-  (parent "AwnThemedIcon")
-  (c-name "AwnOverlaidIcon")
-  (gtype-id "AWN_TYPE_OVERLAID_ICON")
-)
-
 (define-object Overlay
   (in-module "Awn")
   (parent "GObject")
@@ -908,6 +901,24 @@
   )
 )
 
+(define-method add_overlay
+  (of-object "AwnEffects")
+  (c-name "awn_effects_add_overlay")
+  (return-type "none")
+  (parameters
+    '("AwnOverlay*" "overlay")
+  )
+)
+
+(define-method remove_overlay
+  (of-object "AwnEffects")
+  (c-name "awn_effects_remove_overlay")
+  (return-type "none")
+  (parameters
+    '("AwnOverlay*" "overlay")
+  )
+)
+
 ;; From awn-enum-types.h
 
 (define-function awn_orientation_get_type
@@ -1083,32 +1094,6 @@
   (return-type "gint")
 )
 
-;; From awn-overlaid-icon.h
-
-(define-function awn_overlaid_icon_new
-  (c-name "awn_overlaid_icon_new")
-  (is-constructor-of "AwnOverlaidIcon")
-  (return-type "GtkWidget*")
-)
-
-(define-method append_overlay
-  (of-object "AwnOverlaidIcon")
-  (c-name "awn_overlaid_icon_append_overlay")
-  (return-type "none")
-  (parameters
-    '("AwnOverlay*" "overlay")
-  )
-)
-
-(define-method remove_overlay
-  (of-object "AwnOverlaidIcon")
-  (c-name "awn_overlaid_icon_remove_overlay")
-  (return-type "none")
-  (parameters
-    '("AwnOverlay*" "overlay")
-  )
-)
-
 ;; From awn-overlay.h
 
 (define-function awn_overlay_new
@@ -1119,10 +1104,10 @@
 
 (define-method render_overlay
   (of-object "AwnOverlay")
-  (c-name "awn_overlay_render_overlay")
+  (c-name "awn_overlay_render")
   (return-type "none")
   (parameters
-    '("AwnThemedIcon*" "icon")
+    '("GtkWidget*" "widget")
     '("cairo_t*" "cr")
     '("gint" "width")
     '("gint" "height")
@@ -1157,7 +1142,7 @@
   (c-name "awn_overlay_themed_icon_new")
   (is-constructor-of "AwnOverlayThemedIcon")
   (parameters
-    '("AwnOverlaidIcon*" "icon")
+    '("AwnThemedIcon*" "icon")
     '("const-gchar*" "icon_name")
     '("const-gchar*" "icon_state")
   )

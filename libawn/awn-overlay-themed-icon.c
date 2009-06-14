@@ -37,11 +37,12 @@ typedef struct _AwnOverlayThemedIconPrivate AwnOverlayThemedIconPrivate;
 
 struct _AwnOverlayThemedIconPrivate 
 {
+    AwnThemedIcon *themed_icon;
     gdouble alpha;
     gchar * icon_name;
     gchar * icon_state;
     gdouble scale;
-  
+
     GHashTable *pixbufs;
 };
 
@@ -55,11 +56,11 @@ enum
 };
 
 static void 
-_awn_overlay_themed_icon_render ( AwnOverlay* _overlay,
-                               AwnThemedIcon * icon,
-                               cairo_t * cr,                                 
-                               gint width,
-                               gint height);
+_awn_overlay_themed_icon_render (AwnOverlay* _overlay,
+                                 GtkWidget *widget,
+                                 cairo_t * cr,
+                                 gint width,
+                                 gint height);
 
 static void
 awn_overlay_themed_icon_get_property (GObject *object, guint property_id,
@@ -141,7 +142,7 @@ awn_overlay_themed_icon_finalize (GObject *object)
 }
 
 static void
-_awn_overlaid_themed_icon_clear_hash (GObject *pspec,
+_awn_overlay_themed_icon_clear_hash (GObject *pspec,
                                       GParamSpec *gobject,
                                       AwnOverlayThemedIcon* overlay)
 {
@@ -163,7 +164,7 @@ awn_overlay_themed_icon_constructed (GObject *object)
   
   /*FIXME need to clear the hash table on theme changes also */
   g_signal_connect (object, "notify::icon-name",
-                  G_CALLBACK(_awn_overlaid_themed_icon_clear_hash),
+                  G_CALLBACK(_awn_overlay_themed_icon_clear_hash),
                   object);   
 }
 
@@ -179,7 +180,7 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
   object_class->finalize = awn_overlay_themed_icon_finalize;
   object_class->constructed = awn_overlay_themed_icon_constructed;
   
-  AWN_OVERLAY_CLASS(klass)->render_overlay = _awn_overlay_themed_icon_render;
+  AWN_OVERLAY_CLASS(klass)->render = _awn_overlay_themed_icon_render;
   
   pspec = g_param_spec_double ("alpha",
                                "alpha",
@@ -226,7 +227,8 @@ awn_overlay_themed_icon_init (AwnOverlayThemedIcon *self)
 }
 
 AwnOverlayThemedIcon*
-awn_overlay_themed_icon_new (AwnOverlaidIcon * icon, const gchar * icon_name, const gchar * state)
+awn_overlay_themed_icon_new (AwnThemedIcon *icon,
+                             const gchar *icon_name, const gchar *state)
 {
   AwnOverlayThemedIcon * ret;
   gchar * created_state = NULL;
@@ -241,13 +243,16 @@ awn_overlay_themed_icon_new (AwnOverlaidIcon * icon, const gchar * icon_name, co
   }
   
   ret = g_object_new (AWN_TYPE_OVERLAY_THEMED_ICON, 
-                      "icon-name",icon_name,
-                      "icon-state",state,
-                      "gravity",GDK_GRAVITY_SOUTH_EAST,
+                      "icon-name", icon_name,
+                      "icon-state", state,
+                      "gravity", GDK_GRAVITY_SOUTH_EAST,
                       NULL);
-/* some of this probably should be done in constructed() FIXME*/
-  awn_themed_icon_set_info_append (AWN_THEMED_ICON(icon),state,icon_name);
-    
+  /* FIXME: some of this probably should be done in constructed()
+   *  and the icon should be a prop
+   */
+  AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (ret)->themed_icon = icon;
+  awn_themed_icon_set_info_append (icon, state, icon_name);
+
   if (created_state)
   {
     g_free (created_state);
@@ -256,11 +261,11 @@ awn_overlay_themed_icon_new (AwnOverlaidIcon * icon, const gchar * icon_name, co
 }
 
 static void 
-_awn_overlay_themed_icon_render ( AwnOverlay* _overlay,
-                               AwnThemedIcon * icon,
-                               cairo_t * cr,                                 
-                               gint width,
-                               gint height)
+_awn_overlay_themed_icon_render (AwnOverlay* _overlay,
+                                 GtkWidget * widget,
+                                 cairo_t * cr,
+                                 gint width,
+                                 gint height)
 {
   AwnOverlayThemedIcon *overlay = AWN_OVERLAY_THEMED_ICON(_overlay);
   AwnOverlayThemedIconPrivate *priv;
@@ -275,9 +280,10 @@ _awn_overlay_themed_icon_render ( AwnOverlay* _overlay,
   
   if (! pixbuf)
   {
-    pixbuf = awn_themed_icon_get_icon_at_size (icon, 
-                                                   width>height?width:height * priv->scale,
-                                                   priv->icon_state);
+    pixbuf = awn_themed_icon_get_icon_at_size (priv->themed_icon,
+                                               width > height ?
+                                                 width : height * priv->scale,
+                                               priv->icon_state);
     g_hash_table_insert (priv->pixbufs, key, pixbuf);
   }
   else
@@ -288,3 +294,4 @@ _awn_overlay_themed_icon_render ( AwnOverlay* _overlay,
   gdk_cairo_set_source_pixbuf (cr,pixbuf,coord.x,coord.y);  
   cairo_paint_with_alpha (cr,priv->alpha);
 }
+

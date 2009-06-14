@@ -21,7 +21,7 @@ class Main:
   self.vbox = gtk.VBox(False)
   self.effectsHBox = gtk.HBox()
 
-  self.icon = awn.OverlaidIcon()
+  self.icon = awn.ThemedIcon()
   self.icon.set_info_simple("Applet", "123", "awn-manager")
 
   self.icon.connect("button-release-event", self.OnButton)
@@ -56,25 +56,25 @@ class Main:
   if widget.get_active():
     self.textOverlay = awn.OverlayText()
     self.textOverlay.props.text = "hello"
-    self.icon.append_overlay(self.textOverlay)
+    self.icon.get_effects().add_overlay(self.textOverlay)
   elif self.textOverlay != None:
-    self.icon.remove_overlay(self.textOverlay)
+    self.icon.get_effects().remove_overlay(self.textOverlay)
     self.textOverlay = None
 
  def ThrobberOverlay(self, widget, *args, **kwargs):
   if widget.get_active():
     self.throOverlay = awn.OverlayThrobber(self.icon)
-    self.icon.append_overlay(self.throOverlay)
+    self.icon.get_effects().add_overlay(self.throOverlay)
   elif self.throOverlay != None:
-    self.icon.remove_overlay(self.throOverlay)
+    self.icon.get_effects().remove_overlay(self.throOverlay)
     self.throOverlay = None
 
  def ThemedIconOverlay(self, widget, *args, **kwargs):
   if widget.get_active():
     self.thioOverlay = awn.OverlayThemedIcon(self.icon, "awn-manager", "something")
-    self.icon.append_overlay(self.thioOverlay)
+    self.icon.get_effects().add_overlay(self.thioOverlay)
   elif self.thioOverlay != None:
-    self.icon.remove_overlay(self.thioOverlay)
+    self.icon.get_effects().remove_overlay(self.thioOverlay)
     self.thioOverlay = None
 
  def OnMouseOver(self, widget, *args, **kwargs):

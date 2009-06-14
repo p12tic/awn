@@ -23,8 +23,9 @@
 #define _AWN_OVERLAY_PIXBUF
 
 #include <glib-object.h>
-#include "awn-overlay.h"
 #include <gdk/gdk.h>
+
+#include "awn-overlay.h"
 
 G_BEGIN_DECLS
 

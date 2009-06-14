@@ -27,7 +27,7 @@
 #include "awn-applet-simple.h"
 
 #include "awn-icon.h"
-#include "awn-overlaid-icon.h"
+#include "awn-themed-icon.h"
 #include "awn-utils.h"
 
 G_DEFINE_TYPE (AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET)
@@ -124,7 +124,7 @@ awn_applet_simple_constructed (GObject *object)
   AwnAppletSimple        *applet = AWN_APPLET_SIMPLE (object);
   AwnAppletSimplePrivate *priv = applet->priv;
 
-  priv->icon = awn_overlaid_icon_new ();
+  priv->icon = awn_themed_icon_new ();
   awn_icon_set_orientation (AWN_ICON (priv->icon), 
                             awn_applet_get_orientation (AWN_APPLET (object)));
   awn_icon_set_offset (AWN_ICON (priv->icon),

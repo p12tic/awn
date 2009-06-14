@@ -1,3 +1,30 @@
+2009-06-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/Makefile.am:
+	* libawn/anims/awn-effects-shared.h:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* libawn/awn-overlay-pixbuf-file.c:
+	* libawn/awn-overlay-pixbuf.c:
+	* libawn/awn-overlay-pixbuf.h:
+	* libawn/awn-overlay-text.c:
+	* libawn/awn-overlay-themed-icon.c:
+	* libawn/awn-overlay-themed-icon.h:
+	* libawn/awn-overlay-throbber.c:
+	* libawn/awn-overlay-throbber.h:
+	* libawn/awn-overlay.c:
+	* libawn/awn-overlay.h:
+	* libawn/libawn.h:
+	Removed AwnOverlaidIcon, methods it provided are now moved to
+	AwnEffects, where is greater control how, when and if to apply
+	effects together with overlays.
+	* tests/test-overlays.py:
+	Updated to match current architecture.
+	* libawn/awn-icon-box.h:
+	Fixed wrong include.
+
 2009-06-13  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlaid-icon.c:

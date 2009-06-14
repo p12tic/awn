@@ -25,6 +25,7 @@
 #include "awn-effects.h"
 #include "awn-effects-ops-new.h"
 #include "awn-enum-types.h"
+#include "awn-overlay.h"
 
 #include "awn-config-client.h"
 #include "awn-config-bridge.h"
@@ -102,33 +103,48 @@ enum {
 };
 
 static void
-awn_effects_finalize(GObject *object)
+awn_effects_dispose (GObject *object)
 {
-  AwnEffects * fx = AWN_EFFECTS(object);
-  /* destroy animation timer - FIXME: should be moved to dispose method */
+  AwnEffects *fx = AWN_EFFECTS (object);
+  
+  /* destroy animation timer */
   if (fx->priv->timer_id)
   {
-    g_source_remove(fx->priv->timer_id);
+    g_source_remove (fx->priv->timer_id);
+    fx->priv->timer_id = 0;
   }
 
-  /* free effect queue and associated AwnEffectsPriv */
-  GList *queue = fx->priv->effect_queue;
-  while (queue)
+  /* unref overlays in our overlay list */
+  if (fx->priv->overlays)
   {
-    g_free(queue->data);
-    queue->data = NULL;
-    queue = g_list_next(queue);
+    g_list_foreach (fx->priv->overlays, (GFunc)g_object_unref, NULL);
+    g_list_free (fx->priv->overlays);
+    fx->priv->overlays = NULL;
   }
 
-  if (fx->priv->effect_queue)
-    g_list_free(fx->priv->effect_queue);
-  fx->priv->effect_queue = NULL;
+  G_OBJECT_CLASS (awn_effects_parent_class)->dispose(object);
+}
+
+static void
+awn_effects_finalize (GObject *object)
+{
+  AwnEffects *fx = AWN_EFFECTS (object);
 
   fx->widget = NULL;
 
+  /* free effect queue and associated AwnEffectsPriv */
+  if (fx->priv->effect_queue)
+  {
+    g_list_foreach (fx->priv->effect_queue, (GFunc)g_free, NULL);
+    g_list_free (fx->priv->effect_queue);
+    fx->priv->effect_queue = NULL;
+  }
+
   if (fx->label)
-    g_free(fx->label);
-  fx->label = NULL;
+  {
+    g_free (fx->label);
+    fx->label = NULL;
+  }
 
   G_OBJECT_CLASS (awn_effects_parent_class)->finalize(object);
 }
@@ -425,6 +441,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
   obj_class->set_property = awn_effects_set_property;
   obj_class->get_property = awn_effects_get_property;
   obj_class->notify = awn_effects_prop_changed;
+  obj_class->dispose = awn_effects_dispose;
   obj_class->finalize = awn_effects_finalize;
 
   /**
@@ -785,7 +802,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
 static void
 awn_effects_init(AwnEffects * fx)
 {
-  fx->priv = AWN_EFFECTS_GET_PRIVATE(fx);
+  fx->priv = AWN_EFFECTS_GET_PRIVATE (fx);
   /* the entire structure is zeroed in allocation, define only non-zero vars
    * which are not properties
    */
@@ -1190,6 +1207,22 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
 {
   cairo_t *cr = fx->virtual_ctx;
 
+  /* FIXME: divide overlays into two lists - those where effects should be
+   *  applied and where they shouldn't
+
+  GList *overlays_with_effects;
+  GList *overlays_wo_effects;
+  */
+
+  /* Now paint the overlays which should have effects applied */
+  for (GList *iter=g_list_first (fx->priv->overlays); iter != NULL;
+       iter=g_list_next (iter))
+  {
+    AwnOverlay *overlay = iter->data;
+    awn_overlay_render (overlay, fx->widget, cr,
+                        fx->priv->icon_width, fx->priv->icon_height);
+  }
+
   cairo_reset_clip(cr);
   cairo_identity_matrix(cr);
 
@@ -1222,5 +1255,53 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
 
   fx->window_ctx = NULL;
   fx->virtual_ctx = NULL;
+}
+
+void
+awn_effects_add_overlay (AwnEffects *fx, AwnOverlay *overlay)
+{
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+
+  AwnEffectsPrivate *priv = fx->priv;
+
+  if (g_list_find (priv->overlays, overlay) == NULL)
+  {
+    priv->overlays = g_list_append (priv->overlays, g_object_ref (overlay));
+    awn_effects_redraw (fx);
+  }
+  else
+  {
+    g_warning ("%s: Attempt to add overlay that is already in overlays list!",
+               __func__);
+  }
+}
+
+void
+awn_effects_remove_overlay (AwnEffects *fx, AwnOverlay *overlay)
+{
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+
+  AwnEffectsPrivate *priv = fx->priv;
+  GList *elem;
+
+  if ((elem = (g_list_find (priv->overlays, overlay))) != NULL)
+  {
+    priv->overlays = g_list_delete_link (priv->overlays, elem);
+    g_object_unref (overlay);
+    awn_effects_redraw (fx);
+  }
+  else
+  {
+    g_warning ("%s: Attempt to remove overlay that is not in overlays list!",
+               __func__);
+  }
+}
+
+GList*
+awn_effects_get_overlays (AwnEffects *fx)
+{
+  g_return_val_if_fail (AWN_IS_EFFECTS (fx), NULL);
+
+  return g_list_copy (fx->priv->overlays);
 }
 

@@ -27,6 +27,7 @@
 
 #include "awn-defines.h"
 #include "awn-config-client.h"
+#include "awn-overlay.h"
 
 G_BEGIN_DECLS
 
@@ -207,6 +208,20 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
  * Finish drawing of the icon and run all post-ops.
  */
 void awn_effects_cairo_destroy(AwnEffects *fx);
+
+void awn_effects_add_overlay    (AwnEffects *fx, AwnOverlay *overlay);
+
+void awn_effects_remove_overlay (AwnEffects *fx, AwnOverlay *overlay);
+
+/**
+ * awn_effects_get_overlays:
+ * @fx: #AwnEffects instance.
+ *
+ * Returns a newly-allocated list of the overlays added to this effects
+ * instance.
+ */
+GList* awn_effects_get_overlays (AwnEffects *fx);
+
 
 /* Move this somewhere else eventually, these are used only internally */
 void awn_effects_redraw(AwnEffects *fx);

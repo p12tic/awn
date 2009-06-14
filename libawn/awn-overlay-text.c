@@ -59,12 +59,11 @@ enum
 };
 
 static void 
-_awn_overlay_text_render ( AwnOverlay* overlay,
-                               AwnThemedIcon * icon,                          
-                               cairo_t * cr,                                 
-                               gint width,
-                               gint height);
-
+_awn_overlay_text_render (AwnOverlay* overlay,
+                          GtkWidget *widget,
+                          cairo_t * cr,
+                          gint width,
+                          gint height);
 
 static void
 awn_overlay_text_get_property (GObject *object, guint property_id,
@@ -176,7 +175,7 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
   object_class->finalize = awn_overlay_text_finalize;
   object_class->constructed = awn_overlay_text_constructed;
   
-  AWN_OVERLAY_CLASS(klass)->render_overlay = _awn_overlay_text_render;
+  AWN_OVERLAY_CLASS(klass)->render = _awn_overlay_text_render;
  
 
 /**
@@ -259,11 +258,11 @@ awn_overlay_text_new (void)
 }
 
 static void 
-_awn_overlay_text_render ( AwnOverlay* _overlay,
-                               AwnThemedIcon * icon,
-                               cairo_t * cr,                                 
-                               gint width,
-                               gint height)
+_awn_overlay_text_render (AwnOverlay* _overlay,
+                          GtkWidget *widget,
+                          cairo_t * cr,
+                          gint width,
+                          gint height)
 {
   AwnOverlayText *overlay = AWN_OVERLAY_TEXT(_overlay);
   DesktopAgnosticColor * text_colour; /*FIXME*/
@@ -281,7 +280,7 @@ _awn_overlay_text_render ( AwnOverlay* _overlay,
   }
   else
   {
-    text_colour = desktop_agnostic_color_new(&GTK_WIDGET(icon)->style->fg[GTK_STATE_ACTIVE], G_MAXUSHORT);
+    text_colour = desktop_agnostic_color_new(&widget->style->fg[GTK_STATE_ACTIVE], G_MAXUSHORT);
   }
   awn_cairo_set_source_color (cr,text_colour);
   g_object_unref (text_colour);       

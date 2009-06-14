@@ -59,12 +59,12 @@ struct _AwnOverlayPixbufPrivate {
 };
 
 
-void 
-_awn_overlay_pixbuf_render ( AwnOverlay* _overlay,
-                               AwnThemedIcon * icon,
-                               cairo_t * cr,                                 
-                               gint width,
-                               gint height);
+static void
+_awn_overlay_pixbuf_render (AwnOverlay* _overlay,
+                            GtkWidget *widget,
+                            cairo_t * cr,
+                            gint icon_width,
+                            gint icon_height);
 
 static void
 awn_overlay_pixbuf_get_property (GObject *object, guint property_id,
@@ -140,7 +140,7 @@ awn_overlay_pixbuf_class_init (AwnOverlayPixbufClass *klass)
   object_class->dispose = awn_overlay_pixbuf_dispose;
   object_class->finalize = awn_overlay_pixbuf_finalize;
  
-  AWN_OVERLAY_CLASS(klass)->render_overlay = _awn_overlay_pixbuf_render;
+  AWN_OVERLAY_CLASS(klass)->render = _awn_overlay_pixbuf_render;
   
   pspec = g_param_spec_object ("pixbuf",
                                "Pixbuf",
@@ -204,12 +204,12 @@ awn_overlay_pixbuf_new_with_pixbuf (GdkPixbuf * pixbuf)
   return ret;
 }
 
-void 
-_awn_overlay_pixbuf_render ( AwnOverlay* _overlay,
-                               AwnThemedIcon * icon,
-                               cairo_t * cr,                                 
-                               gint icon_width,
-                               gint icon_height)
+static void
+_awn_overlay_pixbuf_render (AwnOverlay* _overlay,
+                            GtkWidget *widget,
+                            cairo_t * cr,
+                            gint icon_width,
+                            gint icon_height)
 {
   AwnOverlayPixbuf *overlay = AWN_OVERLAY_PIXBUF(_overlay);
   AwnOverlayPixbufPrivate *priv;

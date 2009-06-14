@@ -31,13 +31,7 @@ typedef struct _AwnOverlayPixbufFilePrivate AwnOverlayPixbufFilePrivate;
 
 struct _AwnOverlayPixbufFilePrivate {
     gchar * file_name;
-    GHashTable *pixbufs;  
-  
-    void  (*parent_render_overlay) (AwnOverlay* overlay,
-                                   AwnThemedIcon * icon,
-                                   cairo_t * cr,                                 
-                                   gint width,
-                                   gint height);  
+    GHashTable *pixbufs;
 };
 
 enum
@@ -47,18 +41,11 @@ enum
 };
 
 static void 
-_awn_overlay_pixbuf_file_render ( AwnOverlay* _overlay,
-                               AwnThemedIcon * icon,
-                               cairo_t * cr,                                 
-                               gint icon_width,
-                               gint icon_height);
-
-extern void 
-_awn_overlay_pixbuf_render ( AwnOverlay* _overlay,
-                               AwnThemedIcon * icon,
-                               cairo_t * cr,                                 
-                               gint icon_width,
-                               gint icon_height);
+_awn_overlay_pixbuf_file_render (AwnOverlay* _overlay,
+                                 GtkWidget *widget,
+                                 cairo_t * cr,
+                                 gint icon_width,
+                                 gint icon_height);
 
 static void
 awn_overlay_pixbuf_file_get_property (GObject *object, guint property_id,
@@ -149,7 +136,7 @@ awn_overlay_pixbuf_file_class_init (AwnOverlayPixbufFileClass *klass)
   object_class->finalize = awn_overlay_pixbuf_file_finalize;
   object_class->constructed = awn_overlay_pixbuf_file_constructed;
   
-  AWN_OVERLAY_CLASS(klass)->render_overlay = _awn_overlay_pixbuf_file_render;
+  AWN_OVERLAY_CLASS(klass)->render = _awn_overlay_pixbuf_file_render;
   
   pspec = g_param_spec_string ("file-name",
                                "File name",
@@ -188,11 +175,11 @@ awn_overlay_pixbuf_file_new (gchar * file_name)
  */
 
 static void 
-_awn_overlay_pixbuf_file_render ( AwnOverlay* _overlay,
-                               AwnThemedIcon * icon,
-                               cairo_t * cr,                                 
-                               gint icon_width,
-                               gint icon_height)
+_awn_overlay_pixbuf_file_render (AwnOverlay* _overlay,
+                                 GtkWidget *widget,
+                                 cairo_t * cr,
+                                 gint icon_width,
+                                 gint icon_height)
 {
   gdouble scale;
   GdkPixbuf * current_pixbuf;
@@ -253,6 +240,7 @@ _awn_overlay_pixbuf_file_render ( AwnOverlay* _overlay,
     g_object_unref (current_pixbuf);    
   }
 
-  _awn_overlay_pixbuf_render ( _overlay,icon,cr,icon_width,icon_height);
+  AWN_OVERLAY_CLASS (awn_overlay_pixbuf_file_parent_class)->
+    render (_overlay, widget, cr, icon_width, icon_height);
 }
 
