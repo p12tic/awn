@@ -1,3 +1,9 @@
+2009-06-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+  	* libawn/awn-overlaid-icon.h:
+	Removed awn-overlaid-icon.[ch] as code was moved to AwnEffects.
+
 2009-06-14  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:
