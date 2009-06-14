@@ -1,5 +1,11 @@
 2009-06-14  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay.c:
+	Add an "apply-effects" property that AwnEffects can check to determine
+	if effects should be applied to overlay.
+
+2009-06-14  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlaid-icon.c:
   	* libawn/awn-overlaid-icon.h:
 	Removed awn-overlaid-icon.[ch] as code was moved to AwnEffects.

@@ -56,6 +56,7 @@ struct _AwnOverlayPrivate
   double      y_adj;
 
   gboolean    active;  /*if false then the overlay_render will not run*/
+  gboolean    apply_effects;
   
   gdouble     x_override;
   gdouble     y_override;
@@ -69,6 +70,7 @@ enum
   PROP_X_ADJUST,
   PROP_Y_ADJUST,
   PROP_ACTIVE,
+  PROP_APPLY_EFFECTS,
   PROP_X_OVERRIDE,
   PROP_Y_OVERRIDE
 };
@@ -95,6 +97,9 @@ awn_overlay_get_property (GObject *object, guint property_id,
     case PROP_ACTIVE:
         g_value_set_boolean (value, priv->active);
         break;
+    case PROP_APPLY_EFFECTS:
+        g_value_set_boolean (value, priv->apply_effects);
+        break;      
     case PROP_X_OVERRIDE:
         g_value_set_double (value, priv->x_override);
         break;      
@@ -129,6 +134,9 @@ awn_overlay_set_property (GObject *object, guint property_id,
     case PROP_ACTIVE:
       priv->active = g_value_get_boolean (value);
       break;      
+    case PROP_APPLY_EFFECTS:
+      priv->apply_effects = g_value_get_boolean (value);
+      break;            
     case PROP_X_OVERRIDE:
       priv->x_override = g_value_get_double (value);
       break;
@@ -246,6 +254,19 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                TRUE,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ACTIVE, pspec);  
+
+/**
+ * AwnOverlay:apply-effects:
+ *
+ * The apply-effects property controls #AwnEffects effects are applied to the
+ * overlay.
+ */        
+  pspec = g_param_spec_boolean ("apply-effects",
+                               "Apply Effects",
+                               "Apply Effects",
+                               TRUE,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_APPLY_EFFECTS, pspec);  
 
 /**
  * AwnOverlay:x-override:
