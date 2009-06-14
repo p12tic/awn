@@ -70,6 +70,20 @@
   (gtype-id "AWN_TYPE_OVERLAY_THROBBER")
 )
 
+(define-object OverlayPixbuf
+  (in-module "Awn")
+  (parent "AwnOverlay")
+  (c-name "AwnOverlayPixbuf")
+  (gtype-id "AWN_TYPE_OVERLAY_PIXBUF")
+)
+
+(define-object OverlayPixbufFile
+  (in-module "Awn")
+  (parent "AwnOverlayPixbuf")
+  (c-name "AwnOverlayPixbufFile")
+  (gtype-id "AWN_TYPE_OVERLAY_PIXBUF_FILE")
+)
+
 (define-object Tooltip
   (in-module "Awn")
   (parent "GtkWindow")
@@ -1158,6 +1172,35 @@
     '("icon" (argname "icon"))
   )
 )
+
+;; From awn-overlay-pixbuf.h
+
+(define-function awn_overlay_pixbuf_new
+  (c-name "awn_overlay_pixbuf_new")
+  (is-constructor-of "AwnOverlayPixbuf")
+  (return-type "AwnOverlayPixbuf*")
+)
+
+(define-function awn_overlay_pixbuf_new_with_pixbuf
+  (c-name "awn_overlay_pixbuf_new_with_pixbuf")
+  (is-constructor-of "AwnOverlayPixbuf")
+  (return-type "AwnOverlayPixbuf*")
+  (parameters
+    '("GdkPixbuf*" "pixbuf")
+  ) 
+)
+
+;; From awn-overlay-pixbuf-file.h
+
+(define-function awn_overlay_pixbuf_file_new
+  (c-name "awn_overlay_pixbuf_file_new")
+  (is-constructor-of "AwnOverlayPixbufFile")
+  (return-type "AwnOverlayPixbufFile*")
+  (parameters
+    '("gchar*" "file_name")
+  ) 
+)
+
 ;; From awn-tooltip.h
 
 (define-function awn_tooltip_get_type
