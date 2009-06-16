@@ -1,5 +1,11 @@
 2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-progress.c:
+	* libawn/awn-overlay-progress.h:
+	Boilerplate for AwnOverlayProgress.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-pixbuf.c:
         Some modifications of docs/comments.
 
