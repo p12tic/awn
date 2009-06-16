@@ -42,6 +42,7 @@ public_headers = \
 	awn-overlay.h \
 	awn-overlay-pixbuf.h \
 	awn-overlay-pixbuf-file.h \
+	awn-overlay-progress.h \
 	awn-overlay-themed-icon.h \
   awn-overlay-text.h \
   awn-overlay-throbber.h \
@@ -75,6 +76,7 @@ source_c = \
 	awn-overlay.c \
 	awn-overlay-pixbuf.c \
 	awn-overlay-pixbuf-file.c \
+	awn-overlay-progress.c \
 	awn-overlay-themed-icon.c \
   awn-overlay-text.c \
   awn-overlay-throbber.c \

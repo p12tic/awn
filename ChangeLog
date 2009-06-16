@@ -1,5 +1,10 @@
 2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/Makefile.am:
+	Add AwnOverlayProgress files to Makefile.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-progress.c:
 	* libawn/awn-overlay-progress.h:
 	Boilerplate for AwnOverlayProgress.
