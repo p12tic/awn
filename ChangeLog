@@ -1,6 +1,15 @@
 2009-06-16  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:
+	Allowed NULL in OverlayThemedIcon constructor for icon-state param.
+	* libawn/anims/awn-effect-squish.c:
+	Fixed FTBFS.
+	* libawn/awn-effects.c:
+	Added notify signal watch for overlays.
+
+2009-06-16  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
 	Made the OverlayText constructor more convenient
 	* libawn/anims/awn-effect-squish.c:
 	Changes to squish, so that it fits to AwnIcon's window.

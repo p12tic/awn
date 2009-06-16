@@ -102,6 +102,9 @@ enum {
   PROP_CUSTOM_ACTIVE_ICON
 };
 
+/* FORWARDS */
+static void awn_effects_prop_changed (GObject *object, GParamSpec *pspec);
+
 static void
 awn_effects_dispose (GObject *object)
 {
@@ -117,7 +120,14 @@ awn_effects_dispose (GObject *object)
   /* unref overlays in our overlay list */
   if (fx->priv->overlays)
   {
-    g_list_foreach (fx->priv->overlays, (GFunc)g_object_unref, NULL);
+    for (GList *iter = fx->priv->overlays; iter != NULL;
+         iter = g_list_next (iter))
+    {
+      AwnOverlay *overlay = iter->data;
+      g_signal_handlers_disconnect_by_func (overlay,
+        G_CALLBACK (awn_effects_prop_changed), fx);
+      g_object_unref (overlay);
+    }
     g_list_free (fx->priv->overlays);
     fx->priv->overlays = NULL;
   }
@@ -404,14 +414,15 @@ awn_effects_prop_changed(GObject *object, GParamSpec *pspec)
 {
   AwnEffects *fx = AWN_EFFECTS(object);
 
-  awn_effects_redraw(fx);
+  awn_effects_redraw (fx);
 }
 
 void
 awn_effects_redraw(AwnEffects *fx)
 {
-  if (fx->widget && GTK_WIDGET_DRAWABLE(fx->widget)) {
-    gtk_widget_queue_draw(fx->widget);
+  if (fx->widget && GTK_WIDGET_DRAWABLE (fx->widget))
+  {
+    gtk_widget_queue_draw (fx->widget);
   }
 }
 
@@ -1294,6 +1305,8 @@ awn_effects_add_overlay (AwnEffects *fx, AwnOverlay *overlay)
   {
     priv->overlays = g_list_append (priv->overlays, g_object_ref (overlay));
     awn_effects_redraw (fx);
+    g_signal_connect_swapped (overlay, "notify",
+                              G_CALLBACK (awn_effects_prop_changed), fx);
   }
   else
   {
@@ -1312,6 +1325,8 @@ awn_effects_remove_overlay (AwnEffects *fx, AwnOverlay *overlay)
 
   if ((elem = (g_list_find (priv->overlays, overlay))) != NULL)
   {
+    g_signal_handlers_disconnect_by_func (overlay,
+      G_CALLBACK (awn_effects_prop_changed), fx);
     priv->overlays = g_list_delete_link (priv->overlays, elem);
     g_object_unref (overlay);
     awn_effects_redraw (fx);

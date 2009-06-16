@@ -310,7 +310,6 @@ bounce_squish_opening_effect(AwnEffectsAnimation * anim)
       priv->icon_width / 3. : priv->icon_height / 3.;
 
   const gint PERIOD = 18;
-  const gint PERIOD2 = 25;
 
   const gfloat MAX_SQUISH = 1.25;
   const gfloat SQUISH_STEP = 0.0834; // 3 frames to get to max (0.25 / 3)
@@ -399,7 +398,6 @@ bounce_squish_closing_effect(AwnEffectsAnimation * anim)
       priv->icon_width / 3. : priv->icon_height / 3.;
 
   const gint PERIOD = 18;
-  const gint PERIOD2 = 25;
 
   const gfloat MAX_SQUISH = 1.25;
   const gfloat SQUISH_STEP = 0.0834; // 3 frames to get to max (0.25 / 3)

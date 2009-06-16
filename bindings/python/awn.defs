@@ -1161,7 +1161,7 @@
   (parameters
     '("AwnThemedIcon*" "icon")
     '("const-gchar*" "icon_name")
-    '("const-gchar*" "icon_state")
+    '("const-gchar*" "icon_state" (default "NULL") (null-ok))
   )
 )
 
