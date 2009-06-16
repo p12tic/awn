@@ -1,5 +1,10 @@
 2009-06-16  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-progress-circle.c:
+	Set the alpha value on the colours a bit more concisely.
+
+2009-06-16  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-text.c:
 	Switched text back to original rendering except now using 
 	GTK_STATE_NORMAL.

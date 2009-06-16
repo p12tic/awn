@@ -209,8 +209,8 @@ _awn_overlay_progress_circle_render (AwnOverlay* _overlay,
   }
   else
   {
-    fg_color = desktop_agnostic_color_new(&widget->style->bg[GTK_STATE_ACTIVE], G_MAXUSHORT);
-    fg_color->alpha = 0.7*0xFFFF;
+    fg_color = desktop_agnostic_color_new(&widget->style->bg[GTK_STATE_ACTIVE], 
+                                          0.7*G_MAXUSHORT);
   }
   if (priv->bg_color)
   {
@@ -219,8 +219,8 @@ _awn_overlay_progress_circle_render (AwnOverlay* _overlay,
   }
   else
   {
-    bg_color = desktop_agnostic_color_new(&widget->style->fg[GTK_STATE_ACTIVE], G_MAXUSHORT);
-    bg_color->alpha = 0.2*0xFFFF;    
+    bg_color = desktop_agnostic_color_new(&widget->style->fg[GTK_STATE_ACTIVE],
+                                          0.2 * G_MAXUSHORT);
   }
   if (priv->outline_color)
   {
@@ -229,7 +229,8 @@ _awn_overlay_progress_circle_render (AwnOverlay* _overlay,
   }
   else
   {
-    outline_color = desktop_agnostic_color_new(&widget->style->fg[GTK_STATE_ACTIVE], G_MAXUSHORT);
+    outline_color = desktop_agnostic_color_new(&widget->style->fg[GTK_STATE_ACTIVE], 
+                                               G_MAXUSHORT);
   }
 
   cairo_save (cr);
