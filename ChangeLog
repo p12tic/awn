@@ -1,3 +1,13 @@
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Add some docs and check for an AwnThemedIcon in the constructor.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+	Modified docs to reflect AwnOverlaidIcon -> AwnEffects.
+
 2009-06-15  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:

@@ -16,6 +16,19 @@
  *
  */
  
+
+/**
+ * SECTION:AwnOverlayThemedIcon
+ * @short_description: Text overlay for use with #AwnOverlaidIcon.
+ * @see_also: #AwnEffects, #AwnOverlay, #AwnOverlayPixbuf, #AwnOverlayPixbufFile, 
+ * #AwnOverlayThrobber, #AwnOverlayText, #AwnThemedIcon.
+ * @stability: Unstable
+ * @include: libawn/libawn.h
+ *
+ * Themed Icon overlay used with an #AwnThemedIcon.
+ */
+
+
 /* awn-overlay-themed-icon.c */
 
 /*
@@ -181,6 +194,13 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
   object_class->constructed = awn_overlay_themed_icon_constructed;
   
   AWN_OVERLAY_CLASS(klass)->render = _awn_overlay_themed_icon_render;
+
+/**
+ * AwnOverlayThemedIcon:alpha:
+ *
+ * The alpha value to apply to the icon overlay.  Range 0.0...1.0.
+ * Defaults to 0.9
+ */        
   
   pspec = g_param_spec_double ("alpha",
                                "alpha",
@@ -191,6 +211,13 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ALPHA, pspec);   
 
+/**
+ * AwnOverlayThemedIcon:scale:
+ *
+ * The desired size of the overlay scaled to the Icon.  Range 0.0...1.0. Default
+ * value of 0.3
+ */        
+  
   pspec = g_param_spec_double ("scale",
                                "scale",
                                "Scale",
@@ -199,6 +226,12 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
                                0.3,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_SCALE, pspec);   
+
+/**
+ * AwnOverlayThemedIcon:icon-name:
+ *
+ * The themed icon name of the icon to be overlayed.
+ */        
   
   pspec = g_param_spec_string ("icon-name",
                                "Icon name",
@@ -207,6 +240,13 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ICON_NAME, pspec);   
 
+/**
+ * AwnOverlayThemedIcon:icon-name:
+ *
+ * The icon-state to be associated with the themed icon for access through
+ * #AwnThemedIcon.  Or NULL if it will not need to be directly accessed.
+ */        
+  
   pspec = g_param_spec_string ("icon-state",
                                "Icon state",
                                "Icon state",
@@ -226,6 +266,15 @@ awn_overlay_themed_icon_init (AwnOverlayThemedIcon *self)
   priv->pixbufs = g_hash_table_new_full (g_str_hash,g_str_equal, g_free, g_object_unref);
 }
 
+/**
+ * awn_overlay_text_new:
+ * @icon: an #AwnThemedIcon.
+ * @icon_name: A themed icon icon name.
+ * @icon_state: A icon state for the icon or NULL.
+ * Creates a new instance of #AwnOverlayThemedIcon.
+ * Returns: an instance of #AwnOverlayThemedIcon.
+ */
+
 AwnOverlayThemedIcon*
 awn_overlay_themed_icon_new (AwnThemedIcon *icon,
                              const gchar *icon_name, const gchar *state)
@@ -235,6 +284,7 @@ awn_overlay_themed_icon_new (AwnThemedIcon *icon,
   
   g_return_val_if_fail (icon_name,NULL);
   g_return_val_if_fail (icon,NULL);
+  g_return_val_if_fail (AWN_IS_THEMED_ICON (icon), NULL);
   
   if (!state)
   {
