@@ -1,6 +1,12 @@
 2009-06-16  Rodney Cryderman  <rcryderman@gmail.com>
 
-	* libawn/awn-overlay-text.c
+	* libawn/awn-overlay-text.c:
+	Switched text back to original rendering except now using 
+	GTK_STATE_NORMAL.
+
+2009-06-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
 	Switch over to outlined text for comparison purposes.
 
 2009-06-16  Michal Hruby  <michal.mhr@gmail.com>

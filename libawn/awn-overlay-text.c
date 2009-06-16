@@ -268,7 +268,7 @@ _awn_overlay_text_render (AwnOverlay* _overlay,
                           gint height)
 {
   AwnOverlayText *overlay = AWN_OVERLAY_TEXT(_overlay);
-  DesktopAgnosticColor * text_colour; /*FIXME*/
+  DesktopAgnosticColor * text_colour;
   AwnOverlayTextPrivate *priv;
   gint layout_width;
   gint layout_height;
@@ -283,10 +283,8 @@ _awn_overlay_text_render (AwnOverlay* _overlay,
   }
   else
   {
-    text_colour = desktop_agnostic_color_new(&widget->style->fg[GTK_STATE_ACTIVE], G_MAXUSHORT);
+    text_colour = desktop_agnostic_color_new(&widget->style->fg[GTK_STATE_NORMAL], G_MAXUSHORT);
   }
-  awn_cairo_set_source_color (cr,text_colour);
-  g_object_unref (text_colour);       
   
   layout = pango_cairo_create_layout (cr);
   pango_font_description_set_absolute_size (priv->font_description, 
@@ -295,18 +293,44 @@ _awn_overlay_text_render (AwnOverlay* _overlay,
   pango_layout_set_text (layout, priv->text, -1);  
   pango_layout_get_pixel_size (layout,&layout_width,&layout_height);
   awn_overlay_move_to (_overlay,cr,  width, height,layout_width,layout_height,NULL);
-#if 0
+
+  awn_cairo_set_source_color (cr,text_colour);
+  g_object_unref (text_colour);       
   pango_cairo_show_layout (cr, layout);
-#else
-  pango_cairo_show_layout (cr, layout);  
-  text_colour = desktop_agnostic_color_new(&widget->style->bg[GTK_STATE_ACTIVE], G_MAXUSHORT);  
+/*
+
+#elseif 0
+   awn_cairo_set_source_color (cr,text_colour);
+  g_object_unref (text_colour);         
+  cairo_save (cr);
+  pango_cairo_layout_path(cr, layout);  
+  cairo_fill (cr);
+  cairo_restore (cr);
+  text_colour = desktop_agnostic_color_new(&widget->style->bg[GTK_STATE_NORMAL], G_MAXUSHORT);  
   awn_cairo_set_source_color (cr,text_colour);
   g_object_unref (text_colour);         
-  cairo_set_line_width(cr, 0.2 * height / 48.0);
+  cairo_set_line_width(cr, 0.3 * height / 48.0);
   awn_overlay_move_to (_overlay,cr,  width, height,layout_width,layout_height,NULL);  
-  pango_cairo_layout_path(cr, layout);
+  pango_cairo_layout_path(cr, layout);    
   cairo_stroke_preserve(cr);
+#else
+  
+  if (layout_width > highest_width)
+  {
+    highest_width = layout_width;
+  }
+  cairo_rectangle (cr,coord.x - (highest_width - layout_width),coord.y,highest_width,layout_height);
+  bg_color = desktop_agnostic_color_new(&widget->style->bg[GTK_STATE_NORMAL], G_MAXUSHORT*0.3);  
+  awn_cairo_set_source_color (cr,bg_color);
+  g_object_unref (bg_color);         
+  cairo_fill (cr);
+  awn_cairo_set_source_color (cr,text_colour);
+  g_object_unref (text_colour);       
+  
+  awn_overlay_move_to (_overlay,cr,  width, height,layout_width,layout_height,&coord);  
+  pango_cairo_show_layout (cr, layout);  
 #endif
+   */
   
   g_object_unref (layout);
 }
