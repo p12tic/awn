@@ -1,5 +1,10 @@
 2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-progress.c:
+	Add percent-complete prop.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
 	 * libawn/Makefile.am:
         Add AwnOverlayProgressCircle files to Makefile.
 
@@ -8,11 +13,6 @@
 	* libawn/awn-overlay-progress-circle.c:
 	* libawn/awn-overlay-progress-circle.h:
 	Boilderplate for AwnOverlayProgressCircle.
-
-2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
-
-	* libawn/awn-overlay-progress.c:
-	Add percent-complete prop.
 
 2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
 
