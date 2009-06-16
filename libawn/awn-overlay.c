@@ -262,10 +262,10 @@ awn_overlay_class_init (AwnOverlayClass *klass)
  * overlay.
  */        
   pspec = g_param_spec_boolean ("apply-effects",
-                               "Apply Effects",
-                               "Apply Effects",
-                               TRUE,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                                "Apply Effects",
+                                "Apply Effects",
+                                TRUE,
+                                G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_APPLY_EFFECTS, pspec);  
 
 /**
@@ -305,6 +305,11 @@ awn_overlay_class_init (AwnOverlayClass *klass)
 static void
 awn_overlay_init (AwnOverlay *self)
 {
+  AwnOverlayPrivate *priv = AWN_OVERLAY_GET_PRIVATE (self);
+
+  // we don't contruct the apply_effects prop, so subclasses can change the default
+  //  in their init() method
+  priv->apply_effects = TRUE;
 }
 
 /**
@@ -468,3 +473,22 @@ awn_overlay_move_to (      AwnOverlay* overlay,
     *coord_req = coord;
   }
 }
+
+gboolean awn_overlay_get_apply_effects (AwnOverlay *overlay)
+{
+  g_return_val_if_fail (AWN_IS_OVERLAY (overlay), FALSE);
+
+  AwnOverlayPrivate *priv = AWN_OVERLAY_GET_PRIVATE (overlay);
+
+  return priv->apply_effects;
+}
+
+void awn_overlay_set_apply_effects (AwnOverlay *overlay, gboolean value)
+{
+  g_return_if_fail (AWN_IS_OVERLAY (overlay));
+
+  AwnOverlayPrivate *priv = AWN_OVERLAY_GET_PRIVATE (overlay);
+
+  priv->apply_effects = value;
+}
+

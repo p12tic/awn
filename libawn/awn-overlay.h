@@ -124,6 +124,10 @@ void awn_overlay_move_to (AwnOverlay* overlay,
                           gint   overlay_height,
                           AwnOverlayCoord * coord_req);
 
+gboolean awn_overlay_get_apply_effects (AwnOverlay *overlay);
+
+void awn_overlay_set_apply_effects (AwnOverlay *overlay, gboolean value);
+
 G_END_DECLS
 
 #endif /* _AWN_OVERLAY */

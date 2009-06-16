@@ -240,8 +240,10 @@ awn_overlay_text_init (AwnOverlayText *self)
   AwnOverlayTextPrivate *priv;
 
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (self); 
-  priv->text = NULL;  
-  
+  priv->text = NULL;
+
+  // default for text is to not apply effects to it
+  awn_overlay_set_apply_effects (AWN_OVERLAY (self), FALSE);
 }
 
 /**

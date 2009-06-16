@@ -37,7 +37,7 @@ cairo_surface_t *awn_effects_quark_to_surface(AwnEffects *fx, GQuark quark)
 }
 
 /* returns top left coordinates of the icon (without clipping and offsets) */
-static void
+void
 awn_effects_get_base_coords(AwnEffects *fx, double *x, double *y)
 {
   AwnEffectsPrivate *priv = fx->priv;

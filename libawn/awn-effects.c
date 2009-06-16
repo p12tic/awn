@@ -1209,13 +1209,20 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
 
   /* FIXME: divide overlays into two lists - those where effects should be
    *  applied and where they shouldn't
+   */
+  GList *overlays_with_effects = NULL;
+  GList *overlays_wo_effects = NULL;
 
-  GList *overlays_with_effects;
-  GList *overlays_wo_effects;
-  */
+  for (GList *iter=g_list_first (fx->priv->overlays); iter != NULL;
+       iter=g_list_next (iter))
+  {
+    GList **target = awn_overlay_get_apply_effects (AWN_OVERLAY (iter->data)) ?
+      &overlays_with_effects : &overlays_wo_effects;
+    *target = g_list_append (*target, iter->data);
+  }
 
   /* Now paint the overlays which should have effects applied */
-  for (GList *iter=g_list_first (fx->priv->overlays); iter != NULL;
+  for (GList *iter=g_list_first (overlays_with_effects); iter != NULL;
        iter=g_list_next (iter))
   {
     AwnOverlay *overlay = iter->data;
@@ -1242,6 +1249,22 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
   awn_effects_post_op_progress(fx, cr, NULL, NULL);
   /* TODO: we're missing op to paint label */
 
+  if (overlays_wo_effects != NULL)
+  {
+    double x, y;
+    awn_effects_get_base_coords (fx, &x, &y);
+    cairo_translate (cr, x, y);
+
+    /* Now paint the overlays which should NOT have effects applied */
+    for (GList *iter=g_list_first (overlays_wo_effects); iter != NULL;
+         iter=g_list_next (iter))
+    {
+      AwnOverlay *overlay = iter->data;
+      awn_overlay_render (overlay, fx->widget, cr,
+                          fx->priv->icon_width, fx->priv->icon_height);
+    }
+  }
+
   if (fx->indirect_paint)
   {
     cairo_set_operator(fx->window_ctx, CAIRO_OPERATOR_OVER);
@@ -1252,6 +1275,9 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
     cairo_destroy(fx->virtual_ctx);
   }
   cairo_destroy(fx->window_ctx);
+
+  g_list_free (overlays_with_effects);
+  g_list_free (overlays_wo_effects);
 
   fx->window_ctx = NULL;
   fx->virtual_ctx = NULL;
