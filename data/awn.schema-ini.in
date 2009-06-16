@@ -93,6 +93,11 @@ type = string
 default = #FFFFFF0A
 description = Second highlight gradient step color.
 
+[theme/icon_text_color]
+type = string
+default =
+description = Icon text color.  Leave empty to use gtk theme color.
+
 [theme/border]
 type = string
 default = #000000CC

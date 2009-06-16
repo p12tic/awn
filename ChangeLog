@@ -1,5 +1,10 @@
 2009-06-16  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* data/awn.schema-ini.in:
+	Provide schema for theme/icon_text_color.
+
+2009-06-16  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-text.c:
 	Bind text colour to theme/icon_text_color key.
 
