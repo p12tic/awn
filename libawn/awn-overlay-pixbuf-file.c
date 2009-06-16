@@ -16,6 +16,22 @@
  *
  */
 
+
+/**
+ * SECTION:AwnOverlayPixbufFile
+ * @short_description: An subclass of #AwnOverlayPixbuf to overlay a #GdkPixbuf 
+ * loaded from a Filename.
+ * @see_also: #AwnOverlay, #AwnOverlayText, #AwnOverlayThemedIcon, 
+ * #AwnOverlayThrobber, #AwnOverlayPixbuf, #AwnEffects
+ * @stability: Unstable
+ * @include: libawn/libawn.h
+ *
+ * Overlay a #GdkPixbuf, loaded using the filename provided, on an 
+ * #AwnOverlaidIcon.  You probably should _NOT_ be using this object.  You 
+ * should, probably, be using #AwnOverlayThemedIcon.
+ * 
+ */
+
 /* awn-overlay-pixbuf-file.c */
 
 #include <math.h>
@@ -199,6 +215,7 @@ _awn_overlay_pixbuf_file_render (AwnOverlay* _overlay,
                           scaled_width / 
                           icon_width);
   
+  /*has a pixbuf been loaded previously?*/
   if (!current_pixbuf)
   {
     current_pixbuf = gdk_pixbuf_new_from_file_at_scale (priv->file_name, 
