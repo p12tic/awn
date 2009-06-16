@@ -1,5 +1,10 @@
 2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
 
+	 * libawn/Makefile.am:
+        Add AwnOverlayProgressCircle files to Makefile.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-progress-circle.c:
 	* libawn/awn-overlay-progress-circle.h:
 	Boilderplate for AwnOverlayProgressCircle.
