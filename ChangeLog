@@ -1,5 +1,10 @@
 2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/libawn.h:
+	Add new #includes to libawn.h.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-progress.c:
 	Add percent-complete prop.
 
