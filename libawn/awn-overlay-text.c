@@ -18,12 +18,13 @@
 
 /**
  * SECTION:AwnOverlayText
- * @short_description: Text overlay for use with #AwnOverlaidIcon.
- * @see_also: #AwnOverlaidIcon, #AwnOverlay, #AwnOverlayIcon, #AwnOverlayThrobber
+ * @short_description: Text overlay for use with #AwnIcon.
+ * @see_also: #AwnEffects, #AwnOverlay, #AwnOverlayThemedIcon, #AwnOverlayThrobber,
+ * #AwnOverlayPixbuf, #AwnOverlayPixbufFile, #AwnIcon
  * @stability: Unstable
  * @include: libawn/libawn.h
  *
- * Text overlay used with #AwnOverlaidIcon.
+ * Text overlay used with #AwnIcon.
  */
 
 /* awn-overlay-text.c */
