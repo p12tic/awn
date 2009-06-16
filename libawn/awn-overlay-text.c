@@ -295,7 +295,18 @@ _awn_overlay_text_render (AwnOverlay* _overlay,
   pango_layout_set_text (layout, priv->text, -1);  
   pango_layout_get_pixel_size (layout,&layout_width,&layout_height);
   awn_overlay_move_to (_overlay,cr,  width, height,layout_width,layout_height,NULL);
+#if 0
   pango_cairo_show_layout (cr, layout);
-
+#else
+  pango_cairo_show_layout (cr, layout);  
+  text_colour = desktop_agnostic_color_new(&widget->style->bg[GTK_STATE_ACTIVE], G_MAXUSHORT);  
+  awn_cairo_set_source_color (cr,text_colour);
+  g_object_unref (text_colour);         
+  cairo_set_line_width(cr, 0.2 * height / 48.0);
+  awn_overlay_move_to (_overlay,cr,  width, height,layout_width,layout_height,NULL);  
+  pango_cairo_layout_path(cr, layout);
+  cairo_stroke_preserve(cr);
+#endif
+  
   g_object_unref (layout);
 }
