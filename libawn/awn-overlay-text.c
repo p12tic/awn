@@ -32,6 +32,7 @@
 #include <gtk/gtk.h>
 #include <pango/pangocairo.h>
 
+#include "awn-config-bridge.h"
 #include "awn-overlay-text.h"
 #include "awn-cairo-utils.h"
 
@@ -49,6 +50,7 @@ struct _AwnOverlayTextPrivate {
     gdouble font_sizing;
     PangoFontDescription *font_description;
     DesktopAgnosticColor * text_color;
+    gchar                * text_color_astr;
 };
 
 enum
@@ -56,7 +58,8 @@ enum
   PROP_0,
   PROP_FONT_SIZING,
   PROP_TEXT,
-  PROP_TEXT_COLOR
+  PROP_TEXT_COLOR,
+  PROP_TEXT_COLOR_ASTR  
 };
 
 static void 
@@ -84,6 +87,9 @@ awn_overlay_text_get_property (GObject *object, guint property_id,
     case PROP_TEXT_COLOR:
       g_value_set_object (value,priv->text_color);
       break;      
+    case PROP_TEXT_COLOR_ASTR:
+      g_value_set_string (value,priv->text_color_astr);
+      break;            
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -112,6 +118,10 @@ awn_overlay_text_set_property (GObject *object, guint property_id,
       }
       priv->text_color = g_value_get_object (value);
       break;
+    case PROP_TEXT_COLOR_ASTR:
+      g_free(priv->text_color_astr);
+      priv->text_color_astr = g_value_dup_string (value);
+      break;            
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -162,6 +172,7 @@ awn_overlay_text_constructed (GObject *object)
   pango_font_description_set_family (priv->font_description, "sans");
   pango_font_description_set_weight (priv->font_description, PANGO_WEIGHT_SEMIBOLD);
   pango_font_description_set_stretch (priv->font_description, PANGO_STRETCH_CONDENSED);  
+
 }
 
 static void
@@ -229,7 +240,14 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
                                DESKTOP_AGNOSTIC_TYPE_COLOR,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_TEXT_COLOR, pspec);   
-  
+
+  pspec = g_param_spec_string ("text_color_astr",
+                               "text_color_astr",
+                               "Text color as string",
+                               "",
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_TEXT_COLOR_ASTR, pspec);   
+    
   g_type_class_add_private (klass, sizeof (AwnOverlayTextPrivate));  
 
 }
@@ -238,10 +256,19 @@ static void
 awn_overlay_text_init (AwnOverlayText *self)
 {
   AwnOverlayTextPrivate *priv;
-
+  AwnConfigClient * client = NULL;
+  AwnConfigBridge * bridge = NULL;
+  
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (self); 
-  priv->text = NULL;
+   
+  client = awn_config_client_new ();
+  bridge = awn_config_bridge_get_default ();
 
+  awn_config_bridge_bind (bridge, client,
+                          "theme", "icon_text_color",
+                          G_OBJECT(self), "text_color_astr");
+  
+  priv->text = NULL;
   // default for text is to not apply effects to it
   awn_overlay_set_apply_effects (AWN_OVERLAY (self), FALSE);
 }
@@ -268,7 +295,7 @@ _awn_overlay_text_render (AwnOverlay* _overlay,
                           gint height)
 {
   AwnOverlayText *overlay = AWN_OVERLAY_TEXT(_overlay);
-  DesktopAgnosticColor * text_colour;
+  DesktopAgnosticColor * text_colour = NULL;
   AwnOverlayTextPrivate *priv;
   gint layout_width;
   gint layout_height;
@@ -281,7 +308,11 @@ _awn_overlay_text_render (AwnOverlay* _overlay,
     text_colour = priv->text_color;
     g_object_ref (text_colour);
   }
-  else
+  else if (priv->text_color_astr && strlen(priv->text_color_astr) )
+  {
+    text_colour = desktop_agnostic_color_new_from_string (priv->text_color_astr,NULL);
+  }
+  if (!text_colour)
   {
     text_colour = desktop_agnostic_color_new(&widget->style->fg[GTK_STATE_NORMAL], G_MAXUSHORT);
   }
