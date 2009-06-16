@@ -1148,6 +1148,9 @@
   (c-name "awn_overlay_text_new")
   (is-constructor-of "AwnOverlayText")
   (return-type "AwnOverlayText*")
+  (properties
+    '("text" (optional) (argname "text"))
+  )
 )
 
 ;; From awn-overlay-themed-icon.h

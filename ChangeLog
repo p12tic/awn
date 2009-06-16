@@ -1,5 +1,12 @@
 2009-06-16  Michal Hruby  <michal.mhr@gmail.com>
 
+	* bindings/python/awn.defs:
+	Made the OverlayText constructor more convenient
+	* libawn/anims/awn-effect-squish.c:
+	Changes to squish, so that it fits to AwnIcon's window.
+
+2009-06-16  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-effects-ops-new.c:
 	* libawn/awn-effects-ops-new.h:
 	* libawn/awn-effects.c:
