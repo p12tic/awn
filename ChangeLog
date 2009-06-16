@@ -1,5 +1,10 @@
 2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-pixbuf.c:
+        Some modifications of docs/comments.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-pixbuf-file.c:
 	Some modifications of docs/comments.
 

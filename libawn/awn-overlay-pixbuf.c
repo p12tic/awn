@@ -27,7 +27,7 @@
  *
  * Overlay a #GdkPixbuf on an #AwnOverlaidIcon.  You probably should _NOT_ be 
  * using this object.  You almost certainly should be using #AwnOverlayThemedIcon
- * or failing that #AwnOverlayIconFile.  Unecessary use of this object is grounds
+ * or failing that #AwnOverlayPixbufFile.  Unecessary use of this object is grounds
  * to be pilloried.
  * 
  */
