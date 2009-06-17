@@ -1,3 +1,11 @@
+2009-06-17  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/xutils.c:
+	* applets/taskmanager/xutils.h:
+	* src/xutils.c:
+	* src/xutils.h:
+	Remove unused code.
+
 2009-06-16  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* data/awn.schema-ini.in:

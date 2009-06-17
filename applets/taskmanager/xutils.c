@@ -22,19 +22,25 @@
  */
 
 #include <config.h>
-#include "xutils.h"
+
 #include <string.h>
 #include <stdio.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
-#include <libwnck/libwnck.h>
 
-void
+#include <X11/Xatom.h>
+#include <gdk/gdkx.h>
+#include <gtk/gtk.h>
+
+#include "xutils.h"
+
+typedef struct _WnckIconCache WnckIconCache;
+
+static void
 _wnck_error_trap_push (void)
 {
   gdk_error_trap_push ();
 }
 
-int
+static int
 _wnck_error_trap_pop (void)
 {
   XSync (gdk_display, False);
@@ -108,7 +114,7 @@ _wnck_get_wmclass (Window xwindow,
 static GHashTable *atom_hash = NULL;
 static GHashTable *reverse_atom_hash = NULL;
 
-Atom
+static Atom
 _wnck_atom_get (const char *atom_name)
 {
   Atom retval;
@@ -139,15 +145,6 @@ _wnck_atom_get (const char *atom_name)
   }
 
   return retval;
-}
-
-const char *
-_wnck_atom_name (Atom atom)
-{
-  if (reverse_atom_hash)
-    return g_hash_table_lookup (reverse_atom_hash, GUINT_TO_POINTER (atom));
-  else
-    return NULL;
 }
 
 /* The icon-reading code is copied
@@ -494,7 +491,7 @@ get_cmap (GdkPixmap * pixmap)
   return cmap;
 }
 
-GdkPixbuf *
+static GdkPixbuf *
 _wnck_gdk_pixbuf_get_from_pixmap (GdkPixbuf * dest,
 				  Pixmap xpixmap,
 				  int src_x,
@@ -684,12 +681,6 @@ struct _WnckIconCache
 };
 
 
-gboolean
-_wnck_icon_cache_get_is_fallback (WnckIconCache * icon_cache)
-{
-  return icon_cache->origin == USING_FALLBACK_ICON;
-}
-
 static GdkPixbuf *
 scaled_from_pixdata (guchar * pixdata, int w, int h, int new_w, int new_h)
 {
@@ -738,7 +729,7 @@ scaled_from_pixdata (guchar * pixdata, int w, int h, int new_w, int new_h)
   return dest;
 }
 
-gboolean
+static gboolean
 _wnck_read_icons_ (Window xwindow,
 		   GtkWidget * icon_cache,
 		   GdkPixbuf ** iconp,

@@ -26,52 +26,16 @@
 
 #include <glib.h>
 #include <X11/Xlib.h>
-#include <X11/Xatom.h>
 #include <gdk/gdk.h>
-#include <gdk/gdkx.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <libwnck/libwnck.h>
 
 G_BEGIN_DECLS
 
-typedef struct _WnckIconCache WnckIconCache;
-
-void
-_wnck_error_trap_push (void);
-
-int
-_wnck_error_trap_pop (void);
-
 void
 _wnck_get_wmclass (Window xwindow,
                    char **res_class,
                    char **res_name);
-
-Atom
-_wnck_atom_get (const char *atom_name);
-
-const char *
-_wnck_atom_name (Atom atom);
-
-GdkPixbuf *
-_wnck_gdk_pixbuf_get_from_pixmap (GdkPixbuf * dest,
-                                  Pixmap xpixmap,
-                                  int src_x,
-                                  int src_y,
-                                  int dest_x,
-                                  int dest_y, int width, int height);
-
-gboolean
-_wnck_icon_cache_get_is_fallback (WnckIconCache * icon_cache);
-
-gboolean
-_wnck_read_icons_ (Window xwindow,
-                   GtkWidget * icon_cache,
-                   GdkPixbuf ** iconp,
-                   int ideal_width,
-                   int ideal_height,
-                   GdkPixbuf ** mini_iconp,
-                   int ideal_mini_width, int ideal_mini_height);
 
 GdkPixbuf *
 _wnck_get_icon_at_size (WnckWindow *window,
