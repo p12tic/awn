@@ -1,3 +1,8 @@
+2009-06-18  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Added resize animations to panel.
+
 2009-06-17  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/xutils.c:
