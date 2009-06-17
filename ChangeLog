@@ -1,5 +1,11 @@
 2009-06-18  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-overlay-pixbuf-file.c:
+	* libawn/awn-overlay-pixbuf.c:
+	Fixed loading different pixbuf after setting one.
+
+2009-06-18  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-panel.c:
 	Added resize animations to panel.
 

@@ -100,6 +100,10 @@ awn_overlay_pixbuf_set_property (GObject *object, guint property_id,
         g_object_unref (priv->pixbuf);
       }
       priv->pixbuf = g_value_dup_object (value);
+      if (priv->scaled_pixbuf)
+      {
+        priv->scaled_pixbuf = (g_object_unref (priv->scaled_pixbuf), NULL);
+      }
       break;    
     case PROP_SCALE:
       priv->scale = g_value_get_double (value);
@@ -237,11 +241,11 @@ _awn_overlay_pixbuf_render (AwnOverlay* _overlay,
     if (priv->scaled_pixbuf)
     {
       g_object_unref (priv->scaled_pixbuf);
+      priv->scaled_pixbuf = NULL;
     }
     if ( (scaled_width == pixbuf_width) && (scaled_height==pixbuf_height))
     {
-      g_object_ref (priv->pixbuf);
-      priv->scaled_pixbuf = priv->pixbuf;
+      priv->scaled_pixbuf = g_object_ref (priv->pixbuf);
     }
     else
     {

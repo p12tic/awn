@@ -120,6 +120,8 @@ _awn_overlaid_pixbuf_file_clear_hash (GObject *pspec,
   AwnOverlayPixbufFilePrivate * priv;
   priv = AWN_OVERLAY_PIXBUF_FILE_GET_PRIVATE (overlay);
 
+  g_object_set (overlay, "pixbuf", NULL, NULL);
+
   /*clear the hash table... the icon has changed in some fundamental way*/
   g_hash_table_remove_all (priv->pixbufs);
   
@@ -218,6 +220,7 @@ _awn_overlay_pixbuf_file_render (AwnOverlay* _overlay,
   /*has a pixbuf been loaded previously?*/
   if (!current_pixbuf)
   {
+    // FIXME: move the load to file-name prop setting
     current_pixbuf = gdk_pixbuf_new_from_file_at_scale (priv->file_name, 
                                                 scaled_width, 
                                                 scaled_height, 
@@ -230,7 +233,7 @@ _awn_overlay_pixbuf_file_render (AwnOverlay* _overlay,
     }
     else
     {
-      g_warning ("AwnOverlayPixbufFile: Failed to load pixbuf (%s)\n",priv->file_name);
+      g_warning ("AwnOverlayPixbufFile: Failed to load pixbuf (%s)",priv->file_name);
       return;
     }
   }
@@ -242,7 +245,7 @@ _awn_overlay_pixbuf_file_render (AwnOverlay* _overlay,
     current_pixbuf = gdk_pixbuf_new_from_file_at_scale (priv->file_name, 
                                                 scaled_width, 
                                                 scaled_height, 
-                                                TRUE, NULL);                                                        
+                                                TRUE, NULL);
     if (current_pixbuf)
     {
       g_object_set (overlay, 
@@ -251,7 +254,7 @@ _awn_overlay_pixbuf_file_render (AwnOverlay* _overlay,
     }
     else
     {
-      g_warning ("AwnOverlayPixbufFile: Failed to load pixbuf (%s)\n",priv->file_name);
+      g_warning ("AwnOverlayPixbufFile: Failed to load pixbuf (%s)",priv->file_name);
       return;
     }
     g_object_unref (current_pixbuf);    
