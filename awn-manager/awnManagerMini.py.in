@@ -275,8 +275,9 @@ class awnAppletMini(awnApplet):
         self.wTree = glade
 
         self.scrollwindow = self.wTree.get_widget("appletScrollActive")
-        self.make_active_model()
-        self.treeview_available =  self.wTree.get_widget("appletTreeviewAvailable")
+	self.scrollwindow1 = self.wTree.get_widget("appletScrollActive1")
+        self.treeview_available =  self.wTree.get_widget("appletTreeviewAvailable")        
+	self.make_active_model()
 
         self.load_applets()
 
@@ -326,7 +327,7 @@ class awnManagerMini(awnManager):
 
 	self.prefManager = awnPreferencesMini(self.wTree)
 	self.prefLauncher = awnLauncherMini(self.wTree)
-	self.appletManager = awnApplet(self.wTree)
+	self.appletManager = awnAppletMini(self.wTree)
 
         about = self.wTree.get_widget("buttonAbout")
         about.connect("clicked", self.about)
