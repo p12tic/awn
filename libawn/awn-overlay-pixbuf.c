@@ -102,7 +102,8 @@ awn_overlay_pixbuf_set_property (GObject *object, guint property_id,
       priv->pixbuf = g_value_dup_object (value);
       if (priv->scaled_pixbuf)
       {
-        priv->scaled_pixbuf = (g_object_unref (priv->scaled_pixbuf), NULL);
+        g_object_unref (priv->scaled_pixbuf);
+        priv->scaled_pixbuf = NULL;
       }
       break;    
     case PROP_SCALE:
@@ -185,7 +186,6 @@ awn_overlay_pixbuf_init (AwnOverlayPixbuf *self)
 AwnOverlayPixbuf*
 awn_overlay_pixbuf_new (void)
 {
-  g_debug ("aopn\n");
   return g_object_new (AWN_TYPE_OVERLAY_PIXBUF, NULL);
 }
 
@@ -197,7 +197,6 @@ awn_overlay_pixbuf_new_with_pixbuf (GdkPixbuf * pixbuf)
   if (!pixbuf)
   {
     ret = awn_overlay_pixbuf_new ();
-    g_debug ("aopnwp 1\n");
   }
   else
   {
@@ -245,7 +244,8 @@ _awn_overlay_pixbuf_render (AwnOverlay* _overlay,
     }
     if ( (scaled_width == pixbuf_width) && (scaled_height==pixbuf_height))
     {
-      priv->scaled_pixbuf = g_object_ref (priv->pixbuf);
+      g_object_ref (priv->pixbuf);
+      priv->scaled_pixbuf = priv->pixbuf;
     }
     else
     {
