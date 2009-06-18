@@ -1,3 +1,13 @@
+2009-06-18  Michal Hruby  <michal.mhr@gmail.com>
+
+	reviewed by: mhr3
+	patch by: onox
+
+	* bindings/python/awn.override:
+	Added python binding override for ThemedIcon.set_info
+	* tests/test-awn-tooltip.py:
+	Added test for ThemedIcon.set_info()
+
 2009-06-18  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-manager/awnClass.py:
