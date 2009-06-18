@@ -505,7 +505,30 @@ class awnBzr:
 
 		for k, v in new_struct.iteritems():
 			self.load_element_from_desktop(new_struct, k, read=False)
-		
+
+	def list_applets_categories(self):
+		'''	List all categories of applets
+		'''
+		catalog = self.type_catalog_from_sources_list(type_catalog='Applet')
+		desktop_list = [self.read_desktop(elem) for elem in catalog]
+		categories_list = []
+		for applet in desktop_list:
+			if not applet['applet_category'] in categories_list:
+				categories_list.append(applet['applet_category'])
+		return categories_list
+
+	def applets_by_categories(self, categories):
+		'''	Return applets uris of this categories
+			categories = list of Categories
+		'''
+		catalog = self.type_catalog_from_sources_list(type_catalog='Applet')
+		list_applets = []
+		for desktop in catalog:
+			desktop_file = self.read_desktop(desktop)
+			if desktop_file['applet_category'] in categories:
+				list_applets.append(desktop)
+		return list_applets
+			
 
 	def make_row (self, path):
 		''' 	Make a row for a list of applets or launchers
@@ -1671,7 +1694,7 @@ class awnApplet(awnBzr):
 
             model.append([icon, path, uid, text])
 
-    def load_applets (self):
+    def load_applets (self, list_applets="All"):
 
         prefixes = ["/usr/lib", "/usr/local/lib", "/usr/lib64", "/usr/local/lib64"]
         prefixes.append(os.path.expanduser("~/.config"))
@@ -1687,6 +1710,10 @@ class awnApplet(awnBzr):
             applets += [os.path.join(d, a) for a in os.listdir(d) if a.endswith(".desktop")]
 
 	self.treeview_available.set_headers_visible(False)
+
+	if list_applets is not "All":
+		applets = self.applets_by_categories(list_applets)
+
         model = self.make_model(applets, self.treeview_available)
 
     def popup_msg(self, message):
@@ -1721,3 +1748,15 @@ class awnApplet(awnBzr):
 
         if not None in applets and self.load_finished:
             self.client.set_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, applets)
+
+        self.choose_categorie = dropdown
+
+    def create_categories_dropdown(self, widget):
+        self.model_categorie = gtk.ListStore(str)
+
+	for category in self.list_applets_categories():
+        	self.model_categorie.append([category])
+        widget.set_model(self.model_categorie)
+        cell = gtk.CellRendererText()
+        widget.pack_start(cell)
+        widget.add_attribute(cell,'text',0)

@@ -69,7 +69,7 @@ class awnPreferencesMini(awnPreferences):
 	if not os.path.isfile(os.path.join(defs.HOME_CONFIG_DIR,"sources.list")):
 		self.create_sources_list()
 		self.update_sources_list()
-	
+
 	update_win = self.wTree.get_widget("update_repository")
 	exit_button = self.wTree.get_widget("exit_update_win")
 	exit_button.connect("clicked", lambda data=None:  update_win.hide_all())
@@ -252,7 +252,14 @@ class awnLauncherMini(awnLauncher):
         self.client.ensure_group(defs.LAUNCHERS)
 
         self.scrollwindow = self.wTree.get_widget("launchers_scroll_list")
-        self.make_model()
+
+        self.treeview_launchers = gtk.TreeView()
+        self.treeview_launchers.set_reorderable(True)
+        self.treeview_launchers.set_headers_visible(False)
+	
+	self.launchers_uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
+
+        self.refresh_tree(self.launchers_uris, self.make_model(self.launchers_uris, self.treeview_launchers))
 
         self.applet_remove = self.wTree.get_widget("launcher_remove")
         self.applet_remove.connect("clicked", self.remove)
@@ -280,6 +287,9 @@ class awnAppletMini(awnApplet):
 	self.make_active_model()
 
         self.load_applets()
+
+	self.choose_categorie = self.wTree.get_widget("applets_catagories")
+	self.create_categories_dropdown(self.choose_categorie)
 
         self.btn_deactivate = self.wTree.get_widget("appletDeactivate")
         self.btn_deactivate.connect("clicked", self.deactivate_applet)
