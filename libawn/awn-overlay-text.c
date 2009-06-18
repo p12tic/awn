@@ -45,12 +45,17 @@ G_DEFINE_TYPE (AwnOverlayText, awn_overlay_text, AWN_TYPE_OVERLAY)
 
 typedef struct _AwnOverlayTextPrivate AwnOverlayTextPrivate;
 
-struct _AwnOverlayTextPrivate {
-    gchar * text;
-    gdouble font_sizing;
-    PangoFontDescription *font_description;
-    DesktopAgnosticColor * text_color;
-    gchar                * text_color_astr;
+struct _AwnOverlayTextPrivate 
+{
+  gchar * text;
+  gdouble font_sizing;
+  PangoFontDescription *font_description;
+  DesktopAgnosticColor * text_color;
+  gchar                * text_color_astr;
+  
+  AwnConfigClient * client;
+  AwnConfigBridge * bridge;
+  
 };
 
 enum
@@ -130,13 +135,16 @@ awn_overlay_text_set_property (GObject *object, guint property_id,
 static void
 awn_overlay_text_dispose (GObject *object)
 {
+  AwnOverlayTextPrivate *priv;
+  priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object);  
+
+  g_object_unref (priv->bridge);
   G_OBJECT_CLASS (awn_overlay_text_parent_class)->dispose (object);
 }
 
 static void
 awn_overlay_text_finalize (GObject *object)
 {
-
   AwnOverlayTextPrivate *priv;
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object);  
   if (priv->text)
@@ -165,8 +173,6 @@ awn_overlay_text_constructed (GObject *object)
   {
     G_OBJECT_CLASS (awn_overlay_text_parent_class)->constructed (object);    
   }
-  
-  /*FIXME...  make into properties and hook up a signal for prop changes*/
   
   priv->font_description = pango_font_description_new ();
   pango_font_description_set_family (priv->font_description, "sans");
@@ -256,15 +262,12 @@ static void
 awn_overlay_text_init (AwnOverlayText *self)
 {
   AwnOverlayTextPrivate *priv;
-  AwnConfigClient * client = NULL;
-  AwnConfigBridge * bridge = NULL;
   
-  priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (self); 
-   
-  client = awn_config_client_new ();
-  bridge = awn_config_bridge_get_default ();
+  priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (self);   
+  priv->client = awn_config_client_new ();
+  priv->bridge = awn_config_bridge_get_default ();
 
-  awn_config_bridge_bind (bridge, client,
+  awn_config_bridge_bind (priv->bridge, priv->client,
                           "theme", "icon_text_color",
                           G_OBJECT(self), "text_color_astr");
   
