@@ -138,7 +138,17 @@ awn_overlay_text_dispose (GObject *object)
   AwnOverlayTextPrivate *priv;
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object);  
 
-  g_object_unref (priv->bridge);
+  if (priv->bridge)
+  {
+    g_object_unref (priv->bridge);
+    priv->bridge = NULL;
+  }
+  if (priv->text_color)
+  {
+    g_object_unref (priv->text_color);
+    priv->text_color = NULL;
+  }
+  
   G_OBJECT_CLASS (awn_overlay_text_parent_class)->dispose (object);
 }
 
@@ -150,10 +160,6 @@ awn_overlay_text_finalize (GObject *object)
   if (priv->text)
   {
     g_free (priv->text);
-  }
-  if (priv->text_color)
-  {
-    g_object_unref (priv->text_color);
   }
   if (priv->font_description)
   {
@@ -185,7 +191,7 @@ static void
 awn_overlay_text_class_init (AwnOverlayTextClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec   *pspec;    
+  GParamSpec   *pspec;
 
   object_class->get_property = awn_overlay_text_get_property;
   object_class->set_property = awn_overlay_text_set_property;

@@ -1,6 +1,11 @@
 2009-06-18  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-text.c:
+	Be more careful in dispose.
+
+2009-06-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
 	Move bridge and client into Private.  Unref bridge on dispose.
 
 2009-06-18  Rodney Cryderman  <rcryderman@gmail.com>
