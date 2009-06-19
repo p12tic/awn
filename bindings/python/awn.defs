@@ -495,6 +495,23 @@
   )
 )
 
+(define-method inhibit_autohide
+  (of-object "AwnApplet")
+  (c-name "awn_applet_inhibit_autohide")
+  (return-type "guint")
+  (parameters
+    '("const-gchar*" "reason")
+  )
+)
+
+(define-method uninhibit_autohide
+  (of-object "AwnApplet")
+  (c-name "awn_applet_uninhibit_autohide")
+  (parameters
+    '("guint" "cookie")
+  )
+)
+
 (define-method applet_construct
   (of-object "AwnApplet")
   (c-name "gtk_plug_construct")
