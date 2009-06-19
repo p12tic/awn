@@ -646,6 +646,8 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
     if (applet == NULL)
     {
       applet = create_applet (manager, tokens[0], tokens[1]);
+      // lets hope this isn't reentrant, anyway it should look better
+      gdk_window_process_all_updates ();
       if (!applet)
       {
         g_strfreev (tokens);

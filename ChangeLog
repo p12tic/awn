@@ -1,3 +1,9 @@
+2009-06-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	A couple of changes which should make AWN look more polished.
+
 2009-06-19  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-pixbuf-file.c:
