@@ -48,6 +48,9 @@ typedef struct _AwnOverlayPixbufFilePrivate AwnOverlayPixbufFilePrivate;
 struct _AwnOverlayPixbufFilePrivate {
     gchar * file_name;
     GHashTable *pixbufs;
+
+    gint  icon_width;
+    gint  icon_height;
 };
 
 enum
@@ -55,6 +58,11 @@ enum
   PROP_0,
   PROP_FILE_NAME
 };
+
+static void
+awn_overlay_pixbuf_file_load (AwnOverlayPixbufFile *overlay, 
+                              gchar * filename);
+
 
 static void 
 _awn_overlay_pixbuf_file_render (AwnOverlay* _overlay,
@@ -79,6 +87,8 @@ awn_overlay_pixbuf_file_get_property (GObject *object, guint property_id,
   }
 }
 
+
+
 static void
 awn_overlay_pixbuf_file_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
@@ -89,6 +99,8 @@ awn_overlay_pixbuf_file_set_property (GObject *object, guint property_id,
     case PROP_FILE_NAME:
       g_free(priv->file_name);
       priv->file_name = g_value_dup_string (value);
+      awn_overlay_pixbuf_file_load (AWN_OVERLAY_PIXBUF_FILE(object),
+                                    priv->file_name);
       break;    
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -170,7 +182,9 @@ static void
 awn_overlay_pixbuf_file_init (AwnOverlayPixbufFile *self)
 {
   AwnOverlayPixbufFilePrivate * priv = AWN_OVERLAY_PIXBUF_FILE_GET_PRIVATE (self);
-  
+
+  priv->icon_height = 48;  /*FIXME replaces with a named constant */
+  priv->icon_width = 48;  
   priv->file_name = NULL;
   priv->pixbufs = g_hash_table_new_full (g_str_hash,g_str_equal, g_free, g_object_unref);  
 }
@@ -204,8 +218,13 @@ _awn_overlay_pixbuf_file_render (AwnOverlay* _overlay,
   gint scaled_width;
   gint scaled_height;
 
+
   AwnOverlayPixbufFile * overlay = AWN_OVERLAY_PIXBUF_FILE (_overlay);
   AwnOverlayPixbufFilePrivate * priv = AWN_OVERLAY_PIXBUF_FILE_GET_PRIVATE (overlay);  
+
+  priv->icon_height = icon_width;  /*stored so we know what size to ask for when file name changed*/
+  priv->icon_width = icon_height;  
+  
   
   g_object_get (_overlay,
                 "scale",&scale,
@@ -217,50 +236,60 @@ _awn_overlay_pixbuf_file_render (AwnOverlay* _overlay,
                           scaled_width / 
                           icon_width);
   
-  /*has a pixbuf been loaded previously?*/
   if (!current_pixbuf)
   {
-    // FIXME: move the load to file-name prop setting
-    current_pixbuf = gdk_pixbuf_new_from_file_at_scale (priv->file_name, 
-                                                scaled_width, 
-                                                scaled_height, 
-                                                TRUE, NULL);
-    if (current_pixbuf)
-    {
-      g_object_set (overlay, 
-                    "pixbuf", current_pixbuf, 
-                    NULL);
-    }
-    else
-    {
-      g_warning ("AwnOverlayPixbufFile: Failed to load pixbuf (%s)",priv->file_name);
-      return;
-    }
-  }
-  g_object_unref (current_pixbuf);
-  
-  if ( (gdk_pixbuf_get_width (current_pixbuf) != scaled_width) || 
+      awn_overlay_pixbuf_file_load (overlay, priv->file_name);
+    
+  }    
+  else if ( (gdk_pixbuf_get_width (current_pixbuf) != scaled_width) && 
       (gdk_pixbuf_get_height (current_pixbuf) != scaled_height))
   {
-    current_pixbuf = gdk_pixbuf_new_from_file_at_scale (priv->file_name, 
-                                                scaled_width, 
-                                                scaled_height, 
-                                                TRUE, NULL);
-    if (current_pixbuf)
-    {
-      g_object_set (overlay, 
-                    "pixbuf", current_pixbuf, 
-                    NULL);
-    }
-    else
-    {
-      g_warning ("AwnOverlayPixbufFile: Failed to load pixbuf (%s)",priv->file_name);
-      return;
-    }
-    g_object_unref (current_pixbuf);    
+      g_object_unref (current_pixbuf);    
+      awn_overlay_pixbuf_file_load (overlay, priv->file_name);    
+  }
+  else  
+  {
+    g_object_unref (current_pixbuf);
   }
 
   AWN_OVERLAY_CLASS (awn_overlay_pixbuf_file_parent_class)->
     render (_overlay, widget, cr, icon_width, icon_height);
 }
 
+static void
+awn_overlay_pixbuf_file_load (AwnOverlayPixbufFile *overlay, 
+                              gchar * file_name)
+{
+  gdouble scale;
+  GdkPixbuf * pixbuf;
+  gint scaled_width;
+  gint scaled_height;
+  AwnOverlayPixbufFilePrivate * priv = AWN_OVERLAY_PIXBUF_FILE_GET_PRIVATE (overlay);  
+  
+  g_object_get (overlay,
+                "scale",&scale,
+                NULL);
+  g_return_if_fail (scale);
+
+  scaled_width = lround (priv->icon_width * scale);  
+  scaled_height = lround (priv->icon_height * 
+                          scaled_width / 
+                          priv->icon_width);
+
+  pixbuf = gdk_pixbuf_new_from_file_at_scale (file_name, 
+                                              scaled_width, 
+                                              scaled_height, 
+                                              TRUE, NULL);
+  if (pixbuf)
+  {
+    g_object_set (overlay, 
+                  "pixbuf", pixbuf, 
+                  NULL);
+    g_object_unref (pixbuf);    
+  }
+  else
+  {
+    g_warning ("AwnOverlayPixbufFile: Failed to load pixbuf (%s)",file_name);
+  }
+
+}

@@ -1,3 +1,8 @@
+2009-06-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf-file.c:
+	Partial refactor of AwnOverlayPixbufFile.
+
 2009-06-19  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:
