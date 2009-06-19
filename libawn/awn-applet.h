@@ -125,6 +125,11 @@ GtkWidget*         awn_applet_create_default_menu (AwnApplet      *applet);
 void               awn_applet_set_panel_window_id (AwnApplet      *applet,
                                                    GdkNativeWindow anid);
 
+guint              awn_applet_inhibit_autohide    (AwnApplet *applet,
+                                                   const gchar *reason);
+void               awn_applet_uninhibit_autohide  (AwnApplet *applet,
+                                                   guint cookie);
+
 /*
  * Returns a gtk menu item for the "Dock Preferences".
  * Note: awn_applet_create_default_menu() adds this item to its menu.  

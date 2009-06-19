@@ -843,7 +843,7 @@ awn_applet_set_uid (AwnApplet *applet, const gchar *uid)
   priv->uid = g_strdup (uid);
 }
 
-void 
+void
 awn_applet_set_flags (AwnApplet *applet, AwnAppletFlags flags)
 {
   AwnAppletPrivate *priv;
@@ -878,6 +878,59 @@ awn_applet_get_flags (AwnApplet *applet)
   g_return_val_if_fail (AWN_IS_APPLET (applet), AWN_APPLET_FLAGS_NONE);
 
   return applet->priv->flags;
+}
+
+guint
+awn_applet_inhibit_autohide (AwnApplet *applet, const gchar *reason)
+{
+  AwnAppletPrivate *priv;
+  GError *error = NULL;
+  guint ret = 0;
+
+  g_return_val_if_fail (AWN_IS_APPLET (applet), 0);
+  priv = applet->priv;
+
+  gchar *app_name = g_strdup_printf ("%s:%d", g_get_prgname(), getpid());
+
+  dbus_g_proxy_call (priv->proxy, "InhibitAutohide",
+                     &error,
+                     G_TYPE_STRING, app_name,
+                     G_TYPE_STRING, reason,
+                     G_TYPE_INVALID, 
+                     G_TYPE_UINT, &ret,
+                     G_TYPE_INVALID);
+
+  if (app_name) g_free (app_name);
+
+  if (error)
+  {
+    g_warning ("%s", error->message);
+    g_error_free (error);
+  }
+
+  return ret;
+}
+
+void
+awn_applet_uninhibit_autohide (AwnApplet *applet, guint cookie)
+{
+  AwnAppletPrivate *priv;
+  GError *error = NULL;
+
+  g_return_if_fail (AWN_IS_APPLET (applet));
+  priv = applet->priv;
+
+  dbus_g_proxy_call (priv->proxy, "UninhibitAutohide",
+                     &error,
+                     G_TYPE_UINT, cookie,
+                     G_TYPE_INVALID,
+                     G_TYPE_INVALID);
+
+  if (error)
+  {
+    g_warning ("%s", error->message);
+    g_error_free (error);
+  }
 }
 
 static GdkFilterReturn

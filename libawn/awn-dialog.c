@@ -81,6 +81,8 @@ struct _AwnDialogPrivate
   gulong applet_size_id;
   gulong orient_changed_id;
 
+  guint inhibit_cookie;
+
   gint old_x, old_y, old_w, old_h;
   gint a_old_x, a_old_y, a_old_w, a_old_h;
 
@@ -288,10 +290,34 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
 static void
 _real_show (GtkWidget *widget)
 {
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (widget);
+
   awn_dialog_refresh_position (AWN_DIALOG (widget), 0, 0);
 
   /* in Vala terms: base.show(); */
   GTK_WIDGET_CLASS (awn_dialog_parent_class)->show (widget);
+
+  if (priv->anchor_applet && priv->inhibit_cookie == 0)
+  {
+    priv->inhibit_cookie = 
+      awn_applet_inhibit_autohide (priv->anchor_applet,
+                                   "AwnDialog being displayed");
+  }
+}
+
+static void
+_real_hide (GtkWidget *widget)
+{
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (widget);
+
+  /* in Vala terms: base.hide(); */
+  GTK_WIDGET_CLASS (awn_dialog_parent_class)->hide (widget);
+
+  if (priv->anchor_applet && priv->inhibit_cookie)
+  {
+    awn_applet_uninhibit_autohide (priv->anchor_applet, priv->inhibit_cookie);
+    priv->inhibit_cookie = 0;
+  }
 }
 
 static gboolean
@@ -819,6 +845,7 @@ awn_dialog_class_init (AwnDialogClass *klass)
   widget_class = GTK_WIDGET_CLASS (klass);
   widget_class->expose_event = _expose_event;
   widget_class->show = _real_show;
+  widget_class->hide = _real_hide;
 
   cont_class = GTK_CONTAINER_CLASS (klass);
   cont_class->add = awn_dialog_add;
