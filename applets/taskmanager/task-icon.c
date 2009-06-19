@@ -510,7 +510,7 @@ on_window_needs_attention_changed (TaskWindow *window,
   if (needs_attention)
     awn_icon_set_effect (AWN_ICON (icon),AWN_EFFECT_ATTENTION);
   else
-    awn_effects_stop (awn_icon_get_effects (AWN_ICON (icon)), 
+    awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)),
                       AWN_EFFECT_ATTENTION);
 }
 

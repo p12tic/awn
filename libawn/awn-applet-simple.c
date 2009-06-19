@@ -26,11 +26,16 @@
 
 #include "awn-applet-simple.h"
 
+#include "awn-overlayable.h"
 #include "awn-icon.h"
 #include "awn-themed-icon.h"
 #include "awn-utils.h"
 
-G_DEFINE_TYPE (AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET)
+static void awn_applet_simple_overlayable_init (AwnOverlayableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET,
+                         G_IMPLEMENT_INTERFACE (AWN_TYPE_OVERLAYABLE,
+                                          awn_applet_simple_overlayable_init))
 
 #define AWN_APPLET_SIMPLE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
     AWN_TYPE_APPLET_SIMPLE, \
@@ -112,6 +117,17 @@ awn_applet_simple_size_allocate (GtkWidget *widget, GtkAllocation *alloc)
   }
 }
 
+static AwnEffects*
+awn_applet_simple_get_effects (AwnOverlayable *simple)
+{
+  AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE_GET_PRIVATE (simple);
+
+  if (AWN_IS_ICON (priv->icon))
+    return awn_overlayable_get_effects (AWN_OVERLAYABLE (priv->icon));
+
+  return NULL;
+}
+
 static void
 awn_applet_simple_menu_creation (AwnApplet *applet, GtkMenu *menu)
 {
@@ -137,6 +153,12 @@ static void
 awn_applet_simple_dispose (GObject *object)
 {
   G_OBJECT_CLASS (awn_applet_simple_parent_class)->dispose (object);
+}
+
+static void
+awn_applet_simple_overlayable_init (AwnOverlayableIface *iface)
+{
+  iface->get_effects = awn_applet_simple_get_effects;
 }
 
 static void

@@ -39,6 +39,7 @@
 #include <libawn/awn-tooltip.h> 
 #include <libawn/awn-vfs.h>
 #include <libawn/awn-overlay.h>
+#include <libawn/awn-overlayable.h>
 #include <libawn/awn-overlay-pixbuf.h>
 #include <libawn/awn-overlay-pixbuf-file.h>
 #include <libawn/awn-overlay-progress.h>

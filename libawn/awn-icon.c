@@ -22,10 +22,17 @@
 #include "awn-config-bridge.h"
 #include "awn-icon.h"
 #include "awn-utils.h"
+#include "awn-overlayable.h"
 
 #define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
 
-G_DEFINE_TYPE (AwnIcon, awn_icon, GTK_TYPE_DRAWING_AREA)
+static void awn_icon_overlayable_init (AwnOverlayableIface *iface);
+
+static AwnEffects* awn_icon_get_effects (AwnOverlayable *icon);
+
+G_DEFINE_TYPE_WITH_CODE (AwnIcon, awn_icon, GTK_TYPE_DRAWING_AREA,
+                         G_IMPLEMENT_INTERFACE (AWN_TYPE_OVERLAYABLE,
+                                                awn_icon_overlayable_init))
 
 #define AWN_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   AWN_TYPE_ICON, \
@@ -236,6 +243,12 @@ awn_icon_dispose (GObject *object)
   priv->icon_srfc = NULL;
 
   G_OBJECT_CLASS (awn_icon_parent_class)->dispose (object);
+}
+
+static void
+awn_icon_overlayable_init (AwnOverlayableIface *iface)
+{
+  iface->get_effects = awn_icon_get_effects;
 }
 
 static void
@@ -489,12 +502,12 @@ awn_icon_set_effect (AwnIcon *icon, AwnEffect effect)
   awn_effects_start (icon->priv->effects, effect);
 }
 
-AwnEffects * 
-awn_icon_get_effects (AwnIcon *icon)
+static AwnEffects*
+awn_icon_get_effects (AwnOverlayable *icon)
 {
   g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
 
-  return icon->priv->effects;
+  return AWN_ICON_GET_PRIVATE (icon)->effects;
 }
 
 AwnTooltip *

@@ -32,14 +32,13 @@
 #include <math.h>
 
 #include "awn-applet.h"
-#include "awn-applet-simple.h"
 #include "awn-dialog.h"
-#include "awn-icon.h"
 #include "awn-cairo-utils.h"
 #include "awn-config-bridge.h"
 #include "awn-config-client.h"
 #include "awn-defines.h"
 #include "awn-utils.h"
+#include "awn-overlayable.h"
 
 #include "gseal-transition.h"
 
@@ -431,7 +430,7 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
     awn_cairo_rounded_rect_shadow (cr, BORDER, BORDER,
                                    w - BORDER*2, h - BORDER*2,
                                    ROUND_RADIUS, ROUND_ALL,
-                                   SHADOW_RADIUS, 0.5);
+                                   SHADOW_RADIUS, 0.6);
 
     cairo_restore (cr);
   }
@@ -500,16 +499,17 @@ _on_title_notify(GObject *dialog, GParamSpec *spec, gpointer null)
 static void
 _on_active_changed(GObject *dialog, GParamSpec *spec, gpointer null)
 {
+  // FIXME: add property to disable this
   AwnDialogPrivate *priv;
 
   priv = AWN_DIALOG(dialog)->priv;
 
-  if (!AWN_IS_APPLET_SIMPLE (priv->anchor)) return; // FIXME later
+  if (!AWN_IS_OVERLAYABLE (priv->anchor)) return;
 
-  AwnAppletSimple *simple = AWN_APPLET_SIMPLE (priv->anchor);
+  AwnOverlayable *icon = AWN_OVERLAYABLE (priv->anchor);
 
-  awn_icon_set_is_active (AWN_ICON (awn_applet_simple_get_icon (simple)),
-                          gtk_window_is_active (GTK_WINDOW (dialog)));
+  g_object_set (awn_overlayable_get_effects (icon),
+                "active", gtk_window_is_active (GTK_WINDOW (dialog)), NULL);
 }
 
 static void

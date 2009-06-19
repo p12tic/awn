@@ -1,5 +1,12 @@
 ;; -*- scheme -*-
 ; object definitions ...
+
+(define-interface Overlayable
+  (in-module "Awn")
+  (c-name "AwnOverlayable")
+  (gtype-id "AWN_TYPE_OVERLAYABLE")
+)
+
 (define-object Applet
   (in-module "Awn")
   (parent "GtkPlug")
@@ -12,6 +19,7 @@
   (parent "AwnApplet")
   (c-name "AwnAppletSimple")
   (gtype-id "AWN_TYPE_APPLET_SIMPLE")
+  (implements "AwnOverlayable")
 )
 
 (define-object Dialog
@@ -33,6 +41,7 @@
   (parent "GtkDrawingArea")
   (c-name "AwnIcon")
   (gtype-id "AWN_TYPE_ICON")
+  (implements "AwnOverlayable")
 )
 
 (define-object ThemedIcon
@@ -984,12 +993,6 @@
   )
 )
 
-(define-method get_effects
-  (of-object "AwnIcon")
-  (c-name "awn_icon_get_effects")
-  (return-type "AwnEffects*")
-)
-
 (define-method set_from_pixbuf
   (of-object "AwnIcon")
   (c-name "awn_icon_set_from_pixbuf")
@@ -1141,6 +1144,34 @@
     '("AwnOverlayCoord*" "coord")
   )
 )
+
+
+;; From awn-overlayable.h
+
+(define-method get_effects
+  (of-object "AwnOverlayable")
+  (c-name "awn_overlayable_get_effects")
+  (return-type "AwnEffects*")
+)
+
+(define-method add_overlay
+  (of-object "AwnOverlayable")
+  (c-name "awn_overlayable_add_overlay")
+  (return-type "none")
+  (parameters
+    '("AwnOverlay*" "overlay")
+  )
+)
+
+(define-method remove_overlay
+  (of-object "AwnOverlayable")
+  (c-name "awn_overlayable_remove_overlay")
+  (return-type "none")
+  (parameters
+    '("AwnOverlay*" "overlay")
+  )
+)
+
 
 ;; From awn-overlay-text.h
 
