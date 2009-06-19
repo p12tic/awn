@@ -442,6 +442,9 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
           paint_arrow_dot (cr, DOT_RADIUS, arrows_count, r, g ,b);
           break;
         }
+        default:
+          g_warn_if_reached ();
+          break;
       }
     }
     else
