@@ -55,6 +55,8 @@ struct _AwnPanelPrivate
   AwnConfigClient *client;
   AwnMonitor *monitor;
 
+  GHashTable *inhibits;
+
   AwnBackground *bg;
 
   GtkWidget *alignment;
@@ -1121,6 +1123,20 @@ awn_panel_dispose (GObject *object)
   G_OBJECT_CLASS (awn_panel_parent_class)->dispose (object);
 }
 
+static void
+awn_panel_finalize (GObject *object)
+{
+  AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (object);
+
+  if (priv->inhibits)
+  {
+    g_hash_table_destroy (priv->inhibits);
+    priv->inhibits = NULL;
+  }
+
+  G_OBJECT_CLASS (awn_panel_parent_class)->finalize (object);
+}
+
 #include "awn-panel-glue.h"
 
 static void
@@ -1132,6 +1148,7 @@ awn_panel_class_init (AwnPanelClass *klass)
 
   obj_class->constructed   = awn_panel_constructed;
   obj_class->dispose       = awn_panel_dispose;
+  obj_class->finalize      = awn_panel_finalize;
   obj_class->get_property  = awn_panel_get_property;
   obj_class->set_property  = awn_panel_set_property;
     
@@ -1329,6 +1346,9 @@ awn_panel_init (AwnPanel *panel)
 
   priv->path_type = AWN_PATH_LINEAR;
   priv->offset_mod = 1.0;
+
+  priv->inhibits = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+                                          NULL, g_free);
 
   gtk_widget_set_app_paintable (GTK_WIDGET (panel), TRUE);
 
@@ -2215,6 +2235,65 @@ awn_panel_set_applet_flags (AwnPanel         *panel,
 
   awn_applet_manager_set_applet_flags (AWN_APPLET_MANAGER (priv->manager),
                                        uid, flags);
+
+  return TRUE;
+}
+
+guint
+awn_panel_inhibit_autohide (AwnPanel *panel,
+                            const gchar *app_name,
+                            const gchar *reason)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  static guint cookie = 0; // FIXME: use something different!
+  if (cookie == 0) cookie++;
+
+  g_hash_table_insert (priv->inhibits,
+                       GINT_TO_POINTER (cookie),
+                       g_strdup_printf ("(%s): %s", app_name, reason));
+
+  if (!priv->autohide_inhibited)
+  {
+    priv->autohide_inhibited = TRUE;
+    awn_panel_reset_autohide (panel);
+  }
+
+  return cookie++;
+}
+
+gboolean
+awn_panel_uninhibit_autohide  (AwnPanel *panel, guint cookie)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  g_hash_table_remove (priv->inhibits, GINT_TO_POINTER (cookie));
+
+  if (g_hash_table_size (priv->inhibits) == 0)
+    priv->autohide_inhibited = FALSE;
+
+  return TRUE;
+}
+
+gboolean
+awn_panel_get_inhibitors (AwnPanel *panel, GStrv *reasons)
+{
+  AwnPanelPrivate *priv = panel->priv;
+  GList *list, *l;
+
+  *reasons = g_new0 (char*, g_hash_table_size (priv->inhibits) + 1);
+
+  list = l = g_hash_table_get_values (priv->inhibits); // list should be freed
+  int i=0;
+
+  while (list)
+  {
+    (*reasons)[i++] = g_strdup (list->data);
+
+    list = list->next;
+  }
+
+  g_list_free (l);
 
   return TRUE;
 }

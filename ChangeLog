@@ -1,5 +1,12 @@
 2009-06-19  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Added DBus methods for inhibiting autohide.
+
+2009-06-19  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-effects-ops-new.c:
 	Fix compiler warning.
 
