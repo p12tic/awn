@@ -1,3 +1,10 @@
+2009-06-21  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Groundwork for safe inhibits.
+
 2009-06-20  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/__init__.py:

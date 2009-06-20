@@ -14,11 +14,10 @@
     </method>
 
     <method name="InhibitAutohide">
+      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
       <arg name="app_name" type="s" direction="in" />
       <arg name="reason" type="s" direction="in" />
-      <arg name="cookie" type="u" direction="out">
-        <annotation name="org.freedesktop.DBus.GLib.ReturnVal" value=""/>
-      </arg>
+      <arg name="cookie" type="u" direction="out" />
     </method>
 
     <method name="UninhibitAutohide">

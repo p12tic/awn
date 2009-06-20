@@ -26,6 +26,10 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/shape.h>
 
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-bindings.h>
+#include <dbus/dbus-glib-lowlevel.h>
+
 #include <libawn/libawn.h>
 #include <libawn/awn-utils.h>
 
@@ -2240,7 +2244,7 @@ awn_panel_set_applet_flags (AwnPanel         *panel,
 }
 
 guint
-awn_panel_inhibit_autohide (AwnPanel *panel,
+awn_panel_disable_autohide (AwnPanel *panel,
                             const gchar *app_name,
                             const gchar *reason)
 {
@@ -2260,6 +2264,23 @@ awn_panel_inhibit_autohide (AwnPanel *panel,
   }
 
   return cookie++;
+}
+
+void
+awn_panel_inhibit_autohide (AwnPanel *panel,
+                            const gchar *app_name,
+                            const gchar *reason,
+                            DBusGMethodInvocation *context)
+{
+  guint cookie = awn_panel_disable_autohide (panel, app_name, reason);
+
+  gchar *sender = dbus_g_method_get_sender (context);
+  //g_debug ("Inhibit sender: %s", sender);
+  // FIXME: watch the sender on dbus and remove all its inhibits when it
+  //   disappears (to be sure that we don't misbehave due to crashing app)
+  g_free (sender);
+
+  dbus_g_method_return (context, cookie);
 }
 
 gboolean
