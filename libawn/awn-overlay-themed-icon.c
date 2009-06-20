@@ -156,7 +156,7 @@ awn_overlay_themed_icon_finalize (GObject *object)
 }
 
 static void
-_awn_overlay_themed_icon_theme_change (AwnOverlayThemedIcon * overlay                                  )
+_awn_overlay_themed_icon_theme_change (AwnOverlayThemedIcon * overlay)
 {
   /* a change in props will cause effects to queue a draw... however
    a theme change does not cause a change in a prop... we don't have the 

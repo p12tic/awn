@@ -1,5 +1,10 @@
 2009-06-19  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-themed-icon.c:
+        Remove a big chunk of whitespace in a param list.
+
+2009-06-19  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-pixbuf-file.c:
 	Removed a FIXME comment that does not apply.
 
