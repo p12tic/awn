@@ -63,7 +63,7 @@ struct _TaskIconClass
   /*< vtable, not signals >*/
   
   /*< signals >*/
-  void (*ensure_layout) (TaskIcon *icon);
+  void (*visible_changed) (TaskIcon *icon);
   void (*source_drag_fail) (TaskIcon *icon);
   void (*source_drag_begin) (TaskIcon *icon);
   void (*source_drag_end) (TaskIcon *icon);
@@ -75,19 +75,22 @@ GType           task_icon_get_type        (void) G_GNUC_CONST;
 
 GtkWidget*      task_icon_new ();
 
-void            task_icon_append_item     (TaskIcon      *icon,
-                                           TaskItem      *item);
-void            task_icon_remove_item     (TaskIcon      *icon,
-                                           TaskItem      *item);
-guint           task_icon_match_item      (TaskIcon      *icon,
-                                           TaskItem      *item);
+gboolean        task_icon_is_visible        (TaskIcon      *icon);
+gboolean        task_icon_contains_launcher (TaskIcon      *icon);
 
-void            task_icon_remove_windows  (TaskIcon      *icon);
+void            task_icon_append_item       (TaskIcon      *icon,
+                                             TaskItem      *item);
+void            task_icon_remove_item       (TaskIcon      *icon,
+                                             TaskItem      *item);
+guint           task_icon_match_item        (TaskIcon      *icon,
+                                             TaskItem      *item);
 
-void            task_icon_refresh_icon    (TaskIcon      *icon);
+//void            task_icon_remove_windows  (TaskIcon      *icon);
 
-void            task_icon_set_draggable   (TaskIcon      *icon, 
-                                           gboolean       draggable);
+void            task_icon_refresh_icon      (TaskIcon      *icon);
+
+void            task_icon_set_draggable     (TaskIcon      *icon, 
+                                             gboolean       draggable);
 
 #endif /* _TASK_ICON_H_ */
 

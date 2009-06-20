@@ -78,6 +78,10 @@ enum
 };
 
 /* Forwards */
+static void update_icon_visible         (TaskManager *manager, 
+                                         TaskIcon *icon);
+static void on_icon_visible_changed     (TaskManager *manager, 
+                                         TaskIcon      *icon);
 static void on_window_opened            (WnckScreen    *screen, 
                                          WnckWindow    *window,
                                          TaskManager   *manager);
@@ -146,8 +150,7 @@ task_manager_get_property (GObject    *object,
     case PROP_DRAG_AND_DROP:
       g_value_set_boolean (value, manager->priv->drag_and_drop);
       break;
-          
-    //TODO: h4writer - rename 3rd round      
+
     case PROP_MATCH_STRENGTH:
       g_value_set_int (value, manager->priv->match_strength);
       break;
@@ -283,7 +286,7 @@ task_manager_class_init (TaskManagerClass *klass)
                             "match_strength",
                             "How radical matching is applied for grouping items",
                             0,
-                            100,
+                            99,
                             0,
                             G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_MATCH_STRENGTH, pspec);
@@ -328,8 +331,6 @@ task_manager_init (TaskManager *manager)
 
 
 //TODO - 2nd round
-//  g_signal_connect (priv->screen, "window-closed",
-//                    G_CALLBACK(on_wnck_window_closed), manager);
 //  g_signal_connect_swapped (priv->screen, "viewports-changed",
 //                            G_CALLBACK (ensure_layout), manager);
 //  g_signal_connect_swapped (priv->screen, "active-workspace-changed",
@@ -425,6 +426,62 @@ on_window_state_changed (WnckWindow      *window,
 }
 
 /**
+ * The active WnckWindow has changed.
+ * Retrieve the TaskWindows and update there active state 
+ */
+static void 
+on_active_window_changed (WnckScreen    *screen, 
+                          WnckWindow    *old_window,
+                          TaskManager   *manager)
+{
+  TaskManagerPrivate *priv;
+  WnckWindow         *active = NULL;
+  TaskWindow         *taskwin = NULL;
+  TaskWindow         *old_taskwin = NULL;
+  
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+
+  active = wnck_screen_get_active_window (priv->screen);
+
+  if (WNCK_IS_WINDOW (old_window))
+    old_taskwin = (TaskWindow *)g_object_get_qdata (G_OBJECT (old_window),
+                                                    win_quark);
+  if (WNCK_IS_WINDOW (active))
+    taskwin = (TaskWindow *)g_object_get_qdata (G_OBJECT (active), win_quark);
+
+  if (TASK_IS_WINDOW (old_taskwin))
+    task_window_set_is_active (old_taskwin, FALSE);
+  if (TASK_IS_WINDOW (taskwin))
+    task_window_set_is_active (taskwin, TRUE);
+}
+
+/*
+ * TASK_ICON CALLBACKS
+ */
+
+static void
+update_icon_visible (TaskManager *manager, TaskIcon *icon)
+{
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+
+  g_debug ("update visibility");
+  
+  if (task_icon_is_visible (icon))
+    gtk_widget_show (GTK_WIDGET (icon));
+  else
+    gtk_widget_hide (GTK_WIDGET (icon));
+}
+
+static void
+on_icon_visible_changed (TaskManager *manager, TaskIcon *icon)
+{
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+
+  update_icon_visible (manager, icon);
+}
+
+/**
  * This function gets called whenever a task-icon gets finalized.
  * It removes the task-icon from the gslist and update layout
  * (so it gets removed from the bar)
@@ -495,8 +552,6 @@ on_window_opened (WnckScreen    *screen,
   g_object_set_qdata (G_OBJECT (window), win_quark, TASK_WINDOW (item));
 
   // see if there is a icon that matches
-  // TODO: if they don't want to group, don't group and 
-  //       only look to taskicons that contain no window yet
   for (w = priv->icons; w; w = w->next)
   {
     TaskIcon *taskicon = w->data;
@@ -513,7 +568,7 @@ on_window_opened (WnckScreen    *screen,
 
   g_debug("Matching score: %i", max_match_score);
   
-  if (max_match_score > 0)
+  if (max_match_score > 99-priv->match_strength)
   {
     task_icon_append_item (match, item);
   }
@@ -529,36 +584,14 @@ on_window_opened (WnckScreen    *screen,
     if(priv->drag_and_drop)
       _drag_add_signals(manager, icon);
 
-    g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager); 
+    g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
+    g_signal_connect_swapped (icon, "visible-changed",
+                              G_CALLBACK (on_icon_visible_changed), manager);
+
+    update_icon_visible (manager, TASK_ICON (icon));
   }
 }
 
-static void 
-on_active_window_changed (WnckScreen    *screen, 
-                          WnckWindow    *old_window,
-                          TaskManager   *manager)
-{
-  TaskManagerPrivate *priv;
-  WnckWindow         *active = NULL;
-  TaskWindow         *taskwin = NULL;
-  TaskWindow         *old_taskwin = NULL;
-  
-  g_return_if_fail (TASK_IS_MANAGER (manager));
-  priv = manager->priv;
-
-  active = wnck_screen_get_active_window (priv->screen);
-
-  if (WNCK_IS_WINDOW (old_window))
-    old_taskwin = (TaskWindow *)g_object_get_qdata (G_OBJECT (old_window),
-                                                    win_quark);
-  if (WNCK_IS_WINDOW (active))
-    taskwin = (TaskWindow *)g_object_get_qdata (G_OBJECT (active), win_quark);
-
-  if (TASK_IS_WINDOW (old_taskwin))
-    task_window_set_is_active (old_taskwin, FALSE);
-  if (TASK_IS_WINDOW (taskwin))
-    task_window_set_is_active (taskwin, TRUE);
-}
 /*
  * PROPERTIES
  */
@@ -618,6 +651,10 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
     priv->icons = g_slist_append (priv->icons, icon);
 
     g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
+    g_signal_connect_swapped (icon, "visible-changed",
+                              G_CALLBACK (on_icon_visible_changed), manager);
+
+    update_icon_visible (manager, TASK_ICON (icon));
 
     /* reordening through D&D */
     if(priv->drag_and_drop)
@@ -635,7 +672,6 @@ task_manager_set_match_strength (TaskManager *manager,
 {
   g_return_if_fail (TASK_IS_MANAGER (manager));
   manager->priv->match_strength = match_strength;
-
 }
 
 static void

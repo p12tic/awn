@@ -56,6 +56,8 @@ struct _TaskIconPrivate
 
   TaskItem *main_item;
 
+  gboolean visible;
+  
   GdkPixbuf *icon;
   GtkWidget *dialog;
 
@@ -83,7 +85,7 @@ enum
 
 enum
 {
-  ENSURE_LAYOUT,
+  VISIBLE_CHANGED,
 
   SOURCE_DRAG_FAIL,
   SOURCE_DRAG_BEGIN,
@@ -373,7 +375,7 @@ task_icon_class_init (TaskIconClass *klass)
   obj_class->constructed  = task_icon_constructed;
   obj_class->set_property = task_icon_set_property;
   obj_class->get_property = task_icon_get_property;
-  obj_class->dispose     = task_icon_dispose;
+  obj_class->dispose      = task_icon_dispose;
   obj_class->finalize     = task_icon_finalize;
 
   wid_class->configure_event      = task_icon_configure_event;
@@ -395,11 +397,11 @@ task_icon_class_init (TaskIconClass *klass)
   g_object_class_install_property (obj_class, PROP_DRAGGABLE, pspec);
 
   /* Install signals */
-  _icon_signals[ENSURE_LAYOUT] =
-		g_signal_new ("ensure-layout",
+  _icon_signals[VISIBLE_CHANGED] =
+		g_signal_new ("visible_changed",
 			      G_OBJECT_CLASS_TYPE (obj_class),
 			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (TaskIconClass, ensure_layout),
+			      G_STRUCT_OFFSET (TaskIconClass, visible_changed),
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__VOID, 
 			      G_TYPE_NONE, 0);
@@ -470,6 +472,7 @@ task_icon_init (TaskIcon *icon)
   priv->needs_attention = 0;
   priv->is_active = 0;
   priv->main_item = NULL;
+  priv->visible = FALSE;
 
   awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
 
@@ -649,7 +652,7 @@ task_icon_refresh_visible (TaskIcon *icon)
         priv->main_item = NULL;
       }
       
-      gtk_widget_hide (GTK_WIDGET (icon));
+      priv->visible = FALSE;
     }
     else if (count == 1)
     {
@@ -675,7 +678,7 @@ task_icon_refresh_visible (TaskIcon *icon)
       //awn_icon_set_indicator_count (AWN_ICON (icon), 
       //                  TASK_IS_LAUNCHER (priv->main_item) ? 1 : 0);
       
-      gtk_widget_show (GTK_WIDGET (icon));
+      priv->visible = TRUE;
     }
     else
     {
@@ -683,6 +686,8 @@ task_icon_refresh_visible (TaskIcon *icon)
       
       g_return_if_fail (priv->main_item);
     }
+
+    g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);
   }
 
   priv->shown_items = count;
@@ -838,6 +843,44 @@ on_item_visible_changed (TaskItem   *item,
 /**
  * Public Functions
  */
+
+/**
+ * Returns whetever this icon should be visible.
+ * (That means it should contain atleast 1 visible item)
+ */
+gboolean
+task_icon_is_visible (TaskIcon      *icon)
+{
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
+  
+  return icon->priv->visible;
+}
+
+/**
+ * Returns whetever this icon contains atleast one (visible?) launcher.
+ * TODO: adapt TaskIcon so it has a guint with the numbers of TaskLaunchers/TaskWindows
+ */
+gboolean
+task_icon_contains_launcher (TaskIcon      *icon)
+{
+  TaskIconPrivate *priv;
+  GSList *w;
+
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
+
+  priv = icon->priv;
+
+  for (w = priv->items; w; w = w->next)
+  {
+    TaskItem *item = w->data;
+
+    if (!task_item_is_visible (item)) continue;
+
+    if (TASK_IS_LAUNCHER (item))
+      return TRUE;
+  }
+  return FALSE;
+}
 
 guint
 task_icon_match_item (TaskIcon      *icon,
