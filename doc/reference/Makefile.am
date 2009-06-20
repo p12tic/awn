@@ -52,7 +52,6 @@ CFILE_GLOB=$(DOC_SOURCE_DIR)/*.c
 IGNORE_HFILES = \
 	$(DOC_SOURCE_DIR)/gseal-transition.h \
 	$(DOC_SOURCE_DIR)/stamp-awn-enum-types.h \
-	$(DOC_SOURCE_DIR)/egg/stamp-egg-enum-types.h \
 	$(DOC_SOURCE_DIR)/libawn.h \
 	$(NULL)
 

@@ -1,5 +1,12 @@
 2009-06-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* .bzrignore:
+	* configure.in:
+	* doc/reference/Makefile.am:
+	Remove remnants of the old libawn/egg directory.
+
+2009-06-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/taskmanager/task-launcher.c:
 	Remove unused variable.
 

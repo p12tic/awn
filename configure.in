@@ -167,15 +167,6 @@ PKG_CHECK_MODULES(AWN, [$LIBRARY_MODULES])
 PKG_CHECK_MODULES(DOCK, [$DOCK_MODULES])
 PKG_CHECK_MODULES(TASKMANAGER, [$LIBRARY_MODULES $TASKMANAGER_MODULES])
 
-dnl =============================================
-dnl Startup notification check (eggdesktopfile)
-dnl =============================================
-
-old_LIBS="$LIBS"
-LIBS="$LIBS $AWN_LIBS"
-AC_CHECK_FUNCS(gdk_x11_display_broadcast_startup_message)
-LIBS="$old_LIBS"
-
 dnl ==============================================
 dnl DBus
 dnl ==============================================
