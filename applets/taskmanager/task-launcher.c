@@ -180,7 +180,6 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   TaskLauncherPrivate *priv;
   DesktopAgnosticVFSFileBackend *file;
   GError *error = NULL;
-  gchar * needle = NULL;
  
   g_return_if_fail (TASK_IS_LAUNCHER (launcher));
   priv = launcher->priv;

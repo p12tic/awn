@@ -1,5 +1,10 @@
 2009-06-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/taskmanager/task-launcher.c:
+	Remove unused variable.
+
+2009-06-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/awn.override:
 	* libawn/libawn.h:
 	Clean up headers.
