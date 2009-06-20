@@ -1,3 +1,8 @@
+2009-06-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* src/awn-overlay-themed-icon.c:
+	Detect theme changes.
+
 2009-06-19  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-applet-manager.c:

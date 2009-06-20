@@ -144,6 +144,7 @@ static void
 awn_overlay_themed_icon_finalize (GObject *object)
 {
   AwnOverlayThemedIconPrivate * priv;
+  g_return_if_fail (AWN_IS_OVERLAY_THEMED_ICON(object));  
   priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (object);
 
   g_free (priv->icon_name);
@@ -155,30 +156,43 @@ awn_overlay_themed_icon_finalize (GObject *object)
 }
 
 static void
-_awn_overlay_themed_icon_clear_hash (GObject *pspec,
-                                      GParamSpec *gobject,
-                                      AwnOverlayThemedIcon* overlay)
+_awn_overlay_themed_icon_theme_change (AwnOverlayThemedIcon * overlay                                  )
 {
+  /* a change in props will cause effects to queue a draw... however
+   a theme change does not cause a change in a prop... we don't have the 
+   applet here... so we can't queue a draw on it... so trigger the 
+   signal which will invoke g_hash_table_remove_all () and
+   signal effects to queue a draw.  I think I should be able to use 
+   g_signal_emit_by_name here.... but it's late.  FIXME*/
   AwnOverlayThemedIconPrivate * priv;
   priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (overlay);
-
-  /*clear the hash table... the icon has changed in some fundamental way*/
-  g_hash_table_remove_all (priv->pixbufs);
-  
+  g_return_if_fail (priv->icon_name);
+  g_debug ("all hell");
+  gchar * tmp = g_strdup (priv->icon_name);
+  g_object_set (overlay,
+                "icon_name",tmp,
+                NULL);
+  g_free (tmp);
 }
 
 static void
 awn_overlay_themed_icon_constructed (GObject *object)
 {
+  AwnOverlayThemedIconPrivate * priv;
+  priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (object);
+  
   if ( G_OBJECT_CLASS( awn_overlay_themed_icon_parent_class)->constructed)
   {
     G_OBJECT_CLASS (awn_overlay_themed_icon_parent_class)->constructed (object);
   }
   
   /*FIXME need to clear the hash table on theme changes also */
-  g_signal_connect (object, "notify::icon-name",
-                  G_CALLBACK(_awn_overlay_themed_icon_clear_hash),
-                  object);   
+  g_signal_connect_swapped (object, "notify::icon-name",
+                            G_CALLBACK (g_hash_table_remove_all),
+                            priv->pixbufs);
+  g_signal_connect_swapped (gtk_icon_theme_get_default(), "changed",
+                    G_CALLBACK (_awn_overlay_themed_icon_theme_change),
+                    object);
 }
 
 static void
