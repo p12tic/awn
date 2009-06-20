@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
+ *             Hannes Verschore <hv1989@gmail.com>
  *
  */
 
@@ -59,10 +60,6 @@ struct _TaskLauncherClass
   TaskItemClass   parent_class;
 
   /*< signals >*/
-  void (*launcher0) (void);
-  void (*launcher1) (void);
-  void (*launcher2) (void);
-  void (*launcher3) (void);
 };
 
 GType           task_launcher_get_type             (void) G_GNUC_CONST;

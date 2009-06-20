@@ -25,7 +25,6 @@
 #include <libwnck/libwnck.h>
 
 #include "task-item.h"
-#include "task-window-private.h" //TODO: remove
 
 #define TASK_TYPE_WINDOW (task_window_get_type ())
 

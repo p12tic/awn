@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
- *
+ *             Hannes Verschore <hv1989@gmail.com>
  */
 
 #include <stdio.h>
@@ -54,7 +54,7 @@ struct _TaskManagerPrivate
   gint               drag_timeout;
 
   /* This is what the icons are packed into */
-  GtkWidget *box;
+  GtkWidget  *box;
   GSList     *icons;
   GHashTable *win_table;
 
@@ -63,7 +63,7 @@ struct _TaskManagerPrivate
   gboolean  show_all_windows;
   gboolean  only_show_launchers;
   gboolean  drag_and_drop;
-  gint      grouping_mode;
+  gint      match_strength;
 };
 
 enum
@@ -74,17 +74,7 @@ enum
   PROP_ONLY_SHOW_LAUNCHERS,
   PROP_LAUNCHER_PATHS,
   PROP_DRAG_AND_DROP,
-  PROP_GROUPING_MODE
-};
-
-enum
-{
-  GROUPING_NONE,
-  GROUPING_UTIL,
-  GROUPING_PID,
-  GROUPING_WNCK_APP,
-  GROUPING_WMCLASS,
-  GROUPING_END
+  PROP_MATCH_STRENGTH
 };
 
 /* Forwards */
@@ -103,8 +93,8 @@ static void task_manager_refresh_launcher_paths  (TaskManager *manager,
 static void task_manager_set_drag_and_drop (TaskManager *manager, 
                                             gboolean     drag_and_drop);
 
-static void task_manager_set_grouping_mode (TaskManager *manager, 
-                                            gint     drag_and_drop);
+static void task_manager_set_match_strength (TaskManager *manager, 
+                                             gint     drag_and_drop);
 
 static void task_manager_orient_changed (AwnApplet *applet, 
                                          AwnOrientation orient);
@@ -158,8 +148,8 @@ task_manager_get_property (GObject    *object,
       break;
           
     //TODO: h4writer - rename 3rd round      
-    case PROP_GROUPING_MODE:
-      g_value_set_int (value, manager->priv->grouping_mode);
+    case PROP_MATCH_STRENGTH:
+      g_value_set_int (value, manager->priv->match_strength);
       break;
 
     default:
@@ -195,10 +185,9 @@ task_manager_set_property (GObject      *object,
       task_manager_set_drag_and_drop (manager, 
                                       g_value_get_boolean (value));
 
-    //TODO: h4writer - rename 3rd round
-    case PROP_GROUPING_MODE:
-      task_manager_set_grouping_mode (manager, 
-                                      g_value_get_int (value));
+    case PROP_MATCH_STRENGTH:
+      task_manager_set_match_strength (manager, 
+                                       g_value_get_int (value));
       break;
 
       
@@ -244,8 +233,8 @@ task_manager_constructed (GObject *object)
                           AWN_CONFIG_CLIENT_DEFAULT_GROUP, "drag_and_drop",
                           object, "drag_and_drop");
   awn_config_bridge_bind (bridge, priv->client, 
-                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "grouping_mode",
-                          object, "grouping_mode");
+                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "match_strength",
+                          object, "match_strength");
 }
 
 static void
@@ -290,14 +279,14 @@ task_manager_class_init (TaskManagerClass *klass)
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_DRAG_AND_DROP, pspec);
 
-  pspec = g_param_spec_int ("grouping_mode",
-                        "grouping_mode",
-                            "Window Grouping Mode",
+  pspec = g_param_spec_int ("match_strength",
+                            "match_strength",
+                            "How radical matching is applied for grouping items",
                             0,
-                            GROUPING_END-1,
+                            100,
                             0,
                             G_PARAM_READWRITE);
-  g_object_class_install_property (obj_class, PROP_GROUPING_MODE, pspec);
+  g_object_class_install_property (obj_class, PROP_MATCH_STRENGTH, pspec);
   
   g_type_class_add_private (obj_class, sizeof (TaskManagerPrivate));
 }
@@ -641,13 +630,12 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
 }
 
 static void
-task_manager_set_grouping_mode (TaskManager *manager,
-                                   gint grouping_mode)
+task_manager_set_match_strength (TaskManager *manager,
+                                 gint match_strength)
 {
   g_return_if_fail (TASK_IS_MANAGER (manager));
-  manager->priv->grouping_mode = grouping_mode;
+  manager->priv->match_strength = match_strength;
 
-  //ensure_layout (manager);
 }
 
 static void

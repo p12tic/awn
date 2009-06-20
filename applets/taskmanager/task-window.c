@@ -32,6 +32,22 @@
 
 G_DEFINE_TYPE (TaskWindow, task_window, TASK_TYPE_ITEM)
 
+#define TASK_WINDOW_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
+  TASK_TYPE_WINDOW, \
+  TaskWindowPrivate))
+
+struct _TaskWindowPrivate
+{
+  WnckWindow *window;
+
+  /* Properties */
+  gchar   *message;
+  gfloat   progress;
+  gboolean hidden;
+  gboolean needs_attention;
+  gboolean is_active;
+};
+
 enum
 {
   PROP_0,

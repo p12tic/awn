@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Authored by Neil Jagdish Patel <njpatel@gmail.com>
+ * Authored by Hannes Verschore <hv1989@gmail.com>
  *
  */
 
