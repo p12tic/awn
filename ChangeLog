@@ -1,6 +1,11 @@
 2009-06-20  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/__init__.py:
+	Get the CONFIG_LIST_* aliases back.
+
+2009-06-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/__init__.py:
 	* bindings/python/awn.defs:
 	* bindings/python/awnmodule.c:
 	Seems like we were missing constants in awn module the whole time.
