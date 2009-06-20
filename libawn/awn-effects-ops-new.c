@@ -37,7 +37,7 @@ cairo_surface_t *awn_effects_quark_to_surface(AwnEffects *fx, GQuark quark)
 }
 
 /* returns top left coordinates of the icon (without clipping and offsets) */
-static void
+void
 awn_effects_get_base_coords(AwnEffects *fx, double *x, double *y)
 {
   AwnEffectsPrivate *priv = fx->priv;
@@ -442,6 +442,9 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
           paint_arrow_dot (cr, DOT_RADIUS, arrows_count, r, g ,b);
           break;
         }
+        default:
+          g_warn_if_reached ();
+          break;
       }
     }
     else

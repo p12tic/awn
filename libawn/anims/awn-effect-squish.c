@@ -45,6 +45,9 @@ bounce_squish_hover_effect(AwnEffectsAnimation * anim)
       priv->icon_width / 3. : priv->icon_height / 3.;
 
   const gint PERIOD = 25;
+  const gfloat MAX_SQUISH = 1.25;
+  const gfloat SQUISH_STEP = 0.0834; // 3 frames to get to max (0.25 / 3)
+  const gfloat SQUISH_STEP2 = 0.125;
 
   /* repaint widget */
   awn_effects_redraw(anim->effects);
@@ -54,20 +57,19 @@ bounce_squish_hover_effect(AwnEffectsAnimation * anim)
 
     case AWN_EFFECT_SQUISH_DOWN:
     case AWN_EFFECT_SQUISH_DOWN2:
-      priv->width_mod += 3. / PERIOD;
-      priv->height_mod -= 3. / PERIOD;
+      priv->width_mod += SQUISH_STEP;
+      priv->height_mod -= SQUISH_STEP2;
 
-      if (priv->height_mod <= 0.75)
-        priv->direction =
-          priv->direction ==
-          AWN_EFFECT_SQUISH_DOWN ? AWN_EFFECT_SQUISH_UP : AWN_EFFECT_SQUISH_UP2;
+      if (priv->width_mod >= MAX_SQUISH)
+        priv->direction = priv->direction == AWN_EFFECT_SQUISH_DOWN ?
+          AWN_EFFECT_SQUISH_UP : AWN_EFFECT_SQUISH_UP2;
 
       break;
 
     case AWN_EFFECT_SQUISH_UP:
     case AWN_EFFECT_SQUISH_UP2:
-      priv->width_mod -= 3. / PERIOD;
-      priv->height_mod += 3. / PERIOD;
+      priv->width_mod -= SQUISH_STEP;
+      priv->height_mod += SQUISH_STEP2;
 
       if (priv->height_mod >= 1.0 && priv->direction == AWN_EFFECT_SQUISH_UP)
       {
@@ -90,7 +92,10 @@ bounce_squish_hover_effect(AwnEffectsAnimation * anim)
       }
 
       if (priv->count >= PERIOD / 2)
+      {
+        priv->top_offset = 0;
         priv->direction = AWN_EFFECT_SQUISH_DOWN2;
+      }
 
       break;
 
@@ -132,26 +137,28 @@ bounce_squish_effect(AwnEffectsAnimation * anim)
       priv->icon_width / 3. : priv->icon_height / 3.;
 
   const gint PERIOD = 25;
+  const gfloat MAX_SQUISH = 1.25;
+  const gfloat SQUISH_STEP = 0.0834; // 3 frames to get to max (0.25 / 3)
+  const gfloat SQUISH_STEP2 = 0.125;
 
   switch (priv->direction)
   {
 
     case AWN_EFFECT_SQUISH_DOWN:
     case AWN_EFFECT_SQUISH_DOWN2:
-      priv->width_mod += 3. / PERIOD;
-      priv->height_mod -= 3. / PERIOD;
+      priv->width_mod += SQUISH_STEP;
+      priv->height_mod -= SQUISH_STEP2;
 
-      if (priv->height_mod <= 0.75)
-        priv->direction =
-          priv->direction ==
-          AWN_EFFECT_SQUISH_DOWN ? AWN_EFFECT_SQUISH_UP : AWN_EFFECT_SQUISH_UP2;
+      if (priv->width_mod >= MAX_SQUISH)
+        priv->direction = priv->direction == AWN_EFFECT_SQUISH_DOWN ?
+          AWN_EFFECT_SQUISH_UP : AWN_EFFECT_SQUISH_UP2;
 
       break;
 
     case AWN_EFFECT_SQUISH_UP:
     case AWN_EFFECT_SQUISH_UP2:
-      priv->width_mod -= 3. / PERIOD;
-      priv->height_mod += 3. / PERIOD;
+      priv->width_mod -= SQUISH_STEP;
+      priv->height_mod += SQUISH_STEP2;
 
       if (priv->height_mod >= 1.0 && priv->direction == AWN_EFFECT_SQUISH_UP)
       {
@@ -166,7 +173,10 @@ bounce_squish_effect(AwnEffectsAnimation * anim)
       priv->top_offset = sin(++priv->count * M_PI * 2 / PERIOD) * MAX_BOUNCE_OFFSET;
 
       if (priv->count >= PERIOD / 2)
+      {
+        priv->top_offset = 0;
         priv->direction = AWN_EFFECT_SQUISH_DOWN2;
+      }
 
       break;
 
@@ -211,26 +221,28 @@ bounce_squish_attention_effect(AwnEffectsAnimation * anim)
       priv->icon_width / 3. : priv->icon_height / 3.;
 
   const gint PERIOD = 25;
+  const gfloat MAX_SQUISH = 1.25;
+  const gfloat SQUISH_STEP = 0.0834; // 3 frames to get to max (0.25 / 3)
+  const gfloat SQUISH_STEP2 = 0.125;
 
   switch (priv->direction)
   {
 
     case AWN_EFFECT_SQUISH_DOWN:
     case AWN_EFFECT_SQUISH_DOWN2:
-      priv->width_mod += 3. / PERIOD;
-      priv->height_mod -= 3. / PERIOD;
+      priv->width_mod += SQUISH_STEP;
+      priv->height_mod -= SQUISH_STEP2;
 
-      if (priv->height_mod <= 0.75)
-        priv->direction =
-          priv->direction ==
-          AWN_EFFECT_SQUISH_DOWN ? AWN_EFFECT_SQUISH_UP : AWN_EFFECT_SQUISH_UP2;
+      if (priv->width_mod >= MAX_SQUISH)
+        priv->direction = priv->direction == AWN_EFFECT_SQUISH_DOWN ?
+          AWN_EFFECT_SQUISH_UP : AWN_EFFECT_SQUISH_UP2;
 
       break;
 
     case AWN_EFFECT_SQUISH_UP:
     case AWN_EFFECT_SQUISH_UP2:
-      priv->width_mod -= 3. / PERIOD;
-      priv->height_mod += 3. / PERIOD;
+      priv->width_mod -= SQUISH_STEP;
+      priv->height_mod += SQUISH_STEP2;
 
       if (priv->height_mod >= 1.0 && priv->direction == AWN_EFFECT_SQUISH_UP)
       {
@@ -251,6 +263,7 @@ bounce_squish_attention_effect(AwnEffectsAnimation * anim)
       {
         priv->width_mod = 1.0;
         priv->height_mod = 1.0;
+        priv->top_offset = 0;
         priv->direction = AWN_EFFECT_SQUISH_DOWN2;
       }
 
@@ -297,23 +310,26 @@ bounce_squish_opening_effect(AwnEffectsAnimation * anim)
       priv->icon_width / 3. : priv->icon_height / 3.;
 
   const gint PERIOD = 18;
-  const gint PERIOD2 = 25;
+
+  const gfloat MAX_SQUISH = 1.25;
+  const gfloat SQUISH_STEP = 0.0834; // 3 frames to get to max (0.25 / 3)
+  const gfloat SQUISH_STEP2 = 0.125;
 
   switch (priv->direction)
   {
 
     case AWN_EFFECT_SQUISH_DOWN:
-      priv->width_mod += 3. / PERIOD2;
-      priv->height_mod -= 3. / PERIOD2;
+      priv->width_mod += SQUISH_STEP;
+      priv->height_mod -= SQUISH_STEP2;
 
-      if (priv->height_mod <= 0.75)
+      if (priv->width_mod >= MAX_SQUISH)
         priv->direction = AWN_EFFECT_SQUISH_UP;
 
       break;
 
     case AWN_EFFECT_SQUISH_UP:
-      priv->width_mod -= 3. / PERIOD2;
-      priv->height_mod += 3. / PERIOD2;
+      priv->width_mod -= SQUISH_STEP;
+      priv->height_mod += SQUISH_STEP2;
 
       if (priv->height_mod >= 1.0)
       {
@@ -382,22 +398,25 @@ bounce_squish_closing_effect(AwnEffectsAnimation * anim)
       priv->icon_width / 3. : priv->icon_height / 3.;
 
   const gint PERIOD = 18;
-  const gint PERIOD2 = 25;
+
+  const gfloat MAX_SQUISH = 1.25;
+  const gfloat SQUISH_STEP = 0.0834; // 3 frames to get to max (0.25 / 3)
+  const gfloat SQUISH_STEP2 = 0.125;
 
   switch (priv->direction)
   {
 
     case AWN_EFFECT_SQUISH_DOWN:
-      priv->width_mod += 3. / PERIOD2;
-      priv->height_mod -= 3. / PERIOD2;
+      priv->width_mod += SQUISH_STEP;
+      priv->height_mod -= SQUISH_STEP2;
 
-      if(priv->height_mod <= 0.75)
+      if (priv->width_mod >= MAX_SQUISH)
         priv->direction = AWN_EFFECT_SQUISH_UP;
     break;
 
     case AWN_EFFECT_SQUISH_UP:
-      priv->width_mod -= 3. / PERIOD2;
-      priv->height_mod += 3. / PERIOD2;
+      priv->width_mod -= SQUISH_STEP;
+      priv->height_mod += SQUISH_STEP2;
 
       if(priv->height_mod >= 1.0)
       {

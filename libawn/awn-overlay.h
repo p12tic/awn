@@ -23,12 +23,10 @@
 #define _AWN_OVERLAY
 
 #include <glib-object.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
-#include <cairo/cairo-xlib.h>
+#include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
 #include "awn-defines.h"
-#include "awn-themed-icon.h"
 
 G_BEGIN_DECLS
 
@@ -57,22 +55,23 @@ typedef struct {
 
 /**
  * AwnOverlayClass:
- * @render_overlay: Virtual function of the form 
- *  void render_overlay((AwnOverlay* overlay,
- *                                        AwnThemedIcon * icon,
- *                                        cairo_t * cr,                                 
- *                                        gint width,
- *                                        gint height)
+ * @render: Virtual function of the form
+ *  void render (AwnOverlay* overlay,
+ *               GtkWidget *widget,
+ *               cairo_t * cr,
+ *               gint width,
+ *               gint height)
  *
  * Of interest to implementors of #AwnOverlay subclasses.
  */
 
-typedef struct {
+typedef struct
+{
   GObjectClass parent_class;
 
-  void          (*render_overlay)         (AwnOverlay* overlay,
-                                          AwnThemedIcon * icon,
-                                          cairo_t * cr,                                 
+  void          (*render)                (AwnOverlay* overlay,
+                                          GtkWidget *widget,
+                                          cairo_t * cr,
                                           gint width,
                                           gint height);
 } AwnOverlayClass;
@@ -111,20 +110,24 @@ GType awn_overlay_get_type (void);
 
 AwnOverlay* awn_overlay_new (void);
 
-void awn_overlay_render_overlay    (AwnOverlay* overlay,
-                                        AwnThemedIcon * icon,
-                                        cairo_t * cr,                                 
-                                        gint width,
-                                        gint height);
+void awn_overlay_render  (AwnOverlay* overlay,
+                          GtkWidget *widget,
+                          cairo_t * cr,
+                          gint width,
+                          gint height);
 
-void awn_overlay_move_to (cairo_t * cr,
-                           AwnOverlay* overlay,
-                           gint   icon_width,
-                           gint   icon_height,
-                           gint   overlay_width,
-                           gint   overlay_height,
-                           AwnOverlayCoord * coord_req 
-                           );
+void awn_overlay_move_to (AwnOverlay* overlay,
+                          cairo_t * cr,
+                          gint   icon_width,
+                          gint   icon_height,
+                          gint   overlay_width,
+                          gint   overlay_height,
+                          AwnOverlayCoord * coord_req);
+
+gboolean awn_overlay_get_apply_effects (AwnOverlay *overlay);
+
+void awn_overlay_set_apply_effects (AwnOverlay *overlay, gboolean value);
+
 G_END_DECLS
 
 #endif /* _AWN_OVERLAY */

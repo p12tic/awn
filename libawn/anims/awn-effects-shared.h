@@ -50,6 +50,7 @@ struct _AwnEffectsAnimation
 struct _AwnEffectsPrivate
 {
   GList *effect_queue;
+  GList *overlays;
 
   GSourceFunc sleeping_func;
 

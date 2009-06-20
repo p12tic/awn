@@ -48,15 +48,6 @@ typedef struct _AwnApplet AwnApplet;
 typedef struct _AwnAppletClass AwnAppletClass;
 typedef struct _AwnAppletPrivate AwnAppletPrivate;
 
-typedef enum
-{
-  AWN_APPLET_FLAGS_NONE   = 0,
-  AWN_APPLET_EXPAND_MAJOR = 1 << 0,
-  AWN_APPLET_EXPAND_MINOR = 1 << 1,
-  AWN_APPLET_IS_SEPARATOR = 1 << 2
-
-} AwnAppletFlags;
-
 struct _AwnApplet
 {
   GtkPlug parent;
@@ -133,6 +124,11 @@ GtkWidget*         awn_applet_create_default_menu (AwnApplet      *applet);
 
 void               awn_applet_set_panel_window_id (AwnApplet      *applet,
                                                    GdkNativeWindow anid);
+
+guint              awn_applet_inhibit_autohide    (AwnApplet *applet,
+                                                   const gchar *reason);
+void               awn_applet_uninhibit_autohide  (AwnApplet *applet,
+                                                   guint cookie);
 
 /*
  * Returns a gtk menu item for the "Dock Preferences".

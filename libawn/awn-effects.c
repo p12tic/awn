@@ -25,6 +25,7 @@
 #include "awn-effects.h"
 #include "awn-effects-ops-new.h"
 #include "awn-enum-types.h"
+#include "awn-overlay.h"
 
 #include "awn-config-client.h"
 #include "awn-config-bridge.h"
@@ -101,34 +102,59 @@ enum {
   PROP_CUSTOM_ACTIVE_ICON
 };
 
+/* FORWARDS */
+static void awn_effects_prop_changed (GObject *object, GParamSpec *pspec);
+
 static void
-awn_effects_finalize(GObject *object)
+awn_effects_dispose (GObject *object)
 {
-  AwnEffects * fx = AWN_EFFECTS(object);
-  /* destroy animation timer - FIXME: should be moved to dispose method */
+  AwnEffects *fx = AWN_EFFECTS (object);
+  
+  /* destroy animation timer */
   if (fx->priv->timer_id)
   {
-    g_source_remove(fx->priv->timer_id);
+    g_source_remove (fx->priv->timer_id);
+    fx->priv->timer_id = 0;
   }
 
-  /* free effect queue and associated AwnEffectsPriv */
-  GList *queue = fx->priv->effect_queue;
-  while (queue)
+  /* unref overlays in our overlay list */
+  if (fx->priv->overlays)
   {
-    g_free(queue->data);
-    queue->data = NULL;
-    queue = g_list_next(queue);
+    for (GList *iter = fx->priv->overlays; iter != NULL;
+         iter = g_list_next (iter))
+    {
+      AwnOverlay *overlay = iter->data;
+      g_signal_handlers_disconnect_by_func (overlay,
+        G_CALLBACK (awn_effects_prop_changed), fx);
+      g_object_unref (overlay);
+    }
+    g_list_free (fx->priv->overlays);
+    fx->priv->overlays = NULL;
   }
 
-  if (fx->priv->effect_queue)
-    g_list_free(fx->priv->effect_queue);
-  fx->priv->effect_queue = NULL;
+  G_OBJECT_CLASS (awn_effects_parent_class)->dispose(object);
+}
+
+static void
+awn_effects_finalize (GObject *object)
+{
+  AwnEffects *fx = AWN_EFFECTS (object);
 
   fx->widget = NULL;
 
+  /* free effect queue and associated AwnEffectsPriv */
+  if (fx->priv->effect_queue)
+  {
+    g_list_foreach (fx->priv->effect_queue, (GFunc)g_free, NULL);
+    g_list_free (fx->priv->effect_queue);
+    fx->priv->effect_queue = NULL;
+  }
+
   if (fx->label)
-    g_free(fx->label);
-  fx->label = NULL;
+  {
+    g_free (fx->label);
+    fx->label = NULL;
+  }
 
   G_OBJECT_CLASS (awn_effects_parent_class)->finalize(object);
 }
@@ -365,6 +391,7 @@ awn_effects_set_property (GObject      *object,
     case PROP_SPOTLIGHT_ICON:
       fx->spotlight_icon =
         awn_effects_set_custom_icon (fx, g_value_get_string (value));
+      break;
     case PROP_ARROW_ICON:
       /* arrow_type will be set by set_custom_icon if we use internal icon */
       fx->priv->arrow_type = AWN_ARROW_TYPE_CUSTOM;
@@ -387,14 +414,15 @@ awn_effects_prop_changed(GObject *object, GParamSpec *pspec)
 {
   AwnEffects *fx = AWN_EFFECTS(object);
 
-  awn_effects_redraw(fx);
+  awn_effects_redraw (fx);
 }
 
 void
 awn_effects_redraw(AwnEffects *fx)
 {
-  if (fx->widget && GTK_WIDGET_DRAWABLE(fx->widget)) {
-    gtk_widget_queue_draw(fx->widget);
+  if (fx->widget && GTK_WIDGET_DRAWABLE (fx->widget))
+  {
+    gtk_widget_queue_draw (fx->widget);
   }
 }
 
@@ -424,6 +452,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
   obj_class->set_property = awn_effects_set_property;
   obj_class->get_property = awn_effects_get_property;
   obj_class->notify = awn_effects_prop_changed;
+  obj_class->dispose = awn_effects_dispose;
   obj_class->finalize = awn_effects_finalize;
 
   /**
@@ -784,7 +813,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
 static void
 awn_effects_init(AwnEffects * fx)
 {
-  fx->priv = AWN_EFFECTS_GET_PRIVATE(fx);
+  fx->priv = AWN_EFFECTS_GET_PRIVATE (fx);
   /* the entire structure is zeroed in allocation, define only non-zero vars
    * which are not properties
    */
@@ -1189,6 +1218,29 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
 {
   cairo_t *cr = fx->virtual_ctx;
 
+  /* FIXME: divide overlays into two lists - those where effects should be
+   *  applied and where they shouldn't
+   */
+  GList *overlays_with_effects = NULL;
+  GList *overlays_wo_effects = NULL;
+
+  for (GList *iter=g_list_first (fx->priv->overlays); iter != NULL;
+       iter=g_list_next (iter))
+  {
+    GList **target = awn_overlay_get_apply_effects (AWN_OVERLAY (iter->data)) ?
+      &overlays_with_effects : &overlays_wo_effects;
+    *target = g_list_append (*target, iter->data);
+  }
+
+  /* Now paint the overlays which should have effects applied */
+  for (GList *iter=g_list_first (overlays_with_effects); iter != NULL;
+       iter=g_list_next (iter))
+  {
+    AwnOverlay *overlay = iter->data;
+    awn_overlay_render (overlay, fx->widget, cr,
+                        fx->priv->icon_width, fx->priv->icon_height);
+  }
+
   cairo_reset_clip(cr);
   cairo_identity_matrix(cr);
 
@@ -1208,6 +1260,22 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
   awn_effects_post_op_progress(fx, cr, NULL, NULL);
   /* TODO: we're missing op to paint label */
 
+  if (overlays_wo_effects != NULL)
+  {
+    double x, y;
+    awn_effects_get_base_coords (fx, &x, &y);
+    cairo_translate (cr, x, y);
+
+    /* Now paint the overlays which should NOT have effects applied */
+    for (GList *iter=g_list_first (overlays_wo_effects); iter != NULL;
+         iter=g_list_next (iter))
+    {
+      AwnOverlay *overlay = iter->data;
+      awn_overlay_render (overlay, fx->widget, cr,
+                          fx->priv->icon_width, fx->priv->icon_height);
+    }
+  }
+
   if (fx->indirect_paint)
   {
     cairo_set_operator(fx->window_ctx, CAIRO_OPERATOR_OVER);
@@ -1219,7 +1287,62 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
   }
   cairo_destroy(fx->window_ctx);
 
+  g_list_free (overlays_with_effects);
+  g_list_free (overlays_wo_effects);
+
   fx->window_ctx = NULL;
   fx->virtual_ctx = NULL;
+}
+
+void
+awn_effects_add_overlay (AwnEffects *fx, AwnOverlay *overlay)
+{
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+
+  AwnEffectsPrivate *priv = fx->priv;
+
+  if (g_list_find (priv->overlays, overlay) == NULL)
+  {
+    priv->overlays = g_list_append (priv->overlays, g_object_ref (overlay));
+    awn_effects_redraw (fx);
+    g_signal_connect_swapped (overlay, "notify",
+                              G_CALLBACK (awn_effects_prop_changed), fx);
+  }
+  else
+  {
+    g_warning ("%s: Attempt to add overlay that is already in overlays list!",
+               __func__);
+  }
+}
+
+void
+awn_effects_remove_overlay (AwnEffects *fx, AwnOverlay *overlay)
+{
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+
+  AwnEffectsPrivate *priv = fx->priv;
+  GList *elem;
+
+  if ((elem = (g_list_find (priv->overlays, overlay))) != NULL)
+  {
+    g_signal_handlers_disconnect_by_func (overlay,
+      G_CALLBACK (awn_effects_prop_changed), fx);
+    priv->overlays = g_list_delete_link (priv->overlays, elem);
+    g_object_unref (overlay);
+    awn_effects_redraw (fx);
+  }
+  else
+  {
+    g_warning ("%s: Attempt to remove overlay that is not in overlays list!",
+               __func__);
+  }
+}
+
+GList*
+awn_effects_get_overlays (AwnEffects *fx)
+{
+  g_return_val_if_fail (AWN_IS_EFFECTS (fx), NULL);
+
+  return g_list_copy (fx->priv->overlays);
 }
 

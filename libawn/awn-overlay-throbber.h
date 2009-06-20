@@ -54,7 +54,7 @@ typedef struct {
 
 GType awn_overlay_throbber_get_type (void);
 
-GtkWidget* awn_overlay_throbber_new (AwnIcon * icon);
+GtkWidget* awn_overlay_throbber_new (GtkWidget *icon);
 
 G_END_DECLS
 

@@ -21,7 +21,9 @@
 #define _AWN_ICON_BOX_H_
 
 #include <gtk/gtk.h>
-#include <libawn/libawn.h>
+
+#include "awn-defines.h"
+#include "awn-applet.h"
 
 G_BEGIN_DECLS
 

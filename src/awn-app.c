@@ -126,7 +126,6 @@ awn_app_get_panels (AwnApp *app, GPtrArray **panels)
 {
   AwnAppPrivate *priv;
   GList *list, *l;
-  guint size;
 
   priv = app->priv;
 

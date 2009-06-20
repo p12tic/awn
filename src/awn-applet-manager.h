@@ -79,6 +79,12 @@ void        awn_applet_manager_add_widget        (AwnAppletManager *manager,
 void        awn_applet_manager_remove_widget     (AwnAppletManager *manager,
                                                   GtkWidget *widget);
 
+gboolean    awn_applet_manager_get_expands       (AwnAppletManager *manager);
+
+void        awn_applet_manager_set_applet_flags  (AwnAppletManager *manager,
+                                                  const gchar *uid,
+                                                  AwnAppletFlags flags);
+
 G_END_DECLS
 
 #endif /* _AWN_APPLET_MANAGER_H */

@@ -57,6 +57,7 @@ typedef struct _AwnDialogPrivate AwnDialogPrivate;
 struct _AwnDialog
 {
   GtkWindow   window;
+
   AwnDialogPrivate  *priv;
 };
 
@@ -65,13 +66,16 @@ struct _AwnDialogClass
   GtkWindowClass parent_class;
 };
 
-GType awn_dialog_get_type(void);
+GType      awn_dialog_get_type (void);
 
-GtkWidget* awn_dialog_new(void);
+GtkWidget* awn_dialog_new (void);
 
-GtkWidget* awn_dialog_new_for_widget(GtkWidget *widget);
+GtkWidget* awn_dialog_new_for_widget (GtkWidget *widget);
 
-void awn_dialog_set_padding (AwnDialog *dialog, gint padding);
+GtkWidget* awn_dialog_new_for_widget_with_applet (GtkWidget *widget,
+                                                  AwnApplet *applet);
+
+void       awn_dialog_set_padding (AwnDialog *dialog, gint padding);
 
 G_END_DECLS
 
