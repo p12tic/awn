@@ -9,11 +9,7 @@ headers
 #ifdef USE_GCONF
 #include <gconf/gconf-value.h>
 #endif
-#include <libawn/awn-cairo-utils.h>
-#include <libawn/awn-config-client.h>
-#include <libawn/awn-defines.h>
 #include <libawn/awn-enum-types.h>
-
 #include <libawn/libawn.h>
 
 extern Pycairo_CAPI_t *Pycairo_CAPI;
