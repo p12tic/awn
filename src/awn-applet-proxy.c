@@ -52,6 +52,7 @@ struct _AwnAppletProxyPrivate
   GtkWidget *throbber;
 
   gint old_x, old_y;
+  guint idle_id;
 };
 
 enum
@@ -199,6 +200,12 @@ awn_applet_proxy_dispose (GObject *object)
   {
     gtk_widget_destroy (priv->throbber);
     priv->throbber = NULL;
+  }
+
+  if (priv->idle_id)
+  {
+    g_source_remove (priv->idle_id);
+    priv->idle_id = 0;
   }
 
   G_OBJECT_CLASS (awn_applet_proxy_parent_class)->dispose (object);
@@ -543,4 +550,27 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   g_free (exec);
 }
 
+static gboolean
+awn_applet_proxy_idle_cb (gpointer data)
+{
+  g_return_val_if_fail (AWN_IS_APPLET_PROXY (data), FALSE);
+  AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE (data);
+
+  awn_applet_proxy_execute (AWN_APPLET_PROXY (data));
+
+  priv->idle_id = 0;
+
+  return FALSE;
+}
+
+void
+awn_applet_proxy_schedule_execute (AwnAppletProxy *proxy)
+{
+  AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE (proxy);
+
+  if (priv->idle_id == 0)
+  {
+    priv->idle_id = g_idle_add (awn_applet_proxy_idle_cb, proxy);
+  }
+}
 

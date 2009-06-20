@@ -541,7 +541,7 @@ create_applet (AwnAppletManager *manager,
                       priv->touch_quark, GINT_TO_POINTER (0));
   g_hash_table_insert (priv->applets, g_strdup (uid), applet);
 
-  awn_applet_proxy_execute (AWN_APPLET_PROXY (applet));
+  awn_applet_proxy_schedule_execute (AWN_APPLET_PROXY (applet));
 
   return applet;
 }
