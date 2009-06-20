@@ -97,10 +97,10 @@ awn_overlay_pixbuf_file_set_property (GObject *object, guint property_id,
   switch (property_id) 
   {
     case PROP_FILE_NAME:
-      g_free(priv->file_name);
-      priv->file_name = g_value_dup_string (value);
+      g_free(priv->file_name);      
+      priv->file_name = g_value_dup_string (value);      
       awn_overlay_pixbuf_file_load (AWN_OVERLAY_PIXBUF_FILE(object),
-                                    priv->file_name);
+                                  priv->file_name);
       break;    
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -268,7 +268,13 @@ awn_overlay_pixbuf_file_load (AwnOverlayPixbufFile *overlay,
   g_object_get (overlay,
                 "scale",&scale,
                 NULL);
-  g_return_if_fail (scale);
+  /*This will happen during object instantiation.  file_name will get set
+   before scale.  In which case we defer the file load... it'll get picked up
+   during the file render*/
+  if ( ! ( scale>0.01) )
+  {
+    return;
+  }
 
   scaled_width = lround (priv->icon_width * scale);  
   scaled_height = lround (priv->icon_height * 
