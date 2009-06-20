@@ -290,6 +290,7 @@ class awnAppletMini(awnApplet):
 
 	self.choose_categorie = self.wTree.get_widget("applets_catagories")
 	self.create_categories_dropdown(self.choose_categorie)
+	self.choose_categorie.connect("changed", self.callback_widget_filter_applets)
 
         self.btn_deactivate = self.wTree.get_widget("appletDeactivate")
         self.btn_deactivate.connect("clicked", self.deactivate_applet)

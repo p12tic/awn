@@ -1716,7 +1716,7 @@ class awnApplet(awnBzr):
 	if list_applets is not "All":
 		applets = self.applets_by_categories(list_applets)
 
-        model = self.make_model(applets, self.treeview_available)
+        self.make_model(applets, self.treeview_available)
 
     def popup_msg(self, message):
         success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING,
@@ -1760,3 +1760,8 @@ class awnApplet(awnBzr):
         cell = gtk.CellRendererText()
         widget.pack_start(cell)
         widget.add_attribute(cell,'text',0)
+
+    def callback_widget_filter_applets(self, data=None):
+	model = self.choose_categorie.get_model()
+	select_cat = model.get_value(self.choose_categorie.get_active_iter(),0)
+	self.load_applets(select_cat)
