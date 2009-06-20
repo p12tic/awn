@@ -61,6 +61,7 @@ initawn (void)
         d = PyModule_GetDict (m);
 
         pyawn_register_classes (d);
+        pyawn_add_constants (m, "AWN_");
 
         if (PyErr_Occurred ()) {
                 Py_FatalError ("unable to initialise awn module");

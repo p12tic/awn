@@ -30,16 +30,7 @@ if ver < (2, 11, 1):
 
 from awn import *
 
-CONFIG_LIST_BOOL, CONFIG_LIST_FLOAT, CONFIG_LIST_INT, CONFIG_LIST_STRING = range(4)
 CONFIG_DEFAULT_GROUP = 'DEFAULT'
-
-EFFECT_NONE = "none"
-EFFECT_OPENING = "opening"
-EFFECT_LAUNCHING = "launching"
-EFFECT_HOVER = "hover"
-EFFECT_ATTENTION = "attention"
-EFFECT_CLOSING = "closing"
-EFFECT_DESATURATE = "desaturate"
 
 uid = "0"
 window = 0

@@ -117,7 +117,7 @@
 
 ;; Enumerations and flags ...
 
-(define-enum CairoRoundCorners
+(define-flags CairoRoundCorners
   (in-module "Awn")
   (c-name "AwnCairoRoundCorners")
   (gtype-id "AWN_TYPE_CAIRO_ROUND_CORNERS")
