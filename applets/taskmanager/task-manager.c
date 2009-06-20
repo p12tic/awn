@@ -29,9 +29,9 @@
 
 #include "task-drag-indicator.h"
 #include "task-icon.h"
-#include "task-launcher.h"
+//#include "task-launcher.h"
+//#include "task-window.h"
 #include "task-settings.h"
-#include "task-window.h"
 #include "xutils.h"
 
 G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
@@ -48,7 +48,6 @@ struct _TaskManagerPrivate
   TaskSettings    *settings;
   WnckScreen      *screen;
 
-
   /* Dragging properties */
   TaskIcon          *dragged_icon;
   TaskDragIndicator *drag_indicator;
@@ -57,8 +56,6 @@ struct _TaskManagerPrivate
   /* This is what the icons are packed into */
   GtkWidget *box;
   GSList     *icons;
-  GSList     *windows;
-  GSList     *launchers;
   GHashTable *win_table;
 
   /* Properties */
@@ -91,16 +88,12 @@ enum
 };
 
 /* Forwards */
-static void ensure_layout               (TaskManager   *manager);
 static void on_window_opened            (WnckScreen    *screen, 
                                          WnckWindow    *window,
                                          TaskManager   *manager);
 static void on_active_window_changed    (WnckScreen    *screen, 
                                          WnckWindow    *old_window,
                                          TaskManager   *manager);
-static void on_wnck_window_closed (WnckScreen *screen, 
-                                   WnckWindow *window, 
-                                   TaskManager *manager);
 static void task_manager_set_show_all_windows    (TaskManager *manager,
                                                   gboolean     show_all);
 static void task_manager_set_show_only_launchers (TaskManager *manager, 
@@ -163,7 +156,8 @@ task_manager_get_property (GObject    *object,
     case PROP_DRAG_AND_DROP:
       g_value_set_boolean (value, manager->priv->drag_and_drop);
       break;
-      
+          
+    //TODO: h4writer - rename 3rd round      
     case PROP_GROUPING_MODE:
       g_value_set_int (value, manager->priv->grouping_mode);
       break;
@@ -200,8 +194,8 @@ task_manager_set_property (GObject      *object,
     case PROP_DRAG_AND_DROP:
       task_manager_set_drag_and_drop (manager, 
                                       g_value_get_boolean (value));
-      break;
-    
+
+    //TODO: h4writer - rename 3rd round
     case PROP_GROUPING_MODE:
       task_manager_set_grouping_mode (manager, 
                                       g_value_get_int (value));
@@ -297,12 +291,12 @@ task_manager_class_init (TaskManagerClass *klass)
   g_object_class_install_property (obj_class, PROP_DRAG_AND_DROP, pspec);
 
   pspec = g_param_spec_int ("grouping_mode",
-                                "grouping_mode",
-                                "Window Grouping Mode",
-                                0,
-                                GROUPING_END-1,
-                                0,
-                                G_PARAM_READWRITE);
+                        "grouping_mode",
+                            "Window Grouping Mode",
+                            0,
+                            GROUPING_END-1,
+                            0,
+                            G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_GROUPING_MODE, pspec);
   
   g_type_class_add_private (obj_class, sizeof (TaskManagerPrivate));
@@ -342,12 +336,15 @@ task_manager_init (TaskManager *manager)
                     G_CALLBACK (on_window_opened), manager);
   g_signal_connect (priv->screen, "active-window-changed",  
                     G_CALLBACK (on_active_window_changed), manager);
-  g_signal_connect_swapped (priv->screen, "active-workspace-changed",
-                            G_CALLBACK (ensure_layout), manager);
-  g_signal_connect_swapped (priv->screen, "viewports-changed",
-                            G_CALLBACK (ensure_layout), manager);
-  g_signal_connect (priv->screen, "window-closed",
-                    G_CALLBACK(on_wnck_window_closed),manager);        
+
+
+//TODO - 2nd round
+//  g_signal_connect (priv->screen, "window-closed",
+//                    G_CALLBACK(on_wnck_window_closed), manager);
+//  g_signal_connect_swapped (priv->screen, "viewports-changed",
+//                            G_CALLBACK (ensure_layout), manager);
+//  g_signal_connect_swapped (priv->screen, "active-workspace-changed",
+//                            G_CALLBACK (ensure_layout), manager);
 }
 
 AwnApplet *
@@ -411,79 +408,14 @@ task_manager_size_changed   (AwnApplet *applet,
 }
 
 /*
- * The guts of the show or hide logic
- */
-static void
-ensure_layout (TaskManager *manager)
-{
-  TaskManagerPrivate *priv = manager->priv;
-  WnckWorkspace *space;
-  GSList         *i;
-
-  space = wnck_screen_get_active_workspace (priv->screen);
-
-  if (!WNCK_IS_WORKSPACE (space))
-  {
-    return;
-  }
-
-  /* Go through all the TaskIcons to make sure that they should be shown */
-  for (i = priv->icons; i; i = i->next)
-  {
-    TaskIcon *icon = i->data;
-    
-    if (!TASK_IS_ICON (icon))
-      continue;
-    
-    /* If the icon gets dragged, it shouldn't be shown */
-    if( icon == priv->dragged_icon )
-    {
-      gtk_widget_hide (GTK_WIDGET (icon));
-      continue;
-    }
-
-    /* Show launchers regardless of workspace */
-    if (task_icon_is_launcher (icon))
-    {
-      gtk_widget_show (GTK_WIDGET (icon));
-      continue;
-    }
-
-    /* FIXME: Add support for start-up notification icons too */
-
-    /* 
-     * Only show normal window icons if a) the use wants to see them and b) if
-     * they are on the correct workspace
-     */
-    if (priv->only_show_launchers)
-    {
-      gtk_widget_hide (GTK_WIDGET (icon));
-    }
-    else if (task_icon_is_skip_taskbar (icon))
-    {
-      gtk_widget_hide (GTK_WIDGET (icon));
-    } 
-    else if (task_icon_is_in_viewport (icon, space))
-    {
-      gtk_widget_show (GTK_WIDGET (icon));
-    }
-    else if (priv->show_all_windows)
-    {
-      gtk_widget_show (GTK_WIDGET (icon));  
-    }
-    else
-    {
-      gtk_widget_hide (GTK_WIDGET (icon));
-    }
-  }
-  
-  /* Hide drag_indicator if there is no AwnIcon currently dragged */
-  if(priv->dragged_icon == NULL)
-    gtk_widget_hide (GTK_WIDGET(priv->drag_indicator));
-}
-
-/*
  * WNCK_SCREEN CALLBACKS
+ */
+
+/**
+ * This signal is only connected for windows which were of type normal/utility
+ * and were initially "skip-tasklist". If they are not skip-tasklist anymore
+ * we treat them as newly opened windows.
+ * STATE: done
  */
 static void
 on_window_state_changed (WnckWindow      *window,
@@ -493,10 +425,7 @@ on_window_state_changed (WnckWindow      *window,
 {
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
-  /* This signal is only connected for windows which were of type normal/utility
-   * and were initially "skip-tasklist". If they are not skip-tasklist anymore
-   * we treat them as newly opened windows
-   */
+  // test if they don't skip-tasklist anymore
   if (!wnck_window_is_skip_tasklist (window))
   {
     g_signal_handlers_disconnect_by_func (window, 
@@ -506,315 +435,28 @@ on_window_state_changed (WnckWindow      *window,
   }
 }
 
-static void 
-on_wnck_window_closed (WnckScreen *screen, WnckWindow *window, TaskManager *manager)
-{
-  GSList *i;  
-  TaskManagerPrivate *priv = manager->priv;  
-  for (i = priv->icons; i; i = i->next)
-  {
-    TaskIcon *taskicon = i->data;
-    if (!TASK_IS_ICON (taskicon))
-      continue;
-    task_icon_remove_window (taskicon, window);            
-  }
-}
-
-static gboolean
-check_wmclass(TaskWindow *taskwin,gchar * win_res_name, gchar *win_class_name)
-{
-  gboolean result;
-  gchar   *temp;
-  gchar   *res_name = NULL;
-  gchar   *class_name = NULL;
-
-  _wnck_get_wmclass (task_window_get_xid (taskwin), &res_name, &class_name);
-  if (res_name)
-  {
-    temp = res_name;
-    res_name = g_utf8_strdown (temp, -1);
-    g_free (temp);
-  }
-  
-  if (class_name)
-  {
-    temp = class_name;
-    class_name = g_utf8_strdown (temp, -1);
-    g_free (temp);
-  }
-  result =  ( 
-              (g_strcmp0 (res_name,win_res_name)==0) 
-              ||
-              (g_strcmp0 (class_name,win_class_name)==0)
-             );
-  g_free (res_name);
-  g_free (class_name);
-
-  return result;
-}
-
-static gboolean
-try_to_place_window_by_wmclass (TaskManager *manager, WnckWindow *window)
-{
-  GSList *i;
-  TaskManagerPrivate *priv = manager->priv;
-  gchar   *temp;
-  gchar   *res_name = NULL;
-  gchar   *class_name = NULL;
-
-  /* Grab the appropriete info */
-  _wnck_get_wmclass (wnck_window_get_xid (window), &res_name, &class_name);
-
-  if (res_name)
-  { 
-    temp = res_name;
-    res_name = g_utf8_strdown (temp, -1);
-    g_free (temp);
-  }
-  
-  if (class_name)
-  {
-    temp = class_name;
-    class_name = g_utf8_strdown (temp, -1);
-    g_free (temp);
-  }
-  
-  for (i = priv->icons; i; i = i->next)
-  {
-    TaskIcon *taskicon = i->data;
-    TaskWindow *taskwin = NULL;
-    
-    if (!TASK_IS_ICON (taskicon))
-      continue;
-    
-    taskwin = task_icon_get_window(taskicon);
-
-    if ( check_wmclass (taskwin,res_name,class_name) )
-    {
-      task_icon_append_window (taskicon, task_window_new (window));
-      g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
-      g_free (res_name);
-      g_free (class_name);
-      return TRUE;
-    }
-  }
-
-  g_free (res_name);
-  g_free (class_name);
-  return FALSE;  
-}
-
-static gboolean
-try_to_place_window_by_wnck_app (TaskManager *manager, WnckWindow *window)
-{
-  TaskManagerPrivate *priv = manager->priv;
-  GSList *i;
-  WnckApplication *taskwin_app;
-
-  for (i = priv->icons; i; i = i->next)
-  {
-    TaskIcon *taskicon = i->data;
-    TaskWindow *taskwin = NULL;
-    
-    if (!TASK_IS_ICON (taskicon))
-      continue;
-    
-    taskwin = task_icon_get_window(taskicon);
-		taskwin_app = task_window_get_application (taskwin);
-    if ( taskwin_app && (taskwin_app == wnck_window_get_application (window)))
-    {
-      task_icon_append_window (taskicon, task_window_new (window));
-      g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
-      return TRUE;
-    }
-  }
-  
-  return FALSE;  
-}
-
-static gboolean
-try_to_place_window_by_pid (TaskManager *manager, WnckWindow *window)
-{
-  TaskManagerPrivate *priv = manager->priv;
-  GSList *i;
-	gint taskwin_pid = -1;
-  gint matches = 0;
-
-  for (i = priv->icons; i; i = i->next)
-  {
-    TaskIcon *taskicon = i->data;
-    TaskWindow *taskwin = NULL;
-    
-    if (!TASK_IS_ICON (taskicon))
-      continue;
-    
-    taskwin = task_icon_get_window(taskicon);
-		taskwin_pid = task_window_get_pid (taskwin);
-    if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
-    {
-      if (matches)
-      {
-        task_icon_append_window (taskicon, task_window_new (window));
-        g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
-        return TRUE;
-      }
-      matches++;
-    }
-  }
-  return FALSE;
-}
-
-static gboolean
-try_to_place_util_window (TaskManager *manager, WnckWindow *window)
-{
-  WnckWindowType type = wnck_window_get_window_type (window);
-  TaskManagerPrivate *priv = manager->priv;
-  GSList *w;
-  gint taskwin_pid = -1;
-  gint matches = 0;
-  
-  if ( (type !=  WNCK_WINDOW_UTILITY) && (type != WNCK_WINDOW_DIALOG) )
-  {
-    return FALSE;
-  }
-  
-  for (w = priv->icons; w; w = w->next)
-  {
-    TaskIcon *taskicon = w->data;
-    TaskWindow *taskwin = NULL;
-    
-    if (!TASK_IS_ICON (taskicon))
-      continue;
-    
-    taskwin = task_icon_get_window(taskicon);
-    taskwin_pid = task_window_get_pid (taskwin);
-    if ( taskwin_pid && (taskwin_pid == wnck_window_get_pid (window)))
-    {
-      if (matches)
-      {
-        task_icon_append_window (taskicon, task_window_new (window));
-        g_object_set_qdata (G_OBJECT (window), win_quark, taskwin);
-        return TRUE;
-      }
-      matches++;
-    }
-  } 
-  return FALSE;
-} 
-
-static gboolean
-try_to_place_window (TaskManager *manager, WnckWindow *window)
-{
-  TaskManagerPrivate *priv = manager->priv;
-  gboolean result = FALSE;
-  switch(priv->grouping_mode)
-  {
-    case GROUPING_WMCLASS:  /*Fall through*/
-      result =result?result:try_to_place_window_by_wmclass(manager,window);
-    case GROUPING_WNCK_APP:/*Fall through*/
-      result =result?result:try_to_place_window_by_wnck_app(manager,window);      
-    case GROUPING_PID: /*Don't Fall through*/
-      result =result?result:try_to_place_window_by_pid(manager,window);
-      break;
-    case GROUPING_UTIL:/*Don't Fall through*/
-      result =result?result:try_to_place_util_window(manager,window);
-      break;
-    case GROUPING_NONE:
-      break;
-    default:
-      g_assert_not_reached();
-  }
-  return result;
-}
-
-static gboolean
-try_to_match_window_to_launcher (TaskManager *manager, WnckWindow *window)
-{
-  TaskManagerPrivate *priv = manager->priv;
-  GSList  *l;
-  gchar   *temp;
-  gchar   *res_name = NULL;
-  gchar   *class_name = NULL;
-  gint     pid;
-  gboolean res = FALSE;
-
-  /* Grab the appropriete info */
-  pid = wnck_window_get_pid (window);
-  _wnck_get_wmclass (wnck_window_get_xid (window), &res_name, &class_name);
-
-  if (res_name)
-  {
-    temp = res_name;
-    res_name = g_utf8_strdown (temp, -1);
-    g_free (temp);
-  }
-  
-  if (class_name)
-  {
-    temp = class_name;
-    class_name = g_utf8_strdown (temp, -1);
-    g_free (temp);
-  }
-
-  /* Try and match */
-  for (l = priv->launchers; l; l = l->next)
-  {
-    TaskLauncher *launcher = l->data;
-
-    if (!TASK_IS_LAUNCHER (launcher))
-      continue;
-
-    if (task_launcher_has_window (launcher))
-      continue;
-    
-    if (!task_launcher_try_match (launcher, pid, res_name, class_name))
-      continue;
-
-    /* As it matched this launcher, we can set the window to the launcher and
-     * get on with it
-     */
-    task_launcher_set_window (launcher, window);
-    g_object_set_qdata (G_OBJECT (window), win_quark, launcher);
-    res = TRUE;
-  }
-  g_free (res_name);
-  g_free (class_name);
-
-  return res;
-}
-
-static gboolean
-try_to_match_window_to_sn_context (TaskManager *manager, WnckWindow *window)
-{
-  return FALSE;
-}
-
-static void
-window_closed (TaskManager *manager, GObject *old_window)
-{
-  TaskManagerPrivate *priv;
-
-  g_return_if_fail (TASK_IS_MANAGER (manager));
-  priv = manager->priv;
-
-  priv->windows = g_slist_remove (priv->windows, old_window);
-
-  ensure_layout (manager);
-}
-
+/**
+ * This function gets called whenever a task-icon gets finalized.
+ * It removes the task-icon from the gslist and update layout
+ * (so it gets removed from the bar)
+ * State: done
+ */
 static void
 icon_closed (TaskManager *manager, GObject *old_icon)
 {
   TaskManagerPrivate *priv;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
+
   priv = manager->priv;
-
   priv->icons = g_slist_remove (priv->icons, old_icon);
-
-  ensure_layout (manager);
 }
 
+/**
+ * Whenever a new window gets opened it will try to place it
+ * in an awn-icon or will create a new awn-icon.
+ * State: adjusted
+ */
 static void 
 on_window_opened (WnckScreen    *screen, 
                   WnckWindow    *window,
@@ -822,13 +464,17 @@ on_window_opened (WnckScreen    *screen,
 {
   TaskManagerPrivate *priv;
   GtkWidget          *icon;
-  TaskWindow         *taskwin;
+  TaskItem           *item;
   WnckWindowType      type;
+  GSList             *w;
+  TaskIcon *match      = NULL;
+  gint match_score     = 0;
+  gint max_match_score = 0;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   g_return_if_fail (WNCK_IS_WINDOW (window));
-  priv = manager->priv;
 
+  priv = manager->priv;
   type = wnck_window_get_window_type (window);
 
   switch (type)
@@ -855,57 +501,47 @@ on_window_opened (WnckScreen    *screen,
     return;
   }
 
-  /*
-   */
-    
-  if ( priv->grouping_mode && try_to_place_window (manager,window))
+  // create a new TaskWindow containing the WnckWindow
+  item = task_window_new (window);
+  g_object_set_qdata (G_OBJECT (window), win_quark, TASK_WINDOW (item));
+
+  // see if there is a icon that matches
+  // TODO: if they don't want to group, don't group and 
+  //       only look to taskicons that contain no window yet
+  for (w = priv->icons; w; w = w->next)
   {
-    g_debug ("WINDOW PLACED: %s", wnck_window_get_name (window));
-    return;
-  }
- 
-  /* Okay, time to check the launchers if we can get a match */
-  if (try_to_match_window_to_launcher (manager, window))
-  {
-    g_debug ("WINDOW MATCHED: %s", wnck_window_get_name (window));
-    return;
+    TaskIcon *taskicon = w->data;
+
+    if (!TASK_IS_ICON (taskicon)) continue;
+
+    match_score = task_icon_match_item (taskicon, item);
+    if (match_score > max_match_score)
+    {
+      max_match_score = match_score;
+      match = taskicon;
+    }
   }
 
-  /* Try the startup-notification windows */
-  if (try_to_match_window_to_sn_context (manager, window))
-  {
-    g_debug ("WINDOW STARTUP: %s", wnck_window_get_name (window));
-    return;
-  }
-
-  /* 
-   * We couldn't append the window to a pre-existing TaskWindow, so we'll need
-   * to make a new one
-   */
-  taskwin = task_window_new (window);
-  priv->windows = g_slist_append (priv->windows, taskwin);
-  g_object_weak_ref (G_OBJECT (taskwin), (GWeakNotify)window_closed, manager);
-  g_object_set_qdata (G_OBJECT (window), win_quark, taskwin); 
+  g_debug("Matching score: %i", max_match_score);
   
-  /* If we've come this far, the window deserves a spot on the task-manager!
-   * Time to create a TaskIcon for it
-   */
-  icon = task_icon_new_for_window (taskwin);
-  gtk_container_add (GTK_CONTAINER (priv->box), icon);
-  gtk_widget_show (icon);
+  if (max_match_score > 0)
+  {
+    task_icon_append_item (match, item);
+  }
+  else
+  {
+    icon = task_icon_new();
+    task_icon_append_item (TASK_ICON (icon), item);
 
-  priv->icons = g_slist_append (priv->icons, icon);
-  g_signal_connect_swapped (icon, "ensure_layout", 
-                            G_CALLBACK (ensure_layout), manager);
+    priv->icons = g_slist_append (priv->icons, icon);
+    gtk_container_add (GTK_CONTAINER (priv->box), icon);
 
-  /* reordening through D&D */
-  if(priv->drag_and_drop)
-    _drag_add_signals(manager, icon);
+    /* reordening through D&D */
+    if(priv->drag_and_drop)
+      _drag_add_signals(manager, icon);
 
-  g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);  
-  
-  /* Finally, make sure all is well on the taskbar */
-  ensure_layout (manager);
+    g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager); 
+  }
 }
 
 static void 
@@ -934,7 +570,6 @@ on_active_window_changed (WnckScreen    *screen,
   if (TASK_IS_WINDOW (taskwin))
     task_window_set_is_active (taskwin, TRUE);
 }
-
 /*
  * PROPERTIES
  */
@@ -944,8 +579,6 @@ task_manager_set_show_all_windows (TaskManager *manager,
 {
   g_return_if_fail (TASK_IS_MANAGER (manager));
   manager->priv->show_all_windows = show_all;
-
-  ensure_layout (manager);
 
   g_debug ("%s", show_all ? "showing all windows":"not showing all windows");
 }
@@ -957,11 +590,15 @@ task_manager_set_show_only_launchers (TaskManager *manager,
   g_return_if_fail (TASK_IS_MANAGER (manager));
   manager->priv->only_show_launchers = show_only;
 
-  ensure_layout (manager);
-
   g_debug ("%s", show_only ? "only show launchers":"show everything");
 }
 
+/**
+ * Checks when launchers got added/removed in the list in gconf/file.
+ * It removes the launchers from the task-icons and add those
+ * that aren't already on the bar.
+ * State: partial - TODO: refresh of a list
+ */
 static void 
 task_manager_refresh_launcher_paths (TaskManager *manager,
                                      GSList      *list)
@@ -979,40 +616,18 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
   for (d = list; d; d = d->next)
   {
     GtkWidget    *icon;
-    TaskLauncher *launcher = NULL;
-    GSList        *l;
-
-    for (l = priv->launchers; l; l = l->next)
-    {
-      TaskLauncher *launch = l->data;
-
-      if (!TASK_IS_LAUNCHER (launch))
-        continue;
-      
-      if (g_strcmp0 (d->data, task_launcher_get_desktop_path (launch)) == 0)
-      {
-        launcher = launch;
-        break;
-      }
-    }
-
-    if (TASK_IS_LAUNCHER (launcher))
-      continue;
+    TaskItem     *launcher = NULL;
 
     launcher = task_launcher_new_for_desktop_file (d->data);
 
-    if (!launcher)
-      continue;
+    if (!launcher) continue;
 
-    priv->launchers = g_slist_append (priv->launchers, launcher);
-    
-    icon = task_icon_new_for_window (TASK_WINDOW (launcher));
+    icon = task_icon_new ();
+    task_icon_append_item (TASK_ICON (icon), launcher);
     gtk_container_add (GTK_CONTAINER (priv->box), icon);
-    gtk_widget_show (icon);
 
     priv->icons = g_slist_append (priv->icons, icon);
-    g_signal_connect_swapped (icon, "ensure_layout", 
-                               G_CALLBACK (ensure_layout), manager);
+
     g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
 
     /* reordening through D&D */
@@ -1023,9 +638,6 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
   for (d = list; d; d = d->next)
     g_free (d->data);
   g_slist_free (list);
-
-  /* Finally, make sure all is well on the taskbar */
-  ensure_layout (manager);
 }
 
 static void
@@ -1035,7 +647,7 @@ task_manager_set_grouping_mode (TaskManager *manager,
   g_return_if_fail (TASK_IS_MANAGER (manager));
   manager->priv->grouping_mode = grouping_mode;
 
-  ensure_layout (manager);
+  //ensure_layout (manager);
 }
 
 static void
@@ -1049,32 +661,30 @@ task_manager_set_drag_and_drop (TaskManager *manager,
 
   priv->drag_and_drop = drag_and_drop;
 
-  if(drag_and_drop)
+  //connect or dissconnect the dragging signals
+  for (i = priv->icons; i; i = i->next)
   {
-    //connect to the dragging signals
-    for (i = priv->icons; i; i = i->next)
-    {
-      TaskIcon *icon = i->data;
-      
-      if (!TASK_IS_ICON (icon)) continue;
+    TaskIcon *icon = i->data;
+    
+    if (!TASK_IS_ICON (icon)) continue;
 
+    if(drag_and_drop)
+    {
       _drag_add_signals (manager, GTK_WIDGET(icon));
     }
+    else
+    {
+      //FIXME: Stop any ongoing move
+      _drag_remove_signals (manager, GTK_WIDGET(icon));
+    }
+  }
+  if(drag_and_drop)
+  {
     _drag_add_signals (manager, GTK_WIDGET(priv->drag_indicator));
   }
   else
   {
-    //disconnect the dragging signals
-    for (i = priv->icons; i; i = i->next)
-    {
-      TaskIcon *icon = i->data;
-      
-      if (!TASK_IS_ICON (icon)) continue;
-
-      _drag_remove_signals (manager, GTK_WIDGET(icon));
-    }
     _drag_remove_signals (manager, GTK_WIDGET(priv->drag_indicator));
-    //FIXME: Stop any ongoing move
   }
 
   g_debug("%s", drag_and_drop?"D&D is on":"D&D is off");
@@ -1212,11 +822,11 @@ _drag_source_end(TaskManager *manager, GtkWidget *icon)
   TaskManagerPrivate *priv;
   gint move_to;
   GList* childs;
-  GSList* d;
-  GSList* launchers = NULL;
-  TaskLauncher* launcher;
-  gchar* launcher_path;
-  GError *err = NULL;
+  //GSList* d;
+  //GSList* launchers = NULL;
+  //TaskLauncher* launcher;
+  //gchar* launcher_path;
+  //GError *err = NULL;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
@@ -1252,7 +862,7 @@ _drag_source_end(TaskManager *manager, GtkWidget *icon)
   // Update the position in the config (Gconf) if the AwnIcon is a launcher.
   // FIXME: support multiple launchers in one AwnIcon?
 
-  if (task_icon_is_launcher (priv->dragged_icon))
+/*  if (task_icon_is_launcher (priv->dragged_icon))
   {
     // get the updated list
     childs = gtk_container_get_children (GTK_CONTAINER(priv->box));
@@ -1283,6 +893,7 @@ _drag_source_end(TaskManager *manager, GtkWidget *icon)
       return;
     }
   }
+*/
 
   priv->dragged_icon = NULL;
 }

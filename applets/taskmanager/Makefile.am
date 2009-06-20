@@ -17,14 +17,16 @@ taskmanager_la_SOURCES = \
 	task-drag-indicator.h \
 	task-icon.c \
 	task-icon.h \
+	task-item.c \
+	task-item.h \
+  task-window.c \
+  task-window.h \
 	task-launcher.c \
 	task-launcher.h \
 	task-manager.c \
 	task-manager.h \
 	task-settings.c \
 	task-settings.h \
-	task-window.c \
-	task-window.h \
 	$(builddir)/taskmanager-marshal.c \
 	$(builddir)/taskmanager-marshal.h \
 	xutils.c \

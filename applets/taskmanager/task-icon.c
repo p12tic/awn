@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
+ *             Hannes Verschore <hv1989@gmail.com>
  *
  */
 
@@ -41,7 +42,20 @@ G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_ICON)
 
 struct _TaskIconPrivate
 {
-  GSList *windows;
+  //List containing the TaskItems
+  GSList *items;
+
+  //The number of TaskItems that get shown
+  guint shown_items;
+
+  //The number of TaskWindows (subclass of TaskItem) that needs attention
+  guint needs_attention;
+
+  //The number of TaskWindows (subclass of TaskItem) that have the active state.
+  guint is_active;
+
+  TaskItem *main_item;
+
   GdkPixbuf *icon;
   GtkWidget *dialog;
 
@@ -64,7 +78,6 @@ enum
 {
   PROP_0,
 
-  PROP_WINDOW,
   PROP_DRAGGABLE
 };
 
@@ -113,7 +126,7 @@ static gboolean  task_icon_button_press_event   (GtkWidget      *widget,
 static gboolean  task_icon_dialog_unfocus       (GtkWidget      *widget,
                                                 GdkEventFocus   *event,
                                                 gpointer        null);
-/* Dnd 'source' forwards */
+/* Dnd forwards */
 static void      task_icon_drag_data_get        (GtkWidget *widget, 
                                                  GdkDragContext *context, 
                                                  GtkSelectionData *selection_data,
@@ -148,6 +161,8 @@ static void      task_icon_dest_drag_data_received  (GtkWidget      *widget,
                                                      guint           time);
 
 static gboolean _update_geometry(GtkWidget *widget);
+static gboolean task_icon_refresh_geometry (TaskIcon *icon);
+static void     task_icon_refresh_visible  (TaskIcon *icon);
 
 /* GObject stuff */
 static void
@@ -161,11 +176,6 @@ task_icon_get_property (GObject    *object,
 
   switch (prop_id)
   {
-    case PROP_WINDOW:
-      g_value_set_object (value, 
-                          priv->windows ? priv->windows->data : NULL); 
-      break;
-
     case PROP_DRAGGABLE:
       g_value_set_boolean (value, priv->draggable); 
       break;
@@ -185,10 +195,6 @@ task_icon_set_property (GObject      *object,
 
   switch (prop_id)
   {
-    case PROP_WINDOW:
-      task_icon_append_window (icon, g_value_get_object (value));
-      break;
-
     case PROP_DRAGGABLE:
       task_icon_set_draggable (icon, g_value_get_boolean (value));
       break;
@@ -198,6 +204,10 @@ task_icon_set_property (GObject      *object,
   }
 }
 
+/**
+ * Finalize the object and remove the list of windows, 
+ * the list of launchers and the timer of update_geometry.
+ */
 static void
 task_icon_dispose (GObject *object)
 {
@@ -218,13 +228,15 @@ task_icon_finalize (GObject *object)
   TaskIconPrivate *priv = TASK_ICON_GET_PRIVATE (object);
 
   /* FIXME  Check to see if icon needs to be unreffed */
-  if (priv->windows)
+  if (priv->items)
   {
-    g_slist_free (priv->windows);
-    priv->windows = NULL;
+    g_slist_free (priv->items);
+    priv->items = NULL;
   }
   if(priv->update_geometry_id)
+  {
     g_source_remove(priv->update_geometry_id);
+  }
 
   G_OBJECT_CLASS (task_icon_parent_class)->finalize (object);
 }
@@ -235,12 +247,21 @@ task_icon_constructed (GObject *object)
   TaskIconPrivate *priv = TASK_ICON (object)->priv;
   GtkWidget *widget = GTK_WIDGET(object);
  
+  //update geometry of icon every second.
   priv->update_geometry_id = g_timeout_add_seconds (1, (GSourceFunc)_update_geometry, widget);
 }
- 
+
+/**
+ * Checks if the position of the widget has changed.
+ * Upon change it asks the icon to refresh.
+ * returns: TRUE when succeeds
+ *          FALSE when widget isn't an icon
+ */
 static gboolean 
 _update_geometry(GtkWidget *widget)
 {
+  return TRUE; //TODO solve
+  
   gint x,y;
   TaskIconPrivate *priv;
   GdkWindow *win;
@@ -251,6 +272,7 @@ _update_geometry(GtkWidget *widget)
 
   win = gtk_widget_get_window (widget);
   gdk_window_get_origin (win, &x, &y);
+
   if(priv->old_x != x || priv->old_y != y)
   {
     priv->old_x = x;
@@ -260,7 +282,86 @@ _update_geometry(GtkWidget *widget)
 
   return TRUE;
 }
- 
+
+/**
+ * Set the icon geometry of the windows in a task-icon.
+ * This equals to the minimize position of the window.
+ * TODO: not done (part2)
+ */
+static gboolean
+task_icon_refresh_geometry (TaskIcon *icon)
+{
+  TaskSettings *settings;
+  TaskIconPrivate *priv;
+  GtkWidget *widget;
+  GdkWindow *win;
+  GSList    *w;
+  gint      x, y, ww, width, height;
+  gint      i = 0, len = 0;
+
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
+
+  priv = icon->priv;
+  widget = GTK_WIDGET (icon);
+
+  //get the position of the widget
+  win = gtk_widget_get_window (widget);
+  gdk_window_get_origin (win, &x, &y);
+
+  settings = task_settings_get_default ();
+
+  switch (settings->orient)
+  {
+    case AWN_ORIENTATION_RIGHT:
+    case AWN_ORIENTATION_LEFT:
+      ww = GTK_WIDGET (icon)->allocation.height;
+      break;
+    case AWN_ORIENTATION_TOP:
+    case AWN_ORIENTATION_BOTTOM:
+      ww = GTK_WIDGET (icon)->allocation.width;
+      break;
+    default:
+      g_error ("Orientation isn't right, left, top, bottom ??");
+      break;
+  }
+
+  /* FIXME: Do something clever here to allow the user to "scrub" the icon
+   * for the windows.
+   */
+  len = g_slist_length (priv->items);
+  ww = ww/len;
+  for (w = priv->items; w; w = w->next)
+  {
+    if (!TASK_IS_WINDOW (w->data)) continue;
+
+    TaskWindow *window = TASK_WINDOW (w->data);
+
+    switch (settings->orient)
+    {
+      case AWN_ORIENTATION_RIGHT:
+        width = settings->panel_size+settings->offset;
+        height = ww + (i*ww);
+        break;
+      case AWN_ORIENTATION_LEFT:
+        width = settings->panel_size+settings->offset;
+        height = ww + (i*ww);
+        break;
+      case AWN_ORIENTATION_TOP:
+        width = ww + (i*ww);
+        height = settings->panel_size+settings->offset;
+        break;
+      default:
+        width = ww + (i*ww);
+        height = settings->panel_size+settings->offset;
+        break;
+    }
+    task_window_set_icon_geometry (window, x, y, 
+                                   width,
+                                   height);
+    i++;
+  }
+  return FALSE;
+}
 
 static void
 task_icon_class_init (TaskIconClass *klass)
@@ -285,15 +386,7 @@ task_icon_class_init (TaskIconClass *klass)
   wid_class->drag_leave           = task_icon_dest_drag_leave;
   wid_class->drag_data_received   = task_icon_dest_drag_data_received;
 
-
   /* Install properties first */
-  pspec = g_param_spec_object ("taskwindow",
-                               "TaskWindow",
-                               "TaskWindow",
-                               TASK_TYPE_WINDOW,
-                               G_PARAM_READWRITE);
-  g_object_class_install_property (obj_class, PROP_WINDOW, pspec);
-
   pspec = g_param_spec_boolean ("draggable",
                                 "Draggable",
                                 "TaskIcon is draggable?",
@@ -368,11 +461,15 @@ task_icon_init (TaskIcon *icon)
   g_signal_connect (G_OBJECT (priv->dialog),"focus-out-event",
                     G_CALLBACK (task_icon_dialog_unfocus),NULL);  
   priv->icon = NULL;
-  priv->windows = NULL;
+  priv->items = NULL;
   priv->drag_tag = 0;
   priv->drag_motion = FALSE;
   priv->gets_dragged = FALSE;
   priv->update_geometry_id = 0;
+  priv->shown_items = 0;
+  priv->needs_attention = 0;
+  priv->is_active = 0;
+  priv->main_item = NULL;
 
   awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
 
@@ -394,78 +491,25 @@ task_icon_init (TaskIcon *icon)
                        GDK_ACTION_MOVE);
 }
 
+
 GtkWidget *
-task_icon_new_for_window (TaskWindow *window)
+task_icon_new ()
 {
-  GtkWidget *icon = NULL;
+  GtkWidget *icon = g_object_new (TASK_TYPE_ICON, NULL);
+  gtk_widget_hide (icon);
 
-  g_return_val_if_fail (TASK_IS_WINDOW (window), NULL);
-
-  icon = g_object_new (TASK_TYPE_ICON,
-                       "taskwindow", window,
-                       NULL);
+  //BUG: AwnApplet calls upon start gtk_widget_show_all. So even when gtk_widget_hide
+  //     gets called, it will get shown. So I'm forcing it to not listen to 
+  //     'gtk_widget_show_all' with this function. FIXME: improve AwnApplet
+  gtk_widget_set_no_show_all (icon, TRUE);
+  
   return icon;
 }
 
-/*
- * Public Functions
- */
-gboolean 
-task_icon_is_skip_taskbar (TaskIcon *icon)
-{
-  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
-
-  /*if (TASK_IS_LAUNCHER_WINDOW (icon->priv->windows->data))
-    return FALSE;*/
-
-  if (icon->priv->windows)
-    return task_window_is_hidden (icon->priv->windows->data);
-
-  return FALSE;
-}
-
-gboolean  
-task_icon_is_in_viewport (TaskIcon *icon, WnckWorkspace *space)
-{
-  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
-
-  /*if (TASK_IS_LAUNCHER_WINDOW (icon->priv->windows->data))
-    return TRUE;*/
-
-  if (icon->priv->windows)
-    return task_window_is_on_workspace (icon->priv->windows->data, space);
-
-  return TRUE;
-}
-
 static void
-window_closed (TaskIcon *icon, TaskWindow *old_window)
-{
-  TaskIconPrivate *priv;
-
-  g_return_if_fail (TASK_IS_ICON (icon));
-  g_return_if_fail (TASK_IS_WINDOW (old_window));
-  priv = icon->priv;
-
-  if (! TASK_IS_LAUNCHER(old_window))
-  {
-    priv->windows = g_slist_remove (priv->windows, old_window);
-  }
-
-  if (g_slist_length (priv->windows) == 0)
-  {
-    gtk_widget_destroy (GTK_WIDGET (icon));
-  }
-  else
-  {
-    /* Load up with new icon etc */
-  }
-}
-
-static void
-on_window_name_changed (TaskWindow  *window, 
-                        const gchar *name, 
-                        TaskIcon    *icon)
+on_item_name_changed (TaskItem    *item, 
+                      const gchar *name, 
+                      TaskIcon    *icon)
 {
   g_return_if_fail (TASK_IS_ICON (icon));
 
@@ -473,9 +517,9 @@ on_window_name_changed (TaskWindow  *window,
 }
 
 static void
-on_window_icon_changed (TaskWindow *window, 
-                        GdkPixbuf  *pixbuf, 
-                        TaskIcon   *icon)
+on_item_icon_changed (TaskItem   *item, 
+                      GdkPixbuf  *pixbuf, 
+                      TaskIcon   *icon)
 {
   TaskIconPrivate *priv;
 
@@ -490,263 +534,346 @@ on_window_icon_changed (TaskWindow *window,
   awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
 }
 
+/**
+ * Notify that the icon that a window is closed. The window gets
+ * removed from the list and when this icon doesn't has any 
+ * launchers and no windows it will get destroyed.
+ */
+static void
+_destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
+{
+  TaskIconPrivate *priv;
+
+  g_return_if_fail (TASK_IS_ICON (icon));
+  g_return_if_fail (TASK_IS_ITEM (old_item));
+
+  priv = icon->priv;
+  priv->items = g_slist_remove (priv->items, old_item);
+
+  if (old_item == priv->main_item)
+  {
+    g_signal_handlers_disconnect_by_func(priv->main_item, 
+                                         G_CALLBACK (on_item_name_changed), icon);
+    g_signal_handlers_disconnect_by_func(priv->main_item, 
+                                         G_CALLBACK (on_item_icon_changed), icon);
+    //FIXME: choose a new main_item.
+  }
+  task_icon_refresh_visible (icon);
+
+  if (g_slist_length (priv->items) == 0)
+  {
+    gtk_widget_destroy (GTK_WIDGET (icon));
+  }
+  else
+  {
+    /* TODO: Load up with new icon etc */
+  }
+}
+
+/**
+ *
+ */
+static void
+task_icon_refresh_visible (TaskIcon *icon)
+{
+  TaskIconPrivate *priv;
+  GSList *w;
+  TaskItem *vis_item = NULL;
+  guint count = 0;
+
+  g_return_if_fail (TASK_IS_ICON (icon));
+
+  priv = icon->priv;
+
+  for (w = priv->items; w; w = w->next)
+  {
+    TaskItem *item = w->data;
+
+    if (!task_item_is_visible (item)) continue;
+
+    vis_item = item;
+    count++;
+  }
+
+  if (count != priv->shown_items)
+  {
+    g_debug("shown items changed: %i", count);
+  
+    if (count == 0)
+    {
+      /* 
+       * There are no visible items in the icon,
+       * so no reason to show itself.
+       */
+      if (priv->main_item)
+      {
+        g_signal_handlers_disconnect_by_func(priv->main_item, 
+                                             G_CALLBACK (on_item_name_changed), icon);
+        g_signal_handlers_disconnect_by_func(priv->main_item, 
+                                             G_CALLBACK (on_item_icon_changed), icon);
+        priv->main_item = NULL;
+      }
+      
+      gtk_widget_hide (GTK_WIDGET (icon));
+    }
+    else if (count == 1)
+    {
+      /*
+       * There is ONE item visible in the icon,
+       * That becomes the main item and will hook
+       * to name/icon changes
+       */
+      priv->main_item = vis_item;
+      priv->icon = task_item_get_icon (priv->main_item);
+      awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
+      awn_icon_set_tooltip_text (AWN_ICON (icon), 
+                                 task_item_get_name (priv->main_item));
+
+      g_signal_connect (priv->main_item, "name-changed",
+                        G_CALLBACK (on_item_name_changed), icon);
+      g_signal_connect (priv->main_item, "icon-changed",
+                        G_CALLBACK (on_item_icon_changed), icon);
+
+      //awn_icon_set_indicator_count (AWN_ICON (icon), 
+      //                  TASK_IS_LAUNCHER (priv->main_item) ? 1 : 0);
+      
+      gtk_widget_show (GTK_WIDGET (icon));
+    }
+    else
+    {
+      //awn_icon_set_indicator_count (AWN_ICON (icon), 0);
+      
+      g_return_if_fail (priv->main_item);
+    }
+  }
+
+  priv->shown_items = count;
+}
+
+/**
+ * The 'active' state of a TaskWindow changed.
+ * If this is the only TaskWindow that's active,
+ * the TaskIcon will get an active state.
+ * If it the last TaskWindow that isn't active anymore
+ * the TaskIcon will get an inactive state too.
+ * STATE: adjusted
+ * PROBLEM: It shouldn't get called when the state didn't change.
+            Else the count of windows that need have the active state will be off.
+ */
 static void
 on_window_active_changed (TaskWindow *window, 
                           gboolean    is_active, 
                           TaskIcon   *icon)
 {
+  TaskIconPrivate *priv;
+  GSList *w;
+  guint count = 0;
+
   g_return_if_fail (TASK_IS_ICON (icon));
 
-  awn_icon_set_is_active (AWN_ICON (icon), is_active);
+  priv = icon->priv;
+
+  for (w = priv->items; w; w = w->next)
+  {
+    TaskItem *item = w->data;
+
+    if (!TASK_IS_WINDOW (item)) continue;
+    if (!task_item_is_visible (item)) continue;
+    if (!task_window_is_active (TASK_WINDOW (item))) continue;
+
+    count++;
+  }
+
+  if (priv->is_active == 0 && count == 1)
+  {
+      awn_icon_set_is_active (AWN_ICON (icon), TRUE);
+  }
+  else if (priv->is_active == 1 && count == 0)
+  {
+      awn_icon_set_is_active (AWN_ICON (icon), FALSE);
+  }
+  
+  priv->is_active = count;
 }
 
+/**
+ * The 'needs attention' state of a window changed.
+ * If a window needs attention and there isn't one yet, it will
+ * start the animation. When every window don't need attention anymore
+ * it will stop the animation.
+ * STATE: adjusted
+ * TODO: h4writer - check if it is possible to interupt animation mid-air,
+ * and let it start again, if there is a 2nd/3rd window that needs attention.
+ * BUG: when icon becomes visible again it needs to be checked if it needs attention again.
+ */
 static void
 on_window_needs_attention_changed (TaskWindow *window,
                                    gboolean    needs_attention,
                                    TaskIcon   *icon)
 {
-  g_return_if_fail (TASK_IS_ICON (icon));
-
-  if (needs_attention)
-    awn_icon_set_effect (AWN_ICON (icon),AWN_EFFECT_ATTENTION);
-  else
-    awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)),
-                      AWN_EFFECT_ATTENTION);
-}
-
-static void
-on_window_workspace_changed (TaskWindow    *window,  
-                             WnckWorkspace *space,
-                             TaskIcon      *icon)
-{
-  g_return_if_fail (TASK_IS_ICON (icon));
-  
-  g_signal_emit (icon, _icon_signals[ENSURE_LAYOUT], 0);
-}
-
-static void
-on_window_message_changed (TaskWindow  *window, 
-                           const gchar *message,
-                           TaskIcon    *icon)
-{
-  g_return_if_fail (TASK_IS_ICON (icon));
-
-  awn_icon_set_message (AWN_ICON (icon), message);
-}
-
-static void
-on_window_progress_changed (TaskWindow *window,
-                            gfloat      progress,
-                            TaskIcon   *icon)
-{
-  g_return_if_fail (TASK_IS_ICON (icon));
-
-  awn_icon_set_progress (AWN_ICON (icon), progress);
-}
-
-static void
-on_window_hidden_changed (TaskWindow *window,
-                          gboolean    is_hidden,
-                          TaskIcon   *icon)
-{
-  g_return_if_fail (TASK_IS_ICON (icon));
-
-  g_signal_emit (icon, _icon_signals[ENSURE_LAYOUT], 0);
-}
-
-static void
-on_window_running_changed (TaskWindow *window, 
-                           gboolean    is_running,
-                           TaskIcon   *icon)
-{
-  g_return_if_fail (TASK_IS_ICON (icon));
-  awn_icon_set_indicator_count (AWN_ICON (icon), is_running ? 1 : 0);
-}
-
-void
-task_icon_remove_window (TaskIcon      *icon,
-                         WnckWindow    *window)
-{
-  GSList *  w;
   TaskIconPrivate *priv;
+  GSList *w;
+  guint count = 0;
 
   g_return_if_fail (TASK_IS_ICON (icon));
-  g_return_if_fail (WNCK_IS_WINDOW (window));
+
   priv = icon->priv;
-  for (w = priv->windows;w;w=w->next)
+
+  for (w = priv->items; w; w = w->next)
   {
-    TaskWindow * task_win = w->data;
-    if (! TASK_IS_WINDOW(task_win) )
-    {
-      continue;
-    }
-    if (task_win->priv->window == window)
-    {
-      g_assert (TASK_IS_WINDOW(task_win));
-      if (! TASK_IS_LAUNCHER(task_win) )
-      {
-        priv->windows = g_slist_remove (priv->windows, task_win);
-      }
-    }
+    TaskItem *item = w->data;
+
+    if (!TASK_IS_WINDOW (item)) continue;
+    if (!task_item_is_visible (item)) continue;
+    if (!task_window_needs_attention (TASK_WINDOW (item))) continue;
+
+    count++;
   }
+
+  if (priv->needs_attention == 0 && count == 1)
+  {
+    awn_icon_set_effect (AWN_ICON (icon),AWN_EFFECT_ATTENTION);
+  }
+  else if (priv->needs_attention == 1 && count == 0)
+  {
+    awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                      AWN_EFFECT_ATTENTION);
+  }
+  
+  priv->needs_attention = count;
 }
 
-/*
- FIXME   2nd arg isn't the WnckWindow
+/**
+ * When the progress of a TaskWindow has changed,
+ * it will recalculate the process of all the
+ * TaskWindows this TaskIcon contains.
+ * STATE: adjusted
  */
 static void
-_task_icon_launcher_change (TaskLauncher * launcher,
-                            WnckWindow   * wnck_win,
-                            TaskIcon    *  icon)
-{
-  GtkWidget * grouped_icon = NULL;  
-  if (wnck_win)
-  {
-    TaskWindow * taskwin = task_window_new (TASK_WINDOW(launcher)->priv->window);    
-    grouped_icon = task_icon_new_for_window (taskwin);
-    gtk_widget_show (grouped_icon);    
-    gtk_container_add (GTK_CONTAINER(icon->priv->dialog),grouped_icon);
-  }
-  
-}
-
-void
-task_icon_append_window (TaskIcon      *icon,
-                         TaskWindow    *window)
+on_window_progress_changed (TaskWindow   *window,
+                            gfloat      adjusted_progress,
+                            TaskIcon   *icon)
 {
   TaskIconPrivate *priv;
-  gboolean first_window = FALSE;
-  static gboolean recursing = FALSE;
-  
-  g_assert (window);
-  g_assert (icon);
+  GSList *w;
+  gfloat progress = 0;
+  guint len = 0;
+
   g_return_if_fail (TASK_IS_ICON (icon));
-  g_return_if_fail (TASK_IS_WINDOW (window));
+
   priv = icon->priv;
 
-  /* Is this the first, main, window of this icon? */
-  if (priv->windows == NULL)
-    first_window = TRUE;
-
-  priv->windows = g_slist_append (priv->windows, window);
-  g_object_weak_ref (G_OBJECT (window), (GWeakNotify)window_closed, icon);
-
-  /* If it's the first window, let's set-up our icon accordingly */
-  if (first_window)
+  for (w = priv->items; w; w = w->next)
   {
-    priv->icon = task_window_get_icon (window);
-    awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
+    TaskItem *item = w->data;
 
-    awn_icon_set_tooltip_text (AWN_ICON (icon), task_window_get_name (window));
-    on_window_needs_attention_changed (window, 
-                                       task_window_needs_attention (window), 
-                                       icon);
+    if (!TASK_IS_WINDOW (item)) continue;
+    if (!task_item_is_visible (item)) continue;
+    
+    progress += task_window_get_progress (TASK_WINDOW (item));
+    len++;
+  }
 
-    awn_icon_set_indicator_count (AWN_ICON (icon), 
-                        task_window_get_is_running (window) ? 1 : 0);
+  awn_icon_set_progress (AWN_ICON (icon), progress/len);
+}
 
-    g_signal_connect (window, "name-changed", 
-                      G_CALLBACK (on_window_name_changed), icon);
-    g_signal_connect (window, "icon-changed",
-                      G_CALLBACK (on_window_icon_changed), icon);
+/**
+ * When a TaskWindow becomes visible or invisible,
+ * update the number of shown windows.
+ * If because of that the icon has no shown TaskWindows
+ * anymore it will get hidden. If there was no shown
+ * TaskWindow and now the first one gets visible,
+ * then show TaskIcon.
+ * STATE: adjusted
+ */
+static void
+on_item_visible_changed (TaskItem   *item,
+                         gfloat      visible,
+                         TaskIcon   *icon)
+{
+  g_return_if_fail (TASK_IS_ICON (icon));
+  g_return_if_fail (TASK_IS_ITEM (item));
+  
+  task_icon_refresh_visible (icon);
+}
+
+/**
+ * Public Functions
+ */
+
+guint
+task_icon_match_item (TaskIcon      *icon,
+                      TaskItem      *item_to_match)
+{
+  TaskIconPrivate *priv;
+  GSList *w;
+  guint max_score = 0;
+
+  g_return_val_if_fail (TASK_IS_ICON (icon), 0);
+  g_return_val_if_fail (TASK_IS_ITEM (item_to_match), 0);
+
+  priv = icon->priv;
+
+  for (w = priv->items; w; w = w->next)
+  {
+    TaskItem *item = w->data;
+    guint score;
+
+    if (!task_item_is_visible (item)) continue;
+    
+    score = task_item_match (item, item_to_match);
+    if (score > max_score)
+      max_score = score;
+  }
+  
+  return max_score;
+}
+
+/**
+ * Adds a TaskWindow to this task-icon
+ */
+void
+task_icon_append_item (TaskIcon      *icon,
+                       TaskItem      *item)
+{
+  TaskIconPrivate *priv;
+  
+  g_assert (item);
+  g_assert (icon);
+  g_return_if_fail (TASK_IS_ICON (icon));
+  g_return_if_fail (TASK_IS_ITEM (item));
+
+  priv = icon->priv;
+
+  priv->items = g_slist_append (priv->items, item);
+  gtk_widget_show_all (GTK_WIDGET (item));
+  gtk_container_add (GTK_CONTAINER (priv->dialog), GTK_WIDGET (item));
+  
+  g_object_weak_ref (G_OBJECT (item), (GWeakNotify)_destroyed_task_item, icon);
+
+  task_icon_refresh_visible (icon);
+
+  /* Connect item signals */
+  g_signal_connect (item, "visible-changed",
+                    G_CALLBACK (on_item_visible_changed), icon);
+    
+  /* Connect window signals */
+  if (TASK_IS_WINDOW (item))
+  {
+    TaskWindow *window = TASK_WINDOW (item);
     g_signal_connect (window, "active-changed",
                       G_CALLBACK (on_window_active_changed), icon);
     g_signal_connect (window, "needs-attention",
                       G_CALLBACK (on_window_needs_attention_changed), icon);
-    g_signal_connect (window, "workspace-changed",
-                      G_CALLBACK (on_window_workspace_changed), icon);
-    g_signal_connect (window, "message-changed",
-                      G_CALLBACK (on_window_message_changed), icon);
     g_signal_connect (window, "progress-changed",
                       G_CALLBACK (on_window_progress_changed), icon);
-    g_signal_connect (window, "hidden-changed",
-                      G_CALLBACK (on_window_hidden_changed), icon);
-    g_signal_connect (window, "running-changed",
-                      G_CALLBACK (on_window_running_changed), icon);
   }
-
-  if (!recursing)
-  {
-    recursing = TRUE;
-    GtkWidget * grouped_icon = NULL;
-    if (!TASK_IS_LAUNCHER(window))
-    {
-      g_assert (window->priv->window);
-      grouped_icon = task_icon_new_for_window (window);
-    }
-    else if (TASK_IS_LAUNCHER(window) )
-    {
-      TaskWindowPrivate *win_priv = window->priv;
-      g_signal_connect (G_OBJECT(window),"notify::taskwindow",
-                        G_CALLBACK(_task_icon_launcher_change),icon);
-      if (win_priv->window)
-      {
-        TaskWindow * taskwin = task_window_new (win_priv->window);
-        grouped_icon = task_icon_new_for_window (taskwin);
-      }
-    }
-    if (grouped_icon)
-    {
-      gtk_container_add (GTK_CONTAINER(priv->dialog),grouped_icon);
-//    g_object_weak_ref (G_OBJECT (window), (GWeakNotify)window_closed, grouped_icon);    
-      gtk_widget_show (grouped_icon);
-    }
-  }
-  recursing = FALSE;
 }
 
-gboolean 
-task_icon_is_launcher (TaskIcon      *icon)
-{
-  TaskIconPrivate *priv;
-
-  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
-  priv = icon->priv;
-
-  if (priv->windows)
-  {
-    /* For now do it this way ?! */
-    if (TASK_IS_LAUNCHER (priv->windows->data))
-      return TRUE;
-  }
-  return FALSE;
-}
-
-TaskLauncher* 
-task_icon_get_launcher (TaskIcon      *icon)
-{
-  TaskIconPrivate *priv;
-
-  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
-  priv = icon->priv;
-
-  if (priv->windows)
-  {
-    /* For now do it this way ?! */
-    if (TASK_IS_LAUNCHER (priv->windows->data))
-      return TASK_LAUNCHER(priv->windows->data);
-  }
-  return NULL;
-}
-
-TaskWindow* 
-task_icon_get_window (TaskIcon      *icon)
-{
-  TaskIconPrivate *priv;
-
-  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
-  priv = icon->priv;
-
-  if (priv->windows)
-  {
-    /* For now do it this way ?! */
-//    if (TASK_IS_WINDOW (priv->windows->data))
-      return TASK_WINDOW(priv->windows->data);
-  }
-  return NULL;
-}
-
-
+/**
+ * 
+ * TODO: h4writer - adjust 2nd round
+ */
 void
 task_icon_refresh_icon (TaskIcon      *icon)
 {
@@ -755,87 +882,9 @@ task_icon_refresh_icon (TaskIcon      *icon)
   g_return_if_fail (TASK_IS_ICON (icon));
   priv = icon->priv;
 
-  if (priv->windows && priv->windows->data)
+  if (priv->items && priv->items->data)
     awn_icon_set_from_pixbuf (AWN_ICON (icon), 
-                              task_window_get_icon (priv->windows->data));
-}
-
-gboolean
-task_icon_refresh_geometry (TaskIcon *icon)
-{
-  TaskSettings *settings;
-  TaskIconPrivate *priv;
-  GtkWidget *widget;
-  GdkWindow *win;
-  GSList    *w;
-  gint      x, y, ww, width, height;
-  gint      i = 0, len = 0;
-
-  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
-  priv = icon->priv;
-
-  widget = GTK_WIDGET (icon);
-
-  //get the position of the widget
-  win = gtk_widget_get_window (widget);
-  gdk_window_get_origin (win, &x, &y);
-
-  settings = task_settings_get_default ();
-
-  switch (settings->orient)
-  {
-    case AWN_ORIENTATION_RIGHT:
-      //x += settings->panel_size;
-      ww = GTK_WIDGET (icon)->allocation.height;
-      break;
-    case AWN_ORIENTATION_LEFT:
-      //x += settings->offset;
-      ww = GTK_WIDGET (icon)->allocation.height;
-      break;
-    case AWN_ORIENTATION_TOP:
-      //y += settings->offset;
-      ww = GTK_WIDGET (icon)->allocation.width;
-      break;
-    default:
-      //y += settings->panel_size;
-      ww = GTK_WIDGET (icon)->allocation.width;
-      break;
-  }
-
-  /* FIXME: Do something clever here to allow the user to "scrub" the icon
-   * for the windows.
-   */
-  len = g_slist_length (priv->windows);
-  ww = ww/len;
-  for (w = priv->windows; w; w = w->next)
-  {
-    TaskWindow *window = w->data;
-    switch (settings->orient)
-    {
-      case AWN_ORIENTATION_RIGHT:
-        width = settings->panel_size+settings->offset;
-        height = ww + (i*ww);
-        break;
-      case AWN_ORIENTATION_LEFT:
-        width = settings->panel_size+settings->offset;
-        height = ww + (i*ww);
-        break;
-      case AWN_ORIENTATION_TOP:
-        width = ww + (i*ww);
-        height = settings->panel_size+settings->offset;
-        break;
-      default:
-        width = ww + (i*ww);
-        height = settings->panel_size+settings->offset;
-        break;
-    }
-    task_window_set_icon_geometry (window, x, y, 
-                                   width,
-                                   height);
-    i++;
-  }
-
-  return FALSE;
+                              task_item_get_icon (priv->items->data));
 }
 
 /*
@@ -861,78 +910,146 @@ task_icon_configure_event (GtkWidget          *widget,
   return TRUE;
 }
 
+/**
+ * Whenever there is a release event on the TaskIcon it will do the proper actions.
+ * left click: - start launcher = has no (visible) windows
+ *             - activate window = when there is only one (visible) window
+ *             - show dialog = when there are multiple (visible) windows
+ * middle click: - start launcher
+ * Returns: TRUE to stop other handlers from being invoked for the event. 
+ *          FALSE to propagate the event further.
+ * TODO: h4writer - adjust
+ */
 static gboolean
 task_icon_button_release_event (GtkWidget      *widget,
                                 GdkEventButton *event)
 {
   TaskIconPrivate *priv;
-  gint len;
+  TaskIcon *icon;
 
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
-  priv = TASK_ICON (widget)->priv;
 
-  len = g_slist_length (priv->windows);
+  icon = TASK_ICON (widget);
+  priv = icon->priv;
 
-  if (event->button == 1)
+  switch (event->button)
   {
-    if(priv->gets_dragged)
-    {
-      return FALSE;
-    }
-    if (len == 1)
-    {
-      task_window_activate (priv->windows->data, event->time);
-      return TRUE;
-    }
-    else if (len > 1)
-    {
-      if (GTK_WIDGET_VISIBLE(priv->dialog) )
+    case 1: // left click: (start launcher || activate window || show dialog)
+
+      if(priv->gets_dragged) return FALSE;
+    
+      if (priv->shown_items == 0)
       {
-        gtk_widget_hide (priv->dialog);
+        g_critical ("TaskIcon: The icons shouldn't contain a visible (and clickable) icon");
+        return FALSE;
+      }
+      else if (priv->shown_items == 1)
+      {
+        GSList *w;
+        /* Find the window/launcher that is shown */
+        for (w = priv->items; w; w = w->next)
+        {
+          TaskItem *item = w->data;
+
+          if (!task_item_is_visible (item)) continue;
+          
+          task_item_left_click (item, event);
+
+          break;
+        }
+        return TRUE;
       }
       else
       {
-        gtk_widget_show_all (priv->dialog);  
+        GSList *w;
+        for (w = priv->items; w; w = w->next)
+        {
+          TaskItem *item = w->data;
+
+          if (!task_item_is_visible (item)) continue;
+          
+          g_debug ("clicked on: %s", task_item_get_name (item));
+        }
+        
+        //TODO: move to hover?
+        if (GTK_WIDGET_VISIBLE (priv->dialog) )
+        {
+          gtk_widget_hide (priv->dialog);
+        }
+        else
+        {
+          gtk_widget_show (priv->dialog);  
+        }
       }
-    }
+      break;
+
+    case 2: // middle click: start launcher
+
+      g_warning ("TaskIcon: FIXME: No support for starting launcher on middle click");
+
+      //TODO: start launcher
+      /*if (len >= 1 && TASK_IS_LAUNCHER (priv->windows->data))
+      {
+        task_launcher_middle_click (priv->windows->data, event);
+        return TRUE;
+      }*/
+
+      break;
+
+    default:
+      break;
   }
-  else if (event->button == 2)
-  {
-    if (len >= 1 && TASK_IS_LAUNCHER (priv->windows->data))
-    {
-      task_launcher_middle_click (priv->windows->data, event);
-      return TRUE;
-    }
-  }
+
   return FALSE;
 }
 
+/**
+ * Whenever there is a press event on the TaskIcon it will do the proper actions.
+ * right click: - show the context menu if there is only one (visible) window
+ * Returns: TRUE to stop other handlers from being invoked for the event. 
+ *          FALSE to propagate the event further. 
+ */
 static gboolean  
 task_icon_button_press_event (GtkWidget      *widget,
                               GdkEventButton *event)
 {
   TaskIconPrivate *priv;
-  guint len;
+  TaskIcon *icon;
 
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
-  priv = TASK_ICON (widget)->priv;
 
-  if (event->button != 3)
-    return FALSE;
+  icon = TASK_ICON (widget);
+  priv = icon->priv;
 
-  len = g_slist_length (priv->windows);
+  if (event->button != 3) return FALSE;
 
-  if (len == 1)
+  if (priv->shown_items == 0)
   {
-    /* We can just ask the window to popup as normal */
-    task_window_popup_context_menu (priv->windows->data, event);
+    g_critical ("TaskIcon: The icons shouldn't contain a visible (and clickable) icon");
+    return FALSE;
+  }
+  else if (priv->shown_items == 1)
+  {
+    GSList *w;
+
+    /* Find the window/launcher that is shown */
+    for (w = priv->items; w; w = w->next)
+    {
+      TaskItem *item = w->data;
+
+      if (!task_item_is_visible (item)) continue;
+      
+      task_item_right_click (item, event);
+
+      break;
+    }
     return TRUE;
   }
   else
   {
     g_warning ("TaskIcon: FIXME: No support for multiple windows right-click");
+    return FALSE;
   }
-  return FALSE;
 }
 
 static gboolean  
@@ -976,6 +1093,9 @@ task_icon_set_draggable (TaskIcon *icon, gboolean draggable)
   //g_debug("draggable:%d", draggable);
 }
 
+/**
+ * TODO: h4writer - second stage
+ */
 static gboolean
 drag_timeout (TaskIcon *icon)
 {
@@ -984,12 +1104,12 @@ drag_timeout (TaskIcon *icon)
   g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
   priv = icon->priv;
 
-  if (priv->drag_motion == FALSE)
+/*  if (priv->drag_motion == FALSE)
     return FALSE;
   else if (priv->windows->data)
     if (!task_window_is_active(priv->windows->data))
       task_window_activate (priv->windows->data, priv->drag_time);
-
+*/
   return FALSE;
 }
 
@@ -1104,9 +1224,11 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
     {
       /* If it is a launcher it should show that it accepts the drag.
          Else only the the timeout should get set to activate the window. */
-      if (!priv->windows || !TASK_IS_LAUNCHER (priv->windows->data))
-        gdk_drag_status (context, GDK_ACTION_DEFAULT, t);
-      else
+      
+      //TODO: h4writer - 2nd round
+      //if (!priv->items || !TASK_IS_LAUNCHER (priv->items->data))
+      //  gdk_drag_status (context, GDK_ACTION_DEFAULT, t);
+      //else
         gdk_drag_status (context, GDK_ACTION_COPY, t);
       return TRUE;
     }
@@ -1151,7 +1273,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   TaskIconPrivate *priv;
   GSList          *list;
   GError          *error;
-  TaskLauncher    *launcher;
+  //TaskLauncher    *launcher;
   GdkAtom         target;
   gchar           *target_name;
   gchar           *sdata_data;
@@ -1170,13 +1292,14 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   }
 
   /* If we are not a launcher, we don't care about this */
-  if (!priv->windows || !TASK_IS_LAUNCHER (priv->windows->data))
-  {
-    gtk_drag_finish (context, FALSE, FALSE, time_);
-    return;
-  }
-
-  launcher = priv->windows->data;
+  //TODO: h4writer - 2nd round
+  //if (!priv->windows || !TASK_IS_LAUNCHER (priv->windows->data))
+  //{
+  //  gtk_drag_finish (context, FALSE, FALSE, time_);
+  //  return;
+  //}
+  //
+  //launcher = priv->windows->data;
 
   sdata_data = (gchar*)gtk_selection_data_get_data (sdata);
   
@@ -1197,10 +1320,10 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   //FIXME: I think this function returns always FALSE (haytjes)
   // and I also think this isn't a bad idea to allow too.
   // I often drop a url on firefox, even when it is already open.
-  if (task_launcher_has_window (launcher))
-  {
-    gtk_drag_finish (context, FALSE, FALSE, time_);
-  }
+  //if (task_launcher_has_windows (launcher))
+  //{
+  //  gtk_drag_finish (context, FALSE, FALSE, time_);
+  //}
   
   error = NULL;
   list = awn_vfs_get_pathlist_from_string (sdata_data, &error);
@@ -1212,7 +1335,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
     return;
   }
 
-  task_launcher_launch_with_data (launcher, list);
+  //task_launcher_launch_with_data (launcher, list);
 
   g_slist_foreach (list, (GFunc)g_free, NULL);
   g_slist_free (list);

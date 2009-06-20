@@ -24,7 +24,7 @@
 #include <gtk/gtk.h>
 #include <libwnck/libwnck.h>
 
-#include "task-window.h"
+#include "task-item.h"
 
 #define TASK_TYPE_LAUNCHER (task_launcher_get_type ())
 
@@ -49,14 +49,14 @@ typedef struct _TaskLauncherPrivate TaskLauncherPrivate;
  
 struct _TaskLauncher
 {
-  TaskWindow        parent;	
+  TaskItem        parent;	
 
   TaskLauncherPrivate *priv;
 };
 
 struct _TaskLauncherClass
 {
-  TaskWindowClass   parent_class;
+  TaskItemClass   parent_class;
 
   /*< signals >*/
   void (*launcher0) (void);
@@ -67,19 +67,9 @@ struct _TaskLauncherClass
 
 GType           task_launcher_get_type             (void) G_GNUC_CONST;
 
-TaskLauncher  * task_launcher_new_for_desktop_file (const gchar    *path);
+TaskItem      * task_launcher_new_for_desktop_file (const gchar    *path);
 
 const gchar   * task_launcher_get_desktop_path     (TaskLauncher   *launcher);
-
-gboolean        task_launcher_has_window           (TaskLauncher   *launcher);
-
-gboolean        task_launcher_try_match            (TaskLauncher   *launcher,
-                                                    gint            pid,
-                                                    const gchar    *res_name,
-                                                    const gchar    *class_name);
-
-void            task_launcher_set_window           (TaskLauncher   *launcher,
-                                                    WnckWindow     *window);
 
 void            task_launcher_launch_with_data     (TaskLauncher   *launcher,
                                                     GSList         *list);

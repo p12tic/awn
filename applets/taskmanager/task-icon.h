@@ -24,6 +24,7 @@
 #include <gtk/gtk.h>
 #include <libawn/libawn.h>
 
+#include "task-item.h"
 #include "task-window.h"
 #include "task-launcher.h"
 
@@ -72,24 +73,18 @@ struct _TaskIconClass
 
 GType           task_icon_get_type        (void) G_GNUC_CONST;
 
-GtkWidget*      task_icon_new_for_window  (TaskWindow    *window);
+GtkWidget*      task_icon_new ();
 
-gboolean        task_icon_is_skip_taskbar (TaskIcon      *icon);
+void            task_icon_append_item     (TaskIcon      *icon,
+                                           TaskItem      *item);
+void            task_icon_remove_item     (TaskIcon      *icon,
+                                           TaskItem      *item);
+guint           task_icon_match_item      (TaskIcon      *icon,
+                                           TaskItem      *item);
 
-gboolean        task_icon_is_in_viewport  (TaskIcon      *icon,
-                                           WnckWorkspace *space);
-
-void            task_icon_append_window   (TaskIcon      *icon,
-                                           TaskWindow    *window);
-void            task_icon_remove_window   (TaskIcon      *icon,
-                                          WnckWindow    *window);
-gboolean        task_icon_is_launcher     (TaskIcon      *icon);
-TaskLauncher*   task_icon_get_launcher    (TaskIcon      *icon);
-TaskWindow*     task_icon_get_window      (TaskIcon      *icon);
+void            task_icon_remove_windows  (TaskIcon      *icon);
 
 void            task_icon_refresh_icon    (TaskIcon      *icon);
-
-gboolean        task_icon_refresh_geometry (TaskIcon     *icon);
 
 void            task_icon_set_draggable   (TaskIcon      *icon, 
                                            gboolean       draggable);
