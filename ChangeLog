@@ -1,3 +1,8 @@
+2009-06-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Expose utility functions.
+
 2009-06-20  Julien Lavergne  <julien.lavergne@gmail.com>
 
 	* awn-manager/awnClass.py:

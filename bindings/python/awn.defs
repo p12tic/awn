@@ -1443,6 +1443,24 @@
   (return-type "none")
 )
 
+;; From awn-utils.h
+
+(define-function awn_utils_ensure_transparent_bg
+  (c-name "awn_utils_ensure_transparent_bg")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
+
+(define-function awn_utils_make_transparent_bg
+  (c-name "awn_utils_make_transparent_bg")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
+
 ;; From awn-vfs.h
 
 (define-function vfs_init
