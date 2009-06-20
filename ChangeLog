@@ -1,3 +1,9 @@
+2009-06-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	Update the docs.
+
 2009-06-19  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-themed-icon.c:
