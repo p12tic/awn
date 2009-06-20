@@ -463,14 +463,23 @@ on_active_window_changed (WnckScreen    *screen,
 static void
 update_icon_visible (TaskManager *manager, TaskIcon *icon)
 {
+  TaskManagerPrivate *priv;
+
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
-  g_debug ("update visibility");
+  priv = manager->priv;
   
   if (task_icon_is_visible (icon))
-    gtk_widget_show (GTK_WIDGET (icon));
+  {
+    if (priv->only_show_launchers && !task_icon_contains_launcher (icon))
+      gtk_widget_hide (GTK_WIDGET (icon));
+    else
+      gtk_widget_show (GTK_WIDGET (icon));
+  }
   else
+  {
     gtk_widget_hide (GTK_WIDGET (icon));
+  }
 }
 
 static void
@@ -566,7 +575,7 @@ on_window_opened (WnckScreen    *screen,
     }
   }
 
-  g_debug("Matching score: %i", max_match_score);
+  g_debug("Matching score: %i, must be bigger then:%i, groups: %i", max_match_score, 99-priv->match_strength, max_match_score > 99-priv->match_strength);
   
   if (max_match_score > 99-priv->match_strength)
   {
@@ -605,14 +614,32 @@ task_manager_set_show_all_windows (TaskManager *manager,
   g_debug ("%s", show_all ? "showing all windows":"not showing all windows");
 }
 
+/**
+ * The property 'show_only_launchers' changed.
+ * So update the property and update the visiblity of every icon.
+ */
 static void
 task_manager_set_show_only_launchers (TaskManager *manager, 
-                                      gboolean     show_only)
+                                      gboolean     only_show_launchers)
 {
-  g_return_if_fail (TASK_IS_MANAGER (manager));
-  manager->priv->only_show_launchers = show_only;
+  TaskManagerPrivate *priv;
+  GSList             *w;
 
-  g_debug ("%s", show_only ? "only show launchers":"show everything");
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+
+  priv = manager->priv;
+  priv->only_show_launchers = only_show_launchers;
+
+  for (w = priv->icons; w; w = w->next)
+  {
+    TaskIcon *icon = w->data;
+
+    if (!TASK_IS_ICON (icon)) continue;
+
+    update_icon_visible (manager, icon);
+  }
+  
+  g_debug ("%s", only_show_launchers ? "only show launchers":"show everything");
 }
 
 /**
