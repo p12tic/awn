@@ -320,7 +320,7 @@ class awnBzr:
 		#	a string when there is no settings 
 		#	a list when there is a setting : [value of the setting, group settings, key setting]
 		struct= {	'type': '',		# Applet or Theme
-				'location':'',		# Location of the bzr branch
+				'location':'',		# Location of the desktop file
 				'name': '',		# Name of the Type
 				'comment':'',		# Comments
 				'version':'',		# Version of the 
@@ -357,13 +357,13 @@ class awnBzr:
 
 		desktop_entry = DesktopEntry(file_path)
 		struct['type'] = desktop_entry.get('X-AWN-Type')
-		struct['location'] = desktop_entry.get('X-AWN-Location')
+		struct['location'] = file_path
 		struct['name'] = desktop_entry.get('Name')
 		#TODO More to add
 		struct['icon'] = desktop_entry.get('Icon')
 		struct['exec'] = desktop_entry.get('Exec')
 		struct['applet_type'] = desktop_entry.get('X-AWN-AppletType')
-		struct['applet_category'] = desktop_entry.get('X-AWN-AppletCategory')
+		struct['applet_category'] = desktop_entry.get('X-AWN-AppletCategory').rsplit(",")
 
 		if desktop_entry.get('X-AWN-ThemeEffects') <> '':
 			struct['effects'] = [int(desktop_entry.get('X-AWN-ThemeEffects')), 
@@ -513,8 +513,9 @@ class awnBzr:
 		desktop_list = [self.read_desktop(elem) for elem in catalog]
 		categories_list = []
 		for applet in desktop_list:
-			if not applet['applet_category'] in categories_list:
-				categories_list.append(applet['applet_category'])
+			for elem in applet['applet_category']:
+				if not elem in categories_list and elem is not "":
+					categories_list.append(elem)
 		return categories_list
 
 	def applets_by_categories(self, categories):
@@ -522,11 +523,12 @@ class awnBzr:
 			categories = list of Categories
 		'''
 		catalog = self.type_catalog_from_sources_list(type_catalog='Applet')
+		desktop_list = [self.read_desktop(elem) for elem in catalog]
 		list_applets = []
-		for desktop in catalog:
-			desktop_file = self.read_desktop(desktop)
-			if desktop_file['applet_category'] in categories:
-				list_applets.append(desktop)
+		for applet in desktop_list:
+			for elem in applet['applet_category']:
+				if elem in categories:
+					list_applets.append(applet['location'])
 		return list_applets
 			
 
@@ -1748,8 +1750,6 @@ class awnApplet(awnBzr):
 
         if not None in applets and self.load_finished:
             self.client.set_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, applets)
-
-        self.choose_categorie = dropdown
 
     def create_categories_dropdown(self, widget):
         self.model_categorie = gtk.ListStore(str)

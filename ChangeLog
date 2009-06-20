@@ -1,3 +1,12 @@
+2009-06-20  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	location key of read.desktop is now the path of the desktop file .
+	Fix search categories function.
+	Fix when desktop file have multi-categories.
+	* awn-manager/awnDefs.py.in:
+	Set default sources.list with only lcoal location.
+
 2009-06-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* bindings/python/awn.override:
