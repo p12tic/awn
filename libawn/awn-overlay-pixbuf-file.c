@@ -147,7 +147,6 @@ awn_overlay_pixbuf_file_constructed (GObject *object)
     G_OBJECT_CLASS (awn_overlay_pixbuf_file_parent_class)->constructed (object);
   }
   
-  /*FIXME need to clear the hash table on theme changes also */
   g_signal_connect (object, "notify::file-name",
                   G_CALLBACK(_awn_overlaid_pixbuf_file_clear_hash),
                   object);   
