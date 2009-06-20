@@ -56,6 +56,7 @@ struct _TaskManagerPrivate
   /* This is what the icons are packed into */
   GtkWidget  *box;
   GSList     *icons;
+  GSList     *windows;
   GHashTable *win_table;
 
   /* Properties */
@@ -328,13 +329,6 @@ task_manager_init (TaskManager *manager)
                     G_CALLBACK (on_window_opened), manager);
   g_signal_connect (priv->screen, "active-window-changed",  
                     G_CALLBACK (on_active_window_changed), manager);
-
-
-//TODO - 2nd round
-//  g_signal_connect_swapped (priv->screen, "viewports-changed",
-//                            G_CALLBACK (ensure_layout), manager);
-//  g_signal_connect_swapped (priv->screen, "active-workspace-changed",
-//                            G_CALLBACK (ensure_layout), manager);
 }
 
 AwnApplet *
@@ -456,6 +450,33 @@ on_active_window_changed (WnckScreen    *screen,
     task_window_set_is_active (taskwin, TRUE);
 }
 
+/**
+ * When the property 'show_all_windows' is False,
+ * workspace switches are monitored. Whenever one happens
+ * all TaskWindows are notified.
+ */
+static void
+on_workspace_changed (TaskManager *manager) //... has more arguments
+{
+  TaskManagerPrivate *priv;
+  GSList             *w;
+  WnckWorkspace      *space;
+  
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+
+  priv = manager->priv;
+  space = wnck_screen_get_active_workspace (priv->screen);
+  
+  for (w = priv->windows; w; w = w->next)
+  {
+    TaskWindow *window = w->data;
+
+    if (!TASK_IS_WINDOW (window)) continue;
+
+    task_window_set_active_workspace (window, space);
+  }
+}
+
 /*
  * TASK_ICON CALLBACKS
  */
@@ -559,6 +580,7 @@ on_window_opened (WnckScreen    *screen,
   // create a new TaskWindow containing the WnckWindow
   item = task_window_new (window);
   g_object_set_qdata (G_OBJECT (window), win_quark, TASK_WINDOW (item));
+  priv->windows = g_slist_append (priv->windows, item);
 
   // see if there is a icon that matches
   for (w = priv->icons; w; w = w->next)
@@ -608,9 +630,49 @@ static void
 task_manager_set_show_all_windows (TaskManager *manager,
                                    gboolean     show_all)
 {
+  TaskManagerPrivate *priv;
+  GSList             *w;
+  WnckWorkspace      *space = NULL;
+  
   g_return_if_fail (TASK_IS_MANAGER (manager));
+
+  priv = manager->priv;
+
+  if (priv->show_all_windows == show_all) return;
+ 
   manager->priv->show_all_windows = show_all;
 
+  if (show_all)
+  {
+    // Remove signals of workspace changes
+    g_signal_handlers_disconnect_by_func(priv->screen, 
+                                         G_CALLBACK (on_workspace_changed), 
+                                         manager);
+    
+    // Set workspace to NULL, so TaskWindows aren't tied to workspaces anymore
+    space = NULL;
+  }
+  else
+  {
+    // Add signals to WnckScreen for workspace changes
+    g_signal_connect_swapped (priv->screen, "viewports-changed",
+                              G_CALLBACK (on_workspace_changed), manager);
+    g_signal_connect_swapped (priv->screen, "active-workspace-changed",
+                              G_CALLBACK (on_workspace_changed), manager);
+
+    // Retrieve the current active workspace
+    space = wnck_screen_get_active_workspace (priv->screen);
+  }
+
+  /* Update the workspace for every TaskWindow.
+   * NULL if the windows aren't tied to a workspace anymore */
+  for (w = priv->windows; w; w = w->next)
+  {
+    TaskWindow *window = w->data;
+    if (!TASK_IS_WINDOW (window)) continue;
+    task_window_set_active_workspace (window, space);
+  }
+  
   g_debug ("%s", show_all ? "showing all windows":"not showing all windows");
 }
 

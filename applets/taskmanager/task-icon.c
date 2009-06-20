@@ -562,8 +562,9 @@ on_main_item_visible_changed (TaskItem  *item,
 
   /* the main TaskItem should have been visible, so if
      the main TaskItem becomes visible only now,
-     it indicates a bug. */
-  g_return_if_fail (visible == FALSE); 
+     it indicates a bug. 
+     FIXME: this is possible atm in TaskWindow */
+  if (visible) return;
 
   //task_icon_search_main_item (icon); TODO
 }

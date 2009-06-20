@@ -40,6 +40,13 @@ struct _TaskWindowPrivate
 {
   WnckWindow *window;
 
+  // Workspace where the window should be in, before being visible.
+  // NULL if it isn't important
+  WnckWorkspace *workspace;
+
+  // Is this window in the workspace. If workspace is NULL, this is always TRUE;
+  gboolean in_workspace;
+
   /* Properties */
   gchar   *message;
   gfloat   progress;
@@ -220,6 +227,8 @@ task_window_init (TaskWindow *window)
   	
   priv = window->priv = TASK_WINDOW_GET_PRIVATE (window);
 
+  priv->workspace = NULL;
+  priv->in_workspace = TRUE;
   priv->message = NULL;
   priv->progress = 0;
   priv->hidden = FALSE;
@@ -282,7 +291,17 @@ on_window_workspace_changed (WnckWindow *wnckwin, TaskWindow *window)
     
   g_return_if_fail (TASK_IS_WINDOW (window));
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
+
   priv = window->priv;
+  if (priv->workspace==NULL)
+    priv->in_workspace = TRUE;
+  else
+    priv->in_workspace = wnck_window_is_in_viewport (priv->window, priv->workspace);
+
+  if (priv->in_workspace && !priv->hidden)
+    task_item_emit_visible_changed (TASK_ITEM (window), TRUE);
+  else
+    task_item_emit_visible_changed (TASK_ITEM (window), FALSE);
   
   g_signal_emit (window, _window_signals[WORKSPACE_CHANGED], 
                  0, wnck_window_get_workspace (wnckwin));
@@ -308,7 +327,11 @@ on_window_state_changed (WnckWindow      *wnckwin,
   if (priv->hidden != hidden)
   {
     priv->hidden = hidden;
-    task_item_emit_visible_changed (TASK_ITEM (window), hidden);
+
+    if (priv->in_workspace && !priv->hidden)
+      task_item_emit_visible_changed (TASK_ITEM (window), TRUE);
+    else
+      task_item_emit_visible_changed (TASK_ITEM (window), FALSE);      
   }
 
   needs_attention = wnck_window_or_transient_needs_attention (wnckwin);
@@ -491,14 +514,37 @@ task_window_is_hidden (TaskWindow    *window)
   return window->priv->hidden;
 }
 
+void
+task_window_set_active_workspace   (TaskWindow    *window,
+                                    WnckWorkspace *space)
+{
+  TaskWindowPrivate *priv;
+
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  g_return_if_fail (WNCK_IS_WORKSPACE (space) || space == NULL);
+
+  priv = window->priv;
+  priv->workspace = space;
+  priv->in_workspace = (space==NULL)?TRUE:wnck_window_is_in_viewport (priv->window, space);
+
+  g_debug ("Window is in workspace: %i", priv->in_workspace);
+  
+  if (priv->in_workspace && !priv->hidden)
+    task_item_emit_visible_changed (TASK_ITEM (window), TRUE);
+  else
+    task_item_emit_visible_changed (TASK_ITEM (window), FALSE);
+}
+
 gboolean   
 task_window_is_on_workspace (TaskWindow    *window,
                              WnckWorkspace *space)
 {
+  TaskWindowPrivate *priv;
+  
   g_return_val_if_fail (TASK_IS_WINDOW (window), FALSE);
   g_return_val_if_fail (WNCK_IS_WORKSPACE (space), FALSE);
 
-  TaskWindowPrivate *priv = window->priv;
+  priv = window->priv;
 
   if (WNCK_IS_WINDOW (priv->window))
     return wnck_window_is_in_viewport (priv->window, space);
@@ -668,7 +714,9 @@ _get_icon (TaskItem    *item)
 static gboolean
 _is_visible (TaskItem *item)
 {
-  return !task_window_is_hidden (TASK_WINDOW (item));
+  TaskWindowPrivate *priv = TASK_WINDOW (item)->priv;
+  
+  return priv->in_workspace && !priv->hidden;
 }
 
 static void

@@ -100,6 +100,9 @@ gboolean        task_window_is_visible        (TaskWindow    *window);
 
 gboolean        task_window_is_hidden         (TaskWindow    *window);
 
+void            task_window_set_active_workspace   (TaskWindow    *window,
+                                                    WnckWorkspace *space);
+
 gboolean        task_window_is_on_workspace   (TaskWindow    *window,
                                                WnckWorkspace *space);
 
