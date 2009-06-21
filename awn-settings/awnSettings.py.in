@@ -288,6 +288,8 @@ class awnLauncherMini(awnLauncher):
         self.treeview_launchers.set_reorderable(True)
         self.treeview_launchers.set_headers_visible(False)
 
+	self.scrollwindow.add(self.treeview_launchers)
+
 	self.launchers_uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
 
         self.refresh_tree(self.launchers_uris, self.make_model(self.launchers_uris, self.treeview_launchers))

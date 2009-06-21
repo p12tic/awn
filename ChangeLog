@@ -1,5 +1,10 @@
 2009-06-21  Julien Lavergne <julien.lavergne@gmail.com>
 
+	* awn-settings/awnSettings.py.in:
+	Fix launchers windows.
+
+2009-06-21  Julien Lavergne <julien.lavergne@gmail.com>
+
 	* Makefile.am:
 	* awn-settings/Makefile.am:
 	* awn-settings/awn-launcher-editor.in:
