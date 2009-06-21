@@ -562,9 +562,8 @@ _wrap_awn_effects_cairo_create_clipped(PyGObject *self, PyObject *args, PyObject
 %%
 override awn_themed_icon_set_info
 static PyObject *
-_wrap_awn_themed_icon_set_info (PyObject *self, PyObject *args, PyObject *kwargs)
+_wrap_awn_themed_icon_set_info (PyObject *self, PyObject *args)
 {
-  static char *kwlist[] = { "applet_name", "uid", "states", "icon_names", NULL };
   gchar *applet_name;
   gchar *uid;
   PyObject *py_states;
@@ -572,7 +571,7 @@ _wrap_awn_themed_icon_set_info (PyObject *self, PyObject *args, PyObject *kwargs
   gchar **states = NULL;
   gchar **icon_names = NULL;
  
-  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "ssOO:AwnThemedIcon.set_info", kwlist, &applet_name, &uid, &py_states, &py_icon_names))
+  if (!PyArg_ParseTuple (args, "ssOO:AwnThemedIcon.set_info", &applet_name, &uid, &py_states, &py_icon_names))
   {
     return NULL;
   }

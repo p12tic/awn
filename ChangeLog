@@ -1,3 +1,11 @@
+2009-06-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.override:
+	The value of kwargs received by _wrap_awn_themed_icon_set_info () 
+	seemed to be undefined leading to crashes on some systems.  Removed 
+	kwargs as a param and replaced PyArg_ParseTupleAndKeywords() with 
+	PyArg_ParseTuple().
+
 2009-06-21  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-manager/awn-manager-mini.glade:
