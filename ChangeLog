@@ -1,3 +1,11 @@
+2009-06-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	patch by: mjmt <mjmt@chaostech.org>
+
+	* src/main.c:
+	Autohide: attempt to fix the bug where the dock does not hide under
+	certain circumstances.
+
 2009-05-01  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-icons.c:

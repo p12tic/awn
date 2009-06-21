@@ -300,6 +300,10 @@ main(int argc, char *argv[])
 
   g_signal_connect(G_OBJECT(settings->hot), "enter-notify-event",
                    G_CALLBACK(enter_notify_event), (gpointer)settings);
+  g_signal_connect(G_OBJECT(settings->hot), "leave-notify-event",
+                   G_CALLBACK(leave_notify_event), (gpointer)settings);
+  g_signal_connect(G_OBJECT(settings->window), "enter-notify-event",
+                   G_CALLBACK(enter_notify_event), (gpointer)settings);
   g_signal_connect(G_OBJECT(settings->window), "leave-notify-event",
                    G_CALLBACK(leave_notify_event), (gpointer)settings);
 
