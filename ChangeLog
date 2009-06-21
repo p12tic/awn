@@ -1,3 +1,10 @@
+2009-06-21  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnClass.py:
+	* awn-manager/awnManagerMini.py.in:
+	Add a Behavior button, to choose Autohide, Panel mode etc ...
+
 2009-06-21  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-applet.c:

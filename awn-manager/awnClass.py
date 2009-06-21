@@ -660,6 +660,19 @@ class awnBzr:
 					self.idle_id = gobject.idle_add(self.check_changes, [])
 		#model.show()
 
+	def create_dropdown(self, widget, entries, matrix_settings=False):
+		''' 	Create a dropdown.
+			widget : The widget where create the dropdown
+			entries : entries to add to the dropdown
+			matrix_settings : connect to settings (not implemented yet)
+		'''
+		model = gtk.ListStore(str)
+
+		[model.append([elem]) for elem in entries]
+		widget.set_model(model)
+		cell = gtk.CellRendererText()
+		widget.pack_start(cell)
+		widget.add_attribute(cell,'text',0)
 
 class awnPreferences(awnBzr):
     """This is the main class, duh"""
