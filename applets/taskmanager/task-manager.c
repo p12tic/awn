@@ -896,7 +896,43 @@ task_manager_update (TaskManager *manager,
     return FALSE;
   }
 
-  return TRUE;
+  if (matched_window)
+  {
+    GHashTableIter iter;
+    gpointer key, value;
+
+    g_hash_table_iter_init (&iter, hints);
+    while (g_hash_table_iter_next (&iter, &key, &value)) 
+    {
+      gchar *key_name = (gchar *)key;
+      if (strcmp ("icon-file", key_name) == 0)
+      {
+
+      }
+      else if (strcmp ("progress", key_name) == 0)
+      {
+
+      }
+      else if (strcmp ("message", key_name) == 0)
+      {
+
+      }
+      else if (strcmp ("visible", key_name) == 0)
+      {
+        
+      }
+      else
+      {
+        g_debug ("Taskmanager doesn't understand the key: %s", key_name);
+      }
+    }
+    
+    return TRUE;
+  }
+  else
+  {
+    return FALSE;
+  }
 }
 
 
