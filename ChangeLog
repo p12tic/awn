@@ -1,5 +1,10 @@
 2009-06-21  Julien Lavergne <julien.lavergne@gmail.com>
 
+	* .bzrignore:
+	Updated with awn-settings and debian files.
+
+2009-06-21  Julien Lavergne <julien.lavergne@gmail.com>
+
 	* awn-settings/awnSettings.py.in:
 	Fix launchers windows.
 
