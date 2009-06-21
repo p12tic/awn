@@ -7,9 +7,10 @@ pyfiles_DATA = \
 	awnLauncherEditor.py		
 pyfilesdir = $(pkgdatadir)/awn-settings
 
-glade_DATA = 	launcher-editor.glade 	\
-		awn-settings.glade
-gladedir = $(pkgdatadir)/awn-settings
+xml_DATA = 	launcher-editor.xml 	\
+		awn-settings.xml
+
+xmldir = $(pkgdatadir)/awn-settings
 
 desktopdir   = $(datadir)/applications
 desktop_DATA = 	awn-settings.desktop
@@ -25,7 +26,7 @@ uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-launcher-editor
 
 EXTRA_DIST +=			\
-	$(glade_DATA)		\
+	$(xml_DATA)		\
 	*.py			\
 	$(desktop_DATA).in.in	\
 	$(NULL)
@@ -33,4 +34,4 @@ EXTRA_DIST +=			\
 DISTCLEANFILES = awn-settings.desktop
 
 clean:
-	rm -f *.pyo *.pyc *.bak *.gladep $(desktop_DATA) $(desktop_DATA).in
+	rm -f *.pyo *.pyc *.bak $(desktop_DATA) $(desktop_DATA).in

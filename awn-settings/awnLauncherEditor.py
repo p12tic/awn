@@ -45,19 +45,20 @@ ICON_COL_PIXBUF, ICON_COL_LABEL, ICON_COL_DATA = range(3)
 
 class awnLauncherEditor:
     def __init__(self, filename, launcher = None):
-        self.glade = gtk.glade.XML(os.path.join(defs.PKGDATADIR, 'awn-manager', 'launcher-editor.glade'))
-        self.glade.signal_autoconnect(self)
-        self.main_dialog = self.glade.get_widget('dialog_desktop_item')
+        self.xml_file = gtk.Builder()
+	self.xml_file.add_from_file(os.path.join(defs.PKGDATADIR, 'awn-settings', 'launcher-editor.xml'))
+        self.xml_file.connect_signals(self)
+        self.main_dialog = self.xml_file.get_object('dialog_desktop_item')
         self.launcher = launcher
         self.filename = os.path.abspath(filename)
         self.desktop_entry = DesktopEntry(self.filename)
         self.client = awn.Config()
         if os.path.exists(self.filename):
-            self.glade.get_widget('entry_name').set_text(self.desktop_entry.get('Name'))
-            self.glade.get_widget('entry_description').set_text(self.desktop_entry.get('Comment'))
-            self.glade.get_widget('entry_command').set_text(self.desktop_entry.get('Exec'))
+            self.xml_file.get_object('entry_name').set_text(self.desktop_entry.get('Name'))
+            self.xml_file.get_object('entry_description').set_text(self.desktop_entry.get('Comment'))
+            self.xml_file.get_object('entry_command').set_text(self.desktop_entry.get('Exec'))
             self.icon_path = self.desktop_entry.get('Icon')
-            image = self.glade.get_widget('image_icon')
+            image = self.xml_file.get_object('image_icon')
             if os.path.exists(self.icon_path):
                 icon = gdk.pixbuf_new_from_file_at_size (self.icon_path, 32, 32)
                 image.set_from_pixbuf(icon)
@@ -72,7 +73,7 @@ class awnLauncherEditor:
             self.icon_path = None
         self.command_chooser = None
         self.stock_icons = None
-        self.icon_viewer = self.glade.get_widget('iconview_launcher_icons')
+        self.icon_viewer = self.xml_file.get_object('iconview_launcher_icons')
         self.custom_icons = gtk.ListStore(gdk.Pixbuf, str, str)
         self.icon_viewer.set_model(self.custom_icons)
         # based on Gimmie's ItemIconView code.
@@ -106,7 +107,7 @@ class awnLauncherEditor:
                 return ' '.join([word[0].upper() + word[1:] for word in splitter.split(data)]).strip()
             else:
                 return data
-        fcb = self.glade.get_widget('filechooserbutton_icon_directory')
+        fcb = self.xml_file.get_object('filechooserbutton_icon_directory')
         self.populate_icon_viewer_custom(fcb.get_filename())
         # populate stock icon dropdown
         if self.stock_icons is None:
@@ -135,14 +136,14 @@ class awnLauncherEditor:
                         else:
                             label = id_to_label(data[data.find('-') + 1:])
                     self.stock_icons.append((pixbuf, label, data))
-        self.glade.get_widget('dialog_select_icon').show_all()
+        self.xml_file.get_object('dialog_select_icon').show_all()
 
     def on_button_open_command_clicked(self, button):
         if self.command_chooser is None:
             self.command_chooser = gtk.FileChooserDialog(_('Select an Executable File'), self.main_dialog, buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         self.command_chooser.show_all()
         if self.command_chooser.run() == gtk.RESPONSE_OK:
-            self.glade.get_widget('entry_command').set_text(self.command_chooser.get_filename())
+            self.xml_file.get_object('entry_command').set_text(self.command_chooser.get_filename())
         self.command_chooser.hide_all()
 
     def on_dialog_desktop_item_response(self, dialog, response):
@@ -155,7 +156,7 @@ class awnLauncherEditor:
             # check that all required fields are filled
             fields = {}
             for key in ['name', 'description', 'command']:
-                fields[key] = self.glade.get_widget('entry_%s' % key).get_text()
+                fields[key] = self.xml_file.get_object('entry_%s' % key).get_text()
             if fields['name'] is None or len(fields['name']) == 0:
                 err_dialog(_('Please provide a name for the launcher in the "%s" field.') % _('<b>Name:</b>'))
                 return
@@ -195,7 +196,7 @@ class awnLauncherEditor:
         self.populate_icon_viewer_custom(filechooser.get_filename())
 
     def on_radiobutton_icon_toggled(self, button_stock):
-        fcb = self.glade.get_widget('filechooserbutton_icon_directory')
+        fcb = self.xml_file.get_object('filechooserbutton_icon_directory')
         if button_stock.get_active():
             self.icon_viewer.set_model(self.stock_icons)
             fcb.set_sensitive(False)
@@ -228,10 +229,10 @@ class awnLauncherEditor:
             model = self.icon_viewer.get_model()
             iterator = model.get_iter(selected_icon[0])
             self.icon_path = model.get_value(iterator, ICON_COL_DATA)
-            image = self.glade.get_widget('image_icon')
+            image = self.xml_file.get_object('image_icon')
             image.set_from_pixbuf(model.get_value(iterator, ICON_COL_PIXBUF))
         else:
-            self.glade.get_widget('radiobutton_custom').set_active(True)
+            self.xml_file.get_object('radiobutton_custom').set_active(True)
         dialog.hide_all()
 
     def run(self, standalone = False):

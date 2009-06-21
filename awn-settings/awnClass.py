@@ -1317,27 +1317,12 @@ class awnLauncher(awnBzr):
         self.client = awn.Config()
         self.client.ensure_group(defs.LAUNCHERS)
 
-        self.scrollwindow = self.wTree.get_widget("launcher_scrollwindow")
-        self.treeview = gtk.TreeView()
-        self.treeview.set_reorderable(True)
-        self.treeview.set_headers_visible(False)
-
-        self.scrollwindow.add(self.treeview)
         uris = []
         if self.client.exists(defs.LAUNCHERS, defs.LAUNCHERS_LIST):
             uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
 
         self.last_uris = uris[:] # make a copy
         self.client.notify_add(defs.LAUNCHERS, defs.LAUNCHERS_LIST, self.refresh_launchers, self)
-
-        self.refresh_tree(uris, self.make_model(treeview, uris))
-
-        self.applet_remove = self.wTree.get_widget("launcher_remove")
-        self.applet_remove.connect("clicked", self.remove)
-        self.applet_add = self.wTree.get_widget("launcher_add")
-        self.applet_add.connect("clicked", self.add)
-        self.launcher_edit = self.wTree.get_widget("launcher_edit")
-        self.launcher_edit.connect("clicked", self.edit)
 
     def reordered(self, model, path, iterator, data=None):
         cur_index = self.model.get_path(iterator)[0]
@@ -1386,7 +1371,7 @@ class awnLauncher(awnBzr):
     #   Edited by Ryan Rushton
 
     def edit(self, button):
-        selection = self.treeview.get_selection()
+        selection = self.treeview_launchers.get_selection()
         (model, iter) = selection.get_selected()
         uri = model.get_value(iter, 2)
         editor = awnLauncherEditor(uri, self)
@@ -1398,7 +1383,7 @@ class awnLauncher(awnBzr):
         editor.run()
 
     def remove(self, button):
-        selection = self.treeview.get_selection()
+        selection = self.treeview_launchers.get_selection()
         (model, iter) = selection.get_selected()
         uri = model.get_value(iter, 2)
 	# TODO: don't check if it exists, perhaps it's invalid

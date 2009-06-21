@@ -1,3 +1,19 @@
+2009-06-22  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/Makefile.am:
+	* awn-settings/awn-launcher-editor.in:
+	* awn-settings/awn-settings.xml:
+	* awn-settings/awnClass.py:
+	* awn-settings/awnLauncherEditor.py:
+	* awn-settings/awnSettings.py.in:
+	* awn-settings/launcher-editor.xml:
+	* configure.in:
+	* debian/control:
+	Migrate from libglade to GtkBuilder.
+	Bump python-gtk2 depends to 2.12, needed for GtkBuilder.
+	Fix location of awn-launcher-editor.
+	Remove some useless code.
+
 2009-06-21  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* .bzrignore:
