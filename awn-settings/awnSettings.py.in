@@ -24,8 +24,8 @@ import sys, os, os.path, time
 
 PLAT_PKG = '@PY_PLAT_PKG@'
 SITE_PKG = '@PY_SITE_PKG@'
-AWN_MANAGER_DIR = os.path.join('@PKGDATADIR@', 'awn-manager')
-sys.path = [AWN_MANAGER_DIR] + sys.path
+AWN_SETTINGS_DIR = os.path.join('@PKGDATADIR@', 'awn-settings')
+sys.path = [AWN_SETTINGS_DIR] + sys.path
 if PLAT_PKG not in sys.path:
     sys.path = [PLAT_PKG] + sys.path
 if SITE_PKG not in sys.path:
@@ -58,7 +58,7 @@ awn.vfs_init()
 defs.i18nize(globals())
 
 if os.geteuid() == 0:
-	sys.stderr.write(_("Awn Manager can't be run as root.") + '\n') 
+	sys.stderr.write(_("Awn Settings can't be run as root.") + '\n') 
 	sys.exit(1)
 
 class awnPreferencesMini(awnPreferences):
@@ -287,7 +287,7 @@ class awnLauncherMini(awnLauncher):
         self.treeview_launchers = gtk.TreeView()
         self.treeview_launchers.set_reorderable(True)
         self.treeview_launchers.set_headers_visible(False)
-	
+
 	self.launchers_uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
 
         self.refresh_tree(self.launchers_uris, self.make_model(self.launchers_uris, self.treeview_launchers))
@@ -341,7 +341,7 @@ class awnAppletMini(awnApplet):
 
 class awnManagerMini(awnManager):
     def __init__(self):
-	self.GLADE_PATH = os.path.join(AWN_MANAGER_DIR, 'awn-manager-mini.glade')
+	self.GLADE_PATH = os.path.join(AWN_SETTINGS_DIR, 'awn-settings.glade')
         gtk.glade.bindtextdomain(defs.I18N_DOMAIN, defs.LOCALEDIR)
         gtk.glade.textdomain(defs.I18N_DOMAIN)
 
@@ -353,15 +353,15 @@ class awnManagerMini(awnManager):
         if icon_search_path not in self.theme.get_search_path():
             self.theme.append_search_path(icon_search_path)
         icon_list = []
-        icon_sizes = self.theme.get_icon_sizes('awn-manager')
+        icon_sizes = self.theme.get_icon_sizes('awn-settings')
         for size in icon_sizes:
             if size == -1: # scalable
                 if 128 not in icon_sizes:
-                    icon = self.safe_load_icon('awn-manager', 128, gtk.ICON_LOOKUP_USE_BUILTIN)
+                    icon = self.safe_load_icon('awn-settings', 128, gtk.ICON_LOOKUP_USE_BUILTIN)
                 else:
                     continue
             else:
-                icon = self.safe_load_icon('awn-manager', size, gtk.ICON_LOOKUP_USE_BUILTIN)
+                icon = self.safe_load_icon('awn-settings', size, gtk.ICON_LOOKUP_USE_BUILTIN)
             icon_list.append(icon)
         if len(icon_list) > 0:
             gtk.window_set_default_icon_list(*icon_list)

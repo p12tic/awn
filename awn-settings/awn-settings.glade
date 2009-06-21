@@ -4,7 +4,7 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="awnManagerWindow">
     <property name="visible">True</property>
-    <property name="icon">awn-manager</property>
+    <property name="icon">awn-settings</property>
     <property name="icon_name">awn-manager</property>
     <child>
       <widget class="GtkVBox" id="vbox1">

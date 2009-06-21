@@ -1,3 +1,24 @@
+2009-06-21  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* Makefile.am:
+	* awn-settings/Makefile.am:
+	* awn-settings/awn-launcher-editor.in:
+	* awn-settings/awn-settings-small.svg:
+	* awn-settings/awn-settings.desktop.in.in:
+	* awn-settings/awn-settings.glade:
+	* awn-settings/awn-settings.svg:
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnLauncherEditor.py:
+	* awn-settings/awnSettings.py.in:
+	* awn-settings/launcher-editor.glade:
+	* configure.in:
+	* debian/awn-settings-trunk.install:
+	* debian/control:
+	* debian/rules:
+	Rename Awn-manager-mini to Awn-settings.
+	Move all necessary files to awn-settings/
+	Disable awn-manager from the build system.
+
 2009-06-20  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* bindings/python/awn.override:
