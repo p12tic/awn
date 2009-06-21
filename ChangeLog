@@ -1,5 +1,15 @@
 2009-06-21  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-applet.c:
+	Fixed minor problem.
+	* src/Makefile.am:
+	* src/awn-dbus-watcher.c:
+	* src/awn-dbus-watcher.h:
+	Added DBusWatcher object which can send signals when there's
+	a new object on the dbus, or an object disappears.
+
+2009-06-21  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-panel-dbus.xml:
 	* src/awn-panel.c:
 	* src/awn-panel.h:

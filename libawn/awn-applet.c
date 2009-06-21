@@ -331,8 +331,8 @@ awn_applet_finalize (GObject *obj)
 
   if (priv->connection)
   {
-    dbus_g_connection_unref (priv->connection);
     g_object_unref (priv->proxy);
+    dbus_g_connection_unref (priv->connection);
     priv->connection = NULL;
     priv->proxy = NULL;
   }
