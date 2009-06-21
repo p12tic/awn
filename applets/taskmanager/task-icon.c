@@ -165,6 +165,7 @@ static void      task_icon_dest_drag_data_received  (GtkWidget      *widget,
 static gboolean _update_geometry(GtkWidget *widget);
 static gboolean task_icon_refresh_geometry (TaskIcon *icon);
 static void     task_icon_refresh_visible  (TaskIcon *icon);
+static void     task_icon_search_main_item (TaskIcon *icon);
 
 /* GObject stuff */
 static void
@@ -566,7 +567,7 @@ on_main_item_visible_changed (TaskItem  *item,
      FIXME: this is possible atm in TaskWindow */
   if (visible) return;
 
-  //task_icon_search_main_item (icon); TODO
+  task_icon_search_main_item (icon);
 }
 
 /**
@@ -587,14 +588,9 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
 
   if (old_item == priv->main_item)
   {
-    g_signal_handlers_disconnect_by_func(priv->main_item, 
-                                         G_CALLBACK (on_main_item_name_changed), icon);
-    g_signal_handlers_disconnect_by_func(priv->main_item, 
-                                         G_CALLBACK (on_main_item_icon_changed), icon);
-    
-    //TODO: also remove the disconnecting to the following function.
-    //task_icon_search_main_item (icon); TODO
+    task_icon_search_main_item (icon);
   }
+
   task_icon_refresh_visible (icon);
 
   if (g_slist_length (priv->items) == 0)
@@ -607,8 +603,57 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
   }
 }
 
+static void
+task_icon_search_main_item (TaskIcon *icon)
+{
+  TaskIconPrivate *priv;
+  GSList *i;
+  TaskItem *main_item = NULL;
+
+  g_return_if_fail (TASK_IS_ICON (icon));
+
+  priv = icon->priv;
+
+  for (i = priv->items; i; i = i->next)
+  {
+    TaskItem *item = i->data;
+
+    if (!task_item_is_visible (item)) continue;
+
+    main_item = item;
+    break;
+  }
+
+  //remove signals of old main_item
+  if (priv->main_item)
+  {
+    g_signal_handlers_disconnect_by_func(priv->main_item, 
+                                         G_CALLBACK (on_main_item_name_changed), icon);
+    g_signal_handlers_disconnect_by_func(priv->main_item, 
+                                         G_CALLBACK (on_main_item_icon_changed), icon);
+    g_signal_handlers_disconnect_by_func(priv->main_item, 
+                                         G_CALLBACK (on_main_item_visible_changed), icon);
+    priv->main_item = NULL;
+  }
+
+  if (main_item)
+  {
+    priv->main_item = main_item;
+    priv->icon = task_item_get_icon (priv->main_item);
+    awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
+    awn_icon_set_tooltip_text (AWN_ICON (icon), 
+                               task_item_get_name (priv->main_item));
+    g_signal_connect (priv->main_item, "name-changed",
+                      G_CALLBACK (on_main_item_name_changed), icon);
+    g_signal_connect (priv->main_item, "icon-changed",
+                      G_CALLBACK (on_main_item_icon_changed), icon);
+    g_signal_connect (priv->main_item, "visible-changed",
+                      G_CALLBACK (on_main_item_visible_changed), icon);
+  }
+}
+
 /**
- *
+ * 
  */
 static void
 task_icon_refresh_visible (TaskIcon *icon)
@@ -642,50 +687,17 @@ task_icon_refresh_visible (TaskIcon *icon)
        * There are no visible items in the icon,
        * so no reason to show itself.
        */
-      if (priv->main_item)
-      {
-        g_signal_handlers_disconnect_by_func(priv->main_item, 
-                                             G_CALLBACK (on_main_item_name_changed), icon);
-        g_signal_handlers_disconnect_by_func(priv->main_item, 
-                                             G_CALLBACK (on_main_item_icon_changed), icon);
-        g_signal_handlers_disconnect_by_func(priv->main_item, 
-                                             G_CALLBACK (on_main_item_visible_changed), icon);
-        priv->main_item = NULL;
-      }
-      
       priv->visible = FALSE;
     }
-    else if (count == 1)
+    else
     {
-      /*
-       * There is ONE item visible in the icon,
-       * That becomes the main item and will hook
-       * to name/icon changes
-       * TODO: adjust a little?
-       */
-      priv->main_item = vis_item;
-      priv->icon = task_item_get_icon (priv->main_item);
-      awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
-      awn_icon_set_tooltip_text (AWN_ICON (icon), 
-                                 task_item_get_name (priv->main_item));
-
-      g_signal_connect (priv->main_item, "name-changed",
-                        G_CALLBACK (on_main_item_name_changed), icon);
-      g_signal_connect (priv->main_item, "icon-changed",
-                        G_CALLBACK (on_main_item_icon_changed), icon);
-      g_signal_connect (priv->main_item, "visible-changed",
-                        G_CALLBACK (on_main_item_visible_changed), icon);
+      if (!priv->main_item)
+        task_icon_search_main_item (icon);
 
       //awn_icon_set_indicator_count (AWN_ICON (icon), 
       //                  TASK_IS_LAUNCHER (priv->main_item) ? 1 : 0);
       
       priv->visible = TRUE;
-    }
-    else
-    {
-      //awn_icon_set_indicator_count (AWN_ICON (icon), 0);
-      
-      g_return_if_fail (priv->main_item);
     }
 
     g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);

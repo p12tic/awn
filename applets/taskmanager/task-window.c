@@ -382,6 +382,20 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
  * Public functions
  */
 
+/**
+ * Returns the name of the WnckWindow.
+ */
+const gchar *
+task_window_get_name (TaskWindow *window)
+{
+  g_return_val_if_fail (TASK_IS_WINDOW (window), "");
+
+  if (WNCK_IS_WINDOW (window->priv->window))
+    return wnck_window_get_name (window->priv->window);
+  
+  return "";
+}
+
 WnckScreen * 
 task_window_get_screen (TaskWindow *window)
 {
@@ -526,8 +540,6 @@ task_window_set_active_workspace   (TaskWindow    *window,
   priv = window->priv;
   priv->workspace = space;
   priv->in_workspace = (space==NULL)?TRUE:wnck_window_is_in_viewport (priv->window, space);
-
-  g_debug ("Window is in workspace: %i", priv->in_workspace);
   
   if (priv->in_workspace && !priv->hidden)
     task_item_emit_visible_changed (TASK_ITEM (window), TRUE);

@@ -106,6 +106,7 @@ static void task_manager_orient_changed (AwnApplet *applet,
 static void task_manager_size_changed   (AwnApplet *applet,
                                          gint       size);
 
+
 /* D&D Forwards */
 static void _drag_dest_motion (TaskManager *manager,
                                gint x,
@@ -802,6 +803,102 @@ task_manager_set_drag_and_drop (TaskManager *manager,
 
   g_debug("%s", drag_and_drop?"D&D is on":"D&D is off");
 }
+
+/**
+ * D-BUS functionality
+ */
+
+gboolean
+task_manager_get_capabilities (TaskManager *manager,
+                               GStrv *supported_keys,
+                               GError **error)
+{
+  const gchar *known_keys[] =
+  {
+    "icon-file",
+    "progress",
+    "message",
+    "visible",
+    NULL
+  };
+
+  *supported_keys = g_strdupv ((char **)known_keys);
+
+  return TRUE;
+}
+
+gboolean
+task_manager_update (TaskManager *manager,
+                     GValue *window,
+                     GHashTable *hints, /* mappings from string to GValue */
+                     GError **error)
+{
+  TaskManagerPrivate *priv;
+  TaskWindow *matched_window = NULL;
+  GSList *w;
+
+  g_return_val_if_fail (TASK_IS_MANAGER (manager), FALSE);
+  
+  priv = manager->priv;
+  
+  if (G_VALUE_HOLDS_STRING (window))
+  {
+    /* Find the window that corresponds to the given window name.
+       First try to match the application name, then the normal name. */
+    WnckApplication *wnck_app = NULL;
+    const gchar *name = NULL;
+    for (w = priv->windows; w; w = w->next)
+    {
+      TaskWindow *taskwindow = w->data;
+      
+      if (!TASK_IS_WINDOW (taskwindow)) continue;
+
+      wnck_app = task_window_get_application (taskwindow);
+      if (WNCK_IS_APPLICATION(wnck_app))
+      {
+        name = wnck_application_get_name(wnck_app);
+        if (name && strcmp (g_value_get_string (window), name) == 0)
+        {
+          matched_window = taskwindow;
+          break;
+        }
+      }
+      
+      name = task_window_get_name (taskwindow);
+      if (name && strcmp (g_value_get_string (window), name) == 0)
+      {
+        matched_window = taskwindow;
+        break;
+      }
+    }
+  }
+  else if (G_VALUE_HOLDS_INT64 (window))
+  {
+    /* Find the window that corresponds to the given xid */
+    gint64 xid;
+    for (w = priv->windows; w; w = w->next)
+    {
+      TaskWindow *taskwindow = w->data;
+      
+      if (!TASK_IS_WINDOW (taskwindow)) continue;
+
+      xid = task_window_get_xid (taskwindow);
+      if (xid && g_value_get_int64 (window) == xid)
+      {
+        matched_window = taskwindow;
+        break;
+      }
+    }
+  }
+  else
+  {
+    //G_ERROR stuff
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
 
 /*
  * Position Icons through dragging
