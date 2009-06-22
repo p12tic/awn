@@ -34,7 +34,7 @@
 #include "task-launcher.h"
 #include "task-settings.h"
 
-G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_ICON)
+G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_THEMED_ICON)
 
 #define TASK_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_ICON, \
@@ -54,9 +54,14 @@ struct _TaskIconPrivate
   //The number of TaskWindows (subclass of TaskItem) that have the active state.
   guint is_active;
 
+  //The main item being used for the icon (and if alone for the text)
   TaskItem *main_item;
 
+  //Whetever this icon is visible or not
   gboolean visible;
+
+  //An overlay for showing number of items
+  AwnOverlayText *overlay_text;
   
   GdkPixbuf *icon;
   GtkWidget *dialog;
@@ -474,6 +479,7 @@ task_icon_init (TaskIcon *icon)
   priv->is_active = 0;
   priv->main_item = NULL;
   priv->visible = FALSE;
+  priv->overlay_text = NULL;
 
   awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
 
@@ -603,6 +609,11 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
   }
 }
 
+/**
+ * Searches for a new main item.
+ * A main item is used for displaying its icon and also the text (if there is only one item)
+ * Attention: this function doesn't check if it is needed to switch to a new main item.
+ */
 static void
 task_icon_search_main_item (TaskIcon *icon)
 {
@@ -680,22 +691,45 @@ task_icon_refresh_visible (TaskIcon *icon)
   if (count != priv->shown_items)
   {
     g_debug("shown items changed: %i", count);
-  
+
+    if (count > 1)
+    {
+      if (!priv->overlay_text)
+      {
+        priv->overlay_text = awn_overlay_text_new ();
+        awn_overlayable_add_overlay (AWN_OVERLAYABLE (icon), 
+                                     AWN_OVERLAY (priv->overlay_text));
+        g_object_set (G_OBJECT (priv->overlay_text),
+                      "gravity", GDK_GRAVITY_SOUTH_EAST, 
+                      "font-sizing", AWN_FONT_SIZE_LARGE,
+                      "text_color_astr", "#FFFFFFFF",
+                      "apply-effects", TRUE,
+                      NULL);
+      }
+      gchar* count_str = g_strdup_printf ("%i",count);
+      g_object_set (G_OBJECT (priv->overlay_text),
+                    "text", count_str,
+                    NULL);
+      g_free (count_str);
+    }
+    else
+    {
+      if (priv->overlay_text)
+      {
+        awn_overlayable_remove_overlay (AWN_OVERLAYABLE (icon), 
+                                        AWN_OVERLAY (priv->overlay_text));
+        priv->overlay_text = NULL;
+      }
+    }
+    
     if (count == 0)
     {
-      /* 
-       * There are no visible items in the icon,
-       * so no reason to show itself.
-       */
       priv->visible = FALSE;
     }
     else
     {
       if (!priv->main_item)
         task_icon_search_main_item (icon);
-
-      //awn_icon_set_indicator_count (AWN_ICON (icon), 
-      //                  TASK_IS_LAUNCHER (priv->main_item) ? 1 : 0);
       
       priv->visible = TRUE;
     }
