@@ -51,14 +51,14 @@ typedef struct _TaskIconPrivate TaskIconPrivate;
  
 struct _TaskIcon
 {
-  AwnIcon        parent;	
+  AwnThemedIcon        parent;	
 
   TaskIconPrivate *priv;
 };
 
 struct _TaskIconClass
 {
-  AwnIconClass   parent_class;
+  AwnThemedIconClass   parent_class;
 
   /*< vtable, not signals >*/
   
