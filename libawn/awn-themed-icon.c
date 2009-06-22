@@ -66,6 +66,7 @@ struct _AwnThemedIconPrivate
   gchar  *current_state;
   gint    current_size;
   gint    cur_icon;
+  GdkPixbufRotation    rotate;
 };
 
 enum
@@ -99,7 +100,52 @@ void awn_themed_icon_drag_data_received (GtkWidget        *widget,
                                          guint             info,
                                          guint             evt_time);
 
+static void ensure_icon                 (AwnThemedIcon *icon);
+
+enum
+{
+  PROP_0,
+  PROP_ROTATE
+};
+
 /* GObject stuff */
+
+static void
+awn_themed_icon_get_property (GObject *object, guint property_id,
+                              GValue *value, GParamSpec *pspec)
+{
+  AwnThemedIconPrivate * priv;
+  priv = AWN_THEMED_ICON_GET_PRIVATE (object);
+
+  switch (property_id) 
+  {
+    case PROP_ROTATE:
+      g_value_set_enum (value,priv->rotate);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
+}
+
+static void
+awn_themed_icon_set_property (GObject *object, guint property_id,
+                              const GValue *value, GParamSpec *pspec)
+{
+  AwnThemedIconPrivate * priv;
+  priv = AWN_THEMED_ICON_GET_PRIVATE (object);
+
+  switch (property_id) 
+  {
+    case PROP_ROTATE:
+      priv->rotate = g_value_get_enum (value);
+      ensure_icon (AWN_THEMED_ICON(object));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
+}
+
+
 static void
 awn_themed_icon_dispose (GObject *object)
 {
@@ -152,12 +198,23 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
 {
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
+  GParamSpec   *pspec;        
   
+  obj_class->get_property = awn_themed_icon_get_property;
+  obj_class->set_property = awn_themed_icon_set_property;
   obj_class->dispose = awn_themed_icon_dispose;
   obj_class->finalize = awn_themed_icon_finalize;  
   
   wid_class->drag_data_received = awn_themed_icon_drag_data_received;
 
+  pspec = g_param_spec_enum ("rotate",
+                               "Rotate",
+                               "Rotate",
+                               GDK_TYPE_PIXBUF_ROTATION,
+                               GDK_PIXBUF_ROTATE_NONE,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (obj_class, PROP_ROTATE, pspec);   
+  
   g_type_class_add_private (obj_class, sizeof (AwnThemedIconPrivate));
 }
 
@@ -311,7 +368,7 @@ try_and_load_image_from_disk (const gchar *filename, gint size)
 
 /* 
  This function exists because gtk_icon_theme_load_icon() seems to insist 
- on return crappy builtin icons in certain situation  even when 
+ on returning crappy builtin icons in certain situation  even when 
  GTK_ICON_LOOKUP_USE_BUILTIN is not one of the flags.  Obviously I must be 
  misunderstanding something as this bug _couldn't_ have been missed...  but this
  seems to make the "crappy" icons go bye bye.
@@ -474,6 +531,13 @@ ensure_icon (AwnThemedIcon *icon)
   /* Get the icon first */
   pixbuf = get_pixbuf_at_size (icon, priv->current_size, priv->current_state);
 
+  if (priv->rotate)
+  {
+    GdkPixbuf * rotated;
+    rotated = gdk_pixbuf_rotate_simple (pixbuf,priv->rotate);
+    g_object_unref (pixbuf);
+    pixbuf = rotated;
+  }
   awn_icon_set_from_pixbuf (AWN_ICON (icon), pixbuf);
 
   g_object_unref (pixbuf);

@@ -1,3 +1,8 @@
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Added rotate property of type GdkPixbufRotation to AwnThemedIcon.
+
 2009-06-23  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-settings/awn-settings.xml:
