@@ -1,3 +1,12 @@
+2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* doc/reference/libawn-docs.sgml:
+	Added missing files.
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	Moved gtkdoc comments to C file to prevent rebuild of everything when
+	documentation changes.
+
 2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-themed-icon.c:

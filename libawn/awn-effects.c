@@ -827,6 +827,13 @@ awn_effects_init(AwnEffects * fx)
   fx->priv->saturation = 1.0;
 }
 
+/**
+ * awn_effects_new_for_widget:
+ * @widget: Managed widget, computing window width and height is based on it and
+ * it is also passed to gtk_widget_queue_draw() during the animations.
+ *
+ * Creates new #AwnEffects instance.
+ */
 AwnEffects* awn_effects_new_for_widget(GtkWidget * widget)
 {
   g_return_val_if_fail(GTK_IS_WIDGET(widget), NULL);
@@ -889,12 +896,33 @@ awn_effects_sort(gconstpointer a, gconstpointer b)
     awn_effects_get_priority(data2->this_effect));
 }
 
+/**
+ * awn_effects_start:
+ * @fx: Pointer to #AwnEffects instance.
+ * @effect: #AwnEffect to schedule.
+ *
+ * Start a single effect. The effect will loop until awn_effect_stop()
+ * is called.
+ */
 void
 awn_effects_start(AwnEffects * fx, const AwnEffect effect)
 {
   awn_effects_start_ex(fx, effect, 0, FALSE, FALSE);
 }
 
+/**
+ * awn_effects_start_ex:
+ * @fx: Pointer to #AwnEffects instance.
+ * @effect: Effect to schedule.
+ * @max_loops: Number of maximum animation loops (0 for unlimited).
+ * @signal_start: Determines whether the animation should emit "animation-start"
+ *   signal when it starts.
+ * @signal_stop: Determines whether the animation should emit "animation-end"
+ *   signal when it finishes.
+ *
+ * Extended effect start, which provides a way to specify maximum number of loops
+ * and possibility to emit signals for animation start & end.
+ */
 void
 awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
                      gboolean signal_start, gboolean signal_end)
@@ -935,6 +963,13 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
   awn_effects_main_effect_loop(fx);
 }
 
+/**
+ * awn_effects_stop:
+ * @fx: Pointer to #AwnEffects instance.
+ * @effect: #AwnEffect to stop.
+ *
+ * Stop a single effect.
+ */
 void
 awn_effects_stop(AwnEffects * fx, const AwnEffect effect)
 {
@@ -1081,6 +1116,16 @@ void awn_effects_emit_anim_end(AwnEffects *fx, AwnEffect effect)
   g_signal_emit( fx, _effects_signals[ANIMATION_END], 0, effect);
 }
 
+/**
+ * awn_effects_set_icon_size:
+ * @fx: Pointer to #AwnEffects instance.
+ * @width: Width of drawn icon.
+ * @height: Height of drawn icon.
+ * @requestSize: Set to true to call gtk_widget_set_size_request
+ *   for the managed widget.
+ *
+ * Sets up correct offsets in managed window based on dimensions of drawn icon.
+ */
 void
 awn_effects_set_icon_size(AwnEffects * fx, gint width, gint height,
                           gboolean requestSize)
@@ -1129,11 +1174,37 @@ awn_effects_set_icon_size(AwnEffects * fx, gint width, gint height,
   }
 }
 
+/**
+ * awn_effects_cairo_create:
+ * @fx: Pointer to #AwnEffects instance.
+ *
+ * <note>
+ *  Make sure you call awn_effects_cairo_destroy() on the cairo context
+ *  returned by this call.
+ * </note>
+ * 
+ * Returns cairo context where an icon can be drawn. (the icon should have 
+ * dimensions specified by a previous call to #awn_effects_set_icon_size)
+ */
 cairo_t *awn_effects_cairo_create(AwnEffects *fx)
 {
   return awn_effects_cairo_create_clipped(fx, NULL);
 }
 
+/**
+ * awn_effects_cairo_create_clipped:
+ * @fx: Pointer to #AwnEffects instance.
+ * @region: A region the drawing will be clipped to.
+ *
+ * <note>
+ *  Make sure you call awn_effects_cairo_destroy() on the cairo context
+ *  returned by this call.
+ * </note>
+ * 
+ * Returns cairo context where an icon can be drawn. (the icon should have
+ * dimensions specified by a previous call to #awn_effects_set_icon_size)
+ *
+ */
 cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
                                           GdkRegion *region)
 {
@@ -1214,6 +1285,12 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
   return cr;
 }
 
+/**
+ * awn_effects_cairo_destroy:
+ * @fx: Pointer to #AwnEffects instance.
+ *
+ * Finish drawing of the icon and run all post-ops.
+ */
 void awn_effects_cairo_destroy(AwnEffects *fx)
 {
   cairo_t *cr = fx->virtual_ctx;
@@ -1338,6 +1415,13 @@ awn_effects_remove_overlay (AwnEffects *fx, AwnOverlay *overlay)
   }
 }
 
+/**
+ * awn_effects_get_overlays:
+ * @fx: #AwnEffects instance.
+ *
+ * Returns a newly-allocated list of the overlays added to this effects
+ * instance.
+ */
 GList*
 awn_effects_get_overlays (AwnEffects *fx)
 {

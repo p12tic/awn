@@ -25,15 +25,18 @@
       <title>Icons</title>
       <xi:include href="xml/awn-icon.xml"/>
       <xi:include href="xml/awn-themed-icon.xml"/>
-      <xi:include href="xml/awn-overlaid-icon.xml"/>
       <xi:include href="xml/awn-icon-box.xml"/>
     </chapter>
     <chapter>
       <title>Icon Overlays</title>
       <xi:include href="xml/awn-overlay.xml"/>
-      <xi:include href="xml/awn-overlay-icon.xml"/>
+      <xi:include href="xml/awn-overlay-themed-icon.xml"/>
       <xi:include href="xml/awn-overlay-text.xml"/>
       <xi:include href="xml/awn-overlay-throbber.xml"/>
+      <xi:include href="xml/awn-overlay-pixbuf.xml"/>
+      <xi:include href="xml/awn-overlay-pixbuf-file.xml"/>
+      <xi:include href="xml/awn-overlay-progress.xml"/>
+      <xi:include href="xml/awn-overlay-progress-circle.xml"/>
     </chapter>
     <chapter>
       <title>Utilities</title>
