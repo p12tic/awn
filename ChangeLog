@@ -1,4 +1,9 @@
 2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	binding for override_gtk_theme () now accepts None.
+
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
 	
 	* libawn/awn-themed-icon.c:
 	Stop using gtk_icon_theme_load_icon ().  It insist on loading crappy 

@@ -1414,7 +1414,7 @@
   (c-name "awn_themed_icon_override_gtk_theme")
   (return-type "none")
   (parameters
-    '("const-gchar*" "theme_name")
+    '("const-gchar*" "theme_name"  (default "NULL") (null-ok))
   )
 )
 
