@@ -167,7 +167,6 @@ _awn_overlay_themed_icon_theme_change (AwnOverlayThemedIcon * overlay)
   AwnOverlayThemedIconPrivate * priv;
   priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (overlay);
   g_return_if_fail (priv->icon_name);
-  g_debug ("all hell");
   gchar * tmp = g_strdup (priv->icon_name);
   g_object_set (overlay,
                 "icon_name",tmp,
