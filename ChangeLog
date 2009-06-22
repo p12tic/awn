@@ -1,3 +1,8 @@
+2009-06-22  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.override:
+	This should be correct fix for the binding problem.
+
 2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
