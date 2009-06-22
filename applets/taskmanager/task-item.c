@@ -19,7 +19,7 @@
 
 #include "task-item.h"
 
-G_DEFINE_ABSTRACT_TYPE (TaskItem, task_item, GTK_TYPE_BOX)
+G_DEFINE_ABSTRACT_TYPE (TaskItem, task_item, GTK_TYPE_EVENT_BOX)
 
 #define TASK_ITEM_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_ITEM, \
@@ -114,9 +114,12 @@ task_item_init (TaskItem *item)
   /* get and save private struct */
   priv = item->priv = TASK_ITEM_GET_PRIVATE (item);
 
+  /* let this eventbox listen to every events */
+  gtk_event_box_set_above_child (GTK_EVENT_BOX (item), TRUE);
+  
   /* create content */
   priv->name = gtk_label_new ("");
-  gtk_container_add ( GTK_CONTAINER (item), priv->name);
+  gtk_container_add (GTK_CONTAINER (item), priv->name);
 
   /* connect to signals */
   g_signal_connect (G_OBJECT (item), "name-changed",
