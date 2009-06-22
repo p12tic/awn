@@ -1,4 +1,9 @@
 2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+	
+	* libawn/awn-applet.c:
+	switch from awn-applet-mini to awn-settings.
+
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* bindings/python/awn.defs:
 	binding for override_gtk_theme () now accepts None.
