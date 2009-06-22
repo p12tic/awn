@@ -107,24 +107,46 @@ awn_themed_icon_dispose (GObject *object)
 
   g_return_if_fail (AWN_IS_THEMED_ICON (object));
   priv = AWN_THEMED_ICON (object)->priv;
-
-  g_strfreev (priv->states);             priv->states = NULL;
-  g_strfreev (priv->icon_names);         priv->icon_names = NULL;
-  g_strfreev (priv->icon_names_original); priv->icon_names_original = NULL;
-  g_free (priv->applet_name);            priv->applet_name = NULL;
-  g_free (priv->uid);                    priv->uid = NULL;
-  g_free (priv->current_state);          priv->current_state = NULL;
-  g_free (priv->icon_dir);               priv->icon_dir = NULL;
-
+  
   if (G_IS_OBJECT (priv->awn_theme))
+  {
     g_object_unref (priv->awn_theme);
+    priv->awn_theme = NULL;
+  }
   if (G_IS_OBJECT (priv->override_theme))
+  {
     g_object_unref (priv->override_theme);
-
-  g_signal_handlers_disconnect_by_func(priv->gtk_theme, on_icon_theme_changed, object );
+    priv->override_theme = NULL;
+  }
+  
   G_OBJECT_CLASS (awn_themed_icon_parent_class)->dispose (object);
 }
 
+static void
+awn_themed_icon_finalize (GObject *object)
+{
+  AwnThemedIconPrivate *priv;
+
+  g_return_if_fail (AWN_IS_THEMED_ICON (object));
+  priv = AWN_THEMED_ICON (object)->priv;
+
+  g_strfreev (priv->states);             
+  priv->states = NULL;
+  g_strfreev (priv->icon_names);         
+  priv->icon_names = NULL;
+  g_strfreev (priv->icon_names_original); 
+  priv->icon_names_original = NULL;
+  g_free (priv->applet_name);            
+  priv->applet_name = NULL;
+  g_free (priv->uid);                    
+  priv->uid = NULL;
+  g_free (priv->current_state);          
+  priv->current_state = NULL;
+  g_free (priv->icon_dir);               
+  priv->icon_dir = NULL;
+  
+  G_OBJECT_CLASS (awn_themed_icon_parent_class)->finalize (object);  
+}
 static void
 awn_themed_icon_class_init (AwnThemedIconClass *klass)
 {
@@ -132,6 +154,7 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
   GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
   
   obj_class->dispose = awn_themed_icon_dispose;
+  obj_class->finalize = awn_themed_icon_finalize;  
   
   wid_class->drag_data_received = awn_themed_icon_drag_data_received;
 
@@ -328,7 +351,8 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
   g_return_val_if_fail(priv->states,NULL);	
   for (idx = 0; priv->states[idx]; idx++)
   {
-    if (strcmp (priv->states[idx], state ? state : priv->current_state) == 0)
+    /*Conditional Operator */
+    if (g_strcmp0 (priv->states[idx], state ? state : priv->current_state) == 0)
     {
       const gchar *applet_name;
       const gchar *icon_name;

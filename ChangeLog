@@ -1,6 +1,12 @@
 2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
+	Added a finalize method.  Moved some code from dispose to finalize.
+	Replaced a strcmp with a g_strcmp0.
+
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
 	Fix <applet>/themes/  support.
 
 2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
