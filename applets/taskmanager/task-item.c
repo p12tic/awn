@@ -19,6 +19,8 @@
 
 #include "task-item.h"
 
+#include <libawn/libawn.h>
+
 G_DEFINE_ABSTRACT_TYPE (TaskItem, task_item, GTK_TYPE_EVENT_BOX)
 
 #define TASK_ITEM_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -27,7 +29,9 @@ G_DEFINE_ABSTRACT_TYPE (TaskItem, task_item, GTK_TYPE_EVENT_BOX)
 
 struct _TaskItemPrivate
 {
+  GtkWidget *box;
   GtkWidget *name;
+  GtkWidget *icon;
 };
 
 enum
@@ -118,8 +122,14 @@ task_item_init (TaskItem *item)
   gtk_event_box_set_above_child (GTK_EVENT_BOX (item), TRUE);
   
   /* create content */
+  priv->box = gtk_hbox_new (FALSE, 10);
+  gtk_container_add (GTK_CONTAINER (item), priv->box);
+
+  priv->icon = awn_icon_new ();
+  gtk_container_add (GTK_CONTAINER (priv->box), priv->icon);
+  
   priv->name = gtk_label_new ("");
-  gtk_container_add (GTK_CONTAINER (item), priv->name);
+  gtk_container_add (GTK_CONTAINER (priv->box), priv->name);
 
   /* connect to signals */
   g_signal_connect (G_OBJECT (item), "name-changed",
@@ -166,8 +176,9 @@ task_item_name_changed (TaskItem *item, const gchar *name)
 static void 
 task_item_icon_changed (TaskItem *item, GdkPixbuf *icon)
 {
-  //TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
-  //TODO
+  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
+
+  awn_icon_set_from_pixbuf (AWN_ICON (priv->icon), icon);
 }
 
 static void
