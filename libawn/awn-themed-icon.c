@@ -45,7 +45,7 @@ G_DEFINE_TYPE (AwnThemedIcon, awn_themed_icon, AWN_TYPE_ICON)
   AWN_TYPE_THEMED_ICON, \
   AwnThemedIconPrivate))
 
-#define LOAD_FLAGS GTK_ICON_LOOKUP_FORCE_SVG
+#define LOAD_FLAGS GTK_ICON_LOOKUP_FORCE_SIZE | GTK_ICON_LOOKUP_GENERIC_FALLBACK
 #define AWN_ICON_THEME_NAME "awn-theme"
 #define AWN_CHANGE_ICON_UI PKGDATADIR"/awn-themed-icon-ui.xml"
 
@@ -283,6 +283,36 @@ try_and_load_image_from_disk (const gchar *filename, gint size)
   
   g_free (temp);
   return pixbuf;
+} 
+
+
+/* 
+ This function exists because gtk_icon_theme_load_icon() seems to insist 
+ on return crappy builtin icons in certain situation  even when 
+ GTK_ICON_LOOKUP_USE_BUILTIN is not one of the flags.  Obviously I must be 
+ misunderstanding something as this bug _couldn't_ have been missed...  but this
+ seems to make the "crappy" icons go bye bye.
+ */
+static GdkPixbuf* 
+theme_load_icon (GtkIconTheme *icon_theme,
+                                     const gchar *icon_name,
+                                     gint size,
+                                     GtkIconLookupFlags flags,
+                                     GError **error)
+{
+  const gchar * names[2]={NULL,NULL};
+  names[0] = icon_name;
+  GtkIconInfo*  info = gtk_icon_theme_choose_icon (icon_theme,
+                                                   names,
+                                                   size,
+                                                   flags);
+  if (info)
+  {
+    GdkPixbuf *pbuf = gtk_icon_info_load_icon (info,error);
+    gtk_icon_info_free( info);
+    return pbuf;
+  }
+  return NULL;
 }
 
 static GdkPixbuf *
@@ -318,31 +348,31 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
         {
           case SCOPE_UID:
             name = g_strdup_printf ("%s-%s-%s", icon_name, applet_name, uid);
-            pixbuf = gtk_icon_theme_load_icon (priv->awn_theme, name,
+            pixbuf = theme_load_icon (priv->awn_theme, name,
                                                size, LOAD_FLAGS, NULL);
             break;
 
           case SCOPE_APPLET:
             name = g_strdup_printf ("%s-%s", icon_name, applet_name);
-            pixbuf = gtk_icon_theme_load_icon (priv->awn_theme, name,
+            pixbuf = theme_load_icon (priv->awn_theme, name,
                                                size, LOAD_FLAGS, NULL);
             break;
 
           case SCOPE_AWN_THEME:
-            pixbuf = gtk_icon_theme_load_icon (priv->awn_theme, icon_name, 
+            pixbuf = theme_load_icon (priv->awn_theme, icon_name, 
                                                size, LOAD_FLAGS, NULL);
             break;
 
           case SCOPE_OVERRIDE_THEME:
             pixbuf = NULL;
             if (priv->override_theme)
-              pixbuf = gtk_icon_theme_load_icon (priv->override_theme,
+              pixbuf = theme_load_icon (priv->override_theme,
                                                  icon_name, 
                                                  size, LOAD_FLAGS, NULL);
             break;
 
           case SCOPE_GTK_THEME:
-            pixbuf = gtk_icon_theme_load_icon (priv->gtk_theme, icon_name,
+            pixbuf = theme_load_icon (priv->gtk_theme, icon_name,
                                                size, LOAD_FLAGS, NULL);
             break;
 
@@ -356,7 +386,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             break;
 
           case SCOPE_FALLBACK_STOP:
-            pixbuf = gtk_icon_theme_load_icon (priv->gtk_theme,
+            pixbuf = theme_load_icon (priv->gtk_theme,
                                                GTK_STOCK_MISSING_IMAGE,
                                                size, LOAD_FLAGS, NULL);
             break;
@@ -602,7 +632,7 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
     g_free (priv->applet_name);
     priv->applet_name = g_strdup (applet_name);
 
-    /* Add the applet's system-wide icon dir first */
+    /* Add the applet's system-wide icon dir first */ 
     search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", applet_name);
     gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
     g_free (search_dir);
@@ -797,7 +827,7 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
   if (priv->override_theme)
     g_object_unref (priv->override_theme);
 
-  if (theme_name)
+  if ( theme_name && strlen (theme_name) )
   {
     priv->override_theme = gtk_icon_theme_new ();
     gtk_icon_theme_set_custom_theme (priv->override_theme, theme_name);

@@ -1,3 +1,9 @@
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+	
+	* libawn/awn-themed-icon.c:
+	Stop using gtk_icon_theme_load_icon ().  It insist on loading crappy 
+	icons when IMO it should not do so.
+
 2009-06-22  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-settings/Makefile.am:
