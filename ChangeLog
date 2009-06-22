@@ -1,3 +1,10 @@
+2009-06-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-docs.sgml:
+	Fix the documentation main page.
+	Add index.
+	Annotate that the docs are written in English.
+
 2009-06-22  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.override:
