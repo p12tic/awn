@@ -638,6 +638,7 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
     g_free (search_dir);
 
     search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/themes", applet_name);
+    
     gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
     g_free (search_dir); 
   }
@@ -819,6 +820,7 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
                                     const gchar   *theme_name)
 {
   AwnThemedIconPrivate *priv;
+  gchar *search_dir;
 
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
   priv = icon->priv;
@@ -837,6 +839,16 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
     priv->override_theme = NULL;
   }
 
+
+  /* Add the applet's system-wide icon dir first */
+  search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", priv->applet_name);
+  gtk_icon_theme_append_search_path (priv->override_theme, search_dir);
+  g_free (search_dir);
+
+  search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/themes", priv->applet_name);
+  gtk_icon_theme_append_search_path (priv->override_theme, search_dir);
+  g_free (search_dir); 
+  
   ensure_icon (icon);
 }
 

@@ -1,4 +1,9 @@
 2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Fix <applet>/themes/  support.
+
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
 	
 	* libawn/awn-applet.c:
 	switch from awn-applet-mini to awn-settings.
