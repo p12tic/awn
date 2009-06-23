@@ -1,3 +1,8 @@
+2009-06-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Refresh alignment when "expand" property changes.
+
 2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.override:

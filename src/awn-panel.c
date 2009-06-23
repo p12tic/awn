@@ -452,6 +452,7 @@ awn_panel_set_property (GObject      *object,
       break;
     case PROP_EXPAND:
       priv->expand = g_value_get_boolean (value);
+      awn_panel_refresh_alignment (panel);
       gtk_widget_queue_resize (GTK_WIDGET (panel));
       break;
     case PROP_OFFSET:
