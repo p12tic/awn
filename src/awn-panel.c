@@ -41,6 +41,7 @@
 #include "awn-background-3d.h"
 #include "awn-background-curves.h"
 #include "awn-background-edgy.h"
+#include "awn-dbus-watcher.h"
 #include "awn-defines.h"
 #include "awn-marshal.h"
 #include "awn-monitor.h"
@@ -49,7 +50,7 @@
 #include "gseal-transition.h"
 #include "xutils.h"
 
-G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW) 
+G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW)
 
 #define AWN_PANEL_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE (obj, \
   AWN_TYPE_PANEL, AwnPanelPrivate))
@@ -112,6 +113,14 @@ struct _AwnPanelPrivate
   gint last_clickthrough_type;
 };
 
+typedef struct _AwnInhibitItem
+{
+  AwnPanel *panel;
+
+  gchar *description;
+  guint cookie;
+} AwnInhibitItem;
+
 /* FIXME: this timeout should be configurable I guess */
 #define AUTOHIDE_DELAY 1000
 #define MOUSE_POLL_TIMER_DELAY 500
@@ -137,6 +146,7 @@ enum
   PROP_OFFSET,
   PROP_ORIENT,
   PROP_SIZE,
+  PROP_MAX_SIZE,
   PROP_AUTOHIDE_TYPE,
   PROP_STYLE,
   PROP_CLICKTHROUGH
@@ -387,6 +397,19 @@ awn_panel_get_property (GObject    *object,
       break;
     case PROP_SIZE:
       g_value_set_int (value, priv->size);
+      break;
+    case PROP_MAX_SIZE:
+      // FIXME: probably not OK for non-composited
+      switch (priv->orient)
+      {
+        case AWN_ORIENTATION_LEFT:
+        case AWN_ORIENTATION_RIGHT:
+          g_value_set_int (value, priv->manager->allocation.width);
+          break;
+        default:
+          g_value_set_int (value, priv->manager->allocation.height);
+          break;
+      }
       break;
     case PROP_AUTOHIDE_TYPE:
       g_value_set_int (value, priv->autohide_type);
@@ -784,7 +807,17 @@ void awn_panel_get_draw_rect (AwnPanel *panel,
         area->y = 0;
         area->height = height;
       }
+      break;
   }
+}
+
+static void free_inhibit_item (gpointer data)
+{
+  AwnInhibitItem *item = data;
+
+  if (item->description) g_free (item->description);
+
+  g_free (item);
 }
 
 static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
@@ -1223,6 +1256,14 @@ awn_panel_class_init (AwnPanelClass *klass)
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
   
   g_object_class_install_property (obj_class,
+    PROP_MAX_SIZE,
+    g_param_spec_int ("max-size",
+                      "Max Size",
+                      "Maximum size for drawing on the panel",
+                      0, G_MAXINT, 48,
+                      G_PARAM_READABLE));
+  
+  g_object_class_install_property (obj_class,
     PROP_OFFSET,
     g_param_spec_int ("offset",
                       "Offset",
@@ -1352,7 +1393,7 @@ awn_panel_init (AwnPanel *panel)
   priv->offset_mod = 1.0;
 
   priv->inhibits = g_hash_table_new_full (g_direct_hash, g_direct_equal,
-                                          NULL, g_free);
+                                          NULL, free_inhibit_item);
 
   gtk_widget_set_app_paintable (GTK_WIDGET (panel), TRUE);
 
@@ -2243,7 +2284,7 @@ awn_panel_set_applet_flags (AwnPanel         *panel,
   return TRUE;
 }
 
-guint
+static guint
 awn_panel_disable_autohide (AwnPanel *panel,
                             const gchar *app_name,
                             const gchar *reason)
@@ -2253,9 +2294,14 @@ awn_panel_disable_autohide (AwnPanel *panel,
   static guint cookie = 0; // FIXME: use something different!
   if (cookie == 0) cookie++;
 
+  AwnInhibitItem *item = g_new0 (AwnInhibitItem, 1);
+  item->panel = panel;
+  item->description = g_strdup_printf ("(%s): %s", app_name, reason);
+  item->cookie = cookie;
+
   g_hash_table_insert (priv->inhibits,
                        GINT_TO_POINTER (cookie),
-                       g_strdup_printf ("(%s): %s", app_name, reason));
+                       item);
 
   if (!priv->autohide_inhibited)
   {
@@ -2266,18 +2312,34 @@ awn_panel_disable_autohide (AwnPanel *panel,
   return cookie++;
 }
 
+static void
+dbus_inhibitor_lost (AwnDBusWatcher *watcher, gchar *name,
+                     AwnInhibitItem *item)
+{
+  g_debug ("AwnPanel: DBus object %s didn't call UninhibitAutohide!", name);
+  awn_panel_uninhibit_autohide (item->panel, item->cookie);
+}
+
 void
 awn_panel_inhibit_autohide (AwnPanel *panel,
                             const gchar *app_name,
                             const gchar *reason,
                             DBusGMethodInvocation *context)
 {
+  AwnPanelPrivate *priv = panel->priv;
+
   guint cookie = awn_panel_disable_autohide (panel, app_name, reason);
 
-  gchar *sender = dbus_g_method_get_sender (context);
-  //g_debug ("Inhibit sender: %s", sender);
-  // FIXME: watch the sender on dbus and remove all its inhibits when it
+  // watch the sender on dbus and remove all its inhibits when it
   //   disappears (to be sure that we don't misbehave due to crashing app)
+  gchar *sender = dbus_g_method_get_sender (context);
+  gchar *detailed_signal = g_strdup_printf ("connection-closed::%s", sender);
+  g_signal_connect (awn_dbus_watcher_get_default (), detailed_signal,
+                    G_CALLBACK (dbus_inhibitor_lost),
+                    g_hash_table_lookup (priv->inhibits, 
+                                         GINT_TO_POINTER (cookie)));
+
+  g_free (detailed_signal);
   g_free (sender);
 
   dbus_g_method_return (context, cookie);
@@ -2287,6 +2349,16 @@ gboolean
 awn_panel_uninhibit_autohide  (AwnPanel *panel, guint cookie)
 {
   AwnPanelPrivate *priv = panel->priv;
+
+  AwnInhibitItem *item = g_hash_table_lookup (priv->inhibits,
+                                              GINT_TO_POINTER (cookie));
+
+  if (!item) return TRUE; // we could set an error
+
+  // remove the dbus watcher
+  g_signal_handlers_disconnect_by_func (awn_dbus_watcher_get_default (),
+                                        G_CALLBACK (dbus_inhibitor_lost),
+                                        item);
 
   g_hash_table_remove (priv->inhibits, GINT_TO_POINTER (cookie));
 
@@ -2309,7 +2381,8 @@ awn_panel_get_inhibitors (AwnPanel *panel, GStrv *reasons)
 
   while (list)
   {
-    (*reasons)[i++] = g_strdup (list->data);
+    AwnInhibitItem *item = list->data;
+    (*reasons)[i++] = g_strdup (item->description);
 
     list = list->next;
   }

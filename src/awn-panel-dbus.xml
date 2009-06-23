@@ -55,6 +55,7 @@
 
     <!-- Properties -->
     <property name="Size" type="i" access="read" />
+    <property name="MaxSize" type="i" access="read" />
     <property name="Orient" type="i" access="read" />
     <property name="Offset" type="i" access="read" />
 

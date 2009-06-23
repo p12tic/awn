@@ -1,3 +1,14 @@
+2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* doc/reference/libawn-docs.sgml:
+	Added AwnOverlayable.
+	* src/awn-panel-dbus.xml:
+	Exposed max-size property.
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Now using AwnDBusWatcher to make sure we don't misbehave due to
+	crashing applet.
+
 2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:

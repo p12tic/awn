@@ -90,10 +90,6 @@ gboolean    awn_panel_set_applet_flags    (AwnPanel         *panel,
                                            gint              flags,
                                            GError          **error);
 
-guint       awn_panel_disable_autohide    (AwnPanel         *panel,
-                                           const gchar      *app_name,
-                                           const gchar      *reason);
-
 void        awn_panel_inhibit_autohide    (AwnPanel *panel,
                                            const gchar *app_name,
                                            const gchar *reason,
