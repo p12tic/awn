@@ -1,5 +1,10 @@
 2009-06-23  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-themed-icon.c:
+	Make icon a prop.
+
+2009-06-23  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-themed-icon.c:
 	Don't set the ->current_item in get_pixbuf_at_size().
 
