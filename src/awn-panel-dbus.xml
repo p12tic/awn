@@ -28,6 +28,12 @@
       <arg name="inhibitors" type="as" direction="out" />
     </method>
 
+    <method name="DockletRequest">
+      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
+      <arg name="min-size" type="i" direction="in" />
+      <arg name="window_id" type="u" direction="out" />
+    </method>
+
     <!-- Signals -->
     <signal name="SizeChanged">
       <arg name="size" type="i" />

@@ -67,6 +67,8 @@ struct _AwnPanelPrivate
   GtkWidget *alignment;
   GtkWidget *eventbox;
   GtkWidget *manager;
+  GtkWidget *docklet;
+  gint docklet_minsize;
 
   gboolean composited;
   gboolean panel_mode;
@@ -2390,5 +2392,88 @@ awn_panel_get_inhibitors (AwnPanel *panel, GStrv *reasons)
   g_list_free (l);
 
   return TRUE;
+}
+
+static void
+docklet_size_request (GtkWidget *widget, GtkRequisition *req, gpointer data)
+{
+  AwnPanel *panel = AWN_PANEL (data);
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (req->width == 1 && req->height == 1)
+  {
+    switch (priv->orient)
+    {
+      case AWN_ORIENTATION_LEFT:
+      case AWN_ORIENTATION_RIGHT:
+        req->height = priv->docklet_minsize;
+        break;
+      default:
+        req->width = priv->docklet_minsize;
+    }
+  }
+}
+
+static void
+docklet_plug_added (GtkSocket *socket, AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  // FIXME: an animation?!
+  awn_applet_manager_hide_applets (AWN_APPLET_MANAGER (priv->manager));
+  gtk_widget_show (priv->docklet);
+}
+
+static gboolean
+docklet_plug_removed (GtkSocket *socket, AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  // FIXME: an animation?! we could also optimize and not destroy the widget
+  awn_applet_manager_remove_widget (AWN_APPLET_MANAGER (priv->manager),
+                                    priv->docklet);
+  awn_applet_manager_show_applets (AWN_APPLET_MANAGER (priv->manager));
+  priv->docklet = NULL;
+  priv->docklet_minsize = 0;
+
+  return FALSE;
+}
+
+void
+awn_panel_docklet_request (AwnPanel *panel, gint min_size,
+                           DBusGMethodInvocation *context)
+{
+  AwnPanelPrivate *priv = panel->priv;
+  guint32 window_id = 0;
+
+  if (!priv->docklet)
+  {
+    // FIXME: perhaps the min-size shouldn't be min-size but the actual size
+    //  and the docklet would be restricted to this size (set_size_request).
+
+    priv->docklet = gtk_socket_new ();
+    awn_utils_ensure_transparent_bg (priv->docklet);
+    priv->docklet_minsize = min_size;
+
+    g_signal_connect_after (priv->docklet, "size-request",
+                            G_CALLBACK (docklet_size_request), panel);
+    g_signal_connect (priv->docklet, "plug-added",
+                      G_CALLBACK (docklet_plug_added), panel);
+    g_signal_connect (priv->docklet, "plug-removed",
+                      G_CALLBACK (docklet_plug_removed), panel);
+
+    awn_applet_manager_add_widget (AWN_APPLET_MANAGER (priv->manager),
+                                   priv->docklet, 0);
+    gtk_widget_realize (priv->docklet);
+    gtk_widget_hide (priv->docklet);
+  }
+  else
+  {
+    // FIXME: set error
+  }
+
+  window_id = gtk_socket_get_id (GTK_SOCKET (priv->docklet));
+
+  dbus_g_method_return (context, window_id);
 }
 

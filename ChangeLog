@@ -1,3 +1,13 @@
+2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	First version of method to request full dock space - ie all applets
+	will hide and only your "docklet" will be shown.
+
 2009-06-23  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-themed-icon.c:

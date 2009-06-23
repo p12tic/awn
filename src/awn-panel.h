@@ -101,6 +101,10 @@ gboolean    awn_panel_uninhibit_autohide  (AwnPanel         *panel,
 gboolean    awn_panel_get_inhibitors      (AwnPanel         *panel,
                                            GStrv            *reasons);
 
+void        awn_panel_docklet_request     (AwnPanel         *panel,
+                                           gint              min_size,
+                                           DBusGMethodInvocation *context);
+
 G_END_DECLS
 
 
