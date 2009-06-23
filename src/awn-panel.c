@@ -2400,17 +2400,14 @@ docklet_size_request (GtkWidget *widget, GtkRequisition *req, gpointer data)
   AwnPanel *panel = AWN_PANEL (data);
   AwnPanelPrivate *priv = panel->priv;
 
-  if (req->width == 1 && req->height == 1)
+  switch (priv->orient)
   {
-    switch (priv->orient)
-    {
-      case AWN_ORIENTATION_LEFT:
-      case AWN_ORIENTATION_RIGHT:
-        req->height = priv->docklet_minsize;
-        break;
-      default:
-        req->width = priv->docklet_minsize;
-    }
+    case AWN_ORIENTATION_LEFT:
+    case AWN_ORIENTATION_RIGHT:
+      req->height = MAX (req->height, priv->docklet_minsize);
+      break;
+    default:
+      req->width = MAX (req->width, priv->docklet_minsize);
   }
 }
 
@@ -2440,7 +2437,9 @@ docklet_plug_removed (GtkSocket *socket, AwnPanel *panel)
 }
 
 void
-awn_panel_docklet_request (AwnPanel *panel, gint min_size,
+awn_panel_docklet_request (AwnPanel *panel,
+                           gint min_size,
+                           gboolean shrink,
                            DBusGMethodInvocation *context)
 {
   AwnPanelPrivate *priv = panel->priv;
@@ -2450,10 +2449,28 @@ awn_panel_docklet_request (AwnPanel *panel, gint min_size,
   {
     // FIXME: perhaps the min-size shouldn't be min-size but the actual size
     //  and the docklet would be restricted to this size (set_size_request).
+    if (!shrink) 
+    {
+      switch (priv->orient)
+      {
+        case AWN_ORIENTATION_LEFT:
+        case AWN_ORIENTATION_RIGHT:
+          priv->docklet_minsize =
+            MAX (min_size, priv->manager->allocation.height);
+          break;
+        default:
+          priv->docklet_minsize =
+            MAX (min_size, priv->manager->allocation.width);
+          break;
+      }
+    }
+    else
+    {
+      priv->docklet_minsize = min_size;
+    }
 
     priv->docklet = gtk_socket_new ();
     awn_utils_ensure_transparent_bg (priv->docklet);
-    priv->docklet_minsize = min_size;
 
     g_signal_connect_after (priv->docklet, "size-request",
                             G_CALLBACK (docklet_size_request), panel);

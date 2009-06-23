@@ -1,3 +1,14 @@
+2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Added binding for AwnIconBox (needs some work).
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Changed the DBus signature for DockletRequest method, now the min_size
+	parameter is really minimum size the docklet will have.
+
 2009-06-23  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-themed-icon.c:

@@ -30,7 +30,8 @@
 
     <method name="DockletRequest">
       <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
-      <arg name="min-size" type="i" direction="in" />
+      <arg name="min_size" type="i" direction="in" />
+      <arg name="shrink" type="b" direction="in" />
       <arg name="window_id" type="u" direction="out" />
     </method>
 

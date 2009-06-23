@@ -103,6 +103,7 @@ gboolean    awn_panel_get_inhibitors      (AwnPanel         *panel,
 
 void        awn_panel_docklet_request     (AwnPanel         *panel,
                                            gint              min_size,
+                                           gboolean          shrink,
                                            DBusGMethodInvocation *context);
 
 G_END_DECLS

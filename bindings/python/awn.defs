@@ -51,6 +51,13 @@
   (gtype-id "AWN_TYPE_THEMED_ICON")
 )
 
+(define-object IconBox
+  (in-module "Awn")
+  (parent "GtkBox")
+  (c-name "AwnIconBox")
+  (gtype-id "AWN_TYPE_ICON_BOX")
+)
+
 (define-object Overlay
   (in-module "Awn")
   (parent "GObject")
@@ -1128,6 +1135,16 @@
   (return-type "gint")
 )
 
+;; From awn-icon-box.h
+
+(define-function awn_iconbox_new
+  (c-name "awn_icon_box_new_for_applet")
+  (is-constructor-of "AwnIconBox")
+  (return-type "AwnIconBox*")
+  (parameters
+    '("AwnApplet*" "applet")
+  )
+)
 ;; From awn-overlay.h
 
 (define-function awn_overlay_new
