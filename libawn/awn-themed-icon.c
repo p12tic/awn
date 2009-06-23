@@ -49,6 +49,15 @@ G_DEFINE_TYPE (AwnThemedIcon, awn_themed_icon, AWN_TYPE_ICON)
 #define AWN_ICON_THEME_NAME "awn-theme"
 #define AWN_CHANGE_ICON_UI PKGDATADIR"/awn-themed-icon-ui.xml"
 
+
+typedef struct
+{
+  gchar * name;
+  gchar * state;
+  gchar * original_name;  /*do we need this ? */
+  gboolean  sticky;
+}AwnThemedIconItem;
+
 struct _AwnThemedIconPrivate
 {
   GtkIconTheme *awn_theme;
@@ -58,14 +67,11 @@ struct _AwnThemedIconPrivate
   
   gchar  *applet_name;
   gchar  *uid;
-  gchar **states;
-  gchar **icon_names;
-  gchar **icon_names_original;
-  gint    n_states;
 
-  gchar  *current_state;
+  GList   *list;
+  
   gint    current_size;
-  gint    cur_icon;
+  AwnThemedIconItem    *current_item;
   GdkPixbufRotation    rotate;
 };
 
@@ -176,18 +182,13 @@ awn_themed_icon_finalize (GObject *object)
   g_return_if_fail (AWN_IS_THEMED_ICON (object));
   priv = AWN_THEMED_ICON (object)->priv;
 
-  g_strfreev (priv->states);             
-  priv->states = NULL;
-  g_strfreev (priv->icon_names);         
-  priv->icon_names = NULL;
-  g_strfreev (priv->icon_names_original); 
-  priv->icon_names_original = NULL;
+  g_list_foreach (priv->list, (GFunc) g_free,NULL);
+  g_list_free (priv->list);
+  
   g_free (priv->applet_name);            
   priv->applet_name = NULL;
   g_free (priv->uid);                    
   priv->uid = NULL;
-  g_free (priv->current_state);          
-  priv->current_state = NULL;
   g_free (priv->icon_dir);               
   priv->icon_dir = NULL;
   
@@ -266,10 +267,8 @@ awn_themed_icon_init (AwnThemedIcon *icon)
 
   priv->applet_name = NULL;
   priv->uid = NULL;
-  priv->states = NULL;
-  priv->icon_names = NULL;
-  priv->icon_names_original = NULL;
-  priv->current_state = NULL;
+  priv->list = NULL;
+  priv->current_item = NULL;  
   priv->current_size = 48;
 
   /* Set-up the gtk-theme */
@@ -290,7 +289,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   
   scalable_dir = g_strdup_printf ("%s/scalable", theme_dir);
   check_and_make_dir (scalable_dir);
-
+  
   /* Copy over the index.theme if it's not already done */
   index_src = g_strdup (PKGDATADIR"/index.theme");
   index_dest = g_strdup_printf ("%s/index.theme", theme_dir);
@@ -400,25 +399,26 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
 {
   AwnThemedIconPrivate *priv;
   GdkPixbuf            *pixbuf = NULL;
-  gint                  idx;
+  GList                 *iter;
 
   priv = icon->priv;
 
   /* Find the index of the current state in states */
-  g_return_val_if_fail(priv->states,NULL);	
-  for (idx = 0; priv->states[idx]; idx++)
+  g_return_val_if_fail(priv-> list,NULL);	
+  for (iter = priv->list; iter; iter=g_list_next (iter))
   {
+    AwnThemedIconItem *item = iter->data;
     /*Conditional Operator */
-    if (g_strcmp0 (priv->states[idx], state ? state : priv->current_state) == 0)
+    if (g_strcmp0 (item->state, state ? state : priv->current_item->state) == 0)
     {
       const gchar *applet_name;
       const gchar *icon_name;
       const gchar *uid;
       gint         i;
       
-      priv->cur_icon = idx;
+      priv->current_item = iter->data;
       applet_name = priv->applet_name;
-      icon_name = priv->icon_names[idx];
+      icon_name = priv->current_item->name;
       uid = priv->uid;
       
       /* Go through all the possible outcomes until we get a pixbuf */
@@ -447,9 +447,11 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
           case SCOPE_OVERRIDE_THEME:
             pixbuf = NULL;
             if (priv->override_theme)
+            {
               pixbuf = theme_load_icon (priv->override_theme,
                                                  icon_name, 
                                                  size, LOAD_FLAGS, NULL);
+            }
             break;
 
           case SCOPE_GTK_THEME:
@@ -459,10 +461,10 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
 
           case SCOPE_FILENAME:
             pixbuf = NULL;
-            if (priv->icon_names_original)
+            if (priv->current_item->original_name)
             {
-              gchar *real_name = priv->icon_names_original[idx];
-              pixbuf = try_and_load_image_from_disk (real_name, size);
+              pixbuf = try_and_load_image_from_disk (priv->current_item->original_name, 
+                                                     size);
             }
             break;
 
@@ -502,10 +504,9 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
 
     }
   }
-  if (!pixbuf)
-  {
-    g_warning ("State does not exist: %s", priv->current_state);
-  }
+  /* Yes.. this is drastic... asserts should be disabled for releases.
+   This just plain and simple should _not trigger*/
+  g_assert (pixbuf);
   return pixbuf;
 }
 
@@ -521,15 +522,14 @@ ensure_icon (AwnThemedIcon *icon)
 
   priv = icon->priv;
 
-  if (!priv->n_states || !priv->states || !priv->icon_names 
-      || !priv->current_state || !priv->current_size)
+  if (!priv->list || !priv->current_item || !priv->current_size)
   {
     /* We're not ready yet */
     return;
   }
 
   /* Get the icon first */
-  pixbuf = get_pixbuf_at_size (icon, priv->current_size, priv->current_state);
+  pixbuf = get_pixbuf_at_size (icon, priv->current_size, priv->current_item->state);
 
   if (priv->rotate)
   {
@@ -561,15 +561,26 @@ awn_themed_icon_set_state (AwnThemedIcon *icon,
                            const gchar   *state)
 {
   AwnThemedIconPrivate *priv;
+  GList *  iter;
 
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
+  g_return_if_fail (state);
+  
   priv = icon->priv;
+  
+  for (iter = priv->list; iter; iter=g_list_next (iter))
+  {
+    AwnThemedIconItem *item = iter->data;
+    /*Conditional Operator */
 
-  if (priv->current_state)
-    g_free (priv->current_state);
-
-  priv->current_state = g_strdup (state);
-  ensure_icon (icon);
+    if (g_strcmp0 (item->state, state ) == 0)
+    {
+      priv->current_item = item;
+      ensure_icon (icon);
+      return;
+    }
+  }
+  g_warning ("%s: state '%s' not found",__func__,state);
 }
 
 /**
@@ -585,7 +596,7 @@ awn_themed_icon_get_state (AwnThemedIcon *icon)
 {
   g_return_val_if_fail (AWN_IS_THEMED_ICON (icon), NULL);
 
-  return icon->priv->current_state;
+  return icon->priv->current_item->state;
 }
 
 /**
@@ -602,7 +613,7 @@ awn_themed_icon_set_size (AwnThemedIcon *icon,
 {
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
 
-  icon->priv->current_size = size;
+  icon->priv->current_size = size;  
   ensure_icon (icon);
 }
 
@@ -626,26 +637,20 @@ awn_themed_icon_get_size (AwnThemedIcon *icon)
  * replace the slash with a '-' and copy the original names for the file
  * loader
  */
-static gchar **
-normalise_names (gchar **names)
+static gchar *
+normalise_name (const gchar *names)
 {
-  gchar **ret = NULL;
-  gint i;
+  gchar * normalized = g_strdup(names);
+  gint j;
 
-  for (i = 0; names[i]; i++)
+  for (j = 0; normalized[j]; j++)
   {
-    gint j;
-    for (j = 0; names[i][j]; j++)
+    if (normalized[j] == '/')
     {
-      if (names[i][j] == '/')
-      {
-        if (!ret)
-          ret = g_strdupv (names);
-        names[i][j] = '-';
-      }
+      normalized[j] = '-';
     }
   }
-  return ret;
+  return normalized;
 }
 
 /**
@@ -669,8 +674,9 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
                           GStrv          icon_names)
 {
   AwnThemedIconPrivate *priv;
-  guint n_states;
-  gchar ** iter;
+  GList * iter;
+  gint  n_states;
+  gint  i;
   
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
   g_return_if_fail (applet_name);
@@ -678,11 +684,28 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
   g_return_if_fail (states);
   g_return_if_fail (icon_names);
   priv = icon->priv;
-
+  /*clear out the non-sticky*/
+  for (iter = priv->list; iter; iter=g_list_next(iter) )
+  {
+    AwnThemedIconItem * item = iter->data;
+    if (!item->sticky)
+    {
+      if (priv->current_item == item)
+      {
+        priv->current_item = NULL;
+      }
+      g_free (item->name);
+      g_free (item->original_name);
+      g_free (item->state);
+      g_free (item);
+      priv->list = g_list_delete_link (priv->list, iter);
+      iter = priv->list;  /* FIXME*/
+    }
+  }
+  
   /* Check number of strings>0 and n_strings (states)==n_strings (icon_names)*/
   n_states = g_strv_length (states);
-  if (n_states < 1 || n_states != g_strv_length (icon_names) || 
-      n_states != g_strv_length (states) )
+  if ( n_states && (g_strv_length (icon_names) != g_strv_length (states)) )
   {
     g_warning ("%s", n_states ? 
                        "Length of states must match length of icon_names" 
@@ -690,19 +713,19 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
     return;
   }
   
-  /* Free the old states & icon_names */
-  g_strfreev (priv->states);
-  g_strfreev (priv->icon_names);
-  g_strfreev (priv->icon_names_original);
-  priv->states = NULL;
-  priv->icon_names = NULL;
-  priv->icon_names_original = NULL;
+  /* Copy states & icon_names into list */
+  for (i=0;i<n_states;i++)
+  {
+    AwnThemedIconItem * item = g_malloc (sizeof(AwnThemedIconItem) );
+    item->original_name = g_strdup (icon_names[i]);
+    item->state = g_strdup (states[i]);
+    item->sticky = FALSE;
+    item->name = normalise_name (icon_names[i]);
+    priv->list = g_list_append (priv->list, item);
+  }
+  
+  
 
-  /* Copy states & icon_names internally */
-  priv->states = g_strdupv (states);
-  priv->icon_names = g_strdupv (icon_names);
-  priv->icon_names_original = normalise_names (priv->icon_names);
-  priv->n_states = n_states;
   
   /* Now add the rest of the entries */
   g_free (priv->uid);
@@ -715,6 +738,8 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
   }
   else
   {
+    /* FIXME... I'm thinking there's a slight problem here if the applet name 
+     gets changed... which doesn't really make sense in the first place*/
     gchar *search_dir;
 
     g_free (priv->applet_name);
@@ -731,15 +756,20 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
     g_free (search_dir); 
   }
 
-  /*FIXME: Should we ensure_icon here? The current_state variable is probably
-   * invalid at this moment...
-   */
-  /*
-   * Initate drag_drop 
-   */
-  for (iter = priv->states; *iter; iter++)
+  if (!priv->current_item )
   {
-    if (g_strstr_len (*iter,-1, "::invisible::") !=  *iter)
+    priv->current_item = priv->list->data;
+  }
+  ensure_icon(icon);
+  /*
+   * Initate drag_drop  
+   */
+  gtk_drag_dest_unset (GTK_WIDGET(icon));
+  
+  for (iter = priv->list; iter; iter = g_list_next (iter) )
+  {
+    AwnThemedIconItem *item = iter->data;
+    if (g_strstr_len (item->state,-1, "::invisible::") !=  item->state)
     {
       gtk_drag_dest_set (GTK_WIDGET (icon),
                      GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
@@ -773,11 +803,10 @@ awn_themed_icon_set_info_simple (AwnThemedIcon  *icon,
 
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
 
-  icon_names[0] = g_strdup (icon_name);
+  icon_names[0] = (gchar*)icon_name;
   
   awn_themed_icon_set_info (icon, applet_name, uid, states, icon_names);
 
-  g_free (icon_names[0]);
   icon_names[0] = NULL;
 
   /* Set the state to __SINGULAR__, to keeps things easy for simple applets */
@@ -801,12 +830,10 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
   /*  
    FIXME  This function needs to have some sanity imposed.
    */
-  GStrv icon_names;
-  GStrv states;
   AwnThemedIconPrivate *priv;  
-  gchar * applet_name;
-  gchar * uid;
-  
+  AwnThemedIconItem *item = NULL;
+
+  g_return_if_fail (icon_name);
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
   if (state)
   {
@@ -814,42 +841,25 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
   }
   priv = icon->priv;
 
-  /*Conditional operator in use*/
-  applet_name = g_strdup (priv->applet_name?priv->applet_name:"__unknown__");
-  uid = g_strdup (priv->uid?priv->uid:"__invisible__");  
-  icon_names = g_strdupv (priv->icon_names_original?priv->icon_names_original:priv->icon_names);
-  /*End of Conditional operator in use*/
-  
-  if (priv->states)
+  /*FIXME once we get a applet name into AwnApplet*/
+  if (!priv->applet_name)
   {
-    states = g_strdupv (priv->states);
+    priv->applet_name = g_strdup( "__unknown__" );
   }
-  else
+
+  if (!priv->uid)
   {
-    gchar ** tmp = g_malloc ( sizeof(gchar *) * (priv->n_states+1) );
-    int i;
-    for (i = 0; i< priv->n_states; i++)
-    {
-      tmp[i] = NULL;
-    }      
-    states = g_strdupv (tmp);
+    priv->uid = g_strdup ("__invisible__");  
   }
   
-  icon_names = g_realloc (icon_names, sizeof (gchar *) * (priv->n_states+2));
-  states = g_realloc (states,sizeof (gchar *) * (priv->n_states+2) );
+  item = g_malloc (sizeof(AwnThemedIconItem));
   
-  icon_names[priv->n_states+1] = NULL;
-  icon_names[priv->n_states] = g_strdup (icon_name);
-  
-  states [priv->n_states+1] = NULL;
-  states [priv->n_states] = g_strdup (state?state:"::invisible::unknown");
-   
-  awn_themed_icon_set_info (icon,applet_name,uid,states,icon_names);
-  g_strfreev (icon_names);
-  g_strfreev (states);
-  g_free (uid);
-  g_free (applet_name);
-  
+  item->original_name = g_strdup (icon_name);
+  item->name = normalise_name (icon_name);
+  item->state = g_strdup (state?state:"::invisible::unknown");
+  item->sticky = FALSE;
+      
+  priv->list = g_list_append (priv->list,item);
 }
 
 /**
@@ -911,8 +921,9 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
   gchar *search_dir;
 
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
+  
   priv = icon->priv;
-
+  
   /* Remove old theme, if it exists */
   if (priv->override_theme)
     g_object_unref (priv->override_theme);
@@ -929,14 +940,21 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
 
 
   /* Add the applet's system-wide icon dir first */
-  search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", priv->applet_name);
-  gtk_icon_theme_append_search_path (priv->override_theme, search_dir);
-  g_free (search_dir);
+  if (priv->applet_name)
+  {
+    search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", priv->applet_name);
+    gtk_icon_theme_append_search_path (priv->override_theme, search_dir);
+    g_free (search_dir);
 
-  search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/themes", priv->applet_name);
-  gtk_icon_theme_append_search_path (priv->override_theme, search_dir);
-  g_free (search_dir); 
-  
+    search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/themes", priv->applet_name);
+    gtk_icon_theme_append_search_path (priv->override_theme, search_dir);
+    g_free (search_dir); 
+  }
+  else
+  {
+    g_warning ("%s: applet_name not set. Unable to set applet specific icon theme dirs",
+               __func__);
+  }
   ensure_icon (icon);
 }
 
@@ -959,7 +977,7 @@ awn_themed_icon_get_icon_at_size (AwnThemedIcon *icon,
   AwnThemedIconPrivate *priv;
   g_return_val_if_fail (AWN_IS_THEMED_ICON (icon), NULL);
   priv = icon->priv;
-  g_return_val_if_fail (priv->states,NULL);
+  g_return_val_if_fail (priv->list,NULL);
   
   return get_pixbuf_at_size (icon, size, state);
 }
@@ -992,7 +1010,7 @@ awn_themed_icon_clear_icons (AwnThemedIcon *icon,
       {
         filename = g_strdup_printf ("%s/awn-theme/scalable/%s.%s",
                                     priv->icon_dir, 
-                                    priv->icon_names[priv->cur_icon],
+                                    priv->current_item->name,
                                     types[i]);
         g_unlink (filename);
         g_free (filename);
@@ -1003,7 +1021,7 @@ awn_themed_icon_clear_icons (AwnThemedIcon *icon,
       {
         filename = g_strdup_printf ("%s/awn-theme/scalable/%s-%s.%s",
                                     priv->icon_dir,
-                                    priv->icon_names[priv->cur_icon],
+                                    priv->current_item->name,
                                     priv->applet_name,
                                     types[i]);
         g_unlink (filename);
@@ -1015,7 +1033,7 @@ awn_themed_icon_clear_icons (AwnThemedIcon *icon,
       {
         filename = g_strdup_printf ("%s/awn-theme/scalable/%s-%s-%s.%s",
                                     priv->icon_dir,
-                                    priv->icon_names[priv->cur_icon],
+                                    priv->current_item->name,
                                     priv->applet_name,
                                     priv->uid,
                                     types[i]);
@@ -1039,17 +1057,23 @@ void
 awn_themed_icon_clear_info (AwnThemedIcon *icon)
 {
   AwnThemedIconPrivate *priv;
+  GList * iter;
 
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
   priv = icon->priv;
 
   /* Free the old states & icon_names */
-  g_strfreev (priv->states);
-  g_strfreev (priv->icon_names);
-  g_strfreev (priv->icon_names_original);
-  priv->states = NULL;
-  priv->icon_names = NULL;
-  priv->icon_names_original = NULL;
+  priv->current_item = NULL;
+  for (iter = priv->list;iter;iter=g_list_next(iter))
+  {
+    AwnThemedIconItem * item = iter->data;
+  
+    g_free (item->name);
+    g_free (item->original_name);
+    g_free (item->state);
+    g_free (item);    
+    priv->list = g_list_delete_link (priv->list,iter);    
+  }
   gtk_drag_dest_unset (GTK_WIDGET(icon));
 }
 
@@ -1194,7 +1218,7 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   if (scope == SCOPE_UID)
   {
     base_name = g_strdup_printf ("%s-%s-%s.%s",
-                                 priv->icon_names[priv->cur_icon],
+                                 priv->current_item->name,
                                  priv->applet_name,
                                  priv->uid,
                                  suffix);
@@ -1202,14 +1226,14 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   else if (scope == SCOPE_APPLET)
   {
     base_name = g_strdup_printf ("%s-%s.%s",
-                                  priv->icon_names[priv->cur_icon],
+                                  priv->current_item->name,
                                   priv->applet_name,
                                   suffix);
   }
   else /* scope == SCOPE_AWN_THEME */
   {
     base_name = g_strdup_printf ("%s.%s", 
-                                 priv->icon_names[priv->cur_icon],
+                                 priv->current_item->name,
                                  suffix);
   }
 

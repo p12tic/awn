@@ -1,6 +1,12 @@
 2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
+	Imposed a bit more sanity on AwnThemedIcon.  Internally uses
+	GList instead of GStrv now.
+
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
 	Added rotate property of type GdkPixbufRotation to AwnThemedIcon.
 
 2009-06-23  Julien Lavergne <julien.lavergne@gmail.com>
