@@ -1,3 +1,8 @@
+2009-06-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Correct a comment.
+
 2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-applet-manager.c:
