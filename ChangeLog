@@ -1,3 +1,8 @@
+2009-06-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Don't set the ->current_item in get_pixbuf_at_size().
+
 2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:
@@ -29,7 +34,7 @@
 	Now using AwnDBusWatcher to make sure we don't misbehave due to
 	crashing applet.
 
-2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>yy
 
 	* libawn/awn-themed-icon.c:
 	Imposed a bit more sanity on AwnThemedIcon.  Internally uses

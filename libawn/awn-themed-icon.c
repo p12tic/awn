@@ -416,9 +416,8 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
       const gchar *uid;
       gint         i;
       
-      priv->current_item = iter->data;
       applet_name = priv->applet_name;
-      icon_name = priv->current_item->name;
+      icon_name = item->name;
       uid = priv->uid;
       
       /* Go through all the possible outcomes until we get a pixbuf */
@@ -527,7 +526,6 @@ ensure_icon (AwnThemedIcon *icon)
     /* We're not ready yet */
     return;
   }
-
   /* Get the icon first */
   pixbuf = get_pixbuf_at_size (icon, priv->current_size, priv->current_item->state);
 
@@ -756,10 +754,6 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
     g_free (search_dir); 
   }
 
-  if (!priv->current_item )
-  {
-    priv->current_item = priv->list->data;
-  }
   ensure_icon(icon);
   /*
    * Initate drag_drop  
