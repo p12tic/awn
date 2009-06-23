@@ -280,7 +280,7 @@ awn_overlay_themed_icon_init (AwnOverlayThemedIcon *self)
 }
 
 /**
- * awn_overlay_text_new:
+ * awn_overlay_themed_icon_new:
  * @icon: an #AwnThemedIcon.
  * @icon_name: A themed icon icon name.
  * @icon_state: A icon state for the icon or NULL.

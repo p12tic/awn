@@ -43,6 +43,14 @@ extern PyMethodDef pyawn_functions[];
 
 Pycairo_CAPI_t *Pycairo_CAPI;
 
+void sink_awnoverlay (GObject *object)
+{
+  if (g_object_is_floating (object))
+  {
+    g_object_ref_sink (object);
+  }
+}
+
 DL_EXPORT (void)
 initawn (void)
 {
@@ -56,6 +64,8 @@ initawn (void)
                                  "could not import gtk");
                 return;
         }
+
+        pygobject_register_sinkfunc (AWN_TYPE_OVERLAY, sink_awnoverlay);
 
         m = Py_InitModule ("awn", pyawn_functions);
         d = PyModule_GetDict (m);

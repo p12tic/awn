@@ -1,5 +1,13 @@
 2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
 
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* bindings/python/awnmodule.c:
+	* libawn/awn-overlay-themed-icon.c:
+	Fixed the python bindings... hopefully.
+
+2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-overlay.c:
 	* libawn/awn-overlay.h:
 	* bindings/python/awn.defs:
