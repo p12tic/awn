@@ -92,7 +92,6 @@ enum {
   PROP_REFLECTION_ALPHA,
   PROP_REFLECTION_VISIBLE,
   PROP_MAKE_SHADOW,
-  PROP_LABEL,
   PROP_IS_ACTIVE,
   PROP_PROGRESS,
   PROP_BORDER_CLIP,
@@ -148,12 +147,6 @@ awn_effects_finalize (GObject *object)
     g_list_foreach (fx->priv->effect_queue, (GFunc)g_free, NULL);
     g_list_free (fx->priv->effect_queue);
     fx->priv->effect_queue = NULL;
-  }
-
-  if (fx->label)
-  {
-    g_free (fx->label);
-    fx->label = NULL;
   }
 
   G_OBJECT_CLASS (awn_effects_parent_class)->finalize(object);
@@ -289,9 +282,6 @@ awn_effects_get_property (GObject      *object,
     case PROP_MAKE_SHADOW:
       g_value_set_boolean(value, fx->make_shadow);
       break;
-    case PROP_LABEL:
-      g_value_set_string(value, fx->label);
-      break;
     case PROP_IS_ACTIVE:
       g_value_set_boolean(value, fx->is_active);
       break;
@@ -371,10 +361,6 @@ awn_effects_set_property (GObject      *object,
       break;
     case PROP_MAKE_SHADOW:
       fx->make_shadow = g_value_get_boolean(value);
-      break;
-    case PROP_LABEL:
-      if (fx->label) g_free(fx->label);
-      fx->label = g_value_dup_string(value);
       break;
     case PROP_IS_ACTIVE:
       fx->is_active = g_value_get_boolean(value);
@@ -744,18 +730,6 @@ awn_effects_class_init(AwnEffectsClass *klass)
                      "Clips border of the icon",
                      0, G_MAXINT, 0,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
-  /**
-   * AwnEffects:label:
-   *
-   * The extra label painted on top of the icon.
-   */
-  g_object_class_install_property(
-    obj_class, PROP_LABEL,
-    g_param_spec_string("label",
-                        "Label",
-                        "Extra label drawn on top of the icon",
-                        NULL,
-                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   /**
    * AwnEffects:progress:
    *
@@ -1183,7 +1157,7 @@ awn_effects_set_icon_size(AwnEffects * fx, gint width, gint height,
  *  returned by this call.
  * </note>
  * 
- * Returns cairo context where an icon can be drawn. (the icon should have 
+ * Returns: cairo context where an icon can be drawn. (the icon should have 
  * dimensions specified by a previous call to #awn_effects_set_icon_size)
  */
 cairo_t *awn_effects_cairo_create(AwnEffects *fx)
@@ -1201,7 +1175,7 @@ cairo_t *awn_effects_cairo_create(AwnEffects *fx)
  *  returned by this call.
  * </note>
  * 
- * Returns cairo context where an icon can be drawn. (the icon should have
+ * Returns: cairo context where an icon can be drawn. (the icon should have
  * dimensions specified by a previous call to #awn_effects_set_icon_size)
  *
  */
@@ -1335,7 +1309,6 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
   awn_effects_post_op_spotlight(fx, cr, NULL, NULL);
   awn_effects_post_op_arrow (fx, cr, NULL, NULL);
   awn_effects_post_op_progress(fx, cr, NULL, NULL);
-  /* TODO: we're missing op to paint label */
 
   if (overlays_wo_effects != NULL)
   {
@@ -1371,6 +1344,13 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
   fx->virtual_ctx = NULL;
 }
 
+/**
+ * awn_effects_add_overlay:
+ * @fx: AwnEffects instance.
+ * @overlay: AwnOverlay instance which should be added.
+ *
+ * Adds an overlay to the list of rendered overlays.
+ */
 void
 awn_effects_add_overlay (AwnEffects *fx, AwnOverlay *overlay)
 {
@@ -1380,7 +1360,8 @@ awn_effects_add_overlay (AwnEffects *fx, AwnOverlay *overlay)
 
   if (g_list_find (priv->overlays, overlay) == NULL)
   {
-    priv->overlays = g_list_append (priv->overlays, g_object_ref (overlay));
+    priv->overlays = g_list_append (priv->overlays,
+                                    g_object_ref_sink (overlay));
     awn_effects_redraw (fx);
     g_signal_connect_swapped (overlay, "notify",
                               G_CALLBACK (awn_effects_prop_changed), fx);
@@ -1392,6 +1373,14 @@ awn_effects_add_overlay (AwnEffects *fx, AwnOverlay *overlay)
   }
 }
 
+/**
+ * awn_effects_remove_overlay:
+ * @fx: AwnEffects instance.
+ * @overlay: AwnOverlay which was previously added using
+ *  awn_effects_add_overlay.
+ *
+ * Removes overlay from the list of rendered overlays.
+ */
 void
 awn_effects_remove_overlay (AwnEffects *fx, AwnOverlay *overlay)
 {
@@ -1419,7 +1408,7 @@ awn_effects_remove_overlay (AwnEffects *fx, AwnOverlay *overlay)
  * awn_effects_get_overlays:
  * @fx: #AwnEffects instance.
  *
- * Returns a newly-allocated list of the overlays added to this effects
+ * Returns: a newly-allocated list of the overlays added to this effects
  * instance.
  */
 GList*

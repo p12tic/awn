@@ -53,7 +53,7 @@
 
 (define-object Overlay
   (in-module "Awn")
-  (parent "GObject")
+  (parent "GInitiallyUnowned")
   (c-name "AwnOverlay")
   (gtype-id "AWN_TYPE_OVERLAY")
 )

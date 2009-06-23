@@ -62,6 +62,7 @@ struct _AwnDialogPrivate
   AwnOrientation orient;
   gboolean anchored;
   gboolean esc_hide;
+  gboolean effects_activate;
 
   gint window_offset;
   gint window_offset_pub;
@@ -100,6 +101,7 @@ enum
   PROP_WINDOW_OFFSET,
   PROP_WINDOW_PADDING,
   PROP_HIDE_ON_ESC,
+  PROP_EFFECTS_HILIGHT,
 
   PROP_GSTEP1,
   PROP_GSTEP2,
@@ -530,7 +532,7 @@ _on_active_changed(GObject *dialog, GParamSpec *spec, gpointer null)
 
   priv = AWN_DIALOG(dialog)->priv;
 
-  if (!AWN_IS_OVERLAYABLE (priv->anchor)) return;
+  if (!AWN_IS_OVERLAYABLE (priv->anchor) || !priv->effects_activate) return;
 
   AwnOverlayable *icon = AWN_OVERLAYABLE (priv->anchor);
 
@@ -700,6 +702,9 @@ awn_dialog_get_property (GObject    *object,
     case PROP_WINDOW_PADDING:
       g_value_set_int (value, priv->window_padding);
       break;
+    case PROP_EFFECTS_HILIGHT:
+      g_value_set_boolean (value, priv->effects_activate);
+      break;
 
     case PROP_GSTEP1:
     case PROP_GSTEP2:
@@ -755,6 +760,9 @@ awn_dialog_set_property (GObject      *object,
       break;
     case PROP_HIDE_ON_ESC:
       priv->esc_hide = g_value_get_boolean (value);
+      break;
+    case PROP_EFFECTS_HILIGHT:
+      priv->effects_activate = g_value_get_boolean (value);
       break;
 
     case PROP_GSTEP1:
@@ -904,6 +912,16 @@ awn_dialog_class_init (AwnDialogClass *klass)
     g_param_spec_boolean ("hide-on-esc",
                           "Hide on Escape",
                           "Hides the window when escape key is pressed",
+                          TRUE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+    PROP_EFFECTS_HILIGHT,
+    g_param_spec_boolean ("effects-hilight",
+                          "Effects Hilight",
+                          "Sets the anchored widget active when dialog is "
+                          "focused and the anchor implements "
+                          "AwnOverlayable interface",
                           TRUE,
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 

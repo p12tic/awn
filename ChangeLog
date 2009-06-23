@@ -1,5 +1,17 @@
 2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-overlay.c:
+	* libawn/awn-overlay.h:
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Changed base class for AwnOverlay to GInitiallyUnowned.
+	* libawn/awn-dialog.c:
+	Added property to disable the window focus behaviour.
+	* libawn/awn-effects.c:
+	Documentation update etc.
+
+2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
+
 	* doc/reference/libawn-docs.sgml:
 	Added AwnOverlayable.
 	* src/awn-panel-dbus.xml:
