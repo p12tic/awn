@@ -1,5 +1,10 @@
 2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
 
+	* bindings/python/awn.override:
+	Fixed binding for AppletSimple.set_icon_info()
+
+2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
+
 	* bindings/python/awn.defs:
 	* bindings/python/awn.override:
 	Added binding for AwnIconBox (needs some work).
