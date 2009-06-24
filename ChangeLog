@@ -1,3 +1,8 @@
+2009-06-24  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	Update to changes made in make_model().
+
 2009-06-24  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-panel.c:

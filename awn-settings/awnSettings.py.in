@@ -234,8 +234,10 @@ class awnPreferencesMini(awnPreferences):
 		elem.destroy()
 
 	themes = self.type_catalog_from_sources_list()
-	self.treeview_themes = self.make_model(themes)
+	self.treeview_themes = gtk.TreeView()
+	self.treeview_themes.set_headers_visible(False)
 	self.view_themes_scrol.add(self.treeview_themes)
+	self.refresh_tree(themes, self.make_model(themes, self.treeview_themes))
 	self.view_themes_scrol.show_all()
 
     def apply_theme_callback(self, data=None):
