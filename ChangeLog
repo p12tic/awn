@@ -1,3 +1,9 @@
+2009-06-24  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	Convert awn-settings.glade to awn-settings with gtk-builder-convert, 
+	not with galde-3.
+
 2009-06-24  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* bindings/python/awn.defs:
