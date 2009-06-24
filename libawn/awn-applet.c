@@ -1005,6 +1005,33 @@ awn_applet_uninhibit_autohide (AwnApplet *applet, guint cookie)
   }
 }
 
+GdkNativeWindow
+awn_applet_docklet_request (AwnApplet *applet, gint min_size, gboolean shrink)
+{
+  AwnAppletPrivate *priv;
+  GError *error = NULL;
+  gint64 ret = 0;
+
+  g_return_val_if_fail (AWN_IS_APPLET (applet), 0);
+  priv = applet->priv;
+
+  dbus_g_proxy_call (priv->proxy, "DockletRequest",
+                     &error,
+                     G_TYPE_INT, min_size,
+                     G_TYPE_BOOLEAN, shrink,
+                     G_TYPE_INVALID, 
+                     G_TYPE_INT64, &ret,
+                     G_TYPE_INVALID);
+
+  if (error)
+  {
+    g_warning ("%s", error->message);
+    g_error_free (error);
+  }
+
+  return (GdkNativeWindow)ret;
+}
+
 static GdkFilterReturn
 _on_panel_configure (GdkXEvent *xevent, GdkEvent *event, gpointer data)
 {

@@ -2444,7 +2444,7 @@ awn_panel_docklet_request (AwnPanel *panel,
                            DBusGMethodInvocation *context)
 {
   AwnPanelPrivate *priv = panel->priv;
-  guint32 window_id = 0;
+  gint64 window_id = 0;
 
   if (!priv->docklet)
   {

@@ -126,6 +126,9 @@ guint              awn_applet_inhibit_autohide    (AwnApplet *applet,
 void               awn_applet_uninhibit_autohide  (AwnApplet *applet,
                                                    guint cookie);
 
+GdkNativeWindow    awn_applet_docklet_request     (AwnApplet *applet,
+                                                   gint min_size,
+                                                   gboolean shrink);
 /*
  * Returns a gtk menu item for the "Dock Preferences".
  * Note: awn_applet_create_default_menu() adds this item to its menu.  
