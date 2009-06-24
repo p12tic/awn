@@ -48,6 +48,7 @@ G_DEFINE_TYPE (AwnApplet, awn_applet, GTK_TYPE_PLUG)
 struct _AwnAppletPrivate
 {
   gchar *uid;
+  gint panel_id;
   gchar *gconf_key;
   AwnOrientation orient;
   AwnPathType path_type;
@@ -74,6 +75,7 @@ enum
 {
   PROP_0,
   PROP_UID,
+  PROP_PANEL_ID,
   PROP_ORIENT,
   PROP_OFFSET,
   PROP_OFFSET_MOD,
@@ -253,6 +255,9 @@ awn_applet_set_property (GObject      *object,
     case PROP_UID:
       awn_applet_set_uid (applet, g_value_get_string (value));
       break;
+    case PROP_PANEL_ID:
+      applet->priv->panel_id = g_value_get_int (value);
+      break;
     case PROP_ORIENT:
       awn_applet_set_orientation (applet, g_value_get_int (value));
       break;
@@ -292,6 +297,10 @@ awn_applet_get_property (GObject    *object,
       g_value_set_string (value, priv->uid);
       break;
 
+    case PROP_PANEL_ID:
+      g_value_set_int (value, priv->panel_id);
+      break;
+
     case PROP_ORIENT:
       g_value_set_int (value, priv->orient);
       break;
@@ -319,6 +328,113 @@ awn_applet_get_property (GObject    *object,
 }
 
 static void
+awn_applet_constructed (GObject *obj)
+{
+  AwnApplet *applet = AWN_APPLET (obj);
+  AwnAppletPrivate *priv = applet->priv;
+
+  if (priv->panel_id > 0)
+  {
+    gchar *object_path = g_strdup_printf ("/org/awnproject/Awn/Panel%d",
+                                          priv->panel_id);
+    priv->proxy = dbus_g_proxy_new_for_name (priv->connection,
+                                             "org.awnproject.Awn",
+                                             object_path,
+                                             "org.awnproject.Awn.Panel");
+    if (!priv->proxy)
+    {
+      g_warning("Could not connect to mothership! Bailing\n");
+      gtk_main_quit ();
+    }
+
+    dbus_g_object_register_marshaller (
+      libawn_marshal_VOID__STRING_STRING_BOXED,
+      G_TYPE_NONE, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_VALUE,
+      G_TYPE_INVALID
+    );
+
+    dbus_g_proxy_add_signal (priv->proxy, "OrientChanged",
+                             G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_proxy_add_signal (priv->proxy, "OffsetChanged",
+                             G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_proxy_add_signal (priv->proxy, "SizeChanged",
+                             G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_proxy_add_signal (priv->proxy, "PropertyChanged",
+                             G_TYPE_STRING, G_TYPE_STRING,
+                             G_TYPE_VALUE, G_TYPE_INVALID);
+    dbus_g_proxy_add_signal (priv->proxy, "DestroyNotify",
+                             G_TYPE_INVALID);
+    dbus_g_proxy_add_signal (priv->proxy, "DestroyApplet",
+                             G_TYPE_STRING, G_TYPE_INVALID);
+  
+    dbus_g_proxy_connect_signal (priv->proxy, "OrientChanged",
+                                 G_CALLBACK (on_orient_changed), applet, 
+                                 NULL);
+    dbus_g_proxy_connect_signal (priv->proxy, "OffsetChanged",
+                                 G_CALLBACK (on_offset_changed), applet, 
+                                 NULL);
+    dbus_g_proxy_connect_signal (priv->proxy, "SizeChanged",
+                                 G_CALLBACK (on_size_changed), applet,
+                                 NULL);
+    dbus_g_proxy_connect_signal (priv->proxy, "PropertyChanged",
+                                 G_CALLBACK (on_prop_changed), applet,
+                                 NULL);
+    dbus_g_proxy_connect_signal (priv->proxy, "DestroyNotify",
+                                 G_CALLBACK (on_delete_notify), applet,
+                                 NULL);
+    dbus_g_proxy_connect_signal (priv->proxy, "DestroyApplet",
+                                 G_CALLBACK (on_destroy_applet), applet,
+                                 NULL);
+
+    g_signal_connect (priv->proxy, "destroy",
+                      G_CALLBACK (on_proxy_destroyed), NULL);
+
+    // get prop values from Panel
+    DBusGProxy *prop_proxy = dbus_g_proxy_new_from_proxy (
+      priv->proxy, "org.freedesktop.DBus.Properties", NULL
+    );
+
+    if (!prop_proxy)
+    {
+      g_warning("Could not get property values! Bailing\n");
+      gtk_main_quit ();
+    }
+
+    GError *error = NULL;
+    GValue orient = {0}, size = {0}, offset = {0};
+
+    dbus_g_proxy_call (prop_proxy, "Get", &error, 
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "Orient",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &orient,
+                       G_TYPE_INVALID);
+
+    dbus_g_proxy_call (prop_proxy, "Get", &error, 
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "Size",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &size,
+                       G_TYPE_INVALID);
+
+    dbus_g_proxy_call (prop_proxy, "Get", &error, 
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "Offset",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &offset,
+                       G_TYPE_INVALID);
+
+    g_object_set_property (obj, "orient", &orient);
+    g_object_set_property (obj, "size", &size);
+    g_object_set_property (obj, "offset", &offset);
+
+    if (prop_proxy) g_object_unref (prop_proxy);
+
+    g_free (object_path);
+  }
+}
+
+static void
 awn_applet_dispose (GObject *obj)
 {
   G_OBJECT_CLASS (awn_applet_parent_class)->dispose(obj);
@@ -331,7 +447,7 @@ awn_applet_finalize (GObject *obj)
 
   if (priv->connection)
   {
-    g_object_unref (priv->proxy);
+    if (priv->proxy) g_object_unref (priv->proxy);
     dbus_g_connection_unref (priv->connection);
     priv->connection = NULL;
     priv->proxy = NULL;
@@ -373,6 +489,7 @@ awn_applet_class_init (AwnAppletClass *klass)
   GtkWidgetClass *gtk_widget_class;
 
   g_object_class = G_OBJECT_CLASS (klass);
+  g_object_class->constructed = awn_applet_constructed;
   g_object_class->dispose = awn_applet_dispose;
   g_object_class->finalize = awn_applet_finalize;
   g_object_class->get_property = awn_applet_get_property;
@@ -391,12 +508,20 @@ awn_applet_class_init (AwnAppletClass *klass)
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   g_object_class_install_property (g_object_class,
+    PROP_PANEL_ID,
+    g_param_spec_int ("panel-id",
+                      "Panel ID",
+                      "The id of AwnPanel this applet connects to",
+                      0, G_MAXINT, 0,
+                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+
+  g_object_class_install_property (g_object_class,
    PROP_ORIENT,
    g_param_spec_int ("orient",
                      "Orientation",
                      "The current bar orientation",
                      0, 3, AWN_ORIENTATION_BOTTOM,
-                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                     G_PARAM_READWRITE));
 
   g_object_class_install_property (g_object_class,
    PROP_OFFSET,
@@ -404,7 +529,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                      "Offset",
                      "Icon offset set on the bar",
                      0, G_MAXINT, 0,
-                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                     G_PARAM_READWRITE));
 
   g_object_class_install_property (g_object_class,
    PROP_OFFSET_MOD,
@@ -420,7 +545,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                      "Size",
                      "The current visible size of the bar",
                      0, G_MAXINT, 48,
-                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                     G_PARAM_READWRITE));
 
   g_object_class_install_property (g_object_class,
    PROP_PATH_TYPE,
@@ -536,57 +661,6 @@ awn_applet_init (AwnApplet *applet)
     gtk_main_quit ();
   }
   
-  priv->proxy = dbus_g_proxy_new_for_name (priv->connection,
-                                           "org.awnproject.Awn",
-                                           "/org/awnproject/Awn/Panel1",
-                                           "org.awnproject.Awn.Panel");
-  if (!priv->proxy)
-  {
-    g_warning("Could not connect to mothership! Bailing\n");
-    gtk_main_quit ();
-  }
-
-  dbus_g_object_register_marshaller (libawn_marshal_VOID__STRING_STRING_BOXED,
-                                     G_TYPE_NONE, G_TYPE_STRING,
-                                     G_TYPE_STRING, G_TYPE_VALUE,
-                                     G_TYPE_INVALID);
-
-  dbus_g_proxy_add_signal (priv->proxy, "OrientChanged",
-                           G_TYPE_INT, G_TYPE_INVALID);
-  dbus_g_proxy_add_signal (priv->proxy, "OffsetChanged",
-                           G_TYPE_INT, G_TYPE_INVALID);
-  dbus_g_proxy_add_signal (priv->proxy, "SizeChanged",
-                           G_TYPE_INT, G_TYPE_INVALID);
-  dbus_g_proxy_add_signal (priv->proxy, "PropertyChanged",
-                           G_TYPE_STRING, G_TYPE_STRING,
-                           G_TYPE_VALUE, G_TYPE_INVALID);
-  dbus_g_proxy_add_signal (priv->proxy, "DestroyNotify",
-                           G_TYPE_INVALID);
-  dbus_g_proxy_add_signal (priv->proxy, "DestroyApplet",
-                           G_TYPE_STRING, G_TYPE_INVALID);
-  
-  dbus_g_proxy_connect_signal (priv->proxy, "OrientChanged",
-                               G_CALLBACK (on_orient_changed), applet, 
-                               NULL);
-  dbus_g_proxy_connect_signal (priv->proxy, "OffsetChanged",
-                               G_CALLBACK (on_offset_changed), applet, 
-                               NULL);
-  dbus_g_proxy_connect_signal (priv->proxy, "SizeChanged",
-                               G_CALLBACK (on_size_changed), applet,
-                               NULL);
-  dbus_g_proxy_connect_signal (priv->proxy, "PropertyChanged",
-                               G_CALLBACK (on_prop_changed), applet,
-                               NULL);
-  dbus_g_proxy_connect_signal (priv->proxy, "DestroyNotify",
-                               G_CALLBACK (on_delete_notify), applet,
-                               NULL);
-  dbus_g_proxy_connect_signal (priv->proxy, "DestroyApplet",
-                               G_CALLBACK (on_destroy_applet), applet,
-                               NULL);
-
-  g_signal_connect (priv->proxy, "destroy",
-                    G_CALLBACK (on_proxy_destroyed), NULL);
-
   g_signal_connect (applet, "embedded",
                     G_CALLBACK (awn_applet_plug_embedded), NULL);
   g_signal_connect (applet, "delete-event",
@@ -602,13 +676,11 @@ awn_applet_init (AwnApplet *applet)
 }
 
 AwnApplet *
-awn_applet_new (const gchar* uid, gint orient, gint offset, gint size)
+awn_applet_new (const gchar* uid, gint panel_id)
 {
   AwnApplet *applet = g_object_new (AWN_TYPE_APPLET,
                                     "uid", uid,
-                                    "orient", orient,
-                                    "offset", offset,
-                                    "size", size,
+                                    "panel-id", panel_id,
                                     NULL);
   return applet;
 }

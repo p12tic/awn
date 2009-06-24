@@ -60,9 +60,7 @@ struct _TaskManagerClass
 GType       task_manager_get_type (void) G_GNUC_CONST;
 
 AwnApplet * task_manager_new      (const gchar *uid, 
-                                   gint         orient,
-                                   gint         offset,
-                                   gint         height);
+                                   gint         panel_id);
 
 #endif /* _TASK_MANAGER_H_ */
 

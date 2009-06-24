@@ -1,3 +1,20 @@
+2009-06-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/applet.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-manager.h:
+	* awn-applet-activation/main.c:
+	* bindings/python/__init__.py:
+	* bindings/python/awn.defs:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* src/awn-applet-proxy.c:
+	* tests/test-applet-simple.c:
+	AwnApplet constructor changed to include panel ID, now size, offset
+	and similar values are read out via DBus when applet is constructed.
+
 2009-06-24  Julien Lavergne  <julien.lavergne@gmail.com>
 
 	* awn-settings/awn-settings.xml:

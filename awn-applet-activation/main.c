@@ -34,18 +34,13 @@
 GtkWidget *
 _awn_applet_new(const gchar *path,
                 const gchar *uid,
-                gint         orient,
-                gint         offset,
-                gint         size);
+                gint         panel_id);
 static void
 launch_python(const gchar *file,
               const gchar *module,
               const gchar *uid,
               gint64 window,
-              gint64 panel_win_id,
-              gint orient,
-              gint offset,
-              gint size);
+              gint panel_id);
 
 static gboolean
 execute_wrapper (const gchar* cmd_line,
@@ -62,10 +57,7 @@ g_execute (const gchar *file,
 static gchar    *path = NULL;
 static gchar    *uid  = NULL;
 static gint64    window = 0;
-static gint64    awn_id = 0;
-static gint      orient = AWN_ORIENTATION_BOTTOM;
-static gint      offset = 0;
-static gint      size   = 50;
+static gint      panel_id = 0;
 
 
 static GOptionEntry entries[] =
@@ -91,33 +83,12 @@ static GOptionEntry entries[] =
      "The window to embed in.",
      "" },
 
-  {  "panel-window-id",
+  {  "panel-id",
      'i', 0,
-     G_OPTION_ARG_INT64,
-     &awn_id,
-     "The window XID of the toplevel of the window we're embedding into.",
-     "0" },
-
-  {  "orient",
-     'o', 0,
      G_OPTION_ARG_INT,
-     &orient,
-     "Awns current orientation.",
-     "0" },
-
-  {  "offset",
-     'f', 0,
-     G_OPTION_ARG_INT,
-     &offset,
-     "Current icon offset of the panel.",
-     "0" },
-
-  {  "size",
-     's', 0,
-     G_OPTION_ARG_INT,
-     &size,
-     "Current size of the panel.",
-     "50" },
+     &panel_id,
+     "AwnPanel ID for the DBus connection.",
+     "" },
 
   { NULL }
 };
@@ -199,7 +170,7 @@ main(gint argc, gchar **argv)
   {
     if (strcmp(type, "Python") == 0)
     {
-      launch_python(path, exec, uid, window, awn_id, orient, offset, size);
+      launch_python(path, exec, uid, window, panel_id);
       return 0;
     }
   }
@@ -220,7 +191,7 @@ main(gint argc, gchar **argv)
   }
 
   /* Create a GtkPlug for the applet */
-  applet = _awn_applet_new (exec, uid, orient, offset, size);
+  applet = _awn_applet_new (exec, uid, panel_id);
 
   if (applet == NULL)
   {
@@ -240,13 +211,8 @@ main(gint argc, gchar **argv)
   }
   else
   {
-    gtk_plug_construct (GTK_PLUG (applet), -1);
-    gtk_widget_show_all (applet);
-  }
-
-  if (awn_id && AWN_IS_APPLET (applet))
-  {
-    awn_applet_set_panel_window_id (AWN_APPLET (applet), awn_id);
+    gtk_plug_construct (GTK_PLUG (applet), 0);
+    // AwnApplet's embedded signal handler automatically calls show_all()
   }
 
   gtk_main();
@@ -257,9 +223,7 @@ main(gint argc, gchar **argv)
 GtkWidget *
 _awn_applet_new(const gchar *path,
                 const gchar *uid,
-                gint         orient,
-                gint         offset,
-                gint         size)
+                gint         panel_id)
 {
   GModule *module;
   AwnApplet *applet;
@@ -281,7 +245,7 @@ _awn_applet_new(const gchar *path,
                       (gpointer *)&init_func))
   {
     /* create new applet */
-    applet = AWN_APPLET(awn_applet_new(uid, orient, offset, size));
+    applet = AWN_APPLET(awn_applet_new(uid, panel_id));
     /* send applet to factory method */
 
     if (!init_func(applet))
@@ -299,7 +263,7 @@ _awn_applet_new(const gchar *path,
                         (gpointer *)&initp_func))
     {
       /* Create the applet */
-      applet = AWN_APPLET(initp_func(uid, orient, offset, size));
+      applet = AWN_APPLET(initp_func(uid, panel_id));
 
       if (applet == NULL)
       {
@@ -330,10 +294,7 @@ launch_python(const gchar *file,
               const gchar *module,
               const gchar *uid,
               gint64 window,
-              gint64 panel_win_id,
-              gint orient,
-              gint offset,
-              gint size)
+              gint panel_id)
 {
   gchar *cmd = NULL;
   gchar *exec = NULL;
@@ -353,10 +314,8 @@ launch_python(const gchar *file,
 
 
   cmd = g_strdup_printf("python %s --uid=%s "
-                        "--window=%" G_GINT64_FORMAT " "
-                        "--panel-window-id=%" G_GINT64_FORMAT " "
-                        "--orient=%d --offset=%d --size=%d",
-                        exec, uid, window, panel_win_id, orient, offset, size);
+                        "--window=%" G_GINT64_FORMAT " --panel-id=%d",
+                        exec, uid, window, panel_id);
 
   // this wraps execv
   execute_wrapper (cmd, &err);

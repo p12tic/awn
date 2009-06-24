@@ -440,9 +440,7 @@
   (return-type "GtkWidget*")
   (properties
     '("uid" (argname "uid"))
-    '("orient" (argname "orient"))
-    '("offset" (argname "offset"))
-    '("size" (argname "size"))
+    '("panel_id" (argname "panel_id"))
   )
 )
 
@@ -559,9 +557,7 @@
   (return-type "GtkWidget*")
   (properties
     '("uid" (argname "uid"))
-    '("orient" (argname "orient"))
-    '("offset" (argname "offset"))
-    '("size" (argname "size"))
+    '("panel_id" (argname "panel_id"))
   )
 )
 

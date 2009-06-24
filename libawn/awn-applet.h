@@ -81,17 +81,13 @@ struct _AwnAppletClass
 /* Hook to have an AWN Applet built for you */
 typedef gboolean   (*AwnAppletInitFunc)           (AwnApplet   *applet);
 /* Hook to build your own AWN Applet */
-typedef AwnApplet* (*AwnAppletInitPFunc)          (const gchar *uid, 
-                                                   gint         orient,
-                                                   gint         offset,
-                                                   gint         size);
+typedef AwnApplet* (*AwnAppletInitPFunc)          (const gchar *uid,
+                                                   gint         panel_id);
 
 GType              awn_applet_get_type            (void);
 
 AwnApplet *        awn_applet_new                 (const gchar *uid, 
-                                                   gint         orient,
-                                                   gint         offset,
-                                                   gint         size);
+                                                   gint         panel_id);
 
 AwnOrientation     awn_applet_get_orientation     (AwnApplet      *applet);
 void               awn_applet_set_orientation     (AwnApplet      *applet,

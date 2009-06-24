@@ -34,7 +34,7 @@ G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_SOCKET)
 #define AWN_APPLET_PROXY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE (obj, \
   AWN_TYPE_APPLET_PROXY, AwnAppletProxyPrivate))
 
-#define APPLET_EXEC "awn-applet-activation -p %s -u %s -w %" G_GINT64_FORMAT " -i %" G_GINT64_FORMAT " -o %d -f %d -s %d"
+#define APPLET_EXEC "awn-applet-activation -p %s -u %s -w %" G_GINT64_FORMAT " -i %d"
 
 #define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
 
@@ -513,22 +513,10 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
 
   /* Load the applet */
   screen = gtk_widget_get_screen (GTK_WIDGET (proxy));
-  gint64 socket_id = (gint64)
-    gtk_socket_get_id (GTK_SOCKET (proxy));
-  GtkWidget *proxy_widget = gtk_widget_get_toplevel (GTK_WIDGET(proxy));
-  GdkWindow *proxy_win;
-  proxy_win = gtk_widget_get_window (proxy_widget);
-  gint64 panel_window_id = (gint64)GDK_WINDOW_XID (proxy_win);
+  gint64 socket_id = (gint64) gtk_socket_get_id (GTK_SOCKET (proxy));
 
-  exec = g_strdup_printf (APPLET_EXEC,
-                          priv->path,
-                          priv->uid, 
-                          socket_id,
-                          panel_window_id,
-                          priv->orient,
-                          priv->offset,
-                          priv->size);
-
+  // FIXME: panel_id instead of '1'
+  exec = g_strdup_printf (APPLET_EXEC, priv->path, priv->uid, socket_id, 1);
   
   g_shell_parse_argv(exec, NULL, &argv, &error);
   g_warn_if_fail(error == NULL);
