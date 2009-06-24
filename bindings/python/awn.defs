@@ -1223,10 +1223,10 @@
 (define-function awn_overlay_themed_icon_new
   (c-name "awn_overlay_themed_icon_new")
   (is-constructor-of "AwnOverlayThemedIcon")
-  (parameters
-    '("AwnThemedIcon*" "icon")
-    '("const-gchar*" "icon_name")
-    '("const-gchar*" "icon_state" (default "NULL") (null-ok))
+  (properties
+    '("AwnThemedIcon*" (argname "icon"))
+    '("const-gchar*"   (argname "icon_name"))
+    '("const-gchar*"  (optional) (argname "icon_state"))
   )
 )
 
