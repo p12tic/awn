@@ -395,3 +395,14 @@ awn_applet_simple_set_effect (AwnAppletSimple  *applet,
 
   awn_icon_set_effect (AWN_ICON (applet->priv->icon), effect);
 }
+
+GtkWidget *
+awn_applet_simple_create_about_item (const gchar      *copyright,
+                                     AwnAppletLicense  license,
+                                     const gchar      *applet_name,
+                                     const gchar      *version)
+{
+  return awn_applet_create_about_item (copyright, license, applet_name, version,
+                                       NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+                                       NULL);
+}

@@ -725,6 +725,144 @@ awn_applet_create_pref_item (void)
   return item;
 }
 
+static void
+_show_about_dialog (GtkMenuItem *menuitem,
+                    GtkWidget   *dialog)
+{
+  gtk_widget_show_all (dialog);
+}
+
+static gboolean
+_cleanup_about_dialog (GtkWidget *widget,
+                       GdkEvent  *event,
+                       GtkWidget *dialog)
+{
+  gtk_widget_destroy (dialog);
+  return FALSE;
+}
+
+/**
+ * awn_applet_create_about_item:
+ * @license: Must be one of the values enumerated in #AwnAppletLicense.
+ *
+ * Creates an about dialog and an associated menu item for use in the applet's
+ * context menu. The @copyright, @license, and @applet_name parameters are
+ * mandatory. The rest are optional. See also #GtkAboutDialog for a description
+ * of the parameters other than @license.
+ *
+ * Returns: An "about applet" #GtkMenuItem
+ */
+GtkWidget *
+awn_applet_create_about_item (const gchar       *copyright,
+                              AwnAppletLicense   license,
+                              const gchar       *applet_name,
+                              const gchar       *version,
+                              const gchar       *comments,
+                              const gchar       *website,
+                              const gchar       *website_label,
+                              const gchar       *icon_name,
+                              const gchar       *translator_credits,
+                              const gchar      **authors,
+                              const gchar      **artists,
+                              const gchar      **documenters)
+{
+  /* we could use  gtk_show_about_dialog()... but no. */
+  GtkAboutDialog* dialog = GTK_ABOUT_DIALOG (gtk_about_dialog_new ());
+  GtkWidget* item;
+  gchar* item_text = NULL;
+  GdkPixbuf* pixbuf =NULL;
+
+  g_assert (copyright != NULL);
+  g_assert (strlen (copyright) > 8);
+  g_assert (applet_name);
+  if (copyright)
+  {
+    gtk_about_dialog_set_copyright (dialog, copyright);
+  }
+  switch (license)   /* FIXME insert more complete license info. */
+  {
+    case AWN_APPLET_LICENSE_GPLV2:
+      gtk_about_dialog_set_license (dialog, "GPLv2");
+      break;
+    case AWN_APPLET_LICENSE_GPLV3:
+      gtk_about_dialog_set_license (dialog, "GPLv3");
+      break;
+    case AWN_APPLET_LICENSE_LGPLV2_1:
+      gtk_about_dialog_set_license (dialog, "LGPLv2.1");
+      break;
+    case AWN_APPLET_LICENSE_LGPLV3:
+      gtk_about_dialog_set_license (dialog, "LGPLv3");
+      break;
+    default:
+      g_warning ("License must be set");
+      g_assert_not_reached ();
+  }
+#if GTK_CHECK_VERSION(2,12,0)
+  if (applet_name)
+  {
+    gtk_about_dialog_set_program_name (dialog, applet_name);
+  }
+#endif
+  if (version) /* FIXME we can probably append some addition build info in here... */
+  {
+    gtk_about_dialog_set_version (dialog, version);
+  }
+  if (comments)
+  {
+    gtk_about_dialog_set_comments (dialog, comments);
+  }
+  if (website)
+  {
+    gtk_about_dialog_set_website (dialog, website);
+  }
+  if (website_label)
+  {
+    gtk_about_dialog_set_website_label (dialog, website_label);
+  }
+  if (!icon_name)
+  {
+    icon_name = "stock_about";
+  }
+  gtk_about_dialog_set_logo_icon_name (dialog, icon_name);
+  pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+                                     icon_name, 64, 0, NULL);
+  gtk_window_set_icon (GTK_WINDOW (dialog), pixbuf);
+  g_object_unref (pixbuf);
+
+  if (translator_credits)
+  {
+    gtk_about_dialog_set_translator_credits (dialog, translator_credits);
+  }
+  if (authors)
+  {
+    gtk_about_dialog_set_authors (dialog, authors);
+  }
+  if (artists)
+  {
+    gtk_about_dialog_set_artists (dialog, artists);
+  }
+  if (documenters)
+  {
+    gtk_about_dialog_set_documenters (dialog, documenters);
+  }
+  item_text = g_strdup_printf ("About %s", applet_name);
+  item = gtk_image_menu_item_new_with_label (item_text); /* FIXME Add pretty icon */
+
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
+    gtk_image_new_from_stock (GTK_STOCK_ABOUT, GTK_ICON_SIZE_MENU));
+
+  g_free (item_text);
+
+  gtk_widget_show_all (item);
+  g_signal_connect (G_OBJECT (item), "activate",
+                    G_CALLBACK (_show_about_dialog), dialog);
+  g_signal_connect (G_OBJECT (item), "destroy-event",
+                    G_CALLBACK (_cleanup_about_dialog), dialog);
+  g_signal_connect_swapped (dialog, "response",
+                            G_CALLBACK (gtk_widget_hide), dialog);
+  return item;
+}
+
 GtkWidget*
 awn_applet_create_default_menu (AwnApplet *applet)
 {

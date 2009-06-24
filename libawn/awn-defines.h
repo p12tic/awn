@@ -58,6 +58,26 @@ typedef enum
 
 } AwnAppletFlags;
 
+/**
+ * AwnAppletLicense:
+ * @AWN_APPLET_LICENSE_GPLV2: GPL version 2 or later
+ * @AWN_APPLET_LICENSE_GPLV3: GPL version 3 or later
+ * @AWN_APPLET_LICENSE_LGPLV2_1: LGPL version 2.1 or later
+ * @AWN_APPLET_LICENSE_LGPLV3: LGPL version 3 or later
+ *
+ * The license to use for the applet's about dialog.
+ * Starting the acceptable values at 10 makes it rather unlikely
+ * that someone can specify a license type by accident.
+ */
+typedef enum
+{
+  AWN_APPLET_LICENSE_GPLV2 = 10,
+  AWN_APPLET_LICENSE_GPLV3 = 11,
+  AWN_APPLET_LICENSE_LGPLV2_1 = 12,
+  AWN_APPLET_LICENSE_LGPLV3 = 13
+} AwnAppletLicense;
+
+
 typedef enum
 {
 	AWN_PATH_LINEAR=0,

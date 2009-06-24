@@ -136,6 +136,18 @@ GdkNativeWindow    awn_applet_docklet_request     (AwnApplet *applet,
  * awn_applet_create_default_menu() cannot be used 
  */
 GtkWidget *        awn_applet_create_pref_item    (void);
+GtkWidget *        awn_applet_create_about_item   (const gchar       *copyright,
+                                                   AwnAppletLicense   license,
+                                                   const gchar       *applet_name,
+                                                   const gchar       *version,
+                                                   const gchar       *comments,
+                                                   const gchar       *website,
+                                                   const gchar       *website_label,
+                                                   const gchar       *icon_name,
+                                                   const gchar       *translator_credits,
+                                                   const gchar      **authors,
+                                                   const gchar      **artists,
+                                                   const gchar      **documenters);
 
 G_END_DECLS
 

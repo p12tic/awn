@@ -1,3 +1,15 @@
+2009-06-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-defines.h:
+	Add AwnAppletLicense, awn_applet_create_about_item, and
+	awn_applet_simple_create_about_item (migrated from libawn-extras).
+
 2009-06-25  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-applet.c:
