@@ -1,3 +1,8 @@
+2009-06-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Fixed binding for OverlayThemedIcon.
+
 2009-06-24  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/applet.c:

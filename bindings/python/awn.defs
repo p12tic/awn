@@ -517,6 +517,16 @@
   )
 )
 
+(define-method docklet_request
+  (of-object "AwnApplet")
+  (c-name "awn_applet_docklet_request")
+  (return-type "GdkNativeWindow")
+  (parameters
+    '("gint" "min_size")
+    '("gboolean" "shrink")
+  )
+)
+
 (define-method applet_construct
   (of-object "AwnApplet")
   (c-name "gtk_plug_construct")
@@ -1220,9 +1230,9 @@
   (c-name "awn_overlay_themed_icon_new")
   (is-constructor-of "AwnOverlayThemedIcon")
   (properties
-    '("AwnThemedIcon*" (argname "icon"))
-    '("const-gchar*"   (argname "icon_name"))
-    '("const-gchar*"  (optional) (argname "icon_state"))
+    '("icon" (argname "icon"))
+    '("icon-name"   (argname "icon_name"))
+    '("icon-state"  (optional) (argname "icon_state"))
   )
 )
 
