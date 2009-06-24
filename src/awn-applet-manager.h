@@ -91,9 +91,9 @@ gboolean    awn_ua_get_all_server_flags 	(AwnAppletManager *manager,
 
 gboolean    awn_ua_add_applet (	AwnAppletManager *manager,
 		        gchar     *name,
-            glong		  *xid,
-		        gint	    *width,
-		        gint      *height,
+            glong		  xid,
+		        gint	    width,
+		        gint      height,
 		        gchar size_type,
             GError   **error);
 

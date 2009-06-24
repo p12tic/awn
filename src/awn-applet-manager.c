@@ -754,37 +754,74 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
 }
 
 
+/*UA*/
+
+static GtkWidget *
+create_applet_ua (AwnAppletManager *manager,
+                  GtkWidget * applet)
+{  
+  
+
+  AwnAppletManagerPrivate *priv = manager->priv;
+  GtkWidget               *notifier;
+
+  /*FIXME: Exception cases, i.e. separators */
+  
+  notifier = awn_applet_proxy_get_throbber (AWN_APPLET_PROXY (applet));
+
+  gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (manager), notifier, FALSE, FALSE, 0);
+  gtk_widget_show (notifier);
+
+  g_object_set_qdata (G_OBJECT (applet), 
+                      priv->touch_quark, GINT_TO_POINTER (0));
+//  g_hash_table_insert (priv->applets, g_strdup (uid), applet);
+
+//  awn_applet_proxy_schedule_execute (AWN_APPLET_PROXY (applet));
+
+  return applet;
+}
+
 /*DBUS*/
 
 gboolean
 awn_ua_add_applet (	AwnAppletManager *manager,
 			gchar     *name,
-      glong		  *xid,
-			gint	    *width,
-			gint      *height,
+      glong		  xid,
+			gint	    width,
+			gint      height,
 			gchar size_type,
       GError   **error)
 {
+  g_debug ("%s",__func__);
+  g_print ("Applet : %lu : ", xid);
+  g_print ("Width : %i : ", width);
+  g_print ("Height : %i : ", height);
 
- GtkWidget *socket = gtk_socket_new ();
- gint pos = 1;
- GdkWindow* plugwin; 
+  GtkWidget *socket = gtk_socket_new ();
+  gint pos = 1;
+  GdkWindow* plugwin; 
+  AwnAppletManagerPrivate *priv = manager->priv;  
 
- GdkNativeWindow native_window = (GdkNativeWindow) *xid;
+ GdkNativeWindow native_window = (GdkNativeWindow) xid;
 
- gtk_socket_add_id (GTK_SOCKET(socket), native_window);
+// gtk_socket_add_id (GTK_SOCKET(socket), native_window);
+  
+ socket = awn_applet_proxy_new_ua (g_strdup_printf("%lu",xid),priv->orient,
+                                 priv->offset, priv->size);
 
+ g_signal_connect_swapped (socket, "plug-added",
+                          G_CALLBACK (_applet_plug_added), manager);
+  
  plugwin = gtk_socket_get_plug_window (GTK_SOCKET(socket));
 
  awn_applet_manager_add_widget(manager, GTK_WIDGET (socket), pos);
 
  gtk_widget_show_all (GTK_WIDGET (socket));
 
- g_print ("Applet : %lu : ", *xid);
- g_print ("Width : %i : ", *width);
- g_print ("Height : %i : ", *height);
+// create_applet_ua(manager,socket);
 
-
+ return FALSE;
 /*TODO Write a function who create the applet
  applet = create_applet_ua (manager, *uid);
 

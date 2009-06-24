@@ -378,6 +378,25 @@ awn_applet_proxy_new (const gchar *path,
   return proxy;
 }
 
+
+GtkWidget *     
+awn_applet_proxy_new_ua ( gchar *uid,
+                         gint         orient,
+                      gint         offset,
+                      gint         size)
+{
+  GtkWidget *proxy;
+
+  proxy = g_object_new (AWN_TYPE_APPLET_PROXY,
+      "path", "no path",
+      "uid", uid,
+      "orient", orient,
+      "offset", offset,
+      "size", size,
+      NULL);
+  return proxy;
+}
+
 /*
  * GtkSocket callbacks
  */
