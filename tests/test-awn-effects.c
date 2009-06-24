@@ -77,16 +77,10 @@ on_signal_click(GtkWidget *widget, gpointer user_data)
 {
   AwnIcon *icon = AWN_ICON(icons[0]);
 
-  AwnEffects *fx = awn_icon_get_effects(icon);
+  AwnEffects *fx = awn_overlayable_get_effects (AWN_OVERLAYABLE (icon));
   awn_effects_start_ex(fx, AWN_EFFECT_OPENING, 1, TRUE, TRUE);
 
-  gchar* png = NULL;
-  g_object_get(fx, "custom-arrow-png", &png, NULL);
-  if (!png) {
-    g_object_set(fx, "custom-arrow-png", "/usr/share/gimp/2.0/themes/Default/images/preferences/folders-gradients-22.png", NULL);
-    g_free(png);
-  } else
-    g_object_set(fx, "custom-arrow-png", NULL, NULL);
+  g_object_set(fx, "arrow-png", "/usr/share/gimp/2.0/themes/Default/images/preferences/folders-gradients-22.png", NULL);
 
   return FALSE;
 }
@@ -132,7 +126,7 @@ pixbuf_icon (GtkWidget *parent)
   awn_icon_set_tooltip_text (AWN_ICON (icon), "Pixbuf Icon");
 
   /* test the signals */
-  AwnEffects *fx = awn_icon_get_effects(AWN_ICON(icon));
+  AwnEffects *fx = awn_overlayable_get_effects (AWN_OVERLAYABLE (icon));
   g_signal_connect(fx, "animation-start", (GCallback)anim_started, NULL);
   g_signal_connect(fx, "animation-end", (GCallback)anim_ended, NULL);
 

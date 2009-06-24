@@ -75,6 +75,8 @@ GtkWidget * awn_applet_proxy_new               (const gchar *path,
                                                 gint         size);
 void        awn_applet_proxy_execute           (AwnAppletProxy *proxy);
 
+void        awn_applet_proxy_schedule_execute  (AwnAppletProxy *proxy);
+
 GtkWidget* awn_applet_proxy_get_throbber       (AwnAppletProxy *proxy);
 
 G_END_DECLS

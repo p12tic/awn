@@ -35,14 +35,12 @@
 
 #include "awn-overlay.h"
 #include "awn-defines.h"
-#include "awn-overlaid-icon.h"
 
 #include <gdk/gdk.h>
 #include <glib-object.h>
 
 
-
-G_DEFINE_ABSTRACT_TYPE (AwnOverlay, awn_overlay, G_TYPE_OBJECT)
+G_DEFINE_ABSTRACT_TYPE (AwnOverlay, awn_overlay, G_TYPE_INITIALLY_UNOWNED)
 
 #define AWN_OVERLAY_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY, AwnOverlayPrivate))
@@ -56,10 +54,9 @@ struct _AwnOverlayPrivate
 
   double      x_adj;
   double      y_adj;
-  double      x_per;      
-  double      y_per;
-  
+
   gboolean    active;  /*if false then the overlay_render will not run*/
+  gboolean    apply_effects;
   
   gdouble     x_override;
   gdouble     y_override;
@@ -73,20 +70,14 @@ enum
   PROP_X_ADJUST,
   PROP_Y_ADJUST,
   PROP_ACTIVE,
+  PROP_APPLY_EFFECTS,
   PROP_X_OVERRIDE,
   PROP_Y_OVERRIDE
 };
 
 static void
-_awn_overlay_render_overlay (AwnOverlay* overlay,
-                                        AwnThemedIcon * icon,
-                                        cairo_t * cr,                                 
-                                        gint width,
-                                        gint height);
-
-static void
 awn_overlay_get_property (GObject *object, guint property_id,
-                              GValue *value, GParamSpec *pspec)
+                          GValue *value, GParamSpec *pspec)
 {
   AwnOverlayPrivate * priv;
   priv = AWN_OVERLAY_GET_PRIVATE (object);
@@ -106,6 +97,9 @@ awn_overlay_get_property (GObject *object, guint property_id,
     case PROP_ACTIVE:
         g_value_set_boolean (value, priv->active);
         break;
+    case PROP_APPLY_EFFECTS:
+        g_value_set_boolean (value, priv->apply_effects);
+        break;      
     case PROP_X_OVERRIDE:
         g_value_set_double (value, priv->x_override);
         break;      
@@ -140,6 +134,9 @@ awn_overlay_set_property (GObject *object, guint property_id,
     case PROP_ACTIVE:
       priv->active = g_value_get_boolean (value);
       break;      
+    case PROP_APPLY_EFFECTS:
+      priv->apply_effects = g_value_get_boolean (value);
+      break;            
     case PROP_X_OVERRIDE:
       priv->x_override = g_value_get_double (value);
       break;
@@ -174,8 +171,8 @@ awn_overlay_class_init (AwnOverlayClass *klass)
   object_class->dispose = awn_overlay_dispose;
   object_class->finalize = awn_overlay_finalize;
   
-  klass->render_overlay = _awn_overlay_render_overlay;  
-  
+  klass->render = NULL; // let it crash if not overriden
+
 /**
  * AwnOverlay:gravity:
  *
@@ -245,7 +242,7 @@ awn_overlay_class_init (AwnOverlayClass *klass)
 /**
  * AwnOverlay:active:
  *
- * The active property controls if the render_overlay virtual method of
+ * The active property controls if the render virtual method of
  * #AwnOverlayClass is invoked when awn_overlay_render_overlay() .  If set to 
  * FALSE the overlay is not rendered.  Subclass implementors should monitor this_effect
  * property for changes if it is appropriate to disengage timers etc when set to
@@ -257,6 +254,19 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                TRUE,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ACTIVE, pspec);  
+
+/**
+ * AwnOverlay:apply-effects:
+ *
+ * The apply-effects property controls #AwnEffects effects are applied to the
+ * overlay.
+ */        
+  pspec = g_param_spec_boolean ("apply-effects",
+                                "Apply Effects",
+                                "Apply Effects",
+                                TRUE,
+                                G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_APPLY_EFFECTS, pspec);  
 
 /**
  * AwnOverlay:x-override:
@@ -295,6 +305,11 @@ awn_overlay_class_init (AwnOverlayClass *klass)
 static void
 awn_overlay_init (AwnOverlay *self)
 {
+  AwnOverlayPrivate *priv = AWN_OVERLAY_GET_PRIVATE (self);
+
+  // we don't contruct the apply_effects prop, so subclasses can change the default
+  //  in their init() method
+  priv->apply_effects = TRUE;
 }
 
 /**
@@ -309,18 +324,8 @@ awn_overlay_new (void)
   return g_object_new (AWN_TYPE_OVERLAY, NULL);
 }
 
-static void 
-_awn_overlay_render_overlay (AwnOverlay* overlay,
-                                        AwnThemedIcon * icon,
-                                        cairo_t * cr,                                 
-                                        gint width,
-                                        gint height)
-{
-  g_warning ("Overlay has not overriden render_overlay member in base (AwnOverlay) \n");
-}
-
 /**
- * awn_overlay_render_overlay:
+ * awn_overlay_render:
  * @overlay: An pointer to an #AwnOverlay (or subclass) object.
  * @icon: The #AwnThemedIcon that is being overlaid.
  * @cr: Pointer to cairo context ( #cairo_t ) for the surface being overlaid. 
@@ -333,11 +338,11 @@ _awn_overlay_render_overlay (AwnOverlay* overlay,
  * 
  */
 void 
-awn_overlay_render_overlay (AwnOverlay* overlay,
-                                        AwnThemedIcon * icon,
-                                        cairo_t * cr,                                 
-                                        gint width,
-                                        gint height)
+awn_overlay_render (AwnOverlay* overlay,
+                    GtkWidget *widget,
+                    cairo_t * cr,                                 
+                    gint width,
+                    gint height)
 {
   AwnOverlayClass *klass;
   AwnOverlayPrivate * priv;
@@ -347,7 +352,7 @@ awn_overlay_render_overlay (AwnOverlay* overlay,
 
   if (priv->active)
   {
-    klass->render_overlay (overlay,icon,cr,width,height);
+    klass->render (overlay, widget, cr, width, height);
   }
 }
 
@@ -468,3 +473,22 @@ awn_overlay_move_to (      AwnOverlay* overlay,
     *coord_req = coord;
   }
 }
+
+gboolean awn_overlay_get_apply_effects (AwnOverlay *overlay)
+{
+  g_return_val_if_fail (AWN_IS_OVERLAY (overlay), FALSE);
+
+  AwnOverlayPrivate *priv = AWN_OVERLAY_GET_PRIVATE (overlay);
+
+  return priv->apply_effects;
+}
+
+void awn_overlay_set_apply_effects (AwnOverlay *overlay, gboolean value)
+{
+  g_return_if_fail (AWN_IS_OVERLAY (overlay));
+
+  AwnOverlayPrivate *priv = AWN_OVERLAY_GET_PRIVATE (overlay);
+
+  priv->apply_effects = value;
+}
+

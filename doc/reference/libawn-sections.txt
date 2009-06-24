@@ -25,27 +25,13 @@ AWN_TOOLTIP_GET_CLASS
 </SECTION>
 
 <SECTION>
-<FILE>awn-overlay-icon</FILE>
-<TITLE>AwnOverlayIcon</TITLE>
-AwnOverlayIcon
-awn_overlay_icon_new
-<SUBSECTION Standard>
-AWN_OVERLAY_ICON
-AWN_IS_OVERLAY_ICON
-AWN_TYPE_OVERLAY_ICON
-awn_overlay_icon_get_type
-AWN_OVERLAY_ICON_CLASS
-AWN_IS_OVERLAY_ICON_CLASS
-AWN_OVERLAY_ICON_GET_CLASS
-</SECTION>
-
-<SECTION>
 <FILE>awn-dialog</FILE>
 AwnDialogPrivate
 <TITLE>AwnDialog</TITLE>
 AwnDialog
 awn_dialog_new
 awn_dialog_new_for_widget
+awn_dialog_new_for_widget_with_applet
 awn_dialog_set_padding
 <SUBSECTION Standard>
 AWN_DIALOG
@@ -55,6 +41,21 @@ awn_dialog_get_type
 AWN_DIALOG_CLASS
 AWN_IS_DIALOG_CLASS
 AWN_DIALOG_GET_CLASS
+</SECTION>
+
+<SECTION>
+<FILE>awn-overlay-themed-icon</FILE>
+<TITLE>AwnOverlayThemedIcon</TITLE>
+AwnOverlayThemedIcon
+awn_overlay_themed_icon_new
+<SUBSECTION Standard>
+AWN_OVERLAY_THEMED_ICON
+AWN_IS_OVERLAY_THEMED_ICON
+AWN_TYPE_OVERLAY_THEMED_ICON
+awn_overlay_themed_icon_get_type
+AWN_OVERLAY_THEMED_ICON_CLASS
+AWN_IS_OVERLAY_THEMED_ICON_CLASS
+AWN_OVERLAY_THEMED_ICON_GET_CLASS
 </SECTION>
 
 <SECTION>
@@ -81,7 +82,6 @@ awn_icon_new
 awn_icon_set_orientation
 awn_icon_set_offset
 awn_icon_set_effect
-awn_icon_get_effects
 awn_icon_set_from_pixbuf
 awn_icon_set_from_context
 awn_icon_set_from_surface
@@ -138,21 +138,34 @@ AWN_APPLET_SIMPLE_GET_CLASS
 </SECTION>
 
 <SECTION>
-<FILE>awn-overlaid-icon</FILE>
-AwnOverlaidIconPrivate
-<TITLE>AwnOverlaidIcon</TITLE>
-AwnOverlaidIcon
-awn_overlaid_icon_new
-awn_overlaid_icon_append_overlay
-awn_overlaid_icon_remove_overlay
+<FILE>awn-overlay-pixbuf</FILE>
+<TITLE>AwnOverlayPixbuf</TITLE>
+AwnOverlayPixbuf
+awn_overlay_pixbuf_new
+awn_overlay_pixbuf_new_with_pixbuf
 <SUBSECTION Standard>
-AWN_OVERLAID_ICON
-AWN_IS_OVERLAID_ICON
-AWN_TYPE_OVERLAID_ICON
-awn_overlaid_icon_get_type
-AWN_OVERLAID_ICON_CLASS
-AWN_IS_OVERLAID_ICON_CLASS
-AWN_OVERLAID_ICON_GET_CLASS
+AWN_OVERLAY_PIXBUF
+AWN_IS_OVERLAY_PIXBUF
+AWN_TYPE_OVERLAY_PIXBUF
+awn_overlay_pixbuf_get_type
+AWN_OVERLAY_PIXBUF_CLASS
+AWN_IS_OVERLAY_PIXBUF_CLASS
+AWN_OVERLAY_PIXBUF_GET_CLASS
+</SECTION>
+
+<SECTION>
+<FILE>awn-overlay-progress</FILE>
+<TITLE>AwnOverlayProgress</TITLE>
+AwnOverlayProgress
+awn_overlay_progress_new
+<SUBSECTION Standard>
+AWN_OVERLAY_PROGRESS
+AWN_IS_OVERLAY_PROGRESS
+AWN_TYPE_OVERLAY_PROGRESS
+awn_overlay_progress_get_type
+AWN_OVERLAY_PROGRESS_CLASS
+AWN_IS_OVERLAY_PROGRESS_CLASS
+AWN_OVERLAY_PROGRESS_GET_CLASS
 </SECTION>
 
 <SECTION>
@@ -201,7 +214,6 @@ AWN_OVERLAY_THROBBER_GET_CLASS
 <SECTION>
 <FILE>awn-applet</FILE>
 AwnAppletPrivate
-AwnAppletFlags
 <TITLE>AwnApplet</TITLE>
 AwnApplet
 AwnAppletInitFunc
@@ -222,6 +234,8 @@ awn_applet_get_flags
 awn_applet_set_flags
 awn_applet_create_default_menu
 awn_applet_set_panel_window_id
+awn_applet_inhibit_autohide
+awn_applet_uninhibit_autohide
 awn_applet_create_pref_item
 <SUBSECTION Standard>
 AWN_APPLET
@@ -247,6 +261,9 @@ awn_effects_set_icon_size
 awn_effects_cairo_create
 awn_effects_cairo_create_clipped
 awn_effects_cairo_destroy
+awn_effects_add_overlay
+awn_effects_remove_overlay
+awn_effects_get_overlays
 awn_effects_redraw
 awn_effects_main_effect_loop
 awn_effects_emit_anim_start
@@ -298,6 +315,21 @@ AWN_CONFIG_BRIDGE_GET_CLASS
 </SECTION>
 
 <SECTION>
+<FILE>awn-overlay-progress-circle</FILE>
+<TITLE>AwnOverlayProgressCircle</TITLE>
+AwnOverlayProgressCircle
+awn_overlay_progress_circle_new
+<SUBSECTION Standard>
+AWN_OVERLAY_PROGRESS_CIRCLE
+AWN_IS_OVERLAY_PROGRESS_CIRCLE
+AWN_TYPE_OVERLAY_PROGRESS_CIRCLE
+awn_overlay_progress_circle_get_type
+AWN_OVERLAY_PROGRESS_CIRCLE_CLASS
+AWN_IS_OVERLAY_PROGRESS_CIRCLE_CLASS
+AWN_OVERLAY_PROGRESS_CIRCLE_GET_CLASS
+</SECTION>
+
+<SECTION>
 <FILE>awn-icon-box</FILE>
 AwnIconBoxPrivate
 <TITLE>AwnIconBox</TITLE>
@@ -317,13 +349,45 @@ AWN_ICON_BOX_GET_CLASS
 </SECTION>
 
 <SECTION>
+<FILE>awn-overlay-pixbuf-file</FILE>
+<TITLE>AwnOverlayPixbufFile</TITLE>
+AwnOverlayPixbufFile
+awn_overlay_pixbuf_file_new
+<SUBSECTION Standard>
+AWN_OVERLAY_PIXBUF_FILE
+AWN_IS_OVERLAY_PIXBUF_FILE
+AWN_TYPE_OVERLAY_PIXBUF_FILE
+awn_overlay_pixbuf_file_get_type
+AWN_OVERLAY_PIXBUF_FILE_CLASS
+AWN_IS_OVERLAY_PIXBUF_FILE_CLASS
+AWN_OVERLAY_PIXBUF_FILE_GET_CLASS
+</SECTION>
+
+<SECTION>
+<FILE>awn-overlayable</FILE>
+AWN_OVERLAYABLE_GET_INTERFACE
+AwnOverlayable
+AwnOverlayableIface
+awn_overlayable_get_effects
+awn_overlayable_add_overlay
+awn_overlayable_remove_overlay
+<SUBSECTION Standard>
+AWN_OVERLAYABLE
+AWN_IS_OVERLAYABLE
+AWN_TYPE_OVERLAYABLE
+awn_overlayable_get_type
+</SECTION>
+
+<SECTION>
 <FILE>awn-overlay</FILE>
-<TITLE>AwnOverlay</TITLE>
 AwnOverlay
+render
 AwnOverlayAlign
 awn_overlay_new
-awn_overlay_render_overlay
+awn_overlay_render
 awn_overlay_move_to
+awn_overlay_get_apply_effects
+awn_overlay_set_apply_effects
 <SUBSECTION Standard>
 AWN_OVERLAY
 AWN_IS_OVERLAY
@@ -332,6 +396,18 @@ awn_overlay_get_type
 AWN_OVERLAY_CLASS
 AWN_IS_OVERLAY_CLASS
 AWN_OVERLAY_GET_CLASS
+</SECTION>
+
+<SECTION>
+<FILE>stamp-awn-enum-types</FILE>
+</SECTION>
+
+<SECTION>
+<FILE>stamp-egg-enum-types</FILE>
+</SECTION>
+
+<SECTION>
+<FILE>libawn</FILE>
 </SECTION>
 
 <SECTION>
@@ -395,10 +471,10 @@ awn_config_client_free
 <FILE>awn-enum-types</FILE>
 awn_orientation_get_type
 AWN_TYPE_ORIENTATION
-awn_path_type_get_type
-AWN_TYPE_PATH_TYPE
 awn_applet_flags_get_type
 AWN_TYPE_APPLET_FLAGS
+awn_path_type_get_type
+AWN_TYPE_PATH_TYPE
 awn_cairo_round_corners_get_type
 AWN_TYPE_CAIRO_ROUND_CORNERS
 awn_config_value_type_get_type
@@ -423,6 +499,7 @@ AWN_TYPE_VFS_MONITOR_TYPE
 
 <SECTION>
 <FILE>awn-effects-ops-new</FILE>
+awn_effects_get_base_coords
 awn_effects_pre_op_clear
 awn_effects_pre_op_clip
 awn_effects_pre_op_translate
@@ -449,6 +526,7 @@ AWN_APPLET_GCONF_PATH
 AWN_MAX_HEIGHT
 AWN_MIN_HEIGHT
 AwnOrientation
+AwnAppletFlags
 AwnPathType
 AWN_FONT_SIZE_EXTRA_SMALL
 AWN_FONT_SIZE_SMALL

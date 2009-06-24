@@ -121,6 +121,7 @@ awn_cairo_rounded_rect_shadow(cairo_t *cr, double rx0, double ry0,
   pat = cairo_pattern_create_radial (xr, yr, radius,
                                      xr, yr, radius + shadow_radius);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 0.0, 0.0, 0.0, shadow_alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 1./3, 0.0, 0.0, 0.0, shadow_alpha/2);
   cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.0);
 
   cairo_set_source (cr, pat);
@@ -133,6 +134,7 @@ awn_cairo_rounded_rect_shadow(cairo_t *cr, double rx0, double ry0,
   /* top */
   pat = cairo_pattern_create_linear (0.0, ry0 - shadow_radius, 0.0, ry0);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 0.0, 0.0, 0.0, 0.0);
+  cairo_pattern_add_color_stop_rgba (pat, 2./3, 0.0, 0.0, 0.0, shadow_alpha/2);
   cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, shadow_alpha);
 
   cairo_set_source (cr, pat);
@@ -146,6 +148,7 @@ awn_cairo_rounded_rect_shadow(cairo_t *cr, double rx0, double ry0,
   pat = cairo_pattern_create_radial (rx1 - radius, yr, radius,
                                      rx1 - radius, yr, radius + shadow_radius);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 0.0, 0.0, 0.0, shadow_alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 1./3, 0.0, 0.0, 0.0, shadow_alpha/2);
   cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.0);
 
   cairo_set_source (cr, pat);
@@ -158,6 +161,7 @@ awn_cairo_rounded_rect_shadow(cairo_t *cr, double rx0, double ry0,
   /* right */
   pat = cairo_pattern_create_linear (rx1, 0.0, rx1 + shadow_radius, 0.0);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 0.0, 0.0, 0.0, shadow_alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 1./3, 0.0, 0.0, 0.0, shadow_alpha/2);
   cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.0);
 
   cairo_set_source (cr, pat);
@@ -172,6 +176,7 @@ awn_cairo_rounded_rect_shadow(cairo_t *cr, double rx0, double ry0,
                                      rx1 - radius, ry1 - radius,
                                      radius + shadow_radius);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 0.0, 0.0, 0.0, shadow_alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 1./3, 0.0, 0.0, 0.0, shadow_alpha/2);
   cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.0);
 
   cairo_set_source (cr, pat);
@@ -184,6 +189,7 @@ awn_cairo_rounded_rect_shadow(cairo_t *cr, double rx0, double ry0,
   /* bottom */
   pat = cairo_pattern_create_linear (0.0, ry1, 0.0, ry1 + shadow_radius);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 0.0, 0.0, 0.0, shadow_alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 1./3, 0.0, 0.0, 0.0, shadow_alpha/2);
   cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.0);
 
   cairo_set_source (cr, pat);
@@ -197,6 +203,7 @@ awn_cairo_rounded_rect_shadow(cairo_t *cr, double rx0, double ry0,
   pat = cairo_pattern_create_radial (xr, ry1 - radius, radius,
                                      xr, ry1 - radius, radius + shadow_radius);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 0.0, 0.0, 0.0, shadow_alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 1./3, 0.0, 0.0, 0.0, shadow_alpha/2);
   cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.0);
 
   cairo_set_source (cr, pat);
@@ -209,6 +216,7 @@ awn_cairo_rounded_rect_shadow(cairo_t *cr, double rx0, double ry0,
   /* left */
   pat = cairo_pattern_create_linear (rx0 - shadow_radius, 0.0, rx0, 0.0);
   cairo_pattern_add_color_stop_rgba (pat, 0.0, 0.0, 0.0, 0.0, 0.0);
+  cairo_pattern_add_color_stop_rgba (pat, 2./3, 0.0, 0.0, 0.0, shadow_alpha/2);
   cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, shadow_alpha);
 
   cairo_set_source (cr, pat);

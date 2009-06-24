@@ -510,7 +510,7 @@ on_window_needs_attention_changed (TaskWindow *window,
   if (needs_attention)
     awn_icon_set_effect (AWN_ICON (icon),AWN_EFFECT_ATTENTION);
   else
-    awn_effects_stop (awn_icon_get_effects (AWN_ICON (icon)), 
+    awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)),
                       AWN_EFFECT_ATTENTION);
 }
 
@@ -569,8 +569,6 @@ task_icon_remove_window (TaskIcon      *icon,
 {
   GSList *  w;
   TaskIconPrivate *priv;
-  gboolean first_window = FALSE;
-  static gboolean recursing = FALSE;
 
   g_return_if_fail (TASK_IS_ICON (icon));
   g_return_if_fail (WNCK_IS_WINDOW (window));

@@ -26,11 +26,16 @@
 
 #include "awn-applet-simple.h"
 
+#include "awn-overlayable.h"
 #include "awn-icon.h"
-#include "awn-overlaid-icon.h"
+#include "awn-themed-icon.h"
 #include "awn-utils.h"
 
-G_DEFINE_TYPE (AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET)
+static void awn_applet_simple_overlayable_init (AwnOverlayableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET,
+                         G_IMPLEMENT_INTERFACE (AWN_TYPE_OVERLAYABLE,
+                                          awn_applet_simple_overlayable_init))
 
 #define AWN_APPLET_SIMPLE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
     AWN_TYPE_APPLET_SIMPLE, \
@@ -112,15 +117,15 @@ awn_applet_simple_size_allocate (GtkWidget *widget, GtkAllocation *alloc)
   }
 }
 
-static void
-awn_applet_simple_size_request (GtkWidget *widget, GtkRequisition *req)
+static AwnEffects*
+awn_applet_simple_get_effects (AwnOverlayable *simple)
 {
-  AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE_GET_PRIVATE (widget);
+  AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE_GET_PRIVATE (simple);
 
   if (AWN_IS_ICON (priv->icon))
-  {
-    gtk_widget_size_request (priv->icon, req);
-  }
+    return awn_overlayable_get_effects (AWN_OVERLAYABLE (priv->icon));
+
+  return NULL;
 }
 
 static void
@@ -135,7 +140,7 @@ awn_applet_simple_constructed (GObject *object)
   AwnAppletSimple        *applet = AWN_APPLET_SIMPLE (object);
   AwnAppletSimplePrivate *priv = applet->priv;
 
-  priv->icon = awn_overlaid_icon_new ();
+  priv->icon = awn_themed_icon_new ();
   awn_icon_set_orientation (AWN_ICON (priv->icon), 
                             awn_applet_get_orientation (AWN_APPLET (object)));
   awn_icon_set_offset (AWN_ICON (priv->icon),
@@ -151,16 +156,19 @@ awn_applet_simple_dispose (GObject *object)
 }
 
 static void
+awn_applet_simple_overlayable_init (AwnOverlayableIface *iface)
+{
+  iface->get_effects = awn_applet_simple_get_effects;
+}
+
+static void
 awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
 {
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
   AwnAppletClass *app_class = AWN_APPLET_CLASS (klass);
       
   obj_class->dispose     = awn_applet_simple_dispose;
   obj_class->constructed = awn_applet_simple_constructed;
-
-  //wid_class->size_request   = awn_applet_simple_size_request;
 
   app_class->orient_changed = awn_applet_simple_orient_changed;
   app_class->offset_changed = awn_applet_simple_offset_changed;

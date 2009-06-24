@@ -23,6 +23,8 @@
 
 #include "awn-effects.h"
 
+void awn_effects_get_base_coords (AwnEffects *fx, double *x, double *y);
+
 gboolean awn_effects_pre_op_clear(AwnEffects * fx,
                                cairo_t * cr,
                                GtkAllocation * ds,

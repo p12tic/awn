@@ -22,7 +22,7 @@ DEB_CONFIGURE_EXTRA_FLAGS += 	--disable-pymod-checks \
 #DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,-z,defs -Wl,--as-needed"
 
 DEB_INSTALL_MANPAGES_avant-window-navigator-trunk := debian/avant-window-navigator.1 debian/awn-applet-activation.1
-DEB_INSTALL_MANPAGES_awn-manager-trunk := debian/awn-manager.1 debian/awn-launcher-editor.1 debian/awn-schema-to-gconf.1
+DEB_INSTALL_MANPAGES_awn-settings-trunk := debian/awn-settings.1 debian/awn-launcher-editor.1 debian/awn-schema-to-gconf.1
 
 DEB_DH_MAKESHLIBS_ARGS_libawn0-trunk += -V"libawn0-trunk (>= 0.3.0)"
 DEB_DH_MAKESHLIBS_ARGS_avant-window-navigator-trunk += -n
@@ -36,8 +36,8 @@ DEB_DH_STRIP_ARGS := --dbg-package=libawn0-dbg-trunk
 #	cp data/awn-applets-migration.py debian/avant-window-navigator-trunk/usr/share/avant-window-navigator/awn-applets-migration.py
 #	cp debian/awn.wrapper debian/avant-window-navigator-trunk/usr/bin/avant-window-navigator
 
-binary-post-install/awn-manager-trunk::
-	dh_pycentral -pawn-manager-trunk
+binary-post-install/awn-settings-trunk::
+	dh_pycentral -pawn-settings-trunk
 
 binary-post-install/python-awn-trunk::
 	dh_pycentral -ppython-awn-trunk

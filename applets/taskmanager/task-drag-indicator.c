@@ -170,7 +170,7 @@ task_drag_indicator_expose (GtkWidget *widget, GdkEventExpose *event)
   cairo_t      *cr;
   AwnEffects   *effects;
 
-  effects = awn_icon_get_effects (AWN_ICON (widget));
+  effects = awn_overlayable_get_effects (AWN_OVERLAYABLE (widget));
   cr = awn_effects_cairo_create (effects);
 
   cairo_destroy (cr);

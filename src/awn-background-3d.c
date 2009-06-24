@@ -55,13 +55,56 @@ static void awn_background_3d_draw (AwnBackground  *bg,
                                     AwnOrientation  orient,
                                     GdkRectangle   *area);
 
-static void awn_background_3d_bar_angle_changed (AwnBackground *bg);
+static void awn_background_3d_update_padding (AwnBackground *bg);
 
+static void
+awn_background_3d_constructed (GObject *object)
+{
+  G_OBJECT_CLASS (awn_background_3d_parent_class)->constructed (object);
+
+  AwnBackground3d *bg = AWN_BACKGROUND_3D (object);
+  gpointer panel = AWN_BACKGROUND (object)->panel;
+
+  g_return_if_fail (panel);
+
+  g_signal_connect_swapped (panel, "notify::size",
+                            G_CALLBACK (awn_background_3d_update_padding),
+                            object);
+  g_signal_connect_swapped (panel, "notify::offset",
+                            G_CALLBACK (awn_background_3d_update_padding),
+                            object);
+
+  g_signal_connect (bg, "notify::panel-angle", 
+                    G_CALLBACK (awn_background_3d_update_padding), 
+                    NULL);
+}
+
+static void
+awn_background_3d_dispose (GObject *object)
+{
+  gpointer panel = AWN_BACKGROUND (object)->panel;
+  AwnBackground3d *bg = AWN_BACKGROUND_3D (object);
+
+  g_signal_handlers_disconnect_by_func (bg,
+      G_CALLBACK (awn_background_3d_update_padding), NULL);
+
+  if (panel)
+  {
+    g_signal_handlers_disconnect_by_func (panel,
+        G_CALLBACK (awn_background_3d_update_padding), object);
+  }
+
+  G_OBJECT_CLASS (awn_background_3d_parent_class)->dispose (object);
+}
 
 static void
 awn_background_3d_class_init (AwnBackground3dClass *klass)
 {
   AwnBackgroundClass *bg_class = AWN_BACKGROUND_CLASS (klass);
+
+  GObjectClass *obj_class = G_OBJECT_CLASS (klass);
+  obj_class->constructed  = awn_background_3d_constructed;
+  obj_class->dispose = awn_background_3d_dispose;
 
   bg_class->draw = awn_background_3d_draw;
   bg_class->padding_request = awn_background_3d_padding_request;
@@ -72,7 +115,7 @@ awn_background_3d_class_init (AwnBackground3dClass *klass)
 static void
 awn_background_3d_init (AwnBackground3d *bg)
 {
-  g_signal_connect(bg, "notify::panel-angle", G_CALLBACK(awn_background_3d_bar_angle_changed), NULL);
+
 }
 
 AwnBackground * 
@@ -88,14 +131,14 @@ awn_background_3d_new (AwnConfigClient *client, AwnPanel *panel)
 }
 
 /**
- * awn_background_3d_bar_angle_changed:
+ * awn_background_3d_update_padding:
  * @param bg: AwnBackground
  * 
- * This function get's called when the bar_angle has changed.
+ * This function get's called when the padding should get recalculated.
  * It asks the awn_background to emit a signal that the padding has changed.
  */
 static void 
-awn_background_3d_bar_angle_changed (AwnBackground *bg)
+awn_background_3d_update_padding (AwnBackground *bg)
 {
   awn_background_emit_padding_changed(bg);
 }

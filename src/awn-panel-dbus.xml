@@ -13,6 +13,28 @@
       <arg name="flags" type="i" direction="in" />
     </method>
 
+    <method name="InhibitAutohide">
+      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
+      <arg name="app_name" type="s" direction="in" />
+      <arg name="reason" type="s" direction="in" />
+      <arg name="cookie" type="u" direction="out" />
+    </method>
+
+    <method name="UninhibitAutohide">
+      <arg name="cookie" type="u" direction="in" />
+    </method>
+
+    <method name="GetInhibitors">
+      <arg name="inhibitors" type="as" direction="out" />
+    </method>
+
+    <method name="DockletRequest">
+      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
+      <arg name="min_size" type="i" direction="in" />
+      <arg name="shrink" type="b" direction="in" />
+      <arg name="window_id" type="u" direction="out" />
+    </method>
+
     <!-- Signals -->
     <signal name="SizeChanged">
       <arg name="size" type="i" />
@@ -40,6 +62,7 @@
 
     <!-- Properties -->
     <property name="Size" type="i" access="read" />
+    <property name="MaxSize" type="i" access="read" />
     <property name="Orient" type="i" access="read" />
     <property name="Offset" type="i" access="read" />
 

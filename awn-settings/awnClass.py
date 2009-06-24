@@ -320,7 +320,7 @@ class awnBzr:
 		#	a string when there is no settings 
 		#	a list when there is a setting : [value of the setting, group settings, key setting]
 		struct= {	'type': '',		# Applet or Theme
-				'location':'',		# Location of the bzr branch
+				'location':'',		# Location of the desktop file
 				'name': '',		# Name of the Type
 				'comment':'',		# Comments
 				'version':'',		# Version of the 
@@ -357,13 +357,13 @@ class awnBzr:
 
 		desktop_entry = DesktopEntry(file_path)
 		struct['type'] = desktop_entry.get('X-AWN-Type')
-		struct['location'] = desktop_entry.get('X-AWN-Location')
+		struct['location'] = file_path
 		struct['name'] = desktop_entry.get('Name')
 		#TODO More to add
 		struct['icon'] = desktop_entry.get('Icon')
 		struct['exec'] = desktop_entry.get('Exec')
 		struct['applet_type'] = desktop_entry.get('X-AWN-AppletType')
-		struct['applet_category'] = desktop_entry.get('X-AWN-AppletCategory')
+		struct['applet_category'] = desktop_entry.get('X-AWN-AppletCategory').rsplit(",")
 
 		if desktop_entry.get('X-AWN-ThemeEffects') <> '':
 			struct['effects'] = [int(desktop_entry.get('X-AWN-ThemeEffects')), 
@@ -505,7 +505,32 @@ class awnBzr:
 
 		for k, v in new_struct.iteritems():
 			self.load_element_from_desktop(new_struct, k, read=False)
-		
+
+	def list_applets_categories(self):
+		'''	List all categories of applets
+		'''
+		catalog = self.type_catalog_from_sources_list(type_catalog='Applet')
+		desktop_list = [self.read_desktop(elem) for elem in catalog]
+		categories_list = []
+		for applet in desktop_list:
+			for elem in applet['applet_category']:
+				if not elem in categories_list and elem is not "":
+					categories_list.append(elem)
+		return categories_list
+
+	def applets_by_categories(self, categories):
+		'''	Return applets uris of this categories
+			categories = list of Categories
+		'''
+		catalog = self.type_catalog_from_sources_list(type_catalog='Applet')
+		desktop_list = [self.read_desktop(elem) for elem in catalog]
+		list_applets = []
+		for applet in desktop_list:
+			for elem in applet['applet_category']:
+				if elem in categories:
+					list_applets.append(applet['location'])
+		return list_applets
+			
 
 	def make_row (self, path):
 		''' 	Make a row for a list of applets or launchers
@@ -577,12 +602,12 @@ class awnBzr:
 						icon = None
 		return icon
 
-	def make_model(self, uris):
-		treeview = gtk.TreeView()
-		treeview.set_headers_visible(False)
+	def make_model(self, uris, treeview):
 
-		model = model = gtk.ListStore(gdk.Pixbuf, str, str)
+		model = model = gtk.ListStore(gdk.Pixbuf, str, str,str)
+		model.set_sort_column_id(2, gtk.SORT_ASCENDING)
 		treeview.set_model (model)
+		treeview.set_search_column (3)
 
 		ren = gtk.CellRendererPixbuf()
 		col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
@@ -599,13 +624,25 @@ class awnBzr:
 #        self.last_uris = uris[:] # make a copy
 #        self.client.notify_add(defs.LAUNCHERS, defs.LAUNCHERS_LIST, self.refresh_launchers, self)
 
-		self.refresh_tree(uris, model)
+#		self.refresh_tree(uris, model)
+        	for i in uris:
+			if os.path.isfile(i):
+            			icon, text, name = self.make_row (i)
+            			if len(text) > 2:
+                			row = model.append ()
+                			model.set_value (row, 0, icon)
+                			model.set_value (row, 1, text)
+                			model.set_value (row, 2, name)
+				if len(uris) == 0:
+					if (self.idle_id != 0):
+						gobject.source_remove(self.idle_id)
+					self.idle_id = gobject.idle_add(self.check_changes, [])
 
 		self.load_finished = True
 
 		treeview.show()
 
-		return treeview
+		return model
 
 	def refresh_tree (self, uris, model):
         	model.clear()
@@ -621,7 +658,21 @@ class awnBzr:
 					if (self.idle_id != 0):
 						gobject.source_remove(self.idle_id)
 					self.idle_id = gobject.idle_add(self.check_changes, [])
+		#model.show()
 
+	def create_dropdown(self, widget, entries, matrix_settings=False):
+		''' 	Create a dropdown.
+			widget : The widget where create the dropdown
+			entries : entries to add to the dropdown
+			matrix_settings : connect to settings (not implemented yet)
+		'''
+		model = gtk.ListStore(str)
+
+		[model.append([elem]) for elem in entries]
+		widget.set_model(model)
+		cell = gtk.CellRendererText()
+		widget.pack_start(cell)
+		widget.add_attribute(cell,'text',0)
 
 class awnPreferences(awnBzr):
     """This is the main class, duh"""
@@ -1175,34 +1226,6 @@ class awnManager:
         close = self.wTree.get_widget("buttonClose")
         close.connect("clicked", gtk.main_quit)
 
-        #self.make_menu_model()
-
-        #icon_view = gtk.IconView(self.menu_model)
-        #icon_view.set_text_column(0)
-        #icon_view.set_pixbuf_column(1)
-        #icon_view.set_orientation(gtk.ORIENTATION_VERTICAL)
-        #icon_view.set_selection_mode(gtk.SELECTION_SINGLE)
-        #icon_view.set_columns(1)
-        #icon_view.set_item_width(-1)
-        #icon_view.set_size_request(icon_view.get_item_width(), -1)
-        #icon_view.connect("selection-changed", self.changeTab)
-
-        #iconViewFrame = self.wTree.get_widget('CategoryMenuFrame')
-        #iconViewFrame.add(icon_view)
-        #iconViewFrame.show_all()
-
-        #applet
-        #self.appletManager = awnApplet(self.wTree)
-
-        #launcher
-        #self.launchManager = awnLauncher(self.wTree)
-
-        #preferences
-        #self.prefManager = awnPreferencesMini(self.wTree)
-
-        #theme
-        #self.themeManager = AwnThemeManager(self.wTree)
-
         self.window.show_all()
 
     def safe_load_icon(self, name, size, flags = 0):
@@ -1294,15 +1317,12 @@ class awnLauncher(awnBzr):
         self.client = awn.Config()
         self.client.ensure_group(defs.LAUNCHERS)
 
-        self.scrollwindow = self.wTree.get_widget("launcher_scrollwindow")
-        self.make_model()
+        uris = []
+        if self.client.exists(defs.LAUNCHERS, defs.LAUNCHERS_LIST):
+            uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
 
-        self.applet_remove = self.wTree.get_widget("launcher_remove")
-        self.applet_remove.connect("clicked", self.remove)
-        self.applet_add = self.wTree.get_widget("launcher_add")
-        self.applet_add.connect("clicked", self.add)
-        self.launcher_edit = self.wTree.get_widget("launcher_edit")
-        self.launcher_edit.connect("clicked", self.edit)
+        self.last_uris = uris[:] # make a copy
+        self.client.notify_add(defs.LAUNCHERS, defs.LAUNCHERS_LIST, self.refresh_launchers, self)
 
     def reordered(self, model, path, iterator, data=None):
         cur_index = self.model.get_path(iterator)[0]
@@ -1341,61 +1361,9 @@ class awnLauncher(awnBzr):
 
         return False
 
-    def make_model (self):
-
-        self.treeview = gtk.TreeView()
-        self.treeview.set_reorderable(True)
-        self.treeview.set_headers_visible(False)
-
-        self.scrollwindow.add(self.treeview)
-
-        self.model = model = gtk.ListStore(gdk.Pixbuf, str, str)
-        self.treeview.set_model (model)
-
-	#TODO: Debug this.        
-	#model.connect("row-changed", self.reordered)
-
-        ren = gtk.CellRendererPixbuf()
-        col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
-        self.treeview.append_column (col)
-
-        ren = gtk.CellRendererText()
-        col = gtk.TreeViewColumn ("Name", ren, markup=1)
-        self.treeview.append_column (col)
-
-        self.treeview.show()
-
-        uris = []
-        if self.client.exists(defs.LAUNCHERS, defs.LAUNCHERS_LIST):
-            uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
-
-        self.last_uris = uris[:] # make a copy
-        self.client.notify_add(defs.LAUNCHERS, defs.LAUNCHERS_LIST, self.refresh_launchers, self)
-
-        self.refresh_tree(uris)
-
-        self.load_finished = True
-
     def refresh_launchers (self, entry, extra):
         self.last_uris = entry['value']
         self.refresh_tree (self.last_uris)
-
-
-    def refresh_tree (self, uris):
-        self.model.clear()
-        for i in uris:
-		if os.path.isfile(i):
-            		icon, text, name = self.make_row (i)
-            		if len(text) > 2:
-                		row = self.model.append ()
-                		self.model.set_value (row, 0, icon)
-                		self.model.set_value (row, 1, text)
-                		self.model.set_value (row, 2, i)
-        if len(uris) == 0:
-            if (self.idle_id != 0):
-                gobject.source_remove(self.idle_id)
-            self.idle_id = gobject.idle_add(self.check_changes, [])
-
 
     #   Code below taken from:
     #   Alacarte Menu Editor - Simple fd.o Compliant Menu Editor
@@ -1403,7 +1371,7 @@ class awnLauncher(awnBzr):
     #   Edited by Ryan Rushton
 
     def edit(self, button):
-        selection = self.treeview.get_selection()
+        selection = self.treeview_launchers.get_selection()
         (model, iter) = selection.get_selected()
         uri = model.get_value(iter, 2)
         editor = awnLauncherEditor(uri, self)
@@ -1415,7 +1383,7 @@ class awnLauncher(awnBzr):
         editor.run()
 
     def remove(self, button):
-        selection = self.treeview.get_selection()
+        selection = self.treeview_launchers.get_selection()
         (model, iter) = selection.get_selected()
         uri = model.get_value(iter, 2)
 	# TODO: don't check if it exists, perhaps it's invalid
@@ -1452,12 +1420,6 @@ class awnApplet(awnBzr):
         self.treeview_current = None
         self.load_finished = False
 
-        self.wTree = glade
-
-        self.scrollwindow = self.wTree.get_widget("appletScrollActive")
-        self.scrollwindow1 = self.wTree.get_widget("appletScrollActive1")
-        self.make_active_model()
-        self.treeview_available =  self.wTree.get_widget("appletTreeviewAvailable")
 
         self.load_applets()
 
@@ -1732,42 +1694,7 @@ class awnApplet(awnBzr):
 
             model.append([icon, path, uid, text])
 
-    def refresh_tree (self, applets):
-        for a in applets:
-            tokens = a.split("::")
-            path = tokens[0]
-            uid = tokens[1]
-            icon, text, name = self.make_row(path)
-            if len (text) < 2:
-                continue;
-
-            row = self.model.append ()
-            self.model.set_value (row, 0, icon)
-            self.model.set_value (row, 1, text)
-            self.model.set_value (row, 2, path)
-            self.model.set_value (row, 3, uid)
-
-    def make_appmodel (self):
-
-        self.appmodel = model = gtk.ListStore(gdk.Pixbuf, str, str, str)
-        self.appmodel.set_sort_column_id(1, gtk.SORT_ASCENDING)
-        self.treeview_available.set_model (model)
-        self.treeview_available.set_search_column (3)
-
-        ren = gtk.CellRendererPixbuf()
-        col = gtk.TreeViewColumn ("Available Applets", ren, pixbuf=0)
-
-        ren = gtk.CellRendererText()
-        ren = gtk.CellRendererText()
-        col.pack_start(ren, False)
-        col.add_attribute(ren, 'markup', 1)
-        ren.set_property('xalign', 0)
-
-        self.treeview_available.append_column (col)
-
-    def load_applets (self):
-        self.make_appmodel ()
-        model = self.appmodel
+    def load_applets (self, list_applets="All"):
 
         prefixes = ["/usr/lib", "/usr/local/lib", "/usr/lib64", "/usr/local/lib64"]
         prefixes.append(os.path.expanduser("~/.config"))
@@ -1782,16 +1709,12 @@ class awnApplet(awnBzr):
 
             applets += [os.path.join(d, a) for a in os.listdir(d) if a.endswith(".desktop")]
 
-        for a in applets:
-            icon, text, name = self.make_row (a)
-            if len (text) < 2:
-                continue;
-            row = model.append ()
-            model.set_value (row, 0, icon)
-            model.set_value (row, 1, text)
-            model.set_value (row, 2, a)
-            model.set_value (row, 3, name)
-        self.load_finished = True
+	self.treeview_available.set_headers_visible(False)
+
+	if list_applets is not "All":
+		applets = self.applets_by_categories(list_applets)
+
+        self.make_model(applets, self.treeview_available)
 
     def popup_msg(self, message):
         success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING,
@@ -1825,3 +1748,18 @@ class awnApplet(awnBzr):
 
         if not None in applets and self.load_finished:
             self.client.set_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, applets)
+
+    def create_categories_dropdown(self, widget):
+        self.model_categorie = gtk.ListStore(str)
+
+	for category in self.list_applets_categories():
+        	self.model_categorie.append([category])
+        widget.set_model(self.model_categorie)
+        cell = gtk.CellRendererText()
+        widget.pack_start(cell)
+        widget.add_attribute(cell,'text',0)
+
+    def callback_widget_filter_applets(self, data=None):
+	model = self.choose_categorie.get_model()
+	select_cat = model.get_value(self.choose_categorie.get_active_iter(),0)
+	self.load_applets(select_cat)

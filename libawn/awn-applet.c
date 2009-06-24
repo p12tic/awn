@@ -331,8 +331,8 @@ awn_applet_finalize (GObject *obj)
 
   if (priv->connection)
   {
-    dbus_g_connection_unref (priv->connection);
     g_object_unref (priv->proxy);
+    dbus_g_connection_unref (priv->connection);
     priv->connection = NULL;
     priv->proxy = NULL;
   }
@@ -624,7 +624,7 @@ _start_awn_manager (GtkMenuItem *menuitem, gpointer null)
 {
   GError *err = NULL;
   
-  g_spawn_command_line_async("awn-manager-mini", &err);
+  g_spawn_command_line_async("awn-settings", &err);
 
   if (err)
   {
@@ -763,6 +763,7 @@ awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
 {
   AwnAppletPrivate *priv;
   gint result;
+  gdouble temp;
 
   g_return_val_if_fail (AWN_IS_APPLET (applet), 0);
   priv = applet->priv;
@@ -774,12 +775,14 @@ awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
       {
         case AWN_ORIENTATION_LEFT:
         case AWN_ORIENTATION_RIGHT:
-          result = round (sin (M_PI * (priv->pos_y + y) / priv->panel_height)
-                          * (priv->offset_modifier * priv->offset));
+          temp = sin (M_PI * (priv->pos_y + y) / priv->panel_height);
+          temp = temp * temp;
+          result = round (temp * (priv->offset_modifier * priv->offset));
           break;
         default:
-          result = round (sin (M_PI * (priv->pos_x + x) / priv->panel_width)
-                          * (priv->offset_modifier * priv->offset));
+          temp = sin (M_PI * (priv->pos_x + x) / priv->panel_width);
+          temp = temp * temp;
+          result = round (temp * (priv->offset_modifier * priv->offset));
           break;
       }
 /*
@@ -840,7 +843,7 @@ awn_applet_set_uid (AwnApplet *applet, const gchar *uid)
   priv->uid = g_strdup (uid);
 }
 
-void 
+void
 awn_applet_set_flags (AwnApplet *applet, AwnAppletFlags flags)
 {
   AwnAppletPrivate *priv;
@@ -875,6 +878,59 @@ awn_applet_get_flags (AwnApplet *applet)
   g_return_val_if_fail (AWN_IS_APPLET (applet), AWN_APPLET_FLAGS_NONE);
 
   return applet->priv->flags;
+}
+
+guint
+awn_applet_inhibit_autohide (AwnApplet *applet, const gchar *reason)
+{
+  AwnAppletPrivate *priv;
+  GError *error = NULL;
+  guint ret = 0;
+
+  g_return_val_if_fail (AWN_IS_APPLET (applet), 0);
+  priv = applet->priv;
+
+  gchar *app_name = g_strdup_printf ("%s:%d", g_get_prgname(), getpid());
+
+  dbus_g_proxy_call (priv->proxy, "InhibitAutohide",
+                     &error,
+                     G_TYPE_STRING, app_name,
+                     G_TYPE_STRING, reason,
+                     G_TYPE_INVALID, 
+                     G_TYPE_UINT, &ret,
+                     G_TYPE_INVALID);
+
+  if (app_name) g_free (app_name);
+
+  if (error)
+  {
+    g_warning ("%s", error->message);
+    g_error_free (error);
+  }
+
+  return ret;
+}
+
+void
+awn_applet_uninhibit_autohide (AwnApplet *applet, guint cookie)
+{
+  AwnAppletPrivate *priv;
+  GError *error = NULL;
+
+  g_return_if_fail (AWN_IS_APPLET (applet));
+  priv = applet->priv;
+
+  dbus_g_proxy_call (priv->proxy, "UninhibitAutohide",
+                     &error,
+                     G_TYPE_UINT, cookie,
+                     G_TYPE_INVALID,
+                     G_TYPE_INVALID);
+
+  if (error)
+  {
+    g_warning ("%s", error->message);
+    g_error_free (error);
+  }
 }
 
 static GdkFilterReturn

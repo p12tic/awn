@@ -39,11 +39,15 @@ public_headers = \
 	awn-effects.h \
 	awn-icon.h \
 	awn-icon-box.h \
-	awn-overlaid-icon.h \
 	awn-overlay.h \
+	awn-overlayable.h \
+	awn-overlay-pixbuf.h \
+	awn-overlay-pixbuf-file.h \
+	awn-overlay-progress.h \
+	awn-overlay-progress-circle.h \
 	awn-overlay-themed-icon.h \
-  awn-overlay-text.h \
-  awn-overlay-throbber.h \
+	awn-overlay-text.h \
+	awn-overlay-throbber.h \
 	awn-themed-icon.h \
 	awn-tooltip.h \
 	awn-utils.h \
@@ -71,11 +75,15 @@ source_c = \
 	awn-effects-ops-helpers.c \
 	awn-icon.c \
 	awn-icon-box.c \
-	awn-overlaid-icon.c \
 	awn-overlay.c \
+	awn-overlayable.c \
+	awn-overlay-pixbuf.c \
+	awn-overlay-pixbuf-file.c \
+	awn-overlay-progress.c \
+	awn-overlay-progress-circle.c \
 	awn-overlay-themed-icon.c \
-  awn-overlay-text.c \
-  awn-overlay-throbber.c \
+	awn-overlay-text.c \
+	awn-overlay-throbber.c \
 	awn-themed-icon.c \
 	awn-tooltip.c \
 	awn-utils.c \

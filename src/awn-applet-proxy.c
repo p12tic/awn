@@ -36,6 +36,8 @@ G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_SOCKET)
 
 #define APPLET_EXEC "awn-applet-activation -p %s -u %s -w %" G_GINT64_FORMAT " -i %" G_GINT64_FORMAT " -o %d -f %d -s %d"
 
+#define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
+
 struct _AwnAppletProxyPrivate
 {
   gchar *path;
@@ -46,9 +48,11 @@ struct _AwnAppletProxyPrivate
 
   gboolean running;
   gboolean crashed;
+  gboolean size_req_initialized;
   GtkWidget *throbber;
 
   gint old_x, old_y;
+  guint idle_id;
 };
 
 enum
@@ -151,6 +155,37 @@ awn_applet_proxy_set_property (GObject      *object,
 }
 
 static void
+awn_applet_proxy_size_request (GtkWidget *widget, GtkRequisition *req)
+{
+  AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE (widget);
+
+  // call base.size_request()
+  GTK_WIDGET_CLASS (awn_applet_proxy_parent_class)->size_request (widget, req);
+
+  if (!priv->size_req_initialized && req->width == 1 && req->height == 1)
+  {
+    // to prevent flicker we set the size request to the same value 
+    //   as AwnThrobber uses
+    switch (priv->orient)
+    {
+      case AWN_ORIENTATION_LEFT:
+      case AWN_ORIENTATION_RIGHT:
+        req->height = APPLY_SIZE_MULTIPLIER (priv->size);
+        break;
+      case AWN_ORIENTATION_BOTTOM:
+      case AWN_ORIENTATION_TOP:
+      default:
+        req->width = APPLY_SIZE_MULTIPLIER (priv->size);
+        break;
+    }
+  }
+  else if (!priv->size_req_initialized)
+  {
+    priv->size_req_initialized = TRUE;
+  }
+}
+
+static void
 awn_applet_proxy_dispose (GObject *object)
 {
   AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE (object);
@@ -167,6 +202,12 @@ awn_applet_proxy_dispose (GObject *object)
     priv->throbber = NULL;
   }
 
+  if (priv->idle_id)
+  {
+    g_source_remove (priv->idle_id);
+    priv->idle_id = 0;
+  }
+
   G_OBJECT_CLASS (awn_applet_proxy_parent_class)->dispose (object);
 }
 
@@ -174,10 +215,13 @@ static void
 awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
 {
   GObjectClass *obj_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   obj_class->dispose      = awn_applet_proxy_dispose;
   obj_class->set_property = awn_applet_proxy_set_property;
   obj_class->get_property = awn_applet_proxy_get_property;
+
+  widget_class->size_request = awn_applet_proxy_size_request;
 
   /* Install class properties */
   g_object_class_install_property (obj_class,
@@ -462,6 +506,7 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
 
   priv = AWN_APPLET_PROXY_GET_PRIVATE (proxy);
 
+  priv->size_req_initialized = FALSE;
   gtk_widget_realize (GTK_WIDGET (proxy));
 
   g_debug ("Loading Applet: %s %s", priv->path, priv->uid);
@@ -506,3 +551,28 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   g_strfreev (argv);
   g_free (exec);
 }
+
+static gboolean
+awn_applet_proxy_idle_cb (gpointer data)
+{
+  g_return_val_if_fail (AWN_IS_APPLET_PROXY (data), FALSE);
+  AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE (data);
+
+  awn_applet_proxy_execute (AWN_APPLET_PROXY (data));
+
+  priv->idle_id = 0;
+
+  return FALSE;
+}
+
+void
+awn_applet_proxy_schedule_execute (AwnAppletProxy *proxy)
+{
+  AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE (proxy);
+
+  if (priv->idle_id == 0)
+  {
+    priv->idle_id = g_idle_add (awn_applet_proxy_idle_cb, proxy);
+  }
+}
+

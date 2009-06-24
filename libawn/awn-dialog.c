@@ -32,14 +32,13 @@
 #include <math.h>
 
 #include "awn-applet.h"
-#include "awn-applet-simple.h"
 #include "awn-dialog.h"
-#include "awn-icon.h"
 #include "awn-cairo-utils.h"
 #include "awn-config-bridge.h"
 #include "awn-config-client.h"
 #include "awn-defines.h"
 #include "awn-utils.h"
+#include "awn-overlayable.h"
 
 #include "gseal-transition.h"
 
@@ -63,6 +62,7 @@ struct _AwnDialogPrivate
   AwnOrientation orient;
   gboolean anchored;
   gboolean esc_hide;
+  gboolean effects_activate;
 
   gint window_offset;
   gint window_offset_pub;
@@ -82,6 +82,8 @@ struct _AwnDialogPrivate
   gulong applet_size_id;
   gulong orient_changed_id;
 
+  guint inhibit_cookie;
+
   gint old_x, old_y, old_w, old_h;
   gint a_old_x, a_old_y, a_old_w, a_old_h;
 
@@ -99,6 +101,7 @@ enum
   PROP_WINDOW_OFFSET,
   PROP_WINDOW_PADDING,
   PROP_HIDE_ON_ESC,
+  PROP_EFFECTS_HILIGHT,
 
   PROP_GSTEP1,
   PROP_GSTEP2,
@@ -289,10 +292,34 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
 static void
 _real_show (GtkWidget *widget)
 {
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (widget);
+
   awn_dialog_refresh_position (AWN_DIALOG (widget), 0, 0);
 
   /* in Vala terms: base.show(); */
   GTK_WIDGET_CLASS (awn_dialog_parent_class)->show (widget);
+
+  if (priv->anchor_applet && priv->inhibit_cookie == 0)
+  {
+    priv->inhibit_cookie = 
+      awn_applet_inhibit_autohide (priv->anchor_applet,
+                                   "AwnDialog being displayed");
+  }
+}
+
+static void
+_real_hide (GtkWidget *widget)
+{
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (widget);
+
+  /* in Vala terms: base.hide(); */
+  GTK_WIDGET_CLASS (awn_dialog_parent_class)->hide (widget);
+
+  if (priv->anchor_applet && priv->inhibit_cookie)
+  {
+    awn_applet_uninhibit_autohide (priv->anchor_applet, priv->inhibit_cookie);
+    priv->inhibit_cookie = 0;
+  }
 }
 
 static gboolean
@@ -431,7 +458,7 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
     awn_cairo_rounded_rect_shadow (cr, BORDER, BORDER,
                                    w - BORDER*2, h - BORDER*2,
                                    ROUND_RADIUS, ROUND_ALL,
-                                   SHADOW_RADIUS, 0.5);
+                                   SHADOW_RADIUS, 0.6);
 
     cairo_restore (cr);
   }
@@ -449,73 +476,6 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
                                     child, expose);
 
   return TRUE;
-}
-
-static gboolean
-on_hbox_expose(GtkWidget       *widget,
-               GdkEventExpose  *expose,
-               AwnDialog *dialog)
-{
-  cairo_t *cr = NULL;
-  cairo_pattern_t *pat = NULL;
-  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (dialog);
-  gint width, height;
-
-  cr = gdk_cairo_create (gtk_widget_get_window (widget));
-
-  g_return_val_if_fail (cr, FALSE);
-
-  width = widget->allocation.width;
-  height = widget->allocation.height;
-
-  gdk_cairo_region (cr, expose->region);
-  cairo_clip (cr);
-
-  cairo_translate (cr, expose->area.x, expose->area.y);
-
-  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-
-  cairo_set_line_width (cr, 1.0);
-  cairo_translate (cr, 0.5, 0.5);
-
-  /* Paint the background the border colour */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->g_histep_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, priv->g_histep_2);
-
-  awn_cairo_rounded_rect (cr, 0, 0, width-1, height-0.5, 15, ROUND_ALL);
-  cairo_set_source (cr, pat);
-  cairo_fill_preserve (cr);
-  cairo_pattern_destroy (pat);
-
-  /* border */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->border_color);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.75, priv->border_color);
-  cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.25);
-
-  cairo_set_source (cr, pat);
-  cairo_stroke (cr);
-
-  cairo_pattern_destroy (pat);
-
-  /* hilight */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->hilight_color);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.75, priv->hilight_color);
-  cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.0);
-
-  cairo_set_operator (cr, CAIRO_OPERATOR_XOR);
-  awn_cairo_rounded_rect (cr, 1, 1, width-3, height-1.5, 15, ROUND_ALL);
-  cairo_set_source (cr, pat);
-  cairo_stroke (cr);
-
-  cairo_pattern_destroy (pat);
-
-  /* Clean up */
-  cairo_destroy(cr);
-
-  return FALSE;
 }
 
 static gboolean
@@ -567,16 +527,17 @@ _on_title_notify(GObject *dialog, GParamSpec *spec, gpointer null)
 static void
 _on_active_changed(GObject *dialog, GParamSpec *spec, gpointer null)
 {
+  // FIXME: add property to disable this
   AwnDialogPrivate *priv;
 
   priv = AWN_DIALOG(dialog)->priv;
 
-  if (!AWN_IS_APPLET_SIMPLE (priv->anchor)) return; // FIXME later
+  if (!AWN_IS_OVERLAYABLE (priv->anchor) || !priv->effects_activate) return;
 
-  AwnAppletSimple *simple = AWN_APPLET_SIMPLE (priv->anchor);
+  AwnOverlayable *icon = AWN_OVERLAYABLE (priv->anchor);
 
-  awn_icon_set_is_active (AWN_ICON (awn_applet_simple_get_icon (simple)),
-                          gtk_window_is_active (GTK_WINDOW (dialog)));
+  g_object_set (awn_overlayable_get_effects (icon),
+                "active", gtk_window_is_active (GTK_WINDOW (dialog)), NULL);
 }
 
 static void
@@ -741,6 +702,9 @@ awn_dialog_get_property (GObject    *object,
     case PROP_WINDOW_PADDING:
       g_value_set_int (value, priv->window_padding);
       break;
+    case PROP_EFFECTS_HILIGHT:
+      g_value_set_boolean (value, priv->effects_activate);
+      break;
 
     case PROP_GSTEP1:
     case PROP_GSTEP2:
@@ -796,6 +760,9 @@ awn_dialog_set_property (GObject      *object,
       break;
     case PROP_HIDE_ON_ESC:
       priv->esc_hide = g_value_get_boolean (value);
+      break;
+    case PROP_EFFECTS_HILIGHT:
+      priv->effects_activate = g_value_get_boolean (value);
       break;
 
     case PROP_GSTEP1:
@@ -886,6 +853,7 @@ awn_dialog_class_init (AwnDialogClass *klass)
   widget_class = GTK_WIDGET_CLASS (klass);
   widget_class->expose_event = _expose_event;
   widget_class->show = _real_show;
+  widget_class->hide = _real_hide;
 
   cont_class = GTK_CONTAINER_CLASS (klass);
   cont_class->add = awn_dialog_add;
@@ -944,6 +912,16 @@ awn_dialog_class_init (AwnDialogClass *klass)
     g_param_spec_boolean ("hide-on-esc",
                           "Hide on Escape",
                           "Hides the window when escape key is pressed",
+                          TRUE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+    PROP_EFFECTS_HILIGHT,
+    g_param_spec_boolean ("effects-hilight",
+                          "Effects Hilight",
+                          "Sets the anchored widget active when dialog is "
+                          "focused and the anchor implements "
+                          "AwnOverlayable interface",
                           TRUE,
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
@@ -1209,8 +1187,6 @@ static void
 _on_origin_changed (AwnApplet *applet, GdkRectangle *rect, AwnDialog *dialog)
 {
   g_return_if_fail (AWN_IS_DIALOG (dialog));
-
-  AwnDialogPrivate *priv = dialog->priv;
 
   if (!GTK_WIDGET_VISIBLE (dialog)) return;
 
