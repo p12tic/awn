@@ -55,6 +55,7 @@ struct _AwnAppletPrivate
   gint offset;
   gfloat offset_modifier;
   guint size;
+  gint max_size;
 
   gboolean show_all_on_embed;
   gboolean quit_on_delete;
@@ -80,6 +81,7 @@ enum
   PROP_OFFSET,
   PROP_OFFSET_MOD,
   PROP_SIZE,
+  PROP_MAX_SIZE,
   PROP_PATH_TYPE
 };
 
@@ -266,10 +268,13 @@ awn_applet_set_property (GObject      *object,
       break;
     case PROP_OFFSET_MOD:
       // FIXME: method!
-      AWN_APPLET_GET_PRIVATE(applet)->offset_modifier = g_value_get_float (value);
+      applet->priv->offset_modifier = g_value_get_float (value);
       break;
     case PROP_SIZE:
       awn_applet_set_size (applet, g_value_get_int (value));
+      break;
+    case PROP_MAX_SIZE:
+      applet->priv->max_size = g_value_get_int (value);
       break;
     case PROP_PATH_TYPE:
       awn_applet_set_path_type (applet, g_value_get_int (value));
@@ -315,6 +320,10 @@ awn_applet_get_property (GObject    *object,
 
     case PROP_SIZE:
       g_value_set_int (value, priv->size);
+      break;
+
+    case PROP_MAX_SIZE:
+      g_value_set_int (value, priv->max_size);
       break;
 
     case PROP_PATH_TYPE:
@@ -401,7 +410,8 @@ awn_applet_constructed (GObject *obj)
     }
 
     GError *error = NULL;
-    GValue orient = {0}, size = {0}, offset = {0};
+    GValue orient = {0}, size = {0}, max_size = {0}, offset = {0};
+    GValue panel_xid = {0};
 
     dbus_g_proxy_call (prop_proxy, "Get", &error, 
                        G_TYPE_STRING, "org.awnproject.Awn.Panel",
@@ -410,12 +420,16 @@ awn_applet_constructed (GObject *obj)
                        G_TYPE_VALUE, &orient,
                        G_TYPE_INVALID);
 
+    if (error) goto crap_out;
+
     dbus_g_proxy_call (prop_proxy, "Get", &error, 
                        G_TYPE_STRING, "org.awnproject.Awn.Panel",
                        G_TYPE_STRING, "Size",
                        G_TYPE_INVALID,
                        G_TYPE_VALUE, &size,
                        G_TYPE_INVALID);
+
+    if (error) goto crap_out;
 
     dbus_g_proxy_call (prop_proxy, "Get", &error, 
                        G_TYPE_STRING, "org.awnproject.Awn.Panel",
@@ -424,13 +438,53 @@ awn_applet_constructed (GObject *obj)
                        G_TYPE_VALUE, &offset,
                        G_TYPE_INVALID);
 
+    if (error) goto crap_out;
+
+    dbus_g_proxy_call (prop_proxy, "Get", &error,
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "MaxSize",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &max_size,
+                       G_TYPE_INVALID);
+
+    if (error) goto crap_out;
+
+    dbus_g_proxy_call (prop_proxy, "Get", &error,
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "PanelXid",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &panel_xid,
+                       G_TYPE_INVALID);
+
+    if (error) goto crap_out;
+
     g_object_set_property (obj, "orient", &orient);
     g_object_set_property (obj, "size", &size);
     g_object_set_property (obj, "offset", &offset);
+    g_object_set_property (obj, "max-size", &max_size);
+
+    if (g_value_get_int64 (&panel_xid) != 0)
+    {
+      awn_applet_set_panel_window_id (AWN_APPLET (obj),
+                          (GdkNativeWindow) g_value_get_int64 (&panel_xid));
+    }
+
+    g_value_unset (&orient);
+    g_value_unset (&size);
+    g_value_unset (&max_size);
+    g_value_unset (&offset);
+    g_value_unset (&panel_xid);
 
     if (prop_proxy) g_object_unref (prop_proxy);
 
     g_free (object_path);
+    return;
+
+    crap_out:
+
+    g_warning ("%s", error->message);
+    g_error_free (error);
+    gtk_main_quit ();
   }
 }
 
@@ -544,6 +598,14 @@ awn_applet_class_init (AwnAppletClass *klass)
    g_param_spec_int ("size",
                      "Size",
                      "The current visible size of the bar",
+                     0, G_MAXINT, 48,
+                     G_PARAM_READWRITE));
+
+  g_object_class_install_property (g_object_class,
+   PROP_MAX_SIZE,
+   g_param_spec_int ("max-size",
+                     "Max Size",
+                     "The maximum visible size of the applet",
                      0, G_MAXINT, 48,
                      G_PARAM_READWRITE));
 

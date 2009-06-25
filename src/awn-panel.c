@@ -142,6 +142,7 @@ enum
   PROP_CLIENT,
   PROP_MONITOR,
   PROP_APPLET_MANAGER,
+  PROP_PANEL_XID,
   PROP_COMPOSITED,
   PROP_PANEL_MODE,
   PROP_EXPAND,
@@ -370,6 +371,7 @@ awn_panel_get_property (GObject    *object,
 
   g_return_if_fail (AWN_IS_PANEL (object));
   priv = AWN_PANEL (object)->priv;
+  GdkWindow *window;
 
   switch (prop_id)
   {
@@ -381,6 +383,10 @@ awn_panel_get_property (GObject    *object,
       break;
     case PROP_APPLET_MANAGER:
       g_value_set_pointer (value, priv->manager);
+      break;
+    case PROP_PANEL_XID:
+      window = gtk_widget_get_window (GTK_WIDGET (object));
+      g_value_set_int64 (value, window ? (gint64) GDK_WINDOW_XID (window) : 0);
       break;
     case PROP_COMPOSITED:
       g_value_set_boolean (value, priv->composited);
@@ -1218,6 +1224,14 @@ awn_panel_class_init (AwnPanelClass *klass)
     g_param_spec_pointer ("applet-manager",
                           "Applet manager",
                           "The AwnAppletManager",
+                          G_PARAM_READABLE));
+
+  g_object_class_install_property (obj_class,
+    PROP_PANEL_XID,
+    g_param_spec_int64   ("panel-xid",
+                          "Panel XID",
+                          "The XID of the panel",
+                          G_MININT64, G_MAXINT64, 0,
                           G_PARAM_READABLE));
 
   g_object_class_install_property (obj_class,
