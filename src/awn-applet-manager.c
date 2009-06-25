@@ -24,6 +24,7 @@
 #define WNCK_I_KNOW_THIS_IS_UNSTABLE 1
 #include <libwnck/libwnck.h>
 
+#include <libawn/libawn.h>
 #include <libawn/awn-config-bridge.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
@@ -809,6 +810,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   AwnAppletManagerPrivate *priv = manager->priv;  
   GPid  pid;
   GdkNativeWindow native_window = (GdkNativeWindow) xid;
+  AwnAlignment *align = gtk_alignment_new(0.5,1.0,1,0.6);
 
 // 
   
@@ -820,12 +822,13 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   
  plugwin = gtk_socket_get_plug_window (GTK_SOCKET(socket));
 
- awn_applet_manager_add_widget(manager, GTK_WIDGET (socket), pos);
+  gtk_container_add (GTK_CONTAINER(align),socket);
+ awn_applet_manager_add_widget(manager, GTK_WIDGET (align), pos);
  gtk_socket_add_id (GTK_SOCKET(socket), native_window);
- gtk_widget_show_all (GTK_WIDGET (socket));
+ gtk_widget_show_all (GTK_WIDGET (align));
 
   g_assert (priv->applets);
-  g_hash_table_insert (priv->applets, g_strdup_printf("%lu",xid), socket);  
+  g_hash_table_insert (priv->applets, g_strdup_printf("%lu",xid), align);  
   
   /* hmm... not getting the PID.  probably because this is a xid of a plug?*/
 //  pid = wnck_window_get_pid (wnck_window_get(xid));
