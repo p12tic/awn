@@ -1,5 +1,12 @@
 2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+ 	* applets/taskmanager/task-window.c:
+	Task Icon and Task Window need to chain up constructed after recent
+	modifications.
+
+2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-themed-icon.c:
 	Disconnect the signal handler for the default gtk theme on dispose.
 
