@@ -1,6 +1,11 @@
 2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
+	Disconnect the correct object from the signal
+
+2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
 	Have AwnThemedIcon only create one awntheme GtkIconTheme object per process.
 
 2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
