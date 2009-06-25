@@ -1,5 +1,12 @@
 2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-effects.c:
+	A couple of minor fixes in the doc-comments.
+
+2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
+
 	* bindings/python/awn.defs:
 	Added AwnOverlayAlign binding.
 

@@ -196,8 +196,7 @@ awn_applet_simple_init (AwnAppletSimple *simple)
 /**
  * awn_applet_simple_new:
  * @uid: The unique identifier of the instance of the applet on the dock.
- * @orient: The orientation of the applet - see #AwnOrientation.
- * @size: The current size of the panel.
+ * @panel_id: The ID of the panel to connect to.
  *
  * Creates a new #AwnAppletSimple object.  This applet will have awn-effects
  * effects applied to its icon automatically if awn_applet_simple_set_icon() or
