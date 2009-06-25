@@ -1,3 +1,8 @@
+2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Modified to work with the python bindings.
+
 2009-06-25  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* doc/reference/libawn-sections.txt:
