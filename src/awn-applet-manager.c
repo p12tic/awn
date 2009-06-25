@@ -823,9 +823,10 @@ awn_ua_add_applet (	AwnAppletManager *manager,
  plugwin = gtk_socket_get_plug_window (GTK_SOCKET(socket));
 
   gtk_container_add (GTK_CONTAINER(align),socket);
+ gtk_widget_show_all (GTK_WIDGET (align));  
  awn_applet_manager_add_widget(manager, GTK_WIDGET (align), pos);
  gtk_socket_add_id (GTK_SOCKET(socket), native_window);
- gtk_widget_show_all (GTK_WIDGET (align));
+
 
   g_assert (priv->applets);
   g_hash_table_insert (priv->applets, g_strdup_printf("%lu",xid), align);  
