@@ -190,6 +190,27 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
       cairo_stroke(cr);
       break;
     }
+    case AWN_THROBBER_TYPE_CLOSE_BUTTON:
+    {
+      GdkColor c = gtk_widget_get_style (widget)->fg[GTK_STATE_NORMAL];
+      double r = c.red / 65535.0;
+      double g = c.green / 65535.0;
+      double b = c.blue / 65535.0;
+
+      cairo_set_source_rgb (cr, r, g, b);
+      cairo_set_line_width (cr, 0.03);
+
+      // FIXME: paint something nice!
+
+      cairo_move_to (cr, 0.0, 0.0);
+      cairo_line_to (cr, 1.0, 1.0);
+      cairo_stroke (cr);
+
+      cairo_move_to (cr, 1.0, 0.0);
+      cairo_line_to (cr, 0.0, 1.0);
+      cairo_stroke (cr);
+      break;
+    }
     default:
       break;
   }

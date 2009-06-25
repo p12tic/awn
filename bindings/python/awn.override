@@ -134,6 +134,7 @@ _pysequence_to_gchar_array (PyObject *py_seq)
 modulename awn
 %%
 import gobject.GObject as PyGObject_Type
+import gtk.Alignment as PyGtkAlignment_Type
 import gtk.Dialog as PyGtkDialog_Type
 import gtk.EventBox as PyGtkEventBox_Type
 import gtk.Box as PyGtkBox_Type

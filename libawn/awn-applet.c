@@ -55,6 +55,7 @@ struct _AwnAppletPrivate
   gint offset;
   gfloat offset_modifier;
   guint size;
+  gint max_size;
 
   gboolean show_all_on_embed;
   gboolean quit_on_delete;
@@ -80,7 +81,11 @@ enum
   PROP_OFFSET,
   PROP_OFFSET_MOD,
   PROP_SIZE,
-  PROP_PATH_TYPE
+  PROP_MAX_SIZE,
+  PROP_PATH_TYPE,
+
+  PROP_QUIT_ON_DELETE,
+  PROP_SHOW_ALL_ON_EMBED
 };
 
 enum
@@ -97,6 +102,11 @@ enum
   LAST_SIGNAL
 };
 static guint _applet_signals[LAST_SIGNAL] = { 0 };
+
+/* FORWARDS */
+static GdkFilterReturn _on_panel_configure (GdkXEvent *xevent,
+                                            GdkEvent *event, gpointer data);
+
 
 static void
 on_orient_changed (DBusGProxy *proxy, gint orient, AwnApplet *applet)
@@ -143,9 +153,14 @@ on_delete_notify (DBusGProxy *proxy, AwnApplet *applet)
 }
 
 static void
-on_proxy_destroyed (GObject *object)
+on_proxy_destroyed (GObject *object, AwnApplet *applet)
 {
-  gtk_main_quit ();
+  AwnAppletPrivate *priv = applet->priv;
+
+  if (priv->quit_on_delete)
+  {
+    gtk_main_quit ();
+  }
 }
 
 static void
@@ -266,13 +281,19 @@ awn_applet_set_property (GObject      *object,
       break;
     case PROP_OFFSET_MOD:
       // FIXME: method!
-      AWN_APPLET_GET_PRIVATE(applet)->offset_modifier = g_value_get_float (value);
+      applet->priv->offset_modifier = g_value_get_float (value);
       break;
     case PROP_SIZE:
       awn_applet_set_size (applet, g_value_get_int (value));
       break;
+    case PROP_MAX_SIZE:
+      applet->priv->max_size = g_value_get_int (value);
+      break;
     case PROP_PATH_TYPE:
       awn_applet_set_path_type (applet, g_value_get_int (value));
+      break;
+    case PROP_QUIT_ON_DELETE:
+      applet->priv->quit_on_delete = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -317,8 +338,16 @@ awn_applet_get_property (GObject    *object,
       g_value_set_int (value, priv->size);
       break;
 
+    case PROP_MAX_SIZE:
+      g_value_set_int (value, priv->max_size);
+      break;
+
     case PROP_PATH_TYPE:
       g_value_set_int (value, priv->path_type);
+      break;
+
+    case PROP_QUIT_ON_DELETE:
+      g_value_set_boolean (value, priv->quit_on_delete);
       break;
 
     default:
@@ -387,7 +416,7 @@ awn_applet_constructed (GObject *obj)
                                  NULL);
 
     g_signal_connect (priv->proxy, "destroy",
-                      G_CALLBACK (on_proxy_destroyed), NULL);
+                      G_CALLBACK (on_proxy_destroyed), applet);
 
     // get prop values from Panel
     DBusGProxy *prop_proxy = dbus_g_proxy_new_from_proxy (
@@ -401,7 +430,8 @@ awn_applet_constructed (GObject *obj)
     }
 
     GError *error = NULL;
-    GValue orient = {0}, size = {0}, offset = {0};
+    GValue orient = {0}, size = {0}, max_size = {0}, offset = {0};
+    GValue panel_xid = {0};
 
     dbus_g_proxy_call (prop_proxy, "Get", &error, 
                        G_TYPE_STRING, "org.awnproject.Awn.Panel",
@@ -410,12 +440,16 @@ awn_applet_constructed (GObject *obj)
                        G_TYPE_VALUE, &orient,
                        G_TYPE_INVALID);
 
+    if (error) goto crap_out;
+
     dbus_g_proxy_call (prop_proxy, "Get", &error, 
                        G_TYPE_STRING, "org.awnproject.Awn.Panel",
                        G_TYPE_STRING, "Size",
                        G_TYPE_INVALID,
                        G_TYPE_VALUE, &size,
                        G_TYPE_INVALID);
+
+    if (error) goto crap_out;
 
     dbus_g_proxy_call (prop_proxy, "Get", &error, 
                        G_TYPE_STRING, "org.awnproject.Awn.Panel",
@@ -424,19 +458,67 @@ awn_applet_constructed (GObject *obj)
                        G_TYPE_VALUE, &offset,
                        G_TYPE_INVALID);
 
+    if (error) goto crap_out;
+
+    dbus_g_proxy_call (prop_proxy, "Get", &error,
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "MaxSize",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &max_size,
+                       G_TYPE_INVALID);
+
+    if (error) goto crap_out;
+
+    dbus_g_proxy_call (prop_proxy, "Get", &error,
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "PanelXid",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &panel_xid,
+                       G_TYPE_INVALID);
+
+    if (error) goto crap_out;
+
     g_object_set_property (obj, "orient", &orient);
     g_object_set_property (obj, "size", &size);
     g_object_set_property (obj, "offset", &offset);
+    g_object_set_property (obj, "max-size", &max_size);
+
+    if (g_value_get_int64 (&panel_xid) != 0)
+    {
+      awn_applet_set_panel_window_id (AWN_APPLET (obj),
+                          (GdkNativeWindow) g_value_get_int64 (&panel_xid));
+    }
+
+    g_value_unset (&orient);
+    g_value_unset (&size);
+    g_value_unset (&max_size);
+    g_value_unset (&offset);
+    g_value_unset (&panel_xid);
 
     if (prop_proxy) g_object_unref (prop_proxy);
 
     g_free (object_path);
+    return;
+
+    crap_out:
+
+    g_warning ("%s", error->message);
+    g_error_free (error);
+    gtk_main_quit ();
   }
 }
 
 static void
 awn_applet_dispose (GObject *obj)
 {
+  AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (obj);
+
+  if (priv->panel_window)
+  {
+    gdk_window_remove_filter (priv->panel_window, _on_panel_configure, obj);
+    priv->panel_window = 0;
+  }
+
   G_OBJECT_CLASS (awn_applet_parent_class)->dispose(obj);
 }
 
@@ -548,12 +630,28 @@ awn_applet_class_init (AwnAppletClass *klass)
                      G_PARAM_READWRITE));
 
   g_object_class_install_property (g_object_class,
+   PROP_MAX_SIZE,
+   g_param_spec_int ("max-size",
+                     "Max Size",
+                     "The maximum visible size of the applet",
+                     0, G_MAXINT, 48,
+                     G_PARAM_READWRITE));
+
+  g_object_class_install_property (g_object_class,
    PROP_PATH_TYPE,
    g_param_spec_int ("path-type",
                      "Path type",
                      "Path used on the panel",
                      0, AWN_PATH_LAST-1, AWN_PATH_LINEAR,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+
+  g_object_class_install_property (g_object_class,
+   PROP_QUIT_ON_DELETE,
+   g_param_spec_boolean ("quit-on-delete",
+                         "Quit on delete",
+                         "Quit the applet when it's socket is destroyed",
+                         TRUE,
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   /* Class signals */
   _applet_signals[ORIENT_CHANGED] =
@@ -649,7 +747,6 @@ awn_applet_init (AwnApplet *applet)
   priv->offset_modifier = 1.0;
   // FIXME: turn into proper properties
   priv->show_all_on_embed = TRUE;
-  priv->quit_on_delete = TRUE;
 
   error = NULL;
   priv->connection = dbus_g_bus_get(DBUS_BUS_SESSION, &error);

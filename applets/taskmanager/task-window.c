@@ -107,6 +107,11 @@ static void
 task_window_constructed (GObject *object)
 {
   /*TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;*/
+  
+  if ( G_OBJECT_CLASS (task_window_parent_class)->constructed)
+  {
+    G_OBJECT_CLASS (task_window_parent_class)->constructed (object);  
+  }  
 }
 
 static void

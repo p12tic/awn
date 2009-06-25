@@ -64,8 +64,8 @@ struct _AwnThrobberClass
 
 typedef enum {
   AWN_THROBBER_TYPE_NORMAL,
-  AWN_THROBBER_TYPE_SAD_FACE
-
+  AWN_THROBBER_TYPE_SAD_FACE,
+  AWN_THROBBER_TYPE_CLOSE_BUTTON
 } AwnThrobberType;
 
 GType         awn_throbber_get_type         (void) G_GNUC_CONST;

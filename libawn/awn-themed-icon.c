@@ -73,6 +73,9 @@ struct _AwnThemedIconPrivate
   gint    current_size;
   AwnThemedIconItem    *current_item;
   GdkPixbufRotation    rotate;
+  
+  gulong  sig_id_for_gtk_theme;
+  gulong  sig_id_for_awn_theme;  
 };
 
 enum
@@ -113,6 +116,23 @@ enum
   PROP_0,
   PROP_ROTATE
 };
+
+static GtkIconTheme*
+get_awn_theme()
+{
+  static GtkIconTheme *awn_theme = NULL;
+
+  if (!awn_theme)
+  {
+    awn_theme = gtk_icon_theme_new ();
+    gtk_icon_theme_set_custom_theme (awn_theme, AWN_ICON_THEME_NAME);
+  }
+  return awn_theme;
+  
+  
+}
+
+
 
 /* GObject stuff */
 
@@ -160,15 +180,20 @@ awn_themed_icon_dispose (GObject *object)
   g_return_if_fail (AWN_IS_THEMED_ICON (object));
   priv = AWN_THEMED_ICON (object)->priv;
   
-  if (G_IS_OBJECT (priv->awn_theme))
+  if (priv->sig_id_for_awn_theme)
   {
-    g_object_unref (priv->awn_theme);
-    priv->awn_theme = NULL;
+    g_signal_handler_disconnect (priv->gtk_theme,priv->sig_id_for_awn_theme);
+    priv->sig_id_for_awn_theme = 0; 
   }
   if (G_IS_OBJECT (priv->override_theme))
   {
     g_object_unref (priv->override_theme);
     priv->override_theme = NULL;
+  }
+  if (priv->sig_id_for_gtk_theme)
+  {
+    g_signal_handler_disconnect (priv->gtk_theme,priv->sig_id_for_gtk_theme);
+    priv->sig_id_for_gtk_theme = 0; 
   }
   
   G_OBJECT_CLASS (awn_themed_icon_parent_class)->dispose (object);
@@ -273,7 +298,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
 
   /* Set-up the gtk-theme */
   priv->gtk_theme = gtk_icon_theme_get_default ();
-  g_signal_connect (priv->gtk_theme, "changed", 
+  priv->sig_id_for_gtk_theme = g_signal_connect (priv->gtk_theme, "changed", 
                     G_CALLBACK (on_icon_theme_changed), icon);
 
   /* 
@@ -298,9 +323,8 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   g_free (index_dest);
 
   /* Now let's make our custom theme */
-  priv->awn_theme = gtk_icon_theme_new ();
-  gtk_icon_theme_set_custom_theme (priv->awn_theme, AWN_ICON_THEME_NAME);
-  g_signal_connect (priv->awn_theme, "changed", 
+  priv->awn_theme = get_awn_theme ();
+  priv->sig_id_for_awn_theme = g_signal_connect (priv->awn_theme, "changed", 
                     G_CALLBACK (on_icon_theme_changed), icon);
   
   g_free (scalable_dir);
@@ -1196,8 +1220,8 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
 
     case 2: /* Clear */
       awn_themed_icon_clear_icons (icon, -1);
-      gtk_icon_theme_set_custom_theme (priv->awn_theme, NULL);
-      gtk_icon_theme_set_custom_theme (priv->awn_theme, AWN_ICON_THEME_NAME);
+/*      gtk_icon_theme_set_custom_theme (priv->awn_theme, NULL);
+      gtk_icon_theme_set_custom_theme (priv->awn_theme, AWN_ICON_THEME_NAME);*/
       gtk_widget_destroy (dialog);
       goto drag_out;
       break;
@@ -1250,9 +1274,9 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   }
 
   /* Refresh icon-theme */
-  gtk_icon_theme_set_custom_theme (priv->awn_theme, NULL);
+/*  gtk_icon_theme_set_custom_theme (priv->awn_theme, NULL);
   gtk_icon_theme_set_custom_theme (priv->awn_theme, AWN_ICON_THEME_NAME);
-
+*/
   success = TRUE;
 
   /* Clean up */

@@ -65,6 +65,7 @@
     <property name="MaxSize" type="i" access="read" />
     <property name="Orient" type="i" access="read" />
     <property name="Offset" type="i" access="read" />
+    <property name="PanelXid" type="x" access="read" />
 
   </interface>
 </node>

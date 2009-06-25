@@ -45,6 +45,7 @@
 #include "awn-defines.h"
 #include "awn-marshal.h"
 #include "awn-monitor.h"
+#include "awn-throbber.h"
 #include "awn-x.h"
 
 #include "gseal-transition.h"
@@ -68,6 +69,7 @@ struct _AwnPanelPrivate
   GtkWidget *eventbox;
   GtkWidget *manager;
   GtkWidget *docklet;
+  GtkWidget *docklet_closer;
   gint docklet_minsize;
 
   gboolean composited;
@@ -142,6 +144,7 @@ enum
   PROP_CLIENT,
   PROP_MONITOR,
   PROP_APPLET_MANAGER,
+  PROP_PANEL_XID,
   PROP_COMPOSITED,
   PROP_PANEL_MODE,
   PROP_EXPAND,
@@ -370,6 +373,7 @@ awn_panel_get_property (GObject    *object,
 
   g_return_if_fail (AWN_IS_PANEL (object));
   priv = AWN_PANEL (object)->priv;
+  GdkWindow *window;
 
   switch (prop_id)
   {
@@ -381,6 +385,10 @@ awn_panel_get_property (GObject    *object,
       break;
     case PROP_APPLET_MANAGER:
       g_value_set_pointer (value, priv->manager);
+      break;
+    case PROP_PANEL_XID:
+      window = gtk_widget_get_window (GTK_WIDGET (object));
+      g_value_set_int64 (value, window ? (gint64) GDK_WINDOW_XID (window) : 0);
       break;
     case PROP_COMPOSITED:
       g_value_set_boolean (value, priv->composited);
@@ -1218,6 +1226,14 @@ awn_panel_class_init (AwnPanelClass *klass)
     g_param_spec_pointer ("applet-manager",
                           "Applet manager",
                           "The AwnAppletManager",
+                          G_PARAM_READABLE));
+
+  g_object_class_install_property (obj_class,
+    PROP_PANEL_XID,
+    g_param_spec_int64   ("panel-xid",
+                          "Panel XID",
+                          "The XID of the panel",
+                          G_MININT64, G_MAXINT64, 0,
                           G_PARAM_READABLE));
 
   g_object_class_install_property (obj_class,
@@ -2420,6 +2436,7 @@ docklet_plug_added (GtkSocket *socket, AwnPanel *panel)
   // FIXME: an animation?!
   awn_applet_manager_hide_applets (AWN_APPLET_MANAGER (priv->manager));
   gtk_widget_show (priv->docklet);
+  gtk_widget_show (priv->docklet_closer);
 }
 
 static gboolean
@@ -2434,6 +2451,21 @@ docklet_plug_removed (GtkSocket *socket, AwnPanel *panel)
   priv->docklet = NULL;
   priv->docklet_minsize = 0;
 
+  gtk_widget_hide (priv->docklet_closer);
+
+  return FALSE;
+}
+
+static gboolean
+docklet_closer_click (GtkWidget *widget, GdkEventButton *event, AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->docklet == NULL) return FALSE;
+
+  // this removes the docklet from applet manager, effectively destroying it
+  docklet_plug_removed (GTK_SOCKET (priv->docklet), panel);
+
   return FALSE;
 }
 
@@ -2446,11 +2478,30 @@ awn_panel_docklet_request (AwnPanel *panel,
   AwnPanelPrivate *priv = panel->priv;
   gint64 window_id = 0;
 
+  if (!priv->docklet_closer)
+  {
+    priv->docklet_closer = awn_throbber_new ();
+    awn_throbber_set_type (AWN_THROBBER (priv->docklet_closer),
+                           AWN_THROBBER_TYPE_CLOSE_BUTTON);
+
+    awn_applet_manager_add_widget (AWN_APPLET_MANAGER (priv->manager),
+                                   priv->docklet_closer, 1);
+
+    g_signal_connect (priv->docklet_closer, "button-release-event",
+                      G_CALLBACK (docklet_closer_click), panel);
+  }
+
   if (!priv->docklet)
   {
+    AwnThrobber *closer = AWN_THROBBER (priv->docklet_closer);
+
+    awn_throbber_set_size (closer, priv->size / 2);
+    awn_throbber_set_orientation (closer, priv->orient);
+    awn_throbber_set_offset (closer, priv->size / 2 + priv->offset);
+
     // FIXME: perhaps the min-size shouldn't be min-size but the actual size
     //  and the docklet would be restricted to this size (set_size_request).
-    if (!shrink) 
+    if (!shrink)
     {
       switch (priv->orient)
       {

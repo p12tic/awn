@@ -1,5 +1,46 @@
 2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-themed-icon.c:
+	Have AwnThemedIcon only create one awntheme GtkIconTheme object per process.
+
+2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+ 	* applets/taskmanager/task-window.c:
+	Task Icon and Task Window need to chain up constructed after recent
+	modifications.
+
+2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Disconnect the signal handler for the default gtk theme on dispose.
+
+2009-06-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	* src/awn-throbber.h:
+	A couple of fixes to make docklet mode work properly.
+
+2009-06-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Added binding for AwnAlignment.
+	* libawn/awn-icon.c:
+	Added bind-effects property which controls whether effects' property
+	values are read out from config client.
+
+2009-06-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	Fixed curves support.
+
+2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-themed-icon.c:
 	Modified to work with the python bindings.
 
