@@ -73,6 +73,8 @@ struct _AwnThemedIconPrivate
   gint    current_size;
   AwnThemedIconItem    *current_item;
   GdkPixbufRotation    rotate;
+  
+  gulong  sig_id_for_gtk_theme;
 };
 
 enum
@@ -169,6 +171,11 @@ awn_themed_icon_dispose (GObject *object)
   {
     g_object_unref (priv->override_theme);
     priv->override_theme = NULL;
+  }
+  if (priv->sig_id_for_gtk_theme)
+  {
+    g_signal_handler_disconnect (priv->gtk_theme,priv->sig_id_for_gtk_theme);
+    priv->sig_id_for_gtk_theme = 0; 
   }
   
   G_OBJECT_CLASS (awn_themed_icon_parent_class)->dispose (object);
@@ -273,7 +280,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
 
   /* Set-up the gtk-theme */
   priv->gtk_theme = gtk_icon_theme_get_default ();
-  g_signal_connect (priv->gtk_theme, "changed", 
+  priv->sig_id_for_gtk_theme = g_signal_connect (priv->gtk_theme, "changed", 
                     G_CALLBACK (on_icon_theme_changed), icon);
 
   /* 
