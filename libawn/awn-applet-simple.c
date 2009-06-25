@@ -137,6 +137,8 @@ awn_applet_simple_menu_creation (AwnApplet *applet, GtkMenu *menu)
 static void
 awn_applet_simple_constructed (GObject *object)
 {
+  G_OBJECT_CLASS (awn_applet_simple_parent_class)->constructed (object);
+
   AwnAppletSimple        *applet = AWN_APPLET_SIMPLE (object);
   AwnAppletSimplePrivate *priv = applet->priv;
 
@@ -204,15 +206,13 @@ awn_applet_simple_init (AwnAppletSimple *simple)
  * Returns: a new instance of an applet.
  */
 GtkWidget*
-awn_applet_simple_new (const gchar *uid, gint orient, gint offset, gint size)
+awn_applet_simple_new (const gchar *uid, gint panel_id)
 {
   AwnAppletSimple *simple;
 
   simple = g_object_new(AWN_TYPE_APPLET_SIMPLE,
                         "uid", uid,
-                        "orient", orient,
-                        "offset", offset,
-                        "size", size,
+                        "panel-id", panel_id,
                         NULL);
 
   return GTK_WIDGET(simple);
@@ -394,4 +394,15 @@ awn_applet_simple_set_effect (AwnAppletSimple  *applet,
   g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
 
   awn_icon_set_effect (AWN_ICON (applet->priv->icon), effect);
+}
+
+GtkWidget *
+awn_applet_simple_create_about_item (const gchar      *copyright,
+                                     AwnAppletLicense  license,
+                                     const gchar      *applet_name,
+                                     const gchar      *version)
+{
+  return awn_applet_create_about_item (copyright, license, applet_name, version,
+                                       NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+                                       NULL);
 }

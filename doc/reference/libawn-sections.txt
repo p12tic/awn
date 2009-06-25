@@ -127,6 +127,7 @@ awn_applet_simple_set_progress
 awn_applet_simple_get_progress
 awn_applet_simple_get_icon
 awn_applet_simple_set_effect
+awn_applet_simple_create_about_item
 <SUBSECTION Standard>
 AWN_APPLET_SIMPLE
 AWN_IS_APPLET_SIMPLE
@@ -237,6 +238,7 @@ awn_applet_set_panel_window_id
 awn_applet_inhibit_autohide
 awn_applet_uninhibit_autohide
 awn_applet_create_pref_item
+awn_applet_create_about_item
 <SUBSECTION Standard>
 AWN_APPLET
 AWN_IS_APPLET
@@ -473,6 +475,8 @@ awn_orientation_get_type
 AWN_TYPE_ORIENTATION
 awn_applet_flags_get_type
 AWN_TYPE_APPLET_FLAGS
+awn_applet_license_get_type
+AWN_TYPE_APPLET_LICENSE
 awn_path_type_get_type
 AWN_TYPE_PATH_TYPE
 awn_cairo_round_corners_get_type
@@ -527,6 +531,7 @@ AWN_MAX_HEIGHT
 AWN_MIN_HEIGHT
 AwnOrientation
 AwnAppletFlags
+AwnAppletLicense
 AwnPathType
 AWN_FONT_SIZE_EXTRA_SMALL
 AWN_FONT_SIZE_SMALL

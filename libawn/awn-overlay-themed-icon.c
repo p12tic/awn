@@ -94,7 +94,7 @@ awn_overlay_themed_icon_get_property (GObject *object, guint property_id,
     case PROP_ICON_NAME:
       g_value_set_string (value,priv->icon_name);
       break;
-    case PROP_ICON_STATE:
+    case PROP_ICON_STATE:      
       g_value_set_string (value,priv->icon_state);
       break;      
     case PROP_ICON:
@@ -124,9 +124,13 @@ awn_overlay_themed_icon_set_property (GObject *object, guint property_id,
       g_free(priv->icon_name);
       priv->icon_name = g_value_dup_string (value);
       break;
-    case PROP_ICON_STATE:
+    case PROP_ICON_STATE:      
       g_free(priv->icon_state);
-      priv->icon_state = g_value_dup_string (value);
+      priv->icon_state = g_value_dup_string (value);      
+      if ( ! priv->icon_state )
+      {
+        priv->icon_state = g_strdup_printf ("::invisible::__AWN_OVERLAY_THEMED_ICON_STATE_NAME_FOR_%s",priv->icon_name);        
+      }
       break;      
     case PROP_ICON:
       priv->themed_icon = g_value_get_object (value);
@@ -307,21 +311,14 @@ awn_overlay_themed_icon_init (AwnOverlayThemedIcon *self)
  */
 
 AwnOverlayThemedIcon*
-awn_overlay_themed_icon_new (AwnThemedIcon *icon,
+awn_overlay_themed_icon_new (AwnThemedIcon * icon,
                              const gchar *icon_name, const gchar *state)
 {
   AwnOverlayThemedIcon * ret;
-  gchar * created_state = NULL;
   
   g_return_val_if_fail (icon_name,NULL);
   g_return_val_if_fail (icon,NULL);
   g_return_val_if_fail (AWN_IS_THEMED_ICON (icon), NULL);
-  
-  if (!state)
-  {
-    created_state = g_strdup_printf ("::invisible::__AWN_OVERLAY_THEMED_ICON_STATE_NAME_FOR_%s",icon_name);
-    state = created_state;
-  }
   
   ret = g_object_new (AWN_TYPE_OVERLAY_THEMED_ICON, 
                       "icon-name", icon_name,
@@ -329,11 +326,6 @@ awn_overlay_themed_icon_new (AwnThemedIcon *icon,
                       "gravity", GDK_GRAVITY_SOUTH_EAST,
                       "icon", icon,
                       NULL);
-
-  if (created_state)
-  {
-    g_free (created_state);
-  }
   return ret;
 }
 

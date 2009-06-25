@@ -1,3 +1,66 @@
+2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Modified to work with the python bindings.
+
+2009-06-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-defines.h:
+	Add AwnAppletLicense, awn_applet_create_about_item, and
+	awn_applet_simple_create_about_item (migrated from libawn-extras).
+
+2009-06-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	Added docklet_request method to AwnApplet.
+
+2009-06-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Fixed binding for OverlayThemedIcon.
+
+2009-06-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/applet.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-manager.h:
+	* awn-applet-activation/main.c:
+	* bindings/python/__init__.py:
+	* bindings/python/awn.defs:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* src/awn-applet-proxy.c:
+	* tests/test-applet-simple.c:
+	AwnApplet constructor changed to include panel ID, now size, offset
+	and similar values are read out via DBus when applet is constructed.
+
+2009-06-24  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	Convert awn-settings.glade to awn-settings with gtk-builder-convert, 
+	not with galde-3.
+
+2009-06-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Convert to new style bidings for constructor awn_overlay_themed_icon_new.
+
+2009-06-24  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	Update to changes made in make_model().
+
 2009-06-24  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-panel.c:

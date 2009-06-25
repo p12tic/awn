@@ -440,9 +440,7 @@
   (return-type "GtkWidget*")
   (properties
     '("uid" (argname "uid"))
-    '("orient" (argname "orient"))
-    '("offset" (argname "offset"))
-    '("size" (argname "size"))
+    '("panel_id" (argname "panel_id"))
   )
 )
 
@@ -519,6 +517,16 @@
   )
 )
 
+(define-method docklet_request
+  (of-object "AwnApplet")
+  (c-name "awn_applet_docklet_request")
+  (return-type "GdkNativeWindow")
+  (parameters
+    '("gint" "min_size")
+    '("gboolean" "shrink")
+  )
+)
+
 (define-method applet_construct
   (of-object "AwnApplet")
   (c-name "gtk_plug_construct")
@@ -559,9 +567,7 @@
   (return-type "GtkWidget*")
   (properties
     '("uid" (argname "uid"))
-    '("orient" (argname "orient"))
-    '("offset" (argname "offset"))
-    '("size" (argname "size"))
+    '("panel_id" (argname "panel_id"))
   )
 )
 
@@ -1223,10 +1229,10 @@
 (define-function awn_overlay_themed_icon_new
   (c-name "awn_overlay_themed_icon_new")
   (is-constructor-of "AwnOverlayThemedIcon")
-  (parameters
-    '("AwnThemedIcon*" "icon")
-    '("const-gchar*" "icon_name")
-    '("const-gchar*" "icon_state" (default "NULL") (null-ok))
+  (properties
+    '("icon" (argname "icon"))
+    '("icon-name"   (argname "icon_name"))
+    '("icon-state"  (optional) (argname "icon_state"))
   )
 )
 

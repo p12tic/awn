@@ -220,6 +220,8 @@ task_manager_constructed (GObject *object)
   AwnConfigBridge    *bridge;
   GtkWidget          *widget;
   gchar              *uid = NULL;
+
+  G_OBJECT_CLASS (task_manager_parent_class)->constructed (object);
   
   priv = TASK_MANAGER_GET_PRIVATE (object);
   widget = GTK_WIDGET (object);
@@ -352,18 +354,14 @@ task_manager_init (TaskManager *manager)
 
 AwnApplet *
 task_manager_new (const gchar *uid,
-                  gint         orient,
-                  gint         offset,
-                  gint         size)
+                  gint         panel_id)
 {
   static AwnApplet *manager = NULL;
 
   if (!manager)
     manager = g_object_new (TASK_TYPE_MANAGER,
                             "uid", uid,
-                            "orient", orient,
-                            "offset", offset,
-                            "size", size,
+                            "panel-id", panel_id,
                             NULL);
   return manager;
 }
