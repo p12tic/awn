@@ -21,6 +21,9 @@
 
 #include "config.h"
 
+#define WNCK_I_KNOW_THIS_IS_UNSTABLE 1
+#include <libwnck/libwnck.h>
+
 #include <libawn/awn-config-bridge.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
@@ -775,6 +778,7 @@ create_applet_ua (AwnAppletManager *manager,
 
   g_object_set_qdata (G_OBJECT (applet), 
                       priv->touch_quark, GINT_TO_POINTER (0));
+  
 //  g_hash_table_insert (priv->applets, g_strdup (uid), applet);
 
 //  awn_applet_proxy_schedule_execute (AWN_APPLET_PROXY (applet));
@@ -793,6 +797,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
 			gchar size_type,
       GError   **error)
 {
+  
   g_debug ("%s",__func__);
   g_print ("Applet : %lu : ", xid);
   g_print ("Width : %i : ", width);
@@ -802,26 +807,33 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   gint pos = 1;
   GdkWindow* plugwin; 
   AwnAppletManagerPrivate *priv = manager->priv;  
+  GPid  pid;
+  GdkNativeWindow native_window = (GdkNativeWindow) xid;
 
- GdkNativeWindow native_window = (GdkNativeWindow) xid;
-
-// gtk_socket_add_id (GTK_SOCKET(socket), native_window);
+// 
   
  socket = awn_applet_proxy_new_ua (g_strdup_printf("%lu",xid),priv->orient,
                                  priv->offset, priv->size);
-
+ 
  g_signal_connect_swapped (socket, "plug-added",
                           G_CALLBACK (_applet_plug_added), manager);
   
  plugwin = gtk_socket_get_plug_window (GTK_SOCKET(socket));
 
  awn_applet_manager_add_widget(manager, GTK_WIDGET (socket), pos);
-
+ gtk_socket_add_id (GTK_SOCKET(socket), native_window);
  gtk_widget_show_all (GTK_WIDGET (socket));
 
+  g_assert (priv->applets);
+  g_hash_table_insert (priv->applets, g_strdup_printf("%lu",xid), socket);  
+  
+  /* hmm... not getting the PID.  probably because this is a xid of a plug?*/
+//  pid = wnck_window_get_pid (wnck_window_get(xid));
+
+  awn_applet_proxy_seat (socket);
+  g_debug ("Done");
 // create_applet_ua(manager,socket);
 
- return FALSE;
 /*TODO Write a function who create the applet
  applet = create_applet_ua (manager, *uid);
 

@@ -583,3 +583,19 @@ awn_applet_proxy_schedule_execute (AwnAppletProxy *proxy)
   }
 }
 
+void
+awn_applet_proxy_seat (AwnAppletProxy *proxy)
+{
+  AwnAppletProxyPrivate *priv;
+
+  priv = AWN_APPLET_PROXY_GET_PRIVATE (proxy);
+
+  priv->size_req_initialized = FALSE;
+  gtk_widget_realize (GTK_WIDGET (proxy));
+
+  g_debug ("Seating Applet: %s %s", priv->path, priv->uid);
+
+  /* FIXME: update tooltip with name of the applet?! */
+
+  priv->running = TRUE;
+}
