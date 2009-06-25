@@ -1,3 +1,8 @@
+2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Added AwnOverlayAlign binding.
+
 2009-06-25  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* doc/reference/libawn-sections.txt:

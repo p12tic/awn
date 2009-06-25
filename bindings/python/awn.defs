@@ -174,6 +174,17 @@
   )
 )
 
+(define-enum OverlayAlign
+  (in-module "Awn")
+  (c-name "AwnOverlayAlign")
+  (gtype-id "AWN_TYPE_OVERLAY_ALIGN")
+  (values
+    '("centre" "AWN_OVERLAY_ALIGN_CENTRE")
+    '("left" "AWN_OVERLAY_ALIGN_LEFT")
+    '("right" "AWN_OVERLAY_ALIGN_RIGHT")
+  )
+)
+
 (define-enum Effect
   (in-module "Awn")
   (c-name "AwnEffect")
