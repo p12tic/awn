@@ -45,7 +45,9 @@ struct _AwnIconPrivate
 
   guint effects_backup;
   gboolean effects_backup_set;
-  
+
+  gboolean bind_effects;
+
   AwnOrientation orient;
   gint offset;
   gint icon_width;
@@ -59,6 +61,8 @@ struct _AwnIconPrivate
 enum
 {
   PROP_0,
+
+  PROP_BIND_EFFECTS,
 
   PROP_ICON_WIDTH,
   PROP_ICON_HEIGHT
@@ -169,6 +173,42 @@ awn_icon_size_request (GtkWidget *widget, GtkRequisition *req)
 }
 
 static void
+awn_icon_constructed (GObject *object)
+{
+  if (G_OBJECT_CLASS (awn_icon_parent_class)->constructed)
+    G_OBJECT_CLASS (awn_icon_parent_class)->constructed (object);
+
+  AwnIcon *icon = AWN_ICON (object);
+  AwnIconPrivate *priv = icon->priv;
+
+  if (!priv->bind_effects) return;
+
+  AwnConfigClient *client = awn_config_client_new ();
+  AwnConfigBridge *bridge = awn_config_bridge_get_default ();
+
+  GObject *fx = G_OBJECT (priv->effects);
+
+  awn_config_bridge_bind (bridge, client,
+                          "effects", "icon_effect",
+                          fx, "effects");
+  awn_config_bridge_bind (bridge, client,
+                          "effects", "icon_alpha",
+                          fx, "icon-alpha");
+  awn_config_bridge_bind (bridge, client,
+                          "effects", "reflection_alpha_multiplier",
+                          fx, "reflection-alpha");
+  awn_config_bridge_bind (bridge, client,
+                          "effects", "reflection_offset",
+                          fx, "reflection-offset");
+  awn_config_bridge_bind (bridge, client,
+                          "effects", "show_shadows",
+                          fx, "make-shadow");
+  awn_config_bridge_bind (bridge, client,
+                          "effects", "arrow_icon",
+                          fx, "arrow_png");
+}
+
+static void
 awn_icon_get_property (GObject    *object,
                        guint       prop_id,
                        GValue     *value,
@@ -182,6 +222,9 @@ awn_icon_get_property (GObject    *object,
 
   switch (prop_id)
   {
+    case PROP_BIND_EFFECTS:
+      g_value_set_boolean (value, priv->bind_effects);
+      break;
     case PROP_ICON_WIDTH:
       g_value_set_int (value, priv->icon_width);
       break;
@@ -207,6 +250,9 @@ awn_icon_set_property (GObject      *object,
 
   switch (prop_id)
   {
+    case PROP_BIND_EFFECTS:
+      icon->priv->bind_effects = g_value_get_boolean (value);
+      break;
     case PROP_ICON_WIDTH:
       awn_icon_set_custom_paint(icon,
                                 g_value_get_int (value),
@@ -257,6 +303,7 @@ awn_icon_class_init (AwnIconClass *klass)
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
 
+  obj_class->constructed  = awn_icon_constructed;
   obj_class->get_property = awn_icon_get_property;
   obj_class->set_property = awn_icon_set_property;
   obj_class->dispose      = awn_icon_dispose;
@@ -267,6 +314,15 @@ awn_icon_class_init (AwnIconClass *klass)
   wid_class->leave_notify_event = awn_icon_leave_notify_event;
 
   /* Class properties */
+  g_object_class_install_property (obj_class,
+    PROP_BIND_EFFECTS,
+    g_param_spec_boolean ("bind-effects",
+                          "Bind effects",
+                          "If set to true, will load and bind effect property"
+                          " values from config client",
+                          TRUE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+
   g_object_class_install_property (obj_class,
     PROP_ICON_WIDTH,
     g_param_spec_int ("icon-width",
@@ -301,9 +357,6 @@ awn_icon_init (AwnIcon *icon)
 {
   AwnIconPrivate *priv;
 
-  AwnConfigClient *client = awn_config_client_new ();
-  AwnConfigBridge *bridge = awn_config_bridge_get_default ();
-
   priv = icon->priv = AWN_ICON_GET_PRIVATE (icon);
 
   priv->icon_srfc = NULL;
@@ -315,26 +368,6 @@ awn_icon_init (AwnIcon *icon)
   priv->tooltip = awn_tooltip_new_for_widget (GTK_WIDGET (icon));
 
   priv->effects = awn_effects_new_for_widget (GTK_WIDGET (icon));
-  GObject *object = G_OBJECT (priv->effects);
-
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "icon_effect",
-                          object, "effects");
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "icon_alpha",
-                          object, "icon-alpha");
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "reflection_alpha_multiplier",
-                          object, "reflection-alpha");
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "reflection_offset",
-                          object, "reflection-offset");
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "show_shadows",
-                          object, "make-shadow");
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "arrow_icon",
-                          object, "arrow_png");
 
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
 
