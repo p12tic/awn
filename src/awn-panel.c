@@ -45,6 +45,7 @@
 #include "awn-defines.h"
 #include "awn-marshal.h"
 #include "awn-monitor.h"
+#include "awn-throbber.h"
 #include "awn-x.h"
 
 #include "gseal-transition.h"
@@ -68,6 +69,7 @@ struct _AwnPanelPrivate
   GtkWidget *eventbox;
   GtkWidget *manager;
   GtkWidget *docklet;
+  GtkWidget *docklet_closer;
   gint docklet_minsize;
 
   gboolean composited;
@@ -2434,6 +2436,7 @@ docklet_plug_added (GtkSocket *socket, AwnPanel *panel)
   // FIXME: an animation?!
   awn_applet_manager_hide_applets (AWN_APPLET_MANAGER (priv->manager));
   gtk_widget_show (priv->docklet);
+  gtk_widget_show (priv->docklet_closer);
 }
 
 static gboolean
@@ -2448,6 +2451,21 @@ docklet_plug_removed (GtkSocket *socket, AwnPanel *panel)
   priv->docklet = NULL;
   priv->docklet_minsize = 0;
 
+  gtk_widget_hide (priv->docklet_closer);
+
+  return FALSE;
+}
+
+static gboolean
+docklet_closer_click (GtkWidget *widget, GdkEventButton *event, AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->docklet == NULL) return FALSE;
+
+  // this removes the docklet from applet manager, effectively destroying it
+  docklet_plug_removed (GTK_SOCKET (priv->docklet), panel);
+
   return FALSE;
 }
 
@@ -2460,11 +2478,30 @@ awn_panel_docklet_request (AwnPanel *panel,
   AwnPanelPrivate *priv = panel->priv;
   gint64 window_id = 0;
 
+  if (!priv->docklet_closer)
+  {
+    priv->docklet_closer = awn_throbber_new ();
+    awn_throbber_set_type (AWN_THROBBER (priv->docklet_closer),
+                           AWN_THROBBER_TYPE_CLOSE_BUTTON);
+
+    awn_applet_manager_add_widget (AWN_APPLET_MANAGER (priv->manager),
+                                   priv->docklet_closer, 1);
+
+    g_signal_connect (priv->docklet_closer, "button-release-event",
+                      G_CALLBACK (docklet_closer_click), panel);
+  }
+
   if (!priv->docklet)
   {
+    AwnThrobber *closer = AWN_THROBBER (priv->docklet_closer);
+
+    awn_throbber_set_size (closer, priv->size / 2);
+    awn_throbber_set_orientation (closer, priv->orient);
+    awn_throbber_set_offset (closer, priv->size / 2 + priv->offset);
+
     // FIXME: perhaps the min-size shouldn't be min-size but the actual size
     //  and the docklet would be restricted to this size (set_size_request).
-    if (!shrink) 
+    if (!shrink)
     {
       switch (priv->orient)
       {

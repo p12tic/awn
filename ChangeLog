@@ -1,5 +1,13 @@
 2009-06-25  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-applet.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	* src/awn-throbber.h:
+	A couple of fixes to make docklet mode work properly.
+
+2009-06-25  Michal Hruby  <michal.mhr@gmail.com>
+
 	* bindings/python/awn.defs:
 	* bindings/python/awn.override:
 	Added binding for AwnAlignment.
