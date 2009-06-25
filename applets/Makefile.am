@@ -1,2 +1,2 @@
-SUBDIRS=taskmanager expander
+SUBDIRS=taskmanager expander uawrapper
 

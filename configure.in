@@ -214,6 +214,8 @@ applets/expander/Makefile
 applets/expander/expander.desktop.in
 applets/taskmanager/Makefile
 applets/taskmanager/taskmanager.desktop.in
+applets/uawrapper/Makefile
+applets/uawrapper/uawrapper.desktop.in
 awn.pc
 awn-applet-activation/Makefile
 awn-manager/Makefile
