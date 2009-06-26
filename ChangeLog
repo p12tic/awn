@@ -1,3 +1,474 @@
+2009-06-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	* src/awn-throbber.h:
+	A couple of changes to AwnThrobber, made CLOSE_BUTTON mode more
+	visually pleasing.
+
+2009-06-26  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	Fix dupplicated label.
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Fix categories chooser.
+
+2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Removed unnecessary method.
+
+2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-icon.c:
+	Documented AwnApplet and AwnIcon.
+
+2009-06-26  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnLauncherEditor.py:
+	* awn-settings/awnSettings.py.in:
+	Update AwnLauncher to new make_model function.	
+	Remove some unused code.
+	Translate some strings.
+	use generic create_drowdown function.
+
+2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Added expand parameter to DockletRequest DBus method.
+
+2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Set AwnThemedIcon size before calling set_info.  This will
+	make the automatic preload more effective.
+
+2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+  	* libawn/awn-themed-icon.h:
+	Add a preload.  This will be automatically called by by set info.
+
+2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Implement a pixbuf cache.  A fair amount of code duplication
+	but it doesn't lend itself neatly to a function.  Will look
+	into at a later time.
+
+2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf-file.c:
+	Modified the code to spews some warnings when file_name 
+	is NULL or empty.
+
+2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-effects.c:
+	A couple of minor fixes in the doc-comments.
+
+2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Added AwnOverlayAlign binding.
+
+2009-06-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	Add the applet docklet request function to the docs.
+
+2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Disconnect the correct object from the signal
+
+2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Have AwnThemedIcon only create one awntheme GtkIconTheme object per process.
+
+2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+ 	* applets/taskmanager/task-window.c:
+	Task Icon and Task Window need to chain up constructed after recent
+	modifications.
+
+2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Disconnect the signal handler for the default gtk theme on dispose.
+
+2009-06-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	* src/awn-throbber.h:
+	A couple of fixes to make docklet mode work properly.
+
+2009-06-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Added binding for AwnAlignment.
+	* libawn/awn-icon.c:
+	Added bind-effects property which controls whether effects' property
+	values are read out from config client.
+
+2009-06-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	Fixed curves support.
+
+2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Modified to work with the python bindings.
+
+2009-06-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-defines.h:
+	Add AwnAppletLicense, awn_applet_create_about_item, and
+	awn_applet_simple_create_about_item (migrated from libawn-extras).
+
+2009-06-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	Added docklet_request method to AwnApplet.
+
+2009-06-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Fixed binding for OverlayThemedIcon.
+
+2009-06-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/applet.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-manager.h:
+	* awn-applet-activation/main.c:
+	* bindings/python/__init__.py:
+	* bindings/python/awn.defs:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* src/awn-applet-proxy.c:
+	* tests/test-applet-simple.c:
+	AwnApplet constructor changed to include panel ID, now size, offset
+	and similar values are read out via DBus when applet is constructed.
+
+2009-06-24  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	Convert awn-settings.glade to awn-settings with gtk-builder-convert, 
+	not with galde-3.
+
+2009-06-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Convert to new style bidings for constructor awn_overlay_themed_icon_new.
+
+2009-06-24  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	Update to changes made in make_model().
+
+2009-06-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Refresh alignment when "expand" property changes.
+
+2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.override:
+	Fixed binding for AppletSimple.set_icon_info()
+
+2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Added binding for AwnIconBox (needs some work).
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Changed the DBus signature for DockletRequest method, now the min_size
+	parameter is really minimum size the docklet will have.
+
+2009-06-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Correct a comment.
+
+2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	First version of method to request full dock space - ie all applets
+	will hide and only your "docklet" will be shown.
+
+2009-06-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Make icon a prop.
+
+2009-06-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Don't set the ->current_item in get_pixbuf_at_size().
+
+2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* bindings/python/awnmodule.c:
+	* libawn/awn-overlay-themed-icon.c:
+	Fixed the python bindings... hopefully.
+
+2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-overlay.c:
+	* libawn/awn-overlay.h:
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Changed base class for AwnOverlay to GInitiallyUnowned.
+	* libawn/awn-dialog.c:
+	Added property to disable the window focus behaviour.
+	* libawn/awn-effects.c:
+	Documentation update etc.
+
+2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* doc/reference/libawn-docs.sgml:
+	Added AwnOverlayable.
+	* src/awn-panel-dbus.xml:
+	Exposed max-size property.
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Now using AwnDBusWatcher to make sure we don't misbehave due to
+	crashing applet.
+
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>yy
+
+	* libawn/awn-themed-icon.c:
+	Imposed a bit more sanity on AwnThemedIcon.  Internally uses
+	GList instead of GStrv now.
+
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Added rotate property of type GdkPixbufRotation to AwnThemedIcon.
+
+2009-06-23  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	* awn-settings/launcher-editor.xml:
+	Only need GTK >= 2.12
+
+2009-06-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* doc/reference/libawn-docs.sgml:
+	Added missing files.
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	Moved gtkdoc comments to C file to prevent rebuild of everything when
+	documentation changes.
+
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+        Remove a debug.
+
+2009-06-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-docs.sgml:
+	Fix the documentation main page.
+	Add index.
+	Annotate that the docs are written in English.
+
+2009-06-22  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.override:
+	This should be correct fix for the binding problem.
+
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Added a finalize method.  Moved some code from dispose to finalize.
+	Replaced a strcmp with a g_strcmp0.
+
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Fix <applet>/themes/  support.
+
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+	
+	* libawn/awn-applet.c:
+	switch from awn-applet-mini to awn-settings.
+
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	binding for override_gtk_theme () now accepts None.
+
+2009-06-22  Rodney Cryderman  <rcryderman@gmail.com>
+	
+	* libawn/awn-themed-icon.c:
+	Stop using gtk_icon_theme_load_icon ().  It insist on loading crappy 
+	icons when IMO it should not do so.
+
+2009-06-22  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/Makefile.am:
+	* awn-settings/awn-launcher-editor.in:
+	* awn-settings/awn-settings.xml:
+	* awn-settings/awnClass.py:
+	* awn-settings/awnLauncherEditor.py:
+	* awn-settings/awnSettings.py.in:
+	* awn-settings/launcher-editor.xml:
+	* configure.in:
+	* debian/control:
+	Migrate from libglade to GtkBuilder.
+	Bump python-gtk2 depends to 2.12, needed for GtkBuilder.
+	Fix location of awn-launcher-editor.
+	Remove some useless code.
+
+2009-06-21  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* .bzrignore:
+	Updated with awn-settings and debian files.
+
+2009-06-21  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	Fix launchers windows.
+
+2009-06-21  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* Makefile.am:
+	* awn-settings/Makefile.am:
+	* awn-settings/awn-launcher-editor.in:
+	* awn-settings/awn-settings-small.svg:
+	* awn-settings/awn-settings.desktop.in.in:
+	* awn-settings/awn-settings.glade:
+	* awn-settings/awn-settings.svg:
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnLauncherEditor.py:
+	* awn-settings/awnSettings.py.in:
+	* awn-settings/launcher-editor.glade:
+	* configure.in:
+	* debian/awn-settings-trunk.install:
+	* debian/control:
+	* debian/rules:
+	Rename Awn-manager-mini to Awn-settings.
+	Move all necessary files to awn-settings/
+	Disable awn-manager from the build system.
+
+2009-06-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.override:
+	The value of kwargs received by _wrap_awn_themed_icon_set_info () 
+	seemed to be undefined leading to crashes on some systems.  Removed 
+	kwargs as a param and replaced PyArg_ParseTupleAndKeywords() with 
+	PyArg_ParseTuple().
+
+2009-06-21  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnClass.py:
+	* awn-manager/awnManagerMini.py.in:
+	Add a Behavior button, to choose Autohide, Panel mode etc ...
+
+2009-06-21  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	Fixed minor problem.
+	* src/Makefile.am:
+	* src/awn-dbus-watcher.c:
+	* src/awn-dbus-watcher.h:
+	Added DBusWatcher object which can send signals when there's
+	a new object on the dbus, or an object disappears.
+
+2009-06-21  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Groundwork for safe inhibits.
+
+2009-06-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/__init__.py:
+	Get the CONFIG_LIST_* aliases back.
+
+2009-06-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/__init__.py:
+	* bindings/python/awn.defs:
+	* bindings/python/awnmodule.c:
+	Seems like we were missing constants in awn module the whole time.
+
+2009-06-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf-file.c:
+	Deal with scale == 0.0 during instantiation.
+
+2009-06-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Expose utility functions.
+
+2009-06-20  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	* awn-manager/awnManagerMini.py.in:
+	Connect widget to choose applets by catagories.
+
+2009-06-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-applet-proxy.h:
+	More polishing - fork & run applets in idle callback.
+
+2009-06-20  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	location key of read.desktop is now the path of the desktop file .
+	Fix search categories function.
+	Fix when desktop file have multi-categories.
+	* awn-manager/awnDefs.py.in:
+	Set default sources.list with only lcoal location.
+
 2009-06-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* .bzrignore:

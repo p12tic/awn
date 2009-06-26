@@ -21,15 +21,14 @@
 
 #include "task-manager.h"
 
-AwnApplet* awn_applet_factory_initp (gchar* uid, gint orient, gint offset,
-                                     gint size);
+AwnApplet* awn_applet_factory_initp (gchar* uid, gint panel_id);
 
 AwnApplet*
-awn_applet_factory_initp (gchar* uid, gint orient, gint offset, gint size)
+awn_applet_factory_initp (gchar* uid, gint panel_id)
 {
   AwnApplet *applet;
 
-  applet = task_manager_new (uid, orient, offset, size);
+  applet = task_manager_new (uid, panel_id);
 
   return applet;
 }

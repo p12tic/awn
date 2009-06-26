@@ -64,8 +64,8 @@ struct _AwnThrobberClass
 
 typedef enum {
   AWN_THROBBER_TYPE_NORMAL,
-  AWN_THROBBER_TYPE_SAD_FACE
-
+  AWN_THROBBER_TYPE_SAD_FACE,
+  AWN_THROBBER_TYPE_CLOSE_BUTTON
 } AwnThrobberType;
 
 GType         awn_throbber_get_type         (void) G_GNUC_CONST;
@@ -88,6 +88,9 @@ void          awn_throbber_set_size         (AwnThrobber *throbber, gint size);
 AwnEffects *  awn_throbber_get_effects      (AwnThrobber *throbber);
 
 AwnTooltip *  awn_throbber_get_tooltip      (AwnThrobber *throbber);
+
+void          awn_throbber_set_hover_effect (AwnThrobber *throbber,
+                                             gboolean hover_effect);
 
 G_END_DECLS
 

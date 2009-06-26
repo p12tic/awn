@@ -14,7 +14,7 @@ AC_CONFIG_SRCDIR([.])
 AC_CONFIG_HEADERS([config.h])
 
 m4_define(pycairo_required_version,      1.0.2) dnl or 1.1.7
-m4_define(pygtk_required_version,        2.10.0)
+m4_define(pygtk_required_version,        2.12.0)
 
 AM_INIT_AUTOMAKE([1.8])
 AM_MAINTAINER_MODE
@@ -213,10 +213,13 @@ awn-applet-activation/Makefile
 awn-manager/Makefile
 awn-manager/awn-launcher-editor
 awn-manager/awn-manager.desktop.in
-awn-manager/awn-manager-mini.desktop.in
 awn-manager/awnDefs.py
 awn-manager/awnManager.py
-awn-manager/awnManagerMini.py
+awn-settings/Makefile
+awn-settings/awn-launcher-editor
+awn-settings/awn-settings.desktop.in
+awn-settings/awnDefs.py
+awn-settings/awnSettings.py
 bindings/Makefile
 bindings/python/Makefile
 bindings/vala/Makefile

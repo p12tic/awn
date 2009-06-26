@@ -22,6 +22,13 @@
   (implements "AwnOverlayable")
 )
 
+(define-object Alignment
+  (in-module "Awn")
+  (parent "GtkAlignment")
+  (c-name "AwnAlignment")
+  (gtype-id "AWN_TYPE_ALIGNMENT")
+)
+
 (define-object Dialog
   (in-module "Awn")
   (parent "GtkWindow")
@@ -49,6 +56,13 @@
   (parent "AwnIcon")
   (c-name "AwnThemedIcon")
   (gtype-id "AWN_TYPE_THEMED_ICON")
+)
+
+(define-object IconBox
+  (in-module "Awn")
+  (parent "GtkBox")
+  (c-name "AwnIconBox")
+  (gtype-id "AWN_TYPE_ICON_BOX")
 )
 
 (define-object Overlay
@@ -109,7 +123,7 @@
 
 ;; Enumerations and flags ...
 
-(define-enum CairoRoundCorners
+(define-flags CairoRoundCorners
   (in-module "Awn")
   (c-name "AwnCairoRoundCorners")
   (gtype-id "AWN_TYPE_CAIRO_ROUND_CORNERS")
@@ -149,6 +163,17 @@
     '("top" "AWN_ORIENTATION_TOP")
     '("right" "AWN_ORIENTATION_RIGHT")
     '("left" "AWN_ORIENTATION_LEFT")
+  )
+)
+
+(define-enum OverlayAlign
+  (in-module "Awn")
+  (c-name "AwnOverlayAlign")
+  (gtype-id "AWN_TYPE_OVERLAY_ALIGN")
+  (values
+    '("centre" "AWN_OVERLAY_ALIGN_CENTRE")
+    '("left" "AWN_OVERLAY_ALIGN_LEFT")
+    '("right" "AWN_OVERLAY_ALIGN_RIGHT")
   )
 )
 
@@ -411,6 +436,30 @@
 )
 
 
+;; From awn-alignment.h
+
+(define-function awn_alignment_new_for_applet
+  (c-name "awn_alignment_new_for_applet")
+  (is-constructor-of "AwnAlignment")
+  (return-type "GtkWidget*")
+  (properties
+    '("applet" (argname "applet"))
+  )
+)
+
+(define-method get_offset_modifier
+  (c-name "awn_alignment_get_offset_modifier")
+  (of-object "AwnAlignment")
+  (return-type "gint")
+)
+
+(define-method set_offset_modifier
+  (c-name "awn_alignment_set_offset_modifier")
+  (of-object "AwnAlignment")
+  (parameters
+    '("gint" "modifier")
+  )
+)
 
 ;; From awn-applet.h
 
@@ -425,9 +474,7 @@
   (return-type "GtkWidget*")
   (properties
     '("uid" (argname "uid"))
-    '("orient" (argname "orient"))
-    '("offset" (argname "offset"))
-    '("size" (argname "size"))
+    '("panel_id" (argname "panel_id"))
   )
 )
 
@@ -504,17 +551,20 @@
   )
 )
 
-(define-method applet_construct
+(define-method docklet_request
   (of-object "AwnApplet")
-  (c-name "gtk_plug_construct")
+  (c-name "awn_applet_docklet_request")
+  (return-type "GdkNativeWindow")
   (parameters
-    '("GdkNativeWindow" "id")
+    '("gint" "min_size")
+    '("gboolean" "shrink" (default "FALSE"))
+    '("gboolean" "expand" (default "TRUE"))
   )
 )
 
-(define-method set_panel_window_id
+(define-method applet_construct
   (of-object "AwnApplet")
-  (c-name "awn_applet_set_panel_window_id")
+  (c-name "gtk_plug_construct")
   (parameters
     '("GdkNativeWindow" "id")
   )
@@ -544,9 +594,7 @@
   (return-type "GtkWidget*")
   (properties
     '("uid" (argname "uid"))
-    '("orient" (argname "orient"))
-    '("offset" (argname "offset"))
-    '("size" (argname "size"))
+    '("panel_id" (argname "panel_id"))
   )
 )
 
@@ -824,6 +872,9 @@
   (c-name "awn_icon_new")
   (is-constructor-of "AwnIcon")
   (return-type "GtkWidget*")
+  (properties
+    '("bind_effects" (optional) (arg-name "bind_effects"))
+  )
 )
 
 (define-method set_orientation
@@ -970,6 +1021,16 @@
   (return-type "gint")
 )
 
+;; From awn-icon-box.h
+
+(define-function awn_iconbox_new
+  (c-name "awn_icon_box_new_for_applet")
+  (is-constructor-of "AwnIconBox")
+  (return-type "AwnIconBox*")
+  (parameters
+    '("AwnApplet*" "applet")
+  )
+)
 ;; From awn-overlay.h
 
 (define-function awn_overlay_new
@@ -1048,10 +1109,10 @@
 (define-function awn_overlay_themed_icon_new
   (c-name "awn_overlay_themed_icon_new")
   (is-constructor-of "AwnOverlayThemedIcon")
-  (parameters
-    '("AwnThemedIcon*" "icon")
-    '("const-gchar*" "icon_name")
-    '("const-gchar*" "icon_state" (default "NULL") (null-ok))
+  (properties
+    '("icon" (argname "icon"))
+    '("icon-name"   (argname "icon_name"))
+    '("icon-state"  (argname "icon_state"))
   )
 )
 
@@ -1196,6 +1257,9 @@
   (c-name "awn_themed_icon_new")
   (is-constructor-of "AwnThemedIcon")
   (return-type "GtkWidget*")
+  (properties
+    '("bind_effects" (optional) (argname "bind_effects"))
+  )
 )
 
 (define-method set_state
@@ -1256,7 +1320,7 @@
   (c-name "awn_themed_icon_override_gtk_theme")
   (return-type "none")
   (parameters
-    '("const-gchar*" "theme_name")
+    '("const-gchar*" "theme_name"  (default "NULL") (null-ok))
   )
 )
 
@@ -1286,6 +1350,22 @@
 )
 
 ;; From awn-utils.h
+
+(define-function awn_utils_ensure_transparent_bg
+  (c-name "awn_utils_ensure_transparent_bg")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
+
+(define-function awn_utils_make_transparent_bg
+  (c-name "awn_utils_make_transparent_bg")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
 
 (define-function vfs_init
   (c-name "awn_vfs_init")

@@ -78,20 +78,34 @@ struct _AwnAppletClass
 };
 
 
-/* Hook to have an AWN Applet built for you */
+/**
+ * AwnAppletInitFunc:
+ * @applet: AwnApplet instance created for you.
+ *
+ * Function prototype used as entry point for applets.
+ * Hook to have an #AwnApplet built for you.
+ *
+ * Returns: return TRUE if applet construction was successful, FALSE otherwise.
+ */
 typedef gboolean   (*AwnAppletInitFunc)           (AwnApplet   *applet);
-/* Hook to build your own AWN Applet */
-typedef AwnApplet* (*AwnAppletInitPFunc)          (const gchar *uid, 
-                                                   gint         orient,
-                                                   gint         offset,
-                                                   gint         size);
+
+/**
+ * AwnAppletInitPFunc:
+ * @uid: applet's unique ID.
+ * @panel_id: ID of AwnPanel associated with this applet.
+ *
+ * Function prototype used as entry point for applets.
+ * Hook to build your own #AwnApplet.
+ *
+ * Returns: return the constructed #AwnApplet (or its subclass) or NULL.
+ */
+typedef AwnApplet* (*AwnAppletInitPFunc)          (const gchar *uid,
+                                                   gint         panel_id);
 
 GType              awn_applet_get_type            (void);
 
 AwnApplet *        awn_applet_new                 (const gchar *uid, 
-                                                   gint         orient,
-                                                   gint         offset,
-                                                   gint         size);
+                                                   gint         panel_id);
 
 AwnOrientation     awn_applet_get_orientation     (AwnApplet      *applet);
 void               awn_applet_set_orientation     (AwnApplet      *applet,
@@ -122,14 +136,15 @@ void               awn_applet_set_flags           (AwnApplet      *applet,
 
 GtkWidget*         awn_applet_create_default_menu (AwnApplet      *applet);
 
-void               awn_applet_set_panel_window_id (AwnApplet      *applet,
-                                                   GdkNativeWindow anid);
-
 guint              awn_applet_inhibit_autohide    (AwnApplet *applet,
                                                    const gchar *reason);
 void               awn_applet_uninhibit_autohide  (AwnApplet *applet,
                                                    guint cookie);
 
+GdkNativeWindow    awn_applet_docklet_request     (AwnApplet *applet,
+                                                   gint min_size,
+                                                   gboolean shrink,
+                                                   gboolean expand);
 /*
  * Returns a gtk menu item for the "Dock Preferences".
  * Note: awn_applet_create_default_menu() adds this item to its menu.  
@@ -137,6 +152,18 @@ void               awn_applet_uninhibit_autohide  (AwnApplet *applet,
  * awn_applet_create_default_menu() cannot be used 
  */
 GtkWidget *        awn_applet_create_pref_item    (void);
+GtkWidget *        awn_applet_create_about_item   (const gchar       *copyright,
+                                                   AwnAppletLicense   license,
+                                                   const gchar       *applet_name,
+                                                   const gchar       *version,
+                                                   const gchar       *comments,
+                                                   const gchar       *website,
+                                                   const gchar       *website_label,
+                                                   const gchar       *icon_name,
+                                                   const gchar       *translator_credits,
+                                                   const gchar      **authors,
+                                                   const gchar      **artists,
+                                                   const gchar      **documenters);
 
 G_END_DECLS
 

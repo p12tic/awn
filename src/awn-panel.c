@@ -26,6 +26,10 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/shape.h>
 
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-bindings.h>
+#include <dbus/dbus-glib-lowlevel.h>
+
 #include <libawn/libawn.h>
 #include <libawn/awn-utils.h>
 
@@ -37,15 +41,17 @@
 #include "awn-background-3d.h"
 #include "awn-background-curves.h"
 #include "awn-background-edgy.h"
+#include "awn-dbus-watcher.h"
 #include "awn-defines.h"
 #include "awn-marshal.h"
 #include "awn-monitor.h"
+#include "awn-throbber.h"
 #include "awn-x.h"
 
 #include "gseal-transition.h"
 #include "xutils.h"
 
-G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW) 
+G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW)
 
 #define AWN_PANEL_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE (obj, \
   AWN_TYPE_PANEL, AwnPanelPrivate))
@@ -62,6 +68,9 @@ struct _AwnPanelPrivate
   GtkWidget *alignment;
   GtkWidget *eventbox;
   GtkWidget *manager;
+  GtkWidget *docklet;
+  GtkWidget *docklet_closer;
+  gint docklet_minsize;
 
   gboolean composited;
   gboolean panel_mode;
@@ -108,6 +117,14 @@ struct _AwnPanelPrivate
   gint last_clickthrough_type;
 };
 
+typedef struct _AwnInhibitItem
+{
+  AwnPanel *panel;
+
+  gchar *description;
+  guint cookie;
+} AwnInhibitItem;
+
 /* FIXME: this timeout should be configurable I guess */
 #define AUTOHIDE_DELAY 1000
 #define MOUSE_POLL_TIMER_DELAY 500
@@ -127,12 +144,14 @@ enum
   PROP_CLIENT,
   PROP_MONITOR,
   PROP_APPLET_MANAGER,
+  PROP_PANEL_XID,
   PROP_COMPOSITED,
   PROP_PANEL_MODE,
   PROP_EXPAND,
   PROP_OFFSET,
   PROP_ORIENT,
   PROP_SIZE,
+  PROP_MAX_SIZE,
   PROP_AUTOHIDE_TYPE,
   PROP_STYLE,
   PROP_CLICKTHROUGH
@@ -354,6 +373,7 @@ awn_panel_get_property (GObject    *object,
 
   g_return_if_fail (AWN_IS_PANEL (object));
   priv = AWN_PANEL (object)->priv;
+  GdkWindow *window;
 
   switch (prop_id)
   {
@@ -365,6 +385,10 @@ awn_panel_get_property (GObject    *object,
       break;
     case PROP_APPLET_MANAGER:
       g_value_set_pointer (value, priv->manager);
+      break;
+    case PROP_PANEL_XID:
+      window = gtk_widget_get_window (GTK_WIDGET (object));
+      g_value_set_int64 (value, window ? (gint64) GDK_WINDOW_XID (window) : 0);
       break;
     case PROP_COMPOSITED:
       g_value_set_boolean (value, priv->composited);
@@ -383,6 +407,19 @@ awn_panel_get_property (GObject    *object,
       break;
     case PROP_SIZE:
       g_value_set_int (value, priv->size);
+      break;
+    case PROP_MAX_SIZE:
+      // FIXME: probably not OK for non-composited
+      switch (priv->orient)
+      {
+        case AWN_ORIENTATION_LEFT:
+        case AWN_ORIENTATION_RIGHT:
+          g_value_set_int (value, priv->manager->allocation.width);
+          break;
+        default:
+          g_value_set_int (value, priv->manager->allocation.height);
+          break;
+      }
       break;
     case PROP_AUTOHIDE_TYPE:
       g_value_set_int (value, priv->autohide_type);
@@ -423,6 +460,7 @@ awn_panel_set_property (GObject      *object,
       break;
     case PROP_EXPAND:
       priv->expand = g_value_get_boolean (value);
+      awn_panel_refresh_alignment (panel);
       gtk_widget_queue_resize (GTK_WIDGET (panel));
       break;
     case PROP_OFFSET:
@@ -780,7 +818,17 @@ void awn_panel_get_draw_rect (AwnPanel *panel,
         area->y = 0;
         area->height = height;
       }
+      break;
   }
+}
+
+static void free_inhibit_item (gpointer data)
+{
+  AwnInhibitItem *item = data;
+
+  if (item->description) g_free (item->description);
+
+  g_free (item);
 }
 
 static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
@@ -1181,6 +1229,14 @@ awn_panel_class_init (AwnPanelClass *klass)
                           G_PARAM_READABLE));
 
   g_object_class_install_property (obj_class,
+    PROP_PANEL_XID,
+    g_param_spec_int64   ("panel-xid",
+                          "Panel XID",
+                          "The XID of the panel",
+                          G_MININT64, G_MAXINT64, 0,
+                          G_PARAM_READABLE));
+
+  g_object_class_install_property (obj_class,
     PROP_COMPOSITED,
     g_param_spec_boolean ("composited",
                           "Composited",
@@ -1217,6 +1273,14 @@ awn_panel_class_init (AwnPanelClass *klass)
                       "The size of the panel",
                       0, G_MAXINT, 48,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  
+  g_object_class_install_property (obj_class,
+    PROP_MAX_SIZE,
+    g_param_spec_int ("max-size",
+                      "Max Size",
+                      "Maximum size for drawing on the panel",
+                      0, G_MAXINT, 48,
+                      G_PARAM_READABLE));
   
   g_object_class_install_property (obj_class,
     PROP_OFFSET,
@@ -1348,7 +1412,7 @@ awn_panel_init (AwnPanel *panel)
   priv->offset_mod = 1.0;
 
   priv->inhibits = g_hash_table_new_full (g_direct_hash, g_direct_equal,
-                                          NULL, g_free);
+                                          NULL, free_inhibit_item);
 
   gtk_widget_set_app_paintable (GTK_WIDGET (panel), TRUE);
 
@@ -1378,7 +1442,7 @@ GtkWidget *
 awn_panel_new_from_config (AwnConfigClient *client)
 {
   GtkWidget *window;
-  
+
   window = g_object_new (AWN_TYPE_PANEL,
                          "type", GTK_WINDOW_TOPLEVEL,
                          "type-hint", GDK_WINDOW_TYPE_HINT_DOCK,
@@ -2239,8 +2303,8 @@ awn_panel_set_applet_flags (AwnPanel         *panel,
   return TRUE;
 }
 
-guint
-awn_panel_inhibit_autohide (AwnPanel *panel,
+static guint
+awn_panel_disable_autohide (AwnPanel *panel,
                             const gchar *app_name,
                             const gchar *reason)
 {
@@ -2249,9 +2313,14 @@ awn_panel_inhibit_autohide (AwnPanel *panel,
   static guint cookie = 0; // FIXME: use something different!
   if (cookie == 0) cookie++;
 
+  AwnInhibitItem *item = g_new0 (AwnInhibitItem, 1);
+  item->panel = panel;
+  item->description = g_strdup_printf ("(%s): %s", app_name, reason);
+  item->cookie = cookie;
+
   g_hash_table_insert (priv->inhibits,
                        GINT_TO_POINTER (cookie),
-                       g_strdup_printf ("(%s): %s", app_name, reason));
+                       item);
 
   if (!priv->autohide_inhibited)
   {
@@ -2262,10 +2331,53 @@ awn_panel_inhibit_autohide (AwnPanel *panel,
   return cookie++;
 }
 
+static void
+dbus_inhibitor_lost (AwnDBusWatcher *watcher, gchar *name,
+                     AwnInhibitItem *item)
+{
+  g_debug ("AwnPanel: DBus object %s didn't call UninhibitAutohide!", name);
+  awn_panel_uninhibit_autohide (item->panel, item->cookie);
+}
+
+void
+awn_panel_inhibit_autohide (AwnPanel *panel,
+                            const gchar *app_name,
+                            const gchar *reason,
+                            DBusGMethodInvocation *context)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  guint cookie = awn_panel_disable_autohide (panel, app_name, reason);
+
+  // watch the sender on dbus and remove all its inhibits when it
+  //   disappears (to be sure that we don't misbehave due to crashing app)
+  gchar *sender = dbus_g_method_get_sender (context);
+  gchar *detailed_signal = g_strdup_printf ("connection-closed::%s", sender);
+  g_signal_connect (awn_dbus_watcher_get_default (), detailed_signal,
+                    G_CALLBACK (dbus_inhibitor_lost),
+                    g_hash_table_lookup (priv->inhibits, 
+                                         GINT_TO_POINTER (cookie)));
+
+  g_free (detailed_signal);
+  g_free (sender);
+
+  dbus_g_method_return (context, cookie);
+}
+
 gboolean
 awn_panel_uninhibit_autohide  (AwnPanel *panel, guint cookie)
 {
   AwnPanelPrivate *priv = panel->priv;
+
+  AwnInhibitItem *item = g_hash_table_lookup (priv->inhibits,
+                                              GINT_TO_POINTER (cookie));
+
+  if (!item) return TRUE; // we could set an error
+
+  // remove the dbus watcher
+  g_signal_handlers_disconnect_by_func (awn_dbus_watcher_get_default (),
+                                        G_CALLBACK (dbus_inhibitor_lost),
+                                        item);
 
   g_hash_table_remove (priv->inhibits, GINT_TO_POINTER (cookie));
 
@@ -2288,7 +2400,8 @@ awn_panel_get_inhibitors (AwnPanel *panel, GStrv *reasons)
 
   while (list)
   {
-    (*reasons)[i++] = g_strdup (list->data);
+    AwnInhibitItem *item = list->data;
+    (*reasons)[i++] = g_strdup (item->description);
 
     list = list->next;
   }
@@ -2296,5 +2409,149 @@ awn_panel_get_inhibitors (AwnPanel *panel, GStrv *reasons)
   g_list_free (l);
 
   return TRUE;
+}
+
+static void
+docklet_size_request (GtkWidget *widget, GtkRequisition *req, gpointer data)
+{
+  AwnPanel *panel = AWN_PANEL (data);
+  AwnPanelPrivate *priv = panel->priv;
+
+  switch (priv->orient)
+  {
+    case AWN_ORIENTATION_LEFT:
+    case AWN_ORIENTATION_RIGHT:
+      req->height = MAX (req->height, priv->docklet_minsize);
+      break;
+    default:
+      req->width = MAX (req->width, priv->docklet_minsize);
+  }
+}
+
+static void
+docklet_plug_added (GtkSocket *socket, AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  // FIXME: an animation?!
+  awn_applet_manager_hide_applets (AWN_APPLET_MANAGER (priv->manager));
+  gtk_widget_show (priv->docklet);
+  gtk_widget_show (priv->docklet_closer);
+}
+
+static gboolean
+docklet_plug_removed (GtkSocket *socket, AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  // FIXME: an animation?! we could also optimize and not destroy the widget
+  awn_applet_manager_remove_widget (AWN_APPLET_MANAGER (priv->manager),
+                                    priv->docklet);
+  awn_applet_manager_show_applets (AWN_APPLET_MANAGER (priv->manager));
+  priv->docklet = NULL;
+  priv->docklet_minsize = 0;
+
+  gtk_widget_hide (priv->docklet_closer);
+
+  return FALSE;
+}
+
+static gboolean
+docklet_closer_click (GtkWidget *widget, GdkEventButton *event, AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->docklet == NULL) return FALSE;
+
+  // this removes the docklet from applet manager, effectively destroying it
+  docklet_plug_removed (GTK_SOCKET (priv->docklet), panel);
+
+  return FALSE;
+}
+
+void
+awn_panel_docklet_request (AwnPanel *panel,
+                           gint min_size,
+                           gboolean shrink,
+                           gboolean expand,
+                           DBusGMethodInvocation *context)
+{
+  AwnPanelPrivate *priv = panel->priv;
+  gint64 window_id = 0;
+
+  if (!priv->docklet_closer)
+  {
+    priv->docklet_closer = awn_throbber_new ();
+    awn_throbber_set_type (AWN_THROBBER (priv->docklet_closer),
+                           AWN_THROBBER_TYPE_CLOSE_BUTTON);
+    awn_throbber_set_hover_effect (AWN_THROBBER (priv->docklet_closer), TRUE);
+
+    awn_applet_manager_add_widget (AWN_APPLET_MANAGER (priv->manager),
+                                   priv->docklet_closer, 1);
+
+    g_signal_connect (priv->docklet_closer, "button-release-event",
+                      G_CALLBACK (docklet_closer_click), panel);
+  }
+
+  if (!priv->docklet)
+  {
+    AwnThrobber *closer = AWN_THROBBER (priv->docklet_closer);
+
+    awn_throbber_set_size (closer, priv->size / 2);
+    awn_throbber_set_orientation (closer, priv->orient);
+    awn_throbber_set_offset (closer, priv->size / 2 + priv->offset);
+
+    GtkRequisition closer_req;
+    gtk_widget_size_request (priv->docklet_closer, &closer_req);
+
+    // if expand param is false the docklet will be restricted to this size
+    priv->docklet = gtk_socket_new ();
+    switch (priv->orient)
+    {
+      case AWN_ORIENTATION_LEFT:
+      case AWN_ORIENTATION_RIGHT:
+        priv->docklet_minsize = shrink ? min_size :
+          MAX (min_size, priv->manager->allocation.height - closer_req.height);
+
+        if (expand == FALSE)
+        {
+           gtk_widget_set_size_request (priv->docklet,
+                                        -1, priv->docklet_minsize);
+        }
+        break;
+      default:
+        priv->docklet_minsize = shrink ? min_size :
+          MAX (min_size, priv->manager->allocation.width - closer_req.width);
+
+        if (expand == FALSE)
+        {
+           gtk_widget_set_size_request (priv->docklet,
+                                        priv->docklet_minsize, -1);
+        }
+        break;
+    }
+
+    awn_utils_ensure_transparent_bg (priv->docklet);
+
+    g_signal_connect_after (priv->docklet, "size-request",
+                            G_CALLBACK (docklet_size_request), panel);
+    g_signal_connect (priv->docklet, "plug-added",
+                      G_CALLBACK (docklet_plug_added), panel);
+    g_signal_connect (priv->docklet, "plug-removed",
+                      G_CALLBACK (docklet_plug_removed), panel);
+
+    awn_applet_manager_add_widget (AWN_APPLET_MANAGER (priv->manager),
+                                   priv->docklet, 0);
+    gtk_widget_realize (priv->docklet);
+    gtk_widget_hide (priv->docklet);
+  }
+  else
+  {
+    // FIXME: set error
+  }
+
+  window_id = gtk_socket_get_id (GTK_SOCKET (priv->docklet));
+
+  dbus_g_method_return (context, window_id);
 }
 

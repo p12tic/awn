@@ -69,9 +69,7 @@ struct _AwnAppletSimpleClass
 GType         awn_applet_simple_get_type         (void);
 
 GtkWidget *   awn_applet_simple_new              (const gchar      *uid, 
-                                                  gint              orient, 
-						  gint              offset,
-                                                  gint              size);
+                                                  gint              panel_id);
 
 void          awn_applet_simple_set_icon_pixbuf  (AwnAppletSimple  *applet,
                                                   GdkPixbuf        *pixbuf);
@@ -113,6 +111,11 @@ GtkWidget *   awn_applet_simple_get_icon         (AwnAppletSimple  *applet);
 
 void          awn_applet_simple_set_effect       (AwnAppletSimple  *applet,
                                                   AwnEffect         effect);
+
+GtkWidget *   awn_applet_simple_create_about_item (const gchar      *copyright,
+                                                   AwnAppletLicense  license,
+                                                   const gchar      *applet_name,
+                                                   const gchar      *version);
 
 G_END_DECLS
 

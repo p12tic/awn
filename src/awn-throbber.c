@@ -40,6 +40,8 @@ struct _AwnThrobberPrivate
   gint            offset;
   gint            size;
 
+  gboolean        hover_effect;
+
   gint        counter;
   guint       timer_id;
 };
@@ -190,6 +192,39 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
       cairo_stroke(cr);
       break;
     }
+    case AWN_THROBBER_TYPE_CLOSE_BUTTON:
+    {
+      cairo_set_line_width (cr, 1./priv->size);
+
+      cairo_pattern_t *pat = cairo_pattern_create_linear (0.0, 0.0, 0.5, 1.0);
+      cairo_pattern_add_color_stop_rgb (pat, 0.0, 0.97254, 0.643137, 0.403921);
+      //cairo_pattern_add_color_stop_rgb (pat, 0.0, 0.0, 0.0, 0.0); // test
+      cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.98823, 0.4, 0.0);
+      cairo_pattern_add_color_stop_rgb (pat, 1.0, 0.98823, 0.4, 0.0);
+
+      cairo_set_source (cr, pat);
+      //cairo_arc (cr, 0.5, 0.5, 0.4, 0.0, 2 * M_PI);
+      awn_cairo_rounded_rect (cr, 0.1, 0.1, 0.8, 0.8, 0.15, ROUND_ALL);
+      cairo_fill_preserve (cr);
+
+      cairo_pattern_destroy (pat);
+
+      cairo_set_source_rgba (cr, 0.5, 0.5, 0.5, 0.5);
+      cairo_stroke (cr);
+
+      cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
+      cairo_set_line_width (cr, 2./priv->size);
+
+      /*  \  starting with the upper point  */
+      cairo_move_to (cr, 0.3, 0.25);
+      cairo_line_to (cr, 0.7, 0.75);
+      cairo_stroke (cr);
+      /*  /  starting with the upper point  */
+      cairo_move_to (cr, 0.7, 0.25);
+      cairo_line_to (cr, 0.3, 0.75);
+      cairo_stroke (cr);
+      break;
+    }
     default:
       break;
   }
@@ -274,6 +309,28 @@ awn_throbber_hide (GtkWidget *widget, gpointer user_data)
 }
 
 static void
+awn_throbber_mouse_over (GtkWidget *widget, GdkEventCrossing *event)
+{
+  AwnThrobberPrivate *priv = AWN_THROBBER_GET_PRIVATE(widget);
+
+  if (priv->hover_effect)
+  {
+    awn_effects_start (priv->effects, AWN_EFFECT_HOVER);
+  }
+}
+
+static void
+awn_throbber_mouse_out (GtkWidget *widget, GdkEventCrossing *event)
+{
+  AwnThrobberPrivate *priv = AWN_THROBBER_GET_PRIVATE(widget);
+
+  if (priv->hover_effect)
+  {
+    awn_effects_stop (priv->effects, AWN_EFFECT_HOVER);
+  }
+}
+
+static void
 awn_throbber_class_init (AwnThrobberClass *klass)
 {
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
@@ -319,6 +376,10 @@ awn_throbber_init (AwnThrobber *throbber)
                     G_CALLBACK (awn_throbber_show), NULL);
   g_signal_connect (throbber, "hide",
                     G_CALLBACK (awn_throbber_hide), NULL);
+  g_signal_connect (throbber, "enter-notify-event",
+                    G_CALLBACK (awn_throbber_mouse_over), NULL);
+  g_signal_connect (throbber, "leave-notify-event",
+                    G_CALLBACK (awn_throbber_mouse_out), NULL);
 }
 
 GtkWidget *
@@ -380,6 +441,9 @@ awn_throbber_set_type (AwnThrobber *throbber, AwnThrobberType type)
         priv->timer_id = g_timeout_add (100, awn_throbber_timeout, throbber);
       }
       break;
+    case AWN_THROBBER_TYPE_CLOSE_BUTTON:
+      g_object_set (priv->effects, "make-shadow", TRUE, NULL);
+      // no break;
     default:
       if (priv->timer_id)
       {
@@ -443,5 +507,18 @@ awn_throbber_get_tooltip (AwnThrobber *throbber)
   g_return_val_if_fail (AWN_IS_THROBBER (throbber), NULL);
 
   return AWN_TOOLTIP (throbber->priv->tooltip);
+}
+
+void
+awn_throbber_set_hover_effect (AwnThrobber *throbber, gboolean hover_effect)
+{
+  g_return_if_fail (AWN_IS_THROBBER (throbber));
+
+  throbber->priv->hover_effect = hover_effect;
+
+  if (!hover_effect)
+  {
+    awn_effects_stop (throbber->priv->effects, AWN_EFFECT_HOVER);
+  }
 }
 

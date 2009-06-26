@@ -34,6 +34,7 @@
 
 /* awn-overlay-pixbuf-file.c */
 
+#include <string.h>
 #include <math.h>
 
 #include "awn-overlay-pixbuf-file.h"
@@ -97,10 +98,13 @@ awn_overlay_pixbuf_file_set_property (GObject *object, guint property_id,
   switch (property_id) 
   {
     case PROP_FILE_NAME:
-      g_free(priv->file_name);
+      g_free(priv->file_name);      
       priv->file_name = g_value_dup_string (value);
-      awn_overlay_pixbuf_file_load (AWN_OVERLAY_PIXBUF_FILE(object),
-                                    priv->file_name);
+      if (priv->file_name)
+      {
+        awn_overlay_pixbuf_file_load (AWN_OVERLAY_PIXBUF_FILE(object),
+                                  priv->file_name);
+      }
       break;    
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -221,6 +225,8 @@ _awn_overlay_pixbuf_file_render (AwnOverlay* _overlay,
   AwnOverlayPixbufFile * overlay = AWN_OVERLAY_PIXBUF_FILE (_overlay);
   AwnOverlayPixbufFilePrivate * priv = AWN_OVERLAY_PIXBUF_FILE_GET_PRIVATE (overlay);  
 
+  g_return_if_fail (priv->file_name);
+  
   priv->icon_height = icon_width;  /*stored so we know what size to ask for when file name changed*/
   priv->icon_width = icon_height;  
   
@@ -268,8 +274,16 @@ awn_overlay_pixbuf_file_load (AwnOverlayPixbufFile *overlay,
   g_object_get (overlay,
                 "scale",&scale,
                 NULL);
-  g_return_if_fail (scale);
-
+  /*This will happen during object instantiation.  file_name will get set
+   before scale.  In which case we defer the file load... it'll get picked up
+   during the file render*/
+  if ( ! ( scale>0.01) )
+  {
+    return;
+  }
+  g_return_if_fail (file_name);
+  g_return_if_fail (strlen(file_name));  
+  
   scaled_width = lround (priv->icon_width * scale);  
   scaled_height = lround (priv->icon_height * 
                           scaled_width / 
@@ -288,7 +302,7 @@ awn_overlay_pixbuf_file_load (AwnOverlayPixbufFile *overlay,
   }
   else
   {
-    g_warning ("AwnOverlayPixbufFile: Failed to load pixbuf (%s)",file_name);
+    g_warning ("%s: Failed to load pixbuf (%s)",__func__,file_name);
   }
 
 }

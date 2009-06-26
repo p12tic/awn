@@ -235,6 +235,11 @@ task_icon_constructed (GObject *object)
 {
   TaskIconPrivate *priv = TASK_ICON (object)->priv;
   GtkWidget *widget = GTK_WIDGET(object);
+  
+  if ( G_OBJECT_CLASS (task_icon_parent_class)->constructed)
+  {
+    G_OBJECT_CLASS (task_icon_parent_class)->constructed (object);  
+  }
  
   priv->update_geometry_id = g_timeout_add_seconds (1, (GSourceFunc)_update_geometry, widget);
 }
