@@ -1,5 +1,10 @@
 2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
 
+	* bindings/python/awn.defs:
+	Removed unnecessary method.
+
+2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-applet.c:
 	* libawn/awn-applet.h:
 	* libawn/awn-icon.c:

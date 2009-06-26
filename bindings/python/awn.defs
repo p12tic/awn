@@ -578,14 +578,6 @@
   )
 )
 
-(define-method set_panel_window_id
-  (of-object "AwnApplet")
-  (c-name "awn_applet_set_panel_window_id")
-  (parameters
-    '("GdkNativeWindow" "id")
-  )
-)
-
 (define-method create_default_menu
   (of-object "AwnApplet")
   (c-name "awn_applet_create_default_menu")
