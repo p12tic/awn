@@ -1,3 +1,13 @@
+2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Added expand parameter to DockletRequest DBus method.
+
 2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:

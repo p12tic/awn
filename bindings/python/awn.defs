@@ -565,7 +565,8 @@
   (return-type "GdkNativeWindow")
   (parameters
     '("gint" "min_size")
-    '("gboolean" "shrink")
+    '("gboolean" "shrink" (default "FALSE"))
+    '("gboolean" "expand" (default "TRUE"))
   )
 )
 

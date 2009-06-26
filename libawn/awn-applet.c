@@ -1240,8 +1240,25 @@ awn_applet_uninhibit_autohide (AwnApplet *applet, guint cookie)
   }
 }
 
+/**
+ * awn_applet_docklet_request:
+ * @applet: AwnApplet instance.
+ * @min_size: Minimum size required.
+ * @shrink: If true and the panel has greater size than requested, it will
+ *          shrink to min_size. Otherwise current panel size will be allocated.
+ * @expand: If true the embedded window will be allowed to expand, otherwise
+ *          the window will be restricted to min_size.
+ *
+ * Requests docklet mode from the associated AwnPanel - all applets will be
+ * hidden and only one window will be shown.
+ *
+ * Returns: Non-zero window XID which can be passed to GtkPlug constructor, 
+ * or zero if the call failed (or another application is currently using
+ * docklet mode).
+ */
 GdkNativeWindow
-awn_applet_docklet_request (AwnApplet *applet, gint min_size, gboolean shrink)
+awn_applet_docklet_request (AwnApplet *applet, gint min_size,
+                            gboolean shrink, gboolean expand)
 {
   AwnAppletPrivate *priv;
   GError *error = NULL;
@@ -1254,7 +1271,8 @@ awn_applet_docklet_request (AwnApplet *applet, gint min_size, gboolean shrink)
                      &error,
                      G_TYPE_INT, min_size,
                      G_TYPE_BOOLEAN, shrink,
-                     G_TYPE_INVALID, 
+                     G_TYPE_BOOLEAN, expand,
+                     G_TYPE_INVALID,
                      G_TYPE_INT64, &ret,
                      G_TYPE_INVALID);
 
