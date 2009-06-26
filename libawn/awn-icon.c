@@ -378,6 +378,13 @@ awn_icon_init (AwnIcon *icon)
                     G_CALLBACK(awn_icon_update_effects), NULL);
 }
 
+/**
+ * awn_icon_new:
+ * 
+ * Creates new #AwnIcon.
+ *
+ * Returns: newly created #AwnIcon.
+ */
 GtkWidget *
 awn_icon_new (void)
 
@@ -419,6 +426,13 @@ awn_icon_update_tooltip_pos(AwnIcon *icon)
                                 priv->orient, tooltip_offset);
 }
 
+/**
+ * awn_icon_set_offset:
+ * @icon: an #AwnIcon.
+ * @offset: new offset for the icon.
+ *
+ * Sets offset of the icon.
+ */
 void 
 awn_icon_set_offset (AwnIcon        *icon,
                      gint            offset)
@@ -440,6 +454,13 @@ awn_icon_set_offset (AwnIcon        *icon,
   }
 }
 
+/**
+ * awn_icon_set_orientation:
+ * @icon: an #AwnIcon.
+ * @orient: orientation of the icon.
+ *
+ * Sets orientation of the icon.
+ */
 void 
 awn_icon_set_orientation (AwnIcon        *icon,
                           AwnOrientation  orient)
@@ -527,7 +548,15 @@ update_widget_size (AwnIcon *icon)
   update_widget_to_size (icon, width, height);
 }
 
-void  
+/**
+ * awn_icon_set_effect:
+ * @icon: an #AwnIcon.
+ * @effect: #AwnEffect to start looping.
+ *
+ * Sets effect on the icon. Note that the effect will loop until
+ * awn_effects_stop() is called.
+ */
+void
 awn_icon_set_effect (AwnIcon *icon, AwnEffect effect)
 { 
   g_return_if_fail (AWN_IS_ICON (icon));
@@ -543,6 +572,14 @@ awn_icon_get_effects (AwnOverlayable *icon)
   return AWN_ICON_GET_PRIVATE (icon)->effects;
 }
 
+/**
+ * awn_icon_get_tooltip:
+ * @icon: an #AwnIcon.
+ *
+ * Gets the #AwnTooltip associated with this icon.
+ *
+ * Returns: tooltip widget.
+ */
 AwnTooltip *
 awn_icon_get_tooltip (AwnIcon *icon)
 {
@@ -565,7 +602,14 @@ free_existing_icon (AwnIcon *icon)
   priv->icon_srfc = NULL;
 }
 
-void 
+/**
+ * awn_icon_set_from_pixbuf:
+ * @icon: an #AwnIcon.
+ * @pixbuf: a #GdkPixbuf.
+ *
+ * Sets the icon from the given pixbuf. Note that a copy of the pixbuf is made.
+ */
+void
 awn_icon_set_from_pixbuf (AwnIcon *icon, GdkPixbuf *pixbuf)
 {
   AwnIconPrivate  *priv;
@@ -596,6 +640,15 @@ awn_icon_set_from_pixbuf (AwnIcon *icon, GdkPixbuf *pixbuf)
   gtk_widget_queue_draw (GTK_WIDGET(icon));
 }
 
+/**
+ * awn_icon_set_from_surface:
+ * @icon: an #AwnIcon.
+ * @surface: a #cairo_surface_t.
+ *
+ * Sets the icon from the given cairo surface. Note that the surface is only
+ * referenced, so any later changes made to it will change the icon as well
+ * (after a call to gtk_widget_queue_draw()).
+ */
 void 
 awn_icon_set_from_surface (AwnIcon *icon, cairo_surface_t *surface)
 {
@@ -621,6 +674,16 @@ awn_icon_set_from_surface (AwnIcon *icon, cairo_surface_t *surface)
   gtk_widget_queue_draw (GTK_WIDGET (icon));
 }
 
+/**
+ * awn_icon_set_from_context:
+ * @icon: an #AwnIcon.
+ * @ctx: a #cairo_t.
+ *
+ * Extracts the icon from the cairo surface associated with given cairo
+ * context. Note that the surface is only referenced, so any later changes
+ * made to it will change the icon as well
+ * (after a call to gtk_widget_queue_draw()).
+ */
 void 
 awn_icon_set_from_context (AwnIcon *icon, cairo_t *ctx)
 {
@@ -630,6 +693,23 @@ awn_icon_set_from_context (AwnIcon *icon, cairo_t *ctx)
   awn_icon_set_from_surface(icon, cairo_get_target(ctx));
 }
 
+/**
+ * awn_icon_set_custom_paint:
+ * @icon: an #AwnIcon.
+ * @width: new width of the icon.
+ * @height: new height of the icon.
+ *
+ * Prepares the icon for custom painting (by overriding
+ * #GtkWidget::expose-event). Sets proper size requisition, tooltip position,
+ * parameters for #AwnEffects and may emit size changed signal.
+ *
+ * <note>
+ *  If there's already an icon set, it is not freed, so if you later disconnect
+ *  from the #GtkWidget::expose-event, a second call to
+ *  awn_icon_set_custom_paint() with the original dimensions of the icon will
+ *  restore the icon.
+ * </note>
+ */
 void
 awn_icon_set_custom_paint (AwnIcon *icon, gint width, gint height)
 {
@@ -652,6 +732,13 @@ awn_icon_set_custom_paint (AwnIcon *icon, gint width, gint height)
 /*
  * The tooltip 
  */
+/**
+ * awn_icon_set_tooltip_text:
+ * @icon: an #AwnIcon.
+ * @text: tooltip message.
+ *
+ * Sets tooltip message.
+ */
 void   
 awn_icon_set_tooltip_text (AwnIcon     *icon,
                            const gchar *text)
@@ -661,6 +748,15 @@ awn_icon_set_tooltip_text (AwnIcon     *icon,
   awn_tooltip_set_text (AWN_TOOLTIP (icon->priv->tooltip), text);
 }
 
+/**
+ * awn_icon_get_tooltip_text:
+ * @icon: an #AwnIcon.
+ *
+ * Gets the message currently set for the associated #AwnTooltip. The caller
+ * is responsible for freeing the string.
+ *
+ * Returns: currently used message by the associated #AwnTooltip.
+ */
 gchar * 
 awn_icon_get_tooltip_text (AwnIcon *icon)
 {
@@ -673,14 +769,36 @@ awn_icon_get_tooltip_text (AwnIcon *icon)
  * ICON EMBLEMS
  */
 
+/**
+ * awn_icon_set_message:
+ * @icon: an #AwnIcon.
+ * @message: text to overlay on the icon.
+ *
+ * Sets message which will be overlayed on the icon.
+ *
+ * <note>This method might be removed.</note>
+ */
 void 
 awn_icon_set_message (AwnIcon *icon, const gchar  *message)
 {
   g_return_if_fail (AWN_IS_ICON (icon));
 
-  g_object_set (icon->priv->effects, "label", message, NULL);
+  //g_object_set (icon->priv->effects, "label", message, NULL);
+  // FIXME: implement the label using AwnOverlayText?! or remove the method and
+  //   leave it up to devs.
 }
 
+/**
+ * awn_icon_get_message:
+ * @icon: an #AwnIcon.
+ *
+ * Gets currently set message which is displayed on top of the icon. See
+ * awn_icon_set_message(). Caller is responsible for freeing the string.
+ *
+ * <note>This method might be removed.</note>
+ *
+ * Returns: a copy of the currently set message.
+ */
 gchar * 
 awn_icon_get_message (AwnIcon *icon)
 {
@@ -693,6 +811,14 @@ awn_icon_get_message (AwnIcon *icon)
   return result;
 }
 
+/**
+ * awn_icon_set_progress:
+ * @icon: an #AwnIcon.
+ * @progress: new progress (0.0 - 1.0)
+ *
+ * Sets progress pie to overlay on the icon. Setting the value to 1.0 will hide
+ * the progress pie.
+ */
 void
 awn_icon_set_progress (AwnIcon *icon, gfloat progress)
 {
@@ -701,6 +827,14 @@ awn_icon_set_progress (AwnIcon *icon, gfloat progress)
   g_object_set(icon->priv->effects, "progress", progress, NULL);
 }
 
+/**
+ * awn_icon_get_progress:
+ * @icon: an #AwnIcon.
+ *
+ * Gets current progress. See awn_icon_set_progress().
+ *
+ * Returns: current progress.
+ */
 gfloat        
 awn_icon_get_progress (AwnIcon *icon)
 {
@@ -713,6 +847,14 @@ awn_icon_get_progress (AwnIcon *icon)
   return result;
 }
 
+/**
+ * awn_icon_set_is_active:
+ * @icon: an #AwnIcon.
+ * @is_active: value.
+ *
+ * Sets whether the icon is active (if it is paints a rectangle around the icon
+ * by default).
+ */
 void
 awn_icon_set_is_active (AwnIcon *icon, gboolean is_active)
 {
@@ -721,6 +863,14 @@ awn_icon_set_is_active (AwnIcon *icon, gboolean is_active)
   g_object_set (icon->priv->effects, "active", is_active, NULL);
 }
 
+/**
+ * awn_icon_get_is_active:
+ * @icon: an #AwnIcon.
+ *
+ * Gets whether the icon is active.
+ *
+ * Returns: TRUE if the icon is active, FALSE otherwise.
+ */
 gboolean      
 awn_icon_get_is_active (AwnIcon *icon)
 {
@@ -733,6 +883,13 @@ awn_icon_get_is_active (AwnIcon *icon)
   return result;
 }
 
+/**
+ * awn_icon_set_indicator_count:
+ * @icon: an #AwnIcon.
+ * @count: indicator count.
+ *
+ * Paints an indicator (or multiple) on the border of icon.
+ */
 void    
 awn_icon_set_indicator_count (AwnIcon *icon, gint count)
 {
@@ -741,6 +898,14 @@ awn_icon_set_indicator_count (AwnIcon *icon, gint count)
   g_object_set (icon->priv->effects, "arrows-count", count, NULL);
 }
 
+/**
+ * awn_icon_get_indicator_count:
+ * @icon: an #AwnIcon.
+ *
+ * Gets number of indicators set for this icon.
+ *
+ * Returns: number of indicators.
+ */
 gint
 awn_icon_get_indicator_count (AwnIcon *icon)
 {

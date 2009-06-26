@@ -78,9 +78,27 @@ struct _AwnAppletClass
 };
 
 
-/* Hook to have an AWN Applet built for you */
+/**
+ * AwnAppletInitFunc:
+ * @applet: AwnApplet instance created for you.
+ *
+ * Function prototype used as entry point for applets.
+ * Hook to have an #AwnApplet built for you.
+ *
+ * Returns: return TRUE if applet construction was successful, FALSE otherwise.
+ */
 typedef gboolean   (*AwnAppletInitFunc)           (AwnApplet   *applet);
-/* Hook to build your own AWN Applet */
+
+/**
+ * AwnAppletInitPFunc:
+ * @uid: applet's unique ID.
+ * @panel_id: ID of AwnPanel associated with this applet.
+ *
+ * Function prototype used as entry point for applets.
+ * Hook to build your own #AwnApplet.
+ *
+ * Returns: return the constructed #AwnApplet (or its subclass) or NULL.
+ */
 typedef AwnApplet* (*AwnAppletInitPFunc)          (const gchar *uid,
                                                    gint         panel_id);
 
@@ -117,9 +135,6 @@ void               awn_applet_set_flags           (AwnApplet      *applet,
                                                    AwnAppletFlags  flags);
 
 GtkWidget*         awn_applet_create_default_menu (AwnApplet      *applet);
-
-void               awn_applet_set_panel_window_id (AwnApplet      *applet,
-                                                   GdkNativeWindow anid);
 
 guint              awn_applet_inhibit_autohide    (AwnApplet *applet,
                                                    const gchar *reason);
