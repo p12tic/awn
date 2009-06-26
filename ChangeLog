@@ -1,3 +1,12 @@
+2009-06-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	* src/awn-throbber.h:
+	A couple of changes to AwnThrobber, made CLOSE_BUTTON mode more
+	visually pleasing.
+
 2009-06-26  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-settings/awn-settings.xml:

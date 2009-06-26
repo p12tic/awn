@@ -1442,7 +1442,7 @@ GtkWidget *
 awn_panel_new_from_config (AwnConfigClient *client)
 {
   GtkWidget *window;
-  
+
   window = g_object_new (AWN_TYPE_PANEL,
                          "type", GTK_WINDOW_TOPLEVEL,
                          "type-hint", GDK_WINDOW_TYPE_HINT_DOCK,
@@ -2484,6 +2484,7 @@ awn_panel_docklet_request (AwnPanel *panel,
     priv->docklet_closer = awn_throbber_new ();
     awn_throbber_set_type (AWN_THROBBER (priv->docklet_closer),
                            AWN_THROBBER_TYPE_CLOSE_BUTTON);
+    awn_throbber_set_hover_effect (AWN_THROBBER (priv->docklet_closer), TRUE);
 
     awn_applet_manager_add_widget (AWN_APPLET_MANAGER (priv->manager),
                                    priv->docklet_closer, 1);
@@ -2500,6 +2501,9 @@ awn_panel_docklet_request (AwnPanel *panel,
     awn_throbber_set_orientation (closer, priv->orient);
     awn_throbber_set_offset (closer, priv->size / 2 + priv->offset);
 
+    GtkRequisition closer_req;
+    gtk_widget_size_request (priv->docklet_closer, &closer_req);
+
     // if expand param is false the docklet will be restricted to this size
     priv->docklet = gtk_socket_new ();
     switch (priv->orient)
@@ -2507,7 +2511,7 @@ awn_panel_docklet_request (AwnPanel *panel,
       case AWN_ORIENTATION_LEFT:
       case AWN_ORIENTATION_RIGHT:
         priv->docklet_minsize = shrink ? min_size :
-          MAX (min_size, priv->manager->allocation.height);
+          MAX (min_size, priv->manager->allocation.height - closer_req.height);
 
         if (expand == FALSE)
         {
@@ -2517,7 +2521,7 @@ awn_panel_docklet_request (AwnPanel *panel,
         break;
       default:
         priv->docklet_minsize = shrink ? min_size :
-          MAX (min_size, priv->manager->allocation.width);
+          MAX (min_size, priv->manager->allocation.width - closer_req.width);
 
         if (expand == FALSE)
         {
