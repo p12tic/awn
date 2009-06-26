@@ -1,3 +1,9 @@
+2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf-file.c:
+	Modified the code to spews some warnings when file_name 
+	is NULL or empty.
+
 2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-applet-simple.c:
