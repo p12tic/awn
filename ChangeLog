@@ -1,6 +1,12 @@
 2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
+  	* libawn/awn-themed-icon.h:
+	Add a preload.  This will be automatically called by by set info.
+
+2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
 	Implement a pixbuf cache.  A fair amount of code duplication
 	but it doesn't lend itself neatly to a function.  Will look
 	into at a later time.

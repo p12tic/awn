@@ -80,6 +80,13 @@ struct _AwnThemedIconPrivate
   GHashTable *pixbufs;    /*our pixbuf cache*/
 };
 
+typedef struct
+{
+  AwnThemedIcon * icon;
+  gint            size;
+  gchar         * state;
+}AwnThemedIconPreloadItem;
+
 enum
 {
   SCOPE_UID=0,
@@ -103,6 +110,9 @@ static const gint n_drop_types = G_N_ELEMENTS(drop_types);
 /* Forwards */
 void on_icon_theme_changed              (GtkIconTheme     *theme, 
                                          AwnThemedIcon     *icon);
+
+static gboolean on_idle_preload (gpointer item);
+
 void awn_themed_icon_drag_data_received (GtkWidget        *widget, 
                                          GdkDragContext   *context,
                                          gint              x, 
@@ -222,6 +232,8 @@ awn_themed_icon_finalize (GObject *object)
   
   G_OBJECT_CLASS (awn_themed_icon_parent_class)->finalize (object);  
 }
+
+
 static void
 awn_themed_icon_class_init (AwnThemedIconClass *klass)
 {
@@ -296,8 +308,9 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   priv->applet_name = NULL;
   priv->uid = NULL;
   priv->list = NULL;
-  priv->current_item = NULL;  
+  priv->current_item = NULL;
   priv->current_size = 48;
+ 
 
   /* Set-up the gtk-theme */
   priv->gtk_theme = gtk_icon_theme_get_default ();
@@ -449,6 +462,12 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
       icon_name = item->name;
       uid = priv->uid;
       
+      /* 
+       Possible FIXME
+       It would be nice to refactor this code so that all scopes were checked
+       for a cached hit first...  but I think that would give incorrect 
+       results in certain situations.  Think it over.*/
+       
       /* Go through all the possible outcomes until we get a pixbuf */
       for (i = 0; i < N_SCOPES; i++)
       {
@@ -914,6 +933,11 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
       break;
     }
   }
+  /*preload these icons */
+  for (i=0;i<n_states;i++)
+  {    
+    awn_themed_icon_preload_icon (icon, states[i], -1);
+  }
 }
 
 /**
@@ -1213,6 +1237,36 @@ awn_themed_icon_clear_info (AwnThemedIcon *icon)
   gtk_drag_dest_unset (GTK_WIDGET(icon));
 }
 
+/**
+ * awn_themed_icon_preload_icon:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ * @state: The icon state.
+ * @size: The size of the icon.  A value less than or equal to 0  indicates the 
+ * current size should be used.
+ *
+ * Queues a preloads of an icon.  The icon load and cache of the icon is 
+ * queued using g_idle_add().
+ */
+
+void
+awn_themed_icon_preload_icon (AwnThemedIcon * icon, gchar * state, gint size)
+{
+  AwnThemedIconPreloadItem * item;
+  AwnThemedIconPrivate *priv;
+
+  g_return_if_fail (AWN_IS_THEMED_ICON (icon));
+  g_return_if_fail (state);
+  priv = icon->priv;
+
+  item = g_malloc (sizeof (AwnThemedIconPreloadItem) );
+  item->icon = icon;
+  /*Conditional operator*/
+  item->size = size > 0?size:priv->current_size;
+  item->state = g_strdup(state);
+  g_idle_add (on_idle_preload,item);
+  
+}
+
 /*
  * Callbacks 
  */
@@ -1227,9 +1281,29 @@ on_icon_theme_changed (GtkIconTheme *theme, AwnThemedIcon *icon)
 
 }
 
+static gboolean
+on_idle_preload (gpointer data)
+{
+  AwnThemedIconPreloadItem * item = data;
+  GdkPixbuf * pixbuf;
+  AwnThemedIconPrivate *priv;  
+  g_return_val_if_fail (item,FALSE);
+  priv = item->icon->priv;
+
+  /*CONDITIONAL operator*/
+  pixbuf = get_pixbuf_at_size (item->icon, 
+                               item->size>0?item->size:priv->current_size, 
+                               item->state);
+           
+  g_object_unref (pixbuf);
+  g_free (item->state);
+  g_free (item);
+  return FALSE;
+}
+
 /*
  FIXME among other things:
- 
+
  Needs to be made aware of the concept of ::invisible:: mixed with normal states.
  
  I expect it does not deal with multiple icons currently beyond assuming the 
@@ -1420,4 +1494,5 @@ drag_out:
   if (success)
     ensure_icon (icon);
 }
+
 
