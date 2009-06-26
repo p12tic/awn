@@ -1,3 +1,12 @@
+2009-06-26  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	Fix dupplicated label.
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Fix categories chooser.
+
 2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:

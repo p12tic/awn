@@ -516,20 +516,20 @@ class awnBzr:
 			for elem in applet['applet_category']:
 				if not elem in categories_list and elem is not "":
 					categories_list.append(elem)
-		categories_list.append(_("All"))
+		categories_list.append("")
 		return categories_list
 
-	def applets_by_categories(self, categories):
+	def applets_by_categories(self, categories = ""):
 		'''	Return applets uris of this categories
 			categories = list of Categories
 		'''
 		catalog = self.type_catalog_from_sources_list(type_catalog='Applet')
 		desktop_list = [self.read_desktop(elem) for elem in catalog]
-		list_applets = []
-		for applet in desktop_list:
-			for elem in applet['applet_category']:
-				if elem in categories:
-					list_applets.append(applet['location'])
+		if categories is "":
+			list_applets = catalog
+		else:
+			list_applets = [applet['location'] for applet in desktop_list if categories in applet['applet_category']]
+
 		return list_applets
 			
 
@@ -1589,27 +1589,14 @@ class awnApplet(awnBzr):
 
             model.append([icon, path, uid, text])
 
-    def load_applets (self, list_applets="All"):
+    def load_applets (self):
+	applets = self.applets_by_categories()
+	self.make_model(applets, self.treeview_available)
 
-        prefixes = ["/usr/lib", "/usr/local/lib", "/usr/lib64", "/usr/local/lib64"]
-        prefixes.append(os.path.expanduser("~/.config"))
-        dirs = [os.path.join(prefix, "awn", "applets") for prefix in prefixes]
-        dirs.insert(0, os.path.join(defs.PREFIX, "share", "avant-window-navigator", "applets"))
-        applets = []
-        for d in dirs:
-            if not os.path.exists (d):
-                continue
-            if not os.path.realpath(d) == d and os.path.realpath(d) in dirs:
-                continue
-
-            applets += [os.path.join(d, a) for a in os.listdir(d) if a.endswith(".desktop")]
-
-	self.treeview_available.set_headers_visible(False)
-
-	if list_applets is not "All":
-		applets = self.applets_by_categories(list_applets)
-
-        self.make_model(applets, self.treeview_available)
+    def update_applets(self, list_applets):
+	applets = self.applets_by_categories(list_applets)
+	self.refresh_tree(applets, self.treeview_available.get_model())
+	
 
     def popup_msg(self, message):
         success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING,
@@ -1647,4 +1634,4 @@ class awnApplet(awnBzr):
     def callback_widget_filter_applets(self, data=None):
 	model = self.choose_categorie.get_model()
 	select_cat = model.get_value(self.choose_categorie.get_active_iter(),0)
-	self.load_applets(select_cat)
+	self.update_applets(select_cat)
