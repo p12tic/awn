@@ -1,5 +1,11 @@
 2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-applet-simple.c:
+	Set AwnThemedIcon size before calling set_info.  This will
+	make the automatic preload more effective.
+
+2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-themed-icon.c:
   	* libawn/awn-themed-icon.h:
 	Add a preload.  This will be automatically called by by set info.
