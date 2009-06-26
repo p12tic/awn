@@ -107,11 +107,11 @@ class awnPreferencesMini(awnPreferences):
 
 	self.choose_behavior = self.wTree.get_object("behaviorcombo")
 	self.choose_behavior.connect("changed", self.choose_behavior_callback)
-	self.behavior_entries = [	"Standart", 
-					"Panel mode", 
-					"Autohide Keep below",
-					"Autohide Fade out", 
-					"Transparency"]
+	self.behavior_entries = [	[_("Standart")],
+					[_("Panel mode")], 
+					[_("Autohide Keep below")],
+					[_("Autohide Fade out")], 
+					[_("Transparency")]]
 	self.create_dropdown(self.choose_behavior, self.behavior_entries)
 
 	self.client = awn.Config()
@@ -318,13 +318,13 @@ class awnAppletMini(awnApplet):
 
         self.scrollwindow = self.wTree.get_object("appletScrollActive")
 	self.scrollwindow1 = self.wTree.get_object("appletScrollActive1")
-        self.treeview_available =  self.wTree.get_object("appletTreeviewAvailable")        
+        self.treeview_available =  self.wTree.get_object("appletTreeviewAvailable")     
 	self.make_active_model()
 
         self.load_applets()
 
 	self.choose_categorie = self.wTree.get_object("applets_catagories")
-	self.create_categories_dropdown(self.choose_categorie)
+	self.create_dropdown(self.choose_categorie, self.list_applets_categories())
 	self.choose_categorie.connect("changed", self.callback_widget_filter_applets)
 
         self.btn_deactivate = self.wTree.get_object("appletDeactivate")

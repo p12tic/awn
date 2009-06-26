@@ -1,3 +1,13 @@
+2009-06-26  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnLauncherEditor.py:
+	* awn-settings/awnSettings.py.in:
+	Update AwnLauncher to new make_model function.	
+	Remove some unused code.
+	Translate some strings.
+	use generic create_drowdown function.
+
 2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:
