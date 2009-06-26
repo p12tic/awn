@@ -1,5 +1,12 @@
 2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-themed-icon.c:
+	Implement a pixbuf cache.  A fair amount of code duplication
+	but it doesn't lend itself neatly to a function.  Will look
+	into at a later time.
+
+2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-pixbuf-file.c:
 	Modified the code to spews some warnings when file_name 
 	is NULL or empty.

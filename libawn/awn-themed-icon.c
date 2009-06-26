@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
+ * Copyright (C) 2008,2009 Rodney Cryderman <rcryderman@gmail.com>
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -76,6 +76,8 @@ struct _AwnThemedIconPrivate
   
   gulong  sig_id_for_gtk_theme;
   gulong  sig_id_for_awn_theme;  
+  
+  GHashTable *pixbufs;    /*our pixbuf cache*/
 };
 
 enum
@@ -216,6 +218,7 @@ awn_themed_icon_finalize (GObject *object)
   priv->uid = NULL;
   g_free (priv->icon_dir);               
   priv->icon_dir = NULL;
+  g_hash_table_destroy (priv->pixbufs);
   
   G_OBJECT_CLASS (awn_themed_icon_parent_class)->finalize (object);  
 }
@@ -330,6 +333,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   g_free (scalable_dir);
   g_free (theme_dir);
 
+  priv->pixbufs = g_hash_table_new_full (g_str_hash,g_str_equal, g_free, g_object_unref);  
 }
 
 /**
@@ -439,6 +443,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
       const gchar *icon_name;
       const gchar *uid;
       gint         i;
+      gchar * key = NULL;
       
       applet_name = priv->applet_name;
       icon_name = item->name;
@@ -452,49 +457,162 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
         {
           case SCOPE_UID:
             name = g_strdup_printf ("%s-%s-%s", icon_name, applet_name, uid);
-            pixbuf = theme_load_icon (priv->awn_theme, name,
+            key = g_strdup_printf("scope_uid:%s@%d",name,
+                                  priv->current_size);
+            pixbuf = g_hash_table_lookup (priv->pixbufs,key);
+            if (!pixbuf)
+            {
+              pixbuf = theme_load_icon (priv->awn_theme, name,
                                                size, LOAD_FLAGS, NULL);
+              if (pixbuf)
+              {
+                g_object_ref (pixbuf);
+                g_hash_table_insert (priv->pixbufs, g_strdup(key), pixbuf);
+              }
+            }
+            else
+            {
+              g_object_ref (pixbuf);
+            }
+            g_free (key);
             break;
 
           case SCOPE_APPLET:
             name = g_strdup_printf ("%s-%s", icon_name, applet_name);
-            pixbuf = theme_load_icon (priv->awn_theme, name,
+            key = g_strdup_printf("scope_applet:%s@%d",name,
+                                  priv->current_size);
+            pixbuf = g_hash_table_lookup (priv->pixbufs,key);
+            if (!pixbuf)
+            {
+              pixbuf = theme_load_icon (priv->awn_theme, name,
                                                size, LOAD_FLAGS, NULL);
+              if (pixbuf)
+              {
+                g_object_ref (pixbuf);
+                g_hash_table_insert (priv->pixbufs, g_strdup(key), pixbuf);
+              }
+            }
+            else
+            {
+              g_object_ref (pixbuf);              
+            }
+            g_free (key);
             break;
 
           case SCOPE_AWN_THEME:
-            pixbuf = theme_load_icon (priv->awn_theme, icon_name, 
+            key = g_strdup_printf("scope_awn_theme:%s@%d",icon_name,
+                                  priv->current_size);
+            pixbuf = g_hash_table_lookup (priv->pixbufs,key);
+            if (!pixbuf)
+            {
+              pixbuf = theme_load_icon (priv->awn_theme, icon_name, 
                                                size, LOAD_FLAGS, NULL);
+              if (pixbuf)
+              {
+                g_object_ref (pixbuf);
+                g_hash_table_insert (priv->pixbufs, g_strdup(key), pixbuf);
+              }
+            }
+            else
+            {
+              g_object_ref (pixbuf);              
+            }
+            g_free (key);
             break;
 
           case SCOPE_OVERRIDE_THEME:
             pixbuf = NULL;
             if (priv->override_theme)
             {
-              pixbuf = theme_load_icon (priv->override_theme,
+              key = g_strdup_printf("scope_override_theme:%s@%d",icon_name,
+                                    priv->current_size);
+              pixbuf = g_hash_table_lookup (priv->pixbufs,key);
+              if (!pixbuf)
+              {
+                pixbuf = theme_load_icon (priv->override_theme,
                                                  icon_name, 
                                                  size, LOAD_FLAGS, NULL);
+                if (pixbuf)
+                {
+                  g_object_ref (pixbuf);
+                  g_hash_table_insert (priv->pixbufs, g_strdup(key), pixbuf);
+                }                
+              }
+              else
+              {
+                g_object_ref (pixbuf);                
+              }
+              g_free (key);
+              
             }
             break;
 
           case SCOPE_GTK_THEME:
-            pixbuf = theme_load_icon (priv->gtk_theme, icon_name,
+            key = g_strdup_printf("scope_gtk_theme:%s@%d",icon_name,
+                                  priv->current_size);
+            pixbuf = g_hash_table_lookup (priv->pixbufs,key);
+            if (!pixbuf)
+            {
+              pixbuf = theme_load_icon (priv->gtk_theme, icon_name,
                                                size, LOAD_FLAGS, NULL);
+              if (pixbuf)
+              {
+                g_object_ref (pixbuf);
+                g_hash_table_insert (priv->pixbufs, g_strdup(key), pixbuf);
+              }              
+            }
+            else
+            {
+              g_object_ref (pixbuf);              
+            }
+            g_free (key);            
             break;
 
           case SCOPE_FILENAME:
             pixbuf = NULL;
             if (priv->current_item->original_name)
             {
-              pixbuf = try_and_load_image_from_disk (priv->current_item->original_name, 
+              key = g_strdup_printf("scope_filename:%s@%d",icon_name,
+                                    priv->current_size);
+              pixbuf = g_hash_table_lookup (priv->pixbufs,key);
+              if (!pixbuf)
+              {
+                pixbuf = try_and_load_image_from_disk (priv->current_item->original_name, 
                                                      size);
+                if (pixbuf)
+                {
+                  g_object_ref (pixbuf);
+                  g_hash_table_insert (priv->pixbufs, g_strdup(key), pixbuf);
+                }                
+              }
+              else
+              {
+                g_object_ref (pixbuf);                
+              }
+              g_free (key);            
             }
             break;
 
           case SCOPE_FALLBACK_STOP:
-            pixbuf = theme_load_icon (priv->gtk_theme,
+            key = g_strdup_printf("scope_fallback_stop:@%d",
+                                  priv->current_size);
+            pixbuf = g_hash_table_lookup (priv->pixbufs,key);
+            if (!pixbuf)
+            {
+              pixbuf = theme_load_icon (priv->gtk_theme,
                                                GTK_STOCK_MISSING_IMAGE,
                                                size, LOAD_FLAGS, NULL);
+              if (pixbuf)
+              {
+                g_object_ref (pixbuf);
+                g_hash_table_insert (priv->pixbufs, g_strdup(key), pixbuf);
+              }
+            }
+            else
+            {
+              g_object_ref (pixbuf);              
+            }
+            g_free (key);            
             break;
 
           default:
@@ -1089,8 +1207,8 @@ awn_themed_icon_clear_info (AwnThemedIcon *icon)
     g_free (item->name);
     g_free (item->original_name);
     g_free (item->state);
-    g_free (item);    
-    priv->list = g_list_delete_link (priv->list,iter);    
+    g_free (item);
+    priv->list = g_list_delete_link (priv->list,iter);
   }
   gtk_drag_dest_unset (GTK_WIDGET(icon));
 }
@@ -1101,8 +1219,12 @@ awn_themed_icon_clear_info (AwnThemedIcon *icon)
 void 
 on_icon_theme_changed (GtkIconTheme *theme, AwnThemedIcon *icon)
 {
+  AwnThemedIconPrivate *priv;  
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
+  priv = icon->priv;
+  g_hash_table_remove_all (priv->pixbufs);   
   ensure_icon (icon);
+
 }
 
 /*
