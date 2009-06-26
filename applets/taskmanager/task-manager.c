@@ -513,6 +513,22 @@ on_icon_visible_changed (TaskManager *manager, TaskIcon *icon)
 }
 
 /**
+ * This function gets called whenever a task-window gets finalized.
+ * It removes the task-window from the list.
+ * State: done
+ */
+static void
+window_closed (TaskManager *manager, GObject *old_item)
+{
+  TaskManagerPrivate *priv;
+
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+
+  priv = manager->priv;
+  priv->windows = g_slist_remove (priv->windows, old_item);
+}
+
+/**
  * This function gets called whenever a task-icon gets finalized.
  * It removes the task-icon from the gslist and update layout
  * (so it gets removed from the bar)
@@ -581,8 +597,10 @@ on_window_opened (WnckScreen    *screen,
   // create a new TaskWindow containing the WnckWindow
   item = task_window_new (window);
   g_object_set_qdata (G_OBJECT (window), win_quark, TASK_WINDOW (item));
-  priv->windows = g_slist_append (priv->windows, item);
 
+  priv->windows = g_slist_append (priv->windows, item);
+  g_object_weak_ref (G_OBJECT (item), (GWeakNotify)window_closed, manager);
+  
   // see if there is a icon that matches
   for (w = priv->icons; w; w = w->next)
   {

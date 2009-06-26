@@ -25,6 +25,8 @@ taskmanager_la_SOURCES = \
 	task-launcher.h \
 	task-manager.c \
 	task-manager.h \
+	task-manager-api-wrapper.c \
+	task-manager-api-wrapper.h \
 	task-settings.c \
 	task-settings.h \
 	$(builddir)/taskmanager-marshal.c \

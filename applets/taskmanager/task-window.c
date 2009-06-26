@@ -125,19 +125,12 @@ task_window_set_property (GObject      *object,
 }
 
 static void
-task_window_constructed (GObject *object)
-{
-  /*TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;*/
-}
-
-static void
 task_window_class_init (TaskWindowClass *klass)
 {
   GParamSpec    *pspec;
   GObjectClass  *obj_class  = G_OBJECT_CLASS (klass);
   TaskItemClass *item_class = TASK_ITEM_CLASS (klass);
-
-  obj_class->constructed  = task_window_constructed;
+  
   obj_class->set_property = task_window_set_property;
   obj_class->get_property = task_window_get_property;
   

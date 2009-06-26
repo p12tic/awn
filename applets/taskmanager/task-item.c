@@ -280,8 +280,6 @@ void
 task_item_emit_name_changed (TaskItem *item, const gchar *name)
 {
   g_return_if_fail (TASK_IS_ITEM (item));
-
-g_debug ("name changed");
   
   g_signal_emit (item, _item_signals[NAME_CHANGED], 0, name);
 }

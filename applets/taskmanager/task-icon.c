@@ -220,6 +220,7 @@ static void
 task_icon_dispose (GObject *object)
 {
   TaskIconPrivate *priv = TASK_ICON_GET_PRIVATE (object);
+  
   /*this needs to be done in dispose, not finalize, due to idiosyncracies of 
    AwnDialog*/
   if (priv->dialog)
@@ -227,6 +228,7 @@ task_icon_dispose (GObject *object)
     gtk_widget_destroy (priv->dialog);
     priv->dialog = NULL;
   }
+  
   G_OBJECT_CLASS (task_icon_parent_class)->dispose (object);  
 }
 
@@ -254,7 +256,12 @@ task_icon_constructed (GObject *object)
 {
   TaskIconPrivate *priv = TASK_ICON (object)->priv;
   GtkWidget *widget = GTK_WIDGET(object);
- 
+
+  if ( G_OBJECT_CLASS (task_icon_parent_class)->constructed)
+  {
+    G_OBJECT_CLASS (task_icon_parent_class)->constructed (object);
+  }
+  
   //update geometry of icon every second.
   priv->update_geometry_id = g_timeout_add_seconds (1, (GSourceFunc)_update_geometry, widget);
 }
@@ -671,8 +678,8 @@ task_icon_refresh_visible (TaskIcon *icon)
 {
   TaskIconPrivate *priv;
   GSList *w;
-  TaskItem *vis_item = NULL;
   guint count = 0;
+  guint count_windows = 0;
 
   g_return_if_fail (TASK_IS_ICON (icon));
 
@@ -683,11 +690,14 @@ task_icon_refresh_visible (TaskIcon *icon)
     TaskItem *item = w->data;
 
     if (!task_item_is_visible (item)) continue;
-
-    vis_item = item;
     count++;
+
+    if (!TASK_IS_WINDOW (item)) continue;
+    count_windows++;
   }
 
+  awn_icon_set_indicator_count (AWN_ICON (icon), (count_windows>0) ? 1 : 0);
+  
   if (count != priv->shown_items)
   {
     g_debug("shown items changed: %i", count);
@@ -718,6 +728,7 @@ task_icon_refresh_visible (TaskIcon *icon)
       {
         awn_overlayable_remove_overlay (AWN_OVERLAYABLE (icon), 
                                         AWN_OVERLAY (priv->overlay_text));
+        g_object_unref (priv->overlay_text);
         priv->overlay_text = NULL;
       }
     }
@@ -859,9 +870,12 @@ on_window_progress_changed (TaskWindow   *window,
 
     if (!TASK_IS_WINDOW (item)) continue;
     if (!task_item_is_visible (item)) continue;
-    
-    progress += task_window_get_progress (TASK_WINDOW (item));
-    len++;
+
+    if (progress != -1)
+    {
+      progress += task_window_get_progress (TASK_WINDOW (item));
+      len++;
+    }
   }
 
   awn_icon_set_progress (AWN_ICON (icon), progress/len);
