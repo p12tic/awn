@@ -51,7 +51,7 @@ G_DEFINE_TYPE (AwnTooltip, awn_tooltip, GTK_TYPE_WINDOW)
 #define AWN_PANEL_GROUP "panel"
 #define ICON_OFFSET     "offset"
 
-#define TOOLTIP_ROUND_RADIUS 15.0
+#define TOOLTIP_ROUND_RADIUS 7.0
 
 struct _AwnTooltipPrivate
 {

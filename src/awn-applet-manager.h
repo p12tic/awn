@@ -32,18 +32,19 @@ G_BEGIN_DECLS
 
 #define AWN_TYPE_APPLET_MANAGER (awn_applet_manager_get_type())
 
-#define AWN_APPLET_MANAGER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_APPLET_MANAGER, \
-        AwnAppletManager))
+#define AWN_APPLET_MANAGER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+        AWN_TYPE_APPLET_MANAGER, AwnAppletManager))
 
-#define AWN_APPLET_MANAGER_CLASS(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), AWN_APPLET_MANAGER, \
-        AwnAppletManagerClass))
+#define AWN_APPLET_MANAGER_CLASS(obj) (G_TYPE_CHECK_CLASS_CAST ((obj), \
+        AWN_APPLET_MANAGER, AwnAppletManagerClass))
 
-#define AWN_IS_APPLET_MANAGER(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), AWN_TYPE_APPLET_MANAGER))
+#define AWN_IS_APPLET_MANAGER(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+        AWN_TYPE_APPLET_MANAGER))
 
 #define AWN_IS_APPLET_MANAGER_CLASS(obj) (G_TYPE_CHECK_CLASS_TYPE ((obj), \
         AWN_TYPE_APPLET_MANAGER))
 
-#define AWN_APPLET_MANAGER_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), \
+#define AWN_APPLET_MANAGER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), \
         AWN_TYPE_APPLET_MANAGER, AwnAppletManagerClass))
 
 typedef struct _AwnAppletManager AwnAppletManager;
@@ -70,9 +71,21 @@ GType       awn_applet_manager_get_type          (void) G_GNUC_CONST;
 
 GtkWidget * awn_applet_manager_new_from_config   (AwnConfigClient *client);
 
-void        awn_applet_manager_refresh_applets  (AwnAppletManager *manager);
+void        awn_applet_manager_refresh_applets   (AwnAppletManager *manager);
+
+void        awn_applet_manager_add_widget        (AwnAppletManager *manager,
+                                                  GtkWidget *widget, gint pos);
+
+void        awn_applet_manager_remove_widget     (AwnAppletManager *manager,
+                                                  GtkWidget *widget);
+
+gboolean    awn_applet_manager_get_expands       (AwnAppletManager *manager);
+
+void        awn_applet_manager_set_applet_flags  (AwnAppletManager *manager,
+                                                  const gchar *uid,
+                                                  AwnAppletFlags flags);
 
 G_END_DECLS
 
-
 #endif /* _AWN_APPLET_MANAGER_H */
+

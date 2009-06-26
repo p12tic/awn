@@ -37,6 +37,8 @@
 #include "awn-config-bridge.h"
 #include "awn-config-client.h"
 #include "awn-defines.h"
+#include "awn-utils.h"
+#include "awn-overlayable.h"
 
 #include "gseal-transition.h"
 
@@ -48,19 +50,21 @@ G_DEFINE_TYPE(AwnDialog, awn_dialog, GTK_TYPE_WINDOW)
 
 struct _AwnDialogPrivate
 {
+  GtkWidget *hbox;
   GtkWidget *title;
   GtkWidget *vbox;
   GtkWidget *align;
 
   /* Properties */
   GtkWidget *anchor;
-  AwnApplet *anchor_owner;
+  AwnApplet *anchor_applet;
 
   AwnOrientation orient;
   gboolean anchored;
   gboolean esc_hide;
 
   gint window_offset;
+  gint window_offset_pub;
   gint window_padding;
 
   /* Standard box drawing colours */
@@ -72,8 +76,12 @@ struct _AwnDialogPrivate
   DesktopAgnosticColor *hilight_color;
 
   gulong anchor_configure_id;
+  gulong applet_configure_id;
+  gulong applet_comp_id;
+  gulong applet_size_id;
   gulong orient_changed_id;
-  guint  idle_id;
+
+  guint inhibit_cookie;
 
   gint old_x, old_y, old_w, old_h;
   gint a_old_x, a_old_y, a_old_w, a_old_h;
@@ -107,6 +115,9 @@ enum
 
 static void awn_dialog_set_anchor_widget (AwnDialog *dialog,
                                           GtkWidget *anchor);
+
+static void awn_dialog_set_anchor_applet (AwnDialog *dialog,
+                                          AwnApplet *applet);
 
 static void awn_dialog_set_orientation   (AwnDialog *dialog,
                                           AwnOrientation orient);
@@ -156,7 +167,7 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
   AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (dialog);
 
   const int BORDER = priv->window_padding * 3/4;
-  const int ROUND_RADIUS = priv->window_padding;
+  const int ROUND_RADIUS = priv->window_padding / 2;
 
   /* FIXME: mhr3: I couldn't get the shape mask to work in non-composited env,
    *  so I disabled the arrow painting there, anyone feel free to fix it :)
@@ -177,6 +188,7 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
      *   3) calc the difference (which is different for each orient)
      */
     win = gtk_widget_get_window (priv->anchor);
+    g_return_if_fail (win);
 
     gdk_window_get_origin (win, &a_center_point.x, &a_center_point.y);
     gdk_drawable_get_size (GDK_DRAWABLE (win), &aw, &ah);
@@ -220,9 +232,15 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
         break;
     }
     /* Make sure we paint the arrow in our window */
-    arrow.x = CLAMP (arrow.x,
-                     BORDER*2 + ROUND_RADIUS,
-                     width - (BORDER*2 + ROUND_RADIUS));
+    if (BORDER*2 + ROUND_RADIUS > width - (BORDER*2 + ROUND_RADIUS))
+    {
+      arrow.x = width / 2;
+    }
+    else
+    {
+      arrow.x = CLAMP (arrow.x, BORDER*2 + ROUND_RADIUS,
+                       width - (BORDER*2 + ROUND_RADIUS));
+    }
     arrow.y = height - BORDER;
 
     GdkPoint top_left  = { .x = BORDER, .y = BORDER };
@@ -231,34 +249,31 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
     GdkPoint bot_right = { .x = width - BORDER, .y = height - BORDER };
 
     /* start @ top-left curve */
-    cairo_move_to (cr, top_left.x, top_left.y + ROUND_RADIUS);
-    cairo_curve_to (cr, top_left.x, top_left.y, top_left.x, top_left.y, 
-                    top_left.x + ROUND_RADIUS, top_left.y);
+    cairo_move_to (cr, bot_left.x, bot_left.y - ROUND_RADIUS);
+    cairo_arc (cr, top_left.x + ROUND_RADIUS, top_left.y + ROUND_RADIUS,
+               ROUND_RADIUS, M_PI, M_PI * 1.5);
 
     /* line to top-right corner + curve */
-    cairo_line_to (cr, top_right.x - ROUND_RADIUS, top_right.y);
-    cairo_curve_to (cr, top_right.x, top_right.y, top_right.x, top_right.y,
-                    top_right.x, top_right.y + ROUND_RADIUS);
+    cairo_arc (cr, top_right.x - ROUND_RADIUS, top_right.y + ROUND_RADIUS,
+               ROUND_RADIUS, M_PI * 1.5, M_PI * 2);
 
     /* line to bottom-right corner + curve */
-    cairo_line_to (cr, bot_right.x, bot_right.y - ROUND_RADIUS);
-    cairo_curve_to (cr, bot_right.x, bot_right.y, bot_right.x, bot_right.y, 
-                    bot_right.x - ROUND_RADIUS, bot_right.y);
+    cairo_arc (cr, bot_right.x - ROUND_RADIUS, bot_right.y - ROUND_RADIUS,
+               ROUND_RADIUS, 0.0, M_PI * 0.5);
 
     /* Painting the actual "arrow"
      *   now we'll use BORDER for ROUND_RADIUS, because there's only BORDER
      *   pixels between the line and window edge.
      */
-    cairo_line_to (cr, arrow.x + BORDER, arrow.y);
-    cairo_curve_to (cr, arrow.x + BORDER, arrow.y, arrow.x, arrow.y,
-                    arrow.x, arrow.y + BORDER);
-    cairo_curve_to (cr, arrow.x, arrow.y + BORDER, arrow.x, arrow.y,
-                    arrow.x - BORDER, arrow.y);
+
+    cairo_arc_negative (cr, arrow.x + BORDER, arrow.y + BORDER,
+                        BORDER, M_PI * 1.5, M_PI);
+    cairo_arc_negative (cr, arrow.x - BORDER, arrow.y + BORDER,
+                        BORDER, 0.0, M_PI * 1.5);
 
     /* line to bottom-left corner + curve */
-    cairo_line_to (cr, bot_left.x + ROUND_RADIUS, bot_left.y);
-    cairo_curve_to (cr, bot_left.x, bot_left.y, bot_left.x, bot_left.y,
-                    bot_left.x, bot_left.y - ROUND_RADIUS);
+    cairo_arc (cr, bot_left.x + ROUND_RADIUS, bot_left.y - ROUND_RADIUS,
+               ROUND_RADIUS, M_PI * 0.5, M_PI);
 
     /* close the path */
     cairo_close_path (cr);
@@ -272,8 +287,41 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
   }
 }
 
+static void
+_real_show (GtkWidget *widget)
+{
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (widget);
+
+  awn_dialog_refresh_position (AWN_DIALOG (widget), 0, 0);
+
+  /* in Vala terms: base.show(); */
+  GTK_WIDGET_CLASS (awn_dialog_parent_class)->show (widget);
+
+  if (priv->anchor_applet && priv->inhibit_cookie == 0)
+  {
+    priv->inhibit_cookie = 
+      awn_applet_inhibit_autohide (priv->anchor_applet,
+                                   "AwnDialog being displayed");
+  }
+}
+
+static void
+_real_hide (GtkWidget *widget)
+{
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (widget);
+
+  /* in Vala terms: base.hide(); */
+  GTK_WIDGET_CLASS (awn_dialog_parent_class)->hide (widget);
+
+  if (priv->anchor_applet && priv->inhibit_cookie)
+  {
+    awn_applet_uninhibit_autohide (priv->anchor_applet, priv->inhibit_cookie);
+    priv->inhibit_cookie = 0;
+  }
+}
+
 static gboolean
-_expose_event(GtkWidget *widget, GdkEventExpose *expose)
+_expose_event (GtkWidget *widget, GdkEventExpose *expose)
 {
   AwnDialog *dialog;
   AwnDialogPrivate *priv;
@@ -313,6 +361,7 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   cairo_save (cr);
 
+  /* inner border, which is 2 pixels smaller */
   cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
   awn_cairo_set_source_color (cr, priv->hilight_color);
   cairo_translate (cr, 1.0, 1.0);
@@ -333,9 +382,84 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
 
   cairo_restore (cr);
 
+  // make sure the constants here equal the ones in paint_border_path method!
+  const int BORDER = priv->window_padding * 3/4;
+  const int ROUND_RADIUS = priv->window_padding / 2;
+
+  /* fill for the titlebar */
+  if (GTK_WIDGET_VISIBLE (priv->title))
+  {
+    cairo_save (cr);
+
+    cairo_identity_matrix (cr);
+    cairo_translate (cr, 0.5, 0.5);
+    cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+    awn_cairo_set_source_color (cr, priv->g_histep_1);
+
+    const int inner_w = width - 2*BORDER - 4;
+    const int inner_h = priv->title->allocation.height
+                        + (priv->window_padding - BORDER);
+
+    awn_cairo_rounded_rect (cr, BORDER + 2, BORDER + 2,
+                            inner_w, inner_h,
+                            priv->window_padding / 2, ROUND_ALL);
+    cairo_fill_preserve (cr);
+    cairo_stroke (cr);
+
+    const int SHADOW_RADIUS = 4;
+    cairo_rectangle (cr, BORDER + 2,
+                     BORDER + 2 + inner_h - priv->window_padding / 2,
+                     inner_w, priv->window_padding / 2 + SHADOW_RADIUS);
+    cairo_clip (cr);
+    awn_cairo_rounded_rect_shadow (cr, BORDER + 2, BORDER + 2,
+                                   inner_w, inner_h,
+                                   priv->window_padding / 2, ROUND_ALL,
+                                   SHADOW_RADIUS, 0.4);
+    cairo_restore (cr);
+  }
+
   awn_cairo_set_source_color (cr, priv->border_color);
   cairo_append_path (cr, path);
   cairo_stroke (cr);
+
+  /* draw shadow */
+  // FIXME: add property to disable it? (setting padding to <= 1 will do it now)
+  if (gtk_widget_is_composited (widget) && priv->window_padding > 1)
+  {
+    const double SHADOW_RADIUS = MIN (priv->window_padding / 2, 15);
+
+    int w, h;
+
+    switch (priv->orient)
+    {
+      case AWN_ORIENTATION_TOP:
+      case AWN_ORIENTATION_BOTTOM:
+        w = width;
+        h = height;
+        break;
+      case AWN_ORIENTATION_LEFT:
+      default:
+        w = height;
+        h = width;
+        break;
+    }
+    // clip, so the shadow doesn't get drawn over the arrow
+    cairo_save (cr);
+
+    cairo_rectangle (cr, BORDER - SHADOW_RADIUS, BORDER - SHADOW_RADIUS,
+                     w + SHADOW_RADIUS * 2, h + SHADOW_RADIUS * 2);
+    cairo_append_path (cr, path);
+
+    cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
+    cairo_clip (cr);
+
+    awn_cairo_rounded_rect_shadow (cr, BORDER, BORDER,
+                                   w - BORDER*2, h - BORDER*2,
+                                   ROUND_RADIUS, ROUND_ALL,
+                                   SHADOW_RADIUS, 0.6);
+
+    cairo_restore (cr);
+  }
 
   cairo_path_destroy (path);
 
@@ -350,73 +474,6 @@ _expose_event(GtkWidget *widget, GdkEventExpose *expose)
                                     child, expose);
 
   return TRUE;
-}
-
-static gboolean
-on_title_expose(GtkWidget       *widget,
-                GdkEventExpose  *expose,
-                AwnDialog *dialog)
-{
-  cairo_t *cr = NULL;
-  cairo_pattern_t *pat = NULL;
-  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (dialog);
-  gint width, height;
-
-  cr = gdk_cairo_create(gtk_widget_get_window (widget));
-
-  g_return_val_if_fail (cr, FALSE);
-
-  width = widget->allocation.width;
-  height = widget->allocation.height;
-
-  gdk_cairo_region (cr, expose->region);
-  cairo_clip (cr);
-
-  cairo_translate (cr, expose->area.x, expose->area.y);
-
-  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-
-  cairo_set_line_width (cr, 1.0);
-  cairo_translate (cr, 0.5, 0.5);
-
-  /* Paint the background the border colour */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->g_histep_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, priv->g_histep_2);
-
-  awn_cairo_rounded_rect (cr, 0, 0, width-1, height-0.5, 15, ROUND_ALL);
-  cairo_set_source (cr, pat);
-  cairo_fill_preserve (cr);
-  cairo_pattern_destroy (pat);
-
-  /* border */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->border_color);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.75, priv->border_color);
-  cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.25);
-
-  cairo_set_source (cr, pat);
-  cairo_stroke (cr);
-
-  cairo_pattern_destroy (pat);
-
-  /* hilight */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, priv->hilight_color);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.75, priv->hilight_color);
-  cairo_pattern_add_color_stop_rgba (pat, 1.0, 0.0, 0.0, 0.0, 0.0);
-
-  cairo_set_operator (cr, CAIRO_OPERATOR_XOR);
-  awn_cairo_rounded_rect (cr, 1, 1, width-3, height-1.5, 15, ROUND_ALL);
-  cairo_set_source (cr, pat);
-  cairo_stroke (cr);
-
-  cairo_pattern_destroy (pat);
-
-  /* Clean up */
-  cairo_destroy(cr);
-
-  return FALSE;
 }
 
 static gboolean
@@ -463,6 +520,22 @@ _on_title_notify(GObject *dialog, GParamSpec *spec, gpointer null)
   {
     gtk_widget_hide(priv->title);
   }
+}
+
+static void
+_on_active_changed(GObject *dialog, GParamSpec *spec, gpointer null)
+{
+  // FIXME: add property to disable this
+  AwnDialogPrivate *priv;
+
+  priv = AWN_DIALOG(dialog)->priv;
+
+  if (!AWN_IS_OVERLAYABLE (priv->anchor)) return;
+
+  AwnOverlayable *icon = AWN_OVERLAYABLE (priv->anchor);
+
+  g_object_set (awn_overlayable_get_effects (icon),
+                "active", gtk_window_is_active (GTK_WINDOW (dialog)), NULL);
 }
 
 static void
@@ -541,11 +614,11 @@ awn_dialog_add(GtkContainer *dialog, GtkWidget *widget)
 {
   AwnDialogPrivate *priv;
 
-  g_return_if_fail(AWN_IS_DIALOG(dialog));
-  g_return_if_fail(GTK_IS_WIDGET(widget));
-  priv = AWN_DIALOG(dialog)->priv;
+  g_return_if_fail (AWN_IS_DIALOG (dialog));
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+  priv = AWN_DIALOG (dialog)->priv;
 
-  gtk_box_pack_start(GTK_BOX(priv->vbox), widget, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (priv->vbox), widget, TRUE, TRUE, 0);
 }
 
 static void
@@ -553,10 +626,21 @@ awn_dialog_remove(GtkContainer *dialog, GtkWidget *widget)
 {
   AwnDialogPrivate *priv;
 
-  g_return_if_fail(AWN_IS_DIALOG(dialog));
-  g_return_if_fail(GTK_IS_WIDGET(widget));
-  priv = AWN_DIALOG(dialog)->priv;
-  gtk_container_remove(GTK_CONTAINER(priv->vbox), widget);
+  g_return_if_fail (AWN_IS_DIALOG (dialog));
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+  priv = AWN_DIALOG (dialog)->priv;
+
+  if (widget == priv->align)
+  {
+    /* the alignment was added using the base method,
+         so it also has to be removed using that way */
+    GtkContainerClass *klass = GTK_CONTAINER_CLASS (awn_dialog_parent_class);
+    klass->remove (GTK_CONTAINER (dialog), widget);
+  }
+  else
+  {
+    gtk_container_remove (GTK_CONTAINER (priv->vbox), widget);
+  }
 }
 
 static void
@@ -611,7 +695,7 @@ awn_dialog_get_property (GObject    *object,
       g_value_set_boolean (value, priv->esc_hide);
       break;
     case PROP_WINDOW_OFFSET:
-      g_value_set_int (value, priv->window_offset);
+      g_value_set_int (value, priv->window_offset_pub);
       break;
     case PROP_WINDOW_PADDING:
       g_value_set_int (value, priv->window_padding);
@@ -646,6 +730,10 @@ awn_dialog_set_property (GObject      *object,
     case PROP_ANCHOR:
       awn_dialog_set_anchor_widget (AWN_DIALOG (object),
                                     GTK_WIDGET (g_value_get_object (value)));
+      break;
+    case PROP_ANCHOR_OWNER:
+      awn_dialog_set_anchor_applet (AWN_DIALOG (object),
+                                    AWN_APPLET (g_value_get_object (value)));
       break;
     case PROP_ANCHORED:
       priv->anchored = g_value_get_boolean (value);
@@ -698,11 +786,50 @@ awn_dialog_set_property (GObject      *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
 }
+
+static void
+awn_dialog_finalize (GObject *object)
+{
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (object);
+
+  if (priv->anchor_configure_id)
+  {
+    g_signal_handler_disconnect (priv->anchor, priv->anchor_configure_id);
+    priv->anchor_configure_id = 0;
+  }
+
+  if (priv->applet_configure_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->applet_configure_id);
+    priv->applet_configure_id = 0;
+  }
+
+  if (priv->orient_changed_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->orient_changed_id);
+    priv->orient_changed_id = 0;
+  }
+
+  if (priv->applet_comp_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->applet_comp_id);
+    priv->applet_comp_id = 0;
+  }
+
+  if (priv->applet_size_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->applet_size_id);
+    priv->applet_size_id = 0;
+  }
+
+  G_OBJECT_CLASS (awn_dialog_parent_class)->finalize (object);
+}
+
 /*
  * class init
  */
 static void
-awn_dialog_class_init(AwnDialogClass *klass)
+awn_dialog_class_init (AwnDialogClass *klass)
 {
   GObjectClass *obj_class;
   GtkWidgetClass *widget_class;
@@ -713,8 +840,12 @@ awn_dialog_class_init(AwnDialogClass *klass)
   obj_class->get_property = awn_dialog_get_property;
   obj_class->set_property = awn_dialog_set_property;
 
+  obj_class->finalize = awn_dialog_finalize;
+
   widget_class = GTK_WIDGET_CLASS (klass);
   widget_class->expose_event = _expose_event;
+  widget_class->show = _real_show;
+  widget_class->hide = _real_hide;
 
   cont_class = GTK_CONTAINER_CLASS (klass);
   cont_class->add = awn_dialog_add;
@@ -726,6 +857,14 @@ awn_dialog_class_init(AwnDialogClass *klass)
                          "Anchor",
                          "Widget this window is attached to",
                          GTK_TYPE_WIDGET,
+                         G_PARAM_WRITABLE));
+
+  g_object_class_install_property (obj_class,
+    PROP_ANCHOR_OWNER,
+    g_param_spec_object ("anchor-applet",
+                         "Anchor applet",
+                         "AwnApplet this window is attached to",
+                         AWN_TYPE_APPLET,
                          G_PARAM_WRITABLE));
 
   g_object_class_install_property (obj_class,
@@ -831,6 +970,9 @@ awn_dialog_init (AwnDialog *dialog)
 
   priv = dialog->priv = AWN_DIALOG_GET_PRIVATE (dialog);
 
+  priv->anchor = NULL;
+  priv->anchor_applet = NULL;
+
   gtk_window_set_skip_taskbar_hint (GTK_WINDOW (dialog), TRUE);
   gtk_window_set_decorated (GTK_WINDOW (dialog), FALSE);
   gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
@@ -850,29 +992,39 @@ awn_dialog_init (AwnDialog *dialog)
   g_signal_connect (dialog, "composited-changed",
                     G_CALLBACK (_on_composited_changed), NULL);
 
+  awn_utils_ensure_transparent_bg (GTK_WIDGET (dialog));
+
+  /* alignment for dialog's border */
   priv->align = gtk_alignment_new (0.5, 0.5, 1, 1);
 
   GTK_CONTAINER_CLASS (awn_dialog_parent_class)->add (GTK_CONTAINER (dialog),
                                                       priv->align);
 
+  /* main container for widgets */
   priv->vbox = gtk_vbox_new (FALSE, 6);
   gtk_container_add (GTK_CONTAINER (priv->align), priv->vbox);
 
+  /* titlebar */
+  //priv->hbox = gtk_hbox_new (FALSE, 2);
+  //gtk_box_pack_start (GTK_BOX(priv->vbox), priv->hbox, TRUE, TRUE, 0);
+
+  /* title widget itself */
   priv->title = gtk_label_new ("");
   gtk_widget_set_no_show_all (priv->title, TRUE);
-  gtk_box_pack_start (GTK_BOX (priv->vbox), priv->title, TRUE, TRUE, 0);
-  g_signal_connect (priv->title, "expose-event",
-                    G_CALLBACK (on_title_expose), dialog);
-
   gtk_widget_set_state (priv->title, GTK_STATE_PRELIGHT);
   gtk_misc_set_alignment (GTK_MISC (priv->title), 0.5, 0.5);
   gtk_misc_set_padding (GTK_MISC (priv->title), 4, 4);
+
+  gtk_box_pack_start (GTK_BOX (priv->vbox), priv->title, TRUE, TRUE, 0);
 
   /* See if the title has been set */
   g_signal_connect (dialog, "notify::title",
                     G_CALLBACK (_on_title_notify), NULL);
 
   g_object_notify (G_OBJECT (dialog), "title");
+
+  g_signal_connect (dialog, "notify::is-active",
+                    G_CALLBACK (_on_active_changed), NULL);
 }
 
 // FIXME: we're still missing dispose method
@@ -893,7 +1045,7 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
   if (!width)  width  = GTK_WIDGET (dialog)->allocation.width;
   if (!height) height = GTK_WIDGET (dialog)->allocation.height;
 
-    win = gtk_widget_get_window (priv->anchor);
+  win = gtk_widget_get_window (priv->anchor);
 
   if (!win) return; // widget might not be realized yet
 
@@ -945,27 +1097,42 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
 
   if (priv->last_x != x || priv->last_y != y)
   {
-    /* 
+    /*
      * some optimization, we dont want to move the window on every small
      *  change 
      */
-    gboolean both_axes = priv->last_x != x && priv->last_y != y;
-    gboolean huge_delta = FALSE;
-    if (!both_axes)
+    gboolean dominant_axis_changed = FALSE;
+    switch (priv->orient)
     {
-      gint delta = abs(priv->last_x - x) + abs(priv->last_y - y);
+      case AWN_ORIENTATION_LEFT:
+      case AWN_ORIENTATION_RIGHT:
+        dominant_axis_changed = priv->last_x != x;
+        break;
+      default:
+        dominant_axis_changed = priv->last_y != y;
+        break;
+    }
+
+    /*g_debug ("last != current; last [%d, %d], now [%d, %d], (%d x %d)",
+             priv->last_x, priv->last_y, x, y, width, height);*/
+
+    gboolean huge_delta = FALSE;
+    if (!dominant_axis_changed)
+    {
       switch (priv->orient)
       {
         case AWN_ORIENTATION_LEFT:
         case AWN_ORIENTATION_RIGHT:
-          huge_delta = delta >= height / 10;
+          huge_delta = !(y >= priv->last_y - height/3
+                         && y <= priv->last_y + height/3);
           break;
         default:
-          huge_delta = delta >= width / 10;
+          huge_delta = !(x >= priv->last_x - width/3
+                         && x <= priv->last_x + width/3);
           break;
       }
     }
-    if (both_axes || huge_delta)
+    if (dominant_axis_changed || huge_delta)
     {
       priv->last_x = x;
       priv->last_y = y;
@@ -1003,11 +1170,81 @@ _on_origin_changed (AwnApplet *applet, GdkRectangle *rect, AwnDialog *dialog)
 {
   g_return_if_fail (AWN_IS_DIALOG (dialog));
 
-  AwnDialogPrivate *priv = dialog->priv;
-
   if (!GTK_WIDGET_VISIBLE (dialog)) return;
 
   awn_dialog_refresh_position (dialog, 0, 0);
+}
+
+static void
+_applet_on_size_changed (AwnDialog *dialog)
+{
+  g_return_if_fail (AWN_IS_DIALOG (dialog));
+
+  AwnDialogPrivate *priv = dialog->priv;
+
+  awn_dialog_set_offset (dialog, priv->window_offset_pub);
+}
+
+static void
+awn_dialog_set_anchor_applet (AwnDialog *dialog, AwnApplet *applet)
+{
+  g_return_if_fail (AWN_IS_DIALOG (dialog));
+
+  AwnDialogPrivate *priv = dialog->priv;
+
+  if (priv->applet_configure_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->applet_configure_id);
+    priv->applet_configure_id = 0;
+  }
+
+  if (priv->orient_changed_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->orient_changed_id);
+    priv->orient_changed_id = 0;
+  }
+
+  if (priv->applet_comp_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->applet_comp_id);
+    priv->applet_comp_id = 0;
+  }
+
+  if (priv->applet_size_id)
+  {
+    g_signal_handler_disconnect (priv->anchor_applet, priv->applet_size_id);
+    priv->applet_size_id = 0;
+  }
+
+  if (applet) g_return_if_fail (AWN_IS_APPLET (applet));
+
+  priv->anchor_applet = applet;
+
+  if (applet)
+  {
+    /* get orientation from the applet and connect to its changed signal */
+    priv->orient = awn_applet_get_orientation (applet);
+
+    /* connect to the special configure-event and other relevant signals*/
+    priv->applet_configure_id =
+      g_signal_connect (applet, "origin-changed",
+                        G_CALLBACK (_on_origin_changed), dialog);
+
+    priv->orient_changed_id =
+      g_signal_connect_swapped (applet, "orientation-changed",
+                                G_CALLBACK (awn_dialog_set_orientation),
+                                dialog);
+
+    priv->applet_comp_id = 
+      g_signal_connect_swapped (applet, "composited-changed",
+                        G_CALLBACK (_applet_on_size_changed), dialog);
+
+    priv->applet_size_id = 
+      g_signal_connect_swapped (applet, "size-changed",
+                        G_CALLBACK (_applet_on_size_changed), dialog);
+
+    awn_dialog_set_offset (dialog, priv->window_offset_pub);
+  }
 }
 
 static gboolean
@@ -1028,6 +1265,7 @@ _on_anchor_configure_event (GtkWidget *widget, GdkEventConfigure *event,
 
   priv->a_old_x = event->x;     priv->a_old_y = event->y;
   priv->a_old_w = event->width; priv->a_old_h = event->height;
+
   awn_dialog_refresh_position (dialog, 0, 0);
 
   return FALSE;
@@ -1045,11 +1283,6 @@ awn_dialog_set_anchor_widget (AwnDialog *dialog, GtkWidget *anchor)
     g_signal_handler_disconnect (priv->anchor, priv->anchor_configure_id);
     priv->anchor_configure_id = 0;
   }
-  if (priv->orient_changed_id)
-  {
-    g_signal_handler_disconnect (priv->anchor, priv->orient_changed_id);
-    priv->orient_changed_id = 0;
-  }
 
   // FIXME: perhaps we should ref the object and unref it in our dispose
   priv->anchor = anchor;
@@ -1059,26 +1292,7 @@ awn_dialog_set_anchor_widget (AwnDialog *dialog, GtkWidget *anchor)
     if (AWN_IS_APPLET (anchor))
     {
       /* special behaviour if we're anchoring to an AwnApplet */
-      AwnApplet *applet = AWN_APPLET (anchor);
-
-      /* connect to the special configure-event */
-      priv->anchor_configure_id =
-        g_signal_connect (applet, "origin-changed",
-                          G_CALLBACK (_on_origin_changed), dialog);
-
-      /* get orientation from the applet and connect to its changed signal */
-      priv->orient = awn_applet_get_orientation (applet);
-      priv->orient_changed_id =
-        g_signal_connect_swapped (applet, "orientation-changed",
-                                  G_CALLBACK (awn_dialog_set_orientation),
-                                  dialog);
-
-      if (gtk_widget_is_composited (anchor))
-      {
-        // there's an extra space above AwnApplet, lets compensate it
-        priv->window_offset = awn_applet_get_size (applet) * -1;
-        priv->window_offset += AWN_DIALOG_DEFAULT_OFFSET;
-      }
+      awn_dialog_set_anchor_applet (dialog, AWN_APPLET (anchor));
     }
     else
     {
@@ -1117,9 +1331,15 @@ awn_dialog_set_offset (AwnDialog *dialog, gint offset)
   
   AwnDialogPrivate *priv = dialog->priv;
 
-  if (offset == priv->window_offset) return;
-
+  priv->window_offset_pub = offset;
   priv->window_offset = offset;
+
+  if (priv->anchor_applet && gtk_widget_is_composited (
+        GTK_WIDGET (priv->anchor_applet)))
+  {
+    // there's an extra space above AwnApplet, lets compensate it
+    priv->window_offset += awn_applet_get_size (priv->anchor_applet) * -1;
+  }
 
   awn_dialog_refresh_position (dialog, 0, 0);
 }
@@ -1143,7 +1363,7 @@ awn_dialog_set_padding (AwnDialog *dialog, gint padding)
  * the dialog is no longer being used.
  */
 GtkWidget*
-awn_dialog_new()
+awn_dialog_new(void)
 {
   AwnDialog *dialog;
 
@@ -1169,6 +1389,30 @@ awn_dialog_new_for_widget (GtkWidget *widget)
 
   dialog = g_object_new (AWN_TYPE_DIALOG,
                          "anchor", widget,
+                         NULL);
+
+  return GTK_WIDGET (dialog);
+}
+
+/**
+ * awn_dialog_new_for_widget_with_applet:
+ * @widget: The widget to which to associate the dialog.
+ * @applet: AwnApplet associated with @widget.
+ *
+ * Creates a new toplevel window that is "attached" to the @widget.
+ * Returns: a new dialog.  Caller is responsible for freeing the memory when
+ * the dialog is no longer being used.
+ */
+GtkWidget*
+awn_dialog_new_for_widget_with_applet (GtkWidget *widget, AwnApplet *applet)
+{
+  AwnDialog *dialog;
+
+  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+
+  dialog = g_object_new (AWN_TYPE_DIALOG,
+                         "anchor", widget,
+                         "anchor-applet", applet,
                          NULL);
 
   return GTK_WIDGET (dialog);

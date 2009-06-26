@@ -1,3 +1,1121 @@
+2009-06-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	* configure.in:
+	* doc/reference/Makefile.am:
+	Remove remnants of the old libawn/egg directory.
+
+2009-06-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Remove unused variable.
+
+2009-06-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/awn.override:
+	* libawn/libawn.h:
+	Clean up headers.
+
+2009-06-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	Update the docs.
+
+2009-06-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+        Remove a big chunk of whitespace in a param list.
+
+2009-06-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf-file.c:
+	Removed a FIXME comment that does not apply.
+
+2009-06-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Detect theme changes.
+
+2009-06-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	A couple of changes which should make AWN look more polished.
+
+2009-06-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf-file.c:
+	Partial refactor of AwnOverlayPixbufFile.
+
+2009-06-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Added binding for inhibit/uninhibit_autohide.
+
+2009-06-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	Added methods to AwnApplet which will call the InhibitAutohide DBus
+	methods.
+	* libawn/awn-dialog.c:
+	AwnDialog now automatically inhibits autohide when it's shown.
+
+2009-06-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Added DBus methods for inhibiting autohide.
+
+2009-06-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects-ops-new.c:
+	Fix compiler warning.
+
+2009-06-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/Makefile.am:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-dialog.c:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	* libawn/awn-overlayable.c:
+	* libawn/awn-overlayable.h:
+	* libawn/libawn.h:
+	* bindings/python/awn.defs:
+	Added AwnOverlayable interface.
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	* tests/test-awn-effects.c:
+	Changes due to the new interface.
+
+2009-06-19  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnClass.py:
+	* awn-manager/awnManagerMini.py.in:
+	Add prelimary work for Categories support in awn-manager-mini.
+	Add missing initialization.
+
+2009-06-18  Michal Hruby  <michal.mhr@gmail.com>
+
+	reviewed by: mhr3
+	patch by: onox
+
+	* bindings/python/awn.override:
+	Added python binding override for ThemedIcon.set_info
+	* tests/test-awn-tooltip.py:
+	Added test for ThemedIcon.set_info()
+
+2009-06-18  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	* awn-manager/awnManagerMini.py.in:
+	Factorize make_model and refresh_tree.
+
+2009-06-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+	Be more careful in dispose.
+
+2009-06-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+	Move bridge and client into Private.  Unref bridge on dispose.
+
+2009-06-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf.c:
+	Reverted a one stylistic change from rev 920 and modified
+	one of the additions.  To enhance code readability.
+
+2009-06-18  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-overlay-pixbuf-file.c:
+	* libawn/awn-overlay-pixbuf.c:
+	Fixed loading different pixbuf after setting one.
+
+2009-06-18  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Added resize animations to panel.
+
+2009-06-17  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/xutils.c:
+	* applets/taskmanager/xutils.h:
+	* src/xutils.c:
+	* src/xutils.h:
+	Remove unused code.
+
+2009-06-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* data/awn.schema-ini.in:
+	Provide schema for theme/icon_text_color.
+
+2009-06-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+	Bind text colour to theme/icon_text_color key.
+
+2009-06-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-progress-circle.c:
+	Set the alpha value on the colours a bit more concisely.
+
+2009-06-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+	Switched text back to original rendering except now using 
+	GTK_STATE_NORMAL.
+
+2009-06-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+	Switch over to outlined text for comparison purposes.
+
+2009-06-16  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Allowed NULL in OverlayThemedIcon constructor for icon-state param.
+	* libawn/anims/awn-effect-squish.c:
+	Fixed FTBFS.
+	* libawn/awn-effects.c:
+	Added notify signal watch for overlays.
+
+2009-06-16  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Made the OverlayText constructor more convenient
+	* libawn/anims/awn-effect-squish.c:
+	Changes to squish, so that it fits to AwnIcon's window.
+
+2009-06-16  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects-ops-new.h:
+	* libawn/awn-effects.c:
+	* libawn/awn-overlay.c:
+	* libawn/awn-overlay.h:
+	Finished implementation of apply-effects overlay property.
+	* libawn/awn-overlay-text.c:
+	Changed default for apply-effects property to FALSE.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-progress-circle.c:
+	Basic progress circle implemented.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/libawn.h:
+	Add new #includes to libawn.h.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-progress.c:
+	Add percent-complete prop.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	 * libawn/Makefile.am:
+        Add AwnOverlayProgressCircle files to Makefile.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-progress-circle.c:
+	* libawn/awn-overlay-progress-circle.h:
+	Boilderplate for AwnOverlayProgressCircle.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/Makefile.am:
+	Add AwnOverlayProgress files to Makefile.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-progress.c:
+	* libawn/awn-overlay-progress.h:
+	Boilerplate for AwnOverlayProgress.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf.c:
+        Some modifications of docs/comments.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf-file.c:
+	Some modifications of docs/comments.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Add some docs and check for an AwnThemedIcon in the constructor.
+
+2009-06-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+	Modified docs to reflect AwnOverlaidIcon -> AwnEffects.
+
+2009-06-15  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Fixed bindings for pixbuf overlays.
+	* tests/test-overlays.py:
+	Added pixbuf overlays test.
+
+2009-06-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Added bindings for AwnOverlayPixbuf and AwnOverlayPixbufFile.
+
+2009-06-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay.c:
+	Add an "apply-effects" property that AwnEffects can check to determine
+	if effects should be applied to overlay.
+
+2009-06-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+  	* libawn/awn-overlaid-icon.h:
+	Removed awn-overlaid-icon.[ch] as code was moved to AwnEffects.
+
+2009-06-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/Makefile.am:
+	* libawn/anims/awn-effects-shared.h:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* libawn/awn-overlay-pixbuf-file.c:
+	* libawn/awn-overlay-pixbuf.c:
+	* libawn/awn-overlay-pixbuf.h:
+	* libawn/awn-overlay-text.c:
+	* libawn/awn-overlay-themed-icon.c:
+	* libawn/awn-overlay-themed-icon.h:
+	* libawn/awn-overlay-throbber.c:
+	* libawn/awn-overlay-throbber.h:
+	* libawn/awn-overlay.c:
+	* libawn/awn-overlay.h:
+	* libawn/libawn.h:
+	Removed AwnOverlaidIcon, methods it provided are now moved to
+	AwnEffects, where is greater control how, when and if to apply
+	effects together with overlays.
+	* tests/test-overlays.py:
+	Updated to match current architecture.
+	* libawn/awn-icon-box.h:
+	Fixed wrong include.
+
+2009-06-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+	Use awn_effects_cairo_create_clipped()... may help deranged
+	Nvidia drivers.
+
+2009-06-13  Michal Hruby  <michal.mhr@gmail.com>
+
+	* tests/test-overlays.py:
+	Added small overlay test.
+	* bindings/python/awn.defs:
+	Fixed OverlayThrobber python binding.
+	* libawn/awn-effects.c:
+	Fixed missing break.
+	* libawn/awn-overlaid-icon.c:
+	Added redraw when overlay is added/removed.
+	* libawn/awn-overlay-throbber.c:
+	Fixed crash upon object destruction.
+	* tests/test-awn-effects.c:
+	Updated prop name.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
+	Document AwnOverlayThrobber.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+ 	* libawn/awn-overlay-text.c:
+        Document the props for AwnOverlayText.
+
+2009-06-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-overlay-pixbuf-file.c:
+	Fix compiler warning.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+	It's best to disconnect signals in dispose() not finalize.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+	Missed moving a call to parent finalize.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+  	* libawn/awn-overlay-themed-icon.c:
+  	* libawn/awn-overlay-throbber.c:
+	Moved calls to parent dispose/finalize to end of functions.
+
+2009-06-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* tests/test-config-client.c:
+	Fix compiler errors/warnings.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf.c:
+	Move call to parent dispose() to the end of dispose().
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf-file.h:
+	Updated header for AwnOverlayPixbufFile.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf-file.c:
+	Initial implementation of AwnOverlayPixbufFile.  Does not cache
+	pixbufs yet.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Add constructed().  Clear pixbufs hash table when icon name changes.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
+	* libawn/awn-overlay-text.c:
+	Chain up to parent constructed() if there is one.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+	Queue a draw whenever any props in AwnOverlay changes.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+	Queue a draw whenever the active property of any overlay changes.
+	Should consider monitoring some of the other props?
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay.c:
+	Removed x_per and y_per.  This type of thing should be handled
+	in subclasses as not all necessarily need something like this and
+	those that do might best conceptualize it a bit differently (ie scale)
+
+2009-06-12  h4writer <hv1989@gmail.com>
+
+	* src/awn-background-3d.c:
+	Adjust the padding when offset or size of panel changed (of 3d look).
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Fix erroneous state does not exit warnings.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Add an additonal check of data and remove a stray period.
+
+2009-06-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	A rather ugly fix....  Needs to be cleaned up after some testing.
+
+2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+	Disconnect the signal handler in finalize if it _is_ attached.
+
+2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-icon-file.c => libawn/awn-overlay-pixbuf-file.c:
+  	* libawn/awn-overlay-icon-file.h => libawn/awn-overlay-pixbuf-file.h:
+  	* libawn/Makefile.am:
+  	* libawn/libawn.h:
+  	* libawn/awn-overlay-pixbuf-file.c:
+  	* libawn/awn-overlay-pixbuf-file.h:
+	Convert AwnOverlayIconFile to AwnOverlayPixbufFile.
+
+2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf.c:
+        * libawn/awn-overlay-pixbuf.h:
+	Initial implementation of AwnOverlayPixbuf.
+	* libawn/libawn.h:
+	Add AwnOverlayPixbuf header files.
+
+2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
+	Move unref of Icon into dispose.
+
+2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-icon-throbber.c:
+	Take a reference on the Icon when the icon property is set.
+
+2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-icon-file.c:
+	* libawn/awn-overlay-icon-file.h:
+	* libawn/Makefile.am:
+	Boilerplate for AwnOverlayIconFile.
+
+2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf.c:
+  	* libawn/awn-overlay-pixbuf.h:
+  	* libawn/Makefile.am:
+	Boilerplate for AwnOverlayPixbuf.
+
+2009-06-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	Use squared sin for the curved offset - makes the curve a bit more
+	steep.
+
+2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Don't try to copy original_icon_names if it is NULL.
+
+2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Spelling:  orignal -> original
+
+2009-06-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-overlay-themed-icon.c:
+	* libawn/awn-overlay-themed-icon.h:
+	Correct the def of awn_overlay_themed_icon_new() to required an AnwOverlaidIcon instead of AwnThemedIcon.
+
+2009-06-10  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	Tweak the CFLAGS and the warning-related CFLAGS.
+
+	* applets/taskmanager/task-icon.c (task_icon_remove_window):
+	* applets/taskmanager/task-manager.c (try_to_place_window_by_wmclass,
+	  try_to_match_window_to_launcher, _drag_dest_leave):
+	* applets/taskmanager/task-window.c (task_window_set_icon_geometry):
+	* libawn/awn-applet-simple.c (awn_applet_simple_class_init):
+	* libawn/awn-dialog.c (_on_origin_changed):
+	* libawn/awn-overlaid-icon.c (_awn_overlaid_icon_expose):
+	* src/awn-app.c (awn_app_get_panels):
+	* src/awn-applet-manager.c (awn_applet_manager_set_applet_flags):
+	Fix various compiler warnings/errors.
+
+2009-06-10  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/Makefile.am:
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	Fix docs again.
+
+2009-06-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	A bit more documentation.
+
+2009-06-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	More documentation.
+
+2009-06-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-overlay-themed-icon.c:
+	Change order of parameters of awn_themed_icon_set_info_append() 
+	to be consistent with other functions.
+
+2009-06-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Some documentation.
+
+2009-06-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
+	Add scaling to AwnOverlayThrobber.
+
+2009-06-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Move the destruction of the dialog into dispose.  Causes some 
+	nasty warnings when placed in finalize().
+
+2009-06-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	One more fix to the finalization of AwnDialog.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/task-icon.c
+	Destroy the dialog on finalize.  There's some interesting assertions
+	and Warnings generated when doing so. Possible related to some signals
+	that need to be disconnected?
+
+2009-06-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-dialog.c:
+	* libawn/awn-dialog.h:
+	Finalize AwnDialog correctly.
+	Provide new contruction method: awn_dialog_new_for_widget_with_applet
+	 - can be used for AwnIcons inside an AwnApplet (should fix the issues
+	   in taskamanger)
+
+2009-06-10  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Fix constructor of AwnOverlayThemedIcon.
+	* src/awn-panel.c:
+	* tests/test-awn-effects.c:
+	Fix compiler warnings.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Modified binding for awn_overlay_themed_icon_new().
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+	
+	* bindings/python/awn.defs:
+	Attempt to do Python bindings for awn_overlay_move_to().  Broken
+	at the moment.
+	Python bindings for AwnOverlayText, AwnOverlayThemedIcon and
+	AwnOverlayThrobber.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+  	* libawn/awn-overlay-themed-icon.c:
+  	* libawn/awn-overlay.c:
+  	* libawn/awn-overlay.h:
+	Make the parameter order for awn_overlay_move_to() more sensible.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Partial bindings for AwnOverlay.  Need to fix a C function before finishing.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Python bindings for AwnOverlaidIcon.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+  	* bindings/python/awn.override:
+	Working on Python bindings for AwnOverlay*, AwnOverlaidIcon.
+
+2009-06-09  Michal Hruby <michal.mhr@gmail.com>
+
+	* applets/expander/applet.c:
+	Let the applet initialization finish before destroying it.
+
+2009-06-09  Michal Hruby <michal.mhr@gmail.com>
+
+	* configure.in:
+	* applets/Makefile.am:
+	* applets/expander/Makefile.am:
+	* applets/expander/applet.c:
+	* applets/expander/expander.desktop.in.in:
+	Added (semi-dummy) expander applet.
+	* bindings/python/awn.defs:
+	Added bindings for a couple of missing AwnApplet methods.
+	* libawn/awn-applet-simple.c:
+	Removed the size_request method, now uses parent's.
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-defines.h:
+	Implemented support for AwnAppletFlags:
+	 EXPAND_MINOR & MAJOR now increase the requisition size for the applet.
+	 IS_EXPANDER replaces the applet with an expander widget in core.
+	  Note that this destroys the socket widget.
+	 IS_SEPARATOR remains unimplemented.
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-panel.c:
+	Necessary changes for expander support.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Correct error/Changelog in previous commit.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
+	Unref the icon on finalize.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Fixup finalize.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+	Do what needs to be done in AwnOverlayText finalize().
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+        Chain to parent class finalize().
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+	Do what's needed in finalize().  Add a couple g_warning().
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+	Make the  append overlay and remove overlay functions a bit 
+	more robust.  Including taking and releasing a ref.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.h:
+	Correct #include due to file rename.
+
+2009-06-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+  	* libawn/awn-overlay-themed-icon.h:
+  	* libawn/Makefile.am:
+	Moved awn-overlay-icon.[ch] -> awn-overlay-themed-icon.[ch].
+	Renamed AwnOverlayIcon -> AwnOverlayThemedIcon to reduce chance 
+	of confusing with AwnOverlaidIcon.
+
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-applet-activation/main.c:
+	Fix typo.
+
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-docs.sgml:
+	Update/reorganize the table of contents.
+
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnClass.py:
+	Don't die if there's no network connection.
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-dialog.[ch]
+	Fix definition for awn_dialog_new(void).
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay.c:
+	Change to G_DEFINE_ABSTRACT_TYPE() from G_DEFINE_TYPE().
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay.h:
+	Modification of AwnOverlayAlign docs.
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay.c:
+	Slight mod of docs for x-adj and y-adj props.
+
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	Update, given the libdesktop-agnostic-related changes.
+
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/tmpl/awn-applet-dialog.sgml:
+	* doc/reference/tmpl/awn-applet-simple.sgml:
+	* doc/reference/tmpl/awn-applet.sgml:
+	* doc/reference/tmpl/awn-cairo-utils.sgml:
+	* doc/reference/tmpl/awn-config-client.sgml:
+	* doc/reference/tmpl/awn-defines.sgml:
+	* doc/reference/tmpl/awn-desktop-item.sgml:
+	* doc/reference/tmpl/awn-effects.sgml:
+	* doc/reference/tmpl/awn-plug.sgml:
+	* doc/reference/tmpl/awn-settings.sgml:
+	* doc/reference/tmpl/awn-title.sgml:
+	* doc/reference/tmpl/awn-vfs.sgml:
+	* doc/reference/tmpl/libawn-unused.sgml:
+	Remove.
+
+	* .bzrignore:
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	Fix gtk-doc generation.
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay.c:
+	change @include for AwnOverlay docs to libawn/libawn.h
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/libawn.h:
+	Added AnwOverlaidIcon.h and AwnOverlay*.h to libawn.h
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-defines.h:
+  	* libawn/awn-overlay.c:
+  	* libawn/awn-overlay.h:
+	gtk-doc documentation of public API of AwnOverlay.  Also moved a couple definitions 
+	and adjusted some Min. and Max. values for properties.
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+	
+	* libawn/awn-overlay-text.c:
+        Choose a reasonable colour from the current gtkstyle unless a text-color has been provided.
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-text.c:
+	Switch font family to sans
+
+2009-06-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-defines.h:
+  	* libawn/awn-overlay-icon.c:
+  	* libawn/awn-overlay-text.c:
+  	* libawn/awn-overlay.c:
+	Convert properties to use hypens instead of underscore.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+  	* libawn/awn-defines.h:
+  	* libawn/awn-overlay-text.c:
+  	* libawn/awn-overlay-throbber.c:
+  	* libawn/awn-overlay.c:
+	Convert from using cairo toy font api to pango in AwnOverlayText.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
+	Make sure to change the timeout signal when the timeout value is changed.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
+	Add a timeout property.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/Makefile.am:
+	Add awn-overlay-throbber.[ch] into build system.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-throbber.c:
+	* libawn/awn-overlay-throbber.h:
+	Initial pull of the awn throbber code from src into AwnOverlayThrobber.
+
+2009-06-07  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Honour monitor alignment also in expand mode.
+
+2009-06-06  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background-edgy.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	Added virtual method to AwnBackground which allows it to change the
+	strut for panel mode.
+	* src/awn-panel.c:
+	Use the new virtual method of AwnBackground.
+	Fixed a bug in get_applet_rect method.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-surface.h:
+        * libawn/awn-overlay-surface.c:
+	Actually remove the files from the repository (See previous commit).
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-surface.h:
+	* libawn/awn-overlay-surface.c:
+	* libawn/Makefile.am:
+	Had third thoughts about implementing AwnOverlaySurface.  Removing (at least for now).
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-surface.h:
+	include awn-cairo-utils.h not awn-cairo-utils.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlaid-icon.c:
+  	* libawn/awn-overlay-surface.h:
+  	* libawn/awn-overlay-text.c:
+	Fix some #includes.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/Makefile.am
+	Add AwnOverlaySurface source files into build system.
+
+2009-06-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-surface.c:
+	* libawn/awn-overlay-surface.h:
+	Boilerplate code for AwnOverlaySurface.
+
+2009-06-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-icon.c:
+	* libawn/awn-themed-icon.c:
+  	Introduce the concept of ::invisible:: prefix in the state string.  OverlayIcon defaults to this 
+
+2009-06-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+  	* libawn/awn-overlaid-icon.c:
+  	* libawn/awn-overlaid-icon.h:
+  	* libawn/awn-overlay-icon.c:
+  	* libawn/awn-overlay-icon.h:
+  	* libawn/awn-overlay-text.c:
+  	* libawn/awn-overlay-text.h:
+  	* libawn/awn-overlay.c:
+  	* libawn/awn-overlay.h:
+	New Files for AwnOverlaidIcon.  
+
+  	* libawn/Makefile.am:
+	Add new files to build system
+
+  	* libawn/awn-applet-simple.c:
+	Change from using AwnThemedIcon to using AwnOverlaidIcon
+  
+	* libawn/awn-defines.h:
+	Added some defines for AwnOverlaidIcon use.  These may change/move.
+  
+	* libawn/awn-themed-icon.c:
+  	* libawn/awn-themed-icon.h:
+	Various changes needed by AwnOverlaidIcon.
+
+	Seems stable enough to merge into rewrite trunk and continue work.
+
+2009-06-05  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background-edgy.c:
+	Too much cleanup in last commit.
+
+2009-06-05  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background-edgy.c:
+	Some code cleanup plus make the masks work.
+
+2009-06-05  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effect-bounce.c:
+	* libawn/anims/awn-effect-fade.c:
+	* libawn/anims/awn-effect-squish.c:
+	Increased speed of the effects by 10-20%.
+	Fixed offset bug on squish.
+
+2009-06-05  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-background-edgy.c:
+	* src/awn-background-edgy.h:
+	* src/awn-monitor.c:
+	* src/awn-panel.c:
+	Rewritten Edgy background, now looks really cool. :)
+
+2009-06-05  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	Fix selection of icon_alpha
+
+2009-06-04  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	Add Edgy style to awn-manager-mini
+
+	* themes/awn-default.desktop.in.in:
+	Fix a typo.
+
+2009-06-04  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-manager/awnManagerMini.py.in:
+	Fixed mini.
+
+2009-06-04  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-monitor.c:
+	Stupid copy & paste error.
+
+2009-06-04  Michal Hruby <michal.mhr@gmail.com>
+
+	* data/awn.schema-ini.in:
+	Removed config keys which are no longer used.
+	* src/awn-monitor.c:
+	Make sure that monitor width & height are not updated from config
+	client if force_monitor key is not set.
+
+2009-06-04  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	* configure.in:
+	* m4/dolt.m4:
+	Add dolt support to the build system. This removes an average of 30
+	seconds from compile time on my machine.
+
+2009-06-04  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	Remove the Refresh button.
+
+2009-06-04  Julien Lavergne,,,  <julien.lavergne@gmail.com>
+
+	* awn-manager/awn-manager-mini.glade:
+	* awn-manager/awnManagerMini.py.in:
+	Add an exit button to theme window.
+
+2009-06-04  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* themes/awn-default.desktop.in.in:
+	Add all the new keys with default values.
+
+2009-06-04  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-manager/awnClass.py:
+	Add more item to the desktop API to read more items from themes
+	Stock the path in the model for treeview
+	
+
+2009-06-03  Michal Hruby <michal.mhr@gmail.com>
+
+	* data/awn.schema-ini.in:
+	Updated description for autohide.
+	* src/awn-panel.c:
+	Reset autohide when monitor geometry change.
+
+2009-06-02  h4writer <hv1989@gmail.com>
+
+	* src/awn-panel.c:
+	Fixed a bug with jaunty and awn not coming back out of hide properly.
+	Looks like jaunty doesn't listen to opacity changes when hidden.
+
+2009-06-02  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Use transparent background.
+	* src/awn-panel.c:
+	Autohide type 3 now uses clickthrough internally.
+
+2009-06-02  h4writer <hv1989@gmail.com>
+
+	* src/awn-background-flat.c:
+	Fixed bug with position top or right and align 0 or 1.
+
+2009-06-02  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Set AwnIcon to active state when the dialog is activated (if we're
+	connected to AppletSimple)
+
+2009-06-01  Michal Hruby <michal.mhr@gmail.com>
+
+	* src/awn-background.c:
+	Fixed couple of leaks in AwnBackground.
+	* libawn/awn-effects.c:
+	Reverted changes to squish hover animation.
+	* libawn/awn-icon.c:
+	Effects are now set back after composited->non->composited switch.
+	* libawn/awn-dialog.c:
+	Fixed painting of the title background on non-bottom orients.
+
+2009-05-31  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Fix dialog positioning - still not perfect, but getting there...
+
+2009-05-31  Michal Hruby <michal.mhr@gmail.com>
+
+	* TODO:
+	* libawn/awn-dialog.c:
+	Fix issue with titlebar spacing.
+
+2009-05-30  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-launcher.c:
+	* awn-applet-activation/main.c:
+	* libawn/awn-config-client-gkeyfile.c:
+	Use the updated libdesktop-agnostic API.
+
+2009-05-30  Michal Hruby <michal.mhr@gmail.com>
+
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-dialog.c:
+	Few more changes to dialog drawing.
+
+2009-05-29  Michal Hruby <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-tooltip.c:
+	Changed the way rounded rectangle is painted.
+	Added function which draws shadow around a (rounded) rectangle to 
+	cairo utils.
+	Added shadow to AwnDialog.
+
+2009-05-27  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-drag-indicator.h:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-manager.c:
+	- Renamed some function
+	- Removed signals of task-drag-indicator that are about dragging the indicator itself.
+	  It can't be dragged, so they aren't needed.
+
+2009-05-27  h4writer <hv1989@gmail.com>
+
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-manager.c:
+	Altered the way DnD works. Should also be more reliable.
+
+2009-05-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	reviewed by: Rodney Cryderman <rcryderman@gmail.com>
+
+	* libawn/awn-config-client-gconf.c:
+	Fix potential GError-related crashers.
+
 2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* .bzrignore:

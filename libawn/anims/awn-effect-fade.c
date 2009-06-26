@@ -39,7 +39,7 @@ fade_out_effect(AwnEffectsAnimation * anim)
 
   const gdouble MAX_OFFSET = 50.0;
 
-  const gint PERIOD = 20;
+  const gint PERIOD = 18;
 
   priv->top_offset = ++priv->count * (MAX_OFFSET / PERIOD);
 
@@ -70,7 +70,7 @@ fading_effect(AwnEffectsAnimation * anim)
     priv->direction = AWN_EFFECT_DIR_DOWN;
   }
 
-  const gdouble MIN_ALPHA = 0.35;
+  const gdouble MIN_ALPHA = 0.45;
   const gdouble ALPHA_STEP = 0.05;
 
   gboolean repeat = TRUE;

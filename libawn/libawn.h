@@ -19,10 +19,10 @@
  *  Author : Neil Jagdish Patel <njpatel@gmail.com>
 */
 
-
 #ifndef __LIBAWN_H__
 #define __LIBAWN_H__
 
+/* Please keep this list alphabetized. */
 #include <libawn/awn-alignment.h>
 #include <libawn/awn-applet.h>
 #include <libawn/awn-applet-simple.h>
@@ -34,8 +34,17 @@
 #include <libawn/awn-effects.h>
 #include <libawn/awn-icon.h>
 #include <libawn/awn-icon-box.h>
+#include <libawn/awn-overlay.h>
+#include <libawn/awn-overlayable.h>
+#include <libawn/awn-overlay-pixbuf.h>
+#include <libawn/awn-overlay-pixbuf-file.h>
+#include <libawn/awn-overlay-progress.h>
+#include <libawn/awn-overlay-progress-circle.h>
+#include <libawn/awn-overlay-themed-icon.h>
+#include <libawn/awn-overlay-text.h>
+#include <libawn/awn-overlay-throbber.h>
 #include <libawn/awn-themed-icon.h>
-#include <libawn/awn-tooltip.h>
+#include <libawn/awn-tooltip.h> 
 
 #endif /* < __LIBAWN_H__ /> */
 

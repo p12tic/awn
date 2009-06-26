@@ -20,7 +20,7 @@ DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml
 # gtk-doc will search all .c & .h files beneath here for inline comments
 # documenting the functions and macros.
 # e.g. DOC_SOURCE_DIR=../../../gtk
-DOC_SOURCE_DIR=../../libawn
+DOC_SOURCE_DIR=$(top_srcdir)/libawn
 
 # Extra options to pass to gtkdoc-scangobj. Not normally needed.
 SCANGOBJ_OPTIONS=
@@ -44,12 +44,16 @@ FIXXREF_OPTIONS=
 # Used for dependencies. The docs will be rebuilt if any of these change.
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
-HFILE_GLOB=$(top_srcdir)/libawn/*.h
-CFILE_GLOB=$(top_srcdir)/libawn/*.c
+HFILE_GLOB=$(DOC_SOURCE_DIR)/*.h
+CFILE_GLOB=$(DOC_SOURCE_DIR)/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
-IGNORE_HFILES=
+IGNORE_HFILES = \
+	$(DOC_SOURCE_DIR)/gseal-transition.h \
+	$(DOC_SOURCE_DIR)/stamp-awn-enum-types.h \
+	$(DOC_SOURCE_DIR)/libawn.h \
+	$(NULL)
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
@@ -83,6 +87,11 @@ GTKDOC_LIBS = \
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
 include $(top_srcdir)/gtk-doc.make
+
+if MAINTAINER_MODE
+$(DOC_MODULE).types: $(HFILE_GLOB)
+	$(GTKDOC_RUN) gtkdoc-scan --rebuild-sections --rebuild-types --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)"
+endif
 
 # Other files to distribute
 # e.g. EXTRA_DIST += version.xml.in

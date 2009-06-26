@@ -100,19 +100,12 @@ static AwnConfigClient *awn_config_client_new_with_path (gchar *path, gchar *nam
 			g_error_free (err);
 		}
 	}
-	DesktopAgnosticVFSImplementation *vfs = desktop_agnostic_vfs_get_default (&err);
+	DesktopAgnosticVFSFileBackend *file = desktop_agnostic_vfs_file_new_for_path (client->path, &err);
 	if (err) {
-		g_warning ("Could not load the VFS implementation: %s",
-		           err->message);
+		g_warning ("Could not load the file: %s", err->message);
 		g_error_free (err);
 		return NULL;
-	} else if (!vfs) {
-		g_warning ("Could not load the VFS implementation.");
-		return NULL;
 	}
-	DesktopAgnosticVFSFileBackend *file = g_object_new (desktop_agnostic_vfs_implementation_get_file_type (vfs),
-	                                                    "path", client->path,
-	                                                    NULL);
 	client->file_monitor = desktop_agnostic_vfs_file_backend_monitor (file);
 	g_signal_connect (client->file_monitor, "changed", G_CALLBACK (awn_config_client_reload), client);
 	g_datalist_init (&(client->notify_funcs));

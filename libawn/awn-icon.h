@@ -83,8 +83,6 @@ void          awn_icon_set_offset       (AwnIcon        *icon,
 void          awn_icon_set_effect       (AwnIcon     *icon, 
                                          AwnEffect    effect);
 
-AwnEffects *  awn_icon_get_effects      (AwnIcon     *icon);
-
 void          awn_icon_set_from_pixbuf  (AwnIcon     *icon,
                                          GdkPixbuf   *pixbuf);
 

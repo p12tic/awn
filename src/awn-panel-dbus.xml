@@ -13,6 +13,22 @@
       <arg name="flags" type="i" direction="in" />
     </method>
 
+    <method name="InhibitAutohide">
+      <arg name="app_name" type="s" direction="in" />
+      <arg name="reason" type="s" direction="in" />
+      <arg name="cookie" type="u" direction="out">
+        <annotation name="org.freedesktop.DBus.GLib.ReturnVal" value=""/>
+      </arg>
+    </method>
+
+    <method name="UninhibitAutohide">
+      <arg name="cookie" type="u" direction="in" />
+    </method>
+
+    <method name="GetInhibitors">
+      <arg name="inhibitors" type="as" direction="out" />
+    </method>
+
     <!-- Signals -->
     <signal name="SizeChanged">
       <arg name="size" type="i" />

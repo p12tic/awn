@@ -39,7 +39,7 @@ bounce_effect(AwnEffectsAnimation * anim)
     anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
     anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
-  const gint PERIOD = 20;
+  const gint PERIOD = 16;
 
   priv->top_offset = sin(++priv->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
 
@@ -51,6 +51,7 @@ bounce_effect(AwnEffectsAnimation * anim)
   if (priv->count >= PERIOD)
   {
     priv->count = 0;
+    priv->top_offset = 0;
     /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
@@ -69,7 +70,7 @@ bounce_hover_effect(AwnEffectsAnimation * anim)
     anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
     anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
-  const gint PERIOD = 20;
+  const gint PERIOD = 16;
 
   /* repaint widget */
   awn_effects_redraw(anim->effects);
@@ -88,6 +89,7 @@ bounce_hover_effect(AwnEffectsAnimation * anim)
   if (priv->count >= PERIOD)
   {
     priv->count = 0;
+    priv->top_offset = 0;
     /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
@@ -110,8 +112,8 @@ bounce_opening_effect(AwnEffectsAnimation * anim)
     priv->clip_region.height = 0;
   }
 
-  const gint PERIOD1 = 15;
-  const gint PERIOD2 = 20;
+  const gint PERIOD1 = 12;
+  const gint PERIOD2 = 16;
   const gfloat MAX_BOUNCE_OFFSET =
     anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
     anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?

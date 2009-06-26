@@ -620,7 +620,6 @@ task_window_activate (TaskWindow    *window,
 {
   TaskWindowClass *klass;
   TaskWindowPrivate *priv = window->priv;
-  GSList *w;
 
   g_return_if_fail (TASK_IS_WINDOW (window));
 
@@ -641,7 +640,6 @@ void
 task_window_minimize (TaskWindow    *window)
 {
   TaskWindowPrivate *priv;
-  GSList *w;
 
   g_return_if_fail (TASK_IS_WINDOW (window));
   priv = window->priv;
@@ -656,7 +654,6 @@ task_window_close (TaskWindow    *window,
                    guint32        timestamp)
 {
   TaskWindowPrivate *priv;
-  GSList *w;
 
   g_return_if_fail (TASK_IS_WINDOW (window));
   priv = window->priv;
@@ -714,7 +711,6 @@ task_window_set_icon_geometry (TaskWindow    *window,
                                gint           height)
 {
   TaskWindowPrivate *priv;
-  GSList *w;
 
   g_return_if_fail (TASK_IS_WINDOW (window));
   priv = window->priv;

@@ -1,2 +1,2 @@
-SUBDIRS=taskmanager
+SUBDIRS=taskmanager expander
 
