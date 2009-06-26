@@ -182,7 +182,7 @@ awn_themed_icon_dispose (GObject *object)
   
   if (priv->sig_id_for_awn_theme)
   {
-    g_signal_handler_disconnect (priv->gtk_theme,priv->sig_id_for_awn_theme);
+    g_signal_handler_disconnect (priv->awn_theme,priv->sig_id_for_awn_theme);
     priv->sig_id_for_awn_theme = 0; 
   }
   if (G_IS_OBJECT (priv->override_theme))

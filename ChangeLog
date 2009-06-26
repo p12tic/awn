@@ -1,3 +1,25 @@
+2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-effects.c:
+	A couple of minor fixes in the doc-comments.
+
+2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Added AwnOverlayAlign binding.
+
+2009-06-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	Add the applet docklet request function to the docs.
+
+2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Disconnect the correct object from the signal
+
 2009-06-25  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:

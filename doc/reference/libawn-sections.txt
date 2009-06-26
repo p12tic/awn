@@ -237,6 +237,7 @@ awn_applet_create_default_menu
 awn_applet_set_panel_window_id
 awn_applet_inhibit_autohide
 awn_applet_uninhibit_autohide
+awn_applet_docklet_request
 awn_applet_create_pref_item
 awn_applet_create_about_item
 <SUBSECTION Standard>

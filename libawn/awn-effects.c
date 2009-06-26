@@ -891,7 +891,7 @@ awn_effects_start(AwnEffects * fx, const AwnEffect effect)
  * @max_loops: Number of maximum animation loops (0 for unlimited).
  * @signal_start: Determines whether the animation should emit "animation-start"
  *   signal when it starts.
- * @signal_stop: Determines whether the animation should emit "animation-end"
+ * @signal_end: Determines whether the animation should emit "animation-end"
  *   signal when it finishes.
  *
  * Extended effect start, which provides a way to specify maximum number of loops
