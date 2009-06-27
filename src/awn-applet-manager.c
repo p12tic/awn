@@ -889,14 +889,14 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   /*FIXME...  small leak does not get freed*/
   AwnUaInfo * ua_info = g_malloc (sizeof (AwnUaInfo) );
   GtkWidget *socket = gtk_socket_new ();
-  static gint pos = 0;
+  static gint pos = 2;
   GdkWindow* plugwin; 
   AwnAppletManagerPrivate *priv = manager->priv;  
   GPid  pid;
   GdkNativeWindow native_window = (GdkNativeWindow) xid;
   gint offset;
 
-  pos++;
+//  pos++;
   ua_info->manager = manager;
   ua_info->ua_ratio = width / (double) height;
   ua_info->ua_alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0); 
@@ -913,7 +913,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   
  socket = awn_applet_proxy_new_ua (g_strdup_printf("%lu",xid),priv->orient,
                                  priv->offset, priv->size);
- 
+// socket = gtk_socket_new ();  //causes a crash for the moment FIXME?
  g_signal_connect_swapped (socket, "plug-added",
                           G_CALLBACK (_applet_plug_added), manager);
   
@@ -923,8 +923,8 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   
   gtk_widget_show_all (GTK_WIDGET (ua_info->ua_alignment));  
   
-  g_hash_table_insert (priv->applets, g_strdup_printf("%lu",xid), ua_info->ua_alignment);    
-  priv->applet_list = g_slist_append (priv->applet_list,g_strdup_printf("ua::%lu",xid) );
+/*  g_hash_table_insert (priv->applets, g_strdup_printf("%lu",xid), ua_info->ua_alignment);    
+  priv->applet_list = g_slist_append (priv->applet_list,g_strdup_printf("ua::%lu",xid) );*/
   awn_applet_manager_add_widget(manager, GTK_WIDGET (ua_info->ua_alignment), pos);
   gtk_socket_add_id (GTK_SOCKET(socket), native_window);
 
