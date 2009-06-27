@@ -1,3 +1,85 @@
+2009-06-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Changed caching so it's a shared pixbuf cache between all 
+	AwnThemedIcon instances.  Code _needs_ a refactor in a couple
+	places but it seems to be working well.
+
+2009-06-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	* src/awn-throbber.h:
+	A couple of changes to AwnThrobber, made CLOSE_BUTTON mode more
+	visually pleasing.
+
+2009-06-26  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	Fix dupplicated label.
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Fix categories chooser.
+
+2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Removed unnecessary method.
+
+2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-icon.c:
+	Documented AwnApplet and AwnIcon.
+
+2009-06-26  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnLauncherEditor.py:
+	* awn-settings/awnSettings.py.in:
+	Update AwnLauncher to new make_model function.	
+	Remove some unused code.
+	Translate some strings.
+	use generic create_drowdown function.
+
+2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Added expand parameter to DockletRequest DBus method.
+
+2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Set AwnThemedIcon size before calling set_info.  This will
+	make the automatic preload more effective.
+
+2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+  	* libawn/awn-themed-icon.h:
+	Add a preload.  This will be automatically called by by set info.
+
+2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Implement a pixbuf cache.  A fair amount of code duplication
+	but it doesn't lend itself neatly to a function.  Will look
+	into at a later time.
+
+2009-06-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf-file.c:
+	Modified the code to spews some warnings when file_name 
+	is NULL or empty.
+
 2009-06-26  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-applet-simple.c:

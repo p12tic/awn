@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
+ * Copyright (C) 2008,2009 Rodney Cryderman <rcryderman@gmail.com>
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,6 +50,43 @@ G_DEFINE_TYPE (AwnThemedIcon, awn_themed_icon, AWN_TYPE_ICON)
 #define AWN_CHANGE_ICON_UI PKGDATADIR"/awn-themed-icon-ui.xml"
 
 
+/*yes this is evil.  so sue me */
+struct _GtkIconThemePrivate
+{
+  guint custom_theme        : 1;
+  guint is_screen_singleton : 1;
+  guint pixbuf_supports_svg : 1;
+  guint themes_valid        : 1;
+  guint check_reload        : 1;
+  
+  char *current_theme;
+  char *fallback_theme;
+  char **search_path;
+  int search_path_len;
+
+  /* A list of all the themes needed to look up icons.
+   * In search order, without duplicates
+   */
+  GList *themes;
+  GHashTable *unthemed_icons;
+  
+  /* Note: The keys of this hashtable are owned by the
+   * themedir and unthemed hashtables.
+   */
+  GHashTable *all_icons;
+
+  /* GdkScreen for the icon theme (may be NULL)
+   */
+  GdkScreen *screen;
+  
+  /* time when we last stat:ed for theme changes */
+  long last_stat_time;
+  GList *dir_mtimes;
+
+  gulong reset_styles_idle;
+};
+
+
 typedef struct
 {
   gchar * name;
@@ -76,7 +113,16 @@ struct _AwnThemedIconPrivate
   
   gulong  sig_id_for_gtk_theme;
   gulong  sig_id_for_awn_theme;  
+  
+
 };
+
+typedef struct
+{
+  AwnThemedIcon * icon;
+  gint            size;
+  gchar         * state;
+}AwnThemedIconPreloadItem;
 
 enum
 {
@@ -101,6 +147,9 @@ static const gint n_drop_types = G_N_ELEMENTS(drop_types);
 /* Forwards */
 void on_icon_theme_changed              (GtkIconTheme     *theme, 
                                          AwnThemedIcon     *icon);
+
+static gboolean on_idle_preload (gpointer item);
+
 void awn_themed_icon_drag_data_received (GtkWidget        *widget, 
                                          GdkDragContext   *context,
                                          gint              x, 
@@ -132,7 +181,74 @@ get_awn_theme()
   
 }
 
+/*------------------pixbuf caching------  
+ Possible candidate for a public API.
+ Just testing how well the basic approach works for the moment.  Will
+ refactor to a small gobject, or something a bit nicer,
+ if it works well enough.
+ 
+ Notes:
+ scope probably isn't necessary... if the theme_name is always provided.
+ */
+static  GHashTable *pixbufs;    /*our pixbuf cache*/
 
+static void
+add_pixbuf_to_cache (GdkPixbuf * pixbuf,const gchar * scope, 
+            const gchar * theme_name, 
+            const gchar * icon_name, 
+            gint  size)
+{
+  gchar * key;
+   
+  g_return_if_fail (GDK_IS_PIXBUF(pixbuf));
+  g_return_if_fail (icon_name);
+  if (!pixbufs)
+  {
+    pixbufs = g_hash_table_new_full (g_str_hash,g_str_equal, g_free, g_object_unref);  
+  }
+  /*Conditional operator*/
+  key = g_strdup_printf ("%s::%s::%s::%d",
+                         scope?scope:"__NONE__",
+                         theme_name?theme_name:"__NONE__",
+                         icon_name,
+                         size);
+  g_hash_table_insert (pixbufs, key, pixbuf);  
+  g_object_ref (pixbuf);  
+}
+
+static GdkPixbuf * 
+lookup_pixbuf (const gchar * scope, const gchar * theme_name, 
+               const gchar * icon_name, gint  size)
+{
+  GdkPixbuf *pixbuf;
+  gchar * key;
+  g_return_val_if_fail (icon_name,NULL);
+  if (!pixbufs)
+  {
+    pixbufs = g_hash_table_new_full (g_str_hash,g_str_equal, g_free, g_object_unref);  
+  }
+  /*Conditional operator*/
+  key = g_strdup_printf ("%s::%s::%s::%d",
+                         scope?scope:"__NONE__",
+                         theme_name?theme_name:"__NONE__",
+                         icon_name,
+                         size);
+  pixbuf = g_hash_table_lookup (pixbufs,key);
+//  g_debug ("Cache lookup: %s for %s",pixbuf?"Hit":"Miss",key);
+  g_free (key);  
+  return pixbuf;
+}
+
+#if 0
+static void
+invalidate_cache(void)
+{
+  g_debug ("CACHE INVALIDATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//  g_hash_table_remove_all (pixbufs);
+}
+
+#endif
+/*End of pixbuf caching functions */
 
 /* GObject stuff */
 
@@ -219,6 +335,8 @@ awn_themed_icon_finalize (GObject *object)
   
   G_OBJECT_CLASS (awn_themed_icon_parent_class)->finalize (object);  
 }
+
+
 static void
 awn_themed_icon_class_init (AwnThemedIconClass *klass)
 {
@@ -293,8 +411,9 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   priv->applet_name = NULL;
   priv->uid = NULL;
   priv->list = NULL;
-  priv->current_item = NULL;  
+  priv->current_item = NULL;
   priv->current_size = 48;
+ 
 
   /* Set-up the gtk-theme */
   priv->gtk_theme = gtk_icon_theme_get_default ();
@@ -329,7 +448,6 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   
   g_free (scalable_dir);
   g_free (theme_dir);
-
 }
 
 /**
@@ -418,6 +536,8 @@ theme_load_icon (GtkIconTheme *icon_theme,
   return NULL;
 }
 
+/*FIXME  Big function */
+
 static GdkPixbuf *
 get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
 {
@@ -426,7 +546,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
   GList                 *iter;
 
   priv = icon->priv;
-
+                                                           
   /* Find the index of the current state in states */
   g_return_val_if_fail(priv-> list,NULL);	
   for (iter = priv->list; iter; iter=g_list_next (iter))
@@ -443,7 +563,99 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
       applet_name = priv->applet_name;
       icon_name = item->name;
       uid = priv->uid;
-      
+      /* Go through all the possible outcomes looking for a cached pixbuf*/
+      for (i = 0; i < N_SCOPES; i++)
+      {
+        gchar *name = NULL;
+        switch (i)
+        {
+          case SCOPE_UID:
+            name = g_strdup_printf ("%s-%s-%s", icon_name, applet_name, uid);
+            pixbuf = lookup_pixbuf ("scope_uid",
+                                    "awn-theme",
+                                    name,
+                                    priv->current_size);
+            break;
+
+          case SCOPE_APPLET:
+            name = g_strdup_printf ("%s-%s", icon_name, applet_name);
+            pixbuf = lookup_pixbuf ("scope_applet",
+                                    "awn-theme",
+                                    name,
+                                    priv->current_size);
+            break;
+
+          case SCOPE_AWN_THEME:
+            pixbuf = lookup_pixbuf ("scope_awn_theme",
+                                    "awn-theme",
+                                    icon_name,
+                                    priv->current_size);            
+            break;
+
+          case SCOPE_OVERRIDE_THEME:
+            pixbuf = NULL;
+            if (priv->override_theme)
+            {
+              pixbuf = lookup_pixbuf ("scope_override_theme",
+                                    priv->override_theme->priv->current_theme,
+                                    icon_name,
+                                    priv->current_size);              
+            }
+            break;
+
+          case SCOPE_GTK_THEME:
+            pixbuf = lookup_pixbuf ("scope_gtk_theme",
+                                    priv->gtk_theme->priv->current_theme,
+                                    icon_name,
+                                    priv->current_size);            
+            break;
+
+          case SCOPE_FILENAME:
+            pixbuf = NULL;
+            if (priv->current_item->original_name)
+            {
+              pixbuf = lookup_pixbuf ("scope_filename",
+                                    NULL,
+                                    icon_name,
+                                    priv->current_size);              
+            }
+            break;
+
+          case SCOPE_FALLBACK_STOP:
+            pixbuf = lookup_pixbuf ("scope_fallback_stop",
+                                    priv->gtk_theme->priv->current_theme,
+                                    GTK_STOCK_MISSING_IMAGE,
+                                    priv->current_size);            
+            break;
+        }
+        /* Check if we got a valid pixbuf on this run */
+        if (pixbuf)
+        {
+          g_object_ref (pixbuf);
+        }        
+        g_free (name);
+
+        if (pixbuf)
+        {
+          /* FIXME: Should we make this orientation-aware? 
+             FIXME:  code duplication.  same block occurs later in fn.
+           */
+          if (gdk_pixbuf_get_height (pixbuf) > size)
+          {
+            GdkPixbuf *temp = pixbuf;
+            gint       width, height;
+
+            width = gdk_pixbuf_get_width (temp);
+            height = gdk_pixbuf_get_height (temp);
+
+            pixbuf = gdk_pixbuf_scale_simple (temp, width*size/height, size,
+                                              GDK_INTERP_HYPER);
+            g_object_unref (temp);
+          }
+          return pixbuf;
+        }
+      }
+
       /* Go through all the possible outcomes until we get a pixbuf */
       for (i = 0; i < N_SCOPES; i++)
       {
@@ -453,18 +665,39 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
           case SCOPE_UID:
             name = g_strdup_printf ("%s-%s-%s", icon_name, applet_name, uid);
             pixbuf = theme_load_icon (priv->awn_theme, name,
-                                               size, LOAD_FLAGS, NULL);
+                                             size, LOAD_FLAGS, NULL);
+            if (pixbuf)
+            {
+              add_pixbuf_to_cache (pixbuf ,"scope_uid",
+                                  "awn-theme",
+                                  name,
+                                  priv->current_size);
+            }
             break;
 
           case SCOPE_APPLET:
             name = g_strdup_printf ("%s-%s", icon_name, applet_name);
             pixbuf = theme_load_icon (priv->awn_theme, name,
-                                               size, LOAD_FLAGS, NULL);
+                                             size, LOAD_FLAGS, NULL);
+            if (pixbuf)
+            {
+              add_pixbuf_to_cache (pixbuf ,"scope_applet",
+                                  "awn-theme",
+                                  name,
+                                  priv->current_size);
+            }
             break;
 
           case SCOPE_AWN_THEME:
             pixbuf = theme_load_icon (priv->awn_theme, icon_name, 
-                                               size, LOAD_FLAGS, NULL);
+                                             size, LOAD_FLAGS, NULL);
+            if (pixbuf)
+            {
+              add_pixbuf_to_cache (pixbuf ,"scope_awn_theme",
+                                  "awn-theme",
+                                  icon_name,
+                                  priv->current_size);
+            }
             break;
 
           case SCOPE_OVERRIDE_THEME:
@@ -472,14 +705,28 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             if (priv->override_theme)
             {
               pixbuf = theme_load_icon (priv->override_theme,
-                                                 icon_name, 
-                                                 size, LOAD_FLAGS, NULL);
+                                               icon_name, 
+                                               size, LOAD_FLAGS, NULL);
+              if (pixbuf)
+              {
+                add_pixbuf_to_cache (pixbuf ,"scope_override_theme",
+                                  priv->override_theme->priv->current_theme,
+                                  icon_name,
+                                  priv->current_size);
+              }                
             }
             break;
 
           case SCOPE_GTK_THEME:
             pixbuf = theme_load_icon (priv->gtk_theme, icon_name,
-                                               size, LOAD_FLAGS, NULL);
+                                             size, LOAD_FLAGS, NULL);
+            if (pixbuf)
+            {
+              add_pixbuf_to_cache (pixbuf ,"scope_gtk_theme",
+                                  priv->gtk_theme->priv->current_theme,
+                                  icon_name,
+                                  priv->current_size);
+            }              
             break;
 
           case SCOPE_FILENAME:
@@ -487,14 +734,28 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             if (priv->current_item->original_name)
             {
               pixbuf = try_and_load_image_from_disk (priv->current_item->original_name, 
-                                                     size);
+                                                   size);
+              if (pixbuf)
+              {
+                add_pixbuf_to_cache (pixbuf ,"scope_filename",
+                                  NULL,
+                                  icon_name,
+                                  priv->current_size);
+              }                
             }
             break;
 
           case SCOPE_FALLBACK_STOP:
             pixbuf = theme_load_icon (priv->gtk_theme,
-                                               GTK_STOCK_MISSING_IMAGE,
-                                               size, LOAD_FLAGS, NULL);
+                                             GTK_STOCK_MISSING_IMAGE,
+                                             size, LOAD_FLAGS, NULL);
+            if (pixbuf)
+            {
+              add_pixbuf_to_cache (pixbuf ,"scope_fallback_stop",
+                                  priv->gtk_theme->priv->current_theme,
+                                  GTK_STOCK_MISSING_IMAGE,
+                                  priv->current_size);
+            }
             break;
 
           default:
@@ -524,12 +785,12 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
           return pixbuf;
         }
       }
-
+      
     }
   }
   /* Yes.. this is drastic... asserts should be disabled for releases.
    This just plain and simple should _not trigger*/
-  g_assert (pixbuf);
+  g_warning ("%s: state '%s' not present in list",__func__,state);
   return pixbuf;
 }
 
@@ -795,6 +1056,11 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
                      GDK_ACTION_COPY | GDK_ACTION_ASK);
       break;
     }
+  }
+  /*preload these icons */
+  for (i=0;i<n_states;i++)
+  {    
+    awn_themed_icon_preload_icon (icon, states[i], -1);
   }
 }
 
@@ -1089,10 +1355,40 @@ awn_themed_icon_clear_info (AwnThemedIcon *icon)
     g_free (item->name);
     g_free (item->original_name);
     g_free (item->state);
-    g_free (item);    
-    priv->list = g_list_delete_link (priv->list,iter);    
+    g_free (item);
+    priv->list = g_list_delete_link (priv->list,iter);
   }
   gtk_drag_dest_unset (GTK_WIDGET(icon));
+}
+
+/**
+ * awn_themed_icon_preload_icon:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ * @state: The icon state.
+ * @size: The size of the icon.  A value less than or equal to 0  indicates the 
+ * current size should be used.
+ *
+ * Queues a preloads of an icon.  The icon load and cache of the icon is 
+ * queued using g_idle_add().
+ */
+
+void
+awn_themed_icon_preload_icon (AwnThemedIcon * icon, gchar * state, gint size)
+{
+  AwnThemedIconPreloadItem * item;
+  AwnThemedIconPrivate *priv;
+
+  g_return_if_fail (AWN_IS_THEMED_ICON (icon));
+  g_return_if_fail (state);
+  priv = icon->priv;
+
+  item = g_malloc (sizeof (AwnThemedIconPreloadItem) );
+  item->icon = icon;
+  /*Conditional operator*/
+  item->size = size > 0?size:priv->current_size;
+  item->state = g_strdup(state);
+  g_idle_add (on_idle_preload,item);
+  
 }
 
 /*
@@ -1101,13 +1397,35 @@ awn_themed_icon_clear_info (AwnThemedIcon *icon)
 void 
 on_icon_theme_changed (GtkIconTheme *theme, AwnThemedIcon *icon)
 {
+  AwnThemedIconPrivate *priv;  
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
+  priv = icon->priv;
   ensure_icon (icon);
+}
+
+static gboolean
+on_idle_preload (gpointer data)
+{
+  AwnThemedIconPreloadItem * item = data;
+  GdkPixbuf * pixbuf;
+  AwnThemedIconPrivate *priv;  
+  g_return_val_if_fail (item,FALSE);
+  priv = item->icon->priv;
+
+  /*CONDITIONAL operator*/
+  pixbuf = get_pixbuf_at_size (item->icon, 
+                               item->size>0?item->size:priv->current_size, 
+                               item->state);
+           
+  g_object_unref (pixbuf);
+  g_free (item->state);
+  g_free (item);
+  return FALSE;
 }
 
 /*
  FIXME among other things:
- 
+
  Needs to be made aware of the concept of ::invisible:: mixed with normal states.
  
  I expect it does not deal with multiple icons currently beyond assuming the 
@@ -1298,4 +1616,5 @@ drag_out:
   if (success)
     ensure_icon (icon);
 }
+
 

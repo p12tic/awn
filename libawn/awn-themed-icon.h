@@ -110,6 +110,10 @@ void          awn_themed_icon_clear_icons        (AwnThemedIcon *icon,
 
 void          awn_themed_icon_clear_info         (AwnThemedIcon *icon);
 
+void          awn_themed_icon_preload_icon       (AwnThemedIcon * icon, 
+                                                  gchar * state, 
+                                                  gint size);
+
 G_END_DECLS
 
 #endif /* _AWN_THEMED_ICON_H_ */

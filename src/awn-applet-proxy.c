@@ -291,34 +291,10 @@ throbber_click (GtkWidget *widget, GdkEventButton *event, gpointer user_data)
                            _("Loading applet..."));
     awn_throbber_set_type (AWN_THROBBER (priv->throbber),
                            AWN_THROBBER_TYPE_NORMAL);
+    awn_throbber_set_hover_effect (AWN_THROBBER (priv->throbber), FALSE);
+
     awn_applet_proxy_execute (AWN_APPLET_PROXY(user_data));
   }
-  return FALSE;
-}
-
-static gboolean
-throbber_mouse_over (GtkWidget *widget,
-                     GdkEventCrossing *event, gpointer user_data)
-{
-  AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE(user_data);
-
-  if (priv->crashed)
-  {
-    AwnEffects *fx = awn_throbber_get_effects (AWN_THROBBER (priv->throbber));
-    awn_effects_start (fx, AWN_EFFECT_HOVER);
-  }
-  return FALSE;
-}
-
-static gboolean
-throbber_mouse_out (GtkWidget *widget,
-                    GdkEventCrossing *event, gpointer user_data)
-{
-  AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE(user_data);
-
-  AwnEffects *fx = awn_throbber_get_effects (AWN_THROBBER (priv->throbber));
-  awn_effects_stop (fx, AWN_EFFECT_HOVER);
-
   return FALSE;
 }
 
@@ -344,11 +320,6 @@ awn_applet_proxy_init (AwnAppletProxy *proxy)
 
   g_signal_connect (priv->throbber, "button-release-event",
                     G_CALLBACK (throbber_click), proxy);
-  g_signal_connect (priv->throbber, "enter-notify-event",
-                    G_CALLBACK (throbber_mouse_over), proxy);
-  g_signal_connect (priv->throbber, "leave-notify-event",
-                    G_CALLBACK (throbber_mouse_out), proxy);
-
 }
 
 GtkWidget*
@@ -427,6 +398,7 @@ on_plug_removed (AwnAppletProxy *proxy, gpointer user_data)
     _("Whoops! The applet crashed. Click to restart it."));
   awn_throbber_set_type (AWN_THROBBER (priv->throbber),
                          AWN_THROBBER_TYPE_SAD_FACE);
+  awn_throbber_set_hover_effect (AWN_THROBBER (priv->throbber), TRUE);
   gtk_widget_show (priv->throbber);
 
   return TRUE;
@@ -504,6 +476,7 @@ on_child_exit (GPid pid, gint status, gpointer user_data)
                            AWN_THROBBER_TYPE_SAD_FACE);
     awn_throbber_set_text (AWN_THROBBER (priv->throbber),
       _("Whoops! The applet crashed. Click to restart it."));
+    awn_throbber_set_hover_effect (AWN_THROBBER (priv->throbber), TRUE);
     /* we won't call gtk_widget_show - on_plug_removed does that
      * and if the plug wasn't even added, the throbber widget is still visible
      */

@@ -565,21 +565,14 @@
   (return-type "GdkNativeWindow")
   (parameters
     '("gint" "min_size")
-    '("gboolean" "shrink")
+    '("gboolean" "shrink" (default "FALSE"))
+    '("gboolean" "expand" (default "TRUE"))
   )
 )
 
 (define-method applet_construct
   (of-object "AwnApplet")
   (c-name "gtk_plug_construct")
-  (parameters
-    '("GdkNativeWindow" "id")
-  )
-)
-
-(define-method set_panel_window_id
-  (of-object "AwnApplet")
-  (c-name "awn_applet_set_panel_window_id")
   (parameters
     '("GdkNativeWindow" "id")
   )

@@ -89,6 +89,9 @@ AwnEffects *  awn_throbber_get_effects      (AwnThrobber *throbber);
 
 AwnTooltip *  awn_throbber_get_tooltip      (AwnThrobber *throbber);
 
+void          awn_throbber_set_hover_effect (AwnThrobber *throbber,
+                                             gboolean hover_effect);
+
 G_END_DECLS
 
 #endif /* _AWN_THROBBER_H_ */

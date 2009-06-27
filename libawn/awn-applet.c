@@ -107,7 +107,10 @@ static guint _applet_signals[LAST_SIGNAL] = { 0 };
 static GdkFilterReturn _on_panel_configure (GdkXEvent *xevent,
                                             GdkEvent *event, gpointer data);
 
+static void awn_applet_set_panel_window_id (AwnApplet *applet,
+                                            GdkNativeWindow anid);
 
+/* DBus signal callbacks */
 static void
 on_orient_changed (DBusGProxy *proxy, gint orient, AwnApplet *applet)
 {
@@ -772,6 +775,16 @@ awn_applet_init (AwnApplet *applet)
                                          applet);
 }
 
+/**
+ * awn_applet_new:
+ * @uid: unique ID of the applet.
+ * @panel_id: ID of AwnPanel associated with the applet.
+ *
+ * Creates a new AwnApplet which tries to connect via DBus to AwnPanel
+ * with the given ID. You can pass zero @panel_id to not connect to any panel.
+ *
+ * Returns: the new AwnApplet.
+ */
 AwnApplet *
 awn_applet_new (const gchar* uid, gint panel_id)
 {
@@ -987,6 +1000,15 @@ awn_applet_create_default_menu (AwnApplet *applet)
   return menu;
 }
 
+/**
+ * awn_applet_get_orientation:
+ * @applet: an #AwnApplet.
+ *
+ * Gets current orientation of the applet. See awn_applet_set_orientation().
+ * This value corresponds to the value used by the associated panel.
+ *
+ * Returns: current orientation of the applet.
+ */
 AwnOrientation
 awn_applet_get_orientation (AwnApplet *applet)
 {
@@ -998,6 +1020,14 @@ awn_applet_get_orientation (AwnApplet *applet)
   return priv->orient;
 }
 
+/**
+ * awn_applet_set_orientation:
+ * @applet: an #AwnApplet.
+ * @orient: new orientation of the applet.
+ *
+ * Sets current orientation of the applet. Note that setting the orientation 
+ * emits the #AwnApplet::orientation-changed signal.
+ */
 void
 awn_applet_set_orientation (AwnApplet *applet, AwnOrientation orient)
 {
@@ -1011,6 +1041,15 @@ awn_applet_set_orientation (AwnApplet *applet, AwnOrientation orient)
   g_signal_emit (applet, _applet_signals[ORIENT_CHANGED], 0, orient);
 }
 
+/**
+ * awn_applet_get_path_type:
+ * @applet: an #AwnApplet.
+ *
+ * Gets currently used path type for this applet. This value corresponds
+ * to the value used by the associated panel.
+ *
+ * Returns: currently used path type.
+ */
 AwnPathType
 awn_applet_get_path_type (AwnApplet *applet)
 {
@@ -1022,6 +1061,13 @@ awn_applet_get_path_type (AwnApplet *applet)
   return priv->path_type;
 }
 
+/**
+ * awn_applet_set_path_type:
+ * @applet: an #AwnApplet.
+ * @path: path type for this applet.
+ *
+ * Sets path type used by this applet. See awn_applet_get_offset_at().
+ */
 void
 awn_applet_set_path_type (AwnApplet *applet, AwnPathType path)
 {
@@ -1038,6 +1084,16 @@ awn_applet_set_path_type (AwnApplet *applet, AwnPathType path)
   }
 }
 
+/**
+ * awn_applet_get_offset:
+ * @applet: an #AwnApplet.
+ *
+ * Gets current offset set for the applet. This value corresponds
+ * to the value used by the associated panel.
+ * @see_also: awn_applet_get_offset_at().
+ *
+ * Returns: current offset.
+ */
 gint
 awn_applet_get_offset (AwnApplet *applet)
 {
@@ -1049,6 +1105,14 @@ awn_applet_get_offset (AwnApplet *applet)
   return priv->offset;
 }
 
+/**
+ * awn_applet_set_offset:
+ * @applet: an #AwnApplet.
+ * @offset: new offset for this applet.
+ *
+ * Sets offset used by this applet. Note that setting the offset emits the
+ * #AwnApplet::offset-changed signal.
+ */
 void
 awn_applet_set_offset (AwnApplet *applet, gint offset)
 {
@@ -1065,6 +1129,19 @@ awn_applet_set_offset (AwnApplet *applet, gint offset)
   }
 }
 
+/**
+ * awn_applet_get_offset_at:
+ * @applet: an #AwnApplet.
+ * @x: X-coordinate.
+ * @y: Y-coordinate.
+ *
+ * @see_also: awn_applet_set_path_type().
+ *
+ * Gets offset for widget with [@x, @y] coordinates with respect to the current
+ * path type.
+ *
+ * Returns: offset which should have the widget with [x, y] coordinates.
+ */
 gint
 awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
 {
@@ -1103,6 +1180,15 @@ awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
   }
 }
 
+/**
+ * awn_applet_get_size:
+ * @applet: an #AwnApplet.
+ *
+ * Gets the current size set for the applet. This value corresponds
+ * to the value used by the associated panel.
+ *
+ * Returns: current size set for the applet.
+ */
 guint
 awn_applet_get_size (AwnApplet *applet)
 {
@@ -1114,6 +1200,14 @@ awn_applet_get_size (AwnApplet *applet)
   return priv->size;
 }
 
+/**
+ * awn_applet_set_size:
+ * @applet: an #AwnApplet.
+ * @size: new size of the applet.
+ *
+ * Sets new size for the applet. Note that setting the size emits the
+ * #AwnApplet::size-changed signal.
+ */
 void
 awn_applet_set_size (AwnApplet *applet, gint size)
 {
@@ -1127,6 +1221,14 @@ awn_applet_set_size (AwnApplet *applet, gint size)
   g_signal_emit (applet, _applet_signals[SIZE_CHANGED], 0, size);
 }
 
+/**
+ * awn_applet_get_uid:
+ * @applet: an #AwnApplet.
+ *
+ * Gets the unique ID for the applet.
+ *
+ * Returns: unique ID for the applet.
+ */
 const gchar *
 awn_applet_get_uid (AwnApplet *applet)
 {
@@ -1138,6 +1240,13 @@ awn_applet_get_uid (AwnApplet *applet)
   return priv->uid;
 }
 
+/**
+ * awn_applet_set_uid:
+ * @applet: an #AwnApplet.
+ * @uid: new unique ID for the applet.
+ *
+ * Sets new unique ID for the applet.
+ */
 void
 awn_applet_set_uid (AwnApplet *applet, const gchar *uid)
 {
@@ -1150,6 +1259,15 @@ awn_applet_set_uid (AwnApplet *applet, const gchar *uid)
   priv->uid = g_strdup (uid);
 }
 
+/**
+ * awn_applet_set_flags:
+ * @applet: an #AwnApplet.
+ * @flags: flags for this applet.
+ *
+ * Sets flags for this applet. Note that setting the flags to
+ * #AWN_APPLET_IS_SEPARATOR or #AWN_APPLET_IS_EXPANDER will send a DBus request
+ * to the associated AwnPanel which will destroy the socket used by this applet.
+ */
 void
 awn_applet_set_flags (AwnApplet *applet, AwnAppletFlags flags)
 {
@@ -1179,6 +1297,14 @@ awn_applet_set_flags (AwnApplet *applet, AwnAppletFlags flags)
   }
 }
 
+/**
+ * awn_applet_get_flags:
+ * @applet: an #AwnApplet.
+ *
+ * Gets the flags set for this applet.
+ *
+ * Returns: flags set for this applet.
+ */
 AwnAppletFlags 
 awn_applet_get_flags (AwnApplet *applet)
 {
@@ -1187,6 +1313,17 @@ awn_applet_get_flags (AwnApplet *applet)
   return applet->priv->flags;
 }
 
+/**
+ * awn_applet_inhibit_autohide:
+ * @applet: an #AwnApplet.
+ * @reason: reason for the inhibit.
+ *
+ * Requests the associated AwnPanel to disable autohide (if the panel is
+ * already hidden it will unhide) until a call to
+ * awn_applet_uninhibit_autohide() with the returned ID is made.
+ *
+ * Returns: cookie ID which can be used in awn_applet_uninhibit_autohide().
+ */
 guint
 awn_applet_inhibit_autohide (AwnApplet *applet, const gchar *reason)
 {
@@ -1218,6 +1355,15 @@ awn_applet_inhibit_autohide (AwnApplet *applet, const gchar *reason)
   return ret;
 }
 
+/**
+ * awn_applet_uninhibit_autohide:
+ * @applet: an #AwnApplet.
+ * @cookie: inhibit cookie returned by the call
+ *          to awn_applet_inhibit_autohide().
+ *
+ * Uninhibits autohide of the associated AwnPanel.
+ * See awn_applet_inhibit_autohide().
+ */
 void
 awn_applet_uninhibit_autohide (AwnApplet *applet, guint cookie)
 {
@@ -1240,8 +1386,25 @@ awn_applet_uninhibit_autohide (AwnApplet *applet, guint cookie)
   }
 }
 
+/**
+ * awn_applet_docklet_request:
+ * @applet: AwnApplet instance.
+ * @min_size: Minimum size required.
+ * @shrink: If true and the panel has greater size than requested, it will
+ *          shrink to min_size. Otherwise current panel size will be allocated.
+ * @expand: If true the embedded window will be allowed to expand, otherwise
+ *          the window will be restricted to min_size.
+ *
+ * Requests docklet mode from the associated AwnPanel - all applets will be
+ * hidden and only one window will be shown.
+ *
+ * Returns: non-zero window XID which can be passed to GtkPlug constructor, 
+ * or zero if the call failed (or another application is currently using
+ * docklet mode).
+ */
 GdkNativeWindow
-awn_applet_docklet_request (AwnApplet *applet, gint min_size, gboolean shrink)
+awn_applet_docklet_request (AwnApplet *applet, gint min_size,
+                            gboolean shrink, gboolean expand)
 {
   AwnAppletPrivate *priv;
   GError *error = NULL;
@@ -1254,7 +1417,8 @@ awn_applet_docklet_request (AwnApplet *applet, gint min_size, gboolean shrink)
                      &error,
                      G_TYPE_INT, min_size,
                      G_TYPE_BOOLEAN, shrink,
-                     G_TYPE_INVALID, 
+                     G_TYPE_BOOLEAN, expand,
+                     G_TYPE_INVALID,
                      G_TYPE_INT64, &ret,
                      G_TYPE_INVALID);
 
@@ -1320,7 +1484,7 @@ _on_panel_configure (GdkXEvent *xevent, GdkEvent *event, gpointer data)
   return GDK_FILTER_CONTINUE;
 }
 
-void
+static void
 awn_applet_set_panel_window_id (AwnApplet *applet, GdkNativeWindow anid)
 {
   g_return_if_fail (AWN_IS_APPLET (applet) && anid);

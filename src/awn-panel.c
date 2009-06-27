@@ -1442,7 +1442,7 @@ GtkWidget *
 awn_panel_new_from_config (AwnConfigClient *client)
 {
   GtkWidget *window;
-  
+
   window = g_object_new (AWN_TYPE_PANEL,
                          "type", GTK_WINDOW_TOPLEVEL,
                          "type-hint", GDK_WINDOW_TYPE_HINT_DOCK,
@@ -2473,6 +2473,7 @@ void
 awn_panel_docklet_request (AwnPanel *panel,
                            gint min_size,
                            gboolean shrink,
+                           gboolean expand,
                            DBusGMethodInvocation *context)
 {
   AwnPanelPrivate *priv = panel->priv;
@@ -2483,6 +2484,7 @@ awn_panel_docklet_request (AwnPanel *panel,
     priv->docklet_closer = awn_throbber_new ();
     awn_throbber_set_type (AWN_THROBBER (priv->docklet_closer),
                            AWN_THROBBER_TYPE_CLOSE_BUTTON);
+    awn_throbber_set_hover_effect (AWN_THROBBER (priv->docklet_closer), TRUE);
 
     awn_applet_manager_add_widget (AWN_APPLET_MANAGER (priv->manager),
                                    priv->docklet_closer, 1);
@@ -2499,29 +2501,36 @@ awn_panel_docklet_request (AwnPanel *panel,
     awn_throbber_set_orientation (closer, priv->orient);
     awn_throbber_set_offset (closer, priv->size / 2 + priv->offset);
 
-    // FIXME: perhaps the min-size shouldn't be min-size but the actual size
-    //  and the docklet would be restricted to this size (set_size_request).
-    if (!shrink)
+    GtkRequisition closer_req;
+    gtk_widget_size_request (priv->docklet_closer, &closer_req);
+
+    // if expand param is false the docklet will be restricted to this size
+    priv->docklet = gtk_socket_new ();
+    switch (priv->orient)
     {
-      switch (priv->orient)
-      {
-        case AWN_ORIENTATION_LEFT:
-        case AWN_ORIENTATION_RIGHT:
-          priv->docklet_minsize =
-            MAX (min_size, priv->manager->allocation.height);
-          break;
-        default:
-          priv->docklet_minsize =
-            MAX (min_size, priv->manager->allocation.width);
-          break;
-      }
-    }
-    else
-    {
-      priv->docklet_minsize = min_size;
+      case AWN_ORIENTATION_LEFT:
+      case AWN_ORIENTATION_RIGHT:
+        priv->docklet_minsize = shrink ? min_size :
+          MAX (min_size, priv->manager->allocation.height - closer_req.height);
+
+        if (expand == FALSE)
+        {
+           gtk_widget_set_size_request (priv->docklet,
+                                        -1, priv->docklet_minsize);
+        }
+        break;
+      default:
+        priv->docklet_minsize = shrink ? min_size :
+          MAX (min_size, priv->manager->allocation.width - closer_req.width);
+
+        if (expand == FALSE)
+        {
+           gtk_widget_set_size_request (priv->docklet,
+                                        priv->docklet_minsize, -1);
+        }
+        break;
     }
 
-    priv->docklet = gtk_socket_new ();
     awn_utils_ensure_transparent_bg (priv->docklet);
 
     g_signal_connect_after (priv->docklet, "size-request",

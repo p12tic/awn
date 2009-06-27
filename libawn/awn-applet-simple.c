@@ -287,12 +287,12 @@ awn_applet_simple_set_icon_name (AwnAppletSimple  *applet,
   g_return_if_fail (icon_name);
 
   applet->priv->last_set_icon = ICON_THEMED_SIMPLE;
+  awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
+                            awn_applet_get_size (AWN_APPLET (applet)));  
   awn_themed_icon_set_info_simple (AWN_THEMED_ICON (applet->priv->icon),
                                    applet_name,
                                    awn_applet_get_uid (AWN_APPLET (applet)),
                                    icon_name);
-  awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
-                            awn_applet_get_size (AWN_APPLET (applet)));
 }
                                     
 void   
@@ -307,13 +307,13 @@ awn_applet_simple_set_icon_info (AwnAppletSimple  *applet,
   g_return_if_fail (icon_names);
 
   applet->priv->last_set_icon = ICON_THEMED_MANY;
+  awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
+                            awn_applet_get_size (AWN_APPLET (applet)));
   awn_themed_icon_set_info (AWN_THEMED_ICON (applet->priv->icon),
                             applet_name,
                             awn_applet_get_uid (AWN_APPLET (applet)),
                             states,
                             icon_names);
-  awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
-                            awn_applet_get_size (AWN_APPLET (applet)));
 }
                                     
 void 

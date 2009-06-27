@@ -44,12 +44,13 @@ defs.i18nize(globals())
 ICON_COL_PIXBUF, ICON_COL_LABEL, ICON_COL_DATA = range(3)
 
 class awnLauncherEditor:
-    def __init__(self, filename, launcher = None):
+    def __init__(self, filename, model, launcher = None):
         self.xml_file = gtk.Builder()
 	self.xml_file.add_from_file(os.path.join(defs.PKGDATADIR, 'awn-settings', 'launcher-editor.xml'))
         self.xml_file.connect_signals(self)
         self.main_dialog = self.xml_file.get_object('dialog_desktop_item')
         self.launcher = launcher
+	self.model = model
         self.filename = os.path.abspath(filename)
         self.desktop_entry = DesktopEntry(self.filename)
         self.client = awn.Config()
@@ -180,11 +181,11 @@ class awnLauncherEditor:
                 uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
             except gobject.GError:
                 uris = []
-            if os.path.exists(self.filename):
+            if os.path.exists(self.filename) and self.filename not in uris:
                 uris.append(self.filename)
             self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING, uris)
             if self.launcher is not None:
-                self.launcher.refresh_tree(uris)
+                self.launcher.refresh_tree(uris, self.model)
         self.main_dialog.hide_all()
         if self.standalone:
             gtk.main_quit()
