@@ -1,3 +1,8 @@
+2009-06-27  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	Fix again the GTK depends.
+
 2009-06-27  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
