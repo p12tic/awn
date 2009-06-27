@@ -359,7 +359,7 @@ awn_applet_proxy_new_ua ( gchar *uid,
   GtkWidget *proxy;
 
   proxy = g_object_new (AWN_TYPE_APPLET_PROXY,
-      "path", "no path",
+      "path", "ua",
       "uid", uid,
       "orient", orient,
       "offset", offset,

@@ -684,12 +684,14 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
       continue;
     }
 
+    g_debug ("%s:  %s, %s",__func__,tokens[0],tokens[1]);
     /* See if the applet already exists */
     applet = g_hash_table_lookup (priv->applets, tokens[1]);
 
     /* If not, create it */
     if (applet == NULL)
     {
+      g_debug ("applet does not exist");
       applet = create_applet (manager, tokens[0], tokens[1]);
       if (!applet)
       {
@@ -882,15 +884,17 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   g_print ("Width : %i : ", width);
   g_print ("Height : %i : ", height);
 
+  /*FIXME...  small leak does not get freed*/
   AwnUaInfo * ua_info = g_malloc (sizeof (AwnUaInfo) );
   GtkWidget *socket = gtk_socket_new ();
-  gint pos = 1;
+  static gint pos = 0;
   GdkWindow* plugwin; 
   AwnAppletManagerPrivate *priv = manager->priv;  
   GPid  pid;
   GdkNativeWindow native_window = (GdkNativeWindow) xid;
   gint offset;
 
+  pos++;
   ua_info->manager = manager;
   ua_info->ua_ratio = width / (double) height;
   ua_info->ua_alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0); 
@@ -914,13 +918,19 @@ awn_ua_add_applet (	AwnAppletManager *manager,
  plugwin = gtk_socket_get_plug_window (GTK_SOCKET(socket));
 
   gtk_container_add (GTK_CONTAINER(ua_info->ua_alignment),socket);
- gtk_widget_show_all (GTK_WIDGET (ua_info->ua_alignment));  
- awn_applet_manager_add_widget(manager, GTK_WIDGET (ua_info->ua_alignment), pos);
- gtk_socket_add_id (GTK_SOCKET(socket), native_window);
-
+  
+  gtk_widget_show_all (GTK_WIDGET (ua_info->ua_alignment));  
+  
+  g_hash_table_insert (priv->applets, g_strdup_printf("%lu",xid), ua_info->ua_alignment);    
+  priv->applet_list = g_slist_append (priv->applet_list,g_strdup_printf("ua::%lu",xid) );
+  awn_applet_manager_add_widget(manager, GTK_WIDGET (ua_info->ua_alignment), pos);
+  gtk_socket_add_id (GTK_SOCKET(socket), native_window);
 
   g_assert (priv->applets);
-  g_hash_table_insert (priv->applets, g_strdup_printf("%lu",xid), ua_info->ua_alignment);  
+
+  g_object_set_qdata (G_OBJECT (ua_info->ua_alignment), 
+                      priv->touch_quark, GINT_TO_POINTER (0));  
+  
   
   /* hmm... not getting the PID.  probably because this is a xid of a plug?*/
 //  pid = wnck_window_get_pid (wnck_window_get(xid));
