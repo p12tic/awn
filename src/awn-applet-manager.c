@@ -49,6 +49,8 @@ struct _AwnAppletManagerPrivate
   AwnOrientation   orient;
   gint             offset;
   gint             size;
+  
+  /*TODO/FIXME  need to add ua_list and make requisite changes in functions.*/
   GSList          *applet_list;
 
   gboolean         expands;
