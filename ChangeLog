@@ -1,3 +1,10 @@
+2009-06-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Changed caching so it's a shared pixbuf cache between all 
+	AwnThemedIcon instances.  Code _needs_ a refactor in a couple
+	places but it seems to be working well.
+
 2009-06-27  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-applet-proxy.c:
