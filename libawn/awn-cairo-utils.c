@@ -237,11 +237,11 @@ awn_cairo_set_source_color (cairo_t              *cr,
 {
   g_return_if_fail (color);
 
-  cairo_set_source_rgba (cr,
-                         desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
-                         desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
-                         desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
-                         color->alpha / AWN_RGBA_SCALE_FACTOR);
+  double red, green, blue, alpha;
+
+  desktop_agnostic_color_get_cairo_color (color, &red, &green, &blue, &alpha);
+
+  cairo_set_source_rgba (cr, red, green, blue, alpha);
 }
 
 void
@@ -252,11 +252,11 @@ awn_cairo_set_source_color_with_alpha_multiplier (cairo_t              *cr,
   g_return_if_fail (color);
   g_return_if_fail (multiplier >= 0 && multiplier <= 1.0);
 
-  cairo_set_source_rgba (cr,
-                         desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
-                         desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
-                         desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
-                         color->alpha / AWN_RGBA_SCALE_FACTOR * multiplier);
+  double red, green, blue, alpha;
+
+  desktop_agnostic_color_get_cairo_color (color, &red, &green, &blue, &alpha);
+
+  cairo_set_source_rgba (cr, red, green, blue, alpha * multiplier);
 }
 
 void
@@ -267,11 +267,12 @@ awn_cairo_set_source_color_with_multipliers (cairo_t              *cr,
 {
   g_return_if_fail (color);
 
-  cairo_set_source_rgba (cr,
-                         desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR * color_multiplier,
-                         desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR * color_multiplier,
-                         desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR * color_multiplier,
-                         color->alpha / AWN_RGBA_SCALE_FACTOR * alpha_multiplier);
+  double red, green, blue, alpha;
+
+  desktop_agnostic_color_get_cairo_color (color, &red, &green, &blue, &alpha);
+
+  cairo_set_source_rgba (cr, red * color_multiplier, green * color_multiplier,
+                         blue * color_multiplier, alpha * alpha_multiplier);
 }
 
 void
@@ -281,11 +282,11 @@ awn_cairo_pattern_add_color_stop_color (cairo_pattern_t      *pattern,
 {
   g_return_if_fail (color);
 
-  cairo_pattern_add_color_stop_rgba (pattern, offset,
-                                     desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
-                                     desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
-                                     desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
-                                     color->alpha / AWN_RGBA_SCALE_FACTOR);
+  double red, green, blue, alpha;
+
+  desktop_agnostic_color_get_cairo_color (color, &red, &green, &blue, &alpha);
+
+  cairo_pattern_add_color_stop_rgba (pattern, offset, red, green, blue, alpha);
 }
 
 void
@@ -297,11 +298,12 @@ awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier (cairo_pattern_t   
   g_return_if_fail (color);
   g_return_if_fail (multiplier >= 0 && multiplier <= 1.0);
 
-  cairo_pattern_add_color_stop_rgba (pattern, offset,
-                                     desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
-                                     desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
-                                     desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
-                                     color->alpha / AWN_RGBA_SCALE_FACTOR * multiplier);
+  double red, green, blue, alpha;
+
+  desktop_agnostic_color_get_cairo_color (color, &red, &green, &blue, &alpha);
+
+  cairo_pattern_add_color_stop_rgba (pattern, offset, red, green, blue,
+                                     alpha * multiplier);
 }
 
 /* vim: set et ts=2 sts=2 sw=2 ai cindent : */

@@ -552,7 +552,6 @@ surface_saturate
 AwnCairoRoundCorners
 awn_cairo_rounded_rect
 awn_cairo_rounded_rect_shadow
-AWN_RGBA_SCALE_FACTOR
 awn_cairo_set_source_color
 awn_cairo_set_source_color_with_alpha_multiplier
 awn_cairo_set_source_color_with_multipliers
