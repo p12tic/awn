@@ -1,3 +1,23 @@
+2009-06-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	Update the cairo color convenience functions to use the libdesktop-agnostic
+	cairo color convenience API.
+
+2009-06-27  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	Fix again the GTK depends.
+
+2009-06-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Changed caching so it's a shared pixbuf cache between all 
+	AwnThemedIcon instances.  Code _needs_ a refactor in a couple
+	places but it seems to be working well.
+
 2009-06-27  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-applet-proxy.c:
@@ -1589,6 +1609,7 @@
 
 2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
+<<<<<<< TREE
 	* .bzrignore:
 	* bindings/vala/Makefile.am:
 	* bindings/vala/awn.deps:
@@ -1604,6 +1625,8 @@
 
 2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
+=======
+>>>>>>> MERGE-SOURCE
 	* bindings/python/awn.defs:
 	* libawn/awn-utils.c:
 	* libawn/awn-utils.h:
@@ -1658,6 +1681,7 @@
 
 2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
 
+<<<<<<< TREE
 	* .bzrignore:
 	* configure.in:
 	* libawn/Makefile.am:
@@ -1666,6 +1690,8 @@
 
 2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
 
+=======
+>>>>>>> MERGE-SOURCE
 	* libawn/awn-vfs.c:
 	* libawn/awn-vfs.h:
 	Removed (obsoleted by libdesktop-agnostic).
