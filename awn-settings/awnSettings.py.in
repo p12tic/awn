@@ -64,6 +64,7 @@ if os.geteuid() == 0:
 class awnPreferencesMini(awnPreferences):
     def __init__(self, wTree):
         self.wTree = wTree
+	self.client = awn.Config()
 
 	# If the sources.list doesn't exist, create one
 	if not os.path.isfile(os.path.join(defs.HOME_CONFIG_DIR,"sources.list")):
@@ -107,14 +108,14 @@ class awnPreferencesMini(awnPreferences):
 
 	self.choose_behavior = self.wTree.get_object("behaviorcombo")
 	self.choose_behavior.connect("changed", self.choose_behavior_callback)
-	self.behavior_entries = [	[_("Standart")],
-					[_("Panel mode")], 
-					[_("Autohide Keep below")],
-					[_("Autohide Fade out")], 
-					[_("Transparency")]]
+	self.behavior_entries = [	_("Standart"),
+					_("Panel mode"), 
+					_("Autohide Keep below"),
+					_("Autohide Fade out"), 
+					_("Transparency"),
+					_("Custom")]
 	self.create_dropdown(self.choose_behavior, self.behavior_entries)
-
-	self.client = awn.Config()
+	self.choose_behavior.set_active(self.client.get_int(defs.PANEL, defs.BEHAVIOR))
 
 	self.theme_desktop = self.client.get_string(defs.THEME, defs.CURRENT_THEME)
 

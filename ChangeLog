@@ -1,3 +1,10 @@
+2009-06-29  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
+	* data/awn.schema-ini.in:
+	Add a setting to store the behavior of the panel.
+
 2009-06-28  Julien Lavergne  <julien.lavergne@gmail.com>
 
 	* awn-settings/awnClass.py:
