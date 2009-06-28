@@ -1,3 +1,10 @@
+2009-06-28  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Test if the applets list is empty, and complete the sources.list 
+        if it's the case.
+
 2009-06-28  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* tests/test-awn-dialog.py (change_attach):

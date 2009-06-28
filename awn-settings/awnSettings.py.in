@@ -321,6 +321,9 @@ class awnAppletMini(awnApplet):
         self.treeview_available =  self.wTree.get_object("appletTreeviewAvailable")
 	self.treeview_available.set_headers_visible(False)
 	self.make_active_model()
+	
+	if self.type_catalog_from_sources_list(type_catalog='Applet') == []:
+		self.write_default_sources_list(sources_list_path = os.path.join(defs.HOME_CONFIG_DIR,"sources.list"))
 
         self.load_applets()
 

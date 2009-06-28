@@ -184,12 +184,23 @@ class awnBzr:
 		'''
 		sources_list_path = os.path.join(config,"sources.list")
 		if not os.path.isfile(sources_list_path):
+			self.write_default_sources_list(sources_list_path)
+		else: print (_("Error, a sources.list already exist"))
+
+	def write_default_sources_list(self, sources_list_path, config = defs.HOME_CONFIG_DIR, default = defs.DEFAULT_SOURCES_LIST):
+		'''	Write default sources in the sources list
+			If a sources.list exist, it will write default sources at the
+			end of the file
+		'''
+		if os.path.isfile(sources_list_path):
+			f = open(sources_list_path, 'a')
+		else:
 			f = open(sources_list_path, 'w')
-			[f.write(i[0] + " " + i[1] + "\n") 
-				for i 
-				in default if i[0] <> '']
-			f.close()
-		else: print ("Error, a sources.list already exist")
+		[f.write(i[0] + " " + i[1] + "\n") 
+			for i 
+			in default if i[0] <> '']
+		f.close()
+
 
 	def update_sources_list(self, directories = defs.HOME_THEME_DIR, progressbar = None):
 		''' 	
@@ -465,9 +476,14 @@ class awnBzr:
 			path = source[0]
 		else:
 			path= str(directories + "/" + source[1])
-		list_files = os.listdir(path)
-		desktops =  [path + "/" + elem for elem in list_files if os.path.splitext(elem)[1] =='.desktop']
-		return desktops
+		try:
+			list_files = os.listdir(path)
+			desktops =  [path + "/" + elem for elem in list_files if os.path.splitext(elem)[1] =='.desktop']
+			return desktops
+		except:
+			print(_("Error %s is missing on your system, please remove it from the sources.list") % path)
+			return None
+		
 
 	def catalog_from_sources_list(self):
 		'''	
@@ -477,7 +493,7 @@ class awnBzr:
 		sources_list = self.list_from_sources_list()
 		for elem in sources_list:
 			desktops = self.read_desktop_files_from_source(elem)
-			if not desktops == []:
+			if desktops is not None:
 				[ catalog.append(i) for i in desktops ]
 		return catalog
 
