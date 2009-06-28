@@ -168,7 +168,7 @@ dnl =============================================
 dnl GObject Intropsection
 dnl =============================================
 
-GOBJECT_INTROSPECTION_CHECK([0.6.3])
+GOBJECT_INTROSPECTION_REQUIRE([0.6.3])
 
 dnl ==============================================
 dnl DBus

@@ -112,7 +112,10 @@ libawn_la_LIBADD += \
 	$(top_builddir)/libawn/anims/libawn-effects-anims.la \
 	$(NULL)
 
-if HAVE_INTROSPECTION
+#######################
+# GObject Introspection
+#######################
+
 # INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to install
 # thing - we need to install inside our prefix.
 girdir = $(datadir)/gir-1.0
@@ -150,7 +153,8 @@ typelibs_DATA = $(GIRFILES:.gir=.typelib)
 
 %.typelib: %.gir $(INTROSPECTION_COMPILER)
 	$(QUIET_GEN)$(INTROSPECTION_COMPILER) --includedir=$(srcdir) --includedir=. $(INTROSPECTION_COMPILER_OPTS) $< -o $(@F)
-endif
+
+# End GObject Introspection related rules
 
 awn-enum-types.h: stamp-awn-enum-types.h
 	@true

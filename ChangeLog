@@ -1,3 +1,11 @@
+2009-06-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	* libawn/Makefile.am:
+	GObject Introspection is now required.
+	* m4/introspection.m4:
+	Remove (use the one installed in the system).
+
 2009-06-27  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* doc/reference/libawn-sections.txt:
