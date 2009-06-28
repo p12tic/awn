@@ -1,3 +1,8 @@
+2009-06-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	Update the gtk-doc generated sections file.
+
 2009-06-27  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-settings/awn-settings.xml:
