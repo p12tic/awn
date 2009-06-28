@@ -25,6 +25,7 @@ def drag_data_get (widget, context, selection, targetType, eventTime):
 
 
 win = gtk.Window()
+win.connect('delete-event', lambda w, e: gtk.main_quit())
 vbox = gtk.VBox()
 win.add(vbox)
 

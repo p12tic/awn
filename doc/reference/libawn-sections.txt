@@ -187,6 +187,7 @@ awn_themed_icon_override_gtk_theme
 awn_themed_icon_get_icon_at_size
 awn_themed_icon_clear_icons
 awn_themed_icon_clear_info
+awn_themed_icon_preload_icon
 <SUBSECTION Standard>
 AWN_THEMED_ICON
 AWN_IS_THEMED_ICON
@@ -234,7 +235,6 @@ awn_applet_set_uid
 awn_applet_get_flags
 awn_applet_set_flags
 awn_applet_create_default_menu
-awn_applet_set_panel_window_id
 awn_applet_inhibit_autohide
 awn_applet_uninhibit_autohide
 awn_applet_docklet_request
