@@ -346,7 +346,7 @@ the theme ?</property>
                                   <object class="GtkLabel" id="label8">
                                     <property name="visible">True</property>
                                     <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Behavior</property>
+                                    <property name="label" translatable="yes">Behavior of the panel</property>
                                     <property name="max_width_chars">0</property>
                                   </object>
                                   <packing>
@@ -839,8 +839,9 @@ the theme ?</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHBox" id="hbox8">
+                  <object class="GtkHBox" id="vbox10">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkExpander" id="expander1">
                         <property name="visible">True</property>
@@ -936,9 +937,6 @@ the theme ?</property>
                                   <packing>
                                     <property name="position">0</property>
                                   </packing>
-                                </child>
-                                <child>
-                                  <placeholder/>
                                 </child>
                               </object>
                               <packing>
@@ -1142,9 +1140,6 @@ the theme ?</property>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -1166,9 +1161,6 @@ the theme ?</property>
                                   <packing>
                                     <property name="position">0</property>
                                   </packing>
-                                </child>
-                                <child>
-                                  <placeholder/>
                                 </child>
                               </object>
                               <packing>
@@ -1213,8 +1205,30 @@ the theme ?</property>
                                 <property name="position">10</property>
                               </packing>
                             </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel" id="label6">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Panel&lt;/b&gt;</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkExpander" id="expander2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <child>
+                          <object class="GtkVBox" id="vbox2">
+                            <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <child>
-                              <object class="GtkHBox" id="hbox25">
+                              <object class="GtkHBox" id="hbox45">
                                 <property name="visible">True</property>
                                 <child>
                                   <object class="GtkCheckButton" id="only_launchers_config">
@@ -1228,18 +1242,15 @@ the theme ?</property>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">11</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHBox" id="hbox26">
+                              <object class="GtkHBox" id="hbox46">
                                 <property name="visible">True</property>
                                 <child>
                                   <object class="GtkCheckButton" id="show_all_windows_config">
@@ -1253,18 +1264,15 @@ the theme ?</property>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">12</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHBox" id="hbox27">
+                              <object class="GtkHBox" id="hbox47">
                                 <property name="visible">True</property>
                                 <child>
                                   <object class="GtkCheckButton" id="drag_and_drop_config">
@@ -1278,18 +1286,15 @@ the theme ?</property>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">13</property>
+                                <property name="position">2</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHBox" id="hbox28">
+                              <object class="GtkHBox" id="hbox48">
                                 <property name="visible">True</property>
                                 <child>
                                   <object class="GtkLabel" id="grouping_mode_label">
@@ -1321,11 +1326,33 @@ the theme ?</property>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">14</property>
+                                <property name="position">3</property>
                               </packing>
                             </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel" id="label28">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Taskmanagers&lt;/b&gt;</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkExpander" id="expander3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <child>
+                          <object class="GtkVBox" id="vbox3">
+                            <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <child>
-                              <object class="GtkHBox" id="hbox29">
+                              <object class="GtkHBox" id="hbox53">
                                 <property name="visible">True</property>
                                 <child>
                                   <object class="GtkLabel" id="reflection_offset_label">
@@ -1357,11 +1384,11 @@ the theme ?</property>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">15</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHBox" id="hbox30">
+                              <object class="GtkHBox" id="hbox54">
                                 <property name="visible">True</property>
                                 <child>
                                   <object class="GtkLabel" id="icon_alpha_label">
@@ -1394,11 +1421,11 @@ the theme ?</property>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">16</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHBox" id="hbox31">
+                              <object class="GtkHBox" id="hbox55">
                                 <property name="visible">True</property>
                                 <child>
                                   <object class="GtkLabel" id="reflection_alpha_multiplier_label">
@@ -1430,11 +1457,11 @@ the theme ?</property>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">17</property>
+                                <property name="position">2</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHBox" id="hbox32">
+                              <object class="GtkHBox" id="hbox56">
                                 <property name="visible">True</property>
                                 <child>
                                   <object class="GtkCheckButton" id="show_shadows_config">
@@ -1448,35 +1475,26 @@ the theme ?</property>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">18</property>
+                                <property name="position">3</property>
                               </packing>
-                            </child>
-                            <child>
-                              <placeholder/>
                             </child>
                           </object>
                         </child>
                         <child type="label">
-                          <object class="GtkLabel" id="label6">
+                          <object class="GtkLabel" id="label29">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">&lt;b&gt;Advanced options&lt;/b&gt;</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Effects&lt;/b&gt;</property>
                             <property name="use_markup">True</property>
                           </object>
                         </child>
                       </object>
                       <packing>
-                        <property name="position">0</property>
+                        <property name="position">2</property>
                       </packing>
-                    </child>
-                    <child>
-                      <placeholder/>
                     </child>
                   </object>
                   <packing>

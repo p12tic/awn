@@ -1,3 +1,8 @@
+2009-06-29  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	Make advanced options more readable.
+
 2009-06-29  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-settings/awnDefs.py.in:
