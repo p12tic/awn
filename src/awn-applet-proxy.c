@@ -34,7 +34,7 @@ G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_SOCKET)
 #define AWN_APPLET_PROXY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE (obj, \
   AWN_TYPE_APPLET_PROXY, AwnAppletProxyPrivate))
 
-#define APPLET_EXEC "awn-applet-activation -p %s -u %s -w %" G_GINT64_FORMAT " -i %" G_GINT64_FORMAT " -o %d -f %d -s %d"
+#define APPLET_EXEC "awn-applet-activation -p %s -u %s -w %" G_GINT64_FORMAT " -i %d"
 
 #define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
 
@@ -52,6 +52,7 @@ struct _AwnAppletProxyPrivate
   GtkWidget *throbber;
 
   gint old_x, old_y;
+  guint idle_id;
 };
 
 enum
@@ -201,6 +202,12 @@ awn_applet_proxy_dispose (GObject *object)
     priv->throbber = NULL;
   }
 
+  if (priv->idle_id)
+  {
+    g_source_remove (priv->idle_id);
+    priv->idle_id = 0;
+  }
+
   G_OBJECT_CLASS (awn_applet_proxy_parent_class)->dispose (object);
 }
 
@@ -283,34 +290,10 @@ throbber_click (GtkWidget *widget, GdkEventButton *event, gpointer user_data)
                            _("Loading applet..."));
     awn_throbber_set_type (AWN_THROBBER (priv->throbber),
                            AWN_THROBBER_TYPE_NORMAL);
+    awn_throbber_set_hover_effect (AWN_THROBBER (priv->throbber), FALSE);
+
     awn_applet_proxy_execute (AWN_APPLET_PROXY(user_data));
   }
-  return FALSE;
-}
-
-static gboolean
-throbber_mouse_over (GtkWidget *widget,
-                     GdkEventCrossing *event, gpointer user_data)
-{
-  AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE(user_data);
-
-  if (priv->crashed)
-  {
-    AwnEffects *fx = awn_throbber_get_effects (AWN_THROBBER (priv->throbber));
-    awn_effects_start (fx, AWN_EFFECT_HOVER);
-  }
-  return FALSE;
-}
-
-static gboolean
-throbber_mouse_out (GtkWidget *widget,
-                    GdkEventCrossing *event, gpointer user_data)
-{
-  AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE(user_data);
-
-  AwnEffects *fx = awn_throbber_get_effects (AWN_THROBBER (priv->throbber));
-  awn_effects_stop (fx, AWN_EFFECT_HOVER);
-
   return FALSE;
 }
 
@@ -336,10 +319,6 @@ awn_applet_proxy_init (AwnAppletProxy *proxy)
 
   g_signal_connect (priv->throbber, "button-release-event",
                     G_CALLBACK (throbber_click), proxy);
-  g_signal_connect (priv->throbber, "enter-notify-event",
-                    G_CALLBACK (throbber_mouse_over), proxy);
-  g_signal_connect (priv->throbber, "leave-notify-event",
-                    G_CALLBACK (throbber_mouse_out), proxy);
 }
 
 GtkWidget*
@@ -399,6 +378,7 @@ on_plug_removed (AwnAppletProxy *proxy, gpointer user_data)
     _("Whoops! The applet crashed. Click to restart it."));
   awn_throbber_set_type (AWN_THROBBER (priv->throbber),
                          AWN_THROBBER_TYPE_SAD_FACE);
+  awn_throbber_set_hover_effect (AWN_THROBBER (priv->throbber), TRUE);
   gtk_widget_show (priv->throbber);
 
   return TRUE;
@@ -476,6 +456,7 @@ on_child_exit (GPid pid, gint status, gpointer user_data)
                            AWN_THROBBER_TYPE_SAD_FACE);
     awn_throbber_set_text (AWN_THROBBER (priv->throbber),
       _("Whoops! The applet crashed. Click to restart it."));
+    awn_throbber_set_hover_effect (AWN_THROBBER (priv->throbber), TRUE);
     /* we won't call gtk_widget_show - on_plug_removed does that
      * and if the plug wasn't even added, the throbber widget is still visible
      */
@@ -506,22 +487,10 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
 
   /* Load the applet */
   screen = gtk_widget_get_screen (GTK_WIDGET (proxy));
-  gint64 socket_id = (gint64)
-    gtk_socket_get_id (GTK_SOCKET (proxy));
-  GtkWidget *proxy_widget = gtk_widget_get_toplevel (GTK_WIDGET(proxy));
-  GdkWindow *proxy_win;
-  proxy_win = gtk_widget_get_window (proxy_widget);
-  gint64 panel_window_id = (gint64)GDK_WINDOW_XID (proxy_win);
+  gint64 socket_id = (gint64) gtk_socket_get_id (GTK_SOCKET (proxy));
 
-  exec = g_strdup_printf (APPLET_EXEC,
-                          priv->path,
-                          priv->uid, 
-                          socket_id,
-                          panel_window_id,
-                          priv->orient,
-                          priv->offset,
-                          priv->size);
-
+  // FIXME: panel_id instead of '1'
+  exec = g_strdup_printf (APPLET_EXEC, priv->path, priv->uid, socket_id, 1);
   
   g_shell_parse_argv(exec, NULL, &argv, &error);
   g_warn_if_fail(error == NULL);
@@ -543,4 +512,27 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   g_free (exec);
 }
 
+static gboolean
+awn_applet_proxy_idle_cb (gpointer data)
+{
+  g_return_val_if_fail (AWN_IS_APPLET_PROXY (data), FALSE);
+  AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE (data);
+
+  awn_applet_proxy_execute (AWN_APPLET_PROXY (data));
+
+  priv->idle_id = 0;
+
+  return FALSE;
+}
+
+void
+awn_applet_proxy_schedule_execute (AwnAppletProxy *proxy)
+{
+  AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE (proxy);
+
+  if (priv->idle_id == 0)
+  {
+    priv->idle_id = g_idle_add (awn_applet_proxy_idle_cb, proxy);
+  }
+}
 

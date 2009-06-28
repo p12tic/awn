@@ -40,6 +40,8 @@ avant_window_navigator_SOURCES =	\
 	awn-background-edgy.c \
 	awn-background-edgy.h \
 	awn-defines.h \
+	awn-dbus-watcher.c \
+	awn-dbus-watcher.h \
 	$(builddir)/awn-marshal.c \
 	$(builddir)/awn-marshal.h \
 	awn-monitor.c \

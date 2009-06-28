@@ -49,7 +49,7 @@ G_BEGIN_DECLS
 
 
 typedef struct {
-  GObject parent;
+  GInitiallyUnowned parent;
 } AwnOverlay;
 
 
@@ -67,7 +67,7 @@ typedef struct {
 
 typedef struct
 {
-  GObjectClass parent_class;
+  GInitiallyUnownedClass parent_class;
 
   void          (*render)                (AwnOverlay* overlay,
                                           GtkWidget *widget,

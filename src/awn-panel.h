@@ -24,6 +24,9 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-bindings.h>
+
 #include <libawn/awn-config-client.h>
 #include <libawn/awn-defines.h>
 
@@ -87,15 +90,22 @@ gboolean    awn_panel_set_applet_flags    (AwnPanel         *panel,
                                            gint              flags,
                                            GError          **error);
 
-guint       awn_panel_inhibit_autohide    (AwnPanel         *panel,
-                                           const gchar      *app_name,
-                                           const gchar      *reason);
+void        awn_panel_inhibit_autohide    (AwnPanel *panel,
+                                           const gchar *app_name,
+                                           const gchar *reason,
+                                           DBusGMethodInvocation *context);
 
 gboolean    awn_panel_uninhibit_autohide  (AwnPanel         *panel,
                                            guint             cookie);
 
 gboolean    awn_panel_get_inhibitors      (AwnPanel         *panel,
                                            GStrv            *reasons);
+
+void        awn_panel_docklet_request     (AwnPanel         *panel,
+                                           gint              min_size,
+                                           gboolean          shrink,
+                                           gboolean          expand,
+                                           DBusGMethodInvocation *context);
 
 G_END_DECLS
 

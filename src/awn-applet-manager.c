@@ -27,6 +27,7 @@
 #include "awn-applet-manager.h"
 
 #include "awn-applet-proxy.h"
+#include "awn-throbber.h"
 
 G_DEFINE_TYPE (AwnAppletManager, awn_applet_manager, GTK_TYPE_BOX) 
 
@@ -48,6 +49,7 @@ struct _AwnAppletManagerPrivate
   GHashTable      *applets;
   GHashTable      *extra_widgets;
   GQuark           touch_quark;
+  GQuark           visibility_quark;
 
   /* Current box class */
   GtkWidgetClass  *klass;
@@ -312,6 +314,7 @@ awn_applet_manager_init (AwnAppletManager *manager)
   priv = manager->priv = AWN_APPLET_MANAGER_GET_PRIVATE (manager);
 
   priv->touch_quark = g_quark_from_string ("applets-touch-quark");
+  priv->visibility_quark = g_quark_from_string ("visibility-quark");
   priv->applets = g_hash_table_new_full (g_str_hash, g_str_equal,
                                          g_free, NULL);
   priv->extra_widgets = g_hash_table_new (g_direct_hash, g_direct_equal);
@@ -351,6 +354,7 @@ awn_applet_manager_set_applet_flags (AwnAppletManager *manager,
   applet = g_hash_table_lookup (priv->applets, uid);
   if (applet && AWN_IS_APPLET_PROXY (applet))
   {
+    // dummy widget that will expand
     GtkWidget *image = gtk_image_new ();
     gtk_widget_show (image);
     gtk_box_pack_start (GTK_BOX (manager), image, TRUE, TRUE, 0);
@@ -535,13 +539,13 @@ create_applet (AwnAppletManager *manager,
 
   gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (manager), notifier, FALSE, FALSE, 0);
-  gtk_widget_show(notifier);
+  gtk_widget_show (notifier);
 
   g_object_set_qdata (G_OBJECT (applet), 
                       priv->touch_quark, GINT_TO_POINTER (0));
   g_hash_table_insert (priv->applets, g_strdup (uid), applet);
 
-  awn_applet_proxy_execute (AWN_APPLET_PROXY (applet));
+  awn_applet_proxy_schedule_execute (AWN_APPLET_PROXY (applet));
 
   return applet;
 }
@@ -646,8 +650,6 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
     if (applet == NULL)
     {
       applet = create_applet (manager, tokens[0], tokens[1]);
-      // lets hope this isn't reentrant, anyway it should look better
-      gdk_window_process_all_updates ();
       if (!applet)
       {
         g_strfreev (tokens);
@@ -706,7 +708,7 @@ awn_applet_manager_add_widget (AwnAppletManager *manager,
   if (!g_hash_table_lookup_extended (priv->extra_widgets, widget, &key, &val))
   {
     gtk_box_pack_start (GTK_BOX (manager), widget, FALSE, FALSE, 0);
-    /* called is supposed to call gtk_widget_show! */
+    /* caller is supposed to call gtk_widget_show! */
   }
   g_hash_table_replace (priv->extra_widgets, widget, GINT_TO_POINTER (pos));
 
@@ -722,5 +724,54 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
   {
     gtk_container_remove (GTK_CONTAINER (manager), widget);
   }
+}
+
+void
+awn_applet_manager_show_applets (AwnAppletManager *manager)
+{
+  AwnAppletManagerPrivate *priv = manager->priv;
+  GList *list = gtk_container_get_children (GTK_CONTAINER (manager));
+
+  for (GList *it = list; it != NULL; it = it->next)
+  {
+    if (AWN_IS_THROBBER (it->data)) continue;
+    if (AWN_IS_APPLET_PROXY (it->data))
+    {
+      AwnAppletProxy *proxy = AWN_APPLET_PROXY (it->data);
+      if (gtk_socket_get_plug_window (GTK_SOCKET (proxy)))
+        gtk_widget_show (GTK_WIDGET (proxy));
+      else
+        gtk_widget_show (awn_applet_proxy_get_throbber (proxy));
+    }
+    else
+    {
+      int was_visible = GPOINTER_TO_INT (g_object_get_qdata (it->data,
+                                         priv->visibility_quark));
+      if (was_visible) gtk_widget_show (GTK_WIDGET (it->data));
+    }
+  }
+
+  g_list_free (list);
+}
+
+void
+awn_applet_manager_hide_applets (AwnAppletManager *manager)
+{
+  AwnAppletManagerPrivate *priv = manager->priv;
+  GList *list = gtk_container_get_children (GTK_CONTAINER (manager));
+
+  for (GList *it = list; it != NULL; it = it->next)
+  {
+    if (!AWN_IS_THROBBER (it->data) && !AWN_IS_APPLET_PROXY (it->data))
+    {
+      g_object_set_qdata (it->data, priv->visibility_quark,
+                          GINT_TO_POINTER (GTK_WIDGET_VISIBLE (it->data) ?
+                            1 : 0));
+    }
+
+    gtk_widget_hide (GTK_WIDGET (it->data));
+  }
+
+  g_list_free (list);
 }
 

@@ -65,7 +65,8 @@ enum
   PROP_ALPHA,
   PROP_ICON_NAME,
   PROP_ICON_STATE,
-  PROP_SCALE
+  PROP_SCALE,
+  PROP_ICON
 };
 
 static void 
@@ -93,9 +94,12 @@ awn_overlay_themed_icon_get_property (GObject *object, guint property_id,
     case PROP_ICON_NAME:
       g_value_set_string (value,priv->icon_name);
       break;
-    case PROP_ICON_STATE:
+    case PROP_ICON_STATE:      
       g_value_set_string (value,priv->icon_state);
       break;      
+    case PROP_ICON:
+      g_value_set_object (value,priv->themed_icon);
+      break;            
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -120,10 +124,17 @@ awn_overlay_themed_icon_set_property (GObject *object, guint property_id,
       g_free(priv->icon_name);
       priv->icon_name = g_value_dup_string (value);
       break;
-    case PROP_ICON_STATE:
+    case PROP_ICON_STATE:      
       g_free(priv->icon_state);
-      priv->icon_state = g_value_dup_string (value);
+      priv->icon_state = g_value_dup_string (value);      
+      if ( ! priv->icon_state )
+      {
+        priv->icon_state = g_strdup_printf ("::invisible::__AWN_OVERLAY_THEMED_ICON_STATE_NAME_FOR_%s",priv->icon_name);        
+      }
       break;      
+    case PROP_ICON:
+      priv->themed_icon = g_value_get_object (value);
+      break;            
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -167,7 +178,6 @@ _awn_overlay_themed_icon_theme_change (AwnOverlayThemedIcon * overlay)
   AwnOverlayThemedIconPrivate * priv;
   priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (overlay);
   g_return_if_fail (priv->icon_name);
-  g_debug ("all hell");
   gchar * tmp = g_strdup (priv->icon_name);
   g_object_set (overlay,
                 "icon_name",tmp,
@@ -185,7 +195,10 @@ awn_overlay_themed_icon_constructed (GObject *object)
   {
     G_OBJECT_CLASS (awn_overlay_themed_icon_parent_class)->constructed (object);
   }
-  
+
+  awn_themed_icon_set_info_append (priv->themed_icon, priv->icon_state, priv->icon_name);
+
+
   /*FIXME need to clear the hash table on theme changes also */
   g_signal_connect_swapped (object, "notify::icon-name",
                             G_CALLBACK (g_hash_table_remove_all),
@@ -267,6 +280,14 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
                                "",
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ICON_STATE, pspec);   
+
+  pspec = g_param_spec_object ("icon",
+                               "Icon",
+                               "Icon",
+                               AWN_TYPE_THEMED_ICON,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_ICON, pspec);   
+  
   
   g_type_class_add_private (klass, sizeof (AwnOverlayThemedIconPrivate));  
 }
@@ -281,7 +302,7 @@ awn_overlay_themed_icon_init (AwnOverlayThemedIcon *self)
 }
 
 /**
- * awn_overlay_text_new:
+ * awn_overlay_themed_icon_new:
  * @icon: an #AwnThemedIcon.
  * @icon_name: A themed icon icon name.
  * @icon_state: A icon state for the icon or NULL.
@@ -290,37 +311,21 @@ awn_overlay_themed_icon_init (AwnOverlayThemedIcon *self)
  */
 
 AwnOverlayThemedIcon*
-awn_overlay_themed_icon_new (AwnThemedIcon *icon,
+awn_overlay_themed_icon_new (AwnThemedIcon * icon,
                              const gchar *icon_name, const gchar *state)
 {
   AwnOverlayThemedIcon * ret;
-  gchar * created_state = NULL;
   
   g_return_val_if_fail (icon_name,NULL);
   g_return_val_if_fail (icon,NULL);
   g_return_val_if_fail (AWN_IS_THEMED_ICON (icon), NULL);
   
-  if (!state)
-  {
-    created_state = g_strdup_printf ("::invisible::__AWN_OVERLAY_THEMED_ICON_STATE_NAME_FOR_%s",icon_name);
-    state = created_state;
-  }
-  
   ret = g_object_new (AWN_TYPE_OVERLAY_THEMED_ICON, 
                       "icon-name", icon_name,
                       "icon-state", state,
                       "gravity", GDK_GRAVITY_SOUTH_EAST,
+                      "icon", icon,
                       NULL);
-  /* FIXME: some of this probably should be done in constructed()
-   *  and the icon should be a prop
-   */
-  AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (ret)->themed_icon = icon;
-  awn_themed_icon_set_info_append (icon, state, icon_name);
-
-  if (created_state)
-  {
-    g_free (created_state);
-  }
   return ret;
 }
 

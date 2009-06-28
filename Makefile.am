@@ -4,7 +4,7 @@ SUBDIRS =	\
 	libawn \
 	src \
 	awn-applet-activation \
-	awn-manager \
+	awn-settings \
 	applets \
 	bindings \
 	po \

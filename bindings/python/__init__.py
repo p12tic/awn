@@ -33,33 +33,18 @@ from awn import *
 CONFIG_LIST_BOOL, CONFIG_LIST_FLOAT, CONFIG_LIST_INT, CONFIG_LIST_STRING = range(4)
 CONFIG_DEFAULT_GROUP = 'DEFAULT'
 
-EFFECT_NONE = "none"
-EFFECT_OPENING = "opening"
-EFFECT_LAUNCHING = "launching"
-EFFECT_HOVER = "hover"
-EFFECT_ATTENTION = "attention"
-EFFECT_CLOSING = "closing"
-EFFECT_DESATURATE = "desaturate"
-
 uid = "0"
 window = 0
-awn_id = 0
-orient = 0
-offset = 0
-size = 0
+panel_id = 0
 
 def init (argv):
   global uid
   global window
-  global awn_id
-  global orient
-  global offset
-  global size
+  global panel_id
 
   try: 
-    opts, args = getopt.getopt (argv, "u:w:i:o:f:s:", 
-                                ["uid=", "window=", "panel-window-id=", 
-                                 "orient=", "offset=", "size="])
+    opts, args = getopt.getopt (argv, "u:w:i:", 
+                                ["uid=", "window=", "panel-id="])
   except getopt.GetoptError:
     print ("Unable to parse args")
     sys.exit (2)
@@ -71,37 +56,22 @@ def init (argv):
     elif opt in ("-w", "--window"):
       window = int (arg)
       #print "window = " + arg+ " " + str (type (window))
-    elif opt in ("-i", "--panel-window-id"):
-      awn_id = int (arg)
-      #print "panel-window-id = " + arg+ " " + str (type (awn_id))
-    elif opt in ("-o", "--orient"):
-      orient = int (arg)
-      #print "orient = " + arg + " " + str (type (orient))
-    elif opt in ("-f", "--offset"):
-      offset = int (arg)
-      #print "offset = " + arg + " " + str (type (offset))
-    elif opt in ("-s", "--size"):
-      size = int (arg)
-      #print "size = " + arg + " " + str (type (size))
+    elif opt in ("-i", "--panel-id"):
+      panel_id = int (arg)
+      #print "panel-id = " + arg+ " " + str (type (panel_id))
 
 def init_applet (applet):
   global uid
-  global orient
-  global offset
-  global size
   global window
-  global awn_id
+  global panel_id
 
   if (window):
     #applet.construct (window)
     applet.applet_construct (window)
   else:
-    #applet.construct (-1)
-    applet.applet_construct (-1)
+    #applet.construct (0)
+    applet.applet_construct (0)
     applet.show_all ()
-
-  if (awn_id):
-    applet.set_panel_window_id (awn_id)
 
 def check_dependencies(scope, *modules, **choice_modules):
     '''

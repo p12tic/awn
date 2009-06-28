@@ -30,7 +30,8 @@
 
 /**
  * awn_cairo_rounded_rect:
- * draws a rounded rectangle via cairo.
+ *
+ * Draws a rounded rectangle via cairo.
  */
 void
 awn_cairo_rounded_rect(cairo_t *cr, double rx0, double ry0,
@@ -90,8 +91,9 @@ awn_cairo_rounded_rect(cairo_t *cr, double rx0, double ry0,
 }
 
 /**
- * awn_cairo_rounded_rect:
- * draws a rounded rectangle via cairo.
+ * awn_cairo_rounded_rect_shadow:
+ *
+ * Draws a shadow for rounded rectangle via cairo.
  */
 void
 awn_cairo_rounded_rect_shadow(cairo_t *cr, double rx0, double ry0,

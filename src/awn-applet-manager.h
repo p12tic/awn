@@ -85,6 +85,9 @@ void        awn_applet_manager_set_applet_flags  (AwnAppletManager *manager,
                                                   const gchar *uid,
                                                   AwnAppletFlags flags);
 
+void        awn_applet_manager_show_applets      (AwnAppletManager *manager);
+void        awn_applet_manager_hide_applets      (AwnAppletManager *manager);
+
 G_END_DECLS
 
 #endif /* _AWN_APPLET_MANAGER_H */

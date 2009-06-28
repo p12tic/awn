@@ -48,12 +48,14 @@ G_DEFINE_TYPE (AwnApplet, awn_applet, GTK_TYPE_PLUG)
 struct _AwnAppletPrivate
 {
   gchar *uid;
+  gint panel_id;
   gchar *gconf_key;
   AwnOrientation orient;
   AwnPathType path_type;
   gint offset;
   gfloat offset_modifier;
   guint size;
+  gint max_size;
 
   gboolean show_all_on_embed;
   gboolean quit_on_delete;
@@ -74,11 +76,16 @@ enum
 {
   PROP_0,
   PROP_UID,
+  PROP_PANEL_ID,
   PROP_ORIENT,
   PROP_OFFSET,
   PROP_OFFSET_MOD,
   PROP_SIZE,
-  PROP_PATH_TYPE
+  PROP_MAX_SIZE,
+  PROP_PATH_TYPE,
+
+  PROP_QUIT_ON_DELETE,
+  PROP_SHOW_ALL_ON_EMBED
 };
 
 enum
@@ -96,6 +103,14 @@ enum
 };
 static guint _applet_signals[LAST_SIGNAL] = { 0 };
 
+/* FORWARDS */
+static GdkFilterReturn _on_panel_configure (GdkXEvent *xevent,
+                                            GdkEvent *event, gpointer data);
+
+static void awn_applet_set_panel_window_id (AwnApplet *applet,
+                                            GdkNativeWindow anid);
+
+/* DBus signal callbacks */
 static void
 on_orient_changed (DBusGProxy *proxy, gint orient, AwnApplet *applet)
 {
@@ -141,9 +156,14 @@ on_delete_notify (DBusGProxy *proxy, AwnApplet *applet)
 }
 
 static void
-on_proxy_destroyed (GObject *object)
+on_proxy_destroyed (GObject *object, AwnApplet *applet)
 {
-  gtk_main_quit ();
+  AwnAppletPrivate *priv = applet->priv;
+
+  if (priv->quit_on_delete)
+  {
+    gtk_main_quit ();
+  }
 }
 
 static void
@@ -253,6 +273,9 @@ awn_applet_set_property (GObject      *object,
     case PROP_UID:
       awn_applet_set_uid (applet, g_value_get_string (value));
       break;
+    case PROP_PANEL_ID:
+      applet->priv->panel_id = g_value_get_int (value);
+      break;
     case PROP_ORIENT:
       awn_applet_set_orientation (applet, g_value_get_int (value));
       break;
@@ -261,13 +284,19 @@ awn_applet_set_property (GObject      *object,
       break;
     case PROP_OFFSET_MOD:
       // FIXME: method!
-      AWN_APPLET_GET_PRIVATE(applet)->offset_modifier = g_value_get_float (value);
+      applet->priv->offset_modifier = g_value_get_float (value);
       break;
     case PROP_SIZE:
       awn_applet_set_size (applet, g_value_get_int (value));
       break;
+    case PROP_MAX_SIZE:
+      applet->priv->max_size = g_value_get_int (value);
+      break;
     case PROP_PATH_TYPE:
       awn_applet_set_path_type (applet, g_value_get_int (value));
+      break;
+    case PROP_QUIT_ON_DELETE:
+      applet->priv->quit_on_delete = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -292,6 +321,10 @@ awn_applet_get_property (GObject    *object,
       g_value_set_string (value, priv->uid);
       break;
 
+    case PROP_PANEL_ID:
+      g_value_set_int (value, priv->panel_id);
+      break;
+
     case PROP_ORIENT:
       g_value_set_int (value, priv->orient);
       break;
@@ -308,8 +341,16 @@ awn_applet_get_property (GObject    *object,
       g_value_set_int (value, priv->size);
       break;
 
+    case PROP_MAX_SIZE:
+      g_value_set_int (value, priv->max_size);
+      break;
+
     case PROP_PATH_TYPE:
       g_value_set_int (value, priv->path_type);
+      break;
+
+    case PROP_QUIT_ON_DELETE:
+      g_value_set_boolean (value, priv->quit_on_delete);
       break;
 
     default:
@@ -319,8 +360,168 @@ awn_applet_get_property (GObject    *object,
 }
 
 static void
+awn_applet_constructed (GObject *obj)
+{
+  AwnApplet *applet = AWN_APPLET (obj);
+  AwnAppletPrivate *priv = applet->priv;
+
+  if (priv->panel_id > 0)
+  {
+    gchar *object_path = g_strdup_printf ("/org/awnproject/Awn/Panel%d",
+                                          priv->panel_id);
+    priv->proxy = dbus_g_proxy_new_for_name (priv->connection,
+                                             "org.awnproject.Awn",
+                                             object_path,
+                                             "org.awnproject.Awn.Panel");
+    if (!priv->proxy)
+    {
+      g_warning("Could not connect to mothership! Bailing\n");
+      gtk_main_quit ();
+    }
+
+    dbus_g_object_register_marshaller (
+      libawn_marshal_VOID__STRING_STRING_BOXED,
+      G_TYPE_NONE, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_VALUE,
+      G_TYPE_INVALID
+    );
+
+    dbus_g_proxy_add_signal (priv->proxy, "OrientChanged",
+                             G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_proxy_add_signal (priv->proxy, "OffsetChanged",
+                             G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_proxy_add_signal (priv->proxy, "SizeChanged",
+                             G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_proxy_add_signal (priv->proxy, "PropertyChanged",
+                             G_TYPE_STRING, G_TYPE_STRING,
+                             G_TYPE_VALUE, G_TYPE_INVALID);
+    dbus_g_proxy_add_signal (priv->proxy, "DestroyNotify",
+                             G_TYPE_INVALID);
+    dbus_g_proxy_add_signal (priv->proxy, "DestroyApplet",
+                             G_TYPE_STRING, G_TYPE_INVALID);
+  
+    dbus_g_proxy_connect_signal (priv->proxy, "OrientChanged",
+                                 G_CALLBACK (on_orient_changed), applet, 
+                                 NULL);
+    dbus_g_proxy_connect_signal (priv->proxy, "OffsetChanged",
+                                 G_CALLBACK (on_offset_changed), applet, 
+                                 NULL);
+    dbus_g_proxy_connect_signal (priv->proxy, "SizeChanged",
+                                 G_CALLBACK (on_size_changed), applet,
+                                 NULL);
+    dbus_g_proxy_connect_signal (priv->proxy, "PropertyChanged",
+                                 G_CALLBACK (on_prop_changed), applet,
+                                 NULL);
+    dbus_g_proxy_connect_signal (priv->proxy, "DestroyNotify",
+                                 G_CALLBACK (on_delete_notify), applet,
+                                 NULL);
+    dbus_g_proxy_connect_signal (priv->proxy, "DestroyApplet",
+                                 G_CALLBACK (on_destroy_applet), applet,
+                                 NULL);
+
+    g_signal_connect (priv->proxy, "destroy",
+                      G_CALLBACK (on_proxy_destroyed), applet);
+
+    // get prop values from Panel
+    DBusGProxy *prop_proxy = dbus_g_proxy_new_from_proxy (
+      priv->proxy, "org.freedesktop.DBus.Properties", NULL
+    );
+
+    if (!prop_proxy)
+    {
+      g_warning("Could not get property values! Bailing\n");
+      gtk_main_quit ();
+    }
+
+    GError *error = NULL;
+    GValue orient = {0}, size = {0}, max_size = {0}, offset = {0};
+    GValue panel_xid = {0};
+
+    dbus_g_proxy_call (prop_proxy, "Get", &error, 
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "Orient",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &orient,
+                       G_TYPE_INVALID);
+
+    if (error) goto crap_out;
+
+    dbus_g_proxy_call (prop_proxy, "Get", &error, 
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "Size",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &size,
+                       G_TYPE_INVALID);
+
+    if (error) goto crap_out;
+
+    dbus_g_proxy_call (prop_proxy, "Get", &error, 
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "Offset",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &offset,
+                       G_TYPE_INVALID);
+
+    if (error) goto crap_out;
+
+    dbus_g_proxy_call (prop_proxy, "Get", &error,
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "MaxSize",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &max_size,
+                       G_TYPE_INVALID);
+
+    if (error) goto crap_out;
+
+    dbus_g_proxy_call (prop_proxy, "Get", &error,
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "PanelXid",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &panel_xid,
+                       G_TYPE_INVALID);
+
+    if (error) goto crap_out;
+
+    g_object_set_property (obj, "orient", &orient);
+    g_object_set_property (obj, "size", &size);
+    g_object_set_property (obj, "offset", &offset);
+    g_object_set_property (obj, "max-size", &max_size);
+
+    if (g_value_get_int64 (&panel_xid) != 0)
+    {
+      awn_applet_set_panel_window_id (AWN_APPLET (obj),
+                          (GdkNativeWindow) g_value_get_int64 (&panel_xid));
+    }
+
+    g_value_unset (&orient);
+    g_value_unset (&size);
+    g_value_unset (&max_size);
+    g_value_unset (&offset);
+    g_value_unset (&panel_xid);
+
+    if (prop_proxy) g_object_unref (prop_proxy);
+
+    g_free (object_path);
+    return;
+
+    crap_out:
+
+    g_warning ("%s", error->message);
+    g_error_free (error);
+    gtk_main_quit ();
+  }
+}
+
+static void
 awn_applet_dispose (GObject *obj)
 {
+  AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (obj);
+
+  if (priv->panel_window)
+  {
+    gdk_window_remove_filter (priv->panel_window, _on_panel_configure, obj);
+    priv->panel_window = 0;
+  }
+
   G_OBJECT_CLASS (awn_applet_parent_class)->dispose(obj);
 }
 
@@ -331,8 +532,8 @@ awn_applet_finalize (GObject *obj)
 
   if (priv->connection)
   {
+    if (priv->proxy) g_object_unref (priv->proxy);
     dbus_g_connection_unref (priv->connection);
-    g_object_unref (priv->proxy);
     priv->connection = NULL;
     priv->proxy = NULL;
   }
@@ -373,6 +574,7 @@ awn_applet_class_init (AwnAppletClass *klass)
   GtkWidgetClass *gtk_widget_class;
 
   g_object_class = G_OBJECT_CLASS (klass);
+  g_object_class->constructed = awn_applet_constructed;
   g_object_class->dispose = awn_applet_dispose;
   g_object_class->finalize = awn_applet_finalize;
   g_object_class->get_property = awn_applet_get_property;
@@ -391,12 +593,20 @@ awn_applet_class_init (AwnAppletClass *klass)
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   g_object_class_install_property (g_object_class,
+    PROP_PANEL_ID,
+    g_param_spec_int ("panel-id",
+                      "Panel ID",
+                      "The id of AwnPanel this applet connects to",
+                      0, G_MAXINT, 0,
+                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+
+  g_object_class_install_property (g_object_class,
    PROP_ORIENT,
    g_param_spec_int ("orient",
                      "Orientation",
                      "The current bar orientation",
                      0, 3, AWN_ORIENTATION_BOTTOM,
-                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                     G_PARAM_READWRITE));
 
   g_object_class_install_property (g_object_class,
    PROP_OFFSET,
@@ -404,7 +614,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                      "Offset",
                      "Icon offset set on the bar",
                      0, G_MAXINT, 0,
-                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                     G_PARAM_READWRITE));
 
   g_object_class_install_property (g_object_class,
    PROP_OFFSET_MOD,
@@ -420,7 +630,15 @@ awn_applet_class_init (AwnAppletClass *klass)
                      "Size",
                      "The current visible size of the bar",
                      0, G_MAXINT, 48,
-                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                     G_PARAM_READWRITE));
+
+  g_object_class_install_property (g_object_class,
+   PROP_MAX_SIZE,
+   g_param_spec_int ("max-size",
+                     "Max Size",
+                     "The maximum visible size of the applet",
+                     0, G_MAXINT, 48,
+                     G_PARAM_READWRITE));
 
   g_object_class_install_property (g_object_class,
    PROP_PATH_TYPE,
@@ -429,6 +647,14 @@ awn_applet_class_init (AwnAppletClass *klass)
                      "Path used on the panel",
                      0, AWN_PATH_LAST-1, AWN_PATH_LINEAR,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+
+  g_object_class_install_property (g_object_class,
+   PROP_QUIT_ON_DELETE,
+   g_param_spec_boolean ("quit-on-delete",
+                         "Quit on delete",
+                         "Quit the applet when it's socket is destroyed",
+                         TRUE,
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   /* Class signals */
   _applet_signals[ORIENT_CHANGED] =
@@ -524,7 +750,6 @@ awn_applet_init (AwnApplet *applet)
   priv->offset_modifier = 1.0;
   // FIXME: turn into proper properties
   priv->show_all_on_embed = TRUE;
-  priv->quit_on_delete = TRUE;
 
   error = NULL;
   priv->connection = dbus_g_bus_get(DBUS_BUS_SESSION, &error);
@@ -536,57 +761,6 @@ awn_applet_init (AwnApplet *applet)
     gtk_main_quit ();
   }
   
-  priv->proxy = dbus_g_proxy_new_for_name (priv->connection,
-                                           "org.awnproject.Awn",
-                                           "/org/awnproject/Awn/Panel1",
-                                           "org.awnproject.Awn.Panel");
-  if (!priv->proxy)
-  {
-    g_warning("Could not connect to mothership! Bailing\n");
-    gtk_main_quit ();
-  }
-
-  dbus_g_object_register_marshaller (libawn_marshal_VOID__STRING_STRING_BOXED,
-                                     G_TYPE_NONE, G_TYPE_STRING,
-                                     G_TYPE_STRING, G_TYPE_VALUE,
-                                     G_TYPE_INVALID);
-
-  dbus_g_proxy_add_signal (priv->proxy, "OrientChanged",
-                           G_TYPE_INT, G_TYPE_INVALID);
-  dbus_g_proxy_add_signal (priv->proxy, "OffsetChanged",
-                           G_TYPE_INT, G_TYPE_INVALID);
-  dbus_g_proxy_add_signal (priv->proxy, "SizeChanged",
-                           G_TYPE_INT, G_TYPE_INVALID);
-  dbus_g_proxy_add_signal (priv->proxy, "PropertyChanged",
-                           G_TYPE_STRING, G_TYPE_STRING,
-                           G_TYPE_VALUE, G_TYPE_INVALID);
-  dbus_g_proxy_add_signal (priv->proxy, "DestroyNotify",
-                           G_TYPE_INVALID);
-  dbus_g_proxy_add_signal (priv->proxy, "DestroyApplet",
-                           G_TYPE_STRING, G_TYPE_INVALID);
-  
-  dbus_g_proxy_connect_signal (priv->proxy, "OrientChanged",
-                               G_CALLBACK (on_orient_changed), applet, 
-                               NULL);
-  dbus_g_proxy_connect_signal (priv->proxy, "OffsetChanged",
-                               G_CALLBACK (on_offset_changed), applet, 
-                               NULL);
-  dbus_g_proxy_connect_signal (priv->proxy, "SizeChanged",
-                               G_CALLBACK (on_size_changed), applet,
-                               NULL);
-  dbus_g_proxy_connect_signal (priv->proxy, "PropertyChanged",
-                               G_CALLBACK (on_prop_changed), applet,
-                               NULL);
-  dbus_g_proxy_connect_signal (priv->proxy, "DestroyNotify",
-                               G_CALLBACK (on_delete_notify), applet,
-                               NULL);
-  dbus_g_proxy_connect_signal (priv->proxy, "DestroyApplet",
-                               G_CALLBACK (on_destroy_applet), applet,
-                               NULL);
-
-  g_signal_connect (priv->proxy, "destroy",
-                    G_CALLBACK (on_proxy_destroyed), NULL);
-
   g_signal_connect (applet, "embedded",
                     G_CALLBACK (awn_applet_plug_embedded), NULL);
   g_signal_connect (applet, "delete-event",
@@ -601,14 +775,22 @@ awn_applet_init (AwnApplet *applet)
                                          applet);
 }
 
+/**
+ * awn_applet_new:
+ * @uid: unique ID of the applet.
+ * @panel_id: ID of AwnPanel associated with the applet.
+ *
+ * Creates a new AwnApplet which tries to connect via DBus to AwnPanel
+ * with the given ID. You can pass zero @panel_id to not connect to any panel.
+ *
+ * Returns: the new AwnApplet.
+ */
 AwnApplet *
-awn_applet_new (const gchar* uid, gint orient, gint offset, gint size)
+awn_applet_new (const gchar* uid, gint panel_id)
 {
   AwnApplet *applet = g_object_new (AWN_TYPE_APPLET,
                                     "uid", uid,
-                                    "orient", orient,
-                                    "offset", offset,
-                                    "size", size,
+                                    "panel-id", panel_id,
                                     NULL);
   return applet;
 }
@@ -624,7 +806,7 @@ _start_awn_manager (GtkMenuItem *menuitem, gpointer null)
 {
   GError *err = NULL;
   
-  g_spawn_command_line_async("awn-manager-mini", &err);
+  g_spawn_command_line_async("awn-settings", &err);
 
   if (err)
   {
@@ -650,6 +832,144 @@ awn_applet_create_pref_item (void)
   gtk_widget_show_all (item);
   g_signal_connect (item, "activate", 
                     G_CALLBACK (_start_awn_manager), NULL);
+  return item;
+}
+
+static void
+_show_about_dialog (GtkMenuItem *menuitem,
+                    GtkWidget   *dialog)
+{
+  gtk_widget_show_all (dialog);
+}
+
+static gboolean
+_cleanup_about_dialog (GtkWidget *widget,
+                       GdkEvent  *event,
+                       GtkWidget *dialog)
+{
+  gtk_widget_destroy (dialog);
+  return FALSE;
+}
+
+/**
+ * awn_applet_create_about_item:
+ * @license: Must be one of the values enumerated in #AwnAppletLicense.
+ *
+ * Creates an about dialog and an associated menu item for use in the applet's
+ * context menu. The @copyright, @license, and @applet_name parameters are
+ * mandatory. The rest are optional. See also #GtkAboutDialog for a description
+ * of the parameters other than @license.
+ *
+ * Returns: An "about applet" #GtkMenuItem
+ */
+GtkWidget *
+awn_applet_create_about_item (const gchar       *copyright,
+                              AwnAppletLicense   license,
+                              const gchar       *applet_name,
+                              const gchar       *version,
+                              const gchar       *comments,
+                              const gchar       *website,
+                              const gchar       *website_label,
+                              const gchar       *icon_name,
+                              const gchar       *translator_credits,
+                              const gchar      **authors,
+                              const gchar      **artists,
+                              const gchar      **documenters)
+{
+  /* we could use  gtk_show_about_dialog()... but no. */
+  GtkAboutDialog* dialog = GTK_ABOUT_DIALOG (gtk_about_dialog_new ());
+  GtkWidget* item;
+  gchar* item_text = NULL;
+  GdkPixbuf* pixbuf =NULL;
+
+  g_assert (copyright != NULL);
+  g_assert (strlen (copyright) > 8);
+  g_assert (applet_name);
+  if (copyright)
+  {
+    gtk_about_dialog_set_copyright (dialog, copyright);
+  }
+  switch (license)   /* FIXME insert more complete license info. */
+  {
+    case AWN_APPLET_LICENSE_GPLV2:
+      gtk_about_dialog_set_license (dialog, "GPLv2");
+      break;
+    case AWN_APPLET_LICENSE_GPLV3:
+      gtk_about_dialog_set_license (dialog, "GPLv3");
+      break;
+    case AWN_APPLET_LICENSE_LGPLV2_1:
+      gtk_about_dialog_set_license (dialog, "LGPLv2.1");
+      break;
+    case AWN_APPLET_LICENSE_LGPLV3:
+      gtk_about_dialog_set_license (dialog, "LGPLv3");
+      break;
+    default:
+      g_warning ("License must be set");
+      g_assert_not_reached ();
+  }
+#if GTK_CHECK_VERSION(2,12,0)
+  if (applet_name)
+  {
+    gtk_about_dialog_set_program_name (dialog, applet_name);
+  }
+#endif
+  if (version) /* FIXME we can probably append some addition build info in here... */
+  {
+    gtk_about_dialog_set_version (dialog, version);
+  }
+  if (comments)
+  {
+    gtk_about_dialog_set_comments (dialog, comments);
+  }
+  if (website)
+  {
+    gtk_about_dialog_set_website (dialog, website);
+  }
+  if (website_label)
+  {
+    gtk_about_dialog_set_website_label (dialog, website_label);
+  }
+  if (!icon_name)
+  {
+    icon_name = "stock_about";
+  }
+  gtk_about_dialog_set_logo_icon_name (dialog, icon_name);
+  pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+                                     icon_name, 64, 0, NULL);
+  gtk_window_set_icon (GTK_WINDOW (dialog), pixbuf);
+  g_object_unref (pixbuf);
+
+  if (translator_credits)
+  {
+    gtk_about_dialog_set_translator_credits (dialog, translator_credits);
+  }
+  if (authors)
+  {
+    gtk_about_dialog_set_authors (dialog, authors);
+  }
+  if (artists)
+  {
+    gtk_about_dialog_set_artists (dialog, artists);
+  }
+  if (documenters)
+  {
+    gtk_about_dialog_set_documenters (dialog, documenters);
+  }
+  item_text = g_strdup_printf ("About %s", applet_name);
+  item = gtk_image_menu_item_new_with_label (item_text); /* FIXME Add pretty icon */
+
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
+    gtk_image_new_from_stock (GTK_STOCK_ABOUT, GTK_ICON_SIZE_MENU));
+
+  g_free (item_text);
+
+  gtk_widget_show_all (item);
+  g_signal_connect (G_OBJECT (item), "activate",
+                    G_CALLBACK (_show_about_dialog), dialog);
+  g_signal_connect (G_OBJECT (item), "destroy-event",
+                    G_CALLBACK (_cleanup_about_dialog), dialog);
+  g_signal_connect_swapped (dialog, "response",
+                            G_CALLBACK (gtk_widget_hide), dialog);
   return item;
 }
 
@@ -680,6 +1000,15 @@ awn_applet_create_default_menu (AwnApplet *applet)
   return menu;
 }
 
+/**
+ * awn_applet_get_orientation:
+ * @applet: an #AwnApplet.
+ *
+ * Gets current orientation of the applet. See awn_applet_set_orientation().
+ * This value corresponds to the value used by the associated panel.
+ *
+ * Returns: current orientation of the applet.
+ */
 AwnOrientation
 awn_applet_get_orientation (AwnApplet *applet)
 {
@@ -691,6 +1020,14 @@ awn_applet_get_orientation (AwnApplet *applet)
   return priv->orient;
 }
 
+/**
+ * awn_applet_set_orientation:
+ * @applet: an #AwnApplet.
+ * @orient: new orientation of the applet.
+ *
+ * Sets current orientation of the applet. Note that setting the orientation 
+ * emits the #AwnApplet::orientation-changed signal.
+ */
 void
 awn_applet_set_orientation (AwnApplet *applet, AwnOrientation orient)
 {
@@ -704,6 +1041,15 @@ awn_applet_set_orientation (AwnApplet *applet, AwnOrientation orient)
   g_signal_emit (applet, _applet_signals[ORIENT_CHANGED], 0, orient);
 }
 
+/**
+ * awn_applet_get_path_type:
+ * @applet: an #AwnApplet.
+ *
+ * Gets currently used path type for this applet. This value corresponds
+ * to the value used by the associated panel.
+ *
+ * Returns: currently used path type.
+ */
 AwnPathType
 awn_applet_get_path_type (AwnApplet *applet)
 {
@@ -715,6 +1061,13 @@ awn_applet_get_path_type (AwnApplet *applet)
   return priv->path_type;
 }
 
+/**
+ * awn_applet_set_path_type:
+ * @applet: an #AwnApplet.
+ * @path: path type for this applet.
+ *
+ * Sets path type used by this applet. See awn_applet_get_offset_at().
+ */
 void
 awn_applet_set_path_type (AwnApplet *applet, AwnPathType path)
 {
@@ -731,6 +1084,16 @@ awn_applet_set_path_type (AwnApplet *applet, AwnPathType path)
   }
 }
 
+/**
+ * awn_applet_get_offset:
+ * @applet: an #AwnApplet.
+ *
+ * Gets current offset set for the applet. This value corresponds
+ * to the value used by the associated panel.
+ * @see_also: awn_applet_get_offset_at().
+ *
+ * Returns: current offset.
+ */
 gint
 awn_applet_get_offset (AwnApplet *applet)
 {
@@ -742,6 +1105,14 @@ awn_applet_get_offset (AwnApplet *applet)
   return priv->offset;
 }
 
+/**
+ * awn_applet_set_offset:
+ * @applet: an #AwnApplet.
+ * @offset: new offset for this applet.
+ *
+ * Sets offset used by this applet. Note that setting the offset emits the
+ * #AwnApplet::offset-changed signal.
+ */
 void
 awn_applet_set_offset (AwnApplet *applet, gint offset)
 {
@@ -758,6 +1129,19 @@ awn_applet_set_offset (AwnApplet *applet, gint offset)
   }
 }
 
+/**
+ * awn_applet_get_offset_at:
+ * @applet: an #AwnApplet.
+ * @x: X-coordinate.
+ * @y: Y-coordinate.
+ *
+ * @see_also: awn_applet_set_path_type().
+ *
+ * Gets offset for widget with [@x, @y] coordinates with respect to the current
+ * path type.
+ *
+ * Returns: offset which should have the widget with [x, y] coordinates.
+ */
 gint
 awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
 {
@@ -796,6 +1180,15 @@ awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
   }
 }
 
+/**
+ * awn_applet_get_size:
+ * @applet: an #AwnApplet.
+ *
+ * Gets the current size set for the applet. This value corresponds
+ * to the value used by the associated panel.
+ *
+ * Returns: current size set for the applet.
+ */
 guint
 awn_applet_get_size (AwnApplet *applet)
 {
@@ -807,6 +1200,14 @@ awn_applet_get_size (AwnApplet *applet)
   return priv->size;
 }
 
+/**
+ * awn_applet_set_size:
+ * @applet: an #AwnApplet.
+ * @size: new size of the applet.
+ *
+ * Sets new size for the applet. Note that setting the size emits the
+ * #AwnApplet::size-changed signal.
+ */
 void
 awn_applet_set_size (AwnApplet *applet, gint size)
 {
@@ -820,6 +1221,14 @@ awn_applet_set_size (AwnApplet *applet, gint size)
   g_signal_emit (applet, _applet_signals[SIZE_CHANGED], 0, size);
 }
 
+/**
+ * awn_applet_get_uid:
+ * @applet: an #AwnApplet.
+ *
+ * Gets the unique ID for the applet.
+ *
+ * Returns: unique ID for the applet.
+ */
 const gchar *
 awn_applet_get_uid (AwnApplet *applet)
 {
@@ -831,6 +1240,13 @@ awn_applet_get_uid (AwnApplet *applet)
   return priv->uid;
 }
 
+/**
+ * awn_applet_set_uid:
+ * @applet: an #AwnApplet.
+ * @uid: new unique ID for the applet.
+ *
+ * Sets new unique ID for the applet.
+ */
 void
 awn_applet_set_uid (AwnApplet *applet, const gchar *uid)
 {
@@ -843,6 +1259,15 @@ awn_applet_set_uid (AwnApplet *applet, const gchar *uid)
   priv->uid = g_strdup (uid);
 }
 
+/**
+ * awn_applet_set_flags:
+ * @applet: an #AwnApplet.
+ * @flags: flags for this applet.
+ *
+ * Sets flags for this applet. Note that setting the flags to
+ * #AWN_APPLET_IS_SEPARATOR or #AWN_APPLET_IS_EXPANDER will send a DBus request
+ * to the associated AwnPanel which will destroy the socket used by this applet.
+ */
 void
 awn_applet_set_flags (AwnApplet *applet, AwnAppletFlags flags)
 {
@@ -872,6 +1297,14 @@ awn_applet_set_flags (AwnApplet *applet, AwnAppletFlags flags)
   }
 }
 
+/**
+ * awn_applet_get_flags:
+ * @applet: an #AwnApplet.
+ *
+ * Gets the flags set for this applet.
+ *
+ * Returns: flags set for this applet.
+ */
 AwnAppletFlags 
 awn_applet_get_flags (AwnApplet *applet)
 {
@@ -880,6 +1313,17 @@ awn_applet_get_flags (AwnApplet *applet)
   return applet->priv->flags;
 }
 
+/**
+ * awn_applet_inhibit_autohide:
+ * @applet: an #AwnApplet.
+ * @reason: reason for the inhibit.
+ *
+ * Requests the associated AwnPanel to disable autohide (if the panel is
+ * already hidden it will unhide) until a call to
+ * awn_applet_uninhibit_autohide() with the returned ID is made.
+ *
+ * Returns: cookie ID which can be used in awn_applet_uninhibit_autohide().
+ */
 guint
 awn_applet_inhibit_autohide (AwnApplet *applet, const gchar *reason)
 {
@@ -911,6 +1355,15 @@ awn_applet_inhibit_autohide (AwnApplet *applet, const gchar *reason)
   return ret;
 }
 
+/**
+ * awn_applet_uninhibit_autohide:
+ * @applet: an #AwnApplet.
+ * @cookie: inhibit cookie returned by the call
+ *          to awn_applet_inhibit_autohide().
+ *
+ * Uninhibits autohide of the associated AwnPanel.
+ * See awn_applet_inhibit_autohide().
+ */
 void
 awn_applet_uninhibit_autohide (AwnApplet *applet, guint cookie)
 {
@@ -931,6 +1384,51 @@ awn_applet_uninhibit_autohide (AwnApplet *applet, guint cookie)
     g_warning ("%s", error->message);
     g_error_free (error);
   }
+}
+
+/**
+ * awn_applet_docklet_request:
+ * @applet: AwnApplet instance.
+ * @min_size: Minimum size required.
+ * @shrink: If true and the panel has greater size than requested, it will
+ *          shrink to min_size. Otherwise current panel size will be allocated.
+ * @expand: If true the embedded window will be allowed to expand, otherwise
+ *          the window will be restricted to min_size.
+ *
+ * Requests docklet mode from the associated AwnPanel - all applets will be
+ * hidden and only one window will be shown.
+ *
+ * Returns: non-zero window XID which can be passed to GtkPlug constructor, 
+ * or zero if the call failed (or another application is currently using
+ * docklet mode).
+ */
+GdkNativeWindow
+awn_applet_docklet_request (AwnApplet *applet, gint min_size,
+                            gboolean shrink, gboolean expand)
+{
+  AwnAppletPrivate *priv;
+  GError *error = NULL;
+  gint64 ret = 0;
+
+  g_return_val_if_fail (AWN_IS_APPLET (applet), 0);
+  priv = applet->priv;
+
+  dbus_g_proxy_call (priv->proxy, "DockletRequest",
+                     &error,
+                     G_TYPE_INT, min_size,
+                     G_TYPE_BOOLEAN, shrink,
+                     G_TYPE_BOOLEAN, expand,
+                     G_TYPE_INVALID,
+                     G_TYPE_INT64, &ret,
+                     G_TYPE_INVALID);
+
+  if (error)
+  {
+    g_warning ("%s", error->message);
+    g_error_free (error);
+  }
+
+  return (GdkNativeWindow)ret;
 }
 
 static GdkFilterReturn
@@ -986,7 +1484,7 @@ _on_panel_configure (GdkXEvent *xevent, GdkEvent *event, gpointer data)
   return GDK_FILTER_CONTINUE;
 }
 
-void
+static void
 awn_applet_set_panel_window_id (AwnApplet *applet, GdkNativeWindow anid)
 {
   g_return_if_fail (AWN_IS_APPLET (applet) && anid);

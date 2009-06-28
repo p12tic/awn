@@ -92,7 +92,6 @@ enum {
   PROP_REFLECTION_ALPHA,
   PROP_REFLECTION_VISIBLE,
   PROP_MAKE_SHADOW,
-  PROP_LABEL,
   PROP_IS_ACTIVE,
   PROP_PROGRESS,
   PROP_BORDER_CLIP,
@@ -148,12 +147,6 @@ awn_effects_finalize (GObject *object)
     g_list_foreach (fx->priv->effect_queue, (GFunc)g_free, NULL);
     g_list_free (fx->priv->effect_queue);
     fx->priv->effect_queue = NULL;
-  }
-
-  if (fx->label)
-  {
-    g_free (fx->label);
-    fx->label = NULL;
   }
 
   G_OBJECT_CLASS (awn_effects_parent_class)->finalize(object);
@@ -289,9 +282,6 @@ awn_effects_get_property (GObject      *object,
     case PROP_MAKE_SHADOW:
       g_value_set_boolean(value, fx->make_shadow);
       break;
-    case PROP_LABEL:
-      g_value_set_string(value, fx->label);
-      break;
     case PROP_IS_ACTIVE:
       g_value_set_boolean(value, fx->is_active);
       break;
@@ -371,10 +361,6 @@ awn_effects_set_property (GObject      *object,
       break;
     case PROP_MAKE_SHADOW:
       fx->make_shadow = g_value_get_boolean(value);
-      break;
-    case PROP_LABEL:
-      if (fx->label) g_free(fx->label);
-      fx->label = g_value_dup_string(value);
       break;
     case PROP_IS_ACTIVE:
       fx->is_active = g_value_get_boolean(value);
@@ -745,18 +731,6 @@ awn_effects_class_init(AwnEffectsClass *klass)
                      0, G_MAXINT, 0,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   /**
-   * AwnEffects:label:
-   *
-   * The extra label painted on top of the icon.
-   */
-  g_object_class_install_property(
-    obj_class, PROP_LABEL,
-    g_param_spec_string("label",
-                        "Label",
-                        "Extra label drawn on top of the icon",
-                        NULL,
-                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
-  /**
    * AwnEffects:progress:
    *
    * Extra progress pie painted on the pie and percentage value it represents.
@@ -827,6 +801,13 @@ awn_effects_init(AwnEffects * fx)
   fx->priv->saturation = 1.0;
 }
 
+/**
+ * awn_effects_new_for_widget:
+ * @widget: Managed widget, computing window width and height is based on it and
+ * it is also passed to gtk_widget_queue_draw() during the animations.
+ *
+ * Creates new #AwnEffects instance.
+ */
 AwnEffects* awn_effects_new_for_widget(GtkWidget * widget)
 {
   g_return_val_if_fail(GTK_IS_WIDGET(widget), NULL);
@@ -889,12 +870,33 @@ awn_effects_sort(gconstpointer a, gconstpointer b)
     awn_effects_get_priority(data2->this_effect));
 }
 
+/**
+ * awn_effects_start:
+ * @fx: Pointer to #AwnEffects instance.
+ * @effect: #AwnEffect to schedule.
+ *
+ * Start a single effect. The effect will loop until awn_effect_stop()
+ * is called.
+ */
 void
 awn_effects_start(AwnEffects * fx, const AwnEffect effect)
 {
   awn_effects_start_ex(fx, effect, 0, FALSE, FALSE);
 }
 
+/**
+ * awn_effects_start_ex:
+ * @fx: Pointer to #AwnEffects instance.
+ * @effect: Effect to schedule.
+ * @max_loops: Number of maximum animation loops (0 for unlimited).
+ * @signal_start: Determines whether the animation should emit "animation-start"
+ *   signal when it starts.
+ * @signal_end: Determines whether the animation should emit "animation-end"
+ *   signal when it finishes.
+ *
+ * Extended effect start, which provides a way to specify maximum number of loops
+ * and possibility to emit signals for animation start & end.
+ */
 void
 awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
                      gboolean signal_start, gboolean signal_end)
@@ -935,6 +937,13 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
   awn_effects_main_effect_loop(fx);
 }
 
+/**
+ * awn_effects_stop:
+ * @fx: Pointer to #AwnEffects instance.
+ * @effect: #AwnEffect to stop.
+ *
+ * Stop a single effect.
+ */
 void
 awn_effects_stop(AwnEffects * fx, const AwnEffect effect)
 {
@@ -1081,6 +1090,16 @@ void awn_effects_emit_anim_end(AwnEffects *fx, AwnEffect effect)
   g_signal_emit( fx, _effects_signals[ANIMATION_END], 0, effect);
 }
 
+/**
+ * awn_effects_set_icon_size:
+ * @fx: Pointer to #AwnEffects instance.
+ * @width: Width of drawn icon.
+ * @height: Height of drawn icon.
+ * @requestSize: Set to true to call gtk_widget_set_size_request
+ *   for the managed widget.
+ *
+ * Sets up correct offsets in managed window based on dimensions of drawn icon.
+ */
 void
 awn_effects_set_icon_size(AwnEffects * fx, gint width, gint height,
                           gboolean requestSize)
@@ -1129,11 +1148,37 @@ awn_effects_set_icon_size(AwnEffects * fx, gint width, gint height,
   }
 }
 
+/**
+ * awn_effects_cairo_create:
+ * @fx: Pointer to #AwnEffects instance.
+ *
+ * <note>
+ *  Make sure you call awn_effects_cairo_destroy() on the cairo context
+ *  returned by this call.
+ * </note>
+ * 
+ * Returns: cairo context where an icon can be drawn. (the icon should have 
+ * dimensions specified by a previous call to #awn_effects_set_icon_size)
+ */
 cairo_t *awn_effects_cairo_create(AwnEffects *fx)
 {
   return awn_effects_cairo_create_clipped(fx, NULL);
 }
 
+/**
+ * awn_effects_cairo_create_clipped:
+ * @fx: Pointer to #AwnEffects instance.
+ * @region: A region the drawing will be clipped to.
+ *
+ * <note>
+ *  Make sure you call awn_effects_cairo_destroy() on the cairo context
+ *  returned by this call.
+ * </note>
+ * 
+ * Returns: cairo context where an icon can be drawn. (the icon should have
+ * dimensions specified by a previous call to #awn_effects_set_icon_size)
+ *
+ */
 cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
                                           GdkRegion *region)
 {
@@ -1214,6 +1259,12 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
   return cr;
 }
 
+/**
+ * awn_effects_cairo_destroy:
+ * @fx: Pointer to #AwnEffects instance.
+ *
+ * Finish drawing of the icon and run all post-ops.
+ */
 void awn_effects_cairo_destroy(AwnEffects *fx)
 {
   cairo_t *cr = fx->virtual_ctx;
@@ -1258,7 +1309,6 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
   awn_effects_post_op_spotlight(fx, cr, NULL, NULL);
   awn_effects_post_op_arrow (fx, cr, NULL, NULL);
   awn_effects_post_op_progress(fx, cr, NULL, NULL);
-  /* TODO: we're missing op to paint label */
 
   if (overlays_wo_effects != NULL)
   {
@@ -1294,6 +1344,13 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
   fx->virtual_ctx = NULL;
 }
 
+/**
+ * awn_effects_add_overlay:
+ * @fx: AwnEffects instance.
+ * @overlay: AwnOverlay instance which should be added.
+ *
+ * Adds an overlay to the list of rendered overlays.
+ */
 void
 awn_effects_add_overlay (AwnEffects *fx, AwnOverlay *overlay)
 {
@@ -1303,7 +1360,8 @@ awn_effects_add_overlay (AwnEffects *fx, AwnOverlay *overlay)
 
   if (g_list_find (priv->overlays, overlay) == NULL)
   {
-    priv->overlays = g_list_append (priv->overlays, g_object_ref (overlay));
+    priv->overlays = g_list_append (priv->overlays,
+                                    g_object_ref_sink (overlay));
     awn_effects_redraw (fx);
     g_signal_connect_swapped (overlay, "notify",
                               G_CALLBACK (awn_effects_prop_changed), fx);
@@ -1315,6 +1373,14 @@ awn_effects_add_overlay (AwnEffects *fx, AwnOverlay *overlay)
   }
 }
 
+/**
+ * awn_effects_remove_overlay:
+ * @fx: AwnEffects instance.
+ * @overlay: AwnOverlay which was previously added using
+ *  awn_effects_add_overlay.
+ *
+ * Removes overlay from the list of rendered overlays.
+ */
 void
 awn_effects_remove_overlay (AwnEffects *fx, AwnOverlay *overlay)
 {
@@ -1338,6 +1404,13 @@ awn_effects_remove_overlay (AwnEffects *fx, AwnOverlay *overlay)
   }
 }
 
+/**
+ * awn_effects_get_overlays:
+ * @fx: #AwnEffects instance.
+ *
+ * Returns: a newly-allocated list of the overlays added to this effects
+ * instance.
+ */
 GList*
 awn_effects_get_overlays (AwnEffects *fx)
 {

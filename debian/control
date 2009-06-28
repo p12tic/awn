@@ -14,7 +14,7 @@ Build-Depends: 	debhelper (>= 5),
 		python-central (>= 0.5.6),
 		python-dev,
 		python-all-dev (>= 2.4),
-		python-gtk2-dev,
+		python-gtk2-dev (>= 2.12),
 		python-gnome2-dev,
 		python-cairo-dev,
 		gtk-doc-tools, 
@@ -36,7 +36,7 @@ Depends: 	${shlibs:Depends},
 		python-awn-trunk (>= ${source:Version}),
 		libdesktop-agnostic-vfs,
 		dbus-x11 | dbus
-Recommends:	awn-manager-trunk (>= 0.2),
+Recommends:	awn-settings-trunk (>= 0.2),
 Suggests: 	metacity (>= 2.21.5) | xcompmgr | compiz | xfwm4 (>= 4.2)
 Conflicts: avant-window-navigator-bzr, avant-window-navigator, avant-window-navigator-testing
 Replaces: avant-window-navigator-bzr, avant-window-navigator, avant-window-navigator-testing
@@ -94,7 +94,7 @@ Description: library for avant-window-navigator - development files
  This package provides the include files and static library for the
  avant-window-navigator library functions.
 
-Package: awn-manager-trunk
+Package: awn-settings-trunk
 Section: gnome
 Architecture: all
 Depends:	${python:Depends}, 
@@ -104,11 +104,11 @@ Depends:	${python:Depends},
 		gnome-menus,
 		librsvg2-common,
 		python-awn-trunk,
-Conflicts: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4)
-Replaces: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4)
+Conflicts: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4), awn-manager-trunk
+Replaces: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4), awn-manager-trunk
 XB-Python-Version: ${python:Versions}
 Description: A preferences manager for avant-window-navigator
- Awn-Manager provides a simple way to configure avant-window-navigator.
+ awn-settings provides a simple way to configure avant-window-navigator.
  You can manage preferences, themes, applets and launchers.
 
 Package: python-awn-trunk
