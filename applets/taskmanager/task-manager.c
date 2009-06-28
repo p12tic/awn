@@ -494,9 +494,18 @@ update_icon_visible (TaskManager *manager, TaskIcon *icon)
   if (task_icon_is_visible (icon))
   {
     if (priv->only_show_launchers && !task_icon_contains_launcher (icon))
+    {
       gtk_widget_hide (GTK_WIDGET (icon));
+    }
     else
-      gtk_widget_show (GTK_WIDGET (icon));
+    {
+      if (!GTK_WIDGET_VISIBLE (icon))
+      {
+        awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                              AWN_EFFECT_OPENING, 1, FALSE, FALSE);
+        gtk_widget_show (GTK_WIDGET (icon));
+      }
+    }
   }
   else
   {
@@ -845,6 +854,70 @@ task_manager_get_capabilities (TaskManager *manager,
   return TRUE;
 }
 
+/**
+ * Find the window that corresponds to the given window name.
+ * First try to match the application name, then the normal name.
+ */
+static TaskWindow*
+_match_name (TaskManager *manager, const gchar* window)
+{
+  TaskManagerPrivate *priv;
+  WnckApplication *wnck_app = NULL;
+  const gchar *name = NULL;
+  GSList *w;
+
+  g_return_val_if_fail (TASK_IS_MANAGER (manager), FALSE);
+  priv = manager->priv;  
+  
+  for (w = priv->windows; w; w = w->next)
+  {
+    TaskWindow *taskwindow = w->data;
+
+    if (!TASK_IS_WINDOW (taskwindow)) continue;
+
+    wnck_app = task_window_get_application (taskwindow);
+    if (WNCK_IS_APPLICATION(wnck_app))
+    {
+      name = wnck_application_get_name(wnck_app);
+      if (name && strcmp (window, name) == 0)
+        return taskwindow;
+    }
+
+    name = task_window_get_name (taskwindow);
+    if (name && strcmp (window, name) == 0)
+      return taskwindow;
+  }
+  
+  return NULL;
+}
+
+/**
+ * Find the window that corresponds to the given xid
+ */
+static TaskWindow*
+_match_xid (TaskManager *manager, gint64 window)
+{
+  TaskManagerPrivate *priv;
+  gint64 xid;
+  GSList *w;
+
+  g_return_val_if_fail (TASK_IS_MANAGER (manager), FALSE);
+  priv = manager->priv;
+  
+  for (w = priv->windows; w; w = w->next)
+  {
+    TaskWindow *taskwindow = w->data;
+    
+    if (!TASK_IS_WINDOW (taskwindow)) continue;
+
+    xid = task_window_get_xid (taskwindow);
+    if (xid && window == xid)
+      return taskwindow;
+  }
+  
+  return NULL;
+}
+
 gboolean
 task_manager_update (TaskManager *manager,
                      GValue *window,
@@ -853,7 +926,6 @@ task_manager_update (TaskManager *manager,
 {
   TaskManagerPrivate *priv;
   TaskWindow *matched_window = NULL;
-  GSList *w;
 
   g_return_val_if_fail (TASK_IS_MANAGER (manager), FALSE);
   
@@ -861,52 +933,11 @@ task_manager_update (TaskManager *manager,
   
   if (G_VALUE_HOLDS_STRING (window))
   {
-    /* Find the window that corresponds to the given window name.
-       First try to match the application name, then the normal name. */
-    WnckApplication *wnck_app = NULL;
-    const gchar *name = NULL;
-    for (w = priv->windows; w; w = w->next)
-    {
-      TaskWindow *taskwindow = w->data;
-      
-      if (!TASK_IS_WINDOW (taskwindow)) continue;
-
-      wnck_app = task_window_get_application (taskwindow);
-      if (WNCK_IS_APPLICATION(wnck_app))
-      {
-        name = wnck_application_get_name(wnck_app);
-        if (name && strcmp (g_value_get_string (window), name) == 0)
-        {
-          matched_window = taskwindow;
-          break;
-        }
-      }
-      
-      name = task_window_get_name (taskwindow);
-      if (name && strcmp (g_value_get_string (window), name) == 0)
-      {
-        matched_window = taskwindow;
-        break;
-      }
-    }
+    matched_window = _match_name (manager, g_value_get_string (window));
   }
   else if (G_VALUE_HOLDS_INT64 (window))
   {
-    /* Find the window that corresponds to the given xid */
-    gint64 xid;
-    for (w = priv->windows; w; w = w->next)
-    {
-      TaskWindow *taskwindow = w->data;
-      
-      if (!TASK_IS_WINDOW (taskwindow)) continue;
-
-      xid = task_window_get_xid (taskwindow);
-      if (xid && g_value_get_int64 (window) == xid)
-      {
-        matched_window = taskwindow;
-        break;
-      }
-    }
+    matched_window = _match_xid (manager, g_value_get_int64 (window));
   }
   else
   {

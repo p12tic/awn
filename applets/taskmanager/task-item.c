@@ -126,10 +126,10 @@ task_item_init (TaskItem *item)
   gtk_container_add (GTK_CONTAINER (item), priv->box);
 
   priv->icon = awn_icon_new ();
-  gtk_container_add (GTK_CONTAINER (priv->box), priv->icon);
+  gtk_box_pack_start (GTK_BOX (priv->box), priv->icon, FALSE, FALSE, 0);
   
   priv->name = gtk_label_new ("");
-  gtk_container_add (GTK_CONTAINER (priv->box), priv->name);
+  gtk_box_pack_start (GTK_BOX (priv->box), priv->name, TRUE, FALSE, 10);
 
   /* connect to signals */
   g_signal_connect (G_OBJECT (item), "name-changed",
