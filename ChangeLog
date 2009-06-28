@@ -1,3 +1,13 @@
+2009-06-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* tests/test-awn-dialog.py (change_attach):
+	* tests/test-awn-icon.c (main):
+	* tests/test-overlays.py (Main.__init__, Main.OnQuit):
+	* tests/test-taskmanager-dnd.py (drag_data_get):
+	* tests/test-themed-icon.c (main):
+	Make sure that the test programs exit properly when their windows
+	are closed.
+
 2009-06-27  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* doc/reference/libawn-sections.txt:
