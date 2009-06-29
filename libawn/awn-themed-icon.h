@@ -79,6 +79,8 @@ void          awn_themed_icon_set_size           (AwnThemedIcon *icon,
                                                   gint           size);
 gint          awn_themed_icon_get_size           (AwnThemedIcon *icon);
 
+const gchar * awn_themed_icon_get_default_theme_name (AwnThemedIcon *icon);
+
 void          awn_themed_icon_set_info           (AwnThemedIcon  *icon,
                                                   const gchar    *applet_name,
                                                   const gchar    *uid,

@@ -1,6 +1,14 @@
 2009-06-29  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
+	* libawn/awn-themed-icon.h:
+	Do preloads in a couple more appropriate locations.
+	Add awn_themed_icon_get_default_theme_name() so we do
+	not duplicate naughtiness in other places.
+
+2009-06-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
 	Was optimizing for performance a bit too much.  Was grabbing a
 	cached pixbuf in cases where a new pixbuf should have been 
 	loaded.  Moral of the story: listen to your intuition.

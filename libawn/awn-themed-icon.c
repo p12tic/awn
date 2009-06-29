@@ -160,6 +160,8 @@ void awn_themed_icon_drag_data_received (GtkWidget        *widget,
 
 static void ensure_icon                 (AwnThemedIcon *icon);
 
+static void awn_themed_icon_preload_all (AwnThemedIcon * icon);
+
 enum
 {
   PROP_0,
@@ -831,7 +833,6 @@ awn_themed_icon_set_state (AwnThemedIcon *icon,
       return;
     }
   }
-  g_warning ("%s: state '%s' not found",__func__,state);
 }
 
 /**
@@ -850,6 +851,22 @@ awn_themed_icon_get_state (AwnThemedIcon *icon)
   return icon->priv->current_item->state;
 }
 
+
+static void
+awn_themed_icon_preload_all (AwnThemedIcon * icon)
+{
+  AwnThemedIconPrivate *priv;  
+  GList *iter;
+  
+  priv = icon->priv;
+  /*preload these icons */
+  for (iter = priv->list; iter ; iter = g_list_next (iter) )
+  {    
+    AwnThemedIconItem * item = iter->data;
+    awn_themed_icon_preload_icon (icon, item->state, -1);
+  }
+}
+
 /**
  * awn_themed_icon_set_size:
  * @icon: A pointer to an #AwnThemedIcon object.
@@ -862,10 +879,17 @@ void
 awn_themed_icon_set_size (AwnThemedIcon *icon,
                           gint           size)
 {
+  AwnThemedIconPrivate *priv;
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
 
-  icon->priv->current_size = size;  
-  ensure_icon (icon);
+  priv = icon->priv;
+  if (priv->current_size != size)
+  {
+    priv->current_size = size;  
+    ensure_icon (icon);
+    awn_themed_icon_preload_all ( icon);    
+  }    
+  
 }
 
 /**
@@ -1029,7 +1053,8 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
       break;
     }
   }
-  /*preload these icons */
+  /*preload these icons.  we could awn_themed_icon_preload_all() but this
+   is a bit more efficient since we know what was added...*/
   for (i=0;i<n_states;i++)
   {    
     awn_themed_icon_preload_icon (icon, states[i], -1);
@@ -1214,6 +1239,7 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
     }
   }
   ensure_icon (icon);
+  awn_themed_icon_preload_all (icon);
 }
 
 /**
@@ -1238,6 +1264,16 @@ awn_themed_icon_get_icon_at_size (AwnThemedIcon *icon,
   g_return_val_if_fail (priv->list,NULL);
   
   return get_pixbuf_at_size (icon, size, state);
+}
+
+const gchar *
+awn_themed_icon_get_default_theme_name (AwnThemedIcon *icon)
+{
+  AwnThemedIconPrivate *priv;
+  g_return_val_if_fail (AWN_IS_THEMED_ICON (icon), NULL);
+  priv = icon->priv;
+  g_return_val_if_fail (priv->gtk_theme, NULL);
+  return priv->gtk_theme->priv->current_theme;
 }
 
 /**
