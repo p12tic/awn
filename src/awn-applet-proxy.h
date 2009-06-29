@@ -79,14 +79,6 @@ void        awn_applet_proxy_schedule_execute  (AwnAppletProxy *proxy);
 
 GtkWidget* awn_applet_proxy_get_throbber       (AwnAppletProxy *proxy);
 
-GtkWidget * awn_applet_proxy_new_ua ( gchar * uid,
-                      gint         orient,
-                      gint         offset,
-                      gint         size);
-
-void        awn_applet_proxy_seat (AwnAppletProxy *proxy);
-
-
 G_END_DECLS
 
 

@@ -350,23 +350,6 @@ awn_applet_proxy_new (const gchar *path,
 }
 
 
-GtkWidget *     
-awn_applet_proxy_new_ua ( gchar *uid,
-                         gint         orient,
-                      gint         offset,
-                      gint         size)
-{
-  GtkWidget *proxy;
-
-  proxy = g_object_new (AWN_TYPE_APPLET_PROXY,
-      "path", "ua",
-      "uid", uid,
-      "orient", orient,
-      "offset", offset,
-      "size", size,
-      NULL);
-  return proxy;
-}
 
 /*
  * GtkSocket callbacks
@@ -554,21 +537,4 @@ awn_applet_proxy_schedule_execute (AwnAppletProxy *proxy)
   {
     priv->idle_id = g_idle_add (awn_applet_proxy_idle_cb, proxy);
   }
-}
-
-void
-awn_applet_proxy_seat (AwnAppletProxy *proxy)
-{
-  AwnAppletProxyPrivate *priv;
-
-  priv = AWN_APPLET_PROXY_GET_PRIVATE (proxy);
-
-  priv->size_req_initialized = FALSE;
-  gtk_widget_realize (GTK_WIDGET (proxy));
-
-  g_debug ("Seating Applet: %s %s", priv->path, priv->uid);
-
-  /* FIXME: update tooltip with name of the applet?! */
-
-  priv->running = TRUE;
 }

@@ -779,7 +779,7 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
 
 
 static void
-awn_ua_offset_change(GObject *pspec,GParamSpec *gobject,gpointer user_data)
+awn_ua_offset_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
 {
   AwnUaInfo * ua_info = user_data;  
   AwnAppletManager * manager = ua_info->manager;  
@@ -806,7 +806,7 @@ awn_ua_offset_change(GObject *pspec,GParamSpec *gobject,gpointer user_data)
 }
 
 static void
-awn_ua_orient_change(GObject *pspec,GParamSpec *gobject,gpointer user_data)
+awn_ua_orient_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
 {
   AwnUaInfo * ua_info = user_data;
   AwnAppletManager * manager = ua_info->manager;
@@ -831,12 +831,12 @@ awn_ua_orient_change(GObject *pspec,GParamSpec *gobject,gpointer user_data)
     default:
       g_assert_not_reached();      
   }
-  awn_ua_offset_change (pspec,gobject,user_data);    
+  awn_ua_offset_change (object,param_spec,user_data);    
   gtk_widget_show_all (align);
 }
 
 static void
-awn_ua_size_change(GObject *pspec,GParamSpec *gobject,gpointer user_data)
+awn_ua_size_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
 {
   AwnUaInfo * ua_info = user_data;  
   AwnAppletManager * manager = ua_info->manager;  
@@ -916,8 +916,6 @@ awn_ua_add_applet (	AwnAppletManager *manager,
  socket = gtk_socket_new ();  //causes a crash for the moment FIXME?
  g_signal_connect_swapped (socket, "plug-added",
                           G_CALLBACK (_applet_plug_added), manager);
-  
- plugwin = gtk_socket_get_plug_window (GTK_SOCKET(socket));
 
   gtk_container_add (GTK_CONTAINER(ua_info->ua_alignment),socket);
   
@@ -928,6 +926,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   awn_applet_manager_add_widget(manager, GTK_WIDGET (ua_info->ua_alignment), pos);
   gtk_socket_add_id (GTK_SOCKET(socket), native_window);
 
+  plugwin = gtk_socket_get_plug_window (GTK_SOCKET(socket));  
   g_assert (priv->applets);
 
   g_object_set_qdata (G_OBJECT (ua_info->ua_alignment), 
@@ -944,7 +943,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
                                priv->size);
   gtk_widget_show_all (socket);
   gtk_widget_show_all (ua_info->ua_alignment);
-  g_debug ("Done");
+  g_debug ("Done:  plugwin = %p",plugwin);
 // create_applet_ua(manager,socket);
 
 return TRUE;
