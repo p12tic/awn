@@ -865,8 +865,9 @@ awn_ua_size_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
 static gboolean
 awn_ua_plug_removed (GtkSocket *socket,AwnUaInfo * info)
 {
-  g_debug ("%s: plug removed",__func__);
+  g_debug ("%s: plug removed",__func__);\
   awn_applet_manager_remove_widget(info->manager, GTK_WIDGET (info->ua_alignment));  
+  g_free (info);  
   return FALSE;
 }
 /*DBUS*/
