@@ -788,7 +788,6 @@ awn_ua_offset_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
   AwnAppletManager * manager = ua_info->manager;  
   AwnAppletManagerPrivate *priv = manager->priv;  
   GtkWidget * align = ua_info->ua_alignment;
-  g_debug ("%s",__func__);  
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
@@ -804,7 +803,7 @@ awn_ua_offset_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
       gtk_alignment_set_padding (GTK_ALIGNMENT(align), 0, 0, 0, priv->offset);
       break;
     default:
-      g_assert_not_reached();
+      g_warning ("%s: recieved invalid orient %d",__func__,priv->orient);
   }
 }
 
@@ -815,8 +814,7 @@ awn_ua_orient_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
   AwnAppletManager * manager = ua_info->manager;
   AwnAppletManagerPrivate *priv = manager->priv;
   GtkWidget * align = ua_info->ua_alignment; 
-  gint orient = priv->orient;
-  g_debug ("%s",__func__);  
+  gint orient = priv->orient;  
   switch (orient)
   {
     case AWN_ORIENTATION_TOP:
@@ -832,7 +830,7 @@ awn_ua_orient_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
       gtk_alignment_set (GTK_ALIGNMENT(align), 1.0, 0.0, 0.5, 1.0);
       break;
     default:
-      g_assert_not_reached();      
+      g_warning ("%s: recieved invalid orient %d",__func__,priv->orient);
   }
   awn_ua_offset_change (object,param_spec,user_data);    
   gtk_widget_show_all (align);
@@ -845,8 +843,7 @@ awn_ua_size_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
   AwnAppletManager * manager = ua_info->manager;  
   AwnAppletManagerPrivate *priv = manager->priv;  
   GtkRequisition  req;
-  gint size = priv->size;
-  g_debug ("%s",__func__);  
+  gint size = req.width = req.height = priv->size;
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
@@ -860,7 +857,7 @@ awn_ua_size_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
       req.height = size  * 1.0 / ua_info->ua_ratio;            
       break;
     default:
-      g_assert_not_reached();
+      g_warning ("%s: recieved invalid orient %d",__func__,priv->orient);
   }
   gtk_widget_set_size_request (ua_info->socket,req.width,req.height);
 }
@@ -868,7 +865,6 @@ awn_ua_size_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
 static gboolean
 awn_ua_plug_removed (GtkSocket *socket,AwnUaInfo * info)
 {
-  g_debug ("%s: plug removed",__func__);\
   awn_applet_manager_remove_widget(info->manager, GTK_WIDGET (info->ua_alignment));
   g_signal_handler_disconnect (info->manager,info->notify_size_id);
   g_signal_handler_disconnect (info->manager,info->notify_orient_id);
@@ -945,9 +941,10 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   gtk_widget_show_all (ua_info->ua_alignment);
   if (!plugwin)
   {
-    gtk_widget_destroy (socket);
+    gtk_widget_destroy (ua_info->ua_alignment);
     g_warning ("UA Plug was not created within socket.");
     g_free (ua_info);
+    return FALSE;
   }
   ua_info->notify_offset_id = g_signal_connect (manager,"notify::offset",G_CALLBACK(awn_ua_offset_change),ua_info);
   ua_info->notify_orient_id = g_signal_connect_after (manager,"notify::orient",G_CALLBACK(awn_ua_orient_change),ua_info);
