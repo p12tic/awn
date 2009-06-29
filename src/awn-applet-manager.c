@@ -73,7 +73,10 @@ typedef struct
   double          ua_ratio;
   GtkWidget  *ua_alignment;
   GtkWidget  *socket;
-    
+
+  guint       notify_size_id;
+  guint       notify_orient_id;
+  guint       notify_offset_id;
 }AwnUaInfo;
 
 enum 
@@ -866,85 +869,14 @@ static gboolean
 awn_ua_plug_removed (GtkSocket *socket,AwnUaInfo * info)
 {
   g_debug ("%s: plug removed",__func__);\
-  awn_applet_manager_remove_widget(info->manager, GTK_WIDGET (info->ua_alignment));  
+  awn_applet_manager_remove_widget(info->manager, GTK_WIDGET (info->ua_alignment));
+  g_signal_handler_disconnect (info->manager,info->notify_size_id);
+  g_signal_handler_disconnect (info->manager,info->notify_orient_id);
+  g_signal_handler_disconnect (info->manager,info->notify_offset_id);
   g_free (info);  
   return FALSE;
 }
 /*DBUS*/
-
-gboolean
-awn_ua_add_applet (	AwnAppletManager *manager,
-			gchar     *name,
-      glong		  xid,
-			gint	    width,
-			gint      height,
-			gchar     *size_type,
-      GError   **error)
-{
-  g_debug ("size type = '%s'",size_type); 
-  g_return_val_if_fail ( (g_strcmp0(size_type,"scalable")==0 ) || 
-                     (g_strcmp0(size_type,"dynamic")==0 ), FALSE );
-  AwnUaInfo * ua_info = g_malloc (sizeof (AwnUaInfo) );
-  GtkWidget *socket = gtk_socket_new ();
-  static gint pos = 2;
-  GdkWindow* plugwin; 
-  AwnAppletManagerPrivate *priv = manager->priv;  
-  GdkNativeWindow native_window = (GdkNativeWindow) xid;
-
-  ua_info->socket = socket;
-
-  ua_info->manager = manager;
-  ua_info->ua_ratio = width / (double) height;
-  ua_info->ua_alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0); 
-
-  g_signal_connect (manager,"notify::offset",G_CALLBACK(awn_ua_offset_change),ua_info);
-  g_signal_connect_after (manager,"notify::orient",G_CALLBACK(awn_ua_orient_change),ua_info);
-  g_signal_connect_after (manager,"notify::size",G_CALLBACK(awn_ua_size_change),ua_info);  
-  
-  /*FIXME*/
-  awn_ua_orient_change (NULL, NULL, ua_info);
-
-// 
-  
-// socket = awn_applet_proxy_new_ua (g_strdup_printf("%lu",xid),priv->orient,
-//                                 priv->offset, priv->size);
- socket = gtk_socket_new ();  //causes a crash for the moment FIXME?
- g_signal_connect_swapped (socket, "plug-added",
-                          G_CALLBACK (_applet_plug_added), manager);
-
-  gtk_container_add (GTK_CONTAINER(ua_info->ua_alignment),socket);
-  
-  gtk_widget_show_all (GTK_WIDGET (ua_info->ua_alignment));  
-  
-/*  g_hash_table_insert (priv->applets, g_strdup_printf("%lu",xid), ua_info->ua_alignment);    
-  priv->applet_list = g_slist_append (priv->applet_list,g_strdup_printf("ua::%lu",xid) );*/
-  awn_applet_manager_add_widget(manager, GTK_WIDGET (ua_info->ua_alignment), pos);
-  gtk_socket_add_id (GTK_SOCKET(socket), native_window);
-
-  plugwin = gtk_socket_get_plug_window (GTK_SOCKET(socket));  
-  g_assert (priv->applets);
-
-  g_object_set_qdata (G_OBJECT (ua_info->ua_alignment), 
-                      priv->touch_quark, GINT_TO_POINTER (0));  
-  
-  
-  /* hmm... not getting the PID.  probably because this is a xid of a plug?*/
-//  pid = wnck_window_get_pid (wnck_window_get(xid));
-
-//  awn_applet_proxy_seat (AWN_APPLET_PROXY(socket));
-  gtk_widget_realize (GTK_WIDGET (socket));  
-  gtk_widget_set_size_request (ua_info->ua_alignment,
-                               priv->size * ua_info->ua_ratio,
-                               priv->size);
-  gtk_widget_show_all (socket);
-  gtk_widget_show_all (ua_info->ua_alignment);
-  g_debug ("Done:  plugwin = %p",plugwin);
-// create_applet_ua(manager,socket);
-  g_signal_connect (socket,"plug-removed",G_CALLBACK(awn_ua_plug_removed),ua_info);
-
-  return TRUE;
-}
-
 /*
  	@action(IFACE)
 	def add_applet (self, id, plug_id, width, height, size_type):
@@ -969,6 +901,62 @@ awn_ua_add_applet (	AwnAppletManager *manager,
 			size_type, backend=self.backend)
 		self.containers.append(container)
 */
+
+gboolean
+awn_ua_add_applet (	AwnAppletManager *manager,
+			gchar     *name,
+      glong		  xid,
+			gint	    width,
+			gint      height,
+			gchar     *size_type,
+      GError   **error)
+{
+  g_debug ("size type = '%s'",size_type); 
+  g_return_val_if_fail ( (g_strcmp0(size_type,"scalable")==0 ) || 
+                     (g_strcmp0(size_type,"dynamic")==0 ), FALSE );
+  AwnUaInfo * ua_info = g_malloc (sizeof (AwnUaInfo) );
+  GtkWidget *socket = gtk_socket_new ();
+  static gint pos = 2;
+  GdkWindow* plugwin; 
+  AwnAppletManagerPrivate *priv = manager->priv;  
+  GdkNativeWindow native_window = (GdkNativeWindow) xid;
+
+  ua_info->socket = socket;
+  ua_info->manager = manager;
+  ua_info->ua_ratio = width / (double) height;
+  ua_info->ua_alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0); 
+
+  awn_ua_orient_change (NULL, NULL, ua_info);
+
+  socket = gtk_socket_new ();
+  g_signal_connect_swapped (socket, "plug-added",
+                          G_CALLBACK (_applet_plug_added), manager);
+
+  gtk_container_add (GTK_CONTAINER(ua_info->ua_alignment),socket);  
+  awn_applet_manager_add_widget(manager, GTK_WIDGET (ua_info->ua_alignment), pos);  
+  gtk_socket_add_id (GTK_SOCKET(socket), native_window);
+  plugwin = gtk_socket_get_plug_window (GTK_SOCKET(socket));  
+  g_object_set_qdata (G_OBJECT (ua_info->ua_alignment), 
+                      priv->touch_quark, GINT_TO_POINTER (0));    
+  gtk_widget_realize (GTK_WIDGET (socket));  
+  gtk_widget_set_size_request (ua_info->ua_alignment,
+                               priv->size * ua_info->ua_ratio,
+                               priv->size);
+  gtk_widget_show_all (ua_info->ua_alignment);
+  if (!plugwin)
+  {
+    gtk_widget_destroy (socket);
+    g_warning ("UA Plug was not created within socket.");
+    g_free (ua_info);
+  }
+  ua_info->notify_offset_id = g_signal_connect (manager,"notify::offset",G_CALLBACK(awn_ua_offset_change),ua_info);
+  ua_info->notify_orient_id = g_signal_connect_after (manager,"notify::orient",G_CALLBACK(awn_ua_orient_change),ua_info);
+  ua_info->notify_size_id = g_signal_connect_after (manager,"notify::size",G_CALLBACK(awn_ua_size_change),ua_info);  
+  g_signal_connect (socket,"plug-removed",G_CALLBACK(awn_ua_plug_removed),ua_info);
+
+  return TRUE;
+}
+
 gboolean
 awn_ua_get_all_server_flags (	AwnAppletManager *manager,
 				GHashTable *hash,
