@@ -866,6 +866,7 @@ static gboolean
 awn_ua_plug_removed (GtkSocket *socket,AwnUaInfo * info)
 {
   g_debug ("%s: plug removed",__func__);
+  awn_applet_manager_remove_widget(info->manager, GTK_WIDGET (info->ua_alignment));  
   return FALSE;
 }
 /*DBUS*/
@@ -894,20 +895,17 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   GdkNativeWindow native_window = (GdkNativeWindow) xid;
 
   ua_info->socket = socket;
-//  pos++;
+
   ua_info->manager = manager;
   ua_info->ua_ratio = width / (double) height;
   ua_info->ua_alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0); 
+
   g_signal_connect (manager,"notify::offset",G_CALLBACK(awn_ua_offset_change),ua_info);
   g_signal_connect_after (manager,"notify::orient",G_CALLBACK(awn_ua_orient_change),ua_info);
   g_signal_connect_after (manager,"notify::size",G_CALLBACK(awn_ua_size_change),ua_info);  
-  g_signal_connect (socket,"plug-removed",G_CALLBACK(awn_ua_plug_removed),ua_info);
   
   /*FIXME*/
   awn_ua_orient_change (NULL, NULL, ua_info);
-//    gtk_alignment_set (align, 0.0, 1.0, 1.0, 0.0);  
-//  AwnAlignment *align = awn_alignment_new();
-
 
 // 
   
@@ -945,8 +943,9 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   gtk_widget_show_all (ua_info->ua_alignment);
   g_debug ("Done:  plugwin = %p",plugwin);
 // create_applet_ua(manager,socket);
+  g_signal_connect (socket,"plug-removed",G_CALLBACK(awn_ua_plug_removed),ua_info);
 
-return TRUE;
+  return TRUE;
 }
 
 
