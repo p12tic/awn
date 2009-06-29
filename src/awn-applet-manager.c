@@ -71,7 +71,7 @@ typedef struct
   AwnAppletManager  * manager;
 
   double          ua_ratio;
-  GtkAlignment  *ua_alignment;
+  GtkWidget  *ua_alignment;
     
 }AwnUaInfo;
 
@@ -775,69 +775,42 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
 
 /*UA*/
 
-static GtkWidget *
-create_applet_ua (AwnAppletManager *manager,
-                  GtkWidget * applet)
-{  
-  
-
-  AwnAppletManagerPrivate *priv = manager->priv;
-  GtkWidget               *notifier;
-
-  /*FIXME: Exception cases, i.e. separators */
-  
-  notifier = awn_applet_proxy_get_throbber (AWN_APPLET_PROXY (applet));
-
-  gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (manager), notifier, FALSE, FALSE, 0);
-  gtk_widget_show (notifier);
-
-  g_object_set_qdata (G_OBJECT (applet), 
-                      priv->touch_quark, GINT_TO_POINTER (0));
-  
-//  g_hash_table_insert (priv->applets, g_strdup (uid), applet);
-
-//  awn_applet_proxy_schedule_execute (AWN_APPLET_PROXY (applet));
-
-  return applet;
-}
 
 static void
 awn_ua_offset_change(GObject *pspec,GParamSpec *gobject,gpointer user_data)
 {
-  gint  offset;
   AwnUaInfo * ua_info = user_data;  
   AwnAppletManager * manager = ua_info->manager;  
   AwnAppletManagerPrivate *priv = manager->priv;  
-  GtkAlignment * align = ua_info->ua_alignment;
+  GtkWidget * align = ua_info->ua_alignment;
   GtkRequisition  req;
   gint size = priv->size;
   
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
-      gtk_alignment_set_padding (align, priv->offset, 0, 0, 0);
+      gtk_alignment_set_padding (GTK_ALIGNMENT(align), priv->offset, 0, 0, 0);
       req.width = size * ua_info->ua_ratio;
       req.height = size;
       break;
     case AWN_ORIENTATION_BOTTOM:
-      gtk_alignment_set_padding (align, 0, priv->offset, 0, 0);
+      gtk_alignment_set_padding (GTK_ALIGNMENT(align), 0, priv->offset, 0, 0);
       req.width = size * ua_info->ua_ratio;
       req.height = size;      
       break;
     case AWN_ORIENTATION_LEFT:
-      gtk_alignment_set_padding (align, 0, 0, priv->offset, 0);
+      gtk_alignment_set_padding (GTK_ALIGNMENT(align), 0, 0, priv->offset, 0);
       req.width = size;
       req.height = size  * 1.0 / ua_info->ua_ratio;      
       break;
     case AWN_ORIENTATION_RIGHT:
-      gtk_alignment_set_padding (align, 0, 0, 0, priv->offset);
+      gtk_alignment_set_padding (GTK_ALIGNMENT(align), 0, 0, 0, priv->offset);
       req.width = size;
       req.height = size  * 1.0 / ua_info->ua_ratio;            
       break;
   }
 //  awn_applet_manager_size_request (manager,&req);
-  gtk_widget_size_request (ua_info->ua_alignment,&req);
+  gtk_widget_size_request (GTK_WIDGET(ua_info->ua_alignment),&req);
 //  gtk_widget_set_size_request (ua_info->ua_alignment,req.width,req.height);
 
 }
@@ -848,22 +821,22 @@ awn_ua_orient_change(GObject *pspec,GParamSpec *gobject,gpointer user_data)
   AwnUaInfo * ua_info = user_data;
   AwnAppletManager * manager = ua_info->manager;
   AwnAppletManagerPrivate *priv = manager->priv;
-  GtkAlignment * align = ua_info->ua_alignment; 
+  GtkWidget * align = ua_info->ua_alignment; 
   gint orient = priv->orient;
   
   switch (orient)
   {
     case AWN_ORIENTATION_TOP:
-      gtk_alignment_set (align, 0.0, 0.0, 1.0, 0.5);
+      gtk_alignment_set (GTK_ALIGNMENT(align), 0.0, 0.0, 1.0, 0.5);
       break;
     case AWN_ORIENTATION_BOTTOM:
-      gtk_alignment_set (align, 0.0, 1.0, 1.0, 0.5);
+      gtk_alignment_set (GTK_ALIGNMENT(align), 0.0, 1.0, 1.0, 0.5);
       break;
     case AWN_ORIENTATION_LEFT:
-      gtk_alignment_set (align, 0.0, 0.0, 0.5, 1.0);
+      gtk_alignment_set (GTK_ALIGNMENT(align), 0.0, 0.0, 0.5, 1.0);
       break;
     case AWN_ORIENTATION_RIGHT:
-      gtk_alignment_set (align, 1.0, 0.0, 0.5, 1.0);
+      gtk_alignment_set (GTK_ALIGNMENT(align), 1.0, 0.0, 0.5, 1.0);
       break;
   }
   awn_ua_offset_change (pspec,gobject,user_data);    
@@ -892,16 +865,14 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   static gint pos = 2;
   GdkWindow* plugwin; 
   AwnAppletManagerPrivate *priv = manager->priv;  
-  GPid  pid;
   GdkNativeWindow native_window = (GdkNativeWindow) xid;
-  gint offset;
 
 //  pos++;
   ua_info->manager = manager;
   ua_info->ua_ratio = width / (double) height;
   ua_info->ua_alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0); 
-  g_signal_connect (manager,"notify::offset",awn_ua_offset_change,ua_info);
-  g_signal_connect_after (manager,"notify::orient",awn_ua_orient_change,ua_info);
+  g_signal_connect (manager,"notify::offset",G_CALLBACK(awn_ua_offset_change),ua_info);
+  g_signal_connect_after (manager,"notify::orient",G_CALLBACK(awn_ua_orient_change),ua_info);
   
   /*FIXME*/
   awn_ua_orient_change (NULL, NULL, ua_info);
@@ -937,7 +908,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   /* hmm... not getting the PID.  probably because this is a xid of a plug?*/
 //  pid = wnck_window_get_pid (wnck_window_get(xid));
 
-  awn_applet_proxy_seat (socket);
+  awn_applet_proxy_seat (AWN_APPLET_PROXY(socket));
   g_debug ("Done");
 // create_applet_ua(manager,socket);
 
