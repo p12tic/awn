@@ -72,6 +72,7 @@ typedef struct
 
   double          ua_ratio;
   GtkWidget  *ua_alignment;
+  GtkWidget  *socket;
     
 }AwnUaInfo;
 
@@ -808,9 +809,11 @@ awn_ua_offset_change(GObject *pspec,GParamSpec *gobject,gpointer user_data)
       req.width = size;
       req.height = size  * 1.0 / ua_info->ua_ratio;            
       break;
+    default:
+      g_assert_not_reached();
   }
 //  awn_applet_manager_size_request (manager,&req);
-  gtk_widget_size_request (GTK_WIDGET(ua_info->ua_alignment),&req);
+//  gtk_widget_size_request (GTK_WIDGET(ua_info->ua_alignment),&req);
 //  gtk_widget_set_size_request (ua_info->ua_alignment,req.width,req.height);
 
 }
@@ -838,8 +841,11 @@ awn_ua_orient_change(GObject *pspec,GParamSpec *gobject,gpointer user_data)
     case AWN_ORIENTATION_RIGHT:
       gtk_alignment_set (GTK_ALIGNMENT(align), 1.0, 0.0, 0.5, 1.0);
       break;
+    default:
+      g_assert_not_reached();      
   }
   awn_ua_offset_change (pspec,gobject,user_data);    
+  gtk_widget_show_all (align);
 }
 
 /*DBUS*/
@@ -867,12 +873,13 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   AwnAppletManagerPrivate *priv = manager->priv;  
   GdkNativeWindow native_window = (GdkNativeWindow) xid;
 
+  ua_info->socket = socket;
 //  pos++;
   ua_info->manager = manager;
   ua_info->ua_ratio = width / (double) height;
   ua_info->ua_alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0); 
-  g_signal_connect (manager,"notify::offset",G_CALLBACK(awn_ua_offset_change),ua_info);
-  g_signal_connect_after (manager,"notify::orient",G_CALLBACK(awn_ua_orient_change),ua_info);
+  g_signal_connect (socket,"notify::offset",G_CALLBACK(awn_ua_offset_change),ua_info);
+  g_signal_connect_after (socket,"notify::orient",G_CALLBACK(awn_ua_orient_change),ua_info);
   
   /*FIXME*/
   awn_ua_orient_change (NULL, NULL, ua_info);
