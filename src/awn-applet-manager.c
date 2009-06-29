@@ -878,16 +878,12 @@ awn_ua_add_applet (	AwnAppletManager *manager,
       glong		  xid,
 			gint	    width,
 			gint      height,
-			gchar size_type,
+			gchar     *size_type,
       GError   **error)
 {
-  
-  g_debug ("%s",__func__);
-  g_print ("Applet : %lu : ", xid);
-  g_print ("Width : %i : ", width);
-  g_print ("Height : %i : ", height);
-
-  /*FIXME...  small leak does not get freed*/
+  g_debug ("size type = '%s'",size_type); 
+  g_return_val_if_fail ( (g_strcmp0(size_type,"scalable")==0 ) || 
+                     (g_strcmp0(size_type,"dynamic")==0 ), FALSE );
   AwnUaInfo * ua_info = g_malloc (sizeof (AwnUaInfo) );
   GtkWidget *socket = gtk_socket_new ();
   static gint pos = 2;

@@ -94,7 +94,7 @@ gboolean    awn_ua_add_applet (	AwnAppletManager *manager,
             glong		  xid,
 		        gint	    width,
 		        gint      height,
-		        gchar size_type,
+		        gchar     *size_type,
             GError   **error);
 
 
