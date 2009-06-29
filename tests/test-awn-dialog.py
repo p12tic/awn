@@ -16,6 +16,7 @@ d.set_title("Hello")
 d.show_all()
 
 win = gtk.Window()
+win.connect('delete-event', lambda w, e: gtk.main_quit())
 button = gtk.Label("One of the dialogs points to this window")
 win.add(button)
 win.show_all()

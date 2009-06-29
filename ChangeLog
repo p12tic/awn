@@ -1,3 +1,57 @@
+2009-06-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-themed-icon.h:
+	Do preloads in a couple more appropriate locations.
+	Add awn_themed_icon_get_default_theme_name() so we do
+	not duplicate naughtiness in other places.
+
+2009-06-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Was optimizing for performance a bit too much.  Was grabbing a
+	cached pixbuf in cases where a new pixbuf should have been 
+	loaded.  Moral of the story: listen to your intuition.
+
+2009-06-29  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	Make advanced options more readable.
+
+2009-06-29  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
+	* data/awn.schema-ini.in:
+	Add a setting to store the behavior of the panel.
+
+2009-06-28  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Test if the applets list is empty, and complete the sources.list 
+        if it's the case.
+
+2009-06-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* tests/test-awn-dialog.py (change_attach):
+	* tests/test-awn-icon.c (main):
+	* tests/test-overlays.py (Main.__init__, Main.OnQuit):
+	* tests/test-taskmanager-dnd.py (drag_data_get):
+	* tests/test-themed-icon.c (main):
+	Make sure that the test programs exit properly when their windows
+	are closed.
+
+2009-06-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	Update the gtk-doc generated sections file.
+
+2009-06-27  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	Fix again the GTK depends.
+
 2009-06-27  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:

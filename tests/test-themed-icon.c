@@ -34,6 +34,9 @@ main (gint argc, gchar **argv)
   map = gdk_screen_get_rgba_colormap (screen);
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  g_signal_connect (G_OBJECT (window), "destroy",
+                    G_CALLBACK (gtk_main_quit), NULL);
+
   if (map)
     gtk_widget_set_colormap (window, map);
   gtk_window_resize (GTK_WINDOW (window), 50, 100);

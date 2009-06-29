@@ -13,7 +13,7 @@ class Main:
   if rgbaColormap != None:
     gtk.gdk.screen_get_default().set_default_colormap(rgbaColormap)
   self.window = gtk.Window()
-  self.window.connect("destroy", gtk.main_quit)
+  self.window.connect("delete-event", self.OnQuit)
   #self.window.set_property("skip-taskbar-hint", True)
   #self.window.set_property("decorated", False)
   #self.window.set_property("resizable", False)
@@ -109,7 +109,7 @@ class Main:
  def OnButton(self, widget, event):
   pass
 
- def OnQuit(self, widget):
+ def OnQuit(self, widget, event=None):
   gtk.main_quit()
 
 start=Main()
