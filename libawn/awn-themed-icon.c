@@ -1066,8 +1066,7 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
  * @icon: A pointer to an #AwnThemedIcon object.
  * @applet_name: The applet name.
  * @uid: The applet's UID.
- * @icon_n
- * instance.ame: A themed icon name.
+ * @icon_name: A themed icon name.
  *
  * Sets icon name for a specific Applet name / UID instance.  Used for Icons
  * that only have one icon. 
