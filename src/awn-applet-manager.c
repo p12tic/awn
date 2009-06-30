@@ -942,7 +942,12 @@ awn_ua_list_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
     }
     else
     {
-      g_debug ("looks like  %s is ophaned",ua_info->ua_list_entry);
+      g_debug ("looks like  %s was removed from panel/ua_list",ua_info->ua_list_entry);
+      /*
+       aantn as expected this does not kill the screenlet.  What is the best way to
+       tell it that we want it to go away?
+       */
+      gtk_widget_destroy (ua_info->socket);
     }
     
   }
@@ -952,7 +957,7 @@ awn_ua_list_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
 static gboolean
 awn_ua_plug_removed (GtkSocket *socket,AwnUaInfo * info)
 {
-  GSList * search;
+//  GSList * search;
   AwnAppletManagerPrivate *priv = info->manager->priv;  
   awn_applet_manager_remove_widget(info->manager, GTK_WIDGET (info->ua_alignment));
   g_signal_handler_disconnect (info->manager,info->notify_size_id);
@@ -960,6 +965,11 @@ awn_ua_plug_removed (GtkSocket *socket,AwnUaInfo * info)
   g_signal_handler_disconnect (info->manager,info->notify_offset_id);
   g_signal_handler_disconnect (info->manager,info->notify_ua_list_id);
   
+/*
+  It doesn't really make sense to remove this from the list when the 
+   plug is removed.  It could just mean the system is shutting down or
+   screenlets are restart etc...
+   
   search = g_slist_find_custom (priv->ua_list,info->ua_list_entry,g_strcmp0);
   if (search)
   {
@@ -969,6 +979,7 @@ awn_ua_plug_removed (GtkSocket *socket,AwnUaInfo * info)
   {
     g_debug ("unable to find on plug remove");
   }
+*/   
   g_free (info->ua_list_entry);
   g_free (info);  
   awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
