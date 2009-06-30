@@ -103,6 +103,21 @@ type = string
 default =
 description = Icon text color.  Leave empty to use gtk theme color.
 
+[theme/icon_text_outline_color]
+type = string
+default =
+description = Icon text outline color.  Leave empty to use gtk theme color.
+
+[theme/icon_font_mode]
+type = int
+default = 0
+description = 0 - solid, 1 - outline, 2 - outline, reversed.
+
+[theme/icon_text_outline_width]
+type = float
+default = 0.4
+description = width of icon text outline if outline mode is enabled.  Suggest values 0.0 - 1.0.
+
 [theme/border]
 type = string
 default = #000000CC
