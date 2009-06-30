@@ -28,6 +28,11 @@ type = list-string
 default = @APPLETDATADIR@/taskmanager.desktop::1
 description = The list of applets for this panel ordered from ltr or ttb.
 
+[panel/ua_list]
+type = list-string
+default = 
+description = The list of UA Screenlets for this panel ordered from in the form ScreeneletInstance::Position.
+
 [panel/monitor_force]
 type = bool
 default = False

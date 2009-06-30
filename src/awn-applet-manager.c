@@ -50,9 +50,12 @@ struct _AwnAppletManagerPrivate
   gint             offset;
   gint             size;
   
-  /*TODO/FIXME  need to add ua_list and make requisite changes in functions.*/
   GSList          *applet_list;
 
+  /*ua_list does not serve the same purpose as the applet_list
+   It's a list of unique UA names plus their position in the panel
+   */ 
+  GSList          *ua_list;
   gboolean         expands;
   gint             expander_count;
 
@@ -73,10 +76,12 @@ typedef struct
   double          ua_ratio;
   GtkWidget  *ua_alignment;
   GtkWidget  *socket;
+  gchar       *ua_list_entry;
 
   guint       notify_size_id;
   guint       notify_orient_id;
   guint       notify_offset_id;
+  guint       notify_ua_list_id;
 }AwnUaInfo;
 
 enum 
@@ -88,6 +93,7 @@ enum
   PROP_OFFSET,
   PROP_SIZE,
   PROP_APPLET_LIST,
+  PROP_UA_LIST,
   PROP_EXPANDS
 };
 
@@ -139,6 +145,11 @@ awn_applet_manager_constructed (GObject *object)
                                AWN_GROUP_PANEL, AWN_PANEL_APPLET_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
                                object, "applet_list");
+  awn_config_bridge_bind_list (bridge, priv->client,
+                               AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
+                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                               object, "ua_list");
+
 }
 
 static void
@@ -181,10 +192,12 @@ awn_applet_manager_get_property (GObject    *object,
     case PROP_SIZE:
       g_value_set_int (value, priv->size);
       break;
-
     case PROP_APPLET_LIST:
       g_value_set_pointer (value, priv->applet_list);
       break;
+    case PROP_UA_LIST:
+      g_value_set_pointer (value, priv->ua_list);
+      break;      
     case PROP_EXPANDS:
       g_value_set_boolean (value, priv->expands);
       break;
@@ -224,6 +237,11 @@ awn_applet_manager_set_property (GObject      *object,
       priv->applet_list = g_value_get_pointer (value);
       awn_applet_manager_refresh_applets (manager);
       break;
+    case PROP_UA_LIST:
+      free_list (priv->ua_list);
+      priv->ua_list = g_value_get_pointer (value);
+      awn_applet_manager_refresh_applets (manager);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -309,6 +327,13 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
     g_param_spec_pointer ("applet_list",
                           "Applet List",
                           "The list of applets for this panel",
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+    PROP_UA_LIST,
+    g_param_spec_pointer ("ua_list",
+                          "UA List",
+                          "The list of screenlets for this panel",
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -863,15 +888,49 @@ awn_ua_orient_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
   awn_ua_size_change (object,param_spec,user_data);
 }
 
+static void
+awn_ua_list_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
+{
+//  AwnUaInfo * ua_info = user_data;
+  
+  g_debug ("ua list has changed");
+}
+
 static gboolean
 awn_ua_plug_removed (GtkSocket *socket,AwnUaInfo * info)
 {
+  AwnAppletManagerPrivate *priv = info->manager->priv;  
   awn_applet_manager_remove_widget(info->manager, GTK_WIDGET (info->ua_alignment));
   g_signal_handler_disconnect (info->manager,info->notify_size_id);
   g_signal_handler_disconnect (info->manager,info->notify_orient_id);
   g_signal_handler_disconnect (info->manager,info->notify_offset_id);
+  g_signal_handler_disconnect (info->manager,info->notify_ua_list_id);  
+  priv->ua_list = g_slist_remove (priv->ua_list,info->ua_list_entry);
+//  g_free (info->ua_list_entry);
   g_free (info);  
+  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
+                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                               priv->ua_list, NULL);  
   return FALSE;
+}
+
+static gint
+ua_list_cmp (gconstpointer a, gconstpointer b)
+{
+  const gchar * str1 = a;
+  const gchar * str2 = b;
+  gchar * search = NULL;
+  GStrv tokens = g_strsplit (str1,"::",2);
+  g_return_val_if_fail (tokens,-1);
+  
+  search = g_strstr_len (str2,-1,tokens[0]);
+  g_strfreev (tokens);
+  
+  if (!search)
+  {
+    return -1;
+  };
+  return 0;
 }
 /*DBUS*/
 /*
@@ -899,6 +958,8 @@ awn_ua_plug_removed (GtkSocket *socket,AwnUaInfo * info)
 		self.containers.append(container)
 */
 
+/* needs cleanup... this function has become overly complex? FIXME?
+ FIXME... variable naming.*/
 gboolean
 awn_ua_add_applet (	AwnAppletManager *manager,
 			gchar     *name,
@@ -908,21 +969,40 @@ awn_ua_add_applet (	AwnAppletManager *manager,
 			gchar     *size_type,
       GError   **error)
 {
-  g_debug ("size type = '%s'",size_type); 
+  g_debug ("name = %s, size type = '%s'",name,size_type); 
+  
   g_return_val_if_fail ( (g_strcmp0(size_type,"scalable")==0 ) || 
                      (g_strcmp0(size_type,"dynamic")==0 ), FALSE );
+  
   AwnUaInfo * ua_info = g_malloc (sizeof (AwnUaInfo) );
   GtkWidget *socket = gtk_socket_new ();
-  static gint pos = 2;
   GdkWindow* plugwin; 
   AwnAppletManagerPrivate *priv = manager->priv;  
+  gint pos = g_slist_length (priv->applet_list);  
   GdkNativeWindow native_window = (GdkNativeWindow) xid;
-
+  gchar * tmp = g_strdup_printf ("%s::%d",name,pos);
+  GSList * search = g_slist_find_custom (priv->ua_list,tmp,ua_list_cmp);
+  if (search)
+  {
+    GStrv tokens;
+    ua_info->ua_list_entry = search->data ;
+    g_free (tmp);
+    tokens = g_strsplit (search->data,"::",2);
+    if (tokens && tokens[1])
+    {
+      pos = atoi (tokens[1]);
+    }
+    g_strfreev (tokens);
+  }
+  else
+  {
+    ua_info->ua_list_entry = tmp;
+  }
+  
   ua_info->socket = socket;
   ua_info->manager = manager;
   ua_info->ua_ratio = width / (double) height;
   ua_info->ua_alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0); 
-
   awn_ua_orient_change (NULL, NULL, ua_info);
 
   socket = gtk_socket_new ();
@@ -944,14 +1024,22 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   {
     gtk_widget_destroy (ua_info->ua_alignment);
     g_warning ("UA Plug was not created within socket.");
+    g_free (ua_info->ua_list_entry);    
     g_free (ua_info);
     return FALSE;
   }
   ua_info->notify_offset_id = g_signal_connect (manager,"notify::offset",G_CALLBACK(awn_ua_offset_change),ua_info);
   ua_info->notify_orient_id = g_signal_connect_after (manager,"notify::orient",G_CALLBACK(awn_ua_orient_change),ua_info);
-  ua_info->notify_size_id = g_signal_connect_after (manager,"notify::size",G_CALLBACK(awn_ua_size_change),ua_info);  
+  ua_info->notify_size_id = g_signal_connect_after (manager,"notify::size",G_CALLBACK(awn_ua_size_change),ua_info);
+  ua_info->notify_ua_list_id = g_signal_connect_after (manager,"notify::ua_list",G_CALLBACK(awn_ua_list_change),ua_info);
   g_signal_connect (socket,"plug-removed",G_CALLBACK(awn_ua_plug_removed),ua_info);
-
+  if (!search)
+  {
+    priv->ua_list = g_slist_append (priv->ua_list,ua_info->ua_list_entry);
+    awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
+                                 AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                                 priv->ua_list, NULL);
+  }
   return TRUE;
 }
 
