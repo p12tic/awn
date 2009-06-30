@@ -52,6 +52,10 @@ struct _AwnOverlayTextPrivate
   PangoFontDescription *font_description;
   DesktopAgnosticColor * text_color;
   gchar                * text_color_astr;
+  DesktopAgnosticColor * text_outline_color;
+  gchar                * text_outline_color_astr;
+  gint                   font_mode;
+  gdouble                text_outline_width;
   
   AwnConfigClient * client;
   AwnConfigBridge * bridge;
@@ -60,11 +64,22 @@ struct _AwnOverlayTextPrivate
 
 enum
 {
+   FONT_MODE_SOLID,
+   FONT_MODE_OUTLINE,  
+   FONT_MODE_OUTLINE_REVERSED
+};  
+
+enum
+{
   PROP_0,
   PROP_FONT_SIZING,
   PROP_TEXT,
   PROP_TEXT_COLOR,
-  PROP_TEXT_COLOR_ASTR  
+  PROP_TEXT_COLOR_ASTR,
+  PROP_TEXT_OUTLINE_COLOR,
+  PROP_TEXT_OUTLINE_COLOR_ASTR,
+  PROP_FONT_MODE,
+  PROP_TEXT_OUTLINE_WIDTH
 };
 
 static void 
@@ -81,7 +96,7 @@ awn_overlay_text_get_property (GObject *object, guint property_id,
   AwnOverlayTextPrivate * priv;
   priv = AWN_OVERLAY_TEXT_GET_PRIVATE (object);
 
-  switch (property_id) 
+  switch (property_id)
   {
     case PROP_FONT_SIZING:
       g_value_set_double (value,priv->font_sizing);
@@ -89,12 +104,24 @@ awn_overlay_text_get_property (GObject *object, guint property_id,
     case PROP_TEXT:
       g_value_set_string (value,priv->text);
       break;
-    case PROP_TEXT_COLOR:
+      case PROP_TEXT_COLOR:
       g_value_set_object (value,priv->text_color);
-      break;      
+      break;
     case PROP_TEXT_COLOR_ASTR:
       g_value_set_string (value,priv->text_color_astr);
-      break;            
+      break;
+    case PROP_TEXT_OUTLINE_COLOR:
+      g_value_set_object (value,priv->text_outline_color);
+      break;
+    case PROP_TEXT_OUTLINE_COLOR_ASTR:
+      g_value_set_string (value,priv->text_outline_color_astr);
+      break;
+    case PROP_FONT_MODE:
+      g_value_set_int (value,priv->font_mode);
+      break;      
+    case PROP_TEXT_OUTLINE_WIDTH:
+      g_value_set_double (value,priv->text_outline_width);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -127,6 +154,23 @@ awn_overlay_text_set_property (GObject *object, guint property_id,
       g_free(priv->text_color_astr);
       priv->text_color_astr = g_value_dup_string (value);
       break;            
+    case PROP_TEXT_OUTLINE_COLOR:
+      if (priv->text_outline_color)
+      {
+        g_object_unref (priv->text_outline_color);
+      }
+      priv->text_outline_color = g_value_get_object (value);
+      break;
+    case PROP_TEXT_OUTLINE_COLOR_ASTR:
+      g_free(priv->text_outline_color_astr);
+      priv->text_outline_color_astr = g_value_dup_string (value);
+      break;            
+    case PROP_FONT_MODE:
+      priv->font_mode = g_value_get_int (value);
+      break;      
+    case PROP_TEXT_OUTLINE_WIDTH:
+      priv->text_outline_width = g_value_get_double (value);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -148,6 +192,11 @@ awn_overlay_text_dispose (GObject *object)
     g_object_unref (priv->text_color);
     priv->text_color = NULL;
   }
+  if (priv->text_outline_color)
+  {
+    g_object_unref (priv->text_outline_color);
+    priv->text_outline_color = NULL;
+  }
   
   G_OBJECT_CLASS (awn_overlay_text_parent_class)->dispose (object);
 }
@@ -165,6 +214,15 @@ awn_overlay_text_finalize (GObject *object)
   {
     pango_font_description_free (priv->font_description);
   }
+  if (priv->text_color_astr)
+  {
+    g_free(priv->text_color_astr);
+  }
+  if (priv->text_outline_color_astr)
+  {
+    g_free(priv->text_color_astr);
+  }
+  
   G_OBJECT_CLASS (awn_overlay_text_parent_class)->finalize (object); 
 }
 
@@ -250,16 +308,48 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
                                "Text Colour",
                                "Text Colour",
                                DESKTOP_AGNOSTIC_TYPE_COLOR,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READABLE);
   g_object_class_install_property (object_class, PROP_TEXT_COLOR, pspec);   
 
-  pspec = g_param_spec_string ("text_color_astr",
+  pspec = g_param_spec_string ("text-color-astr",
                                "text_color_astr",
                                "Text color as string",
                                "",
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_TEXT_COLOR_ASTR, pspec);   
-    
+
+  pspec = g_param_spec_object ("text-outline-color",
+                               "Text Outline Colour",
+                               "Text Outline Colour",
+                               DESKTOP_AGNOSTIC_TYPE_COLOR,
+                               G_PARAM_READABLE);
+  g_object_class_install_property (object_class, PROP_TEXT_OUTLINE_COLOR, pspec);   
+
+  pspec = g_param_spec_string ("text-outline-color-astr",
+                               "text__outline color_astr",
+                               "Text outline color as string",
+                               "",
+                               G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_TEXT_OUTLINE_COLOR_ASTR, pspec);   
+
+  pspec = g_param_spec_int ("font-mode",
+                               "Font Mode",
+                               "Font Mode",
+                               FONT_MODE_SOLID,
+                               FONT_MODE_OUTLINE_REVERSED,
+                               FONT_MODE_SOLID,
+                               G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_FONT_MODE, pspec);   
+
+  pspec = g_param_spec_double ("text-outline-width",
+                               "Text Outline Width",
+                               "Text Outline Width",
+                               0.0,
+                               2.0,
+                               0.4,
+                               G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_TEXT_OUTLINE_WIDTH, pspec);   
+  
   g_type_class_add_private (klass, sizeof (AwnOverlayTextPrivate));  
 
 }
@@ -275,8 +365,16 @@ awn_overlay_text_init (AwnOverlayText *self)
 
   awn_config_bridge_bind (priv->bridge, priv->client,
                           "theme", "icon_text_color",
-                          G_OBJECT(self), "text_color_astr");
-  
+                          G_OBJECT(self), "text-color-astr");
+  awn_config_bridge_bind (priv->bridge, priv->client,
+                          "theme", "icon_text_outline_color",
+                          G_OBJECT(self), "text-outline-color-astr");
+  awn_config_bridge_bind (priv->bridge, priv->client,
+                          "theme", "icon_font_mode",
+                          G_OBJECT(self), "font-mode");
+  awn_config_bridge_bind (priv->bridge, priv->client,
+                          "theme", "icon_text_outline_width",
+                          G_OBJECT(self), "text-outline-width");  
   priv->text = NULL;
   // default for text is to not apply effects to it
   awn_overlay_set_apply_effects (AWN_OVERLAY (self), FALSE);
@@ -305,6 +403,7 @@ _awn_overlay_text_render (AwnOverlay* _overlay,
 {
   AwnOverlayText *overlay = AWN_OVERLAY_TEXT(_overlay);
   DesktopAgnosticColor * text_colour = NULL;
+  DesktopAgnosticColor * text_outline_colour = NULL;
   AwnOverlayTextPrivate *priv;
   gint layout_width;
   gint layout_height;
@@ -325,6 +424,19 @@ _awn_overlay_text_render (AwnOverlay* _overlay,
   {
     text_colour = desktop_agnostic_color_new(&widget->style->fg[GTK_STATE_NORMAL], G_MAXUSHORT);
   }
+  if (priv->text_outline_color)
+  {
+    text_outline_colour = priv->text_outline_color;
+    g_object_ref (text_outline_colour);
+  }
+  else if (priv->text_outline_color_astr && strlen(priv->text_outline_color_astr) )
+  {
+    text_outline_colour = desktop_agnostic_color_new_from_string (priv->text_outline_color_astr,NULL);
+  }
+  if (!text_outline_colour)
+  {
+    text_outline_colour = desktop_agnostic_color_new(&widget->style->bg[GTK_STATE_NORMAL], G_MAXUSHORT);
+  }
   
   layout = pango_cairo_create_layout (cr);
   pango_font_description_set_absolute_size (priv->font_description, 
@@ -334,43 +446,33 @@ _awn_overlay_text_render (AwnOverlay* _overlay,
   pango_layout_get_pixel_size (layout,&layout_width,&layout_height);
   awn_overlay_move_to (_overlay,cr,  width, height,layout_width,layout_height,NULL);
 
-  awn_cairo_set_source_color (cr,text_colour);
-  g_object_unref (text_colour);       
-  pango_cairo_show_layout (cr, layout);
-/*
 
-#elseif 0
-   awn_cairo_set_source_color (cr,text_colour);
-  g_object_unref (text_colour);         
-  cairo_save (cr);
-  pango_cairo_layout_path(cr, layout);  
-  cairo_fill (cr);
-  cairo_restore (cr);
-  text_colour = desktop_agnostic_color_new(&widget->style->bg[GTK_STATE_NORMAL], G_MAXUSHORT);  
-  awn_cairo_set_source_color (cr,text_colour);
-  g_object_unref (text_colour);         
-  cairo_set_line_width(cr, 0.3 * height / 48.0);
-  awn_overlay_move_to (_overlay,cr,  width, height,layout_width,layout_height,NULL);  
-  pango_cairo_layout_path(cr, layout);    
-  cairo_stroke_preserve(cr);
-#else
-  
-  if (layout_width > highest_width)
+  switch (priv->font_mode)
   {
-    highest_width = layout_width;
+    default:
+    case FONT_MODE_SOLID:
+      awn_cairo_set_source_color (cr,text_colour);
+      pango_cairo_show_layout (cr, layout);      
+      break;
+    case FONT_MODE_OUTLINE:
+    case FONT_MODE_OUTLINE_REVERSED:      
+      /*conditional operator*/
+      awn_cairo_set_source_color (cr,priv->font_mode==FONT_MODE_OUTLINE?
+                                  text_colour:text_outline_colour);
+      cairo_save (cr);
+      pango_cairo_layout_path(cr, layout);
+      cairo_fill (cr);
+      cairo_restore (cr);
+      /*conditional operator*/      
+      awn_cairo_set_source_color (cr,priv->font_mode==FONT_MODE_OUTLINE?
+                                  text_outline_colour:text_colour);
+      cairo_set_line_width(cr, priv->text_outline_width * height / 48.0);
+      awn_overlay_move_to (_overlay,cr,  width, height,layout_width,layout_height,NULL);  
+      pango_cairo_layout_path(cr, layout);    
+      cairo_stroke_preserve(cr);      
+      break;
   }
-  cairo_rectangle (cr,coord.x - (highest_width - layout_width),coord.y,highest_width,layout_height);
-  bg_color = desktop_agnostic_color_new(&widget->style->bg[GTK_STATE_NORMAL], G_MAXUSHORT*0.3);  
-  awn_cairo_set_source_color (cr,bg_color);
-  g_object_unref (bg_color);         
-  cairo_fill (cr);
-  awn_cairo_set_source_color (cr,text_colour);
-  g_object_unref (text_colour);       
-  
-  awn_overlay_move_to (_overlay,cr,  width, height,layout_width,layout_height,&coord);  
-  pango_cairo_show_layout (cr, layout);  
-#endif
-   */
-  
+  g_object_unref (text_colour);
+  g_object_unref (text_outline_colour);  
   g_object_unref (layout);
 }

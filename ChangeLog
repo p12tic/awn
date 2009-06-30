@@ -1,5 +1,28 @@
 2009-06-29  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* bindings/python/awn.defs:
+	Added binding for awn_themed_icon_get_default_theme_name().
+
+2009-06-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* data/awn.schema-ini.in:
+  	* libawn/awn-overlay-text.c:
+	Added various icon text theming keys under theme/.  Including:
+	icon_font_mode, icon_text_outline_color and icon_text_outline_width.
+
+2009-06-29  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Fixed syntax error in documentation.
+
+2009-06-29  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Changes to prevent flicker in composited mode. This again breaks
+	curved mode a bit. Will fix later.
+
+2009-06-29  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-themed-icon.c:
 	* libawn/awn-themed-icon.h:
 	Do preloads in a couple more appropriate locations.
