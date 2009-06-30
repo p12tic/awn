@@ -191,7 +191,7 @@ awn_icon_pressed (AwnIcon *icon, GdkEventButton *event, gpointer data)
   if (event->type == GDK_BUTTON_PRESS && event->button == 1)
     priv->was_pressed = TRUE;
 
-  return TRUE;
+  return FALSE;
 }
 
 static gboolean
@@ -205,7 +205,7 @@ awn_icon_released (AwnIcon *icon, GdkEventButton *event, gpointer data)
     awn_icon_clicked (icon);
   }
 
-  return TRUE;
+  return FALSE;
 }
 
 static void
