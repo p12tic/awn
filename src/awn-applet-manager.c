@@ -804,7 +804,24 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
 
 
 /*UA*/
-
+static gint
+ua_list_cmp (gconstpointer a, gconstpointer b)
+{
+  const gchar * str1 = a;
+  const gchar * str2 = b;
+  gchar * search = NULL;
+  GStrv tokens = g_strsplit (str1,"::",2);
+  g_return_val_if_fail (tokens,-1);
+  
+  search = g_strstr_len (str2,-1,tokens[0]);
+  g_strfreev (tokens);
+  
+  if (!search)
+  {
+    return -1;
+  };
+  return 0;
+}
 
 static void
 awn_ua_offset_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
@@ -891,22 +908,68 @@ awn_ua_orient_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
 static void
 awn_ua_list_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
 {
-//  AwnUaInfo * ua_info = user_data;
+  AwnUaInfo * ua_info = user_data;
+  AwnAppletManager * manager = ua_info->manager;
+  AwnAppletManagerPrivate *priv = manager->priv;  
+
+  GSList * search = g_slist_find_custom (priv->ua_list,ua_info->ua_list_entry,g_strcmp0);
   
-  g_debug ("ua list has changed");
+  g_debug ("ua list has changed");  
+  if (search)
+  {
+    g_debug ("Found... do not need to update %s",ua_info->ua_list_entry);
+  }
+  else
+  {
+    search = g_slist_find_custom (priv->ua_list,ua_info->ua_list_entry,ua_list_cmp);
+    if (search)
+    {
+      g_debug ("Moving %s to %s",ua_info->ua_list_entry,(gchar*)search->data);
+      GStrv tokens;
+      gint pos = -1;
+      g_free (ua_info->ua_list_entry);
+      ua_info->ua_list_entry = g_strdup(search->data);
+      tokens = g_strsplit (search->data,"::",2);
+      if (tokens && tokens[1])
+      {
+        pos = atoi (tokens[1]);
+      }
+      g_strfreev (tokens);
+      if (pos != -1)
+      {
+        awn_applet_manager_add_widget(manager, GTK_WIDGET (ua_info->ua_alignment), pos);
+      }
+    }
+    else
+    {
+      g_debug ("looks like  %s is ophaned",ua_info->ua_list_entry);
+    }
+    
+  }
+  
 }
 
 static gboolean
 awn_ua_plug_removed (GtkSocket *socket,AwnUaInfo * info)
 {
+  GSList * search;
   AwnAppletManagerPrivate *priv = info->manager->priv;  
   awn_applet_manager_remove_widget(info->manager, GTK_WIDGET (info->ua_alignment));
   g_signal_handler_disconnect (info->manager,info->notify_size_id);
   g_signal_handler_disconnect (info->manager,info->notify_orient_id);
   g_signal_handler_disconnect (info->manager,info->notify_offset_id);
-  g_signal_handler_disconnect (info->manager,info->notify_ua_list_id);  
-  priv->ua_list = g_slist_remove (priv->ua_list,info->ua_list_entry);
-//  g_free (info->ua_list_entry);
+  g_signal_handler_disconnect (info->manager,info->notify_ua_list_id);
+  
+  search = g_slist_find_custom (priv->ua_list,info->ua_list_entry,g_strcmp0);
+  if (search)
+  {
+    priv->ua_list = g_slist_remove (priv->ua_list,search->data);
+  }
+  else
+  {
+    g_debug ("unable to find on plug remove");
+  }
+  g_free (info->ua_list_entry);
   g_free (info);  
   awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
@@ -914,24 +977,6 @@ awn_ua_plug_removed (GtkSocket *socket,AwnUaInfo * info)
   return FALSE;
 }
 
-static gint
-ua_list_cmp (gconstpointer a, gconstpointer b)
-{
-  const gchar * str1 = a;
-  const gchar * str2 = b;
-  gchar * search = NULL;
-  GStrv tokens = g_strsplit (str1,"::",2);
-  g_return_val_if_fail (tokens,-1);
-  
-  search = g_strstr_len (str2,-1,tokens[0]);
-  g_strfreev (tokens);
-  
-  if (!search)
-  {
-    return -1;
-  };
-  return 0;
-}
 /*DBUS*/
 /*
  	@action(IFACE)
@@ -985,7 +1030,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   if (search)
   {
     GStrv tokens;
-    ua_info->ua_list_entry = search->data ;
+    ua_info->ua_list_entry = g_strdup (search->data) ;
     g_free (tmp);
     tokens = g_strsplit (search->data,"::",2);
     if (tokens && tokens[1])
@@ -1031,11 +1076,11 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   ua_info->notify_offset_id = g_signal_connect (manager,"notify::offset",G_CALLBACK(awn_ua_offset_change),ua_info);
   ua_info->notify_orient_id = g_signal_connect_after (manager,"notify::orient",G_CALLBACK(awn_ua_orient_change),ua_info);
   ua_info->notify_size_id = g_signal_connect_after (manager,"notify::size",G_CALLBACK(awn_ua_size_change),ua_info);
-  ua_info->notify_ua_list_id = g_signal_connect_after (manager,"notify::ua_list",G_CALLBACK(awn_ua_list_change),ua_info);
+  ua_info->notify_ua_list_id = g_signal_connect_after (manager,"notify::ua-list",G_CALLBACK(awn_ua_list_change),ua_info);  
   g_signal_connect (socket,"plug-removed",G_CALLBACK(awn_ua_plug_removed),ua_info);
   if (!search)
   {
-    priv->ua_list = g_slist_append (priv->ua_list,ua_info->ua_list_entry);
+    priv->ua_list = g_slist_append (priv->ua_list,g_strdup(ua_info->ua_list_entry));
     awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
                                  AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
                                  priv->ua_list, NULL);
