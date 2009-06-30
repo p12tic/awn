@@ -47,6 +47,8 @@ struct _AwnIconPrivate
   gboolean effects_backup_set;
 
   gboolean bind_effects;
+  gboolean hover_effects_enable;
+  gboolean was_pressed;
 
   AwnOrientation orient;
   gint offset;
@@ -72,6 +74,8 @@ enum
 {
   SIZE_CHANGED,
 
+  CLICKED,
+
   LAST_SIGNAL
 };
 static guint32 _icon_signals[LAST_SIGNAL] = { 0 };
@@ -82,7 +86,10 @@ awn_icon_enter_notify_event (GtkWidget *widget, GdkEventCrossing *event)
 {
   AwnIconPrivate *priv = AWN_ICON (widget)->priv;
 
-  awn_effects_start (priv->effects, AWN_EFFECT_HOVER);
+  if (priv->hover_effects_enable)
+  {
+    awn_effects_start (priv->effects, AWN_EFFECT_HOVER);
+  }
 
   return FALSE;
 }
@@ -92,7 +99,10 @@ awn_icon_leave_notify_event (GtkWidget *widget, GdkEventCrossing *event)
 {
   AwnIconPrivate *priv = AWN_ICON (widget)->priv;
 
-  awn_effects_stop (priv->effects, AWN_EFFECT_HOVER);
+  if (priv->hover_effects_enable)
+  {
+    awn_effects_stop (priv->effects, AWN_EFFECT_HOVER);
+  }
 
   return FALSE;
 }
@@ -170,6 +180,32 @@ awn_icon_size_request (GtkWidget *widget, GtkRequisition *req)
       req->height = APPLY_SIZE_MULTIPLIER(priv->icon_height);
       break;
   }
+}
+
+static gboolean
+awn_icon_pressed (AwnIcon *icon, GdkEventButton *event, gpointer data)
+{
+  AwnIconPrivate *priv = icon->priv;
+
+  // FIXME: depressed animation? offset ++/--?
+  if (event->type == GDK_BUTTON_PRESS && event->button == 1)
+    priv->was_pressed = TRUE;
+
+  return TRUE;
+}
+
+static gboolean
+awn_icon_released (AwnIcon *icon, GdkEventButton *event, gpointer data)
+{
+  AwnIconPrivate *priv = icon->priv;
+
+  if (priv->was_pressed && event->button == 1)
+  {
+    priv->was_pressed = FALSE;
+    awn_icon_clicked (icon);
+  }
+
+  return TRUE;
 }
 
 static void
@@ -349,6 +385,15 @@ awn_icon_class_init (AwnIconClass *klass)
       g_cclosure_marshal_VOID__VOID, 
       G_TYPE_NONE, 0);
 
+  _icon_signals[CLICKED] =
+    g_signal_new ("clicked",
+      G_OBJECT_CLASS_TYPE (obj_class),
+      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+      G_STRUCT_OFFSET (AwnIconClass, clicked),
+      NULL, NULL,
+      g_cclosure_marshal_VOID__VOID,
+      G_TYPE_NONE, 0);
+
   g_type_class_add_private (obj_class, sizeof (AwnIconPrivate));
 }
 
@@ -359,6 +404,7 @@ awn_icon_init (AwnIcon *icon)
 
   priv = icon->priv = AWN_ICON_GET_PRIVATE (icon);
 
+  priv->hover_effects_enable = TRUE;
   priv->icon_srfc = NULL;
   priv->orient = AWN_ORIENTATION_BOTTOM;
   priv->offset = 0;
@@ -371,11 +417,16 @@ awn_icon_init (AwnIcon *icon)
 
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
 
+  g_signal_connect (icon, "button-press-event",
+                    G_CALLBACK (awn_icon_pressed), NULL);
+  g_signal_connect (icon, "button-release-event",
+                    G_CALLBACK (awn_icon_released), NULL);
+
   awn_utils_ensure_transparent_bg (GTK_WIDGET (icon));
   g_signal_connect (icon, "realize",
-                    G_CALLBACK(awn_icon_update_effects), NULL);
+                    G_CALLBACK (awn_icon_update_effects), NULL);
   g_signal_connect (icon, "composited-changed",
-                    G_CALLBACK(awn_icon_update_effects), NULL);
+                    G_CALLBACK (awn_icon_update_effects), NULL);
 }
 
 /**
@@ -917,3 +968,35 @@ awn_icon_get_indicator_count (AwnIcon *icon)
 
   return result;
 }
+
+gboolean
+awn_icon_get_hover_effects (AwnIcon *icon)
+{
+  g_return_val_if_fail (AWN_IS_ICON (icon), FALSE);
+
+  return icon->priv->hover_effects_enable;
+}
+
+void
+awn_icon_set_hover_effects (AwnIcon *icon, gboolean enable)
+{
+  AwnIconPrivate *priv;
+  g_return_if_fail (AWN_IS_ICON (icon));
+
+  priv = icon->priv;
+  priv->hover_effects_enable = enable;
+
+  if (!enable)
+  {
+    awn_effects_stop (priv->effects, AWN_EFFECT_HOVER);
+  }
+}
+
+void
+awn_icon_clicked (AwnIcon *icon)
+{
+  g_return_if_fail (AWN_IS_ICON (icon));
+
+  g_signal_emit (icon, _icon_signals[CLICKED], 0);
+}
+
