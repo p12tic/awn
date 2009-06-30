@@ -808,35 +808,6 @@ awn_ua_offset_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
 }
 
 static void
-awn_ua_orient_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
-{
-  AwnUaInfo * ua_info = user_data;
-  AwnAppletManager * manager = ua_info->manager;
-  AwnAppletManagerPrivate *priv = manager->priv;
-  GtkWidget * align = ua_info->ua_alignment; 
-  gint orient = priv->orient;  
-  switch (orient)
-  {
-    case AWN_ORIENTATION_TOP:
-      gtk_alignment_set (GTK_ALIGNMENT(align), 0.0, 0.0, 1.0, 0.5);
-      break;
-    case AWN_ORIENTATION_BOTTOM:
-      gtk_alignment_set (GTK_ALIGNMENT(align), 0.0, 1.0, 1.0, 0.5);
-      break;
-    case AWN_ORIENTATION_LEFT:
-      gtk_alignment_set (GTK_ALIGNMENT(align), 0.0, 0.0, 0.5, 1.0);
-      break;
-    case AWN_ORIENTATION_RIGHT:
-      gtk_alignment_set (GTK_ALIGNMENT(align), 1.0, 0.0, 0.5, 1.0);
-      break;
-    default:
-      g_warning ("%s: recieved invalid orient %d",__func__,priv->orient);
-  }
-  awn_ua_offset_change (object,param_spec,user_data);    
-  gtk_widget_show_all (align);
-}
-
-static void
 awn_ua_size_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
 {
   AwnUaInfo * ua_info = user_data;  
@@ -861,6 +832,35 @@ awn_ua_size_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
       g_warning ("%s: recieved invalid orient %d",__func__,priv->orient);
   }
   gtk_widget_set_size_request (ua_info->ua_alignment,req.width,req.height);
+}
+
+static void
+awn_ua_orient_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
+{
+  AwnUaInfo * ua_info = user_data;
+  AwnAppletManager * manager = ua_info->manager;
+  AwnAppletManagerPrivate *priv = manager->priv;
+  GtkWidget * align = ua_info->ua_alignment; 
+  gint orient = priv->orient;  
+  switch (orient)
+  {
+    case AWN_ORIENTATION_TOP:
+      gtk_alignment_set (GTK_ALIGNMENT(align), 0.0, 0.0, 1.0, 0.5);
+      break;
+    case AWN_ORIENTATION_BOTTOM:
+      gtk_alignment_set (GTK_ALIGNMENT(align), 0.0, 1.0, 1.0, 0.5);
+      break;
+    case AWN_ORIENTATION_LEFT:
+      gtk_alignment_set (GTK_ALIGNMENT(align), 0.0, 0.0, 0.5, 1.0);
+      break;
+    case AWN_ORIENTATION_RIGHT:
+      gtk_alignment_set (GTK_ALIGNMENT(align), 1.0, 0.0, 0.5, 1.0);
+      break;
+    default:
+      g_warning ("%s: recieved invalid orient %d",__func__,priv->orient);
+  }
+  awn_ua_offset_change (object,param_spec,user_data);
+  awn_ua_size_change (object,param_spec,user_data);
 }
 
 static gboolean
