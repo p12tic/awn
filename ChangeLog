@@ -1,5 +1,10 @@
 2009-06-29  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* bindings/python/awn.defs:
+	Added binding for awn_themed_icon_get_default_theme_name().
+
+2009-06-29  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* data/awn.schema-ini.in:
   	* libawn/awn-overlay-text.c:
 	Added various icon text theming keys under theme/.  Including:

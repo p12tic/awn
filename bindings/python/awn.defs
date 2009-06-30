@@ -1435,6 +1435,12 @@
   (return-type "const-gchar*")
 )
 
+(define-method get_default_theme_name
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_get_default_theme_name")
+  (return-type "const-gchar*")
+)
+
 (define-method set_size
   (of-object "AwnThemedIcon")
   (c-name "awn_themed_icon_set_size")
