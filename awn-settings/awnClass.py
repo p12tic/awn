@@ -1660,12 +1660,20 @@ class awnApplet(awnBzr):
 
         if not None in applets and self.load_finished:
 		applets_list = []
+		ua_list = []
 		for a in applets:
 			tokens = a.split("::")
 			path = tokens[0]
 			if path.endswith(".desktop"):
 				applets_list.append(a)
+			else:
+				position = applets.index(a)
+				ua = tokens[0] + "::" + str(position)
+				ua_list.append(ua)
+
             	self.client.set_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, applets_list)
+		self.client.set_list(defs.PANEL, defs.UA_LIST, awn.CONFIG_LIST_STRING, ua_list)
+
 
     def callback_widget_filter_applets(self, data=None):
 	model = self.choose_categorie.get_model()
