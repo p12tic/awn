@@ -59,6 +59,7 @@ STYLE			= "style"		#int
 EXPAND			= "expand"		#bool
 CLICKTHROUGH		= "clickthrough"	#int
 BEHAVIOR		= "behavior"		#int
+UA_LIST			= "ua_list"		#list-string
 
 THEME			= "theme"		#group
 GSTEP1			= "gstep1"		#string
