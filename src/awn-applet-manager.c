@@ -843,6 +843,7 @@ awn_ua_size_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
   AwnAppletManager * manager = ua_info->manager;  
   AwnAppletManagerPrivate *priv = manager->priv;  
   GtkRequisition  req;
+  g_debug ("resize");
   gint size = req.width = req.height = priv->size;
   switch (priv->orient)
   {
@@ -859,7 +860,7 @@ awn_ua_size_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
     default:
       g_warning ("%s: recieved invalid orient %d",__func__,priv->orient);
   }
-  gtk_widget_set_size_request (ua_info->socket,req.width,req.height);
+  gtk_widget_set_size_request (ua_info->ua_alignment,req.width,req.height);
 }
 
 static gboolean
