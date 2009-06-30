@@ -51,7 +51,7 @@ struct _AwnAppletProxyPrivate
   gboolean size_req_initialized;
   GtkWidget *throbber;
 
-  gint old_x, old_y;
+  gint old_x, old_y, old_w, old_h;
   guint idle_id;
 };
 
@@ -400,15 +400,27 @@ schedule_send_client_event (gpointer data)
 static void on_size_alloc (AwnAppletProxy *proxy, GtkAllocation *alloc)
 {
   AwnAppletProxyPrivate *priv;
+  GtkWidget *parent;
   GdkWindow *plug_win;
 
   g_return_if_fail (AWN_IS_APPLET_PROXY (proxy));
+
   priv = proxy->priv;
 
-  if (alloc->x == priv->old_x && alloc->y == priv->old_y) return;
+  parent = gtk_widget_get_parent (GTK_WIDGET (proxy));
 
-  priv->old_x = alloc->y;
-  priv->old_y = alloc->y;
+  gint pos_x = alloc->x - parent->allocation.x;
+  gint pos_y = alloc->x - parent->allocation.x;
+  gint parent_w = parent->allocation.width;
+  gint parent_h = parent->allocation.height;
+
+  if (pos_x == priv->old_x && pos_y == priv->old_y
+      && parent_w == priv->old_w && parent_h == priv->old_h) return;
+
+  priv->old_x = pos_x;
+  priv->old_y = pos_y;
+  priv->old_w = parent_w;
+  priv->old_h = parent_h;
 
   /* Only directly access the struct member if we have to. */
   plug_win = gtk_socket_get_plug_window (GTK_SOCKET (proxy));
@@ -419,8 +431,12 @@ static void on_size_alloc (AwnAppletProxy *proxy, GtkAllocation *alloc)
     event->client.window = g_object_ref (plug_win);
     event->client.data_format = 32;
     event->client.message_type = msg_type;
-    event->client.data.l[0] = alloc->x;
-    event->client.data.l[1] = alloc->y;
+    // first two longs are our relative [x, y]
+    event->client.data.l[0] = pos_x;
+    event->client.data.l[1] = pos_y;
+    // other two longs are our parent's [w, h]
+    event->client.data.l[2] = parent_w;
+    event->client.data.l[3] = parent_h;
 
     gdk_event_send_client_message (event, GDK_WINDOW_XID (plug_win));
 
