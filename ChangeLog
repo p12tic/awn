@@ -1,3 +1,14 @@
+2009-06-30  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	A couple of cosmetic changes.
+
+2009-06-30  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* src/awn-applet-proxy.c:
+	Reworked curves support due to changes in AwnPanel.
+
 2009-06-29  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* bindings/python/awn.defs:

@@ -68,8 +68,6 @@ struct _AwnAppletPrivate
 
   DBusGConnection *connection;
   DBusGProxy      *proxy;
-
-  GdkWindow *panel_window;
 };
 
 enum
@@ -102,13 +100,6 @@ enum
   LAST_SIGNAL
 };
 static guint _applet_signals[LAST_SIGNAL] = { 0 };
-
-/* FORWARDS */
-static GdkFilterReturn _on_panel_configure (GdkXEvent *xevent,
-                                            GdkEvent *event, gpointer data);
-
-static void awn_applet_set_panel_window_id (AwnApplet *applet,
-                                            GdkNativeWindow anid);
 
 /* DBus signal callbacks */
 static void
@@ -220,11 +211,15 @@ on_client_message (GdkXEvent *xevent, GdkEvent *event, gpointer data)
   /* Panel sends us our relative position on it */
   XEvent *xe = (XEvent*) xevent;
   gint pos_x = xe->xclient.data.l[0], pos_y = xe->xclient.data.l[1];
+  gint panel_w = xe->xclient.data.l[2], panel_h = xe->xclient.data.l[3];
 
-  if (priv->pos_x != pos_x || priv->pos_y != pos_y)
+  if (priv->pos_x != pos_x || priv->pos_y != pos_y ||
+      priv->panel_width != panel_w || priv->panel_height != panel_h)
   {
-    priv->pos_x = xe->xclient.data.l[0];
-    priv->pos_y = xe->xclient.data.l[1];
+    priv->pos_x = pos_x;
+    priv->pos_y = pos_y;
+    priv->panel_width = panel_w;
+    priv->panel_height = panel_h;
 
     if (priv->path_type != AWN_PATH_LINEAR)
     {
@@ -434,7 +429,6 @@ awn_applet_constructed (GObject *obj)
 
     GError *error = NULL;
     GValue orient = {0}, size = {0}, max_size = {0}, offset = {0};
-    GValue panel_xid = {0};
 
     dbus_g_proxy_call (prop_proxy, "Get", &error, 
                        G_TYPE_STRING, "org.awnproject.Awn.Panel",
@@ -471,32 +465,16 @@ awn_applet_constructed (GObject *obj)
                        G_TYPE_INVALID);
 
     if (error) goto crap_out;
-
-    dbus_g_proxy_call (prop_proxy, "Get", &error,
-                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
-                       G_TYPE_STRING, "PanelXid",
-                       G_TYPE_INVALID,
-                       G_TYPE_VALUE, &panel_xid,
-                       G_TYPE_INVALID);
-
-    if (error) goto crap_out;
-
+    
     g_object_set_property (obj, "orient", &orient);
     g_object_set_property (obj, "size", &size);
     g_object_set_property (obj, "offset", &offset);
     g_object_set_property (obj, "max-size", &max_size);
 
-    if (g_value_get_int64 (&panel_xid) != 0)
-    {
-      awn_applet_set_panel_window_id (AWN_APPLET (obj),
-                          (GdkNativeWindow) g_value_get_int64 (&panel_xid));
-    }
-
     g_value_unset (&orient);
     g_value_unset (&size);
     g_value_unset (&max_size);
     g_value_unset (&offset);
-    g_value_unset (&panel_xid);
 
     if (prop_proxy) g_object_unref (prop_proxy);
 
@@ -514,13 +492,7 @@ awn_applet_constructed (GObject *obj)
 static void
 awn_applet_dispose (GObject *obj)
 {
-  AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (obj);
-
-  if (priv->panel_window)
-  {
-    gdk_window_remove_filter (priv->panel_window, _on_panel_configure, obj);
-    priv->panel_window = 0;
-  }
+  //AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (obj);
 
   G_OBJECT_CLASS (awn_applet_parent_class)->dispose(obj);
 }
@@ -1429,78 +1401,5 @@ awn_applet_docklet_request (AwnApplet *applet, gint min_size,
   }
 
   return (GdkNativeWindow)ret;
-}
-
-static GdkFilterReturn
-_on_panel_configure (GdkXEvent *xevent, GdkEvent *event, gpointer data)
-{
-  g_return_val_if_fail (AWN_IS_APPLET (data), GDK_FILTER_CONTINUE);
-
-  AwnAppletPrivate *priv = AWN_APPLET_GET_PRIVATE (data);
-  GdkWindow *window;
-
-  window = gtk_widget_get_window (GTK_WIDGET (data));
-
-  XEvent *xe = (XEvent*)xevent;
-
-  if (xe->type == ConfigureNotify)
-  {
-    event->type = GDK_CONFIGURE;
-    event->configure.send_event = xe->xconfigure.send_event;
-    event->configure.x = xe->xconfigure.x;
-    event->configure.y = xe->xconfigure.y;
-    event->configure.width = xe->xconfigure.width;
-    event->configure.height = xe->xconfigure.height;
-
-    priv->panel_width = xe->xconfigure.width;
-    priv->panel_height = xe->xconfigure.height;
-
-    g_signal_emit (data, _applet_signals[PANEL_CONFIGURE], 0, event);
-
-    /* Emit offset-changed, so we still have nice ellipsis */
-    if (priv->path_type != AWN_PATH_LINEAR)
-    {
-      g_signal_emit (data, _applet_signals[OFFSET_CHANGED], 0, priv->offset);
-    }
-
-    if (window != NULL)
-    {
-      gint x, y;
-      gdk_window_get_origin (window, &x, &y);
-
-      if (priv->origin_x == x && priv->origin_y == y)
-        return GDK_FILTER_TRANSLATE;
-
-      priv->origin_x = x;
-      priv->origin_y = y;
-
-      GdkRectangle rect = { .x = x, .y = y };
-      g_signal_emit (data, _applet_signals[ORIGIN_CHANGED], 0, &rect);
-    }
-
-    return GDK_FILTER_TRANSLATE;
-  }
-
-  return GDK_FILTER_CONTINUE;
-}
-
-static void
-awn_applet_set_panel_window_id (AwnApplet *applet, GdkNativeWindow anid)
-{
-  g_return_if_fail (AWN_IS_APPLET (applet) && anid);
-
-  AwnAppletPrivate *priv = applet->priv;
-
-  if (priv->panel_window)
-  {
-    gdk_window_remove_filter (priv->panel_window, _on_panel_configure, applet);
-  }
-
-  priv->panel_window = gdk_window_foreign_new (anid);
-  gdk_window_get_geometry (priv->panel_window, NULL, NULL,
-                           &priv->panel_width, &priv->panel_height, NULL);
-
-  gdk_window_set_events (priv->panel_window, GDK_STRUCTURE_MASK);
-  gdk_window_add_filter (priv->panel_window, _on_panel_configure, applet);
 }
 

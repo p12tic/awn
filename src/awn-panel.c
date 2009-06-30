@@ -282,8 +282,11 @@ static void     awn_panel_update_masks      (GtkWidget *panel,
                                              gint real_width, 
                                              gint real_height);
 
-static void awn_panel_set_strut              (AwnPanel *panel);
-static void awn_panel_remove_strut           (AwnPanel *panel);
+static void     awn_panel_docklet_destroy   (AwnPanel *panel);
+
+static void     awn_panel_set_strut         (AwnPanel *panel);
+
+static void     awn_panel_remove_strut      (AwnPanel *panel);
 
 /*
  * GOBJECT CODE 
@@ -502,6 +505,7 @@ awn_panel_size_request (GtkWidget *widget, GtkRequisition *requisition)
 {
   GtkRequisition child_requisition;
   AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (widget);
+  gint *target_size, *current_draw_size;
 
   GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
   if (!GTK_IS_WIDGET (child))
@@ -511,6 +515,10 @@ awn_panel_size_request (GtkWidget *widget, GtkRequisition *requisition)
 
   gint size = priv->size + priv->offset + priv->extra_padding;
 
+  // if we're animating resizes, we can't just request the size applets
+  // require, because the animation must have extra space to draw to
+  // use full monitor space, otherwise we'll flicker during resizes
+  // FIXME: do this also in non-composited? shouldn't hurt much
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
@@ -519,20 +527,10 @@ awn_panel_size_request (GtkWidget *widget, GtkRequisition *requisition)
         priv->monitor->width : child_requisition.width;
       requisition->height = priv->composited ? size + priv->size : size;
 
-      // if we're animating resizes, we can't just request the size applets
-      // require, because the animation must have extra space to draw to
-      if (priv->animated_resize && !priv->expand)
-      {
-        if (child_requisition.width != priv->draw_width
-            && !priv->resize_timer_id)
-        {
-          priv->resize_timer_id = g_timeout_add (40, awn_panel_resize_timeout,
-                                                 widget);
-        }
-        // use full monitor space, otherwise we'll flicker during resizes
-        // FIXME: do this also in non-composited? shouldn't hurt much
-        //requisition->width = MAX (requisition->width, priv->draw_width);
-      }
+      target_size = priv->expand ?
+        &(requisition->width) : &(child_requisition.width);
+      current_draw_size = &(priv->draw_width);
+      
       break;
     case AWN_ORIENTATION_LEFT:
     case AWN_ORIENTATION_RIGHT:
@@ -541,17 +539,25 @@ awn_panel_size_request (GtkWidget *widget, GtkRequisition *requisition)
       requisition->height = priv->expand || priv->animated_resize ?
         priv->monitor->height : child_requisition.height;
 
-      if (priv->animated_resize && !priv->expand)
-      {
-        if (child_requisition.height != priv->draw_height
-            && !priv->resize_timer_id)
-          priv->resize_timer_id = g_timeout_add (40, awn_panel_resize_timeout,
-                                                 widget);
-        // use full monitor space, otherwise we'll flicker during resizes
-        // FIXME: do this also in non-composited? shouldn't hurt much
-        //requisition->height = MAX (requisition->height, priv->draw_height);
-      }
+      target_size = priv->expand ?
+        &(requisition->height) : &(child_requisition.height);
+      current_draw_size = &(priv->draw_height);
+
       break;
+  }
+
+  if (priv->animated_resize && !priv->expand)
+  {
+    if (*target_size != *current_draw_size && !priv->resize_timer_id)
+    {
+      priv->resize_timer_id = g_timeout_add (40, awn_panel_resize_timeout,
+                                             widget); // 25 FPS
+    }
+  }
+  else if (priv->expand)
+  {
+    // this ensures there's a shrinking animation when expand is turned off
+    *current_draw_size = *target_size;
   }
 }
 
@@ -1955,6 +1961,8 @@ awn_panel_set_orient (AwnPanel *panel, gint orient)
   if (!GTK_WIDGET_REALIZED (panel))
     return;
 
+  if (priv->docklet) awn_panel_docklet_destroy (panel);
+
   awn_panel_reset_autohide (panel);
 
   g_signal_emit (panel, _panel_signals[ORIENT_CHANGED], 0, priv->orient);
@@ -2485,16 +2493,7 @@ docklet_plug_added (GtkSocket *socket, AwnPanel *panel)
 static gboolean
 docklet_plug_removed (GtkSocket *socket, AwnPanel *panel)
 {
-  AwnPanelPrivate *priv = panel->priv;
-
-  // FIXME: an animation?! we could also optimize and not destroy the widget
-  awn_applet_manager_remove_widget (AWN_APPLET_MANAGER (priv->manager),
-                                    priv->docklet);
-  awn_applet_manager_show_applets (AWN_APPLET_MANAGER (priv->manager));
-  priv->docklet = NULL;
-  priv->docklet_minsize = 0;
-
-  gtk_widget_hide (priv->docklet_closer);
+  awn_panel_docklet_destroy (panel);
 
   return FALSE;
 }
@@ -2506,10 +2505,29 @@ docklet_closer_click (GtkWidget *widget, GdkEventButton *event, AwnPanel *panel)
 
   if (priv->docklet == NULL) return FALSE;
 
-  // this removes the docklet from applet manager, effectively destroying it
-  docklet_plug_removed (GTK_SOCKET (priv->docklet), panel);
+  if (event->type == GDK_BUTTON_RELEASE && event->button == 1)
+  {
+    awn_panel_docklet_destroy (panel);
+  }
 
   return FALSE;
+}
+
+static void
+awn_panel_docklet_destroy (AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->docklet == NULL) return;
+
+  // FIXME: an animation?! we could also optimize and not destroy the widget
+  awn_applet_manager_remove_widget (AWN_APPLET_MANAGER (priv->manager),
+                                    priv->docklet);
+  awn_applet_manager_show_applets (AWN_APPLET_MANAGER (priv->manager));
+  priv->docklet = NULL;
+  priv->docklet_minsize = 0;
+
+  gtk_widget_hide (priv->docklet_closer);
 }
 
 void
