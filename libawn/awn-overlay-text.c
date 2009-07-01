@@ -312,7 +312,7 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
   g_object_class_install_property (object_class, PROP_TEXT_COLOR, pspec);   
 
   pspec = g_param_spec_string ("text-color-astr",
-                               "text_color_astr",
+                               "Text color Astr",
                                "Text color as string",
                                "",
                                G_PARAM_READWRITE);
@@ -326,7 +326,7 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
   g_object_class_install_property (object_class, PROP_TEXT_OUTLINE_COLOR, pspec);   
 
   pspec = g_param_spec_string ("text-outline-color-astr",
-                               "text__outline color_astr",
+                               "Text Outline Color Astr",
                                "Text outline color as string",
                                "",
                                G_PARAM_READWRITE);
@@ -345,8 +345,8 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
                                "Text Outline Width",
                                "Text Outline Width",
                                0.0,
-                               2.0,
-                               0.4,
+                               10.0,
+                               2.5,
                                G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_TEXT_OUTLINE_WIDTH, pspec);   
   
@@ -455,21 +455,26 @@ _awn_overlay_text_render (AwnOverlay* _overlay,
       pango_cairo_show_layout (cr, layout);      
       break;
     case FONT_MODE_OUTLINE:
-    case FONT_MODE_OUTLINE_REVERSED:      
-      /*conditional operator*/
-      awn_cairo_set_source_color (cr,priv->font_mode==FONT_MODE_OUTLINE?
-                                  text_colour:text_outline_colour);
+    case FONT_MODE_OUTLINE_REVERSED:
       cairo_save (cr);
-      pango_cairo_layout_path(cr, layout);
-      cairo_fill (cr);
-      cairo_restore (cr);
+
+      cairo_set_line_width(cr, priv->text_outline_width * height / 48.0);
+      // first paint the outline
       /*conditional operator*/      
       awn_cairo_set_source_color (cr,priv->font_mode==FONT_MODE_OUTLINE?
                                   text_outline_colour:text_colour);
-      cairo_set_line_width(cr, priv->text_outline_width * height / 48.0);
-      awn_overlay_move_to (_overlay,cr,  width, height,layout_width,layout_height,NULL);  
-      pango_cairo_layout_path(cr, layout);    
-      cairo_stroke_preserve(cr);      
+      pango_cairo_layout_path (cr, layout);
+      cairo_stroke_preserve (cr);
+
+      // now the text itself
+      awn_overlay_move_to (_overlay, cr, width, height,
+                           layout_width, layout_height, NULL);
+      /*conditional operator*/
+      awn_cairo_set_source_color (cr,priv->font_mode==FONT_MODE_OUTLINE?
+                                  text_colour:text_outline_colour);
+      cairo_fill (cr);
+
+      cairo_restore (cr);
       break;
   }
   g_object_unref (text_colour);

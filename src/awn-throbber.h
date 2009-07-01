@@ -26,6 +26,7 @@
 #include <libawn/awn-defines.h>
 #include <libawn/awn-effects.h>
 #include <libawn/awn-tooltip.h>
+#include <libawn/awn-icon.h>
 
 G_BEGIN_DECLS
 
@@ -52,14 +53,14 @@ typedef struct _AwnThrobberPrivate AwnThrobberPrivate;
  
 struct _AwnThrobber
 {
-  GtkDrawingArea parent;
+  AwnIcon parent;
 
   AwnThrobberPrivate *priv;
 };
 
 struct _AwnThrobberClass
 {
-  GtkDrawingAreaClass parent_class;
+  AwnIconClass parent_class;
 };
 
 typedef enum {
@@ -72,25 +73,10 @@ GType         awn_throbber_get_type         (void) G_GNUC_CONST;
 
 GtkWidget *   awn_throbber_new              (void);
 
-void          awn_throbber_set_orientation  (AwnThrobber *throbber,
-                                             AwnOrientation orient);
-
-void          awn_throbber_set_offset       (AwnThrobber *throbber, gint o);
-
 void          awn_throbber_set_type         (AwnThrobber *throbber,
                                              AwnThrobberType type);
 
-void          awn_throbber_set_text         (AwnThrobber *throbber,
-                                             const gchar* text);
-
 void          awn_throbber_set_size         (AwnThrobber *throbber, gint size);
-
-AwnEffects *  awn_throbber_get_effects      (AwnThrobber *throbber);
-
-AwnTooltip *  awn_throbber_get_tooltip      (AwnThrobber *throbber);
-
-void          awn_throbber_set_hover_effect (AwnThrobber *throbber,
-                                             gboolean hover_effect);
 
 G_END_DECLS
 

@@ -93,6 +93,7 @@ enum {
   PROP_REFLECTION_VISIBLE,
   PROP_MAKE_SHADOW,
   PROP_IS_ACTIVE,
+  PROP_IS_DEPRESSED,
   PROP_PROGRESS,
   PROP_BORDER_CLIP,
   PROP_SPOTLIGHT_ICON,
@@ -285,6 +286,9 @@ awn_effects_get_property (GObject      *object,
     case PROP_IS_ACTIVE:
       g_value_set_boolean(value, fx->is_active);
       break;
+    case PROP_IS_DEPRESSED:
+      g_value_set_boolean(value, fx->depressed);
+      break;
     case PROP_ARROWS_COUNT:
       g_value_set_int(value, fx->arrows_count);
       break;
@@ -364,6 +368,9 @@ awn_effects_set_property (GObject      *object,
       break;
     case PROP_IS_ACTIVE:
       fx->is_active = g_value_get_boolean(value);
+      break;
+    case PROP_IS_DEPRESSED:
+      fx->depressed = g_value_get_boolean(value);
       break;
     case PROP_ARROWS_COUNT:
       fx->arrows_count = g_value_get_int(value);
@@ -703,6 +710,19 @@ awn_effects_class_init(AwnEffectsClass *klass)
     g_param_spec_boolean("active",
                          "Active",
                          "Determines whether to draw active hint around icon",
+                         FALSE,
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+  /**
+   * AwnEffects:depressed:
+   *
+   * Determines whether to draw the icon slightly desaturated.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_IS_DEPRESSED,
+    g_param_spec_boolean("depressed",
+                         "Depressed",
+                         "Determines whether to draw the icon slightly "
+                         "desaturated",
                          FALSE,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   /**

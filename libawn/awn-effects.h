@@ -96,6 +96,7 @@ struct _AwnEffects
   gboolean do_reflection;
   gboolean make_shadow;
   gboolean is_active;
+  gboolean depressed;
   gint arrows_count;
   gchar *label;
   gfloat progress;

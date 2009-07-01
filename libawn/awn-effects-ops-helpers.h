@@ -37,10 +37,11 @@ paint_arrow_dot (cairo_t *cr, double size, gint count,
                  double r, double g, double b);
 
 guchar
-lighten_component(const guchar cur_value, const gfloat amount);
+lighten_component(const guchar cur_value, const gfloat amount,
+                  gboolean absolute);
 
 void
-lighten_surface(cairo_surface_t * src, const gfloat amount);
+lighten_surface(cairo_surface_t * src, const gfloat amount, gboolean absolute);
 
 void
 darken_surface(cairo_surface_t * src);

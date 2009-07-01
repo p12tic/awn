@@ -190,7 +190,8 @@ paint_arrow_dot (cairo_t *cr, double size, gint count,
 }
 
 guchar
-lighten_component(const guchar cur_value, const gfloat amount)
+lighten_component(const guchar cur_value, const gfloat amount,
+                  gboolean absolute)
 {
   int new_value = cur_value;
 
@@ -199,11 +200,13 @@ lighten_component(const guchar cur_value, const gfloat amount)
     return cur_value;
   }
   
-  new_value = new_value + (24 + (new_value >> 3)) * amount;
-
-  if (new_value > 255)
+  if (absolute)
   {
-    new_value = 255;
+    new_value = CLAMP (new_value + amount, 0, 255);
+  }
+  else
+  {
+    new_value = MIN (new_value + (24 + (new_value >> 3)) * amount, 255);
   }
 
   return (guchar) new_value;
@@ -213,7 +216,7 @@ lighten_component(const guchar cur_value, const gfloat amount)
  *    FIXME it would be nice to not have to use image surfaces for this effect
  */
 void
-lighten_surface(cairo_surface_t * src, const gfloat amount)
+lighten_surface(cairo_surface_t * src, const gfloat amount, gboolean absolute)
 {
   int i, j;
   int width, height, row_stride;
@@ -240,7 +243,7 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
 
   temp_srfc = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, i, j);
   temp_ctx = cairo_create(temp_srfc);
-  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);  
+  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
   cairo_set_source_surface(temp_ctx, src, 0, 0);
   cairo_paint(temp_ctx);
 
@@ -257,11 +260,11 @@ lighten_surface(cairo_surface_t * src, const gfloat amount)
 
     for (j = 0; j < width; j++)
     {
-      *pixsrc = lighten_component(*pixsrc, amount);
+      *pixsrc = lighten_component(*pixsrc, amount, absolute);
       pixsrc++;
-      *pixsrc = lighten_component(*pixsrc, amount);
+      *pixsrc = lighten_component(*pixsrc, amount, absolute);
       pixsrc++;
-      *pixsrc = lighten_component(*pixsrc, amount);
+      *pixsrc = lighten_component(*pixsrc, amount, absolute);
       pixsrc++;
 
       pixsrc++; /* ALPHA */
