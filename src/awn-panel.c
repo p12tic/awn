@@ -2499,16 +2499,13 @@ docklet_plug_removed (GtkSocket *socket, AwnPanel *panel)
 }
 
 static gboolean
-docklet_closer_click (GtkWidget *widget, GdkEventButton *event, AwnPanel *panel)
+docklet_closer_click (GtkWidget *widget, AwnPanel *panel)
 {
   AwnPanelPrivate *priv = panel->priv;
 
   if (priv->docklet == NULL) return FALSE;
 
-  if (event->type == GDK_BUTTON_RELEASE && event->button == 1)
-  {
-    awn_panel_docklet_destroy (panel);
-  }
+  awn_panel_docklet_destroy (panel);
 
   return FALSE;
 }
@@ -2545,12 +2542,12 @@ awn_panel_docklet_request (AwnPanel *panel,
     priv->docklet_closer = awn_throbber_new ();
     awn_throbber_set_type (AWN_THROBBER (priv->docklet_closer),
                            AWN_THROBBER_TYPE_CLOSE_BUTTON);
-    awn_throbber_set_hover_effect (AWN_THROBBER (priv->docklet_closer), TRUE);
+    awn_icon_set_hover_effects (AWN_ICON (priv->docklet_closer), TRUE);
 
     awn_applet_manager_add_widget (AWN_APPLET_MANAGER (priv->manager),
                                    priv->docklet_closer, 1);
 
-    g_signal_connect (priv->docklet_closer, "button-release-event",
+    g_signal_connect (priv->docklet_closer, "clicked",
                       G_CALLBACK (docklet_closer_click), panel);
   }
 
@@ -2559,8 +2556,8 @@ awn_panel_docklet_request (AwnPanel *panel,
     AwnThrobber *closer = AWN_THROBBER (priv->docklet_closer);
 
     awn_throbber_set_size (closer, priv->size / 2);
-    awn_throbber_set_orientation (closer, priv->orient);
-    awn_throbber_set_offset (closer, priv->size / 2 + priv->offset);
+    awn_icon_set_orientation (AWN_ICON (closer), priv->orient);
+    awn_icon_set_offset (AWN_ICON (closer), priv->size / 2 + priv->offset);
 
     GtkRequisition closer_req;
     gtk_widget_size_request (priv->docklet_closer, &closer_req);

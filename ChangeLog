@@ -1,5 +1,15 @@
 2009-07-01  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-icon.c:
+	Fixed clicking, though it ain't nice...
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	* src/awn-throbber.h:
+	Changed base class of AwnThrobber to AwnIcon.
+
+2009-07-01  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-effects-ops-new.c:
 	Fixed the active rect op.
 
