@@ -278,7 +278,8 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
         y -= priv->top_offset;
         break;
     }
-    cairo_set_operator(cr, CAIRO_OPERATOR_DEST_OVER);
+    cairo_save (cr);
+    cairo_set_operator (cr, CAIRO_OPERATOR_DEST_OVER);
     if (!fx->custom_active_icon || priv->simple_rect)
     {
       GtkStyle *style = NULL;
@@ -316,7 +317,6 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
     }
     else
     {
-      cairo_save(cr);
       /* get the icon surface */
       cairo_surface_t *srfc =
         awn_effects_quark_to_surface(fx, fx->custom_active_icon);
@@ -333,8 +333,9 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
         cairo_set_source_surface(cr, srfc, 0, 0);
         cairo_paint(cr);
       }
-      cairo_restore(cr);
     }
+    cairo_restore (cr);
+
     return TRUE;
   }
   return FALSE;
