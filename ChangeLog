@@ -1,5 +1,15 @@
 2009-07-01  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-effects-ops-helpers.c:
+	* libawn/awn-effects-ops-helpers.h:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* libawn/awn-icon.c:
+	Added a subtle effect when AwnIcon is clicked.
+
+2009-07-01  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-icon.c:
 	Fixed clicking, though it ain't nice...
 	* src/awn-applet-proxy.c:

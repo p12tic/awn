@@ -189,7 +189,10 @@ awn_icon_pressed (AwnIcon *icon, GdkEventButton *event, gpointer data)
 
   // FIXME: depressed animation? offset ++/--?
   if (event->type == GDK_BUTTON_PRESS && event->button == 1)
+  {
     priv->was_pressed = TRUE;
+    g_object_set (priv->effects, "depressed", TRUE, NULL);
+  }
 
   return FALSE;
 }
@@ -202,6 +205,7 @@ awn_icon_released (AwnIcon *icon, GdkEventButton *event, gpointer data)
   if (priv->was_pressed && event->button == 1)
   {
     priv->was_pressed = FALSE;
+    g_object_set (priv->effects, "depressed", FALSE, NULL);
     awn_icon_clicked (icon);
   }
 

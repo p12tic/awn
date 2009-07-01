@@ -435,9 +435,9 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
 
             if (priv->glow_amount > 0.0)
             {
-              r = lighten_component (r * 255, priv->glow_amount) / 255.0;
-              g = lighten_component (g * 255, priv->glow_amount) / 255.0;
-              b = lighten_component (b * 255, priv->glow_amount) / 255.0;
+              r = lighten_component (r * 255, priv->glow_amount, FALSE) / 255.0;
+              g = lighten_component (g * 255, priv->glow_amount, FALSE) / 255.0;
+              b = lighten_component (b * 255, priv->glow_amount, FALSE) / 255.0;
             }
           }
           paint_arrow_dot (cr, DOT_RADIUS, arrows_count, r, g ,b);
@@ -505,7 +505,7 @@ gboolean awn_effects_post_op_saturate(AwnEffects * fx,
 
   if (priv->saturation < 1.0)
   {
-    surface_saturate(cairo_get_target(cr), priv->saturation);
+    surface_saturate (cairo_get_target(cr), priv->saturation);
     return TRUE;
   }
 
@@ -520,9 +520,10 @@ gboolean awn_effects_post_op_glow(AwnEffects * fx,
 {
   AwnEffectsPrivate *priv = fx->priv;
 
-  if (priv->glow_amount > 0)
+  if (priv->glow_amount > 0 || fx->depressed)
   {
-    lighten_surface(cairo_get_target(cr), priv->glow_amount);
+    gfloat amount = fx->depressed ? 30 : priv->glow_amount;
+    lighten_surface(cairo_get_target(cr), amount, fx->depressed);
     return TRUE;
   }
   return FALSE;
