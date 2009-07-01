@@ -37,6 +37,8 @@
 #include "awn-applet-proxy.h"
 #include "awn-throbber.h"
 
+#define MAX_UA_LIST_ENTRIES 50
+
 G_DEFINE_TYPE (AwnAppletManager, awn_applet_manager, GTK_TYPE_BOX) 
 
 #define AWN_APPLET_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE (obj, \
@@ -957,7 +959,7 @@ awn_ua_list_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
 static gboolean
 awn_ua_plug_removed (GtkSocket *socket,AwnUaInfo * info)
 {
-//  GSList * search;
+  GSList * search;
   AwnAppletManagerPrivate *priv = info->manager->priv;  
   awn_applet_manager_remove_widget(info->manager, GTK_WIDGET (info->ua_alignment));
   g_signal_handler_disconnect (info->manager,info->notify_size_id);
@@ -965,6 +967,13 @@ awn_ua_plug_removed (GtkSocket *socket,AwnUaInfo * info)
   g_signal_handler_disconnect (info->manager,info->notify_offset_id);
   g_signal_handler_disconnect (info->manager,info->notify_ua_list_id);
   
+  search = g_slist_find_custom (priv->ua_list,info->ua_list_entry,g_strcmp0);
+  if (search)
+  {
+    gchar * tmp = search->data;
+    priv->ua_list = g_slist_delete_link (priv->ua_list,search);
+    priv->ua_list = g_slist_prepend (priv->ua_list,tmp);
+  } 
 /*
   It doesn't really make sense to remove this from the list when the 
    plug is removed.  It could just mean the system is shutting down or
@@ -1037,6 +1046,20 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   gint pos = g_slist_length (priv->applet_list);  
   GdkNativeWindow native_window = (GdkNativeWindow) xid;
   gchar * tmp = g_strdup_printf ("%s::%d",name,pos);
+
+  /*
+   OK... i think a marker needs to be placed into the list (The following will not work as written)
+   or provide the number of active screenlets to awn-manager through some mechanism.
+   it only matters to the extent that it will allow awn-manager to determine which
+   applets it should display in the list
+   */
+ /* 
+   = g_slist_find_custom (priv->ua_list,"--ActiveScreenletMarker--::-1",g_strcmp0);
+  if (!search)
+  {
+    priv->ua_list = g_slist_append (priv->ua_list,g_strdup("--ActiveScreenletMarker--::-1"));    
+  }
+  */
   GSList * search = g_slist_find_custom (priv->ua_list,tmp,ua_list_cmp);
   if (search)
   {
@@ -1049,6 +1072,10 @@ awn_ua_add_applet (	AwnAppletManager *manager,
       pos = atoi (tokens[1]);
     }
     g_strfreev (tokens);
+    /* remove the link... that data will be appended at the beginning of the list*/
+    g_free (search->data);
+    priv->ua_list = g_slist_delete_link (priv->ua_list,search);
+    search = NULL;
   }
   else
   {
@@ -1089,13 +1116,23 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   ua_info->notify_size_id = g_signal_connect_after (manager,"notify::size",G_CALLBACK(awn_ua_size_change),ua_info);
   ua_info->notify_ua_list_id = g_signal_connect_after (manager,"notify::ua-list",G_CALLBACK(awn_ua_list_change),ua_info);  
   g_signal_connect (socket,"plug-removed",G_CALLBACK(awn_ua_plug_removed),ua_info);
-  if (!search)
+
+  priv->ua_list = g_slist_append (priv->ua_list,g_strdup(ua_info->ua_list_entry));
+  
+  if (g_slist_length (priv->ua_list) > MAX_UA_LIST_ENTRIES)
   {
-    priv->ua_list = g_slist_append (priv->ua_list,g_strdup(ua_info->ua_list_entry));
-    awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
-                                 AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                                 priv->ua_list, NULL);
+    GSList * iter;
+    int i =  g_slist_length (priv->ua_list) - MAX_UA_LIST_ENTRIES;
+    for(iter = priv->ua_list; i && iter ; iter = priv->ua_list )
+    {
+      g_free (iter->data);
+      priv->ua_list = g_slist_delete_link (priv->ua_list,iter);
+      i--;
+    }
   }
+  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
+                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                               priv->ua_list, NULL);
   return TRUE;
 }
 
