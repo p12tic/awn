@@ -728,7 +728,6 @@ task_icon_refresh_visible (TaskIcon *icon)
       {
         awn_overlayable_remove_overlay (AWN_OVERLAYABLE (icon), 
                                         AWN_OVERLAY (priv->overlay_text));
-        g_object_unref (priv->overlay_text);
         priv->overlay_text = NULL;
       }
     }

@@ -19,8 +19,6 @@ taskmanager_la_SOURCES = \
 	task-icon.h \
 	task-item.c \
 	task-item.h \
-  task-window.c \
-  task-window.h \
 	task-launcher.c \
 	task-launcher.h \
 	task-manager.c \
@@ -29,6 +27,8 @@ taskmanager_la_SOURCES = \
 	task-manager-api-wrapper.h \
 	task-settings.c \
 	task-settings.h \
+	task-window.c \
+	task-window.h \
 	$(builddir)/taskmanager-marshal.c \
 	$(builddir)/taskmanager-marshal.h \
 	xutils.c \
