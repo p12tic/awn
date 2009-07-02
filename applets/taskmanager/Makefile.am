@@ -23,8 +23,10 @@ taskmanager_la_SOURCES = \
 	task-launcher.h \
 	task-manager.c \
 	task-manager.h \
+	task-manager-glue.h \
 	task-manager-api-wrapper.c \
 	task-manager-api-wrapper.h \
+	task-manager-api-wrapper-glue.h \
 	task-settings.c \
 	task-settings.h \
 	task-window.c \
@@ -40,6 +42,13 @@ taskmanager_la_LIBADD = \
 	$(NULL)
 taskmanager_la_CFLAGS = $(WARNING_FLAGS) $(TASKMANAGER_CFLAGS)
 taskmanager_la_LDFLAGS = -module -avoid-version
+
+# DBus glue
+task-manager-glue.h: task-manager-dbus.xml Makefile
+	$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=task_manager --mode=glib-server --output=$@ $<
+
+task-manager-api-wrapper-glue.h: task-manager-api-wrapper-dbus.xml Makefile
+	$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=task_manager_api_wrapper --mode=glib-server --output=$@ $<
 
 # Desktop file
 desktopdir = $(pkgdatadir)/applets
@@ -70,6 +79,11 @@ schema_DATA = taskmanager.schema-ini
 
 install-data-local: install-gconf-schemas
 
-BUILT_SOURCES = $(MARSHALFILES)
+BUILT_SOURCES = \
+	task-manager-glue.h \
+	task-manager-api-wrapper-glue.h \
+	$(MARSHALFILES) \
+	$(NULL)
+
 EXTRA_DIST = $(desktop_DATA).in.in $(schema_DATA)
 CLEANFILES = $(desktop_DATA) $(shemas_in_files) $(schemas_DATA) $(BUILT_SOURCES)

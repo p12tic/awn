@@ -25,7 +25,11 @@
 
 #include <libwnck/libwnck.h>
 
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-bindings.h>
+
 #include "task-manager.h"
+#include "task-manager-glue.h"
 
 #include "task-drag-indicator.h"
 #include "task-icon.h"
@@ -296,6 +300,9 @@ task_manager_class_init (TaskManagerClass *klass)
   g_object_class_install_property (obj_class, PROP_MATCH_STRENGTH, pspec);
   
   g_type_class_add_private (obj_class, sizeof (TaskManagerPrivate));
+
+  dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
+                                   &dbus_glib_task_manager_object_info);
 }
 
 static void
@@ -877,12 +884,12 @@ _match_name (TaskManager *manager, const gchar* window)
     if (WNCK_IS_APPLICATION(wnck_app))
     {
       name = wnck_application_get_name(wnck_app);
-      if (name && strcmp (window, name) == 0)
+      if (name && g_ascii_strcasecmp (window, name) == 0) // FIXME: UTF-8 ?!
         return taskwindow;
     }
 
     name = task_window_get_name (taskwindow);
-    if (name && strcmp (window, name) == 0)
+    if (name && g_ascii_strcasecmp (window, name) == 0) // FIXME: UTF-8 ?!
       return taskwindow;
   }
   
@@ -954,19 +961,19 @@ task_manager_update (TaskManager *manager,
       gchar *key_name = (gchar *)key;
       if (strcmp ("icon-file", key_name) == 0)
       {
-
+        g_debug ("Request to change icon-file...");
       }
       else if (strcmp ("progress", key_name) == 0)
       {
-
+        g_debug ("Request to change progress...");
       }
       else if (strcmp ("message", key_name) == 0)
       {
-
+        g_debug ("Request to change message...");
       }
       else if (strcmp ("visible", key_name) == 0)
       {
-        
+        g_debug ("Request to change visibility...");
       }
       else
       {
@@ -978,6 +985,8 @@ task_manager_update (TaskManager *manager,
   }
   else
   {
+    g_debug ("No matching window found to update.");
+
     return FALSE;
   }
 }

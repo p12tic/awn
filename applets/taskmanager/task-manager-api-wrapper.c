@@ -16,8 +16,11 @@
  * Authored by Hannes Verschore <hv1989@gmail.com>
  */
 
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-bindings.h>
 
 #include "task-manager-api-wrapper.h"
+#include "task-manager-api-wrapper-glue.h"
 
 #include <libawn/libawn.h>
 
@@ -107,6 +110,10 @@ task_manager_api_wrapper_class_init (TaskManagerApiWrapperClass *klass)
   g_object_class_install_property (obj_class, PROP_MANAGER, pspec);  
   
   g_type_class_add_private (obj_class, sizeof (TaskManagerApiWrapperPrivate));
+
+  dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
+                              &dbus_glib_task_manager_api_wrapper_object_info);
+    
 }
 
 static void
@@ -288,7 +295,7 @@ task_manager_api_wrapper_set_progress_by_name (TaskManagerApiWrapper *wrapper,
   gboolean succeeded;
   GValue window = {0};
   GHashTable *hints;
-  const gchar *key = "message";
+  const gchar *key = "progress";
   GValue value = {0};
   
   g_return_val_if_fail (TASK_IS_MANAGER_API_WRAPPER (wrapper), FALSE);
@@ -477,7 +484,7 @@ task_manager_api_wrapper_set_progress_by_xid (TaskManagerApiWrapper *wrapper,
   gboolean succeeded;
   GValue window = {0};
   GHashTable *hints;
-  const gchar *key = "message";
+  const gchar *key = "progress";
   GValue value = {0};
   
   g_return_val_if_fail (TASK_IS_MANAGER_API_WRAPPER (wrapper), FALSE);
