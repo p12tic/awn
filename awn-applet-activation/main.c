@@ -194,7 +194,7 @@ main(gint argc, gchar **argv)
   /* Extract canonical-name from exec */
   gchar *canonical_name = g_strrstr(exec, "/");
   // canonical-name is now: "/applet.ext" or NULL
-  canonical_name = canonical_name ? canonical_name+1 : exec;
+  canonical_name = canonical_name ? canonical_name+1 : (gchar*)exec;
   // canonical_name is now: "applet.ext" or "applet.ext"
   gchar *dot = g_strrstr(canonical_name, ".");
   canonical_name = g_strndup(canonical_name,

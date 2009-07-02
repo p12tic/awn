@@ -819,6 +819,14 @@ awn_applet_new (const gchar* canonical_name, const gchar* uid, gint panel_id)
 /*
  * Public funcs
  */
+const gchar*
+awn_applet_get_canonical_name (AwnApplet *applet)
+{
+  g_return_val_if_fail (AWN_IS_APPLET (applet), NULL);
+
+  return applet->priv->canonical_name;
+}
+
 /*
  * Callback to start awn-manager.  See awn_applet_create_default_menu()
  */

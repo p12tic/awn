@@ -110,6 +110,8 @@ AwnApplet *        awn_applet_new                 (const gchar *canonical_name,
                                                    const gchar *uid,
                                                    gint         panel_id);
 
+const gchar*       awn_applet_get_canonical_name  (AwnApplet      *applet);
+
 AwnOrientation     awn_applet_get_orientation     (AwnApplet      *applet);
 void               awn_applet_set_orientation     (AwnApplet      *applet,
                                                    AwnOrientation  orient);

@@ -487,6 +487,12 @@
   )
 )
 
+(define-method get_canonical_name
+  (of-object "AwnApplet")
+  (c-name "awn_applet_get_canonical_name")
+  (return-type "const-gchar*")
+)
+
 (define-method get_orientation
   (of-object "AwnApplet")
   (c-name "awn_applet_get_orientation")
