@@ -481,9 +481,16 @@
   (is-constructor-of "AwnApplet")
   (return-type "GtkWidget*")
   (properties
+    '("canonical_name" (argname "canonical_name"))
     '("uid" (argname "uid"))
     '("panel_id" (argname "panel_id"))
   )
+)
+
+(define-method get_canonical_name
+  (of-object "AwnApplet")
+  (c-name "awn_applet_get_canonical_name")
+  (return-type "const-gchar*")
 )
 
 (define-method get_orientation
@@ -601,6 +608,7 @@
   (is-constructor-of "AwnAppletSimple")
   (return-type "GtkWidget*")
   (properties
+    '("canonical_name" (argname "canonical_name"))
     '("uid" (argname "uid"))
     '("panel_id" (argname "panel_id"))
   )

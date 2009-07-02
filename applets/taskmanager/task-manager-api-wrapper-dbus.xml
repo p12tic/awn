@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="/com/google/code/Awn">
+<interface name="com.google.code.Awn">
+<annotation name="org.freedesktop.DBus.GLib.CSymbol" value="task_manager_api_wrapper"/>
+	<!--
+          This whole interface is deprecated, please see 
+          org.awnproject.Awn.Applet.Taskmanager instead.
+	-->
+
+	<method name="SetTaskIconByName">
+		<arg name="name" type="s" direction="in"/>
+		<arg name="icon_path" type="s" direction="in"/>
+                <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+	</method>
+	<method name="SetTaskIconByXid">
+		<arg name="xid" type="x" direction="in"/>
+		<arg name="icon_path" type="s" direction="in"/>
+                <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+	</method>
+
+	<method name="UnsetTaskIconByName">
+		<arg name="name" type="s" direction="in"/>
+                <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+	</method>
+	<method name="UnsetTaskIconByXid">
+		<arg name="xid" type="x" direction="in"/>
+                <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+	</method>
+
+	<method name="SetProgressByName">
+		<arg name="name" type="s" direction="in"/>
+		<arg name="progress" type="i" direction="in"/>
+                <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+	</method>
+	<method name="SetProgressByXid">
+		<arg name="xid" type="x" direction="in"/>
+		<arg name="progress" type="i" direction="in"/>
+                <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+	</method>
+
+	<method name="SetInfoByName">
+		<arg name="name" type="s" direction="in"/>
+		<arg name="info" type="s" direction="in"/>
+                <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+	</method>
+	<method name="SetInfoByXid">
+		<arg name="xid" type="x" direction="in"/>
+		<arg name="info" type="s" direction="in"/>
+                <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+	</method>
+
+	<method name="UnsetInfoByName">
+		<arg name="name" type="s" direction="in"/>
+                <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+	</method>
+	<method name="UnsetInfoByXid">
+		<arg name="xid" type="x" direction="in"/>
+                <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+	</method>
+
+</interface>
+</node>

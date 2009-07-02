@@ -230,6 +230,11 @@ static gboolean position_window             (AwnPanel *panel);
 static gboolean on_eb_expose                (GtkWidget      *eb, 
                                              GdkEventExpose *event,
                                              AwnPanel       *panel);
+
+static void     on_manager_size_alloc       (GtkWidget      *manager,
+                                             GtkAllocation  *alloc,
+                                             AwnPanel       *panel);
+
 static gboolean poll_mouse_position         (gpointer data);
 static gboolean awn_panel_expose            (GtkWidget      *widget, 
                                              GdkEventExpose *event);
@@ -325,6 +330,8 @@ awn_panel_constructed (GObject *object)
                             G_CALLBACK (on_applet_embedded), panel);
   g_signal_connect_swapped (priv->manager, "notify::expands",
                             G_CALLBACK (awn_panel_refresh_alignment), panel);
+  g_signal_connect (priv->manager, "size-allocate",
+                    G_CALLBACK (on_manager_size_alloc), panel);
   gtk_container_add (GTK_CONTAINER (panel), priv->manager);
   gtk_widget_show_all (priv->manager);
   
@@ -1444,6 +1451,9 @@ awn_panel_init (AwnPanel *panel)
   priv->path_type = AWN_PATH_LINEAR;
   priv->offset_mod = 1.0;
 
+  priv->draw_width = 32;
+  priv->draw_height = 32;
+
   priv->inhibits = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                                           NULL, free_inhibit_item);
 
@@ -1696,7 +1706,6 @@ on_window_configure (GtkWidget          *panel,
 
   g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
   priv = AWN_PANEL (panel)->priv;
-
 
   if (priv->old_width != event->width || priv->old_height != event->height ||
       priv->old_orient != priv->orient)
@@ -2215,18 +2224,18 @@ awn_panel_set_panel_mode (AwnPanel *panel, gboolean  panel_mode)
   AwnPanelPrivate *priv = panel->priv;
   priv->panel_mode = panel_mode;
 
-  if(priv->panel_mode)
+  if (priv->panel_mode)
   {
     /* Check if panel is already realized. So it has an GdkWindow.
      * If it's not, the strut will get set when the position and dimension get set. 
      */
-    if(GTK_WIDGET_REALIZED(panel))
-      awn_panel_set_strut(panel);
+    if (GTK_WIDGET_REALIZED (panel))
+      awn_panel_set_strut (panel);
   }
   else
   {
-    if(GTK_WIDGET_REALIZED(panel))
-      awn_panel_remove_strut(panel);
+    if (GTK_WIDGET_REALIZED (panel))
+      awn_panel_remove_strut (panel);
   }
 
 }
@@ -2254,6 +2263,19 @@ awn_panel_set_clickthrough_type(AwnPanel *panel, gint type)
 }
 
 static void
+on_manager_size_alloc (GtkWidget *manager, GtkAllocation *alloc,
+                       AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->panel_mode && priv->animated_resize && !priv->expand)
+  {
+    awn_panel_set_strut (panel);
+  }
+}
+
+
+static void
 awn_panel_set_strut (AwnPanel *panel)
 {
   AwnPanelPrivate *priv = panel->priv;
@@ -2261,9 +2283,24 @@ awn_panel_set_strut (AwnPanel *panel)
   gint strut, strut_start, strut_end;
   GdkWindow *win;
   GdkRectangle area;
+  gint root_x, root_y;
 
-  gtk_window_get_size (GTK_WINDOW (panel), &area.width, &area.height);
-  gtk_window_get_position (GTK_WINDOW (panel), &area.x, &area.y);
+  gtk_window_get_position (GTK_WINDOW (panel), &root_x, &root_y);
+
+  if (priv->expand)
+  {
+    area.x = root_x;
+    area.y = root_y;
+    gtk_window_get_size (GTK_WINDOW (panel), &area.width, &area.height);
+  }
+  else
+  {
+    GtkAllocation *manager_alloc = &(priv->manager->allocation);
+    area.x = manager_alloc->x + root_x;
+    area.y = manager_alloc->y + root_y;
+    area.width = manager_alloc->width;
+    area.height = manager_alloc->height;
+  }
 
   switch (priv->orient)
   {
