@@ -91,6 +91,7 @@ typedef gboolean   (*AwnAppletInitFunc)           (AwnApplet   *applet);
 
 /**
  * AwnAppletInitPFunc:
+ * @canonical_name: applet's canonical name.
  * @uid: applet's unique ID.
  * @panel_id: ID of AwnPanel associated with this applet.
  *
@@ -99,12 +100,14 @@ typedef gboolean   (*AwnAppletInitFunc)           (AwnApplet   *applet);
  *
  * Returns: return the constructed #AwnApplet (or its subclass) or NULL.
  */
-typedef AwnApplet* (*AwnAppletInitPFunc)          (const gchar *uid,
+typedef AwnApplet* (*AwnAppletInitPFunc)          (const gchar *canonical_name,
+                                                   const gchar *uid,
                                                    gint         panel_id);
 
 GType              awn_applet_get_type            (void);
 
-AwnApplet *        awn_applet_new                 (const gchar *uid, 
+AwnApplet *        awn_applet_new                 (const gchar *canonical_name,
+                                                   const gchar *uid,
                                                    gint         panel_id);
 
 AwnOrientation     awn_applet_get_orientation     (AwnApplet      *applet);

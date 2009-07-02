@@ -21,10 +21,10 @@
 
 #include "task-manager.h"
 
-AwnApplet* awn_applet_factory_initp (gchar* uid, gint panel_id);
+AwnApplet* awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id);
 
 AwnApplet*
-awn_applet_factory_initp (gchar* uid, gint panel_id)
+awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
 {
   AwnApplet *applet;
 

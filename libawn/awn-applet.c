@@ -49,7 +49,7 @@ struct _AwnAppletPrivate
 {
   gchar *uid;
   gint panel_id;
-  gchar *gconf_key;
+  gchar *canonical_name;
   AwnOrientation orient;
   AwnPathType path_type;
   gint offset;
@@ -75,6 +75,7 @@ enum
   PROP_0,
   PROP_UID,
   PROP_PANEL_ID,
+  PROP_CANONICAL_NAME,
   PROP_ORIENT,
   PROP_OFFSET,
   PROP_OFFSET_MOD,
@@ -268,6 +269,18 @@ awn_applet_set_property (GObject      *object,
     case PROP_UID:
       awn_applet_set_uid (applet, g_value_get_string (value));
       break;
+    case PROP_CANONICAL_NAME:
+      if (g_value_get_string (value) == NULL)
+      {
+        g_warning ("Canonical name for this applet wasn't set!");
+      }
+      else
+      {
+        applet->priv->canonical_name =
+          g_strcanon (g_ascii_strdown (g_value_get_string (value), -1),
+                      "abcdefghijklmnopqrstuvwxyz0123456789-", '-');
+      }
+      break;
     case PROP_PANEL_ID:
       applet->priv->panel_id = g_value_get_int (value);
       break;
@@ -314,6 +327,10 @@ awn_applet_get_property (GObject    *object,
   {
     case PROP_UID:
       g_value_set_string (value, priv->uid);
+      break;
+
+    case PROP_CANONICAL_NAME:
+      g_value_set_string (value, priv->canonical_name);
       break;
 
     case PROP_PANEL_ID:
@@ -510,6 +527,12 @@ awn_applet_finalize (GObject *obj)
     priv->proxy = NULL;
   }
 
+  if (priv->canonical_name)
+  {
+    g_free (priv->canonical_name);
+    priv->canonical_name = NULL;
+  }
+
   G_OBJECT_CLASS (awn_applet_parent_class)->finalize (obj);
 }
 
@@ -563,6 +586,15 @@ awn_applet_class_init (AwnAppletClass *klass)
                          "Awn's Unique ID for this applet instance",
                          NULL,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+
+  g_object_class_install_property (g_object_class,
+    PROP_CANONICAL_NAME,
+    g_param_spec_string ("canonical-name",
+                         "Canonical name",
+                         "Canonical name for the applet, this should be also "
+                         "the name of the directory the applet is in",
+                         NULL,
+                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
 
   g_object_class_install_property (g_object_class,
     PROP_PANEL_ID,
@@ -749,6 +781,7 @@ awn_applet_init (AwnApplet *applet)
 
 /**
  * awn_applet_new:
+ * @canonical_name: canonical name of the applet.
  * @uid: unique ID of the applet.
  * @panel_id: ID of AwnPanel associated with the applet.
  *
@@ -758,9 +791,10 @@ awn_applet_init (AwnApplet *applet)
  * Returns: the new AwnApplet.
  */
 AwnApplet *
-awn_applet_new (const gchar* uid, gint panel_id)
+awn_applet_new (const gchar* canonical_name, const gchar* uid, gint panel_id)
 {
   AwnApplet *applet = g_object_new (AWN_TYPE_APPLET,
+                                    "canonical-name", canonical_name,
                                     "uid", uid,
                                     "panel-id", panel_id,
                                     NULL);

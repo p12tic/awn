@@ -1,5 +1,17 @@
 2009-07-02  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/taskmanager/applet.c:
+	* awn-applet-activation/main.c:
+	* bindings/python/awn.defs:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* tests/test-applet-simple.c:
+	Yay, another change to AwnApplet constructor. :(
+
+2009-07-02  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-panel.c:
 	Fixed strut.
 

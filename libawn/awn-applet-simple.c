@@ -205,16 +205,19 @@ awn_applet_simple_init (AwnAppletSimple *simple)
  * Returns: a new instance of an applet.
  */
 GtkWidget*
-awn_applet_simple_new (const gchar *uid, gint panel_id)
+awn_applet_simple_new (const gchar* canonical_name,
+                       const gchar *uid,
+                       gint panel_id)
 {
   AwnAppletSimple *simple;
 
-  simple = g_object_new(AWN_TYPE_APPLET_SIMPLE,
-                        "uid", uid,
-                        "panel-id", panel_id,
-                        NULL);
+  simple = g_object_new (AWN_TYPE_APPLET_SIMPLE,
+                         "canonical-name", canonical_name,
+                         "uid", uid,
+                         "panel-id", panel_id,
+                         NULL);
 
-  return GTK_WIDGET(simple);
+  return GTK_WIDGET (simple);
 }
 
 /*

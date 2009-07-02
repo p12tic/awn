@@ -32,7 +32,8 @@
 
 /* Forwards */
 GtkWidget *
-_awn_applet_new(const gchar *path,
+_awn_applet_new(const gchar *canonical_name,
+                const gchar *path,
                 const gchar *uid,
                 gint         panel_id);
 static void
@@ -190,8 +191,19 @@ main(gint argc, gchar **argv)
     argv[0][nlen] = '\0';
   }
 
+  /* Extract canonical-name from exec */
+  gchar *canonical_name = g_strrstr(exec, "/");
+  // canonical-name is now: "/applet.ext" or NULL
+  canonical_name = canonical_name ? canonical_name+1 : exec;
+  // canonical_name is now: "applet.ext" or "applet.ext"
+  gchar *dot = g_strrstr(canonical_name, ".");
+  canonical_name = g_strndup(canonical_name,
+                         dot ? dot - canonical_name : strlen (canonical_name));
+
   /* Create a GtkPlug for the applet */
-  applet = _awn_applet_new (exec, uid, panel_id);
+  applet = _awn_applet_new (canonical_name, exec, uid, panel_id);
+
+  g_free (canonical_name);
 
   if (applet == NULL)
   {
@@ -221,7 +233,8 @@ main(gint argc, gchar **argv)
 }
 
 GtkWidget *
-_awn_applet_new(const gchar *path,
+_awn_applet_new(const gchar *canonical_name,
+                const gchar *path,
                 const gchar *uid,
                 gint         panel_id)
 {
@@ -245,7 +258,7 @@ _awn_applet_new(const gchar *path,
                       (gpointer *)&init_func))
   {
     /* create new applet */
-    applet = AWN_APPLET(awn_applet_new(uid, panel_id));
+    applet = AWN_APPLET(awn_applet_new(canonical_name, uid, panel_id));
     /* send applet to factory method */
 
     if (!init_func(applet))
@@ -263,7 +276,7 @@ _awn_applet_new(const gchar *path,
                         (gpointer *)&initp_func))
     {
       /* Create the applet */
-      applet = AWN_APPLET(initp_func(uid, panel_id));
+      applet = AWN_APPLET(initp_func(canonical_name, uid, panel_id));
 
       if (applet == NULL)
       {

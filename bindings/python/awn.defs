@@ -481,6 +481,7 @@
   (is-constructor-of "AwnApplet")
   (return-type "GtkWidget*")
   (properties
+    '("canonical_name" (argname "canonical_name"))
     '("uid" (argname "uid"))
     '("panel_id" (argname "panel_id"))
   )
@@ -601,6 +602,7 @@
   (is-constructor-of "AwnAppletSimple")
   (return-type "GtkWidget*")
   (properties
+    '("canonical_name" (argname "canonical_name"))
     '("uid" (argname "uid"))
     '("panel_id" (argname "panel_id"))
   )
