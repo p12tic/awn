@@ -18,7 +18,7 @@ type = bool
 default = true
 description = Enable reordering of windows by drag and drop 
 
-[DEFAULT/grouping_mode]
+[DEFAULT/match_strength]
 type = int
 default = 0
-description = Window Grouping Mode. 0-4... the higher the value the more aggressive the matching.
+description = How radical matching is applied for grouping items. The value should be between 0 and 99. 0 is as good as no grouping. 99 will match almost everything.

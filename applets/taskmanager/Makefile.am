@@ -17,10 +17,14 @@ taskmanager_la_SOURCES = \
 	task-drag-indicator.h \
 	task-icon.c \
 	task-icon.h \
+	task-item.c \
+	task-item.h \
 	task-launcher.c \
 	task-launcher.h \
 	task-manager.c \
 	task-manager.h \
+	task-manager-api-wrapper.c \
+	task-manager-api-wrapper.h \
 	task-settings.c \
 	task-settings.h \
 	task-window.c \

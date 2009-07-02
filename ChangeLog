@@ -1,5 +1,26 @@
 2009-07-02  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/taskmanager/Makefile.am:
+	* applets/taskmanager/task-drag-indicator.c:
+	* applets/taskmanager/task-drag-indicator.h:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-item.c:
+	* applets/taskmanager/task-item.h:
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/task-launcher.h:
+	* applets/taskmanager/task-manager-api-wrapper.c:
+	* applets/taskmanager/task-manager-api-wrapper.h:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-manager.h:
+	* applets/taskmanager/task-window.c:
+	* applets/taskmanager/task-window.h:
+	* applets/taskmanager/taskmanager.schema-ini:
+	* applets/taskmanager/task-window-private.h:
+	Merged h4writer's taskmanager-rewrite branch.
+
+2009-07-02  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-applet.c:
 	Added warning about canonical-name if it's empty string.
 	* libawn/awn-overlay-text.c:
