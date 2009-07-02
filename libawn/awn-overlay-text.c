@@ -205,25 +205,29 @@ static void
 awn_overlay_text_finalize (GObject *object)
 {
   AwnOverlayTextPrivate *priv;
-  priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object);  
+  priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object);
+
   if (priv->text)
   {
     g_free (priv->text);
   }
+
   if (priv->font_description)
   {
     pango_font_description_free (priv->font_description);
   }
+
   if (priv->text_color_astr)
   {
-    g_free(priv->text_color_astr);
+    g_free (priv->text_color_astr);
   }
+
   if (priv->text_outline_color_astr)
   {
-    g_free(priv->text_color_astr);
+    g_free (priv->text_outline_color_astr);
   }
   
-  G_OBJECT_CLASS (awn_overlay_text_parent_class)->finalize (object); 
+  G_OBJECT_CLASS (awn_overlay_text_parent_class)->finalize (object);
 }
 
 static void

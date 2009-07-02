@@ -279,6 +279,7 @@ awn_applet_set_property (GObject      *object,
         applet->priv->canonical_name =
           g_strcanon (g_ascii_strdown (g_value_get_string (value), -1),
                       "abcdefghijklmnopqrstuvwxyz0123456789-", '-');
+        g_warn_if_fail (strlen (applet->priv->canonical_name) > 0);
       }
       break;
     case PROP_PANEL_ID:
