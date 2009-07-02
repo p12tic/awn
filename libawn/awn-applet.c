@@ -587,12 +587,27 @@ awn_applet_class_init (AwnAppletClass *klass)
                          NULL,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
+  /**
+   * AwnApplet:canonical-name:
+   *
+   * The canonical name of the applet. The format should be considered the
+   * same as a GObject property name: [a-zA-Z][a-zA-Z0-9_\-]
+   * In English, the first character must be a lowercase letter of the English
+   * alphabet, and the following character(s) can be one or more lowercase
+   * English letters, numbers, and/or minus characters.
+   *
+   * For all applets in the Awn Extras project, this name should be the same as
+   * the main directory as the applet sources.
+   *
+   * <note>For Python applets, it should also be the same name as the main
+   * applet script.</note>
+   */
   g_object_class_install_property (g_object_class,
     PROP_CANONICAL_NAME,
     g_param_spec_string ("canonical-name",
                          "Canonical name",
                          "Canonical name for the applet, this should be also "
-                         "the name of the directory the applet is in",
+                         "be the name of the directory the applet is in",
                          NULL,
                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
 

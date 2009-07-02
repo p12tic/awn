@@ -1,3 +1,9 @@
+2009-07-02  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* ChangeLog:
+	* libawn/awn-applet.c (awn_applet_class_init):
+	Update the docs for the canonical-name property.
+
 2009-07-02  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/applet.c:
@@ -8,7 +14,8 @@
 	* libawn/awn-applet.c:
 	* libawn/awn-applet.h:
 	* tests/test-applet-simple.c:
-	Yay, another change to AwnApplet constructor. :(
+	Add the canonical-name property to AwnApplet and friends, needed for
+	infrastructure such as configuration and themed icons.
 
 2009-07-02  Michal Hruby  <michal.mhr@gmail.com>
 
