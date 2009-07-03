@@ -216,7 +216,9 @@ lighten_component(const guchar cur_value, const gfloat amount,
  *    FIXME it would be nice to not have to use image surfaces for this effect
  */
 void
-lighten_surface(cairo_surface_t * src, const gfloat amount, gboolean absolute)
+lighten_surface (cairo_surface_t * src, 
+                 gint surface_width, gint surface_height,
+                 const gfloat amount, gboolean absolute)
 {
   int i, j;
   int width, height, row_stride;
@@ -227,21 +229,8 @@ lighten_surface(cairo_surface_t * src, const gfloat amount, gboolean absolute)
 
   g_return_if_fail(src);
 
-  switch (cairo_surface_get_type (src))
-  {
-    case CAIRO_SURFACE_TYPE_XLIB:
-      i = cairo_xlib_surface_get_width (src);
-      j = cairo_xlib_surface_get_height (src);
-      break;
-    case CAIRO_SURFACE_TYPE_IMAGE:
-      i = cairo_image_surface_get_width (src);
-      j = cairo_image_surface_get_height (src);
-      break;
-    default:
-      g_return_if_reached ();
-  }
-
-  temp_srfc = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, i, j);
+  temp_srfc = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                          surface_width, surface_height);
   temp_ctx = cairo_create(temp_srfc);
   cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
   cairo_set_source_surface(temp_ctx, src, 0, 0);
@@ -284,7 +273,7 @@ lighten_surface(cairo_surface_t * src, const gfloat amount, gboolean absolute)
 }
 
 void
-darken_surface(cairo_surface_t *src)
+darken_surface (cairo_surface_t *src, gint surface_width, gint surface_height)
 {
   int width, height, row_stride;
   guchar *pixsrc, *target_pixels;
@@ -292,9 +281,7 @@ darken_surface(cairo_surface_t *src)
   cairo_t *temp_ctx;
 
   temp_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
-                                         cairo_xlib_surface_get_width(src),
-                                         cairo_xlib_surface_get_height(src)
-                                        );
+                                         surface_width, surface_height);
   temp_ctx = cairo_create(temp_srfc);
   cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
   cairo_set_source_surface(temp_ctx, src, 0, 0);
@@ -337,25 +324,26 @@ darken_surface(cairo_surface_t *src)
 }
 
 void
-blur_surface_shadow(cairo_surface_t *src, const int radius)
+blur_surface_shadow (cairo_surface_t *src,
+                     gint surface_width, gint surface_height, const int radius)
 {
   guchar * pixdest, * target_pixels_dest, * target_pixels, * pixsrc;
   cairo_surface_t * temp_srfc, * temp_srfc_dest;
   cairo_t         * temp_ctx, * temp_ctx_dest;
 
   g_return_if_fail(src);
-  int width = cairo_xlib_surface_get_width(src);
-  int height = cairo_xlib_surface_get_height(src);
 
   /* the original stuff */
-  temp_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+  temp_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
+                                         surface_width, surface_height);
   temp_ctx = cairo_create(temp_srfc);
   cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
   cairo_set_source_surface(temp_ctx, src, 0, 0);
   cairo_paint(temp_ctx);
 
   /* the stuff we draw to */
-  temp_srfc_dest = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+  temp_srfc_dest = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
+                                              surface_width, surface_height);
   temp_ctx_dest = cairo_create(temp_srfc_dest);
   /* --- */
 
@@ -370,16 +358,16 @@ blur_surface_shadow(cairo_surface_t *src, const int radius)
   int total_a;
   int x, y, kx, ky;
 
-  for (y = 0; y < height; ++y)
+  for (y = 0; y < surface_height; ++y)
   {
-    for (x = 0; x < width; ++x)
+    for (x = 0; x < surface_width; ++x)
     {
                         total_a = 0;
 
       for (ky = -radius; ky <= radius; ++ky) {
-        if ((y+ky)>0 && (y+ky)<height) {
+        if ((y+ky)>0 && (y+ky)<surface_height) {
           for (kx = -radius; kx <= radius; ++kx) {
-            if((x+kx)>0 && (x+kx)<width) {
+            if((x+kx)>0 && (x+kx)<surface_width) {
               pixsrc = (target_pixels + (y+ky) * row_stride) + ((x+kx)*4) + 3;
 
               total_a += *pixsrc;
@@ -452,6 +440,8 @@ surface_saturate_and_pixelate(cairo_surface_t *src,
   cairo_t *temp_dest_ctx;
   cairo_surface_t * temp_dest_srfc;
 
+  // FIXME: cairo_xlib_surface_get_width/height doesn't work correctly
+  //   during resizes, pass as param!
   g_return_if_fail(src);
   g_return_if_fail(dest);
   g_return_if_fail(cairo_xlib_surface_get_height(src) ==

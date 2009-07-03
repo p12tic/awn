@@ -37,17 +37,21 @@ paint_arrow_dot (cairo_t *cr, double size, gint count,
                  double r, double g, double b);
 
 guchar
-lighten_component(const guchar cur_value, const gfloat amount,
-                  gboolean absolute);
+lighten_component (const guchar cur_value, const gfloat amount,
+                   gboolean absolute);
 
 void
-lighten_surface(cairo_surface_t * src, const gfloat amount, gboolean absolute);
+lighten_surface (cairo_surface_t *src, 
+                 gint surface_width, gint surface_height,
+                 const gfloat amount, gboolean absolute);
 
 void
-darken_surface(cairo_surface_t * src);
+darken_surface (cairo_surface_t *src, gint surface_width, gint surface_height);
 
 void
-blur_surface_shadow(cairo_surface_t *src, const int radius);
+blur_surface_shadow (cairo_surface_t *src,
+                     gint surface_width, gint surface_height,
+                     const int radius);
 
 void
 surface_saturate(cairo_surface_t * icon_srfc, const gfloat saturation);
