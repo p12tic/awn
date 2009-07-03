@@ -58,6 +58,14 @@
   (gtype-id "AWN_TYPE_THEMED_ICON")
 )
 
+(define-object Image
+  (in-module "Awn")
+  (parent "GtkImage")
+  (c-name "AwnImage")
+  (gtype-id "AWN_TYPE_IMAGE")
+  (implements "AwnOverlayable")
+)
+
 (define-object IconBox
   (in-module "Awn")
   (parent "GtkBox")
@@ -975,7 +983,7 @@
   (of-object "AwnEffects")
   (c-name "awn_effects_cairo_create_clipped")
   (parameters
-    '("GdkRegion*" "region")
+    '("GdkEventExpose*" "event")
   )
   (return-type "cairo_t*")
 )
@@ -1197,6 +1205,18 @@
     '("AwnApplet*" "applet")
   )
 )
+
+;; From awn-image.h
+
+(define-function awn_image_new
+  (c-name "awn_image_new")
+  (is-constructor-of "AwnImage")
+  (return-type "AwnImage*")
+  (properties
+    '("label" (optional) (arg-name "label"))
+  )
+)
+
 ;; From awn-overlay.h
 
 (define-function awn_overlay_new

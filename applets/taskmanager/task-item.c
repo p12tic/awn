@@ -31,7 +31,7 @@ struct _TaskItemPrivate
 {
   GtkWidget *box;
   GtkWidget *name;
-  GtkWidget *icon;
+  GtkWidget *image;
 };
 
 enum
@@ -125,8 +125,8 @@ task_item_init (TaskItem *item)
   priv->box = gtk_hbox_new (FALSE, 10);
   gtk_container_add (GTK_CONTAINER (item), priv->box);
 
-  priv->icon = awn_icon_new ();
-  gtk_box_pack_start (GTK_BOX (priv->box), priv->icon, FALSE, FALSE, 0);
+  priv->image = awn_image_new ();
+  gtk_box_pack_start (GTK_BOX (priv->box), priv->image, FALSE, FALSE, 0);
   
   priv->name = gtk_label_new ("");
   gtk_box_pack_start (GTK_BOX (priv->box), priv->name, TRUE, FALSE, 10);
@@ -178,7 +178,7 @@ task_item_icon_changed (TaskItem *item, GdkPixbuf *icon)
 {
   TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
 
-  awn_icon_set_from_pixbuf (AWN_ICON (priv->icon), icon);
+  gtk_image_set_from_pixbuf (GTK_IMAGE (priv->image), icon);
 }
 
 static void

@@ -140,7 +140,7 @@ void awn_effects_set_icon_size(AwnEffects *fx, gint width, gint height,
 cairo_t *awn_effects_cairo_create(AwnEffects *fx);
 
 cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
-                                               GdkRegion *region);
+                                          GdkEventExpose *event);
 
 void awn_effects_cairo_destroy(AwnEffects *fx);
 
