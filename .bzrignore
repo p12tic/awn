@@ -136,3 +136,4 @@ debian/stamp-autotools-files
 debian/stamp-makefile-build
 debian/stamp-patched
 debian/tmp/
+applets/taskmanager/*-glue.h
