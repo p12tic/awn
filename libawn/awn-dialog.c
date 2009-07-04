@@ -747,10 +747,15 @@ awn_dialog_get_property (GObject    *object,
     case PROP_GHISTEP2:
     case PROP_BORDER:
     case PROP_HILIGHT:
+    {
+      DesktopAgnosticColor *color;
+
       g_warning ("Property get unimplemented!");
-      g_value_set_string (value, "#FFFFFFFF");
+      color = desktop_agnostic_color_new_from_string ("white", NULL);
+      g_value_take_object (value, color);
       break;
-  default:
+    }
+    default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
 }
@@ -801,27 +806,27 @@ awn_dialog_set_property (GObject      *object,
       break;
 
     case PROP_GSTEP1:
-      priv->g_step_1 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      priv->g_step_1 = (DesktopAgnosticColor*)g_value_dup_object (value);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_GSTEP2:
-      priv->g_step_2 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      priv->g_step_2 = (DesktopAgnosticColor*)g_value_dup_object (value);;
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_GHISTEP1:
-      priv->g_histep_1 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      priv->g_histep_1 = (DesktopAgnosticColor*)g_value_dup_object (value);;
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_GHISTEP2:
-      priv->g_histep_2 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      priv->g_histep_2 = (DesktopAgnosticColor*)g_value_dup_object (value);;
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_BORDER:
-      priv->border_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      priv->border_color = (DesktopAgnosticColor*)g_value_dup_object (value);;
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_HILIGHT:
-      priv->hilight_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      priv->hilight_color = (DesktopAgnosticColor*)g_value_dup_object (value);;
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
 
@@ -963,50 +968,50 @@ awn_dialog_class_init (AwnDialogClass *klass)
 
   g_object_class_install_property (obj_class,
     PROP_GSTEP1,
-    g_param_spec_string ("gstep1",
+    g_param_spec_object ("gstep1",
                          "GStep1",
                          "Gradient Step 1",
-                         "FF0000FF",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_GSTEP2,
-    g_param_spec_string ("gstep2",
+    g_param_spec_object ("gstep2",
                          "GStep2",
                          "Gradient Step 2",
-                         "00FF00FF",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_GHISTEP1,
-    g_param_spec_string ("ghistep1",
+    g_param_spec_object ("ghistep1",
                          "GHiStep1",
                          "Hilight Gradient Step 1",
-                         "FFFFFF44",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_GHISTEP2,
-    g_param_spec_string ("ghistep2",
+    g_param_spec_object ("ghistep2",
                          "GHiStep2",
                          "Hilight Gradient Step 2",
-                         "FFFFFF11",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_BORDER,
-    g_param_spec_string ("border",
+    g_param_spec_object ("border",
                          "Border",
                          "Border color",
-                         "000000FF",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_HILIGHT,
-    g_param_spec_string ("hilight",
+    g_param_spec_object ("hilight",
                          "Hilight",
                          "Internal border color",
-                         "FFFFFFff",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_type_class_add_private (G_OBJECT_CLASS (klass),

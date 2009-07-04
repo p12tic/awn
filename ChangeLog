@@ -1,5 +1,10 @@
 2009-07-04  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-dialog.c:
+	Convert color properties to be of type DesktopAgnosticColor*.
+
+2009-07-04  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/taskmanager/task-item.c (task_item_init):
 	Fix compiler warning.
 	* applets/taskmanager/applet.c (awn_applet_factory_initp):
