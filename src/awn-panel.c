@@ -58,7 +58,7 @@ G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW)
 
 struct _AwnPanelPrivate
 {
-  AwnConfigClient *client;
+  DesktopAgnosticConfigClient *client;
   AwnMonitor *monitor;
 
   GHashTable *inhibits;
@@ -292,7 +292,6 @@ static void
 awn_panel_constructed (GObject *object)
 {
   AwnPanelPrivate *priv;
-  AwnConfigBridge *bridge;
   GtkWidget       *panel;
   GdkScreen       *screen;
 
@@ -326,32 +325,47 @@ awn_panel_constructed (GObject *object)
   gtk_widget_show_all (priv->manager);
   
   /* FIXME: Now is the time to hook our properties into priv->client */
-  bridge = awn_config_bridge_get_default ();
   
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_PANEL_MODE,
-                          object, "panel_mode");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_EXPAND,
-                          object, "expand");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_ORIENT,
-                          object, "orient");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_OFFSET,
-                          object, "offset");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_SIZE,
-                          object, "size");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_AUTOHIDE,
-                          object, "autohide-type");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_STYLE,
-                          object, "style");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_CLICKTHROUGH,
-                          object, "clickthrough_type");
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_PANEL_MODE,
+                                       object, "panel_mode", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_EXPAND,
+                                       object, "expand", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_ORIENT,
+                                       object, "orient", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_OFFSET,
+                                       object, "offset", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_SIZE,
+                                       object, "size", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_AUTOHIDE,
+                                       object, "autohide-type", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_STYLE,
+                                       object, "style", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_CLICKTHROUGH,
+                                       object, "clickthrough_type", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 
   /* Background drawing */
   awn_panel_set_style(AWN_PANEL (panel), priv->style);
@@ -1211,7 +1225,7 @@ awn_panel_class_init (AwnPanelClass *klass)
     PROP_CLIENT,
     g_param_spec_pointer ("client",
                           "Client",
-                          "The AwnConfigClient",
+                          "The configuration client",
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -1439,7 +1453,7 @@ awn_panel_init (AwnPanel *panel)
 }
 
 GtkWidget *
-awn_panel_new_from_config (AwnConfigClient *client)
+awn_panel_new_from_config (DesktopAgnosticConfigClient *client)
 {
   GtkWidget *window;
 

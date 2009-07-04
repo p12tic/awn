@@ -44,7 +44,7 @@ static GQuark win_quark = 0;
 
 struct _TaskManagerPrivate
 {
-  AwnConfigClient *client;
+  DesktopAgnosticConfigClient *client;
   TaskSettings    *settings;
   WnckScreen      *screen;
 
@@ -217,9 +217,7 @@ static void
 task_manager_constructed (GObject *object)
 {
   TaskManagerPrivate *priv;
-  AwnConfigBridge    *bridge;
   GtkWidget          *widget;
-  gchar              *uid = NULL;
 
   G_OBJECT_CLASS (task_manager_parent_class)->constructed (object);
   
@@ -228,32 +226,39 @@ task_manager_constructed (GObject *object)
 
   priv->settings = task_settings_get_default ();
 
-  /* Load the uid */
-  /* FIXME: AwnConfigClient needs to associate the default schema when uid is
-   * used
-   */
-  g_object_get (object, "uid", &uid, NULL);
-  priv->client = awn_config_client_new_for_applet ("taskmanager", NULL);
-  g_free (uid);
+  priv->client = awn_config_get_default_for_applet (AWN_APPLET (object), NULL);
 
   /* Connect up the important bits */
-  bridge = awn_config_bridge_get_default ();
-  awn_config_bridge_bind (bridge, priv->client, 
-                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "show_all_windows", 
-                          object, "show_all_windows");
-  awn_config_bridge_bind (bridge, priv->client, 
-                        AWN_CONFIG_CLIENT_DEFAULT_GROUP, "only_show_launchers", 
-                          object, "only_show_launchers");
-  awn_config_bridge_bind_list (bridge, priv->client, 
-                             AWN_CONFIG_CLIENT_DEFAULT_GROUP, "launcher_paths",
-                             AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                             object, "launcher_paths");
-  awn_config_bridge_bind (bridge, priv->client, 
-                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "drag_and_drop",
-                          object, "drag_and_drop");
-  awn_config_bridge_bind (bridge, priv->client, 
-                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "grouping_mode",
-                          object, "grouping_mode");
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "show_all_windows",
+                                       object, "show_all_windows", FALSE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "only_show_launchers",
+                                       object, "only_show_launchers", FALSE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "launcher_paths",
+                                       object, "launcher_paths", FALSE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "drag_and_drop",
+                                       object, "drag_and_drop", FALSE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "grouping_mode",
+                                       object, "grouping_mode", FALSE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 }
 
 static void
@@ -1266,12 +1271,18 @@ _drag_source_end(TaskManager *manager, GtkWidget *icon)
     }
     launchers = g_slist_reverse(launchers);
 
-    awn_config_client_set_list (priv->client, 
-                                AWN_CONFIG_CLIENT_DEFAULT_GROUP, 
-                                "launcher_paths", 
-                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING, 
-                                launchers, 
-                                &err);
+    GValue *val;
+
+    val = g_value_init (val, G_TYPE_BOXED);
+    g_value_set_boxed (val, launchers);
+
+    desktop_agnostic_config_client_set_value (priv->client,
+                                              DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                              "launcher_paths",
+                                              val, &err);
+
+    g_value_unset (val);
+
     for (d = launchers; d; d = d->next)
       g_free (d->data);
     g_slist_free (launchers);

@@ -1,25 +1,32 @@
+# Avant Window Navigator configuration schema
+# -------------------------------------------
+# schema metadata
+[DEFAULT]
+single_instance = false
+
+# configuration options
 [panel/panel_mode]
-type = bool
-default = False
-description = If True, maximised windows will not cover the panel.
+type = boolean
+default = false
+description = If true, maximised windows will not cover the panel.
 
 [panel/expand]
-type = bool
-default = False
-description = If True, the panel will expand to full monitor width/height.
+type = boolean
+default = false
+description = If true, the panel will expand to full monitor width/height.
 
 [panel/orient]
-type = int
+type = integer
 default = 2
 description = Orientation of Awn. (top=0, right=1, bottom=2 and left=3)
 
 [panel/offset]
-type = int
+type = integer
 default = 0
 description = Offset of the icons from window border.
 
 [panel/size]
-type = int
+type = integer
 default = 48
 description = The user-visible size of Awn.
 
@@ -29,22 +36,22 @@ default = @APPLETDATADIR@/taskmanager.desktop::1
 description = The list of applets for this panel ordered from ltr or ttb.
 
 [panel/monitor_force]
-type = bool
-default = False
+type = boolean
+default = false
 description = Force monitor geometry.
 
 [panel/monitor_width]
-type = int
+type = integer
 default = 1024
-description = The forced monitor width. Only used if monitor_force is True.
+description = The forced monitor width. Only used if monitor_force is true.
 
 [panel/monitor_height]
-type = int
+type = integer
 default = 768
-description = The forced monitor height. Only used if monitor_force is True.
+description = The forced monitor height. Only used if monitor_force is true.
 
 [panel/monitor_offset]
-type = int
+type = integer
 default = 0
 description = An optional offset when you have more than 1 monitors.
 
@@ -54,17 +61,17 @@ default = 0.5
 description = Alignment of a non-expanded panel on the monitor edge.
 
 [panel/autohide]
-type = int
+type = integer
 default = 0
 description = Auto hides the dock when the cursor is not on the dock (shouldn't be used together with panel_mode). (none=0, keep below=1, fade out=2, see through=3)
 
 [panel/style]
-type = int
+type = integer
 default = 1
 description = The style of the bar. (none=0, flat bar=1, 3d bar=2, curved bar=3)
 
 [panel/clickthrough]
-type = int
+type = integer
 default = 1
 description = Provides possibility to click on windows behind the panel. (0 - never click through, 1 - click through when holding CTRL, 2 - always click through and interact with panel only when holding CTRL)
 
@@ -74,22 +81,22 @@ default = 1
 description = The list of panels.
 
 [theme/gstep1]
-type = string
+type = color
 default = #454545C8
 description = First gradient step color.
 
 [theme/gstep2]
-type = string
+type = color
 default = #010101BE
 description = Second gradient step color.
 
 [theme/ghistep1]
-type = string
+type = color
 default = #FFFFFF0B
 description = First highlight gradient step color.
 
 [theme/ghistep2]
-type = string
+type = color
 default = #FFFFFF0A
 description = Second highlight gradient step color.
 
@@ -99,28 +106,28 @@ default =
 description = Icon text color.  Leave empty to use gtk theme color.
 
 [theme/border]
-type = string
+type = color
 default = #000000CC
 description = Main border color.
 
 [theme/hilight]
-type = string
+type = color
 default = #FFFFFF11
 description = Internal border color.
 
 [theme/show_sep]
-type = bool
-default = True
+type = boolean
+default = true
 description = Draw separators.
 
 [theme/sep_color]
-type = string
+type = color
 default = #FFFFFF00
 description = Separator color.
 
 [theme/draw_pattern]
-type = bool
-default = False
+type = boolean
+default = false
 description = Enable drawing of a pattern.
 
 [theme/pattern_alpha]
@@ -134,8 +141,8 @@ default = None
 description = The location of the pattern to draw.
 
 [theme/gtk_theme_mode]
-type = bool
-default = TRUE
+type = boolean
+default = true
 description = Whether to use colors from the current Gtk theme.
 
 [theme/corner_radius]
@@ -179,12 +186,12 @@ default = @PKGDATADIR@/themes/awn-default.desktop
 description = Path to the current desktop file theme.
 
 [effects/reflection_offset]
-type = int
+type = integer
 default = 0
 description = The offset between the icon and it's reflection
 
 [effects/icon_effect]
-type = int
+type = integer
 default = 0
 description = A bitmask which stores the type of effect for each event
 
@@ -199,8 +206,8 @@ default = 0.3
 description = Reflection alpha as a multiple of the current alpha of the icon.
 
 [effects/show_shadows]
-type = bool
-default = FALSE
+type = boolean
+default = false
 description = Show shadows for icons.
 
 [effects/arrow_icon]

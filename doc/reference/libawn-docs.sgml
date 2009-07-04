@@ -15,8 +15,6 @@
     </chapter>
     <chapter>
       <title>Base Components</title>
-      <xi:include href="xml/awn-config-bridge.xml"/>
-      <xi:include href="xml/awn-config-client.xml"/>
       <xi:include href="xml/awn-dialog.xml"/>
       <xi:include href="xml/awn-effects.xml"/>
       <xi:include href="xml/awn-tooltip.xml"/>

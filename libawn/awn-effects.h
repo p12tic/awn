@@ -26,7 +26,6 @@
 #include <gtk/gtk.h>
 
 #include "awn-defines.h"
-#include "awn-config-client.h"
 #include "awn-overlay.h"
 
 G_BEGIN_DECLS

@@ -27,7 +27,7 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
-#include <libawn/awn-config-client.h>
+#include <libdesktop-agnostic/desktop-agnostic.h>
 #include <libawn/awn-defines.h>
 
 G_BEGIN_DECLS
@@ -79,7 +79,7 @@ struct _AwnPanelClass
 
 GType       awn_panel_get_type            (void) G_GNUC_CONST;
 
-GtkWidget * awn_panel_new_from_config     (AwnConfigClient *client);
+GtkWidget * awn_panel_new_from_config     (DesktopAgnosticConfigClient *client);
 
 gboolean    awn_panel_delete_applet       (AwnPanel        *panel,
                                            gchar           *uid,

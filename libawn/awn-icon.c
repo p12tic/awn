@@ -19,7 +19,7 @@
 #include <gdk/gdkx.h>
 #include <cairo/cairo-xlib.h>
 
-#include "awn-config-bridge.h"
+#include "awn-config.h"
 #include "awn-icon.h"
 #include "awn-utils.h"
 #include "awn-overlayable.h"
@@ -180,32 +180,46 @@ awn_icon_constructed (GObject *object)
 
   AwnIcon *icon = AWN_ICON (object);
   AwnIconPrivate *priv = icon->priv;
+  GError *error = NULL;
 
   if (!priv->bind_effects) return;
 
-  AwnConfigClient *client = awn_config_client_new ();
-  AwnConfigBridge *bridge = awn_config_bridge_get_default ();
+  DesktopAgnosticConfigClient *client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
+
+  if (error)
+  {
+    g_critical ("An error occurred while trying to retrieve the configuration client: %s",
+                error->message);
+    g_error_free (error);
+    return;
+  }
 
   GObject *fx = G_OBJECT (priv->effects);
 
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "icon_effect",
-                          fx, "effects");
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "icon_alpha",
-                          fx, "icon-alpha");
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "reflection_alpha_multiplier",
-                          fx, "reflection-alpha");
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "reflection_offset",
-                          fx, "reflection-offset");
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "show_shadows",
-                          fx, "make-shadow");
-  awn_config_bridge_bind (bridge, client,
-                          "effects", "arrow_icon",
-                          fx, "arrow_png");
+  desktop_agnostic_config_client_bind (client, "effects", "icon_effect",
+                                       fx, "effects", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (client, "effects", "icon_alpha",
+                                       fx, "icon-alpha", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (client, "effects", "reflection_alpha_multiplier",
+                                       fx, "reflection-alpha", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (client, "effects", "reflection_offset",
+                                       fx, "reflection-offset", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (client, "effects", "show_shadows",
+                                       fx, "make-shadow", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (client, "effects", "arrow_icon",
+                                       fx, "arrow_png", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 }
 
 static void
@@ -268,6 +282,7 @@ awn_icon_set_property (GObject      *object,
   }
 }
 
+// TODO unbind properties & config keys
 static void
 awn_icon_dispose (GObject *object)
 {

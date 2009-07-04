@@ -21,7 +21,7 @@
 
 #include "config.h"
 
-#include <libawn/awn-config-bridge.h>
+#include <libawn/libawn.h>
 
 #include "awn-defines.h"
 #include "awn-applet-manager.h"
@@ -36,7 +36,7 @@ G_DEFINE_TYPE (AwnAppletManager, awn_applet_manager, GTK_TYPE_BOX)
 
 struct _AwnAppletManagerPrivate
 {
-  AwnConfigClient *client;
+  DesktopAgnosticConfigClient *client;
 
   AwnOrientation   orient;
   gint             offset;
@@ -94,27 +94,32 @@ awn_applet_manager_constructed (GObject *object)
 {
   AwnAppletManager        *manager;
   AwnAppletManagerPrivate *priv;
-  AwnConfigBridge         *bridge;
   
   priv = AWN_APPLET_MANAGER_GET_PRIVATE (object);
   manager = AWN_APPLET_MANAGER (object);
 
-  /* Hook everything up the config client */
-  bridge = awn_config_bridge_get_default ();
+  /* Hook everything up to the config client */
 
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_ORIENT,
-                          object, "orient");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_SIZE,
-                          object, "size");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_OFFSET,
-                          object, "offset");
-  awn_config_bridge_bind_list (bridge, priv->client,
-                               AWN_GROUP_PANEL, AWN_PANEL_APPLET_LIST,
-                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                               object, "applet_list");
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_ORIENT,
+                                       object, "orient", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_SIZE,
+                                       object, "size", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_OFFSET,
+                                       object, "offset", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_APPLET_LIST,
+                                       object, "applet_list", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 }
 
 static void
@@ -159,8 +164,22 @@ awn_applet_manager_get_property (GObject    *object,
       break;
 
     case PROP_APPLET_LIST:
-      g_value_set_pointer (value, priv->applet_list);
+    {
+      GValueArray *array;
+
+      array = g_value_array_new (g_slist_length (priv->applet_list));
+      for (GSList *n = priv->applet_list; n != NULL; n = n->next)
+      {
+        GValue val = {0};
+
+        g_value_init (&val, G_TYPE_STRING);
+        g_value_set_string (&val, (gchar*)n->data);
+        g_value_array_append (array, &val);
+        g_value_unset (&val);
+      }
+      g_value_take_boxed (value, array);
       break;
+    }
     case PROP_EXPANDS:
       g_value_set_boolean (value, priv->expands);
       break;
@@ -196,10 +215,25 @@ awn_applet_manager_set_property (GObject      *object,
       awn_applet_manager_set_size (manager, g_value_get_int (value));
       break;
     case PROP_APPLET_LIST:
+    {
+      GValueArray *array;
+
       free_list (priv->applet_list);
-      priv->applet_list = g_value_get_pointer (value);
+      array = (GValueArray*)g_value_get_boxed (value);
+      if (array)
+      {
+        for (guint i = 0; i < array->n_values; i++)
+        {
+          GValue *val = g_value_array_get_nth (array, i);
+          priv->applet_list = g_slist_append (priv->applet_list,
+                                              g_value_dup_string (val));
+        }
+        // don't free array, it will be done automatically
+      }
+
       awn_applet_manager_refresh_applets (manager);
       break;
+    }
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -251,7 +285,7 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
     PROP_CLIENT,
     g_param_spec_pointer ("client",
                           "Client",
-                          "The AwnConfigClient",
+                          "The configuration client",
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -280,10 +314,11 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
 
   g_object_class_install_property (obj_class,
     PROP_APPLET_LIST,
-    g_param_spec_pointer ("applet_list",
-                          "Applet List",
-                          "The list of applets for this panel",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+    g_param_spec_boxed ("applet_list",
+                        "Applet List",
+                        "The list of applets for this panel",
+                        G_TYPE_VALUE_ARRAY,
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_EXPANDS,
@@ -323,7 +358,7 @@ awn_applet_manager_init (AwnAppletManager *manager)
 }
 
 GtkWidget *
-awn_applet_manager_new_from_config (AwnConfigClient *client)
+awn_applet_manager_new_from_config (DesktopAgnosticConfigClient *client)
 {
   GtkWidget *manager;
   
@@ -507,6 +542,7 @@ free_list (GSList *list)
     g_free (l->data);
   }
   g_slist_free (list);
+  list = NULL;
 }
 
 /*

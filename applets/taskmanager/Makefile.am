@@ -42,7 +42,6 @@ desktopdir = $(pkgdatadir)/applets
 desktop_DATA = taskmanager.desktop
 @INTLTOOL_DESKTOP_RULE@
 
-if USE_GCONF
 schemasdir       = @GCONF_SCHEMA_FILE_DIR@
 schemas_in_files = taskmanager.schemas.in
 schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
@@ -58,9 +57,7 @@ install-gconf-schemas: $(schemas_DATA)
 else
 install-gconf-schemas:
 endif
-else
-install-gconf-schemas:
-endif
+
 schemadir = $(pkgdatadir)/schemas
 schema_DATA = taskmanager.schema-ini
 

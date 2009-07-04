@@ -24,8 +24,6 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-#include <libawn/awn-config-client.h>
-
 #include "awn-panel.h"
 
 G_BEGIN_DECLS

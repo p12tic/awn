@@ -5,15 +5,11 @@ awn_overlay_text_get_type
 awn_icon_get_type
 awn_applet_simple_get_type
 awn_overlay_pixbuf_get_type
-awn_config_client_get_type
 awn_orientation_get_type
 awn_applet_flags_get_type
 awn_applet_license_get_type
 awn_path_type_get_type
 awn_cairo_round_corners_get_type
-awn_config_value_type_get_type
-awn_config_list_type_get_type
-awn_config_backend_get_type
 awn_effect_get_type
 awn_overlay_align_get_type
 awn_overlay_progress_get_type
@@ -22,7 +18,6 @@ awn_overlay_throbber_get_type
 awn_applet_get_type
 awn_effects_get_type
 awn_alignment_get_type
-awn_config_bridge_get_type
 awn_overlay_progress_circle_get_type
 awn_icon_box_get_type
 awn_overlay_pixbuf_file_get_type

@@ -17,153 +17,61 @@
  *
  */
 
-#include <assert.h>
-#include "task-settings.h"
-
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
-/* globals */
-static TaskSettings *settings  = NULL;
-static AwnConfigClient    *client   = NULL;
+#include "task-settings.h"
 
 /* prototypes */
 
-/*
-static void awn_load_bool  (AwnConfigClient *lclient, 
-                            const gchar     *group,
-                            const gchar     *key, 
-                            gboolean        *data, 
-                            gboolean         def);
-static void awn_load_float (AwnConfigClient *lclient, 
-                            const gchar     *group,
-                            const gchar     *key, 
-                            gfloat          *data, 
-                            gfloat           def);
-                            */
-static void awn_load_int  (AwnConfigClient  *lclient, 
-                           const gchar      *group,
-                           const gchar      *key, 
-                           gint             *data, 
-                           gint              def);
+static void
+cfg_notify_int (const DesktopAgnosticConfigNotifyEntry *entry,
+                gpointer user_data)
+{
+  gint* value = (gint*)user_data;
+  *value = g_value_get_int (&(entry->value));
+}
 
-/*
-static void awn_notify_bool  (AwnConfigClientNotifyEntry *entry, 
-                              gboolean                   *data);
-static void awn_notify_float (AwnConfigClientNotifyEntry *entry, 
-                              gfloat                     *data);
-                              */
-static void awn_notify_int   (AwnConfigClientNotifyEntry *entry, 
-                              gint                       *data);
+static void
+cfg_load_int (DesktopAgnosticConfigClient *cfg,
+              const gchar                 *group,
+              const gchar                 *key,
+              gint                        *data)
+{
+  /* FIXME handle error */
+  *data = desktop_agnostic_config_client_get_int (cfg, group, key, NULL);
+  desktop_agnostic_config_client_notify_add (cfg, group, key,
+                                             cfg_notify_int, data);
+}
 
+/**
+ * task_settings_get_default:
+ *
+ * Returns: A singleton
+ *
+ * Retrieves a structure that holds various values from the panel useful
+ * for the applet.
+ */
 TaskSettings *
 task_settings_get_default (void)
 {
-  TaskSettings *s;
+  static TaskSettings *settings  = NULL;
+  static DesktopAgnosticConfigClient *client = NULL;
 
-  if (settings)
-    return settings;
-  
-  s = g_new (TaskSettings, 1);
-
-  settings = s;
-
-  client = awn_config_client_new();
-
-  /* Bar settings */
-  awn_config_client_ensure_group(client, "panel");
-
-  awn_load_int(client, "panel", "size", &s->panel_size, 48);
-  awn_load_int(client, "panel", "orient", &s->orient, 0);
-  awn_load_int(client, "panel", "offset", &s->offset, 0);
- 
-  return s;
-}
-
-/*
-static void
-awn_notify_bool (AwnConfigClientNotifyEntry *entry, gboolean* data)
-{
-  *data = entry->value.bool_val;
-}
-
-static void
-awn_notify_float (AwnConfigClientNotifyEntry *entry, gfloat* data)
-{
-  *data = entry->value.float_val;
-}
-*/
-static void
-awn_notify_int (AwnConfigClientNotifyEntry *entry, gint* data)
-{
-  *data = entry->value.int_val;
-}
-
-/*
-static void
-awn_load_bool (AwnConfigClient *lclient, 
-               const gchar     *group, 
-               const gchar     *key, 
-               gboolean        *data, 
-               gboolean         def)
-{
-  if (awn_config_client_entry_exists(lclient, group, key))
+  if (!settings)
   {
-    *data = awn_config_client_get_bool(lclient, group, key, NULL);
-  }
-  else
-  {
-    g_print("%s unset, setting now\n", key);
-    awn_config_client_set_bool(lclient, group, key, def, NULL);
-    *data = def;
+    settings = g_new (TaskSettings, 1);
+
+    /* FIXME handle error */
+    client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, NULL);
+
+    /* Bar settings */
+
+    cfg_load_int(client, "panel", "size", &(settings->panel_size));
+    cfg_load_int(client, "panel", "orient", &(settings->orient));
+    cfg_load_int(client, "panel", "offset", &(settings->offset));
   }
 
-  awn_config_client_notify_add(lclient, group, key, 
-                               (AwnConfigClientNotifyFunc)awn_notify_bool, 
-                               data);
-}
-
-static void
-awn_load_float (AwnConfigClient *lclient, 
-                const gchar     *group, 
-                const gchar     *key, 
-                gfloat          *data, 
-                gfloat           def)
-{
-  if (awn_config_client_entry_exists(lclient, group, key))
-  {
-    *data = awn_config_client_get_float(lclient, group, key, NULL);
-  }
-  else
-  {
-    g_print("%s unset, setting now\n", key);
-    awn_config_client_set_float(lclient, group, key, def, NULL);
-    *data = def;
-  }
-
-  awn_config_client_notify_add (lclient, group, key, 
-                                (AwnConfigClientNotifyFunc)awn_notify_float, 
-                                data);
-}
-*/
-static void
-awn_load_int (AwnConfigClient *lclient, 
-              const gchar     *group, 
-              const gchar     *key, 
-              gint            *data, 
-              gint             def)
-{
-  if (awn_config_client_entry_exists(lclient, group, key))
-  {
-    *data = awn_config_client_get_int(lclient, group, key, NULL);
-  }
-  else
-  {
-    g_print("%s unset, setting now\n", key);
-    awn_config_client_set_int(lclient, group, key, def, NULL);
-    *data = def;
-  }
-
-  awn_config_client_notify_add (lclient, group, key, 
-                                (AwnConfigClientNotifyFunc)awn_notify_int, 
-                                data);
+  return settings;
 }

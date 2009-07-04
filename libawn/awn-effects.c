@@ -27,9 +27,6 @@
 #include "awn-enum-types.h"
 #include "awn-overlay.h"
 
-#include "awn-config-client.h"
-#include "awn-config-bridge.h"
-
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>

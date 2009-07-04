@@ -76,11 +76,11 @@ doc/reference/*.bak
 doc/reference/tmpl/*.sgml
 doc/reference/tmpl/*.sgml.bak
 doc/reference/*-scan.c
-data/awn.schemas*
+data/avant-window-navigator.schemas*
 config.h.in
 test/vala-test
 awn-manager/awn-launcher-editor
-data/awn.schema-ini
+data/avant-window-navigator.schema-ini
 src/awn
 src/awn-app-glue.h
 src/awn-panel-glue.h

@@ -33,8 +33,7 @@
 #include "awn-tooltip.h"
 
 #include "awn-cairo-utils.h"
-#include "awn-config-bridge.h"
-#include "awn-config-client.h"
+#include "awn-config.h"
 
 #include "gseal-transition.h"
 
@@ -55,7 +54,7 @@ G_DEFINE_TYPE (AwnTooltip, awn_tooltip, GTK_TYPE_WINDOW)
 
 struct _AwnTooltipPrivate
 {
-  AwnConfigClient *client;
+  DesktopAgnosticConfigClient *client;
   
   GtkWidget *focus;
   GtkWidget *label;
@@ -219,20 +218,22 @@ awn_tooltip_constructed (GObject *object)
 {
   AwnTooltip        *tooltip = AWN_TOOLTIP (object);
   AwnTooltipPrivate *priv = tooltip->priv;
-  AwnConfigBridge   *bridge = awn_config_bridge_get_default ();
   GtkWidget         *align;
 
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_THEME_GROUP, FONT_NAME,
-                          object, FONT_NAME);
+  desktop_agnostic_config_client_bind (priv->client, AWN_THEME_GROUP, FONT_NAME,
+                                       object, FONT_NAME, TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_THEME_GROUP, FONT_COLOR,
-                          object, FONT_COLOR);
+  desktop_agnostic_config_client_bind (priv->client, AWN_THEME_GROUP, FONT_COLOR,
+                                       object, FONT_COLOR, TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_THEME_GROUP, BACKGROUND,
-                          object, BACKGROUND);
+  desktop_agnostic_config_client_bind (priv->client, AWN_THEME_GROUP, BACKGROUND,
+                                       object, BACKGROUND, TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 
   /* Setup internal widgets */
   align = gtk_alignment_new (0.5, 0.5, 1.0, 1.0);
@@ -353,6 +354,7 @@ awn_tooltip_set_property (GObject      *object,
   }
 }
 
+// TODO unbind properties & config keys
 static void
 awn_tooltip_dispose(GObject *obj)
 {
@@ -492,11 +494,19 @@ static void
 awn_tooltip_init (AwnTooltip *tooltip)
 {
   AwnTooltipPrivate *priv;
+  GError *error = NULL;
   GdkScreen *screen;
   
   priv = tooltip->priv = AWN_TOOLTIP_GET_PRIVATE (tooltip);
 
-  priv->client = awn_config_client_new ();
+  priv->client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
+  if (error)
+  {
+    g_critical ("An error occurred while trying to retrieve the configuration client: %s",
+                error->message);
+    g_error_free (error);
+    return;
+  }
   priv->text = NULL;
   priv->font_name = NULL;
   priv->font_color = NULL;

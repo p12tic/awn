@@ -32,8 +32,7 @@ public_headers = \
 	awn-applet.h \
 	awn-applet-simple.h \
 	awn-cairo-utils.h \
-	awn-config-bridge.h \
-	awn-config-client.h \
+	awn-config.h \
 	awn-dialog.h \
 	awn-effects.h \
 	awn-icon.h \
@@ -66,7 +65,7 @@ source_c = \
 	awn-applet.c \
 	awn-applet-simple.c \
 	awn-cairo-utils.c \
-	awn-config-bridge.c \
+	awn-config.c \
 	awn-dialog.c \
 	awn-effects.c \
 	awn-effects-ops-new.c \
@@ -86,12 +85,6 @@ source_c = \
 	awn-tooltip.c \
 	awn-utils.c \
 	$(NULL)
-
-if USE_GCONF
-source_c += awn-config-client-gconf.c
-else
-source_c += awn-config-client-gkeyfile.c
-endif
 
 libawninc_HEADERS = \
 	$(public_headers) \
@@ -129,7 +122,5 @@ awn-enum-types.c: awn-enum-types.h
 	rm -f xgen-cetc
 
 CLEANFILES = $(STAMPFILES) $(BUILT_SOURCES)
-
-EXTRA_DIST=awn-config-client-shared.c
 
 # vim: set ts=8 sts=8 sw=8 :

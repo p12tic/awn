@@ -34,8 +34,7 @@
 #include "awn-applet.h"
 #include "awn-dialog.h"
 #include "awn-cairo-utils.h"
-#include "awn-config-bridge.h"
-#include "awn-config-client.h"
+#include "awn-config.h"
 #include "awn-defines.h"
 #include "awn-utils.h"
 #include "awn-overlayable.h"
@@ -648,31 +647,43 @@ awn_dialog_remove(GtkContainer *dialog, GtkWidget *widget)
 static void
 awn_dialog_constructed (GObject *object)
 {
-  AwnConfigClient *client = awn_config_client_new ();
-  AwnConfigBridge *bridge = awn_config_bridge_get_default ();
+  GError *error = NULL;
+  DesktopAgnosticConfigClient *client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
 
-#ifndef AWN_GROUP_THEME
- #define AWN_GROUP_THEME "theme"
-#endif
+  if (error)
+  {
+    g_critical ("An error occurred when retrieving the config client: %s", error->message);
+    g_error_free (error);
+  }
+  else
+  {
+#define AWN_GROUP_THEME "theme"
 
-  awn_config_bridge_bind (bridge, client,
-                          AWN_GROUP_THEME, "gstep1",
-                          object, "gstep1");
-  awn_config_bridge_bind (bridge, client,
-                          AWN_GROUP_THEME, "gstep2",
-                          object, "gstep2");
-  awn_config_bridge_bind (bridge, client,
-                          AWN_GROUP_THEME, "ghistep1",
-                          object, "ghistep1");
-  awn_config_bridge_bind (bridge, client,
-                          AWN_GROUP_THEME, "ghistep2",
-                          object, "ghistep2");
-  awn_config_bridge_bind (bridge, client,
-                          AWN_GROUP_THEME, "border",
-                          object, "border");
-  awn_config_bridge_bind (bridge, client,
-                          AWN_GROUP_THEME, "hilight",
-                          object, "hilight");
+    desktop_agnostic_config_client_bind (client, AWN_GROUP_THEME, "gstep1",
+                                         object, "gstep1", TRUE,
+                                         DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                         NULL);
+    desktop_agnostic_config_client_bind (client, AWN_GROUP_THEME, "gstep2",
+                                         object, "gstep2", TRUE,
+                                         DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                         NULL);
+    desktop_agnostic_config_client_bind (client, AWN_GROUP_THEME, "ghistep1",
+                                         object, "ghistep1", TRUE,
+                                         DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                         NULL);
+    desktop_agnostic_config_client_bind (client, AWN_GROUP_THEME, "ghistep2",
+                                         object, "ghistep2", TRUE,
+                                         DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                         NULL);
+    desktop_agnostic_config_client_bind (client, AWN_GROUP_THEME, "border",
+                                         object, "border", TRUE,
+                                         DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                         NULL);
+    desktop_agnostic_config_client_bind (client, AWN_GROUP_THEME, "hilight",
+                                         object, "hilight", TRUE,
+                                         DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                         NULL);
+  }
 }
 
 static void
@@ -713,7 +724,7 @@ awn_dialog_get_property (GObject    *object,
     case PROP_BORDER:
     case PROP_HILIGHT:
       g_warning ("Property get unimplemented!");
-      g_value_set_string (value, "FFFFFFFF");
+      g_value_set_string (value, "#FFFFFFFF");
       break;
   default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -795,6 +806,7 @@ awn_dialog_set_property (GObject      *object,
   }
 }
 
+// TODO unbind properties & config keys
 static void
 awn_dialog_finalize (GObject *object)
 {

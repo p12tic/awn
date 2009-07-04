@@ -1,3 +1,85 @@
+2009-07-04  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-config.c:
+	* libawn/awn-config.h:
+	Added.
+
+	* libawn/awn-config-bridge.c:
+	* libawn/awn-config-bridge.h:
+	* libawn/awn-config-client-gconf.c:
+	* libawn/awn-config-client-gkeyfile.c:
+	* libawn/awn-config-client-shared.c:
+	* libawn/awn-config-client.h:
+	* tests/test-config-client.c:
+	* tests/test-config-client.py:
+	Removed.
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Remove bindings.
+
+	* data/Makefile.am:
+	* data/avant-window-navigator.schema-ini.in:
+	Rename schema files.
+
+	* doc/reference/libawn-docs.sgml:
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	Update documentation templates.
+
+	* libawn/awn-defines.h (AWN_PANEL_ID_DEFAULT):
+	Add default panel ID constant.
+
+	* .bzrignore:
+	* applets/taskmanager/Makefile.am:
+	* applets/taskmanager/task-manager.c (task_manager_constructed,
+	  _drag_source_end):
+	* applets/taskmanager/task-settings.c (cfg_notify_int, cfg_load_int,
+	  task_settings_get_default):
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/awn-dialog.c (awn_dialog_constructed, awn_dialog_get_property,
+	  awn_dialog_set_property, awn_dialog_finalize):
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* libawn/awn-icon.c (awn_icon_constructed, awn_icon_set_property,
+	  awn_icon_dispose):
+	* libawn/awn-overlay-text.c (awn_overlay_text_set_property,
+	  awn_overlay_text_dispose, awn_overlay_text_init):
+	* libawn/awn-tooltip.c (awn_tooltip_constructed, awn_tooltip_set_property,
+				awn_tooltip_init):
+	* libawn/libawn.h:
+	* src/awn-app.c (awn_app_finalize, awn_app_init):
+	* src/awn-applet-manager.c (awn_applet_manager_constructed,
+	  awn_applet_manager_get_property, awn_applet_manager_set_property,
+	  awn_applet_manager_class_init, awn_applet_manager_new_from_config,
+	  free_list):
+	* src/awn-applet-manager.h:
+	* src/awn-applet-proxy.h:
+	* src/awn-background-3d.c (awn_background_3d_new):
+	* src/awn-background-3d.h:
+	* src/awn-background-curves.c (awn_background_curves_new):
+	* src/awn-background-curves.h:
+	* src/awn-background-edgy.c (awn_background_edgy_new):
+	* src/awn-background-edgy.h:
+	* src/awn-background-flat.c (awn_background_flat_new):
+	* src/awn-background-flat.h:
+	* src/awn-background.c (awn_background_constructed,
+	  awn_background_get_property, awn_background_set_property,
+	  awn_background_class_init, set_cfg_from_theme,
+	  load_colours_from_widget):
+	* src/awn-background.h:
+	* src/awn-monitor.c (awn_monitor_constructed, awn_monitor_class_init,
+	  awn_monitor_new_from_config):
+	* src/awn-monitor.h (geometry_changed):
+	* src/awn-panel.c (awn_panel_constructed, awn_panel_class_init,
+	  awn_panel_new_from_config):
+	* src/awn-panel.h:
+	* tests/Makefile.am:
+	The first part of converting Awn to use the libdesktop-agnostic
+	configuration API. The applet convenience methods still need to be
+	implemented.
+
 2009-06-27  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* doc/reference/libawn-sections.txt:

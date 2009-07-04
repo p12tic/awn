@@ -32,7 +32,7 @@
 #include <gtk/gtk.h>
 #include <pango/pangocairo.h>
 
-#include "awn-config-bridge.h"
+#include "awn-config.h"
 #include "awn-overlay-text.h"
 #include "awn-cairo-utils.h"
 
@@ -53,9 +53,7 @@ struct _AwnOverlayTextPrivate
   DesktopAgnosticColor * text_color;
   gchar                * text_color_astr;
   
-  AwnConfigClient * client;
-  AwnConfigBridge * bridge;
-  
+  DesktopAgnosticConfigClient * client;
 };
 
 enum
@@ -132,17 +130,13 @@ awn_overlay_text_set_property (GObject *object, guint property_id,
   }
 }
 
+// TODO unbind property & config key
 static void
 awn_overlay_text_dispose (GObject *object)
 {
   AwnOverlayTextPrivate *priv;
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object);  
 
-  if (priv->bridge)
-  {
-    g_object_unref (priv->bridge);
-    priv->bridge = NULL;
-  }
   if (priv->text_color)
   {
     g_object_unref (priv->text_color);
@@ -267,15 +261,24 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
 static void
 awn_overlay_text_init (AwnOverlayText *self)
 {
+  GError *error = NULL;
   AwnOverlayTextPrivate *priv;
   
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (self);   
-  priv->client = awn_config_client_new ();
-  priv->bridge = awn_config_bridge_get_default ();
+  priv->client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
 
-  awn_config_bridge_bind (priv->bridge, priv->client,
-                          "theme", "icon_text_color",
-                          G_OBJECT(self), "text_color_astr");
+  if (error)
+  {
+    g_critical ("An error occurred while trying to retrieve the configuration client: %s",
+                error->message);
+    g_error_free (error);
+    return;
+  }
+
+  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_text_color",
+                                       G_OBJECT(self), "text_color_astr", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
   
   priv->text = NULL;
   // default for text is to not apply effects to it

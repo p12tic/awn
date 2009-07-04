@@ -27,7 +27,6 @@
 
 #include <libdesktop-agnostic/desktop-agnostic.h>
 
-#include <libawn/awn-config-client.h>
 #include <libawn/awn-defines.h>
 
 #include "awn-panel.h"
@@ -57,7 +56,7 @@ struct _AwnBackground
 {
   GObject  parent;
 
-  AwnConfigClient *client;
+  DesktopAgnosticConfigClient *client;
   AwnPanel        *panel;
 
   /* Standard box drawing colours */

@@ -128,35 +128,7 @@ AM_PATH_GLIB_2_0(2.8.0,,,gobject)
 
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, glib-genmarshal)
 
-dnl ==============================================
-dnl Configuration backend
-dnl ==============================================
-AC_MSG_CHECKING([for config backend support])
-AC_ARG_WITH(gconf,
-            AS_HELP_STRING([--with-gconf],
-                           [Use GConf to store configuration information]),
-            [if test "$with_gconf" == "no"; then
-                # use Glib's GKeyFile - it's already pulled in.
-                CFG_MODULE=""
-                CFG_BACKEND_NAME="GKeyFile"
-                GCONF_SCHEMA_INSTALL_SOURCE="/dev/null"
-                GCONF_SCHEMA_FILE_DIR="/dev/null"
-                AC_MSG_RESULT([GKeyFile (part of Glib)])
-            fi])
-if test "$with_gconf" != "no"; then
-    CFG_MODULE="gconf-2.0"
-    CFG_BACKEND_NAME="GConf"
-    AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
-    if test x"$GCONFTOOL" = xno; then
-        AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
-    fi
-    AC_DEFINE([USE_GCONF], 1, [Use GConf to store configuration information])
-    AC_MSG_RESULT([GConf])
-fi
-AC_SUBST(CFG_BACKEND_NAME)
-AM_CONDITIONAL(USE_GCONF, test "$with_gconf" != "no")
-
-LIBRARY_MODULES="glib-2.0 >= 2.8.0 gthread-2.0 gobject-2.0 gtk+-2.0 >= 2.12 gdk-2.0 >= 2.12 dbus-glib-1 $CFG_MODULE desktop-agnostic"
+LIBRARY_MODULES="glib-2.0 >= 2.8.0 gthread-2.0 gobject-2.0 gtk+-2.0 >= 2.12 gdk-2.0 >= 2.12 dbus-glib-1 desktop-agnostic"
 DOCK_MODULES="libwnck-1.0 x11 xproto xcomposite xrender"
 TASKMANAGER_MODULES="libwnck-1.0 x11"
 AC_SUBST(LIBRARY_MODULES)
@@ -177,6 +149,10 @@ AC_SUBST(DBUS_GLIB_BIN)
 dnl ==============================================
 dnl GConf
 dnl ==============================================
+AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+if test x"$GCONFTOOL" = xno; then
+    AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
+fi
 AM_GCONF_SOURCE_2
 
 dnl ==============================================
@@ -223,7 +199,7 @@ bindings/vala/Makefile
 data/Makefile
 data/active/Makefile
 data/avant-window-navigator.desktop.in
-data/awn.schema-ini
+data/avant-window-navigator.schema-ini
 doc/Makefile
 doc/reference/Makefile
 libawn/Makefile
@@ -243,8 +219,6 @@ echo "             Avant Window Navigator $VERSION"
 echo "             ============================"
 echo ""
 echo "                   prefix:   ${prefix}"
-echo ""
-echo "    Configuration Backend:   $CFG_BACKEND_NAME"
 echo ""
 echo "             Vala Support:   ${with_vala}"
 echo ""
