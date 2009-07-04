@@ -125,7 +125,7 @@ task_item_init (TaskItem *item)
   priv->box = gtk_hbox_new (FALSE, 10);
   gtk_container_add (GTK_CONTAINER (item), priv->box);
 
-  priv->image = awn_image_new ();
+  priv->image = GTK_WIDGET (awn_image_new ());
   gtk_box_pack_start (GTK_BOX (priv->box), priv->image, FALSE, FALSE, 0);
   
   priv->name = gtk_label_new ("");

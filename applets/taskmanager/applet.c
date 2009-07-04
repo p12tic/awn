@@ -74,7 +74,7 @@ awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
     // return NULL; // FIXME: what to do in this case?
   }
 
-  applet = task_manager_new (uid, panel_id);
+  applet = task_manager_new (name, uid, panel_id);
   dbus_g_connection_register_g_object (connection,
                                        "/org/awnproject/Applet/Taskmanager",
                                        G_OBJECT (applet));

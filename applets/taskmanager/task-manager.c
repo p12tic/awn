@@ -193,6 +193,7 @@ task_manager_set_property (GObject      *object,
     case PROP_DRAG_AND_DROP:
       task_manager_set_drag_and_drop (manager, 
                                       g_value_get_boolean (value));
+      break;
 
     case PROP_MATCH_STRENGTH:
       task_manager_set_match_strength (manager, 
@@ -342,13 +343,15 @@ task_manager_init (TaskManager *manager)
 }
 
 AwnApplet *
-task_manager_new (const gchar *uid,
+task_manager_new (const gchar *name,
+                  const gchar *uid,
                   gint         panel_id)
 {
   static AwnApplet *manager = NULL;
 
   if (!manager)
     manager = g_object_new (TASK_TYPE_MANAGER,
+                            "canonical-name", name,
                             "uid", uid,
                             "panel-id", panel_id,
                             NULL);
