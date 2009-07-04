@@ -230,6 +230,11 @@ static gboolean position_window             (AwnPanel *panel);
 static gboolean on_eb_expose                (GtkWidget      *eb, 
                                              GdkEventExpose *event,
                                              AwnPanel       *panel);
+
+static void     on_manager_size_alloc       (GtkWidget      *manager,
+                                             GtkAllocation  *alloc,
+                                             AwnPanel       *panel);
+
 static gboolean poll_mouse_position         (gpointer data);
 static gboolean awn_panel_expose            (GtkWidget      *widget, 
                                              GdkEventExpose *event);
@@ -282,8 +287,11 @@ static void     awn_panel_update_masks      (GtkWidget *panel,
                                              gint real_width, 
                                              gint real_height);
 
-static void awn_panel_set_strut              (AwnPanel *panel);
-static void awn_panel_remove_strut           (AwnPanel *panel);
+static void     awn_panel_docklet_destroy   (AwnPanel *panel);
+
+static void     awn_panel_set_strut         (AwnPanel *panel);
+
+static void     awn_panel_remove_strut      (AwnPanel *panel);
 
 /*
  * GOBJECT CODE 
@@ -321,6 +329,8 @@ awn_panel_constructed (GObject *object)
                             G_CALLBACK (on_applet_embedded), panel);
   g_signal_connect_swapped (priv->manager, "notify::expands",
                             G_CALLBACK (awn_panel_refresh_alignment), panel);
+  g_signal_connect (priv->manager, "size-allocate",
+                    G_CALLBACK (on_manager_size_alloc), panel);
   gtk_container_add (GTK_CONTAINER (panel), priv->manager);
   gtk_widget_show_all (priv->manager);
   
@@ -514,49 +524,61 @@ awn_panel_show (GtkWidget *widget)
 static void
 awn_panel_size_request (GtkWidget *widget, GtkRequisition *requisition)
 {
-  AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE(widget);
+  GtkRequisition child_requisition;
+  AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (widget);
+  gint *target_size, *current_draw_size;
 
   GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
   if (!GTK_IS_WIDGET (child))
     return;
 
-  gtk_widget_size_request (child, requisition);
+  gtk_widget_size_request (child, &child_requisition);
 
   gint size = priv->size + priv->offset + priv->extra_padding;
 
+  // if we're animating resizes, we can't just request the size applets
+  // require, because the animation must have extra space to draw to
+  // use full monitor space, otherwise we'll flicker during resizes
+  // FIXME: do this also in non-composited? shouldn't hurt much
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
-      if (priv->expand) requisition->width = priv->monitor->width;
+      requisition->width = priv->expand || priv->animated_resize ?
+        priv->monitor->width : child_requisition.width;
       requisition->height = priv->composited ? size + priv->size : size;
 
-      // if we're animating resizes, we can't just request the size applets
-      // require, because the animation must have extra space to draw to
-      if (priv->animated_resize && !priv->expand)
-      {
-        if (requisition->width != priv->draw_width && !priv->resize_timer_id)
-        {
-          priv->resize_timer_id = g_timeout_add (40, awn_panel_resize_timeout,
-                                                 widget);
-        }
-        requisition->width = MAX (requisition->width, priv->draw_width);
-      }
+      target_size = priv->expand ?
+        &(requisition->width) : &(child_requisition.width);
+      current_draw_size = &(priv->draw_width);
+      
       break;
     case AWN_ORIENTATION_LEFT:
     case AWN_ORIENTATION_RIGHT:
     default:
       requisition->width = priv->composited ? size + priv->size : size;
-      if (priv->expand) requisition->height = priv->monitor->height;
+      requisition->height = priv->expand || priv->animated_resize ?
+        priv->monitor->height : child_requisition.height;
 
-      if (priv->animated_resize && !priv->expand)
-      {
-        if (requisition->height != priv->draw_height && !priv->resize_timer_id)
-          priv->resize_timer_id = g_timeout_add (40, awn_panel_resize_timeout,
-                                                 widget);
-        requisition->height = MAX (requisition->height, priv->draw_height);
-      }
+      target_size = priv->expand ?
+        &(requisition->height) : &(child_requisition.height);
+      current_draw_size = &(priv->draw_height);
+
       break;
+  }
+
+  if (priv->animated_resize && !priv->expand)
+  {
+    if (*target_size != *current_draw_size && !priv->resize_timer_id)
+    {
+      priv->resize_timer_id = g_timeout_add (40, awn_panel_resize_timeout,
+                                             widget); // 25 FPS
+    }
+  }
+  else if (priv->expand)
+  {
+    // this ensures there's a shrinking animation when expand is turned off
+    *current_draw_size = *target_size;
   }
 }
 
@@ -567,10 +589,13 @@ awn_panel_resize_timeout (gpointer data)
   gint inc, step;
   AwnPanel *panel = AWN_PANEL (data);
   AwnPanelPrivate *priv = panel->priv;
+  GdkRectangle rect1, rect2;
 
-  // find size we are resizing to
+  // this is the size we are resizing to
   const gint target_width = priv->alignment->requisition.width;
   const gint target_height = priv->alignment->requisition.height;
+
+  awn_panel_get_draw_rect (panel, &rect1, 0, 0);
 
   switch (priv->orient)
   {
@@ -580,6 +605,8 @@ awn_panel_resize_timeout (gpointer data)
       step = inc / 7 + 2; // makes the resize shiny
       inc = MIN (inc, step);
 
+      priv->draw_width = GTK_WIDGET (panel)->allocation.width;
+      
       priv->draw_height += priv->draw_height < target_height ? inc : -inc;
 
       resize_done = priv->draw_height == target_height;
@@ -593,6 +620,8 @@ awn_panel_resize_timeout (gpointer data)
 
       priv->draw_width += priv->draw_width < target_width ? inc : -inc;
 
+      priv->draw_height = GTK_WIDGET (panel)->allocation.height;
+
       resize_done = priv->draw_width == target_width;
       break;
   }
@@ -602,7 +631,18 @@ awn_panel_resize_timeout (gpointer data)
                                      priv->draw_height, target_height);
 #endif
 
-  gtk_widget_queue_draw (GTK_WIDGET (panel));
+  // draw_width / height got updated, get the draw rect again
+  awn_panel_get_draw_rect (panel, &rect2, 0, 0);
+
+  // invalidate only the background draw region
+  gtk_widget_queue_draw_area (GTK_WIDGET (panel),
+                              MIN (rect1.x, rect2.x),
+                              MIN (rect1.y, rect2.y),
+                              MAX (rect1.width, rect2.width),
+                              MAX (rect1.height, rect2.height));
+
+  // FIXME: should this really be done on every animation step?
+  awn_panel_update_masks (GTK_WIDGET (panel), 0, 0);
 
   if (resize_done)
   {
@@ -702,6 +742,14 @@ void awn_panel_get_applet_rect (AwnPanel *panel,
   if (!width) width = GTK_WIDGET (panel)->allocation.width;
   if (!height) height = GTK_WIDGET (panel)->allocation.height;
 
+  // FIXME: this whole function should call some method of AppletManager
+
+  GtkAllocation *manager_alloc = &(priv->manager->allocation);
+  area->x = manager_alloc->x;
+  area->y = manager_alloc->y;
+  area->width = manager_alloc->width;
+  area->height = manager_alloc->height;
+
   guint top, bottom, left, right;
   gtk_alignment_get_padding (GTK_ALIGNMENT (priv->alignment),
                              &top, &bottom, &left, &right);
@@ -712,32 +760,24 @@ void awn_panel_get_applet_rect (AwnPanel *panel,
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
-      area->x = left;
       area->y = top;
-      area->width = width - left - right;
       area->height = paintable_size;
       break;
 
     case AWN_ORIENTATION_BOTTOM:
-      area->x = left;
       area->y = height - paintable_size - bottom;
-      area->width = width - left - right;
       area->height = paintable_size;
       break;
 
     case AWN_ORIENTATION_RIGHT:
       area->x = width - paintable_size - right;
-      area->y = top;
       area->width = paintable_size;
-      area->height = height - top - bottom;
       break;
 
     case AWN_ORIENTATION_LEFT:
     default:
       area->x = left;
-      area->y = top;
       area->width = paintable_size;
-      area->height = height - top - bottom;
   }
 }
 
@@ -1425,6 +1465,9 @@ awn_panel_init (AwnPanel *panel)
   priv->path_type = AWN_PATH_LINEAR;
   priv->offset_mod = 1.0;
 
+  priv->draw_width = 32;
+  priv->draw_height = 32;
+
   priv->inhibits = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                                           NULL, free_inhibit_item);
 
@@ -1452,6 +1495,16 @@ awn_panel_init (AwnPanel *panel)
   gtk_window_set_resizable (GTK_WINDOW (panel), FALSE);
 }
 
+//#define DEBUG_INVALIDATION
+#ifdef DEBUG_INVALIDATION
+static gboolean debug_invalidating (gpointer data)
+{
+  gdk_window_set_debug_updates (TRUE);
+
+  return FALSE;
+}
+#endif
+
 GtkWidget *
 awn_panel_new_from_config (DesktopAgnosticConfigClient *client)
 {
@@ -1462,6 +1515,9 @@ awn_panel_new_from_config (DesktopAgnosticConfigClient *client)
                          "type-hint", GDK_WINDOW_TYPE_HINT_DOCK,
                          "client", client,
                          NULL);
+#ifdef DEBUG_INVALIDATION
+  g_timeout_add (2000, debug_invalidating, NULL);
+#endif
   return window;
 }
 
@@ -1536,7 +1592,10 @@ awn_panel_update_masks (GtkWidget *panel,
 
   g_return_if_fail (AWN_IS_PANEL (panel));
   priv = AWN_PANEL (panel)->priv;
-    
+
+  if (!real_width) real_width = GTK_WIDGET (panel)->allocation.width;
+  if (!real_height) real_height = GTK_WIDGET (panel)->allocation.height;
+
   if (priv->clickthrough && priv->composited)
   {
     GdkRegion *region = gdk_region_new ();
@@ -1661,7 +1720,6 @@ on_window_configure (GtkWidget          *panel,
 
   g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
   priv = AWN_PANEL (panel)->priv;
-
 
   if (priv->old_width != event->width || priv->old_height != event->height ||
       priv->old_orient != priv->orient)
@@ -1926,6 +1984,8 @@ awn_panel_set_orient (AwnPanel *panel, gint orient)
   if (!GTK_WIDGET_REALIZED (panel))
     return;
 
+  if (priv->docklet) awn_panel_docklet_destroy (panel);
+
   awn_panel_reset_autohide (panel);
 
   g_signal_emit (panel, _panel_signals[ORIENT_CHANGED], 0, priv->orient);
@@ -2178,18 +2238,18 @@ awn_panel_set_panel_mode (AwnPanel *panel, gboolean  panel_mode)
   AwnPanelPrivate *priv = panel->priv;
   priv->panel_mode = panel_mode;
 
-  if(priv->panel_mode)
+  if (priv->panel_mode)
   {
     /* Check if panel is already realized. So it has an GdkWindow.
      * If it's not, the strut will get set when the position and dimension get set. 
      */
-    if(GTK_WIDGET_REALIZED(panel))
-      awn_panel_set_strut(panel);
+    if (GTK_WIDGET_REALIZED (panel))
+      awn_panel_set_strut (panel);
   }
   else
   {
-    if(GTK_WIDGET_REALIZED(panel))
-      awn_panel_remove_strut(panel);
+    if (GTK_WIDGET_REALIZED (panel))
+      awn_panel_remove_strut (panel);
   }
 
 }
@@ -2217,6 +2277,19 @@ awn_panel_set_clickthrough_type(AwnPanel *panel, gint type)
 }
 
 static void
+on_manager_size_alloc (GtkWidget *manager, GtkAllocation *alloc,
+                       AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->panel_mode && priv->animated_resize && !priv->expand)
+  {
+    awn_panel_set_strut (panel);
+  }
+}
+
+
+static void
 awn_panel_set_strut (AwnPanel *panel)
 {
   AwnPanelPrivate *priv = panel->priv;
@@ -2224,9 +2297,24 @@ awn_panel_set_strut (AwnPanel *panel)
   gint strut, strut_start, strut_end;
   GdkWindow *win;
   GdkRectangle area;
+  gint root_x, root_y;
 
-  gtk_window_get_size (GTK_WINDOW (panel), &area.width, &area.height);
-  gtk_window_get_position (GTK_WINDOW (panel), &area.x, &area.y);
+  gtk_window_get_position (GTK_WINDOW (panel), &root_x, &root_y);
+
+  if (priv->expand)
+  {
+    area.x = root_x;
+    area.y = root_y;
+    gtk_window_get_size (GTK_WINDOW (panel), &area.width, &area.height);
+  }
+  else
+  {
+    GtkAllocation *manager_alloc = &(priv->manager->allocation);
+    area.x = manager_alloc->x + root_x;
+    area.y = manager_alloc->y + root_y;
+    area.width = manager_alloc->width;
+    area.height = manager_alloc->height;
+  }
 
   switch (priv->orient)
   {
@@ -2456,7 +2544,29 @@ docklet_plug_added (GtkSocket *socket, AwnPanel *panel)
 static gboolean
 docklet_plug_removed (GtkSocket *socket, AwnPanel *panel)
 {
+  awn_panel_docklet_destroy (panel);
+
+  return FALSE;
+}
+
+static gboolean
+docklet_closer_click (GtkWidget *widget, AwnPanel *panel)
+{
   AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->docklet == NULL) return FALSE;
+
+  awn_panel_docklet_destroy (panel);
+
+  return FALSE;
+}
+
+static void
+awn_panel_docklet_destroy (AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->docklet == NULL) return;
 
   // FIXME: an animation?! we could also optimize and not destroy the widget
   awn_applet_manager_remove_widget (AWN_APPLET_MANAGER (priv->manager),
@@ -2466,21 +2576,6 @@ docklet_plug_removed (GtkSocket *socket, AwnPanel *panel)
   priv->docklet_minsize = 0;
 
   gtk_widget_hide (priv->docklet_closer);
-
-  return FALSE;
-}
-
-static gboolean
-docklet_closer_click (GtkWidget *widget, GdkEventButton *event, AwnPanel *panel)
-{
-  AwnPanelPrivate *priv = panel->priv;
-
-  if (priv->docklet == NULL) return FALSE;
-
-  // this removes the docklet from applet manager, effectively destroying it
-  docklet_plug_removed (GTK_SOCKET (priv->docklet), panel);
-
-  return FALSE;
 }
 
 void
@@ -2498,12 +2593,12 @@ awn_panel_docklet_request (AwnPanel *panel,
     priv->docklet_closer = awn_throbber_new ();
     awn_throbber_set_type (AWN_THROBBER (priv->docklet_closer),
                            AWN_THROBBER_TYPE_CLOSE_BUTTON);
-    awn_throbber_set_hover_effect (AWN_THROBBER (priv->docklet_closer), TRUE);
+    awn_icon_set_hover_effects (AWN_ICON (priv->docklet_closer), TRUE);
 
     awn_applet_manager_add_widget (AWN_APPLET_MANAGER (priv->manager),
                                    priv->docklet_closer, 1);
 
-    g_signal_connect (priv->docklet_closer, "button-release-event",
+    g_signal_connect (priv->docklet_closer, "clicked",
                       G_CALLBACK (docklet_closer_click), panel);
   }
 
@@ -2512,8 +2607,8 @@ awn_panel_docklet_request (AwnPanel *panel,
     AwnThrobber *closer = AWN_THROBBER (priv->docklet_closer);
 
     awn_throbber_set_size (closer, priv->size / 2);
-    awn_throbber_set_orientation (closer, priv->orient);
-    awn_throbber_set_offset (closer, priv->size / 2 + priv->offset);
+    awn_icon_set_orientation (AWN_ICON (closer), priv->orient);
+    awn_icon_set_offset (AWN_ICON (closer), priv->size / 2 + priv->offset);
 
     GtkRequisition closer_req;
     gtk_widget_size_request (priv->docklet_closer, &closer_req);

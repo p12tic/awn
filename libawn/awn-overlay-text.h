@@ -55,6 +55,12 @@ GType awn_overlay_text_get_type (void);
 
 AwnOverlayText* awn_overlay_text_new (void);
 
+void awn_overlay_text_get_size (AwnOverlayText* overlay,
+                                GtkWidget * widget,
+                                gchar *text,
+                                gint size,
+                                gint *width, gint *height);
+
 G_END_DECLS
 
 #endif /* _AWN_OVERLAY_TEXT */

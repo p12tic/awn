@@ -62,5 +62,14 @@ GType       task_manager_get_type (void) G_GNUC_CONST;
 AwnApplet * task_manager_new      (const gchar *uid, 
                                    gint         panel_id);
 
+gboolean task_manager_get_capabilities (TaskManager *manager,
+                                        GStrv *supported_keys,
+                                        GError **error);
+
+gboolean task_manager_update (TaskManager *manager,
+                              GValue *window,
+                              GHashTable *hints, /* mappings from string to GValue */
+                              GError **error);
+
 #endif /* _TASK_MANAGER_H_ */
 

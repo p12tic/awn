@@ -95,6 +95,7 @@ struct _AwnEffects
   gboolean do_reflection;
   gboolean make_shadow;
   gboolean is_active;
+  gboolean depressed;
   gint arrows_count;
   gchar *label;
   gfloat progress;
@@ -138,7 +139,7 @@ void awn_effects_set_icon_size(AwnEffects *fx, gint width, gint height,
 cairo_t *awn_effects_cairo_create(AwnEffects *fx);
 
 cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
-                                               GdkRegion *region);
+                                          GdkEventExpose *event);
 
 void awn_effects_cairo_destroy(AwnEffects *fx);
 

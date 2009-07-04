@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
- *
+ *             Hannes Verschore <hv1989@gmail.com>
  */
 
 #include <stdio.h>
@@ -28,18 +28,17 @@
 #include <libawn/libawn.h>
 
 #include "task-launcher.h"
+#include "task-item.h"
 #include "task-window.h"
 
 #include "task-settings.h"
 #include "xutils.h"
 
-G_DEFINE_TYPE (TaskLauncher, task_launcher, TASK_TYPE_WINDOW)
+G_DEFINE_TYPE (TaskLauncher, task_launcher, TASK_TYPE_ITEM)
 
 #define TASK_LAUNCHER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_LAUNCHER, \
   TaskLauncherPrivate))
-
-#define GET_WINDOW_PRIVATE(obj) (TASK_WINDOW(obj)->priv)
 
 struct _TaskLauncherPrivate
 {
@@ -59,15 +58,15 @@ enum
 };
 
 /* Forwards */
-static GPid          _get_pid         (TaskWindow     *window);
-static const gchar * _get_name        (TaskWindow     *window);
-static GdkPixbuf   * _get_icon        (TaskWindow     *window);
-static gboolean      _is_on_workspace (TaskWindow     *window,
-                                       WnckWorkspace  *space);
-static void          _activate        (TaskWindow     *window,
-                                       guint32         timestamp);
-static void          _popup_menu      (TaskWindow     *window,
-                                       GtkMenu        *menu);
+static const gchar * _get_name        (TaskItem       *item);
+static GdkPixbuf   * _get_icon        (TaskItem       *item);
+static gboolean      _is_visible      (TaskItem       *item);
+static void          _left_click      (TaskItem       *item,
+                                       GdkEventButton *event);
+static void          _right_click     (TaskItem       *item,
+                                       GdkEventButton *event);
+static guint         _match           (TaskItem       *item,
+                                       TaskItem       *item_to_match);
 
 static void   task_launcher_set_desktop_file (TaskLauncher *launcher,
                                               const gchar  *path);
@@ -115,19 +114,19 @@ static void
 task_launcher_class_init (TaskLauncherClass *klass)
 {
   GParamSpec   *pspec;
-  GObjectClass    *obj_class = G_OBJECT_CLASS (klass);
-  TaskWindowClass *win_class = TASK_WINDOW_CLASS (klass);
+  GObjectClass  *obj_class = G_OBJECT_CLASS (klass);
+  TaskItemClass *item_class = TASK_ITEM_CLASS (klass);
 
   obj_class->set_property = task_launcher_set_property;
   obj_class->get_property = task_launcher_get_property;
 
   /* We implement the necessary funtions for a normal window */
-  win_class->get_pid         = _get_pid;
-  win_class->get_name        = _get_name;
-  win_class->get_icon        = _get_icon;
-  win_class->is_on_workspace = _is_on_workspace;
-  win_class->activate        = _activate;
-  win_class->popup_menu      = _popup_menu;
+  item_class->get_name         = _get_name;
+  item_class->get_icon         = _get_icon;
+  item_class->is_visible       = _is_visible;
+  item_class->match            = _match;
+  item_class->left_click       = _left_click;
+  item_class->right_click      = _right_click;
 
   /* Install properties */
   pspec = g_param_spec_string ("desktopfile",
@@ -151,19 +150,19 @@ task_launcher_init (TaskLauncher *launcher)
   priv->entry = NULL;
 }
 
-TaskLauncher   * 
+TaskItem * 
 task_launcher_new_for_desktop_file (const gchar *path)
 {
-  TaskLauncher *win = NULL;
+  TaskItem *item = NULL;
 
   if (!g_file_test (path, G_FILE_TEST_EXISTS))
     return NULL;
 
-  win = g_object_new (TASK_TYPE_LAUNCHER,
-                      "desktopfile", path,
-                      NULL);
+  item = g_object_new (TASK_TYPE_LAUNCHER,
+                       "desktopfile", path,
+                       NULL);
 
-  return win;
+  return item;
 }
 
 const gchar   * 
@@ -180,6 +179,7 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   TaskLauncherPrivate *priv;
   DesktopAgnosticVFSFileBackend *file;
   GError *error = NULL;
+  GdkPixbuf *pixbuf;
  
   g_return_if_fail (TASK_IS_LAUNCHER (launcher));
   priv = launcher->priv;
@@ -221,61 +221,33 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   
   priv->icon_name = desktop_agnostic_desktop_entry_backend_get_icon (priv->entry);
 
+  task_item_emit_name_changed (TASK_ITEM (launcher), priv->name);
+  pixbuf = _get_icon (TASK_ITEM (launcher));
+  task_item_emit_icon_changed (TASK_ITEM (launcher), pixbuf);
+  g_object_unref (pixbuf);
+  task_item_emit_visible_changed (TASK_ITEM (launcher), TRUE);
+
   g_debug ("LAUNCHER: %s", priv->name);
 }
 
 /*
  * Implemented functions for a standard window without a launcher
  */
-static GPid
-_get_pid (TaskWindow *window)
-{
-  TaskLauncher *launcher = TASK_LAUNCHER (window);
-  
-  if (WNCK_IS_WINDOW (window->priv->window))
-  {
-		gint value = -1;
-    value = wnck_window_get_pid (window->priv->window);
-		value = value ? value : -1;
-		return (GPid)value;
-  }
-  else
-  {
-    return launcher->priv->pid;
-  }
-}
-
 static const gchar * 
-_get_name (TaskWindow    *window)
+_get_name (TaskItem *item)
 {
-  TaskLauncher *launcher = TASK_LAUNCHER (window);
-
-  if (WNCK_IS_WINDOW (window->priv->window))
-  {
-    return wnck_window_get_name (window->priv->window);
-  }
-  else
-  {
-    return launcher->priv->name;
-  }
+  return TASK_LAUNCHER (item)->priv->name;
 }
 
 static GdkPixbuf * 
-_get_icon (TaskWindow    *window)
+_get_icon (TaskItem *item)
 {
-  TaskLauncher *launcher = TASK_LAUNCHER (window);
-  TaskLauncherPrivate *priv = launcher->priv;
+  TaskLauncherPrivate *priv = TASK_LAUNCHER (item)->priv;
   TaskSettings *s = task_settings_get_default ();
   GError *error = NULL;
   GdkPixbuf *pixbuf = NULL;
 
-
-  if (WNCK_IS_WINDOW (window->priv->window))
-  {
-    return _wnck_get_icon_at_size (window->priv->window, 
-                                   s->panel_size, s->panel_size);
-  }
-  else if (g_path_is_absolute (priv->icon_name))
+  if (g_path_is_absolute (priv->icon_name))
   {
     pixbuf = gdk_pixbuf_new_from_file_at_scale (priv->icon_name,
                                                 s->panel_size, s->panel_size,
@@ -298,139 +270,137 @@ _get_icon (TaskWindow    *window)
   return pixbuf;
 }
 
-static gboolean 
-_is_on_workspace (TaskWindow *window,
-                  WnckWorkspace *space)
+static gboolean
+_is_visible (TaskItem *item)
 {
   return TRUE;
 }
 
-static void   
-_activate (TaskWindow    *window,
-           guint32        timestamp)
+/**
+ * Match the launcher with the provided window. 
+ * The higher the number it returns the more it matches the window.
+ * 100 = definitly matches
+ * 0 = doesn't match
+ */
+static guint   
+_match (TaskItem *item,
+        TaskItem *item_to_match)
 {
-  TaskLauncher *launcher = TASK_LAUNCHER (window);
-  GError *error = NULL;
+  TaskLauncherPrivate *priv;
+  TaskLauncher *launcher;
+  TaskWindow   *window;
+  gchar   *res_name = NULL;
+  gchar   *class_name = NULL;
+  gchar   *temp;
+  gint     pid;
 
-  launcher->priv->pid =
-    desktop_agnostic_desktop_entry_backend_launch (launcher->priv->entry,
+  g_return_val_if_fail (TASK_IS_LAUNCHER(item), 0);
+
+  if (!TASK_IS_WINDOW (item_to_match)) return 0;
+
+  launcher = TASK_LAUNCHER (item);
+  priv = launcher->priv;
+  
+  window = TASK_WINDOW (item_to_match);
+
+  /* Try simple pid-match first */
+  pid = task_window_get_pid(window);
+  if ( pid && (priv->pid == pid))
+    return 100;
+
+  /* Now try resource name, which should (hopefully) be 99% of the cases */
+  task_window_get_wm_class(window, &res_name, &class_name);
+
+  if (res_name)
+  {
+    temp = res_name;
+    res_name = g_utf8_strdown (temp, -1);
+    g_free (temp);
+
+    if ( strlen(res_name) && priv->exec)
+    {
+      if ( g_strstr_len (priv->exec, strlen (priv->exec), res_name) ||
+           g_strstr_len (res_name, strlen (res_name), priv->exec))
+      {
+        g_free (res_name);
+        g_free (class_name);
+        return 70;
+      }
+    }
+  }
+
+  /* Try a class_name to exec line match */
+  if (class_name)
+  {
+    temp = class_name;
+    class_name = g_utf8_strdown (temp, -1);
+    g_free (temp);
+
+    if (strlen(class_name) && priv->exec)
+    {
+      if (g_strstr_len (priv->exec, strlen (priv->exec), class_name))
+      {
+        g_free (res_name);
+        g_free (class_name);
+        return 50;
+      }
+    }
+  }
+
+  g_free (res_name);
+  g_free (class_name);
+  return 0; 
+}
+
+static void
+_left_click (TaskItem *item, GdkEventButton *event)
+{
+  TaskLauncherPrivate *priv;
+  TaskLauncher *launcher;
+  GError *error = NULL;
+  
+  g_return_if_fail (TASK_IS_LAUNCHER (item));
+  
+  launcher = TASK_LAUNCHER (item);
+  priv = launcher->priv;
+
+  priv->pid = 
+    desktop_agnostic_desktop_entry_backend_launch (priv->entry,
                                                    0, NULL, &error);
 
   if (error)
   {
     g_warning ("Unable to launch %s: %s", 
-               launcher->priv->name,
+               task_item_get_name (item),
                error->message);
     g_error_free (error);
   }
 }
 
+static void
+_right_click (TaskItem *item, GdkEventButton *event)
+{
+  TaskLauncherPrivate *priv;
+  TaskLauncher *launcher;
+  GtkWidget *menu_item,
+            *menu;
+  
+  g_return_if_fail (TASK_IS_LAUNCHER (item));
+  
+  launcher = TASK_LAUNCHER (item);
+  priv = launcher->priv;
+
+  menu = gtk_menu_new ();
+  menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_EXECUTE, NULL);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+  gtk_widget_show (menu_item);
+  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, 
+                  NULL, NULL, event->button, event->time);
+}
+
 /*
  * Public functions
  */
-gboolean   
-task_launcher_has_window (TaskLauncher *launcher)
-{
-  g_return_val_if_fail (TASK_IS_LAUNCHER (launcher), TRUE);
-
-  if (WNCK_IS_WINDOW (TASK_WINDOW (launcher)->priv->window))
-    return TRUE;
-  return FALSE;
-}
-
-gboolean   
-task_launcher_try_match (TaskLauncher *launcher,
-                         GPid          pid,
-                         const gchar  *res_name,
-                         const gchar  *class_name)
-{
-  TaskLauncherPrivate *priv;
-
-  g_return_val_if_fail (launcher, FALSE);
-  priv = launcher->priv;
-
-  /* Try simple pid-match first */
-  if ( pid && (priv->pid == pid))
-    return TRUE;
-
-  /* Now try resource name, which should (hopefully) be 99% of the cases */
-  if ( res_name && strlen(res_name) && priv->exec)
-  {
-    if ( g_strstr_len (priv->exec, strlen (priv->exec), res_name) ||
-         g_strstr_len (res_name, strlen (res_name), priv->exec))
-    {
-      return TRUE;
-    }
-  }
-  
-  /* Try a class_name to exec line match */
-  if ( class_name && strlen(class_name) && priv->exec)
-  {
-    if (g_strstr_len (priv->exec, strlen (priv->exec), class_name))
-      return TRUE;
-  }
-
-  return FALSE; 
-}
-
-static void
-on_window_closed (TaskLauncher *launcher, WnckWindow *old_window)
-{
-  TaskWindowPrivate *priv;
-  TaskSettings *s = task_settings_get_default ();
-  GdkPixbuf *pixbuf;
-
-  g_return_if_fail (TASK_IS_LAUNCHER (launcher));
-  priv = TASK_WINDOW (launcher)->priv;
-
-  /* NULLify the window pointer */
-  priv->window = NULL;
-
-  /* Reset name */
-  task_window_set_name (TASK_WINDOW (launcher), launcher->priv->name);  
-
-  /* Reset icon */
-  pixbuf = xutils_get_named_icon (launcher->priv->icon_name,
-                                  s->panel_size, s->panel_size);
-
-  task_window_update_icon (TASK_WINDOW (launcher), pixbuf);
-
-  g_object_unref (pixbuf);
-}
-
-void       
-task_launcher_set_window (TaskLauncher *launcher,
-                          WnckWindow   *window)
-{
-  g_return_if_fail (TASK_IS_LAUNCHER (launcher));
-  g_return_if_fail (WNCK_IS_WINDOW (window));
-
-  g_object_set (launcher, "taskwindow", window, NULL);
-
-  task_window_set_name (TASK_WINDOW (launcher), wnck_window_get_name (window));
-
-  g_object_weak_ref (G_OBJECT (window), 
-                     (GWeakNotify)on_window_closed,
-                     launcher);
-}
-
-static void 
-_popup_menu (TaskWindow     *window,
-             GtkMenu        *menu)
-{
-  TaskWindowPrivate *priv;
-  GtkWidget         *item;
-  
-  g_return_if_fail (TASK_IS_WINDOW (window));
-  priv = window->priv;
-
-  if (!WNCK_IS_WINDOW (priv->window))
-  {
-    item = gtk_image_menu_item_new_from_stock (GTK_STOCK_EXECUTE, NULL);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-    gtk_widget_show (item);
-  }
-}
 
 void 
 task_launcher_launch_with_data (TaskLauncher *launcher,
@@ -463,15 +433,8 @@ task_launcher_middle_click (TaskLauncher   *launcher,
   g_return_if_fail (TASK_IS_LAUNCHER (launcher));
   priv = launcher->priv;
 
-  if (WNCK_IS_WINDOW (TASK_WINDOW (launcher)->priv->window))
-  {
-    desktop_agnostic_desktop_entry_backend_launch (priv->entry, 0, NULL, &error);
-  }
-  else
-  {
-    priv->pid = desktop_agnostic_desktop_entry_backend_launch (priv->entry, 0,
-                                                               NULL, &error);
-  }
+  priv->pid = desktop_agnostic_desktop_entry_backend_launch (priv->entry, 0,
+                                                             NULL, &error);
 
   if (error)
   {

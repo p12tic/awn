@@ -80,6 +80,11 @@ type = list-string
 default = 1
 description = The list of panels.
 
+[panel/behavior]
+type = int
+default = 5
+description = Behavior of the bar, handle by awn-settings (0=Standart, 1=Panel mode, 2=Autohide Keep below, 3=Autohide Fade out",4=Transparency, 5=Custom)
+
 [theme/gstep1]
 type = color
 default = #454545C8
@@ -104,6 +109,21 @@ description = Second highlight gradient step color.
 type = string
 default =
 description = Icon text color.  Leave empty to use gtk theme color.
+
+[theme/icon_text_outline_color]
+type = string
+default =
+description = Icon text outline color.  Leave empty to use gtk theme color.
+
+[theme/icon_font_mode]
+type = int
+default = 0
+description = 0 - solid, 1 - outline, 2 - outline, reversed.
+
+[theme/icon_text_outline_width]
+type = float
+default = 2.5
+description = width of icon text outline if outline mode is enabled.  Suggested values 1.0 - 5.0.
 
 [theme/border]
 type = color

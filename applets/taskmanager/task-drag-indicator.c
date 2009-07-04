@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Authored by Neil Jagdish Patel <njpatel@gmail.com>
+ * Authored by Hannes Verschore <hv1989@gmail.com>
  *
  */
 
@@ -151,6 +151,12 @@ task_drag_indicator_new ()
   GtkWidget *drag_indicator = NULL;
 
   drag_indicator = g_object_new (TASK_TYPE_DRAG_INDICATOR, NULL);
+  gtk_widget_hide (drag_indicator);
+
+  //BUG: AwnApplet calls upon start gtk_widget_show_all. So even when gtk_widget_hide
+  //     gets called, it will get shown. So I'm forcing it to not listen to 
+  //     'gtk_widget_show_all' with this function. FIXME: improve AwnApplet
+  gtk_widget_set_no_show_all (drag_indicator, TRUE);
 
   return drag_indicator;
 }

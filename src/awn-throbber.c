@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Michal Hruby
+ * Copyright (C) 2009 Michal Hruby <michal.mhr@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License version 
@@ -22,10 +22,9 @@
 #include "awn-throbber.h"
 #include <libawn/awn-utils.h>
 #include <libawn/awn-cairo-utils.h>
+#include <libawn/awn-overlayable.h>
 
-#define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
-
-G_DEFINE_TYPE (AwnThrobber, awn_throbber, GTK_TYPE_DRAWING_AREA)
+G_DEFINE_TYPE (AwnThrobber, awn_throbber, AWN_TYPE_ICON)
 
 #define AWN_THROBBER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   AWN_TYPE_THROBBER, \
@@ -33,14 +32,8 @@ G_DEFINE_TYPE (AwnThrobber, awn_throbber, GTK_TYPE_DRAWING_AREA)
 
 struct _AwnThrobberPrivate
 {
-  AwnEffects     *effects;
-  GtkWidget      *tooltip;
-  AwnOrientation  orient;
   AwnThrobberType type;
-  gint            offset;
-  gint            size;
-
-  gboolean        hover_effect;
+  gint size;
 
   gint        counter;
   guint       timer_id;
@@ -51,18 +44,6 @@ static void
 awn_throbber_dispose (GObject *object)
 {
   AwnThrobberPrivate *priv = AWN_THROBBER_GET_PRIVATE (object);
-
-  if (priv->tooltip)
-  {
-    gtk_widget_destroy (priv->tooltip);
-    priv->tooltip = NULL;
-  }
-
-  if (priv->effects)
-  {
-    g_object_unref (priv->effects);
-    priv->effects = NULL;
-  }
 
   if (priv->timer_id)
   {
@@ -80,7 +61,8 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
   cairo_t *cr;
 
   /* clip the drawing region, nvidia likes it */
-  cr = awn_effects_cairo_create_clipped (priv->effects, event->region);
+  AwnEffects *fx = awn_overlayable_get_effects (AWN_OVERLAYABLE (widget));
+  cr = awn_effects_cairo_create_clipped (fx, event);
 
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
@@ -230,47 +212,9 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
   }
 
   /* let effects know we're finished */
-  awn_effects_cairo_destroy(priv->effects);
+  awn_effects_cairo_destroy (fx);
 
   return TRUE;
-}
-
-static void
-awn_throbber_size_request (GtkWidget *widget, GtkRequisition *req)
-{
-  AwnThrobberPrivate *priv = AWN_THROBBER_GET_PRIVATE (widget);
-
-  switch (priv->orient)
-  {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
-      req->width = APPLY_SIZE_MULTIPLIER(priv->size);
-      req->height = priv->size + priv->effects->icon_offset;
-      break;
-
-    default:
-      req->width = priv->size + priv->effects->icon_offset;
-      req->height = APPLY_SIZE_MULTIPLIER(priv->size);
-      break;
-  }
-}
-
-static void
-awn_throbber_update_effects (GtkWidget *widget, gpointer data)
-{
-  AwnThrobberPrivate *priv = AWN_THROBBER (widget)->priv;
-
-  if (gtk_widget_is_composited(widget))
-  {
-    /* optimize the render speed */
-    g_object_set(priv->effects,
-                 "indirect-paint", FALSE, NULL);
-  }
-  else
-  {
-    g_object_set(priv->effects,
-                 "indirect-paint", TRUE, NULL);
-  }
 }
 
 static gboolean
@@ -309,28 +253,6 @@ awn_throbber_hide (GtkWidget *widget, gpointer user_data)
 }
 
 static void
-awn_throbber_mouse_over (GtkWidget *widget, GdkEventCrossing *event)
-{
-  AwnThrobberPrivate *priv = AWN_THROBBER_GET_PRIVATE(widget);
-
-  if (priv->hover_effect)
-  {
-    awn_effects_start (priv->effects, AWN_EFFECT_HOVER);
-  }
-}
-
-static void
-awn_throbber_mouse_out (GtkWidget *widget, GdkEventCrossing *event)
-{
-  AwnThrobberPrivate *priv = AWN_THROBBER_GET_PRIVATE(widget);
-
-  if (priv->hover_effect)
-  {
-    awn_effects_stop (priv->effects, AWN_EFFECT_HOVER);
-  }
-}
-
-static void
 awn_throbber_class_init (AwnThrobberClass *klass)
 {
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
@@ -338,8 +260,7 @@ awn_throbber_class_init (AwnThrobberClass *klass)
 
   obj_class->dispose      = awn_throbber_dispose;
 
-  wid_class->size_request       = awn_throbber_size_request;
-  wid_class->expose_event       = awn_throbber_expose_event;
+  wid_class->expose_event = awn_throbber_expose_event;
 
   g_type_class_add_private (obj_class, sizeof (AwnThrobberPrivate));
 }
@@ -351,35 +272,21 @@ awn_throbber_init (AwnThrobber *throbber)
 
   priv = throbber->priv = AWN_THROBBER_GET_PRIVATE (throbber);
 
-  priv->orient = AWN_ORIENTATION_BOTTOM;
   priv->size = 50;
   priv->counter = 0;
   priv->type = AWN_THROBBER_TYPE_NORMAL;
-  priv->tooltip = awn_tooltip_new_for_widget (GTK_WIDGET (throbber));
 
-  priv->effects = awn_effects_new_for_widget (GTK_WIDGET (throbber));
-  /* FIXME: move the prop binding from AwnEffects to AwnIcon, we don't want
-   * any notifications from the ConfigClient (orient and size is changed when
-   * properties of AwnAppletProxy change), well except offset
-   */
-  g_object_set (priv->effects, "effects", 0,
-                "reflection-visible", FALSE, NULL);
+  g_object_set (awn_overlayable_get_effects (AWN_OVERLAYABLE (throbber)),
+                "effects", 0,
+                "reflection-visible", FALSE,
+                NULL);
 
   gtk_widget_add_events (GTK_WIDGET (throbber), GDK_ALL_EVENTS_MASK);
 
-  awn_utils_ensure_transparent_bg (GTK_WIDGET (throbber));
-  g_signal_connect (throbber, "realize",
-                    G_CALLBACK (awn_throbber_update_effects), NULL);
-  g_signal_connect (throbber, "composited-changed",
-                    G_CALLBACK (awn_throbber_update_effects), NULL);
   g_signal_connect (throbber, "show",
                     G_CALLBACK (awn_throbber_show), NULL);
   g_signal_connect (throbber, "hide",
                     G_CALLBACK (awn_throbber_hide), NULL);
-  g_signal_connect (throbber, "enter-notify-event",
-                    G_CALLBACK (awn_throbber_mouse_over), NULL);
-  g_signal_connect (throbber, "leave-notify-event",
-                    G_CALLBACK (awn_throbber_mouse_out), NULL);
 }
 
 GtkWidget *
@@ -387,39 +294,9 @@ awn_throbber_new (void)
 {
   GtkWidget *throbber = NULL;
 
-  throbber = g_object_new (AWN_TYPE_THROBBER, NULL);
+  throbber = g_object_new (AWN_TYPE_THROBBER, "bind-effects", FALSE, NULL);
 
   return throbber;
-}
-
-static void
-awn_throbber_update_tooltip_pos (AwnThrobber *throbber)
-{
-  AwnThrobberPrivate *priv;
-
-  g_return_if_fail (AWN_IS_THROBBER (throbber));
-  priv = throbber->priv;
-
-  awn_tooltip_set_position_hint (AWN_TOOLTIP (priv->tooltip),
-                                 priv->orient, priv->size + priv->offset);
-}
-
-void 
-awn_throbber_set_orientation (AwnThrobber *throbber,
-                              AwnOrientation  orient)
-{
-  AwnThrobberPrivate *priv;
-
-  g_return_if_fail (AWN_IS_THROBBER (throbber));
-  priv = throbber->priv;
-
-  priv->orient = orient;
-
-  g_object_set (priv->effects, "orientation", orient, NULL);
-
-  gtk_widget_queue_resize (GTK_WIDGET (throbber));
-
-  awn_throbber_update_tooltip_pos (throbber);
 }
 
 void
@@ -442,7 +319,8 @@ awn_throbber_set_type (AwnThrobber *throbber, AwnThrobberType type)
       }
       break;
     case AWN_THROBBER_TYPE_CLOSE_BUTTON:
-      g_object_set (priv->effects, "make-shadow", TRUE, NULL);
+      g_object_set (awn_overlayable_get_effects (AWN_OVERLAYABLE (throbber)),
+                    "make-shadow", TRUE, NULL);
       // no break;
     default:
       if (priv->timer_id)
@@ -465,60 +343,8 @@ awn_throbber_set_size (AwnThrobber *throbber, gint size)
   AwnThrobberPrivate *priv = throbber->priv;
 
   priv->size = size;
-  awn_effects_set_icon_size(priv->effects, size, size, FALSE);
+  awn_icon_set_custom_paint (AWN_ICON (throbber), size, size);
 
   gtk_widget_queue_resize (GTK_WIDGET(throbber));
-
-  awn_throbber_update_tooltip_pos (throbber);
-}
-
-void
-awn_throbber_set_offset (AwnThrobber *throbber, gint o)
-{
-  g_return_if_fail (AWN_IS_THROBBER (throbber));
-
-  AwnThrobberPrivate *priv = throbber->priv;
-
-  priv->offset = o;
-  g_object_set (priv->effects, "icon-offset", o, NULL);
-}
-
-void
-awn_throbber_set_text (AwnThrobber *throbber, const gchar* text)
-{
-  g_return_if_fail (AWN_IS_THROBBER (throbber));
-
-  AwnThrobberPrivate *priv = throbber->priv;
-
-  awn_tooltip_set_text (AWN_TOOLTIP (priv->tooltip), text);
-}
-
-AwnEffects *
-awn_throbber_get_effects (AwnThrobber *throbber)
-{
-  g_return_val_if_fail (AWN_IS_THROBBER (throbber), NULL);
-
-  return throbber->priv->effects;
-}
-
-AwnTooltip *
-awn_throbber_get_tooltip (AwnThrobber *throbber)
-{
-  g_return_val_if_fail (AWN_IS_THROBBER (throbber), NULL);
-
-  return AWN_TOOLTIP (throbber->priv->tooltip);
-}
-
-void
-awn_throbber_set_hover_effect (AwnThrobber *throbber, gboolean hover_effect)
-{
-  g_return_if_fail (AWN_IS_THROBBER (throbber));
-
-  throbber->priv->hover_effect = hover_effect;
-
-  if (!hover_effect)
-  {
-    awn_effects_stop (throbber->priv->effects, AWN_EFFECT_HOVER);
-  }
 }
 

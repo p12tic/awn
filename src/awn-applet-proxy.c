@@ -23,6 +23,7 @@
 #include <glib/gi18n.h>
 #include <gdk/gdkx.h>
 #include <libawn/awn-effects.h>
+#include <libawn/awn-icon.h>
 
 #include "awn-applet-proxy.h"
 #include "awn-utils.h"
@@ -51,7 +52,7 @@ struct _AwnAppletProxyPrivate
   gboolean size_req_initialized;
   GtkWidget *throbber;
 
-  gint old_x, old_y;
+  gint old_x, old_y, old_w, old_h;
   guint idle_id;
 };
 
@@ -138,12 +139,11 @@ awn_applet_proxy_set_property (GObject      *object,
       break;
     case PROP_ORIENT:
       priv->orient = g_value_get_int (value);
-      awn_throbber_set_orientation (AWN_THROBBER (priv->throbber),
-                                    priv->orient);
+      awn_icon_set_orientation (AWN_ICON (priv->throbber), priv->orient);
       break;
     case PROP_OFFSET:
       priv->offset = g_value_get_int (value);
-      awn_throbber_set_offset (AWN_THROBBER (priv->throbber), priv->offset);
+      awn_icon_set_offset (AWN_ICON (priv->throbber), priv->offset);
       break;
     case PROP_SIZE:
       priv->size = g_value_get_int (value);
@@ -286,13 +286,13 @@ throbber_click (GtkWidget *widget, GdkEventButton *event, gpointer user_data)
   if (!priv->running)
   {
     priv->crashed = FALSE;
-    awn_throbber_set_text (AWN_THROBBER (priv->throbber),
-                           _("Loading applet..."));
+    awn_icon_set_tooltip_text (AWN_ICON (priv->throbber),
+                               _("Loading applet..."));
     awn_throbber_set_type (AWN_THROBBER (priv->throbber),
                            AWN_THROBBER_TYPE_NORMAL);
-    awn_throbber_set_hover_effect (AWN_THROBBER (priv->throbber), FALSE);
+    awn_icon_set_hover_effects (AWN_ICON (priv->throbber), FALSE);
 
-    awn_applet_proxy_execute (AWN_APPLET_PROXY(user_data));
+    awn_applet_proxy_execute (AWN_APPLET_PROXY (user_data));
   }
   return FALSE;
 }
@@ -315,7 +315,8 @@ awn_applet_proxy_init (AwnAppletProxy *proxy)
 
   priv->throbber = awn_throbber_new ();
 
-  awn_throbber_set_text (AWN_THROBBER (priv->throbber), _("Loading applet..."));
+  awn_icon_set_tooltip_text (AWN_ICON (priv->throbber),
+                             _("Loading applet..."));
 
   g_signal_connect (priv->throbber, "button-release-event",
                     G_CALLBACK (throbber_click), proxy);
@@ -374,11 +375,11 @@ on_plug_removed (AwnAppletProxy *proxy, gpointer user_data)
   /* indicate that the applet crashed and allow restart */
   priv->running = FALSE;
   priv->crashed = TRUE;
-  awn_throbber_set_text (AWN_THROBBER (priv->throbber),
+  awn_icon_set_tooltip_text (AWN_ICON (priv->throbber),
     _("Whoops! The applet crashed. Click to restart it."));
   awn_throbber_set_type (AWN_THROBBER (priv->throbber),
                          AWN_THROBBER_TYPE_SAD_FACE);
-  awn_throbber_set_hover_effect (AWN_THROBBER (priv->throbber), TRUE);
+  awn_icon_set_hover_effects (AWN_ICON (priv->throbber), TRUE);
   gtk_widget_show (priv->throbber);
 
   return TRUE;
@@ -400,15 +401,27 @@ schedule_send_client_event (gpointer data)
 static void on_size_alloc (AwnAppletProxy *proxy, GtkAllocation *alloc)
 {
   AwnAppletProxyPrivate *priv;
+  GtkWidget *parent;
   GdkWindow *plug_win;
 
   g_return_if_fail (AWN_IS_APPLET_PROXY (proxy));
+
   priv = proxy->priv;
 
-  if (alloc->x == priv->old_x && alloc->y == priv->old_y) return;
+  parent = gtk_widget_get_parent (GTK_WIDGET (proxy));
 
-  priv->old_x = alloc->y;
-  priv->old_y = alloc->y;
+  gint pos_x = alloc->x - parent->allocation.x;
+  gint pos_y = alloc->x - parent->allocation.x;
+  gint parent_w = parent->allocation.width;
+  gint parent_h = parent->allocation.height;
+
+  if (pos_x == priv->old_x && pos_y == priv->old_y
+      && parent_w == priv->old_w && parent_h == priv->old_h) return;
+
+  priv->old_x = pos_x;
+  priv->old_y = pos_y;
+  priv->old_w = parent_w;
+  priv->old_h = parent_h;
 
   /* Only directly access the struct member if we have to. */
   plug_win = gtk_socket_get_plug_window (GTK_SOCKET (proxy));
@@ -419,8 +432,12 @@ static void on_size_alloc (AwnAppletProxy *proxy, GtkAllocation *alloc)
     event->client.window = g_object_ref (plug_win);
     event->client.data_format = 32;
     event->client.message_type = msg_type;
-    event->client.data.l[0] = alloc->x;
-    event->client.data.l[1] = alloc->y;
+    // first two longs are our relative [x, y]
+    event->client.data.l[0] = pos_x;
+    event->client.data.l[1] = pos_y;
+    // other two longs are our parent's [w, h]
+    event->client.data.l[2] = parent_w;
+    event->client.data.l[3] = parent_h;
 
     gdk_event_send_client_message (event, GDK_WINDOW_XID (plug_win));
 
@@ -454,9 +471,9 @@ on_child_exit (GPid pid, gint status, gpointer user_data)
 
     awn_throbber_set_type (AWN_THROBBER (priv->throbber),
                            AWN_THROBBER_TYPE_SAD_FACE);
-    awn_throbber_set_text (AWN_THROBBER (priv->throbber),
+    awn_icon_set_tooltip_text (AWN_ICON (priv->throbber),
       _("Whoops! The applet crashed. Click to restart it."));
-    awn_throbber_set_hover_effect (AWN_THROBBER (priv->throbber), TRUE);
+    awn_icon_set_hover_effects (AWN_ICON (priv->throbber), TRUE);
     /* we won't call gtk_widget_show - on_plug_removed does that
      * and if the plug wasn't even added, the throbber widget is still visible
      */

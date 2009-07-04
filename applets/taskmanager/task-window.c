@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
+ *             Hannes Verschore <hv1989@gmail.com>
  *
  */
 
@@ -26,11 +27,33 @@
 #include <libwnck/libwnck.h>
 
 #include "task-window.h"
-#include "task-launcher.h"
 #include "task-settings.h"
 #include "xutils.h"
 
-G_DEFINE_TYPE (TaskWindow, task_window, G_TYPE_OBJECT)
+G_DEFINE_TYPE (TaskWindow, task_window, TASK_TYPE_ITEM)
+
+#define TASK_WINDOW_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
+  TASK_TYPE_WINDOW, \
+  TaskWindowPrivate))
+
+struct _TaskWindowPrivate
+{
+  WnckWindow *window;
+
+  // Workspace where the window should be in, before being visible.
+  // NULL if it isn't important
+  WnckWorkspace *workspace;
+
+  // Is this window in the workspace. If workspace is NULL, this is always TRUE;
+  gboolean in_workspace;
+
+  /* Properties */
+  gchar   *message;
+  gfloat   progress;
+  gboolean hidden;
+  gboolean needs_attention;
+  gboolean is_active;
+};
 
 enum
 {
@@ -40,27 +63,25 @@ enum
 
 enum
 {
-  NAME_CHANGED,
-  ICON_CHANGED,
   ACTIVE_CHANGED,
   NEEDS_ATTENTION,
   WORKSPACE_CHANGED,
   MESSAGE_CHANGED,
   PROGRESS_CHANGED,
   HIDDEN_CHANGED,
-  RUNNING_CHANGED,
 
   LAST_SIGNAL
 };
 static guint32 _window_signals[LAST_SIGNAL] = { 0 };
 
 /* Forwards */
-static WnckApplication * _get_application (TaskWindow *window);
-static gint          _get_pid         (TaskWindow     *window);
-static const gchar * _get_name        (TaskWindow     *window);
-static GdkPixbuf   * _get_icon        (TaskWindow     *window);
-static gboolean      _is_on_workspace (TaskWindow     *window,
-                                       WnckWorkspace  *space);
+static const gchar * _get_name        (TaskItem       *item);
+static GdkPixbuf   * _get_icon        (TaskItem       *item);
+static gboolean      _is_visible      (TaskItem       *item);
+static void          _left_click      (TaskItem *item, GdkEventButton *event);
+static void          _right_click     (TaskItem *item, GdkEventButton *event);
+static guint         _match           (TaskItem *item, TaskItem *item_to_match);
+
 static void   task_window_set_window (TaskWindow *window,
                                       WnckWindow *wnckwin);
 
@@ -110,50 +131,30 @@ task_window_constructed (GObject *object)
   
   if ( G_OBJECT_CLASS (task_window_parent_class)->constructed)
   {
-    G_OBJECT_CLASS (task_window_parent_class)->constructed (object);  
-  }  
+    G_OBJECT_CLASS (task_window_parent_class)->constructed (object);
+  }
 }
 
 static void
 task_window_class_init (TaskWindowClass *klass)
 {
-  GParamSpec   *pspec;
-  GObjectClass *obj_class = G_OBJECT_CLASS (klass);
+  GParamSpec    *pspec;
+  GObjectClass  *obj_class  = G_OBJECT_CLASS (klass);
+  TaskItemClass *item_class = TASK_ITEM_CLASS (klass);
 
-  obj_class->constructed  = task_window_constructed;
   obj_class->set_property = task_window_set_property;
   obj_class->get_property = task_window_get_property;
+  obj_class->constructed  = task_window_constructed;
 
-  /* We implement the necessary funtions for a normal window */
-  klass->get_application = _get_application;
-  klass->get_pid         = _get_pid;
-  klass->get_name        = _get_name;
-  klass->get_icon        = _get_icon;
-  klass->is_on_workspace = _is_on_workspace;
-  klass->activate        = NULL;
-  klass->popup_menu      = NULL;
-
-  /* Install signals */
-  _window_signals[NAME_CHANGED] =
-		g_signal_new ("name-changed",
-			      G_OBJECT_CLASS_TYPE (obj_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (TaskWindowClass, name_changed),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__STRING, 
-			      G_TYPE_NONE,
-            1, G_TYPE_STRING); 
-
-  _window_signals[ICON_CHANGED] =
-		g_signal_new ("icon-changed",
-			      G_OBJECT_CLASS_TYPE (obj_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (TaskWindowClass, icon_changed),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__OBJECT, 
-			      G_TYPE_NONE,
-            1, GDK_TYPE_PIXBUF); 
+  /* We implement the necessary funtions for an item */
+  item_class->get_name        = _get_name;
+  item_class->get_icon        = _get_icon;
+  item_class->is_visible      = _is_visible;
+  item_class->left_click      = _left_click;
+  item_class->right_click      = _right_click;
+  item_class->match           = _match;
   
+  /* Install signals */
   _window_signals[ACTIVE_CHANGED] =
 		g_signal_new ("active-changed",
 			      G_OBJECT_CLASS_TYPE (obj_class),
@@ -214,17 +215,6 @@ task_window_class_init (TaskWindowClass *klass)
 			      G_TYPE_NONE,
             1, G_TYPE_BOOLEAN);
 
-  _window_signals[RUNNING_CHANGED] =
-		g_signal_new ("running-changed",
-			      G_OBJECT_CLASS_TYPE (obj_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (TaskWindowClass, running_changed),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__BOOLEAN,
-			      G_TYPE_NONE,
-            1, G_TYPE_BOOLEAN);
-
-
   /* Install properties */
   pspec = g_param_spec_object ("taskwindow",
                                "Window",
@@ -242,6 +232,8 @@ task_window_init (TaskWindow *window)
   	
   priv = window->priv = TASK_WINDOW_GET_PRIVATE (window);
 
+  priv->workspace = NULL;
+  priv->in_workspace = TRUE;
   priv->message = NULL;
   priv->progress = 0;
   priv->hidden = FALSE;
@@ -249,14 +241,14 @@ task_window_init (TaskWindow *window)
   priv->is_active = FALSE;
 }
 
-TaskWindow *
+TaskItem *
 task_window_new (WnckWindow *window)
 {
-  TaskWindow *win = NULL;
+  TaskItem *win = NULL;
 
   win = g_object_new (TASK_TYPE_WINDOW,
-                         "taskwindow", window,
-                         NULL);
+                      "taskwindow", window,
+                      NULL);
 
   return win;
 }
@@ -267,11 +259,8 @@ task_window_new (WnckWindow *window)
  */
 static void
 window_closed (TaskWindow *window, WnckWindow *old_window)
-{
-  g_signal_emit (window, _window_signals[RUNNING_CHANGED], 0, FALSE);
-  
-  if (!TASK_IS_LAUNCHER (window))
-    g_object_unref (G_OBJECT (window));
+{  
+  gtk_widget_destroy (GTK_WIDGET (window));
 }
 
 static void
@@ -283,8 +272,7 @@ on_window_name_changed (WnckWindow *wnckwin, TaskWindow *window)
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
   priv = window->priv;
 
-  g_signal_emit (window, _window_signals[NAME_CHANGED], 
-                 0, wnck_window_get_name (wnckwin));
+  task_item_emit_name_changed (TASK_ITEM (window), wnck_window_get_name (wnckwin));
 }
 
 static void
@@ -297,7 +285,7 @@ on_window_icon_changed (WnckWindow *wnckwin, TaskWindow *window)
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
   
   pixbuf = _wnck_get_icon_at_size (wnckwin, s->panel_size, s->panel_size);
-  task_window_update_icon (window, pixbuf);
+  task_item_emit_icon_changed (TASK_ITEM (window), pixbuf);
   g_object_unref (pixbuf);
 }
 
@@ -308,7 +296,17 @@ on_window_workspace_changed (WnckWindow *wnckwin, TaskWindow *window)
     
   g_return_if_fail (TASK_IS_WINDOW (window));
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
+
   priv = window->priv;
+  if (priv->workspace==NULL)
+    priv->in_workspace = TRUE;
+  else
+    priv->in_workspace = wnck_window_is_in_viewport (priv->window, priv->workspace);
+
+  if (priv->in_workspace && !priv->hidden)
+    task_item_emit_visible_changed (TASK_ITEM (window), TRUE);
+  else
+    task_item_emit_visible_changed (TASK_ITEM (window), FALSE);
   
   g_signal_emit (window, _window_signals[WORKSPACE_CHANGED], 
                  0, wnck_window_get_workspace (wnckwin));
@@ -334,7 +332,11 @@ on_window_state_changed (WnckWindow      *wnckwin,
   if (priv->hidden != hidden)
   {
     priv->hidden = hidden;
-    g_signal_emit (window, _window_signals[HIDDEN_CHANGED], 0, hidden);
+
+    if (priv->in_workspace && !priv->hidden)
+      task_item_emit_visible_changed (TASK_ITEM (window), TRUE);
+    else
+      task_item_emit_visible_changed (TASK_ITEM (window), FALSE);      
   }
 
   needs_attention = wnck_window_or_transient_needs_attention (wnckwin);
@@ -347,14 +349,19 @@ on_window_state_changed (WnckWindow      *wnckwin,
   }
 }
 
+/**
+ * TODO: remove old signals and weak_ref...
+ */
 static void
 task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
 {
   TaskWindowPrivate *priv;
-
+  GdkPixbuf    *pixbuf;
+  TaskSettings *s = task_settings_get_default ();
+  
   g_return_if_fail (TASK_IS_WINDOW (window));
-  priv = window->priv;
 
+  priv = window->priv;
   priv->window = wnckwin;
 
   g_object_weak_ref (G_OBJECT (priv->window), 
@@ -369,14 +376,33 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
   g_signal_connect (wnckwin, "state-changed", 
                     G_CALLBACK (on_window_state_changed), window);
 
-  g_signal_emit (window, _window_signals[RUNNING_CHANGED], 0, TRUE);
+  task_item_emit_name_changed (TASK_ITEM (window), wnck_window_get_name (wnckwin));
+  pixbuf = _wnck_get_icon_at_size (wnckwin, s->panel_size, s->panel_size);
+  task_item_emit_icon_changed (TASK_ITEM (window), pixbuf);
+  g_object_unref (pixbuf);
+  task_item_emit_visible_changed (TASK_ITEM (window), TRUE);
 }
 
 /*
  * Public functions
  */
+
+/**
+ * Returns the name of the WnckWindow.
+ */
+const gchar *
+task_window_get_name (TaskWindow *window)
+{
+  g_return_val_if_fail (TASK_IS_WINDOW (window), "");
+
+  if (WNCK_IS_WINDOW (window->priv->window))
+    return wnck_window_get_name (window->priv->window);
+  
+  return "";
+}
+
 WnckScreen * 
-task_window_get_screen (TaskWindow    *window)
+task_window_get_screen (TaskWindow *window)
 {
   g_return_val_if_fail (TASK_IS_WINDOW (window), wnck_screen_get_default ());
 
@@ -387,7 +413,7 @@ task_window_get_screen (TaskWindow    *window)
 }
 
 gulong 
-task_window_get_xid (TaskWindow    *window)
+task_window_get_xid (TaskWindow *window)
 {
   g_return_val_if_fail (TASK_IS_WINDOW (window), 0);
 
@@ -398,29 +424,29 @@ task_window_get_xid (TaskWindow    *window)
 }
 
 gint 
-task_window_get_pid (TaskWindow    *window)
+task_window_get_pid (TaskWindow *window)
 {
-  TaskWindowClass *klass;
-
-	g_return_val_if_fail (TASK_IS_WINDOW (window), -1);
+  g_return_val_if_fail (TASK_IS_WINDOW (window), -1);
   
-  klass = TASK_WINDOW_GET_CLASS (window);
-  g_return_val_if_fail (klass->get_pid, -1);
-	
-	return klass->get_pid (window);
+	gint pid = -1;
+  if (WNCK_IS_WINDOW (window->priv->window))
+	{
+    pid = wnck_window_get_pid (window->priv->window);
+		pid = pid ? pid : -1; 		/* if the pid is 0 return -1.  Bad wnck! Bad! */
+	}
+  
+	return pid;  
 }
 
 WnckApplication *
-task_window_get_application (TaskWindow    *window)
+task_window_get_application (TaskWindow *window)
 {
-  TaskWindowClass *klass;
+  g_return_val_if_fail (TASK_IS_WINDOW (window), NULL);
 
-        g_return_val_if_fail (TASK_IS_WINDOW (window), NULL);
-  
-  klass = TASK_WINDOW_GET_CLASS (window);
-  g_return_val_if_fail (klass->get_application, NULL);
-        
-        return klass->get_application (window);
+  if (WNCK_IS_WINDOW (window->priv->window))
+    return wnck_window_get_application (window->priv->window);
+
+  return NULL;
 }
 
 
@@ -429,7 +455,7 @@ task_window_get_wm_class (TaskWindow    *window,
                           gchar        **res_name,
                           gchar        **class_name)
 {
-  g_return_val_if_fail (TASK_IS_WINDOW (window), -1);
+  g_return_val_if_fail (TASK_IS_WINDOW (window), FALSE);
  
   *res_name = NULL;
   *class_name = NULL;
@@ -444,51 +470,6 @@ task_window_get_wm_class (TaskWindow    *window,
   }
 
   return FALSE;
-}
-
-const gchar * 
-task_window_get_name (TaskWindow    *window)
-{
-  TaskWindowClass *klass;
-
-  g_return_val_if_fail (TASK_IS_WINDOW (window), NULL);
-  
-  klass = TASK_WINDOW_GET_CLASS (window);
-  g_return_val_if_fail (klass->get_name, NULL);
-
-  return klass->get_name (window);
-}
-
-void
-task_window_set_name (TaskWindow    *window,
-                      const gchar   *name)
-{
-  g_return_if_fail (TASK_IS_WINDOW (window));
-
-  g_signal_emit (window, _window_signals[NAME_CHANGED], 0, name);
-}
-
-GdkPixbuf     * 
-task_window_get_icon (TaskWindow    *window)
-{
-  TaskWindowClass *klass;
-
-  g_return_val_if_fail (TASK_IS_WINDOW (window), NULL);
-  
-  klass = TASK_WINDOW_GET_CLASS (window);
-  g_return_val_if_fail (klass->get_icon, NULL);
-
-  return klass->get_icon (window);
-}
-
-void
-task_window_update_icon (TaskWindow    *window,
-                         GdkPixbuf     *pixbuf)
-{
-  g_return_if_fail (TASK_IS_WINDOW (window));
-  g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
-  
-  g_signal_emit (window, _window_signals[ICON_CHANGED], 0, pixbuf);
 }
 
 gboolean   
@@ -509,7 +490,7 @@ task_window_set_is_active  (TaskWindow    *window,
   g_return_if_fail (TASK_IS_WINDOW (window));
 
   window->priv->is_active = is_active;
-
+  
   g_signal_emit (window, _window_signals[ACTIVE_CHANGED], 0, is_active);
 }
 
@@ -552,19 +533,40 @@ task_window_is_hidden (TaskWindow    *window)
   return window->priv->hidden;
 }
 
+void
+task_window_set_active_workspace   (TaskWindow    *window,
+                                    WnckWorkspace *space)
+{
+  TaskWindowPrivate *priv;
+
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  g_return_if_fail (WNCK_IS_WORKSPACE (space) || space == NULL);
+
+  priv = window->priv;
+  priv->workspace = space;
+  priv->in_workspace = (space==NULL)?TRUE:wnck_window_is_in_viewport (priv->window, space);
+  
+  if (priv->in_workspace && !priv->hidden)
+    task_item_emit_visible_changed (TASK_ITEM (window), TRUE);
+  else
+    task_item_emit_visible_changed (TASK_ITEM (window), FALSE);
+}
+
 gboolean   
 task_window_is_on_workspace (TaskWindow    *window,
                              WnckWorkspace *space)
 {
-  TaskWindowClass *klass;
-
+  TaskWindowPrivate *priv;
+  
   g_return_val_if_fail (TASK_IS_WINDOW (window), FALSE);
   g_return_val_if_fail (WNCK_IS_WORKSPACE (space), FALSE);
 
-  klass = TASK_WINDOW_GET_CLASS (window);
-  g_return_val_if_fail (klass->is_on_workspace, FALSE);
+  priv = window->priv;
 
-  return klass->is_on_workspace (window, space);
+  if (WNCK_IS_WINDOW (priv->window))
+    return wnck_window_is_in_viewport (priv->window, space);
+
+  return FALSE;
 }
 
 /*
@@ -623,31 +625,16 @@ void
 task_window_activate (TaskWindow    *window,
                       guint32        timestamp)
 {
-  TaskWindowClass *klass;
-  TaskWindowPrivate *priv = window->priv;
-
   g_return_if_fail (TASK_IS_WINDOW (window));
 
-  klass = TASK_WINDOW_GET_CLASS (window);
-
-  if (WNCK_IS_WINDOW (priv->window))
-  {
-    really_activate (priv->window, timestamp);
-  }
-  else
-  {
-    if (klass->activate)
-      klass->activate (window, timestamp);
-  }
+  if (WNCK_IS_WINDOW (window->priv->window))
+    really_activate (window->priv->window, timestamp);
 }
 
 void  
 task_window_minimize (TaskWindow    *window)
 {
-  TaskWindowPrivate *priv;
-
   g_return_if_fail (TASK_IS_WINDOW (window));
-  priv = window->priv;
 
   if (WNCK_IS_WINDOW (window->priv->window))
     wnck_window_minimize (window->priv->window);
@@ -658,13 +645,10 @@ void
 task_window_close (TaskWindow    *window,
                    guint32        timestamp)
 {
-  TaskWindowPrivate *priv;
-
   g_return_if_fail (TASK_IS_WINDOW (window));
-  priv = window->priv;
 
-  if (WNCK_IS_WINDOW (priv->window))
-    wnck_window_close (priv->window, timestamp);
+  if (WNCK_IS_WINDOW (window->priv->window))
+    wnck_window_close (window->priv->window, timestamp);
 
 }
 
@@ -682,28 +666,7 @@ task_window_popup_context_menu (TaskWindow     *window,
   
   klass = TASK_WINDOW_GET_CLASS (window);
 
-  /* If we have a valid WnckWindow, then create the normal menu and allow
-   * custom entires before showing 
-   */
-  if (WNCK_IS_WINDOW (priv->window))
-  {
-    menu = wnck_action_menu_new (priv->window);
-
-    if (klass->popup_menu)
-      klass->popup_menu (window, GTK_MENU (menu));
-  }
-  else if (klass->popup_menu)
-  {
-    /* Let the instance add any custom options */
-    menu = gtk_menu_new ();
-    if (klass->popup_menu)
-      klass->popup_menu (window, GTK_MENU (menu));  
-  }
-  else
-  {
-    return;
-  }
-  
+  menu = wnck_action_menu_new (priv->window);
   gtk_menu_popup (GTK_MENU (menu), NULL, NULL, 
                   NULL, NULL, event->button, event->time);
 }
@@ -738,36 +701,14 @@ task_window_get_is_running (TaskWindow *window)
 }
 
 /*
- * Implemented functions for a standard window without a launcher
+ * Implemented functions for a window
  */
 
-static WnckApplication * 
-_get_application (TaskWindow    *window)
-{
-  WnckApplication * value = NULL;
-  if (WNCK_IS_WINDOW (window->priv->window))
-  {
-    value = wnck_window_get_application (window->priv->window);
-  }
-  return value;  
-}
-
-
-static gint 
-_get_pid (TaskWindow    *window)
-{
-	gint value = -1;
-  if (WNCK_IS_WINDOW (window->priv->window))
-	{
-    value = wnck_window_get_pid (window->priv->window);
-		value = value ? value : -1; 		/* if the pid is 0 return -1.  Bad wnck! Bad! */
-	}
-	return value;  
-}
-
 static const gchar * 
-_get_name (TaskWindow    *window)
+_get_name (TaskItem    *item)
 {
+  TaskWindow *window = TASK_WINDOW (item);
+  
   if (WNCK_IS_WINDOW (window->priv->window))
     return wnck_window_get_name (window->priv->window);
 
@@ -775,9 +716,10 @@ _get_name (TaskWindow    *window)
 }
 
 static GdkPixbuf * 
-_get_icon (TaskWindow    *window)
+_get_icon (TaskItem    *item)
 {
   TaskSettings *s = task_settings_get_default ();
+  TaskWindow *window = TASK_WINDOW (item);
 
   if (WNCK_IS_WINDOW (window->priv->window))
     return _wnck_get_icon_at_size (window->priv->window, 
@@ -786,14 +728,30 @@ _get_icon (TaskWindow    *window)
   return NULL;
 }
 
-static gboolean 
-_is_on_workspace (TaskWindow *window,
-                  WnckWorkspace *space)
+static gboolean
+_is_visible (TaskItem *item)
 {
-  TaskWindowPrivate *priv = window->priv;
+  TaskWindowPrivate *priv = TASK_WINDOW (item)->priv;
+  
+  return priv->in_workspace && !priv->hidden;
+}
 
-  if (WNCK_IS_WINDOW (priv->window))
-    return wnck_window_is_in_viewport (priv->window, space);
+static void
+_left_click (TaskItem *item, GdkEventButton *event)
+{
+  task_window_activate (TASK_WINDOW (item), event->time);
+}
 
-  return FALSE;
+static void
+_right_click (TaskItem *item, GdkEventButton *event)
+{
+  task_window_popup_context_menu (TASK_WINDOW (item), event);
+}
+
+static guint   
+_match (TaskItem *item,
+        TaskItem *item_to_match)
+{
+  //TODO
+  return 0;
 }

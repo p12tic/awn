@@ -58,6 +58,7 @@ AUTOHIDE		= "autohide"		#int
 STYLE			= "style"		#int
 EXPAND			= "expand"		#bool
 CLICKTHROUGH		= "clickthrough"	#int
+BEHAVIOR		= "behavior"		#int
 
 THEME			= "theme"		#group
 GSTEP1			= "gstep1"		#string

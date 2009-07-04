@@ -58,6 +58,14 @@
   (gtype-id "AWN_TYPE_THEMED_ICON")
 )
 
+(define-object Image
+  (in-module "Awn")
+  (parent "GtkImage")
+  (c-name "AwnImage")
+  (gtype-id "AWN_TYPE_IMAGE")
+  (implements "AwnOverlayable")
+)
+
 (define-object IconBox
   (in-module "Awn")
   (parent "GtkBox")
@@ -234,9 +242,16 @@
   (is-constructor-of "AwnApplet")
   (return-type "GtkWidget*")
   (properties
+    '("canonical_name" (argname "canonical_name"))
     '("uid" (argname "uid"))
     '("panel_id" (argname "panel_id"))
   )
+)
+
+(define-method get_canonical_name
+  (of-object "AwnApplet")
+  (c-name "awn_applet_get_canonical_name")
+  (return-type "const-gchar*")
 )
 
 (define-method get_orientation
@@ -354,6 +369,7 @@
   (is-constructor-of "AwnAppletSimple")
   (return-type "GtkWidget*")
   (properties
+    '("canonical_name" (argname "canonical_name"))
     '("uid" (argname "uid"))
     '("panel_id" (argname "panel_id"))
   )
@@ -570,7 +586,7 @@
   (of-object "AwnEffects")
   (c-name "awn_effects_cairo_create_clipped")
   (parameters
-    '("GdkRegion*" "region")
+    '("GdkEventExpose*" "event")
   )
   (return-type "cairo_t*")
 )
@@ -792,6 +808,18 @@
     '("AwnApplet*" "applet")
   )
 )
+
+;; From awn-image.h
+
+(define-function awn_image_new
+  (c-name "awn_image_new")
+  (is-constructor-of "AwnImage")
+  (return-type "AwnImage*")
+  (properties
+    '("label" (optional) (arg-name "label"))
+  )
+)
+
 ;; From awn-overlay.h
 
 (define-function awn_overlay_new
@@ -1035,6 +1063,12 @@
 (define-method get_state
   (of-object "AwnThemedIcon")
   (c-name "awn_themed_icon_get_state")
+  (return-type "const-gchar*")
+)
+
+(define-method get_default_theme_name
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_get_default_theme_name")
   (return-type "const-gchar*")
 )
 

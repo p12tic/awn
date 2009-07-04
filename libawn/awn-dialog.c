@@ -397,16 +397,19 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
     cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
     awn_cairo_set_source_color (cr, priv->g_histep_1);
 
+    const int start_x = BORDER + 2;
+    const int start_y = BORDER + 2;
     const int inner_w = width - 2*BORDER - 4;
     const int inner_h = priv->title->allocation.height
                         + (priv->window_padding - BORDER);
+    const int round_radius = priv->window_padding / 2;
 
-    awn_cairo_rounded_rect (cr, BORDER + 2, BORDER + 2,
+    awn_cairo_rounded_rect (cr, start_x, start_y,
                             inner_w, inner_h,
-                            priv->window_padding / 2, ROUND_ALL);
+                            round_radius, ROUND_TOP);
     cairo_fill_preserve (cr);
     cairo_stroke (cr);
-
+#if 0
     const int SHADOW_RADIUS = 4;
     cairo_rectangle (cr, BORDER + 2,
                      BORDER + 2 + inner_h - priv->window_padding / 2,
@@ -414,8 +417,29 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
     cairo_clip (cr);
     awn_cairo_rounded_rect_shadow (cr, BORDER + 2, BORDER + 2,
                                    inner_w, inner_h,
-                                   priv->window_padding / 2, ROUND_ALL,
+                                   priv->window_padding / 2, ROUND_TOP,
                                    SHADOW_RADIUS, 0.4);
+#endif
+    const GdkColor *color = &priv->title->style->fg[GTK_STATE_PRELIGHT];
+    double r = color->red / 65535.0;
+    double g = color->green / 65535.0;
+    double b = color->blue / 65535.0;
+
+    cairo_pattern_t *pat;
+    pat = cairo_pattern_create_linear (start_x, start_y + inner_h,
+                                       start_x + inner_w, start_y + inner_h);
+    cairo_pattern_add_color_stop_rgba (pat, 0.0, r, g, b, 0.0);
+    cairo_pattern_add_color_stop_rgba (pat, 0.2, r, g, b, 0.625);
+    cairo_pattern_add_color_stop_rgba (pat, 0.8, r, g, b, 0.625);
+    cairo_pattern_add_color_stop_rgba (pat, 1.0, r, g, b, 0.0);
+
+    cairo_set_source (cr, pat);
+    cairo_move_to (cr, start_x, start_y + inner_h);
+    cairo_rel_line_to (cr, inner_w, 0.0);
+    cairo_stroke (cr);
+
+    cairo_pattern_destroy (pat);
+
     cairo_restore (cr);
   }
 
@@ -512,7 +536,7 @@ _on_title_notify(GObject *dialog, GParamSpec *spec, gpointer null)
   if (title)
   {
     gchar *markup = g_strdup_printf(
-                      "<span size='x-large' weight='bold'>%s</span>", title);
+                      "<span size='medium' weight='bold'>%s</span>", title);
     gtk_label_set_markup(GTK_LABEL(priv->title), markup);
     g_free(markup);
     gtk_widget_show(priv->title);
@@ -1043,7 +1067,7 @@ awn_dialog_init (AwnDialog *dialog)
   gtk_widget_set_no_show_all (priv->title, TRUE);
   gtk_widget_set_state (priv->title, GTK_STATE_PRELIGHT);
   gtk_misc_set_alignment (GTK_MISC (priv->title), 0.5, 0.5);
-  gtk_misc_set_padding (GTK_MISC (priv->title), 4, 4);
+  gtk_misc_set_padding (GTK_MISC (priv->title), 4, 0);
 
   gtk_box_pack_start (GTK_BOX (priv->vbox), priv->title, TRUE, TRUE, 0);
 

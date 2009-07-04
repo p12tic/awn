@@ -24,7 +24,7 @@
 #include <gtk/gtk.h>
 #include <libwnck/libwnck.h>
 
-#include "task-window-private.h"
+#include "task-item.h"
 
 #define TASK_TYPE_WINDOW (task_window_get_type ())
 
@@ -49,32 +49,20 @@ typedef struct _TaskWindowPrivate TaskWindowPrivate;
  
 struct _TaskWindow
 {
-  GObject        parent;	
+  TaskItem        parent;	
 
   TaskWindowPrivate *priv;
 };
 
 struct _TaskWindowClass
 {
-  GObjectClass   parent_class;
+  TaskItemClass   parent_class;
 
   /*< vtable >*/
-  gint          (*get_pid)         (TaskWindow     *window);
-  const gchar * (*get_name)        (TaskWindow     *window);
-  WnckApplication * (*get_application) (TaskWindow *window);
-  GdkPixbuf   * (*get_icon)        (TaskWindow     *window);
-  gboolean      (*is_on_workspace) (TaskWindow     *window,
-                                    WnckWorkspace  *space);
-  void          (*activate)        (TaskWindow     *window,
-                                    guint32         timestamp);
-  void          (*popup_menu)      (TaskWindow     *window,
-                                    GtkMenu        *menu);
 
   /*< signals >*/
-  void (*name_changed)      (TaskWindow *window, const gchar   *name);
-  void (*icon_changed)      (TaskWindow *window, GdkPixbuf     *pixbuf);
   void (*active_changed)    (TaskWindow *window, gboolean       is_active);
-  void (*needs_attention)   (TaskWindow *window, gboolean      needs_attention);
+  void (*needs_attention)   (TaskWindow *window, gboolean       needs_attention);
   void (*workspace_changed) (TaskWindow *window, WnckWorkspace *space);
 
   void (*message_changed)   (TaskWindow *window, const gchar   *message);
@@ -85,7 +73,9 @@ struct _TaskWindowClass
 
 GType           task_window_get_type          (void) G_GNUC_CONST;
 
-TaskWindow    * task_window_new               (WnckWindow    *window);
+TaskItem      * task_window_new               (WnckWindow    *window);
+
+const gchar   * task_window_get_name          (TaskWindow    *window);
 
 WnckScreen    * task_window_get_screen        (TaskWindow    *window);
 
@@ -98,15 +88,6 @@ gboolean        task_window_get_wm_class      (TaskWindow    *window,
                                                gchar        **class_name);
 WnckApplication*task_window_get_application   (TaskWindow    *window);
 
-const gchar   * task_window_get_name          (TaskWindow    *window);
-void            task_window_set_name          (TaskWindow    *window,
-                                               const gchar   *name);
-
-GdkPixbuf     * task_window_get_icon          (TaskWindow    *window);
-
-void            task_window_update_icon       (TaskWindow    *window,
-                                               GdkPixbuf     *pixbuf);
-
 gboolean        task_window_is_active         (TaskWindow    *window);
 void            task_window_set_is_active     (TaskWindow    *window,
                                                gboolean       is_active);
@@ -117,10 +98,17 @@ const gchar   * task_window_get_message       (TaskWindow    *window);
 
 gfloat          task_window_get_progress      (TaskWindow    *window);
 
+gboolean        task_window_is_visible        (TaskWindow    *window);
+
 gboolean        task_window_is_hidden         (TaskWindow    *window);
+
+void            task_window_set_active_workspace   (TaskWindow    *window,
+                                                    WnckWorkspace *space);
 
 gboolean        task_window_is_on_workspace   (TaskWindow    *window,
                                                WnckWorkspace *space);
+
+
 
 void            task_window_activate          (TaskWindow    *window,
                                                guint32        timestamp);

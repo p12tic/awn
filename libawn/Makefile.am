@@ -37,6 +37,7 @@ public_headers = \
 	awn-effects.h \
 	awn-icon.h \
 	awn-icon-box.h \
+	awn-image.h \
 	awn-overlay.h \
 	awn-overlayable.h \
 	awn-overlay-pixbuf.h \
@@ -72,6 +73,7 @@ source_c = \
 	awn-effects-ops-helpers.c \
 	awn-icon.c \
 	awn-icon-box.c \
+	awn-image.c \
 	awn-overlay.c \
 	awn-overlayable.c \
 	awn-overlay-pixbuf.c \
