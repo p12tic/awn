@@ -891,7 +891,7 @@ on_window_progress_changed (TaskWindow   *window,
  */
 static void
 on_item_visible_changed (TaskItem   *item,
-                         gfloat      visible,
+                         gboolean   visible,
                          TaskIcon   *icon)
 {
   g_return_if_fail (TASK_IS_ICON (icon));
