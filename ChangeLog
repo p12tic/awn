@@ -1,5 +1,13 @@
 2009-07-04  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-config.c (awn_config_get_default,
+	  awn_config_get_default_for_applet,
+	  awn_config_get_default_for_applet_by_info):
+	Implement the convenience methods for creating applet config objects.
+	Fix potential crasher.
+
+2009-07-04  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-dialog.c:
 	Convert color properties to be of type DesktopAgnosticColor*.
 
