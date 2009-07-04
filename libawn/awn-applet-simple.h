@@ -59,6 +59,9 @@ struct _AwnAppletSimpleClass
 {
   AwnAppletClass parent_class;
 
+  /* signals */
+  void (*clicked) (AwnAppletSimple *simple);
+
   /* padding */
   void (*_simple_applet0) (void);
   void (*_simple_applet1) (void);

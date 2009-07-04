@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include <gdk/gdkx.h>
+#include <glib/gi18n.h>
 
 #include <X11/Xlib.h>
 #include <X11/extensions/shape.h>
@@ -2580,6 +2581,8 @@ awn_panel_docklet_request (AwnPanel *panel,
     awn_throbber_set_type (AWN_THROBBER (priv->docklet_closer),
                            AWN_THROBBER_TYPE_CLOSE_BUTTON);
     awn_icon_set_hover_effects (AWN_ICON (priv->docklet_closer), TRUE);
+    awn_icon_set_tooltip_text (AWN_ICON (priv->docklet_closer),
+                               _("Close docklet"));
 
     awn_applet_manager_add_widget (AWN_APPLET_MANAGER (priv->manager),
                                    priv->docklet_closer, 1);

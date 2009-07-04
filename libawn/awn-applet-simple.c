@@ -56,6 +56,14 @@ enum
   ICON_THEMED_MANY
 };
 
+enum
+{
+  CLICKED,
+
+  LAST_SIGNAL
+};
+static guint32 _simple_signals[LAST_SIGNAL] = { 0 };
+
 /* GObject stuff */
 
 /*
@@ -104,6 +112,12 @@ awn_applet_simple_size_changed (AwnApplet *applet, gint size)
 }
 
 static void
+on_icon_clicked (AwnAppletSimple *simple, AwnIcon *icon)
+{
+  g_signal_emit (simple, _simple_signals[CLICKED], 0);
+}
+
+static void
 awn_applet_simple_size_allocate (GtkWidget *widget, GtkAllocation *alloc)
 {
   AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE_GET_PRIVATE (widget);
@@ -147,6 +161,8 @@ awn_applet_simple_constructed (GObject *object)
                             awn_applet_get_orientation (AWN_APPLET (object)));
   awn_icon_set_offset (AWN_ICON (priv->icon),
                        awn_applet_get_offset (AWN_APPLET (object)));
+  g_signal_connect_swapped (priv->icon, "clicked", 
+                            G_CALLBACK (on_icon_clicked), object);
   gtk_container_add (GTK_CONTAINER (applet), priv->icon);
   gtk_widget_show (priv->icon);
 }
@@ -176,6 +192,15 @@ awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
   app_class->offset_changed = awn_applet_simple_offset_changed;
   app_class->size_changed   = awn_applet_simple_size_changed;
   app_class->menu_creation  = awn_applet_simple_menu_creation;
+
+  _simple_signals[CLICKED] =
+    g_signal_new ("clicked",
+      G_OBJECT_CLASS_TYPE (obj_class),
+      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+      G_STRUCT_OFFSET (AwnAppletSimpleClass, clicked),
+      NULL, NULL,
+      g_cclosure_marshal_VOID__VOID,
+      G_TYPE_NONE, 0);
   
   g_type_class_add_private (obj_class, sizeof (AwnAppletSimplePrivate));
 }
