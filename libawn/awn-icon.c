@@ -146,7 +146,7 @@ awn_icon_expose_event (GtkWidget *widget, GdkEventExpose *event)
   g_return_val_if_fail(priv->icon_srfc, FALSE);
 
   /* clip the drawing region, nvidia likes it */
-  cr = awn_effects_cairo_create_clipped (priv->effects, event->region);
+  cr = awn_effects_cairo_create_clipped (priv->effects, event);
 
   /* if we're RGBA we have transparent background (awn_icon_make_transparent),
    * otherwise default widget background color

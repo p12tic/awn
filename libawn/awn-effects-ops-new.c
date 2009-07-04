@@ -523,7 +523,9 @@ gboolean awn_effects_post_op_glow(AwnEffects * fx,
   if (priv->glow_amount > 0 || fx->depressed)
   {
     gfloat amount = fx->depressed ? 30 : priv->glow_amount;
-    lighten_surface(cairo_get_target(cr), amount, fx->depressed);
+    lighten_surface(cairo_get_target(cr),
+                    priv->window_width, priv->window_height,
+                    amount, fx->depressed);
     return TRUE;
   }
   return FALSE;
@@ -612,8 +614,8 @@ gboolean awn_effects_post_op_shadow(AwnEffects * fx,
     cairo_set_source_surface(blur_ctx, cairo_get_target(cr), 0, 0);
     cairo_paint(blur_ctx);
 
-    darken_surface(blur_srfc);
-    blur_surface_shadow(blur_srfc, 4);
+    darken_surface (blur_srfc, priv->window_width, priv->window_height);
+    blur_surface_shadow (blur_srfc, priv->window_width, priv->window_height, 4);
 
     cairo_save(cr);
     cairo_set_operator(cr, CAIRO_OPERATOR_DEST_OVER);

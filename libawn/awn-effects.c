@@ -1188,8 +1188,12 @@ cairo_t *awn_effects_cairo_create(AwnEffects *fx)
 /**
  * awn_effects_cairo_create_clipped:
  * @fx: Pointer to #AwnEffects instance.
- * @region: A region the drawing will be clipped to.
+ * @event: #GdkEventExpose received by the widget.
  *
+ * Creates a Cairo context for drawing to #AwnEffects:widget. The drawing
+ * region will be clipped to @event's region member, and translated to its
+ * area member, so you can always paint the icon at coordinates [0, 0].
+ * 
  * <note>
  *  Make sure you call awn_effects_cairo_destroy() on the cairo context
  *  returned by this call.
@@ -1200,7 +1204,7 @@ cairo_t *awn_effects_cairo_create(AwnEffects *fx)
  *
  */
 cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
-                                          GdkRegion *region)
+                                          GdkEventExpose *event)
 {
   g_return_val_if_fail(AWN_IS_EFFECTS(fx) && fx->widget, NULL);
 
@@ -1219,18 +1223,22 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
   priv->window_width = fx->widget->allocation.width;
   priv->window_height = fx->widget->allocation.height;
 
-  if (fx->no_clear == FALSE)
-    awn_effects_pre_op_clear(fx, cr, NULL, NULL);
-  if (region && gdk_region_empty(region) == FALSE)
+  if (event)
   {
-    /* Python apps pass empty region... interesting, I guess they should use
-     * cairo_create instead of cairo_create_clipped, but we'll be nice
-     */
-
     /* clip the region */
-    gdk_cairo_region (cr, region);
+    gdk_cairo_rectangle (cr, &event->area);
     cairo_clip (cr);
+
+    /* this part of the code is also very sensitive, using different condition
+     * (ie "if (event->area.x > 0)" results in artifacts similar to the ones
+     * mentioned above if using cairo_xlib_surface_get_width/height)
+     */
+    if (GTK_WIDGET_NO_WINDOW (fx->widget))
+      cairo_translate (cr, (double)(event->area.x), (double)(event->area.y));
   }
+
+  if (fx->no_clear == FALSE)
+    awn_effects_pre_op_clear (fx, cr, NULL, NULL);
 
 #if 0
   g_debug("Icon size: %dx%d, Surface size: %dx%d", 
@@ -1312,8 +1320,12 @@ void awn_effects_cairo_destroy(AwnEffects *fx)
                         fx->priv->icon_width, fx->priv->icon_height);
   }
 
-  cairo_reset_clip(cr);
-  cairo_identity_matrix(cr);
+  cairo_reset_clip (cr);
+  /* FIXME: 
+   *   NO_WINDOW widgets won't like this!
+   *     (though it'll cause problems only when indirect-paint == FALSE)
+   */
+  cairo_identity_matrix (cr);
 
   /* put surface operations here
    * FIXME: put the functions in some kind of list/array

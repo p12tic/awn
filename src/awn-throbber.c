@@ -62,7 +62,7 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
 
   /* clip the drawing region, nvidia likes it */
   AwnEffects *fx = awn_overlayable_get_effects (AWN_OVERLAYABLE (widget));
-  cr = awn_effects_cairo_create_clipped (fx, event->region);
+  cr = awn_effects_cairo_create_clipped (fx, event);
 
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 

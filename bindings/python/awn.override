@@ -14,22 +14,6 @@ headers
 
 extern Pycairo_CAPI_t *Pycairo_CAPI;
 
-/* Some hacking to get GdkRegion to work. */
-#ifndef PYGDK_TYPE_REGION
-GType pygdk_region_get_type (void) G_GNUC_CONST;
-#define PYGDK_TYPE_REGION (pygdk_region_get_type ())
-GType
-pygdk_region_get_type (void)
-{
-  static GType our_type = 0;
-  
-  if (our_type == 0)
-    /* GdkRegion is already taken by pygtk in its boxing of GdkRegion. */
-    our_type = g_type_from_name("GdkRegion");
-  return our_type;
-}
-#endif /* GDK_TYPE_REGION */
-
 static GSList *
 _pysequence_to_gslist (PyObject *seq, AwnConfigListType list_type)
 {
@@ -147,6 +131,7 @@ import gtk.Widget as PyGtkWidget_Type
 import gtk.Window as PyGtkWindow_Type
 import gtk.gdk.Pixbuf as PyGdkPixbuf_Type
 import gtk.DrawingArea as PyGtkDrawingArea_Type
+import gtk.Image as PyGtkImage_Type
 %%
 ignore-glob
   *_get_type
@@ -538,21 +523,21 @@ override awn_effects_cairo_create_clipped
 static PyObject *
 _wrap_awn_effects_cairo_create_clipped(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
-    static char *kwlist[] = { "region", NULL };
-    PyObject *py_region;
+    static char *kwlist[] = { "event", NULL };
+    GdkEvent *event = NULL;
+    PyObject *py_event;
     cairo_t *ret;
-    GdkRegion *region = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:AwnEffects.cairo_create_clipped", kwlist, &py_region))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:AwnEffects.cairo_create_clipped", kwlist, &py_event))
         return NULL;
-    if (pyg_boxed_check(py_region, PYGDK_TYPE_REGION))
-        region = pyg_boxed_get(py_region, GdkRegion);
+    if (pyg_boxed_check(py_event, GDK_TYPE_EVENT))
+        event = pyg_boxed_get(py_event, GdkEvent);
     else {
-        PyErr_SetString(PyExc_TypeError, "region should be a GdkRegion");
+        PyErr_SetString(PyExc_TypeError, "event should be a GdkEvent");
         return NULL;
     }
 
-    ret = awn_effects_cairo_create_clipped(AWN_EFFECTS(self->obj), region);
+    ret = awn_effects_cairo_create_clipped(AWN_EFFECTS(self->obj), (GdkEventExpose *)event);
 
     cairo_reference(ret);
     /* bug in pygtk-codegen > sets second parameter to NULL in call to

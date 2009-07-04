@@ -398,6 +398,29 @@ awn_overlay_text_new (void)
                        NULL);
 }
 
+void awn_overlay_text_get_size (AwnOverlayText *overlay,
+                                GtkWidget *widget,
+                                gchar *text,
+                                gint size,
+                                gint *width, gint *height)
+{
+  PangoLayout *layout;
+  if (size < 1)
+  {
+    size = 48;
+  }
+  g_return_if_fail (AWN_IS_OVERLAY_TEXT (overlay));
+  AwnOverlayTextPrivate *priv = AWN_OVERLAY_TEXT_GET_PRIVATE (overlay);
+
+  layout = gtk_widget_create_pango_layout (widget, NULL);
+  pango_font_description_set_absolute_size (priv->font_description,
+                                            priv->font_sizing * PANGO_SCALE * size / 48.0);
+  pango_layout_set_font_description (layout, priv->font_description);
+  pango_layout_set_text (layout, text ? text : priv->text, -1);
+  pango_layout_get_pixel_size (layout, width, height);
+  g_object_unref (layout);
+}
+
 static void 
 _awn_overlay_text_render (AwnOverlay* _overlay,
                           GtkWidget *widget,
