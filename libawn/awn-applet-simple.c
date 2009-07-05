@@ -155,8 +155,17 @@ awn_applet_simple_constructed (GObject *object)
 
   AwnAppletSimple        *applet = AWN_APPLET_SIMPLE (object);
   AwnAppletSimplePrivate *priv = applet->priv;
+  gchar                  *applet_name;
+  
+  g_object_get (object,
+                "canonical-name",&applet_name,
+                NULL);
 
   priv->icon = awn_themed_icon_new ();
+  
+  g_object_set (priv->icon,
+                "applet-name",applet_name,
+                NULL);
   awn_icon_set_orientation (AWN_ICON (priv->icon), 
                             awn_applet_get_orientation (AWN_APPLET (object)));
   awn_icon_set_offset (AWN_ICON (priv->icon),
@@ -165,6 +174,7 @@ awn_applet_simple_constructed (GObject *object)
                             G_CALLBACK (on_icon_clicked), object);
   gtk_container_add (GTK_CONTAINER (applet), priv->icon);
   gtk_widget_show (priv->icon);
+  g_free (applet_name);
 }
 
 static void
@@ -307,13 +317,17 @@ awn_applet_simple_set_icon_surface (AwnAppletSimple  *applet,
 
 void
 awn_applet_simple_set_icon_name (AwnAppletSimple  *applet,
-                                 const gchar      *applet_name,
                                  const gchar      *icon_name)
 {
+  gchar *applet_name;  
+  
   g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
   g_return_if_fail (applet_name);
   g_return_if_fail (icon_name);
 
+  g_object_get (applet,
+                "canonical-name",&applet_name,
+                NULL);
   applet->priv->last_set_icon = ICON_THEMED_SIMPLE;
   awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
                             awn_applet_get_size (AWN_APPLET (applet)));  
@@ -321,19 +335,24 @@ awn_applet_simple_set_icon_name (AwnAppletSimple  *applet,
                                    applet_name,
                                    awn_applet_get_uid (AWN_APPLET (applet)),
                                    icon_name);
+  g_free (applet_name);
 }
                                     
 void   
 awn_applet_simple_set_icon_info (AwnAppletSimple  *applet,
-                                 const gchar      *applet_name,
                                  GStrv            states,
                                  GStrv            icon_names)
 {
+  gchar *applet_name;
+  
   g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
   g_return_if_fail (applet_name);
   g_return_if_fail (states);
   g_return_if_fail (icon_names);
 
+  g_object_get (applet,
+                "canonical-name",&applet_name,
+                NULL);  
   applet->priv->last_set_icon = ICON_THEMED_MANY;
   awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
                             awn_applet_get_size (AWN_APPLET (applet)));
@@ -342,6 +361,7 @@ awn_applet_simple_set_icon_info (AwnAppletSimple  *applet,
                             awn_applet_get_uid (AWN_APPLET (applet)),
                             states,
                             icon_names);
+  g_free (applet_name);
 }
                                     
 void 
@@ -424,12 +444,13 @@ awn_applet_simple_set_effect (AwnAppletSimple  *applet,
 }
 
 GtkWidget *
-awn_applet_simple_create_about_item (const gchar      *copyright,
+awn_applet_simple_create_about_item (AwnAppletSimple *applet,
+                                     const gchar      *copyright,
                                      AwnAppletLicense  license,
-                                     const gchar      *applet_name,
                                      const gchar      *version)
 {
-  return awn_applet_create_about_item (copyright, license, applet_name, version,
+  g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), NULL);
+  return awn_applet_create_about_item (AWN_APPLET(applet), copyright, license, version, 
                                        NULL, NULL, NULL, NULL, NULL, NULL, NULL,
                                        NULL);
 }

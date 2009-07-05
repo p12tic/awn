@@ -85,11 +85,9 @@ void          awn_applet_simple_set_icon_surface (AwnAppletSimple  *applet,
                                                   cairo_surface_t  *surface);
 
 void          awn_applet_simple_set_icon_name    (AwnAppletSimple  *applet,
-                                                  const gchar      *applet_name,
                                                   const gchar      *icon_name);
                                     
 void          awn_applet_simple_set_icon_info    (AwnAppletSimple  *applet,
-                                                  const gchar      *applet_name,
                                                   GStrv            states,
                                                   GStrv            icon_names);
                                     
@@ -116,10 +114,11 @@ GtkWidget *   awn_applet_simple_get_icon         (AwnAppletSimple  *applet);
 void          awn_applet_simple_set_effect       (AwnAppletSimple  *applet,
                                                   AwnEffect         effect);
 
-GtkWidget *   awn_applet_simple_create_about_item (const gchar      *copyright,
-                                                   AwnAppletLicense  license,
-                                                   const gchar      *applet_name,
-                                                   const gchar      *version);
+
+GtkWidget *   awn_applet_simple_create_about_item (AwnAppletSimple *applet,
+                                                  const gchar      *copyright,
+                                                  AwnAppletLicense  license,
+                                                  const gchar      *version);
 
 G_END_DECLS
 
