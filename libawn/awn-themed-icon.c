@@ -165,7 +165,8 @@ static void awn_themed_icon_preload_all (AwnThemedIcon * icon);
 enum
 {
   PROP_0,
-  PROP_ROTATE
+  PROP_ROTATE,
+  PROP_APPLET_NAME
 };
 
 static GtkIconTheme*
@@ -264,6 +265,9 @@ awn_themed_icon_get_property (GObject *object, guint property_id,
     case PROP_ROTATE:
       g_value_set_enum (value,priv->rotate);
       break;
+    case PROP_APPLET_NAME:
+      g_value_set_string (value,priv->applet_name);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -282,6 +286,10 @@ awn_themed_icon_set_property (GObject *object, guint property_id,
       priv->rotate = g_value_get_enum (value);
       ensure_icon (AWN_THEMED_ICON(object));
       break;
+    case PROP_APPLET_NAME:
+      awn_themed_icon_set_applet_info (AWN_THEMED_ICON(object),
+                                       g_value_get_string (value),priv->uid);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -358,6 +366,13 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
                                GDK_PIXBUF_ROTATE_NONE,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (obj_class, PROP_ROTATE, pspec);   
+
+  pspec = g_param_spec_string ("applet-name",
+                             "Applet Name",
+                             "Applet Name",
+                             NULL,
+                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (obj_class, PROP_APPLET_NAME, pspec);   
   
   g_type_class_add_private (obj_class, sizeof (AwnThemedIconPrivate));
 }

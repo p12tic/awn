@@ -1,3 +1,8 @@
+2009-07-03  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* modified libawn/awn-themed-icon.c:
+	Added "applet-name" prop.
+
 2009-07-05  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-panel.c:
