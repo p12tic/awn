@@ -150,9 +150,22 @@ task_manager_get_property (GObject    *object,
       break;
 
     case PROP_LAUNCHER_PATHS:
-      g_value_set_pointer (value, manager->priv->launcher_paths);
-      break;
+    {
+      GValueArray *array;
 
+      array = g_value_array_new (g_slist_length (manager->priv->launcher_paths));
+      for (GSList *n = manager->priv->launcher_paths; n != NULL; n = n->next)
+      {
+        GValue val = {0};
+
+        g_value_init (&val, G_TYPE_STRING);
+        g_value_set_string (&val, (gchar*)n->data);
+        g_value_array_append (array, &val);
+        g_value_unset (&val);
+      }
+      g_value_take_boxed (value, array);
+      break;
+    }
     case PROP_DRAG_AND_DROP:
       g_value_set_boolean (value, manager->priv->drag_and_drop);
       break;
@@ -186,10 +199,25 @@ task_manager_set_property (GObject      *object,
       break;
 
     case PROP_LAUNCHER_PATHS:
-      task_manager_refresh_launcher_paths (manager, 
-                                           g_value_get_pointer (value));
-      break;
+    {
+      GValueArray *array;
+      GSList *list = NULL;
 
+      array = (GValueArray*)g_value_get_boxed (value);
+      if (array)
+      {
+        for (guint i = 0; i < array->n_values; i++)
+        {
+          GValue *val = g_value_array_get_nth (array, i);
+          list = g_slist_append (list, g_value_dup_string (val));
+        }
+        // don't free array, it will be done automatically
+      }
+
+      task_manager_refresh_launcher_paths (manager, list);
+      // above function also frees list for some reason, so don't free it here.
+      break;
+    }
     case PROP_DRAG_AND_DROP:
       task_manager_set_drag_and_drop (manager, 
                                       g_value_get_boolean (value));
@@ -225,13 +253,13 @@ task_manager_constructed (GObject *object)
   desktop_agnostic_config_client_bind (priv->client,
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
                                        "show_all_windows",
-                                       object, "show_all_windows", FALSE,
+                                       object, "show_all_windows", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
                                        "only_show_launchers",
-                                       object, "only_show_launchers", FALSE,
+                                       object, "only_show_launchers", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
@@ -243,13 +271,13 @@ task_manager_constructed (GObject *object)
   desktop_agnostic_config_client_bind (priv->client,
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
                                        "drag_and_drop",
-                                       object, "drag_and_drop", FALSE,
+                                       object, "drag_and_drop", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
                                        "match_strength",
-                                       object, "match_strength", FALSE,
+                                       object, "match_strength", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 }

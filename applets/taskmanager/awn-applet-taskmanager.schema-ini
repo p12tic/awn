@@ -1,10 +1,18 @@
+# Task Manager configuration schema
+# ---------------------------------
+
+# schema metadata
+[DEFAULT]
+single_instance = false
+
+# configuration options
 [DEFAULT/only_show_launchers]
-type = bool
+type = boolean
 default = false
 description = Only show and manager launcher windows
 
 [DEFAULT/show_all_windows]
-type = bool
+type = boolean
 default = true
 description = Show windows from all workspaces
 
@@ -14,11 +22,12 @@ default = /usr/share/applications/evolution.desktop;/usr/share/applications/thun
 description = a list of paths to .desktop files from which the taskmanager should create it's launchers
 
 [DEFAULT/drag_and_drop]
-type = bool
+type = boolean
 default = true
 description = Enable reordering of windows by drag and drop 
 
 [DEFAULT/match_strength]
-type = int
+type = integer
 default = 0
 description = How radical matching is applied for grouping items. The value should be between 0 and 99. 0 is as good as no grouping. 99 will match almost everything.
+# vim: set ft=dosini :

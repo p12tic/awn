@@ -55,11 +55,14 @@ desktopdir = $(pkgdatadir)/applets
 desktop_DATA = taskmanager.desktop
 @INTLTOOL_DESKTOP_RULE@
 
+schemadir = $(pkgdatadir)/schemas
+schema_DATA = awn-applet-taskmanager.schema-ini
+
 schemasdir       = @GCONF_SCHEMA_FILE_DIR@
-schemas_in_files = taskmanager.schemas.in
+schemas_in_files = $(schema_DATA:.schema-ini=.schemas.in)
 schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
 
-taskmanager.schemas.in: taskmanager.schema-ini
+%.schemas.in: %.schema-ini
 	$(top_srcdir)/data/awn-schema-to-gconf $< $@ "taskmanager"
 
 @INTLTOOL_SCHEMAS_RULE@
@@ -71,9 +74,6 @@ else
 install-gconf-schemas:
 endif
 
-schemadir = $(pkgdatadir)/schemas
-schema_DATA = taskmanager.schema-ini
-
 install-data-local: install-gconf-schemas
 
 BUILT_SOURCES = \
@@ -83,4 +83,4 @@ BUILT_SOURCES = \
 	$(NULL)
 
 EXTRA_DIST = $(desktop_DATA).in.in $(schema_DATA)
-CLEANFILES = $(desktop_DATA) $(shemas_in_files) $(schemas_DATA) $(BUILT_SOURCES)
+CLEANFILES = $(desktop_DATA) $(schemas_in_files) $(schemas_DATA) $(BUILT_SOURCES)
