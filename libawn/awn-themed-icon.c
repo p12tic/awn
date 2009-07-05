@@ -589,7 +589,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             pixbuf = lookup_pixbuf ("scope_uid",
                                     "awn-theme",
                                     name,
-                                    priv->current_size);
+                                    size);
             if (pixbuf)
             {
               g_object_ref (pixbuf);
@@ -602,7 +602,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
               add_pixbuf_to_cache (pixbuf ,"scope_uid",
                                   "awn-theme",
                                   name,
-                                  priv->current_size);
+                                  size);
             }
             break;
 
@@ -611,7 +611,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             pixbuf = lookup_pixbuf ("scope_applet",
                                     "awn-theme",
                                     name,
-                                    priv->current_size);
+                                    size);
             if (pixbuf)
             {
               g_object_ref (pixbuf);
@@ -624,7 +624,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
               add_pixbuf_to_cache (pixbuf ,"scope_applet",
                                   "awn-theme",
                                   name,
-                                  priv->current_size);
+                                  size);
             }
             break;
 
@@ -632,7 +632,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             pixbuf = lookup_pixbuf ("scope_awn_theme",
                                     "awn-theme",
                                     icon_name,
-                                    priv->current_size);            
+                                    size);            
             if (pixbuf)
             {
               g_object_ref (pixbuf);
@@ -645,7 +645,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
               add_pixbuf_to_cache (pixbuf ,"scope_awn_theme",
                                   "awn-theme",
                                   icon_name,
-                                  priv->current_size);
+                                  size);
             }
             break;
 
@@ -656,7 +656,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
               pixbuf = lookup_pixbuf ("scope_override_theme",
                                     priv->override_theme->priv->current_theme,
                                     icon_name,
-                                    priv->current_size);              
+                                    size);              
               if (pixbuf)
               {
                 g_object_ref (pixbuf);
@@ -670,7 +670,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
                 add_pixbuf_to_cache (pixbuf ,"scope_override_theme",
                                   priv->override_theme->priv->current_theme,
                                   icon_name,
-                                  priv->current_size);
+                                  size);
               }                
             }
             break;
@@ -679,7 +679,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             pixbuf = lookup_pixbuf ("scope_gtk_theme",
                                     priv->gtk_theme->priv->current_theme,
                                     icon_name,
-                                    priv->current_size);            
+                                    size);            
             if (pixbuf)
             {
               g_object_ref (pixbuf);
@@ -692,7 +692,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
               add_pixbuf_to_cache (pixbuf ,"scope_gtk_theme",
                                   priv->gtk_theme->priv->current_theme,
                                   icon_name,
-                                  priv->current_size);
+                                  size);
             }              
             break;
 
@@ -703,7 +703,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
               pixbuf = lookup_pixbuf ("scope_filename",
                                     NULL,
                                     icon_name,
-                                    priv->current_size);              
+                                    size);              
               if (pixbuf)
               {
                 g_object_ref (pixbuf);
@@ -716,7 +716,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
                 add_pixbuf_to_cache (pixbuf ,"scope_filename",
                                   NULL,
                                   icon_name,
-                                  priv->current_size);
+                                  size);
               }                
             }
             break;
@@ -725,7 +725,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             pixbuf = lookup_pixbuf ("scope_fallback_stop",
                                     priv->gtk_theme->priv->current_theme,
                                     GTK_STOCK_MISSING_IMAGE,
-                                    priv->current_size);            
+                                    size);            
             if (pixbuf)
             {
               g_object_ref (pixbuf);
@@ -739,7 +739,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
               add_pixbuf_to_cache (pixbuf ,"scope_fallback_stop",
                                   priv->gtk_theme->priv->current_theme,
                                   GTK_STOCK_MISSING_IMAGE,
-                                  priv->current_size);
+                                  size);
             }
             break;
 

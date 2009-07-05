@@ -1,5 +1,11 @@
 2009-07-05  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-themed-icon.c:
+	Fix AwnThemedIcon,  get_pixbuf_at_size now gets the pixbuf at the 
+	size requested (was always retrieving at current_size).
+
+2009-07-05  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* bindings/python/awn.defs:
   	* bindings/python/awn.override:
   	* tests/test-applet-simple.c:
