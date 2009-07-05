@@ -654,7 +654,6 @@
   (c-name "awn_applet_simple_set_icon_name")
   (return-type "none")
   (parameters
-    '("const-gchar*" "applet_name")
     '("const-gchar*" "icon_name")
   )
 )
@@ -664,7 +663,6 @@
   (c-name "awn_applet_simple_set_icon_info")
   (return-type "none")
   (parameters
-    '("const-gchar*" "applet_name")
     '("GStrv" "states")
     '("GStrv" "icon_names")
   )

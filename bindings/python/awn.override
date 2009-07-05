@@ -670,7 +670,6 @@ _wrap_awn_applet_simple_set_icon_info (PyObject *self, PyObject *args, PyObject 
   }
 
   awn_applet_simple_set_icon_info (AWN_APPLET_SIMPLE (pygobject_get (self)),
-    (const gchar*) applet_name,
     (const GStrv) states,
     (const GStrv) icon_names);
 
