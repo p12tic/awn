@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include <gdk/gdkx.h>
+#include <glib/gi18n.h>
 
 #include <X11/Xlib.h>
 #include <X11/extensions/shape.h>
@@ -257,6 +258,8 @@ static void     awn_panel_set_style         (AwnPanel *panel,
                                              gint      style);
 static void     awn_panel_set_panel_mode    (AwnPanel *panel,
                                              gboolean  panel_mode);
+static void     awn_panel_set_expand_mode   (AwnPanel *panel,
+                                             gboolean  expand);
 static void     awn_panel_set_clickthrough_type(AwnPanel *panel,
                                              gint      type);
 
@@ -419,7 +422,6 @@ awn_panel_get_property (GObject    *object,
       g_value_set_int (value, priv->size);
       break;
     case PROP_MAX_SIZE:
-      // FIXME: probably not OK for non-composited
       switch (priv->orient)
       {
         case AWN_ORIENTATION_LEFT:
@@ -466,12 +468,10 @@ awn_panel_set_property (GObject      *object,
       priv->composited = g_value_get_boolean (value);
       break;
     case PROP_PANEL_MODE:
-      awn_panel_set_panel_mode(panel, g_value_get_boolean (value));
+      awn_panel_set_panel_mode (panel, g_value_get_boolean (value));
       break;
     case PROP_EXPAND:
-      priv->expand = g_value_get_boolean (value);
-      awn_panel_refresh_alignment (panel);
-      gtk_widget_queue_resize (GTK_WIDGET (panel));
+      awn_panel_set_expand_mode (panel, g_value_get_boolean (value));
       break;
     case PROP_OFFSET:
       awn_panel_set_offset (panel, g_value_get_int (value));
@@ -768,10 +768,10 @@ void awn_panel_get_applet_rect (AwnPanel *panel,
 }
 
 
-static
-void awn_panel_get_draw_rect (AwnPanel *panel,
-                              GdkRectangle *area,
-                              gint width, gint height)
+static void
+awn_panel_get_draw_rect (AwnPanel *panel,
+                         GdkRectangle *area,
+                         gint width, gint height)
 {
   AwnPanelPrivate *priv = panel->priv;
 
@@ -881,15 +881,22 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
   AwnPanelPrivate *priv = panel->priv;
   GdkWindow *panel_win;
 
-  gint x, y, window_x, window_y;
+  gint x, y, window_x, window_y, width, height;
   /* FIXME: probably needs some love to work on multiple monitors */
   gdk_display_get_pointer (gdk_display_get_default (), NULL, &x, &y, NULL);
   panel_win = gtk_widget_get_window (widget);
   gdk_window_get_root_origin (panel_win, &window_x, &window_y);
 
+  GdkRectangle area;
+  awn_panel_get_draw_rect (AWN_PANEL (panel), &area, 0, 0);
+  window_x += area.x;
+  window_y += area.y;
+  width = area.width;
+  height = area.height;
+  
 #if 0
   g_debug ("mouse: %d,%d; window: %d,%d, %dx%d", x, y, window_x, window_y,
-    widget->allocation.width, widget->allocation.height);
+    width, height);
 #endif
 
   if (!whole_window)
@@ -898,45 +905,25 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
     switch (priv->orient)
     {
       case AWN_ORIENTATION_TOP:
-        return x >= window_x && x < window_x + widget->allocation.width &&
+        return x >= window_x && x < window_x + width &&
                y == window_y;
       case AWN_ORIENTATION_BOTTOM:
-        return x >= window_x && x < window_x + widget->allocation.width &&
-               y == window_y + widget->allocation.height - 1;
+        return x >= window_x && x < window_x + width &&
+               y == window_y + height - 1;
       case AWN_ORIENTATION_LEFT:
-        return y >= window_y && y < window_y + widget->allocation.height &&
+        return y >= window_y && y < window_y + height &&
                x == window_x;
       case AWN_ORIENTATION_RIGHT:
-        return y >= window_y && y < window_y + widget->allocation.height &&
-               x == window_x + widget->allocation.width - 1;
+        return y >= window_y && y < window_y + height &&
+               x == window_x + width - 1;
     }
   }
   else
   {
-    if (!priv->composited)
-    {
-      return (x >= window_x && x < window_x + widget->allocation.width &&
-              y >= window_y && y < window_y + widget->allocation.height);
-    }
-    else
-    {
-      gint k = priv->size;
-      switch (priv->orient)
-      {
-        case AWN_ORIENTATION_TOP:
-          return x >= window_x && x < window_x + widget->allocation.width &&
-                 y >= window_y && y < window_y + widget->allocation.height - k;
-        case AWN_ORIENTATION_BOTTOM:
-          return x >= window_x && x < window_x + widget->allocation.width &&
-                 y >= window_y + k && y < window_y + widget->allocation.height;
-        case AWN_ORIENTATION_LEFT:
-          return y >= window_y && y < window_y + widget->allocation.height &&
-                 x >= window_x && x < window_x + widget->allocation.width - k;
-        case AWN_ORIENTATION_RIGHT:
-          return y >= window_y && y < window_y + widget->allocation.height &&
-                 x >= window_x + k && x < window_x + widget->allocation.width;
-      }
-    }
+    // FIXME: 
+    //   best would be to check if mouse is inside InputShape of the window
+    return (x >= window_x && x < window_x + width &&
+            y >= window_y && y < window_y + height);
   }
   return FALSE;
 }
@@ -1635,12 +1622,10 @@ awn_panel_update_masks (GtkWidget *panel,
 
     if (priv->composited)
     {
-      gtk_widget_input_shape_combine_mask (panel, NULL, 0, 0);
       gtk_widget_input_shape_combine_mask (panel, shaped_bitmap, 0, 0);
     }
     else
     {
-      gtk_widget_shape_combine_mask (panel, NULL, 0, 0);
       gtk_widget_shape_combine_mask (panel, shaped_bitmap, 0, 0);
     }
 
@@ -1856,8 +1841,8 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
 
   cairo_destroy (cr);
 
-/*#define DEBUG_DRAW_AREA
-#define DEBUG_APPLET_AREA*/
+//#define DEBUG_DRAW_AREA
+//#define DEBUG_APPLET_AREA
 
 #ifdef DEBUG_DRAW_AREA
   if (1)
@@ -2240,6 +2225,16 @@ awn_panel_set_panel_mode (AwnPanel *panel, gboolean  panel_mode)
 
 }
 
+static void
+awn_panel_set_expand_mode (AwnPanel *panel, gboolean expand)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  priv->expand = expand;
+  awn_panel_refresh_alignment (panel);
+  gtk_widget_queue_resize (GTK_WIDGET (panel));
+}
+
 static void     
 awn_panel_set_clickthrough_type(AwnPanel *panel, gint type)
 {
@@ -2580,6 +2575,8 @@ awn_panel_docklet_request (AwnPanel *panel,
     awn_throbber_set_type (AWN_THROBBER (priv->docklet_closer),
                            AWN_THROBBER_TYPE_CLOSE_BUTTON);
     awn_icon_set_hover_effects (AWN_ICON (priv->docklet_closer), TRUE);
+    awn_icon_set_tooltip_text (AWN_ICON (priv->docklet_closer),
+                               _("Close docklet"));
 
     awn_applet_manager_add_widget (AWN_APPLET_MANAGER (priv->manager),
                                    priv->docklet_closer, 1);

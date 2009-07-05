@@ -66,9 +66,7 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
 
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
-  /* TODO: translate to event->area
-   * we'll paint to [0,0] - [1,1], so scale's needed
-   */
+  // we'll paint to [0,0] - [1,1], so scale's needed
   cairo_scale(cr, priv->size, priv->size);
 
   switch (priv->type)

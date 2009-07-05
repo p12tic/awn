@@ -1,3 +1,50 @@
+2009-07-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+  	* bindings/python/awn.override:
+  	* tests/test-applet-simple.c:
+	Modifications to bindings and test related to the previous commits.
+
+2009-07-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+  	* libawn/awn-applet-simple.h:
+	Removed applet_name param from  awn_applet_simple_set_icon_name(),  
+	awn_applet_simple_set_icon_info() and 
+	awn_applet_simple_create_about_item().  Note that the 3rd fn should
+	be moved to AwnApplet.
+
+2009-07-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-applet.c:
+  	* libawn/awn-applet.h:
+	Added "display-name" prop.
+	Removed applet_name from awn_applet_create_about_item().
+
+2009-07-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* modified libawn/awn-themed-icon.c:
+	Added "applet-name" prop.
+
+2009-07-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Fixed autohide edge detection now that the window is on whole side of
+	the screen.
+
+2009-07-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	Added "clicked" signal, which is in fact only a proxy to AwnIcon's
+	clicked signal (well usable for future detach).
+	* libawn/awn-effects.c:
+	* libawn/awn-overlay-text.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	* tests/test-effects.py:
+	Various fixes.
+
 2009-07-04  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/task-item.c (task_item_init):

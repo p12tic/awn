@@ -242,6 +242,22 @@ awn_overlay_text_constructed (GObject *object)
     G_OBJECT_CLASS (awn_overlay_text_parent_class)->constructed (object);    
   }
   
+  priv->client = awn_config_client_new ();
+  priv->bridge = awn_config_bridge_get_default ();
+
+  awn_config_bridge_bind (priv->bridge, priv->client,
+                          "theme", "icon_text_color",
+                          object, "text-color-astr");
+  awn_config_bridge_bind (priv->bridge, priv->client,
+                          "theme", "icon_text_outline_color",
+                          object, "text-outline-color-astr");
+  awn_config_bridge_bind (priv->bridge, priv->client,
+                          "theme", "icon_font_mode",
+                          object, "font-mode");
+  awn_config_bridge_bind (priv->bridge, priv->client,
+                          "theme", "icon_text_outline_width",
+                          object, "text-outline-width");
+
   priv->font_description = pango_font_description_new ();
   pango_font_description_set_family (priv->font_description, "sans");
   pango_font_description_set_weight (priv->font_description, PANGO_WEIGHT_SEMIBOLD);
@@ -363,22 +379,8 @@ awn_overlay_text_init (AwnOverlayText *self)
 {
   AwnOverlayTextPrivate *priv;
   
-  priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (self);   
-  priv->client = awn_config_client_new ();
-  priv->bridge = awn_config_bridge_get_default ();
+  priv = AWN_OVERLAY_TEXT_GET_PRIVATE (self);
 
-  awn_config_bridge_bind (priv->bridge, priv->client,
-                          "theme", "icon_text_color",
-                          G_OBJECT(self), "text-color-astr");
-  awn_config_bridge_bind (priv->bridge, priv->client,
-                          "theme", "icon_text_outline_color",
-                          G_OBJECT(self), "text-outline-color-astr");
-  awn_config_bridge_bind (priv->bridge, priv->client,
-                          "theme", "icon_font_mode",
-                          G_OBJECT(self), "font-mode");
-  awn_config_bridge_bind (priv->bridge, priv->client,
-                          "theme", "icon_text_outline_width",
-                          G_OBJECT(self), "text-outline-width");  
   priv->text = NULL;
   // default for text is to not apply effects to it
   awn_overlay_set_apply_effects (AWN_OVERLAY (self), FALSE);

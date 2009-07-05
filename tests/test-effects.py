@@ -34,7 +34,7 @@ class EffectedDA(gtk.DrawingArea):
 
     if not self.useSVG:
       self.effects.set_icon_size(64, 48, False)
-    cr = self.effects.cairo_create()
+    cr = self.effects.cairo_create_clipped(event)
 
     if not self.useSVG:
       cr.rectangle(0, 0, 64, 48)

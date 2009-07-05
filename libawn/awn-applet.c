@@ -50,6 +50,7 @@ struct _AwnAppletPrivate
   gchar *uid;
   gint panel_id;
   gchar *canonical_name;
+	gchar *display_name;
   AwnOrientation orient;
   AwnPathType path_type;
   gint offset;
@@ -76,6 +77,7 @@ enum
   PROP_UID,
   PROP_PANEL_ID,
   PROP_CANONICAL_NAME,
+	PROP_DISPLAY_NAME,
   PROP_ORIENT,
   PROP_OFFSET,
   PROP_OFFSET_MOD,
@@ -282,6 +284,10 @@ awn_applet_set_property (GObject      *object,
         g_warn_if_fail (strlen (applet->priv->canonical_name) > 0);
       }
       break;
+    case PROP_DISPLAY_NAME:
+			g_free (applet->priv->display_name);
+			applet->priv->display_name = g_value_dup_string (value);
+      break;			
     case PROP_PANEL_ID:
       applet->priv->panel_id = g_value_get_int (value);
       break;
@@ -334,6 +340,10 @@ awn_applet_get_property (GObject    *object,
       g_value_set_string (value, priv->canonical_name);
       break;
 
+    case PROP_DISPLAY_NAME:
+      g_value_set_string (value, priv->display_name);
+      break;
+			
     case PROP_PANEL_ID:
       g_value_set_int (value, priv->panel_id);
       break;
@@ -534,6 +544,12 @@ awn_applet_finalize (GObject *obj)
     priv->canonical_name = NULL;
   }
 
+  if (priv->display_name)
+  {
+    g_free (priv->display_name);
+    priv->display_name = NULL;
+  }
+	
   G_OBJECT_CLASS (awn_applet_parent_class)->finalize (obj);
 }
 
@@ -612,6 +628,14 @@ awn_applet_class_init (AwnAppletClass *klass)
                          NULL,
                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
 
+  g_object_class_install_property (g_object_class,
+    PROP_DISPLAY_NAME,
+    g_param_spec_string ("display-name",
+                         "Display name",
+                         "Display name for the applet.",
+                         NULL,
+                          G_PARAM_READWRITE));
+	
   g_object_class_install_property (g_object_class,
     PROP_PANEL_ID,
     g_param_spec_int ("panel-id",
@@ -893,9 +917,9 @@ _cleanup_about_dialog (GtkWidget *widget,
  * Returns: An "about applet" #GtkMenuItem
  */
 GtkWidget *
-awn_applet_create_about_item (const gchar       *copyright,
+awn_applet_create_about_item (AwnApplet					*applet,
+															const gchar       *copyright,
                               AwnAppletLicense   license,
-                              const gchar       *applet_name,
                               const gchar       *version,
                               const gchar       *comments,
                               const gchar       *website,
@@ -906,11 +930,16 @@ awn_applet_create_about_item (const gchar       *copyright,
                               const gchar      **artists,
                               const gchar      **documenters)
 {
+  g_return_val_if_fail (AWN_IS_APPLET (applet), NULL);	
+	
   /* we could use  gtk_show_about_dialog()... but no. */
   GtkAboutDialog* dialog = GTK_ABOUT_DIALOG (gtk_about_dialog_new ());
   GtkWidget* item;
   gchar* item_text = NULL;
   GdkPixbuf* pixbuf =NULL;
+	/*Conditional Operator*/
+	gchar *applet_name = applet->priv->display_name?applet->priv->display_name:
+																									applet->priv->canonical_name;
 
   g_assert (copyright != NULL);
   g_assert (strlen (copyright) > 8);
