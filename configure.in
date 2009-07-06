@@ -150,11 +150,13 @@ AC_SUBST(DBUS_GLIB_BIN)
 dnl ==============================================
 dnl GConf
 dnl ==============================================
-AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
-if test x"$GCONFTOOL" = xno; then
-    AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
-fi
 AM_GCONF_SOURCE_2
+if test "$enable_schemas_install" != "no"; then
+    AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+    if test x"$GCONFTOOL" = xno; then
+        AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
+    fi
+fi
 
 dnl ==============================================
 dnl Miscellaneous

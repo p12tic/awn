@@ -1,5 +1,13 @@
 2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/taskmanager/Makefile.am:
+	* configure.in:
+	* data/Makefile.am:
+	Only install the schema files if requested.
+	Make the schema config conversion rule more generic.
+
+2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/expander/Makefile.am:
 	Remove unnecessary linking.
 

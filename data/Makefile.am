@@ -39,16 +39,16 @@ pkgdir = $(pkgdatadir)
 
 # config-related
 
+if GCONF_SCHEMAS_INSTALL
 schemasdir       = @GCONF_SCHEMA_FILE_DIR@
-schemas_in_files = avant-window-navigator.schemas.in awn-applets-shared.schemas.in
+schemas_in_files = $(schema_DATA:.schema-ini=.schemas.in)
 schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
 
 %.schemas.in: %.schema-ini
-	$(top_srcdir)/data/awn-schema-to-gconf $< $@
+	$(top_srcdir)/data/awn-schema-to-gconf $< $@ $*
 
 @INTLTOOL_SCHEMAS_RULE@
 
-if GCONF_SCHEMAS_INSTALL
 install-gconf-schemas: $(schemas_DATA)
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(schemas_DATA)
 else
