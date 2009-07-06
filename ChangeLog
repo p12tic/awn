@@ -1,5 +1,11 @@
 2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* data/awn-schema-to-gconf (main):
+	The third argument is now mandatory.
+	Applets are no longer nested in the avant-window-navigator directory.
+
+2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* Makefile.marshal:
 	* Makefile.schemas:
 	* Makefile.shave:

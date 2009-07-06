@@ -49,8 +49,8 @@ def type_normalize(type_name):
     return type_aliases.get(type_name, type_name)
 
 def main(argv):
-    if len(argv) < 2:
-        sys.stderr.write('Usage: %s [input file] [output file] ([key prefix])\n')
+    if len(argv) < 3:
+        sys.stderr.write('Usage: %s [input file] [output file] [key prefix]\n')
         sys.exit(1)
     else:
         in_schema = ConfigParser()
@@ -64,10 +64,7 @@ def main(argv):
                 real_key = key[8:]
             else:
                 real_key = key
-            if len(argv) == 3:
-                full_key = '/apps/avant-window-navigator/applets/%s/%s' % (argv[2], real_key)
-            else:
-                full_key = '/apps/avant-window-navigator/%s' % real_key
+            full_key = '/apps/%s/%s' % (argv[2], real_key)
             schema_key = '/schemas' + full_key
             schema_element = ET.SubElement(schemalist, 'schema')
             ET.SubElement(schema_element, 'key').text = schema_key
