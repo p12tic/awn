@@ -81,7 +81,7 @@ default = 1
 description = The list of panels.
 
 [panel/behavior]
-type = int
+type = integer
 default = 5
 description = Behavior of the bar, handle by awn-settings (0=Standart, 1=Panel mode, 2=Autohide Keep below, 3=Autohide Fade out",4=Transparency, 5=Custom)
 
@@ -116,7 +116,7 @@ default =
 description = Icon text outline color.  Leave empty to use gtk theme color.
 
 [theme/icon_font_mode]
-type = int
+type = integer
 default = 0
 description = 0 - solid, 1 - outline, 2 - outline, reversed.
 
