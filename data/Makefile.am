@@ -56,7 +56,7 @@ install-gconf-schemas:
 endif
 
 schemadir = $(pkgdatadir)/schemas
-schema_DATA = avant-window-navigator.schema-ini shared.schema-ini
+schema_DATA = avant-window-navigator.schema-ini
 
 dist_bin_SCRIPTS = awn-schema-to-gconf awn-applets-migration
 
@@ -68,6 +68,6 @@ uninstall-local:
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/24x24/apps/avant-window-navigator.png
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/avant-window-navigator.png
 
-EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in avant-window-navigator.schema-ini shared.schema-ini awn-themed-icon-ui.glade
+EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in avant-window-navigator.schema-ini awn-themed-icon-ui.glade
 
 CLEANFILES = $(desktop_DATA) $(desktop_DATA).in avant-window-navigator.schemas avant-window-navigator.schemas.in

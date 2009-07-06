@@ -1,9 +1,0 @@
-[DEFAULT/dialog_focus_loss_behavior]
-type = bool
-default = true
-description = Whether to close dialogs on loss of focus.
-[DEFAULT/allow_generic_config_edit]
-type = bool
-default = False
-description = Determines if generic configuration editor is allowed for applets that do not have a customized preferences dialog.
-; vim: set ft=dosini :

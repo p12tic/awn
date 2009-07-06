@@ -1,5 +1,13 @@
 2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* .bzrignore:
+	* data/Makefile.am:
+	* data/awn.schema-ini.in:
+	* data/shared.schema-ini (removed):
+	Merge the shared schema file with the main one.
+
+2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* data/awn-schema-to-gconf:
 	Make sure types are converted properly.
 

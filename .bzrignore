@@ -85,8 +85,6 @@ src/awn
 src/awn-app-glue.h
 src/awn-panel-glue.h
 src/test
-data/awn-applets-shared.schemas
-data/awn-applets-shared.schemas.in
 bindings/python/awn.loT
 tests/test-applet-simple
 tests/test-awn-icon
