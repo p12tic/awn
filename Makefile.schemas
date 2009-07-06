@@ -1,0 +1,25 @@
+# requires Makefile.shave
+
+# Usage
+# -----
+# 1. Set the schema_DATA variable to the schema-ini file(s) to install.
+# 2. Add install-gconf-schemas to the install-data-local rule dependencies.
+
+if GCONF_SCHEMAS_INSTALL
+schemasdir       = @GCONF_SCHEMA_FILE_DIR@
+schemas_in_files = $(schema_DATA:.schema-ini=.schemas.in)
+schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
+
+%.schemas.in: %.schema-ini
+	$(QUIET_GEN)$(top_srcdir)/data/awn-schema-to-gconf $< $@ $*
+
+@INTLTOOL_SCHEMAS_RULE@
+
+install-gconf-schemas: $(schemas_DATA)
+	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(schemas_DATA)
+else
+install-gconf-schemas:
+endif
+
+schemadir = $(pkgdatadir)/schemas
+# vim: set ft=automake noet ts=8 sts=8 sw=8 :

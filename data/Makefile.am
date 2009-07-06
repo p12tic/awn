@@ -2,6 +2,8 @@ SUBDIRS = active
 
 APP_ICON_NAME = avant-window-navigator
 include $(top_srcdir)/Makefile.app-icons
+include $(top_srcdir)/Makefile.shave
+include $(top_srcdir)/Makefile.schemas
 
 # desktop file
 
@@ -39,23 +41,6 @@ pkgdir = $(pkgdatadir)
 
 # config-related
 
-if GCONF_SCHEMAS_INSTALL
-schemasdir       = @GCONF_SCHEMA_FILE_DIR@
-schemas_in_files = $(schema_DATA:.schema-ini=.schemas.in)
-schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
-
-%.schemas.in: %.schema-ini
-	$(top_srcdir)/data/awn-schema-to-gconf $< $@ $*
-
-@INTLTOOL_SCHEMAS_RULE@
-
-install-gconf-schemas: $(schemas_DATA)
-	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(schemas_DATA)
-else
-install-gconf-schemas:
-endif
-
-schemadir = $(pkgdatadir)/schemas
 schema_DATA = avant-window-navigator.schema-ini
 
 dist_bin_SCRIPTS = awn-schema-to-gconf awn-applets-migration

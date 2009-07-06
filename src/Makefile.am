@@ -1,3 +1,4 @@
+include $(top_srcdir)/Makefile.shave
 MARSHAL_PREFIX = awn
 include $(top_srcdir)/Makefile.marshal
 

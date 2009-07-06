@@ -1,5 +1,17 @@
 2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* Makefile.marshal:
+	* Makefile.schemas:
+	* Makefile.shave:
+	* applets/taskmanager/Makefile.am:
+	* data/Makefile.am:
+	* src/Makefile.am:
+	Modularize the shave-related variables into its own Makefile.
+	Modularize the schema-related variables/rules into its own Makefile.
+	Use shave when generating the GConf schemas.
+
+2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* .bzrignore:
 	* data/Makefile.am:
 	* data/awn.schema-ini.in:

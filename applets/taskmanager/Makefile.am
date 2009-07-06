@@ -1,5 +1,7 @@
+include $(top_srcdir)/Makefile.shave
 MARSHAL_PREFIX = taskmanager
 include $(top_srcdir)/Makefile.marshal
+include $(top_srcdir)/Makefile.schemas
 
 AM_CPPFLAGS = \
 	$(STANDARD_CPPFLAGS) \
@@ -55,24 +57,7 @@ desktopdir = $(pkgdatadir)/applets
 desktop_DATA = taskmanager.desktop
 @INTLTOOL_DESKTOP_RULE@
 
-schemadir = $(pkgdatadir)/schemas
 schema_DATA = awn-applet-taskmanager.schema-ini
-
-if GCONF_SCHEMAS_INSTALL
-schemasdir       = @GCONF_SCHEMA_FILE_DIR@
-schemas_in_files = $(schema_DATA:.schema-ini=.schemas.in)
-schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
-
-%.schemas.in: %.schema-ini
-	$(top_srcdir)/data/awn-schema-to-gconf $< $@ $*
-
-@INTLTOOL_SCHEMAS_RULE@
-
-install-gconf-schemas: $(schemas_DATA)
-	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(schemas_DATA)
-else
-install-gconf-schemas:
-endif
 
 install-data-local: install-gconf-schemas
 
