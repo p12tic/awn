@@ -228,6 +228,7 @@ static void
 awn_overlay_text_constructed (GObject *object)
 {
   AwnOverlayTextPrivate *priv;
+  GError *error = NULL;
 
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object); 
   
@@ -235,6 +236,36 @@ awn_overlay_text_constructed (GObject *object)
   {
     G_OBJECT_CLASS (awn_overlay_text_parent_class)->constructed (object);    
   }
+  
+  priv->client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
+
+  if (error)
+  {
+    g_critical ("An error occurred while trying to retrieve the configuration client: %s",
+                error->message);
+    g_error_free (error);
+    return;
+  }
+
+  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_text_color",
+                                       object, "text-color-astr", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  
+  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_text_outline_color",
+                                       object, "text-outline-color-astr", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  
+  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_font_mode",
+                                       object, "font-mode", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  
+  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_text_outline-width",
+                                       object, "text-outline-width", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
   
   priv->font_description = pango_font_description_new ();
   pango_font_description_set_family (priv->font_description, "sans");
@@ -355,40 +386,10 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
 static void
 awn_overlay_text_init (AwnOverlayText *self)
 {
-  GError *error = NULL;
   AwnOverlayTextPrivate *priv;
   
-  priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (self);   
-  priv->client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
+  priv = AWN_OVERLAY_TEXT_GET_PRIVATE (self);
 
-  if (error)
-  {
-    g_critical ("An error occurred while trying to retrieve the configuration client: %s",
-                error->message);
-    g_error_free (error);
-    return;
-  }
-
-  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_text_color",
-                                       G_OBJECT(self), "text-color-astr", TRUE,
-                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
-                                       NULL);
-  
-  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_text_outline_color",
-                                       G_OBJECT(self), "text-outline-color-astr", TRUE,
-                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
-                                       NULL);
-  
-  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_font_mode",
-                                       G_OBJECT(self), "font-mode", TRUE,
-                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
-                                       NULL);
-  
-  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_text_outline-width",
-                                       G_OBJECT(self), "text-outline-width", TRUE,
-                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
-                                       NULL);
-  
   priv->text = NULL;
   // default for text is to not apply effects to it
   awn_overlay_set_apply_effects (AWN_OVERLAY (self), FALSE);

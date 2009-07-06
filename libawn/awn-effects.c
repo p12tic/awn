@@ -1223,7 +1223,7 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
   if (event)
   {
     /* clip the region */
-    gdk_cairo_rectangle (cr, &event->area);
+    gdk_cairo_region (cr, event->region);
     cairo_clip (cr);
 
     /* this part of the code is also very sensitive, using different condition
