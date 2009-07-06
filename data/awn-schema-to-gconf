@@ -39,6 +39,15 @@ except ImportError:
                 # dev-python/elementtree
                 from elementtree import ElementTree as ET
 
+type_aliases = {
+    'boolean': 'bool',
+    'color': 'string',
+    'integer': 'int'
+    }
+
+def type_normalize(type_name):
+    return type_aliases.get(type_name, type_name)
+
 def main(argv):
     if len(argv) < 2:
         sys.stderr.write('Usage: %s [input file] [output file] ([key prefix])\n')
@@ -64,12 +73,12 @@ def main(argv):
             ET.SubElement(schema_element, 'key').text = schema_key
             ET.SubElement(schema_element, 'applyto').text = full_key
             ET.SubElement(schema_element, 'owner').text = 'avant-window-navigator'
-            key_type = in_schema.get(key, 'type')
+            key_type = type_normalize(in_schema.get(key, 'type'))
             element_type = ET.SubElement(schema_element, 'type')
             value = in_schema.get(key, 'default')
             if key_type.startswith('list-'):
                 element_type.text = 'list'
-                ET.SubElement(schema_element, 'list_type').text = key_type[5:]
+                ET.SubElement(schema_element, 'list_type').text = type_normalize(key_type[5:])
                 value = '[%s]' % value.replace(';', ',')
             else:
                 element_type.text = key_type
@@ -89,4 +98,4 @@ def main(argv):
 if __name__ == '__main__':
     main(sys.argv[1:])
 
-# vim: set ft=python et sw=4 ts=4 sts=4
+# vim: set ft=python et sw=4 ts=4 sts=4 :
