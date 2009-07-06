@@ -1,5 +1,10 @@
 2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/expander/Makefile.am:
+	Remove unnecessary linking.
+
+2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* configure.in:
 	Clean up the dependencies.
 

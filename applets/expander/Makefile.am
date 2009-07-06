@@ -11,9 +11,10 @@ expander_la_SOURCES = \
 	applet.c \
 	$(NULL)
 expander_la_LIBADD = \
+	$(AWN_LIBS) \
 	$(top_builddir)/libawn/libawn.la \
 	$(NULL)
-expander_la_CFLAGS = $(WARNING_FLAGS) $(TASKMANAGER_CFLAGS)
+expander_la_CFLAGS = $(WARNING_FLAGS) $(AWN_CFLAGS)
 expander_la_LDFLAGS = -module -avoid-version
 
 # Desktop file
