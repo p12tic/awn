@@ -26,11 +26,11 @@
 /* prototypes */
 
 static void
-cfg_notify_int (const DesktopAgnosticConfigNotifyEntry *entry,
+cfg_notify_int (const gchar *group, const gchar *key, const GValue *value,
                 gpointer user_data)
 {
-  gint* value = (gint*)user_data;
-  *value = g_value_get_int (&(entry->value));
+  gint* int_value = (gint*)user_data;
+  *int_value = g_value_get_int (value);
 }
 
 static void
