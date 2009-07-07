@@ -114,12 +114,6 @@ GtkWidget *   awn_applet_simple_get_icon         (AwnAppletSimple  *applet);
 void          awn_applet_simple_set_effect       (AwnAppletSimple  *applet,
                                                   AwnEffect         effect);
 
-
-GtkWidget *   awn_applet_simple_create_about_item (AwnAppletSimple *applet,
-                                                  const gchar      *copyright,
-                                                  AwnAppletLicense  license,
-                                                  const gchar      *version);
-
 G_END_DECLS
 
 #endif

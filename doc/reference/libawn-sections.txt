@@ -63,6 +63,7 @@ AWN_OVERLAY_THEMED_ICON_GET_CLASS
 <TITLE>AwnOverlayText</TITLE>
 AwnOverlayText
 awn_overlay_text_new
+awn_overlay_text_get_size
 <SUBSECTION Standard>
 AWN_OVERLAY_TEXT
 AWN_IS_OVERLAY_TEXT
@@ -97,6 +98,9 @@ awn_icon_set_is_active
 awn_icon_get_is_active
 awn_icon_set_indicator_count
 awn_icon_get_indicator_count
+awn_icon_get_hover_effects
+awn_icon_set_hover_effects
+awn_icon_clicked
 <SUBSECTION Standard>
 AWN_ICON
 AWN_IS_ICON
@@ -127,7 +131,6 @@ awn_applet_simple_set_progress
 awn_applet_simple_get_progress
 awn_applet_simple_get_icon
 awn_applet_simple_set_effect
-awn_applet_simple_create_about_item
 <SUBSECTION Standard>
 AWN_APPLET_SIMPLE
 AWN_IS_APPLET_SIMPLE
@@ -179,6 +182,7 @@ awn_themed_icon_set_state
 awn_themed_icon_get_state
 awn_themed_icon_set_size
 awn_themed_icon_get_size
+awn_themed_icon_get_default_theme_name
 awn_themed_icon_set_info
 awn_themed_icon_set_info_simple
 awn_themed_icon_set_info_append
@@ -221,6 +225,7 @@ AwnApplet
 AwnAppletInitFunc
 AwnAppletInitPFunc
 awn_applet_new
+awn_applet_get_canonical_name
 awn_applet_get_orientation
 awn_applet_set_orientation
 awn_applet_get_path_type
@@ -240,6 +245,7 @@ awn_applet_uninhibit_autohide
 awn_applet_docklet_request
 awn_applet_create_pref_item
 awn_applet_create_about_item
+awn_applet_create_about_item_simple
 <SUBSECTION Standard>
 AWN_APPLET
 AWN_IS_APPLET
@@ -361,6 +367,25 @@ AWN_OVERLAYABLE
 AWN_IS_OVERLAYABLE
 AWN_TYPE_OVERLAYABLE
 awn_overlayable_get_type
+</SECTION>
+
+<SECTION>
+<FILE>awn-image</FILE>
+AwnImagePrivate
+<TITLE>AwnImage</TITLE>
+AwnImage
+awn_image_new
+awn_image_new_with_label
+awn_image_set_label
+awn_image_get_overlay_text
+<SUBSECTION Standard>
+AWN_IMAGE
+AWN_IS_IMAGE
+AWN_TYPE_IMAGE
+awn_image_get_type
+AWN_IMAGE_CLASS
+AWN_IS_IMAGE_CLASS
+AWN_IMAGE_GET_CLASS
 </SECTION>
 
 <SECTION>
