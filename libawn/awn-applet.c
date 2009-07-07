@@ -1032,6 +1032,18 @@ awn_applet_create_about_item (AwnApplet					*applet,
   return item;
 }
 
+GtkWidget *
+awn_applet_create_about_item_simple (AwnApplet        *applet,
+                                     const gchar      *copyright,
+                                     AwnAppletLicense  license,
+                                     const gchar      *version)
+{
+  g_return_val_if_fail (AWN_IS_APPLET (applet), NULL);
+  return awn_applet_create_about_item (applet, copyright, license, version, 
+                                       NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+                                       NULL);
+}
+
 GtkWidget*
 awn_applet_create_default_menu (AwnApplet *applet)
 {
