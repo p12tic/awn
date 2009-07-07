@@ -311,10 +311,11 @@ task_manager_class_init (TaskManagerClass *klass)
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_ONLY_SHOW_LAUNCHERS, pspec);
 
-  pspec = g_param_spec_pointer ("launcher_paths",
-                                "launcher-paths",
-                                "List of paths to launcher desktop files",
-                                G_PARAM_READWRITE);
+  pspec = g_param_spec_boxed ("launcher-paths",
+                              "launcher paths",
+                              "List of paths to launcher desktop files",
+                              G_TYPE_VALUE_ARRAY,
+                              G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_LAUNCHER_PATHS, pspec);
 
   pspec = g_param_spec_boolean ("drag_and_drop",
