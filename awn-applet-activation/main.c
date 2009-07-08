@@ -176,21 +176,6 @@ main(gint argc, gchar **argv)
     }
   }
 
-  /* Process (re)naming */
-  /* FIXME: Actually make this work */
-  if (name != NULL)
-  {
-    gint len = strlen(argv[0]);
-    gint nlen = strlen(name);
-
-    if (len < nlen)
-      strncpy(argv[0], name, len);
-    else
-      strncpy(argv[0], name, nlen);
-
-    argv[0][nlen] = '\0';
-  }
-
   /* Extract canonical-name from exec */
   gchar *canonical_name = g_strrstr(exec, "/");
   // canonical-name is now: "/applet.ext" or NULL
