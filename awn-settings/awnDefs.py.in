@@ -60,11 +60,15 @@ EXPAND			= "expand"		#bool
 CLICKTHROUGH		= "clickthrough"	#int
 BEHAVIOR		= "behavior"		#int
 
+PANELS			= "panels"		#group
+PANEL_LIST		= "panel_list"		#int
+
 THEME			= "theme"		#group
 GSTEP1			= "gstep1"		#string
 GSTEP2			= "gstep2"		#string
 GHISTEP1		= "ghistep1"		#string
 GHISTEP2		= "ghistep2"		#string
+ICON_TEXT_COLOR		= "icon_text_color"	#string
 BORDER			= "border"		#string
 HILIGHT			= "hilight"		#string
 SHOW_SEP		= "show_sep"		#bool
