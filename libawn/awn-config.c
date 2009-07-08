@@ -26,6 +26,7 @@
 #include "awn-config.h"
 
 #define SCHEMADIR PKGDATADIR "/schemas"
+#define UID_SINGLE_INSTANCE_PREFIX "single-"
 
 /* The config client cache. */
 static GData* awn_config_clients = NULL;
@@ -167,6 +168,7 @@ awn_config_get_default_for_applet_by_info (const gchar  *name,
 {
   g_return_val_if_fail (name != NULL, NULL);
 
+  gboolean single_instance;
   gchar *instance_id;
   DesktopAgnosticConfigClient *client = NULL;
 
@@ -176,7 +178,10 @@ awn_config_get_default_for_applet_by_info (const gchar  *name,
     g_datalist_init (&awn_config_clients);
   }
 
-  if (uid == NULL)
+  single_instance = (uid == NULL ||
+                     g_str_has_prefix (uid, UID_SINGLE_INSTANCE_PREFIX));
+
+  if (single_instance)
   {
     instance_id = g_strdup_printf ("awn-applet-%s", name);
   }
@@ -199,9 +204,17 @@ awn_config_get_default_for_applet_by_info (const gchar  *name,
 
     g_free (schema_basename);
 
-    client = desktop_agnostic_config_client_new_for_instance (schema_filename,
-                                                              instance_id,
-                                                              error);
+    if (single_instance)
+    {
+      client = desktop_agnostic_config_client_new (schema_filename);
+    }
+    else
+    {
+      client = desktop_agnostic_config_client_new_for_instance (schema_filename,
+                                                                instance_id,
+                                                                error);
+    }
+
     g_free (schema_filename);
     if (error && *error != NULL)
     {
