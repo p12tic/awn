@@ -2,6 +2,7 @@
 
 /*
  * Copyright (C) 2001 Havoc Pennington
+ *               2009 Michal Hruby <michal.mhr@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -32,6 +33,10 @@ void xutils_set_strut (GdkWindow        *gdk_window,
                        guint32           strut,
                        guint32           strut_start,
                        guint32           strut_end);
+
+GdkRegion* xutils_get_input_shape (GdkWindow *window);
+
+GdkWindow* xutils_get_window_at_pointer (GdkDisplay *gdk_display);
 
 G_END_DECLS
 

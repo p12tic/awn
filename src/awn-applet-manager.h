@@ -64,7 +64,8 @@ struct _AwnAppletManagerClass
   GtkBoxClass parent_class;
 
   /*< signals >*/
-  void (*applet_embedded) (AwnAppletManager *manager, GtkWidget *applet);
+  void (*applet_embedded)    (AwnAppletManager *manager, GtkWidget *applet);
+  void (*shape_mask_changed) (AwnAppletManager *manager);
 };
 
 GType       awn_applet_manager_get_type          (void) G_GNUC_CONST;
@@ -87,6 +88,13 @@ void        awn_applet_manager_set_applet_flags  (AwnAppletManager *manager,
 
 void        awn_applet_manager_show_applets      (AwnAppletManager *manager);
 void        awn_applet_manager_hide_applets      (AwnAppletManager *manager);
+
+void        awn_applet_manager_set_docklet_widget(AwnAppletManager *manager,
+                                                  GtkWidget *docklet);
+
+GdkRegion*  awn_applet_manager_get_mask          (AwnAppletManager *manager,
+                                                  AwnPathType path_type,
+                                                  gfloat offset_modifier);
 
 G_END_DECLS
 

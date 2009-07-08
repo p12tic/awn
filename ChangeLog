@@ -1,3 +1,17 @@
+2009-07-08  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-defines.h:
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-panel.c:
+	* src/xutils.c:
+	* src/xutils.h:
+	A couple of changes to get proper shape mask support.
+	Started the workaround for D&D deadzone.
+
 2009-07-08  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* data/avant-window-navigator.schema-ini.in:

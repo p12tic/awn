@@ -138,6 +138,9 @@ typedef struct _AwnInhibitItem
 
 #define ROUND(x) (x < 0 ? x - 0.5 : x + 0.5)
 
+//#define DEBUG_DRAW_AREA
+//#define DEBUG_APPLET_AREA
+
 enum 
 {
   PROP_0,
@@ -276,11 +279,11 @@ static gboolean awn_panel_check_mouse_pos   (AwnPanel *panel,
 static void     awn_panel_get_draw_rect     (AwnPanel *panel,
                                              GdkRectangle *area,
                                              gint width, gint height);
-
+#ifdef DEBUG_APPLET_AREA
 static void     awn_panel_get_applet_rect   (AwnPanel *panel,
                                              GdkRectangle *area,
                                              gint width, gint height);
-
+#endif
 static void     awn_panel_refresh_alignment (AwnPanel *panel);
 
 static void     awn_panel_refresh_padding   (AwnPanel *panel,
@@ -299,6 +302,37 @@ static void     awn_panel_remove_strut      (AwnPanel *panel);
 /*
  * GOBJECT CODE 
  */
+static gboolean
+awn_panel_drag_motion (GtkWidget *widget, GdkDragContext *context, 
+                       gint x, gint y, guint time_, gpointer user_data)
+{
+  static GdkWindow *proxy = NULL;
+  GdkDisplay *display = gtk_widget_get_display (widget);
+  GdkWindow *window = xutils_get_window_at_pointer (display);
+  if (window != proxy)
+  {
+    if (window != widget->window && window != NULL)
+    {
+      proxy = window;
+      gtk_drag_dest_set_proxy (widget, window, GDK_DRAG_PROTO_XDND, FALSE);
+    }
+    else if (proxy)
+    {
+
+      GtkTargetEntry dummy_drop_types[] =
+      {
+          { (gchar*)"*", 0, 0}
+      };
+
+      gtk_drag_dest_set (widget, 0, dummy_drop_types, 1, GDK_ACTION_COPY);
+
+      proxy = NULL;
+    }
+  }
+  g_debug ("Received drag-motion signal");
+  return TRUE;
+}
+
 static void
 awn_panel_constructed (GObject *object)
 {
@@ -388,6 +422,16 @@ awn_panel_constructed (GObject *object)
                     G_CALLBACK (on_window_configure), NULL);
 
   position_window (AWN_PANEL (panel));
+
+
+  g_signal_connect (panel, "drag-motion", 
+                    G_CALLBACK (awn_panel_drag_motion), NULL);
+  GtkTargetEntry dummy_drop_types[] =
+  {
+      { (gchar*)"*", 0, 0}
+  };
+
+  gtk_drag_dest_set (panel, 0, dummy_drop_types, 1, GDK_ACTION_COPY);
 }
 
 static void
@@ -727,6 +771,7 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
   gtk_widget_queue_draw (GTK_WIDGET (panel));
 }
 
+#ifdef DEBUG_APPLET_AREA
 static
 void awn_panel_get_applet_rect (AwnPanel *panel,
                                 GdkRectangle *area,
@@ -780,7 +825,7 @@ void awn_panel_get_applet_rect (AwnPanel *panel,
       area->width = paintable_size;
   }
 }
-
+#endif
 
 static void
 awn_panel_get_draw_rect (AwnPanel *panel,
@@ -935,7 +980,19 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
   else
   {
     // FIXME: 
-    //   best would be to check if mouse is inside InputShape of the window
+    //   best would be to check if mouse is inside InputShape of the window,
+    //   but we can't do it because the checks are happening also while
+    //   in clickthrough mode
+    //   solution could be to save the mask which is created in update_masks
+    GdkRegion *region;
+    region = awn_applet_manager_get_mask (AWN_APPLET_MANAGER (priv->manager),
+                                          priv->path_type, priv->offset_mod);
+    gdk_region_offset (region, window_x - area.x, window_y - area.y);
+    gboolean inside_mask = gdk_region_point_in (region, x, y);
+    gdk_region_destroy (region);
+
+    if (inside_mask) return TRUE;
+
     return (x >= window_x && x < window_x + width &&
             y >= window_y && y < window_y + height);
   }
@@ -1575,7 +1632,6 @@ awn_panel_update_masks (GtkWidget *panel,
   AwnPanelPrivate *priv;
   GdkBitmap       *shaped_bitmap;
   cairo_t         *cr;
-  GdkRectangle     applet_rect;
 
   g_return_if_fail (AWN_IS_PANEL (panel));
   priv = AWN_PANEL (panel)->priv;
@@ -1624,6 +1680,14 @@ awn_panel_update_masks (GtkWidget *panel,
     /* combine with applet's eventbox (with proper dimensions) */
     cairo_set_operator (cr, CAIRO_OPERATOR_ADD);
     cairo_set_source_rgb (cr, 1.0f, 1.0f, 1.0f);
+
+    GdkRegion *region;
+    region = awn_applet_manager_get_mask (AWN_APPLET_MANAGER (priv->manager),
+                                          priv->path_type, priv->offset_mod);
+    gdk_cairo_region (cr, region);
+    cairo_fill (cr);
+    gdk_region_destroy (region);
+#if 0
     awn_panel_get_applet_rect (AWN_PANEL (panel), &applet_rect,
                                real_width, real_height);
     cairo_identity_matrix (cr);
@@ -1631,7 +1695,7 @@ awn_panel_update_masks (GtkWidget *panel,
     cairo_rectangle (cr, applet_rect.x, applet_rect.y,
                      applet_rect.width, applet_rect.height);
     cairo_fill (cr);
-
+#endif
     cairo_destroy (cr);
 
     if (priv->composited)
@@ -1829,7 +1893,50 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     awn_panel_get_draw_rect (AWN_PANEL (widget), &area, 0, 0);
     awn_background_draw (priv->bg, cr, priv->orient, &area);
   }
- 
+#if 0 
+  if (1)
+  {
+    // enable to paint the input shape masks of individual applets
+    GList *list = gtk_container_get_children (GTK_CONTAINER (priv->manager));
+    for (GList *iter = list; iter != NULL; iter = iter->next)
+    {
+      GtkWidget *s = (GtkWidget*)iter->data;
+      if (GTK_IS_SOCKET (s) && GTK_WIDGET_VISIBLE (s))
+      {
+        GdkWindow *plug_window = gtk_socket_get_plug_window(GTK_SOCKET (s));
+        if (plug_window)
+        {
+          cairo_save (cr);
+          cairo_translate (cr, s->allocation.x, s->allocation.y);
+          GdkRegion *region = xutils_get_input_shape (plug_window);
+          cairo_set_source_rgba (cr, 1.0, 1.0, 0.0, 0.1);
+          gdk_cairo_region (cr, region);
+          cairo_fill (cr);
+          gdk_region_destroy (region);
+          cairo_restore (cr);
+        }
+      }
+    }
+    g_list_free (list);
+  }
+#endif
+
+#if 0
+  if (1)
+  {
+    // enable to see the mask AppletManager uses
+    GdkRegion *region;
+    region = awn_applet_manager_get_mask (AWN_APPLET_MANAGER (priv->manager),
+                                          priv->path_type, priv->offset_mod);
+    cairo_save (cr);
+    cairo_set_source_rgba (cr, 0.0, 1.0, 0.3, 0.4);
+    gdk_cairo_region (cr, region);
+    cairo_fill (cr);
+    cairo_restore (cr);
+    gdk_region_destroy (region);
+  }
+#endif
+
   /* Pass on the expose event to the child */
   child = gtk_bin_get_child (GTK_BIN (widget));
   if (!GTK_IS_WIDGET (child))
@@ -1854,9 +1961,6 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   }
 
   cairo_destroy (cr);
-
-//#define DEBUG_DRAW_AREA
-//#define DEBUG_APPLET_AREA
 
 #ifdef DEBUG_DRAW_AREA
   if (1)
@@ -2281,6 +2385,7 @@ on_manager_size_alloc (GtkWidget *manager, GtkAllocation *alloc,
   {
     awn_panel_set_strut (panel);
   }
+  awn_panel_update_masks (GTK_WIDGET (panel), 0, 0);
 }
 
 
@@ -2391,6 +2496,8 @@ awn_panel_set_applet_flags (AwnPanel         *panel,
     g_print ("Expander ");
   if (flags & AWN_APPLET_IS_SEPARATOR)
     g_print ("Separator ");
+  if (flags & AWN_APPLET_HAS_SHAPE_MASK)
+    g_print ("ShapeMask ");
 
   g_print ("\n");
 
