@@ -17,6 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 #include <gdk/gdk.h>
+#include <math.h>
 
 #include "awn-utils.h"
 #include "gseal-transition.h"
@@ -85,5 +86,35 @@ awn_utils_ensure_transparent_bg (GtkWidget *widget)
                     G_CALLBACK (on_style_set), NULL);
   g_signal_connect (widget, "composited-changed",
                     G_CALLBACK (on_composited_change), NULL);
+}
+
+gfloat
+get_offset_modifier_by_path_type (AwnPathType path_type,
+                                  AwnOrientation orient,
+                                  gfloat offset_modifier,
+                                  gint pos_x, gint pos_y,
+                                  gint width, gint height)
+{
+  gfloat result;
+
+  if (width == 0 || height == 0) return 1.0f;
+
+  switch (path_type)
+  {
+    case AWN_PATH_ELLIPSE:
+      switch (orient)
+      {
+        case AWN_ORIENTATION_LEFT:
+        case AWN_ORIENTATION_RIGHT:
+          result = sinf (M_PI * pos_y / height);
+          return result * result * offset_modifier + 1.0f;
+        default:
+          result = sinf (M_PI * pos_x / width);
+          return result * result * offset_modifier + 1.0f;
+      }
+      break;
+    default:
+      return 1.0f;
+  }
 }
 

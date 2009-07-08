@@ -22,12 +22,15 @@
 #include "config.h"
 
 #include <libawn/awn-config-bridge.h>
+#include <libawn/awn-utils.h>
+#include <math.h>
 
 #include "awn-defines.h"
 #include "awn-applet-manager.h"
 
 #include "awn-applet-proxy.h"
 #include "awn-throbber.h"
+#include "xutils.h"
 
 G_DEFINE_TYPE (AwnAppletManager, awn_applet_manager, GTK_TYPE_BOX) 
 
@@ -43,6 +46,9 @@ struct _AwnAppletManagerPrivate
   gint             size;
   GSList          *applet_list;
 
+  gboolean         docklet_mode;
+  GtkWidget       *docklet_widget;
+
   gboolean         expands;
   gint             expander_count;
 
@@ -50,6 +56,7 @@ struct _AwnAppletManagerPrivate
   GHashTable      *extra_widgets;
   GQuark           touch_quark;
   GQuark           visibility_quark;
+  GQuark           shape_mask_quark;
 
   /* Current box class */
   GtkWidgetClass  *klass;
@@ -70,6 +77,7 @@ enum
 enum
 {
   APPLET_EMBEDDED,
+  SHAPE_MASK_CHANGED,
 
   LAST_SIGNAL
 };
@@ -303,6 +311,15 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                  g_cclosure_marshal_VOID__OBJECT,
                  G_TYPE_NONE, 1, GTK_TYPE_WIDGET);
  
+  _applet_manager_signals[SHAPE_MASK_CHANGED] =
+    g_signal_new("shape-mask-changed",
+                 G_OBJECT_CLASS_TYPE(obj_class),
+                 G_SIGNAL_RUN_FIRST,
+                 G_STRUCT_OFFSET(AwnAppletManagerClass, shape_mask_changed),
+                 NULL, NULL,
+                 g_cclosure_marshal_VOID__VOID,
+                 G_TYPE_NONE, 0);
+ 
   g_type_class_add_private (obj_class, sizeof (AwnAppletManagerPrivate));
 }
 
@@ -315,6 +332,7 @@ awn_applet_manager_init (AwnAppletManager *manager)
 
   priv->touch_quark = g_quark_from_string ("applets-touch-quark");
   priv->visibility_quark = g_quark_from_string ("visibility-quark");
+  priv->shape_mask_quark = g_quark_from_string ("shape-mask-quark");
   priv->applets = g_hash_table_new_full (g_str_hash, g_str_equal,
                                          g_free, NULL);
   priv->extra_widgets = g_hash_table_new (g_direct_hash, g_direct_equal);
@@ -345,32 +363,55 @@ awn_applet_manager_set_applet_flags (AwnAppletManager *manager,
 
   g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
 
-  // FIXME: separators!
-  //if (flags & (AWN_APPLET_IS_SEPARATOR | AWN_APPLET_IS_EXPANDER) == 0) return;
-  if ((flags & AWN_APPLET_IS_EXPANDER) == 0) return;
-
   priv = manager->priv;
 
   applet = g_hash_table_lookup (priv->applets, uid);
-  if (applet && AWN_IS_APPLET_PROXY (applet))
+  if (applet)
   {
-    // dummy widget that will expand
-    GtkWidget *image = gtk_image_new ();
-    gtk_widget_show (image);
-    gtk_box_pack_start (GTK_BOX (manager), image, TRUE, TRUE, 0);
-
-    priv->expander_count++;
-
-    g_hash_table_replace (priv->applets, g_strdup (uid), image);
-    gtk_widget_destroy (GTK_WIDGET (applet));
-
-    awn_applet_manager_refresh_applets (manager);
-
-    if (!priv->expands)
+    if ((flags & AWN_APPLET_IS_EXPANDER) && AWN_IS_APPLET_PROXY (applet))
     {
-      priv->expands = TRUE;
-      g_object_notify (G_OBJECT (manager), "expands");
+      // dummy widget that will expand
+      GtkWidget *image = gtk_image_new ();
+      gtk_widget_show (image);
+      gtk_box_pack_start (GTK_BOX (manager), image, TRUE, TRUE, 0);
+
+      priv->expander_count++;
+
+      g_hash_table_replace (priv->applets, g_strdup (uid), image);
+      gtk_widget_destroy (GTK_WIDGET (applet));
+
+      awn_applet_manager_refresh_applets (manager);
+
+      if (!priv->expands)
+      {
+        priv->expands = TRUE;
+        g_object_notify (G_OBJECT (manager), "expands");
+      }
     }
+    // FIXME: separators!
+    if (flags & AWN_APPLET_HAS_SHAPE_MASK)
+    {
+      GdkWindow *win = GTK_WIDGET (applet)->window;
+      g_object_set_qdata_full (G_OBJECT (applet), priv->shape_mask_quark,
+                               xutils_get_input_shape (win),
+                               (GDestroyNotify) gdk_region_destroy);
+      g_signal_emit (manager, _applet_manager_signals[SHAPE_MASK_CHANGED], 0);
+    }
+    else
+    {
+      gpointer region = g_object_get_qdata (G_OBJECT (applet),
+                                            priv->shape_mask_quark);
+      if (region)
+      {
+        g_object_set_qdata (G_OBJECT (applet), priv->shape_mask_quark, NULL);
+        g_signal_emit (manager, _applet_manager_signals[SHAPE_MASK_CHANGED],
+                       0);
+      }
+    }
+  }
+  else
+  {
+    g_warning ("Cannot find applet with UID: %s", uid);
   }
 }
 
@@ -702,6 +743,7 @@ void
 awn_applet_manager_add_widget (AwnAppletManager *manager,
                                GtkWidget *widget, gint pos)
 {
+  g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
   gpointer key, val;
   AwnAppletManagerPrivate *priv = manager->priv;
 
@@ -718,6 +760,7 @@ awn_applet_manager_add_widget (AwnAppletManager *manager,
 void
 awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
 {
+  g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
   AwnAppletManagerPrivate *priv = manager->priv;
 
   if (g_hash_table_remove (priv->extra_widgets, widget))
@@ -729,6 +772,7 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
 void
 awn_applet_manager_show_applets (AwnAppletManager *manager)
 {
+  g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
   AwnAppletManagerPrivate *priv = manager->priv;
   GList *list = gtk_container_get_children (GTK_CONTAINER (manager));
 
@@ -750,6 +794,7 @@ awn_applet_manager_show_applets (AwnAppletManager *manager)
       if (was_visible) gtk_widget_show (GTK_WIDGET (it->data));
     }
   }
+  priv->docklet_mode = FALSE;
 
   g_list_free (list);
 }
@@ -757,6 +802,7 @@ awn_applet_manager_show_applets (AwnAppletManager *manager)
 void
 awn_applet_manager_hide_applets (AwnAppletManager *manager)
 {
+  g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
   AwnAppletManagerPrivate *priv = manager->priv;
   GList *list = gtk_container_get_children (GTK_CONTAINER (manager));
 
@@ -771,7 +817,85 @@ awn_applet_manager_hide_applets (AwnAppletManager *manager)
 
     gtk_widget_hide (GTK_WIDGET (it->data));
   }
+  priv->docklet_mode = TRUE;
 
   g_list_free (list);
+}
+
+void
+awn_applet_manager_set_docklet_widget (AwnAppletManager *manager,
+                                       GtkWidget *docklet)
+{
+  g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
+  AwnAppletManagerPrivate *priv = manager->priv;
+
+  priv->docklet_widget = docklet;
+}
+
+GdkRegion*
+awn_applet_manager_get_mask (AwnAppletManager *manager,
+                             AwnPathType path_type,
+                             gfloat offset_modifier)
+{
+  g_return_val_if_fail (AWN_IS_APPLET_MANAGER (manager), NULL);
+  AwnAppletManagerPrivate *priv = manager->priv;
+
+  GdkRegion *region = gdk_region_new ();
+  GList *children = gtk_container_get_children (GTK_CONTAINER (manager));
+
+  for (GList *iter = children; iter != NULL; iter = g_list_next (iter))
+  {
+    GtkWidget *widget = (GtkWidget*)iter->data;
+    if (GTK_WIDGET_VISIBLE (widget) && !GTK_WIDGET_NO_WINDOW (widget))
+    {
+      gpointer mask = g_object_get_qdata (G_OBJECT (widget),
+                                          priv->shape_mask_quark);
+      if (mask)
+      {
+        GdkRegion *temp_region = gdk_region_copy (mask);
+        gdk_region_offset (temp_region,
+                           widget->allocation.x, widget->allocation.y);
+        gdk_region_union (region, temp_region);
+        gdk_region_destroy (temp_region);
+      }
+      else
+      {
+        // GtkAllocation and GdkRectangle are the same, we can do this
+        GtkAllocation *manager_alloc = &GTK_WIDGET (manager)->allocation;
+        GdkRectangle rect = (GdkRectangle)widget->allocation;
+        // get curve offset
+        gfloat temp = get_offset_modifier_by_path_type (path_type,
+                   priv->orient, offset_modifier,
+                   rect.x + rect.width / 2 - manager_alloc->x,
+                   rect.y + rect.height / 2 - manager_alloc->y,
+                   manager_alloc->width,
+                   manager_alloc->height);
+        gint offset = round (temp * priv->offset);
+
+        gint size = priv->size + offset;
+
+        switch (priv->orient)
+        {
+          case AWN_ORIENTATION_BOTTOM:
+            rect.y += rect.height - size;
+            // no break!
+          case AWN_ORIENTATION_TOP:
+            rect.height = size;
+            break;
+          case AWN_ORIENTATION_RIGHT:
+            rect.x += rect.width - size;
+            // no break!
+          case AWN_ORIENTATION_LEFT:
+            rect.width = size;
+            break;
+        }
+        gdk_region_union_with_rect (region, &rect);
+      }
+    }
+  }
+
+  g_list_free (children);
+
+  return region;
 }
 

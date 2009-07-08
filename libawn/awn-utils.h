@@ -22,6 +22,7 @@
 #define __AWN_UTILITY_H
 
 #include <gtk/gtk.h>
+#include "awn-defines.h"
 
 /**
  * awn_utils_ensure_transparent_bg:
@@ -40,5 +41,27 @@ void awn_utils_ensure_transparent_bg (GtkWidget *widget);
  * environment is used.
  */
 void awn_utils_make_transparent_bg  (GtkWidget *widget);
+
+/**
+ * get_offset_modifier_by_path_type:
+ * @path_type:
+ * @orient:
+ * @offset_modifier:
+ * @pos_x:
+ * @pos_y:
+ * @width:
+ * @height:
+ *
+ * Computes modifier for offset value based on current path_type and position
+ * of a widget on the panel.
+ *
+ * Returns: Offset modifier, offset value should be multiplied by this
+ * modifier.
+ */
+gfloat get_offset_modifier_by_path_type (AwnPathType path_type,
+                                         AwnOrientation orient,
+                                         gfloat offset_modifier,
+                                         gint pos_x, gint pos_y,
+                                         gint width, gint height);
 
 #endif
