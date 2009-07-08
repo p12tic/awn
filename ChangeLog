@@ -1,3 +1,17 @@
+2009-07-09  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	Some work to add new options.
+
+	* debian/avant-window-navigator-trunk.install:
+	Fix package, following awn-applet-activation new name.
+
+2009-07-09  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
+	Fix Behavior button.
+
 2009-07-08  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-applet-activation/Makefile.am:
