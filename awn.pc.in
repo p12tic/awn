@@ -2,7 +2,6 @@ prefix=@prefix@
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
-config_backend=@CFG_BACKEND_NAME@
 vapidir=@datarootdir@/vala/vapi
 
 Name: libawn
