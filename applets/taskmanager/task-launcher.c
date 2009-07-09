@@ -65,6 +65,8 @@ static void          _left_click      (TaskItem       *item,
                                        GdkEventButton *event);
 static void          _right_click     (TaskItem       *item,
                                        GdkEventButton *event);
+static void          _middle_click     (TaskItem       *item,
+                                       GdkEventButton *event);
 static guint         _match           (TaskItem       *item,
                                        TaskItem       *item_to_match);
 
@@ -127,6 +129,7 @@ task_launcher_class_init (TaskLauncherClass *klass)
   item_class->match            = _match;
   item_class->left_click       = _left_click;
   item_class->right_click      = _right_click;
+  item_class->middle_click      = _middle_click;  
 
   /* Install properties */
   pspec = g_param_spec_string ("desktopfile",
@@ -363,6 +366,28 @@ _right_click (TaskItem *item, GdkEventButton *event)
                   NULL, NULL, event->button, event->time);
 }
 
+static void 
+_middle_click (TaskItem *item, GdkEventButton *event)
+{
+  TaskLauncherPrivate *priv;
+  TaskLauncher *launcher;
+  GError *error = NULL;
+  
+  g_return_if_fail (TASK_IS_LAUNCHER (item));
+  
+  launcher = TASK_LAUNCHER (item);
+  priv = launcher->priv;
+
+  priv->pid = awn_desktop_item_launch (priv->item, NULL, &error);
+
+  if (error)
+  {
+    g_warning ("Unable to launch %s: %s", priv->name, error->message);
+    g_error_free (error);
+  }
+}
+
+
 /*
  * Public functions
  */
@@ -387,21 +412,3 @@ task_launcher_launch_with_data (TaskLauncher *launcher,
   }
 }
 
-void 
-task_launcher_middle_click (TaskLauncher   *launcher, 
-                            GdkEventButton *event)
-{
-  TaskLauncherPrivate *priv;
-  GError *error = NULL;
-
-  g_return_if_fail (TASK_IS_LAUNCHER (launcher));
-  priv = launcher->priv;
-
-  priv->pid = awn_desktop_item_launch (priv->item, NULL, &error);
-
-  if (error)
-  {
-    g_warning ("Unable to launch %s: %s", priv->name, error->message);
-    g_error_free (error);
-  }
-}

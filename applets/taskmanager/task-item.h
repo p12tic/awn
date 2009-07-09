@@ -63,6 +63,7 @@ struct _TaskItemClass
   gboolean      (*is_visible)      (TaskItem *item);
   void          (*left_click)      (TaskItem *item, GdkEventButton *event);
   void          (*right_click)     (TaskItem *item, GdkEventButton *event);
+  void          (*middle_click)     (TaskItem *item, GdkEventButton *event);
   guint         (*match)           (TaskItem *item, TaskItem *item_to_match);
 
   /*< signals >*/
@@ -78,6 +79,7 @@ GdkPixbuf   * task_item_get_icon      (TaskItem *item);
 gboolean      task_item_is_visible    (TaskItem *item);
 void          task_item_left_click    (TaskItem *item, GdkEventButton *event);
 void          task_item_right_click   (TaskItem *item, GdkEventButton *event);
+void          task_item_middle_click   (TaskItem *item, GdkEventButton *event);
 guint         task_item_match         (TaskItem *item, TaskItem *item_to_match);
 
 //TODO: 2nd round: implement

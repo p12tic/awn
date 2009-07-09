@@ -1,3 +1,12 @@
+2009-07-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-item.h:
+  	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/task-launcher.h:
+	Enabled middle click for launchers.
+
 2009-07-09  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-settings/awn-settings.xml:

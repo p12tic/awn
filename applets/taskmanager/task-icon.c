@@ -1126,15 +1126,19 @@ task_icon_button_release_event (GtkWidget      *widget,
 
     case 2: // middle click: start launcher
 
-      g_warning ("TaskIcon: FIXME: No support for starting launcher on middle click");
-
       //TODO: start launcher
-      /*if (len >= 1 && TASK_IS_LAUNCHER (priv->windows->data))
+      /* Find the window/launcher that is shown */
+      for (GSList *w = priv->items; w; w = w->next)
       {
-        task_launcher_middle_click (priv->windows->data, event);
-        return TRUE;
-      }*/
+        TaskItem *item = w->data;
 
+        if (!task_item_is_visible (item)) continue;
+        
+        task_item_left_click (item, event);
+
+        break;
+      }
+      return TRUE;
       break;
 
     default:
