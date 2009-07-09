@@ -146,8 +146,15 @@ task_item_button_release_event (GtkWidget      *widget,
 {
   g_return_val_if_fail (TASK_IS_ITEM (widget), FALSE);
 
-  task_item_left_click (TASK_ITEM (widget), event);
-
+  switch (event->button)
+  {
+    case 1:
+      task_item_left_click (TASK_ITEM (widget), event);
+      break;
+    case 2:
+      task_item_middle_click (TASK_ITEM (widget), event);
+      break;
+  }
   return TRUE;
 }
 
@@ -257,6 +264,22 @@ task_item_right_click (TaskItem *item, GdkEventButton *event)
   g_return_if_fail (klass->right_click);
         
   klass->right_click (item, event);
+}
+
+void
+task_item_middle_click (TaskItem *item, GdkEventButton *event)
+{
+  TaskItemClass *klass;
+
+  g_return_if_fail (TASK_IS_ITEM (item));
+  
+  klass = TASK_ITEM_GET_CLASS (item);
+  g_return_if_fail (klass->right_click);
+
+  if (klass->middle_click)
+  {
+    klass->middle_click (item, event);
+  }
 }
 
 guint

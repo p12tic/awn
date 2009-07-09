@@ -159,6 +159,8 @@ class awnPreferencesMini(awnPreferences):
 	#TODO Need a combobox or setup_string
 	#self.setup_spin(defs.EFFECTS, defs.ARROW_ICON, self.wTree.get_object("arrow_icon_config"))
 
+	#TODO Fix color settings	
+	#self.setup_color(defs.THEME, defs.GSTEP1, self.wTree.get_object("gstep1_colorbutton"))
 
     def reload(self):
         self.load_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
@@ -191,6 +193,9 @@ class awnPreferencesMini(awnPreferences):
 
 	#TODO Need a combobox or load_string
 	#self.load_spin(defs.EFFECTS, defs.ARROW_ICON, self.wTree.get_object("arrow_icon_config"))
+
+	#TODO Fix color settings	
+	#self.load_color(defs.THEME, defs.GSTEP1, self.wTree.get_object("gstep1_colorbutton"))
 
     def add_repo_win_callback(self, data=None):
 	self.update_repo_view()
@@ -270,6 +275,8 @@ class awnPreferencesMini(awnPreferences):
 	elif self.choose_behavior.get_active() == 4:
 		self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
 		self.client.set_int(defs.PANEL , defs.AUTOHIDE, 3)
+
+	self.client.set_int(defs.PANEL, defs.BEHAVIOR, self.choose_behavior.get_active())
 
 
 class awnLauncherMini(awnLauncher):

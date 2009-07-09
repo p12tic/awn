@@ -675,7 +675,7 @@ on_window_opened (WnckScreen    *screen,
   }
   else
   {
-    icon = task_icon_new();
+    icon = task_icon_new (AWN_APPLET (manager));
     task_icon_append_item (TASK_ICON (icon), item);
 
     priv->icons = g_slist_append (priv->icons, icon);
@@ -803,7 +803,7 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
 
     if (!launcher) continue;
 
-    icon = task_icon_new ();
+    icon = task_icon_new (AWN_APPLET (manager));
     task_icon_append_item (TASK_ICON (icon), launcher);
     gtk_container_add (GTK_CONTAINER (priv->box), icon);
 

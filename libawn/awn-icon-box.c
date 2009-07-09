@@ -38,6 +38,16 @@ struct _AwnIconBoxPrivate
   GtkWidgetClass  *klass;
 };
 
+enum
+{
+  PROP_0,
+
+  PROP_APPLET
+};
+
+/* FORWARDS */
+static void awn_icon_box_set_applet (AwnIconBox *box, AwnApplet *applet);
+
 /* GObject stuff */
 static void
 awn_icon_box_size_request (GtkWidget *widget, GtkRequisition *requisition)
@@ -106,17 +116,60 @@ awn_icon_box_add (GtkContainer *container, GtkWidget *child)
 }
 
 static void
+awn_icon_box_get_property (GObject    *object,
+                           guint       prop_id,
+                           GValue     *value,
+                           GParamSpec *pspec)
+{
+  switch (prop_id)
+  {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+  }
+}
+
+static void
+awn_icon_box_set_property (GObject      *object,
+                           guint         prop_id,
+                           const GValue *value,
+                           GParamSpec   *pspec)
+{
+  switch (prop_id)
+  {
+    case PROP_APPLET:
+      awn_icon_box_set_applet (AWN_ICON_BOX (object),
+                               g_value_get_object (value));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+  }
+}
+
+static void
 awn_icon_box_class_init (AwnIconBoxClass *klass)
 {
   GObjectClass      *obj_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass    *wid_class = GTK_WIDGET_CLASS (klass);
-    
+
+  obj_class->get_property = awn_icon_box_get_property;
+  obj_class->set_property = awn_icon_box_set_property;
   obj_class->dispose = awn_icon_box_dispose;
 
   wid_class->size_request  = awn_icon_box_size_request;
   wid_class->size_allocate = awn_icon_box_size_allocate;
 
-  /* FIXME: applet should be property as well as offset and orient */
+  /* FIXME: offset and orient should be properties as well */
+
+  g_object_class_install_property (obj_class,
+    PROP_APPLET,
+    g_param_spec_object ("applet",
+                         "Applet",
+                         "AwnApplet from which offset and orientation "
+                         "properties are read",
+                         AWN_TYPE_APPLET,
+                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE));
 
   g_type_class_add_private (obj_class, sizeof (AwnIconBoxPrivate));
 }
@@ -153,13 +206,13 @@ awn_icon_box_new (void)
 }
 
 static void
-on_panel_size_changed (AwnApplet *applet, gint size, AwnIconBox *box)
+on_applet_size_changed (AwnApplet *applet, gint size, AwnIconBox *box)
 {
   // FIXME: why doesn't this set size of the icons?
 }
 
 static void
-on_panel_orient_changed (AwnApplet      *applet, 
+on_applet_orient_changed (AwnApplet      *applet, 
                          AwnOrientation  orient, 
                          AwnIconBox     *box)
 {
@@ -167,7 +220,7 @@ on_panel_orient_changed (AwnApplet      *applet,
 }
 
 static void
-on_panel_offset_changed (AwnApplet  *applet, 
+on_applet_offset_changed (AwnApplet  *applet, 
                          gint        offset, 
                          AwnIconBox *box)
 {
@@ -177,27 +230,35 @@ on_panel_offset_changed (AwnApplet  *applet,
 GtkWidget *   
 awn_icon_box_new_for_applet (AwnApplet *applet)
 {
-  GtkWidget *box;
+  GtkWidget *icon_box = NULL;
 
-  box = awn_icon_box_new ();
-  
+  icon_box = g_object_new (AWN_TYPE_ICON_BOX,
+                           "homogeneous", FALSE,
+                           "spacing", 0,
+                           "applet", applet,
+                           NULL);
+
+  return icon_box;
+}
+
+static void
+awn_icon_box_set_applet (AwnIconBox *box, AwnApplet *applet)
+{
   if (AWN_IS_APPLET (applet))
   {
     AWN_ICON_BOX(box)->priv->applet = applet;
 
     g_signal_connect (applet, "size-changed", 
-                      G_CALLBACK (on_panel_size_changed), box);
-    g_signal_connect (applet, "orientation-changed", 
-                      G_CALLBACK (on_panel_orient_changed), box);
+                      G_CALLBACK (on_applet_size_changed), box);
+    g_signal_connect (applet, "orientation-changed",
+                      G_CALLBACK (on_applet_orient_changed), box);
     g_signal_connect (applet, "offset-changed",
-                      G_CALLBACK (on_panel_offset_changed), box);
+                      G_CALLBACK (on_applet_offset_changed), box);
     awn_icon_box_set_orientation (AWN_ICON_BOX (box), 
                                   awn_applet_get_orientation (applet));
     awn_icon_box_set_offset (AWN_ICON_BOX (box),
                              awn_applet_get_offset (applet));
   }
-
-  return box;
 }
 
 /*

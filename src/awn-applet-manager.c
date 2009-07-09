@@ -900,7 +900,7 @@ awn_applet_manager_get_mask (AwnAppletManager *manager,
         GtkAllocation *manager_alloc = &GTK_WIDGET (manager)->allocation;
         GdkRectangle rect = (GdkRectangle)widget->allocation;
         // get curve offset
-        gfloat temp = get_offset_modifier_by_path_type (path_type,
+        gfloat temp = awn_utils_get_offset_modifier_by_path_type (path_type,
                    priv->orient, offset_modifier,
                    rect.x + rect.width / 2 - manager_alloc->x,
                    rect.y + rect.height / 2 - manager_alloc->y,

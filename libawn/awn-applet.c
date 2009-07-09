@@ -1223,12 +1223,13 @@ awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
   g_return_val_if_fail (AWN_IS_APPLET (applet), 0);
   priv = applet->priv;
 
-  temp = get_offset_modifier_by_path_type (priv->path_type, priv->orient,
-                                           priv->offset_modifier,
-                                           priv->pos_x + x,
-                                           priv->pos_y + y,
-                                           priv->panel_width,
-                                           priv->panel_height);
+  temp = awn_utils_get_offset_modifier_by_path_type (priv->path_type,
+                                                     priv->orient,
+                                                     priv->offset_modifier,
+                                                     priv->pos_x + x,
+                                                     priv->pos_y + y,
+                                                     priv->panel_width,
+                                                     priv->panel_height);
   result = round (temp * priv->offset);
   return result;
 }

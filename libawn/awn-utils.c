@@ -113,11 +113,11 @@ awn_vfs_init ()
 }
 
 gfloat
-get_offset_modifier_by_path_type (AwnPathType path_type,
-                                  AwnOrientation orient,
-                                  gfloat offset_modifier,
-                                  gint pos_x, gint pos_y,
-                                  gint width, gint height)
+awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
+                                            AwnOrientation orient,
+                                            gfloat offset_modifier,
+                                            gint pos_x, gint pos_y,
+                                            gint width, gint height)
 {
   gfloat result;
 

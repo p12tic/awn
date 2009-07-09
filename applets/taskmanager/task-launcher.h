@@ -71,8 +71,6 @@ const gchar   * task_launcher_get_desktop_path     (TaskLauncher   *launcher);
 void            task_launcher_launch_with_data     (TaskLauncher   *launcher,
                                                     GSList         *list);
 
-void            task_launcher_middle_click         (TaskLauncher   *launcher, 
-                                                    GdkEventButton *event);
 
 #endif /* _TASK_LAUNCHER_H_ */
 

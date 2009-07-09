@@ -43,14 +43,7 @@ void awn_utils_ensure_transparent_bg (GtkWidget *widget);
 void awn_utils_make_transparent_bg  (GtkWidget *widget);
 
 /**
- * awn_vfs_init:
- *
- * Starts up the VFS library routines that Awn uses, if necessary.
- */
-void awn_vfs_init (void);
-
-/**
- * get_offset_modifier_by_path_type:
+ * awn_utils_get_offset_modifier_by_path_type:
  * @path_type:
  * @orient:
  * @offset_modifier:
@@ -65,10 +58,17 @@ void awn_vfs_init (void);
  * Returns: Offset modifier, offset value should be multiplied by this
  * modifier.
  */
-gfloat get_offset_modifier_by_path_type (AwnPathType path_type,
-                                         AwnOrientation orient,
-                                         gfloat offset_modifier,
-                                         gint pos_x, gint pos_y,
-                                         gint width, gint height);
+gfloat awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
+                                                   AwnOrientation orient,
+                                                   gfloat offset_modifier,
+                                                   gint pos_x, gint pos_y,
+                                                   gint width, gint height);
+
+/**
+ * awn_vfs_init:
+ *
+ * Starts up the VFS library routines that Awn uses, if necessary.
+ */
+void awn_vfs_init (void);
 
 #endif

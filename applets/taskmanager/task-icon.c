@@ -65,6 +65,7 @@ struct _TaskIconPrivate
   AwnOverlayText *overlay_text;
   
   GdkPixbuf *icon;
+  AwnApplet *applet;
   GtkWidget *dialog;
 
   gboolean draggable;
@@ -86,6 +87,7 @@ enum
 {
   PROP_0,
 
+  PROP_APPLET,
   PROP_DRAGGABLE
 };
 
@@ -204,6 +206,9 @@ task_icon_set_property (GObject      *object,
 
   switch (prop_id)
   {
+    case PROP_APPLET:
+      TASK_ICON (icon)->priv->applet = g_value_get_object (value);
+      break;
     case PROP_DRAGGABLE:
       task_icon_set_draggable (icon, g_value_get_boolean (value));
       break;
@@ -263,6 +268,11 @@ task_icon_constructed (GObject *object)
     G_OBJECT_CLASS (task_icon_parent_class)->constructed (object);
   }
   
+  priv->dialog = awn_dialog_new_for_widget_with_applet (GTK_WIDGET (object),
+                                                        priv->applet);
+  g_signal_connect (G_OBJECT (priv->dialog),"focus-out-event",
+                    G_CALLBACK (task_icon_dialog_unfocus), NULL);
+
   //update geometry of icon every second.
   priv->update_geometry_id = g_timeout_add_seconds (1, (GSourceFunc)_update_geometry, widget);
 }
@@ -403,6 +413,13 @@ task_icon_class_init (TaskIconClass *klass)
   wid_class->drag_data_received   = task_icon_dest_drag_data_received;
 
   /* Install properties first */
+  pspec = g_param_spec_object ("applet",
+                               "Applet",
+                               "AwnApplet this icon belongs to",
+                               AWN_TYPE_APPLET,
+                               G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE);
+  g_object_class_install_property (obj_class, PROP_APPLET, pspec);
+
   pspec = g_param_spec_boolean ("draggable",
                                 "Draggable",
                                 "TaskIcon is draggable?",
@@ -471,11 +488,6 @@ task_icon_init (TaskIcon *icon)
   	
   priv = icon->priv = TASK_ICON_GET_PRIVATE (icon);
 
-  priv->dialog = awn_dialog_new_for_widget(GTK_WIDGET(icon));
-  gtk_widget_show_all (priv->dialog); /*FIXME*/
-  gtk_widget_hide (priv->dialog);
-  g_signal_connect (G_OBJECT (priv->dialog),"focus-out-event",
-                    G_CALLBACK (task_icon_dialog_unfocus),NULL);  
   priv->icon = NULL;
   priv->items = NULL;
   priv->drag_tag = 0;
@@ -514,9 +526,9 @@ task_icon_init (TaskIcon *icon)
  * (Hiding is because there are no visible TaskItems yet in the TaskIcon)  
  */
 GtkWidget *
-task_icon_new ()
+task_icon_new (AwnApplet *applet)
 {
-  GtkWidget *icon = g_object_new (TASK_TYPE_ICON, NULL);
+  GtkWidget *icon = g_object_new (TASK_TYPE_ICON, "applet", applet, NULL);
   gtk_widget_hide (icon);
 
   //BUG: AwnApplet calls upon start gtk_widget_show_all. So even when gtk_widget_hide
@@ -1127,15 +1139,19 @@ task_icon_button_release_event (GtkWidget      *widget,
 
     case 2: // middle click: start launcher
 
-      g_warning ("TaskIcon: FIXME: No support for starting launcher on middle click");
-
       //TODO: start launcher
-      /*if (len >= 1 && TASK_IS_LAUNCHER (priv->windows->data))
+      /* Find the window/launcher that is shown */
+      for (GSList *w = priv->items; w; w = w->next)
       {
-        task_launcher_middle_click (priv->windows->data, event);
-        return TRUE;
-      }*/
+        TaskItem *item = w->data;
 
+        if (!task_item_is_visible (item)) continue;
+        
+        task_item_left_click (item, event);
+
+        break;
+      }
+      return TRUE;
       break;
 
     default:
