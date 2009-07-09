@@ -296,6 +296,9 @@ _real_show (GtkWidget *widget)
 
   awn_dialog_refresh_position (AWN_DIALOG (widget), 0, 0);
 
+  gtk_widget_show (priv->vbox);
+  gtk_widget_show (priv->align);
+
   /* in Vala terms: base.show(); */
   GTK_WIDGET_CLASS (awn_dialog_parent_class)->show (widget);
 
