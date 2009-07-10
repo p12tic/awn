@@ -1,25 +1,28 @@
 #!/usr/bin/env python
 
-import awn
 import gtk
+import awn
 
 count_windows = 1
 
-def destroy_window (button, window):
+
+def destroy_window(button, window):
     window.destroy()
 
-def button_clicked (button, combobox):
+
+def button_clicked(button, combobox):
     type_hint = {0: gtk.gdk.WINDOW_TYPE_HINT_NORMAL,
                  1: gtk.gdk.WINDOW_TYPE_HINT_DIALOG,
                  2: gtk.gdk.WINDOW_TYPE_HINT_UTILITY}[combobox.get_active()]
 
-    create_window(type_hint);
+    create_window(type_hint)
+
 
 def create_window(type_hint):
     global count_windows
 
     win = gtk.Window()
-    win.set_type_hint(type_hint);
+    win.set_type_hint(type_hint)
     win.set_title("Window "+str(count_windows))
 
     vbox = gtk.VBox()
@@ -38,7 +41,7 @@ def create_window(type_hint):
 
     win.show_all()
 
-    count_windows+=1;
+    count_windows += 1
 
 win = gtk.Window()
 win.connect('destroy', lambda w: gtk.main_quit())

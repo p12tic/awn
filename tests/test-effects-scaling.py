@@ -1,11 +1,11 @@
 #!/usr/bin/python
-import pygtk
 import gtk
 import awn
-import cairo
 import rsvg
 
+
 class EffectedDA(gtk.DrawingArea):
+
     def __init__(self):
         gtk.DrawingArea.__init__(self)
         self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color(65535, 0, 32000))
@@ -16,6 +16,7 @@ class EffectedDA(gtk.DrawingArea):
         self.add_events(gtk.gdk.ALL_EVENTS_MASK)
         self.connect("expose-event", self.expose)
         self.svg = rsvg.Handle("../awn-manager/awn-manager.svg")
+
     def toggle_svg_usage(self, widget, extra = None):
         self.useSVG = not self.useSVG
         self.queue_draw()
@@ -23,6 +24,7 @@ class EffectedDA(gtk.DrawingArea):
             widget.set_label("SVG")
         else:
             widget.set_label("PNG")
+
     def expose(self, widget, event):
         self.effects.set_icon_size(48, 48, False)
 
@@ -36,24 +38,24 @@ class EffectedDA(gtk.DrawingArea):
             cr.paint()
         else:
             svg_dimensions = self.svg.get_dimension_data()
-            cr.scale(48 / float(svg_dimensions[0]), 48 / float(svg_dimensions[1]))
+            cr.scale(48 / float(svg_dimensions[0]),
+                     48 / float(svg_dimensions[1]))
             self.svg.render_cairo(cr)
 
         self.effects.cairo_destroy()
         return True
 
+
 class Main:
+
     def __init__(self):
-    # Create GUI objects
+        # Create GUI objects
         rgbaColormap = gtk.gdk.screen_get_default().get_rgba_colormap()
         if rgbaColormap != None:
             gtk.gdk.screen_get_default().set_default_colormap(rgbaColormap)
         self.testedEffect = "hover"
         self.window = gtk.Window()
         self.window.connect("destroy", gtk.main_quit)
-        #self.window.set_property("skip-taskbar-hint", True)
-        #self.window.set_property("decorated", False)
-        #self.window.set_property("resizable", False)
 
         self.vbox = gtk.VBox()
         self.effectsHBox = gtk.HBox()
@@ -84,12 +86,15 @@ class Main:
 
     def OnMouseOver(self, widget, *args, **kwargs):
         self.eda.effects.start(self.testedEffect)
+
     def OnMouseOut(self, widget, *args, **kwargs):
         self.eda.effects.stop(self.testedEffect)
+
     def OnButton(self, widget, event):
         self.eda.effects.start_ex("attention", max_loops=1)
+
     def OnQuit(self, widget):
         gtk.main_quit()
 
-start=Main()
+start = Main()
 gtk.main()

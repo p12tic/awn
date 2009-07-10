@@ -8,20 +8,21 @@ TARGET_TYPE_TEXT_PLAIN = 1
 TARGET_TYPE_URI_LIST = 2
 TARGET_TYPE_SPECIAL = 3
 
-drop_type_STRING = [ ( "STRING", 0, TARGET_TYPE_STRING ) ]
-drop_type_TEXT_PLAIN = [ ( "text/plain", 0, TARGET_TYPE_TEXT_PLAIN ) ]
-drop_type_URI_LIST = [ ( "text/uri-list", 0, TARGET_TYPE_URI_LIST ) ]
-drop_type_SPECIAL = [ ( "5p3ci4l", 0, TARGET_TYPE_SPECIAL ) ]
+drop_type_STRING = [("STRING", 0, TARGET_TYPE_STRING)]
+drop_type_TEXT_PLAIN = [("text/plain", 0, TARGET_TYPE_TEXT_PLAIN)]
+drop_type_URI_LIST = [("text/uri-list", 0, TARGET_TYPE_URI_LIST)]
+drop_type_SPECIAL = [("5p3ci4l", 0, TARGET_TYPE_SPECIAL)]
 
-def drag_data_get (widget, context, selection, targetType, eventTime):
+
+def drag_data_get(widget, context, selection, targetType, eventTime):
     if targetType == TARGET_TYPE_STRING:
-        selection.set (selection.target, 8, "string")
+        selection.set(selection.target, 8, "string")
     elif targetType == TARGET_TYPE_TEXT_PLAIN:
-        selection.set (selection.target, 8, "plain_text")
+        selection.set(selection.target, 8, "plain_text")
     elif targetType == TARGET_TYPE_URI_LIST:
-        selection.set (selection.target, 8, "uri-list")
+        selection.set(selection.target, 8, "uri-list")
     elif targetType == TARGET_TYPE_SPECIAL:
-        selection.set (selection.target, 8, "5p3ci4l")
+        selection.set(selection.target, 8, "5p3ci4l")
 
 
 win = gtk.Window()

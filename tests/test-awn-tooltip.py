@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-import awn
 import gtk
+import awn
 import gobject
+
 
 def show_hide_tooltip(icon):
     tooltip = icon.get_tooltip()
@@ -23,7 +24,8 @@ icon.set_info_simple("media-player", "12345", "media-player")
 icon.set_tooltip_text("Icon with smart-behavior & toggle-on-click")
 
 icon2 = awn.ThemedIcon()
-icon2.set_info("media-player", "1234", ["icon1", "icon2"], ["gnome-main-menu", "media-player"])
+icon2.set_info("media-player", "1234", ["icon1", "icon2"],
+               ["gnome-main-menu", "media-player"])
 icon2.set_state("icon2")
 icon2.set_tooltip_text("Icon with manual tooltip control")
 icon2.get_tooltip().set_position_hint("top", 35)

@@ -1,12 +1,11 @@
 #!/usr/bin/python
-#coding=utf-8
-import pygtk
+# -*- coding: utf-8 -*-
 import gtk
 import awn
-import cairo
-import rsvg
+
 
 class Main:
+
     def __init__(self):
         # Create GUI objects
         rgbaColormap = gtk.gdk.screen_get_default().get_rgba_colormap()
@@ -14,9 +13,6 @@ class Main:
             gtk.gdk.screen_get_default().set_default_colormap(rgbaColormap)
         self.window = gtk.Window()
         self.window.connect("delete-event", self.OnQuit)
-        #self.window.set_property("skip-taskbar-hint", True)
-        #self.window.set_property("decorated", False)
-        #self.window.set_property("resizable", False)
 
         self.vbox = gtk.VBox(False)
         self.effectsHBox = gtk.HBox()
@@ -78,7 +74,8 @@ class Main:
 
     def ThemedIconOverlay(self, widget, *args, **kwargs):
         if widget.get_active():
-            self.thioOverlay = awn.OverlayThemedIcon(self.icon, "awn-manager", "something")
+            self.thioOverlay = awn.OverlayThemedIcon(self.icon, "awn-manager",
+                                                     "something")
             self.icon.get_effects().add_overlay(self.thioOverlay)
         elif self.thioOverlay != None:
             self.icon.get_effects().remove_overlay(self.thioOverlay)
@@ -86,7 +83,8 @@ class Main:
 
     def PixbufOverlay(self, widget, *args, **kwargs):
         if widget.get_active():
-            self.pixbOverlay = awn.OverlayPixbuf(self.icon.get_icon_at_size(24))
+            pixbuf = self.icon.get_icon_at_size(24)
+            self.pixbOverlay = awn.OverlayPixbuf(pixbuf)
             self.icon.get_effects().add_overlay(self.pixbOverlay)
         elif self.pixbOverlay != None:
             self.icon.get_effects().remove_overlay(self.pixbOverlay)
@@ -94,7 +92,8 @@ class Main:
 
     def PixbufFileOverlay(self, widget, *args, **kwargs):
         if widget.get_active():
-            self.pixfOverlay = awn.OverlayPixbufFile("/usr/share/icons/gnome/22x22/actions/window-new.png")
+            icon_path = "/usr/share/icons/gnome/22x22/actions/window-new.png"
+            self.pixfOverlay = awn.OverlayPixbufFile(icon_path)
             self.icon.get_effects().add_overlay(self.pixfOverlay)
         elif self.pixfOverlay != None:
             self.icon.get_effects().remove_overlay(self.pixfOverlay)
@@ -112,5 +111,5 @@ class Main:
     def OnQuit(self, widget, event=None):
         gtk.main_quit()
 
-start=Main()
+start = Main()
 gtk.main()

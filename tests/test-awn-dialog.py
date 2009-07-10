@@ -3,10 +3,12 @@
 import awn
 import gtk
 
+
 def change_orient(widget, dialog):
     i = dialog.props.orient
     i = (i + 1) % 4
     dialog.props.orient = i
+
 
 def change_attach(widget, dialog):
     dialog.props.anchored = not dialog.props.anchored
