@@ -5,16 +5,16 @@ import gtk
 import gobject
 
 def show_hide_tooltip(icon):
-  tooltip = icon.get_tooltip()
-  if (tooltip.flags() & gtk.VISIBLE) == 0:
-    tooltip.update_position()
-    tooltip.show()
-    icon.set_state("icon1")
-  else:
-    tooltip.hide()
-    icon.set_state("icon2")
+    tooltip = icon.get_tooltip()
+    if (tooltip.flags() & gtk.VISIBLE) == 0:
+        tooltip.update_position()
+        tooltip.show()
+        icon.set_state("icon1")
+    else:
+        tooltip.hide()
+        icon.set_state("icon2")
 
-  return True # timer repeats
+    return True # timer repeats
 
 win = gtk.Window()
 box = gtk.HBox()

@@ -150,7 +150,7 @@ class AwnManager:
             dialog.destroy()
             sys.exit(1)
         return icon
-   
+
     def make_menu_model(self):
         self.menu_model = gtk.ListStore(str, gtk.gdk.Pixbuf)
 

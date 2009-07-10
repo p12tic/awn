@@ -14,14 +14,14 @@ drop_type_URI_LIST = [ ( "text/uri-list", 0, TARGET_TYPE_URI_LIST ) ]
 drop_type_SPECIAL = [ ( "5p3ci4l", 0, TARGET_TYPE_SPECIAL ) ]
 
 def drag_data_get (widget, context, selection, targetType, eventTime):
-  if targetType == TARGET_TYPE_STRING:
-    selection.set (selection.target, 8, "string")
-  elif targetType == TARGET_TYPE_TEXT_PLAIN:
-    selection.set (selection.target, 8, "plain_text")
-  elif targetType == TARGET_TYPE_URI_LIST:
-    selection.set (selection.target, 8, "uri-list")
-  elif targetType == TARGET_TYPE_SPECIAL:
-    selection.set (selection.target, 8, "5p3ci4l")
+    if targetType == TARGET_TYPE_STRING:
+        selection.set (selection.target, 8, "string")
+    elif targetType == TARGET_TYPE_TEXT_PLAIN:
+        selection.set (selection.target, 8, "plain_text")
+    elif targetType == TARGET_TYPE_URI_LIST:
+        selection.set (selection.target, 8, "uri-list")
+    elif targetType == TARGET_TYPE_SPECIAL:
+        selection.set (selection.target, 8, "5p3ci4l")
 
 
 win = gtk.Window()

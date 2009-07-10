@@ -26,7 +26,7 @@ import gobject as _gobject
 
 ver = getattr(_gobject, 'pygobject_version', ())
 if ver < (2, 11, 1):
-  raise ImportError("PyGTK requires PyGObject 2.11.1 or higher, but %s was found" % (ver,))
+    raise ImportError("PyGTK requires PyGObject 2.11.1 or higher, but %s was found" % (ver,))
 
 from awn import *
 
@@ -38,40 +38,40 @@ window = 0
 panel_id = 0
 
 def init (argv):
-  global uid
-  global window
-  global panel_id
+    global uid
+    global window
+    global panel_id
 
-  try: 
-    opts, args = getopt.getopt (argv, "u:w:i:", 
-                                ["uid=", "window=", "panel-id="])
-  except getopt.GetoptError:
-    print ("Unable to parse args")
-    sys.exit (2)
+    try:
+        opts, args = getopt.getopt (argv, "u:w:i:",
+                                    ["uid=", "window=", "panel-id="])
+    except getopt.GetoptError:
+        print ("Unable to parse args")
+        sys.exit (2)
 
-  for opt, arg in opts:
-    if opt in ("-u", "--uid"):
-      uid = arg
-      #print "uid = " + arg + " " + str (type (uid))
-    elif opt in ("-w", "--window"):
-      window = int (arg)
-      #print "window = " + arg+ " " + str (type (window))
-    elif opt in ("-i", "--panel-id"):
-      panel_id = int (arg)
-      #print "panel-id = " + arg+ " " + str (type (panel_id))
+    for opt, arg in opts:
+        if opt in ("-u", "--uid"):
+            uid = arg
+            #print "uid = " + arg + " " + str (type (uid))
+        elif opt in ("-w", "--window"):
+            window = int (arg)
+            #print "window = " + arg+ " " + str (type (window))
+        elif opt in ("-i", "--panel-id"):
+            panel_id = int (arg)
+            #print "panel-id = " + arg+ " " + str (type (panel_id))
 
 def init_applet (applet):
-  global uid
-  global window
-  global panel_id
+    global uid
+    global window
+    global panel_id
 
-  if (window):
-    #applet.construct (window)
-    applet.applet_construct (window)
-  else:
-    #applet.construct (0)
-    applet.applet_construct (0)
-    applet.show_all ()
+    if (window):
+        #applet.construct (window)
+        applet.applet_construct (window)
+    else:
+        #applet.construct (0)
+        applet.applet_construct (0)
+        applet.show_all ()
 
 def check_dependencies(scope, *modules, **choice_modules):
     '''

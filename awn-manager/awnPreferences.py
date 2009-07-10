@@ -164,7 +164,7 @@ class awnPreferences:
         self.load_color(defs.BAR, defs.GLASS_HISTEP_2, self.wTree.get_widget("highlightcolor2"))
 
         self.load_color(defs.BAR, defs.SEP_COLOR, self.wTree.get_widget("sepcolor"))
-        self.load_color(defs.APP, defs.ARROW_COLOR, self.wTree.get_widget("arrowcolor"))       
+        self.load_color(defs.APP, defs.ARROW_COLOR, self.wTree.get_widget("arrowcolor"))
 
     def setup_color(self, group, key, colorbut, show_opacity_scale = True):
         self.load_color(group, key, colorbut, show_opacity_scale)
