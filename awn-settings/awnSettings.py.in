@@ -58,225 +58,225 @@ awn.vfs_init()
 defs.i18nize(globals())
 
 if os.geteuid() == 0:
-	sys.stderr.write(_("Awn Settings can't be run as root.") + '\n') 
-	sys.exit(1)
+    sys.stderr.write(_("Awn Settings can't be run as root.") + '\n')
+    sys.exit(1)
 
 class awnPreferencesMini(awnPreferences):
     def __init__(self, wTree):
         self.wTree = wTree
-	self.client = awn.Config()
+        self.client = awn.Config()
 
-	# If the sources.list doesn't exist, create one
-	if not os.path.isfile(os.path.join(defs.HOME_CONFIG_DIR,"sources.list")):
-		self.create_sources_list()
-		self.update_sources_list()
+        # If the sources.list doesn't exist, create one
+        if not os.path.isfile(os.path.join(defs.HOME_CONFIG_DIR,"sources.list")):
+            self.create_sources_list()
+            self.update_sources_list()
 
-	update_win = self.wTree.get_object("update_repository")
-	exit_button = self.wTree.get_object("exit_update_win")
-	exit_button.connect("clicked", lambda data=None:  update_win.hide_all())
-	self.update_bar = self.wTree.get_object("update_progress")
-	update_win.connect("show", lambda data=None: self.update_sources_list(progressbar=self.update_bar))
+        update_win = self.wTree.get_object("update_repository")
+        exit_button = self.wTree.get_object("exit_update_win")
+        exit_button.connect("clicked", lambda data=None:  update_win.hide_all())
+        self.update_bar = self.wTree.get_object("update_progress")
+        update_win.connect("show", lambda data=None: self.update_sources_list(progressbar=self.update_bar))
 
-	update_repo = self.wTree.get_object("update_repo")
-	update_repo.connect("clicked", 	lambda data=None: update_win.show_all())
+        update_repo = self.wTree.get_object("update_repo")
+        update_repo.connect("clicked",  lambda data=None: update_win.show_all())
 
-	add_repo = self.wTree.get_object("add_repo")
-	add_repo.connect("clicked", self.add_repo_win_callback)
+        add_repo = self.wTree.get_object("add_repo")
+        add_repo.connect("clicked", self.add_repo_win_callback)
 
-	self.add_repo_get_entry = self.wTree.get_object("add_repo_entry")
+        self.add_repo_get_entry = self.wTree.get_object("add_repo_entry")
 
-	self.add_repo_plus = self.wTree.get_object("add_repo_plus")
-	self.add_repo_plus.connect("clicked", self.add_repo_callback)
+        self.add_repo_plus = self.wTree.get_object("add_repo_plus")
+        self.add_repo_plus.connect("clicked", self.add_repo_callback)
 
-	quit_repo = self.wTree.get_object("repo_quit")
-	quit_repo.connect("clicked", lambda data=None: self.top_window_repo.hide_all())
+        quit_repo = self.wTree.get_object("repo_quit")
+        quit_repo.connect("clicked", lambda data=None: self.top_window_repo.hide_all())
 
-	self.top_window_repo = self.wTree.get_object("add_repository")
-	self.view_repo = self.wTree.get_object("list_repos_view")
+        self.top_window_repo = self.wTree.get_object("add_repository")
+        self.view_repo = self.wTree.get_object("list_repos_view")
 
-	exit_theme_button = self.wTree.get_object("exit_theme_select")
-	exit_theme_button.connect("clicked", lambda data=None:  self.load_themes_win.hide_all())
+        exit_theme_button = self.wTree.get_object("exit_theme_select")
+        exit_theme_button.connect("clicked", lambda data=None:  self.load_themes_win.hide_all())
 
-	self.load_themes_win = self.wTree.get_object("choose_theme")
-	self.view_themes_scrol = self.wTree.get_object("list_themes_scrol")
+        self.load_themes_win = self.wTree.get_object("choose_theme")
+        self.view_themes_scrol = self.wTree.get_object("list_themes_scrol")
 
 
-	self.choose_themes_button = self.wTree.get_object("choose_theme_button")
-	self.choose_themes_button.connect("clicked", self.choose_theme_win_callback)
-	self.apply_theme = self.wTree.get_object("apply_theme")
-	self.apply_theme.connect("clicked", self.apply_theme_callback)
+        self.choose_themes_button = self.wTree.get_object("choose_theme_button")
+        self.choose_themes_button.connect("clicked", self.choose_theme_win_callback)
+        self.apply_theme = self.wTree.get_object("apply_theme")
+        self.apply_theme.connect("clicked", self.apply_theme_callback)
 
-	self.choose_behavior = self.wTree.get_object("behaviorcombo")
-	self.choose_behavior.connect("changed", self.choose_behavior_callback)
-	self.behavior_entries = [	_("Standart"),
-					_("Panel mode"), 
-					_("Autohide Keep below"),
-					_("Autohide Fade out"), 
-					_("Transparency"),
-					_("Custom")]
-	self.create_dropdown(self.choose_behavior, self.behavior_entries)
-	self.choose_behavior.set_active(self.client.get_int(defs.PANEL, defs.BEHAVIOR))
+        self.choose_behavior = self.wTree.get_object("behaviorcombo")
+        self.choose_behavior.connect("changed", self.choose_behavior_callback)
+        self.behavior_entries = [       _("Standart"),
+                                        _("Panel mode"),
+                                        _("Autohide Keep below"),
+                                        _("Autohide Fade out"),
+                                        _("Transparency"),
+                                        _("Custom")]
+        self.create_dropdown(self.choose_behavior, self.behavior_entries)
+        self.choose_behavior.set_active(self.client.get_int(defs.PANEL, defs.BEHAVIOR))
 
-	self.theme_desktop = self.client.get_string(defs.THEME, defs.CURRENT_THEME)
+        self.theme_desktop = self.client.get_string(defs.THEME, defs.CURRENT_THEME)
 
-	self.setup_spin(defs.PANEL, defs.SIZE, self.wTree.get_object("panelsize"))
-	self.setup_freeze(self.wTree.get_object("freezeSize"), self.wTree.get_object("panelsize"),"size")
+        self.setup_spin(defs.PANEL, defs.SIZE, self.wTree.get_object("panelsize"))
+        self.setup_freeze(self.wTree.get_object("freezeSize"), self.wTree.get_object("panelsize"),"size")
 
-	self.setup_orientation(defs.PANEL, defs.ORIENT, self.wTree.get_object("orientationcombo"))
-	self.setup_freeze(self.wTree.get_object("freezeOrient"), self.wTree.get_object("orientationcombo"), "orientation")
+        self.setup_orientation(defs.PANEL, defs.ORIENT, self.wTree.get_object("orientationcombo"))
+        self.setup_freeze(self.wTree.get_object("freezeOrient"), self.wTree.get_object("orientationcombo"), "orientation")
 
         self.setup_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
-	self.setup_freeze(self.wTree.get_object("freezeEffects"), self.wTree.get_object("iconeffects"), "effects")
+        self.setup_freeze(self.wTree.get_object("freezeEffects"), self.wTree.get_object("iconeffects"), "effects")
 
-	self.setup_style(defs.PANEL, defs.STYLE, self.wTree.get_object("stylecombo"))
-	self.setup_freeze(self.wTree.get_object("freezeStyle"), self.wTree.get_object("stylecombo"), "style")
+        self.setup_style(defs.PANEL, defs.STYLE, self.wTree.get_object("stylecombo"))
+        self.setup_freeze(self.wTree.get_object("freezeStyle"), self.wTree.get_object("stylecombo"), "style")
 
-	self.setup_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_object("monitor_align_hscale"))
+        self.setup_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_object("monitor_align_hscale"))
 
-	#Advanced
-	self.setup_spin(defs.PANEL, defs.OFFSET, self.wTree.get_object("offset_config"))
-	self.setup_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_object("monitor_align"))
-	self.setup_bool(defs.PANEL, defs.MONITOR_FORCE, self.wTree.get_object("force_monitor"))
-	self.setup_spin(defs.PANEL, defs.MONITOR_HEIGHT, self.wTree.get_object("monitor_height"))
-	self.setup_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_object("monitor_width"))
-	self.setup_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_object("monitor_offset"))
-	self.setup_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_object("autohide_config"))
-	self.setup_spin(defs.PANEL, defs.STYLE, self.wTree.get_object("style_config"))
-	self.setup_bool(defs.PANEL, defs.PANEL_MODE, self.wTree.get_object("panel_mode_config"))
-	self.setup_bool(defs.PANEL, defs.EXPAND, self.wTree.get_object("expand_config"))
-	self.setup_spin(defs.PANEL, defs.CLICKTHROUGH, self.wTree.get_object("clickthrough_config"))
+        #Advanced
+        self.setup_spin(defs.PANEL, defs.OFFSET, self.wTree.get_object("offset_config"))
+        self.setup_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_object("monitor_align"))
+        self.setup_bool(defs.PANEL, defs.MONITOR_FORCE, self.wTree.get_object("force_monitor"))
+        self.setup_spin(defs.PANEL, defs.MONITOR_HEIGHT, self.wTree.get_object("monitor_height"))
+        self.setup_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_object("monitor_width"))
+        self.setup_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_object("monitor_offset"))
+        self.setup_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_object("autohide_config"))
+        self.setup_spin(defs.PANEL, defs.STYLE, self.wTree.get_object("style_config"))
+        self.setup_bool(defs.PANEL, defs.PANEL_MODE, self.wTree.get_object("panel_mode_config"))
+        self.setup_bool(defs.PANEL, defs.EXPAND, self.wTree.get_object("expand_config"))
+        self.setup_spin(defs.PANEL, defs.CLICKTHROUGH, self.wTree.get_object("clickthrough_config"))
 
-	self.setup_bool(defs.LAUNCHERS, defs.ONLY_LAUNCHERS, self.wTree.get_object("only_launchers_config"))
-	self.setup_bool(defs.LAUNCHERS, defs.ALL_WINDOWS, self.wTree.get_object("show_all_windows_config"))
-	self.setup_bool(defs.LAUNCHERS, defs.DRAG_AND_DROP, self.wTree.get_object("drag_and_drop_config"))
-	self.setup_spin(defs.LAUNCHERS, defs.GROUPING_MODE, self.wTree.get_object("grouping_mode_config"))
+        self.setup_bool(defs.LAUNCHERS, defs.ONLY_LAUNCHERS, self.wTree.get_object("only_launchers_config"))
+        self.setup_bool(defs.LAUNCHERS, defs.ALL_WINDOWS, self.wTree.get_object("show_all_windows_config"))
+        self.setup_bool(defs.LAUNCHERS, defs.DRAG_AND_DROP, self.wTree.get_object("drag_and_drop_config"))
+        self.setup_spin(defs.LAUNCHERS, defs.GROUPING_MODE, self.wTree.get_object("grouping_mode_config"))
 
-	self.setup_spin(defs.EFFECTS, defs.REFLECTION_OFFSET, self.wTree.get_object("reflection_offset_config"))
-	self.setup_spin(defs.EFFECTS, defs.ICON_ALPHA, self.wTree.get_object("icon_alpha_config"))
-	self.setup_spin(defs.EFFECTS, defs.REFLECTION_A_MULTIPLIER, self.wTree.get_object("reflection_alpha_multiplier_config"))
-	self.setup_bool(defs.EFFECTS, defs.SHOW_SHADOWS, self.wTree.get_object("show_shadows_config"))
+        self.setup_spin(defs.EFFECTS, defs.REFLECTION_OFFSET, self.wTree.get_object("reflection_offset_config"))
+        self.setup_spin(defs.EFFECTS, defs.ICON_ALPHA, self.wTree.get_object("icon_alpha_config"))
+        self.setup_spin(defs.EFFECTS, defs.REFLECTION_A_MULTIPLIER, self.wTree.get_object("reflection_alpha_multiplier_config"))
+        self.setup_bool(defs.EFFECTS, defs.SHOW_SHADOWS, self.wTree.get_object("show_shadows_config"))
 
-	#TODO Need a combobox or setup_string
-	#self.setup_spin(defs.EFFECTS, defs.ARROW_ICON, self.wTree.get_object("arrow_icon_config"))
+        #TODO Need a combobox or setup_string
+        #self.setup_spin(defs.EFFECTS, defs.ARROW_ICON, self.wTree.get_object("arrow_icon_config"))
 
-	#TODO Fix color settings	
-	#self.setup_color(defs.THEME, defs.GSTEP1, self.wTree.get_object("gstep1_colorbutton"))
+        #TODO Fix color settings
+        #self.setup_color(defs.THEME, defs.GSTEP1, self.wTree.get_object("gstep1_colorbutton"))
 
     def reload(self):
         self.load_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
-	self.load_spin(defs.PANEL, defs.SIZE, self.wTree.get_object("panelsize"))
-	self.load_orientation(defs.PANEL, defs.ORIENT, self.wTree.get_object("orientationcombo"))
-	self.load_style(defs.PANEL, defs.STYLE, self.wTree.get_object("stylecombo"))
+        self.load_spin(defs.PANEL, defs.SIZE, self.wTree.get_object("panelsize"))
+        self.load_orientation(defs.PANEL, defs.ORIENT, self.wTree.get_object("orientationcombo"))
+        self.load_style(defs.PANEL, defs.STYLE, self.wTree.get_object("stylecombo"))
 
-	#Advanced
-	self.load_spin(defs.PANEL, defs.OFFSET, self.wTree.get_object("offset_config"))
-	self.load_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_object("monitor_align"))
-	self.load_bool(defs.PANEL, defs.MONITOR_FORCE, self.wTree.get_object("force_monitor"))
-	self.load_spin(defs.PANEL, defs.MONITOR_HEIGHT, self.wTree.get_object("monitor_height"))
-	self.load_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_object("monitor_width"))
-	self.load_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_object("monitor_offset"))
-	self.load_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_object("autohide_config"))
-	self.load_spin(defs.PANEL, defs.STYLE, self.wTree.get_object("style_config"))
-	self.load_bool(defs.PANEL, defs.PANEL_MODE, self.wTree.get_object("panel_mode_config"))
-	self.load_bool(defs.PANEL, defs.EXPAND, self.wTree.get_object("expand_config"))
-	self.load_spin(defs.PANEL, defs.CLICKTHROUGH, self.wTree.get_object("clickthrough_config"))
+        #Advanced
+        self.load_spin(defs.PANEL, defs.OFFSET, self.wTree.get_object("offset_config"))
+        self.load_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_object("monitor_align"))
+        self.load_bool(defs.PANEL, defs.MONITOR_FORCE, self.wTree.get_object("force_monitor"))
+        self.load_spin(defs.PANEL, defs.MONITOR_HEIGHT, self.wTree.get_object("monitor_height"))
+        self.load_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_object("monitor_width"))
+        self.load_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_object("monitor_offset"))
+        self.load_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_object("autohide_config"))
+        self.load_spin(defs.PANEL, defs.STYLE, self.wTree.get_object("style_config"))
+        self.load_bool(defs.PANEL, defs.PANEL_MODE, self.wTree.get_object("panel_mode_config"))
+        self.load_bool(defs.PANEL, defs.EXPAND, self.wTree.get_object("expand_config"))
+        self.load_spin(defs.PANEL, defs.CLICKTHROUGH, self.wTree.get_object("clickthrough_config"))
 
-	self.load_bool(defs.LAUNCHERS, defs.ONLY_LAUNCHERS, self.wTree.get_object("only_launchers_config"))
-	self.load_bool(defs.LAUNCHERS, defs.ALL_WINDOWS, self.wTree.get_object("show_all_windows_config"))
-	self.load_bool(defs.LAUNCHERS, defs.DRAG_AND_DROP, self.wTree.get_object("drag_and_drop_config"))
-	self.load_spin(defs.LAUNCHERS, defs.GROUPING_MODE, self.wTree.get_object("grouping_mode_config"))
+        self.load_bool(defs.LAUNCHERS, defs.ONLY_LAUNCHERS, self.wTree.get_object("only_launchers_config"))
+        self.load_bool(defs.LAUNCHERS, defs.ALL_WINDOWS, self.wTree.get_object("show_all_windows_config"))
+        self.load_bool(defs.LAUNCHERS, defs.DRAG_AND_DROP, self.wTree.get_object("drag_and_drop_config"))
+        self.load_spin(defs.LAUNCHERS, defs.GROUPING_MODE, self.wTree.get_object("grouping_mode_config"))
 
-	self.load_spin(defs.EFFECTS, defs.REFLECTION_OFFSET, self.wTree.get_object("reflection_offset_config"))
-	self.load_spin(defs.EFFECTS, defs.ICON_ALPHA, self.wTree.get_object("icon_alpha_config"))
-	self.load_spin(defs.EFFECTS, defs.REFLECTION_A_MULTIPLIER, self.wTree.get_object("reflection_alpha_multiplier_config"))
-	self.load_bool(defs.EFFECTS, defs.SHOW_SHADOWS, self.wTree.get_object("show_shadows_config"))
+        self.load_spin(defs.EFFECTS, defs.REFLECTION_OFFSET, self.wTree.get_object("reflection_offset_config"))
+        self.load_spin(defs.EFFECTS, defs.ICON_ALPHA, self.wTree.get_object("icon_alpha_config"))
+        self.load_spin(defs.EFFECTS, defs.REFLECTION_A_MULTIPLIER, self.wTree.get_object("reflection_alpha_multiplier_config"))
+        self.load_bool(defs.EFFECTS, defs.SHOW_SHADOWS, self.wTree.get_object("show_shadows_config"))
 
-	#TODO Need a combobox or load_string
-	#self.load_spin(defs.EFFECTS, defs.ARROW_ICON, self.wTree.get_object("arrow_icon_config"))
+        #TODO Need a combobox or load_string
+        #self.load_spin(defs.EFFECTS, defs.ARROW_ICON, self.wTree.get_object("arrow_icon_config"))
 
-	#TODO Fix color settings	
-	#self.load_color(defs.THEME, defs.GSTEP1, self.wTree.get_object("gstep1_colorbutton"))
+        #TODO Fix color settings
+        #self.load_color(defs.THEME, defs.GSTEP1, self.wTree.get_object("gstep1_colorbutton"))
 
     def add_repo_win_callback(self, data=None):
-	self.update_repo_view()
-	self.top_window_repo.show_all()
+        self.update_repo_view()
+        self.top_window_repo.show_all()
 
     def update_repo_view(self, data=None):
-	self.view_repo.hide_all()
-	for elem in self.view_repo.get_children():
-		elem.destroy()
-	sources = self.sources_from_sources_list()
-	for elem in sources:
-		hbox = gtk.HBox()
-		button = gtk.Button(stock="gtk-delete")
-		label = gtk.Label()
-		label.set_text(elem)
-		hbox.pack_start(label, expand=False, fill=False)
-		button.connect("clicked", self.remove_repo_callback, elem)
-		hbox.pack_end(button, expand=False, fill=False)
-		self.view_repo.pack_start(hbox, expand=False, fill=False)
-	self.view_repo.show_all()
+        self.view_repo.hide_all()
+        for elem in self.view_repo.get_children():
+            elem.destroy()
+        sources = self.sources_from_sources_list()
+        for elem in sources:
+            hbox = gtk.HBox()
+            button = gtk.Button(stock="gtk-delete")
+            label = gtk.Label()
+            label.set_text(elem)
+            hbox.pack_start(label, expand=False, fill=False)
+            button.connect("clicked", self.remove_repo_callback, elem)
+            hbox.pack_end(button, expand=False, fill=False)
+            self.view_repo.pack_start(hbox, expand=False, fill=False)
+        self.view_repo.show_all()
 
 
     def remove_repo_callback(self, elem, data=None):
-	parent = elem.get_parent()
-	child = parent.get_children()
-	self.remove_source(child[0].get_text())
-	self.update_repo_view()
+        parent = elem.get_parent()
+        child = parent.get_children()
+        self.remove_source(child[0].get_text())
+        self.update_repo_view()
 
     def add_repo_callback(self, data=None):
-	source = self.add_repo_get_entry.get_text()
-	self.add_source(source)
-	self.update_repo_view()
+        source = self.add_repo_get_entry.get_text()
+        self.add_source(source)
+        self.update_repo_view()
 
     def choose_theme_win_callback(self, data=None):
-	self.update_view_themes()
-	self.load_themes_win.show_all()
+        self.update_view_themes()
+        self.load_themes_win.show_all()
 
     def update_view_themes(self, data=None):
-	self.view_themes_scrol.hide_all()
+        self.view_themes_scrol.hide_all()
 
-	for elem in self.view_themes_scrol.get_children():
-		elem.destroy()
+        for elem in self.view_themes_scrol.get_children():
+            elem.destroy()
 
-	themes = self.type_catalog_from_sources_list()
-	self.treeview_themes = gtk.TreeView()
-	self.treeview_themes.set_headers_visible(False)
-	self.view_themes_scrol.add(self.treeview_themes)
-	self.refresh_tree(themes, self.make_model(themes, self.treeview_themes))
-	self.view_themes_scrol.show_all()
+        themes = self.type_catalog_from_sources_list()
+        self.treeview_themes = gtk.TreeView()
+        self.treeview_themes.set_headers_visible(False)
+        self.view_themes_scrol.add(self.treeview_themes)
+        self.refresh_tree(themes, self.make_model(themes, self.treeview_themes))
+        self.view_themes_scrol.show_all()
 
     def apply_theme_callback(self, data=None):
-	model = self.treeview_themes.get_model()
-	selection = self.treeview_themes.get_selection()
-	select = selection.get_selected()
-	path = model.get(select[1], 2)
-	self.load_all_settings_from_desktop(path[0])
-	self.client.set_string(defs.THEME, defs.CURRENT_THEME, path[0])
+        model = self.treeview_themes.get_model()
+        selection = self.treeview_themes.get_selection()
+        select = selection.get_selected()
+        path = model.get(select[1], 2)
+        self.load_all_settings_from_desktop(path[0])
+        self.client.set_string(defs.THEME, defs.CURRENT_THEME, path[0])
 
     def choose_behavior_callback(self, data=None):
-	#self.behavior_entries = [	"Standart", 
-	#				"Panel mode", 
-	#				"Autohide Keep below",
-	#				"Autohide Fade out", 
-	#				"Transparency"]
-	if self.choose_behavior.get_active() == 0:
-		self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
-		self.client.set_int(defs.PANEL , defs.AUTOHIDE, 0)
-	elif self.choose_behavior.get_active() == 1:
-		self.client.set_bool(defs.PANEL, defs.PANEL_MODE, True)
-		self.client.set_int(defs.PANEL , defs.AUTOHIDE, 0)
-	elif self.choose_behavior.get_active() == 2:
-		self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
-		self.client.set_int(defs.PANEL , defs.AUTOHIDE, 1)
-	elif self.choose_behavior.get_active() == 3:
-		self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
-		self.client.set_int(defs.PANEL , defs.AUTOHIDE, 2)
-	elif self.choose_behavior.get_active() == 4:
-		self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
-		self.client.set_int(defs.PANEL , defs.AUTOHIDE, 3)
+        #self.behavior_entries = [      "Standart",
+        #                               "Panel mode",
+        #                               "Autohide Keep below",
+        #                               "Autohide Fade out",
+        #                               "Transparency"]
+        if self.choose_behavior.get_active() == 0:
+            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
+            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 0)
+        elif self.choose_behavior.get_active() == 1:
+            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, True)
+            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 0)
+        elif self.choose_behavior.get_active() == 2:
+            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
+            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 1)
+        elif self.choose_behavior.get_active() == 3:
+            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
+            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 2)
+        elif self.choose_behavior.get_active() == 4:
+            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
+            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 3)
 
-	self.client.set_int(defs.PANEL, defs.BEHAVIOR, self.choose_behavior.get_active())
+        self.client.set_int(defs.PANEL, defs.BEHAVIOR, self.choose_behavior.get_active())
 
 
 class awnLauncherMini(awnLauncher):
@@ -287,7 +287,7 @@ class awnLauncherMini(awnLauncher):
 
         self.load_finished = False
 
-	self.idle_id = 0
+        self.idle_id = 0
 
         self.client = awn.Config()
         self.client.ensure_group(defs.LAUNCHERS)
@@ -298,9 +298,9 @@ class awnLauncherMini(awnLauncher):
         self.treeview_launchers.set_reorderable(True)
         self.treeview_launchers.set_headers_visible(False)
 
-	self.scrollwindow.add(self.treeview_launchers)
+        self.scrollwindow.add(self.treeview_launchers)
 
-	self.launchers_uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
+        self.launchers_uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
 
         self.refresh_tree(self.launchers_uris, self.make_model(self.launchers_uris, self.treeview_launchers))
 
@@ -325,19 +325,19 @@ class awnAppletMini(awnApplet):
         self.wTree = glade
 
         self.scrollwindow = self.wTree.get_object("appletScrollActive")
-	self.scrollwindow1 = self.wTree.get_object("appletScrollActive1")
+        self.scrollwindow1 = self.wTree.get_object("appletScrollActive1")
         self.treeview_available =  self.wTree.get_object("appletTreeviewAvailable")
-	self.treeview_available.set_headers_visible(False)
-	self.make_active_model()
-	
-	if self.type_catalog_from_sources_list(type_catalog='Applet') == []:
-		self.write_default_sources_list(sources_list_path = os.path.join(defs.HOME_CONFIG_DIR,"sources.list"))
+        self.treeview_available.set_headers_visible(False)
+        self.make_active_model()
+
+        if self.type_catalog_from_sources_list(type_catalog='Applet') == []:
+            self.write_default_sources_list(sources_list_path = os.path.join(defs.HOME_CONFIG_DIR,"sources.list"))
 
         self.load_applets()
 
-	self.choose_categorie = self.wTree.get_object("applets_catagories")
-	self.create_dropdown(self.choose_categorie, self.list_applets_categories())
-	self.choose_categorie.connect("changed", self.callback_widget_filter_applets)
+        self.choose_categorie = self.wTree.get_object("applets_catagories")
+        self.create_dropdown(self.choose_categorie, self.list_applets_categories())
+        self.choose_categorie.connect("changed", self.callback_widget_filter_applets)
 
         self.btn_deactivate = self.wTree.get_object("appletDeactivate")
         self.btn_deactivate.connect("clicked", self.deactivate_applet)
@@ -357,11 +357,11 @@ class awnAppletMini(awnApplet):
 
 class awnManagerMini(awnManager):
     def __init__(self):
-	self.XML_PATH = os.path.join(AWN_SETTINGS_DIR, 'awn-settings.xml')
+        self.XML_PATH = os.path.join(AWN_SETTINGS_DIR, 'awn-settings.xml')
 
-	self.wTree = gtk.Builder()
-	self.wTree.add_from_file(self.XML_PATH)
-	self.wTree.set_translation_domain(defs.I18N_DOMAIN)
+        self.wTree = gtk.Builder()
+        self.wTree.add_from_file(self.XML_PATH)
+        self.wTree.set_translation_domain(defs.I18N_DOMAIN)
 
         self.window = self.wTree.get_object("awnManagerWindow")
         self.theme = gtk.icon_theme_get_default()
@@ -383,9 +383,9 @@ class awnManagerMini(awnManager):
             gtk.window_set_default_icon_list(*icon_list)
         self.window.connect("delete-event", gtk.main_quit)
 
-	self.prefManager = awnPreferencesMini(self.wTree)
-	self.prefLauncher = awnLauncherMini(self.wTree)
-	self.appletManager = awnAppletMini(self.wTree)
+        self.prefManager = awnPreferencesMini(self.wTree)
+        self.prefLauncher = awnLauncherMini(self.wTree)
+        self.appletManager = awnAppletMini(self.wTree)
 
         about = self.wTree.get_object("buttonAbout")
         about.connect("clicked", self.about)

@@ -1,3 +1,37 @@
+2009-07-09  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/__init__.py:
+	* tests/test-awn-dialog.py:
+	* tests/test-awn-tooltip.py:
+	* tests/test-config-client.py:
+	* tests/test-effects-scaling.py:
+	* tests/test-effects.py:
+	* tests/test-overlays.py:
+	* tests/test-taskmanager-dnd.py:
+	* tests/test-taskmanager-windows.py:
+	Fix style according to PEP 8.
+
+2009-07-09  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/awnApplet.py:
+	* awn-manager/awnDefs.py.in:
+	* awn-manager/awnManager.py.in:
+	* awn-manager/awnPreferences.py:
+	* awn-manager/awnTheme.py:
+	* awn-settings/awnClass.py:
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnLauncherEditor.py:
+	* awn-settings/awnSettings.py.in:
+	* bindings/python/__init__.py:
+	* tests/test-awn-dialog.py:
+	* tests/test-awn-tooltip.py:
+	* tests/test-effects-scaling.py:
+	* tests/test-effects.py:
+	* tests/test-overlays.py:
+	* tests/test-taskmanager-dnd.py:
+	* tests/test-taskmanager-windows.py:
+	Reindent (4 spaces per indentation, no tabs).
+
 2009-07-09  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
