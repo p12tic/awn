@@ -2468,6 +2468,12 @@ awn_panel_set_expand_mode (AwnPanel *panel, gboolean expand)
   priv->expand = expand;
   awn_panel_refresh_alignment (panel);
   gtk_widget_queue_resize (GTK_WIDGET (panel));
+
+  if (priv->manager)
+  {
+    // we may be called in constructed, before AppletManager is created
+    awn_panel_update_masks (GTK_WIDGET (panel), 0, 0);
+  }
 }
 
 static void     
