@@ -620,7 +620,7 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
 
   if (g_slist_length (priv->items) == 0)
   {
-    gtk_widget_destroy (GTK_WIDGET (icon));
+    //gtk_widget_destroy (GTK_WIDGET (icon));
   }
   else
   {
@@ -952,6 +952,20 @@ task_icon_contains_launcher (TaskIcon      *icon)
       return TRUE;
   }
   return FALSE;
+}
+
+/**
+ * Returns the number of visible and unvisible items this TaskIcon contains.
+ */
+guint
+task_icon_count_items (TaskIcon *icon)
+{
+  TaskIconPrivate *priv;
+
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
+  priv = icon->priv;
+  
+  return g_slist_length (priv->items);
 }
 
 guint
