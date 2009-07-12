@@ -72,6 +72,7 @@ struct _AwnPanelPrivate
   GtkWidget *docklet;
   GtkWidget *docklet_closer;
   gint docklet_minsize;
+  GtkWidget *menu;
 
   gboolean composited;
   gboolean panel_mode;
@@ -254,6 +255,8 @@ static gboolean awn_panel_expose            (GtkWidget      *widget,
                                              GdkEventExpose *event);
 static void     awn_panel_size_request      (GtkWidget *widget,
                                              GtkRequisition *requisition);
+static gboolean awn_panel_button_press      (GtkWidget      *widget, 
+                                             GdkEventButton *event);
 static gboolean awn_panel_resize_timeout    (gpointer data);
 
 static void     awn_panel_add               (GtkContainer   *window, 
@@ -377,6 +380,27 @@ awn_panel_drag_motion (GtkWidget *widget, GdkDragContext *context,
 }
 
 static void
+on_prefs_activated (GtkMenuItem *item, AwnPanel *panel)
+{
+  GError *err = NULL;
+
+  gdk_spawn_command_line_on_screen (gtk_widget_get_screen (GTK_WIDGET (panel)),
+                                    "awn-settings", &err);
+
+  if (err)
+  {
+    g_critical ("%s", err->message);
+    g_error_free (err);
+  }
+}
+
+static void
+on_close_activated (GtkMenuItem *item, AwnPanel *panel)
+{
+  gtk_main_quit ();
+}
+
+static void
 awn_panel_constructed (GObject *object)
 {
   AwnPanelPrivate *priv;
@@ -453,6 +477,28 @@ awn_panel_constructed (GObject *object)
   position_window (AWN_PANEL (panel));
 
   gtk_drag_dest_set (panel, 0, drop_types, n_drop_types, GDK_ACTION_COPY);
+
+  GtkWidget *item;
+
+  priv->menu = gtk_menu_new ();
+
+  item = gtk_image_menu_item_new_with_label (_("Dock Preferences"));
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), 
+                              gtk_image_new_from_stock (GTK_STOCK_PREFERENCES,
+                                                        GTK_ICON_SIZE_MENU));
+  gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
+  g_signal_connect (G_OBJECT (item), "activate",
+                    G_CALLBACK (on_prefs_activated), panel);
+
+  item = gtk_separator_menu_item_new ();
+  gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
+
+  item = gtk_image_menu_item_new_from_stock (GTK_STOCK_CLOSE, NULL);
+  gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
+  g_signal_connect (G_OBJECT (item), "activate",
+                    G_CALLBACK (on_close_activated), panel);
+
+  gtk_widget_show_all (priv->menu);
 }
 
 static void
@@ -718,8 +764,23 @@ awn_panel_resize_timeout (gpointer data)
   return !resize_done;
 }
 
-static
-void awn_panel_refresh_alignment (AwnPanel *panel)
+static gboolean
+awn_panel_button_press (GtkWidget *widget, GdkEventButton *event)
+{
+  AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (widget);
+
+  if (event->button == 3)
+  {
+    gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, NULL, NULL,
+                    event->button, event->time);
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+static void
+awn_panel_refresh_alignment (AwnPanel *panel)
 {
   AwnPanelPrivate *priv = panel->priv;
   gfloat align = priv->monitor ? priv->monitor->align : 0.5;
@@ -1356,6 +1417,7 @@ awn_panel_class_init (AwnPanelClass *klass)
   wid_class->expose_event  = awn_panel_expose;
   wid_class->show          = awn_panel_show;
   wid_class->size_request  = awn_panel_size_request;
+  wid_class->button_press_event = awn_panel_button_press;
 
   wid_class->drag_motion   = awn_panel_drag_motion;
 
