@@ -76,6 +76,7 @@ typedef enum
 
 /**
  * AWN_PANEL_ID_DEFAULT:
+ *
  * The default panel ID.
  */
 #define AWN_PANEL_ID_DEFAULT 1
