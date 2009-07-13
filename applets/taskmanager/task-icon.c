@@ -26,7 +26,7 @@
 
 #include <libwnck/libwnck.h>
 
-#include <libdesktop-agnostic/desktop-agnostic.h>
+#include <libdesktop-agnostic/vfs.h>
 #include "libawn/gseal-transition.h"
 
 #include "taskmanager-marshal.h"

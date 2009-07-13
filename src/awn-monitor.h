@@ -24,7 +24,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-#include <libdesktop-agnostic/desktop-agnostic.h>
+#include <libdesktop-agnostic/config.h>
 
 G_BEGIN_DECLS
 

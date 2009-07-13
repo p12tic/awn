@@ -25,6 +25,8 @@
 
 #include <libwnck/libwnck.h>
 
+#include <libdesktop-agnostic/desktop-entry.h>
+
 #include <libawn/libawn.h>
 
 #include "task-launcher.h"

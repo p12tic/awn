@@ -27,7 +27,7 @@
 
 #include <libawn/awn-defines.h>
 #include <libawn/awn-applet.h>
-#include <libdesktop-agnostic/desktop-agnostic.h>
+#include <libdesktop-agnostic/desktop-entry.h>
 
 /* Forwards */
 GtkWidget *

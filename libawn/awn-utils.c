@@ -23,7 +23,7 @@
  */
 #include <math.h>
 #include <gdk/gdk.h>
-#include <libdesktop-agnostic/desktop-agnostic.h>
+#include <libdesktop-agnostic/vfs.h>
 
 #include "awn-utils.h"
 #include "gseal-transition.h"

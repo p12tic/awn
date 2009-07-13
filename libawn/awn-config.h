@@ -23,7 +23,7 @@
 #define __LIBAWN_AWN_CONFIG_H__
 
 #include <glib.h>
-#include <libdesktop-agnostic/desktop-agnostic.h>
+#include <libdesktop-agnostic/config.h>
 #include "awn-applet.h"
 
 G_BEGIN_DECLS
