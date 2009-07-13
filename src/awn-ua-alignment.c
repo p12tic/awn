@@ -116,10 +116,9 @@ awn_ua_alignment_init (AwnUAAlignment *self)
 }
 
 AwnUAAlignment*
-awn_ua_alignment_new (GtkSocket * socket)
+awn_ua_alignment_new (void)
 {
-  return g_object_new (AWN_TYPE_UA_ALIGNMENT, 
-                       "socket",socket,
+  return g_object_new (AWN_TYPE_UA_ALIGNMENT,
                        NULL);
 }
 

@@ -54,7 +54,7 @@ typedef struct {
 
 GType awn_ua_alignment_get_type (void);
 
-AwnUAAlignment* awn_ua_alignment_new (GtkSocket * socket);
+AwnUAAlignment* awn_ua_alignment_new (void);
 
 G_END_DECLS
 
