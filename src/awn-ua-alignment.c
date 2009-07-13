@@ -35,8 +35,7 @@ struct _AwnUAAlignmentPrivate {
 
 enum
 {
-  PROP_0,
-  PROP_SOCKET
+  PROP_0
 };
 
 static void
@@ -49,9 +48,6 @@ awn_ua_alignment_get_property (GObject *object, guint property_id,
   
   switch (property_id) 
   {
-    case PROP_SOCKET:
-      g_value_set_object (value,priv->socket);
-      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -67,9 +63,6 @@ awn_ua_alignment_set_property (GObject *object, guint property_id,
 
   switch (property_id) 
   {
-    case PROP_SOCKET:
-      priv->socket = g_value_get_object (value);
-      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
