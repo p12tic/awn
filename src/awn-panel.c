@@ -72,6 +72,7 @@ struct _AwnPanelPrivate
   GtkWidget *docklet;
   GtkWidget *docklet_closer;
   gint docklet_minsize;
+  GtkWidget *menu;
 
   gboolean composited;
   gboolean panel_mode;
@@ -103,16 +104,19 @@ struct _AwnPanelPrivate
 
   guint extra_padding;
 
+  guint dnd_mouse_poll_timer_id;
+  guint mouse_poll_timer_id;
+
+  /* autohide stuff */
   gint hide_counter;
   guint hiding_timer_id;
-
-  guint mouse_poll_timer_id;
 
   guint autohide_start_timer_id;
   gboolean autohide_started;
   gboolean autohide_always_visible;
   gboolean autohide_inhibited;
 
+  /* clickthrough stuff */
   gboolean clickthrough;
   gint clickthrough_type;
   gint last_clickthrough_type;
@@ -191,6 +195,13 @@ enum
   STYLE_LAST
 };
 
+typedef enum
+{
+  MOUSE_CHECK_EDGE_ONLY,
+  MOUSE_CHECK_ACTIVE_MASK,
+  MOUSE_CHECK_ENTIRE_WINDOW
+} MouseCheckType;
+
 static const GtkTargetEntry drop_types[] = 
 {
   { (gchar*)"STRING", 0, 0 },
@@ -244,6 +255,8 @@ static gboolean awn_panel_expose            (GtkWidget      *widget,
                                              GdkEventExpose *event);
 static void     awn_panel_size_request      (GtkWidget *widget,
                                              GtkRequisition *requisition);
+static gboolean awn_panel_button_press      (GtkWidget      *widget, 
+                                             GdkEventButton *event);
 static gboolean awn_panel_resize_timeout    (gpointer data);
 
 static void     awn_panel_add               (GtkContainer   *window, 
@@ -274,7 +287,7 @@ static void     on_theme_changed            (AwnBackground *bg,
                                              AwnPanel      *panel);
 
 static gboolean awn_panel_check_mouse_pos   (AwnPanel *panel,
-                                             gboolean whole_window);
+                                             MouseCheckType check_type);
 
 static void     awn_panel_get_draw_rect     (AwnPanel *panel,
                                              GdkRectangle *area,
@@ -299,38 +312,92 @@ static void     awn_panel_set_strut         (AwnPanel *panel);
 
 static void     awn_panel_remove_strut      (AwnPanel *panel);
 
+static gboolean awn_panel_dnd_check         (gpointer data);
+
+static gboolean awn_panel_set_drag_proxy    (AwnPanel *panel,
+                                             gboolean check_mouse_pos);
 /*
  * GOBJECT CODE 
  */
 static gboolean
-awn_panel_drag_motion (GtkWidget *widget, GdkDragContext *context, 
-                       gint x, gint y, guint time_, gpointer user_data)
+awn_panel_set_drag_proxy (AwnPanel *panel, gboolean check_mouse_pos)
 {
-  static GdkWindow *proxy = NULL;
+  static GdkWindow *proxy = NULL; // FIXME: turn into private prop
+  GtkWidget *widget = GTK_WIDGET (panel);
+
+  if (check_mouse_pos)
+  {
+    gboolean in = awn_panel_check_mouse_pos (panel, MOUSE_CHECK_ENTIRE_WINDOW);
+    if (!in)
+    {
+      if (proxy)
+      {
+        // FIXME: unset first?
+        gtk_drag_dest_set (widget, 0, drop_types, n_drop_types,
+                           GDK_ACTION_COPY);
+
+        proxy = NULL;
+      }
+      return FALSE;
+    }
+  }
+
   GdkDisplay *display = gtk_widget_get_display (widget);
   GdkWindow *window = xutils_get_window_at_pointer (display);
   if (window != proxy)
   {
-    if (window != widget->window && window != NULL)
+    if (window != widget->window && window != NULL && window != widget->window)
     {
       proxy = window;
       gtk_drag_dest_set_proxy (widget, window, GDK_DRAG_PROTO_XDND, FALSE);
     }
     else if (proxy)
     {
-
-      GtkTargetEntry dummy_drop_types[] =
-      {
-          { (gchar*)"*", 0, 0}
-      };
-
-      gtk_drag_dest_set (widget, 0, dummy_drop_types, 1, GDK_ACTION_COPY);
+      // FIXME: unset first?
+      gtk_drag_dest_set (widget, 0, drop_types, n_drop_types, GDK_ACTION_COPY);
 
       proxy = NULL;
     }
   }
-  g_debug ("Received drag-motion signal");
+
+  return proxy != NULL;
+}
+
+static gboolean
+awn_panel_drag_motion (GtkWidget *widget, GdkDragContext *context, 
+                       gint x, gint y, guint time_)
+{
+  AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (widget);
+  awn_panel_set_drag_proxy (AWN_PANEL (widget), FALSE);
+
+  if (priv->dnd_mouse_poll_timer_id == 0)
+  {
+    priv->dnd_mouse_poll_timer_id = g_timeout_add (40, awn_panel_dnd_check,
+                                                   widget);
+  }
+
   return TRUE;
+}
+
+static void
+on_prefs_activated (GtkMenuItem *item, AwnPanel *panel)
+{
+  GError *err = NULL;
+
+  gdk_spawn_command_line_on_screen (gtk_widget_get_screen (GTK_WIDGET (panel)),
+                                    "awn-settings", &err);
+
+  if (err)
+  {
+    g_critical ("%s", err->message);
+    g_error_free (err);
+  }
+}
+
+static void
+on_close_activated (GtkMenuItem *item, AwnPanel *panel)
+{
+  gtk_main_quit ();
 }
 
 static void
@@ -423,15 +490,29 @@ awn_panel_constructed (GObject *object)
 
   position_window (AWN_PANEL (panel));
 
+  gtk_drag_dest_set (panel, 0, drop_types, n_drop_types, GDK_ACTION_COPY);
 
-  g_signal_connect (panel, "drag-motion", 
-                    G_CALLBACK (awn_panel_drag_motion), NULL);
-  GtkTargetEntry dummy_drop_types[] =
-  {
-      { (gchar*)"*", 0, 0}
-  };
+  GtkWidget *item;
 
-  gtk_drag_dest_set (panel, 0, dummy_drop_types, 1, GDK_ACTION_COPY);
+  priv->menu = gtk_menu_new ();
+
+  item = gtk_image_menu_item_new_with_label (_("Dock Preferences"));
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), 
+                              gtk_image_new_from_stock (GTK_STOCK_PREFERENCES,
+                                                        GTK_ICON_SIZE_MENU));
+  gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
+  g_signal_connect (G_OBJECT (item), "activate",
+                    G_CALLBACK (on_prefs_activated), panel);
+
+  item = gtk_separator_menu_item_new ();
+  gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
+
+  item = gtk_image_menu_item_new_from_stock (GTK_STOCK_CLOSE, NULL);
+  gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
+  g_signal_connect (G_OBJECT (item), "activate",
+                    G_CALLBACK (on_close_activated), panel);
+
+  gtk_widget_show_all (priv->menu);
 }
 
 static void
@@ -697,8 +778,23 @@ awn_panel_resize_timeout (gpointer data)
   return !resize_done;
 }
 
-static
-void awn_panel_refresh_alignment (AwnPanel *panel)
+static gboolean
+awn_panel_button_press (GtkWidget *widget, GdkEventButton *event)
+{
+  AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (widget);
+
+  if (event->button == 3)
+  {
+    gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, NULL, NULL,
+                    event->button, event->time);
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+static void
+awn_panel_refresh_alignment (AwnPanel *panel)
 {
   AwnPanelPrivate *priv = panel->priv;
   gfloat align = priv->monitor ? priv->monitor->align : 0.5;
@@ -931,14 +1027,14 @@ static void free_inhibit_item (gpointer data)
 }
 
 static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
-                                           gboolean whole_window)
+                                           MouseCheckType check_type)
 {
-  /* returns TRUE if mouse is in the window / or on the edge (if !whole_window) */
   g_return_val_if_fail(AWN_IS_PANEL(panel), FALSE);
 
   GtkWidget *widget = GTK_WIDGET (panel);
   AwnPanelPrivate *priv = panel->priv;
   GdkWindow *panel_win;
+  GdkRectangle area;
 
   gint x, y, window_x, window_y, width, height;
   /* FIXME: probably needs some love to work on multiple monitors */
@@ -946,56 +1042,69 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
   panel_win = gtk_widget_get_window (widget);
   gdk_window_get_root_origin (panel_win, &window_x, &window_y);
 
-  GdkRectangle area;
-  awn_panel_get_draw_rect (AWN_PANEL (panel), &area, 0, 0);
-  window_x += area.x;
-  window_y += area.y;
-  width = area.width;
-  height = area.height;
-  
-#if 0
-  g_debug ("mouse: %d,%d; window: %d,%d, %dx%d", x, y, window_x, window_y,
-    width, height);
-#endif
-
-  if (!whole_window)
+  switch (check_type)
   {
-    /* edge detection */
-    switch (priv->orient)
+    case MOUSE_CHECK_EDGE_ONLY:
     {
-      case AWN_ORIENTATION_TOP:
-        return x >= window_x && x < window_x + width &&
-               y == window_y;
-      case AWN_ORIENTATION_BOTTOM:
-        return x >= window_x && x < window_x + width &&
-               y == window_y + height - 1;
-      case AWN_ORIENTATION_LEFT:
-        return y >= window_y && y < window_y + height &&
-               x == window_x;
-      case AWN_ORIENTATION_RIGHT:
-        return y >= window_y && y < window_y + height &&
-               x == window_x + width - 1;
+      /* edge detection */
+      awn_panel_get_draw_rect (AWN_PANEL (panel), &area, 0, 0);
+      window_x += area.x;
+      window_y += area.y;
+      width = area.width;
+      height = area.height;
+
+      switch (priv->orient)
+      {
+        case AWN_ORIENTATION_LEFT:
+          return y >= window_y && y < window_y + height &&
+                 x == window_x;
+        case AWN_ORIENTATION_RIGHT:
+          return y >= window_y && y < window_y + height &&
+                 x == window_x + width - 1;
+        case AWN_ORIENTATION_TOP:
+          return x >= window_x && x < window_x + width &&
+                 y == window_y;
+        case AWN_ORIENTATION_BOTTOM:
+        default:
+          return x >= window_x && x < window_x + width &&
+                 y == window_y + height - 1;
+      }
+    }
+    case MOUSE_CHECK_ACTIVE_MASK:
+    {
+      // FIXME: 
+      //   best would be to check if mouse is inside InputShape of the window,
+      //   but we can't do it because the checks are happening also while
+      //   in clickthrough mode
+      //   solution could be to save the mask which is created in update_masks
+      GdkRegion *region;
+      region = awn_applet_manager_get_mask (AWN_APPLET_MANAGER (priv->manager),
+                                            priv->path_type, priv->offset_mod);
+      gdk_region_offset (region, window_x, window_y);
+      gboolean inside_mask = gdk_region_point_in (region, x, y);
+      gdk_region_destroy (region);
+
+      if (inside_mask) return TRUE;
+
+      awn_panel_get_draw_rect (AWN_PANEL (panel), &area, 0, 0);
+      window_x += area.x;
+      window_y += area.y;
+      width = area.width;
+      height = area.height;
+
+      return (x >= window_x && x < window_x + width &&
+              y >= window_y && y < window_y + height);
+    }
+    case MOUSE_CHECK_ENTIRE_WINDOW:
+    {
+      width = widget->allocation.width;
+      height = widget->allocation.height;
+      
+      return (x >= window_x && x < window_x + width &&
+              y >= window_y && y < window_y + height);
     }
   }
-  else
-  {
-    // FIXME: 
-    //   best would be to check if mouse is inside InputShape of the window,
-    //   but we can't do it because the checks are happening also while
-    //   in clickthrough mode
-    //   solution could be to save the mask which is created in update_masks
-    GdkRegion *region;
-    region = awn_applet_manager_get_mask (AWN_APPLET_MANAGER (priv->manager),
-                                          priv->path_type, priv->offset_mod);
-    gdk_region_offset (region, window_x - area.x, window_y - area.y);
-    gboolean inside_mask = gdk_region_point_in (region, x, y);
-    gdk_region_destroy (region);
 
-    if (inside_mask) return TRUE;
-
-    return (x >= window_x && x < window_x + width &&
-            y >= window_y && y < window_y + height);
-  }
   return FALSE;
 }
 
@@ -1110,7 +1219,7 @@ autohide_start_timeout (gpointer data)
   priv->autohide_start_timer_id = 0;
 
   if (priv->autohide_inhibited ||
-      awn_panel_check_mouse_pos (panel, TRUE))
+      awn_panel_check_mouse_pos (panel, MOUSE_CHECK_ACTIVE_MASK))
   {
      return FALSE;
   }
@@ -1135,7 +1244,8 @@ poll_mouse_position (gpointer data)
   if (priv->autohide_type != AUTOHIDE_TYPE_NONE)
   { 
     if (awn_panel_check_mouse_pos (panel,
-          !priv->autohide_started || priv->autohide_always_visible))
+          !priv->autohide_started || priv->autohide_always_visible ?
+          MOUSE_CHECK_ACTIVE_MASK : MOUSE_CHECK_EDGE_ONLY))
     {
       /* we are on the window or its edge */
       if (priv->autohide_start_timer_id)
@@ -1170,7 +1280,8 @@ poll_mouse_position (gpointer data)
    *  the ctrl-key
    */
   gboolean specialstate = (mask & GDK_CONTROL_MASK) &&
-                          awn_panel_check_mouse_pos (panel, TRUE);
+                          awn_panel_check_mouse_pos (panel,
+                                                     MOUSE_CHECK_ACTIVE_MASK);
 
   GdkWindow *win;
   win = gtk_widget_get_window (GTK_WIDGET (panel));
@@ -1227,13 +1338,30 @@ poll_mouse_position (gpointer data)
   /* Keep on polling when hovering the panel and ctrl clickthrough
    *  is activated
    */
-  if (awn_panel_check_mouse_pos (panel, TRUE) &&
+  if (awn_panel_check_mouse_pos (panel, MOUSE_CHECK_ACTIVE_MASK) &&
       priv->clickthrough_type == CLICKTHROUGH_ON_CTRL)
     return TRUE;
 
   /* In other cases, the polling may end */
   priv->mouse_poll_timer_id = 0;
   return FALSE;
+}
+
+static gboolean
+awn_panel_dnd_check (gpointer data)
+{
+  AwnPanel *panel = AWN_PANEL (data);
+  AwnPanelPrivate *priv = panel->priv;
+  gboolean proxy_set = FALSE;
+
+  proxy_set = awn_panel_set_drag_proxy (panel, TRUE);
+
+  if (!proxy_set)
+  {
+    // kill the timer
+    priv->dnd_mouse_poll_timer_id = 0;
+  }
+  return proxy_set;
 }
 
 static void
@@ -1303,6 +1431,9 @@ awn_panel_class_init (AwnPanelClass *klass)
   wid_class->expose_event  = awn_panel_expose;
   wid_class->show          = awn_panel_show;
   wid_class->size_request  = awn_panel_size_request;
+  wid_class->button_press_event = awn_panel_button_press;
+
+  wid_class->drag_motion   = awn_panel_drag_motion;
 
   /* Add properties to the class */
   g_object_class_install_property (obj_class,
@@ -2351,6 +2482,12 @@ awn_panel_set_expand_mode (AwnPanel *panel, gboolean expand)
   priv->expand = expand;
   awn_panel_refresh_alignment (panel);
   gtk_widget_queue_resize (GTK_WIDGET (panel));
+
+  if (priv->manager)
+  {
+    // we may be called in constructed, before AppletManager is created
+    awn_panel_update_masks (GTK_WIDGET (panel), 0, 0);
+  }
 }
 
 static void     

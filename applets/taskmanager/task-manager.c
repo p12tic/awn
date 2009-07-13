@@ -83,10 +83,13 @@ enum
 };
 
 /* Forwards */
-static void update_icon_visible         (TaskManager *manager, 
-                                         TaskIcon *icon);
-static void on_icon_visible_changed     (TaskManager *manager, 
+static void update_icon_visible         (TaskManager   *manager, 
                                          TaskIcon      *icon);
+static void on_icon_visible_changed     (TaskManager   *manager, 
+                                         TaskIcon      *icon);
+static void on_icon_effects_ends        (TaskIcon      *icon,
+                                         AwnEffect      effect,
+                                         AwnEffects    *instance);
 static void on_window_opened            (WnckScreen    *screen, 
                                          WnckWindow    *window,
                                          TaskManager   *manager);
@@ -528,30 +531,30 @@ static void
 update_icon_visible (TaskManager *manager, TaskIcon *icon)
 {
   TaskManagerPrivate *priv;
+  gboolean visible = FALSE;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
   priv = manager->priv;
   
-  if (task_icon_is_visible (icon))
+  if (task_icon_is_visible (icon) && 
+      (!priv->only_show_launchers || task_icon_contains_launcher (icon)))
   {
-    if (priv->only_show_launchers && !task_icon_contains_launcher (icon))
-    {
-      gtk_widget_hide (GTK_WIDGET (icon));
-    }
-    else
-    {
-      if (!GTK_WIDGET_VISIBLE (icon))
-      {
-        awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                              AWN_EFFECT_OPENING, 1, FALSE, FALSE);
-        gtk_widget_show (GTK_WIDGET (icon));
-      }
-    }
+    visible = TRUE;
   }
-  else
+
+  if (visible && !GTK_WIDGET_VISIBLE (icon))
   {
-    gtk_widget_hide (GTK_WIDGET (icon));
+    gtk_widget_show (GTK_WIDGET (icon));
+    awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                          AWN_EFFECT_OPENING, 1, FALSE, FALSE);
+  }
+
+  if (!visible && GTK_WIDGET_VISIBLE (icon))
+  {
+    awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                          AWN_EFFECT_CLOSING, 1, FALSE, TRUE);
+    //hidding of TaskIcon happens when effect is done.
   }
 }
 
@@ -561,6 +564,22 @@ on_icon_visible_changed (TaskManager *manager, TaskIcon *icon)
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
   update_icon_visible (manager, icon);
+}
+
+static void
+on_icon_effects_ends (TaskIcon   *icon,
+                      AwnEffect   effect,
+                      AwnEffects *instance)
+{
+  g_return_if_fail (TASK_IS_ICON (icon));
+
+  if (effect == AWN_EFFECT_CLOSING)
+  {
+    gtk_widget_hide (GTK_WIDGET (icon));
+
+    //if (task_icon_count_items (icon) == 0)
+    //  gtk_widget_destroy (GTK_WIDGET (icon));
+  }
 }
 
 /**
@@ -686,8 +705,14 @@ on_window_opened (WnckScreen    *screen,
       _drag_add_signals(manager, icon);
 
     g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
-    g_signal_connect_swapped (icon, "visible-changed",
-                              G_CALLBACK (on_icon_visible_changed), manager);
+    g_signal_connect_swapped (icon, 
+                              "visible-changed",
+                              G_CALLBACK (on_icon_visible_changed), 
+                              manager);
+    g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                              "animation-end", 
+                              G_CALLBACK (on_icon_effects_ends), 
+                              icon);
 
     update_icon_visible (manager, TASK_ICON (icon));
   }
@@ -810,9 +835,15 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
     priv->icons = g_slist_append (priv->icons, icon);
 
     g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
-    g_signal_connect_swapped (icon, "visible-changed",
-                              G_CALLBACK (on_icon_visible_changed), manager);
-
+    g_signal_connect_swapped (icon, 
+                              "visible-changed",
+                              G_CALLBACK (on_icon_visible_changed), 
+                              manager);
+    g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                              "animation-end", 
+                              G_CALLBACK (on_icon_effects_ends), 
+                              icon);
+    
     update_icon_visible (manager, TASK_ICON (icon));
 
     /* reordening through D&D */
