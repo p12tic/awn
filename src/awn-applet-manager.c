@@ -1,4 +1,4 @@
-/*
+e/*
  *  Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -1114,7 +1114,8 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   ua_info->notify_offset_id = g_signal_connect (manager,"notify::offset",G_CALLBACK(awn_ua_offset_change),ua_info);
   ua_info->notify_orient_id = g_signal_connect_after (manager,"notify::orient",G_CALLBACK(awn_ua_orient_change),ua_info);
   ua_info->notify_size_id = g_signal_connect_after (manager,"notify::size",G_CALLBACK(awn_ua_size_change),ua_info);
-  ua_info->notify_ua_list_id = g_signal_connect_after (manager,"notify::ua-list",G_CALLBACK(awn_ua_list_change),ua_info);  
+  
+  ua_info->notify_ua_list_id = g_signal_connect_after (manager,"notify::ua-list",G_CALLBACK(awn_ua_list_change),ua_info);
   g_signal_connect (socket,"plug-removed",G_CALLBACK(awn_ua_plug_removed),ua_info);
 
   priv->ua_list = g_slist_append (priv->ua_list,g_strdup(ua_info->ua_list_entry));
@@ -1142,11 +1143,9 @@ awn_ua_get_all_server_flags (	AwnAppletManager *manager,
 				gchar     *name,
 				GError   **error)
 {
-/* Furtur function to return capability of the server
+/* Future function to return capability of the server
 For now, it return nothing*/
-/*hash = g_hash_table_new (NULL, NULL);*/
 return TRUE;
-
 }
 
 
