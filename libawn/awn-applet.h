@@ -170,6 +170,11 @@ GtkWidget *        awn_applet_create_about_item   (AwnApplet *applet,
                                                    const gchar      **artists,
                                                    const gchar      **documenters);
 
+GtkWidget *        awn_applet_create_about_item_simple (AwnApplet        *applet,
+                                                        const gchar      *copyright,
+                                                        AwnAppletLicense  license,
+                                                        const gchar      *version);
+
 G_END_DECLS
 
 #endif

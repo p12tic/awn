@@ -41,7 +41,7 @@ from awnLauncherEditor import awnLauncherEditor
 import tarfile
 
 from bzrlib.builtins import cmd_branch, cmd_pull
-from bzrlib.plugins.launchpad.lp_directory import LaunchpadDirectory 
+from bzrlib.plugins.launchpad.lp_directory import LaunchpadDirectory
 
 defs.i18nize(globals())
 
@@ -78,619 +78,619 @@ def make_color_string(color, alpha):
 EMPTY = "none";
 
 class awnBzr:
-	#Utils Bzr
-	def lp_path_normalize(self, path):
-		'''     Get a "lp:" format url and return a http url
-                        path: a url from a branch
-                        return: the http format of a lp: format, or the same url
-		'''
-                directory = LaunchpadDirectory()
-                return directory._resolve(path).replace("bzr+ssh","http") 
+        #Utils Bzr
+    def lp_path_normalize(self, path):
+        '''     Get a "lp:" format url and return a http url
+                path: a url from a branch
+                return: the http format of a lp: format, or the same url
+        '''
+        directory = LaunchpadDirectory()
+        return directory._resolve(path).replace("bzr+ssh","http")
 
-	def read_list(self, file_path):
-		'''	Read a flat file and return the content in a list
-			file_path : path of the file
-			return: a list of the elements of the file
-		'''
-		flat_list = []
-		f = open(file_path, 'r')
-		for line in f:
-			flat_list.append(line.strip())
-		f.close()
-		return flat_list
+    def read_list(self, file_path):
+        '''     Read a flat file and return the content in a list
+                file_path : path of the file
+                return: a list of the elements of the file
+        '''
+        flat_list = []
+        f = open(file_path, 'r')
+        for line in f:
+            flat_list.append(line.strip())
+        f.close()
+        return flat_list
 
-	#Bzr
-	def create_branch(self, bzr_dir, path):
-		'''	Create a new bzr branch.
-			path: the path of the branch
-			bzr_dir: the location of the futur tree.
-		'''
-		if os.path.exists(path):
-			print ("Error, the path already exist")
-		else:
-			try:
-				bzr_branch = cmd_branch()
-				status = StringIO.StringIO()
-				status = bzr_branch._setup_outf()
-				bzr_branch.run(from_location=self.lp_path_normalize(bzr_dir), to_location=path)
-			except socket.gaierror:
-				print 'Socket error, could not create branch.'
+    #Bzr
+    def create_branch(self, bzr_dir, path):
+        '''     Create a new bzr branch.
+                path: the path of the branch
+                bzr_dir: the location of the futur tree.
+        '''
+        if os.path.exists(path):
+            print ("Error, the path already exist")
+        else:
+            try:
+                bzr_branch = cmd_branch()
+                status = StringIO.StringIO()
+                status = bzr_branch._setup_outf()
+                bzr_branch.run(from_location=self.lp_path_normalize(bzr_dir), to_location=path)
+            except socket.gaierror:
+                print 'Socket error, could not create branch.'
 
-	def update_branch(self, path):
-		''' 	Update a local branch
-			path: Location of the branch
-			Return the output of the command
-		'''
-		bzr_pull = cmd_pull()
-		status = StringIO.StringIO()
-		status = bzr_pull._setup_outf()
-		bzr_pull.run(directory=path)
+    def update_branch(self, path):
+        '''     Update a local branch
+                path: Location of the branch
+                Return the output of the command
+        '''
+        bzr_pull = cmd_pull()
+        status = StringIO.StringIO()
+        status = bzr_pull._setup_outf()
+        bzr_pull.run(directory=path)
 
-	def get_revision_from_path(self, path):
-		''' 	Return the last revision number of the branch 
-			specify with path parameter
-		'''
-		tree = branch.Branch.open(path)
-		revision_number, revision_id = tree.last_revision_info()
-		return revision_number
-	
-	#Sources.list
-	def dict_from_sources_list(self, config=defs.HOME_CONFIG_DIR):
-		'''
-		Return a dictionnay of the sources.list
-		config: the directory to read sources.list.
-		'''
-		sources_dict = {}
-		sources_list_path = os.path.join(config, "sources.list")
-		f = open(sources_list_path)
-		sources_list = f.readlines()
-		sources_list = [elem.replace("\n","") for elem in sources_list]
-		sources_list= [elem.split(" ") for elem in sources_list]
-		for i in sources_list:
-			sources_dict[i[0]] = i[1]
-		f.close()
-		return sources_dict
+    def get_revision_from_path(self, path):
+        '''     Return the last revision number of the branch
+                specify with path parameter
+        '''
+        tree = branch.Branch.open(path)
+        revision_number, revision_id = tree.last_revision_info()
+        return revision_number
 
-	def list_from_sources_list(self, config=defs.HOME_CONFIG_DIR):
-		'''
-		Return a list for the sources.list. 
-		Each element of the list is another list of 2 elements ['sources','directory']
-		config: the directory to read sources.list.
-		'''
-		sources_list = []
-		sources_list_path = os.path.join(config, "sources.list")
-		f = open(sources_list_path)
-		sources_list = f.readlines()
-		sources_list = [elem.replace("\n","") for elem in sources_list]
-		sources_list= [elem.split(" ") for elem in sources_list]
-		f.close()
-		return sources_list
+    #Sources.list
+    def dict_from_sources_list(self, config=defs.HOME_CONFIG_DIR):
+        '''
+        Return a dictionnay of the sources.list
+        config: the directory to read sources.list.
+        '''
+        sources_dict = {}
+        sources_list_path = os.path.join(config, "sources.list")
+        f = open(sources_list_path)
+        sources_list = f.readlines()
+        sources_list = [elem.replace("\n","") for elem in sources_list]
+        sources_list= [elem.split(" ") for elem in sources_list]
+        for i in sources_list:
+            sources_dict[i[0]] = i[1]
+        f.close()
+        return sources_dict
 
-	def sources_from_sources_list(self, config=defs.HOME_CONFIG_DIR):
-		'''
-		Return a list of all sources (without the directory)
-		config: the directory to read sources.list.
-		'''
-		list_sources = []
-		list_sources_list = self.list_from_sources_list(config)
-		[list_sources.append(elem[0]) for elem in list_sources_list]
-		return list_sources
+    def list_from_sources_list(self, config=defs.HOME_CONFIG_DIR):
+        '''
+        Return a list for the sources.list.
+        Each element of the list is another list of 2 elements ['sources','directory']
+        config: the directory to read sources.list.
+        '''
+        sources_list = []
+        sources_list_path = os.path.join(config, "sources.list")
+        f = open(sources_list_path)
+        sources_list = f.readlines()
+        sources_list = [elem.replace("\n","") for elem in sources_list]
+        sources_list= [elem.split(" ") for elem in sources_list]
+        f.close()
+        return sources_list
 
-	def create_sources_list(self, config = defs.HOME_CONFIG_DIR, default = defs.DEFAULT_SOURCES_LIST):
-		'''	Create a sources_list with all the sources (bzr branch or local files)
-			Should be unique for an installation
-			config: the directory to write sources.list.
-			default: the default content of the sources.list
-		'''
-		sources_list_path = os.path.join(config,"sources.list")
-		if not os.path.isfile(sources_list_path):
-			self.write_default_sources_list(sources_list_path)
-		else: print (_("Error, a sources.list already exist"))
+    def sources_from_sources_list(self, config=defs.HOME_CONFIG_DIR):
+        '''
+        Return a list of all sources (without the directory)
+        config: the directory to read sources.list.
+        '''
+        list_sources = []
+        list_sources_list = self.list_from_sources_list(config)
+        [list_sources.append(elem[0]) for elem in list_sources_list]
+        return list_sources
 
-	def write_default_sources_list(self, sources_list_path, config = defs.HOME_CONFIG_DIR, default = defs.DEFAULT_SOURCES_LIST):
-		'''	Write default sources in the sources list
-			If a sources.list exist, it will write default sources at the
-			end of the file
-		'''
-		if os.path.isfile(sources_list_path):
-			f = open(sources_list_path, 'a')
-		else:
-			f = open(sources_list_path, 'w')
-		[f.write(i[0] + " " + i[1] + "\n") 
-			for i 
-			in default if i[0] <> '']
-		f.close()
+    def create_sources_list(self, config = defs.HOME_CONFIG_DIR, default = defs.DEFAULT_SOURCES_LIST):
+        '''     Create a sources_list with all the sources (bzr branch or local files)
+                Should be unique for an installation
+                config: the directory to write sources.list.
+                default: the default content of the sources.list
+        '''
+        sources_list_path = os.path.join(config,"sources.list")
+        if not os.path.isfile(sources_list_path):
+            self.write_default_sources_list(sources_list_path)
+        else: print (_("Error, a sources.list already exist"))
 
-
-	def update_sources_list(self, directories = defs.HOME_THEME_DIR, progressbar = None):
-		''' 	
-			Update all sources of the sources list
-			If the directory doesn't exist, a new branch will be create
-			directories = default locations of the local branches to update
-			progress = A widget of a progress bar to update.
-		'''
-		if progressbar is not None:
-			progressbar.pulse()
-			progressbar.show()
-
-		sources_list = self.list_from_sources_list()
-		sources_to_update = []
-
-		[ sources_to_update.append(elem) 
-			for elem in sources_list 
-			if not elem[0].startswith("/") or not elem[1] == "local" ]
-		total = len(sources_to_update)
-		counter = 0		
-
-		for elem in sources_to_update:
-			if not os.path.isdir(os.path.join(directories , elem[1])):
-				print self.create_branch(elem[0], os.path.join(directories , elem[1]))
-				
-			else:
-				print self.update_branch(os.path.join(directories , elem[1]))
-			counter = counter+1
-			if progressbar is not None:
-				progressbar.set_fraction(int(counter) / int(total))
+    def write_default_sources_list(self, sources_list_path, config = defs.HOME_CONFIG_DIR, default = defs.DEFAULT_SOURCES_LIST):
+        '''     Write default sources in the sources list
+                If a sources.list exist, it will write default sources at the
+                end of the file
+        '''
+        if os.path.isfile(sources_list_path):
+            f = open(sources_list_path, 'a')
+        else:
+            f = open(sources_list_path, 'w')
+        [f.write(i[0] + " " + i[1] + "\n")
+                for i
+                in default if i[0] <> '']
+        f.close()
 
 
-	
+    def update_sources_list(self, directories = defs.HOME_THEME_DIR, progressbar = None):
+        '''
+                Update all sources of the sources list
+                If the directory doesn't exist, a new branch will be create
+                directories = default locations of the local branches to update
+                progress = A widget of a progress bar to update.
+        '''
+        if progressbar is not None:
+            progressbar.pulse()
+            progressbar.show()
 
-	def add_source(self, path, source_type="web", config = defs.HOME_CONFIG_DIR, directories = defs.HOME_THEME_DIR):
-		'''	Add a source to the sources list.
-			path: path to the branch
-			source_type: type of source web or local
-			config: the directory to write sources.list.
-			directories = the directory to write sources
-		'''
-		if not self.sources_check_sanity(path):
-			if source_type == "local":
-				path = path +" "+"local"+"\n"
-			elif source_type == "web":
-				number = len(os.listdir(directories))
-				path = path +" "+"web-sources-"+str(number)+"\n"
-			source = os.path.join(config,"sources.list")
-			f = open(source, 'a')
-			f.write(path)
-			f.close()
-		else:
-			print (_("Error, the path is empty or already exist"))
+        sources_list = self.list_from_sources_list()
+        sources_to_update = []
 
-	def remove_source(self, source, config = defs.HOME_CONFIG_DIR):
-		'''	Remove a source from the sources.list
-			path is the path of the source (url or local path)
-		'''
-		list_sources = self.list_from_sources_list(config)
-		sources_list_path = os.path.join(config,"sources.list")
-		new_sources_list = []
-		for elem in list_sources :
-			if not elem[0] == source:
-				new_sources_list.append(elem)
+        [ sources_to_update.append(elem)
+                for elem in sources_list
+                if not elem[0].startswith("/") or not elem[1] == "local" ]
+        total = len(sources_to_update)
+        counter = 0
 
-		print list_sources
-		print new_sources_list
+        for elem in sources_to_update:
+            if not os.path.isdir(os.path.join(directories , elem[1])):
+                print self.create_branch(elem[0], os.path.join(directories , elem[1]))
 
-		f = open(sources_list_path, 'w')
-		[f.write(i[0] + " " + i[1] + "\n") 
-			for i 
-			in new_sources_list if i[0] <> '']
-		f.close()
-
-	def create_branch_config_directory(self, source):
-		'''
-			Create the directory of a source in config directory.
-			source is a dictionnary of 1 entry {'url','directory'}.
-			source is 1 line of the sources list.
-		'''
-		if not source[0].startswith("/") or source[1] == "local":
-			self.create_branch((source[0], source[1]))
-		else:
-			print "Error, this is a local path"
-
-	def sources_list_check_double_path(self, path):
-		''' 	Check if a path is already in the sources.list
-			path: location of the source
-			Return True if the path already in.
-		'''
-		sources_list = self.list_from_sources_list()
-		error = 0
-		for elem in sources_list:
-			if elem[0] == path:
-				error=error+1
-		if error >= 1:
-			return True
-		else:
-			return False
-	def sources_check_sanity(self, path):
-		''' 	Do some check to be sure the source is ok
-			path: location of the source
-			return True if the source is not ok
-		'''
-		#Test If the source already in the sources.list
-		test = self.sources_list_check_double_path(path)
-
-		#Test if the source is not null 
-		if path == '':
-			test = True
-		
-		#Test if it's not a fantasic path
-		if not path.startswith("/") or not path.startswith("http://"):
-			test = True
-		
-		#TODO Add more tests
-
-	#Desktop files
-	def read_desktop(self, file_path):
-		'''	Read a desktop file and return a dictionnary with all fields
-			API still unstable
-		'''
-
-		#API of the desktop file (unstable, WIP etc ...)
-		# keys should be a string of the type
-		# value could be 
-		#	'' if there is nothing,
-		#	a string when there is no settings 
-		#	a list when there is a setting : [value of the setting, group settings, key setting]
-		struct= {	'type': '',		# Applet or Theme
-				'location':'',		# Location of the desktop file
-				'name': '',		# Name of the Type
-				'comment':'',		# Comments
-				'version':'',		# Version of the 
-				'copyright':'',		# Copyright
-				'author':'',		# Author
-				'licence_code':'',	# Licence for the code
-				'licence_icons':'',	# Licence for the icons
-				'icon':'',		# Icon for the type
-				'style':'',		# Style of the bar
-				# Applet specific
-				'exec':'',		# Execution path, for applet
-				'applet_type':'',	# Type of teh applet (C, Vala or Python)
-				'applet_category':'',	# Category for the applet
-				'singleton':'',		# True or False, use only one instance.
-				# Theme specific
-				'effects':'',
-				'orientation':'',
-				'size':'',
-				'gtk_theme_mode':'',	
-				'corner_radius':'',	
-				'panel_angle':'',	
-				'curviness':''	,
-				'curves_symmetry':'',
-				'gstep1':'',	
-				'gstep2':'',	
-				'ghistep1':'',
-				'ghistep2':'',
-				'border':'',
-				'hilight':'',
-				'corner_radius':'',
-				'panel_angle':'',
-			}
+            else:
+                print self.update_branch(os.path.join(directories , elem[1]))
+            counter = counter+1
+            if progressbar is not None:
+                progressbar.set_fraction(int(counter) / int(total))
 
 
-		desktop_entry = DesktopEntry(file_path)
-		struct['type'] = desktop_entry.get('X-AWN-Type')
-		struct['location'] = file_path
-		struct['name'] = desktop_entry.get('Name')
-		#TODO More to add
-		struct['icon'] = desktop_entry.get('Icon')
-		struct['exec'] = desktop_entry.get('Exec')
-		struct['applet_type'] = desktop_entry.get('X-AWN-AppletType')
-		struct['applet_category'] = desktop_entry.get('X-AWN-AppletCategory').rsplit(",")
-
-		if desktop_entry.get('X-AWN-ThemeEffects') <> '':
-			struct['effects'] = [int(desktop_entry.get('X-AWN-ThemeEffects')), 
-						defs.EFFECTS, defs.ICON_EFFECT]
-
-		if desktop_entry.get('X-AWN-ThemeOrientation') <> '':
-			struct['orientation'] = [int(desktop_entry.get('X-AWN-ThemeOrientation')), 
-							defs.PANEL, defs.ORIENT]
-
-		if desktop_entry.get('X-AWN-ThemeSize') <> '':
-			struct['size'] = [int(desktop_entry.get('X-AWN-ThemeSize')), 
-						defs.PANEL, defs.SIZE]
-
-		if desktop_entry.get('X-AWN-ThemeStyle') <> '':
-			struct['style'] = [int(desktop_entry.get('X-AWN-ThemeStyle')), 
-						defs.PANEL, defs.STYLE]
-
-		if desktop_entry.get('X-AWN-ThemeGstep1') <> '':
-			struct['gstep1'] = [desktop_entry.get('X-AWN-ThemeGstep1'), 
-						defs.THEME, defs.GSTEP1]
-
-		if desktop_entry.get('X-AWN-ThemeGstep2') <> '':
-			struct['gstep2'] = [desktop_entry.get('X-AWN-ThemeGstep2'), 
-						defs.THEME, defs.GSTEP2]
-
-		if desktop_entry.get('X-AWN-ThemeGhistep1') <> '':
-			struct['ghistep1'] = [desktop_entry.get('X-AWN-ThemeGhistep1'), 
-						defs.THEME, defs.GHISTEP1]
-
-		if desktop_entry.get('X-AWN-ThemeGhistep2') <> '':
-			struct['ghistep2'] = [desktop_entry.get('X-AWN-ThemeGhistep2'), 
-						defs.THEME, defs.GHISTEP2]
-
-		if desktop_entry.get('X-AWN-ThemeBorder') <> '':
-			struct['border'] = [desktop_entry.get('X-AWN-ThemeBorder'), 
-						defs.THEME, defs.BORDER]
-
-		if desktop_entry.get('X-AWN-ThemeHilight') <> '':
-			struct['hilight'] = [desktop_entry.get('X-AWN-ThemeHilight'), 
-						defs.THEME, defs.HILIGHT]
-
-		if desktop_entry.get('X-AWN-ThemeCornerRadius') <> '':
-			struct['corner_radius'] = [float(desktop_entry.get('X-AWN-ThemeCornerRadius')), 
-						defs.THEME, defs.CORNER_RADIUS]
-
-		if desktop_entry.get('X-AWN-ThemePanelAngle') <> '':
-			struct['panel_angle'] = [float(desktop_entry.get('X-AWN-ThemePanelAngle')), 
-						defs.THEME, defs.PANEL_ANGLE]
-
-		if desktop_entry.get('X-AWN-ThemeCurvesSymmetry') <> '':
-			struct['curves_symmetry'] = [float(desktop_entry.get('X-AWN-ThemeCurvesSymmetry')), 
-						defs.THEME, defs.CURVES_SYMMETRY]
-
-		if desktop_entry.get('X-AWN-ThemeCurviness') <> '':
-			struct['curviness'] = [float(desktop_entry.get('X-AWN-ThemeCurviness')), 
-						defs.THEME, defs.CURVINESS]
-
-		return struct
-
-	def load_element_from_desktop(self, file_path, parameter, read=True):
-		'''	
-			Read a desktop file, and load the paramater setting.
-			file_path: the path of the desktop file or the read desktop file
-		'''
-		if read == True:
-			struct = self.read_desktop(file_path)
-		else:
-			struct = file_path
-		if struct['type'] == 'Theme':
-			#Read the settings
-			try:
-				if not struct[parameter][0] == '':
-					if type(struct[parameter][0]) is int:
-						self.client.set_int(struct[parameter][1], 
-									struct[parameter][2], 
-									struct[parameter][0])
-					elif type(struct[parameter][0]) is float:
-						self.client.set_float(struct[parameter][1], 
-									struct[parameter][2], 
-									struct[parameter][0])
-					else: self.client.set_string(struct[parameter][1], 
-									struct[parameter][2], 
-									struct[parameter][0])
-			except IndexError:
-				# The key is not in the desktop file, just skip it.
-				pass
-
-			#TODO more type settings
-		else: 
-			print (_("Error, the desktop file is not for a theme"))
 
 
-	def read_desktop_files_from_source(self, source, directories = defs.HOME_THEME_DIR):
-		'''	Read all desktop file from a source
-			source is a list of 2 entries ('url','directory').
-			source is 1 line of the sources list.
-		'''
-		if source[1] == "local":
-			path = source[0]
-		else:
-			path= str(directories + "/" + source[1])
-		try:
-			list_files = os.listdir(path)
-			desktops =  [path + "/" + elem for elem in list_files if os.path.splitext(elem)[1] =='.desktop']
-			return desktops
-		except:
-			print(_("Error %s is missing on your system, please remove it from the sources.list") % path)
-			return None
-		
+    def add_source(self, path, source_type="web", config = defs.HOME_CONFIG_DIR, directories = defs.HOME_THEME_DIR):
+        '''     Add a source to the sources list.
+                path: path to the branch
+                source_type: type of source web or local
+                config: the directory to write sources.list.
+                directories = the directory to write sources
+        '''
+        if not self.sources_check_sanity(path):
+            if source_type == "local":
+                path = path +" "+"local"+"\n"
+            elif source_type == "web":
+                number = len(os.listdir(directories))
+                path = path +" "+"web-sources-"+str(number)+"\n"
+            source = os.path.join(config,"sources.list")
+            f = open(source, 'a')
+            f.write(path)
+            f.close()
+        else:
+            print (_("Error, the path is empty or already exist"))
 
-	def catalog_from_sources_list(self):
-		'''	
-			Return a catalog (list of desktop files from the sources list)
-		'''
-		catalog=[]
-		sources_list = self.list_from_sources_list()
-		for elem in sources_list:
-			desktops = self.read_desktop_files_from_source(elem)
-			if desktops is not None:
-				[ catalog.append(i) for i in desktops ]
-		return catalog
+    def remove_source(self, source, config = defs.HOME_CONFIG_DIR):
+        '''     Remove a source from the sources.list
+                path is the path of the source (url or local path)
+        '''
+        list_sources = self.list_from_sources_list(config)
+        sources_list_path = os.path.join(config,"sources.list")
+        new_sources_list = []
+        for elem in list_sources :
+            if not elem[0] == source:
+                new_sources_list.append(elem)
 
-	def type_catalog_from_sources_list(self, type_catalog='Theme'):
-		'''
-		Return a catalog of themes or applets (list of desktop files from the sources list)
-		type_catalog is the type of catalog (Theme of Applets)
-		'''
-		catalog = self.catalog_from_sources_list()
-		final_catalog = []
-		for elem in catalog:
-			desktop = DesktopEntry(elem)
-			if desktop.get('X-AWN-Type') == type_catalog:
-				final_catalog.append(elem)
-		return final_catalog
+        print list_sources
+        print new_sources_list
 
-	def load_all_settings_from_desktop(self, path):
-		'''	Load a desktop file and load all settings
-		'''
-		struct = self.read_desktop(path)
-		struct_items = struct.items()
-		if struct['type'] == 'Theme':
-			settings = [elem for elem in struct_items if elem[1] <> '' ]
-			new_struct = dict(settings)
+        f = open(sources_list_path, 'w')
+        [f.write(i[0] + " " + i[1] + "\n")
+                for i
+                in new_sources_list if i[0] <> '']
+        f.close()
 
-		for k, v in new_struct.iteritems():
-			self.load_element_from_desktop(new_struct, k, read=False)
+    def create_branch_config_directory(self, source):
+        '''
+                Create the directory of a source in config directory.
+                source is a dictionnary of 1 entry {'url','directory'}.
+                source is 1 line of the sources list.
+        '''
+        if not source[0].startswith("/") or source[1] == "local":
+            self.create_branch((source[0], source[1]))
+        else:
+            print "Error, this is a local path"
 
-	def list_applets_categories(self):
-		'''	List all categories of applets
-		'''
-		catalog = self.type_catalog_from_sources_list(type_catalog='Applet')
-		desktop_list = [self.read_desktop(elem) for elem in catalog]
-		categories_list = []
-		for applet in desktop_list:
-			for elem in applet['applet_category']:
-				if not elem in categories_list and elem is not "":
-					categories_list.append(elem)
-		categories_list.append("")
-		return categories_list
+    def sources_list_check_double_path(self, path):
+        '''     Check if a path is already in the sources.list
+                path: location of the source
+                Return True if the path already in.
+        '''
+        sources_list = self.list_from_sources_list()
+        error = 0
+        for elem in sources_list:
+            if elem[0] == path:
+                error=error+1
+        if error >= 1:
+            return True
+        else:
+            return False
+    def sources_check_sanity(self, path):
+        '''     Do some check to be sure the source is ok
+                path: location of the source
+                return True if the source is not ok
+        '''
+        #Test If the source already in the sources.list
+        test = self.sources_list_check_double_path(path)
 
-	def applets_by_categories(self, categories = ""):
-		'''	Return applets uris of this categories
-			categories = list of Categories
-		'''
-		catalog = self.type_catalog_from_sources_list(type_catalog='Applet')
-		desktop_list = [self.read_desktop(elem) for elem in catalog]
-		if categories is "":
-			list_applets = catalog
-		else:
-			list_applets = [applet['location'] for applet in desktop_list if categories in applet['applet_category']]
+        #Test if the source is not null
+        if path == '':
+            test = True
 
-		return list_applets
-			
+        #Test if it's not a fantasic path
+        if not path.startswith("/") or not path.startswith("http://"):
+            test = True
 
-	#GUI functions
-	def make_row (self, path):
-		''' 	Make a row for a list of applets or launchers
-			path : path of the desktop file
-		'''
-		text = ""
-		name = ""
-		try:
-			if not os.path.exists(path):
-				raise IOError("Desktop file does not exist!")
-			item = DesktopEntry (path)
-			text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
-			name = path
-			icon_name = item.getIcon()
-			icon = self.make_icon(path)
-		except:
-			return None, "", ""
-		return icon, text, name
+        #TODO Add more tests
 
-	def make_icon (self,icon_path):
-		''' Extract an icon from a desktop file
-		'''
-		icon_final = None
-		theme = gtk.icon_theme_get_default ()
-		desktop = DesktopEntry(icon_path)
-		name = desktop.getIcon()
-		pixmaps_path = [os.path.join(p, "share", "pixmaps") for p in ("/usr", "/usr/local", defs.PREFIX)]
-		applets_path = [os.path.join(p, "share", "avant-window-navigator","applets") for p in ("/usr", "/usr/local", defs.PREFIX)]
-		list_icons = (
-			('theme icon', self.search_icon(name, type_icon="theme")),
-			('stock_icon', self.search_icon(name, type_icon="stock")),
-			('file_icon', self.search_icon(name)),
-			('pixmap_png_icon', self.search_icon(name, pixmaps_path, extension=".png")),
-			('pixmap_icon', self.search_icon(name, pixmaps_path)),
-			('applets_png_icon', self.search_icon(name, applets_path, extension=".png")),
-			('applets_svg_icon', self.search_icon(name, applets_path, extension=".svg"))
-				)
+    #Desktop files
+    def read_desktop(self, file_path):
+        '''     Read a desktop file and return a dictionnary with all fields
+                API still unstable
+        '''
 
-		for i in list_icons:
-			if i[1] is not None:
-				icon_final = i[1]
-				break
-		if icon_final is not None:
-			return icon_final
-		else:
-			return theme.load_icon('gtk-execute', 32, 0)
+        #API of the desktop file (unstable, WIP etc ...)
+        # keys should be a string of the type
+        # value could be
+        #       '' if there is nothing,
+        #       a string when there is no settings
+        #       a list when there is a setting : [value of the setting, group settings, key setting]
+        struct= {       'type': '',             # Applet or Theme
+                        'location':'',          # Location of the desktop file
+                        'name': '',             # Name of the Type
+                        'comment':'',           # Comments
+                        'version':'',           # Version of the
+                        'copyright':'',         # Copyright
+                        'author':'',            # Author
+                        'licence_code':'',      # Licence for the code
+                        'licence_icons':'',     # Licence for the icons
+                        'icon':'',              # Icon for the type
+                        'style':'',             # Style of the bar
+                        # Applet specific
+                        'exec':'',              # Execution path, for applet
+                        'applet_type':'',       # Type of teh applet (C, Vala or Python)
+                        'applet_category':'',   # Category for the applet
+                        'singleton':'',         # True or False, use only one instance.
+                        # Theme specific
+                        'effects':'',
+                        'orientation':'',
+                        'size':'',
+                        'gtk_theme_mode':'',
+                        'corner_radius':'',
+                        'panel_angle':'',
+                        'curviness':''  ,
+                        'curves_symmetry':'',
+                        'gstep1':'',
+                        'gstep2':'',
+                        'ghistep1':'',
+                        'ghistep2':'',
+                        'border':'',
+                        'hilight':'',
+                        'corner_radius':'',
+                        'panel_angle':'',
+                }
 
-	def search_icon (self, name, path="", extension="", type_icon="pixmap"):
-		''' Search a icon'''
-		theme = gtk.icon_theme_get_default ()
-		icon = None
-		if type_icon is "theme":
-			try:
-				icon = theme.load_icon (name, 32, 0)
-			except:
-				icon = None
-		elif type_icon is "stock":
-			try:
-				image = gtk.image_new_from_stock(name, 32)
-				icon = image.get_pixbuf()
-			except:
-				icon = None
-		elif type_icon is "pixmap":
-			for i in path:
-				if os.path.exists(os.path.join(i,name+extension)):
-					try: 
-						icon = gdk.pixbuf_new_from_file_at_size(os.path.join(i,name+extension), 32, 32)
-					except:
-						icon = None
-		return icon
 
-	def make_model(self, uris, treeview):
+        desktop_entry = DesktopEntry(file_path)
+        struct['type'] = desktop_entry.get('X-AWN-Type')
+        struct['location'] = file_path
+        struct['name'] = desktop_entry.get('Name')
+        #TODO More to add
+        struct['icon'] = desktop_entry.get('Icon')
+        struct['exec'] = desktop_entry.get('Exec')
+        struct['applet_type'] = desktop_entry.get('X-AWN-AppletType')
+        struct['applet_category'] = desktop_entry.get('X-AWN-AppletCategory').rsplit(",")
 
-		model = model = gtk.ListStore(gdk.Pixbuf, str, str,str)
-		model.set_sort_column_id(2, gtk.SORT_ASCENDING)
-		treeview.set_model (model)
-		treeview.set_search_column (3)
+        if desktop_entry.get('X-AWN-ThemeEffects') <> '':
+            struct['effects'] = [int(desktop_entry.get('X-AWN-ThemeEffects')),
+                                    defs.EFFECTS, defs.ICON_EFFECT]
 
-		ren = gtk.CellRendererPixbuf()
-		col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
-		treeview.append_column (col)
+        if desktop_entry.get('X-AWN-ThemeOrientation') <> '':
+            struct['orientation'] = [int(desktop_entry.get('X-AWN-ThemeOrientation')),
+                                            defs.PANEL, defs.ORIENT]
 
-		ren = gtk.CellRendererText()
-		col = gtk.TreeViewColumn ("Name", ren, markup=1)
-		treeview.append_column (col)
+        if desktop_entry.get('X-AWN-ThemeSize') <> '':
+            struct['size'] = [int(desktop_entry.get('X-AWN-ThemeSize')),
+                                    defs.PANEL, defs.SIZE]
 
-		ren = gtk.CellRendererText()
-		col = gtk.TreeViewColumn ("Desktop", ren, visible=False)
-		treeview.append_column (col)
+        if desktop_entry.get('X-AWN-ThemeStyle') <> '':
+            struct['style'] = [int(desktop_entry.get('X-AWN-ThemeStyle')),
+                                    defs.PANEL, defs.STYLE]
+
+        if desktop_entry.get('X-AWN-ThemeGstep1') <> '':
+            struct['gstep1'] = [desktop_entry.get('X-AWN-ThemeGstep1'),
+                                    defs.THEME, defs.GSTEP1]
+
+        if desktop_entry.get('X-AWN-ThemeGstep2') <> '':
+            struct['gstep2'] = [desktop_entry.get('X-AWN-ThemeGstep2'),
+                                    defs.THEME, defs.GSTEP2]
+
+        if desktop_entry.get('X-AWN-ThemeGhistep1') <> '':
+            struct['ghistep1'] = [desktop_entry.get('X-AWN-ThemeGhistep1'),
+                                    defs.THEME, defs.GHISTEP1]
+
+        if desktop_entry.get('X-AWN-ThemeGhistep2') <> '':
+            struct['ghistep2'] = [desktop_entry.get('X-AWN-ThemeGhistep2'),
+                                    defs.THEME, defs.GHISTEP2]
+
+        if desktop_entry.get('X-AWN-ThemeBorder') <> '':
+            struct['border'] = [desktop_entry.get('X-AWN-ThemeBorder'),
+                                    defs.THEME, defs.BORDER]
+
+        if desktop_entry.get('X-AWN-ThemeHilight') <> '':
+            struct['hilight'] = [desktop_entry.get('X-AWN-ThemeHilight'),
+                                    defs.THEME, defs.HILIGHT]
+
+        if desktop_entry.get('X-AWN-ThemeCornerRadius') <> '':
+            struct['corner_radius'] = [float(desktop_entry.get('X-AWN-ThemeCornerRadius')),
+                                    defs.THEME, defs.CORNER_RADIUS]
+
+        if desktop_entry.get('X-AWN-ThemePanelAngle') <> '':
+            struct['panel_angle'] = [float(desktop_entry.get('X-AWN-ThemePanelAngle')),
+                                    defs.THEME, defs.PANEL_ANGLE]
+
+        if desktop_entry.get('X-AWN-ThemeCurvesSymmetry') <> '':
+            struct['curves_symmetry'] = [float(desktop_entry.get('X-AWN-ThemeCurvesSymmetry')),
+                                    defs.THEME, defs.CURVES_SYMMETRY]
+
+        if desktop_entry.get('X-AWN-ThemeCurviness') <> '':
+            struct['curviness'] = [float(desktop_entry.get('X-AWN-ThemeCurviness')),
+                                    defs.THEME, defs.CURVINESS]
+
+        return struct
+
+    def load_element_from_desktop(self, file_path, parameter, read=True):
+        '''
+                Read a desktop file, and load the paramater setting.
+                file_path: the path of the desktop file or the read desktop file
+        '''
+        if read == True:
+            struct = self.read_desktop(file_path)
+        else:
+            struct = file_path
+        if struct['type'] == 'Theme':
+            #Read the settings
+            try:
+                if not struct[parameter][0] == '':
+                    if type(struct[parameter][0]) is int:
+                        self.client.set_int(struct[parameter][1],
+                                                struct[parameter][2],
+                                                struct[parameter][0])
+                    elif type(struct[parameter][0]) is float:
+                        self.client.set_float(struct[parameter][1],
+                                                struct[parameter][2],
+                                                struct[parameter][0])
+                    else: self.client.set_string(struct[parameter][1],
+                                                    struct[parameter][2],
+                                                    struct[parameter][0])
+            except IndexError:
+                # The key is not in the desktop file, just skip it.
+                pass
+
+            #TODO more type settings
+        else:
+            print (_("Error, the desktop file is not for a theme"))
+
+
+    def read_desktop_files_from_source(self, source, directories = defs.HOME_THEME_DIR):
+        '''     Read all desktop file from a source
+                source is a list of 2 entries ('url','directory').
+                source is 1 line of the sources list.
+        '''
+        if source[1] == "local":
+            path = source[0]
+        else:
+            path= str(directories + "/" + source[1])
+        try:
+            list_files = os.listdir(path)
+            desktops =  [path + "/" + elem for elem in list_files if os.path.splitext(elem)[1] =='.desktop']
+            return desktops
+        except:
+            print(_("Error %s is missing on your system, please remove it from the sources.list") % path)
+            return None
+
+
+    def catalog_from_sources_list(self):
+        '''
+                Return a catalog (list of desktop files from the sources list)
+        '''
+        catalog=[]
+        sources_list = self.list_from_sources_list()
+        for elem in sources_list:
+            desktops = self.read_desktop_files_from_source(elem)
+            if desktops is not None:
+                [ catalog.append(i) for i in desktops ]
+        return catalog
+
+    def type_catalog_from_sources_list(self, type_catalog='Theme'):
+        '''
+        Return a catalog of themes or applets (list of desktop files from the sources list)
+        type_catalog is the type of catalog (Theme of Applets)
+        '''
+        catalog = self.catalog_from_sources_list()
+        final_catalog = []
+        for elem in catalog:
+            desktop = DesktopEntry(elem)
+            if desktop.get('X-AWN-Type') == type_catalog:
+                final_catalog.append(elem)
+        return final_catalog
+
+    def load_all_settings_from_desktop(self, path):
+        '''     Load a desktop file and load all settings
+        '''
+        struct = self.read_desktop(path)
+        struct_items = struct.items()
+        if struct['type'] == 'Theme':
+            settings = [elem for elem in struct_items if elem[1] <> '' ]
+            new_struct = dict(settings)
+
+        for k, v in new_struct.iteritems():
+            self.load_element_from_desktop(new_struct, k, read=False)
+
+    def list_applets_categories(self):
+        '''     List all categories of applets
+        '''
+        catalog = self.type_catalog_from_sources_list(type_catalog='Applet')
+        desktop_list = [self.read_desktop(elem) for elem in catalog]
+        categories_list = []
+        for applet in desktop_list:
+            for elem in applet['applet_category']:
+                if not elem in categories_list and elem is not "":
+                    categories_list.append(elem)
+        categories_list.append("")
+        return categories_list
+
+    def applets_by_categories(self, categories = ""):
+        '''     Return applets uris of this categories
+                categories = list of Categories
+        '''
+        catalog = self.type_catalog_from_sources_list(type_catalog='Applet')
+        desktop_list = [self.read_desktop(elem) for elem in catalog]
+        if categories is "":
+            list_applets = catalog
+        else:
+            list_applets = [applet['location'] for applet in desktop_list if categories in applet['applet_category']]
+
+        return list_applets
+
+
+    #GUI functions
+    def make_row (self, path):
+        '''     Make a row for a list of applets or launchers
+                path : path of the desktop file
+        '''
+        text = ""
+        name = ""
+        try:
+            if not os.path.exists(path):
+                raise IOError("Desktop file does not exist!")
+            item = DesktopEntry (path)
+            text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
+            name = path
+            icon_name = item.getIcon()
+            icon = self.make_icon(path)
+        except:
+            return None, "", ""
+        return icon, text, name
+
+    def make_icon (self,icon_path):
+        ''' Extract an icon from a desktop file
+        '''
+        icon_final = None
+        theme = gtk.icon_theme_get_default ()
+        desktop = DesktopEntry(icon_path)
+        name = desktop.getIcon()
+        pixmaps_path = [os.path.join(p, "share", "pixmaps") for p in ("/usr", "/usr/local", defs.PREFIX)]
+        applets_path = [os.path.join(p, "share", "avant-window-navigator","applets") for p in ("/usr", "/usr/local", defs.PREFIX)]
+        list_icons = (
+                ('theme icon', self.search_icon(name, type_icon="theme")),
+                ('stock_icon', self.search_icon(name, type_icon="stock")),
+                ('file_icon', self.search_icon(name)),
+                ('pixmap_png_icon', self.search_icon(name, pixmaps_path, extension=".png")),
+                ('pixmap_icon', self.search_icon(name, pixmaps_path)),
+                ('applets_png_icon', self.search_icon(name, applets_path, extension=".png")),
+                ('applets_svg_icon', self.search_icon(name, applets_path, extension=".svg"))
+                        )
+
+        for i in list_icons:
+            if i[1] is not None:
+                icon_final = i[1]
+                break
+        if icon_final is not None:
+            return icon_final
+        else:
+            return theme.load_icon('gtk-execute', 32, 0)
+
+    def search_icon (self, name, path="", extension="", type_icon="pixmap"):
+        ''' Search a icon'''
+        theme = gtk.icon_theme_get_default ()
+        icon = None
+        if type_icon is "theme":
+            try:
+                icon = theme.load_icon (name, 32, 0)
+            except:
+                icon = None
+        elif type_icon is "stock":
+            try:
+                image = gtk.image_new_from_stock(name, 32)
+                icon = image.get_pixbuf()
+            except:
+                icon = None
+        elif type_icon is "pixmap":
+            for i in path:
+                if os.path.exists(os.path.join(i,name+extension)):
+                    try:
+                        icon = gdk.pixbuf_new_from_file_at_size(os.path.join(i,name+extension), 32, 32)
+                    except:
+                        icon = None
+        return icon
+
+    def make_model(self, uris, treeview):
+
+        model = model = gtk.ListStore(gdk.Pixbuf, str, str,str)
+        model.set_sort_column_id(2, gtk.SORT_ASCENDING)
+        treeview.set_model (model)
+        treeview.set_search_column (3)
+
+        ren = gtk.CellRendererPixbuf()
+        col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        col = gtk.TreeViewColumn ("Name", ren, markup=1)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        col = gtk.TreeViewColumn ("Desktop", ren, visible=False)
+        treeview.append_column (col)
 
 #        self.last_uris = uris[:] # make a copy
 #        self.client.notify_add(defs.LAUNCHERS, defs.LAUNCHERS_LIST, self.refresh_launchers, self)
 
-#		self.refresh_tree(uris, model)
-        	for i in uris:
-			if os.path.isfile(i):
-            			icon, text, name = self.make_row (i)
-            			if len(text) > 2:
-                			row = model.append ()
-                			model.set_value (row, 0, icon)
-                			model.set_value (row, 1, text)
-                			model.set_value (row, 2, name)
-				if len(uris) == 0:
-					if (self.idle_id != 0):
-						gobject.source_remove(self.idle_id)
-					self.idle_id = gobject.idle_add(self.check_changes, [])
+#               self.refresh_tree(uris, model)
+        for i in uris:
+            if os.path.isfile(i):
+                icon, text, name = self.make_row (i)
+                if len(text) > 2:
+                    row = model.append ()
+                    model.set_value (row, 0, icon)
+                    model.set_value (row, 1, text)
+                    model.set_value (row, 2, name)
+                if len(uris) == 0:
+                    if (self.idle_id != 0):
+                        gobject.source_remove(self.idle_id)
+                    self.idle_id = gobject.idle_add(self.check_changes, [])
 
-		self.load_finished = True
+        self.load_finished = True
 
-		treeview.show()
+        treeview.show()
 
-		return model
+        return model
 
-	def refresh_tree (self, uris, model):
-        	model.clear()
-        	for i in uris:
-			if os.path.isfile(i):
-            			icon, text, name = self.make_row (i)
-            			if len(text) > 2:
-                			row = model.append ()
-                			model.set_value (row, 0, icon)
-                			model.set_value (row, 1, text)
-                			model.set_value (row, 2, name)
-				if len(uris) == 0:
-					if (self.idle_id != 0):
-						gobject.source_remove(self.idle_id)
-					self.idle_id = gobject.idle_add(self.check_changes, [])
-		#model.show()
+    def refresh_tree (self, uris, model):
+        model.clear()
+        for i in uris:
+            if os.path.isfile(i):
+                icon, text, name = self.make_row (i)
+                if len(text) > 2:
+                    row = model.append ()
+                    model.set_value (row, 0, icon)
+                    model.set_value (row, 1, text)
+                    model.set_value (row, 2, name)
+                if len(uris) == 0:
+                    if (self.idle_id != 0):
+                        gobject.source_remove(self.idle_id)
+                    self.idle_id = gobject.idle_add(self.check_changes, [])
+        #model.show()
 
-	def create_dropdown(self, widget, entries, matrix_settings=False):
-		''' 	Create a dropdown.
-			widget : The widget where create the dropdown
-			entries : entries to add to the dropdown
-			matrix_settings : connect to settings (not implemented yet)
-		'''
-		model = gtk.ListStore(str)
+    def create_dropdown(self, widget, entries, matrix_settings=False):
+        '''     Create a dropdown.
+                widget : The widget where create the dropdown
+                entries : entries to add to the dropdown
+                matrix_settings : connect to settings (not implemented yet)
+        '''
+        model = gtk.ListStore(str)
 
-		[model.append([elem]) for elem in entries]
-		widget.set_model(model)
-		cell = gtk.CellRendererText()
-		widget.pack_start(cell)
-		widget.add_attribute(cell,'text',0)
+        [model.append([elem]) for elem in entries]
+        widget.set_model(model)
+        cell = gtk.CellRendererText()
+        widget.pack_start(cell)
+        widget.add_attribute(cell,'text',0)
 
 class awnPreferences(awnBzr):
     def setup_color(self, group, key, colorbut, show_opacity_scale = True):
@@ -1055,7 +1055,7 @@ class awnPreferences(awnBzr):
 
     # The following code is adapted from screenlets-manager.py
     def get_autostart_file_path(self):
-        if os.environ.has_key('DESKTOP_SESSION') and os.environ['DESKTOP_SESSION'].startswith('kde'): 
+        if os.environ.has_key('DESKTOP_SESSION') and os.environ['DESKTOP_SESSION'].startswith('kde'):
             autostart_dir = os.path.join(os.environ['HOME'], '.kde', 'Autostart')
         else:
             autostart_dir = os.path.join(os.environ['HOME'], '.config', 'autostart')
@@ -1128,8 +1128,8 @@ class awnPreferences(awnBzr):
         self.load_orientation(entry['group'], entry['key'], dropdown)
 
     def orientation_changed(self, dropdown, groupkey):
-	group, key = groupkey
-	self.client.set_int(group, key, dropdown.get_active())
+        group, key = groupkey
+        self.client.set_int(group, key, dropdown.get_active())
 
     def setup_style(self, group, key, dropdown):
         self.effects_dd = dropdown
@@ -1138,7 +1138,7 @@ class awnPreferences(awnBzr):
         model.append([_("Flat")])
         model.append([_("3d")])
         model.append([_("Curved")])
-	model.append([_("Edgy")])
+        model.append([_("Edgy")])
         dropdown.set_model(model)
         cell = gtk.CellRendererText()
         dropdown.pack_start(cell)
@@ -1158,32 +1158,32 @@ class awnPreferences(awnBzr):
         self.load_style(entry['group'], entry['key'], dropdown)
 
     def style_changed(self, dropdown, groupkey):
-	group, key = groupkey
-	self.client.set_int(group, key, dropdown.get_active())
+        group, key = groupkey
+        self.client.set_int(group, key, dropdown.get_active())
 
     def setup_freeze(self, toggle, freezed, parameter, data=None):
-	'''	Setup a "linked" toggle button
-		toggle : the gtk.ToggleButton
-		freezed : the gtkWidget to freeze
-	'''
-	toggle.connect("toggled", self.freeze_changed, freezed, parameter)
-	
+        '''     Setup a "linked" toggle button
+                toggle : the gtk.ToggleButton
+                freezed : the gtkWidget to freeze
+        '''
+        toggle.connect("toggled", self.freeze_changed, freezed, parameter)
+
     def freeze_changed(self, widget, freezed, parameter):
-	'''	Callback for the setup_freeze
-	'''
-	if widget.get_active() == True:
-		freezed.set_sensitive(False)
-		self.load_element_from_desktop(self.theme_desktop, parameter)
-	else:
-		freezed.set_sensitive(True)
+        '''     Callback for the setup_freeze
+        '''
+        if widget.get_active() == True:
+            freezed.set_sensitive(False)
+            self.load_element_from_desktop(self.theme_desktop, parameter)
+        else:
+            freezed.set_sensitive(True)
 
     def test_bzr_themes(self, widget, data=None):
-		if widget.get_active() == True:
-			self.create_sources_list()
-			self.update_sources_list()
-			print self.catalog_from_sources_list()
-		else:
-			pass
+        if widget.get_active() == True:
+            self.create_sources_list()
+            self.update_sources_list()
+            print self.catalog_from_sources_list()
+        else:
+            pass
 
 class awnManager:
     def safe_load_icon(self, name, size, flags = 0):
@@ -1197,7 +1197,7 @@ class awnManager:
             dialog.destroy()
             sys.exit(1)
         return icon
-   
+
     def make_menu_model(self):
         self.menu_model = gtk.ListStore(str, gtk.gdk.Pixbuf)
 
@@ -1318,7 +1318,7 @@ class awnLauncher(awnBzr):
 
     def add(self, button):
         file_path = os.path.join(defs.HOME_LAUNCHERS_DIR, self.getUniqueFileId('awn_launcher', '.desktop'))
-	selection = self.treeview_launchers.get_selection()
+        selection = self.treeview_launchers.get_selection()
         (model, iter) = selection.get_selected()
         editor = awnLauncherEditor(file_path, model, self)
         editor.run()
@@ -1327,7 +1327,7 @@ class awnLauncher(awnBzr):
         selection = self.treeview_launchers.get_selection()
         (model, iter) = selection.get_selected()
         uri = model.get_value(iter, 2)
-	# TODO: don't check if it exists, perhaps it's invalid
+        # TODO: don't check if it exists, perhaps it's invalid
         if os.path.exists(uri):
             uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
             uris.remove(uri)
@@ -1432,8 +1432,8 @@ class awnApplet(awnBzr):
                     self.model.set_value (row, 3, uid)
                     self._apply ()
                 else:
-                    model.set_value (row, 3, name)   
-         
+                    model.set_value (row, 3, name)
+
             if msg:
                 message = "Applet Successfully Added"
             else:
@@ -1620,13 +1620,13 @@ class awnApplet(awnBzr):
 			model.append([icon, path, uid, text])
 
     def load_applets (self):
-	applets = self.applets_by_categories()
-	self.make_model(applets, self.treeview_available)
+        applets = self.applets_by_categories()
+        self.make_model(applets, self.treeview_available)
 
     def update_applets(self, list_applets):
-	applets = self.applets_by_categories(list_applets)
-	self.refresh_tree(applets, self.treeview_available.get_model())
-	
+        applets = self.applets_by_categories(list_applets)
+        self.refresh_tree(applets, self.treeview_available.get_model())
+
 
     def popup_msg(self, message):
         success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING,
@@ -1676,6 +1676,6 @@ class awnApplet(awnBzr):
 
 
     def callback_widget_filter_applets(self, data=None):
-	model = self.choose_categorie.get_model()
-	select_cat = model.get_value(self.choose_categorie.get_active_iter(),0)
-	self.update_applets(select_cat)
+        model = self.choose_categorie.get_model()
+        select_cat = model.get_value(self.choose_categorie.get_active_iter(),0)
+        self.update_applets(select_cat)

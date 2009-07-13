@@ -124,7 +124,10 @@ AC_SUBST(slicelocaledir)
 dnl ==============================================
 dnl Check that we meet the dependencies
 dnl ==============================================
-AM_PATH_GLIB_2_0(2.8.0,,,gobject)
+
+MIN_GLIB_VERSION=2.16.0
+MIN_GTK_VERSION=2.12.0
+MIN_WNCK_VERSION=2.22
 
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, glib-genmarshal)
 
@@ -156,12 +159,10 @@ fi
 AC_SUBST(CFG_BACKEND_NAME)
 AM_CONDITIONAL(USE_GCONF, test "$with_gconf" != "no")
 
-LIBRARY_MODULES="glib-2.0 >= 2.8.0 gthread-2.0 gobject-2.0 gtk+-2.0 >= 2.12 gdk-2.0 >= 2.12 dbus-glib-1 gio-2.0 $CFG_MODULE desktop-agnostic"
-DOCK_MODULES="libwnck-1.0 x11 xproto xcomposite xrender"
-TASKMANAGER_MODULES="libwnck-1.0 x11"
+LIBRARY_MODULES="glib-2.0 >= $MIN_GLIB_VERSION gthread-2.0 gobject-2.0 gtk+-2.0 >= $MIN_GTK_VERSION gdk-2.0 >= $MIN_GTK_VERSION dbus-glib-1 gio-2.0 $CFG_MODULE desktop-agnostic"
+DOCK_MODULES="x11 xproto xcomposite xrender"
+TASKMANAGER_MODULES="libwnck-1.0 >= $MIN_WNCK_VERSION x11"
 AC_SUBST(LIBRARY_MODULES)
-
-AC_DEFINE(HAVE_LIBWNCK_220, 1, [Have new libwnck])
 
 PKG_CHECK_MODULES(AWN, [$LIBRARY_MODULES])
 PKG_CHECK_MODULES(DOCK, [$DOCK_MODULES])

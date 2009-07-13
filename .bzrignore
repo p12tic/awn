@@ -32,7 +32,7 @@ po/stamp-it
 avant-applets/avant-applets.py
 avant-launchers/avant-launchers.py
 avant-preferences/avant-preferences.py
-awn-applet-activation/awn-applet-activation
+awn-applet-activation/awn-applet
 applets/switcher/switcher.schemas
 src/avant-window-navigator
 src/awn-applet-manager-glue.h
@@ -86,8 +86,6 @@ src/awn
 src/awn-app-glue.h
 src/awn-panel-glue.h
 src/test
-data/awn-applets-shared.schemas
-data/awn-applets-shared.schemas.in
 bindings/python/awn.loT
 tests/test-applet-simple
 tests/test-awn-icon

@@ -158,7 +158,7 @@ class awnApplet:
                     self.model.set_value (row, 3, uid)
                     self._apply ()
                 else:
-                    model.set_value (row, 3, name)                   
+                    model.set_value (row, 3, name)
 
             if msg:
                 message = "Applet Successfully Added"

@@ -170,15 +170,23 @@ enum
 };
 
 static GtkIconTheme*
-get_awn_theme()
+get_awn_theme(void)
 {
   static GtkIconTheme *awn_theme = NULL;
 
   if (!awn_theme)
   {
     awn_theme = gtk_icon_theme_new ();
+    gtk_icon_theme_set_custom_theme (awn_theme, AWN_ICON_THEME_NAME);    
+
+    /* need to look into the expectations of gtk_icon_theme_set_search_path()
+     regarding the lifetime of arg 2.  Till then this _is_ safe TODO
+     */
+    static const gchar * path[1];    
+    path[0] = g_strdup_printf ("%s/.icons", g_get_home_dir ());
     gtk_icon_theme_set_custom_theme (awn_theme, AWN_ICON_THEME_NAME);
-  }
+    gtk_icon_theme_set_search_path (awn_theme, path, 1);
+  }    
   return awn_theme;
 }
 
@@ -417,6 +425,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   AwnThemedIconPrivate *priv;
   gchar                *icon_dir;
   gchar                *theme_dir;
+  gchar                *hicolor_dir;
   gchar                *scalable_dir;
   gchar                *index_src;
   gchar                *index_dest;
@@ -443,9 +452,14 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   icon_dir = priv->icon_dir = g_strdup_printf ("%s/.icons", g_get_home_dir ());
   check_and_make_dir (icon_dir);
 
+  /*create this so gtk doesn't spam with warnings about no hicolor theme
+   for the awn_theme search path*/
+  hicolor_dir = g_strdup_printf ("%s/hicolor", icon_dir);
+  check_and_make_dir (hicolor_dir);
+  
   theme_dir = g_strdup_printf ("%s/%s", icon_dir, AWN_ICON_THEME_NAME);
   check_and_make_dir (theme_dir);
-  
+
   scalable_dir = g_strdup_printf ("%s/scalable", theme_dir);
   check_and_make_dir (scalable_dir);
   
@@ -453,9 +467,15 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   index_src = g_strdup (PKGDATADIR"/index.theme");
   index_dest = g_strdup_printf ("%s/index.theme", theme_dir);
   check_dest_or_copy (index_src, index_dest);
-  g_free (index_src);
   g_free (index_dest);
 
+  /* see comment earlier in this function.  keeps gtk from whining about there
+   being no hicolor theme in the search path.  We are deliberately _not_ 
+   including the system hicolor dirs in the search path for awn_theme*/
+  index_dest = g_strdup_printf ("%s/index.theme", hicolor_dir);
+  check_dest_or_copy (index_src, index_dest);
+  g_free (index_dest);  
+  g_free (index_src);  
   /* Now let's make our custom theme */
   priv->awn_theme = get_awn_theme ();
   priv->sig_id_for_awn_theme = g_signal_connect (priv->awn_theme, "changed", 
@@ -463,6 +483,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   
   g_free (scalable_dir);
   g_free (theme_dir);
+  g_free (hicolor_dir);
 }
 
 /**
@@ -527,6 +548,9 @@ try_and_load_image_from_disk (const gchar *filename, gint size)
  GTK_ICON_LOOKUP_USE_BUILTIN is not one of the flags.  Obviously I must be 
  misunderstanding something as this bug _couldn't_ have been missed...  but this
  seems to make the "crappy" icons go bye bye.
+ 
+ This issue may have been related to custom themes including system dirs 
+ containing the hicolor theme in the search path...  test later.  TODO
  */
 static GdkPixbuf* 
 theme_load_icon (GtkIconTheme *icon_theme,
@@ -560,7 +584,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
   GList                 *iter;
 
   priv = icon->priv;
-                                                           
+
   /* Find the index of the current state in states */
   g_return_val_if_fail(priv-> list,NULL);	
   for (iter = priv->list; iter; iter=g_list_next (iter))
@@ -1233,7 +1257,11 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
   }
 
 
-  /* Add the applet's system-wide icon dir first */
+  /* Add the applet's system-wide icon dir first 
+   
+   TODO instead appending the override theme to the search path it's actually
+   necessary to set to just those dirs as is being done with awn_theme FIXME
+   */
   if (priv->override_theme)
   {
     if (priv->applet_name)

@@ -41,14 +41,11 @@ pkgdir = $(pkgdatadir)
 
 if USE_GCONF
 schemasdir       = @GCONF_SCHEMA_FILE_DIR@
-schemas_in_files = awn.schemas.in awn-applets-shared.schemas.in
+schemas_in_files = awn.schemas.in
 schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
 
 awn.schemas.in: awn.schema-ini
 	$(top_srcdir)/data/awn-schema-to-gconf $< $@
-
-awn-applets-shared.schemas.in: shared.schema-ini
-	$(top_srcdir)/data/awn-schema-to-gconf $< $@ shared
 
 @INTLTOOL_SCHEMAS_RULE@
 
@@ -62,7 +59,7 @@ else
 install-gconf-schemas:
 endif
 schemadir = $(pkgdatadir)/schemas
-schema_DATA = awn.schema-ini shared.schema-ini
+schema_DATA = awn.schema-ini
 
 dist_bin_SCRIPTS = awn-schema-to-gconf awn-applets-migration
 
@@ -74,6 +71,6 @@ uninstall-local:
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/24x24/apps/avant-window-navigator.png
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/avant-window-navigator.png
 
-EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini shared.schema-ini awn-themed-icon-ui.glade
+EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini awn-themed-icon-ui.glade
 
 CLEANFILES = $(desktop_DATA) $(desktop_DATA).in awn.schemas awn.schemas.in

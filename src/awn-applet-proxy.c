@@ -35,7 +35,7 @@ G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_SOCKET)
 #define AWN_APPLET_PROXY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE (obj, \
   AWN_TYPE_APPLET_PROXY, AwnAppletProxyPrivate))
 
-#define APPLET_EXEC "awn-applet-activation -p %s -u %s -w %" G_GINT64_FORMAT " -i %d"
+#define APPLET_EXEC "awn-applet -p %s -u %s -w %" G_GINT64_FORMAT " -i %d"
 
 #define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
 

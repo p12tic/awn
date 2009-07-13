@@ -2,6 +2,7 @@
 
 /*
  * Copyright (C) 2001 Havoc Pennington
+ *               2009 Michal Hruby <michal.mhr@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -22,10 +23,13 @@
 #include <config.h>
 #include <string.h>
 #include <stdio.h>
+#include <malloc.h>
 
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/extensions/shape.h>
 
 #include "xutils.h"
 
@@ -113,3 +117,58 @@ xutils_set_strut (GdkWindow        *gdk_window,
                    (guchar *) &struts, 12);
   gdk_error_trap_pop ();
 }
+
+GdkRegion*
+xutils_get_input_shape (GdkWindow *window)
+{
+  GdkRegion *region = gdk_region_new ();
+
+  GdkRectangle rect;
+  XRectangle *rects;
+  int count = 0;
+  int ordering = 0;
+
+  gdk_error_trap_push ();
+  rects = XShapeGetRectangles (GDK_WINDOW_XDISPLAY (window),
+                               GDK_WINDOW_XID (window),
+                               ShapeInput, &count, &ordering);
+  gdk_error_trap_pop ();
+
+  for (int i=0; i<count; ++i)
+  {
+    rect.x = rects[i].x;
+    rect.y = rects[i].y;
+    rect.width = rects[i].width;
+    rect.height = rects[i].height;
+
+    gdk_region_union_with_rect (region, &rect);
+  }
+  if (rects) free(rects);
+
+  return region;
+}
+
+GdkWindow*
+xutils_get_window_at_pointer (GdkDisplay *display)
+{
+  GdkWindow *result = NULL;
+  Window root;
+  Window child;
+  int root_x;
+  int root_y;
+  int win_x;
+  int win_y;
+  unsigned int flags;
+
+  Bool res = XQueryPointer (GDK_DISPLAY_XDISPLAY (display),
+                            GDK_ROOT_WINDOW(), &root, &child,
+                            &root_x, &root_y, &win_x, &win_y, &flags);
+  if (!res) return NULL;
+
+  result = gdk_window_lookup_for_display (display, child);
+  if (!result && child != None)
+    result = gdk_window_foreign_new (child);
+
+  return result;
+}
+

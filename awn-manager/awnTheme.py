@@ -145,9 +145,9 @@ class AwnThemeManager:
 
     def apply_theme(self, widget, data=None):
         if self.currItr is not None:
-            
+
             self.model.foreach(self.update_radio)
-            
+
             index = self.model.get_path(self.currItr)[0]
             name = self.theme_list[index]['name']
             version = self.theme_list[index]['version']
@@ -316,7 +316,7 @@ class AwnThemeManager:
     def delete(self, widget, data=None):
         if self.currItr is not None:
             index = self.model.get_path(self.currItr)[0]
-            
+
             name = self.theme_list[index]['name']
             version = self.theme_list[index]['version']
             directory = self.theme_list[index]['dir']

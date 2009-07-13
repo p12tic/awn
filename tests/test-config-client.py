@@ -23,8 +23,10 @@ import awn
 
 GROUP = 'test'
 
+
 def print_err(err):
     sys.stderr.write(err + '\n')
+
 
 def test_option_bool(client):
     print '* set bool...',
@@ -48,6 +50,7 @@ def test_option_bool(client):
     else:
         return 1
 
+
 def test_option_float(client):
     print '* set float...',
     val = 0.5
@@ -69,6 +72,7 @@ def test_option_float(client):
         return 0
     else:
         return 1
+
 
 def test_option_int(client):
     print '* set int...',
@@ -92,6 +96,7 @@ def test_option_int(client):
     else:
         return 1
 
+
 def test_option_string(client):
     print '* set string...',
     val = 'test'
@@ -114,6 +119,7 @@ def test_option_string(client):
     else:
         return 1
 
+
 def check_lists(list_get, list_set):
     retval = 0
     if len(list_get) != len(list_set):
@@ -122,9 +128,11 @@ def check_lists(list_get, list_set):
         list_len = len(list_set)
         for i in range(list_len):
             if list_get[i] != list_set[i]:
-                print_err('The lists differ at list index %s: get="%s", set="%s"' % (i, list_get[i], list_set[i]))
+                msg = 'The lists differ at list index %s: get="%s", set="%s"'
+                print_err(msg % (i, list_get[i], list_set[i]))
                 retval = 1
     return retval
+
 
 def test_option_list_bool(client):
     print '* set list (bool)...',
@@ -144,6 +152,7 @@ def test_option_list_bool(client):
     print 'done.'
     return check_lists(list_get, list_set)
 
+
 def test_option_list_float(client):
     print '* set list (float)...',
     list_set = [0.2, 0.4, 0.6]
@@ -161,6 +170,7 @@ def test_option_list_float(client):
         return 1
     print 'done.'
     return check_lists(list_get, list_set)
+
 
 def test_option_list_int(client):
     print '* set list (int)...',
@@ -180,6 +190,7 @@ def test_option_list_int(client):
     print 'done.'
     return check_lists(list_get, list_set)
 
+
 def test_option_list_string(client):
     print '* set list (string)...',
     list_set = ['One', 'Two', 'Three']
@@ -198,6 +209,7 @@ def test_option_list_string(client):
     print 'done.'
     return check_lists(list_get, list_set)
 
+
 def test_option_types(client):
     retval = 0
     retval |= test_option_bool(client)
@@ -210,6 +222,7 @@ def test_option_types(client):
     retval |= test_option_list_string(client)
     return retval
 
+
 def test_awn_config():
     retval = 0
     print 'Main config client'
@@ -219,6 +232,7 @@ def test_awn_config():
     retval |= test_option_types(client)
     return retval
 
+
 def test_applet_config():
     retval = 0
     print 'Applet config client'
@@ -227,6 +241,7 @@ def test_applet_config():
         return 1
     retval |= test_option_types(client)
     return retval
+
 
 def main():
     retval = 0

@@ -1032,6 +1032,18 @@ awn_applet_create_about_item (AwnApplet					*applet,
   return item;
 }
 
+GtkWidget *
+awn_applet_create_about_item_simple (AwnApplet        *applet,
+                                     const gchar      *copyright,
+                                     AwnAppletLicense  license,
+                                     const gchar      *version)
+{
+  g_return_val_if_fail (AWN_IS_APPLET (applet), NULL);
+  return awn_applet_create_about_item (applet, copyright, license, version, 
+                                       NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+                                       NULL);
+}
+
 GtkWidget*
 awn_applet_create_default_menu (AwnApplet *applet)
 {
@@ -1206,37 +1218,20 @@ awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
 {
   AwnAppletPrivate *priv;
   gint result;
-  gdouble temp;
+  gfloat temp;
 
   g_return_val_if_fail (AWN_IS_APPLET (applet), 0);
   priv = applet->priv;
 
-  switch (priv->path_type)
-  {
-    case AWN_PATH_ELLIPSE:
-      switch (priv->orient)
-      {
-        case AWN_ORIENTATION_LEFT:
-        case AWN_ORIENTATION_RIGHT:
-          temp = sin (M_PI * (priv->pos_y + y) / priv->panel_height);
-          temp = temp * temp;
-          result = round (temp * (priv->offset_modifier * priv->offset));
-          break;
-        default:
-          temp = sin (M_PI * (priv->pos_x + x) / priv->panel_width);
-          temp = temp * temp;
-          result = round (temp * (priv->offset_modifier * priv->offset));
-          break;
-      }
-/*
-      g_debug ("%s: sin(PI*(%d+%d)/%d) * (%d - %d) = %d",
-               __func__, priv->pos_x, x, priv->panel_width,
-               priv->max_offset, priv->offset, result);
-*/
-      return result + priv->offset;
-    default:
-      return priv->offset;
-  }
+  temp = awn_utils_get_offset_modifier_by_path_type (priv->path_type,
+                                                     priv->orient,
+                                                     priv->offset_modifier,
+                                                     priv->pos_x + x,
+                                                     priv->pos_y + y,
+                                                     priv->panel_width,
+                                                     priv->panel_height);
+  result = round (temp * priv->offset);
+  return result;
 }
 
 /**
