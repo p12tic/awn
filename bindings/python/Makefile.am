@@ -49,7 +49,7 @@ defs_DATA = $(AWN_DEFS)
 
 # code generator
 .defs.c:
-	$(QUIET_GEN)($(PYGTK_CODEGEN) \
+	$(QUIET_GEN)($(PYG_CODEGEN) \
 	    -I $(srcdir) \
 	    --py_ssize_t-clean \
 	    --register $(PYGTK_DEFSDIR)/gdk-types.defs \
