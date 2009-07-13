@@ -1,3 +1,8 @@
+# shave-related
+V         = @
+Q         = $(V:1=)
+QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
+
 NULL = 
 
 # awn python scripts
@@ -44,8 +49,7 @@ defs_DATA = $(AWN_DEFS)
 
 # code generator
 .defs.c:
-	@echo "***INFO*** Generating $*.c from $*.defs" \
-	&& ( $(PYGTK_CODEGEN) \
+	$(QUIET_GEN)($(PYGTK_CODEGEN) \
 	    -I $(srcdir) \
 	    --py_ssize_t-clean \
 	    --register $(PYGTK_DEFSDIR)/gdk-types.defs \
