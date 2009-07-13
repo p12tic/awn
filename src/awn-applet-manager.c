@@ -271,6 +271,9 @@ awn_applet_manager_dispose (GObject *object)
     priv->klass = NULL;
   }
 
+  desktop_agnostic_config_client_unbind_all_for_object (priv->client,
+                                                        object, NULL);
+
   G_OBJECT_CLASS (awn_applet_manager_parent_class)->dispose (object);
 }
 

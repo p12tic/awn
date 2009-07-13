@@ -174,12 +174,14 @@ awn_overlay_text_set_property (GObject *object, guint property_id,
   }
 }
 
-// TODO unbind property & config key
 static void
 awn_overlay_text_dispose (GObject *object)
 {
   AwnOverlayTextPrivate *priv;
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object);  
+
+  desktop_agnostic_config_client_unbind_all_for_object (priv->client,
+                                                        object, NULL);
 
   if (priv->text_color)
   {

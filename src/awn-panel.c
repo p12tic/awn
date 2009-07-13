@@ -1394,6 +1394,9 @@ awn_panel_dispose (GObject *object)
     priv->resize_timer_id = 0;
   }
 
+  desktop_agnostic_config_client_unbind_all_for_object (priv->client,
+                                                        object, NULL);
+
   G_OBJECT_CLASS (awn_panel_parent_class)->dispose (object);
 }
 

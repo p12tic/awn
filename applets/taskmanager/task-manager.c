@@ -113,6 +113,8 @@ static void task_manager_orient_changed (AwnApplet *applet,
 static void task_manager_size_changed   (AwnApplet *applet,
                                          gint       size);
 
+static void task_manager_dispose (GObject *object);
+
 
 /* D&D Forwards */
 static void _drag_dest_motion (TaskManager *manager,
@@ -295,6 +297,7 @@ task_manager_class_init (TaskManagerClass *klass)
   obj_class->constructed = task_manager_constructed;
   obj_class->set_property = task_manager_set_property;
   obj_class->get_property = task_manager_get_property;
+  obj_class->dispose = task_manager_dispose;
 
   app_class->orient_changed = task_manager_orient_changed;
   app_class->size_changed   = task_manager_size_changed;
@@ -435,6 +438,20 @@ task_manager_size_changed   (AwnApplet *applet,
   }
 
   task_drag_indicator_refresh (priv->drag_indicator);
+}
+
+static void
+task_manager_dispose (GObject *object)
+{
+  TaskManagerPrivate *priv;
+
+  priv = TASK_MANAGER_GET_PRIVATE (object);
+
+  desktop_agnostic_config_client_unbind_all_for_object (priv->client,
+                                                        object,
+                                                        NULL);
+
+  G_OBJECT_CLASS (task_manager_parent_class)->dispose (object);
 }
 
 /*

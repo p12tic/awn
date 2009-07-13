@@ -192,6 +192,19 @@ awn_monitor_set_property (GObject      *object,
 }
 
 static void
+awn_monitor_dispose (GObject *object)
+{
+  AwnMonitorPrivate *priv;
+
+  priv = AWN_MONITOR_GET_PRIVATE (object);
+
+  desktop_agnostic_config_client_unbind_all_for_object (priv->client,
+                                                        object, NULL);
+
+  G_OBJECT_CLASS (awn_monitor_parent_class)->dispose (object);
+}
+
+static void
 awn_monitor_class_init (AwnMonitorClass *klass)
 {
   GObjectClass *obj_class = G_OBJECT_CLASS (klass);
@@ -199,6 +212,7 @@ awn_monitor_class_init (AwnMonitorClass *klass)
   obj_class->get_property = awn_monitor_get_property;
   obj_class->set_property = awn_monitor_set_property;
   obj_class->constructed  = awn_monitor_constructed;
+  obj_class->dispose      = awn_monitor_dispose;
 
   /* Add properties to the class */
   g_object_class_install_property (obj_class,

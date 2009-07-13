@@ -838,11 +838,26 @@ awn_dialog_set_property (GObject      *object,
   }
 }
 
-// TODO unbind properties & config keys
 static void
 awn_dialog_finalize (GObject *object)
 {
   AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (object);
+  GError *error = NULL;
+  DesktopAgnosticConfigClient *client;
+  
+  client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
+
+  if (error)
+  {
+    g_warning ("An error occurred when retrieving the config client: %s",
+               error->message);
+    g_error_free (error);
+  }
+  else
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (client,
+                                                          object, NULL);
+  }
 
   if (priv->anchor_configure_id)
   {

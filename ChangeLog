@@ -1,5 +1,21 @@
 2009-07-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/taskmanager/task-manager.c (task_manager_class_init,
+		task_manager_size_changed, task_manager_dispose):
+	* libawn/awn-dialog.c (awn_dialog_set_property, awn_dialog_finalize):
+	* libawn/awn-icon.c (awn_icon_set_property, awn_icon_dispose):
+	* libawn/awn-overlay-text.c (awn_overlay_text_set_property,
+	  awn_overlay_text_dispose):
+	* libawn/awn-tooltip.c (awn_tooltip_set_property, awn_tooltip_dispose):
+	* src/awn-applet-manager.c (awn_applet_manager_dispose):
+	* src/awn-background.c (awn_background_finalize):
+	* src/awn-monitor.c (awn_monitor_dispose, awn_monitor_class_init):
+	* src/awn-panel.c (awn_panel_dispose):
+	Clean up the config key <-> property bindings when the object is garbage
+	collected.
+
+2009-07-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/taskmanager/task-icon.c:
 	* applets/taskmanager/task-launcher.c:
 	* awn-applet-activation/main.c:

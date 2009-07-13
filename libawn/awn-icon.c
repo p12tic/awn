@@ -322,14 +322,29 @@ awn_icon_set_property (GObject      *object,
   }
 }
 
-// TODO unbind properties & config keys
 static void
 awn_icon_dispose (GObject *object)
 {
   AwnIconPrivate *priv;
+  GError *error = NULL;
+  DesktopAgnosticConfigClient *client;
 
   g_return_if_fail (AWN_IS_ICON (object));
   priv = AWN_ICON (object)->priv;
+
+  client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
+
+  if (error)
+  {
+    g_warning ("An error occurred while trying to retrieve the configuration client: %s",
+               error->message);
+    g_error_free (error);
+  }
+  else
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (client,
+                                                          object, NULL);
+  }
 
   if (priv->effects)
     g_object_unref (priv->effects);

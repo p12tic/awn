@@ -354,11 +354,13 @@ awn_tooltip_set_property (GObject      *object,
   }
 }
 
-// TODO unbind properties & config keys
 static void
 awn_tooltip_dispose(GObject *obj)
 {
   AwnTooltipPrivate *priv = AWN_TOOLTIP_GET_PRIVATE (obj);
+
+  desktop_agnostic_config_client_unbind_all_for_object (priv->client,
+                                                        obj, NULL);
 
   if (priv->focus)
   {

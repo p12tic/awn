@@ -325,6 +325,12 @@ awn_background_finalize (GObject *object)
 
   AwnBackground *bg = AWN_BACKGROUND (object);
 
+  if (bg->client)
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (bg->client,
+                                                          object, NULL);
+  }
+
   if (bg->g_step_1) g_object_unref (bg->g_step_1);
   if (bg->g_step_2) g_object_unref (bg->g_step_2);
   if (bg->g_histep_1) g_object_unref (bg->g_histep_1);
