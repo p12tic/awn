@@ -20,8 +20,6 @@
 #include "awn-image.h"
 #include "awn-effects.h"
 #include "awn-overlayable.h"
-#include "awn-overlay.h"
-#include "awn-overlay-text.h"
 
 static void awn_image_overlayable_init (AwnOverlayableIface *iface);
 
@@ -56,11 +54,6 @@ awn_image_dispose (GObject *object)
 static void
 awn_image_finalize (GObject *object)
 {
-  AwnImagePrivate *priv = AWN_IMAGE_GET_PRIVATE (object);
-
-  g_object_unref (priv->overlay);
-  priv->overlay = NULL;
-
   G_OBJECT_CLASS (awn_image_parent_class)->finalize (object);
 }
 

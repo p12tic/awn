@@ -1,3 +1,8 @@
+2009-07-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-image.c:
+	Fix FTBFS.
+
 2009-07-14  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* bindings/python/awn.defs:
