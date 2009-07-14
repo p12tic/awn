@@ -1581,6 +1581,12 @@
 
 
 
-;; From stamp-awn-enum-types.h
+;; Miscellaneous needed
 
-
+(define-function image_menu_item_new_with_label
+  (c-name "gtk_image_menu_item_new_with_label")
+  (return-type "GtkImageMenuItem*")
+  (parameters
+    '("const-gchar*" "label")
+  )
+)
