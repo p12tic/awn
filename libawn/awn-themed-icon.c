@@ -145,6 +145,12 @@ static const GtkTargetEntry drop_types[] =
 static const gint n_drop_types = G_N_ELEMENTS(drop_types);
 
 /* Forwards */
+static GdkPixbuf* theme_load_icon (GtkIconTheme *icon_theme,
+                                     const gchar *icon_name,
+                                     gint size,
+                                     GtkIconLookupFlags flags,
+                                     GError **error);
+
 void on_icon_theme_changed              (GtkIconTheme     *theme, 
                                          AwnThemedIcon     *icon);
 
@@ -443,7 +449,14 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   priv->gtk_theme = gtk_icon_theme_get_default ();
   priv->sig_id_for_gtk_theme = g_signal_connect (priv->gtk_theme, "changed", 
                     G_CALLBACK (on_icon_theme_changed), icon);
-
+  
+  /*Calling this with the default icon theme (which contains hicolor dirs)
+   to supress an irritating gtk warning that occurs if the first time we try 
+   to get a themed icon a GtkIconTheme is used that does not contain
+   hicolor dirs. It shouldn't find a icon and even if it does... we don't
+   care.*/
+  theme_load_icon (priv->gtk_theme,"gtk_knows_best",16,0,NULL);
+  
   /* 
    * Set-up our special theme. We need to check for all the dirs
    */
