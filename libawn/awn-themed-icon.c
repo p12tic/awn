@@ -145,6 +145,12 @@ static const GtkTargetEntry drop_types[] =
 static const gint n_drop_types = G_N_ELEMENTS(drop_types);
 
 /* Forwards */
+static GdkPixbuf* theme_load_icon (GtkIconTheme *icon_theme,
+                                     const gchar *icon_name,
+                                     gint size,
+                                     GtkIconLookupFlags flags,
+                                     GError **error);
+
 void on_icon_theme_changed              (GtkIconTheme     *theme, 
                                          AwnThemedIcon     *icon);
 
@@ -179,13 +185,13 @@ get_awn_theme(void)
     awn_theme = gtk_icon_theme_new ();
     gtk_icon_theme_set_custom_theme (awn_theme, AWN_ICON_THEME_NAME);    
 
-    /* need to look into the expectations of gtk_icon_theme_set_search_path()
-     regarding the lifetime of arg 2.  Till then this _is_ safe TODO
+    /* gtk_icon_theme_set_search_path() makes a copy.
      */
-    static const gchar * path[1];    
+    gchar * path[1];    
     path[0] = g_strdup_printf ("%s/.icons", g_get_home_dir ());
     gtk_icon_theme_set_custom_theme (awn_theme, AWN_ICON_THEME_NAME);
-    gtk_icon_theme_set_search_path (awn_theme, path, 1);
+    gtk_icon_theme_set_search_path (awn_theme, (const gchar **)path, 1);
+    g_free (path[0]);
   }    
   return awn_theme;
 }
@@ -425,7 +431,6 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   AwnThemedIconPrivate *priv;
   gchar                *icon_dir;
   gchar                *theme_dir;
-//  gchar                *hicolor_dir;
   gchar                *scalable_dir;
   gchar                *index_src;
   gchar                *index_dest;
@@ -443,7 +448,14 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   priv->gtk_theme = gtk_icon_theme_get_default ();
   priv->sig_id_for_gtk_theme = g_signal_connect (priv->gtk_theme, "changed", 
                     G_CALLBACK (on_icon_theme_changed), icon);
-
+  
+  /*Calling this with the default icon theme (which contains hicolor dirs)
+   to supress an irritating gtk warning that occurs if the first time we try 
+   to get a themed icon a GtkIconTheme is used that does not contain
+   hicolor dirs. It shouldn't find a icon and even if it does... we don't
+   care.*/
+  theme_load_icon (priv->gtk_theme,"gtk_knows_best",16,0,NULL);
+  
   /* 
    * Set-up our special theme. We need to check for all the dirs
    */
@@ -452,11 +464,6 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   icon_dir = priv->icon_dir = g_strdup_printf ("%s/.icons", g_get_home_dir ());
   check_and_make_dir (icon_dir);
 
-  /*create this so gtk doesn't spam with warnings about no hicolor theme
-   for the awn_theme search path*/
-/*  hicolor_dir = g_strdup_printf ("%s/hicolor", icon_dir);
-  check_and_make_dir (hicolor_dir);
-  */
   theme_dir = g_strdup_printf ("%s/%s", icon_dir, AWN_ICON_THEME_NAME);
   check_and_make_dir (theme_dir);
 
@@ -469,12 +476,6 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   check_dest_or_copy (index_src, index_dest);
   g_free (index_dest);
 
-  /* see comment earlier in this function.  keeps gtk from whining about there
-   being no hicolor theme in the search path.  We are deliberately _not_ 
-   including the system hicolor dirs in the search path for awn_theme*/
-/*  index_dest = g_strdup_printf ("%s/index.theme", hicolor_dir);
-  check_dest_or_copy (index_src, index_dest);
-  g_free (index_dest); */ 
   g_free (index_src);  
   /* Now let's make our custom theme */
   priv->awn_theme = get_awn_theme ();
@@ -1264,6 +1265,9 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
    */
   if (priv->override_theme)
   {
+    gchar ** path;
+    gint n_elements;
+    
     if (priv->applet_name)
     {
       search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", priv->applet_name);
@@ -1279,7 +1283,32 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
       g_warning ("%s: applet_name not set. Unable to set applet specific icon theme dirs",
                  __func__);
     }
+    /*strip out hicolor dirs from the search path*/
+    gtk_icon_theme_get_search_path (priv->override_theme,&path,&n_elements);
+    if (path)
+    {
+      gint i;
+      gint removed = 0;
+      for (i=0; i<n_elements;i++)
+      {
+        gchar * search;
+        search = g_strstr_len (path[i],-1,"hicolor");
+        if (search)
+        {
+          int j;
+          for (j = i; j<n_elements;j++)
+          {
+            path[j] = path [j+1];
+          }
+          removed++;
+        }
+      }
+      n_elements = n_elements - removed;
+      gtk_icon_theme_set_search_path (priv->override_theme,(const gchar**)path,n_elements);
+      g_strfreev (path);      
+    }
   }
+
   ensure_icon (icon);
   awn_themed_icon_preload_all (icon);
 }
