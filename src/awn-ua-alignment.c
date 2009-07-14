@@ -22,7 +22,7 @@
 
 #include "awn-ua-alignment.h"
 
-G_DEFINE_TYPE (AwnUAAlignment, awn_ua_alignment, AWN_TYPE_UA_ALIGNMENT)
+G_DEFINE_TYPE (AwnUAAlignment, awn_ua_alignment, GTK_TYPE_ALIGNMENT)
 
 #define AWN_UA_ALIGNMENT_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_UA_ALIGNMENT, AwnUAAlignmentPrivate))
@@ -83,12 +83,16 @@ awn_ua_alignment_finalize (GObject *object)
 static void
 awn_ua_alignment_constructed (GObject *object)
 {
+  AwnUAAlignmentPrivate * priv;
+
+  priv =  AWN_UA_ALIGNMENT_GET_PRIVATE (object);
+
   if (G_OBJECT_CLASS (awn_ua_alignment_parent_class)->constructed)
   {
     G_OBJECT_CLASS (awn_ua_alignment_parent_class)->constructed (object);
   }
   
-  
+  gtk_container_add (GTK_CONTAINER(object),priv->socket);    
 }
 
 static void
@@ -112,13 +116,23 @@ awn_ua_alignment_init (AwnUAAlignment *self)
 
   priv =  AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
 
-  priv->socket = gtk_socket_new ();  
+  priv->socket = gtk_socket_new ();
+  gtk_alignment_set (GTK_ALIGNMENT(self),0.0, 0.0, 0.0, 0.0);
 }
 
-AwnUAAlignment*
+GtkWidget*
 awn_ua_alignment_new (void)
 {
   return g_object_new (AWN_TYPE_UA_ALIGNMENT,
                        NULL);
 }
 
+GtkWidget*
+awn_ua_alignment_get_socket (AwnUAAlignment *self)
+{
+  AwnUAAlignmentPrivate *priv;
+
+  priv =  AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
+
+  return priv->socket;
+}

@@ -29,7 +29,7 @@
 
 #include "awn-defines.h"
 #include "awn-applet-manager.h"
-
+#include "awn-ua-alignment.h"
 #include "awn-applet-proxy.h"
 #include "awn-throbber.h"
 #include "xutils.h"
@@ -1077,7 +1077,6 @@ awn_ua_add_applet (	AwnAppletManager *manager,
                      (g_strcmp0(size_type,"dynamic")==0 ), FALSE );
   
   AwnUaInfo * ua_info = g_malloc (sizeof (AwnUaInfo) );
-  GtkWidget *socket = gtk_socket_new ();
   GdkWindow* plugwin; 
   AwnAppletManagerPrivate *priv = manager->priv;  
   gint pos = g_slist_length (priv->applet_list);  
@@ -1119,23 +1118,24 @@ awn_ua_add_applet (	AwnAppletManager *manager,
     ua_info->ua_list_entry = tmp;
   }
   
-  ua_info->socket = socket;
   ua_info->manager = manager;
   ua_info->ua_ratio = width / (double) height;
-  ua_info->ua_alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0); 
+  ua_info->ua_alignment = awn_ua_alignment_new(); 
   awn_ua_orient_change (NULL, NULL, ua_info);
 
+  ua_info->socket = awn_ua_alignment_get_socket(ua_info->ua_alignment);
+  g_assert (ua_info->socket);
+  g_signal_connect_swapped (awn_ua_alignment_get_socket(ua_info->ua_alignment), 
+                            "plug-added",
+                            G_CALLBACK (_applet_plug_added),
+                            manager);
 
-  g_signal_connect_swapped (socket, "plug-added",
-                          G_CALLBACK (_applet_plug_added), manager);
-
-  gtk_container_add (GTK_CONTAINER(ua_info->ua_alignment),socket);  
   awn_applet_manager_add_widget(manager, GTK_WIDGET (ua_info->ua_alignment), pos);  
-  gtk_socket_add_id (GTK_SOCKET(socket), native_window);
-  plugwin = gtk_socket_get_plug_window (GTK_SOCKET(socket));  
+  gtk_socket_add_id (GTK_SOCKET(ua_info->socket), native_window);
+  plugwin = gtk_socket_get_plug_window (GTK_SOCKET(ua_info->socket));  
   g_object_set_qdata (G_OBJECT (ua_info->ua_alignment), 
                       priv->touch_quark, GINT_TO_POINTER (0));    
-  gtk_widget_realize (GTK_WIDGET (socket));  
+  gtk_widget_realize (GTK_WIDGET (ua_info->socket));  
   gtk_widget_set_size_request (ua_info->ua_alignment,
                                priv->size * ua_info->ua_ratio,
                                priv->size);
@@ -1153,7 +1153,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   ua_info->notify_size_id = g_signal_connect_after (manager,"notify::size",G_CALLBACK(awn_ua_size_change),ua_info);
   
   ua_info->notify_ua_list_id = g_signal_connect_after (manager,"notify::ua-list",G_CALLBACK(awn_ua_list_change),ua_info);
-  g_signal_connect (socket,"plug-removed",G_CALLBACK(awn_ua_plug_removed),ua_info);
+  g_signal_connect (ua_info->socket,"plug-removed",G_CALLBACK(awn_ua_plug_removed),ua_info);
 
   priv->ua_list = g_slist_append (priv->ua_list,g_strdup(ua_info->ua_list_entry));
   
@@ -1171,6 +1171,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
                                priv->ua_list, NULL);
+  g_debug ("return from dbus");
   return TRUE;
 }
 
