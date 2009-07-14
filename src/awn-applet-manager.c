@@ -55,6 +55,8 @@ struct _AwnAppletManagerPrivate
    It's a list of unique UA names plus their position in the panel
    */ 
   GSList          *ua_list;
+  GSList          *ua_active_list;
+  
   gboolean         docklet_mode;
   GtkWidget       *docklet_widget;
 
@@ -82,6 +84,7 @@ enum
   PROP_SIZE,
   PROP_APPLET_LIST,
   PROP_UA_LIST,
+  PROP_UA_ACTIVE_LIST,
   PROP_EXPANDS
 };
 
@@ -138,7 +141,16 @@ awn_applet_manager_constructed (GObject *object)
                                AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
                                object, "ua_list");
-
+  awn_config_bridge_bind_list (bridge, priv->client,
+                               AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
+                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                               object, "ua_active_list");
+  /*
+  ua_active_list should be empty when awn starts...
+   */
+  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
+                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                               NULL, NULL);
 }
 
 static void
@@ -186,7 +198,10 @@ awn_applet_manager_get_property (GObject    *object,
       break;
     case PROP_UA_LIST:
       g_value_set_pointer (value, priv->ua_list);
-      break;      
+      break;
+    case PROP_UA_ACTIVE_LIST:
+      g_value_set_pointer (value, priv->ua_active_list);
+      break;
     case PROP_EXPANDS:
       g_value_set_boolean (value, priv->expands);
       break;
@@ -229,6 +244,11 @@ awn_applet_manager_set_property (GObject      *object,
     case PROP_UA_LIST:
       free_list (priv->ua_list);
       priv->ua_list = g_value_get_pointer (value);
+      awn_applet_manager_refresh_applets (manager);
+      break;
+    case PROP_UA_ACTIVE_LIST:
+      free_list (priv->ua_active_list);
+      priv->ua_active_list = g_value_get_pointer (value);
       awn_applet_manager_refresh_applets (manager);
       break;      
     default:
@@ -322,7 +342,14 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
     PROP_UA_LIST,
     g_param_spec_pointer ("ua_list",
                           "UA List",
-                          "The list of screenlets for this panel",
+                          "The rememebered screenlet positions for this panel",
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+    PROP_UA_ACTIVE_LIST,
+    g_param_spec_pointer ("ua_active_list",
+                          "UA Active List",
+                          "The list of acitve screenlets for this panel",
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -975,6 +1002,11 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
                                priv->ua_list, NULL);
+  priv->ua_active_list = g_slist_append (priv->ua_active_list,g_strdup(ua_list_entry));  
+  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
+                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                               priv->ua_active_list, NULL);
+  
   return TRUE;
 }
 

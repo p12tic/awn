@@ -40,6 +40,7 @@
 #define AWN_PANEL_AUTOHIDE       "autohide"
 #define AWN_PANEL_APPLET_LIST    "applet_list"
 #define AWN_PANEL_UA_LIST        "ua_list"
+#define AWN_PANEL_UA_ACTIVE_LIST "ua_active_list"
 #define AWN_PANEL_MONITOR_HEIGHT "monitor_height"
 #define AWN_PANEL_MONITOR_WIDTH  "monitor_width"
 #define AWN_PANEL_MONITOR_FORCE  "monitor_force"

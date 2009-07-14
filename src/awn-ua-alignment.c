@@ -160,7 +160,7 @@ awn_ua_alignment_constructed (GObject *object)
                                             G_CALLBACK(awn_ua_alignment_size_change),
                                             object);
   priv->notify_ua_list_id = g_signal_connect_after (priv->applet_manager,
-                                           "notify::ua-list",
+                                           "notify::ua-active-list",
                                            G_CALLBACK(awn_ua_alignment_list_change),
                                            object);
 }
@@ -254,7 +254,7 @@ awn_ua_alignment_plug_removed (GtkWidget * socket,AwnUAAlignment * self)
 {
 
   GSList * search;
-  GSList * ua_list;
+  GSList * ua_active_list;
   AwnConfigClient *client;
   
   AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
@@ -265,21 +265,24 @@ awn_ua_alignment_plug_removed (GtkWidget * socket,AwnUAAlignment * self)
   g_signal_handler_disconnect (priv->applet_manager,priv->notify_ua_list_id);
 
   g_object_get ( priv->applet_manager,
-                "ua_list",&ua_list,
+                "ua_active_list",&ua_active_list,
                 "client",&client,
                 NULL);
   
-  search = g_slist_find_custom (ua_list,priv->ua_list_entry,
+  search = g_slist_find_custom (ua_active_list,priv->ua_list_entry,
                                 (GCompareFunc)g_strcmp0);
   if (search)
   {
-    gchar * tmp = search->data;
-    ua_list = g_slist_delete_link (ua_list,search);
-    ua_list = g_slist_prepend (ua_list,tmp);
+    g_debug ("removing from list");
+    ua_active_list = g_slist_remove_link (ua_active_list,search);
   } 
-  awn_config_client_set_list (client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
+  else
+  {
+    g_debug ("not in list");
+  }
+  awn_config_client_set_list (client,AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                               ua_list, NULL);    
+                               ua_active_list, NULL);    
   awn_applet_manager_remove_widget(AWN_APPLET_MANAGER(priv->applet_manager), 
                                    GTK_WIDGET (self));  
   return FALSE;
@@ -411,25 +414,25 @@ awn_ua_alignment_list_change(GObject *object,GParamSpec *param_spec,gpointer use
   AwnUAAlignment * self = user_data;  
   gint orient;
   AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
-  GSList * ua_list;
+  GSList * ua_active_list;
   
   g_object_get ( priv->applet_manager,
                 "orient",&orient,
-                "ua_list",&ua_list,
+                "ua_active_list",&ua_active_list,
                 NULL);
 
-  GSList * search = g_slist_find_custom (ua_list,
+  GSList * search = g_slist_find_custom (ua_active_list,
                                          priv->ua_list_entry,
                                          (GCompareFunc)g_strcmp0);
   
-  g_debug ("ua list has changed");  
+  g_debug ("ua active list has changed");  
   if (search)
   {
     g_debug ("Found... do not need to update %s",priv->ua_list_entry);
   }
   else
   {
-    search = g_slist_find_custom (ua_list,priv->ua_list_entry,awn_ua_alignment_list_cmp);
+    search = g_slist_find_custom (ua_active_list,priv->ua_list_entry,awn_ua_alignment_list_cmp);
     if (search)
     {
       g_debug ("Moving %s to %s",priv->ua_list_entry,(gchar*)search->data);
@@ -457,7 +460,9 @@ awn_ua_alignment_list_change(GObject *object,GParamSpec *param_spec,gpointer use
        aantn as expected this does not kill the screenlet.  What is the best way to
        tell it that we want it to go away?
        */
-      gtk_widget_destroy (priv->socket);
+      awn_applet_manager_remove_widget(AWN_APPLET_MANAGER(priv->applet_manager), 
+                                   GTK_WIDGET (self));        
+      gtk_widget_destroy (GTK_WIDGET(self));
     } 
   }  
 }

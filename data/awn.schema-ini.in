@@ -31,7 +31,12 @@ description = The list of applets for this panel ordered from ltr or ttb.
 [panel/ua_list]
 type = list-string
 default = 
-description = The list of UA Screenlets for this panel ordered from in the form ScreeneletInstance::Position.
+description = The list of UA Screenlets that have been previous added in the form ScreeneletInstance::Position.
+
+[panel/ua_active_list]
+type = list-string
+default = 
+description = The active list UA Screenlets for this panel.
 
 [panel/monitor_force]
 type = bool
