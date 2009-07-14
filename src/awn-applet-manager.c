@@ -890,12 +890,20 @@ awn_ua_add_applet (	AwnAppletManager *manager,
     priv->ua_list = g_slist_append (priv->ua_list,g_strdup("--ActiveScreenletMarker--::-1"));    
   }
   */
+
+
+  /*
+   Is there an entry in ua_list for this particular screenlet instance(name).
+   The comparision function used ignores the position.
+   */
   GSList * search = g_slist_find_custom (priv->ua_list,tmp,awn_ua_alignment_list_cmp);
   if (search)
   {
+    /*     There's already an entry in ua_list so use that.     */
     GStrv tokens;
     ua_list_entry = g_strdup (search->data) ;
     g_free (tmp);
+    /*    Get the position where the screenlet should be placed*/
     tokens = g_strsplit (search->data,"::",2);
     if (tokens && tokens[1])
     {
@@ -909,9 +917,19 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   }
   else
   {
+    /*
+     This screenlet instance is not recorded in ua_list.  It will end up being
+     placed at the end of the bar
+     */
     ua_list_entry = tmp;
   }
   
+  /*
+   Calculated here and passed to the awn_ua_alignment_new().  AwnUAAlignment
+   could recalculate the ratio on bar resizes based on the the then current
+   dimensions of the widget but over time the amount of error in the the 
+   calcs would increase
+   */
   ua_ratio = width / (double) height;
   ua_alignment = awn_ua_alignment_new(manager,ua_list_entry,ua_ratio); 
   socket = awn_ua_alignment_get_socket(AWN_UA_ALIGNMENT(ua_alignment));
@@ -926,12 +944,8 @@ awn_ua_add_applet (	AwnAppletManager *manager,
 
   plugwin = awn_ua_alignment_add_id (AWN_UA_ALIGNMENT(ua_alignment),native_window);
   
-  g_object_set_qdata (G_OBJECT (ua_alignment), 
+  g_object_set_qdata (G_OBJECT (ua_alignment),
                       priv->touch_quark, GINT_TO_POINTER (0));    
-/*  gtk_widget_set_size_request (ua_alignment,
-                               priv->size * ua_ratio,
-                               priv->size);
-*/
 
   if (!plugwin)
   {
@@ -939,10 +953,14 @@ awn_ua_add_applet (	AwnAppletManager *manager,
     gtk_widget_destroy (ua_alignment);
     return FALSE;
   }
-  gtk_widget_realize (socket);
-  gtk_widget_show_all (socket);
+
+  /*
+   Either add the new entry into ua_list or move an existing entry to the 
+   end of ua_list_entry
+   */
   priv->ua_list = g_slist_append (priv->ua_list,g_strdup(ua_list_entry));
 
+  /* Keep the length of ua_list reasonable */
   if (g_slist_length (priv->ua_list) > MAX_UA_LIST_ENTRIES)
   {
     GSList * iter;
