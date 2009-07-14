@@ -21,6 +21,7 @@
 /* awn-ua-alignment.c */
 #include <stdlib.h>
 #include "awn-ua-alignment.h"
+#include "awn-defines.h"
 
 G_DEFINE_TYPE (AwnUAAlignment, awn_ua_alignment, GTK_TYPE_ALIGNMENT)
 
@@ -52,11 +53,20 @@ enum
 };
 
 
-static gboolean awn_ua_alignment_plug_removed (GtkWidget * socket,AwnUAAlignment * self);
-static void awn_ua_alignment_list_change(GObject *object,GParamSpec *param_spec,gpointer user_data);
-static void awn_ua_alignment_orient_change(GObject *object,GParamSpec *param_spec,gpointer user_data);
-static void awn_ua_alignment_size_change(GObject *object,GParamSpec *param_spec,gpointer user_data);
-static void awn_ua_alignment_offset_change(GObject *object,GParamSpec *param_spec,gpointer user_data);
+static gboolean awn_ua_alignment_plug_removed (GtkWidget * socket,
+                                               AwnUAAlignment * self);
+static void awn_ua_alignment_list_change(GObject *object,
+                                         GParamSpec *param_spec,
+                                         gpointer user_data);
+static void awn_ua_alignment_orient_change(GObject *object,
+                                           GParamSpec *param_spec,
+                                           gpointer user_data);
+static void awn_ua_alignment_size_change(GObject *object,
+                                         GParamSpec *param_spec,
+                                         gpointer user_data);
+static void awn_ua_alignment_offset_change(GObject *object,
+                                           GParamSpec *param_spec,
+                                           gpointer user_data);
 
 
 static void
@@ -90,7 +100,6 @@ awn_ua_alignment_set_property (GObject *object, guint property_id,
   AwnUAAlignmentPrivate * priv;
 
   priv =  AWN_UA_ALIGNMENT_GET_PRIVATE (object);
-
   switch (property_id) 
   {
     case PROP_APPLET_MANAGER:
@@ -117,15 +126,19 @@ awn_ua_alignment_dispose (GObject *object)
 static void
 awn_ua_alignment_finalize (GObject *object)
 {
+  AwnUAAlignmentPrivate * priv =  AWN_UA_ALIGNMENT_GET_PRIVATE (object);  
+  g_debug ("%s",__func__);
+  if (priv->ua_list_entry)
+  {
+    g_free (priv->ua_list_entry);
+  }
   G_OBJECT_CLASS (awn_ua_alignment_parent_class)->finalize (object);
 }
 
 static void
 awn_ua_alignment_constructed (GObject *object)
 {
-  AwnUAAlignmentPrivate * priv;
-
-  priv =  AWN_UA_ALIGNMENT_GET_PRIVATE (object);
+  AwnUAAlignmentPrivate * priv =  AWN_UA_ALIGNMENT_GET_PRIVATE (object);
 
   if (G_OBJECT_CLASS (awn_ua_alignment_parent_class)->constructed)
   {
@@ -196,9 +209,7 @@ awn_ua_alignment_init (AwnUAAlignment *self)
   AwnUAAlignmentPrivate *priv;
 
   priv =  AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
-
   priv->socket = gtk_socket_new ();
-  gtk_alignment_set (GTK_ALIGNMENT(self),0.0, 0.0, 0.0, 0.0);
 }
 
 GtkWidget*
@@ -217,7 +228,6 @@ awn_ua_alignment_get_socket (AwnUAAlignment *self)
   AwnUAAlignmentPrivate *priv;
 
   priv =  AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
-
   return priv->socket;
 }
 
@@ -229,13 +239,12 @@ awn_ua_alignment_add_id (AwnUAAlignment *self,GdkNativeWindow native_window)
   AwnUAAlignmentPrivate *priv;
 
   priv =  AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
-
-  g_debug ("adding id %ld",(long)native_window);
   gtk_socket_add_id (GTK_SOCKET(priv->socket), native_window);
   plugwin = gtk_socket_get_plug_window (GTK_SOCKET(priv->socket));
   g_signal_connect (priv->socket,"plug-removed",
                     G_CALLBACK(awn_ua_alignment_plug_removed),self);
-  gtk_widget_show_all (GTK_WIDGET(self));
+  gtk_widget_realize (priv->socket);
+  gtk_widget_show_all (priv->socket);
   return plugwin;
 }
 
@@ -244,43 +253,35 @@ static gboolean
 awn_ua_alignment_plug_removed (GtkWidget * socket,AwnUAAlignment * self)
 {
 
-//  GSList * search;
+  GSList * search;
+  GSList * ua_list;
+  AwnConfigClient *client;
+  
   AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
   
-  awn_applet_manager_remove_widget(AWN_APPLET_MANAGER(priv->applet_manager), 
-                                   GTK_WIDGET (self));
   g_signal_handler_disconnect (priv->applet_manager,priv->notify_size_id);
   g_signal_handler_disconnect (priv->applet_manager,priv->notify_orient_id);
   g_signal_handler_disconnect (priv->applet_manager,priv->notify_offset_id);
   g_signal_handler_disconnect (priv->applet_manager,priv->notify_ua_list_id);
+
+  g_object_get ( priv->applet_manager,
+                "ua_list",&ua_list,
+                "client",&client,
+                NULL);
   
-/*  search = g_slist_find_custom (priv->ua_list,priv->ua_list_entry,g_strcmp0);
+  search = g_slist_find_custom (ua_list,priv->ua_list_entry,
+                                (GCompareFunc)g_strcmp0);
   if (search)
   {
     gchar * tmp = search->data;
-    priv->ua_list = g_slist_delete_link (priv->ua_list,search);
-    priv->ua_list = g_slist_prepend (priv->ua_list,tmp);
-  } */
-/*
-  It doesn't really make sense to remove this from the list when the 
-   plug is removed.  It could just mean the system is shutting down or
-   screenlets are restart etc...
-   
-  search = g_slist_find_custom (priv->ua_list,info->ua_list_entry,g_strcmp0);
-  if (search)
-  {
-    priv->ua_list = g_slist_remove (priv->ua_list,search->data);
-  }
-  else
-  {
-    g_debug ("unable to find on plug remove");
-  }
-*/   
-  g_free (priv->ua_list_entry);
-/*  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
+    ua_list = g_slist_delete_link (ua_list,search);
+    ua_list = g_slist_prepend (ua_list,tmp);
+  } 
+  awn_config_client_set_list (client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                               priv->ua_list, NULL);    */
-  gtk_widget_destroy (GTK_WIDGET(self));
+                               ua_list, NULL);    
+  awn_applet_manager_remove_widget(AWN_APPLET_MANAGER(priv->applet_manager), 
+                                   GTK_WIDGET (self));  
   return FALSE;
 }
 

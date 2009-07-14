@@ -914,9 +914,6 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   
   ua_ratio = width / (double) height;
   ua_alignment = awn_ua_alignment_new(manager,ua_list_entry,ua_ratio); 
-  
-//  awn_ua_orient_change (NULL, NULL, ua_info);
-
   socket = awn_ua_alignment_get_socket(AWN_UA_ALIGNMENT(ua_alignment));
 
   g_signal_connect_swapped (socket, 
@@ -931,21 +928,21 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   
   g_object_set_qdata (G_OBJECT (ua_alignment), 
                       priv->touch_quark, GINT_TO_POINTER (0));    
-  gtk_widget_set_size_request (ua_alignment,
+/*  gtk_widget_set_size_request (ua_alignment,
                                priv->size * ua_ratio,
                                priv->size);
+*/
 
-
-/*  if (!plugwin)
+  if (!plugwin)
   {
     g_warning ("UA Plug was not created within socket.");
     gtk_widget_destroy (ua_alignment);
     return FALSE;
-  }*/
+  }
   gtk_widget_realize (socket);
   gtk_widget_show_all (socket);
   priv->ua_list = g_slist_append (priv->ua_list,g_strdup(ua_list_entry));
-  
+
   if (g_slist_length (priv->ua_list) > MAX_UA_LIST_ENTRIES)
   {
     GSList * iter;
@@ -960,7 +957,6 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
                                priv->ua_list, NULL);
-  g_debug ("return from dbus");
   return TRUE;
 }
 
