@@ -425,7 +425,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   AwnThemedIconPrivate *priv;
   gchar                *icon_dir;
   gchar                *theme_dir;
-  gchar                *hicolor_dir;
+//  gchar                *hicolor_dir;
   gchar                *scalable_dir;
   gchar                *index_src;
   gchar                *index_dest;
@@ -454,9 +454,9 @@ awn_themed_icon_init (AwnThemedIcon *icon)
 
   /*create this so gtk doesn't spam with warnings about no hicolor theme
    for the awn_theme search path*/
-  hicolor_dir = g_strdup_printf ("%s/hicolor", icon_dir);
+/*  hicolor_dir = g_strdup_printf ("%s/hicolor", icon_dir);
   check_and_make_dir (hicolor_dir);
-  
+  */
   theme_dir = g_strdup_printf ("%s/%s", icon_dir, AWN_ICON_THEME_NAME);
   check_and_make_dir (theme_dir);
 
@@ -472,9 +472,9 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   /* see comment earlier in this function.  keeps gtk from whining about there
    being no hicolor theme in the search path.  We are deliberately _not_ 
    including the system hicolor dirs in the search path for awn_theme*/
-  index_dest = g_strdup_printf ("%s/index.theme", hicolor_dir);
+/*  index_dest = g_strdup_printf ("%s/index.theme", hicolor_dir);
   check_dest_or_copy (index_src, index_dest);
-  g_free (index_dest);  
+  g_free (index_dest); */ 
   g_free (index_src);  
   /* Now let's make our custom theme */
   priv->awn_theme = get_awn_theme ();
@@ -483,7 +483,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   
   g_free (scalable_dir);
   g_free (theme_dir);
-  g_free (hicolor_dir);
+//  g_free (hicolor_dir);
 }
 
 /**
