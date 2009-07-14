@@ -279,13 +279,8 @@ awn_ua_alignment_plug_removed (GtkWidget * socket,AwnUAAlignment * self)
                                 (GCompareFunc)g_strcmp0);
   if (search)
   {
-    g_debug ("removing from list");
     ua_active_list = g_slist_delete_link (ua_active_list,search);
   } 
-  else
-  {
-    g_debug ("not in list");
-  }
   awn_config_client_set_list (client,AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
                              AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
                              ua_active_list, NULL); 
@@ -431,9 +426,7 @@ awn_ua_alignment_list_change(GObject *object,GParamSpec *param_spec,gpointer use
 
   GSList * search = g_slist_find_custom (ua_active_list,
                                          priv->ua_list_entry,
-                                         (GCompareFunc)g_strcmp0);
-  
-  g_debug ("ua active list has changed");  
+                                         (GCompareFunc)g_strcmp0);  
   if (search)
   {
     g_debug ("Found... do not need to update %s",priv->ua_list_entry);
