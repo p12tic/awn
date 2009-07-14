@@ -1264,6 +1264,9 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
    */
   if (priv->override_theme)
   {
+    gchar ** path;
+    gint n_elements;
+    
     if (priv->applet_name)
     {
       search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", priv->applet_name);
@@ -1279,7 +1282,32 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
       g_warning ("%s: applet_name not set. Unable to set applet specific icon theme dirs",
                  __func__);
     }
+    /*strip out hicolor dirs from the search path*/
+    gtk_icon_theme_get_search_path (priv->override_theme,&path,&n_elements);
+    if (path)
+    {
+      gint i;
+      gint removed = 0;
+      for (i=0; i<n_elements;i++)
+      {
+        gchar * search;
+        search = g_strstr_len (path[i],-1,"hicolor");
+        if (search)
+        {
+          int j;
+          for (j = i; j<n_elements;j++)
+          {
+            path[j] = path [j+1];
+          }
+          removed++;
+        }
+      }
+      n_elements = n_elements - removed;
+      gtk_icon_theme_set_search_path (priv->override_theme,(const gchar**)path,n_elements);
+      g_strfreev (path);      
+    }
   }
+
   ensure_icon (icon);
   awn_themed_icon_preload_all (icon);
 }

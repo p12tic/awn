@@ -1,6 +1,11 @@
 2009-07-13  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
+	Strip the hicolor entries from the path of override theme.
+
+2009-07-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
 	No need for the array set to gtk_icon_theme_set_search_path() 
 	to be static as it copies the elements.
 
