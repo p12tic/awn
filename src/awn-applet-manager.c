@@ -858,6 +858,8 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
 
 /*DBUS*/
 /*
+  Description of this dbus interface.
+ 
  	@action(IFACE)
 	def add_applet (self, id, plug_id, width, height, size_type):
 		"""
@@ -881,9 +883,6 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
 			size_type, backend=self.backend)
 		self.containers.append(container)
 */
-
-/* needs cleanup... this function has become overly complex? FIXME?
- FIXME... variable naming.*/
 gboolean
 awn_ua_add_applet (	AwnAppletManager *manager,
 			gchar     *name,
@@ -893,8 +892,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
 			gchar     *size_type,
       GError   **error)
 {
-  g_debug ("name = %s, size type = '%s, xid = %ld'",name,size_type,xid); 
-  
+  g_return_val_if_fail (AWN_IS_APPLET_MANAGER (manager),FALSE);
   g_return_val_if_fail ( (g_strcmp0(size_type,"scalable")==0 ) || 
                      (g_strcmp0(size_type,"dynamic")==0 ), FALSE );
   
@@ -905,22 +903,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   gchar * tmp = g_strdup_printf ("%s::%d",name,pos);
   gchar * ua_list_entry = NULL;
   GtkWidget  *ua_alignment;
-  GtkWidget  *socket;
   double ua_ratio;  
-  /*
-   OK... i think a marker needs to be placed into the list (The following will not work as written)
-   or provide the number of active screenlets to awn-manager through some mechanism.
-   it only matters to the extent that it will allow awn-manager to determine which
-   applets it should display in the list
-   */
- /* 
-   = g_slist_find_custom (priv->ua_list,"--ActiveScreenletMarker--::-1",g_strcmp0);
-  if (!search)
-  {
-    priv->ua_list = g_slist_append (priv->ua_list,g_strdup("--ActiveScreenletMarker--::-1"));    
-  }
-  */
-
 
   /*
    Is there an entry in ua_list for this particular screenlet instance(name).
@@ -940,7 +923,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
       pos = atoi (tokens[1]);
     }
     g_strfreev (tokens);
-    /* remove the link... that data will be appended at the beginning of the list*/
+    /* remove the link... that data will be appended at to the list*/
     g_free (search->data);
     priv->ua_list = g_slist_delete_link (priv->ua_list,search);
     search = NULL;
@@ -956,15 +939,14 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   
   /*
    Calculated here and passed to the awn_ua_alignment_new().  AwnUAAlignment
-   could recalculate the ratio on bar resizes based on the the then current
+   could recalculate the ratio on bar resizes based on the, then current,
    dimensions of the widget but over time the amount of error in the the 
    calcs would increase
    */
   ua_ratio = width / (double) height;
   ua_alignment = awn_ua_alignment_new(manager,ua_list_entry,ua_ratio); 
-  socket = awn_ua_alignment_get_socket(AWN_UA_ALIGNMENT(ua_alignment));
 
-  g_signal_connect_swapped (socket, 
+  g_signal_connect_swapped (awn_ua_alignment_get_socket(AWN_UA_ALIGNMENT(ua_alignment)), 
                             "plug-added",
                             G_CALLBACK (_applet_plug_added),
                             manager);
@@ -1005,6 +987,7 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
                                priv->ua_list, NULL);
+  /*Add our newly active screenlet to thend of the active list */
   priv->ua_active_list = g_slist_append (priv->ua_active_list,g_strdup(ua_list_entry));  
   awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
