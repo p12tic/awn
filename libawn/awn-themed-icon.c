@@ -179,13 +179,13 @@ get_awn_theme(void)
     awn_theme = gtk_icon_theme_new ();
     gtk_icon_theme_set_custom_theme (awn_theme, AWN_ICON_THEME_NAME);    
 
-    /* need to look into the expectations of gtk_icon_theme_set_search_path()
-     regarding the lifetime of arg 2.  Till then this _is_ safe TODO
+    /* gtk_icon_theme_set_search_path() makes a copy.
      */
-    static const gchar * path[1];    
+    gchar * path[1];    
     path[0] = g_strdup_printf ("%s/.icons", g_get_home_dir ());
     gtk_icon_theme_set_custom_theme (awn_theme, AWN_ICON_THEME_NAME);
-    gtk_icon_theme_set_search_path (awn_theme, path, 1);
+    gtk_icon_theme_set_search_path (awn_theme, (const gchar **)path, 1);
+    g_free (path[0]);
   }    
   return awn_theme;
 }
