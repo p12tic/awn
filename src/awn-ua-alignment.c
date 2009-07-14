@@ -19,7 +19,7 @@
  */
 
 /* awn-ua-alignment.c */
-
+#include <stdlib.h>
 #include "awn-ua-alignment.h"
 
 G_DEFINE_TYPE (AwnUAAlignment, awn_ua_alignment, GTK_TYPE_ALIGNMENT)
@@ -29,14 +29,35 @@ G_DEFINE_TYPE (AwnUAAlignment, awn_ua_alignment, GTK_TYPE_ALIGNMENT)
 
 typedef struct _AwnUAAlignmentPrivate AwnUAAlignmentPrivate;
 
-struct _AwnUAAlignmentPrivate {
-    GtkWidget * socket;
+struct _AwnUAAlignmentPrivate
+{
+  GtkWidget * socket;
+  GtkWidget * applet_manager;
+  
+  gchar       *ua_list_entry;
+  double      ua_ratio;
+  
+  guint       notify_size_id;
+  guint       notify_orient_id;
+  guint       notify_offset_id;
+  guint       notify_ua_list_id;
 };
 
 enum
 {
-  PROP_0
+  PROP_0,
+  PROP_APPLET_MANAGER,
+  PROP_UA_LIST_ENTRY,
+  PROP_UA_RATIO
 };
+
+
+static gboolean awn_ua_alignment_plug_removed (GtkWidget * socket,AwnUAAlignment * self);
+static void awn_ua_alignment_list_change(GObject *object,GParamSpec *param_spec,gpointer user_data);
+static void awn_ua_alignment_orient_change(GObject *object,GParamSpec *param_spec,gpointer user_data);
+static void awn_ua_alignment_size_change(GObject *object,GParamSpec *param_spec,gpointer user_data);
+static void awn_ua_alignment_offset_change(GObject *object,GParamSpec *param_spec,gpointer user_data);
+
 
 static void
 awn_ua_alignment_get_property (GObject *object, guint property_id,
@@ -48,6 +69,15 @@ awn_ua_alignment_get_property (GObject *object, guint property_id,
   
   switch (property_id) 
   {
+    case PROP_APPLET_MANAGER:
+      g_value_set_object (value,priv->applet_manager);
+      break;
+    case PROP_UA_LIST_ENTRY:
+      g_value_set_string (value,priv->ua_list_entry);
+      break;
+    case PROP_UA_RATIO:
+      g_value_set_double (value,priv->ua_ratio);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -63,6 +93,16 @@ awn_ua_alignment_set_property (GObject *object, guint property_id,
 
   switch (property_id) 
   {
+    case PROP_APPLET_MANAGER:
+      priv->applet_manager = g_value_get_object (value);
+      break;
+    case PROP_UA_LIST_ENTRY:
+      g_free (priv->ua_list_entry);
+      priv->ua_list_entry = g_value_dup_string (value);
+      break;
+    case PROP_UA_RATIO:
+      priv->ua_ratio = g_value_get_double (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -91,22 +131,63 @@ awn_ua_alignment_constructed (GObject *object)
   {
     G_OBJECT_CLASS (awn_ua_alignment_parent_class)->constructed (object);
   }
-  
-  gtk_container_add (GTK_CONTAINER(object),priv->socket);    
+
+  gtk_container_add (GTK_CONTAINER(object),priv->socket);
+  awn_ua_alignment_orient_change (NULL,NULL,object);  
+  priv->notify_offset_id = g_signal_connect (priv->applet_manager,
+                                            "notify::offset",
+                                            G_CALLBACK(awn_ua_alignment_offset_change),
+                                            object);
+  priv->notify_orient_id = g_signal_connect_after (priv->applet_manager,
+                                            "notify::orient",
+                                            G_CALLBACK(awn_ua_alignment_orient_change),
+                                            object);
+  priv->notify_size_id = g_signal_connect_after (priv->applet_manager,
+                                            "notify::size",
+                                            G_CALLBACK(awn_ua_alignment_size_change),
+                                            object);
+  priv->notify_ua_list_id = g_signal_connect_after (priv->applet_manager,
+                                           "notify::ua-list",
+                                           G_CALLBACK(awn_ua_alignment_list_change),
+                                           object);
 }
 
 static void
 awn_ua_alignment_class_init (AwnUAAlignmentClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (AwnUAAlignmentPrivate));
+  GParamSpec   *pspec;
 
   object_class->get_property = awn_ua_alignment_get_property;
   object_class->set_property = awn_ua_alignment_set_property;
   object_class->dispose = awn_ua_alignment_dispose;
   object_class->finalize = awn_ua_alignment_finalize;
   object_class->constructed = awn_ua_alignment_constructed;  
+  
+  pspec = g_param_spec_object ("applet-manager",
+                               "Awn Applet Manager",
+                               "Awn Applet Manager",
+                               AWN_TYPE_APPLET_MANAGER,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_APPLET_MANAGER, pspec);   
+  
+  pspec = g_param_spec_string ("ua-list-entry",
+                               "UA List entry",
+                               "UA List entry",
+                               NULL,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_UA_LIST_ENTRY, pspec);   
+  
+  pspec = g_param_spec_double ("ua-ratio",
+                               "UA Ratio",
+                               "UA Ratio",
+                               0.0,
+                               100.0,
+                               1.0,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class, PROP_UA_RATIO, pspec);   
+
+  g_type_class_add_private (klass, sizeof (AwnUAAlignmentPrivate));  
 }
 
 static void
@@ -121,9 +202,12 @@ awn_ua_alignment_init (AwnUAAlignment *self)
 }
 
 GtkWidget*
-awn_ua_alignment_new (void)
+awn_ua_alignment_new (AwnAppletManager *manager,gchar * ua_list_entry,double ua_ratio)
 {
   return g_object_new (AWN_TYPE_UA_ALIGNMENT,
+                       "applet-manager",manager,
+                       "ua-list-entry",ua_list_entry,
+                       "ua-ratio",ua_ratio,
                        NULL);
 }
 
@@ -135,4 +219,244 @@ awn_ua_alignment_get_socket (AwnUAAlignment *self)
   priv =  AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
 
   return priv->socket;
+}
+
+
+GdkWindow *
+awn_ua_alignment_add_id (AwnUAAlignment *self,GdkNativeWindow native_window)
+{
+  GdkWindow * plugwin;
+  AwnUAAlignmentPrivate *priv;
+
+  priv =  AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
+
+  g_debug ("adding id %ld",(long)native_window);
+  gtk_socket_add_id (GTK_SOCKET(priv->socket), native_window);
+  plugwin = gtk_socket_get_plug_window (GTK_SOCKET(priv->socket));
+  g_signal_connect (priv->socket,"plug-removed",
+                    G_CALLBACK(awn_ua_alignment_plug_removed),self);
+  gtk_widget_show_all (GTK_WIDGET(self));
+  return plugwin;
+}
+
+
+static gboolean
+awn_ua_alignment_plug_removed (GtkWidget * socket,AwnUAAlignment * self)
+{
+
+//  GSList * search;
+  AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
+  
+  awn_applet_manager_remove_widget(AWN_APPLET_MANAGER(priv->applet_manager), 
+                                   GTK_WIDGET (self));
+  g_signal_handler_disconnect (priv->applet_manager,priv->notify_size_id);
+  g_signal_handler_disconnect (priv->applet_manager,priv->notify_orient_id);
+  g_signal_handler_disconnect (priv->applet_manager,priv->notify_offset_id);
+  g_signal_handler_disconnect (priv->applet_manager,priv->notify_ua_list_id);
+  
+/*  search = g_slist_find_custom (priv->ua_list,priv->ua_list_entry,g_strcmp0);
+  if (search)
+  {
+    gchar * tmp = search->data;
+    priv->ua_list = g_slist_delete_link (priv->ua_list,search);
+    priv->ua_list = g_slist_prepend (priv->ua_list,tmp);
+  } */
+/*
+  It doesn't really make sense to remove this from the list when the 
+   plug is removed.  It could just mean the system is shutting down or
+   screenlets are restart etc...
+   
+  search = g_slist_find_custom (priv->ua_list,info->ua_list_entry,g_strcmp0);
+  if (search)
+  {
+    priv->ua_list = g_slist_remove (priv->ua_list,search->data);
+  }
+  else
+  {
+    g_debug ("unable to find on plug remove");
+  }
+*/   
+  g_free (priv->ua_list_entry);
+/*  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
+                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                               priv->ua_list, NULL);    */
+  gtk_widget_destroy (GTK_WIDGET(self));
+  return FALSE;
+}
+
+
+/*UA*/
+gint
+awn_ua_alignment_list_cmp (gconstpointer a, gconstpointer b)
+{
+  const gchar * str1 = a;
+  const gchar * str2 = b;
+  gchar * search = NULL;
+  GStrv tokens = g_strsplit (str1,"::",2);
+  g_return_val_if_fail (tokens,-1);
+  
+  search = g_strstr_len (str2,-1,tokens[0]);
+  g_strfreev (tokens);
+  
+  if (!search)
+  {
+    return -1;
+  };
+  return 0;
+}
+
+static void
+awn_ua_alignment_offset_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
+{
+  AwnUAAlignment * self = user_data;  
+  gint offset;
+  gint orient;
+  AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
+  
+  g_object_get ( priv->applet_manager,
+                "offset",&offset,
+                "orient",&orient,
+                NULL);
+  
+  switch (orient)
+  {
+    case AWN_ORIENTATION_TOP:
+      gtk_alignment_set_padding (GTK_ALIGNMENT(self), offset, 0, 0, 0);
+      break;
+    case AWN_ORIENTATION_BOTTOM:
+      gtk_alignment_set_padding (GTK_ALIGNMENT(self), 0, offset, 0, 0);
+      break;
+    case AWN_ORIENTATION_LEFT:
+      gtk_alignment_set_padding (GTK_ALIGNMENT(self), 0, 0, offset, 0);
+      break;
+    case AWN_ORIENTATION_RIGHT:
+      gtk_alignment_set_padding (GTK_ALIGNMENT(self), 0, 0, 0, offset);
+      break;
+    default:
+      g_warning ("%s: recieved invalid orient %d",__func__,orient);
+  }
+}
+
+static void
+awn_ua_alignment_size_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
+{
+  AwnUAAlignment * self = user_data;  
+  gint offset;
+  gint orient;
+  gint size;
+  AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
+  
+  g_object_get ( priv->applet_manager,
+                "offset",&offset,
+                "orient",&orient,
+                "size",&size,
+                NULL);
+  GtkRequisition  req;
+
+  req.width = req.height = size;
+  switch (orient)
+  {
+    case AWN_ORIENTATION_TOP:
+    case AWN_ORIENTATION_BOTTOM:      
+      req.width = size * priv->ua_ratio;
+      req.height = size;
+      break;
+    case AWN_ORIENTATION_LEFT:
+    case AWN_ORIENTATION_RIGHT:
+      req.width = size;
+      req.height = size  * 1.0 / priv->ua_ratio;            
+      break;
+    default:
+      g_warning ("%s: recieved invalid orient %d",__func__,orient);
+  }
+  gtk_widget_set_size_request (GTK_WIDGET(self),req.width,req.height);
+}
+
+static void
+awn_ua_alignment_orient_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
+{
+  
+  AwnUAAlignment * self = user_data;  
+  gint orient;
+  AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
+  
+  g_object_get ( priv->applet_manager,
+                "orient",&orient,
+                NULL);
+  switch (orient)
+  {
+    case AWN_ORIENTATION_TOP:
+      gtk_alignment_set (GTK_ALIGNMENT(self), 0.0, 0.0, 1.0, 0.5);
+      break;
+    case AWN_ORIENTATION_BOTTOM:
+      gtk_alignment_set (GTK_ALIGNMENT(self), 0.0, 1.0, 1.0, 0.5);
+      break;
+    case AWN_ORIENTATION_LEFT:
+      gtk_alignment_set (GTK_ALIGNMENT(self), 0.0, 0.0, 0.5, 1.0);
+      break;
+    case AWN_ORIENTATION_RIGHT:
+      gtk_alignment_set (GTK_ALIGNMENT(self), 1.0, 0.0, 0.5, 1.0);
+      break;
+    default:
+      g_warning ("%s: recieved invalid orient %d",__func__,orient);
+  }
+  awn_ua_alignment_offset_change (object,param_spec,self);
+  awn_ua_alignment_size_change (object,param_spec,self);
+}
+
+static void
+awn_ua_alignment_list_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
+{
+  AwnUAAlignment * self = user_data;  
+  gint orient;
+  AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
+  GSList * ua_list;
+  
+  g_object_get ( priv->applet_manager,
+                "orient",&orient,
+                "ua_list",&ua_list,
+                NULL);
+
+  GSList * search = g_slist_find_custom (ua_list,
+                                         priv->ua_list_entry,
+                                         (GCompareFunc)g_strcmp0);
+  
+  g_debug ("ua list has changed");  
+  if (search)
+  {
+    g_debug ("Found... do not need to update %s",priv->ua_list_entry);
+  }
+  else
+  {
+    search = g_slist_find_custom (ua_list,priv->ua_list_entry,awn_ua_alignment_list_cmp);
+    if (search)
+    {
+      g_debug ("Moving %s to %s",priv->ua_list_entry,(gchar*)search->data);
+      GStrv tokens;
+      gint pos = -1;
+      g_free (priv->ua_list_entry);
+      priv->ua_list_entry = g_strdup(search->data);
+      tokens = g_strsplit (search->data,"::",2);
+      if (tokens && tokens[1])
+      {
+        pos = atoi (tokens[1]);
+      }
+      g_strfreev (tokens);
+      if (pos != -1)
+      {
+        awn_applet_manager_add_widget(AWN_APPLET_MANAGER(priv->applet_manager),
+                                      GTK_WIDGET (self), 
+                                      pos);
+      }
+    }
+    else
+    {
+      g_debug ("looks like  %s was removed from panel/ua_list",priv->ua_list_entry);
+      /*
+       aantn as expected this does not kill the screenlet.  What is the best way to
+       tell it that we want it to go away?
+       */
+      gtk_widget_destroy (priv->socket);
+    } 
+  }  
 }

@@ -24,6 +24,7 @@
 #define _AWN_UA_ALIGNMENT
 
 #include <gtk/gtk.h>
+#include "awn-applet-manager.h"
 
 G_BEGIN_DECLS
 
@@ -54,9 +55,13 @@ typedef struct {
 
 GType awn_ua_alignment_get_type (void);
 
-GtkWidget* awn_ua_alignment_new (void);
+GtkWidget* awn_ua_alignment_new (AwnAppletManager *manager,gchar * ua_list_entry,double ua_ratio);
 
 GtkWidget* awn_ua_alignment_get_socket (AwnUAAlignment *self);
+
+GdkWindow * awn_ua_alignment_add_id (AwnUAAlignment *self, GdkNativeWindow native_window);
+
+gint awn_ua_alignment_list_cmp (gconstpointer a, gconstpointer b);
 
 G_END_DECLS
 

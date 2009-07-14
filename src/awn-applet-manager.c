@@ -72,21 +72,6 @@ struct _AwnAppletManagerPrivate
 
 };
 
-typedef struct
-{
-  AwnAppletManager  * manager;
-
-  double          ua_ratio;
-  GtkWidget  *ua_alignment;
-  GtkWidget  *socket;
-  gchar       *ua_list_entry;
-
-  guint       notify_size_id;
-  guint       notify_orient_id;
-  guint       notify_offset_id;
-  guint       notify_ua_list_id;
-}AwnUaInfo;
-
 enum 
 {
   PROP_0,
@@ -841,199 +826,6 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
   }
 }
 
-
-/*UA*/
-static gint
-ua_list_cmp (gconstpointer a, gconstpointer b)
-{
-  const gchar * str1 = a;
-  const gchar * str2 = b;
-  gchar * search = NULL;
-  GStrv tokens = g_strsplit (str1,"::",2);
-  g_return_val_if_fail (tokens,-1);
-  
-  search = g_strstr_len (str2,-1,tokens[0]);
-  g_strfreev (tokens);
-  
-  if (!search)
-  {
-    return -1;
-  };
-  return 0;
-}
-
-static void
-awn_ua_offset_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
-{
-  AwnUaInfo * ua_info = user_data;  
-  AwnAppletManager * manager = ua_info->manager;  
-  AwnAppletManagerPrivate *priv = manager->priv;  
-  GtkWidget * align = ua_info->ua_alignment;
-  switch (priv->orient)
-  {
-    case AWN_ORIENTATION_TOP:
-      gtk_alignment_set_padding (GTK_ALIGNMENT(align), priv->offset, 0, 0, 0);
-      break;
-    case AWN_ORIENTATION_BOTTOM:
-      gtk_alignment_set_padding (GTK_ALIGNMENT(align), 0, priv->offset, 0, 0);
-      break;
-    case AWN_ORIENTATION_LEFT:
-      gtk_alignment_set_padding (GTK_ALIGNMENT(align), 0, 0, priv->offset, 0);
-      break;
-    case AWN_ORIENTATION_RIGHT:
-      gtk_alignment_set_padding (GTK_ALIGNMENT(align), 0, 0, 0, priv->offset);
-      break;
-    default:
-      g_warning ("%s: recieved invalid orient %d",__func__,priv->orient);
-  }
-}
-
-static void
-awn_ua_size_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
-{
-  AwnUaInfo * ua_info = user_data;  
-  AwnAppletManager * manager = ua_info->manager;  
-  AwnAppletManagerPrivate *priv = manager->priv;  
-  GtkRequisition  req;
-  g_debug ("resize");
-  gint size = req.width = req.height = priv->size;
-  switch (priv->orient)
-  {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:      
-      req.width = size * ua_info->ua_ratio;
-      req.height = size;
-      break;
-    case AWN_ORIENTATION_LEFT:
-    case AWN_ORIENTATION_RIGHT:
-      req.width = size;
-      req.height = size  * 1.0 / ua_info->ua_ratio;            
-      break;
-    default:
-      g_warning ("%s: recieved invalid orient %d",__func__,priv->orient);
-  }
-  gtk_widget_set_size_request (ua_info->ua_alignment,req.width,req.height);
-}
-
-static void
-awn_ua_orient_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
-{
-  AwnUaInfo * ua_info = user_data;
-  AwnAppletManager * manager = ua_info->manager;
-  AwnAppletManagerPrivate *priv = manager->priv;
-  GtkWidget * align = ua_info->ua_alignment; 
-  gint orient = priv->orient;  
-  switch (orient)
-  {
-    case AWN_ORIENTATION_TOP:
-      gtk_alignment_set (GTK_ALIGNMENT(align), 0.0, 0.0, 1.0, 0.5);
-      break;
-    case AWN_ORIENTATION_BOTTOM:
-      gtk_alignment_set (GTK_ALIGNMENT(align), 0.0, 1.0, 1.0, 0.5);
-      break;
-    case AWN_ORIENTATION_LEFT:
-      gtk_alignment_set (GTK_ALIGNMENT(align), 0.0, 0.0, 0.5, 1.0);
-      break;
-    case AWN_ORIENTATION_RIGHT:
-      gtk_alignment_set (GTK_ALIGNMENT(align), 1.0, 0.0, 0.5, 1.0);
-      break;
-    default:
-      g_warning ("%s: recieved invalid orient %d",__func__,priv->orient);
-  }
-  awn_ua_offset_change (object,param_spec,user_data);
-  awn_ua_size_change (object,param_spec,user_data);
-}
-
-static void
-awn_ua_list_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
-{
-  AwnUaInfo * ua_info = user_data;
-  AwnAppletManager * manager = ua_info->manager;
-  AwnAppletManagerPrivate *priv = manager->priv;  
-
-  GSList * search = g_slist_find_custom (priv->ua_list,ua_info->ua_list_entry,g_strcmp0);
-  
-  g_debug ("ua list has changed");  
-  if (search)
-  {
-    g_debug ("Found... do not need to update %s",ua_info->ua_list_entry);
-  }
-  else
-  {
-    search = g_slist_find_custom (priv->ua_list,ua_info->ua_list_entry,ua_list_cmp);
-    if (search)
-    {
-      g_debug ("Moving %s to %s",ua_info->ua_list_entry,(gchar*)search->data);
-      GStrv tokens;
-      gint pos = -1;
-      g_free (ua_info->ua_list_entry);
-      ua_info->ua_list_entry = g_strdup(search->data);
-      tokens = g_strsplit (search->data,"::",2);
-      if (tokens && tokens[1])
-      {
-        pos = atoi (tokens[1]);
-      }
-      g_strfreev (tokens);
-      if (pos != -1)
-      {
-        awn_applet_manager_add_widget(manager, GTK_WIDGET (ua_info->ua_alignment), pos);
-      }
-    }
-    else
-    {
-      g_debug ("looks like  %s was removed from panel/ua_list",ua_info->ua_list_entry);
-      /*
-       aantn as expected this does not kill the screenlet.  What is the best way to
-       tell it that we want it to go away?
-       */
-      gtk_widget_destroy (ua_info->socket);
-    }
-    
-  }
-  
-}
-
-static gboolean
-awn_ua_plug_removed (GtkSocket *socket,AwnUaInfo * info)
-{
-  GSList * search;
-  AwnAppletManagerPrivate *priv = info->manager->priv;  
-  awn_applet_manager_remove_widget(info->manager, GTK_WIDGET (info->ua_alignment));
-  g_signal_handler_disconnect (info->manager,info->notify_size_id);
-  g_signal_handler_disconnect (info->manager,info->notify_orient_id);
-  g_signal_handler_disconnect (info->manager,info->notify_offset_id);
-  g_signal_handler_disconnect (info->manager,info->notify_ua_list_id);
-  
-  search = g_slist_find_custom (priv->ua_list,info->ua_list_entry,g_strcmp0);
-  if (search)
-  {
-    gchar * tmp = search->data;
-    priv->ua_list = g_slist_delete_link (priv->ua_list,search);
-    priv->ua_list = g_slist_prepend (priv->ua_list,tmp);
-  } 
-/*
-  It doesn't really make sense to remove this from the list when the 
-   plug is removed.  It could just mean the system is shutting down or
-   screenlets are restart etc...
-   
-  search = g_slist_find_custom (priv->ua_list,info->ua_list_entry,g_strcmp0);
-  if (search)
-  {
-    priv->ua_list = g_slist_remove (priv->ua_list,search->data);
-  }
-  else
-  {
-    g_debug ("unable to find on plug remove");
-  }
-*/   
-  g_free (info->ua_list_entry);
-  g_free (info);  
-  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
-                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                               priv->ua_list, NULL);  
-  return FALSE;
-}
-
 /*DBUS*/
 /*
  	@action(IFACE)
@@ -1071,18 +863,20 @@ awn_ua_add_applet (	AwnAppletManager *manager,
 			gchar     *size_type,
       GError   **error)
 {
-  g_debug ("name = %s, size type = '%s'",name,size_type); 
+  g_debug ("name = %s, size type = '%s, xid = %ld'",name,size_type,xid); 
   
   g_return_val_if_fail ( (g_strcmp0(size_type,"scalable")==0 ) || 
                      (g_strcmp0(size_type,"dynamic")==0 ), FALSE );
   
-  AwnUaInfo * ua_info = g_malloc (sizeof (AwnUaInfo) );
   GdkWindow* plugwin; 
   AwnAppletManagerPrivate *priv = manager->priv;  
   gint pos = g_slist_length (priv->applet_list);  
   GdkNativeWindow native_window = (GdkNativeWindow) xid;
   gchar * tmp = g_strdup_printf ("%s::%d",name,pos);
-
+  gchar * ua_list_entry = NULL;
+  GtkWidget  *ua_alignment;
+  GtkWidget  *socket;
+  double ua_ratio;  
   /*
    OK... i think a marker needs to be placed into the list (The following will not work as written)
    or provide the number of active screenlets to awn-manager through some mechanism.
@@ -1096,11 +890,11 @@ awn_ua_add_applet (	AwnAppletManager *manager,
     priv->ua_list = g_slist_append (priv->ua_list,g_strdup("--ActiveScreenletMarker--::-1"));    
   }
   */
-  GSList * search = g_slist_find_custom (priv->ua_list,tmp,ua_list_cmp);
+  GSList * search = g_slist_find_custom (priv->ua_list,tmp,awn_ua_alignment_list_cmp);
   if (search)
   {
     GStrv tokens;
-    ua_info->ua_list_entry = g_strdup (search->data) ;
+    ua_list_entry = g_strdup (search->data) ;
     g_free (tmp);
     tokens = g_strsplit (search->data,"::",2);
     if (tokens && tokens[1])
@@ -1115,47 +909,42 @@ awn_ua_add_applet (	AwnAppletManager *manager,
   }
   else
   {
-    ua_info->ua_list_entry = tmp;
+    ua_list_entry = tmp;
   }
   
-  ua_info->manager = manager;
-  ua_info->ua_ratio = width / (double) height;
-  ua_info->ua_alignment = awn_ua_alignment_new(); 
-  awn_ua_orient_change (NULL, NULL, ua_info);
+  ua_ratio = width / (double) height;
+  ua_alignment = awn_ua_alignment_new(manager,ua_list_entry,ua_ratio); 
+  
+//  awn_ua_orient_change (NULL, NULL, ua_info);
 
-  ua_info->socket = awn_ua_alignment_get_socket(ua_info->ua_alignment);
-  g_assert (ua_info->socket);
-  g_signal_connect_swapped (awn_ua_alignment_get_socket(ua_info->ua_alignment), 
+  socket = awn_ua_alignment_get_socket(AWN_UA_ALIGNMENT(ua_alignment));
+
+  g_signal_connect_swapped (socket, 
                             "plug-added",
                             G_CALLBACK (_applet_plug_added),
                             manager);
 
-  awn_applet_manager_add_widget(manager, GTK_WIDGET (ua_info->ua_alignment), pos);  
-  gtk_socket_add_id (GTK_SOCKET(ua_info->socket), native_window);
-  plugwin = gtk_socket_get_plug_window (GTK_SOCKET(ua_info->socket));  
-  g_object_set_qdata (G_OBJECT (ua_info->ua_alignment), 
-                      priv->touch_quark, GINT_TO_POINTER (0));    
-  gtk_widget_realize (GTK_WIDGET (ua_info->socket));  
-  gtk_widget_set_size_request (ua_info->ua_alignment,
-                               priv->size * ua_info->ua_ratio,
-                               priv->size);
-  gtk_widget_show_all (ua_info->ua_alignment);
-  if (!plugwin)
-  {
-    gtk_widget_destroy (ua_info->ua_alignment);
-    g_warning ("UA Plug was not created within socket.");
-    g_free (ua_info->ua_list_entry);    
-    g_free (ua_info);
-    return FALSE;
-  }
-  ua_info->notify_offset_id = g_signal_connect (manager,"notify::offset",G_CALLBACK(awn_ua_offset_change),ua_info);
-  ua_info->notify_orient_id = g_signal_connect_after (manager,"notify::orient",G_CALLBACK(awn_ua_orient_change),ua_info);
-  ua_info->notify_size_id = g_signal_connect_after (manager,"notify::size",G_CALLBACK(awn_ua_size_change),ua_info);
-  
-  ua_info->notify_ua_list_id = g_signal_connect_after (manager,"notify::ua-list",G_CALLBACK(awn_ua_list_change),ua_info);
-  g_signal_connect (ua_info->socket,"plug-removed",G_CALLBACK(awn_ua_plug_removed),ua_info);
+  awn_applet_manager_add_widget(manager, GTK_WIDGET (ua_alignment), pos);
+  gtk_widget_show_all (ua_alignment);
 
-  priv->ua_list = g_slist_append (priv->ua_list,g_strdup(ua_info->ua_list_entry));
+  plugwin = awn_ua_alignment_add_id (AWN_UA_ALIGNMENT(ua_alignment),native_window);
+  
+  g_object_set_qdata (G_OBJECT (ua_alignment), 
+                      priv->touch_quark, GINT_TO_POINTER (0));    
+  gtk_widget_set_size_request (ua_alignment,
+                               priv->size * ua_ratio,
+                               priv->size);
+
+
+/*  if (!plugwin)
+  {
+    g_warning ("UA Plug was not created within socket.");
+    gtk_widget_destroy (ua_alignment);
+    return FALSE;
+  }*/
+  gtk_widget_realize (socket);
+  gtk_widget_show_all (socket);
+  priv->ua_list = g_slist_append (priv->ua_list,g_strdup(ua_list_entry));
   
   if (g_slist_length (priv->ua_list) > MAX_UA_LIST_ENTRIES)
   {
