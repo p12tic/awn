@@ -16,7 +16,7 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA.
  *
  *  Author : Neil Jagdish Patel <njpatel@gmail.com>
- *
+ *bind
  */
 
 #include "config.h"
@@ -347,7 +347,7 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
 
   g_object_class_install_property (obj_class,
     PROP_UA_ACTIVE_LIST,
-    g_param_spec_pointer ("ua_active_list",
+    g_param_spec_pointer ("ua-active-list",
                           "UA Active List",
                           "The list of acitve screenlets for this panel",
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
@@ -627,7 +627,10 @@ free_list (GSList *list)
   {
     g_free (l->data);
   }
-  g_slist_free (list);
+  if (list)
+  {
+    g_slist_free (list);
+  }
 }
 
 /*

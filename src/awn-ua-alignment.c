@@ -255,6 +255,8 @@ awn_ua_alignment_plug_removed (GtkWidget * socket,AwnUAAlignment * self)
 
   GSList * search;
   GSList * ua_active_list;
+  GSList * orig_active_list;
+  GSList * iter;
   AwnConfigClient *client;
   
   AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
@@ -265,29 +267,35 @@ awn_ua_alignment_plug_removed (GtkWidget * socket,AwnUAAlignment * self)
   g_signal_handler_disconnect (priv->applet_manager,priv->notify_ua_list_id);
 
   g_object_get ( priv->applet_manager,
-                "ua_active_list",&ua_active_list,
+                "ua_active_list",&orig_active_list,
                 "client",&client,
                 NULL);
-  
+  ua_active_list = g_slist_copy (orig_active_list);
+  for (iter = ua_active_list;iter;iter = iter->next)
+  {
+    iter->data = g_strdup(iter->data);
+  }
   search = g_slist_find_custom (ua_active_list,priv->ua_list_entry,
                                 (GCompareFunc)g_strcmp0);
   if (search)
   {
     g_debug ("removing from list");
-    ua_active_list = g_slist_remove_link (ua_active_list,search);
+    ua_active_list = g_slist_delete_link (ua_active_list,search);
   } 
   else
   {
     g_debug ("not in list");
   }
   awn_config_client_set_list (client,AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
-                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                               ua_active_list, NULL);    
+                             AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                             ua_active_list, NULL); 
+  g_object_set (priv->applet_manager,
+                "ua-active-list",ua_active_list,
+                NULL);
   awn_applet_manager_remove_widget(AWN_APPLET_MANAGER(priv->applet_manager), 
-                                   GTK_WIDGET (self));  
+                               GTK_WIDGET (self));        
   return FALSE;
 }
-
 
 /*UA*/
 gint
