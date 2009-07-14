@@ -1,3 +1,25 @@
+2009-07-14  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Move the Gtk.Label.new_with_label constructor Python binding from
+	libawn-extras.
+
+2009-07-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* libawn/Makefile.am:
+	* libawn/awn-image.c:
+	* libawn/awn-image.h:
+	* libawn/awn-label.c:
+	* libawn/awn-label.h:
+	* libawn/awn-overlay-text.c:
+	* libawn/awn-overlay.h:
+	* libawn/libawn.h:
+	Added AwnLabel - GtkLabel subclass which paints also the outline for
+	the text.
+
 2009-07-13  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:

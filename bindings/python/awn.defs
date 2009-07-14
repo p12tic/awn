@@ -66,6 +66,13 @@
   (implements "AwnOverlayable")
 )
 
+(define-object Label
+  (in-module "Awn")
+  (parent "GtkLabel")
+  (c-name "AwnLabel")
+  (gtype-id "AWN_TYPE_LABEL")
+)
+
 (define-object IconBox
   (in-module "Awn")
   (parent "GtkBox")
@@ -1210,6 +1217,14 @@
   (c-name "awn_image_new")
   (is-constructor-of "AwnImage")
   (return-type "AwnImage*")
+)
+
+;; From awn-label.h
+
+(define-function awn_label_new
+  (c-name "awn_label_new")
+  (is-constructor-of "AwnLabel")
+  (return-type "AwnLabel*")
   (properties
     '("label" (optional) (arg-name "label"))
   )
@@ -1566,6 +1581,12 @@
 
 
 
-;; From stamp-awn-enum-types.h
+;; Miscellaneous needed
 
-
+(define-function image_menu_item_new_with_label
+  (c-name "gtk_image_menu_item_new_with_label")
+  (return-type "GtkImageMenuItem*")
+  (parameters
+    '("const-gchar*" "label")
+  )
+)

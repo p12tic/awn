@@ -104,7 +104,7 @@ awn_overlay_text_get_property (GObject *object, guint property_id,
     case PROP_TEXT:
       g_value_set_string (value,priv->text);
       break;
-      case PROP_TEXT_COLOR:
+    case PROP_TEXT_COLOR:
       g_value_set_object (value,priv->text_color);
       break;
     case PROP_TEXT_COLOR_ASTR:

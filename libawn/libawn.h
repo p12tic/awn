@@ -36,6 +36,7 @@
 #include <libawn/awn-icon.h>
 #include <libawn/awn-icon-box.h>
 #include <libawn/awn-image.h>
+#include <libawn/awn-label.h>
 #include <libawn/awn-overlay.h>
 #include <libawn/awn-overlayable.h>
 #include <libawn/awn-overlay-pixbuf.h>
