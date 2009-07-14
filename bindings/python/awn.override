@@ -132,6 +132,7 @@ import gtk.Window as PyGtkWindow_Type
 import gtk.gdk.Pixbuf as PyGdkPixbuf_Type
 import gtk.DrawingArea as PyGtkDrawingArea_Type
 import gtk.Image as PyGtkImage_Type
+import gtk.Label as PyGtkLabel_Type
 %%
 ignore-glob
   *_get_type

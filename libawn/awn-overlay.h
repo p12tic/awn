@@ -64,7 +64,6 @@ typedef struct {
  *
  * Of interest to implementors of #AwnOverlay subclasses.
  */
-
 typedef struct
 {
   GInitiallyUnownedClass parent_class;
