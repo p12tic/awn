@@ -1537,16 +1537,22 @@ class awnApplet(awnBzr):
             os.unlink(filename)
 
     def _apply (self):
-        l = []
+        applets_list = []
+	ua_list = []
+
         it = self.active_model.get_iter_first ()
         while (it):
             path = self.active_model.get_value (it, 1)
             uid = self.active_model.get_value (it, 2)
             s = "%s::%s" % (path, uid)
-            l.append (s)
+            if path.endswith(".desktop"):
+            	applets_list.append(s)
+            else:
+            	ua_list.append(s)
+
             it= self.active_model.iter_next (it)
 
-        self.client.set_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, l)
+        self.client.set_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, applets_list)
 
     def up_clicked (self, button):
         select = self.treeview.get_selection()
