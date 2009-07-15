@@ -59,7 +59,7 @@ STYLE                   = "style"               #int
 EXPAND                  = "expand"              #bool
 CLICKTHROUGH            = "clickthrough"        #int
 BEHAVIOR                = "behavior"            #int
-UA_LIST			= "ua_active_list"	#list-string
+UA_LIST                 = "ua_active_list"      #list-string
 
 PANELS                  = "panels"              #group
 PANEL_LIST              = "panel_list"          #int
