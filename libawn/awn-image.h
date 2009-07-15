@@ -60,13 +60,6 @@ GType           awn_image_get_type              (void);
 
 AwnImage*       awn_image_new                   (void);
 
-AwnImage*       awn_image_new_with_label        (const gchar *label);
-
-void            awn_image_set_label             (AwnImage *image,
-                                                 const gchar *label);
-
-AwnOverlayText* awn_image_get_overlay_text      (AwnImage *image);
-
 G_END_DECLS
 
 #endif /* _AWN_IMAGE_H_ */

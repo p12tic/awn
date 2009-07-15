@@ -47,9 +47,9 @@ dnl PyGTK
 dnl ==============================================
 PKG_CHECK_MODULES(PYGTK, gtk+-2.0 pygtk-2.0 >= pygtk_required_version)
 AC_SUBST(PYGTK_CFLAGS)
-AC_PATH_PROG(PYGTK_CODEGEN, pygtk-codegen-2.0, no)
-if test "x$PYGTK_CODEGEN" = "xno"; then
-  AC_MSG_ERROR([could not find pygtk-codegen-2.0 script])
+AC_PATH_PROGS(PYG_CODEGEN, [pygobject-codegen-2.0 pygtk-codegen-2.0], no)
+if test "x$PY_CODEGEN" = "xno"; then
+  AC_MSG_ERROR([could not find the PyGObject code generator script])
 fi
 
 AC_MSG_CHECKING(for pygtk defs)

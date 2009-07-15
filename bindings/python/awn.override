@@ -77,6 +77,7 @@ import gtk.Window as PyGtkWindow_Type
 import gtk.gdk.Pixbuf as PyGdkPixbuf_Type
 import gtk.DrawingArea as PyGtkDrawingArea_Type
 import gtk.Image as PyGtkImage_Type
+import gtk.Label as PyGtkLabel_Type
 %%
 ignore-glob
   *_get_type
@@ -328,4 +329,29 @@ _wrap_awn_applet_simple_set_icon_info (PyObject *self, PyObject *args, PyObject 
   Py_INCREF(Py_None);
   return Py_None;
 }
+%%
+override gtk_image_menu_item_new_with_label kwargs
+static PyObject*
+_wrap_gtk_image_menu_item_new_with_label (PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  static char *kwlist[] = { "label", NULL };
 
+  gchar *label;
+  GtkWidget *item;
+
+  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "s:image_menu_item_new_with_label", kwlist, &label))
+  {
+    return NULL;
+  }
+
+  item = gtk_image_menu_item_new_with_label (label);
+
+  if (item)
+  {
+    return pygobject_new ((GObject*)item);
+  }
+  else
+  {
+    return NULL;
+  }
+}

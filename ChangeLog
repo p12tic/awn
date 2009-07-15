@@ -1,3 +1,74 @@
+2009-07-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	div by zero is bad.
+
+2009-07-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-image.c:
+	Fix FTBFS.
+
+2009-07-14  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Move the Gtk.Label.new_with_label constructor Python binding from
+	libawn-extras.
+
+2009-07-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* libawn/Makefile.am:
+	* libawn/awn-image.c:
+	* libawn/awn-image.h:
+	* libawn/awn-label.c:
+	* libawn/awn-label.h:
+	* libawn/awn-overlay-text.c:
+	* libawn/awn-overlay.h:
+	* libawn/libawn.h:
+	Added AwnLabel - GtkLabel subclass which paints also the outline for
+	the text.
+
+2009-07-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Removed some, commented, unneeded code.
+
+2009-07-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Some primer to keep GtkIconTheme from spewing a warning.
+
+2009-07-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Strip the hicolor entries from the path of override theme.
+
+2009-07-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	No need for the array set to gtk_icon_theme_set_search_path() 
+	to be static as it copies the elements.
+
+2009-07-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+        Unbreak gtk icon themes.  There will be some console spam until 
+        a less intrusive method of supressing the warnings is researched.
+
+2009-07-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/Makefile.am:
+	* configure.in:
+	Check for pygobject-codegen-2.0 before the pygtk alias, to avoid a
+	warning.
+
+2009-07-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/Makefile.am:
+	Shave-ify the Python bindings generator command.
+
 2009-07-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/task-manager.c (task_manager_class_init,

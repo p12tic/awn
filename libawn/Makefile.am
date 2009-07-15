@@ -38,6 +38,7 @@ public_headers = \
 	awn-icon.h \
 	awn-icon-box.h \
 	awn-image.h \
+	awn-label.h \
 	awn-overlay.h \
 	awn-overlayable.h \
 	awn-overlay-pixbuf.h \
@@ -74,6 +75,7 @@ source_c = \
 	awn-icon.c \
 	awn-icon-box.c \
 	awn-image.c \
+	awn-label.c \
 	awn-overlay.c \
 	awn-overlayable.c \
 	awn-overlay-pixbuf.c \
