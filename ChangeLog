@@ -1,5 +1,12 @@
 2009-07-14  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-label.c (do_bind_property, awn_label_constructed,
+	  awn_label_get_property, awn_label_set_property,
+	  awn_label_class_init):
+	Convert to use the libdesktop-agnostic config API.
+
+2009-07-14  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/awnmodule.c:
 	* src/awn-main.c (main):
 	Remove obsolete usage of preprocessor variable.
