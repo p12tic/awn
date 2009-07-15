@@ -711,7 +711,9 @@ task_icon_refresh_visible (TaskIcon *icon)
     count_windows++;
   }
 
-  awn_icon_set_indicator_count (AWN_ICON (icon), (count_windows>0) ? 1 : 0);
+  /*Conditional Operator in use */
+  awn_icon_set_indicator_count (AWN_ICON (icon), (count_windows>0) ? 
+                                          (count_windows<4?count_windows:3): 0);
   
   if (count != priv->shown_items)
   {
