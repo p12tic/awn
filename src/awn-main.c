@@ -57,9 +57,7 @@ main (gint argc, gchar *argv[])
 {
   AwnApp          *app;
   GOptionContext  *context;
-#ifndef USE_GCONF
   DesktopAgnosticVFSImplementation *vfs;
-#endif
   DBusGConnection *connection;
   DBusGProxy      *proxy;
   GError          *error = NULL;
@@ -85,7 +83,6 @@ main (gint argc, gchar *argv[])
   g_type_init ();
   gtk_init (&argc, &argv);
 
-#ifndef USE_GCONF
   vfs = desktop_agnostic_vfs_get_default (&error);
   if (error)
   {
@@ -100,7 +97,6 @@ main (gint argc, gchar *argv[])
     return EXIT_FAILURE;
   }
   desktop_agnostic_vfs_implementation_init (vfs);
-#endif
 
   /* Single instance checking; first get the D-Bus connection */
   connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
@@ -149,9 +145,7 @@ main (gint argc, gchar *argv[])
   g_object_unref (proxy);
   dbus_g_connection_unref (connection);
 
-#ifndef USE_GCONF
   desktop_agnostic_vfs_implementation_shutdown (vfs);
-#endif
 
   return EXIT_SUCCESS;
 }
