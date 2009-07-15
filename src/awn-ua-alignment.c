@@ -463,7 +463,7 @@ awn_ua_alignment_list_change(GObject *object,GParamSpec *param_spec,gpointer use
        */
       awn_applet_manager_remove_widget(AWN_APPLET_MANAGER(priv->applet_manager), 
                                    GTK_WIDGET (self));        
-      gtk_widget_destroy (GTK_WIDGET(self));
+      gtk_widget_destroy (priv->socket);
     } 
   }  
 }
