@@ -16,7 +16,7 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA.
  *
  *  Author : Neil Jagdish Patel <njpatel@gmail.com>
- *bind
+ *
  */
 
 #include "config.h"
@@ -585,7 +585,6 @@ awn_applet_manager_set_orient (AwnAppletManager *manager,
     g_type_class_unref (priv->klass);
     priv->klass = NULL;
   }
-//  g_debug ("%s, orient = %d",__func__,priv->orient);
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
@@ -730,7 +729,6 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
   gint                     i = 0;
   gint                     applet_num = 0;
 
-  g_debug ("%s",__func__);
   if (!GTK_WIDGET_REALIZED (manager))
     return;
 
@@ -768,14 +766,12 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
       continue;
     }
 
-//    g_debug ("%s:  %s, %s",__func__,tokens[0],tokens[1]);
     /* See if the applet already exists */
     applet = g_hash_table_lookup (priv->applets, tokens[1]);
 
     /* If not, create it */
     if (applet == NULL)
     {
-      g_debug ("applet does not exist");
       applet = create_applet (manager, tokens[0], tokens[1]);
       if (!applet)
       {
