@@ -731,7 +731,7 @@ task_icon_refresh_visible (TaskIcon *icon)
                       "apply-effects", TRUE,
                       NULL);
       }
-      gchar* count_str = g_strdup_printf ("%i",count);
+      gchar* count_str = g_strdup_printf ("%i",count-1);
       g_object_set (G_OBJECT (priv->overlay_text),
                     "text", count_str,
                     NULL);
