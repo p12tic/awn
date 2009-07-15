@@ -712,7 +712,7 @@ task_icon_refresh_visible (TaskIcon *icon)
     count_windows++;
   }
 
-  awn_icon_set_indicator_count (AWN_ICON (icon), (count_windows>0) ? 1 : 0);
+  awn_icon_set_indicator_count (AWN_ICON (icon), count_windows);
   
   if (count != priv->shown_items)
   {
@@ -732,7 +732,7 @@ task_icon_refresh_visible (TaskIcon *icon)
                       "apply-effects", TRUE,
                       NULL);
       }
-      gchar* count_str = g_strdup_printf ("%i",count);
+      gchar* count_str = g_strdup_printf ("%i",count-1);
       g_object_set (G_OBJECT (priv->overlay_text),
                     "text", count_str,
                     NULL);

@@ -28,6 +28,10 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
+#include <sys/types.h>
+#include <unistd.h>
+
+
 #include "task-manager.h"
 #include "task-manager-glue.h"
 
@@ -670,6 +674,18 @@ on_window_opened (WnckScreen    *screen,
       break;
   }
   
+#ifdef DEBUG  
+  g_debug ("%s: Window opened: %s",__func__,wnck_window_get_name (window));  
+  g_debug ("xid = %lu, pid = %d",wnck_window_get_xid (window),wnck_window_get_pid (window));
+#endif  
+  /* 
+    for some reason the skip tasklist property for the taskmanager toggles briefly
+   off and on in certain circumstances.  Nip this in the bud.
+   */
+  if ( wnck_window_get_pid (window) == getpid() )
+  {
+    return;
+  }
   /* 
    * If it's skip tasklist, connect to the state-changed signal and see if
    * it ever becomes a normal window
