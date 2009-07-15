@@ -354,36 +354,39 @@ task_icon_refresh_geometry (TaskIcon *icon)
    * for the windows.
    */
   len = g_slist_length (priv->items);
-  ww = ww/len;
-  for (w = priv->items; w; w = w->next)
+  if (len)
   {
-    if (!TASK_IS_WINDOW (w->data)) continue;
-
-    TaskWindow *window = TASK_WINDOW (w->data);
-
-    switch (settings->orient)
+    ww = ww/len;
+    for (w = priv->items; w; w = w->next)
     {
-      case AWN_ORIENTATION_RIGHT:
-        width = settings->panel_size+settings->offset;
-        height = ww + (i*ww);
-        break;
-      case AWN_ORIENTATION_LEFT:
-        width = settings->panel_size+settings->offset;
-        height = ww + (i*ww);
-        break;
-      case AWN_ORIENTATION_TOP:
-        width = ww + (i*ww);
-        height = settings->panel_size+settings->offset;
-        break;
-      default:
-        width = ww + (i*ww);
-        height = settings->panel_size+settings->offset;
-        break;
+      if (!TASK_IS_WINDOW (w->data)) continue;
+
+      TaskWindow *window = TASK_WINDOW (w->data);
+
+      switch (settings->orient)
+      {
+        case AWN_ORIENTATION_RIGHT:
+          width = settings->panel_size+settings->offset;
+          height = ww + (i*ww);
+          break;
+        case AWN_ORIENTATION_LEFT:
+          width = settings->panel_size+settings->offset;
+          height = ww + (i*ww);
+          break;
+        case AWN_ORIENTATION_TOP:
+          width = ww + (i*ww);
+          height = settings->panel_size+settings->offset;
+          break;
+        default:
+          width = ww + (i*ww);
+          height = settings->panel_size+settings->offset;
+          break;
+      }
+      task_window_set_icon_geometry (window, x, y, 
+                                     width,
+                                     height);
+      i++;
     }
-    task_window_set_icon_geometry (window, x, y, 
-                                   width,
-                                   height);
-    i++;
   }
   return FALSE;
 }
