@@ -192,18 +192,6 @@ awn_alignment_new_for_applet (AwnApplet *applet)
   return alignment;
 }
 
-GtkWidget*
-awn_alignment_new (void)
-{
-  GtkWidget *alignment;
-
-  alignment = g_object_new(AWN_TYPE_ALIGNMENT,
-                           NULL);
-
-  return alignment;
-}
-
-
 static void
 on_orient_changed (AwnAlignment *alignment, AwnOrientation orient)
 {
