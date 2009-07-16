@@ -58,9 +58,12 @@ def hex2dec(s):
 
 def make_color(hexi):
     """returns a gtk.gdk.Color from a hex string RRGGBBAA"""
-    color = gtk.gdk.color_parse('#' + hexi[:6])
-    alpha = hex2dec(hexi[6:])
-    alpha = (float(alpha)/255)*65535
+    try:
+    	color = gtk.gdk.color_parse('#' + hexi[:6])
+    except:
+	color = gtk.gdk.color_parse(hexi[:13])
+    alpha = hex2dec(hexi[4:])
+    alpha = float(alpha)/65535
     return color, int(alpha)
 
 def make_color_string(color, alpha):
@@ -703,6 +706,7 @@ class awnPreferences(awnBzr):
             color, alpha = make_color(self.client.get_string(group, key))
         except TypeError:
             raise "\nKey: [%s]%s isn't set.\nRestarting AWN usually solves this issue\n" % (group, key)
+	print ("color : ", color, " alpha : %s", alpha)
         colorbut.set_color(color)
         if show_opacity_scale:
             colorbut.set_alpha(alpha)

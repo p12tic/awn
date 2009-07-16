@@ -6,6 +6,29 @@
 2009-07-15  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+        * applets/taskmanager/taskmanager.schema-ini:
+	Added a txt_indicator_threshold config key.  Also the text
+	overlay no longer gets destroyed when it's not needed, instead
+	active prop is set to FALSE.
+
+2009-07-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/taskmanager.schema-ini:
+	New config key. Control the max number of indicators to show.
+	More config keys to follow.  We will find the "best" default 
+	set by release day!
+
+2009-07-15  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awnClass.py:
+    Don't crash when reading lda color.
+	* awn-settings/awnSettings.py.in:
+    Update config key only if it changes.
+
+2009-07-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	awn_icon_set_indicator_count() deals with values >3 intelligently.
 
 2009-07-14  Mark Lee  <avant-wn@lazymalevolence.com>
