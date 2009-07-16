@@ -1,5 +1,11 @@
 2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/taskmanager.schema-ini:
+	Added a grouping configuration key.
+
+2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
+
   	* applets/taskmanager/task-launcher.c:
   	* configure.in:
 	Improved the task matching.  Please test with a match strength

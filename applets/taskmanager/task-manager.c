@@ -72,6 +72,7 @@ struct _TaskManagerPrivate
   gboolean  show_all_windows;
   gboolean  only_show_launchers;
   gboolean  drag_and_drop;
+  gboolean  grouping;
   gint      match_strength;
 };
 
@@ -83,6 +84,7 @@ enum
   PROP_ONLY_SHOW_LAUNCHERS,
   PROP_LAUNCHER_PATHS,
   PROP_DRAG_AND_DROP,
+  PROP_GROUPING,
   PROP_MATCH_STRENGTH
 };
 
@@ -108,6 +110,9 @@ static void task_manager_refresh_launcher_paths  (TaskManager *manager,
                                                   GSList      *list);
 static void task_manager_set_drag_and_drop (TaskManager *manager, 
                                             gboolean     drag_and_drop);
+
+static void task_manager_set_grouping (TaskManager *manager, 
+                                            gboolean     grouping);
 
 static void task_manager_set_match_strength (TaskManager *manager, 
                                              gint     drag_and_drop);
@@ -164,6 +169,10 @@ task_manager_get_property (GObject    *object,
       g_value_set_boolean (value, manager->priv->drag_and_drop);
       break;
 
+    case PROP_GROUPING:
+      g_value_set_boolean (value, manager->priv->grouping);
+      break;
+
     case PROP_MATCH_STRENGTH:
       g_value_set_int (value, manager->priv->match_strength);
       break;
@@ -207,6 +216,10 @@ task_manager_set_property (GObject      *object,
                                        g_value_get_int (value));
       break;
 
+    case PROP_GROUPING:
+      task_manager_set_grouping (manager,
+                                 g_value_get_boolean (value));
+      break;
       
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -227,7 +240,6 @@ task_manager_constructed (GObject *object)
   widget = GTK_WIDGET (object);
 
   priv->settings = task_settings_get_default ();
-
   /* Load the uid */
   /* FIXME: AwnConfigClient needs to associate the default schema when uid is
    * used
@@ -251,6 +263,9 @@ task_manager_constructed (GObject *object)
   awn_config_bridge_bind (bridge, priv->client, 
                           AWN_CONFIG_CLIENT_DEFAULT_GROUP, "drag_and_drop",
                           object, "drag_and_drop");
+  awn_config_bridge_bind (bridge, priv->client, 
+                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "grouping",
+                          object, "grouping");  
   awn_config_bridge_bind (bridge, priv->client, 
                           AWN_CONFIG_CLIENT_DEFAULT_GROUP, "match_strength",
                           object, "match_strength");
@@ -297,6 +312,13 @@ task_manager_class_init (TaskManagerClass *klass)
                                 TRUE,
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_DRAG_AND_DROP, pspec);
+
+  pspec = g_param_spec_boolean ("grouping",
+                                "grouping",
+                                "Group windows",
+                                TRUE,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_GROUPING, pspec);
 
   pspec = g_param_spec_int ("match_strength",
                             "match_strength",
@@ -670,7 +692,11 @@ on_window_opened (WnckScreen    *screen,
 
   g_debug("Matching score: %i, must be bigger then:%i, groups: %i", max_match_score, 99-priv->match_strength, max_match_score > 99-priv->match_strength);
   
-  if (max_match_score > 99-priv->match_strength)
+  if  (match
+       &&
+       (priv->grouping || (task_icon_count_items(match)==1) ) 
+       &&
+       ( max_match_score > 99-priv->match_strength))
   {
     task_icon_append_item (match, item);
   }
@@ -886,6 +912,17 @@ task_manager_set_drag_and_drop (TaskManager *manager,
   g_debug("%s", drag_and_drop?"D&D is on":"D&D is off");
 }
 
+
+static void
+task_manager_set_grouping (TaskManager *manager, 
+                                gboolean  grouping)
+{
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+
+  TaskManagerPrivate *priv = manager->priv;
+  
+  priv->grouping = grouping;
+}
 /**
  * D-BUS functionality
  */
