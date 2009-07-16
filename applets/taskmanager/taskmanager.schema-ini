@@ -22,3 +22,8 @@ description = Enable reordering of windows by drag and drop
 type = int
 default = 0
 description = How radical matching is applied for grouping items. The value should be between 0 and 99. 0 is as good as no grouping. 99 will match almost everything.
+
+[DEFAULT/max_indicators]
+type = int
+default = 3
+description = Maximum number of task indicators to show under icons. Valid range is 0..3.

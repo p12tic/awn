@@ -62,6 +62,9 @@ struct _TaskIconPrivate
 
   //An overlay for showing number of items
   AwnOverlayText *overlay_text;
+
+  //A Config client
+  AwnConfigClient * client;
   
   GdkPixbuf *icon;
   AwnApplet *applet;
@@ -78,8 +81,10 @@ struct _TaskIconPrivate
   gint old_height;
   gint old_x;
   gint old_y;
+  
+  guint  max_indicators;
 
-  guint update_geometry_id;
+  gint update_geometry_id;
 };
 
 enum
@@ -87,7 +92,8 @@ enum
   PROP_0,
 
   PROP_APPLET,
-  PROP_DRAGGABLE
+  PROP_DRAGGABLE,
+  PROP_MAX_INDICATORS
 };
 
 enum
@@ -189,7 +195,9 @@ task_icon_get_property (GObject    *object,
     case PROP_DRAGGABLE:
       g_value_set_boolean (value, priv->draggable); 
       break;
-    
+    case PROP_MAX_INDICATORS:
+      g_value_set_int (value,priv->max_indicators);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -211,7 +219,10 @@ task_icon_set_property (GObject      *object,
     case PROP_DRAGGABLE:
       task_icon_set_draggable (icon, g_value_get_boolean (value));
       break;
-
+    case PROP_MAX_INDICATORS:
+      icon->priv->max_indicators = g_value_get_int (value);
+      task_icon_refresh_visible (TASK_ICON(object));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -233,7 +244,11 @@ task_icon_dispose (GObject *object)
     gtk_widget_destroy (priv->dialog);
     priv->dialog = NULL;
   }
-  
+  if (priv->client)
+  {
+    awn_config_client_free(priv->client);
+    priv->client = NULL;
+  }
   G_OBJECT_CLASS (task_icon_parent_class)->dispose (object);  
 }
 
@@ -259,8 +274,9 @@ task_icon_finalize (GObject *object)
 static void
 task_icon_constructed (GObject *object)
 {
+  AwnConfigBridge    *bridge;
   TaskIconPrivate *priv = TASK_ICON (object)->priv;
-  GtkWidget *widget = GTK_WIDGET(object);
+  GtkWidget *widget = GTK_WIDGET(object);  
 
   if ( G_OBJECT_CLASS (task_icon_parent_class)->constructed)
   {
@@ -274,6 +290,14 @@ task_icon_constructed (GObject *object)
 
   //update geometry of icon every second.
   priv->update_geometry_id = g_timeout_add_seconds (1, (GSourceFunc)_update_geometry, widget);
+
+  priv->client = awn_config_client_new_for_applet ("taskmanager", NULL);
+  bridge = awn_config_bridge_get_default ();
+  
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "max_indicators",
+                          object, "max_indicators");  
+
 }
 
 /**
@@ -429,6 +453,16 @@ task_icon_class_init (TaskIconClass *klass)
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_DRAGGABLE, pspec);
 
+  pspec = g_param_spec_int ("max_indicators",
+                            "max_indicators",
+                            "Maxinum nmber of indicators (arrows) under icon",
+                            0,
+                            3,
+                            3,
+                            G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_MAX_INDICATORS, pspec);
+  
+  
   /* Install signals */
   _icon_signals[VISIBLE_CHANGED] =
 		g_signal_new ("visible_changed",
@@ -711,7 +745,10 @@ task_icon_refresh_visible (TaskIcon *icon)
     count_windows++;
   }
 
-  awn_icon_set_indicator_count (AWN_ICON (icon), count_windows);
+  /*Conditional operator*/
+  awn_icon_set_indicator_count (AWN_ICON (icon), 
+                                count_windows > priv->max_indicators?
+                                priv->max_indicators:count_windows);
   
   if (count != priv->shown_items)
   {
