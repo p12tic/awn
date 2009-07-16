@@ -25,6 +25,9 @@
 
 #include <libwnck/libwnck.h>
 
+#undef G_DISABLE_SINGLE_INCLUDES
+#include <glibtop/procargs.h>
+
 #include <libawn/libawn.h>
 
 #include "task-launcher.h"
@@ -263,10 +266,16 @@ _match (TaskItem *item,
   gchar   *class_name = NULL;
   gchar   *temp;
   gint     pid;
+  glibtop_proc_args buf;
+  gchar   *cmd;
+  gchar   *search_result;
 
   g_return_val_if_fail (TASK_IS_LAUNCHER(item), 0);
 
-  if (!TASK_IS_WINDOW (item_to_match)) return 0;
+  if (!TASK_IS_WINDOW (item_to_match)) 
+  {
+    return 0;
+  }
 
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
@@ -275,9 +284,33 @@ _match (TaskItem *item,
 
   /* Try simple pid-match first */
   pid = task_window_get_pid(window);
+  
+#ifdef DEBUG
+  g_debug ("%s:  Pid = %d,  win pid = %d",__func__,pid,priv->pid);
+#endif 
   if ( pid && (priv->pid == pid))
+  {
     return 100;
+  }
 
+  /*does the command line of the process match exec exactly... not likely but
+  damn likely to be the correct match if it does*/
+  cmd = glibtop_get_proc_args (&buf,pid,1024);    
+  #ifdef DEBUG
+  g_debug ("%s:  cmd = '%s', exec = '%s'",__func__,cmd,priv->exec);
+  #endif  
+  if (cmd)
+  {
+    if (g_strcmp0 (cmd, priv->exec)==0)
+    {
+      #ifdef DEBUG
+      g_debug ("%s:  strcmp match ",__func__);
+      #endif
+      g_free (cmd);
+      return 90;
+    }
+  }
+  
   /* Now try resource name, which should (hopefully) be 99% of the cases */
   task_window_get_wm_class(window, &res_name, &class_name);
 
@@ -289,11 +322,15 @@ _match (TaskItem *item,
 
     if ( strlen(res_name) && priv->exec)
     {
+      #ifdef DEBUG
+      g_debug ("%s: 70  res_name = %s,  exec = %s",__func__,res_name,priv->exec);
+      #endif 
       if ( g_strstr_len (priv->exec, strlen (priv->exec), res_name) ||
            g_strstr_len (res_name, strlen (res_name), priv->exec))
       {
         g_free (res_name);
         g_free (class_name);
+        g_free (cmd);
         return 70;
       }
     }
@@ -308,10 +345,14 @@ _match (TaskItem *item,
 
     if (strlen(class_name) && priv->exec)
     {
+      #ifdef DEBUG
+      g_debug ("%s: 50  priv->exec = %s,  class_name = %s",__func__,priv->exec,class_name);
+      #endif 
       if (g_strstr_len (priv->exec, strlen (priv->exec), class_name))
       {
         g_free (res_name);
         g_free (class_name);
+        g_free (cmd);        
         return 50;
       }
     }
@@ -319,6 +360,27 @@ _match (TaskItem *item,
 
   g_free (res_name);
   g_free (class_name);
+  
+  if (cmd)
+  {
+    search_result = g_strrstr (cmd, priv->exec);
+    #ifdef DEBUG
+    g_debug ("cmd = %p, search_result = %p, strlen(exec) = %u, strlen (cmd) =%u",
+             cmd,search_result,(guint)strlen(priv->exec),(guint)strlen(cmd));
+    #endif
+    if (search_result && ( 
+                          (search_result + strlen(priv->exec)) == 
+                          (cmd + strlen(cmd))
+                          ))
+    {
+      #ifdef DEBUG
+      g_debug ("exec matches end of command line.");
+      #endif
+      g_free (cmd);
+      return 20;
+    }
+  }
+  g_free (cmd);
   return 0; 
 }
 
@@ -335,7 +397,9 @@ _left_click (TaskItem *item, GdkEventButton *event)
   priv = launcher->priv;
 
   priv->pid = awn_desktop_item_launch (priv->item, NULL, &error);
-
+#ifdef DEBUG  
+  g_debug ("%s: launch pid = %d",__func__,priv->pid);
+#endif
   if (error)
   {
     g_warning ("Unable to launch %s: %s", 
