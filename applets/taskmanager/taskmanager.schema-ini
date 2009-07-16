@@ -18,7 +18,23 @@ type = bool
 default = true
 description = Enable reordering of windows by drag and drop 
 
+[DEFAULT/grouping]
+type = bool
+default = true
+description = Enabling group of tasks.
+
+
 [DEFAULT/match_strength]
 type = int
-default = 0
+default = 100
 description = How radical matching is applied for grouping items. The value should be between 0 and 99. 0 is as good as no grouping. 99 will match almost everything.
+
+[DEFAULT/max_indicators]
+type = int
+default = 3
+description = Maximum number of task indicators to show under icons. Valid range is 0..3.
+
+[DEFAULT/txt_indicator_threshold]
+type = int
+default = 4
+description = The threshold at which text count begins to be displayed. valid range 1..

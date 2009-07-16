@@ -260,23 +260,24 @@ class awnPreferencesMini(awnPreferences):
         #                               "Autohide Keep below",
         #                               "Autohide Fade out",
         #                               "Transparency"]
-        if self.choose_behavior.get_active() == 0:
-            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
-            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 0)
-        elif self.choose_behavior.get_active() == 1:
-            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, True)
-            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 0)
-        elif self.choose_behavior.get_active() == 2:
-            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
-            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 1)
-        elif self.choose_behavior.get_active() == 3:
-            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
-            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 2)
-        elif self.choose_behavior.get_active() == 4:
-            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
-            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 3)
+        if self.choose_behavior.get_active() <> self.client.get_int(defs.PANEL, defs.BEHAVIOR):
+            if self.choose_behavior.get_active() == 0:
+                self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
+                self.client.set_int(defs.PANEL , defs.AUTOHIDE, 0)
+            elif self.choose_behavior.get_active() == 1:
+                self.client.set_bool(defs.PANEL, defs.PANEL_MODE, True)
+                self.client.set_int(defs.PANEL , defs.AUTOHIDE, 0)
+            elif self.choose_behavior.get_active() == 2:
+                self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
+                self.client.set_int(defs.PANEL , defs.AUTOHIDE, 1)
+            elif self.choose_behavior.get_active() == 3:
+                self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
+                self.client.set_int(defs.PANEL , defs.AUTOHIDE, 2)
+            elif self.choose_behavior.get_active() == 4:
+                self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
+                self.client.set_int(defs.PANEL , defs.AUTOHIDE, 3)
 
-        self.client.set_int(defs.PANEL, defs.BEHAVIOR, self.choose_behavior.get_active())
+            self.client.set_int(defs.PANEL, defs.BEHAVIOR, self.choose_behavior.get_active())
 
 
 class awnLauncherMini(awnLauncher):
