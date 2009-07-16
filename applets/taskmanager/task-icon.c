@@ -83,6 +83,7 @@ struct _TaskIconPrivate
   gint old_y;
   
   guint  max_indicators;
+  guint  txt_indicator_threshold;
 
   gint update_geometry_id;
 };
@@ -93,7 +94,8 @@ enum
 
   PROP_APPLET,
   PROP_DRAGGABLE,
-  PROP_MAX_INDICATORS
+  PROP_MAX_INDICATORS,
+  PROP_TXT_INDICATOR_THRESHOLD
 };
 
 enum
@@ -198,6 +200,9 @@ task_icon_get_property (GObject    *object,
     case PROP_MAX_INDICATORS:
       g_value_set_int (value,priv->max_indicators);
       break;
+    case PROP_TXT_INDICATOR_THRESHOLD:
+      g_value_set_int (value,priv->txt_indicator_threshold);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -223,6 +228,10 @@ task_icon_set_property (GObject      *object,
       icon->priv->max_indicators = g_value_get_int (value);
       task_icon_refresh_visible (TASK_ICON(object));
       break;
+    case PROP_TXT_INDICATOR_THRESHOLD:
+      icon->priv->txt_indicator_threshold = g_value_get_int (value);
+      task_icon_refresh_visible (TASK_ICON(object));
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -248,6 +257,11 @@ task_icon_dispose (GObject *object)
   {
     awn_config_client_free(priv->client);
     priv->client = NULL;
+  }
+  if (priv->overlay_text)
+  {
+    g_object_unref (priv->overlay_text);
+    priv->overlay_text = NULL;
   }
   G_OBJECT_CLASS (task_icon_parent_class)->dispose (object);  
 }
@@ -298,6 +312,9 @@ task_icon_constructed (GObject *object)
                           AWN_CONFIG_CLIENT_DEFAULT_GROUP, "max_indicators",
                           object, "max_indicators");  
 
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "txt_indicator_threshold",
+                          object, "txt_indicator_threshold");  
 }
 
 /**
@@ -462,6 +479,14 @@ task_icon_class_init (TaskIconClass *klass)
                             G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_MAX_INDICATORS, pspec);
   
+  pspec = g_param_spec_int ("txt_indicator_threshold",
+                            "txt_indicator_threshold",
+                            "Threshold at which the text count appears for tasks",
+                            0,
+                            9999,
+                            3,
+                            G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_TXT_INDICATOR_THRESHOLD, pspec);
   
   /* Install signals */
   _icon_signals[VISIBLE_CHANGED] =
@@ -750,40 +775,39 @@ task_icon_refresh_visible (TaskIcon *icon)
                                 count_windows > priv->max_indicators?
                                 priv->max_indicators:count_windows);
   
-  if (count != priv->shown_items)
+  if (count -1 >= priv->txt_indicator_threshold )
   {
-    g_debug("shown items changed: %i", count);
-
-    if (count > 1)
+    if (!priv->overlay_text)
     {
-      if (!priv->overlay_text)
-      {
-        priv->overlay_text = awn_overlay_text_new ();
-        awn_overlayable_add_overlay (AWN_OVERLAYABLE (icon), 
-                                     AWN_OVERLAY (priv->overlay_text));
-        g_object_set (G_OBJECT (priv->overlay_text),
-                      "gravity", GDK_GRAVITY_SOUTH_EAST, 
-                      "font-sizing", AWN_FONT_SIZE_LARGE,
-                      "text_color_astr", "#FFFFFFFF",
-                      "apply-effects", TRUE,
-                      NULL);
-      }
-      gchar* count_str = g_strdup_printf ("%i",count-1);
+      priv->overlay_text = awn_overlay_text_new ();
+      awn_overlayable_add_overlay (AWN_OVERLAYABLE (icon), 
+                                   AWN_OVERLAY (priv->overlay_text));
       g_object_set (G_OBJECT (priv->overlay_text),
-                    "text", count_str,
+                    "gravity", GDK_GRAVITY_SOUTH_EAST, 
+                    "font-sizing", AWN_FONT_SIZE_LARGE,
+                    "text_color_astr", "#FFFFFFFF",
+                    "apply-effects", TRUE,
                     NULL);
-      g_free (count_str);
     }
-    else
+    gchar* count_str = g_strdup_printf ("%i",count-1);
+    g_object_set (G_OBJECT (priv->overlay_text),
+                  "text", count_str,
+                  "active",TRUE,
+                  NULL);
+    g_free (count_str);
+  }
+  else
+  {
+    if (priv->overlay_text)
     {
-      if (priv->overlay_text)
-      {
-        awn_overlayable_remove_overlay (AWN_OVERLAYABLE (icon), 
-                                        AWN_OVERLAY (priv->overlay_text));
-        priv->overlay_text = NULL;
-      }
+      g_object_set (priv->overlay_text,
+                    "active",FALSE,
+                    NULL);
     }
-    
+  }
+
+  if (count != priv->shown_items)
+  {  
     if (count == 0)
     {
       priv->visible = FALSE;
