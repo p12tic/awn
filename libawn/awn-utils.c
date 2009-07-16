@@ -98,9 +98,8 @@ void
 awn_vfs_init ()
 {
   GError *error = NULL;
-  DesktopAgnosticVFSImplementation* vfs;
-  
-  vfs = desktop_agnostic_vfs_get_default (&error);
+
+  desktop_agnostic_vfs_init (&error);
 
   if (error)
   {
@@ -108,8 +107,6 @@ awn_vfs_init ()
     g_error_free (error);
     return;
   }
-
-  desktop_agnostic_vfs_implementation_init (vfs);
 }
 
 gfloat

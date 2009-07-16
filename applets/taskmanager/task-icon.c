@@ -1538,7 +1538,6 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
                                    guint           time_)
 {
   TaskIconPrivate *priv;
-  DesktopAgnosticVFSImplementation *vfs;
   GSList          *list;
   GError          *error;
   //TaskLauncher    *launcher;
@@ -1595,19 +1594,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   
   error = NULL;
 
-  vfs = desktop_agnostic_vfs_get_default (&error);
-
-  if (error)
-  {
-    g_warning ("Unable to handle drop: %s", error->message);
-    g_error_free (error);
-    gtk_drag_finish (context, FALSE, FALSE, time_);
-    return;
-  }
-
-  list = desktop_agnostic_vfs_implementation_files_from_uri_list (vfs,
-                                                                  sdata_data,
-                                                                  &error);
+  list = desktop_agnostic_vfs_files_from_uri_list (sdata_data, &error);
   if (error)
   {
     g_warning ("Unable to handle drop: %s", error->message);

@@ -98,7 +98,6 @@ main(gint argc, gchar **argv)
 {
   GError *error = NULL;
   GOptionContext *context;
-  DesktopAgnosticVFSImplementation *vfs;
   DesktopAgnosticVFSFileBackend *desktop_file = NULL;
   DesktopAgnosticDesktopEntryBackend *entry = NULL;
   GtkWidget *applet = NULL;
@@ -122,20 +121,13 @@ main(gint argc, gchar **argv)
 
   if (!g_thread_supported()) g_thread_init(NULL);
 
-  vfs = desktop_agnostic_vfs_get_default (&error);
+  desktop_agnostic_vfs_init (&error);
   if (error)
   {
-    g_critical ("An error occurred when trying to create the VFS object: %s",
-                error->message);
+    g_critical ("Error initializing VFS subsystem: %s", error->message);
     g_error_free (error);
-    return 1;
+    return EXIT_FAILURE;
   }
-  else if (!vfs)
-  {
-    g_critical ("Could not create the VFS object.");
-    return 1;
-  }
-  desktop_agnostic_vfs_implementation_init (vfs);
 
   gtk_init(&argc, &argv);
 
@@ -242,7 +234,13 @@ main(gint argc, gchar **argv)
 
   gtk_main();
 
-  desktop_agnostic_vfs_implementation_shutdown (vfs);
+  desktop_agnostic_vfs_shutdown (&error);
+  if (error)
+  {
+    g_critical ("Error shutting down VFS subsystem: %s", error->message);
+    g_error_free (error);
+    return EXIT_FAILURE;
+  }
 
   return 0;
 }

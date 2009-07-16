@@ -57,7 +57,6 @@ main (gint argc, gchar *argv[])
 {
   AwnApp          *app;
   GOptionContext  *context;
-  DesktopAgnosticVFSImplementation *vfs;
   DBusGConnection *connection;
   DBusGProxy      *proxy;
   GError          *error = NULL;
@@ -83,20 +82,13 @@ main (gint argc, gchar *argv[])
   g_type_init ();
   gtk_init (&argc, &argv);
 
-  vfs = desktop_agnostic_vfs_get_default (&error);
+  desktop_agnostic_vfs_init (&error);
   if (error)
   {
-    g_critical ("An error occurred when trying to create the VFS object: %s",
-                error->message);
+    g_critical ("Error initializing VFS subsystem: %s", error->message);
     g_error_free (error);
     return EXIT_FAILURE;
   }
-  else if (!vfs)
-  {
-    g_critical ("Could not create the VFS object.");
-    return EXIT_FAILURE;
-  }
-  desktop_agnostic_vfs_implementation_init (vfs);
 
   /* Single instance checking; first get the D-Bus connection */
   connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
@@ -145,7 +137,13 @@ main (gint argc, gchar *argv[])
   g_object_unref (proxy);
   dbus_g_connection_unref (connection);
 
-  desktop_agnostic_vfs_implementation_shutdown (vfs);
+  desktop_agnostic_vfs_shutdown (&error);
+  if (error)
+  {
+    g_critical ("Error shutting down VFS subsystem: %s", error->message);
+    g_error_free (error);
+    return EXIT_FAILURE;
+  }
 
   return EXIT_SUCCESS;
 }
