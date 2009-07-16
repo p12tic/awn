@@ -64,8 +64,8 @@ struct _TaskIconPrivate
   //An overlay for showing number of items
   AwnOverlayText *overlay_text;
 
-  //A Config client
-  AwnConfigClient * client;
+  // Config client
+  DesktopAgnosticConfigClient *client;
   
   GdkPixbuf *icon;
   AwnApplet *applet;
@@ -246,6 +246,9 @@ static void
 task_icon_dispose (GObject *object)
 {
   TaskIconPrivate *priv = TASK_ICON_GET_PRIVATE (object);
+
+  desktop_agnostic_config_client_unbind_all_for_object (priv->client, object,
+                                                        NULL);
   
   /*this needs to be done in dispose, not finalize, due to idiosyncracies of 
    AwnDialog*/
@@ -253,11 +256,6 @@ task_icon_dispose (GObject *object)
   {
     gtk_widget_destroy (priv->dialog);
     priv->dialog = NULL;
-  }
-  if (priv->client)
-  {
-    awn_config_client_free(priv->client);
-    priv->client = NULL;
   }
   if (priv->overlay_text)
   {
@@ -286,12 +284,34 @@ task_icon_finalize (GObject *object)
   G_OBJECT_CLASS (task_icon_parent_class)->finalize (object);
 }
 
+static gboolean
+do_bind_property (DesktopAgnosticConfigClient *client, const gchar *key,
+                  GObject *object, const gchar *property)
+{
+  GError *error = NULL;
+  
+  desktop_agnostic_config_client_bind (client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       key, object, property, TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       &error);
+  if (error)
+  {
+    g_warning ("Could not bind property '%s' to key '%s': %s", property, key,
+               error->message);
+    g_error_free (error);
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
 static void
 task_icon_constructed (GObject *object)
 {
-  AwnConfigBridge    *bridge;
   TaskIconPrivate *priv = TASK_ICON (object)->priv;
   GtkWidget *widget = GTK_WIDGET(object);  
+  GError *error = NULL;
 
   if ( G_OBJECT_CLASS (task_icon_parent_class)->constructed)
   {
@@ -306,16 +326,27 @@ task_icon_constructed (GObject *object)
   //update geometry of icon every second.
   priv->update_geometry_id = g_timeout_add_seconds (1, (GSourceFunc)_update_geometry, widget);
 
-  priv->client = awn_config_client_new_for_applet ("taskmanager", NULL);
-  bridge = awn_config_bridge_get_default ();
-  
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "max_indicators",
-                          object, "max_indicators");  
+  priv->client = awn_config_get_default_for_applet (priv->applet, &error);
 
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "txt_indicator_threshold",
-                          object, "txt_indicator_threshold");  
+  if (error)
+  {
+    g_warning ("Could not get the applet's configuration object: %s",
+               error->message);
+    g_error_free (error);
+    return;
+  }
+  
+  if (!do_bind_property (priv->client, "max_indicators", object,
+                         "max_indicators"))
+  {
+    return;
+  }
+
+  if (!do_bind_property (priv->client, "txt_indicator_threshold", object,
+                         "txt_indicator_threshold"))
+  {
+    return;
+  }
 }
 
 /**

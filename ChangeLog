@@ -1,5 +1,12 @@
 2009-07-15  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/taskmanager/task-icon.c (task_icon_dispose,
+	  task_icon_finalize, do_bind_property,
+	  task_icon_constructed):
+	Convert to use the libdesktop-agnostic config API.
+
+2009-07-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* data/avant-window-navigator.schema-ini.in:
 	Fix keys that should be labeled as colors.
 
