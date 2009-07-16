@@ -952,9 +952,6 @@ awn_ua_add_applet (	AwnAppletManager *manager,
 
   plugwin = awn_ua_alignment_add_id (AWN_UA_ALIGNMENT(ua_alignment),native_window);
   
-  g_object_set_qdata (G_OBJECT (ua_alignment),
-                      priv->touch_quark, GINT_TO_POINTER (0));    
-
   if (!plugwin)
   {
     g_warning ("UA Plug was not created within socket.");
@@ -994,13 +991,14 @@ awn_ua_add_applet (	AwnAppletManager *manager,
 
 gboolean
 awn_ua_get_all_server_flags (	AwnAppletManager *manager,
-				GHashTable *hash,
+				GHashTable **hash,
 				gchar     *name,
 				GError   **error)
 {
+  *hash = g_hash_table_new(g_str_hash,g_str_equal);
 /* Future function to return capability of the server
 For now, it return nothing*/
-return TRUE;
+  return TRUE;
 }
 
 

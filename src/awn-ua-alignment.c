@@ -374,7 +374,7 @@ awn_ua_alignment_size_change(GObject *object,GParamSpec *param_spec,gpointer use
       req.height = size  * 1.0 / priv->ua_ratio;            
       break;
     default:
-      g_warning ("%s: recieved invalid orient %d",__func__,orient);
+      g_warning ("%s: received invalid orient %d",__func__,orient);
   }
   gtk_widget_set_size_request (GTK_WIDGET(self),req.width,req.height);
 }
@@ -405,7 +405,7 @@ awn_ua_alignment_orient_change(GObject *object,GParamSpec *param_spec,gpointer u
       gtk_alignment_set (GTK_ALIGNMENT(self), 1.0, 0.0, 0.5, 1.0);
       break;
     default:
-      g_warning ("%s: recieved invalid orient %d",__func__,orient);
+      g_warning ("%s: received invalid orient %d",__func__,orient);
   }
   awn_ua_alignment_offset_change (object,param_spec,self);
   awn_ua_alignment_size_change (object,param_spec,self);
