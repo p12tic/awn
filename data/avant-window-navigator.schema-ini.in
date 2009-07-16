@@ -106,12 +106,12 @@ default = #FFFFFF0A
 description = Second highlight gradient step color.
 
 [theme/icon_text_color]
-type = string
+type = color
 default =
 description = Icon text color.  Leave empty to use gtk theme color.
 
 [theme/icon_text_outline_color]
-type = string
+type = color
 default =
 description = Icon text outline color.  Leave empty to use gtk theme color.
 
@@ -191,12 +191,12 @@ default = Sans 8
 description = Font name of the tooltip
 
 [theme/tooltip_font_color]
-type = string
+type = color
 default = #FFFFFFFF
 description = Font color of the tooltip
 
 [theme/tooltip_bg_color]
-type = string
+type = color
 default = #000000B3
 description = Background color of the tooltip
 
