@@ -834,16 +834,14 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
   
   for (d = list; d; d = d->next)
   {
+    GtkWidget     *icon;
     TaskItem     *launcher = NULL;
 
     launcher = task_launcher_new_for_desktop_file (d->data);
 
     if (!launcher) continue;
-/*
-#if'd code below out.  Better to have no response to adding a launcher than
-     duplicating all of them
-     */
-#if 0
+    /*Nasty... but can't just disable yet*/
+#if 1
     icon = task_icon_new (AWN_APPLET (manager));
     task_icon_append_item (TASK_ICON (icon), launcher);
     gtk_container_add (GTK_CONTAINER (priv->box), icon);

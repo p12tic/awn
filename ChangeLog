@@ -1,6 +1,12 @@
 2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Previous commit broken things.  return to previous broken state
+	for now.
+
+2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Make the adding of new launchers broken in a different, less
 	disruptive, way.  Instead of duplicating the launchers, the 
 	addition will be ignored (till restart).   This needs a fix,
