@@ -129,7 +129,7 @@ awn_overlay_themed_icon_set_property (GObject *object, guint property_id,
       priv->icon_state = g_value_dup_string (value);      
       if ( ! priv->icon_state )
       {
-        priv->icon_state = g_strdup_printf ("::invisible::__AWN_OVERLAY_THEMED_ICON_STATE_NAME_FOR_%s",priv->icon_name);        
+        priv->icon_state = g_strdup_printf ("::no_drop::__AWN_OVERLAY_THEMED_ICON_STATE_NAME_FOR_%s",priv->icon_name);        
       }
       break;      
     case PROP_ICON:

@@ -1,5 +1,11 @@
 2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-overlay-themed-icon.c:
+	Change ::invisible:: state -> ::no_drop::
+
+2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Previous commit broken things.  return to previous broken state
 	for now.
