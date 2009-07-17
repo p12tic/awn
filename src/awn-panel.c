@@ -316,6 +316,7 @@ static gboolean awn_panel_dnd_check         (gpointer data);
 
 static gboolean awn_panel_set_drag_proxy    (AwnPanel *panel,
                                              gboolean check_mouse_pos);
+
 /*
  * GOBJECT CODE 
  */
