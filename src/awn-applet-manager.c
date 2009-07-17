@@ -809,7 +809,6 @@ awn_applet_manager_add_widget (AwnAppletManager *manager,
     gtk_box_pack_start (GTK_BOX (manager), widget, FALSE, FALSE, 0);
     /* caller is supposed to call gtk_widget_show! */
   }
-  g_print ("Gint : %i : ", pos);
   g_hash_table_replace (priv->extra_widgets, widget, GINT_TO_POINTER (pos));
 
   awn_applet_manager_refresh_applets (manager);
