@@ -276,7 +276,6 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
         1, G_TYPE_INT);
 
   g_type_class_add_private (obj_class, sizeof (AwnAppletProxyPrivate));
-
 }
 
 static gboolean
@@ -349,8 +348,6 @@ awn_applet_proxy_new (const gchar *path,
       NULL);
   return proxy;
 }
-
-
 
 /*
  * GtkSocket callbacks
@@ -555,3 +552,4 @@ awn_applet_proxy_schedule_execute (AwnAppletProxy *proxy)
     priv->idle_id = g_idle_add (awn_applet_proxy_idle_cb, proxy);
   }
 }
+
