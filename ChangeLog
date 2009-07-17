@@ -1,5 +1,11 @@
 2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Display window_count.  At the moment it doesn't matter but it 
+	will once we begin grouping tasks (that don't have a launcher).
+
+2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-themed-icon.c:
 	* libawn/awn-overlay-themed-icon.c:
 	Change ::invisible:: state -> ::no_drop::
