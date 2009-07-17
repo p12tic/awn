@@ -22,8 +22,6 @@
 #include "config.h"
 
 #include <libawn/libawn.h>
-#include <dbus/dbus-glib.h>
-#include <dbus/dbus-glib-bindings.h>
 #include <libawn/awn-utils.h>
 #include <math.h>
 
@@ -283,8 +281,6 @@ awn_applet_manager_dispose (GObject *object)
   G_OBJECT_CLASS (awn_applet_manager_parent_class)->dispose (object);
 }
 
-#include "awn-applet-manager-glue.h"
-
 static void
 awn_applet_manager_class_init (AwnAppletManagerClass *klass)
 {
@@ -380,18 +376,12 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                  G_TYPE_NONE, 0);
  
   g_type_class_add_private (obj_class, sizeof (AwnAppletManagerPrivate));
-
-  dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass), 
-                                   &dbus_glib_awn_ua_object_info);
-
 }
 
 static void
 awn_applet_manager_init (AwnAppletManager *manager)
 {
   AwnAppletManagerPrivate *priv;
-  DBusGConnection *connection;
-  GError                *error = NULL;
 
   priv = manager->priv = AWN_APPLET_MANAGER_GET_PRIVATE (manager);
 
@@ -403,21 +393,6 @@ awn_applet_manager_init (AwnAppletManager *manager)
   priv->extra_widgets = g_hash_table_new (g_direct_hash, g_direct_equal);
 
   gtk_widget_show_all (GTK_WIDGET (manager));
-
-  /* Grab a connection to the bus */
-  connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
-  if (connection == NULL)
-  {
-    g_warning ("Unable to make connection to the D-Bus session bus: %s",
-               error->message);
-    g_error_free (error);
-    gtk_main_quit ();
-  }
-
- dbus_g_connection_register_g_object (connection, 
-                                       AWN_DBUS_MANAGER_PATH, 
-					G_OBJECT (GTK_WIDGET (manager)));
-
 }
 
 GtkWidget *
@@ -735,7 +710,7 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
   if (priv->applet_list == NULL)
   {
     g_debug ("No applets");
-    return;
+    return; // FIXME: removing last applet doesn't work because of this
   }
 
   guint applet_count = g_slist_length (priv->applet_list);
@@ -834,7 +809,6 @@ awn_applet_manager_add_widget (AwnAppletManager *manager,
     gtk_box_pack_start (GTK_BOX (manager), widget, FALSE, FALSE, 0);
     /* caller is supposed to call gtk_widget_show! */
   }
-  g_print ("Gint : %i : ", pos);
   g_hash_table_replace (priv->extra_widgets, widget, GINT_TO_POINTER (pos));
 
   awn_applet_manager_refresh_applets (manager);
@@ -880,13 +854,11 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
 		self.containers.append(container)
 */
 gboolean
-awn_ua_add_applet (	AwnAppletManager *manager,
-			gchar     *name,
-      glong		  xid,
-			gint	    width,
-			gint      height,
-			gchar     *size_type,
-      GError   **error)
+awn_ua_add_applet ( AwnAppletManager *manager,
+                    gchar *name, glong xid,
+                    gint width, gint height,
+                    gchar *size_type,
+                    GError **error)
 {
   g_return_val_if_fail (AWN_IS_APPLET_MANAGER (manager),FALSE);
   g_return_val_if_fail ( (g_strcmp0(size_type,"scalable")==0 ) || 

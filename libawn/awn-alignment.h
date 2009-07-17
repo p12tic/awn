@@ -80,8 +80,6 @@ gint          awn_alignment_get_offset_modifier  (AwnAlignment *alignment);
 void          awn_alignment_set_offset_modifier  (AwnAlignment *alignment, 
                                                   gint modifier);
 
-GtkWidget*    awn_alignment_new (void);
-
 G_END_DECLS
 
 #endif
