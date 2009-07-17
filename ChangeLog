@@ -1,5 +1,31 @@
 2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Display window_count.  At the moment it doesn't matter but it 
+	will once we begin grouping tasks (that don't have a launcher).
+
+2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-overlay-themed-icon.c:
+	Change ::invisible:: state -> ::no_drop::
+
+2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Previous commit broken things.  return to previous broken state
+	for now.
+
+2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Make the adding of new launchers broken in a different, less
+	disruptive, way.  Instead of duplicating the launchers, the 
+	addition will be ignored (till restart).   This needs a fix,
+	see comments in code.
+
+2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
   	* applets/taskmanager/taskmanager.schema-ini:
 	Added a grouping configuration key.

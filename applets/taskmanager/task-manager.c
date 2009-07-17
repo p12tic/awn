@@ -826,16 +826,22 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
   /* FIXME: I guess we should add something to check whether the user has
    * removed a launcher. Make sure we don't remove a launcher which has a 
    * window set, wait till the window is closed
+   *
+   * FIXME:  This approach just is not going to work..
+   *         IMO we should do something similar to 
+   *         awn_applet_manager_refresh_applets() in awn-applet-manager.c
    */
+  
   for (d = list; d; d = d->next)
   {
-    GtkWidget    *icon;
+    GtkWidget     *icon;
     TaskItem     *launcher = NULL;
 
     launcher = task_launcher_new_for_desktop_file (d->data);
 
     if (!launcher) continue;
-
+    /*Nasty... but can't just disable yet*/
+#if 1
     icon = task_icon_new (AWN_APPLET (manager));
     task_icon_append_item (TASK_ICON (icon), launcher);
     gtk_container_add (GTK_CONTAINER (priv->box), icon);
@@ -857,6 +863,7 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
     /* reordening through D&D */
     if(priv->drag_and_drop)
       _drag_add_signals(manager, icon);
+#endif     
 
   }
   for (d = list; d; d = d->next)

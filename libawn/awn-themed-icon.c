@@ -1084,7 +1084,7 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
   for (iter = priv->list; iter; iter = g_list_next (iter) )
   {
     AwnThemedIconItem *item = iter->data;
-    if (g_strstr_len (item->state,-1, "::invisible::") !=  item->state)
+    if (g_strstr_len (item->state,-1, "::no_drop::") !=  item->state)
     {
       gtk_drag_dest_set (GTK_WIDGET (icon),
                      GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
@@ -1176,7 +1176,7 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
   
   item->original_name = g_strdup (icon_name);
   item->name = normalise_name (icon_name);
-  item->state = g_strdup (state?state:"::invisible::unknown");
+  item->state = g_strdup (state?state:"::no_drop::unknown");
   item->sticky = FALSE;
       
   priv->list = g_list_append (priv->list,item);
@@ -1507,11 +1507,11 @@ on_idle_preload (gpointer data)
 /*
  FIXME among other things:
 
- Needs to be made aware of the concept of ::invisible:: mixed with normal states.
+ Needs to be made aware of the concept of ::no_drop:: mixed with normal states.
  
  I expect it does not deal with multiple icons currently beyond assuming the 
  drag and drop is for the currently selected stated.  Should provide a drop down
- of all icons that do not have ::invisible:: states default the choice to the 
+ of all icons that do not have ::no_drop:: states default the choice to the 
  currently selected state.
  
  */
