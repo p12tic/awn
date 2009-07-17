@@ -1,3 +1,12 @@
+2009-07-17  Michal Hruby <michal.mhr@gmail.com>
+
+	* applets/taskmanager/applet.c:
+	Fix crash when running non-first instance of the applet.
+	* data/awn.schema-ini.in:
+	Use non-zero offset as default.
+	* src/awn-monitor.c:
+	Fix to better support multiple monitors.
+
 2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

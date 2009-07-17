@@ -15,7 +15,7 @@ description = Orientation of Awn. (top=0, right=1, bottom=2 and left=3)
 
 [panel/offset]
 type = int
-default = 0
+default = 10
 description = Offset of the icons from window border.
 
 [panel/size]
