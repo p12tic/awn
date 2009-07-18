@@ -501,6 +501,7 @@ libawn_marshal_VOID__STRING_STRING_BOXED
 <FILE>awn-utils</FILE>
 awn_utils_ensure_transparent_bg
 awn_utils_make_transparent_bg
+awn_utils_gslist_to_gvaluearray
 awn_vfs_init
 </SECTION>
 

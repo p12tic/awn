@@ -172,27 +172,6 @@ awn_applet_manager_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
   priv->klass->size_allocate (widget, allocation);
 }
 
-/**
- * Sets a GValueArray from a GSList<string> property.
- */
-static void
-get_list_property (GValue *value, GSList *list)
-{
-  GValueArray *array;
-
-  array = g_value_array_new (g_slist_length (list));
-  for (GSList *n = list; n != NULL; n = n->next)
-  {
-    GValue val = {0};
-
-    g_value_init (&val, G_TYPE_STRING);
-    g_value_set_string (&val, (gchar*)n->data);
-    g_value_array_append (array, &val);
-    g_value_unset (&val);
-  }
-  g_value_take_boxed (value, array);
-}
-
 static void
 awn_applet_manager_get_property (GObject    *object,
                          guint       prop_id,
@@ -219,13 +198,13 @@ awn_applet_manager_get_property (GObject    *object,
       g_value_set_int (value, priv->size);
       break;
     case PROP_APPLET_LIST:
-      get_list_property (value, priv->applet_list);
+      g_value_take_boxed (value, awn_utils_gslist_to_gvaluearray (priv->applet_list));
       break;
     case PROP_UA_LIST:
-      get_list_property (value, priv->ua_list);
+      g_value_take_boxed (value, awn_utils_gslist_to_gvaluearray (priv->ua_list));
       break;
     case PROP_UA_ACTIVE_LIST:
-      get_list_property (value, priv->ua_active_list);
+      g_value_take_boxed (value, awn_utils_gslist_to_gvaluearray (priv->ua_active_list));
       break;
     case PROP_EXPANDS:
       g_value_set_boolean (value, priv->expands);
@@ -922,6 +901,7 @@ awn_ua_add_applet ( AwnAppletManager *manager,
   gchar * ua_list_entry = NULL;
   GtkWidget  *ua_alignment;
   double ua_ratio;  
+  GValueArray *array;
 
   /*
    Is there an entry in ua_list for this particular screenlet instance(name).
@@ -999,14 +979,19 @@ awn_ua_add_applet ( AwnAppletManager *manager,
       i--;
     }
   }
-  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
-                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                               priv->ua_list, NULL);
+  array = awn_utils_gslist_to_gvaluearray (priv->ua_list);
+  desktop_agnostic_config_client_set_list (priv->client,
+                                           AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
+                                           array, NULL);
+  g_value_array_free (array);
   /*Add our newly active screenlet to thend of the active list */
   priv->ua_active_list = g_slist_append (priv->ua_active_list,g_strdup(ua_list_entry));  
-  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
-                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                               priv->ua_active_list, NULL);
+  array = awn_utils_gslist_to_gvaluearray (priv->ua_active_list);
+  desktop_agnostic_config_client_set_list (priv->client,
+                                           AWN_GROUP_PANEL,
+                                           AWN_PANEL_UA_ACTIVE_LIST,
+                                           array, NULL);
+  g_value_array_free (array);
   
   return TRUE;
 }

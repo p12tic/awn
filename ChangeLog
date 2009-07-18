@@ -1,3 +1,17 @@
+2009-07-17  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	* libawn/awn-utils.c (awn_utils_ensure_transparent_bg,
+	  awn_utils_gslist_to_gvaluearray):
+	* libawn/awn-utils.h:
+	Add awn_utils_gslist_to_gvaluearray(), to make converting between the two
+	structures easier.
+	* src/awn-applet-manager.c (awn_applet_manager_get_property,
+	  awn_ua_add_applet):
+	Convert to use the new function.
+	* src/awn-ua-alignment.c (awn_ua_alignment_plug_removed):
+	Convert to use the libdesktop-agnostic API.
+
 2009-07-17  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* src/awn-ua-alignment.c:

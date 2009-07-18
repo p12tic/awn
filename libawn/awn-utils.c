@@ -94,6 +94,26 @@ awn_utils_ensure_transparent_bg (GtkWidget *widget)
                     G_CALLBACK (on_composited_change), NULL);
 }
 
+GValueArray*
+awn_utils_gslist_to_gvaluearray (GSList *list)
+{
+  GValueArray *array;
+
+  array = g_value_array_new (g_slist_length (list));
+  for (GSList *n = list; n != NULL; n = n->next)
+  {
+    GValue val = {0};
+
+    g_value_init (&val, G_TYPE_STRING);
+    g_value_set_string (&val, (gchar*)n->data);
+    g_value_array_append (array, &val);
+    g_value_unset (&val);
+  }
+
+  return array;
+}
+
+
 void
 awn_vfs_init ()
 {
