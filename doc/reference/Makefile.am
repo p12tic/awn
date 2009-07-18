@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+include $(top_srcdir)/Makefile.shave
+
 # We require automake 1.6 at least.
 AUTOMAKE_OPTIONS = 1.6
 
@@ -90,7 +92,7 @@ include $(top_srcdir)/gtk-doc.make
 
 if MAINTAINER_MODE
 $(DOC_MODULE).types: $(HFILE_GLOB)
-	$(GTKDOC_RUN) gtkdoc-scan --rebuild-sections --rebuild-types --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)"
+	$(QUIET_GEN)$(GTKDOC_RUN) gtkdoc-scan --rebuild-sections --rebuild-types --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)"
 endif
 
 # Other files to distribute

@@ -44,6 +44,21 @@ AWN_DIALOG_GET_CLASS
 </SECTION>
 
 <SECTION>
+<FILE>awn-label</FILE>
+<TITLE>AwnLabel</TITLE>
+AwnLabel
+awn_label_new
+<SUBSECTION Standard>
+AWN_LABEL
+AWN_IS_LABEL
+AWN_TYPE_LABEL
+awn_label_get_type
+AWN_LABEL_CLASS
+AWN_IS_LABEL_CLASS
+AWN_LABEL_GET_CLASS
+</SECTION>
+
+<SECTION>
 <FILE>awn-overlay-themed-icon</FILE>
 <TITLE>AwnOverlayThemedIcon</TITLE>
 AwnOverlayThemedIcon
@@ -375,9 +390,6 @@ AwnImagePrivate
 <TITLE>AwnImage</TITLE>
 AwnImage
 awn_image_new
-awn_image_new_with_label
-awn_image_set_label
-awn_image_get_overlay_text
 <SUBSECTION Standard>
 AWN_IMAGE
 AWN_IS_IMAGE
@@ -501,6 +513,7 @@ libawn_marshal_VOID__STRING_STRING_BOXED
 <FILE>awn-utils</FILE>
 awn_utils_ensure_transparent_bg
 awn_utils_make_transparent_bg
+awn_utils_get_offset_modifier_by_path_type
 awn_utils_gslist_to_gvaluearray
 awn_vfs_init
 </SECTION>
