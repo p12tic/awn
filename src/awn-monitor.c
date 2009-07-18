@@ -121,7 +121,7 @@ awn_monitor_get_property (GObject    *object,
   switch (prop_id)
   {
     case PROP_CLIENT:
-      g_value_set_pointer (value, priv->client);
+      g_value_set_object (value, priv->client);
       break;
     case PROP_FORCE_MONITOR:
       g_value_set_boolean (value, priv->force_monitor);
@@ -158,7 +158,7 @@ awn_monitor_set_property (GObject      *object,
   switch (prop_id)
   {
     case PROP_CLIENT:
-      priv->client = g_value_get_pointer (value);
+      priv->client = g_value_get_object (value);
       break;
     case PROP_FORCE_MONITOR:
       priv->force_monitor = g_value_get_boolean (value);
@@ -213,10 +213,11 @@ awn_monitor_class_init (AwnMonitorClass *klass)
   /* Add properties to the class */
   g_object_class_install_property (obj_class,
     PROP_CLIENT,
-    g_param_spec_pointer ("client",
-                          "Config Client",
-                          "Configuration client",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+    g_param_spec_object ("client",
+                         "Config Client",
+                         "Configuration client",
+                         DESKTOP_AGNOSTIC_CONFIG_TYPE_CLIENT,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_FORCE_MONITOR,

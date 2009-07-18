@@ -531,7 +531,7 @@ awn_panel_get_property (GObject    *object,
   switch (prop_id)
   {
     case PROP_CLIENT:
-      g_value_set_pointer (value, priv->client);
+      g_value_set_object (value, priv->client);
       break;
     case PROP_MONITOR:
       g_value_set_pointer (value, priv->monitor);
@@ -602,7 +602,7 @@ awn_panel_set_property (GObject      *object,
   switch (prop_id)
   {
     case PROP_CLIENT:
-      priv->client =  g_value_get_pointer (value);
+      priv->client =  g_value_get_object (value);
       break;
     case PROP_COMPOSITED:
       priv->composited = g_value_get_boolean (value);
@@ -1442,10 +1442,11 @@ awn_panel_class_init (AwnPanelClass *klass)
   /* Add properties to the class */
   g_object_class_install_property (obj_class,
     PROP_CLIENT,
-    g_param_spec_pointer ("client",
-                          "Client",
-                          "The configuration client",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+    g_param_spec_object ("client",
+                         "Client",
+                         "The configuration client",
+                         DESKTOP_AGNOSTIC_CONFIG_TYPE_CLIENT,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_MONITOR,

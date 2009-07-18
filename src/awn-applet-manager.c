@@ -186,7 +186,7 @@ awn_applet_manager_get_property (GObject    *object,
   switch (prop_id)
   {
     case PROP_CLIENT:
-      g_value_set_pointer (value, priv->client);
+      g_value_set_object (value, priv->client);
       break;
     case PROP_ORIENT:
       g_value_set_int (value, priv->orient);
@@ -250,7 +250,7 @@ awn_applet_manager_set_property (GObject      *object,
   switch (prop_id)
   {
     case PROP_CLIENT:
-      priv->client =  g_value_get_pointer (value);
+      priv->client =  g_value_get_object (value);
       break;
     case PROP_ORIENT:
       awn_applet_manager_set_orient (manager, g_value_get_int (value));
@@ -325,10 +325,11 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
   /* Add properties to the class */
   g_object_class_install_property (obj_class,
     PROP_CLIENT,
-    g_param_spec_pointer ("client",
-                          "Client",
-                          "The configuration client",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+    g_param_spec_object ("client",
+                         "Client",
+                         "The configuration client",
+                         DESKTOP_AGNOSTIC_CONFIG_TYPE_CLIENT,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_ORIENT,
@@ -364,17 +365,19 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
 
   g_object_class_install_property (obj_class,
     PROP_UA_LIST,
-    g_param_spec_pointer ("ua_list",
-                          "UA List",
-                          "The rememebered screenlet positions for this panel",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+    g_param_spec_boxed ("ua_list",
+                        "UA List",
+                        "The remembered screenlet positions for this panel",
+                        G_TYPE_VALUE_ARRAY,
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_UA_ACTIVE_LIST,
-    g_param_spec_pointer ("ua-active-list",
-                          "UA Active List",
-                          "The list of active screenlets for this panel",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+    g_param_spec_boxed ("ua-active-list",
+                        "UA Active List",
+                        "The list of active screenlets for this panel",
+                        G_TYPE_VALUE_ARRAY,
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_EXPANDS,

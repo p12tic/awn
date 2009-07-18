@@ -220,7 +220,7 @@ awn_background_set_property (GObject      *object,
   switch (prop_id)
   {
     case PROP_CLIENT:
-      bg->client = g_value_get_pointer (value);
+      bg->client = g_value_get_object (value);
       break;
     case PROP_PANEL:
       bg->panel = g_value_get_pointer (value);
@@ -361,10 +361,11 @@ awn_background_class_init (AwnBackgroundClass *klass)
   /* Object properties */
   g_object_class_install_property (obj_class,
     PROP_CLIENT,
-    g_param_spec_pointer ("client",
-                          "Client",
-                          "Awn Config Client",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+    g_param_spec_object ("client",
+                         "Client",
+                         "Awn Config Client",
+                         DESKTOP_AGNOSTIC_CONFIG_TYPE_CLIENT,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_PANEL,

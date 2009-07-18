@@ -1,5 +1,17 @@
 2009-07-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* src/awn-applet-manager.c (awn_applet_manager_get_property,
+	  awn_applet_manager_set_property, awn_applet_manager_class_init):
+	* src/awn-background.c (awn_background_set_property,
+	  awn_background_class_init):
+	* src/awn-monitor.c (awn_monitor_get_property,
+	  awn_monitor_set_property, awn_monitor_class_init):
+	* src/awn-panel.c (awn_panel_get_property, awn_panel_set_property,
+	  awn_panel_class_init):
+	Fix property types.
+
+2009-07-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-utils.h:
 	Fix gtk-doc.
 
