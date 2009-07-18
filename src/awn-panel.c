@@ -350,7 +350,7 @@ awn_panel_set_drag_proxy (AwnPanel *panel, gboolean check_mouse_pos)
   GdkDisplay *display = gtk_widget_get_display (widget);
   GdkWindow *window = NULL;
 
-#if GTK_CHECK_VERSION(2, 15, 0)
+#if 1
   GdkScreen *screen;
   gint mouse_x, mouse_y;
   gdk_display_get_pointer (display, &screen, &mouse_x, &mouse_y, NULL);
@@ -387,9 +387,10 @@ awn_panel_set_drag_proxy (AwnPanel *panel, gboolean check_mouse_pos)
 
   g_list_free (windows);
 #else
-  // in gtk 2.15+ we'd get the actual window with the drag
-  // FIXME: we can just use the window stack method all the time, though this
-  //  is much faster...
+  // FIXME: this method is much faster, but when dragging for example a file
+  //  from the desktop to different position on the desktop,
+  //  it returns a temporary window created by nautilus, therefore doesn't work
+  //  on 100% :-(
   window = xutils_get_window_at_pointer (display);
 #endif
   if (window != priv->dnd_proxy_win)
