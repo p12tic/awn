@@ -12,10 +12,10 @@
 	* src/awn-panel-dbus.xml:
 	* src/awn-panel.c:
 	* src/awn-panel.h:
-              Merged https://code.launchpad.net/~awn-testing/awn/awn-rewrite-ua-support
-              Merge Proposal: https://code.edge.launchpad.net/~awn-testing/awn/awn-rewrite-ua-support/+merge/8972
-              Provides basic (AwnApplet level) ability to embed Universal Applets 
-              (see https://launchpad.net/universal-applets) in awn panel.
+	Merged <https://code.launchpad.net/~awn-testing/awn/awn-rewrite-ua-support>.
+	Merge Proposal: https://code.launchpad.net/~awn-testing/awn/awn-rewrite-ua-support/+merge/8972
+	Provides basic (AwnApplet level) ability to embed Universal Applets (see
+	https://launchpad.net/universal-applets) in the panel.
 
 2009-07-17  Michal Hruby <michal.mhr@gmail.com>
 

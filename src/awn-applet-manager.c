@@ -345,7 +345,7 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
     PROP_UA_ACTIVE_LIST,
     g_param_spec_pointer ("ua-active-list",
                           "UA Active List",
-                          "The list of acitve screenlets for this panel",
+                          "The list of active screenlets for this panel",
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
