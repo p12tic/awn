@@ -69,7 +69,7 @@ gfloat awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
  *
  * @list: The #GSList of #gchar pointers to convert.
  *
- * Converts a #GSList<string> to a #GValueArray, suitable for use with a
+ * Converts a #GSList of strings to a #GValueArray, suitable for use with a
  * configuration client.
  *
  * Returns: A newly allocated #GValueArray (the #GValue elements and their
