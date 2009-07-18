@@ -1541,16 +1541,23 @@ class awnApplet(awnBzr):
             os.unlink(filename)
 
     def _apply (self):
-        l = []
+        applets_list = []
+        ua_list = []
+
         it = self.active_model.get_iter_first ()
         while (it):
             path = self.active_model.get_value (it, 1)
             uid = self.active_model.get_value (it, 2)
             s = "%s::%s" % (path, uid)
-            l.append (s)
+            if path.endswith(".desktop"):
+                applets_list.append(s)
+            else:
+                ua_list.append(s)
+
             it= self.active_model.iter_next (it)
 
-        self.client.set_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, l)
+        self.client.set_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, applets_list)
+        self.client.set_list(defs.PANEL, defs.UA_LIST, awn.CONFIG_LIST_STRING, ua_list)
 
     def up_clicked (self, button):
         select = self.treeview.get_selection()
@@ -1596,18 +1603,32 @@ class awnApplet(awnBzr):
 
         applets = self.client.get_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING)
 
+        ua_applets = self.client.get_list(defs.PANEL, defs.UA_LIST, awn.CONFIG_LIST_STRING)
+	
+        for ua in ua_applets:
+            tokens = ua.split("::")
+            applets.insert(int(tokens[1]), ua)
+
         self.refresh_icon_list (applets, self.active_model)
 
     def refresh_icon_list (self, applets, model):
         for a in applets:
             tokens = a.split("::")
-            path = tokens[0]
-            uid = tokens[1]
-            icon, text, name = self.make_row(path)
-            if len (text) < 2:
-                continue;
+            if tokens[0].endswith(".desktop"):
+                path = tokens[0]
+                uid = tokens[1]
+                icon, text, name = self.make_row(path)
+                if len (text) < 2:
+                    continue;
 
-            model.append([icon, path, uid, text])
+                model.append([icon, path, uid, text])
+            else:
+                path = tokens[0]
+                uid = tokens[1]
+                theme = gtk.icon_theme_get_default ()
+                icon = theme.load_icon ("screenlets", 32, 0)
+                text = tokens[0]
+                model.append([icon, path, uid, text])
 
     def load_applets (self):
         applets = self.applets_by_categories()
@@ -1649,7 +1670,21 @@ class awnApplet(awnBzr):
         applets = l.values()
 
         if not None in applets and self.load_finished:
-            self.client.set_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, applets)
+            applets_list = []
+            ua_list = []
+            for a in applets:
+                tokens = a.split("::")
+                path = tokens[0]
+                if path.endswith(".desktop"):
+                    applets_list.append(a)
+                else:
+                    position = applets.index(a)
+                    ua = tokens[0] + "::" + str(position)
+                    ua_list.append(ua)
+
+            self.client.set_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, applets_list)
+            self.client.set_list(defs.PANEL, defs.UA_LIST, awn.CONFIG_LIST_STRING, ua_list)
+
 
     def callback_widget_filter_applets(self, data=None):
         model = self.choose_categorie.get_model()

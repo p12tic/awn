@@ -21,16 +21,18 @@
 
 #include "config.h"
 
-#include <libawn/awn-config-bridge.h>
+#include <libawn/libawn.h>
 #include <libawn/awn-utils.h>
 #include <math.h>
 
 #include "awn-defines.h"
 #include "awn-applet-manager.h"
-
+#include "awn-ua-alignment.h"
 #include "awn-applet-proxy.h"
 #include "awn-throbber.h"
 #include "xutils.h"
+
+#define MAX_UA_LIST_ENTRIES 50
 
 G_DEFINE_TYPE (AwnAppletManager, awn_applet_manager, GTK_TYPE_BOX) 
 
@@ -44,8 +46,15 @@ struct _AwnAppletManagerPrivate
   AwnOrientation   orient;
   gint             offset;
   gint             size;
+  
   GSList          *applet_list;
 
+  /*ua_list does not serve the same purpose as the applet_list
+   It's a list of unique UA names plus their position in the panel
+   */ 
+  GSList          *ua_list;
+  GSList          *ua_active_list;
+  
   gboolean         docklet_mode;
   GtkWidget       *docklet_widget;
 
@@ -60,6 +69,7 @@ struct _AwnAppletManagerPrivate
 
   /* Current box class */
   GtkWidgetClass  *klass;
+
 };
 
 enum 
@@ -71,6 +81,8 @@ enum
   PROP_OFFSET,
   PROP_SIZE,
   PROP_APPLET_LIST,
+  PROP_UA_LIST,
+  PROP_UA_ACTIVE_LIST,
   PROP_EXPANDS
 };
 
@@ -123,6 +135,20 @@ awn_applet_manager_constructed (GObject *object)
                                AWN_GROUP_PANEL, AWN_PANEL_APPLET_LIST,
                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
                                object, "applet_list");
+  awn_config_bridge_bind_list (bridge, priv->client,
+                               AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
+                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                               object, "ua_list");
+  awn_config_bridge_bind_list (bridge, priv->client,
+                               AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
+                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                               object, "ua_active_list");
+  /*
+  ua_active_list should be empty when awn starts...
+   */
+  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
+                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                               NULL, NULL);
 }
 
 static void
@@ -165,9 +191,14 @@ awn_applet_manager_get_property (GObject    *object,
     case PROP_SIZE:
       g_value_set_int (value, priv->size);
       break;
-
     case PROP_APPLET_LIST:
       g_value_set_pointer (value, priv->applet_list);
+      break;
+    case PROP_UA_LIST:
+      g_value_set_pointer (value, priv->ua_list);
+      break;
+    case PROP_UA_ACTIVE_LIST:
+      g_value_set_pointer (value, priv->ua_active_list);
       break;
     case PROP_EXPANDS:
       g_value_set_boolean (value, priv->expands);
@@ -208,6 +239,16 @@ awn_applet_manager_set_property (GObject      *object,
       priv->applet_list = g_value_get_pointer (value);
       awn_applet_manager_refresh_applets (manager);
       break;
+    case PROP_UA_LIST:
+      free_list (priv->ua_list);
+      priv->ua_list = g_value_get_pointer (value);
+      awn_applet_manager_refresh_applets (manager);
+      break;
+    case PROP_UA_ACTIVE_LIST:
+      free_list (priv->ua_active_list);
+      priv->ua_active_list = g_value_get_pointer (value);
+      awn_applet_manager_refresh_applets (manager);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -291,6 +332,20 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
     g_param_spec_pointer ("applet_list",
                           "Applet List",
                           "The list of applets for this panel",
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+    PROP_UA_LIST,
+    g_param_spec_pointer ("ua_list",
+                          "UA List",
+                          "The rememebered screenlet positions for this panel",
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (obj_class,
+    PROP_UA_ACTIVE_LIST,
+    g_param_spec_pointer ("ua-active-list",
+                          "UA Active List",
+                          "The list of acitve screenlets for this panel",
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -505,7 +560,6 @@ awn_applet_manager_set_orient (AwnAppletManager *manager,
     g_type_class_unref (priv->klass);
     priv->klass = NULL;
   }
-
   switch (priv->orient)
   {
     case AWN_ORIENTATION_TOP:
@@ -547,7 +601,10 @@ free_list (GSList *list)
   {
     g_free (l->data);
   }
-  g_slist_free (list);
+  if (list)
+  {
+    g_slist_free (list);
+  }
 }
 
 /*
@@ -653,7 +710,7 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
   if (priv->applet_list == NULL)
   {
     g_debug ("No applets");
-    return;
+    return; // FIXME: removing last applet doesn't work because of this
   }
 
   guint applet_count = g_slist_length (priv->applet_list);
@@ -769,6 +826,155 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
   }
 }
 
+/*DBUS*/
+/*
+  Description of this dbus interface.
+ 
+ 	@action(IFACE)
+	def add_applet (self, id, plug_id, width, height, size_type):
+		"""
+		Add an applet.
+		
+		id: A unique string used to identify the applet.
+		plug_id: The applet's gtk.Plug's xid.
+		width: A recommended width. This will be interpreted according to size_type.
+		height A recommended height. This will be interpreted according to size_type.
+		size_type: Determines the meaning of width and height.
+			May be one of the following values:
+			"scalable"- The applet may be resized as long as the width/height ratio is kept.
+			"static"- The applet should be displayed at exactly the size requested.
+			"static-width"-	The applet's width should remain static, and the server may change the height.
+			"static-height"- The applet's height should remain static, and the server may change the width.
+			"dynamic"- The applet may be resized to any size.
+		desktop_path: Path to the desktop file.
+		"""
+		# NOTE: Melange currently ignores the size_type parameter.
+		container = ToplevelContainer(plug_id, id, self, width, height,
+			size_type, backend=self.backend)
+		self.containers.append(container)
+*/
+gboolean
+awn_ua_add_applet ( AwnAppletManager *manager,
+                    gchar *name, glong xid,
+                    gint width, gint height,
+                    gchar *size_type,
+                    GError **error)
+{
+  g_return_val_if_fail (AWN_IS_APPLET_MANAGER (manager),FALSE);
+  g_return_val_if_fail ( (g_strcmp0(size_type,"scalable")==0 ) || 
+                     (g_strcmp0(size_type,"dynamic")==0 ), FALSE );
+  
+  GdkWindow* plugwin; 
+  AwnAppletManagerPrivate *priv = manager->priv;  
+  gint pos = g_slist_length (priv->applet_list);  
+  GdkNativeWindow native_window = (GdkNativeWindow) xid;
+  gchar * tmp = g_strdup_printf ("%s::%d",name,pos);
+  gchar * ua_list_entry = NULL;
+  GtkWidget  *ua_alignment;
+  double ua_ratio;  
+
+  /*
+   Is there an entry in ua_list for this particular screenlet instance(name).
+   The comparision function used ignores the position.
+   */
+  GSList * search = g_slist_find_custom (priv->ua_list,tmp,awn_ua_alignment_list_cmp);
+  if (search)
+  {
+    /*     There's already an entry in ua_list so use that.     */
+    GStrv tokens;
+    ua_list_entry = g_strdup (search->data) ;
+    g_free (tmp);
+    /*    Get the position where the screenlet should be placed*/
+    tokens = g_strsplit (search->data,"::",2);
+    if (tokens && tokens[1])
+    {
+      pos = atoi (tokens[1]);
+    }
+    g_strfreev (tokens);
+    /* remove the link... that data will be appended at to the list*/
+    g_free (search->data);
+    priv->ua_list = g_slist_delete_link (priv->ua_list,search);
+    search = NULL;
+  }
+  else
+  {
+    /*
+     This screenlet instance is not recorded in ua_list.  It will end up being
+     placed at the end of the bar
+     */
+    ua_list_entry = tmp;
+  }
+  
+  /*
+   Calculated here and passed to the awn_ua_alignment_new().  AwnUAAlignment
+   could recalculate the ratio on bar resizes based on the, then current,
+   dimensions of the widget but over time the amount of error in the the 
+   calcs would increase
+   */
+  ua_ratio = width / (double) height;
+  ua_alignment = awn_ua_alignment_new(manager,ua_list_entry,ua_ratio); 
+
+  g_signal_connect_swapped (awn_ua_alignment_get_socket(AWN_UA_ALIGNMENT(ua_alignment)), 
+                            "plug-added",
+                            G_CALLBACK (_applet_plug_added),
+                            manager);
+
+  awn_applet_manager_add_widget(manager, GTK_WIDGET (ua_alignment), pos);
+  gtk_widget_show_all (ua_alignment);
+
+  plugwin = awn_ua_alignment_add_id (AWN_UA_ALIGNMENT(ua_alignment),native_window);
+  
+  if (!plugwin)
+  {
+    g_warning ("UA Plug was not created within socket.");
+    gtk_widget_destroy (ua_alignment);
+    return FALSE;
+  }
+
+  /*
+   Either add the new entry into ua_list or move an existing entry to the 
+   end of ua_list_entry
+   */
+  priv->ua_list = g_slist_append (priv->ua_list,g_strdup(ua_list_entry));
+
+  /* Keep the length of ua_list reasonable */
+  if (g_slist_length (priv->ua_list) > MAX_UA_LIST_ENTRIES)
+  {
+    GSList * iter;
+    int i =  g_slist_length (priv->ua_list) - MAX_UA_LIST_ENTRIES;
+    for(iter = priv->ua_list; i && iter ; iter = priv->ua_list )
+    {
+      g_free (iter->data);
+      priv->ua_list = g_slist_delete_link (priv->ua_list,iter);
+      i--;
+    }
+  }
+  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
+                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                               priv->ua_list, NULL);
+  /*Add our newly active screenlet to thend of the active list */
+  priv->ua_active_list = g_slist_append (priv->ua_active_list,g_strdup(ua_list_entry));  
+  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
+                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                               priv->ua_active_list, NULL);
+  
+  return TRUE;
+}
+
+gboolean
+awn_ua_get_all_server_flags (	AwnAppletManager *manager,
+				GHashTable **hash,
+				gchar     *name,
+				GError   **error)
+{
+  *hash = g_hash_table_new(g_str_hash,g_str_equal);
+/* Future function to return capability of the server
+For now, it return nothing*/
+  return TRUE;
+}
+
+
+/*End DBUS*/
 void
 awn_applet_manager_show_applets (AwnAppletManager *manager)
 {

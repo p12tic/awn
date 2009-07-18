@@ -25,6 +25,7 @@
 #include <gtk/gtk.h>
 
 #include <libawn/awn-config-client.h>
+#include <libawn/awn-defines.h>
 
 #include "awn-panel.h"
 
@@ -95,6 +96,19 @@ void        awn_applet_manager_set_docklet_widget(AwnAppletManager *manager,
 GdkRegion*  awn_applet_manager_get_mask          (AwnAppletManager *manager,
                                                   AwnPathType path_type,
                                                   gfloat offset_modifier);
+
+/* UA stuff */
+
+gboolean    awn_ua_get_all_server_flags 	 (AwnAppletManager *manager,
+                                                  GHashTable **hash,
+                                                  gchar     *name,
+                                                  GError   **error);
+
+gboolean    awn_ua_add_applet                    (AwnAppletManager *manager,
+                                                  gchar *name, glong xid,
+                                                  gint width, gint height,
+                                                  gchar *size_type,
+                                                  GError **error);
 
 G_END_DECLS
 
