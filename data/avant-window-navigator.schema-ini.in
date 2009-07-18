@@ -22,7 +22,7 @@ description = Orientation of Awn. (top=0, right=1, bottom=2 and left=3)
 
 [panel/offset]
 type = integer
-default = 0
+default = 10
 description = Offset of the icons from window border.
 
 [panel/size]
@@ -34,6 +34,16 @@ description = The user-visible size of Awn.
 type = list-string
 default = @APPLETDATADIR@/taskmanager.desktop::1
 description = The list of applets for this panel ordered from ltr or ttb.
+
+[panel/ua_list]
+type = list-string
+default = 
+description = The list of UA Screenlets that have been previous added in the form ScreeneletInstance::Position.
+
+[panel/ua_active_list]
+type = list-string
+default = 
+description = The active list UA Screenlets for this panel.
 
 [panel/monitor_force]
 type = boolean

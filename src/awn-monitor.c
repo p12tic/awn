@@ -39,7 +39,8 @@ struct _AwnMonitorPrivate
   DesktopAgnosticConfigClient *client;
 
   GdkScreen *screen;
-  guint      tag;
+  guint      size_signal_id;
+  guint      monitors_signal_id;
 
   /* Monitor Geometry stuff */
   gboolean force_monitor;
@@ -91,11 +92,6 @@ awn_monitor_constructed (GObject *object)
   desktop_agnostic_config_client_bind (priv->client,
                                        AWN_GROUP_PANEL, AWN_PANEL_MONITOR_HEIGHT,
                                        object, "monitor_height", FALSE,
-                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
-                                       NULL);
-  desktop_agnostic_config_client_bind (priv->client,
-                                       AWN_GROUP_PANEL, AWN_PANEL_MONITOR_FORCE,
-                                       object, "monitor_force", FALSE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
@@ -282,8 +278,8 @@ awn_monitor_init (AwnMonitor *monitor)
 
   priv = monitor->priv = AWN_MONITOR_GET_PRIVATE (monitor);
 
+  // FIXME: this might not be the best idea
   priv->screen = gdk_screen_get_default ();
-  priv->tag = 0;
 }
 
 AwnMonitor *
@@ -303,11 +299,30 @@ on_screen_size_changed (GdkScreen *screen, AwnMonitor *monitor)
   g_return_if_fail (AWN_IS_MONITOR (monitor));
   priv = monitor->priv;
 
-  if (!priv->force_monitor)
-    return;
+  if (!priv->force_monitor) return;
 
-  monitor->width = gdk_screen_get_width (screen);
-  monitor->height = gdk_screen_get_height (screen);
+  GdkRectangle geometry;
+  gdk_screen_get_monitor_geometry (priv->screen, 0, &geometry);
+  monitor->width = geometry.width;
+  monitor->height = geometry.height;
+
+  g_signal_emit (monitor, _monitor_signals[GEOMETRY_CHANGED], 0);
+}
+
+static void
+on_screen_monitors_changed (GdkScreen *screen, AwnMonitor *monitor)
+{
+  AwnMonitorPrivate *priv;
+
+  g_return_if_fail (AWN_IS_MONITOR (monitor));
+  priv = monitor->priv;
+
+  if (!priv->force_monitor) return;
+
+  GdkRectangle geometry;
+  gdk_screen_get_monitor_geometry (priv->screen, 0, &geometry);
+  monitor->width = geometry.width;
+  monitor->height = geometry.height;
 
   g_signal_emit (monitor, _monitor_signals[GEOMETRY_CHANGED], 0);
 }
@@ -320,8 +335,17 @@ awn_monitor_set_force_monitor (AwnMonitor *monitor,
 
   if (force_monitor)
   {
-    if (priv->tag)
-      g_signal_handler_disconnect (priv->screen, priv->tag);
+    if (priv->size_signal_id)
+    {
+      g_signal_handler_disconnect (priv->screen, priv->size_signal_id);
+      priv->size_signal_id = 0;
+    }
+
+    if (priv->monitors_signal_id)
+    {
+      g_signal_handler_disconnect (priv->screen, priv->monitors_signal_id);
+      priv->monitors_signal_id = 0;
+    }
 
     g_object_set (monitor,
                   "monitor-width", priv->config_width,
@@ -330,11 +354,15 @@ awn_monitor_set_force_monitor (AwnMonitor *monitor,
   }
   else
   {
-    priv->tag = g_signal_connect (priv->screen, "size-changed",
+    priv->size_signal_id = g_signal_connect (priv->screen, "size-changed",
                                   G_CALLBACK (on_screen_size_changed), monitor);
+    priv->monitors_signal_id = g_signal_connect (priv->screen, 
+          "monitors-changed", G_CALLBACK (on_screen_monitors_changed), monitor);
 
-    monitor->width = gdk_screen_get_width (priv->screen);
-    monitor->height = gdk_screen_get_height (priv->screen);
+    GdkRectangle geometry;
+    gdk_screen_get_monitor_geometry (priv->screen, 0, &geometry);
+    monitor->width = geometry.width;
+    monitor->height = geometry.height;
 
     g_signal_emit (monitor, _monitor_signals[GEOMETRY_CHANGED], 0);
   }

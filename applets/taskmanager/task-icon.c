@@ -806,8 +806,8 @@ task_icon_refresh_visible (TaskIcon *icon)
   awn_icon_set_indicator_count (AWN_ICON (icon), 
                                 count_windows > priv->max_indicators?
                                 priv->max_indicators:count_windows);
-  
-  if (count -1 >= priv->txt_indicator_threshold )
+
+  if (count_windows >= priv->txt_indicator_threshold )
   {
     if (!priv->overlay_text)
     {
@@ -821,7 +821,8 @@ task_icon_refresh_visible (TaskIcon *icon)
                     "apply-effects", TRUE,
                     NULL);
     }
-    gchar* count_str = g_strdup_printf ("%i",count-1);
+
+    gchar* count_str = g_strdup_printf ("%i",count_windows);
     g_object_set (G_OBJECT (priv->overlay_text),
                   "text", count_str,
                   "active",TRUE,

@@ -107,6 +107,17 @@ void        awn_panel_docklet_request     (AwnPanel         *panel,
                                            gboolean          expand,
                                            DBusGMethodInvocation *context);
 
+gboolean    awn_panel_get_all_server_flags(AwnPanel *panel,
+                                           GHashTable **hash,
+                                           gchar     *name,
+                                           GError   **error);
+
+gboolean    awn_panel_add_applet          (AwnPanel *panel,
+                                           gchar *name, glong xid,
+                                           gint width, gint height,
+                                           gchar *size_type,
+                                           GError **error);
+
 G_END_DECLS
 
 

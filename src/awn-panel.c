@@ -316,6 +316,7 @@ static gboolean awn_panel_dnd_check         (gpointer data);
 
 static gboolean awn_panel_set_drag_proxy    (AwnPanel *panel,
                                              gboolean check_mouse_pos);
+
 /*
  * GOBJECT CODE 
  */
@@ -2906,5 +2907,35 @@ awn_panel_docklet_request (AwnPanel *panel,
   window_id = gtk_socket_get_id (GTK_SOCKET (priv->docklet));
 
   dbus_g_method_return (context, window_id);
+}
+
+gboolean
+awn_panel_get_all_server_flags (AwnPanel *panel,
+                                GHashTable **hash,
+                                gchar     *name,
+                                GError   **error)
+{
+  AwnPanelPrivate *priv;
+
+  g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
+  priv = panel->priv;
+
+  return awn_ua_get_all_server_flags (AWN_APPLET_MANAGER (priv->manager),
+                                      hash, name, error);
+}
+
+gboolean
+awn_panel_add_applet (AwnPanel *panel, gchar *name, glong xid,
+                      gint width, gint height,
+                      gchar *size_type,
+                      GError **error)
+{
+  AwnPanelPrivate *priv;
+
+  g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
+  priv = panel->priv;
+
+  return awn_ua_add_applet (AWN_APPLET_MANAGER (priv->manager), name, xid,
+                            width, height, size_type, error);
 }
 

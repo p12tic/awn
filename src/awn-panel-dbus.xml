@@ -69,4 +69,23 @@
     <property name="PanelXid" type="x" access="read" />
 
   </interface>
+
+  <interface name="org.awnproject.Awn.UA">
+    <annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_panel"/>
+
+    <!-- Methods -->
+    <method name="add_applet">
+      <arg name="name" type="s" direction="in" />
+      <arg name="uid" type="x" direction="in" />
+      <arg name="width" type="i" direction="in" />
+      <arg name="height" type="i" direction="in" />
+      <arg name="size_type" type="s" direction="in" />
+    </method>
+
+    <method name="get_all_server_flags">
+      <arg name="name" type="s" direction="in" />
+      <arg name="hash" type="a{ss}" direction="out" />
+    </method>
+
+  </interface>
 </node>

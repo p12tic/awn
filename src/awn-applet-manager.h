@@ -96,6 +96,19 @@ GdkRegion*  awn_applet_manager_get_mask          (AwnAppletManager *manager,
                                                   AwnPathType path_type,
                                                   gfloat offset_modifier);
 
+/* UA stuff */
+
+gboolean    awn_ua_get_all_server_flags 	 (AwnAppletManager *manager,
+                                                  GHashTable **hash,
+                                                  gchar     *name,
+                                                  GError   **error);
+
+gboolean    awn_ua_add_applet                    (AwnAppletManager *manager,
+                                                  gchar *name, glong xid,
+                                                  gint width, gint height,
+                                                  gchar *size_type,
+                                                  GError **error);
+
 G_END_DECLS
 
 #endif /* _AWN_APPLET_MANAGER_H */

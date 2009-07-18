@@ -1,3 +1,70 @@
+2009-07-17  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* src/awn-ua-alignment.c:
+	* src/awn-ua-alignment.h:
+	* awn-settings/awnClass.py:
+	* awn-settings/awnDefs.py.in:
+	* data/awn.schema-ini.in:
+	* src/Makefile.am:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-defines.h:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+              Merged https://code.launchpad.net/~awn-testing/awn/awn-rewrite-ua-support
+              Merge Proposal: https://code.edge.launchpad.net/~awn-testing/awn/awn-rewrite-ua-support/+merge/8972
+              Provides basic (AwnApplet level) ability to embed Universal Applets 
+              (see https://launchpad.net/universal-applets) in awn panel.
+
+2009-07-17  Michal Hruby <michal.mhr@gmail.com>
+
+	* applets/taskmanager/applet.c:
+	Fix crash when running non-first instance of the applet.
+	* data/awn.schema-ini.in:
+	Use non-zero offset as default.
+	* src/awn-monitor.c:
+	Fix to better support multiple monitors.
+
+2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Display window_count.  At the moment it doesn't matter but it 
+	will once we begin grouping tasks (that don't have a launcher).
+
+2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-overlay-themed-icon.c:
+	Change ::invisible:: state -> ::no_drop::
+
+2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Previous commit broken things.  return to previous broken state
+	for now.
+
+2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Make the adding of new launchers broken in a different, less
+	disruptive, way.  Instead of duplicating the launchers, the 
+	addition will be ignored (till restart).   This needs a fix,
+	see comments in code.
+
+2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/taskmanager.schema-ini:
+	Added a grouping configuration key.
+
+2009-07-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+  	* applets/taskmanager/task-launcher.c:
+  	* configure.in:
+	Improved the task matching.  Please test with a match strength
+	of 99.  Especially interested in false positives.
+
 2009-07-15  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/task-icon.c (task_icon_dest_drag_data_received):
