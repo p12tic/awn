@@ -111,6 +111,7 @@ awn_label_set_property (GObject *object, guint property_id,
                         const GValue *value, GParamSpec *pspec)
 {
   AwnLabelPrivate *priv = AWN_LABEL_GET_PRIVATE (object);
+  GtkWidget *widget = GTK_WIDGET (object);
   GError *err = NULL;
 
   switch (property_id)
@@ -134,8 +135,11 @@ awn_label_set_property (GObject *object, guint property_id,
                                                 &err);
       if (err)
       {
-        priv->text_color = NULL;
         g_error_free (err);
+        gtk_widget_modify_fg (widget, GTK_STATE_NORMAL, NULL);
+        priv->text_color =
+          desktop_agnostic_color_new (&widget->style->fg[GTK_STATE_NORMAL],
+                                      G_MAXUSHORT);
       }
       break;
 
@@ -150,14 +154,28 @@ awn_label_set_property (GObject *object, guint property_id,
                                                 &err);
       if (err)
       {
-        priv->text_outline_color = NULL;
         g_error_free (err);
+        priv->text_outline_color =
+          desktop_agnostic_color_new (&widget->style->bg[GTK_STATE_NORMAL],
+                                      G_MAXUSHORT);
       }
       break;
 
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     return;
+  }
+
+  GdkColor color;
+  DesktopAgnosticColor *da_color;
+
+  // makes sure that text_color affects the actual label color
+  da_color = priv->font_mode == FONT_MODE_OUTLINE_REVERSED ? 
+    priv->text_outline_color : priv->text_color;
+  if (da_color)
+  {
+    desktop_agnostic_color_get_color (da_color, &color);
+    gtk_widget_modify_fg (widget, GTK_STATE_NORMAL, &color);
   }
 
   gtk_widget_queue_draw (GTK_WIDGET (object));
@@ -210,21 +228,8 @@ awn_label_expose (GtkWidget *widget, GdkEventExpose *event)
 
   cairo_move_to (cr, x, y);
   cairo_set_line_width (cr, priv->text_outline_width);
-  if (!priv->text_outline_color || !priv->text_color)
-  {
-    if (!priv->text_color)
-    {
-      priv->text_color =
-        desktop_agnostic_color_new (&widget->style->fg[GTK_STATE_NORMAL],
-                                    G_MAXUSHORT);
-    }
-    if (!priv->text_outline_color)
-    {
-      priv->text_outline_color =
-        desktop_agnostic_color_new (&widget->style->bg[GTK_STATE_NORMAL],
-                                    G_MAXUSHORT);
-    }
-  }
+  g_return_val_if_fail (priv->text_outline_color && priv->text_color, FALSE);
+
   awn_cairo_set_source_color (cr, priv->font_mode == FONT_MODE_OUTLINE ?
                               priv->text_outline_color : priv->text_color);
   pango_cairo_layout_path (cr, layout);
