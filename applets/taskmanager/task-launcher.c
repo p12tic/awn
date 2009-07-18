@@ -184,7 +184,7 @@ static void
 task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
 {
   TaskLauncherPrivate *priv;
-  DesktopAgnosticVFSFileBackend *file;
+  DesktopAgnosticVFSFile *file;
   GError *error = NULL;
   GdkPixbuf *pixbuf;
  
@@ -202,7 +202,7 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
     return;
   }
 
-  if (file == NULL || !desktop_agnostic_vfs_file_backend_get_exists (file))
+  if (file == NULL || !desktop_agnostic_vfs_file_exists (file))
   {
     g_critical ("File not found: '%s'", path);
     return;

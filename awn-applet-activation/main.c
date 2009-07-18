@@ -98,7 +98,7 @@ main(gint argc, gchar **argv)
 {
   GError *error = NULL;
   GOptionContext *context;
-  DesktopAgnosticVFSFileBackend *desktop_file = NULL;
+  DesktopAgnosticVFSFile *desktop_file = NULL;
   DesktopAgnosticDesktopEntryBackend *entry = NULL;
   GtkWidget *applet = NULL;
   const gchar *exec;
@@ -147,8 +147,7 @@ main(gint argc, gchar **argv)
     return 1;
   }
 
-  if (desktop_file == NULL ||
-      !desktop_agnostic_vfs_file_backend_get_exists (desktop_file))
+  if (desktop_file == NULL || !desktop_agnostic_vfs_file_exists (desktop_file))
   {
     g_warning ("This desktop file '%s' does not exist.", path);
     return 1;
