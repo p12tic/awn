@@ -1,5 +1,16 @@
 2009-07-17  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* Makefile.marshal:
+	* Makefile.shave:
+	* applets/taskmanager/Makefile.am:
+	* doc/reference/Makefile.am:
+	* libawn/Makefile.am:
+	* src/Makefile.am:
+	Split the shave-related variables into their own Makefile.
+	Use shave on various file generation rules.
+
+2009-07-17  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/libawn-sections.txt:
 	* doc/reference/libawn.types:
 	Update the doc templates.

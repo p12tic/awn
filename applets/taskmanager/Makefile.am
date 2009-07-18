@@ -1,3 +1,4 @@
+include $(top_srcdir)/Makefile.shave
 MARSHAL_PREFIX = taskmanager
 include $(top_srcdir)/Makefile.marshal
 
@@ -45,10 +46,10 @@ taskmanager_la_LDFLAGS = -module -avoid-version
 
 # DBus glue
 task-manager-glue.h: task-manager-dbus.xml Makefile
-	$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=task_manager --mode=glib-server --output=$@ $<
+	$(QUIET_GEN)$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=task_manager --mode=glib-server --output=$@ $<
 
 task-manager-api-wrapper-glue.h: task-manager-api-wrapper-dbus.xml Makefile
-	$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=task_manager_api_wrapper --mode=glib-server --output=$@ $<
+	$(QUIET_GEN)$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=task_manager_api_wrapper --mode=glib-server --output=$@ $<
 
 # Desktop file
 desktopdir = $(pkgdatadir)/applets

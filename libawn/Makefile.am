@@ -1,5 +1,6 @@
 SUBDIRS = egg anims
 
+include $(top_srcdir)/Makefile.shave
 MARSHAL_PREFIX = libawn
 include $(top_srcdir)/Makefile.marshal
 
