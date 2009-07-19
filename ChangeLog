@@ -1,3 +1,9 @@
+2009-07-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf-file.c:
+	Only one warning for a missing icon file.  Reset on filname
+	change.
+
 2009-07-19  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-label.c:
