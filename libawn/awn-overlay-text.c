@@ -250,12 +250,12 @@ awn_overlay_text_constructed (GObject *object)
   }
 
   desktop_agnostic_config_client_bind (priv->client, "theme", "icon_text_color",
-                                       object, "text-color-astr", TRUE,
+                                       object, "text-color", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   
   desktop_agnostic_config_client_bind (priv->client, "theme", "icon_text_outline_color",
-                                       object, "text-outline-color-astr", TRUE,
+                                       object, "text-outline-color", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   
@@ -339,7 +339,7 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
                                "Text Colour",
                                "Text Colour",
                                DESKTOP_AGNOSTIC_TYPE_COLOR,
-                               G_PARAM_READABLE);
+                               G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_TEXT_COLOR, pspec);   
 
   pspec = g_param_spec_string ("text-color-astr",
@@ -353,7 +353,7 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
                                "Text Outline Colour",
                                "Text Outline Colour",
                                DESKTOP_AGNOSTIC_TYPE_COLOR,
-                               G_PARAM_READABLE);
+                               G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_TEXT_OUTLINE_COLOR, pspec);   
 
   pspec = g_param_spec_string ("text-outline-color-astr",

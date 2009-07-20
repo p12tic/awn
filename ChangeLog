@@ -1,5 +1,16 @@
 2009-07-20  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-overlay-text.c (awn_overlay_text_constructed,
+	  awn_overlay_text_class_init):
+	* libawn/awn-tooltip.c (awn_tooltip_get_property,
+	  awn_tooltip_set_property, awn_tooltip_finalize,
+	  awn_tooltip_class_init, ensure_tooltip, awn_tooltip_set_font_color,
+	  awn_tooltip_set_background_color):
+	* libawn/awn-tooltip.h:
+	Fix/convert color-related code.
+
+2009-07-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* src/awn-applet-manager.c (awn_applet_manager_constructed,
 	  set_list_property, awn_applet_manager_set_property):
 	Fix typo.

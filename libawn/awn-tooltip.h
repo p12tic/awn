@@ -22,6 +22,7 @@
 #ifndef __AWN_TOOLTIP_H__
 #define __AWN_TOOLTIP_H__
 
+#include <libdesktop-agnostic/desktop-agnostic.h>
 #include <gtk/gtk.h>
 
 #include "awn-defines.h"
@@ -85,11 +86,11 @@ void          awn_tooltip_set_focus_widget     (AwnTooltip *tooltip,
 void          awn_tooltip_set_font_name        (AwnTooltip *tooltip,
                                                 const gchar *font_name);
 
-void          awn_tooltip_set_font_color       (AwnTooltip  *tooltip,
-                                                const gchar *font_color);
+void          awn_tooltip_set_font_color       (AwnTooltip           *tooltip,
+                                                DesktopAgnosticColor *font_color);
 
-void          awn_tooltip_set_background_color (AwnTooltip  *tooltip,
-                                                const gchar *bg_color);
+void          awn_tooltip_set_background_color (AwnTooltip           *tooltip,
+                                                DesktopAgnosticColor *bg_color);
 
 void          awn_tooltip_set_delay            (AwnTooltip  *tooltip,
                                                 gint         msecs);
