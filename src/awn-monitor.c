@@ -293,6 +293,19 @@ awn_monitor_new_from_config (DesktopAgnosticConfigClient *client)
 }
 
 static void
+awn_monitor_update_fields (AwnMonitor *monitor)
+{
+  AwnMonitorPrivate *priv = monitor->priv;
+
+  GdkRectangle geometry;
+  gint monitor_number = gdk_screen_get_monitor_at_point (priv->screen, 0, 0);
+
+  gdk_screen_get_monitor_geometry (priv->screen, monitor_number, &geometry);
+  monitor->width = geometry.width;
+  monitor->height = geometry.height;
+}
+
+static void
 on_screen_size_changed (GdkScreen *screen, AwnMonitor *monitor)
 {
   AwnMonitorPrivate *priv;
@@ -300,12 +313,9 @@ on_screen_size_changed (GdkScreen *screen, AwnMonitor *monitor)
   g_return_if_fail (AWN_IS_MONITOR (monitor));
   priv = monitor->priv;
 
-  if (!priv->force_monitor) return;
+  if (priv->force_monitor) return;
 
-  GdkRectangle geometry;
-  gdk_screen_get_monitor_geometry (priv->screen, 0, &geometry);
-  monitor->width = geometry.width;
-  monitor->height = geometry.height;
+  awn_monitor_update_fields (monitor);
 
   g_signal_emit (monitor, _monitor_signals[GEOMETRY_CHANGED], 0);
 }
@@ -318,12 +328,9 @@ on_screen_monitors_changed (GdkScreen *screen, AwnMonitor *monitor)
   g_return_if_fail (AWN_IS_MONITOR (monitor));
   priv = monitor->priv;
 
-  if (!priv->force_monitor) return;
+  if (priv->force_monitor) return;
 
-  GdkRectangle geometry;
-  gdk_screen_get_monitor_geometry (priv->screen, 0, &geometry);
-  monitor->width = geometry.width;
-  monitor->height = geometry.height;
+  awn_monitor_update_fields (monitor);
 
   g_signal_emit (monitor, _monitor_signals[GEOMETRY_CHANGED], 0);
 }
@@ -360,10 +367,7 @@ awn_monitor_set_force_monitor (AwnMonitor *monitor,
     priv->monitors_signal_id = g_signal_connect (priv->screen, 
           "monitors-changed", G_CALLBACK (on_screen_monitors_changed), monitor);
 
-    GdkRectangle geometry;
-    gdk_screen_get_monitor_geometry (priv->screen, 0, &geometry);
-    monitor->width = geometry.width;
-    monitor->height = geometry.height;
+    awn_monitor_update_fields (monitor);
 
     g_signal_emit (monitor, _monitor_signals[GEOMETRY_CHANGED], 0);
   }

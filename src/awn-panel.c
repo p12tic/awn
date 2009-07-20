@@ -104,6 +104,9 @@ struct _AwnPanelPrivate
 
   guint extra_padding;
 
+  GdkWindow *dnd_proxy_win;
+  GdkDragProtocol dnd_proxy_proto;
+
   guint dnd_mouse_poll_timer_id;
   guint mouse_poll_timer_id;
 
@@ -323,7 +326,7 @@ static gboolean awn_panel_set_drag_proxy    (AwnPanel *panel,
 static gboolean
 awn_panel_set_drag_proxy (AwnPanel *panel, gboolean check_mouse_pos)
 {
-  static GdkWindow *proxy = NULL; // FIXME: turn into private prop
+  AwnPanelPrivate *priv = panel->priv;
   GtkWidget *widget = GTK_WIDGET (panel);
 
   if (check_mouse_pos)
@@ -331,37 +334,113 @@ awn_panel_set_drag_proxy (AwnPanel *panel, gboolean check_mouse_pos)
     gboolean in = awn_panel_check_mouse_pos (panel, MOUSE_CHECK_ENTIRE_WINDOW);
     if (!in)
     {
-      if (proxy)
+      if (priv->dnd_proxy_win)
       {
+        g_object_unref (priv->dnd_proxy_win);
         // FIXME: unset first?
         gtk_drag_dest_set (widget, 0, drop_types, n_drop_types,
                            GDK_ACTION_COPY);
 
-        proxy = NULL;
+        priv->dnd_proxy_win = NULL;
       }
       return FALSE;
     }
   }
 
   GdkDisplay *display = gtk_widget_get_display (widget);
-  GdkWindow *window = xutils_get_window_at_pointer (display);
-  if (window != proxy)
+  GdkWindow *window = NULL;
+
+#if 1
+  GdkScreen *screen;
+  gint mouse_x, mouse_y;
+  gdk_display_get_pointer (display, &screen, &mouse_x, &mouse_y, NULL);
+  GList *windows = gdk_screen_get_window_stack (screen);
+
+  GdkNativeWindow panel_xid = GDK_WINDOW_XID (widget->window);
+
+  // go through window stack list and find window the mouse is on
+  for (GList *it = g_list_last (windows); it; it = g_list_previous (it))
+  {
+    gint win_x, win_y, win_w, win_h;
+    GdkWindow *it_window = it->data;
+
+    if (GDK_WINDOW_XID (it_window) == panel_xid || window != NULL)
+    {
+      g_object_unref (it_window);
+      continue;
+    }
+
+    gdk_window_get_origin (it_window, &win_x, &win_y);
+    gdk_window_get_geometry (it_window, NULL, NULL, &win_w, &win_h, NULL);
+
+    // if mouse in
+    if (mouse_x >= win_x && mouse_x < win_x + win_w &&
+        mouse_y >= win_y && mouse_y < win_y + win_h &&
+        gdk_window_is_visible (it_window))
+    {
+      window = g_object_ref (it_window);
+      // no break so we unref all other windows
+    }
+
+    g_object_unref (it_window);
+  }
+
+  g_list_free (windows);
+#else
+  // FIXME: this method is much faster, but when dragging for example a file
+  //  from the desktop to different position on the desktop,
+  //  it returns a temporary window created by nautilus, therefore doesn't work
+  //  on 100% :-(
+  window = xutils_get_window_at_pointer (display);
+#endif
+  if (window != priv->dnd_proxy_win)
   {
     if (window != widget->window && window != NULL && window != widget->window)
     {
-      proxy = window;
-      gtk_drag_dest_set_proxy (widget, window, GDK_DRAG_PROTO_XDND, FALSE);
+      GdkNativeWindow target;
+
+      target = gdk_drag_get_protocol (GDK_WINDOW_XID (window),
+                                      &priv->dnd_proxy_proto);
+
+      if (target == 0)
+      {
+        if (priv->dnd_proxy_win) 
+        {
+          g_object_unref (priv->dnd_proxy_win);
+          gtk_drag_dest_set (widget, 0, drop_types, n_drop_types, GDK_ACTION_COPY);
+        }
+        priv->dnd_proxy_win = NULL;
+        return FALSE;
+      }
+
+      // get the target GdkWindow
+      if (GDK_WINDOW_XID (window) != target)
+      {
+        g_object_unref (window);
+
+        // FIXME: this might need ref
+        window = gdk_window_lookup_for_display (display, target);
+        if (priv->dnd_proxy_win != NULL && window == priv->dnd_proxy_win)
+          return TRUE;
+        if (window == NULL) window = gdk_window_foreign_new (target);
+      }
+
+      priv->dnd_proxy_win = g_object_ref (window);
+      gtk_drag_dest_set_proxy (widget, window, priv->dnd_proxy_proto, FALSE);
+
+      g_object_unref (window);
     }
-    else if (proxy)
+    else if (priv->dnd_proxy_win)
     {
       // FIXME: unset first?
       gtk_drag_dest_set (widget, 0, drop_types, n_drop_types, GDK_ACTION_COPY);
 
-      proxy = NULL;
+      g_object_unref (priv->dnd_proxy_win);
+      priv->dnd_proxy_win = NULL;
     }
   }
 
-  return proxy != NULL;
+  return priv->dnd_proxy_win != NULL;
 }
 
 static gboolean
@@ -369,6 +448,7 @@ awn_panel_drag_motion (GtkWidget *widget, GdkDragContext *context,
                        gint x, gint y, guint time_)
 {
   AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (widget);
+
   awn_panel_set_drag_proxy (AWN_PANEL (widget), FALSE);
 
   if (priv->dnd_mouse_poll_timer_id == 0)
@@ -376,6 +456,8 @@ awn_panel_drag_motion (GtkWidget *widget, GdkDragContext *context,
     priv->dnd_mouse_poll_timer_id = g_timeout_add (40, awn_panel_dnd_check,
                                                    widget);
   }
+
+  gdk_drag_status (context, 0, time_);
 
   return TRUE;
 }

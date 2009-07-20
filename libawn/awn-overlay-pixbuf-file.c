@@ -52,6 +52,8 @@ struct _AwnOverlayPixbufFilePrivate {
 
     gint  icon_width;
     gint  icon_height;
+    /*Used to keep missing file from spamming the console messages*/
+    gboolean  emitted_warning;
 };
 
 enum
@@ -82,6 +84,7 @@ awn_overlay_pixbuf_file_get_property (GObject *object, guint property_id,
   {
     case PROP_FILE_NAME:
       g_value_set_string (value,priv->file_name);
+      priv->emitted_warning = FALSE;
       break;             
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -300,9 +303,10 @@ awn_overlay_pixbuf_file_load (AwnOverlayPixbufFile *overlay,
                   NULL);
     g_object_unref (pixbuf);    
   }
-  else
+  else if (!priv->emitted_warning)
   {
     g_warning ("%s: Failed to load pixbuf (%s)",__func__,file_name);
+    priv->emitted_warning = TRUE;
   }
 
 }
