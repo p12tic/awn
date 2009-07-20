@@ -1,3 +1,8 @@
+2009-07-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/taskmanager.schema-ini:
+	Fix the match_strength default so that it's a valid value.
+
 2009-07-19  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-overlay-pixbuf-file.c:
