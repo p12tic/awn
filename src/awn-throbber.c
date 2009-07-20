@@ -234,7 +234,10 @@ awn_throbber_show (GtkWidget *widget, gpointer user_data)
 
   if (!priv->timer_id && priv->type == AWN_THROBBER_TYPE_NORMAL)
   {
-    priv->timer_id = g_timeout_add(100, awn_throbber_timeout, widget);
+    // we want lower prio than HIGH_IDLE
+    priv->timer_id = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 
+                                         100, awn_throbber_timeout, 
+                                         widget, NULL);
   }
 }
 
@@ -313,7 +316,10 @@ awn_throbber_set_type (AwnThrobber *throbber, AwnThrobberType type)
     case AWN_THROBBER_TYPE_NORMAL:
       if (!priv->timer_id && GTK_WIDGET_MAPPED (GTK_WIDGET (throbber)))
       {
-        priv->timer_id = g_timeout_add (100, awn_throbber_timeout, throbber);
+        // we want lower prio than HIGH_IDLE
+        priv->timer_id = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 
+                                             100, awn_throbber_timeout, 
+                                             throbber, NULL);
       }
       break;
     case AWN_THROBBER_TYPE_CLOSE_BUTTON:
