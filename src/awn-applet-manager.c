@@ -113,6 +113,7 @@ awn_applet_manager_constructed (GObject *object)
 {
   AwnAppletManager        *manager;
   AwnAppletManagerPrivate *priv;
+  GValueArray *empty_array;
   
   priv = AWN_APPLET_MANAGER_GET_PRIVATE (object);
   manager = AWN_APPLET_MANAGER (object);
@@ -146,15 +147,17 @@ awn_applet_manager_constructed (GObject *object)
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
                                        AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
-                                       object, "ua_activelist", TRUE,
+                                       object, "ua_active_list", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   /*
   ua_active_list should be empty when awn starts...
    */
+  empty_array = g_value_array_new (0);
   desktop_agnostic_config_client_set_list (priv->client,
                                            AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
-                                           NULL, NULL);
+                                           empty_array, NULL);
+  g_value_array_free (empty_array);
 }
 
 static void
@@ -218,18 +221,18 @@ awn_applet_manager_get_property (GObject    *object,
  * Sets a an GSList<string> property from a GValueArray.
  */
 static void
-set_list_property (const GValue *value, GSList *list)
+set_list_property (const GValue *value, GSList **list)
 {
   GValueArray *array;
 
-  free_list (list);
+  free_list (*list);
   array = (GValueArray*)g_value_get_boxed (value);
   if (array)
   {
     for (guint i = 0; i < array->n_values; i++)
     {
       GValue *val = g_value_array_get_nth (array, i);
-      list = g_slist_append (list, g_value_dup_string (val));
+      *list = g_slist_append (*list, g_value_dup_string (val));
     }
     // don't free array, it will be done automatically
   }
@@ -262,15 +265,15 @@ awn_applet_manager_set_property (GObject      *object,
       awn_applet_manager_set_size (manager, g_value_get_int (value));
       break;
     case PROP_APPLET_LIST:
-      set_list_property (value, priv->applet_list);
+      set_list_property (value, &priv->applet_list);
       awn_applet_manager_refresh_applets (manager);
       break;
     case PROP_UA_LIST:
-      set_list_property (value, priv->ua_list);
+      set_list_property (value, &priv->ua_list);
       awn_applet_manager_refresh_applets (manager);
       break;
     case PROP_UA_ACTIVE_LIST:
-      set_list_property (value, priv->ua_active_list);
+      set_list_property (value, &priv->ua_active_list);
       awn_applet_manager_refresh_applets (manager);
       break;
     default:

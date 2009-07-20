@@ -1,5 +1,12 @@
 2009-07-20  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* src/awn-applet-manager.c (awn_applet_manager_constructed,
+	  set_list_property, awn_applet_manager_set_property):
+	Fix typo.
+	Fix setting list properties.
+
+2009-07-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
 	Fix schema type names.
 
