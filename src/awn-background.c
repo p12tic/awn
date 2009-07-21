@@ -687,6 +687,12 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
   set_cfg_from_theme (&style->light[GTK_STATE_ACTIVE], 100,
                       client, AWN_THEME_HILIGHT);
 
+  /* Set colors for AwnDialog */
+  set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 255,
+                      client, AWN_THEME_DLG_BG);
+  set_cfg_from_theme (&style->bg[GTK_STATE_PRELIGHT], 255,
+                      client, AWN_THEME_DLG_TITLE_BG);
+
   /* Don't draw patterns */
   awn_config_client_set_bool (client,
                               AWN_GROUP_THEME, AWN_THEME_DRAW_PATTERN, 

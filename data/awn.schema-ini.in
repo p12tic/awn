@@ -71,7 +71,7 @@ description = Auto hides the dock when the cursor is not on the dock (shouldn't 
 [panel/style]
 type = int
 default = 1
-description = The style of the bar. (none=0, flat bar=1, 3d bar=2, curved bar=3)
+description = The style of the bar. (none=0, flat bar=1, 3d bar=2, curved bar=3, edgy=4)
 
 [panel/clickthrough]
 type = int
@@ -107,6 +107,16 @@ description = First highlight gradient step color.
 type = string
 default = #FFFFFF0A
 description = Second highlight gradient step color.
+
+[theme/dialog_bg]
+type = string
+default = #AAAAAAEE
+description = Background color for AwnDialog.
+
+[theme/dialog_title_bg]
+type = string
+default = #FFFFFFFF
+description = Background color for AwnDialog's title.
 
 [theme/icon_text_color]
 type = string

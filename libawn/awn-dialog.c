@@ -69,10 +69,8 @@ struct _AwnDialogPrivate
   gint window_padding;
 
   /* Standard box drawing colours */
-  DesktopAgnosticColor *g_step_1;
-  DesktopAgnosticColor *g_step_2;
-  DesktopAgnosticColor *g_histep_1;
-  DesktopAgnosticColor *g_histep_2;
+  DesktopAgnosticColor *dialog_bg;
+  DesktopAgnosticColor *title_bg;
   DesktopAgnosticColor *border_color;
   DesktopAgnosticColor *hilight_color;
 
@@ -103,10 +101,8 @@ enum
   PROP_HIDE_ON_ESC,
   PROP_EFFECTS_HILIGHT,
 
-  PROP_GSTEP1,
-  PROP_GSTEP2,
-  PROP_GHISTEP1,
-  PROP_GHISTEP2,
+  PROP_DIALOG_BG,
+  PROP_TITLE_BG,
   PROP_BORDER,
   PROP_HILIGHT,
 };
@@ -358,7 +354,7 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
   cairo_translate (cr, 0.5, 0.5);
 
   /* background shading */
-  awn_cairo_set_source_color (cr, priv->g_step_2);
+  awn_cairo_set_source_color (cr, priv->dialog_bg);
 
   awn_dialog_paint_border_path (dialog, cr, width, height);
   path = cairo_copy_path (cr);
@@ -399,7 +395,7 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
     cairo_identity_matrix (cr);
     cairo_translate (cr, 0.5, 0.5);
     cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-    awn_cairo_set_source_color (cr, priv->g_histep_1);
+    awn_cairo_set_source_color (cr, priv->title_bg);
 
     const int start_x = BORDER + 2;
     const int start_y = BORDER + 2;
@@ -683,17 +679,11 @@ awn_dialog_constructed (GObject *object)
 #endif
 
   awn_config_bridge_bind (bridge, client,
-                          AWN_GROUP_THEME, "gstep1",
-                          object, "gstep1");
+                          AWN_GROUP_THEME, "dialog_bg",
+                          object, "dialog_bg");
   awn_config_bridge_bind (bridge, client,
-                          AWN_GROUP_THEME, "gstep2",
-                          object, "gstep2");
-  awn_config_bridge_bind (bridge, client,
-                          AWN_GROUP_THEME, "ghistep1",
-                          object, "ghistep1");
-  awn_config_bridge_bind (bridge, client,
-                          AWN_GROUP_THEME, "ghistep2",
-                          object, "ghistep2");
+                          AWN_GROUP_THEME, "dialog_title_bg",
+                          object, "title_bg");
   awn_config_bridge_bind (bridge, client,
                           AWN_GROUP_THEME, "border",
                           object, "border");
@@ -733,14 +723,12 @@ awn_dialog_get_property (GObject    *object,
       g_value_set_boolean (value, priv->effects_activate);
       break;
 
-    case PROP_GSTEP1:
-    case PROP_GSTEP2:
-    case PROP_GHISTEP1:
-    case PROP_GHISTEP2:
+    case PROP_DIALOG_BG:
+    case PROP_TITLE_BG:
     case PROP_BORDER:
     case PROP_HILIGHT:
       g_warning ("Property get unimplemented!");
-      g_value_set_string (value, "FFFFFFFF");
+      g_value_set_string (value, "#FFFFFFFF");
       break;
   default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -792,27 +780,23 @@ awn_dialog_set_property (GObject      *object,
       priv->effects_activate = g_value_get_boolean (value);
       break;
 
-    case PROP_GSTEP1:
-      priv->g_step_1 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+    case PROP_DIALOG_BG:
+      if (priv->dialog_bg) g_object_unref (priv->dialog_bg);
+      priv->dialog_bg = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
-    case PROP_GSTEP2:
-      priv->g_step_2 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
-      gtk_widget_queue_draw (GTK_WIDGET (object));
-      break;
-    case PROP_GHISTEP1:
-      priv->g_histep_1 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
-      gtk_widget_queue_draw (GTK_WIDGET (object));
-      break;
-    case PROP_GHISTEP2:
-      priv->g_histep_2 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+    case PROP_TITLE_BG:
+      if (priv->title_bg) g_object_unref (priv->title_bg);
+      priv->title_bg = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_BORDER:
+      if (priv->border_color) g_object_unref (priv->border_color);
       priv->border_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_HILIGHT:
+      if (priv->hilight_color) g_object_unref (priv->hilight_color);
       priv->hilight_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
@@ -953,35 +937,19 @@ awn_dialog_class_init (AwnDialogClass *klass)
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
-    PROP_GSTEP1,
-    g_param_spec_string ("gstep1",
-                         "GStep1",
-                         "Gradient Step 1",
-                         "FF0000FF",
+    PROP_DIALOG_BG,
+    g_param_spec_string ("dialog_bg",
+                         "Dialog Background",
+                         "Dialog background color",
+                         "#AAAAAAEE",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
-    PROP_GSTEP2,
-    g_param_spec_string ("gstep2",
-                         "GStep2",
-                         "Gradient Step 2",
-                         "00FF00FF",
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (obj_class,
-    PROP_GHISTEP1,
-    g_param_spec_string ("ghistep1",
-                         "GHiStep1",
-                         "Hilight Gradient Step 1",
-                         "FFFFFF44",
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (obj_class,
-    PROP_GHISTEP2,
-    g_param_spec_string ("ghistep2",
-                         "GHiStep2",
-                         "Hilight Gradient Step 2",
-                         "FFFFFF11",
+    PROP_TITLE_BG,
+    g_param_spec_string ("title_bg",
+                         "Title Background",
+                         "Background color for dialog's title",
+                         "#FFFFFFFF",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -989,7 +957,7 @@ awn_dialog_class_init (AwnDialogClass *klass)
     g_param_spec_string ("border",
                          "Border",
                          "Border color",
-                         "000000FF",
+                         "#000000FF",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -997,7 +965,7 @@ awn_dialog_class_init (AwnDialogClass *klass)
     g_param_spec_string ("hilight",
                          "Hilight",
                          "Internal border color",
-                         "FFFFFFff",
+                         "#FFFFFFFF",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_type_class_add_private (G_OBJECT_CLASS (klass),

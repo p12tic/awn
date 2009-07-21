@@ -57,6 +57,9 @@
 #define AWN_THEME_BORDER         "border"
 #define AWN_THEME_HILIGHT        "hilight"
 
+#define AWN_THEME_DLG_BG         "dialog_bg"
+#define AWN_THEME_DLG_TITLE_BG   "dialog_title_bg"
+
 #define AWN_THEME_SHOW_SEP       "show_sep"
 #define AWN_THEME_SEP_COLOR      "sep_color"
 
