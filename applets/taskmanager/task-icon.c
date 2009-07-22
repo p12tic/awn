@@ -1194,7 +1194,8 @@ task_icon_button_release_event (GtkWidget      *widget,
       else if (priv->shown_items == 2)
       {
         /*This clause will probably get more complicated after enabling 
-         task grouping
+         task grouping for non-launchers.  As a launcher will not be among the 
+         shown_items.
          
          TODO add an config option so those who want can revert back to the
          previous behaviour.
