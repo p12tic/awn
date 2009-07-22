@@ -1,5 +1,16 @@
 2009-07-21  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-item.h:
+	Contributed by Matt <sharkbaitbobby@gmail.com>.
+	Adds buttons to the dialog.  This will probably need to be switched
+	back to the previous way of doing things (and redone with a bit 
+	more effort) once we begin providing a stacks type option 
+	(probably in the 0.6).  Till then this seems to be useful as both a
+	visual and usability improvement.
+
+2009-07-21  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-launcher.c:
 	Small style cleanup.
 

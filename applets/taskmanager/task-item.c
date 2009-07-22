@@ -21,7 +21,7 @@
 
 #include <libawn/libawn.h>
 
-G_DEFINE_ABSTRACT_TYPE (TaskItem, task_item, GTK_TYPE_EVENT_BOX)
+G_DEFINE_ABSTRACT_TYPE (TaskItem, task_item, GTK_TYPE_BUTTON)
 
 #define TASK_ITEM_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_ITEM, \
@@ -118,12 +118,16 @@ task_item_init (TaskItem *item)
   /* get and save private struct */
   priv = item->priv = TASK_ITEM_GET_PRIVATE (item);
 
-  /* let this eventbox listen to every events */
-  gtk_event_box_set_above_child (GTK_EVENT_BOX (item), TRUE);
-  
+  /* let this button listen to every event */
+  gtk_widget_add_events (GTK_WIDGET (item), GDK_ALL_EVENTS_MASK);
+
+  /* for looks */
+  gtk_button_set_relief (GTK_BUTTON (item), GTK_RELIEF_NONE);
+
   /* create content */
   priv->box = gtk_hbox_new (FALSE, 10);
   gtk_container_add (GTK_CONTAINER (item), priv->box);
+  gtk_container_set_border_width (GTK_CONTAINER (priv->box), 1);
 
   priv->image = GTK_WIDGET (awn_image_new ());
   gtk_box_pack_start (GTK_BOX (priv->box), priv->image, FALSE, FALSE, 0);
@@ -154,8 +158,12 @@ task_item_button_release_event (GtkWidget      *widget,
     case 2:
       task_item_middle_click (TASK_ITEM (widget), event);
       break;
+    case 3:
+      task_item_right_click (TASK_ITEM (widget), event);
+      break;
   }
-  return TRUE;
+
+  return FALSE;
 }
 
 static gboolean
@@ -164,11 +172,9 @@ task_item_button_press_event (GtkWidget      *widget,
 {
   g_return_val_if_fail (TASK_IS_ITEM (widget), FALSE);
 
-  if (event->button != 3) return FALSE;
+  gtk_widget_queue_draw (widget);
 
-  task_item_right_click (TASK_ITEM (widget), event);
-
-  return TRUE;
+  return FALSE;
 }
 
 static void 
