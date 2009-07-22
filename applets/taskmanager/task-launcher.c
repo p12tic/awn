@@ -368,10 +368,8 @@ _match (TaskItem *item,
     g_debug ("cmd = %p, search_result = %p, strlen(exec) = %u, strlen (cmd) =%u",
              cmd,search_result,(guint)strlen(priv->exec),(guint)strlen(cmd));
     #endif
-    if (search_result && ( 
-                          (search_result + strlen(priv->exec)) == 
-                          (cmd + strlen(cmd))
-                          ))
+    if (search_result && 
+        ((search_result + strlen(priv->exec)) == (cmd + strlen(cmd))))
     {
       #ifdef DEBUG
       g_debug ("exec matches end of command line.");
