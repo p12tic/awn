@@ -1,6 +1,11 @@
 2009-07-21  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-item.c:
+	Hookup the activate signal so space/enter work on the buttons.
+
+2009-07-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-item.c:
   	* applets/taskmanager/task-item.h:
 	Contributed by Matt <sharkbaitbobby@gmail.com>.
 	Adds buttons to the dialog.  This will probably need to be switched

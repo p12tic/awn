@@ -58,6 +58,7 @@ static gboolean  task_item_button_release_event (GtkWidget      *widget,
                                                  GdkEventButton *event);
 static gboolean  task_item_button_press_event   (GtkWidget      *widget,
                                                  GdkEventButton *event);
+static void task_item_activate (GtkWidget *widget, gpointer null);
 
 /* GObject stuff */
 static void
@@ -142,6 +143,9 @@ task_item_init (TaskItem *item)
                     G_CALLBACK (task_item_icon_changed), NULL);
   g_signal_connect (G_OBJECT (item), "visible-changed",
                     G_CALLBACK (task_item_visible_changed), NULL);
+  g_signal_connect (G_OBJECT (item), "activate",
+                    G_CALLBACK (task_item_activate), NULL);
+  
 }
 
 static gboolean
@@ -171,10 +175,29 @@ task_item_button_press_event (GtkWidget      *widget,
                               GdkEventButton *event)
 {
   g_return_val_if_fail (TASK_IS_ITEM (widget), FALSE);
-
   gtk_widget_queue_draw (widget);
 
   return FALSE;
+}
+
+static void 
+task_item_activate (GtkWidget *widget, gpointer null)
+{
+  g_return_if_fail (TASK_IS_ITEM (widget));
+  
+  /*
+   FIXME TODO
+   This works for now as the GdkEventButton arg has already
+   been checked before this.. and it's not checked 
+   by any of the called code.
+   
+   That being said... It probably makes sense to remove
+   the event arg from the parameters to task_item_*_click()
+   and the functions called by them.  If it doesn't make sense
+   then this needs to this function call needs to be replaced 
+   with something else :-)
+   */
+  task_item_left_click (TASK_ITEM(widget), NULL);
 }
 
 static void 
