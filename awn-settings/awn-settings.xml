@@ -101,7 +101,6 @@
                           <object class="GtkVBox" id="vbox4">
                             <property name="visible">True</property>
                             <property name="orientation">vertical</property>
-                            <property name="homogeneous">True</property>
                             <child>
                               <object class="GtkHBox" id="hbox3">
                                 <property name="visible">True</property>
@@ -127,6 +126,7 @@
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
+                                    <property name="pack_type">end</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
@@ -138,17 +138,28 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label14">
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <object class="GtkHSeparator" id="hseparator2">
                                 <property name="visible">True</property>
-                                <property name="xalign">0.98000001907348633</property>
-                                <property name="label" translatable="yes">Linked with
-the theme ?</property>
-                                <property name="wrap">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label21">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">&lt;b&gt;Panel&lt;/b&gt;</property>
+                                <property name="use_markup">True</property>
+                                <property name="max_width_chars">0</property>
+                              </object>
+                              <packing>
+                                <property name="padding">5</property>
+                                <property name="position">3</property>
                               </packing>
                             </child>
                             <child>
@@ -179,26 +190,11 @@ the theme ?</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
-                                <child>
-                                  <object class="GtkCheckButton" id="freezeSize">
-                                    <property name="width_request">80</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="draw_indicator">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="pack_type">end</property>
-                                    <property name="position">2</property>
-                                  </packing>
-                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">2</property>
+                                <property name="position">4</property>
                               </packing>
                             </child>
                             <child>
@@ -225,26 +221,11 @@ the theme ?</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
-                                <child>
-                                  <object class="GtkCheckButton" id="freezeOrient">
-                                    <property name="width_request">80</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="draw_indicator">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="pack_type">end</property>
-                                    <property name="position">2</property>
-                                  </packing>
-                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">3</property>
+                                <property name="position">5</property>
                               </packing>
                             </child>
                             <child>
@@ -271,26 +252,11 @@ the theme ?</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
-                                <child>
-                                  <object class="GtkCheckButton" id="freezeStyle">
-                                    <property name="width_request">80</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="draw_indicator">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="pack_type">end</property>
-                                    <property name="position">2</property>
-                                  </packing>
-                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">4</property>
+                                <property name="position">6</property>
                               </packing>
                             </child>
                             <child>
@@ -317,26 +283,11 @@ the theme ?</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
-                                <child>
-                                  <object class="GtkCheckButton" id="freezeEffects">
-                                    <property name="width_request">80</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="draw_indicator">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="pack_type">end</property>
-                                    <property name="position">2</property>
-                                  </packing>
-                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">5</property>
+                                <property name="position">7</property>
                               </packing>
                             </child>
                             <child>
@@ -363,26 +314,46 @@ the theme ?</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">8</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkHBox" id="hbox26">
+                                <property name="visible">True</property>
                                 <child>
-                                  <object class="GtkCheckButton" id="freezeEffects1">
-                                    <property name="width_request">80</property>
+                                  <object class="GtkCheckButton" id="expand_config">
+                                    <property name="label" translatable="yes">Expand the bar ?</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="draw_indicator">True</property>
                                   </object>
                                   <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="pack_type">end</property>
-                                    <property name="position">2</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkCheckButton" id="autostart_config">
+                                    <property name="label" translatable="yes">Enable autostart</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="draw_indicator">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">1</property>
                                   </packing>
                                 </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">6</property>
+                                <property name="padding">5</property>
+                                <property name="position">9</property>
                               </packing>
                             </child>
                             <child>
@@ -412,7 +383,84 @@ the theme ?</property>
                                 </child>
                               </object>
                               <packing>
-                                <property name="position">7</property>
+                                <property name="position">10</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkHSeparator" id="hseparator1">
+                                <property name="visible">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="position">11</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label18">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">&lt;b&gt;Taskmanager&lt;/b&gt;</property>
+                                <property name="use_markup">True</property>
+                                <property name="max_width_chars">0</property>
+                              </object>
+                              <packing>
+                                <property name="padding">5</property>
+                                <property name="position">12</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkHBox" id="hbox8">
+                                <property name="visible">True</property>
+                                <child>
+                                  <object class="GtkCheckButton" id="show_all_windows_config">
+                                    <property name="label" translatable="yes">Show all windows</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="draw_indicator">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkCheckButton" id="grouping_config">
+                                    <property name="label" translatable="yes">Group windows</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="draw_indicator">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">13</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkHBox" id="hbox25">
+                                <property name="visible">True</property>
+                                <child>
+                                  <object class="GtkCheckButton" id="only_launchers_config">
+                                    <property name="label" translatable="yes">Launchers only</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="draw_indicator">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">14</property>
                               </packing>
                             </child>
                           </object>
@@ -425,7 +473,7 @@ the theme ?</property>
                     <child type="label">
                       <object class="GtkLabel" id="frame1">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Panel&lt;/b&gt;</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Theme&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
                     </child>
@@ -702,7 +750,7 @@ the theme ?</property>
                                 <property name="visible">True</property>
                                 <child>
                                   <object class="GtkButton" id="launcher_add">
-                                    <property name="label" translatable="yes">Add</property>
+                                    <property name="label" translatable="yes">gtk-add</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -716,10 +764,11 @@ the theme ?</property>
                                 </child>
                                 <child>
                                   <object class="GtkButton" id="launcher_remove">
-                                    <property name="label" translatable="yes">Remove</property>
+                                    <property name="label" translatable="yes">gtk-remove</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <property name="use_stock">True</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -729,10 +778,11 @@ the theme ?</property>
                                 </child>
                                 <child>
                                   <object class="GtkButton" id="launcher_edit">
-                                    <property name="label" translatable="yes">Edit</property>
+                                    <property name="label" translatable="yes">gtk-edit</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <property name="use_stock">True</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1151,16 +1201,7 @@ the theme ?</property>
                               <object class="GtkHBox" id="hbox24">
                                 <property name="visible">True</property>
                                 <child>
-                                  <object class="GtkCheckButton" id="expand_config">
-                                    <property name="label" translatable="yes">Expand the bar ?</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="draw_indicator">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">0</property>
-                                  </packing>
+                                  <placeholder/>
                                 </child>
                               </object>
                               <packing>
@@ -1231,16 +1272,7 @@ the theme ?</property>
                               <object class="GtkHBox" id="hbox45">
                                 <property name="visible">True</property>
                                 <child>
-                                  <object class="GtkCheckButton" id="only_launchers_config">
-                                    <property name="label" translatable="yes">Show only launchers ?</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="draw_indicator">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">0</property>
-                                  </packing>
+                                  <placeholder/>
                                 </child>
                               </object>
                               <packing>
@@ -1253,16 +1285,7 @@ the theme ?</property>
                               <object class="GtkHBox" id="hbox46">
                                 <property name="visible">True</property>
                                 <child>
-                                  <object class="GtkCheckButton" id="show_all_windows_config">
-                                    <property name="label" translatable="yes">Show all windows ?</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="draw_indicator">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">0</property>
-                                  </packing>
+                                  <placeholder/>
                                 </child>
                               </object>
                               <packing>

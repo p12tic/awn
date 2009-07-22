@@ -103,6 +103,7 @@ ONLY_LAUNCHERS          = "only_show_launchers" #bool
 ALL_WINDOWS             = "show_all_windows"    #bool
 DRAG_AND_DROP           = "drag_and_drop"       #bool
 GROUPING_MODE           = "grouping_mode"       #int
+GROUPING                = "grouping"            #bool
 
 # i18n-related
 I18N_DOMAIN = "avant-window-navigator"

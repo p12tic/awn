@@ -1037,21 +1037,19 @@ class awnPreferences(awnBzr):
 #            self.wTree.get_widget('customeffectsframe').show()
             pass
 
-    def setup_autostart(self, group, key, check):
+    def setup_autostart(self, check):
         """sets up checkboxes"""
-        self.load_autostart(group, key, check)
-        check.connect("toggled", self.autostart_changed, (group, key))
-        self.client.notify_add(group, key, self.reload_autostart, check)
+        self.load_autostart(check)
+        check.connect("toggled", self.autostart_changed)
 
-    def load_autostart(self, group, key, check):
-        check.set_active(self.client.get_bool(group, key))
+    def load_autostart(self, check):
+        autostart_file = self.get_autostart_file_path()
+        check.set_active(os.path.isfile(autostart_file))
 
     def reload_autostart(self, entry, check):
         self.load_autostart(entry['group'], entry['key'], check)
 
-    def autostart_changed(self, check, groupkey):
-        group, key = groupkey
-        self.client.set_bool(group, key, check.get_active())
+    def autostart_changed(self, check):
         if check.get_active():
             self.create_autostarter()
         else:
@@ -1077,7 +1075,7 @@ class awnPreferences(awnBzr):
         autostart_dir = os.path.dirname(autostart_file)
         if not os.path.isdir(autostart_dir):
             # create autostart directory, if not existent
-            parent = self.wTree.get_widget('awnManagerWindow')
+            parent = self.wTree.get_object('awnManagerWindow')
             dialog = gtk.Dialog(_('Confirm directory creation'), parent, gtk.DIALOG_MODAL, ((gtk.STOCK_NO, gtk.RESPONSE_NO, gtk.STOCK_YES, gtk.RESPONSE_YES)))
             dialog.vbox.add(gtk.Label(_('There is no existing autostart directory for your user account yet.\nDo you want me to automatically create it for you?')))
             dialog.show_all()

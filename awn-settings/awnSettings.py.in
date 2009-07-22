@@ -71,29 +71,6 @@ class awnPreferencesMini(awnPreferences):
             self.create_sources_list()
             self.update_sources_list()
 
-        update_win = self.wTree.get_object("update_repository")
-        exit_button = self.wTree.get_object("exit_update_win")
-        exit_button.connect("clicked", lambda data=None:  update_win.hide_all())
-        self.update_bar = self.wTree.get_object("update_progress")
-        update_win.connect("show", lambda data=None: self.update_sources_list(progressbar=self.update_bar))
-
-        update_repo = self.wTree.get_object("update_repo")
-        update_repo.connect("clicked",  lambda data=None: update_win.show_all())
-
-        add_repo = self.wTree.get_object("add_repo")
-        add_repo.connect("clicked", self.add_repo_win_callback)
-
-        self.add_repo_get_entry = self.wTree.get_object("add_repo_entry")
-
-        self.add_repo_plus = self.wTree.get_object("add_repo_plus")
-        self.add_repo_plus.connect("clicked", self.add_repo_callback)
-
-        quit_repo = self.wTree.get_object("repo_quit")
-        quit_repo.connect("clicked", lambda data=None: self.top_window_repo.hide_all())
-
-        self.top_window_repo = self.wTree.get_object("add_repository")
-        self.view_repo = self.wTree.get_object("list_repos_view")
-
         exit_theme_button = self.wTree.get_object("exit_theme_select")
         exit_theme_button.connect("clicked", lambda data=None:  self.load_themes_win.hide_all())
 
@@ -120,18 +97,23 @@ class awnPreferencesMini(awnPreferences):
         self.theme_desktop = self.client.get_string(defs.THEME, defs.CURRENT_THEME)
 
         self.setup_spin(defs.PANEL, defs.SIZE, self.wTree.get_object("panelsize"))
-        self.setup_freeze(self.wTree.get_object("freezeSize"), self.wTree.get_object("panelsize"),"size")
+        #self.setup_freeze(self.wTree.get_object("freezeSize"), self.wTree.get_object("panelsize"),"size")
 
         self.setup_orientation(defs.PANEL, defs.ORIENT, self.wTree.get_object("orientationcombo"))
-        self.setup_freeze(self.wTree.get_object("freezeOrient"), self.wTree.get_object("orientationcombo"), "orientation")
+        #self.setup_freeze(self.wTree.get_object("freezeOrient"), self.wTree.get_object("orientationcombo"), "orientation")
 
         self.setup_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
-        self.setup_freeze(self.wTree.get_object("freezeEffects"), self.wTree.get_object("iconeffects"), "effects")
+        #self.setup_freeze(self.wTree.get_object("freezeEffects"), self.wTree.get_object("iconeffects"), "effects")
 
         self.setup_style(defs.PANEL, defs.STYLE, self.wTree.get_object("stylecombo"))
-        self.setup_freeze(self.wTree.get_object("freezeStyle"), self.wTree.get_object("stylecombo"), "style")
+        #self.setup_freeze(self.wTree.get_object("freezeStyle"), self.wTree.get_object("stylecombo"), "style")
 
         self.setup_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_object("monitor_align_hscale"))
+
+        self.setup_bool(defs.PANEL, defs.EXPAND, self.wTree.get_object("expand_config"))
+        self.setup_bool(defs.LAUNCHERS, defs.ONLY_LAUNCHERS, self.wTree.get_object("only_launchers_config"))
+        self.setup_bool(defs.LAUNCHERS, defs.ALL_WINDOWS, self.wTree.get_object("show_all_windows_config"))
+        self.setup_bool(defs.LAUNCHERS, defs.GROUPING, self.wTree.get_object("grouping_config"))
 
         #Advanced
         self.setup_spin(defs.PANEL, defs.OFFSET, self.wTree.get_object("offset_config"))
@@ -143,11 +125,8 @@ class awnPreferencesMini(awnPreferences):
         self.setup_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_object("autohide_config"))
         self.setup_spin(defs.PANEL, defs.STYLE, self.wTree.get_object("style_config"))
         self.setup_bool(defs.PANEL, defs.PANEL_MODE, self.wTree.get_object("panel_mode_config"))
-        self.setup_bool(defs.PANEL, defs.EXPAND, self.wTree.get_object("expand_config"))
         self.setup_spin(defs.PANEL, defs.CLICKTHROUGH, self.wTree.get_object("clickthrough_config"))
 
-        self.setup_bool(defs.LAUNCHERS, defs.ONLY_LAUNCHERS, self.wTree.get_object("only_launchers_config"))
-        self.setup_bool(defs.LAUNCHERS, defs.ALL_WINDOWS, self.wTree.get_object("show_all_windows_config"))
         self.setup_bool(defs.LAUNCHERS, defs.DRAG_AND_DROP, self.wTree.get_object("drag_and_drop_config"))
         self.setup_spin(defs.LAUNCHERS, defs.GROUPING_MODE, self.wTree.get_object("grouping_mode_config"))
 
@@ -155,6 +134,7 @@ class awnPreferencesMini(awnPreferences):
         self.setup_spin(defs.EFFECTS, defs.ICON_ALPHA, self.wTree.get_object("icon_alpha_config"))
         self.setup_spin(defs.EFFECTS, defs.REFLECTION_A_MULTIPLIER, self.wTree.get_object("reflection_alpha_multiplier_config"))
         self.setup_bool(defs.EFFECTS, defs.SHOW_SHADOWS, self.wTree.get_object("show_shadows_config"))
+        self.setup_autostart (self.wTree.get_object("autostart_config"))
 
         #TODO Need a combobox or setup_string
         #self.setup_spin(defs.EFFECTS, defs.ARROW_ICON, self.wTree.get_object("arrow_icon_config"))
@@ -167,6 +147,10 @@ class awnPreferencesMini(awnPreferences):
         self.load_spin(defs.PANEL, defs.SIZE, self.wTree.get_object("panelsize"))
         self.load_orientation(defs.PANEL, defs.ORIENT, self.wTree.get_object("orientationcombo"))
         self.load_style(defs.PANEL, defs.STYLE, self.wTree.get_object("stylecombo"))
+        self.load_bool(defs.PANEL, defs.EXPAND, self.wTree.get_object("expand_config"))
+        self.load_bool(defs.LAUNCHERS, defs.ONLY_LAUNCHERS, self.wTree.get_object("only_launchers_config"))
+        self.load_bool(defs.LAUNCHERS, defs.ALL_WINDOWS, self.wTree.get_object("show_all_windows_config"))
+        self.load_bool(defs.LAUNCHERS, defs.GROUPING, self.wTree.get_object("grouping_config"))
 
         #Advanced
         self.load_spin(defs.PANEL, defs.OFFSET, self.wTree.get_object("offset_config"))
@@ -178,11 +162,8 @@ class awnPreferencesMini(awnPreferences):
         self.load_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_object("autohide_config"))
         self.load_spin(defs.PANEL, defs.STYLE, self.wTree.get_object("style_config"))
         self.load_bool(defs.PANEL, defs.PANEL_MODE, self.wTree.get_object("panel_mode_config"))
-        self.load_bool(defs.PANEL, defs.EXPAND, self.wTree.get_object("expand_config"))
         self.load_spin(defs.PANEL, defs.CLICKTHROUGH, self.wTree.get_object("clickthrough_config"))
 
-        self.load_bool(defs.LAUNCHERS, defs.ONLY_LAUNCHERS, self.wTree.get_object("only_launchers_config"))
-        self.load_bool(defs.LAUNCHERS, defs.ALL_WINDOWS, self.wTree.get_object("show_all_windows_config"))
         self.load_bool(defs.LAUNCHERS, defs.DRAG_AND_DROP, self.wTree.get_object("drag_and_drop_config"))
         self.load_spin(defs.LAUNCHERS, defs.GROUPING_MODE, self.wTree.get_object("grouping_mode_config"))
 
@@ -190,12 +171,39 @@ class awnPreferencesMini(awnPreferences):
         self.load_spin(defs.EFFECTS, defs.ICON_ALPHA, self.wTree.get_object("icon_alpha_config"))
         self.load_spin(defs.EFFECTS, defs.REFLECTION_A_MULTIPLIER, self.wTree.get_object("reflection_alpha_multiplier_config"))
         self.load_bool(defs.EFFECTS, defs.SHOW_SHADOWS, self.wTree.get_object("show_shadows_config"))
+        self.load_autostart (self.wTree.get_object("autostart_config"))
 
         #TODO Need a combobox or load_string
         #self.load_spin(defs.EFFECTS, defs.ARROW_ICON, self.wTree.get_object("arrow_icon_config"))
 
         #TODO Fix color settings
         #self.load_color(defs.THEME, defs.GSTEP1, self.wTree.get_object("gstep1_colorbutton"))
+
+
+        #Repositories
+        update_win = self.wTree.get_object("update_repository")
+        exit_button = self.wTree.get_object("exit_update_win")
+        exit_button.connect("clicked", lambda data=None:  update_win.hide_all())
+        self.update_bar = self.wTree.get_object("update_progress")
+        update_win.connect("show", lambda data=None: self.update_sources_list(progressbar=self.update_bar))
+
+        update_repo = self.wTree.get_object("update_repo")
+        update_repo.connect("clicked",  lambda data=None: update_win.show_all())
+
+        add_repo = self.wTree.get_object("add_repo")
+        add_repo.connect("clicked", self.add_repo_win_callback)
+
+        self.add_repo_get_entry = self.wTree.get_object("add_repo_entry")
+
+        self.add_repo_plus = self.wTree.get_object("add_repo_plus")
+        self.add_repo_plus.connect("clicked", self.add_repo_callback)
+
+        quit_repo = self.wTree.get_object("repo_quit")
+        quit_repo.connect("clicked", lambda data=None: self.top_window_repo.hide_all())
+
+        self.top_window_repo = self.wTree.get_object("add_repository")
+        self.view_repo = self.wTree.get_object("list_repos_view")
+
 
     def add_repo_win_callback(self, data=None):
         self.update_repo_view()
