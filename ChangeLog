@@ -1,3 +1,9 @@
+2009-07-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Do not show dialog when there is only one window being managed.
+	An config option to revert to previous behaviour will be added.
+
 2009-07-21  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-item.c:

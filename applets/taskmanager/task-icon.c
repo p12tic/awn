@@ -1191,6 +1191,33 @@ task_icon_button_release_event (GtkWidget      *widget,
         }
         return TRUE;
       }
+      else if (priv->shown_items == 2)
+      {
+        /*This clause will probably get more complicated after enabling 
+         task grouping
+         
+         TODO add an config option so those who want can revert back to the
+         previous behaviour.
+         */
+        GSList *w;
+        for (w = priv->items; w; w = w->next)
+        {
+          TaskItem *item = w->data;
+
+          if (TASK_IS_WINDOW (item))
+          {
+            if ( task_window_is_active (TASK_WINDOW(item)) )
+            {
+              task_window_minimize (TASK_WINDOW(item));
+            }
+            else
+            {
+              task_window_activate (TASK_WINDOW(item), event->time);
+            }
+          }
+          g_debug ("clicked on: %s", task_item_get_name (item));
+        }            
+      }
       else
       {
         GSList *w;
@@ -1199,10 +1226,10 @@ task_icon_button_release_event (GtkWidget      *widget,
           TaskItem *item = w->data;
 
           if (!task_item_is_visible (item)) continue;
-          
+
           g_debug ("clicked on: %s", task_item_get_name (item));
         }
-        
+
         //TODO: move to hover?
         if (GTK_WIDGET_VISIBLE (priv->dialog) )
         {
