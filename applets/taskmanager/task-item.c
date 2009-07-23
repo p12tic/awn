@@ -26,7 +26,7 @@
  The value of this is still no settled.
  Possible TODO:  Consider as a bound prop.
  */
-#define TASK_ITEM_ICON_SCALE 0.8
+#define TASK_ITEM_ICON_SCALE 0.65
 
 G_DEFINE_ABSTRACT_TYPE (TaskItem, task_item, GTK_TYPE_BUTTON)
 

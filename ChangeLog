@@ -1,6 +1,11 @@
 2009-07-23  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-item.c:
+	Decreased TaskItem icon size.
+
+2009-07-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-item.c:
   	* applets/taskmanager/task-launcher.c:
   	* applets/taskmanager/task-window.c:
 	Adjust the size of icon displayed in TaskItem. Implementation
