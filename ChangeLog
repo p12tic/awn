@@ -1,3 +1,11 @@
+2009-07-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	Added long-press and context-menu-popup signals.
+
 2009-07-23  Michal Hruby <michal.mhr@gmail.com>
 
 	* awn-settings/Makefile.am:
