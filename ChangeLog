@@ -1,3 +1,8 @@
+2009-07-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-label.c:
+	Fixed non-zero angle to work correctly with AwnLabel.
+
 2009-07-23  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-applet-simple.c:
