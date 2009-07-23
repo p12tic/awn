@@ -136,6 +136,20 @@ task_window_constructed (GObject *object)
 }
 
 static void
+task_window_dispose (GObject *object)
+{
+  G_OBJECT_CLASS (task_window_parent_class)->dispose (object);
+}
+
+
+static void
+task_window_finalize (GObject *object)
+{
+  G_OBJECT_CLASS (task_window_parent_class)->finalize (object);
+}
+
+
+static void
 task_window_class_init (TaskWindowClass *klass)
 {
   GParamSpec    *pspec;
@@ -145,6 +159,8 @@ task_window_class_init (TaskWindowClass *klass)
   obj_class->set_property = task_window_set_property;
   obj_class->get_property = task_window_get_property;
   obj_class->constructed  = task_window_constructed;
+  obj_class->finalize = task_window_finalize;
+  obj_class->dispose = task_window_dispose;
 
   /* We implement the necessary funtions for an item */
   item_class->get_name        = _get_name;
