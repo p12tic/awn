@@ -21,6 +21,13 @@
 
 #include <libawn/libawn.h>
 
+/*
+ Scale the size of the icon displayd in the task items.
+ The value of this is still no settled.
+ Possible TODO:  Consider as a bound prop.
+ */
+#define TASK_ITEM_ICON_SCALE 0.5
+
 G_DEFINE_ABSTRACT_TYPE (TaskItem, task_item, GTK_TYPE_BUTTON)
 
 #define TASK_ITEM_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -214,7 +221,12 @@ task_item_icon_changed (TaskItem *item, GdkPixbuf *icon)
 {
   TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
 
-  gtk_image_set_from_pixbuf (GTK_IMAGE (priv->image), icon);
+  GdkPixbuf * scaled = gdk_pixbuf_scale_simple (icon,
+                               TASK_ITEM_ICON_SCALE*gdk_pixbuf_get_width(icon),
+                               TASK_ITEM_ICON_SCALE*gdk_pixbuf_get_height(icon),
+                               GDK_INTERP_BILINEAR);
+  gtk_image_set_from_pixbuf (GTK_IMAGE (priv->image), scaled);
+  g_object_unref (scaled);
 }
 
 static void
