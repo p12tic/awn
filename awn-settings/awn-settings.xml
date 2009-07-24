@@ -59,8 +59,7 @@
     <property name="page_size">10</property>
   </object>
   <object class="GtkAdjustment" id="adjustment7">
-    <property name="value">6</property>
-    <property name="upper">100</property>
+    <property name="upper">9999</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
     <property name="page_size">10</property>
@@ -989,13 +988,13 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHBox" id="hbox10">
+                              <object class="GtkHBox" id="hbox20">
                                 <property name="visible">True</property>
                                 <child>
-                                  <object class="GtkLabel" id="label10">
+                                  <object class="GtkLabel" id="clickthrough_label">
                                     <property name="visible">True</property>
                                     <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Monitor alignement</property>
+                                    <property name="label" translatable="yes">Clickthrough</property>
                                     <property name="justify">right</property>
                                     <property name="max_width_chars">0</property>
                                   </object>
@@ -1004,12 +1003,11 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinButton" id="monitor_align">
+                                  <object class="GtkSpinButton" id="clickthrough_config">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">&#x25CF;</property>
-                                    <property name="adjustment">adjustment4</property>
-                                    <property name="digits">3</property>
+                                    <property name="adjustment">adjustment10</property>
                                     <property name="numeric">True</property>
                                   </object>
                                   <packing>
@@ -1048,42 +1046,6 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHBox" id="hbox12">
-                                <property name="visible">True</property>
-                                <child>
-                                  <object class="GtkLabel" id="label11">
-                                    <property name="visible">True</property>
-                                    <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Monitor height</property>
-                                    <property name="justify">right</property>
-                                    <property name="max_width_chars">0</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkSpinButton" id="monitor_height">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="invisible_char">&#x25CF;</property>
-                                    <property name="adjustment">adjustment5</property>
-                                    <property name="numeric">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">3</property>
-                              </packing>
-                            </child>
-                            <child>
                               <object class="GtkHBox" id="hbox13">
                                 <property name="visible">True</property>
                                 <child>
@@ -1104,6 +1066,42 @@
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">&#x25CF;</property>
                                     <property name="adjustment">adjustment6</property>
+                                    <property name="numeric">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">3</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkHBox" id="hbox12">
+                                <property name="visible">True</property>
+                                <child>
+                                  <object class="GtkLabel" id="label11">
+                                    <property name="visible">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Monitor height</property>
+                                    <property name="justify">right</property>
+                                    <property name="max_width_chars">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="monitor_height">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="invisible_char">&#x25CF;</property>
+                                    <property name="adjustment">adjustment5</property>
                                     <property name="numeric">True</property>
                                   </object>
                                   <packing>
@@ -1153,149 +1151,6 @@
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
                                 <property name="position">5</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHBox" id="hbox21">
-                                <property name="visible">True</property>
-                                <child>
-                                  <object class="GtkLabel" id="label20">
-                                    <property name="visible">True</property>
-                                    <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Autohide</property>
-                                    <property name="justify">right</property>
-                                    <property name="max_width_chars">0</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkSpinButton" id="autohide_config">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="invisible_char">&#x25CF;</property>
-                                    <property name="adjustment">adjustment8</property>
-                                    <property name="numeric">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">6</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHBox" id="hbox22">
-                                <property name="visible">True</property>
-                                <child>
-                                  <object class="GtkLabel" id="label22">
-                                    <property name="visible">True</property>
-                                    <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Style</property>
-                                    <property name="justify">right</property>
-                                    <property name="max_width_chars">0</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkSpinButton" id="style_config">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="invisible_char">&#x25CF;</property>
-                                    <property name="adjustment">adjustment9</property>
-                                    <property name="numeric">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">7</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHBox" id="hbox23">
-                                <property name="visible">True</property>
-                                <child>
-                                  <object class="GtkCheckButton" id="panel_mode_config">
-                                    <property name="label" translatable="yes">Panel mode ?</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="draw_indicator">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">8</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHBox" id="hbox24">
-                                <property name="visible">True</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">9</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHBox" id="hbox20">
-                                <property name="visible">True</property>
-                                <child>
-                                  <object class="GtkLabel" id="clickthrough_label">
-                                    <property name="visible">True</property>
-                                    <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Clickthrough</property>
-                                    <property name="justify">right</property>
-                                    <property name="max_width_chars">0</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkSpinButton" id="clickthrough_config">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="invisible_char">&#x25CF;</property>
-                                    <property name="adjustment">adjustment10</property>
-                                    <property name="numeric">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">10</property>
                               </packing>
                             </child>
                           </object>

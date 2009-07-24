@@ -117,15 +117,11 @@ class awnPreferencesMini(awnPreferences):
 
         #Advanced
         self.setup_spin(defs.PANEL, defs.OFFSET, self.wTree.get_object("offset_config"))
-        self.setup_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_object("monitor_align"))
+        self.setup_spin(defs.PANEL, defs.CLICKTHROUGH, self.wTree.get_object("clickthrough_config"))
         self.setup_bool(defs.PANEL, defs.MONITOR_FORCE, self.wTree.get_object("force_monitor"))
         self.setup_spin(defs.PANEL, defs.MONITOR_HEIGHT, self.wTree.get_object("monitor_height"))
         self.setup_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_object("monitor_width"))
         self.setup_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_object("monitor_offset"))
-        self.setup_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_object("autohide_config"))
-        self.setup_spin(defs.PANEL, defs.STYLE, self.wTree.get_object("style_config"))
-        self.setup_bool(defs.PANEL, defs.PANEL_MODE, self.wTree.get_object("panel_mode_config"))
-        self.setup_spin(defs.PANEL, defs.CLICKTHROUGH, self.wTree.get_object("clickthrough_config"))
 
         self.setup_bool(defs.LAUNCHERS, defs.DRAG_AND_DROP, self.wTree.get_object("drag_and_drop_config"))
         self.setup_spin(defs.LAUNCHERS, defs.GROUPING_MODE, self.wTree.get_object("grouping_mode_config"))
