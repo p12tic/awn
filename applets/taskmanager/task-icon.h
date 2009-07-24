@@ -81,6 +81,9 @@ guint           task_icon_count_items       (TaskIcon      *icon);
 
 void            task_icon_append_item       (TaskIcon      *icon,
                                              TaskItem      *item);
+void            task_icon_append_ephemeral_item (TaskIcon      *icon,
+                                            TaskItem      *item);
+
 void            task_icon_remove_item       (TaskIcon      *icon,
                                              TaskItem      *item);
 guint           task_icon_match_item        (TaskIcon      *icon,

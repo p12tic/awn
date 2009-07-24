@@ -618,6 +618,9 @@ on_window_opened (WnckScreen    *screen,
                   WnckWindow    *window,
                   TaskManager   *manager)
 {
+  /*TODO
+   This functions is becoming a beast.  look into chopping into bits
+   */
   TaskManagerPrivate *priv;
   GtkWidget          *icon;
   TaskItem           *item;
@@ -709,9 +712,68 @@ on_window_opened (WnckScreen    *screen,
   }
   else
   {
+    /* grab the class name.
+     look through the various freedesktop system/user dirs for the 
+     associated desktop file.  If we find it then dump the associated 
+     launcher into the the dialog.
+    */
+    gchar   *res_name = NULL;
+    gchar   *class_name = NULL;
+    
     icon = task_icon_new (AWN_APPLET (manager));
+    task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name); 
+    if (class_name && strlen (class_name))
+    {
+      gchar * lower;
+      gchar * desktop;
+      const gchar* const * system_dirs = g_get_system_data_dirs ();
+      GStrv   iter;
+      TaskItem     *launcher = NULL;
+//#define DEBUG 1
+#ifdef DEBUG
+      g_debug ("%s: wm class = %s",__func__,class_name);
+#endif
+      lower = g_utf8_strdown (class_name, -1);
+#ifdef DEBUG
+      g_debug ("%s: lower = %s",__func__,lower);
+#endif      
+      
+      for (iter = (GStrv)system_dirs; *iter; iter++)
+      {
+        desktop = g_strdup_printf ("%sapplications/%s.desktop",*iter,lower);
+  #ifdef DEBUG
+        g_debug ("%s: desktop = %s",__func__,desktop);
+  #endif      
+        launcher = task_launcher_new_for_desktop_file (desktop);
+        if (launcher)
+        {
+  #ifdef DEBUG
+          g_debug ("launcher %p",launcher);
+  #endif
+          task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+          g_free (desktop);
+          break;
+        }
+        g_free (desktop);
+      }
+      if (!launcher)
+      {
+        desktop = g_strdup_printf ("%sapplications/%s.desktop",g_get_user_data_dir (),lower);
+        launcher = task_launcher_new_for_desktop_file (desktop);
+        if (launcher)
+        {
+  #ifdef DEBUG
+          g_debug ("launcher %p",launcher);
+  #endif
+          task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+        }        
+        g_free (desktop);        
+      }
+      g_free (lower);
+    }
+    g_free (class_name);
+    g_free (res_name);
     task_icon_append_item (TASK_ICON (icon), item);
-
     priv->icons = g_slist_append (priv->icons, icon);
     gtk_container_add (GTK_CONTAINER (priv->box), icon);
 

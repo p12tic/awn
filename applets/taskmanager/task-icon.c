@@ -86,6 +86,8 @@ struct _TaskIconPrivate
   guint  txt_indicator_threshold;
 
   gint update_geometry_id;
+  
+  guint ephemeral_count;
 };
 
 enum
@@ -561,7 +563,8 @@ task_icon_init (TaskIcon *icon)
   priv->main_item = NULL;
   priv->visible = FALSE;
   priv->overlay_text = NULL;
-
+  priv->ephemeral_count = 0;
+  
   awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
 
   /* D&D accept dragged objs */
@@ -680,8 +683,12 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
 
   task_icon_refresh_visible (icon);
 
-  if (g_slist_length (priv->items) == 0)
+  if (g_slist_length (priv->items) == priv->ephemeral_count)
   {
+    g_slist_foreach (priv->items,(GFunc)gtk_widget_destroy,NULL);
+    g_slist_free (priv->items);
+    priv->items = NULL;
+    priv->ephemeral_count = 0;
     //gtk_widget_destroy (GTK_WIDGET (icon));
   }
   else
@@ -1100,6 +1107,24 @@ task_icon_append_item (TaskIcon      *icon,
                       G_CALLBACK (on_window_progress_changed), icon);
   }
 }
+
+void
+task_icon_append_ephemeral_item (TaskIcon      *icon,
+                       TaskItem      *item)
+{
+  TaskIconPrivate *priv;
+  
+  g_assert (item);
+  g_assert (icon);
+  g_return_if_fail (TASK_IS_ICON (icon));
+  g_return_if_fail (TASK_IS_ITEM (item));
+
+  priv = icon->priv;
+
+  priv->ephemeral_count++;
+  task_icon_append_item (icon,item); 
+}
+
 
 /**
  * 
