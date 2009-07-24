@@ -687,7 +687,7 @@ awn_dialog_constructed (GObject *object)
                                          DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                          NULL);
     desktop_agnostic_config_client_bind (client, AWN_GROUP_THEME, "dialog_title_bg",
-                                         object, "dialog_title_bg", TRUE,
+                                         object, "title_bg", TRUE,
                                          DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                          NULL);
     desktop_agnostic_config_client_bind (client, AWN_GROUP_THEME, "border",
