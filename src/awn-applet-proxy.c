@@ -411,7 +411,7 @@ static void on_size_alloc (AwnAppletProxy *proxy, GtkAllocation *alloc)
   parent = gtk_widget_get_parent (GTK_WIDGET (proxy));
 
   gint pos_x = alloc->x - parent->allocation.x;
-  gint pos_y = alloc->x - parent->allocation.x;
+  gint pos_y = alloc->y - parent->allocation.y;
   gint parent_w = parent->allocation.width;
   gint parent_h = parent->allocation.height;
 
