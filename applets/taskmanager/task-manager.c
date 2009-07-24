@@ -31,7 +31,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-
 #include "task-manager.h"
 #include "task-manager-glue.h"
 
@@ -47,6 +46,8 @@ G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
 #define TASK_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_MANAGER, \
   TaskManagerPrivate))
+
+//#define DEBUG 1
 
 static GQuark win_quark = 0;
 
@@ -674,14 +675,20 @@ on_window_opened (WnckScreen    *screen,
 
   priv->windows = g_slist_append (priv->windows, item);
   g_object_weak_ref (G_OBJECT (item), (GWeakNotify)window_closed, manager);
-  
+
   // see if there is a icon that matches
   for (w = priv->icons; w; w = w->next)
   {
     TaskIcon *taskicon = w->data;
 
+#ifdef DEBUG
+    if (!TASK_IS_ICON (taskicon))
+      g_debug ("Not a task icon");
+#endif
     if (!TASK_IS_ICON (taskicon)) continue;
-
+#ifdef DEBUG
+    g_debug ("contains launcher is %d",task_icon_contains_launcher (taskicon) );
+#endif
     match_score = task_icon_match_item (taskicon, item);
     if (match_score > max_match_score)
     {

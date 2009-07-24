@@ -1,5 +1,12 @@
 2009-07-24  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+	Some initial code for grouping non-launchers.
+
+2009-07-24  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/task-icon.c:
 	NEVER change the color of a text overlay.  This will
 	get blocked eventually... till then just don't do it.
