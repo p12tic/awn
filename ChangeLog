@@ -1,6 +1,11 @@
 2009-07-24  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	An "ephemeral" item must be a Launcher.
+
+2009-07-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-icon.h:
 	* applets/taskmanager/task-manager.c:
 	Looks for a desktop file to associate with windows that are not 

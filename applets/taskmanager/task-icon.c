@@ -1117,7 +1117,7 @@ task_icon_append_ephemeral_item (TaskIcon      *icon,
   g_assert (item);
   g_assert (icon);
   g_return_if_fail (TASK_IS_ICON (icon));
-  g_return_if_fail (TASK_IS_ITEM (item));
+  g_return_if_fail (TASK_IS_LAUNCHER (item));
 
   priv = icon->priv;
 
