@@ -59,6 +59,8 @@ enum
 enum
 {
   CLICKED,
+  LONG_PRESS,
+  MENU_POPUP,
 
   LAST_SIGNAL
 };
@@ -118,6 +120,19 @@ on_icon_clicked (AwnAppletSimple *simple, AwnIcon *icon)
 }
 
 static void
+on_icon_long_press (AwnAppletSimple *simple, AwnIcon *icon)
+{
+  g_signal_emit (simple, _simple_signals[LONG_PRESS], 0);
+}
+
+static void
+on_icon_menu_popup (AwnAppletSimple *simple, GdkEventButton *event, 
+                    AwnIcon *icon)
+{
+  g_signal_emit (simple, _simple_signals[MENU_POPUP], 0, event);
+}
+
+static void
 awn_applet_simple_size_allocate (GtkWidget *widget, GtkAllocation *alloc)
 {
   AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE_GET_PRIVATE (widget);
@@ -172,6 +187,10 @@ awn_applet_simple_constructed (GObject *object)
                        awn_applet_get_offset (AWN_APPLET (object)));
   g_signal_connect_swapped (priv->icon, "clicked", 
                             G_CALLBACK (on_icon_clicked), object);
+  g_signal_connect_swapped (priv->icon, "long-press", 
+                            G_CALLBACK (on_icon_long_press), object);
+  g_signal_connect_swapped (priv->icon, "context-menu-popup", 
+                            G_CALLBACK (on_icon_menu_popup), object);
   gtk_container_add (GTK_CONTAINER (applet), priv->icon);
   gtk_widget_show (priv->icon);
   g_free (applet_name);
@@ -211,7 +230,26 @@ awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
       NULL, NULL,
       g_cclosure_marshal_VOID__VOID,
       G_TYPE_NONE, 0);
-  
+
+  _simple_signals[LONG_PRESS] =
+    g_signal_new ("long-press",
+      G_OBJECT_CLASS_TYPE (obj_class),
+      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+      G_STRUCT_OFFSET (AwnAppletSimpleClass, long_press),
+      NULL, NULL,
+      g_cclosure_marshal_VOID__VOID,
+      G_TYPE_NONE, 0);
+
+  _simple_signals[MENU_POPUP] =
+    g_signal_new ("context-menu-popup",
+      G_OBJECT_CLASS_TYPE (obj_class),
+      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+      G_STRUCT_OFFSET (AwnAppletSimpleClass, context_menu_popup),
+      NULL, NULL,
+      g_cclosure_marshal_VOID__BOXED,
+      G_TYPE_NONE, 1,
+      GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+
   g_type_class_add_private (obj_class, sizeof (AwnAppletSimplePrivate));
 }
 

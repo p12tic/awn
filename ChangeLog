@@ -1,3 +1,119 @@
+2009-07-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	* awn-settings/awnSettings.py.in:
+	Removed some panel settings from Advanced, since they are in general
+	tab too.
+
+2009-07-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-proxy.c:
+	Fixed curved mode on left/right orients.
+
+2009-07-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fixed condition.  Dialogs appear at correct time for 
+	Launchers again.
+
+2009-07-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	Don't do the command line comparisions for the moment.
+	Not good with scripting languages.
+
+2009-07-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+	Some initial code for grouping non-launchers.
+
+2009-07-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/task-icon.c:
+	NEVER change the color of a text overlay.  This will
+	get blocked eventually... till then just don't do it.
+
+2009-07-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-label.c:
+	Fixed non-zero angle to work correctly with AwnLabel.
+
+2009-07-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	Added long-press and context-menu-popup signals.
+
+2009-07-23  Michal Hruby <michal.mhr@gmail.com>
+
+	* awn-settings/Makefile.am:
+	* awn-settings/awn-settings.xml:
+	Try to make awn-settings layout bit more consistent.
+
+2009-07-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+	Decreased TaskItem icon size.
+
+2009-07-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-window.c:
+	Adjust the size of icon displayed in TaskItem. Implementation
+	Needs some further thought.
+	In the process addd dispose and finalize methods to TaskItem,
+	TaskWindow and TaskLauncher.
+
+2009-07-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+	Scale the icon size displayed in the task items.
+
+2009-07-23  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	* awn-settings/awnClass.py:
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
+    Rework the preferences UI.
+
+2009-07-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Clarified a comment.
+
+2009-07-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Do not show dialog when there is only one window being managed.
+	An config option to revert to previous behaviour will be added.
+
+2009-07-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+	Hookup the activate signal so space/enter work on the buttons.
+
+2009-07-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-item.h:
+	Contributed by Matt <sharkbaitbobby@gmail.com>.
+	Adds buttons to the dialog.  This will probably need to be switched
+	back to the previous way of doing things (and redone with a bit 
+	more effort) once we begin providing a stacks type option 
+	(probably in the 0.6).  Till then this seems to be useful as both a
+	visual and usability improvement.
+
+2009-07-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Small style cleanup.
+
 2009-07-21  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-utils.h (awn_utils_gslist_to_gvaluearray):

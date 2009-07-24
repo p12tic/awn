@@ -62,8 +62,10 @@ struct _AwnIconClass
   GtkDrawingAreaClass parent_class;
 
   /*< signals >*/
-  void (*size_changed)  (AwnIcon *icon);
-  void (*clicked)       (AwnIcon *icon);
+  void (*size_changed)       (AwnIcon *icon);
+  void (*clicked)            (AwnIcon *icon);
+  void (*long_press)         (AwnIcon *icon);
+  void (*context_menu_popup) (AwnIcon *icon, GdkEventButton *event);
 
   void (*icon_padding0) (AwnIcon *icon);
   void (*icon_padding1) (AwnIcon *icon);

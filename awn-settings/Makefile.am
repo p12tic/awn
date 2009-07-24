@@ -4,6 +4,7 @@ include $(top_srcdir)/Makefile.app-icons
 pyfiles_DATA = \
 	awnClass.py		\
 	awnDefs.py		\
+	awnSettings.py		\
 	awnLauncherEditor.py		
 pyfilesdir = $(pkgdatadir)/awn-settings
 

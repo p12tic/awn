@@ -25,6 +25,7 @@
 #include "awn-overlayable.h"
 
 #define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
+#define LONG_PRESS_TIMEOUT 1000
 
 static void awn_icon_overlayable_init (AwnOverlayableIface *iface);
 
@@ -49,6 +50,10 @@ struct _AwnIconPrivate
   gboolean bind_effects;
   gboolean hover_effects_enable;
   gboolean was_pressed;
+
+  gdouble press_start_x;
+  gdouble press_start_y;
+  guint long_press_timer;
 
   AwnOrientation orient;
   gint offset;
@@ -75,6 +80,8 @@ enum
   SIZE_CHANGED,
 
   CLICKED,
+  LONG_PRESS,
+  MENU_POPUP,
 
   LAST_SIGNAL
 };
@@ -183,15 +190,54 @@ awn_icon_size_request (GtkWidget *widget, GtkRequisition *req)
 }
 
 static gboolean
+awn_icon_long_press_timeout (gpointer data)
+{
+  AwnIcon *icon = AWN_ICON (data);
+  AwnIconPrivate *priv = icon->priv;
+
+  // get mouse position, so we know we aren't in d&d
+  gint current_x, current_y;
+  gdk_display_get_pointer (gtk_widget_get_display (GTK_WIDGET (icon)),
+                           NULL, &current_x, &current_y, NULL);
+
+  if (gtk_drag_check_threshold (GTK_WIDGET (icon), 
+                                priv->press_start_x, priv->press_start_y, 
+                                current_x, current_y) == FALSE)
+  {
+    g_signal_emit (icon, _icon_signals[LONG_PRESS], 0);
+  }
+
+  priv->long_press_timer = 0;
+
+  return FALSE;
+}
+
+static gboolean
 awn_icon_pressed (AwnIcon *icon, GdkEventButton *event, gpointer data)
 {
   AwnIconPrivate *priv = icon->priv;
 
-  // FIXME: depressed animation? offset ++/--?
-  if (event->type == GDK_BUTTON_PRESS && event->button == 1)
+  if (event->type != GDK_BUTTON_PRESS) return FALSE;
+
+  switch (event->button)
   {
-    priv->was_pressed = TRUE;
-    g_object_set (priv->effects, "depressed", TRUE, NULL);
+    case 1:
+      priv->was_pressed = TRUE;
+      g_object_set (priv->effects, "depressed", TRUE, NULL);
+      if (priv->long_press_timer == 0)
+      {
+        priv->press_start_x = event->x_root;
+        priv->press_start_y = event->y_root;
+        priv->long_press_timer = g_timeout_add (LONG_PRESS_TIMEOUT, 
+                                                awn_icon_long_press_timeout,
+                                                icon);
+      }
+      break;
+    case 3:
+      g_signal_emit (icon, _icon_signals[MENU_POPUP], 0, event);
+      break;
+    default:
+      break;
   }
 
   return FALSE;
@@ -206,6 +252,11 @@ awn_icon_released (AwnIcon *icon, GdkEventButton *event, gpointer data)
   {
     priv->was_pressed = FALSE;
     g_object_set (priv->effects, "depressed", FALSE, NULL);
+    if (priv->long_press_timer)
+    {
+      g_source_remove (priv->long_press_timer);
+      priv->long_press_timer = 0;
+    }
     awn_icon_clicked (icon);
   }
 
@@ -358,6 +409,10 @@ awn_icon_dispose (GObject *object)
     cairo_surface_destroy (priv->icon_srfc);
   priv->icon_srfc = NULL;
 
+  if (priv->long_press_timer)
+    g_source_remove (priv->long_press_timer);
+  priv->long_press_timer = 0;
+
   G_OBJECT_CLASS (awn_icon_parent_class)->dispose (object);
 }
 
@@ -427,6 +482,25 @@ awn_icon_class_init (AwnIconClass *klass)
       NULL, NULL,
       g_cclosure_marshal_VOID__VOID,
       G_TYPE_NONE, 0);
+
+  _icon_signals[LONG_PRESS] =
+    g_signal_new ("long-press",
+      G_OBJECT_CLASS_TYPE (obj_class),
+      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+      G_STRUCT_OFFSET (AwnIconClass, long_press),
+      NULL, NULL,
+      g_cclosure_marshal_VOID__VOID,
+      G_TYPE_NONE, 0);
+
+  _icon_signals[MENU_POPUP] =
+    g_signal_new ("context-menu-popup",
+      G_OBJECT_CLASS_TYPE (obj_class),
+      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+      G_STRUCT_OFFSET (AwnIconClass, long_press),
+      NULL, NULL,
+      g_cclosure_marshal_VOID__BOXED,
+      G_TYPE_NONE, 1,
+      GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   g_type_class_add_private (obj_class, sizeof (AwnIconPrivate));
 }

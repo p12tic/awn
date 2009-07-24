@@ -254,8 +254,28 @@ awn_label_expose (GtkWidget *widget, GdkEventExpose *event)
 
   g_return_val_if_fail (cr, FALSE);
 
-  cairo_move_to (cr, x, y);
   cairo_set_line_width (cr, priv->text_outline_width);
+
+  PangoContext *context = pango_layout_get_context (layout);
+  const PangoMatrix *matrix = pango_context_get_matrix (context);
+  if (matrix)
+  {
+    PangoRectangle rect;
+    pango_layout_get_pixel_extents (layout, NULL, &rect);
+    pango_matrix_transform_rectangle (matrix, &rect);
+
+    cairo_matrix_t cairo_matrix;
+    cairo_matrix_init (&cairo_matrix,
+                       matrix->xx, matrix->yx,
+                       matrix->xy, matrix->yy,
+                       abs(rect.x) + x, abs(rect.y) + y);
+    cairo_set_matrix (cr, &cairo_matrix);
+  }
+  else
+  {
+    cairo_move_to (cr, x, y);
+  }
+
   g_return_val_if_fail (priv->text_outline_color && priv->text_color, FALSE);
 
   awn_cairo_set_source_color (cr, priv->font_mode == FONT_MODE_OUTLINE ?

@@ -60,7 +60,9 @@ struct _AwnAppletSimpleClass
   AwnAppletClass parent_class;
 
   /* signals */
-  void (*clicked) (AwnAppletSimple *simple);
+  void (*clicked)            (AwnAppletSimple *simple);
+  void (*long_press)         (AwnAppletSimple *simple);
+  void (*context_menu_popup) (AwnAppletSimple *simple, GdkEventButton *event);
 
   /* padding */
   void (*_simple_applet0) (void);

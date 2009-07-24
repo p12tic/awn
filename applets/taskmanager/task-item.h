@@ -48,14 +48,14 @@ typedef struct _TaskItemPrivate TaskItemPrivate;
 
 struct _TaskItem
 {
-  GtkBox     parent;	
+  GtkButton     parent;
 
   TaskItemPrivate *priv;
 };
 
 struct _TaskItemClass
 {
-  GtkBoxClass   parent_class;
+  GtkButtonClass   parent_class;
 
   /*< vtable, not signals >*/
   const gchar * (*get_name)        (TaskItem *item);

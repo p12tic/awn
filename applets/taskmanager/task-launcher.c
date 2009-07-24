@@ -117,6 +117,18 @@ task_launcher_set_property (GObject      *object,
 }
 
 static void
+task_launcher_dispose (GObject *object)
+{ 
+  G_OBJECT_CLASS (task_launcher_parent_class)->dispose (object);
+}
+
+static void
+task_launcher_finalize (GObject *object)
+{ 
+  G_OBJECT_CLASS (task_launcher_parent_class)->finalize (object);
+}
+
+static void
 task_launcher_class_init (TaskLauncherClass *klass)
 {
   GParamSpec   *pspec;
@@ -125,6 +137,8 @@ task_launcher_class_init (TaskLauncherClass *klass)
 
   obj_class->set_property = task_launcher_set_property;
   obj_class->get_property = task_launcher_get_property;
+  obj_class->finalize = task_launcher_finalize;
+  obj_class->dispose = task_launcher_dispose;
 
   /* We implement the necessary funtions for a normal window */
   item_class->get_name         = _get_name;
@@ -402,10 +416,8 @@ _match (TaskItem *item,
     g_debug ("cmd = %p, search_result = %p, strlen(exec) = %u, strlen (cmd) =%u",
              cmd,search_result,(guint)strlen(priv->exec),(guint)strlen(cmd));
     #endif
-    if (search_result && ( 
-                          (search_result + strlen(priv->exec)) == 
-                          (cmd + strlen(cmd))
-                          ))
+    if (search_result && 
+        ((search_result + strlen(priv->exec)) == (cmd + strlen(cmd))))
     {
       #ifdef DEBUG
       g_debug ("exec matches end of command line.");

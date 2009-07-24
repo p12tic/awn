@@ -817,7 +817,6 @@ task_icon_refresh_visible (TaskIcon *icon)
       g_object_set (G_OBJECT (priv->overlay_text),
                     "gravity", GDK_GRAVITY_SOUTH_EAST, 
                     "font-sizing", AWN_FONT_SIZE_LARGE,
-                    "text_color_astr", "#FFFFFFFF",
                     "apply-effects", TRUE,
                     NULL);
     }
@@ -1222,6 +1221,34 @@ task_icon_button_release_event (GtkWidget      *widget,
           break;
         }
         return TRUE;
+      }   /*Conditional Operator */
+      else if (priv->shown_items == (1 + ( task_icon_contains_launcher (icon)?1:0)))
+    {
+        /*This clause will probably get more complicated after enabling 
+         task grouping for non-launchers.  As a launcher will not be among the 
+         shown_items.
+         
+         TODO add an config option so those who want can revert back to the
+         previous behaviour.
+         */
+        GSList *w;
+        for (w = priv->items; w; w = w->next)
+        {
+          TaskItem *item = w->data;
+
+          if (TASK_IS_WINDOW (item))
+          {
+            if ( task_window_is_active (TASK_WINDOW(item)) )
+            {
+              task_window_minimize (TASK_WINDOW(item));
+            }
+            else
+            {
+              task_window_activate (TASK_WINDOW(item), event->time);
+            }
+          }
+          g_debug ("clicked on: %s", task_item_get_name (item));
+        }            
       }
       else
       {
@@ -1231,10 +1258,10 @@ task_icon_button_release_event (GtkWidget      *widget,
           TaskItem *item = w->data;
 
           if (!task_item_is_visible (item)) continue;
-          
+
           g_debug ("clicked on: %s", task_item_get_name (item));
         }
-        
+
         //TODO: move to hover?
         if (GTK_WIDGET_VISIBLE (priv->dialog) )
         {

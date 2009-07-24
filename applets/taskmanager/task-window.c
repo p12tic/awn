@@ -26,6 +26,9 @@
 
 #include <libwnck/libwnck.h>
 
+#undef G_DISABLE_SINGLE_INCLUDES
+#include <glibtop/procargs.h>
+
 #include "task-window.h"
 #include "task-settings.h"
 #include "xutils.h"
@@ -136,6 +139,20 @@ task_window_constructed (GObject *object)
 }
 
 static void
+task_window_dispose (GObject *object)
+{
+  G_OBJECT_CLASS (task_window_parent_class)->dispose (object);
+}
+
+
+static void
+task_window_finalize (GObject *object)
+{
+  G_OBJECT_CLASS (task_window_parent_class)->finalize (object);
+}
+
+
+static void
 task_window_class_init (TaskWindowClass *klass)
 {
   GParamSpec    *pspec;
@@ -145,6 +162,8 @@ task_window_class_init (TaskWindowClass *klass)
   obj_class->set_property = task_window_set_property;
   obj_class->get_property = task_window_get_property;
   obj_class->constructed  = task_window_constructed;
+  obj_class->finalize = task_window_finalize;
+  obj_class->dispose = task_window_dispose;
 
   /* We implement the necessary funtions for an item */
   item_class->get_name        = _get_name;
@@ -752,6 +771,154 @@ static guint
 _match (TaskItem *item,
         TaskItem *item_to_match)
 {
-  //TODO
-  return 0;
+  TaskWindowPrivate *priv;
+  TaskWindow   *window;
+  TaskWindow   *window_to_match;
+  gchar   *res_name = NULL;
+  gchar   *class_name = NULL;
+  gchar   *res_name_to_match = NULL;
+  gchar   *class_name_to_match = NULL;  
+  gchar   *temp;
+  gint      pid;
+  gint      pid_to_match;
+//  glibtop_proc_args buf;
+//  gchar   *cmd;
+//  gchar   *cmd_to_match;
+//  gchar   *search_result;
+
+  g_return_val_if_fail (TASK_IS_WINDOW(item), 0);
+
+  if (!TASK_IS_WINDOW (item_to_match)) 
+  {
+    return 0;
+  }
+
+  window = TASK_WINDOW (item);
+  priv = window->priv;
+  
+  window_to_match = TASK_WINDOW (item_to_match);
+
+  /* Try simple pid-match first */
+  pid = task_window_get_pid (window);
+  pid_to_match = task_window_get_pid (window_to_match);
+//#define DEBUG 1  
+#ifdef DEBUG
+  g_debug ("%s:  Pid to match = %d,  pid = %d",__func__,pid_to_match,pid);
+#endif 
+  if ( pid && ( pid_to_match == pid ))
+  {
+    return 100;
+  }
+
+  
+  /*does the command line of the process match exec exactly... not likely but
+  damn likely to be the correct match if it does*/
+#if 0
+  cmd_to_match = glibtop_get_proc_args (&buf,pid_to_match,1024);
+  cmd = glibtop_get_proc_args (&buf,pid,1024);
+  #ifdef DEBUG
+  g_debug ("%s:  cmd_to_match = '%s', cmd = '%s'",__func__,cmd_to_match,cmd);
+  #endif  
+  if (cmd_to_match && cmd)
+  {
+    if (g_strcmp0 (cmd_to_match, cmd)==0)
+    {
+      #ifdef DEBUG
+      g_debug ("%s:  strcmp match ",__func__);
+      #endif
+      g_free (cmd);
+      g_free (cmd_to_match);
+      return 90;
+    }
+  }
+#endif
+  /* Now try resource name, which should (hopefully) be 99% of the cases */
+  task_window_get_wm_class(window_to_match, &res_name_to_match, &class_name_to_match);
+  task_window_get_wm_class(window, &res_name, &class_name);
+  
+  if (res_name && res_name_to_match)
+  {
+    temp = res_name;
+    res_name = g_utf8_strdown (temp, -1);
+    g_free (temp);
+
+    temp = res_name_to_match;
+    res_name_to_match = g_utf8_strdown (temp, -1);
+    g_free (temp);
+
+    if ( strlen (res_name_to_match) && strlen (res_name) )
+    {
+      #ifdef DEBUG
+      g_debug ("%s: 70  res_name = %s,  res_name_to_match = %s",__func__,res_name,res_name_to_match);
+      #endif 
+      if ( g_strstr_len (res_name, strlen (res_name), res_name_to_match) ||
+           g_strstr_len (res_name_to_match, strlen (res_name_to_match), res_name))
+      {
+        g_free (res_name);
+        g_free (class_name);
+//        g_free (cmd);
+        g_free (res_name_to_match);
+        g_free (class_name_to_match);
+//        g_free (cmd_to_match);        
+        return 70;
+      }
+    }
+  }
+
+  /* Try a class_name to exec line match */
+  if (class_name && class_name_to_match)
+  {
+    temp = class_name;
+    class_name = g_utf8_strdown (temp, -1);
+    g_free (temp);
+
+    temp = class_name_to_match;
+    class_name_to_match = g_utf8_strdown (temp, -1);
+    g_free (temp);
+
+    if (strlen(class_name) && strlen(class_name_to_match) )
+    {
+      #ifdef DEBUG
+      g_debug ("%s: 50  class_name_to_match = %s,  class_name = %s",__func__,class_name_to_match,class_name);
+      #endif 
+      if (g_strstr_len (class_name, strlen (class_name), class_name_to_match))
+      {
+        g_free (res_name);
+        g_free (class_name);
+//        g_free (cmd);
+        g_free (res_name_to_match);
+        g_free (class_name_to_match);
+//        g_free (cmd_to_match);
+        return 50;
+      }
+    }
+  }
+
+  g_free (res_name);
+  g_free (class_name);
+  g_free (res_name_to_match);
+  g_free (class_name_to_match);
+#if 0  
+  if (cmd && cmd_to_match)
+  {
+    search_result = g_strrstr (cmd_to_match, cmd);
+    #ifdef DEBUG
+    g_debug ("cmd_to_match = %p, search_result = %p, strlen(exec) = %u, strlen (cmd) =%u",
+             cmd_to_match,search_result,(guint)strlen(cmd),(guint)strlen(cmd));
+    #endif
+    if (search_result && 
+        ((search_result + strlen(cmd)) == (cmd_to_match + strlen(cmd_to_match))))
+    {
+      #ifdef DEBUG
+      g_debug ("exec matches end of command line.");
+      #endif
+      g_free (cmd);
+      g_free (cmd_to_match);      
+      return 20;
+    }
+  }
+  g_free (cmd);
+  g_free (cmd_to_match);
+#endif
+  return 0; 
 }
