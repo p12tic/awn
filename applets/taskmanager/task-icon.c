@@ -1190,8 +1190,8 @@ task_icon_button_release_event (GtkWidget      *widget,
         }
         return TRUE;
       }   /*Conditional Operator */
-      else if (priv->shown_items == (1 + task_icon_contains_launcher (icon)?1:0))
-      {
+      else if (priv->shown_items == (1 + ( task_icon_contains_launcher (icon)?1:0)))
+    {
         /*This clause will probably get more complicated after enabling 
          task grouping for non-launchers.  As a launcher will not be among the 
          shown_items.
