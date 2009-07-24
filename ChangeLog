@@ -1,5 +1,11 @@
 2009-07-24  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-window.c:
+	Don't do the command line comparisions for the moment.
+	Not good with scripting languages.
+
+2009-07-24  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-manager.c:
   	* applets/taskmanager/task-window.c:

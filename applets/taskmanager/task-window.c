@@ -781,10 +781,10 @@ _match (TaskItem *item,
   gchar   *temp;
   gint      pid;
   gint      pid_to_match;
-  glibtop_proc_args buf;
-  gchar   *cmd;
-  gchar   *cmd_to_match;
-  gchar   *search_result;
+//  glibtop_proc_args buf;
+//  gchar   *cmd;
+//  gchar   *cmd_to_match;
+//  gchar   *search_result;
 
   g_return_val_if_fail (TASK_IS_WINDOW(item), 0);
 
@@ -813,6 +813,7 @@ _match (TaskItem *item,
   
   /*does the command line of the process match exec exactly... not likely but
   damn likely to be the correct match if it does*/
+#if 0
   cmd_to_match = glibtop_get_proc_args (&buf,pid_to_match,1024);
   cmd = glibtop_get_proc_args (&buf,pid,1024);
   #ifdef DEBUG
@@ -830,7 +831,7 @@ _match (TaskItem *item,
       return 90;
     }
   }
-  
+#endif
   /* Now try resource name, which should (hopefully) be 99% of the cases */
   task_window_get_wm_class(window_to_match, &res_name_to_match, &class_name_to_match);
   task_window_get_wm_class(window, &res_name, &class_name);
@@ -855,10 +856,10 @@ _match (TaskItem *item,
       {
         g_free (res_name);
         g_free (class_name);
-        g_free (cmd);
+//        g_free (cmd);
         g_free (res_name_to_match);
         g_free (class_name_to_match);
-        g_free (cmd_to_match);        
+//        g_free (cmd_to_match);        
         return 70;
       }
     }
@@ -884,10 +885,10 @@ _match (TaskItem *item,
       {
         g_free (res_name);
         g_free (class_name);
-        g_free (cmd);
+//        g_free (cmd);
         g_free (res_name_to_match);
         g_free (class_name_to_match);
-        g_free (cmd_to_match);
+//        g_free (cmd_to_match);
         return 50;
       }
     }
@@ -897,7 +898,7 @@ _match (TaskItem *item,
   g_free (class_name);
   g_free (res_name_to_match);
   g_free (class_name_to_match);
-  
+#if 0  
   if (cmd && cmd_to_match)
   {
     search_result = g_strrstr (cmd_to_match, cmd);
@@ -918,5 +919,6 @@ _match (TaskItem *item,
   }
   g_free (cmd);
   g_free (cmd_to_match);
+#endif
   return 0; 
 }
