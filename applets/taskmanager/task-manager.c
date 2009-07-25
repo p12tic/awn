@@ -15,6 +15,7 @@
  *
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
  *             Hannes Verschore <hv1989@gmail.com>
+ *             Rodney Cryderman <rcryderman@gmail.com>
  */
 
 #include <stdio.h>
@@ -718,7 +719,8 @@ on_window_opened (WnckScreen    *screen,
     for some reason the skip tasklist property for the taskmanager toggles briefly
    off and on in certain circumstances.  Nip this in the bud.
    */
-  if ( wnck_window_get_pid (window) == getpid() )
+  if ( wnck_window_get_pid (window) == getpid() || 
+      g_strcmp0 (wnck_window_get_name (window),"awn-applet")==0 )
   {
     return;
   }
@@ -804,7 +806,7 @@ on_window_opened (WnckScreen    *screen,
       found_desktop = find_desktop (TASK_ICON(icon), cmd);
       g_free (cmd);
     }
-      
+     
     g_free (class_name);
     g_free (res_name);
     task_icon_append_item (TASK_ICON (icon), item);
