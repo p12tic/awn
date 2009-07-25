@@ -1,3 +1,9 @@
+2009-07-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Get a bit more agressive about finding the desktop file.  
+	Needs testing to see if it gives false positives in practice.
+
 2009-07-25  Julien Lavergne <julien.lavergne@gmail.com>
 
 	* awn-settings/awnSettings.py.in:

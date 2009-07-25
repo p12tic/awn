@@ -31,6 +31,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#undef G_DISABLE_SINGLE_INCLUDES
+#include <glibtop/procargs.h>
+
 #include "task-manager.h"
 #include "task-manager-glue.h"
 
@@ -608,6 +611,63 @@ icon_closed (TaskManager *manager, GObject *old_icon)
   priv->icons = g_slist_remove (priv->icons, old_icon);
 }
 
+
+static gboolean
+find_desktop (TaskIcon *icon, gchar * class_name)
+{
+  gchar * lower;
+  gchar * desktop;
+  const gchar* const * system_dirs = g_get_system_data_dirs ();
+  GStrv   iter;
+  TaskItem     *launcher = NULL;
+//#define DEBUG 1
+#ifdef DEBUG
+  g_debug ("%s: wm class = %s",__func__,class_name);
+#endif
+  lower = g_utf8_strdown (class_name, -1);
+#ifdef DEBUG
+  g_debug ("%s: lower = %s",__func__,lower);
+#endif      
+  
+  for (iter = (GStrv)system_dirs; *iter; iter++)
+  {
+    desktop = g_strdup_printf ("%sapplications/%s.desktop",*iter,lower);
+#ifdef DEBUG
+    g_debug ("%s: desktop = %s",__func__,desktop);
+#endif      
+    launcher = task_launcher_new_for_desktop_file (desktop);
+    if (launcher)
+    {
+#ifdef DEBUG
+      g_debug ("launcher %p",launcher);
+#endif
+      task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+      g_free (desktop);
+      return TRUE;
+    }
+    g_free (desktop);
+  }
+  if (!launcher)
+  {
+    desktop = g_strdup_printf ("%sapplications/%s.desktop",g_get_user_data_dir (),lower);
+    launcher = task_launcher_new_for_desktop_file (desktop);
+    if (launcher)
+    {
+#ifdef DEBUG
+      g_debug ("launcher %p",launcher);
+#endif
+      task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+      g_free (desktop);
+      g_free  (lower);
+      return TRUE;
+    }        
+    g_free (desktop);        
+  }
+  g_free (lower);
+  return FALSE;
+}
+
+
 /**
  * Whenever a new window gets opened it will try to place it
  * in an awn-icon or will create a new awn-icon.
@@ -629,6 +689,7 @@ on_window_opened (WnckScreen    *screen,
   TaskIcon *match      = NULL;
   gint match_score     = 0;
   gint max_match_score = 0;
+  gboolean            found_desktop = FALSE;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   g_return_if_fail (WNCK_IS_WINDOW (window));
@@ -648,7 +709,7 @@ on_window_opened (WnckScreen    *screen,
     default:
       break;
   }
-  
+
 #ifdef DEBUG  
   g_debug ("%s: Window opened: %s",__func__,wnck_window_get_name (window));  
   g_debug ("xid = %lu, pid = %d",wnck_window_get_xid (window),wnck_window_get_pid (window));
@@ -722,55 +783,28 @@ on_window_opened (WnckScreen    *screen,
     
     icon = task_icon_new (AWN_APPLET (manager));
     task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name); 
+#ifdef DEBUG
+      g_debug ("%s: class name  = %s, res name = %s",__func__,class_name,res_name);
+#endif      
+    
     if (class_name && strlen (class_name))
     {
-      gchar * lower;
-      gchar * desktop;
-      const gchar* const * system_dirs = g_get_system_data_dirs ();
-      GStrv   iter;
-      TaskItem     *launcher = NULL;
-//#define DEBUG 1
-#ifdef DEBUG
-      g_debug ("%s: wm class = %s",__func__,class_name);
-#endif
-      lower = g_utf8_strdown (class_name, -1);
-#ifdef DEBUG
-      g_debug ("%s: lower = %s",__func__,lower);
-#endif      
-      
-      for (iter = (GStrv)system_dirs; *iter; iter++)
-      {
-        desktop = g_strdup_printf ("%sapplications/%s.desktop",*iter,lower);
-  #ifdef DEBUG
-        g_debug ("%s: desktop = %s",__func__,desktop);
-  #endif      
-        launcher = task_launcher_new_for_desktop_file (desktop);
-        if (launcher)
-        {
-  #ifdef DEBUG
-          g_debug ("launcher %p",launcher);
-  #endif
-          task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
-          g_free (desktop);
-          break;
-        }
-        g_free (desktop);
-      }
-      if (!launcher)
-      {
-        desktop = g_strdup_printf ("%sapplications/%s.desktop",g_get_user_data_dir (),lower);
-        launcher = task_launcher_new_for_desktop_file (desktop);
-        if (launcher)
-        {
-  #ifdef DEBUG
-          g_debug ("launcher %p",launcher);
-  #endif
-          task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
-        }        
-        g_free (desktop);        
-      }
-      g_free (lower);
+      found_desktop = find_desktop (TASK_ICON(icon), class_name);
     }
+    
+    /*This _may_ result in unacceptable false positives.  Testing.*/
+    if (!found_desktop)
+    {
+      glibtop_proc_args buf;
+      gchar   *cmd;
+      cmd = glibtop_get_proc_args (&buf,wnck_window_get_pid (window),1024);    
+      #ifdef DEBUG
+      g_debug ("%s:  cmd = '%s'",__func__,cmd);
+      #endif
+      found_desktop = find_desktop (TASK_ICON(icon), cmd);
+      g_free (cmd);
+    }
+      
     g_free (class_name);
     g_free (res_name);
     task_icon_append_item (TASK_ICON (icon), item);
