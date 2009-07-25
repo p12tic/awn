@@ -83,11 +83,6 @@ type = list-string
 default = 1
 description = The list of panels.
 
-[panel/behavior]
-type = int
-default = 5
-description = Behavior of the bar, handle by awn-settings (0=Standart, 1=Panel mode, 2=Autohide Keep below, 3=Autohide Fade out",4=Transparency, 5=Custom)
-
 [theme/gstep1]
 type = string
 default = #454545C8
