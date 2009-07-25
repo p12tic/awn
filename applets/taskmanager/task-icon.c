@@ -636,6 +636,10 @@ on_main_item_icon_changed (TaskItem   *item,
   g_object_ref(pixbuf);
 
   priv->icon = pixbuf;
+//#define DEBUG 1
+#ifdef DEBUG
+  g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(pixbuf), gdk_pixbuf_get_height(pixbuf));
+#endif
   awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
 }
 
@@ -739,6 +743,10 @@ task_icon_search_main_item (TaskIcon *icon)
   {
     priv->main_item = main_item;
     priv->icon = task_item_get_icon (priv->main_item);
+#ifdef DEBUG
+    g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
+    
+#endif    
     awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
     awn_icon_set_tooltip_text (AWN_ICON (icon), 
                                task_item_get_name (priv->main_item));

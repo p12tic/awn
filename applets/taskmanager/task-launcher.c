@@ -31,7 +31,7 @@
 #include <libawn/libawn.h>
 
 #include "task-launcher.h"
-#include "task-item.h"
+#include "task-item-private.h"
 #include "task-window.h"
 
 #include "task-settings.h"
@@ -72,6 +72,8 @@ static void          _middle_click     (TaskItem       *item,
                                        GdkEventButton *event);
 static guint         _match           (TaskItem       *item,
                                        TaskItem       *item_to_match);
+static void         _name_change      (TaskItem *item, 
+                                       const gchar *name);
 
 static void   task_launcher_set_desktop_file (TaskLauncher *launcher,
                                               const gchar  *path);
@@ -146,7 +148,8 @@ task_launcher_class_init (TaskLauncherClass *klass)
   item_class->match            = _match;
   item_class->left_click       = _left_click;
   item_class->right_click      = _right_click;
-  item_class->middle_click      = _middle_click;  
+  item_class->middle_click      = _middle_click; 
+  item_class->name_change       = _name_change;
 
   /* Install properties */
   pspec = g_param_spec_string ("desktopfile",
@@ -488,3 +491,14 @@ task_launcher_launch_with_data (TaskLauncher *launcher,
   }
 }
 
+static void 
+_name_change (TaskItem *item, const gchar *name)
+{
+  g_return_if_fail (TASK_IS_LAUNCHER (item));
+  gchar * tmp;
+  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
+
+  tmp = g_strdup_printf ("Launch   %s",name);
+  gtk_label_set_text (GTK_LABEL (priv->name), tmp);
+  g_free (tmp);
+}

@@ -65,6 +65,7 @@ struct _TaskItemClass
   void          (*right_click)     (TaskItem *item, GdkEventButton *event);
   void          (*middle_click)     (TaskItem *item, GdkEventButton *event);
   guint         (*match)           (TaskItem *item, TaskItem *item_to_match);
+  void          (*name_change)     (TaskItem *item, const gchar *name);
 
   /*< signals >*/
   void (*name_changed)      (TaskItem *item, const gchar *name);

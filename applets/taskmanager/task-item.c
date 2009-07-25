@@ -18,6 +18,7 @@
  */
 
 #include "task-item.h"
+#include "task-item-private.h"
 
 #include <libawn/libawn.h>
 
@@ -29,18 +30,6 @@
 #define TASK_ITEM_ICON_SCALE 0.65
 
 G_DEFINE_ABSTRACT_TYPE (TaskItem, task_item, GTK_TYPE_BUTTON)
-
-#define TASK_ITEM_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
-  TASK_TYPE_ITEM, \
-  TaskItemPrivate))
-
-struct _TaskItemPrivate
-{
-  GtkWidget *box;
-  GtkWidget *name;
-  GtkWidget *image;
-  GdkPixbuf *icon;
-};
 
 enum
 {
@@ -92,6 +81,33 @@ task_item_finalize (GObject *object)
 }
 
 static void
+task_item_constructed (GObject *object)
+{
+  TaskItemClass *klass;  
+  klass = TASK_ITEM_GET_CLASS (object);  
+  g_return_if_fail (klass->is_visible);
+  
+  if (G_OBJECT_CLASS (task_item_parent_class)->constructed)
+  {
+    G_OBJECT_CLASS (task_item_parent_class)->constructed (object);
+  }
+
+  /* connect to signals */
+  g_signal_connect (G_OBJECT (object), "name-changed",
+                    G_CALLBACK (klass->name_change), NULL);
+  g_signal_connect (G_OBJECT (object), "visible-changed",
+                    G_CALLBACK (task_item_visible_changed), NULL);
+  g_signal_connect (G_OBJECT (object), "activate",
+                    G_CALLBACK (task_item_activate), NULL);
+  g_signal_connect (G_OBJECT (object), "icon-changed",
+                    G_CALLBACK (task_item_icon_changed), NULL);  
+  g_signal_connect (G_OBJECT (object), "size-request",
+                    G_CALLBACK (task_item_size_request),NULL);
+  
+}
+
+
+static void
 task_item_class_init (TaskItemClass *klass)
 {
   //GParamSpec   *pspec;
@@ -100,7 +116,8 @@ task_item_class_init (TaskItemClass *klass)
 
   obj_class->dispose = task_item_dispose;
   obj_class->finalize = task_item_finalize;
-  
+  obj_class->constructed = task_item_constructed;  
+
   wid_class->button_release_event = task_item_button_release_event;
   wid_class->button_press_event   = task_item_button_press_event;
   
@@ -109,6 +126,7 @@ task_item_class_init (TaskItemClass *klass)
   klass->get_icon        = NULL;
   klass->is_visible      = NULL;
   klass->match           = NULL;
+  klass->name_change    = task_item_name_changed;
 
   /* Install signals */
   _item_signals[NAME_CHANGED] =
@@ -148,7 +166,10 @@ static void
 task_item_init (TaskItem *item)
 {
   TaskItemPrivate *priv;
+  TaskItemClass *klass;
 
+  klass = TASK_ITEM_GET_CLASS (item);  
+  
   /* get and save private struct */
   priv = item->priv = TASK_ITEM_GET_PRIVATE (item);
 
@@ -169,17 +190,6 @@ task_item_init (TaskItem *item)
   priv->name = gtk_label_new ("");
   gtk_box_pack_start (GTK_BOX (priv->box), priv->name, TRUE, FALSE, 10);
 
-  /* connect to signals */
-  g_signal_connect (G_OBJECT (item), "name-changed",
-                    G_CALLBACK (task_item_name_changed), NULL);
-  g_signal_connect (G_OBJECT (item), "visible-changed",
-                    G_CALLBACK (task_item_visible_changed), NULL);
-  g_signal_connect (G_OBJECT (item), "activate",
-                    G_CALLBACK (task_item_activate), NULL);
-  g_signal_connect (G_OBJECT (item), "icon-changed",
-                    G_CALLBACK (task_item_icon_changed), NULL);  
-  g_signal_connect (G_OBJECT (item), "size-request",
-                    G_CALLBACK (task_item_size_request),NULL);
 }
 
 static gboolean
@@ -241,7 +251,6 @@ task_item_name_changed (TaskItem *item, const gchar *name)
 
   gtk_label_set_text (GTK_LABEL (priv->name), name);
 }
-
 
 static void 
 task_item_icon_changed (TaskItem *item, GdkPixbuf *icon)
