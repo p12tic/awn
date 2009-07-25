@@ -84,7 +84,7 @@ class awnPreferencesMini(awnPreferences):
         self.apply_theme.connect("clicked", self.apply_theme_callback)
 
         self.choose_behavior = self.wTree.get_object("behaviorcombo")
-        self.behavior_entries = [       _("Standart"),
+        self.behavior_entries = [       _("Standard"),
                                         _("Panel mode"),
                                         _("Autohide Keep below"),
                                         _("Autohide Fade out"),
