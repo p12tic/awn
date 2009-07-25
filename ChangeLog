@@ -1,5 +1,10 @@
 2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-item-private.h:
+	Add new file.
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-item.c:
   	* applets/taskmanager/task-item.h:
