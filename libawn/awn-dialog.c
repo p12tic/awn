@@ -671,6 +671,11 @@ awn_dialog_remove(GtkContainer *dialog, GtkWidget *widget)
 static void
 awn_dialog_constructed (GObject *object)
 {
+  if ( G_OBJECT_CLASS (awn_dialog_parent_class)->constructed)
+  {
+    G_OBJECT_CLASS (awn_dialog_parent_class)->constructed (object);
+  }
+
   AwnConfigClient *client = awn_config_client_new ();
   AwnConfigBridge *bridge = awn_config_bridge_get_default ();
 
@@ -690,6 +695,11 @@ awn_dialog_constructed (GObject *object)
   awn_config_bridge_bind (bridge, client,
                           AWN_GROUP_THEME, "hilight",
                           object, "hilight");
+
+  // FIXME: bind only if we're connected to AwnApplet
+  awn_config_bridge_bind (bridge, client,
+                          "panel", "dialog_offset",
+                          object, "window-offset");
 }
 
 static void

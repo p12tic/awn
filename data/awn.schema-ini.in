@@ -18,6 +18,11 @@ type = int
 default = 10
 description = Offset of the icons from window border.
 
+[panel/dialog_offset]
+type = int
+default = 15
+description = Offset between the icons and their dialog.
+
 [panel/size]
 type = int
 default = 48
