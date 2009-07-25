@@ -768,7 +768,8 @@
             <child type="tab">
               <object class="GtkImage" id="image6">
                 <property name="visible">True</property>
-                <property name="stock">gtk-sort-ascending</property>
+                <property name="pixel_size">0</property>
+                <property name="icon_name">awn-plugins</property>
                 <property name="icon-size">6</property>
               </object>
               <packing>
@@ -870,7 +871,8 @@
             <child type="tab">
               <object class="GtkImage" id="image2">
                 <property name="visible">True</property>
-                <property name="stock">gtk-fullscreen</property>
+                <property name="pixel_size">0</property>
+                <property name="icon_name">gnome-panel-launcher</property>
                 <property name="icon-size">6</property>
               </object>
               <packing>
