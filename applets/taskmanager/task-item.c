@@ -40,11 +40,13 @@ struct _TaskItemPrivate
   GtkWidget *name;
   GtkWidget *image;
   GdkPixbuf *icon;
+
+  TaskIcon *task_icon;
 };
 
 enum
 {
-  PROP_0,
+  PROP_0
 };
 
 enum
@@ -74,6 +76,7 @@ static void task_item_activate (GtkWidget *widget, gpointer null);
 static void
 task_item_dispose (GObject *object)
 {
+  TaskItem *item = TASK_ITEM (object);
   TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (object);
 
   if (priv->icon)
@@ -81,6 +84,14 @@ task_item_dispose (GObject *object)
     g_object_unref (priv->icon);
     priv->icon = NULL;
   }
+
+  // this removes the overlays from the associated TaskIcon
+  task_item_set_task_icon (item, NULL);
+
+  item->text_overlay = NULL;
+  item->progress_overlay = NULL;
+  item->icon_overlay = NULL;
+
   G_OBJECT_CLASS (task_item_parent_class)->dispose (object);
 }
 
@@ -413,6 +424,59 @@ task_item_match (TaskItem *item, TaskItem *item_to_match)
   g_return_val_if_fail (klass->match, 0);
         
   return klass->match (item, item_to_match);
+}
+
+void
+task_item_set_task_icon (TaskItem *item, TaskIcon *icon)
+{
+  g_return_if_fail (TASK_IS_ITEM (item));
+
+  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
+
+  // add/remove overlays
+  if (priv->task_icon)
+  {
+    AwnOverlayable *over = AWN_OVERLAYABLE (priv->task_icon);
+    if (item->text_overlay)
+      awn_overlayable_remove_overlay (over, AWN_OVERLAY (item->text_overlay));
+    if (item->progress_overlay)
+      awn_overlayable_remove_overlay (over, AWN_OVERLAY (item->progress_overlay));
+    if (item->icon_overlay)
+      awn_overlayable_remove_overlay (over, AWN_OVERLAY (item->icon_overlay));
+  }
+
+  priv->task_icon = icon;
+  if (icon)
+  {
+    AwnOverlayable *over = AWN_OVERLAYABLE (icon);
+    // we can control what's on top here
+    if (item->icon_overlay)
+      awn_overlayable_add_overlay (over, item->icon_overlay);
+    if (item->progress_overlay)
+      awn_overlayable_add_overlay (over, item->progress_overlay);
+    if (item->text_overlay)
+      awn_overlayable_add_overlay (over, item->text_overlay);
+  }
+}
+
+TaskIcon*
+task_item_get_task_icon (TaskItem *item)
+{
+  g_return_val_if_fail (TASK_IS_ITEM (item), NULL);
+
+  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
+
+  return priv->task_icon; 
+}
+
+GtkWidget*
+task_item_get_image_widget (TaskItem *item)
+{
+  g_return_val_if_fail (TASK_IS_ITEM (item), NULL);
+
+  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
+
+  return priv->image;
 }
 
 /**

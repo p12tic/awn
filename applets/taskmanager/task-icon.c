@@ -1097,6 +1097,8 @@ task_icon_append_item (TaskIcon      *icon,
   
   g_object_weak_ref (G_OBJECT (item), (GWeakNotify)_destroyed_task_item, icon);
 
+  task_item_set_task_icon (item, icon);
+
   task_icon_refresh_visible (icon);
 
   /* Connect item signals */

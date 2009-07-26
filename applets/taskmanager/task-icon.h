@@ -24,10 +24,6 @@
 #include <gtk/gtk.h>
 #include <libawn/libawn.h>
 
-#include "task-item.h"
-#include "task-window.h"
-#include "task-launcher.h"
-
 #define TASK_TYPE_ICON (task_icon_get_type ())
 
 #define TASK_ICON(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
@@ -48,7 +44,7 @@
 typedef struct _TaskIcon        TaskIcon;
 typedef struct _TaskIconClass   TaskIconClass;
 typedef struct _TaskIconPrivate TaskIconPrivate;
- 
+
 struct _TaskIcon
 {
   AwnThemedIcon        parent;	
@@ -70,6 +66,11 @@ struct _TaskIconClass
   void (*dest_drag_motion) (TaskIcon *icon);
   void (*dest_drag_leave) (TaskIcon *icon);
 };
+
+// circular dependency :/ 
+#include "task-item.h"
+#include "task-window.h"
+#include "task-launcher.h"
 
 GType           task_icon_get_type          (void) G_GNUC_CONST;
 
