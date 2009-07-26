@@ -1,5 +1,12 @@
 2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-item.h:
+        * applets/taskmanager/task-item.c:
+        * applets/taskmanager/task-launcher.c:
+	More cleanup of code to add "Launch" string to TaskItem labels.
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-item-private.h:
 	* applets/taskmanager/task-item.h:
 	* applets/taskmanager/task-item.c:

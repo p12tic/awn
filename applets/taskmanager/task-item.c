@@ -63,7 +63,7 @@ static void task_item_icon_changed      (TaskItem *item, GdkPixbuf     *icon);
 static void task_item_visible_changed   (TaskItem *item, gboolean       visible);
 static void task_item_size_request      (GtkWidget *widget, GtkRequisition *req,
                                           gpointer null);
-
+static void task_item_name_changed      (TaskItem *item, const gchar   *name);
 static gboolean  task_item_button_release_event (GtkWidget      *widget,
                                                  GdkEventButton *event);
 static gboolean  task_item_button_press_event   (GtkWidget      *widget,
@@ -255,7 +255,7 @@ task_item_activate (GtkWidget *widget, gpointer null)
   task_item_left_click (TASK_ITEM(widget), NULL);
 }
 
-void 
+static void 
 task_item_name_changed (TaskItem *item, const gchar *name)
 {
   TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);

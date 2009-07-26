@@ -498,6 +498,6 @@ _name_change (TaskItem *item, const gchar *name)
   gchar * tmp;
 
   tmp = g_strdup_printf (_("Launch %s"),name);
-  task_item_name_changed (item, tmp);  
+  TASK_ITEM_CLASS (task_launcher_parent_class)->name_change (item, tmp);  
   g_free (tmp);
 }
