@@ -15,6 +15,7 @@
  *
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
  *             Hannes Verschore <hv1989@gmail.com>
+ *             Rodney Cryderman <rcryderman@gmail.com>
  *
  */
 
@@ -1250,7 +1251,9 @@ task_icon_button_release_event (GtkWidget      *widget,
               task_window_activate (TASK_WINDOW(item), event->time);
             }
           }
+#ifdef DEBUG
           g_debug ("clicked on: %s", task_item_get_name (item));
+#endif
         }            
       }
       else
@@ -1261,8 +1264,9 @@ task_icon_button_release_event (GtkWidget      *widget,
           TaskItem *item = w->data;
 
           if (!task_item_is_visible (item)) continue;
-
+#ifdef DEBUG
           g_debug ("clicked on: %s", task_item_get_name (item));
+#endif          
         }
 
         //TODO: move to hover?

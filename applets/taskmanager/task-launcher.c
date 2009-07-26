@@ -15,6 +15,7 @@
  *
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
  *             Hannes Verschore <hv1989@gmail.com>
+ *             Rodney Cryderman <rcryderman@gmail.com>
  */
 
 #include <stdio.h>
@@ -239,8 +240,9 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   task_item_emit_icon_changed (TASK_ITEM (launcher), pixbuf);
   g_object_unref (pixbuf);
   task_item_emit_visible_changed (TASK_ITEM (launcher), TRUE);
-
+#ifdef DEBUG
   g_debug ("LAUNCHER: %s", priv->name);
+#endif
 }
 
 /*

@@ -762,9 +762,9 @@ on_window_opened (WnckScreen    *screen,
       match = taskicon;
     }
   }
-
+#ifdef DEBUG
   g_debug("Matching score: %i, must be bigger then:%i, groups: %i", max_match_score, 99-priv->match_strength, max_match_score > 99-priv->match_strength);
-  
+#endif  
   if  (match
        &&
        (priv->grouping || (task_icon_count_items(match)==1) ) 
