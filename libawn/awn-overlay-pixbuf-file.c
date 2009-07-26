@@ -62,7 +62,7 @@ enum
   PROP_FILE_NAME
 };
 
-static void
+static gboolean
 awn_overlay_pixbuf_file_load (AwnOverlayPixbufFile *overlay, 
                               gchar * filename);
 
@@ -223,7 +223,7 @@ _awn_overlay_pixbuf_file_render (AwnOverlay* _overlay,
   GdkPixbuf * current_pixbuf;
   gint scaled_width;
   gint scaled_height;
-
+  gboolean good = TRUE;
 
   AwnOverlayPixbufFile * overlay = AWN_OVERLAY_PIXBUF_FILE (_overlay);
   AwnOverlayPixbufFilePrivate * priv = AWN_OVERLAY_PIXBUF_FILE_GET_PRIVATE (overlay);  
@@ -246,8 +246,7 @@ _awn_overlay_pixbuf_file_render (AwnOverlay* _overlay,
   
   if (!current_pixbuf)
   {
-      awn_overlay_pixbuf_file_load (overlay, priv->file_name);
-    
+      good = awn_overlay_pixbuf_file_load (overlay, priv->file_name); 
   }    
   else if ( (gdk_pixbuf_get_width (current_pixbuf) != scaled_width) && 
       (gdk_pixbuf_get_height (current_pixbuf) != scaled_height))
@@ -260,11 +259,14 @@ _awn_overlay_pixbuf_file_render (AwnOverlay* _overlay,
     g_object_unref (current_pixbuf);
   }
 
-  AWN_OVERLAY_CLASS (awn_overlay_pixbuf_file_parent_class)->
-    render (_overlay, widget, cr, icon_width, icon_height);
+  if (good)
+  {
+    AWN_OVERLAY_CLASS (awn_overlay_pixbuf_file_parent_class)->
+      render (_overlay, widget, cr, icon_width, icon_height);
+  }
 }
 
-static void
+static gboolean
 awn_overlay_pixbuf_file_load (AwnOverlayPixbufFile *overlay, 
                               gchar * file_name)
 {
@@ -282,10 +284,10 @@ awn_overlay_pixbuf_file_load (AwnOverlayPixbufFile *overlay,
    during the file render*/
   if ( ! ( scale>0.01) )
   {
-    return;
+    return FALSE;
   }
-  g_return_if_fail (file_name);
-  g_return_if_fail (strlen(file_name));  
+  g_return_val_if_fail (file_name,FALSE);
+  g_return_val_if_fail (strlen(file_name),FALSE);  
   
   scaled_width = lround (priv->icon_width * scale);  
   scaled_height = lround (priv->icon_height * 
@@ -303,10 +305,14 @@ awn_overlay_pixbuf_file_load (AwnOverlayPixbufFile *overlay,
                   NULL);
     g_object_unref (pixbuf);    
   }
-  else if (!priv->emitted_warning)
+  else
   {
-    g_warning ("%s: Failed to load pixbuf (%s)",__func__,file_name);
-    priv->emitted_warning = TRUE;
+    if (!priv->emitted_warning)
+    {
+      g_warning ("%s: Failed to load pixbuf (%s)",__func__,file_name);
+      priv->emitted_warning = TRUE;
+    }
+    return FALSE;
   }
-
+  return TRUE;
 }

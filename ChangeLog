@@ -1,5 +1,11 @@
 2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-pixbuf-file.c:
+	Further error checking.  Don't call the parent class render
+	if there is no pixbuf.
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-item.h:
         * applets/taskmanager/task-item.c:
         * applets/taskmanager/task-launcher.c:
