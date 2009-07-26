@@ -95,6 +95,7 @@ guint         task_item_match         (TaskItem *item, TaskItem *item_to_match);
 void task_item_emit_name_changed    (TaskItem *item, const gchar *name);
 void task_item_emit_icon_changed    (TaskItem *item, GdkPixbuf   *icon);
 void task_item_emit_visible_changed (TaskItem *item, gboolean     visible);
+void task_item_name_changed      (TaskItem *item, const gchar   *name);
 
 G_END_DECLS
 

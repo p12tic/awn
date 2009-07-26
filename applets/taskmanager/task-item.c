@@ -18,7 +18,6 @@
  */
 
 #include "task-item.h"
-#include "task-item-private.h"
 
 #include <libawn/libawn.h>
 
@@ -31,9 +30,21 @@
 
 G_DEFINE_ABSTRACT_TYPE (TaskItem, task_item, GTK_TYPE_BUTTON)
 
+#define TASK_ITEM_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
+  TASK_TYPE_ITEM, \
+  TaskItemPrivate))
+
+struct _TaskItemPrivate
+{
+  GtkWidget *box;
+  GtkWidget *name;
+  GtkWidget *image;
+  GdkPixbuf *icon;
+};
+
 enum
 {
-  PROP_0
+  PROP_0,
 };
 
 enum
@@ -47,7 +58,7 @@ enum
 static guint32 _item_signals[LAST_SIGNAL] = { 0 };
 
 /* Forwards */
-static void task_item_name_changed      (TaskItem *item, const gchar   *name);
+
 static void task_item_icon_changed      (TaskItem *item, GdkPixbuf     *icon);
 static void task_item_visible_changed   (TaskItem *item, gboolean       visible);
 static void task_item_size_request      (GtkWidget *widget, GtkRequisition *req,
@@ -244,7 +255,7 @@ task_item_activate (GtkWidget *widget, gpointer null)
   task_item_left_click (TASK_ITEM(widget), NULL);
 }
 
-static void 
+void 
 task_item_name_changed (TaskItem *item, const gchar *name)
 {
   TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);

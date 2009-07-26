@@ -24,6 +24,7 @@
 #include <gdk/gdkx.h>
 
 #include <libwnck/libwnck.h>
+#include <glib/gi18n.h>
 
 #undef G_DISABLE_SINGLE_INCLUDES
 #include <glibtop/procargs.h>
@@ -31,7 +32,6 @@
 #include <libawn/libawn.h>
 
 #include "task-launcher.h"
-#include "task-item-private.h"
 #include "task-window.h"
 
 #include "task-settings.h"
@@ -496,9 +496,8 @@ _name_change (TaskItem *item, const gchar *name)
 {
   g_return_if_fail (TASK_IS_LAUNCHER (item));
   gchar * tmp;
-  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
 
-  tmp = g_strdup_printf ("Launch   %s",name);
-  gtk_label_set_text (GTK_LABEL (priv->name), tmp);
+  tmp = g_strdup_printf (_("Launch %s"),name);
+  task_item_name_changed (item, tmp);  
   g_free (tmp);
 }
