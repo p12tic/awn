@@ -66,6 +66,10 @@ class awnPreferencesMini(awnPreferences):
         self.wTree = wTree
         self.client = awn.Config()
 
+        # Make sure the config dir exist
+        if not os.path.isdir(defs.HOME_CONFIG_DIR):
+            os.mkdir(defs.HOME_CONFIG_DIR)
+
         # If the sources.list doesn't exist, create one
         if not os.path.isfile(os.path.join(defs.HOME_CONFIG_DIR,"sources.list")):
             self.create_sources_list()
