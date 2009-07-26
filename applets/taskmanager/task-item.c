@@ -451,11 +451,11 @@ task_item_set_task_icon (TaskItem *item, TaskIcon *icon)
     AwnOverlayable *over = AWN_OVERLAYABLE (icon);
     // we can control what's on top here
     if (item->icon_overlay)
-      awn_overlayable_add_overlay (over, item->icon_overlay);
+      awn_overlayable_add_overlay (over, AWN_OVERLAY (item->icon_overlay));
     if (item->progress_overlay)
-      awn_overlayable_add_overlay (over, item->progress_overlay);
+      awn_overlayable_add_overlay (over, AWN_OVERLAY (item->progress_overlay));
     if (item->text_overlay)
-      awn_overlayable_add_overlay (over, item->text_overlay);
+      awn_overlayable_add_overlay (over, AWN_OVERLAY (item->text_overlay));
   }
 }
 

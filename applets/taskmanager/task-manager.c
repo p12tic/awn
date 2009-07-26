@@ -1174,6 +1174,8 @@ task_manager_update (TaskManager *manager,
           awn_overlayable_add_overlay (over,
                                        AWN_OVERLAY (item->progress_overlay));
         }
+        g_object_set (G_OBJECT (item->progress_overlay),
+                      "active", g_value_get_int (value) != -1, NULL);
         g_object_set_property (G_OBJECT (item->progress_overlay),
                                "percent-complete", value);
 
@@ -1187,6 +1189,8 @@ task_manager_update (TaskManager *manager,
         if (item->text_overlay == NULL)
         {
           item->text_overlay = awn_overlay_text_new ();
+          g_object_set (G_OBJECT (item->text_overlay),
+                        "font-sizing", AWN_FONT_SIZE_LARGE, NULL);
           GtkWidget *image = task_item_get_image_widget (item);
           AwnOverlayable *over = AWN_OVERLAYABLE (image);
           awn_overlayable_add_overlay (over, AWN_OVERLAY (item->text_overlay));
