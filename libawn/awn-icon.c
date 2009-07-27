@@ -54,6 +54,7 @@ struct _AwnIconPrivate
   gdouble press_start_x;
   gdouble press_start_y;
   guint long_press_timer;
+  gboolean long_press_emitted;
 
   AwnOrientation orient;
   gint offset;
@@ -207,6 +208,8 @@ awn_icon_long_press_timeout (gpointer data)
     g_signal_emit (icon, _icon_signals[LONG_PRESS], 0);
   }
 
+  // if we're in drag we won't emit clicked either
+  priv->long_press_emitted = TRUE;
   priv->long_press_timer = 0;
 
   return FALSE;
@@ -224,6 +227,7 @@ awn_icon_pressed (AwnIcon *icon, GdkEventButton *event, gpointer data)
     case 1:
       priv->was_pressed = TRUE;
       g_object_set (priv->effects, "depressed", TRUE, NULL);
+      priv->long_press_emitted = FALSE;
       if (priv->long_press_timer == 0)
       {
         priv->press_start_x = event->x_root;
@@ -257,7 +261,9 @@ awn_icon_released (AwnIcon *icon, GdkEventButton *event, gpointer data)
       g_source_remove (priv->long_press_timer);
       priv->long_press_timer = 0;
     }
-    awn_icon_clicked (icon);
+    // emit clicked only if long-press wasn't emitted
+    if (priv->long_press_emitted == FALSE)
+      awn_icon_clicked (icon);
   }
 
   return FALSE;
