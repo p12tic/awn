@@ -24,10 +24,6 @@
 #include <gtk/gtk.h>
 #include <libawn/libawn.h>
 
-#include "task-item.h"
-#include "task-window.h"
-#include "task-launcher.h"
-
 #define TASK_TYPE_ICON (task_icon_get_type ())
 
 #define TASK_ICON(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
@@ -48,7 +44,7 @@
 typedef struct _TaskIcon        TaskIcon;
 typedef struct _TaskIconClass   TaskIconClass;
 typedef struct _TaskIconPrivate TaskIconPrivate;
- 
+
 struct _TaskIcon
 {
   AwnThemedIcon        parent;	
@@ -71,6 +67,11 @@ struct _TaskIconClass
   void (*dest_drag_leave) (TaskIcon *icon);
 };
 
+// circular dependency :/ 
+#include "task-item.h"
+#include "task-window.h"
+#include "task-launcher.h"
+
 GType           task_icon_get_type          (void) G_GNUC_CONST;
 
 GtkWidget*      task_icon_new               (AwnApplet     *applet);
@@ -81,6 +82,9 @@ guint           task_icon_count_items       (TaskIcon      *icon);
 
 void            task_icon_append_item       (TaskIcon      *icon,
                                              TaskItem      *item);
+void            task_icon_append_ephemeral_item (TaskIcon      *icon,
+                                            TaskItem      *item);
+
 void            task_icon_remove_item       (TaskIcon      *icon,
                                              TaskItem      *item);
 guint           task_icon_match_item        (TaskIcon      *icon,
@@ -92,6 +96,8 @@ void            task_icon_refresh_icon      (TaskIcon      *icon);
 
 void            task_icon_set_draggable     (TaskIcon      *icon, 
                                              gboolean       draggable);
+
+GSList *  task_icon_get_items         (TaskIcon     *icon);
 
 #endif /* _TASK_ICON_H_ */
 

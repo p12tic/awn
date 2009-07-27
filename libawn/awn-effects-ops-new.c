@@ -714,7 +714,7 @@ gboolean awn_effects_post_op_alpha(AwnEffects * fx,
 
     cairo_set_operator (cr, CAIRO_OPERATOR_DEST_OUT);
     cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0 - priv->alpha*fx->icon_alpha);
-    cairo_translate (cr, 0.5, 0.5);
+    cairo_translate (cr, -0.5, -0.5);
     cairo_rectangle (cr, 0.0, 0.0, priv->window_width, priv->window_height);
     cairo_fill (cr);
 

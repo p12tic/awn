@@ -15,6 +15,7 @@
  *
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
  *             Hannes Verschore <hv1989@gmail.com>
+ *             Rodney Cryderman <rcryderman@gmail.com> 
  *
  */
 
@@ -468,6 +469,16 @@ task_window_get_application (TaskWindow *window)
   return NULL;
 }
 
+WnckWindow *
+task_window_get_window (TaskWindow *window)
+{
+  g_return_val_if_fail (TASK_IS_WINDOW (window), NULL);
+
+  if (WNCK_IS_WINDOW (window->priv->window))
+    return window->priv->window;
+
+  return NULL;
+}
 
 gboolean   
 task_window_get_wm_class (TaskWindow    *window,

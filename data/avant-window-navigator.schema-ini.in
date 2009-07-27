@@ -25,6 +25,11 @@ type = integer
 default = 10
 description = Offset of the icons from window border.
 
+[panel/dialog_offset]
+type = integer
+default = 15
+description = Offset between the icons and their dialog.
+
 [panel/size]
 type = integer
 default = 48
@@ -89,11 +94,6 @@ description = Provides possibility to click on windows behind the panel. (0 - ne
 type = list-string
 default = 1
 description = The list of panels.
-
-[panel/behavior]
-type = integer
-default = 5
-description = Behavior of the bar, handle by awn-settings (0=Standart, 1=Panel mode, 2=Autohide Keep below, 3=Autohide Fade out",4=Transparency, 5=Custom)
 
 [theme/gstep1]
 type = color

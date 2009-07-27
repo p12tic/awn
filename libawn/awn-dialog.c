@@ -670,6 +670,11 @@ awn_dialog_remove(GtkContainer *dialog, GtkWidget *widget)
 static void
 awn_dialog_constructed (GObject *object)
 {
+  if ( G_OBJECT_CLASS (awn_dialog_parent_class)->constructed)
+  {
+    G_OBJECT_CLASS (awn_dialog_parent_class)->constructed (object);
+  }
+
   GError *error = NULL;
   DesktopAgnosticConfigClient *client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
 
@@ -696,6 +701,12 @@ awn_dialog_constructed (GObject *object)
                                          NULL);
     desktop_agnostic_config_client_bind (client, AWN_GROUP_THEME, "hilight",
                                          object, "hilight", TRUE,
+                                         DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                         NULL);
+
+    // FIXME: bind only if we're connected to AwnApplet
+    desktop_agnostic_config_client_bind (client, "panel", "dialog_offset",
+                                         object, "window-offset", TRUE,
                                          DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                          NULL);
   }

@@ -1,3 +1,154 @@
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Implement "long-press".  Try to do the smart thing on short
+	clicks.
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Check for a NULL.
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Place new launchers at the correct position.
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+  	* applets/taskmanager/task-manager.c:
+	Handling of changes to launcher list are now handled a bit more
+	sanely but by no means correctly.
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+ 	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+	Be smarter about what TaskItem info is displayed in the tooltip.
+	Probably needs some fine tuning.
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+	Quiet some of the console spam.  Add to Authors.
+
+2009-07-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+	* applets/taskmanager/task-manager.c:
+	Hide the progress overlay properly.
+
+2009-07-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-item.c:
+	* applets/taskmanager/task-item.h:
+	* applets/taskmanager/task-manager.c:
+	Implemented text & progress overlays which are used by the DBus
+	interface.
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf-file.c:
+	Further error checking.  Don't call the parent class render
+	if there is no pixbuf.
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-item.h:
+        * applets/taskmanager/task-item.c:
+        * applets/taskmanager/task-launcher.c:
+	More cleanup of code to add "Launch" string to TaskItem labels.
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-item-private.h:
+	* applets/taskmanager/task-item.h:
+	* applets/taskmanager/task-item.c:
+	* applets/taskmanager/task-launcher.c:
+	Cleanup code to add "Launch" string to TaskItem labels.
+
+2009-07-26  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+    Make sure ~/.config/awn exist when awn-settings starts. 
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-item-private.h:
+	Add new file.
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-item.h:
+  	* applets/taskmanager/task-launcher.c:
+	Add the string "Launch" to launchers TaskItems.
+
+2009-07-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/awn.schema-ini.in:
+	* libawn/awn-dialog.c:
+	Added dialog-offset key to config.
+	* libawn/awn-effects-ops-new.c:
+	Fixed 1px bug.
+
+2009-07-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	* awn-settings/awnSettings.py.in:
+	Polish awn-settings general settings dialog layout.
+
+2009-07-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Make sure we don't show an awn-applet process.  
+	Added to authors.
+
+2009-07-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Get a bit more agressive about finding the desktop file.  
+	Needs testing to see if it gives false positives in practice.
+
+2009-07-25  Julien Lavergne <julien.lavergne@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	* data/awn.schema-ini.in:
+    Remove panel/behavior key. Instead, read configuration keys to
+    find the behavior.
+
+2009-07-25  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* awn-settings/Makefile.am:
+	* awn-settings/awn-plugins.svg:
+	* awn-settings/awn-settings.xml:
+	* debian/awn-settings-trunk.install:
+    Change icons for awn-settings (LP: #243706)
+    - Ship a copy of plugin in icon for applets
+    - Use gnome-panel-launcher for launchers
+
+2009-07-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	An "ephemeral" item must be a Launcher.
+
+2009-07-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-manager.c:
+	Looks for a desktop file to associate with windows that are not 
+	already associated with a TaskLauncher.
+
 2009-07-24  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-dialog.c (awn_dialog_constructed):

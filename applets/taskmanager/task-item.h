@@ -23,6 +23,8 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
+#include <libawn/libawn.h>
+
 G_BEGIN_DECLS
 
 #define TASK_TYPE_ITEM (task_item_get_type ())
@@ -50,6 +52,10 @@ struct _TaskItem
 {
   GtkButton     parent;
 
+  AwnOverlayPixbufFile *icon_overlay;
+  AwnOverlayText *text_overlay;
+  AwnOverlayProgressCircle *progress_overlay;
+
   TaskItemPrivate *priv;
 };
 
@@ -65,12 +71,16 @@ struct _TaskItemClass
   void          (*right_click)     (TaskItem *item, GdkEventButton *event);
   void          (*middle_click)     (TaskItem *item, GdkEventButton *event);
   guint         (*match)           (TaskItem *item, TaskItem *item_to_match);
+  void          (*name_change)     (TaskItem *item, const gchar *name);
 
   /*< signals >*/
   void (*name_changed)      (TaskItem *item, const gchar *name);
   void (*icon_changed)      (TaskItem *item, GdkPixbuf   *icon);
   void (*visible_changed)   (TaskItem *item, gboolean     visible);
 };
+
+// circular dependency :/
+#include "task-icon.h"
 
 GType           task_item_get_type        (void) G_GNUC_CONST;
 
@@ -81,6 +91,11 @@ void          task_item_left_click    (TaskItem *item, GdkEventButton *event);
 void          task_item_right_click   (TaskItem *item, GdkEventButton *event);
 void          task_item_middle_click   (TaskItem *item, GdkEventButton *event);
 guint         task_item_match         (TaskItem *item, TaskItem *item_to_match);
+
+void          task_item_set_task_icon (TaskItem *item, TaskIcon *icon);
+TaskIcon    * task_item_get_task_icon (TaskItem *item);
+
+GtkWidget   * task_item_get_image_widget (TaskItem *item);
 
 //TODO: 2nd round: implement
 //const gchar   * task_item_get_name          (TaskItem    *item);

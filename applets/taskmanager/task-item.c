@@ -40,6 +40,8 @@ struct _TaskItemPrivate
   GtkWidget *name;
   GtkWidget *image;
   GdkPixbuf *icon;
+
+  TaskIcon *task_icon;
 };
 
 enum
@@ -58,12 +60,12 @@ enum
 static guint32 _item_signals[LAST_SIGNAL] = { 0 };
 
 /* Forwards */
-static void task_item_name_changed      (TaskItem *item, const gchar   *name);
+
 static void task_item_icon_changed      (TaskItem *item, GdkPixbuf     *icon);
 static void task_item_visible_changed   (TaskItem *item, gboolean       visible);
 static void task_item_size_request      (GtkWidget *widget, GtkRequisition *req,
                                           gpointer null);
-
+static void task_item_name_changed      (TaskItem *item, const gchar   *name);
 static gboolean  task_item_button_release_event (GtkWidget      *widget,
                                                  GdkEventButton *event);
 static gboolean  task_item_button_press_event   (GtkWidget      *widget,
@@ -74,6 +76,7 @@ static void task_item_activate (GtkWidget *widget, gpointer null);
 static void
 task_item_dispose (GObject *object)
 {
+  TaskItem *item = TASK_ITEM (object);
   TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (object);
 
   if (priv->icon)
@@ -81,6 +84,14 @@ task_item_dispose (GObject *object)
     g_object_unref (priv->icon);
     priv->icon = NULL;
   }
+
+  // this removes the overlays from the associated TaskIcon
+  task_item_set_task_icon (item, NULL);
+
+  item->text_overlay = NULL;
+  item->progress_overlay = NULL;
+  item->icon_overlay = NULL;
+
   G_OBJECT_CLASS (task_item_parent_class)->dispose (object);
 }
 
@@ -92,6 +103,33 @@ task_item_finalize (GObject *object)
 }
 
 static void
+task_item_constructed (GObject *object)
+{
+  TaskItemClass *klass;  
+  klass = TASK_ITEM_GET_CLASS (object);  
+  g_return_if_fail (klass->is_visible);
+  
+  if (G_OBJECT_CLASS (task_item_parent_class)->constructed)
+  {
+    G_OBJECT_CLASS (task_item_parent_class)->constructed (object);
+  }
+
+  /* connect to signals */
+  g_signal_connect (G_OBJECT (object), "name-changed",
+                    G_CALLBACK (klass->name_change), NULL);
+  g_signal_connect (G_OBJECT (object), "visible-changed",
+                    G_CALLBACK (task_item_visible_changed), NULL);
+  g_signal_connect (G_OBJECT (object), "activate",
+                    G_CALLBACK (task_item_activate), NULL);
+  g_signal_connect (G_OBJECT (object), "icon-changed",
+                    G_CALLBACK (task_item_icon_changed), NULL);  
+  g_signal_connect (G_OBJECT (object), "size-request",
+                    G_CALLBACK (task_item_size_request),NULL);
+  
+}
+
+
+static void
 task_item_class_init (TaskItemClass *klass)
 {
   //GParamSpec   *pspec;
@@ -100,7 +138,8 @@ task_item_class_init (TaskItemClass *klass)
 
   obj_class->dispose = task_item_dispose;
   obj_class->finalize = task_item_finalize;
-  
+  obj_class->constructed = task_item_constructed;  
+
   wid_class->button_release_event = task_item_button_release_event;
   wid_class->button_press_event   = task_item_button_press_event;
   
@@ -109,6 +148,7 @@ task_item_class_init (TaskItemClass *klass)
   klass->get_icon        = NULL;
   klass->is_visible      = NULL;
   klass->match           = NULL;
+  klass->name_change    = task_item_name_changed;
 
   /* Install signals */
   _item_signals[NAME_CHANGED] =
@@ -148,7 +188,10 @@ static void
 task_item_init (TaskItem *item)
 {
   TaskItemPrivate *priv;
+  TaskItemClass *klass;
 
+  klass = TASK_ITEM_GET_CLASS (item);  
+  
   /* get and save private struct */
   priv = item->priv = TASK_ITEM_GET_PRIVATE (item);
 
@@ -169,17 +212,6 @@ task_item_init (TaskItem *item)
   priv->name = gtk_label_new ("");
   gtk_box_pack_start (GTK_BOX (priv->box), priv->name, TRUE, FALSE, 10);
 
-  /* connect to signals */
-  g_signal_connect (G_OBJECT (item), "name-changed",
-                    G_CALLBACK (task_item_name_changed), NULL);
-  g_signal_connect (G_OBJECT (item), "visible-changed",
-                    G_CALLBACK (task_item_visible_changed), NULL);
-  g_signal_connect (G_OBJECT (item), "activate",
-                    G_CALLBACK (task_item_activate), NULL);
-  g_signal_connect (G_OBJECT (item), "icon-changed",
-                    G_CALLBACK (task_item_icon_changed), NULL);  
-  g_signal_connect (G_OBJECT (item), "size-request",
-                    G_CALLBACK (task_item_size_request),NULL);
 }
 
 static gboolean
@@ -241,7 +273,6 @@ task_item_name_changed (TaskItem *item, const gchar *name)
 
   gtk_label_set_text (GTK_LABEL (priv->name), name);
 }
-
 
 static void 
 task_item_icon_changed (TaskItem *item, GdkPixbuf *icon)
@@ -393,6 +424,59 @@ task_item_match (TaskItem *item, TaskItem *item_to_match)
   g_return_val_if_fail (klass->match, 0);
         
   return klass->match (item, item_to_match);
+}
+
+void
+task_item_set_task_icon (TaskItem *item, TaskIcon *icon)
+{
+  g_return_if_fail (TASK_IS_ITEM (item));
+
+  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
+
+  // add/remove overlays
+  if (priv->task_icon)
+  {
+    AwnOverlayable *over = AWN_OVERLAYABLE (priv->task_icon);
+    if (item->text_overlay)
+      awn_overlayable_remove_overlay (over, AWN_OVERLAY (item->text_overlay));
+    if (item->progress_overlay)
+      awn_overlayable_remove_overlay (over, AWN_OVERLAY (item->progress_overlay));
+    if (item->icon_overlay)
+      awn_overlayable_remove_overlay (over, AWN_OVERLAY (item->icon_overlay));
+  }
+
+  priv->task_icon = icon;
+  if (icon)
+  {
+    AwnOverlayable *over = AWN_OVERLAYABLE (icon);
+    // we can control what's on top here
+    if (item->icon_overlay)
+      awn_overlayable_add_overlay (over, AWN_OVERLAY (item->icon_overlay));
+    if (item->progress_overlay)
+      awn_overlayable_add_overlay (over, AWN_OVERLAY (item->progress_overlay));
+    if (item->text_overlay)
+      awn_overlayable_add_overlay (over, AWN_OVERLAY (item->text_overlay));
+  }
+}
+
+TaskIcon*
+task_item_get_task_icon (TaskItem *item)
+{
+  g_return_val_if_fail (TASK_IS_ITEM (item), NULL);
+
+  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
+
+  return priv->task_icon; 
+}
+
+GtkWidget*
+task_item_get_image_widget (TaskItem *item)
+{
+  g_return_val_if_fail (TASK_IS_ITEM (item), NULL);
+
+  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
+
+  return priv->image;
 }
 
 /**
