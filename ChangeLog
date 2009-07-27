@@ -1,5 +1,11 @@
 2009-07-27  Michal Hruby  <michal.mhr@gmail.com>
 
+	* data/awn.schema-ini.in:
+	* libawn/awn-icon.c:
+	Made the long-press-timeout value configurable (default 750ms).
+
+2009-07-27  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-icon.c:
 	Don't emit clicked if long-press was emitted.
 

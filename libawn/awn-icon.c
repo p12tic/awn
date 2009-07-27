@@ -25,7 +25,6 @@
 #include "awn-overlayable.h"
 
 #define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
-#define LONG_PRESS_TIMEOUT 1000
 
 static void awn_icon_overlayable_init (AwnOverlayableIface *iface);
 
@@ -51,6 +50,7 @@ struct _AwnIconPrivate
   gboolean hover_effects_enable;
   gboolean was_pressed;
 
+  gint long_press_timeout;
   gdouble press_start_x;
   gdouble press_start_y;
   guint long_press_timer;
@@ -73,7 +73,8 @@ enum
   PROP_BIND_EFFECTS,
 
   PROP_ICON_WIDTH,
-  PROP_ICON_HEIGHT
+  PROP_ICON_HEIGHT,
+  PROP_LONG_PRESS_TIMEOUT
 };
 
 enum
@@ -232,7 +233,7 @@ awn_icon_pressed (AwnIcon *icon, GdkEventButton *event, gpointer data)
       {
         priv->press_start_x = event->x_root;
         priv->press_start_y = event->y_root;
-        priv->long_press_timer = g_timeout_add (LONG_PRESS_TIMEOUT, 
+        priv->long_press_timer = g_timeout_add (priv->long_press_timeout, 
                                                 awn_icon_long_press_timeout,
                                                 icon);
       }
@@ -278,10 +279,14 @@ awn_icon_constructed (GObject *object)
   AwnIcon *icon = AWN_ICON (object);
   AwnIconPrivate *priv = icon->priv;
 
-  if (!priv->bind_effects) return;
-
   AwnConfigClient *client = awn_config_client_new ();
   AwnConfigBridge *bridge = awn_config_bridge_get_default ();
+
+  awn_config_bridge_bind (bridge, client,
+                          "shared", "long_press_timeout",
+                          object, "long_press_timeout");
+
+  if (!priv->bind_effects) return;
 
   GObject *fx = G_OBJECT (priv->effects);
 
@@ -328,6 +333,9 @@ awn_icon_get_property (GObject    *object,
     case PROP_ICON_HEIGHT:
       g_value_set_int (value, priv->icon_height);
       break;
+    case PROP_LONG_PRESS_TIMEOUT:
+      g_value_set_int (value, priv->long_press_timeout);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -359,6 +367,9 @@ awn_icon_set_property (GObject      *object,
       awn_icon_set_custom_paint(icon,
                                 priv->icon_width,
                                 g_value_get_int (value));
+      break;
+    case PROP_LONG_PRESS_TIMEOUT:
+      icon->priv->long_press_timeout = g_value_get_int (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -439,6 +450,14 @@ awn_icon_class_init (AwnIconClass *klass)
                       "Current icon height",
                       0, G_MAXINT, 0,
                       G_PARAM_READWRITE));
+
+  g_object_class_install_property (obj_class,
+    PROP_LONG_PRESS_TIMEOUT,
+    g_param_spec_int ("long-press-timeout",
+                      "Long press timeout",
+                      "Timeout after which long-press signal is emit",
+                      250, 10000, 750,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   /* Signals */
   _icon_signals[SIZE_CHANGED] =
