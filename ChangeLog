@@ -1,5 +1,10 @@
 2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Place new launchers at the correct position.
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-icon.h:
   	* applets/taskmanager/task-manager.c:

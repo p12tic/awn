@@ -971,8 +971,8 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
       icon = task_icon_new (AWN_APPLET (manager));
       task_icon_append_item (TASK_ICON (icon), launcher);
       gtk_container_add (GTK_CONTAINER (priv->box), icon);
-
-      priv->icons = g_slist_append (priv->icons, icon);
+      gtk_box_reorder_child (GTK_BOX (priv->box), icon, g_slist_position (list,d));
+      priv->icons = g_slist_insert (priv->icons, icon, g_slist_position (list,d));
 
       g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
       g_signal_connect_swapped (icon, 
