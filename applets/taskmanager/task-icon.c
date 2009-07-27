@@ -1243,7 +1243,16 @@ task_icon_append_item (TaskIcon      *icon,
   g_return_if_fail (TASK_IS_ITEM (item));
 
   priv = icon->priv;
+  /* 
+   if we don't have an icon (this is the first item being appended) or
+   this item is a launcher then we'll use this item's icon 
+   */
+  if (!priv->icon || TASK_IS_LAUNCHER(item))
+  {
+    priv->icon = task_item_get_icon (item);
+  }
 
+  
   priv->items = g_slist_append (priv->items, item);
   gtk_widget_show_all (GTK_WIDGET (item));
   gtk_container_add (GTK_CONTAINER (priv->dialog), GTK_WIDGET (item));
@@ -1268,13 +1277,6 @@ task_icon_append_item (TaskIcon      *icon,
                       G_CALLBACK (on_window_needs_attention_changed), icon);
     g_signal_connect (window, "progress-changed",
                       G_CALLBACK (on_window_progress_changed), icon);
-  }
-  /* 
-   if we don't have an icon (this is the first item being appended) or
-   this item is a launcher then we'll use this item's icon */
-  if (!priv->icon || TASK_IS_LAUNCHER(item))
-  {
-    priv->icon = task_item_get_icon (item);
   }
   task_icon_search_main_item (icon,item);
 }
