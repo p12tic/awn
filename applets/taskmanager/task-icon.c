@@ -35,6 +35,8 @@
 #include "task-launcher.h"
 #include "task-settings.h"
 
+//#define DEBUG 1
+
 G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_THEMED_ICON)
 
 #define TASK_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -183,7 +185,10 @@ static void      task_icon_dest_drag_data_received  (GtkWidget      *widget,
 static gboolean _update_geometry(GtkWidget *widget);
 static gboolean task_icon_refresh_geometry (TaskIcon *icon);
 static void     task_icon_refresh_visible  (TaskIcon *icon);
-static void     task_icon_search_main_item (TaskIcon *icon);
+static void     task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item);
+static void     task_icon_active_window_changed (WnckScreen *screen,
+                                 WnckWindow *previously_active_window,
+                                 TaskIcon *icon);
 
 /* GObject stuff */
 static void
@@ -284,6 +289,9 @@ task_icon_finalize (GObject *object)
   {
     g_source_remove(priv->update_geometry_id);
   }
+  g_signal_handlers_disconnect_by_func(wnck_screen_get_default (), 
+                                       G_CALLBACK (task_icon_active_window_changed), 
+                                       object);
 
   G_OBJECT_CLASS (task_icon_parent_class)->finalize (object);
 }
@@ -305,6 +313,9 @@ task_icon_constructed (GObject *object)
   g_signal_connect (G_OBJECT (priv->dialog),"focus-out-event",
                     G_CALLBACK (task_icon_dialog_unfocus), NULL);
 
+  g_signal_connect (wnck_screen_get_default(),"active-window-changed",
+                    G_CALLBACK(task_icon_active_window_changed),
+                    object);
   //update geometry of icon every second.
   priv->update_geometry_id = g_timeout_add_seconds (1, (GSourceFunc)_update_geometry, widget);
 
@@ -317,7 +328,7 @@ task_icon_constructed (GObject *object)
 
   awn_config_bridge_bind (bridge, priv->client,
                           AWN_CONFIG_CLIENT_DEFAULT_GROUP, "txt_indicator_threshold",
-                          object, "txt_indicator_threshold");  
+                          object, "txt_indicator_threshold");
 }
 
 /**
@@ -614,8 +625,13 @@ on_main_item_name_changed (TaskItem    *item,
                            TaskIcon    *icon)
 {
   g_return_if_fail (TASK_IS_ICON (icon));
-
-  awn_icon_set_tooltip_text (AWN_ICON (icon), name);
+  if (TASK_IS_WINDOW(item))
+  {
+#ifdef DEBUG
+    g_debug ("%s: window name is %s",__func__,wnck_window_get_name (task_window_get_window(TASK_WINDOW(item))));
+#endif
+    awn_icon_set_tooltip_text (AWN_ICON (icon), name);
+  }
 }
 
 /**
@@ -662,7 +678,34 @@ on_main_item_visible_changed (TaskItem  *item,
      FIXME: this is possible atm in TaskWindow */
   if (visible) return;
 
-  task_icon_search_main_item (icon);
+//  task_icon_search_main_item (icon,item);
+}
+
+static void
+task_icon_active_window_changed (WnckScreen *screen,
+                                 WnckWindow *previously_active_window,
+                                 TaskIcon *icon)
+{
+  WnckWindow * active;
+  GSList     *i;
+  TaskIconPrivate *priv = icon->priv;
+  
+  active = wnck_screen_get_active_window (screen);
+  if (active )
+  {
+    for (i = priv->items; i; i = i->next)
+    {
+      TaskItem *item = i->data;
+
+      if (!task_item_is_visible (item)) continue;
+      if (!TASK_IS_WINDOW(item)) continue;
+      if ( active == task_window_get_window (TASK_WINDOW(item)) )
+      {
+        task_icon_search_main_item (icon,item);
+        break; 
+      }
+    }
+  }
 }
 
 /**
@@ -683,7 +726,7 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
 
   if (old_item == priv->main_item)
   {
-    task_icon_search_main_item (icon);
+    task_icon_search_main_item (icon,NULL);
   }
 
   task_icon_refresh_visible (icon);
@@ -703,31 +746,78 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
 }
 
 /**
- * Searches for a new main item.
+ * Searches for a new main item unless one is provided.
  * A main item is used for displaying its icon and also the text (if there is only one item)
  * Attention: this function doesn't check if it is needed to switch to a new main item.
  */
 static void
-task_icon_search_main_item (TaskIcon *icon)
+task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
 {
   TaskIconPrivate *priv;
-  GSList *i;
-  TaskItem *main_item = NULL;
-
+  GSList * i;
+  
   g_return_if_fail (TASK_IS_ICON (icon));
 
   priv = icon->priv;
 
-  for (i = priv->items; i; i = i->next)
+  if (!main_item)
   {
-    TaskItem *item = i->data;
+    for (i = priv->items; i; i = i->next)
+    {
+      TaskItem *item = i->data;
 
-    if (!task_item_is_visible (item)) continue;
+      if (!task_item_is_visible (item)) continue;
+      if (!TASK_IS_WINDOW (item)) continue;
 
-    main_item = item;
-    break;
+      if (wnck_window_needs_attention (task_window_get_window (TASK_WINDOW(item))) )
+      {
+        main_item = item;
+      }
+    }
+  }
+  if (!main_item)
+  {
+    for (i = priv->items; i; i = i->next)
+    {
+      TaskItem *item = i->data;
+
+      if (!task_item_is_visible (item)) continue;
+      if (!TASK_IS_WINDOW (item)) continue;
+      
+      if (wnck_window_is_most_recently_activated (task_window_get_window (TASK_WINDOW(item))))
+      {
+        main_item = item;
+      }
+    }
+  }
+  
+  if (!main_item)
+  {
+    for (i = priv->items; i; i = i->next)
+    {
+      TaskItem *item = i->data;
+
+      if (!task_item_is_visible (item)) continue;
+      if (!TASK_IS_WINDOW (item)) continue;
+      
+      main_item = item;
+      break;
+    }
   }
 
+  if (!main_item)
+  {
+    for (i = priv->items; i; i = i->next)
+    {
+      TaskItem *item = i->data;
+
+      if (!task_item_is_visible (item)) continue;
+      
+      main_item = item;
+      break;
+    }
+  }
+  
   //remove signals of old main_item
   if (priv->main_item)
   {
@@ -746,7 +836,6 @@ task_icon_search_main_item (TaskIcon *icon)
     priv->icon = task_item_get_icon (priv->main_item);
 #ifdef DEBUG
     g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
-    
 #endif    
     awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
     awn_icon_set_tooltip_text (AWN_ICON (icon), 
@@ -831,7 +920,7 @@ task_icon_refresh_visible (TaskIcon *icon)
     else
     {
       if (!priv->main_item)
-        task_icon_search_main_item (icon);
+        task_icon_search_main_item (icon,NULL);
       
       priv->visible = TRUE;
     }
@@ -910,6 +999,8 @@ on_window_needs_attention_changed (TaskWindow *window,
   g_return_if_fail (TASK_IS_ICON (icon));
 
   priv = icon->priv;
+  
+  task_icon_search_main_item (icon,TASK_ITEM(window));
 
   for (w = priv->items; w; w = w->next)
   {
@@ -1117,6 +1208,7 @@ task_icon_append_item (TaskIcon      *icon,
     g_signal_connect (window, "progress-changed",
                       G_CALLBACK (on_window_progress_changed), icon);
   }
+  task_icon_search_main_item (icon,item);
 }
 
 void
