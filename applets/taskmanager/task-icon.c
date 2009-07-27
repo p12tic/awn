@@ -344,7 +344,7 @@ task_icon_constructed (GObject *object)
   g_signal_connect (object,"long-press",
                     G_CALLBACK(task_icon_long_press),
                     NULL);
-  g_signal_connect (object,"clicked",
+  g_signal_connect_after (object,"clicked",
                     G_CALLBACK(task_icon_clicked),
                     NULL);
   
@@ -696,7 +696,6 @@ on_main_item_icon_changed (TaskItem   *item,
   g_object_ref(pixbuf);
 
   priv->icon = pixbuf;
-//#define DEBUG 1
 #ifdef DEBUG
   g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(pixbuf), gdk_pixbuf_get_height(pixbuf));
 #endif
@@ -888,7 +887,12 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
   if (main_item)
   {
     priv->main_item = main_item;
-    priv->icon = task_item_get_icon (priv->main_item);
+    /*
+     ok... what to do here?  FIXME 
+     For the moment we'll keep the icon as the launcher icon.
+     */
+//    priv->icon = task_item_get_icon (priv->main_item);
+    
     priv->items = g_slist_remove (priv->items, priv->main_item);
     priv->items = g_slist_prepend (priv->items,priv->main_item);
 #ifdef DEBUG
@@ -1265,6 +1269,13 @@ task_icon_append_item (TaskIcon      *icon,
     g_signal_connect (window, "progress-changed",
                       G_CALLBACK (on_window_progress_changed), icon);
   }
+  /* 
+   if we don't have an icon (this is the first item being appended) or
+   this item is a launcher then we'll use this item's icon */
+  if (!priv->icon || TASK_IS_LAUNCHER(item))
+  {
+    priv->icon = task_item_get_icon (item);
+  }
   task_icon_search_main_item (icon,item);
 }
 
@@ -1383,16 +1394,17 @@ task_icon_clicked (TaskIcon * icon,gpointer null)
     g_critical ("TaskIcon: The icons shouldn't contain a visible (and clickable) icon");
     return;
   }
+  else if (GTK_WIDGET_VISIBLE (priv->dialog) )
+  {
+  /*is the dialog open?  if so then it should be closed on icon click*/  
+    
+    gtk_widget_hide (priv->dialog);
+  }  
   else if (priv->shown_items == 1)
   {
     GSList *w;
 
-    /*is the dialog open?  if so then it should be closed on icon click*/
-    if (GTK_WIDGET_VISIBLE (priv->dialog) )
-    {
-      gtk_widget_hide (priv->dialog);
-    }
-    else if (main_item) 
+    if (main_item) 
     {
       /*if we have a main item then pass the click on to that */
       task_item_left_click (main_item,NULL);
@@ -1495,25 +1507,25 @@ task_icon_button_release_event (GtkWidget      *widget,
 {
   TaskIconPrivate *priv;
   TaskIcon *icon;
-
+  g_debug ("%s",__func__);
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
 
   icon = TASK_ICON (widget);
   priv = icon->priv;
 
+  g_debug ("button = %d",event->button);
   switch (event->button)
   {
-
     case 2: // middle click: start launcher
 
       //TODO: start launcher
-      /* Find the window/launcher that is shown */
+      /* Find the launcher that is shown */
       for (GSList *w = priv->items; w; w = w->next)
       {
         TaskItem *item = w->data;
 
         if (!task_item_is_visible (item)) continue;
-        
+        if (!TASK_IS_LAUNCHER (item) ) continue;
         task_item_left_click (item, event);
 
         break;
