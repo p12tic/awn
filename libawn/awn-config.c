@@ -25,6 +25,18 @@
 
 #include "awn-config.h"
 
+/**
+ * SECTION: awn-config
+ * @short_description: Convenience functions for handling dock/applet
+ * configuration.
+ * @see_also: #DesktopAgnosticConfigClient
+ * @since: 0.4.0
+ *
+ * Functions used by the dock, applets, and preferences dialogs to
+ * associate configuration options with the first two categories. Also
+ * handles their memory management.
+ */
+
 #define SCHEMADIR PKGDATADIR "/schemas"
 #define UID_SINGLE_INSTANCE_PREFIX "single-"
 
@@ -46,10 +58,10 @@ on_config_destroy (gpointer data)
  * client.
  * @error: The address of the #GError object, if an error occurs.
  *
- * Returns: A borrowed reference to a configuration client object.
- *
  * Looks up or creates a configuration client that is associated with the
  * panel specified.
+ *
+ * Returns: A borrowed reference to a configuration client object.
  */
 DesktopAgnosticConfigClient*
 awn_config_get_default (gint panel_id, GError** error)
@@ -110,11 +122,11 @@ awn_config_free (void)
  * @applet: The applet.
  * @error: The address of the #GError object, if an error occurs.
  *
- * Returns: A borrowed reference to the configuration client associated with
- * the applet specified via the metadata.
- *
  * Looks up or creates a configuration client that is associated with the
  * given applet.
+ *
+ * Returns: A borrowed reference to the configuration client associated with
+ * the applet specified via the metadata.
  */
 DesktopAgnosticConfigClient*
 awn_config_get_default_for_applet (AwnApplet *applet, GError **error)
@@ -153,13 +165,13 @@ awn_config_get_default_for_applet (AwnApplet *applet, GError **error)
  * @uid: The UID of the applet (may be %NULL).
  * @error: The address of the #GError object, if an error occurs.
  *
- * Returns: A borrowed reference to the configuration client associated with
- * the applet specified via the metadata.
- *
  * Looks up or creates a configuration client that is associated with the
  * canonical name of an applet and an optional UID.
  * Should only be used by code where the #AwnApplet object is not present,
  * such as the dock's preferences dialog.
+ *
+ * Returns: A borrowed reference to the configuration client associated with
+ * the applet specified via the metadata.
  */
 DesktopAgnosticConfigClient*
 awn_config_get_default_for_applet_by_info (const gchar  *name,
