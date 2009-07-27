@@ -70,10 +70,13 @@ dnl ==============================================
 AC_ARG_WITH(vala, AS_HELP_STRING([--with-vala],[Enables installation of the Vala bindings]),,[with_vala=no])
 
 if test "$with_vala" != "no"; then
-  VALA_PROG_VALAC(0.7.2)
-  AC_PATH_PROG(VAPIGEN, vapigen, vapigen, [])
+  VALA_PROG_VALAC(0.5.4)
+  if test $USE_MAINTAINER_MODE = yes; then
+    AC_PATH_PROG(VALA_GEN_INTROSPECT, vala-gen-introspect, vala-gen-introspect, [])
+    AC_PATH_PROG(VAPIGEN, vapigen, vapigen, [])
+  fi
 fi
-AM_CONDITIONAL(HAVE_VALA, test -n "$VALAC" -a -n "$VAPIGEN")
+AM_CONDITIONAL(HAVE_VALA, test -n "$VALAC")
 
 dnl ==============================================
 dnl Check for Python modules
@@ -136,12 +139,6 @@ AC_SUBST(LIBRARY_MODULES)
 PKG_CHECK_MODULES(AWN, [$LIBRARY_MODULES])
 PKG_CHECK_MODULES(DOCK, [$DOCK_MODULES])
 PKG_CHECK_MODULES(TASKMANAGER, [$LIBRARY_MODULES $TASKMANAGER_MODULES])
-
-dnl =============================================
-dnl GObject Intropsection
-dnl =============================================
-
-GOBJECT_INTROSPECTION_REQUIRE([0.6.3])
 
 dnl ==============================================
 dnl DBus

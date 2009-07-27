@@ -105,9 +105,6 @@ src/stamp-awnmarshal.c
 src/stamp-awnmarshal.h
 applets/taskmanager/taskmanager-marshal.c
 applets/taskmanager/taskmanager-marshal.h
-*.gir
-*.typelib
-bindings/vala/awn.vapi
 doltcompile
 doltlibtool
 m4/lt*.m4
