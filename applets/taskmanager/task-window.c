@@ -769,7 +769,14 @@ _is_visible (TaskItem *item)
 static void
 _left_click (TaskItem *item, GdkEventButton *event)
 {
-  task_window_activate (TASK_WINDOW (item), event->time);
+  if (event)
+  {
+    task_window_activate (TASK_WINDOW (item), event->time);
+  }
+  else
+  {
+    task_window_activate (TASK_WINDOW (item), gdk_event_get_time(NULL));
+  }
 }
 
 static void

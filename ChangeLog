@@ -1,5 +1,11 @@
 2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-window.c:
+	Fix a crasher stemming from GdkEvent not being 
+	available in clicked signal.
+
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/taskmanager.schema-ini:
 	Add config option to enable/disable long press.
