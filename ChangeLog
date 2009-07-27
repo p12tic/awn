@@ -1,6 +1,11 @@
 2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Check for a NULL.
+
+2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Place new launchers at the correct position.
 
 2009-07-26  Rodney Cryderman  <rcryderman@gmail.com>

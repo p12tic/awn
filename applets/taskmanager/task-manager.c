@@ -805,7 +805,10 @@ on_window_opened (WnckScreen    *screen,
       #ifdef DEBUG
       g_debug ("%s:  cmd = '%s'",__func__,cmd);
       #endif
-      found_desktop = find_desktop (TASK_ICON(icon), cmd);
+      if (cmd)
+      {
+        found_desktop = find_desktop (TASK_ICON(icon), cmd);
+      }
       g_free (cmd);
     }
      
