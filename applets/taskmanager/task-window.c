@@ -448,11 +448,10 @@ task_window_get_pid (TaskWindow *window)
 {
   g_return_val_if_fail (TASK_IS_WINDOW (window), -1);
   
-	gint pid = -1;
+	gint pid = 0;
   if (WNCK_IS_WINDOW (window->priv->window))
 	{
     pid = wnck_window_get_pid (window->priv->window);
-		pid = pid ? pid : -1; 		/* if the pid is 0 return -1.  Bad wnck! Bad! */
 	}
   
 	return pid;  

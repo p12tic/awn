@@ -54,6 +54,7 @@ struct _TaskLauncherPrivate
   gchar *exec;
   gchar *icon_name;
   gint   pid;
+  glong timestamp;
 };
 
 enum
@@ -61,6 +62,8 @@ enum
   PROP_0,
   PROP_DESKTOP_FILE
 };
+
+//#define DEBUG 1
 
 /* Forwards */
 static const gchar * _get_name        (TaskItem       *item);
@@ -290,6 +293,8 @@ _match (TaskItem *item,
   gchar   *cmd;
   gchar   *search_result;
   glibtop_proc_uid buf_proc_uid;
+  glong   timestamp;
+  GTimeVal timeval;
   
   g_return_val_if_fail (TASK_IS_LAUNCHER(item), 0);
 
@@ -300,6 +305,9 @@ _match (TaskItem *item,
 
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
+  
+  timestamp = priv->timestamp;
+  priv->timestamp = 0;
   
   window = TASK_WINDOW (item_to_match);
 
@@ -318,6 +326,8 @@ _match (TaskItem *item,
     glibtop_get_proc_uid (&buf_proc_uid,pid);
 
 #ifdef DEBUG
+    g_debug ("%s: session = %d",__func__,buf_proc_uid.session);    
+    g_debug ("%s: process group id = %d",__func__,buf_proc_uid.pgrp);
     g_debug ("%s: parent pid = %d",__func__,buf_proc_uid.ppid);
 #endif
 
@@ -393,9 +403,6 @@ _match (TaskItem *item,
     }
   }
 
-  g_free (res_name);
-  g_free (class_name);
-  
   if (cmd)
   {
     search_result = g_strrstr (cmd, priv->exec);
@@ -409,11 +416,66 @@ _match (TaskItem *item,
       #ifdef DEBUG
       g_debug ("exec matches end of command line.");
       #endif
+      g_free (res_name);
+      g_free (class_name);
       g_free (cmd);
       return 20;
     }
   }
   g_free (cmd);
+
+  /*
+   Dubious... thus the rating of 1.
+   Let's see how it works in practice
+   This may work well enough with some additional fuzzy heuristics.
+   */
+  g_get_current_time (&timeval);
+#ifdef DEBUG
+    g_debug ("%s: current time = %ld",__func__,timeval.tv_sec);  
+#endif
+  if ( timestamp)
+  {
+    /* was this launcher used in the last 10 seconds?*/
+    if (timeval.tv_sec - timestamp < 10)
+    {
+      /* is the launcher pid set?*/
+      if (priv->pid)
+      {
+        gchar * name = awn_desktop_item_get_name (priv->item);
+        GStrv tokens = g_strsplit (name, " ",-1);
+        if (tokens && tokens[0] && (strlen (tokens[0])>5) )
+        {
+          gchar * lower = g_utf8_strdown (tokens[0],-1);
+          gchar * res_name_lower = g_utf8_strdown (res_name,-1);
+#ifdef DEBUG
+            g_debug ("%s: Attempt fuzzy match. res = %s, name = %s, pid =%d, timestamp = %ld",
+                     __func__,res_name_lower,lower,priv->pid,timestamp);
+#endif
+          
+          if ( g_strstr_len (res_name_lower, -1, lower) )
+          {
+#ifdef DEBUG
+            g_debug ("%s: Success on fuzzy match!",__func__);
+#endif
+            g_free (res_name);
+            g_free (class_name);
+            g_free (lower);              
+            g_free (res_name_lower);
+            g_strfreev (tokens);
+            g_free (name);
+            return 1;
+          }
+          g_free (res_name_lower);
+          g_free (lower);          
+        }
+        g_strfreev (tokens);
+        g_free (name);
+      }
+    }
+  }
+  g_free (res_name);
+  g_free (class_name);
+    
   return 0; 
 }
 
@@ -423,6 +485,7 @@ _left_click (TaskItem *item, GdkEventButton *event)
   TaskLauncherPrivate *priv;
   TaskLauncher *launcher;
   GError *error = NULL;
+  GTimeVal timeval;
   
   g_return_if_fail (TASK_IS_LAUNCHER (item));
   
@@ -430,7 +493,11 @@ _left_click (TaskItem *item, GdkEventButton *event)
   priv = launcher->priv;
 
   priv->pid = awn_desktop_item_launch (priv->item, NULL, &error);
+  g_get_current_time (&timeval);
+  priv->timestamp = timeval.tv_sec;
+  
 #ifdef DEBUG  
+  g_debug ("%s: current time = %ld",__func__,timeval.tv_sec);  
   g_debug ("%s: launch pid = %d",__func__,priv->pid);
 #endif
   if (error)

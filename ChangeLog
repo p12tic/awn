@@ -1,5 +1,13 @@
 2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/task-window.c:
+        Experimental code.  If matching is set at 99 it should match 
+        launchers to windows launched from said launchers... for some more
+        problematic apps (I'm looking at you OO).
+
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-launcher.c:
 	Stop using Clicked signal.  Issues specific to taskmanager.
