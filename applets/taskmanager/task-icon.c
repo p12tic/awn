@@ -150,7 +150,7 @@ static gboolean  task_icon_configure_event      (GtkWidget          *widget,
                                                  GdkEventConfigure  *event);
 
 static void task_icon_long_press (TaskIcon * icon,gpointer null);
-static void task_icon_clicked (TaskIcon * icon,gpointer null);
+static void task_icon_clicked (TaskIcon * icon,GdkEventButton *event);
 static gboolean  task_icon_button_release_event (GtkWidget      *widget,
                                                  GdkEventButton *event);
 static gboolean  task_icon_button_press_event   (GtkWidget      *widget,
@@ -344,10 +344,7 @@ task_icon_constructed (GObject *object)
   g_signal_connect (object,"long-press",
                     G_CALLBACK(task_icon_long_press),
                     NULL);
-  g_signal_connect_after (object,"clicked",
-                    G_CALLBACK(task_icon_clicked),
-                    NULL);
-  
+
   //update geometry of icon every second.
   priv->update_geometry_id = g_timeout_add_seconds (1, (GSourceFunc)_update_geometry, widget);
 
@@ -1365,7 +1362,7 @@ task_icon_long_press (TaskIcon * icon,gpointer null)
 }
 
 static void
-task_icon_clicked (TaskIcon * icon,gpointer null)
+task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
 {
   TaskIconPrivate *priv;
   TaskItem        *main_item;
@@ -1409,7 +1406,7 @@ task_icon_clicked (TaskIcon * icon,gpointer null)
     if (main_item) 
     {
       /*if we have a main item then pass the click on to that */
-      task_item_left_click (main_item,NULL);
+      task_item_left_click (main_item,event);
     }
     else
     {
@@ -1420,7 +1417,7 @@ task_icon_clicked (TaskIcon * icon,gpointer null)
 
         if (!task_item_is_visible (item)) continue;
         
-        task_item_left_click (item, NULL);
+        task_item_left_click (item, event);
 
         break;
       }
@@ -1441,7 +1438,7 @@ task_icon_clicked (TaskIcon * icon,gpointer null)
     }
     else
     {
-      task_window_activate (TASK_WINDOW(main_item), gdk_event_get_time(NULL));
+      task_window_activate (TASK_WINDOW(main_item), event->time);
     }      
   }  
   else if (priv->shown_items == (1 + ( task_icon_contains_launcher (icon)?1:0)))
@@ -1466,7 +1463,7 @@ task_icon_clicked (TaskIcon * icon,gpointer null)
         }
         else
         {
-          task_window_activate (TASK_WINDOW(item), gdk_event_get_time(NULL));
+          task_window_activate (TASK_WINDOW(item), event->time);
         }
       }
 #ifdef DEBUG
@@ -1509,15 +1506,16 @@ task_icon_button_release_event (GtkWidget      *widget,
 {
   TaskIconPrivate *priv;
   TaskIcon *icon;
-  g_debug ("%s",__func__);
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
 
   icon = TASK_ICON (widget);
   priv = icon->priv;
 
-  g_debug ("button = %d",event->button);
   switch (event->button)
   {
+    case 1:
+      task_icon_clicked (TASK_ICON(widget),event);
+      break;
     case 2: // middle click: start launcher
 
       //TODO: start launcher

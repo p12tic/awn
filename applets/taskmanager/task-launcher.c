@@ -29,6 +29,7 @@
 
 #undef G_DISABLE_SINGLE_INCLUDES
 #include <glibtop/procargs.h>
+#include <glibtop/procuid.h>
 
 #include <libawn/libawn.h>
 
@@ -288,7 +289,8 @@ _match (TaskItem *item,
   glibtop_proc_args buf;
   gchar   *cmd;
   gchar   *search_result;
-
+  glibtop_proc_uid buf_proc_uid;
+  
   g_return_val_if_fail (TASK_IS_LAUNCHER(item), 0);
 
   if (!TASK_IS_WINDOW (item_to_match)) 
@@ -303,14 +305,28 @@ _match (TaskItem *item,
 
   /* Try simple pid-match first */
   pid = task_window_get_pid(window);
-  
+
 #ifdef DEBUG
-  g_debug ("%s:  Pid = %d,  win pid = %d",__func__,pid,priv->pid);
+  g_debug ("%s:  win Pid = %d,  launch pid = %d",__func__,pid,priv->pid);
 #endif 
   if ( pid && (priv->pid == pid))
   {
     return 100;
+  } 
+  if (pid)
+  {
+    glibtop_get_proc_uid (&buf_proc_uid,pid);
+
+#ifdef DEBUG
+    g_debug ("%s: parent pid = %d",__func__,buf_proc_uid.ppid);
+#endif
+
+    if ( buf_proc_uid.ppid == priv->pid)
+    {
+      return 95;
+    }
   }
+  
 
   /*does the command line of the process match exec exactly... not likely but
   damn likely to be the correct match if it does*/
