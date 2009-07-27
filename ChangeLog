@@ -1,6 +1,14 @@
 2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/taskmanager.schema-ini:
+	Add config option to enable/disable long press.
+	Close dialog on icon click if it is open.
+	Add some comments to the clicked signal handler.
+
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Implement "long-press".  Try to do the smart thing on short
 	clicks.
 

@@ -23,7 +23,6 @@ type = bool
 default = true
 description = Enabling group of tasks.
 
-
 [DEFAULT/match_strength]
 type = int
 default = 99
@@ -38,3 +37,8 @@ description = Maximum number of task indicators to show under icons. Valid range
 type = int
 default = 4
 description = The threshold at which text count begins to be displayed. valid range 1..
+
+[DEFAULT/enable_long_press]
+type = bool
+default = true
+description = Enable long press to open Dialog.

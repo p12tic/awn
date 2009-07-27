@@ -91,10 +91,12 @@ struct _TaskIconPrivate
   gint update_geometry_id;
   
   guint ephemeral_count;
+
+  /*prop*/
+  gboolean  enable_long_press;
   
-  /*temporary, I hope, workaround until "clicked" and "long-press" sigs work for
-   more than just left click*/
-  gboolean  long_press;
+  gboolean  long_press;     /*set to TRUE when there has been a long press so the clicked event can be ignored*/
+  
 };
 
 enum
@@ -104,7 +106,8 @@ enum
   PROP_APPLET,
   PROP_DRAGGABLE,
   PROP_MAX_INDICATORS,
-  PROP_TXT_INDICATOR_THRESHOLD
+  PROP_TXT_INDICATOR_THRESHOLD,
+  PROP_USE_LONG_PRESS
 };
 
 enum
@@ -218,6 +221,9 @@ task_icon_get_property (GObject    *object,
     case PROP_TXT_INDICATOR_THRESHOLD:
       g_value_set_int (value,priv->txt_indicator_threshold);
       break;
+    case PROP_USE_LONG_PRESS:
+      g_value_set_boolean (value, priv->enable_long_press);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -246,7 +252,23 @@ task_icon_set_property (GObject      *object,
     case PROP_TXT_INDICATOR_THRESHOLD:
       icon->priv->txt_indicator_threshold = g_value_get_int (value);
       task_icon_refresh_visible (TASK_ICON(object));
-      break;      
+      break;
+    case PROP_USE_LONG_PRESS:
+      /*TODO Move into a fn */
+      if (icon->priv->enable_long_press)
+      {
+        g_signal_handlers_disconnect_by_func(wnck_screen_get_default (), 
+                                       G_CALLBACK (task_icon_active_window_changed), 
+                                       object);
+      }
+      icon->priv->enable_long_press = g_value_get_boolean (value);
+      if (icon->priv->enable_long_press)
+      {
+        g_signal_connect (wnck_screen_get_default(),"active-window-changed",
+                    G_CALLBACK(task_icon_active_window_changed),
+                    object);
+      }      
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -319,10 +341,6 @@ task_icon_constructed (GObject *object)
                                                         priv->applet);
   g_signal_connect (G_OBJECT (priv->dialog),"focus-out-event",
                     G_CALLBACK (task_icon_dialog_unfocus), NULL);
-
-  g_signal_connect (wnck_screen_get_default(),"active-window-changed",
-                    G_CALLBACK(task_icon_active_window_changed),
-                    object);
   g_signal_connect (object,"long-press",
                     G_CALLBACK(task_icon_long_press),
                     NULL);
@@ -343,6 +361,10 @@ task_icon_constructed (GObject *object)
   awn_config_bridge_bind (bridge, priv->client,
                           AWN_CONFIG_CLIENT_DEFAULT_GROUP, "txt_indicator_threshold",
                           object, "txt_indicator_threshold");
+
+  awn_config_bridge_bind (bridge, priv->client,
+                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "enable_long_press",
+                          object, "enable_long_press");
 }
 
 /**
@@ -515,6 +537,13 @@ task_icon_class_init (TaskIconClass *klass)
                             3,
                             G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_TXT_INDICATOR_THRESHOLD, pspec);
+
+  pspec = g_param_spec_boolean ("enable_long_press",
+                                "Use Long Press",
+                                "Enable Long Preess",
+                                TRUE,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_USE_LONG_PRESS, pspec);
   
   /* Install signals */
   _icon_signals[VISIBLE_CHANGED] =
@@ -1326,12 +1355,21 @@ static void
 task_icon_clicked (TaskIcon * icon,gpointer null)
 {
   TaskIconPrivate *priv;
+  TaskItem        *main_item;
   priv = icon->priv;
 
-#ifdef DEBUG
-  g_debug ("%s",__func__);
-#endif
+  /*If long press is enabled then we try to be smart about what we do on short clicks*/
+  if (priv->enable_long_press)
+  {
+    main_item = priv->main_item;
+  }
+  else
+  {
+    main_item = NULL;  /* if main_item is NULL then dialog will always open when >1 item in it*/
+  }
 
+  /*hackish way to determine that we already had a long press for this signal.
+   clicked signal still fires even if there was a long press*/
   if (priv->long_press)
   {
     priv->long_press = FALSE;
@@ -1348,13 +1386,20 @@ task_icon_clicked (TaskIcon * icon,gpointer null)
   else if (priv->shown_items == 1)
   {
     GSList *w;
-    if (priv->main_item)
+
+    /*is the dialog open?  if so then it should be closed on icon click*/
+    if (GTK_WIDGET_VISIBLE (priv->dialog) )
     {
-      task_item_left_click (priv->main_item,NULL);
+      gtk_widget_hide (priv->dialog);
+    }
+    else if (main_item) 
+    {
+      /*if we have a main item then pass the click on to that */
+      task_item_left_click (main_item,NULL);
     }
     else
     {
-      /* Find the window/launcher that is shown */
+      /* Otherwise Find the window/launcher that is shown and pass the click on*/
       for (w = priv->items; w; w = w->next)
       {
         TaskItem *item = w->data;
@@ -1367,26 +1412,32 @@ task_icon_clicked (TaskIcon * icon,gpointer null)
       }
       return;
     }
-  }   /*Conditional Operator */
-  else if (priv->main_item)
+  }
+  else if (main_item)
   {
-    if ( task_window_is_active (TASK_WINDOW(priv->main_item)) )
+    /* 
+     Reach here if we have main_item set and
+     1) Launcher + 1 or more TaskWindow or
+     2) No Launcher + 2 or more TaskWindow.
+     In either case main_item Should be TaskWindow and we want to act on that.
+     */    
+    if ( task_window_is_active (TASK_WINDOW(main_item)) )
     {
-      task_window_minimize (TASK_WINDOW(priv->main_item));
+      task_window_minimize (TASK_WINDOW(main_item));
     }
     else
     {
-      task_window_activate (TASK_WINDOW(priv->main_item), gdk_event_get_time(NULL));
+      task_window_activate (TASK_WINDOW(main_item), gdk_event_get_time(NULL));
     }      
   }  
   else if (priv->shown_items == (1 + ( task_icon_contains_launcher (icon)?1:0)))
   {
-    /*This clause will probably get more complicated after enabling 
-     task grouping for non-launchers.  As a launcher will not be among the 
-     shown_items.
+    /*
+     main item not set (for whatever reason).
+     This is either a case of 1 Launcher + 1 Window or
+     1 Window.
      
-     TODO add an config option so those who want can revert back to the
-     previous behaviour.
+     So, find the first TaskWindow and act on it.
      */
     GSList *w;
     for (w = priv->items; w; w = w->next)
@@ -1411,16 +1462,10 @@ task_icon_clicked (TaskIcon * icon,gpointer null)
   }
   else
   {
-    GSList *w;
-    for (w = priv->items; w; w = w->next)
-    {
-      TaskItem *item = w->data;
-
-      if (!task_item_is_visible (item)) continue;
-#ifdef DEBUG
-      g_debug ("clicked on: %s", task_item_get_name (item));
-#endif          
-    }
+    /*
+     There are multiple TaskWindows.  And main_item is not set..
+     therefore we show the dialog
+     */
 
     //TODO: move to hover?
     if (GTK_WIDGET_VISIBLE (priv->dialog) )
