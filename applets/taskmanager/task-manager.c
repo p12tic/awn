@@ -621,6 +621,8 @@ find_desktop (TaskIcon *icon, gchar * class_name)
   const gchar* const * system_dirs = g_get_system_data_dirs ();
   GStrv   iter;
   TaskItem     *launcher = NULL;
+  
+  g_return_val_if_fail (class_name,FALSE);
 //#define DEBUG 1
 #ifdef DEBUG
   g_debug ("%s: wm class = %s",__func__,class_name);
@@ -924,6 +926,7 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
 {
   TaskManagerPrivate *priv;
   GSList *d;
+  GSList *i;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
@@ -938,6 +941,58 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
    */
   
   for (d = list; d; d = d->next)
+  {  
+    gboolean found;
+    found = FALSE;
+    for (i = priv->icons; i ;i = i->next)
+    {
+      TaskIcon * icon = i->data;
+      GSList   * items = task_icon_get_items (icon);
+      GSList   * item_iter;
+      for (item_iter = items; item_iter; item_iter = item_iter->next)
+      {
+        TaskItem * item = item_iter->data;
+        
+        if ( TASK_IS_LAUNCHER (item) )
+        {
+          if (g_strcmp0 (task_launcher_get_desktop_path(TASK_LAUNCHER(item)),d->data)==0)
+          {
+            found = TRUE;
+          }
+        }
+      }
+    }
+    if (!found)
+    {
+      TaskItem     *launcher = NULL;
+      GtkWidget     *icon;
+      
+      launcher = task_launcher_new_for_desktop_file (d->data);
+      icon = task_icon_new (AWN_APPLET (manager));
+      task_icon_append_item (TASK_ICON (icon), launcher);
+      gtk_container_add (GTK_CONTAINER (priv->box), icon);
+
+      priv->icons = g_slist_append (priv->icons, icon);
+
+      g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
+      g_signal_connect_swapped (icon, 
+                                "visible-changed",
+                                G_CALLBACK (on_icon_visible_changed), 
+                                manager);
+      g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                                "animation-end", 
+                                G_CALLBACK (on_icon_effects_ends), 
+                                icon);
+      
+      update_icon_visible (manager, TASK_ICON (icon));
+
+      /* reordening through D&D */
+      if(priv->drag_and_drop)
+        _drag_add_signals(manager, icon);        
+    }
+  }
+#if 0
+  for (d = list; d; d = d->next)
   {
     GtkWidget     *icon;
     TaskItem     *launcher = NULL;
@@ -946,7 +1001,6 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
 
     if (!launcher) continue;
     /*Nasty... but can't just disable yet*/
-#if 1
     icon = task_icon_new (AWN_APPLET (manager));
     task_icon_append_item (TASK_ICON (icon), launcher);
     gtk_container_add (GTK_CONTAINER (priv->box), icon);
@@ -968,9 +1022,8 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
     /* reordening through D&D */
     if(priv->drag_and_drop)
       _drag_add_signals(manager, icon);
-#endif     
-
   }
+#endif       
   for (d = list; d; d = d->next)
     g_free (d->data);
   g_slist_free (list);

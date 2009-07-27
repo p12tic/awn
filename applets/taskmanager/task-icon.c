@@ -1228,6 +1228,17 @@ task_icon_append_ephemeral_item (TaskIcon      *icon,
   task_icon_append_item (icon,item); 
 }
 
+GSList *  
+task_icon_get_items (TaskIcon     *icon)
+{
+  TaskIconPrivate *priv;
+  
+  g_assert (icon);
+  g_return_val_if_fail (TASK_IS_ICON (icon),NULL);
+
+  priv = icon->priv;
+  return priv->items;
+}
 
 /**
  * 

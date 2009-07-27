@@ -97,5 +97,7 @@ void            task_icon_refresh_icon      (TaskIcon      *icon);
 void            task_icon_set_draggable     (TaskIcon      *icon, 
                                              gboolean       draggable);
 
+GSList *  task_icon_get_items         (TaskIcon     *icon);
+
 #endif /* _TASK_ICON_H_ */
 
