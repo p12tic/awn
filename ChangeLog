@@ -1262,6 +1262,14 @@
 	Make sure that the test programs exit properly when their windows
 	are closed.
 
+2009-06-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	* libawn/Makefile.am:
+	GObject Introspection is now required.
+	* m4/introspection.m4:
+	Remove (use the one installed in the system).
+
 2009-06-27  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* doc/reference/libawn-sections.txt:
@@ -2878,6 +2886,21 @@
 
 2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* .bzrignore:
+	* bindings/vala/Makefile.am:
+	* bindings/vala/awn.deps:
+	* configure.in:
+	Use the files generated via the GObject Introspection toolchain to
+	generate the Vala vapi file. 
+
+	* bindings/vala/awn.files:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.namespace:
+	* bindings/vala/awn.vapi:
+	Remove.
+
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/awn.defs:
 	* libawn/awn-utils.c:
 	* libawn/awn-utils.h:
@@ -2920,10 +2943,23 @@
 	* libawn/awn-dialog.h:
 	Make the padding configurable. (step towards fully transparent dialog)
 
+2009-05-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/Makefile.am:
+	Add workaround for a bug in the GObject Introspection scanner.
+
 2009-05-15  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-effects-ops-new.c:
 	Fixed the active rectangle after switch to desktop-agnostic color.
+
+2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	* configure.in:
+	* libawn/Makefile.am:
+	* m4/introspection.m4:
+	Add GObject Introspection support.
 
 2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
 
