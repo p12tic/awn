@@ -1,5 +1,18 @@
 2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
 
+  	* applets/taskmanager/util.c:
+  	* applets/taskmanager/util.h:
+	Place for some generic functions.  Initial infrastrcture for 
+	special casing specific apps.
+  
+	* applets/taskmanager/Makefile.am:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-window.c:
+	Initial infrastructure for special casing apps.
+	Thank you goes to OpenOffice for providing the impetus.
+
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-launcher.c:
 	* applets/taskmanager/task-window.c:
         Experimental code.  If matching is set at 99 it should match 

@@ -32,6 +32,8 @@ taskmanager_la_SOURCES = \
 	task-settings.h \
 	task-window.c \
 	task-window.h \
+	util.h \
+	util.c  \
 	$(builddir)/taskmanager-marshal.c \
 	$(builddir)/taskmanager-marshal.h \
 	xutils.c \

@@ -38,6 +38,7 @@
 
 #include "task-settings.h"
 #include "xutils.h"
+#include "util.h"
 
 G_DEFINE_TYPE (TaskLauncher, task_launcher, TASK_TYPE_ITEM)
 
@@ -55,6 +56,8 @@ struct _TaskLauncherPrivate
   gchar *icon_name;
   gint   pid;
   glong timestamp;
+  
+  gchar         *special_id;    /*AKA OpenOffice ***** */
 };
 
 enum
@@ -131,6 +134,10 @@ task_launcher_dispose (GObject *object)
 static void
 task_launcher_finalize (GObject *object)
 { 
+  TaskLauncher *launcher = TASK_LAUNCHER (object);
+
+  g_free (launcher->priv->special_id);
+  
   G_OBJECT_CLASS (task_launcher_parent_class)->finalize (object);
 }
 
@@ -220,6 +227,7 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   if (priv->item == NULL)
     return;
 
+  priv->special_id = get_special_id_from_desktop(priv->item);
   priv->name = awn_desktop_item_get_name (priv->item);
 
   exec_key = g_strstrip (awn_desktop_item_get_exec (priv->item) );
@@ -278,6 +286,10 @@ _is_visible (TaskItem *item)
  * 100 = definitly matches
  * 0 = doesn't match
  */
+
+/*
+FIXME,  ugly, ugly,ugly.
+*/
 static guint   
 _match (TaskItem *item,
         TaskItem *item_to_match)
@@ -291,11 +303,13 @@ _match (TaskItem *item,
   gint     pid;
   glibtop_proc_args buf;
   gchar   *cmd;
+  gchar   *full_cmd = NULL;
   gchar   *search_result;
   glibtop_proc_uid buf_proc_uid;
   glong   timestamp;
   GTimeVal timeval;
-  
+  gchar * id;
+    
   g_return_val_if_fail (TASK_IS_LAUNCHER(item), 0);
 
   if (!TASK_IS_WINDOW (item_to_match)) 
@@ -313,13 +327,49 @@ _match (TaskItem *item,
 
   /* Try simple pid-match first */
   pid = task_window_get_pid(window);
-
+  cmd = glibtop_get_proc_args (&buf,pid,1024);
+  task_window_get_wm_class(window, &res_name, &class_name);
+  full_cmd = get_full_cmd_from_pid (pid);
+#ifdef DEBUG
+  g_debug ("%s: full cmd is '%s'",__func__,full_cmd);
+#endif
+  id = get_special_id_from_window_data (full_cmd, res_name,class_name,task_window_get_name (window));
+  /* the open office clause follows */
+  if (priv->special_id && id)
+  {
+#ifdef DEBUG
+    g_debug ("%s, compare %s,%s",__func__,priv->special_id,id);
+#endif
+    if (g_strcmp0 (priv->special_id,id) == 0)
+    {
+      g_free (res_name);
+      g_free (class_name);    
+      g_free (cmd);
+      g_free (full_cmd);      
+      g_free (id);      
+      return 100;
+    }
+  }
+  if (priv->special_id || id)
+  {
+      g_free (res_name);
+      g_free (class_name);    
+      g_free (cmd);
+      g_free (full_cmd);      
+      g_free (id);      
+      return 0;    
+  }
+  g_free (id);  
+  g_free (full_cmd);  
 #ifdef DEBUG
   g_debug ("%s:  win Pid = %d,  launch pid = %d",__func__,pid,priv->pid);
 #endif 
   if ( pid && (priv->pid == pid))
   {
-    return 100;
+    g_free (res_name);
+    g_free (class_name);    
+    g_free (cmd);
+    return 95;
   } 
   if (pid)
   {
@@ -333,14 +383,16 @@ _match (TaskItem *item,
 
     if ( buf_proc_uid.ppid == priv->pid)
     {
-      return 95;
+      g_free (res_name);
+      g_free (class_name);      
+      g_free (cmd);
+      return 92;
     }
   }
   
 
   /*does the command line of the process match exec exactly... not likely but
   damn likely to be the correct match if it does*/
-  cmd = glibtop_get_proc_args (&buf,pid,1024);    
   #ifdef DEBUG
   g_debug ("%s:  cmd = '%s', exec = '%s'",__func__,cmd,priv->exec);
   #endif  
@@ -351,13 +403,14 @@ _match (TaskItem *item,
       #ifdef DEBUG
       g_debug ("%s:  strcmp match ",__func__);
       #endif
+      g_free (res_name);
+      g_free (class_name);      
       g_free (cmd);
       return 90;
     }
   }
   
   /* Now try resource name, which should (hopefully) be 99% of the cases */
-  task_window_get_wm_class(window, &res_name, &class_name);
 
   if (res_name)
   {

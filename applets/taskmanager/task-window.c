@@ -33,6 +33,7 @@
 #include "task-window.h"
 #include "task-settings.h"
 #include "xutils.h"
+#include "util.h"
 
 G_DEFINE_TYPE (TaskWindow, task_window, TASK_TYPE_ITEM)
 
@@ -57,6 +58,8 @@ struct _TaskWindowPrivate
   gboolean hidden;
   gboolean needs_attention;
   gboolean is_active;
+  
+  gchar * special_id; /*Thank you OpenOffice*/
 };
 
 enum
@@ -88,6 +91,7 @@ static guint         _match           (TaskItem *item, TaskItem *item_to_match);
 
 static void   task_window_set_window (TaskWindow *window,
                                       WnckWindow *wnckwin);
+static void   task_window_check_for_special_case (TaskWindow * window);
 
 /* GObject stuff */
 static void
@@ -131,7 +135,7 @@ task_window_set_property (GObject      *object,
 static void
 task_window_constructed (GObject *object)
 {
-  /*TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;*/
+ /*  TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;*/
   
   if ( G_OBJECT_CLASS (task_window_parent_class)->constructed)
   {
@@ -149,6 +153,9 @@ task_window_dispose (GObject *object)
 static void
 task_window_finalize (GObject *object)
 {
+  TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;
+
+  g_free (priv->special_id);
   G_OBJECT_CLASS (task_window_parent_class)->finalize (object);
 }
 
@@ -274,6 +281,24 @@ task_window_new (WnckWindow *window)
 }
 
 
+static void
+task_window_check_for_special_case (TaskWindow * window)
+{
+  gchar * full_cmd;
+  gchar   *res_name = NULL;
+  gchar   *class_name = NULL;
+  TaskWindowPrivate *priv = window->priv;
+  
+  full_cmd = get_full_cmd_from_pid (task_window_get_pid(window));
+  task_window_get_wm_class(window, &res_name, &class_name);  
+  priv->special_id = get_special_id_from_window_data (full_cmd, 
+                                    res_name, 
+                                    class_name,
+                                    task_window_get_name (window));
+  g_free (full_cmd);    
+  g_free (res_name);
+  g_free (class_name);
+}
 /*
  * Handling of the main WnckWindow
  */
@@ -383,7 +408,7 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
 
   priv = window->priv;
   priv->window = wnckwin;
-
+  task_window_check_for_special_case (window);
   g_object_weak_ref (G_OBJECT (priv->window), 
                      (GWeakNotify)window_closed, window);
 
@@ -778,6 +803,9 @@ _left_click (TaskItem *item, GdkEventButton *event)
   }
 }
 
+/*
+ FIXME,  ugly, ugly,ugly.
+ */
 static void
 _right_click (TaskItem *item, GdkEventButton *event)
 {
@@ -798,11 +826,9 @@ _match (TaskItem *item,
   gchar   *temp;
   gint      pid;
   gint      pid_to_match;
-//  glibtop_proc_args buf;
-//  gchar   *cmd;
-//  gchar   *cmd_to_match;
-//  gchar   *search_result;
-
+  gchar   *full_cmd;
+  gchar   *id;
+  
   g_return_val_if_fail (TASK_IS_WINDOW(item), 0);
 
   if (!TASK_IS_WINDOW (item_to_match)) 
@@ -814,17 +840,53 @@ _match (TaskItem *item,
   priv = window->priv;
   
   window_to_match = TASK_WINDOW (item_to_match);
-
-  /* Try simple pid-match first */
   pid = task_window_get_pid (window);
   pid_to_match = task_window_get_pid (window_to_match);
-//#define DEBUG 1  
+
+//#define DEBUG 1
+  /* special case? */
+  full_cmd = get_full_cmd_from_pid (pid_to_match);
+  task_window_get_wm_class(window_to_match, &res_name_to_match, &class_name_to_match);
+  id = get_special_id_from_window_data (full_cmd, res_name_to_match,
+                                        class_name_to_match,
+                                        task_window_get_name (window_to_match));  
+  /* the open office clause follows */
+#ifdef DEBUG
+    g_debug ("%s, compare %s,%s------------------------",__func__,priv->special_id,id);
+#endif
+
+  if (priv->special_id && id)
+  {
+    if (g_strcmp0 (priv->special_id,id) == 0)
+    {
+      g_free (res_name_to_match);
+      g_free (class_name_to_match);    
+      g_free (full_cmd);      
+      g_free (id);      
+      return 99;
+    }
+  }
+  if (priv->special_id || id)
+  {
+      g_free (res_name_to_match);
+      g_free (class_name_to_match);    
+      g_free (full_cmd);      
+      g_free (id);      
+      return 0;
+  }
+  g_free (full_cmd);
+  g_free (id);
+  
+  /* Try simple pid-match next */
+
 #ifdef DEBUG
   g_debug ("%s:  Pid to match = %d,  pid = %d",__func__,pid_to_match,pid);
 #endif 
   if ( pid && ( pid_to_match == pid ))
   {
-    return 100;
+    g_free (res_name_to_match);
+    g_free (class_name_to_match);        
+    return 94;
   }
 
   
@@ -850,7 +912,6 @@ _match (TaskItem *item,
   }
 #endif
   /* Now try resource name, which should (hopefully) be 99% of the cases */
-  task_window_get_wm_class(window_to_match, &res_name_to_match, &class_name_to_match);
   task_window_get_wm_class(window, &res_name, &class_name);
   
   if (res_name && res_name_to_match)
@@ -877,7 +938,7 @@ _match (TaskItem *item,
         g_free (res_name_to_match);
         g_free (class_name_to_match);
 //        g_free (cmd_to_match);        
-        return 70;
+        return 65;
       }
     }
   }
@@ -906,7 +967,7 @@ _match (TaskItem *item,
         g_free (res_name_to_match);
         g_free (class_name_to_match);
 //        g_free (cmd_to_match);
-        return 50;
+        return 45;
       }
     }
   }
