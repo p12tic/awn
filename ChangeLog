@@ -1,5 +1,11 @@
 2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager:
+	Strip some non-alpha chars from the match string when attempting 
+	to find the desktop file.  Should fix d-feet issue.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-launcher:
 	Bring a _bit_ of sanity to TaskLauncher match function.
 

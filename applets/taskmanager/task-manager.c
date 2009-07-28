@@ -620,15 +620,15 @@ find_desktop (TaskIcon *icon, gchar * class_name)
   gchar * desktop;
   const gchar* const * system_dirs = g_get_system_data_dirs ();
   GStrv   iter;
+  GStrv   tokens;
   TaskItem     *launcher = NULL;
   
   g_return_val_if_fail (class_name,FALSE);
+  lower = g_utf8_strdown (class_name, -1);
+  
 //#define DEBUG 1
 #ifdef DEBUG
   g_debug ("%s: wm class = %s",__func__,class_name);
-#endif
-  lower = g_utf8_strdown (class_name, -1);
-#ifdef DEBUG
   g_debug ("%s: lower = %s",__func__,lower);
 #endif      
   
@@ -645,6 +645,7 @@ find_desktop (TaskIcon *icon, gchar * class_name)
       g_debug ("launcher %p",launcher);
 #endif
       task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+      g_free (lower);
       g_free (desktop);
       return TRUE;
     }
@@ -666,8 +667,26 @@ find_desktop (TaskIcon *icon, gchar * class_name)
     }        
     g_free (desktop);        
   }
-  g_free (lower);
+  g_strdelimit (lower,"-.:,=+_~!@#$%^()[]{}'",' ');
+  tokens = g_strsplit (lower," ",-1);
+  if (tokens)
+  {
+    gchar * stripped = g_strjoinv(NULL,tokens);
+    g_strfreev (tokens);    
+    if (g_strcmp0 (stripped, class_name) !=0)
+    {
+      if (find_desktop (icon,stripped) )
+      {
+        g_free (lower);
+        g_free (stripped);
+        return TRUE;
+      }
+    }  
+    g_free (stripped);    
+  }
+  g_free (lower);  
   return FALSE;
+//#undef DEBUG
 }
 
 
