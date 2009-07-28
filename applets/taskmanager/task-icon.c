@@ -257,15 +257,15 @@ task_icon_set_property (GObject      *object,
       /*TODO Move into a fn */
       if (icon->priv->enable_long_press)
       {
-        g_signal_handlers_disconnect_by_func(wnck_screen_get_default (), 
-                                       G_CALLBACK (task_icon_active_window_changed), 
+        g_signal_handlers_disconnect_by_func(object, 
+                                       G_CALLBACK (task_icon_long_press), 
                                        object);
       }
       icon->priv->enable_long_press = g_value_get_boolean (value);
       if (icon->priv->enable_long_press)
       {
-        g_signal_connect (wnck_screen_get_default(),"active-window-changed",
-                    G_CALLBACK(task_icon_active_window_changed),
+        g_signal_connect (object,"long-press",
+                    G_CALLBACK(task_icon_long_press),
                     object);
       }      
       break;
@@ -341,9 +341,10 @@ task_icon_constructed (GObject *object)
                                                         priv->applet);
   g_signal_connect (G_OBJECT (priv->dialog),"focus-out-event",
                     G_CALLBACK (task_icon_dialog_unfocus), NULL);
-  g_signal_connect (object,"long-press",
-                    G_CALLBACK(task_icon_long_press),
-                    NULL);
+  g_signal_connect  (wnck_screen_get_default (), 
+                     "active-window-changed",
+                     G_CALLBACK (task_icon_active_window_changed), 
+                     object);
 
   //update geometry of icon every second.
   priv->update_geometry_id = g_timeout_add_seconds (1, (GSourceFunc)_update_geometry, widget);
@@ -1477,7 +1478,6 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
      There are multiple TaskWindows.  And main_item is not set..
      therefore we show the dialog
      */
-
     //TODO: move to hover?
     if (GTK_WIDGET_VISIBLE (priv->dialog) )
     {

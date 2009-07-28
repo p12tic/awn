@@ -1,5 +1,11 @@
 2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Fix some signal code that can only be explained by someone
+	being tired when it was written.
+
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
   	* applets/taskmanager/util.c:
   	* applets/taskmanager/util.h:
 	Place for some generic functions.  Initial infrastrcture for 
