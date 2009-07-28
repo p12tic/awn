@@ -1,5 +1,10 @@
 2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Some more magic desktop file locating code.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager:
 	Strip some non-alpha chars from the match string when attempting 
 	to find the desktop file.  Should fix d-feet issue.

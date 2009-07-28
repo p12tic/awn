@@ -626,7 +626,6 @@ find_desktop (TaskIcon *icon, gchar * class_name)
   g_return_val_if_fail (class_name,FALSE);
   lower = g_utf8_strdown (class_name, -1);
   
-//#define DEBUG 1
 #ifdef DEBUG
   g_debug ("%s: wm class = %s",__func__,class_name);
   g_debug ("%s: lower = %s",__func__,lower);
@@ -667,6 +666,7 @@ find_desktop (TaskIcon *icon, gchar * class_name)
     }        
     g_free (desktop);        
   }
+  
   g_strdelimit (lower,"-.:,=+_~!@#$%^()[]{}'",' ');
   tokens = g_strsplit (lower," ",-1);
   if (tokens)
@@ -686,7 +686,95 @@ find_desktop (TaskIcon *icon, gchar * class_name)
   }
   g_free (lower);  
   return FALSE;
+}
+
+static gboolean
+find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
+{
+  gchar * lower;
+  gchar * desktop_regex_str;
+  GRegex  * desktop_regex;
+  const gchar* const * system_dirs = g_get_system_data_dirs ();
+  GStrv   iter;
+  TaskItem     *launcher = NULL;
+  
+  g_return_val_if_fail (class_name,FALSE);
+  lower = g_utf8_strdown (class_name, -1);
+  
+//#define DEBUG 1
+#ifdef DEBUG
+  g_debug ("%s: wm class = %s",__func__,class_name);
+  g_debug ("%s: lower = %s",__func__,lower);
+#endif      
+
+  /*
+   TODO compile the regex
+   */
+  desktop_regex_str = g_strdup_printf (".*%s.*desktop",lower);  
+  desktop_regex = g_regex_new (desktop_regex_str,0,0,NULL);
+
+#ifdef DEBUG
+    g_debug ("%s: desktop regex = %s",__func__,desktop_regex_str);
+#endif      
+  g_free (lower);    
+  g_free (desktop_regex_str);
+  g_return_val_if_fail (desktop_regex,FALSE);
+  
+  for (iter = (GStrv)system_dirs; *iter; iter++)
+  {
+    gchar * dir_name = g_strdup_printf ("%sapplications",*iter);
+    GDir  * dir = g_dir_open (dir_name,0,NULL);
+    if (dir)
+    {
+      const gchar * filename;
+      while ( (filename = g_dir_read_name (dir)) )
+      {
+        if ( g_regex_match (desktop_regex, filename,0,NULL) )
+        {
+          gchar * full_path = g_strdup_printf ("%s/%s",dir_name,filename);
+#ifdef DEBUG
+          g_debug ("%s:  regex matched full path =   %s",__func__,full_path);
+#endif       
+          AwnDesktopItem * desktop = awn_desktop_item_new (full_path);
+          if (desktop)
+          {
+            gchar * exec = awn_desktop_item_get_exec (desktop);
+            awn_desktop_item_free (desktop);
+#ifdef DEBUG
+            g_debug ("%s:  exec =   %s",__func__,exec);
+            g_debug ("%s:  cmd =   %s",__func__,cmd);            
+#endif            
+            if (exec)
+            {
+              /*
+               May need some adjustments.
+                Possible conversion to a regex
+               */
+              if ( g_strrstr (exec,cmd) || g_strrstr (cmd, exec))
+              {
+                launcher = task_launcher_new_for_desktop_file (full_path);
+                if (launcher)
+                {
+                  task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+                  g_regex_unref (desktop_regex);
+                  g_free (exec);
+                  return TRUE;
+                }
+              }
+              g_free (exec);              
+            }            
+          }          
+          g_free (full_path);
+        }
+      }
+      g_dir_close (dir);
+    }
+    g_free (dir_name);
+  }
+  g_regex_unref (desktop_regex);
+  return FALSE;
 //#undef DEBUG
+  
 }
 
 
@@ -803,6 +891,9 @@ on_window_opened (WnckScreen    *screen,
     */
     gchar   *res_name = NULL;
     gchar   *class_name = NULL;
+    gchar   *cmd;
+    glibtop_proc_args buf;    
+    cmd = glibtop_get_proc_args (&buf,wnck_window_get_pid (window),1024);    
     
     icon = task_icon_new (AWN_APPLET (manager));
     task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name); 
@@ -818,19 +909,19 @@ on_window_opened (WnckScreen    *screen,
     /*This _may_ result in unacceptable false positives.  Testing.*/
     if (!found_desktop)
     {
-      glibtop_proc_args buf;
-      gchar   *cmd;
-      cmd = glibtop_get_proc_args (&buf,wnck_window_get_pid (window),1024);    
       #ifdef DEBUG
-      g_debug ("%s:  cmd = '%s'",__func__,cmd);
+      g_debug ("%s:  cmd = '%s'",__func__,);
       #endif
       if (cmd)
       {
         found_desktop = find_desktop (TASK_ICON(icon), cmd);
       }
-      g_free (cmd);
     }
-     
+    if (!found_desktop)
+    {
+      found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
+    }
+    g_free (cmd);     
     g_free (class_name);
     g_free (res_name);
     task_icon_append_item (TASK_ICON (icon), item);
