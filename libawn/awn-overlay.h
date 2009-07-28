@@ -127,6 +127,10 @@ gboolean awn_overlay_get_apply_effects (AwnOverlay *overlay);
 
 void awn_overlay_set_apply_effects (AwnOverlay *overlay, gboolean value);
 
+gboolean awn_overlay_get_use_source_op (AwnOverlay *overlay);
+
+void awn_overlay_set_use_source_op (AwnOverlay *overlay, gboolean value);
+
 G_END_DECLS
 
 #endif /* _AWN_OVERLAY */

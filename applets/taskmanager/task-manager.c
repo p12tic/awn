@@ -1216,11 +1216,32 @@ task_manager_update (TaskManager *manager,
       gchar *key_name = (gchar *)key;
       if (strcmp ("icon-file", key_name) == 0)
       {
-        g_debug ("Request to change icon-file...");
+        //g_debug ("Request to change icon-file...");
+        TaskItem *item = TASK_ITEM (matched_window);
+        if (item->icon_overlay == NULL)
+        {
+          item->icon_overlay = awn_overlay_pixbuf_file_new (NULL);
+          g_object_set (G_OBJECT (item->icon_overlay),
+                        "use-source-op", TRUE,
+                        "scale", 1.0, NULL);
+          GtkWidget *image = task_item_get_image_widget (item);
+          AwnOverlayable *over = AWN_OVERLAYABLE (image);
+          awn_overlayable_add_overlay (over,
+                                       AWN_OVERLAY (item->icon_overlay));
+        }
+
+        const gchar* filename = g_value_get_string (value);
+        g_object_set (G_OBJECT (item->icon_overlay),
+                      "active", filename && filename[0] != '\0', NULL);
+        g_object_set_property (G_OBJECT (item->icon_overlay),
+                               "file-name", value);
+
+        // this refreshes the overlays on TaskIcon
+        task_item_set_task_icon (item, task_item_get_task_icon (item));
       }
       else if (strcmp ("progress", key_name) == 0)
       {
-        g_debug ("Request to change progress...");
+        //g_debug ("Request to change progress...");
         TaskItem *item = TASK_ITEM (matched_window);
         if (item->progress_overlay == NULL)
         {
@@ -1230,6 +1251,7 @@ task_manager_update (TaskManager *manager,
           awn_overlayable_add_overlay (over,
                                        AWN_OVERLAY (item->progress_overlay));
         }
+
         g_object_set (G_OBJECT (item->progress_overlay),
                       "active", g_value_get_int (value) != -1, NULL);
         g_object_set_property (G_OBJECT (item->progress_overlay),
@@ -1240,7 +1262,7 @@ task_manager_update (TaskManager *manager,
       }
       else if (strcmp ("message", key_name) == 0)
       {
-        g_debug ("Request to change message...");
+        //g_debug ("Request to change message...");
         TaskItem *item = TASK_ITEM (matched_window);
         if (item->text_overlay == NULL)
         {
@@ -1251,6 +1273,7 @@ task_manager_update (TaskManager *manager,
           AwnOverlayable *over = AWN_OVERLAYABLE (image);
           awn_overlayable_add_overlay (over, AWN_OVERLAY (item->text_overlay));
         }
+
         g_object_set_property (G_OBJECT (item->text_overlay), "text", value);
 
         // this refreshes the overlays on TaskIcon

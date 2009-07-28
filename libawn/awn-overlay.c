@@ -57,6 +57,7 @@ struct _AwnOverlayPrivate
 
   gboolean    active;  /*if false then the overlay_render will not run*/
   gboolean    apply_effects;
+  gboolean    use_source_op;
   
   gdouble     x_override;
   gdouble     y_override;
@@ -71,6 +72,7 @@ enum
   PROP_Y_ADJUST,
   PROP_ACTIVE,
   PROP_APPLY_EFFECTS,
+  PROP_USE_SOURCE_OP,
   PROP_X_OVERRIDE,
   PROP_Y_OVERRIDE
 };
@@ -99,6 +101,9 @@ awn_overlay_get_property (GObject *object, guint property_id,
         break;
     case PROP_APPLY_EFFECTS:
         g_value_set_boolean (value, priv->apply_effects);
+        break;      
+    case PROP_USE_SOURCE_OP:
+        g_value_set_boolean (value, priv->use_source_op);
         break;      
     case PROP_X_OVERRIDE:
         g_value_set_double (value, priv->x_override);
@@ -136,6 +141,9 @@ awn_overlay_set_property (GObject *object, guint property_id,
       break;      
     case PROP_APPLY_EFFECTS:
       priv->apply_effects = g_value_get_boolean (value);
+      break;            
+    case PROP_USE_SOURCE_OP:
+      priv->use_source_op = g_value_get_boolean (value);
       break;            
     case PROP_X_OVERRIDE:
       priv->x_override = g_value_get_double (value);
@@ -267,6 +275,20 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                 TRUE,
                                 G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_APPLY_EFFECTS, pspec);  
+
+/**
+ * AwnOverlay:use-source-op:
+ *
+ * The use-source-op property controls if this overlay replaces graphics
+ * already painted beneath the overlay. (support for this has to be implemented
+ * by the subclasses)
+ */
+  pspec = g_param_spec_boolean ("use-source-op",
+                                "Use Source Operator",
+                                "Replaces previous content beneath the overlay",
+                                FALSE,
+                                G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_USE_SOURCE_OP, pspec);
 
 /**
  * AwnOverlay:x-override:
@@ -490,5 +512,23 @@ void awn_overlay_set_apply_effects (AwnOverlay *overlay, gboolean value)
   AwnOverlayPrivate *priv = AWN_OVERLAY_GET_PRIVATE (overlay);
 
   priv->apply_effects = value;
+}
+
+gboolean awn_overlay_get_use_source_op (AwnOverlay *overlay)
+{
+  g_return_val_if_fail (AWN_IS_OVERLAY (overlay), FALSE);
+
+  AwnOverlayPrivate *priv = AWN_OVERLAY_GET_PRIVATE (overlay);
+
+  return priv->use_source_op;
+}
+
+void awn_overlay_set_use_source_op (AwnOverlay *overlay, gboolean value)
+{
+  g_return_if_fail (AWN_IS_OVERLAY (overlay));
+
+  AwnOverlayPrivate *priv = AWN_OVERLAY_GET_PRIVATE (overlay);
+
+  priv->use_source_op = value;
 }
 
