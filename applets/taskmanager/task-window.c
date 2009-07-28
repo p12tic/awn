@@ -826,7 +826,8 @@ _match (TaskItem *item,
   gchar   *temp;
   gint      pid;
   gint      pid_to_match;
-  gchar   *full_cmd;
+  gchar   *full_cmd_to_match;
+  gchar   *full_cmd = NULL;
   gchar   *id;
   
   g_return_val_if_fail (TASK_IS_WINDOW(item), 0);
@@ -845,9 +846,9 @@ _match (TaskItem *item,
 
 //#define DEBUG 1
   /* special case? */
-  full_cmd = get_full_cmd_from_pid (pid_to_match);
+  full_cmd_to_match = get_full_cmd_from_pid (pid_to_match);
   task_window_get_wm_class(window_to_match, &res_name_to_match, &class_name_to_match);
-  id = get_special_id_from_window_data (full_cmd, res_name_to_match,
+  id = get_special_id_from_window_data (full_cmd_to_match, res_name_to_match,
                                         class_name_to_match,
                                         task_window_get_name (window_to_match));  
   /* the open office clause follows */
@@ -860,21 +861,34 @@ _match (TaskItem *item,
     if (g_strcmp0 (priv->special_id,id) == 0)
     {
       g_free (res_name_to_match);
-      g_free (class_name_to_match);    
-      g_free (full_cmd);      
-      g_free (id);      
+      g_free (class_name_to_match);
+      g_free (full_cmd_to_match);
+      g_free (id);
       return 99;
     }
   }
   if (priv->special_id || id)
   {
       g_free (res_name_to_match);
-      g_free (class_name_to_match);    
-      g_free (full_cmd);      
-      g_free (id);      
+      g_free (class_name_to_match);
+      g_free (full_cmd_to_match);
+      g_free (id);
       return 0;
   }
-  g_free (full_cmd);
+  
+  if (pid)
+  {
+    full_cmd = get_full_cmd_from_pid (pid);
+  }
+  if (g_strcmp0 (full_cmd, full_cmd_to_match) == 0)
+  {
+    g_free (full_cmd_to_match);
+    g_free (full_cmd);
+    g_free (id);    
+    return 95;
+  }
+  
+  g_free (full_cmd_to_match);
   g_free (id);
   
   /* Try simple pid-match next */
@@ -889,28 +903,6 @@ _match (TaskItem *item,
     return 94;
   }
 
-  
-  /*does the command line of the process match exec exactly... not likely but
-  damn likely to be the correct match if it does*/
-#if 0
-  cmd_to_match = glibtop_get_proc_args (&buf,pid_to_match,1024);
-  cmd = glibtop_get_proc_args (&buf,pid,1024);
-  #ifdef DEBUG
-  g_debug ("%s:  cmd_to_match = '%s', cmd = '%s'",__func__,cmd_to_match,cmd);
-  #endif  
-  if (cmd_to_match && cmd)
-  {
-    if (g_strcmp0 (cmd_to_match, cmd)==0)
-    {
-      #ifdef DEBUG
-      g_debug ("%s:  strcmp match ",__func__);
-      #endif
-      g_free (cmd);
-      g_free (cmd_to_match);
-      return 90;
-    }
-  }
-#endif
   /* Now try resource name, which should (hopefully) be 99% of the cases */
   task_window_get_wm_class(window, &res_name, &class_name);
   
@@ -959,7 +951,9 @@ _match (TaskItem *item,
       #ifdef DEBUG
       g_debug ("%s: 50  class_name_to_match = %s,  class_name = %s",__func__,class_name_to_match,class_name);
       #endif 
-      if (g_strstr_len (class_name, strlen (class_name), class_name_to_match))
+      if (g_strstr_len (class_name, strlen (class_name), class_name_to_match)||
+          g_strstr_len (class_name_to_match, strlen (class_name_to_match), class_name)
+          )
       {
         g_free (res_name);
         g_free (class_name);
@@ -976,27 +970,5 @@ _match (TaskItem *item,
   g_free (class_name);
   g_free (res_name_to_match);
   g_free (class_name_to_match);
-#if 0  
-  if (cmd && cmd_to_match)
-  {
-    search_result = g_strrstr (cmd_to_match, cmd);
-    #ifdef DEBUG
-    g_debug ("cmd_to_match = %p, search_result = %p, strlen(exec) = %u, strlen (cmd) =%u",
-             cmd_to_match,search_result,(guint)strlen(cmd),(guint)strlen(cmd));
-    #endif
-    if (search_result && 
-        ((search_result + strlen(cmd)) == (cmd_to_match + strlen(cmd_to_match))))
-    {
-      #ifdef DEBUG
-      g_debug ("exec matches end of command line.");
-      #endif
-      g_free (cmd);
-      g_free (cmd_to_match);      
-      return 20;
-    }
-  }
-  g_free (cmd);
-  g_free (cmd_to_match);
-#endif
   return 0; 
 }
