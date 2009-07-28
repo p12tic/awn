@@ -288,7 +288,7 @@ _is_visible (TaskItem *item)
  */
 
 /*
-FIXME,  ugly, ugly,ugly.
+FIXME,  ugly.
 */
 static guint   
 _match (TaskItem *item,
@@ -299,16 +299,18 @@ _match (TaskItem *item,
   TaskWindow   *window;
   gchar   *res_name = NULL;
   gchar   *class_name = NULL;
-  gchar   *temp;
+  gchar   *res_name_lower = NULL;
+  gchar   *class_name_lower = NULL;  
   gint     pid;
   glibtop_proc_args buf;
-  gchar   *cmd;
+  gchar   *cmd = NULL;
   gchar   *full_cmd = NULL;
-  gchar   *search_result;
+  gchar   *search_result= NULL;
   glibtop_proc_uid buf_proc_uid;
   glong   timestamp;
   GTimeVal timeval;
-  gchar * id;
+  gchar * id = NULL;
+  gint    result = 0;
     
   g_return_val_if_fail (TASK_IS_LAUNCHER(item), 0);
 
@@ -319,173 +321,142 @@ _match (TaskItem *item,
 
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
-  
   timestamp = priv->timestamp;
   priv->timestamp = 0;
-  
   window = TASK_WINDOW (item_to_match);
 
-  /* Try simple pid-match first */
   pid = task_window_get_pid(window);
+  glibtop_get_proc_uid (&buf_proc_uid,pid);
+  g_get_current_time (&timeval);
+  
   cmd = glibtop_get_proc_args (&buf,pid,1024);
-  task_window_get_wm_class(window, &res_name, &class_name);
   full_cmd = get_full_cmd_from_pid (pid);
-#ifdef DEBUG
-  g_debug ("%s: full cmd is '%s'",__func__,full_cmd);
-#endif
+  
+  task_window_get_wm_class(window, &res_name, &class_name);  
+  if (res_name)
+  {
+    res_name_lower = g_utf8_strdown (res_name, -1);
+  }
+  if (class_name)
+  {
+    class_name_lower = g_utf8_strdown (class_name, -1);
+  }
+
   id = get_special_id_from_window_data (full_cmd, res_name,class_name,task_window_get_name (window));
-  /* the open office clause follows */
+
+  
+  /* 
+   the open office clause follows 
+   If either the launcher or the window is special cased then that is the 
+   only comparision that will be done.  It's either a match or not on that 
+   basis.
+   */
+  
   if (priv->special_id && id)
   {
-#ifdef DEBUG
-    g_debug ("%s, compare %s,%s",__func__,priv->special_id,id);
-#endif
     if (g_strcmp0 (priv->special_id,id) == 0)
     {
-      g_free (res_name);
-      g_free (class_name);    
-      g_free (cmd);
-      g_free (full_cmd);      
-      g_free (id);      
-      return 100;
-    }
-  }
-  if (priv->special_id || id)
-  {
-      g_free (res_name);
-      g_free (class_name);    
-      g_free (cmd);
-      g_free (full_cmd);      
-      g_free (id);      
-      return 0;    
-  }
-  g_free (id);  
-  g_free (full_cmd);  
-#ifdef DEBUG
-  g_debug ("%s:  win Pid = %d,  launch pid = %d",__func__,pid,priv->pid);
-#endif 
-  if ( pid && (priv->pid == pid))
-  {
-    g_free (res_name);
-    g_free (class_name);    
-    g_free (cmd);
-    return 95;
-  } 
-  if (pid)
-  {
-    glibtop_get_proc_uid (&buf_proc_uid,pid);
-
-#ifdef DEBUG
-    g_debug ("%s: session = %d",__func__,buf_proc_uid.session);    
-    g_debug ("%s: process group id = %d",__func__,buf_proc_uid.pgrp);
-    g_debug ("%s: parent pid = %d",__func__,buf_proc_uid.ppid);
-#endif
-
-    if ( buf_proc_uid.ppid == priv->pid)
-    {
-      g_free (res_name);
-      g_free (class_name);      
-      g_free (cmd);
-      return 92;
+      result = 100;
+      goto  finished;
     }
   }
   
+  if (priv->special_id || id)
+  {
+    goto finished;  /* result is initialized to 0*/
+  }
+  
+  /*
+   Did the pid last launched from the launcher match the pid of the window?
+   Note that if each launch starts a new process then those will get matched up
+   in the TaskIcon match functions for older windows
+   */
+  if ( pid && (priv->pid == pid))
+  {
+    result = 95;
+    goto finished;
+  } 
+  
+  /*
+   Check the parent PID also
+   */
+  if (pid)
+  {
+    if ( buf_proc_uid.ppid == priv->pid)
+    {
+      result = 92;
+      goto finished;
+    }
+  }
 
-  /*does the command line of the process match exec exactly... not likely but
-  damn likely to be the correct match if it does*/
-  #ifdef DEBUG
-  g_debug ("%s:  cmd = '%s', exec = '%s'",__func__,cmd,priv->exec);
-  #endif  
+  /*
+   Does the command line of the process match exec exactly? 
+   Not likely but damn likely to be the correct match if it does
+   Note that this will only match a case where there are _no_ arguments.
+   full_cmd contains the arg list.
+   */
   if (cmd)
   {
     if (g_strcmp0 (cmd, priv->exec)==0)
     {
-      #ifdef DEBUG
-      g_debug ("%s:  strcmp match ",__func__);
-      #endif
-      g_free (res_name);
-      g_free (class_name);      
-      g_free (cmd);
-      return 90;
+      result = 90;
+      goto finished;
     }
   }
   
-  /* Now try resource name, which should (hopefully) be 99% of the cases */
+  /* 
+   Now try resource name, which should (hopefully) be 99% of the cases.
+   See if the resouce name is the exec and check if the exec is in the resource
+   name.
+   */
 
-  if (res_name)
+  if (res_name_lower)
   {
-    temp = res_name;
-    res_name = g_utf8_strdown (temp, -1);
-    g_free (temp);
-
-    if ( strlen(res_name) && priv->exec)
+    if ( strlen(res_name_lower) && priv->exec)
     {
-      #ifdef DEBUG
-      g_debug ("%s: 70  res_name = %s,  exec = %s",__func__,res_name,priv->exec);
-      #endif 
-      if ( g_strstr_len (priv->exec, strlen (priv->exec), res_name) ||
-           g_strstr_len (res_name, strlen (res_name), priv->exec))
+      if ( g_strstr_len (priv->exec, strlen (priv->exec), res_name_lower) ||
+           g_strstr_len (res_name_lower, strlen (res_name_lower), priv->exec))
       {
-        g_free (res_name);
-        g_free (class_name);
-        g_free (cmd);
-        return 70;
+        result = 70;
+        goto finished;
       }
     }
   }
 
-  /* Try a class_name to exec line match */
-  if (class_name)
+  /* 
+   Try a class_name to exec line match. Same theory as res_name
+   */
+  if (class_name_lower)
   {
-    temp = class_name;
-    class_name = g_utf8_strdown (temp, -1);
-    g_free (temp);
-
-    if (strlen(class_name) && priv->exec)
+    if (strlen(class_name_lower) && priv->exec)
     {
-      #ifdef DEBUG
-      g_debug ("%s: 50  priv->exec = %s,  class_name = %s",__func__,priv->exec,class_name);
-      #endif 
-      if (g_strstr_len (priv->exec, strlen (priv->exec), class_name))
+      if (g_strstr_len (priv->exec, strlen (priv->exec), class_name_lower))
       {
-        g_free (res_name);
-        g_free (class_name);
-        g_free (cmd);        
-        return 50;
+        result = 50;
+        goto finished;
       }
     }
   }
 
+  /*
+   Is does priv->exec match the end of cmd?
+   */
   if (cmd)
   {
     search_result = g_strrstr (cmd, priv->exec);
-    #ifdef DEBUG
-    g_debug ("cmd = %p, search_result = %p, strlen(exec) = %u, strlen (cmd) =%u",
-             cmd,search_result,(guint)strlen(priv->exec),(guint)strlen(cmd));
-    #endif
     if (search_result && 
         ((search_result + strlen(priv->exec)) == (cmd + strlen(cmd))))
     {
-      #ifdef DEBUG
-      g_debug ("exec matches end of command line.");
-      #endif
-      g_free (res_name);
-      g_free (class_name);
-      g_free (cmd);
-      return 20;
+      result = 20;
+      goto finished;
     }
   }
-  g_free (cmd);
 
   /*
    Dubious... thus the rating of 1.
    Let's see how it works in practice
    This may work well enough with some additional fuzzy heuristics.
    */
-  g_get_current_time (&timeval);
-#ifdef DEBUG
-    g_debug ("%s: current time = %ld",__func__,timeval.tv_sec);  
-#endif
   if ( timestamp)
   {
     /* was this launcher used in the last 10 seconds?*/
@@ -498,27 +469,15 @@ _match (TaskItem *item,
         GStrv tokens = g_strsplit (name, " ",-1);
         if (tokens && tokens[0] && (strlen (tokens[0])>5) )
         {
-          gchar * lower = g_utf8_strdown (tokens[0],-1);
-          gchar * res_name_lower = g_utf8_strdown (res_name,-1);
-#ifdef DEBUG
-            g_debug ("%s: Attempt fuzzy match. res = %s, name = %s, pid =%d, timestamp = %ld",
-                     __func__,res_name_lower,lower,priv->pid,timestamp);
-#endif
-          
+          gchar * lower = g_utf8_strdown (tokens[0],-1);          
           if ( g_strstr_len (res_name_lower, -1, lower) )
           {
-#ifdef DEBUG
-            g_debug ("%s: Success on fuzzy match!",__func__);
-#endif
-            g_free (res_name);
-            g_free (class_name);
             g_free (lower);              
-            g_free (res_name_lower);
             g_strfreev (tokens);
             g_free (name);
-            return 1;
+            result = 1;
+            goto finished;
           }
-          g_free (res_name_lower);
           g_free (lower);          
         }
         g_strfreev (tokens);
@@ -526,10 +485,17 @@ _match (TaskItem *item,
       }
     }
   }
+
+finished:
+  
   g_free (res_name);
   g_free (class_name);
-    
-  return 0; 
+  g_free (res_name_lower);
+  g_free (class_name_lower);
+  g_free (cmd);
+  g_free (full_cmd);
+  g_free (id);
+  return result;
 }
 
 static void
