@@ -74,7 +74,8 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","ooo-draw"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","ooo-impress"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","ooo-calc"},
-  {".*gimp.*",".*Gimp.*",".*gimp.*",".*GNU.*Image*.Manipulation.*Program.*","gimp"},      
+  {".*gimp.*",".*Gimp.*",".*gimp.*",".*GNU.*Image.*Manipulation.*Program.*","gimp"},
+  {".*system-config-printer.*applet.*py.*",".*Applet.*py.*",".*applet.*",".*Print.*Status.*","redhat-manage-print-jobs"},  
   {NULL,NULL,NULL,NULL,NULL}
 };
 
@@ -188,6 +189,10 @@ get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, gchar * clas
    TODO  optimize the regex handling.
    */
   WindowToDesktopMatch  *iter;
+//#define DEBUG
+#ifdef DEBUG
+  g_debug ("%s: cmd = '%s', res = '%s', class = '%s', title = '%s'",__func__,cmd,res_name,class_name,title);
+#endif
   for (iter = window_to_desktop_regexes; iter->desktop; iter++)
   {
     gboolean  match = TRUE;

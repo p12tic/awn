@@ -624,7 +624,7 @@ find_desktop (TaskIcon *icon, gchar * name)
   
   g_return_val_if_fail (name,FALSE);
   lower = g_utf8_strdown (name, -1);
-  
+//#define DEBUG
 #ifdef DEBUG
   g_debug ("%s: name = %s",__func__,name);
   g_debug ("%s: lower = %s",__func__,lower);
@@ -789,6 +789,10 @@ find_desktop_special_case (TaskIcon *icon, gchar * cmd, gchar *res_name,
   if (special_desktop)
   {
     result = find_desktop (icon,special_desktop);
+    if ( !result && (strlen (cmd) > 8) ) 
+    {
+      result = find_desktop_fuzzy (icon,special_desktop,cmd);
+    }
   }
   g_free (special_desktop);
   return result;
