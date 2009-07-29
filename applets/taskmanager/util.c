@@ -36,8 +36,16 @@ typedef struct
   const gchar * class_name;
   const gchar * title;
   const gchar * id;
-  const gchar * desktop;
 }WindowMatch;
+
+typedef struct
+{
+  const gchar * cmd;
+  const gchar * res_name;
+  const gchar * class_name;
+  const gchar * title;
+  const gchar * desktop;
+}WindowToDesktopMatch;
 
 static DesktopMatch desktop_regexes[] = 
 {
@@ -52,10 +60,21 @@ static DesktopMatch desktop_regexes[] =
 static  WindowMatch window_regexes[] = 
 {
   /*Do not bother trying to parse an open office command line for the type of window*/
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*","OpenOffice-Writer","ooo-writer"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","OpenOffice-Draw","ooo-draw"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","OpenOffice-Impress","ooo-impress"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","OpenOffice-Calc","ooo-impress"},    
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*","OpenOffice-Writer"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","OpenOffice-Draw"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","OpenOffice-Impress"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","OpenOffice-Calc"},    
+  {NULL,NULL,NULL,NULL,NULL}
+};
+
+static  WindowToDesktopMatch window_to_desktop_regexes[] = 
+{
+  /*Do not bother trying to parse an open office command line for the type of window*/
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*","ooo-writer"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","ooo-draw"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","ooo-impress"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","ooo-calc"},
+  {".*gimp.*",".*Gimp.*",".*gimp.*",".*GNU.*Image*.Manipulation.*Program.*","gimp"},      
   {NULL,NULL,NULL,NULL,NULL}
 };
 
@@ -168,8 +187,8 @@ get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, gchar * clas
    
    TODO  optimize the regex handling.
    */
-  WindowMatch  *iter;
-  for (iter = window_regexes; iter->id; iter++)
+  WindowToDesktopMatch  *iter;
+  for (iter = window_to_desktop_regexes; iter->desktop; iter++)
   {
     gboolean  match = TRUE;
     if (iter->cmd)
@@ -196,7 +215,7 @@ get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, gchar * clas
       if (!match)
         continue;
     }    
-    g_debug ("%s:  Special cased Window ID: '%s'",__func__,iter->id);
+    g_debug ("%s:  Special cased desktop: '%s'",__func__,iter->desktop);
     return g_strdup (iter->desktop);
   }
   return NULL;
@@ -219,7 +238,7 @@ get_full_cmd_from_pid (gint pid)
     for (iter = cmd_argv;*iter;iter++)
     {
       temp = full_cmd;
-      full_cmd = g_strdup_printf("%s %s",full_cmd?full_cmd:"",*iter);
+      full_cmd = g_strdup_printf("%s%s%s",full_cmd?full_cmd:"",full_cmd?" ":"",*iter);
       g_free (temp);
     }
   }

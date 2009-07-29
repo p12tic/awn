@@ -936,7 +936,7 @@ _match (TaskItem *item,
   }
 
   /* Try a class_name to exec line match */
-  if (class_name && class_name_to_match)
+/*  if (class_name && class_name_to_match)
   {
     temp = class_name;
     class_name = g_utf8_strdown (temp, -1);
@@ -965,7 +965,7 @@ _match (TaskItem *item,
       }
     }
   }
-
+*/
   g_free (res_name);
   g_free (class_name);
   g_free (res_name_to_match);

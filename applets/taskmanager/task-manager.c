@@ -52,7 +52,7 @@ G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
   TASK_TYPE_MANAGER, \
   TaskManagerPrivate))
 
-//#define DEBUG 1
+#define DEBUG 1
 
 static GQuark win_quark = 0;
 
@@ -910,8 +910,11 @@ on_window_opened (WnckScreen    *screen,
     gchar   *res_name = NULL;
     gchar   *class_name = NULL;
     gchar   *cmd;
+    gchar   *full_cmd;
+    
     glibtop_proc_args buf;    
     cmd = glibtop_get_proc_args (&buf,wnck_window_get_pid (window),1024);    
+    full_cmd = get_full_cmd_from_pid (wnck_window_get_pid (window));
     
     icon = task_icon_new (AWN_APPLET (manager));
     task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name); 
@@ -928,6 +931,16 @@ on_window_opened (WnckScreen    *screen,
     if (!found_desktop)
     {
       #ifdef DEBUG
+      g_debug ("%s:  full cmd = '%s'",__func__,full_cmd);
+      #endif
+      if (full_cmd)
+      {
+        found_desktop = find_desktop (TASK_ICON(icon), full_cmd);
+      }
+    }
+    if (!found_desktop)
+    {
+      #ifdef DEBUG
       g_debug ("%s:  cmd = '%s'",__func__,cmd);
       #endif
       if (cmd)
@@ -935,9 +948,21 @@ on_window_opened (WnckScreen    *screen,
         found_desktop = find_desktop (TASK_ICON(icon), cmd);
       }
     }
+    
+    if (!found_desktop)
+    {
+      found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, full_cmd);
+    }
     if (!found_desktop)
     {
       found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
+    }
+    
+    if (!found_desktop)
+    {
+      found_desktop = find_desktop_special_case (TASK_ICON(icon),full_cmd,res_name,
+                                                 class_name,
+                                                 wnck_window_get_name (window));
     }
     if (!found_desktop)
     {
@@ -945,6 +970,8 @@ on_window_opened (WnckScreen    *screen,
                                                  class_name,
                                                  wnck_window_get_name (window));
     }
+    
+    g_free (full_cmd);
     g_free (cmd);     
     g_free (class_name);
     g_free (res_name);
