@@ -1,6 +1,12 @@
 2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:
+	special cased amsn windows.  I obviously really dislike 
+	pidgin.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
 	Special case amsn.
 
 2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>

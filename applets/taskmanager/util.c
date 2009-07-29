@@ -67,6 +67,27 @@ static  WindowMatch window_regexes[] =
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","OpenOffice-Calc"},
   {NULL,"Amsn","amsn",".*aMSN.*","aMSN"},
   {NULL,"Chatwindow","container.*",".*Buddies.*Chat.*","aMSN"},
+  {NULL,"Toplevel","cfg",".*Preferences.*-.*Config.*","aMSN"},
+  {NULL,"Toplevel","plugin_selector",".*Select.*Plugins.*","aMSN"},
+  {NULL,"Toplevel","skin_selector",".*Please.*select.*skin.*","aMSN"},
+  {NULL,"Toplevel","eventlog_hist",".*History.*eventlog.*","aMSN"},
+  {NULL,"Toplevel","alarm_cfg.*",".*Alarm.*settings.*contact.*","aMSN"},
+  {NULL,"Toplevel","dpbrowser",".*Display.*Pictures.*Browser.*","aMSN"},
+  {NULL,"Toplevel","change_name",".*Change.*Nick.*aMSN.*","aMSN"},  
+  {NULL,"Toplevel","_listchoose","Send.*File","aMSN"},
+  {NULL,"Toplevel","_listchoose","Send.*Message","aMSN"},
+  {NULL,"Toplevel","_listchoose","Send.*to.*Mobile.*Device","aMSN"},
+  {NULL,"Toplevel","_listchoose","Send.*E-mail","aMSN"},
+  {NULL,"Toplevel","_listchoose","Send.*Webcam","aMSN"},
+  {NULL,"Toplevel","_listchoose","Ask.*to.*Receive.*Webcam","aMSN"},
+  {NULL,"Toplevel","globalnick","Global.*Nickname","aMSN"},
+  {NULL,"Toplevel","addcontact","Add.*Contact.*aMSN","aMSN"},
+  {NULL,"Toplevel","_listchoose","^Delete$","aMSN"},
+  {NULL,"Toplevel","_listchoose","^Properties$","aMSN"},
+  {NULL,"Toplevel","_listchoose","^Properties$","aMSN"},
+  {NULL,"Toplevel","^dlgag$","^Add.*Group$","aMSN"},
+  {NULL,"Toplevel",".*_hist$","^History.*","aMSN"},
+  {NULL,"Toplevel","savecontacts","^Options$","aMSN"},  
   {NULL,NULL,NULL,NULL,NULL}
 };
 
@@ -80,7 +101,7 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {".*gimp.*",".*Gimp.*",".*gimp.*",".*GNU.*Image.*Manipulation.*Program.*","gimp"},
   {".*system-config-printer.*applet.*py.*",".*Applet.*py.*",".*applet.*",".*Print.*Status.*","redhat-manage-print-jobs"},  
   {".*amsn","Amsn","amsn",".*aMSN.*","amsn"},
-  {NULL,"Chatwindow","container.*",".*Buddies.*Chat.*","amsn"},  
+  {NULL,"Chatwindow","container.*",".*Buddies.*Chat.*","amsn"},
   {NULL,NULL,NULL,NULL,NULL}
 };
 
