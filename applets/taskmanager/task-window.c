@@ -880,7 +880,7 @@ _match (TaskItem *item,
   {
     full_cmd = get_full_cmd_from_pid (pid);
   }
-  if (g_strcmp0 (full_cmd, full_cmd_to_match) == 0)
+  if (full_cmd && g_strcmp0 (full_cmd, full_cmd_to_match) == 0)
   {
     g_free (full_cmd_to_match);
     g_free (full_cmd);

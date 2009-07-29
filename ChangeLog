@@ -1,5 +1,10 @@
 2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-window.c:
+	Check for a NULL so two NULLs are not compared.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	* applets/taskmanager/task-window.c:
 	Disable some console debugs.
