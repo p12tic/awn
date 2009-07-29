@@ -44,6 +44,7 @@
 //#include "task-window.h"
 #include "task-settings.h"
 #include "xutils.h"
+#include "util.h"
 
 G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
 
@@ -614,7 +615,7 @@ icon_closed (TaskManager *manager, GObject *old_icon)
 
 
 static gboolean
-find_desktop (TaskIcon *icon, gchar * class_name)
+find_desktop (TaskIcon *icon, gchar * name)
 {
   gchar * lower;
   gchar * desktop;
@@ -623,11 +624,11 @@ find_desktop (TaskIcon *icon, gchar * class_name)
   GStrv   tokens;
   TaskItem     *launcher = NULL;
   
-  g_return_val_if_fail (class_name,FALSE);
-  lower = g_utf8_strdown (class_name, -1);
+  g_return_val_if_fail (name,FALSE);
+  lower = g_utf8_strdown (name, -1);
   
 #ifdef DEBUG
-  g_debug ("%s: wm class = %s",__func__,class_name);
+  g_debug ("%s: name = %s",__func__,name);
   g_debug ("%s: lower = %s",__func__,lower);
 #endif      
   
@@ -673,7 +674,7 @@ find_desktop (TaskIcon *icon, gchar * class_name)
   {
     gchar * stripped = g_strjoinv(NULL,tokens);
     g_strfreev (tokens);    
-    if (g_strcmp0 (stripped, class_name) !=0)
+    if (g_strcmp0 (stripped, name) !=0)
     {
       if (find_desktop (icon,stripped) )
       {
@@ -778,6 +779,22 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   
 }
 
+static gboolean
+find_desktop_special_case (TaskIcon *icon, gchar * cmd, gchar *res_name, 
+                                 gchar * class_name,const gchar *title)
+{
+  gboolean result = FALSE;
+  gchar * special_desktop = get_special_desktop_from_window_data (cmd,
+                                                                  res_name,
+                                                                  class_name,
+                                                                  title);
+  if (special_desktop)
+  {
+    result = find_desktop (icon,special_desktop);
+  }
+  g_free (special_desktop);
+  return result;
+}
 
 /**
  * Whenever a new window gets opened it will try to place it
@@ -921,6 +938,12 @@ on_window_opened (WnckScreen    *screen,
     if (!found_desktop)
     {
       found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
+    }
+    if (!found_desktop)
+    {
+      found_desktop = find_desktop_special_case (TASK_ICON(icon),cmd,res_name,
+                                                 class_name,
+                                                 wnck_window_get_name (window));
     }
     g_free (cmd);     
     g_free (class_name);

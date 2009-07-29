@@ -1,5 +1,12 @@
 2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/util.c:
+  	* applets/taskmanager/util.h:
+	Special case the deskto files for OO.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	Fix right click on TaskIcon.  Provides context menu for
 	most recently active item under TaskIcon.  Possibly 
