@@ -701,7 +701,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   g_return_val_if_fail (class_name,FALSE);
   lower = g_utf8_strdown (class_name, -1);
   
-//#define DEBUG 1
+#define DEBUG 1
 #ifdef DEBUG
   g_debug ("%s: wm class = %s",__func__,class_name);
   g_debug ("%s: lower = %s",__func__,lower);
@@ -911,7 +911,7 @@ on_window_opened (WnckScreen    *screen,
     if (!found_desktop)
     {
       #ifdef DEBUG
-      g_debug ("%s:  cmd = '%s'",__func__,);
+      g_debug ("%s:  cmd = '%s'",__func__,cmd);
       #endif
       if (cmd)
       {
