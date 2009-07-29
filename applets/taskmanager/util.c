@@ -52,7 +52,8 @@ static DesktopMatch desktop_regexes[] =
   {".*ooffice.*-writer.*",".*OpenOffice.*",NULL,"OpenOffice-Writer"},
   {".*ooffice.*-draw.*",".*OpenOffice.*",NULL,"OpenOffice-Draw"},
   {".*ooffice.*-impress.*",".*OpenOffice.*",NULL,"OpenOffice-Impress"},
-  {".*ooffice.*-calc.*",".*OpenOffice.*",NULL,"OpenOffice-Calc"},    
+  {".*ooffice.*-calc.*",".*OpenOffice.*",NULL,"OpenOffice-Calc"},
+  {".*amsn.*","aMSN",".*asmn.*desktop.*","aMSN"},
   {NULL,NULL,NULL,NULL}
 };
 
@@ -63,7 +64,9 @@ static  WindowMatch window_regexes[] =
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*","OpenOffice-Writer"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","OpenOffice-Draw"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","OpenOffice-Impress"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","OpenOffice-Calc"},    
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","OpenOffice-Calc"},
+  {NULL,"Amsn","amsn",".*aMSN.*","aMSN"},
+  {NULL,"Chatwindow","container.*",".*Buddies.*Chat.*","aMSN"},
   {NULL,NULL,NULL,NULL,NULL}
 };
 
@@ -76,6 +79,8 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","ooo-calc"},
   {".*gimp.*",".*Gimp.*",".*gimp.*",".*GNU.*Image.*Manipulation.*Program.*","gimp"},
   {".*system-config-printer.*applet.*py.*",".*Applet.*py.*",".*applet.*",".*Print.*Status.*","redhat-manage-print-jobs"},  
+  {".*amsn","Amsn","amsn",".*aMSN.*","amsn"},
+  {NULL,"Chatwindow","container.*",".*Buddies.*Chat.*","amsn"},  
   {NULL,NULL,NULL,NULL,NULL}
 };
 

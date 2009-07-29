@@ -1,5 +1,10 @@
 2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/util.c:
+	Special case amsn.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
   	* applets/taskmanager/util.c:
 	Fix regex for gimp.  Added regex for desktop file
