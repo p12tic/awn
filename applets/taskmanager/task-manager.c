@@ -1134,27 +1134,34 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
       GtkWidget     *icon;
       
       launcher = task_launcher_new_for_desktop_file (d->data);
-      icon = task_icon_new (AWN_APPLET (manager));
-      task_icon_append_item (TASK_ICON (icon), launcher);
-      gtk_container_add (GTK_CONTAINER (priv->box), icon);
-      gtk_box_reorder_child (GTK_BOX (priv->box), icon, g_slist_position (list,d));
-      priv->icons = g_slist_insert (priv->icons, icon, g_slist_position (list,d));
+      if (launcher)
+      {
+        icon = task_icon_new (AWN_APPLET (manager));
+        task_icon_append_item (TASK_ICON (icon), launcher);
+        gtk_container_add (GTK_CONTAINER (priv->box), icon);
+        gtk_box_reorder_child (GTK_BOX (priv->box), icon, g_slist_position (list,d));
+        priv->icons = g_slist_insert (priv->icons, icon, g_slist_position (list,d));
 
-      g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
-      g_signal_connect_swapped (icon, 
-                                "visible-changed",
-                                G_CALLBACK (on_icon_visible_changed), 
-                                manager);
-      g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                                "animation-end", 
-                                G_CALLBACK (on_icon_effects_ends), 
-                                icon);
-      
-      update_icon_visible (manager, TASK_ICON (icon));
+        g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
+        g_signal_connect_swapped (icon, 
+                                  "visible-changed",
+                                  G_CALLBACK (on_icon_visible_changed), 
+                                  manager);
+        g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                                  "animation-end", 
+                                  G_CALLBACK (on_icon_effects_ends), 
+                                  icon);
+        
+        update_icon_visible (manager, TASK_ICON (icon));
 
-      /* reordening through D&D */
-      if(priv->drag_and_drop)
-        _drag_add_signals(manager, icon);        
+        /* reordening through D&D */
+        if(priv->drag_and_drop)
+          _drag_add_signals(manager, icon);        
+      }
+      else
+      {
+        g_debug ("%s: Bad desktop file '%s'",__func__,(gchar *)d->data);
+      }
     }
   }
 #if 0
