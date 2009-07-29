@@ -1,6 +1,11 @@
 2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Make the filename search regex caseless also.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Fix a debug.
 
 2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>

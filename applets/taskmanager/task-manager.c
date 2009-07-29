@@ -701,7 +701,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   g_return_val_if_fail (class_name,FALSE);
   lower = g_utf8_strdown (class_name, -1);
   
-#define DEBUG 1
+//#define DEBUG 1
 #ifdef DEBUG
   g_debug ("%s: wm class = %s",__func__,class_name);
   g_debug ("%s: lower = %s",__func__,lower);
@@ -711,7 +711,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
    TODO compile the regex
    */
   desktop_regex_str = g_strdup_printf (".*%s.*desktop",lower);  
-  desktop_regex = g_regex_new (desktop_regex_str,0,0,NULL);
+  desktop_regex = g_regex_new (desktop_regex_str,G_REGEX_CASELESS,0,NULL);
 
 #ifdef DEBUG
     g_debug ("%s: desktop regex = %s",__func__,desktop_regex_str);
