@@ -750,7 +750,8 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
                May need some adjustments.
                 Possible conversion to a regex
                */
-              if ( g_strrstr (exec,cmd) || g_strrstr (cmd, exec))
+              if ( g_regex_match_simple (exec,cmd,G_REGEX_CASELESS,0) 
+                  || g_regex_match_simple (cmd, exec,G_REGEX_CASELESS,0))
               {
                 launcher = task_launcher_new_for_desktop_file (full_path);
                 if (launcher)

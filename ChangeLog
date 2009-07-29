@@ -1,6 +1,12 @@
 2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Do a case insensitive comparision exec<->cmd
+	in the fuzzy desktop search
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Some more magic desktop file locating code.
 
 2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
