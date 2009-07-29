@@ -1563,30 +1563,13 @@ task_icon_button_press_event (GtkWidget      *widget,
   if (priv->shown_items == 0)
   {
     g_critical ("TaskIcon: The icons shouldn't contain a visible (and clickable) icon");
-    return FALSE;
   }
-  else if (priv->shown_items == 1)
+  else if (priv->main_item)
   {
-    GSList *w;
-
-    /* Find the window/launcher that is shown */
-    for (w = priv->items; w; w = w->next)
-    {
-      TaskItem *item = w->data;
-
-      if (!task_item_is_visible (item)) continue;
-      
-      task_item_right_click (item, event);
-
-      break;
-    }
+    task_item_right_click (priv->main_item, event);
     return TRUE;
   }
-  else
-  {
-    g_warning ("TaskIcon: FIXME: No support for multiple windows right-click");
-    return FALSE;
-  }
+  return FALSE;  
 }
 
 static gboolean  
