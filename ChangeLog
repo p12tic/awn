@@ -1,6 +1,13 @@
 2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-window.c:
+	Disable some console debugs.
+	Removed commented out code.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
   	* applets/taskmanager/task-window.c:
   	* applets/taskmanager/util.c:
 	Special case gimp desktop file lookup.

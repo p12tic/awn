@@ -935,37 +935,6 @@ _match (TaskItem *item,
     }
   }
 
-  /* Try a class_name to exec line match */
-/*  if (class_name && class_name_to_match)
-  {
-    temp = class_name;
-    class_name = g_utf8_strdown (temp, -1);
-    g_free (temp);
-
-    temp = class_name_to_match;
-    class_name_to_match = g_utf8_strdown (temp, -1);
-    g_free (temp);
-
-    if (strlen(class_name) && strlen(class_name_to_match) )
-    {
-      #ifdef DEBUG
-      g_debug ("%s: 50  class_name_to_match = %s,  class_name = %s",__func__,class_name_to_match,class_name);
-      #endif 
-      if (g_strstr_len (class_name, strlen (class_name), class_name_to_match)||
-          g_strstr_len (class_name_to_match, strlen (class_name_to_match), class_name)
-          )
-      {
-        g_free (res_name);
-        g_free (class_name);
-//        g_free (cmd);
-        g_free (res_name_to_match);
-        g_free (class_name_to_match);
-//        g_free (cmd_to_match);
-        return 45;
-      }
-    }
-  }
-*/
   g_free (res_name);
   g_free (class_name);
   g_free (res_name_to_match);

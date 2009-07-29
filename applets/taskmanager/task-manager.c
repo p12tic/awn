@@ -40,8 +40,6 @@
 
 #include "task-drag-indicator.h"
 #include "task-icon.h"
-//#include "task-launcher.h"
-//#include "task-window.h"
 #include "task-settings.h"
 #include "xutils.h"
 #include "util.h"
@@ -52,7 +50,7 @@ G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
   TASK_TYPE_MANAGER, \
   TaskManagerPrivate))
 
-#define DEBUG 1
+//#define DEBUG 1
 
 static GQuark win_quark = 0;
 
