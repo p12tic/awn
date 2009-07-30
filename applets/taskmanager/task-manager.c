@@ -1081,6 +1081,33 @@ task_manager_set_show_only_launchers (TaskManager *manager,
   g_debug ("%s", only_show_launchers ? "only show launchers":"show everything");
 }
 
+void
+task_manager_append_launcher(TaskManager  *manager, const gchar * launcher_path)
+{
+  TaskManagerPrivate *priv;
+  GSList  * launcher_paths;
+  
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+
+  /*
+   directly editing priv->launcher_paths does not work... so retrieve,
+   modify, and set
+   TODO once lda is merged have another look.
+   */
+  launcher_paths = awn_config_client_get_list (priv->client,
+                                               AWN_CONFIG_CLIENT_DEFAULT_GROUP,
+                                               "launcher_paths",
+                                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                                               NULL);
+  launcher_paths = g_slist_append (launcher_paths,g_strdup(launcher_path));
+  awn_config_client_set_list (priv->client,AWN_CONFIG_CLIENT_DEFAULT_GROUP,
+                              "launcher_paths",AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
+                              launcher_paths,NULL);
+  task_manager_refresh_launcher_paths (manager,launcher_paths);
+  
+}
+
 /**
  * Checks when launchers got added/removed in the list in gconf/file.
  * It removes the launchers from the task-icons and add those

@@ -72,5 +72,9 @@ gboolean task_manager_update (TaskManager *manager,
                               GHashTable *hints, /* mappings from string to GValue */
                               GError **error);
 
+void task_manager_append_launcher (TaskManager  *manager, 
+                                    const gchar * launcher_path);
+
+
 #endif /* _TASK_MANAGER_H_ */
 

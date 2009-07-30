@@ -34,6 +34,7 @@
 
 #include "task-launcher.h"
 #include "task-settings.h"
+#include "task-manager.h"
 
 //#define DEBUG 1
 
@@ -1556,6 +1557,30 @@ task_icon_button_release_event (GtkWidget      *widget,
   return FALSE;
 }
 
+static void
+add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
+{
+  TaskIconPrivate *priv;
+  GSList          *iter;
+  TaskLauncher    *launcher = NULL;
+  
+  g_return_if_fail (TASK_IS_ICON (icon));  
+  priv = icon->priv;
+  
+  for (iter = priv->items; iter; iter=iter->next)
+  {
+    if ( TASK_IS_LAUNCHER (iter->data) )
+    {
+      launcher = iter->data;
+      break;
+    }
+  }
+  if (launcher)
+  {
+    task_manager_append_launcher (TASK_MANAGER(priv->applet),
+                                  task_launcher_get_desktop_path(launcher));
+  }
+}
 /**
  * Whenever there is a press event on the TaskIcon it will do the proper actions.
  * right click: - show the context menu 
@@ -1598,6 +1623,7 @@ task_icon_button_press_event (GtkWidget      *widget,
       if (TASK_IS_WINDOW (priv->main_item))
       {
         GSList      *iter;
+        TaskItem    *launcher;
         
         priv->menu = wnck_action_menu_new (task_window_get_window (TASK_WINDOW(priv->main_item)));
         
@@ -1615,7 +1641,10 @@ task_icon_button_press_event (GtkWidget      *widget,
         {
           GtkWidget   *sub_menu;
           if ( TASK_IS_LAUNCHER (iter->data) )
+          {
+            launcher = iter->data;
             continue;
+          }
           if ( iter->data == priv->main_item)
             continue;
           item = gtk_menu_item_new_with_label (task_window_get_name (TASK_WINDOW(iter->data)));
@@ -1629,7 +1658,10 @@ task_icon_button_press_event (GtkWidget      *widget,
         {
           item = gtk_menu_item_new_with_label ("Add to Launcher List");
           gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
-          gtk_widget_show (item);          
+          gtk_widget_show (item);
+          g_signal_connect (item,"activate",
+                            G_CALLBACK(add_to_launcher_list_cb),
+                            icon);
         }
       }
     }
