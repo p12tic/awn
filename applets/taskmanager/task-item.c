@@ -209,6 +209,13 @@ task_item_init (TaskItem *item)
 
 }
 
+
+static void
+unset_inhibit_focus_loss_cb (TaskIcon * icon)
+{
+      task_icon_set_inhibit_focus_loss (icon,FALSE);
+}
+
 static gboolean
 task_item_button_release_event (GtkWidget      *widget,
                                 GdkEventButton *event)
@@ -232,7 +239,9 @@ task_item_button_release_event (GtkWidget      *widget,
       g_signal_connect_swapped (menu,"deactivate", 
                                 G_CALLBACK(gtk_widget_hide),
                                 task_icon_get_dialog(priv->task_icon));
-      task_icon_set_inhibit_focus_loss (priv->task_icon,FALSE);
+      g_signal_connect_swapped (menu,"deactivate",
+                                G_CALLBACK(unset_inhibit_focus_loss_cb),
+                                priv->task_icon);
       break;
   }
 

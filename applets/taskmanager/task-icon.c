@@ -1363,6 +1363,7 @@ task_icon_long_press (TaskIcon * icon,gpointer null)
 #endif
   
   gtk_widget_show (priv->dialog);
+  gtk_widget_grab_focus (priv->dialog);
   priv->long_press = TRUE;
 }
 
@@ -1499,7 +1500,8 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
     }
     else
     {
-      gtk_widget_show (priv->dialog);  
+      gtk_widget_show (priv->dialog); 
+      gtk_widget_grab_focus (priv->dialog);      
     }
   }
 }
@@ -1623,6 +1625,12 @@ task_icon_button_press_event (GtkWidget      *widget,
           gtk_widget_show (item);
           gtk_widget_show (sub_menu);
         }
+        if (priv->ephemeral_count == 1)
+        {
+          item = gtk_menu_item_new_with_label ("Add to Launcher List");
+          gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
+          gtk_widget_show (item);          
+        }
       }
     }
     
@@ -1680,7 +1688,7 @@ task_icon_dialog_unfocus (GtkWidget      *widget,
 
   priv = icon->priv;
   
-  if (priv->inhibit_focus_loss)
+  if (!priv->inhibit_focus_loss)
   {
     gtk_widget_hide (priv->dialog);
   }
