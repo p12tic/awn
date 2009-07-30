@@ -75,6 +75,7 @@ gboolean task_manager_update (TaskManager *manager,
 void task_manager_append_launcher (TaskManager  *manager, 
                                     const gchar * launcher_path);
 
+void task_manager_remove_task_icon (TaskManager  *manager, GtkWidget *icon);
 
 #endif /* _TASK_MANAGER_H_ */
 

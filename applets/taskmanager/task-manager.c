@@ -50,7 +50,7 @@ G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
   TASK_TYPE_MANAGER, \
   TaskManagerPrivate))
 
-//#define DEBUG 1
+#define DEBUG 1
 
 static GQuark win_quark = 0;
 
@@ -914,10 +914,12 @@ on_window_opened (WnckScreen    *screen,
     gchar   *class_name = NULL;
     gchar   *cmd;
     gchar   *full_cmd;
+    gchar   *cmd_basename;
     
     glibtop_proc_args buf;    
     cmd = glibtop_get_proc_args (&buf,wnck_window_get_pid (window),1024);    
     full_cmd = get_full_cmd_from_pid (wnck_window_get_pid (window));
+    cmd_basename = g_path_get_basename (cmd);
     
     icon = task_icon_new (AWN_APPLET (manager));
     task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name); 
@@ -960,6 +962,10 @@ on_window_opened (WnckScreen    *screen,
     {
       found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
     }
+    if (!found_desktop)
+    {
+      found_desktop = find_desktop (TASK_ICON(icon), cmd_basename);
+    }
     
     if (!found_desktop)
     {
@@ -978,6 +984,7 @@ on_window_opened (WnckScreen    *screen,
     g_free (cmd);     
     g_free (class_name);
     g_free (res_name);
+    g_free (cmd_basename);
     task_icon_append_item (TASK_ICON (icon), item);
     priv->icons = g_slist_append (priv->icons, icon);
     gtk_container_add (GTK_CONTAINER (priv->box), icon);
@@ -1079,6 +1086,17 @@ task_manager_set_show_only_launchers (TaskManager *manager,
   }
   
   g_debug ("%s", only_show_launchers ? "only show launchers":"show everything");
+}
+
+void 
+task_manager_remove_task_icon (TaskManager  *manager, GtkWidget *icon)
+{
+  TaskManagerPrivate *priv;
+
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+  
+  priv->icons = g_slist_remove (priv->icons,icon);
 }
 
 void

@@ -1378,6 +1378,7 @@ task_icon_set_inhibit_focus_loss (TaskIcon *icon, gboolean val)
   priv = icon->priv;
   priv->inhibit_focus_loss = val;
 }
+
 static void
 task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
 {
@@ -1577,8 +1578,13 @@ add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
   }
   if (launcher)
   {
-    task_manager_append_launcher (TASK_MANAGER(priv->applet),
+//    GSList * iter;
+    TaskManager * applet = TASK_MANAGER(priv->applet);
+    task_manager_remove_task_icon (TASK_MANAGER(applet), GTK_WIDGET(icon));            
+//    
+    task_manager_append_launcher (TASK_MANAGER(applet),
                                   task_launcher_get_desktop_path(launcher));
+//    gtk_widget_destroy (GTK_WIDGET(icon));    
   }
 }
 /**
