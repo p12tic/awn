@@ -99,5 +99,10 @@ void            task_icon_set_draggable     (TaskIcon      *icon,
 
 GSList *  task_icon_get_items         (TaskIcon     *icon);
 
+GtkWidget *     task_icon_get_dialog        (TaskIcon     *icon);
+
+void            task_icon_set_inhibit_focus_loss (TaskIcon *icon, gboolean val);
+
+
 #endif /* _TASK_ICON_H_ */
 

@@ -76,7 +76,7 @@ static GdkPixbuf   * _get_icon        (TaskItem       *item);
 static gboolean      _is_visible      (TaskItem       *item);
 static void          _left_click      (TaskItem       *item,
                                        GdkEventButton *event);
-static void          _right_click     (TaskItem       *item,
+static GtkWidget *   _right_click     (TaskItem       *item,
                                        GdkEventButton *event);
 static void          _middle_click     (TaskItem       *item,
                                        GdkEventButton *event);
@@ -530,14 +530,14 @@ _left_click (TaskItem *item, GdkEventButton *event)
   }
 }
 
-static void
+static GtkWidget *
 _right_click (TaskItem *item, GdkEventButton *event)
 {
   TaskLauncherPrivate *priv;
   TaskLauncher *launcher;
   GtkWidget *menu_item;
   
-  g_return_if_fail (TASK_IS_LAUNCHER (item));
+  g_return_val_if_fail (TASK_IS_LAUNCHER (item),NULL);
   
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
@@ -564,6 +564,7 @@ _right_click (TaskItem *item, GdkEventButton *event)
   }
   gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, 
                   NULL, NULL, event->button, event->time);
+  return priv->menu;
 }
 
 static void 

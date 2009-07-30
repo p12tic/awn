@@ -213,6 +213,9 @@ static gboolean
 task_item_button_release_event (GtkWidget      *widget,
                                 GdkEventButton *event)
 {
+  GtkWidget * menu;
+  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (widget);
+
   g_return_val_if_fail (TASK_IS_ITEM (widget), FALSE);
 
   switch (event->button)
@@ -224,7 +227,12 @@ task_item_button_release_event (GtkWidget      *widget,
       task_item_middle_click (TASK_ITEM (widget), event);
       break;
     case 3:
-      task_item_right_click (TASK_ITEM (widget), event);
+      task_icon_set_inhibit_focus_loss (priv->task_icon,TRUE);
+      menu = task_item_right_click (TASK_ITEM (widget), event);
+      g_signal_connect_swapped (menu,"deactivate", 
+                                G_CALLBACK(gtk_widget_hide),
+                                task_icon_get_dialog(priv->task_icon));
+      task_icon_set_inhibit_focus_loss (priv->task_icon,FALSE);
       break;
   }
 
@@ -370,17 +378,17 @@ task_item_left_click (TaskItem *item, GdkEventButton *event)
   klass->left_click (item, event);
 }
 
-void
+GtkWidget *
 task_item_right_click (TaskItem *item, GdkEventButton *event)
 {
   TaskItemClass *klass;
 
-  g_return_if_fail (TASK_IS_ITEM (item));
+  g_return_val_if_fail (TASK_IS_ITEM (item),NULL);
   
   klass = TASK_ITEM_GET_CLASS (item);
-  g_return_if_fail (klass->right_click);
+  g_return_val_if_fail (klass->right_click,NULL);
         
-  klass->right_click (item, event);
+  return klass->right_click (item, event);
 }
 
 void

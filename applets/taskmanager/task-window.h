@@ -119,7 +119,7 @@ void            task_window_minimize          (TaskWindow    *window);
 void            task_window_close             (TaskWindow    *window,
                                                guint32        timestamp);
 
-void            task_window_popup_context_menu(TaskWindow     *window,
+GtkWidget*      task_window_popup_context_menu(TaskWindow     *window,
                                                GdkEventButton *event);
 
 void            task_window_set_icon_geometry (TaskWindow     *window,

@@ -87,7 +87,7 @@ static const gchar * _get_name        (TaskItem       *item);
 static GdkPixbuf   * _get_icon        (TaskItem       *item);
 static gboolean      _is_visible      (TaskItem       *item);
 static void          _left_click      (TaskItem *item, GdkEventButton *event);
-static void          _right_click     (TaskItem *item, GdkEventButton *event);
+static GtkWidget *   _right_click     (TaskItem *item, GdkEventButton *event);
 static guint         _match           (TaskItem *item, TaskItem *item_to_match);
 
 static void   task_window_set_window (TaskWindow *window,
@@ -707,7 +707,7 @@ task_window_close (TaskWindow    *window,
 
 }
 
-void   
+GtkWidget *   
 task_window_popup_context_menu (TaskWindow     *window,
                                 GdkEventButton *event)
 {
@@ -715,8 +715,8 @@ task_window_popup_context_menu (TaskWindow     *window,
   TaskWindowPrivate *priv;
   GtkWidget         *item;
 
-  g_return_if_fail (TASK_IS_WINDOW (window));
-  g_return_if_fail (event);
+  g_return_val_if_fail (TASK_IS_WINDOW (window),NULL);
+  g_return_val_if_fail (event,NULL);
   priv = window->priv;
   
   klass = TASK_WINDOW_GET_CLASS (window);
@@ -740,7 +740,7 @@ task_window_popup_context_menu (TaskWindow     *window,
   
   gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, 
                   NULL, NULL, event->button, event->time);
-  
+  return priv->menu;
 }
 
 void    
@@ -824,10 +824,10 @@ _left_click (TaskItem *item, GdkEventButton *event)
 /*
  FIXME,  ugly, ugly,ugly.
  */
-static void
+static GtkWidget *
 _right_click (TaskItem *item, GdkEventButton *event)
 {
-  task_window_popup_context_menu (TASK_WINDOW (item), event);
+  return task_window_popup_context_menu (TASK_WINDOW (item), event);
 }
 
 static guint   

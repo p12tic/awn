@@ -94,6 +94,8 @@ struct _TaskIconPrivate
   
   guint ephemeral_count;
 
+  gboolean  inhibit_focus_loss;
+  
   /*prop*/
   gboolean  enable_long_press;
   
@@ -159,7 +161,7 @@ static gboolean  task_icon_button_press_event   (GtkWidget      *widget,
                                                  GdkEventButton *event);
 static gboolean  task_icon_dialog_unfocus       (GtkWidget      *widget,
                                                 GdkEventFocus   *event,
-                                                gpointer        null);
+                                                TaskIcon        *icon);
 /* Dnd forwards */
 static void      task_icon_drag_data_get        (GtkWidget *widget, 
                                                  GdkDragContext *context, 
@@ -342,7 +344,7 @@ task_icon_constructed (GObject *object)
   priv->dialog = awn_dialog_new_for_widget_with_applet (GTK_WIDGET (object),
                                                         priv->applet);
   g_signal_connect (G_OBJECT (priv->dialog),"focus-out-event",
-                    G_CALLBACK (task_icon_dialog_unfocus), NULL);
+                    G_CALLBACK (task_icon_dialog_unfocus), object);
   g_signal_connect  (wnck_screen_get_default (), 
                      "active-window-changed",
                      G_CALLBACK (task_icon_active_window_changed), 
@@ -1364,6 +1366,16 @@ task_icon_long_press (TaskIcon * icon,gpointer null)
   priv->long_press = TRUE;
 }
 
+
+void            
+task_icon_set_inhibit_focus_loss (TaskIcon *icon, gboolean val)
+{
+  TaskIconPrivate *priv;
+  g_return_if_fail (TASK_IS_ICON (icon));
+  
+  priv = icon->priv;
+  priv->inhibit_focus_loss = val;
+}
 static void
 task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
 {
@@ -1554,7 +1566,8 @@ task_icon_button_press_event (GtkWidget      *widget,
 {
   TaskIconPrivate *priv;
   TaskIcon *icon;
-
+  GtkWidget   *item;
+  
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
 
   icon = TASK_ICON (widget);
@@ -1580,7 +1593,6 @@ task_icon_button_press_event (GtkWidget      *widget,
     }
     if (priv->main_item)
     {
-      GtkWidget   *item;
       if (TASK_IS_WINDOW (priv->main_item))
       {
         GSList      *iter;
@@ -1612,22 +1624,45 @@ task_icon_button_press_event (GtkWidget      *widget,
           gtk_widget_show (sub_menu);
         }
       }
-      item = awn_applet_create_about_item (priv->applet,                
-             "Copyright 2008,2009 Neil Jagdish Patel <njpatel@gmail.com>\n"
-             "          2009 Hannes Verschore <hv1989@gmail.com>\n"
-             "          2009 Rodney Cryderman <rcryderman@gmail.com>",
-             AWN_APPLET_LICENSE_GPLV2,
-             NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-      gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
     }
+    
+    if (!priv->menu)
+    {
+      priv->menu = gtk_menu_new ();
+
+      item = gtk_separator_menu_item_new();
+      gtk_widget_show_all(item);
+      gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
+
+      item = awn_applet_create_pref_item();
+      gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
+
+      item = gtk_separator_menu_item_new();
+      gtk_widget_show(item);
+      gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
+      
+      if (priv->main_item)
+      {
+        item = gtk_image_menu_item_new_from_stock (GTK_STOCK_EXECUTE, NULL);
+        gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
+        gtk_widget_show (item);
+      }      
+    }
+    item = awn_applet_create_about_item (priv->applet,                
+           "Copyright 2008,2009 Neil Jagdish Patel <njpatel@gmail.com>\n"
+           "          2009 Hannes Verschore <hv1989@gmail.com>\n"
+           "          2009 Rodney Cryderman <rcryderman@gmail.com>",
+           AWN_APPLET_LICENSE_GPLV2,
+           NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+    gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
+
     if (priv->menu)
     {
-        gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, 
-                        NULL, NULL, event->button, event->time);
-    }
-    else
-    {
-      task_item_right_click (priv->main_item, event);
+      gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, 
+                      NULL, NULL, event->button, event->time);
+      
+      g_signal_connect_swapped (priv->menu,"deactivate", 
+                                G_CALLBACK(gtk_widget_hide),priv->dialog);
     }
     return TRUE;
   }
@@ -1637,14 +1672,32 @@ task_icon_button_press_event (GtkWidget      *widget,
 static gboolean  
 task_icon_dialog_unfocus (GtkWidget      *widget,
                          GdkEventFocus  *event,
-                         gpointer       null)
+                         TaskIcon *icon)
 {
-  g_return_val_if_fail (GTK_IS_WIDGET(widget),FALSE);
-  gtk_widget_hide (widget);
+  TaskIconPrivate *priv;
+
+  g_return_val_if_fail (AWN_IS_DIALOG (widget), FALSE);  
+
+  priv = icon->priv;
+  
+  if (priv->inhibit_focus_loss)
+  {
+    gtk_widget_hide (priv->dialog);
+  }
   return FALSE;
 }
 
+GtkWidget *     
+task_icon_get_dialog (TaskIcon *icon)
+{
+  TaskIconPrivate *priv;
 
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);  
+
+  priv = icon->priv;
+  
+  return priv->dialog;
+}
 /*
  * Drag and Drop code
  * - code to drop things on icons
