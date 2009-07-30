@@ -1662,6 +1662,10 @@ task_icon_button_press_event (GtkWidget      *widget,
           g_signal_connect (item,"activate",
                             G_CALLBACK(add_to_launcher_list_cb),
                             icon);
+          item = gtk_separator_menu_item_new();
+          gtk_widget_show_all(item);
+          gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
+          
         }
       }
     }

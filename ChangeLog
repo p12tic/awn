@@ -1,6 +1,11 @@
 2009-07-30  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	Add a separator after the Add to launcher list item.
+
+2009-07-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-manager.c:
  	* applets/taskmanager/task-manager.h:
 	Partial implementation of an Add to launcher list feature.
