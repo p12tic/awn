@@ -72,6 +72,8 @@ struct _TaskIconPrivate
   GdkPixbuf *icon;
   AwnApplet *applet;
   GtkWidget *dialog;
+  
+  GtkWidget * menu;
 
   gboolean draggable;
   gboolean gets_dragged;
@@ -1566,7 +1568,67 @@ task_icon_button_press_event (GtkWidget      *widget,
   }
   else if (priv->main_item)
   {
-    task_item_right_click (priv->main_item, event);
+    /*
+     Could create some reusable code in TaskWindow/TaskLauncher.  
+     For now just deal with it here...  once the exact layout/behaviour is
+     finalized then look into it.  TODO
+     */
+    if (priv->menu)
+    {
+      gtk_widget_destroy (priv->menu);
+      priv->menu = NULL;
+    }
+    if (priv->main_item)
+    {
+      GtkWidget   *item;
+      if (TASK_IS_WINDOW (priv->main_item))
+      {
+        GSList      *iter;
+        
+        priv->menu = wnck_action_menu_new (task_window_get_window (TASK_WINDOW(priv->main_item)));
+        
+        item = gtk_separator_menu_item_new();
+        gtk_widget_show_all(item);
+        gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
+
+        item = awn_applet_create_pref_item();
+        gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
+
+        item = gtk_separator_menu_item_new();
+        gtk_widget_show(item);
+        gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
+        for (iter = priv->items; iter; iter=iter->next)
+        {
+          GtkWidget   *sub_menu;
+          if ( TASK_IS_LAUNCHER (iter->data) )
+            continue;
+          if ( iter->data == priv->main_item)
+            continue;
+          item = gtk_menu_item_new_with_label (task_window_get_name (TASK_WINDOW(iter->data)));
+          sub_menu = wnck_action_menu_new (task_window_get_window (TASK_WINDOW(iter->data)));          
+          gtk_menu_item_set_submenu (GTK_MENU_ITEM(item),sub_menu);
+          gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
+          gtk_widget_show (item);
+          gtk_widget_show (sub_menu);
+        }
+      }
+      item = awn_applet_create_about_item (priv->applet,                
+             "Copyright 2008,2009 Neil Jagdish Patel <njpatel@gmail.com>\n"
+             "          2009 Hannes Verschore <hv1989@gmail.com>\n"
+             "          2009 Rodney Cryderman <rcryderman@gmail.com>",
+             AWN_APPLET_LICENSE_GPLV2,
+             NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+      gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
+    }
+    if (priv->menu)
+    {
+        gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, 
+                        NULL, NULL, event->button, event->time);
+    }
+    else
+    {
+      task_item_right_click (priv->main_item, event);
+    }
     return TRUE;
   }
   return FALSE;  

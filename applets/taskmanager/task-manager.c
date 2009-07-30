@@ -385,6 +385,7 @@ task_manager_new (const gchar *name,
   if (!manager)
     manager = g_object_new (TASK_TYPE_MANAGER,
                             "canonical-name", name,
+                            "display-name", "Task Manager",
                             "uid", uid,
                             "panel-id", panel_id,
                             NULL);
