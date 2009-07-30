@@ -58,6 +58,7 @@ struct _TaskWindowPrivate
   gboolean hidden;
   gboolean needs_attention;
   gboolean is_active;
+  GtkWidget         *menu;
   
   gchar * special_id; /*Thank you OpenOffice*/
 };
@@ -712,7 +713,7 @@ task_window_popup_context_menu (TaskWindow     *window,
 {
   TaskWindowClass *klass;
   TaskWindowPrivate *priv;
-  GtkWidget         *menu;
+  GtkWidget         *item;
 
   g_return_if_fail (TASK_IS_WINDOW (window));
   g_return_if_fail (event);
@@ -720,9 +721,26 @@ task_window_popup_context_menu (TaskWindow     *window,
   
   klass = TASK_WINDOW_GET_CLASS (window);
 
-  menu = wnck_action_menu_new (priv->window);
-  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, 
+  if (priv->menu)
+  {
+    gtk_widget_destroy (priv->menu);
+  }
+  priv->menu = wnck_action_menu_new (priv->window);
+  
+  item = gtk_separator_menu_item_new();
+  gtk_widget_show_all(item);
+  gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
+
+  item = awn_applet_create_pref_item();
+  gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
+
+  item = gtk_separator_menu_item_new();
+  gtk_widget_show(item);
+  gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
+  
+  gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, 
                   NULL, NULL, event->button, event->time);
+  
 }
 
 void    

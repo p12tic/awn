@@ -1542,7 +1542,7 @@ task_icon_button_release_event (GtkWidget      *widget,
 
 /**
  * Whenever there is a press event on the TaskIcon it will do the proper actions.
- * right click: - show the context menu if there is only one (visible) window
+ * right click: - show the context menu 
  * Returns: TRUE to stop other handlers from being invoked for the event. 
  *          FALSE to propagate the event further. 
  */

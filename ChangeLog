@@ -1,3 +1,12 @@
+2009-07-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-window.c:
+	* applets/taskmanager/task-launcher.c:
+	Some work on the context menus.  Reuse the context
+	menu in the case of TaskLauncher.  Destroy the old
+	one and build a new one in the case of TaskWindow.
+
 2009-07-29  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awn-settings.xml:

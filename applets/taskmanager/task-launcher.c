@@ -57,6 +57,8 @@ struct _TaskLauncherPrivate
   gint   pid;
   glong timestamp;
   
+  GtkWidget     *menu;
+  
   gchar         *special_id;    /*AKA OpenOffice ***** */
 };
 
@@ -533,19 +535,34 @@ _right_click (TaskItem *item, GdkEventButton *event)
 {
   TaskLauncherPrivate *priv;
   TaskLauncher *launcher;
-  GtkWidget *menu_item,
-            *menu;
+  GtkWidget *menu_item;
   
   g_return_if_fail (TASK_IS_LAUNCHER (item));
   
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
 
-  menu = gtk_menu_new ();
-  menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_EXECUTE, NULL);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
-  gtk_widget_show (menu_item);
-  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, 
+  if (!priv->menu)
+  {
+    priv->menu = gtk_menu_new ();
+
+    menu_item = gtk_separator_menu_item_new();
+    gtk_widget_show_all(menu_item);
+    gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), menu_item);
+
+    menu_item = awn_applet_create_pref_item();
+    gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), menu_item);
+
+    menu_item = gtk_separator_menu_item_new();
+    gtk_widget_show(menu_item);
+    gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), menu_item);
+    
+    menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_EXECUTE, NULL);
+    gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), menu_item);
+    gtk_widget_show (menu_item);
+        
+  }
+  gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, 
                   NULL, NULL, event->button, event->time);
 }
 
