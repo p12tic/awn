@@ -1081,7 +1081,8 @@ on_window_needs_attention_changed (TaskWindow *window,
   {
     awn_icon_set_effect (AWN_ICON (icon),AWN_EFFECT_ATTENTION);
   }
-  else if (priv->needs_attention == 1 && count == 0)
+//  else if (priv->needs_attention == 1 && count == 0)
+  else if  (count == 0)  /*not sure why ^ was that structure.  try this way */
   {
     awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                       AWN_EFFECT_ATTENTION);
