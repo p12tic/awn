@@ -40,10 +40,9 @@
 
 #include "task-drag-indicator.h"
 #include "task-icon.h"
-//#include "task-launcher.h"
-//#include "task-window.h"
 #include "task-settings.h"
 #include "xutils.h"
+#include "util.h"
 
 G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
 
@@ -51,7 +50,7 @@ G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
   TASK_TYPE_MANAGER, \
   TaskManagerPrivate))
 
-//#define DEBUG 1
+#define DEBUG 1
 
 static GQuark win_quark = 0;
 
@@ -427,6 +426,7 @@ task_manager_new (const gchar *name,
   if (!manager)
     manager = g_object_new (TASK_TYPE_MANAGER,
                             "canonical-name", name,
+                            "display-name", "Task Manager",
                             "uid", uid,
                             "panel-id", panel_id,
                             NULL);
@@ -669,21 +669,20 @@ icon_closed (TaskManager *manager, GObject *old_icon)
 
 
 static gboolean
-find_desktop (TaskIcon *icon, gchar * class_name)
+find_desktop (TaskIcon *icon, gchar * name)
 {
   gchar * lower;
   gchar * desktop;
   const gchar* const * system_dirs = g_get_system_data_dirs ();
   GStrv   iter;
+  GStrv   tokens;
   TaskItem     *launcher = NULL;
   
-  g_return_val_if_fail (class_name,FALSE);
-//#define DEBUG 1
+  g_return_val_if_fail (name,FALSE);
+  lower = g_utf8_strdown (name, -1);
+//#define DEBUG
 #ifdef DEBUG
-  g_debug ("%s: wm class = %s",__func__,class_name);
-#endif
-  lower = g_utf8_strdown (class_name, -1);
-#ifdef DEBUG
+  g_debug ("%s: name = %s",__func__,name);
   g_debug ("%s: lower = %s",__func__,lower);
 #endif      
   
@@ -700,6 +699,7 @@ find_desktop (TaskIcon *icon, gchar * class_name)
       g_debug ("launcher %p",launcher);
 #endif
       task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+      g_free (lower);
       g_free (desktop);
       return TRUE;
     }
@@ -721,10 +721,141 @@ find_desktop (TaskIcon *icon, gchar * class_name)
     }        
     g_free (desktop);        
   }
-  g_free (lower);
+  
+  g_strdelimit (lower,"-.:,=+_~!@#$%^()[]{}'",' ');
+  tokens = g_strsplit (lower," ",-1);
+  if (tokens)
+  {
+    gchar * stripped = g_strjoinv(NULL,tokens);
+    g_strfreev (tokens);    
+    if (g_strcmp0 (stripped, name) !=0)
+    {
+      if (find_desktop (icon,stripped) )
+      {
+        g_free (lower);
+        g_free (stripped);
+        return TRUE;
+      }
+    }  
+    g_free (stripped);    
+  }
+  g_free (lower);  
   return FALSE;
 }
 
+static gboolean
+find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
+{
+  gchar * lower;
+  gchar * desktop_regex_str;
+  GRegex  * desktop_regex;
+  const gchar* const * system_dirs = g_get_system_data_dirs ();
+  GStrv   iter;
+  TaskItem     *launcher = NULL;
+  
+  g_return_val_if_fail (class_name,FALSE);
+  lower = g_utf8_strdown (class_name, -1);
+  
+//#define DEBUG 1
+#ifdef DEBUG
+  g_debug ("%s: wm class = %s",__func__,class_name);
+  g_debug ("%s: lower = %s",__func__,lower);
+#endif      
+
+  /*
+   TODO compile the regex
+   */
+  desktop_regex_str = g_strdup_printf (".*%s.*desktop",lower);  
+  desktop_regex = g_regex_new (desktop_regex_str,G_REGEX_CASELESS,0,NULL);
+
+#ifdef DEBUG
+    g_debug ("%s: desktop regex = %s",__func__,desktop_regex_str);
+#endif      
+  g_free (lower);    
+  g_free (desktop_regex_str);
+  g_return_val_if_fail (desktop_regex,FALSE);
+  
+  for (iter = (GStrv)system_dirs; *iter; iter++)
+  {
+    gchar * dir_name = g_strdup_printf ("%sapplications",*iter);
+    GDir  * dir = g_dir_open (dir_name,0,NULL);
+    if (dir)
+    {
+      const gchar * filename;
+      while ( (filename = g_dir_read_name (dir)) )
+      {
+        if ( g_regex_match (desktop_regex, filename,0,NULL) )
+        {
+          gchar * full_path = g_strdup_printf ("%s/%s",dir_name,filename);
+#ifdef DEBUG
+          g_debug ("%s:  regex matched full path =   %s",__func__,full_path);
+#endif       
+          // TODO handle GErrors
+          DesktopAgnosticVFSFile *file = desktop_agnostic_vfs_file_new_for_path (full_path, NULL);
+          DesktopAgnosticDesktopEntryBackend * desktop = desktop_agnostic_desktop_entry_new_for_file (file, NULL);
+          if (desktop)
+          {
+            gchar * exec = desktop_agnostic_desktop_entry_backend_get_string (desktop, "Exec");
+            g_object_unref (desktop);
+#ifdef DEBUG
+            g_debug ("%s:  exec =   %s",__func__,exec);
+            g_debug ("%s:  cmd =   %s",__func__,cmd);            
+#endif            
+            if (exec)
+            {
+              /*
+               May need some adjustments.
+                Possible conversion to a regex
+               */
+              if ( g_regex_match_simple (exec,cmd,G_REGEX_CASELESS,0) 
+                  || g_regex_match_simple (cmd, exec,G_REGEX_CASELESS,0))
+              {
+                launcher = task_launcher_new_for_desktop_file (full_path);
+                if (launcher)
+                {
+                  task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+                  g_regex_unref (desktop_regex);
+                  g_free (exec);
+                  return TRUE;
+                }
+              }
+              g_free (exec);              
+            }            
+          }
+          g_object_unref (file);
+          g_free (full_path);
+        }
+      }
+      g_dir_close (dir);
+    }
+    g_free (dir_name);
+  }
+  g_regex_unref (desktop_regex);
+  return FALSE;
+//#undef DEBUG
+  
+}
+
+static gboolean
+find_desktop_special_case (TaskIcon *icon, gchar * cmd, gchar *res_name, 
+                                 gchar * class_name,const gchar *title)
+{
+  gboolean result = FALSE;
+  gchar * special_desktop = get_special_desktop_from_window_data (cmd,
+                                                                  res_name,
+                                                                  class_name,
+                                                                  title);
+  if (special_desktop)
+  {
+    result = find_desktop (icon,special_desktop);
+    if ( !result && (strlen (cmd) > 8) ) 
+    {
+      result = find_desktop_fuzzy (icon,special_desktop,cmd);
+    }
+  }
+  g_free (special_desktop);
+  return result;
+}
 
 /**
  * Whenever a new window gets opened it will try to place it
@@ -839,6 +970,14 @@ on_window_opened (WnckScreen    *screen,
     */
     gchar   *res_name = NULL;
     gchar   *class_name = NULL;
+    gchar   *cmd;
+    gchar   *full_cmd;
+    gchar   *cmd_basename;
+    
+    glibtop_proc_args buf;    
+    cmd = glibtop_get_proc_args (&buf,wnck_window_get_pid (window),1024);    
+    full_cmd = get_full_cmd_from_pid (wnck_window_get_pid (window));
+    cmd_basename = g_path_get_basename (cmd);
     
     icon = task_icon_new (AWN_APPLET (manager));
     task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name); 
@@ -854,9 +993,16 @@ on_window_opened (WnckScreen    *screen,
     /*This _may_ result in unacceptable false positives.  Testing.*/
     if (!found_desktop)
     {
-      glibtop_proc_args buf;
-      gchar   *cmd;
-      cmd = glibtop_get_proc_args (&buf,wnck_window_get_pid (window),1024);    
+      #ifdef DEBUG
+      g_debug ("%s:  full cmd = '%s'",__func__,full_cmd);
+      #endif
+      if (full_cmd)
+      {
+        found_desktop = find_desktop (TASK_ICON(icon), full_cmd);
+      }
+    }
+    if (!found_desktop)
+    {
       #ifdef DEBUG
       g_debug ("%s:  cmd = '%s'",__func__,cmd);
       #endif
@@ -864,11 +1010,39 @@ on_window_opened (WnckScreen    *screen,
       {
         found_desktop = find_desktop (TASK_ICON(icon), cmd);
       }
-      g_free (cmd);
     }
-     
+    
+    if (!found_desktop)
+    {
+      found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, full_cmd);
+    }
+    if (!found_desktop)
+    {
+      found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
+    }
+    if (!found_desktop)
+    {
+      found_desktop = find_desktop (TASK_ICON(icon), cmd_basename);
+    }
+    
+    if (!found_desktop)
+    {
+      found_desktop = find_desktop_special_case (TASK_ICON(icon),full_cmd,res_name,
+                                                 class_name,
+                                                 wnck_window_get_name (window));
+    }
+    if (!found_desktop)
+    {
+      found_desktop = find_desktop_special_case (TASK_ICON(icon),cmd,res_name,
+                                                 class_name,
+                                                 wnck_window_get_name (window));
+    }
+    
+    g_free (full_cmd);
+    g_free (cmd);     
     g_free (class_name);
     g_free (res_name);
+    g_free (cmd_basename);
     task_icon_append_item (TASK_ICON (icon), item);
     priv->icons = g_slist_append (priv->icons, icon);
     gtk_container_add (GTK_CONTAINER (priv->box), icon);
@@ -972,6 +1146,53 @@ task_manager_set_show_only_launchers (TaskManager *manager,
   g_debug ("%s", only_show_launchers ? "only show launchers":"show everything");
 }
 
+void 
+task_manager_remove_task_icon (TaskManager  *manager, GtkWidget *icon)
+{
+  TaskManagerPrivate *priv;
+
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+  
+  priv->icons = g_slist_remove (priv->icons,icon);
+}
+
+void
+task_manager_append_launcher(TaskManager  *manager, const gchar * launcher_path)
+{
+  TaskManagerPrivate *priv;
+  GValueArray *launcher_paths;
+  GSList *launcher_list = NULL;
+  GValue val = {0,};
+  
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+
+  /*
+   directly editing priv->launcher_paths does not work... so retrieve,
+   modify, and set
+   TODO once lda is merged have another look.
+   */
+  g_value_init (&val, G_TYPE_STRING);
+  g_value_set_string (&val, launcher_path);
+  launcher_paths = desktop_agnostic_config_client_get_list (priv->client,
+                                                            DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                                            "launcher_paths",
+                                                            NULL);
+  launcher_paths = g_value_array_append (launcher_paths, &val);
+  desktop_agnostic_config_client_set_list (priv->client,
+                                           DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                           "launcher_paths", launcher_paths, NULL);
+  g_value_unset (&val);
+  for (guint i = 0; i < launcher_paths->n_values; i++)
+  {
+    gchar *path = g_value_dup_string (g_value_array_get_nth (launcher_paths, i));
+    launcher_list = g_slist_append (launcher_list, path);
+  }
+  g_value_array_free (launcher_paths);
+  task_manager_refresh_launcher_paths (manager, launcher_list);
+}
+
 /**
  * Checks when launchers got added/removed in the list in gconf/file.
  * It removes the launchers from the task-icons and add those
@@ -1026,27 +1247,34 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
       GtkWidget     *icon;
       
       launcher = task_launcher_new_for_desktop_file (d->data);
-      icon = task_icon_new (AWN_APPLET (manager));
-      task_icon_append_item (TASK_ICON (icon), launcher);
-      gtk_container_add (GTK_CONTAINER (priv->box), icon);
-      gtk_box_reorder_child (GTK_BOX (priv->box), icon, g_slist_position (list,d));
-      priv->icons = g_slist_insert (priv->icons, icon, g_slist_position (list,d));
+      if (launcher)
+      {
+        icon = task_icon_new (AWN_APPLET (manager));
+        task_icon_append_item (TASK_ICON (icon), launcher);
+        gtk_container_add (GTK_CONTAINER (priv->box), icon);
+        gtk_box_reorder_child (GTK_BOX (priv->box), icon, g_slist_position (list,d));
+        priv->icons = g_slist_insert (priv->icons, icon, g_slist_position (list,d));
 
-      g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
-      g_signal_connect_swapped (icon, 
-                                "visible-changed",
-                                G_CALLBACK (on_icon_visible_changed), 
-                                manager);
-      g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                                "animation-end", 
-                                G_CALLBACK (on_icon_effects_ends), 
-                                icon);
-      
-      update_icon_visible (manager, TASK_ICON (icon));
+        g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
+        g_signal_connect_swapped (icon, 
+                                  "visible-changed",
+                                  G_CALLBACK (on_icon_visible_changed), 
+                                  manager);
+        g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                                  "animation-end", 
+                                  G_CALLBACK (on_icon_effects_ends), 
+                                  icon);
+        
+        update_icon_visible (manager, TASK_ICON (icon));
 
-      /* reordening through D&D */
-      if(priv->drag_and_drop)
-        _drag_add_signals(manager, icon);        
+        /* reordening through D&D */
+        if(priv->drag_and_drop)
+          _drag_add_signals(manager, icon);        
+      }
+      else
+      {
+        g_debug ("%s: Bad desktop file '%s'",__func__,(gchar *)d->data);
+      }
     }
   }
 #if 0
@@ -1271,11 +1499,32 @@ task_manager_update (TaskManager *manager,
       gchar *key_name = (gchar *)key;
       if (strcmp ("icon-file", key_name) == 0)
       {
-        g_debug ("Request to change icon-file...");
+        //g_debug ("Request to change icon-file...");
+        TaskItem *item = TASK_ITEM (matched_window);
+        if (item->icon_overlay == NULL)
+        {
+          item->icon_overlay = awn_overlay_pixbuf_file_new (NULL);
+          g_object_set (G_OBJECT (item->icon_overlay),
+                        "use-source-op", TRUE,
+                        "scale", 1.0, NULL);
+          GtkWidget *image = task_item_get_image_widget (item);
+          AwnOverlayable *over = AWN_OVERLAYABLE (image);
+          awn_overlayable_add_overlay (over,
+                                       AWN_OVERLAY (item->icon_overlay));
+        }
+
+        const gchar* filename = g_value_get_string (value);
+        g_object_set (G_OBJECT (item->icon_overlay),
+                      "active", filename && filename[0] != '\0', NULL);
+        g_object_set_property (G_OBJECT (item->icon_overlay),
+                               "file-name", value);
+
+        // this refreshes the overlays on TaskIcon
+        task_item_set_task_icon (item, task_item_get_task_icon (item));
       }
       else if (strcmp ("progress", key_name) == 0)
       {
-        g_debug ("Request to change progress...");
+        //g_debug ("Request to change progress...");
         TaskItem *item = TASK_ITEM (matched_window);
         if (item->progress_overlay == NULL)
         {
@@ -1285,6 +1534,7 @@ task_manager_update (TaskManager *manager,
           awn_overlayable_add_overlay (over,
                                        AWN_OVERLAY (item->progress_overlay));
         }
+
         g_object_set (G_OBJECT (item->progress_overlay),
                       "active", g_value_get_int (value) != -1, NULL);
         g_object_set_property (G_OBJECT (item->progress_overlay),
@@ -1295,7 +1545,7 @@ task_manager_update (TaskManager *manager,
       }
       else if (strcmp ("message", key_name) == 0)
       {
-        g_debug ("Request to change message...");
+        //g_debug ("Request to change message...");
         TaskItem *item = TASK_ITEM (matched_window);
         if (item->text_overlay == NULL)
         {
@@ -1306,6 +1556,7 @@ task_manager_update (TaskManager *manager,
           AwnOverlayable *over = AWN_OVERLAYABLE (image);
           awn_overlayable_add_overlay (over, AWN_OVERLAY (item->text_overlay));
         }
+
         g_object_set_property (G_OBJECT (item->text_overlay), "text", value);
 
         // this refreshes the overlays on TaskIcon

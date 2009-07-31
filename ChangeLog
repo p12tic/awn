@@ -1,3 +1,257 @@
+2009-07-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	loosen the condition whereby attention required effect
+	is turned off.
+
+2009-07-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-manager.h:
+	Tweaking of desktop lookup code.  
+	Some more work on Add to launder list.
+
+2009-07-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Add a separator after the Add to launcher list item.
+
+2009-07-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+ 	* applets/taskmanager/task-manager.h:
+	Partial implementation of an Add to launcher list feature.
+
+2009-07-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-item.c:
+	Fixup some context menu / AwnDialog focus issue.
+	Added a Add Launcher item to context menus (has
+	no code attached to it yet).
+
+2009-07-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+  	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-item.h:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+	Jumping through hoops to deal with the focus loss
+	issue with context menus and AwnDialog.  Patches 
+	implementing a cleaner solution are gladly accepted.
+
+2009-07-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+	Mapped out the structure of TaskIcon conext menu.
+
+2009-07-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-window.c:
+	* applets/taskmanager/task-launcher.c:
+	Some work on the context menus.  Reuse the context
+	menu in the case of TaskLauncher.  Destroy the old
+	one and build a new one in the case of TaskWindow.
+
+2009-07-29  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	Changed Applets tab.
+
+2009-07-29  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	Changed Launcher tab.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Make sure the desktop file in the launcher list was
+	usable.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	special cased amsn windows.  I obviously really dislike 
+	pidgin.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Special case amsn.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/util.c:
+	Fix regex for gimp.  Added regex for desktop file
+	lookup for Mange print jobs.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	Check for a NULL so two NULLs are not compared.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-window.c:
+	Disable some console debugs.
+	Removed commented out code.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/util.c:
+	Special case gimp desktop file lookup.
+	Removed the class_name to class_name comparision from 
+	TaskWindow match (it is not a good idea).
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/util.c:
+  	* applets/taskmanager/util.h:
+	Special case the deskto files for OO.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix right click on TaskIcon.  Provides context menu for
+	most recently active item under TaskIcon.  Possibly 
+	should provide all TaskWindows within the TaskIcon
+	context menu?
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Make the filename search regex caseless also.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Fix a debug.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Do a case insensitive comparision exec<->cmd
+	in the fuzzy desktop search
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Some more magic desktop file locating code.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager:
+	Strip some non-alpha chars from the match string when attempting 
+	to find the desktop file.  Should fix d-feet issue.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher:
+	Bring a _bit_ of sanity to TaskLauncher match function.
+
+2009-07-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+        Set the icon size in the buttons to the system Button icon size.
+	TaskItem buttons should now reflect icon changes.
+
+2009-07-28  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Implemented support for icon-file key in DBus calls.
+	* libawn/awn-overlay-pixbuf.c:
+	* libawn/awn-overlay.c:
+	* libawn/awn-overlay.h:
+	Added use-source-op property.
+
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Add a full command line comparision into TaskWindow.
+
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix some signal code that can only be explained by someone
+	being tired when it was written.
+
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+  	* applets/taskmanager/util.c:
+  	* applets/taskmanager/util.h:
+	Place for some generic functions.  Initial infrastrcture for 
+	special casing specific apps.
+  
+	* applets/taskmanager/Makefile.am:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-window.c:
+	Initial infrastructure for special casing apps.
+	Thank you goes to OpenOffice for providing the impetus.
+
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/task-window.c:
+        Experimental code.  If matching is set at 99 it should match 
+        launchers to windows launched from said launchers... for some more
+        problematic apps (I'm looking at you OO).
+
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-launcher.c:
+	Stop using Clicked signal.  Issues specific to taskmanager.
+
+2009-07-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/awn.schema-ini.in:
+	* libawn/awn-icon.c:
+	Made the long-press-timeout value configurable (default 750ms).
+
+2009-07-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-icon.c:
+	Don't emit clicked if long-press was emitted.
+
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Move the icon setting code a bit earlier to get
+	rid of some console spam
+
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix middle click.
+	Use the Launcher icon again (if it's available).
+	
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	Fix a crasher stemming from GdkEvent not being 
+	available in clicked signal.
+
+2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/taskmanager.schema-ini:
+	Add config option to enable/disable long press.
+	Close dialog on icon click if it is open.
+	Add some comments to the clicked signal handler.
+
 2009-07-27  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* doc/reference/libawn-docs.sgml:

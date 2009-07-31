@@ -25,7 +25,6 @@
 #include "awn-overlayable.h"
 
 #define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
-#define LONG_PRESS_TIMEOUT 1000
 
 static void awn_icon_overlayable_init (AwnOverlayableIface *iface);
 
@@ -51,9 +50,11 @@ struct _AwnIconPrivate
   gboolean hover_effects_enable;
   gboolean was_pressed;
 
+  gint long_press_timeout;
   gdouble press_start_x;
   gdouble press_start_y;
   guint long_press_timer;
+  gboolean long_press_emitted;
 
   AwnOrientation orient;
   gint offset;
@@ -72,7 +73,8 @@ enum
   PROP_BIND_EFFECTS,
 
   PROP_ICON_WIDTH,
-  PROP_ICON_HEIGHT
+  PROP_ICON_HEIGHT,
+  PROP_LONG_PRESS_TIMEOUT
 };
 
 enum
@@ -207,6 +209,8 @@ awn_icon_long_press_timeout (gpointer data)
     g_signal_emit (icon, _icon_signals[LONG_PRESS], 0);
   }
 
+  // if we're in drag we won't emit clicked either
+  priv->long_press_emitted = TRUE;
   priv->long_press_timer = 0;
 
   return FALSE;
@@ -224,11 +228,12 @@ awn_icon_pressed (AwnIcon *icon, GdkEventButton *event, gpointer data)
     case 1:
       priv->was_pressed = TRUE;
       g_object_set (priv->effects, "depressed", TRUE, NULL);
+      priv->long_press_emitted = FALSE;
       if (priv->long_press_timer == 0)
       {
         priv->press_start_x = event->x_root;
         priv->press_start_y = event->y_root;
-        priv->long_press_timer = g_timeout_add (LONG_PRESS_TIMEOUT, 
+        priv->long_press_timer = g_timeout_add (priv->long_press_timeout, 
                                                 awn_icon_long_press_timeout,
                                                 icon);
       }
@@ -257,7 +262,9 @@ awn_icon_released (AwnIcon *icon, GdkEventButton *event, gpointer data)
       g_source_remove (priv->long_press_timer);
       priv->long_press_timer = 0;
     }
-    awn_icon_clicked (icon);
+    // emit clicked only if long-press wasn't emitted
+    if (priv->long_press_emitted == FALSE)
+      awn_icon_clicked (icon);
   }
 
   return FALSE;
@@ -273,8 +280,6 @@ awn_icon_constructed (GObject *object)
   AwnIconPrivate *priv = icon->priv;
   GError *error = NULL;
 
-  if (!priv->bind_effects) return;
-
   DesktopAgnosticConfigClient *client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
 
   if (error)
@@ -284,6 +289,13 @@ awn_icon_constructed (GObject *object)
     g_error_free (error);
     return;
   }
+
+  desktop_agnostic_config_client_bind (client, "shared", "long_press_timeout",
+                                       object, "long_press_timeout", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+
+  if (!priv->bind_effects) return;
 
   GObject *fx = G_OBJECT (priv->effects);
 
@@ -336,6 +348,9 @@ awn_icon_get_property (GObject    *object,
     case PROP_ICON_HEIGHT:
       g_value_set_int (value, priv->icon_height);
       break;
+    case PROP_LONG_PRESS_TIMEOUT:
+      g_value_set_int (value, priv->long_press_timeout);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -367,6 +382,9 @@ awn_icon_set_property (GObject      *object,
       awn_icon_set_custom_paint(icon,
                                 priv->icon_width,
                                 g_value_get_int (value));
+      break;
+    case PROP_LONG_PRESS_TIMEOUT:
+      icon->priv->long_press_timeout = g_value_get_int (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -463,6 +481,14 @@ awn_icon_class_init (AwnIconClass *klass)
                       "Current icon height",
                       0, G_MAXINT, 0,
                       G_PARAM_READWRITE));
+
+  g_object_class_install_property (obj_class,
+    PROP_LONG_PRESS_TIMEOUT,
+    g_param_spec_int ("long-press-timeout",
+                      "Long press timeout",
+                      "Timeout after which long-press signal is emit",
+                      250, 10000, 750,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   /* Signals */
   _icon_signals[SIZE_CHANGED] =

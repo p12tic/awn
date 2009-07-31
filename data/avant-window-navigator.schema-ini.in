@@ -265,4 +265,9 @@ type = boolean
 default = false
 description = Determines if generic configuration editor is allowed for applets that do not have a customized preferences dialog.
 
+[shared/long_press_timeout]
+type = integer
+default = 750
+description = Time in ms after which AwnIcon will emit long-press signal.
+
 ; vim: set ft=dosini :

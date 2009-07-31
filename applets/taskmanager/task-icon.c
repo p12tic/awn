@@ -35,6 +35,7 @@
 
 #include "task-launcher.h"
 #include "task-settings.h"
+#include "task-manager.h"
 
 //#define DEBUG 1
 
@@ -73,6 +74,8 @@ struct _TaskIconPrivate
   GdkPixbuf *icon;
   AwnApplet *applet;
   GtkWidget *dialog;
+  
+  GtkWidget * menu;
 
   gboolean draggable;
   gboolean gets_dragged;
@@ -92,10 +95,14 @@ struct _TaskIconPrivate
   gint update_geometry_id;
   
   guint ephemeral_count;
+
+  gboolean  inhibit_focus_loss;
   
-  /*temporary, I hope, workaround until "clicked" and "long-press" sigs work for
-   more than just left click*/
-  gboolean  long_press;
+  /*prop*/
+  gboolean  enable_long_press;
+  
+  gboolean  long_press;     /*set to TRUE when there has been a long press so the clicked event can be ignored*/
+  
 };
 
 enum
@@ -105,7 +112,8 @@ enum
   PROP_APPLET,
   PROP_DRAGGABLE,
   PROP_MAX_INDICATORS,
-  PROP_TXT_INDICATOR_THRESHOLD
+  PROP_TXT_INDICATOR_THRESHOLD,
+  PROP_USE_LONG_PRESS
 };
 
 enum
@@ -148,14 +156,14 @@ static gboolean  task_icon_configure_event      (GtkWidget          *widget,
                                                  GdkEventConfigure  *event);
 
 static void task_icon_long_press (TaskIcon * icon,gpointer null);
-static void task_icon_clicked (TaskIcon * icon,gpointer null);
+static void task_icon_clicked (TaskIcon * icon,GdkEventButton *event);
 static gboolean  task_icon_button_release_event (GtkWidget      *widget,
                                                  GdkEventButton *event);
 static gboolean  task_icon_button_press_event   (GtkWidget      *widget,
                                                  GdkEventButton *event);
 static gboolean  task_icon_dialog_unfocus       (GtkWidget      *widget,
                                                 GdkEventFocus   *event,
-                                                gpointer        null);
+                                                TaskIcon        *icon);
 /* Dnd forwards */
 static void      task_icon_drag_data_get        (GtkWidget *widget, 
                                                  GdkDragContext *context, 
@@ -219,6 +227,9 @@ task_icon_get_property (GObject    *object,
     case PROP_TXT_INDICATOR_THRESHOLD:
       g_value_set_int (value,priv->txt_indicator_threshold);
       break;
+    case PROP_USE_LONG_PRESS:
+      g_value_set_boolean (value, priv->enable_long_press);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -247,7 +258,23 @@ task_icon_set_property (GObject      *object,
     case PROP_TXT_INDICATOR_THRESHOLD:
       icon->priv->txt_indicator_threshold = g_value_get_int (value);
       task_icon_refresh_visible (TASK_ICON(object));
-      break;      
+      break;
+    case PROP_USE_LONG_PRESS:
+      /*TODO Move into a fn */
+      if (icon->priv->enable_long_press)
+      {
+        g_signal_handlers_disconnect_by_func(object, 
+                                       G_CALLBACK (task_icon_long_press), 
+                                       object);
+      }
+      icon->priv->enable_long_press = g_value_get_boolean (value);
+      if (icon->priv->enable_long_press)
+      {
+        g_signal_connect (object,"long-press",
+                    G_CALLBACK(task_icon_long_press),
+                    object);
+      }      
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -339,18 +366,12 @@ task_icon_constructed (GObject *object)
   priv->dialog = awn_dialog_new_for_widget_with_applet (GTK_WIDGET (object),
                                                         priv->applet);
   g_signal_connect (G_OBJECT (priv->dialog),"focus-out-event",
-                    G_CALLBACK (task_icon_dialog_unfocus), NULL);
+                    G_CALLBACK (task_icon_dialog_unfocus), object);
+  g_signal_connect  (wnck_screen_get_default (), 
+                     "active-window-changed",
+                     G_CALLBACK (task_icon_active_window_changed), 
+                     object);
 
-  g_signal_connect (wnck_screen_get_default(),"active-window-changed",
-                    G_CALLBACK(task_icon_active_window_changed),
-                    object);
-  g_signal_connect (object,"long-press",
-                    G_CALLBACK(task_icon_long_press),
-                    NULL);
-  g_signal_connect (object,"clicked",
-                    G_CALLBACK(task_icon_clicked),
-                    NULL);
-  
   //update geometry of icon every second.
   priv->update_geometry_id = g_timeout_add_seconds (1, (GSourceFunc)_update_geometry, widget);
 
@@ -372,6 +393,12 @@ task_icon_constructed (GObject *object)
 
   if (!do_bind_property (priv->client, "txt_indicator_threshold", object,
                          "txt_indicator_threshold"))
+  {
+    return;
+  }
+
+  if (!do_bind_property (priv->client, "enable_long_press", object,
+                         "enable_long_press"))
   {
     return;
   }
@@ -547,6 +574,13 @@ task_icon_class_init (TaskIconClass *klass)
                             3,
                             G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_TXT_INDICATOR_THRESHOLD, pspec);
+
+  pspec = g_param_spec_boolean ("enable_long_press",
+                                "Use Long Press",
+                                "Enable Long Preess",
+                                TRUE,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_USE_LONG_PRESS, pspec);
   
   /* Install signals */
   _icon_signals[VISIBLE_CHANGED] =
@@ -699,7 +733,6 @@ on_main_item_icon_changed (TaskItem   *item,
   g_object_ref(pixbuf);
 
   priv->icon = pixbuf;
-//#define DEBUG 1
 #ifdef DEBUG
   g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(pixbuf), gdk_pixbuf_get_height(pixbuf));
 #endif
@@ -891,7 +924,12 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
   if (main_item)
   {
     priv->main_item = main_item;
-    priv->icon = task_item_get_icon (priv->main_item);
+    /*
+     ok... what to do here?  FIXME 
+     For the moment we'll keep the icon as the launcher icon.
+     */
+//    priv->icon = task_item_get_icon (priv->main_item);
+    
     priv->items = g_slist_remove (priv->items, priv->main_item);
     priv->items = g_slist_prepend (priv->items,priv->main_item);
 #ifdef DEBUG
@@ -1077,7 +1115,8 @@ on_window_needs_attention_changed (TaskWindow *window,
   {
     awn_icon_set_effect (AWN_ICON (icon),AWN_EFFECT_ATTENTION);
   }
-  else if (priv->needs_attention == 1 && count == 0)
+//  else if (priv->needs_attention == 1 && count == 0)
+  else if  (count == 0)  /*not sure why ^ was that structure.  try this way */
   {
     awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                       AWN_EFFECT_ATTENTION);
@@ -1242,7 +1281,16 @@ task_icon_append_item (TaskIcon      *icon,
   g_return_if_fail (TASK_IS_ITEM (item));
 
   priv = icon->priv;
+  /* 
+   if we don't have an icon (this is the first item being appended) or
+   this item is a launcher then we'll use this item's icon 
+   */
+  if (!priv->icon || TASK_IS_LAUNCHER(item))
+  {
+    priv->icon = task_item_get_icon (item);
+  }
 
+  
   priv->items = g_slist_append (priv->items, item);
   gtk_widget_show_all (GTK_WIDGET (item));
   gtk_container_add (GTK_CONTAINER (priv->dialog), GTK_WIDGET (item));
@@ -1351,19 +1399,40 @@ task_icon_long_press (TaskIcon * icon,gpointer null)
 #endif
   
   gtk_widget_show (priv->dialog);
+  gtk_widget_grab_focus (priv->dialog);
   priv->long_press = TRUE;
 }
 
-static void
-task_icon_clicked (TaskIcon * icon,gpointer null)
+
+void            
+task_icon_set_inhibit_focus_loss (TaskIcon *icon, gboolean val)
 {
   TaskIconPrivate *priv;
+  g_return_if_fail (TASK_IS_ICON (icon));
+  
+  priv = icon->priv;
+  priv->inhibit_focus_loss = val;
+}
+
+static void
+task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
+{
+  TaskIconPrivate *priv;
+  TaskItem        *main_item;
   priv = icon->priv;
 
-#ifdef DEBUG
-  g_debug ("%s",__func__);
-#endif
+  /*If long press is enabled then we try to be smart about what we do on short clicks*/
+  if (priv->enable_long_press)
+  {
+    main_item = priv->main_item;
+  }
+  else
+  {
+    main_item = NULL;  /* if main_item is NULL then dialog will always open when >1 item in it*/
+  }
 
+  /*hackish way to determine that we already had a long press for this signal.
+   clicked signal still fires even if there was a long press*/
   if (priv->long_press)
   {
     priv->long_press = FALSE;
@@ -1377,48 +1446,62 @@ task_icon_clicked (TaskIcon * icon,gpointer null)
     g_critical ("TaskIcon: The icons shouldn't contain a visible (and clickable) icon");
     return;
   }
+  else if (GTK_WIDGET_VISIBLE (priv->dialog) )
+  {
+  /*is the dialog open?  if so then it should be closed on icon click*/  
+    
+    gtk_widget_hide (priv->dialog);
+  }  
   else if (priv->shown_items == 1)
   {
     GSList *w;
-    if (priv->main_item)
+
+    if (main_item) 
     {
-      task_item_left_click (priv->main_item,NULL);
+      /*if we have a main item then pass the click on to that */
+      task_item_left_click (main_item,event);
     }
     else
     {
-      /* Find the window/launcher that is shown */
+      /* Otherwise Find the window/launcher that is shown and pass the click on*/
       for (w = priv->items; w; w = w->next)
       {
         TaskItem *item = w->data;
 
         if (!task_item_is_visible (item)) continue;
         
-        task_item_left_click (item, NULL);
+        task_item_left_click (item, event);
 
         break;
       }
       return;
     }
-  }   /*Conditional Operator */
-  else if (priv->main_item)
+  }
+  else if (main_item)
   {
-    if ( task_window_is_active (TASK_WINDOW(priv->main_item)) )
+    /* 
+     Reach here if we have main_item set and
+     1) Launcher + 1 or more TaskWindow or
+     2) No Launcher + 2 or more TaskWindow.
+     In either case main_item Should be TaskWindow and we want to act on that.
+     */    
+    if ( task_window_is_active (TASK_WINDOW(main_item)) )
     {
-      task_window_minimize (TASK_WINDOW(priv->main_item));
+      task_window_minimize (TASK_WINDOW(main_item));
     }
     else
     {
-      task_window_activate (TASK_WINDOW(priv->main_item), gdk_event_get_time(NULL));
+      task_window_activate (TASK_WINDOW(main_item), event->time);
     }      
   }  
   else if (priv->shown_items == (1 + ( task_icon_contains_launcher (icon)?1:0)))
   {
-    /*This clause will probably get more complicated after enabling 
-     task grouping for non-launchers.  As a launcher will not be among the 
-     shown_items.
+    /*
+     main item not set (for whatever reason).
+     This is either a case of 1 Launcher + 1 Window or
+     1 Window.
      
-     TODO add an config option so those who want can revert back to the
-     previous behaviour.
+     So, find the first TaskWindow and act on it.
      */
     GSList *w;
     for (w = priv->items; w; w = w->next)
@@ -1433,7 +1516,7 @@ task_icon_clicked (TaskIcon * icon,gpointer null)
         }
         else
         {
-          task_window_activate (TASK_WINDOW(item), gdk_event_get_time(NULL));
+          task_window_activate (TASK_WINDOW(item), event->time);
         }
       }
 #ifdef DEBUG
@@ -1443,17 +1526,10 @@ task_icon_clicked (TaskIcon * icon,gpointer null)
   }
   else
   {
-    GSList *w;
-    for (w = priv->items; w; w = w->next)
-    {
-      TaskItem *item = w->data;
-
-      if (!task_item_is_visible (item)) continue;
-#ifdef DEBUG
-      g_debug ("clicked on: %s", task_item_get_name (item));
-#endif          
-    }
-
+    /*
+     There are multiple TaskWindows.  And main_item is not set..
+     therefore we show the dialog
+     */
     //TODO: move to hover?
     if (GTK_WIDGET_VISIBLE (priv->dialog) )
     {
@@ -1461,7 +1537,8 @@ task_icon_clicked (TaskIcon * icon,gpointer null)
     }
     else
     {
-      gtk_widget_show (priv->dialog);  
+      gtk_widget_show (priv->dialog); 
+      gtk_widget_grab_focus (priv->dialog);      
     }
   }
 }
@@ -1482,7 +1559,6 @@ task_icon_button_release_event (GtkWidget      *widget,
 {
   TaskIconPrivate *priv;
   TaskIcon *icon;
-
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
 
   icon = TASK_ICON (widget);
@@ -1490,17 +1566,19 @@ task_icon_button_release_event (GtkWidget      *widget,
 
   switch (event->button)
   {
-
+    case 1:
+      task_icon_clicked (TASK_ICON(widget),event);
+      break;
     case 2: // middle click: start launcher
 
       //TODO: start launcher
-      /* Find the window/launcher that is shown */
+      /* Find the launcher that is shown */
       for (GSList *w = priv->items; w; w = w->next)
       {
         TaskItem *item = w->data;
 
         if (!task_item_is_visible (item)) continue;
-        
+        if (!TASK_IS_LAUNCHER (item) ) continue;
         task_item_left_click (item, event);
 
         break;
@@ -1515,9 +1593,38 @@ task_icon_button_release_event (GtkWidget      *widget,
   return FALSE;
 }
 
+static void
+add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
+{
+  TaskIconPrivate *priv;
+  GSList          *iter;
+  TaskLauncher    *launcher = NULL;
+  
+  g_return_if_fail (TASK_IS_ICON (icon));  
+  priv = icon->priv;
+  
+  for (iter = priv->items; iter; iter=iter->next)
+  {
+    if ( TASK_IS_LAUNCHER (iter->data) )
+    {
+      launcher = iter->data;
+      break;
+    }
+  }
+  if (launcher)
+  {
+//    GSList * iter;
+    TaskManager * applet = TASK_MANAGER(priv->applet);
+    task_manager_remove_task_icon (TASK_MANAGER(applet), GTK_WIDGET(icon));            
+//    
+    task_manager_append_launcher (TASK_MANAGER(applet),
+                                  task_launcher_get_desktop_path(launcher));
+//    gtk_widget_destroy (GTK_WIDGET(icon));    
+  }
+}
 /**
  * Whenever there is a press event on the TaskIcon it will do the proper actions.
- * right click: - show the context menu if there is only one (visible) window
+ * right click: - show the context menu 
  * Returns: TRUE to stop other handlers from being invoked for the event. 
  *          FALSE to propagate the event further. 
  */
@@ -1527,7 +1634,8 @@ task_icon_button_press_event (GtkWidget      *widget,
 {
   TaskIconPrivate *priv;
   TaskIcon *icon;
-
+  GtkWidget   *item;
+  
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
 
   icon = TASK_ICON (widget);
@@ -1538,43 +1646,143 @@ task_icon_button_press_event (GtkWidget      *widget,
   if (priv->shown_items == 0)
   {
     g_critical ("TaskIcon: The icons shouldn't contain a visible (and clickable) icon");
-    return FALSE;
   }
-  else if (priv->shown_items == 1)
+  else if (priv->main_item)
   {
-    GSList *w;
-
-    /* Find the window/launcher that is shown */
-    for (w = priv->items; w; w = w->next)
+    /*
+     Could create some reusable code in TaskWindow/TaskLauncher.  
+     For now just deal with it here...  once the exact layout/behaviour is
+     finalized then look into it.  TODO
+     */
+    if (priv->menu)
     {
-      TaskItem *item = w->data;
+      gtk_widget_destroy (priv->menu);
+      priv->menu = NULL;
+    }
+    if (priv->main_item)
+    {
+      if (TASK_IS_WINDOW (priv->main_item))
+      {
+        GSList      *iter;
+        TaskItem    *launcher;
+        
+        priv->menu = wnck_action_menu_new (task_window_get_window (TASK_WINDOW(priv->main_item)));
+        
+        item = gtk_separator_menu_item_new();
+        gtk_widget_show_all(item);
+        gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
 
-      if (!task_item_is_visible (item)) continue;
+        item = awn_applet_create_pref_item();
+        gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
+
+        item = gtk_separator_menu_item_new();
+        gtk_widget_show(item);
+        gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
+        for (iter = priv->items; iter; iter=iter->next)
+        {
+          GtkWidget   *sub_menu;
+          if ( TASK_IS_LAUNCHER (iter->data) )
+          {
+            launcher = iter->data;
+            continue;
+          }
+          if ( iter->data == priv->main_item)
+            continue;
+          item = gtk_menu_item_new_with_label (task_window_get_name (TASK_WINDOW(iter->data)));
+          sub_menu = wnck_action_menu_new (task_window_get_window (TASK_WINDOW(iter->data)));          
+          gtk_menu_item_set_submenu (GTK_MENU_ITEM(item),sub_menu);
+          gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
+          gtk_widget_show (item);
+          gtk_widget_show (sub_menu);
+        }
+        if (priv->ephemeral_count == 1)
+        {
+          item = gtk_menu_item_new_with_label ("Add to Launcher List");
+          gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
+          gtk_widget_show (item);
+          g_signal_connect (item,"activate",
+                            G_CALLBACK(add_to_launcher_list_cb),
+                            icon);
+          item = gtk_separator_menu_item_new();
+          gtk_widget_show_all(item);
+          gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
+          
+        }
+      }
+    }
+    
+    if (!priv->menu)
+    {
+      priv->menu = gtk_menu_new ();
+
+      item = gtk_separator_menu_item_new();
+      gtk_widget_show_all(item);
+      gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
+
+      item = awn_applet_create_pref_item();
+      gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
+
+      item = gtk_separator_menu_item_new();
+      gtk_widget_show(item);
+      gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
       
-      task_item_right_click (item, event);
+      if (priv->main_item)
+      {
+        item = gtk_image_menu_item_new_from_stock (GTK_STOCK_EXECUTE, NULL);
+        gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
+        gtk_widget_show (item);
+      }      
+    }
+    item = awn_applet_create_about_item (priv->applet,                
+           "Copyright 2008,2009 Neil Jagdish Patel <njpatel@gmail.com>\n"
+           "          2009 Hannes Verschore <hv1989@gmail.com>\n"
+           "          2009 Rodney Cryderman <rcryderman@gmail.com>",
+           AWN_APPLET_LICENSE_GPLV2,
+           NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+    gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
 
-      break;
+    if (priv->menu)
+    {
+      gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, 
+                      NULL, NULL, event->button, event->time);
+      
+      g_signal_connect_swapped (priv->menu,"deactivate", 
+                                G_CALLBACK(gtk_widget_hide),priv->dialog);
     }
     return TRUE;
   }
-  else
-  {
-    g_warning ("TaskIcon: FIXME: No support for multiple windows right-click");
-    return FALSE;
-  }
+  return FALSE;  
 }
 
 static gboolean  
 task_icon_dialog_unfocus (GtkWidget      *widget,
                          GdkEventFocus  *event,
-                         gpointer       null)
+                         TaskIcon *icon)
 {
-  g_return_val_if_fail (GTK_IS_WIDGET(widget),FALSE);
-  gtk_widget_hide (widget);
+  TaskIconPrivate *priv;
+
+  g_return_val_if_fail (AWN_IS_DIALOG (widget), FALSE);  
+
+  priv = icon->priv;
+  
+  if (!priv->inhibit_focus_loss)
+  {
+    gtk_widget_hide (priv->dialog);
+  }
   return FALSE;
 }
 
+GtkWidget *     
+task_icon_get_dialog (TaskIcon *icon)
+{
+  TaskIconPrivate *priv;
 
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);  
+
+  priv = icon->priv;
+  
+  return priv->dialog;
+}
 /*
  * Drag and Drop code
  * - code to drop things on icons

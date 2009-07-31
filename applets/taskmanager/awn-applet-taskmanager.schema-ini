@@ -31,7 +31,6 @@ type = boolean
 default = true
 description = Enabling group of tasks.
 
-
 [DEFAULT/match_strength]
 type = integer
 default = 99
@@ -46,5 +45,10 @@ description = Maximum number of task indicators to show under icons. Valid range
 type = integer
 default = 4
 description = The threshold at which text count begins to be displayed. valid range 1..
+
+[DEFAULT/enable_long_press]
+type = boolean
+default = true
+description = Enable long press to open Dialog.
 
 # vim: set ft=dosini :

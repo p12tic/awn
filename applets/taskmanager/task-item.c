@@ -63,8 +63,6 @@ static guint32 _item_signals[LAST_SIGNAL] = { 0 };
 
 static void task_item_icon_changed      (TaskItem *item, GdkPixbuf     *icon);
 static void task_item_visible_changed   (TaskItem *item, gboolean       visible);
-static void task_item_size_request      (GtkWidget *widget, GtkRequisition *req,
-                                          gpointer null);
 static void task_item_name_changed      (TaskItem *item, const gchar   *name);
 static gboolean  task_item_button_release_event (GtkWidget      *widget,
                                                  GdkEventButton *event);
@@ -123,9 +121,6 @@ task_item_constructed (GObject *object)
                     G_CALLBACK (task_item_activate), NULL);
   g_signal_connect (G_OBJECT (object), "icon-changed",
                     G_CALLBACK (task_item_icon_changed), NULL);  
-  g_signal_connect (G_OBJECT (object), "size-request",
-                    G_CALLBACK (task_item_size_request),NULL);
-  
 }
 
 
@@ -214,10 +209,20 @@ task_item_init (TaskItem *item)
 
 }
 
+
+static void
+unset_inhibit_focus_loss_cb (TaskIcon * icon)
+{
+      task_icon_set_inhibit_focus_loss (icon,FALSE);
+}
+
 static gboolean
 task_item_button_release_event (GtkWidget      *widget,
                                 GdkEventButton *event)
 {
+  GtkWidget * menu;
+  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (widget);
+
   g_return_val_if_fail (TASK_IS_ITEM (widget), FALSE);
 
   switch (event->button)
@@ -229,7 +234,14 @@ task_item_button_release_event (GtkWidget      *widget,
       task_item_middle_click (TASK_ITEM (widget), event);
       break;
     case 3:
-      task_item_right_click (TASK_ITEM (widget), event);
+      task_icon_set_inhibit_focus_loss (priv->task_icon,TRUE);
+      menu = task_item_right_click (TASK_ITEM (widget), event);
+      g_signal_connect_swapped (menu,"deactivate", 
+                                G_CALLBACK(gtk_widget_hide),
+                                task_icon_get_dialog(priv->task_icon));
+      g_signal_connect_swapped (menu,"deactivate",
+                                G_CALLBACK(unset_inhibit_focus_loss_cb),
+                                priv->task_icon);
       break;
   }
 
@@ -278,12 +290,36 @@ static void
 task_item_icon_changed (TaskItem *item, GdkPixbuf *icon)
 {
   TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
+  GdkPixbuf * scaled;
+  gint  height;
+  gint  width;
+  gint  scaled_height;
+  gint  scaled_width;
+  
   if (priv->icon)
   {
     g_object_unref (priv->icon);
   }
   priv->icon = icon;
   g_object_ref (icon);
+  
+  /* height should be equal to width... but just in case */
+  height = gdk_pixbuf_get_height (icon);
+  width = gdk_pixbuf_get_width (icon);
+  gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON,&scaled_width,&scaled_height);  
+  if (height != scaled_height)
+  {
+    scaled = gdk_pixbuf_scale_simple (icon,scaled_width,scaled_height,GDK_INTERP_BILINEAR);    
+  }
+  else
+  {
+    scaled = icon;
+    g_object_ref (scaled);
+  }
+  
+  gtk_image_set_from_pixbuf (GTK_IMAGE (priv->image), scaled);
+  g_object_unref (scaled);
+  
 }
 
 static void
@@ -294,39 +330,6 @@ task_item_visible_changed (TaskItem *item, gboolean visible)
   else
     gtk_widget_hide (GTK_WIDGET (item));
 }
-
-static void
-task_item_size_request (GtkWidget *widget, GtkRequisition *req,
-                        gpointer null)
-{
-/*
-   Not overly happy with this solution...  need to give it some more thought.
-   For now it works.  TODO
-   Note that some of the code in here is based on the assumption that the signal
-   is not being disconnected.  ATM it is being disconnected.
-   */
-  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (widget);  
-  GdkPixbuf * cur_pixbuf = gtk_image_get_pixbuf (GTK_IMAGE(priv->image));
-  if ( !cur_pixbuf || (int)(TASK_ITEM_ICON_SCALE * req->height) != gdk_pixbuf_get_height (cur_pixbuf) )
-  {
-    gdouble ratio = gdk_pixbuf_get_width(priv->icon) / (gdouble)gdk_pixbuf_get_height(priv->icon);
-    GdkPixbuf * scaled = gdk_pixbuf_scale_simple (priv->icon,
-                                 TASK_ITEM_ICON_SCALE * req->height * ratio,
-                                 TASK_ITEM_ICON_SCALE * req->height,
-                                 GDK_INTERP_BILINEAR);
-    gtk_image_set_from_pixbuf (GTK_IMAGE (priv->image), scaled);
-    g_object_unref (scaled);
-  }
-  /*
-   Doing this for the moment.  Really we should only need to set the size
-   once.  Disconnecting will keep a nasty cascade from happening if the newly 
-   resized images causes the a new size request with a different (larger)
-   height.  
-   */
-  g_signal_handlers_disconnect_by_func (widget,task_item_size_request,null);
-}
-
-
 
 /**
  * Public functions
@@ -384,17 +387,17 @@ task_item_left_click (TaskItem *item, GdkEventButton *event)
   klass->left_click (item, event);
 }
 
-void
+GtkWidget *
 task_item_right_click (TaskItem *item, GdkEventButton *event)
 {
   TaskItemClass *klass;
 
-  g_return_if_fail (TASK_IS_ITEM (item));
+  g_return_val_if_fail (TASK_IS_ITEM (item),NULL);
   
   klass = TASK_ITEM_GET_CLASS (item);
-  g_return_if_fail (klass->right_click);
+  g_return_val_if_fail (klass->right_click,NULL);
         
-  klass->right_click (item, event);
+  return klass->right_click (item, event);
 }
 
 void

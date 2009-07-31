@@ -256,7 +256,13 @@ _awn_overlay_pixbuf_render (AwnOverlay* _overlay,
     }
   }
     
-  awn_overlay_move_to (AWN_OVERLAY(overlay),cr,icon_width,icon_height,scaled_width,scaled_height,&coord);
+  awn_overlay_move_to (AWN_OVERLAY (overlay), cr,
+                       icon_width, icon_height, 
+                       scaled_width, scaled_height, &coord);
+
+  if (awn_overlay_get_use_source_op (AWN_OVERLAY (overlay)))
+    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+
   gdk_cairo_set_source_pixbuf (cr,priv->scaled_pixbuf,coord.x,coord.y);
   cairo_paint_with_alpha (cr,priv->alpha);
   cairo_restore (cr);
