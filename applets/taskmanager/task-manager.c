@@ -50,7 +50,7 @@ G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
   TASK_TYPE_MANAGER, \
   TaskManagerPrivate))
 
-#define DEBUG 1
+//#define DEBUG 1
 
 static GQuark win_quark = 0;
 
@@ -622,9 +622,23 @@ find_desktop (TaskIcon *icon, gchar * name)
   GStrv   iter;
   GStrv   tokens;
   TaskItem     *launcher = NULL;
+  gchar * name_stripped = NULL;
+  const gchar * extensions[] = { ".py",".pl",".exe",NULL};
   
   g_return_val_if_fail (name,FALSE);
-  lower = g_utf8_strdown (name, -1);
+  
+  for (iter = (GStrv)extensions; *iter; iter++)
+  {
+    if ( g_strrstr (name,*iter) )
+    {
+      name_stripped = g_strdup (name);
+      *g_strrstr (name_stripped,*iter) = '\0';
+      break;
+    }
+  }  
+  
+  lower = g_utf8_strdown (name_stripped?name_stripped:name, -1);
+  g_free (name_stripped);
 //#define DEBUG
 #ifdef DEBUG
   g_debug ("%s: name = %s",__func__,name);
@@ -707,6 +721,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   g_debug ("%s: lower = %s",__func__,lower);
 #endif      
 
+  g_return_val_if_fail (strlen (lower),FALSE);
   /*
    TODO compile the regex
    */
@@ -915,7 +930,6 @@ on_window_opened (WnckScreen    *screen,
     gchar   *cmd;
     gchar   *full_cmd;
     gchar   *cmd_basename;
-    gchar   *res_name_py;
     
     glibtop_proc_args buf;    
     cmd = glibtop_get_proc_args (&buf,wnck_window_get_pid (window),1024);    
@@ -924,12 +938,6 @@ on_window_opened (WnckScreen    *screen,
     
     icon = task_icon_new (AWN_APPLET (manager));
     task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name);
-    res_name_py = g_strrstr (res_name,".py");
-    if (res_name_py)
-    {
-      res_name_py = g_strdup (res_name);
-      *g_strrstr (res_name_py,".py") = '\0';
-    }
 
 #ifdef DEBUG
       g_debug ("%s: class name  = %s, res name = %s",__func__,class_name,res_name);
@@ -946,14 +954,6 @@ on_window_opened (WnckScreen    *screen,
       found_desktop = find_desktop (TASK_ICON(icon), res_name);
     }
     
-    if (!found_desktop)
-    {
-      if (res_name_py)
-      {
-        found_desktop = find_desktop (TASK_ICON(icon), res_name_py);
-      }
-    }
-
     if (!found_desktop)
     {
       if (class_name && strlen (class_name))
@@ -1017,7 +1017,6 @@ on_window_opened (WnckScreen    *screen,
     g_free (class_name);
     g_free (res_name);
     g_free (cmd_basename);
-    g_free (res_name_py);
     task_icon_append_item (TASK_ICON (icon), item);
     priv->icons = g_slist_append (priv->icons, icon);
     gtk_container_add (GTK_CONTAINER (priv->box), icon);

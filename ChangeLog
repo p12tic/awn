@@ -1,6 +1,11 @@
 2009-08-01  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Strip extensions in a different location.
+	
+2009-08-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Make use of res_name in looking up desktop files.
 	If a app appends a ".py" to it's res_name (Exaile)
 	then try stripping it off.
