@@ -915,6 +915,7 @@ on_window_opened (WnckScreen    *screen,
     gchar   *cmd;
     gchar   *full_cmd;
     gchar   *cmd_basename;
+    gchar   *res_name_py;
     
     glibtop_proc_args buf;    
     cmd = glibtop_get_proc_args (&buf,wnck_window_get_pid (window),1024);    
@@ -922,16 +923,44 @@ on_window_opened (WnckScreen    *screen,
     cmd_basename = g_path_get_basename (cmd);
     
     icon = task_icon_new (AWN_APPLET (manager));
-    task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name); 
+    task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name);
+    res_name_py = g_strrstr (res_name,".py");
+    if (res_name_py)
+    {
+      res_name_py = g_strdup (res_name);
+      *g_strrstr (res_name_py,".py") = '\0';
+    }
+
 #ifdef DEBUG
       g_debug ("%s: class name  = %s, res name = %s",__func__,class_name,res_name);
 #endif      
     
-    if (class_name && strlen (class_name))
+/*
+     TODO:
+     Check for saved signature.
+*/
+
+    
+    if (res_name && strlen (res_name))
     {
-      found_desktop = find_desktop (TASK_ICON(icon), class_name);
+      found_desktop = find_desktop (TASK_ICON(icon), res_name);
     }
     
+    if (!found_desktop)
+    {
+      if (res_name_py)
+      {
+        found_desktop = find_desktop (TASK_ICON(icon), res_name_py);
+      }
+    }
+
+    if (!found_desktop)
+    {
+      if (class_name && strlen (class_name))
+      {
+        found_desktop = find_desktop (TASK_ICON(icon), class_name);
+      }
+    }    
     /*This _may_ result in unacceptable false positives.  Testing.*/
     if (!found_desktop)
     {
@@ -979,12 +1008,16 @@ on_window_opened (WnckScreen    *screen,
                                                  class_name,
                                                  wnck_window_get_name (window));
     }
-    
+/*
+     TODO
+     if found and signature has not already been saved then save it.
+*/
     g_free (full_cmd);
     g_free (cmd);     
     g_free (class_name);
     g_free (res_name);
     g_free (cmd_basename);
+    g_free (res_name_py);
     task_icon_append_item (TASK_ICON (icon), item);
     priv->icons = g_slist_append (priv->icons, icon);
     gtk_container_add (GTK_CONTAINER (priv->box), icon);
