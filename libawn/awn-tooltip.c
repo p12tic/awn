@@ -28,7 +28,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libdesktop-agnostic/color.h>
+#include <libdesktop-agnostic/desktop-agnostic.h>
 
 #include "awn-tooltip.h"
 

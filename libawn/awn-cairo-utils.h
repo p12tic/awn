@@ -30,7 +30,7 @@
 #define __AWN_CAIRO_UTILS_H__
 
 #include <cairo.h>
-#include <libdesktop-agnostic/color.h>
+#include <libdesktop-agnostic/desktop-agnostic.h>
 
 typedef enum
 {

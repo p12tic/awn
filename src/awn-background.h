@@ -25,7 +25,7 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
-#include <libdesktop-agnostic/color.h>
+#include <libdesktop-agnostic/desktop-agnostic.h>
 
 #include <libawn/awn-config-client.h>
 #include <libawn/awn-defines.h>
