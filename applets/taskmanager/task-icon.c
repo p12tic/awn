@@ -776,6 +776,11 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
 
   task_icon_refresh_visible (icon);
 
+  if ( (g_slist_length (priv->items) == 1 ) && task_icon_contains_launcher(icon))
+  {
+    awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                      AWN_EFFECT_ATTENTION); 
+  }
   if (g_slist_length (priv->items) == priv->ephemeral_count)
   {
     g_slist_foreach (priv->items,(GFunc)gtk_widget_destroy,NULL);
