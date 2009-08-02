@@ -1370,6 +1370,69 @@ task_icon_long_press (TaskIcon * icon,gpointer null)
 }
 
 
+static void
+task_icon_minimize_group(TaskIcon * icon,TaskWindow * window)
+{
+  g_return_if_fail (TASK_IS_WINDOW(window));
+  g_return_if_fail (TASK_IS_ICON(icon));
+  
+  gulong group_leader = wnck_window_get_group_leader (task_window_get_window(window));
+  WnckApplication* application=wnck_application_get (group_leader);
+  if (application)
+  {
+    GList* app_windows = wnck_application_get_windows (application);
+    GList * iter;
+    for (iter = app_windows; iter; iter = iter->next)
+    {
+      GSList * i;
+      for (i = icon->priv->items; i; i=i->next)
+      {
+        if (!TASK_IS_WINDOW (i->data) ) continue;
+        if ( iter->data == task_window_get_window(i->data))
+        {
+          wnck_window_minimize (iter->data);
+          break;
+        }
+      }
+    }      
+  }
+  else
+  {
+    wnck_window_minimize (task_window_get_window(window));
+  }
+}
+
+static void
+task_icon_restore_group(TaskIcon * icon,TaskWindow * window, guint32 timestamp)
+{
+  g_return_if_fail (TASK_IS_WINDOW(window));
+  g_return_if_fail (TASK_IS_ICON(icon));
+  
+  gulong group_leader = wnck_window_get_group_leader (task_window_get_window(window));
+  WnckApplication* application=wnck_application_get (group_leader);
+  if (application)
+  {
+    GList* app_windows = wnck_application_get_windows (application);
+    GList * iter;
+    for (iter = app_windows; iter; iter = iter->next)
+    {
+      GSList * i;
+      for (i = icon->priv->items; i; i=i->next)
+      {
+        if (!TASK_IS_WINDOW (i->data) ) continue;
+        if (i->data == window) continue;
+        
+        if ( iter->data == task_window_get_window(i->data))
+        {
+          wnck_window_unminimize  (iter->data,timestamp);
+          break;
+        }
+      }
+    }      
+  }
+  wnck_window_activate (task_window_get_window(window),timestamp);
+}
+
 void            
 task_icon_set_inhibit_focus_loss (TaskIcon *icon, gboolean val)
 {
@@ -1425,7 +1488,21 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
     if (main_item) 
     {
       /*if we have a main item then pass the click on to that */
-      task_item_left_click (main_item,event);
+      if (!TASK_IS_WINDOW(main_item))
+      {
+        task_item_left_click (main_item,event);
+      }
+      else
+      {
+        if (wnck_window_is_minimized(task_window_get_window(TASK_WINDOW(main_item))))
+        {
+          task_icon_minimize_group (icon,TASK_WINDOW(main_item));
+        }
+        else
+        {
+          task_icon_restore_group (icon,TASK_WINDOW(main_item),event->time);
+        }
+      }
     }
     else
     {
@@ -1436,8 +1513,21 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
 
         if (!task_item_is_visible (item)) continue;
         
-        task_item_left_click (item, event);
-
+        if (!TASK_IS_WINDOW(item))
+        {
+          task_item_left_click (item,event);
+        }
+        else
+        {
+          if (wnck_window_is_minimized(task_window_get_window(TASK_WINDOW(item))))
+          {
+            task_icon_minimize_group (icon,TASK_WINDOW(item));
+          }
+          else
+          {
+            task_icon_restore_group (icon,TASK_WINDOW(item),event->time);
+          }
+        }
         break;
       }
       return;
@@ -1450,15 +1540,19 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
      1) Launcher + 1 or more TaskWindow or
      2) No Launcher + 2 or more TaskWindow.
      In either case main_item Should be TaskWindow and we want to act on that.
-     */    
-    if ( task_window_is_active (TASK_WINDOW(main_item)) )
+     */  
+    if (!TASK_IS_WINDOW(main_item))
     {
-      task_window_minimize (TASK_WINDOW(main_item));
+      task_item_left_click (main_item,event);
+    }
+    else if (task_window_is_active (TASK_WINDOW(main_item)))
+    {
+      task_icon_minimize_group (icon,TASK_WINDOW(main_item));
     }
     else
     {
-      task_window_activate (TASK_WINDOW(main_item), event->time);
-    }      
+      task_icon_restore_group (icon,TASK_WINDOW(main_item),event->time);
+    }
   }  
   else if (priv->shown_items == (1 + ( task_icon_contains_launcher (icon)?1:0)))
   {
@@ -1474,15 +1568,19 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
     {
       TaskItem *item = w->data;
 
-      if (TASK_IS_WINDOW (item))
+      if (!TASK_IS_WINDOW(item))
       {
-        if ( task_window_is_active (TASK_WINDOW(item)) )
+        task_item_left_click (item,event);
+      }
+      else
+      {
+        if (wnck_window_is_minimized(task_window_get_window(TASK_WINDOW(item))))
         {
-          task_window_minimize (TASK_WINDOW(item));
+          task_icon_minimize_group (icon,TASK_WINDOW(item));
         }
         else
         {
-          task_window_activate (TASK_WINDOW(item), event->time);
+          task_icon_restore_group (icon,TASK_WINDOW(item),event->time);
         }
       }
 #ifdef DEBUG

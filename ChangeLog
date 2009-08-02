@@ -1,3 +1,10 @@
+2009-08-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	When grouping is on, minimize and restore by
+	group when TaskIcon is clicked.  This seems to be 
+	the least broken of the various options.
+
 2009-08-01  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
