@@ -126,6 +126,15 @@ static void task_manager_orient_changed (AwnApplet *applet,
 static void task_manager_size_changed   (AwnApplet *applet,
                                          gint       size);
 
+typedef enum 
+{
+  TASK_MANAGER_ERROR_UNSUPPORTED_WINDOW_TYPE,
+  TASK_MANAGER_ERROR_NO_WINDOW_MATCH
+} TaskManagerError;
+
+static GQuark task_manager_error_quark   (void);
+
+static GType task_manager_error_get_type (void);
 
 /* D&D Forwards */
 static void _drag_dest_motion (TaskManager *manager,
@@ -337,6 +346,9 @@ task_manager_class_init (TaskManagerClass *klass)
 
   dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
                                    &dbus_glib_task_manager_object_info);
+
+  dbus_g_error_domain_register (task_manager_error_quark (), NULL, 
+                                task_manager_error_get_type ());
 }
 
 static void
@@ -1428,6 +1440,39 @@ _match_xid (TaskManager *manager, gint64 window)
   return NULL;
 }
 
+static GQuark
+task_manager_error_quark (void)
+{
+  static GQuark quark = 0;
+  if (!quark)
+    quark = g_quark_from_static_string ("task_manager_error");
+  return quark;
+}
+
+static GType
+task_manager_error_get_type (void)
+{
+  static GType etype = 0;
+
+  if (!etype)
+  {
+#define ENUM_ENTRY(NAME, DESC) { NAME, "" #NAME "", DESC }
+    static const GEnumValue values[] =
+    {
+      // argh! DBus enums can't have spaces in the nick!
+      ENUM_ENTRY(TASK_MANAGER_ERROR_UNSUPPORTED_WINDOW_TYPE,
+                 "UnsupportedWindowType"),
+      ENUM_ENTRY(TASK_MANAGER_ERROR_NO_WINDOW_MATCH,
+                 "NoWindowMatch"),
+      { 0, 0, 0 }
+    };
+
+    etype = g_enum_register_static ("TaskManagerError", values);
+  }
+
+  return etype;
+}
+
 gboolean
 task_manager_update (TaskManager *manager,
                      GValue *window,
@@ -1451,7 +1496,11 @@ task_manager_update (TaskManager *manager,
   }
   else
   {
-    //G_ERROR stuff
+    g_set_error (error, 
+                 task_manager_error_quark (),
+                 TASK_MANAGER_ERROR_UNSUPPORTED_WINDOW_TYPE,
+                 "Window can be specified only by its name or XID");
+
     return FALSE;
   }
 
@@ -1543,7 +1592,10 @@ task_manager_update (TaskManager *manager,
   }
   else
   {
-    g_debug ("No matching window found to update.");
+    g_set_error (error,
+                 task_manager_error_quark (),
+                 TASK_MANAGER_ERROR_NO_WINDOW_MATCH,
+                 "No matching window found to update.");
 
     return FALSE;
   }

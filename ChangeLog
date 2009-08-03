@@ -1,3 +1,9 @@
+2009-08-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-manager-api-wrapper.c:
+	* applets/taskmanager/task-manager.c:
+	Throw errors in the new DBus API, but not in the old one.
+
 2009-08-03  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-window.c:

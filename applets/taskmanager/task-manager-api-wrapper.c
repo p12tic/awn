@@ -169,11 +169,13 @@ task_manager_api_wrapper_set_task_icon_by_name (TaskManagerApiWrapper *wrapper,
                                    &window,
                                    hints,
                                    error);
+  g_clear_error (error);
+
   g_value_unset (&window);
   g_value_unset (&value);
   g_hash_table_destroy (hints);
 
-  return succeeded;
+  return TRUE;
 }
 
 gboolean
@@ -205,11 +207,13 @@ task_manager_api_wrapper_unset_task_icon_by_name (TaskManagerApiWrapper *wrapper
                                    &window,
                                    hints,
                                    error);
+  g_clear_error (error);
+
   g_value_unset (&window);
   g_value_unset (&value);
   g_hash_table_destroy (hints);
 
-  return succeeded;
+  return TRUE;
 }
 
 gboolean
@@ -242,11 +246,13 @@ task_manager_api_wrapper_set_info_by_name (TaskManagerApiWrapper *wrapper,
                                    &window,
                                    hints,
                                    error);
+  g_clear_error (error);
+
   g_value_unset (&window);
   g_value_unset (&value);
   g_hash_table_destroy (hints);
 
-  return succeeded;
+  return TRUE;
 }
 
 gboolean
@@ -278,11 +284,13 @@ task_manager_api_wrapper_unset_info_by_name (TaskManagerApiWrapper *wrapper,
                                    &window,
                                    hints,
                                    error);
+  g_clear_error (error);
+
   g_value_unset (&window);
   g_value_unset (&value);
   g_hash_table_destroy (hints);
 
-  return succeeded;
+  return TRUE;
 }
 
 gboolean
@@ -319,11 +327,13 @@ task_manager_api_wrapper_set_progress_by_name (TaskManagerApiWrapper *wrapper,
                                    &window,
                                    hints,
                                    error);
+  g_clear_error (error);
+
   g_value_unset (&window);
   g_value_unset (&value);
   g_hash_table_destroy (hints);
 
-  return succeeded;
+  return TRUE;
 }
 
 /*     XID variants     */
@@ -358,11 +368,13 @@ task_manager_api_wrapper_set_task_icon_by_xid (TaskManagerApiWrapper *wrapper,
                                    &window,
                                    hints,
                                    error);
+  g_clear_error (error);
+
   g_value_unset (&window);
   g_value_unset (&value);
   g_hash_table_destroy (hints);
 
-  return succeeded;
+  return TRUE;
 }
 
 gboolean
@@ -394,11 +406,13 @@ task_manager_api_wrapper_unset_task_icon_by_xid (TaskManagerApiWrapper *wrapper,
                                    &window,
                                    hints,
                                    error);
+  g_clear_error (error);
+
   g_value_unset (&window);
   g_value_unset (&value);
   g_hash_table_destroy (hints);
 
-  return succeeded;
+  return TRUE;
 }
 
 gboolean
@@ -431,11 +445,13 @@ task_manager_api_wrapper_set_info_by_xid (TaskManagerApiWrapper *wrapper,
                                    &window,
                                    hints,
                                    error);
+  g_clear_error (error);
+
   g_value_unset (&window);
   g_value_unset (&value);
   g_hash_table_destroy (hints);
 
-  return succeeded;
+  return TRUE;
 }
 
 gboolean
@@ -467,11 +483,13 @@ task_manager_api_wrapper_unset_info_by_xid (TaskManagerApiWrapper *wrapper,
                                    &window,
                                    hints,
                                    error);
+  g_clear_error (error);
+
   g_value_unset (&window);
   g_value_unset (&value);
   g_hash_table_destroy (hints);
 
-  return succeeded;
+  return TRUE;
 }
 
 gboolean
@@ -508,9 +526,11 @@ task_manager_api_wrapper_set_progress_by_xid (TaskManagerApiWrapper *wrapper,
                                    &window,
                                    hints,
                                    error);
+  g_clear_error (error);
+
   g_value_unset (&window);
   g_value_unset (&value);
   g_hash_table_destroy (hints);
 
-  return succeeded;
+  return TRUE;
 }
