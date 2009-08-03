@@ -10,7 +10,7 @@ description = Show windows from all workspaces
 
 [DEFAULT/launcher_paths]
 type = list-string
-default = /usr/share/applications/evolution.desktop;/usr/share/applications/thunderbird.desktop;/usr/share/applications/firefox.desktop;/usr/share/applications/rythmbox.desktop;/usr/share/applications/banshee-1.desktop;/usr/share/applications/pidgin.desktop;/usr/share/applications/empathy.desktop
+default = /usr/share/applications/firefox.desktop;
 description = a list of paths to .desktop files from which the taskmanager should create it's launchers
 
 [DEFAULT/drag_and_drop]

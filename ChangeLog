@@ -1,5 +1,11 @@
 2009-08-02  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.schema-ini:
+	Change launcher_list default.  Needs to be changed again
+	before release.
+
+2009-08-02  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-manager.c:
 	Deal with the possibility of NULL.  
