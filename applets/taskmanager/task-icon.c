@@ -1858,12 +1858,14 @@ task_icon_get_dialog (TaskIcon *icon)
  * - code to drop things on icons
  * - code to reorder icons through dragging
  */
-
+#define DEBUG
 void
 task_icon_set_draggable (TaskIcon *icon, gboolean draggable)
 {
   TaskIconPrivate *priv;
-
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
   g_return_if_fail (TASK_IS_ICON (icon));
   priv = icon->priv;
 
@@ -1890,7 +1892,9 @@ static gboolean
 drag_timeout (TaskIcon *icon)
 {
   TaskIconPrivate *priv;
-
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
   g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
   priv = icon->priv;
 
@@ -1910,6 +1914,9 @@ task_icon_drag_data_get (GtkWidget *widget,
                          guint target_type, 
                          guint time_)
 {
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif  
   switch(target_type)
   {
     case TARGET_TASK_ICON:
@@ -1930,7 +1937,9 @@ task_icon_source_drag_begin (GtkWidget      *widget,
 {
   TaskIconPrivate *priv;
   TaskSettings *settings;
-
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
   g_return_if_fail (TASK_IS_ICON (widget));
   priv = TASK_ICON (widget)->priv;
 
@@ -1950,7 +1959,9 @@ task_icon_source_drag_end (GtkWidget      *widget,
                            GdkDragContext *drag_context)
 {
   TaskIconPrivate *priv;
-
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
   g_return_if_fail (TASK_IS_ICON (widget));
   priv = TASK_ICON (widget)->priv;
 
@@ -1966,7 +1977,9 @@ task_icon_source_drag_fail (GtkWidget      *widget,
                           GtkDragResult   result)
 {
   TaskIconPrivate *priv;
-
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
   priv = TASK_ICON (widget)->priv;
 
@@ -1992,7 +2005,9 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
   TaskIconPrivate *priv;
   GdkAtom target;
   gchar *target_name;
-
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
   priv = TASK_ICON (widget)->priv;
 
@@ -2037,7 +2052,9 @@ task_icon_dest_drag_leave (GtkWidget      *widget,
                            guint           time_)
 {
   TaskIconPrivate *priv;
-
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
   g_return_if_fail (TASK_IS_ICON (widget));
   priv = TASK_ICON (widget)->priv;
 
@@ -2068,6 +2085,9 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   gchar           *target_name;
   gchar           *sdata_data;
 
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
   g_return_if_fail (TASK_IS_ICON (widget));
   priv = TASK_ICON (widget)->priv;
 
@@ -2103,6 +2123,12 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
     /*g_signal_emit (icon, _icon_signals[DESKTOP_DROPPED],
      *               0, sdata->data);
      */
+    gchar * filename = g_strchomp (g_filename_from_uri ((gchar*)sdata->data,NULL,NULL));
+    if (filename)
+    {
+      task_manager_append_launcher (TASK_MANAGER(priv->applet),filename);
+      g_free (filename);
+    }
     gtk_drag_finish (context, TRUE, FALSE, time_);
   }
 

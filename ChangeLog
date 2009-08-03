@@ -1,3 +1,9 @@
+2009-08-03  Rodney Cryderman  <rcryderman@gmail.com>
+
+	*  applets/taskmanager/task-icon.c:
+	Initial support for drag and drop of desktop files into 
+	taskmanager.
+
 2009-08-02  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.schema-ini:
