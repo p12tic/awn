@@ -1858,7 +1858,7 @@ task_icon_get_dialog (TaskIcon *icon)
  * - code to drop things on icons
  * - code to reorder icons through dragging
  */
-#define DEBUG
+
 void
 task_icon_set_draggable (TaskIcon *icon, gboolean draggable)
 {
