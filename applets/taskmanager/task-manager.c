@@ -929,12 +929,15 @@ on_window_opened (WnckScreen    *screen,
     gchar   *class_name = NULL;
     gchar   *cmd;
     gchar   *full_cmd;
-    gchar   *cmd_basename;
+    gchar   *cmd_basename = NULL;
     
     glibtop_proc_args buf;    
     cmd = glibtop_get_proc_args (&buf,wnck_window_get_pid (window),1024);    
     full_cmd = get_full_cmd_from_pid (wnck_window_get_pid (window));
-    cmd_basename = g_path_get_basename (cmd);
+    if (cmd)
+    {
+      cmd_basename = g_path_get_basename (cmd);
+    }
     
     icon = task_icon_new (AWN_APPLET (manager));
     task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name);
@@ -947,13 +950,12 @@ on_window_opened (WnckScreen    *screen,
      TODO:
      Check for saved signature.
 */
-
     
     if (res_name && strlen (res_name))
     {
       found_desktop = find_desktop (TASK_ICON(icon), res_name);
     }
-    
+
     if (!found_desktop)
     {
       if (class_name && strlen (class_name))
@@ -991,7 +993,7 @@ on_window_opened (WnckScreen    *screen,
     {
       found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
     }
-    if (!found_desktop)
+    if (!found_desktop && cmd_basename)
     {
       found_desktop = find_desktop (TASK_ICON(icon), cmd_basename);
     }

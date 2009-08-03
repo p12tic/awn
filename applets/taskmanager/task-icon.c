@@ -24,6 +24,7 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
+#include <glib/gi18n.h>
 
 #include <libwnck/libwnck.h>
 
@@ -1766,7 +1767,7 @@ task_icon_button_press_event (GtkWidget      *widget,
         }
         if (priv->ephemeral_count == 1)
         {
-          item = gtk_menu_item_new_with_label ("Add to Launcher List");
+          item = gtk_menu_item_new_with_label (_("Add to Launcher List"));
           gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
           gtk_widget_show (item);
           g_signal_connect (item,"activate",
@@ -1774,7 +1775,7 @@ task_icon_button_press_event (GtkWidget      *widget,
                             icon);
           item = gtk_separator_menu_item_new();
           gtk_widget_show_all(item);
-          gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
+          gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
           
         }
       }
