@@ -382,7 +382,7 @@ _match (TaskItem *item,
   /*
    Check the parent PID also
    */
-  if (pid)
+/*  if (pid)
   {
     if ( buf_proc_uid.ppid == priv->pid)
     {
@@ -390,7 +390,7 @@ _match (TaskItem *item,
       goto finished;
     }
   }
-
+*/
   /*
    Does the command line of the process match exec exactly? 
    Not likely but damn likely to be the correct match if it does
