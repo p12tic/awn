@@ -1,5 +1,10 @@
 2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	The logic was the reverse of what it should have been.
+
+2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Check values for desktop lookups a bit more 
 	consistently/stringently.

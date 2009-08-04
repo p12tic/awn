@@ -1502,11 +1502,11 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
       {
         if (wnck_window_is_minimized(task_window_get_window(TASK_WINDOW(main_item))))
         {
-          task_icon_minimize_group (icon,TASK_WINDOW(main_item));
+          task_icon_restore_group (icon,TASK_WINDOW(main_item),event->time);
         }
         else
         {
-          task_icon_restore_group (icon,TASK_WINDOW(main_item),event->time);
+          task_icon_minimize_group (icon,TASK_WINDOW(main_item));
         }
       }
     }
