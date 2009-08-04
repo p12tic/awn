@@ -1,6 +1,12 @@
 2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+        The logic was the reverse of what it should have been in a 
+	couple more places...
+
+2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	The logic was the reverse of what it should have been.
 
 2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
