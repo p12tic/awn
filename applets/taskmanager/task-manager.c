@@ -72,12 +72,12 @@ struct _TaskManagerPrivate
   GHashTable *win_table;
 
   /* Properties */
-  GSList   *launcher_paths;
-  gboolean  show_all_windows;
-  gboolean  only_show_launchers;
-  gboolean  drag_and_drop;
-  gboolean  grouping;
-  gint      match_strength;
+  GValueArray *launcher_paths;
+  gboolean     show_all_windows;
+  gboolean     only_show_launchers;
+  gboolean     drag_and_drop;
+  gboolean     grouping;
+  gint         match_strength;
 };
 
 enum
@@ -111,7 +111,7 @@ static void task_manager_set_show_all_windows    (TaskManager *manager,
 static void task_manager_set_show_only_launchers (TaskManager *manager, 
                                                   gboolean     show_only);
 static void task_manager_refresh_launcher_paths  (TaskManager *manager,
-                                                  GSList      *list);
+                                                  GValueArray *list);
 static void task_manager_set_drag_and_drop (TaskManager *manager, 
                                             gboolean     drag_and_drop);
 
@@ -168,22 +168,8 @@ task_manager_get_property (GObject    *object,
       break;
 
     case PROP_LAUNCHER_PATHS:
-    {
-      GValueArray *array;
-
-      array = g_value_array_new (g_slist_length (manager->priv->launcher_paths));
-      for (GSList *n = manager->priv->launcher_paths; n != NULL; n = n->next)
-      {
-        GValue val = {0};
-
-        g_value_init (&val, G_TYPE_STRING);
-        g_value_set_string (&val, (gchar*)n->data);
-        g_value_array_append (array, &val);
-        g_value_unset (&val);
-      }
-      g_value_take_boxed (value, array);
+      g_value_set_boxed (value, manager->priv->launcher_paths);
       break;
-    }
     case PROP_DRAG_AND_DROP:
       g_value_set_boolean (value, manager->priv->drag_and_drop);
       break;
@@ -221,25 +207,15 @@ task_manager_set_property (GObject      *object,
       break;
 
     case PROP_LAUNCHER_PATHS:
-    {
-      GValueArray *array;
-      GSList *list = NULL;
-
-      array = (GValueArray*)g_value_get_boxed (value);
-      if (array)
+      if (manager->priv->launcher_paths)
       {
-        for (guint i = 0; i < array->n_values; i++)
-        {
-          GValue *val = g_value_array_get_nth (array, i);
-          list = g_slist_append (list, g_value_dup_string (val));
-        }
-        // don't free array, it will be done automatically
+        g_value_array_free (manager->priv->launcher_paths);
+        manager->priv->launcher_paths = NULL;
       }
-
-      task_manager_refresh_launcher_paths (manager, list);
-      // above function also frees list for some reason, so don't free it here.
+      manager->priv->launcher_paths = (GValueArray*)g_value_dup_boxed (value);
+      task_manager_refresh_launcher_paths (manager,
+                                           manager->priv->launcher_paths);
       break;
-    }
     case PROP_DRAG_AND_DROP:
       task_manager_set_drag_and_drop (manager, 
                                       g_value_get_boolean (value));
@@ -1162,35 +1138,19 @@ task_manager_append_launcher(TaskManager  *manager, const gchar * launcher_path)
 {
   TaskManagerPrivate *priv;
   GValueArray *launcher_paths;
-  GSList *launcher_list = NULL;
   GValue val = {0,};
   
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
 
-  /*
-   directly editing priv->launcher_paths does not work... so retrieve,
-   modify, and set
-   TODO once lda is merged have another look.
-   */
+  g_object_get (G_OBJECT (manager), "launcher_paths", &launcher_paths, NULL);
   g_value_init (&val, G_TYPE_STRING);
   g_value_set_string (&val, launcher_path);
-  launcher_paths = desktop_agnostic_config_client_get_list (priv->client,
-                                                            DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
-                                                            "launcher_paths",
-                                                            NULL);
   launcher_paths = g_value_array_append (launcher_paths, &val);
-  desktop_agnostic_config_client_set_list (priv->client,
-                                           DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
-                                           "launcher_paths", launcher_paths, NULL);
+  g_object_set (G_OBJECT (manager), "launcher_paths", launcher_paths, NULL);
   g_value_unset (&val);
-  for (guint i = 0; i < launcher_paths->n_values; i++)
-  {
-    gchar *path = g_value_dup_string (g_value_array_get_nth (launcher_paths, i));
-    launcher_list = g_slist_append (launcher_list, path);
-  }
+  task_manager_refresh_launcher_paths (manager, launcher_paths);
   g_value_array_free (launcher_paths);
-  task_manager_refresh_launcher_paths (manager, launcher_list);
 }
 
 /**
@@ -1199,93 +1159,111 @@ task_manager_append_launcher(TaskManager  *manager, const gchar * launcher_path)
  * that aren't already on the bar.
  * State: partial - TODO: refresh of a list
  */
-static void 
+static void
 task_manager_refresh_launcher_paths (TaskManager *manager,
-                                     GSList      *list)
+                                     GValueArray *list)
 {
   TaskManagerPrivate *priv;
-  GSList *d;
-  GSList *i;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
-  
+
   /* FIXME: I guess we should add something to check whether the user has
-   * removed a launcher. Make sure we don't remove a launcher which has a 
+   * removed a launcher. Make sure we don't remove a launcher which has a
    * window set, wait till the window is closed
    *
    * FIXME:  This approach just is not going to work..
-   *         IMO we should do something similar to 
+   *         IMO we should do something similar to
    *         awn_applet_manager_refresh_applets() in awn-applet-manager.c
    */
-  
-  for (d = list; d; d = d->next)
-  {  
+
+  for (guint idx = 0; idx < list->n_values; idx++)
+  {
+    gchar *path;
     gboolean found;
+
+    path = g_value_dup_string (g_value_array_get_nth (list, idx));
     found = FALSE;
-    for (i = priv->icons; i ;i = i->next)
+
+    for (GSList *icon_iter = priv->icons;
+         icon_iter != NULL;
+         icon_iter = icon_iter->next)
     {
-      TaskIcon * icon = i->data;
-      GSList   * items = task_icon_get_items (icon);
-      GSList   * item_iter;
-      for (item_iter = items; item_iter; item_iter = item_iter->next)
+      GSList *items = task_icon_get_items (TASK_ICON (icon_iter->data));
+
+      for (GSList *item_iter = items;
+           item_iter != NULL;
+           item_iter = item_iter->next)
       {
-        TaskItem * item = item_iter->data;
-        
-        if ( TASK_IS_LAUNCHER (item) )
+        TaskItem *item = item_iter->data;
+
+        if (TASK_IS_LAUNCHER (item) &&
+            g_strcmp0 (task_launcher_get_desktop_path (TASK_LAUNCHER (item)),
+                       path) == 0)
         {
-          if (g_strcmp0 (task_launcher_get_desktop_path(TASK_LAUNCHER(item)),d->data)==0)
-          {
-            found = TRUE;
-          }
+          found = TRUE;
+          break;
         }
+      }
+      if (found)
+      {
+        break;
       }
     }
     if (!found)
     {
-      TaskItem     *launcher = NULL;
-      GtkWidget     *icon;
-      
-      launcher = task_launcher_new_for_desktop_file (d->data);
+      TaskItem  *launcher = NULL;
+      GtkWidget *icon;
+
+      launcher = task_launcher_new_for_desktop_file (path);
       if (launcher)
       {
         icon = task_icon_new (AWN_APPLET (manager));
         task_icon_append_item (TASK_ICON (icon), launcher);
         gtk_container_add (GTK_CONTAINER (priv->box), icon);
-        gtk_box_reorder_child (GTK_BOX (priv->box), icon, g_slist_position (list,d));
-        priv->icons = g_slist_insert (priv->icons, icon, g_slist_position (list,d));
+        gtk_box_reorder_child (GTK_BOX (priv->box), icon, idx);
+        priv->icons = g_slist_insert (priv->icons, icon, idx);
 
         g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
-        g_signal_connect_swapped (icon, 
+        g_signal_connect_swapped (icon,
                                   "visible-changed",
-                                  G_CALLBACK (on_icon_visible_changed), 
+                                  G_CALLBACK (on_icon_visible_changed),
                                   manager);
-        g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                                  "animation-end", 
-                                  G_CALLBACK (on_icon_effects_ends), 
+        g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)),
+                                  "animation-end",
+                                  G_CALLBACK (on_icon_effects_ends),
                                   icon);
-        
+
         update_icon_visible (manager, TASK_ICON (icon));
 
         /* reordening through D&D */
-        if(priv->drag_and_drop)
-          _drag_add_signals(manager, icon);        
+        if (priv->drag_and_drop)
+        {
+          _drag_add_signals(manager, icon);
+        }
       }
       else
       {
-        g_debug ("%s: Bad desktop file '%s'",__func__,(gchar *)d->data);
+        g_debug ("%s: Bad desktop file '%s'", __func__, path);
       }
     }
+    g_free (path);
   }
 #if 0
-  for (d = list; d; d = d->next)
+  for (guint idx = 0; idx < list->n_values; idx++)
   {
-    GtkWidget     *icon;
-    TaskItem     *launcher = NULL;
+    gchar *path;
+    TaskItem  *launcher = NULL;
+    GtkWidget *icon;
 
-    launcher = task_launcher_new_for_desktop_file (d->data);
+    path = g_value_dup_string (g_value_array_get_nth (list, idx));
 
-    if (!launcher) continue;
+    launcher = task_launcher_new_for_desktop_file (path);
+
+    if (!launcher)
+    {
+      continue;
+    }
     /*Nasty... but can't just disable yet*/
     icon = task_icon_new (AWN_APPLET (manager));
     task_icon_append_item (TASK_ICON (icon), launcher);
@@ -1306,13 +1284,12 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
     update_icon_visible (manager, TASK_ICON (icon));
 
     /* reordening through D&D */
-    if(priv->drag_and_drop)
+    if (priv->drag_and_drop)
+    {
       _drag_add_signals(manager, icon);
+    }
   }
-#endif       
-  for (d = list; d; d = d->next)
-    g_free (d->data);
-  g_slist_free (list);
+#endif
 }
 
 static void

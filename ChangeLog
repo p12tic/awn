@@ -1,3 +1,9 @@
+2009-08-04  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-manager.c:
+	Convert the launcher_paths member to a GValueArray, to avoid
+	converting to and from GSList.
+
 2009-07-30  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
