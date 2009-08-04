@@ -1,3 +1,9 @@
+2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Check values for desktop lookups a bit more 
+	consistently/stringently.
+
 2009-08-04  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-manager-api-wrapper.c:

@@ -968,44 +968,35 @@ on_window_opened (WnckScreen    *screen,
       found_desktop = find_desktop (TASK_ICON(icon), res_name);
     }
 
-    if (!found_desktop)
+    if (!found_desktop && class_name && strlen (class_name))
     {
-      if (class_name && strlen (class_name))
-      {
-        found_desktop = find_desktop (TASK_ICON(icon), class_name);
-      }
+      found_desktop = find_desktop (TASK_ICON(icon), class_name);
     }    
     /*This _may_ result in unacceptable false positives.  Testing.*/
-    if (!found_desktop)
+    if (!found_desktop && full_cmd && strlen (full_cmd))
     {
       #ifdef DEBUG
       g_debug ("%s:  full cmd = '%s'",__func__,full_cmd);
       #endif
-      if (full_cmd)
-      {
-        found_desktop = find_desktop (TASK_ICON(icon), full_cmd);
-      }
+      found_desktop = find_desktop (TASK_ICON(icon), full_cmd);
     }
-    if (!found_desktop)
+    if (!found_desktop && cmd && strlen (cmd))
     {
       #ifdef DEBUG
       g_debug ("%s:  cmd = '%s'",__func__,cmd);
       #endif
-      if (cmd)
-      {
-        found_desktop = find_desktop (TASK_ICON(icon), cmd);
-      }
+      found_desktop = find_desktop (TASK_ICON(icon), cmd);
     }
     
-    if (!found_desktop)
+    if (!found_desktop && full_cmd && strlen (full_cmd) )
     {
       found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, full_cmd);
     }
-    if (!found_desktop)
+    if (!found_desktop && cmd && strlen (cmd))
     {
       found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
     }
-    if (!found_desktop && cmd_basename)
+    if (!found_desktop && cmd_basename && strlen (cmd_basename) )
     {
       found_desktop = find_desktop (TASK_ICON(icon), cmd_basename);
     }
