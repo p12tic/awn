@@ -43,7 +43,7 @@ pkgdir = $(pkgdatadir)
 
 schema_DATA = avant-window-navigator.schema-ini
 
-dist_bin_SCRIPTS = awn-schema-to-gconf awn-applets-migration
+dist_bin_SCRIPTS = awn-applets-migration
 
 # global
 

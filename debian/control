@@ -20,7 +20,6 @@ Build-Depends: 	debhelper (>= 5),
 		gtk-doc-tools, 
 		doc-base,
 		valac (>= 0.5.4),
-		python2.5 | python-lxml | python-celementtree | python-elementtree,
 		automake,
 		libdesktop-agnostic-dev,
 Standards-Version: 3.7.3

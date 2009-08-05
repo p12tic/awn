@@ -16,7 +16,7 @@ AC_CONFIG_HEADERS([config.h])
 m4_define(pycairo_required_version,      1.0.2) dnl or 1.1.7
 m4_define(pygtk_required_version,        2.12.0)
 
-AM_INIT_AUTOMAKE([1.8])
+AM_INIT_AUTOMAKE([1.8 -Wno-portability])
 AM_MAINTAINER_MODE
 
 AC_SUBST([ACLOCAL_AMFLAGS], ["\${ACLOCAL_FLAGS}"])
@@ -139,6 +139,9 @@ AC_SUBST(LIBRARY_MODULES)
 PKG_CHECK_MODULES(AWN, [$LIBRARY_MODULES])
 PKG_CHECK_MODULES(DOCK, [$DOCK_MODULES])
 PKG_CHECK_MODULES(TASKMANAGER, [$LIBRARY_MODULES $TASKMANAGER_MODULES])
+
+LDA_BINDIR="`$PKG_CONFIG --variable=exec_prefix desktop-agnostic`/bin"
+AC_SUBST(LDA_BINDIR)
 
 dnl ==============================================
 dnl DBus
