@@ -50,7 +50,7 @@ G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
   TASK_TYPE_MANAGER, \
   TaskManagerPrivate))
 
-#define DEBUG 1
+//#define DEBUG 1
 
 static GQuark win_quark = 0;
 
@@ -128,6 +128,15 @@ static void task_manager_size_changed   (AwnApplet *applet,
 
 static void task_manager_dispose (GObject *object);
 
+typedef enum 
+{
+  TASK_MANAGER_ERROR_UNSUPPORTED_WINDOW_TYPE,
+  TASK_MANAGER_ERROR_NO_WINDOW_MATCH
+} TaskManagerError;
+
+static GQuark task_manager_error_quark   (void);
+
+static GType task_manager_error_get_type (void);
 
 /* D&D Forwards */
 static void _drag_dest_motion (TaskManager *manager,
@@ -354,6 +363,9 @@ task_manager_class_init (TaskManagerClass *klass)
 
   dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
                                    &dbus_glib_task_manager_object_info);
+
+  dbus_g_error_domain_register (task_manager_error_quark (), NULL, 
+                                task_manager_error_get_type ());
 }
 
 static void
@@ -653,9 +665,23 @@ find_desktop (TaskIcon *icon, gchar * name)
   GStrv   iter;
   GStrv   tokens;
   TaskItem     *launcher = NULL;
+  gchar * name_stripped = NULL;
+  const gchar * extensions[] = { ".py",".pl",".exe",NULL};
   
   g_return_val_if_fail (name,FALSE);
-  lower = g_utf8_strdown (name, -1);
+  
+  for (iter = (GStrv)extensions; *iter; iter++)
+  {
+    if ( g_strrstr (name,*iter) )
+    {
+      name_stripped = g_strdup (name);
+      *g_strrstr (name_stripped,*iter) = '\0';
+      break;
+    }
+  }  
+  
+  lower = g_utf8_strdown (name_stripped?name_stripped:name, -1);
+  g_free (name_stripped);
 //#define DEBUG
 #ifdef DEBUG
   g_debug ("%s: name = %s",__func__,name);
@@ -738,6 +764,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   g_debug ("%s: lower = %s",__func__,lower);
 #endif      
 
+  g_return_val_if_fail (strlen (lower),FALSE);
   /*
    TODO compile the regex
    */
@@ -948,55 +975,62 @@ on_window_opened (WnckScreen    *screen,
     gchar   *class_name = NULL;
     gchar   *cmd;
     gchar   *full_cmd;
-    gchar   *cmd_basename;
+    gchar   *cmd_basename = NULL;
     
     glibtop_proc_args buf;    
     cmd = glibtop_get_proc_args (&buf,wnck_window_get_pid (window),1024);    
     full_cmd = get_full_cmd_from_pid (wnck_window_get_pid (window));
-    cmd_basename = g_path_get_basename (cmd);
+    if (cmd)
+    {
+      cmd_basename = g_path_get_basename (cmd);
+    }
     
     icon = task_icon_new (AWN_APPLET (manager));
-    task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name); 
+    task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name);
+
 #ifdef DEBUG
       g_debug ("%s: class name  = %s, res name = %s",__func__,class_name,res_name);
 #endif      
     
-    if (class_name && strlen (class_name))
+/*
+     TODO:
+     Check for saved signature.
+*/
+    
+    if (res_name && strlen (res_name))
+    {
+      found_desktop = find_desktop (TASK_ICON(icon), res_name);
+    }
+
+    if (!found_desktop && class_name && strlen (class_name))
     {
       found_desktop = find_desktop (TASK_ICON(icon), class_name);
-    }
-    
+    }    
     /*This _may_ result in unacceptable false positives.  Testing.*/
-    if (!found_desktop)
+    if (!found_desktop && full_cmd && strlen (full_cmd))
     {
       #ifdef DEBUG
       g_debug ("%s:  full cmd = '%s'",__func__,full_cmd);
       #endif
-      if (full_cmd)
-      {
-        found_desktop = find_desktop (TASK_ICON(icon), full_cmd);
-      }
+      found_desktop = find_desktop (TASK_ICON(icon), full_cmd);
     }
-    if (!found_desktop)
+    if (!found_desktop && cmd && strlen (cmd))
     {
       #ifdef DEBUG
       g_debug ("%s:  cmd = '%s'",__func__,cmd);
       #endif
-      if (cmd)
-      {
-        found_desktop = find_desktop (TASK_ICON(icon), cmd);
-      }
+      found_desktop = find_desktop (TASK_ICON(icon), cmd);
     }
     
-    if (!found_desktop)
+    if (!found_desktop && full_cmd && strlen (full_cmd) )
     {
       found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, full_cmd);
     }
-    if (!found_desktop)
+    if (!found_desktop && cmd && strlen (cmd))
     {
       found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
     }
-    if (!found_desktop)
+    if (!found_desktop && cmd_basename && strlen (cmd_basename) )
     {
       found_desktop = find_desktop (TASK_ICON(icon), cmd_basename);
     }
@@ -1013,7 +1047,10 @@ on_window_opened (WnckScreen    *screen,
                                                  class_name,
                                                  wnck_window_get_name (window));
     }
-    
+/*
+     TODO
+     if found and signature has not already been saved then save it.
+*/
     g_free (full_cmd);
     g_free (cmd);     
     g_free (class_name);
@@ -1438,6 +1475,39 @@ _match_xid (TaskManager *manager, gint64 window)
   return NULL;
 }
 
+static GQuark
+task_manager_error_quark (void)
+{
+  static GQuark quark = 0;
+  if (!quark)
+    quark = g_quark_from_static_string ("task_manager_error");
+  return quark;
+}
+
+static GType
+task_manager_error_get_type (void)
+{
+  static GType etype = 0;
+
+  if (!etype)
+  {
+#define ENUM_ENTRY(NAME, DESC) { NAME, "" #NAME "", DESC }
+    static const GEnumValue values[] =
+    {
+      // argh! DBus enums can't have spaces in the nick!
+      ENUM_ENTRY(TASK_MANAGER_ERROR_UNSUPPORTED_WINDOW_TYPE,
+                 "UnsupportedWindowType"),
+      ENUM_ENTRY(TASK_MANAGER_ERROR_NO_WINDOW_MATCH,
+                 "NoWindowMatch"),
+      { 0, 0, 0 }
+    };
+
+    etype = g_enum_register_static ("TaskManagerError", values);
+  }
+
+  return etype;
+}
+
 gboolean
 task_manager_update (TaskManager *manager,
                      GValue *window,
@@ -1461,7 +1531,11 @@ task_manager_update (TaskManager *manager,
   }
   else
   {
-    //G_ERROR stuff
+    g_set_error (error, 
+                 task_manager_error_quark (),
+                 TASK_MANAGER_ERROR_UNSUPPORTED_WINDOW_TYPE,
+                 "Window can be specified only by its name or XID");
+
     return FALSE;
   }
 
@@ -1553,7 +1627,10 @@ task_manager_update (TaskManager *manager,
   }
   else
   {
-    g_debug ("No matching window found to update.");
+    g_set_error (error,
+                 task_manager_error_quark (),
+                 TASK_MANAGER_ERROR_NO_WINDOW_MATCH,
+                 "No matching window found to update.");
 
     return FALSE;
   }

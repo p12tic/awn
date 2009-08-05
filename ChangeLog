@@ -4,6 +4,90 @@
 	Convert the launcher_paths member to a GValueArray, to avoid
 	converting to and from GSList.
 
+2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+        The logic was the reverse of what it should have been in a 
+	couple more places...
+
+2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	The logic was the reverse of what it should have been.
+
+2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Check values for desktop lookups a bit more 
+	consistently/stringently.
+
+2009-08-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-manager-api-wrapper.c:
+	* applets/taskmanager/task-manager.c:
+	Throw errors in the new DBus API, but not in the old one.
+
+2009-08-03  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	Removed check for PPID when matching.
+
+2009-08-03  Rodney Cryderman  <rcryderman@gmail.com>
+
+	*  applets/taskmanager/task-icon.c:
+	Disable debugs.
+
+2009-08-03  Rodney Cryderman  <rcryderman@gmail.com>
+
+	*  applets/taskmanager/task-icon.c:
+	Initial support for drag and drop of desktop files into 
+	taskmanager.
+
+2009-08-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.schema-ini:
+	Change launcher_list default.  Needs to be changed again
+	before release.
+
+2009-08-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+	Deal with the possibility of NULL.  
+
+2009-08-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Stop animations when a launcher has not TaskWindows.
+
+2009-08-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	When grouping is on, minimize and restore by
+	group when TaskIcon is clicked.  This seems to be 
+	the least broken of the various options.
+
+2009-08-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Strip extensions in a different location.
+	
+2009-08-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Make use of res_name in looking up desktop files.
+	If a app appends a ".py" to it's res_name (Exaile)
+	then try stripping it off.
+
+2009-07-31  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-dialog.c:
+	* libawn/awn-tooltip.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	Fix the libdesktop-agnostic header name.
+
 2009-07-30  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
