@@ -1574,20 +1574,15 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
     {
       TaskItem *item = w->data;
 
-      if (!TASK_IS_WINDOW(item))
+      if (TASK_IS_LAUNCHER (item) ) continue;
+      
+      if (wnck_window_is_minimized(task_window_get_window(TASK_WINDOW(item))))
       {
-        task_item_left_click (item,event);
+        task_icon_restore_group (icon,TASK_WINDOW(item),event->time);
       }
       else
       {
-        if (wnck_window_is_minimized(task_window_get_window(TASK_WINDOW(item))))
-        {
-          task_icon_restore_group (icon,TASK_WINDOW(item),event->time);
-        }
-        else
-        {
-          task_icon_minimize_group (icon,TASK_WINDOW(item));          
-        }
+        task_icon_minimize_group (icon,TASK_WINDOW(item));          
       }
 #ifdef DEBUG
       g_debug ("clicked on: %s", task_item_get_name (item));

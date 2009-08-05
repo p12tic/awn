@@ -1,5 +1,11 @@
 2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	When we're dealing with a single TaskWindow and non-group, make
+	sure we ignore the Launcher when TaskIcon is clicked.
+
+2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Search */applications/ subdirectories for desktop files also
 	
