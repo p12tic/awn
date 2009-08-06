@@ -102,6 +102,7 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {".*system-config-printer.*applet.*py.*",".*Applet.*py.*",".*applet.*",".*Print.*Status.*","redhat-manage-print-jobs"},  
   {".*amsn","Amsn","amsn",".*aMSN.*","amsn"},
   {NULL,"Chatwindow","container.*",".*Buddies.*Chat.*","amsn"},
+  {".*linuxdcpp","Linuxdcpp","linuxdcpp","LinuxDC\\+\\+","dc++"},    
   {NULL,NULL,NULL,NULL,NULL}
 };
 
