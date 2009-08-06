@@ -1,6 +1,12 @@
 2009-08-06  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:
+        Special case desktop file lookup for Mozilla-Thunderbird.  May revisit
+	this issue if there enough problem cases due to an appended "-bin"
+
+2009-08-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
 	Special case desktop file lookup for linuxdcpp.
 
 2009-08-06  Rodney Cryderman  <rcryderman@gmail.com>
