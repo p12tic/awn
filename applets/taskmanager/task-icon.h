@@ -103,6 +103,8 @@ GtkWidget *     task_icon_get_dialog        (TaskIcon     *icon);
 
 void            task_icon_set_inhibit_focus_loss (TaskIcon *icon, gboolean val);
 
+void            task_icon_schedule_geometry_refresh (TaskIcon *icon);
+
 
 #endif /* _TASK_ICON_H_ */
 

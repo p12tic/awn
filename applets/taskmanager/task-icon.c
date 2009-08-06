@@ -199,7 +199,10 @@ static void      task_icon_dest_drag_data_received  (GtkWidget      *widget,
                                                      guint           info,
                                                      guint           time);
 
-static gboolean _update_geometry(GtkWidget *widget);
+static void     task_icon_size_allocate             (TaskIcon *icon, 
+                                                     GtkAllocation *alloc,
+                                                     gpointer user_data);
+
 static gboolean task_icon_refresh_geometry (TaskIcon *icon);
 static void     task_icon_refresh_visible  (TaskIcon *icon);
 static void     task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item);
@@ -319,13 +322,13 @@ task_icon_finalize (GObject *object)
     g_slist_free (priv->items);
     priv->items = NULL;
   }
-  if(priv->update_geometry_id)
+  if (priv->update_geometry_id)
   {
-    g_source_remove(priv->update_geometry_id);
+    g_source_remove (priv->update_geometry_id);
   }
-  g_signal_handlers_disconnect_by_func(wnck_screen_get_default (), 
-                                       G_CALLBACK (task_icon_active_window_changed), 
-                                       object);
+
+  g_signal_handlers_disconnect_by_func (wnck_screen_get_default (),
+                          G_CALLBACK (task_icon_active_window_changed), object);
 
   G_OBJECT_CLASS (task_icon_parent_class)->finalize (object);
 }
@@ -373,8 +376,8 @@ task_icon_constructed (GObject *object)
                      G_CALLBACK (task_icon_active_window_changed), 
                      object);
 
-  //update geometry of icon every second.
-  priv->update_geometry_id = g_timeout_add_seconds (1, (GSourceFunc)_update_geometry, widget);
+  g_signal_connect (G_OBJECT (widget), "size-allocate",
+                    G_CALLBACK (task_icon_size_allocate), NULL);
 
   priv->client = awn_config_get_default_for_applet (priv->applet, &error);
 
@@ -405,42 +408,16 @@ task_icon_constructed (GObject *object)
   }
 }
 
-/**
- * Checks if the position of the widget has changed.
- * Upon change it asks the icon to refresh.
- * returns: TRUE when succeeds
- *          FALSE when widget isn't an icon
- */
-static gboolean 
-_update_geometry(GtkWidget *widget)
+static void
+task_icon_size_allocate (TaskIcon *icon, GtkAllocation *alloc,
+                         gpointer user_data)
 {
-  return TRUE; //TODO solve
-  
-  gint x,y;
-  TaskIconPrivate *priv;
-  GdkWindow *win;
-
-  g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
-
-  priv = TASK_ICON (widget)->priv;
-
-  win = gtk_widget_get_window (widget);
-  gdk_window_get_origin (win, &x, &y);
-
-  if(priv->old_x != x || priv->old_y != y)
-  {
-    priv->old_x = x;
-    priv->old_y = y;
-    task_icon_refresh_geometry (TASK_ICON (widget));
-  }
-
-  return TRUE;
+  task_icon_schedule_geometry_refresh (icon);
 }
 
 /**
  * Set the icon geometry of the windows in a task-icon.
  * This equals to the minimize position of the window.
- * TODO: not done (part2)
  */
 static gboolean
 task_icon_refresh_geometry (TaskIcon *icon)
@@ -457,6 +434,10 @@ task_icon_refresh_geometry (TaskIcon *icon)
 
   priv = icon->priv;
   widget = GTK_WIDGET (icon);
+
+  priv->update_geometry_id = 0;
+
+  if (!GTK_WIDGET_DRAWABLE (widget)) return FALSE;
 
   //get the position of the widget
   win = gtk_widget_get_window (widget);
@@ -518,6 +499,20 @@ task_icon_refresh_geometry (TaskIcon *icon)
     }
   }
   return FALSE;
+}
+
+void
+task_icon_schedule_geometry_refresh (TaskIcon *icon)
+{
+  g_return_if_fail (TASK_IS_ICON (icon));
+
+  TaskIconPrivate *priv = icon->priv;
+
+  if (priv->update_geometry_id == 0)
+  {
+    GSourceFunc func = (GSourceFunc)task_icon_refresh_geometry;
+    priv->update_geometry_id = g_idle_add (func, icon);
+  }
 }
 
 static void
@@ -1321,6 +1316,8 @@ task_icon_append_item (TaskIcon      *icon,
                       G_CALLBACK (on_window_needs_attention_changed), icon);
     g_signal_connect (window, "progress-changed",
                       G_CALLBACK (on_window_progress_changed), icon);
+
+    task_icon_schedule_geometry_refresh (icon);
   }
   task_icon_search_main_item (icon,item);
 }

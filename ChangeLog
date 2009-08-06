@@ -1,3 +1,10 @@
+2009-08-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+	* applets/taskmanager/task-manager.c:
+	Fix up the icon geometry setting.
+
 2009-08-06  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* bindings/python/Makefile.am:

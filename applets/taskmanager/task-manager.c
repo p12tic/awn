@@ -125,6 +125,9 @@ static void task_manager_orient_changed (AwnApplet *applet,
                                          AwnOrientation orient);
 static void task_manager_size_changed   (AwnApplet *applet,
                                          gint       size);
+static void task_manager_origin_changed (AwnApplet *applet,
+                                         GdkRectangle  *rect,
+                                         gpointer       data);
 
 static void task_manager_dispose (GObject *object);
 
@@ -402,6 +405,10 @@ task_manager_init (TaskManager *manager)
                     G_CALLBACK (on_window_opened), manager);
   g_signal_connect (priv->screen, "active-window-changed",  
                     G_CALLBACK (on_active_window_changed), manager);
+
+  /* connect to our origin-changed signal for updating icon geometry */
+  g_signal_connect (manager, "origin-changed",
+                    G_CALLBACK (task_manager_origin_changed), NULL);
 }
 
 AwnApplet *
@@ -461,6 +468,30 @@ task_manager_size_changed   (AwnApplet *applet,
   }
 
   task_drag_indicator_refresh (priv->drag_indicator);
+}
+
+static void task_manager_origin_changed (AwnApplet *applet,
+                                         GdkRectangle  *rect,
+                                         gpointer       data)
+{
+  TaskManagerPrivate *priv;
+  GSList *i;
+
+  g_return_if_fail (TASK_IS_MANAGER (applet));
+  priv = TASK_MANAGER (applet)->priv;
+
+  // our origin changed, we need to update icon geometries
+#ifdef DEBUG
+  g_debug ("Got origin-changed, updating icon geometries...");
+#endif
+
+  for (i = priv->icons; i; i = i->next)
+  {
+    TaskIcon *icon = i->data;
+
+    if (TASK_IS_ICON (icon))
+      task_icon_schedule_geometry_refresh (icon);
+  }
 }
 
 static void
