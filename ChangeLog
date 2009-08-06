@@ -1,3 +1,9 @@
+2009-08-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	On TaskIcon click... Better to check if active (and then do a minimize)
+	first instead of checking if minimized (and then do a restore).
+
 2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
