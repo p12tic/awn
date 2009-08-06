@@ -241,7 +241,7 @@ awn_cairo_set_source_color (cairo_t              *cr,
                          desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
                          desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
                          desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
-                         color->alpha / AWN_RGBA_SCALE_FACTOR);
+                         desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR);
 }
 
 void
@@ -256,7 +256,7 @@ awn_cairo_set_source_color_with_alpha_multiplier (cairo_t              *cr,
                          desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
                          desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
                          desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
-                         color->alpha / AWN_RGBA_SCALE_FACTOR * multiplier);
+                         desktop_agnostic_color_get_alpha (color) / AWN_RGBA_SCALE_FACTOR * multiplier);
 }
 
 void
@@ -271,7 +271,7 @@ awn_cairo_set_source_color_with_multipliers (cairo_t              *cr,
                          desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR * color_multiplier,
                          desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR * color_multiplier,
                          desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR * color_multiplier,
-                         color->alpha / AWN_RGBA_SCALE_FACTOR * alpha_multiplier);
+                         desktop_agnostic_color_get_alpha (color) / AWN_RGBA_SCALE_FACTOR * alpha_multiplier);
 }
 
 void
@@ -285,7 +285,7 @@ awn_cairo_pattern_add_color_stop_color (cairo_pattern_t      *pattern,
                                      desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
                                      desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
                                      desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
-                                     color->alpha / AWN_RGBA_SCALE_FACTOR);
+                                     desktop_agnostic_color_get_alpha (color) / AWN_RGBA_SCALE_FACTOR);
 }
 
 void
@@ -301,7 +301,7 @@ awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier (cairo_pattern_t   
                                      desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
                                      desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
                                      desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
-                                     color->alpha / AWN_RGBA_SCALE_FACTOR * multiplier);
+                                     desktop_agnostic_color_get_alpha (color) / AWN_RGBA_SCALE_FACTOR * multiplier);
 }
 
 /* vim: set et ts=2 sts=2 sw=2 ai cindent : */
