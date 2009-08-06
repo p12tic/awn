@@ -1,3 +1,8 @@
+2009-08-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-settings.c (cfg_load_int):
+	Update due to a change in the libdesktop-agnostic config API.
+
 2009-08-06  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-cairo-utils.c:

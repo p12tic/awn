@@ -39,10 +39,10 @@ cfg_load_int (DesktopAgnosticConfigClient *cfg,
               const gchar                 *key,
               gint                        *data)
 {
-  /* FIXME handle error */
+  /* FIXME handle errors */
   *data = desktop_agnostic_config_client_get_int (cfg, group, key, NULL);
   desktop_agnostic_config_client_notify_add (cfg, group, key,
-                                             cfg_notify_int, data);
+                                             cfg_notify_int, data, NULL);
 }
 
 /**
