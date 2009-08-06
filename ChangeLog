@@ -1,6 +1,11 @@
 2009-08-06  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-cairo-utils.c:
+	Fix typo.
+
+2009-08-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-cairo-utils.c:
 	Fix DaColor usage to work with latest versions of LDA.
 
 2009-08-06  Rodney Cryderman  <rcryderman@gmail.com>

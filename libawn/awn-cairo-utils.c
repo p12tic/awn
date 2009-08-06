@@ -241,7 +241,7 @@ awn_cairo_set_source_color (cairo_t              *cr,
                          desktop_agnostic_color_get_red (color) / AWN_RGBA_SCALE_FACTOR,
                          desktop_agnostic_color_get_green (color) / AWN_RGBA_SCALE_FACTOR,
                          desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR,
-                         desktop_agnostic_color_get_blue (color) / AWN_RGBA_SCALE_FACTOR);
+                         desktop_agnostic_color_get_alpha (color) / AWN_RGBA_SCALE_FACTOR);
 }
 
 void
