@@ -1,3 +1,30 @@
+2009-08-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-cairo-utils.c:
+	Fix typo.
+
+2009-08-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-cairo-utils.c:
+	Fix DaColor usage to work with latest versions of LDA.
+
+2009-08-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+        Special case desktop file lookup for Mozilla-Thunderbird.  May revisit
+	this issue if there enough problem cases due to an appended "-bin"
+
+2009-08-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Special case desktop file lookup for linuxdcpp.
+
+2009-08-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	On TaskIcon click... Better to check if active (and then do a minimize)
+	first instead of checking if minimized (and then do a restore).
+
 2009-08-05  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* Makefile.schemas:
@@ -15,6 +42,17 @@
 	Convert the launcher_paths member to a GValueArray, to avoid
 	converting to and from GSList.
 
+2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	When we're dealing with a single TaskWindow and non-group, make
+	sure we ignore the Launcher when TaskIcon is clicked.
+
+2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Search */applications/ subdirectories for desktop files also
+	
 2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

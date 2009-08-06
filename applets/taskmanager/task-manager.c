@@ -655,6 +655,55 @@ icon_closed (TaskManager *manager, GObject *old_icon)
   priv->icons = g_slist_remove (priv->icons, old_icon);
 }
 
+static gboolean
+task_icon_check_system_dir_for_desktop (TaskIcon *icon,
+                                        gchar * system_dir, 
+                                        gchar * name)
+{
+  gchar * desktop;
+  TaskItem     *launcher = NULL;
+  GDir      * dir;
+  desktop = g_strdup_printf ("%s%s.desktop",system_dir,name);
+#define DEBUG
+#ifdef DEBUG
+  g_debug ("%s: desktop = %s",__func__,desktop);
+#endif      
+  launcher = task_launcher_new_for_desktop_file (desktop);
+  if (launcher)
+  {
+#ifdef DEBUG
+    g_debug ("launcher %p",launcher);
+#endif
+    task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+    g_free (desktop);
+    return TRUE;
+  }
+  g_free (desktop);
+  
+  dir = g_dir_open (system_dir,0,NULL);
+  if (dir)
+  {
+    const char * fname;
+    while ( (fname = g_dir_read_name (dir)))
+    {
+//      g_debug ("fname = %s",fname);
+      gchar * new_path = g_strdup_printf ("%s%s/",system_dir,fname);      
+      if ( g_file_test (new_path,G_FILE_TEST_IS_DIR) )
+      {
+        g_debug (" dir name = %s",fname);        
+        if (task_icon_check_system_dir_for_desktop (icon,new_path,name))
+        {
+          g_free (new_path);
+          g_dir_close (dir);
+          return TRUE;
+        }
+      }
+      g_free (new_path);
+    }
+    g_dir_close (dir);    
+  }
+  return FALSE;
+}
 
 static gboolean
 find_desktop (TaskIcon *icon, gchar * name)
@@ -687,25 +736,17 @@ find_desktop (TaskIcon *icon, gchar * name)
   g_debug ("%s: name = %s",__func__,name);
   g_debug ("%s: lower = %s",__func__,lower);
 #endif      
-  
+
   for (iter = (GStrv)system_dirs; *iter; iter++)
   {
-    desktop = g_strdup_printf ("%sapplications/%s.desktop",*iter,lower);
-#ifdef DEBUG
-    g_debug ("%s: desktop = %s",__func__,desktop);
-#endif      
-    launcher = task_launcher_new_for_desktop_file (desktop);
-    if (launcher)
+    gchar * applications_dir = g_strdup_printf ("%s/applications/",*iter);
+    if (task_icon_check_system_dir_for_desktop (icon,applications_dir,lower) )
     {
-#ifdef DEBUG
-      g_debug ("launcher %p",launcher);
-#endif
-      task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
       g_free (lower);
-      g_free (desktop);
+      g_free (applications_dir);
       return TRUE;
     }
-    g_free (desktop);
+    g_free (applications_dir);
   }
   if (!launcher)
   {

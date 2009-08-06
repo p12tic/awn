@@ -1534,13 +1534,13 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
       }
       else
       {
-        if (wnck_window_is_minimized(task_window_get_window(TASK_WINDOW(main_item))))
+        if (task_window_is_active (TASK_WINDOW(main_item)))
         {
-          task_icon_restore_group (icon,TASK_WINDOW(main_item),event->time);
+          task_icon_minimize_group (icon,TASK_WINDOW(main_item));
         }
         else
         {
-          task_icon_minimize_group (icon,TASK_WINDOW(main_item));
+          task_icon_restore_group (icon,TASK_WINDOW(main_item),event->time);
         }
       }
     }
@@ -1559,13 +1559,13 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
         }
         else
         {
-          if (wnck_window_is_minimized(task_window_get_window(TASK_WINDOW(item))))
+          if (task_window_is_active (TASK_WINDOW(main_item)))
           {
-            task_icon_restore_group (icon,TASK_WINDOW(item),event->time);
+            task_icon_minimize_group (icon,TASK_WINDOW(item));            
           }
           else
           {
-             task_icon_minimize_group (icon,TASK_WINDOW(item));
+            task_icon_restore_group (icon,TASK_WINDOW(item),event->time);
           }
         }
         break;
@@ -1608,20 +1608,15 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
     {
       TaskItem *item = w->data;
 
-      if (!TASK_IS_WINDOW(item))
+      if (TASK_IS_LAUNCHER (item) ) continue;
+      
+      if (task_window_is_active (TASK_WINDOW(main_item)))
       {
-        task_item_left_click (item,event);
+        task_icon_minimize_group (icon,TASK_WINDOW(item));        
       }
       else
       {
-        if (wnck_window_is_minimized(task_window_get_window(TASK_WINDOW(item))))
-        {
-          task_icon_restore_group (icon,TASK_WINDOW(item),event->time);
-        }
-        else
-        {
-          task_icon_minimize_group (icon,TASK_WINDOW(item));          
-        }
+        task_icon_restore_group (icon,TASK_WINDOW(item),event->time);
       }
 #ifdef DEBUG
       g_debug ("clicked on: %s", task_item_get_name (item));
