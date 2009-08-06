@@ -18,9 +18,9 @@
 #define __TASK_MANAGER_UTIL_H__
 
 #include <libawn/libawn.h>
-#include <libdesktop-agnostic/desktop-entry.h>
+#include <libdesktop-agnostic/fdo.h>
 
-gchar * get_special_id_from_desktop (DesktopAgnosticDesktopEntryBackend *entry);
+gchar * get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry *entry);
 
 gchar * get_special_id_from_window_data (gchar * cmd, gchar *res_name, 
                                       gchar * class_name,const gchar *title);

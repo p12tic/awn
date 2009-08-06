@@ -836,10 +836,10 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
 #endif       
           // TODO handle GErrors
           DesktopAgnosticVFSFile *file = desktop_agnostic_vfs_file_new_for_path (full_path, NULL);
-          DesktopAgnosticDesktopEntryBackend * desktop = desktop_agnostic_desktop_entry_new_for_file (file, NULL);
+          DesktopAgnosticFDODesktopEntry * desktop = desktop_agnostic_fdo_desktop_entry_new_for_file (file, NULL);
           if (desktop)
           {
-            gchar * exec = desktop_agnostic_desktop_entry_backend_get_string (desktop, "Exec");
+            gchar * exec = desktop_agnostic_fdo_desktop_entry_get_string (desktop, "Exec");
             g_object_unref (desktop);
 #ifdef DEBUG
             g_debug ("%s:  exec =   %s",__func__,exec);

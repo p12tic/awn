@@ -27,7 +27,7 @@
 
 #include <libawn/awn-defines.h>
 #include <libawn/awn-applet.h>
-#include <libdesktop-agnostic/desktop-entry.h>
+#include <libdesktop-agnostic/fdo.h>
 
 /* Forwards */
 GtkWidget *
@@ -99,7 +99,7 @@ main(gint argc, gchar **argv)
   GError *error = NULL;
   GOptionContext *context;
   DesktopAgnosticVFSFile *desktop_file = NULL;
-  DesktopAgnosticDesktopEntryBackend *entry = NULL;
+  DesktopAgnosticFDODesktopEntry *entry = NULL;
   GtkWidget *applet = NULL;
   const gchar *exec;
   const gchar *name;
@@ -153,7 +153,7 @@ main(gint argc, gchar **argv)
     return 1;
   }
 
-  entry = desktop_agnostic_desktop_entry_new_for_file (desktop_file, &error);
+  entry = desktop_agnostic_fdo_desktop_entry_new_for_file (desktop_file, &error);
 
   if (error)
   {
@@ -171,7 +171,7 @@ main(gint argc, gchar **argv)
   /* Now we have the file, lets see if we can
           a) load the dynamic library it points to
           b) Find the correct function within that library */
-  exec = desktop_agnostic_desktop_entry_backend_get_string (entry, "Exec");
+  exec = desktop_agnostic_fdo_desktop_entry_get_string (entry, "Exec");
 
   if (exec == NULL)
   {
@@ -179,10 +179,10 @@ main(gint argc, gchar **argv)
     return 1;
   }
 
-  name = desktop_agnostic_desktop_entry_backend_get_name (entry);
+  name = desktop_agnostic_fdo_desktop_entry_get_name (entry);
 
   /* Check if this is a Python applet */
-  type = desktop_agnostic_desktop_entry_backend_get_string (entry, "X-AWN-AppletType");
+  type = desktop_agnostic_fdo_desktop_entry_get_string (entry, "X-AWN-AppletType");
 
   if (!type)
   {

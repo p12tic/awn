@@ -27,7 +27,7 @@
 #include <libwnck/libwnck.h>
 #include <glib/gi18n.h>
 
-#include <libdesktop-agnostic/desktop-entry.h>
+#include <libdesktop-agnostic/fdo.h>
 #undef G_DISABLE_SINGLE_INCLUDES
 #include <glibtop/procargs.h>
 #include <glibtop/procuid.h>
@@ -50,7 +50,7 @@ G_DEFINE_TYPE (TaskLauncher, task_launcher, TASK_TYPE_ITEM)
 struct _TaskLauncherPrivate
 {
   gchar *path;
-  DesktopAgnosticDesktopEntryBackend *entry;
+  DesktopAgnosticFDODesktopEntry *entry;
 
   const gchar *name;
   const gchar *exec;
@@ -239,7 +239,7 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
     return;
   }
 
-  priv->entry = desktop_agnostic_desktop_entry_new_for_file (file, &error);
+  priv->entry = desktop_agnostic_fdo_desktop_entry_new_for_file (file, &error);
 
   if (error)
   {
@@ -254,11 +254,11 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   }
 
   priv->special_id = get_special_id_from_desktop(priv->entry);
-  priv->name = desktop_agnostic_desktop_entry_backend_get_name (priv->entry);
+  priv->name = desktop_agnostic_fdo_desktop_entry_get_name (priv->entry);
 
-  priv->exec = g_strstrip (desktop_agnostic_desktop_entry_backend_get_string (priv->entry, "Exec"));
+  priv->exec = g_strstrip (desktop_agnostic_fdo_desktop_entry_get_string (priv->entry, "Exec"));
   
-  priv->icon_name = desktop_agnostic_desktop_entry_backend_get_icon (priv->entry);
+  priv->icon_name = desktop_agnostic_fdo_desktop_entry_get_icon (priv->entry);
 
   task_item_emit_name_changed (TASK_ITEM (launcher), priv->name);
   pixbuf = _get_icon (TASK_ITEM (launcher));
@@ -501,7 +501,7 @@ _match (TaskItem *item,
       /* is the launcher pid set?*/
       if (priv->pid)
       {
-        gchar *name = desktop_agnostic_desktop_entry_backend_get_name (priv->entry);
+        gchar *name = desktop_agnostic_fdo_desktop_entry_get_name (priv->entry);
         GStrv tokens = g_strsplit (name, " ",-1);
         if (tokens && tokens[0] && (strlen (tokens[0])>5) )
         {
@@ -548,8 +548,8 @@ _left_click (TaskItem *item, GdkEventButton *event)
   priv = launcher->priv;
 
   priv->pid = 
-    desktop_agnostic_desktop_entry_backend_launch (priv->entry,
-                                                   0, NULL, &error);
+    desktop_agnostic_fdo_desktop_entry_launch (priv->entry,
+                                               0, NULL, &error);
   g_get_current_time (&timeval);
   priv->timestamp = timeval.tv_sec;
 
@@ -615,8 +615,8 @@ _middle_click (TaskItem *item, GdkEventButton *event)
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
 
-  priv->pid = desktop_agnostic_desktop_entry_backend_launch (priv->entry, 0,
-                                                             NULL, &error);
+  priv->pid = desktop_agnostic_fdo_desktop_entry_launch (priv->entry, 0,
+                                                         NULL, &error);
 
   if (error)
   {
@@ -639,8 +639,8 @@ task_launcher_launch_with_data (TaskLauncher *launcher,
   g_return_if_fail (TASK_IS_LAUNCHER (launcher));
 
   launcher->priv->pid =
-    desktop_agnostic_desktop_entry_backend_launch (launcher->priv->entry,
-                                                   0, list, &error);
+    desktop_agnostic_fdo_desktop_entry_launch (launcher->priv->entry,
+                                               0, list, &error);
 
   if (error)
   {
