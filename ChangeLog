@@ -1,5 +1,14 @@
 2009-08-06  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/python/Makefile.am:
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* configure.in:
+	Add/fix Python bindings with regards to functions which depend on the
+	libdesktop-agnostic Python bindings.
+
+2009-08-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/taskmanager/task-launcher.c:
 	* applets/taskmanager/task-manager.c:
 	* applets/taskmanager/util.c:

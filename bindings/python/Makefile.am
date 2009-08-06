@@ -38,6 +38,7 @@ awn_la_LIBADD = \
 	$(PYTHON_EXTRA_LDFLAGS) \
 	$(PYGTK_LIBS) \
 	$(PYCAIRO_LIBS) \
+	$(AWN_LIBS) \
 	$(top_builddir)/libawn/libawn.la \
 	$(NULL)
 
@@ -54,6 +55,8 @@ defs_DATA = $(AWN_DEFS)
 	    --py_ssize_t-clean \
 	    --register $(PYGTK_DEFSDIR)/gdk-types.defs \
 	    --register $(PYGTK_DEFSDIR)/gtk-types.defs \
+	    --register $(LDA_DEFSDIR)/desktopagnostic.defs \
+	    --register $(LDA_DEFSDIR)/desktopagnostic_config.defs \
 	--override $(srcdir)/$*.override \
 	    --prefix py$* $<) > gen-$*.c \
 	&& cp -f gen-$*.c $*.c \

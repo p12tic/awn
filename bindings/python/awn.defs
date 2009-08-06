@@ -529,6 +529,67 @@
   )
 )
 
+(define-function awn_cairo_set_source_color
+  (c-name "awn_cairo_set_source_color")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+    '("DesktopAgnosticColor*" "color")
+  )
+)
+
+(define-function awn_cairo_set_source_color_with_alpha_multiplier
+  (c-name "awn_cairo_set_source_color_with_alpha_multiplier")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+    '("DesktopAgnosticColor*" "color")
+    '("gdouble" "multiplier")
+  )
+)
+
+(define-function awn_cairo_set_source_color_with_multipliers
+  (c-name "awn_cairo_set_source_color_with_multipliers")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+    '("DesktopAgnosticColor*" "color")
+    '("gdouble" "color_multiplier")
+    '("gdouble" "alpha_multiplier")
+  )
+)
+
+
+;; From awn-config.h
+
+(define-function awn_config_get_default
+  (c-name "awn_config_get_default")
+  (return-type "DesktopAgnosticConfigClient*")
+  (parameters
+    '("gint" "panel_id")
+    '("GError**" "error")
+  )
+)
+
+(define-function awn_config_get_default_for_applet
+  (c-name "awn_config_get_default_for_applet")
+  (return-type "DesktopAgnosticConfigClient*")
+  (parameters
+    '("AwnApplet*" "applet")
+    '("GError**" "error")
+  )
+)
+
+(define-function awn_config_get_default_for_applet_by_info
+  (c-name "awn_config_get_default_for_applet_by_info")
+  (return-type "DesktopAgnosticConfigClient*")
+  (parameters
+    '("const-gchar*" "name")
+    '("const-gchar*" "uid")
+    '("GError**" "error")
+  )
+)
+
 
 
 ;; From awn-defines.h
@@ -1004,7 +1065,7 @@
   (c-name "awn_tooltip_set_font_color")
   (return-type "none")
   (parameters
-    '("const-gchar*" "font_color")
+    '("DesktopAgnosticColor*" "font_color")
   )
 )
 
@@ -1013,7 +1074,7 @@
   (c-name "awn_tooltip_set_background_color")
   (return-type "none")
   (parameters
-    '("const-gchar*" "bg_color")
+    '("DesktopAgnosticColor*" "bg_color")
   )
 )
 
