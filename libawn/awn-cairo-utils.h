@@ -58,8 +58,6 @@ awn_cairo_rounded_rect_shadow(cairo_t *cr, double rx0, double ry0,
                               double radius, AwnCairoRoundCorners state,
                               double shadow_radius, double shadow_alpha);
 
-#define AWN_RGBA_SCALE_FACTOR (double)(G_MAXUSHORT)
-
 void
 awn_cairo_set_source_color (cairo_t              *cr,
                             DesktopAgnosticColor *color);

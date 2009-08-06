@@ -23,8 +23,6 @@
 
 #include <glib/gprintf.h>
 #include <libdesktop-agnostic/desktop-agnostic.h>
-#include <libawn/awn-config-client.h>
-#include <libawn/awn-config-bridge.h>
 
 #include "awn-background.h"
 
@@ -92,61 +90,90 @@ static void
 awn_background_constructed (GObject *object)
 {
   AwnBackground   *bg = AWN_BACKGROUND (object);
-  AwnConfigBridge *bridge;
 
-  bridge = awn_config_bridge_get_default ();
-
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_GSTEP1,
-                          object, "gstep1");
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_GSTEP2,
-                          object, "gstep2");
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_GHISTEP1,
-                          object, "ghistep1");
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_GHISTEP2,
-                          object, "ghistep2");
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_BORDER,
-                          object, "border");
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_HILIGHT,
-                          object, "hilight");
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_GSTEP1,
+                                       object, "gstep1", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_GSTEP2,
+                                       object, "gstep2", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_GHISTEP1,
+                                       object, "ghistep1", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_GHISTEP2,
+                                       object, "ghistep2", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_BORDER,
+                                       object, "border", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_HILIGHT,
+                                       object, "hilight", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
   
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_SHOW_SEP,
-                          object, "show_sep");
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_SEP_COLOR,
-                          object, "sep_color");
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_SHOW_SEP,
+                                       object, "show_sep", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_SEP_COLOR,
+                                       object, "sep_color", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
   
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_DRAW_PATTERN,
-                          object, "draw_pattern");
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_PATTERN_ALPHA,
-                          object, "pattern_alpha");
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_PATTERN_FILENAME,
-                          object, "pattern_filename");
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_DRAW_PATTERN,
+                                       object, "draw_pattern", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_PATTERN_ALPHA,
+                                       object, "pattern_alpha", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_PATTERN_FILENAME,
+                                       object, "pattern_filename", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_GTK_THEME_MODE,
-                          object, "gtk_theme_mode");
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_CORNER_RADIUS,
-                          object, "corner_radius");
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_PANEL_ANGLE,
-                          object, "panel_angle");
-  awn_config_bridge_bind (bridge, bg->client, 
-                          AWN_GROUP_THEME, AWN_THEME_CURVINESS, 
-                          object, "curviness");
-  awn_config_bridge_bind (bridge, bg->client,
-                          AWN_GROUP_THEME, AWN_THEME_CURVES_SYMMETRY,
-                          object, "curves_symmetry");
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_GTK_THEME_MODE,
+                                       object, "gtk_theme_mode", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_CORNER_RADIUS,
+                                       object, "corner_radius", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_PANEL_ANGLE,
+                                       object, "panel_angle", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_CURVINESS,
+                                       object, "curviness", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_CURVES_SYMMETRY,
+                                       object, "curves_symmetry", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 }
 
 static void
@@ -167,10 +194,15 @@ awn_background_get_property (GObject    *object,
     case PROP_HILIGHT:
     case PROP_SHOW_SEP:
     case PROP_SEP_COLOR:
+    {
+      DesktopAgnosticColor *color;
+
       g_warning ("Background property get unimplemented!");
-      g_value_set_string (value, "FFFFFFFF");
+      color = desktop_agnostic_color_new_from_string ("white", NULL);
+      g_value_take_object (value, color);
       break;
-  default:
+    }
+    default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
 }
@@ -188,7 +220,7 @@ awn_background_set_property (GObject      *object,
   switch (prop_id)
   {
     case PROP_CLIENT:
-      bg->client = g_value_get_pointer (value);
+      bg->client = g_value_get_object (value);
       break;
     case PROP_PANEL:
       bg->panel = g_value_get_pointer (value);
@@ -199,44 +231,43 @@ awn_background_set_property (GObject      *object,
       {
         bg->g_step_1 = (g_object_unref (bg->g_step_1), NULL);
       }
-      bg->g_step_1 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      bg->g_step_1 = (DesktopAgnosticColor*)g_value_dup_object (value);
       break;
     case PROP_GSTEP2:
       if (bg->g_step_2)
       {
         bg->g_step_2 = (g_object_unref (bg->g_step_2), NULL);
       }
-      bg->g_step_2 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      bg->g_step_2 = (DesktopAgnosticColor*)g_value_dup_object (value);
       break;
     case PROP_GHISTEP1:
       if (bg->g_histep_1)
       {
         bg->g_histep_1 = (g_object_unref (bg->g_histep_1), NULL);
       }
-      bg->g_histep_1 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      bg->g_histep_1 = (DesktopAgnosticColor*)g_value_dup_object (value);
       break;
     case PROP_GHISTEP2:
       if (bg->g_histep_2)
       {
         bg->g_histep_2 = (g_object_unref (bg->g_histep_2), NULL);
       }
-      bg->g_histep_2 = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      bg->g_histep_2 = (DesktopAgnosticColor*)g_value_dup_object (value);
       break;
     case PROP_BORDER:
       if (bg->border_color)
       {
         bg->border_color = (g_object_unref (bg->border_color), NULL);
       }
-      bg->border_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      bg->border_color = (DesktopAgnosticColor*)g_value_dup_object (value);
       break;
     case PROP_HILIGHT:
       if (bg->hilight_color)
       {
         bg->hilight_color = (g_object_unref (bg->hilight_color), NULL);
       }
-      bg->hilight_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      bg->hilight_color = (DesktopAgnosticColor*)g_value_dup_object (value);
       break;
-    
     case PROP_SHOW_SEP:
       bg->show_sep = g_value_get_boolean (value);
       break;
@@ -245,7 +276,7 @@ awn_background_set_property (GObject      *object,
       {
         bg->sep_color = (g_object_unref (bg->sep_color), NULL);
       }
-      bg->sep_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      bg->sep_color = (DesktopAgnosticColor*)g_value_dup_object (value);
       break;
     
     case PROP_ENABLE_PATTERN:
@@ -294,6 +325,12 @@ awn_background_finalize (GObject *object)
 
   AwnBackground *bg = AWN_BACKGROUND (object);
 
+  if (bg->client)
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (bg->client,
+                                                          object, NULL);
+  }
+
   if (bg->g_step_1) g_object_unref (bg->g_step_1);
   if (bg->g_step_2) g_object_unref (bg->g_step_2);
   if (bg->g_histep_1) g_object_unref (bg->g_histep_1);
@@ -324,10 +361,11 @@ awn_background_class_init (AwnBackgroundClass *klass)
   /* Object properties */
   g_object_class_install_property (obj_class,
     PROP_CLIENT,
-    g_param_spec_pointer ("client",
-                          "Client",
-                          "Awn Config Client",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+    g_param_spec_object ("client",
+                         "Client",
+                         "Awn Config Client",
+                         DESKTOP_AGNOSTIC_CONFIG_TYPE_CLIENT,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_PANEL,
@@ -338,50 +376,50 @@ awn_background_class_init (AwnBackgroundClass *klass)
 
   g_object_class_install_property (obj_class,
     PROP_GSTEP1,
-    g_param_spec_string ("gstep1",
+    g_param_spec_object ("gstep1",
                          "GStep1",
                          "Gradient Step 1",
-                         "#FF0000FF",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_GSTEP2,
-    g_param_spec_string ("gstep2",
+    g_param_spec_object ("gstep2",
                          "GStep2",
                          "Gradient Step 2",
-                         "#00FF00FF",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_GHISTEP1,
-    g_param_spec_string ("ghistep1",
+    g_param_spec_object ("ghistep1",
                          "GHiStep1",
                          "Hilight Gradient Step 1",
-                         "#FFFFFF44",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_GHISTEP2,
-    g_param_spec_string ("ghistep2",
+    g_param_spec_object ("ghistep2",
                          "GHiStep2",
                          "Hilight Gradient Step 2",
-                         "#FFFFFF11",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_BORDER,
-    g_param_spec_string ("border",
+    g_param_spec_object ("border",
                          "Border",
                          "Border color",
-                         "#000000FF",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_HILIGHT,
-    g_param_spec_string ("hilight",
+    g_param_spec_object ("hilight",
                          "Hilight",
                          "Internal border color",
-                         "#FFFFFFff",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   
@@ -395,10 +433,10 @@ awn_background_class_init (AwnBackgroundClass *klass)
 
   g_object_class_install_property (obj_class,
     PROP_SEP_COLOR,
-    g_param_spec_string ("sep_color",
+    g_param_spec_object ("sep_color",
                          "Separator color",
                          "Separator color",
-                         "#00000000",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
 
@@ -645,27 +683,31 @@ awn_background_get_panel_alignment (AwnBackground *bg)
  * alpha: between 0 and 255. Multiplied by 256 to get the "proper" alpha value.
  */
 static void
-set_cfg_from_theme (GdkColor        *color,
-                    gushort          alpha,
-                    AwnConfigClient *client,
-                    const gchar     *key)
+set_cfg_from_theme (GdkColor                    *color,
+                    gushort                      alpha,
+                    DesktopAgnosticConfigClient *client,
+                    const gchar                 *key)
 {
   DesktopAgnosticColor *da_color;
-  gchar *hex_value;
+  GValue val = {0};
+
   da_color = desktop_agnostic_color_new (color, alpha * 256);
-  hex_value = desktop_agnostic_color_to_string (da_color);
-  awn_config_client_set_string (client,
-                                AWN_GROUP_THEME, key,
-                                hex_value, NULL);
-  g_free (hex_value);
+  g_value_init (&val, DESKTOP_AGNOSTIC_TYPE_COLOR);
+  g_value_set_object (&val, da_color);
+  desktop_agnostic_config_client_set_value (client,
+                                            AWN_GROUP_THEME, key,
+                                            (const GValue*)&val, NULL);
+  g_value_unset (&val);
   g_object_unref (da_color);
 }
 
 static void
 load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
 {
-  AwnConfigClient *client = bg->client;
+  DesktopAgnosticConfigClient *client = bg->client;
   GtkStyle        *style;
+  DesktopAgnosticColor *sep_color;
+  GValue sep_color_val = {0};
 
   style = gtk_widget_get_style (widget);
 
@@ -694,17 +736,25 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
                       client, AWN_THEME_DLG_TITLE_BG);
 
   /* Don't draw patterns */
-  awn_config_client_set_bool (client,
-                              AWN_GROUP_THEME, AWN_THEME_DRAW_PATTERN, 
-                              FALSE, NULL);
+  desktop_agnostic_config_client_set_bool (client,
+                                           AWN_GROUP_THEME,
+                                           AWN_THEME_DRAW_PATTERN,
+                                           FALSE, NULL);
 
-  /* Set up seperators to draw in the standard way */
-  awn_config_client_set_bool (client, 
-                              AWN_GROUP_THEME, AWN_THEME_SHOW_SEP,
-                              TRUE, NULL);
-  awn_config_client_set_string (client, 
-                                AWN_GROUP_THEME, AWN_THEME_SEP_COLOR,
-                                (gchar*)"#FFFFFF00", NULL);
+  /* Set up separators to draw in the standard way */
+  desktop_agnostic_config_client_set_bool (client,
+                                           AWN_GROUP_THEME,
+                                           AWN_THEME_SHOW_SEP,
+                                           TRUE, NULL);
+  sep_color = desktop_agnostic_color_new_from_string ("#FFFFFF00", NULL);
+  g_value_init (&sep_color_val, DESKTOP_AGNOSTIC_TYPE_COLOR);
+  g_value_set_object (&sep_color_val, sep_color);
+  desktop_agnostic_config_client_set_value (client,
+                                            AWN_GROUP_THEME,
+                                            AWN_THEME_SEP_COLOR,
+                                            &sep_color_val, NULL);
+  g_value_unset (&sep_color_val);
+  g_object_unref (sep_color);
 
   /* Misc settings */
 }

@@ -20,6 +20,7 @@
 
 /* awn-ua-alignment.c */
 #include <stdlib.h>
+#include <libawn/awn-utils.h>
 #include "awn-ua-alignment.h"
 #include "awn-defines.h"
 
@@ -257,7 +258,8 @@ awn_ua_alignment_plug_removed (GtkWidget * socket,AwnUAAlignment * self)
   GSList * ua_active_list;
   GSList * orig_active_list;
   GSList * iter;
-  AwnConfigClient *client;
+  DesktopAgnosticConfigClient *client;
+  GValueArray *array;
   
   AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
   
@@ -281,9 +283,16 @@ awn_ua_alignment_plug_removed (GtkWidget * socket,AwnUAAlignment * self)
   {
     ua_active_list = g_slist_delete_link (ua_active_list,search);
   } 
-  awn_config_client_set_list (client,AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
-                             AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                             ua_active_list, NULL); 
+
+  array = awn_utils_gslist_to_gvaluearray (ua_active_list);
+
+  desktop_agnostic_config_client_set_list (client,
+                                           AWN_GROUP_PANEL,
+                                           AWN_PANEL_UA_ACTIVE_LIST,
+                                           array, NULL);
+
+  g_value_array_free (array);
+
   g_object_set (priv->applet_manager,
                 "ua-active-list",ua_active_list,
                 NULL);

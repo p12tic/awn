@@ -1,3 +1,27 @@
+2009-08-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/Makefile.am:
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* configure.in:
+	Add/fix Python bindings with regards to functions which depend on the
+	libdesktop-agnostic Python bindings.
+
+2009-08-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/util.c:
+	* applets/taskmanager/util.h:
+	* awn-applet-activation/main.c:
+	Update due to naming changes in the libdesktop-agnostic desktop
+	entry API.
+
+2009-08-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-settings.c (cfg_load_int):
+	Update due to a change in the libdesktop-agnostic config API.
+
 2009-08-06  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-cairo-utils.c:
@@ -24,6 +48,23 @@
 	* applets/taskmanager/task-icon.c:
 	On TaskIcon click... Better to check if active (and then do a minimize)
 	first instead of checking if minimized (and then do a restore).
+
+2009-08-05  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.schemas:
+	* configure.in:
+	* data/Makefile.am:
+	* data/awn-schema-to-gconf (removed):
+	* debian/awn-settings-trunk.install:
+	* debian/control:
+	Replace awn-schema-to-gconf with the equivalent program packaged
+	with libdesktop-agnostic.
+
+2009-08-04  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-manager.c:
+	Convert the launcher_paths member to a GValueArray, to avoid
+	converting to and from GSList.
 
 2009-08-04  Rodney Cryderman  <rcryderman@gmail.com>
 
@@ -374,6 +415,13 @@
 	Close dialog on icon click if it is open.
 	Add some comments to the clicked signal handler.
 
+2009-07-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-docs.sgml:
+	Add the awn-config page to the documentation.
+	* libawn/awn-config.c:
+	Fix the gtk-doc documentation.
+
 2009-07-27  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
@@ -525,6 +573,11 @@
 	Looks for a desktop file to associate with windows that are not 
 	already associated with a TaskLauncher.
 
+2009-07-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-dialog.c (awn_dialog_constructed):
+	Fix typo.
+
 2009-07-24  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awn-settings.xml:
@@ -641,6 +694,11 @@
 	* applets/taskmanager/task-launcher.c:
 	Small style cleanup.
 
+2009-07-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-utils.h (awn_utils_gslist_to_gvaluearray):
+	Fix gtk-doc.
+
 2009-07-21  Michal Hruby <michal.mhr@gmail.com>
 
 	* data/awn.schema-ini.in:
@@ -654,6 +712,29 @@
 	* src/awn-throbber.c:
 	Lower priority of the animation timer, so the applets are actually
 	executed on super slow machines (or when running a debugger/profiler).
+
+2009-07-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-overlay-text.c (awn_overlay_text_constructed,
+	  awn_overlay_text_class_init):
+	* libawn/awn-tooltip.c (awn_tooltip_get_property,
+	  awn_tooltip_set_property, awn_tooltip_finalize,
+	  awn_tooltip_class_init, ensure_tooltip, awn_tooltip_set_font_color,
+	  awn_tooltip_set_background_color):
+	* libawn/awn-tooltip.h:
+	Fix/convert color-related code.
+
+2009-07-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* src/awn-applet-manager.c (awn_applet_manager_constructed,
+	  set_list_property, awn_applet_manager_set_property):
+	Fix typo.
+	Fix setting list properties.
+
+2009-07-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
+	Fix schema type names.
 
 2009-07-20  Mark Lee  <avant-wn@lazymalevolence.com>
 
@@ -687,6 +768,29 @@
 	* src/awn-monitor.c:
 	Auto-config when using multiple monitors now really works.
 
+2009-07-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* src/awn-applet-manager.c (awn_applet_manager_get_property,
+	  awn_applet_manager_set_property, awn_applet_manager_class_init):
+	* src/awn-background.c (awn_background_set_property,
+	  awn_background_class_init):
+	* src/awn-monitor.c (awn_monitor_get_property,
+	  awn_monitor_set_property, awn_monitor_class_init):
+	* src/awn-panel.c (awn_panel_get_property, awn_panel_set_property,
+	  awn_panel_class_init):
+	Fix property types.
+
+2009-07-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-utils.h:
+	Fix gtk-doc.
+
+2009-07-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-launcher.c:
+	* awn-applet-activation/main.c:
+	Update due to the VFS API change in libdesktop-agnostic.
+
 2009-07-17  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* Makefile.marshal:
@@ -703,6 +807,20 @@
 	* doc/reference/libawn-sections.txt:
 	* doc/reference/libawn.types:
 	Update the doc templates.
+
+2009-07-17  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	* libawn/awn-utils.c (awn_utils_ensure_transparent_bg,
+	  awn_utils_gslist_to_gvaluearray):
+	* libawn/awn-utils.h:
+	Add awn_utils_gslist_to_gvaluearray(), to make converting between the two
+	structures easier.
+	* src/awn-applet-manager.c (awn_applet_manager_get_property,
+	  awn_ua_add_applet):
+	Convert to use the new function.
+	* src/awn-ua-alignment.c (awn_ua_alignment_plug_removed):
+	Convert to use the libdesktop-agnostic API.
 
 2009-07-17  Rodney Cryderman  <rcryderman@gmail.com>
 
@@ -771,6 +889,26 @@
 	Improved the task matching.  Please test with a match strength
 	of 99.  Especially interested in false positives.
 
+2009-07-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon.c (task_icon_dest_drag_data_received):
+	* awn-applet-activation/main.c (main):
+	* libawn/awn-utils.c (awn_vfs_init):
+	* src/awn-main.c (main):
+	Update to use the new libdesktop-agnostic VFS convenience API.
+
+2009-07-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon.c (task_icon_dispose,
+	  task_icon_finalize, do_bind_property,
+	  task_icon_constructed):
+	Convert to use the libdesktop-agnostic config API.
+
+2009-07-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/avant-window-navigator.schema-ini.in:
+	Fix keys that should be labeled as colors.
+
 2009-07-15  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
@@ -798,6 +936,19 @@
 
 	* applets/taskmanager/task-icon.c:
 	awn_icon_set_indicator_count() deals with values >3 intelligently.
+
+2009-07-14  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-label.c (do_bind_property, awn_label_constructed,
+	  awn_label_get_property, awn_label_set_property,
+	  awn_label_class_init):
+	Convert to use the libdesktop-agnostic config API.
+
+2009-07-14  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/awnmodule.c:
+	* src/awn-main.c (main):
+	Remove obsolete usage of preprocessor variable.
 
 2009-07-14  Rodney Cryderman  <rcryderman@gmail.com>
 
@@ -886,6 +1037,39 @@
 
 	* bindings/python/Makefile.am:
 	Shave-ify the Python bindings generator command.
+
+2009-07-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-manager.c (task_manager_class_init,
+		task_manager_size_changed, task_manager_dispose):
+	* libawn/awn-dialog.c (awn_dialog_set_property, awn_dialog_finalize):
+	* libawn/awn-icon.c (awn_icon_set_property, awn_icon_dispose):
+	* libawn/awn-overlay-text.c (awn_overlay_text_set_property,
+	  awn_overlay_text_dispose):
+	* libawn/awn-tooltip.c (awn_tooltip_set_property, awn_tooltip_dispose):
+	* src/awn-applet-manager.c (awn_applet_manager_dispose):
+	* src/awn-background.c (awn_background_finalize):
+	* src/awn-monitor.c (awn_monitor_dispose, awn_monitor_class_init):
+	* src/awn-panel.c (awn_panel_dispose):
+	Clean up the config key <-> property bindings when the object is garbage
+	collected.
+
+2009-07-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-launcher.c:
+	* awn-applet-activation/main.c:
+	* libawn/awn-config.h:
+	* libawn/awn-utils.c:
+	* src/awn-main.c:
+	* src/awn-monitor.h:
+	* src/awn-panel.h:
+	Update #includes due to libdesktop-agnostic changes.
+
+2009-07-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-defines.h (AWN_PANEL_ID_DEFAULT):
+	Fix gtk-doc.
 
 2009-07-12  Rodney Cryderman  <rcryderman@gmail.com>
 
@@ -1003,6 +1187,11 @@
 	awn-applet-activation -> awn-applet.
 	Attempt to rename the process was removed.
 
+2009-07-08  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-config.c:
+	Handle single-instance applets when the mode is denoted in the UID.
+
 2009-07-08  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-applet.c:
@@ -1016,6 +1205,26 @@
 	* src/xutils.h:
 	A couple of changes to get proper shape mask support.
 	Started the workaround for D&D deadzone.
+
+2009-07-08  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/avant-window-navigator.schema-ini.in:
+	Fix shared config option types.
+
+2009-07-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn.pc.in:
+	Remove obsolete variable from pkgconfig file.
+
+2009-07-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-settings.c (cfg_notify_int):
+	Update due to API change in libdesktop-agnostic.
+
+2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-manager.c:
+	Launchers work again.
 
 2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
 
@@ -1033,11 +1242,47 @@
 
 2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* data/awn-schema-to-gconf (main):
+	The third argument is now mandatory.
+	Applets are no longer nested in the avant-window-navigator directory.
+
+2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.marshal:
+	* Makefile.schemas:
+	* Makefile.shave:
+	* applets/taskmanager/Makefile.am:
+	* data/Makefile.am:
+	* src/Makefile.am:
+	Modularize the shave-related variables into its own Makefile.
+	Modularize the schema-related variables/rules into its own Makefile.
+	Use shave when generating the GConf schemas.
+
+2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* .bzrignore:
 	* data/Makefile.am:
 	* data/awn.schema-ini.in:
 	* data/shared.schema-ini (removed):
 	Merge the shared schema file with the main one.
+
+2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/awn-schema-to-gconf:
+	Make sure types are converted properly.
+
+2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/avant-window-navigator.schema-ini.in:
+	Fix types.
+
+2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/Makefile.am:
+	* configure.in:
+	* data/Makefile.am:
+	Only install the schema files if requested.
+	Make the schema config conversion rule more generic.
 
 2009-07-06  Mark Lee  <avant-wn@lazymalevolence.com>
 
@@ -1102,6 +1347,29 @@
 	* tests/test-effects.py:
 	Various fixes.
 
+2009-07-05  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	* applets/taskmanager/Makefile.am:
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
+	Rename schema file.
+	* applets/taskmanager/task-manager.c (task_manager_get_property,
+	  task_manager_set_property, task_manager_constructed):
+	Continue converting taskmanager to use the libdesktop-agnostic config
+	API.
+
+2009-07-04  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-config.c (awn_config_get_default,
+	  awn_config_get_default_for_applet,
+	  awn_config_get_default_for_applet_by_info):
+	Implement the convenience methods for creating applet config objects.
+	Fix potential crasher.
+
+2009-07-04  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-dialog.c:
+	Convert color properties to be of type DesktopAgnosticColor*.
 2009-07-04  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/task-item.c (task_item_init):
@@ -1112,6 +1380,88 @@
 	* applets/taskmanager/task-manager.h:
 	Fix typo.
 	Make sure taskmanager defines the canonical-name property.
+
+2009-07-04  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-config.c:
+	* libawn/awn-config.h:
+	Added.
+
+	* libawn/awn-config-bridge.c:
+	* libawn/awn-config-bridge.h:
+	* libawn/awn-config-client-gconf.c:
+	* libawn/awn-config-client-gkeyfile.c:
+	* libawn/awn-config-client-shared.c:
+	* libawn/awn-config-client.h:
+	* tests/test-config-client.c:
+	* tests/test-config-client.py:
+	Removed.
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Remove bindings.
+
+	* data/Makefile.am:
+	* data/avant-window-navigator.schema-ini.in:
+	Rename schema files.
+
+	* doc/reference/libawn-docs.sgml:
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	Update documentation templates.
+
+	* libawn/awn-defines.h (AWN_PANEL_ID_DEFAULT):
+	Add default panel ID constant.
+
+	* .bzrignore:
+	* applets/taskmanager/Makefile.am:
+	* applets/taskmanager/task-manager.c (task_manager_constructed,
+	  _drag_source_end):
+	* applets/taskmanager/task-settings.c (cfg_notify_int, cfg_load_int,
+	  task_settings_get_default):
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/awn-dialog.c (awn_dialog_constructed, awn_dialog_get_property,
+	  awn_dialog_set_property, awn_dialog_finalize):
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* libawn/awn-icon.c (awn_icon_constructed, awn_icon_set_property,
+	  awn_icon_dispose):
+	* libawn/awn-overlay-text.c (awn_overlay_text_set_property,
+	  awn_overlay_text_dispose, awn_overlay_text_init):
+	* libawn/awn-tooltip.c (awn_tooltip_constructed, awn_tooltip_set_property,
+				awn_tooltip_init):
+	* libawn/libawn.h:
+	* src/awn-app.c (awn_app_finalize, awn_app_init):
+	* src/awn-applet-manager.c (awn_applet_manager_constructed,
+	  awn_applet_manager_get_property, awn_applet_manager_set_property,
+	  awn_applet_manager_class_init, awn_applet_manager_new_from_config,
+	  free_list):
+	* src/awn-applet-manager.h:
+	* src/awn-applet-proxy.h:
+	* src/awn-background-3d.c (awn_background_3d_new):
+	* src/awn-background-3d.h:
+	* src/awn-background-curves.c (awn_background_curves_new):
+	* src/awn-background-curves.h:
+	* src/awn-background-edgy.c (awn_background_edgy_new):
+	* src/awn-background-edgy.h:
+	* src/awn-background-flat.c (awn_background_flat_new):
+	* src/awn-background-flat.h:
+	* src/awn-background.c (awn_background_constructed,
+	  awn_background_get_property, awn_background_set_property,
+	  awn_background_class_init, set_cfg_from_theme,
+	  load_colours_from_widget):
+	* src/awn-background.h:
+	* src/awn-monitor.c (awn_monitor_constructed, awn_monitor_class_init,
+	  awn_monitor_new_from_config):
+	* src/awn-monitor.h (geometry_changed):
+	* src/awn-panel.c (awn_panel_constructed, awn_panel_class_init,
+	  awn_panel_new_from_config):
+	* src/awn-panel.h:
+	* tests/Makefile.am:
+	The first part of converting Awn to use the libdesktop-agnostic
+	configuration API. The applet convenience methods still need to be
+	implemented.
 
 2009-07-04  Michal Hruby  <michal.mhr@gmail.com>
 
@@ -1340,6 +1690,14 @@
 
 	* doc/reference/libawn-sections.txt:
 	Update the gtk-doc generated sections file.
+
+2009-06-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	Update the cairo color convenience functions to use the libdesktop-agnostic
+	cairo color convenience API.
 
 2009-06-27  Julien Lavergne <julien.lavergne@gmail.com>
 
@@ -1823,6 +2181,18 @@
 	Fix when desktop file have multi-categories.
 	* awn-manager/awnDefs.py.in:
 	Set default sources.list with only lcoal location.
+
+2009-06-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	* configure.in:
+	* doc/reference/Makefile.am:
+	Remove remnants of the old libawn/egg directory.
+
+2009-06-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Remove unused variable.
 
 2009-06-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
@@ -2524,6 +2894,11 @@
 
 2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* awn-applet-activation/main.c:
+	Fix typo.
+
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/libawn-docs.sgml:
 	Update/reorganize the table of contents.
 
@@ -2551,6 +2926,12 @@
 
 	* libawn/awn-overlay.c:
 	Slight mod of docs for x-adj and y-adj props.
+
+2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	Update, given the libdesktop-agnostic-related changes.
 
 2009-06-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
@@ -2867,6 +3248,13 @@
 	* libawn/awn-dialog.c:
 	Fix issue with titlebar spacing.
 
+2009-05-30  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-launcher.c:
+	* awn-applet-activation/main.c:
+	* libawn/awn-config-client-gkeyfile.c:
+	Use the updated libdesktop-agnostic API.
+
 2009-05-30  Michal Hruby <michal.mhr@gmail.com>
 
 	* libawn/awn-cairo-utils.c:
@@ -2914,6 +3302,29 @@
 
 2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/python/awn.defs:
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	Re-add awn_vfs_init () until one can access libdesktop-agnostic
+	from Python.
+
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-launcher.c:
+	* awn-applet-activation/main.c:
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/awn-desktop-item.h:
+	* libawn/awn-desktop-item-egg.c:
+	* libawn/egg/:
+	* libawn/libawn.h:
+	Replace AwnDesktopItem/EggDesktopFile with the equivalent API in
+	libdesktop-agnostic.
+
+2009-05-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* INSTALL:
 	Update.
 
@@ -2937,6 +3348,18 @@
 
 	* libawn/awn-effects-ops-new.c:
 	Fixed the active rectangle after switch to desktop-agnostic color.
+
+2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-vfs.c:
+	* libawn/awn-vfs.h:
+	Removed (obsoleted by libdesktop-agnostic).
+
+	* bindings/python/awn.override:
+	* configure.in:
+	* libawn/Makefile.am:
+	* libawn/libawn.h:
+	Remove references of the removed files and their dependencies.
 
 2009-05-12  Mark Lee  <avant-wn@lazymalevolence.com>
 
@@ -3003,6 +3426,25 @@
 2009-04-25  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/task-icon.c:
+	* awn-applet-activation/main.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-config-client-gkeyfile.c:
+	* libawn/awn-dialog.c:
+	* libawn/awn-tooltip.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	* src/awn-main.c:
+	The libdesktop-agnostic headers have been consolidated into a single
+	header; use that instead.
+
+2009-04-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* debian/control:
+	Add libdesktop-agnostic dependencies.
+
+2009-04-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon.c:
 	* libawn/Makefile.am:
 	* libawn/awn-applet.c:
 	* libawn/awn-dialog.c:
@@ -3019,6 +3461,28 @@
 
 	* libawn/awn-cairo-utils.c:
 	Fix variable shadowing errors.
+
+2009-04-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-config-client-gkeyfile.c:
+	Convert to use the libdesktop-agnostic VFS implementation. Only tested
+	to see if it compiled correctly.
+
+2009-04-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* src/awn-main.c:
+	Convert to use the libdesktop-agnostic VFS implementation (currently
+	used only if the gkeyfile config backend is used).
+
+2009-04-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon.c:
+	Convert to use the libdesktop-agnostic VFS implementation.
+
+2009-04-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-applet-activation/main.c:
+	Convert to use the libdesktop-agnostic VFS implementation.
 
 2009-04-20  Mark Lee  <avant-wn@lazymalevolence.com>
 
@@ -5021,7 +5485,6 @@
 	* libawn/awn-icons.h:
 	Added awn_icons_get_icon_at_height() to awn-icons.
 
->>>>>>> MERGE-SOURCE
 2008-07-13  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-icons.c:

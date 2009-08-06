@@ -60,7 +60,7 @@ struct _AwnBackgroundCurvesClass
 
 GType           awn_background_curves_get_type (void) G_GNUC_CONST;
 
-AwnBackground * awn_background_curves_new      (AwnConfigClient *client,
+AwnBackground * awn_background_curves_new      (DesktopAgnosticConfigClient *client,
                                               AwnPanel        *panel);
 
 G_END_DECLS

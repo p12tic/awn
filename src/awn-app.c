@@ -36,7 +36,7 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
-#include <libawn/awn-config-client.h>
+#include <libawn/awn-config.h>
 
 #include "awn-app.h"
 #include "awn-defines.h"
@@ -53,7 +53,7 @@ G_DEFINE_TYPE (AwnApp, awn_app, G_TYPE_OBJECT)
 struct _AwnAppPrivate
 {
   DBusGConnection *connection;
-  AwnConfigClient *client;
+  DesktopAgnosticConfigClient *client;
 
   GHashTable *panels;
 };
@@ -67,7 +67,7 @@ awn_app_finalize (GObject *app)
   g_return_if_fail (AWN_IS_APP (app));
   priv = AWN_APP (app)->priv;
 
-  awn_config_client_free (priv->client);
+  g_object_unref (priv->client);
 
   G_OBJECT_CLASS (awn_app_parent_class)->finalize (app);
 }
@@ -96,7 +96,15 @@ awn_app_init (AwnApp *app)
 
   priv->panels = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-  priv->client = awn_config_client_new ();
+  priv->client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
+
+  if (error)
+  {
+    g_warning ("Unable to retrieve the configuration client: %s",
+               error->message);
+    g_error_free (error);
+    gtk_main_quit ();
+  }
 
   /* Grab a connection to the bus */
   priv->connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);

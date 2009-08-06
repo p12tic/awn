@@ -31,7 +31,7 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
-#include <libawn/awn-vfs.h>
+#include <libdesktop-agnostic/vfs.h>
 
 #include "awn-app.h"
 #include "awn-defines.h"
@@ -81,7 +81,14 @@ main (gint argc, gchar *argv[])
   dbus_g_thread_init ();
   g_type_init ();
   gtk_init (&argc, &argv);
-  awn_vfs_init ();
+
+  desktop_agnostic_vfs_init (&error);
+  if (error)
+  {
+    g_critical ("Error initializing VFS subsystem: %s", error->message);
+    g_error_free (error);
+    return EXIT_FAILURE;
+  }
 
   /* Single instance checking; first get the D-Bus connection */
   connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
@@ -129,6 +136,14 @@ main (gint argc, gchar *argv[])
   g_object_unref (app);
   g_object_unref (proxy);
   dbus_g_connection_unref (connection);
+
+  desktop_agnostic_vfs_shutdown (&error);
+  if (error)
+  {
+    g_critical ("Error shutting down VFS subsystem: %s", error->message);
+    g_error_free (error);
+    return EXIT_FAILURE;
+  }
 
   return EXIT_SUCCESS;
 }

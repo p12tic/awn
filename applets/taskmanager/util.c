@@ -112,7 +112,7 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
  Other matching algororithms are NOT used if something is special cased.
 */
 gchar *
-get_special_id_from_desktop (AwnDesktopItem * item)
+get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry * entry)
 {
   /*
    Exec,Name,filename, special_id.  If all in the first 3 match then the 
@@ -128,7 +128,7 @@ get_special_id_from_desktop (AwnDesktopItem * item)
     gboolean  match = TRUE;
     if (iter->exec)
     {
-      gchar * exec = awn_desktop_item_get_exec (item);
+      gchar * exec = desktop_agnostic_fdo_desktop_entry_get_string (entry, "Exec");
       match = g_regex_match_simple(iter->exec, exec,0,0);
       g_free (exec);
       if (!match)
@@ -136,7 +136,7 @@ get_special_id_from_desktop (AwnDesktopItem * item)
     }
     if (iter->name)
     {
-      gchar * name = awn_desktop_item_get_name (item);
+      gchar * name = desktop_agnostic_fdo_desktop_entry_get_name (entry);
       match = g_regex_match_simple(iter->name, name,0,0);
       g_free (name);
       if (!match)
@@ -144,8 +144,10 @@ get_special_id_from_desktop (AwnDesktopItem * item)
     }
     if (iter->filename)
     {
-      const gchar * filename = awn_desktop_item_get_filename (item);
+      DesktopAgnosticVFSFile *file = desktop_agnostic_fdo_desktop_entry_get_file (entry);
+      gchar *filename = desktop_agnostic_vfs_file_get_path (file);
       match = g_regex_match_simple(iter->filename, filename,0,0);
+      g_free (filename);
       if (!match)
         continue;
     }

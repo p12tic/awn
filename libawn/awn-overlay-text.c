@@ -32,7 +32,7 @@
 #include <gtk/gtk.h>
 #include <pango/pangocairo.h>
 
-#include "awn-config-bridge.h"
+#include "awn-config.h"
 #include "awn-overlay-text.h"
 #include "awn-cairo-utils.h"
 
@@ -57,9 +57,7 @@ struct _AwnOverlayTextPrivate
   gint                   font_mode;
   gdouble                text_outline_width;
   
-  AwnConfigClient * client;
-  AwnConfigBridge * bridge;
-  
+  DesktopAgnosticConfigClient * client;
 };
 
 enum
@@ -182,11 +180,9 @@ awn_overlay_text_dispose (GObject *object)
   AwnOverlayTextPrivate *priv;
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object);  
 
-  if (priv->bridge)
-  {
-    g_object_unref (priv->bridge);
-    priv->bridge = NULL;
-  }
+  desktop_agnostic_config_client_unbind_all_for_object (priv->client,
+                                                        object, NULL);
+
   if (priv->text_color)
   {
     g_object_unref (priv->text_color);
@@ -234,6 +230,7 @@ static void
 awn_overlay_text_constructed (GObject *object)
 {
   AwnOverlayTextPrivate *priv;
+  GError *error = NULL;
 
   priv =  AWN_OVERLAY_TEXT_GET_PRIVATE (object); 
   
@@ -242,22 +239,36 @@ awn_overlay_text_constructed (GObject *object)
     G_OBJECT_CLASS (awn_overlay_text_parent_class)->constructed (object);    
   }
   
-  priv->client = awn_config_client_new ();
-  priv->bridge = awn_config_bridge_get_default ();
+  priv->client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
 
-  awn_config_bridge_bind (priv->bridge, priv->client,
-                          "theme", "icon_text_color",
-                          object, "text-color-astr");
-  awn_config_bridge_bind (priv->bridge, priv->client,
-                          "theme", "icon_text_outline_color",
-                          object, "text-outline-color-astr");
-  awn_config_bridge_bind (priv->bridge, priv->client,
-                          "theme", "icon_font_mode",
-                          object, "font-mode");
-  awn_config_bridge_bind (priv->bridge, priv->client,
-                          "theme", "icon_text_outline_width",
-                          object, "text-outline-width");
+  if (error)
+  {
+    g_critical ("An error occurred while trying to retrieve the configuration client: %s",
+                error->message);
+    g_error_free (error);
+    return;
+  }
 
+  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_text_color",
+                                       object, "text-color", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  
+  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_text_outline_color",
+                                       object, "text-outline-color", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  
+  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_font_mode",
+                                       object, "font-mode", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  
+  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_text_outline-width",
+                                       object, "text-outline-width", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  
   priv->font_description = pango_font_description_new ();
   pango_font_description_set_family (priv->font_description, "sans");
   pango_font_description_set_weight (priv->font_description, PANGO_WEIGHT_SEMIBOLD);
@@ -328,7 +339,7 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
                                "Text Colour",
                                "Text Colour",
                                DESKTOP_AGNOSTIC_TYPE_COLOR,
-                               G_PARAM_READABLE);
+                               G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_TEXT_COLOR, pspec);   
 
   pspec = g_param_spec_string ("text-color-astr",
@@ -342,7 +353,7 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
                                "Text Outline Colour",
                                "Text Outline Colour",
                                DESKTOP_AGNOSTIC_TYPE_COLOR,
-                               G_PARAM_READABLE);
+                               G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_TEXT_OUTLINE_COLOR, pspec);   
 
   pspec = g_param_spec_string ("text-outline-color-astr",

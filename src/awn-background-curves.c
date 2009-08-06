@@ -23,7 +23,6 @@
 
 #include <gdk/gdk.h>
 #include <libawn/awn-cairo-utils.h>
-#include <libawn/awn-config-client.h>
 
 #include "awn-background-curves.h"
 
@@ -66,7 +65,7 @@ awn_background_curves_init (AwnBackgroundCurves *bg)
 }
 
 AwnBackground * 
-awn_background_curves_new (AwnConfigClient *client, AwnPanel *panel)
+awn_background_curves_new (DesktopAgnosticConfigClient *client, AwnPanel *panel)
 {
   AwnBackground *bg;
 

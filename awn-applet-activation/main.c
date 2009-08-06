@@ -26,9 +26,8 @@
 #include <errno.h>
 
 #include <libawn/awn-defines.h>
-#include <libawn/awn-desktop-item.h>
 #include <libawn/awn-applet.h>
-#include <libawn/awn-vfs.h>
+#include <libdesktop-agnostic/fdo.h>
 
 /* Forwards */
 GtkWidget *
@@ -99,7 +98,8 @@ main(gint argc, gchar **argv)
 {
   GError *error = NULL;
   GOptionContext *context;
-  AwnDesktopItem *item = NULL;
+  DesktopAgnosticVFSFile *desktop_file = NULL;
+  DesktopAgnosticFDODesktopEntry *entry = NULL;
   GtkWidget *applet = NULL;
   const gchar *exec;
   const gchar *name;
@@ -121,7 +121,13 @@ main(gint argc, gchar **argv)
 
   if (!g_thread_supported()) g_thread_init(NULL);
 
-  awn_vfs_init();
+  desktop_agnostic_vfs_init (&error);
+  if (error)
+  {
+    g_critical ("Error initializing VFS subsystem: %s", error->message);
+    g_error_free (error);
+    return EXIT_FAILURE;
+  }
 
   gtk_init(&argc, &argv);
 
@@ -132,48 +138,62 @@ main(gint argc, gchar **argv)
   }
 
   /* Try and load the desktop file */
-  item = awn_desktop_item_new(path);
+  desktop_file = desktop_agnostic_vfs_file_new_for_path (path, &error);
 
-  if (item == NULL)
+  if (error)
   {
-    g_warning("This desktop file does not exist %s\n", path);
+    g_critical ("Error: %s", error->message);
+    g_error_free (error);
+    return 1;
+  }
+
+  if (desktop_file == NULL || !desktop_agnostic_vfs_file_exists (desktop_file))
+  {
+    g_warning ("This desktop file '%s' does not exist.", path);
+    return 1;
+  }
+
+  entry = desktop_agnostic_fdo_desktop_entry_new_for_file (desktop_file, &error);
+
+  if (error)
+  {
+    g_critical ("Error: %s", error->message);
+    g_error_free (error);
+    return 1;
+  }
+
+  if (entry == NULL)
+  {
+    g_warning ("This desktop file '%s' does not exist.", path);
     return 1;
   }
 
   /* Now we have the file, lets see if we can
           a) load the dynamic library it points to
           b) Find the correct function within that library */
-  exec = awn_desktop_item_get_exec(item);
+  exec = desktop_agnostic_fdo_desktop_entry_get_string (entry, "Exec");
 
   if (exec == NULL)
   {
-    g_warning("No exec path found in desktop file %s\n", path);
+    g_warning ("No Exec key found in desktop file '%s', exiting.", path);
     return 1;
   }
 
-  name = awn_desktop_item_get_name(item);
+  name = desktop_agnostic_fdo_desktop_entry_get_name (entry);
 
   /* Check if this is a Python applet */
-  type = awn_desktop_item_get_string(item, "X-AWN-AppletType");
+  type = desktop_agnostic_fdo_desktop_entry_get_string (entry, "X-AWN-AppletType");
 
   if (!type)
   {
-    /* FIXME we'll maintain this for a bit until the .desktop files are fixed */
-    type = awn_desktop_item_get_item_type(item);
-
-    if (type)
-    {
-      g_warning("Please inform the developer(s) of the applet '%s' that the .desktop file associated with their applet need to be updated per the Applet Development Guidelines on the AWN Wiki.", name);
-    }
+    g_warning ("No X-AWN-AppletType key found in desktop file '%s', exiting.", path);
+    return 1;
   }
 
-  if (type)
+  if (strcmp(type, "Python") == 0)
   {
-    if (strcmp(type, "Python") == 0)
-    {
-      launch_python(path, exec, uid, window, panel_id);
-      return 0;
-    }
+    launch_python(path, exec, uid, window, panel_id);
+    return 0;
   }
 
   /* Extract canonical-name from exec */
@@ -195,7 +215,6 @@ main(gint argc, gchar **argv)
     g_warning ("Could not create applet\n");
     return 1;
   }
-  name = awn_desktop_item_get_name (item);
 
   if (name != NULL)
   {
@@ -213,6 +232,14 @@ main(gint argc, gchar **argv)
   }
 
   gtk_main();
+
+  desktop_agnostic_vfs_shutdown (&error);
+  if (error)
+  {
+    g_critical ("Error shutting down VFS subsystem: %s", error->message);
+    g_error_free (error);
+    return EXIT_FAILURE;
+  }
 
   return 0;
 }

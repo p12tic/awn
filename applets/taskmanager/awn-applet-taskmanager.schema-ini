@@ -1,10 +1,18 @@
+# Task Manager configuration schema
+# ---------------------------------
+
+# schema metadata
+[DEFAULT]
+single_instance = false
+
+# configuration options
 [DEFAULT/only_show_launchers]
-type = bool
+type = boolean
 default = false
 description = Only show and manager launcher windows
 
 [DEFAULT/show_all_windows]
-type = bool
+type = boolean
 default = true
 description = Show windows from all workspaces
 
@@ -14,31 +22,33 @@ default = /usr/share/applications/firefox.desktop;
 description = a list of paths to .desktop files from which the taskmanager should create it's launchers
 
 [DEFAULT/drag_and_drop]
-type = bool
+type = boolean
 default = true
 description = Enable reordering of windows by drag and drop 
 
 [DEFAULT/grouping]
-type = bool
+type = boolean
 default = true
 description = Enabling group of tasks.
 
 [DEFAULT/match_strength]
-type = int
+type = integer
 default = 99
 description = How radical matching is applied for grouping items. The value should be between 0 and 99. 0 is as good as no grouping. 99 will match almost everything.
 
 [DEFAULT/max_indicators]
-type = int
+type = integer
 default = 3
 description = Maximum number of task indicators to show under icons. Valid range is 0..3.
 
 [DEFAULT/txt_indicator_threshold]
-type = int
+type = integer
 default = 4
 description = The threshold at which text count begins to be displayed. valid range 1..
 
 [DEFAULT/enable_long_press]
-type = bool
+type = boolean
 default = true
 description = Enable long press to open Dialog.
+
+# vim: set ft=dosini :

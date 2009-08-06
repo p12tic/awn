@@ -45,7 +45,6 @@ mkinstalldirs
 libawn/*awn-enum-types.*
 libawn/*libawnmarshal.*
 libawn/libawn-marshal.*
-libawn/egg/*egg-enum-types.*
 bindings/python/awn.c
 awn-manager/awnDefs.py
 awn-manager/awnManager.py
@@ -77,11 +76,11 @@ doc/reference/*.bak
 doc/reference/tmpl/*.sgml
 doc/reference/tmpl/*.sgml.bak
 doc/reference/*-scan.c
-data/awn.schemas*
+data/avant-window-navigator.schemas*
 config.h.in
 test/vala-test
 awn-manager/awn-launcher-editor
-data/awn.schema-ini
+data/avant-window-navigator.schema-ini
 src/awn
 src/awn-app-glue.h
 src/awn-panel-glue.h
@@ -93,8 +92,7 @@ tests/test-config-client
 tests/test-themed-icon
 tests/test-awn-icon-box
 ./tests/test-taskmanager
-applets/taskmanager/taskmanager.schemas
-applets/taskmanager/taskmanager.schemas.in
+applets/taskmanager/awn-applet-taskmanager.schemas*
 tests/test-awn-effects
 awn-manager/awnManagerMini.py
 m4/gtk-doc.m4

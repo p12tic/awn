@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2009 Michal Hruby <michal.mhr@gmail.com>
+ *  Copyright (C) 2009 Mark Lee <avant-wn@lazymalevolence.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,9 +16,14 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
+ *
+ * Authors: Michal Hruby (awn_utils_ensure_transparent_bg,
+ *                        awn_utils_make_transparent_bg)
+ *          Mark Lee     (awn_vfs_init)
  */
-#include <gdk/gdk.h>
 #include <math.h>
+#include <gdk/gdk.h>
+#include <libdesktop-agnostic/vfs.h>
 
 #include "awn-utils.h"
 #include "gseal-transition.h"
@@ -86,6 +92,41 @@ awn_utils_ensure_transparent_bg (GtkWidget *widget)
                     G_CALLBACK (on_style_set), NULL);
   g_signal_connect (widget, "composited-changed",
                     G_CALLBACK (on_composited_change), NULL);
+}
+
+GValueArray*
+awn_utils_gslist_to_gvaluearray (GSList *list)
+{
+  GValueArray *array;
+
+  array = g_value_array_new (g_slist_length (list));
+  for (GSList *n = list; n != NULL; n = n->next)
+  {
+    GValue val = {0};
+
+    g_value_init (&val, G_TYPE_STRING);
+    g_value_set_string (&val, (gchar*)n->data);
+    g_value_array_append (array, &val);
+    g_value_unset (&val);
+  }
+
+  return array;
+}
+
+
+void
+awn_vfs_init ()
+{
+  GError *error = NULL;
+
+  desktop_agnostic_vfs_init (&error);
+
+  if (error)
+  {
+    g_critical ("Error initializing VFS subsystem: %s", error->message);
+    g_error_free (error);
+    return;
+  }
 }
 
 gfloat

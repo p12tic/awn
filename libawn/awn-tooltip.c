@@ -28,13 +28,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libdesktop-agnostic/desktop-agnostic.h>
-
 #include "awn-tooltip.h"
 
 #include "awn-cairo-utils.h"
-#include "awn-config-bridge.h"
-#include "awn-config-client.h"
+#include "awn-config.h"
 
 #include "gseal-transition.h"
 
@@ -55,14 +52,14 @@ G_DEFINE_TYPE (AwnTooltip, awn_tooltip, GTK_TYPE_WINDOW)
 
 struct _AwnTooltipPrivate
 {
-  AwnConfigClient *client;
+  DesktopAgnosticConfigClient *client;
   
   GtkWidget *focus;
   GtkWidget *label;
 
   DesktopAgnosticColor  *bg;
   gchar    *font_name;
-  gchar    *font_color;
+  DesktopAgnosticColor *font_color;
   gint      icon_offset;
 
   gboolean  smart_behavior, toggle_on_click;
@@ -219,20 +216,22 @@ awn_tooltip_constructed (GObject *object)
 {
   AwnTooltip        *tooltip = AWN_TOOLTIP (object);
   AwnTooltipPrivate *priv = tooltip->priv;
-  AwnConfigBridge   *bridge = awn_config_bridge_get_default ();
   GtkWidget         *align;
 
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_THEME_GROUP, FONT_NAME,
-                          object, FONT_NAME);
+  desktop_agnostic_config_client_bind (priv->client, AWN_THEME_GROUP, FONT_NAME,
+                                       object, FONT_NAME, TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_THEME_GROUP, FONT_COLOR,
-                          object, FONT_COLOR);
+  desktop_agnostic_config_client_bind (priv->client, AWN_THEME_GROUP, FONT_COLOR,
+                                       object, FONT_COLOR, TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_THEME_GROUP, BACKGROUND,
-                          object, BACKGROUND);
+  desktop_agnostic_config_client_bind (priv->client, AWN_THEME_GROUP, BACKGROUND,
+                                       object, BACKGROUND, TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 
   /* Setup internal widgets */
   align = gtk_alignment_new (0.5, 0.5, 1.0, 1.0);
@@ -274,11 +273,11 @@ awn_tooltip_get_property (GObject    *object,
       break;
 
     case PROP_FONT_COLOR:
-      g_value_set_string (value, priv->font_color);
+      g_value_set_object (value, priv->font_color);
       break;
 
     case PROP_BG:
-      g_value_set_string (value, "#FFFFFFFF");
+      g_value_set_object (value, priv->bg);
       break;
 
     case PROP_ICON_OFFSET:
@@ -325,11 +324,11 @@ awn_tooltip_set_property (GObject      *object,
       break;
 
     case PROP_FONT_COLOR:
-      awn_tooltip_set_font_color (tooltip, g_value_get_string (value));
+      awn_tooltip_set_font_color (tooltip, g_value_get_object (value));
       break;
 
     case PROP_BG:
-      awn_tooltip_set_background_color (tooltip, g_value_get_string (value));
+      awn_tooltip_set_background_color (tooltip, g_value_get_object (value));
       break;
 
     case PROP_ICON_OFFSET:
@@ -357,6 +356,9 @@ static void
 awn_tooltip_dispose(GObject *obj)
 {
   AwnTooltipPrivate *priv = AWN_TOOLTIP_GET_PRIVATE (obj);
+
+  desktop_agnostic_config_client_unbind_all_for_object (priv->client,
+                                                        obj, NULL);
 
   if (priv->focus)
   {
@@ -398,8 +400,13 @@ awn_tooltip_finalize(GObject *obj)
   }
   if (priv->font_color)
   {
-    g_free (priv->font_color);
+    g_object_unref (priv->font_color);
     priv->font_color = NULL;
+  }
+  if (priv->bg)
+  {
+    g_object_unref (priv->bg);
+    priv->bg = NULL;
   }
 
   G_OBJECT_CLASS (awn_tooltip_parent_class)->finalize (obj);
@@ -438,18 +445,18 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
   
   g_object_class_install_property (obj_class,
     PROP_FONT_COLOR,
-    g_param_spec_string ("tooltip_font_color",
+    g_param_spec_object ("tooltip_font_color",
                          "tooltip-font-color",
                          "Tooltip Font Color",
-                         "#FFFFFF00",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_BG,
-    g_param_spec_string ("tooltip_bg_color",
+    g_param_spec_object ("tooltip_bg_color",
                          "tooltip-bg-color",
                          "Tooltip Background Color",
-                         "#000000B3",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
@@ -492,11 +499,19 @@ static void
 awn_tooltip_init (AwnTooltip *tooltip)
 {
   AwnTooltipPrivate *priv;
+  GError *error = NULL;
   GdkScreen *screen;
   
   priv = tooltip->priv = AWN_TOOLTIP_GET_PRIVATE (tooltip);
 
-  priv->client = awn_config_client_new ();
+  priv->client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
+  if (error)
+  {
+    g_critical ("An error occurred while trying to retrieve the configuration client: %s",
+                error->message);
+    g_error_free (error);
+    return;
+  }
   priv->text = NULL;
   priv->font_name = NULL;
   priv->font_color = NULL;
@@ -617,22 +632,27 @@ ensure_tooltip (AwnTooltip *tooltip)
 {
   AwnTooltipPrivate *priv = tooltip->priv;
   gchar *normal = NULL;
+  GdkColor clr;
+  gchar *color = NULL;
   gchar *markup = NULL;
 
-  if (priv->text == NULL)
+  if (priv->text == NULL || priv->font_color == NULL)
+  {
     return;
+  }
 
   normal = g_markup_escape_text (priv->text, -1);
+  desktop_agnostic_color_get_color (priv->font_color, &clr);
+  color = gdk_color_to_string (&clr);
   markup = g_strdup_printf ("<span foreground='%s' font_desc='%s'>%s</span>",
-                            priv->font_color,
-                            priv->font_name,
-                            normal);
+                            color, priv->font_name, normal);
 
   gtk_label_set_max_width_chars (GTK_LABEL (priv->label), 120);
   gtk_label_set_ellipsize (GTK_LABEL (priv->label), PANGO_ELLIPSIZE_END);
   gtk_label_set_markup (GTK_LABEL (priv->label), markup);
 
   g_free (normal);
+  g_free (color);
   g_free (markup);
 
   if (GTK_WIDGET_MAPPED (tooltip) && GTK_IS_WIDGET (priv->focus))
@@ -840,40 +860,57 @@ awn_tooltip_set_font_name (AwnTooltip *tooltip,
 }
 
 void   
-awn_tooltip_set_font_color (AwnTooltip  *tooltip,
-                            const gchar *font_color)
+awn_tooltip_set_font_color (AwnTooltip           *tooltip,
+                            DesktopAgnosticColor *font_color)
 {
   AwnTooltipPrivate *priv;
 
   g_return_if_fail (AWN_TOOLTIP (tooltip));
-  g_return_if_fail (font_color);
   priv = tooltip->priv;
   
   if (priv->font_color)
-    g_free (priv->font_color);
+  {
+    g_object_unref (priv->font_color);
+  }
 
-  priv->font_color = g_strndup (font_color, 7);
+  if (font_color)
+  {
+    priv->font_color = g_object_ref (font_color);
+  }
+  else
+  {
+    /* use default, (opaque) white. */
+    priv->font_color = desktop_agnostic_color_new_from_string ("white", NULL);
+  }
 
   ensure_tooltip (tooltip);
 }
 
 void     
-awn_tooltip_set_background_color (AwnTooltip  *tooltip,
-                                  const gchar *bg_color)
+awn_tooltip_set_background_color (AwnTooltip           *tooltip,
+                                  DesktopAgnosticColor *bg_color)
 {
   AwnTooltipPrivate *priv;
-  GError *err = NULL;
 
   g_return_if_fail (AWN_TOOLTIP (tooltip));
-  g_return_if_fail (bg_color);
   priv = tooltip->priv;
-  
-  priv->bg = desktop_agnostic_color_new_from_string (bg_color, &err);
-  if (err)
+
+  if (priv->bg)
   {
-    g_critical ("awn_tooltip_set_background_color: %s", err->message);
-    g_error_free (err);
+    g_object_unref (priv->bg);
   }
+  
+  if (bg_color)
+  {
+    priv->bg = g_object_ref (bg_color);
+  }
+  else
+  {
+    /* use default, (translucent) black. */
+    priv->bg = desktop_agnostic_color_new_from_string ("#000000B3", NULL);
+  }
+
+  ensure_tooltip (tooltip);
 }
 
 void    

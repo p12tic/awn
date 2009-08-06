@@ -23,7 +23,6 @@
 
 #include <math.h>
 #include <libawn/awn-cairo-utils.h>
-#include <libawn/awn-config-client.h>
 
 #include "awn-background-flat.h"
 
@@ -121,7 +120,7 @@ awn_background_flat_init (AwnBackgroundFlat *bg)
 }
 
 AwnBackground * 
-awn_background_flat_new (AwnConfigClient *client, AwnPanel *panel)
+awn_background_flat_new (DesktopAgnosticConfigClient *client, AwnPanel *panel)
 {
   AwnBackground *bg;
 

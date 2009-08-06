@@ -23,7 +23,6 @@
 
 #include <gdk/gdk.h>
 #include <libawn/awn-cairo-utils.h>
-#include <libawn/awn-config-client.h>
 #include <math.h>
 
 #include "awn-background-edgy.h"
@@ -227,7 +226,7 @@ awn_background_edgy_init (AwnBackgroundEdgy *bg)
 }
 
 AwnBackground * 
-awn_background_edgy_new (AwnConfigClient *client, AwnPanel *panel)
+awn_background_edgy_new (DesktopAgnosticConfigClient *client, AwnPanel *panel)
 {
   AwnBackground *bg;
 

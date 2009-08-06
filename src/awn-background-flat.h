@@ -60,7 +60,7 @@ struct _AwnBackgroundFlatClass
 
 GType           awn_background_flat_get_type (void) G_GNUC_CONST;
 
-AwnBackground * awn_background_flat_new      (AwnConfigClient *client,
+AwnBackground * awn_background_flat_new      (DesktopAgnosticConfigClient *client,
                                               AwnPanel        *panel);
 
 G_END_DECLS

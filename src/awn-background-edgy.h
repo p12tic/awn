@@ -65,7 +65,7 @@ struct _AwnBackgroundEdgyClass
 
 GType           awn_background_edgy_get_type (void) G_GNUC_CONST;
 
-AwnBackground * awn_background_edgy_new      (AwnConfigClient *client,
+AwnBackground * awn_background_edgy_new      (DesktopAgnosticConfigClient *client,
                                               AwnPanel        *panel);
 
 G_END_DECLS

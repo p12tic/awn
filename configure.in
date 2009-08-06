@@ -16,7 +16,7 @@ AC_CONFIG_HEADERS([config.h])
 m4_define(pycairo_required_version,      1.0.2) dnl or 1.1.7
 m4_define(pygtk_required_version,        2.12.0)
 
-AM_INIT_AUTOMAKE([1.8])
+AM_INIT_AUTOMAKE([1.8 -Wno-portability])
 AM_MAINTAINER_MODE
 
 AC_SUBST([ACLOCAL_AMFLAGS], ["\${ACLOCAL_FLAGS}"])
@@ -56,6 +56,11 @@ AC_MSG_CHECKING(for pygtk defs)
 PYGTK_DEFSDIR=`$PKG_CONFIG --variable=defsdir pygtk-2.0`
 AC_SUBST(PYGTK_DEFSDIR)
 AC_MSG_RESULT($PYGTK_DEFSDIR)
+
+AC_MSG_CHECKING(for libdesktop-agnostic Python definitions directory)
+LDA_DEFSDIR=`$PKG_CONFIG --variable=defsdir desktop-agnostic`
+AC_SUBST(LDA_DEFSDIR)
+AC_MSG_RESULT($LDA_DEFSDIR)
 
 PKG_CHECK_MODULES(PYCAIRO, pycairo >= pycairo_required_version)
 AC_SUBST(PYCAIRO_CFLAGS)
@@ -131,35 +136,7 @@ MIN_WNCK_VERSION=2.22
 
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, glib-genmarshal)
 
-dnl ==============================================
-dnl Configuration backend
-dnl ==============================================
-AC_MSG_CHECKING([for config backend support])
-AC_ARG_WITH(gconf,
-            AS_HELP_STRING([--with-gconf],
-                           [Use GConf to store configuration information]),
-            [if test "$with_gconf" == "no"; then
-                # use Glib's GKeyFile - it's already pulled in.
-                CFG_MODULE=""
-                CFG_BACKEND_NAME="GKeyFile"
-                GCONF_SCHEMA_INSTALL_SOURCE="/dev/null"
-                GCONF_SCHEMA_FILE_DIR="/dev/null"
-                AC_MSG_RESULT([GKeyFile (part of Glib)])
-            fi])
-if test "$with_gconf" != "no"; then
-    CFG_MODULE="gconf-2.0"
-    CFG_BACKEND_NAME="GConf"
-    AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
-    if test x"$GCONFTOOL" = xno; then
-        AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
-    fi
-    AC_DEFINE([USE_GCONF], 1, [Use GConf to store configuration information])
-    AC_MSG_RESULT([GConf])
-fi
-AC_SUBST(CFG_BACKEND_NAME)
-AM_CONDITIONAL(USE_GCONF, test "$with_gconf" != "no")
-
-LIBRARY_MODULES="glib-2.0 >= $MIN_GLIB_VERSION gthread-2.0 gobject-2.0 gtk+-2.0 >= $MIN_GTK_VERSION gdk-2.0 >= $MIN_GTK_VERSION dbus-glib-1 gio-2.0 $CFG_MODULE desktop-agnostic"
+LIBRARY_MODULES="glib-2.0 >= $MIN_GLIB_VERSION gthread-2.0 gobject-2.0 gtk+-2.0 >= $MIN_GTK_VERSION gdk-2.0 >= $MIN_GTK_VERSION dbus-glib-1 desktop-agnostic"
 DOCK_MODULES="x11 xproto xcomposite xrender"
 TASKMANAGER_MODULES="libwnck-1.0 >= $MIN_WNCK_VERSION x11 libgtop-2.0"
 AC_SUBST(LIBRARY_MODULES)
@@ -168,14 +145,8 @@ PKG_CHECK_MODULES(AWN, [$LIBRARY_MODULES])
 PKG_CHECK_MODULES(DOCK, [$DOCK_MODULES])
 PKG_CHECK_MODULES(TASKMANAGER, [$LIBRARY_MODULES $TASKMANAGER_MODULES])
 
-dnl =============================================
-dnl Startup notification check (eggdesktopfile)
-dnl =============================================
-
-old_LIBS="$LIBS"
-LIBS="$LIBS $AWN_LIBS"
-AC_CHECK_FUNCS(gdk_x11_display_broadcast_startup_message)
-LIBS="$old_LIBS"
+LDA_BINDIR="`$PKG_CONFIG --variable=exec_prefix desktop-agnostic`/bin"
+AC_SUBST(LDA_BINDIR)
 
 dnl ==============================================
 dnl DBus
@@ -188,6 +159,12 @@ dnl ==============================================
 dnl GConf
 dnl ==============================================
 AM_GCONF_SOURCE_2
+if test "$enable_schemas_install" != "no"; then
+    AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+    if test x"$GCONFTOOL" = xno; then
+        AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
+    fi
+fi
 
 dnl ==============================================
 dnl Miscellaneous
@@ -233,12 +210,11 @@ bindings/vala/Makefile
 data/Makefile
 data/active/Makefile
 data/avant-window-navigator.desktop.in
-data/awn.schema-ini
+data/avant-window-navigator.schema-ini
 doc/Makefile
 doc/reference/Makefile
 libawn/Makefile
 libawn/anims/Makefile
-libawn/egg/Makefile
 po/Makefile.in
 shave/shave
 shave/shave-libtool
@@ -254,8 +230,6 @@ echo "             Avant Window Navigator $VERSION"
 echo "             ============================"
 echo ""
 echo "                   prefix:   ${prefix}"
-echo ""
-echo "    Configuration Backend:   $CFG_BACKEND_NAME"
 echo ""
 echo "             Vala Support:   ${with_vala}"
 echo ""

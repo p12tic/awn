@@ -129,21 +129,6 @@
   (gtype-id "AWN_TYPE_TOOLTIP")
 )
 
-;; Boxed types ...
-(define-boxed Config
-  (in-module "Awn")
-  (c-name "AwnConfigClient")
-  (gtype-id "AWN_TYPE_CONFIG_CLIENT")
-)
-
-(define-boxed DesktopItem
-  (in-module "Awn")
-  (c-name "AwnDesktopItem")
-  (gtype-id "AWN_TYPE_DESKTOP_ITEM")
-  (copy-func "awn_desktop_item_copy")
-  (release-func "awn_desktop_item_free")
-)
-
 ;; Enumerations and flags ...
 
 (define-flags CairoRoundCorners
@@ -215,35 +200,6 @@
   )
 )
 
-(define-enum ConfigListType
-  (in-module "Awn")
-  (c-name "AwnConfigListType")
-  (gtype-id "AWN_TYPE_CONFIG_LIST_TYPE")
-  (values
-    '("boolean" "AWN_CONFIG_LIST_TYPE_BOOL")
-    '("float" "AWN_CONFIG_LIST_TYPE_FLOAT")
-    '("integer" "AWN_CONFIG_LIST_TYPE_INT")
-    '("string" "AWN_CONFIG_LIST_TYPE_STRING")
-  )
-)
-
-(define-enum ConfigValueType
-  (in-module "Awn")
-  (c-name "AwnConfigValueType")
-  (gtype-id "AWN_TYPE_CONFIG_VALUE_TYPE")
-  (values
-    '("null" "AWN_CONFIG_VALUE_TYPE_NULL")
-    '("boolean" "AWN_CONFIG_VALUE_TYPE_BOOL")
-    '("float" "AWN_CONFIG_VALUE_TYPE_FLOAT")
-    '("integer" "AWN_CONFIG_VALUE_TYPE_INT")
-    '("string" "AWN_CONFIG_VALUE_TYPE_STRING")
-    '("list_boolean" "AWN_CONFIG_VALUE_TYPE_LIST_BOOL")
-    '("list_float" "AWN_CONFIG_VALUE_TYPE_LIST_FLOAT")
-    '("list_integer" "AWN_CONFIG_VALUE_TYPE_LIST_INT")
-    '("list_string" "AWN_CONFIG_VALUE_TYPE_LIST_STRING")
-  )
-)
-
 ;; From awn-dialog.h
 
 (define-function dialog_new
@@ -255,209 +211,6 @@
     '("anchor-applet" (optional) (argname "anchor-applet"))
   )
 )
-
-;; From awn-config-client.h
-
-(define-function config_client_new
-  (c-name "awn_config_client_new")
-  (is-constructor-of "AwnConfigClient")
-  (return-type "AwnConfigClient*")
-)
-
-(define-method clear
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_clear")
-  (return-type "none")
-  (parameters
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method ensure_group
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_ensure_group")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "group")
-  )
-)
-
-(define-method notify_add
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_notify_add")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("AwnConfigClientNotifyFunc" "callback")
-    '("gpointer" "data")
-  )
-)
-
-(define-method exists
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_entry_exists")
-  (return-type "gboolean")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-  )
-)
-
-(define-method get_value_type
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_get_value_type")
-  (return-type "AwnConfigValueType")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method set_bool
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_set_bool")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("gboolean" "the_bool")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method set_int
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_set_int")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("gint" "the_int")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method set_string
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_set_string")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("const-gchar*" "the_string")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method set_float
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_set_float")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("gdouble" "the_float")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method set_list
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_set_list")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("GConfValueType" "list_type")
-    '("GSList*" "list")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method get_bool
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_get_bool")
-  (return-type "gboolean")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method get_int
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_get_int")
-  (return-type "gint")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method get_string
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_get_string")
-  (return-type "gchar*")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method get_float
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_get_float")
-  (return-type "gfloat")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method get_list
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_get_list")
-  (return-type "GSList*")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("AwnConfigListType" "list_type")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-function config_key_lock_open
-  (c-name "awn_config_client_key_lock_open")
-  (return-type "int")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-  )
-)
-
-(define-function config_key_lock
-  (c-name "awn_config_client_key_lock")
-  (return-type "none")
-  (parameters
-    '("int" "fd")
-    '("int" "operation")
-  )
-)
-
-(define-function config_key_lock_close
-  (c-name "awn_config_client_key_lock_close")
-  (return-type "none")
-  (parameters
-    '("int" "fd")
-  )
-)
-
 
 ;; From awn-alignment.h
 
@@ -776,161 +529,72 @@
   )
 )
 
+(define-function awn_cairo_set_source_color
+  (c-name "awn_cairo_set_source_color")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+    '("DesktopAgnosticColor*" "color")
+  )
+)
+
+(define-function awn_cairo_set_source_color_with_alpha_multiplier
+  (c-name "awn_cairo_set_source_color_with_alpha_multiplier")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+    '("DesktopAgnosticColor*" "color")
+    '("gdouble" "multiplier")
+  )
+)
+
+(define-function awn_cairo_set_source_color_with_multipliers
+  (c-name "awn_cairo_set_source_color_with_multipliers")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+    '("DesktopAgnosticColor*" "color")
+    '("gdouble" "color_multiplier")
+    '("gdouble" "alpha_multiplier")
+  )
+)
+
+
+;; From awn-config.h
+
+(define-function awn_config_get_default
+  (c-name "awn_config_get_default")
+  (return-type "DesktopAgnosticConfigClient*")
+  (parameters
+    '("gint" "panel_id")
+    '("GError**" "error")
+  )
+)
+
+(define-function awn_config_get_default_for_applet
+  (c-name "awn_config_get_default_for_applet")
+  (return-type "DesktopAgnosticConfigClient*")
+  (parameters
+    '("AwnApplet*" "applet")
+    '("GError**" "error")
+  )
+)
+
+(define-function awn_config_get_default_for_applet_by_info
+  (c-name "awn_config_get_default_for_applet_by_info")
+  (return-type "DesktopAgnosticConfigClient*")
+  (parameters
+    '("const-gchar*" "name")
+    '("const-gchar*" "uid")
+    '("GError**" "error")
+  )
+)
+
 
 
 ;; From awn-defines.h
 
 
-
-;; From awn-desktop-item.h
-
-(define-function awn_desktop_item_get_type
-  (c-name "awn_desktop_item_get_type")
-  (return-type "GType")
-)
-
-(define-function awn_desktop_item_new
-  (c-name "awn_desktop_item_new")
-  (is-constructor-of "AwnDesktopItem")
-  (return-type "AwnDesktopItem*")
-  (parameters
-    '("gchar*" "filename")
-  )
-)
-
-(define-method get_filename
-  (c-name "awn_desktop_item_get_filename")
-  (of-object "AwnDesktopItem")
-  (return-type "const-gchar*")
-)
-
-(define-method get_item_type
-  (c-name "awn_desktop_item_get_item_type")
-  (of-object "AwnDesktopItem")
-  (return-type "gchar*")
-)
-
-(define-method set_item_type
-  (c-name "awn_desktop_item_set_item_type")
-  (of-object "AwnDesktopItem")
-  (return-type "none")
-  (parameters
-    '("gchar*" "item_type")
-  )
-)
-
-(define-method get_icon
-  (c-name "awn_desktop_item_get_icon")
-  (of-object "AwnDesktopItem")
-  (return-type "GdkPixbuf*")
-  (parameters
-    '("guint" "size")
-  )
-)
-
-(define-method set_icon
-  (c-name "awn_desktop_item_set_icon_name")
-  (of-object "AwnDesktopItem")
-  (return-type "none")
-  (parameters
-    '("gchar*" "icon")
-  )
-)
-
-(define-method get_name
-  (c-name "awn_desktop_item_get_name")
-  (of-object "AwnDesktopItem")
-  (return-type "gchar*")
-)
-
-(define-method set_name
-  (c-name "awn_desktop_item_set_name")
-  (of-object "AwnDesktopItem")
-  (return-type "none")
-  (parameters
-    '("gchar*" "name")
-  )
-)
-
-(define-method get_exec
-  (c-name "awn_desktop_item_get_exec")
-  (of-object "AwnDesktopItem")
-  (return-type "gchar*")
-)
-
-(define-method set_exec
-  (c-name "awn_desktop_item_set_exec")
-  (of-object "AwnDesktopItem")
-  (return-type "none")
-  (parameters
-    '("gchar*" "exec")
-  )
-)
-
-(define-method get_string
-  (c-name "awn_desktop_item_get_string")
-  (of-object "AwnDesktopItem")
-  (return-type "gchar*")
-  (parameters
-    '("gchar*" "key")
-  )
-)
-
-(define-method set_string
-  (c-name "awn_desktop_item_set_string")
-  (of-object "AwnDesktopItem")
-  (return-type "none")
-  (parameters
-    '("gchar*" "key")
-    '("gchar*" "value")
-  )
-)
-
-(define-method get_localestring
-  (c-name "awn_desktop_item_get_localestring")
-  (of-object "AwnDesktopItem")
-  (return-type "gchar*")
-  (parameters
-    '("gchar*" "key")
-  )
-)
-
-(define-method set_localestring
-  (c-name "awn_desktop_item_set_localestring")
-  (of-object "AwnDesktopItem")
-  (return-type "none")
-  (parameters
-    '("gchar*" "key")
-    '("gchar*" "locale")
-    '("gchar*" "value")
-  )
-)
-
-(define-method exists
-  (c-name "awn_desktop_item_exists")
-  (of-object "AwnDesktopItem")
-  (return-type "gboolean")
-)
-
-(define-method launch
-  (c-name "awn_desktop_item_launch")
-  (of-object "AwnDesktopItem")
-  (return-type "gint")
-  (parameters
-    '("GSList*" "documents")
-    '("GError**" "err")
-  )
-)
-
-(define-method save
-  (c-name "awn_desktop_item_save")
-  (of-object "AwnDesktopItem")
-  (return-type "none")
-  (parameters
-    '("gchar*" "new_filename")
-    '("GError**" "err")
-  )
-)
 
 ;; From awn-effects.h
 
@@ -1401,7 +1065,7 @@
   (c-name "awn_tooltip_set_font_color")
   (return-type "none")
   (parameters
-    '("const-gchar*" "font_color")
+    '("DesktopAgnosticColor*" "font_color")
   )
 )
 
@@ -1410,7 +1074,7 @@
   (c-name "awn_tooltip_set_background_color")
   (return-type "none")
   (parameters
-    '("const-gchar*" "bg_color")
+    '("DesktopAgnosticColor*" "bg_color")
   )
 )
 
@@ -1571,8 +1235,6 @@
     '("GtkWidget*" "widget")
   )
 )
-
-;; From awn-vfs.h
 
 (define-function vfs_init
   (c-name "awn_vfs_init")

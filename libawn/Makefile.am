@@ -1,4 +1,4 @@
-SUBDIRS = egg anims
+SUBDIRS = anims
 
 include $(top_srcdir)/Makefile.shave
 MARSHAL_PREFIX = libawn
@@ -33,9 +33,7 @@ public_headers = \
 	awn-applet.h \
 	awn-applet-simple.h \
 	awn-cairo-utils.h \
-	awn-config-bridge.h \
-	awn-config-client.h \
-	awn-desktop-item.h \
+	awn-config.h \
 	awn-dialog.h \
 	awn-effects.h \
 	awn-icon.h \
@@ -54,7 +52,6 @@ public_headers = \
 	awn-themed-icon.h \
 	awn-tooltip.h \
 	awn-utils.h \
-	awn-vfs.h \
 	libawn.h
 	$(NULL)
 
@@ -71,7 +68,7 @@ source_c = \
 	awn-applet.c \
 	awn-applet-simple.c \
 	awn-cairo-utils.c \
-	awn-config-bridge.c \
+	awn-config.c \
 	awn-dialog.c \
 	awn-effects.c \
 	awn-effects-ops-new.c \
@@ -92,16 +89,7 @@ source_c = \
 	awn-themed-icon.c \
 	awn-tooltip.c \
 	awn-utils.c \
-	awn-vfs.c \
 	$(NULL)
-
-source_c += awn-desktop-item-egg.c
-
-if USE_GCONF
-source_c += awn-config-client-gconf.c
-else
-source_c += awn-config-client-gkeyfile.c
-endif
 
 libawninc_HEADERS = \
 	$(public_headers) \
@@ -116,7 +104,6 @@ libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
 libawn_la_LDFLAGS = -version-info 0:1:0
 
 libawn_la_LIBADD += \
-	$(top_builddir)/libawn/egg/libeggdesktopfile.la \
 	$(top_builddir)/libawn/anims/libawn-effects-anims.la \
 	$(NULL)
 
@@ -140,7 +127,5 @@ awn-enum-types.c: awn-enum-types.h
 	rm -f xgen-cetc
 
 CLEANFILES = $(STAMPFILES) $(BUILT_SOURCES)
-
-EXTRA_DIST=awn-config-client-shared.c
 
 # vim: set ts=8 sts=8 sw=8 :

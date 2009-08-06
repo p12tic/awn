@@ -23,7 +23,6 @@
 
 #include <libawn/libawn.h>
 #include <libawn/awn-utils.h>
-#include <math.h>
 
 #include "awn-defines.h"
 #include "awn-applet-manager.h"
@@ -41,7 +40,7 @@ G_DEFINE_TYPE (AwnAppletManager, awn_applet_manager, GTK_TYPE_BOX)
 
 struct _AwnAppletManagerPrivate
 {
-  AwnConfigClient *client;
+  DesktopAgnosticConfigClient *client;
 
   AwnOrientation   orient;
   gint             offset;
@@ -114,41 +113,51 @@ awn_applet_manager_constructed (GObject *object)
 {
   AwnAppletManager        *manager;
   AwnAppletManagerPrivate *priv;
-  AwnConfigBridge         *bridge;
+  GValueArray *empty_array;
   
   priv = AWN_APPLET_MANAGER_GET_PRIVATE (object);
   manager = AWN_APPLET_MANAGER (object);
 
-  /* Hook everything up the config client */
-  bridge = awn_config_bridge_get_default ();
+  /* Hook everything up to the config client */
 
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_ORIENT,
-                          object, "orient");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_SIZE,
-                          object, "size");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_OFFSET,
-                          object, "offset");
-  awn_config_bridge_bind_list (bridge, priv->client,
-                               AWN_GROUP_PANEL, AWN_PANEL_APPLET_LIST,
-                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                               object, "applet_list");
-  awn_config_bridge_bind_list (bridge, priv->client,
-                               AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
-                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                               object, "ua_list");
-  awn_config_bridge_bind_list (bridge, priv->client,
-                               AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
-                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                               object, "ua_active_list");
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_ORIENT,
+                                       object, "orient", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_SIZE,
+                                       object, "size", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_OFFSET,
+                                       object, "offset", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_APPLET_LIST,
+                                       object, "applet_list", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
+                                       object, "ua_list", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
+                                       object, "ua_active_list", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
   /*
   ua_active_list should be empty when awn starts...
    */
-  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
-                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                               NULL, NULL);
+  empty_array = g_value_array_new (0);
+  desktop_agnostic_config_client_set_list (priv->client,
+                                           AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
+                                           empty_array, NULL);
+  g_value_array_free (empty_array);
 }
 
 static void
@@ -180,7 +189,7 @@ awn_applet_manager_get_property (GObject    *object,
   switch (prop_id)
   {
     case PROP_CLIENT:
-      g_value_set_pointer (value, priv->client);
+      g_value_set_object (value, priv->client);
       break;
     case PROP_ORIENT:
       g_value_set_int (value, priv->orient);
@@ -192,19 +201,40 @@ awn_applet_manager_get_property (GObject    *object,
       g_value_set_int (value, priv->size);
       break;
     case PROP_APPLET_LIST:
-      g_value_set_pointer (value, priv->applet_list);
+      g_value_take_boxed (value, awn_utils_gslist_to_gvaluearray (priv->applet_list));
       break;
     case PROP_UA_LIST:
-      g_value_set_pointer (value, priv->ua_list);
+      g_value_take_boxed (value, awn_utils_gslist_to_gvaluearray (priv->ua_list));
       break;
     case PROP_UA_ACTIVE_LIST:
-      g_value_set_pointer (value, priv->ua_active_list);
+      g_value_take_boxed (value, awn_utils_gslist_to_gvaluearray (priv->ua_active_list));
       break;
     case PROP_EXPANDS:
       g_value_set_boolean (value, priv->expands);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+/**
+ * Sets a an GSList<string> property from a GValueArray.
+ */
+static void
+set_list_property (const GValue *value, GSList **list)
+{
+  GValueArray *array;
+
+  free_list (*list);
+  array = (GValueArray*)g_value_get_boxed (value);
+  if (array)
+  {
+    for (guint i = 0; i < array->n_values; i++)
+    {
+      GValue *val = g_value_array_get_nth (array, i);
+      *list = g_slist_append (*list, g_value_dup_string (val));
+    }
+    // don't free array, it will be done automatically
   }
 }
 
@@ -223,7 +253,7 @@ awn_applet_manager_set_property (GObject      *object,
   switch (prop_id)
   {
     case PROP_CLIENT:
-      priv->client =  g_value_get_pointer (value);
+      priv->client =  g_value_get_object (value);
       break;
     case PROP_ORIENT:
       awn_applet_manager_set_orient (manager, g_value_get_int (value));
@@ -235,20 +265,17 @@ awn_applet_manager_set_property (GObject      *object,
       awn_applet_manager_set_size (manager, g_value_get_int (value));
       break;
     case PROP_APPLET_LIST:
-      free_list (priv->applet_list);
-      priv->applet_list = g_value_get_pointer (value);
+      set_list_property (value, &priv->applet_list);
       awn_applet_manager_refresh_applets (manager);
       break;
     case PROP_UA_LIST:
-      free_list (priv->ua_list);
-      priv->ua_list = g_value_get_pointer (value);
+      set_list_property (value, &priv->ua_list);
       awn_applet_manager_refresh_applets (manager);
       break;
     case PROP_UA_ACTIVE_LIST:
-      free_list (priv->ua_active_list);
-      priv->ua_active_list = g_value_get_pointer (value);
+      set_list_property (value, &priv->ua_active_list);
       awn_applet_manager_refresh_applets (manager);
-      break;      
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -278,6 +305,9 @@ awn_applet_manager_dispose (GObject *object)
     priv->klass = NULL;
   }
 
+  desktop_agnostic_config_client_unbind_all_for_object (priv->client,
+                                                        object, NULL);
+
   G_OBJECT_CLASS (awn_applet_manager_parent_class)->dispose (object);
 }
 
@@ -298,10 +328,11 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
   /* Add properties to the class */
   g_object_class_install_property (obj_class,
     PROP_CLIENT,
-    g_param_spec_pointer ("client",
-                          "Client",
-                          "The AwnConfigClient",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+    g_param_spec_object ("client",
+                         "Client",
+                         "The configuration client",
+                         DESKTOP_AGNOSTIC_CONFIG_TYPE_CLIENT,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_ORIENT,
@@ -329,24 +360,27 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
 
   g_object_class_install_property (obj_class,
     PROP_APPLET_LIST,
-    g_param_spec_pointer ("applet_list",
-                          "Applet List",
-                          "The list of applets for this panel",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+    g_param_spec_boxed ("applet_list",
+                        "Applet List",
+                        "The list of applets for this panel",
+                        G_TYPE_VALUE_ARRAY,
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_UA_LIST,
-    g_param_spec_pointer ("ua_list",
-                          "UA List",
-                          "The rememebered screenlet positions for this panel",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+    g_param_spec_boxed ("ua_list",
+                        "UA List",
+                        "The remembered screenlet positions for this panel",
+                        G_TYPE_VALUE_ARRAY,
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_UA_ACTIVE_LIST,
-    g_param_spec_pointer ("ua-active-list",
-                          "UA Active List",
-                          "The list of active screenlets for this panel",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+    g_param_spec_boxed ("ua-active-list",
+                        "UA Active List",
+                        "The list of active screenlets for this panel",
+                        G_TYPE_VALUE_ARRAY,
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_EXPANDS,
@@ -396,7 +430,7 @@ awn_applet_manager_init (AwnAppletManager *manager)
 }
 
 GtkWidget *
-awn_applet_manager_new_from_config (AwnConfigClient *client)
+awn_applet_manager_new_from_config (DesktopAgnosticConfigClient *client)
 {
   GtkWidget *manager;
   
@@ -605,6 +639,7 @@ free_list (GSList *list)
   {
     g_slist_free (list);
   }
+  list = NULL;
 }
 
 /*
@@ -872,6 +907,7 @@ awn_ua_add_applet ( AwnAppletManager *manager,
   gchar * ua_list_entry = NULL;
   GtkWidget  *ua_alignment;
   double ua_ratio;  
+  GValueArray *array;
 
   /*
    Is there an entry in ua_list for this particular screenlet instance(name).
@@ -949,14 +985,19 @@ awn_ua_add_applet ( AwnAppletManager *manager,
       i--;
     }
   }
-  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
-                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                               priv->ua_list, NULL);
+  array = awn_utils_gslist_to_gvaluearray (priv->ua_list);
+  desktop_agnostic_config_client_set_list (priv->client,
+                                           AWN_GROUP_PANEL, AWN_PANEL_UA_LIST,
+                                           array, NULL);
+  g_value_array_free (array);
   /*Add our newly active screenlet to thend of the active list */
   priv->ua_active_list = g_slist_append (priv->ua_active_list,g_strdup(ua_list_entry));  
-  awn_config_client_set_list (priv->client,AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
-                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                               priv->ua_active_list, NULL);
+  array = awn_utils_gslist_to_gvaluearray (priv->ua_active_list);
+  desktop_agnostic_config_client_set_list (priv->client,
+                                           AWN_GROUP_PANEL,
+                                           AWN_PANEL_UA_ACTIVE_LIST,
+                                           array, NULL);
+  g_value_array_free (array);
   
   return TRUE;
 }

@@ -18,9 +18,8 @@
  */
 
 #include "awn-label.h"
-#include "awn-config-client.h"
-#include "awn-config-bridge.h"
 #include "awn-cairo-utils.h"
+#include "awn-config.h"
 
 G_DEFINE_TYPE (AwnLabel, awn_label, GTK_TYPE_LABEL)
 
@@ -53,6 +52,29 @@ enum
   PROP_TEXT_OUTLINE_COLOR
 };
 
+static gboolean
+do_bind_property (DesktopAgnosticConfigClient *client, const gchar *key,
+                  GObject *object, const gchar *property)
+{
+  GError *error = NULL;
+
+  desktop_agnostic_config_client_bind (client,
+                                       "theme", key,
+                                       object, property, TRUE, 
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       &error);
+  if (error)
+  {
+    g_critical ("Could not bind property to config key: %s", error->message);
+    g_error_free (error);
+    return FALSE;
+  }
+  else
+  {
+    return TRUE;
+  }
+}
+
 static void
 awn_label_constructed (GObject *object)
 {
@@ -61,21 +83,36 @@ awn_label_constructed (GObject *object)
     G_OBJECT_CLASS (awn_label_parent_class)->constructed (object);
   }
 
-  AwnConfigClient *client = awn_config_client_new ();
-  AwnConfigBridge *bridge = awn_config_bridge_get_default ();
+  GError *error = NULL;
+  DesktopAgnosticConfigClient *client;
 
-  awn_config_bridge_bind (bridge, client,
-                          "theme", "icon_text_color",
-                          object, "text-color");
-  awn_config_bridge_bind (bridge, client,
-                          "theme", "icon_text_outline_color",
-                          object, "text-outline-color");
-  awn_config_bridge_bind (bridge, client,
-                          "theme", "icon_font_mode",
-                          object, "font-mode");
-  awn_config_bridge_bind (bridge, client,
-                          "theme", "icon_text_outline_width",
-                          object, "text-outline-width");
+  client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
+
+  if (error)
+  {
+    g_critical ("Cannot obtain config object: %s", error->message);
+    g_error_free (error);
+    return;
+  }
+
+  if (!do_bind_property (client, "icon_text_color", object, "text-color"))
+  {
+    return;
+  }
+  if (!do_bind_property (client, "icon_text_outline_color", object,
+                         "text-outline-color"))
+  {
+    return;
+  }
+  if (!do_bind_property (client, "icon_font_mode", object, "font-mode"))
+  {
+    return;
+  }
+  if (!do_bind_property (client, "icon_text_outline_width", object,
+                         "text-outline-width"))
+  {
+    return;
+  }
 }
 
 static void
@@ -93,12 +130,10 @@ awn_label_get_property (GObject *object, guint property_id,
       g_value_set_double (value, priv->text_outline_width);
       break;
     case PROP_TEXT_COLOR:
-      g_value_take_string (value, priv->text_color ?
-         desktop_agnostic_color_to_string (priv->text_color) : NULL);
+      g_value_set_object (value, priv->text_color);
       break;
     case PROP_TEXT_OUTLINE_COLOR:
-      g_value_take_string (value, priv->text_outline_color ?
-         desktop_agnostic_color_to_string (priv->text_outline_color) : NULL);
+      g_value_set_object (value, priv->text_outline_color);
       break;
 
   default:
@@ -112,7 +147,6 @@ awn_label_set_property (GObject *object, guint property_id,
 {
   AwnLabelPrivate *priv = AWN_LABEL_GET_PRIVATE (object);
   GtkWidget *widget = GTK_WIDGET (object);
-  GError *err = NULL;
 
   switch (property_id)
   {
@@ -130,12 +164,9 @@ awn_label_set_property (GObject *object, guint property_id,
         g_object_unref (priv->text_color);
         priv->text_color = NULL;
       }
-      priv->text_color =
-        desktop_agnostic_color_new_from_string (g_value_get_string (value),
-                                                &err);
-      if (err)
+      priv->text_color = g_value_dup_object (value);
+      if (!priv->text_color)
       {
-        g_error_free (err);
         gtk_widget_modify_fg (widget, GTK_STATE_NORMAL, NULL);
         priv->text_color =
           desktop_agnostic_color_new (&widget->style->fg[GTK_STATE_NORMAL],
@@ -149,12 +180,9 @@ awn_label_set_property (GObject *object, guint property_id,
         g_object_unref (priv->text_outline_color);
         priv->text_outline_color = NULL;
       }
-      priv->text_outline_color =
-        desktop_agnostic_color_new_from_string (g_value_get_string (value),
-                                                &err);
-      if (err)
+      priv->text_outline_color = g_value_dup_object (value);
+      if (!priv->text_outline_color)
       {
-        g_error_free (err);
         priv->text_outline_color =
           desktop_agnostic_color_new (&widget->style->bg[GTK_STATE_NORMAL],
                                       G_MAXUSHORT);
@@ -272,17 +300,17 @@ awn_label_class_init (AwnLabelClass *klass)
 
   GParamSpec *pspec;
 
-  pspec = g_param_spec_string ("text-color",
+  pspec = g_param_spec_object ("text-color",
                                "Text color",
                                "Text color",
-                               "",
+                               DESKTOP_AGNOSTIC_TYPE_COLOR,
                                G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_TEXT_COLOR, pspec);
 
-  pspec = g_param_spec_string ("text-outline-color",
+  pspec = g_param_spec_object ("text-outline-color",
                                "Text Outline Color",
                                "Text outline color",
-                               "",
+                               DESKTOP_AGNOSTIC_TYPE_COLOR,
                                G_PARAM_READWRITE);
   g_object_class_install_property (object_class,
                                    PROP_TEXT_OUTLINE_COLOR, pspec);

@@ -2,6 +2,8 @@ SUBDIRS = active
 
 APP_ICON_NAME = avant-window-navigator
 include $(top_srcdir)/Makefile.app-icons
+include $(top_srcdir)/Makefile.shave
+include $(top_srcdir)/Makefile.schemas
 
 # desktop file
 
@@ -39,29 +41,9 @@ pkgdir = $(pkgdatadir)
 
 # config-related
 
-if USE_GCONF
-schemasdir       = @GCONF_SCHEMA_FILE_DIR@
-schemas_in_files = awn.schemas.in
-schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
+schema_DATA = avant-window-navigator.schema-ini
 
-awn.schemas.in: awn.schema-ini
-	$(top_srcdir)/data/awn-schema-to-gconf $< $@
-
-@INTLTOOL_SCHEMAS_RULE@
-
-if GCONF_SCHEMAS_INSTALL
-install-gconf-schemas: $(schemas_DATA)
-	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(schemas_DATA)
-else
-install-gconf-schemas:
-endif
-else
-install-gconf-schemas:
-endif
-schemadir = $(pkgdatadir)/schemas
-schema_DATA = awn.schema-ini
-
-dist_bin_SCRIPTS = awn-schema-to-gconf awn-applets-migration
+dist_bin_SCRIPTS = awn-applets-migration
 
 # global
 
@@ -71,6 +53,6 @@ uninstall-local:
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/24x24/apps/avant-window-navigator.png
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/avant-window-navigator.png
 
-EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini awn-themed-icon-ui.glade
+EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in avant-window-navigator.schema-ini awn-themed-icon-ui.glade
 
-CLEANFILES = $(desktop_DATA) $(desktop_DATA).in awn.schemas awn.schemas.in
+CLEANFILES = $(desktop_DATA) $(desktop_DATA).in avant-window-navigator.schemas avant-window-navigator.schemas.in

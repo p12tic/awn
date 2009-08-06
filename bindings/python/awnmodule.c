@@ -24,11 +24,6 @@
 #include <pygobject.h>
 #include <cairo/cairo.h>
 #include <pycairo.h>
-#ifdef USE_GCONF
-#include <gconf/gconf.h>
-#include <gconf/gconf-client.h>
-#include <gconf/gconf-value.h>
-#endif
 #include <gtk/gtk.h>
 #include <libawn/awn-applet.h>
 #include <libawn/awn-applet-simple.h>

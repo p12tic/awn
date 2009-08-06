@@ -27,6 +27,7 @@
 #include <libwnck/libwnck.h>
 #include <glib/gi18n.h>
 
+#include <libdesktop-agnostic/fdo.h>
 #undef G_DISABLE_SINGLE_INCLUDES
 #include <glibtop/procargs.h>
 #include <glibtop/procuid.h>
@@ -48,13 +49,13 @@ G_DEFINE_TYPE (TaskLauncher, task_launcher, TASK_TYPE_ITEM)
 
 struct _TaskLauncherPrivate
 {
-  gchar          *path;
-  AwnDesktopItem *item;
+  gchar *path;
+  DesktopAgnosticFDODesktopEntry *entry;
 
-  gchar *name;
-  gchar *exec;
-  gchar *icon_name;
-  gint   pid;
+  const gchar *name;
+  const gchar *exec;
+  const gchar *icon_name;
+  GPid   pid;
   glong timestamp;
   
   GtkWidget     *menu;
@@ -184,7 +185,7 @@ task_launcher_init (TaskLauncher *launcher)
   priv = launcher->priv = TASK_LAUNCHER_GET_PRIVATE (launcher);
   
   priv->path = NULL;
-  priv->item = NULL;
+  priv->entry = NULL;
 }
 
 TaskItem * 
@@ -214,43 +215,53 @@ static void
 task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
 {
   TaskLauncherPrivate *priv;
-  TaskSettings * s = task_settings_get_default ();
+  DesktopAgnosticVFSFile *file;
+  GError *error = NULL;
   GdkPixbuf *pixbuf;
-  gchar * exec_key = NULL;
-  gchar * needle = NULL;
  
   g_return_if_fail (TASK_IS_LAUNCHER (launcher));
   priv = launcher->priv;
 
   priv->path = g_strdup (path);
 
-  priv->item = awn_desktop_item_new (path);
+  file = desktop_agnostic_vfs_file_new_for_path (path, &error);
 
-  if (priv->item == NULL)
-    return;
-
-  priv->special_id = get_special_id_from_desktop(priv->item);
-  priv->name = awn_desktop_item_get_name (priv->item);
-
-  exec_key = g_strstrip (awn_desktop_item_get_exec (priv->item) );
-  
-  /*do we have have any % chars? if so... then find the first one , 
-   and truncate
-   
-   There is an open question if we should remove any of other command line 
-   args... for now leaving things alone as long as their is no %
-   */
-  needle = strchr (exec_key,'%');
-  if (needle)
+  if (error)
   {
-	  *needle = '\0';
-	  g_strstrip (exec_key);
+    g_critical ("Error when trying to load the launcher: %s", error->message);
+    g_error_free (error);
+    return;
   }
-  priv->exec = exec_key;
-  priv->icon_name = awn_desktop_item_get_icon_name (priv->item);
+
+  if (file == NULL || !desktop_agnostic_vfs_file_exists (file))
+  {
+    g_critical ("File not found: '%s'", path);
+    return;
+  }
+
+  priv->entry = desktop_agnostic_fdo_desktop_entry_new_for_file (file, &error);
+
+  if (error)
+  {
+    g_critical ("Error when trying to load the launcher: %s", error->message);
+    g_error_free (error);
+    return;
+  }
+
+  if (priv->entry == NULL)
+  {
+    return;
+  }
+
+  priv->special_id = get_special_id_from_desktop(priv->entry);
+  priv->name = desktop_agnostic_fdo_desktop_entry_get_name (priv->entry);
+
+  priv->exec = g_strstrip (desktop_agnostic_fdo_desktop_entry_get_string (priv->entry, "Exec"));
+  
+  priv->icon_name = desktop_agnostic_fdo_desktop_entry_get_icon (priv->entry);
 
   task_item_emit_name_changed (TASK_ITEM (launcher), priv->name);
-  pixbuf = awn_desktop_item_get_icon (priv->item, s->panel_size);
+  pixbuf = _get_icon (TASK_ITEM (launcher));
   task_item_emit_icon_changed (TASK_ITEM (launcher), pixbuf);
   g_object_unref (pixbuf);
   task_item_emit_visible_changed (TASK_ITEM (launcher), TRUE);
@@ -271,9 +282,32 @@ _get_name (TaskItem *item)
 static GdkPixbuf * 
 _get_icon (TaskItem *item)
 {
+  TaskLauncherPrivate *priv = TASK_LAUNCHER (item)->priv;
   TaskSettings *s = task_settings_get_default ();
+  GError *error = NULL;
+  GdkPixbuf *pixbuf = NULL;
 
-  return awn_desktop_item_get_icon (TASK_LAUNCHER (item)->priv->item, s->panel_size);
+  if (g_path_is_absolute (priv->icon_name))
+  {
+    pixbuf = gdk_pixbuf_new_from_file_at_scale (priv->icon_name,
+                                                s->panel_size, s->panel_size,
+                                                TRUE, &error);
+  }
+  else
+  {
+    GtkIconTheme *icon_theme = gtk_icon_theme_get_default ();
+
+    pixbuf = gtk_icon_theme_load_icon (icon_theme, priv->icon_name,
+                                       s->panel_size, 0, &error);
+  }
+  if (error)
+  {
+    g_warning ("The launcher '%s' could not load the icon '%s': %s",
+               priv->path, priv->icon_name, error->message);
+    g_error_free (error);
+    return NULL;
+  }
+  return pixbuf;
 }
 
 static gboolean
@@ -467,7 +501,7 @@ _match (TaskItem *item,
       /* is the launcher pid set?*/
       if (priv->pid)
       {
-        gchar * name = awn_desktop_item_get_name (priv->item);
+        gchar *name = desktop_agnostic_fdo_desktop_entry_get_name (priv->entry);
         GStrv tokens = g_strsplit (name, " ",-1);
         if (tokens && tokens[0] && (strlen (tokens[0])>5) )
         {
@@ -513,10 +547,12 @@ _left_click (TaskItem *item, GdkEventButton *event)
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
 
-  priv->pid = awn_desktop_item_launch (priv->item, NULL, &error);
+  priv->pid = 
+    desktop_agnostic_fdo_desktop_entry_launch (priv->entry,
+                                               0, NULL, &error);
   g_get_current_time (&timeval);
   priv->timestamp = timeval.tv_sec;
-  
+
 #ifdef DEBUG  
   g_debug ("%s: current time = %ld",__func__,timeval.tv_sec);  
   g_debug ("%s: launch pid = %d",__func__,priv->pid);
@@ -579,7 +615,8 @@ _middle_click (TaskItem *item, GdkEventButton *event)
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
 
-  priv->pid = awn_desktop_item_launch (priv->item, NULL, &error);
+  priv->pid = desktop_agnostic_fdo_desktop_entry_launch (priv->entry, 0,
+                                                         NULL, &error);
 
   if (error)
   {
@@ -601,8 +638,9 @@ task_launcher_launch_with_data (TaskLauncher *launcher,
   
   g_return_if_fail (TASK_IS_LAUNCHER (launcher));
 
-  launcher->priv->pid = awn_desktop_item_launch (launcher->priv->item,
-                                                 list, &error);
+  launcher->priv->pid =
+    desktop_agnostic_fdo_desktop_entry_launch (launcher->priv->entry,
+                                               0, list, &error);
 
   if (error)
   {

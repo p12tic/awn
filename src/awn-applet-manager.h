@@ -24,8 +24,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-#include <libawn/awn-config-client.h>
-#include <libawn/awn-defines.h>
+#include <libdesktop-agnostic/desktop-agnostic.h>
 
 #include "awn-panel.h"
 
@@ -71,7 +70,7 @@ struct _AwnAppletManagerClass
 
 GType       awn_applet_manager_get_type          (void) G_GNUC_CONST;
 
-GtkWidget * awn_applet_manager_new_from_config   (AwnConfigClient *client);
+GtkWidget * awn_applet_manager_new_from_config   (DesktopAgnosticConfigClient *client);
 
 void        awn_applet_manager_refresh_applets   (AwnAppletManager *manager);
 

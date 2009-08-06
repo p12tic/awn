@@ -22,7 +22,6 @@
 #include "config.h"
 
 #include <libawn/awn-cairo-utils.h>
-#include <libawn/awn-config-client.h>
 
 #include "awn-background-3d.h"
 #include "awn-x.h"
@@ -119,7 +118,7 @@ awn_background_3d_init (AwnBackground3d *bg)
 }
 
 AwnBackground * 
-awn_background_3d_new (AwnConfigClient *client, AwnPanel *panel)
+awn_background_3d_new (DesktopAgnosticConfigClient *client, AwnPanel *panel)
 {
   AwnBackground *bg;
 

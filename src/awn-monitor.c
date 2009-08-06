@@ -24,8 +24,6 @@
 #include "config.h"
 
 #include <gdk/gdkx.h>
-#include <libawn/awn-config-bridge.h>
-#include <libawn/awn-config-client.h>
 
 #include "awn-monitor.h"
 
@@ -38,7 +36,7 @@ G_DEFINE_TYPE (AwnMonitor, awn_monitor, G_TYPE_OBJECT)
 
 struct _AwnMonitorPrivate
 {
-  AwnConfigClient *client;
+  DesktopAgnosticConfigClient *client;
 
   GdkScreen *screen;
   guint      size_signal_id;
@@ -80,23 +78,32 @@ awn_monitor_constructed (GObject *object)
 {
   AwnMonitor        *monitor = AWN_MONITOR (object);
   AwnMonitorPrivate *priv = monitor->priv;
-  AwnConfigBridge   *bridge = awn_config_bridge_get_default ();
 
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_MONITOR_FORCE,
-                          object, "monitor_force");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_MONITOR_WIDTH,
-                          object, "monitor_width");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_MONITOR_HEIGHT,
-                          object, "monitor_height");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_MONITOR_OFFSET,
-                          object, "monitor_offset");
-  awn_config_bridge_bind (bridge, priv->client,
-                          AWN_GROUP_PANEL, AWN_PANEL_MONITOR_ALIGN,
-                          object, "monitor_align");
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_MONITOR_FORCE,
+                                       object, "monitor_force", FALSE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_MONITOR_WIDTH,
+                                       object, "monitor_width", FALSE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_MONITOR_HEIGHT,
+                                       object, "monitor_height", FALSE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_MONITOR_OFFSET,
+                                       object, "monitor_offset", FALSE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_MONITOR_ALIGN,
+                                       object, "monitor_align", FALSE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 }
 
 static void
@@ -114,7 +121,7 @@ awn_monitor_get_property (GObject    *object,
   switch (prop_id)
   {
     case PROP_CLIENT:
-      g_value_set_pointer (value, priv->client);
+      g_value_set_object (value, priv->client);
       break;
     case PROP_FORCE_MONITOR:
       g_value_set_boolean (value, priv->force_monitor);
@@ -151,7 +158,7 @@ awn_monitor_set_property (GObject      *object,
   switch (prop_id)
   {
     case PROP_CLIENT:
-      priv->client = g_value_get_pointer (value);
+      priv->client = g_value_get_object (value);
       break;
     case PROP_FORCE_MONITOR:
       priv->force_monitor = g_value_get_boolean (value);
@@ -181,6 +188,19 @@ awn_monitor_set_property (GObject      *object,
 }
 
 static void
+awn_monitor_dispose (GObject *object)
+{
+  AwnMonitorPrivate *priv;
+
+  priv = AWN_MONITOR_GET_PRIVATE (object);
+
+  desktop_agnostic_config_client_unbind_all_for_object (priv->client,
+                                                        object, NULL);
+
+  G_OBJECT_CLASS (awn_monitor_parent_class)->dispose (object);
+}
+
+static void
 awn_monitor_class_init (AwnMonitorClass *klass)
 {
   GObjectClass *obj_class = G_OBJECT_CLASS (klass);
@@ -188,14 +208,16 @@ awn_monitor_class_init (AwnMonitorClass *klass)
   obj_class->get_property = awn_monitor_get_property;
   obj_class->set_property = awn_monitor_set_property;
   obj_class->constructed  = awn_monitor_constructed;
+  obj_class->dispose      = awn_monitor_dispose;
 
   /* Add properties to the class */
   g_object_class_install_property (obj_class,
     PROP_CLIENT,
-    g_param_spec_pointer ("client",
-                          "Client",
-                          "AwnConfigClient",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+    g_param_spec_object ("client",
+                         "Config Client",
+                         "Configuration client",
+                         DESKTOP_AGNOSTIC_CONFIG_TYPE_CLIENT,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_FORCE_MONITOR,
@@ -262,7 +284,7 @@ awn_monitor_init (AwnMonitor *monitor)
 }
 
 AwnMonitor *
-awn_monitor_new_from_config (AwnConfigClient *client)
+awn_monitor_new_from_config (DesktopAgnosticConfigClient *client)
 {
   AwnMonitor *monitor = g_object_new (AWN_TYPE_MONITOR,
                                       "client", client,

@@ -34,8 +34,7 @@
 #include "awn-applet.h"
 #include "awn-dialog.h"
 #include "awn-cairo-utils.h"
-#include "awn-config-bridge.h"
-#include "awn-config-client.h"
+#include "awn-config.h"
 #include "awn-defines.h"
 #include "awn-utils.h"
 #include "awn-overlayable.h"
@@ -676,30 +675,41 @@ awn_dialog_constructed (GObject *object)
     G_OBJECT_CLASS (awn_dialog_parent_class)->constructed (object);
   }
 
-  AwnConfigClient *client = awn_config_client_new ();
-  AwnConfigBridge *bridge = awn_config_bridge_get_default ();
+  GError *error = NULL;
+  DesktopAgnosticConfigClient *client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
 
-#ifndef AWN_GROUP_THEME
- #define AWN_GROUP_THEME "theme"
-#endif
+  if (error)
+  {
+    g_critical ("An error occurred when retrieving the config client: %s", error->message);
+    g_error_free (error);
+  }
+  else
+  {
+#define AWN_GROUP_THEME "theme"
 
-  awn_config_bridge_bind (bridge, client,
-                          AWN_GROUP_THEME, "dialog_bg",
-                          object, "dialog_bg");
-  awn_config_bridge_bind (bridge, client,
-                          AWN_GROUP_THEME, "dialog_title_bg",
-                          object, "title_bg");
-  awn_config_bridge_bind (bridge, client,
-                          AWN_GROUP_THEME, "border",
-                          object, "border");
-  awn_config_bridge_bind (bridge, client,
-                          AWN_GROUP_THEME, "hilight",
-                          object, "hilight");
+    desktop_agnostic_config_client_bind (client, AWN_GROUP_THEME, "dialog_bg",
+                                         object, "dialog_bg", TRUE,
+                                         DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                         NULL);
+    desktop_agnostic_config_client_bind (client, AWN_GROUP_THEME, "dialog_title_bg",
+                                         object, "title_bg", TRUE,
+                                         DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                         NULL);
+    desktop_agnostic_config_client_bind (client, AWN_GROUP_THEME, "border",
+                                         object, "border", TRUE,
+                                         DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                         NULL);
+    desktop_agnostic_config_client_bind (client, AWN_GROUP_THEME, "hilight",
+                                         object, "hilight", TRUE,
+                                         DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                         NULL);
 
-  // FIXME: bind only if we're connected to AwnApplet
-  awn_config_bridge_bind (bridge, client,
-                          "panel", "dialog_offset",
-                          object, "window-offset");
+    // FIXME: bind only if we're connected to AwnApplet
+    desktop_agnostic_config_client_bind (client, "panel", "dialog_offset",
+                                         object, "window-offset", TRUE,
+                                         DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                         NULL);
+  }
 }
 
 static void
@@ -737,10 +747,15 @@ awn_dialog_get_property (GObject    *object,
     case PROP_TITLE_BG:
     case PROP_BORDER:
     case PROP_HILIGHT:
+    {
+      DesktopAgnosticColor *color;
+
       g_warning ("Property get unimplemented!");
-      g_value_set_string (value, "#FFFFFFFF");
+      color = desktop_agnostic_color_new_from_string ("white", NULL);
+      g_value_take_object (value, color);
       break;
-  default:
+    }
+    default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
 }
@@ -791,23 +806,35 @@ awn_dialog_set_property (GObject      *object,
       break;
 
     case PROP_DIALOG_BG:
-      if (priv->dialog_bg) g_object_unref (priv->dialog_bg);
-      priv->dialog_bg = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      if (priv->dialog_bg)
+      {
+        g_object_unref (priv->dialog_bg);
+      }
+      priv->dialog_bg = (DesktopAgnosticColor*)g_value_dup_object (value);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_TITLE_BG:
-      if (priv->title_bg) g_object_unref (priv->title_bg);
-      priv->title_bg = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      if (priv->title_bg)
+      {
+        g_object_unref (priv->title_bg);
+      }
+      priv->title_bg = (DesktopAgnosticColor*)g_value_dup_object (value);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_BORDER:
-      if (priv->border_color) g_object_unref (priv->border_color);
-      priv->border_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      if (priv->border_color)
+      {
+        g_object_unref (priv->border_color);
+      }
+      priv->border_color = (DesktopAgnosticColor*)g_value_dup_object (value);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_HILIGHT:
-      if (priv->hilight_color) g_object_unref (priv->hilight_color);
-      priv->hilight_color = desktop_agnostic_color_new_from_string (g_value_get_string (value), NULL);
+      if (priv->hilight_color)
+      {
+        g_object_unref (priv->hilight_color);
+      }
+      priv->hilight_color = (DesktopAgnosticColor*)g_value_dup_object (value);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
 
@@ -820,6 +847,22 @@ static void
 awn_dialog_finalize (GObject *object)
 {
   AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (object);
+  GError *error = NULL;
+  DesktopAgnosticConfigClient *client;
+  
+  client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
+
+  if (error)
+  {
+    g_warning ("An error occurred when retrieving the config client: %s",
+               error->message);
+    g_error_free (error);
+  }
+  else
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (client,
+                                                          object, NULL);
+  }
 
   if (priv->anchor_configure_id)
   {
@@ -948,34 +991,34 @@ awn_dialog_class_init (AwnDialogClass *klass)
 
   g_object_class_install_property (obj_class,
     PROP_DIALOG_BG,
-    g_param_spec_string ("dialog_bg",
+    g_param_spec_object ("dialog_bg",
                          "Dialog Background",
                          "Dialog background color",
-                         "#AAAAAAEE",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_TITLE_BG,
-    g_param_spec_string ("title_bg",
+    g_param_spec_object ("title_bg",
                          "Title Background",
                          "Background color for dialog's title",
-                         "#FFFFFFFF",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_BORDER,
-    g_param_spec_string ("border",
+    g_param_spec_object ("border",
                          "Border",
                          "Border color",
-                         "#000000FF",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (obj_class,
     PROP_HILIGHT,
-    g_param_spec_string ("hilight",
+    g_param_spec_object ("hilight",
                          "Hilight",
                          "Internal border color",
-                         "#FFFFFFFF",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_type_class_add_private (G_OBJECT_CLASS (klass),

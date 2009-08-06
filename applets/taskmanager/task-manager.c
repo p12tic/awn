@@ -56,7 +56,7 @@ static GQuark win_quark = 0;
 
 struct _TaskManagerPrivate
 {
-  AwnConfigClient *client;
+  DesktopAgnosticConfigClient *client;
   TaskSettings    *settings;
   WnckScreen      *screen;
 
@@ -72,12 +72,12 @@ struct _TaskManagerPrivate
   GHashTable *win_table;
 
   /* Properties */
-  GSList   *launcher_paths;
-  gboolean  show_all_windows;
-  gboolean  only_show_launchers;
-  gboolean  drag_and_drop;
-  gboolean  grouping;
-  gint      match_strength;
+  GValueArray *launcher_paths;
+  gboolean     show_all_windows;
+  gboolean     only_show_launchers;
+  gboolean     drag_and_drop;
+  gboolean     grouping;
+  gint         match_strength;
 };
 
 enum
@@ -111,7 +111,7 @@ static void task_manager_set_show_all_windows    (TaskManager *manager,
 static void task_manager_set_show_only_launchers (TaskManager *manager, 
                                                   gboolean     show_only);
 static void task_manager_refresh_launcher_paths  (TaskManager *manager,
-                                                  GSList      *list);
+                                                  GValueArray *list);
 static void task_manager_set_drag_and_drop (TaskManager *manager, 
                                             gboolean     drag_and_drop);
 
@@ -125,6 +125,8 @@ static void task_manager_orient_changed (AwnApplet *applet,
                                          AwnOrientation orient);
 static void task_manager_size_changed   (AwnApplet *applet,
                                          gint       size);
+
+static void task_manager_dispose (GObject *object);
 
 typedef enum 
 {
@@ -175,9 +177,8 @@ task_manager_get_property (GObject    *object,
       break;
 
     case PROP_LAUNCHER_PATHS:
-      g_value_set_pointer (value, manager->priv->launcher_paths);
+      g_value_set_boxed (value, manager->priv->launcher_paths);
       break;
-
     case PROP_DRAG_AND_DROP:
       g_value_set_boolean (value, manager->priv->drag_and_drop);
       break;
@@ -215,10 +216,15 @@ task_manager_set_property (GObject      *object,
       break;
 
     case PROP_LAUNCHER_PATHS:
-      task_manager_refresh_launcher_paths (manager, 
-                                           g_value_get_pointer (value));
+      if (manager->priv->launcher_paths)
+      {
+        g_value_array_free (manager->priv->launcher_paths);
+        manager->priv->launcher_paths = NULL;
+      }
+      manager->priv->launcher_paths = (GValueArray*)g_value_dup_boxed (value);
+      task_manager_refresh_launcher_paths (manager,
+                                           manager->priv->launcher_paths);
       break;
-
     case PROP_DRAG_AND_DROP:
       task_manager_set_drag_and_drop (manager, 
                                       g_value_get_boolean (value));
@@ -243,9 +249,7 @@ static void
 task_manager_constructed (GObject *object)
 {
   TaskManagerPrivate *priv;
-  AwnConfigBridge    *bridge;
   GtkWidget          *widget;
-  gchar              *uid = NULL;
 
   G_OBJECT_CLASS (task_manager_parent_class)->constructed (object);
   
@@ -253,35 +257,46 @@ task_manager_constructed (GObject *object)
   widget = GTK_WIDGET (object);
 
   priv->settings = task_settings_get_default ();
-  /* Load the uid */
-  /* FIXME: AwnConfigClient needs to associate the default schema when uid is
-   * used
-   */
-  g_object_get (object, "uid", &uid, NULL);
-  priv->client = awn_config_client_new_for_applet ("taskmanager", NULL);
-  g_free (uid);
+
+  priv->client = awn_config_get_default_for_applet (AWN_APPLET (object), NULL);
 
   /* Connect up the important bits */
-  bridge = awn_config_bridge_get_default ();
-  awn_config_bridge_bind (bridge, priv->client, 
-                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "show_all_windows", 
-                          object, "show_all_windows");
-  awn_config_bridge_bind (bridge, priv->client, 
-                        AWN_CONFIG_CLIENT_DEFAULT_GROUP, "only_show_launchers", 
-                          object, "only_show_launchers");
-  awn_config_bridge_bind_list (bridge, priv->client, 
-                             AWN_CONFIG_CLIENT_DEFAULT_GROUP, "launcher_paths",
-                             AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                             object, "launcher_paths");
-  awn_config_bridge_bind (bridge, priv->client, 
-                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "drag_and_drop",
-                          object, "drag_and_drop");
-  awn_config_bridge_bind (bridge, priv->client, 
-                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "grouping",
-                          object, "grouping");  
-  awn_config_bridge_bind (bridge, priv->client, 
-                          AWN_CONFIG_CLIENT_DEFAULT_GROUP, "match_strength",
-                          object, "match_strength");
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "show_all_windows",
+                                       object, "show_all_windows", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "only_show_launchers",
+                                       object, "only_show_launchers", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "launcher_paths",
+                                       object, "launcher_paths", FALSE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "drag_and_drop",
+                                       object, "drag_and_drop", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "grouping",
+                                       object, "grouping", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "match_strength",
+                                       object, "match_strength", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 }
 
 static void
@@ -294,6 +309,7 @@ task_manager_class_init (TaskManagerClass *klass)
   obj_class->constructed = task_manager_constructed;
   obj_class->set_property = task_manager_set_property;
   obj_class->get_property = task_manager_get_property;
+  obj_class->dispose = task_manager_dispose;
 
   app_class->orient_changed = task_manager_orient_changed;
   app_class->size_changed   = task_manager_size_changed;
@@ -313,10 +329,11 @@ task_manager_class_init (TaskManagerClass *klass)
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_ONLY_SHOW_LAUNCHERS, pspec);
 
-  pspec = g_param_spec_pointer ("launcher_paths",
-                                "launcher-paths",
-                                "List of paths to launcher desktop files",
-                                G_PARAM_READWRITE);
+  pspec = g_param_spec_boxed ("launcher-paths",
+                              "launcher paths",
+                              "List of paths to launcher desktop files",
+                              G_TYPE_VALUE_ARRAY,
+                              G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_LAUNCHER_PATHS, pspec);
 
   pspec = g_param_spec_boolean ("drag_and_drop",
@@ -444,6 +461,20 @@ task_manager_size_changed   (AwnApplet *applet,
   }
 
   task_drag_indicator_refresh (priv->drag_indicator);
+}
+
+static void
+task_manager_dispose (GObject *object)
+{
+  TaskManagerPrivate *priv;
+
+  priv = TASK_MANAGER_GET_PRIVATE (object);
+
+  desktop_agnostic_config_client_unbind_all_for_object (priv->client,
+                                                        object,
+                                                        NULL);
+
+  G_OBJECT_CLASS (task_manager_parent_class)->dispose (object);
 }
 
 /*
@@ -803,11 +834,13 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
 #ifdef DEBUG
           g_debug ("%s:  regex matched full path =   %s",__func__,full_path);
 #endif       
-          AwnDesktopItem * desktop = awn_desktop_item_new (full_path);
+          // TODO handle GErrors
+          DesktopAgnosticVFSFile *file = desktop_agnostic_vfs_file_new_for_path (full_path, NULL);
+          DesktopAgnosticFDODesktopEntry * desktop = desktop_agnostic_fdo_desktop_entry_new_for_file (file, NULL);
           if (desktop)
           {
-            gchar * exec = awn_desktop_item_get_exec (desktop);
-            awn_desktop_item_free (desktop);
+            gchar * exec = desktop_agnostic_fdo_desktop_entry_get_string (desktop, "Exec");
+            g_object_unref (desktop);
 #ifdef DEBUG
             g_debug ("%s:  exec =   %s",__func__,exec);
             g_debug ("%s:  cmd =   %s",__func__,cmd);            
@@ -832,7 +865,8 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
               }
               g_free (exec);              
             }            
-          }          
+          }
+          g_object_unref (file);
           g_free (full_path);
         }
       }
@@ -1181,27 +1215,20 @@ void
 task_manager_append_launcher(TaskManager  *manager, const gchar * launcher_path)
 {
   TaskManagerPrivate *priv;
-  GSList  * launcher_paths;
+  GValueArray *launcher_paths;
+  GValue val = {0,};
   
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
 
-  /*
-   directly editing priv->launcher_paths does not work... so retrieve,
-   modify, and set
-   TODO once lda is merged have another look.
-   */
-  launcher_paths = awn_config_client_get_list (priv->client,
-                                               AWN_CONFIG_CLIENT_DEFAULT_GROUP,
-                                               "launcher_paths",
-                                               AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                                               NULL);
-  launcher_paths = g_slist_append (launcher_paths,g_strdup(launcher_path));
-  awn_config_client_set_list (priv->client,AWN_CONFIG_CLIENT_DEFAULT_GROUP,
-                              "launcher_paths",AWN_CONFIG_CLIENT_LIST_TYPE_STRING,
-                              launcher_paths,NULL);
-  task_manager_refresh_launcher_paths (manager,launcher_paths);
-  
+  g_object_get (G_OBJECT (manager), "launcher_paths", &launcher_paths, NULL);
+  g_value_init (&val, G_TYPE_STRING);
+  g_value_set_string (&val, launcher_path);
+  launcher_paths = g_value_array_append (launcher_paths, &val);
+  g_object_set (G_OBJECT (manager), "launcher_paths", launcher_paths, NULL);
+  g_value_unset (&val);
+  task_manager_refresh_launcher_paths (manager, launcher_paths);
+  g_value_array_free (launcher_paths);
 }
 
 /**
@@ -1210,93 +1237,111 @@ task_manager_append_launcher(TaskManager  *manager, const gchar * launcher_path)
  * that aren't already on the bar.
  * State: partial - TODO: refresh of a list
  */
-static void 
+static void
 task_manager_refresh_launcher_paths (TaskManager *manager,
-                                     GSList      *list)
+                                     GValueArray *list)
 {
   TaskManagerPrivate *priv;
-  GSList *d;
-  GSList *i;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
-  
+
   /* FIXME: I guess we should add something to check whether the user has
-   * removed a launcher. Make sure we don't remove a launcher which has a 
+   * removed a launcher. Make sure we don't remove a launcher which has a
    * window set, wait till the window is closed
    *
    * FIXME:  This approach just is not going to work..
-   *         IMO we should do something similar to 
+   *         IMO we should do something similar to
    *         awn_applet_manager_refresh_applets() in awn-applet-manager.c
    */
-  
-  for (d = list; d; d = d->next)
-  {  
+
+  for (guint idx = 0; idx < list->n_values; idx++)
+  {
+    gchar *path;
     gboolean found;
+
+    path = g_value_dup_string (g_value_array_get_nth (list, idx));
     found = FALSE;
-    for (i = priv->icons; i ;i = i->next)
+
+    for (GSList *icon_iter = priv->icons;
+         icon_iter != NULL;
+         icon_iter = icon_iter->next)
     {
-      TaskIcon * icon = i->data;
-      GSList   * items = task_icon_get_items (icon);
-      GSList   * item_iter;
-      for (item_iter = items; item_iter; item_iter = item_iter->next)
+      GSList *items = task_icon_get_items (TASK_ICON (icon_iter->data));
+
+      for (GSList *item_iter = items;
+           item_iter != NULL;
+           item_iter = item_iter->next)
       {
-        TaskItem * item = item_iter->data;
-        
-        if ( TASK_IS_LAUNCHER (item) )
+        TaskItem *item = item_iter->data;
+
+        if (TASK_IS_LAUNCHER (item) &&
+            g_strcmp0 (task_launcher_get_desktop_path (TASK_LAUNCHER (item)),
+                       path) == 0)
         {
-          if (g_strcmp0 (task_launcher_get_desktop_path(TASK_LAUNCHER(item)),d->data)==0)
-          {
-            found = TRUE;
-          }
+          found = TRUE;
+          break;
         }
+      }
+      if (found)
+      {
+        break;
       }
     }
     if (!found)
     {
-      TaskItem     *launcher = NULL;
-      GtkWidget     *icon;
-      
-      launcher = task_launcher_new_for_desktop_file (d->data);
+      TaskItem  *launcher = NULL;
+      GtkWidget *icon;
+
+      launcher = task_launcher_new_for_desktop_file (path);
       if (launcher)
       {
         icon = task_icon_new (AWN_APPLET (manager));
         task_icon_append_item (TASK_ICON (icon), launcher);
         gtk_container_add (GTK_CONTAINER (priv->box), icon);
-        gtk_box_reorder_child (GTK_BOX (priv->box), icon, g_slist_position (list,d));
-        priv->icons = g_slist_insert (priv->icons, icon, g_slist_position (list,d));
+        gtk_box_reorder_child (GTK_BOX (priv->box), icon, idx);
+        priv->icons = g_slist_insert (priv->icons, icon, idx);
 
         g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
-        g_signal_connect_swapped (icon, 
+        g_signal_connect_swapped (icon,
                                   "visible-changed",
-                                  G_CALLBACK (on_icon_visible_changed), 
+                                  G_CALLBACK (on_icon_visible_changed),
                                   manager);
-        g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                                  "animation-end", 
-                                  G_CALLBACK (on_icon_effects_ends), 
+        g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)),
+                                  "animation-end",
+                                  G_CALLBACK (on_icon_effects_ends),
                                   icon);
-        
+
         update_icon_visible (manager, TASK_ICON (icon));
 
         /* reordening through D&D */
-        if(priv->drag_and_drop)
-          _drag_add_signals(manager, icon);        
+        if (priv->drag_and_drop)
+        {
+          _drag_add_signals(manager, icon);
+        }
       }
       else
       {
-        g_debug ("%s: Bad desktop file '%s'",__func__,(gchar *)d->data);
+        g_debug ("%s: Bad desktop file '%s'", __func__, path);
       }
     }
+    g_free (path);
   }
 #if 0
-  for (d = list; d; d = d->next)
+  for (guint idx = 0; idx < list->n_values; idx++)
   {
-    GtkWidget     *icon;
-    TaskItem     *launcher = NULL;
+    gchar *path;
+    TaskItem  *launcher = NULL;
+    GtkWidget *icon;
 
-    launcher = task_launcher_new_for_desktop_file (d->data);
+    path = g_value_dup_string (g_value_array_get_nth (list, idx));
 
-    if (!launcher) continue;
+    launcher = task_launcher_new_for_desktop_file (path);
+
+    if (!launcher)
+    {
+      continue;
+    }
     /*Nasty... but can't just disable yet*/
     icon = task_icon_new (AWN_APPLET (manager));
     task_icon_append_item (TASK_ICON (icon), launcher);
@@ -1317,13 +1362,12 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
     update_icon_visible (manager, TASK_ICON (icon));
 
     /* reordening through D&D */
-    if(priv->drag_and_drop)
+    if (priv->drag_and_drop)
+    {
       _drag_add_signals(manager, icon);
+    }
   }
-#endif       
-  for (d = list; d; d = d->next)
-    g_free (d->data);
-  g_slist_free (list);
+#endif
 }
 
 static void
@@ -1822,12 +1866,18 @@ _drag_source_end(TaskManager *manager, GtkWidget *icon)
     }
     launchers = g_slist_reverse(launchers);
 
-    awn_config_client_set_list (priv->client, 
-                                AWN_CONFIG_CLIENT_DEFAULT_GROUP, 
-                                "launcher_paths", 
-                                AWN_CONFIG_CLIENT_LIST_TYPE_STRING, 
-                                launchers, 
-                                &err);
+    GValue *val;
+
+    val = g_value_init (val, G_TYPE_BOXED);
+    g_value_set_boxed (val, launchers);
+
+    desktop_agnostic_config_client_set_value (priv->client,
+                                              DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                              "launcher_paths",
+                                              val, &err);
+
+    g_value_unset (val);
+
     for (d = launchers; d; d = d->next)
       g_free (d->data);
     g_slist_free (launchers);
