@@ -103,7 +103,7 @@ static void awn_applet_manager_set_orient (AwnAppletManager *manager,
                                            gint              orient);
 static void awn_applet_manager_set_offset (AwnAppletManager *manager,
                                            gint              offset);
-static void free_list                     (GSList *list);
+static void free_list                     (GSList **list);
 
 /*
  * GOBJECT CODE 
@@ -225,7 +225,7 @@ set_list_property (const GValue *value, GSList **list)
 {
   GValueArray *array;
 
-  free_list (*list);
+  free_list (list);
   array = (GValueArray*)g_value_get_boxed (value);
   if (array)
   {
@@ -627,19 +627,19 @@ awn_applet_manager_set_orient (AwnAppletManager *manager,
  * UTIL
  */
 static void
-free_list (GSList *list)
+free_list (GSList **list)
 {
   GSList *l;
 
-  for (l = list; l; l = l->next)
+  for (l = *list; l; l = l->next)
   {
     g_free (l->data);
   }
-  if (list)
+  if (*list)
   {
-    g_slist_free (list);
+    g_slist_free (*list);
   }
-  list = NULL;
+  *list = NULL;
 }
 
 /*
