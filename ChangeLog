@@ -1,3 +1,8 @@
+2009-08-07  Julien Lavergne  <julien.lavergne@gmail.com>
+
+	* debian/control:
+    Refresh Build-depends and Depends based of new libdesktop-agnostic.
+
 2009-08-07  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-applet-manager.c:

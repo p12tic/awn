@@ -22,6 +22,8 @@ Build-Depends: 	debhelper (>= 5),
 		valac (>= 0.5.4),
 		automake,
 		libdesktop-agnostic-dev,
+        libdesktop-agnostic-bin,
+        python-libdesktop-agnostic
 Standards-Version: 3.7.3
 Homepage: https://launchpad.net/avant-window-navigator/
 XS-Python-Version: >= 2.4
@@ -33,7 +35,9 @@ Depends: 	${shlibs:Depends},
 		${misc:Depends},
 		avant-window-navigator-data-trunk (>= ${source:Version}),
 		python-awn-trunk (>= ${source:Version}),
-		libdesktop-agnostic-vfs,
+        libdesktop-agnostic-vfs-gio | libdesktop-agnostic-vfs-thunar | libdesktop-agnostic-vfs-gnome,
+        libdesktop-agnostic-fdo-glib | libdesktop-agnostic-fdo-gnome,
+        libdesktop-agnostic-cfg-gconf | libdesktop-agnostic-cfg-keyfile,
 		dbus-x11 | dbus
 Recommends:	awn-settings-trunk (>= 0.2),
 Suggests: 	metacity (>= 2.21.5) | xcompmgr | compiz | xfwm4 (>= 4.2)
@@ -116,7 +120,8 @@ Architecture: any
 Depends:	libawn0-trunk (= ${binary:Version}),
 		${shlibs:Depends},
 		${misc:Depends},
-		${python:Depends}
+		${python:Depends},
+        python-libdesktop-agnostic
 Provides: ${python:Provides}
 Conflicts: python-libawn0, python-libawn, python-libawn-bzr, python-awn, python-awn-testing
 Replaces: python-libawn0, python-libawn, python-libawn-bzr, python-awn, python-awn-testing
