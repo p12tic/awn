@@ -1,5 +1,11 @@
 2009-08-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
+	* data/avant-window-navigator.schema-ini.in:
+	Reorganize schema keys alphabetically.
+
+2009-08-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* data/avant-window-navigator.schema-ini.in:
 	Mark global config options so that the config client handles them
 	appropriately.

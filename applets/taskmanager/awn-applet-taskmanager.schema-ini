@@ -6,30 +6,26 @@
 single_instance = false
 
 # configuration options
-[DEFAULT/only_show_launchers]
-type = boolean
-default = false
-description = Only show and manager launcher windows
-
-[DEFAULT/show_all_windows]
-type = boolean
-default = true
-description = Show windows from all workspaces
-
-[DEFAULT/launcher_paths]
-type = list-string
-default = /usr/share/applications/firefox.desktop;
-description = a list of paths to .desktop files from which the taskmanager should create it's launchers
-
+# PLEASE KEEP THIS ALPHABETIZED!
 [DEFAULT/drag_and_drop]
 type = boolean
 default = true
 description = Enable reordering of windows by drag and drop 
 
+[DEFAULT/enable_long_press]
+type = boolean
+default = true
+description = Enable long press to open Dialog.
+
 [DEFAULT/grouping]
 type = boolean
 default = true
 description = Enabling group of tasks.
+
+[DEFAULT/launcher_paths]
+type = list-string
+default = /usr/share/applications/firefox.desktop;
+description = a list of paths to .desktop files from which the taskmanager should create it's launchers
 
 [DEFAULT/match_strength]
 type = integer
@@ -41,14 +37,19 @@ type = integer
 default = 3
 description = Maximum number of task indicators to show under icons. Valid range is 0..3.
 
+[DEFAULT/only_show_launchers]
+type = boolean
+default = false
+description = Only show and manager launcher windows
+
+[DEFAULT/show_all_windows]
+type = boolean
+default = true
+description = Show windows from all workspaces
+
 [DEFAULT/txt_indicator_threshold]
 type = integer
 default = 4
 description = The threshold at which text count begins to be displayed. valid range 1..
-
-[DEFAULT/enable_long_press]
-type = boolean
-default = true
-description = Enable long press to open Dialog.
 
 # vim: set ft=dosini :
