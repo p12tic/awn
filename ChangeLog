@@ -1,3 +1,8 @@
+2009-08-08  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-overlay-text.c:
+	Fix typo.
+
 2009-08-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini:

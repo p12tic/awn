@@ -264,7 +264,7 @@ awn_overlay_text_constructed (GObject *object)
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   
-  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_text_outline-width",
+  desktop_agnostic_config_client_bind (priv->client, "theme", "icon_text_outline_width",
                                        object, "text-outline-width", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
