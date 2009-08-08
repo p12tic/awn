@@ -1,5 +1,11 @@
 2009-08-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* data/avant-window-navigator.schema-ini.in:
+	Mark global config options so that the config client handles them
+	appropriately.
+
+2009-08-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/libawn-sections.txt:
 	Update the doc section template.
 
