@@ -1,5 +1,10 @@
 2009-08-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* doc/reference/libawn-sections.txt:
+	Update the doc section template.
+
+2009-08-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* ChangeLog:
 	* debian/control:
 	Fix whitespace.

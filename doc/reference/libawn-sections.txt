@@ -410,6 +410,8 @@ awn_overlay_render
 awn_overlay_move_to
 awn_overlay_get_apply_effects
 awn_overlay_set_apply_effects
+awn_overlay_get_use_source_op
+awn_overlay_set_use_source_op
 <SUBSECTION Standard>
 AWN_OVERLAY
 AWN_IS_OVERLAY
