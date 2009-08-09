@@ -103,6 +103,57 @@ fading_effect(AwnEffectsAnimation * anim)
 }
 
 gboolean
+fading_hover_effect(AwnEffectsAnimation * anim)
+{
+  AwnEffectsPrivate *priv = anim->effects->priv;
+
+  AWN_ANIMATION_INIT(anim) {
+    priv->direction = priv->alpha >= 1.0 ?
+                    AWN_EFFECT_DIR_DOWN : AWN_EFFECT_DIR_UP;
+  }
+
+  const gdouble MIN_ALPHA = 0.45;
+  const gdouble ALPHA_STEP = 0.05;
+
+  /* repaint widget */
+  awn_effects_redraw(anim->effects);
+
+  if (priv->direction == AWN_EFFECT_DIR_DOWN)
+  {
+    priv->alpha -= ALPHA_STEP;
+
+    if (priv->alpha <= MIN_ALPHA)
+    {
+      priv->direction = AWN_EFFECT_DIR_UP;
+      priv->alpha = MIN_ALPHA;
+    }
+  }
+  else
+  {
+    priv->alpha += ALPHA_STEP * 1.5;
+
+    if (priv->alpha >= 1.0)
+    {
+      priv->alpha = 1.0;
+      priv->direction = AWN_EFFECT_DIR_DOWN;
+
+      // suspend if we should loop
+      if (awn_effect_check_top_effect(anim, NULL) && anim->max_loops == 0)
+        return awn_effect_suspend_animation(anim,
+                                            (GSourceFunc)fading_hover_effect);
+    }
+  }
+
+  gboolean repeat = TRUE;
+  if (priv->alpha <= MIN_ALPHA)
+  {
+    repeat = awn_effect_handle_repeating(anim);
+  }
+
+  return repeat;
+}
+
+gboolean
 fading_effect_finalize(AwnEffectsAnimation * anim)
 {
   printf("fading_effect_finalize(AwnEffectsAnimation * anim)\n");
