@@ -146,7 +146,7 @@ awn_overlay_text_set_property (GObject *object, guint property_id,
       {
         g_object_unref (priv->text_color);
       }
-      priv->text_color = g_value_get_object (value);
+      priv->text_color = g_value_dup_object (value);
       break;
     case PROP_TEXT_COLOR_ASTR:
       g_free(priv->text_color_astr);
@@ -157,7 +157,7 @@ awn_overlay_text_set_property (GObject *object, guint property_id,
       {
         g_object_unref (priv->text_outline_color);
       }
-      priv->text_outline_color = g_value_get_object (value);
+      priv->text_outline_color = g_value_dup_object (value);
       break;
     case PROP_TEXT_OUTLINE_COLOR_ASTR:
       g_free(priv->text_outline_color_astr);

@@ -1,5 +1,10 @@
 2009-08-09  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-overlay-text.c:
+	Fix object referencing.
+
+2009-08-09  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/anims/awn-effect-fade.c:
 	* libawn/anims/awn-effect-fade.h:
 	Add fade hover effect (from global effects experiment - unused now).
