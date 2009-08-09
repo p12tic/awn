@@ -410,8 +410,10 @@ static void on_size_alloc (AwnAppletProxy *proxy, GtkAllocation *alloc)
 
   parent = gtk_widget_get_parent (GTK_WIDGET (proxy));
 
-  gint pos_x = alloc->x - parent->allocation.x;
-  gint pos_y = alloc->y - parent->allocation.y;
+  gint pos_x = alloc->x;
+  gint pos_y = alloc->y;
+  gint rel_x = pos_x - parent->allocation.x;
+  gint rel_y = pos_y - parent->allocation.y;
   gint parent_w = parent->allocation.width;
   gint parent_h = parent->allocation.height;
 
@@ -433,8 +435,8 @@ static void on_size_alloc (AwnAppletProxy *proxy, GtkAllocation *alloc)
     event->client.data_format = 32;
     event->client.message_type = msg_type;
     // first two longs are our relative [x, y]
-    event->client.data.l[0] = pos_x;
-    event->client.data.l[1] = pos_y;
+    event->client.data.l[0] = rel_x;
+    event->client.data.l[1] = rel_y;
     // other two longs are our parent's [w, h]
     event->client.data.l[2] = parent_w;
     event->client.data.l[3] = parent_h;

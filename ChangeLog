@@ -1,3 +1,8 @@
+2009-08-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-proxy.c:
+	Fix missing X client message.
+
 2009-08-08  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-overlay-text.c:
