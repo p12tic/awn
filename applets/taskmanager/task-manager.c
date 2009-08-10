@@ -695,7 +695,7 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
   TaskItem     *launcher = NULL;
   GDir      * dir;
   desktop = g_strdup_printf ("%s%s.desktop",system_dir,name);
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
   g_debug ("%s: desktop = %s",__func__,desktop);
 #endif      

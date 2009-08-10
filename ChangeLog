@@ -1,3 +1,10 @@
+2009-08-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/applet.c:
+  	* applets/taskmanager/task-manager.c:
+	Disable some debugs.
+	Set taskmanager to not use the instance configuration.
+
 2009-08-09  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* debian/control:
