@@ -69,7 +69,7 @@ enum
   PROP_DESKTOP_FILE
 };
 
-#define DEBUG 1
+//#define DEBUG 1
 
 /* Forwards */
 static const gchar * _get_name        (TaskItem       *item);

@@ -1,5 +1,11 @@
 2009-08-10  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/applet.c:
+  	* applets/taskmanager/task-launcher.c:
+	Set single instances in a better manner.
+
+2009-08-10  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-launcher.c:
 	Returned some code to strip placeholders from Exec that was lost
 	during lda merge.
