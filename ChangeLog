@@ -1,3 +1,8 @@
+2009-08-10  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-effects.c:
+	Fix binding the icon_effect config key to the object.
+
 2009-08-10  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/applet.c:

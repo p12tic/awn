@@ -260,7 +260,7 @@ awn_effects_get_property (GObject      *object,
       g_value_set_int(value, fx->orientation);
       break;
     case PROP_CURRENT_EFFECTS:
-      g_value_set_uint(value, fx->set_effects);
+      g_value_set_int(value, (int)fx->set_effects);
       break;
     case PROP_ICON_OFFSET:
       g_value_set_int(value, fx->icon_offset);
@@ -343,7 +343,7 @@ awn_effects_set_property (GObject      *object,
       }
       break;
     case PROP_CURRENT_EFFECTS:
-      fx->set_effects = g_value_get_uint(value);
+      fx->set_effects = (guint)g_value_get_int(value);
       break;
     case PROP_ICON_OFFSET:
       fx->icon_offset = g_value_get_int(value);
@@ -620,11 +620,11 @@ awn_effects_class_init(AwnEffectsClass *klass)
    */
   g_object_class_install_property(
     obj_class, PROP_CURRENT_EFFECTS,
-    g_param_spec_uint("effects",
-                      "Current effects",
-                      "Active effects set for this instance",
-                      0, G_MAXUINT, 0, /* set to classic (bouncing) */
-                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+    g_param_spec_int("effects",
+                     "Current effects",
+                     "Active effects set for this instance",
+                     G_MININT, G_MAXINT, 0, /* set to classic (bouncing) */
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
   /**
    * AwnEffects:icon-offset:
    *
