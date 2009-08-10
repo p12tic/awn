@@ -33,6 +33,8 @@
 #include <libawn/awn-effects.h>
 #include <libawn/awn-tooltip.h>
 
+/* the following symbols are declared in awn.c: */
+void pyawn_add_constants (PyObject *module, const gchar *strip_prefix);
 void pyawn_register_classes (PyObject *d);
 extern PyMethodDef pyawn_functions[];
 

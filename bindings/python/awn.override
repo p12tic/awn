@@ -8,6 +8,7 @@ headers
 #include <pygtk/pygtk.h>
 #include <libawn/awn-enum-types.h>
 #include <libawn/libawn.h>
+#include <libawn/awn-utils.h>
 
 extern Pycairo_CAPI_t *Pycairo_CAPI;
 
