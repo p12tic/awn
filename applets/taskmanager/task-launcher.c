@@ -69,7 +69,7 @@ enum
   PROP_DESKTOP_FILE
 };
 
-//#define DEBUG 1
+#define DEBUG 1
 
 /* Forwards */
 static const gchar * _get_name        (TaskItem       *item);
@@ -218,7 +218,9 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   DesktopAgnosticVFSFile *file;
   GError *error = NULL;
   GdkPixbuf *pixbuf;
- 
+  gchar * exec_key;
+  gchar * needle;
+  
   g_return_if_fail (TASK_IS_LAUNCHER (launcher));
   priv = launcher->priv;
 
@@ -256,7 +258,22 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   priv->special_id = get_special_id_from_desktop(priv->entry);
   priv->name = desktop_agnostic_fdo_desktop_entry_get_name (priv->entry);
 
-  priv->exec = g_strstrip (desktop_agnostic_fdo_desktop_entry_get_string (priv->entry, "Exec"));
+  exec_key = g_strstrip (desktop_agnostic_fdo_desktop_entry_get_string (priv->entry, "Exec"));
+  
+  /*do we have have any % chars? if so... then find the first one , 
+   and truncate
+   
+   There is an open question if we should remove any of other command line 
+   args... for now leaving things alone as long as their is no %
+   */
+  needle = strchr (exec_key,'%');
+  if (needle)
+  {
+          *needle = '\0';
+          g_strstrip (exec_key);
+  }
+  priv->exec = exec_key;
+  
   
   priv->icon_name = desktop_agnostic_fdo_desktop_entry_get_icon (priv->entry);
 
@@ -343,6 +360,7 @@ _match (TaskItem *item,
   gchar   *full_cmd = NULL;
   gchar   *search_result= NULL;
   glibtop_proc_uid buf_proc_uid;
+  glibtop_proc_uid ppid_buf_proc_uid;  
   glong   timestamp;
   GTimeVal timeval;
   gchar * id = NULL;
@@ -363,8 +381,8 @@ _match (TaskItem *item,
 
   pid = task_window_get_pid(window);
   glibtop_get_proc_uid (&buf_proc_uid,pid);
+  glibtop_get_proc_uid (&ppid_buf_proc_uid,buf_proc_uid.ppid);  
   g_get_current_time (&timeval);
-  
   cmd = glibtop_get_proc_args (&buf,pid,1024);
   full_cmd = get_full_cmd_from_pid (pid);
   
@@ -377,7 +395,13 @@ _match (TaskItem *item,
   {
     class_name_lower = g_utf8_strdown (class_name, -1);
   }
-
+#ifdef DEBUG
+  g_debug ("res name lower = %s", res_name_lower);
+  g_debug ("class name lower = %s",class_name_lower);
+  g_debug ("cmd = %s",cmd);
+  g_debug ("fullcmd = %s",full_cmd);
+  g_debug ("exec = %s",priv->exec);
+#endif
   id = get_special_id_from_window_data (full_cmd, res_name,class_name,task_window_get_name (window));
 
   
@@ -407,6 +431,9 @@ _match (TaskItem *item,
    Note that if each launch starts a new process then those will get matched up
    in the TaskIcon match functions for older windows
    */
+#ifdef DEBUG
+  g_debug ("window pid = %d, launch pid = %d",pid,priv->pid);
+#endif  
   if ( pid && (priv->pid == pid))
   {
     result = 95;
@@ -416,7 +443,10 @@ _match (TaskItem *item,
   /*
    Check the parent PID also
    */
-/*  if (pid)
+#ifdef DEBUG
+  g_debug ("ppid of window pid = %d, launch pid = %d",buf_proc_uid.ppid,priv->pid);
+#endif    
+  if (pid && buf_proc_uid.ppid)
   {
     if ( buf_proc_uid.ppid == priv->pid)
     {
@@ -424,7 +454,18 @@ _match (TaskItem *item,
       goto finished;
     }
   }
-*/
+#ifdef DEBUG
+  g_debug ("ppid of parent pid = %d, launch pid = %d",ppid_buf_proc_uid.ppid,priv->pid);
+#endif    
+  if (pid && buf_proc_uid.ppid && ppid_buf_proc_uid.ppid)
+  {
+    if ( ppid_buf_proc_uid.ppid == priv->pid)
+    {
+      result = 91;
+      goto finished;
+    }
+  }
+
   /*
    Does the command line of the process match exec exactly? 
    Not likely but damn likely to be the correct match if it does

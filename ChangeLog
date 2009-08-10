@@ -1,5 +1,12 @@
 2009-08-10  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-launcher.c:
+	Returned some code to strip placeholders from Exec that was lost
+	during lda merge.
+	Add some additional ppid checks for launcher only.
+
+2009-08-10  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Removed a debug
 
