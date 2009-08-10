@@ -1,5 +1,11 @@
 2009-08-09  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/python/awn.defs:
+	Fix the naming of various functions so that they are not prefixed with
+	"awn_".
+
+2009-08-09  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/awn.override:
 	* bindings/python/awnmodule.c:
 	Fix compiler warnings.

@@ -214,7 +214,7 @@
 
 ;; From awn-alignment.h
 
-(define-function awn_alignment_new_for_applet
+(define-function alignment_new_for_applet
   (c-name "awn_alignment_new_for_applet")
   (is-constructor-of "AwnAlignment")
   (return-type "GtkWidget*")
@@ -499,7 +499,7 @@
 
 ;; From awn-cairo-utils.h
 
-(define-function awn_cairo_rounded_rect
+(define-function cairo_rounded_rect
   (c-name "awn_cairo_rounded_rect")
   (return-type "none")
   (parameters
@@ -513,7 +513,7 @@
   )
 )
 
-(define-function awn_cairo_rounded_rect_shadow
+(define-function cairo_rounded_rect_shadow
   (c-name "awn_cairo_rounded_rect_shadow")
   (return-type "none")
   (parameters
@@ -529,7 +529,7 @@
   )
 )
 
-(define-function awn_cairo_set_source_color
+(define-function cairo_set_source_color
   (c-name "awn_cairo_set_source_color")
   (return-type "none")
   (parameters
@@ -538,7 +538,7 @@
   )
 )
 
-(define-function awn_cairo_set_source_color_with_alpha_multiplier
+(define-function cairo_set_source_color_with_alpha_multiplier
   (c-name "awn_cairo_set_source_color_with_alpha_multiplier")
   (return-type "none")
   (parameters
@@ -548,7 +548,7 @@
   )
 )
 
-(define-function awn_cairo_set_source_color_with_multipliers
+(define-function cairo_set_source_color_with_multipliers
   (c-name "awn_cairo_set_source_color_with_multipliers")
   (return-type "none")
   (parameters
@@ -562,7 +562,7 @@
 
 ;; From awn-config.h
 
-(define-function awn_config_get_default
+(define-function config_get_default
   (c-name "awn_config_get_default")
   (return-type "DesktopAgnosticConfigClient*")
   (parameters
@@ -571,7 +571,7 @@
   )
 )
 
-(define-function awn_config_get_default_for_applet
+(define-function config_get_default_for_applet
   (c-name "awn_config_get_default_for_applet")
   (return-type "DesktopAgnosticConfigClient*")
   (parameters
@@ -580,7 +580,7 @@
   )
 )
 
-(define-function awn_config_get_default_for_applet_by_info
+(define-function config_get_default_for_applet_by_info
   (c-name "awn_config_get_default_for_applet_by_info")
   (return-type "DesktopAgnosticConfigClient*")
   (parameters
@@ -1019,7 +1019,7 @@
   (return-type "GType")
 )
 
-(define-function awn_tooltip_new_for_widget
+(define-function tooltip_new_for_widget
   (c-name "awn_tooltip_new_for_widget")
   (return-type "GtkWidget*")
   (parameters
@@ -1220,7 +1220,7 @@
 
 ;; From awn-utils.h
 
-(define-function awn_utils_ensure_transparent_bg
+(define-function utils_ensure_transparent_bg
   (c-name "awn_utils_ensure_transparent_bg")
   (return-type "none")
   (parameters
@@ -1228,7 +1228,7 @@
   )
 )
 
-(define-function awn_utils_make_transparent_bg
+(define-function utils_make_transparent_bg
   (c-name "awn_utils_make_transparent_bg")
   (return-type "none")
   (parameters
