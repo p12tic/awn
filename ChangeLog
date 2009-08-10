@@ -1,5 +1,10 @@
 2009-08-10  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Removed a debug
+
+2009-08-10  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/applet.c:
   	* applets/taskmanager/task-manager.c:
 	Disable some debugs.

@@ -721,7 +721,6 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
       gchar * new_path = g_strdup_printf ("%s%s/",system_dir,fname);      
       if ( g_file_test (new_path,G_FILE_TEST_IS_DIR) )
       {
-        g_debug (" dir name = %s",fname);        
         if (task_icon_check_system_dir_for_desktop (icon,new_path,name))
         {
           g_free (new_path);
