@@ -20,14 +20,15 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
-#include <errno.h>
+#include <unistd.h>
 
-#include <libawn/awn-defines.h>
-#include <libawn/awn-applet.h>
+#include <gtk/gtk.h>
+
 #include <libdesktop-agnostic/fdo.h>
+#include <libawn/libawn.h>
 
 /* Forwards */
 GtkWidget *
