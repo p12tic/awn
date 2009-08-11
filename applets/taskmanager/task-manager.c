@@ -1635,7 +1635,6 @@ task_manager_check_for_intersection (TaskManager * manager,
   gint64 xid; 
   
   g_object_get (manager, "panel-xid", &xid, NULL);
-  g_debug ("%s",__func__);
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
   
@@ -1645,19 +1644,26 @@ task_manager_check_for_intersection (TaskManager * manager,
                            &awn_rect.y,&awn_rect.width,
                            &awn_rect.height,&depth);  
   gdk_window_get_root_origin (awn_gdk_window,&awn_rect.x,&awn_rect.y);
-  g_debug ("%d,%d   %dx%d",awn_rect.x,awn_rect.y,awn_rect.width,awn_rect.height);  
   awn_gdk_region = xutils_get_input_shape (awn_gdk_window);
   g_return_if_fail (awn_gdk_region);
   gdk_region_offset (awn_gdk_region,awn_rect.x,awn_rect.y);
   
   gdk_region_get_clipbox (awn_gdk_region,&awn_rect);
-  g_debug ("clipbox: %d,%d   %dx%d",awn_rect.x,awn_rect.y,awn_rect.width,awn_rect.height);    
-  windows = wnck_application_get_windows (app);
+  windows = wnck_screen_get_windows (priv->screen);
   for (iter = windows; iter; iter = iter->next)
   {
     GdkRectangle win_rect;
     GdkRectangle intersection;
 
+    if (wnck_window_is_skip_tasklist (iter->data) )
+    {
+      continue;
+    }
+
+    if (!wnck_window_is_visible_on_workspace (iter->data,space))
+    {
+      continue;
+    }
     /*
      It may be a good idea to go the same route as we go with the 
      panel to get the GdkRectangle.  But in practice it's _probably_
@@ -1666,8 +1672,6 @@ task_manager_check_for_intersection (TaskManager * manager,
     wnck_window_get_geometry (iter->data,&win_rect.x,
                               &win_rect.y,&win_rect.width,
                               &win_rect.height);
-    g_debug ("%s: %d,%d   %dx%d",wnck_window_get_name(iter->data),
-             win_rect.x,win_rect.y,win_rect.width,win_rect.height);
 
     if ( gdk_rectangle_intersect (&awn_rect,&win_rect,&intersection))
     {
@@ -1681,13 +1685,16 @@ task_manager_check_for_intersection (TaskManager * manager,
   g_object_unref (awn_gdk_window);
   
   if (intersect && priv->autohide_cookie)
-  { 
+  {     
     awn_applet_uninhibit_autohide (AWN_APPLET(manager), priv->autohide_cookie);
+    g_debug ("me eat cookie: %u",priv->autohide_cookie);    
     priv->autohide_cookie = 0;
   }
-  else if (!priv->autohide_cookie)
+  
+  if (!intersect && !priv->autohide_cookie)
   {
     priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager), "Intellihide");
+    g_debug ("cookie is %u",priv->autohide_cookie);
   }
 
 }
@@ -1702,7 +1709,6 @@ task_manager_active_window_changed_cb (WnckScreen *screen,
   WnckApplication     *app;
   WnckWorkspace       *space;
 
-  g_debug ("%s",__func__);  
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
 
@@ -1717,7 +1723,6 @@ task_manager_active_window_changed_cb (WnckScreen *screen,
   {
     return;
   }
-  g_debug ("win name = %s",wnck_window_get_name(win) );  
   app = wnck_window_get_application (win);
   space = wnck_screen_get_active_workspace (screen);
   task_manager_check_for_intersection (manager,space,app);
@@ -1763,7 +1768,6 @@ task_manager_win_geom_changed_cb (WnckWindow *window, TaskManager * manager)
   WnckApplication     *app;
   WnckWorkspace       *space;
 
-  g_debug ("%s",__func__);  
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
  
