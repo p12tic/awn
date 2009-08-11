@@ -54,6 +54,8 @@ from awnClass import awnPreferences, awnManager, awnLauncher, awnApplet
 import awn
 import awnDefs as defs
 
+import desktopagnostic.config
+
 awn.vfs_init()
 defs.i18nize(globals())
 
@@ -64,7 +66,7 @@ if os.geteuid() == 0:
 class awnPreferencesMini(awnPreferences):
     def __init__(self, wTree):
         self.wTree = wTree
-        self.client = awn.Config()
+        self.client = awn.config_get_default(1)
 
         # Make sure the config dir exist
         if not os.path.isdir(defs.HOME_CONFIG_DIR):
@@ -312,8 +314,8 @@ class awnLauncherMini(awnLauncher):
 
         self.idle_id = 0
 
-        self.client = awn.Config()
-        self.client.ensure_group(defs.LAUNCHERS)
+        self.client = awn.config_get_default(1)
+        #self.client.ensure_group(defs.LAUNCHERS)
 
         self.scrollwindow = self.wTree.get_object("launchers_scroll_list")
 
@@ -323,7 +325,8 @@ class awnLauncherMini(awnLauncher):
 
         self.scrollwindow.add(self.treeview_launchers)
 
-        self.launchers_uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
+        #self.launchers_uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
+        self.launchers_uris = []
 
         self.refresh_tree(self.launchers_uris, self.make_model(self.launchers_uris, self.treeview_launchers))
 
@@ -339,8 +342,8 @@ class awnAppletMini(awnApplet):
         if not os.path.isdir(defs.HOME_APPLET_DIR):
             os.mkdir(defs.HOME_APPLET_DIR)
 
-        self.client = awn.Config()
-        self.client.ensure_group(defs.AWN)
+        self.client = awn.config_get_default(1)
+        #self.client.ensure_group(defs.AWN)
 
         self.treeview_current = None
         self.load_finished = False

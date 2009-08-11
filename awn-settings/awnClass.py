@@ -713,8 +713,8 @@ class awnPreferences(awnBzr):
         else:
             colorbut.set_use_alpha(False)
 
-    def reload_color(self, entry, (colorbut,show_opacity_scale)):
-        self.load_color(entry['group'], entry['key'], colorbut, show_opacity_scale)
+    def reload_color(self, group, key, value, (colorbut,show_opacity_scale)):
+        self.load_color(group, key, colorbut, show_opacity_scale)
 
     def color_changed(self, colorbut, groupkey):
         group, key = groupkey
@@ -734,8 +734,8 @@ class awnPreferences(awnBzr):
         val = 100 - (val * 100)
         scale.set_value(val)
 
-    def reload_scale(self, entry, scale):
-        self.load_scale(entry['group'], entry['key'], scale)
+    def reload_scale(self, group, key, value, scale):
+        self.load_scale(group, key, scale)
 
     def scale_changed(self, scale, groupkey):
         group, key = groupkey
@@ -758,8 +758,8 @@ class awnPreferences(awnBzr):
         except gobject.GError, err:
             spin.set_value(float(self.client.get_int(group, key)))
 
-    def reload_spin(self, entry, spin):
-        self.load_spin(entry['group'], entry['key'], spin)
+    def reload_spin(self, group, key, value, spin):
+        self.load_spin(group, key, spin)
 
     def spin_changed(self, spin, groupkey):
         group, key = groupkey
@@ -795,8 +795,8 @@ class awnPreferences(awnBzr):
         except TypeError:
             raise "\nKey: [%s]%s isn't set.\nRestarting AWN usually solves this issue\n" % (group, key)
 
-    def reload_chooser(self, entry, chooser):
-        self.load_chooser(entry['group'], entry['key'], chooser)
+    def reload_chooser(self, group, key, value, chooser):
+        self.load_chooser(group, key, chooser)
 
     def chooser_changed(self, chooser, groupkey):
         group, key = groupkey
@@ -824,8 +824,8 @@ class awnPreferences(awnBzr):
     def load_bool(self, group, key, check):
         check.set_active(self.client.get_bool(group, key))
 
-    def reload_bool(self, entry, check):
-        self.load_bool(entry['group'], entry['key'], check)
+    def reload_bool(self, group, key, value, check):
+        self.load_bool(group, key, check)
 
     def bool_changed(self, check, groupkey):
         group, key = groupkey
@@ -848,8 +848,8 @@ class awnPreferences(awnBzr):
             font = "Sans 10"
         font_btn.set_font_name(font)
 
-    def reload_font(self, entry, font_btn):
-        self.load_font(entry['group'], entry['key'], font_btn)
+    def reload_font(self, group, key, value, font_btn):
+        self.load_font(group, key, font_btn)
 
     def font_changed(self, font_btn, groupkey):
         group, key = groupkey
@@ -879,37 +879,12 @@ class awnPreferences(awnBzr):
     def load_effect(self, group, key, dropdown):
         dropdown.set_active(self.client.get_int(group, key))
 
-    def reload_effect(self, entry, dropdown):
-        self.load_effect(entry['group'], entry['key'], dropdown)
+    def reload_effect(self, group, key, value, dropdown):
+        self.load_effect(group, key, dropdown)
 
     def effect_changed(self, dropdown, groupkey):
         group, key = groupkey
         self.client.set_int(group, key, dropdown.get_active())
-
-    def setup_look(self, group, key, dropdown):
-        dropdown.append_text(_("Flat bar"))
-        dropdown.append_text(_("3D look"))
-        self.changed_look(dropdown)
-        dropdown.connect("changed", self.changed_look)
-        self.client.notify_add(group, key, self.reload_look, dropdown)
-
-    def reload_look(self, entry, dropdown):
-        if self.client.get_int(defs.BAR, defs.BAR_ANGLE) == 0:
-            dropdown.set_active(0)
-            self.wTree.get_widget("barangle_holder").hide_all()
-        else:
-            dropdown.set_active(1)
-            self.wTree.get_widget("barangle_holder").show_all()
-
-    def changed_look(self, dropdown):
-        if dropdown.get_active() == -1: #init
-            self.reload_look(0, dropdown)
-        elif dropdown.get_active() == 0:
-            self.wTree.get_widget("barangle").set_value(0)
-            self.wTree.get_widget("barangle_holder").hide_all()
-        else:
-            self.wTree.get_widget("barangle").set_value(45)
-            self.wTree.get_widget("barangle_holder").show_all()
 
     def setup_effect_custom(self, group, key):
         self.effect_drop = []
@@ -949,8 +924,8 @@ class awnPreferences(awnBzr):
                 d.set_active(current_effect+1)
             cnt = cnt+1
 
-    def reload_effect_custom(self, entry, nothing):
-        self.load_effect_custom(entry['group'], entry['key'])
+    def reload_effect_custom(self, group, key, value):
+        self.load_effect_custom(group, key)
 
     def effect_custom_changed(self, dropdown, groupkey):
         group, key = groupkey
@@ -1015,8 +990,8 @@ class awnPreferences(awnBzr):
 
         dropdown.set_active(int(active))
 
-    def reload_effect(self, entry, dropdown):
-        self.load_effect(entry['group'], entry['key'], dropdown)
+    def reload_effect(self, group, key, value, dropdown):
+        self.load_effect(group, key, dropdown)
 
     def effect_changed(self, dropdown, groupkey):
         group, key = groupkey
@@ -1046,8 +1021,8 @@ class awnPreferences(awnBzr):
         autostart_file = self.get_autostart_file_path()
         check.set_active(os.path.isfile(autostart_file))
 
-    def reload_autostart(self, entry, check):
-        self.load_autostart(entry['group'], entry['key'], check)
+    def reload_autostart(self, group, key, value, check):
+        self.load_autostart(group, key, check)
 
     def autostart_changed(self, check):
         if check.get_active():
@@ -1126,8 +1101,8 @@ class awnPreferences(awnBzr):
         orientation_settings = self.client.get_int(group, key)
         dropdown.set_active(int(orientation_settings))
 
-    def reload_orientation(self, entry, dropdown):
-        self.load_orientation(entry['group'], entry['key'], dropdown)
+    def reload_orientation(self, group, key, value, dropdown):
+        self.load_orientation(group, key, dropdown)
 
     def orientation_changed(self, dropdown, groupkey):
         group, key = groupkey
@@ -1156,8 +1131,8 @@ class awnPreferences(awnBzr):
         style_settings = self.client.get_int(group, key)
         dropdown.set_active(int(style_settings))
 
-    def reload_style(self, entry, dropdown):
-        self.load_style(entry['group'], entry['key'], dropdown)
+    def reload_style(self, group, key, value, dropdown):
+        self.load_style(group, key, dropdown)
 
     def style_changed(self, dropdown, groupkey):
         group, key = groupkey
@@ -1298,7 +1273,7 @@ class awnLauncher(awnBzr):
         self.idle_id = 0
         if (self.last_uris != data):
             self.last_uris = data[:]
-            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING, data)
+            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, data)
 
         return False
 
@@ -1331,11 +1306,11 @@ class awnLauncher(awnBzr):
         uri = model.get_value(iter, 2)
         # TODO: don't check if it exists, perhaps it's invalid
         if os.path.exists(uri):
-            uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING)
+            uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST)
             uris.remove(uri)
             if uri.startswith(defs.HOME_LAUNCHERS_DIR):
                 os.remove(uri)
-            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, awn.CONFIG_LIST_STRING, uris)
+            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, uris)
             self.refresh_tree(uris, model)
 
     def getUniqueFileId(self, name, extension):
@@ -1554,8 +1529,8 @@ class awnApplet(awnBzr):
 
             it= self.active_model.iter_next (it)
 
-        self.client.set_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, applets_list)
-        self.client.set_list(defs.PANEL, defs.UA_LIST, awn.CONFIG_LIST_STRING, ua_list)
+        self.client.set_list(defs.PANEL, defs.APPLET_LIST, applets_list)
+        self.client.set_list(defs.PANEL, defs.UA_LIST, ua_list)
 
     def up_clicked (self, button):
         select = self.treeview.get_selection()
@@ -1599,9 +1574,9 @@ class awnApplet(awnBzr):
         self.scrollwindow1.add(self.icon_view)
         self.scrollwindow1.show_all()
 
-        applets = self.client.get_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING)
+        applets = self.client.get_list(defs.PANEL, defs.APPLET_LIST)
 
-        ua_applets = self.client.get_list(defs.PANEL, defs.UA_LIST, awn.CONFIG_LIST_STRING)
+        ua_applets = self.client.get_list(defs.PANEL, defs.UA_LIST)
 	
         for ua in ua_applets:
             tokens = ua.split("::")
@@ -1680,8 +1655,8 @@ class awnApplet(awnBzr):
                     ua = tokens[0] + "::" + str(position)
                     ua_list.append(ua)
 
-            self.client.set_list(defs.PANEL, defs.APPLET_LIST, awn.CONFIG_LIST_STRING, applets_list)
-            self.client.set_list(defs.PANEL, defs.UA_LIST, awn.CONFIG_LIST_STRING, ua_list)
+            self.client.set_list(defs.PANEL, defs.APPLET_LIST, applets_list)
+            self.client.set_list(defs.PANEL, defs.UA_LIST, ua_list)
 
 
     def callback_widget_filter_applets(self, data=None):

@@ -1715,7 +1715,7 @@
     <property name="modal">True</property>
     <property name="deletable">False</property>
     <child>
-      <object class="GtkVBox" id="vbox7">
+      <object class="GtkVBox" id="vbox17">
         <property name="visible">True</property>
         <child>
           <object class="GtkFrame" id="frame4">
@@ -1808,7 +1808,7 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <child>
-      <object class="GtkVBox" id="vbox8">
+      <object class="GtkVBox" id="vbox18">
         <property name="visible">True</property>
         <child>
           <object class="GtkLabel" id="label22">
@@ -1943,12 +1943,12 @@
   </object>
   <object class="GtkSizeGroup" id="sizegroup1">
     <widgets>
-      <widget name="hbox2"/>
-      <widget name="orientationcombo"/>
-      <widget name="stylecombo"/>
-      <widget name="iconeffects"/>
-      <widget name="behaviorcombo"/>
       <widget name="monitor_align_hscale"/>
+      <widget name="behaviorcombo"/>
+      <widget name="iconeffects"/>
+      <widget name="stylecombo"/>
+      <widget name="orientationcombo"/>
+      <widget name="hbox2"/>
     </widgets>
   </object>
 </interface>
