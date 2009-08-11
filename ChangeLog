@@ -1,3 +1,10 @@
+2009-08-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+	New and improved awn, now with Intellihide.  Please test.
+
 2009-08-11  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-applet.c:

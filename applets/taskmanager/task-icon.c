@@ -210,6 +210,9 @@ static void     task_icon_active_window_changed (WnckScreen *screen,
                                  WnckWindow *previously_active_window,
                                  TaskIcon *icon);
 
+static void     size_changed_cb(AwnApplet *app, guint size, TaskIcon *icon);
+
+
 /* GObject stuff */
 static void
 task_icon_get_property (GObject    *object,
@@ -378,6 +381,9 @@ task_icon_constructed (GObject *object)
 
   g_signal_connect (G_OBJECT (widget), "size-allocate",
                     G_CALLBACK (task_icon_size_allocate), NULL);
+  
+  g_signal_connect(G_OBJECT(priv->applet), "size-changed", 
+                   G_CALLBACK(size_changed_cb), object);
 
   priv->client = awn_config_get_default_for_applet (priv->applet, &error);
 
@@ -1687,6 +1693,16 @@ task_icon_button_release_event (GtkWidget      *widget,
   }
 
   return FALSE;
+}
+
+static void 
+size_changed_cb(AwnApplet *app, guint size, TaskIcon *icon)
+{
+  g_debug ("%s",__func__);
+  g_return_if_fail (AWN_IS_APPLET (app) );
+  g_return_if_fail (TASK_IS_ICON (icon));
+
+  task_icon_refresh_icon (icon);
 }
 
 static void

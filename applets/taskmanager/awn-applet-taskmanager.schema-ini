@@ -22,6 +22,11 @@ type = boolean
 default = true
 description = Enabling group of tasks.
 
+[DEFAULT/intellihide]
+type = boolean
+default = true
+description = Intellihide if hide is enabled for the panel
+
 [DEFAULT/launcher_paths]
 type = list-string
 default = /usr/share/applications/firefox.desktop;

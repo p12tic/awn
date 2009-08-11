@@ -44,6 +44,9 @@
 #include "xutils.h"
 #include "util.h"
 
+#include <X11/extensions/shape.h>
+
+
 G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
 
 #define TASK_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -59,6 +62,7 @@ struct _TaskManagerPrivate
   DesktopAgnosticConfigClient *client;
   TaskSettings    *settings;
   WnckScreen      *screen;
+  guint           autohide_cookie;
 
   /* Dragging properties */
   TaskIcon          *dragged_icon;
@@ -77,6 +81,7 @@ struct _TaskManagerPrivate
   gboolean     only_show_launchers;
   gboolean     drag_and_drop;
   gboolean     grouping;
+  gboolean     intellihide;
   gint         match_strength;
 };
 
@@ -89,7 +94,8 @@ enum
   PROP_LAUNCHER_PATHS,
   PROP_DRAG_AND_DROP,
   PROP_GROUPING,
-  PROP_MATCH_STRENGTH
+  PROP_MATCH_STRENGTH,
+  PROP_INTELLIHIDE
 };
 
 /* Forwards */
@@ -130,6 +136,16 @@ static void task_manager_origin_changed (AwnApplet *applet,
                                          gpointer       data);
 
 static void task_manager_dispose (GObject *object);
+
+static void task_manager_active_window_changed_cb (WnckScreen *screen,
+                                                   WnckWindow *previous_window,
+                                                   TaskManager * manager);
+static void task_manager_active_workspace_changed_cb (WnckScreen    *screen,
+                                                      WnckWorkspace *previous_space,
+                                                      TaskManager * manager);
+static void task_manager_window_opened_cb (WnckScreen    *screen,
+                                           WnckWindow *window,
+                                           TaskManager * manager);
 
 typedef enum 
 {
@@ -190,6 +206,10 @@ task_manager_get_property (GObject    *object,
       g_value_set_boolean (value, manager->priv->grouping);
       break;
 
+    case PROP_INTELLIHIDE:
+      g_value_set_boolean (value, manager->priv->intellihide);
+      break;
+
     case PROP_MATCH_STRENGTH:
       g_value_set_int (value, manager->priv->match_strength);
       break;
@@ -243,6 +263,10 @@ task_manager_set_property (GObject      *object,
                                  g_value_get_boolean (value));
       break;
       
+    case PROP_INTELLIHIDE:
+      manager->priv->intellihide = g_value_get_boolean (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -296,10 +320,22 @@ task_manager_constructed (GObject *object)
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "intellihide",
+                                       object, "intellihide", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);  
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
                                        "match_strength",
                                        object, "match_strength", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
+  g_signal_connect (priv->screen,"active-window-changed",
+                    G_CALLBACK(task_manager_active_window_changed_cb),object);
+  g_signal_connect (priv->screen,"active-workspace-changed",
+                    G_CALLBACK(task_manager_active_workspace_changed_cb),object);
+  g_signal_connect (priv->screen,"window-opened",
+                    G_CALLBACK(task_manager_window_opened_cb),object);
 }
 
 static void
@@ -352,6 +388,13 @@ task_manager_class_init (TaskManagerClass *klass)
                                 TRUE,
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_GROUPING, pspec);
+
+  pspec = g_param_spec_boolean ("intellihide",
+                                "intellihide",
+                                "Intellihide",
+                                TRUE,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_INTELLIHIDE, pspec);
 
   pspec = g_param_spec_int ("match_strength",
                             "match_strength",
@@ -1544,6 +1587,208 @@ _match_xid (TaskManager *manager, gint64 window)
   }
   
   return NULL;
+}
+
+static GdkRegion*
+xutils_get_input_shape (GdkWindow *window)
+{
+  GdkRegion *region = gdk_region_new ();
+
+  GdkRectangle rect;
+  XRectangle *rects;
+  int count = 0;
+  int ordering = 0;
+
+  gdk_error_trap_push ();
+  rects = XShapeGetRectangles (GDK_WINDOW_XDISPLAY (window),
+                               GDK_WINDOW_XID (window),
+                               ShapeInput, &count, &ordering);
+  gdk_error_trap_pop ();
+
+  for (int i=0; i<count; ++i)
+  {
+    rect.x = rects[i].x;
+    rect.y = rects[i].y;
+    rect.width = rects[i].width;
+    rect.height = rects[i].height;
+
+    gdk_region_union_with_rect (region, &rect);
+  }
+  if (rects) free(rects);
+
+  return region;
+}
+
+static void
+task_manager_check_for_intersection (TaskManager * manager, 
+                                     WnckWorkspace * space,
+                                     WnckApplication * app)
+{
+  TaskManagerPrivate  *priv;
+  GList * windows;
+  GList * iter;
+  gboolean  intersect = FALSE;
+  GdkWindow * awn_gdk_window;
+  GdkRegion * awn_gdk_region;
+  GdkRectangle awn_rect;
+  gint depth;
+  gint64 xid; 
+  
+  g_object_get (manager, "panel-xid", &xid, NULL);
+  g_debug ("%s",__func__);
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+  
+  awn_gdk_window = gdk_window_foreign_new ( xid);
+  g_return_if_fail (awn_gdk_window);
+  gdk_window_get_geometry (awn_gdk_window,&awn_rect.x,
+                           &awn_rect.y,&awn_rect.width,
+                           &awn_rect.height,&depth);  
+  gdk_window_get_root_origin (awn_gdk_window,&awn_rect.x,&awn_rect.y);
+  g_debug ("%d,%d   %dx%d",awn_rect.x,awn_rect.y,awn_rect.width,awn_rect.height);  
+  awn_gdk_region = xutils_get_input_shape (awn_gdk_window);
+  g_return_if_fail (awn_gdk_region);
+  gdk_region_offset (awn_gdk_region,awn_rect.x,awn_rect.y);
+  
+  gdk_region_get_clipbox (awn_gdk_region,&awn_rect);
+  g_debug ("clipbox: %d,%d   %dx%d",awn_rect.x,awn_rect.y,awn_rect.width,awn_rect.height);    
+  windows = wnck_application_get_windows (app);
+  for (iter = windows; iter; iter = iter->next)
+  {
+    GdkRectangle win_rect;
+    GdkRectangle intersection;
+
+    /*
+     It may be a good idea to go the same route as we go with the 
+     panel to get the GdkRectangle.  But in practice it's _probably_
+     not necessary
+     */
+    wnck_window_get_geometry (iter->data,&win_rect.x,
+                              &win_rect.y,&win_rect.width,
+                              &win_rect.height);
+    g_debug ("%s: %d,%d   %dx%d",wnck_window_get_name(iter->data),
+             win_rect.x,win_rect.y,win_rect.width,win_rect.height);
+
+    if ( gdk_rectangle_intersect (&awn_rect,&win_rect,&intersection))
+    {
+      g_debug ("Intersect with %s, %d",wnck_window_get_name (iter->data),
+               wnck_window_get_pid(iter->data));
+      
+      intersect = TRUE;
+    }
+  }
+  gdk_region_destroy (awn_gdk_region);
+  g_object_unref (awn_gdk_window);
+  
+  if (intersect && priv->autohide_cookie)
+  { 
+    awn_applet_uninhibit_autohide (AWN_APPLET(manager), priv->autohide_cookie);
+    priv->autohide_cookie = 0;
+  }
+  else if (!priv->autohide_cookie)
+  {
+    priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager), "Intellihide");
+  }
+
+}
+
+static void 
+task_manager_active_window_changed_cb (WnckScreen *screen,
+                                                   WnckWindow *previous_window,
+                                                   TaskManager * manager)
+{
+  TaskManagerPrivate  *priv;
+  WnckWindow          *win;
+  WnckApplication     *app;
+  WnckWorkspace       *space;
+
+  g_debug ("%s",__func__);  
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+
+  if (!priv->intellihide)
+  {
+/*    g_warning ("%s: Intellihide callback invoked with Intellihide off",__func__);*/
+    return;
+  }
+  
+  win = wnck_screen_get_active_window (screen);
+  if (!win)
+  {
+    return;
+  }
+  g_debug ("win name = %s",wnck_window_get_name(win) );  
+  app = wnck_window_get_application (win);
+  space = wnck_screen_get_active_workspace (screen);
+  task_manager_check_for_intersection (manager,space,app);
+}
+
+static void 
+task_manager_active_workspace_changed_cb (WnckScreen    *screen,
+                                                      WnckWorkspace *previous_space,
+                                                      TaskManager * manager)
+{
+  TaskManagerPrivate *priv;
+  WnckApplication     *app;
+  WnckWorkspace       *space;
+  WnckWindow          *win;
+  
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+  if (!priv->intellihide)
+  {
+/*    g_warning ("%s: Intellihide callback invoked with Intellihide off",__func__);    */
+    return;
+  }
+  win = wnck_screen_get_active_window (screen);
+  if (!win)
+  {
+    return;
+  }
+  
+  app = wnck_window_get_application (win);
+  space = wnck_screen_get_active_workspace (screen);
+
+  task_manager_check_for_intersection (manager,space,app);
+}
+
+static void
+task_manager_win_geom_changed_cb (WnckWindow *window, TaskManager * manager)
+{
+/*
+   TODO... only check for intersect if window is in the active application.
+   practically speaking it should be in most cases */
+  TaskManagerPrivate  *priv;
+  WnckWindow          *win;
+  WnckApplication     *app;
+  WnckWorkspace       *space;
+
+  g_debug ("%s",__func__);  
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+ 
+  if (!priv->intellihide)
+  {
+/*    g_warning ("%s: Intellihide callback invoked with Intellihide off",__func__);*/
+    return;
+  }
+  win = wnck_screen_get_active_window (priv->screen);
+  if (!win)
+  {
+    return;
+  }
+  g_debug ("win name = %s",wnck_window_get_name(win) );  
+  app = wnck_window_get_application (win);
+  space = wnck_screen_get_active_workspace (priv->screen);
+  task_manager_check_for_intersection (manager,space,app);  
+}
+
+static void 
+task_manager_window_opened_cb (WnckScreen *screen, WnckWindow *window,
+                                                   TaskManager * manager)
+{
+  g_signal_connect (window,"geometry-changed",
+                    G_CALLBACK(task_manager_win_geom_changed_cb),manager);
 }
 
 static GQuark
