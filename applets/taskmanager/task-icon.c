@@ -1556,7 +1556,7 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
         }
         else
         {
-          if (task_window_is_active (TASK_WINDOW(main_item)))
+          if (task_window_is_active (TASK_WINDOW(item)))
           {
             task_icon_minimize_group (icon,TASK_WINDOW(item));            
           }
@@ -1605,9 +1605,9 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
     {
       TaskItem *item = w->data;
 
-      if (TASK_IS_LAUNCHER (item) ) continue;
+      if (!TASK_IS_WINDOW (item) ) continue;
       
-      if (task_window_is_active (TASK_WINDOW(main_item)))
+      if (task_window_is_active (TASK_WINDOW(item)))
       {
         task_icon_minimize_group (icon,TASK_WINDOW(item));        
       }

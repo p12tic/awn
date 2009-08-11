@@ -1,3 +1,8 @@
+2009-08-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix logic of window minimize when long press is off.
+
 2009-08-10  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-effects.c:
