@@ -272,8 +272,8 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
           *needle = '\0';
           g_strstrip (exec_key);
   }
+  g_strstrip (exec_key);
   priv->exec = exec_key;
-  
   
   priv->icon_name = desktop_agnostic_fdo_desktop_entry_get_icon (priv->entry);
 

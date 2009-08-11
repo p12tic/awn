@@ -3,7 +3,7 @@
 
 # schema metadata
 [DEFAULT]
-single_instance = false
+single_instance = true
 
 # configuration options
 # PLEASE KEEP THIS ALPHABETIZED!
