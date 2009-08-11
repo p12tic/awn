@@ -49,6 +49,7 @@ struct _AwnAppletPrivate
 {
   gchar *uid;
   gint panel_id;
+  gint64 panel_xid;
   gchar *canonical_name;
 	gchar *display_name;
   AwnOrientation orient;
@@ -76,6 +77,7 @@ enum
   PROP_0,
   PROP_UID,
   PROP_PANEL_ID,
+  PROP_PANEL_XID,
   PROP_CANONICAL_NAME,
 	PROP_DISPLAY_NAME,
   PROP_ORIENT,
@@ -348,6 +350,10 @@ awn_applet_get_property (GObject    *object,
       g_value_set_int (value, priv->panel_id);
       break;
 
+    case PROP_PANEL_XID:
+      g_value_set_int64 (value, priv->panel_xid);
+      break;
+
     case PROP_ORIENT:
       g_value_set_int (value, priv->orient);
       break;
@@ -456,7 +462,8 @@ awn_applet_constructed (GObject *obj)
     }
 
     GError *error = NULL;
-    GValue orient = {0}, size = {0}, max_size = {0}, offset = {0};
+    GValue orient = {0,}, size = {0,}, max_size = {0,}, offset = {0,};
+    GValue panel_xid = {0,};
 
     dbus_g_proxy_call (prop_proxy, "Get", &error, 
                        G_TYPE_STRING, "org.awnproject.Awn.Panel",
@@ -494,10 +501,24 @@ awn_applet_constructed (GObject *obj)
 
     if (error) goto crap_out;
     
+    dbus_g_proxy_call (prop_proxy, "Get", &error,
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "PanelXid",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &panel_xid,
+                       G_TYPE_INVALID);
+
+    if (error) goto crap_out;
+    
     g_object_set_property (obj, "orient", &orient);
     g_object_set_property (obj, "size", &size);
     g_object_set_property (obj, "offset", &offset);
     g_object_set_property (obj, "max-size", &max_size);
+
+    if (G_VALUE_HOLDS_INT64 (&panel_xid))
+    {
+      priv->panel_xid = g_value_get_int64 (&panel_xid);
+    }
 
     g_value_unset (&orient);
     g_value_unset (&size);
@@ -626,7 +647,8 @@ awn_applet_class_init (AwnAppletClass *klass)
                          "Canonical name for the applet, this should be also "
                          "be the name of the directory the applet is in",
                          NULL,
-                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (g_object_class,
     PROP_DISPLAY_NAME,
@@ -634,7 +656,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                          "Display name",
                          "Display name for the applet.",
                          NULL,
-                          G_PARAM_READWRITE));
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 	
   g_object_class_install_property (g_object_class,
     PROP_PANEL_ID,
@@ -642,7 +664,16 @@ awn_applet_class_init (AwnAppletClass *klass)
                       "Panel ID",
                       "The id of AwnPanel this applet connects to",
                       0, G_MAXINT, 0,
-                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE |
+                      G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (g_object_class,
+    PROP_PANEL_XID,
+    g_param_spec_int64 ("panel-xid",
+                        "Panel XID",
+                        "The XID of AwnPanel this applet is connected to",
+                        G_MININT64, G_MAXINT64, 0,
+                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (g_object_class,
    PROP_ORIENT,
@@ -650,7 +681,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                      "Orientation",
                      "The current bar orientation",
                      0, 3, AWN_ORIENTATION_BOTTOM,
-                     G_PARAM_READWRITE));
+                     G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (g_object_class,
    PROP_OFFSET,
@@ -658,7 +689,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                      "Offset",
                      "Icon offset set on the bar",
                      0, G_MAXINT, 0,
-                     G_PARAM_READWRITE));
+                     G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (g_object_class,
    PROP_OFFSET_MOD,
@@ -666,7 +697,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                        "Offset modifier",
                        "Offset modifier for non-linear path types",
                        -G_MAXFLOAT, G_MAXFLOAT, 1.0,
-                       G_PARAM_READWRITE));
+                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (g_object_class,
    PROP_SIZE,
@@ -674,7 +705,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                      "Size",
                      "The current visible size of the bar",
                      0, G_MAXINT, 48,
-                     G_PARAM_READWRITE));
+                     G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (g_object_class,
    PROP_MAX_SIZE,
@@ -682,7 +713,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                      "Max Size",
                      "The maximum visible size of the applet",
                      0, G_MAXINT, 48,
-                     G_PARAM_READWRITE));
+                     G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (g_object_class,
    PROP_PATH_TYPE,
@@ -690,7 +721,8 @@ awn_applet_class_init (AwnAppletClass *klass)
                      "Path type",
                      "Path used on the panel",
                      0, AWN_PATH_LAST-1, AWN_PATH_LINEAR,
-                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                     G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (g_object_class,
    PROP_QUIT_ON_DELETE,
@@ -698,7 +730,8 @@ awn_applet_class_init (AwnAppletClass *klass)
                          "Quit on delete",
                          "Quit the applet when it's socket is destroyed",
                          TRUE,
-                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
 
   /* Class signals */
   _applet_signals[ORIENT_CHANGED] =
