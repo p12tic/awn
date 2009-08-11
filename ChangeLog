@@ -1,5 +1,10 @@
 2009-08-10  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/util.c:
+	Kill some console spam.
+
+2009-08-10  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
 	* applets/taskmanager/task-launcher.c:
 	Mark taskmanager as a single instance applet in the schema-ini.

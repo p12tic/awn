@@ -151,7 +151,9 @@ get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry * entry)
       if (!match)
         continue;
     }
+#ifdef DEBUG    
     g_debug ("%s:  Special cased ID: '%s'",__func__,iter->id);
+#endif
     return g_strdup (iter->id);
   }
   return NULL;
@@ -200,8 +202,10 @@ get_special_id_from_window_data (gchar * cmd, gchar *res_name, gchar * class_nam
       match = title && g_regex_match_simple(iter->title, title,0,0);
       if (!match)
         continue;
-    }    
+    } 
+#ifdef DEBUG    
     g_debug ("%s:  Special cased Window ID: '%s'",__func__,iter->id);
+#endif
     return g_strdup (iter->id);
   }
   return NULL;
@@ -249,8 +253,10 @@ get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, gchar * clas
       match = title && g_regex_match_simple(iter->title, title,0,0);
       if (!match)
         continue;
-    }    
+    } 
+#ifdef DEBUG    
     g_debug ("%s:  Special cased desktop: '%s'",__func__,iter->desktop);
+#endif
     return g_strdup (iter->desktop);
   }
   return NULL;
