@@ -90,6 +90,7 @@ struct _AwnEffectsPrivate
   gboolean simple_rect;
 
   guint timer_id;
+  gboolean already_exposed;
 };
 
 typedef enum

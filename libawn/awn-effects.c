@@ -1081,10 +1081,24 @@ awn_effects_main_effect_loop(AwnEffects * fx)
 
   if (animation)
   {
+    // FIXME: if we're not mapped wait with starting the timer for the map-event
     fx->priv->timer_id = g_timeout_add(1000 / AWN_FRAMES_PER_SECOND(fx),
                                        animation, topEffect);
     fx->priv->current_effect = topEffect->this_effect;
     fx->priv->effect_lock = FALSE;
+
+    // to fix problem with first expose we call the animation function
+    //  immediately
+    if (fx->priv->already_exposed == FALSE)
+    {
+      guint timer_backup = fx->priv->timer_id;
+      if (animation (topEffect) == FALSE)
+      {
+        // if the animation is one-frame, we need to kill the timer ourselves,
+        //  but effect cleanup set the timer_id to 0 meanwhile
+        g_source_remove (timer_backup);
+      }
+    }
   }
   else
   {
@@ -1233,6 +1247,9 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
     if (GTK_WIDGET_NO_WINDOW (fx->widget))
       cairo_translate (cr, (double)(event->area.x), (double)(event->area.y));
   }
+
+  if (fx->priv->already_exposed == FALSE)
+    fx->priv->already_exposed = TRUE;
 
   if (fx->no_clear == FALSE)
     awn_effects_pre_op_clear (fx, cr, NULL, NULL);
