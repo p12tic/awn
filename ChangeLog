@@ -1,5 +1,10 @@
 2009-08-12  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Minor formatting fix.
+
+2009-08-12  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
         * applets/taskmanager/awn-applet-taskmanager.schema-ini:
 	Remove description of grouped window option from intellhide_mode
