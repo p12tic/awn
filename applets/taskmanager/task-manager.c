@@ -83,7 +83,15 @@ struct _TaskManagerPrivate
   gboolean     drag_and_drop;
   gboolean     grouping;
   gboolean     intellihide;
+  gint         intellihide_mode;
   gint         match_strength;
+};
+
+enum
+{
+  INTELLIHIDE_WORKSPACE,
+  INTELLIHIDE_GROUP,
+  INTELLIHIDE_APP
 };
 
 enum
@@ -96,7 +104,8 @@ enum
   PROP_DRAG_AND_DROP,
   PROP_GROUPING,
   PROP_MATCH_STRENGTH,
-  PROP_INTELLIHIDE
+  PROP_INTELLIHIDE,
+  PROP_INTELLIHIDE_MODE
 };
 
 /* Forwards */
@@ -211,6 +220,10 @@ task_manager_get_property (GObject    *object,
       g_value_set_boolean (value, manager->priv->intellihide);
       break;
 
+    case PROP_INTELLIHIDE_MODE:
+      g_value_set_int (value, manager->priv->intellihide_mode);
+      break;
+      
     case PROP_MATCH_STRENGTH:
       g_value_set_int (value, manager->priv->match_strength);
       break;
@@ -274,10 +287,13 @@ task_manager_set_property (GObject      *object,
       if (manager->priv->intellihide && !manager->priv->autohide_cookie)
       {     
         manager->priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager),"Intellihide" );
-      }
-      
+      }      
       break;
 
+    case PROP_INTELLIHIDE_MODE:
+      manager->priv->intellihide_mode = g_value_get_int (value);
+      break;
+      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -335,6 +351,12 @@ task_manager_constructed (GObject *object)
                                        object, "intellihide", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);  
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "intellihide_mode",
+                                       object, "intellihide_mode", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);    
   desktop_agnostic_config_client_bind (priv->client,
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
                                        "match_strength",
@@ -406,6 +428,15 @@ task_manager_class_init (TaskManagerClass *klass)
                                 TRUE,
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_INTELLIHIDE, pspec);
+
+  pspec = g_param_spec_int ("intellihide_mode",
+                                "intellihide mode",
+                                "Intellihide mode",
+                                0,
+                                2,
+                                2,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_INTELLIHIDE_MODE, pspec);
 
   pspec = g_param_spec_int ("match_strength",
                             "match_strength",
@@ -1657,6 +1688,9 @@ task_manager_check_for_intersection (TaskManager * manager,
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
   
+  /*
+   Generate a GdkRegion for the awn panel_size
+   */
   if (!priv->awn_gdk_window)
   {
     g_object_get (manager, "panel-xid", &xid, NULL);    
@@ -1670,9 +1704,27 @@ task_manager_check_for_intersection (TaskManager * manager,
   awn_gdk_region = xutils_get_input_shape (priv->awn_gdk_window);
   g_return_if_fail (awn_gdk_region);
   gdk_region_offset (awn_gdk_region,awn_rect.x,awn_rect.y);
-  
   gdk_region_get_clipbox (awn_gdk_region,&awn_rect);
-  windows = wnck_screen_get_windows (priv->screen);
+  
+  /*
+   Get the list of windows to check for intersection
+   */
+  switch (priv->intellihide_mode)
+  {
+    case INTELLIHIDE_WORKSPACE:
+      windows = wnck_screen_get_windows (priv->screen);
+      break;
+    case INTELLIHIDE_GROUP:  /*TODO... Implement this for now same as app*/
+    case INTELLIHIDE_APP:
+    default:
+      windows = wnck_application_get_windows (app);
+      break;
+  }
+  
+  /*
+   Check window list for intersection... ignoring skip tasklist and those on
+   non-active workspaces
+   */
   for (iter = windows; iter; iter = iter->next)
   {
     GdkRectangle win_rect;
@@ -1682,7 +1734,6 @@ task_manager_check_for_intersection (TaskManager * manager,
     {
       continue;
     }
-
     if (!wnck_window_is_visible_on_workspace (iter->data,space))
     {
       continue;
@@ -1704,8 +1755,12 @@ task_manager_check_for_intersection (TaskManager * manager,
       intersect = TRUE;
     }
   }
+  
   gdk_region_destroy (awn_gdk_region);
   
+  /*
+   Allow panel to hide (if necessary)
+   */
   if (intersect && priv->autohide_cookie)
   {     
     awn_applet_uninhibit_autohide (AWN_APPLET(manager), priv->autohide_cookie);
@@ -1713,6 +1768,9 @@ task_manager_check_for_intersection (TaskManager * manager,
     priv->autohide_cookie = 0;
   }
   
+  /*
+   Inhibit Hide if not already doing so
+   */
   if (!intersect && !priv->autohide_cookie)
   {
     priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager), "Intellihide");
