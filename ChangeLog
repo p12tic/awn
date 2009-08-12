@@ -1,3 +1,8 @@
+2009-08-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Minimize calls to gdk_window_foreign_new().
+
 2009-08-11  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:

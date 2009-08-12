@@ -63,6 +63,7 @@ struct _TaskManagerPrivate
   TaskSettings    *settings;
   WnckScreen      *screen;
   guint           autohide_cookie;
+  GdkWindow       *awn_gdk_window;
 
   /* Dragging properties */
   TaskIcon          *dragged_icon;
@@ -561,6 +562,11 @@ task_manager_dispose (GObject *object)
   {     
     awn_applet_uninhibit_autohide (AWN_APPLET(object), priv->autohide_cookie);
     priv->autohide_cookie = 0;
+  }
+  if (priv->awn_gdk_window)
+  {
+    g_object_unref (priv->awn_gdk_window);
+    priv->awn_gdk_window = NULL;
   }
 
   G_OBJECT_CLASS (task_manager_parent_class)->dispose (object);
@@ -1643,23 +1649,25 @@ task_manager_check_for_intersection (TaskManager * manager,
   GList * windows;
   GList * iter;
   gboolean  intersect = FALSE;
-  GdkWindow * awn_gdk_window;
   GdkRegion * awn_gdk_region;
   GdkRectangle awn_rect;
   gint depth;
   gint64 xid; 
   
-  g_object_get (manager, "panel-xid", &xid, NULL);
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
   
-  awn_gdk_window = gdk_window_foreign_new ( xid);
-  g_return_if_fail (awn_gdk_window);
-  gdk_window_get_geometry (awn_gdk_window,&awn_rect.x,
+  if (!priv->awn_gdk_window)
+  {
+    g_object_get (manager, "panel-xid", &xid, NULL);    
+    priv->awn_gdk_window = gdk_window_foreign_new ( xid);
+  }
+  g_return_if_fail (priv->awn_gdk_window);
+  gdk_window_get_geometry (priv->awn_gdk_window,&awn_rect.x,
                            &awn_rect.y,&awn_rect.width,
                            &awn_rect.height,&depth);  
-  gdk_window_get_root_origin (awn_gdk_window,&awn_rect.x,&awn_rect.y);
-  awn_gdk_region = xutils_get_input_shape (awn_gdk_window);
+  gdk_window_get_root_origin (priv->awn_gdk_window,&awn_rect.x,&awn_rect.y);
+  awn_gdk_region = xutils_get_input_shape (priv->awn_gdk_window);
   g_return_if_fail (awn_gdk_region);
   gdk_region_offset (awn_gdk_region,awn_rect.x,awn_rect.y);
   
@@ -1697,7 +1705,6 @@ task_manager_check_for_intersection (TaskManager * manager,
     }
   }
   gdk_region_destroy (awn_gdk_region);
-  g_object_unref (awn_gdk_window);
   
   if (intersect && priv->autohide_cookie)
   {     
