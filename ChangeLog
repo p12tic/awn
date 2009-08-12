@@ -1,6 +1,14 @@
 2009-08-12  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+        * applets/taskmanager/awn-applet-taskmanager.schema-ini:
+	Remove description of grouped window option from intellhide_mode
+	as it will, almost certainly, not appear by the 3.9 snapshot.
+	Switched ordering of enum so currently offered options are sequential.
+
+2009-08-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
 	Config options to determine window list used by Intellihide. 
 	Defaults is to check for intersection against currently focused 

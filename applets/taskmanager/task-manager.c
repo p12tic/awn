@@ -90,8 +90,8 @@ struct _TaskManagerPrivate
 enum
 {
   INTELLIHIDE_WORKSPACE,
-  INTELLIHIDE_GROUP,
-  INTELLIHIDE_APP
+  INTELLIHIDE_APP,
+  INTELLIHIDE_GROUP  
 };
 
 enum
@@ -434,7 +434,7 @@ task_manager_class_init (TaskManagerClass *klass)
                                 "Intellihide mode",
                                 0,
                                 2,
-                                2,
+                                1,
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_INTELLIHIDE_MODE, pspec);
 
@@ -780,6 +780,12 @@ icon_closed (TaskManager *manager, GObject *old_icon)
   priv = manager->priv;
   priv->icons = g_slist_remove (priv->icons, old_icon);
 }
+
+/*
+ Possible TODO.
+ Consider moving as much of the desktop search code as possible somewhere else
+ (possibly util.c)
+ */
 
 static gboolean
 task_icon_check_system_dir_for_desktop (TaskIcon *icon,
