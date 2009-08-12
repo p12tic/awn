@@ -1,10 +1,15 @@
-2009-08-10  Rodney Cryderman  <rcryderman@gmail.com>
+2009-08-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Properly deal with dynamic changes in Intellihide config setting.
+
+2009-08-11  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
 	Be a bit more agressive about the window list that's checked and 
 	fix the cookie eating.
 
-2009-08-10  Rodney Cryderman  <rcryderman@gmail.com>
+2009-08-11  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
   	* applets/taskmanager/task-icon.c:

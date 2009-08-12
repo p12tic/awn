@@ -265,6 +265,16 @@ task_manager_set_property (GObject      *object,
       
     case PROP_INTELLIHIDE:
       manager->priv->intellihide = g_value_get_boolean (value);
+      if (!manager->priv->intellihide && manager->priv->autohide_cookie)
+      {     
+        awn_applet_uninhibit_autohide (AWN_APPLET(manager), manager->priv->autohide_cookie);
+        manager->priv->autohide_cookie = 0;
+      }
+      if (manager->priv->intellihide && !manager->priv->autohide_cookie)
+      {     
+        manager->priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager),"Intellihide" );
+      }
+      
       break;
 
     default:
@@ -547,6 +557,11 @@ task_manager_dispose (GObject *object)
   desktop_agnostic_config_client_unbind_all_for_object (priv->client,
                                                         object,
                                                         NULL);
+  if (priv->autohide_cookie)
+  {     
+    awn_applet_uninhibit_autohide (AWN_APPLET(object), priv->autohide_cookie);
+    priv->autohide_cookie = 0;
+  }
 
   G_OBJECT_CLASS (task_manager_parent_class)->dispose (object);
 }
