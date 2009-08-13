@@ -1,5 +1,10 @@
 2009-08-12  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Add some comments and minor code cleanup.
+
+2009-08-12  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	Cache awn's GdkRegions for reuse when autohide is set to transparency
 	(which ends up setting the input mask to an empty region)

@@ -62,7 +62,9 @@ struct _TaskManagerPrivate
   DesktopAgnosticConfigClient *client;
   TaskSettings    *settings;
   WnckScreen      *screen;
-  guint           autohide_cookie;
+
+  /*Used by Intellihide*/
+  guint           autohide_cookie;  
   GdkWindow       *awn_gdk_window;
   GdkRegion       * awn_gdk_region;
 
@@ -279,6 +281,7 @@ task_manager_set_property (GObject      *object,
       break;
       
     case PROP_INTELLIHIDE:
+      /* TODO move into a function */
       manager->priv->intellihide = g_value_get_boolean (value);
       if (!manager->priv->intellihide && manager->priv->autohide_cookie)
       {     
@@ -608,11 +611,12 @@ task_manager_dispose (GObject *object)
  * WNCK_SCREEN CALLBACKS
  */
 
-/**
+/*
  * This signal is only connected for windows which were of type normal/utility
  * and were initially "skip-tasklist". If they are not skip-tasklist anymore
  * we treat them as newly opened windows.
  * STATE: done
+ *
  */
 static void
 on_window_state_changed (WnckWindow      *window,
@@ -622,7 +626,7 @@ on_window_state_changed (WnckWindow      *window,
 {
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
-  // test if they don't skip-tasklist anymore
+  /* test if they don't skip-tasklist anymore*/
   if (!wnck_window_is_skip_tasklist (window))
   {
     g_signal_handlers_disconnect_by_func (window, 
@@ -632,11 +636,15 @@ on_window_state_changed (WnckWindow      *window,
   }
 }
 
-/**
+/*
  * The active WnckWindow has changed.
- * Retrieve the TaskWindows and update there active state 
+ * Retrieve the TaskWindows and update their active state 
+ *
+ * TODO Store the active TaskWin into a TaskManager field so it can be used
+ * for group value in intellihide_mode and minimize code bloat in other places.
+ * It'll probably end up being useful to store this info for other purposes also.
  */
-static void 
+static void
 on_active_window_changed (WnckScreen    *screen, 
                           WnckWindow    *old_window,
                           TaskManager   *manager)
@@ -663,13 +671,13 @@ on_active_window_changed (WnckScreen    *screen,
     task_window_set_is_active (taskwin, TRUE);
 }
 
-/**
+/*
  * When the property 'show_all_windows' is False,
  * workspace switches are monitored. Whenever one happens
  * all TaskWindows are notified.
  */
 static void
-on_workspace_changed (TaskManager *manager) //... has more arguments
+on_workspace_changed (TaskManager *manager) /*... has more arguments*/
 {
   TaskManagerPrivate *priv;
   GSList             *w;
@@ -721,7 +729,7 @@ update_icon_visible (TaskManager *manager, TaskIcon *icon)
   {
     awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                           AWN_EFFECT_CLOSING, 1, FALSE, TRUE);
-    //hidding of TaskIcon happens when effect is done.
+    /*hidding of TaskIcon happens when effect is done.*/
   }
 }
 
@@ -743,13 +751,10 @@ on_icon_effects_ends (TaskIcon   *icon,
   if (effect == AWN_EFFECT_CLOSING)
   {
     gtk_widget_hide (GTK_WIDGET (icon));
-
-    //if (task_icon_count_items (icon) == 0)
-    //  gtk_widget_destroy (GTK_WIDGET (icon));
   }
 }
 
-/**
+/*
  * This function gets called whenever a task-window gets finalized.
  * It removes the task-window from the list.
  * State: done
@@ -765,7 +770,7 @@ window_closed (TaskManager *manager, GObject *old_item)
   priv->windows = g_slist_remove (priv->windows, old_item);
 }
 
-/**
+/*
  * This function gets called whenever a task-icon gets finalized.
  * It removes the task-icon from the gslist and update layout
  * (so it gets removed from the bar)
@@ -788,6 +793,14 @@ icon_closed (TaskManager *manager, GObject *old_icon)
  (possibly util.c)
  */
 
+/*
+ Create a path <systemdir><name>.desktop
+ Does the desktop file exist?
+ If so then append as an ephemeral item to the item list.  An ephemeral item
+ disappears when their are only ephemeral items left in the list.
+ If there desktop file is not discovered then it will recursively call itself
+ for any subdirectories within system_dir.
+ */
 static gboolean
 task_icon_check_system_dir_for_desktop (TaskIcon *icon,
                                         gchar * system_dir, 
@@ -837,6 +850,10 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
   return FALSE;
 }
 
+/*
+ TODO: refactor into a few smaller functions or possibly just clean up the logic
+ with judicious use of goto.
+ */
 static gboolean
 find_desktop (TaskIcon *icon, gchar * name)
 {
@@ -851,6 +868,7 @@ find_desktop (TaskIcon *icon, gchar * name)
   
   g_return_val_if_fail (name,FALSE);
   
+  /*if the name has an of extensions then get rid of them*/
   for (iter = (GStrv)extensions; *iter; iter++)
   {
     if ( g_strrstr (name,*iter) )
@@ -860,7 +878,7 @@ find_desktop (TaskIcon *icon, gchar * name)
       break;
     }
   }  
-  
+
   lower = g_utf8_strdown (name_stripped?name_stripped:name, -1);
   g_free (name_stripped);
 //#define DEBUG
@@ -869,6 +887,11 @@ find_desktop (TaskIcon *icon, gchar * name)
   g_debug ("%s: lower = %s",__func__,lower);
 #endif      
 
+  /*
+   Check in the application dirs of all System dirs
+   If we find the desktop file it will get added as an ephemeral item and 
+   TRUE will be returned.
+   */
   for (iter = (GStrv)system_dirs; *iter; iter++)
   {
     gchar * applications_dir = g_strdup_printf ("%s/applications/",*iter);
@@ -880,23 +903,30 @@ find_desktop (TaskIcon *icon, gchar * name)
     }
     g_free (applications_dir);
   }
-  if (!launcher)
+
+  /*
+   Didn't find a desktop file in the system dirs...
+   So check the user's data dir directory for an applications subdir containing
+   our desktop file
+   */
+  desktop = g_strdup_printf ("%sapplications/%s.desktop",g_get_user_data_dir (),lower);
+  launcher = task_launcher_new_for_desktop_file (desktop);
+  if (launcher)
   {
-    desktop = g_strdup_printf ("%sapplications/%s.desktop",g_get_user_data_dir (),lower);
-    launcher = task_launcher_new_for_desktop_file (desktop);
-    if (launcher)
-    {
 #ifdef DEBUG
-      g_debug ("launcher %p",launcher);
+    g_debug ("launcher %p",launcher);
 #endif
-      task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
-      g_free (desktop);
-      g_free  (lower);
-      return TRUE;
-    }        
-    g_free (desktop);        
+    task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+    g_free (desktop);
+    g_free  (lower);
+    return TRUE;
   }
+  g_free (desktop);
   
+  /*
+   Didn't find anything... so attempt to strip out odd characters and retry 
+   the process if any were successfully removed.
+   */
   g_strdelimit (lower,"-.:,=+_~!@#$%^()[]{}'",' ');
   tokens = g_strsplit (lower," ",-1);
   if (tokens)
