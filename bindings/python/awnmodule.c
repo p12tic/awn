@@ -70,6 +70,8 @@ initawn (void)
         pyawn_register_classes (d);
         pyawn_add_constants (m, "AWN_");
 
+        PyModule_AddIntConstant (m, "PANEL_ID_DEFAULT", AWN_PANEL_ID_DEFAULT);
+
         if (PyErr_Occurred ()) {
                 Py_FatalError ("unable to initialise awn module");
         }
