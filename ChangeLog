@@ -1,6 +1,11 @@
 2009-08-12  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+        Add some comments.
+
+2009-08-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Add some comments and minor code cleanup.
 
 2009-08-12  Rodney Cryderman  <rcryderman@gmail.com>

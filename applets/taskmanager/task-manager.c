@@ -948,6 +948,13 @@ find_desktop (TaskIcon *icon, gchar * name)
   return FALSE;
 }
 
+/*
+ Similar to find_desktop but attempting to match using regexes instead of 
+ direct string comparisions
+ This is fuzzier so if a desktop file is matched it will do a comparision
+ of Exec to the cmd... if they don't match then the desktop file match will
+ be discarded.
+ */
 static gboolean
 find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
 {
@@ -1042,6 +1049,11 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   
 }
 
+/*
+ If other attempts to find a desktop file fail then this function will
+ typically get called which use tables of data to match problem apps to 
+ desktop file names (refer to util.c)
+ */
 static gboolean
 find_desktop_special_case (TaskIcon *icon, gchar * cmd, gchar *res_name, 
                                  gchar * class_name,const gchar *title)
@@ -1063,10 +1075,13 @@ find_desktop_special_case (TaskIcon *icon, gchar * cmd, gchar *res_name,
   return result;
 }
 
-/**
+/*
  * Whenever a new window gets opened it will try to place it
  * in an awn-icon or will create a new awn-icon.
  * State: adjusted
+ *
+ * TODO: document all the possible match ratings in one place.  Evaluate if they
+ * are sane.
  */
 static void 
 on_window_opened (WnckScreen    *screen, 
@@ -1112,6 +1127,7 @@ on_window_opened (WnckScreen    *screen,
   /* 
     for some reason the skip tasklist property for the taskmanager toggles briefly
    off and on in certain circumstances.  Nip this in the bud.
+   TODO:  Investigate wth this is happening...  it bothers me.
    */
   if ( wnck_window_get_pid (window) == getpid() || 
       g_strcmp0 (wnck_window_get_name (window),"awn-applet")==0 )
@@ -1121,6 +1137,10 @@ on_window_opened (WnckScreen    *screen,
   /* 
    * If it's skip tasklist, connect to the state-changed signal and see if
    * it ever becomes a normal window
+   *
+   * NOTE:  Shouldn't we just be connecting everything that gets to this point
+   * to state-changed.  Do we have the case of as window switching from in the 
+   * tasklist to skip_tasklist?   TODO:  investigate.
    */
   if (wnck_window_is_skip_tasklist (window))
   {
@@ -1129,14 +1149,14 @@ on_window_opened (WnckScreen    *screen,
     return;
   }
 
-  // create a new TaskWindow containing the WnckWindow
+  /* create a new TaskWindow containing the WnckWindow*/
   item = task_window_new (window);
   g_object_set_qdata (G_OBJECT (window), win_quark, TASK_WINDOW (item));
 
   priv->windows = g_slist_append (priv->windows, item);
   g_object_weak_ref (G_OBJECT (item), (GWeakNotify)window_closed, manager);
 
-  // see if there is a icon that matches
+  /* see if there is a icon that matches*/
   for (w = priv->icons; w; w = w->next)
   {
     TaskIcon *taskicon = w->data;
@@ -1196,8 +1216,19 @@ on_window_opened (WnckScreen    *screen,
 #endif      
     
 /*
-     TODO:
+     Possible TODO:
      Check for saved signature.
+     If we save a signature,desktopfile pair when we successfully discover a
+     desktop file then we don't need to search through a bunch of directories
+     for an app multiple times...
+     Question: How bad is the performance hit atm?
+     
+     TODO Note:  Desktop file lookup is important if we want to be able to offer
+     a favourite apps options (automatically show the top 4 apps in the bar for 
+     example).   
+     
+     We may as well implement both the signature/desktop caching along with 
+     stats for favourite app usage in a unified manner.
 */
     
     if (res_name && strlen (res_name))
@@ -1251,7 +1282,7 @@ on_window_opened (WnckScreen    *screen,
                                                  wnck_window_get_name (window));
     }
 /*
-     TODO
+     Possible TODO
      if found and signature has not already been saved then save it.
 */
     g_free (full_cmd);
