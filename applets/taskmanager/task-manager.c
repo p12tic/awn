@@ -1777,12 +1777,6 @@ task_manager_check_for_intersection (TaskManager * manager,
     priv->awn_gdk_region = updated_region; 
     gdk_region_offset (priv->awn_gdk_region,awn_rect.x,awn_rect.y);    
   }
-  /*
-   awn_rect will end up being correct after this call...  
-   TODO: Probably should look into using gdk_region_intersect () or at the very least
-   gdk_region_rect_in().  especially because of curves.
-   */
-  gdk_region_get_clipbox (priv->awn_gdk_region,&awn_rect);
   
   /*
    Get the list of windows to check for intersection
@@ -1806,7 +1800,6 @@ task_manager_check_for_intersection (TaskManager * manager,
   for (iter = windows; iter; iter = iter->next)
   {
     GdkRectangle win_rect;
-    GdkRectangle intersection;
 
     if (wnck_window_is_skip_tasklist (iter->data) )
     {
@@ -1820,20 +1813,19 @@ task_manager_check_for_intersection (TaskManager * manager,
      It may be a good idea to go the same route as we go with the 
      panel to get the GdkRectangle.  But in practice it's _probably_
      not necessary
-     
-     TODO:  use gdk_region_instersect() or gdk_region_rect_in() at min.
-     
      */
     wnck_window_get_geometry (iter->data,&win_rect.x,
                               &win_rect.y,&win_rect.width,
                               &win_rect.height);
 
-    if ( gdk_rectangle_intersect (&awn_rect,&win_rect,&intersection))
+    if (gdk_region_rect_in (priv->awn_gdk_region, &win_rect) != 
+          GDK_OVERLAP_RECTANGLE_OUT)
     {
       g_debug ("Intersect with %s, %d",wnck_window_get_name (iter->data),
                wnck_window_get_pid(iter->data));
-      
+
       intersect = TRUE;
+      break;
     }
   }
   
