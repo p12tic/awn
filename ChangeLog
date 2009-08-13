@@ -1,3 +1,8 @@
+2009-08-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* configure.in:
+	Add -lext for taskmanager.
+
 2009-08-12  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/anims/awn-effects-shared.h:
