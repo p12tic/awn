@@ -1,3 +1,8 @@
+2009-08-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Removed a function and moved it's code into on_window_opened().
+
 2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-applet-simple.c:

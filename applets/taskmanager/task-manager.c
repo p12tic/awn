@@ -46,7 +46,6 @@
 
 #include <X11/extensions/shape.h>
 
-
 G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
 
 #define TASK_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -156,9 +155,8 @@ static void task_manager_active_window_changed_cb (WnckScreen *screen,
 static void task_manager_active_workspace_changed_cb (WnckScreen    *screen,
                                                       WnckWorkspace *previous_space,
                                                       TaskManager * manager);
-static void task_manager_window_opened_cb (WnckScreen    *screen,
-                                           WnckWindow *window,
-                                           TaskManager * manager);
+static void task_manager_win_geom_changed_cb (WnckWindow *window, 
+                                              TaskManager * manager);
 
 typedef enum 
 {
@@ -371,8 +369,6 @@ task_manager_constructed (GObject *object)
                     G_CALLBACK(task_manager_active_window_changed_cb),object);
   g_signal_connect (priv->screen,"active-workspace-changed",
                     G_CALLBACK(task_manager_active_workspace_changed_cb),object);
-  g_signal_connect (priv->screen,"window-opened",
-                    G_CALLBACK(task_manager_window_opened_cb),object);
 }
 
 static void
@@ -1106,6 +1102,13 @@ on_window_opened (WnckScreen    *screen,
 
   priv = manager->priv;
   type = wnck_window_get_window_type (window);
+    
+  /*
+   For Intellihide.  It may be ok to connect this after we the switch (where
+   some windows are filtered out)
+   */
+  g_signal_connect (window,"geometry-changed",
+                  G_CALLBACK(task_manager_win_geom_changed_cb),manager);
 
   switch (type)
   {
@@ -1232,7 +1235,7 @@ on_window_opened (WnckScreen    *screen,
 */
 
     /*
-     Various permations on finding a desktop file for the app.
+     Various permutations on finding a desktop file for the app.
      
      Class name may eventually be shown to give a false positive for something.
      
@@ -1300,7 +1303,7 @@ on_window_opened (WnckScreen    *screen,
     task_icon_append_item (TASK_ICON (icon), item);
     priv->icons = g_slist_append (priv->icons, icon);
     gtk_container_add (GTK_CONTAINER (priv->box), icon);
-
+    
     /* reordening through D&D */
     if(priv->drag_and_drop)
       _drag_add_signals(manager, icon);
@@ -1947,18 +1950,6 @@ task_manager_win_geom_changed_cb (WnckWindow *window, TaskManager * manager)
   app = wnck_window_get_application (win);
   space = wnck_screen_get_active_workspace (priv->screen);
   task_manager_check_for_intersection (manager,space,app);  
-}
-
-/*
- If we have a new window then hook it up to task_manager_win_geom_changed_cb()
- for Intellihide purposes
- */
-static void 
-task_manager_window_opened_cb (WnckScreen *screen, WnckWindow *window,
-                                                   TaskManager * manager)
-{
-  g_signal_connect (window,"geometry-changed",
-                    G_CALLBACK(task_manager_win_geom_changed_cb),manager);
 }
 
 static GQuark
