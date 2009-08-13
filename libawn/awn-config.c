@@ -135,17 +135,20 @@ awn_config_get_default_for_applet (AwnApplet *applet, GError **error)
 
   gchar *canonical_name = NULL;
   gchar *uid = NULL;
+  gboolean single_instance = FALSE;
   DesktopAgnosticConfigClient *client = NULL;
 
   g_object_get (G_OBJECT (applet),
                 "canonical-name", &canonical_name,
                 "uid", &uid,
+                "single-instance", &single_instance,
                 NULL);
 
   g_return_val_if_fail (canonical_name != NULL, NULL);
 
   client = awn_config_get_default_for_applet_by_info (canonical_name,
                                                       uid,
+                                                      single_instance,
                                                       error);
 
   if (uid != NULL)
@@ -163,6 +166,7 @@ awn_config_get_default_for_applet (AwnApplet *applet, GError **error)
  * awn_config_get_default_for_applet_by_info:
  * @name: The canonical applet name.
  * @uid: The UID of the applet (may be %NULL).
+ * @single_instance: Whether configuration should be single-instance.
  * @error: The address of the #GError object, if an error occurs.
  *
  * Looks up or creates a configuration client that is associated with the
@@ -176,11 +180,11 @@ awn_config_get_default_for_applet (AwnApplet *applet, GError **error)
 DesktopAgnosticConfigClient*
 awn_config_get_default_for_applet_by_info (const gchar  *name,
                                            const gchar  *uid,
+                                           gboolean      single_instance,
                                            GError      **error)
 {
   g_return_val_if_fail (name != NULL, NULL);
 
-  gboolean single_instance;
   gchar *instance_id;
   DesktopAgnosticConfigClient *client = NULL;
 
@@ -189,9 +193,6 @@ awn_config_get_default_for_applet_by_info (const gchar  *name,
     /* initialize datalist */
     g_datalist_init (&awn_config_clients);
   }
-
-  single_instance = (uid == NULL ||
-                     g_str_has_prefix (uid, UID_SINGLE_INSTANCE_PREFIX));
 
   if (single_instance)
   {

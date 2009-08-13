@@ -74,10 +74,7 @@ awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
     // return NULL; // FIXME: what to do in this case?
   }
 
-  uid = g_strdup_printf ("single-%s",uid);
   applet = task_manager_new (name, uid, panel_id);
-  g_free (uid);
-  uid = NULL;
   
   // We're non-first instance, don't do DBus registering
   if (connection == NULL) return applet;

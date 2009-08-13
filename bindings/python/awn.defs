@@ -586,6 +586,7 @@
   (parameters
     '("const-gchar*" "name")
     '("const-gchar*" "uid")
+    '("gboolean" "single_instance")
     '("GError**" "error")
   )
 )

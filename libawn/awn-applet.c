@@ -61,6 +61,7 @@ struct _AwnAppletPrivate
 
   gboolean show_all_on_embed;
   gboolean quit_on_delete;
+  gboolean single_instance;
 
   gint origin_x, origin_y;
   gint pos_x, pos_y;
@@ -87,8 +88,9 @@ enum
   PROP_MAX_SIZE,
   PROP_PATH_TYPE,
 
+  PROP_SHOW_ALL_ON_EMBED,
   PROP_QUIT_ON_DELETE,
-  PROP_SHOW_ALL_ON_EMBED
+  PROP_SINGLE_INSTANCE
 };
 
 enum
@@ -312,8 +314,14 @@ awn_applet_set_property (GObject      *object,
     case PROP_PATH_TYPE:
       awn_applet_set_path_type (applet, g_value_get_int (value));
       break;
+    case PROP_SHOW_ALL_ON_EMBED:
+      applet->priv->show_all_on_embed = g_value_get_boolean (value);
+      break;
     case PROP_QUIT_ON_DELETE:
       applet->priv->quit_on_delete = g_value_get_boolean (value);
+      break;
+    case PROP_SINGLE_INSTANCE:
+      applet->priv->single_instance = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -378,8 +386,16 @@ awn_applet_get_property (GObject    *object,
       g_value_set_int (value, priv->path_type);
       break;
 
+    case PROP_SHOW_ALL_ON_EMBED:
+      g_value_set_boolean (value, priv->show_all_on_embed);
+      break;
+
     case PROP_QUIT_ON_DELETE:
       g_value_set_boolean (value, priv->quit_on_delete);
+      break;
+
+    case PROP_SINGLE_INSTANCE:
+      g_value_set_boolean (value, priv->single_instance);
       break;
 
     default:
@@ -725,13 +741,31 @@ awn_applet_class_init (AwnAppletClass *klass)
                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (g_object_class,
+   PROP_SHOW_ALL_ON_EMBED,
+   g_param_spec_boolean ("show-all-on-embed",
+                         "Show all on Embed",
+                         "The applet will automatically call show_all when "
+                         "it's embedded in the socket",
+                         TRUE,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (g_object_class,
    PROP_QUIT_ON_DELETE,
    g_param_spec_boolean ("quit-on-delete",
                          "Quit on delete",
                          "Quit the applet when it's socket is destroyed",
                          TRUE,
-                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
-                         G_PARAM_STATIC_STRINGS));
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (g_object_class,
+   PROP_SINGLE_INSTANCE,
+   g_param_spec_boolean ("single-instance",
+                         "Single Instance",
+                         "Determines if applet uses single-instance "
+                         "configuration (doesn't limit number of instances "
+                         "on the panel)",
+                         FALSE,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /* Class signals */
   _applet_signals[ORIENT_CHANGED] =
@@ -825,8 +859,10 @@ awn_applet_init (AwnApplet *applet)
 
   priv->flags = AWN_APPLET_FLAGS_NONE;
   priv->offset_modifier = 1.0;
-  // FIXME: turn into proper properties
+
+  // provide defaults (these aren't constructed)
   priv->show_all_on_embed = TRUE;
+  priv->quit_on_delete = TRUE;
 
   error = NULL;
   priv->connection = dbus_g_bus_get(DBUS_BUS_SESSION, &error);
