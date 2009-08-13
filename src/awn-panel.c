@@ -2810,7 +2810,15 @@ awn_panel_uninhibit_autohide  (AwnPanel *panel, guint cookie)
   g_hash_table_remove (priv->inhibits, GINT_TO_POINTER (cookie));
 
   if (g_hash_table_size (priv->inhibits) == 0)
+  {
     priv->autohide_inhibited = FALSE;
+
+    // don't wait for the timer, start autohide immediately (in next loop)
+    if (priv->autohide_start_timer_id)
+      g_source_remove (priv->autohide_start_timer_id);
+
+    priv->autohide_start_timer_id = g_idle_add (autohide_start_timeout, panel);
+  }
 
   return TRUE;
 }
