@@ -1137,7 +1137,7 @@ awn_themed_icon_set_info_simple (AwnThemedIcon  *icon,
  * awn_themed_icon_set_info_append:
  * @icon: A pointer to an #AwnThemedIcon object.
  * @state: An Icon state.  
- * @icon_names: A icon name.
+ * @icon_name: A icon name.
  *
  * Appends a icon state/ icon name pair to the existing list of themed icons.
  */
@@ -1183,7 +1183,7 @@ awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
 }
 
 /**
- * awn_themed_icon_set_info_append:
+ * awn_themed_icon_set_applet_info:
  * @icon: A pointer to an #AwnThemedIcon object.
  * @applet_name: The applet name.  
  * @uid: The UID of the applet instance.
@@ -1350,7 +1350,7 @@ awn_themed_icon_get_default_theme_name (AwnThemedIcon *icon)
 /**
  * awn_themed_icon_clear_icons:
  * @icon: A pointer to an #AwnThemedIcon object.
- * @size: Scope to clear. One of SCOPE_AWN_THEME, SCOPE_AWN_APPLET, SCOPE_AWN_UID.
+ * @scope: Scope to clear. One of SCOPE_AWN_THEME, SCOPE_AWN_APPLET, SCOPE_AWN_UID.
  *
  * Delete icons from the custom awn-theme in $HOME/.icons/awn-theme
  */

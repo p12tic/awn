@@ -19,7 +19,7 @@
 
 /**
  * SECTION:AwnOverlayThemedIcon
- * @short_description: Text overlay for use with #AwnOverlaidIcon.
+ * @short_description: Themed Icon overlay for use with #AwnOverlaidIcon.
  * @see_also: #AwnEffects, #AwnOverlay, #AwnOverlayPixbuf, #AwnOverlayPixbufFile, 
  * #AwnOverlayThrobber, #AwnOverlayText, #AwnThemedIcon.
  * @stability: Unstable
@@ -305,7 +305,7 @@ awn_overlay_themed_icon_init (AwnOverlayThemedIcon *self)
  * awn_overlay_themed_icon_new:
  * @icon: an #AwnThemedIcon.
  * @icon_name: A themed icon icon name.
- * @icon_state: A icon state for the icon or NULL.
+ * @state: A icon state for the icon or NULL.
  * Creates a new instance of #AwnOverlayThemedIcon.
  * Returns: an instance of #AwnOverlayThemedIcon.
  */

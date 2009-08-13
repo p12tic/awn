@@ -16,6 +16,17 @@
  *
  */
  
+/**
+ * SECTION:AwnOverlayProgressCircle
+ * @short_description: Circle Progress overlay for use with #AwnIcon.
+ * @see_also: #AwnEffects, #AwnOverlay, #AwnOverlayThemedIcon, #AwnOverlayThrobber,
+ * #AwnOverlayPixbuf, #AwnOverlayPixbufFile, #AwnIcon, #AwnOverlayProgress
+ * @stability: Unstable
+ * @include: libawn/libawn.h
+ *
+ * Circle Progress overlay used with #AwnIcon.
+ */
+
  /* awn-overlay-progress-circle.c */
 
 #include <math.h>
@@ -139,6 +150,13 @@ awn_overlay_progress_circle_class_init (AwnOverlayProgressCircleClass *klass)
   
   AWN_OVERLAY_CLASS(klass)->render = _awn_overlay_progress_circle_render;  
   
+/**
+ * AwnOverlayProgressCircle:scale:
+ *
+ * The desired size of the overlay scaled to the Icon.  Range 0.0...1.0. Default
+ * value of 0.9
+ */        
+  
   pspec = g_param_spec_double ("scale",
                                "Scale",
                                "Scale",
@@ -148,6 +166,12 @@ awn_overlay_progress_circle_class_init (AwnOverlayProgressCircleClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_SCALE, pspec);   
 
+/**
+ * AwnOverlayProgressCircle:background-color:
+ *
+ * Overlay background color of type #DesktopAgnosticColor.
+ */        
+  
   pspec = g_param_spec_object ("background-color",
                                "Background Color",
                                "Background Color",
@@ -155,6 +179,12 @@ awn_overlay_progress_circle_class_init (AwnOverlayProgressCircleClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_BACKGROUND_COLOR, pspec);   
 
+/**
+ * AwnOverlayProgressCircle:foreground-color:
+ *
+ * Overlay foregroundground color of type #DesktopAgnosticColor.
+ */        
+  
   pspec = g_param_spec_object ("foreground-color",
                                "Foreground Color",
                                "Foreground Color",
@@ -162,6 +192,12 @@ awn_overlay_progress_circle_class_init (AwnOverlayProgressCircleClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_FOREGROUND_COLOR, pspec);   
 
+/**
+ * AwnOverlayProgressCircle:outline-color:
+ *
+ * Overlay outline color of type #DesktopAgnosticColor.
+ */        
+  
   pspec = g_param_spec_object ("outline-color",
                                "Outline Color",
                                "Outline Color",
@@ -177,6 +213,12 @@ awn_overlay_progress_circle_init (AwnOverlayProgressCircle *self)
 {
 }
 
+/**
+ * awn_overlay_progress_circle_new:
+ *
+ * Creates a new instance of #AwnOverlayProgressCircle.
+ * Returns: an instance of #AwnOverlayProgressCircle.
+ */
 AwnOverlayProgressCircle*
 awn_overlay_progress_circle_new (void)
 {

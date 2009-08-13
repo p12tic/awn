@@ -146,6 +146,12 @@ awn_overlay_pixbuf_class_init (AwnOverlayPixbufClass *klass)
   object_class->finalize = awn_overlay_pixbuf_finalize;
  
   AWN_OVERLAY_CLASS(klass)->render = _awn_overlay_pixbuf_render;
+
+/**
+ * AwnOverlayPixbuf:pixbuf:
+ *
+ * A #GdkPixbuf to overlay.
+ */        
   
   pspec = g_param_spec_object ("pixbuf",
                                "Pixbuf",
@@ -153,6 +159,13 @@ awn_overlay_pixbuf_class_init (AwnOverlayPixbufClass *klass)
                                GDK_TYPE_PIXBUF,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_PIXBUF, pspec);   
+
+/**
+ * AwnOverlayPixbuf:scale:
+ *
+ * The desired size of the overlay scaled to the Icon.  Range 0.0...1.0. Default
+ * value of 0.5
+ */        
   
   pspec = g_param_spec_double ("scale",
                                "scale",
@@ -163,6 +176,12 @@ awn_overlay_pixbuf_class_init (AwnOverlayPixbufClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_SCALE, pspec);   
 
+/**
+ * AwnOverlayPixbuf:alpha:
+ *
+ * An alpha value to apply to the Overlay.  Range of 0.0...1.0.  Default is 0.9.
+ */        
+  
   pspec = g_param_spec_double ("alpha",
                                "Alpha",
                                "Alpha",
@@ -183,6 +202,12 @@ awn_overlay_pixbuf_init (AwnOverlayPixbuf *self)
   priv->scaled_pixbuf = NULL;
 }
 
+/**
+ * awn_overlay_pixbuf_new:
+ *
+ * Creates a new instance of #AwnOverlayPixbuf.
+ * Returns: an instance of #AwnOverlayPixbuf.
+ */
 AwnOverlayPixbuf*
 awn_overlay_pixbuf_new (void)
 {

@@ -349,7 +349,7 @@ awn_overlay_new (void)
 /**
  * awn_overlay_render:
  * @overlay: An pointer to an #AwnOverlay (or subclass) object.
- * @icon: The #AwnThemedIcon that is being overlaid.
+ * @widget: The #GtkWidget that is being overlaid.
  * @cr: Pointer to cairo context ( #cairo_t ) for the surface being overlaid. 
  * @width: The width of the #AwnThemedIcon as #gint.
  * @height: The height of the #AwnThemedIcon as #gint.

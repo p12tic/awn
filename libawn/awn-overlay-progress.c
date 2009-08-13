@@ -16,6 +16,18 @@
  *
  */
  
+
+/**
+ * SECTION:AwnOverlayProgress
+ * @short_description: Progress overlay for use with #AwnIcon.
+ * @see_also: #AwnEffects, #AwnOverlay, #AwnOverlayThemedIcon, #AwnOverlayThrobber,
+ * #AwnOverlayPixbuf, #AwnOverlayPixbufFile, #AwnIcon
+ * @stability: Unstable
+ * @include: libawn/libawn.h
+ *
+ * Progress overlay used with #AwnIcon.  This is an abstract type.
+ */
+
  /* awn-overlay-progress.c */
 
 #include "awn-overlay-progress.h"
@@ -89,6 +101,12 @@ awn_overlay_progress_class_init (AwnOverlayProgressClass *klass)
   object_class->set_property = awn_overlay_progress_set_property;
   object_class->dispose = awn_overlay_progress_dispose;
   object_class->finalize = awn_overlay_progress_finalize;
+
+/**
+ * AwnOverlayProgress:percent-complete:
+ *
+ * A property of type double.  Set to the completion percentage for the overlay.
+ */    
   
   pspec = g_param_spec_double ("percent-complete",
                                "Percent Complete",
@@ -106,6 +124,13 @@ static void
 awn_overlay_progress_init (AwnOverlayProgress *self)
 {
 }
+
+/**
+ * awn_overlay_progress_new:
+ *
+ * Creates a new instance of #AwnOverlayProgress.
+ * Returns: an instance of #AwnOverlayProgress.
+ */
 
 AwnOverlayProgress*
 awn_overlay_progress_new (void)

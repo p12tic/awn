@@ -1,3 +1,13 @@
+2009-08-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf.c:
+  	* libawn/awn-overlay-progress-circle.c:
+  	* libawn/awn-overlay-progress.c:
+  	* libawn/awn-overlay-themed-icon.c:
+  	* libawn/awn-overlay.c:
+  	* libawn/awn-themed-icon.c:
+	Additions and fixes to gtk-doc style documentation.
+
 2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* .bzrignore:
