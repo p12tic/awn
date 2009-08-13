@@ -1,33 +1,126 @@
 <?xml version="1.0"?>
 <api version="1.0">
 	<namespace name="Awn">
+		<function name="cairo_pattern_add_color_stop_color" symbol="awn_cairo_pattern_add_color_stop_color">
+			<return-type type="void"/>
+			<parameters>
+				<parameter name="pattern" type="cairo_pattern_t*"/>
+				<parameter name="offset" type="double"/>
+				<parameter name="color" type="DesktopAgnosticColor*"/>
+			</parameters>
+		</function>
+		<function name="cairo_pattern_add_color_stop_color_with_alpha_multiplier" symbol="awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier">
+			<return-type type="void"/>
+			<parameters>
+				<parameter name="pattern" type="cairo_pattern_t*"/>
+				<parameter name="offset" type="double"/>
+				<parameter name="color" type="DesktopAgnosticColor*"/>
+				<parameter name="multiplier" type="gdouble"/>
+			</parameters>
+		</function>
 		<function name="cairo_rounded_rect" symbol="awn_cairo_rounded_rect">
 			<return-type type="void"/>
 			<parameters>
 				<parameter name="cr" type="cairo_t*"/>
-				<parameter name="x0" type="int"/>
-				<parameter name="y0" type="int"/>
-				<parameter name="width" type="int"/>
-				<parameter name="height" type="int"/>
+				<parameter name="x0" type="double"/>
+				<parameter name="y0" type="double"/>
+				<parameter name="width" type="double"/>
+				<parameter name="height" type="double"/>
 				<parameter name="radius" type="double"/>
 				<parameter name="state" type="AwnCairoRoundCorners"/>
 			</parameters>
 		</function>
-		<function name="cairo_string_to_color" symbol="awn_cairo_string_to_color">
+		<function name="cairo_rounded_rect_shadow" symbol="awn_cairo_rounded_rect_shadow">
 			<return-type type="void"/>
 			<parameters>
-				<parameter name="string" type="gchar*"/>
-				<parameter name="color" type="AwnColor*"/>
+				<parameter name="cr" type="cairo_t*"/>
+				<parameter name="rx0" type="double"/>
+				<parameter name="ry0" type="double"/>
+				<parameter name="width" type="double"/>
+				<parameter name="height" type="double"/>
+				<parameter name="radius" type="double"/>
+				<parameter name="state" type="AwnCairoRoundCorners"/>
+				<parameter name="shadow_radius" type="double"/>
+				<parameter name="shadow_alpha" type="double"/>
 			</parameters>
 		</function>
-		<function name="get_settings" symbol="awn_get_settings">
-			<return-type type="AwnSettings*"/>
-		</function>
-		<function name="vfs_get_pathlist_from_string" symbol="awn_vfs_get_pathlist_from_string">
-			<return-type type="GSList*"/>
+		<function name="cairo_set_source_color" symbol="awn_cairo_set_source_color">
+			<return-type type="void"/>
 			<parameters>
-				<parameter name="paths" type="gchar*"/>
-				<parameter name="err" type="GError**"/>
+				<parameter name="cr" type="cairo_t*"/>
+				<parameter name="color" type="DesktopAgnosticColor*"/>
+			</parameters>
+		</function>
+		<function name="cairo_set_source_color_with_alpha_multiplier" symbol="awn_cairo_set_source_color_with_alpha_multiplier">
+			<return-type type="void"/>
+			<parameters>
+				<parameter name="cr" type="cairo_t*"/>
+				<parameter name="color" type="DesktopAgnosticColor*"/>
+				<parameter name="multiplier" type="gdouble"/>
+			</parameters>
+		</function>
+		<function name="cairo_set_source_color_with_multipliers" symbol="awn_cairo_set_source_color_with_multipliers">
+			<return-type type="void"/>
+			<parameters>
+				<parameter name="cr" type="cairo_t*"/>
+				<parameter name="color" type="DesktopAgnosticColor*"/>
+				<parameter name="color_multiplier" type="gdouble"/>
+				<parameter name="alpha_multiplier" type="gdouble"/>
+			</parameters>
+		</function>
+		<function name="config_free" symbol="awn_config_free">
+			<return-type type="void"/>
+		</function>
+		<function name="config_get_default" symbol="awn_config_get_default">
+			<return-type type="DesktopAgnosticConfigClient*"/>
+			<parameters>
+				<parameter name="panel_id" type="gint"/>
+				<parameter name="error" type="GError**"/>
+			</parameters>
+		</function>
+		<function name="config_get_default_for_applet" symbol="awn_config_get_default_for_applet">
+			<return-type type="DesktopAgnosticConfigClient*"/>
+			<parameters>
+				<parameter name="applet" type="AwnApplet*"/>
+				<parameter name="error" type="GError**"/>
+			</parameters>
+		</function>
+		<function name="config_get_default_for_applet_by_info" symbol="awn_config_get_default_for_applet_by_info">
+			<return-type type="DesktopAgnosticConfigClient*"/>
+			<parameters>
+				<parameter name="name" type="gchar*"/>
+				<parameter name="uid" type="gchar*"/>
+				<parameter name="error" type="GError**"/>
+			</parameters>
+		</function>
+		<function name="utils_ensure_transparent_bg" symbol="awn_utils_ensure_transparent_bg">
+			<return-type type="void"/>
+			<parameters>
+				<parameter name="widget" type="GtkWidget*"/>
+			</parameters>
+		</function>
+		<function name="utils_get_offset_modifier_by_path_type" symbol="awn_utils_get_offset_modifier_by_path_type">
+			<return-type type="gfloat"/>
+			<parameters>
+				<parameter name="path_type" type="AwnPathType"/>
+				<parameter name="orient" type="AwnOrientation"/>
+				<parameter name="offset_modifier" type="gfloat"/>
+				<parameter name="pos_x" type="gint"/>
+				<parameter name="pos_y" type="gint"/>
+				<parameter name="width" type="gint"/>
+				<parameter name="height" type="gint"/>
+			</parameters>
+		</function>
+		<function name="utils_gslist_to_gvaluearray" symbol="awn_utils_gslist_to_gvaluearray">
+			<return-type type="GValueArray*"/>
+			<parameters>
+				<parameter name="list" type="GSList*"/>
+			</parameters>
+		</function>
+		<function name="utils_make_transparent_bg" symbol="awn_utils_make_transparent_bg">
+			<return-type type="void"/>
+			<parameters>
+				<parameter name="widget" type="GtkWidget*"/>
 			</parameters>
 		</function>
 		<function name="vfs_init" symbol="awn_vfs_init">
@@ -42,547 +135,571 @@
 		<callback name="AwnAppletInitPFunc">
 			<return-type type="AwnApplet*"/>
 			<parameters>
+				<parameter name="canonical_name" type="gchar*"/>
 				<parameter name="uid" type="gchar*"/>
-				<parameter name="orient" type="gint"/>
-				<parameter name="height" type="gint"/>
-			</parameters>
-		</callback>
-		<callback name="AwnConfigClientNotifyFunc">
-			<return-type type="void"/>
-			<parameters>
-				<parameter name="entry" type="AwnConfigClientNotifyEntry*"/>
-				<parameter name="user_data" type="gpointer"/>
+				<parameter name="panel_id" type="gint"/>
 			</parameters>
 		</callback>
 		<callback name="AwnEffectsOpfn">
 			<return-type type="gboolean"/>
 			<parameters>
 				<parameter name="fx" type="AwnEffects*"/>
-				<parameter name="ds" type="DrawIconState*"/>
+				<parameter name="alloc" type="GtkAllocation*"/>
 				<parameter name="user_data" type="gpointer"/>
 			</parameters>
 		</callback>
-		<callback name="AwnEventNotify">
-			<return-type type="void"/>
-			<parameters>
-				<parameter name="p1" type="GtkWidget*"/>
-			</parameters>
-		</callback>
-		<callback name="AwnIconsChange">
-			<return-type type="void"/>
-			<parameters>
-				<parameter name="fx" type="AwnIcons*"/>
-				<parameter name="user_data" type="gpointer"/>
-			</parameters>
-		</callback>
-		<callback name="AwnTitleCallback">
-			<return-type type="gchar*"/>
-			<parameters>
-				<parameter name="p1" type="GtkWidget*"/>
-			</parameters>
-		</callback>
-		<callback name="AwnVfsMonitorFunc">
-			<return-type type="void"/>
-			<parameters>
-				<parameter name="monitor" type="AwnVfsMonitor*"/>
-				<parameter name="monitor_path" type="gchar*"/>
-				<parameter name="event_path" type="gchar*"/>
-				<parameter name="event" type="AwnVfsMonitorEvent"/>
-				<parameter name="user_data" type="gpointer"/>
-			</parameters>
-		</callback>
-		<struct name="AwnColor">
-			<field name="red" type="gfloat"/>
-			<field name="green" type="gfloat"/>
-			<field name="blue" type="gfloat"/>
-			<field name="alpha" type="gfloat"/>
-		</struct>
-		<struct name="AwnConfigClientNotifyEntry">
-			<field name="client" type="AwnConfigClient*"/>
-			<field name="group" type="gchar*"/>
-			<field name="key" type="gchar*"/>
-			<field name="value" type="AwnConfigClientValue"/>
-		</struct>
-		<struct name="AwnDesktopItem">
-			<method name="copy" symbol="awn_desktop_item_copy">
-				<return-type type="AwnDesktopItem*"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-				</parameters>
-			</method>
-			<method name="exists" symbol="awn_desktop_item_exists">
-				<return-type type="gboolean"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-				</parameters>
-			</method>
-			<method name="free" symbol="awn_desktop_item_free">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-				</parameters>
-			</method>
-			<method name="get_exec" symbol="awn_desktop_item_get_exec">
-				<return-type type="gchar*"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-				</parameters>
-			</method>
-			<method name="get_filename" symbol="awn_desktop_item_get_filename">
-				<return-type type="gchar*"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-				</parameters>
-			</method>
-			<method name="get_icon" symbol="awn_desktop_item_get_icon">
-				<return-type type="gchar*"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-					<parameter name="icon_theme" type="GtkIconTheme*"/>
-				</parameters>
-			</method>
-			<method name="get_item_type" symbol="awn_desktop_item_get_item_type">
-				<return-type type="gchar*"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-				</parameters>
-			</method>
-			<method name="get_localestring" symbol="awn_desktop_item_get_localestring">
-				<return-type type="gchar*"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-					<parameter name="key" type="gchar*"/>
-				</parameters>
-			</method>
-			<method name="get_name" symbol="awn_desktop_item_get_name">
-				<return-type type="gchar*"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-				</parameters>
-			</method>
-			<method name="get_string" symbol="awn_desktop_item_get_string">
-				<return-type type="gchar*"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-					<parameter name="key" type="gchar*"/>
-				</parameters>
-			</method>
-			<method name="launch" symbol="awn_desktop_item_launch">
-				<return-type type="gint"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-					<parameter name="documents" type="GSList*"/>
-					<parameter name="err" type="GError**"/>
-				</parameters>
-			</method>
-			<method name="new" symbol="awn_desktop_item_new">
-				<return-type type="AwnDesktopItem*"/>
-				<parameters>
-					<parameter name="filename" type="gchar*"/>
-				</parameters>
-			</method>
-			<method name="save" symbol="awn_desktop_item_save">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-					<parameter name="new_filename" type="gchar*"/>
-					<parameter name="err" type="GError**"/>
-				</parameters>
-			</method>
-			<method name="set_exec" symbol="awn_desktop_item_set_exec">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-					<parameter name="exec" type="gchar*"/>
-				</parameters>
-			</method>
-			<method name="set_icon" symbol="awn_desktop_item_set_icon">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-					<parameter name="icon" type="gchar*"/>
-				</parameters>
-			</method>
-			<method name="set_item_type" symbol="awn_desktop_item_set_item_type">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-					<parameter name="item_type" type="gchar*"/>
-				</parameters>
-			</method>
-			<method name="set_localestring" symbol="awn_desktop_item_set_localestring">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-					<parameter name="key" type="gchar*"/>
-					<parameter name="locale" type="gchar*"/>
-					<parameter name="value" type="gchar*"/>
-				</parameters>
-			</method>
-			<method name="set_name" symbol="awn_desktop_item_set_name">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-					<parameter name="name" type="gchar*"/>
-				</parameters>
-			</method>
-			<method name="set_string" symbol="awn_desktop_item_set_string">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="item" type="AwnDesktopItem*"/>
-					<parameter name="key" type="gchar*"/>
-					<parameter name="value" type="gchar*"/>
-				</parameters>
-			</method>
-		</struct>
 		<struct name="AwnEffectsOp">
 			<field name="fn" type="AwnEffectsOpfn"/>
 			<field name="data" type="gpointer"/>
 		</struct>
-		<struct name="AwnSettings">
-			<method name="new" symbol="awn_settings_new">
-				<return-type type="AwnSettings*"/>
-			</method>
-			<field name="icon_theme" type="GtkIconTheme*"/>
-			<field name="bar" type="GtkWidget*"/>
-			<field name="window" type="GtkWidget*"/>
-			<field name="title" type="GtkWidget*"/>
-			<field name="appman" type="GtkWidget*"/>
-			<field name="hot" type="GtkWidget*"/>
-			<field name="task_width" type="gint"/>
-			<field name="show_dialog" type="gboolean"/>
-			<field name="monitor" type="GdkRectangle"/>
-			<field name="force_monitor" type="gboolean"/>
-			<field name="monitor_height" type="int"/>
-			<field name="monitor_width" type="int"/>
-			<field name="panel_mode" type="gboolean"/>
-			<field name="auto_hide" type="gboolean"/>
-			<field name="hidden" type="gboolean"/>
-			<field name="hiding" type="gboolean"/>
-			<field name="auto_hide_delay" type="gint"/>
-			<field name="keep_below" type="gboolean"/>
-			<field name="bar_height" type="int"/>
-			<field name="bar_angle" type="int"/>
-			<field name="bar_pos" type="gfloat"/>
-			<field name="no_bar_resize_ani" type="gboolean"/>
-			<field name="rounded_corners" type="gboolean"/>
-			<field name="corner_radius" type="gfloat"/>
-			<field name="render_pattern" type="gboolean"/>
-			<field name="expand_bar" type="gboolean"/>
-			<field name="pattern_uri" type="gchar*"/>
-			<field name="pattern_alpha" type="gfloat"/>
-			<field name="g_step_1" type="AwnColor"/>
-			<field name="g_step_2" type="AwnColor"/>
-			<field name="g_histep_1" type="AwnColor"/>
-			<field name="g_histep_2" type="AwnColor"/>
-			<field name="border_color" type="AwnColor"/>
-			<field name="hilight_color" type="AwnColor"/>
-			<field name="show_separator" type="gboolean"/>
-			<field name="sep_color" type="AwnColor"/>
-			<field name="show_all_windows" type="gboolean"/>
-			<field name="launchers" type="GSList*"/>
-			<field name="use_png" type="gboolean"/>
-			<field name="active_png" type="gchar*"/>
-			<field name="arrow_color" type="AwnColor"/>
-			<field name="arrow_offset" type="int"/>
-			<field name="tasks_have_arrows" type="gboolean"/>
-			<field name="name_change_notify" type="gboolean"/>
-			<field name="alpha_effect" type="gboolean"/>
-			<field name="icon_effect" type="gint"/>
-			<field name="icon_alpha" type="float"/>
-			<field name="reflection_alpha_mult" type="float"/>
-			<field name="frame_rate" type="gint"/>
-			<field name="icon_depth_on" type="gboolean"/>
-			<field name="icon_offset" type="int"/>
-			<field name="reflection_offset" type="int"/>
-			<field name="show_shadows" type="gboolean"/>
-			<field name="text_color" type="AwnColor"/>
-			<field name="shadow_color" type="AwnColor"/>
-			<field name="background" type="AwnColor"/>
-			<field name="font_face" type="gchar*"/>
-			<field name="btest" type="gboolean"/>
-			<field name="ftest" type="float"/>
-			<field name="stest" type="char*"/>
-			<field name="ctest" type="AwnColor"/>
-			<field name="ltest" type="GSList*"/>
-			<field name="bar_width" type="int"/>
-			<field name="curviness" type="gfloat"/>
-			<field name="curves_symmetry" type="gfloat"/>
+		<struct name="AwnOverlayCoord">
+			<field name="x" type="gdouble"/>
+			<field name="y" type="gdouble"/>
 		</struct>
-		<struct name="AwnVfsMonitor">
-			<method name="add" symbol="awn_vfs_monitor_add">
-				<return-type type="AwnVfsMonitor*"/>
-				<parameters>
-					<parameter name="path" type="gchar*"/>
-					<parameter name="monitor_type" type="AwnVfsMonitorType"/>
-					<parameter name="callback" type="AwnVfsMonitorFunc"/>
-					<parameter name="user_data" type="gpointer"/>
-				</parameters>
-			</method>
-			<method name="emit" symbol="awn_vfs_monitor_emit">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="monitor" type="AwnVfsMonitor*"/>
-					<parameter name="path" type="gchar*"/>
-					<parameter name="event" type="AwnVfsMonitorEvent"/>
-				</parameters>
-			</method>
-			<method name="remove" symbol="awn_vfs_monitor_remove">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="monitor" type="AwnVfsMonitor*"/>
-				</parameters>
-			</method>
-		</struct>
-		<struct name="DrawIconState">
-			<field name="current_height" type="gint"/>
-			<field name="current_width" type="gint"/>
-			<field name="x1" type="gint"/>
-			<field name="y1" type="gint"/>
-		</struct>
-		<boxed name="AwnConfigClient" type-name="AwnConfigClient" get-type="awn_config_client_get_type">
-			<method name="clear" symbol="awn_config_client_clear">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="err" type="GError**"/>
-				</parameters>
-			</method>
-			<method name="ensure_group" symbol="awn_config_client_ensure_group">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="group" type="gchar*"/>
-				</parameters>
-			</method>
-			<method name="entry_exists" symbol="awn_config_client_entry_exists">
-				<return-type type="gboolean"/>
-				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="group" type="gchar*"/>
-					<parameter name="key" type="gchar*"/>
-				</parameters>
-			</method>
-			<method name="free" symbol="awn_config_client_free">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-				</parameters>
-			</method>
-			<method name="get_bool" symbol="awn_config_client_get_bool">
-				<return-type type="gboolean"/>
-				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="group" type="gchar*"/>
-					<parameter name="key" type="gchar*"/>
-					<parameter name="err" type="GError**"/>
-				</parameters>
-			</method>
-			<method name="get_float" symbol="awn_config_client_get_float">
-				<return-type type="gfloat"/>
-				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="group" type="gchar*"/>
-					<parameter name="key" type="gchar*"/>
-					<parameter name="err" type="GError**"/>
-				</parameters>
-			</method>
-			<method name="get_int" symbol="awn_config_client_get_int">
+		<enum name="AwnAppletFlags">
+			<member name="AWN_APPLET_FLAGS_NONE" value="0"/>
+			<member name="AWN_APPLET_EXPAND_MINOR" value="1"/>
+			<member name="AWN_APPLET_EXPAND_MAJOR" value="2"/>
+			<member name="AWN_APPLET_IS_EXPANDER" value="4"/>
+			<member name="AWN_APPLET_IS_SEPARATOR" value="8"/>
+			<member name="AWN_APPLET_HAS_SHAPE_MASK" value="16"/>
+		</enum>
+		<enum name="AwnAppletLicense">
+			<member name="AWN_APPLET_LICENSE_GPLV2" value="10"/>
+			<member name="AWN_APPLET_LICENSE_GPLV3" value="11"/>
+			<member name="AWN_APPLET_LICENSE_LGPLV2_1" value="12"/>
+			<member name="AWN_APPLET_LICENSE_LGPLV3" value="13"/>
+		</enum>
+		<enum name="AwnCairoRoundCorners">
+			<member name="ROUND_NONE" value="0"/>
+			<member name="ROUND_TOP_LEFT" value="1"/>
+			<member name="ROUND_TOP_RIGHT" value="2"/>
+			<member name="ROUND_BOTTOM_RIGHT" value="4"/>
+			<member name="ROUND_BOTTOM_LEFT" value="8"/>
+			<member name="ROUND_TOP" value="3"/>
+			<member name="ROUND_BOTTOM" value="12"/>
+			<member name="ROUND_LEFT" value="9"/>
+			<member name="ROUND_RIGHT" value="6"/>
+			<member name="ROUND_ALL" value="15"/>
+		</enum>
+		<enum name="AwnEffect">
+			<member name="AWN_EFFECT_NONE" value="0"/>
+			<member name="AWN_EFFECT_OPENING" value="1"/>
+			<member name="AWN_EFFECT_CLOSING" value="2"/>
+			<member name="AWN_EFFECT_HOVER" value="3"/>
+			<member name="AWN_EFFECT_LAUNCHING" value="4"/>
+			<member name="AWN_EFFECT_ATTENTION" value="5"/>
+			<member name="AWN_EFFECT_DESATURATE" value="6"/>
+		</enum>
+		<enum name="AwnOrientation">
+			<member name="AWN_ORIENTATION_TOP" value="0"/>
+			<member name="AWN_ORIENTATION_RIGHT" value="1"/>
+			<member name="AWN_ORIENTATION_BOTTOM" value="2"/>
+			<member name="AWN_ORIENTATION_LEFT" value="3"/>
+		</enum>
+		<enum name="AwnOverlayAlign">
+			<member name="AWN_OVERLAY_ALIGN_CENTRE" value="0"/>
+			<member name="AWN_OVERLAY_ALIGN_LEFT" value="1"/>
+			<member name="AWN_OVERLAY_ALIGN_RIGHT" value="2"/>
+		</enum>
+		<enum name="AwnPathType">
+			<member name="AWN_PATH_LINEAR" value="0"/>
+			<member name="AWN_PATH_ELLIPSE" value="1"/>
+			<member name="AWN_PATH_LAST" value="2"/>
+		</enum>
+		<object name="AwnAlignment" parent="GtkAlignment" type-name="AwnAlignment" get-type="awn_alignment_get_type">
+			<implements>
+				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
+			</implements>
+			<method name="get_offset_modifier" symbol="awn_alignment_get_offset_modifier">
 				<return-type type="gint"/>
 				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="group" type="gchar*"/>
-					<parameter name="key" type="gchar*"/>
-					<parameter name="err" type="GError**"/>
+					<parameter name="alignment" type="AwnAlignment*"/>
 				</parameters>
 			</method>
-			<method name="get_list" symbol="awn_config_client_get_list">
-				<return-type type="GSList*"/>
+			<constructor name="new_for_applet" symbol="awn_alignment_new_for_applet">
+				<return-type type="GtkWidget*"/>
 				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="group" type="gchar*"/>
-					<parameter name="key" type="gchar*"/>
-					<parameter name="list_type" type="AwnConfigListType"/>
-					<parameter name="err" type="GError**"/>
+					<parameter name="applet" type="AwnApplet*"/>
+				</parameters>
+			</constructor>
+			<method name="set_offset_modifier" symbol="awn_alignment_set_offset_modifier">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="alignment" type="AwnAlignment*"/>
+					<parameter name="modifier" type="gint"/>
 				</parameters>
 			</method>
-			<method name="get_string" symbol="awn_config_client_get_string">
+			<property name="applet" type="AwnApplet*" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="offset-modifier" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+		</object>
+		<object name="AwnApplet" parent="GtkPlug" type-name="AwnApplet" get-type="awn_applet_get_type">
+			<implements>
+				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
+			</implements>
+			<method name="create_about_item" symbol="awn_applet_create_about_item">
+				<return-type type="GtkWidget*"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="copyright" type="gchar*"/>
+					<parameter name="license" type="AwnAppletLicense"/>
+					<parameter name="version" type="gchar*"/>
+					<parameter name="comments" type="gchar*"/>
+					<parameter name="website" type="gchar*"/>
+					<parameter name="website_label" type="gchar*"/>
+					<parameter name="icon_name" type="gchar*"/>
+					<parameter name="translator_credits" type="gchar*"/>
+					<parameter name="authors" type="gchar**"/>
+					<parameter name="artists" type="gchar**"/>
+					<parameter name="documenters" type="gchar**"/>
+				</parameters>
+			</method>
+			<method name="create_about_item_simple" symbol="awn_applet_create_about_item_simple">
+				<return-type type="GtkWidget*"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="copyright" type="gchar*"/>
+					<parameter name="license" type="AwnAppletLicense"/>
+					<parameter name="version" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="create_default_menu" symbol="awn_applet_create_default_menu">
+				<return-type type="GtkWidget*"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+				</parameters>
+			</method>
+			<method name="create_pref_item" symbol="awn_applet_create_pref_item">
+				<return-type type="GtkWidget*"/>
+			</method>
+			<method name="docklet_request" symbol="awn_applet_docklet_request">
+				<return-type type="GdkNativeWindow"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="min_size" type="gint"/>
+					<parameter name="shrink" type="gboolean"/>
+					<parameter name="expand" type="gboolean"/>
+				</parameters>
+			</method>
+			<method name="get_canonical_name" symbol="awn_applet_get_canonical_name">
 				<return-type type="gchar*"/>
 				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="group" type="gchar*"/>
-					<parameter name="key" type="gchar*"/>
-					<parameter name="err" type="GError**"/>
+					<parameter name="applet" type="AwnApplet*"/>
 				</parameters>
 			</method>
-			<method name="get_value_type" symbol="awn_config_client_get_value_type">
-				<return-type type="AwnConfigValueType"/>
+			<method name="get_flags" symbol="awn_applet_get_flags">
+				<return-type type="AwnAppletFlags"/>
 				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="group" type="gchar*"/>
-					<parameter name="key" type="gchar*"/>
-					<parameter name="err" type="GError**"/>
+					<parameter name="applet" type="AwnApplet*"/>
 				</parameters>
 			</method>
-			<method name="key_lock" symbol="awn_config_client_key_lock">
-				<return-type type="int"/>
+			<method name="get_offset" symbol="awn_applet_get_offset">
+				<return-type type="gint"/>
 				<parameters>
-					<parameter name="fd" type="int"/>
-					<parameter name="operation" type="int"/>
+					<parameter name="applet" type="AwnApplet*"/>
 				</parameters>
 			</method>
-			<method name="key_lock_close" symbol="awn_config_client_key_lock_close">
-				<return-type type="int"/>
+			<method name="get_offset_at" symbol="awn_applet_get_offset_at">
+				<return-type type="gint"/>
 				<parameters>
-					<parameter name="fd" type="int"/>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="x" type="gint"/>
+					<parameter name="y" type="gint"/>
 				</parameters>
 			</method>
-			<method name="key_lock_open" symbol="awn_config_client_key_lock_open">
-				<return-type type="int"/>
+			<method name="get_orientation" symbol="awn_applet_get_orientation">
+				<return-type type="AwnOrientation"/>
 				<parameters>
-					<parameter name="group" type="gchar*"/>
-					<parameter name="key" type="gchar*"/>
+					<parameter name="applet" type="AwnApplet*"/>
 				</parameters>
 			</method>
-			<method name="load_defaults_from_schema" symbol="awn_config_client_load_defaults_from_schema">
+			<method name="get_path_type" symbol="awn_applet_get_path_type">
+				<return-type type="AwnPathType"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+				</parameters>
+			</method>
+			<method name="get_size" symbol="awn_applet_get_size">
+				<return-type type="guint"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+				</parameters>
+			</method>
+			<method name="get_uid" symbol="awn_applet_get_uid">
+				<return-type type="gchar*"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+				</parameters>
+			</method>
+			<method name="inhibit_autohide" symbol="awn_applet_inhibit_autohide">
+				<return-type type="guint"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="reason" type="gchar*"/>
+				</parameters>
+			</method>
+			<constructor name="new" symbol="awn_applet_new">
+				<return-type type="AwnApplet*"/>
+				<parameters>
+					<parameter name="canonical_name" type="gchar*"/>
+					<parameter name="uid" type="gchar*"/>
+					<parameter name="panel_id" type="gint"/>
+				</parameters>
+			</constructor>
+			<method name="set_flags" symbol="awn_applet_set_flags">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="err" type="GError**"/>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="flags" type="AwnAppletFlags"/>
 				</parameters>
 			</method>
-			<constructor name="new" symbol="awn_config_client_new">
-				<return-type type="AwnConfigClient*"/>
-			</constructor>
-			<constructor name="new_for_applet" symbol="awn_config_client_new_for_applet">
-				<return-type type="AwnConfigClient*"/>
+			<method name="set_offset" symbol="awn_applet_set_offset">
+				<return-type type="void"/>
 				<parameters>
-					<parameter name="name" type="gchar*"/>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="offset" type="gint"/>
+				</parameters>
+			</method>
+			<method name="set_orientation" symbol="awn_applet_set_orientation">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="orient" type="AwnOrientation"/>
+				</parameters>
+			</method>
+			<method name="set_path_type" symbol="awn_applet_set_path_type">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="path" type="AwnPathType"/>
+				</parameters>
+			</method>
+			<method name="set_size" symbol="awn_applet_set_size">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="size" type="gint"/>
+				</parameters>
+			</method>
+			<method name="set_uid" symbol="awn_applet_set_uid">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
 					<parameter name="uid" type="gchar*"/>
 				</parameters>
+			</method>
+			<method name="uninhibit_autohide" symbol="awn_applet_uninhibit_autohide">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="cookie" type="guint"/>
+				</parameters>
+			</method>
+			<property name="canonical-name" type="char*" readable="1" writable="1" construct="0" construct-only="1"/>
+			<property name="display-name" type="char*" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="max-size" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="offset" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="offset-modifier" type="gfloat" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="orient" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="panel-id" type="gint" readable="1" writable="1" construct="0" construct-only="1"/>
+			<property name="panel-xid" type="gint64" readable="1" writable="0" construct="0" construct-only="0"/>
+			<property name="path-type" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="quit-on-delete" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="size" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="uid" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<signal name="applet-deleted" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="object" type="AwnApplet*"/>
+					<parameter name="p0" type="char*"/>
+				</parameters>
+			</signal>
+			<signal name="flags-changed" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="flags" type="gint"/>
+				</parameters>
+			</signal>
+			<signal name="menu-creation" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="menu" type="GtkMenu*"/>
+				</parameters>
+			</signal>
+			<signal name="offset-changed" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="offset" type="gint"/>
+				</parameters>
+			</signal>
+			<signal name="orientation-changed" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="object" type="AwnApplet*"/>
+					<parameter name="p0" type="AwnOrientation"/>
+				</parameters>
+			</signal>
+			<signal name="origin-changed" when="LAST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="rect" type="GdkRectangle*"/>
+				</parameters>
+			</signal>
+			<signal name="panel-configure-event" when="LAST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="object" type="AwnApplet*"/>
+					<parameter name="p0" type="GdkEvent*"/>
+				</parameters>
+			</signal>
+			<signal name="size-changed" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="size" type="gint"/>
+				</parameters>
+			</signal>
+			<vfunc name="deleted">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="uid" type="gchar*"/>
+				</parameters>
+			</vfunc>
+			<vfunc name="orient_changed">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="orient" type="AwnOrientation"/>
+				</parameters>
+			</vfunc>
+			<vfunc name="panel_configure">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="event" type="GdkEventConfigure*"/>
+				</parameters>
+			</vfunc>
+		</object>
+		<object name="AwnAppletSimple" parent="AwnApplet" type-name="AwnAppletSimple" get-type="awn_applet_simple_get_type">
+			<implements>
+				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
+				<interface name="AwnOverlayable"/>
+			</implements>
+			<method name="get_icon" symbol="awn_applet_simple_get_icon">
+				<return-type type="GtkWidget*"/>
+				<parameters>
+					<parameter name="applet" type="AwnAppletSimple*"/>
+				</parameters>
+			</method>
+			<method name="get_message" symbol="awn_applet_simple_get_message">
+				<return-type type="gchar*"/>
+				<parameters>
+					<parameter name="applet" type="AwnAppletSimple*"/>
+				</parameters>
+			</method>
+			<method name="get_progress" symbol="awn_applet_simple_get_progress">
+				<return-type type="gfloat"/>
+				<parameters>
+					<parameter name="applet" type="AwnAppletSimple*"/>
+				</parameters>
+			</method>
+			<method name="get_tooltip_text" symbol="awn_applet_simple_get_tooltip_text">
+				<return-type type="gchar*"/>
+				<parameters>
+					<parameter name="applet" type="AwnAppletSimple*"/>
+				</parameters>
+			</method>
+			<constructor name="new" symbol="awn_applet_simple_new">
+				<return-type type="GtkWidget*"/>
+				<parameters>
+					<parameter name="canonical_name" type="gchar*"/>
+					<parameter name="uid" type="gchar*"/>
+					<parameter name="panel_id" type="gint"/>
+				</parameters>
 			</constructor>
-			<method name="notify_add" symbol="awn_config_client_notify_add">
+			<method name="set_effect" symbol="awn_applet_simple_set_effect">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="group" type="gchar*"/>
-					<parameter name="key" type="gchar*"/>
-					<parameter name="callback" type="AwnConfigClientNotifyFunc"/>
-					<parameter name="user_data" type="gpointer"/>
+					<parameter name="applet" type="AwnAppletSimple*"/>
+					<parameter name="effect" type="AwnEffect"/>
 				</parameters>
 			</method>
-			<method name="query_backend" symbol="awn_config_client_query_backend">
-				<return-type type="AwnConfigBackend"/>
-			</method>
-			<method name="set_bool" symbol="awn_config_client_set_bool">
+			<method name="set_icon_context" symbol="awn_applet_simple_set_icon_context">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="group" type="gchar*"/>
-					<parameter name="key" type="gchar*"/>
-					<parameter name="value" type="gboolean"/>
-					<parameter name="err" type="GError**"/>
-				</parameters>
-			</method>
-			<method name="set_float" symbol="awn_config_client_set_float">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="group" type="gchar*"/>
-					<parameter name="key" type="gchar*"/>
-					<parameter name="value" type="gfloat"/>
-					<parameter name="err" type="GError**"/>
-				</parameters>
-			</method>
-			<method name="set_int" symbol="awn_config_client_set_int">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="group" type="gchar*"/>
-					<parameter name="key" type="gchar*"/>
-					<parameter name="value" type="gint"/>
-					<parameter name="err" type="GError**"/>
-				</parameters>
-			</method>
-			<method name="set_list" symbol="awn_config_client_set_list">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="group" type="gchar*"/>
-					<parameter name="key" type="gchar*"/>
-					<parameter name="list_type" type="AwnConfigListType"/>
-					<parameter name="value" type="GSList*"/>
-					<parameter name="err" type="GError**"/>
-				</parameters>
-			</method>
-			<method name="set_string" symbol="awn_config_client_set_string">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="client" type="AwnConfigClient*"/>
-					<parameter name="group" type="gchar*"/>
-					<parameter name="key" type="gchar*"/>
-					<parameter name="value" type="gchar*"/>
-					<parameter name="err" type="GError**"/>
-				</parameters>
-			</method>
-		</boxed>
-		<boxed name="AwnEffects" type-name="AwnEffects" get-type="awn_effects_get_type">
-			<method name="draw_background" symbol="awn_effects_draw_background">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="p1" type="AwnEffects*"/>
-					<parameter name="p2" type="cairo_t*"/>
-				</parameters>
-			</method>
-			<method name="draw_foreground" symbol="awn_effects_draw_foreground">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="p1" type="AwnEffects*"/>
-					<parameter name="p2" type="cairo_t*"/>
-				</parameters>
-			</method>
-			<method name="draw_icons" symbol="awn_effects_draw_icons">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="p1" type="AwnEffects*"/>
-					<parameter name="p2" type="cairo_t*"/>
-					<parameter name="p3" type="GdkPixbuf*"/>
-					<parameter name="p4" type="GdkPixbuf*"/>
-				</parameters>
-			</method>
-			<method name="draw_icons_cairo" symbol="awn_effects_draw_icons_cairo">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="fx" type="AwnEffects*"/>
+					<parameter name="applet" type="AwnAppletSimple*"/>
 					<parameter name="cr" type="cairo_t*"/>
-					<parameter name="p3" type="cairo_t*"/>
-					<parameter name="p4" type="cairo_t*"/>
 				</parameters>
 			</method>
-			<method name="draw_set_icon_size" symbol="awn_effects_draw_set_icon_size">
+			<method name="set_icon_info" symbol="awn_applet_simple_set_icon_info">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="p1" type="AwnEffects*"/>
-					<parameter name="p2" type="gint"/>
-					<parameter name="p3" type="gint"/>
+					<parameter name="applet" type="AwnAppletSimple*"/>
+					<parameter name="states" type="GStrv"/>
+					<parameter name="icon_names" type="GStrv"/>
 				</parameters>
 			</method>
-			<method name="draw_set_window_size" symbol="awn_effects_draw_set_window_size">
+			<method name="set_icon_name" symbol="awn_applet_simple_set_icon_name">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="p1" type="AwnEffects*"/>
-					<parameter name="p2" type="gint"/>
-					<parameter name="p3" type="gint"/>
+					<parameter name="applet" type="AwnAppletSimple*"/>
+					<parameter name="icon_name" type="gchar*"/>
 				</parameters>
 			</method>
-			<method name="finalize" symbol="awn_effects_finalize">
+			<method name="set_icon_pixbuf" symbol="awn_applet_simple_set_icon_pixbuf">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnAppletSimple*"/>
+					<parameter name="pixbuf" type="GdkPixbuf*"/>
+				</parameters>
+			</method>
+			<method name="set_icon_state" symbol="awn_applet_simple_set_icon_state">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnAppletSimple*"/>
+					<parameter name="state" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="set_icon_surface" symbol="awn_applet_simple_set_icon_surface">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnAppletSimple*"/>
+					<parameter name="surface" type="cairo_surface_t*"/>
+				</parameters>
+			</method>
+			<method name="set_message" symbol="awn_applet_simple_set_message">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnAppletSimple*"/>
+					<parameter name="message" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="set_progress" symbol="awn_applet_simple_set_progress">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnAppletSimple*"/>
+					<parameter name="progress" type="gfloat"/>
+				</parameters>
+			</method>
+			<method name="set_tooltip_text" symbol="awn_applet_simple_set_tooltip_text">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnAppletSimple*"/>
+					<parameter name="text" type="gchar*"/>
+				</parameters>
+			</method>
+			<signal name="clicked" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="simple" type="AwnAppletSimple*"/>
+				</parameters>
+			</signal>
+			<signal name="context-menu-popup" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="simple" type="AwnAppletSimple*"/>
+					<parameter name="event" type="GdkEvent*"/>
+				</parameters>
+			</signal>
+			<signal name="long-press" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="simple" type="AwnAppletSimple*"/>
+				</parameters>
+			</signal>
+		</object>
+		<object name="AwnDialog" parent="GtkWindow" type-name="AwnDialog" get-type="awn_dialog_get_type">
+			<implements>
+				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
+			</implements>
+			<constructor name="new" symbol="awn_dialog_new">
+				<return-type type="GtkWidget*"/>
+			</constructor>
+			<constructor name="new_for_widget" symbol="awn_dialog_new_for_widget">
+				<return-type type="GtkWidget*"/>
+				<parameters>
+					<parameter name="widget" type="GtkWidget*"/>
+				</parameters>
+			</constructor>
+			<constructor name="new_for_widget_with_applet" symbol="awn_dialog_new_for_widget_with_applet">
+				<return-type type="GtkWidget*"/>
+				<parameters>
+					<parameter name="widget" type="GtkWidget*"/>
+					<parameter name="applet" type="AwnApplet*"/>
+				</parameters>
+			</constructor>
+			<method name="set_padding" symbol="awn_dialog_set_padding">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="dialog" type="AwnDialog*"/>
+					<parameter name="padding" type="gint"/>
+				</parameters>
+			</method>
+			<property name="anchor" type="GtkWidget*" readable="0" writable="1" construct="0" construct-only="0"/>
+			<property name="anchor-applet" type="AwnApplet*" readable="0" writable="1" construct="0" construct-only="0"/>
+			<property name="anchored" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="border" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="dialog-bg" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="effects-hilight" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="hide-on-esc" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="hilight" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="orient" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="title-bg" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="window-offset" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="window-padding" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+		</object>
+		<object name="AwnEffects" parent="GObject" type-name="AwnEffects" get-type="awn_effects_get_type">
+			<method name="add_overlay" symbol="awn_effects_add_overlay">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="fx" type="AwnEffects*"/>
+					<parameter name="overlay" type="AwnOverlay*"/>
+				</parameters>
+			</method>
+			<method name="cairo_create" symbol="awn_effects_cairo_create">
+				<return-type type="cairo_t*"/>
+				<parameters>
+					<parameter name="fx" type="AwnEffects*"/>
+				</parameters>
+			</method>
+			<method name="cairo_create_clipped" symbol="awn_effects_cairo_create_clipped">
+				<return-type type="cairo_t*"/>
+				<parameters>
+					<parameter name="fx" type="AwnEffects*"/>
+					<parameter name="event" type="GdkEventExpose*"/>
+				</parameters>
+			</method>
+			<method name="cairo_destroy" symbol="awn_effects_cairo_destroy">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="fx" type="AwnEffects*"/>
 				</parameters>
 			</method>
-			<method name="free" symbol="awn_effects_free">
+			<method name="emit_anim_end" symbol="awn_effects_emit_anim_end">
 				<return-type type="void"/>
+				<parameters>
+					<parameter name="fx" type="AwnEffects*"/>
+					<parameter name="effect" type="AwnEffect"/>
+				</parameters>
+			</method>
+			<method name="emit_anim_start" symbol="awn_effects_emit_anim_start">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="fx" type="AwnEffects*"/>
+					<parameter name="effect" type="AwnEffect"/>
+				</parameters>
+			</method>
+			<method name="get_overlays" symbol="awn_effects_get_overlays">
+				<return-type type="GList*"/>
 				<parameters>
 					<parameter name="fx" type="AwnEffects*"/>
 				</parameters>
@@ -593,47 +710,32 @@
 					<parameter name="fx" type="AwnEffects*"/>
 				</parameters>
 			</method>
-			<constructor name="new" symbol="awn_effects_new">
-				<return-type type="AwnEffects*"/>
-			</constructor>
 			<constructor name="new_for_widget" symbol="awn_effects_new_for_widget">
 				<return-type type="AwnEffects*"/>
 				<parameters>
 					<parameter name="widget" type="GtkWidget*"/>
 				</parameters>
 			</constructor>
-			<method name="reflection_off" symbol="awn_effects_reflection_off">
+			<method name="redraw" symbol="awn_effects_redraw">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="fx" type="AwnEffects*"/>
 				</parameters>
 			</method>
-			<method name="reflection_on" symbol="awn_effects_reflection_on">
+			<method name="remove_overlay" symbol="awn_effects_remove_overlay">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="fx" type="AwnEffects*"/>
+					<parameter name="overlay" type="AwnOverlay*"/>
 				</parameters>
 			</method>
-			<method name="register" symbol="awn_effects_register">
+			<method name="set_icon_size" symbol="awn_effects_set_icon_size">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="fx" type="AwnEffects*"/>
-					<parameter name="obj" type="GtkWidget*"/>
-				</parameters>
-			</method>
-			<method name="set_offset_cut" symbol="awn_effects_set_offset_cut">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="fx" type="AwnEffects*"/>
-					<parameter name="cut" type="gboolean"/>
-				</parameters>
-			</method>
-			<method name="set_title" symbol="awn_effects_set_title">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="fx" type="AwnEffects*"/>
-					<parameter name="title" type="AwnTitle*"/>
-					<parameter name="title_func" type="AwnTitleCallback"/>
+					<parameter name="width" type="gint"/>
+					<parameter name="height" type="gint"/>
+					<parameter name="requestSize" type="gboolean"/>
 				</parameters>
 			</method>
 			<method name="start" symbol="awn_effects_start">
@@ -648,9 +750,9 @@
 				<parameters>
 					<parameter name="fx" type="AwnEffects*"/>
 					<parameter name="effect" type="AwnEffect"/>
-					<parameter name="start" type="AwnEventNotify"/>
-					<parameter name="stop" type="AwnEventNotify"/>
 					<parameter name="max_loops" type="gint"/>
+					<parameter name="signal_start" type="gboolean"/>
+					<parameter name="signal_end" type="gboolean"/>
 				</parameters>
 			</method>
 			<method name="stop" symbol="awn_effects_stop">
@@ -660,499 +762,711 @@
 					<parameter name="effect" type="AwnEffect"/>
 				</parameters>
 			</method>
-			<method name="unregister" symbol="awn_effects_unregister">
+			<property name="active" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="arrow-png" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="arrows-count" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="border-clip" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="custom-active-png" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="depressed" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="effects" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="icon-alpha" type="gfloat" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="icon-offset" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="indirect-paint" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="make-shadow" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="no-clear" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="orientation" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="progress" type="gfloat" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="reflection-alpha" type="gfloat" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="reflection-offset" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="reflection-visible" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="spotlight-png" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="widget" type="GtkWidget*" readable="1" writable="1" construct="0" construct-only="0"/>
+			<signal name="animation-end" when="FIRST">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="fx" type="AwnEffects*"/>
+					<parameter name="effect" type="AwnEffect"/>
 				</parameters>
-			</method>
-			<field name="self" type="GtkWidget*"/>
-			<field name="focus_window" type="GtkWidget*"/>
-			<field name="settings" type="AwnSettings*"/>
-			<field name="title" type="AwnTitle*"/>
-			<field name="get_title" type="AwnTitleCallback"/>
-			<field name="effect_queue" type="GList*"/>
-			<field name="icon_width" type="gint"/>
-			<field name="icon_height" type="gint"/>
-			<field name="window_width" type="gint"/>
-			<field name="window_height" type="gint"/>
-			<field name="effect_lock" type="gboolean"/>
-			<field name="current_effect" type="AwnEffect"/>
-			<field name="direction" type="AwnEffectSequence"/>
-			<field name="count" type="gint"/>
-			<field name="x_offset" type="gdouble"/>
-			<field name="y_offset" type="gdouble"/>
-			<field name="curve_offset" type="gdouble"/>
-			<field name="delta_width" type="gint"/>
-			<field name="delta_height" type="gint"/>
-			<field name="clip_region" type="GtkAllocation"/>
-			<field name="rotate_degrees" type="gdouble"/>
-			<field name="alpha" type="gfloat"/>
-			<field name="spotlight_alpha" type="gfloat"/>
-			<field name="saturation" type="gfloat"/>
-			<field name="glow_amount" type="gfloat"/>
-			<field name="icon_depth" type="gint"/>
-			<field name="icon_depth_direction" type="gint"/>
-			<field name="hover" type="gboolean"/>
-			<field name="clip" type="gboolean"/>
-			<field name="flip" type="gboolean"/>
-			<field name="spotlight" type="gboolean"/>
-			<field name="do_reflections" type="gboolean"/>
-			<field name="do_offset_cut" type="gboolean"/>
-			<field name="enter_notify" type="guint"/>
-			<field name="leave_notify" type="guint"/>
-			<field name="timer_id" type="guint"/>
-			<field name="icon_ctx" type="cairo_t*"/>
-			<field name="reflect_ctx" type="cairo_t*"/>
-			<field name="op_list" type="AwnEffectsOp*"/>
-			<field name="pad1" type="void*"/>
-			<field name="pad2" type="void*"/>
-			<field name="pad3" type="void*"/>
-			<field name="pad4" type="void*"/>
-		</boxed>
-		<boxed name="EggDesktopFile" type-name="EggDesktopFile" get-type="awn_desktop_item_get_type">
-		</boxed>
-		<enum name="AwnCairoRoundCorners" type-name="AwnCairoRoundCorners" get-type="awn_cairo_round_corners_get_type">
-			<member name="ROUND_NONE" value="0"/>
-			<member name="ROUND_TOP_LEFT" value="1"/>
-			<member name="ROUND_TOP_RIGHT" value="2"/>
-			<member name="ROUND_BOTTOM_RIGHT" value="4"/>
-			<member name="ROUND_BOTTOM_LEFT" value="8"/>
-			<member name="ROUND_TOP" value="3"/>
-			<member name="ROUND_BOTTOM" value="12"/>
-			<member name="ROUND_LEFT" value="9"/>
-			<member name="ROUND_RIGHT" value="6"/>
-			<member name="ROUND_ALL" value="15"/>
-		</enum>
-		<enum name="AwnConfigBackend" type-name="AwnConfigBackend" get-type="awn_config_backend_get_type">
-			<member name="AWN_CONFIG_CLIENT_GCONF" value="0"/>
-			<member name="AWN_CONFIG_CLIENT_GKEYFILE" value="1"/>
-		</enum>
-		<enum name="AwnConfigListType" type-name="AwnConfigListType" get-type="awn_config_list_type_get_type">
-			<member name="AWN_CONFIG_CLIENT_LIST_TYPE_BOOL" value="0"/>
-			<member name="AWN_CONFIG_CLIENT_LIST_TYPE_FLOAT" value="1"/>
-			<member name="AWN_CONFIG_CLIENT_LIST_TYPE_INT" value="2"/>
-			<member name="AWN_CONFIG_CLIENT_LIST_TYPE_STRING" value="3"/>
-		</enum>
-		<enum name="AwnConfigValueType" type-name="AwnConfigValueType" get-type="awn_config_value_type_get_type">
-			<member name="AWN_CONFIG_VALUE_TYPE_NULL" value="-1"/>
-			<member name="AWN_CONFIG_VALUE_TYPE_BOOL" value="0"/>
-			<member name="AWN_CONFIG_VALUE_TYPE_FLOAT" value="1"/>
-			<member name="AWN_CONFIG_VALUE_TYPE_INT" value="2"/>
-			<member name="AWN_CONFIG_VALUE_TYPE_STRING" value="3"/>
-			<member name="AWN_CONFIG_VALUE_TYPE_LIST_BOOL" value="4"/>
-			<member name="AWN_CONFIG_VALUE_TYPE_LIST_FLOAT" value="5"/>
-			<member name="AWN_CONFIG_VALUE_TYPE_LIST_INT" value="6"/>
-			<member name="AWN_CONFIG_VALUE_TYPE_LIST_STRING" value="7"/>
-		</enum>
-		<enum name="AwnEffect" type-name="AwnEffect" get-type="awn_effect_get_type">
-			<member name="AWN_EFFECT_NONE" value="0"/>
-			<member name="AWN_EFFECT_OPENING" value="1"/>
-			<member name="AWN_EFFECT_LAUNCHING" value="2"/>
-			<member name="AWN_EFFECT_HOVER" value="3"/>
-			<member name="AWN_EFFECT_ATTENTION" value="4"/>
-			<member name="AWN_EFFECT_CLOSING" value="5"/>
-			<member name="AWN_EFFECT_DESATURATE" value="6"/>
-		</enum>
-		<enum name="AwnEffectPriority" type-name="AwnEffectPriority" get-type="awn_effect_priority_get_type">
-			<member name="AWN_EFFECT_PRIORITY_HIGHEST" value="0"/>
-			<member name="AWN_EFFECT_PRIORITY_HIGH" value="1"/>
-			<member name="AWN_EFFECT_PRIORITY_ABOVE_NORMAL" value="2"/>
-			<member name="AWN_EFFECT_PRIORITY_NORMAL" value="3"/>
-			<member name="AWN_EFFECT_PRIORITY_BELOW_NORMAL" value="4"/>
-			<member name="AWN_EFFECT_PRIORITY_LOW" value="5"/>
-			<member name="AWN_EFFECT_PRIORITY_LOWEST" value="6"/>
-		</enum>
-		<enum name="AwnEffectSequence" type-name="AwnEffectSequence" get-type="awn_effect_sequence_get_type">
-			<member name="AWN_EFFECT_DIR_NONE" value="0"/>
-			<member name="AWN_EFFECT_DIR_STOP" value="1"/>
-			<member name="AWN_EFFECT_DIR_DOWN" value="2"/>
-			<member name="AWN_EFFECT_DIR_UP" value="3"/>
-			<member name="AWN_EFFECT_DIR_LEFT" value="4"/>
-			<member name="AWN_EFFECT_DIR_RIGHT" value="5"/>
-			<member name="AWN_EFFECT_SQUISH_DOWN" value="6"/>
-			<member name="AWN_EFFECT_SQUISH_DOWN2" value="7"/>
-			<member name="AWN_EFFECT_SQUISH_UP" value="8"/>
-			<member name="AWN_EFFECT_SQUISH_UP2" value="9"/>
-			<member name="AWN_EFFECT_TURN_1" value="10"/>
-			<member name="AWN_EFFECT_TURN_2" value="11"/>
-			<member name="AWN_EFFECT_TURN_3" value="12"/>
-			<member name="AWN_EFFECT_TURN_4" value="13"/>
-			<member name="AWN_EFFECT_SPOTLIGHT_ON" value="14"/>
-			<member name="AWN_EFFECT_SPOTLIGHT_TREMBLE_UP" value="15"/>
-			<member name="AWN_EFFECT_SPOTLIGHT_TREMBLE_DOWN" value="16"/>
-			<member name="AWN_EFFECT_SPOTLIGHT_OFF" value="17"/>
-		</enum>
-		<enum name="AwnOrientation" type-name="AwnOrientation" get-type="awn_orientation_get_type">
-			<member name="AWN_ORIENTATION_BOTTOM" value="0"/>
-			<member name="AWN_ORIENTATION_TOP" value="1"/>
-			<member name="AWN_ORIENTATION_RIGHT" value="2"/>
-			<member name="AWN_ORIENTATION_LEFT" value="3"/>
-		</enum>
-		<enum name="AwnVfsMonitorEvent" type-name="AwnVfsMonitorEvent" get-type="awn_vfs_monitor_event_get_type">
-			<member name="AWN_VFS_MONITOR_EVENT_CHANGED" value="0"/>
-			<member name="AWN_VFS_MONITOR_EVENT_CREATED" value="1"/>
-			<member name="AWN_VFS_MONITOR_EVENT_DELETED" value="2"/>
-		</enum>
-		<enum name="AwnVfsMonitorType" type-name="AwnVfsMonitorType" get-type="awn_vfs_monitor_type_get_type">
-			<member name="AWN_VFS_MONITOR_FILE" value="0"/>
-			<member name="AWN_VFS_MONITOR_DIRECTORY" value="1"/>
-		</enum>
-		<object name="AwnApplet" parent="GtkEventBox" type-name="AwnApplet" get-type="awn_applet_get_type">
+			</signal>
+			<signal name="animation-start" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="fx" type="AwnEffects*"/>
+					<parameter name="effect" type="AwnEffect"/>
+				</parameters>
+			</signal>
+			<field name="widget" type="GtkWidget*"/>
+			<field name="no_clear" type="gboolean"/>
+			<field name="indirect_paint" type="gboolean"/>
+			<field name="orientation" type="gint"/>
+			<field name="set_effects" type="guint"/>
+			<field name="icon_offset" type="gint"/>
+			<field name="refl_offset" type="gint"/>
+			<field name="icon_alpha" type="gfloat"/>
+			<field name="refl_alpha" type="gfloat"/>
+			<field name="do_reflection" type="gboolean"/>
+			<field name="make_shadow" type="gboolean"/>
+			<field name="is_active" type="gboolean"/>
+			<field name="depressed" type="gboolean"/>
+			<field name="arrows_count" type="gint"/>
+			<field name="label" type="gchar*"/>
+			<field name="progress" type="gfloat"/>
+			<field name="border_clip" type="gint"/>
+			<field name="spotlight_icon" type="GQuark"/>
+			<field name="arrow_icon" type="GQuark"/>
+			<field name="custom_active_icon" type="GQuark"/>
+			<field name="window_ctx" type="cairo_t*"/>
+			<field name="virtual_ctx" type="cairo_t*"/>
+		</object>
+		<object name="AwnIcon" parent="GtkDrawingArea" type-name="AwnIcon" get-type="awn_icon_get_type">
 			<implements>
-				<interface name="GtkBuildable"/>
 				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
+				<interface name="AwnOverlayable"/>
 			</implements>
-			<method name="create_default_menu" symbol="awn_applet_create_default_menu">
-				<return-type type="GtkWidget*"/>
+			<method name="clicked" symbol="awn_icon_clicked">
+				<return-type type="void"/>
 				<parameters>
-					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="icon" type="AwnIcon*"/>
 				</parameters>
 			</method>
-			<method name="create_pref_item" symbol="awn_applet_create_pref_item">
-				<return-type type="GtkWidget*"/>
-			</method>
-			<method name="get_height" symbol="awn_applet_get_height">
-				<return-type type="guint"/>
+			<method name="get_hover_effects" symbol="awn_icon_get_hover_effects">
+				<return-type type="gboolean"/>
 				<parameters>
-					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="icon" type="AwnIcon*"/>
 				</parameters>
 			</method>
-			<method name="get_orientation" symbol="awn_applet_get_orientation">
-				<return-type type="AwnOrientation"/>
+			<method name="get_indicator_count" symbol="awn_icon_get_indicator_count">
+				<return-type type="gint"/>
 				<parameters>
-					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="icon" type="AwnIcon*"/>
 				</parameters>
 			</method>
-			<method name="get_uid" symbol="awn_applet_get_uid">
+			<method name="get_is_active" symbol="awn_icon_get_is_active">
+				<return-type type="gboolean"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
+				</parameters>
+			</method>
+			<method name="get_message" symbol="awn_icon_get_message">
 				<return-type type="gchar*"/>
 				<parameters>
-					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="icon" type="AwnIcon*"/>
 				</parameters>
 			</method>
-			<constructor name="new" symbol="awn_applet_new">
-				<return-type type="AwnApplet*"/>
+			<method name="get_progress" symbol="awn_icon_get_progress">
+				<return-type type="gfloat"/>
 				<parameters>
-					<parameter name="uid" type="gchar*"/>
-					<parameter name="orient" type="gint"/>
-					<parameter name="height" type="gint"/>
+					<parameter name="icon" type="AwnIcon*"/>
 				</parameters>
-			</constructor>
-			<property name="height" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
-			<property name="orient" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
-			<property name="uid" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
-			<signal name="applet-deleted" when="FIRST">
-				<return-type type="void"/>
+			</method>
+			<method name="get_tooltip" symbol="awn_icon_get_tooltip">
+				<return-type type="AwnTooltip*"/>
 				<parameters>
-					<parameter name="object" type="AwnApplet*"/>
-					<parameter name="p0" type="char*"/>
+					<parameter name="icon" type="AwnIcon*"/>
 				</parameters>
-			</signal>
-			<signal name="height-changed" when="FIRST">
-				<return-type type="void"/>
+			</method>
+			<method name="get_tooltip_text" symbol="awn_icon_get_tooltip_text">
+				<return-type type="gchar*"/>
 				<parameters>
-					<parameter name="applet" type="AwnApplet*"/>
-					<parameter name="height" type="gint"/>
+					<parameter name="icon" type="AwnIcon*"/>
 				</parameters>
-			</signal>
-			<signal name="orientation-changed" when="FIRST">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="object" type="AwnApplet*"/>
-					<parameter name="p0" type="gint"/>
-				</parameters>
-			</signal>
-			<vfunc name="deleted">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="applet" type="AwnApplet*"/>
-					<parameter name="uid" type="gchar*"/>
-				</parameters>
-			</vfunc>
-			<vfunc name="orient_changed">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="applet" type="AwnApplet*"/>
-					<parameter name="oreint" type="AwnOrientation"/>
-				</parameters>
-			</vfunc>
-			<vfunc name="plug_embedded">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="applet" type="AwnApplet*"/>
-				</parameters>
-			</vfunc>
-			<vfunc name="size_changed">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="applet" type="AwnApplet*"/>
-					<parameter name="x" type="gint"/>
-				</parameters>
-			</vfunc>
-		</object>
-		<object name="AwnAppletDialog" parent="GtkWindow" type-name="AwnAppletDialog" get-type="awn_applet_dialog_get_type">
-			<implements>
-				<interface name="GtkBuildable"/>
-				<interface name="AtkImplementor"/>
-			</implements>
-			<constructor name="new" symbol="awn_applet_dialog_new">
+			</method>
+			<constructor name="new" symbol="awn_icon_new">
 				<return-type type="GtkWidget*"/>
-				<parameters>
-					<parameter name="applet" type="AwnApplet*"/>
-				</parameters>
 			</constructor>
-			<method name="position_reset" symbol="awn_applet_dialog_position_reset">
+			<method name="set_custom_paint" symbol="awn_icon_set_custom_paint">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="dialog" type="AwnAppletDialog*"/>
-				</parameters>
-			</method>
-		</object>
-		<object name="AwnAppletSimple" parent="AwnApplet" type-name="AwnAppletSimple" get-type="awn_applet_simple_get_type">
-			<implements>
-				<interface name="GtkBuildable"/>
-				<interface name="AtkImplementor"/>
-			</implements>
-			<method name="effects_off" symbol="awn_applet_simple_effects_off">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="simple" type="AwnAppletSimple*"/>
-				</parameters>
-			</method>
-			<method name="effects_on" symbol="awn_applet_simple_effects_on">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="simple" type="AwnAppletSimple*"/>
-				</parameters>
-			</method>
-			<method name="get_awn_icons" symbol="awn_applet_simple_get_awn_icons">
-				<return-type type="AwnIcons*"/>
-				<parameters>
-					<parameter name="simple" type="AwnAppletSimple*"/>
-				</parameters>
-			</method>
-			<method name="get_effects" symbol="awn_applet_simple_get_effects">
-				<return-type type="AwnEffects*"/>
-				<parameters>
-					<parameter name="simple" type="AwnAppletSimple*"/>
-				</parameters>
-			</method>
-			<constructor name="new" symbol="awn_applet_simple_new">
-				<return-type type="GtkWidget*"/>
-				<parameters>
-					<parameter name="uid" type="gchar*"/>
-					<parameter name="orient" type="gint"/>
+					<parameter name="icon" type="AwnIcon*"/>
+					<parameter name="width" type="gint"/>
 					<parameter name="height" type="gint"/>
 				</parameters>
-			</constructor>
-			<method name="set_awn_icon" symbol="awn_applet_simple_set_awn_icon">
-				<return-type type="GdkPixbuf*"/>
-				<parameters>
-					<parameter name="simple" type="AwnAppletSimple*"/>
-					<parameter name="applet_name" type="gchar*"/>
-					<parameter name="icon_name" type="gchar*"/>
-				</parameters>
 			</method>
-			<method name="set_awn_icon_state" symbol="awn_applet_simple_set_awn_icon_state">
-				<return-type type="GdkPixbuf*"/>
-				<parameters>
-					<parameter name="simple" type="AwnAppletSimple*"/>
-					<parameter name="state" type="gchar*"/>
-				</parameters>
-			</method>
-			<method name="set_awn_icons" symbol="awn_applet_simple_set_awn_icons">
-				<return-type type="GdkPixbuf*"/>
-				<parameters>
-					<parameter name="simple" type="AwnAppletSimple*"/>
-					<parameter name="applet_name" type="gchar*"/>
-					<parameter name="states" type="GStrv"/>
-					<parameter name="icon_names" type="GStrv"/>
-				</parameters>
-			</method>
-			<method name="set_icon" symbol="awn_applet_simple_set_icon">
+			<method name="set_effect" symbol="awn_icon_set_effect">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="simple" type="AwnAppletSimple*"/>
+					<parameter name="icon" type="AwnIcon*"/>
+					<parameter name="effect" type="AwnEffect"/>
+				</parameters>
+			</method>
+			<method name="set_from_context" symbol="awn_icon_set_from_context">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
+					<parameter name="ctx" type="cairo_t*"/>
+				</parameters>
+			</method>
+			<method name="set_from_pixbuf" symbol="awn_icon_set_from_pixbuf">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
 					<parameter name="pixbuf" type="GdkPixbuf*"/>
 				</parameters>
 			</method>
-			<method name="set_icon_context" symbol="awn_applet_simple_set_icon_context">
+			<method name="set_from_surface" symbol="awn_icon_set_from_surface">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="simple" type="AwnAppletSimple*"/>
-					<parameter name="cr" type="cairo_t*"/>
+					<parameter name="icon" type="AwnIcon*"/>
+					<parameter name="surface" type="cairo_surface_t*"/>
 				</parameters>
 			</method>
-			<method name="set_icon_context_scaled" symbol="awn_applet_simple_set_icon_context_scaled">
+			<method name="set_hover_effects" symbol="awn_icon_set_hover_effects">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="simple" type="AwnAppletSimple*"/>
-					<parameter name="cr" type="cairo_t*"/>
+					<parameter name="icon" type="AwnIcon*"/>
+					<parameter name="enable" type="gboolean"/>
 				</parameters>
 			</method>
-			<method name="set_temp_icon" symbol="awn_applet_simple_set_temp_icon">
+			<method name="set_indicator_count" symbol="awn_icon_set_indicator_count">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="simple" type="AwnAppletSimple*"/>
-					<parameter name="pixbuf" type="GdkPixbuf*"/>
+					<parameter name="icon" type="AwnIcon*"/>
+					<parameter name="count" type="gint"/>
 				</parameters>
 			</method>
-			<method name="set_title" symbol="awn_applet_simple_set_title">
+			<method name="set_is_active" symbol="awn_icon_set_is_active">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="simple" type="AwnAppletSimple*"/>
-					<parameter name="title_string" type="char*"/>
+					<parameter name="icon" type="AwnIcon*"/>
+					<parameter name="is_active" type="gboolean"/>
 				</parameters>
 			</method>
-			<method name="set_title_visibility" symbol="awn_applet_simple_set_title_visibility">
+			<method name="set_message" symbol="awn_icon_set_message">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="simple" type="AwnAppletSimple*"/>
-					<parameter name="state" type="gboolean"/>
+					<parameter name="icon" type="AwnIcon*"/>
+					<parameter name="message" type="gchar*"/>
 				</parameters>
 			</method>
-		</object>
-		<object name="AwnIcons" parent="GObject" type-name="AwnIcons" get-type="awn_icons_get_type">
-			<method name="get_icon" symbol="awn_icons_get_icon">
-				<return-type type="GdkPixbuf*"/>
-				<parameters>
-					<parameter name="icons" type="AwnIcons*"/>
-					<parameter name="state" type="gchar*"/>
-				</parameters>
-			</method>
-			<method name="get_icon_at_height" symbol="awn_icons_get_icon_at_height">
-				<return-type type="GdkPixbuf*"/>
-				<parameters>
-					<parameter name="icons" type="AwnIcons*"/>
-					<parameter name="state" type="gchar*"/>
-					<parameter name="height" type="gint"/>
-				</parameters>
-			</method>
-			<method name="get_icon_simple" symbol="awn_icons_get_icon_simple">
-				<return-type type="GdkPixbuf*"/>
-				<parameters>
-					<parameter name="icons" type="AwnIcons*"/>
-				</parameters>
-			</method>
-			<method name="get_icon_simple_at_height" symbol="awn_icons_get_icon_simple_at_height">
-				<return-type type="GdkPixbuf*"/>
-				<parameters>
-					<parameter name="icons" type="AwnIcons*"/>
-					<parameter name="height" type="gint"/>
-				</parameters>
-			</method>
-			<constructor name="new" symbol="awn_icons_new">
-				<return-type type="AwnIcons*"/>
-				<parameters>
-					<parameter name="applet_name" type="gchar*"/>
-				</parameters>
-			</constructor>
-			<method name="override_gtk_theme" symbol="awn_icons_override_gtk_theme">
+			<method name="set_offset" symbol="awn_icon_set_offset">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="icons" type="AwnIcons*"/>
-					<parameter name="theme_name" type="gchar*"/>
+					<parameter name="icon" type="AwnIcon*"/>
+					<parameter name="offset" type="gint"/>
 				</parameters>
 			</method>
-			<method name="set_changed_cb" symbol="awn_icons_set_changed_cb">
+			<method name="set_orientation" symbol="awn_icon_set_orientation">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="icons" type="AwnIcons*"/>
-					<parameter name="fn" type="AwnIconsChange"/>
-					<parameter name="user_data" type="gpointer"/>
+					<parameter name="icon" type="AwnIcon*"/>
+					<parameter name="orient" type="AwnOrientation"/>
 				</parameters>
 			</method>
-			<method name="set_height" symbol="awn_icons_set_height">
+			<method name="set_progress" symbol="awn_icon_set_progress">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="icons" type="AwnIcons*"/>
-					<parameter name="height" type="gint"/>
+					<parameter name="icon" type="AwnIcon*"/>
+					<parameter name="progress" type="gfloat"/>
 				</parameters>
 			</method>
-			<method name="set_icon_info" symbol="awn_icons_set_icon_info">
+			<method name="set_tooltip_text" symbol="awn_icon_set_tooltip_text">
 				<return-type type="void"/>
 				<parameters>
-					<parameter name="icons" type="AwnIcons*"/>
-					<parameter name="applet" type="GtkWidget*"/>
-					<parameter name="uid" type="gchar*"/>
-					<parameter name="height" type="gint"/>
-					<parameter name="icon_name" type="gchar*"/>
-				</parameters>
-			</method>
-			<method name="set_icons_info" symbol="awn_icons_set_icons_info">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="icons" type="AwnIcons*"/>
-					<parameter name="applet" type="GtkWidget*"/>
-					<parameter name="uid" type="gchar*"/>
-					<parameter name="height" type="gint"/>
-					<parameter name="states" type="GStrv"/>
-					<parameter name="icon_names" type="GStrv"/>
-				</parameters>
-			</method>
-		</object>
-		<object name="AwnPlug" parent="GtkPlug" type-name="AwnPlug" get-type="awn_plug_get_type">
-			<implements>
-				<interface name="GtkBuildable"/>
-				<interface name="AtkImplementor"/>
-			</implements>
-			<method name="construct" symbol="awn_plug_construct">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="plug" type="AwnPlug*"/>
-					<parameter name="socket_id" type="GdkNativeWindow"/>
-				</parameters>
-			</method>
-			<constructor name="new" symbol="awn_plug_new">
-				<return-type type="GtkWidget*"/>
-				<parameters>
-					<parameter name="applet" type="AwnApplet*"/>
-				</parameters>
-			</constructor>
-			<signal name="applet-deleted" when="LAST">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="plug" type="AwnPlug*"/>
-					<parameter name="uid" type="char*"/>
-				</parameters>
-			</signal>
-		</object>
-		<object name="AwnTitle" parent="GtkWindow" type-name="AwnTitle" get-type="awn_title_get_type">
-			<implements>
-				<interface name="GtkBuildable"/>
-				<interface name="AtkImplementor"/>
-			</implements>
-			<method name="get_default" symbol="awn_title_get_default">
-				<return-type type="GtkWidget*"/>
-			</method>
-			<method name="hide" symbol="awn_title_hide">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="title" type="AwnTitle*"/>
-					<parameter name="focus" type="GtkWidget*"/>
-				</parameters>
-			</method>
-			<method name="show" symbol="awn_title_show">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="title" type="AwnTitle*"/>
-					<parameter name="focus" type="GtkWidget*"/>
+					<parameter name="icon" type="AwnIcon*"/>
 					<parameter name="text" type="gchar*"/>
 				</parameters>
 			</method>
+			<property name="bind-effects" type="gboolean" readable="1" writable="1" construct="0" construct-only="1"/>
+			<property name="icon-height" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="icon-width" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="long-press-timeout" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<signal name="clicked" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
+				</parameters>
+			</signal>
+			<signal name="context-menu-popup" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
+					<parameter name="event" type="GdkEvent*"/>
+				</parameters>
+			</signal>
+			<signal name="long-press" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
+				</parameters>
+			</signal>
+			<signal name="size-changed" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
+				</parameters>
+			</signal>
+			<vfunc name="icon_padding0">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
+				</parameters>
+			</vfunc>
+			<vfunc name="icon_padding1">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
+				</parameters>
+			</vfunc>
+			<vfunc name="icon_padding2">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
+				</parameters>
+			</vfunc>
+			<vfunc name="icon_padding3">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
+				</parameters>
+			</vfunc>
 		</object>
-		<constant name="AWN_APPLET_GCONF_PATH" type="char*" value="/apps/avant-window-navigator/applets"/>
-		<constant name="AWN_CONFIG_CLIENT_DEFAULT_GROUP" type="char*" value="DEFAULT"/>
-		<constant name="AWN_GCONF_PATH" type="char*" value="/apps/avant-window-navigator"/>
+		<object name="AwnIconBox" parent="GtkBox" type-name="AwnIconBox" get-type="awn_icon_box_get_type">
+			<implements>
+				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
+			</implements>
+			<constructor name="new" symbol="awn_icon_box_new">
+				<return-type type="GtkWidget*"/>
+			</constructor>
+			<constructor name="new_for_applet" symbol="awn_icon_box_new_for_applet">
+				<return-type type="GtkWidget*"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+				</parameters>
+			</constructor>
+			<method name="set_offset" symbol="awn_icon_box_set_offset">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon_box" type="AwnIconBox*"/>
+					<parameter name="offset" type="gint"/>
+				</parameters>
+			</method>
+			<method name="set_orientation" symbol="awn_icon_box_set_orientation">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon_box" type="AwnIconBox*"/>
+					<parameter name="orient" type="AwnOrientation"/>
+				</parameters>
+			</method>
+			<property name="applet" type="AwnApplet*" readable="0" writable="1" construct="0" construct-only="1"/>
+		</object>
+		<object name="AwnImage" parent="GtkImage" type-name="AwnImage" get-type="awn_image_get_type">
+			<implements>
+				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
+				<interface name="AwnOverlayable"/>
+			</implements>
+			<constructor name="new" symbol="awn_image_new">
+				<return-type type="AwnImage*"/>
+			</constructor>
+		</object>
+		<object name="AwnLabel" parent="GtkLabel" type-name="AwnLabel" get-type="awn_label_get_type">
+			<implements>
+				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
+			</implements>
+			<constructor name="new" symbol="awn_label_new">
+				<return-type type="AwnLabel*"/>
+			</constructor>
+			<property name="font-mode" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="text-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="text-outline-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="text-outline-width" type="gdouble" readable="1" writable="1" construct="0" construct-only="0"/>
+		</object>
+		<object name="AwnOverlay" parent="GInitiallyUnowned" type-name="AwnOverlay" get-type="awn_overlay_get_type">
+			<method name="get_apply_effects" symbol="awn_overlay_get_apply_effects">
+				<return-type type="gboolean"/>
+				<parameters>
+					<parameter name="overlay" type="AwnOverlay*"/>
+				</parameters>
+			</method>
+			<method name="get_use_source_op" symbol="awn_overlay_get_use_source_op">
+				<return-type type="gboolean"/>
+				<parameters>
+					<parameter name="overlay" type="AwnOverlay*"/>
+				</parameters>
+			</method>
+			<method name="move_to" symbol="awn_overlay_move_to">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="overlay" type="AwnOverlay*"/>
+					<parameter name="cr" type="cairo_t*"/>
+					<parameter name="icon_width" type="gint"/>
+					<parameter name="icon_height" type="gint"/>
+					<parameter name="overlay_width" type="gint"/>
+					<parameter name="overlay_height" type="gint"/>
+					<parameter name="coord_req" type="AwnOverlayCoord*"/>
+				</parameters>
+			</method>
+			<constructor name="new" symbol="awn_overlay_new">
+				<return-type type="AwnOverlay*"/>
+			</constructor>
+			<method name="render" symbol="awn_overlay_render">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="overlay" type="AwnOverlay*"/>
+					<parameter name="widget" type="GtkWidget*"/>
+					<parameter name="cr" type="cairo_t*"/>
+					<parameter name="width" type="gint"/>
+					<parameter name="height" type="gint"/>
+				</parameters>
+			</method>
+			<method name="set_apply_effects" symbol="awn_overlay_set_apply_effects">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="overlay" type="AwnOverlay*"/>
+					<parameter name="value" type="gboolean"/>
+				</parameters>
+			</method>
+			<method name="set_use_source_op" symbol="awn_overlay_set_use_source_op">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="overlay" type="AwnOverlay*"/>
+					<parameter name="value" type="gboolean"/>
+				</parameters>
+			</method>
+			<property name="active" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="align" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="apply-effects" type="gboolean" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="gravity" type="GdkGravity" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="use-source-op" type="gboolean" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="x-adj" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="x-override" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="y-adj" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="y-override" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
+			<vfunc name="render">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="overlay" type="AwnOverlay*"/>
+					<parameter name="widget" type="GtkWidget*"/>
+					<parameter name="cr" type="cairo_t*"/>
+					<parameter name="width" type="gint"/>
+					<parameter name="height" type="gint"/>
+				</parameters>
+			</vfunc>
+		</object>
+		<object name="AwnOverlayPixbuf" parent="AwnOverlay" type-name="AwnOverlayPixbuf" get-type="awn_overlay_pixbuf_get_type">
+			<constructor name="new" symbol="awn_overlay_pixbuf_new">
+				<return-type type="AwnOverlayPixbuf*"/>
+			</constructor>
+			<constructor name="new_with_pixbuf" symbol="awn_overlay_pixbuf_new_with_pixbuf">
+				<return-type type="AwnOverlayPixbuf*"/>
+				<parameters>
+					<parameter name="pixbuf" type="GdkPixbuf*"/>
+				</parameters>
+			</constructor>
+			<property name="alpha" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="pixbuf" type="GdkPixbuf*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="scale" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
+		</object>
+		<object name="AwnOverlayPixbufFile" parent="AwnOverlayPixbuf" type-name="AwnOverlayPixbufFile" get-type="awn_overlay_pixbuf_file_get_type">
+			<constructor name="new" symbol="awn_overlay_pixbuf_file_new">
+				<return-type type="AwnOverlayPixbufFile*"/>
+				<parameters>
+					<parameter name="file_name" type="gchar*"/>
+				</parameters>
+			</constructor>
+			<property name="file-name" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
+		</object>
+		<object name="AwnOverlayProgress" parent="AwnOverlay" type-name="AwnOverlayProgress" get-type="awn_overlay_progress_get_type">
+			<constructor name="new" symbol="awn_overlay_progress_new">
+				<return-type type="AwnOverlayProgress*"/>
+			</constructor>
+			<property name="percent-complete" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
+		</object>
+		<object name="AwnOverlayProgressCircle" parent="AwnOverlayProgress" type-name="AwnOverlayProgressCircle" get-type="awn_overlay_progress_circle_get_type">
+			<constructor name="new" symbol="awn_overlay_progress_circle_new">
+				<return-type type="AwnOverlayProgressCircle*"/>
+			</constructor>
+			<property name="background-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="foreground-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="outline-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="scale" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
+		</object>
+		<object name="AwnOverlayText" parent="AwnOverlay" type-name="AwnOverlayText" get-type="awn_overlay_text_get_type">
+			<method name="get_size" symbol="awn_overlay_text_get_size">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="overlay" type="AwnOverlayText*"/>
+					<parameter name="widget" type="GtkWidget*"/>
+					<parameter name="text" type="gchar*"/>
+					<parameter name="size" type="gint"/>
+					<parameter name="width" type="gint*"/>
+					<parameter name="height" type="gint*"/>
+				</parameters>
+			</method>
+			<constructor name="new" symbol="awn_overlay_text_new">
+				<return-type type="AwnOverlayText*"/>
+			</constructor>
+			<property name="font-mode" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="font-sizing" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="text" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="text-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="text-color-astr" type="char*" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="text-outline-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="text-outline-color-astr" type="char*" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="text-outline-width" type="gdouble" readable="1" writable="1" construct="0" construct-only="0"/>
+		</object>
+		<object name="AwnOverlayThemedIcon" parent="AwnOverlay" type-name="AwnOverlayThemedIcon" get-type="awn_overlay_themed_icon_get_type">
+			<constructor name="new" symbol="awn_overlay_themed_icon_new">
+				<return-type type="AwnOverlayThemedIcon*"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+					<parameter name="icon_name" type="gchar*"/>
+					<parameter name="state" type="gchar*"/>
+				</parameters>
+			</constructor>
+			<property name="alpha" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="icon" type="AwnThemedIcon*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="icon-name" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="icon-state" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="scale" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
+		</object>
+		<object name="AwnOverlayThrobber" parent="AwnOverlay" type-name="AwnOverlayThrobber" get-type="awn_overlay_throbber_get_type">
+			<constructor name="new" symbol="awn_overlay_throbber_new">
+				<return-type type="GtkWidget*"/>
+				<parameters>
+					<parameter name="icon" type="GtkWidget*"/>
+				</parameters>
+			</constructor>
+			<property name="icon" type="GtkWidget*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="scale" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="timeout" type="guint" readable="1" writable="1" construct="1" construct-only="0"/>
+		</object>
+		<object name="AwnThemedIcon" parent="AwnIcon" type-name="AwnThemedIcon" get-type="awn_themed_icon_get_type">
+			<implements>
+				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
+				<interface name="AwnOverlayable"/>
+			</implements>
+			<method name="clear_icons" symbol="awn_themed_icon_clear_icons">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+					<parameter name="scope" type="gint"/>
+				</parameters>
+			</method>
+			<method name="clear_info" symbol="awn_themed_icon_clear_info">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+				</parameters>
+			</method>
+			<method name="get_default_theme_name" symbol="awn_themed_icon_get_default_theme_name">
+				<return-type type="gchar*"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+				</parameters>
+			</method>
+			<method name="get_icon_at_size" symbol="awn_themed_icon_get_icon_at_size">
+				<return-type type="GdkPixbuf*"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+					<parameter name="size" type="guint"/>
+					<parameter name="state" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="get_size" symbol="awn_themed_icon_get_size">
+				<return-type type="gint"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+				</parameters>
+			</method>
+			<method name="get_state" symbol="awn_themed_icon_get_state">
+				<return-type type="gchar*"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+				</parameters>
+			</method>
+			<constructor name="new" symbol="awn_themed_icon_new">
+				<return-type type="GtkWidget*"/>
+			</constructor>
+			<method name="override_gtk_theme" symbol="awn_themed_icon_override_gtk_theme">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+					<parameter name="theme_name" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="preload_icon" symbol="awn_themed_icon_preload_icon">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+					<parameter name="state" type="gchar*"/>
+					<parameter name="size" type="gint"/>
+				</parameters>
+			</method>
+			<method name="set_applet_info" symbol="awn_themed_icon_set_applet_info">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+					<parameter name="applet_name" type="gchar*"/>
+					<parameter name="uid" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="set_info" symbol="awn_themed_icon_set_info">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+					<parameter name="applet_name" type="gchar*"/>
+					<parameter name="uid" type="gchar*"/>
+					<parameter name="states" type="GStrv"/>
+					<parameter name="icon_names" type="GStrv"/>
+				</parameters>
+			</method>
+			<method name="set_info_append" symbol="awn_themed_icon_set_info_append">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+					<parameter name="icon_name" type="gchar*"/>
+					<parameter name="state" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="set_info_simple" symbol="awn_themed_icon_set_info_simple">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+					<parameter name="applet_name" type="gchar*"/>
+					<parameter name="uid" type="gchar*"/>
+					<parameter name="icon_name" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="set_size" symbol="awn_themed_icon_set_size">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+					<parameter name="size" type="gint"/>
+				</parameters>
+			</method>
+			<method name="set_state" symbol="awn_themed_icon_set_state">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+					<parameter name="state" type="gchar*"/>
+				</parameters>
+			</method>
+			<property name="applet-name" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="rotate" type="GdkPixbufRotation" readable="1" writable="1" construct="1" construct-only="0"/>
+		</object>
+		<object name="AwnTooltip" parent="GtkWindow" type-name="AwnTooltip" get-type="awn_tooltip_get_type">
+			<implements>
+				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
+			</implements>
+			<method name="get_delay" symbol="awn_tooltip_get_delay">
+				<return-type type="gint"/>
+				<parameters>
+					<parameter name="tooltip" type="AwnTooltip*"/>
+				</parameters>
+			</method>
+			<method name="get_text" symbol="awn_tooltip_get_text">
+				<return-type type="gchar*"/>
+				<parameters>
+					<parameter name="tooltip" type="AwnTooltip*"/>
+				</parameters>
+			</method>
+			<constructor name="new_for_widget" symbol="awn_tooltip_new_for_widget">
+				<return-type type="GtkWidget*"/>
+				<parameters>
+					<parameter name="widget" type="GtkWidget*"/>
+				</parameters>
+			</constructor>
+			<method name="set_background_color" symbol="awn_tooltip_set_background_color">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="tooltip" type="AwnTooltip*"/>
+					<parameter name="bg_color" type="DesktopAgnosticColor*"/>
+				</parameters>
+			</method>
+			<method name="set_delay" symbol="awn_tooltip_set_delay">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="tooltip" type="AwnTooltip*"/>
+					<parameter name="msecs" type="gint"/>
+				</parameters>
+			</method>
+			<method name="set_focus_widget" symbol="awn_tooltip_set_focus_widget">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="tooltip" type="AwnTooltip*"/>
+					<parameter name="widget" type="GtkWidget*"/>
+				</parameters>
+			</method>
+			<method name="set_font_color" symbol="awn_tooltip_set_font_color">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="tooltip" type="AwnTooltip*"/>
+					<parameter name="font_color" type="DesktopAgnosticColor*"/>
+				</parameters>
+			</method>
+			<method name="set_font_name" symbol="awn_tooltip_set_font_name">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="tooltip" type="AwnTooltip*"/>
+					<parameter name="font_name" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="set_position_hint" symbol="awn_tooltip_set_position_hint">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="tooltip" type="AwnTooltip*"/>
+					<parameter name="orient" type="AwnOrientation"/>
+					<parameter name="size" type="gint"/>
+				</parameters>
+			</method>
+			<method name="set_text" symbol="awn_tooltip_set_text">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="tooltip" type="AwnTooltip*"/>
+					<parameter name="text" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="update_position" symbol="awn_tooltip_update_position">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="tooltip" type="AwnTooltip*"/>
+				</parameters>
+			</method>
+			<property name="delay" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="focus" type="GtkWidget*" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="offset" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="smart-behavior" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="toggle-on-click" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="tooltip-bg-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="tooltip-font-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="tooltip-font-name" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
+		</object>
+		<interface name="AwnOverlayable" type-name="AwnOverlayable" get-type="awn_overlayable_get_type">
+			<method name="add_overlay" symbol="awn_overlayable_add_overlay">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="self" type="AwnOverlayable*"/>
+					<parameter name="overlay" type="AwnOverlay*"/>
+				</parameters>
+			</method>
+			<method name="get_effects" symbol="awn_overlayable_get_effects">
+				<return-type type="AwnEffects*"/>
+				<parameters>
+					<parameter name="self" type="AwnOverlayable*"/>
+				</parameters>
+			</method>
+			<method name="remove_overlay" symbol="awn_overlayable_remove_overlay">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="self" type="AwnOverlayable*"/>
+					<parameter name="overlay" type="AwnOverlay*"/>
+				</parameters>
+			</method>
+			<vfunc name="get_effects">
+				<return-type type="AwnEffects*"/>
+				<parameters>
+					<parameter name="self" type="AwnOverlayable*"/>
+				</parameters>
+			</vfunc>
+		</interface>
 		<constant name="AWN_MAX_HEIGHT" type="int" value="100"/>
-		<constant name="AWN_MIN_BAR_HEIGHT" type="int" value="10"/>
 		<constant name="AWN_MIN_HEIGHT" type="int" value="12"/>
-		<union name="AwnConfigClientValue">
-			<field name="bool_val" type="gboolean"/>
-			<field name="float_val" type="gfloat"/>
-			<field name="int_val" type="gint"/>
-			<field name="str_val" type="gchar*"/>
-			<field name="list_val" type="GSList*"/>
-		</union>
+		<constant name="AWN_PANEL_ID_DEFAULT" type="int" value="1"/>
 	</namespace>
 </api>

@@ -67,7 +67,7 @@ dnl ==============================================
 dnl Vala support
 dnl ==============================================
 
-AC_ARG_WITH(vala, AS_HELP_STRING([--with-vala],[Enables installation of the Vala bindings]),,[with_vala=no])
+AC_ARG_WITH(vala, AS_HELP_STRING([--with-vala],[Enables installation of the Vala bindings]),,[with_vala=yes])
 
 if test "$with_vala" != "no"; then
   VALA_PROG_VALAC(0.5.4)
@@ -145,6 +145,11 @@ AC_SUBST(LDA_BINDIR)
 
 LDA_DEFSDIR=`$PKG_CONFIG --variable=defsdir desktop-agnostic`
 AC_SUBST(LDA_DEFSDIR)
+
+if test "$with_vala" != "no"; then
+    LDA_VAPIDIR="`$PKG_CONFIG --variable=vapidir desktop-agnostic`"
+    AC_SUBST(LDA_VAPIDIR)
+fi
 
 dnl ==============================================
 dnl DBus

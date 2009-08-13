@@ -1,5 +1,22 @@
 2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* .bzrignore:
+	* bindings/vala/Makefile.am:
+	* bindings/vala/awn-custom.vala:
+	* bindings/vala/awn.deps:
+	* bindings/vala/awn.exclude:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	* configure.in:
+	* tests/Makefile.am:
+	* tests/test-vala-awn-dialog.vala:
+	Update Vala bindings.
+	Re-enable Vala support by default.
+	Rewrite the Vala test to be a port of the Awn dialog test.
+
+2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* configure.in:
 	Move libdesktop-agnostic defsdir check to after we check for the existence
 	of libdesktop-agnostic.

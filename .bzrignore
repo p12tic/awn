@@ -78,7 +78,8 @@ doc/reference/tmpl/*.sgml.bak
 doc/reference/*-scan.c
 data/avant-window-navigator.schemas*
 config.h.in
-test/vala-test
+tests/test-vala-awn-dialog
+tests/test-vala-awn-dialog.c
 awn-manager/awn-launcher-editor
 data/avant-window-navigator.schema-ini
 src/awn

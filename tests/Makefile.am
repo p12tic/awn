@@ -1,3 +1,5 @@
+include $(top_srcdir)/Makefile.shave
+
 noinst_PROGRAMS = \
 	test-applet-simple \
 	test-awn-effects \
@@ -29,10 +31,15 @@ test_themed_icon_SOURCES = test-themed-icon.c
 test_themed_icon_LDADD = $(top_builddir)/libawn/libawn.la
 
 if HAVE_VALA
-noinst_PROGRAMS += vala-test
+noinst_PROGRAMS += test-vala-awn-dialog
 
-vala-test: test.vala
-	$(VALAC) -C $< --vapidir=$(top_srcdir)/bindings/vala --pkg=awn
-	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(INCLUDES) -o $@ test.c $(LDFLAGS) $(top_builddir)/libawn/libawn.la
-	rm test.c test.h
+test_vala_awn_dialog_SOURCES = test-vala-awn-dialog.c
+test_vala_awn_dialog_CFLAGS = -Wall -Wno-redundant-decls
+test_vala_awn_dialog_LDADD = $(top_builddir)/libawn/libawn.la
+
+.vala.c:
+	$(QUIET_GEN)$(VALAC) -C $< --vapidir=$(top_srcdir)/bindings/vala \
+		--vapidir=$(LDA_VAPIDIR) --pkg=awn
+
+CLEANFILES = test-vala-awn-dialog.c
 endif
