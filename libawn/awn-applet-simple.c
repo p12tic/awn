@@ -268,6 +268,8 @@ awn_applet_simple_init (AwnAppletSimple *simple)
 
 /**
  * awn_applet_simple_new:
+ * @canonical_name: The canonical name of the applet (see
+ * #AwnApplet:canonical-name).
  * @uid: The unique identifier of the instance of the applet on the dock.
  * @panel_id: The ID of the panel to connect to.
  *

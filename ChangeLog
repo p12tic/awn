@@ -1,3 +1,8 @@
+2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-applet-simple.c:
+	Add missing docs for awn_applet_simple_new()'s canonical_name parameter.
+
 2009-08-13  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
