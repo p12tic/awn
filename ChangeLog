@@ -1,5 +1,10 @@
 2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/python/__init__.py:
+	Remove obsolete symbols.
+
+2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/awnmodule.c:
 	Add the PANEL_ID_DEFAULT constant to the awn module.
 

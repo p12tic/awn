@@ -19,7 +19,6 @@
 # -*- Mode: Python; py-indent-offset: 4 -*-
 
 import sys
-import os
 import getopt
 
 # load the required modules:
@@ -31,10 +30,6 @@ if _version < (2, 11, 1):
                       _version)
 
 from awn import *
-
-CONFIG_LIST_BOOL, CONFIG_LIST_FLOAT, \
-    CONFIG_LIST_INT, CONFIG_LIST_STRING = range(4)
-CONFIG_DEFAULT_GROUP = 'DEFAULT'
 
 uid = "0"
 window = 0
@@ -152,15 +147,3 @@ package manager.  This situation is explained in the FAQ section of the wiki.
         if exit_on_failure:
             import sys
             sys.exit(RESPONSE_WIKI)
-
-
-class ConfigLock:
-
-    def __init__(self, group, key):
-        self.fd = config_key_lock_open(group, key)
-
-    def lock(self, operation):
-        config_key_lock(self.fd, operation)
-
-    def close(self):
-        config_key_lock_close(self.fd)
