@@ -1230,6 +1230,13 @@ on_window_opened (WnckScreen    *screen,
      We may as well implement both the signature/desktop caching along with 
      stats for favourite app usage in a unified manner.
 */
+
+    /*
+     Various permations on finding a desktop file for the app.
+     
+     Class name may eventually be shown to give a false positive for something.
+     
+     */
     
     if (res_name && strlen (res_name))
     {
@@ -1333,17 +1340,17 @@ task_manager_set_show_all_windows (TaskManager *manager,
 
   if (show_all)
   {
-    // Remove signals of workspace changes
+    /* Remove signals of workspace changes*/
     g_signal_handlers_disconnect_by_func(priv->screen, 
                                          G_CALLBACK (on_workspace_changed), 
                                          manager);
     
-    // Set workspace to NULL, so TaskWindows aren't tied to workspaces anymore
+    /* Set workspace to NULL, so TaskWindows aren't tied to workspaces anymore*/
     space = NULL;
   }
   else
   {
-    // Add signals to WnckScreen for workspace changes
+    /* Add signals to WnckScreen for workspace changes*/
     g_signal_connect_swapped (priv->screen, "viewports-changed",
                               G_CALLBACK (on_workspace_changed), manager);
     g_signal_connect_swapped (priv->screen, "active-workspace-changed",
@@ -1358,14 +1365,17 @@ task_manager_set_show_all_windows (TaskManager *manager,
   for (w = priv->windows; w; w = w->next)
   {
     TaskWindow *window = w->data;
-    if (!TASK_IS_WINDOW (window)) continue;
+    if (!TASK_IS_WINDOW (window)) 
+    {
+      continue;
+    }
     task_window_set_active_workspace (window, space);
   }
   
   g_debug ("%s", show_all ? "showing all windows":"not showing all windows");
 }
 
-/**
+/*
  * The property 'show_only_launchers' changed.
  * So update the property and update the visiblity of every icon.
  */
@@ -1385,7 +1395,10 @@ task_manager_set_show_only_launchers (TaskManager *manager,
   {
     TaskIcon *icon = w->data;
 
-    if (!TASK_IS_ICON (icon)) continue;
+    if (!TASK_IS_ICON (icon)) 
+    {
+      continue;
+    }
 
     update_icon_visible (manager, icon);
   }
@@ -1424,7 +1437,7 @@ task_manager_append_launcher(TaskManager  *manager, const gchar * launcher_path)
   g_value_array_free (launcher_paths);
 }
 
-/**
+/*
  * Checks when launchers got added/removed in the list in gconf/file.
  * It removes the launchers from the task-icons and add those
  * that aren't already on the bar.
@@ -1520,47 +1533,6 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
     }
     g_free (path);
   }
-#if 0
-  for (guint idx = 0; idx < list->n_values; idx++)
-  {
-    gchar *path;
-    TaskItem  *launcher = NULL;
-    GtkWidget *icon;
-
-    path = g_value_dup_string (g_value_array_get_nth (list, idx));
-
-    launcher = task_launcher_new_for_desktop_file (path);
-
-    if (!launcher)
-    {
-      continue;
-    }
-    /*Nasty... but can't just disable yet*/
-    icon = task_icon_new (AWN_APPLET (manager));
-    task_icon_append_item (TASK_ICON (icon), launcher);
-    gtk_container_add (GTK_CONTAINER (priv->box), icon);
-
-    priv->icons = g_slist_append (priv->icons, icon);
-
-    g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
-    g_signal_connect_swapped (icon, 
-                              "visible-changed",
-                              G_CALLBACK (on_icon_visible_changed), 
-                              manager);
-    g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                              "animation-end", 
-                              G_CALLBACK (on_icon_effects_ends), 
-                              icon);
-    
-    update_icon_visible (manager, TASK_ICON (icon));
-
-    /* reordening through D&D */
-    if (priv->drag_and_drop)
-    {
-      _drag_add_signals(manager, icon);
-    }
-  }
-#endif
 }
 
 static void
@@ -1582,12 +1554,15 @@ task_manager_set_drag_and_drop (TaskManager *manager,
 
   priv->drag_and_drop = drag_and_drop;
 
-  //connect or dissconnect the dragging signals
+  /*connect or dissconnect the dragging signals*/
   for (i = priv->icons; i; i = i->next)
   {
     TaskIcon *icon = i->data;
     
-    if (!TASK_IS_ICON (icon)) continue;
+    if (!TASK_IS_ICON (icon)) 
+    {
+      continue;
+    }
 
     if(drag_and_drop)
     {
@@ -1595,7 +1570,7 @@ task_manager_set_drag_and_drop (TaskManager *manager,
     }
     else
     {
-      //FIXME: Stop any ongoing move
+      /*FIXME: Stop any ongoing move*/
       _drag_remove_signals (manager, GTK_WIDGET(icon));
     }
   }
@@ -1645,7 +1620,7 @@ task_manager_get_capabilities (TaskManager *manager,
   return TRUE;
 }
 
-/**
+/*
  * Find the window that corresponds to the given window name.
  * First try to match the application name, then the normal name.
  */
@@ -1664,25 +1639,29 @@ _match_name (TaskManager *manager, const gchar* window)
   {
     TaskWindow *taskwindow = w->data;
 
-    if (!TASK_IS_WINDOW (taskwindow)) continue;
-
+    if (!TASK_IS_WINDOW (taskwindow)) 
+    {
+      continue;
+    }
     wnck_app = task_window_get_application (taskwindow);
     if (WNCK_IS_APPLICATION(wnck_app))
     {
       name = wnck_application_get_name(wnck_app);
-      if (name && g_ascii_strcasecmp (window, name) == 0) // FIXME: UTF-8 ?!
+      if (name && g_ascii_strcasecmp (window, name) == 0) 
+      {/* FIXME: UTF-8 ?!*/
         return taskwindow;
+      }
     }
-
     name = task_window_get_name (taskwindow);
-    if (name && g_ascii_strcasecmp (window, name) == 0) // FIXME: UTF-8 ?!
+    if (name && g_ascii_strcasecmp (window, name) == 0) /* FIXME: UTF-8 ?!*/
+    {
       return taskwindow;
+    }
   }
-  
   return NULL;
 }
 
-/**
+/*
  * Find the window that corresponds to the given xid
  */
 static TaskWindow*
@@ -1739,8 +1718,13 @@ xutils_get_input_shape (GdkWindow *window)
   return region;
 }
 
+/*
+ Governs the panel autohide when Intellihide is enabled.
+ If a window in the relevant window list intersects with the awn panel then
+ autohide will be uninhibited otherwise it will be inhibited.
+ */
 static void
-task_manager_check_for_intersection (TaskManager * manager, 
+task_manager_check_for_intersection (TaskManager * manager,
                                      WnckWorkspace * space,
                                      WnckApplication * app)
 {
@@ -1768,6 +1752,10 @@ task_manager_check_for_intersection (TaskManager * manager,
   gdk_window_get_geometry (priv->awn_gdk_window,&awn_rect.x,
                            &awn_rect.y,&awn_rect.width,
                            &awn_rect.height,&depth);  
+  /*
+   gdk_window_get_geometry gives us an x,y or 0,0
+   Fix that using get root origin.
+   */
   gdk_window_get_root_origin (priv->awn_gdk_window,&awn_rect.x,&awn_rect.y);
   /*
    We cache the region for reuse for situations where the input mask is an empty
@@ -1789,6 +1777,11 @@ task_manager_check_for_intersection (TaskManager * manager,
     priv->awn_gdk_region = updated_region; 
     gdk_region_offset (priv->awn_gdk_region,awn_rect.x,awn_rect.y);    
   }
+  /*
+   awn_rect will end up being correct after this call...  
+   TODO: Probably should look into using gdk_region_intersect () or at the very least
+   gdk_region_rect_in().  especially because of curves.
+   */
   gdk_region_get_clipbox (priv->awn_gdk_region,&awn_rect);
   
   /*
@@ -1827,6 +1820,9 @@ task_manager_check_for_intersection (TaskManager * manager,
      It may be a good idea to go the same route as we go with the 
      panel to get the GdkRectangle.  But in practice it's _probably_
      not necessary
+     
+     TODO:  use gdk_region_instersect() or gdk_region_rect_in() at min.
+     
      */
     wnck_window_get_geometry (iter->data,&win_rect.x,
                               &win_rect.y,&win_rect.width,
@@ -1862,6 +1858,10 @@ task_manager_check_for_intersection (TaskManager * manager,
 
 }
 
+/*
+  Active window has changed.  If intellhide is active we need to check for 
+ window instersections
+ */
 static void 
 task_manager_active_window_changed_cb (WnckScreen *screen,
                                                    WnckWindow *previous_window,
@@ -1891,6 +1891,10 @@ task_manager_active_window_changed_cb (WnckScreen *screen,
   task_manager_check_for_intersection (manager,space,app);
 }
 
+/*
+ Workspace changed... check window intersections for new workspace if Intellidide
+ is active 
+ */
 static void 
 task_manager_active_workspace_changed_cb (WnckScreen    *screen,
                                                       WnckWorkspace *previous_space,
@@ -1920,6 +1924,10 @@ task_manager_active_workspace_changed_cb (WnckScreen    *screen,
   task_manager_check_for_intersection (manager,space,app);
 }
 
+/*
+ A window's geometry has channged.  If Intellihide is active then check for
+ intersections
+ */
 static void
 task_manager_win_geom_changed_cb (WnckWindow *window, TaskManager * manager)
 {
@@ -1949,6 +1957,10 @@ task_manager_win_geom_changed_cb (WnckWindow *window, TaskManager * manager)
   task_manager_check_for_intersection (manager,space,app);  
 }
 
+/*
+ If we have a new window then hook it up to task_manager_win_geom_changed_cb()
+ for Intellihide purposes
+ */
 static void 
 task_manager_window_opened_cb (WnckScreen *screen, WnckWindow *window,
                                                    TaskManager * manager)
