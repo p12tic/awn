@@ -64,6 +64,7 @@ struct _TaskManagerPrivate
   WnckScreen      *screen;
   guint           autohide_cookie;
   GdkWindow       *awn_gdk_window;
+  GdkRegion       * awn_gdk_region;
 
   /* Dragging properties */
   TaskIcon          *dragged_icon;
@@ -1686,10 +1687,10 @@ task_manager_check_for_intersection (TaskManager * manager,
   GList * windows;
   GList * iter;
   gboolean  intersect = FALSE;
-  GdkRegion * awn_gdk_region;
   GdkRectangle awn_rect;
   gint depth;
   gint64 xid; 
+  GdkRegion * updated_region;
   
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
@@ -1707,10 +1708,27 @@ task_manager_check_for_intersection (TaskManager * manager,
                            &awn_rect.y,&awn_rect.width,
                            &awn_rect.height,&depth);  
   gdk_window_get_root_origin (priv->awn_gdk_window,&awn_rect.x,&awn_rect.y);
-  awn_gdk_region = xutils_get_input_shape (priv->awn_gdk_window);
-  g_return_if_fail (awn_gdk_region);
-  gdk_region_offset (awn_gdk_region,awn_rect.x,awn_rect.y);
-  gdk_region_get_clipbox (awn_gdk_region,&awn_rect);
+  /*
+   We cache the region for reuse for situations where the input mask is an empty
+   region when the panel is hidden.  In that case we reuse the last good 
+   region.
+   */
+  updated_region = xutils_get_input_shape (priv->awn_gdk_window);
+  g_return_if_fail (updated_region);
+  if (gdk_region_empty(updated_region))
+  {
+    gdk_region_destroy (updated_region);
+  }
+  else
+  {
+    if (priv->awn_gdk_region)
+    {
+      gdk_region_destroy (priv->awn_gdk_region);
+    }
+    priv->awn_gdk_region = updated_region; 
+    gdk_region_offset (priv->awn_gdk_region,awn_rect.x,awn_rect.y);    
+  }
+  gdk_region_get_clipbox (priv->awn_gdk_region,&awn_rect);
   
   /*
    Get the list of windows to check for intersection
@@ -1761,8 +1779,6 @@ task_manager_check_for_intersection (TaskManager * manager,
       intersect = TRUE;
     }
   }
-  
-  gdk_region_destroy (awn_gdk_region);
   
   /*
    Allow panel to hide (if necessary)
@@ -1867,7 +1883,6 @@ task_manager_win_geom_changed_cb (WnckWindow *window, TaskManager * manager)
   {
     return;
   }
-  g_debug ("win name = %s",wnck_window_get_name(win) );  
   app = wnck_window_get_application (win);
   space = wnck_screen_get_active_workspace (priv->screen);
   task_manager_check_for_intersection (manager,space,app);  
