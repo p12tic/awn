@@ -1,5 +1,11 @@
 2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* configure.in:
+	Move libdesktop-agnostic defsdir check to after we check for the existence
+	of libdesktop-agnostic.
+
+2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/__init__.py:
 	Remove obsolete symbols.
 
