@@ -151,6 +151,8 @@ if test "$with_vala" != "no"; then
     AC_SUBST(LDA_VAPIDIR)
 fi
 
+AC_CHECK_LIB(m, lround)
+
 dnl ==============================================
 dnl DBus
 dnl ==============================================
@@ -190,7 +192,6 @@ dnl ==============================================
 dnl Please keep alphabetized (case-sensitive)
 AC_OUTPUT([
 Makefile
-applets/Makefile
 applets/expander/Makefile
 applets/expander/expander.desktop.in
 applets/taskmanager/Makefile
@@ -207,11 +208,9 @@ awn-settings/awn-launcher-editor
 awn-settings/awn-settings.desktop.in
 awn-settings/awnDefs.py
 awn-settings/awnSettings.py
-bindings/Makefile
 bindings/python/Makefile
 bindings/vala/Makefile
 data/Makefile
-data/active/Makefile
 data/avant-window-navigator.desktop.in
 data/avant-window-navigator.schema-ini
 doc/Makefile

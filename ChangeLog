@@ -1,3 +1,15 @@
+2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.am:
+	* applets/Makefile.am (removed):
+	* bindings/Makefile.am (removed):
+	* configure.in:
+	* data/Makefile.am:
+	* data/active/Makefile.am (removed):
+	* libawn/Makefile.am:
+	Remove some recursive make calls.
+	Make sure that libawn links to libm if necessary.
+
 2009-08-14  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-config.h:

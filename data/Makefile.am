@@ -1,5 +1,3 @@
-SUBDIRS = active
-
 APP_ICON_NAME = avant-window-navigator
 include $(top_srcdir)/Makefile.app-icons
 include $(top_srcdir)/Makefile.shave
@@ -39,6 +37,24 @@ dist_pkg_DATA = \
 
 pkgdir = $(pkgdatadir)
 
+# active subdirectory
+
+active_DATA = \
+	active/spotlight1.png \
+	active/spotlight2.png \
+	active/glow.png \
+	active/glow2.png \
+	active/glow3.png \
+	active/glow4.png \
+	active/glow5.png \
+	active/glow6.png \
+	active/glow7.png \
+	active/glow8.png \
+	active/glow9.png \
+	$(NULL)
+
+activedir = $(pkgdatadir)/active
+
 # config-related
 
 schema_DATA = avant-window-navigator.schema-ini
@@ -53,6 +69,14 @@ uninstall-local:
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/24x24/apps/avant-window-navigator.png
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/avant-window-navigator.png
 
-EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in avant-window-navigator.schema-ini awn-themed-icon-ui.glade
+EXTRA_DIST += \
+	$(icons) \
+	$(text_DATA) \
+	$(desktop_DATA).in.in \
+	avant-window-navigator.schema-ini \
+	awn-themed-icon-ui.glade \
+	$(active_DATA) \
+	spotlight_png_inline.c \
+	$(NULL)
 
 CLEANFILES = $(desktop_DATA) $(desktop_DATA).in avant-window-navigator.schemas avant-window-navigator.schemas.in

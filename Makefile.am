@@ -1,17 +1,23 @@
 NULL = 
 
-SUBDIRS =	\
+if HAVE_VALA
+VALA_BINDINGS = bindings/vala
+endif
+
+SUBDIRS = \
 	libawn \
 	src \
 	awn-applet-activation \
 	awn-settings \
-	applets \
-	bindings \
+	applets/taskmanager \
+	applets/expander \
+	bindings/python \
+	bindings/vala \
 	po \
 	data \
 	tests \
 	doc \
-	themes	\
+	themes \
 	$(NULL)
 
 ACLOCAL_AMFLAGS = -I m4
