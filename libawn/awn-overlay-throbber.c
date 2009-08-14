@@ -238,7 +238,8 @@ awn_overlay_throbber_class_init (AwnOverlayThrobberClass *klass)
                                "Icon",
                                "Icon",
                                GTK_TYPE_WIDGET,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_ICON, pspec);
 
 /**
@@ -247,12 +248,13 @@ awn_overlay_throbber_class_init (AwnOverlayThrobberClass *klass)
  * The time in milliseconds between throbber updates.
  */          
   pspec = g_param_spec_uint ("timeout",
-                               "Timeout",
-                               "Timeout",
-                               50,
-                               10000,
-                               100,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                             "Timeout",
+                             "Timeout",
+                             50,
+                             10000,
+                             100,
+                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                             G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_TIMEOUT, pspec);   
 
 /**
@@ -269,7 +271,8 @@ awn_overlay_throbber_class_init (AwnOverlayThrobberClass *klass)
                                0.01,
                                1.0,
                                0.6,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_SCALE, pspec);   
   
   g_type_class_add_private (klass, sizeof (AwnOverlayThrobberPrivate));

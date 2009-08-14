@@ -332,7 +332,8 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                          "Client",
                          "The configuration client",
                          DESKTOP_AGNOSTIC_CONFIG_TYPE_CLIENT,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_ORIENT,
@@ -340,7 +341,8 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                       "Orient",
                       "The orientation of the panel",
                       0, 3, AWN_ORIENTATION_BOTTOM,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_OFFSET,
@@ -348,7 +350,8 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                       "Offset",
                       "The icon offset of the panel",
                       0, G_MAXINT, 0,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_SIZE,
@@ -356,23 +359,26 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                       "Size",
                       "The size of the panel",
                       0, G_MAXINT, 48,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_APPLET_LIST,
-    g_param_spec_boxed ("applet_list",
+    g_param_spec_boxed ("applet-list",
                         "Applet List",
                         "The list of applets for this panel",
                         G_TYPE_VALUE_ARRAY,
-                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                        G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_UA_LIST,
-    g_param_spec_boxed ("ua_list",
+    g_param_spec_boxed ("ua-list",
                         "UA List",
                         "The remembered screenlet positions for this panel",
                         G_TYPE_VALUE_ARRAY,
-                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                        G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_UA_ACTIVE_LIST,
@@ -380,7 +386,8 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                         "UA Active List",
                         "The list of active screenlets for this panel",
                         G_TYPE_VALUE_ARRAY,
-                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                        G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_EXPANDS,

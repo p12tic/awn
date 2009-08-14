@@ -304,14 +304,14 @@ awn_label_class_init (AwnLabelClass *klass)
                                "Text color",
                                "Text color",
                                DESKTOP_AGNOSTIC_TYPE_COLOR,
-                               G_PARAM_READWRITE);
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_TEXT_COLOR, pspec);
 
   pspec = g_param_spec_object ("text-outline-color",
                                "Text Outline Color",
                                "Text outline color",
                                DESKTOP_AGNOSTIC_TYPE_COLOR,
-                               G_PARAM_READWRITE);
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class,
                                    PROP_TEXT_OUTLINE_COLOR, pspec);
 
@@ -321,7 +321,7 @@ awn_label_class_init (AwnLabelClass *klass)
                             FONT_MODE_SOLID,
                             FONT_MODE_OUTLINE_REVERSED,
                             FONT_MODE_SOLID,
-                            G_PARAM_READWRITE);
+                            G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_FONT_MODE, pspec);
 
   pspec = g_param_spec_double ("text-outline-width",
@@ -330,7 +330,7 @@ awn_label_class_init (AwnLabelClass *klass)
                                0.0,
                                10.0,
                                2.5,
-                               G_PARAM_READWRITE);
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, 
                                    PROP_TEXT_OUTLINE_WIDTH, pspec);
 

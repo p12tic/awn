@@ -192,7 +192,8 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                "Gravity",
                                GDK_TYPE_GRAVITY,
                                GDK_GRAVITY_CENTER,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_GRAVITY, pspec);  
 
 /**
@@ -210,7 +211,8 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                AWN_OVERLAY_ALIGN_CENTRE,
                                AWN_OVERLAY_ALIGN_RIGHT,
                                AWN_OVERLAY_ALIGN_CENTRE,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_ALIGN, pspec);  
 
 /**
@@ -227,7 +229,8 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                -1.0,
                                1.0,
                                0.0,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_X_ADJUST, pspec);  
 
 /**
@@ -244,7 +247,8 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                -1.0,
                                1.0,
                                0.0,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_Y_ADJUST, pspec);  
 
 /**
@@ -260,7 +264,8 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                "Active",
                                "Active",
                                TRUE,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_ACTIVE, pspec);  
 
 /**
@@ -273,7 +278,7 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                 "Apply Effects",
                                 "Apply Effects",
                                 TRUE,
-                                G_PARAM_READWRITE);
+                                G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_APPLY_EFFECTS, pspec);  
 
 /**
@@ -287,7 +292,7 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                 "Use Source Operator",
                                 "Replaces previous content beneath the overlay",
                                 FALSE,
-                                G_PARAM_READWRITE);
+                                G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_USE_SOURCE_OP, pspec);
 
 /**
@@ -302,7 +307,8 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                -10000.0,
                                1000.0,
                                -10000.0,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_X_OVERRIDE, pspec);  
 
 /**
@@ -317,7 +323,8 @@ awn_overlay_class_init (AwnOverlayClass *klass)
                                -10000.0,
                                1000.0,
                                -10000.0,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_Y_OVERRIDE, pspec);  
   
   g_type_class_add_private (klass, sizeof (AwnOverlayPrivate));

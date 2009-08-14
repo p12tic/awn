@@ -169,7 +169,8 @@ awn_icon_box_class_init (AwnIconBoxClass *klass)
                          "AwnApplet from which offset and orientation "
                          "properties are read",
                          AWN_TYPE_APPLET,
-                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE));
+                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE |
+                         G_PARAM_STATIC_STRINGS));
 
   g_type_class_add_private (obj_class, sizeof (AwnIconBoxPrivate));
 }

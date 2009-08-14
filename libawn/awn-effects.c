@@ -569,7 +569,7 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          "Widget",
                          "Widget to draw to",
                          GTK_TYPE_WIDGET,
-                         G_PARAM_READWRITE));
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:no-clear:
    *
@@ -581,9 +581,10 @@ awn_effects_class_init(AwnEffectsClass *klass)
     obj_class, PROP_NO_CLEAR,
     g_param_spec_boolean("no-clear",
                          "No context clear",
-                         "Determines whether to clear the context when drawing",
+                         "Don't clear background to transparent",
                          TRUE,
-                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:indirect-paint:
    *
@@ -599,7 +600,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          "Determines whether to apply transforms directly on "
                          "the window or paint to a buffer instead",
                          TRUE,
-                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:orientation:
    *
@@ -612,7 +614,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                      "Orientation",
                      "Icon orientation",
                      0, 3, AWN_EFFECT_ORIENT_BOTTOM,
-                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                     G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:effects:
    *
@@ -623,8 +626,9 @@ awn_effects_class_init(AwnEffectsClass *klass)
     g_param_spec_int("effects",
                      "Current effects",
                      "Active effects set for this instance",
-                     G_MININT, G_MAXINT, 0, /* set to classic (bouncing) */
-                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                     G_MININT, G_MAXINT, 0, /* set to simple (glow) */
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                     G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:icon-offset:
    *
@@ -636,7 +640,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                      "Icon offset",
                      "Offset of drawn icon to window border",
                      G_MININT, G_MAXINT, 0,
-                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                     G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:icon-alpha:
    *
@@ -648,7 +653,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                        "Icon alpha",
                        "Alpha value of drawn icon",
                        0.0, 1.0, 1.0,
-                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                       G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:reflection-offset:
    *
@@ -660,7 +666,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                      "Reflection offset",
                      "Offset of drawn reflection to icon",
                      G_MININT, G_MAXINT, 0,
-                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                     G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:reflection-alpha:
    *
@@ -672,7 +679,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                        "Reflection alpha",
                        "Alpha value of drawn reflection",
                        0.0, 1.0, 0.25,
-                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                       G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:reflection-visible:
    *
@@ -684,7 +692,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          "Reflection visibility",
                          "Determines whether reflection is visible",
                          TRUE,
-                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:make-shadow:
    *
@@ -696,7 +705,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          "Create shadow",
                          "Determines whether shadow is drawn around icon",
                          FALSE,
-                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:active:
    *
@@ -708,7 +718,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          "Active",
                          "Determines whether to draw active hint around icon",
                          FALSE,
-                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:depressed:
    *
@@ -721,7 +732,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          "Determines whether to draw the icon slightly "
                          "desaturated",
                          FALSE,
-                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:arrows-count:
    *
@@ -733,7 +745,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                      "Arrows count",
                      "Number of arrows to draw",
                      0, G_MAXINT, 0,
-                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                     G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:border-clip:
    *
@@ -746,7 +759,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                      "Active",
                      "Clips border of the icon",
                      0, G_MAXINT, 0,
-                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                     G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:progress:
    *
@@ -760,7 +774,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                        "Value displayed on extra progress pie"
                        " drawn on the icon",
                        0.0, 1.0, 1.0,
-                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                       G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:spotlight-png:
    *
@@ -772,7 +787,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                         "Spotlight Icon",
                         "Icon to draw for the spotlight effect",
                         AWN_INTERNAL_SPOTLIGHT,
-                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:arrow-icon:
    *
@@ -785,7 +801,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                         "Arrow Icon",
                         "Icon to draw when arrows-count is more than 0",
                         AWN_INTERNAL_ARROW1,
-                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS));
   /**
    * AwnEffects:custom-active-png:
    *
@@ -798,7 +815,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
                         "Custom active Icon",
                         "Custom icon to draw when in active state",
                         NULL,
-                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS));
 }
 
 static void

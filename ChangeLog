@@ -1,3 +1,30 @@
+2009-08-15  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-alignment.c:
+	* libawn/awn-applet.c:
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-icon.c:
+	* libawn/awn-label.c:
+	* libawn/awn-overlay-pixbuf-file.c:
+	* libawn/awn-overlay-pixbuf.c:
+	* libawn/awn-overlay-progress-circle.c:
+	* libawn/awn-overlay-progress.c:
+	* libawn/awn-overlay-text.c:
+	* libawn/awn-overlay-themed-icon.c:
+	* libawn/awn-overlay-throbber.c:
+	* libawn/awn-overlay.c:
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-tooltip.c:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-background.c:
+	* src/awn-monitor.c:
+	* src/awn-panel.c:
+	* src/awn-ua-alignment.c:
+	Use G_PARAM_STATIC_STRINGS for properties.
+
 2009-08-14  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

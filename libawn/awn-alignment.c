@@ -148,9 +148,9 @@ awn_alignment_class_init (AwnAlignmentClass *klass)
     PROP_APPLET,
     g_param_spec_object ("applet",
                          "Applet",
-                         "Applet",
+                         "Applet from which properties are read out",
                          AWN_TYPE_APPLET,
-                         G_PARAM_READWRITE));
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /*
    *  Can be set to negative value to get some extra space where you can paint,
@@ -162,7 +162,8 @@ awn_alignment_class_init (AwnAlignmentClass *klass)
                       "Offset modifier",
                       "Offset modifier",
                       G_MININT, G_MAXINT, 0,
-                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                      G_PARAM_STATIC_STRINGS));
 
   g_type_class_add_private (obj_class, sizeof (AwnAlignmentPrivate));
 }

@@ -235,7 +235,8 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
                                0.0,
                                1.0,
                                0.9,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_ALPHA, pspec);   
 
 /**
@@ -251,7 +252,8 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
                                0.0,
                                1.0,
                                0.3,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_SCALE, pspec);   
 
 /**
@@ -264,7 +266,8 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
                                "Icon name",
                                "Icon gtk theme name",
                                "",
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_ICON_NAME, pspec);   
 
 /**
@@ -278,14 +281,16 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
                                "Icon state",
                                "Icon state",
                                "",
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_ICON_STATE, pspec);   
 
   pspec = g_param_spec_object ("icon",
                                "Icon",
                                "Icon",
                                AWN_TYPE_THEMED_ICON,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_ICON, pspec);   
   
   

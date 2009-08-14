@@ -114,7 +114,8 @@ awn_overlay_progress_class_init (AwnOverlayProgressClass *klass)
                                0.0,
                                G_MAXDOUBLE,
                                0.0,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_PERCENT_COMPLETE, pspec);     
   
   g_type_class_add_private (klass, sizeof (AwnOverlayProgressPrivate));  

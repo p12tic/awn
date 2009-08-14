@@ -365,14 +365,16 @@ awn_background_class_init (AwnBackgroundClass *klass)
                          "Client",
                          "Awn Config Client",
                          DESKTOP_AGNOSTIC_CONFIG_TYPE_CLIENT,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_PANEL,
     g_param_spec_pointer ("panel",
                           "panel",
                           "AwnPanel associated with this background",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_GSTEP1,
@@ -380,7 +382,8 @@ awn_background_class_init (AwnBackgroundClass *klass)
                          "GStep1",
                          "Gradient Step 1",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_GSTEP2,
@@ -388,7 +391,8 @@ awn_background_class_init (AwnBackgroundClass *klass)
                          "GStep2",
                          "Gradient Step 2",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_GHISTEP1,
@@ -396,7 +400,8 @@ awn_background_class_init (AwnBackgroundClass *klass)
                          "GHiStep1",
                          "Hilight Gradient Step 1",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_GHISTEP2,
@@ -404,7 +409,8 @@ awn_background_class_init (AwnBackgroundClass *klass)
                          "GHiStep2",
                          "Hilight Gradient Step 2",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_BORDER,
@@ -412,7 +418,8 @@ awn_background_class_init (AwnBackgroundClass *klass)
                          "Border",
                          "Border color",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_HILIGHT,
@@ -420,81 +427,88 @@ awn_background_class_init (AwnBackgroundClass *klass)
                          "Hilight",
                          "Internal border color",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
   
   g_object_class_install_property (obj_class,
     PROP_SHOW_SEP,
-    g_param_spec_boolean ("show_sep",
+    g_param_spec_boolean ("show-sep",
                           "Show Separators",
                           "Show separators",
                           TRUE,
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_SEP_COLOR,
-    g_param_spec_object ("sep_color",
+    g_param_spec_object ("sep-color",
                          "Separator color",
                          "Separator color",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_ENABLE_PATTERN,
-    g_param_spec_boolean ("draw_pattern",
+    g_param_spec_boolean ("draw-pattern",
                           "Draw pattern",
                           "Enable drawing of pattern",
                           FALSE,
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_PATTERN_ALPHA,
-    g_param_spec_float ("pattern_alpha",
+    g_param_spec_float ("pattern-alpha",
                         "Pattern alpha",
                         "Pattern Alpha",
                         0.0, 1.0, 0.5,
-                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                        G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_PATTERN_FILENAME,
-    g_param_spec_string ("pattern_filename",
+    g_param_spec_string ("pattern-filename",
                          "Pattern filename",
                          "Pattern Filename",
                          "",
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_GTK_THEME_MODE,
-    g_param_spec_boolean ("gtk_theme_mode",
+    g_param_spec_boolean ("gtk-theme-mode",
                           "Gtk theme mode",
                           "Use colours from the current Gtk theme",
                           TRUE,
-                          G_PARAM_READWRITE));
+                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   
   g_object_class_install_property (obj_class,
     PROP_ROUNDED_CORNERS,
-    g_param_spec_boolean ("rounded_corners",
+    g_param_spec_boolean ("rounded-corners",
                           "Rounded Corners",
                           "Enable drawing of rounded corners",
                           FALSE,
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_CORNER_RADIUS,
-    g_param_spec_float ("corner_radius",
+    g_param_spec_float ("corner-radius",
                         "Corner Radius",
                         "Corner Radius",
                         0.0, G_MAXFLOAT, 10.0,
-                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                        G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_PANEL_ANGLE,
-    g_param_spec_float ("panel_angle",
+    g_param_spec_float ("panel-angle",
                         "Panel Angle",
                         "The angle of the panel in 3D mode",
                         0.0, 90.0, 45.0,
-                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                        G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_CURVINESS,
@@ -502,15 +516,17 @@ awn_background_class_init (AwnBackgroundClass *klass)
                         "Curviness",
                         "Curviness",
                         0.0, G_MAXFLOAT, 10.0,
-                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                        G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_CURVES_SYMEMETRY,
-    g_param_spec_float ("curves_symmetry",
+    g_param_spec_float ("curves-symmetry",
                         "Curves Symmetry",
                         "The symmetry of the curve",
                         0.0, 1.0, 0.5,
-                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                        G_PARAM_STATIC_STRINGS));
 
   /* Add signals to the class */
   _bg_signals[CHANGED] = 

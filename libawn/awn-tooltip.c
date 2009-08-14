@@ -433,31 +433,34 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
                          "Focus",
                          "Widget to focus on",
                          GTK_TYPE_WIDGET,
-                         G_PARAM_READWRITE));
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_FONT_NAME,
-    g_param_spec_string ("tooltip_font_name",
+    g_param_spec_string ("tooltip-font-name",
                          "tooltip-font-name",
                          "Tooltip Font Name",
                          "Sans 8",
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
   
   g_object_class_install_property (obj_class,
     PROP_FONT_COLOR,
-    g_param_spec_object ("tooltip_font_color",
+    g_param_spec_object ("tooltip-font-color",
                          "tooltip-font-color",
                          "Tooltip Font Color",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_BG,
-    g_param_spec_object ("tooltip_bg_color",
+    g_param_spec_object ("tooltip-bg-color",
                          "tooltip-bg-color",
                          "Tooltip Background Color",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_ICON_OFFSET,
@@ -465,7 +468,8 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
                       "Icon Offset",
                       "Icon Offset",
                       0, G_MAXINT, 0,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_DELAY,
@@ -473,7 +477,8 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
                       "delay",
                       "Delay",
                       0, G_MAXINT, 0,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT)); 
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_SMART_BEHAVIOUR,
@@ -482,7 +487,8 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
                           "Will show the tooltip on enter-notify-event and "
                           "hide on leave-notify-event",
                           TRUE,
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_TOGGLE_ON_CLICK,
@@ -490,7 +496,8 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
                           "Toggle on click",
                           "Toggles tooltip visibility on click",
                           TRUE,
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
 
   g_type_class_add_private (obj_class, sizeof (AwnTooltipPrivate));
 }

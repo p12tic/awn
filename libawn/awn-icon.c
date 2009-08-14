@@ -464,7 +464,8 @@ awn_icon_class_init (AwnIconClass *klass)
                           "If set to true, will load and bind effect property"
                           " values from config client",
                           TRUE,
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
+                          G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_ICON_WIDTH,
@@ -472,7 +473,7 @@ awn_icon_class_init (AwnIconClass *klass)
                       "Icon width",
                       "Current icon width",
                       0, G_MAXINT, 0,
-                      G_PARAM_READWRITE));
+                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_ICON_HEIGHT,
@@ -480,7 +481,7 @@ awn_icon_class_init (AwnIconClass *klass)
                       "Icon height",
                       "Current icon height",
                       0, G_MAXINT, 0,
-                      G_PARAM_READWRITE));
+                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_LONG_PRESS_TIMEOUT,
@@ -488,7 +489,8 @@ awn_icon_class_init (AwnIconClass *klass)
                       "Long press timeout",
                       "Timeout after which long-press signal is emit",
                       250, 10000, 750,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
 
   /* Signals */
   _icon_signals[SIZE_CHANGED] =

@@ -929,7 +929,7 @@ awn_dialog_class_init (AwnDialogClass *klass)
                          "Anchor",
                          "Widget this window is attached to",
                          GTK_TYPE_WIDGET,
-                         G_PARAM_WRITABLE));
+                         G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_ANCHOR_OWNER,
@@ -937,7 +937,7 @@ awn_dialog_class_init (AwnDialogClass *klass)
                          "Anchor applet",
                          "AwnApplet this window is attached to",
                          AWN_TYPE_APPLET,
-                         G_PARAM_WRITABLE));
+                         G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_ANCHORED,
@@ -945,7 +945,8 @@ awn_dialog_class_init (AwnDialogClass *klass)
                           "Anchored",
                           "Moves the window together with it's anchor widget",
                           TRUE,
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_ORIENT,
@@ -953,7 +954,8 @@ awn_dialog_class_init (AwnDialogClass *klass)
                       "Orient",
                       "The orientation of the window",
                       0, 3, AWN_ORIENTATION_BOTTOM,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_WINDOW_OFFSET,
@@ -961,7 +963,8 @@ awn_dialog_class_init (AwnDialogClass *klass)
                       "Window offset",
                       "The offset from window border",
                       G_MININT, G_MAXINT, AWN_DIALOG_DEFAULT_OFFSET,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_WINDOW_PADDING,
@@ -969,7 +972,8 @@ awn_dialog_class_init (AwnDialogClass *klass)
                       "Window padding",
                       "The padding from window border",
                       0, G_MAXINT, 15,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_HIDE_ON_ESC,
@@ -977,7 +981,8 @@ awn_dialog_class_init (AwnDialogClass *klass)
                           "Hide on Escape",
                           "Hides the window when escape key is pressed",
                           TRUE,
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_EFFECTS_HILIGHT,
@@ -987,23 +992,26 @@ awn_dialog_class_init (AwnDialogClass *klass)
                           "focused and the anchor implements "
                           "AwnOverlayable interface",
                           TRUE,
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_DIALOG_BG,
-    g_param_spec_object ("dialog_bg",
+    g_param_spec_object ("dialog-bg",
                          "Dialog Background",
                          "Dialog background color",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_TITLE_BG,
-    g_param_spec_object ("title_bg",
+    g_param_spec_object ("title-bg",
                          "Title Background",
                          "Background color for dialog's title",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_BORDER,
@@ -1011,7 +1019,8 @@ awn_dialog_class_init (AwnDialogClass *klass)
                          "Border",
                          "Border color",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_HILIGHT,
@@ -1019,7 +1028,8 @@ awn_dialog_class_init (AwnDialogClass *klass)
                          "Hilight",
                          "Internal border color",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_type_class_add_private (G_OBJECT_CLASS (klass),
                             sizeof (AwnDialogPrivate));

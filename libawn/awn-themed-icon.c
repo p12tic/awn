@@ -380,12 +380,13 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
  */
   
   pspec = g_param_spec_enum ("rotate",
-                               "Rotate",
-                               "Rotate",
-                               GDK_TYPE_PIXBUF_ROTATION,
-                               GDK_PIXBUF_ROTATE_NONE,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
-  g_object_class_install_property (obj_class, PROP_ROTATE, pspec);   
+                             "Rotate",
+                             "Rotation of the icon",
+                             GDK_TYPE_PIXBUF_ROTATION,
+                             GDK_PIXBUF_ROTATE_NONE,
+                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                             G_PARAM_STATIC_STRINGS);
+  g_object_class_install_property (obj_class, PROP_ROTATE, pspec);
 
 /**
  * AwnThemedIcon:applet-name:
@@ -393,10 +394,11 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
  * The applet name.
  */
   pspec = g_param_spec_string ("applet-name",
-                             "Applet Name",
-                             "Applet Name",
-                             NULL,
-                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               "Applet Name",
+                               "Applet Name",
+                               NULL,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (obj_class, PROP_APPLET_NAME, pspec);   
   
   g_type_class_add_private (obj_class, sizeof (AwnThemedIconPrivate));

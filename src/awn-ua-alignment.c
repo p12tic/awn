@@ -182,14 +182,16 @@ awn_ua_alignment_class_init (AwnUAAlignmentClass *klass)
                                "Awn Applet Manager",
                                "Awn Applet Manager",
                                AWN_TYPE_APPLET_MANAGER,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_APPLET_MANAGER, pspec);   
   
   pspec = g_param_spec_string ("ua-list-entry",
                                "UA List entry",
                                "UA List entry",
                                NULL,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_UA_LIST_ENTRY, pspec);   
   
   pspec = g_param_spec_double ("ua-ratio",
@@ -198,7 +200,8 @@ awn_ua_alignment_class_init (AwnUAAlignmentClass *klass)
                                0.0,
                                100.0,
                                1.0,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_UA_RATIO, pspec);   
 
   g_type_class_add_private (klass, sizeof (AwnUAAlignmentPrivate));  

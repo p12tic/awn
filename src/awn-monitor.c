@@ -217,47 +217,50 @@ awn_monitor_class_init (AwnMonitorClass *klass)
                          "Config Client",
                          "Configuration client",
                          DESKTOP_AGNOSTIC_CONFIG_TYPE_CLIENT,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_FORCE_MONITOR,
-    g_param_spec_boolean ("monitor_force",
+    g_param_spec_boolean ("monitor-force",
                           "Monitor Force",
                           "Force the monitor geometry",
                           FALSE,
-                          G_PARAM_READWRITE));
+                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_WIDTH,
-    g_param_spec_int ("monitor_width",
+    g_param_spec_int ("monitor-width",
                       "Monitor Width",
                       "Monitor Width",
                       0, G_MAXINT, 1024,
-                      G_PARAM_READWRITE));
+                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_HEIGHT,
-    g_param_spec_int ("monitor_height",
+    g_param_spec_int ("monitor-height",
                       "Monitor Height",
                       "Monitor Height",
                       0, G_MAXINT, 768,
-                      G_PARAM_READWRITE));
+                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_OFFSET,
-    g_param_spec_int ("monitor_offset",
+    g_param_spec_int ("monitor-offset",
                       "Monitor Offset",
                       "An optional offset (for displays > 1)",
                       0, G_MAXINT, 0,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_ALIGN,
-    g_param_spec_float ("monitor_align",
+    g_param_spec_float ("monitor-align",
                         "Monitor Align",
                         "The alignment of the panel on the monitor",
                         0.0, 1.0, 0.5,
-                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                        G_PARAM_STATIC_STRINGS));
 
   /* Add signals to the class */
   _monitor_signals[GEOMETRY_CHANGED] = 

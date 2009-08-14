@@ -15,7 +15,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA.
  *
- *  Author : Neil Jagdish Patel <njpatel@gmail.com>
+ *  Authors : Neil Jagdish Patel <njpatel@gmail.com>
+ *            Michal Hruby <michal.mhr@gmail.com>
  *
  */
 
@@ -1528,21 +1529,22 @@ awn_panel_class_init (AwnPanelClass *klass)
                          "Client",
                          "The configuration client",
                          DESKTOP_AGNOSTIC_CONFIG_TYPE_CLIENT,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_MONITOR,
     g_param_spec_pointer ("monitor",
                           "Monitor",
                           "The AwnMonitor",
-                          G_PARAM_READABLE));
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_APPLET_MANAGER,
     g_param_spec_pointer ("applet-manager",
                           "Applet manager",
                           "The AwnAppletManager",
-                          G_PARAM_READABLE));
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_PANEL_XID,
@@ -1550,7 +1552,7 @@ awn_panel_class_init (AwnPanelClass *klass)
                           "Panel XID",
                           "The XID of the panel",
                           G_MININT64, G_MAXINT64, 0,
-                          G_PARAM_READABLE));
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_COMPOSITED,
@@ -1558,14 +1560,15 @@ awn_panel_class_init (AwnPanelClass *klass)
                           "Composited",
                           "The window is composited",
                           TRUE,
-                          G_PARAM_READWRITE));
+                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (obj_class,
     PROP_PANEL_MODE,
-    g_param_spec_boolean ("panel_mode",
+    g_param_spec_boolean ("panel-mode",
                           "Panel Mode",
                           "The window sets the appropriete panel size hints",
                           FALSE,
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (obj_class,
     PROP_EXPAND,
     g_param_spec_boolean ("expand",
@@ -1573,14 +1576,16 @@ awn_panel_class_init (AwnPanelClass *klass)
                           "The panel will expand to fill the entire "
                           "width/height of the screen",
                           FALSE,
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
  g_object_class_install_property (obj_class,
     PROP_ORIENT,
     g_param_spec_int ("orient",
                       "Orient",
                       "The orientation of the panel",
                       0, 3, AWN_ORIENTATION_BOTTOM,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
    
   g_object_class_install_property (obj_class,
     PROP_SIZE,
@@ -1588,7 +1593,8 @@ awn_panel_class_init (AwnPanelClass *klass)
                       "Size",
                       "The size of the panel",
                       0, G_MAXINT, 48,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
   
   g_object_class_install_property (obj_class,
     PROP_MAX_SIZE,
@@ -1596,7 +1602,7 @@ awn_panel_class_init (AwnPanelClass *klass)
                       "Max Size",
                       "Maximum size for drawing on the panel",
                       0, G_MAXINT, 48,
-                      G_PARAM_READABLE));
+                      G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
   
   g_object_class_install_property (obj_class,
     PROP_OFFSET,
@@ -1604,7 +1610,8 @@ awn_panel_class_init (AwnPanelClass *klass)
                       "Offset",
                       "An offset for applets in the panel",
                       0, G_MAXINT, 0,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_AUTOHIDE_TYPE,
@@ -1612,7 +1619,8 @@ awn_panel_class_init (AwnPanelClass *klass)
                       "Autohide type",
                       "Type of used autohide",
                       0, AUTOHIDE_TYPE_LAST - 1, 0,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
  
   g_object_class_install_property (obj_class,
     PROP_STYLE,
@@ -1620,7 +1628,8 @@ awn_panel_class_init (AwnPanelClass *klass)
                       "Style",
                       "Style of the bar",
                       0, STYLE_LAST - 1, 0,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_CLICKTHROUGH,
@@ -1628,7 +1637,8 @@ awn_panel_class_init (AwnPanelClass *klass)
                       "Clickthrough type",
                       "Type of clickthrough action",
                       0, CLICKTHROUGH_LAST - 1, 0,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
 
   /* Add signals to the class */
   _panel_signals[SIZE_CHANGED] =

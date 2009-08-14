@@ -163,7 +163,8 @@ awn_overlay_progress_circle_class_init (AwnOverlayProgressCircleClass *klass)
                                0.0,
                                1.0,
                                0.9,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_SCALE, pspec);   
 
 /**
@@ -176,7 +177,8 @@ awn_overlay_progress_circle_class_init (AwnOverlayProgressCircleClass *klass)
                                "Background Color",
                                "Background Color",
                                DESKTOP_AGNOSTIC_TYPE_COLOR,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_BACKGROUND_COLOR, pspec);   
 
 /**
@@ -189,7 +191,8 @@ awn_overlay_progress_circle_class_init (AwnOverlayProgressCircleClass *klass)
                                "Foreground Color",
                                "Foreground Color",
                                DESKTOP_AGNOSTIC_TYPE_COLOR,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_FOREGROUND_COLOR, pspec);   
 
 /**
@@ -202,7 +205,8 @@ awn_overlay_progress_circle_class_init (AwnOverlayProgressCircleClass *klass)
                                "Outline Color",
                                "Outline Color",
                                DESKTOP_AGNOSTIC_TYPE_COLOR,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                               G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_OUTLINE_COLOR, pspec);   
   
   g_type_class_add_private (klass, sizeof (AwnOverlayProgressCirclePrivate));  

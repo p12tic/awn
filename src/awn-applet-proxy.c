@@ -230,7 +230,7 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
         "Path",
         "The path to the applets desktop file",
         NULL,
-        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+        G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
       PROP_UID,
@@ -238,7 +238,7 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
         "UID",
         "The unique ID for this applet instance",
         NULL,
-        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+        G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
       PROP_ORIENT,
@@ -246,7 +246,7 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
         "Orient",
         "The panel orientation",
         0, 3, AWN_ORIENTATION_BOTTOM,
-        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+        G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
       PROP_OFFSET,
@@ -254,7 +254,7 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
         "Offset",
         "The panel icon offset",
         0, G_MAXINT, 0,
-        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+        G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
       PROP_SIZE,
@@ -262,7 +262,7 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
         "size",
         "The panel size",
         0, G_MAXINT, 48,
-        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+        G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS));
 
   /* Class signals */
   _proxy_signals[APPLET_DELETED] =
