@@ -1,5 +1,10 @@
 2009-08-14  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-config.h:
+	Updated prototype for awn_config_get_default_for_applet_by_info().
+
+2009-08-14  Michal Hruby  <michal.mhr@gmail.com>
+
 	* applets/taskmanager/applet.c:
 	* applets/taskmanager/task-manager.c:
 	* bindings/python/awn.defs:
