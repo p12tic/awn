@@ -19,8 +19,8 @@
 #
 #  Notes: Avant Window Navigator preferences window
 
-import sys, os
-from awn import CONFIG_DEFAULT_GROUP as DEFAULT_GROUP
+import os
+from desktopagnostic.config import GROUP_DEFAULT
 
 PREFIX = "@prefix@"
 
@@ -42,7 +42,7 @@ DEFAULT_SOURCES_LIST = [[SYS_THEME_DIR,'local'],[HOME_THEME_DIR,'local'], [SYS_A
 
 
 # AwnConfigClient Groups/Keys
-AWN                     = DEFAULT_GROUP         #group
+AWN                     = GROUP_DEFAULT         #group
 PANEL                   = "panel"               #group
 PANEL_MODE              = "panel_mode"          #bool
 ORIENT                  = "orient"              #int
