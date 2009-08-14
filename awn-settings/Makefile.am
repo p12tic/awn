@@ -52,10 +52,10 @@ uninstall-local:
 EXTRA_DIST +=			\
 	$(xml_DATA)		\
 	*.py			\
-	$(desktop_DATA).in.in	\
+	$(desktop_DATA).in	\
 	$(NULL)
 
 DISTCLEANFILES = awn-settings.desktop
 
 clean:
-	rm -f *.pyo *.pyc *.bak $(desktop_DATA) $(desktop_DATA).in
+	rm -f *.pyo *.pyc *.bak $(desktop_DATA)

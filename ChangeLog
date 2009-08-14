@@ -1,5 +1,16 @@
 2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* awn-settings/Makefile.am:
+	* awn-settings/awn-settings.desktop.in:
+	* configure.in:
+	* data/Makefile.am:
+	* data/avant-window-navigator.desktop.in:
+	* po/POTFILES.in:
+	The awn-settings and avant-window-navigator desktop files don't need
+	to be processed by config.status.
+
+2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/expander/expander.desktop.in.in:
 	* applets/taskmanager/taskmanager.desktop.in.in:
 	Make applet desktop files translatable.

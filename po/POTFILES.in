@@ -2,7 +2,7 @@ applets/expander/expander.desktop.in.in
 applets/taskmanager/task-launcher.c
 applets/taskmanager/task-icon.c
 applets/taskmanager/taskmanager.desktop.in.in
-awn-settings/awn-settings.desktop.in.in
+awn-settings/awn-settings.desktop.in
 awn-settings/awn-settings.xml
 awn-settings/awnClass.py
 awn-manager/awnLauncher.py
@@ -10,7 +10,7 @@ awn-settings/awnLauncherEditor.py
 awn-settings/awnSettings.py.in
 awn-settings/launcher-editor.xml
 awn-manager/window.glade
-data/avant-window-navigator.desktop.in.in
+data/avant-window-navigator.desktop.in
 libawn/awn-applet.c
 src/awn-applet-proxy.c
 src/awn-panel.c

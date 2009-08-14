@@ -205,13 +205,11 @@ awn-manager/awnDefs.py
 awn-manager/awnManager.py
 awn-settings/Makefile
 awn-settings/awn-launcher-editor
-awn-settings/awn-settings.desktop.in
 awn-settings/awnDefs.py
 awn-settings/awnSettings.py
 bindings/python/Makefile
 bindings/vala/Makefile
 data/Makefile
-data/avant-window-navigator.desktop.in
 data/avant-window-navigator.schema-ini
 doc/Makefile
 doc/reference/Makefile

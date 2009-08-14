@@ -72,11 +72,11 @@ uninstall-local:
 EXTRA_DIST += \
 	$(icons) \
 	$(text_DATA) \
-	$(desktop_DATA).in.in \
+	$(desktop_DATA).in \
 	avant-window-navigator.schema-ini \
 	awn-themed-icon-ui.glade \
 	$(active_DATA) \
 	spotlight_png_inline.c \
 	$(NULL)
 
-CLEANFILES = $(desktop_DATA) $(desktop_DATA).in avant-window-navigator.schemas avant-window-navigator.schemas.in
+CLEANFILES = $(desktop_DATA) avant-window-navigator.schemas avant-window-navigator.schemas.in
