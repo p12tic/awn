@@ -1,3 +1,9 @@
+2009-08-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-applet.c:
+  	* libawn/awn-themed-icon.c:
+	Some more gtk-doc style documentation.
+
 2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* Makefile.am:

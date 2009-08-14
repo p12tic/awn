@@ -666,6 +666,12 @@ awn_applet_class_init (AwnAppletClass *klass)
                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE |
                          G_PARAM_STATIC_STRINGS));
 
+ /**
+ * AwnApplet:display:
+ *
+ * The friendly name of the applet.  Used for display in menu text if available
+ */
+
   g_object_class_install_property (g_object_class,
     PROP_DISPLAY_NAME,
     g_param_spec_string ("display-name",
@@ -673,6 +679,12 @@ awn_applet_class_init (AwnAppletClass *klass)
                          "Display name for the applet.",
                          NULL,
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+ /**
+ * AwnApplet:panel-id:
+ *
+ * The id of the Awn Panel the applet connects to.
+ */
 	
   g_object_class_install_property (g_object_class,
     PROP_PANEL_ID,
@@ -682,6 +694,11 @@ awn_applet_class_init (AwnAppletClass *klass)
                       0, G_MAXINT, 0,
                       G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE |
                       G_PARAM_STATIC_STRINGS));
+ /**
+ * AwnApplet:panel-xid:
+ *
+ * The XID of the awn panel the applet is connected to.
+ */
 
   g_object_class_install_property (g_object_class,
     PROP_PANEL_XID,
@@ -691,6 +708,12 @@ awn_applet_class_init (AwnAppletClass *klass)
                         G_MININT64, G_MAXINT64, 0,
                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
+ /**
+ * AwnApplet:orient:
+ *
+ * The current bar orientation.
+ */
+	
   g_object_class_install_property (g_object_class,
    PROP_ORIENT,
    g_param_spec_int ("orient",
@@ -699,6 +722,12 @@ awn_applet_class_init (AwnAppletClass *klass)
                      0, 3, AWN_ORIENTATION_BOTTOM,
                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+ /**
+ * AwnApplet:offset:
+ *
+ * The icon offset of the bar.
+ */
+	
   g_object_class_install_property (g_object_class,
    PROP_OFFSET,
    g_param_spec_int ("offset",
@@ -707,6 +736,12 @@ awn_applet_class_init (AwnAppletClass *klass)
                      0, G_MAXINT, 0,
                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+ /**
+ * AwnApplet:offset-modifier:
+ *
+ * The offset modifier for non-linear path types.
+ */
+
   g_object_class_install_property (g_object_class,
    PROP_OFFSET_MOD,
    g_param_spec_float ("offset-modifier",
@@ -714,6 +749,11 @@ awn_applet_class_init (AwnAppletClass *klass)
                        "Offset modifier for non-linear path types",
                        -G_MAXFLOAT, G_MAXFLOAT, 1.0,
                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+ /**
+ * AwnApplet:size:
+ *
+ * The current visible size of the bar.  
+ */
 
   g_object_class_install_property (g_object_class,
    PROP_SIZE,
@@ -722,6 +762,11 @@ awn_applet_class_init (AwnAppletClass *klass)
                      "The current visible size of the bar",
                      0, G_MAXINT, 48,
                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+ /**
+ * AwnApplet:max-size:
+ *
+ * The maximum visible size of the applet.
+ */
 
   g_object_class_install_property (g_object_class,
    PROP_MAX_SIZE,
@@ -748,7 +793,12 @@ awn_applet_class_init (AwnAppletClass *klass)
                          "it's embedded in the socket",
                          TRUE,
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
-
+ /**
+ * AwnApplet:quit-on-delete:
+ *
+ * Whether the applet quits when it's socket is destroyed.
+ */
+	
   g_object_class_install_property (g_object_class,
    PROP_QUIT_ON_DELETE,
    g_param_spec_boolean ("quit-on-delete",
@@ -757,6 +807,14 @@ awn_applet_class_init (AwnAppletClass *klass)
                          TRUE,
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+ /**
+ * AwnApplet:single-instance:
+ *
+ * Controls whether the applet uses single-insance configurations.  This does 
+ * not limit the number of instances on the panel.
+ */
+
+	
   g_object_class_install_property (g_object_class,
    PROP_SINGLE_INSTANCE,
    g_param_spec_boolean ("single-instance",
@@ -913,6 +971,14 @@ awn_applet_new (const gchar* canonical_name, const gchar* uid, gint panel_id)
 /*
  * Public funcs
  */
+
+/**
+ * awn_applet_get_canonical_name:
+ * @applet: The #AwnApplet.
+ *
+ * Retrieve the applet's canonical name.
+ * Returns: the applet's canonical name.
+ */
 const gchar*
 awn_applet_get_canonical_name (AwnApplet *applet)
 {
@@ -942,7 +1008,14 @@ _start_awn_manager (GtkMenuItem *menuitem, gpointer null)
   return TRUE;
 }
 
-/*create a Dock Preferences menu item */
+/**
+ * awn_applet_create_pref_item:
+ *
+ * Create a Dock Preferences menu item.
+ * Returns: A #GtkImageMenuItem for the Dock Preferences that can be added to
+ * an applet icon's context menu.
+ */
+
 GtkWidget *
 awn_applet_create_pref_item (void)
 {
@@ -976,10 +1049,21 @@ _cleanup_about_dialog (GtkWidget *widget,
 
 /**
  * awn_applet_create_about_item:
+ * @applet: An AwnApplet.
+ * @copyright: The copyright holder string.
  * @license: Must be one of the values enumerated in #AwnAppletLicense.
+ * @version: Applet version string.
+ * @comments: Comment string.
+ * @website: Website string.
+ * @website_lable: Website label string.
+ * @icon_name: Icon name.
+ * @translator_credits: Translator's credit string.
+ * @authors: Array of author strings.
+ * @artists: Array of artist strings.
+ * @documenters: Array of documentor strings.
  *
  * Creates an about dialog and an associated menu item for use in the applet's
- * context menu. The @copyright, @license, and @applet_name parameters are
+ * context menu. The @copyright and @license parameters are
  * mandatory. The rest are optional. See also #GtkAboutDialog for a description
  * of the parameters other than @license.
  *
@@ -1101,6 +1185,21 @@ awn_applet_create_about_item (AwnApplet					*applet,
   return item;
 }
 
+/**
+ * awn_applet_create_about_item_simple:
+ * @applet: An AwnApplet.
+ * @copyright: The copyright holder string.
+ * @license: Must be one of the values enumerated in #AwnAppletLicense.
+ * @version: Applet version string.
+ *
+ * Creates an about dialog and an associated menu item for use in the applet's
+ * context menu. The @copyright and @license parameters are
+ * mandatory. See also #GtkAboutDialog for a description
+ * of the parameters other than @license.
+ *
+ * Returns: An "about applet" #GtkMenuItem
+ */
+
 GtkWidget *
 awn_applet_create_about_item_simple (AwnApplet        *applet,
                                      const gchar      *copyright,
@@ -1113,6 +1212,15 @@ awn_applet_create_about_item_simple (AwnApplet        *applet,
                                        NULL);
 }
 
+/**
+ * awn_applet_create_default_menu:
+ * @applet: An AwnApplet.
+ *
+ * Creates an default applet context menu. Includes a dock preferences menu
+ * item
+ *
+ * Returns: A default #GtkMenu for #AwnApplet
+ */
 GtkWidget*
 awn_applet_create_default_menu (AwnApplet *applet)
 {

@@ -373,6 +373,12 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
   
   wid_class->drag_data_received = awn_themed_icon_drag_data_received;
 
+/**
+ * AwnThemedIcon:rotate:
+ *
+ * Rotates the icon as per #GdkPixbufRotation.
+ */
+  
   pspec = g_param_spec_enum ("rotate",
                                "Rotate",
                                "Rotate",
@@ -381,6 +387,11 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (obj_class, PROP_ROTATE, pspec);   
 
+/**
+ * AwnThemedIcon:applet-name:
+ *
+ * The applet name.
+ */
   pspec = g_param_spec_string ("applet-name",
                              "Applet Name",
                              "Applet Name",
@@ -1322,6 +1333,7 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
  * Retrieve an icon as a #GdkPixbuf at a specific size and for a specific
  * icon state.  Note that this will not change the currently displayed icon.
  * The caller is responsible of unreffing the pixbuf.
+ * Returns: an #GdkPixbuf for the requested state of the requested size.
  */
 
 GdkPixbuf * 
@@ -1337,6 +1349,13 @@ awn_themed_icon_get_icon_at_size (AwnThemedIcon *icon,
   return get_pixbuf_at_size (icon, size, state);
 }
 
+/**
+ * awn_themed_icon_get_default_theme_name:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ *
+ * Retrieve the default system icon theme name
+ * Returns: the current default icon theme name.
+ */
 const gchar *
 awn_themed_icon_get_default_theme_name (AwnThemedIcon *icon)
 {
@@ -1449,7 +1468,7 @@ awn_themed_icon_clear_info (AwnThemedIcon *icon)
  * @size: The size of the icon.  A value less than or equal to 0  indicates the 
  * current size should be used.
  *
- * Queues a preloads of an icon.  The icon load and cache of the icon is 
+ * Queues a preload of an icon.  The icon load and cache of the icon is 
  * queued using g_idle_add().
  */
 
