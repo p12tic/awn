@@ -17,10 +17,12 @@ Build-Depends: 	debhelper (>= 5),
 		python-cairo-dev,
 		gtk-doc-tools, 
 		doc-base,
+		valac (>= 0.5.4),
 		automake,
 		libdesktop-agnostic-dev,
 		libdesktop-agnostic-bin,
-		python-libdesktop-agnostic
+		python-libdesktop-agnostic,
+		vala-libdesktop-agnostic
 Standards-Version: 3.7.3
 Homepage: https://launchpad.net/avant-window-navigator/
 XS-Python-Version: >= 2.4
@@ -116,7 +118,7 @@ Depends:	libawn0-trunk (= ${binary:Version}),
 		${shlibs:Depends},
 		${misc:Depends},
 		${python:Depends},
-        python-libdesktop-agnostic
+		python-libdesktop-agnostic
 Provides: ${python:Provides}
 Conflicts: python-libawn0, python-libawn, python-libawn-bzr, python-awn, python-awn-testing
 Replaces: python-libawn0, python-libawn, python-libawn-bzr, python-awn, python-awn-testing
@@ -131,7 +133,7 @@ Architecture: all
 Depends: 	libawn0-trunk (>= ${source:Version}),
 		${shlibs:Depends}, 
 		${misc:Depends},
-		valac (>= 0.1.7)
+		valac (>= 0.5.4)
 Conflicts: vala-awn-testing, vala-awn
 Replaces: vala-awn-testing, vala-awn
 Description: Vala bindings for avant-window-navigator library 

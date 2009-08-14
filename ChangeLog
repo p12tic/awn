@@ -1,3 +1,10 @@
+2009-08-14  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* debian/control:
+	* debian/rules:
+	* debian/vala-awn-trunk.install:
+	Update the Debian packaging files.
+
 2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* po/*.po:

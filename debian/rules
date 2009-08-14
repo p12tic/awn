@@ -14,12 +14,9 @@ endif
 
 DEB_CONFIGURE_SCRIPT := $(CURDIR)/$(DEB_SRCDIR)/autogen.sh
 DEB_CONFIGURE_EXTRA_FLAGS += 	--disable-pymod-checks \
-				--with-desktop=gnome \
-				--with-gconf \
-				--without-vala \
 				--enable-extra-version=$(EXTRA_VERSION)
 
-#DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,-z,defs -Wl,--as-needed"
+DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,-z,defs -Wl,--as-needed"
 
 DEB_INSTALL_MANPAGES_avant-window-navigator-trunk := debian/avant-window-navigator.1 debian/awn-applet-activation.1
 DEB_INSTALL_MANPAGES_awn-settings-trunk := debian/awn-settings.1 debian/awn-launcher-editor.1 debian/awn-schema-to-gconf.1
