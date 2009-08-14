@@ -1,3 +1,9 @@
+2009-08-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Return from the drag and drop handler once we've processed the 
+	desktop file.
+
 2009-08-14  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/__init__.py:

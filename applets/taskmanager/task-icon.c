@@ -2172,6 +2172,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
       g_free (filename);
     }
     gtk_drag_finish (context, TRUE, FALSE, time_);
+    return;
   }
 
   /* We don't handle drops if the launcher already has a window associcated */
