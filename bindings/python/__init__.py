@@ -57,10 +57,8 @@ def init(argv):
             panel_id = int(arg)
 
 
-def init_applet(applet):
-    global uid
+def embed_applet(applet):
     global window
-    global panel_id
 
     if window:
         applet.applet_construct(window)
