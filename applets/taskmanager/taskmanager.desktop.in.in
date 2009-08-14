@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Name=Launcher/Taskmanager
-Comment=Launcher/Taskmanager applet
+_Name=Launcher/Taskmanager
+_Comment=Launcher/Taskmanager applet
 Exec=@APPLETDIR@/taskmanager/taskmanager.so
 Icon=avant-window-navigator
 X-AWN-Type=Applet

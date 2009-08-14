@@ -1,5 +1,15 @@
 2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/expander/expander.desktop.in.in:
+	* applets/taskmanager/taskmanager.desktop.in.in:
+	Make applet desktop files translatable.
+
+	* po/POTFILES.in:
+	* po/*.po:
+	Update gettext files.
+
+2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* Makefile.am:
 	Add a rule that automatically updates all of the .po files with all of
 	the translatable strings in the tree (make i18n-update).
