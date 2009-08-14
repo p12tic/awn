@@ -1,5 +1,11 @@
 2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* Makefile.am:
+	Add a rule that automatically updates all of the .po files with all of
+	the translatable strings in the tree (make i18n-update).
+
+2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* awn-settings/awnDefs.py.in:
 	Update due to an API change in the Python bindings.
 
