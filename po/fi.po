@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 22:47-0700\n"
+"POT-Creation-Date: 2009-08-13 23:47-0700\n"
 "PO-Revision-Date: 2009-01-25 11:27+0000\n"
 "Last-Translator: Elias Julkunen <elias.julkunen@gmail.com>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -44,12 +44,12 @@ msgstr ""
 msgid "Launcher/Taskmanager applet"
 msgstr ""
 
-#: ../awn-settings/awn-settings.desktop.in.in.h:1
+#: ../awn-settings/awn-settings.desktop.in.h:1
 #, fuzzy
 msgid "Awn Settings"
 msgstr "Käynnistetään %s"
 
-#: ../awn-settings/awn-settings.desktop.in.in.h:2
+#: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "Hallitse awn:n asetuksia, käynnistimiä, sovelmia ja teemoja"
 
@@ -203,7 +203,7 @@ msgid "AWN has been successfully refreshed"
 msgstr "AWN on virkistetty onnistuneesti"
 
 #: ../awn-settings/awnClass.py:1202
-#: ../data/avant-window-navigator.desktop.in.in.h:2
+#: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "Avant Window Navigator"
 
@@ -569,7 +569,7 @@ msgstr "sivu 3"
 msgid "page 4"
 msgstr "sivu 4"
 
-#: ../data/avant-window-navigator.desktop.in.in.h:1
+#: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr "Telakkamainen ikkunanavigaattori."
 

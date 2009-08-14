@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 22:44-0700\n"
+"POT-Creation-Date: 2009-08-13 23:46-0700\n"
 "PO-Revision-Date: 2009-01-30 11:54+0000\n"
 "Last-Translator: Walter Leibbrandt <Unknown>\n"
 "Language-Team: Translate.org.za\n"
@@ -45,12 +45,12 @@ msgstr ""
 msgid "Launcher/Taskmanager applet"
 msgstr ""
 
-#: ../awn-settings/awn-settings.desktop.in.in.h:1
+#: ../awn-settings/awn-settings.desktop.in.h:1
 #, fuzzy
 msgid "Awn Settings"
 msgstr "Begin tans %s"
 
-#: ../awn-settings/awn-settings.desktop.in.in.h:2
+#: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "Bestuur AWN voorkeure, programlanseerders, mini-programme en temas"
 
@@ -205,7 +205,7 @@ msgid "AWN has been successfully refreshed"
 msgstr "AWN is suksesvol verfris"
 
 #: ../awn-settings/awnClass.py:1202
-#: ../data/avant-window-navigator.desktop.in.in.h:2
+#: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "Avant Verster Navigator"
 
@@ -576,7 +576,7 @@ msgstr "bladsy 3"
 msgid "page 4"
 msgstr "bladsy 4"
 
-#: ../data/avant-window-navigator.desktop.in.in.h:1
+#: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr "'n Dokagtige venster navigator."
 

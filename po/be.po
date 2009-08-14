@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avant-window-navigator 0.2.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 22:45-0700\n"
+"POT-Creation-Date: 2009-08-13 23:46-0700\n"
 "PO-Revision-Date: 2008-04-04 17:16+0000\n"
 "Last-Translator: Hleb Valoshka <Unknown>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -40,11 +40,11 @@ msgstr ""
 msgid "Launcher/Taskmanager applet"
 msgstr ""
 
-#: ../awn-settings/awn-settings.desktop.in.in.h:1
+#: ../awn-settings/awn-settings.desktop.in.h:1
 msgid "Awn Settings"
 msgstr ""
 
-#: ../awn-settings/awn-settings.desktop.in.in.h:2
+#: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr ""
 
@@ -192,7 +192,7 @@ msgid "AWN has been successfully refreshed"
 msgstr ""
 
 #: ../awn-settings/awnClass.py:1202
-#: ../data/avant-window-navigator.desktop.in.in.h:2
+#: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr ""
 
@@ -551,7 +551,7 @@ msgstr "Старонка 3"
 msgid "page 4"
 msgstr "Старонка 4"
 
-#: ../data/avant-window-navigator.desktop.in.in.h:1
+#: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr ""
 

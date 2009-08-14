@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 22:46-0700\n"
+"POT-Creation-Date: 2009-08-13 23:46-0700\n"
 "PO-Revision-Date: 2009-01-25 12:05+0000\n"
 "Last-Translator: Jen Ockwell <jenfraggleubuntu@googlemail.com>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
@@ -44,12 +44,12 @@ msgstr ""
 msgid "Launcher/Taskmanager applet"
 msgstr ""
 
-#: ../awn-settings/awn-settings.desktop.in.in.h:1
+#: ../awn-settings/awn-settings.desktop.in.h:1
 #, fuzzy
 msgid "Awn Settings"
 msgstr "Starting %s"
 
-#: ../awn-settings/awn-settings.desktop.in.in.h:2
+#: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "Manage Awn preferences, launchers, applets and themes"
 
@@ -203,7 +203,7 @@ msgid "AWN has been successfully refreshed"
 msgstr "AWN has been successfully refreshed"
 
 #: ../awn-settings/awnClass.py:1202
-#: ../data/avant-window-navigator.desktop.in.in.h:2
+#: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "Avant Window Navigator"
 
@@ -572,7 +572,7 @@ msgstr "page 3"
 msgid "page 4"
 msgstr "page 4"
 
-#: ../data/avant-window-navigator.desktop.in.in.h:1
+#: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr "A dock-like window navigator."
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: _avant-window-navigator-ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 22:44-0700\n"
+"POT-Creation-Date: 2009-08-13 23:46-0700\n"
 "PO-Revision-Date: 2009-02-03 11:47+0000\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic\n"
@@ -47,12 +47,12 @@ msgstr ""
 msgid "Launcher/Taskmanager applet"
 msgstr ""
 
-#: ../awn-settings/awn-settings.desktop.in.in.h:1
+#: ../awn-settings/awn-settings.desktop.in.h:1
 #, fuzzy
 msgid "Awn Settings"
 msgstr "يجري بدء %s"
 
-#: ../awn-settings/awn-settings.desktop.in.in.h:2
+#: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "يدير تفضيلات ومطْلِقات وبريمجات وسمات أون"
 
@@ -206,7 +206,7 @@ msgid "AWN has been successfully refreshed"
 msgstr "نشط أون بنجاح"
 
 #: ../awn-settings/awnClass.py:1202
-#: ../data/avant-window-navigator.desktop.in.in.h:2
+#: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "ملاح النوفذة أفانت"
 
@@ -573,7 +573,7 @@ msgstr "صفحة 3"
 msgid "page 4"
 msgstr "صفحة 4"
 
-#: ../data/avant-window-navigator.desktop.in.in.h:1
+#: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr "ملاح نوفذة كالمرساة."
 

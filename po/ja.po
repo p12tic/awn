@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 22:48-0700\n"
+"POT-Creation-Date: 2009-08-13 23:47-0700\n"
 "PO-Revision-Date: 2009-02-01 22:57+0000\n"
 "Last-Translator: José Lou C. <knight4light@gmail.com>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -44,11 +44,11 @@ msgstr ""
 msgid "Launcher/Taskmanager applet"
 msgstr ""
 
-#: ../awn-settings/awn-settings.desktop.in.in.h:1
+#: ../awn-settings/awn-settings.desktop.in.h:1
 msgid "Awn Settings"
 msgstr ""
 
-#: ../awn-settings/awn-settings.desktop.in.in.h:2
+#: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "Awnの設定、ランチャー、アプレットやテーマを管理する"
 
@@ -196,7 +196,7 @@ msgid "AWN has been successfully refreshed"
 msgstr "AWNのリフレッシ成功です"
 
 #: ../awn-settings/awnClass.py:1202
-#: ../data/avant-window-navigator.desktop.in.in.h:2
+#: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "Avant ウィンドウ・ナビゲーター"
 
@@ -560,7 +560,7 @@ msgstr "ページ 3"
 msgid "page 4"
 msgstr "ページ 4"
 
-#: ../data/avant-window-navigator.desktop.in.in.h:1
+#: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr ""
 

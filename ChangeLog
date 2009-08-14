@@ -1,5 +1,10 @@
 2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* po/*.po:
+	Update gettext files.
+
+2009-08-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* awn-settings/Makefile.am:
 	* awn-settings/awn-settings.desktop.in:
 	* configure.in:

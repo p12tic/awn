@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 22:50-0700\n"
+"POT-Creation-Date: 2009-08-13 23:48-0700\n"
 "PO-Revision-Date: 2009-01-21 21:10+0000\n"
 "Last-Translator: Ermal Llanaj <ermalipavia@gmail.com>\n"
 "Language-Team: Albanian <sq@li.org>\n"
@@ -44,12 +44,12 @@ msgstr ""
 msgid "Launcher/Taskmanager applet"
 msgstr ""
 
-#: ../awn-settings/awn-settings.desktop.in.in.h:1
+#: ../awn-settings/awn-settings.desktop.in.h:1
 #, fuzzy
 msgid "Awn Settings"
 msgstr "Duke nisur %s"
 
-#: ../awn-settings/awn-settings.desktop.in.in.h:2
+#: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "Menaxho preferencat e Awn, leshuesve, applikacionet dhe temat"
 
@@ -203,7 +203,7 @@ msgid "AWN has been successfully refreshed"
 msgstr "AWN u rifreskua me sukses"
 
 #: ../awn-settings/awnClass.py:1202
-#: ../data/avant-window-navigator.desktop.in.in.h:2
+#: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "Avant Window Navigator"
 
@@ -572,7 +572,7 @@ msgstr "faqja 3"
 msgid "page 4"
 msgstr "faqja 4"
 
-#: ../data/avant-window-navigator.desktop.in.in.h:1
+#: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr "Nje panel navigues dritaresh."
 
