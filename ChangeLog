@@ -1,3 +1,9 @@
+2009-08-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Implement launch effect when launched through TaskIcon.
+	Still need to do when launched through TaskItem.
+
 2009-08-15  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-alignment.c:

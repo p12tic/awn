@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
+ * Copyright (C) 2009 Rodney Cryderman <rcryderman@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as 
@@ -211,6 +212,7 @@ static void     task_icon_active_window_changed (WnckScreen *screen,
                                  TaskIcon *icon);
 
 static void     size_changed_cb(AwnApplet *app, guint size, TaskIcon *icon);
+static gint     task_icon_count_require_attention (TaskIcon *icon);
 
 
 /* GObject stuff */
@@ -1082,6 +1084,28 @@ on_window_active_changed (TaskWindow *window,
   priv->is_active = count;
 }
 
+static gint 
+task_icon_count_require_attention (TaskIcon *icon)
+{
+  TaskIconPrivate *priv;
+  GSList *w;
+  guint count = 0;
+
+  priv = icon->priv;
+  
+  for (w = priv->items; w; w = w->next)
+  {
+    TaskItem *item = w->data;
+
+    if (!TASK_IS_WINDOW (item)) continue;
+    if (!task_item_is_visible (item)) continue;
+    if (!task_window_needs_attention (TASK_WINDOW (item))) continue;
+
+    count++;
+  }
+  return count;
+}
+
 /**
  * The 'needs attention' state of a window changed.
  * If a window needs attention and there isn't one yet, it will
@@ -1098,7 +1122,6 @@ on_window_needs_attention_changed (TaskWindow *window,
                                    TaskIcon   *icon)
 {
   TaskIconPrivate *priv;
-  GSList *w;
   guint count = 0;
 
   g_return_if_fail (TASK_IS_ICON (icon));
@@ -1107,16 +1130,7 @@ on_window_needs_attention_changed (TaskWindow *window,
   
   task_icon_search_main_item (icon,TASK_ITEM(window));
 
-  for (w = priv->items; w; w = w->next)
-  {
-    TaskItem *item = w->data;
-
-    if (!TASK_IS_WINDOW (item)) continue;
-    if (!task_item_is_visible (item)) continue;
-    if (!task_window_needs_attention (TASK_WINDOW (item))) continue;
-
-    count++;
-  }
+  count = task_icon_count_require_attention (icon);
 
   if (priv->needs_attention == 0 && count == 1)
   {
@@ -1311,7 +1325,18 @@ task_icon_append_item (TaskIcon      *icon,
   /* Connect item signals */
   g_signal_connect (item, "visible-changed",
                     G_CALLBACK (on_item_visible_changed), icon);
-    
+
+  /*we have a new matching window, it's possible the launch effect is playing.
+   stop it.*/
+  awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                  AWN_EFFECT_LAUNCHING);
+
+  /*check to see if attention effect needs to be started back up*/
+  if (priv->needs_attention != 0 && task_icon_count_require_attention (icon)>0)
+  {
+    awn_icon_set_effect (AWN_ICON (icon),AWN_EFFECT_ATTENTION);
+  }
+  
   /* Connect window signals */
   if (TASK_IS_WINDOW (item))
   {
@@ -1533,7 +1558,12 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
       /*if we have a main item then pass the click on to that */
       if (!TASK_IS_WINDOW(main_item))
       {
+        /*it's a launcher*/
+        g_debug ("starting launch effect"); 
         task_item_left_click (main_item,event);
+        awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                          AWN_EFFECT_LAUNCHING, 10, FALSE, FALSE);
+        
       }
       else
       {
@@ -1558,6 +1588,10 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
         
         if (!TASK_IS_WINDOW(item))
         {
+          /*it's a launcher*/
+          g_debug ("staring launch effect"); 
+          awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                            AWN_EFFECT_HOVER, 11, FALSE, FALSE);
           task_item_left_click (item,event);
         }
         else
@@ -1586,6 +1620,9 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
      */  
     if (!TASK_IS_WINDOW(main_item))
     {
+      /*it's a launcher*/
+      awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                        AWN_EFFECT_LAUNCHING, 1, FALSE, FALSE);      
       task_item_left_click (main_item,event);
     }
     else if (task_window_is_active (TASK_WINDOW(main_item)))
