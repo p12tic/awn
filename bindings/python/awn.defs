@@ -1237,11 +1237,6 @@
   )
 )
 
-(define-function vfs_init
-  (c-name "awn_vfs_init")
-  (return-type "none")
-)
-
 
 
 ;; Miscellaneous needed

@@ -76,11 +76,4 @@ gfloat awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
  */
 GValueArray* awn_utils_gslist_to_gvaluearray (GSList *list);
 
-/**
- * awn_vfs_init:
- *
- * Starts up the VFS library routines that Awn uses, if necessary.
- */
-void awn_vfs_init (void);
-
 #endif

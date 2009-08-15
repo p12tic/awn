@@ -19,11 +19,10 @@
  *
  * Authors: Michal Hruby (awn_utils_ensure_transparent_bg,
  *                        awn_utils_make_transparent_bg)
- *          Mark Lee     (awn_vfs_init)
+ *          Mark Lee (awn_utils_gslist_to_gvaluearray)
  */
 #include <math.h>
 #include <gdk/gdk.h>
-#include <libdesktop-agnostic/vfs.h>
 
 #include "awn-utils.h"
 #include "gseal-transition.h"
@@ -111,22 +110,6 @@ awn_utils_gslist_to_gvaluearray (GSList *list)
   }
 
   return array;
-}
-
-
-void
-awn_vfs_init ()
-{
-  GError *error = NULL;
-
-  desktop_agnostic_vfs_init (&error);
-
-  if (error)
-  {
-    g_critical ("Error initializing VFS subsystem: %s", error->message);
-    g_error_free (error);
-    return;
-  }
 }
 
 gfloat

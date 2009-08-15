@@ -1,3 +1,14 @@
+2009-08-15  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* doc/reference/libawn-sections.txt:
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	Remove awn_vfs_init(), which has been obsoleted by the equivalent
+	function in libdesktop-agnostic.
+
 2009-08-15  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

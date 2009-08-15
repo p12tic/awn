@@ -565,6 +565,4 @@ namespace Awn {
 	public const int MIN_HEIGHT;
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public const int PANEL_ID_DEFAULT;
-	[CCode (cheader_filename = "libawn/libawn.h")]
-	public static void vfs_init ();
 }

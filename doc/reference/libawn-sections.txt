@@ -517,7 +517,6 @@ awn_utils_ensure_transparent_bg
 awn_utils_make_transparent_bg
 awn_utils_get_offset_modifier_by_path_type
 awn_utils_gslist_to_gvaluearray
-awn_vfs_init
 </SECTION>
 
 <SECTION>

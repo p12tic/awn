@@ -123,9 +123,6 @@
 				<parameter name="widget" type="GtkWidget*"/>
 			</parameters>
 		</function>
-		<function name="vfs_init" symbol="awn_vfs_init">
-			<return-type type="void"/>
-		</function>
 		<callback name="AwnAppletInitFunc">
 			<return-type type="gboolean"/>
 			<parameters>
