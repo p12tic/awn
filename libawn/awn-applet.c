@@ -1056,7 +1056,7 @@ _cleanup_about_dialog (GtkWidget *widget,
  * @version: Applet version string.
  * @comments: Comment string.
  * @website: Website string.
- * @website_lable: Website label string.
+ * @website_label: Website label string.
  * @icon_name: Icon name.
  * @translator_credits: Translator's credit string.
  * @authors: Array of author strings.
