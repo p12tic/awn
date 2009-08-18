@@ -1,3 +1,8 @@
+2009-08-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/vala/awn.vapi:
+	Update the Vala bindings due to API changes.
+
 2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* doc/reference/Makefile.am:
