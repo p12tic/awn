@@ -90,6 +90,7 @@
 			<parameters>
 				<parameter name="name" type="gchar*"/>
 				<parameter name="uid" type="gchar*"/>
+				<parameter name="single_instance" type="gboolean"/>
 				<parameter name="error" type="GError**"/>
 			</parameters>
 		</function>
@@ -403,7 +404,9 @@
 			<property name="panel-id" type="gint" readable="1" writable="1" construct="0" construct-only="1"/>
 			<property name="panel-xid" type="gint64" readable="1" writable="0" construct="0" construct-only="0"/>
 			<property name="path-type" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
-			<property name="quit-on-delete" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="quit-on-delete" type="gboolean" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="show-all-on-embed" type="gboolean" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="single-instance" type="gboolean" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="size" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="uid" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<signal name="applet-deleted" when="FIRST">
@@ -1020,6 +1023,7 @@
 		</object>
 		<object name="AwnIconBox" parent="GtkBox" type-name="AwnIconBox" get-type="awn_icon_box_get_type">
 			<implements>
+				<interface name="GtkOrientable"/>
 				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
 			</implements>

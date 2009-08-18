@@ -98,7 +98,11 @@ namespace Awn {
 		public int64 panel_xid { get; }
 		public int path_type { get; set construct; }
 		[NoAccessorMethod]
-		public bool quit_on_delete { get; set construct; }
+		public bool quit_on_delete { get; set; }
+		[NoAccessorMethod]
+		public bool show_all_on_embed { get; set; }
+		[NoAccessorMethod]
+		public bool single_instance { get; set; }
 		public int size { get; set; }
 		public string uid { get; set construct; }
 		public virtual signal void applet_deleted (string p0);
@@ -288,7 +292,7 @@ namespace Awn {
 		public virtual signal void size_changed ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class IconBox : Gtk.Box, Atk.Implementor, Gtk.Buildable {
+	public class IconBox : Gtk.Box, Gtk.Orientable, Atk.Implementor, Gtk.Buildable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public IconBox.for_applet (Awn.Applet applet);
 		[CCode (type = "GtkWidget*", has_construct_function = false)]

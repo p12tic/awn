@@ -1,5 +1,11 @@
 2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	Update the Vala bindings due to API changes.
+
+2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* TODO:
 	Remove libdesktop-agnostic-related TODO items.
 
