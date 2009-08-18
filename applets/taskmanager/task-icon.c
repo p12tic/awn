@@ -433,6 +433,7 @@ task_icon_refresh_geometry (TaskIcon *icon)
   TaskSettings *settings;
   TaskIconPrivate *priv;
   GtkWidget *widget;
+  GtkAllocation *alloc = NULL;
   GdkWindow *win;
   GSList    *w;
   gint      x, y, ww, width, height;
@@ -451,17 +452,19 @@ task_icon_refresh_geometry (TaskIcon *icon)
   win = gtk_widget_get_window (widget);
   gdk_window_get_origin (win, &x, &y);
 
+  gtk_widget_get_allocation (GTK_WIDGET (icon), alloc);
+
   settings = task_settings_get_default ();
 
   switch (settings->orient)
   {
     case AWN_ORIENTATION_RIGHT:
     case AWN_ORIENTATION_LEFT:
-      ww = GTK_WIDGET (icon)->allocation.height;
+      ww = alloc->height;
       break;
     case AWN_ORIENTATION_TOP:
     case AWN_ORIENTATION_BOTTOM:
-      ww = GTK_WIDGET (icon)->allocation.width;
+      ww = alloc->width;
       break;
     default:
       g_error ("Orientation isn't right, left, top, bottom ??");

@@ -30,6 +30,7 @@
 #include "awn-icon.h"
 #include "awn-themed-icon.h"
 #include "awn-utils.h"
+#include "gseal-transition.h"
 
 static void awn_applet_simple_overlayable_init (AwnOverlayableIface *iface);
 
@@ -89,7 +90,8 @@ awn_applet_simple_offset_changed (AwnApplet *applet, gint offset)
 
   if (AWN_IS_ICON (priv->icon))
   {
-    GtkAllocation *alloc = &(GTK_WIDGET (priv->icon)->allocation);
+    GtkAllocation *alloc = NULL;
+    gtk_widget_get_allocation (GTK_WIDGET (priv->icon), alloc);
     gint x = alloc->x + alloc->width / 2;
     gint y = alloc->y + alloc->height / 2;
     offset = awn_applet_get_offset_at (applet, x, y);

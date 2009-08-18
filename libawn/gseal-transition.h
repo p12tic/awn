@@ -31,5 +31,9 @@
 #define gtk_widget_get_window(x) (x)->window
 #endif
 
+#if !GTK_CHECK_VERSION(2,17,7)
+#define gtk_widget_get_allocation(w, alloc) { *(alloc) = (w)->allocation; }
+#endif
+
 #endif
 /* vim: set ts=2 sts=2 sw=2 ai cindent : */

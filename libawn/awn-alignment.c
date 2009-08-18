@@ -29,6 +29,7 @@
 #include <string.h>
 
 #include "awn-alignment.h"
+#include "gseal-transition.h"
 
 G_DEFINE_TYPE (AwnAlignment, awn_alignment, GTK_TYPE_ALIGNMENT)
 
@@ -286,14 +287,14 @@ ensure_alignment (AwnAlignment *alignment)
 {
   AwnAlignmentPrivate *priv;
   GtkAlignment *align;
-  GtkAllocation *alloc;
+  GtkAllocation *alloc = NULL;
   gint x, y, offset;
 
   g_return_if_fail (AWN_IS_ALIGNMENT (alignment));
 
   priv = alignment->priv;
   align = GTK_ALIGNMENT (alignment);
-  alloc = &(GTK_WIDGET (alignment)->allocation);
+  gtk_widget_get_allocation (GTK_WIDGET (alignment), alloc);
 
   x = alloc->x + alloc->width / 2;
   y = alloc->y + alloc->height / 2;

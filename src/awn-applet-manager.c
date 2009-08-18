@@ -23,6 +23,7 @@
 
 #include <libawn/libawn.h>
 #include <libawn/awn-utils.h>
+#include "gseal-transition.h"
 
 #include "awn-defines.h"
 #include "awn-applet-manager.h"
@@ -1107,16 +1108,21 @@ awn_applet_manager_get_mask (AwnAppletManager *manager,
       if (mask)
       {
         GdkRegion *temp_region = gdk_region_copy (mask);
-        gdk_region_offset (temp_region,
-                           widget->allocation.x, widget->allocation.y);
+        GtkAllocation *alloc = NULL;
+        
+        gtk_widget_get_allocation (widget, alloc);
+        gdk_region_offset (temp_region, alloc->x, alloc->y);
         gdk_region_union (region, temp_region);
         gdk_region_destroy (temp_region);
       }
       else
       {
         // GtkAllocation and GdkRectangle are the same, we can do this
-        GtkAllocation *manager_alloc = &GTK_WIDGET (manager)->allocation;
-        GdkRectangle rect = (GdkRectangle)widget->allocation;
+        GtkAllocation *manager_alloc = NULL;
+        GdkRectangle rect;
+
+        gtk_widget_get_allocation (GTK_WIDGET (manager), manager_alloc);
+        gtk_widget_get_allocation (widget, &rect);
         // get curve offset
         gfloat temp = awn_utils_get_offset_modifier_by_path_type (path_type,
                    priv->orient, offset_modifier,

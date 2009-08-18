@@ -144,6 +144,8 @@ _on_alpha_screen_changed(GtkWidget* pWidget,
 static void
 _on_composited_changed (GtkWidget *widget, gpointer data)
 {
+  GtkAllocation *alloc = NULL;
+
   if (gtk_widget_is_composited (widget))
   {
     gtk_widget_shape_combine_mask (widget, NULL, 0, 0);
@@ -153,8 +155,8 @@ _on_composited_changed (GtkWidget *widget, gpointer data)
     gtk_widget_input_shape_combine_mask (widget, NULL, 0, 0);
   }
 
-  awn_dialog_set_masks (widget,
-                        widget->allocation.width, widget->allocation.height);
+  gtk_widget_get_allocation (widget, alloc);
+  awn_dialog_set_masks (widget, alloc->width, alloc->height);
 }
 
 static void
@@ -328,6 +330,7 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
   GtkWidget *child;
   cairo_t *cr = NULL;
   cairo_path_t *path = NULL;
+  GtkAllocation *alloc = NULL;
   gint width, height;
 
   dialog = AWN_DIALOG (widget);
@@ -337,8 +340,9 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
 
   g_return_val_if_fail (cr, FALSE);
 
-  width = widget->allocation.width;
-  height = widget->allocation.height;
+  gtk_widget_get_allocation (widget, alloc);
+  width = alloc->width;
+  height = alloc->height;
 
   gdk_cairo_region (cr, expose->region);
   cairo_clip (cr);
@@ -389,6 +393,8 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
   /* fill for the titlebar */
   if (GTK_WIDGET_VISIBLE (priv->title))
   {
+    GtkAllocation *title_alloc = NULL;
+
     cairo_save (cr);
 
     cairo_identity_matrix (cr);
@@ -396,10 +402,12 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
     cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
     awn_cairo_set_source_color (cr, priv->title_bg);
 
+    gtk_widget_get_allocation (priv->title, title_alloc);
+
     const int start_x = BORDER + 2;
     const int start_y = BORDER + 2;
     const int inner_w = width - 2*BORDER - 4;
-    const int inner_h = priv->title->allocation.height
+    const int inner_h = title_alloc->height
                         + (priv->window_padding - BORDER);
     const int round_radius = priv->window_padding / 2;
 
@@ -1110,6 +1118,7 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
 {
   gint ax, ay, aw, ah;
   gint x = 0, y = 0;
+  GtkAllocation *alloc = NULL;
   GdkWindow *win, *dialog_win;
 
   g_return_if_fail (AWN_IS_DIALOG (dialog));
@@ -1118,8 +1127,10 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
 
   if (!priv->anchor || !priv->anchored) return;
 
-  if (!width)  width  = GTK_WIDGET (dialog)->allocation.width;
-  if (!height) height = GTK_WIDGET (dialog)->allocation.height;
+  gtk_widget_get_allocation (GTK_WIDGET (dialog), alloc);
+
+  if (!width)  width  = alloc->width;
+  if (!height) height = alloc->height;
 
   win = gtk_widget_get_window (priv->anchor);
 

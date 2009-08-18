@@ -1,3 +1,18 @@
+2009-08-17  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon.c:
+	* libawn/awn-alignment.c:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-tooltip.c:
+	* libawn/gseal-transition.h:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	Convert to use the GSEAL function gtk_widget_get_allocation ().
+
 2009-08-15  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* bindings/python/awn.defs:

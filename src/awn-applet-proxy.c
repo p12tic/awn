@@ -402,6 +402,7 @@ static void on_size_alloc (AwnAppletProxy *proxy, GtkAllocation *alloc)
 {
   AwnAppletProxyPrivate *priv;
   GtkWidget *parent;
+  GtkAllocation *parent_alloc = NULL;
   GdkWindow *plug_win;
 
   g_return_if_fail (AWN_IS_APPLET_PROXY (proxy));
@@ -409,13 +410,14 @@ static void on_size_alloc (AwnAppletProxy *proxy, GtkAllocation *alloc)
   priv = proxy->priv;
 
   parent = gtk_widget_get_parent (GTK_WIDGET (proxy));
+  gtk_widget_get_allocation (parent, parent_alloc);
 
   gint pos_x = alloc->x;
   gint pos_y = alloc->y;
-  gint rel_x = pos_x - parent->allocation.x;
-  gint rel_y = pos_y - parent->allocation.y;
-  gint parent_w = parent->allocation.width;
-  gint parent_h = parent->allocation.height;
+  gint rel_x = pos_x - parent_alloc->x;
+  gint rel_y = pos_y - parent_alloc->y;
+  gint parent_w = parent_alloc->width;
+  gint parent_h = parent_alloc->height;
 
   if (pos_x == priv->old_x && pos_y == priv->old_y
       && parent_w == priv->old_w && parent_h == priv->old_h) return;
