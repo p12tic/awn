@@ -1,3 +1,8 @@
+2009-08-18  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-applet-activation/main.c:
+	Check for valid UID during awn-applet execution.
+
 2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/task-icon.c:

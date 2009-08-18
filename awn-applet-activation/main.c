@@ -134,7 +134,12 @@ main(gint argc, gchar **argv)
 
   if (uid == NULL)
   {
-    g_warning("You need to provide a uid for this applet\n");
+    g_warning ("You need to provide a UID for this applet\n");
+    return 1;
+  }
+  else if (uid[0] == '\0' || strcmp (uid, "None") == 0)
+  {
+    g_warning ("You need to provide a valid UID for this applet\n");
     return 1;
   }
 
