@@ -60,15 +60,6 @@ libawn/
     - shadows?
   - AwnDialog
     - Inhibit autohide on the panel if dialog is showing
-  - AwnConfigClient
-    - Make sure GKeyFile and GConf backends are still working, check for any
-      more mem leaks
-    - [Nice-to-have] port to use libdesktop-agnostic
-  - AwnConfigBridge
-    - Fix situation where object dies but config change callbacks are still
-      called with invalid pointer to the dead object
-    - [Nice-to-have] use libdesktop-agnostic's config bridge instead (which is
-      based on this code)
 
 applets/taskmananger
   - Complete simple window-managment
@@ -104,7 +95,6 @@ applets/taskmananger
     - Set that the drop worked, so it doesn't go back to original place
 
 misc
-  - Python/Vala bindings
   - Process naming in awn-applet-activation
   - Documentation
 
