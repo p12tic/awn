@@ -107,15 +107,15 @@ awn_tooltip_expose_event (GtkWidget *widget, GdkEventExpose *expose)
 {
   AwnTooltipPrivate *priv;
   cairo_t           *cr;
-  GtkAllocation     *alloc = NULL;
+  GtkAllocation      alloc;
   gint               width, height;
 
   priv = AWN_TOOLTIP (widget)->priv;
 
-  gtk_widget_get_allocation (widget, alloc);
+  gtk_widget_get_allocation (widget, &alloc);
 
-  width = alloc->width;
-  height = alloc->height;
+  width = alloc.width;
+  height = alloc.height;
 
   cr = gdk_cairo_create (gtk_widget_get_window (widget));
 
@@ -205,10 +205,10 @@ _on_composited_changed (GtkWidget *widget)
 {
   if (gtk_widget_is_composited (widget) == FALSE)
   {
-    GtkAllocation *a = NULL;
+    GtkAllocation alloc;
 
-    gtk_widget_get_allocation (widget, a);
-    awn_tooltip_set_mask (AWN_TOOLTIP (widget), a->width, a->height);
+    gtk_widget_get_allocation (widget, &alloc);
+    awn_tooltip_set_mask (AWN_TOOLTIP (widget), alloc.width, alloc.height);
   }
   else
   {

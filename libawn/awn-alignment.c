@@ -287,17 +287,17 @@ ensure_alignment (AwnAlignment *alignment)
 {
   AwnAlignmentPrivate *priv;
   GtkAlignment *align;
-  GtkAllocation *alloc = NULL;
+  GtkAllocation alloc;
   gint x, y, offset;
 
   g_return_if_fail (AWN_IS_ALIGNMENT (alignment));
 
   priv = alignment->priv;
   align = GTK_ALIGNMENT (alignment);
-  gtk_widget_get_allocation (GTK_WIDGET (alignment), alloc);
+  gtk_widget_get_allocation (GTK_WIDGET (alignment), &alloc);
 
-  x = alloc->x + alloc->width / 2;
-  y = alloc->y + alloc->height / 2;
+  x = alloc.x + alloc.width / 2;
+  y = alloc.y + alloc.height / 2;
   offset = awn_applet_get_offset_at (priv->applet, x, y)
              + priv->offset_modifier;
   if (offset < 0) offset = 0;

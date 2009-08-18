@@ -90,10 +90,10 @@ awn_applet_simple_offset_changed (AwnApplet *applet, gint offset)
 
   if (AWN_IS_ICON (priv->icon))
   {
-    GtkAllocation *alloc = NULL;
-    gtk_widget_get_allocation (GTK_WIDGET (priv->icon), alloc);
-    gint x = alloc->x + alloc->width / 2;
-    gint y = alloc->y + alloc->height / 2;
+    GtkAllocation alloc;
+    gtk_widget_get_allocation (GTK_WIDGET (priv->icon), &alloc);
+    gint x = alloc.x + alloc.width / 2;
+    gint y = alloc.y + alloc.height / 2;
     offset = awn_applet_get_offset_at (applet, x, y);
     awn_icon_set_offset (AWN_ICON (priv->icon), offset);
   }

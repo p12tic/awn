@@ -1108,28 +1108,28 @@ awn_applet_manager_get_mask (AwnAppletManager *manager,
       if (mask)
       {
         GdkRegion *temp_region = gdk_region_copy (mask);
-        GtkAllocation *alloc = NULL;
+        GtkAllocation alloc;
         
-        gtk_widget_get_allocation (widget, alloc);
-        gdk_region_offset (temp_region, alloc->x, alloc->y);
+        gtk_widget_get_allocation (widget, &alloc);
+        gdk_region_offset (temp_region, alloc.x, alloc.y);
         gdk_region_union (region, temp_region);
         gdk_region_destroy (temp_region);
       }
       else
       {
         // GtkAllocation and GdkRectangle are the same, we can do this
-        GtkAllocation *manager_alloc = NULL;
+        GtkAllocation manager_alloc;
         GdkRectangle rect;
 
-        gtk_widget_get_allocation (GTK_WIDGET (manager), manager_alloc);
+        gtk_widget_get_allocation (GTK_WIDGET (manager), &manager_alloc);
         gtk_widget_get_allocation (widget, &rect);
         // get curve offset
         gfloat temp = awn_utils_get_offset_modifier_by_path_type (path_type,
                    priv->orient, offset_modifier,
-                   rect.x + rect.width / 2 - manager_alloc->x,
-                   rect.y + rect.height / 2 - manager_alloc->y,
-                   manager_alloc->width,
-                   manager_alloc->height);
+                   rect.x + rect.width / 2 - manager_alloc.x,
+                   rect.y + rect.height / 2 - manager_alloc.y,
+                   manager_alloc.width,
+                   manager_alloc.height);
         gint offset = round (temp * priv->offset);
 
         gint size = priv->size + offset;

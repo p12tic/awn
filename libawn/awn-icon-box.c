@@ -342,10 +342,10 @@ awn_icon_box_set_offset (AwnIconBox *icon_box,
     {
       if (priv->applet)
       {
-        GtkAllocation *alloc = NULL;
-        gtk_widget_get_allocation (GTK_WIDGET (icon), alloc);
-        gint x = alloc->x + alloc->width / 2;
-        gint y = alloc->y + alloc->height / 2;
+        GtkAllocation alloc;
+        gtk_widget_get_allocation (GTK_WIDGET (icon), &alloc);
+        gint x = alloc.x + alloc.width / 2;
+        gint y = alloc.y + alloc.height / 2;
         offset = awn_applet_get_offset_at (priv->applet, x, y);
       }
       awn_icon_set_offset (icon, offset);

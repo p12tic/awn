@@ -1239,7 +1239,7 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
 
   AwnEffectsPrivate *priv = fx->priv;
   cairo_t *cr;
-  GtkAllocation *alloc = NULL;
+  GtkAllocation alloc;
 
   cr = gdk_cairo_create (gtk_widget_get_window (fx->widget));
   g_return_val_if_fail(cairo_status(cr) == CAIRO_STATUS_SUCCESS, NULL);
@@ -1250,9 +1250,9 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
    * discovered that is causes artifacts, so now we use simple allocation
    * which seems to work just fine.
    */
-  gtk_widget_get_allocation (fx->widget, alloc);
-  priv->window_width = alloc->width;
-  priv->window_height = alloc->height;
+  gtk_widget_get_allocation (fx->widget, &alloc);
+  priv->window_width = alloc.width;
+  priv->window_height = alloc.height;
 
   if (event)
   {
@@ -1279,8 +1279,8 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
           priv->icon_width, priv->icon_height,
           priv->window_width, priv->window_height);
   g_debug("Allocation size: (%d,%d) (%dx%d)",
-          alloc->x, alloc->y,
-          alloc->width, alloc->height);
+          alloc.x, alloc.y,
+          alloc.width, alloc.height);
 #endif
 
   if (fx->indirect_paint)

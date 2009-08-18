@@ -646,17 +646,17 @@ awn_panel_get_property (GObject    *object,
       break;
     case PROP_MAX_SIZE:
     {
-      GtkAllocation *alloc = NULL;
+      GtkAllocation alloc;
 
-      gtk_widget_get_allocation (priv->manager, alloc);
+      gtk_widget_get_allocation (priv->manager, &alloc);
       switch (priv->orient)
       {
         case AWN_ORIENTATION_LEFT:
         case AWN_ORIENTATION_RIGHT:
-          g_value_set_int (value, alloc->width);
+          g_value_set_int (value, alloc.width);
           break;
         default:
-          g_value_set_int (value, alloc->height);
+          g_value_set_int (value, alloc.height);
           break;
       }
       break;
@@ -803,7 +803,7 @@ awn_panel_resize_timeout (gpointer data)
   gint inc, step;
   AwnPanel *panel = AWN_PANEL (data);
   AwnPanelPrivate *priv = panel->priv;
-  GtkAllocation *alloc = NULL;
+  GtkAllocation alloc;
   GdkRectangle rect1, rect2;
 
   // this is the size we are resizing to
@@ -812,7 +812,7 @@ awn_panel_resize_timeout (gpointer data)
 
   awn_panel_get_draw_rect (panel, &rect1, 0, 0);
 
-  gtk_widget_get_allocation (GTK_WIDGET (panel), alloc);
+  gtk_widget_get_allocation (GTK_WIDGET (panel), &alloc);
 
   switch (priv->orient)
   {
@@ -822,7 +822,7 @@ awn_panel_resize_timeout (gpointer data)
       step = inc / 7 + 2; // makes the resize shiny
       inc = MIN (inc, step);
 
-      priv->draw_width = alloc->width;
+      priv->draw_width = alloc.width;
       
       priv->draw_height += priv->draw_height < target_height ? inc : -inc;
 
@@ -837,7 +837,7 @@ awn_panel_resize_timeout (gpointer data)
 
       priv->draw_width += priv->draw_width < target_width ? inc : -inc;
 
-      priv->draw_height = alloc->height;
+      priv->draw_height = alloc.height;
 
       resize_done = priv->draw_width == target_width;
       break;
@@ -966,25 +966,25 @@ void awn_panel_get_applet_rect (AwnPanel *panel,
                                 gint width, gint height)
 {
   AwnPanelPrivate *priv = panel->priv;
-  GtkAllocation *alloc = NULL;
-  GtkAllocation *manager_alloc = NULL;
+  GtkAllocation alloc;
+  GtkAllocation manager_alloc;
 
   /*
    * We provide a param for width & height, cause for example
    * in the configure event callback allocation field is not yet updated.
    * Otherwise zeroes can be used for width & height
    */
-  gtk_widget_get_allocation (GTK_WIDGET (panel), alloc);
-  if (!width) width = alloc->width;
-  if (!height) height = alloc->height;
+  gtk_widget_get_allocation (GTK_WIDGET (panel), &alloc);
+  if (!width) width = alloc.width;
+  if (!height) height = alloc.height;
 
   // FIXME: this whole function should call some method of AppletManager
 
-  gtk_widget_get_allocation (priv->manager, manager_alloc);
-  area->x = manager_alloc->x;
-  area->y = manager_alloc->y;
-  area->width = manager_alloc->width;
-  area->height = manager_alloc->height;
+  gtk_widget_get_allocation (priv->manager, &manager_alloc);
+  area->x = manager_alloc.x;
+  area->y = manager_alloc.y;
+  area->width = manager_alloc.width;
+  area->height = manager_alloc.height;
 
   guint top, bottom, left, right;
   gtk_alignment_get_padding (GTK_ALIGNMENT (priv->alignment),
@@ -1024,16 +1024,16 @@ awn_panel_get_draw_rect (AwnPanel *panel,
                          gint width, gint height)
 {
   AwnPanelPrivate *priv = panel->priv;
-  GtkAllocation *alloc = NULL;
+  GtkAllocation alloc;
 
   /* 
    * We provide a param for width & height, cause for example
    * in the configure event callback allocation field is not yet updated.
    * Otherwise zeroes can be used for width & height
    */
-  gtk_widget_get_allocation (GTK_WIDGET (panel), alloc);
-  if (!width) width = alloc->width;
-  if (!height) height = alloc->height;
+  gtk_widget_get_allocation (GTK_WIDGET (panel), &alloc);
+  if (!width) width = alloc.width;
+  if (!height) height = alloc.height;
 
   /* if we're not composited the whole window is drawable */
   if (priv->composited == FALSE)
@@ -1194,11 +1194,11 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
     }
     case MOUSE_CHECK_ENTIRE_WINDOW:
     {
-      GtkAllocation *alloc = NULL;
+      GtkAllocation alloc;
 
-      gtk_widget_get_allocation (widget, alloc);
-      width = alloc->width;
-      height = alloc->height;
+      gtk_widget_get_allocation (widget, &alloc);
+      width = alloc.width;
+      height = alloc.height;
       
       return (x >= window_x && x < window_x + width &&
               y >= window_y && y < window_y + height);
@@ -1874,17 +1874,17 @@ awn_panel_update_masks (GtkWidget *panel,
                         gint       real_height)
 {
   AwnPanelPrivate *priv;
-  GtkAllocation   *alloc = NULL;
+  GtkAllocation   alloc;
   GdkBitmap       *shaped_bitmap;
   cairo_t         *cr;
 
   g_return_if_fail (AWN_IS_PANEL (panel));
   priv = AWN_PANEL (panel)->priv;
 
-  gtk_widget_get_allocation (GTK_WIDGET (panel), alloc);
+  gtk_widget_get_allocation (GTK_WIDGET (panel), &alloc);
 
-  if (!real_width) real_width = alloc->width;
-  if (!real_height) real_height = alloc->height;
+  if (!real_width) real_width = alloc.width;
+  if (!real_height) real_height = alloc.height;
 
   if (priv->clickthrough && priv->composited)
   {
@@ -2153,12 +2153,12 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
         GdkWindow *plug_window = gtk_socket_get_plug_window(GTK_SOCKET (s));
         if (plug_window)
         {
-          GtkAllocation *alloc = NULL;
+          GtkAllocation alloc;
 
-          gtk_widget_get_allocation (s, alloc);
+          gtk_widget_get_allocation (s, &alloc);
 
           cairo_save (cr);
-          cairo_translate (cr, alloc->x, alloc->y);
+          cairo_translate (cr, alloc.x, alloc.y);
           GdkRegion *region = xutils_get_input_shape (plug_window);
           cairo_set_source_rgba (cr, 1.0, 1.0, 0.0, 0.1);
           gdk_cairo_region (cr, region);
@@ -2195,16 +2195,16 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
 
   if (priv->composited)
   {
-    GtkAllocation *alloc = NULL;
+    GtkAllocation alloc;
     GdkRegion *region;
 
-    gtk_widget_get_allocation (child, alloc);
+    gtk_widget_get_allocation (child, &alloc);
 
     gdk_cairo_set_source_pixmap (cr,
                                  gtk_widget_get_window (child),
-                                 alloc->x, alloc->y);
+                                 alloc.x, alloc.y);
 
-    region = gdk_region_rectangle (alloc);
+    region = gdk_region_rectangle (&alloc);
     gdk_region_intersect (region, event->region);
     gdk_cairo_region (cr, region);
     cairo_clip (cr);
@@ -2669,13 +2669,13 @@ awn_panel_set_strut (AwnPanel *panel)
   }
   else
   {
-    GtkAllocation *manager_alloc = NULL;
+    GtkAllocation manager_alloc;
 
-    gtk_widget_get_allocation (priv->manager, manager_alloc);
-    area.x = manager_alloc->x + root_x;
-    area.y = manager_alloc->y + root_y;
-    area.width = manager_alloc->width;
-    area.height = manager_alloc->height;
+    gtk_widget_get_allocation (priv->manager, &manager_alloc);
+    area.x = manager_alloc.x + root_x;
+    area.y = manager_alloc.y + root_y;
+    area.width = manager_alloc.width;
+    area.height = manager_alloc.height;
   }
 
   switch (priv->orient)
@@ -2958,7 +2958,7 @@ awn_panel_docklet_request (AwnPanel *panel,
                            DBusGMethodInvocation *context)
 {
   AwnPanelPrivate *priv = panel->priv;
-  GtkAllocation *alloc = NULL;
+  GtkAllocation alloc;
   gint64 window_id = 0;
 
   if (!priv->docklet_closer)
@@ -2988,7 +2988,7 @@ awn_panel_docklet_request (AwnPanel *panel,
     GtkRequisition closer_req;
     gtk_widget_size_request (priv->docklet_closer, &closer_req);
 
-    gtk_widget_get_allocation (priv->manager, alloc);
+    gtk_widget_get_allocation (priv->manager, &alloc);
 
     // if expand param is false the docklet will be restricted to this size
     priv->docklet = gtk_socket_new ();
@@ -2997,7 +2997,7 @@ awn_panel_docklet_request (AwnPanel *panel,
       case AWN_ORIENTATION_LEFT:
       case AWN_ORIENTATION_RIGHT:
         priv->docklet_minsize = shrink ? min_size :
-          MAX (min_size, alloc->height - closer_req.height);
+          MAX (min_size, alloc.height - closer_req.height);
 
         if (expand == FALSE)
         {
@@ -3007,7 +3007,7 @@ awn_panel_docklet_request (AwnPanel *panel,
         break;
       default:
         priv->docklet_minsize = shrink ? min_size :
-          MAX (min_size, alloc->width - closer_req.width);
+          MAX (min_size, alloc.width - closer_req.width);
 
         if (expand == FALSE)
         {

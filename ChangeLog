@@ -1,5 +1,19 @@
 2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/taskmanager/task-icon.c:
+	* libawn/awn-alignment.c:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-dialog.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-tooltip.c:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	Fix usage of gtk_widget_get_allocation ().
+
+2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* awn-settings/awnSettings.py.in:
 	Use the VFS init/shutdown functions from desktopagnostic.vfs.
 
