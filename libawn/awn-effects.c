@@ -1264,7 +1264,7 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
      * (ie "if (event->area.x > 0)" results in artifacts similar to the ones
      * mentioned above if using cairo_xlib_surface_get_width/height)
      */
-    if (GTK_WIDGET_NO_WINDOW (fx->widget))
+    if (!gtk_widget_get_has_window (fx->widget))
       cairo_translate (cr, (double)(event->area.x), (double)(event->area.y));
   }
 

@@ -31,6 +31,10 @@
 #define gtk_widget_get_window(x) (x)->window
 #endif
 
+#if !GTK_CHECK_VERSION(2,17,5)
+#define gtk_widget_get_has_window(x) (!GTK_WIDGET_NO_WINDOW (x))
+#endif
+
 #if !GTK_CHECK_VERSION(2,17,7)
 #define gtk_widget_get_allocation(w, alloc) { *(alloc) = (w)->allocation; }
 #define gtk_widget_get_visible(x) GTK_WIDGET_VISIBLE(x)

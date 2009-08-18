@@ -1101,7 +1101,7 @@ awn_applet_manager_get_mask (AwnAppletManager *manager,
   for (GList *iter = children; iter != NULL; iter = g_list_next (iter))
   {
     GtkWidget *widget = (GtkWidget*)iter->data;
-    if (gtk_widget_get_visible (widget) && !GTK_WIDGET_NO_WINDOW (widget))
+    if (gtk_widget_get_visible (widget) && gtk_widget_get_has_window (widget))
     {
       gpointer mask = g_object_get_qdata (G_OBJECT (widget),
                                           priv->shape_mask_quark);
