@@ -51,10 +51,8 @@ CFILE_GLOB=$(DOC_SOURCE_DIR)/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
-IGNORE_HFILES = \
-	$(DOC_SOURCE_DIR)/gseal-transition.h \
-	$(DOC_SOURCE_DIR)/stamp-awn-enum-types.h \
-	$(DOC_SOURCE_DIR)/libawn.h \
+IGNORE_HFILES= \
+	gseal-transition.h \
 	$(NULL)
 
 # Images to copy into HTML directory.

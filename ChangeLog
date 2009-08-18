@@ -1,5 +1,12 @@
 2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* doc/reference/Makefile.am:
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	Update documentation templates.
+
+2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-applet.c:
 	Fix documentation typo.
 

@@ -423,22 +423,6 @@ AWN_OVERLAY_GET_CLASS
 </SECTION>
 
 <SECTION>
-<FILE>stamp-awn-enum-types</FILE>
-</SECTION>
-
-<SECTION>
-<FILE>libawn</FILE>
-</SECTION>
-
-<SECTION>
-<FILE>gseal-transition</FILE>
-gtk_selection_data_get_data
-gtk_selection_data_get_length
-gtk_socket_get_plug_window
-gtk_widget_get_window
-</SECTION>
-
-<SECTION>
 <FILE>awn-enum-types</FILE>
 awn_orientation_get_type
 AWN_TYPE_ORIENTATION
@@ -454,6 +438,10 @@ awn_effect_get_type
 AWN_TYPE_EFFECT
 awn_overlay_align_get_type
 AWN_TYPE_OVERLAY_ALIGN
+awn_arrow_type_get_type
+AWN_TYPE_ARROW_TYPE
+awn_effect_sequence_get_type
+AWN_TYPE_EFFECT_SEQUENCE
 </SECTION>
 
 <SECTION>
@@ -637,6 +625,7 @@ awn_effect_emit_anim_end
 <FILE>awn-effect-fade</FILE>
 fade_out_effect
 fading_effect
+fading_hover_effect
 fading_effect_finalize
 </SECTION>
 
