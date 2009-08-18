@@ -33,6 +33,7 @@
 
 #if !GTK_CHECK_VERSION(2,17,7)
 #define gtk_widget_get_allocation(w, alloc) { *(alloc) = (w)->allocation; }
+#define gtk_widget_get_visible(x) GTK_WIDGET_VISIBLE(x)
 #endif
 
 #endif

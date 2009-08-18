@@ -2148,7 +2148,7 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     for (GList *iter = list; iter != NULL; iter = iter->next)
     {
       GtkWidget *s = (GtkWidget*)iter->data;
-      if (GTK_IS_SOCKET (s) && GTK_WIDGET_VISIBLE (s))
+      if (GTK_IS_SOCKET (s) && gtk_widget_get_visible (s))
       {
         GdkWindow *plug_window = gtk_socket_get_plug_window(GTK_SOCKET (s));
         if (plug_window)

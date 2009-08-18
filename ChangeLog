@@ -1,3 +1,14 @@
+2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-manager.c:
+	* libawn/awn-dialog.c:
+	* libawn/awn-tooltip.c:
+	* libawn/gseal-transition.h:
+	* src/awn-applet-manager.c:
+	* src/awn-panel.c:
+	Convert to use the GSEAL function gtk_widget_get_visible ().
+
 2009-08-17  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/task-icon.c:

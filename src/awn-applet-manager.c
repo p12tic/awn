@@ -1066,7 +1066,7 @@ awn_applet_manager_hide_applets (AwnAppletManager *manager)
     if (!AWN_IS_THROBBER (it->data) && !AWN_IS_APPLET_PROXY (it->data))
     {
       g_object_set_qdata (it->data, priv->visibility_quark,
-                          GINT_TO_POINTER (GTK_WIDGET_VISIBLE (it->data) ?
+                          GINT_TO_POINTER (gtk_widget_get_visible (it->data) ?
                             1 : 0));
     }
 
@@ -1101,7 +1101,7 @@ awn_applet_manager_get_mask (AwnAppletManager *manager,
   for (GList *iter = children; iter != NULL; iter = g_list_next (iter))
   {
     GtkWidget *widget = (GtkWidget*)iter->data;
-    if (GTK_WIDGET_VISIBLE (widget) && !GTK_WIDGET_NO_WINDOW (widget))
+    if (gtk_widget_get_visible (widget) && !GTK_WIDGET_NO_WINDOW (widget))
     {
       gpointer mask = g_object_get_qdata (G_OBJECT (widget),
                                           priv->shape_mask_quark);

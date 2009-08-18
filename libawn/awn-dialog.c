@@ -391,7 +391,7 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
   const int ROUND_RADIUS = priv->window_padding / 2;
 
   /* fill for the titlebar */
-  if (GTK_WIDGET_VISIBLE (priv->title))
+  if (gtk_widget_get_visible (priv->title))
   {
     GtkAllocation *title_alloc = NULL;
 
@@ -1257,7 +1257,7 @@ _on_origin_changed (AwnApplet *applet, GdkRectangle *rect, AwnDialog *dialog)
 {
   g_return_if_fail (AWN_IS_DIALOG (dialog));
 
-  if (!GTK_WIDGET_VISIBLE (dialog)) return;
+  if (!gtk_widget_get_visible (dialog)) return;
 
   awn_dialog_refresh_position (dialog, 0, 0);
 }
@@ -1342,7 +1342,7 @@ _on_anchor_configure_event (GtkWidget *widget, GdkEventConfigure *event,
 
   AwnDialogPrivate *priv = dialog->priv;
 
-  if (!GTK_WIDGET_VISIBLE (widget)) return FALSE;
+  if (!gtk_widget_get_visible (widget)) return FALSE;
 
   if (event->x == priv->a_old_x && event->y == priv->a_old_y
       && event->width == priv->a_old_w && event->height == priv->a_old_h)

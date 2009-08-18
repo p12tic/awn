@@ -35,6 +35,8 @@
 #undef G_DISABLE_SINGLE_INCLUDES
 #include <glibtop/procargs.h>
 
+#include "libawn/gseal-transition.h"
+
 #include "task-manager.h"
 #include "task-manager-glue.h"
 
@@ -715,14 +717,14 @@ update_icon_visible (TaskManager *manager, TaskIcon *icon)
     visible = TRUE;
   }
 
-  if (visible && !GTK_WIDGET_VISIBLE (icon))
+  if (visible && !gtk_widget_get_visible (icon))
   {
     gtk_widget_show (GTK_WIDGET (icon));
     awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                           AWN_EFFECT_OPENING, 1, FALSE, FALSE);
   }
 
-  if (!visible && GTK_WIDGET_VISIBLE (icon))
+  if (!visible && gtk_widget_get_visible (icon))
   {
     awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                           AWN_EFFECT_CLOSING, 1, FALSE, TRUE);

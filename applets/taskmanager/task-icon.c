@@ -1546,7 +1546,7 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
     g_critical ("TaskIcon: The icons shouldn't contain a visible (and clickable) icon");
     return;
   }
-  else if (GTK_WIDGET_VISIBLE (priv->dialog) )
+  else if (gtk_widget_get_visible (priv->dialog) )
   {
   /*is the dialog open?  if so then it should be closed on icon click*/  
     
@@ -1673,7 +1673,7 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
      therefore we show the dialog
      */
     //TODO: move to hover?
-    if (GTK_WIDGET_VISIBLE (priv->dialog) )
+    if (gtk_widget_get_visible (priv->dialog) )
     {
       gtk_widget_hide (priv->dialog);
     }

@@ -733,7 +733,7 @@ awn_tooltip_show (AwnTooltip *tooltip,
     return FALSE;
   }
 
-  if (GTK_WIDGET_VISIBLE (tooltip)) return FALSE;
+  if (gtk_widget_get_visible (tooltip)) return FALSE;
 
   /* always use timer to show the widget, because there's a show/hide race
    * condition when mouse moves on the tooltip, leave-notify-event is generated
@@ -812,7 +812,7 @@ on_button_press (GtkWidget *widget, GdkEventCrossing *event, AwnTooltip *tooltip
     g_source_remove (priv->show_timer_id);
     priv->show_timer_id = 0;
   }
-  else if (GTK_WIDGET_VISIBLE (tooltip))
+  else if (gtk_widget_get_visible (tooltip))
   {
     gtk_widget_hide (GTK_WIDGET (tooltip));
   }
