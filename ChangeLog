@@ -1,5 +1,10 @@
 2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* awn-settings/awnSettings.py.in:
+	Use the VFS init/shutdown functions from desktopagnostic.vfs.
+
+2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-effects.c:
 	* libawn/gseal-transition.h:
 	* src/awn-applet-manager.c:

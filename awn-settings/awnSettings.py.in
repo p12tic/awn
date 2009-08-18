@@ -55,8 +55,9 @@ import awn
 import awnDefs as defs
 
 import desktopagnostic.config
+from desktopagnostic import vfs
 
-awn.vfs_init()
+vfs.init()
 defs.i18nize(globals())
 
 if os.geteuid() == 0:
@@ -421,5 +422,8 @@ class awnManagerMini(awnManager):
 
 
 if __name__ == "__main__":
-    awnmanager = awnManagerMini()
-    awnmanager.main()
+    try:
+        awnmanager = awnManagerMini()
+        awnmanager.main()
+    finally:
+        vfs.shutdown()
