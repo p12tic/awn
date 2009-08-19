@@ -1390,7 +1390,7 @@ task_icon_get_items (TaskIcon     *icon)
  * TODO: h4writer - adjust 2nd round
  */
 void
-task_icon_refresh_icon (TaskIcon      *icon)
+task_icon_refresh_icon (TaskIcon *icon)
 {
   TaskIconPrivate *priv;
 
@@ -1398,8 +1398,14 @@ task_icon_refresh_icon (TaskIcon      *icon)
   priv = icon->priv;
 
   if (priv->items && priv->items->data)
-    awn_icon_set_from_pixbuf (AWN_ICON (icon), 
-                              task_item_get_icon (priv->items->data));
+  {
+    if (priv->icon)
+    {
+      g_object_unref (priv->icon);
+    }
+    priv->icon = task_item_get_icon (priv->items->data);
+    awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
+  }
 }
 
 /*

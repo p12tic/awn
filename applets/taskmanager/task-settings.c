@@ -25,6 +25,11 @@
 
 /* prototypes */
 
+/*
+ TODO hook up to the signals instead of monitoring the keys.
+ This works for now... but it'll break once we beging automatic resizing.
+ */
+
 static void
 cfg_notify_int (const gchar *group, const gchar *key, const GValue *value,
                 gpointer user_data)
@@ -66,7 +71,7 @@ task_settings_get_default (void)
     /* FIXME handle error */
     client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, NULL);
 
-    /* Bar settings */
+  /* Bar settings */
 
     cfg_load_int(client, "panel", "size", &(settings->panel_size));
     cfg_load_int(client, "panel", "orient", &(settings->orient));

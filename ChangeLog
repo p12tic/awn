@@ -1,3 +1,11 @@
+2009-08-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-settings.c:
+	Fixed the icon sizing issue when panel size is changed.
+	Removed some debug spam.
+
 2009-08-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* src/awn-app.c:

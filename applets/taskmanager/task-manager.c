@@ -1858,9 +1858,10 @@ task_manager_check_for_intersection (TaskManager * manager,
     if (gdk_region_rect_in (priv->awn_gdk_region, &win_rect) != 
           GDK_OVERLAP_RECTANGLE_OUT)
     {
+#ifdef DEBUG
       g_debug ("Intersect with %s, %d",wnck_window_get_name (iter->data),
                wnck_window_get_pid(iter->data));
-
+#endif
       intersect = TRUE;
       break;
     }
@@ -1872,7 +1873,9 @@ task_manager_check_for_intersection (TaskManager * manager,
   if (intersect && priv->autohide_cookie)
   {     
     awn_applet_uninhibit_autohide (AWN_APPLET(manager), priv->autohide_cookie);
-    g_debug ("me eat cookie: %u",priv->autohide_cookie);    
+#ifdef DEBUG
+    g_debug ("me eat cookie: %u",priv->autohide_cookie);
+#endif
     priv->autohide_cookie = 0;
   }
   
@@ -1882,7 +1885,9 @@ task_manager_check_for_intersection (TaskManager * manager,
   if (!intersect && !priv->autohide_cookie)
   {
     priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager), "Intellihide");
+#ifdef DEBUG    
     g_debug ("cookie is %u",priv->autohide_cookie);
+#endif
   }
 
 }
