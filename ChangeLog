@@ -1,6 +1,11 @@
 2009-08-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* HACKING:
+	Add a note about po/POTFILES.in.
+
+2009-08-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* HACKING:
 	Add a short developer's guide.
 
 2009-08-19  Mark Lee  <avant-wn@lazymalevolence.com>

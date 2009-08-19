@@ -62,6 +62,12 @@ accomplishes this::
 
     make i18n-update
 
+Additionally, if you add or remove files which contain translatable strings,
+make sure that you update ``po/POTFILES.in``. You can check to see if your
+file(s) need to be added by running::
+
+    make check
+
 Coding Style
 ------------
 
