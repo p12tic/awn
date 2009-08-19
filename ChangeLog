@@ -1,5 +1,14 @@
 2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* awn-applet-activation/Makefile.am:
+	* src/Makefile.am:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	Fix header references and include directories.
+
+2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* data/Makefile.am:
 	* data/awn-themed-icon-ui.glade (removed):
 	Remove obsolete file.

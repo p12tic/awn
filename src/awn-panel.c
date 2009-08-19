@@ -50,7 +50,7 @@
 #include "awn-throbber.h"
 #include "awn-x.h"
 
-#include "gseal-transition.h"
+#include "libawn/gseal-transition.h"
 #include "xutils.h"
 
 G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW)

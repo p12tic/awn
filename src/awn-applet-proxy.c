@@ -24,11 +24,11 @@
 #include <gdk/gdkx.h>
 #include <libawn/awn-effects.h>
 #include <libawn/awn-icon.h>
+#include <libawn/awn-utils.h>
 
 #include "awn-applet-proxy.h"
-#include "awn-utils.h"
 #include "awn-throbber.h"
-#include "gseal-transition.h"
+#include "libawn/gseal-transition.h"
 
 G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_SOCKET) 
 

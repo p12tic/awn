@@ -10,7 +10,7 @@ AM_CPPFLAGS =				\
 	$(DOCK_CFLAGS)			\
 	-DLIBDIR=\""$(libdir)"\"	\
 	-DLOCALEDIR=\""$(datadir)/locale"\"	\
-	-I$(top_srcdir)/libawn		\
+	-I$(top_srcdir)			\
 	-I$(builddir)			\
 	$(NULL)
 

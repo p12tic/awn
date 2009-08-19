@@ -23,7 +23,7 @@
 
 #include <libawn/libawn.h>
 #include <libawn/awn-utils.h>
-#include "gseal-transition.h"
+#include "libawn/gseal-transition.h"
 
 #include "awn-defines.h"
 #include "awn-applet-manager.h"

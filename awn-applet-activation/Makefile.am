@@ -1,5 +1,6 @@
 NULL =
 INCLUDES =		\
+	-I$(top_srcdir) \
 	$(AWN_CFLAGS)	\
 	$(NULL)
 
