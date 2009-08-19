@@ -1535,7 +1535,8 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
       TaskItem  *launcher = NULL;
       GtkWidget *icon;
 
-      launcher = get_launcher (path);
+      launcher = task_launcher_new_for_desktop_file (path);
+      
       if (launcher)
       {
         icon = task_icon_new (AWN_APPLET (manager));
