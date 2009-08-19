@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
+ * Copyright (C) 2009 Rodney Cryderman <rcryderman@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as 
@@ -97,7 +98,7 @@ task_launcher_get_property (GObject    *object,
                             GParamSpec *pspec)
 {
   TaskLauncher *launcher = TASK_LAUNCHER (object);
-
+  
   switch (prop_id)
   {
     case PROP_DESKTOP_FILE:

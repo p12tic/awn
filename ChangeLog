@@ -1,3 +1,13 @@
+2009-08-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/util.c:
+	Do not accept desktop files which have a NoDisplay key set to
+	True as being a valid desktop file.  This requires lda >= 267.
+	This should solve crashes when starting a wine app.
+
 2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* po/*.po:

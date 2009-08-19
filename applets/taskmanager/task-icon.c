@@ -1594,7 +1594,7 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
           /*it's a launcher*/
           g_debug ("staring launch effect"); 
           awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                            AWN_EFFECT_HOVER, 11, FALSE, FALSE);
+                            AWN_EFFECT_HOVER, 10, FALSE, FALSE);
           task_item_left_click (item,event);
         }
         else
@@ -1625,7 +1625,7 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
     {
       /*it's a launcher*/
       awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                        AWN_EFFECT_LAUNCHING, 1, FALSE, FALSE);      
+                        AWN_EFFECT_LAUNCHING, 10, FALSE, FALSE);      
       task_item_left_click (main_item,event);
     }
     else if (task_window_is_active (TASK_WINDOW(main_item)))

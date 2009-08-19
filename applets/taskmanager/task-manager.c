@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
+ * Copyright (C) 2009 Rodney Cryderman <rcryderman@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as 
@@ -786,6 +787,34 @@ icon_closed (TaskManager *manager, GObject *old_icon)
   priv->icons = g_slist_remove (priv->icons, old_icon);
 }
 
+
+static TaskItem *
+get_launcher(gchar * desktop)
+{
+  TaskItem     *launcher = NULL;  
+  DesktopAgnosticFDODesktopEntry *entry=NULL;
+  DesktopAgnosticVFSFile *file;
+
+  file = desktop_agnostic_vfs_file_new_for_path (desktop, NULL);
+  if (file)
+  {
+    if (desktop_agnostic_vfs_file_exists (file) )
+    {
+      entry = desktop_agnostic_fdo_desktop_entry_new_for_file (file, NULL);
+    }
+    g_object_unref (file);
+  }
+  if (entry)
+  {
+    gboolean key_exists = desktop_agnostic_fdo_desktop_entry_key_exists (entry,"NoDisplay");
+    if (!key_exists || !desktop_agnostic_fdo_desktop_entry_get_boolean (entry,"NoDisplay"))
+    {
+      launcher = task_launcher_new_for_desktop_file (desktop);
+    }
+    g_object_unref (entry);                                                    
+  }
+  return launcher;
+}
 /*
  Possible TODO.
  Consider moving as much of the desktop search code as possible somewhere else
@@ -808,12 +837,13 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
   gchar * desktop;
   TaskItem     *launcher = NULL;
   GDir      * dir;
+  
   desktop = g_strdup_printf ("%s%s.desktop",system_dir,name);
 //#define DEBUG
 #ifdef DEBUG
   g_debug ("%s: desktop = %s",__func__,desktop);
 #endif      
-  launcher = task_launcher_new_for_desktop_file (desktop);
+  get_launcher(desktop);  
   if (launcher)
   {
 #ifdef DEBUG
@@ -909,7 +939,7 @@ find_desktop (TaskIcon *icon, gchar * name)
    our desktop file
    */
   desktop = g_strdup_printf ("%sapplications/%s.desktop",g_get_user_data_dir (),lower);
-  launcher = task_launcher_new_for_desktop_file (desktop);
+  launcher = get_launcher (desktop);
   if (launcher)
   {
 #ifdef DEBUG
@@ -1002,7 +1032,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
 #ifdef DEBUG
           g_debug ("%s:  regex matched full path =   %s",__func__,full_path);
 #endif       
-          // TODO handle GErrors
+          // TODO handle GErrors.  Do we really want to handle them?
           DesktopAgnosticVFSFile *file = desktop_agnostic_vfs_file_new_for_path (full_path, NULL);
           DesktopAgnosticFDODesktopEntry * desktop = desktop_agnostic_fdo_desktop_entry_new_for_file (file, NULL);
           if (desktop)
@@ -1022,7 +1052,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
               if ( g_regex_match_simple (exec,cmd,G_REGEX_CASELESS,0) 
                   || g_regex_match_simple (cmd, exec,G_REGEX_CASELESS,0))
               {
-                launcher = task_launcher_new_for_desktop_file (full_path);
+                launcher = get_launcher (full_path);
                 if (launcher)
                 {
                   task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
@@ -1505,7 +1535,7 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
       TaskItem  *launcher = NULL;
       GtkWidget *icon;
 
-      launcher = task_launcher_new_for_desktop_file (path);
+      launcher = get_launcher (path);
       if (launcher)
       {
         icon = task_icon_new (AWN_APPLET (manager));

@@ -21,6 +21,9 @@
 
 #include "util.h"
 
+
+//#define DEBUG
+
 typedef struct
 {
   const gchar * exec;
@@ -223,7 +226,6 @@ get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, gchar * clas
    TODO  optimize the regex handling.
    */
   WindowToDesktopMatch  *iter;
-//#define DEBUG
 #ifdef DEBUG
   g_debug ("%s: cmd = '%s', res = '%s', class = '%s', title = '%s'",__func__,cmd,res_name,class_name,title);
 #endif
