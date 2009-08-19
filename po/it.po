@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 23:47-0700\n"
+"POT-Creation-Date: 2009-08-18 18:22-0700\n"
 "PO-Revision-Date: 2008-12-29 01:55+0000\n"
 "Last-Translator: Alessio Treglia <quadrispro@ubuntu.com>\n"
 "Language-Team: Italian <it@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Launch %s"
 msgstr "Apertura"
 
-#: ../applets/taskmanager/task-icon.c:1812
+#: ../applets/taskmanager/task-icon.c:1852
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "Aggiunge e rimuove lanciatori"
@@ -130,7 +130,7 @@ msgstr ""
 msgid "3D Spotlight Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:98
+#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:99
 msgid "Custom"
 msgstr ""
 
@@ -227,10 +227,6 @@ msgid ""
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
 
-#: ../awn-manager/awnLauncher.py:138
-msgid "Invalid launcher"
-msgstr ""
-
 #: ../awn-settings/awnLauncherEditor.py:144
 msgid "Select an Executable File"
 msgstr ""
@@ -258,308 +254,59 @@ msgstr ""
 msgid "Couldn't save the launcher. Error: %s"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:63
+#: ../awn-settings/awnSettings.py.in:64
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:93
+#: ../awn-settings/awnSettings.py.in:94
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:94
+#: ../awn-settings/awnSettings.py.in:95
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:95
+#: ../awn-settings/awnSettings.py.in:96
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:96
+#: ../awn-settings/awnSettings.py.in:97
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "Nascondere automaticamente la barra quando non utilizzata"
 
-#: ../awn-settings/awnSettings.py.in:97
+#: ../awn-settings/awnSettings.py.in:98
 #, fuzzy
 msgid "Transparency"
 msgstr "Trasparenza:"
 
-#: ../awn-manager/window.glade.h:1
-msgid "<b>Active Icon</b>"
-msgstr "<b>Icona attiva</b>"
-
-#: ../awn-manager/window.glade.h:2
-msgid "<b>Applet Preferences</b>"
-msgstr "<b>Preferenze dell'applicazione</b>"
-
-#: ../awn-manager/window.glade.h:3
-msgid "<b>Arrows</b>"
-msgstr "<b>Frecce</b>"
-
-#: ../awn-manager/window.glade.h:4
-msgid "<b>Bar behaviour</b>"
-msgstr "<b>Comportamento della barra</b>"
-
-#: ../awn-manager/window.glade.h:5
-msgid "<b>Borders</b>"
-msgstr "<b>Bordi</b>"
-
-#: ../awn-manager/window.glade.h:6
-msgid "<b>Customize Effects</b>"
-msgstr "<b>Personalizza effetti</b>"
-
-#: ../awn-manager/window.glade.h:7
-msgid "<b>General Preferences</b>"
-msgstr "<b>Preferenze generali</b>"
-
-#: ../awn-manager/window.glade.h:8
-msgid "<b>Gradient</b>"
-msgstr "<b>Gradiente</b>"
-
-#: ../awn-manager/window.glade.h:9
-msgid "<b>Highlight</b>"
-msgstr "<b>Evidenzia</b>"
-
-#: ../awn-manager/window.glade.h:10
-msgid "<b>Icon Effects</b>"
-msgstr "<b>Effetti dell'icona</b>"
-
-#: ../awn-manager/window.glade.h:11
-msgid "<b>Launcher Preferences</b>"
-msgstr "<b>Preferenze dei lanciatori</b>"
-
-#: ../awn-manager/window.glade.h:12
-msgid "<b>Look </b>"
-msgstr "<b>Stile </b>"
-
-#: ../awn-manager/window.glade.h:13
-msgid "<b>Pattern</b>"
-msgstr "<b>Motivo</b>"
-
-#: ../awn-manager/window.glade.h:14
-msgid "<b>Separator</b>"
-msgstr "<b>Separatore</b>"
-
-#: ../awn-manager/window.glade.h:15
-msgid "<b>Startup behaviour</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:16
-msgid "<b>Text</b>"
-msgstr "<b>Testo</b>"
-
-#: ../awn-manager/window.glade.h:17
-msgid "<b>Themes</b>"
-msgstr "<b>Temi</b>"
-
-#: ../awn-manager/window.glade.h:18
-msgid "<b>Windows</b>"
-msgstr "<b>Finestre</b>"
-
-#: ../awn-manager/window.glade.h:19
-msgid "Activate"
-msgstr "Attiva"
-
-#: ../awn-manager/window.glade.h:20
-msgid "Add and remove applets"
-msgstr "Aggiungi e rimuovi applet"
-
-#: ../awn-manager/window.glade.h:21
-msgid "Add and remove launchers"
-msgstr "Aggiunge e rimuove lanciatori"
-
-#: ../awn-manager/window.glade.h:22
-msgid "Add, remove and save themes"
-msgstr "Aggiungi, rimuovi e salva i temi"
-
-#: ../awn-manager/window.glade.h:23
-msgid "Alert when application window updated"
-msgstr "Avvisa quando una finestra viene aggiornata"
-
-#: ../awn-manager/window.glade.h:24
-msgid "Arrow offset: "
-msgstr ""
-
-#: ../awn-manager/window.glade.h:25
-msgid "Attention"
-msgstr "Attenzione"
-
-#: ../awn-manager/window.glade.h:26
-msgid "Auto hide bar when not in use"
-msgstr "Nascondere automaticamente la barra quando non utilizzata"
-
-#: ../awn-manager/window.glade.h:27
-msgid "Automatically start AWN on login."
-msgstr ""
-
-#: ../awn-manager/window.glade.h:28
-msgid "Background color:"
-msgstr "Colore dello sfondo:"
-
-#: ../awn-manager/window.glade.h:29
-msgid "Bar Appearance"
-msgstr "Aspetto della barra"
-
-#: ../awn-manager/window.glade.h:30
-msgid "Bar angle: "
-msgstr "Inclinazione della barra: "
-
-#: ../awn-manager/window.glade.h:31
-msgid "Bar height: "
-msgstr "Altezza della barra: "
-
-#: ../awn-manager/window.glade.h:32
-msgid "Change the look and behaviour of the dock"
-msgstr "Cambia l'aspetto e il comportamento della barra"
-
-#: ../awn-manager/window.glade.h:33
-msgid "Closing"
-msgstr "Chiusura"
-
-#: ../awn-manager/window.glade.h:34
-msgid "Color:"
-msgstr "Colore:"
-
-#: ../awn-manager/window.glade.h:35
-msgid "Deactivate"
-msgstr "Disattiva"
-
-#: ../awn-manager/window.glade.h:36
-msgid "Delete"
-msgstr "Elimina"
-
-#: ../awn-manager/window.glade.h:37
-msgid "Enable pattern"
-msgstr "Abilitare il motivo"
-
-#: ../awn-manager/window.glade.h:38
-msgid "Enable rounded corners"
-msgstr "Arrotondare gli angoli"
-
-#: ../awn-manager/window.glade.h:39
-msgid "First step color:"
-msgstr "Colore del primo passaggio:"
-
-#: ../awn-manager/window.glade.h:40
-msgid "Font:"
-msgstr "Tipo di carattere:"
-
-#: ../awn-manager/window.glade.h:41
-msgid "General"
-msgstr "Generali"
-
-#: ../awn-manager/window.glade.h:42
-msgid "Glass Engine"
-msgstr "Effetto specchio"
-
-#: ../awn-manager/window.glade.h:43
-msgid "Hover"
-msgstr "Passaggio con il mouse"
-
-#: ../awn-manager/window.glade.h:44
+#: ../bindings/python/__init__.py:118
+#, python-format
 msgid ""
-"Icon attention effect will be activated to alert user of updated windows."
+"The following Python modules could not be found: %s.  There are a few "
+"possible\n"
+"explanations for this:\n"
+"\n"
+"1. You do not have this Python module installed.  In this case, you should\n"
+"visit the AWN wiki's applets section to figure out the exact name of the\n"
+"package for your distribution that provides this module.\n"
+"\n"
+"2. The module is installed in a non-standard location.  This is usually the\n"
+"case when you manually install a package, that is, not via your "
+"distribution's\n"
+"package manager.  This situation is explained in the FAQ section of the "
+"wiki.\n"
 msgstr ""
-"Verrà attivato l'effetto di attenzione dell'icona per avvisare l'utente "
-"dell'aggiornamento delle finestre."
 
-#: ../awn-manager/window.glade.h:45
-msgid "Icon offset: "
-msgstr "Offset dell'icona: "
-
-#: ../awn-manager/window.glade.h:46
-msgid "Install"
-msgstr "Installa"
-
-#: ../awn-manager/window.glade.h:47
-msgid "Internal border:"
-msgstr "Bordo interno:"
-
-#: ../awn-manager/window.glade.h:48
-msgid "Keep below maximized windows when not in use"
-msgstr "Mostra sotto alle finestre massimizzate quando inutilizzato"
-
-#: ../awn-manager/window.glade.h:49
-msgid "Launching"
-msgstr "Apertura"
-
-#: ../awn-manager/window.glade.h:50
-msgid "Main border:"
-msgstr "Bordo principale:"
-
-#: ../awn-manager/window.glade.h:51
-msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "Le finestre massimizzate non coprono la barra (richiede riavvio)"
-
-#: ../awn-manager/window.glade.h:52
-msgid "Opening"
-msgstr "Apertura"
-
-#: ../awn-manager/window.glade.h:53
-msgid "Pattern Engine"
-msgstr "Motore a motivi"
-
-#: ../awn-manager/window.glade.h:54
-msgid "Second step color:"
-msgstr "Colore del secondo passaggio:"
-
-#: ../awn-manager/window.glade.h:55
-msgid "Separator color:"
-msgstr "Colore separatore:"
-
-#: ../awn-manager/window.glade.h:56
-msgid "Shadow color:"
-msgstr "Colore dell'ombra:"
-
-#: ../awn-manager/window.glade.h:57
-msgid "Show separator between launchers and tasks"
-msgstr "Mostrare un separatore tra i lanciatori e i task"
-
-#: ../awn-manager/window.glade.h:58
-msgid "Show windows from all viewports"
-msgstr "Mostrare le finestre di tutte le aree di lavoro"
-
-#: ../awn-manager/window.glade.h:59
-msgid "Task Appearance"
-msgstr "Aspetto dei programmi"
-
-#: ../awn-manager/window.glade.h:60
-msgid "Tasks have arrows"
-msgstr "I programmi presentano le frecce"
-
-#: ../awn-manager/window.glade.h:61
-msgid "The bar automatically hides when not used"
-msgstr "Nascondere automaticamente la barra quando non usata"
-
-#: ../awn-manager/window.glade.h:62
-msgid "Transparency:"
-msgstr "Trasparenza:"
-
-#: ../awn-manager/window.glade.h:63
-msgid "Windows don't overlap the bar if this is set"
-msgstr "Le finestre non coprono la barra se questa è attivata"
-
-#: ../awn-manager/window.glade.h:64
-msgid "page 1"
-msgstr "pagina 1"
-
-#: ../awn-manager/window.glade.h:65
-msgid "page 2"
-msgstr "pagina 2"
-
-#: ../awn-manager/window.glade.h:66
-msgid "page 3"
-msgstr "pagina 3"
-
-#: ../awn-manager/window.glade.h:67
-msgid "page 4"
-msgstr "pagina 4"
+#: ../bindings/python/__init__.py:133
+msgid "Awn Wiki"
+msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr ""
 
-#: ../libawn/awn-applet.c:1024 ../src/awn-panel.c:582
+#: ../libawn/awn-applet.c:1025 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr ""
 
@@ -567,13 +314,208 @@ msgstr ""
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:477
+#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:479
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:2932
+#: ../src/awn-panel.c:2971
 msgid "Close docklet"
 msgstr ""
+
+#~ msgid "<b>Active Icon</b>"
+#~ msgstr "<b>Icona attiva</b>"
+
+#~ msgid "<b>Applet Preferences</b>"
+#~ msgstr "<b>Preferenze dell'applicazione</b>"
+
+#~ msgid "<b>Arrows</b>"
+#~ msgstr "<b>Frecce</b>"
+
+#~ msgid "<b>Bar behaviour</b>"
+#~ msgstr "<b>Comportamento della barra</b>"
+
+#~ msgid "<b>Borders</b>"
+#~ msgstr "<b>Bordi</b>"
+
+#~ msgid "<b>Customize Effects</b>"
+#~ msgstr "<b>Personalizza effetti</b>"
+
+#~ msgid "<b>General Preferences</b>"
+#~ msgstr "<b>Preferenze generali</b>"
+
+#~ msgid "<b>Gradient</b>"
+#~ msgstr "<b>Gradiente</b>"
+
+#~ msgid "<b>Highlight</b>"
+#~ msgstr "<b>Evidenzia</b>"
+
+#~ msgid "<b>Icon Effects</b>"
+#~ msgstr "<b>Effetti dell'icona</b>"
+
+#~ msgid "<b>Launcher Preferences</b>"
+#~ msgstr "<b>Preferenze dei lanciatori</b>"
+
+#~ msgid "<b>Look </b>"
+#~ msgstr "<b>Stile </b>"
+
+#~ msgid "<b>Pattern</b>"
+#~ msgstr "<b>Motivo</b>"
+
+#~ msgid "<b>Separator</b>"
+#~ msgstr "<b>Separatore</b>"
+
+#~ msgid "<b>Text</b>"
+#~ msgstr "<b>Testo</b>"
+
+#~ msgid "<b>Themes</b>"
+#~ msgstr "<b>Temi</b>"
+
+#~ msgid "<b>Windows</b>"
+#~ msgstr "<b>Finestre</b>"
+
+#~ msgid "Activate"
+#~ msgstr "Attiva"
+
+#~ msgid "Add and remove applets"
+#~ msgstr "Aggiungi e rimuovi applet"
+
+#~ msgid "Add and remove launchers"
+#~ msgstr "Aggiunge e rimuove lanciatori"
+
+#~ msgid "Add, remove and save themes"
+#~ msgstr "Aggiungi, rimuovi e salva i temi"
+
+#~ msgid "Alert when application window updated"
+#~ msgstr "Avvisa quando una finestra viene aggiornata"
+
+#~ msgid "Attention"
+#~ msgstr "Attenzione"
+
+#~ msgid "Auto hide bar when not in use"
+#~ msgstr "Nascondere automaticamente la barra quando non utilizzata"
+
+#~ msgid "Background color:"
+#~ msgstr "Colore dello sfondo:"
+
+#~ msgid "Bar Appearance"
+#~ msgstr "Aspetto della barra"
+
+#~ msgid "Bar angle: "
+#~ msgstr "Inclinazione della barra: "
+
+#~ msgid "Bar height: "
+#~ msgstr "Altezza della barra: "
+
+#~ msgid "Change the look and behaviour of the dock"
+#~ msgstr "Cambia l'aspetto e il comportamento della barra"
+
+#~ msgid "Closing"
+#~ msgstr "Chiusura"
+
+#~ msgid "Color:"
+#~ msgstr "Colore:"
+
+#~ msgid "Deactivate"
+#~ msgstr "Disattiva"
+
+#~ msgid "Delete"
+#~ msgstr "Elimina"
+
+#~ msgid "Enable pattern"
+#~ msgstr "Abilitare il motivo"
+
+#~ msgid "Enable rounded corners"
+#~ msgstr "Arrotondare gli angoli"
+
+#~ msgid "First step color:"
+#~ msgstr "Colore del primo passaggio:"
+
+#~ msgid "Font:"
+#~ msgstr "Tipo di carattere:"
+
+#~ msgid "General"
+#~ msgstr "Generali"
+
+#~ msgid "Glass Engine"
+#~ msgstr "Effetto specchio"
+
+#~ msgid "Hover"
+#~ msgstr "Passaggio con il mouse"
+
+#~ msgid ""
+#~ "Icon attention effect will be activated to alert user of updated windows."
+#~ msgstr ""
+#~ "Verrà attivato l'effetto di attenzione dell'icona per avvisare l'utente "
+#~ "dell'aggiornamento delle finestre."
+
+#~ msgid "Icon offset: "
+#~ msgstr "Offset dell'icona: "
+
+#~ msgid "Install"
+#~ msgstr "Installa"
+
+#~ msgid "Internal border:"
+#~ msgstr "Bordo interno:"
+
+#~ msgid "Keep below maximized windows when not in use"
+#~ msgstr "Mostra sotto alle finestre massimizzate quando inutilizzato"
+
+#~ msgid "Launching"
+#~ msgstr "Apertura"
+
+#~ msgid "Main border:"
+#~ msgstr "Bordo principale:"
+
+#~ msgid "Maximized windows don't cover the bar (requires restart)"
+#~ msgstr "Le finestre massimizzate non coprono la barra (richiede riavvio)"
+
+#~ msgid "Opening"
+#~ msgstr "Apertura"
+
+#~ msgid "Pattern Engine"
+#~ msgstr "Motore a motivi"
+
+#~ msgid "Second step color:"
+#~ msgstr "Colore del secondo passaggio:"
+
+#~ msgid "Separator color:"
+#~ msgstr "Colore separatore:"
+
+#~ msgid "Shadow color:"
+#~ msgstr "Colore dell'ombra:"
+
+#~ msgid "Show separator between launchers and tasks"
+#~ msgstr "Mostrare un separatore tra i lanciatori e i task"
+
+#~ msgid "Show windows from all viewports"
+#~ msgstr "Mostrare le finestre di tutte le aree di lavoro"
+
+#~ msgid "Task Appearance"
+#~ msgstr "Aspetto dei programmi"
+
+#~ msgid "Tasks have arrows"
+#~ msgstr "I programmi presentano le frecce"
+
+#~ msgid "The bar automatically hides when not used"
+#~ msgstr "Nascondere automaticamente la barra quando non usata"
+
+#~ msgid "Transparency:"
+#~ msgstr "Trasparenza:"
+
+#~ msgid "Windows don't overlap the bar if this is set"
+#~ msgstr "Le finestre non coprono la barra se questa è attivata"
+
+#~ msgid "page 1"
+#~ msgstr "pagina 1"
+
+#~ msgid "page 2"
+#~ msgstr "pagina 2"
+
+#~ msgid "page 3"
+#~ msgstr "pagina 3"
+
+#~ msgid "page 4"
+#~ msgstr "pagina 4"
 
 #~ msgid "Change Icon"
 #~ msgstr "Cambia icona"

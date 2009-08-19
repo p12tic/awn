@@ -1,5 +1,10 @@
 2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* po/*.po:
+	Update gettext files.
+
+2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* Makefile.am:
 	* applets/taskmanager/Makefile.am:
 	* awn-settings/Makefile.am:

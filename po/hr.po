@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 23:47-0700\n"
+"POT-Creation-Date: 2009-08-18 18:22-0700\n"
 "PO-Revision-Date: 2008-04-02 17:50+0000\n"
 "Last-Translator: Igor Vatavuk <Unknown>\n"
 "Language-Team: Croatian <hr@li.org>\n"
@@ -32,7 +32,7 @@ msgstr ""
 msgid "Launch %s"
 msgstr "Pokretanje"
 
-#: ../applets/taskmanager/task-icon.c:1812
+#: ../applets/taskmanager/task-icon.c:1852
 msgid "Add to Launcher List"
 msgstr ""
 
@@ -130,7 +130,7 @@ msgstr ""
 msgid "3D Spotlight Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:98
+#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:99
 msgid "Custom"
 msgstr ""
 
@@ -227,10 +227,6 @@ msgid ""
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
 
-#: ../awn-manager/awnLauncher.py:138
-msgid "Invalid launcher"
-msgstr ""
-
 #: ../awn-settings/awnLauncherEditor.py:144
 msgid "Select an Executable File"
 msgstr ""
@@ -258,308 +254,59 @@ msgstr ""
 msgid "Couldn't save the launcher. Error: %s"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:63
+#: ../awn-settings/awnSettings.py.in:64
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:93
+#: ../awn-settings/awnSettings.py.in:94
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:94
+#: ../awn-settings/awnSettings.py.in:95
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:95
+#: ../awn-settings/awnSettings.py.in:96
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:96
+#: ../awn-settings/awnSettings.py.in:97
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "Sakrij traku dok se ne koristi"
 
-#: ../awn-settings/awnSettings.py.in:97
+#: ../awn-settings/awnSettings.py.in:98
 #, fuzzy
 msgid "Transparency"
 msgstr "Prozirnost:"
 
-#: ../awn-manager/window.glade.h:1
-msgid "<b>Active Icon</b>"
-msgstr "<b>Aktivna ikona</b>"
-
-#: ../awn-manager/window.glade.h:2
-msgid "<b>Applet Preferences</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:3
-msgid "<b>Arrows</b>"
-msgstr "<b>Strelice</b>"
-
-#: ../awn-manager/window.glade.h:4
-msgid "<b>Bar behaviour</b>"
-msgstr "<b>Ponašanje trake</b>"
-
-#: ../awn-manager/window.glade.h:5
-msgid "<b>Borders</b>"
-msgstr "<b>Okviri</b>"
-
-#: ../awn-manager/window.glade.h:6
-msgid "<b>Customize Effects</b>"
-msgstr "<b>Prilagođavanje efekata</b>"
-
-#: ../awn-manager/window.glade.h:7
-msgid "<b>General Preferences</b>"
-msgstr "<b>Opće postavke</b>"
-
-#: ../awn-manager/window.glade.h:8
-msgid "<b>Gradient</b>"
-msgstr "<b>Gradijent</b>"
-
-#: ../awn-manager/window.glade.h:9
-msgid "<b>Highlight</b>"
-msgstr "<b>Osvjetljeno</b>"
-
-#: ../awn-manager/window.glade.h:10
-msgid "<b>Icon Effects</b>"
-msgstr "<b>Efekti ikone</b>"
-
-#: ../awn-manager/window.glade.h:11
-msgid "<b>Launcher Preferences</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:12
-msgid "<b>Look </b>"
-msgstr "<b>Izgled </b>"
-
-#: ../awn-manager/window.glade.h:13
-msgid "<b>Pattern</b>"
-msgstr "<b>Uzorak</b>"
-
-#: ../awn-manager/window.glade.h:14
-msgid "<b>Separator</b>"
-msgstr "<b>Separator</b>"
-
-#: ../awn-manager/window.glade.h:15
-msgid "<b>Startup behaviour</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:16
-msgid "<b>Text</b>"
-msgstr "<b>Tekst</b>"
-
-#: ../awn-manager/window.glade.h:17
-msgid "<b>Themes</b>"
-msgstr "<b>Teme</b>"
-
-#: ../awn-manager/window.glade.h:18
-msgid "<b>Windows</b>"
-msgstr "<b>Prozori</b>"
-
-#: ../awn-manager/window.glade.h:19
-msgid "Activate"
-msgstr "Aktiviraj"
-
-#: ../awn-manager/window.glade.h:20
-msgid "Add and remove applets"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:21
-msgid "Add and remove launchers"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:22
-msgid "Add, remove and save themes"
-msgstr "Dodaj, ukloni i sačuvaj teme"
-
-#: ../awn-manager/window.glade.h:23
-msgid "Alert when application window updated"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:24
-msgid "Arrow offset: "
-msgstr ""
-
-#: ../awn-manager/window.glade.h:25
-msgid "Attention"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:26
-msgid "Auto hide bar when not in use"
-msgstr "Sakrij traku dok se ne koristi"
-
-#: ../awn-manager/window.glade.h:27
-msgid "Automatically start AWN on login."
-msgstr ""
-
-#: ../awn-manager/window.glade.h:28
-msgid "Background color:"
-msgstr "Pozadinska boja:"
-
-#: ../awn-manager/window.glade.h:29
-msgid "Bar Appearance"
-msgstr "Izgled trake"
-
-#: ../awn-manager/window.glade.h:30
-msgid "Bar angle: "
-msgstr "Kut trake: "
-
-#: ../awn-manager/window.glade.h:31
-msgid "Bar height: "
-msgstr "Visina trake: "
-
-#: ../awn-manager/window.glade.h:32
-msgid "Change the look and behaviour of the dock"
-msgstr "Promijenite izgled i ponašanje docka"
-
-#: ../awn-manager/window.glade.h:33
-msgid "Closing"
-msgstr "Zatvaranje"
-
-#: ../awn-manager/window.glade.h:34
-msgid "Color:"
-msgstr "Boja:"
-
-#: ../awn-manager/window.glade.h:35
-msgid "Deactivate"
-msgstr "Deaktiviraj"
-
-#: ../awn-manager/window.glade.h:36
-msgid "Delete"
-msgstr "Obriši"
-
-#: ../awn-manager/window.glade.h:37
-msgid "Enable pattern"
-msgstr "Uključi uzorak"
-
-#: ../awn-manager/window.glade.h:38
-msgid "Enable rounded corners"
-msgstr "Uključi zaobljene rubove"
-
-#: ../awn-manager/window.glade.h:39
-msgid "First step color:"
-msgstr "Boja prvog koraka:"
-
-#: ../awn-manager/window.glade.h:40
-msgid "Font:"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:41
-msgid "General"
-msgstr "Opće"
-
-#: ../awn-manager/window.glade.h:42
-msgid "Glass Engine"
-msgstr "Stakleni izgled"
-
-#: ../awn-manager/window.glade.h:43
-msgid "Hover"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:44
+#: ../bindings/python/__init__.py:118
+#, python-format
 msgid ""
-"Icon attention effect will be activated to alert user of updated windows."
+"The following Python modules could not be found: %s.  There are a few "
+"possible\n"
+"explanations for this:\n"
+"\n"
+"1. You do not have this Python module installed.  In this case, you should\n"
+"visit the AWN wiki's applets section to figure out the exact name of the\n"
+"package for your distribution that provides this module.\n"
+"\n"
+"2. The module is installed in a non-standard location.  This is usually the\n"
+"case when you manually install a package, that is, not via your "
+"distribution's\n"
+"package manager.  This situation is explained in the FAQ section of the "
+"wiki.\n"
 msgstr ""
 
-#: ../awn-manager/window.glade.h:45
-msgid "Icon offset: "
+#: ../bindings/python/__init__.py:133
+msgid "Awn Wiki"
 msgstr ""
-
-#: ../awn-manager/window.glade.h:46
-msgid "Install"
-msgstr "Instaliraj"
-
-#: ../awn-manager/window.glade.h:47
-msgid "Internal border:"
-msgstr "Unutarnji okvir:"
-
-#: ../awn-manager/window.glade.h:48
-msgid "Keep below maximized windows when not in use"
-msgstr "Drži ispod maksimiziranih prozora dok se ne koristi"
-
-#: ../awn-manager/window.glade.h:49
-msgid "Launching"
-msgstr "Pokretanje"
-
-#: ../awn-manager/window.glade.h:50
-msgid "Main border:"
-msgstr "Glavni okvir:"
-
-#: ../awn-manager/window.glade.h:51
-msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr ""
-"Maksimizirani prozori ne prekrivaju traku (zahtjeva ponovno pokretanje "
-"aplikacije)"
-
-#: ../awn-manager/window.glade.h:52
-msgid "Opening"
-msgstr "Otvaranje"
-
-#: ../awn-manager/window.glade.h:53
-msgid "Pattern Engine"
-msgstr "Uzorak"
-
-#: ../awn-manager/window.glade.h:54
-msgid "Second step color:"
-msgstr "Broja drugog koraka:"
-
-#: ../awn-manager/window.glade.h:55
-msgid "Separator color:"
-msgstr "Boja razdljeljnika:"
-
-#: ../awn-manager/window.glade.h:56
-msgid "Shadow color:"
-msgstr "Boja sjene:"
-
-#: ../awn-manager/window.glade.h:57
-msgid "Show separator between launchers and tasks"
-msgstr "Prikaži razdjeljnjik između pokretača i zadataka"
-
-#: ../awn-manager/window.glade.h:58
-msgid "Show windows from all viewports"
-msgstr "Prokaži prozore sa svih radnih površina"
-
-#: ../awn-manager/window.glade.h:59
-msgid "Task Appearance"
-msgstr "Izgled alata"
-
-#: ../awn-manager/window.glade.h:60
-msgid "Tasks have arrows"
-msgstr "Alati imaju strelice"
-
-#: ../awn-manager/window.glade.h:61
-msgid "The bar automatically hides when not used"
-msgstr "Traka se automatski sakriva ako se ne koristi"
-
-#: ../awn-manager/window.glade.h:62
-msgid "Transparency:"
-msgstr "Prozirnost:"
-
-#: ../awn-manager/window.glade.h:63
-msgid "Windows don't overlap the bar if this is set"
-msgstr "prozori ne preklapaju traku ako je ova opcija uključena"
-
-#: ../awn-manager/window.glade.h:64
-msgid "page 1"
-msgstr "stranica 1"
-
-#: ../awn-manager/window.glade.h:65
-msgid "page 2"
-msgstr "stranica 2"
-
-#: ../awn-manager/window.glade.h:66
-msgid "page 3"
-msgstr "stranica 3"
-
-#: ../awn-manager/window.glade.h:67
-msgid "page 4"
-msgstr "stranica 4"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr ""
 
-#: ../libawn/awn-applet.c:1024 ../src/awn-panel.c:582
+#: ../libawn/awn-applet.c:1025 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr ""
 
@@ -567,13 +314,177 @@ msgstr ""
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:477
+#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:479
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:2932
+#: ../src/awn-panel.c:2971
 msgid "Close docklet"
 msgstr ""
+
+#~ msgid "<b>Active Icon</b>"
+#~ msgstr "<b>Aktivna ikona</b>"
+
+#~ msgid "<b>Arrows</b>"
+#~ msgstr "<b>Strelice</b>"
+
+#~ msgid "<b>Bar behaviour</b>"
+#~ msgstr "<b>Ponašanje trake</b>"
+
+#~ msgid "<b>Borders</b>"
+#~ msgstr "<b>Okviri</b>"
+
+#~ msgid "<b>Customize Effects</b>"
+#~ msgstr "<b>Prilagođavanje efekata</b>"
+
+#~ msgid "<b>General Preferences</b>"
+#~ msgstr "<b>Opće postavke</b>"
+
+#~ msgid "<b>Gradient</b>"
+#~ msgstr "<b>Gradijent</b>"
+
+#~ msgid "<b>Highlight</b>"
+#~ msgstr "<b>Osvjetljeno</b>"
+
+#~ msgid "<b>Icon Effects</b>"
+#~ msgstr "<b>Efekti ikone</b>"
+
+#~ msgid "<b>Look </b>"
+#~ msgstr "<b>Izgled </b>"
+
+#~ msgid "<b>Pattern</b>"
+#~ msgstr "<b>Uzorak</b>"
+
+#~ msgid "<b>Separator</b>"
+#~ msgstr "<b>Separator</b>"
+
+#~ msgid "<b>Text</b>"
+#~ msgstr "<b>Tekst</b>"
+
+#~ msgid "<b>Themes</b>"
+#~ msgstr "<b>Teme</b>"
+
+#~ msgid "<b>Windows</b>"
+#~ msgstr "<b>Prozori</b>"
+
+#~ msgid "Activate"
+#~ msgstr "Aktiviraj"
+
+#~ msgid "Add, remove and save themes"
+#~ msgstr "Dodaj, ukloni i sačuvaj teme"
+
+#~ msgid "Auto hide bar when not in use"
+#~ msgstr "Sakrij traku dok se ne koristi"
+
+#~ msgid "Background color:"
+#~ msgstr "Pozadinska boja:"
+
+#~ msgid "Bar Appearance"
+#~ msgstr "Izgled trake"
+
+#~ msgid "Bar angle: "
+#~ msgstr "Kut trake: "
+
+#~ msgid "Bar height: "
+#~ msgstr "Visina trake: "
+
+#~ msgid "Change the look and behaviour of the dock"
+#~ msgstr "Promijenite izgled i ponašanje docka"
+
+#~ msgid "Closing"
+#~ msgstr "Zatvaranje"
+
+#~ msgid "Color:"
+#~ msgstr "Boja:"
+
+#~ msgid "Deactivate"
+#~ msgstr "Deaktiviraj"
+
+#~ msgid "Delete"
+#~ msgstr "Obriši"
+
+#~ msgid "Enable pattern"
+#~ msgstr "Uključi uzorak"
+
+#~ msgid "Enable rounded corners"
+#~ msgstr "Uključi zaobljene rubove"
+
+#~ msgid "First step color:"
+#~ msgstr "Boja prvog koraka:"
+
+#~ msgid "General"
+#~ msgstr "Opće"
+
+#~ msgid "Glass Engine"
+#~ msgstr "Stakleni izgled"
+
+#~ msgid "Install"
+#~ msgstr "Instaliraj"
+
+#~ msgid "Internal border:"
+#~ msgstr "Unutarnji okvir:"
+
+#~ msgid "Keep below maximized windows when not in use"
+#~ msgstr "Drži ispod maksimiziranih prozora dok se ne koristi"
+
+#~ msgid "Launching"
+#~ msgstr "Pokretanje"
+
+#~ msgid "Main border:"
+#~ msgstr "Glavni okvir:"
+
+#~ msgid "Maximized windows don't cover the bar (requires restart)"
+#~ msgstr ""
+#~ "Maksimizirani prozori ne prekrivaju traku (zahtjeva ponovno pokretanje "
+#~ "aplikacije)"
+
+#~ msgid "Opening"
+#~ msgstr "Otvaranje"
+
+#~ msgid "Pattern Engine"
+#~ msgstr "Uzorak"
+
+#~ msgid "Second step color:"
+#~ msgstr "Broja drugog koraka:"
+
+#~ msgid "Separator color:"
+#~ msgstr "Boja razdljeljnika:"
+
+#~ msgid "Shadow color:"
+#~ msgstr "Boja sjene:"
+
+#~ msgid "Show separator between launchers and tasks"
+#~ msgstr "Prikaži razdjeljnjik između pokretača i zadataka"
+
+#~ msgid "Show windows from all viewports"
+#~ msgstr "Prokaži prozore sa svih radnih površina"
+
+#~ msgid "Task Appearance"
+#~ msgstr "Izgled alata"
+
+#~ msgid "Tasks have arrows"
+#~ msgstr "Alati imaju strelice"
+
+#~ msgid "The bar automatically hides when not used"
+#~ msgstr "Traka se automatski sakriva ako se ne koristi"
+
+#~ msgid "Transparency:"
+#~ msgstr "Prozirnost:"
+
+#~ msgid "Windows don't overlap the bar if this is set"
+#~ msgstr "prozori ne preklapaju traku ako je ova opcija uključena"
+
+#~ msgid "page 1"
+#~ msgstr "stranica 1"
+
+#~ msgid "page 2"
+#~ msgstr "stranica 2"
+
+#~ msgid "page 3"
+#~ msgstr "stranica 3"
+
+#~ msgid "page 4"
+#~ msgstr "stranica 4"
 
 #~ msgid "Change Icon"
 #~ msgstr "Izmjeni ikonu"

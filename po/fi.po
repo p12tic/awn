@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 23:47-0700\n"
+"POT-Creation-Date: 2009-08-18 18:21-0700\n"
 "PO-Revision-Date: 2009-01-25 11:27+0000\n"
 "Last-Translator: Elias Julkunen <elias.julkunen@gmail.com>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Launch %s"
 msgstr "Käynnistetään"
 
-#: ../applets/taskmanager/task-icon.c:1812
+#: ../applets/taskmanager/task-icon.c:1852
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "Lisää ja poista käynnistimiä"
@@ -131,7 +131,7 @@ msgstr "3D-kääntyminen"
 msgid "3D Spotlight Turn"
 msgstr "3D-kääntyminen kohdevalolla"
 
-#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:98
+#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:99
 msgid "Custom"
 msgstr "Muokattu"
 
@@ -241,10 +241,6 @@ msgid ""
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
 
-#: ../awn-manager/awnLauncher.py:138
-msgid "Invalid launcher"
-msgstr ""
-
 #: ../awn-settings/awnLauncherEditor.py:144
 msgid "Select an Executable File"
 msgstr "Valitse suoritettava tiedosto"
@@ -272,308 +268,59 @@ msgstr "<b>Komento:</b>"
 msgid "Couldn't save the launcher. Error: %s"
 msgstr "Käynnistintä ei voitu tallentaa. Virhe: %s"
 
-#: ../awn-settings/awnSettings.py.in:63
+#: ../awn-settings/awnSettings.py.in:64
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:93
+#: ../awn-settings/awnSettings.py.in:94
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:94
+#: ../awn-settings/awnSettings.py.in:95
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:95
+#: ../awn-settings/awnSettings.py.in:96
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:96
+#: ../awn-settings/awnSettings.py.in:97
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "Piilota palkki automaattisesti"
 
-#: ../awn-settings/awnSettings.py.in:97
+#: ../awn-settings/awnSettings.py.in:98
 #, fuzzy
 msgid "Transparency"
 msgstr "Läpinäkyvyys:"
 
-#: ../awn-manager/window.glade.h:1
-msgid "<b>Active Icon</b>"
-msgstr "<b>Aktiivinen kuvake</b>"
-
-#: ../awn-manager/window.glade.h:2
-msgid "<b>Applet Preferences</b>"
-msgstr "<b>Sovelmien asetukset</b>"
-
-#: ../awn-manager/window.glade.h:3
-msgid "<b>Arrows</b>"
-msgstr "<b>Nuolet</b>"
-
-#: ../awn-manager/window.glade.h:4
-msgid "<b>Bar behaviour</b>"
-msgstr "<b>Palkin toiminta</b>"
-
-#: ../awn-manager/window.glade.h:5
-msgid "<b>Borders</b>"
-msgstr "<b>Reunukset</b>"
-
-#: ../awn-manager/window.glade.h:6
-msgid "<b>Customize Effects</b>"
-msgstr "<b>Mukauta efektejä</b>"
-
-#: ../awn-manager/window.glade.h:7
-msgid "<b>General Preferences</b>"
-msgstr "<b>Yleiset asetukset</b>"
-
-#: ../awn-manager/window.glade.h:8
-msgid "<b>Gradient</b>"
-msgstr "<b>Gradientti</b>"
-
-#: ../awn-manager/window.glade.h:9
-msgid "<b>Highlight</b>"
-msgstr "<b>Korostus</b>"
-
-#: ../awn-manager/window.glade.h:10
-msgid "<b>Icon Effects</b>"
-msgstr "<b>Kuvake-efektit</b>"
-
-#: ../awn-manager/window.glade.h:11
-msgid "<b>Launcher Preferences</b>"
-msgstr "Käynnistinasetukset"
-
-#: ../awn-manager/window.glade.h:12
-msgid "<b>Look </b>"
-msgstr "<b>Tyyli</b>"
-
-#: ../awn-manager/window.glade.h:13
-msgid "<b>Pattern</b>"
-msgstr "<b>Kuvio</b>"
-
-#: ../awn-manager/window.glade.h:14
-msgid "<b>Separator</b>"
-msgstr "<b>Erotin</b>"
-
-#: ../awn-manager/window.glade.h:15
-msgid "<b>Startup behaviour</b>"
-msgstr "<b>Käynnistyskäyttäytyminen</b>"
-
-#: ../awn-manager/window.glade.h:16
-msgid "<b>Text</b>"
-msgstr "<b>Teksti</b>"
-
-#: ../awn-manager/window.glade.h:17
-msgid "<b>Themes</b>"
-msgstr "<b>Teemat</b>"
-
-#: ../awn-manager/window.glade.h:18
-msgid "<b>Windows</b>"
-msgstr "<b>Ikkunat</b>"
-
-#: ../awn-manager/window.glade.h:19
-msgid "Activate"
-msgstr "Ota käyttöön"
-
-#: ../awn-manager/window.glade.h:20
-msgid "Add and remove applets"
-msgstr "Lisää ja poista sovelmia"
-
-#: ../awn-manager/window.glade.h:21
-msgid "Add and remove launchers"
-msgstr "Lisää ja poista käynnistimiä"
-
-#: ../awn-manager/window.glade.h:22
-msgid "Add, remove and save themes"
-msgstr "Lisää, poista ja tallenna teemoja"
-
-#: ../awn-manager/window.glade.h:23
-msgid "Alert when application window updated"
-msgstr "Huomauta, kun sovelluksen ikkuna on päivittynyt"
-
-#: ../awn-manager/window.glade.h:24
-msgid "Arrow offset: "
-msgstr ""
-
-#: ../awn-manager/window.glade.h:25
-msgid "Attention"
-msgstr "Huomio"
-
-#: ../awn-manager/window.glade.h:26
-msgid "Auto hide bar when not in use"
-msgstr "Piilota palkki automaattisesti"
-
-#: ../awn-manager/window.glade.h:27
-msgid "Automatically start AWN on login."
-msgstr "Käynnistä AWN automaattisesti kirjautumisen yhteydessä."
-
-#: ../awn-manager/window.glade.h:28
-msgid "Background color:"
-msgstr "Taustan väri:"
-
-#: ../awn-manager/window.glade.h:29
-msgid "Bar Appearance"
-msgstr "Palkin ulkonäkö"
-
-#: ../awn-manager/window.glade.h:30
-msgid "Bar angle: "
-msgstr "Palkin kulma: "
-
-#: ../awn-manager/window.glade.h:31
-msgid "Bar height: "
-msgstr "Palkin korkeus: "
-
-#: ../awn-manager/window.glade.h:32
-msgid "Change the look and behaviour of the dock"
-msgstr "Muuta palkin ulkonäköä ja toimintaa"
-
-#: ../awn-manager/window.glade.h:33
-msgid "Closing"
-msgstr "Suljetaan"
-
-#: ../awn-manager/window.glade.h:34
-msgid "Color:"
-msgstr "Väri:"
-
-#: ../awn-manager/window.glade.h:35
-msgid "Deactivate"
-msgstr "Poista käytöstä"
-
-#: ../awn-manager/window.glade.h:36
-msgid "Delete"
-msgstr "Poista"
-
-#: ../awn-manager/window.glade.h:37
-msgid "Enable pattern"
-msgstr "Ota kuvio käyttöön"
-
-#: ../awn-manager/window.glade.h:38
-msgid "Enable rounded corners"
-msgstr "Ota kulmien pyöristys käyttöön"
-
-#: ../awn-manager/window.glade.h:39
-msgid "First step color:"
-msgstr "Ensisijainen väri:"
-
-#: ../awn-manager/window.glade.h:40
-msgid "Font:"
-msgstr "Fontti:"
-
-#: ../awn-manager/window.glade.h:41
-msgid "General"
-msgstr "Yleiset"
-
-#: ../awn-manager/window.glade.h:42
-msgid "Glass Engine"
-msgstr "Lasitus"
-
-#: ../awn-manager/window.glade.h:43
-msgid "Hover"
-msgstr "Osoitus"
-
-#: ../awn-manager/window.glade.h:44
+#: ../bindings/python/__init__.py:118
+#, python-format
 msgid ""
-"Icon attention effect will be activated to alert user of updated windows."
+"The following Python modules could not be found: %s.  There are a few "
+"possible\n"
+"explanations for this:\n"
+"\n"
+"1. You do not have this Python module installed.  In this case, you should\n"
+"visit the AWN wiki's applets section to figure out the exact name of the\n"
+"package for your distribution that provides this module.\n"
+"\n"
+"2. The module is installed in a non-standard location.  This is usually the\n"
+"case when you manually install a package, that is, not via your "
+"distribution's\n"
+"package manager.  This situation is explained in the FAQ section of the "
+"wiki.\n"
 msgstr ""
-"Kuvakkeen huomio-efektillä ilmoitetaan käyttäjälle päivittyneistä ikkunoista."
 
-#: ../awn-manager/window.glade.h:45
-msgid "Icon offset: "
-msgstr "Kuvakkeen etäisyys: "
-
-#: ../awn-manager/window.glade.h:46
-msgid "Install"
-msgstr "Asenna"
-
-#: ../awn-manager/window.glade.h:47
-msgid "Internal border:"
-msgstr "Sisäreunus"
-
-#: ../awn-manager/window.glade.h:48
-msgid "Keep below maximized windows when not in use"
-msgstr "Pidä palkki suurennettujen ikkunoiden takana, kun se ei ole käytössä"
-
-#: ../awn-manager/window.glade.h:49
-msgid "Launching"
-msgstr "Käynnistetään"
-
-#: ../awn-manager/window.glade.h:50
-msgid "Main border:"
-msgstr "Pääreunus"
-
-#: ../awn-manager/window.glade.h:51
-msgid "Maximized windows don't cover the bar (requires restart)"
+#: ../bindings/python/__init__.py:133
+msgid "Awn Wiki"
 msgstr ""
-"Suurennetut ikkunat eivät peitä palkkia (vaatii uudelleenkäynnistyksen)"
-
-#: ../awn-manager/window.glade.h:52
-msgid "Opening"
-msgstr "Avataan"
-
-#: ../awn-manager/window.glade.h:53
-msgid "Pattern Engine"
-msgstr "Kuviointi"
-
-#: ../awn-manager/window.glade.h:54
-msgid "Second step color:"
-msgstr "Toissijainen väri:"
-
-#: ../awn-manager/window.glade.h:55
-msgid "Separator color:"
-msgstr "Erottimen väri:"
-
-#: ../awn-manager/window.glade.h:56
-msgid "Shadow color:"
-msgstr "Varjon väri:"
-
-#: ../awn-manager/window.glade.h:57
-msgid "Show separator between launchers and tasks"
-msgstr "Näytä erotin käynnistimien ja tehtävien välillä"
-
-#: ../awn-manager/window.glade.h:58
-msgid "Show windows from all viewports"
-msgstr "Näytä ikkunat kaikista työtiloista"
-
-#: ../awn-manager/window.glade.h:59
-msgid "Task Appearance"
-msgstr "Tehtävän ulkoasu"
-
-#: ../awn-manager/window.glade.h:60
-msgid "Tasks have arrows"
-msgstr "Prosessien alla on nuolet"
-
-#: ../awn-manager/window.glade.h:61
-msgid "The bar automatically hides when not used"
-msgstr "Palkki piilottuu automaattisesti kun sitä ei käytetä"
-
-#: ../awn-manager/window.glade.h:62
-msgid "Transparency:"
-msgstr "Läpinäkyvyys:"
-
-#: ../awn-manager/window.glade.h:63
-msgid "Windows don't overlap the bar if this is set"
-msgstr "Ikkunat eivät peitä palkkia"
-
-#: ../awn-manager/window.glade.h:64
-msgid "page 1"
-msgstr "sivu 1"
-
-#: ../awn-manager/window.glade.h:65
-msgid "page 2"
-msgstr "sivu 2"
-
-#: ../awn-manager/window.glade.h:66
-msgid "page 3"
-msgstr "sivu 3"
-
-#: ../awn-manager/window.glade.h:67
-msgid "page 4"
-msgstr "sivu 4"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr "Telakkamainen ikkunanavigaattori."
 
-#: ../libawn/awn-applet.c:1024 ../src/awn-panel.c:582
+#: ../libawn/awn-applet.c:1025 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr "Telakan asetukset"
 
@@ -581,13 +328,216 @@ msgstr "Telakan asetukset"
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:477
+#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:479
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:2932
+#: ../src/awn-panel.c:2971
 msgid "Close docklet"
 msgstr ""
+
+#~ msgid "<b>Active Icon</b>"
+#~ msgstr "<b>Aktiivinen kuvake</b>"
+
+#~ msgid "<b>Applet Preferences</b>"
+#~ msgstr "<b>Sovelmien asetukset</b>"
+
+#~ msgid "<b>Arrows</b>"
+#~ msgstr "<b>Nuolet</b>"
+
+#~ msgid "<b>Bar behaviour</b>"
+#~ msgstr "<b>Palkin toiminta</b>"
+
+#~ msgid "<b>Borders</b>"
+#~ msgstr "<b>Reunukset</b>"
+
+#~ msgid "<b>Customize Effects</b>"
+#~ msgstr "<b>Mukauta efektejä</b>"
+
+#~ msgid "<b>General Preferences</b>"
+#~ msgstr "<b>Yleiset asetukset</b>"
+
+#~ msgid "<b>Gradient</b>"
+#~ msgstr "<b>Gradientti</b>"
+
+#~ msgid "<b>Highlight</b>"
+#~ msgstr "<b>Korostus</b>"
+
+#~ msgid "<b>Icon Effects</b>"
+#~ msgstr "<b>Kuvake-efektit</b>"
+
+#~ msgid "<b>Launcher Preferences</b>"
+#~ msgstr "Käynnistinasetukset"
+
+#~ msgid "<b>Look </b>"
+#~ msgstr "<b>Tyyli</b>"
+
+#~ msgid "<b>Pattern</b>"
+#~ msgstr "<b>Kuvio</b>"
+
+#~ msgid "<b>Separator</b>"
+#~ msgstr "<b>Erotin</b>"
+
+#~ msgid "<b>Startup behaviour</b>"
+#~ msgstr "<b>Käynnistyskäyttäytyminen</b>"
+
+#~ msgid "<b>Text</b>"
+#~ msgstr "<b>Teksti</b>"
+
+#~ msgid "<b>Themes</b>"
+#~ msgstr "<b>Teemat</b>"
+
+#~ msgid "<b>Windows</b>"
+#~ msgstr "<b>Ikkunat</b>"
+
+#~ msgid "Activate"
+#~ msgstr "Ota käyttöön"
+
+#~ msgid "Add and remove applets"
+#~ msgstr "Lisää ja poista sovelmia"
+
+#~ msgid "Add and remove launchers"
+#~ msgstr "Lisää ja poista käynnistimiä"
+
+#~ msgid "Add, remove and save themes"
+#~ msgstr "Lisää, poista ja tallenna teemoja"
+
+#~ msgid "Alert when application window updated"
+#~ msgstr "Huomauta, kun sovelluksen ikkuna on päivittynyt"
+
+#~ msgid "Attention"
+#~ msgstr "Huomio"
+
+#~ msgid "Auto hide bar when not in use"
+#~ msgstr "Piilota palkki automaattisesti"
+
+#~ msgid "Automatically start AWN on login."
+#~ msgstr "Käynnistä AWN automaattisesti kirjautumisen yhteydessä."
+
+#~ msgid "Background color:"
+#~ msgstr "Taustan väri:"
+
+#~ msgid "Bar Appearance"
+#~ msgstr "Palkin ulkonäkö"
+
+#~ msgid "Bar angle: "
+#~ msgstr "Palkin kulma: "
+
+#~ msgid "Bar height: "
+#~ msgstr "Palkin korkeus: "
+
+#~ msgid "Change the look and behaviour of the dock"
+#~ msgstr "Muuta palkin ulkonäköä ja toimintaa"
+
+#~ msgid "Closing"
+#~ msgstr "Suljetaan"
+
+#~ msgid "Color:"
+#~ msgstr "Väri:"
+
+#~ msgid "Deactivate"
+#~ msgstr "Poista käytöstä"
+
+#~ msgid "Delete"
+#~ msgstr "Poista"
+
+#~ msgid "Enable pattern"
+#~ msgstr "Ota kuvio käyttöön"
+
+#~ msgid "Enable rounded corners"
+#~ msgstr "Ota kulmien pyöristys käyttöön"
+
+#~ msgid "First step color:"
+#~ msgstr "Ensisijainen väri:"
+
+#~ msgid "Font:"
+#~ msgstr "Fontti:"
+
+#~ msgid "General"
+#~ msgstr "Yleiset"
+
+#~ msgid "Glass Engine"
+#~ msgstr "Lasitus"
+
+#~ msgid "Hover"
+#~ msgstr "Osoitus"
+
+#~ msgid ""
+#~ "Icon attention effect will be activated to alert user of updated windows."
+#~ msgstr ""
+#~ "Kuvakkeen huomio-efektillä ilmoitetaan käyttäjälle päivittyneistä "
+#~ "ikkunoista."
+
+#~ msgid "Icon offset: "
+#~ msgstr "Kuvakkeen etäisyys: "
+
+#~ msgid "Install"
+#~ msgstr "Asenna"
+
+#~ msgid "Internal border:"
+#~ msgstr "Sisäreunus"
+
+#~ msgid "Keep below maximized windows when not in use"
+#~ msgstr ""
+#~ "Pidä palkki suurennettujen ikkunoiden takana, kun se ei ole käytössä"
+
+#~ msgid "Launching"
+#~ msgstr "Käynnistetään"
+
+#~ msgid "Main border:"
+#~ msgstr "Pääreunus"
+
+#~ msgid "Maximized windows don't cover the bar (requires restart)"
+#~ msgstr ""
+#~ "Suurennetut ikkunat eivät peitä palkkia (vaatii uudelleenkäynnistyksen)"
+
+#~ msgid "Opening"
+#~ msgstr "Avataan"
+
+#~ msgid "Pattern Engine"
+#~ msgstr "Kuviointi"
+
+#~ msgid "Second step color:"
+#~ msgstr "Toissijainen väri:"
+
+#~ msgid "Separator color:"
+#~ msgstr "Erottimen väri:"
+
+#~ msgid "Shadow color:"
+#~ msgstr "Varjon väri:"
+
+#~ msgid "Show separator between launchers and tasks"
+#~ msgstr "Näytä erotin käynnistimien ja tehtävien välillä"
+
+#~ msgid "Show windows from all viewports"
+#~ msgstr "Näytä ikkunat kaikista työtiloista"
+
+#~ msgid "Task Appearance"
+#~ msgstr "Tehtävän ulkoasu"
+
+#~ msgid "Tasks have arrows"
+#~ msgstr "Prosessien alla on nuolet"
+
+#~ msgid "The bar automatically hides when not used"
+#~ msgstr "Palkki piilottuu automaattisesti kun sitä ei käytetä"
+
+#~ msgid "Transparency:"
+#~ msgstr "Läpinäkyvyys:"
+
+#~ msgid "Windows don't overlap the bar if this is set"
+#~ msgstr "Ikkunat eivät peitä palkkia"
+
+#~ msgid "page 1"
+#~ msgstr "sivu 1"
+
+#~ msgid "page 2"
+#~ msgstr "sivu 2"
+
+#~ msgid "page 3"
+#~ msgstr "sivu 3"
+
+#~ msgid "page 4"
+#~ msgstr "sivu 4"
 
 #~ msgid "Awn Manager"
 #~ msgstr "Awn-hallinta"

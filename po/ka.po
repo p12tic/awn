@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 23:47-0700\n"
+"POT-Creation-Date: 2009-08-18 18:22-0700\n"
 "PO-Revision-Date: 2008-11-15 00:30+0000\n"
 "Last-Translator: David Machakhelidze <david.machakhelidze@gmail.com>\n"
 "Language-Team: Georgian <ka@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Launch %s"
 msgstr "გაშვება"
 
-#: ../applets/taskmanager/task-icon.c:1812
+#: ../applets/taskmanager/task-icon.c:1852
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "გამშვებების ჩამატება/წაშლა"
@@ -130,7 +130,7 @@ msgstr ""
 msgid "3D Spotlight Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:98
+#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:99
 msgid "Custom"
 msgstr ""
 
@@ -227,10 +227,6 @@ msgid ""
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
 
-#: ../awn-manager/awnLauncher.py:138
-msgid "Invalid launcher"
-msgstr ""
-
 #: ../awn-settings/awnLauncherEditor.py:144
 msgid "Select an Executable File"
 msgstr ""
@@ -258,306 +254,59 @@ msgstr ""
 msgid "Couldn't save the launcher. Error: %s"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:63
+#: ../awn-settings/awnSettings.py.in:64
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:93
+#: ../awn-settings/awnSettings.py.in:94
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:94
+#: ../awn-settings/awnSettings.py.in:95
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:95
+#: ../awn-settings/awnSettings.py.in:96
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:96
+#: ../awn-settings/awnSettings.py.in:97
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "პანელის ავტომატური დამალვა როცა არ გამოიყენება"
 
-#: ../awn-settings/awnSettings.py.in:97
+#: ../awn-settings/awnSettings.py.in:98
 #, fuzzy
 msgid "Transparency"
 msgstr "გამჭვირვალობა:"
 
-#: ../awn-manager/window.glade.h:1
-msgid "<b>Active Icon</b>"
-msgstr "<b>აქტიური ხატულა</b>"
-
-#: ../awn-manager/window.glade.h:2
-msgid "<b>Applet Preferences</b>"
-msgstr "აპლეტის პარამეტრები"
-
-#: ../awn-manager/window.glade.h:3
-msgid "<b>Arrows</b>"
-msgstr "<b>ისრები</b>"
-
-#: ../awn-manager/window.glade.h:4
-msgid "<b>Bar behaviour</b>"
-msgstr "<b>პანელის მოქმედებები</b>"
-
-#: ../awn-manager/window.glade.h:5
-msgid "<b>Borders</b>"
-msgstr "<b>ჩარჩოები</b>"
-
-#: ../awn-manager/window.glade.h:6
-msgid "<b>Customize Effects</b>"
-msgstr "ეფექტების შერჩევა"
-
-#: ../awn-manager/window.glade.h:7
-msgid "<b>General Preferences</b>"
-msgstr "ძირითადი პარამეტრები"
-
-#: ../awn-manager/window.glade.h:8
-msgid "<b>Gradient</b>"
-msgstr "<b>გრადიენტი</b>"
-
-#: ../awn-manager/window.glade.h:9
-msgid "<b>Highlight</b>"
-msgstr "<b>მონიშვნა</b>"
-
-#: ../awn-manager/window.glade.h:10
-msgid "<b>Icon Effects</b>"
-msgstr "ხატულის ეფექტები"
-
-#: ../awn-manager/window.glade.h:11
-msgid "<b>Launcher Preferences</b>"
-msgstr "გამშვების პარამეტრები"
-
-#: ../awn-manager/window.glade.h:12
-msgid "<b>Look </b>"
-msgstr "იერსახე"
-
-#: ../awn-manager/window.glade.h:13
-msgid "<b>Pattern</b>"
-msgstr "<b>შტრიხები</b>"
-
-#: ../awn-manager/window.glade.h:14
-msgid "<b>Separator</b>"
-msgstr "<b>გამყოფი</b>"
-
-#: ../awn-manager/window.glade.h:15
-msgid "<b>Startup behaviour</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:16
-msgid "<b>Text</b>"
-msgstr "<b>ტექსტი</b>"
-
-#: ../awn-manager/window.glade.h:17
-msgid "<b>Themes</b>"
-msgstr "თემები"
-
-#: ../awn-manager/window.glade.h:18
-msgid "<b>Windows</b>"
-msgstr "<b>ფანჯრები</b>"
-
-#: ../awn-manager/window.glade.h:19
-msgid "Activate"
-msgstr "აქტივირება"
-
-#: ../awn-manager/window.glade.h:20
-msgid "Add and remove applets"
-msgstr "აპტელების დამატება/წაშლა"
-
-#: ../awn-manager/window.glade.h:21
-msgid "Add and remove launchers"
-msgstr "გამშვებების ჩამატება/წაშლა"
-
-#: ../awn-manager/window.glade.h:22
-msgid "Add, remove and save themes"
-msgstr "თემების დამატება, წაშლა და შენახვა"
-
-#: ../awn-manager/window.glade.h:23
-msgid "Alert when application window updated"
-msgstr "ვიზუალური შეტყობინება პროგრამის მდგომარეობის განახლებისას"
-
-#: ../awn-manager/window.glade.h:24
-msgid "Arrow offset: "
-msgstr ""
-
-#: ../awn-manager/window.glade.h:25
-msgid "Attention"
-msgstr "ყურადღება"
-
-#: ../awn-manager/window.glade.h:26
-msgid "Auto hide bar when not in use"
-msgstr "პანელის ავტომატური დამალვა როცა არ გამოიყენება"
-
-#: ../awn-manager/window.glade.h:27
-msgid "Automatically start AWN on login."
-msgstr ""
-
-#: ../awn-manager/window.glade.h:28
-msgid "Background color:"
-msgstr "ფონის ფერი:"
-
-#: ../awn-manager/window.glade.h:29
-msgid "Bar Appearance"
-msgstr "პანლეის იერსახე"
-
-#: ../awn-manager/window.glade.h:30
-msgid "Bar angle: "
-msgstr "პანელის დახრილობის კუთხე "
-
-#: ../awn-manager/window.glade.h:31
-msgid "Bar height: "
-msgstr "პანელის სიმაღლე "
-
-#: ../awn-manager/window.glade.h:32
-msgid "Change the look and behaviour of the dock"
-msgstr "დოკის იერსახისა და მოქმედებების ცვლილება"
-
-#: ../awn-manager/window.glade.h:33
-msgid "Closing"
-msgstr "დახურვა"
-
-#: ../awn-manager/window.glade.h:34
-msgid "Color:"
-msgstr "ფერი"
-
-#: ../awn-manager/window.glade.h:35
-msgid "Deactivate"
-msgstr "დეაქტივაცია"
-
-#: ../awn-manager/window.glade.h:36
-msgid "Delete"
-msgstr "წაშლა"
-
-#: ../awn-manager/window.glade.h:37
-msgid "Enable pattern"
-msgstr "დაშტრიხვის ჩართვა"
-
-#: ../awn-manager/window.glade.h:38
-msgid "Enable rounded corners"
-msgstr "მრგვალი კუთხეების ჩართვა"
-
-#: ../awn-manager/window.glade.h:39
-msgid "First step color:"
-msgstr "პრიველი ნაბიჯის ფერი:"
-
-#: ../awn-manager/window.glade.h:40
-msgid "Font:"
-msgstr "ფონტი:"
-
-#: ../awn-manager/window.glade.h:41
-msgid "General"
-msgstr "ძირითადი"
-
-#: ../awn-manager/window.glade.h:42
-msgid "Glass Engine"
-msgstr "შუშის ძრავა"
-
-#: ../awn-manager/window.glade.h:43
-msgid "Hover"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:44
+#: ../bindings/python/__init__.py:118
+#, python-format
 msgid ""
-"Icon attention effect will be activated to alert user of updated windows."
+"The following Python modules could not be found: %s.  There are a few "
+"possible\n"
+"explanations for this:\n"
+"\n"
+"1. You do not have this Python module installed.  In this case, you should\n"
+"visit the AWN wiki's applets section to figure out the exact name of the\n"
+"package for your distribution that provides this module.\n"
+"\n"
+"2. The module is installed in a non-standard location.  This is usually the\n"
+"case when you manually install a package, that is, not via your "
+"distribution's\n"
+"package manager.  This situation is explained in the FAQ section of the "
+"wiki.\n"
 msgstr ""
 
-#: ../awn-manager/window.glade.h:45
-msgid "Icon offset: "
+#: ../bindings/python/__init__.py:133
+msgid "Awn Wiki"
 msgstr ""
-
-#: ../awn-manager/window.glade.h:46
-msgid "Install"
-msgstr "ინსტალაცია"
-
-#: ../awn-manager/window.glade.h:47
-msgid "Internal border:"
-msgstr "შიდა ჩარჩო:"
-
-#: ../awn-manager/window.glade.h:48
-msgid "Keep below maximized windows when not in use"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:49
-msgid "Launching"
-msgstr "გაშვება"
-
-#: ../awn-manager/window.glade.h:50
-msgid "Main border:"
-msgstr "მთავარი ჩარჩო:"
-
-#: ../awn-manager/window.glade.h:51
-msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "მაქსიმიზირებული ფანჯარა არ ფარავს პანელს (საჭიროებს გადატვირთვას)"
-
-#: ../awn-manager/window.glade.h:52
-msgid "Opening"
-msgstr "გახსნა"
-
-#: ../awn-manager/window.glade.h:53
-msgid "Pattern Engine"
-msgstr "დაშტრიხვის ძრავა"
-
-#: ../awn-manager/window.glade.h:54
-msgid "Second step color:"
-msgstr "მეორე ნაბიჯის ფერი:"
-
-#: ../awn-manager/window.glade.h:55
-msgid "Separator color:"
-msgstr "გამოყოფის ფერი:"
-
-#: ../awn-manager/window.glade.h:56
-msgid "Shadow color:"
-msgstr "ჩრდილის ფერი:"
-
-#: ../awn-manager/window.glade.h:57
-msgid "Show separator between launchers and tasks"
-msgstr "აჩვენე გამყოფი გამშვებთა და ამოცანებს შორის"
-
-#: ../awn-manager/window.glade.h:58
-msgid "Show windows from all viewports"
-msgstr "აჩვენე ფანჯარა ყველა დესკტოპზე"
-
-#: ../awn-manager/window.glade.h:59
-msgid "Task Appearance"
-msgstr "ამოცანის იერსახე"
-
-#: ../awn-manager/window.glade.h:60
-msgid "Tasks have arrows"
-msgstr "ამოცანებს აქვთ ისრები"
-
-#: ../awn-manager/window.glade.h:61
-msgid "The bar automatically hides when not used"
-msgstr "პანელი ავტომატურად იმალება როცა არ გმოიყენება"
-
-#: ../awn-manager/window.glade.h:62
-msgid "Transparency:"
-msgstr "გამჭვირვალობა:"
-
-#: ../awn-manager/window.glade.h:63
-msgid "Windows don't overlap the bar if this is set"
-msgstr "ფანჯარა არ ფარავს პანელს როცა ეს ჩართულია"
-
-#: ../awn-manager/window.glade.h:64
-msgid "page 1"
-msgstr "1 - გვერდი"
-
-#: ../awn-manager/window.glade.h:65
-msgid "page 2"
-msgstr "2 - გვერდი"
-
-#: ../awn-manager/window.glade.h:66
-msgid "page 3"
-msgstr "3 - გვერდი"
-
-#: ../awn-manager/window.glade.h:67
-msgid "page 4"
-msgstr "4 - გვერდი"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr ""
 
-#: ../libawn/awn-applet.c:1024 ../src/awn-panel.c:582
+#: ../libawn/awn-applet.c:1025 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr ""
 
@@ -565,13 +314,193 @@ msgstr ""
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:477
+#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:479
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:2932
+#: ../src/awn-panel.c:2971
 msgid "Close docklet"
 msgstr ""
+
+#~ msgid "<b>Active Icon</b>"
+#~ msgstr "<b>აქტიური ხატულა</b>"
+
+#~ msgid "<b>Applet Preferences</b>"
+#~ msgstr "აპლეტის პარამეტრები"
+
+#~ msgid "<b>Arrows</b>"
+#~ msgstr "<b>ისრები</b>"
+
+#~ msgid "<b>Bar behaviour</b>"
+#~ msgstr "<b>პანელის მოქმედებები</b>"
+
+#~ msgid "<b>Borders</b>"
+#~ msgstr "<b>ჩარჩოები</b>"
+
+#~ msgid "<b>Customize Effects</b>"
+#~ msgstr "ეფექტების შერჩევა"
+
+#~ msgid "<b>General Preferences</b>"
+#~ msgstr "ძირითადი პარამეტრები"
+
+#~ msgid "<b>Gradient</b>"
+#~ msgstr "<b>გრადიენტი</b>"
+
+#~ msgid "<b>Highlight</b>"
+#~ msgstr "<b>მონიშვნა</b>"
+
+#~ msgid "<b>Icon Effects</b>"
+#~ msgstr "ხატულის ეფექტები"
+
+#~ msgid "<b>Launcher Preferences</b>"
+#~ msgstr "გამშვების პარამეტრები"
+
+#~ msgid "<b>Look </b>"
+#~ msgstr "იერსახე"
+
+#~ msgid "<b>Pattern</b>"
+#~ msgstr "<b>შტრიხები</b>"
+
+#~ msgid "<b>Separator</b>"
+#~ msgstr "<b>გამყოფი</b>"
+
+#~ msgid "<b>Text</b>"
+#~ msgstr "<b>ტექსტი</b>"
+
+#~ msgid "<b>Themes</b>"
+#~ msgstr "თემები"
+
+#~ msgid "<b>Windows</b>"
+#~ msgstr "<b>ფანჯრები</b>"
+
+#~ msgid "Activate"
+#~ msgstr "აქტივირება"
+
+#~ msgid "Add and remove applets"
+#~ msgstr "აპტელების დამატება/წაშლა"
+
+#~ msgid "Add and remove launchers"
+#~ msgstr "გამშვებების ჩამატება/წაშლა"
+
+#~ msgid "Add, remove and save themes"
+#~ msgstr "თემების დამატება, წაშლა და შენახვა"
+
+#~ msgid "Alert when application window updated"
+#~ msgstr "ვიზუალური შეტყობინება პროგრამის მდგომარეობის განახლებისას"
+
+#~ msgid "Attention"
+#~ msgstr "ყურადღება"
+
+#~ msgid "Auto hide bar when not in use"
+#~ msgstr "პანელის ავტომატური დამალვა როცა არ გამოიყენება"
+
+#~ msgid "Background color:"
+#~ msgstr "ფონის ფერი:"
+
+#~ msgid "Bar Appearance"
+#~ msgstr "პანლეის იერსახე"
+
+#~ msgid "Bar angle: "
+#~ msgstr "პანელის დახრილობის კუთხე "
+
+#~ msgid "Bar height: "
+#~ msgstr "პანელის სიმაღლე "
+
+#~ msgid "Change the look and behaviour of the dock"
+#~ msgstr "დოკის იერსახისა და მოქმედებების ცვლილება"
+
+#~ msgid "Closing"
+#~ msgstr "დახურვა"
+
+#~ msgid "Color:"
+#~ msgstr "ფერი"
+
+#~ msgid "Deactivate"
+#~ msgstr "დეაქტივაცია"
+
+#~ msgid "Delete"
+#~ msgstr "წაშლა"
+
+#~ msgid "Enable pattern"
+#~ msgstr "დაშტრიხვის ჩართვა"
+
+#~ msgid "Enable rounded corners"
+#~ msgstr "მრგვალი კუთხეების ჩართვა"
+
+#~ msgid "First step color:"
+#~ msgstr "პრიველი ნაბიჯის ფერი:"
+
+#~ msgid "Font:"
+#~ msgstr "ფონტი:"
+
+#~ msgid "General"
+#~ msgstr "ძირითადი"
+
+#~ msgid "Glass Engine"
+#~ msgstr "შუშის ძრავა"
+
+#~ msgid "Install"
+#~ msgstr "ინსტალაცია"
+
+#~ msgid "Internal border:"
+#~ msgstr "შიდა ჩარჩო:"
+
+#~ msgid "Launching"
+#~ msgstr "გაშვება"
+
+#~ msgid "Main border:"
+#~ msgstr "მთავარი ჩარჩო:"
+
+#~ msgid "Maximized windows don't cover the bar (requires restart)"
+#~ msgstr "მაქსიმიზირებული ფანჯარა არ ფარავს პანელს (საჭიროებს გადატვირთვას)"
+
+#~ msgid "Opening"
+#~ msgstr "გახსნა"
+
+#~ msgid "Pattern Engine"
+#~ msgstr "დაშტრიხვის ძრავა"
+
+#~ msgid "Second step color:"
+#~ msgstr "მეორე ნაბიჯის ფერი:"
+
+#~ msgid "Separator color:"
+#~ msgstr "გამოყოფის ფერი:"
+
+#~ msgid "Shadow color:"
+#~ msgstr "ჩრდილის ფერი:"
+
+#~ msgid "Show separator between launchers and tasks"
+#~ msgstr "აჩვენე გამყოფი გამშვებთა და ამოცანებს შორის"
+
+#~ msgid "Show windows from all viewports"
+#~ msgstr "აჩვენე ფანჯარა ყველა დესკტოპზე"
+
+#~ msgid "Task Appearance"
+#~ msgstr "ამოცანის იერსახე"
+
+#~ msgid "Tasks have arrows"
+#~ msgstr "ამოცანებს აქვთ ისრები"
+
+#~ msgid "The bar automatically hides when not used"
+#~ msgstr "პანელი ავტომატურად იმალება როცა არ გმოიყენება"
+
+#~ msgid "Transparency:"
+#~ msgstr "გამჭვირვალობა:"
+
+#~ msgid "Windows don't overlap the bar if this is set"
+#~ msgstr "ფანჯარა არ ფარავს პანელს როცა ეს ჩართულია"
+
+#~ msgid "page 1"
+#~ msgstr "1 - გვერდი"
+
+#~ msgid "page 2"
+#~ msgstr "2 - გვერდი"
+
+#~ msgid "page 3"
+#~ msgstr "3 - გვერდი"
+
+#~ msgid "page 4"
+#~ msgstr "4 - გვერდი"
 
 #~ msgid "Change Icon"
 #~ msgstr "ხატულას შეცვლა"

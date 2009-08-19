@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 23:47-0700\n"
+"POT-Creation-Date: 2009-08-18 18:22-0700\n"
 "PO-Revision-Date: 2009-01-30 13:43+0000\n"
 "Last-Translator: Manuel R. Ciosici <manuelciosici@yahoo.com>\n"
 "Language-Team: Romanian <ro@li.org>\n"
@@ -32,7 +32,7 @@ msgstr ""
 msgid "Launch %s"
 msgstr "Se lansează"
 
-#: ../applets/taskmanager/task-icon.c:1812
+#: ../applets/taskmanager/task-icon.c:1852
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "Adaugare și eliminare lansatoare"
@@ -132,7 +132,7 @@ msgstr "Rotire 3D"
 msgid "3D Spotlight Turn"
 msgstr "Rotire 3D cu spot de lumină"
 
-#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:98
+#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:99
 msgid "Custom"
 msgstr "Personalizat"
 
@@ -250,10 +250,6 @@ msgstr ""
 "Software Liber la adresa Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-"
 "1301 USA."
 
-#: ../awn-manager/awnLauncher.py:138
-msgid "Invalid launcher"
-msgstr ""
-
 #: ../awn-settings/awnLauncherEditor.py:144
 msgid "Select an Executable File"
 msgstr "Selectați un fișier executabil"
@@ -281,308 +277,59 @@ msgstr "<b>Comandă:</b>"
 msgid "Couldn't save the launcher. Error: %s"
 msgstr "Lansatorul nu a putut fi salvat. Eroare: %s"
 
-#: ../awn-settings/awnSettings.py.in:63
+#: ../awn-settings/awnSettings.py.in:64
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:93
+#: ../awn-settings/awnSettings.py.in:94
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:94
+#: ../awn-settings/awnSettings.py.in:95
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:95
+#: ../awn-settings/awnSettings.py.in:96
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:96
+#: ../awn-settings/awnSettings.py.in:97
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "Ascunde automat bara când nu este folosită"
 
-#: ../awn-settings/awnSettings.py.in:97
+#: ../awn-settings/awnSettings.py.in:98
 #, fuzzy
 msgid "Transparency"
 msgstr "Transparență:"
 
-#: ../awn-manager/window.glade.h:1
-msgid "<b>Active Icon</b>"
-msgstr "<b>Pictogramă activă</b>"
-
-#: ../awn-manager/window.glade.h:2
-msgid "<b>Applet Preferences</b>"
-msgstr "<b>Preferințe mini-aplicație</b>"
-
-#: ../awn-manager/window.glade.h:3
-msgid "<b>Arrows</b>"
-msgstr "<b>Indicatoare</b>"
-
-#: ../awn-manager/window.glade.h:4
-msgid "<b>Bar behaviour</b>"
-msgstr "<b>Comportament bară</b>"
-
-#: ../awn-manager/window.glade.h:5
-msgid "<b>Borders</b>"
-msgstr "<b>Margini</b>"
-
-#: ../awn-manager/window.glade.h:6
-msgid "<b>Customize Effects</b>"
-msgstr "<b>Prelucrează efectele</b>"
-
-#: ../awn-manager/window.glade.h:7
-msgid "<b>General Preferences</b>"
-msgstr "<b>Preferințe generale</b>"
-
-#: ../awn-manager/window.glade.h:8
-msgid "<b>Gradient</b>"
-msgstr "<b>Degrade</b>"
-
-#: ../awn-manager/window.glade.h:9
-msgid "<b>Highlight</b>"
-msgstr "<b>Evidențiere</b>"
-
-#: ../awn-manager/window.glade.h:10
-msgid "<b>Icon Effects</b>"
-msgstr "<b>Efecte pictogramă</b>"
-
-#: ../awn-manager/window.glade.h:11
-msgid "<b>Launcher Preferences</b>"
-msgstr "<b>Preferințe lansator</b>"
-
-#: ../awn-manager/window.glade.h:12
-msgid "<b>Look </b>"
-msgstr "<b>Aspect </b>"
-
-#: ../awn-manager/window.glade.h:13
-msgid "<b>Pattern</b>"
-msgstr "<b>Model</b>"
-
-#: ../awn-manager/window.glade.h:14
-msgid "<b>Separator</b>"
-msgstr "<b>Separator</b>"
-
-#: ../awn-manager/window.glade.h:15
-msgid "<b>Startup behaviour</b>"
-msgstr "<b>Comportament la pornire</b>"
-
-#: ../awn-manager/window.glade.h:16
-msgid "<b>Text</b>"
-msgstr "<b>Text</b>"
-
-#: ../awn-manager/window.glade.h:17
-msgid "<b>Themes</b>"
-msgstr "<b>Teme</b>"
-
-#: ../awn-manager/window.glade.h:18
-msgid "<b>Windows</b>"
-msgstr "<b>Ferestre</b>"
-
-#: ../awn-manager/window.glade.h:19
-msgid "Activate"
-msgstr "Activează"
-
-#: ../awn-manager/window.glade.h:20
-msgid "Add and remove applets"
-msgstr "Adaugare și eliminare mini-aplicații"
-
-#: ../awn-manager/window.glade.h:21
-msgid "Add and remove launchers"
-msgstr "Adaugare și eliminare lansatoare"
-
-#: ../awn-manager/window.glade.h:22
-msgid "Add, remove and save themes"
-msgstr "Adaugare, eliminare și salvare teme"
-
-#: ../awn-manager/window.glade.h:23
-msgid "Alert when application window updated"
-msgstr "Avertizează când fereastra aplicaţiei este actualizată"
-
-#: ../awn-manager/window.glade.h:24
-msgid "Arrow offset: "
-msgstr ""
-
-#: ../awn-manager/window.glade.h:25
-msgid "Attention"
-msgstr "Atenție"
-
-#: ../awn-manager/window.glade.h:26
-msgid "Auto hide bar when not in use"
-msgstr "Ascunde automat bara când nu este folosită"
-
-#: ../awn-manager/window.glade.h:27
-msgid "Automatically start AWN on login."
-msgstr "Pornește AWN automat la autentificare."
-
-#: ../awn-manager/window.glade.h:28
-msgid "Background color:"
-msgstr "Culoare de fundal:"
-
-#: ../awn-manager/window.glade.h:29
-msgid "Bar Appearance"
-msgstr "Aspectul barei"
-
-#: ../awn-manager/window.glade.h:30
-msgid "Bar angle: "
-msgstr "Unghi bară: "
-
-#: ../awn-manager/window.glade.h:31
-msgid "Bar height: "
-msgstr "Înălțime bară: "
-
-#: ../awn-manager/window.glade.h:32
-msgid "Change the look and behaviour of the dock"
-msgstr "Schimbă aspectul și comportamentul barei"
-
-#: ../awn-manager/window.glade.h:33
-msgid "Closing"
-msgstr "Închid"
-
-#: ../awn-manager/window.glade.h:34
-msgid "Color:"
-msgstr "Culoare:"
-
-#: ../awn-manager/window.glade.h:35
-msgid "Deactivate"
-msgstr "Dezactivează"
-
-#: ../awn-manager/window.glade.h:36
-msgid "Delete"
-msgstr "Șterge"
-
-#: ../awn-manager/window.glade.h:37
-msgid "Enable pattern"
-msgstr "Activează modelul"
-
-#: ../awn-manager/window.glade.h:38
-msgid "Enable rounded corners"
-msgstr "Activează colţuri rotunde"
-
-#: ../awn-manager/window.glade.h:39
-msgid "First step color:"
-msgstr "Culoarea primului pas:"
-
-#: ../awn-manager/window.glade.h:40
-msgid "Font:"
-msgstr "Font:"
-
-#: ../awn-manager/window.glade.h:41
-msgid "General"
-msgstr "General"
-
-#: ../awn-manager/window.glade.h:42
-msgid "Glass Engine"
-msgstr "Motor reflecție"
-
-#: ../awn-manager/window.glade.h:43
-msgid "Hover"
-msgstr "Planare"
-
-#: ../awn-manager/window.glade.h:44
+#: ../bindings/python/__init__.py:118
+#, python-format
 msgid ""
-"Icon attention effect will be activated to alert user of updated windows."
+"The following Python modules could not be found: %s.  There are a few "
+"possible\n"
+"explanations for this:\n"
+"\n"
+"1. You do not have this Python module installed.  In this case, you should\n"
+"visit the AWN wiki's applets section to figure out the exact name of the\n"
+"package for your distribution that provides this module.\n"
+"\n"
+"2. The module is installed in a non-standard location.  This is usually the\n"
+"case when you manually install a package, that is, not via your "
+"distribution's\n"
+"package manager.  This situation is explained in the FAQ section of the "
+"wiki.\n"
 msgstr ""
-"Efectul pictogramă de atenţie va fi activat pentru a aviza utilizatorul de "
-"actualizarea ferestrei"
 
-#: ../awn-manager/window.glade.h:45
-msgid "Icon offset: "
-msgstr "Decalaj pictogramă: "
-
-#: ../awn-manager/window.glade.h:46
-msgid "Install"
-msgstr "Instalează"
-
-#: ../awn-manager/window.glade.h:47
-msgid "Internal border:"
-msgstr "Margine internă:"
-
-#: ../awn-manager/window.glade.h:48
-msgid "Keep below maximized windows when not in use"
-msgstr "Menţine sub fereastrele maximizate când nu e în uz"
-
-#: ../awn-manager/window.glade.h:49
-msgid "Launching"
-msgstr "Se lansează"
-
-#: ../awn-manager/window.glade.h:50
-msgid "Main border:"
-msgstr "Margine principală:"
-
-#: ../awn-manager/window.glade.h:51
-msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "Ferestrele maximizate nu acoperă bara (necesită repornire)"
-
-#: ../awn-manager/window.glade.h:52
-msgid "Opening"
-msgstr "Se deschide"
-
-#: ../awn-manager/window.glade.h:53
-msgid "Pattern Engine"
-msgstr "Motor modele"
-
-#: ../awn-manager/window.glade.h:54
-msgid "Second step color:"
-msgstr "Culoarea pasului doi:"
-
-#: ../awn-manager/window.glade.h:55
-msgid "Separator color:"
-msgstr "Culoare separator:"
-
-#: ../awn-manager/window.glade.h:56
-msgid "Shadow color:"
-msgstr "Culoare umbră:"
-
-#: ../awn-manager/window.glade.h:57
-msgid "Show separator between launchers and tasks"
-msgstr "Arată un separator între lansatoare și programe"
-
-#: ../awn-manager/window.glade.h:58
-msgid "Show windows from all viewports"
-msgstr "Arată ferestre de pe toate ecranele"
-
-#: ../awn-manager/window.glade.h:59
-msgid "Task Appearance"
-msgstr "Aspectul programelor"
-
-#: ../awn-manager/window.glade.h:60
-msgid "Tasks have arrows"
-msgstr "Programele au indicatoare"
-
-#: ../awn-manager/window.glade.h:61
-msgid "The bar automatically hides when not used"
-msgstr "Bara se ascunde automat când nu e folosită"
-
-#: ../awn-manager/window.glade.h:62
-msgid "Transparency:"
-msgstr "Transparență:"
-
-#: ../awn-manager/window.glade.h:63
-msgid "Windows don't overlap the bar if this is set"
-msgstr "Ferestrele nu se suprapun peste bară"
-
-#: ../awn-manager/window.glade.h:64
-msgid "page 1"
-msgstr "pagina 1"
-
-#: ../awn-manager/window.glade.h:65
-msgid "page 2"
-msgstr "pagina 2"
-
-#: ../awn-manager/window.glade.h:66
-msgid "page 3"
-msgstr "pagina 3"
-
-#: ../awn-manager/window.glade.h:67
-msgid "page 4"
-msgstr "pagina 4"
+#: ../bindings/python/__init__.py:133
+msgid "Awn Wiki"
+msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr "Un navigator de ferestre asemănător barei de docare."
 
-#: ../libawn/awn-applet.c:1024 ../src/awn-panel.c:582
+#: ../libawn/awn-applet.c:1025 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr "Preferințele bară de docare"
 
@@ -590,13 +337,214 @@ msgstr "Preferințele bară de docare"
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:477
+#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:479
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:2932
+#: ../src/awn-panel.c:2971
 msgid "Close docklet"
 msgstr ""
+
+#~ msgid "<b>Active Icon</b>"
+#~ msgstr "<b>Pictogramă activă</b>"
+
+#~ msgid "<b>Applet Preferences</b>"
+#~ msgstr "<b>Preferințe mini-aplicație</b>"
+
+#~ msgid "<b>Arrows</b>"
+#~ msgstr "<b>Indicatoare</b>"
+
+#~ msgid "<b>Bar behaviour</b>"
+#~ msgstr "<b>Comportament bară</b>"
+
+#~ msgid "<b>Borders</b>"
+#~ msgstr "<b>Margini</b>"
+
+#~ msgid "<b>Customize Effects</b>"
+#~ msgstr "<b>Prelucrează efectele</b>"
+
+#~ msgid "<b>General Preferences</b>"
+#~ msgstr "<b>Preferințe generale</b>"
+
+#~ msgid "<b>Gradient</b>"
+#~ msgstr "<b>Degrade</b>"
+
+#~ msgid "<b>Highlight</b>"
+#~ msgstr "<b>Evidențiere</b>"
+
+#~ msgid "<b>Icon Effects</b>"
+#~ msgstr "<b>Efecte pictogramă</b>"
+
+#~ msgid "<b>Launcher Preferences</b>"
+#~ msgstr "<b>Preferințe lansator</b>"
+
+#~ msgid "<b>Look </b>"
+#~ msgstr "<b>Aspect </b>"
+
+#~ msgid "<b>Pattern</b>"
+#~ msgstr "<b>Model</b>"
+
+#~ msgid "<b>Separator</b>"
+#~ msgstr "<b>Separator</b>"
+
+#~ msgid "<b>Startup behaviour</b>"
+#~ msgstr "<b>Comportament la pornire</b>"
+
+#~ msgid "<b>Text</b>"
+#~ msgstr "<b>Text</b>"
+
+#~ msgid "<b>Themes</b>"
+#~ msgstr "<b>Teme</b>"
+
+#~ msgid "<b>Windows</b>"
+#~ msgstr "<b>Ferestre</b>"
+
+#~ msgid "Activate"
+#~ msgstr "Activează"
+
+#~ msgid "Add and remove applets"
+#~ msgstr "Adaugare și eliminare mini-aplicații"
+
+#~ msgid "Add and remove launchers"
+#~ msgstr "Adaugare și eliminare lansatoare"
+
+#~ msgid "Add, remove and save themes"
+#~ msgstr "Adaugare, eliminare și salvare teme"
+
+#~ msgid "Alert when application window updated"
+#~ msgstr "Avertizează când fereastra aplicaţiei este actualizată"
+
+#~ msgid "Attention"
+#~ msgstr "Atenție"
+
+#~ msgid "Auto hide bar when not in use"
+#~ msgstr "Ascunde automat bara când nu este folosită"
+
+#~ msgid "Automatically start AWN on login."
+#~ msgstr "Pornește AWN automat la autentificare."
+
+#~ msgid "Background color:"
+#~ msgstr "Culoare de fundal:"
+
+#~ msgid "Bar Appearance"
+#~ msgstr "Aspectul barei"
+
+#~ msgid "Bar angle: "
+#~ msgstr "Unghi bară: "
+
+#~ msgid "Bar height: "
+#~ msgstr "Înălțime bară: "
+
+#~ msgid "Change the look and behaviour of the dock"
+#~ msgstr "Schimbă aspectul și comportamentul barei"
+
+#~ msgid "Closing"
+#~ msgstr "Închid"
+
+#~ msgid "Color:"
+#~ msgstr "Culoare:"
+
+#~ msgid "Deactivate"
+#~ msgstr "Dezactivează"
+
+#~ msgid "Delete"
+#~ msgstr "Șterge"
+
+#~ msgid "Enable pattern"
+#~ msgstr "Activează modelul"
+
+#~ msgid "Enable rounded corners"
+#~ msgstr "Activează colţuri rotunde"
+
+#~ msgid "First step color:"
+#~ msgstr "Culoarea primului pas:"
+
+#~ msgid "Font:"
+#~ msgstr "Font:"
+
+#~ msgid "General"
+#~ msgstr "General"
+
+#~ msgid "Glass Engine"
+#~ msgstr "Motor reflecție"
+
+#~ msgid "Hover"
+#~ msgstr "Planare"
+
+#~ msgid ""
+#~ "Icon attention effect will be activated to alert user of updated windows."
+#~ msgstr ""
+#~ "Efectul pictogramă de atenţie va fi activat pentru a aviza utilizatorul "
+#~ "de actualizarea ferestrei"
+
+#~ msgid "Icon offset: "
+#~ msgstr "Decalaj pictogramă: "
+
+#~ msgid "Install"
+#~ msgstr "Instalează"
+
+#~ msgid "Internal border:"
+#~ msgstr "Margine internă:"
+
+#~ msgid "Keep below maximized windows when not in use"
+#~ msgstr "Menţine sub fereastrele maximizate când nu e în uz"
+
+#~ msgid "Launching"
+#~ msgstr "Se lansează"
+
+#~ msgid "Main border:"
+#~ msgstr "Margine principală:"
+
+#~ msgid "Maximized windows don't cover the bar (requires restart)"
+#~ msgstr "Ferestrele maximizate nu acoperă bara (necesită repornire)"
+
+#~ msgid "Opening"
+#~ msgstr "Se deschide"
+
+#~ msgid "Pattern Engine"
+#~ msgstr "Motor modele"
+
+#~ msgid "Second step color:"
+#~ msgstr "Culoarea pasului doi:"
+
+#~ msgid "Separator color:"
+#~ msgstr "Culoare separator:"
+
+#~ msgid "Shadow color:"
+#~ msgstr "Culoare umbră:"
+
+#~ msgid "Show separator between launchers and tasks"
+#~ msgstr "Arată un separator între lansatoare și programe"
+
+#~ msgid "Show windows from all viewports"
+#~ msgstr "Arată ferestre de pe toate ecranele"
+
+#~ msgid "Task Appearance"
+#~ msgstr "Aspectul programelor"
+
+#~ msgid "Tasks have arrows"
+#~ msgstr "Programele au indicatoare"
+
+#~ msgid "The bar automatically hides when not used"
+#~ msgstr "Bara se ascunde automat când nu e folosită"
+
+#~ msgid "Transparency:"
+#~ msgstr "Transparență:"
+
+#~ msgid "Windows don't overlap the bar if this is set"
+#~ msgstr "Ferestrele nu se suprapun peste bară"
+
+#~ msgid "page 1"
+#~ msgstr "pagina 1"
+
+#~ msgid "page 2"
+#~ msgstr "pagina 2"
+
+#~ msgid "page 3"
+#~ msgstr "pagina 3"
+
+#~ msgid "page 4"
+#~ msgstr "pagina 4"
 
 #~ msgid "Awn Manager"
 #~ msgstr "Administratorul Awn"

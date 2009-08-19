@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 23:47-0700\n"
+"POT-Creation-Date: 2009-08-18 18:22-0700\n"
 "PO-Revision-Date: 2009-02-01 22:57+0000\n"
 "Last-Translator: José Lou C. <knight4light@gmail.com>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Launch %s"
 msgstr "起動中"
 
-#: ../applets/taskmanager/task-icon.c:1812
+#: ../applets/taskmanager/task-icon.c:1852
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "ランチャーの追加と削除"
@@ -130,7 +130,7 @@ msgstr ""
 msgid "3D Spotlight Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:98
+#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:99
 msgid "Custom"
 msgstr ""
 
@@ -234,10 +234,6 @@ msgid ""
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
 
-#: ../awn-manager/awnLauncher.py:138
-msgid "Invalid launcher"
-msgstr ""
-
 #: ../awn-settings/awnLauncherEditor.py:144
 msgid "Select an Executable File"
 msgstr "実行ファイルを選んでください"
@@ -265,306 +261,59 @@ msgstr "<b>コマンド:</b>"
 msgid "Couldn't save the launcher. Error: %s"
 msgstr "ラーンチャをセーブ出来ませんでした。エラー：%s"
 
-#: ../awn-settings/awnSettings.py.in:63
+#: ../awn-settings/awnSettings.py.in:64
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:93
+#: ../awn-settings/awnSettings.py.in:94
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:94
+#: ../awn-settings/awnSettings.py.in:95
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:95
+#: ../awn-settings/awnSettings.py.in:96
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:96
+#: ../awn-settings/awnSettings.py.in:97
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "使わないときバーを自動的に隠す"
 
-#: ../awn-settings/awnSettings.py.in:97
+#: ../awn-settings/awnSettings.py.in:98
 #, fuzzy
 msgid "Transparency"
 msgstr "透明度:"
 
-#: ../awn-manager/window.glade.h:1
-msgid "<b>Active Icon</b>"
-msgstr "<b>アクティブなアイコン</b>"
-
-#: ../awn-manager/window.glade.h:2
-msgid "<b>Applet Preferences</b>"
-msgstr "<b>アプレット設定</b>"
-
-#: ../awn-manager/window.glade.h:3
-msgid "<b>Arrows</b>"
-msgstr "<b>矢印</b>"
-
-#: ../awn-manager/window.glade.h:4
-msgid "<b>Bar behaviour</b>"
-msgstr "<b>バーの動作</b>"
-
-#: ../awn-manager/window.glade.h:5
-msgid "<b>Borders</b>"
-msgstr "<b>境界</b>"
-
-#: ../awn-manager/window.glade.h:6
-msgid "<b>Customize Effects</b>"
-msgstr "<b>特撮設定</b>"
-
-#: ../awn-manager/window.glade.h:7
-msgid "<b>General Preferences</b>"
-msgstr "<b>設定</b>"
-
-#: ../awn-manager/window.glade.h:8
-msgid "<b>Gradient</b>"
-msgstr "グラデーション"
-
-#: ../awn-manager/window.glade.h:9
-msgid "<b>Highlight</b>"
-msgstr "<b>光沢</b>"
-
-#: ../awn-manager/window.glade.h:10
-msgid "<b>Icon Effects</b>"
-msgstr "<b>アイコン設定</b>"
-
-#: ../awn-manager/window.glade.h:11
-msgid "<b>Launcher Preferences</b>"
-msgstr "<b>ランチャー設定</b>"
-
-#: ../awn-manager/window.glade.h:12
-msgid "<b>Look </b>"
-msgstr "<b>外観 </b>"
-
-#: ../awn-manager/window.glade.h:13
-msgid "<b>Pattern</b>"
-msgstr "<b>パターン</b>"
-
-#: ../awn-manager/window.glade.h:14
-msgid "<b>Separator</b>"
-msgstr "<b>区切り</b>"
-
-#: ../awn-manager/window.glade.h:15
-msgid "<b>Startup behaviour</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:16
-msgid "<b>Text</b>"
-msgstr "<b>テキスト</b>"
-
-#: ../awn-manager/window.glade.h:17
-msgid "<b>Themes</b>"
-msgstr "<b>テーマ</b>"
-
-#: ../awn-manager/window.glade.h:18
-msgid "<b>Windows</b>"
-msgstr "<b>ウィンドウ</b>"
-
-#: ../awn-manager/window.glade.h:19
-msgid "Activate"
-msgstr "有効化"
-
-#: ../awn-manager/window.glade.h:20
-msgid "Add and remove applets"
-msgstr "アプレットの追加と削除"
-
-#: ../awn-manager/window.glade.h:21
-msgid "Add and remove launchers"
-msgstr "ランチャーの追加と削除"
-
-#: ../awn-manager/window.glade.h:22
-msgid "Add, remove and save themes"
-msgstr "テーマの追加と削除"
-
-#: ../awn-manager/window.glade.h:23
-msgid "Alert when application window updated"
-msgstr "アプリケーションウィンドウが更新されたら警告"
-
-#: ../awn-manager/window.glade.h:24
-msgid "Arrow offset: "
-msgstr ""
-
-#: ../awn-manager/window.glade.h:25
-msgid "Attention"
-msgstr "注意"
-
-#: ../awn-manager/window.glade.h:26
-msgid "Auto hide bar when not in use"
-msgstr "使わないときバーを自動的に隠す"
-
-#: ../awn-manager/window.glade.h:27
-msgid "Automatically start AWN on login."
-msgstr ""
-
-#: ../awn-manager/window.glade.h:28
-msgid "Background color:"
-msgstr "背景色:"
-
-#: ../awn-manager/window.glade.h:29
-msgid "Bar Appearance"
-msgstr "バーの外観"
-
-#: ../awn-manager/window.glade.h:30
-msgid "Bar angle: "
-msgstr "バーの角度: "
-
-#: ../awn-manager/window.glade.h:31
-msgid "Bar height: "
-msgstr "バーの高さ: "
-
-#: ../awn-manager/window.glade.h:32
-msgid "Change the look and behaviour of the dock"
-msgstr "Dockの外観と動作を変更します"
-
-#: ../awn-manager/window.glade.h:33
-msgid "Closing"
-msgstr "閉じています"
-
-#: ../awn-manager/window.glade.h:34
-msgid "Color:"
-msgstr "色:"
-
-#: ../awn-manager/window.glade.h:35
-msgid "Deactivate"
-msgstr "無効化"
-
-#: ../awn-manager/window.glade.h:36
-msgid "Delete"
-msgstr "削除"
-
-#: ../awn-manager/window.glade.h:37
-msgid "Enable pattern"
-msgstr "パターンを有効にする"
-
-#: ../awn-manager/window.glade.h:38
-msgid "Enable rounded corners"
-msgstr "Dockの角を丸める"
-
-#: ../awn-manager/window.glade.h:39
-msgid "First step color:"
-msgstr "最初の段の色"
-
-#: ../awn-manager/window.glade.h:40
-msgid "Font:"
-msgstr "フォント:"
-
-#: ../awn-manager/window.glade.h:41
-msgid "General"
-msgstr "全般"
-
-#: ../awn-manager/window.glade.h:42
-msgid "Glass Engine"
-msgstr "鏡面効果の設定"
-
-#: ../awn-manager/window.glade.h:43
-msgid "Hover"
-msgstr "ホバー"
-
-#: ../awn-manager/window.glade.h:44
+#: ../bindings/python/__init__.py:118
+#, python-format
 msgid ""
-"Icon attention effect will be activated to alert user of updated windows."
-msgstr "アイコンエフェクトを更新されたウィンドウに対して有効化"
+"The following Python modules could not be found: %s.  There are a few "
+"possible\n"
+"explanations for this:\n"
+"\n"
+"1. You do not have this Python module installed.  In this case, you should\n"
+"visit the AWN wiki's applets section to figure out the exact name of the\n"
+"package for your distribution that provides this module.\n"
+"\n"
+"2. The module is installed in a non-standard location.  This is usually the\n"
+"case when you manually install a package, that is, not via your "
+"distribution's\n"
+"package manager.  This situation is explained in the FAQ section of the "
+"wiki.\n"
+msgstr ""
 
-#: ../awn-manager/window.glade.h:45
-msgid "Icon offset: "
-msgstr "アイコン偏り： "
-
-#: ../awn-manager/window.glade.h:46
-msgid "Install"
-msgstr "インストール"
-
-#: ../awn-manager/window.glade.h:47
-msgid "Internal border:"
-msgstr "内側の境界"
-
-#: ../awn-manager/window.glade.h:48
-msgid "Keep below maximized windows when not in use"
-msgstr "使わないとき最大化ウィンドウの下に保つ"
-
-#: ../awn-manager/window.glade.h:49
-msgid "Launching"
-msgstr "起動中"
-
-#: ../awn-manager/window.glade.h:50
-msgid "Main border:"
-msgstr "メインの境界"
-
-#: ../awn-manager/window.glade.h:51
-msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "最大化されたウィンドウをバーで覆わない (再起動が必要)"
-
-#: ../awn-manager/window.glade.h:52
-msgid "Opening"
-msgstr "開いています"
-
-#: ../awn-manager/window.glade.h:53
-msgid "Pattern Engine"
-msgstr "パターンの設定"
-
-#: ../awn-manager/window.glade.h:54
-msgid "Second step color:"
-msgstr "二段目の色"
-
-#: ../awn-manager/window.glade.h:55
-msgid "Separator color:"
-msgstr "区切りの色"
-
-#: ../awn-manager/window.glade.h:56
-msgid "Shadow color:"
-msgstr "影の色:"
-
-#: ../awn-manager/window.glade.h:57
-msgid "Show separator between launchers and tasks"
-msgstr "ランチャとタスクの間に区切りを表示"
-
-#: ../awn-manager/window.glade.h:58
-msgid "Show windows from all viewports"
-msgstr "全てのビューポートのウィンドウを表示"
-
-#: ../awn-manager/window.glade.h:59
-msgid "Task Appearance"
-msgstr "タスクの外観"
-
-#: ../awn-manager/window.glade.h:60
-msgid "Tasks have arrows"
-msgstr "タスクに矢印をつける"
-
-#: ../awn-manager/window.glade.h:61
-msgid "The bar automatically hides when not used"
-msgstr "使わないときバーを自動的に隠す"
-
-#: ../awn-manager/window.glade.h:62
-msgid "Transparency:"
-msgstr "透明度:"
-
-#: ../awn-manager/window.glade.h:63
-msgid "Windows don't overlap the bar if this is set"
-msgstr "ウィンドウをバーの上に表示させない"
-
-#: ../awn-manager/window.glade.h:64
-msgid "page 1"
-msgstr "ページ1"
-
-#: ../awn-manager/window.glade.h:65
-msgid "page 2"
-msgstr "ページ 2"
-
-#: ../awn-manager/window.glade.h:66
-msgid "page 3"
-msgstr "ページ 3"
-
-#: ../awn-manager/window.glade.h:67
-msgid "page 4"
-msgstr "ページ 4"
+#: ../bindings/python/__init__.py:133
+msgid "Awn Wiki"
+msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr ""
 
-#: ../libawn/awn-applet.c:1024 ../src/awn-panel.c:582
+#: ../libawn/awn-applet.c:1025 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr ""
 
@@ -572,13 +321,206 @@ msgstr ""
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:477
+#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:479
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:2932
+#: ../src/awn-panel.c:2971
 msgid "Close docklet"
 msgstr ""
+
+#~ msgid "<b>Active Icon</b>"
+#~ msgstr "<b>アクティブなアイコン</b>"
+
+#~ msgid "<b>Applet Preferences</b>"
+#~ msgstr "<b>アプレット設定</b>"
+
+#~ msgid "<b>Arrows</b>"
+#~ msgstr "<b>矢印</b>"
+
+#~ msgid "<b>Bar behaviour</b>"
+#~ msgstr "<b>バーの動作</b>"
+
+#~ msgid "<b>Borders</b>"
+#~ msgstr "<b>境界</b>"
+
+#~ msgid "<b>Customize Effects</b>"
+#~ msgstr "<b>特撮設定</b>"
+
+#~ msgid "<b>General Preferences</b>"
+#~ msgstr "<b>設定</b>"
+
+#~ msgid "<b>Gradient</b>"
+#~ msgstr "グラデーション"
+
+#~ msgid "<b>Highlight</b>"
+#~ msgstr "<b>光沢</b>"
+
+#~ msgid "<b>Icon Effects</b>"
+#~ msgstr "<b>アイコン設定</b>"
+
+#~ msgid "<b>Launcher Preferences</b>"
+#~ msgstr "<b>ランチャー設定</b>"
+
+#~ msgid "<b>Look </b>"
+#~ msgstr "<b>外観 </b>"
+
+#~ msgid "<b>Pattern</b>"
+#~ msgstr "<b>パターン</b>"
+
+#~ msgid "<b>Separator</b>"
+#~ msgstr "<b>区切り</b>"
+
+#~ msgid "<b>Text</b>"
+#~ msgstr "<b>テキスト</b>"
+
+#~ msgid "<b>Themes</b>"
+#~ msgstr "<b>テーマ</b>"
+
+#~ msgid "<b>Windows</b>"
+#~ msgstr "<b>ウィンドウ</b>"
+
+#~ msgid "Activate"
+#~ msgstr "有効化"
+
+#~ msgid "Add and remove applets"
+#~ msgstr "アプレットの追加と削除"
+
+#~ msgid "Add and remove launchers"
+#~ msgstr "ランチャーの追加と削除"
+
+#~ msgid "Add, remove and save themes"
+#~ msgstr "テーマの追加と削除"
+
+#~ msgid "Alert when application window updated"
+#~ msgstr "アプリケーションウィンドウが更新されたら警告"
+
+#~ msgid "Attention"
+#~ msgstr "注意"
+
+#~ msgid "Auto hide bar when not in use"
+#~ msgstr "使わないときバーを自動的に隠す"
+
+#~ msgid "Background color:"
+#~ msgstr "背景色:"
+
+#~ msgid "Bar Appearance"
+#~ msgstr "バーの外観"
+
+#~ msgid "Bar angle: "
+#~ msgstr "バーの角度: "
+
+#~ msgid "Bar height: "
+#~ msgstr "バーの高さ: "
+
+#~ msgid "Change the look and behaviour of the dock"
+#~ msgstr "Dockの外観と動作を変更します"
+
+#~ msgid "Closing"
+#~ msgstr "閉じています"
+
+#~ msgid "Color:"
+#~ msgstr "色:"
+
+#~ msgid "Deactivate"
+#~ msgstr "無効化"
+
+#~ msgid "Delete"
+#~ msgstr "削除"
+
+#~ msgid "Enable pattern"
+#~ msgstr "パターンを有効にする"
+
+#~ msgid "Enable rounded corners"
+#~ msgstr "Dockの角を丸める"
+
+#~ msgid "First step color:"
+#~ msgstr "最初の段の色"
+
+#~ msgid "Font:"
+#~ msgstr "フォント:"
+
+#~ msgid "General"
+#~ msgstr "全般"
+
+#~ msgid "Glass Engine"
+#~ msgstr "鏡面効果の設定"
+
+#~ msgid "Hover"
+#~ msgstr "ホバー"
+
+#~ msgid ""
+#~ "Icon attention effect will be activated to alert user of updated windows."
+#~ msgstr "アイコンエフェクトを更新されたウィンドウに対して有効化"
+
+#~ msgid "Icon offset: "
+#~ msgstr "アイコン偏り： "
+
+#~ msgid "Install"
+#~ msgstr "インストール"
+
+#~ msgid "Internal border:"
+#~ msgstr "内側の境界"
+
+#~ msgid "Keep below maximized windows when not in use"
+#~ msgstr "使わないとき最大化ウィンドウの下に保つ"
+
+#~ msgid "Launching"
+#~ msgstr "起動中"
+
+#~ msgid "Main border:"
+#~ msgstr "メインの境界"
+
+#~ msgid "Maximized windows don't cover the bar (requires restart)"
+#~ msgstr "最大化されたウィンドウをバーで覆わない (再起動が必要)"
+
+#~ msgid "Opening"
+#~ msgstr "開いています"
+
+#~ msgid "Pattern Engine"
+#~ msgstr "パターンの設定"
+
+#~ msgid "Second step color:"
+#~ msgstr "二段目の色"
+
+#~ msgid "Separator color:"
+#~ msgstr "区切りの色"
+
+#~ msgid "Shadow color:"
+#~ msgstr "影の色:"
+
+#~ msgid "Show separator between launchers and tasks"
+#~ msgstr "ランチャとタスクの間に区切りを表示"
+
+#~ msgid "Show windows from all viewports"
+#~ msgstr "全てのビューポートのウィンドウを表示"
+
+#~ msgid "Task Appearance"
+#~ msgstr "タスクの外観"
+
+#~ msgid "Tasks have arrows"
+#~ msgstr "タスクに矢印をつける"
+
+#~ msgid "The bar automatically hides when not used"
+#~ msgstr "使わないときバーを自動的に隠す"
+
+#~ msgid "Transparency:"
+#~ msgstr "透明度:"
+
+#~ msgid "Windows don't overlap the bar if this is set"
+#~ msgstr "ウィンドウをバーの上に表示させない"
+
+#~ msgid "page 1"
+#~ msgstr "ページ1"
+
+#~ msgid "page 2"
+#~ msgstr "ページ 2"
+
+#~ msgid "page 3"
+#~ msgstr "ページ 3"
+
+#~ msgid "page 4"
+#~ msgstr "ページ 4"
 
 #~ msgid "Awn Manager"
 #~ msgstr "Awn マネージャー"

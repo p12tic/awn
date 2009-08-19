@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 23:48-0700\n"
+"POT-Creation-Date: 2009-08-18 18:23-0700\n"
 "PO-Revision-Date: 2008-07-09 03:13+0000\n"
 "Last-Translator: lancetw <lancetw@gmail.com>\n"
 "Language-Team: Traditional Chinese <zh_TW@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Launch %s"
 msgstr "正在启动"
 
-#: ../applets/taskmanager/task-icon.c:1812
+#: ../applets/taskmanager/task-icon.c:1852
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "加入和刪除啟動器"
@@ -130,7 +130,7 @@ msgstr ""
 msgid "3D Spotlight Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:98
+#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:99
 msgid "Custom"
 msgstr ""
 
@@ -227,10 +227,6 @@ msgid ""
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
 
-#: ../awn-manager/awnLauncher.py:138
-msgid "Invalid launcher"
-msgstr ""
-
 #: ../awn-settings/awnLauncherEditor.py:144
 msgid "Select an Executable File"
 msgstr ""
@@ -258,306 +254,59 @@ msgstr ""
 msgid "Couldn't save the launcher. Error: %s"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:63
+#: ../awn-settings/awnSettings.py.in:64
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:93
+#: ../awn-settings/awnSettings.py.in:94
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:94
+#: ../awn-settings/awnSettings.py.in:95
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:95
+#: ../awn-settings/awnSettings.py.in:96
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:96
+#: ../awn-settings/awnSettings.py.in:97
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "自動隱藏"
 
-#: ../awn-settings/awnSettings.py.in:97
+#: ../awn-settings/awnSettings.py.in:98
 #, fuzzy
 msgid "Transparency"
 msgstr "透明度:"
 
-#: ../awn-manager/window.glade.h:1
-msgid "<b>Active Icon</b>"
-msgstr "<b>活動圖標</b>"
-
-#: ../awn-manager/window.glade.h:2
-msgid "<b>Applet Preferences</b>"
-msgstr "<b>小程式選項</b>"
-
-#: ../awn-manager/window.glade.h:3
-msgid "<b>Arrows</b>"
-msgstr "<b>箭頭</b>"
-
-#: ../awn-manager/window.glade.h:4
-msgid "<b>Bar behaviour</b>"
-msgstr "<b>承條屬性</b>"
-
-#: ../awn-manager/window.glade.h:5
-msgid "<b>Borders</b>"
-msgstr "<b>邊框</b>"
-
-#: ../awn-manager/window.glade.h:6
-msgid "<b>Customize Effects</b>"
-msgstr "<b>定制特效</b>"
-
-#: ../awn-manager/window.glade.h:7
-msgid "<b>General Preferences</b>"
-msgstr "<b>通用首选项</b>"
-
-#: ../awn-manager/window.glade.h:8
-msgid "<b>Gradient</b>"
-msgstr "<b>遞色</b>"
-
-#: ../awn-manager/window.glade.h:9
-msgid "<b>Highlight</b>"
-msgstr "<b>打光</b>"
-
-#: ../awn-manager/window.glade.h:10
-msgid "<b>Icon Effects</b>"
-msgstr "<b>圖標特效</b>"
-
-#: ../awn-manager/window.glade.h:11
-msgid "<b>Launcher Preferences</b>"
-msgstr "<b>起动器选项</b>"
-
-#: ../awn-manager/window.glade.h:12
-msgid "<b>Look </b>"
-msgstr "<b>外觀</b>"
-
-#: ../awn-manager/window.glade.h:13
-msgid "<b>Pattern</b>"
-msgstr "<b>花色</b>"
-
-#: ../awn-manager/window.glade.h:14
-msgid "<b>Separator</b>"
-msgstr "<b>分隔線</b>"
-
-#: ../awn-manager/window.glade.h:15
-msgid "<b>Startup behaviour</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:16
-msgid "<b>Text</b>"
-msgstr "<b>文字</b>"
-
-#: ../awn-manager/window.glade.h:17
-msgid "<b>Themes</b>"
-msgstr "<b>主题</b>"
-
-#: ../awn-manager/window.glade.h:18
-msgid "<b>Windows</b>"
-msgstr "<b>視窗</b>"
-
-#: ../awn-manager/window.glade.h:19
-msgid "Activate"
-msgstr "啟動"
-
-#: ../awn-manager/window.glade.h:20
-msgid "Add and remove applets"
-msgstr "加入和刪除小程式"
-
-#: ../awn-manager/window.glade.h:21
-msgid "Add and remove launchers"
-msgstr "加入和刪除啟動器"
-
-#: ../awn-manager/window.glade.h:22
-msgid "Add, remove and save themes"
-msgstr "添加，删除和保存主题"
-
-#: ../awn-manager/window.glade.h:23
-msgid "Alert when application window updated"
-msgstr "当程序窗口更新时提醒"
-
-#: ../awn-manager/window.glade.h:24
-msgid "Arrow offset: "
-msgstr ""
-
-#: ../awn-manager/window.glade.h:25
-msgid "Attention"
-msgstr "注意"
-
-#: ../awn-manager/window.glade.h:26
-msgid "Auto hide bar when not in use"
-msgstr "自動隱藏"
-
-#: ../awn-manager/window.glade.h:27
-msgid "Automatically start AWN on login."
-msgstr ""
-
-#: ../awn-manager/window.glade.h:28
-msgid "Background color:"
-msgstr "背景顏色："
-
-#: ../awn-manager/window.glade.h:29
-msgid "Bar Appearance"
-msgstr "承條外貌"
-
-#: ../awn-manager/window.glade.h:30
-msgid "Bar angle: "
-msgstr "面板角度 "
-
-#: ../awn-manager/window.glade.h:31
-msgid "Bar height: "
-msgstr "面板高度 "
-
-#: ../awn-manager/window.glade.h:32
-msgid "Change the look and behaviour of the dock"
-msgstr "调整dock的外观和行为"
-
-#: ../awn-manager/window.glade.h:33
-msgid "Closing"
-msgstr "關閉中"
-
-#: ../awn-manager/window.glade.h:34
-msgid "Color:"
-msgstr "顏色："
-
-#: ../awn-manager/window.glade.h:35
-msgid "Deactivate"
-msgstr "停止"
-
-#: ../awn-manager/window.glade.h:36
-msgid "Delete"
-msgstr "刪除"
-
-#: ../awn-manager/window.glade.h:37
-msgid "Enable pattern"
-msgstr "綴花色"
-
-#: ../awn-manager/window.glade.h:38
-msgid "Enable rounded corners"
-msgstr "抹圓角"
-
-#: ../awn-manager/window.glade.h:39
-msgid "First step color:"
-msgstr "起色"
-
-#: ../awn-manager/window.glade.h:40
-msgid "Font:"
-msgstr "字体"
-
-#: ../awn-manager/window.glade.h:41
-msgid "General"
-msgstr "一般"
-
-#: ../awn-manager/window.glade.h:42
-msgid "Glass Engine"
-msgstr "琉璃"
-
-#: ../awn-manager/window.glade.h:43
-msgid "Hover"
-msgstr "悬浮"
-
-#: ../awn-manager/window.glade.h:44
+#: ../bindings/python/__init__.py:118
+#, python-format
 msgid ""
-"Icon attention effect will be activated to alert user of updated windows."
-msgstr "图标提醒特效将会被激活以提醒用户改变了的窗口。"
+"The following Python modules could not be found: %s.  There are a few "
+"possible\n"
+"explanations for this:\n"
+"\n"
+"1. You do not have this Python module installed.  In this case, you should\n"
+"visit the AWN wiki's applets section to figure out the exact name of the\n"
+"package for your distribution that provides this module.\n"
+"\n"
+"2. The module is installed in a non-standard location.  This is usually the\n"
+"case when you manually install a package, that is, not via your "
+"distribution's\n"
+"package manager.  This situation is explained in the FAQ section of the "
+"wiki.\n"
+msgstr ""
 
-#: ../awn-manager/window.glade.h:45
-msgid "Icon offset: "
-msgstr "图标偏移： "
-
-#: ../awn-manager/window.glade.h:46
-msgid "Install"
-msgstr "安装"
-
-#: ../awn-manager/window.glade.h:47
-msgid "Internal border:"
-msgstr "內框："
-
-#: ../awn-manager/window.glade.h:48
-msgid "Keep below maximized windows when not in use"
-msgstr "在不使用时隐藏在最大化窗口的下面"
-
-#: ../awn-manager/window.glade.h:49
-msgid "Launching"
-msgstr "正在启动"
-
-#: ../awn-manager/window.glade.h:50
-msgid "Main border:"
-msgstr "主框："
-
-#: ../awn-manager/window.glade.h:51
-msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "不被展幅視窗蓋過（重啟生效）"
-
-#: ../awn-manager/window.glade.h:52
-msgid "Opening"
-msgstr "正在打开"
-
-#: ../awn-manager/window.glade.h:53
-msgid "Pattern Engine"
-msgstr "花色"
-
-#: ../awn-manager/window.glade.h:54
-msgid "Second step color:"
-msgstr "終色"
-
-#: ../awn-manager/window.glade.h:55
-msgid "Separator color:"
-msgstr "隔線色："
-
-#: ../awn-manager/window.glade.h:56
-msgid "Shadow color:"
-msgstr "陰影色："
-
-#: ../awn-manager/window.glade.h:57
-msgid "Show separator between launchers and tasks"
-msgstr "啟動器與程序間以線分隔"
-
-#: ../awn-manager/window.glade.h:58
-msgid "Show windows from all viewports"
-msgstr "顯示各工作區所有視窗"
-
-#: ../awn-manager/window.glade.h:59
-msgid "Task Appearance"
-msgstr "程序外貌"
-
-#: ../awn-manager/window.glade.h:60
-msgid "Tasks have arrows"
-msgstr "程序下加箭頭"
-
-#: ../awn-manager/window.glade.h:61
-msgid "The bar automatically hides when not used"
-msgstr "閒置時自動隱藏"
-
-#: ../awn-manager/window.glade.h:62
-msgid "Transparency:"
-msgstr "透明度:"
-
-#: ../awn-manager/window.glade.h:63
-msgid "Windows don't overlap the bar if this is set"
-msgstr "設定此項後，視窗不會蓋過承條"
-
-#: ../awn-manager/window.glade.h:64
-msgid "page 1"
-msgstr "第一页"
-
-#: ../awn-manager/window.glade.h:65
-msgid "page 2"
-msgstr "第二页"
-
-#: ../awn-manager/window.glade.h:66
-msgid "page 3"
-msgstr "第三页"
-
-#: ../awn-manager/window.glade.h:67
-msgid "page 4"
-msgstr "第四页"
+#: ../bindings/python/__init__.py:133
+msgid "Awn Wiki"
+msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr ""
 
-#: ../libawn/awn-applet.c:1024 ../src/awn-panel.c:582
+#: ../libawn/awn-applet.c:1025 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr ""
 
@@ -565,13 +314,206 @@ msgstr ""
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:477
+#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:479
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:2932
+#: ../src/awn-panel.c:2971
 msgid "Close docklet"
 msgstr ""
+
+#~ msgid "<b>Active Icon</b>"
+#~ msgstr "<b>活動圖標</b>"
+
+#~ msgid "<b>Applet Preferences</b>"
+#~ msgstr "<b>小程式選項</b>"
+
+#~ msgid "<b>Arrows</b>"
+#~ msgstr "<b>箭頭</b>"
+
+#~ msgid "<b>Bar behaviour</b>"
+#~ msgstr "<b>承條屬性</b>"
+
+#~ msgid "<b>Borders</b>"
+#~ msgstr "<b>邊框</b>"
+
+#~ msgid "<b>Customize Effects</b>"
+#~ msgstr "<b>定制特效</b>"
+
+#~ msgid "<b>General Preferences</b>"
+#~ msgstr "<b>通用首选项</b>"
+
+#~ msgid "<b>Gradient</b>"
+#~ msgstr "<b>遞色</b>"
+
+#~ msgid "<b>Highlight</b>"
+#~ msgstr "<b>打光</b>"
+
+#~ msgid "<b>Icon Effects</b>"
+#~ msgstr "<b>圖標特效</b>"
+
+#~ msgid "<b>Launcher Preferences</b>"
+#~ msgstr "<b>起动器选项</b>"
+
+#~ msgid "<b>Look </b>"
+#~ msgstr "<b>外觀</b>"
+
+#~ msgid "<b>Pattern</b>"
+#~ msgstr "<b>花色</b>"
+
+#~ msgid "<b>Separator</b>"
+#~ msgstr "<b>分隔線</b>"
+
+#~ msgid "<b>Text</b>"
+#~ msgstr "<b>文字</b>"
+
+#~ msgid "<b>Themes</b>"
+#~ msgstr "<b>主题</b>"
+
+#~ msgid "<b>Windows</b>"
+#~ msgstr "<b>視窗</b>"
+
+#~ msgid "Activate"
+#~ msgstr "啟動"
+
+#~ msgid "Add and remove applets"
+#~ msgstr "加入和刪除小程式"
+
+#~ msgid "Add and remove launchers"
+#~ msgstr "加入和刪除啟動器"
+
+#~ msgid "Add, remove and save themes"
+#~ msgstr "添加，删除和保存主题"
+
+#~ msgid "Alert when application window updated"
+#~ msgstr "当程序窗口更新时提醒"
+
+#~ msgid "Attention"
+#~ msgstr "注意"
+
+#~ msgid "Auto hide bar when not in use"
+#~ msgstr "自動隱藏"
+
+#~ msgid "Background color:"
+#~ msgstr "背景顏色："
+
+#~ msgid "Bar Appearance"
+#~ msgstr "承條外貌"
+
+#~ msgid "Bar angle: "
+#~ msgstr "面板角度 "
+
+#~ msgid "Bar height: "
+#~ msgstr "面板高度 "
+
+#~ msgid "Change the look and behaviour of the dock"
+#~ msgstr "调整dock的外观和行为"
+
+#~ msgid "Closing"
+#~ msgstr "關閉中"
+
+#~ msgid "Color:"
+#~ msgstr "顏色："
+
+#~ msgid "Deactivate"
+#~ msgstr "停止"
+
+#~ msgid "Delete"
+#~ msgstr "刪除"
+
+#~ msgid "Enable pattern"
+#~ msgstr "綴花色"
+
+#~ msgid "Enable rounded corners"
+#~ msgstr "抹圓角"
+
+#~ msgid "First step color:"
+#~ msgstr "起色"
+
+#~ msgid "Font:"
+#~ msgstr "字体"
+
+#~ msgid "General"
+#~ msgstr "一般"
+
+#~ msgid "Glass Engine"
+#~ msgstr "琉璃"
+
+#~ msgid "Hover"
+#~ msgstr "悬浮"
+
+#~ msgid ""
+#~ "Icon attention effect will be activated to alert user of updated windows."
+#~ msgstr "图标提醒特效将会被激活以提醒用户改变了的窗口。"
+
+#~ msgid "Icon offset: "
+#~ msgstr "图标偏移： "
+
+#~ msgid "Install"
+#~ msgstr "安装"
+
+#~ msgid "Internal border:"
+#~ msgstr "內框："
+
+#~ msgid "Keep below maximized windows when not in use"
+#~ msgstr "在不使用时隐藏在最大化窗口的下面"
+
+#~ msgid "Launching"
+#~ msgstr "正在启动"
+
+#~ msgid "Main border:"
+#~ msgstr "主框："
+
+#~ msgid "Maximized windows don't cover the bar (requires restart)"
+#~ msgstr "不被展幅視窗蓋過（重啟生效）"
+
+#~ msgid "Opening"
+#~ msgstr "正在打开"
+
+#~ msgid "Pattern Engine"
+#~ msgstr "花色"
+
+#~ msgid "Second step color:"
+#~ msgstr "終色"
+
+#~ msgid "Separator color:"
+#~ msgstr "隔線色："
+
+#~ msgid "Shadow color:"
+#~ msgstr "陰影色："
+
+#~ msgid "Show separator between launchers and tasks"
+#~ msgstr "啟動器與程序間以線分隔"
+
+#~ msgid "Show windows from all viewports"
+#~ msgstr "顯示各工作區所有視窗"
+
+#~ msgid "Task Appearance"
+#~ msgstr "程序外貌"
+
+#~ msgid "Tasks have arrows"
+#~ msgstr "程序下加箭頭"
+
+#~ msgid "The bar automatically hides when not used"
+#~ msgstr "閒置時自動隱藏"
+
+#~ msgid "Transparency:"
+#~ msgstr "透明度:"
+
+#~ msgid "Windows don't overlap the bar if this is set"
+#~ msgstr "設定此項後，視窗不會蓋過承條"
+
+#~ msgid "page 1"
+#~ msgstr "第一页"
+
+#~ msgid "page 2"
+#~ msgstr "第二页"
+
+#~ msgid "page 3"
+#~ msgstr "第三页"
+
+#~ msgid "page 4"
+#~ msgstr "第四页"
 
 #~ msgid "Change Icon"
 #~ msgstr "變更圖示"

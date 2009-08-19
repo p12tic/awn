@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 23:47-0700\n"
+"POT-Creation-Date: 2009-08-18 18:22-0700\n"
 "PO-Revision-Date: 2008-07-17 17:07+0000\n"
 "Last-Translator: Pittmann Tamás <zaivaldi@gmail.com>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Launch %s"
 msgstr "Futtatás"
 
-#: ../applets/taskmanager/task-icon.c:1812
+#: ../applets/taskmanager/task-icon.c:1852
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "Alkalmazásindító ikonok hozzáadása és eltávolítása"
@@ -130,7 +130,7 @@ msgstr ""
 msgid "3D Spotlight Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:98
+#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:99
 msgid "Custom"
 msgstr ""
 
@@ -227,10 +227,6 @@ msgid ""
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
 
-#: ../awn-manager/awnLauncher.py:138
-msgid "Invalid launcher"
-msgstr ""
-
 #: ../awn-settings/awnLauncherEditor.py:144
 msgid "Select an Executable File"
 msgstr ""
@@ -258,308 +254,59 @@ msgstr ""
 msgid "Couldn't save the launcher. Error: %s"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:63
+#: ../awn-settings/awnSettings.py.in:64
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:93
+#: ../awn-settings/awnSettings.py.in:94
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:94
+#: ../awn-settings/awnSettings.py.in:95
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:95
+#: ../awn-settings/awnSettings.py.in:96
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:96
+#: ../awn-settings/awnSettings.py.in:97
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "Pult automatikus elrejtése, amikor nincs használatban"
 
-#: ../awn-settings/awnSettings.py.in:97
+#: ../awn-settings/awnSettings.py.in:98
 #, fuzzy
 msgid "Transparency"
 msgstr "Átlátszóság:"
 
-#: ../awn-manager/window.glade.h:1
-msgid "<b>Active Icon</b>"
-msgstr "<b>Aktív ikon</b>"
-
-#: ../awn-manager/window.glade.h:2
-msgid "<b>Applet Preferences</b>"
-msgstr "<b>Kisalkalmazás beállítások</b>"
-
-#: ../awn-manager/window.glade.h:3
-msgid "<b>Arrows</b>"
-msgstr "<b>Nyilak</b>"
-
-#: ../awn-manager/window.glade.h:4
-msgid "<b>Bar behaviour</b>"
-msgstr "<b>Pult viselkedése</b>"
-
-#: ../awn-manager/window.glade.h:5
-msgid "<b>Borders</b>"
-msgstr "<b>Szegélyek</b>"
-
-#: ../awn-manager/window.glade.h:6
-msgid "<b>Customize Effects</b>"
-msgstr "<b>Effektek testreszabása</b>"
-
-#: ../awn-manager/window.glade.h:7
-msgid "<b>General Preferences</b>"
-msgstr "<b>Általános beállítások</b>"
-
-#: ../awn-manager/window.glade.h:8
-msgid "<b>Gradient</b>"
-msgstr "<b>Színátmenet</b>"
-
-#: ../awn-manager/window.glade.h:9
-msgid "<b>Highlight</b>"
-msgstr "<b>Kiemelés</b>"
-
-#: ../awn-manager/window.glade.h:10
-msgid "<b>Icon Effects</b>"
-msgstr "<b>Ikon effektek</b>"
-
-#: ../awn-manager/window.glade.h:11
-msgid "<b>Launcher Preferences</b>"
-msgstr "Indítópult Beállítások"
-
-#: ../awn-manager/window.glade.h:12
-msgid "<b>Look </b>"
-msgstr "<b>Megjelenés</b>"
-
-#: ../awn-manager/window.glade.h:13
-msgid "<b>Pattern</b>"
-msgstr "<b>Minta</b>"
-
-#: ../awn-manager/window.glade.h:14
-msgid "<b>Separator</b>"
-msgstr "<b>Elválasztó</b>"
-
-#: ../awn-manager/window.glade.h:15
-msgid "<b>Startup behaviour</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:16
-msgid "<b>Text</b>"
-msgstr "<b>Szöveg</b>"
-
-#: ../awn-manager/window.glade.h:17
-msgid "<b>Themes</b>"
-msgstr "<b>Témák</b>"
-
-#: ../awn-manager/window.glade.h:18
-msgid "<b>Windows</b>"
-msgstr "<b>Ablakok</b>"
-
-#: ../awn-manager/window.glade.h:19
-msgid "Activate"
-msgstr "Aktiválás"
-
-#: ../awn-manager/window.glade.h:20
-msgid "Add and remove applets"
-msgstr "Kisalkalmazások hozzáadása és eltávolítása"
-
-#: ../awn-manager/window.glade.h:21
-msgid "Add and remove launchers"
-msgstr "Alkalmazásindító ikonok hozzáadása és eltávolítása"
-
-#: ../awn-manager/window.glade.h:22
-msgid "Add, remove and save themes"
-msgstr "Témák hozzáadása, eltávolítása és mentése"
-
-#: ../awn-manager/window.glade.h:23
-msgid "Alert when application window updated"
-msgstr "Visszajelzés amikor az alkalmazásablak frissül"
-
-#: ../awn-manager/window.glade.h:24
-msgid "Arrow offset: "
-msgstr ""
-
-#: ../awn-manager/window.glade.h:25
-msgid "Attention"
-msgstr "Figyelem"
-
-#: ../awn-manager/window.glade.h:26
-msgid "Auto hide bar when not in use"
-msgstr "Pult automatikus elrejtése, amikor nincs használatban"
-
-#: ../awn-manager/window.glade.h:27
-msgid "Automatically start AWN on login."
-msgstr ""
-
-#: ../awn-manager/window.glade.h:28
-msgid "Background color:"
-msgstr "Háttérszín:"
-
-#: ../awn-manager/window.glade.h:29
-msgid "Bar Appearance"
-msgstr "Pult megjelenése"
-
-#: ../awn-manager/window.glade.h:30
-msgid "Bar angle: "
-msgstr "Sáv szöge: "
-
-#: ../awn-manager/window.glade.h:31
-msgid "Bar height: "
-msgstr "Sáv magassága "
-
-#: ../awn-manager/window.glade.h:32
-msgid "Change the look and behaviour of the dock"
-msgstr "Dokkoló megjelenésének és viselkedésének megváltoztatása"
-
-#: ../awn-manager/window.glade.h:33
-msgid "Closing"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:34
-msgid "Color:"
-msgstr "Szín:"
-
-#: ../awn-manager/window.glade.h:35
-msgid "Deactivate"
-msgstr "Kikapcsolás"
-
-#: ../awn-manager/window.glade.h:36
-msgid "Delete"
-msgstr "Törlés"
-
-#: ../awn-manager/window.glade.h:37
-msgid "Enable pattern"
-msgstr "Mintázat engedélyezése"
-
-#: ../awn-manager/window.glade.h:38
-msgid "Enable rounded corners"
-msgstr "Lekerekített sarkok engedélyezése"
-
-#: ../awn-manager/window.glade.h:39
-msgid "First step color:"
-msgstr "Első szín"
-
-#: ../awn-manager/window.glade.h:40
-msgid "Font:"
-msgstr "Betűkészlet:"
-
-#: ../awn-manager/window.glade.h:41
-msgid "General"
-msgstr "Általános"
-
-#: ../awn-manager/window.glade.h:42
-msgid "Glass Engine"
-msgstr "Üveg motor"
-
-#: ../awn-manager/window.glade.h:43
-msgid "Hover"
-msgstr "Szövegbuborék"
-
-#: ../awn-manager/window.glade.h:44
+#: ../bindings/python/__init__.py:118
+#, python-format
 msgid ""
-"Icon attention effect will be activated to alert user of updated windows."
+"The following Python modules could not be found: %s.  There are a few "
+"possible\n"
+"explanations for this:\n"
+"\n"
+"1. You do not have this Python module installed.  In this case, you should\n"
+"visit the AWN wiki's applets section to figure out the exact name of the\n"
+"package for your distribution that provides this module.\n"
+"\n"
+"2. The module is installed in a non-standard location.  This is usually the\n"
+"case when you manually install a package, that is, not via your "
+"distribution's\n"
+"package manager.  This situation is explained in the FAQ section of the "
+"wiki.\n"
 msgstr ""
-"Az ikon figyelmeztető effektus aktív lesz és jelzi a felhasználónak az egyes "
-"ablakok frissülését"
 
-#: ../awn-manager/window.glade.h:45
-msgid "Icon offset: "
-msgstr "Ikon kezdőpozíció: "
-
-#: ../awn-manager/window.glade.h:46
-msgid "Install"
-msgstr "Telepítés"
-
-#: ../awn-manager/window.glade.h:47
-msgid "Internal border:"
-msgstr "Belső szegély:"
-
-#: ../awn-manager/window.glade.h:48
-msgid "Keep below maximized windows when not in use"
-msgstr "Használaton kívül maradjon a maximalizált ablakok mögött amikor"
-
-#: ../awn-manager/window.glade.h:49
-msgid "Launching"
-msgstr "Futtatás"
-
-#: ../awn-manager/window.glade.h:50
-msgid "Main border:"
-msgstr "Külső szegély:"
-
-#: ../awn-manager/window.glade.h:51
-msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "A maximalizált ablakok ne takarják ki a pultot (újraindítást igényel)"
-
-#: ../awn-manager/window.glade.h:52
-msgid "Opening"
-msgstr "Megnyitás"
-
-#: ../awn-manager/window.glade.h:53
-msgid "Pattern Engine"
-msgstr "Minta motor"
-
-#: ../awn-manager/window.glade.h:54
-msgid "Second step color:"
-msgstr "Második szín:"
-
-#: ../awn-manager/window.glade.h:55
-msgid "Separator color:"
-msgstr "Elválasztó színe:"
-
-#: ../awn-manager/window.glade.h:56
-msgid "Shadow color:"
-msgstr "Árnyékolás színe:"
-
-#: ../awn-manager/window.glade.h:57
-msgid "Show separator between launchers and tasks"
-msgstr "Elválasztó megjelenítése az indítóikonok és a feladatok között"
-
-#: ../awn-manager/window.glade.h:58
-msgid "Show windows from all viewports"
-msgstr "Ablakok mutatása az összes munkaterületről"
-
-#: ../awn-manager/window.glade.h:59
-msgid "Task Appearance"
-msgstr "Feladatok megjelenése"
-
-#: ../awn-manager/window.glade.h:60
-msgid "Tasks have arrows"
-msgstr "Nyíl megjelenítése a feladatokhoz"
-
-#: ../awn-manager/window.glade.h:61
-msgid "The bar automatically hides when not used"
-msgstr "A pult automatikus elrejtése, amikor nincs használatban"
-
-#: ../awn-manager/window.glade.h:62
-msgid "Transparency:"
-msgstr "Átlátszóság:"
-
-#: ../awn-manager/window.glade.h:63
-msgid "Windows don't overlap the bar if this is set"
-msgstr "Az ablakok nem takarják ki a pultot, ha ez be van kapcsolva"
-
-#: ../awn-manager/window.glade.h:64
-msgid "page 1"
-msgstr "1. oldal"
-
-#: ../awn-manager/window.glade.h:65
-msgid "page 2"
-msgstr "2. oldal"
-
-#: ../awn-manager/window.glade.h:66
-msgid "page 3"
-msgstr "3. oldal"
-
-#: ../awn-manager/window.glade.h:67
-msgid "page 4"
-msgstr "4. oldal"
+#: ../bindings/python/__init__.py:133
+msgid "Awn Wiki"
+msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr ""
 
-#: ../libawn/awn-applet.c:1024 ../src/awn-panel.c:582
+#: ../libawn/awn-applet.c:1025 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr ""
 
@@ -567,13 +314,206 @@ msgstr ""
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:477
+#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:479
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:2932
+#: ../src/awn-panel.c:2971
 msgid "Close docklet"
 msgstr ""
+
+#~ msgid "<b>Active Icon</b>"
+#~ msgstr "<b>Aktív ikon</b>"
+
+#~ msgid "<b>Applet Preferences</b>"
+#~ msgstr "<b>Kisalkalmazás beállítások</b>"
+
+#~ msgid "<b>Arrows</b>"
+#~ msgstr "<b>Nyilak</b>"
+
+#~ msgid "<b>Bar behaviour</b>"
+#~ msgstr "<b>Pult viselkedése</b>"
+
+#~ msgid "<b>Borders</b>"
+#~ msgstr "<b>Szegélyek</b>"
+
+#~ msgid "<b>Customize Effects</b>"
+#~ msgstr "<b>Effektek testreszabása</b>"
+
+#~ msgid "<b>General Preferences</b>"
+#~ msgstr "<b>Általános beállítások</b>"
+
+#~ msgid "<b>Gradient</b>"
+#~ msgstr "<b>Színátmenet</b>"
+
+#~ msgid "<b>Highlight</b>"
+#~ msgstr "<b>Kiemelés</b>"
+
+#~ msgid "<b>Icon Effects</b>"
+#~ msgstr "<b>Ikon effektek</b>"
+
+#~ msgid "<b>Launcher Preferences</b>"
+#~ msgstr "Indítópult Beállítások"
+
+#~ msgid "<b>Look </b>"
+#~ msgstr "<b>Megjelenés</b>"
+
+#~ msgid "<b>Pattern</b>"
+#~ msgstr "<b>Minta</b>"
+
+#~ msgid "<b>Separator</b>"
+#~ msgstr "<b>Elválasztó</b>"
+
+#~ msgid "<b>Text</b>"
+#~ msgstr "<b>Szöveg</b>"
+
+#~ msgid "<b>Themes</b>"
+#~ msgstr "<b>Témák</b>"
+
+#~ msgid "<b>Windows</b>"
+#~ msgstr "<b>Ablakok</b>"
+
+#~ msgid "Activate"
+#~ msgstr "Aktiválás"
+
+#~ msgid "Add and remove applets"
+#~ msgstr "Kisalkalmazások hozzáadása és eltávolítása"
+
+#~ msgid "Add and remove launchers"
+#~ msgstr "Alkalmazásindító ikonok hozzáadása és eltávolítása"
+
+#~ msgid "Add, remove and save themes"
+#~ msgstr "Témák hozzáadása, eltávolítása és mentése"
+
+#~ msgid "Alert when application window updated"
+#~ msgstr "Visszajelzés amikor az alkalmazásablak frissül"
+
+#~ msgid "Attention"
+#~ msgstr "Figyelem"
+
+#~ msgid "Auto hide bar when not in use"
+#~ msgstr "Pult automatikus elrejtése, amikor nincs használatban"
+
+#~ msgid "Background color:"
+#~ msgstr "Háttérszín:"
+
+#~ msgid "Bar Appearance"
+#~ msgstr "Pult megjelenése"
+
+#~ msgid "Bar angle: "
+#~ msgstr "Sáv szöge: "
+
+#~ msgid "Bar height: "
+#~ msgstr "Sáv magassága "
+
+#~ msgid "Change the look and behaviour of the dock"
+#~ msgstr "Dokkoló megjelenésének és viselkedésének megváltoztatása"
+
+#~ msgid "Color:"
+#~ msgstr "Szín:"
+
+#~ msgid "Deactivate"
+#~ msgstr "Kikapcsolás"
+
+#~ msgid "Delete"
+#~ msgstr "Törlés"
+
+#~ msgid "Enable pattern"
+#~ msgstr "Mintázat engedélyezése"
+
+#~ msgid "Enable rounded corners"
+#~ msgstr "Lekerekített sarkok engedélyezése"
+
+#~ msgid "First step color:"
+#~ msgstr "Első szín"
+
+#~ msgid "Font:"
+#~ msgstr "Betűkészlet:"
+
+#~ msgid "General"
+#~ msgstr "Általános"
+
+#~ msgid "Glass Engine"
+#~ msgstr "Üveg motor"
+
+#~ msgid "Hover"
+#~ msgstr "Szövegbuborék"
+
+#~ msgid ""
+#~ "Icon attention effect will be activated to alert user of updated windows."
+#~ msgstr ""
+#~ "Az ikon figyelmeztető effektus aktív lesz és jelzi a felhasználónak az "
+#~ "egyes ablakok frissülését"
+
+#~ msgid "Icon offset: "
+#~ msgstr "Ikon kezdőpozíció: "
+
+#~ msgid "Install"
+#~ msgstr "Telepítés"
+
+#~ msgid "Internal border:"
+#~ msgstr "Belső szegély:"
+
+#~ msgid "Keep below maximized windows when not in use"
+#~ msgstr "Használaton kívül maradjon a maximalizált ablakok mögött amikor"
+
+#~ msgid "Launching"
+#~ msgstr "Futtatás"
+
+#~ msgid "Main border:"
+#~ msgstr "Külső szegély:"
+
+#~ msgid "Maximized windows don't cover the bar (requires restart)"
+#~ msgstr ""
+#~ "A maximalizált ablakok ne takarják ki a pultot (újraindítást igényel)"
+
+#~ msgid "Opening"
+#~ msgstr "Megnyitás"
+
+#~ msgid "Pattern Engine"
+#~ msgstr "Minta motor"
+
+#~ msgid "Second step color:"
+#~ msgstr "Második szín:"
+
+#~ msgid "Separator color:"
+#~ msgstr "Elválasztó színe:"
+
+#~ msgid "Shadow color:"
+#~ msgstr "Árnyékolás színe:"
+
+#~ msgid "Show separator between launchers and tasks"
+#~ msgstr "Elválasztó megjelenítése az indítóikonok és a feladatok között"
+
+#~ msgid "Show windows from all viewports"
+#~ msgstr "Ablakok mutatása az összes munkaterületről"
+
+#~ msgid "Task Appearance"
+#~ msgstr "Feladatok megjelenése"
+
+#~ msgid "Tasks have arrows"
+#~ msgstr "Nyíl megjelenítése a feladatokhoz"
+
+#~ msgid "The bar automatically hides when not used"
+#~ msgstr "A pult automatikus elrejtése, amikor nincs használatban"
+
+#~ msgid "Transparency:"
+#~ msgstr "Átlátszóság:"
+
+#~ msgid "Windows don't overlap the bar if this is set"
+#~ msgstr "Az ablakok nem takarják ki a pultot, ha ez be van kapcsolva"
+
+#~ msgid "page 1"
+#~ msgstr "1. oldal"
+
+#~ msgid "page 2"
+#~ msgstr "2. oldal"
+
+#~ msgid "page 3"
+#~ msgstr "3. oldal"
+
+#~ msgid "page 4"
+#~ msgstr "4. oldal"
 
 #~ msgid "Change Icon"
 #~ msgstr "Ikoncsere"

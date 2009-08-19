@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 23:47-0700\n"
+"POT-Creation-Date: 2009-08-18 18:22-0700\n"
 "PO-Revision-Date: 2007-08-22 13:15+0000\n"
 "Last-Translator: Ketil Wendelbo Aanensen <ketil.w.aanensen@gmail.com>\n"
 "Language-Team: Norwegian Nynorsk <nn@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Launch %s"
 msgstr ""
 
-#: ../applets/taskmanager/task-icon.c:1812
+#: ../applets/taskmanager/task-icon.c:1852
 msgid "Add to Launcher List"
 msgstr ""
 
@@ -129,7 +129,7 @@ msgstr ""
 msgid "3D Spotlight Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:98
+#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:99
 msgid "Custom"
 msgstr ""
 
@@ -226,10 +226,6 @@ msgid ""
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
 
-#: ../awn-manager/awnLauncher.py:138
-msgid "Invalid launcher"
-msgstr ""
-
 #: ../awn-settings/awnLauncherEditor.py:144
 msgid "Select an Executable File"
 msgstr ""
@@ -257,306 +253,59 @@ msgstr ""
 msgid "Couldn't save the launcher. Error: %s"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:63
+#: ../awn-settings/awnSettings.py.in:64
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:93
+#: ../awn-settings/awnSettings.py.in:94
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:94
+#: ../awn-settings/awnSettings.py.in:95
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:95
+#: ../awn-settings/awnSettings.py.in:96
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:96
+#: ../awn-settings/awnSettings.py.in:97
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "Gjem stolpe når ikkje i bruk"
 
-#: ../awn-settings/awnSettings.py.in:97
+#: ../awn-settings/awnSettings.py.in:98
 #, fuzzy
 msgid "Transparency"
 msgstr "Gjennomsiktigheit:"
 
-#: ../awn-manager/window.glade.h:1
-msgid "<b>Active Icon</b>"
-msgstr "<b>Aktivt ikon</b>"
-
-#: ../awn-manager/window.glade.h:2
-msgid "<b>Applet Preferences</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:3
-msgid "<b>Arrows</b>"
-msgstr "<b>Piler</b>"
-
-#: ../awn-manager/window.glade.h:4
-msgid "<b>Bar behaviour</b>"
-msgstr "<b>Oppførsel for stolpe</b>"
-
-#: ../awn-manager/window.glade.h:5
-msgid "<b>Borders</b>"
-msgstr "<b>Kantar</b>"
-
-#: ../awn-manager/window.glade.h:6
-msgid "<b>Customize Effects</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:7
-msgid "<b>General Preferences</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:8
-msgid "<b>Gradient</b>"
-msgstr "<b>Gradering</b>"
-
-#: ../awn-manager/window.glade.h:9
-msgid "<b>Highlight</b>"
-msgstr "<b>Framhev</b>"
-
-#: ../awn-manager/window.glade.h:10
-msgid "<b>Icon Effects</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:11
-msgid "<b>Launcher Preferences</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:12
-msgid "<b>Look </b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:13
-msgid "<b>Pattern</b>"
-msgstr "<b>Mønster</b>"
-
-#: ../awn-manager/window.glade.h:14
-msgid "<b>Separator</b>"
-msgstr "<b>Delestrek</b>"
-
-#: ../awn-manager/window.glade.h:15
-msgid "<b>Startup behaviour</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:16
-msgid "<b>Text</b>"
-msgstr "<b>Tekst</b>"
-
-#: ../awn-manager/window.glade.h:17
-msgid "<b>Themes</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:18
-msgid "<b>Windows</b>"
-msgstr "<b>Vindauge</b>"
-
-#: ../awn-manager/window.glade.h:19
-msgid "Activate"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:20
-msgid "Add and remove applets"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:21
-msgid "Add and remove launchers"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:22
-msgid "Add, remove and save themes"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:23
-msgid "Alert when application window updated"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:24
-msgid "Arrow offset: "
-msgstr ""
-
-#: ../awn-manager/window.glade.h:25
-msgid "Attention"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:26
-msgid "Auto hide bar when not in use"
-msgstr "Gjem stolpe når ikkje i bruk"
-
-#: ../awn-manager/window.glade.h:27
-msgid "Automatically start AWN on login."
-msgstr ""
-
-#: ../awn-manager/window.glade.h:28
-msgid "Background color:"
-msgstr "Bakgrunnsfarge"
-
-#: ../awn-manager/window.glade.h:29
-msgid "Bar Appearance"
-msgstr "Utsjånad for stolpe"
-
-#: ../awn-manager/window.glade.h:30
-msgid "Bar angle: "
-msgstr ""
-
-#: ../awn-manager/window.glade.h:31
-msgid "Bar height: "
-msgstr ""
-
-#: ../awn-manager/window.glade.h:32
-msgid "Change the look and behaviour of the dock"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:33
-msgid "Closing"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:34
-msgid "Color:"
-msgstr "Farge:"
-
-#: ../awn-manager/window.glade.h:35
-msgid "Deactivate"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:36
-msgid "Delete"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:37
-msgid "Enable pattern"
-msgstr "Bruk mønster"
-
-#: ../awn-manager/window.glade.h:38
-msgid "Enable rounded corners"
-msgstr "Bruk runde hjørne"
-
-#: ../awn-manager/window.glade.h:39
-msgid "First step color:"
-msgstr "Farge for første skritt:"
-
-#: ../awn-manager/window.glade.h:40
-msgid "Font:"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:41
-msgid "General"
-msgstr "Hovudval"
-
-#: ../awn-manager/window.glade.h:42
-msgid "Glass Engine"
-msgstr "Glasseffektar"
-
-#: ../awn-manager/window.glade.h:43
-msgid "Hover"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:44
+#: ../bindings/python/__init__.py:118
+#, python-format
 msgid ""
-"Icon attention effect will be activated to alert user of updated windows."
+"The following Python modules could not be found: %s.  There are a few "
+"possible\n"
+"explanations for this:\n"
+"\n"
+"1. You do not have this Python module installed.  In this case, you should\n"
+"visit the AWN wiki's applets section to figure out the exact name of the\n"
+"package for your distribution that provides this module.\n"
+"\n"
+"2. The module is installed in a non-standard location.  This is usually the\n"
+"case when you manually install a package, that is, not via your "
+"distribution's\n"
+"package manager.  This situation is explained in the FAQ section of the "
+"wiki.\n"
 msgstr ""
 
-#: ../awn-manager/window.glade.h:45
-msgid "Icon offset: "
-msgstr ""
-
-#: ../awn-manager/window.glade.h:46
-msgid "Install"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:47
-msgid "Internal border:"
-msgstr "Kantar på innsida"
-
-#: ../awn-manager/window.glade.h:48
-msgid "Keep below maximized windows when not in use"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:49
-msgid "Launching"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:50
-msgid "Main border:"
-msgstr "Hovudkantar:"
-
-#: ../awn-manager/window.glade.h:51
-msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "Maksimerte vindauge dekker ikkje stolpa (krever omstart)"
-
-#: ../awn-manager/window.glade.h:52
-msgid "Opening"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:53
-msgid "Pattern Engine"
-msgstr "Mønster"
-
-#: ../awn-manager/window.glade.h:54
-msgid "Second step color:"
-msgstr "Farge for andre skritt:"
-
-#: ../awn-manager/window.glade.h:55
-msgid "Separator color:"
-msgstr "Farge for delestrek:"
-
-#: ../awn-manager/window.glade.h:56
-msgid "Shadow color:"
-msgstr "Skuggefarge:"
-
-#: ../awn-manager/window.glade.h:57
-msgid "Show separator between launchers and tasks"
-msgstr "Vis delestrek mellom oppstartarar og oppgåver"
-
-#: ../awn-manager/window.glade.h:58
-msgid "Show windows from all viewports"
-msgstr "Vis vindauge frå alle arbeidsområde"
-
-#: ../awn-manager/window.glade.h:59
-msgid "Task Appearance"
-msgstr "Utsjånad for oppgåver"
-
-#: ../awn-manager/window.glade.h:60
-msgid "Tasks have arrows"
-msgstr "Oppgåver har piler"
-
-#: ../awn-manager/window.glade.h:61
-msgid "The bar automatically hides when not used"
-msgstr "Stolpa blir gjemt automatisk når ikkje i bruk"
-
-#: ../awn-manager/window.glade.h:62
-msgid "Transparency:"
-msgstr "Gjennomsiktigheit:"
-
-#: ../awn-manager/window.glade.h:63
-msgid "Windows don't overlap the bar if this is set"
-msgstr "Vindauge dekkar ikkje stolpa hvis denne er vald"
-
-#: ../awn-manager/window.glade.h:64
-msgid "page 1"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:65
-msgid "page 2"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:66
-msgid "page 3"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:67
-msgid "page 4"
+#: ../bindings/python/__init__.py:133
+msgid "Awn Wiki"
 msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr ""
 
-#: ../libawn/awn-applet.c:1024 ../src/awn-panel.c:582
+#: ../libawn/awn-applet.c:1025 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr ""
 
@@ -564,13 +313,112 @@ msgstr ""
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:477
+#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:479
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:2932
+#: ../src/awn-panel.c:2971
 msgid "Close docklet"
 msgstr ""
+
+#~ msgid "<b>Active Icon</b>"
+#~ msgstr "<b>Aktivt ikon</b>"
+
+#~ msgid "<b>Arrows</b>"
+#~ msgstr "<b>Piler</b>"
+
+#~ msgid "<b>Bar behaviour</b>"
+#~ msgstr "<b>Oppførsel for stolpe</b>"
+
+#~ msgid "<b>Borders</b>"
+#~ msgstr "<b>Kantar</b>"
+
+#~ msgid "<b>Gradient</b>"
+#~ msgstr "<b>Gradering</b>"
+
+#~ msgid "<b>Highlight</b>"
+#~ msgstr "<b>Framhev</b>"
+
+#~ msgid "<b>Pattern</b>"
+#~ msgstr "<b>Mønster</b>"
+
+#~ msgid "<b>Separator</b>"
+#~ msgstr "<b>Delestrek</b>"
+
+#~ msgid "<b>Text</b>"
+#~ msgstr "<b>Tekst</b>"
+
+#~ msgid "<b>Windows</b>"
+#~ msgstr "<b>Vindauge</b>"
+
+#~ msgid "Auto hide bar when not in use"
+#~ msgstr "Gjem stolpe når ikkje i bruk"
+
+#~ msgid "Background color:"
+#~ msgstr "Bakgrunnsfarge"
+
+#~ msgid "Bar Appearance"
+#~ msgstr "Utsjånad for stolpe"
+
+#~ msgid "Color:"
+#~ msgstr "Farge:"
+
+#~ msgid "Enable pattern"
+#~ msgstr "Bruk mønster"
+
+#~ msgid "Enable rounded corners"
+#~ msgstr "Bruk runde hjørne"
+
+#~ msgid "First step color:"
+#~ msgstr "Farge for første skritt:"
+
+#~ msgid "General"
+#~ msgstr "Hovudval"
+
+#~ msgid "Glass Engine"
+#~ msgstr "Glasseffektar"
+
+#~ msgid "Internal border:"
+#~ msgstr "Kantar på innsida"
+
+#~ msgid "Main border:"
+#~ msgstr "Hovudkantar:"
+
+#~ msgid "Maximized windows don't cover the bar (requires restart)"
+#~ msgstr "Maksimerte vindauge dekker ikkje stolpa (krever omstart)"
+
+#~ msgid "Pattern Engine"
+#~ msgstr "Mønster"
+
+#~ msgid "Second step color:"
+#~ msgstr "Farge for andre skritt:"
+
+#~ msgid "Separator color:"
+#~ msgstr "Farge for delestrek:"
+
+#~ msgid "Shadow color:"
+#~ msgstr "Skuggefarge:"
+
+#~ msgid "Show separator between launchers and tasks"
+#~ msgstr "Vis delestrek mellom oppstartarar og oppgåver"
+
+#~ msgid "Show windows from all viewports"
+#~ msgstr "Vis vindauge frå alle arbeidsområde"
+
+#~ msgid "Task Appearance"
+#~ msgstr "Utsjånad for oppgåver"
+
+#~ msgid "Tasks have arrows"
+#~ msgstr "Oppgåver har piler"
+
+#~ msgid "The bar automatically hides when not used"
+#~ msgstr "Stolpa blir gjemt automatisk når ikkje i bruk"
+
+#~ msgid "Transparency:"
+#~ msgstr "Gjennomsiktigheit:"
+
+#~ msgid "Windows don't overlap the bar if this is set"
+#~ msgstr "Vindauge dekkar ikkje stolpa hvis denne er vald"
 
 #~ msgid "Change Icon"
 #~ msgstr "Endre ikon"

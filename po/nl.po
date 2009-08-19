@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 23:47-0700\n"
+"POT-Creation-Date: 2009-08-18 18:22-0700\n"
 "PO-Revision-Date: 2009-01-20 16:17+0000\n"
 "Last-Translator: haytjes <Unknown>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Launch %s"
 msgstr "Starten"
 
-#: ../applets/taskmanager/task-icon.c:1812
+#: ../applets/taskmanager/task-icon.c:1852
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "Starters toevoegen en verwijderen"
@@ -130,7 +130,7 @@ msgstr ""
 msgid "3D Spotlight Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:98
+#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:99
 msgid "Custom"
 msgstr "Aangepast"
 
@@ -236,10 +236,6 @@ msgid ""
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
 
-#: ../awn-manager/awnLauncher.py:138
-msgid "Invalid launcher"
-msgstr ""
-
 #: ../awn-settings/awnLauncherEditor.py:144
 msgid "Select an Executable File"
 msgstr ""
@@ -267,308 +263,59 @@ msgstr "<b>Opdracht:</b>"
 msgid "Couldn't save the launcher. Error: %s"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:63
+#: ../awn-settings/awnSettings.py.in:64
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:93
+#: ../awn-settings/awnSettings.py.in:94
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:94
+#: ../awn-settings/awnSettings.py.in:95
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:95
+#: ../awn-settings/awnSettings.py.in:96
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:96
+#: ../awn-settings/awnSettings.py.in:97
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "Balk automatisch verbergen indien niet in gebruik"
 
-#: ../awn-settings/awnSettings.py.in:97
+#: ../awn-settings/awnSettings.py.in:98
 #, fuzzy
 msgid "Transparency"
 msgstr "Transparantie:"
 
-#: ../awn-manager/window.glade.h:1
-msgid "<b>Active Icon</b>"
-msgstr "<b>Actief Icoon</b>"
-
-#: ../awn-manager/window.glade.h:2
-msgid "<b>Applet Preferences</b>"
-msgstr "<b>Applet Eigenschappen</b>"
-
-#: ../awn-manager/window.glade.h:3
-msgid "<b>Arrows</b>"
-msgstr "<b>Pijlen</b>"
-
-#: ../awn-manager/window.glade.h:4
-msgid "<b>Bar behaviour</b>"
-msgstr "<b>Gedrag</b>"
-
-#: ../awn-manager/window.glade.h:5
-msgid "<b>Borders</b>"
-msgstr "<b>Randen</b>"
-
-#: ../awn-manager/window.glade.h:6
-msgid "<b>Customize Effects</b>"
-msgstr "<b>Aangepaste Effecten</b>"
-
-#: ../awn-manager/window.glade.h:7
-msgid "<b>General Preferences</b>"
-msgstr "<b>Algemene Eigenschappen</b>"
-
-#: ../awn-manager/window.glade.h:8
-msgid "<b>Gradient</b>"
-msgstr "<b>Overgang</b>"
-
-#: ../awn-manager/window.glade.h:9
-msgid "<b>Highlight</b>"
-msgstr "<b>Markeer</b>"
-
-#: ../awn-manager/window.glade.h:10
-msgid "<b>Icon Effects</b>"
-msgstr "<b>Icoon Effecten</b>"
-
-#: ../awn-manager/window.glade.h:11
-msgid "<b>Launcher Preferences</b>"
-msgstr "<b>Starter Eigenschappen</b>"
-
-#: ../awn-manager/window.glade.h:12
-msgid "<b>Look </b>"
-msgstr "<b>Uiterlijk</b>"
-
-#: ../awn-manager/window.glade.h:13
-msgid "<b>Pattern</b>"
-msgstr "<b>Patroon</b>"
-
-#: ../awn-manager/window.glade.h:14
-msgid "<b>Separator</b>"
-msgstr "<b>Afscheiding</b>"
-
-#: ../awn-manager/window.glade.h:15
-msgid "<b>Startup behaviour</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:16
-msgid "<b>Text</b>"
-msgstr "<b>Tekst</b>"
-
-#: ../awn-manager/window.glade.h:17
-msgid "<b>Themes</b>"
-msgstr "<b>Thema's</b>"
-
-#: ../awn-manager/window.glade.h:18
-msgid "<b>Windows</b>"
-msgstr "<b>Vensters</b>"
-
-#: ../awn-manager/window.glade.h:19
-msgid "Activate"
-msgstr "Activeer"
-
-#: ../awn-manager/window.glade.h:20
-msgid "Add and remove applets"
-msgstr "Applets toevoegen en verwijderen"
-
-#: ../awn-manager/window.glade.h:21
-msgid "Add and remove launchers"
-msgstr "Starters toevoegen en verwijderen"
-
-#: ../awn-manager/window.glade.h:22
-msgid "Add, remove and save themes"
-msgstr "Voeg toe, verwijder en bewaar thema's"
-
-#: ../awn-manager/window.glade.h:23
-msgid "Alert when application window updated"
-msgstr "Waarschuw als applicatie venster vernieuwt"
-
-#: ../awn-manager/window.glade.h:24
-msgid "Arrow offset: "
-msgstr ""
-
-#: ../awn-manager/window.glade.h:25
-msgid "Attention"
-msgstr "Attentie"
-
-#: ../awn-manager/window.glade.h:26
-msgid "Auto hide bar when not in use"
-msgstr "Balk automatisch verbergen indien niet in gebruik"
-
-#: ../awn-manager/window.glade.h:27
-msgid "Automatically start AWN on login."
-msgstr ""
-
-#: ../awn-manager/window.glade.h:28
-msgid "Background color:"
-msgstr "Achtergrondkleur:"
-
-#: ../awn-manager/window.glade.h:29
-msgid "Bar Appearance"
-msgstr "Uiterlijk van de balk"
-
-#: ../awn-manager/window.glade.h:30
-msgid "Bar angle: "
-msgstr "Hoek van de balk: "
-
-#: ../awn-manager/window.glade.h:31
-msgid "Bar height: "
-msgstr "Hoogte van de balk: "
-
-#: ../awn-manager/window.glade.h:32
-msgid "Change the look and behaviour of the dock"
-msgstr "Verander het uiterlijk en gedrag van de balk"
-
-#: ../awn-manager/window.glade.h:33
-msgid "Closing"
-msgstr "Afsluiten"
-
-#: ../awn-manager/window.glade.h:34
-msgid "Color:"
-msgstr "Kleur:"
-
-#: ../awn-manager/window.glade.h:35
-msgid "Deactivate"
-msgstr "Deactiveren"
-
-#: ../awn-manager/window.glade.h:36
-msgid "Delete"
-msgstr "Verwijderen"
-
-#: ../awn-manager/window.glade.h:37
-msgid "Enable pattern"
-msgstr "Gebruik patroon"
-
-#: ../awn-manager/window.glade.h:38
-msgid "Enable rounded corners"
-msgstr "Afgeronde hoeken gebruiken"
-
-#: ../awn-manager/window.glade.h:39
-msgid "First step color:"
-msgstr "Kleur 1:"
-
-#: ../awn-manager/window.glade.h:40
-msgid "Font:"
-msgstr "Lettertype:"
-
-#: ../awn-manager/window.glade.h:41
-msgid "General"
-msgstr "Algemeen"
-
-#: ../awn-manager/window.glade.h:42
-msgid "Glass Engine"
-msgstr "Achtergrond balk"
-
-#: ../awn-manager/window.glade.h:43
-msgid "Hover"
-msgstr "Muisover"
-
-#: ../awn-manager/window.glade.h:44
+#: ../bindings/python/__init__.py:118
+#, python-format
 msgid ""
-"Icon attention effect will be activated to alert user of updated windows."
+"The following Python modules could not be found: %s.  There are a few "
+"possible\n"
+"explanations for this:\n"
+"\n"
+"1. You do not have this Python module installed.  In this case, you should\n"
+"visit the AWN wiki's applets section to figure out the exact name of the\n"
+"package for your distribution that provides this module.\n"
+"\n"
+"2. The module is installed in a non-standard location.  This is usually the\n"
+"case when you manually install a package, that is, not via your "
+"distribution's\n"
+"package manager.  This situation is explained in the FAQ section of the "
+"wiki.\n"
 msgstr ""
-"Het attentie-effect zal worden geactiveerd om gebruikers op de hoogte te "
-"stellen van geupdate vensters."
 
-#: ../awn-manager/window.glade.h:45
-msgid "Icon offset: "
-msgstr "Afstand van de rand tot het icoon (herstart vereist): "
-
-#: ../awn-manager/window.glade.h:46
-msgid "Install"
-msgstr "Installeren"
-
-#: ../awn-manager/window.glade.h:47
-msgid "Internal border:"
-msgstr "Binnenste rand:"
-
-#: ../awn-manager/window.glade.h:48
-msgid "Keep below maximized windows when not in use"
-msgstr "Onder gemaximaliseerde vensters houden wanneer niet in gebruik"
-
-#: ../awn-manager/window.glade.h:49
-msgid "Launching"
-msgstr "Starten"
-
-#: ../awn-manager/window.glade.h:50
-msgid "Main border:"
-msgstr "Buitenste rand:"
-
-#: ../awn-manager/window.glade.h:51
-msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "Gemaximaliseerde vensters bedekken de balk niet (herstart vereist)"
-
-#: ../awn-manager/window.glade.h:52
-msgid "Opening"
-msgstr "Aan het openen"
-
-#: ../awn-manager/window.glade.h:53
-msgid "Pattern Engine"
-msgstr "Patroon balk"
-
-#: ../awn-manager/window.glade.h:54
-msgid "Second step color:"
-msgstr "Kleur 2:"
-
-#: ../awn-manager/window.glade.h:55
-msgid "Separator color:"
-msgstr "Kleur afscheiding:"
-
-#: ../awn-manager/window.glade.h:56
-msgid "Shadow color:"
-msgstr "Schaduwkleur:"
-
-#: ../awn-manager/window.glade.h:57
-msgid "Show separator between launchers and tasks"
-msgstr "Laat scheiding tussen starters en taken zien"
-
-#: ../awn-manager/window.glade.h:58
-msgid "Show windows from all viewports"
-msgstr "Vensters van alle werkbladen laten zien"
-
-#: ../awn-manager/window.glade.h:59
-msgid "Task Appearance"
-msgstr "Uiterlijk taken"
-
-#: ../awn-manager/window.glade.h:60
-msgid "Tasks have arrows"
-msgstr "Taken bevatten pijlen"
-
-#: ../awn-manager/window.glade.h:61
-msgid "The bar automatically hides when not used"
-msgstr "De balk verbergt zich automatisch indien niet in gebruik"
-
-#: ../awn-manager/window.glade.h:62
-msgid "Transparency:"
-msgstr "Transparantie:"
-
-#: ../awn-manager/window.glade.h:63
-msgid "Windows don't overlap the bar if this is set"
-msgstr "Vensters overlappen de balk niet als dit ingesteld is"
-
-#: ../awn-manager/window.glade.h:64
-msgid "page 1"
-msgstr "pagina 1"
-
-#: ../awn-manager/window.glade.h:65
-msgid "page 2"
-msgstr "pagina 2"
-
-#: ../awn-manager/window.glade.h:66
-msgid "page 3"
-msgstr "pagina 3"
-
-#: ../awn-manager/window.glade.h:67
-msgid "page 4"
-msgstr "pagina 4"
+#: ../bindings/python/__init__.py:133
+msgid "Awn Wiki"
+msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr ""
 
-#: ../libawn/awn-applet.c:1024 ../src/awn-panel.c:582
+#: ../libawn/awn-applet.c:1025 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr ""
 
@@ -576,13 +323,208 @@ msgstr ""
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:477
+#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:479
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:2932
+#: ../src/awn-panel.c:2971
 msgid "Close docklet"
 msgstr ""
+
+#~ msgid "<b>Active Icon</b>"
+#~ msgstr "<b>Actief Icoon</b>"
+
+#~ msgid "<b>Applet Preferences</b>"
+#~ msgstr "<b>Applet Eigenschappen</b>"
+
+#~ msgid "<b>Arrows</b>"
+#~ msgstr "<b>Pijlen</b>"
+
+#~ msgid "<b>Bar behaviour</b>"
+#~ msgstr "<b>Gedrag</b>"
+
+#~ msgid "<b>Borders</b>"
+#~ msgstr "<b>Randen</b>"
+
+#~ msgid "<b>Customize Effects</b>"
+#~ msgstr "<b>Aangepaste Effecten</b>"
+
+#~ msgid "<b>General Preferences</b>"
+#~ msgstr "<b>Algemene Eigenschappen</b>"
+
+#~ msgid "<b>Gradient</b>"
+#~ msgstr "<b>Overgang</b>"
+
+#~ msgid "<b>Highlight</b>"
+#~ msgstr "<b>Markeer</b>"
+
+#~ msgid "<b>Icon Effects</b>"
+#~ msgstr "<b>Icoon Effecten</b>"
+
+#~ msgid "<b>Launcher Preferences</b>"
+#~ msgstr "<b>Starter Eigenschappen</b>"
+
+#~ msgid "<b>Look </b>"
+#~ msgstr "<b>Uiterlijk</b>"
+
+#~ msgid "<b>Pattern</b>"
+#~ msgstr "<b>Patroon</b>"
+
+#~ msgid "<b>Separator</b>"
+#~ msgstr "<b>Afscheiding</b>"
+
+#~ msgid "<b>Text</b>"
+#~ msgstr "<b>Tekst</b>"
+
+#~ msgid "<b>Themes</b>"
+#~ msgstr "<b>Thema's</b>"
+
+#~ msgid "<b>Windows</b>"
+#~ msgstr "<b>Vensters</b>"
+
+#~ msgid "Activate"
+#~ msgstr "Activeer"
+
+#~ msgid "Add and remove applets"
+#~ msgstr "Applets toevoegen en verwijderen"
+
+#~ msgid "Add and remove launchers"
+#~ msgstr "Starters toevoegen en verwijderen"
+
+#~ msgid "Add, remove and save themes"
+#~ msgstr "Voeg toe, verwijder en bewaar thema's"
+
+#~ msgid "Alert when application window updated"
+#~ msgstr "Waarschuw als applicatie venster vernieuwt"
+
+#~ msgid "Attention"
+#~ msgstr "Attentie"
+
+#~ msgid "Auto hide bar when not in use"
+#~ msgstr "Balk automatisch verbergen indien niet in gebruik"
+
+#~ msgid "Background color:"
+#~ msgstr "Achtergrondkleur:"
+
+#~ msgid "Bar Appearance"
+#~ msgstr "Uiterlijk van de balk"
+
+#~ msgid "Bar angle: "
+#~ msgstr "Hoek van de balk: "
+
+#~ msgid "Bar height: "
+#~ msgstr "Hoogte van de balk: "
+
+#~ msgid "Change the look and behaviour of the dock"
+#~ msgstr "Verander het uiterlijk en gedrag van de balk"
+
+#~ msgid "Closing"
+#~ msgstr "Afsluiten"
+
+#~ msgid "Color:"
+#~ msgstr "Kleur:"
+
+#~ msgid "Deactivate"
+#~ msgstr "Deactiveren"
+
+#~ msgid "Delete"
+#~ msgstr "Verwijderen"
+
+#~ msgid "Enable pattern"
+#~ msgstr "Gebruik patroon"
+
+#~ msgid "Enable rounded corners"
+#~ msgstr "Afgeronde hoeken gebruiken"
+
+#~ msgid "First step color:"
+#~ msgstr "Kleur 1:"
+
+#~ msgid "Font:"
+#~ msgstr "Lettertype:"
+
+#~ msgid "General"
+#~ msgstr "Algemeen"
+
+#~ msgid "Glass Engine"
+#~ msgstr "Achtergrond balk"
+
+#~ msgid "Hover"
+#~ msgstr "Muisover"
+
+#~ msgid ""
+#~ "Icon attention effect will be activated to alert user of updated windows."
+#~ msgstr ""
+#~ "Het attentie-effect zal worden geactiveerd om gebruikers op de hoogte te "
+#~ "stellen van geupdate vensters."
+
+#~ msgid "Icon offset: "
+#~ msgstr "Afstand van de rand tot het icoon (herstart vereist): "
+
+#~ msgid "Install"
+#~ msgstr "Installeren"
+
+#~ msgid "Internal border:"
+#~ msgstr "Binnenste rand:"
+
+#~ msgid "Keep below maximized windows when not in use"
+#~ msgstr "Onder gemaximaliseerde vensters houden wanneer niet in gebruik"
+
+#~ msgid "Launching"
+#~ msgstr "Starten"
+
+#~ msgid "Main border:"
+#~ msgstr "Buitenste rand:"
+
+#~ msgid "Maximized windows don't cover the bar (requires restart)"
+#~ msgstr "Gemaximaliseerde vensters bedekken de balk niet (herstart vereist)"
+
+#~ msgid "Opening"
+#~ msgstr "Aan het openen"
+
+#~ msgid "Pattern Engine"
+#~ msgstr "Patroon balk"
+
+#~ msgid "Second step color:"
+#~ msgstr "Kleur 2:"
+
+#~ msgid "Separator color:"
+#~ msgstr "Kleur afscheiding:"
+
+#~ msgid "Shadow color:"
+#~ msgstr "Schaduwkleur:"
+
+#~ msgid "Show separator between launchers and tasks"
+#~ msgstr "Laat scheiding tussen starters en taken zien"
+
+#~ msgid "Show windows from all viewports"
+#~ msgstr "Vensters van alle werkbladen laten zien"
+
+#~ msgid "Task Appearance"
+#~ msgstr "Uiterlijk taken"
+
+#~ msgid "Tasks have arrows"
+#~ msgstr "Taken bevatten pijlen"
+
+#~ msgid "The bar automatically hides when not used"
+#~ msgstr "De balk verbergt zich automatisch indien niet in gebruik"
+
+#~ msgid "Transparency:"
+#~ msgstr "Transparantie:"
+
+#~ msgid "Windows don't overlap the bar if this is set"
+#~ msgstr "Vensters overlappen de balk niet als dit ingesteld is"
+
+#~ msgid "page 1"
+#~ msgstr "pagina 1"
+
+#~ msgid "page 2"
+#~ msgstr "pagina 2"
+
+#~ msgid "page 3"
+#~ msgstr "pagina 3"
+
+#~ msgid "page 4"
+#~ msgstr "pagina 4"
 
 #~ msgid "3D look"
 #~ msgstr "3D-uiterlijk"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 23:48-0700\n"
+"POT-Creation-Date: 2009-08-18 18:22-0700\n"
 "PO-Revision-Date: 2009-01-21 21:10+0000\n"
 "Last-Translator: Ermal Llanaj <ermalipavia@gmail.com>\n"
 "Language-Team: Albanian <sq@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Launch %s"
 msgstr "Ne ngarkim"
 
-#: ../applets/taskmanager/task-icon.c:1812
+#: ../applets/taskmanager/task-icon.c:1852
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "Shto ose hiq Fillues"
@@ -131,7 +131,7 @@ msgstr "Rrotullim 3D"
 msgid "3D Spotlight Turn"
 msgstr "Rrotullim 3D me ndricim"
 
-#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:98
+#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:99
 msgid "Custom"
 msgstr "Personalizuar"
 
@@ -244,10 +244,6 @@ msgstr ""
 "kete program; nese jo, shkruajini Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
-#: ../awn-manager/awnLauncher.py:138
-msgid "Invalid launcher"
-msgstr ""
-
 #: ../awn-settings/awnLauncherEditor.py:144
 msgid "Select an Executable File"
 msgstr "Zgjidh nje file te Ekzekutueshem"
@@ -275,308 +271,59 @@ msgstr "<b>Komanda:</b>"
 msgid "Couldn't save the launcher. Error: %s"
 msgstr "Nuk mund te ruhej leshuesi. Gabim: %s"
 
-#: ../awn-settings/awnSettings.py.in:63
+#: ../awn-settings/awnSettings.py.in:64
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:93
+#: ../awn-settings/awnSettings.py.in:94
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:94
+#: ../awn-settings/awnSettings.py.in:95
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:95
+#: ../awn-settings/awnSettings.py.in:96
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:96
+#: ../awn-settings/awnSettings.py.in:97
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "Fshih automatikisht barin kur nuk eshte ne perdorim"
 
-#: ../awn-settings/awnSettings.py.in:97
+#: ../awn-settings/awnSettings.py.in:98
 #, fuzzy
 msgid "Transparency"
 msgstr "Transparenca:"
 
-#: ../awn-manager/window.glade.h:1
-msgid "<b>Active Icon</b>"
-msgstr "<b>Ikona Aktive</b>"
-
-#: ../awn-manager/window.glade.h:2
-msgid "<b>Applet Preferences</b>"
-msgstr "<b>Preferencat e Programit</b>"
-
-#: ../awn-manager/window.glade.h:3
-msgid "<b>Arrows</b>"
-msgstr "<b>Shigjetat</b>"
-
-#: ../awn-manager/window.glade.h:4
-msgid "<b>Bar behaviour</b>"
-msgstr "<b>Sjellja e Barit</b>"
-
-#: ../awn-manager/window.glade.h:5
-msgid "<b>Borders</b>"
-msgstr "<b>Bordet</b>"
-
-#: ../awn-manager/window.glade.h:6
-msgid "<b>Customize Effects</b>"
-msgstr "<b>Pershtat Efektet</b>"
-
-#: ../awn-manager/window.glade.h:7
-msgid "<b>General Preferences</b>"
-msgstr "<b>Preferenca Gjenerale</b>"
-
-#: ../awn-manager/window.glade.h:8
-msgid "<b>Gradient</b>"
-msgstr "<b>Gradient</b>"
-
-#: ../awn-manager/window.glade.h:9
-msgid "<b>Highlight</b>"
-msgstr "<b>Thekso</b>"
-
-#: ../awn-manager/window.glade.h:10
-msgid "<b>Icon Effects</b>"
-msgstr "<b>Efektet e Ikones</b>"
-
-#: ../awn-manager/window.glade.h:11
-msgid "<b>Launcher Preferences</b>"
-msgstr "<b>Preferencat e Filluesit</b>"
-
-#: ../awn-manager/window.glade.h:12
-msgid "<b>Look </b>"
-msgstr "<b>Shiko </b>"
-
-#: ../awn-manager/window.glade.h:13
-msgid "<b>Pattern</b>"
-msgstr "<b>Model</b>"
-
-#: ../awn-manager/window.glade.h:14
-msgid "<b>Separator</b>"
-msgstr "<b>Ndares</b>"
-
-#: ../awn-manager/window.glade.h:15
-msgid "<b>Startup behaviour</b>"
-msgstr "<b>Startup behaviour</b>"
-
-#: ../awn-manager/window.glade.h:16
-msgid "<b>Text</b>"
-msgstr "<b>Teksti</b>"
-
-#: ../awn-manager/window.glade.h:17
-msgid "<b>Themes</b>"
-msgstr "<b>Temat</b>"
-
-#: ../awn-manager/window.glade.h:18
-msgid "<b>Windows</b>"
-msgstr "<b>Dritare</b>"
-
-#: ../awn-manager/window.glade.h:19
-msgid "Activate"
-msgstr "Aktivizo"
-
-#: ../awn-manager/window.glade.h:20
-msgid "Add and remove applets"
-msgstr "Shto ose hiq programe"
-
-#: ../awn-manager/window.glade.h:21
-msgid "Add and remove launchers"
-msgstr "Shto ose hiq Fillues"
-
-#: ../awn-manager/window.glade.h:22
-msgid "Add, remove and save themes"
-msgstr "Shto, hiq dhe ruaj temat"
-
-#: ../awn-manager/window.glade.h:23
-msgid "Alert when application window updated"
-msgstr "Lajmero kur dritarja e programit perditesohet"
-
-#: ../awn-manager/window.glade.h:24
-msgid "Arrow offset: "
-msgstr "Arrow offset: "
-
-#: ../awn-manager/window.glade.h:25
-msgid "Attention"
-msgstr "Kujdes"
-
-#: ../awn-manager/window.glade.h:26
-msgid "Auto hide bar when not in use"
-msgstr "Fshih automatikisht barin kur nuk eshte ne perdorim"
-
-#: ../awn-manager/window.glade.h:27
-msgid "Automatically start AWN on login."
-msgstr "Fillo AWN automatikisht ne hyrje."
-
-#: ../awn-manager/window.glade.h:28
-msgid "Background color:"
-msgstr "Ngjyra e sfondit:"
-
-#: ../awn-manager/window.glade.h:29
-msgid "Bar Appearance"
-msgstr "Pamja e Barit"
-
-#: ../awn-manager/window.glade.h:30
-msgid "Bar angle: "
-msgstr "Kendi i Barit: "
-
-#: ../awn-manager/window.glade.h:31
-msgid "Bar height: "
-msgstr "Lartesia e Barit: "
-
-#: ../awn-manager/window.glade.h:32
-msgid "Change the look and behaviour of the dock"
-msgstr "Ndrysho pamjen dhe sjelljen"
-
-#: ../awn-manager/window.glade.h:33
-msgid "Closing"
-msgstr "Duke u mbyllur"
-
-#: ../awn-manager/window.glade.h:34
-msgid "Color:"
-msgstr "Ngjyra"
-
-#: ../awn-manager/window.glade.h:35
-msgid "Deactivate"
-msgstr "Caktivizo"
-
-#: ../awn-manager/window.glade.h:36
-msgid "Delete"
-msgstr "Fshi"
-
-#: ../awn-manager/window.glade.h:37
-msgid "Enable pattern"
-msgstr "Aktivizo modelin"
-
-#: ../awn-manager/window.glade.h:38
-msgid "Enable rounded corners"
-msgstr "Aktivizo kendet e rrumbullaket"
-
-#: ../awn-manager/window.glade.h:39
-msgid "First step color:"
-msgstr "Ngjyra e hapit te pare:"
-
-#: ../awn-manager/window.glade.h:40
-msgid "Font:"
-msgstr "Shkrimi:"
-
-#: ../awn-manager/window.glade.h:41
-msgid "General"
-msgstr "Të përgjithshme"
-
-#: ../awn-manager/window.glade.h:42
-msgid "Glass Engine"
-msgstr "Prodhuesi i efektit Xham"
-
-#: ../awn-manager/window.glade.h:43
-msgid "Hover"
-msgstr "Rri pezull"
-
-#: ../awn-manager/window.glade.h:44
+#: ../bindings/python/__init__.py:118
+#, python-format
 msgid ""
-"Icon attention effect will be activated to alert user of updated windows."
+"The following Python modules could not be found: %s.  There are a few "
+"possible\n"
+"explanations for this:\n"
+"\n"
+"1. You do not have this Python module installed.  In this case, you should\n"
+"visit the AWN wiki's applets section to figure out the exact name of the\n"
+"package for your distribution that provides this module.\n"
+"\n"
+"2. The module is installed in a non-standard location.  This is usually the\n"
+"case when you manually install a package, that is, not via your "
+"distribution's\n"
+"package manager.  This situation is explained in the FAQ section of the "
+"wiki.\n"
 msgstr ""
-"Efekti i kujdesit per ikonen do te aktivizohet per te lajmeruar perdoruesin "
-"per perditesimin e dritares."
 
-#: ../awn-manager/window.glade.h:45
-msgid "Icon offset: "
-msgstr "Zhvendos ikonen: "
-
-#: ../awn-manager/window.glade.h:46
-msgid "Install"
-msgstr "Instalo"
-
-#: ../awn-manager/window.glade.h:47
-msgid "Internal border:"
-msgstr "Bordi i brendshem:"
-
-#: ../awn-manager/window.glade.h:48
-msgid "Keep below maximized windows when not in use"
-msgstr "Kalo mbrapa dritareve te zmadhuara kur nuk eshte ne perdorim"
-
-#: ../awn-manager/window.glade.h:49
-msgid "Launching"
-msgstr "Ne ngarkim"
-
-#: ../awn-manager/window.glade.h:50
-msgid "Main border:"
-msgstr "Bordi Kryesor:"
-
-#: ../awn-manager/window.glade.h:51
-msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "Dritaret e zmadhuara nuk e mbulojne barin (kerkon rinisje)"
-
-#: ../awn-manager/window.glade.h:52
-msgid "Opening"
-msgstr "Po Hapet"
-
-#: ../awn-manager/window.glade.h:53
-msgid "Pattern Engine"
-msgstr "Motorri i modeleve"
-
-#: ../awn-manager/window.glade.h:54
-msgid "Second step color:"
-msgstr "Ngjyra per hapin e dyte:"
-
-#: ../awn-manager/window.glade.h:55
-msgid "Separator color:"
-msgstr "Ngjyra e ndaresit:"
-
-#: ../awn-manager/window.glade.h:56
-msgid "Shadow color:"
-msgstr "Ngjyra e hijes:"
-
-#: ../awn-manager/window.glade.h:57
-msgid "Show separator between launchers and tasks"
-msgstr "Shfaq ndaresin midis filluesve dhe taskeve"
-
-#: ../awn-manager/window.glade.h:58
-msgid "Show windows from all viewports"
-msgstr "Shfaq dritaret nga te gjitha sfondet"
-
-#: ../awn-manager/window.glade.h:59
-msgid "Task Appearance"
-msgstr "Pamja e taskeve"
-
-#: ../awn-manager/window.glade.h:60
-msgid "Tasks have arrows"
-msgstr "Tasket kane shigjeta"
-
-#: ../awn-manager/window.glade.h:61
-msgid "The bar automatically hides when not used"
-msgstr "Bari fshihet automatikisht kur nuk eshte ne perdorim"
-
-#: ../awn-manager/window.glade.h:62
-msgid "Transparency:"
-msgstr "Transparenca:"
-
-#: ../awn-manager/window.glade.h:63
-msgid "Windows don't overlap the bar if this is set"
-msgstr "Dritaret nuk e mbulojne barin nese behet kjo zgjedhje"
-
-#: ../awn-manager/window.glade.h:64
-msgid "page 1"
-msgstr "faqja 1"
-
-#: ../awn-manager/window.glade.h:65
-msgid "page 2"
-msgstr "faqja 2"
-
-#: ../awn-manager/window.glade.h:66
-msgid "page 3"
-msgstr "faqja 3"
-
-#: ../awn-manager/window.glade.h:67
-msgid "page 4"
-msgstr "faqja 4"
+#: ../bindings/python/__init__.py:133
+msgid "Awn Wiki"
+msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr "Nje panel navigues dritaresh."
 
-#: ../libawn/awn-applet.c:1024 ../src/awn-panel.c:582
+#: ../libawn/awn-applet.c:1025 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr "Preferencat e Panelit"
 
@@ -584,13 +331,217 @@ msgstr "Preferencat e Panelit"
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:477
+#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:479
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:2932
+#: ../src/awn-panel.c:2971
 msgid "Close docklet"
 msgstr ""
+
+#~ msgid "<b>Active Icon</b>"
+#~ msgstr "<b>Ikona Aktive</b>"
+
+#~ msgid "<b>Applet Preferences</b>"
+#~ msgstr "<b>Preferencat e Programit</b>"
+
+#~ msgid "<b>Arrows</b>"
+#~ msgstr "<b>Shigjetat</b>"
+
+#~ msgid "<b>Bar behaviour</b>"
+#~ msgstr "<b>Sjellja e Barit</b>"
+
+#~ msgid "<b>Borders</b>"
+#~ msgstr "<b>Bordet</b>"
+
+#~ msgid "<b>Customize Effects</b>"
+#~ msgstr "<b>Pershtat Efektet</b>"
+
+#~ msgid "<b>General Preferences</b>"
+#~ msgstr "<b>Preferenca Gjenerale</b>"
+
+#~ msgid "<b>Gradient</b>"
+#~ msgstr "<b>Gradient</b>"
+
+#~ msgid "<b>Highlight</b>"
+#~ msgstr "<b>Thekso</b>"
+
+#~ msgid "<b>Icon Effects</b>"
+#~ msgstr "<b>Efektet e Ikones</b>"
+
+#~ msgid "<b>Launcher Preferences</b>"
+#~ msgstr "<b>Preferencat e Filluesit</b>"
+
+#~ msgid "<b>Look </b>"
+#~ msgstr "<b>Shiko </b>"
+
+#~ msgid "<b>Pattern</b>"
+#~ msgstr "<b>Model</b>"
+
+#~ msgid "<b>Separator</b>"
+#~ msgstr "<b>Ndares</b>"
+
+#~ msgid "<b>Startup behaviour</b>"
+#~ msgstr "<b>Startup behaviour</b>"
+
+#~ msgid "<b>Text</b>"
+#~ msgstr "<b>Teksti</b>"
+
+#~ msgid "<b>Themes</b>"
+#~ msgstr "<b>Temat</b>"
+
+#~ msgid "<b>Windows</b>"
+#~ msgstr "<b>Dritare</b>"
+
+#~ msgid "Activate"
+#~ msgstr "Aktivizo"
+
+#~ msgid "Add and remove applets"
+#~ msgstr "Shto ose hiq programe"
+
+#~ msgid "Add and remove launchers"
+#~ msgstr "Shto ose hiq Fillues"
+
+#~ msgid "Add, remove and save themes"
+#~ msgstr "Shto, hiq dhe ruaj temat"
+
+#~ msgid "Alert when application window updated"
+#~ msgstr "Lajmero kur dritarja e programit perditesohet"
+
+#~ msgid "Arrow offset: "
+#~ msgstr "Arrow offset: "
+
+#~ msgid "Attention"
+#~ msgstr "Kujdes"
+
+#~ msgid "Auto hide bar when not in use"
+#~ msgstr "Fshih automatikisht barin kur nuk eshte ne perdorim"
+
+#~ msgid "Automatically start AWN on login."
+#~ msgstr "Fillo AWN automatikisht ne hyrje."
+
+#~ msgid "Background color:"
+#~ msgstr "Ngjyra e sfondit:"
+
+#~ msgid "Bar Appearance"
+#~ msgstr "Pamja e Barit"
+
+#~ msgid "Bar angle: "
+#~ msgstr "Kendi i Barit: "
+
+#~ msgid "Bar height: "
+#~ msgstr "Lartesia e Barit: "
+
+#~ msgid "Change the look and behaviour of the dock"
+#~ msgstr "Ndrysho pamjen dhe sjelljen"
+
+#~ msgid "Closing"
+#~ msgstr "Duke u mbyllur"
+
+#~ msgid "Color:"
+#~ msgstr "Ngjyra"
+
+#~ msgid "Deactivate"
+#~ msgstr "Caktivizo"
+
+#~ msgid "Delete"
+#~ msgstr "Fshi"
+
+#~ msgid "Enable pattern"
+#~ msgstr "Aktivizo modelin"
+
+#~ msgid "Enable rounded corners"
+#~ msgstr "Aktivizo kendet e rrumbullaket"
+
+#~ msgid "First step color:"
+#~ msgstr "Ngjyra e hapit te pare:"
+
+#~ msgid "Font:"
+#~ msgstr "Shkrimi:"
+
+#~ msgid "General"
+#~ msgstr "Të përgjithshme"
+
+#~ msgid "Glass Engine"
+#~ msgstr "Prodhuesi i efektit Xham"
+
+#~ msgid "Hover"
+#~ msgstr "Rri pezull"
+
+#~ msgid ""
+#~ "Icon attention effect will be activated to alert user of updated windows."
+#~ msgstr ""
+#~ "Efekti i kujdesit per ikonen do te aktivizohet per te lajmeruar "
+#~ "perdoruesin per perditesimin e dritares."
+
+#~ msgid "Icon offset: "
+#~ msgstr "Zhvendos ikonen: "
+
+#~ msgid "Install"
+#~ msgstr "Instalo"
+
+#~ msgid "Internal border:"
+#~ msgstr "Bordi i brendshem:"
+
+#~ msgid "Keep below maximized windows when not in use"
+#~ msgstr "Kalo mbrapa dritareve te zmadhuara kur nuk eshte ne perdorim"
+
+#~ msgid "Launching"
+#~ msgstr "Ne ngarkim"
+
+#~ msgid "Main border:"
+#~ msgstr "Bordi Kryesor:"
+
+#~ msgid "Maximized windows don't cover the bar (requires restart)"
+#~ msgstr "Dritaret e zmadhuara nuk e mbulojne barin (kerkon rinisje)"
+
+#~ msgid "Opening"
+#~ msgstr "Po Hapet"
+
+#~ msgid "Pattern Engine"
+#~ msgstr "Motorri i modeleve"
+
+#~ msgid "Second step color:"
+#~ msgstr "Ngjyra per hapin e dyte:"
+
+#~ msgid "Separator color:"
+#~ msgstr "Ngjyra e ndaresit:"
+
+#~ msgid "Shadow color:"
+#~ msgstr "Ngjyra e hijes:"
+
+#~ msgid "Show separator between launchers and tasks"
+#~ msgstr "Shfaq ndaresin midis filluesve dhe taskeve"
+
+#~ msgid "Show windows from all viewports"
+#~ msgstr "Shfaq dritaret nga te gjitha sfondet"
+
+#~ msgid "Task Appearance"
+#~ msgstr "Pamja e taskeve"
+
+#~ msgid "Tasks have arrows"
+#~ msgstr "Tasket kane shigjeta"
+
+#~ msgid "The bar automatically hides when not used"
+#~ msgstr "Bari fshihet automatikisht kur nuk eshte ne perdorim"
+
+#~ msgid "Transparency:"
+#~ msgstr "Transparenca:"
+
+#~ msgid "Windows don't overlap the bar if this is set"
+#~ msgstr "Dritaret nuk e mbulojne barin nese behet kjo zgjedhje"
+
+#~ msgid "page 1"
+#~ msgstr "faqja 1"
+
+#~ msgid "page 2"
+#~ msgstr "faqja 2"
+
+#~ msgid "page 3"
+#~ msgstr "faqja 3"
+
+#~ msgid "page 4"
+#~ msgstr "faqja 4"
 
 #~ msgid "Awn Manager"
 #~ msgstr "Menaxheri Awn"

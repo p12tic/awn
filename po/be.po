@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avant-window-navigator 0.2.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 23:46-0700\n"
+"POT-Creation-Date: 2009-08-18 18:21-0700\n"
 "PO-Revision-Date: 2008-04-04 17:16+0000\n"
 "Last-Translator: Hleb Valoshka <Unknown>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -27,7 +27,7 @@ msgstr ""
 msgid "Launch %s"
 msgstr "Запусканьне"
 
-#: ../applets/taskmanager/task-icon.c:1812
+#: ../applets/taskmanager/task-icon.c:1852
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "Дадаць/прыбраць запускальнікі"
@@ -126,7 +126,7 @@ msgstr ""
 msgid "3D Spotlight Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:98
+#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:99
 msgid "Custom"
 msgstr ""
 
@@ -223,10 +223,6 @@ msgid ""
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
 
-#: ../awn-manager/awnLauncher.py:138
-msgid "Invalid launcher"
-msgstr ""
-
 #: ../awn-settings/awnLauncherEditor.py:144
 msgid "Select an Executable File"
 msgstr ""
@@ -254,308 +250,59 @@ msgstr ""
 msgid "Couldn't save the launcher. Error: %s"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:63
+#: ../awn-settings/awnSettings.py.in:64
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:93
+#: ../awn-settings/awnSettings.py.in:94
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:94
+#: ../awn-settings/awnSettings.py.in:95
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:95
+#: ../awn-settings/awnSettings.py.in:96
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:96
+#: ../awn-settings/awnSettings.py.in:97
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "Хаваць панэль, калі яна не выкарыстоўваецца"
 
-#: ../awn-settings/awnSettings.py.in:97
+#: ../awn-settings/awnSettings.py.in:98
 #, fuzzy
 msgid "Transparency"
 msgstr "Празрыстасьць:"
 
-#: ../awn-manager/window.glade.h:1
-msgid "<b>Active Icon</b>"
-msgstr "<b>Актыўная значка</b>"
-
-#: ../awn-manager/window.glade.h:2
-msgid "<b>Applet Preferences</b>"
-msgstr "<b>Настаўленьні аплета</b>"
-
-#: ../awn-manager/window.glade.h:3
-msgid "<b>Arrows</b>"
-msgstr "<b>Стрэлкі</b>"
-
-#: ../awn-manager/window.glade.h:4
-msgid "<b>Bar behaviour</b>"
-msgstr "<b>Паводзіны панэлі</b>"
-
-#: ../awn-manager/window.glade.h:5
-msgid "<b>Borders</b>"
-msgstr "<b>Межы</b>"
-
-#: ../awn-manager/window.glade.h:6
-msgid "<b>Customize Effects</b>"
-msgstr "<b>Выбраць эфэкты</b>"
-
-#: ../awn-manager/window.glade.h:7
-msgid "<b>General Preferences</b>"
-msgstr "<b>Агульныя настаўленьні</b>"
-
-#: ../awn-manager/window.glade.h:8
-msgid "<b>Gradient</b>"
-msgstr "<b>Градыент</b>"
-
-#: ../awn-manager/window.glade.h:9
-msgid "<b>Highlight</b>"
-msgstr "<b>Падсьвечваньне</b>"
-
-#: ../awn-manager/window.glade.h:10
-msgid "<b>Icon Effects</b>"
-msgstr "<b>Эфэкты значак</b>"
-
-#: ../awn-manager/window.glade.h:11
-msgid "<b>Launcher Preferences</b>"
-msgstr "<b>Настаўленьні запускальніка</b>"
-
-#: ../awn-manager/window.glade.h:12
-msgid "<b>Look </b>"
-msgstr "<b>Выгляд </b>"
-
-#: ../awn-manager/window.glade.h:13
-msgid "<b>Pattern</b>"
-msgstr "<b>Узор</b>"
-
-#: ../awn-manager/window.glade.h:14
-msgid "<b>Separator</b>"
-msgstr "<b>Падзельнік</b>"
-
-#: ../awn-manager/window.glade.h:15
-msgid "<b>Startup behaviour</b>"
-msgstr ""
-
-#: ../awn-manager/window.glade.h:16
-msgid "<b>Text</b>"
-msgstr "<b>Тэкст</b>"
-
-#: ../awn-manager/window.glade.h:17
-msgid "<b>Themes</b>"
-msgstr "<b>Тэмы</b>"
-
-#: ../awn-manager/window.glade.h:18
-msgid "<b>Windows</b>"
-msgstr "<b>Вокны</b>"
-
-#: ../awn-manager/window.glade.h:19
-msgid "Activate"
-msgstr "Задзейнічаць"
-
-#: ../awn-manager/window.glade.h:20
-msgid "Add and remove applets"
-msgstr "Дадаць/прыбраць аплеты"
-
-#: ../awn-manager/window.glade.h:21
-msgid "Add and remove launchers"
-msgstr "Дадаць/прыбраць запускальнікі"
-
-#: ../awn-manager/window.glade.h:22
-msgid "Add, remove and save themes"
-msgstr "Дадаць/прыбраць і захаваць тэмы"
-
-#: ../awn-manager/window.glade.h:23
-msgid "Alert when application window updated"
-msgstr "Папярэджваць, калі вакно дастасаваньня абнавілася"
-
-#: ../awn-manager/window.glade.h:24
-msgid "Arrow offset: "
-msgstr ""
-
-#: ../awn-manager/window.glade.h:25
-msgid "Attention"
-msgstr "Турбаваньне"
-
-#: ../awn-manager/window.glade.h:26
-msgid "Auto hide bar when not in use"
-msgstr "Хаваць панэль, калі яна не выкарыстоўваецца"
-
-#: ../awn-manager/window.glade.h:27
-msgid "Automatically start AWN on login."
-msgstr ""
-
-#: ../awn-manager/window.glade.h:28
-msgid "Background color:"
-msgstr "Колер асноведзі:"
-
-#: ../awn-manager/window.glade.h:29
-msgid "Bar Appearance"
-msgstr "Выгляд панэлі"
-
-#: ../awn-manager/window.glade.h:30
-msgid "Bar angle: "
-msgstr "Кут панэлі: "
-
-#: ../awn-manager/window.glade.h:31
-msgid "Bar height: "
-msgstr "Вышыня панэлі: "
-
-#: ../awn-manager/window.glade.h:32
-msgid "Change the look and behaviour of the dock"
-msgstr "Зьмяніць выгляд і паводзіны дока"
-
-#: ../awn-manager/window.glade.h:33
-msgid "Closing"
-msgstr "Закрыцьцё"
-
-#: ../awn-manager/window.glade.h:34
-msgid "Color:"
-msgstr "Колер:"
-
-#: ../awn-manager/window.glade.h:35
-msgid "Deactivate"
-msgstr "Абязьдзейніць"
-
-#: ../awn-manager/window.glade.h:36
-msgid "Delete"
-msgstr "Выдаліць"
-
-#: ../awn-manager/window.glade.h:37
-msgid "Enable pattern"
-msgstr "Задзейнічаць узор"
-
-#: ../awn-manager/window.glade.h:38
-msgid "Enable rounded corners"
-msgstr "Задзейнічаць закругленыя куты"
-
-#: ../awn-manager/window.glade.h:39
-msgid "First step color:"
-msgstr "Пачатковы колер:"
-
-#: ../awn-manager/window.glade.h:40
-msgid "Font:"
-msgstr "Шрыфт:"
-
-#: ../awn-manager/window.glade.h:41
-msgid "General"
-msgstr "Асноўныя"
-
-#: ../awn-manager/window.glade.h:42
-msgid "Glass Engine"
-msgstr "Рухавік люстэрка"
-
-#: ../awn-manager/window.glade.h:43
-msgid "Hover"
-msgstr "Пад курсорам"
-
-#: ../awn-manager/window.glade.h:44
+#: ../bindings/python/__init__.py:118
+#, python-format
 msgid ""
-"Icon attention effect will be activated to alert user of updated windows."
+"The following Python modules could not be found: %s.  There are a few "
+"possible\n"
+"explanations for this:\n"
+"\n"
+"1. You do not have this Python module installed.  In this case, you should\n"
+"visit the AWN wiki's applets section to figure out the exact name of the\n"
+"package for your distribution that provides this module.\n"
+"\n"
+"2. The module is installed in a non-standard location.  This is usually the\n"
+"case when you manually install a package, that is, not via your "
+"distribution's\n"
+"package manager.  This situation is explained in the FAQ section of the "
+"wiki.\n"
 msgstr ""
-"Будзе задзенічаны эфэкт «пільная значка», каб папярэдзіць карыстальніка аб "
-"абноўленых вокнах."
 
-#: ../awn-manager/window.glade.h:45
-msgid "Icon offset: "
-msgstr "Зрушэньне значак: "
-
-#: ../awn-manager/window.glade.h:46
-msgid "Install"
-msgstr "Усталяваць"
-
-#: ../awn-manager/window.glade.h:47
-msgid "Internal border:"
-msgstr "Унутраная мяжа"
-
-#: ../awn-manager/window.glade.h:48
-msgid "Keep below maximized windows when not in use"
-msgstr "Трымаць пад разгорнутымі вокнамі, калі не выкарыстоўваецца"
-
-#: ../awn-manager/window.glade.h:49
-msgid "Launching"
-msgstr "Запусканьне"
-
-#: ../awn-manager/window.glade.h:50
-msgid "Main border:"
-msgstr "Галоўная мяжа:"
-
-#: ../awn-manager/window.glade.h:51
-msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "Разгорнутыя вокны не перакрываюць панэль (патрэбны перазапуск)"
-
-#: ../awn-manager/window.glade.h:52
-msgid "Opening"
-msgstr "Адкрыцьцё"
-
-#: ../awn-manager/window.glade.h:53
-msgid "Pattern Engine"
-msgstr "Рухавік узораў"
-
-#: ../awn-manager/window.glade.h:54
-msgid "Second step color:"
-msgstr "Канцавы колер:"
-
-#: ../awn-manager/window.glade.h:55
-msgid "Separator color:"
-msgstr "Колер падзельніка:"
-
-#: ../awn-manager/window.glade.h:56
-msgid "Shadow color:"
-msgstr "Колер ценю:"
-
-#: ../awn-manager/window.glade.h:57
-msgid "Show separator between launchers and tasks"
-msgstr "Паказваць падзельнік між запускальнікамі й задачамі"
-
-#: ../awn-manager/window.glade.h:58
-msgid "Show windows from all viewports"
-msgstr "Паказваць вокны з усіх працоўных прастор"
-
-#: ../awn-manager/window.glade.h:59
-msgid "Task Appearance"
-msgstr "Выгляд панэлі"
-
-#: ../awn-manager/window.glade.h:60
-msgid "Tasks have arrows"
-msgstr "Задачы маюць стрэлкі"
-
-#: ../awn-manager/window.glade.h:61
-msgid "The bar automatically hides when not used"
-msgstr "Хаваць панэль, калі яна не ва ўжытку"
-
-#: ../awn-manager/window.glade.h:62
-msgid "Transparency:"
-msgstr "Празрыстасьць:"
-
-#: ../awn-manager/window.glade.h:63
-msgid "Windows don't overlap the bar if this is set"
-msgstr "Вокны не перакрываюць панэль, калі тут задзейнічана"
-
-#: ../awn-manager/window.glade.h:64
-msgid "page 1"
-msgstr "Старонка 1"
-
-#: ../awn-manager/window.glade.h:65
-msgid "page 2"
-msgstr "Старонка 2"
-
-#: ../awn-manager/window.glade.h:66
-msgid "page 3"
-msgstr "Старонка 3"
-
-#: ../awn-manager/window.glade.h:67
-msgid "page 4"
-msgstr "Старонка 4"
+#: ../bindings/python/__init__.py:133
+msgid "Awn Wiki"
+msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
 msgstr ""
 
-#: ../libawn/awn-applet.c:1024 ../src/awn-panel.c:582
+#: ../libawn/awn-applet.c:1025 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr ""
 
@@ -563,13 +310,208 @@ msgstr ""
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:477
+#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:479
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:2932
+#: ../src/awn-panel.c:2971
 msgid "Close docklet"
 msgstr ""
+
+#~ msgid "<b>Active Icon</b>"
+#~ msgstr "<b>Актыўная значка</b>"
+
+#~ msgid "<b>Applet Preferences</b>"
+#~ msgstr "<b>Настаўленьні аплета</b>"
+
+#~ msgid "<b>Arrows</b>"
+#~ msgstr "<b>Стрэлкі</b>"
+
+#~ msgid "<b>Bar behaviour</b>"
+#~ msgstr "<b>Паводзіны панэлі</b>"
+
+#~ msgid "<b>Borders</b>"
+#~ msgstr "<b>Межы</b>"
+
+#~ msgid "<b>Customize Effects</b>"
+#~ msgstr "<b>Выбраць эфэкты</b>"
+
+#~ msgid "<b>General Preferences</b>"
+#~ msgstr "<b>Агульныя настаўленьні</b>"
+
+#~ msgid "<b>Gradient</b>"
+#~ msgstr "<b>Градыент</b>"
+
+#~ msgid "<b>Highlight</b>"
+#~ msgstr "<b>Падсьвечваньне</b>"
+
+#~ msgid "<b>Icon Effects</b>"
+#~ msgstr "<b>Эфэкты значак</b>"
+
+#~ msgid "<b>Launcher Preferences</b>"
+#~ msgstr "<b>Настаўленьні запускальніка</b>"
+
+#~ msgid "<b>Look </b>"
+#~ msgstr "<b>Выгляд </b>"
+
+#~ msgid "<b>Pattern</b>"
+#~ msgstr "<b>Узор</b>"
+
+#~ msgid "<b>Separator</b>"
+#~ msgstr "<b>Падзельнік</b>"
+
+#~ msgid "<b>Text</b>"
+#~ msgstr "<b>Тэкст</b>"
+
+#~ msgid "<b>Themes</b>"
+#~ msgstr "<b>Тэмы</b>"
+
+#~ msgid "<b>Windows</b>"
+#~ msgstr "<b>Вокны</b>"
+
+#~ msgid "Activate"
+#~ msgstr "Задзейнічаць"
+
+#~ msgid "Add and remove applets"
+#~ msgstr "Дадаць/прыбраць аплеты"
+
+#~ msgid "Add and remove launchers"
+#~ msgstr "Дадаць/прыбраць запускальнікі"
+
+#~ msgid "Add, remove and save themes"
+#~ msgstr "Дадаць/прыбраць і захаваць тэмы"
+
+#~ msgid "Alert when application window updated"
+#~ msgstr "Папярэджваць, калі вакно дастасаваньня абнавілася"
+
+#~ msgid "Attention"
+#~ msgstr "Турбаваньне"
+
+#~ msgid "Auto hide bar when not in use"
+#~ msgstr "Хаваць панэль, калі яна не выкарыстоўваецца"
+
+#~ msgid "Background color:"
+#~ msgstr "Колер асноведзі:"
+
+#~ msgid "Bar Appearance"
+#~ msgstr "Выгляд панэлі"
+
+#~ msgid "Bar angle: "
+#~ msgstr "Кут панэлі: "
+
+#~ msgid "Bar height: "
+#~ msgstr "Вышыня панэлі: "
+
+#~ msgid "Change the look and behaviour of the dock"
+#~ msgstr "Зьмяніць выгляд і паводзіны дока"
+
+#~ msgid "Closing"
+#~ msgstr "Закрыцьцё"
+
+#~ msgid "Color:"
+#~ msgstr "Колер:"
+
+#~ msgid "Deactivate"
+#~ msgstr "Абязьдзейніць"
+
+#~ msgid "Delete"
+#~ msgstr "Выдаліць"
+
+#~ msgid "Enable pattern"
+#~ msgstr "Задзейнічаць узор"
+
+#~ msgid "Enable rounded corners"
+#~ msgstr "Задзейнічаць закругленыя куты"
+
+#~ msgid "First step color:"
+#~ msgstr "Пачатковы колер:"
+
+#~ msgid "Font:"
+#~ msgstr "Шрыфт:"
+
+#~ msgid "General"
+#~ msgstr "Асноўныя"
+
+#~ msgid "Glass Engine"
+#~ msgstr "Рухавік люстэрка"
+
+#~ msgid "Hover"
+#~ msgstr "Пад курсорам"
+
+#~ msgid ""
+#~ "Icon attention effect will be activated to alert user of updated windows."
+#~ msgstr ""
+#~ "Будзе задзенічаны эфэкт «пільная значка», каб папярэдзіць карыстальніка аб "
+#~ "абноўленых вокнах."
+
+#~ msgid "Icon offset: "
+#~ msgstr "Зрушэньне значак: "
+
+#~ msgid "Install"
+#~ msgstr "Усталяваць"
+
+#~ msgid "Internal border:"
+#~ msgstr "Унутраная мяжа"
+
+#~ msgid "Keep below maximized windows when not in use"
+#~ msgstr "Трымаць пад разгорнутымі вокнамі, калі не выкарыстоўваецца"
+
+#~ msgid "Launching"
+#~ msgstr "Запусканьне"
+
+#~ msgid "Main border:"
+#~ msgstr "Галоўная мяжа:"
+
+#~ msgid "Maximized windows don't cover the bar (requires restart)"
+#~ msgstr "Разгорнутыя вокны не перакрываюць панэль (патрэбны перазапуск)"
+
+#~ msgid "Opening"
+#~ msgstr "Адкрыцьцё"
+
+#~ msgid "Pattern Engine"
+#~ msgstr "Рухавік узораў"
+
+#~ msgid "Second step color:"
+#~ msgstr "Канцавы колер:"
+
+#~ msgid "Separator color:"
+#~ msgstr "Колер падзельніка:"
+
+#~ msgid "Shadow color:"
+#~ msgstr "Колер ценю:"
+
+#~ msgid "Show separator between launchers and tasks"
+#~ msgstr "Паказваць падзельнік між запускальнікамі й задачамі"
+
+#~ msgid "Show windows from all viewports"
+#~ msgstr "Паказваць вокны з усіх працоўных прастор"
+
+#~ msgid "Task Appearance"
+#~ msgstr "Выгляд панэлі"
+
+#~ msgid "Tasks have arrows"
+#~ msgstr "Задачы маюць стрэлкі"
+
+#~ msgid "The bar automatically hides when not used"
+#~ msgstr "Хаваць панэль, калі яна не ва ўжытку"
+
+#~ msgid "Transparency:"
+#~ msgstr "Празрыстасьць:"
+
+#~ msgid "Windows don't overlap the bar if this is set"
+#~ msgstr "Вокны не перакрываюць панэль, калі тут задзейнічана"
+
+#~ msgid "page 1"
+#~ msgstr "Старонка 1"
+
+#~ msgid "page 2"
+#~ msgstr "Старонка 2"
+
+#~ msgid "page 3"
+#~ msgstr "Старонка 3"
+
+#~ msgid "page 4"
+#~ msgstr "Старонка 4"
 
 #~ msgid "Change Icon"
 #~ msgstr "Зьмяніць значку"
