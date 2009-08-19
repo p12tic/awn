@@ -1,5 +1,12 @@
 2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* data/Makefile.am:
+	* data/awn-themed-icon-ui.glade (removed):
+	Remove obsolete file.
+	Fix typo.
+
+2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/__init__.py:
 	* po/POTFILES.in:
 	* po/POTFILES.skip:
