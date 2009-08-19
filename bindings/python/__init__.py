@@ -115,7 +115,7 @@ def check_dependencies(scope, *modules, **choice_modules):
             pass
         import gtk
         RESPONSE_WIKI = 21
-        msg = '''\
+        msg = _('''\
 The following Python modules could not be found: %s.  There are a few possible
 explanations for this:
 
@@ -126,11 +126,11 @@ package for your distribution that provides this module.
 2. The module is installed in a non-standard location.  This is usually the
 case when you manually install a package, that is, not via your distribution's
 package manager.  This situation is explained in the FAQ section of the wiki.
-''' % ', '.join(not_found_modules)
+''') % ', '.join(not_found_modules)
 
         dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_ERROR,
                                    gtk.BUTTONS_NONE, msg)
-        dialog.add_button('AWN Wiki', RESPONSE_WIKI).grab_default()
+        dialog.add_button(_('Awn Wiki'), RESPONSE_WIKI).grab_default()
         dialog.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK)
         dialog.set_alternative_button_order([gtk.RESPONSE_OK, RESPONSE_WIKI])
         if dialog.run() == RESPONSE_WIKI:

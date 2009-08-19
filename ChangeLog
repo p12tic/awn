@@ -1,3 +1,10 @@
+2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/__init__.py:
+	* po/POTFILES.in:
+	* po/POTFILES.skip:
+	Update translatable files.
+
 2009-08-19  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/vala/awn.vapi:

@@ -5,12 +5,12 @@ applets/taskmanager/taskmanager.desktop.in.in
 awn-settings/awn-settings.desktop.in
 awn-settings/awn-settings.xml
 awn-settings/awnClass.py
-awn-manager/awnLauncher.py
 awn-settings/awnLauncherEditor.py
 awn-settings/awnSettings.py.in
 awn-settings/launcher-editor.xml
-awn-manager/window.glade
+bindings/python/__init__.py
 data/avant-window-navigator.desktop.in
+data/awn-themed-icon-ui.xml
 libawn/awn-applet.c
 src/awn-applet-proxy.c
 src/awn-panel.c
