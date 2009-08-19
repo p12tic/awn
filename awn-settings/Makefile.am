@@ -17,13 +17,12 @@ desktopdir   = $(datadir)/applications
 desktop_DATA = 	awn-settings.desktop
 @INTLTOOL_DESKTOP_RULE@
 
-icons = awn-plugins.svg
-
 # icon-related
 
-install-icons:
-	mkdir -p $(DESTDIR)$(datadir)/icons/hicolor/scalable/apps
-	$(INSTALL) -m644 $(srcdir)/awn-plugins.svg $(DESTDIR)$(datadir)/icons/hicolor/scalable/apps/awn-plugins.svg
+categoryicondir = $(datadir)/icons/hicolor/scalable/categories
+dist_categoryicon_DATA = \
+	awn-plugins.svg \
+	$(NULL)
 
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
 install-data-hook: update-icon-cache
@@ -37,8 +36,6 @@ update-icon-cache:
 		echo "***   $(gtk_update_icon_cache)"; \
 	fi
 
-install-data-local: install-icons
-
 install-exec-local:
 	test -e "$(DESTDIR)$(bindir)" || mkdir -p "$(DESTDIR)$(bindir)"
 	$(INSTALL) -m 755 awnSettings.py "$(DESTDIR)$(bindir)/awn-settings"
@@ -47,7 +44,6 @@ install-exec-local:
 uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-settings
 	rm -f $(DESTDIR)$(bindir)/awn-launcher-editor
-	rm -f $(DESTDIR)$(datadir)/icons/hicolor/scalable/apps/awn-plugins.svg
 
 EXTRA_DIST +=			\
 	$(xml_DATA)		\

@@ -48,6 +48,8 @@ taskmanager_la_CFLAGS = $(WARNING_FLAGS) $(TASKMANAGER_CFLAGS)
 taskmanager_la_LDFLAGS = -module -avoid-version
 
 # DBus glue
+DBUS_XML = task-manager-dbus.xml task-manager-api-wrapper-dbus.xml
+
 task-manager-glue.h: task-manager-dbus.xml Makefile
 	$(QUIET_GEN)$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=task_manager --mode=glib-server --output=$@ $<
 
@@ -69,5 +71,5 @@ BUILT_SOURCES = \
 	$(MARSHALFILES) \
 	$(NULL)
 
-EXTRA_DIST = $(desktop_DATA).in.in $(schema_DATA)
+EXTRA_DIST = $(desktop_DATA).in.in $(schema_DATA) $(DBUS_XML)
 CLEANFILES = $(desktop_DATA) $(schemas_in_files) $(schemas_DATA) $(BUILT_SOURCES)

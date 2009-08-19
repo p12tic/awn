@@ -198,11 +198,6 @@ applets/taskmanager/Makefile
 applets/taskmanager/taskmanager.desktop.in
 awn.pc
 awn-applet-activation/Makefile
-awn-manager/Makefile
-awn-manager/awn-launcher-editor
-awn-manager/awn-manager.desktop.in
-awn-manager/awnDefs.py
-awn-manager/awnManager.py
 awn-settings/Makefile
 awn-settings/awn-launcher-editor
 awn-settings/awnDefs.py
@@ -214,7 +209,6 @@ data/avant-window-navigator.schema-ini
 doc/Makefile
 doc/reference/Makefile
 libawn/Makefile
-libawn/anims/Makefile
 po/Makefile.in
 shave/shave
 shave/shave-libtool

@@ -1,5 +1,13 @@
 2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* Makefile.am:
+	* applets/taskmanager/Makefile.am:
+	* awn-settings/Makefile.am:
+	* configure.in:
+	Add make distcheck fixes.
+
+2009-08-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* awn-applet-activation/Makefile.am:
 	* src/Makefile.am:
 	* src/awn-applet-manager.c:
