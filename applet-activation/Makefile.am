@@ -4,7 +4,7 @@ INCLUDES =		\
 	$(AWN_CFLAGS)	\
 	$(NULL)
 
-bin_PROGRAMS = awn-applet
+libexec_PROGRAMS = awn-applet
 
 awn_applet_LDADD =			\
 	$(AWN_LIBS)				\

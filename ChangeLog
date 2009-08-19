@@ -1,5 +1,16 @@
 2009-08-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* .bzrignore:
+	* Makefile.am:
+	* applet-activation/Makefile.am:
+	* configure.in:
+	* src/awn-applet-proxy.c:
+	Rename the folder where awn-applet lives.
+	Install awn-applet to the libexec folder, as it is not meant to be
+	run manually by a user.
+
+2009-08-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/Makefile.am:
 	* doc/reference/libawn-sections.txt:
 	Update the doc templates so that it ignores files that aren't really

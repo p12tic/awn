@@ -7,7 +7,7 @@ endif
 SUBDIRS = \
 	libawn \
 	src \
-	awn-applet-activation \
+	applet-activation \
 	awn-settings \
 	applets/taskmanager \
 	applets/expander \
