@@ -51,9 +51,25 @@ CFILE_GLOB=$(DOC_SOURCE_DIR)/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
+# For some bizarre reason, I needed to add nonexistent buffer files to get it
+# to work correctly. (malept)
 IGNORE_HFILES= \
+	awn-effect-bounce.h \
+	awn-effect-desaturate.h \
+	awn-effect-fade.h \
+	awn-effect-glow.h \
+	awn-effect-simple.h \
+	awn-effect-spotlight.h \
+	awn-effect-spotlight3d.h \
+	awn-effect-squish.h \
+	awn-effect-turn.h \
+	awn-effect-zoom.h \
+	awn-effects-shared.h \
 	gseal-transition.h \
-	$(NULL)
+	libawn.h \
+	libawn-marshal.h \
+	stamp-awn-enum-types.h \
+	invalid.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
@@ -90,7 +106,7 @@ include $(top_srcdir)/gtk-doc.make
 
 if MAINTAINER_MODE
 $(DOC_MODULE).types: $(HFILE_GLOB)
-	$(QUIET_GEN)$(GTKDOC_RUN) gtkdoc-scan --rebuild-sections --rebuild-types --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)"
+	$(QUIET_GEN) gtkdoc-scan --rebuild-sections --rebuild-types --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)"
 endif
 
 # Other files to distribute

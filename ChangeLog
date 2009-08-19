@@ -1,3 +1,10 @@
+2009-08-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/Makefile.am:
+	* doc/reference/libawn-sections.txt:
+	Update the doc templates so that it ignores files that aren't really
+	part of the API.
+
 2009-08-18  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
