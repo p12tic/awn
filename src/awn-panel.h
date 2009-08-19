@@ -28,7 +28,7 @@
 #include <dbus/dbus-glib-bindings.h>
 
 #include <libdesktop-agnostic/config.h>
-#include <libawn/awn-defines.h>
+#include <libawn/libawn.h>
 
 G_BEGIN_DECLS
 

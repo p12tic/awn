@@ -36,7 +36,7 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
-#include <libawn/awn-config.h>
+#include <libawn/libawn.h>
 
 #include "awn-app.h"
 #include "awn-defines.h"

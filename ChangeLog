@@ -1,5 +1,15 @@
 2009-08-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* src/awn-app.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-background.h:
+	* src/awn-panel.h:
+	* src/awn-throbber.h:
+	Use the single header instead of enumerating all of the libawn
+	headers.
+
+2009-08-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* HACKING:
 	Add a note about po/POTFILES.in.
 

@@ -22,8 +22,7 @@
 #include "config.h"
 #include <glib/gi18n.h>
 #include <gdk/gdkx.h>
-#include <libawn/awn-effects.h>
-#include <libawn/awn-icon.h>
+#include <libawn/libawn.h>
 #include <libawn/awn-utils.h>
 
 #include "awn-applet-proxy.h"

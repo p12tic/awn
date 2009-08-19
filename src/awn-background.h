@@ -27,7 +27,7 @@
 
 #include <libdesktop-agnostic/desktop-agnostic.h>
 
-#include <libawn/awn-defines.h>
+#include <libawn/libawn.h>
 
 #include "awn-panel.h"
 

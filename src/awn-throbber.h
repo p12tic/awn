@@ -23,10 +23,7 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
-#include <libawn/awn-defines.h>
-#include <libawn/awn-effects.h>
-#include <libawn/awn-tooltip.h>
-#include <libawn/awn-icon.h>
+#include <libawn/libawn.h>
 
 G_BEGIN_DECLS
 
