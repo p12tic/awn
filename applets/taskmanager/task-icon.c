@@ -156,6 +156,9 @@ static const gint n_task_icon_type = G_N_ELEMENTS (task_icon_type);
 
 static gboolean  task_icon_configure_event      (GtkWidget          *widget, 
                                                  GdkEventConfigure  *event);
+static gboolean task_icon_scroll_event          (GtkWidget *widget, 
+                                                 GdkEventScroll *event, 
+                                                 TaskIcon *icon);
 
 static void task_icon_long_press (TaskIcon * icon,gpointer null);
 static void task_icon_clicked (TaskIcon * icon,GdkEventButton *event);
@@ -387,6 +390,9 @@ task_icon_constructed (GObject *object)
   g_signal_connect(G_OBJECT(priv->applet), "size-changed", 
                    G_CALLBACK(size_changed_cb), object);
 
+  g_signal_connect(G_OBJECT(object), "scroll-event",
+                   G_CALLBACK(task_icon_scroll_event), object);  
+  
   priv->client = awn_config_get_default_for_applet (priv->applet, &error);
 
   if (error)
@@ -942,10 +948,10 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
      */
 //    priv->icon = task_item_get_icon (priv->main_item);
     
-    priv->items = g_slist_remove (priv->items, priv->main_item);
-    priv->items = g_slist_prepend (priv->items,priv->main_item);
+//    priv->items = g_slist_remove (priv->items, priv->main_item);
+//    priv->items = g_slist_prepend (priv->items,priv->main_item);
 #ifdef DEBUG
-    g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
+    g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 #endif    
     awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
     awn_icon_set_tooltip_text (AWN_ICON (icon), 
@@ -1518,6 +1524,63 @@ task_icon_set_inhibit_focus_loss (TaskIcon *icon, gboolean val)
   
   priv = icon->priv;
   priv->inhibit_focus_loss = val;
+}
+
+static gboolean
+task_icon_scroll_event (GtkWidget *widget, GdkEventScroll *event, TaskIcon *icon)
+{
+  TaskIconPrivate *priv;
+
+  g_assert (TASK_IS_ICON(icon));
+
+  priv = icon->priv;
+  if (event->type == GDK_SCROLL)
+  {
+    if (priv->main_item && TASK_IS_WINDOW (priv->main_item))
+    {
+      GSList *cur_item = NULL;
+      guint count = 0;
+      gint pos;
+      
+      if (!task_window_is_active (TASK_WINDOW(priv->main_item)) )
+      {
+        task_window_activate (TASK_WINDOW(priv->main_item),event->time);
+        return TRUE;
+      }
+      cur_item = g_slist_find (priv->items, priv->main_item);
+      do
+      {
+        switch (event->direction)
+        {
+          case GDK_SCROLL_UP:
+          case GDK_SCROLL_LEFT:
+            /*This is why it's almost always best to use a GList instead of a
+             GSList*/
+            pos = g_slist_position (priv->items, cur_item);
+            pos--;
+            if (pos<0)
+            {
+              pos = g_slist_length (priv->items) -1;
+            }
+            cur_item = g_slist_nth (priv->items, pos);
+            break;
+          case GDK_SCROLL_DOWN:
+          case GDK_SCROLL_RIGHT:
+            cur_item = g_slist_next (cur_item);
+            if (!cur_item)
+            {
+              cur_item = priv->items;
+            }
+            break;
+        }
+        count ++;
+      } while ( TASK_IS_LAUNCHER (cur_item->data) && (count <= g_slist_length(priv->items)) );
+      priv->main_item = cur_item->data;
+      task_window_activate (TASK_WINDOW(priv->main_item),event->time);
+      return TRUE;
+    }
+  }
+  return FALSE;
 }
 
 static void
