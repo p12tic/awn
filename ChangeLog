@@ -1,3 +1,12 @@
+2009-08-20  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* debian/avant-window-navigator-trunk.install:
+	* debian/awn-applet-activation.1 (removed):
+	* debian/awn-schema-to-gconf.1 (removed):
+	* debian/awn-settings-trunk.install:
+	* debian/rules:
+	Update Debian packaging based on recent changes.
+
 2009-08-20  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-applet.c:
