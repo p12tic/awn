@@ -1,3 +1,8 @@
+2009-08-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	Added check to DBus calling methods whether the proxy is initialized.
+
 2009-08-18  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

@@ -1566,6 +1566,8 @@ awn_applet_inhibit_autohide (AwnApplet *applet, const gchar *reason)
   g_return_val_if_fail (AWN_IS_APPLET (applet), 0);
   priv = applet->priv;
 
+  g_return_val_if_fail (priv->proxy, 0);
+
   gchar *app_name = g_strdup_printf ("%s:%d", g_get_prgname(), getpid());
 
   dbus_g_proxy_call (priv->proxy, "InhibitAutohide",
@@ -1604,6 +1606,8 @@ awn_applet_uninhibit_autohide (AwnApplet *applet, guint cookie)
 
   g_return_if_fail (AWN_IS_APPLET (applet));
   priv = applet->priv;
+
+  g_return_if_fail (priv->proxy);
 
   dbus_g_proxy_call (priv->proxy, "UninhibitAutohide",
                      &error,
@@ -1644,6 +1648,8 @@ awn_applet_docklet_request (AwnApplet *applet, gint min_size,
 
   g_return_val_if_fail (AWN_IS_APPLET (applet), 0);
   priv = applet->priv;
+
+  g_return_val_if_fail (priv->proxy, 0);
 
   dbus_g_proxy_call (priv->proxy, "DockletRequest",
                      &error,
