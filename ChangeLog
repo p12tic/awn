@@ -1,6 +1,13 @@
 2009-08-21  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-icon.h:
+        * applets/taskmanager/task-manager.c:
+	Fix the only_show_launchers mode to work again.
+
+2009-08-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-manager.c:
 	Re-enable the drag and drop.  Seems it was not crashing in Jaunty or
 	Karmic.  Found a fix for Intrepid.  Please test drag and drop of the

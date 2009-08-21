@@ -1254,6 +1254,19 @@ task_icon_contains_launcher (TaskIcon      *icon)
   return FALSE;
 }
 
+
+guint
+task_icon_count_ephemeral_items (TaskIcon * icon)
+{
+  TaskIconPrivate *priv;
+
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
+  priv = icon->priv;
+  
+  return priv->ephemeral_count;
+  
+  
+}
 /**
  * Returns the number of visible and unvisible items this TaskIcon contains.
  */
