@@ -138,7 +138,7 @@ static const GtkTargetEntry drop_types[] =
   { (gchar*)"STRING", 0, 0 },
   { (gchar*)"text/plain", 0,  },
   { (gchar*)"text/uri-list", 0, 0 },
-/*  { (gchar*)"awn/task-icon", 0, 0 }*/
+  { (gchar*)"awn/task-icon", 0, 0 }
 };
 static const gint n_drop_types = G_N_ELEMENTS (drop_types);
 
@@ -684,10 +684,10 @@ task_icon_init (TaskIcon *icon)
                     G_CALLBACK (task_icon_source_drag_fail), NULL);
 
   /* D&D support dragging itself */
-/*  gtk_drag_source_set (GTK_WIDGET (icon),
+  gtk_drag_source_set (GTK_WIDGET (icon),
                        GDK_BUTTON1_MASK,
                        task_icon_type, n_task_icon_type,
-                       GDK_ACTION_MOVE);*/
+                       GDK_ACTION_MOVE);
 }
 
 /**
@@ -2004,8 +2004,6 @@ task_icon_get_dialog (TaskIcon *icon)
   
   return priv->dialog;
 }
-
-//#define DEBUG 1
 /*
  * Drag and Drop code
  * - code to drop things on icons
@@ -2024,7 +2022,6 @@ task_icon_set_draggable (TaskIcon *icon, gboolean draggable)
 
   priv->draggable = draggable;
 
-  /*
   if(draggable)
   {
     gtk_drag_source_set (GTK_WIDGET (icon),
@@ -2035,7 +2032,7 @@ task_icon_set_draggable (TaskIcon *icon, gboolean draggable)
   else
   {
     gtk_drag_source_unset(GTK_WIDGET (icon));
-  }*/
+  }
   //g_debug("draggable:%d", draggable);
 }
 
@@ -2092,23 +2089,19 @@ task_icon_source_drag_begin (GtkWidget      *widget,
   TaskIconPrivate *priv;
   TaskSettings *settings;
 #ifdef DEBUG
-  g_debug ("%s",__func__); 
+  g_debug ("%s",__func__);
 #endif
   g_return_if_fail (TASK_IS_ICON (widget));
   priv = TASK_ICON (widget)->priv;
 
-  if(!priv->draggable)
-  {
-    return;
-  }
+  if(!priv->draggable) return;
+
+  priv->gets_dragged = TRUE;
   
   if (GTK_WIDGET_VISIBLE(priv->dialog))
   {
-    g_debug ("%s: dialog visible bailing",__func__);
-    return;
+    gtk_widget_hide (priv->dialog);    
   }
-
-  priv->gets_dragged = TRUE;
 
   settings = task_settings_get_default ();
 
@@ -2128,16 +2121,9 @@ task_icon_source_drag_end (GtkWidget      *widget,
   g_return_if_fail (TASK_IS_ICON (widget));
   priv = TASK_ICON (widget)->priv;
 
-  if (!priv->gets_dragged) 
-  {
-    return;
-  }
-  priv->gets_dragged = FALSE;  
-  if (GTK_WIDGET_VISIBLE (priv->dialog) )
-  {
-    gtk_drag_finish (drag_context,FALSE,FALSE,drag_context->start_time);
-    return;
-  }
+  if(!priv->gets_dragged) return;
+
+  priv->gets_dragged = FALSE;
   g_signal_emit (TASK_ICON (widget), _icon_signals[SOURCE_DRAG_END], 0);
 }
 
