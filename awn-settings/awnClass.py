@@ -1080,65 +1080,6 @@ class awnPreferences(awnBzr):
 
 #TODO Factorize *_orientation and *_style
 
-    def setup_orientation(self, group, key, dropdown):
-        self.effects_dd = dropdown
-        model = gtk.ListStore(str)
-        model.append([_("Top")])
-        model.append([_("Right")])
-        model.append([_("Bottom")])
-        model.append([_("Left")])
-        dropdown.set_model(model)
-        cell = gtk.CellRendererText()
-        dropdown.pack_start(cell)
-        dropdown.add_attribute(cell,'text',0)
-
-        self.load_orientation(group,key,dropdown)
-
-        dropdown.connect("changed", self.orientation_changed, (group, key))
-        #self.setup_effect_custom(group, key)
-        self.client.notify_add(group, key, self.reload_orientation, dropdown)
-
-    def load_orientation(self, group, key, dropdown):
-        orientation_settings = self.client.get_int(group, key)
-        dropdown.set_active(int(orientation_settings))
-
-    def reload_orientation(self, group, key, value, dropdown):
-        self.load_orientation(group, key, dropdown)
-
-    def orientation_changed(self, dropdown, groupkey):
-        group, key = groupkey
-        self.client.set_int(group, key, dropdown.get_active())
-
-    def setup_style(self, group, key, dropdown):
-        self.effects_dd = dropdown
-        model = gtk.ListStore(str)
-        model.append([_("None")])
-        model.append([_("Flat")])
-        model.append([_("3d")])
-        model.append([_("Curved")])
-        model.append([_("Edgy")])
-        dropdown.set_model(model)
-        cell = gtk.CellRendererText()
-        dropdown.pack_start(cell)
-        dropdown.add_attribute(cell,'text',0)
-
-        self.load_style(group,key,dropdown)
-
-        dropdown.connect("changed", self.style_changed, (group, key))
-        #self.setup_effect_custom(group, key)
-        self.client.notify_add(group, key, self.reload_style, dropdown)
-
-    def load_style(self, group, key, dropdown):
-        style_settings = self.client.get_int(group, key)
-        dropdown.set_active(int(style_settings))
-
-    def reload_style(self, group, key, value, dropdown):
-        self.load_style(group, key, dropdown)
-
-    def style_changed(self, dropdown, groupkey):
-        group, key = groupkey
-        self.client.set_int(group, key, dropdown.get_active())
-
     def setup_freeze(self, toggle, freezed, parameter, data=None):
         '''     Setup a "linked" toggle button
                 toggle : the gtk.ToggleButton

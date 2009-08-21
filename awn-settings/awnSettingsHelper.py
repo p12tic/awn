@@ -21,34 +21,46 @@ def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
                              (and/or value range)
     """
 
+    def get_widget_value (widget):
+        if (isinstance(widget, (gtk.CheckButton, gtk.ComboBox))):
+            return widget.get_active()
+        elif (isinstance(widget, (gtk.SpinButton, gtk.Range))):
+            return widget.get_value()
+        else: raise NotImplementedError()
+
+    def set_widget_value (widget, value):
+        if (isinstance(widget, (gtk.CheckButton, gtk.ComboBox))):
+            widget.set_active(value)
+        elif (isinstance(widget, (gtk.SpinButton, gtk.Range))):
+            widget.set_value(value)
+        else: raise NotImplementedError()
+
+    def get_widget_change_signal_name (widget):
+        signal_names = {
+            gtk.CheckButton: 'toggled',
+            gtk.SpinButton: 'value-changed',
+            gtk.ComboBox: 'changed',
+            gtk.Range: 'value-changed'
+        }
+        for cls in signal_names.keys():
+            if isinstance(widget, cls): return signal_names[cls]
+        else: raise NotImplementedError()
+
     def key_changed (obj, pspec, tuple):
         widget, getter = tuple
 
-        old_value = None
-        if (isinstance(widget, gtk.CheckButton)):
-            old_value = widget.get_active()
-        elif (isinstance(widget, gtk.SpinButton)):
-            old_value = widget.get_value()
-        else: raise NotImplementedError()
-
+        old_value = get_widget_value(widget)
         new_value = obj.get_property(pspec.name)
+
         # FIXME: does it need also the widget param?
         if getter: new_value = getter(new_value)
 
         if (old_value != new_value):
-            if (isinstance(widget, gtk.CheckButton)):
-                widget.set_active(new_value)
-            elif (isinstance(widget, gtk.SpinButton)):
-                widget.set_value(new_value)
+            set_widget_value(widget, new_value)
 
     def widget_changed (widget, *args):
-        new_value = None
         obj, prop_name, setter = args[-1]
-        if (isinstance(widget, gtk.CheckButton)):
-            new_value = widget.get_active()
-        elif (isinstance(widget, gtk.SpinButton)):
-            new_value = widget.get_value()
-        else: raise NotImplementedError()
+        new_value = get_widget_value(widget)
 
         # FIXME: does it need also the widget param?
         if setter: new_value = setter(new_value)
@@ -66,8 +78,6 @@ def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
     # and last connect to widget's change signal if we're supposed to update it
     if (read_only == False):
         data = (obj, prop_name, setter_transform)
-        if (isinstance(widget, gtk.CheckButton)):
-            widget.connect("toggled", widget_changed, data)
-        elif (isinstance(widget, gtk.SpinButton)):
-            widget.connect("value-changed", widget_changed, data)
-        else: raise NotImplementedError()
+        signal_name = get_widget_change_signal_name (widget)
+
+        widget.connect(signal_name, widget_changed, data)

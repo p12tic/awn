@@ -68,6 +68,13 @@ if os.geteuid() == 0:
     sys.exit(1)
 
 class awnPreferencesMini(awnPreferences):
+    panel_size = gobject.property(type=int, default=48)
+    panel_orient = gobject.property(type=int, default=2)
+    panel_style = gobject.property(type=int, default=1)
+    panel_expand = gobject.property(type=bool, default=False)
+
+    monitor_align = gobject.property(type=gobject.TYPE_FLOAT, default=0.5)
+
     launchers_only = gobject.property(type=bool, default=False)
     show_all_windows = gobject.property(type=bool, default=True)
     intellihide = gobject.property(type=bool, default=True)
@@ -131,44 +138,67 @@ class awnPreferencesMini(awnPreferences):
 
         self.choose_behavior.connect("changed", self.choose_behavior_callback)
 
-        self.theme_desktop = self.client.get_string(defs.THEME, defs.CURRENT_THEME)
-
-        self.setup_spin(defs.PANEL, defs.SIZE, self.wTree.get_object("panelsize"))
-        #self.setup_freeze(self.wTree.get_object("freezeSize"), self.wTree.get_object("panelsize"),"size")
-
-        self.setup_orientation(defs.PANEL, defs.ORIENT, self.wTree.get_object("orientationcombo"))
-        #self.setup_freeze(self.wTree.get_object("freezeOrient"), self.wTree.get_object("orientationcombo"), "orientation")
-
         self.setup_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
         #self.setup_freeze(self.wTree.get_object("freezeEffects"), self.wTree.get_object("iconeffects"), "effects")
 
-        self.setup_style(defs.PANEL, defs.STYLE, self.wTree.get_object("stylecombo"))
-        #self.setup_freeze(self.wTree.get_object("freezeStyle"), self.wTree.get_object("stylecombo"), "style")
+        self.theme_desktop = self.client.get_string(defs.THEME, defs.CURRENT_THEME)
 
-        self.setup_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_object("monitor_align_hscale"))
+        # setup orientation model
+        dropdown = self.wTree.get_object("orientationcombo")
+        model = gtk.ListStore(str)
+        model.append([_("Top")])
+        model.append([_("Right")])
+        model.append([_("Bottom")])
+        model.append([_("Left")])
+        dropdown.set_model(model)
+        cell = gtk.CellRendererText()
+        dropdown.pack_start(cell)
+        dropdown.add_attribute(cell,'text',0)
 
-        self.setup_bool(defs.PANEL, defs.EXPAND, self.wTree.get_object("expand_config"))
-        
-        bind_to_gtk_component (self.client_taskman,
-                               GROUP_DEFAULT, defs.ONLY_LAUNCHERS,
-                               self, "launchers-only",
-                               self.wTree.get_object("only_launchers_config"),
-                               False)
-        bind_to_gtk_component (self.client_taskman,
-                               GROUP_DEFAULT, defs.ALL_WINDOWS,
-                               self, "show-all-windows",
-                               self.wTree.get_object("show_all_windows_config"),
-                               False)
-        bind_to_gtk_component (self.client_taskman,
-                               GROUP_DEFAULT, defs.GROUPING,
-                               self, "group-windows",
-                               self.wTree.get_object("grouping_config"),
-                               False)
-        bind_to_gtk_component (self.client_taskman,
-                               GROUP_DEFAULT, defs.INTELLIHIDE,
-                               self, "intellihide",
-                               self.wTree.get_object("intellihide_config"),
-                               False)
+        #setup style mode
+        dropdown = self.wTree.get_object("stylecombo")
+        model = gtk.ListStore(str)
+        model.append([_("None")])
+        model.append([_("Flat")])
+        model.append([_("3d")])
+        model.append([_("Curved")])
+        model.append([_("Edgy")])
+        dropdown.set_model(model)
+        cell = gtk.CellRendererText()
+        dropdown.pack_start(cell)
+        dropdown.add_attribute(cell,'text',0)
+
+        config_map_simple = [
+            # General options
+            (self.client, defs.PANEL, defs.SIZE,
+                "panel-size", "panelsize"),
+            (self.client, defs.PANEL, defs.ORIENT,
+                "panel-orient", "orientationcombo"),
+            (self.client, defs.PANEL, defs.STYLE,
+                "panel-style", "stylecombo"),
+            (self.client, defs.PANEL, defs.EXPAND,
+                "panel-expand", "expand_config"),
+            (self.client, defs.PANEL, defs.MONITOR_ALIGN,
+                "monitor-align", "monitor_align_hscale"),
+            (self.client_taskman, GROUP_DEFAULT, defs.ONLY_LAUNCHERS,
+                "launchers-only", "only_launchers_config"),
+            (self.client_taskman, GROUP_DEFAULT, defs.ALL_WINDOWS,
+                "show-all-windows", "show_all_windows_config"),
+            (self.client_taskman, GROUP_DEFAULT, defs.GROUPING,
+                "group-windows", "grouping_config"),
+            (self.client_taskman, GROUP_DEFAULT, defs.INTELLIHIDE,
+                "intellihide", "intellihide_config"),
+            # Advanced options
+            (self.client_taskman, GROUP_DEFAULT, defs.DRAG_AND_DROP,
+                "drag-and-drop", "drag_and_drop_config"),
+            (self.client_taskman, GROUP_DEFAULT, defs.MATCH_STRENGTH,
+                "match-strength", "match_strength_config")
+        ]
+
+        for item in config_map_simple:
+            client, group, key, prop_name, wtree_name = item
+            bind_to_gtk_component (client, group, key, self, prop_name,
+                                   self.wTree.get_object(wtree_name), False)
 
         #Advanced
         self.setup_spin(defs.PANEL, defs.OFFSET, self.wTree.get_object("offset_config"))
@@ -177,17 +207,6 @@ class awnPreferencesMini(awnPreferences):
         self.setup_spin(defs.PANEL, defs.MONITOR_HEIGHT, self.wTree.get_object("monitor_height"))
         self.setup_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_object("monitor_width"))
         self.setup_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_object("monitor_offset"))
-
-        bind_to_gtk_component (self.client_taskman,
-                               GROUP_DEFAULT, defs.DRAG_AND_DROP,
-                               self, "drag-and-drop",
-                               self.wTree.get_object("drag_and_drop_config"),
-                               False)
-        bind_to_gtk_component (self.client_taskman,
-                               GROUP_DEFAULT, defs.MATCH_STRENGTH,
-                               self, "match-strength",
-                               self.wTree.get_object("match_strength_config"),
-                               False)
 
         self.setup_spin(defs.EFFECTS, defs.REFLECTION_OFFSET, self.wTree.get_object("reflection_offset_config"))
         self.setup_spin(defs.EFFECTS, defs.ICON_ALPHA, self.wTree.get_object("icon_alpha_config"))
@@ -202,21 +221,16 @@ class awnPreferencesMini(awnPreferences):
         #self.setup_color(defs.THEME, defs.GSTEP1, self.wTree.get_object("gstep1_colorbutton"))
 
     def reload(self):
+        # FIXME: this method should be unnecessary soon
         self.load_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
-        self.load_spin(defs.PANEL, defs.SIZE, self.wTree.get_object("panelsize"))
-        self.load_orientation(defs.PANEL, defs.ORIENT, self.wTree.get_object("orientationcombo"))
-        self.load_style(defs.PANEL, defs.STYLE, self.wTree.get_object("stylecombo"))
-        self.load_bool(defs.PANEL, defs.EXPAND, self.wTree.get_object("expand_config"))
 
         #Advanced
         self.load_spin(defs.PANEL, defs.OFFSET, self.wTree.get_object("offset_config"))
-        self.load_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_object("monitor_align"))
         self.load_bool(defs.PANEL, defs.MONITOR_FORCE, self.wTree.get_object("force_monitor"))
         self.load_spin(defs.PANEL, defs.MONITOR_HEIGHT, self.wTree.get_object("monitor_height"))
         self.load_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_object("monitor_width"))
         self.load_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_object("monitor_offset"))
         self.load_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_object("autohide_config"))
-        self.load_spin(defs.PANEL, defs.STYLE, self.wTree.get_object("style_config"))
         self.load_bool(defs.PANEL, defs.PANEL_MODE, self.wTree.get_object("panel_mode_config"))
         self.load_spin(defs.PANEL, defs.CLICKTHROUGH, self.wTree.get_object("clickthrough_config"))
 
