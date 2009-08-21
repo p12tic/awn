@@ -2152,7 +2152,7 @@ task_manager_update (TaskManager *manager,
   }
 }
 
-
+//#define DEBUG
 /*
  * Position Icons through dragging
  */
@@ -2166,6 +2166,9 @@ _drag_dest_motion(TaskManager *manager, gint x, gint y, GtkWidget *icon)
   AwnOrientation orient;
   guint size;
   double action;
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
   
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
@@ -2216,6 +2219,9 @@ static void
 _drag_source_begin(TaskManager *manager, GtkWidget *icon)
 {
   g_return_if_fail (TASK_IS_MANAGER (manager));
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
 
   TaskManagerPrivate *priv = TASK_MANAGER_GET_PRIVATE (manager);
 
@@ -2231,8 +2237,7 @@ _drag_source_begin(TaskManager *manager, GtkWidget *icon)
   }
   else 
   {
-    g_print("ERROR: previous drag wasn't done yet ?!");
-    g_return_if_reached();
+    g_debug("%s: error, previous drag wasn't done yet ?!",__func__);
   }
 }
 
@@ -2240,6 +2245,9 @@ static void
 _drag_source_fail(TaskManager *manager, GtkWidget *icon)
 {
   g_return_if_fail (TASK_IS_MANAGER (manager));
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
 
   TaskManagerPrivate *priv = TASK_MANAGER_GET_PRIVATE (manager);
 
@@ -2257,6 +2265,9 @@ static void
 _drag_dest_leave (TaskManager *manager, GtkWidget *icon)
 {
   g_return_if_fail (TASK_IS_MANAGER (manager));
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
 
   /*
   TaskManagerPrivate *priv = TASK_MANAGER_GET_PRIVATE (manager);
@@ -2292,6 +2303,9 @@ _drag_source_end(TaskManager *manager, GtkWidget *icon)
   //GError *err = NULL;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
 
   priv = TASK_MANAGER_GET_PRIVATE (manager);
   if(priv->dragged_icon == NULL)
@@ -2372,6 +2386,9 @@ _drag_add_signals (TaskManager *manager, GtkWidget *icon)
 {
   g_return_if_fail (TASK_IS_MANAGER (manager));
   g_return_if_fail (TASK_IS_ICON (icon)||TASK_IS_DRAG_INDICATOR (icon));
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
 
   // listen to signals of 'source' start getting dragged, only if it is an icon
   if(TASK_IS_ICON (icon))
@@ -2391,6 +2408,9 @@ _drag_remove_signals (TaskManager *manager, GtkWidget *icon)
 {
   g_return_if_fail (TASK_IS_MANAGER (manager));
   g_return_if_fail (TASK_IS_ICON (icon)||TASK_IS_DRAG_INDICATOR (icon));
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
 
   if(TASK_IS_ICON (icon))
   {

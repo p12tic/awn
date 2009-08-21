@@ -1,5 +1,13 @@
 2009-08-20  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+	Added some debugs into the drag and drop code.
+	Disabled drag and drop of TaskIcons until such time as someone fixes
+	the crashers that are currently present.
+
+2009-08-20  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Store the value returned from get_launcher()...
 
