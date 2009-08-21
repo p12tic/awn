@@ -1,3 +1,21 @@
+#!/usr/bin/python
+#
+#  Copyright (C) 2009 Michal Hruby <michal.mhr@gmail.com>
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA.
+
 import gtk
 from desktopagnostic import config
 
@@ -22,6 +40,17 @@ def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
     """
 
     def get_widget_value (widget):
+        # radio group needs real special case
+        if (isinstance(widget, gtk.RadioButton)):
+            # we need to reverse the list, cause gtk is smart and uses prepend
+            group_widgets = widget.get_group()
+            group_widgets.reverse()
+            i = range(len(group_widgets))
+            for i in range(len(group_widgets)):
+                if group_widgets[i].get_active(): return i
+            else:
+                return -1
+
         if (isinstance(widget, (gtk.CheckButton, gtk.ComboBox))):
             return widget.get_active()
         elif (isinstance(widget, (gtk.SpinButton, gtk.Range))):
@@ -29,6 +58,15 @@ def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
         else: raise NotImplementedError()
 
     def set_widget_value (widget, value):
+        # radio group needs real special case
+        if (isinstance(widget, gtk.RadioButton)):
+            # we need to reverse the list, cause gtk is smart and uses prepend
+            group_widgets = widget.get_group()
+            group_widgets.reverse()
+            for i in range(len(group_widgets)):
+                group_widgets[i].set_active(True if value == i else False)
+            return
+
         if (isinstance(widget, (gtk.CheckButton, gtk.ComboBox))):
             widget.set_active(value)
         elif (isinstance(widget, (gtk.SpinButton, gtk.Range))):
@@ -45,6 +83,20 @@ def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
         for cls in signal_names.keys():
             if isinstance(widget, cls): return signal_names[cls]
         else: raise NotImplementedError()
+
+    def connect_to_widget_changes (widget, callback, data):
+        # radio group needs real special case
+        if (isinstance(widget, gtk.RadioButton)):
+
+            def radio_button_changed (widget, extra):
+                if widget.get_active(): callback(widget, extra)
+
+            for radio in widget.get_group():
+                radio.connect("toggled", radio_button_changed, data)
+            return
+
+        signal_name = get_widget_change_signal_name (widget)
+        widget.connect (signal_name, callback, data)
 
     def key_changed (obj, pspec, tuple):
         widget, getter = tuple
@@ -78,6 +130,5 @@ def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
     # and last connect to widget's change signal if we're supposed to update it
     if (read_only == False):
         data = (obj, prop_name, setter_transform)
-        signal_name = get_widget_change_signal_name (widget)
 
-        widget.connect(signal_name, widget_changed, data)
+        connect_to_widget_changes (widget, widget_changed, data)

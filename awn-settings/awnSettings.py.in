@@ -86,6 +86,7 @@ class awnPreferencesMini(awnPreferences):
     reflection_alpha = gobject.property(type=gobject.TYPE_FLOAT, default=0.3)
     icon_alpha = gobject.property(type=gobject.TYPE_FLOAT, default=1.0)
     show_shadows = gobject.property(type=bool, default=False)
+    arrow_type = gobject.property(type=str)
 
     launchers_only = gobject.property(type=bool, default=False)
     show_all_windows = gobject.property(type=bool, default=True)
@@ -235,11 +236,23 @@ class awnPreferencesMini(awnPreferences):
         #Advanced
         self.setup_autostart (self.wTree.get_object("autostart_config"))
 
-        #TODO Need a combobox or setup_string
-        #self.setup_spin(defs.EFFECTS, defs.ARROW_ICON, self.wTree.get_object("arrow_icon_config"))
-
         #TODO Fix color settings
         #self.setup_color(defs.THEME, defs.GSTEP1, self.wTree.get_object("gstep1_colorbutton"))
+
+        # non-trivial bindings
+        def arrow_type_getter (arrow_type):
+            d = {"__awn_internal_arrow1": 0, "__awn_internal_arrow2": 1}
+            if arrow_type in d: return d[arrow_type]
+            else: return 2
+
+        arrow_type_setter = lambda x: ["__awn_internal_arrow1",
+                                       "__awn_internal_arrow2", ""][x]
+                                       
+        bind_to_gtk_component (self.client, defs.EFFECTS, defs.ARROW_ICON,
+                               self, "arrow-type",
+                               self.wTree.get_object("arrow_triangle_radio"),
+                               False,
+                               arrow_type_getter, arrow_type_setter)
 
     def reload(self):
         # FIXME: this method should be unnecessary soon
