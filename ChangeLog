@@ -1,5 +1,10 @@
 2009-08-21  Rodney Cryderman  <rcryderman@gmail.com>
 
+	*  applets/taskmanager/task-icon.c:
+	Activate relevant windows on drag and drop hover.
+
+2009-08-21  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	* applets/taskmanager/task-icon.h:
         * applets/taskmanager/task-manager.c:

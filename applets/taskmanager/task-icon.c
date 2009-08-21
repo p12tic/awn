@@ -2206,7 +2206,16 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
         gdk_drag_status (context, GDK_ACTION_COPY, t);
       return TRUE;
     }
-
+    if (priv->main_item && TASK_IS_WINDOW (priv->main_item) )
+    {
+      GTimeVal timeval;
+      g_get_current_time (&timeval);
+      if (!task_window_is_active(TASK_WINDOW(priv->main_item)) )
+      {
+        task_window_activate (TASK_WINDOW(priv->main_item),
+                              timeval.tv_sec);
+      }
+    }
     priv->drag_motion = TRUE;
     priv->drag_tag = g_timeout_add_seconds (1, (GSourceFunc)drag_timeout, widget);
     priv->drag_time = t;
