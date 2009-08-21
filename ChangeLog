@@ -1,5 +1,10 @@
 2009-08-21  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* HACKING:
+	Add a note about the extra files used to generate the Vala bindings.
+
+2009-08-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/vala/awn.metadata:
 	* bindings/vala/awn.vapi:
 	Mark Awn.OverlayProgress as abstract in the Vala bindings.

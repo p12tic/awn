@@ -42,7 +42,10 @@ both currently versioned. Note that the current system reads the introspection
 data from the installed location instead of the tree, which is why the
 ``make install`` command is present. When GObject Introspection support is
 properly integrated, generating the bindings will be at build-time, instead of
-a semi-manual process by the developer.
+a semi-manual process by the developer. Note that you may have to edit the
+``awn.metadata`` file and/or the ``awn-custom.vala`` file as well, as the
+introspection generation step sometimes does not accurately catch all of the
+API metadata that Vala can express.
 
 Code Documentation (gtk-doc)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
