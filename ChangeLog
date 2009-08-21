@@ -1,6 +1,13 @@
 2009-08-20  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	Bail out of task_icon_dest_drag_data_received() before the bad things
+	happen.  I'm not really sure what the disabled code that will not be
+	reached is supposed to do but I do know that it makes things go boom.
+
+2009-08-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-manager.c:
 	Added some debugs into the drag and drop code.
 	Disabled drag and drop of TaskIcons until such time as someone fixes

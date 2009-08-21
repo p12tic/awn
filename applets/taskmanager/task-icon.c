@@ -2303,6 +2303,14 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
     return;
   }
 
+  /*
+   Getting the out of this function while we have a chance.  I'm not really sure
+   What the code that follows after the return is supposed to do but I do know 
+   it results in crashes.
+   FIXME
+   */
+  gtk_drag_finish (context, FALSE, FALSE, time_);
+  return;
   /* We don't handle drops if the launcher already has a window associcated */
   //FIXME: I think this function returns always FALSE (haytjes)
   // and I also think this isn't a bad idea to allow too.
