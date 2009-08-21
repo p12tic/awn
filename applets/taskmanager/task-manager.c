@@ -843,7 +843,7 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
 #ifdef DEBUG
   g_debug ("%s: desktop = %s",__func__,desktop);
 #endif      
-  get_launcher(desktop);  
+  launcher = get_launcher(desktop);  
   if (launcher)
   {
 #ifdef DEBUG
