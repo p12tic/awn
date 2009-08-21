@@ -189,7 +189,6 @@ get_awn_theme(void)
      */
     gchar * path[1];    
     path[0] = g_strdup_printf ("%s/.icons", g_get_home_dir ());
-    gtk_icon_theme_set_custom_theme (awn_theme, AWN_ICON_THEME_NAME);
     gtk_icon_theme_set_search_path (awn_theme, (const gchar **)path, 1);
     g_free (path[0]);
   }    
@@ -254,15 +253,18 @@ lookup_pixbuf (const gchar * scope, const gchar * theme_name,
   return pixbuf;
 }
 
-#if 0
+
 static void
-invalidate_cache(void)
+invalidate_pixbuf_cache(void)
 {
-  g_debug ("CACHE INVALIDATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//  g_hash_table_remove_all (pixbufs);
+  if (pixbufs)
+  {
+    g_hash_table_remove_all (pixbufs);
+    pixbufs = NULL;
+  }
 }
 
-#endif
+
 /*End of pixbuf caching functions */
 
 /* GObject stuff */
@@ -1258,7 +1260,10 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
   priv = icon->priv;
   /* Remove old theme, if it exists */
   if (priv->override_theme)
+  {
     g_object_unref (priv->override_theme);
+    invalidate_pixbuf_cache ();
+  }
 
   if ( theme_name && strlen (theme_name) )
   {
@@ -1502,6 +1507,7 @@ on_icon_theme_changed (GtkIconTheme *theme, AwnThemedIcon *icon)
   AwnThemedIconPrivate *priv;  
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
   priv = icon->priv;
+  invalidate_pixbuf_cache ();
   ensure_icon (icon);
 }
 
@@ -1640,8 +1646,8 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
 
     case 2: /* Clear */
       awn_themed_icon_clear_icons (icon, -1);
-/*      gtk_icon_theme_set_custom_theme (priv->awn_theme, NULL);
-      gtk_icon_theme_set_custom_theme (priv->awn_theme, AWN_ICON_THEME_NAME);*/
+      gtk_icon_theme_set_custom_theme (priv->awn_theme, NULL);
+      gtk_icon_theme_set_custom_theme (priv->awn_theme, AWN_ICON_THEME_NAME);
       gtk_widget_destroy (dialog);
       goto drag_out;
       break;
@@ -1694,9 +1700,9 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   }
 
   /* Refresh icon-theme */
-/*  gtk_icon_theme_set_custom_theme (priv->awn_theme, NULL);
+  gtk_icon_theme_set_custom_theme (priv->awn_theme, NULL);
   gtk_icon_theme_set_custom_theme (priv->awn_theme, AWN_ICON_THEME_NAME);
-*/
+                     
   success = TRUE;
 
   /* Clean up */
