@@ -135,9 +135,14 @@ class awnPreferencesMini(awnPreferences):
         self.setup_spin(defs.PANEL, defs.MONITOR_ALIGN, self.wTree.get_object("monitor_align_hscale"))
 
         self.setup_bool(defs.PANEL, defs.EXPAND, self.wTree.get_object("expand_config"))
-        self.setup_bool(defs.LAUNCHERS, defs.ONLY_LAUNCHERS, self.wTree.get_object("only_launchers_config"))
-        self.setup_bool(defs.LAUNCHERS, defs.ALL_WINDOWS, self.wTree.get_object("show_all_windows_config"))
-        self.setup_bool(defs.LAUNCHERS, defs.GROUPING, self.wTree.get_object("grouping_config"))
+        #self.setup_bool(defs.LAUNCHERS, defs.ONLY_LAUNCHERS, self.wTree.get_object("only_launchers_config"))
+        self.wTree.get_object("only_launchers_config").set_sensitive(False)
+        #self.setup_bool(defs.LAUNCHERS, defs.ALL_WINDOWS, self.wTree.get_object("show_all_windows_config"))
+        self.wTree.get_object("show_all_windows_config").set_sensitive(False)
+        #self.setup_bool(defs.LAUNCHERS, defs.GROUPING, self.wTree.get_object("grouping_config"))
+        self.wTree.get_object("grouping_config").set_sensitive(False)
+        #self.setup_bool(defs.LAUNCHERS, defs.INTELLIHIDE, self.wTree.get_object("intellihide_config"))
+        self.wTree.get_object("intellihide_config").set_sensitive(False)
 
         #Advanced
         self.setup_spin(defs.PANEL, defs.OFFSET, self.wTree.get_object("offset_config"))
@@ -147,8 +152,10 @@ class awnPreferencesMini(awnPreferences):
         self.setup_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_object("monitor_width"))
         self.setup_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_object("monitor_offset"))
 
-        self.setup_bool(defs.LAUNCHERS, defs.DRAG_AND_DROP, self.wTree.get_object("drag_and_drop_config"))
-        self.setup_spin(defs.LAUNCHERS, defs.GROUPING_MODE, self.wTree.get_object("grouping_mode_config"))
+        #self.setup_bool(defs.LAUNCHERS, defs.DRAG_AND_DROP, self.wTree.get_object("drag_and_drop_config"))
+        self.wTree.get_object("drag_and_drop_config").set_sensitive(False)
+        #self.setup_spin(defs.LAUNCHERS, defs.GROUPING_MODE, self.wTree.get_object("grouping_mode_config"))
+        self.wTree.get_object("grouping_mode_config").set_sensitive(False)
 
         self.setup_spin(defs.EFFECTS, defs.REFLECTION_OFFSET, self.wTree.get_object("reflection_offset_config"))
         self.setup_spin(defs.EFFECTS, defs.ICON_ALPHA, self.wTree.get_object("icon_alpha_config"))
@@ -168,9 +175,9 @@ class awnPreferencesMini(awnPreferences):
         self.load_orientation(defs.PANEL, defs.ORIENT, self.wTree.get_object("orientationcombo"))
         self.load_style(defs.PANEL, defs.STYLE, self.wTree.get_object("stylecombo"))
         self.load_bool(defs.PANEL, defs.EXPAND, self.wTree.get_object("expand_config"))
-        self.load_bool(defs.LAUNCHERS, defs.ONLY_LAUNCHERS, self.wTree.get_object("only_launchers_config"))
-        self.load_bool(defs.LAUNCHERS, defs.ALL_WINDOWS, self.wTree.get_object("show_all_windows_config"))
-        self.load_bool(defs.LAUNCHERS, defs.GROUPING, self.wTree.get_object("grouping_config"))
+        #self.load_bool(defs.LAUNCHERS, defs.ONLY_LAUNCHERS, self.wTree.get_object("only_launchers_config"))
+        #self.load_bool(defs.LAUNCHERS, defs.ALL_WINDOWS, self.wTree.get_object("show_all_windows_config"))
+        #self.load_bool(defs.LAUNCHERS, defs.GROUPING, self.wTree.get_object("grouping_config"))
 
         #Advanced
         self.load_spin(defs.PANEL, defs.OFFSET, self.wTree.get_object("offset_config"))
@@ -184,8 +191,8 @@ class awnPreferencesMini(awnPreferences):
         self.load_bool(defs.PANEL, defs.PANEL_MODE, self.wTree.get_object("panel_mode_config"))
         self.load_spin(defs.PANEL, defs.CLICKTHROUGH, self.wTree.get_object("clickthrough_config"))
 
-        self.load_bool(defs.LAUNCHERS, defs.DRAG_AND_DROP, self.wTree.get_object("drag_and_drop_config"))
-        self.load_spin(defs.LAUNCHERS, defs.GROUPING_MODE, self.wTree.get_object("grouping_mode_config"))
+        #self.load_bool(defs.LAUNCHERS, defs.DRAG_AND_DROP, self.wTree.get_object("drag_and_drop_config"))
+        #self.load_spin(defs.LAUNCHERS, defs.GROUPING_MODE, self.wTree.get_object("grouping_mode_config"))
 
         self.load_spin(defs.EFFECTS, defs.REFLECTION_OFFSET, self.wTree.get_object("reflection_offset_config"))
         self.load_spin(defs.EFFECTS, defs.ICON_ALPHA, self.wTree.get_object("icon_alpha_config"))
@@ -315,8 +322,8 @@ class awnLauncherMini(awnLauncher):
 
         self.idle_id = 0
 
-        self.client = awn.config_get_default(1)
-        #self.client.ensure_group(defs.LAUNCHERS)
+        #self.client = awn.config_get_default_for_applet_by_info("taskmanager",
+        #                                                        "", True)
 
         self.scrollwindow = self.wTree.get_object("launchers_scroll_list")
 

@@ -1,3 +1,9 @@
+2009-08-21  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
+	Make at least the panel-config part of awn-settings work.
+
 2009-08-21  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
