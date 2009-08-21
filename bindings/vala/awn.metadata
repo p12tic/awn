@@ -17,4 +17,5 @@ awn_utils_get_offset_modifier_by_path_type hidden="1"
 awn_utils_gslist_to_gvaluearray hidden="1"
 awn_utils_make_transparent_bg hidden="1"
 
+AwnOverlayProgress abstract="1"
 AwnAppletInitPFunc value_owned="1"

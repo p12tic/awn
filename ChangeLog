@@ -1,5 +1,11 @@
 2009-08-21  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	Mark Awn.OverlayProgress as abstract in the Vala bindings.
+
+2009-08-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/vala/awn-custom.vala:
 	Properly fix the Vala binding
 	Awn.Config.get_default_for_applet_by_info ().

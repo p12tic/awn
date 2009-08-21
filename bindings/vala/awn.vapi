@@ -373,7 +373,7 @@ namespace Awn {
 		public string file_name { owned get; set construct; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class OverlayProgress : Awn.Overlay {
+	public abstract class OverlayProgress : Awn.Overlay {
 		[CCode (has_construct_function = false)]
 		public OverlayProgress ();
 		[NoAccessorMethod]
