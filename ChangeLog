@@ -1,3 +1,9 @@
+2009-08-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/vala/awn-custom.vala:
+	Properly fix the Vala binding
+	Awn.Config.get_default_for_applet_by_info ().
+
 2009-08-21  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awn-settings.xml:
