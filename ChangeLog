@@ -2,6 +2,12 @@
 
 	* awn-settings/awnClass.py:
 	* awn-settings/awnSettings.py.in:
+	Transition of the simple controls complete.
+
+2009-08-21  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
 	* awn-settings/awnSettingsHelper.py:
 	Continuing the config transition.
 

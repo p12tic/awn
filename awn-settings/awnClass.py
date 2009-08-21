@@ -722,54 +722,6 @@ class awnPreferences(awnBzr):
         string =  make_color_string(colorbut.get_color(), colorbut.get_alpha())
         self.client.set_string(group, key, string)
 
-    def setup_scale(self, group, key, scale):
-        self.load_scale(group, key, scale)
-        scale.connect("value-changed", self.scale_changed, (group, key))
-        self.client.notify_add(group, key, self.reload_scale, scale)
-
-    def load_scale(self, group, key, scale):
-        try:
-            val = self.client.get_float(group, key)
-        except TypeError:
-            raise "\nKey: [%s]%s isn't set.\nRestarting AWN usually solves this issue\n" % (group, key)
-        val = 100 - (val * 100)
-        scale.set_value(val)
-
-    def reload_scale(self, group, key, value, scale):
-        self.load_scale(group, key, scale)
-
-    def scale_changed(self, scale, groupkey):
-        group, key = groupkey
-        val = scale.get_value()
-        val = 100 - val
-        if (val):
-            val = val/100
-        self.client.set_float(group, key, val)
-
-    def setup_spin(self, group, key, spin):
-        self.load_spin(group, key, spin)
-        spin.connect("value-changed", self.spin_changed, (group, key))
-        self.client.notify_add(group, key, self.reload_spin, spin)
-
-    def load_spin(self, group, key, spin):
-        try:
-            spin.set_value(self.client.get_float(group, key))
-        except TypeError:
-            raise "\nKey: [%s]%s isn't set.\nRestarting AWN usually solves this issue\n" % (group, key)
-        except gobject.GError, err:
-            spin.set_value(float(self.client.get_int(group, key)))
-
-    def reload_spin(self, group, key, value, spin):
-        self.load_spin(group, key, spin)
-
-    def spin_changed(self, spin, groupkey):
-        group, key = groupkey
-        try:
-            self.client.get_float(group, key) #gives error if it is an int
-            self.client.set_float(group, key, spin.get_value())
-        except gobject.GError, err:
-            self.client.set_int(group, key, int(spin.get_value()))
-
     def setup_chooser(self, group, key, chooser):
         """sets up png choosers"""
         fil = gtk.FileFilter()
@@ -815,27 +767,6 @@ class awnPreferences(awnBzr):
         except:
             have_preview = False
         chooser.set_preview_widget_active(have_preview)
-
-    def setup_bool(self, group, key, check):
-        """sets up checkboxes"""
-        self.load_bool(group, key, check)
-        check.connect("toggled", self.bool_changed, (group, key))
-        self.client.notify_add(group, key, self.reload_bool, check)
-
-    def load_bool(self, group, key, check):
-        check.set_active(self.client.get_bool(group, key))
-
-    def reload_bool(self, group, key, value, check):
-        self.load_bool(group, key, check)
-
-    def bool_changed(self, check, groupkey):
-        group, key = groupkey
-        self.client.set_bool(group, key, check.get_active())
-#        if key == defs.KEEP_BELOW:
-#            self.wTree.get_widget('autohide').set_active(check.get_active())
-#        elif key == defs.AUTO_HIDE:
-#            if not check.get_active() and self.wTree.get_widget("keepbelow").get_active():
-#                self.wTree.get_widget("keepbelow").set_active(False)
 
     def setup_font(self, group, key, font_btn):
         """sets up font chooser"""

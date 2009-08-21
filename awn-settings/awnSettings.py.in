@@ -70,10 +70,22 @@ if os.geteuid() == 0:
 class awnPreferencesMini(awnPreferences):
     panel_size = gobject.property(type=int, default=48)
     panel_orient = gobject.property(type=int, default=2)
+    panel_offset = gobject.property(type=int, default=10)
     panel_style = gobject.property(type=int, default=1)
     panel_expand = gobject.property(type=bool, default=False)
 
+    clickthrough = gobject.property(type=int, default=1)
+
     monitor_align = gobject.property(type=gobject.TYPE_FLOAT, default=0.5)
+    monitor_force = gobject.property(type=bool, default=False)
+    monitor_width = gobject.property(type=int, default=1024)
+    monitor_height = gobject.property(type=int, default=768)
+    monitor_offset = gobject.property(type=int, default=0)
+
+    reflection_offset = gobject.property(type=int, default=0)
+    reflection_alpha = gobject.property(type=gobject.TYPE_FLOAT, default=0.3)
+    icon_alpha = gobject.property(type=gobject.TYPE_FLOAT, default=1.0)
+    show_shadows = gobject.property(type=bool, default=False)
 
     launchers_only = gobject.property(type=bool, default=False)
     show_all_windows = gobject.property(type=bool, default=True)
@@ -189,6 +201,26 @@ class awnPreferencesMini(awnPreferences):
             (self.client_taskman, GROUP_DEFAULT, defs.INTELLIHIDE,
                 "intellihide", "intellihide_config"),
             # Advanced options
+            (self.client, defs.PANEL, defs.OFFSET,
+                "panel-offset", "offset_config"),
+            (self.client, defs.PANEL, defs.CLICKTHROUGH,
+                "clickthrough", "clickthrough_config"),
+            (self.client, defs.PANEL, defs.MONITOR_FORCE,
+                "monitor-force", "force_monitor"),
+            (self.client, defs.PANEL, defs.MONITOR_WIDTH,
+                "monitor-width", "monitor_width"),
+            (self.client, defs.PANEL, defs.MONITOR_HEIGHT,
+                "monitor-height", "monitor_height"),
+            (self.client, defs.PANEL, defs.MONITOR_OFFSET,
+                "monitor-offset", "monitor_offset"),
+            (self.client, defs.EFFECTS, defs.REFLECTION_OFFSET,
+                "reflection-offset", "reflection_offset_config"),
+            (self.client, defs.EFFECTS, defs.ICON_ALPHA,
+                "icon-alpha", "icon_alpha_config"),
+            (self.client, defs.EFFECTS, defs.REFLECTION_A_MULTIPLIER,
+                "reflection-alpha", "reflection_alpha_multiplier_config"),
+            (self.client, defs.EFFECTS, defs.SHOW_SHADOWS,
+                "show-shadows", "show_shadows_config"),
             (self.client_taskman, GROUP_DEFAULT, defs.DRAG_AND_DROP,
                 "drag-and-drop", "drag_and_drop_config"),
             (self.client_taskman, GROUP_DEFAULT, defs.MATCH_STRENGTH,
@@ -201,17 +233,6 @@ class awnPreferencesMini(awnPreferences):
                                    self.wTree.get_object(wtree_name), False)
 
         #Advanced
-        self.setup_spin(defs.PANEL, defs.OFFSET, self.wTree.get_object("offset_config"))
-        self.setup_spin(defs.PANEL, defs.CLICKTHROUGH, self.wTree.get_object("clickthrough_config"))
-        self.setup_bool(defs.PANEL, defs.MONITOR_FORCE, self.wTree.get_object("force_monitor"))
-        self.setup_spin(defs.PANEL, defs.MONITOR_HEIGHT, self.wTree.get_object("monitor_height"))
-        self.setup_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_object("monitor_width"))
-        self.setup_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_object("monitor_offset"))
-
-        self.setup_spin(defs.EFFECTS, defs.REFLECTION_OFFSET, self.wTree.get_object("reflection_offset_config"))
-        self.setup_spin(defs.EFFECTS, defs.ICON_ALPHA, self.wTree.get_object("icon_alpha_config"))
-        self.setup_spin(defs.EFFECTS, defs.REFLECTION_A_MULTIPLIER, self.wTree.get_object("reflection_alpha_multiplier_config"))
-        self.setup_bool(defs.EFFECTS, defs.SHOW_SHADOWS, self.wTree.get_object("show_shadows_config"))
         self.setup_autostart (self.wTree.get_object("autostart_config"))
 
         #TODO Need a combobox or setup_string
@@ -225,19 +246,9 @@ class awnPreferencesMini(awnPreferences):
         self.load_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
 
         #Advanced
-        self.load_spin(defs.PANEL, defs.OFFSET, self.wTree.get_object("offset_config"))
-        self.load_bool(defs.PANEL, defs.MONITOR_FORCE, self.wTree.get_object("force_monitor"))
-        self.load_spin(defs.PANEL, defs.MONITOR_HEIGHT, self.wTree.get_object("monitor_height"))
-        self.load_spin(defs.PANEL, defs.MONITOR_WIDTH, self.wTree.get_object("monitor_width"))
-        self.load_spin(defs.PANEL, defs.MONITOR_OFFSET, self.wTree.get_object("monitor_offset"))
         self.load_spin(defs.PANEL, defs.AUTOHIDE, self.wTree.get_object("autohide_config"))
         self.load_bool(defs.PANEL, defs.PANEL_MODE, self.wTree.get_object("panel_mode_config"))
-        self.load_spin(defs.PANEL, defs.CLICKTHROUGH, self.wTree.get_object("clickthrough_config"))
 
-        self.load_spin(defs.EFFECTS, defs.REFLECTION_OFFSET, self.wTree.get_object("reflection_offset_config"))
-        self.load_spin(defs.EFFECTS, defs.ICON_ALPHA, self.wTree.get_object("icon_alpha_config"))
-        self.load_spin(defs.EFFECTS, defs.REFLECTION_A_MULTIPLIER, self.wTree.get_object("reflection_alpha_multiplier_config"))
-        self.load_bool(defs.EFFECTS, defs.SHOW_SHADOWS, self.wTree.get_object("show_shadows_config"))
         self.load_autostart (self.wTree.get_object("autostart_config"))
 
         #TODO Need a combobox or load_string
