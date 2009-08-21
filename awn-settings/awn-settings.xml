@@ -14,7 +14,7 @@
     <property name="step_increment">1</property>
   </object>
   <object class="GtkAdjustment" id="adjustment11">
-    <property name="upper">4</property>
+    <property name="upper">99</property>
     <property name="step_increment">1</property>
   </object>
   <object class="GtkAdjustment" id="adjustment12">
@@ -1328,10 +1328,10 @@
                               <object class="GtkHBox" id="hbox48">
                                 <property name="visible">True</property>
                                 <child>
-                                  <object class="GtkLabel" id="grouping_mode_label">
+                                  <object class="GtkLabel" id="match_strength_label">
                                     <property name="visible">True</property>
                                     <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Grouping mode</property>
+                                    <property name="label" translatable="yes">Matching strength</property>
                                     <property name="justify">right</property>
                                     <property name="max_width_chars">0</property>
                                   </object>
@@ -1340,7 +1340,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinButton" id="grouping_mode_config">
+                                  <object class="GtkSpinButton" id="match_strength_config">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">&#x25CF;</property>
@@ -1943,12 +1943,12 @@
   </object>
   <object class="GtkSizeGroup" id="sizegroup1">
     <widgets>
-      <widget name="monitor_align_hscale"/>
-      <widget name="behaviorcombo"/>
-      <widget name="iconeffects"/>
-      <widget name="stylecombo"/>
-      <widget name="orientationcombo"/>
       <widget name="hbox2"/>
+      <widget name="orientationcombo"/>
+      <widget name="stylecombo"/>
+      <widget name="iconeffects"/>
+      <widget name="behaviorcombo"/>
+      <widget name="monitor_align_hscale"/>
     </widgets>
   </object>
 </interface>

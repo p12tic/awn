@@ -5,6 +5,7 @@ pyfiles_DATA = \
 	awnClass.py		\
 	awnDefs.py		\
 	awnSettings.py		\
+	awnSettingsHelper.py	\
 	awnLauncherEditor.py		
 pyfilesdir = $(pkgdatadir)/awn-settings
 

@@ -35,6 +35,7 @@ except Exception, e:
     sys.exit(1)
 from xdg.DesktopEntry import DesktopEntry
 
+import gobject
 import awn
 import awnDefs as defs
 from awnLauncherEditor import awnLauncherEditor
@@ -80,7 +81,7 @@ def make_color_string(color, alpha):
 
 EMPTY = "none";
 
-class awnBzr:
+class awnBzr(gobject.GObject):
         #Utils Bzr
     def lp_path_normalize(self, path):
         '''     Get a "lp:" format url and return a http url
