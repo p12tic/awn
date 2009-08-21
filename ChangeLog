@@ -1,5 +1,11 @@
 2009-08-21  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Initial implementation: allow drag and drop of data files into 
+	launchers.
+
+2009-08-21  Rodney Cryderman  <rcryderman@gmail.com>
+
 	*  applets/taskmanager/task-icon.c:
 	Activate relevant windows on drag and drop hover.
 

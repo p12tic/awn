@@ -2262,7 +2262,9 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   GdkAtom         target;
   gchar           *target_name;
   gchar           *sdata_data;
-
+  GSList          *w;
+  TaskLauncher    *launcher = NULL;
+  
 #ifdef DEBUG
   g_debug ("%s",__func__);
 #endif
@@ -2311,14 +2313,6 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
     return;
   }
 
-  /*
-   Getting the out of this function while we have a chance.  I'm not really sure
-   What the code that follows after the return is supposed to do but I do know 
-   it results in crashes.
-   FIXME
-   */
-  gtk_drag_finish (context, FALSE, FALSE, time_);
-  return;
   /* We don't handle drops if the launcher already has a window associcated */
   //FIXME: I think this function returns always FALSE (haytjes)
   // and I also think this isn't a bad idea to allow too.
@@ -2327,10 +2321,11 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   //{
   //  gtk_drag_finish (context, FALSE, FALSE, time_);
   //}
-  
+
   error = NULL;
 
-  list = desktop_agnostic_vfs_files_from_uri_list (sdata_data, &error);
+  //Don't use for now until desktop_agnostic_fdo_desktop_entry_launch() gets modified.
+/*  list = desktop_agnostic_vfs_files_from_uri_list (sdata_data, &error);
   if (error)
   {
     g_warning ("Unable to handle drop: %s", error->message);
@@ -2338,11 +2333,49 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
     gtk_drag_finish (context, FALSE, FALSE, time_);
     return;
   }
+*/
+  //temp replacement for the code above.
+  list = NULL;
+  GStrv tokens = g_strsplit  (sdata_data, "\n",-1);
+  gchar ** i;
+  for (i=tokens; *i;i++)
+  {
+//    g_debug ("token string =  %s",*i);
+    gchar * str = g_filename_from_uri ((gchar*) *i,NULL,NULL);
+    if (str)
+    {
+      g_strstrip(str);
+    }
+    if (str && strlen(str) )
+    {
+      list = g_slist_append (list,str);
+    }
+  }
+  g_strfreev (tokens);
+    
+  for (w = priv->items; w; w = w->next)
+  {
+    TaskItem *item = w->data;
 
-  //task_launcher_launch_with_data (launcher, list);
+    if (!task_item_is_visible (item)) continue;
 
-  g_slist_foreach (list, (GFunc)g_free, NULL);
-  g_slist_free (list);
+    if (TASK_IS_LAUNCHER (item))
+    {
+      launcher = TASK_LAUNCHER(item);
+    }
+  }
+  
+  if (launcher && list && g_slist_length(list) )
+  {
+    task_launcher_launch_with_data (launcher, list);
+    gtk_drag_finish (context, TRUE,TRUE, time_);    
+  }
+
+  if (list)
+  {
+    g_slist_foreach (list, (GFunc)g_free, NULL);
+    g_slist_free (list);
+  }
 
   gtk_drag_finish (context, TRUE, FALSE, time_);
 }
