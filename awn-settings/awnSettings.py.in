@@ -56,7 +56,7 @@ from awnSettingsHelper import bind_to_gtk_component
 import awn
 import awnDefs as defs
 
-import desktopagnostic.config
+from desktopagnostic import config
 from desktopagnostic import vfs
 from desktopagnostic.config import GROUP_DEFAULT
 
@@ -75,6 +75,8 @@ class awnPreferencesMini(awnPreferences):
     panel_expand = gobject.property(type=bool, default=False)
 
     clickthrough = gobject.property(type=int, default=1)
+    autohide_type = gobject.property(type=int)
+    panel_mode = gobject.property(type=bool, default=False)
 
     monitor_align = gobject.property(type=gobject.TYPE_FLOAT, default=0.5)
     monitor_force = gobject.property(type=bool, default=False)
@@ -123,34 +125,6 @@ class awnPreferencesMini(awnPreferences):
         self.apply_theme = self.wTree.get_object("apply_theme")
         self.apply_theme.connect("clicked", self.apply_theme_callback)
 
-        self.choose_behavior = self.wTree.get_object("behaviorcombo")
-        self.behavior_entries = [       _("Standard"),
-                                        _("Panel mode"),
-                                        _("Autohide Keep below"),
-                                        _("Autohide Fade out"),
-                                        _("Transparency"),
-                                        _("Custom")]
-        self.create_dropdown(self.choose_behavior, self.behavior_entries)
-
-        # Init behavior
-        self.behavior = (   self.client.get_bool(defs.PANEL, defs.PANEL_MODE),
-                            self.client.get_int(defs.PANEL , defs.AUTOHIDE))
-
-        if self.behavior == (False, 0):
-            self.choose_behavior.set_active(0)
-        elif self.behavior == (True, 0):
-            self.choose_behavior.set_active(1)
-        elif self.behavior == (False, 1):
-            self.choose_behavior.set_active(2)
-        elif self.behavior == (False, 2):
-            self.choose_behavior.set_active(3)
-        elif self.behavior == (False, 3):
-            self.choose_behavior.set_active(4)
-        else: 
-            self.choose_behavior.set_active(5)
-
-        self.choose_behavior.connect("changed", self.choose_behavior_callback)
-
         self.setup_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
         #self.setup_freeze(self.wTree.get_object("freezeEffects"), self.wTree.get_object("iconeffects"), "effects")
 
@@ -158,28 +132,20 @@ class awnPreferencesMini(awnPreferences):
 
         # setup orientation model
         dropdown = self.wTree.get_object("orientationcombo")
-        model = gtk.ListStore(str)
-        model.append([_("Top")])
-        model.append([_("Right")])
-        model.append([_("Bottom")])
-        model.append([_("Left")])
-        dropdown.set_model(model)
-        cell = gtk.CellRendererText()
-        dropdown.pack_start(cell)
-        dropdown.add_attribute(cell,'text',0)
+        self.create_dropdown(dropdown, [_("Top"), _("Right"),
+                                        _("Bottom"), _("Left")])
 
         #setup style mode
         dropdown = self.wTree.get_object("stylecombo")
-        model = gtk.ListStore(str)
-        model.append([_("None")])
-        model.append([_("Flat")])
-        model.append([_("3d")])
-        model.append([_("Curved")])
-        model.append([_("Edgy")])
-        dropdown.set_model(model)
-        cell = gtk.CellRendererText()
-        dropdown.pack_start(cell)
-        dropdown.add_attribute(cell,'text',0)
+        self.create_dropdown(dropdown, [_("None"), _("Flat"),
+                                        _("3d"), _("Curved"), _("Edgy")])
+
+        #setup behaviour combo
+        dropdown = self.wTree.get_object("behaviorcombo")
+        self.create_dropdown(dropdown, [_("Standard"), _("Panel mode"),
+                                        _("Autohide Keep below"),
+                                        _("Autohide Fade out"),
+                                        _("Transparency"), _("Custom")])
 
         config_map_simple = [
             # General options
@@ -239,7 +205,55 @@ class awnPreferencesMini(awnPreferences):
         #TODO Fix color settings
         #self.setup_color(defs.THEME, defs.GSTEP1, self.wTree.get_object("gstep1_colorbutton"))
 
-        # non-trivial bindings
+        # Non-trivial bindings
+
+        # Behaviour combobox
+        self.choose_behavior = self.wTree.get_object("behaviorcombo")
+
+        def refresh_behaviour(*args):
+            behaviour = (self.panel_mode, self.autohide_type)
+            new_active = 5
+            if behaviour == (False, 0):
+                new_active = 0
+            elif behaviour == (True, 0):
+                new_active = 1
+            elif behaviour == (False, 1):
+                new_active = 2
+            elif behaviour == (False, 2):
+                new_active = 3
+            elif behaviour == (False, 3):
+                new_active = 4
+
+            if (self.choose_behavior.get_active() != new_active):
+                self.choose_behavior.set_active(new_active)
+
+        def choose_behavior_callback(widget, *args):
+            if widget.get_active() == 0:
+                if self.panel_mode: self.panel_mode = False
+                self.autohide_type = 0
+            elif widget.get_active() == 1:
+                if not self.panel_mode: self.panel_mode = False
+                self.autohide_type = 0
+            elif widget.get_active() == 2:
+                if self.panel_mode: self.panel_mode = False
+                self.autohide_type = 1
+            elif widget.get_active() == 3:
+                if self.panel_mode: self.panel_mode = False
+                self.autohide_type = 2
+            elif widget.get_active() == 4:
+                if self.panel_mode: self.panel_mode = False
+                self.autohide_type = 3
+
+        self.connect("notify::panel-mode", refresh_behaviour)
+        self.connect("notify::autohide-type", refresh_behaviour)
+        self.client.bind (defs.PANEL, defs.PANEL_MODE, self, "panel-mode",
+                          False, config.BIND_METHOD_FALLBACK)
+        self.client.bind (defs.PANEL, defs.AUTOHIDE, self, "autohide-type",
+                          False, config.BIND_METHOD_FALLBACK)
+
+        self.choose_behavior.connect("changed", choose_behavior_callback)
+
+        # Arrow type radio group
         def arrow_type_getter (arrow_type):
             d = {"__awn_internal_arrow1": 0, "__awn_internal_arrow2": 1}
             if arrow_type in d: return d[arrow_type]
@@ -352,28 +366,6 @@ class awnPreferencesMini(awnPreferences):
         path = model.get(select[1], 2)
         self.load_all_settings_from_desktop(path[0])
         self.client.set_string(defs.THEME, defs.CURRENT_THEME, path[0])
-
-    def choose_behavior_callback(self, data=None):
-        #self.behavior_entries = [      "Standart",
-        #                               "Panel mode",
-        #                               "Autohide Keep below",
-        #                               "Autohide Fade out",
-        #                               "Transparency"]
-        if self.choose_behavior.get_active() == 0:
-            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
-            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 0)
-        elif self.choose_behavior.get_active() == 1:
-            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, True)
-            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 0)
-        elif self.choose_behavior.get_active() == 2:
-            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
-            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 1)
-        elif self.choose_behavior.get_active() == 3:
-            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
-            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 2)
-        elif self.choose_behavior.get_active() == 4:
-            self.client.set_bool(defs.PANEL, defs.PANEL_MODE, False)
-            self.client.set_int(defs.PANEL , defs.AUTOHIDE, 3)
 
 
 class awnLauncherMini(awnLauncher):
