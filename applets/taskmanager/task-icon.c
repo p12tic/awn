@@ -218,6 +218,7 @@ static void     size_changed_cb(AwnApplet *app, guint size, TaskIcon *icon);
 static gint     task_icon_count_require_attention (TaskIcon *icon);
 static void     task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item);
 
+static void     theme_changed_cb (GtkIconTheme *icon_theme,TaskIcon * icon);
 /* GObject stuff */
 static void
 task_icon_get_property (GObject    *object,
@@ -337,7 +338,9 @@ task_icon_finalize (GObject *object)
 
   g_signal_handlers_disconnect_by_func (wnck_screen_get_default (),
                           G_CALLBACK (task_icon_active_window_changed), object);
-
+  g_signal_handlers_disconnect_by_func (awn_themed_icon_get_awn_theme (AWN_THEMED_ICON(object)),
+                          G_CALLBACK (theme_changed_cb),object);
+  
   G_OBJECT_CLASS (task_icon_parent_class)->finalize (object);
 }
 
@@ -392,6 +395,10 @@ task_icon_constructed (GObject *object)
 
   g_signal_connect(G_OBJECT(object), "scroll-event",
                    G_CALLBACK(task_icon_scroll_event), object);  
+  
+  g_signal_connect(G_OBJECT(awn_themed_icon_get_awn_theme(AWN_THEMED_ICON(object))),
+                   "changed",
+                   G_CALLBACK(theme_changed_cb),object);
   
   priv->client = awn_config_get_default_for_applet (priv->applet, &error);
 
@@ -1897,6 +1904,19 @@ size_changed_cb(AwnApplet *app, guint size, TaskIcon *icon)
 }
 
 static void
+theme_changed_cb (GtkIconTheme *icon_theme,TaskIcon * icon)
+{
+  TaskIconPrivate *priv;
+  
+  g_return_if_fail (TASK_IS_ICON (icon));
+  priv = icon->priv;
+  if (priv->icon)
+  {
+    task_icon_refresh_icon (icon,gdk_pixbuf_get_height(priv->icon));
+  }
+}
+
+static void
 add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
 {
   TaskIconPrivate *priv;
@@ -1938,12 +1958,25 @@ task_icon_button_press_event (GtkWidget      *widget,
   TaskIconPrivate *priv;
   TaskIcon *icon;
   GtkWidget   *item;
+  GSList *iter;
+  TaskItem * launcher = NULL;
   
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
 
   icon = TASK_ICON (widget);
   priv = icon->priv;
 
+  /* no point to call has_launcher as it just duplicates work*/
+  
+  for (iter = priv->items;iter;iter=iter->next)
+  {
+    if (TASK_IS_LAUNCHER(iter->data))
+    {
+      launcher = iter->data;
+      break;
+    }
+  }
+          
   if (event->button != 3) return FALSE;
 
   if (priv->shown_items == 0)
@@ -1966,15 +1999,19 @@ task_icon_button_press_event (GtkWidget      *widget,
     {
       if (TASK_IS_WINDOW (priv->main_item))
       {
-        GSList      *iter;
-        TaskItem    *launcher;
-        
         priv->menu = wnck_action_menu_new (task_window_get_window (TASK_WINDOW(priv->main_item)));
         
         item = gtk_separator_menu_item_new();
         gtk_widget_show_all(item);
         gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
 
+        if (launcher)
+        {
+          item = awn_themed_icon_create_custom_icon_item (AWN_THEMED_ICON(icon),
+                                                          task_launcher_get_icon_name(launcher));
+          gtk_widget_show(item);
+          gtk_menu_shell_prepend (GTK_MENU_SHELL(priv->menu), item);
+        }
         item = awn_applet_create_pref_item();
         gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
 
@@ -1986,7 +2023,6 @@ task_icon_button_press_event (GtkWidget      *widget,
           GtkWidget   *sub_menu;
           if ( TASK_IS_LAUNCHER (iter->data) )
           {
-            launcher = iter->data;
             continue;
           }
           if ( iter->data == priv->main_item)
@@ -2023,7 +2059,13 @@ task_icon_button_press_event (GtkWidget      *widget,
       gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
 
       item = awn_applet_create_pref_item();
+      gtk_widget_show_all(item);
       gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
+
+      item = awn_themed_icon_create_custom_icon_item (AWN_THEMED_ICON(icon),
+                                          task_launcher_get_icon_name(launcher));
+      gtk_widget_show(item);
+      gtk_menu_shell_append (GTK_MENU_SHELL(priv->menu), item);
 
       item = gtk_separator_menu_item_new();
       gtk_widget_show(item);

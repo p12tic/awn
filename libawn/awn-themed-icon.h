@@ -115,6 +115,10 @@ void          awn_themed_icon_clear_info         (AwnThemedIcon *icon);
 void          awn_themed_icon_preload_icon       (AwnThemedIcon * icon, 
                                                   gchar * state, 
                                                   gint size);
+GtkIconTheme *awn_themed_icon_get_awn_theme     (AwnThemedIcon * icon);
+
+GtkWidget *   awn_themed_icon_create_custom_icon_item (AwnThemedIcon * icon,
+                                                 const gchar * icon_name);
 
 G_END_DECLS
 

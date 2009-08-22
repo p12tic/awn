@@ -1,5 +1,16 @@
 2009-08-22  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Initial code:
+	Added awn_themed_icon_create_custom_icon_item() to get a customize 
+	icon menu item.  At the moment does not support the various 
+	AwnThemedIcon scopes.
+  	* libawn/awn-themed-icon.c:
+  	* libawn/awn-themed-icon.h:
+	Initial support for changing icons through context menu.
+
+2009-08-22  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-themed-icon.c:
 	Disconnect the "changed" signal handler from the icon theme during
 	AwnOverlayThemedIcon finalize().

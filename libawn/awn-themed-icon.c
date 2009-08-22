@@ -18,9 +18,18 @@
  *
  */
 
+
+
+/*
+ 
+ TODO:  Put a file monitor on ~/.icons/awn-theme/scalable/ to detect user 
+ user changes to the directory
+ */
+
 #include <glib/gstdio.h>
 #include <string.h>
 #include <gio/gio.h>
+#include <glib/gi18n.h>
 
 #include "awn-themed-icon.h"
 
@@ -407,18 +416,16 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
 }
 
 static void 
-check_dest_or_copy (const gchar *src, const gchar *dest)
+copy_over (const gchar *src, const gchar *dest)
 {
   GFile  *from;
   GFile  *to;
   GError *error = NULL;
 
-  if (g_file_test (dest, G_FILE_TEST_EXISTS))
-    return;
-
   from = g_file_new_for_path (src);
   to = g_file_new_for_path (dest);
 
+  g_unlink (dest);
   g_file_copy (from, to, 0, NULL, NULL, NULL, &error);
 
   if (error)
@@ -429,6 +436,14 @@ check_dest_or_copy (const gchar *src, const gchar *dest)
 
   g_object_unref (to);
   g_object_unref (from);
+}
+
+static void 
+check_dest_or_copy (const gchar *src, const gchar *dest)
+{
+  if (g_file_test (dest, G_FILE_TEST_EXISTS))
+    return;
+  copy_over (src,dest);
 }
 
 static void
@@ -1498,6 +1513,13 @@ awn_themed_icon_preload_icon (AwnThemedIcon * icon, gchar * state, gint size)
   
 }
 
+
+GtkIconTheme *
+awn_themed_icon_get_awn_theme (AwnThemedIcon * icon)
+{
+  /*for the sake of bindings*/
+  return get_awn_theme();  
+}
 /*
  * Callbacks 
  */
@@ -1723,6 +1745,104 @@ drag_out:
 
   if (success)
     ensure_icon (icon);
+}
+
+
+static void
+_select_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
+{
+  GtkWidget * dialog;
+  
+  dialog = gtk_file_chooser_dialog_new ( _("Choose Custom Icon"),
+                                        NULL,
+                                        GTK_FILE_CHOOSER_ACTION_OPEN,
+				                                GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+				                                GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+				                                NULL);
+  /* is there a correct way to determine the main icons dirs?*/
+  gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog),"/usr/share/icons");
+  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+  {
+    gchar * src_filename;
+    gchar * dest_filename=NULL;
+    gchar  ** tokens;
+    gchar ** last;
+    
+    g_debug ("copy and save the file");
+    src_filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+    /*
+     TODO check that src file is an icon
+     
+     */
+    tokens = g_strsplit (src_filename,".",-1);
+    if (tokens && tokens[0])
+    {
+      gchar * del_file;
+      for (last = tokens; *last; last++)
+      {
+        if (! *(last+1) )
+        {
+          break;
+        }
+      }
+      del_file = g_strdup_printf("%s.png",dest_filename_minus_ext);
+      g_unlink (del_file);
+      g_free (del_file);
+      del_file = g_strdup_printf("%s.svg",dest_filename_minus_ext);
+      g_unlink (del_file);
+      g_free (del_file);      
+      dest_filename = g_strdup_printf("%s.%s",dest_filename_minus_ext,*last);
+      copy_over (src_filename,dest_filename);
+      /* Refresh icon-theme */
+      gtk_icon_theme_set_custom_theme (get_awn_theme(), NULL);
+      gtk_icon_theme_set_custom_theme (get_awn_theme(), AWN_ICON_THEME_NAME);
+      g_free (dest_filename);
+    }
+    g_free (src_filename);
+    if (tokens)
+    {
+      g_strfreev (tokens);
+    }
+  }
+  gtk_widget_destroy (dialog);
+}
+
+/**
+ * awn_themed_icon_create_custom_icon_item:
+ *
+ * Create a Customize Icon menu item.
+ * Returns: A #GtkImageMenuItem for the Customize Icon that can be added to
+ * an applet icon's context menu.
+ */
+
+GtkWidget *
+awn_themed_icon_create_custom_icon_item (AwnThemedIcon * icon, 
+                                         const gchar *icon_name)
+{
+	GtkWidget *item;
+  gchar * dest_filename;
+  AwnThemedIconPrivate * priv;
+  
+  g_return_val_if_fail (AWN_IS_THEMED_ICON(icon),NULL);
+  g_return_val_if_fail (icon_name,NULL);
+  
+  priv = icon->priv;
+  dest_filename = g_build_filename (priv->icon_dir,
+                                  "awn-theme", "scalable",
+                                  icon_name, NULL);
+  
+  item = gtk_image_menu_item_new_with_label (_("Customize Icon"));
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
+                                 gtk_image_new_from_stock(GTK_STOCK_OPEN,
+                                                          GTK_ICON_SIZE_MENU));
+  gtk_widget_show_all (item);
+  
+  g_signal_connect (item, "activate", 
+                    G_CALLBACK (_select_icon), dest_filename);
+  g_signal_connect_swapped (G_OBJECT (item), "unrealize",
+                    G_CALLBACK (g_free), dest_filename);
+
+  return item;
 }
 
 
