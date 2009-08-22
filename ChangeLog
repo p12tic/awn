@@ -1,5 +1,10 @@
 2009-08-22  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-themed-icon.c:
+	Add a filter to the file chooser.
+
+2009-08-22  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	Initial code:
 	Added awn_themed_icon_create_custom_icon_item() to get a customize 

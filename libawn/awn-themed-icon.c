@@ -1752,6 +1752,11 @@ static void
 _select_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
 {
   GtkWidget * dialog;
+  GtkFileFilter * filter = gtk_file_filter_new ();
+  
+  gtk_file_filter_add_pattern (filter, "*.png");
+  gtk_file_filter_add_pattern (filter, "*.svg");
+  gtk_file_filter_set_name (filter,NULL);
   
   dialog = gtk_file_chooser_dialog_new ( _("Choose Custom Icon"),
                                         NULL,
@@ -1761,6 +1766,7 @@ _select_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
 				                                NULL);
   /* is there a correct way to determine the main icons dirs?*/
   gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog),"/usr/share/icons");
+  gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog),filter);  
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
   {
     gchar * src_filename;
