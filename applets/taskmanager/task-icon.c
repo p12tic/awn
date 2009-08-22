@@ -1481,7 +1481,7 @@ task_icon_refresh_icon (TaskIcon *icon, guint size)
 
   if (priv->items && priv->items->data)
   {
-    if (priv->icon)
+    if (priv->icon && task_icon_contains_launcher (icon) )
     {
       g_object_unref (priv->icon);
       priv->icon = awn_themed_icon_get_icon_at_size (AWN_THEMED_ICON(icon),

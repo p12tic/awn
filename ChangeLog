@@ -1,6 +1,13 @@
 2009-08-21  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	On size changed signals don't call awn_themed_icon_get_icon_at_size() 
+	unless we've set the info().  Which happens if the task icon contains
+	a launcher.
+
+2009-08-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-icon.h:
   	* applets/taskmanager/task-launcher.c:
   	* applets/taskmanager/task-launcher.h:
