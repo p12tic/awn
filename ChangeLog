@@ -1,3 +1,9 @@
+2009-08-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-themed-icon.c:
+	Disconnect the "changed" signal handler from the icon theme during
+	AwnOverlayThemedIcon finalize().
+
 2009-08-21  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

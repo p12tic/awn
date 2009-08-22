@@ -75,6 +75,9 @@ _awn_overlay_themed_icon_render (AwnOverlay* _overlay,
                                  cairo_t * cr,
                                  gint width,
                                  gint height);
+static void
+_awn_overlay_themed_icon_theme_change (AwnOverlayThemedIcon * overlay);
+
 
 static void
 awn_overlay_themed_icon_get_property (GObject *object, guint property_id,
@@ -161,7 +164,9 @@ awn_overlay_themed_icon_finalize (GObject *object)
   g_free (priv->icon_name);
   g_free (priv->icon_state);
   g_hash_table_destroy (priv->pixbufs);  
-  
+  g_signal_handlers_disconnect_by_func (gtk_icon_theme_get_default(),
+                                        _awn_overlay_themed_icon_theme_change,
+                                        object);
   G_OBJECT_CLASS (awn_overlay_themed_icon_parent_class)->finalize (object);  
   
 }
