@@ -1,6 +1,20 @@
 2009-08-21  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-launcher.h:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+	Switch taskmanager to use the awn_themed_icon* functions to 
+	get the desktop file icon for use in the TaskIcon.  Note that
+	sometimes the wnck provided icon is in use in the TaskIcon and
+	the wnck provided icon is being used in the task item dialog
+	(which may or may not change).
+
+2009-08-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Initial implementation: allow drag and drop of data files into 
 	launchers.
 

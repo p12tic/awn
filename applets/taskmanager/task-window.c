@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
+ * Copyright (C) 2009 Rodney Cryderman <rcryderman@gmail.com> 
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as 
@@ -393,6 +394,7 @@ on_window_state_changed (WnckWindow      *wnckwin,
     g_signal_emit (window, _window_signals[NEEDS_ATTENTION], 
                    0, needs_attention);
   }
+  
 }
 
 /**

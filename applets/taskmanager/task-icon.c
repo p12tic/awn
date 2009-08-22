@@ -216,7 +216,7 @@ static void     task_icon_active_window_changed (WnckScreen *screen,
 
 static void     size_changed_cb(AwnApplet *app, guint size, TaskIcon *icon);
 static gint     task_icon_count_require_attention (TaskIcon *icon);
-
+static void     task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item);
 
 /* GObject stuff */
 static void
@@ -742,13 +742,13 @@ on_main_item_icon_changed (TaskItem   *item,
   g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
 
   priv = icon->priv;
-  g_object_unref (priv->icon);
-  g_object_ref(pixbuf);
 
-  priv->icon = pixbuf;
 #ifdef DEBUG
   g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(pixbuf), gdk_pixbuf_get_height(pixbuf));
 #endif
+  g_object_unref (priv->icon);
+  priv->icon = pixbuf;
+  g_object_ref (priv->icon);
   awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
 }
 
@@ -952,7 +952,11 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
 //    priv->items = g_slist_prepend (priv->items,priv->main_item);
 #ifdef DEBUG
     g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
-#endif    
+#endif
+    if (!priv->icon)
+    {
+      task_icon_set_icon_pixbuf (icon,main_item);
+    }
     awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
     awn_icon_set_tooltip_text (AWN_ICON (icon), 
                                task_item_get_name (priv->main_item));
@@ -1309,6 +1313,66 @@ task_icon_match_item (TaskIcon      *icon,
   return max_score;
 }
 
+
+static void
+task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
+{
+  TaskIconPrivate *priv;
+  GSList * iter;
+  priv = icon->priv;
+  
+  if (!item || TASK_IS_WINDOW(item) )
+  {
+    for (iter=priv->items;iter;iter=iter->next)
+    {
+      if (TASK_IS_LAUNCHER(iter->data) )
+      {
+        item=iter->data;
+        break;
+      }
+    }
+  }
+  g_assert (item);
+  
+  if (TASK_IS_WINDOW(item))
+  {
+    priv->icon = task_item_get_icon (item);
+    g_object_ref (priv->icon);
+  }
+  else
+  {
+    gchar * uid,*name;
+    gint size;
+    gchar * states[2] = {"::no_drop::desktop",NULL};
+    gchar * names[2]  = {NULL,NULL};
+    names[0] = task_launcher_get_icon_name(item);
+    if (priv->icon)
+    {
+      g_object_unref (priv->icon);
+
+    }      
+    g_object_get (priv->applet,
+                  "uid",&uid,
+                  "canonical-name",&name,
+                  "size",&size,
+                  NULL);
+    awn_themed_icon_set_info (AWN_THEMED_ICON(icon),
+                                     name,
+                                     uid,
+                                     states,
+                                     names);
+    priv->icon = awn_themed_icon_get_icon_at_size (AWN_THEMED_ICON(icon),
+                                                  size,
+                                                  "::no_drop::desktop");
+#ifdef DEBUG
+    g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
+#endif    
+    g_free (uid);
+    g_free (name);
+  }
+  g_assert (GDK_IS_PIXBUF(priv->icon));
+}
+
 /**
  * Adds a TaskWindow to this task-icon
  */
@@ -1330,9 +1394,8 @@ task_icon_append_item (TaskIcon      *icon,
    */
   if (!priv->icon || TASK_IS_LAUNCHER(item))
   {
-    priv->icon = task_item_get_icon (item);
+    task_icon_set_icon_pixbuf (icon,item);
   }
-
   
   priv->items = g_slist_append (priv->items, item);
   gtk_widget_show_all (GTK_WIDGET (item));
@@ -1409,7 +1472,7 @@ task_icon_get_items (TaskIcon     *icon)
  * TODO: h4writer - adjust 2nd round
  */
 void
-task_icon_refresh_icon (TaskIcon *icon)
+task_icon_refresh_icon (TaskIcon *icon, guint size)
 {
   TaskIconPrivate *priv;
 
@@ -1421,8 +1484,17 @@ task_icon_refresh_icon (TaskIcon *icon)
     if (priv->icon)
     {
       g_object_unref (priv->icon);
+      priv->icon = awn_themed_icon_get_icon_at_size (AWN_THEMED_ICON(icon),
+                                                  size,
+                                                  "::no_drop::desktop");      
     }
-    priv->icon = task_item_get_icon (priv->items->data);
+    else
+    {
+      task_icon_set_icon_pixbuf (icon, priv->items->data);
+    }
+#ifdef DEBUG
+    g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
+#endif    
     awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
   }
 }
@@ -1644,7 +1716,6 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
       if (!TASK_IS_WINDOW(main_item))
       {
         /*it's a launcher*/
-        g_debug ("starting launch effect"); 
         task_item_left_click (main_item,event);
         awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                           AWN_EFFECT_LAUNCHING, 10, FALSE, FALSE);
@@ -1674,7 +1745,6 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
         if (!TASK_IS_WINDOW(item))
         {
           /*it's a launcher*/
-          g_debug ("staring launch effect"); 
           awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                             AWN_EFFECT_HOVER, 10, FALSE, FALSE);
           task_item_left_click (item,event);
@@ -1820,11 +1890,10 @@ task_icon_button_release_event (GtkWidget      *widget,
 static void 
 size_changed_cb(AwnApplet *app, guint size, TaskIcon *icon)
 {
-  g_debug ("%s",__func__);
   g_return_if_fail (AWN_IS_APPLET (app) );
   g_return_if_fail (TASK_IS_ICON (icon));
 
-  task_icon_refresh_icon (icon);
+  task_icon_refresh_icon (icon,size);
 }
 
 static void

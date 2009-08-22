@@ -553,7 +553,7 @@ task_manager_size_changed   (AwnApplet *applet,
     TaskIcon *icon = i->data;
 
     if (TASK_IS_ICON (icon))
-      task_icon_refresh_icon (icon);
+      task_icon_refresh_icon (icon,size);
   }
 
   task_drag_indicator_refresh (priv->drag_indicator);

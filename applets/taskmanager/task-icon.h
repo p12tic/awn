@@ -94,7 +94,7 @@ guint           task_icon_match_item        (TaskIcon      *icon,
 
 //void            task_icon_remove_windows  (TaskIcon      *icon);
 
-void            task_icon_refresh_icon      (TaskIcon      *icon);
+void            task_icon_refresh_icon      (TaskIcon      *icon,guint size);
 
 void            task_icon_set_draggable     (TaskIcon      *icon, 
                                              gboolean       draggable);

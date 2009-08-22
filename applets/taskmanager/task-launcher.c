@@ -297,6 +297,12 @@ _get_name (TaskItem *item)
   return TASK_LAUNCHER (item)->priv->name;
 }
 
+const gchar * 
+task_launcher_get_icon_name (TaskItem *item)
+{
+  return TASK_LAUNCHER (item)->priv->icon_name;
+}
+
 static GdkPixbuf * 
 _get_icon (TaskItem *item)
 {

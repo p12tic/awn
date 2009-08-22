@@ -71,6 +71,8 @@ const gchar   * task_launcher_get_desktop_path     (TaskLauncher   *launcher);
 void            task_launcher_launch_with_data     (TaskLauncher   *launcher,
                                                     GSList         *list);
 
+const gchar *   task_launcher_get_icon_name       (TaskItem *item);
+
 
 #endif /* _TASK_LAUNCHER_H_ */
 
