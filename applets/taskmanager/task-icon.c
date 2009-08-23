@@ -1997,16 +1997,7 @@ task_icon_button_press_event (GtkWidget      *widget,
   icon = TASK_ICON (widget);
   priv = icon->priv;
 
-  /* no point to call has_launcher as it just duplicates work*/
-  
-  for (iter = priv->items;iter;iter=iter->next)
-  {
-    if (TASK_IS_LAUNCHER(iter->data))
-    {
-      launcher = iter->data;
-      break;
-    }
-  }
+  launcher = task_icon_get_launcher (icon);  
           
   if (event->button != 3) return FALSE;
 
