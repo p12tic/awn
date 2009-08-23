@@ -1489,12 +1489,6 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
 
-  /* FIXME: I guess we should add something to check whether the user has
-   * removed a launcher. Make sure we don't remove a launcher which has a
-   * window set, wait till the window is closed
-   *
-   */
-
   for (guint idx = 0; idx < list->n_values; idx++)
   {
     gchar *path;
@@ -1594,18 +1588,10 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
     {
       if ( !task_icon_count_ephemeral_items (icon_iter->data) )
       {
-        if (task_icon_count_items (icon_iter->data) > 1)
-        {
-          task_icon_increment_ephemeral_count (icon_iter->data);
-        }
-        else
-        {
-          /*
-            Console spam!  FIXME.  remove correctly
-           */
-          TaskIcon * icon = icon_iter->data;
-          gtk_container_remove (GTK_CONTAINER (priv->box), icon);
-        }
+        /*if there are only ephemeral items in the icon then it will 
+         trigger it's removal.  Otherwise the it will be removed when it is
+         no longer managing ay TaskWindows*/
+        task_icon_increment_ephemeral_count (icon_iter->data);
       }
     }
   }

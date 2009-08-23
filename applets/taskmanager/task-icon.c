@@ -843,7 +843,6 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
     g_slist_free (priv->items);
     priv->items = NULL;
     priv->ephemeral_count = 0;
-    //gtk_widget_destroy (GTK_WIDGET (icon));
   }
   else
   {
@@ -1315,6 +1314,11 @@ task_icon_increment_ephemeral_count (TaskIcon *icon)
   priv = icon->priv;
 
   priv->ephemeral_count++;
+  
+  if (priv->ephemeral_count >= g_slist_length (priv->items) )
+  {
+    _destroyed_task_item (icon, priv->items->data);
+  }
 }
 /**
  * Returns the number of visible and unvisible items this TaskIcon contains.
