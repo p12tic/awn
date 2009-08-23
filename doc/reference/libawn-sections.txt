@@ -502,17 +502,6 @@ awn_utils_gslist_to_gvaluearray
 </SECTION>
 
 <SECTION>
-<FILE>awn-effects-ops-helpers</FILE>
-paint_arrow_triangle
-paint_arrow_dot
-lighten_component
-lighten_surface
-darken_surface
-blur_surface_shadow
-surface_saturate
-</SECTION>
-
-<SECTION>
 <FILE>awn-cairo-utils</FILE>
 AwnCairoRoundCorners
 awn_cairo_rounded_rect

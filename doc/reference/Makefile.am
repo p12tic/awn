@@ -64,6 +64,7 @@ IGNORE_HFILES= \
 	awn-effect-squish.h \
 	awn-effect-turn.h \
 	awn-effect-zoom.h \
+	awn-effects-ops-helpers.h \
 	awn-effects-shared.h \
 	gseal-transition.h \
 	libawn.h \
