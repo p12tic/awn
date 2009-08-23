@@ -38,9 +38,9 @@ namespace Awn
   namespace Config
   {
     public static void free ();
-    public static DesktopAgnostic.Config.Client get_default (int panel_id) throws GLib.Error;
-    public static DesktopAgnostic.Config.Client get_default_for_applet (Awn.Applet applet) throws GLib.Error;
-    public static DesktopAgnostic.Config.Client get_default_for_applet_by_info (string name, string uid, bool single_instance) throws GLib.Error;
+    public static unowned DesktopAgnostic.Config.Client get_default (int panel_id) throws GLib.Error;
+    public static unowned DesktopAgnostic.Config.Client get_default_for_applet (Awn.Applet applet) throws GLib.Error;
+    public static unowned DesktopAgnostic.Config.Client get_default_for_applet_by_info (string name, string uid, bool single_instance) throws GLib.Error;
   }
 
   [CCode (cheader_filename = "libawn/awn-utils.h")]
