@@ -207,8 +207,8 @@
 		</enum>
 		<object name="AwnAlignment" parent="GtkAlignment" type-name="AwnAlignment" get-type="awn_alignment_get_type">
 			<implements>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 			</implements>
 			<method name="get_offset_modifier" symbol="awn_alignment_get_offset_modifier">
 				<return-type type="gint"/>
@@ -234,8 +234,8 @@
 		</object>
 		<object name="AwnApplet" parent="GtkPlug" type-name="AwnApplet" get-type="awn_applet_get_type">
 			<implements>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 			</implements>
 			<method name="create_about_item" symbol="awn_applet_create_about_item">
 				<return-type type="GtkWidget*"/>
@@ -489,8 +489,8 @@
 		</object>
 		<object name="AwnAppletSimple" parent="AwnApplet" type-name="AwnAppletSimple" get-type="awn_applet_simple_get_type">
 			<implements>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 				<interface name="AwnOverlayable"/>
 			</implements>
 			<method name="get_icon" symbol="awn_applet_simple_get_icon">
@@ -618,8 +618,8 @@
 		</object>
 		<object name="AwnDialog" parent="GtkWindow" type-name="AwnDialog" get-type="awn_dialog_get_type">
 			<implements>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 			</implements>
 			<constructor name="new" symbol="awn_dialog_new">
 				<return-type type="GtkWidget*"/>
@@ -820,8 +820,8 @@
 		</object>
 		<object name="AwnIcon" parent="GtkDrawingArea" type-name="AwnIcon" get-type="awn_icon_get_type">
 			<implements>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 				<interface name="AwnOverlayable"/>
 			</implements>
 			<method name="clicked" symbol="awn_icon_clicked">
@@ -1023,9 +1023,8 @@
 		</object>
 		<object name="AwnIconBox" parent="GtkBox" type-name="AwnIconBox" get-type="awn_icon_box_get_type">
 			<implements>
-				<interface name="GtkOrientable"/>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 			</implements>
 			<constructor name="new" symbol="awn_icon_box_new">
 				<return-type type="GtkWidget*"/>
@@ -1054,8 +1053,8 @@
 		</object>
 		<object name="AwnImage" parent="GtkImage" type-name="AwnImage" get-type="awn_image_get_type">
 			<implements>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 				<interface name="AwnOverlayable"/>
 			</implements>
 			<constructor name="new" symbol="awn_image_new">
@@ -1064,8 +1063,8 @@
 		</object>
 		<object name="AwnLabel" parent="GtkLabel" type-name="AwnLabel" get-type="awn_label_get_type">
 			<implements>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 			</implements>
 			<constructor name="new" symbol="awn_label_new">
 				<return-type type="AwnLabel*"/>
@@ -1237,8 +1236,8 @@
 		</object>
 		<object name="AwnThemedIcon" parent="AwnIcon" type-name="AwnThemedIcon" get-type="awn_themed_icon_get_type">
 			<implements>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 				<interface name="AwnOverlayable"/>
 			</implements>
 			<method name="clear_icons" symbol="awn_themed_icon_clear_icons">
@@ -1250,6 +1249,31 @@
 			</method>
 			<method name="clear_info" symbol="awn_themed_icon_clear_info">
 				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+				</parameters>
+			</method>
+			<method name="create_custom_icon_item" symbol="awn_themed_icon_create_custom_icon_item">
+				<return-type type="GtkWidget*"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+					<parameter name="icon_name" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="drag_data_received" symbol="awn_themed_icon_drag_data_received">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="widget" type="GtkWidget*"/>
+					<parameter name="context" type="GdkDragContext*"/>
+					<parameter name="x" type="gint"/>
+					<parameter name="y" type="gint"/>
+					<parameter name="selection_data" type="GtkSelectionData*"/>
+					<parameter name="info" type="guint"/>
+					<parameter name="evt_time" type="guint"/>
+				</parameters>
+			</method>
+			<method name="get_awn_theme" symbol="awn_themed_icon_get_awn_theme">
+				<return-type type="GtkIconTheme*"/>
 				<parameters>
 					<parameter name="icon" type="AwnThemedIcon*"/>
 				</parameters>
@@ -1348,12 +1372,13 @@
 				</parameters>
 			</method>
 			<property name="applet-name" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="drag-and-drop" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="rotate" type="GdkPixbufRotation" readable="1" writable="1" construct="1" construct-only="0"/>
 		</object>
 		<object name="AwnTooltip" parent="GtkWindow" type-name="AwnTooltip" get-type="awn_tooltip_get_type">
 			<implements>
-				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AtkImplementor"/>
 			</implements>
 			<method name="get_delay" symbol="awn_tooltip_get_delay">
 				<return-type type="gint"/>

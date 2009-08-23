@@ -1,5 +1,11 @@
 2009-08-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	Update Vala bindings.
+
+2009-08-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/libawn-sections.txt:
 	Update doc template.
 
