@@ -1,5 +1,10 @@
 2009-08-22  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-themed-icon.c:
+	Make sure the TaskIcon icon reverts to the standard desktop icon.
+
+2009-08-22  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	Fixed drag and drop.
   	* libawn/awn-themed-icon.c:

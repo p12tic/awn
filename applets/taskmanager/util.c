@@ -50,6 +50,10 @@ typedef struct
   const gchar * desktop;
 }WindowToDesktopMatch;
 
+/*Assign an id to a desktop file
+ 
+ exec field,name field,desktop filename,id
+ */
 static DesktopMatch desktop_regexes[] = 
 {
   {".*ooffice.*-writer.*",".*OpenOffice.*",NULL,"OpenOffice-Writer"},

@@ -752,7 +752,6 @@ on_main_item_icon_changed (TaskItem   *item,
   g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
 
   priv = icon->priv;
-
 #ifdef DEBUG
   g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(pixbuf), gdk_pixbuf_get_height(pixbuf));
 #endif
@@ -862,6 +861,7 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
 {
   TaskIconPrivate *priv;
   GSList * i;
+  TaskItem * old_main_item = main_item;
   
   g_return_if_fail (TASK_IS_ICON (icon));
 
@@ -949,6 +949,11 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
     priv->main_item = NULL;
   }
 
+  if (main_item && (main_item != old_main_item) )
+  {
+    task_icon_set_icon_pixbuf (icon,main_item);
+  }
+  
   if (main_item)
   {
     priv->main_item = main_item;
@@ -1504,7 +1509,7 @@ task_icon_refresh_icon (TaskIcon *icon, guint size)
     }
 #ifdef DEBUG
     g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
-#endif    
+#endif
     awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
   }
 }
