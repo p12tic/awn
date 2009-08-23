@@ -485,7 +485,8 @@ task_icon_refresh_geometry (TaskIcon *icon)
   }
 
   /* FIXME: Do something clever here to allow the user to "scrub" the icon
-   * for the windows.
+   * for the windows. 
+   * h4writer, what do you mean by this comment?
    */
   len = g_slist_length (priv->items);
   if (len)
@@ -1367,21 +1368,16 @@ static void
 task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
 {
   TaskIconPrivate *priv;
-  GSList * iter;
   priv = icon->priv;
   
   if (!item || TASK_IS_WINDOW(item) )
   {
-    for (iter=priv->items;iter;iter=iter->next)
+    TaskItem * launcher = task_icon_get_launcher (icon);
+    if (launcher)
     {
-      if (TASK_IS_LAUNCHER(iter->data) )
-      {
-        item=iter->data;
-        break;
-      }
+      item = launcher;
     }
   }
-  g_assert (item);
   
   if (TASK_IS_WINDOW(item))
   {
