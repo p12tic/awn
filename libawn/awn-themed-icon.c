@@ -165,14 +165,6 @@ static void on_icon_theme_changed (GtkIconTheme  *theme,
 
 static gboolean on_idle_preload (gpointer item);
 
-void awn_themed_icon_drag_data_received (GtkWidget        *widget, 
-                                         GdkDragContext   *context,
-                                         gint              x, 
-                                         gint              y, 
-                                         GtkSelectionData *selection,
-                                         guint             info,
-                                         guint             evt_time);
-
 static void ensure_icon                 (AwnThemedIcon *icon);
 
 static void awn_themed_icon_preload_all (AwnThemedIcon * icon);

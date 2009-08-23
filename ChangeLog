@@ -1,5 +1,10 @@
 2009-08-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-themed-icon.c:
+	Remove redundant declaration.
+
+2009-08-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/anims/Makefile.am (removed):
 	Remove obsolete file.
 
