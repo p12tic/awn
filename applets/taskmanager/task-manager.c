@@ -838,7 +838,11 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
   gchar * desktop;
   TaskItem     *launcher = NULL;
   GDir      * dir;
-  
+ 
+  if (check_if_blacklisted(name) )
+  {
+    return FALSE;
+  }
   desktop = g_strdup_printf ("%s%s.desktop",system_dir,name);
 //#define DEBUG
 #ifdef DEBUG
@@ -1076,8 +1080,8 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   }
   g_regex_unref (desktop_regex);
   
-  tokens = g_strsplit (class_name,"-",-1);
-  if (tokens)
+  tokens = g_strsplit (lower,"-",-1);
+  if (tokens && tokens[0] && tokens[1] )
   {
     gboolean result = find_desktop_fuzzy (icon, tokens[0], cmd);
     g_strfreev (tokens);

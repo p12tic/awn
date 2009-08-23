@@ -50,6 +50,9 @@ typedef struct
   const gchar * desktop;
 }WindowToDesktopMatch;
 
+
+const gchar * blacklist[] = {"prism",
+                       NULL};
 /*Assign an id to a desktop file
  
  exec field,name field,desktop filename,id
@@ -291,4 +294,18 @@ get_full_cmd_from_pid (gint pid)
   }
   g_strfreev (cmd_argv);   
   return full_cmd;
+}
+
+gboolean 
+check_if_blacklisted (gchar * name)
+{
+  const gchar ** iter;
+  for (iter = blacklist; *iter;iter++)
+  {
+    if (g_strcmp0 (name,*iter) == 0)
+    {
+      return TRUE;
+    }
+  }
+  return FALSE;
 }

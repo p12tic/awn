@@ -1,6 +1,16 @@
 2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Fixed a nasty recursive bug from the last commit.
+	Use the new blacklist.
+  	* applets/taskmanager/util.c:
+  	* applets/taskmanager/util.h:
+	Add a blacklist for desktop files that probably should
+	be using NoDisplay but are not.
+
+2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Desktop file lookup tweak.  Tokenize the class_name
 	using "-" in the fuzzy lookup.
 
