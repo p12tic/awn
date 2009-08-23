@@ -411,6 +411,19 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
                                G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (obj_class, PROP_APPLET_NAME, pspec);   
 
+  /**
+   * AwnThemedIcon:drag-and-drop:
+   *
+   * Whether to enable the dragging and dropping of icons, so that a user
+   * can customize the icon via a user interface. One example of an applet
+   * that would not want this behavior enabled is a trash applet that allowed
+   * a user to drag and drop files onto it, in order to send them to the
+   * trash.
+   *
+   * If this value is %FALSE, the icon customization behavior can be used as
+   * a fallback by calling #awn_themed_icon_drag_data_received in a custom
+   * signal handler for #GtkWidget::drag-data-received.
+   */
   pspec = g_param_spec_boolean ("drag_and_drop",
                              "Drag and Drop",
                              "Enable drag and drop",
@@ -1525,7 +1538,14 @@ awn_themed_icon_preload_icon (AwnThemedIcon * icon, gchar * state, gint size)
   
 }
 
-
+/**
+ * awn_themed_icon_get_awn_theme:
+ * @icon: The themed icon.
+ *
+ * A convenience method for bindings.
+ *
+ * Returns: The current icon theme associated with the themed icon.
+ */
 GtkIconTheme *
 awn_themed_icon_get_awn_theme (AwnThemedIcon * icon)
 {
@@ -1565,22 +1585,21 @@ on_idle_preload (gpointer data)
   return FALSE;
 }
 
-/**The icon state.
+/**
  * awn_themed_icon_drag_data_received:
  * @widget: An #AwnThemedIcon object.
- * @context: The GdkDragContext
- * x: x position
- * y: y position.
- * selection_data: The GtkSelectionData.
- * info: info.
- * evt_time: The drag event time.
+ * @context: The GDK drag context.
+ * @x: The X position of the drop.
+ * @y: The Y position of the drop.
+ * @selection_data: The received data.
+ * @info: The info that has been registered with the target in the #GtkTargetList.
+ * @evt_time: The drag event time.
  *
  * This is exposed for applets that need to do their own drag and drop handling
  * but still want to chain the this function so it can handle icons that are 
  * dropped.  Use this by setting the drag_and_drop property of #AwnThemedIcon 
  * and chaining to this function from the applet drag data received handler.
  */
-
 void 
 awn_themed_icon_drag_data_received (GtkWidget        *widget, 
                                     GdkDragContext   *context,
@@ -1831,8 +1850,10 @@ _select_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
 
 /**
  * awn_themed_icon_create_custom_icon_item:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ * @icon_name: The name of the customized icon.
  *
- * Create a Customize Icon menu item.
+ * Creates a "Customize Icon" menu item.
  * Returns: A #GtkImageMenuItem for the Customize Icon that can be added to
  * an applet icon's context menu.
  */

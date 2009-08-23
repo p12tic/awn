@@ -1,5 +1,10 @@
 2009-08-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-themed-icon.c:
+	Add/update documentation.
+
+2009-08-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/Makefile.am:
 	* doc/reference/libawn-sections.txt:
 	Remove a non-public header from the doc templates.
