@@ -2408,14 +2408,13 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
                                    guint           info,
                                    guint           time_)
 {
+  TaskIcon        *icon = TASK_ICON(widget);
   TaskIconPrivate *priv;
   GSList          *list;
   GError          *error;
-  //TaskLauncher    *launcher;
   GdkAtom         target;
   gchar           *target_name;
   gchar           *sdata_data;
-  GSList          *w;
   TaskLauncher    *launcher = NULL;
   GStrv           tokens = NULL;
   gchar           ** i;  
@@ -2424,7 +2423,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   g_debug ("%s",__func__);
 #endif
   g_return_if_fail (TASK_IS_ICON (widget));
-  priv = TASK_ICON (widget)->priv;
+  priv = icon->priv;
 
   target = gtk_drag_dest_find_target (widget, context, NULL);
   target_name = gdk_atom_name (target);
@@ -2496,22 +2495,13 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   }
   g_strfreev (tokens);
     
-  for (w = priv->items; w; w = w->next)
-  {
-    TaskItem *item = w->data;
-
-    if (!task_item_is_visible (item)) continue;
-
-    if (TASK_IS_LAUNCHER (item))
-    {
-      launcher = TASK_LAUNCHER(item);
-    }
-  }
+  launcher = TASK_LAUNCHER(task_icon_get_launcher (icon));
   
   if (launcher && list && g_slist_length(list) )
   {
     task_launcher_launch_with_data (launcher, list);
-    gtk_drag_finish (context, TRUE,TRUE, time_);    
+    gtk_drag_finish (context, TRUE,TRUE, time_);
+    return;
   }
 
   if (list)
