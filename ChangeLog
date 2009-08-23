@@ -1,5 +1,10 @@
 2009-08-22  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-themed-icon.c:
+	on_icon_theme_changed() should be static.
+
+2009-08-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/vala/awn.gi:
 	* bindings/vala/awn.vapi:
 	Update Vala bindings.

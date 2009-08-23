@@ -160,8 +160,8 @@ static GdkPixbuf* theme_load_icon (GtkIconTheme *icon_theme,
                                      GtkIconLookupFlags flags,
                                      GError **error);
 
-void on_icon_theme_changed              (GtkIconTheme     *theme, 
-                                         AwnThemedIcon     *icon);
+static void on_icon_theme_changed (GtkIconTheme  *theme,
+                                   AwnThemedIcon *icon);
 
 static gboolean on_idle_preload (gpointer item);
 
@@ -1543,7 +1543,7 @@ awn_themed_icon_get_awn_theme (AwnThemedIcon * icon)
 /*
  * Callbacks 
  */
-void 
+static void 
 on_icon_theme_changed (GtkIconTheme *theme, AwnThemedIcon *icon)
 {
   AwnThemedIconPrivate *priv;  
