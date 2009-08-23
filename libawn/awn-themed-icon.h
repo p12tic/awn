@@ -120,6 +120,15 @@ GtkIconTheme *awn_themed_icon_get_awn_theme     (AwnThemedIcon * icon);
 GtkWidget *   awn_themed_icon_create_custom_icon_item (AwnThemedIcon * icon,
                                                  const gchar * icon_name);
 
+void awn_themed_icon_drag_data_received (GtkWidget        *widget, 
+                                    GdkDragContext   *context,
+                                    gint              x, 
+                                    gint              y, 
+                                    GtkSelectionData *selection_data,
+                                    guint             info,
+                                    guint             evt_time);
+
+
 G_END_DECLS
 
 #endif /* _AWN_THEMED_ICON_H_ */

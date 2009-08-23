@@ -704,7 +704,10 @@ task_icon_init (TaskIcon *icon)
 GtkWidget *
 task_icon_new (AwnApplet *applet)
 {
-  GtkWidget *icon = g_object_new (TASK_TYPE_ICON, "applet", applet, NULL);
+  GtkWidget *icon = g_object_new (TASK_TYPE_ICON, 
+                                  "applet", applet, 
+                                  "drag_and_drop",FALSE,
+                                  NULL);
   gtk_widget_hide (icon);
 
   //BUG: AwnApplet calls upon start gtk_widget_show_all. So even when gtk_widget_hide

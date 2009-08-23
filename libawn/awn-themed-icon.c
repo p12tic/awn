@@ -123,7 +123,7 @@ struct _AwnThemedIconPrivate
   gulong  sig_id_for_gtk_theme;
   gulong  sig_id_for_awn_theme;  
   
-
+  gboolean drag_and_drop;
 };
 
 typedef struct
@@ -181,7 +181,8 @@ enum
 {
   PROP_0,
   PROP_ROTATE,
-  PROP_APPLET_NAME
+  PROP_APPLET_NAME,
+  PROP_DRAG_AND_DROP
 };
 
 static GtkIconTheme*
@@ -292,7 +293,10 @@ awn_themed_icon_get_property (GObject *object, guint property_id,
       break;
     case PROP_APPLET_NAME:
       g_value_set_string (value,priv->applet_name);
-      break;      
+      break;
+    case PROP_DRAG_AND_DROP:
+      g_value_set_boolean (value,priv->drag_and_drop);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -314,7 +318,10 @@ awn_themed_icon_set_property (GObject *object, guint property_id,
     case PROP_APPLET_NAME:
       awn_themed_icon_set_applet_info (AWN_THEMED_ICON(object),
                                        g_value_get_string (value),priv->uid);
-      break;      
+      break;
+    case PROP_DRAG_AND_DROP:
+      priv->drag_and_drop = g_value_get_boolean (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -411,6 +418,14 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                                G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (obj_class, PROP_APPLET_NAME, pspec);   
+
+  pspec = g_param_spec_boolean ("drag_and_drop",
+                             "Drag and Drop",
+                             "Enable drag and drop",
+                             TRUE,
+                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (obj_class, PROP_DRAG_AND_DROP, pspec);
+
   
   g_type_class_add_private (obj_class, sizeof (AwnThemedIconPrivate));
 }
@@ -1109,18 +1124,20 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
   /*
    * Initate drag_drop  
    */
-  gtk_drag_dest_unset (GTK_WIDGET(icon));
-  
-  for (iter = priv->list; iter; iter = g_list_next (iter) )
+  if (priv->drag_and_drop)
   {
-    AwnThemedIconItem *item = iter->data;
-    if (g_strstr_len (item->state,-1, "::no_drop::") !=  item->state)
+    gtk_drag_dest_unset (GTK_WIDGET(icon));
+    for (iter = priv->list; iter; iter = g_list_next (iter) )
     {
-      gtk_drag_dest_set (GTK_WIDGET (icon),
-                     GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
-                     drop_types, n_drop_types,
-                     GDK_ACTION_COPY | GDK_ACTION_ASK);
-      break;
+      AwnThemedIconItem *item = iter->data;
+      if (g_strstr_len (item->state,-1, "::no_drop::") !=  item->state)
+      {
+        gtk_drag_dest_set (GTK_WIDGET (icon),
+                       GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
+                       drop_types, n_drop_types,
+                       GDK_ACTION_COPY | GDK_ACTION_ASK);
+        break;
+      }
     }
   }
   /*preload these icons.  we could awn_themed_icon_preload_all() but this
@@ -1480,7 +1497,10 @@ awn_themed_icon_clear_info (AwnThemedIcon *icon)
     g_free (item);
     priv->list = g_list_delete_link (priv->list,iter);
   }
-  gtk_drag_dest_unset (GTK_WIDGET(icon));
+  if (priv->drag_and_drop)
+  {
+    gtk_drag_dest_unset (GTK_WIDGET(icon));
+  }
 }
 
 /**
@@ -1553,16 +1573,20 @@ on_idle_preload (gpointer data)
   return FALSE;
 }
 
-/*
- FIXME among other things:
-
- Needs to be made aware of the concept of ::no_drop:: mixed with normal states.
- 
- I expect it does not deal with multiple icons currently beyond assuming the 
- drag and drop is for the currently selected stated.  Should provide a drop down
- of all icons that do not have ::no_drop:: states default the choice to the 
- currently selected state.
- 
+/**The icon state.
+ * awn_themed_icon_drag_data_received:
+ * @widget: An #AwnThemedIcon object.
+ * @context: The GdkDragContext
+ * x: x position
+ * y: y position.
+ * selection_data: The GtkSelectionData.
+ * info: info.
+ * evt_time: The drag event time.
+ *
+ * This is exposed for applets that need to do their own drag and drop handling
+ * but still want to chain the this function so it can handle icons that are 
+ * dropped.  Use this by setting the drag_and_drop property of #AwnThemedIcon 
+ * and chaining to this function from the applet drag data received handler.
  */
 
 void 
