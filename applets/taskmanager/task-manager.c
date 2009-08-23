@@ -1493,9 +1493,6 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
    * removed a launcher. Make sure we don't remove a launcher which has a
    * window set, wait till the window is closed
    *
-   * FIXME:  This approach just is not going to work..
-   *         IMO we should do something similar to
-   *         awn_applet_manager_refresh_applets() in awn-applet-manager.c
    */
 
   for (guint idx = 0; idx < list->n_values; idx++)
@@ -1570,6 +1567,48 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
       }
     }
     g_free (path);
+  }
+  for (GSList *icon_iter = priv->icons;
+       icon_iter != NULL;
+       icon_iter = icon_iter->next)
+  {
+    TaskLauncher * launcher = TASK_LAUNCHER(task_icon_get_launcher (icon_iter->data));
+    gboolean found;
+    const gchar * launcher_name = NULL;
+    found = FALSE;
+    if (launcher)
+    {
+      launcher_name = task_launcher_get_desktop_path (launcher);
+      for (guint idx = 0; idx < list->n_values; idx++)
+      {
+        gchar *path;
+        path = g_value_dup_string (g_value_array_get_nth (list, idx));
+        if (g_strcmp0(launcher_name,path)==0)
+        {
+          found = TRUE;
+        }
+        g_free (path);
+      }
+    }
+    if (!found)
+    {
+      if ( !task_icon_count_ephemeral_items (icon_iter->data) )
+      {
+        if (task_icon_count_items (icon_iter->data) > 1)
+        {
+          task_icon_increment_ephemeral_count (icon_iter->data);
+        }
+        else
+        {
+          /*
+            Console spam!  FIXME.  remove correctly
+           */
+          TaskIcon * icon = icon_iter->data;
+          priv->icons = g_slist_remove (priv->icons,icon);
+          g_object_unref (icon);
+        }
+      }
+    }
   }
 }
 

@@ -1,3 +1,10 @@
+2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+  	* applets/taskmanager/task-manager.c:
+	Implement removal of launcher from launcher list.
+
 2009-08-22  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:

@@ -1273,6 +1273,27 @@ task_icon_contains_launcher (TaskIcon      *icon)
   return FALSE;
 }
 
+TaskItem *
+task_icon_get_launcher (TaskIcon      *icon)
+{
+  TaskIconPrivate *priv;
+  GSList *w;
+
+  g_return_val_if_fail (TASK_IS_ICON (icon), NULL);
+
+  priv = icon->priv;
+
+  for (w = priv->items; w; w = w->next)
+  {
+    TaskItem *item = w->data;
+
+    if (TASK_IS_LAUNCHER (item))
+      return item;
+  }
+  return NULL;
+}
+
+
 
 guint
 task_icon_count_ephemeral_items (TaskIcon * icon)
@@ -1282,9 +1303,18 @@ task_icon_count_ephemeral_items (TaskIcon * icon)
   g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
   priv = icon->priv;
   
-  return priv->ephemeral_count;
-  
-  
+  return priv->ephemeral_count; 
+}
+
+void
+task_icon_increment_ephemeral_count (TaskIcon *icon)
+{
+  TaskIconPrivate *priv;
+
+  g_return_if_fail (TASK_IS_ICON (icon));
+  priv = icon->priv;
+
+  priv->ephemeral_count++;
 }
 /**
  * Returns the number of visible and unvisible items this TaskIcon contains.
