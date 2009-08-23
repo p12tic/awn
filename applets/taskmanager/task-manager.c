@@ -994,6 +994,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   const gchar* const * system_dirs = g_get_system_data_dirs ();
   GStrv   iter;
   TaskItem     *launcher = NULL;
+  gchar ** tokens;
   
   g_return_val_if_fail (class_name,FALSE);
   lower = g_utf8_strdown (class_name, -1);
@@ -1074,6 +1075,18 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
     g_free (dir_name);
   }
   g_regex_unref (desktop_regex);
+  
+  tokens = g_strsplit (class_name,"-",-1);
+  if (tokens)
+  {
+    gboolean result = find_desktop_fuzzy (icon, tokens[0], cmd);
+    g_strfreev (tokens);
+    if (result)
+    {
+      return TRUE;
+    }
+  }
+  
   return FALSE;
 //#undef DEBUG
   
