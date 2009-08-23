@@ -1,5 +1,11 @@
 2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Remove the Taskicon in a slightly different mannger.
+	Might be a bit better.
+
+2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-icon.h:
   	* applets/taskmanager/task-manager.c:

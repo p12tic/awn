@@ -1604,8 +1604,7 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
             Console spam!  FIXME.  remove correctly
            */
           TaskIcon * icon = icon_iter->data;
-          priv->icons = g_slist_remove (priv->icons,icon);
-          g_object_unref (icon);
+          gtk_container_remove (GTK_CONTAINER (priv->box), icon);
         }
       }
     }
