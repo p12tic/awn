@@ -1,6 +1,16 @@
 2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	Remove Custom Icon" menu item is present when a 
+	custom icon is in use.
+  	
+	* libawn/awn-themed-icon.c:
+  	* libawn/awn-themed-icon.h:
+	Added a "Remove Custom Icon" menu item to AwnThemedIcon.
+
+2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-manager.c:
 	Remove the chance of name collisions between standard
 	applets and taskmanager using awn themed icons.

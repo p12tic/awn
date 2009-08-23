@@ -1387,6 +1387,7 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   else
   {
     gint size;
+    const gchar * state;
     
     g_object_get (priv->applet,
                   "size",&size,
@@ -1396,9 +1397,19 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
       g_object_unref (priv->icon);
 
     }          
+    if (gtk_icon_theme_has_icon(awn_themed_icon_get_awn_theme (AWN_THEMED_ICON(icon)),
+                                priv->custom_name) )
+    {
+      state = "::no_drop::customized";
+    }
+    else
+    {
+      state = "::no_drop::desktop";
+    }
+    
     priv->icon = awn_themed_icon_get_icon_at_size (AWN_THEMED_ICON(icon),
                                                   size,
-                                                  "::no_drop::desktop");
+                                                  state);
 #ifdef DEBUG
     g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 #endif    
@@ -1447,7 +1458,16 @@ task_icon_append_item (TaskIcon      *icon,
                                        uid,
                                        (gchar**)states,
                                        (gchar**)names);
-      awn_themed_icon_set_state (AWN_THEMED_ICON(icon),"::no_drop::desktop");
+      if (gtk_icon_theme_has_icon(awn_themed_icon_get_awn_theme (AWN_THEMED_ICON(icon)),
+                                  priv->custom_name) )
+      {
+        awn_themed_icon_set_state (AWN_THEMED_ICON(icon),"::no_drop::customized");
+      }
+      else
+      {
+        awn_themed_icon_set_state (AWN_THEMED_ICON(icon),"::no_drop::desktop");
+      }
+      
       awn_themed_icon_set_size (AWN_THEMED_ICON(icon),size);
       g_free (name);
       g_free (uid);
@@ -2050,11 +2070,16 @@ task_icon_button_press_event (GtkWidget      *widget,
         priv->menu = wnck_action_menu_new (task_window_get_window (TASK_WINDOW(priv->main_item)));
         
         item = gtk_separator_menu_item_new();
-        gtk_widget_show_all(item);
+        gtk_widget_show(item);
         gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
 
         if (launcher)
         {
+          /* Do not show this item... AwnThemedIcon handles that*/
+          item = awn_themed_icon_create_remove_custom_icon_item (AWN_THEMED_ICON(icon),
+                                                          priv->custom_name);
+          gtk_menu_shell_prepend (GTK_MENU_SHELL(priv->menu), item);
+          
           item = awn_themed_icon_create_custom_icon_item (AWN_THEMED_ICON(icon),
                                                           priv->custom_name);
           gtk_widget_show(item);
@@ -2091,7 +2116,7 @@ task_icon_button_press_event (GtkWidget      *widget,
                             G_CALLBACK(add_to_launcher_list_cb),
                             icon);
           item = gtk_separator_menu_item_new();
-          gtk_widget_show_all(item);
+          gtk_widget_show(item);
           gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
           
         }
@@ -2103,16 +2128,21 @@ task_icon_button_press_event (GtkWidget      *widget,
       priv->menu = gtk_menu_new ();
 
       item = gtk_separator_menu_item_new();
-      gtk_widget_show_all(item);
+      gtk_widget_show(item);
       gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
 
       item = awn_applet_create_pref_item();
-      gtk_widget_show_all(item);
+      gtk_widget_show(item);
       gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
 
       item = awn_themed_icon_create_custom_icon_item (AWN_THEMED_ICON(icon),
                                           priv->custom_name);
       gtk_widget_show(item);
+      gtk_menu_shell_append (GTK_MENU_SHELL(priv->menu), item);
+
+      /* Do not show this item... AwnThemedIcon handles that*/      
+      item = awn_themed_icon_create_remove_custom_icon_item (AWN_THEMED_ICON(icon),
+                                          priv->custom_name);
       gtk_menu_shell_append (GTK_MENU_SHELL(priv->menu), item);
 
       item = gtk_separator_menu_item_new();

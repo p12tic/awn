@@ -124,6 +124,10 @@ struct _AwnThemedIconPrivate
   gulong  sig_id_for_awn_theme;  
   
   gboolean drag_and_drop;
+  
+  /*used in management of "Remove Custom Icon" menu items */
+  gboolean    awn_theme_hit;  
+  GtkWidget * remove_custom_icon_item;
 };
 
 typedef struct
@@ -652,7 +656,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
       applet_name = priv->applet_name;
       icon_name = item->name;
       uid = priv->uid;
-      
+      priv->awn_theme_hit = TRUE;
       /* Go through all the possible outcomes until we get a pixbuf */
       for (i = 0; i < N_SCOPES; i++)
       {
@@ -725,6 +729,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             break;
 
           case SCOPE_OVERRIDE_THEME:
+            priv->awn_theme_hit = FALSE;
             pixbuf = NULL;
             if (priv->override_theme)
             {
@@ -830,6 +835,15 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
         if (pixbuf)
         {
           /* FIXME: Should we make this orientation-aware? */
+          if (priv->awn_theme_hit && priv->remove_custom_icon_item)
+          {
+            gtk_widget_show (priv->remove_custom_icon_item);
+          }
+          else if (priv->remove_custom_icon_item)
+          {
+            gtk_widget_hide (priv->remove_custom_icon_item);
+          }
+          
           if (gdk_pixbuf_get_height (pixbuf) > size)
           {
             GdkPixbuf *temp = pixbuf;
@@ -845,7 +859,6 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
           return pixbuf;
         }
       }
-      
     }
   }
   /* Yes.. this is drastic... asserts should be disabled for releases.
@@ -1888,4 +1901,83 @@ awn_themed_icon_create_custom_icon_item (AwnThemedIcon * icon,
   return item;
 }
 
+
+static void
+_remove_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
+{
+  /* is there a correct way to determine the main icons dirs?*/
+  gchar * del_file;
+
+  del_file = g_strdup_printf("%s.png",dest_filename_minus_ext);
+  g_unlink (del_file);
+  g_free (del_file);
+  del_file = g_strdup_printf("%s.svg",dest_filename_minus_ext);
+  g_unlink (del_file);
+  g_free (del_file);      
+  
+  gtk_icon_theme_set_custom_theme (get_awn_theme(), NULL);
+  gtk_icon_theme_set_custom_theme (get_awn_theme(), AWN_ICON_THEME_NAME);  
+}
+
+
+static void
+_remove_icon_cleanup (GtkWidget * widget, AwnThemedIcon * icon)
+{
+  AwnThemedIconPrivate * priv;
+  
+  g_return_if_fail (AWN_IS_THEMED_ICON(icon));
+
+  g_debug ("%s",__func__);
+  priv = icon->priv;
+  priv->remove_custom_icon_item=NULL;
+}
+
+/**
+ * awn_themed_icon_create_remove_custom_icon_item:
+ * @icon: A pointer to an #AwnThemedIcon object.
+ * @icon_name: The name of the customized icon.
+ *
+ * Creates a "Remove Customize Icon" menu item.  Will only be visible when a
+ * custom icon is in use.
+ * Returns: A #GtkImageMenuItem for the Customize Icon that can be added to
+ * an applet icon's context menu.
+ */
+
+GtkWidget *
+awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon, 
+                                         const gchar *icon_name)
+{
+  gchar * dest_filename;
+  AwnThemedIconPrivate * priv;
+  
+  g_return_val_if_fail (AWN_IS_THEMED_ICON(icon),NULL);
+  g_return_val_if_fail (icon_name,NULL);
+  
+  priv = icon->priv;
+  dest_filename = g_build_filename (priv->icon_dir,
+                                  "awn-theme", "scalable",
+                                  icon_name, NULL);
+  
+  priv->remove_custom_icon_item = gtk_image_menu_item_new_with_label (_("Remove Customize Icon"));
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (priv->remove_custom_icon_item),
+                                 gtk_image_new_from_stock(GTK_STOCK_OPEN,
+                                                         GTK_ICON_SIZE_MENU));
+  if (priv->awn_theme_hit)
+  {
+    gtk_widget_show_all (priv->remove_custom_icon_item);
+  }
+  else
+  {
+    gtk_widget_hide (priv->remove_custom_icon_item);
+  }
+  
+  g_signal_connect (priv->remove_custom_icon_item, "activate", 
+                    G_CALLBACK (_remove_icon), dest_filename);
+  g_signal_connect_swapped (G_OBJECT (priv->remove_custom_icon_item), "unrealize",
+                    G_CALLBACK (g_free), dest_filename);
+  g_signal_connect_swapped (G_OBJECT (priv->remove_custom_icon_item), "unrealize",
+                    G_CALLBACK (_remove_icon_cleanup), icon);
+  
+  return priv->remove_custom_icon_item;
+}
 
