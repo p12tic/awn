@@ -1478,7 +1478,6 @@ task_manager_append_launcher(TaskManager  *manager, const gchar * launcher_path)
  * Checks when launchers got added/removed in the list in gconf/file.
  * It removes the launchers from the task-icons and add those
  * that aren't already on the bar.
- * State: partial - TODO: refresh of a list
  */
 static void
 task_manager_refresh_launcher_paths (TaskManager *manager,
@@ -1489,6 +1488,10 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
 
+  /*
+   Find launchers in the the launcher list do not yet have a TaskIcon and 
+   add them
+   */
   for (guint idx = 0; idx < list->n_values; idx++)
   {
     gchar *path;
@@ -1562,6 +1565,12 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
     }
     g_free (path);
   }
+  
+  /*
+   Find non-ephemeral launchers in the TaskIcons that are not represented in the
+   launcher list and make them ephemeral  (Removes them from the TaskIcons once
+   they contain no TaskWindows)
+   */
   for (GSList *icon_iter = priv->icons;
        icon_iter != NULL;
        icon_iter = icon_iter->next)

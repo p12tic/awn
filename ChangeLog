@@ -1,6 +1,13 @@
 2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+	Remove the chance of name collisions between standard
+	applets and taskmanager using awn themed icons.
+
+2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
         Some cleanup in task_icon_set_icon_pixbuf().
 
 2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>

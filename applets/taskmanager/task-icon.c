@@ -104,7 +104,7 @@ struct _TaskIconPrivate
   gboolean  enable_long_press;
   
   gboolean  long_press;     /*set to TRUE when there has been a long press so the clicked event can be ignored*/
-  
+  gchar * custom_name;
 };
 
 enum
@@ -1386,34 +1386,22 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   }
   else
   {
-    gchar * uid,*name;
     gint size;
-    gchar * states[2] = {"::no_drop::desktop",NULL};
-    gchar * names[2]  = {NULL,NULL};
-    names[0] = task_launcher_get_icon_name(item);
+    
+    g_object_get (priv->applet,
+                  "size",&size,
+                  NULL);    
     if (priv->icon)
     {
       g_object_unref (priv->icon);
 
-    }      
-    g_object_get (priv->applet,
-                  "uid",&uid,
-                  "canonical-name",&name,
-                  "size",&size,
-                  NULL);
-    awn_themed_icon_set_info (AWN_THEMED_ICON(icon),
-                                     name,
-                                     uid,
-                                     states,
-                                     names);
+    }          
     priv->icon = awn_themed_icon_get_icon_at_size (AWN_THEMED_ICON(icon),
                                                   size,
                                                   "::no_drop::desktop");
 #ifdef DEBUG
     g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 #endif    
-    g_free (uid);
-    g_free (name);
   }
   g_assert (GDK_IS_PIXBUF(priv->icon));
 }
@@ -1439,6 +1427,31 @@ task_icon_append_item (TaskIcon      *icon,
    */
   if (!priv->icon || TASK_IS_LAUNCHER(item))
   {
+    if (TASK_IS_LAUNCHER(item))
+    {
+      gchar * uid,*name;
+      gint  size;
+      const gchar * states[3] = {"::no_drop::desktop","::no_drop::customized",NULL};
+      const gchar * names[3]  = {NULL,NULL,NULL};
+
+      g_object_get (priv->applet,
+                    "uid",&uid,
+                    "canonical-name",&name,
+                    "size",&size,
+                    NULL);
+      names[0] = task_launcher_get_icon_name(item);
+      priv->custom_name = g_strdup_printf ("%s-%s",name,task_launcher_get_icon_name(item));
+      names[1] = priv->custom_name;
+      awn_themed_icon_set_info (AWN_THEMED_ICON(icon),
+                                       name,
+                                       uid,
+                                       (gchar**)states,
+                                       (gchar**)names);
+      awn_themed_icon_set_state (AWN_THEMED_ICON(icon),"::no_drop::desktop");
+      awn_themed_icon_set_size (AWN_THEMED_ICON(icon),size);
+      g_free (name);
+      g_free (uid);
+    }    
     task_icon_set_icon_pixbuf (icon,item);
   }
   
@@ -1528,10 +1541,27 @@ task_icon_refresh_icon (TaskIcon *icon, guint size)
   {
     if (priv->icon && task_icon_contains_launcher (icon) )
     {
+      const gchar * state;
       g_object_unref (priv->icon);
+      /*
+       Check the awn-them for our customized icon name.  If it's present then
+       use that... otherwise use the standard name.  This just allows us to 
+       minimized the risk (to about zero) of name collisions with applets using
+       awn-theme.  Basically customization of launcher icons in taskmanager 
+       should not effect the themed icons used by applets.
+       */
+      if (gtk_icon_theme_has_icon(awn_themed_icon_get_awn_theme (AWN_THEMED_ICON(icon)),
+                                  priv->custom_name) )
+      {
+        state = "::no_drop::customized";
+      }
+      else
+      {
+        state = "::no_drop::desktop";
+      }
       priv->icon = awn_themed_icon_get_icon_at_size (AWN_THEMED_ICON(icon),
                                                   size,
-                                                  "::no_drop::desktop");      
+                                                  state);
     }
     else
     {
@@ -2026,7 +2056,7 @@ task_icon_button_press_event (GtkWidget      *widget,
         if (launcher)
         {
           item = awn_themed_icon_create_custom_icon_item (AWN_THEMED_ICON(icon),
-                                                          task_launcher_get_icon_name(launcher));
+                                                          priv->custom_name);
           gtk_widget_show(item);
           gtk_menu_shell_prepend (GTK_MENU_SHELL(priv->menu), item);
         }
@@ -2081,7 +2111,7 @@ task_icon_button_press_event (GtkWidget      *widget,
       gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
 
       item = awn_themed_icon_create_custom_icon_item (AWN_THEMED_ICON(icon),
-                                          task_launcher_get_icon_name(launcher));
+                                          priv->custom_name);
       gtk_widget_show(item);
       gtk_menu_shell_append (GTK_MENU_SHELL(priv->menu), item);
 
