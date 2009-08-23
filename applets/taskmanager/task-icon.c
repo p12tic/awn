@@ -2417,6 +2417,8 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   gchar           *sdata_data;
   GSList          *w;
   TaskLauncher    *launcher = NULL;
+  GStrv           tokens = NULL;
+  gchar           ** i;  
   
 #ifdef DEBUG
   g_debug ("%s",__func__);
@@ -2433,47 +2435,37 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
     gtk_drag_finish (context, TRUE, TRUE, time_);
     return;
   }
-
-  /* If we are not a launcher, we don't care about this */
-  //TODO: h4writer - 2nd round
-  //if (!priv->windows || !TASK_IS_LAUNCHER (priv->windows->data))
-  //{
-  //  gtk_drag_finish (context, FALSE, FALSE, time_);
-  //  return;
-  //}
-  //
-  //launcher = priv->windows->data;
-
   sdata_data = (gchar*)gtk_selection_data_get_data (sdata);
   
   /* If we are dealing with a desktop file, then we want to do something else
    * FIXME: This is a crude way of checking
-   * FIXME: Emit a signal or something to let the manager know that the user
-   * dropped a desktop file
    */
   if (strstr (sdata_data, ".desktop"))
   {
-    /*g_signal_emit (icon, _icon_signals[DESKTOP_DROPPED],
-     *               0, sdata->data);
-     */
-    gchar * filename = g_strchomp (g_filename_from_uri ((gchar*)sdata->data,NULL,NULL));
-    if (filename)
+    tokens = g_strsplit  (sdata_data, "\n",-1);    
+    for (i=tokens; *i;i++)
     {
-      task_manager_append_launcher (TASK_MANAGER(priv->applet),filename);
-      g_free (filename);
+      gchar * filename = g_filename_from_uri ((gchar*) *i,NULL,NULL);
+      if (filename)
+      {
+        g_strstrip(filename);
+      }
+      if (filename && strlen(filename) && strstr (filename,".desktop"))
+      {
+        if (filename)
+        {
+          task_manager_append_launcher (TASK_MANAGER(priv->applet),filename);
+        }
+      }
+      if (filename)
+      {
+        g_free (filename);
+      }
     }
+    g_strfreev (tokens);
     gtk_drag_finish (context, TRUE, FALSE, time_);
     return;
   }
-
-  /* We don't handle drops if the launcher already has a window associcated */
-  //FIXME: I think this function returns always FALSE (haytjes)
-  // and I also think this isn't a bad idea to allow too.
-  // I often drop a url on firefox, even when it is already open.
-  //if (task_launcher_has_windows (launcher))
-  //{
-  //  gtk_drag_finish (context, FALSE, FALSE, time_);
-  //}
 
   error = NULL;
 
@@ -2489,11 +2481,9 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
 */
   //temp replacement for the code above.
   list = NULL;
-  GStrv tokens = g_strsplit  (sdata_data, "\n",-1);
-  gchar ** i;
+  tokens = g_strsplit  (sdata_data, "\n",-1);
   for (i=tokens; *i;i++)
   {
-//    g_debug ("token string =  %s",*i);
     gchar * str = g_filename_from_uri ((gchar*) *i,NULL,NULL);
     if (str)
     {
