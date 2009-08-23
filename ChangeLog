@@ -1,5 +1,10 @@
 2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
 
+ 	* applets/taskmanager/task-icon.c:
+        Some cleanup in add_to_launcher_list_cb().
+
+2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	Some cleanup in task_icon_dest_drag_data_received().
 

@@ -1962,29 +1962,18 @@ static void
 add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
 {
   TaskIconPrivate *priv;
-  GSList          *iter;
   TaskLauncher    *launcher = NULL;
   
   g_return_if_fail (TASK_IS_ICON (icon));  
   priv = icon->priv;
   
-  for (iter = priv->items; iter; iter=iter->next)
-  {
-    if ( TASK_IS_LAUNCHER (iter->data) )
-    {
-      launcher = iter->data;
-      break;
-    }
-  }
+  launcher = TASK_LAUNCHER(task_icon_get_launcher (icon));
   if (launcher)
   {
-//    GSList * iter;
     TaskManager * applet = TASK_MANAGER(priv->applet);
-    task_manager_remove_task_icon (TASK_MANAGER(applet), GTK_WIDGET(icon));            
-//    
+    task_manager_remove_task_icon (TASK_MANAGER(applet), GTK_WIDGET(icon));               
     task_manager_append_launcher (TASK_MANAGER(applet),
                                   task_launcher_get_desktop_path(launcher));
-//    gtk_widget_destroy (GTK_WIDGET(icon));    
   }
 }
 /**
