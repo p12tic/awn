@@ -219,9 +219,17 @@ get_awn_theme(void)
     
     theme_dir_vfs = desktop_agnostic_vfs_file_new_for_path (awn_theme_path,
                                                             &error);
-    theme_dir_monitor_vfs = desktop_agnostic_vfs_file_monitor (theme_dir_vfs);
-    g_signal_connect (theme_dir_monitor_vfs,"changed",
-                      G_CALLBACK(awn_theme_dir_changed),NULL);
+    if (error)
+    {
+      g_warning ("Unable to Monitor %s: %s",awn_theme_path, error->message);
+      g_error_free (error);
+    }
+    else
+    {
+      theme_dir_monitor_vfs = desktop_agnostic_vfs_file_monitor (theme_dir_vfs);
+      g_signal_connect (theme_dir_monitor_vfs,"changed",
+                        G_CALLBACK(awn_theme_dir_changed),NULL);
+    }
     g_free (awn_theme_path);
   }    
   return awn_theme;

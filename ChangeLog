@@ -1,5 +1,11 @@
 2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-themed-icon.c:
+	Check for a GError and deal with when setting up the
+	file monitor.
+
+2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
   	* libawn/awn-themed-icon.c:
 	Connect a file monitor to awn-theme dir.
