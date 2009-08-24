@@ -2,6 +2,13 @@
 
 	* bindings/vala/awn.gi:
 	* bindings/vala/awn.vapi:
+	* doc/reference/libawn-sections.txt:
+	Update the doc templates and Vala bindings.
+
+2009-08-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
 	* libawn/awn-applet.c (awn_applet_class_init):
 	The single-instance property should be a construct property only.
 

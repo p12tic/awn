@@ -209,6 +209,7 @@ awn_themed_icon_clear_info
 awn_themed_icon_preload_icon
 awn_themed_icon_get_awn_theme
 awn_themed_icon_create_custom_icon_item
+awn_themed_icon_create_remove_custom_icon_item
 awn_themed_icon_drag_data_received
 <SUBSECTION Standard>
 AWN_THEMED_ICON

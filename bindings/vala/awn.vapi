@@ -445,6 +445,7 @@ namespace Awn {
 		public void clear_icons (int scope);
 		public void clear_info ();
 		public unowned Gtk.Widget create_custom_icon_item (string icon_name);
+		public unowned Gtk.Widget create_remove_custom_icon_item (string icon_name);
 		public static void drag_data_received (Gtk.Widget widget, Gdk.DragContext context, int x, int y, Gtk.SelectionData selection_data, uint info, uint evt_time);
 		public unowned Gtk.IconTheme get_awn_theme ();
 		public unowned string get_default_theme_name ();

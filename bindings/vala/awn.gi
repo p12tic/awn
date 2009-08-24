@@ -1260,6 +1260,13 @@
 					<parameter name="icon_name" type="gchar*"/>
 				</parameters>
 			</method>
+			<method name="create_remove_custom_icon_item" symbol="awn_themed_icon_create_remove_custom_icon_item">
+				<return-type type="GtkWidget*"/>
+				<parameters>
+					<parameter name="icon" type="AwnThemedIcon*"/>
+					<parameter name="icon_name" type="gchar*"/>
+				</parameters>
+			</method>
 			<method name="drag_data_received" symbol="awn_themed_icon_drag_data_received">
 				<return-type type="void"/>
 				<parameters>
