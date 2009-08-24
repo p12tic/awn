@@ -1,5 +1,11 @@
 2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+  	* libawn/awn-themed-icon.c:
+	Connect a file monitor to awn-theme dir.
+
+2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/util.c:
 	Special case Google Prism apps.
 

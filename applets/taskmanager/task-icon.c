@@ -2084,6 +2084,9 @@ task_icon_button_press_event (GtkWidget      *widget,
                                                           priv->custom_name);
           gtk_widget_show(item);
           gtk_menu_shell_prepend (GTK_MENU_SHELL(priv->menu), item);
+          item = gtk_separator_menu_item_new();
+          gtk_widget_show(item);
+          gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);          
         }
         item = awn_applet_create_pref_item();
         gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);

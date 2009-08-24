@@ -30,6 +30,7 @@
 #include <string.h>
 #include <gio/gio.h>
 #include <glib/gi18n.h>
+#include <libdesktop-agnostic/vfs.h>
 
 #include "awn-themed-icon.h"
 
@@ -173,6 +174,8 @@ static void ensure_icon                 (AwnThemedIcon *icon);
 
 static void awn_themed_icon_preload_all (AwnThemedIcon * icon);
 
+static GtkIconTheme* get_awn_theme(void);
+
 enum
 {
   PROP_0,
@@ -181,13 +184,29 @@ enum
   PROP_DRAG_AND_DROP
 };
 
+static void
+awn_theme_dir_changed (DesktopAgnosticVFSFileMonitor* self, 
+                       DesktopAgnosticVFSFile* other, 
+                       DesktopAgnosticVFSFileMonitorEvent event)
+{
+  gtk_icon_theme_set_custom_theme (get_awn_theme(), NULL);
+  gtk_icon_theme_set_custom_theme (get_awn_theme(), AWN_ICON_THEME_NAME);
+}
+
 static GtkIconTheme*
 get_awn_theme(void)
 {
   static GtkIconTheme *awn_theme = NULL;
-
+  static DesktopAgnosticVFSFile* theme_dir_vfs = NULL;
+  static DesktopAgnosticVFSFileMonitor* theme_dir_monitor_vfs = NULL;
+  
   if (!awn_theme)
   {
+    GError* error = NULL;
+    gchar * awn_theme_path = g_strdup_printf ("%s/.icons/%s/scalable/", 
+                                              g_get_home_dir (),
+                                              AWN_ICON_THEME_NAME);
+    
     awn_theme = gtk_icon_theme_new ();
     gtk_icon_theme_set_custom_theme (awn_theme, AWN_ICON_THEME_NAME);    
 
@@ -197,6 +216,13 @@ get_awn_theme(void)
     path[0] = g_strdup_printf ("%s/.icons", g_get_home_dir ());
     gtk_icon_theme_set_search_path (awn_theme, (const gchar **)path, 1);
     g_free (path[0]);
+    
+    theme_dir_vfs = desktop_agnostic_vfs_file_new_for_path (awn_theme_path,
+                                                            &error);
+    theme_dir_monitor_vfs = desktop_agnostic_vfs_file_monitor (theme_dir_vfs);
+    g_signal_connect (theme_dir_monitor_vfs,"changed",
+                      G_CALLBACK(awn_theme_dir_changed),NULL);
+    g_free (awn_theme_path);
   }    
   return awn_theme;
 }
