@@ -308,6 +308,8 @@ task_item_icon_changed (TaskItem *item, GdkPixbuf *icon)
   gint  scaled_height;
   gint  scaled_width;
   
+  g_return_if_fail (icon);
+  g_return_if_fail (GDK_IS_PIXBUF(icon));
   if (priv->icon)
   {
     g_object_unref (priv->icon);

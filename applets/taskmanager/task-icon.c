@@ -779,7 +779,7 @@ on_main_item_icon_changed (TaskItem   *item,
 #ifdef DEBUG
   g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(pixbuf), gdk_pixbuf_get_height(pixbuf));
 #endif
-  if (!priv->disable_icon_changes)
+  if (!priv->disable_icon_changes || !priv->icon)
   {
     g_object_unref (priv->icon);
     priv->icon = pixbuf;

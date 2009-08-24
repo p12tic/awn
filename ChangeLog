@@ -1,5 +1,13 @@
 2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Let the app change the icon if it is still NULL even if 
+	disable_icon_changes is true.
+	* applets/taskmanager/task-item.c:
+	Check the icon sent to task_item_icon_changed ().
+	
+2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Don't set intellihide during construction.
 
