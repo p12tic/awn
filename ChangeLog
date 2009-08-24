@@ -1,6 +1,12 @@
 2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	Deal with runtime changes of disable_icon_changes key, along
+	with several fixes necessary for this to work.
+
+2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
 	Created config option for drag_and_drop_hover_delay.  Current 
 	default 500.

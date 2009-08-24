@@ -300,7 +300,12 @@ task_icon_set_property (GObject      *object,
       }      
       break;
     case PROP_DISABLE_ICON_CHANGES:
+      task_icon_set_icon_pixbuf (TASK_ICON(object),icon->priv->main_item);
       icon->priv->disable_icon_changes = g_value_get_boolean (value);
+      if (icon->priv->icon)
+      {
+        awn_icon_set_from_pixbuf (AWN_ICON (object), icon->priv->icon);
+      }
       break;
     case PROP_DRAG_AND_DROP_HOVER_DELAY:
       icon->priv->drag_and_drop_hover_delay = g_value_get_int (value);
@@ -1456,7 +1461,9 @@ static void
 task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
 {
   TaskIconPrivate *priv;
-  priv = icon->priv;
+  
+  g_return_if_fail (TASK_IS_ICON (icon) );
+  priv = icon->priv;  
   
   if (!item || TASK_IS_WINDOW(item) )
   {
@@ -1469,10 +1476,14 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   
   if (TASK_IS_WINDOW(item))
   {
+    if (priv->icon)
+    {
+      g_object_unref (priv->icon);
+    }
     priv->icon = task_item_get_icon (item);
     g_object_ref (priv->icon);
   }
-  else
+  else if (priv->custom_name)
   {
     gint size;
     const gchar * state;
@@ -1493,8 +1504,7 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
     else
     {
       state = "::no_drop::desktop";
-    }
-    
+    }    
     priv->icon = awn_themed_icon_get_icon_at_size (AWN_THEMED_ICON(icon),
                                                   size,
                                                   state);
@@ -1502,7 +1512,6 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
     g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 #endif    
   }
-  g_assert (GDK_IS_PIXBUF(priv->icon));
 }
 
 /**
