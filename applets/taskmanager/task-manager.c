@@ -429,7 +429,7 @@ task_manager_class_init (TaskManagerClass *klass)
                                 "intellihide",
                                 "Intellihide",
                                 TRUE,
-                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+                                G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_INTELLIHIDE, pspec);
 
   pspec = g_param_spec_int ("intellihide_mode",
