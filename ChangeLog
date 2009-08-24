@@ -1,3 +1,9 @@
+2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c
+	Hookup the delay on drag over Task Icon.  Currently
+	set to 500ms before it will activate a window.
+
 2009-08-24  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* bindings/vala/awn.gi:
