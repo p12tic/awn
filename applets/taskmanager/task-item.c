@@ -33,8 +33,8 @@ G_DEFINE_ABSTRACT_TYPE (TaskItem, task_item, GTK_TYPE_BUTTON)
 struct _TaskItemPrivate
 {
   GtkWidget *box;
-  GtkWidget *name;
-  GtkWidget *image;
+  GtkWidget *name;    /*name label*/
+  GtkWidget *image;   /*placed in button (TaskItem) with label*/
   GdkPixbuf *icon;
 
   TaskIcon *task_icon;
@@ -69,9 +69,38 @@ static void task_item_activate (GtkWidget *widget, gpointer null);
 
 /* GObject stuff */
 
-/*
- TODO: add get and set props
- */
+static void
+task_item_get_property (GObject    *object,
+                        guint       prop_id,
+                        GValue     *value,
+                        GParamSpec *pspec)
+{
+/*  TaskItem        *icon = TASK_ITEM (object);
+  TaskItemPrivate *priv = icon->priv;
+*/
+  switch (prop_id)
+  {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
+task_item_set_property (GObject      *object,
+                        guint         prop_id,
+                        const GValue *value,
+                        GParamSpec   *pspec)
+{
+/*  TaskItem *icon = TASK_ITEM (object);
+  TaskItemPrivate *priv = icon->priv;
+  */
+  switch (prop_id)
+  {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
 
 static void
 task_item_dispose (GObject *object)
@@ -132,10 +161,13 @@ task_item_class_init (TaskItemClass *klass)
   //GParamSpec   *pspec;
   GObjectClass *obj_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
+//  GParamSpec     *pspec;
 
   obj_class->dispose = task_item_dispose;
   obj_class->finalize = task_item_finalize;
   obj_class->constructed = task_item_constructed;  
+  obj_class->set_property = task_item_set_property;
+  obj_class->get_property = task_item_get_property;
 
   wid_class->button_release_event = task_item_button_release_event;
   wid_class->button_press_event   = task_item_button_press_event;
@@ -146,7 +178,7 @@ task_item_class_init (TaskItemClass *klass)
   klass->is_visible      = NULL;
   klass->match           = NULL;
   klass->name_change    = task_item_name_changed;
-
+  
   /* Install signals */
   _item_signals[NAME_CHANGED] =
 		g_signal_new ("name-changed",
@@ -291,11 +323,10 @@ task_item_activate (GtkWidget *widget, gpointer null)
 }
 
 static void 
-task_item_name_changed (TaskItem *item, const gchar *name)
+task_item_name_changed (TaskItem *item, const gchar *markup)
 {
   TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
-
-  gtk_label_set_text (GTK_LABEL (priv->name), name);
+  gtk_label_set_markup (GTK_LABEL (priv->name), markup);
 }
 
 static void 

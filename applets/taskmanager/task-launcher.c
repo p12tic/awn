@@ -704,8 +704,11 @@ _name_change (TaskItem *item, const gchar *name)
 {
   g_return_if_fail (TASK_IS_LAUNCHER (item));
   gchar * tmp;
+  gchar * markup;
 
   tmp = g_strdup_printf (_("Launch %s"),name);
-  TASK_ITEM_CLASS (task_launcher_parent_class)->name_change (item, tmp);  
+  markup = g_markup_printf_escaped ("<b>%s</b>", tmp);
+  TASK_ITEM_CLASS (task_launcher_parent_class)->name_change (item, markup);  
   g_free (tmp);
+  g_free (markup);
 }

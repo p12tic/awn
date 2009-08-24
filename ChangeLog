@@ -1,5 +1,13 @@
 2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-window.c:
+	Added bold text to Launcher task item.
+	Added get/set prop skeletons to TaskItem.
+
+2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	Let the app change the icon if it is still NULL even if 
 	disable_icon_changes is true.

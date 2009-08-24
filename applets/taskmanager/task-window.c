@@ -314,12 +314,16 @@ static void
 on_window_name_changed (WnckWindow *wnckwin, TaskWindow *window)
 {
   TaskWindowPrivate *priv;
-
+  gchar * markup;
+  
   g_return_if_fail (TASK_IS_WINDOW (window));
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
   priv = window->priv;
 
-  task_item_emit_name_changed (TASK_ITEM (window), wnck_window_get_name (wnckwin));
+  //Is there any real advantage to emit a signal in this case?
+  markup = g_markup_printf_escaped ("%s", wnck_window_get_name (wnckwin));
+  task_item_emit_name_changed (TASK_ITEM (window), markup);  
+  g_free (markup);
 }
 
 static void
