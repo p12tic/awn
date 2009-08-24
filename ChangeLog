@@ -1,7 +1,21 @@
+2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	 * applets/taskmanager/task-manager.c:
+         Fixed a nasty bug task_manager_refresh_launcher_paths () 
+         where TaskWindows that did not have launchers were being
+         treated as though they did a launcher.
+
 2009-08-24  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-cairo-utils.c:
 	Add documentation for the cairo wrapper functions.
+
+2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Fixed a nasty bug task_manager_refresh_launcher_paths () 
+	where TaskWindows that did not have launchers were being
+	treated as though they did a launcher.
 
 2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
 
