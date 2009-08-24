@@ -64,13 +64,29 @@ static DesktopMatch desktop_regexes[] =
   {".*ooffice.*-impress.*",".*OpenOffice.*",NULL,"OpenOffice-Impress"},
   {".*ooffice.*-calc.*",".*OpenOffice.*",NULL,"OpenOffice-Calc"},
   {".*amsn.*","aMSN",".*asmn.*desktop.*","aMSN"},
+  {".*prism-google-calendar",".*Google.*Calendar.*","prism-google-calendar","prism-google-calendar"},
+  {".*prism-google-analytics",".*Google.*Analytics.*","prism-google-analytics","prism-google-analytics"},
+  {".*prism-google-docs",".*Google.*Docs.*","prism-google-docs","prism-google-docs"},
+  {".*prism-google-groups",".*Google.*Groups.*","prism-google-groups","prism-google-groups"},
+  {".*prism-google-mail",".*Google.*Mail.*","prism-google-mail","prism-google-mail"},
+  {".*prism-google-reader",".*Google.*Reader.*","prism-google-reader","prism-google-reader"},
+  {".*prism-google-talk",".*Google.*Talk.*","prism-google-talk","prism-google-talk"},
   {NULL,NULL,NULL,NULL}
 };
 
-
+/*
+ cmd, res name, class name, window title, id
+ */
 static  WindowMatch window_regexes[] = 
 {
   /*Do not bother trying to parse an open office command line for the type of window*/
+  {".*prism.*google.*calendar.*","Prism","Navigator",".*[Cc]alendar.*","prism-google-calendar"},
+  {".*prism.*google.*analytics.*","Prism","Navigator",".*[Aa]nalytics.*","prism-google-analytics"},
+  {".*prism.*google.*docs.*","Prism","Navigator",".*[Dd]ocs.*","prism-google-docs"},
+  {".*prism.*google.*groups.*","Prism","Navigator",".*[Gg]roups.*","prism-google-groups"},
+  {".*prism.*google.*mail.*","Prism","Navigator",".*[Mm]ail.*","prism-google-mail"},
+  {".*prism.*google.*reader.*","Prism","Navigator",".*[Rr]eader.*","prism-google-reader"},
+  {".*prism.*google.*talk.*","Prism","Navigator",".*[Tt]alk.*","prism-google-talk"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*","OpenOffice-Writer"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","OpenOffice-Draw"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","OpenOffice-Impress"},
@@ -101,9 +117,19 @@ static  WindowMatch window_regexes[] =
   {NULL,NULL,NULL,NULL,NULL}
 };
 
+/*
+ cmd, res name, class name, title, desktop
+ */
 static  WindowToDesktopMatch window_to_desktop_regexes[] = 
 {
   /*Do not bother trying to parse an open office command line for the type of window*/
+  {".*prism.*google.*calendar.*","Prism","Navigator",".*[Cc]alendar.*","prism-google-calendar"},
+  {".*prism.*google.*analytics.*","Prism","Navigator",".*[Aa]nalytics.*","prism-google-analytics"},
+  {".*prism.*google.*docs.*","Prism","Navigator",".*[Dd]ocs.*","prism-google-docs"},
+  {".*prism.*google.*groups.*","Prism","Navigator",".*[Gg]roups.*","prism-google-groups"},
+  {".*prism.*google.*mail.*","Prism","Navigator",".*[Mm]ail.*","prism-google-mail"},
+  {".*prism.*google.*reader.*","Prism","Navigator",".*[Rr]eader.*","prism-google-reader"},
+  {".*prism.*google.*talk.*","Prism","Navigator",".*[Tt]alk.*","prism-google-talk"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*","ooo-writer"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","ooo-draw"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","ooo-impress"},

@@ -1,5 +1,10 @@
 2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/util.c:
+	Special case Google Prism apps.
+
+2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Fixed a nasty recursive bug from the last commit.
 	Use the new blacklist.
