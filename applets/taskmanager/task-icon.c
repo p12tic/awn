@@ -105,6 +105,7 @@ struct _TaskIconPrivate
   
   /*prop*/
   gboolean  enable_long_press;
+  gboolean  disable_icon_changes;
   
   gboolean  long_press;     /*set to TRUE when there has been a long press so the clicked event can be ignored*/
   gchar * custom_name;
@@ -118,7 +119,8 @@ enum
   PROP_DRAGGABLE,
   PROP_MAX_INDICATORS,
   PROP_TXT_INDICATOR_THRESHOLD,
-  PROP_USE_LONG_PRESS
+  PROP_USE_LONG_PRESS,
+  PROP_DISABLE_ICON_CHANGES
 };
 
 enum
@@ -244,6 +246,9 @@ task_icon_get_property (GObject    *object,
     case PROP_USE_LONG_PRESS:
       g_value_set_boolean (value, priv->enable_long_press);
       break;
+    case PROP_DISABLE_ICON_CHANGES:
+      g_value_set_boolean (value, priv->disable_icon_changes);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -288,6 +293,9 @@ task_icon_set_property (GObject      *object,
                     G_CALLBACK(task_icon_long_press),
                     object);
       }      
+      break;
+    case PROP_DISABLE_ICON_CHANGES:
+      icon->priv->disable_icon_changes = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -428,6 +436,13 @@ task_icon_constructed (GObject *object)
   {
     return;
   }
+  
+  if (!do_bind_property (priv->client, "disable_icon_changes", object,
+                         "disable_icon_changes"))
+  {
+    return;
+  }
+  
 }
 
 static void
@@ -604,6 +619,13 @@ task_icon_class_init (TaskIconClass *klass)
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_USE_LONG_PRESS, pspec);
   
+  pspec = g_param_spec_boolean ("disable_icon_changes",
+                                "Disable Icon Changes",
+                                "Disable Icon Changes by App",
+                                FALSE,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_DISABLE_ICON_CHANGES, pspec);
+  
   /* Install signals */
   _icon_signals[VISIBLE_CHANGED] =
 		g_signal_new ("visible_changed",
@@ -757,10 +779,13 @@ on_main_item_icon_changed (TaskItem   *item,
 #ifdef DEBUG
   g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(pixbuf), gdk_pixbuf_get_height(pixbuf));
 #endif
-  g_object_unref (priv->icon);
-  priv->icon = pixbuf;
-  g_object_ref (priv->icon);
-  awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
+  if (!priv->disable_icon_changes)
+  {
+    g_object_unref (priv->icon);
+    priv->icon = pixbuf;
+    g_object_ref (priv->icon);
+    awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
+  }
 }
 
 /**

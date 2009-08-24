@@ -7,6 +7,12 @@ single_instance = true
 
 # configuration options
 # PLEASE KEEP THIS ALPHABETIZED!
+
+[DEFAULT/disable_icon_changes]
+type = boolean
+default = false
+description = Disables changing of panel icon when app indicates icon change.
+
 [DEFAULT/drag_and_drop]
 type = boolean
 default = true
