@@ -1019,7 +1019,6 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
 #ifdef DEBUG
     g_debug ("%s: desktop regex = %s",__func__,desktop_regex_str);
 #endif      
-  g_free (lower);    
   g_free (desktop_regex_str);
   g_return_val_if_fail (desktop_regex,FALSE);
   
@@ -1064,6 +1063,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
                   task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
                   g_regex_unref (desktop_regex);
                   g_free (exec);
+                  g_free (lower);
                   return TRUE;
                 }
               }
@@ -1081,6 +1081,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   g_regex_unref (desktop_regex);
   
   tokens = g_strsplit (lower,"-",-1);
+  g_free (lower);  
   if (tokens && tokens[0] && tokens[1] )
   {
     gboolean result = find_desktop_fuzzy (icon, tokens[0], cmd);

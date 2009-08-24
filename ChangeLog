@@ -1,5 +1,10 @@
 2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Don't free memory until we're done using it.
+
+2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-item.c:
   	* applets/taskmanager/task-launcher.c:
   	* applets/taskmanager/task-window.c:
