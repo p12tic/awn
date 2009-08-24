@@ -21,12 +21,8 @@
 
 #include <libawn/libawn.h>
 
-/*
- Scale the size of the icon displayd in the task items.
- The value of this is still no settled.
- Possible TODO:  Consider as a bound prop.
- */
 #define TASK_ITEM_ICON_SCALE 0.65
+#define MAX_TASK_ITEM_CHARS 50
 
 G_DEFINE_ABSTRACT_TYPE (TaskItem, task_item, GTK_TYPE_BUTTON)
 
@@ -42,6 +38,7 @@ struct _TaskItemPrivate
   GdkPixbuf *icon;
 
   TaskIcon *task_icon;
+
 };
 
 enum
@@ -71,6 +68,11 @@ static gboolean  task_item_button_press_event   (GtkWidget      *widget,
 static void task_item_activate (GtkWidget *widget, gpointer null);
 
 /* GObject stuff */
+
+/*
+ TODO: add get and set props
+ */
+
 static void
 task_item_dispose (GObject *object)
 {
@@ -205,8 +207,14 @@ task_item_init (TaskItem *item)
   gtk_box_pack_start (GTK_BOX (priv->box), priv->image, FALSE, FALSE, 0);
   
   priv->name = gtk_label_new ("");
+  
+  /*
+   TODO once get/set prop is available create this a config key and bind
+   */
+  gtk_label_set_max_width_chars (GTK_LABEL(priv->name), MAX_TASK_ITEM_CHARS);
+  gtk_label_set_ellipsize (GTK_LABEL(priv->name),PANGO_ELLIPSIZE_END);
   gtk_box_pack_start (GTK_BOX (priv->box), priv->name, TRUE, FALSE, 10);
-
+  
 }
 
 
@@ -234,6 +242,10 @@ task_item_button_release_event (GtkWidget      *widget,
       task_item_middle_click (TASK_ITEM (widget), event);
       break;
     case 3:
+      /*
+       Crazy hoops to keep the dialog open when bringing up a context menu.
+      Keeps it from closing due to focus loss.
+       */
       task_icon_set_inhibit_focus_loss (priv->task_icon,TRUE);
       menu = task_item_right_click (TASK_ITEM (widget), event);
       g_signal_connect_swapped (menu,"deactivate", 

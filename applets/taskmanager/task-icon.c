@@ -76,7 +76,8 @@ struct _TaskIconPrivate
   GdkPixbuf *icon;
   AwnApplet *applet;
   GtkWidget *dialog;
-  
+
+  /*context menu*/
   GtkWidget * menu;
 
   gboolean draggable;
@@ -91,11 +92,13 @@ struct _TaskIconPrivate
   gint old_x;
   gint old_y;
   
+  /*Bound to config keys*/
   guint  max_indicators;
   guint  txt_indicator_threshold;
 
   gint update_geometry_id;
-  
+
+  /*Keep track if TaskLauncher was added through desktop file lookup*/
   guint ephemeral_count;
 
   gboolean  inhibit_focus_loss;
@@ -159,7 +162,6 @@ static gboolean  task_icon_configure_event      (GtkWidget          *widget,
 static gboolean task_icon_scroll_event          (GtkWidget *widget, 
                                                  GdkEventScroll *event, 
                                                  TaskIcon *icon);
-
 static void task_icon_long_press (TaskIcon * icon,gpointer null);
 static void task_icon_clicked (TaskIcon * icon,GdkEventButton *event);
 static gboolean  task_icon_button_release_event (GtkWidget      *widget,
@@ -202,11 +204,9 @@ static void      task_icon_dest_drag_data_received  (GtkWidget      *widget,
                                                      GtkSelectionData *data,
                                                      guint           info,
                                                      guint           time);
-
 static void     task_icon_size_allocate             (TaskIcon *icon, 
                                                      GtkAllocation *alloc,
                                                      gpointer user_data);
-
 static gboolean task_icon_refresh_geometry (TaskIcon *icon);
 static void     task_icon_refresh_visible  (TaskIcon *icon);
 static void     task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item);
@@ -219,6 +219,7 @@ static gint     task_icon_count_require_attention (TaskIcon *icon);
 static void     task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item);
 
 static void     theme_changed_cb (GtkIconTheme *icon_theme,TaskIcon * icon);
+
 /* GObject stuff */
 static void
 task_icon_get_property (GObject    *object,
@@ -867,6 +868,10 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
 
   priv = icon->priv;
 
+  /*
+   If we don't have a main_item at this point then go for the one that
+   requires attention
+   */
   if (!main_item)
   {
     for (i = priv->items; i; i = i->next)
@@ -886,6 +891,11 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
       }
     }
   }
+
+  /*
+   If we don't have a main_item at this point then go for the one wnck says 
+   was the most recently activated window.
+   */  
   if (!main_item)
   {
     for (i = priv->items; i; i = i->next)
@@ -905,7 +915,11 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
       }
     }
   }
-  
+
+    /*
+   If we don't have a main_item at this point then go for the one just look
+   for the first TaskWindow we can find.
+   */  
   if (!main_item)
   {
     for (i = priv->items; i; i = i->next)
@@ -923,6 +937,12 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
     }
   }
 
+  /*
+   If we don't have a main_item at this point then find the first visible item
+   (TaskLauncher in all likelihood... otherwise there might be something rather
+    strange going on)
+   */  
+  
   if (!main_item)
   {
     for (i = priv->items; i; i = i->next)
@@ -949,32 +969,52 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
     priv->main_item = NULL;
   }
 
+  /*
+   If the main_item actually changed 
+   */
   if (main_item && (main_item != old_main_item) )
   {
+    /* 
+     Set the task icon.  In most cases the task item will _not_ get set to 
+     what the main_item icon is unless main_item is the TaskLauncher or there
+     is not TaskLauncher.
+     The icon only gets set to the TaskWindows icons when there is no TaskLauncher 
+     _or_ the Windows specifically change their icons to indicate specific 
+     information.
+     task_icon_set_icon_pixbuf does _not_ actually change the displayed icon,
+     only (potentially) the value of priv->icon.
+     */
     task_icon_set_icon_pixbuf (icon,main_item);
   }
   
+  /*
+   Assuming we have a main_item
+   */
   if (main_item)
   {
-    priv->main_item = main_item;
     /*
-     ok... what to do here?  FIXME 
-     For the moment we'll keep the icon as the launcher icon.
+     Set the TaskIcon to the Icon associated with the main_item.
      */
-//    priv->icon = task_item_get_icon (priv->main_item);
-    
-//    priv->items = g_slist_remove (priv->items, priv->main_item);
-//    priv->items = g_slist_prepend (priv->items,priv->main_item);
+    priv->main_item = main_item;
 #ifdef DEBUG
     g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 #endif
+    /*
+     It's possible priv->icon might be NULL.  Not likely.
+     */
     if (!priv->icon)
     {
       task_icon_set_icon_pixbuf (icon,main_item);
     }
+    /*
+     Set the displayed pixbuf
+     */
     awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
     awn_icon_set_tooltip_text (AWN_ICON (icon), 
                                task_item_get_name (priv->main_item));
+    /*
+     we have callbacks for when the main_item window do things
+     */
     g_signal_connect (priv->main_item, "name-changed",
                       G_CALLBACK (on_main_item_name_changed), icon);
     g_signal_connect (priv->main_item, "icon-changed",

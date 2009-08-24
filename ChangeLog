@@ -1,5 +1,11 @@
 2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-item.c:
+	Added some comments.
+
+2009-08-23  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-themed-icon.c:
 	Check for a GError and deal with when setting up the
 	file monitor.
