@@ -1,6 +1,12 @@
 2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	If disable_icon_updates is enabled it should be ignored if there
+	is not launcher for the TaskIcon.
+
+2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Deal with runtime changes of disable_icon_changes key, along
 	with several fixes necessary for this to work.
 
