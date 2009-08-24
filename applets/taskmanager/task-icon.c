@@ -86,6 +86,7 @@ struct _TaskIconPrivate
   guint    drag_tag;
   gboolean drag_motion;
   guint    drag_time;
+  gint     drag_and_drop_hover_delay;
 
   gint old_width;
   gint old_height;
@@ -117,6 +118,7 @@ enum
 
   PROP_APPLET,
   PROP_DRAGGABLE,
+  PROP_DRAG_AND_DROP_HOVER_DELAY,
   PROP_MAX_INDICATORS,
   PROP_TXT_INDICATOR_THRESHOLD,
   PROP_USE_LONG_PRESS,
@@ -249,6 +251,9 @@ task_icon_get_property (GObject    *object,
     case PROP_DISABLE_ICON_CHANGES:
       g_value_set_boolean (value, priv->disable_icon_changes);
       break;
+    case PROP_DRAG_AND_DROP_HOVER_DELAY:
+      g_value_set_int (value, priv->drag_and_drop_hover_delay);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -296,6 +301,9 @@ task_icon_set_property (GObject      *object,
       break;
     case PROP_DISABLE_ICON_CHANGES:
       icon->priv->disable_icon_changes = g_value_get_boolean (value);
+      break;
+    case PROP_DRAG_AND_DROP_HOVER_DELAY:
+      icon->priv->drag_and_drop_hover_delay = g_value_get_int (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -439,6 +447,12 @@ task_icon_constructed (GObject *object)
   
   if (!do_bind_property (priv->client, "disable_icon_changes", object,
                          "disable_icon_changes"))
+  {
+    return;
+  }
+
+  if (!do_bind_property (priv->client, "drag_and_drop_hover_delay", object,
+                         "drag_and_drop_hover_delay"))
   {
     return;
   }
@@ -625,6 +639,15 @@ task_icon_class_init (TaskIconClass *klass)
                                 FALSE,
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_DISABLE_ICON_CHANGES, pspec);
+
+  pspec = g_param_spec_int ("drag_and_drop_hover_delay",
+                            "Drag and drop hover delay",
+                            "Value in ms to wait before activating window on hover",
+                            1,
+                            10000,
+                            500,
+                            G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_DRAG_AND_DROP_HOVER_DELAY, pspec);
   
   /* Install signals */
   _icon_signals[VISIBLE_CHANGED] =
@@ -2477,7 +2500,8 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
           g_source_remove (priv->drag_tag);
         }
         priv->drag_motion = TRUE;
-        priv->drag_tag = g_timeout_add (500, (GSourceFunc)drag_timeout, widget);
+        priv->drag_tag = g_timeout_add (priv->drag_and_drop_hover_delay, 
+                                        (GSourceFunc)drag_timeout, widget);
         priv->drag_time = t;
       }
     }

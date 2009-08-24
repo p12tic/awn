@@ -1,5 +1,12 @@
 2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
+	Created config option for drag_and_drop_hover_delay.  Current 
+	default 500.
+
+2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c
 	Hookup the delay on drag over Task Icon.  Currently
 	set to 500ms before it will activate a window.

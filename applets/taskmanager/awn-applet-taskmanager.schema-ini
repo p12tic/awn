@@ -18,6 +18,11 @@ type = boolean
 default = true
 description = Enable reordering of windows by drag and drop 
 
+[DEFAULT/drag_and_drop_hover_delay]
+type = integer
+default = 500
+description = Delay before activating a window when dragging over an icon.
+
 [DEFAULT/enable_long_press]
 type = boolean
 default = true
