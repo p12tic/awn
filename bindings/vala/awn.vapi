@@ -102,7 +102,7 @@ namespace Awn {
 		[NoAccessorMethod]
 		public bool show_all_on_embed { get; set; }
 		[NoAccessorMethod]
-		public bool single_instance { get; set; }
+		public bool single_instance { get; construct; }
 		public int size { get; set; }
 		public string uid { get; set construct; }
 		public virtual signal void applet_deleted (string p0);

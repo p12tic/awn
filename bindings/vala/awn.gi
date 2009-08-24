@@ -406,7 +406,7 @@
 			<property name="path-type" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="quit-on-delete" type="gboolean" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="show-all-on-embed" type="gboolean" readable="1" writable="1" construct="0" construct-only="0"/>
-			<property name="single-instance" type="gboolean" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="single-instance" type="gboolean" readable="1" writable="1" construct="0" construct-only="1"/>
 			<property name="size" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="uid" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<signal name="applet-deleted" when="FIRST">

@@ -1,3 +1,10 @@
+2009-08-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* libawn/awn-applet.c (awn_applet_class_init):
+	The single-instance property should be a construct property only.
+
 2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
 
 	 * applets/taskmanager/task-manager.c:

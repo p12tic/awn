@@ -824,7 +824,8 @@ awn_applet_class_init (AwnAppletClass *klass)
                          "configuration (doesn't limit number of instances "
                          "on the panel)",
                          FALSE,
-                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
 
   /* Class signals */
   _applet_signals[ORIENT_CHANGED] =
