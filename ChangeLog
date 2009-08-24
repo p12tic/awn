@@ -1,3 +1,8 @@
+2009-08-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-cairo-utils.c:
+	Add documentation for the cairo wrapper functions.
+
 2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:

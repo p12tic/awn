@@ -231,6 +231,14 @@ awn_cairo_rounded_rect_shadow(cairo_t *cr, double rx0, double ry0,
   cairo_restore (cr);
 }
 
+/**
+ * awn_cairo_set_source_color:
+ * @cr: A cairo context.
+ * @color: The source color.
+ *
+ * A convenience function which wraps #cairo_set_source_rgba by using the
+ * values from the @color parameter.
+ */
 void
 awn_cairo_set_source_color (cairo_t              *cr,
                             DesktopAgnosticColor *color)
@@ -244,6 +252,16 @@ awn_cairo_set_source_color (cairo_t              *cr,
   cairo_set_source_rgba (cr, red, green, blue, alpha);
 }
 
+/**
+ * awn_cairo_set_source_color_with_alpha_multiplier:
+ * @cr: A cairo context.
+ * @color: The source color.
+ * @multiplier: The number (between 0 and 1.0 inclusive) that the alpha value
+ * is multiplied by.
+ *
+ * Similar to #awn_cairo_set_source_color, except for the @multiplier
+ * parameter.
+ */
 void
 awn_cairo_set_source_color_with_alpha_multiplier (cairo_t              *cr,
                                                   DesktopAgnosticColor *color,
@@ -259,6 +277,16 @@ awn_cairo_set_source_color_with_alpha_multiplier (cairo_t              *cr,
   cairo_set_source_rgba (cr, red, green, blue, alpha * multiplier);
 }
 
+/**
+ * awn_cairo_set_source_color_with_multipliers:
+ * @cr: A cairo context.
+ * @color: The source color.
+ * @color_multiplier: The number that the color values are multiplied by.
+ * @alpha_multiplier: The number that the alpha value is multiplied by.
+ *
+ * Similar to #awn_cairo_set_source_color_with_alpha_multiplier, except that
+ * there is an additional @color_multiplier parameter.
+ */
 void
 awn_cairo_set_source_color_with_multipliers (cairo_t              *cr,
                                              DesktopAgnosticColor *color,
@@ -275,6 +303,15 @@ awn_cairo_set_source_color_with_multipliers (cairo_t              *cr,
                          blue * color_multiplier, alpha * alpha_multiplier);
 }
 
+/**
+ * awn_cairo_pattern_add_color_stop_color:
+ * @pattern: A cairo pattern.
+ * @offset: An offset in the range [0.0 .. 1.0].
+ * @color: The source color.
+ *
+ * A convenience function which wraps #cairo_pattern_add_color_stop_rgba by
+ * using the values from the @color parameter.
+ */
 void
 awn_cairo_pattern_add_color_stop_color (cairo_pattern_t      *pattern,
                                         double                offset,
@@ -289,6 +326,17 @@ awn_cairo_pattern_add_color_stop_color (cairo_pattern_t      *pattern,
   cairo_pattern_add_color_stop_rgba (pattern, offset, red, green, blue, alpha);
 }
 
+/**
+ * awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier:
+ * @pattern: A cairo pattern.
+ * @offset: An offset in the range [0.0 .. 1.0].
+ * @color: The source color.
+ * @multiplier: The number (between 0 and 1.0 inclusive) that the alpha value
+ * is multiplied by.
+ *
+ * Similar to #awn_cairo_pattern_add_color_stop_color, except for the
+ * @multiplier parameter.
+ */
 void
 awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier (cairo_pattern_t      *pattern,
                                                               double                offset,
