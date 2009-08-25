@@ -1,3 +1,8 @@
+2009-08-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/awnSettings.py.in:
+	Update due to API changes.
+
 2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:

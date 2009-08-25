@@ -101,8 +101,8 @@ class awnPreferencesMini(awnPreferences):
         awnPreferences.__init__(self)
         
         self.wTree = wTree
-        self.client = awn.config_get_default(1)
-        self.client_taskman = awn.config_get_default_for_applet_by_info("taskmanager", "", True)
+        self.client = awn.config_get_default(awn.PANEL_ID_DEFAULT)
+        self.client_taskman = awn.config_get_default_for_applet_by_info("taskmanager", "")
 
         # Make sure the config dir exist
         if not os.path.isdir(defs.HOME_CONFIG_DIR):
@@ -379,7 +379,7 @@ class awnLauncherMini(awnLauncher):
         self.idle_id = 0
 
         self.client = awn.config_get_default_for_applet_by_info("taskmanager",
-                                                                "", True)
+                                                                "")
 
         self.scrollwindow = self.wTree.get_object("launchers_scroll_list")
 
