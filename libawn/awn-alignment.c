@@ -44,7 +44,7 @@ struct _AwnAlignmentPrivate
   gint offset_modifier;
   gint last_offset;
 
-  gulong orient_changed_id;
+  gulong position_changed_id;
   gulong offset_changed_id;
 };
 
@@ -120,10 +120,10 @@ awn_alignment_dispose (GObject *obj)
 {
   AwnAlignmentPrivate *priv = AWN_ALIGNMENT_GET_PRIVATE (obj);
 
-  if (priv->orient_changed_id)
+  if (priv->position_changed_id)
   {
-    g_signal_handler_disconnect (priv->applet, priv->orient_changed_id);
-    priv->orient_changed_id = 0;
+    g_signal_handler_disconnect (priv->applet, priv->position_changed_id);
+    priv->position_changed_id = 0;
   }
 
   if (priv->offset_changed_id)
@@ -195,7 +195,7 @@ awn_alignment_new_for_applet (AwnApplet *applet)
 }
 
 static void
-on_orient_changed (AwnAlignment *alignment, GtkPositionType position)
+on_position_changed (AwnAlignment *alignment, GtkPositionType position)
 {
   AwnAlignmentPrivate *priv;
   GtkAlignment *align;
@@ -250,15 +250,15 @@ awn_alignment_set_applet (AwnAlignment *alignment,
 
   priv->position = awn_applet_get_position (applet);
 
-  priv->orient_changed_id =
+  priv->position_changed_id =
     g_signal_connect_swapped (applet, "position-changed",
-                              G_CALLBACK (on_orient_changed), alignment);
+                              G_CALLBACK (on_position_changed), alignment);
   priv->offset_changed_id =
     g_signal_connect_swapped (applet, "offset-changed",
                               G_CALLBACK (ensure_alignment), alignment);
 
   /* will set proper align and padding */
-  on_orient_changed (alignment, priv->position);
+  on_position_changed (alignment, priv->position);
 }
 
 gint

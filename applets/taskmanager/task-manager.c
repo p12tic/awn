@@ -142,7 +142,7 @@ static void task_manager_set_grouping (TaskManager *manager,
 static void task_manager_set_match_strength (TaskManager *manager, 
                                              gint     drag_and_drop);
 
-static void task_manager_orient_changed (AwnApplet *applet, 
+static void task_manager_position_changed (AwnApplet *applet, 
                                          GtkPositionType position);
 static void task_manager_size_changed   (AwnApplet *applet,
                                          gint       size);
@@ -386,7 +386,7 @@ task_manager_class_init (TaskManagerClass *klass)
   obj_class->get_property = task_manager_get_property;
   obj_class->dispose = task_manager_dispose;
 
-  app_class->orient_changed = task_manager_orient_changed;
+  app_class->position_changed = task_manager_position_changed;
   app_class->size_changed   = task_manager_size_changed;
 
   /* Install properties first */
@@ -520,7 +520,7 @@ task_manager_new (const gchar *name,
  * AwnApplet stuff
  */
 static void 
-task_manager_orient_changed (AwnApplet *applet, 
+task_manager_position_changed (AwnApplet *applet, 
                              GtkPositionType position)
 {
   TaskManagerPrivate *priv;

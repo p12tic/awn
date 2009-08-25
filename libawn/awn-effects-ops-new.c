@@ -149,7 +149,7 @@ gboolean awn_effects_pre_op_clip(AwnEffects * fx,
         cairo_rectangle(cr, priv->clip_region.x, priv->clip_region.y,
                         priv->clip_region.width, priv->clip_region.height);
         break;
-      /* we have to map the clipping coordinates when using left/right orients */
+      /* we have to map the clipping coordinates when using left/right positions */
       case GTK_POS_RIGHT:
         m_w = (float)priv->clip_region.height/priv->icon_height * priv->icon_width;
         m_h = (float)priv->clip_region.width/priv->icon_width * priv->icon_height;

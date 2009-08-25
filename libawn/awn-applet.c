@@ -108,7 +108,7 @@ static guint _applet_signals[LAST_SIGNAL] = { 0 };
 
 /* DBus signal callbacks */
 static void
-on_orient_changed (DBusGProxy *proxy, gint position, AwnApplet *applet)
+on_position_changed (DBusGProxy *proxy, gint position, AwnApplet *applet)
 {
   g_return_if_fail (AWN_IS_APPLET (applet));
 
@@ -436,7 +436,7 @@ awn_applet_constructed (GObject *obj)
                              G_TYPE_STRING, G_TYPE_INVALID);
   
     dbus_g_proxy_connect_signal (priv->proxy, "OrientChanged",
-                                 G_CALLBACK (on_orient_changed), applet, 
+                                 G_CALLBACK (on_position_changed), applet, 
                                  NULL);
     dbus_g_proxy_connect_signal (priv->proxy, "OffsetChanged",
                                  G_CALLBACK (on_offset_changed), applet, 
@@ -804,7 +804,7 @@ awn_applet_class_init (AwnAppletClass *klass)
     g_signal_new("position-changed",
                  G_OBJECT_CLASS_TYPE (g_object_class),
                  G_SIGNAL_RUN_FIRST,
-                 G_STRUCT_OFFSET (AwnAppletClass, orient_changed),
+                 G_STRUCT_OFFSET (AwnAppletClass, position_changed),
                  NULL, NULL,
                  g_cclosure_marshal_VOID__ENUM,
                  G_TYPE_NONE, 1, GTK_TYPE_POSITION_TYPE);

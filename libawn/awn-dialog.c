@@ -77,7 +77,7 @@ struct _AwnDialogPrivate
   gulong applet_configure_id;
   gulong applet_comp_id;
   gulong applet_size_id;
-  gulong orient_changed_id;
+  gulong position_changed_id;
 
   guint inhibit_cookie;
 
@@ -884,10 +884,10 @@ awn_dialog_finalize (GObject *object)
     priv->applet_configure_id = 0;
   }
 
-  if (priv->orient_changed_id)
+  if (priv->position_changed_id)
   {
-    g_signal_handler_disconnect (priv->anchor_applet, priv->orient_changed_id);
-    priv->orient_changed_id = 0;
+    g_signal_handler_disconnect (priv->anchor_applet, priv->position_changed_id);
+    priv->position_changed_id = 0;
   }
 
   if (priv->applet_comp_id)
@@ -1285,10 +1285,10 @@ awn_dialog_set_anchor_applet (AwnDialog *dialog, AwnApplet *applet)
     priv->applet_configure_id = 0;
   }
 
-  if (priv->orient_changed_id)
+  if (priv->position_changed_id)
   {
-    g_signal_handler_disconnect (priv->anchor_applet, priv->orient_changed_id);
-    priv->orient_changed_id = 0;
+    g_signal_handler_disconnect (priv->anchor_applet, priv->position_changed_id);
+    priv->position_changed_id = 0;
   }
 
   if (priv->applet_comp_id)
@@ -1317,7 +1317,7 @@ awn_dialog_set_anchor_applet (AwnDialog *dialog, AwnApplet *applet)
       g_signal_connect (applet, "origin-changed",
                         G_CALLBACK (_on_origin_changed), dialog);
 
-    priv->orient_changed_id =
+    priv->position_changed_id =
       g_signal_connect_swapped (applet, "position-changed",
                                 G_CALLBACK (awn_dialog_set_position),
                                 dialog);

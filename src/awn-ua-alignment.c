@@ -40,7 +40,7 @@ struct _AwnUAAlignmentPrivate
   double      ua_ratio;
   
   guint       notify_size_id;
-  guint       notify_orient_id;
+  guint       notify_position_id;
   guint       notify_offset_id;
   guint       notify_ua_list_id;
 };
@@ -59,7 +59,7 @@ static gboolean awn_ua_alignment_plug_removed (GtkWidget * socket,
 static void awn_ua_alignment_list_change(GObject *object,
                                          GParamSpec *param_spec,
                                          gpointer user_data);
-static void awn_ua_alignment_orient_change(GObject *object,
+static void awn_ua_alignment_position_change(GObject *object,
                                            GParamSpec *param_spec,
                                            gpointer user_data);
 static void awn_ua_alignment_size_change(GObject *object,
@@ -147,14 +147,14 @@ awn_ua_alignment_constructed (GObject *object)
   }
 
   gtk_container_add (GTK_CONTAINER(object),priv->socket);
-  awn_ua_alignment_orient_change (NULL,NULL,object);  
+  awn_ua_alignment_position_change (NULL,NULL,object);  
   priv->notify_offset_id = g_signal_connect (priv->applet_manager,
                                             "notify::offset",
                                             G_CALLBACK(awn_ua_alignment_offset_change),
                                             object);
-  priv->notify_orient_id = g_signal_connect_after (priv->applet_manager,
+  priv->notify_position_id = g_signal_connect_after (priv->applet_manager,
                                             "notify::position",
-                                            G_CALLBACK(awn_ua_alignment_orient_change),
+                                            G_CALLBACK(awn_ua_alignment_position_change),
                                             object);
   priv->notify_size_id = g_signal_connect_after (priv->applet_manager,
                                             "notify::size",
@@ -267,7 +267,7 @@ awn_ua_alignment_plug_removed (GtkWidget * socket,AwnUAAlignment * self)
   AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
   
   g_signal_handler_disconnect (priv->applet_manager,priv->notify_size_id);
-  g_signal_handler_disconnect (priv->applet_manager,priv->notify_orient_id);
+  g_signal_handler_disconnect (priv->applet_manager,priv->notify_position_id);
   g_signal_handler_disconnect (priv->applet_manager,priv->notify_offset_id);
   g_signal_handler_disconnect (priv->applet_manager,priv->notify_ua_list_id);
 
@@ -392,7 +392,7 @@ awn_ua_alignment_size_change(GObject *object,GParamSpec *param_spec,gpointer use
 }
 
 static void
-awn_ua_alignment_orient_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
+awn_ua_alignment_position_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
 {
   
   AwnUAAlignment * self = user_data;  

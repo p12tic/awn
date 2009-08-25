@@ -214,7 +214,7 @@ on_applet_size_changed (AwnApplet *applet, gint size, AwnIconBox *box)
 }
 
 static void
-on_applet_orient_changed (AwnApplet      *applet, 
+on_applet_position_changed (AwnApplet      *applet, 
                          GtkPositionType  position, 
                          AwnIconBox     *box)
 {
@@ -253,7 +253,7 @@ awn_icon_box_set_applet (AwnIconBox *box, AwnApplet *applet)
     g_signal_connect (applet, "size-changed", 
                       G_CALLBACK (on_applet_size_changed), box);
     g_signal_connect (applet, "position-changed",
-                      G_CALLBACK (on_applet_orient_changed), box);
+                      G_CALLBACK (on_applet_position_changed), box);
     g_signal_connect (applet, "offset-changed",
                       G_CALLBACK (on_applet_offset_changed), box);
     awn_icon_box_set_position (AWN_ICON_BOX (box), 

@@ -73,7 +73,7 @@ static guint32 _simple_signals[LAST_SIGNAL] = { 0 };
  * When the position changes, we need to update the size of the applet
  */
 static void
-awn_applet_simple_orient_changed (AwnApplet *applet, GtkPositionType position)
+awn_applet_simple_position_changed (AwnApplet *applet, GtkPositionType position)
 {
   AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE (applet)->priv;
 
@@ -111,7 +111,7 @@ awn_applet_simple_size_changed (AwnApplet *applet, gint size)
       || priv->last_set_icon == ICON_THEMED_MANY)
     awn_themed_icon_set_size (AWN_THEMED_ICON (priv->icon), size);
 
-  awn_applet_simple_orient_changed (applet, 
+  awn_applet_simple_position_changed (applet, 
                                     awn_applet_get_position (applet));
 }
 
@@ -219,7 +219,7 @@ awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
   obj_class->dispose     = awn_applet_simple_dispose;
   obj_class->constructed = awn_applet_simple_constructed;
 
-  app_class->orient_changed = awn_applet_simple_orient_changed;
+  app_class->position_changed = awn_applet_simple_position_changed;
   app_class->offset_changed = awn_applet_simple_offset_changed;
   app_class->size_changed   = awn_applet_simple_size_changed;
   app_class->menu_creation  = awn_applet_simple_menu_creation;

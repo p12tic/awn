@@ -1668,10 +1668,10 @@ awn_panel_class_init (AwnPanelClass *klass)
 			      1, G_TYPE_INT);
   
   _panel_signals[ORIENT_CHANGED] =
-		g_signal_new ("orient_changed",
+		g_signal_new ("position_changed",
 			      G_OBJECT_CLASS_TYPE (obj_class),
 			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (AwnPanelClass, orient_changed),
+			      G_STRUCT_OFFSET (AwnPanelClass, position_changed),
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__INT, 
 			      G_TYPE_NONE,

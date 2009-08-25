@@ -61,7 +61,7 @@ struct _AwnAppletClass
   GtkPlugClass parent_class;
 
   /*<signals >*/
-  void (*orient_changed)  (AwnApplet *applet, GtkPositionType position);
+  void (*position_changed)  (AwnApplet *applet, GtkPositionType position);
   void (*offset_changed)  (AwnApplet *applet, gint offset);
   void (*size_changed)    (AwnApplet *applet, gint size);
   void (*deleted)         (AwnApplet *applet, const gchar *uid);
