@@ -27,6 +27,12 @@
  * Text overlay used with #AwnIcon.
  */
 
+/**
+ * AwnOverlayText:
+ *
+ * Text overlay used with #AwnIcon.
+ */
+
 /* awn-overlay-text.c */
 
 #include <gtk/gtk.h>

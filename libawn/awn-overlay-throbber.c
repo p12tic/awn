@@ -34,6 +34,12 @@
  * Throbber overlay used with #AwnOverlaidIcon.
  */
 
+/**
+ * AwnOverlayThrobber:
+ *
+ * Throbber overlay used with #AwnOverlaidIcon.
+ */
+
 G_DEFINE_TYPE (AwnOverlayThrobber, awn_overlay_throbber, AWN_TYPE_OVERLAY)
 
 #define AWN_OVERLAY_THROBBER_GET_PRIVATE(o) \

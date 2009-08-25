@@ -32,6 +32,15 @@
  * 
  */
 
+/**
+ * AwnOverlayPixbufFile:
+ *
+ * Overlay a #GdkPixbuf, loaded using the filename provided, on an 
+ * #AwnOverlaidIcon.  You probably should _NOT_ be using this object.  You 
+ * should, probably, be using #AwnOverlayThemedIcon.
+ * 
+ */
+
 /* awn-overlay-pixbuf-file.c */
 
 #include <string.h>

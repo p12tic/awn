@@ -28,6 +28,12 @@
  * Progress overlay used with #AwnIcon.  This is an abstract type.
  */
 
+/**
+ * AwnOverlayProgress:
+ *
+ * Progress overlay used with #AwnIcon.  This is an abstract type.
+ */
+
  /* awn-overlay-progress.c */
 
 #include "awn-overlay-progress.h"

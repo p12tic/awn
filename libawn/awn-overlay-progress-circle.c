@@ -27,6 +27,12 @@
  * Circle Progress overlay used with #AwnIcon.
  */
 
+/**
+ * AwnOverlayProgressCircle:
+ *
+ * Circle Progress overlay used with #AwnIcon.
+ */
+
  /* awn-overlay-progress-circle.c */
 
 #include <math.h>

@@ -45,7 +45,16 @@
  *
  * Provides convenient support for one or more themed icons using lists of 
  * of icon names / icon states.  Includes support of transparent (to applet)
- * modification of displayed icons through drag and drop.
+ * modification of displayed icons through drag and drop.  A subclass of AwnIcon.
+ * 
+ */
+
+/**
+ * AwnThemedIcon:
+ *
+ * Provides convenient support for one or more themed icons using lists of 
+ * of icon names / icon states.  Includes support of transparent (to applet)
+ * modification of displayed icons through drag and drop. A subclass of AwnIcon.
  * 
  */
 

@@ -29,6 +29,12 @@
  * as a base class from which others are derived.
  */
 
+/**
+ * AwnOverlay:
+ *
+ * Base object for overlays used with #AwnOverlaidIcon.  This object is only useful
+ * as a base class from which others are derived.
+ */
 
 
 /* awn-overlay.c */

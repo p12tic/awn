@@ -28,6 +28,11 @@
  * Themed Icon overlay used with an #AwnThemedIcon.
  */
 
+/**
+ * AwnOverlayThemedIcon:
+ *
+ * Themed Icon overlay used with an #AwnThemedIcon.
+ */
 
 /* awn-overlay-themed-icon.c */
 
