@@ -66,6 +66,7 @@ IGNORE_HFILES= \
 	awn-effect-zoom.h \
 	awn-effects-ops-helpers.h \
 	awn-effects-shared.h \
+	awn-enum-types.h \
 	gseal-transition.h \
 	libawn.h \
 	libawn-marshal.h \

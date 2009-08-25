@@ -1,5 +1,12 @@
 2009-08-24  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* doc/reference/Makefile.am:
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	Remove a non-public header from the doc templates.
+
+2009-08-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/taskmanager/task-manager.c (task_manager_new):
 	* bindings/python/awn.defs:
 	* bindings/vala/awn-custom.vala:
