@@ -27,7 +27,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-/* FIXME: because of orientation support the effect shouldn't use window_width */
+/* FIXME: because of position support the effect shouldn't use window_width */
 
 gboolean
 zoom_effect(AwnEffectsAnimation * anim)
@@ -43,10 +43,10 @@ zoom_effect(AwnEffectsAnimation * anim)
   }
 
   gfloat max;
-  switch (anim->effects->orientation)
+  switch (anim->effects->position)
   {
-    case AWN_EFFECT_ORIENT_LEFT:
-    case AWN_EFFECT_ORIENT_RIGHT:
+    case GTK_POS_LEFT:
+    case GTK_POS_RIGHT:
       max = priv->window_height / (gfloat)priv->icon_height;
       break;
     default:
@@ -130,10 +130,10 @@ zoom_attention_effect(AwnEffectsAnimation * anim)
   }
 
   gfloat max;
-  switch (anim->effects->orientation)
+  switch (anim->effects->position)
   {
-    case AWN_EFFECT_ORIENT_LEFT:
-    case AWN_EFFECT_ORIENT_RIGHT:
+    case GTK_POS_LEFT:
+    case GTK_POS_RIGHT:
       max = priv->window_height / (gfloat)priv->icon_height;
       break;
     default:

@@ -23,7 +23,7 @@
 
 #define PICTURE_FILE "../data/avant-window-navigator.png"
 
-static AwnOrientation orient = AWN_ORIENTATION_BOTTOM;
+static GtkPositionType position = GTK_POS_BOTTOM;
 
 #define NUM_ICONS 4
 static AwnIcon *icons[NUM_ICONS];
@@ -103,11 +103,11 @@ on_click (GtkWidget *widget, GdkEventButton *event, AwnIconBox *box)
     case 2:
       gtk_container_remove(GTK_CONTAINER(box), widget);
       break;
-    /* right click > change orientation */
+    /* right click > change position */
     case 3:
-      orient++;
-      if (orient > AWN_ORIENTATION_LEFT) orient = AWN_ORIENTATION_TOP;
-      awn_icon_box_set_orientation (box, orient);
+      position++;
+      if (position > GTK_POS_LEFT) position = GTK_POS_TOP;
+      awn_icon_box_set_position (box, position);
       break;
   }
   return TRUE;

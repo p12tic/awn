@@ -30,16 +30,16 @@ G_DEFINE_TYPE (AwnBackgroundFlat, awn_background_flat, AWN_TYPE_BACKGROUND)
 
 static void awn_background_flat_draw (AwnBackground  *bg,
                                       cairo_t        *cr,
-                                      AwnOrientation  orient,
+                                      GtkPositionType  position,
                                       GdkRectangle   *area);
 
 static void awn_background_flat_get_shape_mask (AwnBackground  *bg,
                                                 cairo_t        *cr,
-                                                AwnOrientation  orient,
+                                                GtkPositionType  position,
                                                 GdkRectangle   *area);
 
 static void awn_background_flat_padding_request (AwnBackground *bg,
-                                                 AwnOrientation orient,
+                                                 GtkPositionType position,
                                                  guint *padding_top,
                                                  guint *padding_bottom,
                                                  guint *padding_left,
@@ -138,7 +138,7 @@ awn_background_flat_new (DesktopAgnosticConfigClient *client, AwnPanel *panel)
 static void 
 draw_rect (AwnBackground  *bg,
            cairo_t        *cr,
-           AwnOrientation orient,
+           GtkPositionType position,
            gdouble         x,
            gdouble         y,
            gint            width,
@@ -151,15 +151,15 @@ draw_rect (AwnBackground  *bg,
   if (expand){ state = ROUND_NONE; x-=2; width+=4; }
   else
   {
-    switch (orient)
+    switch (position)
     {
-      case AWN_ORIENTATION_BOTTOM:
-      case AWN_ORIENTATION_LEFT:
+      case GTK_POS_BOTTOM:
+      case GTK_POS_LEFT:
         if (align == 0.0f){ state = ROUND_TOP_RIGHT; x-=2; width+=2; }
         else if(align == 1.0f){ state = ROUND_TOP_LEFT; width+=2; }
         break;
-      case AWN_ORIENTATION_TOP:
-      case AWN_ORIENTATION_RIGHT:
+      case GTK_POS_TOP:
+      case GTK_POS_RIGHT:
         if (align == 0.0f){ state = ROUND_TOP_LEFT; width+=2; }
         else if(align == 1.0f){ state = ROUND_TOP_RIGHT; x-=2; width+=2; }
         break;
@@ -174,7 +174,7 @@ draw_rect (AwnBackground  *bg,
 
 static void
 draw_top_bottom_background (AwnBackground  *bg,
-                            AwnOrientation orient,
+                            GtkPositionType position,
                             cairo_t        *cr,
                             gint            width,
                             gint            height)
@@ -202,7 +202,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   pat = cairo_pattern_create_linear (0, 0, 0, height);
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
-  draw_rect (bg, cr, orient, 1, 1, width-2, height-1, align, expand);
+  draw_rect (bg, cr, position, 1, 1, width-2, height-1, align, expand);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
@@ -212,7 +212,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   pat = cairo_pattern_create_linear (0, 0, 0, (height/3.0));
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
-  draw_rect (bg, cr, orient, 1, 1, width-2, height/3.0, align, expand);
+  draw_rect (bg, cr, position, 1, 1, width-2, height/3.0, align, expand);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
@@ -222,18 +222,18 @@ draw_top_bottom_background (AwnBackground  *bg,
 
   /* Internal border */
   awn_cairo_set_source_color (cr, bg->hilight_color);
-  draw_rect (bg, cr, orient, 1, 1, width-3, height+3, align, expand);
+  draw_rect (bg, cr, position, 1, 1, width-3, height+3, align, expand);
   cairo_stroke (cr);
 
   /* External border */
   awn_cairo_set_source_color (cr, bg->border_color);
-  draw_rect (bg, cr, orient, 0, 0, width-1, height+3, align, expand);
+  draw_rect (bg, cr, position, 0, 0, width-1, height+3, align, expand);
   cairo_stroke (cr);
 }
 
 static
 void awn_background_flat_padding_request (AwnBackground *bg,
-                                          AwnOrientation orient,
+                                          GtkPositionType position,
                                           guint *padding_top,
                                           guint *padding_bottom,
                                           guint *padding_left,
@@ -241,21 +241,21 @@ void awn_background_flat_padding_request (AwnBackground *bg,
 {
   #define SIDE_PADDING 6
   #define TOP_PADDING 2
-  switch (orient)
+  switch (position)
   {
-    case AWN_ORIENTATION_TOP:
+    case GTK_POS_TOP:
       *padding_top  = 0; *padding_bottom = TOP_PADDING;
       *padding_left = SIDE_PADDING; *padding_right = SIDE_PADDING;
       break;
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_BOTTOM:
       *padding_top  = TOP_PADDING; *padding_bottom = 0;
       *padding_left = SIDE_PADDING; *padding_right = SIDE_PADDING;
       break;
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       *padding_top  = SIDE_PADDING; *padding_bottom = SIDE_PADDING;
       *padding_left = 0; *padding_right = TOP_PADDING;
       break;
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       *padding_top  = SIDE_PADDING; *padding_bottom = SIDE_PADDING;
       *padding_left = TOP_PADDING; *padding_right = 0;
       break;
@@ -267,7 +267,7 @@ void awn_background_flat_padding_request (AwnBackground *bg,
 static void 
 awn_background_flat_draw (AwnBackground  *bg,
                           cairo_t        *cr, 
-                          AwnOrientation  orient,
+                          GtkPositionType  position,
                           GdkRectangle   *area)
 {
   gint temp;
@@ -275,21 +275,21 @@ awn_background_flat_draw (AwnBackground  *bg,
   gint width = area->width, height = area->height;
   cairo_save (cr);
 
-  switch (orient)
+  switch (position)
   {
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       cairo_translate (cr, x, y+height);
       cairo_rotate (cr, M_PI * 1.5);
       temp = width;
       width = height; height = temp;
       break;
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       cairo_translate (cr, x+width, y);
       cairo_rotate (cr, M_PI * 0.5);
       temp = width;
       width = height; height = temp;
       break;
-    case AWN_ORIENTATION_TOP:
+    case GTK_POS_TOP:
       cairo_translate (cr, x+width, y+height);
       cairo_rotate (cr, M_PI);
       break;
@@ -298,7 +298,7 @@ awn_background_flat_draw (AwnBackground  *bg,
       break;
   }
 
-  draw_top_bottom_background (bg, orient, cr, width, height);
+  draw_top_bottom_background (bg, position, cr, width, height);
 
   cairo_restore (cr);
 }
@@ -306,7 +306,7 @@ awn_background_flat_draw (AwnBackground  *bg,
 static void 
 awn_background_flat_get_shape_mask (AwnBackground  *bg,
                                     cairo_t        *cr, 
-                                    AwnOrientation  orient,
+                                    GtkPositionType  position,
                                     GdkRectangle   *area)
 {
   gint temp;
@@ -320,21 +320,21 @@ awn_background_flat_get_shape_mask (AwnBackground  *bg,
   align = awn_background_get_panel_alignment (bg);
   g_object_get (bg->panel, "expand", &expand, NULL);
 
-  switch (orient)
+  switch (position)
   {
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       cairo_translate (cr, x, y+height);
       cairo_rotate (cr, M_PI * 1.5);
       temp = width;
       width = height; height = temp;
       break;
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       cairo_translate (cr, x+width, y);
       cairo_rotate (cr, M_PI * 0.5);
       temp = width;
       width = height; height = temp;
       break;
-    case AWN_ORIENTATION_TOP:
+    case GTK_POS_TOP:
       cairo_translate (cr, x+width, y+height);
       cairo_rotate (cr, M_PI);
       break;
@@ -343,7 +343,7 @@ awn_background_flat_get_shape_mask (AwnBackground  *bg,
       break;
   }
 
-  draw_rect (bg, cr, orient, 0, 0, width, height+3, align, expand);
+  draw_rect (bg, cr, position, 0, 0, width, height+3, align, expand);
   cairo_fill (cr);
 
   cairo_restore (cr);

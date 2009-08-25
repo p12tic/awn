@@ -257,7 +257,7 @@ awn_effects_get_property (GObject      *object,
       g_value_set_boolean(value, fx->indirect_paint);
       break;
     case PROP_ORIENTATION:
-      g_value_set_int(value, fx->orientation);
+      g_value_set_int(value, fx->position);
       break;
     case PROP_CURRENT_EFFECTS:
       g_value_set_int(value, (int)fx->set_effects);
@@ -329,16 +329,16 @@ awn_effects_set_property (GObject      *object,
       fx->indirect_paint = g_value_get_boolean(value);
       break;
     case PROP_ORIENTATION:
-      /* make sure we set correct orient */
+      /* make sure we set correct position */
       switch (g_value_get_int(value)) {
-        case AWN_EFFECT_ORIENT_TOP:
-        case AWN_EFFECT_ORIENT_RIGHT:
-        case AWN_EFFECT_ORIENT_BOTTOM:
-        case AWN_EFFECT_ORIENT_LEFT:
-          fx->orientation = g_value_get_int(value);
+        case GTK_POS_TOP:
+        case GTK_POS_RIGHT:
+        case GTK_POS_BOTTOM:
+        case GTK_POS_LEFT:
+          fx->position = g_value_get_int(value);
           break;
         default:
-          fx->orientation = AWN_EFFECT_ORIENT_BOTTOM;
+          fx->position = GTK_POS_BOTTOM;
           break;
       }
       break;
@@ -603,17 +603,17 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
                          G_PARAM_STATIC_STRINGS));
   /**
-   * AwnEffects:orientation:
+   * AwnEffects:position:
    *
-   * Determines orientation of the widget.
+   * Determines position of the widget.
    */
   g_object_class_install_property(
     obj_class, PROP_ORIENTATION,
-    /* keep in sync with AwnOrientation */
-    g_param_spec_int("orientation",
+    /* keep in sync with GtkPositionType */
+    g_param_spec_int("position",
                      "Orientation",
-                     "Icon orientation",
-                     0, 3, AWN_EFFECT_ORIENT_BOTTOM,
+                     "Icon position",
+                     0, 3, GTK_POS_BOTTOM,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
                      G_PARAM_STATIC_STRINGS));
   /**
@@ -1184,13 +1184,13 @@ awn_effects_set_icon_size(AwnEffects * fx, gint width, gint height,
      */
 
     gint inc = fx->icon_offset;
-    switch (fx->orientation) {
-      case AWN_EFFECT_ORIENT_TOP:
-      case AWN_EFFECT_ORIENT_BOTTOM:
+    switch (fx->position) {
+      case GTK_POS_TOP:
+      case GTK_POS_BOTTOM:
         gtk_widget_set_size_request(fx->widget, width*6/5, height + inc);
         break;
-      case AWN_EFFECT_ORIENT_RIGHT:
-      case AWN_EFFECT_ORIENT_LEFT:
+      case GTK_POS_RIGHT:
+      case GTK_POS_LEFT:
         gtk_widget_set_size_request(fx->widget, width + inc, height*6/5);
         break;
     }

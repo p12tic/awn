@@ -42,21 +42,21 @@ awn_effects_get_base_coords(AwnEffects *fx, double *x, double *y)
 {
   AwnEffectsPrivate *priv = fx->priv;
 
-  switch (fx->orientation)
+  switch (fx->position)
   {
-    case AWN_EFFECT_ORIENT_TOP:
+    case GTK_POS_TOP:
       *x = (priv->window_width - priv->icon_width) / 2.0;
       *y = fx->icon_offset;
       break;
-    case AWN_EFFECT_ORIENT_LEFT:
+    case GTK_POS_LEFT:
       *x = fx->icon_offset;
       *y = (priv->window_height - priv->icon_height) / 2.0;
       break;
-    case AWN_EFFECT_ORIENT_RIGHT:
+    case GTK_POS_RIGHT:
       *x = priv->window_width - priv->icon_width - fx->icon_offset;
       *y = (priv->window_height - priv->icon_height) / 2.0;
       break;
-    default: /* AWN_EFFECT_ORIENT_BOTTOM: */
+    default: /* GTK_POS_BOTTOM: */
       *x = (priv->window_width - priv->icon_width) / 2.0;
       *y = priv->window_height - priv->icon_height - fx->icon_offset;
       break;
@@ -90,24 +90,24 @@ gboolean awn_effects_pre_op_translate(AwnEffects * fx,
 
   AwnEffectsPrivate *priv = fx->priv;
 
-  /* width/height_mod is swapped when using LEFT/RIGHT orientations */
-  switch (fx->orientation) {
-    case AWN_EFFECT_ORIENT_TOP:
+  /* width/height_mod is swapped when using LEFT/RIGHT positions */
+  switch (fx->position) {
+    case GTK_POS_TOP:
       dx = (priv->window_width - priv->icon_width * priv->width_mod)/2.0 + priv->side_offset;
       dy = priv->top_offset;
       dy += fx->icon_offset;
       break;
-    case AWN_EFFECT_ORIENT_RIGHT:
+    case GTK_POS_RIGHT:
       dx = (priv->window_width - priv->icon_width * priv->height_mod) - priv->top_offset;
       dx -= fx->icon_offset;
       dy = (priv->window_height - priv->icon_height * priv->width_mod)/2.0 - priv->side_offset;
       break;
-    case AWN_EFFECT_ORIENT_BOTTOM:
+    case GTK_POS_BOTTOM:
       dx = (priv->window_width - priv->icon_width * priv->width_mod)/2.0 - priv->side_offset;
       dy = (priv->window_height - priv->icon_height * priv->height_mod) - priv->top_offset;
       dy -= fx->icon_offset;
       break;
-    case AWN_EFFECT_ORIENT_LEFT:
+    case GTK_POS_LEFT:
       dx = priv->top_offset;
       dx += fx->icon_offset;
       dy = (priv->window_height - priv->icon_height * priv->width_mod)/2.0 + priv->side_offset;
@@ -132,8 +132,8 @@ gboolean awn_effects_pre_op_clip(AwnEffects * fx,
     gint m_w, m_h, m_x, m_y;
     double dx, dy;
     /* translate, so the icon will still be painted on bottom even if clipped */
-    switch (fx->orientation) {
-      case AWN_EFFECT_ORIENT_TOP:
+    switch (fx->position) {
+      case GTK_POS_TOP:
         dx = priv->clip_region.width - priv->clip_region.x;
         dy = priv->clip_region.height - priv->clip_region.y;
 
@@ -141,7 +141,7 @@ gboolean awn_effects_pre_op_clip(AwnEffects * fx,
         cairo_rectangle(cr, priv->clip_region.x, priv->icon_height - priv->clip_region.y - priv->clip_region.height,
                         priv->clip_region.width, priv->clip_region.height);
         break;
-      case AWN_EFFECT_ORIENT_BOTTOM:
+      case GTK_POS_BOTTOM:
         dx = priv->clip_region.width - priv->clip_region.x;
         dy = priv->clip_region.height - priv->clip_region.y;
 
@@ -150,7 +150,7 @@ gboolean awn_effects_pre_op_clip(AwnEffects * fx,
                         priv->clip_region.width, priv->clip_region.height);
         break;
       /* we have to map the clipping coordinates when using left/right orients */
-      case AWN_EFFECT_ORIENT_RIGHT:
+      case GTK_POS_RIGHT:
         m_w = (float)priv->clip_region.height/priv->icon_height * priv->icon_width;
         m_h = (float)priv->clip_region.width/priv->icon_width * priv->icon_height;
         m_x = (float)priv->clip_region.y/priv->icon_height * priv->icon_width;
@@ -163,7 +163,7 @@ gboolean awn_effects_pre_op_clip(AwnEffects * fx,
         cairo_rectangle(cr, m_x, m_y,
                         m_w, m_h);
         break;
-      case AWN_EFFECT_ORIENT_LEFT:
+      case GTK_POS_LEFT:
         m_w = (float)priv->clip_region.height/priv->icon_height * priv->icon_width;
         m_h = (float)priv->clip_region.width/priv->icon_width * priv->icon_height;
         m_x = (float)priv->clip_region.y/priv->icon_height * priv->icon_width;
@@ -193,13 +193,13 @@ gboolean awn_effects_pre_op_scale(AwnEffects * fx,
   AwnEffectsPrivate *priv = fx->priv;
 
   if (priv->width_mod != 1.0 || priv->height_mod != 1.0)
-    switch (fx->orientation) {
-      case AWN_EFFECT_ORIENT_TOP:
-      case AWN_EFFECT_ORIENT_BOTTOM:
+    switch (fx->position) {
+      case GTK_POS_TOP:
+      case GTK_POS_BOTTOM:
         cairo_scale(cr, priv->width_mod, priv->height_mod);
         break;
-      case AWN_EFFECT_ORIENT_RIGHT:
-      case AWN_EFFECT_ORIENT_LEFT:
+      case GTK_POS_RIGHT:
+      case GTK_POS_LEFT:
         cairo_scale(cr, priv->height_mod, priv->width_mod);
         break;
     }
@@ -230,16 +230,16 @@ gboolean awn_effects_pre_op_flip(AwnEffects * fx,
   /* currently we only have variable for hflip */
   if (priv->flip) {
     cairo_matrix_t matrix;
-    switch (fx->orientation) {
-      case AWN_EFFECT_ORIENT_TOP:
-      case AWN_EFFECT_ORIENT_BOTTOM:
+    switch (fx->position) {
+      case GTK_POS_TOP:
+      case GTK_POS_BOTTOM:
         cairo_matrix_init(&matrix,
                           -1, 0,
                           0, 1,
                           ds->width, 0);
         break;
-      case AWN_EFFECT_ORIENT_RIGHT:
-      case AWN_EFFECT_ORIENT_LEFT:
+      case GTK_POS_RIGHT:
+      case GTK_POS_LEFT:
         cairo_matrix_init(&matrix,
                           1, 0,
                           0, -1,
@@ -263,18 +263,18 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
   if (fx->is_active || priv->simple_rect) {
     double x,y;
     awn_effects_get_base_coords(fx, &x, &y);
-    switch (fx->orientation)
+    switch (fx->position)
     {
-      case AWN_EFFECT_ORIENT_LEFT:
+      case GTK_POS_LEFT:
         x += priv->top_offset;
         break;
-      case AWN_EFFECT_ORIENT_RIGHT:
+      case GTK_POS_RIGHT:
         x -= priv->top_offset;
         break;
-      case AWN_EFFECT_ORIENT_TOP:
+      case GTK_POS_TOP:
         y += priv->top_offset;
         break;
-      default: /* AWN_EFFECT_ORIENT_BOTTOM: */
+      default: /* GTK_POS_BOTTOM: */
         y -= priv->top_offset;
         break;
     }
@@ -366,9 +366,9 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
     gdouble x, y, rotation;
     awn_effects_get_base_coords(fx, &x, &y);
     /* get coordinates of bottom center (for BOTTOM) and equivalents */
-    switch (fx->orientation)
+    switch (fx->position)
     {
-      case AWN_EFFECT_ORIENT_TOP:
+      case GTK_POS_TOP:
         x += priv->icon_width / 2.0;
         x += arrow_w / 2.0;
         y -= fx->icon_offset / 1.5;
@@ -376,7 +376,7 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
         rotation = M_PI;
         break;
 
-      case AWN_EFFECT_ORIENT_LEFT:
+      case GTK_POS_LEFT:
         x -= fx->icon_offset / 1.5;
         x += arrow_h;
         y += priv->icon_height / 2.0;
@@ -384,7 +384,7 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
         rotation = M_PI * 0.5;
         break;
 
-      case AWN_EFFECT_ORIENT_RIGHT:
+      case GTK_POS_RIGHT:
         x += priv->icon_width;
         x += fx->icon_offset / 1.5;
         x -= arrow_h;
@@ -393,7 +393,7 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
         rotation = M_PI * 1.5;
         break;
 
-      default: /* AWN_EFFECT_ORIENT_BOTTOM: */
+      default: /* GTK_POS_BOTTOM: */
         x += priv->icon_width / 2.0;
         x -= arrow_w / 2.0;
         y += priv->icon_height;
@@ -474,17 +474,17 @@ gboolean awn_effects_post_op_clip(AwnEffects * fx,
    * 4px offset for 3D look for reflection
    */
   if (fx->border_clip) {
-    switch (fx->orientation) {
-      case AWN_EFFECT_ORIENT_TOP:
+    switch (fx->position) {
+      case GTK_POS_TOP:
         cairo_rectangle(cr, 0, fx->border_clip, priv->window_width, priv->window_height - fx->border_clip);
         break;
-      case AWN_EFFECT_ORIENT_LEFT:
+      case GTK_POS_LEFT:
         cairo_rectangle(cr, fx->border_clip, 0, priv->window_width - fx->border_clip, priv->window_height);
         break;
-      case AWN_EFFECT_ORIENT_BOTTOM:
+      case GTK_POS_BOTTOM:
         cairo_rectangle(cr, 0, 0, priv->window_width, priv->window_height - fx->border_clip);
         break;
-      case AWN_EFFECT_ORIENT_RIGHT:
+      case GTK_POS_RIGHT:
         cairo_rectangle(cr, 0, 0, priv->window_width - fx->border_clip, priv->window_height);
         break;
       default:
@@ -560,9 +560,9 @@ gboolean awn_effects_post_op_depth(AwnEffects * fx,
 
     gint i, multiplier = priv->icon_depth_direction ? 1 : -1;
     cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
-    switch (fx->orientation) {
-      case AWN_EFFECT_ORIENT_TOP:
-      case AWN_EFFECT_ORIENT_BOTTOM:
+    switch (fx->position) {
+      case GTK_POS_TOP:
+      case GTK_POS_BOTTOM:
         for (i=1; i < priv->icon_depth; i++) {
           cairo_set_source_surface(cr,
                                    srfc,
@@ -571,8 +571,8 @@ gboolean awn_effects_post_op_depth(AwnEffects * fx,
           cairo_paint(cr);
         }
         break;
-      case AWN_EFFECT_ORIENT_LEFT:
-      case AWN_EFFECT_ORIENT_RIGHT:
+      case GTK_POS_LEFT:
+      case GTK_POS_RIGHT:
         for (i=1; i < priv->icon_depth; i++) {
           cairo_set_source_surface(cr,
                                    srfc,
@@ -651,25 +651,25 @@ gboolean awn_effects_post_op_spotlight(AwnEffects * fx,
 
     cairo_save(cr);
     double x, y, rotate=0;
-    switch (fx->orientation) {
-      case AWN_EFFECT_ORIENT_TOP:
+    switch (fx->position) {
+      case GTK_POS_TOP:
         x = priv->window_width;
         y = priv->icon_height - priv->icon_height/12;
         y += fx->icon_offset;
         rotate = M_PI;
         break;
-      case AWN_EFFECT_ORIENT_RIGHT:
+      case GTK_POS_RIGHT:
         x = priv->window_width - priv->icon_height + priv->icon_height/12;
         x -= fx->icon_offset;
         y = priv->window_height;
         rotate = -M_PI/2;
         break;
-      case AWN_EFFECT_ORIENT_BOTTOM:
+      case GTK_POS_BOTTOM:
         x = 0;
         y = priv->window_height - priv->icon_height + priv->icon_height/12;
         y -= fx->icon_offset;
         break;
-      case AWN_EFFECT_ORIENT_LEFT:
+      case GTK_POS_LEFT:
         x = priv->icon_height - priv->icon_height/12;
         x += fx->icon_offset;
         y = 0;
@@ -679,8 +679,8 @@ gboolean awn_effects_post_op_spotlight(AwnEffects * fx,
         return FALSE;
     }
     cairo_translate(cr, x, y);
-    if (fx->orientation == AWN_EFFECT_ORIENT_TOP ||
-        fx->orientation == AWN_EFFECT_ORIENT_BOTTOM) {
+    if (fx->position == GTK_POS_TOP ||
+        fx->position == GTK_POS_BOTTOM) {
       cairo_scale(cr, priv->window_width / srfc_width,
                       priv->icon_height*5/4 / srfc_height);
     } else {
@@ -743,19 +743,19 @@ gboolean awn_effects_post_op_reflection(AwnEffects * fx,
                                                         );
     cairo_t *ctx = cairo_create(srfc);
     cairo_matrix_t matrix;
-    switch (fx->orientation) {
-      case AWN_EFFECT_ORIENT_TOP:
+    switch (fx->position) {
+      case GTK_POS_TOP:
         dy *= -1; /* careful no break here */
-      case AWN_EFFECT_ORIENT_BOTTOM:
+      case GTK_POS_BOTTOM:
         dx = 0;
         cairo_matrix_init(&matrix,
                           1, 0,
                           0, -1,
                           0, priv->window_height);
         break;
-      case AWN_EFFECT_ORIENT_LEFT:
+      case GTK_POS_LEFT:
         dx *= -1; /* careful no break here */
-      case AWN_EFFECT_ORIENT_RIGHT:
+      case GTK_POS_RIGHT:
         dy = 0;
         cairo_matrix_init(&matrix,
                           -1, 0,
@@ -792,20 +792,20 @@ gboolean awn_effects_post_op_progress(AwnEffects * fx,
 
   if (fx->progress < 1.0) {
     double dx, dy; /* center coordinates for the pie */
-    switch (fx->orientation) {
-      case AWN_EFFECT_ORIENT_TOP:
+    switch (fx->position) {
+      case GTK_POS_TOP:
         dx = priv->window_width / 2.0;
         dy = fx->icon_offset + priv->icon_height / 2.0;
         break;
-      case AWN_EFFECT_ORIENT_BOTTOM:
+      case GTK_POS_BOTTOM:
         dx = priv->window_width / 2.0;
         dy = priv->window_height - fx->icon_offset - priv->icon_height / 2.0;
         break;
-      case AWN_EFFECT_ORIENT_LEFT:
+      case GTK_POS_LEFT:
         dx = fx->icon_offset + priv->icon_width / 2.0;
         dy = priv->window_height / 2.0;
         break;
-      case AWN_EFFECT_ORIENT_RIGHT:
+      case GTK_POS_RIGHT:
         dx = priv->window_width - fx->icon_offset - priv->icon_width / 2.0;
         dy = priv->window_height / 2.0;
         break;

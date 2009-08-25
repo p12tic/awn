@@ -504,14 +504,14 @@ task_icon_refresh_geometry (TaskIcon *icon)
 
   settings = task_settings_get_default ();
 
-  switch (settings->orient)
+  switch (settings->position)
   {
-    case AWN_ORIENTATION_RIGHT:
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_RIGHT:
+    case GTK_POS_LEFT:
       ww = alloc.height;
       break;
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_TOP:
+    case GTK_POS_BOTTOM:
       ww = alloc.width;
       break;
     default:
@@ -533,17 +533,17 @@ task_icon_refresh_geometry (TaskIcon *icon)
 
       TaskWindow *window = TASK_WINDOW (w->data);
 
-      switch (settings->orient)
+      switch (settings->position)
       {
-        case AWN_ORIENTATION_RIGHT:
+        case GTK_POS_RIGHT:
           width = settings->panel_size+settings->offset;
           height = ww + (i*ww);
           break;
-        case AWN_ORIENTATION_LEFT:
+        case GTK_POS_LEFT:
           width = settings->panel_size+settings->offset;
           height = ww + (i*ww);
           break;
-        case AWN_ORIENTATION_TOP:
+        case GTK_POS_TOP:
           width = ww + (i*ww);
           height = settings->panel_size+settings->offset;
           break;
@@ -729,7 +729,7 @@ task_icon_init (TaskIcon *icon)
   priv->overlay_text = NULL;
   priv->ephemeral_count = 0;
   
-  awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
+  awn_icon_set_position (AWN_ICON (icon), GTK_POS_BOTTOM);
 
   /* D&D accept dragged objs */
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);

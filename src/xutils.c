@@ -54,19 +54,19 @@ static Atom net_wm_strut_partial      = 0;
 
 /* xutils_set_strut:
  * @gdk_window: window to set struts on
- * @orientation: orientation of the window, top=0, right=1, bottom=2, left=3
+ * @position: position of the window, top=0, right=1, bottom=2, left=3
  * @strut: the height of the strut
  * @strut_start: the start position of the strut
  * @strut_end: the end position of the strut
  *
- * Sets struts for a given @gdk_window on the specified @orientation. 
+ * Sets struts for a given @gdk_window on the specified @position. 
  * To let a maximised window not cover the given struts
  *
  * - partially pulled out of xutils.c -
  */
 void
 xutils_set_strut (GdkWindow        *gdk_window,
-                  int               orientation,
+                  int               position,
                   guint32           strut,
                   guint32           strut_start,
                   guint32           strut_end)
@@ -85,7 +85,7 @@ xutils_set_strut (GdkWindow        *gdk_window,
   if (net_wm_strut_partial == None)
     net_wm_strut_partial = XInternAtom (display, "_NET_WM_STRUT_PARTIAL", False);
 
-  switch (orientation) {
+  switch (position) {
     case 0:
       struts [STRUT_TOP] = strut;
       struts [STRUT_TOP_START] = strut_start;

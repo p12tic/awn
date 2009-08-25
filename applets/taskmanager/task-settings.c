@@ -74,7 +74,7 @@ task_settings_get_default (void)
   /* Bar settings */
 
     cfg_load_int(client, "panel", "size", &(settings->panel_size));
-    cfg_load_int(client, "panel", "orient", &(settings->orient));
+    cfg_load_int(client, "panel", "position", &(settings->position));
     cfg_load_int(client, "panel", "offset", &(settings->offset));
   }
 

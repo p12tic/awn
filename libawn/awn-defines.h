@@ -38,23 +38,23 @@
 #define AWN_MIN_HEIGHT 12
 
 /**
- * AwnOrientation:
- * @AWN_ORIENTATION_TOP: Placed along the top of the screen.
- * @AWN_ORIENTATION_RIGHT: Placed along the right side of the screen.
- * @AWN_ORIENTATION_BOTTOM: Placed along the bottom of the screen.
- * @AWN_ORIENTATION_LEFT: Placed along the left side of the screen.
+ * GtkPositionType:
+ * @GTK_POS_TOP: Placed along the top of the screen.
+ * @GTK_POS_RIGHT: Placed along the right side of the screen.
+ * @GTK_POS_BOTTOM: Placed along the bottom of the screen.
+ * @GTK_POS_LEFT: Placed along the left side of the screen.
  *
- * Describes the orientation and placement of the panel.
+ * Describes the position and placement of the panel.
  */
 
 typedef enum
 {
-        AWN_ORIENTATION_TOP=0,
-        AWN_ORIENTATION_RIGHT,
-        AWN_ORIENTATION_BOTTOM,
-        AWN_ORIENTATION_LEFT
+        GTK_POS_TOP=0,
+        GTK_POS_RIGHT,
+        GTK_POS_BOTTOM,
+        GTK_POS_LEFT
 
-} AwnOrientation;
+} GtkPositionType;
 
 typedef enum
 {

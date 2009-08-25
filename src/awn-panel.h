@@ -66,7 +66,7 @@ struct _AwnPanelClass
 
   /*< signals >*/
   void (*size_changed)    (AwnPanel *panel, gint size);
-  void (*orient_changed)  (AwnPanel *panel, gint orientation);
+  void (*orient_changed)  (AwnPanel *panel, gint position);
   void (*offset_changed)  (AwnPanel *panel, gint offset);
   void (*property_changed)(AwnPanel *panel, const gchar *uid,
                            const gchar *prop_name, GValue *value);

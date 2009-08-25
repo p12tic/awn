@@ -95,11 +95,11 @@ struct _AwnBackgroundClass
   /*< vtable >*/
   void (*draw) (AwnBackground  *bg,
                 cairo_t        *cr, 
-                AwnOrientation  orient,
+                GtkPositionType  position,
                 GdkRectangle   *area);
 
   void (*padding_request) (AwnBackground *bg,
-                           AwnOrientation orient,
+                           GtkPositionType position,
                            guint *padding_top,
                            guint *padding_bottom,
                            guint *padding_left,
@@ -107,19 +107,19 @@ struct _AwnBackgroundClass
 
   void (*get_shape_mask) (AwnBackground *bg,
                           cairo_t        *cr,
-                          AwnOrientation  orient,
+                          GtkPositionType  position,
                           GdkRectangle   *area);
 
   void (*get_input_shape_mask) (AwnBackground *bg,
                                 cairo_t        *cr,
-                                AwnOrientation  orient,
+                                GtkPositionType  position,
                                 GdkRectangle   *area);
 
   AwnPathType (*get_path_type) (AwnBackground *bg,
                                 gfloat *offset_mod);
 
   void (*get_strut_offsets) (AwnBackground *bg,
-                             AwnOrientation orient,
+                             GtkPositionType position,
                              GdkRectangle *area,
                              gint *strut,
                              gint *strut_start, gint *strut_end);
@@ -133,11 +133,11 @@ GType awn_background_get_type (void) G_GNUC_CONST;
 
 void awn_background_draw      (AwnBackground  *bg,
                                cairo_t        *cr, 
-                               AwnOrientation  orient,
+                               GtkPositionType  position,
                                GdkRectangle   *area);
 
 void awn_background_padding_request (AwnBackground *bg,
-                                     AwnOrientation orient,
+                                     GtkPositionType position,
                                      guint *padding_top,
                                      guint *padding_bottom,
                                      guint *padding_left,
@@ -145,19 +145,19 @@ void awn_background_padding_request (AwnBackground *bg,
 
 void awn_background_get_shape_mask (AwnBackground  *bg,
                                     cairo_t        *cr,
-                                    AwnOrientation  orient,
+                                    GtkPositionType  position,
                                     GdkRectangle   *area);
 
 void awn_background_get_input_shape_mask (AwnBackground  *bg,
                                           cairo_t        *cr,
-                                          AwnOrientation  orient,
+                                          GtkPositionType  position,
                                           GdkRectangle   *area);
 
 AwnPathType awn_background_get_path_type (AwnBackground *bg,
                                           gfloat *offset_mod);
 
 void awn_background_get_strut_offsets (AwnBackground *bg,
-                                       AwnOrientation orient,
+                                       GtkPositionType position,
                                        GdkRectangle *area,
                                        gint *strut,
                                        gint *strut_start, gint *strut_end);
