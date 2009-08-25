@@ -1,5 +1,10 @@
 2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-window.c:
+	Clicking on items in the dialogs should now minimize/restore.
+
+2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	If disable_icon_updates is enabled it should be ignored if there
 	is not launcher for the TaskIcon.

@@ -22,6 +22,8 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
@@ -46,6 +48,7 @@ struct _TaskWindowPrivate
 {
   WnckWindow *window;
 
+  WnckWindow *last_active_non_taskmanager_window;
   // Workspace where the window should be in, before being visible.
   // NULL if it isn't important
   WnckWorkspace *workspace;
@@ -95,6 +98,9 @@ static void   task_window_set_window (TaskWindow *window,
                                       WnckWindow *wnckwin);
 static void   task_window_check_for_special_case (TaskWindow * window);
 
+static void   _active_window_changed  (WnckScreen *screen,
+                                      WnckWindow *previously_active_window,
+                                      TaskWindow * item);
 /* GObject stuff */
 static void
 task_window_get_property (GObject    *object,
@@ -137,12 +143,13 @@ task_window_set_property (GObject      *object,
 static void
 task_window_constructed (GObject *object)
 {
- /*  TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;*/
-  
+ /*  TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;*/  
   if ( G_OBJECT_CLASS (task_window_parent_class)->constructed)
   {
     G_OBJECT_CLASS (task_window_parent_class)->constructed (object);
   }
+  g_signal_connect (wnck_screen_get_default(),"active-window-changed",
+                    G_CALLBACK(_active_window_changed),object);
 }
 
 static void
@@ -159,6 +166,9 @@ task_window_finalize (GObject *object)
 
   g_free (priv->special_id);
   G_OBJECT_CLASS (task_window_parent_class)->finalize (object);
+  g_signal_handlers_disconnect_by_func(wnck_screen_get_default(), 
+                                       G_CALLBACK (_active_window_changed), 
+                                       object);
 }
 
 
@@ -401,6 +411,22 @@ on_window_state_changed (WnckWindow      *wnckwin,
   
 }
 
+static void   _active_window_changed  (WnckScreen *screen,
+                                      WnckWindow *previously_active_window,
+                                      TaskWindow * item)
+{
+  TaskWindowPrivate *priv;
+  priv = item->priv;
+  WnckWindow * win = wnck_screen_get_active_window (screen);
+  if (!win)
+  {
+    win = previously_active_window;
+  }
+  if ( win && ( getpid() != wnck_window_get_pid ( win) ) )
+  {
+    priv->last_active_non_taskmanager_window = win;
+  }
+}
 /**
  * TODO: remove old signals and weak_ref...
  */
@@ -817,13 +843,19 @@ _is_visible (TaskItem *item)
 static void
 _left_click (TaskItem *item, GdkEventButton *event)
 {
-  if (event)
+  TaskWindowPrivate *priv = TASK_WINDOW (item)->priv;  
+  guint timestamp = event?event->time:gdk_event_get_time(NULL);
+  
+  if ( (priv->window == priv->last_active_non_taskmanager_window) && 
+      !wnck_window_is_minimized(priv->last_active_non_taskmanager_window))
   {
-    task_window_activate (TASK_WINDOW (item), event->time);
+    /*activate before we minimize so the dialog loses focus*/
+    task_window_activate (TASK_WINDOW (item), timestamp);
+    task_window_minimize (TASK_WINDOW (item) );
   }
   else
   {
-    task_window_activate (TASK_WINDOW (item), gdk_event_get_time(NULL));
+    task_window_activate (TASK_WINDOW (item), timestamp);
   }
 }
 
