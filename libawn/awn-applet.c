@@ -80,7 +80,7 @@ enum
   PROP_PANEL_XID,
   PROP_CANONICAL_NAME,
 	PROP_DISPLAY_NAME,
-  PROP_ORIENT,
+  PROP_POSITION,
   PROP_OFFSET,
   PROP_OFFSET_MOD,
   PROP_SIZE,
@@ -93,7 +93,7 @@ enum
 
 enum
 {
-  ORIENT_CHANGED,
+  POS_CHANGED,
   OFFSET_CHANGED,
   SIZE_CHANGED,
   PANEL_CONFIGURE,
@@ -108,7 +108,8 @@ static guint _applet_signals[LAST_SIGNAL] = { 0 };
 
 /* DBus signal callbacks */
 static void
-on_position_changed (DBusGProxy *proxy, gint position, AwnApplet *applet)
+on_position_changed (DBusGProxy *proxy, GtkPositionType position,
+                     AwnApplet *applet)
 {
   g_return_if_fail (AWN_IS_APPLET (applet));
 
@@ -293,8 +294,8 @@ awn_applet_set_property (GObject      *object,
     case PROP_PANEL_ID:
       applet->priv->panel_id = g_value_get_int (value);
       break;
-    case PROP_ORIENT:
-      awn_applet_set_position (applet, g_value_get_int (value));
+    case PROP_POSITION:
+      awn_applet_set_position (applet, g_value_get_enum (value));
       break;
     case PROP_OFFSET:
       awn_applet_set_offset (applet, g_value_get_int (value));
@@ -357,8 +358,8 @@ awn_applet_get_property (GObject    *object,
       g_value_set_int64 (value, priv->panel_xid);
       break;
 
-    case PROP_ORIENT:
-      g_value_set_int (value, priv->position);
+    case PROP_POSITION:
+      g_value_set_enum (value, priv->position);
       break;
 
     case PROP_OFFSET:
@@ -421,7 +422,7 @@ awn_applet_constructed (GObject *obj)
       G_TYPE_INVALID
     );
 
-    dbus_g_proxy_add_signal (priv->proxy, "OrientChanged",
+    dbus_g_proxy_add_signal (priv->proxy, "PositionChanged",
                              G_TYPE_INT, G_TYPE_INVALID);
     dbus_g_proxy_add_signal (priv->proxy, "OffsetChanged",
                              G_TYPE_INT, G_TYPE_INVALID);
@@ -435,7 +436,7 @@ awn_applet_constructed (GObject *obj)
     dbus_g_proxy_add_signal (priv->proxy, "DestroyApplet",
                              G_TYPE_STRING, G_TYPE_INVALID);
   
-    dbus_g_proxy_connect_signal (priv->proxy, "OrientChanged",
+    dbus_g_proxy_connect_signal (priv->proxy, "PositionChanged",
                                  G_CALLBACK (on_position_changed), applet, 
                                  NULL);
     dbus_g_proxy_connect_signal (priv->proxy, "OffsetChanged",
@@ -474,7 +475,7 @@ awn_applet_constructed (GObject *obj)
 
     dbus_g_proxy_call (prop_proxy, "Get", &error, 
                        G_TYPE_STRING, "org.awnproject.Awn.Panel",
-                       G_TYPE_STRING, "Orient",
+                       G_TYPE_STRING, "Position",
                        G_TYPE_INVALID,
                        G_TYPE_VALUE, &position,
                        G_TYPE_INVALID);
@@ -707,12 +708,13 @@ awn_applet_class_init (AwnAppletClass *klass)
  */
 	
   g_object_class_install_property (g_object_class,
-   PROP_ORIENT,
-   g_param_spec_int ("position",
-                     "Orientation",
-                     "The current bar position",
-                     0, 3, GTK_POS_BOTTOM,
-                     G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+   PROP_POSITION,
+   g_param_spec_enum ("position",
+                      "Position",
+                      "The current bar position",
+                      GTK_TYPE_POSITION_TYPE,
+                      GTK_POS_BOTTOM,
+                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
  /**
  * AwnApplet:offset:
@@ -800,7 +802,7 @@ awn_applet_class_init (AwnAppletClass *klass)
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /* Class signals */
-  _applet_signals[ORIENT_CHANGED] =
+  _applet_signals[POS_CHANGED] =
     g_signal_new("position-changed",
                  G_OBJECT_CLASS_TYPE (g_object_class),
                  G_SIGNAL_RUN_FIRST,
@@ -1260,7 +1262,7 @@ awn_applet_set_position (AwnApplet *applet, GtkPositionType position)
 
   priv->position = position;
 
-  g_signal_emit (applet, _applet_signals[ORIENT_CHANGED], 0, position);
+  g_signal_emit (applet, _applet_signals[POS_CHANGED], 0, position);
 }
 
 /**

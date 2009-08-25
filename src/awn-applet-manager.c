@@ -77,7 +77,7 @@ enum
   PROP_0,
 
   PROP_CLIENT,
-  PROP_ORIENT,
+  PROP_POSITION,
   PROP_OFFSET,
   PROP_SIZE,
   PROP_APPLET_LIST,
@@ -122,7 +122,7 @@ awn_applet_manager_constructed (GObject *object)
   /* Hook everything up to the config client */
 
   desktop_agnostic_config_client_bind (priv->client,
-                                       AWN_GROUP_PANEL, AWN_PANEL_ORIENT,
+                                       AWN_GROUP_PANEL, AWN_PANEL_POSITION,
                                        object, "position", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
@@ -192,7 +192,7 @@ awn_applet_manager_get_property (GObject    *object,
     case PROP_CLIENT:
       g_value_set_object (value, priv->client);
       break;
-    case PROP_ORIENT:
+    case PROP_POSITION:
       g_value_set_int (value, priv->position);
       break;
     case PROP_OFFSET:
@@ -256,7 +256,7 @@ awn_applet_manager_set_property (GObject      *object,
     case PROP_CLIENT:
       priv->client =  g_value_get_object (value);
       break;
-    case PROP_ORIENT:
+    case PROP_POSITION:
       awn_applet_manager_set_position (manager, g_value_get_int (value));
       break;
     case PROP_OFFSET:
@@ -337,9 +337,9 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                          G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
-    PROP_ORIENT,
+    PROP_POSITION,
     g_param_spec_int ("position",
-                      "Orient",
+                      "Position",
                       "The position of the panel",
                       0, 3, GTK_POS_BOTTOM,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
@@ -607,7 +607,7 @@ awn_applet_manager_set_position (AwnAppletManager *manager,
     case GTK_POS_TOP:
     case GTK_POS_BOTTOM:
 #if GTK_CHECK_VERSION(2, 15, 0)
-      gtk_orientable_set_position (GTK_ORIENTABLE(manager), GTK_ORIENTATION_HORIZONTAL);
+      gtk_orientable_set_orientation (GTK_ORIENTABLE(manager), GTK_ORIENTATION_HORIZONTAL);
 #endif
       priv->klass = GTK_WIDGET_CLASS (g_type_class_ref (GTK_TYPE_HBOX));
       break;
@@ -615,7 +615,7 @@ awn_applet_manager_set_position (AwnAppletManager *manager,
     case GTK_POS_RIGHT:
     case GTK_POS_LEFT:
 #if GTK_CHECK_VERSION(2, 15, 0)
-      gtk_orientable_set_position (GTK_ORIENTABLE(manager), GTK_ORIENTATION_VERTICAL);
+      gtk_orientable_set_orientation (GTK_ORIENTABLE(manager), GTK_ORIENTATION_VERTICAL);
 #endif
       priv->klass = GTK_WIDGET_CLASS (g_type_class_ref (GTK_TYPE_VBOX));
       break;

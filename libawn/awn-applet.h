@@ -61,14 +61,14 @@ struct _AwnAppletClass
   GtkPlugClass parent_class;
 
   /*<signals >*/
-  void (*position_changed)  (AwnApplet *applet, GtkPositionType position);
-  void (*offset_changed)  (AwnApplet *applet, gint offset);
-  void (*size_changed)    (AwnApplet *applet, gint size);
-  void (*deleted)         (AwnApplet *applet, const gchar *uid);
-  void (*menu_creation)   (AwnApplet *applet, GtkMenu *menu);
-  void (*flags_changed)   (AwnApplet *applet, AwnAppletFlags flags);
-  void (*panel_configure) (AwnApplet *applet, GdkEventConfigure *event);
-  void (*origin_changed)  (AwnApplet *applet, GdkRectangle *rect);
+  void (*position_changed) (AwnApplet *applet, GtkPositionType position);
+  void (*offset_changed)   (AwnApplet *applet, gint offset);
+  void (*size_changed)     (AwnApplet *applet, gint size);
+  void (*deleted)          (AwnApplet *applet, const gchar *uid);
+  void (*menu_creation)    (AwnApplet *applet, GtkMenu *menu);
+  void (*flags_changed)    (AwnApplet *applet, AwnAppletFlags flags);
+  void (*panel_configure)  (AwnApplet *applet, GdkEventConfigure *event);
+  void (*origin_changed)   (AwnApplet *applet, GdkRectangle *rect);
 
   /*< Future padding >*/
   void (*_applet0) (void);
@@ -112,9 +112,9 @@ AwnApplet *        awn_applet_new                 (const gchar *canonical_name,
 
 const gchar*       awn_applet_get_canonical_name  (AwnApplet      *applet);
 
-GtkPositionType     awn_applet_get_position     (AwnApplet      *applet);
-void               awn_applet_set_position     (AwnApplet      *applet,
-                                                   GtkPositionType  position);
+GtkPositionType    awn_applet_get_position        (AwnApplet      *applet);
+void               awn_applet_set_position        (AwnApplet      *applet,
+                                                   GtkPositionType position);
 
 AwnPathType        awn_applet_get_path_type       (AwnApplet *applet);
 void               awn_applet_set_path_type       (AwnApplet *applet,

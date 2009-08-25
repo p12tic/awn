@@ -37,25 +37,6 @@
  */
 #define AWN_MIN_HEIGHT 12
 
-/**
- * GtkPositionType:
- * @GTK_POS_TOP: Placed along the top of the screen.
- * @GTK_POS_RIGHT: Placed along the right side of the screen.
- * @GTK_POS_BOTTOM: Placed along the bottom of the screen.
- * @GTK_POS_LEFT: Placed along the left side of the screen.
- *
- * Describes the position and placement of the panel.
- */
-
-typedef enum
-{
-        GTK_POS_TOP=0,
-        GTK_POS_RIGHT,
-        GTK_POS_BOTTOM,
-        GTK_POS_LEFT
-
-} GtkPositionType;
-
 typedef enum
 {
   AWN_APPLET_FLAGS_NONE     = 0,

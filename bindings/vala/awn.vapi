@@ -35,14 +35,14 @@ namespace Awn {
 		[CCode (cheader_filename = "libawn/awn-utils.h")]
 		public static void ensure_transparent_bg (Gtk.Widget widget);
 		[CCode (cheader_filename = "libawn/awn-utils.h")]
-		public static float get_offset_modifier_by_path_type (Awn.PathType path_type, Awn.Orientation orient, float offset_modifier, int pos_x, int pos_y, int width, int height);
+		public static float get_offset_modifier_by_path_type (Awn.PathType path_type, Gtk.PositionType position, float offset_modifier, int pos_x, int pos_y, int width, int height);
 		[CCode (cheader_filename = "libawn/awn-utils.h")]
 		public static GLib.ValueArray gslist_to_gvaluearray (GLib.SList list);
 		[CCode (cheader_filename = "libawn/awn-utils.h")]
 		public static void make_transparent_bg (Gtk.Widget widget);
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class Alignment : Gtk.Alignment, Gtk.Buildable, Atk.Implementor {
+	public class Alignment : Gtk.Alignment, Atk.Implementor, Gtk.Buildable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public Alignment.for_applet (Awn.Applet applet);
 		public int get_offset_modifier ();
@@ -52,7 +52,7 @@ namespace Awn {
 		public int offset_modifier { get; set construct; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class Applet : Gtk.Plug, Gtk.Buildable, Atk.Implementor {
+	public class Applet : Gtk.Plug, Atk.Implementor, Gtk.Buildable {
 		public unowned Gtk.Widget create_about_item (string copyright, Awn.AppletLicense license, string version, string comments, string website, string website_label, string icon_name, string translator_credits, string authors, string artists, string documenters);
 		public unowned Gtk.Widget create_about_item_simple (string copyright, Awn.AppletLicense license, string version);
 		public unowned Gtk.Widget create_default_menu ();
@@ -64,21 +64,19 @@ namespace Awn {
 		public Awn.AppletFlags get_flags ();
 		public int get_offset ();
 		public int get_offset_at (int x, int y);
-		public Awn.Orientation get_orientation ();
 		public Awn.PathType get_path_type ();
+		public Gtk.PositionType get_position ();
 		public uint get_size ();
 		public unowned string get_uid ();
 		public uint inhibit_autohide (string reason);
 		[CCode (has_construct_function = false)]
 		public Applet (string canonical_name, string uid, int panel_id);
 		[NoWrapper]
-		public virtual void orient_changed (Awn.Orientation orient);
-		[NoWrapper]
 		public virtual void panel_configure (Gdk.EventConfigure event);
 		public void set_flags (Awn.AppletFlags flags);
 		public void set_offset (int offset);
-		public void set_orientation (Awn.Orientation orient);
 		public void set_path_type (Awn.PathType path);
+		public void set_position (Gtk.PositionType position);
 		public void set_size (int size);
 		public void set_uid (string uid);
 		public void uninhibit_autohide (uint cookie);
@@ -91,31 +89,28 @@ namespace Awn {
 		[NoAccessorMethod]
 		public float offset_modifier { get; set; }
 		[NoAccessorMethod]
-		public int orient { get; set; }
-		[NoAccessorMethod]
 		public int panel_id { get; construct; }
 		[NoAccessorMethod]
 		public int64 panel_xid { get; }
 		public int path_type { get; set construct; }
+		public Gtk.PositionType position { get; set; }
 		[NoAccessorMethod]
 		public bool quit_on_delete { get; set; }
 		[NoAccessorMethod]
 		public bool show_all_on_embed { get; set; }
-		[NoAccessorMethod]
-		public bool single_instance { get; construct; }
 		public int size { get; set; }
 		public string uid { get; set construct; }
 		public virtual signal void applet_deleted (string p0);
 		public virtual signal void flags_changed (int flags);
 		public virtual signal void menu_creation (Gtk.Menu menu);
 		public virtual signal void offset_changed (int offset);
-		public virtual signal void orientation_changed (Awn.Orientation p0);
 		public virtual signal void origin_changed (Gdk.Rectangle rect);
 		public virtual signal void panel_configure_event (Gdk.Event p0);
+		public virtual signal void position_changed (Gtk.PositionType position);
 		public virtual signal void size_changed (int size);
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class AppletSimple : Awn.Applet, Gtk.Buildable, Atk.Implementor, Awn.Overlayable {
+	public class AppletSimple : Awn.Applet, Atk.Implementor, Gtk.Buildable, Awn.Overlayable {
 		public unowned Gtk.Widget get_icon ();
 		public unowned string get_message ();
 		public float get_progress ();
@@ -137,7 +132,7 @@ namespace Awn {
 		public virtual signal void long_press ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class Dialog : Gtk.Window, Gtk.Buildable, Atk.Implementor {
+	public class Dialog : Gtk.Window, Atk.Implementor, Gtk.Buildable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public Dialog.for_widget (Gtk.Widget widget);
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
@@ -162,7 +157,7 @@ namespace Awn {
 		[NoAccessorMethod]
 		public DesktopAgnostic.Color hilight { owned get; set construct; }
 		[NoAccessorMethod]
-		public int orient { get; set construct; }
+		public int position { get; set construct; }
 		[NoAccessorMethod]
 		public DesktopAgnostic.Color title_bg { owned get; set construct; }
 		[NoAccessorMethod]
@@ -224,7 +219,7 @@ namespace Awn {
 		[NoAccessorMethod]
 		public bool no_clear { get; set construct; }
 		[NoAccessorMethod]
-		public int orientation { get; set construct; }
+		public int position { get; set construct; }
 		[NoAccessorMethod]
 		public float progress { get; set construct; }
 		[NoAccessorMethod]
@@ -247,7 +242,7 @@ namespace Awn {
 		public weak Awn.EffectsOpfn fn;
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class Icon : Gtk.DrawingArea, Gtk.Buildable, Atk.Implementor, Awn.Overlayable {
+	public class Icon : Gtk.DrawingArea, Atk.Implementor, Gtk.Buildable, Awn.Overlayable {
 		public bool get_hover_effects ();
 		public int get_indicator_count ();
 		public bool get_is_active ();
@@ -275,7 +270,7 @@ namespace Awn {
 		public void set_is_active (bool is_active);
 		public void set_message (string message);
 		public void set_offset (int offset);
-		public void set_orientation (Awn.Orientation orient);
+		public void set_position (Gtk.PositionType position);
 		public void set_progress (float progress);
 		public void set_tooltip_text (string text);
 		[NoAccessorMethod]
@@ -292,22 +287,22 @@ namespace Awn {
 		public virtual signal void size_changed ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class IconBox : Gtk.Box, Gtk.Buildable, Atk.Implementor {
+	public class IconBox : Gtk.Box, Atk.Implementor, Gtk.Buildable, Gtk.Orientable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public IconBox.for_applet (Awn.Applet applet);
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public IconBox ();
 		public void set_offset (int offset);
-		public void set_orientation (Awn.Orientation orient);
+		public void set_position (Gtk.PositionType position);
 		public Awn.Applet applet { construct; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class Image : Gtk.Image, Gtk.Buildable, Atk.Implementor, Awn.Overlayable {
+	public class Image : Gtk.Image, Atk.Implementor, Gtk.Buildable, Awn.Overlayable {
 		[CCode (has_construct_function = false)]
 		public Image ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class Label : Gtk.Label, Gtk.Buildable, Atk.Implementor {
+	public class Label : Gtk.Label, Atk.Implementor, Gtk.Buildable {
 		[CCode (has_construct_function = false)]
 		public Label ();
 		[NoAccessorMethod]
@@ -441,7 +436,7 @@ namespace Awn {
 		public uint timeout { get; set construct; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class ThemedIcon : Awn.Icon, Gtk.Buildable, Atk.Implementor, Awn.Overlayable {
+	public class ThemedIcon : Awn.Icon, Atk.Implementor, Gtk.Buildable, Awn.Overlayable {
 		public void clear_icons (int scope);
 		public void clear_info ();
 		public unowned Gtk.Widget create_custom_icon_item (string icon_name);
@@ -470,7 +465,7 @@ namespace Awn {
 		public Gdk.PixbufRotation rotate { get; set construct; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class Tooltip : Gtk.Window, Gtk.Buildable, Atk.Implementor {
+	public class Tooltip : Gtk.Window, Atk.Implementor, Gtk.Buildable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public Tooltip.for_widget (Gtk.Widget widget);
 		public int get_delay ();
@@ -480,7 +475,7 @@ namespace Awn {
 		public void set_focus_widget (Gtk.Widget widget);
 		public void set_font_color (DesktopAgnostic.Color font_color);
 		public void set_font_name (string font_name);
-		public void set_position_hint (Awn.Orientation orient, int size);
+		public void set_position_hint (Gtk.PositionType position, int size);
 		public void set_text (string text);
 		public void update_position ();
 		public int delay { get; set construct; }
@@ -543,13 +538,6 @@ namespace Awn {
 		LAUNCHING,
 		ATTENTION,
 		DESATURATE
-	}
-	[CCode (cprefix = "AWN_ORIENTATION_", has_type_id = "0", cheader_filename = "libawn/libawn.h")]
-	public enum Orientation {
-		TOP,
-		RIGHT,
-		BOTTOM,
-		LEFT
 	}
 	[CCode (cprefix = "AWN_OVERLAY_ALIGN_", has_type_id = "0", cheader_filename = "libawn/libawn.h")]
 	public enum OverlayAlign {

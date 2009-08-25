@@ -94,7 +94,7 @@ enum
   PROP_ANCHOR,
   PROP_ANCHOR_OWNER,
   PROP_ANCHORED,
-  PROP_ORIENT,
+  PROP_POSITION,
   PROP_WINDOW_OFFSET,
   PROP_WINDOW_PADDING,
   PROP_HIDE_ON_ESC,
@@ -735,7 +735,7 @@ awn_dialog_get_property (GObject    *object,
     case PROP_ANCHORED:
       g_value_set_boolean (value, priv->anchored);
       break;
-    case PROP_ORIENT:
+    case PROP_POSITION:
       g_value_set_int (value, priv->position);
       break;
     case PROP_HIDE_ON_ESC:
@@ -796,7 +796,7 @@ awn_dialog_set_property (GObject      *object,
       }
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
-    case PROP_ORIENT:
+    case PROP_POSITION:
       awn_dialog_set_position (AWN_DIALOG (object),
                                   g_value_get_int (value));
       break;
@@ -957,9 +957,9 @@ awn_dialog_class_init (AwnDialogClass *klass)
                           G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
-    PROP_ORIENT,
+    PROP_POSITION,
     g_param_spec_int ("position",
-                      "Orient",
+                      "Position",
                       "The position of the window",
                       0, 3, GTK_POS_BOTTOM,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT |

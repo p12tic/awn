@@ -83,7 +83,7 @@ struct _AwnPanelPrivate
   gint size;
   gint offset;
   gfloat offset_mod;
-  gint position;
+  GtkPositionType position;
   gint path_type;
   gint style;
 
@@ -92,7 +92,7 @@ struct _AwnPanelPrivate
   /* for masks/strut updating */
   gint old_width;
   gint old_height;
-  gint old_position;
+  GtkPositionType old_position;
 
   /* for strut updating */
   gint old_x;
@@ -161,7 +161,7 @@ enum
   PROP_PANEL_MODE,
   PROP_EXPAND,
   PROP_OFFSET,
-  PROP_ORIENT,
+  PROP_POSITION,
   PROP_SIZE,
   PROP_MAX_SIZE,
   PROP_AUTOHIDE_TYPE,
@@ -217,7 +217,7 @@ static const gint n_drop_types = G_N_ELEMENTS (drop_types);
 enum
 {
   SIZE_CHANGED,
-  ORIENT_CHANGED,
+  POS_CHANGED,
   OFFSET_CHANGED,
   PROPERTY_CHANGED,
   DESTROY_NOTIFY,
@@ -268,8 +268,8 @@ static void     awn_panel_add               (GtkContainer   *window,
 
 static void     awn_panel_set_offset        (AwnPanel *panel,
                                              gint      offset);
-static void     awn_panel_set_position        (AwnPanel *panel,
-                                             gint      position);
+static void     awn_panel_set_position      (AwnPanel *panel,
+                                             GtkPositionType position);
 static void     awn_panel_set_size          (AwnPanel *panel,
                                              gint      size);
 static void     awn_panel_set_autohide_type (AwnPanel *panel,
@@ -535,7 +535,7 @@ awn_panel_constructed (GObject *object)
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
-                                       AWN_GROUP_PANEL, AWN_PANEL_ORIENT,
+                                       AWN_GROUP_PANEL, AWN_PANEL_POSITION,
                                        object, "position", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
@@ -638,7 +638,7 @@ awn_panel_get_property (GObject    *object,
     case PROP_OFFSET:
       g_value_set_int (value, priv->offset);
       break;
-    case PROP_ORIENT:
+    case PROP_POSITION:
       g_value_set_int (value, priv->position);
       break;
     case PROP_SIZE:
@@ -704,7 +704,7 @@ awn_panel_set_property (GObject      *object,
     case PROP_OFFSET:
       awn_panel_set_offset (panel, g_value_get_int (value));
       break;
-    case PROP_ORIENT:
+    case PROP_POSITION:
       awn_panel_set_position (panel, g_value_get_int (value));
       break;
     case PROP_SIZE:
@@ -1595,9 +1595,9 @@ awn_panel_class_init (AwnPanelClass *klass)
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                           G_PARAM_STATIC_STRINGS));
  g_object_class_install_property (obj_class,
-    PROP_ORIENT,
+    PROP_POSITION,
     g_param_spec_int ("position",
-                      "Orient",
+                      "Position",
                       "The position of the panel",
                       0, 3, GTK_POS_BOTTOM,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
@@ -1667,13 +1667,13 @@ awn_panel_class_init (AwnPanelClass *klass)
 			      G_TYPE_NONE,
 			      1, G_TYPE_INT);
   
-  _panel_signals[ORIENT_CHANGED] =
+  _panel_signals[POS_CHANGED] =
 		g_signal_new ("position_changed",
 			      G_OBJECT_CLASS_TYPE (obj_class),
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (AwnPanelClass, position_changed),
 			      NULL, NULL,
-			      g_cclosure_marshal_VOID__INT, 
+			      g_cclosure_marshal_VOID__INT,
 			      G_TYPE_NONE,
 			      1, G_TYPE_INT);
 
@@ -2314,7 +2314,7 @@ awn_panel_set_offset  (AwnPanel *panel,
 }
 
 static void
-awn_panel_set_position (AwnPanel *panel, gint position)
+awn_panel_set_position (AwnPanel *panel, GtkPositionType position)
 {
   AwnPanelPrivate *priv = panel->priv;
 
@@ -2331,7 +2331,7 @@ awn_panel_set_position (AwnPanel *panel, gint position)
 
   awn_panel_reset_autohide (panel);
 
-  g_signal_emit (panel, _panel_signals[ORIENT_CHANGED], 0, priv->position);
+  g_signal_emit (panel, _panel_signals[POS_CHANGED], 0, priv->position);
   
   position_window (panel);
   

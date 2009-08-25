@@ -81,7 +81,7 @@ enum {
   PROP_WIDGET,
   PROP_NO_CLEAR,
   PROP_INDIRECT_PAINT,
-  PROP_ORIENTATION,
+  PROP_POSITION,
   PROP_CURRENT_EFFECTS,
   PROP_ICON_OFFSET,
   PROP_ICON_ALPHA,
@@ -256,7 +256,7 @@ awn_effects_get_property (GObject      *object,
     case PROP_INDIRECT_PAINT:
       g_value_set_boolean(value, fx->indirect_paint);
       break;
-    case PROP_ORIENTATION:
+    case PROP_POSITION:
       g_value_set_int(value, fx->position);
       break;
     case PROP_CURRENT_EFFECTS:
@@ -328,7 +328,7 @@ awn_effects_set_property (GObject      *object,
     case PROP_INDIRECT_PAINT:
       fx->indirect_paint = g_value_get_boolean(value);
       break;
-    case PROP_ORIENTATION:
+    case PROP_POSITION:
       /* make sure we set correct position */
       switch (g_value_get_int(value)) {
         case GTK_POS_TOP:
@@ -608,10 +608,10 @@ awn_effects_class_init(AwnEffectsClass *klass)
    * Determines position of the widget.
    */
   g_object_class_install_property(
-    obj_class, PROP_ORIENTATION,
+    obj_class, PROP_POSITION,
     /* keep in sync with GtkPositionType */
     g_param_spec_int("position",
-                     "Orientation",
+                     "Position",
                      "Icon position",
                      0, 3, GTK_POS_BOTTOM,
                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE |

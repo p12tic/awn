@@ -47,7 +47,7 @@ namespace Awn
   namespace Utils
   {
     public static void ensure_transparent_bg (Gtk.Widget widget);
-    public static float get_offset_modifier_by_path_type (Awn.PathType path_type, Awn.Orientation orient, float offset_modifier, int pos_x, int pos_y, int width, int height);
+    public static float get_offset_modifier_by_path_type (Awn.PathType path_type, Gtk.PositionType position, float offset_modifier, int pos_x, int pos_y, int width, int height);
     public static GLib.ValueArray gslist_to_gvaluearray (GLib.SList list);
     public static void make_transparent_bg (Gtk.Widget widget);
   }

@@ -515,7 +515,7 @@ task_icon_refresh_geometry (TaskIcon *icon)
       ww = alloc.width;
       break;
     default:
-      g_error ("Orientation isn't right, left, top, bottom ??");
+      g_error ("Position isn't right, left, top, bottom ??");
       break;
   }
 

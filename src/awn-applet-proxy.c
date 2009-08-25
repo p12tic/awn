@@ -61,7 +61,7 @@ enum
   PROP_0,
   PROP_PATH,
   PROP_UID,
-  PROP_ORIENT,
+  PROP_POSITION,
   PROP_OFFSET,
   PROP_SIZE
 };
@@ -104,7 +104,7 @@ awn_applet_proxy_get_property (GObject    *object,
     case PROP_UID:
       g_value_set_string (value, priv->uid);
       break;
-    case PROP_ORIENT:
+    case PROP_POSITION:
       g_value_set_int (value, priv->position);
       break;
     case PROP_OFFSET:
@@ -137,7 +137,7 @@ awn_applet_proxy_set_property (GObject      *object,
     case PROP_UID:
       priv->uid = g_value_dup_string (value);
       break;
-    case PROP_ORIENT:
+    case PROP_POSITION:
       priv->position = g_value_get_int (value);
       awn_icon_set_position (AWN_ICON (priv->throbber), priv->position);
       break;
@@ -241,9 +241,9 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
         G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
-      PROP_ORIENT,
+      PROP_POSITION,
       g_param_spec_int ("position",
-        "Orient",
+        "Position",
         "The panel position",
         0, 3, GTK_POS_BOTTOM,
         G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS));
