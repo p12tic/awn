@@ -22,7 +22,6 @@
 #include <libawn/libawn.h>
 
 #define TASK_ITEM_ICON_SCALE 0.65
-#define MAX_TASK_ITEM_CHARS 50
 
 G_DEFINE_ABSTRACT_TYPE (TaskItem, task_item, GTK_TYPE_BUTTON)
 
@@ -32,9 +31,6 @@ G_DEFINE_ABSTRACT_TYPE (TaskItem, task_item, GTK_TYPE_BUTTON)
 
 struct _TaskItemPrivate
 {
-  GtkWidget *box;
-  GtkWidget *name;    /*name label*/
-  GtkWidget *image;   /*placed in button (TaskItem) with label*/
   GdkPixbuf *icon;
 
   TaskIcon *task_icon;
@@ -178,6 +174,7 @@ task_item_class_init (TaskItemClass *klass)
   klass->is_visible      = NULL;
   klass->match           = NULL;
   klass->name_change    = task_item_name_changed;
+  klass->get_image_widget = task_item_get_image_widget;
   
   /* Install signals */
   _item_signals[NAME_CHANGED] =
@@ -218,39 +215,11 @@ task_item_init (TaskItem *item)
 {
   TaskItemPrivate *priv;
   TaskItemClass *klass;
-  GtkWidget * alignment;
 
   klass = TASK_ITEM_GET_CLASS (item);  
   
   /* get and save private struct */
-  priv = item->priv = TASK_ITEM_GET_PRIVATE (item);
-
-  /* let this button listen to every event */
-  gtk_widget_add_events (GTK_WIDGET (item), GDK_ALL_EVENTS_MASK);
-
-  /* for looks */
-  gtk_button_set_relief (GTK_BUTTON (item), GTK_RELIEF_NONE);
-
-  /* create content */
-  priv->box = gtk_hbox_new (FALSE, 10);
-
-  alignment = gtk_alignment_new (0.0,0.5,0.0,0.0);
-  gtk_container_add (GTK_CONTAINER(alignment),priv->box);
-
-  gtk_container_add (GTK_CONTAINER (item), alignment);
-  gtk_container_set_border_width (GTK_CONTAINER (priv->box), 1);
-
-  priv->image = GTK_WIDGET (awn_image_new ());
-  gtk_box_pack_start (GTK_BOX (priv->box), priv->image, FALSE, FALSE, 0);
-  
-  priv->name = gtk_label_new ("");
-  /*
-   TODO once get/set prop is available create this a config key and bind
-   */
-  gtk_label_set_max_width_chars (GTK_LABEL(priv->name), MAX_TASK_ITEM_CHARS);
-  gtk_label_set_ellipsize (GTK_LABEL(priv->name),PANGO_ELLIPSIZE_END);
-  gtk_box_pack_start (GTK_BOX (priv->box), priv->name, TRUE, FALSE, 10);
-  
+  priv = item->priv = TASK_ITEM_GET_PRIVATE (item);  
 }
 
 
@@ -327,21 +296,15 @@ task_item_activate (GtkWidget *widget, gpointer null)
 }
 
 static void 
-task_item_name_changed (TaskItem *item, const gchar *markup)
+task_item_name_changed (TaskItem *item, const gchar *name)
 {
-  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
-  gtk_label_set_markup (GTK_LABEL (priv->name), markup);
+/*  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item); */
 }
 
 static void 
 task_item_icon_changed (TaskItem *item, GdkPixbuf *icon)
 {
   TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
-  GdkPixbuf * scaled;
-  gint  height;
-  gint  width;
-  gint  scaled_height;
-  gint  scaled_width;
   
   g_return_if_fail (icon);
   g_return_if_fail (GDK_IS_PIXBUF(icon));
@@ -352,23 +315,7 @@ task_item_icon_changed (TaskItem *item, GdkPixbuf *icon)
   priv->icon = icon;
   g_object_ref (icon);
   
-  /* height should be equal to width... but just in case */
-  height = gdk_pixbuf_get_height (icon);
-  width = gdk_pixbuf_get_width (icon);
-  gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON,&scaled_width,&scaled_height);  
-  if (height != scaled_height)
-  {
-    scaled = gdk_pixbuf_scale_simple (icon,scaled_width,scaled_height,GDK_INTERP_BILINEAR);    
-  }
-  else
-  {
-    scaled = icon;
-    g_object_ref (scaled);
-  }
-  
-  gtk_image_set_from_pixbuf (GTK_IMAGE (priv->image), scaled);
-  g_object_unref (scaled);
-  
+  /* height should be equal to width... but just in case */  
 }
 
 static void
@@ -524,11 +471,21 @@ task_item_get_task_icon (TaskItem *item)
 GtkWidget*
 task_item_get_image_widget (TaskItem *item)
 {
+  TaskItemClass *klass;
+
   g_return_val_if_fail (TASK_IS_ITEM (item), NULL);
+  
+  klass = TASK_ITEM_GET_CLASS (item);
+  g_return_val_if_fail (klass->get_name, NULL);
 
-  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (item);
-
-  return priv->image;
+  if (klass->get_image_widget)
+  {
+    return klass->get_image_widget (item);
+  }
+  else
+  {
+    return NULL;
+  }
 }
 
 /**

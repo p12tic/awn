@@ -27,6 +27,8 @@
 
 G_BEGIN_DECLS
 
+#define MAX_TASK_ITEM_CHARS 50
+
 #define TASK_TYPE_ITEM (task_item_get_type ())
 
 #define TASK_ITEM(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
@@ -66,6 +68,7 @@ struct _TaskItemClass
   /*< vtable, not signals >*/
   const gchar * (*get_name)        (TaskItem *item);
   GdkPixbuf   * (*get_icon)        (TaskItem *item);
+  GtkWidget   * (*get_image_widget)(TaskItem *item);
   gboolean      (*is_visible)      (TaskItem *item);
   void          (*left_click)      (TaskItem *item, GdkEventButton *event);
   GtkWidget *   (*right_click)     (TaskItem *item, GdkEventButton *event);

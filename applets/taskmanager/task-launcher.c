@@ -62,6 +62,11 @@ struct _TaskLauncherPrivate
   GtkWidget     *menu;
   
   gchar         *special_id;    /*AKA OpenOffice ***** */
+  
+  GtkWidget *box;
+  GtkWidget *name_label;    /*name label*/
+  GtkWidget *image;   /*placed in button (TaskItem) with label*/
+  
 };
 
 enum
@@ -86,6 +91,7 @@ static guint         _match           (TaskItem       *item,
                                        TaskItem       *item_to_match);
 static void         _name_change      (TaskItem *item, 
                                        const gchar *name);
+static GtkWidget*    _get_image_widget (TaskItem *item);
 
 static void   task_launcher_set_desktop_file (TaskLauncher *launcher,
                                               const gchar  *path);
@@ -166,7 +172,8 @@ task_launcher_class_init (TaskLauncherClass *klass)
   item_class->right_click      = _right_click;
   item_class->middle_click      = _middle_click; 
   item_class->name_change       = _name_change;
-
+  item_class->get_image_widget= _get_image_widget;
+  
   /* Install properties */
   pspec = g_param_spec_string ("desktopfile",
                                "DesktopFile",
@@ -182,11 +189,39 @@ static void
 task_launcher_init (TaskLauncher *launcher)
 {
   TaskLauncherPrivate *priv;
+  GtkWidget           *alignment;
   	
   priv = launcher->priv = TASK_LAUNCHER_GET_PRIVATE (launcher);
   
   priv->path = NULL;
   priv->entry = NULL;
+  
+  /* let this button listen to every event */
+  gtk_widget_add_events (GTK_WIDGET (launcher), GDK_ALL_EVENTS_MASK);
+
+  /* for looks */
+  gtk_button_set_relief (GTK_BUTTON (launcher), GTK_RELIEF_NONE);
+
+  /* create content */
+  priv->box = gtk_hbox_new (FALSE, 10);
+
+  alignment = gtk_alignment_new (0.0,0.5,0.0,0.0);
+  gtk_container_add (GTK_CONTAINER(alignment),priv->box);
+
+  gtk_container_add (GTK_CONTAINER (launcher), alignment);
+  gtk_container_set_border_width (GTK_CONTAINER (priv->box), 1);
+
+  priv->image = GTK_WIDGET (awn_image_new ());
+  gtk_box_pack_start (GTK_BOX (priv->box), priv->image, FALSE, FALSE, 0);
+  
+  priv->name_label = gtk_label_new ("");
+  /*
+   TODO once get/set prop is available create this a config key and bind
+   */
+  gtk_label_set_max_width_chars (GTK_LABEL(priv->name_label), MAX_TASK_ITEM_CHARS);
+  gtk_label_set_ellipsize (GTK_LABEL(priv->name_label),PANGO_ELLIPSIZE_END);
+  gtk_box_pack_start (GTK_BOX (priv->box), priv->name_label, TRUE, FALSE, 10);
+  
 }
 
 TaskItem * 
@@ -221,6 +256,11 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   GdkPixbuf *pixbuf;
   gchar * exec_key;
   gchar * needle;
+  GdkPixbuf    *scaled;
+  gint  height;
+  gint  width;
+  gint  scaled_height;
+  gint  scaled_width;  
   
   g_return_if_fail (TASK_IS_LAUNCHER (launcher));
   priv = launcher->priv;
@@ -279,7 +319,25 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   priv->icon_name = desktop_agnostic_fdo_desktop_entry_get_icon (priv->entry);
 
   task_item_emit_name_changed (TASK_ITEM (launcher), priv->name);
+
   pixbuf = _get_icon (TASK_ITEM (launcher));
+  
+  height = gdk_pixbuf_get_height (pixbuf);
+  width = gdk_pixbuf_get_width (pixbuf);
+  gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON,&scaled_width,&scaled_height);  
+  if (height != scaled_height)
+  {
+    scaled = gdk_pixbuf_scale_simple (pixbuf,scaled_width,scaled_height,GDK_INTERP_BILINEAR);    
+  }
+  else
+  {
+    scaled = pixbuf;
+    g_object_ref (scaled);
+  }
+  
+  gtk_image_set_from_pixbuf (GTK_IMAGE (priv->image), scaled);
+  g_object_unref (scaled);
+  
   task_item_emit_icon_changed (TASK_ITEM (launcher), pixbuf);
   g_object_unref (pixbuf);
   task_item_emit_visible_changed (TASK_ITEM (launcher), TRUE);
@@ -702,13 +760,26 @@ task_launcher_launch_with_data (TaskLauncher *launcher,
 static void 
 _name_change (TaskItem *item, const gchar *name)
 {
+  TaskLauncherPrivate *priv;
+  
   g_return_if_fail (TASK_IS_LAUNCHER (item));
   gchar * tmp;
   gchar * markup;
 
+  priv = TASK_LAUNCHER (item)->priv;  
+  
   tmp = g_strdup_printf (_("Launch %s"),name);
   markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_weight=\"bold\">%s</span>", tmp);
-  TASK_ITEM_CLASS (task_launcher_parent_class)->name_change (item, markup);  
+  gtk_label_set_markup (GTK_LABEL (priv->name_label), markup);  
+  TASK_ITEM_CLASS (task_launcher_parent_class)->name_change (item, name);  
   g_free (tmp);
   g_free (markup);
+}
+
+static GtkWidget *
+_get_image_widget (TaskItem *item)
+{
+  TaskLauncherPrivate *priv = TASK_LAUNCHER (item)->priv;
+  
+  return priv->image;
 }

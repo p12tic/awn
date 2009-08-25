@@ -65,6 +65,11 @@ struct _TaskWindowPrivate
   GtkWidget         *menu;
   
   gchar * special_id; /*Thank you OpenOffice*/
+  
+  GtkWidget *box;
+  GtkWidget *name;    /*name label*/
+  GtkWidget *image;   /*placed in button (TaskItem) with label*/
+  
 };
 
 enum
@@ -93,6 +98,7 @@ static gboolean      _is_visible      (TaskItem       *item);
 static void          _left_click      (TaskItem *item, GdkEventButton *event);
 static GtkWidget *   _right_click     (TaskItem *item, GdkEventButton *event);
 static guint         _match           (TaskItem *item, TaskItem *item_to_match);
+static GtkWidget*    _get_image_widget (TaskItem *item);
 
 static void   task_window_set_window (TaskWindow *window,
                                       WnckWindow *wnckwin);
@@ -101,6 +107,8 @@ static void   task_window_check_for_special_case (TaskWindow * window);
 static void   _active_window_changed  (WnckScreen *screen,
                                       WnckWindow *previously_active_window,
                                       TaskWindow * item);
+
+
 /* GObject stuff */
 static void
 task_window_get_property (GObject    *object,
@@ -192,6 +200,7 @@ task_window_class_init (TaskWindowClass *klass)
   item_class->left_click      = _left_click;
   item_class->right_click      = _right_click;
   item_class->match           = _match;
+  item_class->get_image_widget= _get_image_widget;
   
   /* Install signals */
   _window_signals[ACTIVE_CHANGED] =
@@ -268,7 +277,8 @@ static void
 task_window_init (TaskWindow *window)
 {
   TaskWindowPrivate *priv;
-  	
+  GtkWidget         *alignment;
+  
   priv = window->priv = TASK_WINDOW_GET_PRIVATE (window);
 
   priv->workspace = NULL;
@@ -278,6 +288,33 @@ task_window_init (TaskWindow *window)
   priv->hidden = FALSE;
   priv->needs_attention = FALSE;
   priv->is_active = FALSE;
+  
+  /* let this button listen to every event */
+  gtk_widget_add_events (GTK_WIDGET (window), GDK_ALL_EVENTS_MASK);
+
+  /* for looks */
+  gtk_button_set_relief (GTK_BUTTON (window), GTK_RELIEF_NONE);
+
+  /* create content */
+  priv->box = gtk_hbox_new (FALSE, 10);
+
+  alignment = gtk_alignment_new (0.0,0.5,0.0,0.0);
+  gtk_container_add (GTK_CONTAINER(alignment),priv->box);
+
+  gtk_container_add (GTK_CONTAINER (window), alignment);
+  gtk_container_set_border_width (GTK_CONTAINER (priv->box), 1);
+
+  priv->image = GTK_WIDGET (awn_image_new ());
+  gtk_box_pack_start (GTK_BOX (priv->box), priv->image, FALSE, FALSE, 0);
+  
+  priv->name = gtk_label_new ("");
+  /*
+   TODO once get/set prop is available create this a config key and bind
+   */
+  gtk_label_set_max_width_chars (GTK_LABEL(priv->name), MAX_TASK_ITEM_CHARS);
+  gtk_label_set_ellipsize (GTK_LABEL(priv->name),PANGO_ELLIPSIZE_END);
+  gtk_box_pack_start (GTK_BOX (priv->box), priv->name, TRUE, FALSE, 10);
+  
 }
 
 TaskItem *
@@ -325,15 +362,17 @@ on_window_name_changed (WnckWindow *wnckwin, TaskWindow *window)
 {
   TaskWindowPrivate *priv;
   gchar * markup;
+  const gchar * name = NULL;
   
   g_return_if_fail (TASK_IS_WINDOW (window));
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
   priv = window->priv;
 
-  //Is there any real advantage to emit a signal in this case?
-  markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", wnck_window_get_name (wnckwin));
-  task_item_emit_name_changed (TASK_ITEM (window), markup);  
-  g_free (markup);
+  name = wnck_window_get_name (wnckwin);
+  markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", name);
+  gtk_label_set_markup (GTK_LABEL (priv->name), markup);
+  g_free (markup);  
+  task_item_emit_name_changed (TASK_ITEM (window), name);  
 }
 
 static void
@@ -341,11 +380,36 @@ on_window_icon_changed (WnckWindow *wnckwin, TaskWindow *window)
 {
   TaskSettings *s = task_settings_get_default ();
   GdkPixbuf    *pixbuf;
+  GdkPixbuf    *scaled;
+  gint  height;
+  gint  width;
+  gint  scaled_height;
+  gint  scaled_width;  
+  TaskWindowPrivate *priv;
 
   g_return_if_fail (TASK_IS_WINDOW (window));
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
+
+  priv = window->priv;
   
   pixbuf = _wnck_get_icon_at_size (wnckwin, s->panel_size, s->panel_size);
+  
+  height = gdk_pixbuf_get_height (pixbuf);
+  width = gdk_pixbuf_get_width (pixbuf);
+  gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON,&scaled_width,&scaled_height);  
+  if (height != scaled_height)
+  {
+    scaled = gdk_pixbuf_scale_simple (pixbuf,scaled_width,scaled_height,GDK_INTERP_BILINEAR);    
+  }
+  else
+  {
+    scaled = pixbuf;
+    g_object_ref (scaled);
+  }
+  
+  gtk_image_set_from_pixbuf (GTK_IMAGE (priv->image), scaled);
+  g_object_unref (scaled);
+  
   task_item_emit_icon_changed (TASK_ITEM (window), pixbuf);
   g_object_unref (pixbuf);
 }
@@ -457,7 +521,9 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
 
   
   markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", wnck_window_get_name (wnckwin));
-  task_item_emit_name_changed (TASK_ITEM (window), markup);  
+  task_item_emit_name_changed (TASK_ITEM (window), markup);
+  on_window_name_changed (wnckwin,window);
+  on_window_icon_changed (wnckwin,window);
   g_free (markup);
   pixbuf = _wnck_get_icon_at_size (wnckwin, s->panel_size, s->panel_size);
   task_item_emit_icon_changed (TASK_ITEM (window), pixbuf);
@@ -843,6 +909,15 @@ _is_visible (TaskItem *item)
   
   return priv->in_workspace && !priv->hidden;
 }
+
+static GtkWidget *
+_get_image_widget (TaskItem *item)
+{
+  TaskWindowPrivate *priv = TASK_WINDOW (item)->priv;
+  
+  return priv->image;
+}
+
 
 static void
 _left_click (TaskItem *item, GdkEventButton *event)
