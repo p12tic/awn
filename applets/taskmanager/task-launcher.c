@@ -707,7 +707,7 @@ _name_change (TaskItem *item, const gchar *name)
   gchar * markup;
 
   tmp = g_strdup_printf (_("Launch %s"),name);
-  markup = g_markup_printf_escaped ("<b>%s</b>", tmp);
+  markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_weight=\"bold\">%s</span>", tmp);
   TASK_ITEM_CLASS (task_launcher_parent_class)->name_change (item, markup);  
   g_free (tmp);
   g_free (markup);

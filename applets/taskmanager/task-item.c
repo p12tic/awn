@@ -218,6 +218,7 @@ task_item_init (TaskItem *item)
 {
   TaskItemPrivate *priv;
   TaskItemClass *klass;
+  GtkWidget * alignment;
 
   klass = TASK_ITEM_GET_CLASS (item);  
   
@@ -232,14 +233,17 @@ task_item_init (TaskItem *item)
 
   /* create content */
   priv->box = gtk_hbox_new (FALSE, 10);
-  gtk_container_add (GTK_CONTAINER (item), priv->box);
+
+  alignment = gtk_alignment_new (0.0,0.5,0.0,0.0);
+  gtk_container_add (GTK_CONTAINER(alignment),priv->box);
+
+  gtk_container_add (GTK_CONTAINER (item), alignment);
   gtk_container_set_border_width (GTK_CONTAINER (priv->box), 1);
 
   priv->image = GTK_WIDGET (awn_image_new ());
   gtk_box_pack_start (GTK_BOX (priv->box), priv->image, FALSE, FALSE, 0);
   
   priv->name = gtk_label_new ("");
-  
   /*
    TODO once get/set prop is available create this a config key and bind
    */

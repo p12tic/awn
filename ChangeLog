@@ -1,3 +1,11 @@
+2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-window.c:
+	Modify the text and alignment of task items in the
+	Dialog.
+
 2009-08-24  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* awn-settings/awnSettings.py.in:

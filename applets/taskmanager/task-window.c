@@ -331,7 +331,7 @@ on_window_name_changed (WnckWindow *wnckwin, TaskWindow *window)
   priv = window->priv;
 
   //Is there any real advantage to emit a signal in this case?
-  markup = g_markup_printf_escaped ("%s", wnck_window_get_name (wnckwin));
+  markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", wnck_window_get_name (wnckwin));
   task_item_emit_name_changed (TASK_ITEM (window), markup);  
   g_free (markup);
 }
@@ -435,6 +435,7 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
 {
   TaskWindowPrivate *priv;
   GdkPixbuf    *pixbuf;
+  gchar * markup;
   TaskSettings *s = task_settings_get_default ();
   
   g_return_if_fail (TASK_IS_WINDOW (window));
@@ -454,7 +455,10 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
   g_signal_connect (wnckwin, "state-changed", 
                     G_CALLBACK (on_window_state_changed), window);
 
-  task_item_emit_name_changed (TASK_ITEM (window), wnck_window_get_name (wnckwin));
+  
+  markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", wnck_window_get_name (wnckwin));
+  task_item_emit_name_changed (TASK_ITEM (window), markup);  
+  g_free (markup);
   pixbuf = _wnck_get_icon_at_size (wnckwin, s->panel_size, s->panel_size);
   task_item_emit_icon_changed (TASK_ITEM (window), pixbuf);
   g_object_unref (pixbuf);
