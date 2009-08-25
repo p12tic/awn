@@ -24,6 +24,21 @@
 
 //#define DEBUG
 
+
+/*
+ TODO: Split/cleanup this and related code in taskmanager-c into a separater 
+      object/lib once it comes time to do a caching of results + tracking of app 
+      use (early in 0.6).  
+  
+      The various uses are kind of obvious.  Such as use by shinyswitcher. And 
+      use your imagination.
+ 
+      Special casing info should be moved into separate datafiles/db.
+ 
+      Tool to analyze and special case windows by advanced users ala xprop 
+      (point and click) and analyze.
+ */
+
 typedef struct
 {
   const gchar * exec;
