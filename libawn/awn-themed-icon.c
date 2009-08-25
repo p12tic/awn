@@ -37,7 +37,7 @@
 #include "gseal-transition.h"
  
 /**
- * SECTION:AwnThemedIcon
+ * SECTION: awn-themed-icon
  * @short_description: A AwnIcon subclass that provides gtk themed icon support
  * @see_also: #AwnIcon, #AwnOverlaidIcon, #GtkIconTheme
  * @stability: Unstable

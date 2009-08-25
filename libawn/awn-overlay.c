@@ -19,7 +19,7 @@
 
 
 /**
- * SECTION:AwnOverlay
+ * SECTION: awn-overlay
  * @short_description: Base object for overlays used with #AwnOverlaidIcon.
  * @see_also: #AwnOverlaidIcon, #AwnOverlayText, #AwnOverlayIcon, #AwnOverlayThrobber
  * @stability: Unstable

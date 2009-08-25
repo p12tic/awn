@@ -24,7 +24,7 @@
 #include "awn-overlay-throbber.h"
 
 /**
- * SECTION:AwnOverlayThrobber
+ * SECTION: awn-overlay-throbber
  * @short_description: Throbber overlay.
  * @see_also: #AwnOverlaidIcon, #AwnOverlay, #AwnOverlayIcon, #AwnOverlayText,
  * #AwnOverlayPixbuf, #AwnOverlayPixbufFile

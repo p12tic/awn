@@ -1,5 +1,18 @@
 2009-08-24  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-overlay-pixbuf-file.c:
+	* libawn/awn-overlay-pixbuf.c:
+	* libawn/awn-overlay-progress-circle.c:
+	* libawn/awn-overlay-progress.c:
+	* libawn/awn-overlay-text.c:
+	* libawn/awn-overlay-themed-icon.c:
+	* libawn/awn-overlay-throbber.c:
+	* libawn/awn-overlay.c:
+	* libawn/awn-themed-icon.c:
+	Fix gtk-doc.
+
+2009-08-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/Makefile.am:
 	* doc/reference/libawn-sections.txt:
 	* doc/reference/libawn.types:

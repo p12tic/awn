@@ -18,7 +18,7 @@
  
 
 /**
- * SECTION:AwnOverlayProgress
+ * SECTION: awn-overlay-progress
  * @short_description: Progress overlay for use with #AwnIcon.
  * @see_also: #AwnEffects, #AwnOverlay, #AwnOverlayThemedIcon, #AwnOverlayThrobber,
  * #AwnOverlayPixbuf, #AwnOverlayPixbufFile, #AwnIcon

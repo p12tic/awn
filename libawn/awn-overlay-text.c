@@ -17,7 +17,7 @@
  */
 
 /**
- * SECTION:AwnOverlayText
+ * SECTION: awn-overlay-text
  * @short_description: Text overlay for use with #AwnIcon.
  * @see_also: #AwnEffects, #AwnOverlay, #AwnOverlayThemedIcon, #AwnOverlayThrobber,
  * #AwnOverlayPixbuf, #AwnOverlayPixbufFile, #AwnIcon

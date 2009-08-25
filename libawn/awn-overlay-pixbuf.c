@@ -19,7 +19,7 @@
 /* awn-overlay-pixbuf.c */
 
 /**
- * SECTION:AwnOverlayPixbuf
+ * SECTION: awn-overlay-pixbuf
  * @short_description: An #AwnOverlay subclass to overlay a #GdkPixbuf
  * @see_also: #AwnOverlay, #AwnOverlayText, #AwnOverlayThemedIcon, #AwnOverlaidIcon
  * @stability: Unstable

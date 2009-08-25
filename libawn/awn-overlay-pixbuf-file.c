@@ -18,7 +18,7 @@
 
 
 /**
- * SECTION:AwnOverlayPixbufFile
+ * SECTION: awn-overlay-pixbuf-file
  * @short_description: An subclass of #AwnOverlayPixbuf to overlay a #GdkPixbuf 
  * loaded from a Filename.
  * @see_also: #AwnOverlay, #AwnOverlayText, #AwnOverlayThemedIcon, 

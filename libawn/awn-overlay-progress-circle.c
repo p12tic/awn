@@ -17,7 +17,7 @@
  */
  
 /**
- * SECTION:AwnOverlayProgressCircle
+ * SECTION: awn-overlay-progress-circle
  * @short_description: Circle Progress overlay for use with #AwnIcon.
  * @see_also: #AwnEffects, #AwnOverlay, #AwnOverlayThemedIcon, #AwnOverlayThrobber,
  * #AwnOverlayPixbuf, #AwnOverlayPixbufFile, #AwnIcon, #AwnOverlayProgress

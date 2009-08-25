@@ -18,7 +18,7 @@
  
 
 /**
- * SECTION:AwnOverlayThemedIcon
+ * SECTION: awn-overlay-themed-icon
  * @short_description: Themed Icon overlay for use with #AwnOverlaidIcon.
  * @see_also: #AwnEffects, #AwnOverlay, #AwnOverlayPixbuf, #AwnOverlayPixbufFile, 
  * #AwnOverlayThrobber, #AwnOverlayText, #AwnThemedIcon.
