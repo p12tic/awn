@@ -22,8 +22,30 @@
 #ifndef __AWN_DEFINES_H__
 #define __AWN_DEFINES_H__
 
+/**
+ * AWN_MAX_HEIGHT: 
+ *
+ *The maximum size of the panel
+ */
+
 #define AWN_MAX_HEIGHT 100
+
+/**
+ * AWN_MIN_HEIGHT: 
+ *
+ *The minimum size of the panel
+ */
 #define AWN_MIN_HEIGHT 12
+
+/**
+ * AwnOrientation:
+ * @AWN_ORIENTATION_TOP: Placed along the top of the screen.
+ * @AWN_ORIENTATION_RIGHT: Placed along the right side of the screen.
+ * @AWN_ORIENTATION_BOTTOM: Placed along the bottom of the screen.
+ * @AWN_ORIENTATION_LEFT: Placed along the left side of the screen.
+ *
+ * Describes the orientation and placement of the panel.
+ */
 
 typedef enum
 {
@@ -64,6 +86,14 @@ typedef enum
   AWN_APPLET_LICENSE_LGPLV3 = 13
 } AwnAppletLicense;
 
+/**
+ * AwnPathType:
+ * @AWN_PATH_LINEAR: Standard (non-curved) panel layout.
+ * @AWN_PATH_ELLIPSE: Elliptical (curved) panel layout.
+ * @AWN_PATH_LAST: Placeholder value.
+ *
+ * Describes the layout of icons on the panel.
+ */
 
 typedef enum
 {
@@ -80,6 +110,51 @@ typedef enum
  * The default panel ID.
  */
 #define AWN_PANEL_ID_DEFAULT 1
+
+/**
+ * AWN_FONT_SIZE_EXTRA_SMALL: 
+ *
+ * Extra small font size. For use with #AwnOverlayText.
+ * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to 
+ * standard Pango font size units for standard %PANGO_SCALE when the awn icon
+ * size is 48.0 pixels.
+ */
+
+/**
+ * AWN_FONT_SIZE_SMALL: 
+ *
+ * Small font size. For use with #AwnOverlayText.
+ * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to 
+ * standard Pango font size units for standard %PANGO_SCALE when the awn icon
+ * size is 48.0 pixels.
+ */
+
+/**
+ * AWN_FONT_SIZE_MEDIUM: 
+ *
+ * Medium font size. For use with #AwnOverlayText.
+ * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to 
+ * standard Pango font size units for standard %PANGO_SCALE when the awn icon
+ * size is 48.0 pixels.
+ */
+
+/**
+ * AWN_FONT_SIZE_LARGE: 
+ *
+ * Large font size. For use with #AwnOverlayText.
+ * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to 
+ * standard Pango font size units for standard %PANGO_SCALE when the awn icon
+ * size is 48.0 pixels.
+ */
+
+/**
+ * AWN_FONT_SIZE_EXTRA_LARGE: 
+ *
+ * Extra large font size. For use with #AwnOverlayText.
+ * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to 
+ * standard Pango font size units for standard %PANGO_SCALE when the awn icon
+ * size is 48.0 pixels.
+ */
 
 #define AWN_FONT_SIZE_EXTRA_SMALL 6.0
 #define AWN_FONT_SIZE_SMALL       9.0

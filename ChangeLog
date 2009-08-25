@@ -1,3 +1,8 @@
+2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-defines.h:
+	Added documentation for several enums and constants.
+
 2009-08-24  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-overlay-pixbuf-file.c:
