@@ -1,3 +1,16 @@
+2009-08-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-manager.c (task_manager_new):
+	* bindings/python/awn.defs:
+	* bindings/vala/awn-custom.vala:
+	* bindings/vala/awn.vapi:
+	* libawn/awn-applet.c (awn_applet_class_init):
+	* libawn/awn-config.c (awn_config_get_default_for_applet,
+	  awn_config_get_default_for_applet_by_info):
+	* libawn/awn-config.h:
+	Remove the single-instance property from AwnApplet and its related
+	code in awn-config.
+
 2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-window.c:

@@ -512,7 +512,6 @@ task_manager_new (const gchar *name,
                             "display-name", "Task Manager",
                             "uid", uid,
                             "panel-id", panel_id,
-                            "single-instance", TRUE,
                             NULL);
   return manager;
 }

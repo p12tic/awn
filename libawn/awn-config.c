@@ -38,7 +38,6 @@
  */
 
 #define SCHEMADIR PKGDATADIR "/schemas"
-#define UID_SINGLE_INSTANCE_PREFIX "single-"
 
 /* The config client cache. */
 static GData* awn_config_clients = NULL;
@@ -135,20 +134,17 @@ awn_config_get_default_for_applet (AwnApplet *applet, GError **error)
 
   gchar *canonical_name = NULL;
   gchar *uid = NULL;
-  gboolean single_instance = FALSE;
   DesktopAgnosticConfigClient *client = NULL;
 
   g_object_get (G_OBJECT (applet),
                 "canonical-name", &canonical_name,
                 "uid", &uid,
-                "single-instance", &single_instance,
                 NULL);
 
   g_return_val_if_fail (canonical_name != NULL, NULL);
 
   client = awn_config_get_default_for_applet_by_info (canonical_name,
                                                       uid,
-                                                      single_instance,
                                                       error);
 
   if (uid != NULL)
@@ -166,7 +162,6 @@ awn_config_get_default_for_applet (AwnApplet *applet, GError **error)
  * awn_config_get_default_for_applet_by_info:
  * @name: The canonical applet name.
  * @uid: The UID of the applet (may be %NULL).
- * @single_instance: Whether configuration should be single-instance.
  * @error: The address of the #GError object, if an error occurs.
  *
  * Looks up or creates a configuration client that is associated with the
@@ -180,7 +175,6 @@ awn_config_get_default_for_applet (AwnApplet *applet, GError **error)
 DesktopAgnosticConfigClient*
 awn_config_get_default_for_applet_by_info (const gchar  *name,
                                            const gchar  *uid,
-                                           gboolean      single_instance,
                                            GError      **error)
 {
   g_return_val_if_fail (name != NULL, NULL);
@@ -194,14 +188,7 @@ awn_config_get_default_for_applet_by_info (const gchar  *name,
     g_datalist_init (&awn_config_clients);
   }
 
-  if (single_instance)
-  {
-    instance_id = g_strdup_printf ("awn-applet-%s", name);
-  }
-  else
-  {
-    instance_id = g_strdup_printf ("awn-applet-%s-%s", name, uid);
-  }
+  instance_id = g_strdup_printf ("awn-applet-%s-%s", name, uid);
 
   client = (DesktopAgnosticConfigClient*)g_datalist_get_data (&awn_config_clients,
                                                               instance_id);
@@ -210,6 +197,7 @@ awn_config_get_default_for_applet_by_info (const gchar  *name,
   {
     gchar *schema_basename;
     gchar *schema_filename;
+    DesktopAgnosticConfigSchema *schema;
 
     schema_basename = g_strdup_printf ("awn-applet-%s.schema-ini", name);
 
@@ -217,18 +205,28 @@ awn_config_get_default_for_applet_by_info (const gchar  *name,
 
     g_free (schema_basename);
 
-    if (single_instance)
-    {
-      client = desktop_agnostic_config_client_new (schema_filename);
-    }
-    else
-    {
-      client = desktop_agnostic_config_client_new_for_instance (schema_filename,
-                                                                instance_id,
-                                                                error);
-    }
+    g_message ("schema filename: %s", schema_filename);
+
+    schema = desktop_agnostic_config_schema_new (schema_filename, error);
 
     g_free (schema_filename);
+
+    if (error && *error != NULL)
+    {
+      if (schema != NULL)
+      {
+        g_object_unref (schema);
+      }
+      g_free (instance_id);
+      return NULL;
+    }
+
+    client = desktop_agnostic_config_client_new_for_schema (schema,
+                                                            instance_id,
+                                                            error);
+
+    g_object_unref (schema);
+
     if (error && *error != NULL)
     {
       if (client != NULL)

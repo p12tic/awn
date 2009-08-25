@@ -28,7 +28,7 @@ namespace Awn {
 		[CCode (cheader_filename = "libawn/libawn.h")]
 		public static unowned DesktopAgnostic.Config.Client get_default_for_applet (Awn.Applet applet) throws GLib.Error;
 		[CCode (cheader_filename = "libawn/libawn.h")]
-		public static unowned DesktopAgnostic.Config.Client get_default_for_applet_by_info (string name, string uid, bool single_instance) throws GLib.Error;
+		public static unowned DesktopAgnostic.Config.Client get_default_for_applet_by_info (string name, string uid) throws GLib.Error;
 	}
 	[CCode (cprefix = "AwnUtils", lower_case_cprefix = "awn_utils_")]
 	namespace Utils {

@@ -30,7 +30,7 @@ G_BEGIN_DECLS
 
 DesktopAgnosticConfigClient* awn_config_get_default                    (gint panel_id, GError **error);
 DesktopAgnosticConfigClient* awn_config_get_default_for_applet         (AwnApplet *applet, GError **error);
-DesktopAgnosticConfigClient* awn_config_get_default_for_applet_by_info (const gchar *name, const gchar *uid, gboolean single_instance, GError **error);
+DesktopAgnosticConfigClient* awn_config_get_default_for_applet_by_info (const gchar *name, const gchar *uid, GError **error);
 void                         awn_config_free                           (void);
 
 G_END_DECLS
