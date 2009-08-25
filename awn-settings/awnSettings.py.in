@@ -20,7 +20,8 @@
 #
 #  Notes: Avant Window Navigator Manager
 
-import sys, os, os.path, time
+import sys
+import os
 
 PLAT_PKG = '@PY_PLAT_PKG@'
 SITE_PKG = '@PY_SITE_PKG@'
@@ -39,12 +40,10 @@ except:
 try:
     import gobject
     import gtk
-    import gtk.glade
     import gtk.gdk as gdk
 except Exception, e:
     sys.stderr.write(str(e) + '\n')
     sys.exit(1)
-from xdg.DesktopEntry import DesktopEntry
 
 #from awnTheme import AwnThemeManager
 from awnClass import awnPreferences, awnManager, awnLauncher, awnApplet
@@ -60,7 +59,6 @@ from desktopagnostic import config
 from desktopagnostic import vfs
 from desktopagnostic.config import GROUP_DEFAULT
 
-vfs.init()
 defs.i18nize(globals())
 
 if os.geteuid() == 0:
@@ -389,7 +387,7 @@ class awnLauncherMini(awnLauncher):
 
         self.scrollwindow.add(self.treeview_launchers)
 
-        self.launchers_uris = self.client.get_list(GROUP_DEFAULT, 
+        self.launchers_uris = self.client.get_list(GROUP_DEFAULT,
                                                    defs.LAUNCHERS_LIST)
 
         self.refresh_tree(self.launchers_uris, self.make_model(self.launchers_uris, self.treeview_launchers))
@@ -485,6 +483,7 @@ class awnManagerMini(awnManager):
 
 
 if __name__ == "__main__":
+    vfs.init()
     try:
         awnmanager = awnManagerMini()
         awnmanager.main()

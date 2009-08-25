@@ -20,12 +20,15 @@
 #
 #  Notes: Avant Window Navigator preferences window
 
-import sys, os, time, urllib, StringIO
+import sys
+import os
+import socket
+import time
+import urllib
 try:
-    import pygtk
-    pygtk.require("2.0")
-except:
-    pass
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 try:
     import gobject
     import gtk
@@ -35,12 +38,11 @@ except Exception, e:
     sys.exit(1)
 from xdg.DesktopEntry import DesktopEntry
 
-import gobject
-import awn
 import awnDefs as defs
 from awnLauncherEditor import awnLauncherEditor
 import tarfile
 
+from bzrlib import branch
 from bzrlib.builtins import cmd_branch, cmd_pull
 from bzrlib.plugins.launchpad.lp_directory import LaunchpadDirectory
 
@@ -60,7 +62,7 @@ def hex2dec(s):
 def make_color(hexi):
     """returns a gtk.gdk.Color from a hex string RRGGBBAA"""
     try:
-    	color = gtk.gdk.color_parse('#' + hexi[:6])
+        color = gtk.gdk.color_parse('#' + hexi[:6])
     except:
 	color = gtk.gdk.color_parse(hexi[:13])
     alpha = hex2dec(hexi[4:])
@@ -114,7 +116,7 @@ class awnBzr(gobject.GObject):
         else:
             try:
                 bzr_branch = cmd_branch()
-                status = StringIO.StringIO()
+                status = StringIO()
                 status = bzr_branch._setup_outf()
                 bzr_branch.run(from_location=self.lp_path_normalize(bzr_dir), to_location=path)
             except socket.gaierror:
@@ -126,7 +128,7 @@ class awnBzr(gobject.GObject):
                 Return the output of the command
         '''
         bzr_pull = cmd_pull()
-        status = StringIO.StringIO()
+        status = StringIO()
         status = bzr_pull._setup_outf()
         bzr_pull.run(directory=path)
 
@@ -877,73 +879,6 @@ class awnPreferences(awnBzr):
             else:
                 effects = effects << 4 | int(d.get_active())-1
         return effects
-
-    def setup_effect(self, group, key, dropdown):
-        self.effects_dd = dropdown
-        model = gtk.ListStore(str)
-        model.append([_("None")])
-        model.append([_("Simple")])
-        model.append([_("Classic")])
-        model.append([_("Fade")])
-        model.append([_("Spotlight")])
-        model.append([_("Zoom")])
-        model.append([_("Squish")])
-        model.append([_("3D Turn")])
-        model.append([_("3D Spotlight Turn")])
-        model.append([_("Glow")])
-        model.append([_("Custom")]) ##Always last
-        dropdown.set_model(model)
-        cell = gtk.CellRendererText()
-        dropdown.pack_start(cell)
-        dropdown.add_attribute(cell,'text',0)
-
-        self.load_effect(group,key,dropdown)
-
-        dropdown.connect("changed", self.effect_changed, (group, key))
-        #self.setup_effect_custom(group, key)
-        self.client.notify_add(group, key, self.reload_effect, dropdown)
-
-    def load_effect(self, group, key, dropdown):
-        effect_settings = self.client.get_int(group, key)
-        hover_effect = effect_settings & 15
-        bundle = 0
-        for i in range(5):
-            bundle = bundle << 4 | hover_effect
-
-        if (bundle == effect_settings):
-        #    self.wTree.get_widget('customeffectsframe').hide()
-        #    self.wTree.get_widget('customeffectsframe').set_no_show_all(True)
-            if (hover_effect == 15):
-                active = 0
-            else:
-                active = hover_effect+1
-        else:
-            active = 10 #Custom
-        #    self.wTree.get_widget('customeffectsframe').show()
-
-        dropdown.set_active(int(active))
-
-    def reload_effect(self, group, key, value, dropdown):
-        self.load_effect(group, key, dropdown)
-
-    def effect_changed(self, dropdown, groupkey):
-        group, key = groupkey
-        new_effects = 0
-        effect = 0
-        if(dropdown.get_active() != 10): # not Custom
-#            self.wTree.get_widget('customeffectsframe').hide()
-            if(dropdown.get_active() == 0):
-                effect = 15
-            else:
-                effect = dropdown.get_active() - 1
-            for i in range(5):
-                new_effects = new_effects << 4 | effect
-            self.client.set_int(group, key, new_effects)
-            print "effects set to: ", "%0.8X" % new_effects
-#            self.load_effect_custom(group, key)
-        else:
-#            self.wTree.get_widget('customeffectsframe').show()
-            pass
 
     def setup_autostart(self, check):
         """sets up checkboxes"""

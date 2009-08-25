@@ -1,5 +1,12 @@
 2009-08-25  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Fix style issues.
+	Remove unused imports and multiple method defintions.
+
+2009-08-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* awn-settings/awn-settings.xml:
 	* awn-settings/awnClass.py:
 	Fix runtime warnings.
