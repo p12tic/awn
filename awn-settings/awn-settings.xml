@@ -7,7 +7,6 @@
     <property name="upper">100</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-    <property name="page_size">10</property>
   </object>
   <object class="GtkAdjustment" id="adjustment10">
     <property name="upper">2</property>
@@ -38,7 +37,6 @@
     <property name="upper">100</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-    <property name="page_size">10</property>
   </object>
   <object class="GtkAdjustment" id="adjustment4">
     <property name="upper">1</property>
@@ -49,20 +47,17 @@
     <property name="upper">3000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-    <property name="page_size">10</property>
   </object>
   <object class="GtkAdjustment" id="adjustment6">
     <property name="value">1280</property>
     <property name="upper">3000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-    <property name="page_size">10</property>
   </object>
   <object class="GtkAdjustment" id="adjustment7">
     <property name="upper">9999</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-    <property name="page_size">10</property>
   </object>
   <object class="GtkAdjustment" id="adjustment8">
     <property name="upper">3</property>
@@ -89,7 +84,6 @@
             <child>
               <object class="GtkVBox" id="vbox4">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
                 <property name="spacing">2</property>
                 <child>
                   <object class="GtkFrame" id="frame5">
@@ -116,7 +110,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="choose_theme_button">
-                                <property name="label" translatable="yes">gtk-select-color</property>
+                                <property name="label">gtk-select-color</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -167,7 +161,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox13">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">2</property>
                             <child>
                               <object class="GtkHBox" id="hbox5">
@@ -453,7 +446,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox12">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkHBox" id="hbox8">
                                 <property name="visible">True</property>
@@ -556,7 +548,6 @@
             <child>
               <object class="GtkVBox" id="vbox9">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkHBox" id="hbox1">
                     <property name="visible">True</property>
@@ -622,7 +613,6 @@
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="border_width">6</property>
-                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkScrolledWindow" id="appletScrollActive">
                             <property name="visible">True</property>
@@ -882,7 +872,6 @@
                   <object class="GtkVBox" id="vbox5">
                     <property name="visible">True</property>
                     <property name="border_width">6</property>
-                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkScrolledWindow" id="launchers_scroll_list">
@@ -907,7 +896,7 @@
                         <property name="layout_style">end</property>
                         <child>
                           <object class="GtkButton" id="launcher_add">
-                            <property name="label" translatable="yes">gtk-add</property>
+                            <property name="label">gtk-add</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -921,7 +910,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="launcher_remove">
-                            <property name="label" translatable="yes">gtk-remove</property>
+                            <property name="label">gtk-remove</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -935,7 +924,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="launcher_edit">
-                            <property name="label" translatable="yes">gtk-edit</property>
+                            <property name="label">gtk-edit</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -982,7 +971,6 @@
             <child>
               <object class="GtkVBox" id="vbox7">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkFrame" id="frame4">
                     <property name="visible">True</property>
@@ -1002,7 +990,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="add_repo">
-                            <property name="label" translatable="yes">gtk-add</property>
+                            <property name="label">gtk-add</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -1014,7 +1002,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="update_repo">
-                            <property name="label" translatable="yes">gtk-refresh</property>
+                            <property name="label">gtk-refresh</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -1043,7 +1031,6 @@
                 <child>
                   <object class="GtkHBox" id="vbox10">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkExpander" id="expander1">
                         <property name="visible">True</property>
@@ -1051,7 +1038,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox6">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkHBox" id="hbox9">
                                 <property name="visible">True</property>
@@ -1275,7 +1261,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox2">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkHBox" id="hbox45">
                                 <property name="visible">True</property>
@@ -1381,7 +1366,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox3">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkHBox" id="hbox53">
                                 <property name="visible">True</property>
@@ -1495,7 +1479,6 @@
                             <child>
                               <object class="GtkVBox" id="vbox11">
                                 <property name="visible">True</property>
-                                <property name="orientation">vertical</property>
                                 <child>
                                   <object class="GtkLabel" id="label26">
                                     <property name="visible">True</property>
@@ -1609,7 +1592,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox8">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkHBox" id="hbox27">
                                 <property name="visible">True</property>
@@ -1842,7 +1824,7 @@
             </child>
             <child>
               <object class="GtkButton" id="add_repo_plus">
-                <property name="label" translatable="yes">gtk-add</property>
+                <property name="label">gtk-add</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -1856,7 +1838,7 @@
             </child>
             <child>
               <object class="GtkButton" id="repo_quit">
-                <property name="label" translatable="yes">gtk-quit</property>
+                <property name="label">gtk-quit</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -1909,7 +1891,7 @@
             </child>
             <child>
               <object class="GtkButton" id="exit_update_win">
-                <property name="label" translatable="yes">gtk-quit</property>
+                <property name="label">gtk-quit</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -1979,7 +1961,7 @@
             <property name="visible">True</property>
             <child>
               <object class="GtkButton" id="apply_theme">
-                <property name="label" translatable="yes">gtk-apply</property>
+                <property name="label">gtk-apply</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -1993,7 +1975,7 @@
             </child>
             <child>
               <object class="GtkButton" id="exit_theme_select">
-                <property name="label" translatable="yes">gtk-quit</property>
+                <property name="label">gtk-quit</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -2017,12 +1999,12 @@
   </object>
   <object class="GtkSizeGroup" id="sizegroup1">
     <widgets>
-      <widget name="monitor_align_hscale"/>
-      <widget name="behaviorcombo"/>
-      <widget name="iconeffects"/>
-      <widget name="stylecombo"/>
-      <widget name="orientationcombo"/>
       <widget name="hbox2"/>
+      <widget name="orientationcombo"/>
+      <widget name="stylecombo"/>
+      <widget name="iconeffects"/>
+      <widget name="behaviorcombo"/>
+      <widget name="monitor_align_hscale"/>
     </widgets>
   </object>
 </interface>

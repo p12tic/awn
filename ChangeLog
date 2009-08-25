@@ -1,3 +1,9 @@
+2009-08-25  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/awn-settings.xml:
+	* awn-settings/awnClass.py:
+	Fix runtime warnings.
+
 2009-08-24  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-item.c:

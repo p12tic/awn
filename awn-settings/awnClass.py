@@ -640,7 +640,8 @@ class awnBzr(gobject.GObject):
         treeview.append_column (col)
 
         ren = gtk.CellRendererText()
-        col = gtk.TreeViewColumn ("Desktop", ren, visible=False)
+        ren.props.visible = False
+        col = gtk.TreeViewColumn ("Desktop", ren)
         treeview.append_column (col)
 
 #        self.last_uris = uris[:] # make a copy
