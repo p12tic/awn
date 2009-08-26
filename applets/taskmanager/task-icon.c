@@ -2326,7 +2326,6 @@ task_icon_get_dialog (TaskIcon *icon)
  * - code to drop things on icons
  * - code to reorder icons through dragging
  */
-
 void
 task_icon_set_draggable (TaskIcon *icon, gboolean draggable)
 {
@@ -2512,7 +2511,7 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
       //if (!priv->items || !TASK_IS_LAUNCHER (priv->items->data))
       //  gdk_drag_status (context, GDK_ACTION_DEFAULT, t);
       //else
-        gdk_drag_status (context, GDK_ACTION_COPY, t);
+      gdk_drag_status (context, GDK_ACTION_COPY, t);
       return TRUE;
     }
     if (priv->main_item && TASK_IS_WINDOW (priv->main_item) )
@@ -2528,6 +2527,11 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
                                         (GSourceFunc)drag_timeout, widget);
         priv->drag_time = t;
       }
+    }
+    else
+    {
+      gdk_drag_status (context, GDK_ACTION_COPY, t);
+      return TRUE;
     }
     return FALSE;
   }

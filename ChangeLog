@@ -1,5 +1,10 @@
 2009-08-25  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Fix DnD of items onto Launch only task icon.
+
+2009-08-25  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Added to the scariness that is the desktop lookup code.
 	More specifically deal with the fact that the desktop 
