@@ -57,6 +57,7 @@ import awnDefs as defs
 
 from desktopagnostic import config
 from desktopagnostic import vfs
+from desktopagnostic import Color
 from desktopagnostic.config import GROUP_DEFAULT
 
 defs.i18nize(globals())
@@ -64,6 +65,12 @@ defs.i18nize(globals())
 if os.geteuid() == 0:
     sys.stderr.write(_("Awn Settings can't be run as root.") + '\n')
     sys.exit(1)
+
+# there's a bug in propertyhelper, so we'll workaround it
+class color_property(gobject.property):
+
+    def get_pspec_args(self):
+        return (Color.__gtype__, self.nick, self.blurb, self.flags)
 
 class awnPreferencesMini(awnPreferences):
     panel_size = gobject.property(type=int, default=48)
@@ -94,6 +101,8 @@ class awnPreferencesMini(awnPreferences):
     group_windows = gobject.property(type=bool, default=True)
     drag_and_drop = gobject.property(type=bool, default=True)
     match_strength = gobject.property(type=int, default=99)
+
+    gstep1 = color_property()
 
     def __init__(self, wTree):
         awnPreferences.__init__(self)
@@ -189,7 +198,10 @@ class awnPreferencesMini(awnPreferences):
             (self.client_taskman, GROUP_DEFAULT, defs.DRAG_AND_DROP,
                 "drag-and-drop", "drag_and_drop_config"),
             (self.client_taskman, GROUP_DEFAULT, defs.MATCH_STRENGTH,
-                "match-strength", "match_strength_config")
+                "match-strength", "match_strength_config"),
+            # Colors
+            (self.client, defs.THEME, defs.GSTEP1,
+                "gstep1", "gstep1_colorbutton")
         ]
 
         for item in config_map_simple:

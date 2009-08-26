@@ -1029,7 +1029,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHBox" id="vbox10">
+                  <object class="GtkVBox" id="vbox10">
                     <property name="visible">True</property>
                     <child>
                       <object class="GtkExpander" id="expander1">

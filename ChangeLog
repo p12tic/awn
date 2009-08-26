@@ -1,3 +1,10 @@
+2009-08-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.xml:
+	* awn-settings/awnSettings.py.in:
+	* awn-settings/awnSettingsHelper.py:
+	Implemented support for gtk.ColorButtons to bind_to_gtk_component.
+
 2009-08-26  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/Makefile.am:
