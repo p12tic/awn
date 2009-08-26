@@ -43,7 +43,7 @@ struct _AwnAppletManagerPrivate
 {
   DesktopAgnosticConfigClient *client;
 
-  AwnOrientation   orient;
+  GtkPositionType   position;
   gint             offset;
   gint             size;
   
@@ -77,7 +77,7 @@ enum
   PROP_0,
 
   PROP_CLIENT,
-  PROP_ORIENT,
+  PROP_POSITION,
   PROP_OFFSET,
   PROP_SIZE,
   PROP_APPLET_LIST,
@@ -100,8 +100,8 @@ static guint _applet_manager_signals[LAST_SIGNAL] = { 0 };
  */
 static void awn_applet_manager_set_size   (AwnAppletManager *manager,
                                            gint              size);
-static void awn_applet_manager_set_orient (AwnAppletManager *manager, 
-                                           gint              orient);
+static void awn_applet_manager_set_position (AwnAppletManager *manager, 
+                                           gint              position);
 static void awn_applet_manager_set_offset (AwnAppletManager *manager,
                                            gint              offset);
 static void free_list                     (GSList **list);
@@ -122,8 +122,8 @@ awn_applet_manager_constructed (GObject *object)
   /* Hook everything up to the config client */
 
   desktop_agnostic_config_client_bind (priv->client,
-                                       AWN_GROUP_PANEL, AWN_PANEL_ORIENT,
-                                       object, "orient", TRUE,
+                                       AWN_GROUP_PANEL, AWN_PANEL_POSITION,
+                                       object, "position", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
@@ -192,8 +192,8 @@ awn_applet_manager_get_property (GObject    *object,
     case PROP_CLIENT:
       g_value_set_object (value, priv->client);
       break;
-    case PROP_ORIENT:
-      g_value_set_int (value, priv->orient);
+    case PROP_POSITION:
+      g_value_set_int (value, priv->position);
       break;
     case PROP_OFFSET:
       g_value_set_int (value, priv->offset);
@@ -256,8 +256,8 @@ awn_applet_manager_set_property (GObject      *object,
     case PROP_CLIENT:
       priv->client =  g_value_get_object (value);
       break;
-    case PROP_ORIENT:
-      awn_applet_manager_set_orient (manager, g_value_get_int (value));
+    case PROP_POSITION:
+      awn_applet_manager_set_position (manager, g_value_get_int (value));
       break;
     case PROP_OFFSET:
       awn_applet_manager_set_offset (manager, g_value_get_int (value));
@@ -337,11 +337,11 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                          G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
-    PROP_ORIENT,
-    g_param_spec_int ("orient",
-                      "Orient",
-                      "The orientation of the panel",
-                      0, 3, AWN_ORIENTATION_BOTTOM,
+    PROP_POSITION,
+    g_param_spec_int ("position",
+                      "Position",
+                      "The position of the panel",
+                      0, 3, GTK_POS_BOTTOM,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                       G_PARAM_STATIC_STRINGS));
 
@@ -575,14 +575,14 @@ awn_applet_manager_set_offset (AwnAppletManager *manager,
 }
 
 static void
-awn_manager_set_applets_orient (gpointer key,
+awn_manager_set_applets_position (gpointer key,
                                 GtkWidget *applet,
                                 AwnAppletManager *manager)
 {
   if (G_IS_OBJECT (applet) &&
-        g_object_class_find_property (G_OBJECT_GET_CLASS (applet), "orient"))
+        g_object_class_find_property (G_OBJECT_GET_CLASS (applet), "position"))
   {
-    g_object_set (applet, "orient", manager->priv->orient, NULL);
+    g_object_set (applet, "position", manager->priv->position, NULL);
   }
 }
 
@@ -590,30 +590,30 @@ awn_manager_set_applets_orient (gpointer key,
  * Update the box class
  */
 static void 
-awn_applet_manager_set_orient (AwnAppletManager *manager, 
-                               gint              orient)
+awn_applet_manager_set_position (AwnAppletManager *manager, 
+                               gint              position)
 {
   AwnAppletManagerPrivate *priv = manager->priv;
   
-  priv->orient = orient;
+  priv->position = position;
 
   if (priv->klass)
   {
     g_type_class_unref (priv->klass);
     priv->klass = NULL;
   }
-  switch (priv->orient)
+  switch (priv->position)
   {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_TOP:
+    case GTK_POS_BOTTOM:
 #if GTK_CHECK_VERSION(2, 15, 0)
       gtk_orientable_set_orientation (GTK_ORIENTABLE(manager), GTK_ORIENTATION_HORIZONTAL);
 #endif
       priv->klass = GTK_WIDGET_CLASS (g_type_class_ref (GTK_TYPE_HBOX));
       break;
     
-    case AWN_ORIENTATION_RIGHT:
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_RIGHT:
+    case GTK_POS_LEFT:
 #if GTK_CHECK_VERSION(2, 15, 0)
       gtk_orientable_set_orientation (GTK_ORIENTABLE(manager), GTK_ORIENTATION_VERTICAL);
 #endif
@@ -626,9 +626,9 @@ awn_applet_manager_set_orient (AwnAppletManager *manager,
       break;
   }
 
-  /* update orientation on all running applets (if they'd crash) */
+  /* update position on all running applets (if they'd crash) */
   g_hash_table_foreach(priv->applets,
-                       (GHFunc)awn_manager_set_applets_orient, manager);
+                       (GHFunc)awn_manager_set_applets_position, manager);
 }
 
 /*
@@ -672,7 +672,7 @@ create_applet (AwnAppletManager *manager,
 
   /*FIXME: Exception cases, i.e. separators */
   
-  applet = awn_applet_proxy_new (path, uid, priv->orient,
+  applet = awn_applet_proxy_new (path, uid, priv->position,
                                  priv->offset, priv->size);
   g_signal_connect_swapped (applet, "plug-added",
                             G_CALLBACK (_applet_plug_added), manager);
@@ -1125,7 +1125,7 @@ awn_applet_manager_get_mask (AwnAppletManager *manager,
         gtk_widget_get_allocation (widget, &rect);
         // get curve offset
         gfloat temp = awn_utils_get_offset_modifier_by_path_type (path_type,
-                   priv->orient, offset_modifier,
+                   priv->position, offset_modifier,
                    rect.x + rect.width / 2 - manager_alloc.x,
                    rect.y + rect.height / 2 - manager_alloc.y,
                    manager_alloc.width,
@@ -1134,18 +1134,18 @@ awn_applet_manager_get_mask (AwnAppletManager *manager,
 
         gint size = priv->size + offset;
 
-        switch (priv->orient)
+        switch (priv->position)
         {
-          case AWN_ORIENTATION_BOTTOM:
+          case GTK_POS_BOTTOM:
             rect.y += rect.height - size;
             // no break!
-          case AWN_ORIENTATION_TOP:
+          case GTK_POS_TOP:
             rect.height = size;
             break;
-          case AWN_ORIENTATION_RIGHT:
+          case GTK_POS_RIGHT:
             rect.x += rect.width - size;
             // no break!
-          case AWN_ORIENTATION_LEFT:
+          case GTK_POS_LEFT:
             rect.width = size;
             break;
         }

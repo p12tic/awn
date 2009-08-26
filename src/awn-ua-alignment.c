@@ -40,7 +40,7 @@ struct _AwnUAAlignmentPrivate
   double      ua_ratio;
   
   guint       notify_size_id;
-  guint       notify_orient_id;
+  guint       notify_position_id;
   guint       notify_offset_id;
   guint       notify_ua_list_id;
 };
@@ -59,7 +59,7 @@ static gboolean awn_ua_alignment_plug_removed (GtkWidget * socket,
 static void awn_ua_alignment_list_change(GObject *object,
                                          GParamSpec *param_spec,
                                          gpointer user_data);
-static void awn_ua_alignment_orient_change(GObject *object,
+static void awn_ua_alignment_position_change(GObject *object,
                                            GParamSpec *param_spec,
                                            gpointer user_data);
 static void awn_ua_alignment_size_change(GObject *object,
@@ -147,14 +147,14 @@ awn_ua_alignment_constructed (GObject *object)
   }
 
   gtk_container_add (GTK_CONTAINER(object),priv->socket);
-  awn_ua_alignment_orient_change (NULL,NULL,object);  
+  awn_ua_alignment_position_change (NULL,NULL,object);  
   priv->notify_offset_id = g_signal_connect (priv->applet_manager,
                                             "notify::offset",
                                             G_CALLBACK(awn_ua_alignment_offset_change),
                                             object);
-  priv->notify_orient_id = g_signal_connect_after (priv->applet_manager,
-                                            "notify::orient",
-                                            G_CALLBACK(awn_ua_alignment_orient_change),
+  priv->notify_position_id = g_signal_connect_after (priv->applet_manager,
+                                            "notify::position",
+                                            G_CALLBACK(awn_ua_alignment_position_change),
                                             object);
   priv->notify_size_id = g_signal_connect_after (priv->applet_manager,
                                             "notify::size",
@@ -267,7 +267,7 @@ awn_ua_alignment_plug_removed (GtkWidget * socket,AwnUAAlignment * self)
   AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
   
   g_signal_handler_disconnect (priv->applet_manager,priv->notify_size_id);
-  g_signal_handler_disconnect (priv->applet_manager,priv->notify_orient_id);
+  g_signal_handler_disconnect (priv->applet_manager,priv->notify_position_id);
   g_signal_handler_disconnect (priv->applet_manager,priv->notify_offset_id);
   g_signal_handler_disconnect (priv->applet_manager,priv->notify_ua_list_id);
 
@@ -329,30 +329,30 @@ awn_ua_alignment_offset_change(GObject *object,GParamSpec *param_spec,gpointer u
 {
   AwnUAAlignment * self = user_data;  
   gint offset;
-  gint orient;
+  gint position;
   AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
   
   g_object_get ( priv->applet_manager,
                 "offset",&offset,
-                "orient",&orient,
+                "position",&position,
                 NULL);
   
-  switch (orient)
+  switch (position)
   {
-    case AWN_ORIENTATION_TOP:
+    case GTK_POS_TOP:
       gtk_alignment_set_padding (GTK_ALIGNMENT(self), offset, 0, 0, 0);
       break;
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_BOTTOM:
       gtk_alignment_set_padding (GTK_ALIGNMENT(self), 0, offset, 0, 0);
       break;
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       gtk_alignment_set_padding (GTK_ALIGNMENT(self), 0, 0, offset, 0);
       break;
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       gtk_alignment_set_padding (GTK_ALIGNMENT(self), 0, 0, 0, offset);
       break;
     default:
-      g_warning ("%s: recieved invalid orient %d",__func__,orient);
+      g_warning ("%s: recieved invalid position %d",__func__,position);
   }
 }
 
@@ -361,63 +361,63 @@ awn_ua_alignment_size_change(GObject *object,GParamSpec *param_spec,gpointer use
 {
   AwnUAAlignment * self = user_data;  
   gint offset;
-  gint orient;
+  gint position;
   gint size;
   AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
   
   g_object_get ( priv->applet_manager,
                 "offset",&offset,
-                "orient",&orient,
+                "position",&position,
                 "size",&size,
                 NULL);
   GtkRequisition  req;
 
   req.width = req.height = size;
-  switch (orient)
+  switch (position)
   {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:      
+    case GTK_POS_TOP:
+    case GTK_POS_BOTTOM:      
       req.width = size * priv->ua_ratio;
       req.height = size;
       break;
-    case AWN_ORIENTATION_LEFT:
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_LEFT:
+    case GTK_POS_RIGHT:
       req.width = size;
       req.height = size  * 1.0 / priv->ua_ratio;            
       break;
     default:
-      g_warning ("%s: received invalid orient %d",__func__,orient);
+      g_warning ("%s: received invalid position %d",__func__,position);
   }
   gtk_widget_set_size_request (GTK_WIDGET(self),req.width,req.height);
 }
 
 static void
-awn_ua_alignment_orient_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
+awn_ua_alignment_position_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
 {
   
   AwnUAAlignment * self = user_data;  
-  gint orient;
+  gint position;
   AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
   
   g_object_get ( priv->applet_manager,
-                "orient",&orient,
+                "position",&position,
                 NULL);
-  switch (orient)
+  switch (position)
   {
-    case AWN_ORIENTATION_TOP:
+    case GTK_POS_TOP:
       gtk_alignment_set (GTK_ALIGNMENT(self), 0.0, 0.0, 1.0, 0.5);
       break;
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_BOTTOM:
       gtk_alignment_set (GTK_ALIGNMENT(self), 0.0, 1.0, 1.0, 0.5);
       break;
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       gtk_alignment_set (GTK_ALIGNMENT(self), 0.0, 0.0, 0.5, 1.0);
       break;
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       gtk_alignment_set (GTK_ALIGNMENT(self), 1.0, 0.0, 0.5, 1.0);
       break;
     default:
-      g_warning ("%s: received invalid orient %d",__func__,orient);
+      g_warning ("%s: received invalid position %d",__func__,position);
   }
   awn_ua_alignment_offset_change (object,param_spec,self);
   awn_ua_alignment_size_change (object,param_spec,self);
@@ -427,12 +427,12 @@ static void
 awn_ua_alignment_list_change(GObject *object,GParamSpec *param_spec,gpointer user_data)
 {
   AwnUAAlignment * self = user_data;  
-  gint orient;
+  gint position;
   AwnUAAlignmentPrivate *priv = AWN_UA_ALIGNMENT_GET_PRIVATE (self); 
   GSList * ua_active_list;
   
   g_object_get ( priv->applet_manager,
-                "orient",&orient,
+                "position",&position,
                 "ua_active_list",&ua_active_list,
                 NULL);
 

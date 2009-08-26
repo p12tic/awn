@@ -56,7 +56,7 @@ struct _AwnIconPrivate
   guint long_press_timer;
   gboolean long_press_emitted;
 
-  AwnOrientation orient;
+  GtkPositionType position;
   gint offset;
   gint icon_width;
   gint icon_height;
@@ -176,10 +176,10 @@ awn_icon_size_request (GtkWidget *widget, GtkRequisition *req)
 {
   AwnIconPrivate *priv = AWN_ICON_GET_PRIVATE (widget);
 
-  switch (priv->orient)
+  switch (priv->position)
   {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_TOP:
+    case GTK_POS_BOTTOM:
       req->width = APPLY_SIZE_MULTIPLIER(priv->icon_width);
       req->height = priv->icon_height + priv->effects->icon_offset;
       break;
@@ -542,7 +542,7 @@ awn_icon_init (AwnIcon *icon)
 
   priv->hover_effects_enable = TRUE;
   priv->icon_srfc = NULL;
-  priv->orient = AWN_ORIENTATION_BOTTOM;
+  priv->position = GTK_POS_BOTTOM;
   priv->offset = 0;
   priv->size = 50;
   priv->icon_width = 0;
@@ -598,10 +598,10 @@ awn_icon_update_tooltip_pos(AwnIcon *icon)
    */
   gint tooltip_offset = priv->offset;
 
-  switch (priv->orient)
+  switch (priv->position)
   {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_TOP:
+    case GTK_POS_BOTTOM:
       tooltip_offset += priv->icon_height;
       break;
     default:
@@ -610,7 +610,7 @@ awn_icon_update_tooltip_pos(AwnIcon *icon)
   }
 
   awn_tooltip_set_position_hint(AWN_TOOLTIP(priv->tooltip),
-                                priv->orient, tooltip_offset);
+                                priv->position, tooltip_offset);
 }
 
 /**
@@ -642,24 +642,24 @@ awn_icon_set_offset (AwnIcon        *icon,
 }
 
 /**
- * awn_icon_set_orientation:
+ * awn_icon_set_position:
  * @icon: an #AwnIcon.
- * @orient: orientation of the icon.
+ * @position: position of the icon.
  *
- * Sets orientation of the icon.
+ * Sets position of the icon.
  */
 void 
-awn_icon_set_orientation (AwnIcon        *icon,
-                          AwnOrientation  orient)
+awn_icon_set_position (AwnIcon        *icon,
+                       GtkPositionType  position)
 {
   AwnIconPrivate *priv;
 
   g_return_if_fail (AWN_IS_ICON (icon));
   priv = icon->priv;
 
-  priv->orient = orient;
+  priv->position = position;
 
-  g_object_set (priv->effects, "orientation", orient, NULL);
+  g_object_set (priv->effects, "position", position, NULL);
 
   gtk_widget_queue_resize (GTK_WIDGET(icon));
 
@@ -679,10 +679,10 @@ update_widget_to_size (AwnIcon *icon, gint width, gint height)
   priv->icon_width = width;
   priv->icon_height = height;
 
-  switch (priv->orient)
+  switch (priv->position)
   {
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_TOP:
+    case GTK_POS_BOTTOM:
       priv->size = priv->icon_width;
       break;
 

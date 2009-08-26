@@ -142,8 +142,8 @@ static void task_manager_set_grouping (TaskManager *manager,
 static void task_manager_set_match_strength (TaskManager *manager, 
                                              gint     drag_and_drop);
 
-static void task_manager_orient_changed (AwnApplet *applet, 
-                                         AwnOrientation orient);
+static void task_manager_position_changed (AwnApplet *applet, 
+                                           GtkPositionType position);
 static void task_manager_size_changed   (AwnApplet *applet,
                                          gint       size);
 static void task_manager_origin_changed (AwnApplet *applet,
@@ -386,7 +386,7 @@ task_manager_class_init (TaskManagerClass *klass)
   obj_class->get_property = task_manager_get_property;
   obj_class->dispose = task_manager_dispose;
 
-  app_class->orient_changed = task_manager_orient_changed;
+  app_class->position_changed = task_manager_position_changed;
   app_class->size_changed   = task_manager_size_changed;
 
   /* Install properties first */
@@ -520,8 +520,8 @@ task_manager_new (const gchar *name,
  * AwnApplet stuff
  */
 static void 
-task_manager_orient_changed (AwnApplet *applet, 
-                             AwnOrientation orient)
+task_manager_position_changed (AwnApplet *applet, 
+                               GtkPositionType position)
 {
   TaskManagerPrivate *priv;
 
@@ -529,7 +529,7 @@ task_manager_orient_changed (AwnApplet *applet,
   priv = TASK_MANAGER (applet)->priv;
 
   if (priv->settings)
-    priv->settings->orient = orient;
+    priv->settings->position = position;
 
   task_drag_indicator_refresh (priv->drag_indicator);
 }
@@ -2244,7 +2244,7 @@ _drag_dest_motion(TaskManager *manager, gint x, gint y, GtkWidget *icon)
   gint move_to, moved;
   GList* childs;
   TaskManagerPrivate *priv;
-  AwnOrientation orient;
+  GtkPositionType position;
   guint size;
   double action;
   
@@ -2261,7 +2261,7 @@ _drag_dest_motion(TaskManager *manager, gint x, gint y, GtkWidget *icon)
     priv->drag_timeout = 0;
   }
 
-  orient = awn_applet_get_orientation (AWN_APPLET(manager));
+  position = awn_applet_get_position (AWN_APPLET(manager));
   size = awn_applet_get_size (AWN_APPLET(manager));
   childs = gtk_container_get_children (GTK_CONTAINER(priv->box));
   move_to = g_list_index (childs, GTK_WIDGET(icon));
@@ -2270,7 +2270,7 @@ _drag_dest_motion(TaskManager *manager, gint x, gint y, GtkWidget *icon)
   g_return_if_fail (move_to != -1);
   g_return_if_fail (moved != -1);
 
-  if(orient == AWN_ORIENTATION_TOP || orient == AWN_ORIENTATION_BOTTOM)
+  if(position == GTK_POS_TOP || position == GTK_POS_BOTTOM)
     action = (double)x/size;
   else
     action = (double)y/size;

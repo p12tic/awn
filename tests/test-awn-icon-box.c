@@ -23,17 +23,17 @@
 
 #define PICTURE_FILE "../data/avant-window-navigator.png"
 
-static AwnOrientation orient = AWN_ORIENTATION_BOTTOM;
+static GtkPositionType position = GTK_POS_BOTTOM;
 
 static gboolean
 on_click (GtkWidget *widget, GdkEventButton *event, AwnIconBox *box)
 {
-  if (orient == AWN_ORIENTATION_BOTTOM)
-    orient = AWN_ORIENTATION_RIGHT;
+  if (position == GTK_POS_BOTTOM)
+    position = GTK_POS_RIGHT;
   else
-    orient = AWN_ORIENTATION_BOTTOM;
+    position = GTK_POS_BOTTOM;
 
-  awn_icon_box_set_orientation (box, orient);
+  awn_icon_box_set_position (box, position);
   return TRUE;
 }
 
@@ -47,7 +47,7 @@ pixbuf_icon (GtkWidget *parent)
 
   icon = awn_icon_new ();
   awn_icon_set_from_pixbuf (AWN_ICON (icon), pixbuf);
-  awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
+  awn_icon_set_position (AWN_ICON (icon), GTK_POS_BOTTOM);
   awn_icon_set_tooltip_text (AWN_ICON (icon), "Pixbuf Icon");
   gtk_container_add (GTK_CONTAINER (parent), icon);
   gtk_widget_show (icon);
@@ -85,7 +85,7 @@ cairo_icon (GtkWidget *parent)
 
   icon = awn_icon_new ();
   awn_icon_set_from_context (AWN_ICON (icon), cr);
-  awn_icon_set_orientation (AWN_ICON (icon), AWN_ORIENTATION_BOTTOM);
+  awn_icon_set_position (AWN_ICON (icon), GTK_POS_BOTTOM);
   awn_icon_set_tooltip_text (AWN_ICON (icon), "Cairo Icon");
   
   gtk_container_add (GTK_CONTAINER (parent), icon);

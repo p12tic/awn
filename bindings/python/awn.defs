@@ -162,18 +162,6 @@
   )
 )
 
-(define-enum Orientation
-  (in-module "Awn")
-  (c-name "AwnOrientation")
-  (gtype-id "AWN_TYPE_ORIENTATION")
-  (values
-    '("bottom" "AWN_ORIENTATION_BOTTOM")
-    '("top" "AWN_ORIENTATION_TOP")
-    '("right" "AWN_ORIENTATION_RIGHT")
-    '("left" "AWN_ORIENTATION_LEFT")
-  )
-)
-
 (define-enum OverlayAlign
   (in-module "Awn")
   (c-name "AwnOverlayAlign")
@@ -261,17 +249,17 @@
   (return-type "const-gchar*")
 )
 
-(define-method get_orientation
+(define-method get_position
   (of-object "AwnApplet")
-  (c-name "awn_applet_get_orientation")
-  (return-type "AwnOrientation")
+  (c-name "awn_applet_get_position")
+  (return-type "GtkPositionType")
 )
 
-(define-method set_orientation
+(define-method set_position
   (of-object "AwnApplet")
-  (c-name "awn_applet_set_orientation")
+  (c-name "awn_applet_set_position")
   (parameters
-    '("AwnOrientation" "orient")
+    '("GtkPositionType" "position")
   )
 )
 
@@ -694,11 +682,6 @@
 
 ;; From awn-enum-types.h
 
-(define-function awn_orientation_get_type
-  (c-name "awn_orientation_get_type")
-  (return-type "GType")
-)
-
 (define-function awn_cairo_round_corners_get_type
   (c-name "awn_cairo_round_corners_get_type")
   (return-type "GType")
@@ -720,12 +703,12 @@
   )
 )
 
-(define-method set_orientation
+(define-method set_position
   (of-object "AwnIcon")
-  (c-name "awn_icon_set_orientation")
+  (c-name "awn_icon_set_position")
   (return-type "none")
   (parameters
-    '("AwnOrientation" "orient")
+    '("GtkPositionType" "position")
   )
 )
 
@@ -1104,7 +1087,7 @@
   (c-name "awn_tooltip_set_position_hint")
   (return-type "none")
   (parameters
-    '("AwnOrientation" "orient")
+    '("GtkPositionType" "position")
     '("gint" "size")
   )
 )

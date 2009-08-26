@@ -877,7 +877,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
 
         if (pixbuf)
         {
-          /* FIXME: Should we make this orientation-aware? */
+          /* FIXME: Should we make this position-aware? */
           if (priv->awn_theme_hit && priv->remove_custom_icon_item)
           {
             gtk_widget_show (priv->remove_custom_icon_item);

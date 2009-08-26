@@ -34,7 +34,7 @@
 #define AWN_GROUP_PANEL          "panel"
 #define AWN_PANEL_PANEL_MODE     "panel_mode"
 #define AWN_PANEL_EXPAND         "expand"
-#define AWN_PANEL_ORIENT         "orient"
+#define AWN_PANEL_POSITION       "orient"
 #define AWN_PANEL_OFFSET         "offset"
 #define AWN_PANEL_SIZE           "size"
 #define AWN_PANEL_AUTOHIDE       "autohide"

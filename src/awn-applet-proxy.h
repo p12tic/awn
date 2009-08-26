@@ -68,7 +68,7 @@ GType       awn_applet_proxy_get_type          (void) G_GNUC_CONST;
 
 GtkWidget * awn_applet_proxy_new               (const gchar *path,
                                                 const gchar *uid,
-                                                gint         orient,
+                                                gint         position,
                                                 gint         offset,
                                                 gint         size);
 void        awn_applet_proxy_execute           (AwnAppletProxy *proxy);

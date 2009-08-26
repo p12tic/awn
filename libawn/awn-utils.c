@@ -114,7 +114,7 @@ awn_utils_gslist_to_gvaluearray (GSList *list)
 
 gfloat
 awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
-                                            AwnOrientation orient,
+                                            GtkPositionType position,
                                             gfloat offset_modifier,
                                             gint pos_x, gint pos_y,
                                             gint width, gint height)
@@ -126,10 +126,10 @@ awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
   switch (path_type)
   {
     case AWN_PATH_ELLIPSE:
-      switch (orient)
+      switch (position)
       {
-        case AWN_ORIENTATION_LEFT:
-        case AWN_ORIENTATION_RIGHT:
+        case GTK_POS_LEFT:
+        case GTK_POS_RIGHT:
           result = sinf (M_PI * pos_y / height);
           return result * result * offset_modifier + 1.0f;
         default:

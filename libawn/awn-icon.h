@@ -77,8 +77,8 @@ GType         awn_icon_get_type            (void) G_GNUC_CONST;
 
 GtkWidget *   awn_icon_new                 (void);
 
-void          awn_icon_set_orientation     (AwnIcon        *icon,
-                                            AwnOrientation  orient);
+void          awn_icon_set_position        (AwnIcon        *icon,
+                                            GtkPositionType  position);
 
 void          awn_icon_set_offset          (AwnIcon        *icon,
                                             gint            offset);

@@ -86,7 +86,7 @@ struct _AwnEffects
   GtkWidget *widget;
   gboolean no_clear;
   gboolean indirect_paint;
-  gint orientation;
+  gint position;
   guint set_effects;
   gint icon_offset;
   gint refl_offset;

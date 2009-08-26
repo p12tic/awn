@@ -72,7 +72,7 @@ static void awn_background_set_gtk_theme_mode (AwnBackground *bg,
                                                gboolean       gtk_mode);
 
 static void awn_background_padding_zero (AwnBackground *bg,
-                                         AwnOrientation orient,
+                                         GtkPositionType position,
                                          guint *padding_top,
                                          guint *padding_bottom,
                                          guint *padding_left,
@@ -80,7 +80,7 @@ static void awn_background_padding_zero (AwnBackground *bg,
 
 static void awn_background_mask_none (AwnBackground  *bg,
                                       cairo_t        *cr,
-                                      AwnOrientation  orient,
+                                      GtkPositionType  position,
                                       GdkRectangle   *area);
 
 static AwnPathType awn_background_path_default (AwnBackground *bg,
@@ -564,7 +564,7 @@ awn_background_init (AwnBackground *bg)
 void 
 awn_background_draw (AwnBackground  *bg,
                      cairo_t        *cr, 
-                     AwnOrientation  orient,
+                     GtkPositionType  position,
                      GdkRectangle   *area)
 {
   AwnBackgroundClass *klass;
@@ -574,12 +574,12 @@ awn_background_draw (AwnBackground  *bg,
   klass = AWN_BACKGROUND_GET_CLASS (bg);
   g_return_if_fail (klass->draw != NULL);
 
-  klass->draw (bg, cr, orient, area);
+  klass->draw (bg, cr, position, area);
 }
 
 void 
 awn_background_padding_request (AwnBackground *bg,
-                                AwnOrientation orient,
+                                GtkPositionType position,
                                 guint *padding_top,
                                 guint *padding_bottom,
                                 guint *padding_left,
@@ -592,14 +592,14 @@ awn_background_padding_request (AwnBackground *bg,
   klass = AWN_BACKGROUND_GET_CLASS (bg);
   g_return_if_fail (klass->padding_request != NULL);
 
-  klass->padding_request (bg, orient, padding_top, padding_bottom,
+  klass->padding_request (bg, position, padding_top, padding_bottom,
                           padding_left, padding_right);
 }
 
 void 
 awn_background_get_shape_mask (AwnBackground *bg,
                                cairo_t        *cr,
-                               AwnOrientation  orient,
+                               GtkPositionType  position,
                                GdkRectangle   *area)
 {
   AwnBackgroundClass *klass;
@@ -609,13 +609,13 @@ awn_background_get_shape_mask (AwnBackground *bg,
   klass = AWN_BACKGROUND_GET_CLASS (bg);
   g_return_if_fail (klass->get_shape_mask != NULL);
 
-  klass->get_shape_mask (bg, cr, orient, area);
+  klass->get_shape_mask (bg, cr, position, area);
 }
 
 void 
 awn_background_get_input_shape_mask (AwnBackground *bg,
                                      cairo_t        *cr,
-                                     AwnOrientation  orient,
+                                     GtkPositionType  position,
                                      GdkRectangle   *area)
 {
   AwnBackgroundClass *klass;
@@ -625,7 +625,7 @@ awn_background_get_input_shape_mask (AwnBackground *bg,
   klass = AWN_BACKGROUND_GET_CLASS (bg);
   g_return_if_fail (klass->get_input_shape_mask != NULL);
 
-  klass->get_input_shape_mask (bg, cr, orient, area);
+  klass->get_input_shape_mask (bg, cr, position, area);
 }
 
 AwnPathType
@@ -644,7 +644,7 @@ awn_background_get_path_type (AwnBackground *bg,
 
 void
 awn_background_get_strut_offsets (AwnBackground *bg,
-                                  AwnOrientation orient,
+                                  GtkPositionType position,
                                   GdkRectangle *area,
                                   gint *strut,
                                   gint *strut_start, gint *strut_end)
@@ -656,7 +656,7 @@ awn_background_get_strut_offsets (AwnBackground *bg,
   klass = AWN_BACKGROUND_GET_CLASS (bg);
   if (klass->get_strut_offsets == NULL) return;
 
-  klass->get_strut_offsets (bg, orient, area, strut, strut_start, strut_end);
+  klass->get_strut_offsets (bg, position, area, strut, strut_start, strut_end);
 }
 
 void
@@ -819,7 +819,7 @@ awn_background_set_gtk_theme_mode (AwnBackground *bg,
 }
 
 static void awn_background_padding_zero(AwnBackground *bg,
-                                        AwnOrientation orient,
+                                        GtkPositionType position,
                                         guint *padding_top,
                                         guint *padding_bottom,
                                         guint *padding_left,
@@ -831,7 +831,7 @@ static void awn_background_padding_zero(AwnBackground *bg,
 
 static void awn_background_mask_none (AwnBackground *bg,
                                       cairo_t        *cr,
-                                      AwnOrientation  orient,
+                                      GtkPositionType  position,
                                       GdkRectangle   *area)
 {
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
