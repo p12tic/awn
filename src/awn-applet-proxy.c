@@ -43,7 +43,7 @@ struct _AwnAppletProxyPrivate
 {
   gchar *path;
   gchar *uid;
-  gint   orient;
+  gint   position;
   gint   offset;
   gint   size;
 
@@ -61,7 +61,7 @@ enum
   PROP_0,
   PROP_PATH,
   PROP_UID,
-  PROP_ORIENT,
+  PROP_POSITION,
   PROP_OFFSET,
   PROP_SIZE
 };
@@ -104,8 +104,8 @@ awn_applet_proxy_get_property (GObject    *object,
     case PROP_UID:
       g_value_set_string (value, priv->uid);
       break;
-    case PROP_ORIENT:
-      g_value_set_int (value, priv->orient);
+    case PROP_POSITION:
+      g_value_set_int (value, priv->position);
       break;
     case PROP_OFFSET:
       g_value_set_int (value, priv->offset);
@@ -137,9 +137,9 @@ awn_applet_proxy_set_property (GObject      *object,
     case PROP_UID:
       priv->uid = g_value_dup_string (value);
       break;
-    case PROP_ORIENT:
-      priv->orient = g_value_get_int (value);
-      awn_icon_set_orientation (AWN_ICON (priv->throbber), priv->orient);
+    case PROP_POSITION:
+      priv->position = g_value_get_int (value);
+      awn_icon_set_pos_type (AWN_ICON (priv->throbber), priv->position);
       break;
     case PROP_OFFSET:
       priv->offset = g_value_get_int (value);
@@ -166,14 +166,14 @@ awn_applet_proxy_size_request (GtkWidget *widget, GtkRequisition *req)
   {
     // to prevent flicker we set the size request to the same value 
     //   as AwnThrobber uses
-    switch (priv->orient)
+    switch (priv->position)
     {
-      case AWN_ORIENTATION_LEFT:
-      case AWN_ORIENTATION_RIGHT:
+      case GTK_POS_LEFT:
+      case GTK_POS_RIGHT:
         req->height = APPLY_SIZE_MULTIPLIER (priv->size);
         break;
-      case AWN_ORIENTATION_BOTTOM:
-      case AWN_ORIENTATION_TOP:
+      case GTK_POS_BOTTOM:
+      case GTK_POS_TOP:
       default:
         req->width = APPLY_SIZE_MULTIPLIER (priv->size);
         break;
@@ -241,11 +241,11 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
         G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
-      PROP_ORIENT,
-      g_param_spec_int ("orient",
-        "Orient",
-        "The panel orientation",
-        0, 3, AWN_ORIENTATION_BOTTOM,
+      PROP_POSITION,
+      g_param_spec_int ("position",
+        "Position",
+        "The panel position",
+        0, 3, GTK_POS_BOTTOM,
         G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
@@ -333,7 +333,7 @@ awn_applet_proxy_get_throbber(AwnAppletProxy *proxy)
 GtkWidget *     
 awn_applet_proxy_new (const gchar *path,
                       const gchar *uid,
-                      gint         orient,
+                      gint         position,
                       gint         offset,
                       gint         size)
 {
@@ -342,7 +342,7 @@ awn_applet_proxy_new (const gchar *path,
   proxy = g_object_new (AWN_TYPE_APPLET_PROXY,
       "path", path,
       "uid", uid,
-      "orient", orient,
+      "position", position,
       "offset", offset,
       "size", size,
       NULL);

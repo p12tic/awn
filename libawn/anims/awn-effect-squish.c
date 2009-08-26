@@ -40,8 +40,8 @@ bounce_squish_hover_effect(AwnEffectsAnimation * anim)
   }
 
   const gfloat MAX_BOUNCE_OFFSET =
-    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
-    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+    anim->effects->position == GTK_POS_LEFT ||
+    anim->effects->position == GTK_POS_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
 
   const gint PERIOD = 25;
@@ -132,8 +132,8 @@ bounce_squish_effect(AwnEffectsAnimation * anim)
   }
 
   const gfloat MAX_BOUNCE_OFFSET =
-    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
-    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+    anim->effects->position == GTK_POS_LEFT ||
+    anim->effects->position == GTK_POS_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
 
   const gint PERIOD = 25;
@@ -216,8 +216,8 @@ bounce_squish_attention_effect(AwnEffectsAnimation * anim)
   }
 
   const gfloat MAX_BOUNCE_OFFSET =
-    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
-    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+    anim->effects->position == GTK_POS_LEFT ||
+    anim->effects->position == GTK_POS_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
 
   const gint PERIOD = 25;
@@ -305,8 +305,8 @@ bounce_squish_opening_effect(AwnEffectsAnimation * anim)
   }
 
   const gfloat MAX_BOUNCE_OFFSET =
-    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
-    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+    anim->effects->position == GTK_POS_LEFT ||
+    anim->effects->position == GTK_POS_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
 
   const gint PERIOD = 18;
@@ -393,8 +393,8 @@ bounce_squish_closing_effect(AwnEffectsAnimation * anim)
   }
 
   const gfloat MAX_BOUNCE_OFFSET =
-    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
-    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+    anim->effects->position == GTK_POS_LEFT ||
+    anim->effects->position == GTK_POS_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
 
   const gint PERIOD = 18;

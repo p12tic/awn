@@ -90,7 +90,6 @@
 			<parameters>
 				<parameter name="name" type="gchar*"/>
 				<parameter name="uid" type="gchar*"/>
-				<parameter name="single_instance" type="gboolean"/>
 				<parameter name="error" type="GError**"/>
 			</parameters>
 		</function>
@@ -104,7 +103,7 @@
 			<return-type type="gfloat"/>
 			<parameters>
 				<parameter name="path_type" type="AwnPathType"/>
-				<parameter name="orient" type="AwnOrientation"/>
+				<parameter name="position" type="GtkPositionType"/>
 				<parameter name="offset_modifier" type="gfloat"/>
 				<parameter name="pos_x" type="gint"/>
 				<parameter name="pos_y" type="gint"/>
@@ -189,12 +188,6 @@
 			<member name="AWN_EFFECT_ATTENTION" value="5"/>
 			<member name="AWN_EFFECT_DESATURATE" value="6"/>
 		</enum>
-		<enum name="AwnOrientation">
-			<member name="AWN_ORIENTATION_TOP" value="0"/>
-			<member name="AWN_ORIENTATION_RIGHT" value="1"/>
-			<member name="AWN_ORIENTATION_BOTTOM" value="2"/>
-			<member name="AWN_ORIENTATION_LEFT" value="3"/>
-		</enum>
 		<enum name="AwnOverlayAlign">
 			<member name="AWN_OVERLAY_ALIGN_CENTRE" value="0"/>
 			<member name="AWN_OVERLAY_ALIGN_LEFT" value="1"/>
@@ -207,8 +200,8 @@
 		</enum>
 		<object name="AwnAlignment" parent="GtkAlignment" type-name="AwnAlignment" get-type="awn_alignment_get_type">
 			<implements>
-				<interface name="GtkBuildable"/>
 				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
 			</implements>
 			<method name="get_offset_modifier" symbol="awn_alignment_get_offset_modifier">
 				<return-type type="gint"/>
@@ -234,8 +227,8 @@
 		</object>
 		<object name="AwnApplet" parent="GtkPlug" type-name="AwnApplet" get-type="awn_applet_get_type">
 			<implements>
-				<interface name="GtkBuildable"/>
 				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
 			</implements>
 			<method name="create_about_item" symbol="awn_applet_create_about_item">
 				<return-type type="GtkWidget*"/>
@@ -307,14 +300,14 @@
 					<parameter name="y" type="gint"/>
 				</parameters>
 			</method>
-			<method name="get_orientation" symbol="awn_applet_get_orientation">
-				<return-type type="AwnOrientation"/>
+			<method name="get_path_type" symbol="awn_applet_get_path_type">
+				<return-type type="AwnPathType"/>
 				<parameters>
 					<parameter name="applet" type="AwnApplet*"/>
 				</parameters>
 			</method>
-			<method name="get_path_type" symbol="awn_applet_get_path_type">
-				<return-type type="AwnPathType"/>
+			<method name="get_pos_type" symbol="awn_applet_get_pos_type">
+				<return-type type="GtkPositionType"/>
 				<parameters>
 					<parameter name="applet" type="AwnApplet*"/>
 				</parameters>
@@ -360,18 +353,18 @@
 					<parameter name="offset" type="gint"/>
 				</parameters>
 			</method>
-			<method name="set_orientation" symbol="awn_applet_set_orientation">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="applet" type="AwnApplet*"/>
-					<parameter name="orient" type="AwnOrientation"/>
-				</parameters>
-			</method>
 			<method name="set_path_type" symbol="awn_applet_set_path_type">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="applet" type="AwnApplet*"/>
 					<parameter name="path" type="AwnPathType"/>
+				</parameters>
+			</method>
+			<method name="set_pos_type" symbol="awn_applet_set_pos_type">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="position" type="GtkPositionType"/>
 				</parameters>
 			</method>
 			<method name="set_size" symbol="awn_applet_set_size">
@@ -400,13 +393,12 @@
 			<property name="max-size" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="offset" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="offset-modifier" type="gfloat" readable="1" writable="1" construct="0" construct-only="0"/>
-			<property name="orient" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="panel-id" type="gint" readable="1" writable="1" construct="0" construct-only="1"/>
 			<property name="panel-xid" type="gint64" readable="1" writable="0" construct="0" construct-only="0"/>
 			<property name="path-type" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="position" type="GtkPositionType" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="quit-on-delete" type="gboolean" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="show-all-on-embed" type="gboolean" readable="1" writable="1" construct="0" construct-only="0"/>
-			<property name="single-instance" type="gboolean" readable="1" writable="1" construct="0" construct-only="1"/>
 			<property name="size" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="uid" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<signal name="applet-deleted" when="FIRST">
@@ -437,13 +429,6 @@
 					<parameter name="offset" type="gint"/>
 				</parameters>
 			</signal>
-			<signal name="orientation-changed" when="FIRST">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="object" type="AwnApplet*"/>
-					<parameter name="p0" type="AwnOrientation"/>
-				</parameters>
-			</signal>
 			<signal name="origin-changed" when="LAST">
 				<return-type type="void"/>
 				<parameters>
@@ -456,6 +441,13 @@
 				<parameters>
 					<parameter name="object" type="AwnApplet*"/>
 					<parameter name="p0" type="GdkEvent*"/>
+				</parameters>
+			</signal>
+			<signal name="position-changed" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="position" type="GtkPositionType"/>
 				</parameters>
 			</signal>
 			<signal name="size-changed" when="FIRST">
@@ -472,13 +464,6 @@
 					<parameter name="uid" type="gchar*"/>
 				</parameters>
 			</vfunc>
-			<vfunc name="orient_changed">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="applet" type="AwnApplet*"/>
-					<parameter name="orient" type="AwnOrientation"/>
-				</parameters>
-			</vfunc>
 			<vfunc name="panel_configure">
 				<return-type type="void"/>
 				<parameters>
@@ -489,8 +474,8 @@
 		</object>
 		<object name="AwnAppletSimple" parent="AwnApplet" type-name="AwnAppletSimple" get-type="awn_applet_simple_get_type">
 			<implements>
-				<interface name="GtkBuildable"/>
 				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
 				<interface name="AwnOverlayable"/>
 			</implements>
 			<method name="get_icon" symbol="awn_applet_simple_get_icon">
@@ -618,8 +603,8 @@
 		</object>
 		<object name="AwnDialog" parent="GtkWindow" type-name="AwnDialog" get-type="awn_dialog_get_type">
 			<implements>
-				<interface name="GtkBuildable"/>
 				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
 			</implements>
 			<constructor name="new" symbol="awn_dialog_new">
 				<return-type type="GtkWidget*"/>
@@ -652,7 +637,7 @@
 			<property name="effects-hilight" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="hide-on-esc" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="hilight" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
-			<property name="orient" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="position" type="GtkPositionType" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="title-bg" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="window-offset" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="window-padding" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
@@ -774,7 +759,7 @@
 			<property name="indirect-paint" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="make-shadow" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="no-clear" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
-			<property name="orientation" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="position" type="GtkPositionType" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="progress" type="gfloat" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="reflection-alpha" type="gfloat" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="reflection-offset" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
@@ -798,7 +783,7 @@
 			<field name="widget" type="GtkWidget*"/>
 			<field name="no_clear" type="gboolean"/>
 			<field name="indirect_paint" type="gboolean"/>
-			<field name="orientation" type="gint"/>
+			<field name="position" type="gint"/>
 			<field name="set_effects" type="guint"/>
 			<field name="icon_offset" type="gint"/>
 			<field name="refl_offset" type="gint"/>
@@ -820,8 +805,8 @@
 		</object>
 		<object name="AwnIcon" parent="GtkDrawingArea" type-name="AwnIcon" get-type="awn_icon_get_type">
 			<implements>
-				<interface name="GtkBuildable"/>
 				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
 				<interface name="AwnOverlayable"/>
 			</implements>
 			<method name="clicked" symbol="awn_icon_clicked">
@@ -946,11 +931,11 @@
 					<parameter name="offset" type="gint"/>
 				</parameters>
 			</method>
-			<method name="set_orientation" symbol="awn_icon_set_orientation">
+			<method name="set_pos_type" symbol="awn_icon_set_pos_type">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="icon" type="AwnIcon*"/>
-					<parameter name="orient" type="AwnOrientation"/>
+					<parameter name="position" type="GtkPositionType"/>
 				</parameters>
 			</method>
 			<method name="set_progress" symbol="awn_icon_set_progress">
@@ -1023,8 +1008,9 @@
 		</object>
 		<object name="AwnIconBox" parent="GtkBox" type-name="AwnIconBox" get-type="awn_icon_box_get_type">
 			<implements>
-				<interface name="GtkBuildable"/>
 				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
+				<interface name="GtkOrientable"/>
 			</implements>
 			<constructor name="new" symbol="awn_icon_box_new">
 				<return-type type="GtkWidget*"/>
@@ -1042,19 +1028,19 @@
 					<parameter name="offset" type="gint"/>
 				</parameters>
 			</method>
-			<method name="set_orientation" symbol="awn_icon_box_set_orientation">
+			<method name="set_pos_type" symbol="awn_icon_box_set_pos_type">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="icon_box" type="AwnIconBox*"/>
-					<parameter name="orient" type="AwnOrientation"/>
+					<parameter name="position" type="GtkPositionType"/>
 				</parameters>
 			</method>
 			<property name="applet" type="AwnApplet*" readable="0" writable="1" construct="0" construct-only="1"/>
 		</object>
 		<object name="AwnImage" parent="GtkImage" type-name="AwnImage" get-type="awn_image_get_type">
 			<implements>
-				<interface name="GtkBuildable"/>
 				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
 				<interface name="AwnOverlayable"/>
 			</implements>
 			<constructor name="new" symbol="awn_image_new">
@@ -1063,8 +1049,8 @@
 		</object>
 		<object name="AwnLabel" parent="GtkLabel" type-name="AwnLabel" get-type="awn_label_get_type">
 			<implements>
-				<interface name="GtkBuildable"/>
 				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
 			</implements>
 			<constructor name="new" symbol="awn_label_new">
 				<return-type type="AwnLabel*"/>
@@ -1236,8 +1222,8 @@
 		</object>
 		<object name="AwnThemedIcon" parent="AwnIcon" type-name="AwnThemedIcon" get-type="awn_themed_icon_get_type">
 			<implements>
-				<interface name="GtkBuildable"/>
 				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
 				<interface name="AwnOverlayable"/>
 			</implements>
 			<method name="clear_icons" symbol="awn_themed_icon_clear_icons">
@@ -1384,8 +1370,8 @@
 		</object>
 		<object name="AwnTooltip" parent="GtkWindow" type-name="AwnTooltip" get-type="awn_tooltip_get_type">
 			<implements>
-				<interface name="GtkBuildable"/>
 				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
 			</implements>
 			<method name="get_delay" symbol="awn_tooltip_get_delay">
 				<return-type type="gint"/>
@@ -1444,7 +1430,7 @@
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="tooltip" type="AwnTooltip*"/>
-					<parameter name="orient" type="AwnOrientation"/>
+					<parameter name="position" type="GtkPositionType"/>
 					<parameter name="size" type="gint"/>
 				</parameters>
 			</method>

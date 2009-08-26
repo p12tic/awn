@@ -43,7 +43,7 @@ G_DEFINE_TYPE (AwnBackground3d, awn_background_3d, AWN_TYPE_BACKGROUND)
 
 /* FORWARDS */
 static void awn_background_3d_padding_request (AwnBackground *bg,
-                                               AwnOrientation orient,
+                                               GtkPositionType position,
                                                guint *padding_top,
                                                guint *padding_bottom,
                                                guint *padding_left,
@@ -51,7 +51,7 @@ static void awn_background_3d_padding_request (AwnBackground *bg,
 
 static void awn_background_3d_draw (AwnBackground  *bg,
                                     cairo_t        *cr,
-                                    AwnOrientation  orient,
+                                    GtkPositionType  position,
                                     GdkRectangle   *area);
 
 static void awn_background_3d_update_padding (AwnBackground *bg);
@@ -289,7 +289,7 @@ draw_rect_path (AwnBackground  *bg,
  * @param width: the width for the drawing
  * @param height: the height for the drawing
  *
- * Draws the bar in the bottom orientation on the cairo context &cr given 
+ * Draws the bar in the bottom position on the cairo context &cr given 
  * the &x position, &y position, &width and &height.
  */
 static void
@@ -394,7 +394,7 @@ draw_top_bottom_background (AwnBackground  *bg,
 /**
  * awn_background_3d_padding_request:
  * @param bg: AwnBackground
- * @param orient: the orientation of the bar
+ * @param position: the position of the bar
  * @param padding_top: the top padding 
  * @param padding_bottom: the bottom padding
  * @param padding_left: the left padding
@@ -406,7 +406,7 @@ draw_top_bottom_background (AwnBackground  *bg,
  */
 static void 
 awn_background_3d_padding_request (AwnBackground *bg,
-                                   AwnOrientation orient,
+                                   GtkPositionType position,
                                    guint *padding_top,
                                    guint *padding_bottom,
                                    guint *padding_left,
@@ -422,21 +422,21 @@ awn_background_3d_padding_request (AwnBackground *bg,
   else
     padding = offset/tan((90-bg->panel_angle)*M_PI/180);
 
-  switch (orient)
+  switch (position)
   {
-    case AWN_ORIENTATION_TOP:
+    case GTK_POS_TOP:
       *padding_top  = SIDE_SPACE+2; *padding_bottom = 0;
       *padding_left = padding; *padding_right = padding;
       break;
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_BOTTOM:
       *padding_top  = 0; *padding_bottom = SIDE_SPACE+2;
       *padding_left = padding; *padding_right = padding;
       break;
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       *padding_top  = padding; *padding_bottom = padding;
       *padding_left = SIDE_SPACE+2; *padding_right = 0;
       break;
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       *padding_top  = padding; *padding_bottom = padding;
       *padding_left = 0; *padding_right = SIDE_SPACE+2;
       break;
@@ -449,19 +449,19 @@ awn_background_3d_padding_request (AwnBackground *bg,
  * awn_background_3d_draw:
  * @param bg: AwnBackground
  * @param cr: a cairo context 
- * @param orient: orientation of the bar
+ * @param position: position of the bar
  * @param x: the begin x position to draw 
  * @param y: the begin y position to draw
  * @param width: the width for the drawing
  * @param height: the height for the drawing
  *
- * Draws the bar in the in the cairo context &cr given the orientation &orient,
+ * Draws the bar in the in the cairo context &cr given the position &position,
  * the &x and &y position and given &width and &height
  */
 static void 
 awn_background_3d_draw (AwnBackground  *bg,
                         cairo_t        *cr, 
-                        AwnOrientation  orient,
+                        GtkPositionType  position,
                         GdkRectangle   *area)
 {
   gint temp;
@@ -469,21 +469,21 @@ awn_background_3d_draw (AwnBackground  *bg,
   gint width = area->width, height = area->height;
   cairo_save (cr);
 
-  switch (orient)
+  switch (position)
   {
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       cairo_translate (cr, x-1, y+height);
       cairo_rotate (cr, M_PI * 1.5);
       temp = width;
       width = height; height = temp;
       break;
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       cairo_translate (cr, x+width+1, y);
       cairo_rotate (cr, M_PI * 0.5);
       temp = width;
       width = height; height = temp;
       break;
-    case AWN_ORIENTATION_TOP:
+    case GTK_POS_TOP:
       cairo_translate (cr, x+width, y+height+1);
       cairo_rotate (cr, M_PI);
       break;

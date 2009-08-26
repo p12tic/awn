@@ -41,8 +41,8 @@
       <arg name="size" type="i" />
     </signal>
 
-    <signal name="OrientChanged">
-      <arg name="orient" type="i" />
+    <signal name="PositionChanged">
+      <arg name="position" type="i" />
     </signal>
 
     <signal name="OffsetChanged">
@@ -64,7 +64,7 @@
     <!-- Properties -->
     <property name="Size" type="i" access="read" />
     <property name="MaxSize" type="i" access="read" />
-    <property name="Orient" type="i" access="read" />
+    <property name="Position" type="i" access="read" />
     <property name="Offset" type="i" access="read" />
     <property name="PanelXid" type="x" access="read" />
 

@@ -58,7 +58,7 @@ struct _AwnDialogPrivate
   GtkWidget *anchor;
   AwnApplet *anchor_applet;
 
-  AwnOrientation orient;
+  GtkPositionType position;
   gboolean anchored;
   gboolean esc_hide;
   gboolean effects_activate;
@@ -77,7 +77,7 @@ struct _AwnDialogPrivate
   gulong applet_configure_id;
   gulong applet_comp_id;
   gulong applet_size_id;
-  gulong orient_changed_id;
+  gulong position_changed_id;
 
   guint inhibit_cookie;
 
@@ -94,7 +94,7 @@ enum
   PROP_ANCHOR,
   PROP_ANCHOR_OWNER,
   PROP_ANCHORED,
-  PROP_ORIENT,
+  PROP_POSITION,
   PROP_WINDOW_OFFSET,
   PROP_WINDOW_PADDING,
   PROP_HIDE_ON_ESC,
@@ -116,8 +116,8 @@ static void awn_dialog_set_anchor_widget (AwnDialog *dialog,
 static void awn_dialog_set_anchor_applet (AwnDialog *dialog,
                                           AwnApplet *applet);
 
-static void awn_dialog_set_orientation   (AwnDialog *dialog,
-                                          AwnOrientation orient);
+static void awn_dialog_set_pos_type      (AwnDialog *dialog,
+                                          GtkPositionType position);
 
 static void awn_dialog_set_offset        (AwnDialog *dialog, gint offset);
 
@@ -184,7 +184,7 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
     /* Calculate position of the arrow point
      *   1) get anchored window center point in root window coordinates
      *   2) get our origin in root window coordinates
-     *   3) calc the difference (which is different for each orient)
+     *   3) calc the difference (which is different for each position)
      */
     win = gtk_widget_get_window (priv->anchor);
     g_return_if_fail (win);
@@ -201,9 +201,9 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
                              &o_center_point.x, &o_center_point.y);
     }
 
-    switch (priv->orient)
+    switch (priv->position)
     {
-      case AWN_ORIENTATION_LEFT:
+      case GTK_POS_LEFT:
         cairo_translate (cr, width, 0.0);
         cairo_rotate (cr, M_PI * 0.5);
         temp = width;
@@ -211,7 +211,7 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
 
         arrow.x = a_center_point.y - o_center_point.y;
         break;
-      case AWN_ORIENTATION_RIGHT:
+      case GTK_POS_RIGHT:
         cairo_translate (cr, 0.0, height);
         cairo_rotate (cr, M_PI * 1.5);
         temp = width;
@@ -219,13 +219,13 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
 
         arrow.x = width - (a_center_point.y - o_center_point.y);
         break;
-      case AWN_ORIENTATION_TOP:
+      case GTK_POS_TOP:
         cairo_translate (cr, width, height);
         cairo_rotate (cr, M_PI);
 
         arrow.x = width - (a_center_point.x - o_center_point.x);
         break;
-      case AWN_ORIENTATION_BOTTOM:
+      case GTK_POS_BOTTOM:
       default:
         arrow.x = a_center_point.x - o_center_point.x;
         break;
@@ -369,14 +369,14 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
   cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
   awn_cairo_set_source_color (cr, priv->hilight_color);
   cairo_translate (cr, 1.0, 1.0);
-  switch (priv->orient)
+  switch (priv->position)
   {
-    case AWN_ORIENTATION_LEFT:
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_LEFT:
+    case GTK_POS_RIGHT:
       cairo_scale (cr, (height-2) / (double)height, (width-2) / (double)width);
       break;
-    case AWN_ORIENTATION_TOP:
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_TOP:
+    case GTK_POS_BOTTOM:
     default:
       cairo_scale (cr, (width-2) / (double)width, (height-2) / (double)height);
       break;
@@ -462,14 +462,14 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
 
     int w, h;
 
-    switch (priv->orient)
+    switch (priv->position)
     {
-      case AWN_ORIENTATION_TOP:
-      case AWN_ORIENTATION_BOTTOM:
+      case GTK_POS_TOP:
+      case GTK_POS_BOTTOM:
         w = width;
         h = height;
         break;
-      case AWN_ORIENTATION_LEFT:
+      case GTK_POS_LEFT:
       default:
         w = height;
         h = width;
@@ -735,8 +735,8 @@ awn_dialog_get_property (GObject    *object,
     case PROP_ANCHORED:
       g_value_set_boolean (value, priv->anchored);
       break;
-    case PROP_ORIENT:
-      g_value_set_int (value, priv->orient);
+    case PROP_POSITION:
+      g_value_set_enum (value, priv->position);
       break;
     case PROP_HIDE_ON_ESC:
       g_value_set_boolean (value, priv->esc_hide);
@@ -796,9 +796,8 @@ awn_dialog_set_property (GObject      *object,
       }
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
-    case PROP_ORIENT:
-      awn_dialog_set_orientation (AWN_DIALOG (object),
-                                  g_value_get_int (value));
+    case PROP_POSITION:
+      awn_dialog_set_pos_type (AWN_DIALOG (object), g_value_get_enum (value));
       break;
     case PROP_WINDOW_OFFSET:
       awn_dialog_set_offset (AWN_DIALOG (object), g_value_get_int (value));
@@ -884,10 +883,10 @@ awn_dialog_finalize (GObject *object)
     priv->applet_configure_id = 0;
   }
 
-  if (priv->orient_changed_id)
+  if (priv->position_changed_id)
   {
-    g_signal_handler_disconnect (priv->anchor_applet, priv->orient_changed_id);
-    priv->orient_changed_id = 0;
+    g_signal_handler_disconnect (priv->anchor_applet, priv->position_changed_id);
+    priv->position_changed_id = 0;
   }
 
   if (priv->applet_comp_id)
@@ -957,13 +956,13 @@ awn_dialog_class_init (AwnDialogClass *klass)
                           G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
-    PROP_ORIENT,
-    g_param_spec_int ("orient",
-                      "Orient",
-                      "The orientation of the window",
-                      0, 3, AWN_ORIENTATION_BOTTOM,
-                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                      G_PARAM_STATIC_STRINGS));
+    PROP_POSITION,
+    g_param_spec_enum ("position",
+                       "Position",
+                       "The position of the window",
+                       GTK_TYPE_POSITION_TYPE, GTK_POS_BOTTOM,
+                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                       G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_WINDOW_OFFSET,
@@ -1141,21 +1140,21 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
 
   const int OFFSET = priv->window_offset;
 
-  switch (priv->orient)
+  switch (priv->position)
   {
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       x = ax + aw + OFFSET;
       y = ay - height / 2 + ah / 2;
       break;
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       x = ax - width - OFFSET;
       y = ay - height / 2 + ah / 2;
       break;
-    case AWN_ORIENTATION_TOP:
+    case GTK_POS_TOP:
       x = ax - width / 2 + aw / 2;
       y = ay + ah + OFFSET;
       break;
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_BOTTOM:
     default:
       x = ax - width / 2 + aw / 2;
       y = ay - height - OFFSET;
@@ -1189,10 +1188,10 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
      *  change 
      */
     gboolean dominant_axis_changed = FALSE;
-    switch (priv->orient)
+    switch (priv->position)
     {
-      case AWN_ORIENTATION_LEFT:
-      case AWN_ORIENTATION_RIGHT:
+      case GTK_POS_LEFT:
+      case GTK_POS_RIGHT:
         dominant_axis_changed = priv->last_x != x;
         break;
       default:
@@ -1206,10 +1205,10 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
     gboolean huge_delta = FALSE;
     if (!dominant_axis_changed)
     {
-      switch (priv->orient)
+      switch (priv->position)
       {
-        case AWN_ORIENTATION_LEFT:
-        case AWN_ORIENTATION_RIGHT:
+        case GTK_POS_LEFT:
+        case GTK_POS_RIGHT:
           huge_delta = !(y >= priv->last_y - height/3
                          && y <= priv->last_y + height/3);
           break;
@@ -1228,22 +1227,22 @@ awn_dialog_refresh_position (AwnDialog *dialog, gint width, gint height)
   }
 
   /* Invalidate part of the window where the arrow is */
-  switch (priv->orient)
+  switch (priv->position)
   {
-    case AWN_ORIENTATION_TOP:
+    case GTK_POS_TOP:
       gtk_widget_queue_draw_area (GTK_WIDGET (dialog), 0, 0,
                                   width, priv->window_padding);
       break;
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       gtk_widget_queue_draw_area (GTK_WIDGET (dialog), 0, 0,
                                   priv->window_padding, height);
       break;
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       gtk_widget_queue_draw_area (GTK_WIDGET (dialog), 
                                   width - priv->window_padding, 0,
                                   priv->window_padding, height);
       break;
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_BOTTOM:
     default:
       gtk_widget_queue_draw_area (GTK_WIDGET (dialog),
                                   0, height - priv->window_padding,
@@ -1285,10 +1284,10 @@ awn_dialog_set_anchor_applet (AwnDialog *dialog, AwnApplet *applet)
     priv->applet_configure_id = 0;
   }
 
-  if (priv->orient_changed_id)
+  if (priv->position_changed_id)
   {
-    g_signal_handler_disconnect (priv->anchor_applet, priv->orient_changed_id);
-    priv->orient_changed_id = 0;
+    g_signal_handler_disconnect (priv->anchor_applet, priv->position_changed_id);
+    priv->position_changed_id = 0;
   }
 
   if (priv->applet_comp_id)
@@ -1309,17 +1308,17 @@ awn_dialog_set_anchor_applet (AwnDialog *dialog, AwnApplet *applet)
 
   if (applet)
   {
-    /* get orientation from the applet and connect to its changed signal */
-    priv->orient = awn_applet_get_orientation (applet);
+    /* get position from the applet and connect to its changed signal */
+    priv->position = awn_applet_get_pos_type (applet);
 
     /* connect to the special configure-event and other relevant signals*/
     priv->applet_configure_id =
       g_signal_connect (applet, "origin-changed",
                         G_CALLBACK (_on_origin_changed), dialog);
 
-    priv->orient_changed_id =
-      g_signal_connect_swapped (applet, "orientation-changed",
-                                G_CALLBACK (awn_dialog_set_orientation),
+    priv->position_changed_id =
+      g_signal_connect_swapped (applet, "position-changed",
+                                G_CALLBACK (awn_dialog_set_pos_type),
                                 dialog);
 
     priv->applet_comp_id = 
@@ -1396,15 +1395,15 @@ awn_dialog_set_anchor_widget (AwnDialog *dialog, GtkWidget *anchor)
 }
 
 static void
-awn_dialog_set_orientation (AwnDialog *dialog, AwnOrientation orient)
+awn_dialog_set_pos_type (AwnDialog *dialog, GtkPositionType position)
 {
   g_return_if_fail (AWN_IS_DIALOG (dialog));
 
   AwnDialogPrivate *priv = dialog->priv;
 
-  if (orient == priv->orient) return;
+  if (position == priv->position) return;
 
-  priv->orient = orient;
+  priv->position = position;
 
   awn_dialog_refresh_position (dialog, 0, 0);
 

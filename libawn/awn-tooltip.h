@@ -100,7 +100,7 @@ gint          awn_tooltip_get_delay            (AwnTooltip  *tooltip);
 void          awn_tooltip_update_position      (AwnTooltip *tooltip);
 
 void          awn_tooltip_set_position_hint    (AwnTooltip *tooltip,
-                                                AwnOrientation orient,
+                                                GtkPositionType position,
                                                 gint size);
 
 G_END_DECLS

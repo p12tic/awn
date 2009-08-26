@@ -36,8 +36,8 @@ bounce_effect(AwnEffectsAnimation * anim)
   AWN_ANIMATION_INIT(anim) priv->count = 0;
 
   const gfloat MAX_BOUNCE_OFFSET =
-    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
-    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+    anim->effects->position == GTK_POS_LEFT ||
+    anim->effects->position == GTK_POS_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
   const gint PERIOD = 16;
 
@@ -67,8 +67,8 @@ bounce_hover_effect(AwnEffectsAnimation * anim)
   AWN_ANIMATION_INIT(anim) priv->count = 0;
 
   const gfloat MAX_BOUNCE_OFFSET =
-    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
-    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+    anim->effects->position == GTK_POS_LEFT ||
+    anim->effects->position == GTK_POS_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
   const gint PERIOD = 16;
 
@@ -115,8 +115,8 @@ bounce_opening_effect(AwnEffectsAnimation * anim)
   const gint PERIOD1 = 12;
   const gint PERIOD2 = 16;
   const gfloat MAX_BOUNCE_OFFSET =
-    anim->effects->orientation == AWN_EFFECT_ORIENT_LEFT ||
-    anim->effects->orientation == AWN_EFFECT_ORIENT_RIGHT ?
+    anim->effects->position == GTK_POS_LEFT ||
+    anim->effects->position == GTK_POS_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
 
   if (priv->count < PERIOD1)

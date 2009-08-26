@@ -29,7 +29,7 @@
 G_BEGIN_DECLS
 
 void xutils_set_strut (GdkWindow        *gdk_window,
-                       int               orientation,
+                       int               position,
                        guint32           strut,
                        guint32           strut_start,
                        guint32           strut_end);

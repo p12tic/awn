@@ -37,25 +37,6 @@
  */
 #define AWN_MIN_HEIGHT 12
 
-/**
- * AwnOrientation:
- * @AWN_ORIENTATION_TOP: Placed along the top of the screen.
- * @AWN_ORIENTATION_RIGHT: Placed along the right side of the screen.
- * @AWN_ORIENTATION_BOTTOM: Placed along the bottom of the screen.
- * @AWN_ORIENTATION_LEFT: Placed along the left side of the screen.
- *
- * Describes the orientation and placement of the panel.
- */
-
-typedef enum
-{
-        AWN_ORIENTATION_TOP=0,
-        AWN_ORIENTATION_RIGHT,
-        AWN_ORIENTATION_BOTTOM,
-        AWN_ORIENTATION_LEFT
-
-} AwnOrientation;
-
 typedef enum
 {
   AWN_APPLET_FLAGS_NONE     = 0,

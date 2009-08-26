@@ -132,7 +132,7 @@ task_drag_indicator_init (TaskDragIndicator *drag_indicator)
 
   settings = task_settings_get_default ();
 
-  awn_icon_set_orientation (AWN_ICON (drag_indicator), AWN_ORIENTATION_BOTTOM);
+  awn_icon_set_pos_type (AWN_ICON (drag_indicator), GTK_POS_BOTTOM);
   awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size, settings->panel_size);
 
   /* D&D accept dragged objs */

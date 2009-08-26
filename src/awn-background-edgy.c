@@ -46,23 +46,23 @@ struct _AwnBackgroundEdgyPrivate
 
 static void awn_background_edgy_draw (AwnBackground  *bg,
                                       cairo_t        *cr,
-                                      AwnOrientation  orient,
+                                      GtkPositionType  position,
                                       GdkRectangle   *area);
 
 static void awn_background_edgy_get_shape_mask (AwnBackground  *bg,
                                                 cairo_t        *cr,
-                                                AwnOrientation  orient,
+                                                GtkPositionType  position,
                                                 GdkRectangle   *area);
 
 static void awn_background_edgy_padding_request (AwnBackground *bg,
-                                                 AwnOrientation orient,
+                                                 GtkPositionType position,
                                                  guint *padding_top,
                                                  guint *padding_bottom,
                                                  guint *padding_left,
                                                  guint *padding_right);
 
 static void awn_background_edgy_get_strut_offsets (AwnBackground *bg,
-                                                   AwnOrientation orient,
+                                                   GtkPositionType position,
                                                    GdkRectangle *area,
                                                    gint *strut,
                                                    gint *strut_start,
@@ -328,7 +328,7 @@ draw_top_bottom_background (AwnBackground  *bg,
 
 static
 void awn_background_edgy_padding_request (AwnBackground *bg,
-                                          AwnOrientation orient,
+                                          GtkPositionType position,
                                           guint *padding_top,
                                           guint *padding_bottom,
                                           guint *padding_left,
@@ -338,7 +338,7 @@ void awn_background_edgy_padding_request (AwnBackground *bg,
   {
     /* if we're not in the corner behave as standard flat bg */
     AWN_BACKGROUND_CLASS (awn_background_edgy_parent_class)->padding_request (
-      bg, orient, padding_top, padding_bottom, padding_left, padding_right);
+      bg, position, padding_top, padding_bottom, padding_left, padding_right);
     return;
   }
 
@@ -346,30 +346,30 @@ void awn_background_edgy_padding_request (AwnBackground *bg,
   guint dummy, left, right;
 
   AWN_BACKGROUND_CLASS (awn_background_edgy_parent_class)->padding_request (
-      bg, AWN_ORIENTATION_BOTTOM, &dummy, &dummy, &left, &right);
+      bg, GTK_POS_BOTTOM, &dummy, &dummy, &left, &right);
   base_side_pad = MAX (left, right);
 
   const gint req = AWN_BACKGROUND_EDGY (bg)->priv->top_pad;
   gboolean bottom_left = awn_background_get_panel_alignment (bg) == 0.0;
 
-  switch (orient)
+  switch (position)
   {
-    case AWN_ORIENTATION_TOP:
+    case GTK_POS_TOP:
       *padding_top  = 0; *padding_bottom = req;
       *padding_left = bottom_left ? 0 : base_side_pad;
       *padding_right = bottom_left ? base_side_pad : 0;
       break;
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_BOTTOM:
       *padding_top  = req; *padding_bottom = 0;
       *padding_left = bottom_left ? 0 : base_side_pad;
       *padding_right = bottom_left ? base_side_pad : 0;
       break;
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       *padding_top  = bottom_left ? 0 : base_side_pad;
       *padding_bottom = bottom_left ? base_side_pad : 0;
       *padding_left = 0; *padding_right = req;
       break;
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       *padding_top  = bottom_left ? 0 : base_side_pad;
       *padding_bottom = bottom_left ? base_side_pad : 0;
       *padding_left = req; *padding_right = 0;
@@ -381,7 +381,7 @@ void awn_background_edgy_padding_request (AwnBackground *bg,
 
 static void
 awn_background_edgy_get_strut_offsets (AwnBackground *bg,
-                                       AwnOrientation orient,
+                                       GtkPositionType position,
                                        GdkRectangle *area,
                                        gint *strut,
                                        gint *strut_start,
@@ -391,35 +391,35 @@ awn_background_edgy_get_strut_offsets (AwnBackground *bg,
 
   /* FIXME: magic constant!
    *   it's ACTIVE_RECT_PADDING (defined in awn-panel.c)
-   *   + flat bg top padding (for bottom orient)
+   *   + flat bg top padding (for bottom position)
    */
   *strut = edgy->priv->radius - edgy->priv->top_pad + 5;
 }
 
 static void
 awn_background_edgy_translate_for_flat (AwnBackground *bg,
-                                        AwnOrientation orient,
+                                        GtkPositionType position,
                                         GdkRectangle *area)
 {
   guint top, bot, left, right;
 
   AWN_BACKGROUND_CLASS (awn_background_edgy_parent_class)->padding_request (
-    bg, orient, &top, &bot, &left, &right);
+    bg, position, &top, &bot, &left, &right);
   const gint modifier = AWN_BACKGROUND_EDGY (bg)->priv->top_pad;
   
-  switch (orient)
+  switch (position)
   {
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       area->x += modifier - left;
       area->width -= modifier - left;
       break;
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       area->width -= modifier - right;
       break;
-    case AWN_ORIENTATION_TOP:
+    case GTK_POS_TOP:
       area->height -= modifier - bot;
       break;
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_BOTTOM:
     default:
       area->y += modifier - top;
       area->height -= modifier - top;
@@ -430,7 +430,7 @@ awn_background_edgy_translate_for_flat (AwnBackground *bg,
 static void
 awn_background_edgy_prepare_context (AwnBackgroundEdgy *bg,
                                      cairo_t        *cr,
-                                     AwnOrientation  orient,
+                                     GtkPositionType  position,
                                      GdkRectangle   *area,
                                      gint *width_ptr, gint *height_ptr)
 {
@@ -438,22 +438,22 @@ awn_background_edgy_prepare_context (AwnBackgroundEdgy *bg,
   gint x = area->x, y = area->y;
   gint width = area->width, height = area->height;
 
-  switch (orient)
+  switch (position)
   {
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       cairo_translate (cr, x, y);
       cairo_rotate (cr, M_PI * 0.5);
       cairo_scale (cr, 1.0, -1.0);
       temp = width;
       width = height; height = temp;
       break;
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       cairo_translate (cr, x+width, y);
       cairo_rotate (cr, M_PI * 0.5);
       temp = width;
       width = height; height = temp;
       break;
-    case AWN_ORIENTATION_TOP:
+    case GTK_POS_TOP:
       cairo_translate (cr, x, height - y);
       cairo_scale (cr, 1.0, -1.0);
       break;
@@ -469,7 +469,7 @@ awn_background_edgy_prepare_context (AwnBackgroundEdgy *bg,
 static void 
 chain_draw (AwnBackground  *bg,
             cairo_t        *cr, 
-            AwnOrientation  orient,
+            GtkPositionType  position,
             GdkRectangle   *area)
 {
   cairo_save (cr);
@@ -486,7 +486,7 @@ chain_draw (AwnBackground  *bg,
 
     /* init our context - translate, rotate.. */
     awn_background_edgy_prepare_context (AWN_BACKGROUND_EDGY (bg), cr,
-                                         orient, area, &width, &height);
+                                         position, area, &width, &height);
 
     cairo_move_to (cr, bottom_left ? 0.0 : width, height);
     draw_path (cr, height - 1.0, width, height, bottom_left);
@@ -499,11 +499,11 @@ chain_draw (AwnBackground  *bg,
     cairo_identity_matrix (cr);
     cairo_set_fill_rule (cr, CAIRO_FILL_RULE_WINDING);
 
-    awn_background_edgy_translate_for_flat (bg, orient, area);
+    awn_background_edgy_translate_for_flat (bg, position, area);
   }
 
   AWN_BACKGROUND_CLASS (awn_background_edgy_parent_class)-> draw (
-    bg, cr, orient, area);
+    bg, cr, position, area);
 
   cairo_restore (cr);
 }
@@ -511,7 +511,7 @@ chain_draw (AwnBackground  *bg,
 static void 
 awn_background_edgy_draw (AwnBackground  *bg,
                           cairo_t        *cr, 
-                          AwnOrientation  orient,
+                          GtkPositionType  position,
                           GdkRectangle   *area)
 {
   const gboolean in_corner = AWN_BACKGROUND_EDGY (bg)->priv->in_corner;
@@ -525,7 +525,7 @@ awn_background_edgy_draw (AwnBackground  *bg,
 
     /* init our context - translate, rotate.. */
     awn_background_edgy_prepare_context (AWN_BACKGROUND_EDGY (bg),
-                                         cr, orient, area, &width, &height);
+                                         cr, position, area, &width, &height);
 
     draw_top_bottom_background (bg, cr, width, height);
 
@@ -535,13 +535,13 @@ awn_background_edgy_draw (AwnBackground  *bg,
   }
 
   if (!in_corner || base_size > AWN_BACKGROUND_EDGY (bg)->priv->radius * 4/3)
-    chain_draw (bg, cr, orient, area);
+    chain_draw (bg, cr, position, area);
 }
 
 static void 
 awn_background_edgy_get_shape_mask (AwnBackground  *bg,
                                     cairo_t        *cr, 
-                                    AwnOrientation  orient,
+                                    GtkPositionType  position,
                                     GdkRectangle   *area)
 {
   const gboolean in_corner = AWN_BACKGROUND_EDGY (bg)->priv->in_corner;
@@ -558,7 +558,7 @@ awn_background_edgy_get_shape_mask (AwnBackground  *bg,
 
     /* init our context - translate, rotate.. */
     awn_background_edgy_prepare_context (AWN_BACKGROUND_EDGY (bg),
-                                         cr, orient, area, &width, &height);
+                                         cr, position, area, &width, &height);
 
     draw_path (cr, height - 1.0, width, height, bottom_left);
     cairo_line_to (cr, bottom_left ? 0.0 : width, height);
@@ -571,7 +571,7 @@ awn_background_edgy_get_shape_mask (AwnBackground  *bg,
     base_size = width;
 
     /* prepare context for base class call */
-    awn_background_edgy_translate_for_flat (bg, orient, area);
+    awn_background_edgy_translate_for_flat (bg, position, area);
   }
 
   if (!in_corner || base_size > AWN_BACKGROUND_EDGY (bg)->priv->radius * 4/3)
@@ -579,7 +579,7 @@ awn_background_edgy_get_shape_mask (AwnBackground  *bg,
     cairo_set_operator (cr, CAIRO_OPERATOR_ADD);
 
     AWN_BACKGROUND_CLASS (awn_background_edgy_parent_class)->get_shape_mask (
-      bg, cr, orient, area);
+      bg, cr, position, area);
   }
 }
 

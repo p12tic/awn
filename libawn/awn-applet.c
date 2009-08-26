@@ -52,7 +52,7 @@ struct _AwnAppletPrivate
   gint64 panel_xid;
   gchar *canonical_name;
 	gchar *display_name;
-  AwnOrientation orient;
+  GtkPositionType position;
   AwnPathType path_type;
   gint offset;
   gfloat offset_modifier;
@@ -80,7 +80,7 @@ enum
   PROP_PANEL_XID,
   PROP_CANONICAL_NAME,
 	PROP_DISPLAY_NAME,
-  PROP_ORIENT,
+  PROP_POSITION,
   PROP_OFFSET,
   PROP_OFFSET_MOD,
   PROP_SIZE,
@@ -93,7 +93,7 @@ enum
 
 enum
 {
-  ORIENT_CHANGED,
+  POS_CHANGED,
   OFFSET_CHANGED,
   SIZE_CHANGED,
   PANEL_CONFIGURE,
@@ -108,11 +108,12 @@ static guint _applet_signals[LAST_SIGNAL] = { 0 };
 
 /* DBus signal callbacks */
 static void
-on_orient_changed (DBusGProxy *proxy, gint orient, AwnApplet *applet)
+on_position_changed (DBusGProxy *proxy, GtkPositionType position,
+                     AwnApplet *applet)
 {
   g_return_if_fail (AWN_IS_APPLET (applet));
 
-  awn_applet_set_orientation (applet, orient);
+  awn_applet_set_pos_type (applet, position);
 }
 
 static void
@@ -293,8 +294,8 @@ awn_applet_set_property (GObject      *object,
     case PROP_PANEL_ID:
       applet->priv->panel_id = g_value_get_int (value);
       break;
-    case PROP_ORIENT:
-      awn_applet_set_orientation (applet, g_value_get_int (value));
+    case PROP_POSITION:
+      awn_applet_set_pos_type (applet, g_value_get_enum (value));
       break;
     case PROP_OFFSET:
       awn_applet_set_offset (applet, g_value_get_int (value));
@@ -357,8 +358,8 @@ awn_applet_get_property (GObject    *object,
       g_value_set_int64 (value, priv->panel_xid);
       break;
 
-    case PROP_ORIENT:
-      g_value_set_int (value, priv->orient);
+    case PROP_POSITION:
+      g_value_set_enum (value, priv->position);
       break;
 
     case PROP_OFFSET:
@@ -421,7 +422,7 @@ awn_applet_constructed (GObject *obj)
       G_TYPE_INVALID
     );
 
-    dbus_g_proxy_add_signal (priv->proxy, "OrientChanged",
+    dbus_g_proxy_add_signal (priv->proxy, "PositionChanged",
                              G_TYPE_INT, G_TYPE_INVALID);
     dbus_g_proxy_add_signal (priv->proxy, "OffsetChanged",
                              G_TYPE_INT, G_TYPE_INVALID);
@@ -435,8 +436,8 @@ awn_applet_constructed (GObject *obj)
     dbus_g_proxy_add_signal (priv->proxy, "DestroyApplet",
                              G_TYPE_STRING, G_TYPE_INVALID);
   
-    dbus_g_proxy_connect_signal (priv->proxy, "OrientChanged",
-                                 G_CALLBACK (on_orient_changed), applet, 
+    dbus_g_proxy_connect_signal (priv->proxy, "PositionChanged",
+                                 G_CALLBACK (on_position_changed), applet, 
                                  NULL);
     dbus_g_proxy_connect_signal (priv->proxy, "OffsetChanged",
                                  G_CALLBACK (on_offset_changed), applet, 
@@ -469,14 +470,14 @@ awn_applet_constructed (GObject *obj)
     }
 
     GError *error = NULL;
-    GValue orient = {0,}, size = {0,}, max_size = {0,}, offset = {0,};
+    GValue position = {0,}, size = {0,}, max_size = {0,}, offset = {0,};
     GValue panel_xid = {0,};
 
     dbus_g_proxy_call (prop_proxy, "Get", &error, 
                        G_TYPE_STRING, "org.awnproject.Awn.Panel",
-                       G_TYPE_STRING, "Orient",
+                       G_TYPE_STRING, "Position",
                        G_TYPE_INVALID,
-                       G_TYPE_VALUE, &orient,
+                       G_TYPE_VALUE, &position,
                        G_TYPE_INVALID);
 
     if (error) goto crap_out;
@@ -517,7 +518,7 @@ awn_applet_constructed (GObject *obj)
 
     if (error) goto crap_out;
     
-    g_object_set_property (obj, "orient", &orient);
+    g_object_set_property (obj, "position", &position);
     g_object_set_property (obj, "size", &size);
     g_object_set_property (obj, "offset", &offset);
     g_object_set_property (obj, "max-size", &max_size);
@@ -527,7 +528,7 @@ awn_applet_constructed (GObject *obj)
       priv->panel_xid = g_value_get_int64 (&panel_xid);
     }
 
-    g_value_unset (&orient);
+    g_value_unset (&position);
     g_value_unset (&size);
     g_value_unset (&max_size);
     g_value_unset (&offset);
@@ -594,10 +595,10 @@ awn_applet_size_request (GtkWidget *widget, GtkRequisition *req)
 
   if (modifier > 0)
   {
-    switch (priv->orient)
+    switch (priv->position)
     {
-      case AWN_ORIENTATION_BOTTOM:
-      case AWN_ORIENTATION_TOP:
+      case GTK_POS_BOTTOM:
+      case GTK_POS_TOP:
         req->width += req->width * modifier / 4;
         break;
       default:
@@ -701,18 +702,19 @@ awn_applet_class_init (AwnAppletClass *klass)
                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
  /**
- * AwnApplet:orient:
+ * AwnApplet:position:
  *
- * The current bar orientation.
+ * The current bar position.
  */
 	
   g_object_class_install_property (g_object_class,
-   PROP_ORIENT,
-   g_param_spec_int ("orient",
-                     "Orientation",
-                     "The current bar orientation",
-                     0, 3, AWN_ORIENTATION_BOTTOM,
-                     G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+   PROP_POSITION,
+   g_param_spec_enum ("position",
+                      "Position",
+                      "The current bar position",
+                      GTK_TYPE_POSITION_TYPE,
+                      GTK_POS_BOTTOM,
+                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
  /**
  * AwnApplet:offset:
@@ -800,14 +802,14 @@ awn_applet_class_init (AwnAppletClass *klass)
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /* Class signals */
-  _applet_signals[ORIENT_CHANGED] =
-    g_signal_new("orientation-changed",
+  _applet_signals[POS_CHANGED] =
+    g_signal_new("position-changed",
                  G_OBJECT_CLASS_TYPE (g_object_class),
                  G_SIGNAL_RUN_FIRST,
-                 G_STRUCT_OFFSET (AwnAppletClass, orient_changed),
+                 G_STRUCT_OFFSET (AwnAppletClass, position_changed),
                  NULL, NULL,
                  g_cclosure_marshal_VOID__ENUM,
-                 G_TYPE_NONE, 1, AWN_TYPE_ORIENTATION);
+                 G_TYPE_NONE, 1, GTK_TYPE_POSITION_TYPE);
 
   _applet_signals[OFFSET_CHANGED] =
     g_signal_new("offset-changed",
@@ -1223,44 +1225,44 @@ awn_applet_create_default_menu (AwnApplet *applet)
 }
 
 /**
- * awn_applet_get_orientation:
+ * awn_applet_get_pos_type:
  * @applet: an #AwnApplet.
  *
- * Gets current orientation of the applet. See awn_applet_set_orientation().
+ * Gets current position of the applet. See awn_applet_set_pos_type().
  * This value corresponds to the value used by the associated panel.
  *
- * Returns: current orientation of the applet.
+ * Returns: current position of the applet.
  */
-AwnOrientation
-awn_applet_get_orientation (AwnApplet *applet)
+GtkPositionType
+awn_applet_get_pos_type (AwnApplet *applet)
 {
   AwnAppletPrivate *priv;
 
-  g_return_val_if_fail(AWN_IS_APPLET (applet), AWN_ORIENTATION_BOTTOM);
+  g_return_val_if_fail(AWN_IS_APPLET (applet), GTK_POS_BOTTOM);
   priv = AWN_APPLET_GET_PRIVATE (applet);
 
-  return priv->orient;
+  return priv->position;
 }
 
 /**
- * awn_applet_set_orientation:
+ * awn_applet_set_pos_type:
  * @applet: an #AwnApplet.
- * @orient: new orientation of the applet.
+ * @position: new position of the applet.
  *
- * Sets current orientation of the applet. Note that setting the orientation 
- * emits the #AwnApplet::orientation-changed signal.
+ * Sets current position of the applet. Note that setting the position 
+ * emits the #AwnApplet::position-changed signal.
  */
 void
-awn_applet_set_orientation (AwnApplet *applet, AwnOrientation orient)
+awn_applet_set_pos_type (AwnApplet *applet, GtkPositionType position)
 {
   AwnAppletPrivate *priv;
 
   g_return_if_fail (AWN_IS_APPLET (applet));
   priv = applet->priv;
 
-  priv->orient = orient;
+  priv->position = position;
 
-  g_signal_emit (applet, _applet_signals[ORIENT_CHANGED], 0, orient);
+  g_signal_emit (applet, _applet_signals[POS_CHANGED], 0, position);
 }
 
 /**
@@ -1375,7 +1377,7 @@ awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
   priv = applet->priv;
 
   temp = awn_utils_get_offset_modifier_by_path_type (priv->path_type,
-                                                     priv->orient,
+                                                     priv->position,
                                                      priv->offset_modifier,
                                                      priv->pos_x + x,
                                                      priv->pos_y + y,

@@ -40,11 +40,11 @@ struct _AwnAlignmentPrivate
 {
   AwnApplet *applet;
 
-  AwnOrientation orient;
+  GtkPositionType position;
   gint offset_modifier;
   gint last_offset;
 
-  gulong orient_changed_id;
+  gulong position_changed_id;
   gulong offset_changed_id;
 };
 
@@ -120,10 +120,10 @@ awn_alignment_dispose (GObject *obj)
 {
   AwnAlignmentPrivate *priv = AWN_ALIGNMENT_GET_PRIVATE (obj);
 
-  if (priv->orient_changed_id)
+  if (priv->position_changed_id)
   {
-    g_signal_handler_disconnect (priv->applet, priv->orient_changed_id);
-    priv->orient_changed_id = 0;
+    g_signal_handler_disconnect (priv->applet, priv->position_changed_id);
+    priv->position_changed_id = 0;
   }
 
   if (priv->offset_changed_id)
@@ -195,7 +195,7 @@ awn_alignment_new_for_applet (AwnApplet *applet)
 }
 
 static void
-on_orient_changed (AwnAlignment *alignment, AwnOrientation orient)
+on_position_changed (AwnAlignment *alignment, GtkPositionType position)
 {
   AwnAlignmentPrivate *priv;
   GtkAlignment *align;
@@ -205,20 +205,20 @@ on_orient_changed (AwnAlignment *alignment, AwnOrientation orient)
   align = GTK_ALIGNMENT (alignment);
   priv = alignment->priv;
 
-  priv->orient = orient;
+  priv->position = position;
 
-  switch (priv->orient)
+  switch (priv->position)
   {
-    case AWN_ORIENTATION_TOP:
+    case GTK_POS_TOP:
       gtk_alignment_set (align, 0.0, 0.0, 1.0, 0.0);
       break;
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_BOTTOM:
       gtk_alignment_set (align, 0.0, 1.0, 1.0, 0.0);
       break;
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       gtk_alignment_set (align, 0.0, 0.0, 0.0, 1.0);
       break;
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       gtk_alignment_set (align, 1.0, 0.0, 0.0, 1.0);
       break;
   }
@@ -248,17 +248,17 @@ awn_alignment_set_applet (AwnAlignment *alignment,
 
   priv->applet = applet;
 
-  priv->orient = awn_applet_get_orientation (applet);
+  priv->position = awn_applet_get_pos_type (applet);
 
-  priv->orient_changed_id =
-    g_signal_connect_swapped (applet, "orientation-changed",
-                              G_CALLBACK (on_orient_changed), alignment);
+  priv->position_changed_id =
+    g_signal_connect_swapped (applet, "position-changed",
+                              G_CALLBACK (on_position_changed), alignment);
   priv->offset_changed_id =
     g_signal_connect_swapped (applet, "offset-changed",
                               G_CALLBACK (ensure_alignment), alignment);
 
   /* will set proper align and padding */
-  on_orient_changed (alignment, priv->orient);
+  on_position_changed (alignment, priv->position);
 }
 
 gint
@@ -310,18 +310,18 @@ ensure_alignment (AwnAlignment *alignment)
 
   priv->last_offset = offset;
 
-  switch (priv->orient)
+  switch (priv->position)
   {
-    case AWN_ORIENTATION_TOP:
+    case GTK_POS_TOP:
       gtk_alignment_set_padding (align, offset, 0, 0, 0);
       break;
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_BOTTOM:
       gtk_alignment_set_padding (align, 0, offset, 0, 0);
       break;
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       gtk_alignment_set_padding (align, 0, 0, offset, 0);
       break;
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       gtk_alignment_set_padding (align, 0, 0, 0, offset);
       break;
   }

@@ -130,8 +130,8 @@ class awnPreferencesMini(awnPreferences):
 
         # setup orientation model
         dropdown = self.wTree.get_object("orientationcombo")
-        self.create_dropdown(dropdown, [_("Top"), _("Right"),
-                                        _("Bottom"), _("Left")])
+        self.create_dropdown(dropdown, [_("Left"), _("Right"),
+                                        _("Top"), _("Bottom")])
 
         #setup style mode
         dropdown = self.wTree.get_object("stylecombo")

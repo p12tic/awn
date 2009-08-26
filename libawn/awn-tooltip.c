@@ -69,7 +69,7 @@ struct _AwnTooltipPrivate
   guint     show_timer_id;
   guint     hide_timer_id;
 
-  AwnOrientation orient;
+  GtkPositionType position;
   gint           size;
 
   gchar    *text;
@@ -527,7 +527,7 @@ awn_tooltip_init (AwnTooltip *tooltip)
   priv->text = NULL;
   priv->font_name = NULL;
   priv->font_color = NULL;
-  priv->orient = AWN_ORIENTATION_BOTTOM;
+  priv->position = GTK_POS_BOTTOM;
   priv->size = 50;
   priv->show_timer_id = 0;
   priv->hide_timer_id = 0;
@@ -587,20 +587,20 @@ awn_tooltip_update_position (AwnTooltip *tooltip)
   
   /* Find and set our position */
   #define TOOLTIP_OFFSET 16
-  switch (priv->orient) {
-    case AWN_ORIENTATION_TOP:
+  switch (priv->position) {
+    case GTK_POS_TOP:
       x = fx + (fw / 2) - (w / 2);
       y = fy + priv->size + priv->icon_offset + TOOLTIP_OFFSET;
       break;
-    case AWN_ORIENTATION_BOTTOM:
+    case GTK_POS_BOTTOM:
       x = fx + (fw / 2) - (w / 2);
       y = fy + fh - priv->size - priv->icon_offset - TOOLTIP_OFFSET - h;
       break;
-    case AWN_ORIENTATION_RIGHT:
+    case GTK_POS_RIGHT:
       x = fx + fw - priv->size - priv->icon_offset - TOOLTIP_OFFSET - w;
       y = fy + (fh / 2) - h / 2;
       break;
-    case AWN_ORIENTATION_LEFT:
+    case GTK_POS_LEFT:
       x = fx + priv->size + priv->icon_offset + TOOLTIP_OFFSET;
       y = fy + (fh / 2) - h / 2;
       break;
@@ -944,14 +944,14 @@ awn_tooltip_get_delay (AwnTooltip  *tooltip)
 
 void
 awn_tooltip_set_position_hint(AwnTooltip *tooltip,
-                              AwnOrientation orient,
+                              GtkPositionType position,
                               gint size)
 {
   g_return_if_fail (AWN_IS_TOOLTIP (tooltip));
 
   AwnTooltipPrivate *priv = tooltip->priv;
 
-  priv->orient = orient;
+  priv->position = position;
   priv->size = size;
 
   if (GTK_WIDGET_MAPPED (tooltip) && GTK_IS_WIDGET (priv->focus))
