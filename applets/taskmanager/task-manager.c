@@ -816,18 +816,24 @@ get_launcher(gchar * desktop)
   return launcher;
 }
 /*
- Possible TODO.
- Consider moving as much of the desktop search code as possible somewhere else
- (possibly util.c)
+See note in util.c
+ 
+ The desktop matching code will be refactored and put into its own object
+ early in the 0.6 dev cycle.
+ 
  */
 
 /*
  Create a path <systemdir><name>.desktop
- Does the desktop file exist?
+ Does the desktop file exist (case sensitive)?
  If so then append as an ephemeral item to the item list.  An ephemeral item
  disappears when their are only ephemeral items left in the list.
- If there desktop file is not discovered then it will recursively call itself
- for any subdirectories within system_dir.
+ 
+ If the desktop file is not discovered then it will recursively call itself
+ for any subdirectories within system_dir while doing a case insensitive match
+ on all the filenames.
+ 
+ FIXME: cleanup.
  */
 static gboolean
 task_icon_check_system_dir_for_desktop (TaskIcon *icon,
@@ -876,6 +882,26 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
           return TRUE;
         }
       }
+      else
+      {
+        gchar * filename_lower;
+        g_free (new_path);
+        new_path = g_strdup_printf ("%s%s",system_dir,fname);
+        desktop = new_path;
+        filename_lower = g_utf8_strdown (desktop, -1);
+        if ( g_strrstr (filename_lower,name) )
+        {
+          launcher = get_launcher(desktop);
+          if (launcher)
+          {
+            g_free (filename_lower);
+            g_free (new_path);            
+            task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+            return TRUE;
+          }
+        }
+        g_free (filename_lower);        
+      }
       g_free (new_path);
     }
     g_dir_close (dir);    
@@ -904,12 +930,15 @@ find_desktop (TaskIcon *icon, gchar * name)
   /*if the name has an of extensions then get rid of them*/
   for (iter = (GStrv)extensions; *iter; iter++)
   {
-    if ( g_strrstr (name,*iter) )
+    gchar * filename_lower = g_utf8_strdown (*iter, -1);
+    if ( g_strrstr (name,filename_lower) )
     {
+      g_free (filename_lower);
       name_stripped = g_strdup (name);
       *g_strrstr (name_stripped,*iter) = '\0';
       break;
     }
+    g_free (filename_lower);
   }  
 
   lower = g_utf8_strdown (name_stripped?name_stripped:name, -1);
