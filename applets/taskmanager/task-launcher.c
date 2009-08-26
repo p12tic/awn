@@ -680,7 +680,7 @@ _right_click (TaskItem *item, GdkEventButton *event)
   GtkWidget *menu_item;
   
   g_return_val_if_fail (TASK_IS_LAUNCHER (item),NULL);
-  
+
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
 
@@ -702,7 +702,9 @@ _right_click (TaskItem *item, GdkEventButton *event)
     menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_EXECUTE, NULL);
     gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), menu_item);
     gtk_widget_show (menu_item);
-        
+    g_signal_connect_swapped (menu_item,"activate",
+                      G_CALLBACK(_middle_click),
+                      item);        
   }
   gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, 
                   NULL, NULL, event->button, event->time);

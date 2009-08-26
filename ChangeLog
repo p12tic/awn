@@ -1,5 +1,12 @@
 2009-08-25  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-launcher.c:
+	Make sure there's a working Execute menu option when
+	there is a launcher.
+
+2009-08-25  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-item.c:
   	* applets/taskmanager/task-item.h:
   	* applets/taskmanager/task-launcher.c:

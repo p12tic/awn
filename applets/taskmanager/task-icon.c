@@ -2169,6 +2169,15 @@ task_icon_button_press_event (GtkWidget      *widget,
         item = gtk_separator_menu_item_new();
         gtk_widget_show(item);
         gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
+        if (launcher)
+        {
+          item = gtk_image_menu_item_new_from_stock (GTK_STOCK_EXECUTE, NULL);
+          gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
+          gtk_widget_show (item);
+          g_signal_connect_swapped (item,"activate",
+                        G_CALLBACK(task_item_middle_click),
+                        launcher);
+        }
 
         if (launcher)
         {
@@ -2249,11 +2258,17 @@ task_icon_button_press_event (GtkWidget      *widget,
       gtk_widget_show(item);
       gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
       
-      if (priv->main_item)
+      if (launcher)
       {
         item = gtk_image_menu_item_new_from_stock (GTK_STOCK_EXECUTE, NULL);
         gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
         gtk_widget_show (item);
+        g_signal_connect_swapped (item,"activate",
+                      G_CALLBACK(task_item_middle_click),
+                      launcher);
+        item = gtk_separator_menu_item_new();
+        gtk_widget_show(item);
+        gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
       }      
     }
     item = awn_applet_create_about_item (priv->applet,                
