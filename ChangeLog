@@ -1,3 +1,8 @@
+2009-08-26  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* doc/reference/libawn-sections.txt:
+	Update doc template due to API change.
+
 2009-08-26  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-drag-indicator.c:

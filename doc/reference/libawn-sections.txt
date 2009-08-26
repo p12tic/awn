@@ -95,7 +95,7 @@ AwnIconPrivate
 <TITLE>AwnIcon</TITLE>
 AwnIcon
 awn_icon_new
-awn_icon_set_orientation
+awn_icon_set_pos_type
 awn_icon_set_offset
 awn_icon_set_effect
 awn_icon_set_from_pixbuf
@@ -245,8 +245,8 @@ AwnAppletInitFunc
 AwnAppletInitPFunc
 awn_applet_new
 awn_applet_get_canonical_name
-awn_applet_get_orientation
-awn_applet_set_orientation
+awn_applet_get_pos_type
+awn_applet_set_pos_type
 awn_applet_get_path_type
 awn_applet_set_path_type
 awn_applet_get_offset
@@ -346,7 +346,7 @@ AwnIconBoxPrivate
 AwnIconBox
 awn_icon_box_new
 awn_icon_box_new_for_applet
-awn_icon_box_set_orientation
+awn_icon_box_set_pos_type
 awn_icon_box_set_offset
 <SUBSECTION Standard>
 AWN_ICON_BOX
@@ -452,7 +452,6 @@ awn_effects_post_op_progress
 <FILE>awn-defines</FILE>
 AWN_MAX_HEIGHT
 AWN_MIN_HEIGHT
-AwnOrientation
 AwnAppletFlags
 AwnAppletLicense
 AwnPathType
