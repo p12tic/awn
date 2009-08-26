@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-18 18:22-0700\n"
+"POT-Creation-Date: 2009-08-26 13:02-0700\n"
 "PO-Revision-Date: 2008-03-31 14:27+0000\n"
 "Last-Translator: Cédric VALMARY <Unknown>\n"
 "Language-Team: Occitan (post 1500) <oc@li.org>\n"
@@ -26,12 +26,12 @@ msgstr ""
 msgid "Fills space on the panel in expand mode"
 msgstr ""
 
-#: ../applets/taskmanager/task-launcher.c:701
+#: ../applets/taskmanager/task-launcher.c:773
 #, fuzzy, c-format
 msgid "Launch %s"
 msgstr "Aviada"
 
-#: ../applets/taskmanager/task-icon.c:1852
+#: ../applets/taskmanager/task-icon.c:2221
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "Apondre e levar d'aviaires"
@@ -52,159 +52,115 @@ msgstr ""
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:191
+#: ../awn-settings/awnClass.py:195
 msgid "Error, a sources.list already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:259
+#: ../awn-settings/awnClass.py:263
 msgid "Error, the path is empty or already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:470
+#: ../awn-settings/awnClass.py:478
 msgid "Error, the desktop file is not for a theme"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:487
+#: ../awn-settings/awnClass.py:495
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:775
+#: ../awn-settings/awnClass.py:740
 msgid "PNG Files"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:860 ../awn-settings/awnClass.py:896
-#: ../awn-settings/awnClass.py:952
+#: ../awn-settings/awnClass.py:804 ../awn-settings/awnClass.py:840
 msgid "Simple"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:861 ../awn-settings/awnClass.py:897
-#: ../awn-settings/awnClass.py:953
+#: ../awn-settings/awnClass.py:805 ../awn-settings/awnClass.py:841
 msgid "Classic"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:862 ../awn-settings/awnClass.py:898
-#: ../awn-settings/awnClass.py:954
+#: ../awn-settings/awnClass.py:806 ../awn-settings/awnClass.py:842
 msgid "Fade"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:863 ../awn-settings/awnClass.py:899
-#: ../awn-settings/awnClass.py:955
+#: ../awn-settings/awnClass.py:807 ../awn-settings/awnClass.py:843
 msgid "Spotlight"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:864 ../awn-settings/awnClass.py:900
-#: ../awn-settings/awnClass.py:956
+#: ../awn-settings/awnClass.py:808 ../awn-settings/awnClass.py:844
 msgid "Zoom"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:865 ../awn-settings/awnClass.py:901
-#: ../awn-settings/awnClass.py:957
+#: ../awn-settings/awnClass.py:809 ../awn-settings/awnClass.py:845
 msgid "Squish"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:866
+#: ../awn-settings/awnClass.py:810
 msgid "3D turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:867
+#: ../awn-settings/awnClass.py:811
 msgid "3D turn with spotlight"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:868 ../awn-settings/awnClass.py:904
-#: ../awn-settings/awnClass.py:960
+#: ../awn-settings/awnClass.py:812 ../awn-settings/awnClass.py:848
 msgid "Glow"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:895 ../awn-settings/awnClass.py:951
-#: ../awn-settings/awnClass.py:1114
+#: ../awn-settings/awnClass.py:839 ../awn-settings/awnSettings.py.in:138
 msgid "None"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:902 ../awn-settings/awnClass.py:958
+#: ../awn-settings/awnClass.py:846
 msgid "3D Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:903 ../awn-settings/awnClass.py:959
+#: ../awn-settings/awnClass.py:847
 msgid "3D Spotlight Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:961 ../awn-settings/awnSettings.py.in:99
-msgid "Custom"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:1044
+#: ../awn-settings/awnClass.py:921
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1054
+#: ../awn-settings/awnClass.py:931
 msgid "Confirm directory creation"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1055
+#: ../awn-settings/awnClass.py:932
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1085
-msgid "Top"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:1086
-msgid "Right"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:1087
-msgid "Bottom"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:1088
-msgid "Left"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:1115
-msgid "Flat"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:1116
-msgid "3d"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:1117
-msgid "Curved"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:1118
-msgid "Edgy"
-msgstr ""
-
 #. must be on one line due to i18n
-#: ../awn-settings/awnClass.py:1171
+#: ../awn-settings/awnClass.py:991
 #, python-format
 msgid ""
 "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
 "installed. It usually comes with librsvg, or a package similarly named."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1196
+#: ../awn-settings/awnClass.py:1016
 msgid "AWN has been successfully refreshed"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1202
+#: ../awn-settings/awnClass.py:1022
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1220
+#: ../awn-settings/awnClass.py:1040
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1222
+#: ../awn-settings/awnClass.py:1042
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -212,7 +168,7 @@ msgid ""
 "any later version."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1224
+#: ../awn-settings/awnClass.py:1044
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -220,7 +176,7 @@ msgid ""
 "more details."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1226
+#: ../awn-settings/awnClass.py:1046
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -254,31 +210,67 @@ msgstr ""
 msgid "Couldn't save the launcher. Error: %s"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:64
+#: ../awn-settings/awnSettings.py.in:65
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:94
+#: ../awn-settings/awnSettings.py.in:133
+msgid "Left"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:133
+msgid "Right"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:134
+msgid "Top"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:134
+msgid "Bottom"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:138
+msgid "Flat"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:139
+msgid "3d"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:139
+msgid "Curved"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:139
+msgid "Edgy"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:143
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:95
+#: ../awn-settings/awnSettings.py.in:143
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:96
+#: ../awn-settings/awnSettings.py.in:144
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:97
+#: ../awn-settings/awnSettings.py.in:145
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "Amagar la barra automaticament quand es inactiva"
 
-#: ../awn-settings/awnSettings.py.in:98
+#: ../awn-settings/awnSettings.py.in:146
 #, fuzzy
 msgid "Transparency"
 msgstr "Transparéncia :"
+
+#: ../awn-settings/awnSettings.py.in:146
+msgid "Custom"
+msgstr ""
 
 #: ../bindings/python/__init__.py:118
 #, python-format
@@ -306,8 +298,20 @@ msgstr ""
 msgid "A dock-like window navigator."
 msgstr ""
 
-#: ../libawn/awn-applet.c:1025 ../src/awn-panel.c:583
+#: ../libawn/awn-applet.c:1000 ../src/awn-panel.c:583
 msgid "Dock Preferences"
+msgstr ""
+
+#: ../libawn/awn-themed-icon.c:1852
+msgid "Choose Custom Icon"
+msgstr ""
+
+#: ../libawn/awn-themed-icon.c:1933
+msgid "Customize Icon"
+msgstr ""
+
+#: ../libawn/awn-themed-icon.c:2004
+msgid "Remove Customize Icon"
 msgstr ""
 
 #: ../src/awn-applet-proxy.c:290 ../src/awn-applet-proxy.c:319

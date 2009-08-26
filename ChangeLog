@@ -1,5 +1,11 @@
 2009-08-26  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* po/POTFILES.in:
+	* po/*.po:
+	Update gettext files.
+
+2009-08-26  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/libawn-sections.txt:
 	Update doc template due to API change.
 

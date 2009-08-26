@@ -12,5 +12,6 @@ bindings/python/__init__.py
 data/avant-window-navigator.desktop.in
 data/awn-themed-icon-ui.xml
 libawn/awn-applet.c
+libawn/awn-themed-icon.c
 src/awn-applet-proxy.c
 src/awn-panel.c
