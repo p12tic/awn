@@ -71,10 +71,11 @@ task_settings_get_default (void)
     /* FIXME handle error */
     client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, NULL);
 
-  /* Bar settings */
-
+    /* Bar settings
+     * FIXME: this should be using AwnApplet properties instead
+     */
     cfg_load_int(client, "panel", "size", &(settings->panel_size));
-    cfg_load_int(client, "panel", "orient", &(settings->orient));
+    cfg_load_int(client, "panel", "orient", &(settings->position));
     cfg_load_int(client, "panel", "offset", &(settings->offset));
   }
 

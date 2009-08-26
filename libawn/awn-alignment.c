@@ -248,7 +248,7 @@ awn_alignment_set_applet (AwnAlignment *alignment,
 
   priv->applet = applet;
 
-  priv->position = awn_applet_get_position (applet);
+  priv->position = awn_applet_get_pos_type (applet);
 
   priv->position_changed_id =
     g_signal_connect_swapped (applet, "position-changed",

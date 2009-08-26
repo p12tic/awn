@@ -66,7 +66,7 @@ GtkWidget *   awn_icon_box_new              (void);
 
 GtkWidget *   awn_icon_box_new_for_applet   (AwnApplet *applet);
 
-void          awn_icon_box_set_position  (AwnIconBox     *icon_box,
+void          awn_icon_box_set_pos_type  (AwnIconBox     *icon_box,
                                              GtkPositionType  position);
 
 void          awn_icon_box_set_offset       (AwnIconBox *icon_box,

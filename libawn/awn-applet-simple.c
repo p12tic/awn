@@ -79,7 +79,7 @@ awn_applet_simple_position_changed (AwnApplet *applet, GtkPositionType position)
 
   if (AWN_IS_ICON (priv->icon))
   {
-    awn_icon_set_position (AWN_ICON (priv->icon), position);
+    awn_icon_set_pos_type (AWN_ICON (priv->icon), position);
   }
 }
 
@@ -112,7 +112,7 @@ awn_applet_simple_size_changed (AwnApplet *applet, gint size)
     awn_themed_icon_set_size (AWN_THEMED_ICON (priv->icon), size);
 
   awn_applet_simple_position_changed (applet, 
-                                      awn_applet_get_position (applet));
+                                      awn_applet_get_pos_type (applet));
 }
 
 static void
@@ -183,8 +183,8 @@ awn_applet_simple_constructed (GObject *object)
   g_object_set (priv->icon,
                 "applet-name",applet_name,
                 NULL);
-  awn_icon_set_position (AWN_ICON (priv->icon), 
-                         awn_applet_get_position (AWN_APPLET (object)));
+  awn_icon_set_pos_type (AWN_ICON (priv->icon), 
+                         awn_applet_get_pos_type (AWN_APPLET (object)));
   awn_icon_set_offset (AWN_ICON (priv->icon),
                        awn_applet_get_offset (AWN_APPLET (object)));
   g_signal_connect_swapped (priv->icon, "clicked", 

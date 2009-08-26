@@ -139,7 +139,7 @@ awn_applet_proxy_set_property (GObject      *object,
       break;
     case PROP_POSITION:
       priv->position = g_value_get_int (value);
-      awn_icon_set_position (AWN_ICON (priv->throbber), priv->position);
+      awn_icon_set_pos_type (AWN_ICON (priv->throbber), priv->position);
       break;
     case PROP_OFFSET:
       priv->offset = g_value_get_int (value);

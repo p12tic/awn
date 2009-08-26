@@ -2261,7 +2261,7 @@ _drag_dest_motion(TaskManager *manager, gint x, gint y, GtkWidget *icon)
     priv->drag_timeout = 0;
   }
 
-  position = awn_applet_get_position (AWN_APPLET(manager));
+  position = awn_applet_get_pos_type (AWN_APPLET(manager));
   size = awn_applet_get_size (AWN_APPLET(manager));
   childs = gtk_container_get_children (GTK_CONTAINER(priv->box));
   move_to = g_list_index (childs, GTK_WIDGET(icon));

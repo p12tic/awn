@@ -65,7 +65,7 @@ namespace Awn {
 		public int get_offset ();
 		public int get_offset_at (int x, int y);
 		public Awn.PathType get_path_type ();
-		public Gtk.PositionType get_position ();
+		public Gtk.PositionType get_pos_type ();
 		public uint get_size ();
 		public unowned string get_uid ();
 		public uint inhibit_autohide (string reason);
@@ -76,7 +76,7 @@ namespace Awn {
 		public void set_flags (Awn.AppletFlags flags);
 		public void set_offset (int offset);
 		public void set_path_type (Awn.PathType path);
-		public void set_position (Gtk.PositionType position);
+		public void set_pos_type (Gtk.PositionType position);
 		public void set_size (int size);
 		public void set_uid (string uid);
 		public void uninhibit_autohide (uint cookie);
@@ -93,6 +93,7 @@ namespace Awn {
 		[NoAccessorMethod]
 		public int64 panel_xid { get; }
 		public int path_type { get; set construct; }
+		[NoAccessorMethod]
 		public Gtk.PositionType position { get; set; }
 		[NoAccessorMethod]
 		public bool quit_on_delete { get; set; }
@@ -157,7 +158,7 @@ namespace Awn {
 		[NoAccessorMethod]
 		public DesktopAgnostic.Color hilight { owned get; set construct; }
 		[NoAccessorMethod]
-		public int position { get; set construct; }
+		public Gtk.PositionType position { get; set construct; }
 		[NoAccessorMethod]
 		public DesktopAgnostic.Color title_bg { owned get; set construct; }
 		[NoAccessorMethod]
@@ -219,7 +220,7 @@ namespace Awn {
 		[NoAccessorMethod]
 		public bool no_clear { get; set construct; }
 		[NoAccessorMethod]
-		public int position { get; set construct; }
+		public Gtk.PositionType position { get; set construct; }
 		[NoAccessorMethod]
 		public float progress { get; set construct; }
 		[NoAccessorMethod]
@@ -270,7 +271,7 @@ namespace Awn {
 		public void set_is_active (bool is_active);
 		public void set_message (string message);
 		public void set_offset (int offset);
-		public void set_position (Gtk.PositionType position);
+		public void set_pos_type (Gtk.PositionType position);
 		public void set_progress (float progress);
 		public void set_tooltip_text (string text);
 		[NoAccessorMethod]
@@ -293,7 +294,7 @@ namespace Awn {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public IconBox ();
 		public void set_offset (int offset);
-		public void set_position (Gtk.PositionType position);
+		public void set_pos_type (Gtk.PositionType position);
 		public Awn.Applet applet { construct; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]

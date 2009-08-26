@@ -306,7 +306,7 @@
 					<parameter name="applet" type="AwnApplet*"/>
 				</parameters>
 			</method>
-			<method name="get_position" symbol="awn_applet_get_position">
+			<method name="get_pos_type" symbol="awn_applet_get_pos_type">
 				<return-type type="GtkPositionType"/>
 				<parameters>
 					<parameter name="applet" type="AwnApplet*"/>
@@ -360,7 +360,7 @@
 					<parameter name="path" type="AwnPathType"/>
 				</parameters>
 			</method>
-			<method name="set_position" symbol="awn_applet_set_position">
+			<method name="set_pos_type" symbol="awn_applet_set_pos_type">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="applet" type="AwnApplet*"/>
@@ -637,7 +637,7 @@
 			<property name="effects-hilight" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="hide-on-esc" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="hilight" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
-			<property name="position" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="position" type="GtkPositionType" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="title-bg" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="window-offset" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="window-padding" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
@@ -759,7 +759,7 @@
 			<property name="indirect-paint" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="make-shadow" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="no-clear" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
-			<property name="position" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="position" type="GtkPositionType" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="progress" type="gfloat" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="reflection-alpha" type="gfloat" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="reflection-offset" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
@@ -931,7 +931,7 @@
 					<parameter name="offset" type="gint"/>
 				</parameters>
 			</method>
-			<method name="set_position" symbol="awn_icon_set_position">
+			<method name="set_pos_type" symbol="awn_icon_set_pos_type">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="icon" type="AwnIcon*"/>
@@ -1028,7 +1028,7 @@
 					<parameter name="offset" type="gint"/>
 				</parameters>
 			</method>
-			<method name="set_position" symbol="awn_icon_box_set_position">
+			<method name="set_pos_type" symbol="awn_icon_box_set_pos_type">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="icon_box" type="AwnIconBox*"/>

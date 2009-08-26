@@ -113,7 +113,7 @@ on_position_changed (DBusGProxy *proxy, GtkPositionType position,
 {
   g_return_if_fail (AWN_IS_APPLET (applet));
 
-  awn_applet_set_position (applet, position);
+  awn_applet_set_pos_type (applet, position);
 }
 
 static void
@@ -295,7 +295,7 @@ awn_applet_set_property (GObject      *object,
       applet->priv->panel_id = g_value_get_int (value);
       break;
     case PROP_POSITION:
-      awn_applet_set_position (applet, g_value_get_enum (value));
+      awn_applet_set_pos_type (applet, g_value_get_enum (value));
       break;
     case PROP_OFFSET:
       awn_applet_set_offset (applet, g_value_get_int (value));
@@ -1225,16 +1225,16 @@ awn_applet_create_default_menu (AwnApplet *applet)
 }
 
 /**
- * awn_applet_get_position:
+ * awn_applet_get_pos_type:
  * @applet: an #AwnApplet.
  *
- * Gets current position of the applet. See awn_applet_set_position().
+ * Gets current position of the applet. See awn_applet_set_pos_type().
  * This value corresponds to the value used by the associated panel.
  *
  * Returns: current position of the applet.
  */
 GtkPositionType
-awn_applet_get_position (AwnApplet *applet)
+awn_applet_get_pos_type (AwnApplet *applet)
 {
   AwnAppletPrivate *priv;
 
@@ -1245,7 +1245,7 @@ awn_applet_get_position (AwnApplet *applet)
 }
 
 /**
- * awn_applet_set_position:
+ * awn_applet_set_pos_type:
  * @applet: an #AwnApplet.
  * @position: new position of the applet.
  *
@@ -1253,7 +1253,7 @@ awn_applet_get_position (AwnApplet *applet)
  * emits the #AwnApplet::position-changed signal.
  */
 void
-awn_applet_set_position (AwnApplet *applet, GtkPositionType position)
+awn_applet_set_pos_type (AwnApplet *applet, GtkPositionType position)
 {
   AwnAppletPrivate *priv;
 

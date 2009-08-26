@@ -33,7 +33,7 @@ on_click (GtkWidget *widget, GdkEventButton *event, AwnIconBox *box)
   else
     position = GTK_POS_BOTTOM;
 
-  awn_icon_box_set_position (box, position);
+  awn_icon_box_set_pos_type (box, position);
   return TRUE;
 }
 
@@ -47,7 +47,7 @@ pixbuf_icon (GtkWidget *parent)
 
   icon = awn_icon_new ();
   awn_icon_set_from_pixbuf (AWN_ICON (icon), pixbuf);
-  awn_icon_set_position (AWN_ICON (icon), GTK_POS_BOTTOM);
+  awn_icon_set_pos_type (AWN_ICON (icon), GTK_POS_BOTTOM);
   awn_icon_set_tooltip_text (AWN_ICON (icon), "Pixbuf Icon");
   gtk_container_add (GTK_CONTAINER (parent), icon);
   gtk_widget_show (icon);
@@ -85,7 +85,7 @@ cairo_icon (GtkWidget *parent)
 
   icon = awn_icon_new ();
   awn_icon_set_from_context (AWN_ICON (icon), cr);
-  awn_icon_set_position (AWN_ICON (icon), GTK_POS_BOTTOM);
+  awn_icon_set_pos_type (AWN_ICON (icon), GTK_POS_BOTTOM);
   awn_icon_set_tooltip_text (AWN_ICON (icon), "Cairo Icon");
   
   gtk_container_add (GTK_CONTAINER (parent), icon);

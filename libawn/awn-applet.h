@@ -112,8 +112,8 @@ AwnApplet *        awn_applet_new                 (const gchar *canonical_name,
 
 const gchar*       awn_applet_get_canonical_name  (AwnApplet      *applet);
 
-GtkPositionType    awn_applet_get_position        (AwnApplet      *applet);
-void               awn_applet_set_position        (AwnApplet      *applet,
+GtkPositionType    awn_applet_get_pos_type        (AwnApplet      *applet);
+void               awn_applet_set_pos_type        (AwnApplet      *applet,
                                                    GtkPositionType position);
 
 AwnPathType        awn_applet_get_path_type       (AwnApplet *applet);

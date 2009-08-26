@@ -332,7 +332,7 @@ awn_effects_set_property (GObject      *object,
       fx->position = g_value_get_enum(value);
       break;
     case PROP_CURRENT_EFFECTS:
-      fx->set_effects = g_value_get_uint(value);
+      fx->set_effects = (uint)g_value_get_int(value);
       break;
     case PROP_ICON_OFFSET:
       fx->icon_offset = g_value_get_int(value);

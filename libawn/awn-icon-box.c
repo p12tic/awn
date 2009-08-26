@@ -110,7 +110,7 @@ awn_icon_box_add (GtkContainer *container, GtkWidget *child)
                               GTK_PACK_START);
   awn_icon_set_offset      (AWN_ICON (child),
                             AWN_ICON_BOX (container)->priv->offset);
-  awn_icon_set_position (AWN_ICON (child), 
+  awn_icon_set_pos_type (AWN_ICON (child), 
                             AWN_ICON_BOX (container)->priv->position);
   g_signal_connect (child, "size-allocate",
                     G_CALLBACK (awn_icon_box_child_size_allocate), container);
@@ -218,7 +218,7 @@ on_applet_position_changed (AwnApplet      *applet,
                          GtkPositionType  position, 
                          AwnIconBox     *box)
 {
-  awn_icon_box_set_position (box, position);
+  awn_icon_box_set_pos_type (box, position);
 }
 
 static void
@@ -256,8 +256,8 @@ awn_icon_box_set_applet (AwnIconBox *box, AwnApplet *applet)
                       G_CALLBACK (on_applet_position_changed), box);
     g_signal_connect (applet, "offset-changed",
                       G_CALLBACK (on_applet_offset_changed), box);
-    awn_icon_box_set_position (AWN_ICON_BOX (box), 
-                                  awn_applet_get_position (applet));
+    awn_icon_box_set_pos_type (AWN_ICON_BOX (box), 
+                                  awn_applet_get_pos_type (applet));
     awn_icon_box_set_offset (AWN_ICON_BOX (box),
                              awn_applet_get_offset (applet));
   }
@@ -267,7 +267,7 @@ awn_icon_box_set_applet (AwnIconBox *box, AwnApplet *applet)
  * Public functions 
  */
 void 
-awn_icon_box_set_position (AwnIconBox     *icon_box,
+awn_icon_box_set_pos_type (AwnIconBox     *icon_box,
                               GtkPositionType  position)
 {
   AwnIconBoxPrivate *priv;
@@ -315,7 +315,7 @@ awn_icon_box_set_position (AwnIconBox     *icon_box,
     AwnIcon *icon = c->data;
 
     if (AWN_IS_ICON (icon))
-      awn_icon_set_position (icon, position);
+      awn_icon_set_pos_type (icon, position);
   }
   g_list_free (children);
 }

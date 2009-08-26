@@ -729,7 +729,7 @@ task_icon_init (TaskIcon *icon)
   priv->overlay_text = NULL;
   priv->ephemeral_count = 0;
   
-  awn_icon_set_position (AWN_ICON (icon), GTK_POS_BOTTOM);
+  awn_icon_set_pos_type (AWN_ICON (icon), GTK_POS_BOTTOM);
 
   /* D&D accept dragged objs */
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);

@@ -268,7 +268,7 @@ static void     awn_panel_add               (GtkContainer   *window,
 
 static void     awn_panel_set_offset        (AwnPanel *panel,
                                              gint      offset);
-static void     awn_panel_set_position      (AwnPanel *panel,
+static void     awn_panel_set_pos_type      (AwnPanel *panel,
                                              GtkPositionType position);
 static void     awn_panel_set_size          (AwnPanel *panel,
                                              gint      size);
@@ -705,7 +705,7 @@ awn_panel_set_property (GObject      *object,
       awn_panel_set_offset (panel, g_value_get_int (value));
       break;
     case PROP_POSITION:
-      awn_panel_set_position (panel, g_value_get_int (value));
+      awn_panel_set_pos_type (panel, g_value_get_int (value));
       break;
     case PROP_SIZE:
       awn_panel_set_size (panel, g_value_get_int (value));
@@ -2314,7 +2314,7 @@ awn_panel_set_offset  (AwnPanel *panel,
 }
 
 static void
-awn_panel_set_position (AwnPanel *panel, GtkPositionType position)
+awn_panel_set_pos_type (AwnPanel *panel, GtkPositionType position)
 {
   AwnPanelPrivate *priv = panel->priv;
 
@@ -2982,7 +2982,7 @@ awn_panel_docklet_request (AwnPanel *panel,
     AwnThrobber *closer = AWN_THROBBER (priv->docklet_closer);
 
     awn_throbber_set_size (closer, priv->size / 2);
-    awn_icon_set_position (AWN_ICON (closer), priv->position);
+    awn_icon_set_pos_type (AWN_ICON (closer), priv->position);
     awn_icon_set_offset (AWN_ICON (closer), priv->size / 2 + priv->offset);
 
     GtkRequisition closer_req;

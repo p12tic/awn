@@ -642,14 +642,14 @@ awn_icon_set_offset (AwnIcon        *icon,
 }
 
 /**
- * awn_icon_set_position:
+ * awn_icon_set_pos_type:
  * @icon: an #AwnIcon.
  * @position: position of the icon.
  *
  * Sets position of the icon.
  */
 void 
-awn_icon_set_position (AwnIcon        *icon,
+awn_icon_set_pos_type (AwnIcon        *icon,
                        GtkPositionType  position)
 {
   AwnIconPrivate *priv;

@@ -107,7 +107,7 @@ on_click (GtkWidget *widget, GdkEventButton *event, AwnIconBox *box)
     case 3:
       position++;
       if (position > GTK_POS_LEFT) position = GTK_POS_TOP;
-      awn_icon_box_set_position (box, position);
+      awn_icon_box_set_pos_type (box, position);
       break;
   }
   return TRUE;

@@ -100,7 +100,7 @@ static guint _applet_manager_signals[LAST_SIGNAL] = { 0 };
  */
 static void awn_applet_manager_set_size   (AwnAppletManager *manager,
                                            gint              size);
-static void awn_applet_manager_set_position (AwnAppletManager *manager, 
+static void awn_applet_manager_set_pos_type (AwnAppletManager *manager, 
                                            gint              position);
 static void awn_applet_manager_set_offset (AwnAppletManager *manager,
                                            gint              offset);
@@ -257,7 +257,7 @@ awn_applet_manager_set_property (GObject      *object,
       priv->client =  g_value_get_object (value);
       break;
     case PROP_POSITION:
-      awn_applet_manager_set_position (manager, g_value_get_int (value));
+      awn_applet_manager_set_pos_type (manager, g_value_get_int (value));
       break;
     case PROP_OFFSET:
       awn_applet_manager_set_offset (manager, g_value_get_int (value));
@@ -590,7 +590,7 @@ awn_manager_set_applets_position (gpointer key,
  * Update the box class
  */
 static void 
-awn_applet_manager_set_position (AwnAppletManager *manager, 
+awn_applet_manager_set_pos_type (AwnAppletManager *manager, 
                                gint              position)
 {
   AwnAppletManagerPrivate *priv = manager->priv;

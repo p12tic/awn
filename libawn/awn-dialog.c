@@ -116,7 +116,7 @@ static void awn_dialog_set_anchor_widget (AwnDialog *dialog,
 static void awn_dialog_set_anchor_applet (AwnDialog *dialog,
                                           AwnApplet *applet);
 
-static void awn_dialog_set_position      (AwnDialog *dialog,
+static void awn_dialog_set_pos_type      (AwnDialog *dialog,
                                           GtkPositionType position);
 
 static void awn_dialog_set_offset        (AwnDialog *dialog, gint offset);
@@ -797,7 +797,7 @@ awn_dialog_set_property (GObject      *object,
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_POSITION:
-      awn_dialog_set_position (AWN_DIALOG (object), g_value_get_enum (value));
+      awn_dialog_set_pos_type (AWN_DIALOG (object), g_value_get_enum (value));
       break;
     case PROP_WINDOW_OFFSET:
       awn_dialog_set_offset (AWN_DIALOG (object), g_value_get_int (value));
@@ -1309,7 +1309,7 @@ awn_dialog_set_anchor_applet (AwnDialog *dialog, AwnApplet *applet)
   if (applet)
   {
     /* get position from the applet and connect to its changed signal */
-    priv->position = awn_applet_get_position (applet);
+    priv->position = awn_applet_get_pos_type (applet);
 
     /* connect to the special configure-event and other relevant signals*/
     priv->applet_configure_id =
@@ -1318,7 +1318,7 @@ awn_dialog_set_anchor_applet (AwnDialog *dialog, AwnApplet *applet)
 
     priv->position_changed_id =
       g_signal_connect_swapped (applet, "position-changed",
-                                G_CALLBACK (awn_dialog_set_position),
+                                G_CALLBACK (awn_dialog_set_pos_type),
                                 dialog);
 
     priv->applet_comp_id = 
@@ -1395,7 +1395,7 @@ awn_dialog_set_anchor_widget (AwnDialog *dialog, GtkWidget *anchor)
 }
 
 static void
-awn_dialog_set_position (AwnDialog *dialog, GtkPositionType position)
+awn_dialog_set_pos_type (AwnDialog *dialog, GtkPositionType position)
 {
   g_return_if_fail (AWN_IS_DIALOG (dialog));
 
