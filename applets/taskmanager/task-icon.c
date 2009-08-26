@@ -1404,6 +1404,7 @@ task_icon_increment_ephemeral_count (TaskIcon *icon)
 {
   TaskIconPrivate *priv;
 
+  g_debug ("%s",__func__);
   g_return_if_fail (TASK_IS_ICON (icon));
   priv = icon->priv;
 
@@ -1619,6 +1620,7 @@ task_icon_append_ephemeral_item (TaskIcon      *icon,
 {
   TaskIconPrivate *priv;
   
+  g_debug ("%s",__func__);
   g_assert (item);
   g_assert (icon);
   g_return_if_fail (TASK_IS_ICON (icon));
