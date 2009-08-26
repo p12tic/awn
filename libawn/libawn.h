@@ -26,6 +26,7 @@
 #include <libawn/awn-alignment.h>
 #include <libawn/awn-applet.h>
 #include <libawn/awn-applet-simple.h>
+#include <libawn/awn-box.h>
 #include <libawn/awn-cairo-utils.h>
 #include <libawn/awn-config.h>
 #include <libawn/awn-defines.h>

@@ -25,8 +25,7 @@
 #include <gtk/gtk.h>
 
 #include <libdesktop-agnostic/desktop-agnostic.h>
-
-#include "awn-panel.h"
+#include <libawn/libawn.h>
 
 G_BEGIN_DECLS
 
@@ -53,7 +52,7 @@ typedef struct _AwnAppletManagerPrivate AwnAppletManagerPrivate;
 
 struct _AwnAppletManager 
 {
-  GtkBox parent;
+  AwnBox parent;
 
   /*< private >*/
   AwnAppletManagerPrivate *priv;
@@ -61,7 +60,7 @@ struct _AwnAppletManager
 
 struct _AwnAppletManagerClass 
 {
-  GtkBoxClass parent_class;
+  AwnBoxClass parent_class;
 
   /*< signals >*/
   void (*applet_embedded)    (AwnAppletManager *manager, GtkWidget *applet);
@@ -98,7 +97,7 @@ GdkRegion*  awn_applet_manager_get_mask          (AwnAppletManager *manager,
 
 /* UA stuff */
 
-gboolean    awn_ua_get_all_server_flags 	 (AwnAppletManager *manager,
+gboolean    awn_ua_get_all_server_flags          (AwnAppletManager *manager,
                                                   GHashTable **hash,
                                                   gchar     *name,
                                                   GError   **error);

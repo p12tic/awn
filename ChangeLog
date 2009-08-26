@@ -1,3 +1,16 @@
+2009-08-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/Makefile.am:
+	* libawn/awn-box.c:
+	* libawn/awn-box.h:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-icon-box.h:
+	* libawn/libawn.h:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	Added AwnBox which wraps GtkBox's differences in various Gtk versions.
+	AwnBox is now base class of AwnIconBox and AwnAppletManager.
+
 2009-08-26  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* po/POTFILES.in:

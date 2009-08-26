@@ -30,6 +30,7 @@ public_headers = \
 	awn-alignment.h \
 	awn-applet.h \
 	awn-applet-simple.h \
+	awn-box.h \
 	awn-cairo-utils.h \
 	awn-config.h \
 	awn-dialog.h \
@@ -95,6 +96,7 @@ source_c = \
 	awn-alignment.c \
 	awn-applet.c \
 	awn-applet-simple.c \
+	awn-box.c \
 	awn-cairo-utils.c \
 	awn-config.c \
 	awn-dialog.c \

@@ -34,7 +34,7 @@
 
 #define MAX_UA_LIST_ENTRIES 50
 
-G_DEFINE_TYPE (AwnAppletManager, awn_applet_manager, GTK_TYPE_BOX) 
+G_DEFINE_TYPE (AwnAppletManager, awn_applet_manager, AWN_TYPE_BOX) 
 
 #define AWN_APPLET_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE (obj, \
   AWN_TYPE_APPLET_MANAGER, AwnAppletManagerPrivate))
@@ -43,7 +43,7 @@ struct _AwnAppletManagerPrivate
 {
   DesktopAgnosticConfigClient *client;
 
-  GtkPositionType   position;
+  GtkPositionType  position;
   gint             offset;
   gint             size;
   
@@ -66,10 +66,6 @@ struct _AwnAppletManagerPrivate
   GQuark           touch_quark;
   GQuark           visibility_quark;
   GQuark           shape_mask_quark;
-
-  /* Current box class */
-  GtkWidgetClass  *klass;
-
 };
 
 enum 
@@ -98,13 +94,13 @@ static guint _applet_manager_signals[LAST_SIGNAL] = { 0 };
 /* 
  * FORWARDS
  */
-static void awn_applet_manager_set_size   (AwnAppletManager *manager,
-                                           gint              size);
+static void awn_applet_manager_set_size     (AwnAppletManager *manager,
+                                             gint              size);
 static void awn_applet_manager_set_pos_type (AwnAppletManager *manager, 
-                                           gint              position);
-static void awn_applet_manager_set_offset (AwnAppletManager *manager,
-                                           gint              offset);
-static void free_list                     (GSList **list);
+                                             GtkPositionType   position);
+static void awn_applet_manager_set_offset   (AwnAppletManager *manager,
+                                             gint              offset);
+static void free_list                       (GSList **list);
 
 /*
  * GOBJECT CODE 
@@ -121,6 +117,7 @@ awn_applet_manager_constructed (GObject *object)
 
   /* Hook everything up to the config client */
 
+  // FIXME: at least "size" should be set by AwnPanel, don't read it from config
   desktop_agnostic_config_client_bind (priv->client,
                                        AWN_GROUP_PANEL, AWN_PANEL_POSITION,
                                        object, "position", TRUE,
@@ -159,21 +156,6 @@ awn_applet_manager_constructed (GObject *object)
                                            AWN_GROUP_PANEL, AWN_PANEL_UA_ACTIVE_LIST,
                                            empty_array, NULL);
   g_value_array_free (empty_array);
-}
-
-static void
-awn_applet_manager_size_request (GtkWidget *widget, GtkRequisition *requisition){
-  AwnAppletManagerPrivate *priv = AWN_APPLET_MANAGER (widget)->priv;
-  
-  priv->klass->size_request (widget, requisition);
-}
-
-static void
-awn_applet_manager_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
-{
-  AwnAppletManagerPrivate *priv = AWN_APPLET_MANAGER (widget)->priv;
-  
-  priv->klass->size_allocate (widget, allocation);
 }
 
 static void
@@ -300,12 +282,6 @@ awn_applet_manager_dispose (GObject *object)
     priv->extra_widgets = NULL;
   }
 
-  if (priv->klass)
-  {
-    g_type_class_unref (priv->klass);
-    priv->klass = NULL;
-  }
-
   desktop_agnostic_config_client_unbind_all_for_object (priv->client,
                                                         object, NULL);
 
@@ -316,16 +292,12 @@ static void
 awn_applet_manager_class_init (AwnAppletManagerClass *klass)
 {
   GObjectClass *obj_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
   
   obj_class->constructed   = awn_applet_manager_constructed;
   obj_class->dispose       = awn_applet_manager_dispose;
   obj_class->get_property  = awn_applet_manager_get_property;
   obj_class->set_property  = awn_applet_manager_set_property;
 
-  wid_class->size_request  = awn_applet_manager_size_request;
-  wid_class->size_allocate = awn_applet_manager_size_allocate;
-    
   /* Add properties to the class */
   g_object_class_install_property (obj_class,
     PROP_CLIENT,
@@ -591,40 +563,13 @@ awn_manager_set_applets_position (gpointer key,
  */
 static void 
 awn_applet_manager_set_pos_type (AwnAppletManager *manager, 
-                               gint              position)
+                                 GtkPositionType   position)
 {
   AwnAppletManagerPrivate *priv = manager->priv;
   
   priv->position = position;
 
-  if (priv->klass)
-  {
-    g_type_class_unref (priv->klass);
-    priv->klass = NULL;
-  }
-  switch (priv->position)
-  {
-    case GTK_POS_TOP:
-    case GTK_POS_BOTTOM:
-#if GTK_CHECK_VERSION(2, 15, 0)
-      gtk_orientable_set_orientation (GTK_ORIENTABLE(manager), GTK_ORIENTATION_HORIZONTAL);
-#endif
-      priv->klass = GTK_WIDGET_CLASS (g_type_class_ref (GTK_TYPE_HBOX));
-      break;
-    
-    case GTK_POS_RIGHT:
-    case GTK_POS_LEFT:
-#if GTK_CHECK_VERSION(2, 15, 0)
-      gtk_orientable_set_orientation (GTK_ORIENTABLE(manager), GTK_ORIENTATION_VERTICAL);
-#endif
-      priv->klass = GTK_WIDGET_CLASS (g_type_class_ref (GTK_TYPE_VBOX));
-      break;
-
-    default:
-      g_assert_not_reached ();
-      priv->klass = NULL;
-      break;
-  }
+  awn_box_set_orientation_from_pos_type (AWN_BOX (manager), position);
 
   /* update position on all running applets (if they'd crash) */
   g_hash_table_foreach(priv->applets,
@@ -1024,6 +969,8 @@ For now, it return nothing*/
 
 
 /*End DBUS*/
+
+/* FIXME: get rid of these show/hide methods, it can be made cleaner */
 void
 awn_applet_manager_show_applets (AwnAppletManager *manager)
 {

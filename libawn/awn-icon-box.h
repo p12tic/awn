@@ -50,14 +50,14 @@ typedef struct _AwnIconBoxPrivate AwnIconBoxPrivate;
  
 struct _AwnIconBox
 {
-  GtkBox  parent;	
+  AwnBox  parent;	
 
   AwnIconBoxPrivate *priv;
 };
 
 struct _AwnIconBoxClass
 {
-  GtkBoxClass parent_class;
+  AwnBoxClass parent_class;
 };
 
 GType         awn_icon_box_get_type         (void) G_GNUC_CONST;
