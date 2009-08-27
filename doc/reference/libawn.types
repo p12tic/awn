@@ -2,6 +2,7 @@ awn_tooltip_get_type
 awn_dialog_get_type
 awn_label_get_type
 awn_overlay_themed_icon_get_type
+awn_box_get_type
 awn_overlay_text_get_type
 awn_icon_get_type
 awn_applet_simple_get_type

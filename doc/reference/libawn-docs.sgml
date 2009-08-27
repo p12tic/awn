@@ -15,9 +15,12 @@
     </chapter>
     <chapter>
       <title>Base Components</title>
+      <xi:include href="xml/awn-box.xml"/>
       <xi:include href="xml/awn-config.xml"/>
       <xi:include href="xml/awn-dialog.xml"/>
       <xi:include href="xml/awn-effects.xml"/>
+      <xi:include href="xml/awn-image.xml"/>
+      <xi:include href="xml/awn-label.xml"/>
       <xi:include href="xml/awn-tooltip.xml"/>
       <xi:include href="xml/awn-overlayable.xml"/>
     </chapter>

@@ -74,6 +74,24 @@ AWN_OVERLAY_THEMED_ICON_GET_CLASS
 </SECTION>
 
 <SECTION>
+<FILE>awn-box</FILE>
+AwnBoxPrivate
+<TITLE>AwnBox</TITLE>
+AwnBox
+awn_box_new
+awn_box_set_orientation
+awn_box_set_orientation_from_pos_type
+<SUBSECTION Standard>
+AWN_BOX
+AWN_IS_BOX
+AWN_TYPE_BOX
+awn_box_get_type
+AWN_BOX_CLASS
+AWN_IS_BOX_CLASS
+AWN_BOX_GET_CLASS
+</SECTION>
+
+<SECTION>
 <FILE>awn-overlay-text</FILE>
 <TITLE>AwnOverlayText</TITLE>
 AwnOverlayText
