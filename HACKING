@@ -56,6 +56,9 @@ documentation templates, run the following commands::
     rm doc/reference/libawn.types
     make -C doc/reference libawn.types
 
+If you add or remove a new type to ``libawn``, you should also modify the
+documentation index file, ``doc/reference/libawn-docs.sgml``.
+
 Adding/Modifying Translatable Strings
 -------------------------------------
 

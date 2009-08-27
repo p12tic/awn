@@ -1,3 +1,8 @@
+2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* HACKING:
+	Add a note about the documentation index file.
+
 2009-08-27  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
