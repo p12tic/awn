@@ -29,6 +29,13 @@
   (gtype-id "AWN_TYPE_ALIGNMENT")
 )
 
+(define-object Box
+  (in-module "Awn")
+  (parent "GtkBox")
+  (c-name "AwnBox")
+  (gtype-id "AWN_TYPE_BOX")
+)
+
 (define-object Dialog
   (in-module "Awn")
   (parent "GtkWindow")
@@ -51,6 +58,13 @@
   (implements "AwnOverlayable")
 )
 
+(define-object IconBox
+  (in-module "Awn")
+  (parent "AwnBox")
+  (c-name "AwnIconBox")
+  (gtype-id "AWN_TYPE_ICON_BOX")
+)
+
 (define-object ThemedIcon
   (in-module "Awn")
   (parent "AwnIcon")
@@ -71,13 +85,6 @@
   (parent "GtkLabel")
   (c-name "AwnLabel")
   (gtype-id "AWN_TYPE_LABEL")
-)
-
-(define-object IconBox
-  (in-module "Awn")
-  (parent "GtkBox")
-  (c-name "AwnIconBox")
-  (gtype-id "AWN_TYPE_ICON_BOX")
 )
 
 (define-object Overlay
@@ -482,6 +489,40 @@
   (return-type "none")
   (parameters
     '("AwnEffect" "effect")
+  )
+)
+
+;; From awn-box.h
+
+(define-function awn_box_get_type
+  (c-name "awn_box_get_type")
+  (return-type "GType")
+)
+
+(define-function awn_box_new
+  (c-name "awn_box_new")
+  (is-constructor-of "AwnBox")
+  (return-type "GtkWidget*")
+  (properties
+    '("orient" (argname "orient"))
+  )
+)
+
+(define-method set_orientation
+  (of-object "AwnBox")
+  (c-name "awn_box_set_orientation")
+  (return-type "none")
+  (parameters
+    '("GtkOrientation" "orient")
+  )
+)
+
+(define-method set_orientation_from_pos_type
+  (of-object "AwnBox")
+  (c-name "awn_box_set_orientation_from_pos_type")
+  (return-type "none")
+  (parameters
+    '("GtkPositionType" "pos_type")
   )
 )
 

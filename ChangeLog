@@ -1,3 +1,8 @@
+2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/awn.defs:
+	Fix Python bindings, due to the introduction of AwnBox.
+
 2009-08-27  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
