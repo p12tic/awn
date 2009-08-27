@@ -48,8 +48,13 @@ public class AwnTest : Window
   on_orient_clicked (Gtk.Button button)
   {
     Awn.Dialog dialog = (Awn.Dialog)button.parent.parent.parent;
+    int pos;
 
-    dialog.orient = (dialog.orient + 1) % 4;
+    pos = (int)dialog.position;
+
+    pos = (pos + 1) % 4;
+
+    dialog.position = (PositionType)pos;
   }
 
   private static void

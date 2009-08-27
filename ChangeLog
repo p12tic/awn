@@ -1,3 +1,9 @@
+2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* tests/test-awn-dialog.py:
+	* tests/test-vala-awn-dialog.vala:
+	Update due to API change.
+
 2009-08-27  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awn-settings.xml:

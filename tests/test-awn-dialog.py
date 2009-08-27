@@ -5,9 +5,9 @@ import gtk
 
 
 def change_orient(widget, dialog):
-    i = dialog.props.orient
+    i = dialog.props.position
     i = (i + 1) % 4
-    dialog.props.orient = i
+    dialog.props.position = i
 
 
 def change_attach(widget, dialog):
