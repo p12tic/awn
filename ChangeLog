@@ -1,5 +1,12 @@
 2009-08-27  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
+  	* applets/taskmanager/task-manager.c:
+	Inhbiit autohide for 10 seconds when a window requires 
+	attention.
+
+2009-08-27  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-launcher.c:
   	* applets/taskmanager/task-manager.c:
 	Added launcher icon to TaskLauncher Task item.

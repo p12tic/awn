@@ -8,6 +8,11 @@ single_instance = true
 # configuration options
 # PLEASE KEEP THIS ALPHABETIZED!
 
+[DEFAULT/attention_autohide_timer]
+type = integer
+default = 10
+description = Number of seconds to inhibit autohide when a application requests attention. A value of 0 disables.
+
 [DEFAULT/disable_icon_changes]
 type = boolean
 default = false

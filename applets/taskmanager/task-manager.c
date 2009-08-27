@@ -69,7 +69,10 @@ struct _TaskManagerPrivate
   guint           autohide_cookie;  
   GdkWindow       *awn_gdk_window;
   GdkRegion       * awn_gdk_region;
-
+  
+  guint           attention_cookie;
+  guint           attention_source;
+  
   /* Dragging properties */
   TaskIcon          *dragged_icon;
   TaskDragIndicator *drag_indicator;
@@ -90,6 +93,7 @@ struct _TaskManagerPrivate
   gboolean     intellihide;
   gint         intellihide_mode;
   gint         match_strength;
+  gint         attention_autohide_timer;
 };
 
 enum
@@ -110,7 +114,8 @@ enum
   PROP_GROUPING,
   PROP_MATCH_STRENGTH,
   PROP_INTELLIHIDE,
-  PROP_INTELLIHIDE_MODE
+  PROP_INTELLIHIDE_MODE,
+  PROP_ATTENTION_AUTOHIDE_TIMER
 };
 
 /* Forwards */
@@ -227,9 +232,13 @@ task_manager_get_property (GObject    *object,
     case PROP_INTELLIHIDE_MODE:
       g_value_set_int (value, manager->priv->intellihide_mode);
       break;
-      
+
     case PROP_MATCH_STRENGTH:
       g_value_set_int (value, manager->priv->match_strength);
+      break;
+
+    case PROP_ATTENTION_AUTOHIDE_TIMER:
+      g_value_set_int (value, manager->priv->attention_autohide_timer);
       break;
 
     default:
@@ -297,6 +306,10 @@ task_manager_set_property (GObject      *object,
 
     case PROP_INTELLIHIDE_MODE:
       manager->priv->intellihide_mode = g_value_get_int (value);
+      break;
+      
+    case PROP_ATTENTION_AUTOHIDE_TIMER:
+      manager->priv->attention_autohide_timer = g_value_get_int (value);
       break;
       
     default:
@@ -368,6 +381,13 @@ task_manager_constructed (GObject *object)
                                        object, "match_strength", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "attention_autohide_timer",
+                                       object, "attention_autohide_timer", FALSE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  
   g_signal_connect (priv->screen,"active-window-changed",
                     G_CALLBACK(task_manager_active_window_changed_cb),object);
   g_signal_connect (priv->screen,"active-workspace-changed",
@@ -450,6 +470,15 @@ task_manager_class_init (TaskManagerClass *klass)
                             G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_MATCH_STRENGTH, pspec);
   
+  pspec = g_param_spec_int ("attention_autohide_timer",
+                            "Attention Autohide Timer",
+                            "Number of seconds to inhibit autohide when a window requests attention",
+                            0,
+                            9999,
+                            10,
+                            G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_ATTENTION_AUTOHIDE_TIMER, pspec);
+
   g_type_class_add_private (obj_class, sizeof (TaskManagerPrivate));
 
   dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
@@ -634,6 +663,58 @@ on_window_state_changed (WnckWindow      *window,
     return;
   }
 }
+
+
+static gboolean
+uninhibit_timer (gpointer manager)
+{
+  TaskManagerPrivate *priv;
+  
+  g_return_val_if_fail (TASK_IS_MANAGER (manager),FALSE);
+  priv = TASK_MANAGER(manager)->priv;
+
+  awn_applet_uninhibit_autohide (AWN_APPLET(manager),priv->attention_cookie);
+  priv->attention_cookie = 0;
+  priv->attention_source = 0;
+  return FALSE;
+}
+
+static void
+check_attention_requested (WnckWindow      *window,
+                         WnckWindowState  changed_mask,
+                         WnckWindowState  new_state,
+                         TaskManager     *manager)
+{
+  TaskManagerPrivate *priv;
+  
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+
+  WnckWindowState win_state = wnck_window_get_state (window);
+  
+  /* inhibit autohide for a length of time.  If it's already inhibited due 
+    to attention then reset timer
+   */
+  if (priv->attention_autohide_timer)
+  {
+    if ( (win_state  & WNCK_WINDOW_STATE_DEMANDS_ATTENTION) || 
+        (win_state & WNCK_WINDOW_STATE_URGENT) )
+    {
+      if (priv->attention_cookie)
+      {
+        g_source_remove (priv->attention_source);
+      }
+      else
+      {
+        priv->attention_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager),
+                                                              "Attention" );      
+      }
+      priv->attention_source = g_timeout_add_seconds (priv->attention_autohide_timer,
+                                                      uninhibit_timer,manager);
+    }
+  }
+}
+
 
 /*
  * The active WnckWindow has changed.
@@ -1232,6 +1313,9 @@ on_window_opened (WnckScreen    *screen,
     return;
   }
 
+  g_signal_connect (window, "state-changed", 
+                    G_CALLBACK (check_attention_requested), manager);    
+  
   /* create a new TaskWindow containing the WnckWindow*/
   item = task_window_new (window);
   g_object_set_qdata (G_OBJECT (window), win_quark, TASK_WINDOW (item));
