@@ -20,12 +20,18 @@
  *
  */
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <time.h>
+
 #include <stdio.h>
 #include <string.h>
 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <glib/gi18n.h>
+#include <glib/gstdio.h>
 
 #include <libwnck/libwnck.h>
 
@@ -40,6 +46,12 @@
 #include "task-manager.h"
 
 //#define DEBUG 1
+
+enum{
+  DESKTOP_COPY_ALL=0,
+  DESKTOP_COPY_OWNER,
+  DESKTOP_COPY_NONE
+}DesktopCopy;
 
 G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_THEMED_ICON)
 
@@ -107,6 +119,7 @@ struct _TaskIconPrivate
   /*prop*/
   gboolean  enable_long_press;
   gboolean  disable_icon_changes;
+  gint      desktop_copy;
   
   gboolean  long_press;     /*set to TRUE when there has been a long press so the clicked event can be ignored*/
   gchar * custom_name;
@@ -122,7 +135,8 @@ enum
   PROP_MAX_INDICATORS,
   PROP_TXT_INDICATOR_THRESHOLD,
   PROP_USE_LONG_PRESS,
-  PROP_DISABLE_ICON_CHANGES
+  PROP_DISABLE_ICON_CHANGES,
+  PROP_DESKTOP_COPY
 };
 
 enum
@@ -254,6 +268,9 @@ task_icon_get_property (GObject    *object,
     case PROP_DRAG_AND_DROP_HOVER_DELAY:
       g_value_set_int (value, priv->drag_and_drop_hover_delay);
       break;
+    case PROP_DESKTOP_COPY:
+      g_value_set_int (value, priv->desktop_copy);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -310,6 +327,9 @@ task_icon_set_property (GObject      *object,
     case PROP_DRAG_AND_DROP_HOVER_DELAY:
       icon->priv->drag_and_drop_hover_delay = g_value_get_int (value);
       break;
+    case PROP_DESKTOP_COPY:
+      icon->priv->desktop_copy = g_value_get_int (value);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -461,7 +481,13 @@ task_icon_constructed (GObject *object)
   {
     return;
   }
-  
+
+  if (!do_bind_property (priv->client, "desktop_copy", object,
+                         "desktop_copy"))
+  {
+    return;
+  }
+
 }
 
 static void
@@ -653,6 +679,15 @@ task_icon_class_init (TaskIconClass *klass)
                             500,
                             G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_DRAG_AND_DROP_HOVER_DELAY, pspec);
+
+  pspec = g_param_spec_int ("desktop_copy",
+                            "When/if to copy desktop files",
+                            "When/if to copy desktop files",
+                            DESKTOP_COPY_ALL,
+                            DESKTOP_COPY_NONE,
+                            DESKTOP_COPY_OWNER,
+                            G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_DESKTOP_COPY, pspec);
   
   /* Install signals */
   _icon_signals[VISIBLE_CHANGED] =
@@ -2559,6 +2594,31 @@ task_icon_dest_drag_leave (GtkWidget      *widget,
   g_signal_emit (TASK_ICON (widget), _icon_signals[DEST_DRAG_LEAVE], 0);
 }
 
+
+static void 
+copy_over (const gchar *src, const gchar *dest)
+{
+  GFile  *from;
+  GFile  *to;
+  GError *error = NULL;
+
+  from = g_file_new_for_path (src);
+  to = g_file_new_for_path (dest);
+
+  g_unlink (dest);
+  g_file_copy (from, to, 0, NULL, NULL, NULL, &error);
+
+  if (error)
+  {
+    g_warning ("Unable to copy %s to %s: %s", src, dest, error->message);
+    g_error_free (error);
+  }
+
+  g_object_unref (to);
+  g_object_unref (from);
+}
+
+
 static void
 task_icon_dest_drag_data_received (GtkWidget      *widget,
                                    GdkDragContext *context,
@@ -2601,6 +2661,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
    */
   if (strstr (sdata_data, ".desktop"))
   {
+    /*TODO move into a separate function */
     tokens = g_strsplit  (sdata_data, "\n",-1);    
     for (i=tokens; *i;i++)
     {
@@ -2613,6 +2674,40 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
       {
         if (filename)
         {
+          gboolean make_copy = FALSE;
+          struct stat stat_buf;
+          switch (priv->desktop_copy)
+          {
+            case DESKTOP_COPY_ALL:
+              make_copy = TRUE;
+              break;
+            case DESKTOP_COPY_OWNER:
+              g_stat (filename,&stat_buf);
+              if ( stat_buf.st_uid == getuid())
+              {
+                make_copy = TRUE;
+              }
+              break;
+            case DESKTOP_COPY_NONE:
+            default:
+              break;
+          }
+          if (make_copy)
+          {
+            gchar * launcher_dir = NULL;
+            gchar * file_basename;
+            gchar * dest;
+            launcher_dir = g_strdup_printf ("%s/.config/awn/launchers", 
+                                              g_get_home_dir ());
+            g_mkdir_with_parents (launcher_dir,0755); 
+            file_basename = g_path_get_basename (filename);
+            dest = g_strdup_printf("%s/%lu-%s",launcher_dir,(gulong)time(NULL),file_basename);
+            copy_over (filename,dest);
+            g_free (file_basename);
+            g_free (filename);
+            g_free (launcher_dir);
+            filename = dest;
+          }
           task_manager_append_launcher (TASK_MANAGER(priv->applet),filename);
         }
       }

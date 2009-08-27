@@ -1645,8 +1645,7 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
       {
         /*if there are only ephemeral items in the icon then it will 
          trigger it's removal.  Otherwise the it will be removed when it is
-         no longer managing ay TaskWindows*/
-        g_debug ("appending ephemeral %s",task_launcher_get_desktop_path (launcher));
+         no longer managing ay TaskWindows*/        
         task_icon_increment_ephemeral_count (icon_iter->data);
       }
     }

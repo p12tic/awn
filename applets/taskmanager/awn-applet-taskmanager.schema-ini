@@ -23,6 +23,11 @@ type = integer
 default = 500
 description = Delay before activating a window when dragging over an icon.
 
+[DEFAULT/desktop_copy]
+type = integer
+default = 1
+description = Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. Copy if owned by user, 2.. Do not copy.
+
 [DEFAULT/enable_long_press]
 type = boolean
 default = true
