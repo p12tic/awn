@@ -95,7 +95,7 @@ description = Offset of the icons from window border.
 [panel/orient]
 type = integer
 default = 2
-description = Orientation of Awn. (top=0, right=1, bottom=2 and left=3)
+description = Orientation of Awn. (left=0, right=1, top=2 and bottom=3)
 
 [panel/panel_mode]
 type = boolean

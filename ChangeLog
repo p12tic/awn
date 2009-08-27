@@ -1,5 +1,10 @@
 2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* data/avant-window-navigator.schema-ini.in:
+	Fix the description for the orientation config key.
+
+2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* doc/reference/libawn-docs.sgml:
 	* doc/reference/libawn-sections.txt:
 	* doc/reference/libawn.types:
