@@ -1,5 +1,11 @@
 2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-config.c (awn_config_get_default_for_applet_by_info):
+	Due to changes in UID handling, the UID parameter may no longer
+	be NULL.
+
+2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/awn.defs:
 	Fix Python bindings, due to the introduction of AwnBox.
 

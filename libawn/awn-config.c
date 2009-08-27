@@ -161,7 +161,7 @@ awn_config_get_default_for_applet (AwnApplet *applet, GError **error)
 /**
  * awn_config_get_default_for_applet_by_info:
  * @name: The canonical applet name.
- * @uid: The UID of the applet (may be %NULL).
+ * @uid: The UID of the applet (may not be %NULL).
  * @error: The address of the #GError object, if an error occurs.
  *
  * Looks up or creates a configuration client that is associated with the
@@ -178,6 +178,7 @@ awn_config_get_default_for_applet_by_info (const gchar  *name,
                                            GError      **error)
 {
   g_return_val_if_fail (name != NULL, NULL);
+  g_return_val_if_fail (uid != NULL, NULL);
 
   gchar *instance_id;
   DesktopAgnosticConfigClient *client = NULL;
