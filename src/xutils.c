@@ -66,7 +66,7 @@ static Atom net_wm_strut_partial      = 0;
  */
 void
 xutils_set_strut (GdkWindow        *gdk_window,
-                  int               position,
+                  GtkPositionType   position,
                   guint32           strut,
                   guint32           strut_start,
                   guint32           strut_end)
@@ -86,22 +86,22 @@ xutils_set_strut (GdkWindow        *gdk_window,
     net_wm_strut_partial = XInternAtom (display, "_NET_WM_STRUT_PARTIAL", False);
 
   switch (position) {
-    case 0:
+    case GTK_POS_TOP:
       struts [STRUT_TOP] = strut;
       struts [STRUT_TOP_START] = strut_start;
       struts [STRUT_TOP_END] = strut_end;
       break;
-    case 1:
+    case GTK_POS_RIGHT:
       struts [STRUT_RIGHT] = strut;
       struts [STRUT_RIGHT_START] = strut_start;
       struts [STRUT_RIGHT_END] = strut_end;
       break;
-    case 2:
+    case GTK_POS_BOTTOM:
       struts [STRUT_BOTTOM] = strut;
       struts [STRUT_BOTTOM_START] = strut_start;
       struts [STRUT_BOTTOM_END] = strut_end;
       break;
-    case 3:
+    case GTK_POS_LEFT:
       struts [STRUT_LEFT] = strut;
       struts [STRUT_LEFT_START] = strut_start;
       struts [STRUT_LEFT_END] = strut_end;

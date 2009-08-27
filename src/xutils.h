@@ -24,12 +24,13 @@
 #define WNCK_XUTILS_H
 
 #include <glib.h>
+#include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
 G_BEGIN_DECLS
 
 void xutils_set_strut (GdkWindow        *gdk_window,
-                       int               position,
+                       GtkPositionType   position,
                        guint32           strut,
                        guint32           strut_start,
                        guint32           strut_end);

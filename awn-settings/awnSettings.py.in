@@ -242,7 +242,7 @@ class awnPreferencesMini(awnPreferences):
                 if self.panel_mode: self.panel_mode = False
                 self.autohide_type = 0
             elif widget.get_active() == 1:
-                if not self.panel_mode: self.panel_mode = False
+                if not self.panel_mode: self.panel_mode = True
                 self.autohide_type = 0
             elif widget.get_active() == 2:
                 if self.panel_mode: self.panel_mode = False

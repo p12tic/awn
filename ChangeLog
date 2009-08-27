@@ -1,3 +1,10 @@
+2009-08-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	* src/xutils.c:
+	* src/xutils.h:
+	Fix problems with panel mode.
+
 2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* data/avant-window-navigator.schema-ini.in:
