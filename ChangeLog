@@ -1,3 +1,15 @@
+2009-08-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-manager.c:
+	Added launcher icon to TaskLauncher Task item.
+	Center label for TaskLauncher Task Item.
+	Reduced space between icon and label in TaskWindow
+	TaskItem
+
+  	* applets/taskmanager/task-window.c:
+	Removed some spame
+
 2009-08-27  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awnSettings.py.in:

@@ -1454,8 +1454,6 @@ task_manager_set_show_all_windows (TaskManager *manager,
     }
     task_window_set_active_workspace (window, space);
   }
-  
-  g_debug ("%s", show_all ? "showing all windows":"not showing all windows");
 }
 
 /*
@@ -1485,8 +1483,6 @@ task_manager_set_show_only_launchers (TaskManager *manager,
 
     update_icon_visible (manager, icon);
   }
-  
-  g_debug ("%s", only_show_launchers ? "only show launchers":"show everything");
 }
 
 void 
@@ -1699,8 +1695,6 @@ task_manager_set_drag_and_drop (TaskManager *manager,
   {
     _drag_remove_signals (manager, GTK_WIDGET(priv->drag_indicator));
   }
-
-  g_debug("%s", drag_and_drop?"D&D is on":"D&D is off");
 }
 
 

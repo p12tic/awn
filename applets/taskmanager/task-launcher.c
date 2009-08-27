@@ -66,7 +66,7 @@ struct _TaskLauncherPrivate
   GtkWidget *box;
   GtkWidget *name_label;    /*name label*/
   GtkWidget *image;   /*placed in button (TaskItem) with label*/
-  
+  GtkWidget *launcher_image;
 };
 
 enum
@@ -189,7 +189,9 @@ static void
 task_launcher_init (TaskLauncher *launcher)
 {
   TaskLauncherPrivate *priv;
-  GtkWidget           *alignment;
+  GdkPixbuf           *launcher_pbuf;
+  gint                icon_height;
+  gint                icon_width;
   	
   priv = launcher->priv = TASK_LAUNCHER_GET_PRIVATE (launcher);
   
@@ -205,10 +207,7 @@ task_launcher_init (TaskLauncher *launcher)
   /* create content */
   priv->box = gtk_hbox_new (FALSE, 10);
 
-  alignment = gtk_alignment_new (0.0,0.5,0.0,0.0);
-  gtk_container_add (GTK_CONTAINER(alignment),priv->box);
-
-  gtk_container_add (GTK_CONTAINER (launcher), alignment);
+  gtk_container_add (GTK_CONTAINER (launcher), priv->box);
   gtk_container_set_border_width (GTK_CONTAINER (priv->box), 1);
 
   priv->image = GTK_WIDGET (awn_image_new ());
@@ -220,7 +219,35 @@ task_launcher_init (TaskLauncher *launcher)
    */
   gtk_label_set_max_width_chars (GTK_LABEL(priv->name_label), MAX_TASK_ITEM_CHARS);
   gtk_label_set_ellipsize (GTK_LABEL(priv->name_label),PANGO_ELLIPSIZE_END);
-  gtk_box_pack_start (GTK_BOX (priv->box), priv->name_label, TRUE, FALSE, 10);
+  gtk_box_pack_start (GTK_BOX (priv->box), priv->name_label, TRUE, TRUE, 10);
+  
+  priv->launcher_image = GTK_WIDGET (awn_image_new ());  
+  gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON,&icon_width,&icon_height);  
+  /*repress annoying gtk icon theme spam*/
+  launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),"gtk_knows_best",16,0,NULL);
+  if (launcher_pbuf)
+  {
+    g_object_unref (launcher_pbuf);
+  }
+  launcher_pbuf = gtk_icon_theme_load_icon (awn_themed_icon_get_awn_theme (NULL),
+                                            "launcher-program",
+                                            icon_height,
+                                            GTK_ICON_LOOKUP_FORCE_SIZE,
+                                            NULL);
+  if (!launcher_pbuf)
+  {
+    launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),
+                                            "launcher-program",
+                                            icon_height,
+                                            GTK_ICON_LOOKUP_FORCE_SIZE,
+                                            NULL);
+  }
+  if (launcher_pbuf)
+  {
+    gtk_image_set_from_pixbuf (GTK_IMAGE (priv->launcher_image), launcher_pbuf);
+    g_object_unref (launcher_pbuf);
+  }
+  gtk_box_pack_end (GTK_BOX (priv->box), priv->launcher_image, FALSE, FALSE, 0);  
   
 }
 

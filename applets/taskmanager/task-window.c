@@ -313,7 +313,7 @@ task_window_init (TaskWindow *window)
    */
   gtk_label_set_max_width_chars (GTK_LABEL(priv->name), MAX_TASK_ITEM_CHARS);
   gtk_label_set_ellipsize (GTK_LABEL(priv->name),PANGO_ELLIPSIZE_END);
-  gtk_box_pack_start (GTK_BOX (priv->box), priv->name, TRUE, FALSE, 10);
+  gtk_box_pack_start (GTK_BOX (priv->box), priv->name, TRUE, FALSE, 0);
   
 }
 
