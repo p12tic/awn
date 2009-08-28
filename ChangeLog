@@ -1,5 +1,11 @@
 2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* debian/control:
+	Add gconf2 as a build dependency, so that GConf schemas can
+	be installed.
+
+2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-config.c (awn_config_get_default_for_applet_by_info):
 	Due to changes in UID handling, the UID parameter may no longer
 	be NULL.
