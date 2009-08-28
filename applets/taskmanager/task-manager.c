@@ -949,7 +949,7 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
   dir = g_dir_open (system_dir,0,NULL);
   if (dir)
   {
-    const char * fname;
+    const char * fname;	
     while ( (fname = g_dir_read_name (dir)))
     {
 //      g_debug ("fname = %s",fname);
@@ -967,20 +967,26 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
       {
         gchar * filename_lower;
         g_free (new_path);
+        gchar * name_desktop = g_strdup_printf ("/%s.desktop",name);
         new_path = g_strdup_printf ("%s%s",system_dir,fname);
         desktop = new_path;
         filename_lower = g_utf8_strdown (desktop, -1);
-        if ( g_strrstr (filename_lower,name) )
+        if ( g_strrstr (filename_lower,name_desktop) )
         {
           launcher = get_launcher(desktop);
           if (launcher)
           {
+#ifdef DEBUG
+            g_debug ("%s: found %s",__func__,desktop);
+#endif
             g_free (filename_lower);
             g_free (new_path);            
+            g_free (name_desktop);
             task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
             return TRUE;
           }
         }
+        g_free (name_desktop);        
         g_free (filename_lower);        
       }
       g_free (new_path);
@@ -1007,6 +1013,10 @@ find_desktop (TaskIcon *icon, gchar * name)
   const gchar * extensions[] = { ".py",".pl",".exe",NULL};
   
   g_return_val_if_fail (name,FALSE);
+  
+#ifdef DEBUG
+  g_debug ("%s:  name = %s",__func__,name);
+#endif
   
   /*if the name has an of extensions then get rid of them*/
   for (iter = (GStrv)extensions; *iter; iter++)
@@ -1052,7 +1062,12 @@ find_desktop (TaskIcon *icon, gchar * name)
    So check the user's data dir directory for an applications subdir containing
    our desktop file
    */
-  desktop = g_strdup_printf ("%sapplications/%s.desktop",g_get_user_data_dir (),lower);
+  
+  desktop = g_strdup_printf ("%s/applications/%s.desktop",g_get_user_data_dir (),lower);
+  
+#ifdef DEBUG  
+  g_debug ("%s: local desktop search = %s",__func__,desktop);
+#endif
   launcher = get_launcher (desktop);
   if (launcher)
   {
@@ -1063,6 +1078,17 @@ find_desktop (TaskIcon *icon, gchar * name)
     g_free (desktop);
     g_free  (lower);
     return TRUE;
+  }
+  else
+  {
+    gchar * local_dir = g_strdup_printf ("%s/applications/",g_get_user_data_dir ());
+    if (task_icon_check_system_dir_for_desktop (icon,local_dir,lower) )
+    {
+      g_free (local_dir);
+      g_free (lower);
+      return TRUE;
+    }
+    g_free (local_dir);
   }
   g_free (desktop);
   

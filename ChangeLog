@@ -1,3 +1,10 @@
+2009-08-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Various modifications to further minimize the chance of false 
+	positives.  Also do more extensive search of local dir
+	which will result in beter results for wine apps.
+
 2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* debian/control:
