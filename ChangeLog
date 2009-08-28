@@ -1,5 +1,11 @@
 2009-08-28  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/python/Makefile.am:
+	* debian/python-awn-trunk.install:
+	Install the Python bindings definitions into the correct location.
+
+2009-08-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/__init__.py:
 	* bindings/python/awn.defs:
 	* bindings/python/awn.override:

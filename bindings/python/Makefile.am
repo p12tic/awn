@@ -45,7 +45,7 @@ awn_la_LIBADD = \
 awn_la_SOURCES = awnmodule.c
 nodist_awn_la_SOURCES = awn.c
 
-defsdir = $(pkgdatadir)/defs
+defsdir = $(datarootdir)/pygtk/2.0/defs
 defs_DATA = $(AWN_DEFS)
 
 # code generator
