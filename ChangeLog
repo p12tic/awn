@@ -1,6 +1,12 @@
 2009-08-29  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	Refresh icon geometry also when task item is removed 
+	from the TaskIcon.
+
+2009-08-29  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Fix the refresh_geometry method.
 
 2009-08-29  Michal Hruby  <michal.mhr@gmail.com>

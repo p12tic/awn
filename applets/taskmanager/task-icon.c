@@ -1155,6 +1155,8 @@ task_icon_refresh_visible (TaskIcon *icon)
     count_windows++;
   }
 
+  task_icon_schedule_geometry_refresh (icon);
+
   /*Conditional operator*/
   awn_icon_set_indicator_count (AWN_ICON (icon), 
                                 count_windows > priv->max_indicators?
