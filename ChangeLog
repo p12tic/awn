@@ -1,5 +1,12 @@
 2009-08-28  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* src/awn-applet-proxy.c (DEBUG_APPLET_EXEC, awn_applet_proxy_execute):
+	Add support for attaching a gdb instance to all applets, so that
+	applets can be debugged easier. Uses the environment variable
+	AWN_APPLET_GDB as the flag.
+
+2009-08-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/Makefile.am:
 	* debian/python-awn-trunk.install:
 	Install the Python bindings definitions into the correct location.

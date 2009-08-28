@@ -37,6 +37,8 @@ G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_SOCKET)
 #define APPLET_EXEC LIBEXECDIR G_DIR_SEPARATOR_S \
                     "awn-applet -p %s -u %s -w %" G_GINT64_FORMAT " -i %d"
 
+#define DEBUG_APPLET_EXEC "gdb -ex run -ex bt --batch --args " APPLET_EXEC
+
 #define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
 
 struct _AwnAppletProxyPrivate
@@ -511,7 +513,15 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   gint64 socket_id = (gint64) gtk_socket_get_id (GTK_SOCKET (proxy));
 
   // FIXME: panel_id instead of '1'
-  exec = g_strdup_printf (APPLET_EXEC, priv->path, priv->uid, socket_id, 1);
+  if (g_getenv ("AWN_APPLET_GDB"))
+  {
+    exec = g_strdup_printf (DEBUG_APPLET_EXEC, priv->path, priv->uid,
+                            socket_id, 1);
+  }
+  else
+  {
+    exec = g_strdup_printf (APPLET_EXEC, priv->path, priv->uid, socket_id, 1);
+  }
   
   g_shell_parse_argv(exec, NULL, &argv, &error);
   g_warn_if_fail(error == NULL);
