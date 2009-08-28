@@ -2598,15 +2598,24 @@ task_icon_dest_drag_leave (GtkWidget      *widget,
 static void 
 copy_over (const gchar *src, const gchar *dest)
 {
-  GFile  *from;
-  GFile  *to;
-  GError *error = NULL;
+  DesktopAgnosticVFSFile *from = NULL;
+  DesktopAgnosticVFSFile *to = NULL;
+  GError                 *error = NULL;
 
-  from = g_file_new_for_path (src);
-  to = g_file_new_for_path (dest);
+  from = desktop_agnostic_vfs_file_new_for_path (src, &error);
+  if (error)
+  {
+    goto copy_over_error;
+  }
+  to = desktop_agnostic_vfs_file_new_for_path (dest, &error);
+  if (error)
+  {
+    goto copy_over_error;
+  }
 
-  g_unlink (dest);
-  g_file_copy (from, to, 0, NULL, NULL, NULL, &error);
+  desktop_agnostic_vfs_file_copy (from, to, TRUE, &error);
+
+copy_over_error:
 
   if (error)
   {
@@ -2614,8 +2623,14 @@ copy_over (const gchar *src, const gchar *dest)
     g_error_free (error);
   }
 
-  g_object_unref (to);
-  g_object_unref (from);
+  if (to)
+  {
+    g_object_unref (to);
+  }
+  if (from)
+  {
+    g_object_unref (from);
+  }
 }
 
 

@@ -1,3 +1,10 @@
+2009-08-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon.c (copy_over):
+	* libawn/awn-themed-icon.c (copy_over):
+	Replace GIO functions with the equivalent libdesktop-agnostic
+	functions.
+
 2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-themed-icon.c:
