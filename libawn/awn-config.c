@@ -206,8 +206,6 @@ awn_config_get_default_for_applet_by_info (const gchar  *name,
 
     g_free (schema_basename);
 
-    g_message ("schema filename: %s", schema_filename);
-
     schema = desktop_agnostic_config_schema_new (schema_filename, error);
 
     g_free (schema_filename);
