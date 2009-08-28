@@ -54,21 +54,16 @@ def init(argv):
         if opt in ("-u", "--uid"):
             uid = arg
         elif opt in ("-w", "--window"):
-            window = int(arg)
+            # casting to long because of
+            # http://bugzilla.gnome.org/show_bug.cgi?id=539365
+            window = long(arg)
         elif opt in ("-i", "--panel-id"):
             panel_id = int(arg)
 
 
 def embed_applet(applet):
-    global window
-
-    if gtk.pygtk_version < (2, 13, 0):
-        applet.applet_construct(window)
-    else:
-        gtk.Plug.__init__(applet, window)
-
-    if window == 0:
-        applet.show_all()
+    gtk.Plug.__init__(applet, globals()['window'])
+    # applet's embedded signal handler automatically calls show_all()
 
 
 def check_dependencies(scope, *modules, **choice_modules):

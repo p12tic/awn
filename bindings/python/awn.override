@@ -357,19 +357,3 @@ _wrap_gtk_image_menu_item_new_with_label (PyObject *self, PyObject *args, PyObje
     return NULL;
   }
 }
-%%
-override gtk_plug_construct onearg
-/* XXX Remove when support for PyGTK < 2.13.0 is removed */
-static PyObject *
-_wrap_gtk_plug_construct (PyGObject *self, PyObject *arg)
-{
-    unsigned long id;
-
-    id = PyInt_AsUnsignedLongMask (arg);
-
-    gtk_plug_construct(GTK_PLUG (self->obj), id);
-
-    Py_INCREF(Py_None);
-    return Py_None;
-}
-
