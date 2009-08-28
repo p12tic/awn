@@ -1,3 +1,18 @@
+2009-08-29  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* doc/reference/libawn-sections.txt:
+	* doc/reference/libawn.types:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	* tests/test-awn-effects.c:
+	Removed _message and _progress methods from AwnIcon, we now have
+	overlays for that purpose.
+	Updated bindings.
+
 2009-08-28  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* src/awn-applet-proxy.c (DEBUG_APPLET_EXEC, awn_applet_proxy_execute):

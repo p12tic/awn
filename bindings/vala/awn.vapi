@@ -133,6 +133,13 @@ namespace Awn {
 		public virtual signal void long_press ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
+	public class Box : Gtk.Box, Gtk.Orientable, Atk.Implementor, Gtk.Buildable {
+		[CCode (type = "GtkWidget*", has_construct_function = false)]
+		public Box (Gtk.Orientation orient);
+		public void set_orientation (Gtk.Orientation orient);
+		public void set_orientation_from_pos_type (Gtk.PositionType pos_type);
+	}
+	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class Dialog : Gtk.Window, Atk.Implementor, Gtk.Buildable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public Dialog.for_widget (Gtk.Widget widget);
@@ -247,8 +254,8 @@ namespace Awn {
 		public bool get_hover_effects ();
 		public int get_indicator_count ();
 		public bool get_is_active ();
-		public unowned string get_message ();
-		public float get_progress ();
+		public int get_offset ();
+		public Gtk.PositionType get_pos_type ();
 		public unowned Awn.Tooltip get_tooltip ();
 		public unowned string get_tooltip_text ();
 		[NoWrapper]
@@ -269,10 +276,8 @@ namespace Awn {
 		public void set_hover_effects (bool enable);
 		public void set_indicator_count (int count);
 		public void set_is_active (bool is_active);
-		public void set_message (string message);
 		public void set_offset (int offset);
 		public void set_pos_type (Gtk.PositionType position);
-		public void set_progress (float progress);
 		public void set_tooltip_text (string text);
 		[NoAccessorMethod]
 		public bool bind_effects { get; construct; }
@@ -288,7 +293,7 @@ namespace Awn {
 		public virtual signal void size_changed ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class IconBox : Gtk.Box, Atk.Implementor, Gtk.Buildable, Gtk.Orientable {
+	public class IconBox : Awn.Box, Gtk.Orientable, Atk.Implementor, Gtk.Buildable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public IconBox.for_applet (Awn.Applet applet);
 		[CCode (type = "GtkWidget*", has_construct_function = false)]

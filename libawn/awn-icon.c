@@ -614,6 +614,20 @@ awn_icon_update_tooltip_pos(AwnIcon *icon)
 }
 
 /**
+ * awn_icon_get_offset:
+ * @icon: an #AwnIcon.
+ *
+ * Returns current offset set for the icon.
+ */
+gint
+awn_icon_get_offset (AwnIcon *icon)
+{
+  g_return_val_if_fail (AWN_IS_ICON (icon), 0);
+
+  return icon->priv->offset;
+}
+
+/**
  * awn_icon_set_offset:
  * @icon: an #AwnIcon.
  * @offset: new offset for the icon.
@@ -639,6 +653,20 @@ awn_icon_set_offset (AwnIcon        *icon,
 
     awn_icon_update_tooltip_pos(icon);
   }
+}
+
+/**
+ * awn_icon_get_pos_type:
+ * @icon: an #AwnIcon.
+ *
+ * Returns current position type set for the icon.
+ */
+GtkPositionType
+awn_icon_get_pos_type (AwnIcon *icon)
+{
+  g_return_val_if_fail (AWN_IS_ICON (icon), GTK_POS_BOTTOM);
+
+  return icon->priv->position;
 }
 
 /**
@@ -955,84 +983,6 @@ awn_icon_get_tooltip_text (AwnIcon *icon)
 /*
  * ICON EMBLEMS
  */
-
-/**
- * awn_icon_set_message:
- * @icon: an #AwnIcon.
- * @message: text to overlay on the icon.
- *
- * Sets message which will be overlayed on the icon.
- *
- * <note>This method might be removed.</note>
- */
-void 
-awn_icon_set_message (AwnIcon *icon, const gchar  *message)
-{
-  g_return_if_fail (AWN_IS_ICON (icon));
-
-  //g_object_set (icon->priv->effects, "label", message, NULL);
-  // FIXME: implement the label using AwnOverlayText?! or remove the method and
-  //   leave it up to devs.
-}
-
-/**
- * awn_icon_get_message:
- * @icon: an #AwnIcon.
- *
- * Gets currently set message which is displayed on top of the icon. See
- * awn_icon_set_message(). Caller is responsible for freeing the string.
- *
- * <note>This method might be removed.</note>
- *
- * Returns: a copy of the currently set message.
- */
-gchar * 
-awn_icon_get_message (AwnIcon *icon)
-{
-  gchar *result = NULL;
-  
-  g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
-
-  g_object_get (icon->priv->effects, "label", &result, NULL);
-  /* caller gets a copy, so he's responsible for freeing it */
-  return result;
-}
-
-/**
- * awn_icon_set_progress:
- * @icon: an #AwnIcon.
- * @progress: new progress (0.0 - 1.0)
- *
- * Sets progress pie to overlay on the icon. Setting the value to 1.0 will hide
- * the progress pie.
- */
-void
-awn_icon_set_progress (AwnIcon *icon, gfloat progress)
-{
-  g_return_if_fail (AWN_IS_ICON (icon));
-
-  g_object_set(icon->priv->effects, "progress", progress, NULL);
-}
-
-/**
- * awn_icon_get_progress:
- * @icon: an #AwnIcon.
- *
- * Gets current progress. See awn_icon_set_progress().
- *
- * Returns: current progress.
- */
-gfloat        
-awn_icon_get_progress (AwnIcon *icon)
-{
-  gfloat result;
-  
-  g_return_val_if_fail (AWN_IS_ICON (icon), 0.0);
-
-  g_object_get (icon->priv->effects, "progress", &result, NULL);
-
-  return result;
-}
 
 /**
  * awn_icon_set_is_active:

@@ -442,7 +442,7 @@ awn_applet_simple_set_message (AwnAppletSimple  *applet,
 {
   g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
 
-  awn_icon_set_message (AWN_ICON (applet->priv->icon), message);
+  // FIXME: OverlayText
 }
 
 gchar *
@@ -450,7 +450,8 @@ awn_applet_simple_get_message (AwnAppletSimple  *applet)
 {
   g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), NULL);
 
-  return awn_icon_get_message (AWN_ICON (applet->priv->icon));
+  // FIXME: OverlayText
+  return NULL;
 }
 
 void 
@@ -459,7 +460,7 @@ awn_applet_simple_set_progress (AwnAppletSimple  *applet,
 {
   g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
 
-  awn_icon_set_progress (AWN_ICON (applet->priv->icon), progress);
+  // FIXME: OverlayProgress
 }
 
 gfloat  
@@ -467,7 +468,8 @@ awn_applet_simple_get_progress (AwnAppletSimple  *applet)
 {
   g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), 0.0);
 
-  return awn_icon_get_progress (AWN_ICON (applet->priv->icon));
+  // FIXME: OverlayProgress
+  return 0.0f;
 }
 
 GtkWidget *  
@@ -486,3 +488,4 @@ awn_applet_simple_set_effect (AwnAppletSimple  *applet,
 
   awn_icon_set_effect (AWN_ICON (applet->priv->icon), effect);
 }
+

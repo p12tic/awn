@@ -601,6 +601,33 @@
 				</parameters>
 			</signal>
 		</object>
+		<object name="AwnBox" parent="GtkBox" type-name="AwnBox" get-type="awn_box_get_type">
+			<implements>
+				<interface name="GtkOrientable"/>
+				<interface name="AtkImplementor"/>
+				<interface name="GtkBuildable"/>
+			</implements>
+			<constructor name="new" symbol="awn_box_new">
+				<return-type type="GtkWidget*"/>
+				<parameters>
+					<parameter name="orient" type="GtkOrientation"/>
+				</parameters>
+			</constructor>
+			<method name="set_orientation" symbol="awn_box_set_orientation">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="box" type="AwnBox*"/>
+					<parameter name="orient" type="GtkOrientation"/>
+				</parameters>
+			</method>
+			<method name="set_orientation_from_pos_type" symbol="awn_box_set_orientation_from_pos_type">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="box" type="AwnBox*"/>
+					<parameter name="pos_type" type="GtkPositionType"/>
+				</parameters>
+			</method>
+		</object>
 		<object name="AwnDialog" parent="GtkWindow" type-name="AwnDialog" get-type="awn_dialog_get_type">
 			<implements>
 				<interface name="AtkImplementor"/>
@@ -833,14 +860,14 @@
 					<parameter name="icon" type="AwnIcon*"/>
 				</parameters>
 			</method>
-			<method name="get_message" symbol="awn_icon_get_message">
-				<return-type type="gchar*"/>
+			<method name="get_offset" symbol="awn_icon_get_offset">
+				<return-type type="gint"/>
 				<parameters>
 					<parameter name="icon" type="AwnIcon*"/>
 				</parameters>
 			</method>
-			<method name="get_progress" symbol="awn_icon_get_progress">
-				<return-type type="gfloat"/>
+			<method name="get_pos_type" symbol="awn_icon_get_pos_type">
+				<return-type type="GtkPositionType"/>
 				<parameters>
 					<parameter name="icon" type="AwnIcon*"/>
 				</parameters>
@@ -917,13 +944,6 @@
 					<parameter name="is_active" type="gboolean"/>
 				</parameters>
 			</method>
-			<method name="set_message" symbol="awn_icon_set_message">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="icon" type="AwnIcon*"/>
-					<parameter name="message" type="gchar*"/>
-				</parameters>
-			</method>
 			<method name="set_offset" symbol="awn_icon_set_offset">
 				<return-type type="void"/>
 				<parameters>
@@ -936,13 +956,6 @@
 				<parameters>
 					<parameter name="icon" type="AwnIcon*"/>
 					<parameter name="position" type="GtkPositionType"/>
-				</parameters>
-			</method>
-			<method name="set_progress" symbol="awn_icon_set_progress">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="icon" type="AwnIcon*"/>
-					<parameter name="progress" type="gfloat"/>
 				</parameters>
 			</method>
 			<method name="set_tooltip_text" symbol="awn_icon_set_tooltip_text">
@@ -1006,11 +1019,11 @@
 				</parameters>
 			</vfunc>
 		</object>
-		<object name="AwnIconBox" parent="GtkBox" type-name="AwnIconBox" get-type="awn_icon_box_get_type">
+		<object name="AwnIconBox" parent="AwnBox" type-name="AwnIconBox" get-type="awn_icon_box_get_type">
 			<implements>
+				<interface name="GtkOrientable"/>
 				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
-				<interface name="GtkOrientable"/>
 			</implements>
 			<constructor name="new" symbol="awn_icon_box_new">
 				<return-type type="GtkWidget*"/>

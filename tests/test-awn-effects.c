@@ -89,14 +89,15 @@ on_signal_click(GtkWidget *widget, gpointer user_data)
 static gboolean
 on_click (GtkWidget *widget, GdkEventButton *event, AwnIconBox *box)
 {
+  AwnEffects *fx = awn_overlayable_get_effects (AWN_OVERLAYABLE (widget));
   switch (event->button) {
     /* left click > test progress pie */
     case 1: {
-      AwnIcon *icon = AWN_ICON(widget);
-      float progress = awn_icon_get_progress(icon);
+      float progress;
+      g_object_get (fx, "progress", &progress, NULL);
       if (progress < 1.0) progress += 0.1; else progress = 0.0;
       if (progress > 1.0) progress = 1.0;
-      awn_icon_set_progress(icon, progress);
+      g_object_set (fx, "progress", progress, NULL);
       break;
     }
     /* middle click > destroy AwnIcon */
@@ -106,7 +107,7 @@ on_click (GtkWidget *widget, GdkEventButton *event, AwnIconBox *box)
     /* right click > change position */
     case 3:
       position++;
-      if (position > GTK_POS_LEFT) position = GTK_POS_TOP;
+      if (position > GTK_POS_BOTTOM) position = GTK_POS_LEFT;
       awn_icon_box_set_pos_type (box, position);
       break;
   }

@@ -745,6 +745,12 @@
   )
 )
 
+(define-method get_pos_type
+  (of-object "AwnIcon")
+  (c-name "awn_icon_get_pos_type")
+  (return-type "GtkPositionType")
+)
+
 (define-method set_offset
   (of-object "AwnIcon")
   (c-name "awn_icon_set_offset")
@@ -753,6 +759,13 @@
     '("gint" "offset")
   )
 )
+
+(define-method get_offset
+  (of-object "AwnIcon")
+  (c-name "awn_icon_get_offset")
+  (return-type "gint")
+)
+
 (define-method set_effect
   (of-object "AwnIcon")
   (c-name "awn_icon_set_effect")
@@ -818,36 +831,6 @@
   (of-object "AwnIcon")
   (c-name "awn_icon_get_tooltip_text")
   (return-type "gchar*")
-)
-
-(define-method set_message
-  (of-object "AwnIcon")
-  (c-name "awn_icon_set_message")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "message")
-  )
-)
-
-(define-method get_message
-  (of-object "AwnIcon")
-  (c-name "awn_icon_get_message")
-  (return-type "gchar*")
-)
-
-(define-method set_progress
-  (of-object "AwnIcon")
-  (c-name "awn_icon_set_progress")
-  (return-type "none")
-  (parameters
-    '("gfloat" "progress")
-  )
-)
-
-(define-method get_progress
-  (of-object "AwnIcon")
-  (c-name "awn_icon_get_progress")
-  (return-type "gfloat")
 )
 
 (define-method set_is_active

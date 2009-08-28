@@ -73,62 +73,50 @@ struct _AwnIconClass
   void (*icon_padding3) (AwnIcon *icon);
 };
 
-GType         awn_icon_get_type            (void) G_GNUC_CONST;
+GType           awn_icon_get_type            (void) G_GNUC_CONST;
 
-GtkWidget *   awn_icon_new                 (void);
+GtkWidget *     awn_icon_new                 (void);
 
-void          awn_icon_set_pos_type        (AwnIcon        *icon,
-                                            GtkPositionType  position);
+void            awn_icon_set_pos_type        (AwnIcon        *icon,
+                                              GtkPositionType position);
+GtkPositionType awn_icon_get_pos_type        (AwnIcon        *icon);
 
-void          awn_icon_set_offset          (AwnIcon        *icon,
-                                            gint            offset);
+void            awn_icon_set_offset          (AwnIcon        *icon,
+                                              gint            offset);
+gint            awn_icon_get_offset          (AwnIcon        *icon);
 
-void          awn_icon_set_effect          (AwnIcon     *icon, 
-                                            AwnEffect    effect);
+void            awn_icon_set_effect          (AwnIcon     *icon, 
+                                              AwnEffect    effect);
 
-void          awn_icon_set_from_pixbuf     (AwnIcon     *icon,
-                                            GdkPixbuf   *pixbuf);
+void            awn_icon_set_from_pixbuf     (AwnIcon     *icon,
+                                              GdkPixbuf   *pixbuf);
 
-void          awn_icon_set_from_context    (AwnIcon     *icon,
-                                            cairo_t     *ctx);
+void            awn_icon_set_from_context    (AwnIcon     *icon,
+                                              cairo_t     *ctx);
 
-void          awn_icon_set_from_surface    (AwnIcon         *icon,
-                                            cairo_surface_t *surface);
+void            awn_icon_set_from_surface    (AwnIcon         *icon,
+                                              cairo_surface_t *surface);
 
-void          awn_icon_set_custom_paint    (AwnIcon *icon,
-                                            gint width, gint height);
+void            awn_icon_set_custom_paint    (AwnIcon *icon,
+                                              gint width, gint height);
 
-AwnTooltip*   awn_icon_get_tooltip         (AwnIcon *icon);
+AwnTooltip*     awn_icon_get_tooltip         (AwnIcon *icon);
 
-void          awn_icon_set_tooltip_text    (AwnIcon     *icon,
-                                            const gchar *text);
+void            awn_icon_set_tooltip_text    (AwnIcon     *icon,
+                                              const gchar *text);
+gchar *         awn_icon_get_tooltip_text    (AwnIcon     *icon);
 
-gchar *       awn_icon_get_tooltip_text    (AwnIcon     *icon);
+void            awn_icon_set_is_active       (AwnIcon     *icon,
+                                              gboolean     is_active);
+gboolean        awn_icon_get_is_active       (AwnIcon     *icon);
 
-void          awn_icon_set_message         (AwnIcon     *icon,
-                                            const gchar *message);
+void            awn_icon_set_indicator_count (AwnIcon *icon, gint count);
+gint            awn_icon_get_indicator_count (AwnIcon *icon);
 
-gchar *       awn_icon_get_message         (AwnIcon     *icon);
+gboolean        awn_icon_get_hover_effects   (AwnIcon *icon);
+void            awn_icon_set_hover_effects   (AwnIcon *icon, gboolean enable);
 
-void          awn_icon_set_progress        (AwnIcon     *icon,
-                                            gfloat       progress);
-
-gfloat        awn_icon_get_progress        (AwnIcon     *icon);
-
-void          awn_icon_set_is_active       (AwnIcon     *icon,
-                                            gboolean     is_active);
-
-gboolean      awn_icon_get_is_active       (AwnIcon     *icon);
-
-void          awn_icon_set_indicator_count (AwnIcon *icon, gint count);
-
-gint          awn_icon_get_indicator_count (AwnIcon *icon);
-
-gboolean      awn_icon_get_hover_effects   (AwnIcon *icon);
-
-void          awn_icon_set_hover_effects   (AwnIcon *icon, gboolean enable);
-
-void          awn_icon_clicked             (AwnIcon *icon);
+void            awn_icon_clicked             (AwnIcon *icon);
 
 G_END_DECLS
 
