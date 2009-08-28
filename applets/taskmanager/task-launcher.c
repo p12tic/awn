@@ -42,6 +42,10 @@
 #include "xutils.h"
 #include "util.h"
 
+#if !GTK_CHECK_VERSION(2,14,0)
+#define GTK_ICON_LOOKUP_FORCE_SIZE 0
+#endif
+
 G_DEFINE_TYPE (TaskLauncher, task_launcher, TASK_TYPE_ITEM)
 
 #define TASK_LAUNCHER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\

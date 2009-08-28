@@ -1,5 +1,10 @@
 2009-08-28  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* applets/taskmanager/task-launcher.c:
+	Define dummy enum, if building with GTK+ 2.12.
+
+2009-08-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/__init__.py (embed_applet):
 	* bindings/python/awn.defs:
 	Use the real gtk.Plug constructor, when available.
