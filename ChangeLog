@@ -1,3 +1,8 @@
+2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* CC.COPYING (removed):
+	Get rid of the duplicate CC license.
+
 2009-08-27  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
