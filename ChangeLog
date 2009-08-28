@@ -1,5 +1,10 @@
 2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-themed-icon.c:
+	Define dummy enum, if building with GTK+ 2.12.
+
+2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* tests/Makefile.am:
 	Attempt to fix the test-taskmanager linking problem in the PPA.
 

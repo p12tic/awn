@@ -35,7 +35,11 @@
 #include "awn-themed-icon.h"
 
 #include "gseal-transition.h"
- 
+
+#if !GTK_CHECK_VERSION(2,14,0)
+#define GTK_ICON_LOOKUP_FORCE_SIZE 0
+#endif
+
 /**
  * SECTION: awn-themed-icon
  * @short_description: A AwnIcon subclass that provides gtk themed icon support
