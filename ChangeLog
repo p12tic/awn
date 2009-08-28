@@ -1,5 +1,10 @@
 2009-08-28  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-applet-simple.c (awn_applet_simple_set_icon_name):
+	Fix placement of an assertion statement.
+
+2009-08-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* src/awn-ua-alignment.c:
 	Use the GSEAL transition header.
 

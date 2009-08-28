@@ -364,12 +364,14 @@ awn_applet_simple_set_icon_name (AwnAppletSimple  *applet,
   gchar *applet_name;  
   
   g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
-  g_return_if_fail (applet_name);
   g_return_if_fail (icon_name);
 
   g_object_get (applet,
                 "canonical-name",&applet_name,
                 NULL);
+
+  g_return_if_fail (applet_name);
+
   applet->priv->last_set_icon = ICON_THEMED_SIMPLE;
   awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
                             awn_applet_get_size (AWN_APPLET (applet)));  
