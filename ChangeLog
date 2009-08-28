@@ -1,5 +1,10 @@
 2009-08-28  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* src/awn-ua-alignment.c:
+	Use the GSEAL transition header.
+
+2009-08-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/taskmanager/task-icon.c (copy_over):
 	* libawn/awn-themed-icon.c (copy_over):
 	Replace GIO functions with the equivalent libdesktop-agnostic

@@ -21,6 +21,7 @@
 /* awn-ua-alignment.c */
 #include <stdlib.h>
 #include <libawn/awn-utils.h>
+#include "libawn/gseal-transition.h"
 #include "awn-ua-alignment.h"
 #include "awn-defines.h"
 
