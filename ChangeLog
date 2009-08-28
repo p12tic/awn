@@ -1,5 +1,10 @@
 2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* tests/Makefile.am:
+	Attempt to fix the test-taskmanager linking problem in the PPA.
+
+2009-08-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* CC.COPYING (removed):
 	Get rid of the duplicate CC license.
 

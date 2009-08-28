@@ -25,7 +25,10 @@ test_awn_icon_box_SOURCES = test-awn-icon-box.c
 test_awn_icon_box_LDADD = $(top_builddir)/libawn/libawn.la
 
 test_taskmanager_SOURCES = test-taskmanager.c
-test_taskmanager_LDADD = $(top_builddir)/libawn/libawn.la
+test_taskmanager_LDADD = \
+	$(AWN_LIBS) \
+	$(top_builddir)/libawn/libawn.la \
+	$(NULL)
 
 test_themed_icon_SOURCES = test-themed-icon.c
 test_themed_icon_LDADD = $(top_builddir)/libawn/libawn.la
