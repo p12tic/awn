@@ -29,6 +29,8 @@ if _version < (2, 11, 1):
     raise ImportError("Awn requires PyGObject >= 2.11.1, but %s was found" %
                       _version)
 
+import gtk
+
 from awn import *
 
 uid = "0"
@@ -60,10 +62,12 @@ def init(argv):
 def embed_applet(applet):
     global window
 
-    if window:
+    if gtk.pygtk_version < (2, 13, 0):
         applet.applet_construct(window)
     else:
-        applet.applet_construct(0)
+        gtk.Plug.__init__(applet, window)
+
+    if window == 0:
         applet.show_all()
 
 

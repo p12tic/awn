@@ -1,5 +1,15 @@
 2009-08-28  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/python/__init__.py (embed_applet):
+	* bindings/python/awn.defs:
+	Use the real gtk.Plug constructor, when available.
+
+	* bindings/python/awn.override:
+	Fix compile warning.
+	
+
+2009-08-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-config.c:
 	Remove debug code.
 

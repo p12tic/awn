@@ -340,6 +340,7 @@
   )
 )
 
+; XXX Remove when support for PyGTK < 2.13.0 is removed
 (define-method applet_construct
   (of-object "AwnApplet")
   (c-name "gtk_plug_construct")
