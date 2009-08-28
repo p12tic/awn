@@ -504,14 +504,15 @@ task_icon_size_allocate (TaskIcon *icon, GtkAllocation *alloc,
 static gboolean
 task_icon_refresh_geometry (TaskIcon *icon)
 {
-  TaskSettings *settings;
   TaskIconPrivate *priv;
   GtkWidget *widget;
   GtkAllocation alloc;
+  GtkPositionType pos_type;
   GdkWindow *win;
   GSList    *w;
-  gint      x, y, ww, width, height;
-  gint      i = 0, len = 0;
+  gint      base_x, base_y, x, y, size, offset, panel_size;
+  gint      stripe_size, width, height;
+  gint      len = 0;
 
   g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
 
@@ -522,66 +523,82 @@ task_icon_refresh_geometry (TaskIcon *icon)
 
   if (!GTK_WIDGET_DRAWABLE (widget)) return FALSE;
 
-  //get the position of the widget
   win = gtk_widget_get_window (widget);
-  gdk_window_get_origin (win, &x, &y);
+  g_return_val_if_fail (win != NULL, FALSE);
+
+  // get the position of the widget
+  gdk_window_get_origin (win, &base_x, &base_y);
 
   gtk_widget_get_allocation (GTK_WIDGET (icon), &alloc);
 
-  settings = task_settings_get_default ();
+  offset = awn_icon_get_offset (AWN_ICON (icon));
+  pos_type = awn_icon_get_pos_type (AWN_ICON (icon));
 
-  switch (settings->position)
+  switch (pos_type)
   {
-    case GTK_POS_RIGHT:
     case GTK_POS_LEFT:
-      ww = alloc.height;
+    case GTK_POS_RIGHT:
+      size = alloc.height;
+      g_object_get (icon, "icon-height", &panel_size, NULL);
+
+      x = base_x;
+      y = base_y;
+      // the icon has extra space above it, this compensates it
+      if (pos_type == GTK_POS_RIGHT) x += alloc.width - panel_size - offset;
       break;
     case GTK_POS_TOP:
-    case GTK_POS_BOTTOM:
-      ww = alloc.width;
-      break;
     default:
-      g_error ("Position isn't right, left, top, bottom ??");
+      size = alloc.width;
+      g_object_get (icon, "icon-width", &panel_size, NULL);
+
+      x = base_x;
+      y = base_y;
+      // the icon has extra space above it, this compensates it
+      if (pos_type == GTK_POS_BOTTOM) y += alloc.height - panel_size - offset;
       break;
   }
 
-  /* FIXME: Do something clever here to allow the user to "scrub" the icon
-   * for the windows. 
-   * h4writer, what do you mean by this comment?
-   */
-  len = g_slist_length (priv->items);
+  // get number of real windows this icon manages
+  for (w = priv->items; w; w = w->next)
+  {
+    TaskItem *item = w->data;
+
+    if (!TASK_IS_WINDOW (item)) continue;
+    //if (!task_item_is_visible (item)) continue;
+
+    len++;
+  }
   if (len)
   {
-    ww = ww/len;
+    // divide the icon in multiple sections (or stripes)
+    stripe_size = size / len;
+    switch (pos_type)
+    {
+      case GTK_POS_LEFT:
+      case GTK_POS_RIGHT:
+        width = panel_size + offset;
+        height = stripe_size;
+        break;
+      case GTK_POS_TOP:
+      default:
+        width = stripe_size;
+        height = panel_size + offset;
+        break;
+    }
+    // each window will get part of the icon - own stripe
     for (w = priv->items; w; w = w->next)
     {
       if (!TASK_IS_WINDOW (w->data)) continue;
 
       TaskWindow *window = TASK_WINDOW (w->data);
 
-      switch (settings->position)
-      {
-        case GTK_POS_RIGHT:
-          width = settings->panel_size+settings->offset;
-          height = ww + (i*ww);
-          break;
-        case GTK_POS_LEFT:
-          width = settings->panel_size+settings->offset;
-          height = ww + (i*ww);
-          break;
-        case GTK_POS_TOP:
-          width = ww + (i*ww);
-          height = settings->panel_size+settings->offset;
-          break;
-        default:
-          width = ww + (i*ww);
-          height = settings->panel_size+settings->offset;
-          break;
-      }
-      task_window_set_icon_geometry (window, x, y, 
-                                     width,
-                                     height);
-      i++;
+      task_window_set_icon_geometry (window, x, y, width, height);
+
+      // shift the stripe
+      if (pos_type == GTK_POS_LEFT || pos_type == GTK_POS_RIGHT)
+        y += stripe_size;
+      else
+        x += stripe_size;
     }
   }
   return FALSE;
@@ -1336,7 +1353,8 @@ on_window_progress_changed (TaskWindow   *window,
     }
   }
 
-  awn_icon_set_progress (AWN_ICON (icon), progress/len);
+  // FIXME: noone emits progress changed so far, do something when it
+  //  starts to be used
 }
 
 /**
