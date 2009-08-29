@@ -62,6 +62,8 @@ struct _TaskWindowPrivate
   gboolean hidden;
   gboolean needs_attention;
   gboolean is_active;
+  gint     activate_behavior;
+  
   GtkWidget         *menu;
   
   gchar * special_id; /*Thank you OpenOffice*/
@@ -75,7 +77,8 @@ struct _TaskWindowPrivate
 enum
 {
   PROP_0,
-  PROP_WINDOW
+  PROP_WINDOW,
+  PROP_ACTIVATE_BEHAVIOR
 };
 
 enum
@@ -89,6 +92,14 @@ enum
 
   LAST_SIGNAL
 };
+
+typedef enum 
+{
+  AWN_ACTIVATE_DEFAULT,
+  AWN_ACTIVATE_MOVE_TO_TASK_VIEWPORT,
+  AWN_ACTIVATE_MOVE_TASK_TO_ACTIVE_VIEWPORT
+} AwnActivateBehavior;
+
 static guint32 _window_signals[LAST_SIGNAL] = { 0 };
 
 /* Forwards */
@@ -117,11 +128,17 @@ task_window_get_property (GObject    *object,
                           GParamSpec *pspec)
 {
   TaskWindow *taskwin = TASK_WINDOW (object);
+  TaskWindowPrivate *priv;
+  priv = TASK_WINDOW_GET_PRIVATE (object);
 
   switch (prop_id)
   {
     case PROP_WINDOW:
       g_value_set_object (value, taskwin->priv->window); 
+      break;
+
+    case PROP_ACTIVATE_BEHAVIOR:
+      g_value_set_int (value, taskwin->priv->activate_behavior); 
       break;
     
     default:
@@ -136,11 +153,17 @@ task_window_set_property (GObject      *object,
                           GParamSpec   *pspec)
 {
   TaskWindow *taskwin = TASK_WINDOW (object);
+  TaskWindowPrivate *priv;
+  priv = TASK_WINDOW_GET_PRIVATE (object);
 
   switch (prop_id)
   {
     case PROP_WINDOW:
       task_window_set_window (taskwin, g_value_get_object (value));
+      break;
+      
+    case PROP_ACTIVATE_BEHAVIOR:
+      priv->activate_behavior = g_value_get_int (value);
       break;
 
     default:
@@ -148,9 +171,40 @@ task_window_set_property (GObject      *object,
   }
 }
 
+static gboolean
+do_bind_property (DesktopAgnosticConfigClient *client, const gchar *key,
+                  GObject *object, const gchar *property)
+{
+  GError *error = NULL;
+  
+  desktop_agnostic_config_client_bind (client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       key, object, property, TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       &error);
+  if (error)
+  {
+    g_warning ("Could not bind property '%s' to key '%s': %s", property, key,
+               error->message);
+    g_error_free (error);
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
 static void
 task_window_constructed (GObject *object)
 {
+  TaskWindowPrivate *priv;
+  AwnApplet   *applet;
+  
+  priv = TASK_WINDOW_GET_PRIVATE (object);
+  
+  g_object_get (object,
+                "applet",&applet,
+                NULL);
+  
  /*  TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;*/  
   if ( G_OBJECT_CLASS (task_window_parent_class)->constructed)
   {
@@ -158,6 +212,13 @@ task_window_constructed (GObject *object)
   }
   g_signal_connect (wnck_screen_get_default(),"active-window-changed",
                     G_CALLBACK(_active_window_changed),object);
+  
+  if (!do_bind_property (awn_config_get_default_for_applet (applet, NULL), "activate_behavior", object,
+                         "activate_behavior"))
+  {
+    return;
+  }
+  
 }
 
 static void
@@ -270,6 +331,16 @@ task_window_class_init (TaskWindowClass *klass)
                                WNCK_TYPE_WINDOW,
                                G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_WINDOW, pspec);  
+  
+  pspec = g_param_spec_int ("activate_behavior",
+                               "Activate Behavior",
+                               "Activate Behavior",
+                               AWN_ACTIVATE_DEFAULT,
+                               AWN_ACTIVATE_MOVE_TASK_TO_ACTIVE_VIEWPORT,
+                               AWN_ACTIVATE_DEFAULT,
+                               G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_ACTIVATE_BEHAVIOR, pspec);  
+  
   g_type_class_add_private (obj_class, sizeof (TaskWindowPrivate));
 }
 
@@ -318,12 +389,13 @@ task_window_init (TaskWindow *window)
 }
 
 TaskItem *
-task_window_new (WnckWindow *window)
+task_window_new (AwnApplet * applet, WnckWindow *window)
 {
   TaskItem *win = NULL;
 
   win = g_object_new (TASK_TYPE_WINDOW,
                       "taskwindow", window,
+                      "applet",applet,
                       NULL);
 
   return win;
@@ -782,10 +854,46 @@ void
 task_window_activate (TaskWindow    *window,
                       guint32        timestamp)
 {
+  TaskWindowPrivate *priv;
+  WnckScreen *screen;
+  WnckWorkspace *active_workspace, *window_workspace;
+
   g_return_if_fail (TASK_IS_WINDOW (window));
 
-  if (WNCK_IS_WINDOW (window->priv->window))
-    really_activate (window->priv->window, timestamp);
+  priv = window->priv;
+  if (WNCK_IS_WINDOW (priv->window))
+  {
+    switch (priv->activate_behavior)
+    {
+      case AWN_ACTIVATE_MOVE_TO_TASK_VIEWPORT:
+        screen = wnck_window_get_screen(priv->window);
+        active_workspace = wnck_screen_get_active_workspace (screen);
+        window_workspace = wnck_window_get_workspace (priv->window);
+
+        if (active_workspace && window_workspace &&
+              !wnck_window_is_on_workspace(priv->window, active_workspace))
+        {
+          wnck_workspace_activate(window_workspace, timestamp);
+        }
+        really_activate (window->priv->window, timestamp);
+        break;
+
+      case AWN_ACTIVATE_MOVE_TASK_TO_ACTIVE_VIEWPORT:
+        screen = wnck_window_get_screen(priv->window);
+        active_workspace = wnck_screen_get_active_workspace (screen);
+
+        wnck_window_move_to_workspace(priv->window, active_workspace);
+        wnck_window_activate (window->priv->window, timestamp);
+        break;
+
+      case AWN_ACTIVATE_DEFAULT:
+      default:
+        really_activate (window->priv->window, timestamp);        
+        break;
+    }
+    
+
+  }
 }
 
 void  

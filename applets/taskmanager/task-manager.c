@@ -1343,7 +1343,7 @@ on_window_opened (WnckScreen    *screen,
                     G_CALLBACK (check_attention_requested), manager);    
   
   /* create a new TaskWindow containing the WnckWindow*/
-  item = task_window_new (window);
+  item = task_window_new (AWN_APPLET(manager), window);
   g_object_set_qdata (G_OBJECT (window), win_quark, TASK_WINDOW (item));
 
   priv->windows = g_slist_append (priv->windows, item);
@@ -1939,11 +1939,12 @@ xutils_get_input_shape (GdkWindow *window)
   return region;
 }
 
-/*
+/* 
  Governs the panel autohide when Intellihide is enabled.
  If a window in the relevant window list intersects with the awn panel then
  autohide will be uninhibited otherwise it will be inhibited.
  */
+
 static void
 task_manager_check_for_intersection (TaskManager * manager,
                                      WnckWorkspace * space,
@@ -2102,6 +2103,19 @@ task_manager_active_window_changed_cb (WnckScreen *screen,
   win = wnck_screen_get_active_window (screen);
   if (!win)
   {
+    /*
+     This tends to happen when the last window on workspace is moved to a
+     different workspace or minimized.  In which case we have a problem if 
+     we had intersection and the panel was hidden, it will continue hide.
+     So inhibit the autohide if there is no active window.
+     */
+    if (!priv->autohide_cookie)
+    {
+      priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager), "Intellihide");
+#ifdef DEBUG    
+      g_debug ("%s: cookie is %u",__func__,priv->autohide_cookie);
+#endif
+    }
     return;
   }
   app = wnck_window_get_application (win);
@@ -2133,6 +2147,13 @@ task_manager_active_workspace_changed_cb (WnckScreen    *screen,
   win = wnck_screen_get_active_window (screen);
   if (!win)
   {
+    if (!priv->autohide_cookie)
+    {
+      priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager), "Intellihide");
+#ifdef DEBUG    
+      g_debug ("%s: cookie is %u",__func__,priv->autohide_cookie);
+#endif
+    }    
     return;
   }
   
@@ -2141,7 +2162,6 @@ task_manager_active_workspace_changed_cb (WnckScreen    *screen,
 
   task_manager_check_for_intersection (manager,space,app);
 }
-
 /*
  A window's geometry has channged.  If Intellihide is active then check for
  intersections

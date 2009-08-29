@@ -1,3 +1,19 @@
+2009-08-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
+  	* applets/taskmanager/task-icon.c:
+ 	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+	Added activate_behavior configuration key to taskmanager.
+	Mostly intended to work around Metacity's idiosyncratic behaviour
+	on window activate. 
+	Adding the above required either applet ot a config client to be
+	available in TaskWindow, chose applet.
+	Fixed bug with Intellihide where last window on workspace moved
+	or minimized with panel hidden (it did not unhide).
+
 2009-08-29  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

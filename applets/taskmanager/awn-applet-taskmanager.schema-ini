@@ -8,6 +8,11 @@ single_instance = true
 # configuration options
 # PLEASE KEEP THIS ALPHABETIZED!
 
+[DEFAULT/activate_behavior]
+type = integer
+default = 0
+description =  Behavior when window on a different workspace is activated. (0 for default, 1 - change active workspace, 2 - move to current workspace)
+
 [DEFAULT/attention_autohide_timer]
 type = integer
 default = 4

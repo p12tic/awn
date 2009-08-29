@@ -1845,7 +1845,7 @@ task_icon_restore_group(TaskIcon * icon,TaskWindow * window, guint32 timestamp)
       }
     }      
   }
-  wnck_window_activate (task_window_get_window(window),timestamp);
+  task_window_activate (window,timestamp);
 }
 
 void            

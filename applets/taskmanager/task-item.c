@@ -34,12 +34,13 @@ struct _TaskItemPrivate
   GdkPixbuf *icon;
 
   TaskIcon *task_icon;
-
+  AwnApplet * applet;
 };
 
 enum
 {
-  PROP_0
+  PROP_0,
+  PROP_APPLET
 };
 
 enum
@@ -71,11 +72,14 @@ task_item_get_property (GObject    *object,
                         GValue     *value,
                         GParamSpec *pspec)
 {
-/*  TaskItem        *icon = TASK_ITEM (object);
+  TaskItem        *icon = TASK_ITEM (object);
   TaskItemPrivate *priv = icon->priv;
-*/
+
   switch (prop_id)
   {
+    case PROP_APPLET:
+      g_value_set_object (value,priv->applet);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -87,11 +91,14 @@ task_item_set_property (GObject      *object,
                         const GValue *value,
                         GParamSpec   *pspec)
 {
-/*  TaskItem *icon = TASK_ITEM (object);
+  TaskItem *icon = TASK_ITEM (object);
   TaskItemPrivate *priv = icon->priv;
-  */
+  
   switch (prop_id)
   {
+    case PROP_APPLET:
+      priv->applet = g_value_get_object (value);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -154,10 +161,9 @@ task_item_constructed (GObject *object)
 static void
 task_item_class_init (TaskItemClass *klass)
 {
-  //GParamSpec   *pspec;
+  GParamSpec   *pspec;
   GObjectClass *obj_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
-//  GParamSpec     *pspec;
 
   obj_class->dispose = task_item_dispose;
   obj_class->finalize = task_item_finalize;
@@ -205,7 +211,14 @@ task_item_class_init (TaskItemClass *klass)
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__BOOLEAN, 
 			      G_TYPE_NONE, 
-            1, G_TYPE_BOOLEAN);
+
+                  1, G_TYPE_BOOLEAN);
+  pspec = g_param_spec_object ("applet",
+                               "Applet",
+                               "AwnApplet this item belongs to",
+                               AWN_TYPE_APPLET,
+                               G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_APPLET, pspec);
 
   g_type_class_add_private (obj_class, sizeof (TaskItemPrivate));
 }
