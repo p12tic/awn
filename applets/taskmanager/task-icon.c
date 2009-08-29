@@ -111,7 +111,9 @@ struct _TaskIconPrivate
 
   gint update_geometry_id;
 
-  /*Keep track if TaskLauncher was added through desktop file lookup*/
+  /*Keep track if TaskLauncher was added through desktop file lookup
+   FIXME _should_ be able to dump this by setting the task launcher visibility to false for ephemeral launchers.
+   target for 0.6. */
   guint ephemeral_count;
 
   gboolean  inhibit_focus_loss;
