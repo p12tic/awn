@@ -1,5 +1,10 @@
 2009-08-29  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	fix show_all_windows == false.
+
+2009-08-29  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
   	* applets/taskmanager/task-icon.c:
  	* applets/taskmanager/task-item.c:
