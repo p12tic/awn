@@ -1,6 +1,11 @@
 2009-08-29  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+        fix rev 1400.
+
+2009-08-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Added a note to self.
 
 2009-08-29  Rodney Cryderman  <rcryderman@gmail.com>

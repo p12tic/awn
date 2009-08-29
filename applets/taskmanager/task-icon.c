@@ -1197,7 +1197,7 @@ task_icon_refresh_visible (TaskIcon *icon)
 
   if (count != priv->shown_items)
   {  
-    if (count == task_icon_count_ephemeral_items(icon))
+    if (count <= task_icon_count_ephemeral_items(icon))
     {
       priv->visible = FALSE;
     }
