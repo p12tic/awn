@@ -1996,9 +1996,9 @@ _remove_icon_cleanup (GtkWidget * widget, AwnThemedIcon * icon)
   
   g_return_if_fail (AWN_IS_THEMED_ICON(icon));
 
-  g_debug ("%s",__func__);
   priv = icon->priv;
   priv->remove_custom_icon_item=NULL;
+  g_signal_handlers_disconnect_by_func (widget,_remove_icon_cleanup,icon);
 }
 
 /**
@@ -2044,7 +2044,7 @@ awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon,
                     G_CALLBACK (_remove_icon), dest_filename);
   g_signal_connect_swapped (G_OBJECT (priv->remove_custom_icon_item), "unrealize",
                     G_CALLBACK (g_free), dest_filename);
-  g_signal_connect_swapped (G_OBJECT (priv->remove_custom_icon_item), "unrealize",
+  g_signal_connect (G_OBJECT (priv->remove_custom_icon_item), "unrealize",
                     G_CALLBACK (_remove_icon_cleanup), icon);
   
   return priv->remove_custom_icon_item;

@@ -1,6 +1,12 @@
 2009-08-29  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
+	_remove_icon_cleanup() was just wrong, should not have used
+	signal_connect_swapped.
+
+2009-08-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
 	Correctly deal with idle preloads where the there's a
 	clear between the point where the preload is added and
 	it actually happens.
