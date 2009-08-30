@@ -709,9 +709,23 @@ _right_click (TaskItem *item, GdkEventButton *event)
   TaskLauncherPrivate *priv;
   TaskLauncher *launcher;
   GtkWidget *menu_item;
+  gint width,height;  
+  
+  static GdkPixbuf * launcher_pbuf = NULL;
   
   g_return_val_if_fail (TASK_IS_LAUNCHER (item),NULL);
-
+  
+  if (launcher_pbuf)
+  {
+    g_object_unref (launcher_pbuf);
+  }
+  gtk_icon_size_lookup (GTK_ICON_SIZE_MENU,&width,&height);
+  launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),
+                                              "launcher-program",
+                                              height,
+                                              GTK_ICON_LOOKUP_FORCE_SIZE,
+                                              NULL);
+  
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
 
@@ -730,7 +744,12 @@ _right_click (TaskItem *item, GdkEventButton *event)
     gtk_widget_show(menu_item);
     gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), menu_item);
     
-    menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_EXECUTE, NULL);
+    menu_item = gtk_image_menu_item_new_with_label (_("Launch"));
+    if (launcher_pbuf)
+    {
+      gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
+                                  gtk_image_new_from_pixbuf (launcher_pbuf));
+    }
     gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), menu_item);
     gtk_widget_show (menu_item);
     g_signal_connect_swapped (menu_item,"activate",

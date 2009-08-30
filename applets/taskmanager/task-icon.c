@@ -55,6 +55,10 @@ enum{
 
 G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_THEMED_ICON)
 
+#if !GTK_CHECK_VERSION(2,14,0)
+#define GTK_ICON_LOOKUP_FORCE_SIZE 0
+#endif
+
 #define TASK_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_ICON, \
   TaskIconPrivate))
@@ -2191,12 +2195,25 @@ task_icon_button_press_event (GtkWidget      *widget,
   GtkWidget   *item;
   GSList *iter;
   TaskItem * launcher = NULL;
+  static GdkPixbuf * launcher_pbuf=NULL;
+  gint width,height;
   
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
 
   icon = TASK_ICON (widget);
   priv = icon->priv;
 
+  if (launcher_pbuf)
+  {
+    g_object_unref (launcher_pbuf);
+  }
+  gtk_icon_size_lookup (GTK_ICON_SIZE_MENU,&width,&height);
+  launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),
+                                              "launcher-program",
+                                              height,
+                                              GTK_ICON_LOOKUP_FORCE_SIZE,
+                                              NULL);
+  
   launcher = task_icon_get_launcher (icon);  
           
   if (event->button != 3) return FALSE;
@@ -2228,7 +2245,12 @@ task_icon_button_press_event (GtkWidget      *widget,
         gtk_menu_shell_prepend(GTK_MENU_SHELL(priv->menu), item);
         if (launcher)
         {
-          item = gtk_image_menu_item_new_from_stock (GTK_STOCK_EXECUTE, NULL);
+          item = gtk_image_menu_item_new_with_label (_("Launch"));
+          if (launcher_pbuf)
+          {
+            gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
+                                        gtk_image_new_from_pixbuf (launcher_pbuf));
+          }
           gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
           gtk_widget_show (item);
           g_signal_connect_swapped (item,"activate",
@@ -2317,7 +2339,14 @@ task_icon_button_press_event (GtkWidget      *widget,
       
       if (launcher)
       {
-        item = gtk_image_menu_item_new_from_stock (GTK_STOCK_EXECUTE, NULL);
+        item = gtk_image_menu_item_new_with_label (_("Launch"));
+        gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
+                                      gtk_image_new_from_stock (GTK_STOCK_EXECUTE,GTK_ICON_SIZE_MENU));
+        if (launcher_pbuf)
+        {
+          gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
+                                      gtk_image_new_from_pixbuf (launcher_pbuf));
+        }        
         gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
         gtk_widget_show (item);
         g_signal_connect_swapped (item,"activate",
