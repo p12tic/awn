@@ -1567,6 +1567,7 @@ awn_themed_icon_clear_info (AwnThemedIcon *icon)
 
   /* Free the old states & icon_names */
   priv->current_item = NULL;
+  
   for (iter = priv->list;iter;iter=g_list_next(iter))
   {
     AwnThemedIconItem * item = iter->data;
@@ -1648,6 +1649,12 @@ on_idle_preload (gpointer data)
   AwnThemedIconPrivate *priv;  
   g_return_val_if_fail (item,FALSE);
   priv = item->icon->priv;
+
+  /*Normally this indicates there was a clear_info*/
+  if (!priv->list)
+  {
+    return FALSE;
+  }
 
   /*CONDITIONAL operator*/
   pixbuf = get_pixbuf_at_size (item->icon, 
