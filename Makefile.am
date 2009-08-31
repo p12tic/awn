@@ -26,8 +26,9 @@ DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = awn.pc
 
-i18n-update: po/POTFILES.in
+i18n-update: po/POTFILES.in po/POTFILES.skip
 	(cd po && for lang in `grep ALL_LINGUAS ../configure.in | cut -d'"' -f2`; do \
+		echo -n "Updating $$lang:"; \
 		intltool-update $$lang; \
 	done)
 

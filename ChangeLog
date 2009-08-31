@@ -1,3 +1,8 @@
+2009-08-30  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.am:
+	Update the i18n-update rule.
+
 2009-08-29  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
