@@ -1,5 +1,10 @@
 2009-08-31  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* po/*.po:
+	Update gettext files.
+
+2009-08-31  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* po/POTFILES.in:
 	* po/POTFILES.skip:
 	* themes/Makefile.am:

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: _avant-window-navigator-ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-30 23:03-0700\n"
+"POT-Creation-Date: 2009-08-31 00:51-0700\n"
 "PO-Revision-Date: 2009-02-03 11:47+0000\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic\n"
@@ -354,6 +354,10 @@ msgstr ""
 
 #: ../src/awn-panel.c:2971
 msgid "Close docklet"
+msgstr ""
+
+#: ../themes/awn-default.desktop.in.h:1
+msgid "Default Theme"
 msgstr ""
 
 #~ msgid "Invalid launcher"

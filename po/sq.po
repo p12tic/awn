@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-30 23:04-0700\n"
+"POT-Creation-Date: 2009-08-31 00:56-0700\n"
 "PO-Revision-Date: 2009-01-21 21:10+0000\n"
 "Last-Translator: Ermal Llanaj <ermalipavia@gmail.com>\n"
 "Language-Team: Albanian <sq@li.org>\n"
@@ -349,6 +349,10 @@ msgstr ""
 
 #: ../src/awn-panel.c:2971
 msgid "Close docklet"
+msgstr ""
+
+#: ../themes/awn-default.desktop.in.h:1
+msgid "Default Theme"
 msgstr ""
 
 #~ msgid "<b>Active Icon</b>"

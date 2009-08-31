@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-30 23:03-0700\n"
+"POT-Creation-Date: 2009-08-31 00:52-0700\n"
 "PO-Revision-Date: 2008-10-05 20:26+0000\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -332,6 +332,10 @@ msgstr ""
 
 #: ../src/awn-panel.c:2971
 msgid "Close docklet"
+msgstr ""
+
+#: ../themes/awn-default.desktop.in.h:1
+msgid "Default Theme"
 msgstr ""
 
 #~ msgid "<b>Active Icon</b>"
