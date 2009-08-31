@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-26 13:01-0700\n"
+"POT-Creation-Date: 2009-08-30 23:03-0700\n"
 "PO-Revision-Date: 2009-01-25 11:27+0000\n"
 "Last-Translator: Elias Julkunen <elias.julkunen@gmail.com>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -26,12 +26,19 @@ msgstr ""
 msgid "Fills space on the panel in expand mode"
 msgstr ""
 
-#: ../applets/taskmanager/task-launcher.c:773
+#: ../applets/taskmanager/task-launcher.c:747
+#: ../applets/taskmanager/task-icon.c:2248
+#: ../applets/taskmanager/task-icon.c:2342
+#, fuzzy
+msgid "Launch"
+msgstr "Käynnistetään"
+
+#: ../applets/taskmanager/task-launcher.c:823
 #, fuzzy, c-format
 msgid "Launch %s"
 msgstr "Käynnistetään"
 
-#: ../applets/taskmanager/task-icon.c:2221
+#: ../applets/taskmanager/task-icon.c:2300
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "Lisää ja poista käynnistimiä"
@@ -53,77 +60,77 @@ msgstr "Käynnistetään %s"
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "Hallitse awn:n asetuksia, käynnistimiä, sovelmia ja teemoja"
 
-#: ../awn-settings/awnClass.py:195
+#: ../awn-settings/awnClass.py:194
 msgid "Error, a sources.list already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:263
+#: ../awn-settings/awnClass.py:262
 msgid "Error, the path is empty or already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:478
+#: ../awn-settings/awnClass.py:473
 msgid "Error, the desktop file is not for a theme"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:495
+#: ../awn-settings/awnClass.py:490
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:740
+#: ../awn-settings/awnClass.py:731
 msgid "PNG Files"
 msgstr "PNG-tiedostot"
 
-#: ../awn-settings/awnClass.py:804 ../awn-settings/awnClass.py:840
+#: ../awn-settings/awnClass.py:795 ../awn-settings/awnClass.py:831
 msgid "Simple"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:805 ../awn-settings/awnClass.py:841
+#: ../awn-settings/awnClass.py:796 ../awn-settings/awnClass.py:832
 msgid "Classic"
 msgstr "Perinteinen"
 
-#: ../awn-settings/awnClass.py:806 ../awn-settings/awnClass.py:842
+#: ../awn-settings/awnClass.py:797 ../awn-settings/awnClass.py:833
 msgid "Fade"
 msgstr "Häivytys"
 
-#: ../awn-settings/awnClass.py:807 ../awn-settings/awnClass.py:843
+#: ../awn-settings/awnClass.py:798 ../awn-settings/awnClass.py:834
 msgid "Spotlight"
 msgstr "Kohdevalo"
 
-#: ../awn-settings/awnClass.py:808 ../awn-settings/awnClass.py:844
+#: ../awn-settings/awnClass.py:799 ../awn-settings/awnClass.py:835
 msgid "Zoom"
 msgstr "Zoomaus"
 
-#: ../awn-settings/awnClass.py:809 ../awn-settings/awnClass.py:845
+#: ../awn-settings/awnClass.py:800 ../awn-settings/awnClass.py:836
 msgid "Squish"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:810
+#: ../awn-settings/awnClass.py:801
 msgid "3D turn"
 msgstr "3D-kääntyminen"
 
-#: ../awn-settings/awnClass.py:811
+#: ../awn-settings/awnClass.py:802
 msgid "3D turn with spotlight"
 msgstr "3D-kääntyminen kohdevalolla"
 
-#: ../awn-settings/awnClass.py:812 ../awn-settings/awnClass.py:848
+#: ../awn-settings/awnClass.py:803 ../awn-settings/awnClass.py:839
 msgid "Glow"
 msgstr "Hehku"
 
-#: ../awn-settings/awnClass.py:839 ../awn-settings/awnSettings.py.in:138
+#: ../awn-settings/awnClass.py:830 ../awn-settings/awnSettings.py.in:147
 msgid "None"
 msgstr "Ei mikään"
 
-#: ../awn-settings/awnClass.py:846
+#: ../awn-settings/awnClass.py:837
 msgid "3D Turn"
 msgstr "3D-kääntyminen"
 
-#: ../awn-settings/awnClass.py:847
+#: ../awn-settings/awnClass.py:838
 msgid "3D Spotlight Turn"
 msgstr "3D-kääntyminen kohdevalolla"
 
-#: ../awn-settings/awnClass.py:921
+#: ../awn-settings/awnClass.py:912
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
@@ -132,11 +139,11 @@ msgstr ""
 "Automaattinen luonti epäonnistui. Luo hakemisto käsin:\n"
 "%s"
 
-#: ../awn-settings/awnClass.py:931
+#: ../awn-settings/awnClass.py:922
 msgid "Confirm directory creation"
 msgstr "Vahvista hakemiston luonti"
 
-#: ../awn-settings/awnClass.py:932
+#: ../awn-settings/awnClass.py:923
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
@@ -145,27 +152,27 @@ msgstr ""
 "Luodaanko sellainen sinulle?"
 
 #. must be on one line due to i18n
-#: ../awn-settings/awnClass.py:991
+#: ../awn-settings/awnClass.py:980
 #, python-format
 msgid ""
 "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
 "installed. It usually comes with librsvg, or a package similarly named."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1016
+#: ../awn-settings/awnClass.py:1005
 msgid "AWN has been successfully refreshed"
 msgstr "AWN on virkistetty onnistuneesti"
 
-#: ../awn-settings/awnClass.py:1022
+#: ../awn-settings/awnClass.py:1011
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "Avant Window Navigator"
 
-#: ../awn-settings/awnClass.py:1040
+#: ../awn-settings/awnClass.py:1029
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr "Täysin muokattava telakkatyylinen ikkunanavigaattori Gnomelle."
 
-#: ../awn-settings/awnClass.py:1042
+#: ../awn-settings/awnClass.py:1031
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -176,7 +183,7 @@ msgstr ""
 "lisenssin sopimusehtojen mukaisesti sellaisina kun Free Software Foundation "
 "on ne julkaissut. Voit soveltaa lisenssin versiota 2 tai myöhempää."
 
-#: ../awn-settings/awnClass.py:1044
+#: ../awn-settings/awnClass.py:1033
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -188,7 +195,7 @@ msgstr ""
 "SOVELTUMISESTA TIETTYYN ERITYISEEN TARKOITUKSEEN. Yksityiskohtien osalta "
 "katso GNU:n GPL-lisenssiä."
 
-#: ../awn-settings/awnClass.py:1046
+#: ../awn-settings/awnClass.py:1035
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -222,71 +229,71 @@ msgstr "<b>Komento:</b>"
 msgid "Couldn't save the launcher. Error: %s"
 msgstr "Käynnistintä ei voitu tallentaa. Virhe: %s"
 
-#: ../awn-settings/awnSettings.py.in:65
+#: ../awn-settings/awnSettings.py.in:66
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:133
+#: ../awn-settings/awnSettings.py.in:142
 msgid "Left"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:133
+#: ../awn-settings/awnSettings.py.in:142
 msgid "Right"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:134
+#: ../awn-settings/awnSettings.py.in:143
 msgid "Top"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:134
+#: ../awn-settings/awnSettings.py.in:143
 #, fuzzy
 msgid "Bottom"
 msgstr "Zoomaus"
 
-#: ../awn-settings/awnSettings.py.in:138
+#: ../awn-settings/awnSettings.py.in:147
 #, fuzzy
 msgid "Flat"
 msgstr "Tasainen palkkki"
 
-#: ../awn-settings/awnSettings.py.in:139
+#: ../awn-settings/awnSettings.py.in:148
 msgid "3d"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:139
+#: ../awn-settings/awnSettings.py.in:148
 msgid "Curved"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:139
+#: ../awn-settings/awnSettings.py.in:148
 msgid "Edgy"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awnSettings.py.in:152
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awnSettings.py.in:152
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:144
+#: ../awn-settings/awnSettings.py.in:153
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:145
+#: ../awn-settings/awnSettings.py.in:154
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "Piilota palkki automaattisesti"
 
-#: ../awn-settings/awnSettings.py.in:146
+#: ../awn-settings/awnSettings.py.in:155
 #, fuzzy
 msgid "Transparency"
 msgstr "Läpinäkyvyys:"
 
-#: ../awn-settings/awnSettings.py.in:146
+#: ../awn-settings/awnSettings.py.in:155
 msgid "Custom"
 msgstr "Muokattu"
 
-#: ../bindings/python/__init__.py:118
+#: ../bindings/python/__init__.py:117
 #, python-format
 msgid ""
 "The following Python modules could not be found: %s.  There are a few "
@@ -304,7 +311,7 @@ msgid ""
 "wiki.\n"
 msgstr ""
 
-#: ../bindings/python/__init__.py:133
+#: ../bindings/python/__init__.py:132
 msgid "Awn Wiki"
 msgstr ""
 
@@ -316,24 +323,24 @@ msgstr "Telakkamainen ikkunanavigaattori."
 msgid "Dock Preferences"
 msgstr "Telakan asetukset"
 
-#: ../libawn/awn-themed-icon.c:1852
+#: ../libawn/awn-themed-icon.c:1878
 msgid "Choose Custom Icon"
 msgstr ""
 
-#: ../libawn/awn-themed-icon.c:1933
+#: ../libawn/awn-themed-icon.c:1959
 #, fuzzy
 msgid "Customize Icon"
 msgstr "Muokattu"
 
-#: ../libawn/awn-themed-icon.c:2004
+#: ../libawn/awn-themed-icon.c:2030
 msgid "Remove Customize Icon"
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:290 ../src/awn-applet-proxy.c:319
+#: ../src/awn-applet-proxy.c:292 ../src/awn-applet-proxy.c:321
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:479
+#: ../src/awn-applet-proxy.c:381 ../src/awn-applet-proxy.c:481
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 

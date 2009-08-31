@@ -3,3 +3,4 @@ applets/expander/expander.desktop.in
 awn-manager/
 awn-settings/awnSettings.py
 debian/
+themes/awn-default.desktop.in

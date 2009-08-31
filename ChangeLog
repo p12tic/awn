@@ -1,5 +1,12 @@
 2009-08-30  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* po/POTFILES.in:
+	* po/POTFILES.skip:
+	* po/*.po:
+	Update gettext files.
+
+2009-08-30  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* Makefile.am:
 	Update the i18n-update rule.
 

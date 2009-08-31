@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-26 12:59-0700\n"
+"POT-Creation-Date: 2009-08-30 23:02-0700\n"
 "PO-Revision-Date: 2009-01-30 11:54+0000\n"
 "Last-Translator: Walter Leibbrandt <Unknown>\n"
 "Language-Team: Translate.org.za\n"
@@ -27,12 +27,19 @@ msgstr ""
 msgid "Fills space on the panel in expand mode"
 msgstr ""
 
-#: ../applets/taskmanager/task-launcher.c:773
+#: ../applets/taskmanager/task-launcher.c:747
+#: ../applets/taskmanager/task-icon.c:2248
+#: ../applets/taskmanager/task-icon.c:2342
+#, fuzzy
+msgid "Launch"
+msgstr "Besig om te lanseer"
+
+#: ../applets/taskmanager/task-launcher.c:823
 #, fuzzy, c-format
 msgid "Launch %s"
 msgstr "Besig om te lanseer"
 
-#: ../applets/taskmanager/task-icon.c:2221
+#: ../applets/taskmanager/task-icon.c:2300
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "Voeg by en verwyder lanseerders"
@@ -54,77 +61,77 @@ msgstr "Begin tans %s"
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "Bestuur AWN voorkeure, programlanseerders, mini-programme en temas"
 
-#: ../awn-settings/awnClass.py:195
+#: ../awn-settings/awnClass.py:194
 msgid "Error, a sources.list already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:263
+#: ../awn-settings/awnClass.py:262
 msgid "Error, the path is empty or already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:478
+#: ../awn-settings/awnClass.py:473
 msgid "Error, the desktop file is not for a theme"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:495
+#: ../awn-settings/awnClass.py:490
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:740
+#: ../awn-settings/awnClass.py:731
 msgid "PNG Files"
 msgstr "PNG-lêers"
 
-#: ../awn-settings/awnClass.py:804 ../awn-settings/awnClass.py:840
+#: ../awn-settings/awnClass.py:795 ../awn-settings/awnClass.py:831
 msgid "Simple"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:805 ../awn-settings/awnClass.py:841
+#: ../awn-settings/awnClass.py:796 ../awn-settings/awnClass.py:832
 msgid "Classic"
 msgstr "Klasiek"
 
-#: ../awn-settings/awnClass.py:806 ../awn-settings/awnClass.py:842
+#: ../awn-settings/awnClass.py:797 ../awn-settings/awnClass.py:833
 msgid "Fade"
 msgstr "Vervaag"
 
-#: ../awn-settings/awnClass.py:807 ../awn-settings/awnClass.py:843
+#: ../awn-settings/awnClass.py:798 ../awn-settings/awnClass.py:834
 msgid "Spotlight"
 msgstr "Soeklig"
 
-#: ../awn-settings/awnClass.py:808 ../awn-settings/awnClass.py:844
+#: ../awn-settings/awnClass.py:799 ../awn-settings/awnClass.py:835
 msgid "Zoom"
 msgstr "Zoem"
 
-#: ../awn-settings/awnClass.py:809 ../awn-settings/awnClass.py:845
+#: ../awn-settings/awnClass.py:800 ../awn-settings/awnClass.py:836
 msgid "Squish"
 msgstr "Platgedruk"
 
-#: ../awn-settings/awnClass.py:810
+#: ../awn-settings/awnClass.py:801
 msgid "3D turn"
 msgstr "3D draai"
 
-#: ../awn-settings/awnClass.py:811
+#: ../awn-settings/awnClass.py:802
 msgid "3D turn with spotlight"
 msgstr "3D draai met soeklig"
 
-#: ../awn-settings/awnClass.py:812 ../awn-settings/awnClass.py:848
+#: ../awn-settings/awnClass.py:803 ../awn-settings/awnClass.py:839
 msgid "Glow"
 msgstr "Gloei"
 
-#: ../awn-settings/awnClass.py:839 ../awn-settings/awnSettings.py.in:138
+#: ../awn-settings/awnClass.py:830 ../awn-settings/awnSettings.py.in:147
 msgid "None"
 msgstr "Geen"
 
-#: ../awn-settings/awnClass.py:846
+#: ../awn-settings/awnClass.py:837
 msgid "3D Turn"
 msgstr "3D draai"
 
-#: ../awn-settings/awnClass.py:847
+#: ../awn-settings/awnClass.py:838
 msgid "3D Spotlight Turn"
 msgstr "3D soeklig draai"
 
-#: ../awn-settings/awnClass.py:921
+#: ../awn-settings/awnClass.py:912
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
@@ -134,11 +141,11 @@ msgstr ""
 "handmatig:\n"
 "%s"
 
-#: ../awn-settings/awnClass.py:931
+#: ../awn-settings/awnClass.py:922
 msgid "Confirm directory creation"
 msgstr "Bevestig skepping van gids"
 
-#: ../awn-settings/awnClass.py:932
+#: ../awn-settings/awnClass.py:923
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
@@ -147,27 +154,27 @@ msgstr ""
 "Mag ek dit outomaties vir u skep?"
 
 #. must be on one line due to i18n
-#: ../awn-settings/awnClass.py:991
+#: ../awn-settings/awnClass.py:980
 #, python-format
 msgid ""
 "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
 "installed. It usually comes with librsvg, or a package similarly named."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1016
+#: ../awn-settings/awnClass.py:1005
 msgid "AWN has been successfully refreshed"
 msgstr "AWN is suksesvol verfris"
 
-#: ../awn-settings/awnClass.py:1022
+#: ../awn-settings/awnClass.py:1011
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "Avant Verster Navigator"
 
-#: ../awn-settings/awnClass.py:1040
+#: ../awn-settings/awnClass.py:1029
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr "Volledig-aanpasbare dokagtige venster navigator vir GNOME."
 
-#: ../awn-settings/awnClass.py:1042
+#: ../awn-settings/awnClass.py:1031
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -179,7 +186,7 @@ msgstr ""
 "gepubliseer deur die Stigting vir Vry Sagteware; óf weergawe 2 van die "
 "Lisensie, óf (indien u verkies) enige latere weergawe."
 
-#: ../awn-settings/awnClass.py:1044
+#: ../awn-settings/awnClass.py:1033
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -191,7 +198,7 @@ msgstr ""
 "VERHANDELBAARHEID of GESKIKTHEID VIR 'N SPESIFIEKE DOEL.  Sien die GNU "
 "Algemene Publieke Lisensie vir meer detail."
 
-#: ../awn-settings/awnClass.py:1046
+#: ../awn-settings/awnClass.py:1035
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -229,71 +236,71 @@ msgstr "<b>Opdrag:</b>"
 msgid "Couldn't save the launcher. Error: %s"
 msgstr "Kon nie die lanseerder stoor nie. Fout: %s"
 
-#: ../awn-settings/awnSettings.py.in:65
+#: ../awn-settings/awnSettings.py.in:66
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:133
+#: ../awn-settings/awnSettings.py.in:142
 msgid "Left"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:133
+#: ../awn-settings/awnSettings.py.in:142
 msgid "Right"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:134
+#: ../awn-settings/awnSettings.py.in:143
 msgid "Top"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:134
+#: ../awn-settings/awnSettings.py.in:143
 #, fuzzy
 msgid "Bottom"
 msgstr "Zoem"
 
-#: ../awn-settings/awnSettings.py.in:138
+#: ../awn-settings/awnSettings.py.in:147
 #, fuzzy
 msgid "Flat"
 msgstr "Plat balk"
 
-#: ../awn-settings/awnSettings.py.in:139
+#: ../awn-settings/awnSettings.py.in:148
 msgid "3d"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:139
+#: ../awn-settings/awnSettings.py.in:148
 msgid "Curved"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:139
+#: ../awn-settings/awnSettings.py.in:148
 msgid "Edgy"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awnSettings.py.in:152
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awnSettings.py.in:152
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:144
+#: ../awn-settings/awnSettings.py.in:153
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:145
+#: ../awn-settings/awnSettings.py.in:154
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "Versteek balk outomaties wanner nie in gebruik nie"
 
-#: ../awn-settings/awnSettings.py.in:146
+#: ../awn-settings/awnSettings.py.in:155
 #, fuzzy
 msgid "Transparency"
 msgstr "Deursigtigheid:"
 
-#: ../awn-settings/awnSettings.py.in:146
+#: ../awn-settings/awnSettings.py.in:155
 msgid "Custom"
 msgstr "Doelmaak:"
 
-#: ../bindings/python/__init__.py:118
+#: ../bindings/python/__init__.py:117
 #, python-format
 msgid ""
 "The following Python modules could not be found: %s.  There are a few "
@@ -311,7 +318,7 @@ msgid ""
 "wiki.\n"
 msgstr ""
 
-#: ../bindings/python/__init__.py:133
+#: ../bindings/python/__init__.py:132
 msgid "Awn Wiki"
 msgstr ""
 
@@ -323,24 +330,24 @@ msgstr "'n Dokagtige venster navigator."
 msgid "Dock Preferences"
 msgstr "Dokvoorkeure"
 
-#: ../libawn/awn-themed-icon.c:1852
+#: ../libawn/awn-themed-icon.c:1878
 msgid "Choose Custom Icon"
 msgstr ""
 
-#: ../libawn/awn-themed-icon.c:1933
+#: ../libawn/awn-themed-icon.c:1959
 #, fuzzy
 msgid "Customize Icon"
 msgstr "Doelmaak:"
 
-#: ../libawn/awn-themed-icon.c:2004
+#: ../libawn/awn-themed-icon.c:2030
 msgid "Remove Customize Icon"
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:290 ../src/awn-applet-proxy.c:319
+#: ../src/awn-applet-proxy.c:292 ../src/awn-applet-proxy.c:321
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:379 ../src/awn-applet-proxy.c:479
+#: ../src/awn-applet-proxy.c:381 ../src/awn-applet-proxy.c:481
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
