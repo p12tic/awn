@@ -1331,6 +1331,7 @@ on_window_opened (WnckScreen    *screen,
    * NOTE:  Shouldn't we just be connecting everything that gets to this point
    * to state-changed.  Do we have the case of as window switching from in the 
    * tasklist to skip_tasklist?   TODO:  investigate.
+   NOTE:  This _still_ bothers me.
    */
   if (wnck_window_is_skip_tasklist (window))
   {
@@ -2023,10 +2024,6 @@ task_manager_check_for_intersection (TaskManager * manager,
   {
     GdkRectangle win_rect;
 
-    if (wnck_window_is_skip_tasklist (iter->data) )
-    {
-      continue;
-    }
     if (!wnck_window_is_visible_on_workspace (iter->data,space))
     {
       continue;

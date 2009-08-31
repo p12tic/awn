@@ -1,3 +1,8 @@
+2009-08-31  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/task-manager.c:
+	Don't ignore skip taskbar windows for intellihide.
+
 2009-08-31  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* po/avant-window-navigator.pot:
