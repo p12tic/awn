@@ -1,3 +1,13 @@
+2009-08-31  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* po/POTFILES.in:
+	* po/POTFILES.skip:
+	* themes/Makefile.am:
+	Remove unecessary file creation.
+
+	* themes/awn-default.desktop.in:
+	Make desktop file translatable.
+
 2009-08-30  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* po/POTFILES.in:

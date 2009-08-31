@@ -15,4 +15,4 @@ libawn/awn-applet.c
 libawn/awn-themed-icon.c
 src/awn-applet-proxy.c
 src/awn-panel.c
-themes/awn-default.desktop.in.in
+themes/awn-default.desktop.in
