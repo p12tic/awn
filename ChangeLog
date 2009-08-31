@@ -1,5 +1,11 @@
 2009-08-31  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* po/avant-window-navigator.pot:
+	Add PO template so that we can integrate with Launchpad Translations
+	better.
+
+2009-08-31  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* po/*.po:
 	Update gettext files.
 
