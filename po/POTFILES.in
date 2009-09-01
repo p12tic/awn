@@ -3,14 +3,14 @@ applets/taskmanager/task-launcher.c
 applets/taskmanager/task-icon.c
 applets/taskmanager/taskmanager.desktop.in.in
 awn-settings/awn-settings.desktop.in
-awn-settings/awn-settings.xml
+awn-settings/awn-settings.ui
 awn-settings/awnClass.py
 awn-settings/awnLauncherEditor.py
 awn-settings/awnSettings.py.in
-awn-settings/launcher-editor.xml
+awn-settings/launcher-editor.ui
 bindings/python/__init__.py
 data/avant-window-navigator.desktop.in
-data/awn-themed-icon-ui.xml
+data/awn-themed-icon.ui
 libawn/awn-applet.c
 libawn/awn-themed-icon.c
 src/awn-applet-proxy.c

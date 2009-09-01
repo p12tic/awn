@@ -9,10 +9,12 @@ pyfiles_DATA = \
 	awnLauncherEditor.py		
 pyfilesdir = $(pkgdatadir)/awn-settings
 
-xml_DATA = 	launcher-editor.xml 	\
-		awn-settings.xml
+ui_DATA = \
+	launcher-editor.ui \
+	awn-settings.ui \
+	$(NULL)
 
-xmldir = $(pkgdatadir)/awn-settings
+uidir = $(pkgdatadir)/awn-settings
 
 desktopdir   = $(datadir)/applications
 desktop_DATA = 	awn-settings.desktop
@@ -47,7 +49,7 @@ uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-launcher-editor
 
 EXTRA_DIST +=			\
-	$(xml_DATA)		\
+	$(ui_DATA)		\
 	*.py			\
 	$(desktop_DATA).in	\
 	$(NULL)

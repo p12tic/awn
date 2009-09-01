@@ -1,3 +1,16 @@
+2009-08-31  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/Makefile.am:
+	* awn-settings/awn-settings.ui
+	* awn-settings/awnLauncherEditor.py:
+	* awn-settings/awnSettings.py.in:
+	* awn-settings/launcher-editor.ui:
+	* data/Makefile.am:
+	* data/awn-themed-icon.ui:
+	* libawn/awn-themed-icon.c:
+	* po/POTFILES.in:
+	Change the extension of GtkBuilder files to .ui.
+
 2009-08-31  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/task-manager.c:

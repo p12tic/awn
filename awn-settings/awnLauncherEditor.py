@@ -46,7 +46,7 @@ ICON_COL_PIXBUF, ICON_COL_LABEL, ICON_COL_DATA = range(3)
 class awnLauncherEditor:
     def __init__(self, filename, model, launcher = None):
         self.xml_file = gtk.Builder()
-        self.xml_file.add_from_file(os.path.join(defs.PKGDATADIR, 'awn-settings', 'launcher-editor.xml'))
+        self.xml_file.add_from_file(os.path.join(defs.PKGDATADIR, 'awn-settings', 'launcher-editor.ui'))
         self.xml_file.connect_signals(self)
         self.main_dialog = self.xml_file.get_object('dialog_desktop_item')
         self.launcher = launcher

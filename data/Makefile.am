@@ -32,7 +32,7 @@ update-icon-cache:
 	fi
 
 dist_pkg_DATA = \
-	awn-themed-icon-ui.xml \
+	awn-themed-icon.ui \
 	index.theme 
 
 pkgdir = $(pkgdatadir)

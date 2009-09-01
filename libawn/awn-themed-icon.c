@@ -70,7 +70,7 @@ G_DEFINE_TYPE (AwnThemedIcon, awn_themed_icon, AWN_TYPE_ICON)
 
 #define LOAD_FLAGS GTK_ICON_LOOKUP_FORCE_SIZE | GTK_ICON_LOOKUP_GENERIC_FALLBACK
 #define AWN_ICON_THEME_NAME "awn-theme"
-#define AWN_CHANGE_ICON_UI PKGDATADIR"/awn-themed-icon-ui.xml"
+#define AWN_CHANGE_ICON_UI PKGDATADIR"/awn-themed-icon.ui"
 
 
 /*yes this is evil.  so sue me */
