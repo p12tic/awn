@@ -1,3 +1,8 @@
+2009-09-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	Free a string in finalize(), not dispose().
+
 2009-09-02  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* awn-settings/awn-settings.ui:
