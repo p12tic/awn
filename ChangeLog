@@ -1,5 +1,10 @@
 2009-09-02  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Ignore Desktop windows for Intellihide.
+
+2009-09-02  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	Destroy the TaskIcons when they're no longer needed.
 

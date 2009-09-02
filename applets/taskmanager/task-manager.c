@@ -2115,11 +2115,14 @@ task_manager_active_window_changed_cb (WnckScreen *screen,
     }
     return;
   }
+  if ( wnck_window_get_window_type (win) == WNCK_WINDOW_DESKTOP )
+  {
+    return;
+  }
   app = wnck_window_get_application (win);
   space = wnck_screen_get_active_workspace (screen);
   task_manager_check_for_intersection (manager,space,app);
 }
-
 /*
  Workspace changed... check window intersections for new workspace if Intellidide
  is active 
