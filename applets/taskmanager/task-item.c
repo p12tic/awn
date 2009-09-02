@@ -110,7 +110,8 @@ task_item_dispose (GObject *object)
 {
   TaskItem *item = TASK_ITEM (object);
   TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (object);
-
+  GError  * err = NULL;
+ 
   if (priv->icon)
   {
     g_object_unref (priv->icon);
@@ -124,6 +125,17 @@ task_item_dispose (GObject *object)
   item->progress_overlay = NULL;
   item->icon_overlay = NULL;
 
+  if (priv->applet)
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (awn_config_get_default_for_applet (priv->applet, NULL), object, &err);
+    if (err)
+    {
+      g_warning ("%s: Failed to unbind_all: %s",__func__,err->message);
+      g_error_free (err);
+    }
+    priv->applet = NULL;
+  }  
+  
   G_OBJECT_CLASS (task_item_parent_class)->dispose (object);
 }
 
@@ -131,6 +143,19 @@ task_item_dispose (GObject *object)
 static void
 task_item_finalize (GObject *object)
 {
+  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (object);
+  GError  * err = NULL;
+ 
+  if (priv->applet)
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (awn_config_get_default_for_applet (priv->applet, NULL), object, &err);
+    if (err)
+    {
+      g_warning ("%s: Failed to unbind_all: %s",__func__,err->message);
+      g_error_free (err);
+    }
+    priv->applet = NULL;
+  }  
   G_OBJECT_CLASS (task_item_parent_class)->finalize (object);
 }
 

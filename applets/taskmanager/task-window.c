@@ -56,6 +56,8 @@ struct _TaskWindowPrivate
   // Is this window in the workspace. If workspace is NULL, this is always TRUE;
   gboolean in_workspace;
 
+  AwnApplet   *applet;
+  
   /* Properties */
   gchar   *message;
   gfloat   progress;
@@ -189,7 +191,7 @@ do_bind_property (DesktopAgnosticConfigClient *client, const gchar *key,
     g_error_free (error);
     return FALSE;
   }
-
+	
   return TRUE;
 }
 
@@ -197,12 +199,11 @@ static void
 task_window_constructed (GObject *object)
 {
   TaskWindowPrivate *priv;
-  AwnApplet   *applet;
   
   priv = TASK_WINDOW_GET_PRIVATE (object);
   
   g_object_get (object,
-                "applet",&applet,
+                "applet",&priv->applet,
                 NULL);
   
  /*  TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;*/  
@@ -213,7 +214,7 @@ task_window_constructed (GObject *object)
   g_signal_connect (wnck_screen_get_default(),"active-window-changed",
                     G_CALLBACK(_active_window_changed),object);
   
-  if (!do_bind_property (awn_config_get_default_for_applet (applet, NULL), "activate_behavior", object,
+  if (!do_bind_property (awn_config_get_default_for_applet (priv->applet, NULL), "activate_behavior", object,
                          "activate_behavior"))
   {
     return;
@@ -224,6 +225,23 @@ task_window_constructed (GObject *object)
 static void
 task_window_dispose (GObject *object)
 {
+  TaskWindowPrivate *priv = TASK_WINDOW (object)->priv; 
+  GError  * err = NULL;
+   
+  g_free (priv->special_id);
+  
+  /*TaskItem will also do this, so it shouldn't be necessary in TaskWindow.*/
+  if (priv->applet)
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (awn_config_get_default_for_applet (priv->applet, NULL), object, &err);
+    if (err)
+    {
+      g_warning ("%s: Failed to unbind_all: %s",__func__,err->message);
+      g_error_free (err);
+    }
+    priv->applet = NULL;
+  }  
+  
   G_OBJECT_CLASS (task_window_parent_class)->dispose (object);
 }
 
@@ -231,13 +249,11 @@ task_window_dispose (GObject *object)
 static void
 task_window_finalize (GObject *object)
 {
-  TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;
-
-  g_free (priv->special_id);
-  G_OBJECT_CLASS (task_window_parent_class)->finalize (object);
   g_signal_handlers_disconnect_by_func(wnck_screen_get_default(), 
                                        G_CALLBACK (_active_window_changed), 
                                        object);
+  G_OBJECT_CLASS (task_window_parent_class)->finalize (object);
+  
 }
 
 

@@ -1,3 +1,9 @@
+2009-09-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-window.c:
+	Unbind the config keys on dispose().
+
 2009-08-31  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* awn-settings/Makefile.am:
