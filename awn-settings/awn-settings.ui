@@ -1608,7 +1608,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkColorButton" id="gstep1_colorbutton">
+                                  <object class="DesktopAgnosticGTKColorButton" id="gstep1_colorbutton">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>

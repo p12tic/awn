@@ -1,3 +1,11 @@
+2009-09-02  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnSettingsHelper.py (get_widget_value,
+	  set_widget_value, get_widget_change_signal_name):
+	Replace Gtk.ColorButton widgets with DesktopAgnostic.GTK.ColorButton
+	widgets.
+
 2009-09-02  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-item.c:

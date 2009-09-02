@@ -17,8 +17,8 @@
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA.
 
 import gtk
-import desktopagnostic
 from desktopagnostic import config
+from desktopagnostic.gtk import ColorButton
 
 
 def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
@@ -56,10 +56,8 @@ def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
             return widget.get_active()
         elif (isinstance(widget, (gtk.SpinButton, gtk.Range))):
             return widget.get_value()
-        elif (isinstance(widget, gtk.ColorButton)):
-            lda_color = desktopagnostic.Color(widget.get_color(),
-                                              widget.get_alpha())
-            return lda_color #.to_string()
+        elif (isinstance(widget, ColorButton)):
+            return widget.props.da_color
         else: raise NotImplementedError()
 
     def set_widget_value (widget, value):
@@ -76,12 +74,8 @@ def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
             widget.set_active(value)
         elif (isinstance(widget, (gtk.SpinButton, gtk.Range))):
             widget.set_value(value)
-        elif (isinstance(widget, gtk.ColorButton)):
-            # value should be desktopagnostic.Color
-            color = gtk.gdk.Color()
-            value.get_color(color)
-            widget.set_color(color)
-            widget.set_alpha(value.get_alpha())
+        elif (isinstance(widget, ColorButton)):
+            widget.props.da_color = value
         else: raise NotImplementedError()
 
     def get_widget_change_signal_name (widget):
@@ -90,7 +84,7 @@ def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
             gtk.SpinButton: 'value-changed',
             gtk.ComboBox: 'changed',
             gtk.Range: 'value-changed',
-            gtk.ColorButton: 'color-set'
+            ColorButton: 'color-set'
         }
         for cls in signal_names.keys():
             if isinstance(widget, cls): return signal_names[cls]
