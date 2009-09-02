@@ -956,6 +956,7 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
     g_slist_free (priv->items);
     priv->items = NULL;
     priv->ephemeral_count = 0;
+    gtk_widget_destroy (GTK_WIDGET(icon));    
   }
   else
   {
