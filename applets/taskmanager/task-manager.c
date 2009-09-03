@@ -165,6 +165,11 @@ static void task_manager_active_workspace_changed_cb (WnckScreen    *screen,
                                                       TaskManager * manager);
 static void task_manager_win_geom_changed_cb (WnckWindow *window, 
                                               TaskManager * manager);
+static void task_manager_win_state_changed_cb (WnckWindow * window,
+                                               WnckWindowState changed_mask,
+                                               WnckWindowState new_state,
+                                               TaskManager * manager);
+
 
 typedef enum 
 {
@@ -1296,7 +1301,9 @@ on_window_opened (WnckScreen    *screen,
    */
   g_signal_connect (window,"geometry-changed",
                   G_CALLBACK(task_manager_win_geom_changed_cb),manager);
-
+  g_signal_connect (window,"state-changed",
+                    G_CALLBACK(task_manager_win_state_changed_cb),manager);
+  
   switch (type)
   {
     case WNCK_WINDOW_DESKTOP:
@@ -1962,7 +1969,7 @@ task_manager_check_for_intersection (TaskManager * manager,
   
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
-  
+
   /*
    Generate a GdkRegion for the awn panel_size
    */
@@ -2025,6 +2032,10 @@ task_manager_check_for_intersection (TaskManager * manager,
     GdkRectangle win_rect;
 
     if (!wnck_window_is_visible_on_workspace (iter->data,space))
+    {
+      continue;
+    }
+    if (wnck_window_is_minimized(iter->data) )
     {
       continue;
     }
@@ -2136,7 +2147,7 @@ task_manager_active_workspace_changed_cb (WnckScreen    *screen,
   WnckApplication     *app;
   WnckWorkspace       *space;
   WnckWindow          *win;
-  
+
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
   if (!priv->intellihide)
@@ -2176,7 +2187,6 @@ task_manager_win_geom_changed_cb (WnckWindow *window, TaskManager * manager)
   WnckWindow          *win;
   WnckApplication     *app;
   WnckWorkspace       *space;
-
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
  
@@ -2193,6 +2203,33 @@ task_manager_win_geom_changed_cb (WnckWindow *window, TaskManager * manager)
   app = wnck_window_get_application (win);
   space = wnck_screen_get_active_workspace (priv->screen);
   task_manager_check_for_intersection (manager,space,app);  
+}
+
+static void task_manager_win_state_changed_cb (WnckWindow * window,
+                                               WnckWindowState changed_mask,
+                                               WnckWindowState new_state,
+                                               TaskManager * manager)
+{
+  TaskManagerPrivate  *priv;
+  WnckWindow          *win;
+  WnckApplication     *app;
+  WnckWorkspace       *space;
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+ 
+  if (!priv->intellihide)
+  {
+    return;
+  }
+  win = wnck_screen_get_active_window (priv->screen);
+  if (!win)
+  {
+    return;
+  }
+  app = wnck_window_get_application (win);
+  space = wnck_screen_get_active_workspace (priv->screen);
+  task_manager_check_for_intersection (manager,space,app);  
+  
 }
 
 static GQuark
