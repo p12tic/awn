@@ -1,3 +1,8 @@
+2009-09-03  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/avant-window-navigator.schema-ini.in:
+	Change the default orientation back to "bottom".
+
 2009-09-03  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
