@@ -1,3 +1,8 @@
+2009-09-03  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* debian/avant-window-navigator-trunk.install:
+	Fix the Debian packaging to reflect the .ui change.
+
 2009-09-03  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
