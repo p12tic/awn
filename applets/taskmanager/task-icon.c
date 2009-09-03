@@ -362,7 +362,10 @@ task_icon_dispose (GObject *object)
   }
   if (priv->overlay_text)
   {
-    g_object_unref (priv->overlay_text);
+    awn_overlayable_remove_overlay (AWN_OVERLAYABLE(object), AWN_OVERLAY(priv->overlay_text));
+    
+    /*this should be necessary.  But seems to cause some spam  FIXME */
+//    g_object_unref (priv->overlay_text);
     priv->overlay_text = NULL;
   }
   G_OBJECT_CLASS (task_icon_parent_class)->dispose (object);  

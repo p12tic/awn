@@ -1,3 +1,11 @@
+2009-09-03  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* libawn/awn-icon.c:
+	Fixed up the dispose process that occurs when TaskIcons
+	disappear.  The fix seems somewhat incomplete/dubious 
+	(see comments).
+
 2009-09-02  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:

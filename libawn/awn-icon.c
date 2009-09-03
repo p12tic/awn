@@ -414,9 +414,12 @@ awn_icon_dispose (GObject *object)
     desktop_agnostic_config_client_unbind_all_for_object (client,
                                                           object, NULL);
   }
-
   if (priv->effects)
+  {
+    /*awn_effects_cairo_destroy () makes things go boom.  possible FIXME ?*/
+    //awn_effects_cairo_destroy (priv->effects);
     g_object_unref (priv->effects);
+  }
   priv->effects = NULL;
 
   if (priv->tooltip)
@@ -550,7 +553,6 @@ awn_icon_init (AwnIcon *icon)
   priv->tooltip = awn_tooltip_new_for_widget (GTK_WIDGET (icon));
 
   priv->effects = awn_effects_new_for_widget (GTK_WIDGET (icon));
-
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
 
   g_signal_connect (icon, "button-press-event",
