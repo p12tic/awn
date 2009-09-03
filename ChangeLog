@@ -1,3 +1,10 @@
+2009-09-03  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* libawn/awn-icon.c:
+	Removed some comments as the unexpected behaviour was
+	expected.
+
 2009-09-03  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* debian/avant-window-navigator-trunk.install:

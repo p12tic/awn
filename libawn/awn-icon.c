@@ -416,8 +416,6 @@ awn_icon_dispose (GObject *object)
   }
   if (priv->effects)
   {
-    /*awn_effects_cairo_destroy () makes things go boom.  possible FIXME ?*/
-    //awn_effects_cairo_destroy (priv->effects);
     g_object_unref (priv->effects);
   }
   priv->effects = NULL;
