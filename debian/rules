@@ -27,12 +27,6 @@ DEB_SHLIBDEPS_LIBRARY_avant-window-navigator-trunk:= libawn0-trunk
 DEB_SHLIBDEPS_INCLUDE_avant-window-navigator-trunk := debian/libawn0-trunk/usr/
 DEB_DH_STRIP_ARGS := --dbg-package=libawn0-dbg-trunk
 
-#install/avant-window-navigator-trunk::
-#	dh_install -pavant-window-navigator-trunk --sourcedir=debian/tmp
-#	mv debian/tmp/usr/bin/avant-window-navigator debian/avant-window-navigator-trunk/usr/bin/awn
-#	cp data/awn-applets-migration.py debian/avant-window-navigator-trunk/usr/share/avant-window-navigator/awn-applets-migration.py
-#	cp debian/awn.wrapper debian/avant-window-navigator-trunk/usr/bin/avant-window-navigator
-
 binary-post-install/awn-settings-trunk::
 	dh_pycentral -pawn-settings-trunk
 

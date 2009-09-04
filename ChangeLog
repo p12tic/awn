@@ -1,3 +1,12 @@
+2009-09-04  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/control:
+	* debian/libawn0-trunk.install:
+	* debian/rules:
+	Add awn-applets-c-core-trunk and awn-applets-python-core-trunk
+	as Recommends for avant-window-navigator.
+	Various little fixes.
+
 2009-09-03  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* debian/control:

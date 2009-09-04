@@ -38,9 +38,10 @@ Depends: 	${shlibs:Depends},
 		libdesktop-agnostic-vfs,
 		libdesktop-agnostic-fdo,
 		libdesktop-agnostic-cfg,
-		libgtop2-7,
 		dbus-x11 | dbus
 Recommends:	awn-settings-trunk (>= 0.2),
+			awn-applets-c-core-trunk,
+			awn-applets-python-core-trunk
 Suggests: 	metacity (>= 2.21.5) | xcompmgr | compiz | xfwm4 (>= 4.2)
 Conflicts: avant-window-navigator-bzr, avant-window-navigator, avant-window-navigator-testing
 Replaces: avant-window-navigator-bzr, avant-window-navigator, avant-window-navigator-testing
@@ -65,7 +66,6 @@ Section: libs
 Architecture: any
 Depends: 	${shlibs:Depends},
 		${misc:Depends},
-		libdesktop-agnostic0,
 Suggests: 	metacity (>= 2.21.5) | xcompmgr | compiz | xfwm4 (>= 4.2)
 Conflicts: libawn0-bzr, libawn-bzr, libawn, libawn0, libawn0-testing
 Replaces: libawn0-bzr, libawn-bzr, libawn, libawn0, libawn0-testing
@@ -90,7 +90,7 @@ Depends:	libawn0-trunk (= ${binary:Version}),
 		${shlibs:Depends},
 		${misc:Depends},
 		libgtk2.0-dev,
-		libdesktop-agnostic-dev,
+		libdesktop-agnostic-dev
 Conflicts: libawn-dev-bzr, libawn-dev, libawn-testing-dev
 Replaces: libawn-dev-bzr, libawn-dev, libawn-testing-dev
 Description: library for avant-window-navigator - development files
@@ -105,8 +105,8 @@ Depends:	${python:Depends},
 		gnome-menus,
 		librsvg2-common,
 		python-awn-trunk,
-Conflicts: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4), awn-manager-trunk
-Replaces: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4), awn-manager-trunk
+Conflicts: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4), awn-manager-trunk, awn-settings
+Replaces: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4), awn-manager-trunk, awn-settings
 XB-Python-Version: ${python:Versions}
 Description: A preferences manager for avant-window-navigator
  awn-settings provides a simple way to configure avant-window-navigator.
@@ -134,7 +134,6 @@ Architecture: all
 Depends: 	libawn0-trunk (>= ${source:Version}),
 		${shlibs:Depends}, 
 		${misc:Depends},
-		valac (>= 0.5.4),
 		vala-libdesktop-agnostic
 Conflicts: vala-awn-testing, vala-awn
 Replaces: vala-awn-testing, vala-awn
