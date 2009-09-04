@@ -134,7 +134,8 @@ Architecture: all
 Depends: 	libawn0-trunk (>= ${source:Version}),
 		${shlibs:Depends}, 
 		${misc:Depends},
-		valac (>= 0.5.4)
+		valac (>= 0.5.4),
+		vala-libdesktop-agnostic
 Conflicts: vala-awn-testing, vala-awn
 Replaces: vala-awn-testing, vala-awn
 Description: Vala bindings for avant-window-navigator library 

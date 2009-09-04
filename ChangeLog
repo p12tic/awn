@@ -1,5 +1,10 @@
 2009-09-03  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* debian/control:
+	Fix the vala-awn-trunk dependencies.
+
+2009-09-03  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* data/avant-window-navigator.schema-ini.in:
 	Change the default orientation back to "bottom".
 
