@@ -109,8 +109,6 @@ void            task_window_set_active_workspace   (TaskWindow    *window,
 gboolean        task_window_is_on_workspace   (TaskWindow    *window,
                                                WnckWorkspace *space);
 
-
-
 void            task_window_activate          (TaskWindow    *window,
                                                guint32        timestamp);
 

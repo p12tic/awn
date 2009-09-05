@@ -1,3 +1,9 @@
+2009-09-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Make the logic of on_window_needs_attention_changed () a bit
+	more sane.
+
 2009-09-04  Julien Lavergne <gilir@ubuntu.com>
 
 	* debian/control:

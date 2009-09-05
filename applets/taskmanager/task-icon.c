@@ -952,6 +952,8 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
   }
   if (g_slist_length (priv->items) == priv->ephemeral_count)
   {
+    awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                      AWN_EFFECT_ATTENTION);     
     g_slist_foreach (priv->items,(GFunc)gtk_widget_destroy,NULL);
     g_slist_free (priv->items);
     priv->items = NULL;
@@ -1314,12 +1316,11 @@ on_window_needs_attention_changed (TaskWindow *window,
 
   count = task_icon_count_require_attention (icon);
 
-  if (priv->needs_attention == 0 && count == 1)
+  if ( count)
   {
     awn_icon_set_effect (AWN_ICON (icon),AWN_EFFECT_ATTENTION);
   }
-//  else if (priv->needs_attention == 1 && count == 0)
-  else if  (count == 0)  /*not sure why ^ was that structure.  try this way */
+  else
   {
     awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                       AWN_EFFECT_ATTENTION);
