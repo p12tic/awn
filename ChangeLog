@@ -1,6 +1,11 @@
 2009-09-06  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awnClass.py:
+	Removed redundant function.
+
+2009-09-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
 	Reverted part of r1361, which screwed up effect setting.
 
 2009-09-05  Rodney Cryderman  <rcryderman@gmail.com>

@@ -790,27 +790,6 @@ class awnPreferences(awnBzr):
         group, key = groupkey
         self.client.set_string(group, key, font_btn.get_font_name())
 
-    def setup_effect(self, group, key, dropdown):
-        model = gtk.ListStore(str)
-        model.append([_("Simple")])
-        model.append([_("Classic")])
-        model.append([_("Fade")])
-        model.append([_("Spotlight")])
-        model.append([_("Zoom")])
-        model.append([_("Squish")])
-        model.append([_("3D turn")])
-        model.append([_("3D turn with spotlight")])
-        model.append([_("Glow")])
-        dropdown.set_model(model)
-        cell = gtk.CellRendererText()
-        dropdown.pack_start(cell)
-        dropdown.add_attribute(cell,'text',0)
-
-        self.load_effect(group, key, dropdown)
-        dropdown.connect("changed", self.effect_changed, (group, key))
-
-        self.client.notify_add(group, key, self.reload_effect, dropdown)
-
     def load_effect(self, group, key, dropdown):
         dropdown.set_active(self.client.get_int(group, key))
 
