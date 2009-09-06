@@ -880,6 +880,73 @@ class awnPreferences(awnBzr):
                 effects = effects << 4 | int(d.get_active())-1
         return effects
 
+    def setup_effect(self, group, key, dropdown):
+        self.effects_dd = dropdown
+        model = gtk.ListStore(str)
+        model.append([_("None")])
+        model.append([_("Simple")])
+        model.append([_("Classic")])
+        model.append([_("Fade")])
+        model.append([_("Spotlight")])
+        model.append([_("Zoom")])
+        model.append([_("Squish")])
+        model.append([_("3D Turn")])
+        model.append([_("3D Spotlight Turn")])
+        model.append([_("Glow")])
+        model.append([_("Custom")]) ##Always last
+        dropdown.set_model(model)
+        cell = gtk.CellRendererText()
+        dropdown.pack_start(cell)
+        dropdown.add_attribute(cell,'text',0)
+
+        self.load_effect(group,key,dropdown)
+
+        dropdown.connect("changed", self.effect_changed, (group, key))
+        #self.setup_effect_custom(group, key)
+        self.client.notify_add(group, key, self.reload_effect, dropdown)
+
+    def load_effect(self, group, key, dropdown):
+        effect_settings = self.client.get_int(group, key)
+        hover_effect = effect_settings & 15
+        bundle = 0
+        for i in range(5):
+            bundle = bundle << 4 | hover_effect
+
+        if (bundle == effect_settings):
+        #    self.wTree.get_widget('customeffectsframe').hide()
+        #    self.wTree.get_widget('customeffectsframe').set_no_show_all(True)
+            if (hover_effect == 15):
+                active = 0
+            else:
+                active = hover_effect+1
+        else:
+            active = 10 #Custom
+        #    self.wTree.get_widget('customeffectsframe').show()
+
+        dropdown.set_active(int(active))
+
+    def reload_effect(self, group, key, value, dropdown):
+        self.load_effect(group, key, dropdown)
+
+    def effect_changed(self, dropdown, groupkey):
+        group, key = groupkey
+        new_effects = 0
+        effect = 0
+        if(dropdown.get_active() != 10): # not Custom
+#            self.wTree.get_widget('customeffectsframe').hide()
+            if(dropdown.get_active() == 0):
+                effect = 15
+            else:
+                effect = dropdown.get_active() - 1
+            for i in range(5):
+                new_effects = new_effects << 4 | effect
+            self.client.set_int(group, key, new_effects)
+            print "effects set to: ", "%0.8X" % new_effects
+#            self.load_effect_custom(group, key)
+        else:
+#            self.wTree.get_widget('customeffectsframe').show()
+            pass
+
     def setup_autostart(self, check):
         """sets up checkboxes"""
         self.load_autostart(check)
