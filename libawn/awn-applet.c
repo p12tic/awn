@@ -45,6 +45,8 @@ G_DEFINE_TYPE (AwnApplet, awn_applet, GTK_TYPE_PLUG)
 #define AWN_APPLET_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
                                      AWN_TYPE_APPLET, AwnAppletPrivate))
 
+#define AWN_SETTINGS_APP "awn-settings"
+
 struct _AwnAppletPrivate
 {
   gchar *uid;
@@ -964,18 +966,18 @@ awn_applet_get_canonical_name (AwnApplet *applet)
 }
 
 /*
- * Callback to start awn-manager.  See awn_applet_create_default_menu()
+ * Callback to start the settings App. See awn_applet_create_default_menu().
  */
 static gboolean
-_start_awn_manager (GtkMenuItem *menuitem, gpointer null)
+_start_awn_settings (GtkMenuItem *menuitem, gpointer null)
 {
   GError *err = NULL;
   
-  g_spawn_command_line_async("awn-settings", &err);
+  g_spawn_command_line_async(AWN_SETTINGS_APP, &err);
 
   if (err)
   {
-    g_warning("Failed to start awn-manager: %s\n", err->message);
+    g_warning("Failed to start %s: %s\n", AWN_SETTINGS_APP, err->message);
     g_error_free(err);
   }
 
@@ -1003,7 +1005,7 @@ awn_applet_create_pref_item (void)
                                                           GTK_ICON_SIZE_MENU));
   gtk_widget_show_all (item);
   g_signal_connect (item, "activate", 
-                    G_CALLBACK (_start_awn_manager), NULL);
+                    G_CALLBACK (_start_awn_settings), NULL);
   return item;
 }
 
@@ -1209,7 +1211,7 @@ awn_applet_create_default_menu (AwnApplet *applet)
 
   menu = gtk_menu_new ();
 
-  /* The preferences (awn-manager) menu item  */
+  /* The preferences (awn-settings) menu item  */
   item = awn_applet_create_pref_item ();
   gtk_menu_shell_append (GTK_MENU_SHELL(menu), item);
 

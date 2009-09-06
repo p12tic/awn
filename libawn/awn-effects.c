@@ -1092,7 +1092,7 @@ awn_effects_main_effect_loop(AwnEffects * fx)
     (AwnEffectsAnimation *)(fx->priv->effect_queue->data);
 
   /* FIXME: simplifing the index to (topEffect->thisEffect-1) changed
-   *  the gconf key a bit -> update awn-manager's custom effect setting
+   *  the gconf key a bit -> update awn-settings's custom effect setting
    *  to reflect this change.
    */
 

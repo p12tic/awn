@@ -1,5 +1,13 @@
 2009-09-06  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* awn-manager/ (removed):
+	* libawn/awn-applet.c (AWN_SETTINGS_APP, _start_awn_settings,
+	  awn_applet_create_pref_item, awn_applet_create_default_menu):
+	* libawn/awn-effects.c (awn_effects_main_effect_loop):
+	Remove all references to awn-manager.
+
+2009-09-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* libawn/awn-effects.c (awn_effects_finalize):
 	Make sure the AwnEffects object removes any config bindings that it
 	may have when it is garbage collected.
