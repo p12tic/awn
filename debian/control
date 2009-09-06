@@ -105,6 +105,7 @@ Depends:	${python:Depends},
 		gnome-menus,
 		librsvg2-common,
 		python-awn-trunk,
+		bzr,
 Conflicts: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4), awn-manager-trunk, awn-settings
 Replaces: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4), awn-manager-trunk, awn-settings
 XB-Python-Version: ${python:Versions}
