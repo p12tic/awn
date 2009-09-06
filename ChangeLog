@@ -1,3 +1,9 @@
+2009-09-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-effects.c (awn_effects_finalize):
+	Make sure the AwnEffects object removes any config bindings that it
+	may have when it is garbage collected.
+
 2009-09-06  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awnClass.py:

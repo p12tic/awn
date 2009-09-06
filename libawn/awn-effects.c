@@ -22,6 +22,7 @@
 #include <config.h>
 #endif
 
+#include "awn-config.h"
 #include "awn-effects.h"
 #include "awn-effects-ops-new.h"
 #include "awn-enum-types.h"
@@ -106,7 +107,7 @@ static void
 awn_effects_dispose (GObject *object)
 {
   AwnEffects *fx = AWN_EFFECTS (object);
-  
+
   /* destroy animation timer */
   if (fx->priv->timer_id)
   {
@@ -135,7 +136,23 @@ awn_effects_dispose (GObject *object)
 static void
 awn_effects_finalize (GObject *object)
 {
+  GError *error = NULL;
+  DesktopAgnosticConfigClient *client;
   AwnEffects *fx = AWN_EFFECTS (object);
+
+  client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
+
+  if (error)
+  {
+    g_warning ("An error occurred while trying to retrieve the configuration client: %s",
+               error->message);
+    g_error_free (error);
+  }
+  else
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (client,
+                                                          object, NULL);
+  }
 
   fx->widget = NULL;
 
