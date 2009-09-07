@@ -1,5 +1,11 @@
 2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Remove the signal so the signal handler does not get invoked 
+	after the TaskIcon has been destroyed.
+
+2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-themed-icon.c:
 	Add icon preview widget to customize icon dialog, 
 	Submitted by Matt <sharkbaitbobby@gmail.com>
