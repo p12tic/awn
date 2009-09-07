@@ -1,5 +1,10 @@
 2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-themed-icon.c:
+	Use weak_ref instead of connecting to "unrealize".
+
+2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-window.c:
 	* applets/taskmanager/task-manager.c:
 	This should allow closing animation and make sure Icon is disped

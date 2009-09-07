@@ -1990,7 +1990,7 @@ _remove_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
 
 
 static void
-_remove_icon_cleanup (GtkWidget * widget, AwnThemedIcon * icon)
+_remove_icon_cleanup (AwnThemedIcon * icon, GtkWidget * widget)
 {
   AwnThemedIconPrivate * priv;
   
@@ -2042,10 +2042,10 @@ awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon,
   
   g_signal_connect (priv->remove_custom_icon_item, "activate", 
                     G_CALLBACK (_remove_icon), dest_filename);
-  g_signal_connect_swapped (G_OBJECT (priv->remove_custom_icon_item), "unrealize",
-                    G_CALLBACK (g_free), dest_filename);
-  g_signal_connect (G_OBJECT (priv->remove_custom_icon_item), "unrealize",
-                    G_CALLBACK (_remove_icon_cleanup), icon);
+  g_object_weak_ref (G_OBJECT (priv->remove_custom_icon_item),
+                     (GWeakNotify) g_free, dest_filename);
+  g_object_weak_ref (G_OBJECT (priv->remove_custom_icon_item),
+                    (GWeakNotify) _remove_icon_cleanup, icon);
   
   return priv->remove_custom_icon_item;
 }
