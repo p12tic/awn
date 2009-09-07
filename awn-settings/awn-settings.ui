@@ -1774,7 +1774,7 @@
       <object class="GtkVBox" id="vbox17">
         <property name="visible">True</property>
         <child>
-          <object class="GtkFrame" id="frame4">
+          <object class="GtkFrame" id="frame400">
             <property name="visible">True</property>
             <property name="label_xalign">0</property>
             <property name="shadow_type">none</property>

@@ -1,3 +1,8 @@
+2009-09-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/awn-settings.ui:
+	Remove duplicate widget ID.
+
 2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
