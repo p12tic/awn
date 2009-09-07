@@ -804,14 +804,14 @@ update_icon_visible (TaskManager *manager, TaskIcon *icon)
     visible = TRUE;
   }
 
-  if (visible && !gtk_widget_get_visible (icon))
+  if (visible && !gtk_widget_get_visible (GTK_WIDGET(icon)))
   {
     gtk_widget_show (GTK_WIDGET (icon));
     awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                           AWN_EFFECT_OPENING, 1, FALSE, FALSE);
   }
 
-  if (!visible && gtk_widget_get_visible (icon))
+  if (!visible && gtk_widget_get_visible (GTK_WIDGET(icon)))
   {
     awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                           AWN_EFFECT_CLOSING, 1, FALSE, TRUE);
@@ -833,10 +833,11 @@ on_icon_effects_ends (TaskIcon   *icon,
                       AwnEffects *instance)
 {
   g_return_if_fail (TASK_IS_ICON (icon));
-
   if (effect == AWN_EFFECT_CLOSING)
   {
-    gtk_widget_hide (GTK_WIDGET (icon));
+    /*something (AwnEffects I think) needs a chance to do some cleanup before
+     the icon is destroyed... seemingly*/
+    g_idle_add ((GSourceFunc)gtk_widget_destroy,icon);
   }
 }
 

@@ -1,3 +1,10 @@
+2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	* applets/taskmanager/task-manager.c:
+	This should allow closing animation and make sure Icon is disped
+	of.  For some reason the animation is not happening.
+
 2009-09-06  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* debian/control:
