@@ -1,6 +1,12 @@
 2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
+	Add icon preview widget to customize icon dialog, 
+	Submitted by Matt <sharkbaitbobby@gmail.com>
+
+2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
 	Use weak_ref instead of connecting to "unrealize".
 
 2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>

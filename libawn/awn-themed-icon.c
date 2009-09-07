@@ -1866,14 +1866,43 @@ drag_out:
 
 
 static void
+_update_preview (GtkFileChooser *file_chooser, GtkWidget *preview)
+{
+  GdkPixbuf *pixbuf;
+  char *filename;
+  gboolean have_preview;
+
+  filename = gtk_file_chooser_get_preview_filename (file_chooser);
+
+  if (filename == NULL)
+  {
+    gtk_file_chooser_set_preview_widget_active (file_chooser, FALSE);
+
+    return;
+  }
+
+  pixbuf = gdk_pixbuf_new_from_file_at_size (filename, 128, 128, NULL);
+  have_preview = (pixbuf != NULL);
+
+  g_free (filename);
+
+  gtk_image_set_from_pixbuf (GTK_IMAGE (preview), pixbuf);
+
+  if (pixbuf)
+    g_object_unref (pixbuf);
+
+  gtk_file_chooser_set_preview_widget_active (file_chooser, have_preview);
+}
+
+static void
 _select_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
 {
-  GtkWidget * dialog;
+  GtkWidget * dialog, *preview;
   GtkFileFilter * filter = gtk_file_filter_new ();
   
   gtk_file_filter_add_pattern (filter, "*.png");
   gtk_file_filter_add_pattern (filter, "*.svg");
-  gtk_file_filter_set_name (filter,NULL);
+  gtk_file_filter_set_name (filter, _("Icons"));
   
   dialog = gtk_file_chooser_dialog_new ( _("Choose Custom Icon"),
                                         NULL,
@@ -1883,7 +1912,12 @@ _select_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
 				                                NULL);
   /* is there a correct way to determine the main icons dirs?*/
   gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog),"/usr/share/icons");
-  gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog),filter);  
+  gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog),filter);
+
+  preview = gtk_image_new();
+  gtk_file_chooser_set_preview_widget (GTK_FILE_CHOOSER(dialog), preview);
+  g_signal_connect (dialog, "update-preview", G_CALLBACK (_update_preview), preview);
+
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
   {
     gchar * src_filename;
