@@ -1,3 +1,9 @@
+2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Tweaked the desktop lookup code.  Cuts Exec at "%" and 
+	does a fuzzy search using res_name.
+
 2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-launcher.c:

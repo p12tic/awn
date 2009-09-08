@@ -1188,19 +1188,21 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
           if (desktop)
           {
             gchar * exec = desktop_agnostic_fdo_desktop_entry_get_string (desktop, "Exec");
+            tokens = g_strsplit(exec,"%",-1);
+            g_strchomp (tokens[0]);
             g_object_unref (desktop);
 #ifdef DEBUG
             g_debug ("%s:  exec =   %s",__func__,exec);
             g_debug ("%s:  cmd =   %s",__func__,cmd);            
 #endif            
-            if (exec)
+            if (tokens[0])
             {
               /*
                May need some adjustments.
                 Possible conversion to a regex
                */
-              if ( g_regex_match_simple (exec,cmd,G_REGEX_CASELESS,0) 
-                  || g_regex_match_simple (cmd, exec,G_REGEX_CASELESS,0))
+              if ( g_regex_match_simple (tokens[0],cmd,G_REGEX_CASELESS,0) 
+                  || g_regex_match_simple (cmd, tokens[0],G_REGEX_CASELESS,0))
               {
                 launcher = get_launcher (full_path);
                 if (launcher)
@@ -1209,8 +1211,13 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
                   g_regex_unref (desktop_regex);
                   g_free (exec);
                   g_free (lower);
+                  g_strfreev (tokens);
                   return TRUE;
                 }
+              }
+              if (tokens)
+              {
+                g_strfreev (tokens);
               }
               g_free (exec);              
             }            
@@ -1477,6 +1484,15 @@ on_window_opened (WnckScreen    *screen,
     {
       found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
     }
+    if (!found_desktop && full_cmd && strlen (full_cmd) )
+    {
+      found_desktop = find_desktop_fuzzy (TASK_ICON(icon),res_name, full_cmd);
+    }
+    if (!found_desktop && cmd && strlen (cmd))
+    {
+      found_desktop = find_desktop_fuzzy (TASK_ICON(icon),res_name, cmd);
+    }
+    
     if (!found_desktop && cmd_basename && strlen (cmd_basename) )
     {
       found_desktop = find_desktop (TASK_ICON(icon), cmd_basename);
