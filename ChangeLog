@@ -1,6 +1,12 @@
 2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Was destroying TaskIcons in some situation where they should
+	only be hidden.
+
+2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Tweaked the desktop lookup code.  Cuts Exec at "%" and 
 	does a fuzzy search using res_name.
 

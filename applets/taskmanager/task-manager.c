@@ -835,13 +835,37 @@ on_icon_effects_ends (TaskIcon   *icon,
   g_return_if_fail (TASK_IS_ICON (icon));
   if (effect == AWN_EFFECT_CLOSING)
   {
-    /*we're done... disconnect this handler or it's going to get called again...
-     for this object*/
-    g_signal_handlers_disconnect_by_func (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)),
-                          G_CALLBACK (on_icon_effects_ends), icon);
-    /*something (AwnEffects I think) needs a chance to do some cleanup before
-     the icon is destroyed... seemingly*/    
-    g_idle_add ((GSourceFunc)gtk_widget_destroy,icon);
+    gboolean destroy = FALSE;
+    /*conditional operator*/
+    if ( !task_icon_contains_launcher (icon) )
+    {
+      if (task_icon_count_items(icon)==0)
+      {
+        destroy = TRUE;
+      }
+    }
+    else
+    {
+      if (task_icon_count_items (icon) <= task_icon_count_ephemeral_items (icon))
+      {
+        destroy = TRUE;
+      }
+    }
+   
+    if (destroy)
+    {
+      /*we're done... disconnect this handler or it's going to get called again...
+       for this object*/
+      g_signal_handlers_disconnect_by_func (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)),
+                            G_CALLBACK (on_icon_effects_ends), icon);
+      /*something (AwnEffects I think) needs a chance to do some cleanup before
+       the icon is destroyed... seemingly*/    
+      g_idle_add ((GSourceFunc)gtk_widget_destroy,icon);
+    }
+    else
+    {
+      gtk_widget_hide (GTK_WIDGET(icon));
+    }
   }
 }
 
