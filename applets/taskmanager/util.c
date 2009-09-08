@@ -66,6 +66,14 @@ typedef struct
 }WindowToDesktopMatch;
 
 
+typedef struct
+{
+  const gchar * res_name;
+  const gchar * class_name;
+  const gchar * title;
+  guint wait;
+}WindowWait;
+
 const gchar * blacklist[] = {"prism",
                        NULL};
 /*Assign an id to a desktop file
@@ -148,16 +156,16 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {".*prism.*google.*talk.*","Prism","Navigator",".*[Tt]alk.*","prism-google-talk"},
 
   /*Debian*/
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*|.*OpenOffice.*","openoffice.org-writer"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*|.*OpenOffice.*","openoffice.org-draw"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*|.*OpenOffice.*","openoffice.org-impress"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*|.*OpenOffice.*","openoffice.org-calc"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*","openoffice.org-writer"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","openoffice.org-draw"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","openoffice.org-impress"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","openoffice.org-calc"},
 
     /*Ubuntu*/
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*|.*OpenOffice.*","ooo-writer"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*|.*OpenOffice.*","ooo-draw"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*|.*OpenOffice.*","ooo-impress"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*|.*OpenOffice.*","ooo-calc"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*","ooo-writer"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","ooo-draw"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","ooo-impress"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","ooo-calc"},
   
   {".*gimp.*",".*Gimp.*",".*gimp.*",".*GNU.*Image.*Manipulation.*Program.*","gimp"},
   {".*system-config-printer.*applet.*py.*",".*Applet.*py.*",".*applet.*",".*Print.*Status.*","redhat-manage-print-jobs"},  
@@ -169,6 +177,11 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {NULL,NULL,NULL,NULL,NULL}
 };
 
+static  WindowWait windows_to_wait[] = 
+{
+  {".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*","^OpenOffice\\.org.*",1000},
+  {NULL,NULL,NULL,0}
+};
 /*
  Special Casing should NOT be used for anything but a last resort.  
  Other matching algororithms are NOT used if something is special cased.
@@ -358,6 +371,55 @@ get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, gchar * clas
   return result;
 }
 
+gboolean
+get_special_wait_from_window_data (gchar *res_name, gchar * class_name,const gchar *title)
+{
+  /*
+   Exec,Name,filename, special_id.  If all in the first 3 match then the 
+   special_id is returned.
+
+   TODO  put data into a separate file
+   
+   TODO  optimize the regex handling.
+   */
+  WindowWait  *iter;
+  for (iter = windows_to_wait; iter->wait; iter++)
+  {
+    gboolean  match = TRUE;
+#ifdef DEBUG      
+      g_debug ("%s: iter->res_name = %s, res_name = %s",__func__,iter->res_name,res_name);
+#endif    
+    if (iter->res_name)
+    {
+      match = res_name && g_regex_match_simple(iter->res_name, res_name,0,0); 
+      if (!match)
+        continue;
+    }
+#ifdef DEBUG      
+      g_debug ("%s: iter->class_name = %s, class_name = %s",__func__,iter->class_name,class_name);
+#endif
+    if (iter->class_name)
+    {
+      match = class_name && g_regex_match_simple(iter->class_name, class_name,0,0);
+      if (!match)
+        continue;
+    } 
+#ifdef DEBUG      
+      g_debug ("%s: iter->title = %s, title = %s",__func__,iter->title,title);
+#endif
+    if (iter->title)
+    {
+      match = title && g_regex_match_simple(iter->title, title,0,0);
+      if (!match)
+        continue;
+    } 
+#ifdef DEBUG    
+    g_debug ("%s:  Special Wait Window ID:",__func__);
+#endif
+    return TRUE;
+  }
+  return FALSE;
+}
 
 
 gchar * 

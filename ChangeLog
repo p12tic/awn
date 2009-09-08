@@ -1,5 +1,12 @@
 2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/util.c:
+  	* applets/taskmanager/util.h:
+	Do the OpenOffice devs hate me?  Is it something personal?
+
+2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/util.c:
 	Remove a debug.
 

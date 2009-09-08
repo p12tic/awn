@@ -33,4 +33,8 @@ gchar * get_full_cmd_from_pid (gint pid);
 
 gboolean check_if_blacklisted (gchar * name);
 
+gboolean get_special_wait_from_window_data (gchar *res_name, 
+                                            gchar * class_name,
+                                            const gchar *title);
+
 #endif

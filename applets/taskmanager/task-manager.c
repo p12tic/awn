@@ -96,6 +96,12 @@ struct _TaskManagerPrivate
   gint         attention_autohide_timer;
 };
 
+typedef struct
+{
+  WnckWindow * window;
+  TaskManager * manager;
+} WindowOpenTimeoutData;
+
 enum
 {
   INTELLIHIDE_WORKSPACE,
@@ -1309,17 +1315,8 @@ find_desktop_special_case (TaskIcon *icon, gchar * cmd, gchar *res_name,
   return result;
 }
 
-/*
- * Whenever a new window gets opened it will try to place it
- * in an awn-icon or will create a new awn-icon.
- * State: adjusted
- *
- * TODO: document all the possible match ratings in one place.  Evaluate if they
- * are sane.
- */
-static void 
-on_window_opened (WnckScreen    *screen, 
-                  WnckWindow    *window,
+static void
+process_window_opened (WnckWindow    *window,
                   TaskManager   *manager)
 {
   /*TODO
@@ -1338,6 +1335,8 @@ on_window_opened (WnckScreen    *screen,
   g_return_if_fail (TASK_IS_MANAGER (manager));
   g_return_if_fail (WNCK_IS_WINDOW (window));
 
+  g_signal_handlers_disconnect_by_func(window, process_window_opened, manager);
+  
   priv = manager->priv;
   type = wnck_window_get_window_type (window);
     
@@ -1573,6 +1572,73 @@ on_window_opened (WnckScreen    *screen,
 
     update_icon_visible (manager, TASK_ICON (icon));
   }
+
+}
+  
+static gboolean
+_wait_for_name_change_timeout (WindowOpenTimeoutData * data)
+{
+  gchar * res_name = NULL;
+  gchar * class_name = NULL;
+
+  _wnck_get_wmclass (wnck_window_get_xid (data->window),
+                     &res_name, &class_name);
+  /*only go ahead and process if the title is still useless*/
+  if (get_special_wait_from_window_data (res_name, 
+                                         class_name,
+                                         wnck_window_get_name(data->window) ) )
+  {
+    process_window_opened (data->window,data->manager);
+  }  
+  g_free (res_name);
+  g_free (class_name);
+  return FALSE;
+}
+
+/*
+ * Whenever a new window gets opened it will try to place it
+ * in an awn-icon or will create a new awn-icon.
+ * State: adjusted
+ *
+ * TODO: document all the possible match ratings in one place.  Evaluate if they
+ * are sane.
+ */
+static void 
+on_window_opened (WnckScreen    *screen, 
+                  WnckWindow    *window,
+                  TaskManager   *manager)
+{
+  /*this function is about certain windows setting a very unexpected, unuseful,
+   title in certain circumstances when it first opens then changing it almost
+   immediately to something that is useful.  get_special_wait_from_window_data()
+   checks for one of those cases (open office being opened with a through a 
+   data file is one), and if that is the situations it connect a "name-change" 
+   signal and defers processing till then (after 500ms it will just go ahead*/
+  gchar * res_name = NULL;
+  gchar * class_name = NULL;
+  WindowOpenTimeoutData * win_timeout_data;
+
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  g_return_if_fail (WNCK_IS_WINDOW (window));
+  
+  win_timeout_data = g_malloc (sizeof (WindowOpenTimeoutData));
+  win_timeout_data->window = window;
+  win_timeout_data->manager = manager;
+  _wnck_get_wmclass (wnck_window_get_xid (window),
+                     &res_name, &class_name);
+  if (get_special_wait_from_window_data (res_name, 
+                                         class_name,
+                                         wnck_window_get_name(window) ) )
+  {
+    g_signal_connect (window,"name-changed",G_CALLBACK(process_window_opened),manager);
+    g_timeout_add (500,(GSourceFunc)_wait_for_name_change_timeout,win_timeout_data);
+  }
+  else
+  {
+    process_window_opened (window,manager);
+  }
+  g_free (res_name);
+  g_free (class_name);  
 }
 
 /*
