@@ -1,6 +1,11 @@
 2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
 
-	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/util.c:
+	Remove a debug.
+
+2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
         * applets/taskmanager/util.c:
         * applets/taskmanager/util.h:
 	Tweaked regex for OpenOffice to account for different Title when
