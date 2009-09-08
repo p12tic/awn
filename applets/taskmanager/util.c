@@ -146,10 +146,19 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {".*prism.*google.*mail.*","Prism","Navigator",".*[Mm]ail.*","prism-google-mail"},
   {".*prism.*google.*reader.*","Prism","Navigator",".*[Rr]eader.*","prism-google-reader"},
   {".*prism.*google.*talk.*","Prism","Navigator",".*[Tt]alk.*","prism-google-talk"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*","ooo-writer"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","ooo-draw"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","ooo-impress"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","ooo-calc"},
+
+  /*Debian*/
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*|.*OpenOffice.*","openoffice.org-writer"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*|.*OpenOffice.*","openoffice.org-draw"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*|.*OpenOffice.*","openoffice.org-impress"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*|.*OpenOffice.*","openoffice.org-calc"},
+
+    /*Ubuntu*/
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*|.*OpenOffice.*","ooo-writer"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*|.*OpenOffice.*","ooo-draw"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*|.*OpenOffice.*","ooo-impress"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*|.*OpenOffice.*","ooo-calc"},
+  
   {".*gimp.*",".*Gimp.*",".*gimp.*",".*GNU.*Image.*Manipulation.*Program.*","gimp"},
   {".*system-config-printer.*applet.*py.*",".*Applet.*py.*",".*applet.*",".*Print.*Status.*","redhat-manage-print-jobs"},  
   {".*amsn","Amsn","amsn",".*aMSN.*","amsn"},
@@ -285,7 +294,8 @@ get_special_id_from_window_data (gchar * cmd, gchar *res_name, gchar * class_nam
   return NULL;
 }
 
-gchar *
+#define DEBUG
+GSList *
 get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, gchar * class_name,const gchar *title)
 {
   /*
@@ -296,6 +306,7 @@ get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, gchar * clas
    
    TODO  optimize the regex handling.
    */
+  GSList * result=NULL;
   WindowToDesktopMatch  *iter;
 #ifdef DEBUG
   g_debug ("%s: cmd = '%s', res = '%s', class = '%s', title = '%s'",__func__,cmd,res_name,class_name,title);
@@ -303,36 +314,49 @@ get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, gchar * clas
   for (iter = window_to_desktop_regexes; iter->desktop; iter++)
   {
     gboolean  match = TRUE;
+    
     if (iter->cmd)
     {
+#ifdef DEBUG
+      g_debug ("%s: iter->cmd = %s, cmd = %s",__func__,iter->cmd,cmd);
+#endif
       match = cmd && g_regex_match_simple(iter->cmd, cmd,0,0);
       if (!match)
         continue;
     }
     if (iter->res_name)
     {
+#ifdef DEBUG
+      g_debug ("%s: iter->res_name = %s, res_name = %s",__func__,iter->res_name,res_name);
+#endif
       match = res_name && g_regex_match_simple(iter->res_name, res_name,0,0); 
       if (!match)
         continue;
     }
+#ifdef DEBUG
+      g_debug ("%s: iter->class_name = %s, class_name = %s",__func__,iter->class_name,class_name);
+#endif
     if (iter->class_name)
     {
       match = class_name && g_regex_match_simple(iter->class_name, class_name,0,0);
       if (!match)
         continue;
-    }        
+    }
+#ifdef DEBUG      
+      g_debug ("%s: iter->title = %s, title = %s",__func__,iter->title,title);
+#endif
     if (iter->title)
     {
       match = title && g_regex_match_simple(iter->title, title,0,0);
       if (!match)
         continue;
-    } 
+    }
 #ifdef DEBUG    
     g_debug ("%s:  Special cased desktop: '%s'",__func__,iter->desktop);
 #endif
-    return g_strdup (iter->desktop);
+    result = g_slist_append (result, g_strdup (iter->desktop));
   }
-  return NULL;
+  return result;
 }
 
 

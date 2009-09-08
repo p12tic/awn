@@ -1,5 +1,16 @@
 2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-launcher.c:
+        * applets/taskmanager/util.c:
+        * applets/taskmanager/util.h:
+	Tweaked regex for OpenOffice to account for different Title when
+	opened through a document.
+	Added entries for Debian OpenOffice desktop files.
+	get_special_desktop_from_window_data() now returns a list of possible 
+	desktop files to account for various dists using different file names.
+
+2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Was destroying TaskIcons in some situation where they should
 	only be hidden.

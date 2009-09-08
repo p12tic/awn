@@ -25,7 +25,7 @@ gchar * get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry *entry);
 gchar * get_special_id_from_window_data (gchar * cmd, gchar *res_name, 
                                       gchar * class_name,const gchar *title);
 
-gchar * get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, 
+GSList * get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, 
                                               gchar * class_name,
                                               const gchar *title);
 

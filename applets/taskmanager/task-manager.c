@@ -1283,19 +1283,29 @@ find_desktop_special_case (TaskIcon *icon, gchar * cmd, gchar *res_name,
                                  gchar * class_name,const gchar *title)
 {
   gboolean result = FALSE;
-  gchar * special_desktop = get_special_desktop_from_window_data (cmd,
+  GSList * desktops = get_special_desktop_from_window_data (cmd,
                                                                   res_name,
                                                                   class_name,
                                                                   title);
-  if (special_desktop)
+  if (desktops)
   {
-    result = find_desktop (icon,special_desktop);
-    if ( !result && (strlen (cmd) > 8) ) 
+    GSList * iter;
+    for (iter = desktops; iter; iter = iter->next)
     {
-      result = find_desktop_fuzzy (icon,special_desktop,cmd);
+      result = find_desktop (icon,iter->data);
+      if ( !result && (strlen (cmd) > 8) ) 
+      {
+        result = find_desktop_fuzzy (icon,iter->data,cmd);
+      }
+      if (result)
+      {
+        break;
+      }
     }
+    g_slist_foreach (desktops,(GFunc)g_free,NULL);
+    g_slist_free (desktops);
   }
-  g_free (special_desktop);
+
   return result;
 }
 
