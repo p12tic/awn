@@ -1,3 +1,10 @@
+2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/util.c:
+	Fix an item amsn special case data, and added a new entry
+	for some newly discovered strangeness.
+
 2009-09-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* awn-settings/awn-settings.ui:

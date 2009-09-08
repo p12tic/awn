@@ -78,7 +78,7 @@ static DesktopMatch desktop_regexes[] =
   {".*ooffice.*-draw.*",".*OpenOffice.*",NULL,"OpenOffice-Draw"},
   {".*ooffice.*-impress.*",".*OpenOffice.*",NULL,"OpenOffice-Impress"},
   {".*ooffice.*-calc.*",".*OpenOffice.*",NULL,"OpenOffice-Calc"},
-  {".*amsn.*","aMSN",".*asmn.*desktop.*","aMSN"},
+  {".*amsn.*","aMSN",".*amsn.*desktop.*","aMSN"},
   {".*prism-google-calendar",".*Google.*Calendar.*","prism-google-calendar","prism-google-calendar"},
   {".*prism-google-analytics",".*Google.*Analytics.*","prism-google-analytics","prism-google-analytics"},
   {".*prism-google-docs",".*Google.*Docs.*","prism-google-docs","prism-google-docs"},
@@ -108,6 +108,7 @@ static  WindowMatch window_regexes[] =
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","OpenOffice-Calc"},
   {NULL,"Amsn","amsn",".*aMSN.*","aMSN"},
   {NULL,"Chatwindow","container.*",".*Buddies.*Chat.*","aMSN"},
+  {NULL,"Chatwindow","container.*",".*Untitled.*[wW]indow.*","aMSN"},  
   {NULL,"Toplevel","cfg",".*Preferences.*-.*Config.*","aMSN"},
   {NULL,"Toplevel","plugin_selector",".*Select.*Plugins.*","aMSN"},
   {NULL,"Toplevel","skin_selector",".*Please.*select.*skin.*","aMSN"},
@@ -153,6 +154,7 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {".*system-config-printer.*applet.*py.*",".*Applet.*py.*",".*applet.*",".*Print.*Status.*","redhat-manage-print-jobs"},  
   {".*amsn","Amsn","amsn",".*aMSN.*","amsn"},
   {NULL,"Chatwindow","container.*",".*Buddies.*Chat.*","amsn"},
+  {NULL,"Chatwindow","container.*",".*Untitled.*window.*","amsn"},  
   {".*linuxdcpp","Linuxdcpp","linuxdcpp","LinuxDC\\+\\+","dc++"},    
   {".*thunderbird-bin","Thunderbird-bin","gecko",".*Thunderbird.*","thunderbird"},    
   {NULL,NULL,NULL,NULL,NULL}
@@ -173,6 +175,7 @@ get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry * entry)
    
    TODO  optimize the regex handling.
    */
+  
   DesktopMatch  *iter;
   for (iter = desktop_regexes; iter->id; iter++)
   {
@@ -180,6 +183,9 @@ get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry * entry)
     if (iter->exec)
     {
       gchar * exec = desktop_agnostic_fdo_desktop_entry_get_string (entry, "Exec");
+#ifdef DEBUG      
+      g_debug ("%s: iter->exec = %s, exec = %s",__func__,iter->exec,exec);
+#endif
       match = g_regex_match_simple(iter->exec, exec,0,0);
       g_free (exec);
       if (!match)
@@ -188,6 +194,9 @@ get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry * entry)
     if (iter->name)
     {
       gchar * name = desktop_agnostic_fdo_desktop_entry_get_name (entry);
+#ifdef DEBUG      
+      g_debug ("%s: iter->name = %s, name = %s",__func__,iter->name,name);      
+#endif
       match = g_regex_match_simple(iter->name, name,0,0);
       g_free (name);
       if (!match)
@@ -197,12 +206,15 @@ get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry * entry)
     {
       DesktopAgnosticVFSFile *file = desktop_agnostic_fdo_desktop_entry_get_file (entry);
       gchar *filename = desktop_agnostic_vfs_file_get_path (file);
+#ifdef DEBUG      
+      g_debug ("%s: iter->filename = %s, filename = %s",__func__,iter->filename,filename);
+#endif
       match = g_regex_match_simple(iter->filename, filename,0,0);
       g_free (filename);
       if (!match)
         continue;
     }
-#ifdef DEBUG    
+#ifdef DEBUG
     g_debug ("%s:  Special cased ID: '%s'",__func__,iter->id);
 #endif
     return g_strdup (iter->id);
@@ -214,7 +226,6 @@ get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry * entry)
  Special Casing should NOT be used for anything but a last resort.  
  Other matching algororithms are NOT used if something is special cased.
 */
-
 gchar *
 get_special_id_from_window_data (gchar * cmd, gchar *res_name, gchar * class_name,const gchar *title)
 {
@@ -230,24 +241,36 @@ get_special_id_from_window_data (gchar * cmd, gchar *res_name, gchar * class_nam
   for (iter = window_regexes; iter->id; iter++)
   {
     gboolean  match = TRUE;
+#ifdef DEBUG      
+      g_debug ("%s: iter->cmd = %s, cmd = %s",__func__,iter->cmd,cmd);
+#endif
     if (iter->cmd)
     {
       match = cmd && g_regex_match_simple(iter->cmd, cmd,0,0);
       if (!match)
         continue;
     }
+#ifdef DEBUG      
+      g_debug ("%s: iter->res_name = %s, res_name = %s",__func__,iter->res_name,res_name);
+#endif    
     if (iter->res_name)
     {
       match = res_name && g_regex_match_simple(iter->res_name, res_name,0,0); 
       if (!match)
         continue;
     }
+#ifdef DEBUG      
+      g_debug ("%s: iter->class_name = %s, class_name = %s",__func__,iter->class_name,class_name);
+#endif
     if (iter->class_name)
     {
       match = class_name && g_regex_match_simple(iter->class_name, class_name,0,0);
       if (!match)
         continue;
-    }        
+    } 
+#ifdef DEBUG      
+      g_debug ("%s: iter->title = %s, title = %s",__func__,iter->title,title);
+#endif
     if (iter->title)
     {
       match = title && g_regex_match_simple(iter->title, title,0,0);

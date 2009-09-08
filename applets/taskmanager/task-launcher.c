@@ -439,6 +439,7 @@ _is_visible (TaskItem *item)
 /*
 FIXME,  ugly.
 */
+
 static guint   
 _match (TaskItem *item,
         TaskItem *item_to_match)
@@ -507,7 +508,6 @@ _match (TaskItem *item,
    only comparision that will be done.  It's either a match or not on that 
    basis.
    */
-  
   if (priv->special_id && id)
   {
     if (g_strcmp0 (priv->special_id,id) == 0)
