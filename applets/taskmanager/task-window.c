@@ -1182,8 +1182,7 @@ _match (TaskItem *item,
       #ifdef DEBUG
       g_debug ("%s: 70  res_name = %s,  res_name_to_match = %s",__func__,res_name,res_name_to_match);
       #endif 
-      if ( g_strstr_len (res_name, strlen (res_name), res_name_to_match) ||
-           g_strstr_len (res_name_to_match, strlen (res_name_to_match), res_name))
+      if ( g_strcmp0 (res_name, res_name_to_match) == 0)
       {
         g_free (res_name);
         g_free (class_name);
