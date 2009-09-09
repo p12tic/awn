@@ -55,7 +55,7 @@ G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
   TASK_TYPE_MANAGER, \
   TaskManagerPrivate))
 
-//#define DEBUG 1
+#define DEBUG 1
 
 static GQuark win_quark = 0;
 
@@ -1227,12 +1227,10 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
 #endif            
             if (tokens[0])
             {
-              /*
-               May need some adjustments.
-                Possible conversion to a regex
-               */
-              if ( g_regex_match_simple (tokens[0],cmd,G_REGEX_CASELESS,0) 
-                  || g_regex_match_simple (cmd, tokens[0],G_REGEX_CASELESS,0))
+              gchar * exec_base = g_path_get_basename (tokens[0]);
+              gchar * cmd_base  = g_path_get_basename (cmd);
+              
+              if ( g_strcmp0 (exec_base,cmd_base) == 0)
               {
                 launcher = get_launcher (full_path);
                 if (launcher)
@@ -1242,9 +1240,13 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
                   g_free (exec);
                   g_free (lower);
                   g_strfreev (tokens);
+                  g_free (exec_base);
+                  g_free (cmd_base);
                   return TRUE;
                 }
               }
+              g_free (exec_base);
+              g_free (cmd_base);              
               if (tokens)
               {
                 g_strfreev (tokens);

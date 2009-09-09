@@ -1,3 +1,10 @@
+2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Tighten up requirements for matching the Exec
+	with the Command line in the fuzzy desktop 
+	lookup.
+
 2009-09-09  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* awn-settings/Makefile.am:
