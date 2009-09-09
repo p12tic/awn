@@ -184,7 +184,8 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {NULL,"Chatwindow","container.*",".*Buddies.*Chat.*","amsn"},
   {NULL,"Chatwindow","container.*",".*Untitled.*window.*","amsn"},  
   {".*linuxdcpp","Linuxdcpp","linuxdcpp","LinuxDC\\+\\+","dc++"},    
-  {".*thunderbird-bin","Thunderbird-bin","gecko",".*Thunderbird.*","thunderbird"},    
+  {".*thunderbird-bin","Thunderbird-bin","gecko",".*Thunderbird.*","thunderbird"},
+  {NULL,"tvtime","TVWindow","^tvtime","net-tvtime"},  
   {NULL,NULL,NULL,NULL,NULL}
 };
 

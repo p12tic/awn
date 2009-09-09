@@ -1,5 +1,10 @@
 2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/util.c:
+	Special case desktop lookup for tvtime
+
+2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-window.c:
 	When comparing res names use g_strcmp0 not g_strstrlen.
 
