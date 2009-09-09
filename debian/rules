@@ -19,7 +19,7 @@ DEB_CONFIGURE_EXTRA_FLAGS += 	--disable-pymod-checks \
 DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,-z,defs -Wl,--as-needed"
 
 DEB_INSTALL_MANPAGES_avant-window-navigator-trunk := debian/avant-window-navigator.1
-DEB_INSTALL_MANPAGES_awn-settings-trunk := debian/awn-settings.1 debian/awn-launcher-editor.1
+DEB_INSTALL_MANPAGES_awn-settings-trunk := debian/awn-settings.1
 
 DEB_DH_MAKESHLIBS_ARGS_libawn0-trunk += -V"libawn0-trunk (>> 0.3.3)"
 DEB_DH_MAKESHLIBS_ARGS_avant-window-navigator-trunk += -n

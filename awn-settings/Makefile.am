@@ -6,11 +6,10 @@ pyfiles_DATA = \
 	awnDefs.py		\
 	awnSettings.py		\
 	awnSettingsHelper.py	\
-	awnLauncherEditor.py		
+	$(NULL)
 pyfilesdir = $(pkgdatadir)/awn-settings
 
 ui_DATA = \
-	launcher-editor.ui \
 	awn-settings.ui \
 	$(NULL)
 
@@ -42,11 +41,9 @@ update-icon-cache:
 install-exec-local:
 	test -e "$(DESTDIR)$(bindir)" || mkdir -p "$(DESTDIR)$(bindir)"
 	$(INSTALL) -m 755 awnSettings.py "$(DESTDIR)$(bindir)/awn-settings"
-	$(INSTALL) -m 755 awn-launcher-editor "$(DESTDIR)$(bindir)"
 
 uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-settings
-	rm -f $(DESTDIR)$(bindir)/awn-launcher-editor
 
 EXTRA_DIST +=			\
 	$(ui_DATA)		\

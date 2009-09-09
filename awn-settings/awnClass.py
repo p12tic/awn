@@ -39,7 +39,8 @@ except Exception, e:
 from xdg.DesktopEntry import DesktopEntry
 
 import awnDefs as defs
-from awnLauncherEditor import awnLauncherEditor
+from desktopagnostic import vfs
+from desktopagnostic.gtk import LauncherEditorDialog
 import tarfile
 
 from bzrlib import branch
@@ -1140,33 +1141,51 @@ class awnLauncher(awnBzr):
     #   Alacarte Menu Editor - Simple fd.o Compliant Menu Editor
     #   Copyright (C) 2006  Travis Watkins
     #   Edited by Ryan Rushton
+    
+    def create_unique_launcher_file(self):
+        path = os.path.join(defs.HOME_LAUNCHERS_DIR,
+                            self.getUniqueFileId('awn_launcher', '.desktop'))
+        return vfs.File.for_path(path)
 
     def edit(self, button):
         selection = self.treeview_launchers.get_selection()
         (model, iter) = selection.get_selected()
-        uri = model.get_value(iter, 2)
-        editor = awnLauncherEditor(uri, model, self)
-        editor.run()
+        path = model.get_value(iter, 2)
+        vfile = vfs.File.for_path(path)
+        if vfile.is_writable():
+            output = None
+        else:
+            output = self.create_unique_launcher_file()
+        editor = LauncherEditorDialog(vfile, None)
+        editor.show_all()
+        response = editor.run()
+        if response == gtk.RESPONSE_APPLY and output is not None:
+            paths = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST)
+            idx = paths.index(path)
+            paths[idx] = output.props.path
+            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, paths)
+            self.refresh_tree(paths, model)
 
     def add(self, button):
-        file_path = os.path.join(defs.HOME_LAUNCHERS_DIR, self.getUniqueFileId('awn_launcher', '.desktop'))
         selection = self.treeview_launchers.get_selection()
         (model, iter) = selection.get_selected()
-        editor = awnLauncherEditor(file_path, model, self)
+        vfile = self.create_unique_launcher_file()
+        editor = LauncherEditorDialog(vfile, None)
+        editor.show_all()
         editor.run()
 
     def remove(self, button):
         selection = self.treeview_launchers.get_selection()
         (model, iter) = selection.get_selected()
-        uri = model.get_value(iter, 2)
+        path = model.get_value(iter, 2)
         # TODO: don't check if it exists, perhaps it's invalid
-        if os.path.exists(uri):
-            uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST)
-            uris.remove(uri)
-            if uri.startswith(defs.HOME_LAUNCHERS_DIR):
-                os.remove(uri)
-            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, uris)
-            self.refresh_tree(uris, model)
+        if os.path.exists(path):
+            paths = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST)
+            path.remove(path)
+            if path.startswith(defs.HOME_LAUNCHERS_DIR):
+                os.remove(path)
+            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, paths)
+            self.refresh_tree(paths, model)
 
     def getUniqueFileId(self, name, extension):
         append = 0

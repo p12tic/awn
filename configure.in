@@ -202,7 +202,6 @@ applets/taskmanager/Makefile
 applets/taskmanager/taskmanager.desktop.in
 awn.pc
 awn-settings/Makefile
-awn-settings/awn-launcher-editor
 awn-settings/awnDefs.py
 awn-settings/awnSettings.py
 bindings/python/Makefile

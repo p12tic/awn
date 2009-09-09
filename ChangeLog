@@ -1,5 +1,19 @@
 2009-09-09  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* awn-settings/Makefile.am:
+	* awn-settings/awn-launcher-editor.in (removed):
+	* awn-settings/awnClass.py:
+	* awn-settings/awnLauncherEditor.py (removed):
+	* awn-settings/launcher-editor.ui (removed):
+	* configure.in:
+	* debian/awn-launcher-editor.1 (removed):
+	* debian/awn-settings-trunk.install:
+	* debian/rules:
+	Replace awn-launcher-editor with the libdesktop-agnostic
+	equivalent.
+
+2009-09-09  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/python/awn.defs:
 	* bindings/python/awn.override:
 	Add bindings for awn.applet.create_about_item*().
