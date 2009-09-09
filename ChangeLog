@@ -1,5 +1,10 @@
 2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/util.c:
+	Input some info of OO Math and Base.
+
+2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
   	* applets/taskmanager/util.c:
   	* applets/taskmanager/util.h:

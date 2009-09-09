@@ -86,6 +86,8 @@ static DesktopMatch desktop_regexes[] =
   {".*ooffice.*-draw.*",".*OpenOffice.*",NULL,"OpenOffice-Draw"},
   {".*ooffice.*-impress.*",".*OpenOffice.*",NULL,"OpenOffice-Impress"},
   {".*ooffice.*-calc.*",".*OpenOffice.*",NULL,"OpenOffice-Calc"},
+  {".*ooffice.*-math.*",".*OpenOffice.*",NULL,"OpenOffice-Math"},
+  {".*ooffice.*-base.*",".*OpenOffice.*",NULL,"OpenOffice-Base"},  
   {".*amsn.*","aMSN",".*amsn.*desktop.*","aMSN"},
   {".*prism-google-calendar",".*Google.*Calendar.*","prism-google-calendar","prism-google-calendar"},
   {".*prism-google-analytics",".*Google.*Analytics.*","prism-google-analytics","prism-google-analytics"},
@@ -114,6 +116,9 @@ static  WindowMatch window_regexes[] =
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","OpenOffice-Draw"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","OpenOffice-Impress"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","OpenOffice-Calc"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Math.*","OpenOffice-Math"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Base.*","OpenOffice-Base"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*","^Database.*Wizard$","OpenOffice-Base"},      
   {NULL,"Amsn","amsn",".*aMSN.*","aMSN"},
   {NULL,"Chatwindow","container.*",".*Buddies.*Chat.*","aMSN"},
   {NULL,"Chatwindow","container.*",".*Untitled.*[wW]indow.*","aMSN"},  
@@ -160,12 +165,18 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","openoffice.org-draw"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","openoffice.org-impress"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","openoffice.org-calc"},
-
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Math.*","openoffice.org-math"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Base.*","openoffice.org-base"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*","^Database.*Wizard$","openoffice.org-base"},
+  
     /*Ubuntu*/
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*","ooo-writer"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","ooo-draw"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","ooo-impress"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","ooo-calc"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Math.*","ooo-math"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Base.*","ooo-base"},  
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*","^Database.*Wizard$","ooo-base"},
   
   {".*gimp.*",".*Gimp.*",".*gimp.*",".*GNU.*Image.*Manipulation.*Program.*","gimp"},
   {".*system-config-printer.*applet.*py.*",".*Applet.*py.*",".*applet.*",".*Print.*Status.*","redhat-manage-print-jobs"},  
