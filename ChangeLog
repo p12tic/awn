@@ -1,3 +1,9 @@
+2009-09-09  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Add bindings for awn.applet.create_about_item*().
+
 2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:

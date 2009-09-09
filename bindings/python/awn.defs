@@ -138,6 +138,18 @@
 
 ;; Enumerations and flags ...
 
+(define-enum AppletLicense
+  (in-module "Awn")
+  (c-name "AwnAppletLicense")
+  (gtype-id "AWN_TYPE_APPLET_LICENSE")
+  (values
+    '("gplv2" "AWN_APPLET_LICENSE_GPLV2")
+    '("gplv3" "AWN_APPLET_LICENSE_GPLV3")
+    '("lgplv2-1" "AWN_APPLET_LICENSE_LGPLV2_1")
+    '("lgplv3" "AWN_APPLET_LICENSE_LGPLV3")
+  )
+)
+
 (define-flags CairoRoundCorners
   (in-module "Awn")
   (c-name "AwnCairoRoundCorners")
@@ -349,6 +361,36 @@
 (define-function create_pref_item
   (c-name "awn_applet_create_pref_item")
   (return-type "GtkWidget*")
+)
+
+(define-method create_about_item
+  (of-object "AwnApplet")
+  (c-name "awn_applet_create_about_item")
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "copyright")
+    '("AwnAppletLicense" "license")
+    '("const-gchar*" "version")
+    '("const-gchar*" "comments")
+    '("const-gchar*" "website")
+    '("const-gchar*" "website_label")
+    '("const-gchar*" "icon_name")
+    '("const-gchar*" "translator_credits")
+    '("GStrv" "authors")
+    '("GStrv" "artists")
+    '("GStrv" "documenters")
+  )
+)
+
+(define-method create_about_item_simple
+  (of-object "AwnApplet")
+  (c-name "awn_applet_create_about_item_simple")
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "copyright")
+    '("AwnAppletLicense" "license")
+    '("const-gchar*" "version")
+  )
 )
 
 ;; From awn-applet-simple.h
