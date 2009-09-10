@@ -2162,6 +2162,10 @@ task_manager_check_for_intersection (TaskManager * manager,
     {
       continue;
     }
+    if ( wnck_window_get_window_type (iter->data) == WNCK_WINDOW_DESKTOP )
+    {
+      continue;
+    }    
     /*
      It may be a good idea to go the same route as we go with the 
      panel to get the GdkRectangle.  But in practice it's _probably_
