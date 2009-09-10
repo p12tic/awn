@@ -1,8 +1,15 @@
 2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/util.c:
+	disable some debugs.
+
+2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/util.c:
 	Fix for situation where a window that is demanding
 	attention is closed without becoming active.
+	Addition to the Thunderbird special case data.
 
 2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
 

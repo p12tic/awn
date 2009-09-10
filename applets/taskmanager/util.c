@@ -320,7 +320,6 @@ get_special_id_from_window_data (gchar * cmd, gchar *res_name, gchar * class_nam
   return NULL;
 }
 
-#define DEBUG
 GSList *
 get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, gchar * class_name,const gchar *title)
 {
@@ -384,7 +383,7 @@ get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, gchar * clas
   }
   return result;
 }
-#undef DEBUG
+
 gboolean
 get_special_wait_from_window_data (gchar *res_name, gchar * class_name,const gchar *title)
 {
