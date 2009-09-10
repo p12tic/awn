@@ -55,7 +55,7 @@ G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
   TASK_TYPE_MANAGER, \
   TaskManagerPrivate))
 
-#define DEBUG 1
+//#define DEBUG 1
 
 static GQuark win_quark = 0;
 
