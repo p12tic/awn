@@ -12,11 +12,9 @@ pyawn_PYTHON = __init__.py
 INCLUDES = \
 	$(PYTHON_CPPFLAGS) \
 	$(PYGTK_CFLAGS) \
-	$(PYCAIRO_CFLAGS) \
 	$(AWN_CFLAGS) \
 	-I$(top_srcdir) \
 	-I$(top_builddir)/libawn \
-	-DHAVE_PYCAIRO \
 	$(NULL)
 
 # awn python extensions
@@ -37,7 +35,6 @@ awn_la_LIBADD = \
 	$(PYTHON_EXTRA_LIBS) \
 	$(PYTHON_EXTRA_LDFLAGS) \
 	$(PYGTK_LIBS) \
-	$(PYCAIRO_LIBS) \
 	$(AWN_LIBS) \
 	$(top_builddir)/libawn/libawn.la \
 	$(NULL)

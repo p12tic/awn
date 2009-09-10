@@ -43,7 +43,8 @@ AC_PYTHON_DEVEL
 dnl ==============================================
 dnl PyGTK
 dnl ==============================================
-PKG_CHECK_MODULES(PYGTK, gtk+-2.0 pygtk-2.0 >= pygtk_required_version)
+
+PKG_CHECK_MODULES(PYGTK, gtk+-2.0 pycairo >= pycairo_required_version pygtk-2.0 >= pygtk_required_version)
 AC_SUBST(PYGTK_CFLAGS)
 AC_PATH_PROGS(PYG_CODEGEN, [pygobject-codegen-2.0 pygtk-codegen-2.0], no)
 if test "x$PY_CODEGEN" = "xno"; then
@@ -54,12 +55,6 @@ AC_MSG_CHECKING(for pygtk defs)
 PYGTK_DEFSDIR=`$PKG_CONFIG --variable=defsdir pygtk-2.0`
 AC_SUBST(PYGTK_DEFSDIR)
 AC_MSG_RESULT($PYGTK_DEFSDIR)
-
-PKG_CHECK_MODULES(PYCAIRO, pycairo >= pycairo_required_version)
-AC_SUBST(PYCAIRO_CFLAGS)
-AC_SUBST(PYCAIRO_LIBS)
-PYGTK_CODEGEN_DEFINES="-DHAVE_PYCAIRO $PYGTK_CODEGEN_DEFINES";
-AC_DEFINE([HAVE_PYCAIRO], [1], [Define to 1 if pycairo is available])
 
 dnl ==============================================
 dnl Vala support
