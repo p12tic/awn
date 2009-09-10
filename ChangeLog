@@ -1,6 +1,12 @@
 2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Fix for situation where a window that is demanding
+	attention is closed without becoming active.
+
+2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	In the intersection check code... check for 
 	DESKTOP type while interating through application
 	windows (nautilus can be the desktop)

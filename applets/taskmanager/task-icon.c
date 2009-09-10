@@ -243,7 +243,8 @@ static gint     task_icon_count_require_attention (TaskIcon *icon);
 static void     task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item);
 
 static void     theme_changed_cb (GtkIconTheme *icon_theme,TaskIcon * icon);
-
+static void     window_closed_cb (WnckScreen *screen,WnckWindow *window,
+                                                        TaskIcon * icon);
 /* GObject stuff */
 static void
 task_icon_get_property (GObject    *object,
@@ -388,7 +389,8 @@ task_icon_finalize (GObject *object)
                           G_CALLBACK (task_icon_active_window_changed), object);
   g_signal_handlers_disconnect_by_func (awn_themed_icon_get_awn_theme (AWN_THEMED_ICON(object)),
                           G_CALLBACK (theme_changed_cb),object);
-  
+  g_signal_handlers_disconnect_by_func (wnck_screen_get_default(),
+                          G_CALLBACK(window_closed_cb),object);  
   G_OBJECT_CLASS (task_icon_parent_class)->finalize (object);
 }
 
@@ -447,6 +449,8 @@ task_icon_constructed (GObject *object)
   g_signal_connect(G_OBJECT(awn_themed_icon_get_awn_theme(AWN_THEMED_ICON(object))),
                    "changed",
                    G_CALLBACK(theme_changed_cb),object);
+  g_signal_connect (wnck_screen_get_default(),"window-closed",
+                    G_CALLBACK(window_closed_cb),object);
   
   priv->client = awn_config_get_default_for_applet (priv->applet, &error);
 
@@ -799,7 +803,7 @@ task_icon_init (TaskIcon *icon)
   gtk_drag_dest_add_text_targets (GTK_WIDGET (icon));
   g_signal_connect (G_OBJECT (icon), "drag-failed",
                     G_CALLBACK (task_icon_source_drag_fail), NULL);
-
+  
   /* D&D support dragging itself */
   gtk_drag_source_set (GTK_WIDGET (icon),
                        GDK_BUTTON1_MASK,
@@ -1669,7 +1673,8 @@ task_icon_append_item (TaskIcon      *icon,
                       G_CALLBACK (on_window_needs_attention_changed), icon);
     g_signal_connect (window, "progress-changed",
                       G_CALLBACK (on_window_progress_changed), icon);
-
+    g_signal_connect (window, "progress-changed",
+                      G_CALLBACK (on_window_progress_changed), icon);
     task_icon_schedule_geometry_refresh (icon);
   }
   task_icon_search_main_item (icon,item);
@@ -2140,6 +2145,34 @@ task_icon_button_release_event (GtkWidget      *widget,
 
   return FALSE;
 }
+
+static void
+window_closed_cb (WnckScreen *screen,WnckWindow *window,TaskIcon * icon)
+{
+  TaskWindow * taskwin = NULL;
+  GSList * iter;
+  TaskIconPrivate *priv;
+  
+  g_return_if_fail (TASK_IS_ICON (icon));
+  priv = icon->priv;  
+  for (iter = priv->items; iter; iter=iter->next)
+  {
+    if (!TASK_IS_WINDOW(iter->data))
+    {
+      continue;
+    }
+    if (task_window_get_window (iter->data) == window)
+    {
+      taskwin = iter->data;
+      break;
+    }
+  }
+  if (taskwin)
+  {
+    on_window_needs_attention_changed (taskwin,FALSE,icon);
+  }
+}
+
 
 static void 
 size_changed_cb(AwnApplet *app, guint size, TaskIcon *icon)
