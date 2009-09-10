@@ -241,6 +241,7 @@ static void     task_icon_active_window_changed (WnckScreen *screen,
 static void     size_changed_cb(AwnApplet *app, guint size, TaskIcon *icon);
 static gint     task_icon_count_require_attention (TaskIcon *icon);
 static void     task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item);
+static void     task_icon_set_draggable_state (TaskIcon *icon, gboolean draggable);
 
 static void     theme_changed_cb (GtkIconTheme *icon_theme,TaskIcon * icon);
 static void     window_closed_cb (WnckScreen *screen,WnckWindow *window,
@@ -494,6 +495,12 @@ task_icon_constructed (GObject *object)
 
   if (!do_bind_property (priv->client, "desktop_copy", object,
                          "desktop_copy"))
+  {
+    return;
+  }
+
+  if (!do_bind_property (priv->client, "drag_and_drop", object,
+                         "drag_and_drop"))
   {
     return;
   }
@@ -803,12 +810,7 @@ task_icon_init (TaskIcon *icon)
   gtk_drag_dest_add_text_targets (GTK_WIDGET (icon));
   g_signal_connect (G_OBJECT (icon), "drag-failed",
                     G_CALLBACK (task_icon_source_drag_fail), NULL);
-  
-  /* D&D support dragging itself */
-  gtk_drag_source_set (GTK_WIDGET (icon),
-                       GDK_BUTTON1_MASK,
-                       task_icon_type, n_task_icon_type,
-                       GDK_ACTION_MOVE);
+
 }
 
 /**
@@ -1792,6 +1794,7 @@ task_icon_long_press (TaskIcon * icon,gpointer null)
 #endif
   
   gtk_widget_show (priv->dialog);
+  task_icon_set_draggable_state (icon, FALSE);
   gtk_widget_grab_focus (priv->dialog);
   priv->long_press = TRUE;
 }
@@ -1964,6 +1967,7 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
   /*is the dialog open?  if so then it should be closed on icon click*/  
     
     gtk_widget_hide (priv->dialog);
+    task_icon_set_draggable_state (icon, priv->draggable);    
   }  
   else if (priv->shown_items == 1)
   {
@@ -2087,10 +2091,12 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
     if (gtk_widget_get_visible (priv->dialog) )
     {
       gtk_widget_hide (priv->dialog);
+      task_icon_set_draggable_state (icon, priv->draggable);
     }
     else
     {
       gtk_widget_show (priv->dialog); 
+      task_icon_set_draggable_state (icon, FALSE);      
       gtk_widget_grab_focus (priv->dialog);      
     }
   }
@@ -2405,7 +2411,7 @@ task_icon_button_press_event (GtkWidget      *widget,
                       NULL, NULL, event->button, event->time);
       
       g_signal_connect_swapped (priv->menu,"deactivate", 
-                                G_CALLBACK(gtk_widget_hide),priv->dialog);
+                                G_CALLBACK(gtk_widget_hide),priv->dialog);      
     }
     return TRUE;
   }
@@ -2426,6 +2432,7 @@ task_icon_dialog_unfocus (GtkWidget      *widget,
   if (!priv->inhibit_focus_loss)
   {
     gtk_widget_hide (priv->dialog);
+    task_icon_set_draggable_state (TASK_ICON(widget), priv->draggable);    
   }
   return FALSE;
 }
@@ -2441,13 +2448,9 @@ task_icon_get_dialog (TaskIcon *icon)
   
   return priv->dialog;
 }
-/*
- * Drag and Drop code
- * - code to drop things on icons
- * - code to reorder icons through dragging
- */
-void
-task_icon_set_draggable (TaskIcon *icon, gboolean draggable)
+
+static void
+task_icon_set_draggable_state (TaskIcon *icon, gboolean draggable)
 {
   TaskIconPrivate *priv;
 #ifdef DEBUG
@@ -2455,8 +2458,6 @@ task_icon_set_draggable (TaskIcon *icon, gboolean draggable)
 #endif
   g_return_if_fail (TASK_IS_ICON (icon));
   priv = icon->priv;
-
-  priv->draggable = draggable;
 
   if(draggable)
   {
@@ -2471,6 +2472,28 @@ task_icon_set_draggable (TaskIcon *icon, gboolean draggable)
   }
   //g_debug("draggable:%d", draggable);
 }
+
+/*
+ * Drag and Drop code
+ * - code to drop things on icons
+ * - code to reorder icons through dragging
+ */
+
+void
+task_icon_set_draggable (TaskIcon *icon, gboolean draggable)
+{
+  TaskIconPrivate *priv;
+#ifdef DEBUG
+  g_debug ("%s",__func__);
+#endif
+  g_return_if_fail (TASK_IS_ICON (icon));
+  priv = icon->priv;
+
+  priv->draggable = draggable;
+
+  task_icon_set_draggable_state (icon,draggable);
+}
+
 
 /**
  * TODO: h4writer - second stage
@@ -2541,7 +2564,8 @@ task_icon_source_drag_begin (GtkWidget      *widget,
   
   if (GTK_WIDGET_VISIBLE(priv->dialog))
   {
-    gtk_widget_hide (priv->dialog);    
+    gtk_widget_hide (priv->dialog);
+    task_icon_set_draggable_state (TASK_ICON(widget), priv->draggable);
   }
 
   settings = task_settings_get_default ();
