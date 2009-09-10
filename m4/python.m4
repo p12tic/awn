@@ -1,4 +1,4 @@
-dnl AC_PYTHON_DEVEL([version])
+dnl AC_PYTHON_DEVEL()
 dnl 
 dnl Originally copied from http://autoconf-archive.cryp.to/ac_python_devel.html
 dnl (Original last modified 2007-07-31)
@@ -37,67 +37,7 @@ dnl modified version of the Autoconf Macro, you may extend this special
 dnl exception to the GPL to apply to your modified version as well.
 dnl
 AC_DEFUN([AC_PYTHON_DEVEL],[
-        #
-        # Allow the use of a (user set) custom python version
-        #
-        AC_ARG_VAR([PYTHON_VERSION],[The installed Python
-                version to use, for example '2.3'. This string
-                will be appended to the Python interpreter
-                canonical name.])
-
-        AC_PATH_PROG([PYTHON],[python[$PYTHON_VERSION]])
-        if test -z "$PYTHON"; then
-           AC_MSG_ERROR([Cannot find python$PYTHON_VERSION in your system path])
-           PYTHON_VERSION=""
-        fi
-
-        #
-        # Check for a version of Python >= 2.1.0
-        #
-        AC_MSG_CHECKING([for a version of Python >= 2.1.0])
-        ac_supports_python_ver=`$PYTHON -c "import sys, string; \
-                ver = string.split(sys.version)[[0]]; \
-                print ver >= '2.1.0'"`
-        if test "$ac_supports_python_ver" != "True"; then
-                if test -z "$PYTHON_NOVERSIONCHECK"; then
-                        AC_MSG_RESULT([no])
-                        AC_MSG_FAILURE([
-This version of the AC@&t@_PYTHON_DEVEL macro
-doesn't work properly with versions of Python before
-2.1.0. You may need to re-run configure, setting the
-variables PYTHON_CPPFLAGS, PYTHON_LDFLAGS, PYTHON_SITE_PKG,
-PYTHON_EXTRA_LIBS and PYTHON_EXTRA_LDFLAGS by hand.
-Moreover, to disable this check, set PYTHON_NOVERSIONCHECK
-to something else than an empty string.
-])
-                else
-                        AC_MSG_RESULT([skip at user request])
-                fi
-        else
-                AC_MSG_RESULT([yes])
-        fi
-
-        #
-        # if the macro parameter ``version'' is set, honour it
-        #
-        if test -n "$1"; then
-                AC_MSG_CHECKING([for a version of Python >= $1])
-                ac_supports_python_ver=`$PYTHON -c "import sys, string; \
-                        ver = string.split(sys.version)[[0]]; \
-                        print ver >= '$1'"`
-                if test "$ac_supports_python_ver" = "True"; then
-                   AC_MSG_RESULT([yes])
-                else
-                        AC_MSG_RESULT([no])
-                        AC_MSG_ERROR([this package requires Python $1.
-If you have it installed, but it isn't the default Python
-interpreter in your system path, please pass the PYTHON_VERSION
-variable to configure. See ``configure --help'' for reference.
-])
-                        PYTHON_VERSION=""
-                fi
-        fi
-
+        AC_REQUIRE([AM_PATH_PYTHON])
         #
         # Check if you have distutils, else fail
         #
@@ -110,7 +50,6 @@ variable to configure. See ``configure --help'' for reference.
                 AC_MSG_ERROR([cannot import Python module "distutils".
 Please check your Python installation. The error was:
 $ac_distutils_result])
-                PYTHON_VERSION=""
         fi
 
         #
@@ -133,50 +72,13 @@ $ac_distutils_result])
         #
         AC_MSG_CHECKING([for Python library path])
         if test -z "$PYTHON_LDFLAGS"; then
-                # (makes two attempts to ensure we've got a version number
-                # from the interpreter)
-                py_version=`$PYTHON -c "from distutils.sysconfig import *; \
-                        from string import join; \
-                        print join(get_config_vars('VERSION'))"`
-                if test "$py_version" == "[None]"; then
-                        if test -n "$PYTHON_VERSION"; then
-                                py_version=$PYTHON_VERSION
-                        else
-                                py_version=`$PYTHON -c "import sys; \
-                                        print sys.version[[:3]]"`
-                        fi
-                fi
-
                 PYTHON_LDFLAGS=`$PYTHON -c "from distutils.sysconfig import *; \
                         from string import join; \
                         print '-L' + get_python_lib(0,1), \
-                        '-lpython';"`$py_version
+                        '-lpython';"`$am_cv_python_version
         fi
         AC_MSG_RESULT([$PYTHON_LDFLAGS])
         AC_SUBST([PYTHON_LDFLAGS])
-
-        #
-        # Check for the site packages
-        #
-        AC_MSG_CHECKING([for Python site-packages path])
-        AC_SUBST([PYTHON_EXEC_PREFIX], ['${exec_prefix}'])
-        if test -z "$PYTHON_SITE_PKG"; then
-                PYTHON_SITE_PKG=`$PYTHON -c "import distutils.sysconfig; \
-                        print distutils.sysconfig.get_python_lib(0,0,prefix='${PYTHON_EXEC_PREFIX}');"`
-        fi
-        AC_MSG_RESULT([$PYTHON_SITE_PKG])
-        AC_SUBST([PYTHON_SITE_PKG])
-
-        #
-        # Check for the platform-specific site packages directory
-        #
-        AC_MSG_CHECKING([for Python platform-specific site-packages path])
-        if test -z "$PYTHON_PLATFORM_PKG"; then
-                PYTHON_PLATFORM_PKG=`$PYTHON -c "import distutils.sysconfig; \
-                        print distutils.sysconfig.get_python_lib(1,0,prefix='${PYTHON_EXEC_PREFIX}');"`
-        fi
-        AC_MSG_RESULT([$PYTHON_PLATFORM_PKG])
-        AC_SUBST([PYTHON_PLATFORM_PKG])
 
         #
         # libraries which must be linked in when embedding
@@ -230,7 +132,6 @@ $ac_distutils_result])
    for your distribution.  The exact name of this package varies among them.
   ============================================================================
            ])
-          PYTHON_VERSION=""
         fi
         AC_LANG_POP
         # turn back to default flags
@@ -245,7 +146,7 @@ $ac_distutils_result])
 dnl AM_CHECK_PYMOD(MODNAME [,SYMBOL [,ACTION-IF-FOUND [,ACTION-IF-NOT-FOUND]]])
 dnl Check if a module containing a given symbol is visible to python.
 AC_DEFUN([AM_CHECK_PYMOD],
-[AC_REQUIRE([AC_PYTHON_DEVEL])
+[AC_REQUIRE([AM_PATH_PYTHON])
 py_mod_var=`echo $1['_']$2 | sed 'y%./+-%__p_%'`
 AC_MSG_CHECKING(for ifelse([$2],[],,[$2 in ])python module $1)
 AC_CACHE_VAL(py_cv_mod_$py_mod_var, [

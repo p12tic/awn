@@ -1,3 +1,11 @@
+2009-09-10  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/Makefile.am:
+	* configure.in:
+	* m4/python.m4:
+	Use AM_PATH_PYTHON for the install directories, as Ubuntu does some
+	non-standard install magic.
+
 2009-09-10  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini:

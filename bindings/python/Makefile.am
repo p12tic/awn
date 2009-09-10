@@ -6,7 +6,7 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 NULL = 
 
 # awn python scripts
-pyawndir = $(PYTHON_PLATFORM_PKG)/awn
+pyawndir = $(pyexecdir)/awn
 pyawn_PYTHON = __init__.py
 
 INCLUDES = \
@@ -20,7 +20,7 @@ INCLUDES = \
 	$(NULL)
 
 # awn python extensions
-pyawnexecdir = $(PYTHON_PLATFORM_PKG)/awn
+pyawnexecdir = $(pyexecdir)/awn
 pyawnexec_LTLIBRARIES = awn.la
 
 common_ldflags = -module -avoid-version

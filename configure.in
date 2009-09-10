@@ -37,10 +37,8 @@ dnl ==============================================
 dnl Python support
 dnl ==============================================
 
-AC_PYTHON_DEVEL(2.3.5)
-
-PLATFORM=`$PYTHON -c "from distutils import util; print util.get_platform()"`
-AC_SUBST(PLATFORM)
+AM_PATH_PYTHON(2.5)
+AC_PYTHON_DEVEL
 
 dnl ==============================================
 dnl PyGTK
@@ -175,8 +173,6 @@ dnl ==============================================
 dnl Miscellaneous
 dnl ==============================================
 
-AS_AC_EXPAND([PY_SITE_PKG], [$PYTHON_SITE_PKG])
-AS_AC_EXPAND([PY_PLAT_PKG], [$PYTHON_PLATFORM_PKG])
 AS_AC_EXPAND([PKGDATADIR], [$datadir/$PACKAGE_NAME])
 AS_AC_EXPAND([DATADIR], [$datadir])
 AS_AC_EXPAND([LIBDIR], [$libdir])
