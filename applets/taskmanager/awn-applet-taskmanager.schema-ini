@@ -20,7 +20,7 @@ description = Number of seconds to inhibit autohide when a application requests 
 
 [DEFAULT/disable_icon_changes]
 type = boolean
-default = false
+default = true
 description = Disables changing of panel icon when app indicates icon change.
 
 [DEFAULT/drag_and_drop]
@@ -40,7 +40,7 @@ description = Desktop copy behaviour on drag and drop of desktop files. 0.. Copy
 
 [DEFAULT/enable_long_press]
 type = boolean
-default = true
+default = false
 description = Enable long press to open Dialog.
 
 [DEFAULT/grouping]

@@ -1,3 +1,10 @@
+2009-09-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
+	Changed defaults for taskmanager enable_long_press and 
+	disable_config_keys configuration keys to false and true
+	respectively.
+	
 2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:
