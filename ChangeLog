@@ -1,5 +1,11 @@
 2009-09-10  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Fix an incorrect argument introduced in the the last dnd
+	commit.
+
+2009-09-10  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Reflect changes in launcher_paths order in bar.
 

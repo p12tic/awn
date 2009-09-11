@@ -2432,7 +2432,7 @@ task_icon_dialog_unfocus (GtkWidget      *widget,
   if (!priv->inhibit_focus_loss)
   {
     gtk_widget_hide (priv->dialog);
-    task_icon_set_draggable_state (TASK_ICON(widget), priv->draggable);    
+    task_icon_set_draggable_state (icon, priv->draggable);    
   }
   return FALSE;
 }
