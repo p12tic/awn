@@ -1214,6 +1214,16 @@
   )
 )
 
+(define-method set_info_append
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_set_info_append")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "state")
+    '("const-gchar*" "icon_name")
+  )
+)
+
 (define-method set_info_simple
   (of-object "AwnThemedIcon")
   (c-name "awn_themed_icon_set_info_simple")
