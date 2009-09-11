@@ -1,5 +1,10 @@
 2009-09-10  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Reflect changes in launcher_paths order in bar.
+
+2009-09-10  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
         Changed default of taskmanager drag_and_drop config option
 	false.

@@ -1424,9 +1424,11 @@ process_window_opened (WnckWindow    *window,
       match = taskicon;
     }
   }
+#define DEBUG
 #ifdef DEBUG
   g_debug("Matching score: %i, must be bigger then:%i, groups: %i", max_match_score, 99-priv->match_strength, max_match_score > 99-priv->match_strength);
 #endif  
+#undef DEBUG
   if  (match
        &&
        (priv->grouping || (task_icon_count_items(match)==1) ) 
@@ -1770,7 +1772,6 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
-
   /*
    Find launchers in the the launcher list do not yet have a TaskIcon and 
    add them
@@ -1799,7 +1800,16 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
             g_strcmp0 (task_launcher_get_desktop_path (TASK_LAUNCHER (item)),
                        path) == 0)
         {
+          gint cur_pos;
           found = TRUE;
+          cur_pos = g_slist_position (priv->icons,icon_iter);
+          if (cur_pos != (gint)idx)
+          {
+            TaskIcon * icon = icon_iter->data;
+            priv->icons = g_slist_remove_link (priv->icons,icon_iter);
+            priv->icons = g_slist_insert (priv->icons,icon,idx);
+            gtk_box_reorder_child (GTK_BOX (priv->box), GTK_WIDGET(icon), idx);            
+          }
           break;
         }
       }
