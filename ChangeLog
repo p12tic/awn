@@ -1,3 +1,8 @@
+2009-09-12  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Add a couple missing bindings.
+
 2009-09-11  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* debian/python-awn-trunk.install:

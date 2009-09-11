@@ -129,6 +129,20 @@
   (gtype-id "AWN_TYPE_OVERLAY_PIXBUF_FILE")
 )
 
+(define-object OverlayProgress
+  (in-module "Awn")
+  (parent "AwnOverlay")
+  (c-name "AwnOverlayProgress")
+  (gtype-id "AWN_TYPE_OVERLAY_PROGRESS")
+)
+
+(define-object OverlayProgressCircle
+  (in-module "Awn")
+  (parent "AwnOverlayProgress")
+  (c-name "AwnOverlayProgressCircle")
+  (gtype-id "AWN_TYPE_OVERLAY_PROGRESS_CIRCLE")
+)
+
 (define-object Tooltip
   (in-module "Awn")
   (parent "GtkWindow")
@@ -1053,6 +1067,14 @@
   )
 )
 
+;; From awn-overlay-progress-circle.h
+
+(define-function awn_overlay_progress_circle_new
+  (c-name "awn_overlay_progress_circle_new")
+  (is-constructor-of "AwnOverlayProgressCircle")
+  (return-type "AwnOverlayProgressCircle*")
+)
+
 ;; From awn-tooltip.h
 
 (define-function awn_tooltip_get_type
@@ -1221,6 +1243,16 @@
   (parameters
     '("const-gchar*" "state")
     '("const-gchar*" "icon_name")
+  )
+)
+
+(define-method set_applet_info
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_set_applet_info")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "applet_name")
+    '("const-gchar*" "uid")
   )
 )
 
