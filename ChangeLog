@@ -1,3 +1,8 @@
+2009-09-11  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* debian/python-awn-trunk.install:
+	Fix installation of the Python bindings.
+
 2009-09-11  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:
