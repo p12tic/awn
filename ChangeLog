@@ -1,5 +1,12 @@
 2009-09-12  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Make the comparison of the Exec field of the desktop file
+	to the process command line a lot smarter.  Probably won't gain
+	a lot from it in practice bu it is an improvement.
+
+2009-09-12  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/util.c:
 	Special case the nautilus desktop...  there's a lot of variations 
 	on the nautilus desktop file, if the main desktop file is not called

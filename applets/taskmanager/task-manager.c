@@ -1217,42 +1217,69 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
           DesktopAgnosticFDODesktopEntry * desktop = desktop_agnostic_fdo_desktop_entry_new_for_file (file, NULL);
           if (desktop)
           {
+            const gchar * fdo_options[] = {"%f","%F","%u","%U","%d","%D","%n","%N","%i","%c","%k","%v","%m",NULL};
+            const gchar ** i;
+            gchar ** j;
             gchar * exec = desktop_agnostic_fdo_desktop_entry_get_string (desktop, "Exec");
-            tokens = g_strsplit(exec,"%",-1);
-            g_strchomp (tokens[0]);
+            gchar ** exec_tokens;
+            gchar * exec_base;
+            gchar * cmd_base;
+            gchar ** cmd_tokens;
+            
             g_object_unref (desktop);
-#ifdef DEBUG
-            g_debug ("%s:  exec =   %s",__func__,exec);
-            g_debug ("%s:  cmd =   %s",__func__,cmd);            
-#endif            
-            if (tokens[0])
+            for (i=fdo_options; *i;i++)
             {
-              gchar * exec_base = g_path_get_basename (tokens[0]);
-              gchar * cmd_base  = g_path_get_basename (cmd);
-              
-              if ( g_strcmp0 (exec_base,cmd_base) == 0)
+              exec_tokens = g_strsplit (exec,*i,-1);
+              g_free (exec);
+              exec = g_strjoinv ("",exec_tokens);
+              g_strfreev (exec_tokens);
+            }
+            exec_tokens = g_strsplit(exec," ",-1);
+            exec_base = g_path_get_basename (exec_tokens[0]);
+            g_free (exec_tokens[0]);
+            exec_tokens[0] = exec_base;
+            for (j=exec_tokens; *j; j++)
+            {
+              g_strstrip (*j);
+            }
+            g_free (exec);
+            exec = g_strjoinv (".*",exec_tokens);
+            g_strfreev (exec_tokens);
+
+            cmd_tokens = g_strsplit (cmd," ",-1);
+            cmd_base = g_path_get_basename (cmd_tokens[0]);
+            g_free (cmd_tokens[0]);
+            cmd_tokens [0] = cmd_base;
+            for (j = cmd_tokens; *j; j++)
+            {
+              gchar * str = *j;
+              g_strstrip (str);
+              if ( str[0] == '-')
               {
-                launcher = get_launcher (full_path);
-                if (launcher)
-                {
-                  task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
-                  g_regex_unref (desktop_regex);
-                  g_free (exec);
-                  g_free (lower);
-                  g_strfreev (tokens);
-                  g_free (exec_base);
-                  g_free (cmd_base);
-                  return TRUE;
-                }
+                *str = '\0';
               }
-              g_free (exec_base);
-              g_free (cmd_base);              
-              if (tokens)
+            }
+            cmd_base = g_strjoinv (" ",cmd_tokens);
+            g_strfreev (cmd_tokens);
+#ifdef DEBUG            
+            g_debug ("%s:  exec =   '%s'",__func__,exec);
+            g_debug ("%s:  cmd_base =   '%s'",__func__,cmd_base);
+#endif              
+            if ( g_regex_match_simple (exec, cmd,G_REGEX_CASELESS,0) )              
+            {
+              launcher = get_launcher (full_path);
+              if (launcher)
               {
-                g_strfreev (tokens);
+                task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+                g_regex_unref (desktop_regex);
+                g_free (exec);
+                g_free (lower);
+                g_free (cmd_base);
+                return TRUE;
               }
-              g_free (exec);              
-            }            
+            }
+            g_free (cmd_base);              
+            g_free (exec);              
           }
           g_object_unref (file);
           g_free (full_path);
