@@ -188,7 +188,8 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {".*thunderbird.*","Thunderbird-bin","gecko",".*Thunderbird.*","mozilla-thunderbird"},  
   {NULL,"tvtime","TVWindow","^tvtime","net-tvtime"},
   {NULL,"VirtualBox",NULL,".*VirtualBox.*","virtualbox-ose"},
-  {NULL,"VirtualBox",NULL,".*VirtualBox.*","virtualbox"},  
+  {NULL,"VirtualBox",NULL,".*VirtualBox.*","virtualbox"},
+  {NULL,"Nautilus","nautilus",".*File.*Browser.*","nautilus-browser"},    
   {NULL,NULL,NULL,NULL,NULL}
 };
 

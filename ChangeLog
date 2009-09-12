@@ -1,3 +1,11 @@
+2009-09-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Special case the nautilus desktop...  there's a lot of variations 
+	on the nautilus desktop file, if the main desktop file is not called
+	nautilus.desktop then it's not obvious how to lookup the _correct_
+	one.
+
 2009-09-12  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:
