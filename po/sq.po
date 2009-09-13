@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-31 00:56-0700\n"
+"POT-Creation-Date: 2009-09-13 00:11-0700\n"
 "PO-Revision-Date: 2009-01-21 21:10+0000\n"
 "Last-Translator: Ermal Llanaj <ermalipavia@gmail.com>\n"
 "Language-Team: Albanian <sq@li.org>\n"
@@ -27,8 +27,8 @@ msgid "Fills space on the panel in expand mode"
 msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:747
-#: ../applets/taskmanager/task-icon.c:2248
-#: ../applets/taskmanager/task-icon.c:2342
+#: ../applets/taskmanager/task-icon.c:2288
+#: ../applets/taskmanager/task-icon.c:2382
 #, fuzzy
 msgid "Launch"
 msgstr "Ne ngarkim"
@@ -38,7 +38,7 @@ msgstr "Ne ngarkim"
 msgid "Launch %s"
 msgstr "Ne ngarkim"
 
-#: ../applets/taskmanager/task-icon.c:2300
+#: ../applets/taskmanager/task-icon.c:2340
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "Shto ose hiq Fillues"
@@ -60,77 +60,74 @@ msgstr "Duke nisur %s"
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "Menaxho preferencat e Awn, leshuesve, applikacionet dhe temat"
 
-#: ../awn-settings/awnClass.py:194
+#: ../awn-settings/awnClass.py:195
 msgid "Error, a sources.list already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:262
+#: ../awn-settings/awnClass.py:263
 msgid "Error, the path is empty or already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:473
+#: ../awn-settings/awnClass.py:474
 msgid "Error, the desktop file is not for a theme"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:490
+#: ../awn-settings/awnClass.py:491
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:731
+#: ../awn-settings/awnClass.py:732
 msgid "PNG Files"
 msgstr "Dokumentat PNG"
 
-#: ../awn-settings/awnClass.py:795 ../awn-settings/awnClass.py:831
-msgid "Simple"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:796 ../awn-settings/awnClass.py:832
-msgid "Classic"
-msgstr "Klasik"
-
-#: ../awn-settings/awnClass.py:797 ../awn-settings/awnClass.py:833
-msgid "Fade"
-msgstr "Zbehje"
-
-#: ../awn-settings/awnClass.py:798 ../awn-settings/awnClass.py:834
-msgid "Spotlight"
-msgstr "Kendveshtrim"
-
-#: ../awn-settings/awnClass.py:799 ../awn-settings/awnClass.py:835
-msgid "Zoom"
-msgstr "Zmadho"
-
-#: ../awn-settings/awnClass.py:800 ../awn-settings/awnClass.py:836
-msgid "Squish"
-msgstr "Squish"
-
-#: ../awn-settings/awnClass.py:801
-msgid "3D turn"
-msgstr "Rrotullim 3D"
-
-#: ../awn-settings/awnClass.py:802
-msgid "3D turn with spotlight"
-msgstr "Rrotullim 3D me ndricim"
-
-#: ../awn-settings/awnClass.py:803 ../awn-settings/awnClass.py:839
-msgid "Glow"
-msgstr "Ndrico"
-
-#: ../awn-settings/awnClass.py:830 ../awn-settings/awnSettings.py.in:147
+#: ../awn-settings/awnClass.py:810 ../awn-settings/awnClass.py:866
+#: ../awn-settings/awnSettings.py.in:147
 msgid "None"
 msgstr "Asnje"
 
-#: ../awn-settings/awnClass.py:837
+#: ../awn-settings/awnClass.py:811 ../awn-settings/awnClass.py:867
+msgid "Simple"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:812 ../awn-settings/awnClass.py:868
+msgid "Classic"
+msgstr "Klasik"
+
+#: ../awn-settings/awnClass.py:813 ../awn-settings/awnClass.py:869
+msgid "Fade"
+msgstr "Zbehje"
+
+#: ../awn-settings/awnClass.py:814 ../awn-settings/awnClass.py:870
+msgid "Spotlight"
+msgstr "Kendveshtrim"
+
+#: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:871
+msgid "Zoom"
+msgstr "Zmadho"
+
+#: ../awn-settings/awnClass.py:816 ../awn-settings/awnClass.py:872
+msgid "Squish"
+msgstr "Squish"
+
+#: ../awn-settings/awnClass.py:817 ../awn-settings/awnClass.py:873
 msgid "3D Turn"
 msgstr "Rrotullim 3D"
 
-#: ../awn-settings/awnClass.py:838
+#: ../awn-settings/awnClass.py:818 ../awn-settings/awnClass.py:874
 msgid "3D Spotlight Turn"
 msgstr "Rrotullim 3D me ndricim"
 
-#: ../awn-settings/awnClass.py:912
+#: ../awn-settings/awnClass.py:819 ../awn-settings/awnClass.py:875
+msgid "Glow"
+msgstr "Ndrico"
+
+#: ../awn-settings/awnClass.py:876 ../awn-settings/awnSettings.py.in:155
+msgid "Custom"
+msgstr "Personalizuar"
+
+#: ../awn-settings/awnClass.py:959
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
@@ -139,11 +136,11 @@ msgstr ""
 "Krijimi automatik nuk u krye. Ju lutem krijoni manualisht direktorine:\n"
 "%s"
 
-#: ../awn-settings/awnClass.py:922
+#: ../awn-settings/awnClass.py:969
 msgid "Confirm directory creation"
 msgstr "Konfirmo krijimin e direktorise"
 
-#: ../awn-settings/awnClass.py:923
+#: ../awn-settings/awnClass.py:970
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
@@ -152,27 +149,27 @@ msgstr ""
 "Doni te krijohet automatikisht?"
 
 #. must be on one line due to i18n
-#: ../awn-settings/awnClass.py:980
+#: ../awn-settings/awnClass.py:1027
 #, python-format
 msgid ""
 "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
 "installed. It usually comes with librsvg, or a package similarly named."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1005
+#: ../awn-settings/awnClass.py:1052
 msgid "AWN has been successfully refreshed"
 msgstr "AWN u rifreskua me sukses"
 
-#: ../awn-settings/awnClass.py:1011
+#: ../awn-settings/awnClass.py:1058
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "Avant Window Navigator"
 
-#: ../awn-settings/awnClass.py:1029
+#: ../awn-settings/awnClass.py:1076
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr "Panel plotesisht i ndryshueshem per GNOME."
 
-#: ../awn-settings/awnClass.py:1031
+#: ../awn-settings/awnClass.py:1078
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -183,7 +180,7 @@ msgstr ""
 "termat e GNU Licenses Gjenerale Publike nga Free Software Foundation; dhe "
 "versionin 2 te Licenses, ose te versioneve te mevonshme."
 
-#: ../awn-settings/awnClass.py:1033
+#: ../awn-settings/awnClass.py:1080
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -195,7 +192,7 @@ msgstr ""
 "QËLLIME TË VEÇANTA.  Shiko Liçencën Publike të Përgjithshme GNU për hollësi "
 "të mëtejshme."
 
-#: ../awn-settings/awnClass.py:1035
+#: ../awn-settings/awnClass.py:1082
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -204,33 +201,6 @@ msgstr ""
 "Ju duhet te keni marre nje kopje te  Liçencës Publike të Përgjithshme GNU me "
 "kete program; nese jo, shkruajini Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
-
-#: ../awn-settings/awnLauncherEditor.py:144
-msgid "Select an Executable File"
-msgstr "Zgjidh nje file te Ekzekutueshem"
-
-#: ../awn-settings/awnLauncherEditor.py:162
-#, python-format
-msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr "Shkruani nje emer per leshuesin ne fushen \"%s\""
-
-#: ../awn-settings/awnLauncherEditor.py:162
-msgid "<b>Name:</b>"
-msgstr "<b>Emri:</b>"
-
-#: ../awn-settings/awnLauncherEditor.py:165
-#, python-format
-msgid "Please provide a program to launch in the \"%s\" field."
-msgstr "Mundeso nje program per te leshuar ne fushen \"%s\""
-
-#: ../awn-settings/awnLauncherEditor.py:165
-msgid "<b>Command:</b>"
-msgstr "<b>Komanda:</b>"
-
-#: ../awn-settings/awnLauncherEditor.py:177
-#, python-format
-msgid "Couldn't save the launcher. Error: %s"
-msgstr "Nuk mund te ruhej leshuesi. Gabim: %s"
 
 #: ../awn-settings/awnSettings.py.in:66
 msgid "Awn Settings can't be run as root."
@@ -292,10 +262,6 @@ msgstr "Fshih automatikisht barin kur nuk eshte ne perdorim"
 msgid "Transparency"
 msgstr "Transparenca:"
 
-#: ../awn-settings/awnSettings.py.in:155
-msgid "Custom"
-msgstr "Personalizuar"
-
 #: ../bindings/python/__init__.py:117
 #, python-format
 msgid ""
@@ -322,20 +288,24 @@ msgstr ""
 msgid "A dock-like window navigator."
 msgstr "Nje panel navigues dritaresh."
 
-#: ../libawn/awn-applet.c:1000 ../src/awn-panel.c:583
+#: ../libawn/awn-applet.c:1002 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr "Preferencat e Panelit"
 
-#: ../libawn/awn-themed-icon.c:1878
+#: ../libawn/awn-themed-icon.c:1905
+msgid "Icons"
+msgstr ""
+
+#: ../libawn/awn-themed-icon.c:1907
 msgid "Choose Custom Icon"
 msgstr ""
 
-#: ../libawn/awn-themed-icon.c:1959
+#: ../libawn/awn-themed-icon.c:1993
 #, fuzzy
 msgid "Customize Icon"
 msgstr "Personalizuar"
 
-#: ../libawn/awn-themed-icon.c:2030
+#: ../libawn/awn-themed-icon.c:2064
 msgid "Remove Customize Icon"
 msgstr ""
 
@@ -354,6 +324,74 @@ msgstr ""
 #: ../themes/awn-default.desktop.in.h:1
 msgid "Default Theme"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Show windows from all workspaces"
+#~ msgstr "Shfaq dritaret nga te gjitha sfondet"
+
+#, fuzzy
+#~ msgid "Background color for AwnDialog."
+#~ msgstr "Ngjyra e sfondit:"
+
+#, fuzzy
+#~ msgid "Background color of the tooltip"
+#~ msgstr "Ngjyra e sfondit:"
+
+#, fuzzy
+#~ msgid "Enable drawing of a pattern."
+#~ msgstr "Aktivizo modelin"
+
+#, fuzzy
+#~ msgid "First gradient step color."
+#~ msgstr "Ngjyra e hapit te pare:"
+
+#, fuzzy
+#~ msgid "First highlight gradient step color."
+#~ msgstr "Ngjyra e hapit te pare:"
+
+#, fuzzy
+#~ msgid "Internal border color."
+#~ msgstr "Bordi i brendshem:"
+
+#, fuzzy
+#~ msgid "Main border color."
+#~ msgstr "Bordi Kryesor:"
+
+#, fuzzy
+#~ msgid "Second gradient step color."
+#~ msgstr "Ngjyra per hapin e dyte:"
+
+#, fuzzy
+#~ msgid "Second highlight gradient step color."
+#~ msgstr "Ngjyra per hapin e dyte:"
+
+#, fuzzy
+#~ msgid "Separator color."
+#~ msgstr "Ngjyra e ndaresit:"
+
+#~ msgid "3D turn"
+#~ msgstr "Rrotullim 3D"
+
+#~ msgid "3D turn with spotlight"
+#~ msgstr "Rrotullim 3D me ndricim"
+
+#~ msgid "Select an Executable File"
+#~ msgstr "Zgjidh nje file te Ekzekutueshem"
+
+#~ msgid "Please provide a name for the launcher in the \"%s\" field."
+#~ msgstr "Shkruani nje emer per leshuesin ne fushen \"%s\""
+
+#~ msgid "<b>Name:</b>"
+#~ msgstr "<b>Emri:</b>"
+
+#~ msgid "Please provide a program to launch in the \"%s\" field."
+#~ msgstr "Mundeso nje program per te leshuar ne fushen \"%s\""
+
+#~ msgid "<b>Command:</b>"
+#~ msgstr "<b>Komanda:</b>"
+
+#~ msgid "Couldn't save the launcher. Error: %s"
+#~ msgstr "Nuk mund te ruhej leshuesi. Gabim: %s"
 
 #~ msgid "<b>Active Icon</b>"
 #~ msgstr "<b>Ikona Aktive</b>"
@@ -436,9 +474,6 @@ msgstr ""
 #~ msgid "Automatically start AWN on login."
 #~ msgstr "Fillo AWN automatikisht ne hyrje."
 
-#~ msgid "Background color:"
-#~ msgstr "Ngjyra e sfondit:"
-
 #~ msgid "Bar Appearance"
 #~ msgstr "Pamja e Barit"
 
@@ -463,14 +498,8 @@ msgstr ""
 #~ msgid "Delete"
 #~ msgstr "Fshi"
 
-#~ msgid "Enable pattern"
-#~ msgstr "Aktivizo modelin"
-
 #~ msgid "Enable rounded corners"
 #~ msgstr "Aktivizo kendet e rrumbullaket"
-
-#~ msgid "First step color:"
-#~ msgstr "Ngjyra e hapit te pare:"
 
 #~ msgid "Font:"
 #~ msgstr "Shkrimi:"
@@ -496,17 +525,11 @@ msgstr ""
 #~ msgid "Install"
 #~ msgstr "Instalo"
 
-#~ msgid "Internal border:"
-#~ msgstr "Bordi i brendshem:"
-
 #~ msgid "Keep below maximized windows when not in use"
 #~ msgstr "Kalo mbrapa dritareve te zmadhuara kur nuk eshte ne perdorim"
 
 #~ msgid "Launching"
 #~ msgstr "Ne ngarkim"
-
-#~ msgid "Main border:"
-#~ msgstr "Bordi Kryesor:"
 
 #~ msgid "Maximized windows don't cover the bar (requires restart)"
 #~ msgstr "Dritaret e zmadhuara nuk e mbulojne barin (kerkon rinisje)"
@@ -517,20 +540,11 @@ msgstr ""
 #~ msgid "Pattern Engine"
 #~ msgstr "Motorri i modeleve"
 
-#~ msgid "Second step color:"
-#~ msgstr "Ngjyra per hapin e dyte:"
-
-#~ msgid "Separator color:"
-#~ msgstr "Ngjyra e ndaresit:"
-
 #~ msgid "Shadow color:"
 #~ msgstr "Ngjyra e hijes:"
 
 #~ msgid "Show separator between launchers and tasks"
 #~ msgstr "Shfaq ndaresin midis filluesve dhe taskeve"
-
-#~ msgid "Show windows from all viewports"
-#~ msgstr "Shfaq dritaret nga te gjitha sfondet"
 
 #~ msgid "Task Appearance"
 #~ msgstr "Pamja e taskeve"

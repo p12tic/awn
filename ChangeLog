@@ -1,3 +1,10 @@
+2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* po/POTFILES.in:
+	* po/avant-window-navigator.pot:
+	* po/*.po:
+	Update gettext files.
+
 2009-09-12  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:

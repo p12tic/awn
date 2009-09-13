@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: _avant-window-navigator-ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-31 00:51-0700\n"
+"POT-Creation-Date: 2009-09-13 00:04-0700\n"
 "PO-Revision-Date: 2009-02-03 11:47+0000\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic\n"
@@ -30,8 +30,8 @@ msgid "Fills space on the panel in expand mode"
 msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:747
-#: ../applets/taskmanager/task-icon.c:2248
-#: ../applets/taskmanager/task-icon.c:2342
+#: ../applets/taskmanager/task-icon.c:2288
+#: ../applets/taskmanager/task-icon.c:2382
 #, fuzzy
 msgid "Launch"
 msgstr "يجري التنفيذ"
@@ -41,7 +41,7 @@ msgstr "يجري التنفيذ"
 msgid "Launch %s"
 msgstr "يجري التنفيذ"
 
-#: ../applets/taskmanager/task-icon.c:2300
+#: ../applets/taskmanager/task-icon.c:2340
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "أضف وأزل المُطْلِقات"
@@ -63,77 +63,74 @@ msgstr "يجري بدء %s"
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "يدير تفضيلات ومطْلِقات وبريمجات وسمات أون"
 
-#: ../awn-settings/awnClass.py:194
+#: ../awn-settings/awnClass.py:195
 msgid "Error, a sources.list already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:262
+#: ../awn-settings/awnClass.py:263
 msgid "Error, the path is empty or already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:473
+#: ../awn-settings/awnClass.py:474
 msgid "Error, the desktop file is not for a theme"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:490
+#: ../awn-settings/awnClass.py:491
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:731
+#: ../awn-settings/awnClass.py:732
 msgid "PNG Files"
 msgstr "ملفات بي إن جي"
 
-#: ../awn-settings/awnClass.py:795 ../awn-settings/awnClass.py:831
-msgid "Simple"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:796 ../awn-settings/awnClass.py:832
-msgid "Classic"
-msgstr "تقليدي"
-
-#: ../awn-settings/awnClass.py:797 ../awn-settings/awnClass.py:833
-msgid "Fade"
-msgstr "تضاؤل"
-
-#: ../awn-settings/awnClass.py:798 ../awn-settings/awnClass.py:834
-msgid "Spotlight"
-msgstr "دائرة ضوء"
-
-#: ../awn-settings/awnClass.py:799 ../awn-settings/awnClass.py:835
-msgid "Zoom"
-msgstr "تقريب"
-
-#: ../awn-settings/awnClass.py:800 ../awn-settings/awnClass.py:836
-msgid "Squish"
-msgstr "عصر"
-
-#: ../awn-settings/awnClass.py:801
-msgid "3D turn"
-msgstr "دوران ثلاثي الأبعاد"
-
-#: ../awn-settings/awnClass.py:802
-msgid "3D turn with spotlight"
-msgstr "دوران ثلاثي الأبعاد مع دائرة ضوء"
-
-#: ../awn-settings/awnClass.py:803 ../awn-settings/awnClass.py:839
-msgid "Glow"
-msgstr "توهج"
-
-#: ../awn-settings/awnClass.py:830 ../awn-settings/awnSettings.py.in:147
+#: ../awn-settings/awnClass.py:810 ../awn-settings/awnClass.py:866
+#: ../awn-settings/awnSettings.py.in:147
 msgid "None"
 msgstr "لا شيء"
 
-#: ../awn-settings/awnClass.py:837
+#: ../awn-settings/awnClass.py:811 ../awn-settings/awnClass.py:867
+msgid "Simple"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:812 ../awn-settings/awnClass.py:868
+msgid "Classic"
+msgstr "تقليدي"
+
+#: ../awn-settings/awnClass.py:813 ../awn-settings/awnClass.py:869
+msgid "Fade"
+msgstr "تضاؤل"
+
+#: ../awn-settings/awnClass.py:814 ../awn-settings/awnClass.py:870
+msgid "Spotlight"
+msgstr "دائرة ضوء"
+
+#: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:871
+msgid "Zoom"
+msgstr "تقريب"
+
+#: ../awn-settings/awnClass.py:816 ../awn-settings/awnClass.py:872
+msgid "Squish"
+msgstr "عصر"
+
+#: ../awn-settings/awnClass.py:817 ../awn-settings/awnClass.py:873
 msgid "3D Turn"
 msgstr "دوران ثلاثي الأبعاد"
 
-#: ../awn-settings/awnClass.py:838
+#: ../awn-settings/awnClass.py:818 ../awn-settings/awnClass.py:874
 msgid "3D Spotlight Turn"
 msgstr "دوران دائرة ضوء ثلاثي الأبعاد"
 
-#: ../awn-settings/awnClass.py:912
+#: ../awn-settings/awnClass.py:819 ../awn-settings/awnClass.py:875
+msgid "Glow"
+msgstr "توهج"
+
+#: ../awn-settings/awnClass.py:876 ../awn-settings/awnSettings.py.in:155
+msgid "Custom"
+msgstr "مخصص"
+
+#: ../awn-settings/awnClass.py:959
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
@@ -142,11 +139,11 @@ msgstr ""
 "فشل الإنشاء التلقائي. من فضلك أنشئ الدليل يدويا:\n"
 "%s"
 
-#: ../awn-settings/awnClass.py:922
+#: ../awn-settings/awnClass.py:969
 msgid "Confirm directory creation"
 msgstr "أكّد إنشاء الدليل"
 
-#: ../awn-settings/awnClass.py:923
+#: ../awn-settings/awnClass.py:970
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
@@ -155,27 +152,27 @@ msgstr ""
 "أتريدني أن أنشئه تلقائيا لك؟"
 
 #. must be on one line due to i18n
-#: ../awn-settings/awnClass.py:980
+#: ../awn-settings/awnClass.py:1027
 #, python-format
 msgid ""
 "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
 "installed. It usually comes with librsvg, or a package similarly named."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1005
+#: ../awn-settings/awnClass.py:1052
 msgid "AWN has been successfully refreshed"
 msgstr "نشط أون بنجاح"
 
-#: ../awn-settings/awnClass.py:1011
+#: ../awn-settings/awnClass.py:1058
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "ملاح النوفذة أفانت"
 
-#: ../awn-settings/awnClass.py:1029
+#: ../awn-settings/awnClass.py:1076
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr "ملاح نوفذة كالمرساة قابل للتخصيص تماما لجنوم."
 
-#: ../awn-settings/awnClass.py:1031
+#: ../awn-settings/awnClass.py:1078
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -186,7 +183,7 @@ msgstr ""
 "كما نشرت من مؤسسة البرمجيات الحرة، سواءً النسخة 2 من الرخصة، أو (على اختيارك) "
 "أي نسخة لاحقة."
 
-#: ../awn-settings/awnClass.py:1033
+#: ../awn-settings/awnClass.py:1080
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -197,7 +194,7 @@ msgstr ""
 "ضمان يضمن صلاحية العرض في السوق أو توافقه مع أي استخدام محدد. يمكنك مراجعة "
 "الرخصة العمومية العامة لجنو لمزيد من التفاصيل."
 
-#: ../awn-settings/awnClass.py:1035
+#: ../awn-settings/awnClass.py:1082
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -206,33 +203,6 @@ msgstr ""
 "يجب أن تكون تلقيت نسخة من رخصة جنو العمومية مع هذا البرنامج، إذا لم تحصل، "
 "اكتب لمؤسسة البرمجيات الحرة المحدودة، 51 Franklin St, Fifth Floor, Boston, "
 "MA 02110-1301  USA."
-
-#: ../awn-settings/awnLauncherEditor.py:144
-msgid "Select an Executable File"
-msgstr "اختر ملفا تنفيذيا"
-
-#: ../awn-settings/awnLauncherEditor.py:162
-#, python-format
-msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr "من فضلك ضع اسما للمطلق في خانة \"%s\"."
-
-#: ../awn-settings/awnLauncherEditor.py:162
-msgid "<b>Name:</b>"
-msgstr "<b>الاسم:</b>"
-
-#: ../awn-settings/awnLauncherEditor.py:165
-#, python-format
-msgid "Please provide a program to launch in the \"%s\" field."
-msgstr "من فضلك ضع برنامجا للتنفيذ في خانة \"%s\"."
-
-#: ../awn-settings/awnLauncherEditor.py:165
-msgid "<b>Command:</b>"
-msgstr "<b>الأمر:</b>"
-
-#: ../awn-settings/awnLauncherEditor.py:177
-#, python-format
-msgid "Couldn't save the launcher. Error: %s"
-msgstr "تعذر حفظ المطلق. خطأ: %s"
 
 #: ../awn-settings/awnSettings.py.in:66
 #, fuzzy
@@ -295,10 +265,6 @@ msgstr "أخفِ الشريط تلقائيا عندما لا يكون مستخد
 msgid "Transparency"
 msgstr "الشفافية:"
 
-#: ../awn-settings/awnSettings.py.in:155
-msgid "Custom"
-msgstr "مخصص"
-
 #: ../bindings/python/__init__.py:117
 #, python-format
 msgid ""
@@ -325,21 +291,25 @@ msgstr ""
 msgid "A dock-like window navigator."
 msgstr "ملاح نوفذة كالمرساة."
 
-#: ../libawn/awn-applet.c:1000 ../src/awn-panel.c:583
+#: ../libawn/awn-applet.c:1002 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr "تفضيلات الإرساء"
 
-#: ../libawn/awn-themed-icon.c:1878
+#: ../libawn/awn-themed-icon.c:1905
+msgid "Icons"
+msgstr ""
+
+#: ../libawn/awn-themed-icon.c:1907
 #, fuzzy
 msgid "Choose Custom Icon"
 msgstr "أأمسح الأيقونات المخصصة؟"
 
-#: ../libawn/awn-themed-icon.c:1959
+#: ../libawn/awn-themed-icon.c:1993
 #, fuzzy
 msgid "Customize Icon"
 msgstr "أأمسح الأيقونات المخصصة؟"
 
-#: ../libawn/awn-themed-icon.c:2030
+#: ../libawn/awn-themed-icon.c:2064
 #, fuzzy
 msgid "Remove Customize Icon"
 msgstr "أأمسح الأيقونات المخصصة؟"
@@ -359,6 +329,74 @@ msgstr ""
 #: ../themes/awn-default.desktop.in.h:1
 msgid "Default Theme"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Show windows from all workspaces"
+#~ msgstr "اعرض النوافذ من جميع منافذ العرض"
+
+#, fuzzy
+#~ msgid "Background color for AwnDialog."
+#~ msgstr "لون الخلفية:"
+
+#, fuzzy
+#~ msgid "Background color of the tooltip"
+#~ msgstr "لون الخلفية:"
+
+#, fuzzy
+#~ msgid "Enable drawing of a pattern."
+#~ msgstr "مكّن النمط"
+
+#, fuzzy
+#~ msgid "First gradient step color."
+#~ msgstr "لون الخطوة الأولى:"
+
+#, fuzzy
+#~ msgid "First highlight gradient step color."
+#~ msgstr "لون الخطوة الأولى:"
+
+#, fuzzy
+#~ msgid "Internal border color."
+#~ msgstr "الحد الداخلي:"
+
+#, fuzzy
+#~ msgid "Main border color."
+#~ msgstr "الحد الرئيسي:"
+
+#, fuzzy
+#~ msgid "Second gradient step color."
+#~ msgstr "لون الخطوة الثانية:"
+
+#, fuzzy
+#~ msgid "Second highlight gradient step color."
+#~ msgstr "لون الخطوة الثانية:"
+
+#, fuzzy
+#~ msgid "Separator color."
+#~ msgstr "لون الفاصل:"
+
+#~ msgid "3D turn"
+#~ msgstr "دوران ثلاثي الأبعاد"
+
+#~ msgid "3D turn with spotlight"
+#~ msgstr "دوران ثلاثي الأبعاد مع دائرة ضوء"
+
+#~ msgid "Select an Executable File"
+#~ msgstr "اختر ملفا تنفيذيا"
+
+#~ msgid "Please provide a name for the launcher in the \"%s\" field."
+#~ msgstr "من فضلك ضع اسما للمطلق في خانة \"%s\"."
+
+#~ msgid "<b>Name:</b>"
+#~ msgstr "<b>الاسم:</b>"
+
+#~ msgid "Please provide a program to launch in the \"%s\" field."
+#~ msgstr "من فضلك ضع برنامجا للتنفيذ في خانة \"%s\"."
+
+#~ msgid "<b>Command:</b>"
+#~ msgstr "<b>الأمر:</b>"
+
+#~ msgid "Couldn't save the launcher. Error: %s"
+#~ msgstr "تعذر حفظ المطلق. خطأ: %s"
 
 #~ msgid "Invalid launcher"
 #~ msgstr "مُطْلِق غير صحيح"
@@ -444,9 +482,6 @@ msgstr ""
 #~ msgid "Automatically start AWN on login."
 #~ msgstr "ابدء أون تلقائيا عند الولوج"
 
-#~ msgid "Background color:"
-#~ msgstr "لون الخلفية:"
-
 #~ msgid "Bar Appearance"
 #~ msgstr "مظهر الشريط"
 
@@ -471,14 +506,8 @@ msgstr ""
 #~ msgid "Delete"
 #~ msgstr "احذف"
 
-#~ msgid "Enable pattern"
-#~ msgstr "مكّن النمط"
-
 #~ msgid "Enable rounded corners"
 #~ msgstr "مكّن الزوايا المدوّرة"
-
-#~ msgid "First step color:"
-#~ msgstr "لون الخطوة الأولى:"
 
 #~ msgid "Font:"
 #~ msgstr "الخط:"
@@ -502,17 +531,11 @@ msgstr ""
 #~ msgid "Install"
 #~ msgstr "ثبّت"
 
-#~ msgid "Internal border:"
-#~ msgstr "الحد الداخلي:"
-
 #~ msgid "Keep below maximized windows when not in use"
 #~ msgstr "ضع تحت النوافذ المكبرة حين لا يستخدم"
 
 #~ msgid "Launching"
 #~ msgstr "يجري التنفيذ"
-
-#~ msgid "Main border:"
-#~ msgstr "الحد الرئيسي:"
 
 #~ msgid "Maximized windows don't cover the bar (requires restart)"
 #~ msgstr "النوافذ المكبرة ﻻ تغطي الشريط (تحتاج إعادة التشغيل)"
@@ -523,20 +546,11 @@ msgstr ""
 #~ msgid "Pattern Engine"
 #~ msgstr "محرك الأنماط"
 
-#~ msgid "Second step color:"
-#~ msgstr "لون الخطوة الثانية:"
-
-#~ msgid "Separator color:"
-#~ msgstr "لون الفاصل:"
-
 #~ msgid "Shadow color:"
 #~ msgstr "لون الظل:"
 
 #~ msgid "Show separator between launchers and tasks"
 #~ msgstr "أظهر الفاصل بين المطلق والمهام"
-
-#~ msgid "Show windows from all viewports"
-#~ msgstr "اعرض النوافذ من جميع منافذ العرض"
 
 #~ msgid "Task Appearance"
 #~ msgstr "مظهر المهمة"

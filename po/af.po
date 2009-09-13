@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-31 00:51-0700\n"
+"POT-Creation-Date: 2009-09-13 00:04-0700\n"
 "PO-Revision-Date: 2009-01-30 11:54+0000\n"
 "Last-Translator: Walter Leibbrandt <Unknown>\n"
 "Language-Team: Translate.org.za\n"
@@ -28,8 +28,8 @@ msgid "Fills space on the panel in expand mode"
 msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:747
-#: ../applets/taskmanager/task-icon.c:2248
-#: ../applets/taskmanager/task-icon.c:2342
+#: ../applets/taskmanager/task-icon.c:2288
+#: ../applets/taskmanager/task-icon.c:2382
 #, fuzzy
 msgid "Launch"
 msgstr "Besig om te lanseer"
@@ -39,7 +39,7 @@ msgstr "Besig om te lanseer"
 msgid "Launch %s"
 msgstr "Besig om te lanseer"
 
-#: ../applets/taskmanager/task-icon.c:2300
+#: ../applets/taskmanager/task-icon.c:2340
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "Voeg by en verwyder lanseerders"
@@ -61,77 +61,74 @@ msgstr "Begin tans %s"
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "Bestuur AWN voorkeure, programlanseerders, mini-programme en temas"
 
-#: ../awn-settings/awnClass.py:194
+#: ../awn-settings/awnClass.py:195
 msgid "Error, a sources.list already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:262
+#: ../awn-settings/awnClass.py:263
 msgid "Error, the path is empty or already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:473
+#: ../awn-settings/awnClass.py:474
 msgid "Error, the desktop file is not for a theme"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:490
+#: ../awn-settings/awnClass.py:491
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:731
+#: ../awn-settings/awnClass.py:732
 msgid "PNG Files"
 msgstr "PNG-lêers"
 
-#: ../awn-settings/awnClass.py:795 ../awn-settings/awnClass.py:831
-msgid "Simple"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:796 ../awn-settings/awnClass.py:832
-msgid "Classic"
-msgstr "Klasiek"
-
-#: ../awn-settings/awnClass.py:797 ../awn-settings/awnClass.py:833
-msgid "Fade"
-msgstr "Vervaag"
-
-#: ../awn-settings/awnClass.py:798 ../awn-settings/awnClass.py:834
-msgid "Spotlight"
-msgstr "Soeklig"
-
-#: ../awn-settings/awnClass.py:799 ../awn-settings/awnClass.py:835
-msgid "Zoom"
-msgstr "Zoem"
-
-#: ../awn-settings/awnClass.py:800 ../awn-settings/awnClass.py:836
-msgid "Squish"
-msgstr "Platgedruk"
-
-#: ../awn-settings/awnClass.py:801
-msgid "3D turn"
-msgstr "3D draai"
-
-#: ../awn-settings/awnClass.py:802
-msgid "3D turn with spotlight"
-msgstr "3D draai met soeklig"
-
-#: ../awn-settings/awnClass.py:803 ../awn-settings/awnClass.py:839
-msgid "Glow"
-msgstr "Gloei"
-
-#: ../awn-settings/awnClass.py:830 ../awn-settings/awnSettings.py.in:147
+#: ../awn-settings/awnClass.py:810 ../awn-settings/awnClass.py:866
+#: ../awn-settings/awnSettings.py.in:147
 msgid "None"
 msgstr "Geen"
 
-#: ../awn-settings/awnClass.py:837
+#: ../awn-settings/awnClass.py:811 ../awn-settings/awnClass.py:867
+msgid "Simple"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:812 ../awn-settings/awnClass.py:868
+msgid "Classic"
+msgstr "Klasiek"
+
+#: ../awn-settings/awnClass.py:813 ../awn-settings/awnClass.py:869
+msgid "Fade"
+msgstr "Vervaag"
+
+#: ../awn-settings/awnClass.py:814 ../awn-settings/awnClass.py:870
+msgid "Spotlight"
+msgstr "Soeklig"
+
+#: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:871
+msgid "Zoom"
+msgstr "Zoem"
+
+#: ../awn-settings/awnClass.py:816 ../awn-settings/awnClass.py:872
+msgid "Squish"
+msgstr "Platgedruk"
+
+#: ../awn-settings/awnClass.py:817 ../awn-settings/awnClass.py:873
 msgid "3D Turn"
 msgstr "3D draai"
 
-#: ../awn-settings/awnClass.py:838
+#: ../awn-settings/awnClass.py:818 ../awn-settings/awnClass.py:874
 msgid "3D Spotlight Turn"
 msgstr "3D soeklig draai"
 
-#: ../awn-settings/awnClass.py:912
+#: ../awn-settings/awnClass.py:819 ../awn-settings/awnClass.py:875
+msgid "Glow"
+msgstr "Gloei"
+
+#: ../awn-settings/awnClass.py:876 ../awn-settings/awnSettings.py.in:155
+msgid "Custom"
+msgstr "Doelmaak:"
+
+#: ../awn-settings/awnClass.py:959
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
@@ -141,11 +138,11 @@ msgstr ""
 "handmatig:\n"
 "%s"
 
-#: ../awn-settings/awnClass.py:922
+#: ../awn-settings/awnClass.py:969
 msgid "Confirm directory creation"
 msgstr "Bevestig skepping van gids"
 
-#: ../awn-settings/awnClass.py:923
+#: ../awn-settings/awnClass.py:970
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
@@ -154,27 +151,27 @@ msgstr ""
 "Mag ek dit outomaties vir u skep?"
 
 #. must be on one line due to i18n
-#: ../awn-settings/awnClass.py:980
+#: ../awn-settings/awnClass.py:1027
 #, python-format
 msgid ""
 "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
 "installed. It usually comes with librsvg, or a package similarly named."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1005
+#: ../awn-settings/awnClass.py:1052
 msgid "AWN has been successfully refreshed"
 msgstr "AWN is suksesvol verfris"
 
-#: ../awn-settings/awnClass.py:1011
+#: ../awn-settings/awnClass.py:1058
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "Avant Verster Navigator"
 
-#: ../awn-settings/awnClass.py:1029
+#: ../awn-settings/awnClass.py:1076
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr "Volledig-aanpasbare dokagtige venster navigator vir GNOME."
 
-#: ../awn-settings/awnClass.py:1031
+#: ../awn-settings/awnClass.py:1078
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -186,7 +183,7 @@ msgstr ""
 "gepubliseer deur die Stigting vir Vry Sagteware; óf weergawe 2 van die "
 "Lisensie, óf (indien u verkies) enige latere weergawe."
 
-#: ../awn-settings/awnClass.py:1033
+#: ../awn-settings/awnClass.py:1080
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -198,7 +195,7 @@ msgstr ""
 "VERHANDELBAARHEID of GESKIKTHEID VIR 'N SPESIFIEKE DOEL.  Sien die GNU "
 "Algemene Publieke Lisensie vir meer detail."
 
-#: ../awn-settings/awnClass.py:1035
+#: ../awn-settings/awnClass.py:1082
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -207,34 +204,6 @@ msgstr ""
 "U moes 'n kopie van die GNU Algemene Publieke Lisensie ontvang het saam met "
 "hierdie program; indien nie, skryf aan Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA"
-
-#: ../awn-settings/awnLauncherEditor.py:144
-msgid "Select an Executable File"
-msgstr "Selekteer 'n uitvoerbare lêer"
-
-#: ../awn-settings/awnLauncherEditor.py:162
-#, python-format
-msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr ""
-"Verskaf asseblief 'n naam vir die programlanseerder in die \"%s\"-veld."
-
-#: ../awn-settings/awnLauncherEditor.py:162
-msgid "<b>Name:</b>"
-msgstr "<b>Naam:</b>"
-
-#: ../awn-settings/awnLauncherEditor.py:165
-#, python-format
-msgid "Please provide a program to launch in the \"%s\" field."
-msgstr "Verskaf asseblief 'n lanseerder of uit te voer in die \"%s\"-veld."
-
-#: ../awn-settings/awnLauncherEditor.py:165
-msgid "<b>Command:</b>"
-msgstr "<b>Opdrag:</b>"
-
-#: ../awn-settings/awnLauncherEditor.py:177
-#, python-format
-msgid "Couldn't save the launcher. Error: %s"
-msgstr "Kon nie die lanseerder stoor nie. Fout: %s"
 
 #: ../awn-settings/awnSettings.py.in:66
 msgid "Awn Settings can't be run as root."
@@ -296,10 +265,6 @@ msgstr "Versteek balk outomaties wanner nie in gebruik nie"
 msgid "Transparency"
 msgstr "Deursigtigheid:"
 
-#: ../awn-settings/awnSettings.py.in:155
-msgid "Custom"
-msgstr "Doelmaak:"
-
 #: ../bindings/python/__init__.py:117
 #, python-format
 msgid ""
@@ -326,20 +291,24 @@ msgstr ""
 msgid "A dock-like window navigator."
 msgstr "'n Dokagtige venster navigator."
 
-#: ../libawn/awn-applet.c:1000 ../src/awn-panel.c:583
+#: ../libawn/awn-applet.c:1002 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr "Dokvoorkeure"
 
-#: ../libawn/awn-themed-icon.c:1878
+#: ../libawn/awn-themed-icon.c:1905
+msgid "Icons"
+msgstr ""
+
+#: ../libawn/awn-themed-icon.c:1907
 msgid "Choose Custom Icon"
 msgstr ""
 
-#: ../libawn/awn-themed-icon.c:1959
+#: ../libawn/awn-themed-icon.c:1993
 #, fuzzy
 msgid "Customize Icon"
 msgstr "Doelmaak:"
 
-#: ../libawn/awn-themed-icon.c:2030
+#: ../libawn/awn-themed-icon.c:2064
 msgid "Remove Customize Icon"
 msgstr ""
 
@@ -358,6 +327,75 @@ msgstr ""
 #: ../themes/awn-default.desktop.in.h:1
 msgid "Default Theme"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Show windows from all workspaces"
+#~ msgstr "Vertoon venster van alle uitkykpunte"
+
+#, fuzzy
+#~ msgid "Background color for AwnDialog."
+#~ msgstr "Agtergrond kleur:"
+
+#, fuzzy
+#~ msgid "Background color of the tooltip"
+#~ msgstr "Agtergrond kleur:"
+
+#, fuzzy
+#~ msgid "Enable drawing of a pattern."
+#~ msgstr "Aktiveer patroon"
+
+#, fuzzy
+#~ msgid "First gradient step color."
+#~ msgstr "Eerste stap kleur:"
+
+#, fuzzy
+#~ msgid "First highlight gradient step color."
+#~ msgstr "Eerste stap kleur:"
+
+#, fuzzy
+#~ msgid "Internal border color."
+#~ msgstr "Interne raam:"
+
+#, fuzzy
+#~ msgid "Main border color."
+#~ msgstr "Hoof raam:"
+
+#, fuzzy
+#~ msgid "Second gradient step color."
+#~ msgstr "Tweede stap kleur:"
+
+#, fuzzy
+#~ msgid "Second highlight gradient step color."
+#~ msgstr "Tweede stap kleur:"
+
+#, fuzzy
+#~ msgid "Separator color."
+#~ msgstr "Skeierkleur:"
+
+#~ msgid "3D turn"
+#~ msgstr "3D draai"
+
+#~ msgid "3D turn with spotlight"
+#~ msgstr "3D draai met soeklig"
+
+#~ msgid "Select an Executable File"
+#~ msgstr "Selekteer 'n uitvoerbare lêer"
+
+#~ msgid "Please provide a name for the launcher in the \"%s\" field."
+#~ msgstr ""
+#~ "Verskaf asseblief 'n naam vir die programlanseerder in die \"%s\"-veld."
+
+#~ msgid "<b>Name:</b>"
+#~ msgstr "<b>Naam:</b>"
+
+#~ msgid "Please provide a program to launch in the \"%s\" field."
+#~ msgstr "Verskaf asseblief 'n lanseerder of uit te voer in die \"%s\"-veld."
+
+#~ msgid "<b>Command:</b>"
+#~ msgstr "<b>Opdrag:</b>"
+
+#~ msgid "Couldn't save the launcher. Error: %s"
+#~ msgstr "Kon nie die lanseerder stoor nie. Fout: %s"
 
 #~ msgid "<b>Active Icon</b>"
 #~ msgstr "<b>Aktiewe Ikoon</b>"
@@ -440,9 +478,6 @@ msgstr ""
 #~ msgid "Automatically start AWN on login."
 #~ msgstr "Begin AWN outomaties op aanmelding."
 
-#~ msgid "Background color:"
-#~ msgstr "Agtergrond kleur:"
-
 #~ msgid "Bar Appearance"
 #~ msgstr "Balk Voorkoms"
 
@@ -467,14 +502,8 @@ msgstr ""
 #~ msgid "Delete"
 #~ msgstr "Vee uit"
 
-#~ msgid "Enable pattern"
-#~ msgstr "Aktiveer patroon"
-
 #~ msgid "Enable rounded corners"
 #~ msgstr "Aktiveer geronde hoeke"
-
-#~ msgid "First step color:"
-#~ msgstr "Eerste stap kleur:"
 
 #~ msgid "Font:"
 #~ msgstr "Font:"
@@ -500,17 +529,11 @@ msgstr ""
 #~ msgid "Install"
 #~ msgstr "Installeer"
 
-#~ msgid "Internal border:"
-#~ msgstr "Interne raam:"
-
 #~ msgid "Keep below maximized windows when not in use"
 #~ msgstr "Hou onder gemaksimeerde vensters wanneer nie in gebruik"
 
 #~ msgid "Launching"
 #~ msgstr "Besig om te lanseer"
-
-#~ msgid "Main border:"
-#~ msgstr "Hoof raam:"
 
 #~ msgid "Maximized windows don't cover the bar (requires restart)"
 #~ msgstr "Gemaksimeerde vensters maak nie die balk toe nie (benodig herbegin)"
@@ -521,20 +544,11 @@ msgstr ""
 #~ msgid "Pattern Engine"
 #~ msgstr "Patroonenjin"
 
-#~ msgid "Second step color:"
-#~ msgstr "Tweede stap kleur:"
-
-#~ msgid "Separator color:"
-#~ msgstr "Skeierkleur:"
-
 #~ msgid "Shadow color:"
 #~ msgstr "Skadukleur:"
 
 #~ msgid "Show separator between launchers and tasks"
 #~ msgstr "Wys skeier tussen lanseerders en take"
-
-#~ msgid "Show windows from all viewports"
-#~ msgstr "Vertoon venster van alle uitkykpunte"
 
 #~ msgid "Task Appearance"
 #~ msgstr "Taak Voorkoms"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avant-window-navigator 0.2.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-31 00:51-0700\n"
+"POT-Creation-Date: 2009-09-13 00:04-0700\n"
 "PO-Revision-Date: 2008-04-04 17:16+0000\n"
 "Last-Translator: Hleb Valoshka <Unknown>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -23,8 +23,8 @@ msgid "Fills space on the panel in expand mode"
 msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:747
-#: ../applets/taskmanager/task-icon.c:2248
-#: ../applets/taskmanager/task-icon.c:2342
+#: ../applets/taskmanager/task-icon.c:2288
+#: ../applets/taskmanager/task-icon.c:2382
 #, fuzzy
 msgid "Launch"
 msgstr "Запусканьне"
@@ -34,7 +34,7 @@ msgstr "Запусканьне"
 msgid "Launch %s"
 msgstr "Запусканьне"
 
-#: ../applets/taskmanager/task-icon.c:2300
+#: ../applets/taskmanager/task-icon.c:2340
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "Дадаць/прыбраць запускальнікі"
@@ -55,115 +55,112 @@ msgstr ""
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:194
+#: ../awn-settings/awnClass.py:195
 msgid "Error, a sources.list already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:262
+#: ../awn-settings/awnClass.py:263
 msgid "Error, the path is empty or already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:473
+#: ../awn-settings/awnClass.py:474
 msgid "Error, the desktop file is not for a theme"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:490
+#: ../awn-settings/awnClass.py:491
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:731
+#: ../awn-settings/awnClass.py:732
 msgid "PNG Files"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:795 ../awn-settings/awnClass.py:831
-msgid "Simple"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:796 ../awn-settings/awnClass.py:832
-msgid "Classic"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:797 ../awn-settings/awnClass.py:833
-msgid "Fade"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:798 ../awn-settings/awnClass.py:834
-msgid "Spotlight"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:799 ../awn-settings/awnClass.py:835
-msgid "Zoom"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:800 ../awn-settings/awnClass.py:836
-msgid "Squish"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:801
-msgid "3D turn"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:802
-msgid "3D turn with spotlight"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:803 ../awn-settings/awnClass.py:839
-msgid "Glow"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:830 ../awn-settings/awnSettings.py.in:147
+#: ../awn-settings/awnClass.py:810 ../awn-settings/awnClass.py:866
+#: ../awn-settings/awnSettings.py.in:147
 msgid "None"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:837
+#: ../awn-settings/awnClass.py:811 ../awn-settings/awnClass.py:867
+msgid "Simple"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:812 ../awn-settings/awnClass.py:868
+msgid "Classic"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:813 ../awn-settings/awnClass.py:869
+msgid "Fade"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:814 ../awn-settings/awnClass.py:870
+msgid "Spotlight"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:871
+msgid "Zoom"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:816 ../awn-settings/awnClass.py:872
+msgid "Squish"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:817 ../awn-settings/awnClass.py:873
 msgid "3D Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:838
+#: ../awn-settings/awnClass.py:818 ../awn-settings/awnClass.py:874
 msgid "3D Spotlight Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:912
+#: ../awn-settings/awnClass.py:819 ../awn-settings/awnClass.py:875
+msgid "Glow"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:876 ../awn-settings/awnSettings.py.in:155
+msgid "Custom"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:959
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:922
+#: ../awn-settings/awnClass.py:969
 msgid "Confirm directory creation"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:923
+#: ../awn-settings/awnClass.py:970
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
 
 #. must be on one line due to i18n
-#: ../awn-settings/awnClass.py:980
+#: ../awn-settings/awnClass.py:1027
 #, python-format
 msgid ""
 "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
 "installed. It usually comes with librsvg, or a package similarly named."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1005
+#: ../awn-settings/awnClass.py:1052
 msgid "AWN has been successfully refreshed"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1011
+#: ../awn-settings/awnClass.py:1058
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1029
+#: ../awn-settings/awnClass.py:1076
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1031
+#: ../awn-settings/awnClass.py:1078
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -171,7 +168,7 @@ msgid ""
 "any later version."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1033
+#: ../awn-settings/awnClass.py:1080
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -179,38 +176,11 @@ msgid ""
 "more details."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1035
+#: ../awn-settings/awnClass.py:1082
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
-msgstr ""
-
-#: ../awn-settings/awnLauncherEditor.py:144
-msgid "Select an Executable File"
-msgstr ""
-
-#: ../awn-settings/awnLauncherEditor.py:162
-#, python-format
-msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr ""
-
-#: ../awn-settings/awnLauncherEditor.py:162
-msgid "<b>Name:</b>"
-msgstr ""
-
-#: ../awn-settings/awnLauncherEditor.py:165
-#, python-format
-msgid "Please provide a program to launch in the \"%s\" field."
-msgstr ""
-
-#: ../awn-settings/awnLauncherEditor.py:165
-msgid "<b>Command:</b>"
-msgstr ""
-
-#: ../awn-settings/awnLauncherEditor.py:177
-#, python-format
-msgid "Couldn't save the launcher. Error: %s"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:66
@@ -271,10 +241,6 @@ msgstr "Хаваць панэль, калі яна не выкарыстоўва
 msgid "Transparency"
 msgstr "Празрыстасьць:"
 
-#: ../awn-settings/awnSettings.py.in:155
-msgid "Custom"
-msgstr ""
-
 #: ../bindings/python/__init__.py:117
 #, python-format
 msgid ""
@@ -301,19 +267,23 @@ msgstr ""
 msgid "A dock-like window navigator."
 msgstr ""
 
-#: ../libawn/awn-applet.c:1000 ../src/awn-panel.c:583
+#: ../libawn/awn-applet.c:1002 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr ""
 
-#: ../libawn/awn-themed-icon.c:1878
+#: ../libawn/awn-themed-icon.c:1905
+msgid "Icons"
+msgstr ""
+
+#: ../libawn/awn-themed-icon.c:1907
 msgid "Choose Custom Icon"
 msgstr ""
 
-#: ../libawn/awn-themed-icon.c:1959
+#: ../libawn/awn-themed-icon.c:1993
 msgid "Customize Icon"
 msgstr ""
 
-#: ../libawn/awn-themed-icon.c:2030
+#: ../libawn/awn-themed-icon.c:2064
 msgid "Remove Customize Icon"
 msgstr ""
 
@@ -332,6 +302,50 @@ msgstr ""
 #: ../themes/awn-default.desktop.in.h:1
 msgid "Default Theme"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Show windows from all workspaces"
+#~ msgstr "Паказваць вокны з усіх працоўных прастор"
+
+#, fuzzy
+#~ msgid "Background color for AwnDialog."
+#~ msgstr "Колер асноведзі:"
+
+#, fuzzy
+#~ msgid "Background color of the tooltip"
+#~ msgstr "Колер асноведзі:"
+
+#, fuzzy
+#~ msgid "Enable drawing of a pattern."
+#~ msgstr "Задзейнічаць узор"
+
+#, fuzzy
+#~ msgid "First gradient step color."
+#~ msgstr "Пачатковы колер:"
+
+#, fuzzy
+#~ msgid "First highlight gradient step color."
+#~ msgstr "Пачатковы колер:"
+
+#, fuzzy
+#~ msgid "Internal border color."
+#~ msgstr "Унутраная мяжа"
+
+#, fuzzy
+#~ msgid "Main border color."
+#~ msgstr "Галоўная мяжа:"
+
+#, fuzzy
+#~ msgid "Second gradient step color."
+#~ msgstr "Канцавы колер:"
+
+#, fuzzy
+#~ msgid "Second highlight gradient step color."
+#~ msgstr "Канцавы колер:"
+
+#, fuzzy
+#~ msgid "Separator color."
+#~ msgstr "Колер падзельніка:"
 
 #~ msgid "<b>Active Icon</b>"
 #~ msgstr "<b>Актыўная значка</b>"
@@ -405,9 +419,6 @@ msgstr ""
 #~ msgid "Auto hide bar when not in use"
 #~ msgstr "Хаваць панэль, калі яна не выкарыстоўваецца"
 
-#~ msgid "Background color:"
-#~ msgstr "Колер асноведзі:"
-
 #~ msgid "Bar Appearance"
 #~ msgstr "Выгляд панэлі"
 
@@ -432,14 +443,8 @@ msgstr ""
 #~ msgid "Delete"
 #~ msgstr "Выдаліць"
 
-#~ msgid "Enable pattern"
-#~ msgstr "Задзейнічаць узор"
-
 #~ msgid "Enable rounded corners"
 #~ msgstr "Задзейнічаць закругленыя куты"
-
-#~ msgid "First step color:"
-#~ msgstr "Пачатковы колер:"
 
 #~ msgid "Font:"
 #~ msgstr "Шрыфт:"
@@ -465,17 +470,11 @@ msgstr ""
 #~ msgid "Install"
 #~ msgstr "Усталяваць"
 
-#~ msgid "Internal border:"
-#~ msgstr "Унутраная мяжа"
-
 #~ msgid "Keep below maximized windows when not in use"
 #~ msgstr "Трымаць пад разгорнутымі вокнамі, калі не выкарыстоўваецца"
 
 #~ msgid "Launching"
 #~ msgstr "Запусканьне"
-
-#~ msgid "Main border:"
-#~ msgstr "Галоўная мяжа:"
 
 #~ msgid "Maximized windows don't cover the bar (requires restart)"
 #~ msgstr "Разгорнутыя вокны не перакрываюць панэль (патрэбны перазапуск)"
@@ -486,20 +485,11 @@ msgstr ""
 #~ msgid "Pattern Engine"
 #~ msgstr "Рухавік узораў"
 
-#~ msgid "Second step color:"
-#~ msgstr "Канцавы колер:"
-
-#~ msgid "Separator color:"
-#~ msgstr "Колер падзельніка:"
-
 #~ msgid "Shadow color:"
 #~ msgstr "Колер ценю:"
 
 #~ msgid "Show separator between launchers and tasks"
 #~ msgstr "Паказваць падзельнік між запускальнікамі й задачамі"
-
-#~ msgid "Show windows from all viewports"
-#~ msgstr "Паказваць вокны з усіх працоўных прастор"
 
 #~ msgid "Task Appearance"
 #~ msgstr "Выгляд панэлі"
