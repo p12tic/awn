@@ -1,5 +1,13 @@
 2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* awn-settings/awn-plugins.svg:
+	* awn-settings/awn-settings-small.svg:
+	* awn-settings/awn-settings.svg:
+	* data/avant-window-navigator.svg:
+	Remove unused definitions from SVG files.
+
+2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* awn-settings/awn-settings.ui:
 	Remove duplicate IDs.
 
