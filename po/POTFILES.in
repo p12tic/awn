@@ -1,4 +1,5 @@
 applets/expander/expander.desktop.in.in
+[type: gettext/ini]applets/taskmanager/awn-applet-taskmanager.schema-ini.in
 applets/taskmanager/task-launcher.c
 applets/taskmanager/task-icon.c
 applets/taskmanager/taskmanager.desktop.in.in
@@ -8,6 +9,7 @@ awn-settings/awnClass.py
 awn-settings/awnSettings.py.in
 bindings/python/__init__.py
 data/avant-window-navigator.desktop.in
+[type: gettext/ini]data/avant-window-navigator.schema-ini.in
 data/awn-themed-icon.ui
 libawn/awn-applet.c
 libawn/awn-themed-icon.c

@@ -57,7 +57,7 @@ activedir = $(pkgdatadir)/active
 
 # config-related
 
-schema_DATA = avant-window-navigator.schema-ini
+schema_in_files = avant-window-navigator.schema-ini.in
 
 dist_bin_SCRIPTS = awn-applets-migration
 
@@ -73,9 +73,9 @@ EXTRA_DIST += \
 	$(icons) \
 	$(text_DATA) \
 	$(desktop_DATA).in \
-	avant-window-navigator.schema-ini \
+	$(schema_in_files:.schema-ini.in=.schema-ini.in.in) \
 	$(active_DATA) \
 	active/spotlight_png_inline.c \
 	$(NULL)
 
-CLEANFILES = $(desktop_DATA) avant-window-navigator.schemas avant-window-navigator.schemas.in
+CLEANFILES = $(desktop_DATA) $(schemas_DATA) $(schema_in_DATA)

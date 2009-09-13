@@ -1,5 +1,19 @@
 2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* .bzrignore:
+	* Makefile.schemas:
+	* applets/taskmanager/Makefile.am:
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	* configure.in:
+	* data/Makefile.am:
+	* data/avant-window-navigator.schema-ini.in.in:
+	* po/POTFILES.in:
+	* po/avant-window-navigator.pot:
+	* po/*.po:
+	Make schema-ini files translatable.
+
+2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* po/POTFILES.in:
 	* po/avant-window-navigator.pot:
 	* po/*.po:

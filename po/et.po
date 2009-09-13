@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-13 00:06-0700\n"
+"POT-Creation-Date: 2009-09-13 00:31-0700\n"
 "PO-Revision-Date: 2008-03-03 15:00+0000\n"
 "Last-Translator: Rene Pärts <Unknown>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -24,6 +24,90 @@ msgstr ""
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
+msgid ""
+"Behavior when window on a different workspace is activated. (0 for default, "
+"1 - change active workspace, 2 - move to current workspace)"
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
+msgid "Delay before activating a window when dragging over an icon."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
+msgid ""
+"Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
+"Copy if owned by user, 2.. Do not copy."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
+msgid "Disables changing of panel icon when app indicates icon change."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
+msgid "Enable long press to open Dialog."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
+msgid "Enable reordering of windows by drag and drop "
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
+msgid "Enabling group of tasks."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
+msgid ""
+"How radical matching is applied for grouping items. The value should be "
+"between 0 and 99. 0 is as good as no grouping. 99 will match almost "
+"everything."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
+msgid ""
+"How to generate the list of windows tested for intersection when Intellihide "
+"is active.  0.. use windows on active workspace, 1.. use windows of "
+"currently focused app."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
+msgid ""
+"Intellihide if hide is enabled for the panel.  This will inhibit autohide of "
+"the panel if there are no intersecting windows in the relevant window list "
+"(see intellihide_mode)."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
+msgid ""
+"Maximum number of task indicators to show under icons. Valid range is 0..3."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
+msgid ""
+"Number of seconds to inhibit autohide when a application requests attention. "
+"A value of 0 disables."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
+msgid "Only show and manager launcher windows"
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
+#, fuzzy
+msgid "Show windows from all workspaces"
+msgstr "Näita aknaid kõigilt töölaudadelt"
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
+msgid ""
+"The threshold at which text count begins to be displayed. valid range 1.."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
+msgid ""
+"a list of paths to .desktop files from which the taskmanager should create "
+"it's launchers"
 msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:747
@@ -271,6 +355,239 @@ msgstr ""
 msgid "A dock-like window navigator."
 msgstr ""
 
+#: ../data/avant-window-navigator.schema-ini.in.h:1
+msgid "0 - solid, 1 - outline, 2 - outline, reversed."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:2
+msgid "3)"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:3
+msgid "4)"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:4
+msgid "A bitmask which stores the type of effect for each event"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:5
+msgid "Alignment of a non-expanded panel on the monitor edge."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:6
+msgid "An optional offset when you have more than 1 monitors."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:7
+msgid ""
+"Anything greater than 0 will draw a panel with corners. The greater the "
+"radius, the larger the corners."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:8
+#, fuzzy
+msgid "Background color for AwnDialog's title."
+msgstr "Taustavärv:"
+
+#: ../data/avant-window-navigator.schema-ini.in.h:9
+#, fuzzy
+msgid "Background color for AwnDialog."
+msgstr "Taustavärv:"
+
+#: ../data/avant-window-navigator.schema-ini.in.h:10
+#, fuzzy
+msgid "Background color of the tooltip"
+msgstr "Taustavärv:"
+
+#: ../data/avant-window-navigator.schema-ini.in.h:11
+msgid ""
+"Determines if generic configuration editor is allowed for applets that do "
+"not have a customized preferences dialog."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:12
+msgid "Draw separators."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:13
+#, fuzzy
+msgid "Enable drawing of a pattern."
+msgstr "Luba muster"
+
+#: ../data/avant-window-navigator.schema-ini.in.h:14
+#, fuzzy
+msgid "First gradient step color."
+msgstr "Esimese sammu värv:"
+
+#: ../data/avant-window-navigator.schema-ini.in.h:15
+#, fuzzy
+msgid "First highlight gradient step color."
+msgstr "Esimese sammu värv:"
+
+#: ../data/avant-window-navigator.schema-ini.in.h:16
+#, fuzzy
+msgid "Font color of the tooltip"
+msgstr "Taustavärv:"
+
+#: ../data/avant-window-navigator.schema-ini.in.h:17
+#, fuzzy
+msgid "Font name of the tooltip"
+msgstr "Taustavärv:"
+
+#: ../data/avant-window-navigator.schema-ini.in.h:18
+msgid "Force monitor geometry."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:19
+msgid "Icon text color.  Leave empty to use gtk theme color."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:20
+msgid "Icon text outline color.  Leave empty to use gtk theme color."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:21
+msgid "If true, maximised windows will not cover the panel."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:22
+msgid "If true, the panel will expand to full monitor width/height."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:23
+#, fuzzy
+msgid "Internal border color."
+msgstr "Sisemine piirjoon:"
+
+#: ../data/avant-window-navigator.schema-ini.in.h:24
+#, fuzzy
+msgid "Main border color."
+msgstr "Peamine piirjoon:"
+
+#: ../data/avant-window-navigator.schema-ini.in.h:25
+msgid "Offset between the icons and their dialog."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:26
+msgid "Offset of the icons from window border."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:27
+msgid "Path to the current desktop file theme."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:28
+msgid "Path to the png containing the arrow icon."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:29
+msgid ""
+"Provides possibility to click on windows behind the panel. (0 - never click "
+"through, 1 - click through when holding CTRL, 2 - always click through and "
+"interact with panel only when holding CTRL)"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:30
+msgid "Reflection alpha as a multiple of the current alpha of the icon."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:31
+#, fuzzy
+msgid "Second gradient step color."
+msgstr "Teise sammu värv:"
+
+#: ../data/avant-window-navigator.schema-ini.in.h:32
+#, fuzzy
+msgid "Second highlight gradient step color."
+msgstr "Teise sammu värv:"
+
+#: ../data/avant-window-navigator.schema-ini.in.h:33
+#, fuzzy
+msgid "Separator color."
+msgstr "Eraldaja värv:"
+
+#: ../data/avant-window-navigator.schema-ini.in.h:34
+msgid "Show shadows for icons."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:35
+msgid "The active list UA Screenlets for this panel."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:36
+msgid "The angle of the panel in 3D mode."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:37
+msgid "The curviness of the panel in Curves mode."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:38
+msgid "The forced monitor height. Only used if monitor_force is true."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:39
+msgid "The forced monitor width. Only used if monitor_force is true."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:40
+msgid ""
+"The list of UA Screenlets that have been previous added in the form "
+"ScreeneletInstance::Position."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:41
+msgid "The list of applets for this panel ordered from ltr or ttb."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:42
+msgid "The list of panels."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:43
+msgid "The location of the pattern to draw."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:44
+msgid "The offset between the icon and it's reflection"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:45
+msgid "The opacity of the icons, from 0.0 to 1.0"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:46
+#, fuzzy
+msgid "The opacity of the pattern."
+msgstr "Luba muster"
+
+#: ../data/avant-window-navigator.schema-ini.in.h:47
+msgid "The symmetry of the curve in Curves mode."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:48
+msgid "The user-visible size of Awn."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:49
+msgid "Time in ms after which AwnIcon will emit long-press signal."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:50
+msgid "Whether to close dialogs on loss of focus."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:51
+msgid "Whether to use colors from the current Gtk theme."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.h:52
+msgid ""
+"width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
+"- 5.0."
+msgstr ""
+
 #: ../libawn/awn-applet.c:1002 ../src/awn-panel.c:583
 msgid "Dock Preferences"
 msgstr ""
@@ -306,50 +623,6 @@ msgstr ""
 #: ../themes/awn-default.desktop.in.h:1
 msgid "Default Theme"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Show windows from all workspaces"
-#~ msgstr "Näita aknaid kõigilt töölaudadelt"
-
-#, fuzzy
-#~ msgid "Background color for AwnDialog."
-#~ msgstr "Taustavärv:"
-
-#, fuzzy
-#~ msgid "Background color of the tooltip"
-#~ msgstr "Taustavärv:"
-
-#, fuzzy
-#~ msgid "Enable drawing of a pattern."
-#~ msgstr "Luba muster"
-
-#, fuzzy
-#~ msgid "First gradient step color."
-#~ msgstr "Esimese sammu värv:"
-
-#, fuzzy
-#~ msgid "First highlight gradient step color."
-#~ msgstr "Esimese sammu värv:"
-
-#, fuzzy
-#~ msgid "Internal border color."
-#~ msgstr "Sisemine piirjoon:"
-
-#, fuzzy
-#~ msgid "Main border color."
-#~ msgstr "Peamine piirjoon:"
-
-#, fuzzy
-#~ msgid "Second gradient step color."
-#~ msgstr "Teise sammu värv:"
-
-#, fuzzy
-#~ msgid "Second highlight gradient step color."
-#~ msgstr "Teise sammu värv:"
-
-#, fuzzy
-#~ msgid "Separator color."
-#~ msgstr "Eraldaja värv:"
 
 #~ msgid "<b>Active Icon</b>"
 #~ msgstr "<b>Aktiivne ikoon</b>"

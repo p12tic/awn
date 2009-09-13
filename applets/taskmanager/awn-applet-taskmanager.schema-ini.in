@@ -1,0 +1,91 @@
+# Task Manager configuration schema
+# ---------------------------------
+
+# schema metadata
+[DEFAULT]
+single_instance = true
+
+# configuration options
+# PLEASE KEEP THIS ALPHABETIZED!
+
+[DEFAULT/activate_behavior]
+type = integer
+default = 0
+_description=Behavior when window on a different workspace is activated. (0 for default, 1 - change active workspace, 2 - move to current workspace)
+
+[DEFAULT/attention_autohide_timer]
+type = integer
+default = 4
+_description=Number of seconds to inhibit autohide when a application requests attention. A value of 0 disables.
+
+[DEFAULT/disable_icon_changes]
+type = boolean
+default = true
+_description=Disables changing of panel icon when app indicates icon change.
+
+[DEFAULT/drag_and_drop]
+type = boolean
+default = false
+_description=Enable reordering of windows by drag and drop 
+
+[DEFAULT/drag_and_drop_hover_delay]
+type = integer
+default = 500
+_description=Delay before activating a window when dragging over an icon.
+
+[DEFAULT/desktop_copy]
+type = integer
+default = 1
+_description=Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. Copy if owned by user, 2.. Do not copy.
+
+[DEFAULT/enable_long_press]
+type = boolean
+default = false
+_description=Enable long press to open Dialog.
+
+[DEFAULT/grouping]
+type = boolean
+default = true
+_description=Enabling group of tasks.
+
+[DEFAULT/intellihide]
+type = boolean
+default = true
+_description=Intellihide if hide is enabled for the panel.  This will inhibit autohide of the panel if there are no intersecting windows in the relevant window list (see intellihide_mode).
+
+[DEFAULT/intellihide_mode]
+type = integer
+default = 1
+_description=How to generate the list of windows tested for intersection when Intellihide is active.  0.. use windows on active workspace, 1.. use windows of currently focused app.
+
+[DEFAULT/launcher_paths]
+type = list-string
+default = /usr/share/applications/firefox.desktop;
+_description=a list of paths to .desktop files from which the taskmanager should create it's launchers
+
+[DEFAULT/match_strength]
+type = integer
+default = 99
+_description=How radical matching is applied for grouping items. The value should be between 0 and 99. 0 is as good as no grouping. 99 will match almost everything.
+
+[DEFAULT/max_indicators]
+type = integer
+default = 3
+_description=Maximum number of task indicators to show under icons. Valid range is 0..3.
+
+[DEFAULT/only_show_launchers]
+type = boolean
+default = false
+_description=Only show and manager launcher windows
+
+[DEFAULT/show_all_windows]
+type = boolean
+default = true
+_description=Show windows from all workspaces
+
+[DEFAULT/txt_indicator_threshold]
+type = integer
+default = 4
+_description=The threshold at which text count begins to be displayed. valid range 1..
+
+# vim: set ft=cfg :

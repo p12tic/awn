@@ -61,7 +61,7 @@ desktopdir = $(pkgdatadir)/applets
 desktop_DATA = taskmanager.desktop
 @INTLTOOL_DESKTOP_RULE@
 
-schema_DATA = awn-applet-taskmanager.schema-ini
+schema_in_files = awn-applet-taskmanager.schema-ini.in
 
 install-data-local: install-gconf-schemas
 
@@ -71,5 +71,5 @@ BUILT_SOURCES = \
 	$(MARSHALFILES) \
 	$(NULL)
 
-EXTRA_DIST = $(desktop_DATA).in.in $(schema_DATA) $(DBUS_XML)
-CLEANFILES = $(desktop_DATA) $(schemas_in_files) $(schemas_DATA) $(BUILT_SOURCES)
+EXTRA_DIST = $(desktop_DATA).in.in $(schema_in_files) $(DBUS_XML)
+CLEANFILES = $(desktop_DATA) $(schema_DATA) $(schemas_DATA) $(BUILT_SOURCES)

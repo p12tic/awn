@@ -111,8 +111,8 @@ ALL_LINGUAS="af ar be bg bn bs ca csb cs da de el en_AU en_CA en_GB eo es et eu 
 IT_PROG_INTLTOOL([0.34])
 AM_GLIB_GNU_GETTEXT
 
-slicelocaledir='${prefix}/${DATADIRNAME}/locale'
-AC_SUBST(slicelocaledir)
+INTLTOOL_SCHEMA_INI_RULE='%.schema-ini:	%.schema-ini.in	$(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< [$]@'
+AC_SUBST(INTLTOOL_SCHEMA_INI_RULE)
 
 dnl ==============================================
 dnl Check that we meet the dependencies
@@ -198,7 +198,7 @@ awn-settings/awnSettings.py
 bindings/python/Makefile
 bindings/vala/Makefile
 data/Makefile
-data/avant-window-navigator.schema-ini
+data/avant-window-navigator.schema-ini.in
 doc/Makefile
 doc/reference/Makefile
 libawn/Makefile
