@@ -254,6 +254,11 @@ static void     on_manager_size_alloc       (GtkWidget      *manager,
                                              GtkAllocation  *alloc,
                                              AwnPanel       *panel);
 
+static gboolean on_window_state_event       (GtkWidget *widget,
+                                             GdkEventWindowState *event,
+                                             gpointer nul);
+
+
 static gboolean poll_mouse_position         (gpointer data);
 static gboolean awn_panel_expose            (GtkWidget      *widget, 
                                              GdkEventExpose *event);
@@ -510,7 +515,9 @@ awn_panel_constructed (GObject *object)
 
   g_signal_connect (panel, "composited-changed",
                     G_CALLBACK (on_composited_changed), NULL);
-
+  g_signal_connect (panel, "window-state-event",
+                    G_CALLBACK (on_window_state_event), NULL);
+  
   /* Contents */
   priv->manager = awn_applet_manager_new_from_config (priv->client);
   g_signal_connect_swapped (priv->manager, "applet-embedded",
@@ -1276,7 +1283,6 @@ static gboolean keep_below_start (AwnPanel *panel, gpointer data)
 {
   /* wow, setting keep_below makes the border appear and unsticks us */
   gtk_window_set_decorated (GTK_WINDOW (panel), FALSE);
-  gtk_window_stick (GTK_WINDOW (panel));
 
   gtk_window_set_keep_below (GTK_WINDOW (panel), TRUE);
 
@@ -1806,6 +1812,7 @@ awn_panel_new_from_config (DesktopAgnosticConfigClient *client)
 #ifdef DEBUG_INVALIDATION
   g_timeout_add (2000, debug_invalidating, NULL);
 #endif
+  
   return window;
 }
 
@@ -1832,6 +1839,29 @@ load_correct_colormap (GtkWidget *panel)
   }
 
   gtk_widget_set_colormap (panel, colormap);
+}
+
+/*
+ Window state has changed...  awn does a lot of things can trigger unwanted
+ state changes.
+ */
+static gboolean
+on_window_state_event (GtkWidget *widget,GdkEventWindowState *event,gpointer nul)
+{
+  /*
+   Have we just lost sticky?
+   */
+  if ( GDK_WINDOW_STATE_STICKY & event->changed_mask)
+  {
+    if ( ! (GDK_WINDOW_STATE_STICKY & event->new_window_state) )
+    {
+      /*
+       For whatever reason, sticky is gone.  We don't want that.
+       */
+      gtk_window_stick (GTK_WINDOW (widget));
+    }
+  }
+  return FALSE;
 }
 
 static void 

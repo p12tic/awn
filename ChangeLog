@@ -1,3 +1,12 @@
+2009-09-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* src/awn-panel.c:
+	Fixed loss of sticky.  This also seems to have fixed the
+	disappearing icons bug.  However, I am unable to test under
+	compiz, mhr3 has indicated sticky might cause issues with 
+	compiz.  If it does cause an issue then this will need to be
+	made into a config option.
+
 2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* .bzrignore:
