@@ -1787,7 +1787,7 @@
               </object>
             </child>
             <child type="label">
-              <object class="GtkLabel" id="label17">
+              <object class="GtkLabel" id="label1700">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">&lt;b&gt;Repositories&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
@@ -1799,7 +1799,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label18">
+          <object class="GtkLabel" id="label1800">
             <property name="visible">True</property>
             <property name="xalign">0.05000000074505806</property>
             <property name="label" translatable="yes">Paste the new source to add</property>
@@ -1811,7 +1811,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="hbox19">
+          <object class="GtkHBox" id="hbox1900">
             <property name="visible">True</property>
             <child>
               <object class="GtkEntry" id="add_repo_entry">
@@ -1867,7 +1867,7 @@
       <object class="GtkVBox" id="vbox18">
         <property name="visible">True</property>
         <child>
-          <object class="GtkLabel" id="label22">
+          <object class="GtkLabel" id="label2200">
             <property name="visible">True</property>
             <property name="label" translatable="yes">&lt;b&gt;The repositories are updated. Please wait.&lt;/b&gt;</property>
             <property name="use_markup">True</property>
@@ -1879,7 +1879,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="hbox20">
+          <object class="GtkHBox" id="hbox2000">
             <property name="visible">True</property>
             <child>
               <object class="GtkProgressBar" id="update_progress">
@@ -1917,7 +1917,7 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <child>
-      <object class="GtkVBox" id="vbox9">
+      <object class="GtkVBox" id="vbox900">
         <property name="visible">True</property>
         <child>
           <object class="GtkFrame" id="frame5">
@@ -1957,7 +1957,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHButtonBox" id="hbuttonbox1">
+          <object class="GtkHButtonBox" id="hbuttonbox1000">
             <property name="visible">True</property>
             <child>
               <object class="GtkButton" id="apply_theme">

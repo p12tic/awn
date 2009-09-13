@@ -1,3 +1,8 @@
+2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/awn-settings.ui:
+	Remove duplicate IDs.
+
 2009-09-12  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* src/awn-panel.c:
