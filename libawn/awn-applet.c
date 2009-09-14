@@ -1048,8 +1048,8 @@ _cleanup_about_dialog (GtkWidget *widget,
  * Returns: An "about applet" #GtkMenuItem
  */
 GtkWidget *
-awn_applet_create_about_item (AwnApplet					*applet,
-															const gchar       *copyright,
+awn_applet_create_about_item (AwnApplet         *applet,
+                              const gchar       *copyright,
                               AwnAppletLicense   license,
                               const gchar       *version,
                               const gchar       *comments,
@@ -1061,25 +1061,29 @@ awn_applet_create_about_item (AwnApplet					*applet,
                               const gchar      **artists,
                               const gchar      **documenters)
 {
-  g_return_val_if_fail (AWN_IS_APPLET (applet), NULL);	
-	
-  /* we could use  gtk_show_about_dialog()... but no. */
-  GtkAboutDialog* dialog = GTK_ABOUT_DIALOG (gtk_about_dialog_new ());
-  GtkWidget* item;
-  gchar* item_text = NULL;
-  GdkPixbuf* pixbuf =NULL;
-	/*Conditional Operator*/
-	gchar *applet_name = applet->priv->display_name?applet->priv->display_name:
-																									applet->priv->canonical_name;
+  g_return_val_if_fail (AWN_IS_APPLET (applet), NULL);
+  g_return_val_if_fail (copyright && strlen (copyright) > 8, NULL);
 
-  g_assert (copyright != NULL);
-  g_assert (strlen (copyright) > 8);
-  g_assert (applet_name);
-  if (copyright)
+  /* we could use  gtk_show_about_dialog()... but no. */
+  GtkAboutDialog *dialog = GTK_ABOUT_DIALOG (gtk_about_dialog_new ());
+  GtkWidget *item;
+  gchar *item_text = NULL;
+  GdkPixbuf *pixbuf = NULL;
+  gchar *applet_name;
+
+  if (applet->priv->display_name)
   {
-    gtk_about_dialog_set_copyright (dialog, copyright);
+    applet_name = applet->priv->display_name;
   }
-  switch (license)   /* FIXME insert more complete license info. */
+  else
+  {
+    applet_name = applet->priv->canonical_name;
+  }
+  g_return_val_if_fail (applet_name, NULL);
+
+  gtk_about_dialog_set_copyright (dialog, copyright);
+
+  switch (license) /* FIXME insert more complete license info. */
   {
     case AWN_APPLET_LICENSE_GPLV2:
       gtk_about_dialog_set_license (dialog, "GPLv2");
@@ -1097,12 +1101,9 @@ awn_applet_create_about_item (AwnApplet					*applet,
       g_warning ("License must be set");
       g_assert_not_reached ();
   }
-#if GTK_CHECK_VERSION(2,12,0)
-  if (applet_name)
-  {
-    gtk_about_dialog_set_program_name (dialog, applet_name);
-  }
-#endif
+
+  gtk_about_dialog_set_program_name (dialog, applet_name);
+
   if (version) /* FIXME we can probably append some addition build info in here... */
   {
     gtk_about_dialog_set_version (dialog, version);

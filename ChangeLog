@@ -1,5 +1,10 @@
 2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-applet.c (awn_applet_create_about_item):
+	Fix formatting.
+
+2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* bindings/vala/awn.metadata:
 	* bindings/vala/awn.vapi:
 	Fix the Vala binding for Applet.create_about_item().
