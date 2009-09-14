@@ -83,6 +83,7 @@ struct _TaskManagerPrivate
   GSList     *icons;
   GSList     *windows;
   GHashTable *win_table;
+  GHashTable *desktops_table;
 
   /* Properties */
   GValueArray *launcher_paths;
@@ -339,6 +340,8 @@ task_manager_constructed (GObject *object)
   priv = TASK_MANAGER_GET_PRIVATE (object);
   widget = GTK_WIDGET (object);
 
+  priv->desktops_table = g_hash_table_new_full (g_str_hash,g_str_equal,g_free,g_free);
+  
   priv->settings = task_settings_get_default ();
 
   priv->client = awn_config_get_default_for_applet (AWN_APPLET (object), NULL);
@@ -956,7 +959,7 @@ See note in util.c
  
  FIXME: cleanup.
  */
-static gboolean
+static gchar *
 task_icon_check_system_dir_for_desktop (TaskIcon *icon,
                                         gchar * system_dir, 
                                         gchar * name)
@@ -964,10 +967,11 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
   gchar * desktop;
   TaskItem     *launcher = NULL;
   GDir      * dir;
+  gchar     * result;
  
   if (check_if_blacklisted(name) )
   {
-    return FALSE;
+    return NULL;
   }
   desktop = g_strdup_printf ("%s%s.desktop",system_dir,name);
 //#define DEBUG
@@ -981,8 +985,7 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
     g_debug ("launcher %p",launcher);
 #endif
     task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
-    g_free (desktop);
-    return TRUE;
+    return desktop;
   }
   g_free (desktop);
   
@@ -996,11 +999,12 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
       gchar * new_path = g_strdup_printf ("%s%s/",system_dir,fname);      
       if ( g_file_test (new_path,G_FILE_TEST_IS_DIR) )
       {
-        if (task_icon_check_system_dir_for_desktop (icon,new_path,name))
+        result = task_icon_check_system_dir_for_desktop (icon,new_path,name);
+        if (result)
         {
           g_free (new_path);
           g_dir_close (dir);
-          return TRUE;
+          return result;
         }
       }
       else
@@ -1021,9 +1025,8 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
 #endif
             g_free (filename_lower);
             g_free (new_path);            
-            g_free (name_desktop);
             task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
-            return TRUE;
+            return name_desktop;
           }
         }
         g_free (name_desktop);        
@@ -1040,7 +1043,7 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
  TODO: refactor into a few smaller functions or possibly just clean up the logic
  with judicious use of goto.
  */
-static gboolean
+static gchar *
 find_desktop (TaskIcon *icon, gchar * name)
 {
   gchar * lower;
@@ -1051,6 +1054,7 @@ find_desktop (TaskIcon *icon, gchar * name)
   TaskItem     *launcher = NULL;
   gchar * name_stripped = NULL;
   const gchar * extensions[] = { ".py",".pl",".exe",NULL};
+  gchar * result;
   
   g_return_val_if_fail (name,FALSE);
   
@@ -1088,11 +1092,12 @@ find_desktop (TaskIcon *icon, gchar * name)
   for (iter = (GStrv)system_dirs; *iter; iter++)
   {
     gchar * applications_dir = g_strdup_printf ("%s/applications/",*iter);
-    if (task_icon_check_system_dir_for_desktop (icon,applications_dir,lower) )
+    result = task_icon_check_system_dir_for_desktop (icon,applications_dir,lower);
+    if (result)
     {
       g_free (lower);
       g_free (applications_dir);
-      return TRUE;
+      return result;
     }
     g_free (applications_dir);
   }
@@ -1115,18 +1120,18 @@ find_desktop (TaskIcon *icon, gchar * name)
     g_debug ("launcher %p",launcher);
 #endif
     task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
-    g_free (desktop);
     g_free  (lower);
-    return TRUE;
+    return desktop;
   }
   else
   {
     gchar * local_dir = g_strdup_printf ("%s/applications/",g_get_user_data_dir ());
-    if (task_icon_check_system_dir_for_desktop (icon,local_dir,lower) )
+    result = task_icon_check_system_dir_for_desktop (icon,local_dir,lower);
+    if (result)
     {
       g_free (local_dir);
       g_free (lower);
-      return TRUE;
+      return result;
     }
     g_free (local_dir);
   }
@@ -1144,11 +1149,12 @@ find_desktop (TaskIcon *icon, gchar * name)
     g_strfreev (tokens);    
     if (g_strcmp0 (stripped, name) !=0)
     {
-      if (find_desktop (icon,stripped) )
+      result = find_desktop (icon,stripped);
+      if (result)
       {
         g_free (lower);
         g_free (stripped);
-        return TRUE;
+        return result;
       }
     }  
     g_free (stripped);    
@@ -1164,7 +1170,7 @@ find_desktop (TaskIcon *icon, gchar * name)
  of Exec to the cmd... if they don't match then the desktop file match will
  be discarded.
  */
-static gboolean
+static gchar *
 find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
 {
   gchar * lower;
@@ -1175,7 +1181,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   TaskItem     *launcher = NULL;
   gchar ** tokens;
   
-  g_return_val_if_fail (class_name,FALSE);
+  g_return_val_if_fail (class_name,NULL);
   lower = g_utf8_strdown (class_name, -1);
   
 //#define DEBUG 1
@@ -1184,7 +1190,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   g_debug ("%s: lower = %s",__func__,lower);
 #endif      
 
-  g_return_val_if_fail (strlen (lower),FALSE);
+  g_return_val_if_fail (strlen (lower),NULL);
   /*
    TODO compile the regex
    */
@@ -1195,7 +1201,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
     g_debug ("%s: desktop regex = %s",__func__,desktop_regex_str);
 #endif      
   g_free (desktop_regex_str);
-  g_return_val_if_fail (desktop_regex,FALSE);
+  g_return_val_if_fail (desktop_regex,NULL);
   
   for (iter = (GStrv)system_dirs; *iter; iter++)
   {
@@ -1275,7 +1281,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
                 g_free (exec);
                 g_free (lower);
                 g_free (cmd_base);
-                return TRUE;
+                return full_path;
               }
             }
             g_free (cmd_base);              
@@ -1295,15 +1301,15 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   g_free (lower);  
   if (tokens && tokens[0] && tokens[1] )
   {
-    gboolean result = find_desktop_fuzzy (icon, tokens[0], cmd);
+    gchar * result = find_desktop_fuzzy (icon, tokens[0], cmd);
     g_strfreev (tokens);
     if (result)
     {
-      return TRUE;
+      return result;
     }
   }
   
-  return FALSE;
+  return NULL;
 //#undef DEBUG
   
 }
@@ -1313,11 +1319,11 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
  typically get called which use tables of data to match problem apps to 
  desktop file names (refer to util.c)
  */
-static gboolean
+static gchar *
 find_desktop_special_case (TaskIcon *icon, gchar * cmd, gchar *res_name, 
                                  gchar * class_name,const gchar *title)
 {
-  gboolean result = FALSE;
+  gchar * result = NULL;
   GSList * desktops = get_special_desktop_from_window_data (cmd,
                                                                   res_name,
                                                                   class_name,
@@ -1344,6 +1350,32 @@ find_desktop_special_case (TaskIcon *icon, gchar * cmd, gchar *res_name,
   return result;
 }
 
+static gchar *
+search_desktop_cache (TaskManager * manager, TaskIcon * icon,gchar * class_name, 
+                      gchar * res_name, gchar * cmd)
+{
+  TaskManagerPrivate *priv;
+  gchar * key;
+  gchar * desktop_path;
+  TaskItem *launcher = NULL;
+  
+  priv = manager->priv;
+  key = g_strdup_printf("%s::%s::%s",class_name,res_name,cmd);
+  desktop_path = g_hash_table_lookup (priv->desktops_table,key);
+
+  if (desktop_path)
+  {
+    launcher = get_launcher (desktop_path);
+    g_free (desktop_path);
+    if (launcher)
+    {
+      task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);      
+      return desktop_path;
+    }
+  }
+  return NULL;
+}
+
 static void
 process_window_opened (WnckWindow    *window,
                   TaskManager   *manager)
@@ -1359,7 +1391,7 @@ process_window_opened (WnckWindow    *window,
   TaskIcon *match      = NULL;
   gint match_score     = 0;
   gint max_match_score = 0;
-  gboolean            found_desktop = FALSE;
+  gchar*             found_desktop = FALSE;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   g_return_if_fail (WNCK_IS_WINDOW (window));
@@ -1492,6 +1524,8 @@ process_window_opened (WnckWindow    *window,
       g_debug ("%s: class name  = %s, res name = %s",__func__,class_name,res_name);
 #endif      
     
+    found_desktop = search_desktop_cache (manager,TASK_ICON(icon),class_name,res_name,cmd_basename);
+    
 /*
      Possible TODO:
      Check for saved signature.
@@ -1514,70 +1548,79 @@ process_window_opened (WnckWindow    *window,
      Class name may eventually be shown to give a false positive for something.
      
      */
-    
-    if (res_name && strlen (res_name))
+    if (!found_desktop)
     {
-      found_desktop = find_desktop (TASK_ICON(icon), res_name);
-    }
+      if (res_name && strlen (res_name))
+      {
+        found_desktop = find_desktop (TASK_ICON(icon), res_name);
+      }
 
-    if (!found_desktop && class_name && strlen (class_name))
-    {
-      found_desktop = find_desktop (TASK_ICON(icon), class_name);
-    }    
-    /*This _may_ result in unacceptable false positives.  Testing.*/
-    if (!found_desktop && full_cmd && strlen (full_cmd))
-    {
-      #ifdef DEBUG
-      g_debug ("%s:  full cmd = '%s'",__func__,full_cmd);
-      #endif
-      found_desktop = find_desktop (TASK_ICON(icon), full_cmd);
+      if (!found_desktop && class_name && strlen (class_name))
+      {
+        found_desktop = find_desktop (TASK_ICON(icon), class_name);
+      }    
+      /*This _may_ result in unacceptable false positives.  Testing.*/
+      if (!found_desktop && full_cmd && strlen (full_cmd))
+      {
+        #ifdef DEBUG
+        g_debug ("%s:  full cmd = '%s'",__func__,full_cmd);
+        #endif
+        found_desktop = find_desktop (TASK_ICON(icon), full_cmd);
+      }
+      if (!found_desktop && cmd && strlen (cmd))
+      {
+        #ifdef DEBUG
+        g_debug ("%s:  cmd = '%s'",__func__,cmd);
+        #endif
+        found_desktop = find_desktop (TASK_ICON(icon), cmd);
+      }
+      
+      if (!found_desktop && full_cmd && strlen (full_cmd) )
+      {
+        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, full_cmd);
+      }
+      if (!found_desktop && cmd && strlen (cmd))
+      {
+        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
+      }
+      if (!found_desktop && full_cmd && strlen (full_cmd) )
+      {
+        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),res_name, full_cmd);
+      }
+      if (!found_desktop && cmd && strlen (cmd))
+      {
+        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),res_name, cmd);
+      }
+      
+      if (!found_desktop && cmd_basename && strlen (cmd_basename) )
+      {
+        found_desktop = find_desktop (TASK_ICON(icon), cmd_basename);
+      }
+      
+      if (!found_desktop)
+      {
+        found_desktop = find_desktop_special_case (TASK_ICON(icon),full_cmd,res_name,
+                                                   class_name,
+                                                   wnck_window_get_name (window));
+      }
+      if (!found_desktop)
+      {
+        found_desktop = find_desktop_special_case (TASK_ICON(icon),cmd,res_name,
+                                                   class_name,
+                                                   wnck_window_get_name (window));
+      }
+      if (found_desktop)
+      {
+        gchar * key = g_strdup_printf("%s::%s::%s",class_name,res_name,cmd_basename);
+        g_hash_table_insert (priv->desktops_table, key,found_desktop);
+      }
     }
-    if (!found_desktop && cmd && strlen (cmd))
-    {
-      #ifdef DEBUG
-      g_debug ("%s:  cmd = '%s'",__func__,cmd);
-      #endif
-      found_desktop = find_desktop (TASK_ICON(icon), cmd);
-    }
-    
-    if (!found_desktop && full_cmd && strlen (full_cmd) )
-    {
-      found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, full_cmd);
-    }
-    if (!found_desktop && cmd && strlen (cmd))
-    {
-      found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
-    }
-    if (!found_desktop && full_cmd && strlen (full_cmd) )
-    {
-      found_desktop = find_desktop_fuzzy (TASK_ICON(icon),res_name, full_cmd);
-    }
-    if (!found_desktop && cmd && strlen (cmd))
-    {
-      found_desktop = find_desktop_fuzzy (TASK_ICON(icon),res_name, cmd);
-    }
-    
-    if (!found_desktop && cmd_basename && strlen (cmd_basename) )
-    {
-      found_desktop = find_desktop (TASK_ICON(icon), cmd_basename);
-    }
-    
-    if (!found_desktop)
-    {
-      found_desktop = find_desktop_special_case (TASK_ICON(icon),full_cmd,res_name,
-                                                 class_name,
-                                                 wnck_window_get_name (window));
-    }
-    if (!found_desktop)
-    {
-      found_desktop = find_desktop_special_case (TASK_ICON(icon),cmd,res_name,
-                                                 class_name,
-                                                 wnck_window_get_name (window));
-    }
+      
 /*
      Possible TODO
      if found and signature has not already been saved then save it.
 */
+    
     g_free (full_cmd);
     g_free (cmd);     
     g_free (class_name);
