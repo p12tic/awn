@@ -1,5 +1,8 @@
 Awn cprefix="Awn" lower_case_cprefix="awn_" cheader_filename="libawn/libawn.h"
 
+AwnAppletSimple::context_menu_popup.event namespace_name="Gdk" type_name="EventButton"
+AwnIcon::context_menu_popup.event namespace_name="Gdk" type_name="EventButton"
+
 awn_cairo_pattern_add_color_stop_color hidden="1"
 awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier hidden="1"
 awn_cairo_rounded_rect hidden="1"

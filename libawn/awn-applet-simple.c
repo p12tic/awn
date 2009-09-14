@@ -242,6 +242,14 @@ awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
       g_cclosure_marshal_VOID__VOID,
       G_TYPE_NONE, 0);
 
+  /**
+   * AwnAppletSimple::context-menu-popup:
+   * @applet: the object which received the signal.
+   * @event: the #GdkEventButton which triggered this signal.
+   *
+   * The ::context-menu-popup signal will be emitted when right mouse button
+   * is pressed on the icon.
+   */
   _simple_signals[MENU_POPUP] =
     g_signal_new ("context-menu-popup",
       G_OBJECT_CLASS_TYPE (obj_class),

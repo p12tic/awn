@@ -1350,8 +1350,8 @@
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="icon" type="AwnThemedIcon*"/>
-					<parameter name="icon_name" type="gchar*"/>
 					<parameter name="state" type="gchar*"/>
+					<parameter name="icon_name" type="gchar*"/>
 				</parameters>
 			</method>
 			<method name="set_info_simple" symbol="awn_themed_icon_set_info_simple">

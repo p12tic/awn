@@ -129,7 +129,7 @@ namespace Awn {
 		public void set_progress (float progress);
 		public void set_tooltip_text (string text);
 		public virtual signal void clicked ();
-		public virtual signal void context_menu_popup (Gdk.Event event);
+		public virtual signal void context_menu_popup (Gdk.EventButton event);
 		public virtual signal void long_press ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
@@ -288,7 +288,7 @@ namespace Awn {
 		[NoAccessorMethod]
 		public int long_press_timeout { get; set construct; }
 		public virtual signal void clicked ();
-		public virtual signal void context_menu_popup (Gdk.Event event);
+		public virtual signal void context_menu_popup (Gdk.EventButton event);
 		public virtual signal void long_press ();
 		public virtual signal void size_changed ();
 	}
@@ -459,7 +459,7 @@ namespace Awn {
 		public void preload_icon (string state, int size);
 		public void set_applet_info (string applet_name, string uid);
 		public void set_info (string applet_name, string uid, string[] states, string[] icon_names);
-		public void set_info_append (string icon_name, string state);
+		public void set_info_append (string state, string icon_name);
 		public void set_info_simple (string applet_name, string uid, string icon_name);
 		public void set_size (int size);
 		public void set_state (string state);
