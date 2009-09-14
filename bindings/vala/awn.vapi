@@ -53,7 +53,7 @@ namespace Awn {
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class Applet : Gtk.Plug, Atk.Implementor, Gtk.Buildable {
-		public unowned Gtk.Widget create_about_item (string copyright, Awn.AppletLicense license, string version, string comments, string website, string website_label, string icon_name, string translator_credits, string authors, string artists, string documenters);
+		public unowned Gtk.Widget create_about_item (string copyright, Awn.AppletLicense license, string version, string? comments, string? website, string? website_label, string? icon_name, string? translator_credits, [CCode (array_length = false)] string[]? authors, [CCode (array_length = false)] string[]? artists, [CCode (array_length = false)] string[]? documenters);
 		public unowned Gtk.Widget create_about_item_simple (string copyright, Awn.AppletLicense license, string version);
 		public unowned Gtk.Widget create_default_menu ();
 		public static unowned Gtk.Widget create_pref_item ();

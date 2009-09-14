@@ -1,5 +1,11 @@
 2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	Fix the Vala binding for Applet.create_about_item().
+
+2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* awn-settings/awn-plugins.svg:
 	* awn-settings/awn-settings-small.svg:
 	* awn-settings/awn-settings.svg:

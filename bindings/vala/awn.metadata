@@ -19,3 +19,12 @@ awn_utils_make_transparent_bg hidden="1"
 
 AwnOverlayProgress abstract="1"
 AwnAppletInitPFunc value_owned="1"
+
+awn_applet_create_about_item.comments nullable="1"
+awn_applet_create_about_item.website nullable="1"
+awn_applet_create_about_item.website_label nullable="1"
+awn_applet_create_about_item.icon_name nullable="1"
+awn_applet_create_about_item.translator_credits nullable="1"
+awn_applet_create_about_item.authors is_array="1" array_null_terminated="1" nullable="1"
+awn_applet_create_about_item.artists is_array="1" array_null_terminated="1" nullable="1"
+awn_applet_create_about_item.documenters is_array="1" array_null_terminated="1" nullable="1"
