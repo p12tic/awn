@@ -372,6 +372,7 @@ class awnBzr(gobject.GObject):
                         'panel_angle':'',
                 }
 
+        struct['gtk_theme_mode'] = [False, defs.THEME, defs.GTK_THEME_MODE]
 
         desktop_entry = DesktopEntry(file_path)
         struct['type'] = desktop_entry.get('X-AWN-Type')
@@ -453,18 +454,23 @@ class awnBzr(gobject.GObject):
         if struct['type'] == 'Theme':
             #Read the settings
             try:
-                if not struct[parameter][0] == '':
+                if not isinstance(struct[parameter], list): return
+                if struct[parameter][0] is not '':
                     if type(struct[parameter][0]) is int:
                         self.client.set_int(struct[parameter][1],
-                                                struct[parameter][2],
-                                                struct[parameter][0])
+                                            struct[parameter][2],
+                                            struct[parameter][0])
                     elif type(struct[parameter][0]) is float:
                         self.client.set_float(struct[parameter][1],
-                                                struct[parameter][2],
-                                                struct[parameter][0])
+                                              struct[parameter][2],
+                                              struct[parameter][0])
+                    elif type(struct[parameter][0]) is bool:
+                        self.client.set_bool(struct[parameter][1],
+                                             struct[parameter][2],
+                                             struct[parameter][0])
                     else: self.client.set_string(struct[parameter][1],
-                                                    struct[parameter][2],
-                                                    struct[parameter][0])
+                                                 struct[parameter][2],
+                                                 struct[parameter][0])
             except IndexError:
                 # The key is not in the desktop file, just skip it.
                 pass

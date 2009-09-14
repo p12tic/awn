@@ -208,6 +208,7 @@ shave/shave-libtool
 src/Makefile
 tests/Makefile
 themes/Makefile
+themes/awn-default.desktop
 ])
 
 dnl ========================================================================

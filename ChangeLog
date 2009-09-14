@@ -1,3 +1,13 @@
+2009-09-15  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* configure.in:
+	* themes/awn-default.desktop.in:
+	Update the theme keys to reflect the default, and make the theme
+	choosing in awn-settings work, though it could use complete rewrite,
+	why do we abuse desktop file for theme settings? How about some 
+	ini or xml?
+
 2009-09-14  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/vala/awn.gi:
