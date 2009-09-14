@@ -1,6 +1,11 @@
 2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-applet.c (awn_applet_create_about_item):
+	Avoid a potential critical message.
+
+2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-applet.c (awn_applet_create_about_item):
 	Fix formatting.
 
 2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>

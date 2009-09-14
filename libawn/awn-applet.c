@@ -1127,8 +1127,11 @@ awn_applet_create_about_item (AwnApplet         *applet,
   gtk_about_dialog_set_logo_icon_name (dialog, icon_name);
   pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
                                      icon_name, 64, 0, NULL);
-  gtk_window_set_icon (GTK_WINDOW (dialog), pixbuf);
-  g_object_unref (pixbuf);
+  if (pixbuf)
+  {
+    gtk_window_set_icon (GTK_WINDOW (dialog), pixbuf);
+    g_object_unref (pixbuf);
+  }
 
   if (translator_credits)
   {
