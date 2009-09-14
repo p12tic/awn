@@ -1,3 +1,8 @@
+2009-09-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	Change also clickthrough type when changing Behaviour.
+
 2009-09-14  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/applet.c:

@@ -221,17 +221,17 @@ class awnPreferencesMini(awnPreferences):
         self.choose_behavior = self.wTree.get_object("behaviorcombo")
 
         def refresh_behaviour(*args):
-            behaviour = (self.panel_mode, self.autohide_type)
+            behaviour = (self.panel_mode, self.autohide_type, self.clickthrough)
             new_active = 5
-            if behaviour == (False, 0):
+            if behaviour == (False, 0, 1):
                 new_active = 0
-            elif behaviour == (True, 0):
+            elif behaviour == (True, 0, 0):
                 new_active = 1
-            elif behaviour == (False, 1):
+            elif behaviour == (False, 1, 0):
                 new_active = 2
-            elif behaviour == (False, 2):
+            elif behaviour == (False, 2, 0):
                 new_active = 3
-            elif behaviour == (False, 3):
+            elif behaviour == (False, 3, 0):
                 new_active = 4
 
             if (self.choose_behavior.get_active() != new_active):
@@ -240,26 +240,36 @@ class awnPreferencesMini(awnPreferences):
         def choose_behavior_callback(widget, *args):
             if widget.get_active() == 0:
                 if self.panel_mode: self.panel_mode = False
+                if self.clickthrough == 0: self.clickthrough = 1
                 self.autohide_type = 0
             elif widget.get_active() == 1:
                 if not self.panel_mode: self.panel_mode = True
+                if self.clickthrough != 0: self.clickthrough = 0
                 self.autohide_type = 0
             elif widget.get_active() == 2:
                 if self.panel_mode: self.panel_mode = False
+                if self.clickthrough != 0: self.clickthrough = 0
                 self.autohide_type = 1
             elif widget.get_active() == 3:
                 if self.panel_mode: self.panel_mode = False
+                if self.clickthrough != 0: self.clickthrough = 0
                 self.autohide_type = 2
             elif widget.get_active() == 4:
                 if self.panel_mode: self.panel_mode = False
+                if self.clickthrough != 0: self.clickthrough = 0
                 self.autohide_type = 3
 
-        self.connect("notify::panel-mode", refresh_behaviour)
-        self.connect("notify::autohide-type", refresh_behaviour)
         self.client.bind (defs.PANEL, defs.PANEL_MODE, self, "panel-mode",
                           False, config.BIND_METHOD_FALLBACK)
         self.client.bind (defs.PANEL, defs.AUTOHIDE, self, "autohide-type",
                           False, config.BIND_METHOD_FALLBACK)
+        # clickthough is already bound
+
+        self.connect("notify::panel-mode", refresh_behaviour)
+        self.connect("notify::autohide-type", refresh_behaviour)
+        self.connect("notify::clickthrough", refresh_behaviour)
+
+        refresh_behaviour()
 
         self.choose_behavior.connect("changed", choose_behavior_callback)
 
