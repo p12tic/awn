@@ -1,3 +1,9 @@
+2009-09-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/applet.c:
+	Add a wnck_screen_force_update() on init to provide 
+	more consistent appearance of launcher/icons on start.
+
 2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-applet.c (awn_applet_create_about_item):

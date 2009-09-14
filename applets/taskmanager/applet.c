@@ -21,6 +21,7 @@
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
+#include <libwnck/libwnck.h>
 
 #include "task-manager.h"
 #include "task-manager-api-wrapper.h"
@@ -109,5 +110,6 @@ awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
                                          old_manager);
   }
 
+  wnck_screen_force_update (wnck_screen_get_default());
   return applet;
 }
