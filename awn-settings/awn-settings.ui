@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <interface>
   <!-- interface-requires gtk+ 2.12 -->
-  <!-- interface-naming-policy toplevel-contextual -->
+  <!-- interface-requires desktop-agnostic 0.4 -->
+  <!-- interface-naming-policy project-wide -->
   <object class="GtkAdjustment" id="adjustment1">
     <property name="value">6</property>
     <property name="upper">100</property>
@@ -1920,7 +1921,7 @@
       <object class="GtkVBox" id="vbox900">
         <property name="visible">True</property>
         <child>
-          <object class="GtkFrame" id="frame5">
+          <object class="GtkFrame" id="frame2">
             <property name="visible">True</property>
             <property name="label_xalign">0</property>
             <property name="shadow_type">none</property>
@@ -1945,7 +1946,7 @@
               </object>
             </child>
             <child type="label">
-              <object class="GtkLabel" id="label21">
+              <object class="GtkLabel" id="label27">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">&lt;b&gt;List of themes&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
@@ -1999,12 +2000,12 @@
   </object>
   <object class="GtkSizeGroup" id="sizegroup1">
     <widgets>
-      <widget name="hbox2"/>
-      <widget name="orientationcombo"/>
-      <widget name="stylecombo"/>
-      <widget name="iconeffects"/>
-      <widget name="behaviorcombo"/>
       <widget name="monitor_align_hscale"/>
+      <widget name="behaviorcombo"/>
+      <widget name="iconeffects"/>
+      <widget name="stylecombo"/>
+      <widget name="orientationcombo"/>
+      <widget name="hbox2"/>
     </widgets>
   </object>
 </interface>
