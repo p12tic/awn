@@ -3,6 +3,16 @@
 	* src/awn-panel.c:
 	Fixed sticky for openbox.
 
+	* applets/taskmanager/task-icon.c:
+	Fix various drag and drop issues.
+
+	* applets/taskmanager/task-manager.c:
+	Fixed up crash with the memory cache.	
+
+	* libawn/awn-overlay-pixbuf.c:
+	Potential fix for Pixbuf Overlay issue when
+	pixbuf is not square.
+
 2009-09-15  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awn-settings.ui:
