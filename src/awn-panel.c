@@ -114,6 +114,8 @@ struct _AwnPanelPrivate
   /* autohide stuff */
   gint hide_counter;
   guint hiding_timer_id;
+  guint withdraw_timer_id;
+  gint withdraw_redraw_timer;
 
   guint autohide_start_timer_id;
   gboolean autohide_started;
@@ -255,9 +257,7 @@ static void     on_manager_size_alloc       (GtkWidget      *manager,
                                              AwnPanel       *panel);
 
 static gboolean on_window_state_event       (GtkWidget *widget,
-                                             GdkEventWindowState *event,
-                                             gpointer nul);
-
+                                             GdkEventWindowState *event);
 
 static gboolean poll_mouse_position         (gpointer data);
 static gboolean awn_panel_expose            (GtkWidget      *widget, 
@@ -1275,6 +1275,7 @@ alpha_blend_end (AwnPanel *panel, gpointer data)
   {
     position_window (panel);
     gtk_widget_show (GTK_WIDGET (panel));
+    
   }
 }
 
@@ -1842,11 +1843,45 @@ load_correct_colormap (GtkWidget *panel)
 }
 
 /*
+ * This weird function tries to workaround an X(?) bug where the composited
+ * child windows do not repaint properly after calling gtk_widget_show().
+ * Affects only fade-out autohide type.
+ */
+static gboolean
+awn_panel_schedule_redraw (gpointer user_data)
+{
+  GtkWidget *widget = (GtkWidget*)user_data;
+
+  g_return_val_if_fail (AWN_IS_PANEL (widget), FALSE);
+
+  AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (widget);
+
+  gdk_window_invalidate_rect (priv->eventbox->window,
+                              (GdkRectangle*)&priv->eventbox->allocation,
+                              TRUE);
+
+  // increase the timer in every step
+  switch (priv->withdraw_redraw_timer)
+  {
+    case 0: priv->withdraw_redraw_timer = 50; break;
+    case 50: priv->withdraw_redraw_timer = 150; break;
+    case 150: priv->withdraw_redraw_timer = 350; break;
+    default: priv->withdraw_redraw_timer = 0; break;
+  }
+
+  priv->withdraw_timer_id = priv->withdraw_redraw_timer == 0 ? 0 :
+    g_timeout_add (priv->withdraw_redraw_timer, awn_panel_schedule_redraw,
+                   widget);
+
+  return FALSE;
+}
+
+/*
  Window state has changed...  awn does a lot of things can trigger unwanted
  state changes.
  */
 static gboolean
-on_window_state_event (GtkWidget *widget,GdkEventWindowState *event,gpointer nul)
+on_window_state_event (GtkWidget *widget, GdkEventWindowState *event)
 {
   /*
    Have we just lost sticky?
@@ -1863,6 +1898,19 @@ on_window_state_event (GtkWidget *widget,GdkEventWindowState *event,gpointer nul
      For whatever reason, sticky is gone.  We don't want that.
      */
     gtk_window_stick (GTK_WINDOW (widget));
+  }
+
+  if (GDK_WINDOW_STATE_WITHDRAWN & event->changed_mask)
+  {
+    if ( ! (GDK_WINDOW_STATE_WITHDRAWN & event->new_window_state))
+    {
+      AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (widget);
+      if (priv->withdraw_timer_id == 0 && priv->composited)
+      {
+        priv->withdraw_timer_id =
+          g_idle_add (awn_panel_schedule_redraw, widget);
+      }
+    }
   }
   return FALSE;
 }
