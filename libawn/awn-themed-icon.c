@@ -258,6 +258,7 @@ get_awn_theme(void)
  scope probably isn't necessary... if the theme_name is always provided.
  */
 static  GHashTable *pixbufs;    /*our pixbuf cache*/
+static  int  cache_sentinel = 0;
 
 static void
 add_pixbuf_to_cache (GdkPixbuf * pixbuf,const gchar * scope, 
@@ -310,6 +311,10 @@ lookup_pixbuf (const gchar * scope, const gchar * theme_name,
 static void
 invalidate_pixbuf_cache(void)
 {
+  if (cache_sentinel)
+  {
+    return;
+  } 
   if (pixbufs)
   {
     g_hash_table_remove_all (pixbufs);
@@ -378,7 +383,7 @@ awn_themed_icon_dispose (GObject *object)
 
   g_return_if_fail (AWN_IS_THEMED_ICON (object));
   priv = AWN_THEMED_ICON (object)->priv;
-  
+
   if (priv->sig_id_for_awn_theme)
   {
     g_signal_handler_disconnect (priv->awn_theme,priv->sig_id_for_awn_theme);
@@ -426,7 +431,7 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
   GParamSpec   *pspec;        
-  
+
   obj_class->get_property = awn_themed_icon_get_property;
   obj_class->set_property = awn_themed_icon_set_property;
   obj_class->dispose = awn_themed_icon_dispose;
@@ -527,6 +532,7 @@ copy_over_error:
 static void 
 check_dest_or_copy (const gchar *src, const gchar *dest)
 {
+
   if (g_file_test (dest, G_FILE_TEST_EXISTS))
     return;
   copy_over (src,dest);
@@ -535,6 +541,7 @@ check_dest_or_copy (const gchar *src, const gchar *dest)
 static void
 check_and_make_dir (const gchar *dir)
 {
+
   if (!g_file_test (dir, G_FILE_TEST_EXISTS))
   {
     g_mkdir (dir, 0755);
@@ -564,7 +571,6 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   priv->gtk_theme = gtk_icon_theme_get_default ();
   priv->sig_id_for_gtk_theme = g_signal_connect (priv->gtk_theme, "changed", 
                     G_CALLBACK (on_icon_theme_changed), icon);
-  
   /*Calling this with the default icon theme (which contains hicolor dirs)
    to supress an irritating gtk warning that occurs if the first time we try 
    to get a themed icon a GtkIconTheme is used that does not contain
@@ -1022,7 +1028,7 @@ awn_themed_icon_preload_all (AwnThemedIcon * icon)
 {
   AwnThemedIconPrivate *priv;  
   GList *iter;
-  
+
   priv = icon->priv;
   /*preload these icons */
   for (iter = priv->list; iter ; iter = g_list_next (iter) )
@@ -1118,7 +1124,7 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
   gint  n_states;
   gint  i;
   gchar * state = NULL;
-  
+
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
   g_return_if_fail (applet_name);
   g_return_if_fail (uid);
@@ -1186,12 +1192,14 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
 
     /* Add the applet's system-wide icon dir first */ 
     search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", applet_name);
+    cache_sentinel++; /*don't invalidate the pixbuf cache*/
     gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
     g_free (search_dir);
 
     search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/themes", applet_name);
     
     gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
+    cache_sentinel--; /*unprotect the pixbuf cache*/    
     g_free (search_dir); 
   }
   if (state)
@@ -1325,7 +1333,7 @@ awn_themed_icon_set_applet_info (AwnThemedIcon  *icon,
 {
   AwnThemedIconPrivate *priv;
   priv = icon->priv;
-  
+
   g_free (priv->uid);
   priv->uid = g_strdup (uid);
 
@@ -1343,11 +1351,13 @@ awn_themed_icon_set_applet_info (AwnThemedIcon  *icon,
 
     /* Add the applet's system-wide icon dir first */
     search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", applet_name);
+    cache_sentinel++; /*don't invalidate the pixbuf cache*/
     gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
     g_free (search_dir);
 
     search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/themes", applet_name);
     gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
+    cache_sentinel--; /*unprotect the cache*/    
     g_free (search_dir); 
   }  
 }
@@ -1464,7 +1474,7 @@ awn_themed_icon_get_icon_at_size (AwnThemedIcon *icon,
   g_return_val_if_fail (AWN_IS_THEMED_ICON (icon), NULL);
   priv = icon->priv;
   g_return_val_if_fail (priv->list,NULL);
-  
+
   return get_pixbuf_at_size (icon, size, state);
 }
 
@@ -1480,6 +1490,7 @@ awn_themed_icon_get_default_theme_name (AwnThemedIcon *icon)
 {
   AwnThemedIconPrivate *priv;
   g_return_val_if_fail (AWN_IS_THEMED_ICON (icon), NULL);
+
   priv = icon->priv;
   g_return_val_if_fail (priv->gtk_theme, NULL);
   return priv->gtk_theme->priv->current_theme;
@@ -1625,6 +1636,7 @@ awn_themed_icon_preload_icon (AwnThemedIcon * icon, gchar * state, gint size)
 GtkIconTheme *
 awn_themed_icon_get_awn_theme (AwnThemedIcon * icon)
 {
+
   /*for the sake of bindings*/
   return get_awn_theme();  
 }
@@ -1636,6 +1648,7 @@ on_icon_theme_changed (GtkIconTheme *theme, AwnThemedIcon *icon)
 {
   AwnThemedIconPrivate *priv;  
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
+
   priv = icon->priv;
   invalidate_pixbuf_cache ();
   ensure_icon (icon);

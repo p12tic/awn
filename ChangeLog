@@ -1,3 +1,9 @@
+2009-09-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Don't invalidate the pixbuf cache when a new AwnThemedIcon
+	is created.
+
 2009-09-15  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-drag-indicator.c:
