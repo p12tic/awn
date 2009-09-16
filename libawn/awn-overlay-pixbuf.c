@@ -266,10 +266,16 @@ _awn_overlay_pixbuf_render (AwnOverlay* _overlay,
   cairo_save (cr);
   pixbuf_width = gdk_pixbuf_get_width (priv->pixbuf);
   pixbuf_height = gdk_pixbuf_get_height (priv->pixbuf);
- 
-  scaled_width = lround (icon_width * priv->scale);  
-  scaled_height = lround (pixbuf_height * scaled_width / pixbuf_width);
 
+  scaled_width = lround (icon_width * priv->scale);  
+  scaled_height = lround (pixbuf_height * (scaled_width / (gdouble)icon_width) );
+
+  if ( (scaled_height / (gdouble) icon_height) > priv->scale)
+  {
+    scaled_height = lround (icon_height * priv->scale);
+    scaled_width = lround (pixbuf_width * (scaled_height / (gdouble) icon_height));
+  }
+  
   /* Why do we do this?  Well the gdk pixbuf scaling gives a better result than
    the cairo scaling when dealing with a source pixbuf */
   if ( !priv->scaled_pixbuf || (scaled_width != gdk_pixbuf_get_width (priv->scaled_pixbuf) ) || 

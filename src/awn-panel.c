@@ -1851,15 +1851,18 @@ on_window_state_event (GtkWidget *widget,GdkEventWindowState *event,gpointer nul
   /*
    Have we just lost sticky?
    */
-  if ( GDK_WINDOW_STATE_STICKY & event->changed_mask)
+
+  /*
+   It would be nice to check event->changed_mask to see if STICKY changed but
+   we don't get the initail state change signal when we set sticky in at least
+   one WM (openbox).
+   */
+  if ( ! (GDK_WINDOW_STATE_STICKY & event->new_window_state) )
   {
-    if ( ! (GDK_WINDOW_STATE_STICKY & event->new_window_state) )
-    {
-      /*
-       For whatever reason, sticky is gone.  We don't want that.
-       */
-      gtk_window_stick (GTK_WINDOW (widget));
-    }
+    /*
+     For whatever reason, sticky is gone.  We don't want that.
+     */
+    gtk_window_stick (GTK_WINDOW (widget));
   }
   return FALSE;
 }

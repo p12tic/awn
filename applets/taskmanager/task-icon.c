@@ -392,6 +392,9 @@ task_icon_finalize (GObject *object)
                           G_CALLBACK (theme_changed_cb),object);
   g_signal_handlers_disconnect_by_func (wnck_screen_get_default(),
                           G_CALLBACK(window_closed_cb),object);  
+  g_signal_handlers_disconnect_by_func (priv->applet,
+                                        G_CALLBACK(size_changed_cb), object);
+ 
   G_OBJECT_CLASS (task_icon_parent_class)->finalize (object);
 }
 
@@ -928,10 +931,12 @@ task_icon_active_window_changed (WnckScreen *screen,
   }
 }
 
-/**
+/*
  * Notify that the icon that a window is closed. The window gets
  * removed from the list and when this icon doesn't has any 
  * launchers and no windows it will get destroyed.
+ *
+ * TODO: refactor.
  */
 static void
 _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
@@ -964,6 +969,11 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
     g_slist_free (priv->items);
     priv->items = NULL;
     priv->ephemeral_count = 0;
+  }
+  else if ( !task_icon_count_require_attention (icon) )
+  {
+    awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                      AWN_EFFECT_ATTENTION);
   }
   else
   {
@@ -2186,6 +2196,7 @@ size_changed_cb(AwnApplet *app, guint size, TaskIcon *icon)
   g_return_if_fail (AWN_IS_APPLET (app) );
   g_return_if_fail (TASK_IS_ICON (icon));
 
+  g_debug ("%s: refresh icon to %u",__func__,size);
   task_icon_refresh_icon (icon,size);
 }
 
