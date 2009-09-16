@@ -1,5 +1,10 @@
 2009-09-17  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-label.c:
+	Fixed missing unbind.
+
+2009-09-17  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-panel.c:
 	Possible fix for disappearing icons when using fade-out autohide.
 

@@ -212,8 +212,12 @@ awn_label_set_property (GObject *object, guint property_id,
 static void
 awn_label_finalize (GObject *object)
 {
+  DesktopAgnosticConfigClient *client;
   AwnLabelPrivate *priv = AWN_LABEL_GET_PRIVATE (object);
 
+  client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, NULL);
+  desktop_agnostic_config_client_unbind_all_for_object (client, object, NULL);
+  
   if (priv->text_color)
   {
     g_object_unref (priv->text_color);
