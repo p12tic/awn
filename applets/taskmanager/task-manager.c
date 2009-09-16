@@ -340,55 +340,13 @@ task_manager_constructed (GObject *object)
 {
   TaskManagerPrivate *priv;
   GtkWidget          *widget;
-  GError             *err = NULL;
-  gchar              *full_path;
-  gchar              *desktop_cache_contents = NULL;
   
   G_OBJECT_CLASS (task_manager_parent_class)->constructed (object);
   
   priv = TASK_MANAGER_GET_PRIVATE (object);
   widget = GTK_WIDGET (object);
 
-  /*prime the cache*/
   priv->desktops_table = g_hash_table_new_full (g_str_hash,g_str_equal,g_free,g_free);
-  full_path = g_strdup_printf ("%s/.config/awn/applets/taskmanager/%s",
-                               g_get_home_dir (),DESKTOP_CACHE_FILENAME);
-
-  if (g_file_get_contents (full_path,&desktop_cache_contents,NULL,&err))
-  {
-    gchar ** lines;
-    gchar ** iter;
-    gchar * key;
-    
-    lines = g_strsplit (desktop_cache_contents,"\n",-1);
-    for (iter = lines;*iter; iter++)
-    {
-      gchar ** desktop_entry = g_strsplit (*iter, ",", 4);
-      if (g_strv_length (desktop_entry) != 4)
-      {
-        if (strlen(*iter))
-        {
-          g_warning ("%s: Invalid line in %s. Contents = '%s'",__func__,full_path,
-                   *iter);
-        }
-        g_strfreev (desktop_entry);
-        continue;
-      }
-      key = g_strdup_printf("%s::%s::%s",desktop_entry[0],desktop_entry[1],desktop_entry[2]);
-      g_hash_table_insert (priv->desktops_table, key,g_strdup (desktop_entry[3]));
-      g_strfreev (desktop_entry);
-    }
-    g_strfreev (lines);
-    g_free (desktop_cache_contents);
-  }
-  if (err)
-  {
-    g_warning ("%s: error reading %s",__func__,full_path);
-    g_error_free (err);
-    err = NULL;
-  }
-  g_free (full_path);
-  /*done priming cache*/
   priv->settings = task_settings_get_default ();
 
   priv->client = awn_config_get_default_for_applet (AWN_APPLET (object), NULL);
@@ -1657,43 +1615,9 @@ process_window_opened (WnckWindow    *window,
       }
       if (found_desktop)
       {
-        g_debug ("%s: found_desktop = (%s,%s,%s) %s",__func__,class_name,
-                 res_name,cmd_basename,found_desktop);
         gchar * key = g_strdup_printf("%s::%s::%s",class_name,res_name,cmd_basename);
-        gchar * dir_path = g_strdup_printf ("%s/.config/awn/applets/taskmanager/",
-                                            g_get_home_dir ());
-        char * full_path = g_strdup_printf ("%s/%s",dir_path ,DESKTOP_CACHE_FILENAME);
-        int fd;
         
         g_hash_table_insert (priv->desktops_table, key,found_desktop);
-        /*let's keep this really simple */
-        g_mkdir_with_parents (dir_path,0750);
-        /*NOTE:  if we supported multiple processes then it would be theoretically
-         necessary to use file locking to avoid a race if we were dealing with an
-         NFS location.  This will get a bit fancier with 0.6*/
-        fd = g_open (full_path,O_CREAT|O_APPEND|O_RDWR,0666);
-        if (fd != -1)
-        {
-          gchar * line = g_strdup_printf ("%s,%s,%s,%s\n",class_name,res_name,
-                                          cmd_basename,found_desktop);
-          if (write(fd, line, strlen (line))!= (int)strlen (line) )
-          {
-            g_warning ("%s: partial append to %s. data = '%s'",__func__,
-                       full_path,line);
-          }
-          else
-          {
-            g_debug ("%s: appended %s", __func__,line);
-          }
-          close (fd);
-          g_free (line);
-        }
-        else
-        {
-          g_warning ("%s: error writing to %s",__func__,full_path);
-        }
-        g_free (full_path);
-        g_free (dir_path);
       }
     }
       

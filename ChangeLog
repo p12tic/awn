@@ -1,5 +1,11 @@
 2009-09-15  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Removed the experimental caching of desktop
+	lookup data to file.
+
+2009-09-15  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* src/awn-panel.c:
 	Fixed sticky for openbox.
 
