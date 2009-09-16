@@ -268,12 +268,13 @@ _awn_overlay_pixbuf_render (AwnOverlay* _overlay,
   pixbuf_height = gdk_pixbuf_get_height (priv->pixbuf);
 
   scaled_width = lround (icon_width * priv->scale);  
-  scaled_height = lround (pixbuf_height * (scaled_width / (gdouble)icon_width) );
+  scaled_height = lround (pixbuf_height * (scaled_width / (gdouble) pixbuf_width) );
 
+  
   if ( (scaled_height / (gdouble) icon_height) > priv->scale)
   {
     scaled_height = lround (icon_height * priv->scale);
-    scaled_width = lround (pixbuf_width * (scaled_height / (gdouble) icon_height));
+    scaled_width = lround (pixbuf_width * (scaled_height / (gdouble) pixbuf_height));
   }
   
   /* Why do we do this?  Well the gdk pixbuf scaling gives a better result than

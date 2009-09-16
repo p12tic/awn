@@ -1,5 +1,10 @@
 2009-09-16  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-pixbuf.c:
+	Fix the scaling of AwnOverlayPixbuf.
+
+2009-09-16  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-themed-icon.c:
 	Don't invalidate the pixbuf cache when a new AwnThemedIcon
 	is created.
