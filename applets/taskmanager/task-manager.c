@@ -347,7 +347,6 @@ task_manager_constructed (GObject *object)
   widget = GTK_WIDGET (object);
 
   priv->desktops_table = g_hash_table_new_full (g_str_hash,g_str_equal,g_free,g_free);
-  priv->settings = task_settings_get_default ();
 
   priv->client = awn_config_get_default_for_applet (AWN_APPLET (object), NULL);
 
@@ -521,6 +520,8 @@ task_manager_init (TaskManager *manager)
 
   win_quark = g_quark_from_string ("task-window-quark");
 
+  priv->settings = task_settings_get_default (AWN_APPLET(manager));
+  
   /* Create the icon box */
   priv->box = awn_icon_box_new_for_applet (AWN_APPLET (manager));
   gtk_container_add (GTK_CONTAINER (manager), priv->box);

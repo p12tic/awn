@@ -1,5 +1,19 @@
 2009-09-15  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-drag-indicator.c:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-settings.c:
+  	* applets/taskmanager/task-settings.h:
+  	* applets/taskmanager/task-window.c:
+	Changed task-settings as minimally as possible to get
+	the correct behaviour.
+	Call awn_themed_icon_set_size() on size changes to ensure
+	mis-sized icons do not occur when panel size is changed.
+
+2009-09-15  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Removed the experimental caching of desktop
 	lookup data to file.

@@ -50,6 +50,24 @@ cfg_load_int (DesktopAgnosticConfigClient *cfg,
                                              cfg_notify_int, data, NULL);
 }
 
+static void
+_size_changed (AwnApplet * applet, gint size, TaskSettings * settings)
+{
+  settings->panel_size = size;
+}
+
+static void
+_position_changed (AwnApplet * applet, gint position, TaskSettings * settings)
+{
+  settings->position = position;
+}
+
+static void
+_offset_changed (AwnApplet * applet, gint offset, TaskSettings * settings)
+{
+  settings->offset = offset;
+}
+
 /**
  * task_settings_get_default:
  *
@@ -59,13 +77,17 @@ cfg_load_int (DesktopAgnosticConfigClient *cfg,
  * for the applet.
  */
 TaskSettings *
-task_settings_get_default (void)
+task_settings_get_default (AwnApplet * applet)
 {
   static TaskSettings *settings  = NULL;
   static DesktopAgnosticConfigClient *client = NULL;
 
   if (!settings)
   {
+    /*
+     The first time this function is called applet must be provided...
+     after which it can be NULL*/
+    g_assert (applet);
     settings = g_new (TaskSettings, 1);
 
     /* FIXME handle error */
@@ -77,6 +99,10 @@ task_settings_get_default (void)
     cfg_load_int(client, "panel", "size", &(settings->panel_size));
     cfg_load_int(client, "panel", "orient", &(settings->position));
     cfg_load_int(client, "panel", "offset", &(settings->offset));
+
+    g_signal_connect (applet,"size-changed",G_CALLBACK(_size_changed),settings);
+    g_signal_connect (applet,"offset-changed",G_CALLBACK(_offset_changed),settings);
+    g_signal_connect (applet,"position-changed",G_CALLBACK(_position_changed),settings);
   }
 
   return settings;

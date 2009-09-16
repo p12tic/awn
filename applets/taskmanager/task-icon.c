@@ -1733,6 +1733,7 @@ task_icon_refresh_icon (TaskIcon *icon, guint size)
   g_return_if_fail (TASK_IS_ICON (icon));
   priv = icon->priv;
 
+  awn_themed_icon_set_size (AWN_THEMED_ICON (icon),size);
   if (priv->items && priv->items->data)
   {
     if (priv->icon && task_icon_contains_launcher (icon) )
@@ -2196,8 +2197,7 @@ size_changed_cb(AwnApplet *app, guint size, TaskIcon *icon)
   g_return_if_fail (AWN_IS_APPLET (app) );
   g_return_if_fail (TASK_IS_ICON (icon));
 
-  g_debug ("%s: refresh icon to %u",__func__,size);
-  task_icon_refresh_icon (icon,size);
+  task_icon_refresh_icon (icon,size);  
 }
 
 static void
@@ -2579,7 +2579,7 @@ task_icon_source_drag_begin (GtkWidget      *widget,
     task_icon_set_draggable_state (TASK_ICON(widget), priv->draggable);
   }
 
-  settings = task_settings_get_default ();
+  settings = task_settings_get_default (NULL);
 
   gtk_drag_set_icon_pixbuf (context, priv->icon, settings->panel_size/2, settings->panel_size/2);
 

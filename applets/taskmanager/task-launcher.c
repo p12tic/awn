@@ -396,7 +396,7 @@ static GdkPixbuf *
 _get_icon (TaskItem *item)
 {
   TaskLauncherPrivate *priv = TASK_LAUNCHER (item)->priv;
-  TaskSettings *s = task_settings_get_default ();
+  TaskSettings *s = task_settings_get_default (NULL);
   GError *error = NULL;
   GdkPixbuf *pixbuf = NULL;
 

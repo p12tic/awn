@@ -32,6 +32,6 @@ typedef struct
   
 } TaskSettings;
 
-TaskSettings * task_settings_get_default (void);
+TaskSettings * task_settings_get_default (AwnApplet * applet);
 
 #endif /* _TASK_SETTINGS_H */

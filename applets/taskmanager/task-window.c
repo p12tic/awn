@@ -468,7 +468,7 @@ on_window_name_changed (WnckWindow *wnckwin, TaskWindow *window)
 static void
 on_window_icon_changed (WnckWindow *wnckwin, TaskWindow *window)
 {
-  TaskSettings *s = task_settings_get_default ();
+  TaskSettings *s = task_settings_get_default (NULL);
   GdkPixbuf    *pixbuf;
   GdkPixbuf    *scaled;
   gint  height;
@@ -590,7 +590,7 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
   TaskWindowPrivate *priv;
   GdkPixbuf    *pixbuf;
   gchar * markup;
-  TaskSettings *s = task_settings_get_default ();
+  TaskSettings *s = task_settings_get_default (NULL);
   
   g_return_if_fail (TASK_IS_WINDOW (window));
 
@@ -1018,7 +1018,7 @@ _get_name (TaskItem    *item)
 static GdkPixbuf * 
 _get_icon (TaskItem    *item)
 {
-  TaskSettings *s = task_settings_get_default ();
+  TaskSettings *s = task_settings_get_default (NULL);
   TaskWindow *window = TASK_WINDOW (item);
 
   if (WNCK_IS_WINDOW (window->priv->window))
