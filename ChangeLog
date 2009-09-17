@@ -1,5 +1,11 @@
 2009-09-17  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-panel.c:
+	Do one more redraw, hopefully it's enough to cover that stupid fade-out
+	bug.
+
+2009-09-17  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-label.c:
 	Fixed missing unbind.
 

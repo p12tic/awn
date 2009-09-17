@@ -1856,9 +1856,7 @@ awn_panel_schedule_redraw (gpointer user_data)
 
   AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (widget);
 
-  gdk_window_invalidate_rect (priv->eventbox->window,
-                              (GdkRectangle*)&priv->eventbox->allocation,
-                              TRUE);
+  gtk_widget_queue_draw (priv->eventbox);
 
   // increase the timer in every step
   switch (priv->withdraw_redraw_timer)
@@ -1866,6 +1864,7 @@ awn_panel_schedule_redraw (gpointer user_data)
     case 0: priv->withdraw_redraw_timer = 50; break;
     case 50: priv->withdraw_redraw_timer = 150; break;
     case 150: priv->withdraw_redraw_timer = 350; break;
+    case 350: priv->withdraw_redraw_timer = 850; break;
     default: priv->withdraw_redraw_timer = 0; break;
   }
 
