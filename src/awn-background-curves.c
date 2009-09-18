@@ -222,7 +222,7 @@ AwnPathType awn_background_curves_get_path_type (AwnBackground *bg,
 {
   g_return_val_if_fail (AWN_IS_BACKGROUND (bg) && offset_mod, AWN_PATH_LINEAR);
 
-  *offset_mod = 1.5;
+  *offset_mod = 20.0;
   return AWN_PATH_ELLIPSE;
 }
 

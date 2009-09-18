@@ -1072,12 +1072,12 @@ awn_applet_manager_get_mask (AwnAppletManager *manager,
         gtk_widget_get_allocation (widget, &rect);
         // get curve offset
         gfloat temp = awn_utils_get_offset_modifier_by_path_type (path_type,
-                   priv->position, offset_modifier,
+                   priv->position, priv->offset, offset_modifier,
                    rect.x + rect.width / 2 - manager_alloc.x,
                    rect.y + rect.height / 2 - manager_alloc.y,
                    manager_alloc.width,
                    manager_alloc.height);
-        gint offset = round (temp * priv->offset);
+        gint offset = round (temp);
 
         gint size = priv->size + offset;
 

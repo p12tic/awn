@@ -46,6 +46,7 @@ void awn_utils_make_transparent_bg  (GtkWidget *widget);
  * awn_utils_get_offset_modifier_by_path_type:
  * @path_type:
  * @position:
+ * @offset:
  * @offset_modifier:
  * @pos_x:
  * @pos_y:
@@ -60,6 +61,7 @@ void awn_utils_make_transparent_bg  (GtkWidget *widget);
  */
 gfloat awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
                                                    GtkPositionType position,
+                                                   gint offset,
                                                    gfloat offset_modifier,
                                                    gint pos_x, gint pos_y,
                                                    gint width, gint height);

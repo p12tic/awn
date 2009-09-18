@@ -115,13 +115,14 @@ awn_utils_gslist_to_gvaluearray (GSList *list)
 gfloat
 awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
                                             GtkPositionType position,
+                                            gint offset,
                                             gfloat offset_modifier,
                                             gint pos_x, gint pos_y,
                                             gint width, gint height)
 {
-  gfloat result;
+  gfloat result, relative_pos;
 
-  if (width == 0 || height == 0) return 1.0f;
+  if (width == 0 || height == 0) return offset;
 
   switch (path_type)
   {
@@ -130,15 +131,18 @@ awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
       {
         case GTK_POS_LEFT:
         case GTK_POS_RIGHT:
-          result = sinf (M_PI * pos_y / height);
-          return result * result * offset_modifier + 1.0f;
+          relative_pos = pos_y * 1.0 / height;
+          break;
         default:
-          result = sinf (M_PI * pos_x / width);
-          return result * result * offset_modifier + 1.0f;
+          relative_pos = pos_x * 1.0 / width;
+          break;
       }
+      offset_modifier += sqrt (offset); // let the max raise with higher offset
+      result = sinf (M_PI * relative_pos);
+      return result * offset_modifier + offset;
       break;
     default:
-      return 1.0f;
+      return offset;
   }
 }
 

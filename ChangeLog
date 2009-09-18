@@ -1,3 +1,12 @@
+2009-09-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	* src/awn-applet-manager.c:
+	* src/awn-background-curves.c:
+	Change the equation for determining offset on the curve.
+
 2009-09-17  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
