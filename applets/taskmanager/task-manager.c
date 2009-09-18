@@ -839,7 +839,6 @@ update_icon_visible (TaskManager *manager, TaskIcon *icon)
 
   if (!visible && gtk_widget_get_visible (GTK_WIDGET(icon)))
   {
-    g_debug ("closing");
     awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                           AWN_EFFECT_CLOSING, 1, FALSE, TRUE);
     /*hidding of TaskIcon happens when effect is done.*/

@@ -1,6 +1,11 @@
 2009-09-18  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Removed a debug.
+
+2009-09-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Fix for, occasional, disappearing icons issue on 
 	workspace switch.
 
