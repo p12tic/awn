@@ -1,3 +1,9 @@
+2009-09-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Fix for, occasional, disappearing icons issue on 
+	workspace switch.
+
 2009-09-19  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-applet.c:
