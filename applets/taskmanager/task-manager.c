@@ -828,6 +828,7 @@ update_icon_visible (TaskManager *manager, TaskIcon *icon)
 
   if (!visible && gtk_widget_get_visible (GTK_WIDGET(icon)))
   {
+    g_debug ("closing");
     awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                           AWN_EFFECT_CLOSING, 1, FALSE, TRUE);
     /*hidding of TaskIcon happens when effect is done.*/
@@ -1493,9 +1494,16 @@ process_window_opened (WnckWindow    *window,
   g_debug("Matching score: %i, must be bigger then:%i, groups: %i", max_match_score, 99-priv->match_strength, max_match_score > 99-priv->match_strength);
 #endif  
 #undef DEBUG
+  /*
+   if match is not 0
+   and 
+   we're doing grouping || there are 1 items in the TaskIcon and that is a Launcher
+   and 
+   the matching meets the match strength
+   */
   if  (match
        &&
-       (priv->grouping || (task_icon_count_items(match)==1) ) 
+       (priv->grouping || ( (task_icon_count_items(match)==1) && (task_icon_contains_launcher (match)) ) ) 
        &&
        ( max_match_score > 99-priv->match_strength))
   {
