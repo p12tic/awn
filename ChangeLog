@@ -1,6 +1,12 @@
 2009-09-18  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Removed fix for disappearing task icons that turned out
+	to not be a fix.
+
+2009-09-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Removed a debug.
 
 2009-09-18  Rodney Cryderman  <rcryderman@gmail.com>

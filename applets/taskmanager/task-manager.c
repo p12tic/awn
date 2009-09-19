@@ -796,17 +796,6 @@ on_workspace_changed (TaskManager *manager) /*... has more arguments*/
 
     task_window_set_active_workspace (window, space);
   }
-  /*
-   TaskIcons will sometimes disappear on workspace switches on xfwm4.  I expect
-   this occurs with other WMs except for Compiz (which uses a viewport).  This
-   may be related to the icon disappearance issue with panel in autohide/fade.
-
-   Queuing draws on the icon after a WS switch resolves this.
-   */
-  for (w = priv->icons; w; w = w->next)
-  {
-    gtk_widget_queue_draw (w->data);
-  }
 }
 
 /*
