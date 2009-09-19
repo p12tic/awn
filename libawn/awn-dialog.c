@@ -1256,7 +1256,7 @@ _on_origin_changed (AwnApplet *applet, GdkRectangle *rect, AwnDialog *dialog)
 {
   g_return_if_fail (AWN_IS_DIALOG (dialog));
 
-  if (!gtk_widget_get_visible (dialog)) return;
+  if (!gtk_widget_get_visible (GTK_WIDGET (dialog))) return;
 
   awn_dialog_refresh_position (dialog, 0, 0);
 }

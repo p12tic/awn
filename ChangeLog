@@ -1,5 +1,11 @@
 2009-09-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* libawn/awn-dialog.c (_on_origin_changed):
+	* libawn/awn-tooltip.c (awn_tooltip_show, on_button_press):
+	Fix compiler warnings.
+
+2009-09-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* configure.in:
 	Update maintainer mode CFLAGS.
 
