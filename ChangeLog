@@ -1,3 +1,10 @@
+2009-09-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	When config key show_all_windows config=false we do 
+	not want to play the closing animation on workspace
+	switches.
+
 2009-09-19  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/anims/awn-effect-fade.c:

@@ -807,6 +807,11 @@ update_icon_visible (TaskManager *manager, TaskIcon *icon)
 {
   TaskManagerPrivate *priv;
   gboolean visible = FALSE;
+  /*if show_all_windows config key is false then we show/hide different
+   icons on workspace switches.  We don't want to play closing 
+   animations on them, opening animations are played as it seems to provide
+   a better visual cue of what has changed*/
+  gboolean do_hide_animation = FALSE;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
@@ -819,18 +824,40 @@ update_icon_visible (TaskManager *manager, TaskIcon *icon)
     visible = TRUE;
   }
 
+  if ( !task_icon_contains_launcher (icon) )
+  {
+    if (task_icon_count_items(icon)==0)
+    {
+      do_hide_animation = TRUE;
+    }
+  }
+  else
+  {
+    if (task_icon_count_items (icon) <= task_icon_count_ephemeral_items (icon))
+    {
+      do_hide_animation = TRUE;
+    }
+  }
+
+  
   if (visible && !gtk_widget_get_visible (GTK_WIDGET(icon)))
   {
     gtk_widget_show (GTK_WIDGET (icon));
     awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                          AWN_EFFECT_OPENING, 1, FALSE, FALSE);
+                        AWN_EFFECT_OPENING, 1, FALSE, FALSE);
   }
 
   if (!visible && gtk_widget_get_visible (GTK_WIDGET(icon)))
   {
-    awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+    if (!do_hide_animation)
+    {
+      gtk_widget_hide (GTK_WIDGET(icon));
+    }
+    else
+    {
+      awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                           AWN_EFFECT_CLOSING, 1, FALSE, TRUE);
-    /*hidding of TaskIcon happens when effect is done.*/
+    } 
   }
 }
 
