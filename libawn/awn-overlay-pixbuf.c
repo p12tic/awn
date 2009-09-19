@@ -306,7 +306,15 @@ _awn_overlay_pixbuf_render (AwnOverlay* _overlay,
                        scaled_width, scaled_height, &coord);
 
   if (awn_overlay_get_use_source_op (AWN_OVERLAY (overlay)))
-    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+  {
+    // there's some issue in gdk + cairo, using source operator itself
+    // produces some artifacts
+    //cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+    cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+    cairo_rectangle (cr, coord.x, coord.y, scaled_width, scaled_height);
+    cairo_fill (cr);
+    cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  }
 
   gdk_cairo_set_source_pixbuf (cr,priv->scaled_pixbuf,coord.x,coord.y);
   cairo_paint_with_alpha (cr,priv->alpha);

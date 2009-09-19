@@ -1,3 +1,8 @@
+2009-09-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-overlay-pixbuf.c:
+	Fix issues with using SOURCE operator with GdkPixbufs.
+
 2009-09-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-dialog.c (_on_origin_changed):
