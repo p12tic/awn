@@ -53,6 +53,8 @@ fade_out_effect(AwnEffectsAnimation * anim)
   if (priv->count >= PERIOD)
   {
     priv->count = 0;
+    priv->alpha = 1.0;
+    priv->top_offset = 0;
     /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }

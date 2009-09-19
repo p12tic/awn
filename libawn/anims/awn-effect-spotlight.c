@@ -208,9 +208,7 @@ spotlight_closing_effect(AwnEffectsAnimation * anim)
 
   AWN_ANIMATION_INIT(anim) {
     priv->spotlight_alpha = 0.0;
-    priv->spotlight = TRUE;
     priv->glow_amount = priv->spotlight_alpha;
-    priv->clip = TRUE;
     priv->clip_region.x = 0;
     priv->clip_region.y = 0;
     priv->clip_region.height = priv->icon_height;
@@ -218,6 +216,9 @@ spotlight_closing_effect(AwnEffectsAnimation * anim)
     priv->direction = AWN_EFFECT_SPOTLIGHT_ON;
   }
 
+  priv->spotlight = TRUE;
+  priv->clip = TRUE;
+  
   const gint PERIOD = 40;
 
   if (priv->direction == AWN_EFFECT_SPOTLIGHT_ON)
@@ -262,14 +263,15 @@ spotlight_closing_effect(AwnEffectsAnimation * anim)
 
   if (priv->direction == AWN_EFFECT_SPOTLIGHT_OFF && priv->spotlight_alpha <= 0)
   {
-    priv->spotlight_alpha = 0;
-    priv->glow_amount = 0;
+    priv->alpha = 1.0;
+    priv->spotlight_alpha = 0.0;
+    priv->glow_amount = 0.0;
+    priv->clip = FALSE;
+    priv->spotlight = FALSE;
     priv->direction = AWN_EFFECT_DIR_NONE;
+
     /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
-
-    if (!repeat)
-      priv->spotlight = FALSE;
   }
 
   return repeat;

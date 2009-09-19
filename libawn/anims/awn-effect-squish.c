@@ -463,6 +463,9 @@ bounce_squish_closing_effect(AwnEffectsAnimation * anim)
   if (priv->direction == AWN_EFFECT_DIR_NONE && priv->count == PERIOD)
   {
     priv->top_offset = 0;
+    priv->count = 0;
+    priv->width_mod = 1.0;
+    priv->height_mod = 1.0;
     /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }

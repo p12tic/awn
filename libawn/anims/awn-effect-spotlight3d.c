@@ -381,6 +381,9 @@ spotlight3D_closing_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
   }
 
+  priv->spotlight = TRUE;
+  priv->clip = TRUE;
+
   const gint PERIOD = 80;
 
   const gint TURN_PERIOD = 20;
@@ -467,14 +470,17 @@ spotlight3D_closing_effect(AwnEffectsAnimation * anim)
 
   if (priv->direction == AWN_EFFECT_SPOTLIGHT_OFF && priv->spotlight_alpha <= 0)
   {
-    priv->spotlight_alpha = 0;
-    priv->glow_amount = 0;
+    priv->count = 0;
+    priv->width_mod = 1.0;
+    priv->icon_depth = 0;
+    priv->spotlight = FALSE;
+    priv->clip = FALSE;
+    priv->spotlight_alpha = 0.0;
+    priv->glow_amount = 0.0;
+    priv->alpha = 1.0;
     priv->direction = AWN_EFFECT_DIR_NONE;
     /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
-
-    if (!repeat)
-      priv->spotlight = FALSE;
   }
 
   return repeat;

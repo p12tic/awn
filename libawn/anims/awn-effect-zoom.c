@@ -258,9 +258,10 @@ zoom_closing_effect(AwnEffectsAnimation * anim)
 
   if (priv->alpha <= 0.0)
   {
-    priv->alpha = 0.0;
+    priv->count = 0;
     priv->width_mod = 1.0;
     priv->height_mod = 1.0;
+    priv->alpha = 1.0;
     /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }

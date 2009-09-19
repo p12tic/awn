@@ -161,6 +161,8 @@ glow_closing_effect(AwnEffectsAnimation * anim)
 
   if (priv->direction == AWN_EFFECT_DIR_NONE)
   {
+    priv->alpha = 1.0;
+    priv->glow_amount = 0.0;
     /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
   }
