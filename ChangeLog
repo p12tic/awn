@@ -1,5 +1,10 @@
 2009-09-19  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* configure.in:
+	Update maintainer mode CFLAGS.
+
+2009-09-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* m4/python.m4 (AC_PYTHON_DEVEL):
 	Update to the latest upstream macro code.
 
