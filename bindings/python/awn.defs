@@ -552,7 +552,7 @@
   (is-constructor-of "AwnBox")
   (return-type "GtkWidget*")
   (properties
-    '("orient" (argname "orient"))
+    '("orientation" (argname "orientation"))
   )
 )
 

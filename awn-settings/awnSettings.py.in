@@ -144,8 +144,8 @@ class awnPreferencesMini(awnPreferences):
 
         #setup style mode
         dropdown = self.wTree.get_object("stylecombo")
-        self.create_dropdown(dropdown, [_("None"), _("Flat"),
-                                        _("3d"), _("Curved"), _("Edgy")])
+        self.create_dropdown(dropdown, [_("None"), _("Flat"), _("3d"),
+                                        _("Curved"), _("Edgy"), _("Floaty")])
 
         #setup behaviour combo
         dropdown = self.wTree.get_object("behaviorcombo")

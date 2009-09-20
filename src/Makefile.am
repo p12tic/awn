@@ -40,6 +40,8 @@ avant_window_navigator_SOURCES =	\
 	awn-background-curves.h \
 	awn-background-edgy.c \
 	awn-background-edgy.h \
+	awn-background-floaty.c \
+	awn-background-floaty.h \
 	awn-defines.h \
 	awn-dbus-watcher.c \
 	awn-dbus-watcher.h \

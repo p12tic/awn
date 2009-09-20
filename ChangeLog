@@ -1,3 +1,14 @@
+2009-09-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	* bindings/python/awn.defs:
+	* data/avant-window-navigator.schema-ini.in.in:
+	* src/Makefile.am:
+	* src/awn-background-floaty.c:
+	* src/awn-background-floaty.h:
+	* src/awn-panel.c:
+	Added new background style: Floaty.
+
 2009-09-19  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:

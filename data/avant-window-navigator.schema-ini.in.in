@@ -45,7 +45,7 @@ per_instance = false
 [panel/applet_list]
 type = list-string
 default = @APPLETDATADIR@/taskmanager.desktop::1
-_description=The list of applets for this panel ordered from ltr or ttb.
+_description=The list of applets for this panel ordered from left-to-right or top-to-bottom.
 
 [panel/clickthrough]
 type = integer
@@ -125,7 +125,7 @@ _description=Auto hides the dock when the cursor is not on the dock (shouldn't b
 [panel/style]
 type = integer
 default = 1
-_description=The style of the bar. (none=0, flat bar=1, 3d bar=2, curved bar=3, edgy=4)
+_description=The style of the bar. (none=0, flat bar=1, 3d bar=2, curved bar=3, edgy=4, floaty=5)
 
 [panels/panel_list]
 type = list-string

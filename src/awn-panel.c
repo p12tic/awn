@@ -43,6 +43,7 @@
 #include "awn-background-3d.h"
 #include "awn-background-curves.h"
 #include "awn-background-edgy.h"
+#include "awn-background-floaty.h"
 #include "awn-dbus-watcher.h"
 #include "awn-defines.h"
 #include "awn-marshal.h"
@@ -197,6 +198,7 @@ enum
   STYLE_3D,
   STYLE_CURVES,
   STYLE_EDGY,
+  STYLE_FLOATY,
 
   STYLE_LAST
 };
@@ -2618,8 +2620,11 @@ awn_panel_set_style (AwnPanel *panel, gint style)
     case STYLE_EDGY:
       priv->bg = awn_background_edgy_new (priv->client, panel);
       break;
+    case STYLE_FLOATY:
+      priv->bg = awn_background_floaty_new (priv->client, panel);
+      break;
     default:
-      g_assert_not_reached();
+      g_assert_not_reached ();
   }
 
   if (old_bg) g_object_unref (old_bg);
