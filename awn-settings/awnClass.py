@@ -40,6 +40,7 @@ from xdg.DesktopEntry import DesktopEntry
 
 import awnDefs as defs
 from desktopagnostic import vfs
+from desktopagnostic.config import GROUP_DEFAULT
 from desktopagnostic.gtk import LauncherEditorDialog
 import tarfile
 
@@ -653,9 +654,6 @@ class awnBzr(gobject.GObject):
         col = gtk.TreeViewColumn ("Desktop", ren)
         treeview.append_column (col)
 
-#        self.last_uris = uris[:] # make a copy
-#        self.client.notify_add(defs.LAUNCHERS, defs.LAUNCHERS_LIST, self.refresh_launchers, self)
-
 #               self.refresh_tree(uris, model)
         for i in uris:
             if os.path.isfile(i):
@@ -1135,13 +1133,13 @@ class awnLauncher(awnBzr):
         self.idle_id = 0
         if (self.last_uris != data):
             self.last_uris = data[:]
-            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, data)
+            self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, data)
 
         return False
 
-    def refresh_launchers (self, entry, extra):
-        self.last_uris = entry['value']
-        self.refresh_tree (self.last_uris)
+    def refresh_launchers (self, group, key, value, extra):
+        self.last_uris = value
+        self.refresh_tree (self.last_uris, extra)
 
     #   Code below taken from:
     #   Alacarte Menu Editor - Simple fd.o Compliant Menu Editor
@@ -1166,10 +1164,10 @@ class awnLauncher(awnBzr):
         editor.show_all()
         response = editor.run()
         if response == gtk.RESPONSE_APPLY and output is not None:
-            paths = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST)
+            paths = self.client_taskman.get_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST)
             idx = paths.index(path)
             paths[idx] = output.props.path
-            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, paths)
+            self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, paths)
             self.refresh_tree(paths, model)
 
     def add(self, button):
@@ -1186,11 +1184,11 @@ class awnLauncher(awnBzr):
         path = model.get_value(iter, 2)
         # TODO: don't check if it exists, perhaps it's invalid
         if os.path.exists(path):
-            paths = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST)
-            path.remove(path)
+            paths = self.client_taskman.get_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST)
+            paths.remove(path)
             if path.startswith(defs.HOME_LAUNCHERS_DIR):
                 os.remove(path)
-            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, paths)
+            self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, paths)
             self.refresh_tree(paths, model)
 
     def getUniqueFileId(self, name, extension):

@@ -398,7 +398,7 @@ class awnLauncherMini(awnLauncher):
 
         self.idle_id = 0
 
-        self.client = awn.config_get_default_for_applet_by_info("taskmanager",
+        self.client_taskman = awn.config_get_default_for_applet_by_info("taskmanager",
                                                                 "")
 
         self.scrollwindow = self.wTree.get_object("launchers_scroll_list")
@@ -409,10 +409,17 @@ class awnLauncherMini(awnLauncher):
 
         self.scrollwindow.add(self.treeview_launchers)
 
-        self.launchers_uris = self.client.get_list(GROUP_DEFAULT,
-                                                   defs.LAUNCHERS_LIST)
+        self.launchers_uris = self.client_taskman.get_list(GROUP_DEFAULT,
+                                                           defs.LAUNCHERS_LIST)
 
-        self.refresh_tree(self.launchers_uris, self.make_model(self.launchers_uris, self.treeview_launchers))
+        self.last_uris = self.launchers_uris[:] # make a copy
+        launchers_model = self.make_model(self.launchers_uris,
+                                          self.treeview_launchers)
+        self.refresh_tree(self.launchers_uris, launchers_model)
+        self.client_taskman.notify_add(GROUP_DEFAULT,
+                                       defs.LAUNCHERS_LIST,
+                                       self.refresh_launchers,
+                                       launchers_model)
 
         self.applet_remove = self.wTree.get_object("launcher_remove")
         self.applet_remove.connect("clicked", self.remove)
@@ -427,7 +434,6 @@ class awnAppletMini(awnApplet):
             os.mkdir(defs.HOME_APPLET_DIR)
 
         self.client = awn.config_get_default(1)
-        #self.client.ensure_group(defs.AWN)
 
         self.treeview_current = None
         self.load_finished = False

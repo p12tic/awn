@@ -1,3 +1,10 @@
+2009-09-21  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Fix up launcher editing a bit, now it at least watches the correct key
+	and Remove button is working.
+
 2009-09-20  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awnSettings.py.in:
