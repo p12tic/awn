@@ -1,6 +1,12 @@
 2009-09-21  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:
+	* applets/taskmanager/task-icon.c:
+	Fixed a change in permission.
+
+2009-09-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
 	Added a new special case for Amsn.
 
 2009-09-21  Rodney Cryderman  <rcryderman@gmail.com>
