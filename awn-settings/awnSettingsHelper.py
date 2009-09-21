@@ -18,6 +18,7 @@
 
 import gtk
 from desktopagnostic import config
+from desktopagnostic import Color
 from desktopagnostic.gtk import ColorButton
 
 
@@ -123,7 +124,9 @@ def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
         # FIXME: does it need also the widget param?
         if setter: new_value = setter(new_value)
 
-        if new_value != obj.get_property(prop_name):
+        # we shouldn't compare color properties, cause they might point
+        # to the same instance and would therefore be the same all the time
+        if new_value != obj.get_property(prop_name) or isinstance(new_value, Color):
             obj.set_property(prop_name, new_value) # update config key
 
     # make sure the widget updates when the prop changes

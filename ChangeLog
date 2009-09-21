@@ -1,5 +1,13 @@
 2009-09-21  Michal Hruby  <michal.mhr@gmail.com>
 
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnSettings.py.in:
+	* awn-settings/awnSettingsHelper.py:
+	Add a couple of ColorButtons to the advanced tab in awn-settings, so
+	that all colors used on the panel can be set through it.
+
+2009-09-21  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awnClass.py:
 	* awn-settings/awnSettings.py.in:
 	Fix up launcher editing a bit, now it at least watches the correct key

@@ -102,8 +102,6 @@ class awnPreferencesMini(awnPreferences):
     drag_and_drop = gobject.property(type=bool, default=True)
     match_strength = gobject.property(type=int, default=99)
 
-    gstep1 = color_property()
-
     def __init__(self, wTree):
         awnPreferences.__init__(self)
         
@@ -199,9 +197,6 @@ class awnPreferencesMini(awnPreferences):
                 "drag-and-drop", "drag_and_drop_config"),
             (self.client_taskman, GROUP_DEFAULT, defs.MATCH_STRENGTH,
                 "match-strength", "match_strength_config"),
-            # Colors
-            (self.client, defs.THEME, defs.GSTEP1,
-                "gstep1", "gstep1_colorbutton")
         ]
 
         for item in config_map_simple:
@@ -209,11 +204,24 @@ class awnPreferencesMini(awnPreferences):
             bind_to_gtk_component (client, group, key, self, prop_name,
                                    self.wTree.get_object(wtree_name), False)
 
+        # Colors
+        color_map = [
+            (self.client, defs.THEME, defs.GSTEP1, "gstep1_colorbutton"),
+            (self.client, defs.THEME, defs.GSTEP2, "gstep2_colorbutton"),
+            (self.client, defs.THEME, defs.GHISTEP1, "ghistep1_colorbutton"),
+            (self.client, defs.THEME, defs.GHISTEP2, "ghistep2_colorbutton"),
+            (self.client, defs.THEME, defs.BORDER, "border_colorbutton"),
+            (self.client, defs.THEME, defs.HILIGHT, "hilight_colorbutton")
+        ]
+
+        for item in color_map:
+            client, group, key, wtree_name = item
+            widget = self.wTree.get_object(wtree_name)
+            client.bind (group, key, widget, "da-color",
+                         False, config.BIND_METHOD_FALLBACK)
+
         #Advanced
         self.setup_autostart (self.wTree.get_object("autostart_config"))
-
-        #TODO Fix color settings
-        #self.setup_color(defs.THEME, defs.GSTEP1, self.wTree.get_object("gstep1_colorbutton"))
 
         # Non-trivial bindings
 
@@ -280,8 +288,9 @@ class awnPreferencesMini(awnPreferences):
             else: return 2
 
         arrow_type_setter = lambda x: ["__awn_internal_arrow1",
-                                       "__awn_internal_arrow2", ""][x]
-                                       
+                                       "__awn_internal_arrow2",
+                                       ""][x]
+
         bind_to_gtk_component (self.client, defs.EFFECTS, defs.ARROW_ICON,
                                self, "arrow-type",
                                self.wTree.get_object("arrow_triangle_radio"),
@@ -300,10 +309,6 @@ class awnPreferencesMini(awnPreferences):
 
         #TODO Need a combobox or load_string
         #self.load_spin(defs.EFFECTS, defs.ARROW_ICON, self.wTree.get_object("arrow_icon_config"))
-
-        #TODO Fix color settings
-        #self.load_color(defs.THEME, defs.GSTEP1, self.wTree.get_object("gstep1_colorbutton"))
-
 
         #Repositories
         update_win = self.wTree.get_object("update_repository")
