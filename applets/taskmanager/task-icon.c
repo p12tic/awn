@@ -912,10 +912,35 @@ task_icon_active_window_changed (WnckScreen *screen,
   WnckWindow * active;
   GSList     *i;
   TaskIconPrivate *priv = icon->priv;
-  
+
   active = wnck_screen_get_active_window (screen);
+
   if (active )
   {
+    /*this block basically detects when a window has been moved to a different
+     workspace when show_all_window is false.  In this case main_item needs to
+     either get set to another of the app's windows on the current workspace or
+     to the launcher*/
+    if (previously_active_window && WNCK_IS_WINDOW(previously_active_window))
+    {
+      if (wnck_window_get_application (active) != wnck_window_get_application(previously_active_window))
+      {
+        for (i = priv->items; i; i = i->next)
+        {
+          TaskItem *item = i->data;
+
+          if (!TASK_IS_WINDOW(item)) continue;
+          if ( previously_active_window == task_window_get_window (TASK_WINDOW(item)) )
+          {
+            if (!task_item_is_visible (item))
+            {
+              task_icon_search_main_item (icon,NULL);
+              break; 
+            }
+          }
+        }
+      }
+    }    
     for (i = priv->items; i; i = i->next)
     {
       TaskItem *item = i->data;
@@ -928,7 +953,15 @@ task_icon_active_window_changed (WnckScreen *screen,
         break; 
       }
     }
+    
   }
+  /* 
+   if found is false then ther are no "visible" Windows
+   */
+/*  if (!found)
+  {
+    task_icon_search_main_item (icon,item);
+  }*/
 }
 
 /*
@@ -2138,6 +2171,7 @@ task_icon_button_release_event (GtkWidget      *widget,
   {
     case 1:
       task_icon_clicked (TASK_ICON(widget),event);
+      return TRUE;      
       break;
     case 2: // middle click: start launcher
 
@@ -2159,7 +2193,6 @@ task_icon_button_release_event (GtkWidget      *widget,
     default:
       break;
   }
-
   return FALSE;
 }
 
@@ -2287,7 +2320,7 @@ task_icon_button_press_event (GtkWidget      *widget,
     }
     if (priv->main_item)
     {
-      if (TASK_IS_WINDOW (priv->main_item))
+      if (TASK_IS_WINDOW (priv->main_item) && task_item_is_visible (priv->main_item))
       {
         priv->menu = wnck_action_menu_new (task_window_get_window (TASK_WINDOW(priv->main_item)));
         
@@ -2334,6 +2367,10 @@ task_icon_button_press_event (GtkWidget      *widget,
         {
           GtkWidget   *sub_menu;
           if ( TASK_IS_LAUNCHER (iter->data) )
+          {
+            continue;
+          }
+          if ( !task_item_is_visible (iter->data))
           {
             continue;
           }
