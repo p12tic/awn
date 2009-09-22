@@ -1,3 +1,9 @@
+2009-09-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Destroy the TaskIcon in the "animation-end" signal handler.  
+	Possible due to previous commit.
+
 2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/anims/awn-effects-shared.c:

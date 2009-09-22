@@ -902,7 +902,7 @@ on_icon_effects_ends (TaskIcon   *icon,
                             G_CALLBACK (on_icon_effects_ends), icon);
       /*something (AwnEffects I think) needs a chance to do some cleanup before
        the icon is destroyed... seemingly*/    
-      g_idle_add ((GSourceFunc)gtk_widget_destroy,icon);
+      gtk_widget_destroy (GTK_WIDGET(icon));
     }
     else
     {
