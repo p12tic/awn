@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2007 Michal Hruby <michal.mhr@gmail.com>
+ *  Copyright (C) 2007-2009 Michal Hruby <michal.mhr@gmail.com>
  *  Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -113,6 +113,12 @@ awn_effects_dispose (GObject *object)
   {
     g_source_remove (fx->priv->timer_id);
     fx->priv->timer_id = 0;
+  }
+
+  if (fx->widget)
+  {
+    g_object_remove_weak_pointer (fx->widget, &fx->widget);
+    fx->widget = NULL;
   }
 
   /* unref overlays in our overlay list */
@@ -337,7 +343,12 @@ awn_effects_set_property (GObject      *object,
 
   switch (prop_id) {
     case PROP_WIDGET:
-      fx->widget = g_value_get_object(value);
+      if (fx->widget)
+      {
+        g_object_remove_weak_pointer (fx->widget, &fx->widget);
+      }
+      fx->widget = g_value_get_object (value);
+      g_object_add_weak_pointer (fx->widget, &fx->widget);
       break;
     case PROP_NO_CLEAR:
       fx->no_clear = g_value_get_boolean(value);

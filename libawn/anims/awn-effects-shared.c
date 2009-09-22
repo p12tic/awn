@@ -83,11 +83,15 @@ awn_effect_handle_repeating(AwnEffectsAnimation * anim)
 
     if (effect_stopped)
     {
-      awn_effect_emit_anim_end(anim);
+      // the signal handler can try to destroy us, so make sure it doesn't do
+      //   that immediately
+      g_object_ref (fx);
+      awn_effect_emit_anim_end (anim);
 
       unregistered = fx->widget == NULL;
-      
-      g_free(anim);
+
+      g_object_unref (fx);
+      g_free (anim);
     }
 
     if (!unregistered)

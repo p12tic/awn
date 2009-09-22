@@ -1,3 +1,10 @@
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effects-shared.c:
+	* libawn/awn-effects.c:
+	Fix issue with AwnEffects destruction inside "animation-end" signal
+	handler.
+
 2009-09-22  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awn-settings.ui:
