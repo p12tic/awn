@@ -484,7 +484,13 @@ class awnAppletMini(awnApplet):
     
     def create_category_list(self, categories):
         category_model = gtk.ListStore(str)
-        #self.cat_model.connect("row-activated", self.callback_widget_filter_applets_view)
+        
+        cell = gtk.CellRendererText()
+        col = gtk.TreeViewColumn("Categories", cell)
+        col.set_attributes(cell, markup=0)
+        
+        self.choose_category_view.append_column(col)
+        
         category_model.set_sort_column_id(0, gtk.SORT_ASCENDING)
         self.choose_category_view.set_model (category_model)
         #self.choose_category_view.set_search_column (0)
@@ -619,14 +625,14 @@ class awnManagerMini(awnManager):
         self.current_panel = self.wTree.get_object("appletPanel")
         self.panel_container.add(self.current_panel)
 
-        appletTreeviewAvailable = self.wTree.get_object("appletTreeviewAvailable")
-        appletCategoryList = self.wTree.get_object("appletCategoryList")
+        #appletTreeviewAvailable = self.wTree.get_object("appletTreeviewAvailable")
+        #appletCategoryList = self.wTree.get_object("appletCategoryList")
 
-        cell = gtk.CellRendererText()
+        #cell = gtk.CellRendererText()
 
-        col = gtk.TreeViewColumn("Categories", cell)
-        appletCategoryList.append_column(col)
-        col.set_attributes(cell, markup=0)
+        #col = gtk.TreeViewColumn("Categories", cell)
+        #appletCategoryList.append_column(col)
+        #col.set_attributes(cell, markup=0)
         #liststore = gtk.ListStore(str, str)
         #appletCategoryList.set_model(liststore)
 
