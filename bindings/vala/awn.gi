@@ -104,6 +104,7 @@
 			<parameters>
 				<parameter name="path_type" type="AwnPathType"/>
 				<parameter name="position" type="GtkPositionType"/>
+				<parameter name="offset" type="gint"/>
 				<parameter name="offset_modifier" type="gfloat"/>
 				<parameter name="pos_x" type="gint"/>
 				<parameter name="pos_y" type="gint"/>
@@ -603,9 +604,9 @@
 		</object>
 		<object name="AwnBox" parent="GtkBox" type-name="AwnBox" get-type="awn_box_get_type">
 			<implements>
-				<interface name="GtkOrientable"/>
 				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="GtkOrientable"/>
 			</implements>
 			<constructor name="new" symbol="awn_box_new">
 				<return-type type="GtkWidget*"/>
@@ -1021,9 +1022,9 @@
 		</object>
 		<object name="AwnIconBox" parent="AwnBox" type-name="AwnIconBox" get-type="awn_icon_box_get_type">
 			<implements>
-				<interface name="GtkOrientable"/>
 				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="GtkOrientable"/>
 			</implements>
 			<constructor name="new" symbol="awn_icon_box_new">
 				<return-type type="GtkWidget*"/>

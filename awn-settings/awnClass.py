@@ -546,7 +546,7 @@ class awnBzr(gobject.GObject):
             for elem in applet['applet_category']:
                 if not elem in categories_list and elem is not "":
                     categories_list.append(elem)
-        categories_list.append("")
+        categories_list.append("All")
         return categories_list
 
     def applets_by_categories(self, categories = ""):
@@ -703,7 +703,7 @@ class awnBzr(gobject.GObject):
         cell = gtk.CellRendererText()
         widget.pack_start(cell)
         widget.add_attribute(cell,'text',0)
-
+    
 class awnPreferences(awnBzr):
     def setup_color(self, group, key, colorbut, show_opacity_scale = True):
         self.load_color(group, key, colorbut, show_opacity_scale)
@@ -1486,6 +1486,8 @@ class awnApplet(awnBzr):
         self.make_model(applets, self.treeview_available)
 
     def update_applets(self, list_applets):
+        if list_applets == "All":
+            list_applets = ''
         applets = self.applets_by_categories(list_applets)
         self.refresh_tree(applets, self.treeview_available.get_model())
 
@@ -1541,3 +1543,10 @@ class awnApplet(awnBzr):
         model = self.choose_categorie.get_model()
         select_cat = model.get_value(self.choose_categorie.get_active_iter(),0)
         self.update_applets(select_cat)
+
+    def callback_widget_filter_applets_view(self, selection, data=None):
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            self.update_applets(model.get_value(iter, 0))
+        
+

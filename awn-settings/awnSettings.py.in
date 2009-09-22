@@ -117,7 +117,7 @@ class awnPreferencesMini(awnPreferences):
         if not os.path.isfile(os.path.join(defs.HOME_CONFIG_DIR,"sources.list")):
             self.create_sources_list()
             self.update_sources_list()
-
+        '''
         exit_theme_button = self.wTree.get_object("exit_theme_select")
         exit_theme_button.connect("clicked", lambda data=None:  self.load_themes_win.hide_all())
 
@@ -129,7 +129,7 @@ class awnPreferencesMini(awnPreferences):
         self.choose_themes_button.connect("clicked", self.choose_theme_win_callback)
         self.apply_theme = self.wTree.get_object("apply_theme")
         self.apply_theme.connect("clicked", self.apply_theme_callback)
-
+        '''
         self.setup_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
         #self.setup_freeze(self.wTree.get_object("freezeEffects"), self.wTree.get_object("iconeffects"), "effects")
 
@@ -213,13 +213,13 @@ class awnPreferencesMini(awnPreferences):
             (self.client, defs.THEME, defs.BORDER, "border_colorbutton"),
             (self.client, defs.THEME, defs.HILIGHT, "hilight_colorbutton")
         ]
-
+        '''
         for item in color_map:
             client, group, key, wtree_name = item
             widget = self.wTree.get_object(wtree_name)
             client.bind (group, key, widget, "da-color",
                          False, config.BIND_METHOD_FALLBACK)
-
+        '''
         #Advanced
         self.setup_autostart (self.wTree.get_object("autostart_config"))
 
@@ -311,6 +311,7 @@ class awnPreferencesMini(awnPreferences):
         #self.load_spin(defs.EFFECTS, defs.ARROW_ICON, self.wTree.get_object("arrow_icon_config"))
 
         #Repositories
+        '''
         update_win = self.wTree.get_object("update_repository")
         exit_button = self.wTree.get_object("exit_update_win")
         exit_button.connect("clicked", lambda data=None:  update_win.hide_all())
@@ -333,7 +334,7 @@ class awnPreferencesMini(awnPreferences):
 
         self.top_window_repo = self.wTree.get_object("add_repository")
         self.view_repo = self.wTree.get_object("list_repos_view")
-
+        '''
 
     def add_repo_win_callback(self, data=None):
         self.update_repo_view()
@@ -456,10 +457,15 @@ class awnAppletMini(awnApplet):
 
         self.load_applets()
 
-        self.choose_categorie = self.wTree.get_object("applets_catagories")
-        self.create_dropdown(self.choose_categorie, self.list_applets_categories())
-        self.choose_categorie.connect("changed", self.callback_widget_filter_applets)
-
+        #self.choose_categorie = self.wTree.get_object("applets_catagories")
+        #self.create_dropdown(self.choose_categorie, self.list_applets_categories())
+        #self.choose_categorie.connect("changed", self.callback_widget_filter_applets)
+        
+        self.choose_category_view = self.wTree.get_object("appletCategoryList")
+        selection = self.choose_category_view.get_selection()
+        selection.connect('changed', self.callback_widget_filter_applets_view)
+        self.create_category_list(self.list_applets_categories())
+ 
         self.btn_deactivate = self.wTree.get_object("appletDeactivate")
         self.btn_deactivate.connect("clicked", self.deactivate_applet)
 
@@ -475,8 +481,29 @@ class awnAppletMini(awnApplet):
         self.treeview_available.enable_model_drag_dest([('text/plain', 0, 0)],
                   gdk.ACTION_DEFAULT | gdk.ACTION_MOVE)
         self.treeview_available.connect("drag_data_received", self.drag_data_received_data)
+    
+    def create_category_list(self, categories):
+        category_model = gtk.ListStore(str)
+        #self.cat_model.connect("row-activated", self.callback_widget_filter_applets_view)
+        category_model.set_sort_column_id(0, gtk.SORT_ASCENDING)
+        self.choose_category_view.set_model (category_model)
+        #self.choose_category_view.set_search_column (0)
 
+        #ren = gtk.CellRendererText()
+        #col = gtk.TreeViewColumn ("Category", ren, markup=1)
+        #self.choose_category_view.append_column (col)
+        
+        [category_model.append([elem]) for elem in categories]
+        
 class awnManagerMini(awnManager):
+    PREFERENCE_PANEL = 0
+    APPLET_PANEL = 1 
+    LAUNCHER_PANEL = 2
+    THEME_PANEL = 3
+    ADVANCED_PANEL = 4
+    
+    current_panel = None
+    
     def __init__(self):
         self.XML_PATH = os.path.join(AWN_SETTINGS_DIR, 'awn-settings.ui')
 
@@ -485,6 +512,9 @@ class awnManagerMini(awnManager):
         self.wTree.set_translation_domain(defs.I18N_DOMAIN)
 
         self.window = self.wTree.get_object("awnManagerWindow")
+        self.panel_container = self.wTree.get_object("panelContainer")
+        self.createMainMenu()
+        
         self.theme = gtk.icon_theme_get_default()
         icon_search_path = os.path.join('@DATADIR@', 'icons')
         if icon_search_path not in self.theme.get_search_path():
@@ -514,7 +544,111 @@ class awnManagerMini(awnManager):
         close = self.wTree.get_object("buttonClose")
         close.connect("clicked", gtk.main_quit)
 
+        self.window.show()
+        
+    def createMainMenu(self):
+        self.main_menu_icon_view = self.wTree.get_object("mainMenuIconView")
+        self.main_menu_icon_view.connect("selection-changed", self.showPanel);
 
+        store = gtk.ListStore(str, gtk.gdk.Pixbuf, str) 
+        store.append([
+            'Preferences', 
+            self.main_menu_icon_view.render_icon(gtk.STOCK_PROPERTIES, gtk.ICON_SIZE_BUTTON),
+            self.PREFERENCE_PANEL
+        ])
+
+        store.append([
+            'Applets', 
+            self.main_menu_icon_view.render_icon(gtk.STOCK_SORT_ASCENDING, gtk.ICON_SIZE_BUTTON),
+            self.APPLET_PANEL
+        ])
+
+        store.append([
+            'Launchers', 
+            self.main_menu_icon_view.render_icon(gtk.STOCK_FULLSCREEN, gtk.ICON_SIZE_BUTTON),
+            self.LAUNCHER_PANEL
+        ])
+
+        store.append([
+            'Themes', 
+            self.main_menu_icon_view.render_icon(gtk.STOCK_SELECT_COLOR, gtk.ICON_SIZE_BUTTON),
+            self.THEME_PANEL
+        ])
+
+        store.append([
+            'Advanced', 
+            self.main_menu_icon_view.render_icon(gtk.STOCK_EXECUTE, gtk.ICON_SIZE_BUTTON),
+	        self.ADVANCED_PANEL
+        ])					
+
+        self.main_menu_icon_view.set_model(store)
+        self.main_menu_icon_view.set_text_column(0)
+        self.main_menu_icon_view.set_pixbuf_column(1)		
+        self.main_menu_icon_view.select_path(self.PREFERENCE_PANEL)
+
+    def showPanel(self, widget):
+        store = widget.get_model()
+        selected = widget.get_selected_items()
+        panel = self.PREFERENCE_PANEL
+
+        if len(selected) > 0:
+            path = widget.get_selected_items()[0]
+            iter = store.get_iter(path)
+            panel = int(store.get_value(iter, 2))
+
+        if self.current_panel is not None:
+            self.panel_container.remove(self.current_panel)
+            self.current_panel = None
+
+        if panel == self.APPLET_PANEL:
+            self.showAppletPanel()
+        elif panel == self.LAUNCHER_PANEL:
+            self.showLaunchPanel()
+        elif panel == self.THEME_PANEL:
+            self.showThemePanel()
+        elif panel == self.ADVANCED_PANEL:
+            self.showAdvPanel()
+        else:
+            self.showPrefPanel()
+
+    def showPrefPanel(self):
+        self.current_panel = self.wTree.get_object("prefPanel")
+        self.panel_container.add(self.current_panel)
+	
+    def showAppletPanel(self):
+        self.current_panel = self.wTree.get_object("appletPanel")
+        self.panel_container.add(self.current_panel)
+
+        appletTreeviewAvailable = self.wTree.get_object("appletTreeviewAvailable")
+        appletCategoryList = self.wTree.get_object("appletCategoryList")
+
+        cell = gtk.CellRendererText()
+
+        col = gtk.TreeViewColumn("Categories", cell)
+        appletCategoryList.append_column(col)
+        col.set_attributes(cell, markup=0)
+        #liststore = gtk.ListStore(str, str)
+        #appletCategoryList.set_model(liststore)
+
+        #col = gtk.TreeViewColumn("Description", cell)
+        #appletTreeviewAvailable.append_column(col)
+        #col.set_attributes(cell, markup=0)
+        #liststore = gtk.ListStore(str, str, str)
+        #appletTreeviewAvailable.set_model(liststore)
+
+    def showLaunchPanel(self):
+        self.current_panel = self.wTree.get_object("launchPanel")
+        self.panel_container.add(self.current_panel)
+
+    def showThemePanel(self):
+        self.current_panel = self.wTree.get_object("themePanel")
+        self.panel_container.add(self.current_panel)
+	
+    def showAdvPanel(self):
+        self.current_panel = self.wTree.get_object("advPanel")
+        self.panel_container.add(self.current_panel)
+		
+        
 if __name__ == "__main__":
     vfs.init()
     try:
