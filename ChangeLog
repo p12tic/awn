@@ -1,5 +1,10 @@
 2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
 
+	* awn-settings/awnClass.py:
+	Removal of unused methods.
+
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awn-settings.ui:
 	* awn-settings/awnClass.py:
 	* awn-settings/awnSettings.py.in:
