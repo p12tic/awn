@@ -625,23 +625,6 @@ class awnManagerMini(awnManager):
         self.current_panel = self.wTree.get_object("appletPanel")
         self.panel_container.add(self.current_panel)
 
-        #appletTreeviewAvailable = self.wTree.get_object("appletTreeviewAvailable")
-        #appletCategoryList = self.wTree.get_object("appletCategoryList")
-
-        #cell = gtk.CellRendererText()
-
-        #col = gtk.TreeViewColumn("Categories", cell)
-        #appletCategoryList.append_column(col)
-        #col.set_attributes(cell, markup=0)
-        #liststore = gtk.ListStore(str, str)
-        #appletCategoryList.set_model(liststore)
-
-        #col = gtk.TreeViewColumn("Description", cell)
-        #appletTreeviewAvailable.append_column(col)
-        #col.set_attributes(cell, markup=0)
-        #liststore = gtk.ListStore(str, str, str)
-        #appletTreeviewAvailable.set_model(liststore)
-
     def showLaunchPanel(self):
         self.current_panel = self.wTree.get_object("launchPanel")
         self.panel_container.add(self.current_panel)
