@@ -118,15 +118,9 @@ class awnPreferencesMini(awnPreferences):
             self.create_sources_list()
             self.update_sources_list()
 
-        exit_theme_button = self.wTree.get_object("exit_theme_select")
-        exit_theme_button.connect("clicked", lambda data=None:  self.load_themes_win.hide_all())
-
-        self.load_themes_win = self.wTree.get_object("choose_theme")
         self.view_themes_scrol = self.wTree.get_object("list_themes_scrol")
+        self.update_view_themes()
 
-
-        self.choose_themes_button = self.wTree.get_object("choose_theme_button")
-        self.choose_themes_button.connect("clicked", self.choose_theme_win_callback)
         self.apply_theme = self.wTree.get_object("apply_theme")
         self.apply_theme.connect("clicked", self.apply_theme_callback)
 
@@ -367,10 +361,6 @@ class awnPreferencesMini(awnPreferences):
         self.add_source(source)
         self.update_repo_view()
 
-    def choose_theme_win_callback(self, data=None):
-        self.update_view_themes()
-        self.load_themes_win.show_all()
-
     def update_view_themes(self, data=None):
         self.view_themes_scrol.hide_all()
 
@@ -389,7 +379,7 @@ class awnPreferencesMini(awnPreferences):
         selection = self.treeview_themes.get_selection()
         select = selection.get_selected()
         path = model.get(select[1], 2)
-        self.load_all_settings_from_desktop(path[0])
+        self.load_settings_from_theme(path[0])
         self.client.set_string(defs.THEME, defs.CURRENT_THEME, path[0])
 
 

@@ -25,6 +25,7 @@ import os
 import socket
 import time
 import urllib
+from ConfigParser import ConfigParser
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -481,7 +482,7 @@ class awnBzr(gobject.GObject):
             print (_("Error, the desktop file is not for a theme"))
 
 
-    def read_desktop_files_from_source(self, source, directories = defs.HOME_THEME_DIR):
+    def get_files_from_source(self, source, file_type, directories = defs.HOME_THEME_DIR):
         '''     Read all desktop file from a source
                 source is a list of 2 entries ('url','directory').
                 source is 1 line of the sources list.
@@ -492,21 +493,21 @@ class awnBzr(gobject.GObject):
             path= str(directories + "/" + source[1])
         try:
             list_files = os.listdir(path)
-            desktops =  [path + "/" + elem for elem in list_files if os.path.splitext(elem)[1] =='.desktop']
-            return desktops
+            files =  [path + "/" + elem for elem in list_files if os.path.splitext(elem)[1] ==file_type]
+            return files
         except:
             print(_("Error %s is missing on your system, please remove it from the sources.list") % path)
             return None
 
 
-    def catalog_from_sources_list(self):
+    def catalog_from_sources_list(self, file_type='.desktop'):
         '''
                 Return a catalog (list of desktop files from the sources list)
         '''
         catalog=[]
         sources_list = self.list_from_sources_list()
         for elem in sources_list:
-            desktops = self.read_desktop_files_from_source(elem)
+            desktops = self.get_files_from_source(elem, file_type)
             if desktops is not None:
                 [ catalog.append(i) for i in desktops ]
         return catalog
@@ -516,25 +517,52 @@ class awnBzr(gobject.GObject):
         Return a catalog of themes or applets (list of desktop files from the sources list)
         type_catalog is the type of catalog (Theme of Applets)
         '''
-        catalog = self.catalog_from_sources_list()
+
+        extension = '.awn-theme' if type_catalog == 'Theme' else '.desktop'
+        catalog = self.catalog_from_sources_list(extension)
+
         final_catalog = []
-        for elem in catalog:
-            desktop = DesktopEntry(elem)
-            if desktop.get('X-AWN-Type') == type_catalog:
-                final_catalog.append(elem)
+
+        if type_catalog == 'Theme':
+            final_catalog = catalog
+        else:
+            for elem in catalog:
+                desktop = DesktopEntry(elem)
+                if desktop.get('X-AWN-Type') == type_catalog:
+                    final_catalog.append(elem)
+
         return final_catalog
 
-    def load_all_settings_from_desktop(self, path):
-        '''     Load a desktop file and load all settings
+    def load_settings_from_theme(self, path):
+        '''     Load settings from desktop file
         '''
-        struct = self.read_desktop(path)
-        struct_items = struct.items()
-        if struct['type'] == 'Theme':
-            settings = [elem for elem in struct_items if elem[1] <> '' ]
-            new_struct = dict(settings)
+        parser = ConfigParser()
+        parser.read(path)
 
-        for k, v in new_struct.iteritems():
-            self.load_element_from_desktop(new_struct, k, read=False)
+        for section in parser.sections():
+            if section.startswith('config'):
+                ids = section.split('/')
+                group, instance_id = None, None
+                if len(ids) > 2:
+                    group = ids[1]
+                    instance_id = ids[2]
+                else:
+                    group = ids[1]
+
+                # once we support multiple panels use awn.config_get_defa...
+                # so far, self.client is OK
+                client = self.client
+
+                for key, value in parser.items(section):
+                    try:
+                        if value.isdigit(): value = int(value)
+                        elif len(value.split('.')) == 2: value = float(value)
+                        elif value.startswith('#'): 
+                            client.set_string(group, key, value)
+                            continue
+                        client.set_value(group, key, value)
+                    except:
+                        print "Unable to set value %s for %s/%s" % (value, group, key)
 
     def list_applets_categories(self):
         '''     List all categories of applets
@@ -573,22 +601,31 @@ class awnBzr(gobject.GObject):
         try:
             if not os.path.exists(path):
                 raise IOError("Desktop file does not exist!")
-            item = DesktopEntry (path)
-            text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
-            name = path
-            icon_name = item.getIcon()
-            icon = self.make_icon(path)
+
+            if os.path.splitext(path)[1] == '.desktop':
+                item = DesktopEntry (path)
+                text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
+                name = path
+                icon_name = item.getIcon()
+                icon = self.make_icon(icon_name)
+            else:
+                parser = ConfigParser()
+                parser.read(path)
+                text = "<b>%s</b> %s" % (parser.get('theme-info', 'Name'),
+                                          parser.get('theme-info', 'Version'))
+                if parser.has_option('theme-info', 'Author'):
+                    text += "\n<span style='italic'>by</span> %s" % parser.get('theme-info', 'Author')
+                name = path
+                icon = self.make_icon(parser.get('theme-info', 'Icon'))
         except:
             return None, "", ""
         return icon, text, name
 
-    def make_icon (self,icon_path):
+    def make_icon (self, name):
         ''' Extract an icon from a desktop file
         '''
         icon_final = None
         theme = gtk.icon_theme_get_default ()
-        desktop = DesktopEntry(icon_path)
-        name = desktop.getIcon()
         pixmaps_path = [os.path.join(p, "share", "pixmaps") for p in ("/usr", "/usr/local", defs.PREFIX)]
         applets_path = [os.path.join(p, "share", "avant-window-navigator","applets") for p in ("/usr", "/usr/local", defs.PREFIX)]
         list_icons = (
@@ -654,7 +691,6 @@ class awnBzr(gobject.GObject):
         col = gtk.TreeViewColumn ("Desktop", ren)
         treeview.append_column (col)
 
-#               self.refresh_tree(uris, model)
         for i in uris:
             if os.path.isfile(i):
                 icon, text, name = self.make_row (i)

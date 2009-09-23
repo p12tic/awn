@@ -1,0 +1,39 @@
+[theme-info]
+Name=Default Theme
+Icon=avant-window-navigator
+Author=Awn-core team
+Version=1.0
+
+[config/panel/1]
+#Orientation of Awn, left=0, right=1, top=2 and bottom=3
+orient=3
+#The user-visible size of Awn (minus the offset)
+size=48
+#The style of the bar, none=0, flat bar=1, 3d bar=2, curved bar=3
+style=1
+
+[config/effects]
+#A bitmask which stores the type of effect for each event
+icon_effect=69905
+
+[config/theme]
+#First gradient step color.
+gstep1=#454545454545c8c8
+#Second gradient step color.
+gstep2=#010101010101bebe
+#First highlight gradient step color.
+ghistep1=#ffffffffffff0b0b
+#Second highlight gradient step color.
+ghistep2=#ffffffffffff0a0a
+#Main border color.
+border=#000000000000cccc
+#Internal border color.
+hilight=#ffffffffffff1111
+#Corner radius of the background. Set to 0 to disable rounded corners.
+corner_radius=10
+#The angle of the panel in 3D mode.
+panel_angle=45
+#The symmetry of the curve in Curves mode.
+curves_symmetry=0.5
+#The curviness of the panel in Curves mode.
+curviness=10
