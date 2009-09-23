@@ -1,5 +1,10 @@
 2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-icon.c:
+	Decrease the priority of timer in long-press implementation.
+
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-effects.c:
 	Fix compiler warnings.
 

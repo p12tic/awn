@@ -233,9 +233,13 @@ awn_icon_pressed (AwnIcon *icon, GdkEventButton *event, gpointer data)
       {
         priv->press_start_x = event->x_root;
         priv->press_start_y = event->y_root;
-        priv->long_press_timer = g_timeout_add (priv->long_press_timeout, 
-                                                awn_icon_long_press_timeout,
-                                                icon);
+        // make sure the timer has lower priority than X-events
+        priv->long_press_timer = g_timeout_add_full (
+            G_PRIORITY_DEFAULT + 10,
+            priv->long_press_timeout,
+            awn_icon_long_press_timeout,
+            icon,
+            NULL);
       }
       break;
     case 3:
