@@ -117,7 +117,7 @@ awn_effects_dispose (GObject *object)
 
   if (fx->widget)
   {
-    g_object_remove_weak_pointer (fx->widget, &fx->widget);
+    g_object_remove_weak_pointer ((GObject*)fx->widget, (gpointer*)&fx->widget);
     fx->widget = NULL;
   }
 
@@ -345,10 +345,11 @@ awn_effects_set_property (GObject      *object,
     case PROP_WIDGET:
       if (fx->widget)
       {
-        g_object_remove_weak_pointer (fx->widget, &fx->widget);
+        g_object_remove_weak_pointer ((GObject*)fx->widget,
+                                      (gpointer*)&fx->widget);
       }
       fx->widget = g_value_get_object (value);
-      g_object_add_weak_pointer (fx->widget, &fx->widget);
+      g_object_add_weak_pointer ((GObject*)fx->widget, (gpointer*)&fx->widget);
       break;
     case PROP_NO_CLEAR:
       fx->no_clear = g_value_get_boolean(value);

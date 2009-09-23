@@ -1,3 +1,8 @@
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fix compiler warnings.
+
 2009-09-22  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
