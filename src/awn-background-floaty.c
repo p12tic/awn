@@ -144,7 +144,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   pat = cairo_pattern_create_linear (0, 0, 0, bg_size);
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
-  draw_rect (bg, cr, position, 1, 1, width-2, bg_size-2);
+  draw_rect (bg, cr, position, 1, 1, width-3, bg_size-2);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
@@ -154,7 +154,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   pat = cairo_pattern_create_linear (0, 0, 0, (bg_size/3.0));
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
-  draw_rect (bg, cr, position, 1, 1, width-2, bg_size/3.0);
+  draw_rect (bg, cr, position, 1, 1, width-3, bg_size/3.0);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);

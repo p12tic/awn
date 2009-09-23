@@ -1,5 +1,11 @@
 2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-background-flat.c:
+	* src/awn-background-floaty.c:
+	Make the flat & floaty backgrounds pixel perfect.
+
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awnClass.py:
 	Removal of unused methods.
 
