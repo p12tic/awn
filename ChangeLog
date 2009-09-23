@@ -1,6 +1,13 @@
 2009-09-22  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	When dynamically generating regular expressions it's a good
+	idea to escape the source strings.  This may fix the reported
+	grouping issues with Eclipse.
+
+2009-09-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Remove a, no longer relevant, comment.
 
 2009-09-22  Rodney Cryderman  <rcryderman@gmail.com>
