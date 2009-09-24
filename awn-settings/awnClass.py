@@ -25,6 +25,7 @@ import os
 import socket
 import time
 import urllib
+from ConfigParser import ConfigParser
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -338,42 +339,22 @@ class awnBzr(gobject.GObject):
         #       '' if there is nothing,
         #       a string when there is no settings
         #       a list when there is a setting : [value of the setting, group settings, key setting]
-        struct= {       'type': '',             # Applet or Theme
-                        'location':'',          # Location of the desktop file
-                        'name': '',             # Name of the Type
-                        'comment':'',           # Comments
-                        'version':'',           # Version of the
-                        'copyright':'',         # Copyright
-                        'author':'',            # Author
-                        'licence_code':'',      # Licence for the code
-                        'licence_icons':'',     # Licence for the icons
-                        'icon':'',              # Icon for the type
-                        'style':'',             # Style of the bar
-                        # Applet specific
-                        'exec':'',              # Execution path, for applet
-                        'applet_type':'',       # Type of teh applet (C, Vala or Python)
-                        'applet_category':'',   # Category for the applet
-                        'singleton':'',         # True or False, use only one instance.
-                        # Theme specific
-                        'effects':'',
-                        'orientation':'',
-                        'size':'',
-                        'gtk_theme_mode':'',
-                        'corner_radius':'',
-                        'panel_angle':'',
-                        'curviness':''  ,
-                        'curves_symmetry':'',
-                        'gstep1':'',
-                        'gstep2':'',
-                        'ghistep1':'',
-                        'ghistep2':'',
-                        'border':'',
-                        'hilight':'',
-                        'corner_radius':'',
-                        'panel_angle':'',
-                }
-
-        struct['gtk_theme_mode'] = [False, defs.THEME, defs.GTK_THEME_MODE]
+        struct = {
+            'type': '',             # Applet
+            'location':'',          # Location of the desktop file
+            'name': '',             # Name of the Type
+            'comment':'',           # Comments
+            'version':'',           # Version of the
+            'copyright':'',         # Copyright
+            'author':'',            # Author
+            'licence_code':'',      # Licence for the code
+            'licence_icons':'',     # Licence for the icons
+            'icon':'',              # Icon for the type
+            'exec':'',              # Execution path, for applet
+            'applet_type':'',       # Type of teh applet (C, Vala or Python)
+            'applet_category':'',   # Category for the applet
+            'singleton':'',         # True or False, use only one instance.
+        }
 
         desktop_entry = DesktopEntry(file_path)
         struct['type'] = desktop_entry.get('X-AWN-Type')
@@ -385,103 +366,9 @@ class awnBzr(gobject.GObject):
         struct['applet_type'] = desktop_entry.get('X-AWN-AppletType')
         struct['applet_category'] = desktop_entry.get('X-AWN-AppletCategory').rsplit(",")
 
-        if desktop_entry.get('X-AWN-ThemeEffects') <> '':
-            struct['effects'] = [int(desktop_entry.get('X-AWN-ThemeEffects')),
-                                    defs.EFFECTS, defs.ICON_EFFECT]
-
-        if desktop_entry.get('X-AWN-ThemeOrientation') <> '':
-            struct['orientation'] = [int(desktop_entry.get('X-AWN-ThemeOrientation')),
-                                            defs.PANEL, defs.ORIENT]
-
-        if desktop_entry.get('X-AWN-ThemeSize') <> '':
-            struct['size'] = [int(desktop_entry.get('X-AWN-ThemeSize')),
-                                    defs.PANEL, defs.SIZE]
-
-        if desktop_entry.get('X-AWN-ThemeStyle') <> '':
-            struct['style'] = [int(desktop_entry.get('X-AWN-ThemeStyle')),
-                                    defs.PANEL, defs.STYLE]
-
-        if desktop_entry.get('X-AWN-ThemeGstep1') <> '':
-            struct['gstep1'] = [desktop_entry.get('X-AWN-ThemeGstep1'),
-                                    defs.THEME, defs.GSTEP1]
-
-        if desktop_entry.get('X-AWN-ThemeGstep2') <> '':
-            struct['gstep2'] = [desktop_entry.get('X-AWN-ThemeGstep2'),
-                                    defs.THEME, defs.GSTEP2]
-
-        if desktop_entry.get('X-AWN-ThemeGhistep1') <> '':
-            struct['ghistep1'] = [desktop_entry.get('X-AWN-ThemeGhistep1'),
-                                    defs.THEME, defs.GHISTEP1]
-
-        if desktop_entry.get('X-AWN-ThemeGhistep2') <> '':
-            struct['ghistep2'] = [desktop_entry.get('X-AWN-ThemeGhistep2'),
-                                    defs.THEME, defs.GHISTEP2]
-
-        if desktop_entry.get('X-AWN-ThemeBorder') <> '':
-            struct['border'] = [desktop_entry.get('X-AWN-ThemeBorder'),
-                                    defs.THEME, defs.BORDER]
-
-        if desktop_entry.get('X-AWN-ThemeHilight') <> '':
-            struct['hilight'] = [desktop_entry.get('X-AWN-ThemeHilight'),
-                                    defs.THEME, defs.HILIGHT]
-
-        if desktop_entry.get('X-AWN-ThemeCornerRadius') <> '':
-            struct['corner_radius'] = [float(desktop_entry.get('X-AWN-ThemeCornerRadius')),
-                                    defs.THEME, defs.CORNER_RADIUS]
-
-        if desktop_entry.get('X-AWN-ThemePanelAngle') <> '':
-            struct['panel_angle'] = [float(desktop_entry.get('X-AWN-ThemePanelAngle')),
-                                    defs.THEME, defs.PANEL_ANGLE]
-
-        if desktop_entry.get('X-AWN-ThemeCurvesSymmetry') <> '':
-            struct['curves_symmetry'] = [float(desktop_entry.get('X-AWN-ThemeCurvesSymmetry')),
-                                    defs.THEME, defs.CURVES_SYMMETRY]
-
-        if desktop_entry.get('X-AWN-ThemeCurviness') <> '':
-            struct['curviness'] = [float(desktop_entry.get('X-AWN-ThemeCurviness')),
-                                    defs.THEME, defs.CURVINESS]
-
         return struct
 
-    def load_element_from_desktop(self, file_path, parameter, read=True):
-        '''
-                Read a desktop file, and load the paramater setting.
-                file_path: the path of the desktop file or the read desktop file
-        '''
-        if read == True:
-            struct = self.read_desktop(file_path)
-        else:
-            struct = file_path
-        if struct['type'] == 'Theme':
-            #Read the settings
-            try:
-                if not isinstance(struct[parameter], list): return
-                if struct[parameter][0] is not '':
-                    if type(struct[parameter][0]) is int:
-                        self.client.set_int(struct[parameter][1],
-                                            struct[parameter][2],
-                                            struct[parameter][0])
-                    elif type(struct[parameter][0]) is float:
-                        self.client.set_float(struct[parameter][1],
-                                              struct[parameter][2],
-                                              struct[parameter][0])
-                    elif type(struct[parameter][0]) is bool:
-                        self.client.set_bool(struct[parameter][1],
-                                             struct[parameter][2],
-                                             struct[parameter][0])
-                    else: self.client.set_string(struct[parameter][1],
-                                                 struct[parameter][2],
-                                                 struct[parameter][0])
-            except IndexError:
-                # The key is not in the desktop file, just skip it.
-                pass
-
-            #TODO more type settings
-        else:
-            print (_("Error, the desktop file is not for a theme"))
-
-
-    def read_desktop_files_from_source(self, source, directories = defs.HOME_THEME_DIR):
+    def get_files_from_source(self, source, file_type, directories = defs.HOME_THEME_DIR):
         '''     Read all desktop file from a source
                 source is a list of 2 entries ('url','directory').
                 source is 1 line of the sources list.
@@ -492,21 +379,21 @@ class awnBzr(gobject.GObject):
             path= str(directories + "/" + source[1])
         try:
             list_files = os.listdir(path)
-            desktops =  [path + "/" + elem for elem in list_files if os.path.splitext(elem)[1] =='.desktop']
-            return desktops
+            files =  [path + "/" + elem for elem in list_files if os.path.splitext(elem)[1] ==file_type]
+            return files
         except:
             print(_("Error %s is missing on your system, please remove it from the sources.list") % path)
             return None
 
 
-    def catalog_from_sources_list(self):
+    def catalog_from_sources_list(self, file_type='.desktop'):
         '''
                 Return a catalog (list of desktop files from the sources list)
         '''
         catalog=[]
         sources_list = self.list_from_sources_list()
         for elem in sources_list:
-            desktops = self.read_desktop_files_from_source(elem)
+            desktops = self.get_files_from_source(elem, file_type)
             if desktops is not None:
                 [ catalog.append(i) for i in desktops ]
         return catalog
@@ -516,25 +403,52 @@ class awnBzr(gobject.GObject):
         Return a catalog of themes or applets (list of desktop files from the sources list)
         type_catalog is the type of catalog (Theme of Applets)
         '''
-        catalog = self.catalog_from_sources_list()
+
+        extension = '.awn-theme' if type_catalog == 'Theme' else '.desktop'
+        catalog = self.catalog_from_sources_list(extension)
+
         final_catalog = []
-        for elem in catalog:
-            desktop = DesktopEntry(elem)
-            if desktop.get('X-AWN-Type') == type_catalog:
-                final_catalog.append(elem)
+
+        if type_catalog == 'Theme':
+            final_catalog = catalog
+        else:
+            for elem in catalog:
+                desktop = DesktopEntry(elem)
+                if desktop.get('X-AWN-Type') == type_catalog:
+                    final_catalog.append(elem)
+
         return final_catalog
 
-    def load_all_settings_from_desktop(self, path):
-        '''     Load a desktop file and load all settings
+    def load_settings_from_theme(self, path):
+        '''     Load settings from desktop file
         '''
-        struct = self.read_desktop(path)
-        struct_items = struct.items()
-        if struct['type'] == 'Theme':
-            settings = [elem for elem in struct_items if elem[1] <> '' ]
-            new_struct = dict(settings)
+        parser = ConfigParser()
+        parser.read(path)
 
-        for k, v in new_struct.iteritems():
-            self.load_element_from_desktop(new_struct, k, read=False)
+        for section in parser.sections():
+            if section.startswith('config'):
+                ids = section.split('/')
+                group, instance_id = None, None
+                if len(ids) > 2:
+                    group = ids[1]
+                    instance_id = ids[2]
+                else:
+                    group = ids[1]
+
+                # once we support multiple panels use awn.config_get_defa...
+                # so far, self.client is OK
+                client = self.client
+
+                for key, value in parser.items(section):
+                    try:
+                        if value.isdigit(): value = int(value)
+                        elif len(value.split('.')) == 2: value = float(value)
+                        elif value.startswith('#'): 
+                            client.set_string(group, key, value)
+                            continue
+                        client.set_value(group, key, value)
+                    except:
+                        print "Unable to set value %s for %s/%s" % (value, group, key)
 
     def list_applets_categories(self):
         '''     List all categories of applets
@@ -573,22 +487,31 @@ class awnBzr(gobject.GObject):
         try:
             if not os.path.exists(path):
                 raise IOError("Desktop file does not exist!")
-            item = DesktopEntry (path)
-            text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
-            name = path
-            icon_name = item.getIcon()
-            icon = self.make_icon(path)
+
+            if os.path.splitext(path)[1] == '.desktop':
+                item = DesktopEntry (path)
+                text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
+                name = path
+                icon_name = item.getIcon()
+                icon = self.make_icon(icon_name)
+            else:
+                parser = ConfigParser()
+                parser.read(path)
+                text = "<b>%s</b> %s" % (parser.get('theme-info', 'Name'),
+                                          parser.get('theme-info', 'Version'))
+                if parser.has_option('theme-info', 'Author'):
+                    text += "\n<span style='italic'>by</span> %s" % parser.get('theme-info', 'Author')
+                name = path
+                icon = self.make_icon(parser.get('theme-info', 'Icon'))
         except:
             return None, "", ""
         return icon, text, name
 
-    def make_icon (self,icon_path):
+    def make_icon (self, name):
         ''' Extract an icon from a desktop file
         '''
         icon_final = None
         theme = gtk.icon_theme_get_default ()
-        desktop = DesktopEntry(icon_path)
-        name = desktop.getIcon()
         pixmaps_path = [os.path.join(p, "share", "pixmaps") for p in ("/usr", "/usr/local", defs.PREFIX)]
         applets_path = [os.path.join(p, "share", "avant-window-navigator","applets") for p in ("/usr", "/usr/local", defs.PREFIX)]
         list_icons = (
@@ -654,7 +577,6 @@ class awnBzr(gobject.GObject):
         col = gtk.TreeViewColumn ("Desktop", ren)
         treeview.append_column (col)
 
-#               self.refresh_tree(uris, model)
         for i in uris:
             if os.path.isfile(i):
                 icon, text, name = self.make_row (i)
@@ -705,77 +627,6 @@ class awnBzr(gobject.GObject):
         widget.add_attribute(cell,'text',0)
     
 class awnPreferences(awnBzr):
-    def setup_color(self, group, key, colorbut, show_opacity_scale = True):
-        self.load_color(group, key, colorbut, show_opacity_scale)
-        colorbut.connect("color-set", self.color_changed, (group, key))
-        self.client.notify_add(group, key, self.reload_color, (colorbut,show_opacity_scale))
-
-    def load_color(self, group, key, colorbut, show_opacity_scale = True):
-        try:
-            color, alpha = make_color(self.client.get_string(group, key))
-        except TypeError:
-            raise "\nKey: [%s]%s isn't set.\nRestarting AWN usually solves this issue\n" % (group, key)
-	print ("color : ", color, " alpha : %s", alpha)
-        colorbut.set_color(color)
-        if show_opacity_scale:
-            colorbut.set_alpha(alpha)
-        else:
-            colorbut.set_use_alpha(False)
-
-    def reload_color(self, group, key, value, (colorbut,show_opacity_scale)):
-        self.load_color(group, key, colorbut, show_opacity_scale)
-
-    def color_changed(self, colorbut, groupkey):
-        group, key = groupkey
-        string =  make_color_string(colorbut.get_color(), colorbut.get_alpha())
-        self.client.set_string(group, key, string)
-
-    def setup_chooser(self, group, key, chooser):
-        """sets up png choosers"""
-        fil = gtk.FileFilter()
-        fil.set_name(_("PNG Files"))
-        fil.add_pattern("*.png")
-        fil.add_pattern("*.PNG")
-        chooser.add_filter(fil)
-        preview = gtk.Image()
-        chooser.set_preview_widget(preview)
-
-        self.load_chooser(group, key, chooser)
-        self.client.notify_add(group, key, self.reload_chooser, chooser)
-
-        chooser.connect("update-preview", self.update_preview, preview)
-        chooser.connect("selection-changed", self.chooser_changed, (group, key))
-
-    def load_chooser(self, group, key, chooser):
-        try:
-            filename = self.client.get_string(group, key)
-            if os.path.exists(filename):
-                chooser.set_uri(filename)
-            elif(filename != "~"):
-                self.client.set_string(group, key, "~")
-        except TypeError:
-            raise "\nKey: [%s]%s isn't set.\nRestarting AWN usually solves this issue\n" % (group, key)
-
-    def reload_chooser(self, group, key, value, chooser):
-        self.load_chooser(group, key, chooser)
-
-    def chooser_changed(self, chooser, groupkey):
-        group, key = groupkey
-        f = chooser.get_filename()
-        if f == None:
-            return
-        self.client.set_string(group, key, f)
-
-    def update_preview(self, chooser, preview):
-        f = chooser.get_preview_filename()
-        try:
-            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(f, 128, 128)
-            preview.set_from_pixbuf(pixbuf)
-            have_preview = True
-        except:
-            have_preview = False
-        chooser.set_preview_widget_active(have_preview)
-
     def setup_font(self, group, key, font_btn):
         """sets up font chooser"""
         self.load_font(group, key, font_btn)
@@ -996,24 +847,6 @@ class awnPreferences(awnBzr):
         '''Delete the autostart entry for the dock.'''
         os.remove(self.get_autostart_file_path())
 
-#TODO Factorize *_orientation and *_style
-
-    def setup_freeze(self, toggle, freezed, parameter, data=None):
-        '''     Setup a "linked" toggle button
-                toggle : the gtk.ToggleButton
-                freezed : the gtkWidget to freeze
-        '''
-        toggle.connect("toggled", self.freeze_changed, freezed, parameter)
-
-    def freeze_changed(self, widget, freezed, parameter):
-        '''     Callback for the setup_freeze
-        '''
-        if widget.get_active() == True:
-            freezed.set_sensitive(False)
-            self.load_element_from_desktop(self.theme_desktop, parameter)
-        else:
-            freezed.set_sensitive(True)
-
     def test_bzr_themes(self, widget, data=None):
         if widget.get_active() == True:
             self.create_sources_list()
@@ -1065,7 +898,7 @@ class awnManager:
         if len(extra_version) > 0:
             version += extra_version
         self.about.set_version(version)
-        self.about.set_copyright("Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>")
+        self.about.set_copyright("Copyright (C) 2007-2009 Awn-core team")
         self.about.set_authors([
             'Neil Jagdish Patel <njpatel@gmail.com>',
             'haytjes <hv1989@gmail.com>',

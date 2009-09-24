@@ -1,3 +1,64 @@
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-flat.c:
+	* src/awn-background-floaty.c:
+	Make the flat & floaty backgrounds pixel perfect.
+
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Removal of unused methods.
+
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	* configure.in:
+	* themes/Makefile.am:
+	* themes/default.awn-theme:
+	Change the way we deal with themes.
+
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-icon.c:
+	Decrease the priority of timer in long-press implementation.
+
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fix compiler warnings.
+
+2009-09-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	When dynamically generating regular expressions it's a good
+	idea to escape the source strings.  This may fix the reported
+	grouping issues with Eclipse.
+
+2009-09-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Remove a, no longer relevant, comment.
+
+2009-09-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Destroy the TaskIcon in the "animation-end" signal handler.  
+	Possible due to previous commit.
+
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effects-shared.c:
+	* libawn/awn-effects.c:
+	Fix issue with AwnEffects destruction inside "animation-end" signal
+	handler.
+
+2009-09-22  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	Fixed the non-unique ID... again...
+
 2009-09-21  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:

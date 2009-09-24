@@ -900,9 +900,7 @@ on_icon_effects_ends (TaskIcon   *icon,
        for this object*/
       g_signal_handlers_disconnect_by_func (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)),
                             G_CALLBACK (on_icon_effects_ends), icon);
-      /*something (AwnEffects I think) needs a chance to do some cleanup before
-       the icon is destroyed... seemingly*/    
-      g_idle_add ((GSourceFunc)gtk_widget_destroy,icon);
+      gtk_widget_destroy (GTK_WIDGET(icon));
     }
     else
     {
@@ -1207,6 +1205,7 @@ static gchar *
 find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
 {
   gchar * lower;
+  gchar * lower_regex_escaped;
   gchar * desktop_regex_str;
   GRegex  * desktop_regex;
   const gchar* const * system_dirs = g_get_system_data_dirs ();
@@ -1216,7 +1215,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   
   g_return_val_if_fail (class_name,NULL);
   lower = g_utf8_strdown (class_name, -1);
-  
+  lower_regex_escaped = g_regex_escape_string (lower,-1);
 //#define DEBUG 1
 #ifdef DEBUG
   g_debug ("%s: wm class = %s",__func__,class_name);
@@ -1227,13 +1226,15 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   /*
    TODO compile the regex
    */
-  desktop_regex_str = g_strdup_printf (".*%s.*desktop",lower);  
+  desktop_regex_str = g_strdup_printf (".*%s.*desktop",lower_regex_escaped);
   desktop_regex = g_regex_new (desktop_regex_str,G_REGEX_CASELESS,0,NULL);
-
 #ifdef DEBUG
     g_debug ("%s: desktop regex = %s",__func__,desktop_regex_str);
 #endif      
   g_free (desktop_regex_str);
+  desktop_regex_str = NULL;
+  g_free (lower_regex_escaped);
+  lower_regex_escaped = NULL;
   g_return_val_if_fail (desktop_regex,NULL);
   
   for (iter = (GStrv)system_dirs; *iter; iter++)
@@ -1260,20 +1261,24 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
             const gchar ** i;
             gchar ** j;
             gchar * exec = desktop_agnostic_fdo_desktop_entry_get_string (desktop, "Exec");
+            gchar * exec_regex_escaped = g_regex_escape_string (exec,-1);
             gchar ** exec_tokens;
             gchar * exec_base;
             gchar * cmd_base;
             gchar ** cmd_tokens;
+
+            g_free (exec);
+            exec = NULL;
             
             g_object_unref (desktop);
             for (i=fdo_options; *i;i++)
             {
-              exec_tokens = g_strsplit (exec,*i,-1);
-              g_free (exec);
-              exec = g_strjoinv ("",exec_tokens);
+              exec_tokens = g_strsplit (exec_regex_escaped,*i,-1);
+              g_free (exec_regex_escaped);
+              exec_regex_escaped = g_strjoinv ("",exec_tokens);
               g_strfreev (exec_tokens);
             }
-            exec_tokens = g_strsplit(exec," ",-1);
+            exec_tokens = g_strsplit(exec_regex_escaped," ",-1);
             exec_base = g_path_get_basename (exec_tokens[0]);
             g_free (exec_tokens[0]);
             exec_tokens[0] = exec_base;
@@ -1281,8 +1286,8 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
             {
               g_strstrip (*j);
             }
-            g_free (exec);
-            exec = g_strjoinv (".*",exec_tokens);
+            g_free (exec_regex_escaped);
+            exec_regex_escaped = g_strjoinv (".*",exec_tokens);
             g_strfreev (exec_tokens);
 
             cmd_tokens = g_strsplit (cmd," ",-1);
@@ -1301,37 +1306,42 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
             cmd_base = g_strjoinv (" ",cmd_tokens);
             g_strfreev (cmd_tokens);
 #ifdef DEBUG            
-            g_debug ("%s:  exec =   '%s'",__func__,exec);
+            g_debug ("%s:  exec =   '%s'",__func__,exec_regex_escaped);
             g_debug ("%s:  cmd_base =   '%s'",__func__,cmd_base);
 #endif              
-            if ( g_regex_match_simple (exec, cmd,G_REGEX_CASELESS,0) )              
+            if ( g_regex_match_simple (exec_regex_escaped, cmd,G_REGEX_CASELESS,0) )              
             {
               launcher = get_launcher (full_path);
               if (launcher)
               {
                 task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
                 g_regex_unref (desktop_regex);
-                g_free (exec);
+                g_free (exec_regex_escaped);
                 g_free (lower);
                 g_free (cmd_base);
                 return full_path;
               }
             }
-            g_free (cmd_base);              
-            g_free (exec);              
+            g_free (cmd_base);
+            cmd_base = NULL;
+            g_free (exec_regex_escaped);
+            exec_regex_escaped = NULL;
           }
           g_object_unref (file);
           g_free (full_path);
+          full_path = NULL;
         }
       }
       g_dir_close (dir);
     }
     g_free (dir_name);
+    dir_name = NULL;
   }
   g_regex_unref (desktop_regex);
   
   tokens = g_strsplit (lower,"-",-1);
   g_free (lower);  
+  lower = NULL;
   if (tokens && tokens[0] && tokens[1] )
   {
     gchar * result = find_desktop_fuzzy (icon, tokens[0], cmd);
@@ -1519,7 +1529,7 @@ process_window_opened (WnckWindow    *window,
 #ifdef DEBUG
   g_debug("Matching score: %i, must be bigger then:%i, groups: %i", max_match_score, 99-priv->match_strength, max_match_score > 99-priv->match_strength);
 #endif  
-#undef DEBUG
+#undef DEBUG  
   /*
    if match is not 0
    and 
