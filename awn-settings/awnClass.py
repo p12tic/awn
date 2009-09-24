@@ -1448,7 +1448,10 @@ class awnApplet(awnBzr):
         self.icon_view.set_size_request(48, -1)
         self.icon_view.set_reorderable(True)
         self.icon_view.set_columns(100)
-
+        
+        #icon_view_selection = self.icon_view.get_selection()
+        self.icon_view.connect('selection-changed', self.callback_active_selection)
+        
         self.scrollwindow1.add(self.icon_view)
         self.scrollwindow1.show_all()
 
@@ -1548,5 +1551,22 @@ class awnApplet(awnBzr):
         (model, iter) = selection.get_selected()
         if iter is not None:
             self.update_applets(model.get_value(iter, 0))
-        
-
+    
+    def callback_applet_selection(self, selection, data=None):
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            self.btn_activate.set_sensitive(True)
+            if os.access(model.get_value(iter, 2), os.W_OK):
+                self.btn_delete.set_sensitive(True)
+            else:
+                self.btn_delete.set_sensitive(False)
+        else:
+            self.btn_activate.set_sensitive(False)
+            self.btn_delete.set_sensitive(False)
+            
+    def callback_active_selection(self, iconview, data=None):
+        if len(iconview.get_selected_items()) > 0:
+            self.btn_deactivate.set_sensitive(True)
+        else:
+            self.btn_deactivate.set_sensitive(False) 
+    

@@ -448,8 +448,12 @@ class awnAppletMini(awnApplet):
 
         self.scrollwindow = self.wTree.get_object("appletScrollActive")
         self.scrollwindow1 = self.wTree.get_object("appletScrollActive1")
+        
         self.treeview_available =  self.wTree.get_object("appletTreeviewAvailable")
         self.treeview_available.set_headers_visible(False)
+        treeview_available_selection = self.treeview_available.get_selection()
+        treeview_available_selection.connect('changed', self.callback_applet_selection)
+        
         self.make_active_model()
 
         if self.type_catalog_from_sources_list(type_catalog='Applet') == []:

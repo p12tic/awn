@@ -3,6 +3,7 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="awnManagerWindow">
+    <property name="window_position">mouse</property>
     <property name="default_width">550</property>
     <property name="default_height">350</property>
     <signal name="destroy" handler="on_window_destroy"/>
@@ -384,6 +385,7 @@
         <child>
           <object class="GtkAlignment" id="alignment4">
             <property name="visible">True</property>
+            <property name="top_padding">5</property>
             <property name="bottom_padding">5</property>
             <property name="left_padding">12</property>
             <child>
@@ -645,6 +647,7 @@
                                   <object class="GtkButton" id="appletActivate">
                                     <property name="label" translatable="yes">Activate</property>
                                     <property name="visible">True</property>
+                                    <property name="sensitive">False</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="image">image2</property>
@@ -659,6 +662,7 @@
                                   <object class="GtkButton" id="appletDeactivate">
                                     <property name="label" translatable="yes">Deactivate</property>
                                     <property name="visible">True</property>
+                                    <property name="sensitive">False</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="image">image1</property>
@@ -680,8 +684,9 @@
                                 <property name="layout_style">end</property>
                                 <child>
                                   <object class="GtkButton" id="appletDelete">
-                                    <property name="label">gtk-delete</property>
+                                    <property name="label">gtk-remove</property>
                                     <property name="visible">True</property>
+                                    <property name="sensitive">False</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="use_stock">True</property>
@@ -694,11 +699,10 @@
                                 </child>
                                 <child>
                                   <object class="GtkButton" id="appletInstall">
-                                    <property name="label">gtk-add</property>
+                                    <property name="label">Install...</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
-                                    <property name="use_stock">True</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -744,6 +748,7 @@
             <property name="right_padding">5</property>
             <child>
               <object class="GtkScrolledWindow" id="appletScrollActive1">
+                <property name="height_request">60</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">automatic</property>
