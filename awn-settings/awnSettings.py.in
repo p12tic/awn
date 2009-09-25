@@ -118,13 +118,18 @@ class awnPreferencesMini(awnPreferences):
             self.create_sources_list()
             self.update_sources_list()
         
-        '''
-        self.view_themes_scrol = self.wTree.get_object("list_themes_scrol")
+        self.view_themes_scroll = self.wTree.get_object("list_themes_scroll")
+        self.treeview_themes = self.wTree.get_object("list_themes_view")
+        treeview_themes_selection = self.treeview_themes.get_selection()
+        treeview_themes_selection.connect('changed', self.callback_theme_selection)
         self.update_view_themes()
 
         self.apply_theme = self.wTree.get_object("apply_theme")
         self.apply_theme.connect("clicked", self.apply_theme_callback)
-        '''
+        self.delete_theme = self.wTree.get_object("delete_theme")
+        self.delete_theme.connect('clicked', self.delete_theme_callback)
+        self.install_theme = self.wTree.get_object("install_theme")
+        
         self.setup_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
         #self.setup_freeze(self.wTree.get_object("freezeEffects"), self.wTree.get_object("iconeffects"), "effects")
 
@@ -364,17 +369,17 @@ class awnPreferencesMini(awnPreferences):
         self.update_repo_view()
 
     def update_view_themes(self, data=None):
-        self.view_themes_scrol.hide_all()
+        #self.view_themes_scroll.hide_all()
 
-        for elem in self.view_themes_scrol.get_children():
-            elem.destroy()
+        #for elem in self.view_themes_scroll.get_children():
+        #    elem.destroy()
 
         themes = self.type_catalog_from_sources_list()
-        self.treeview_themes = gtk.TreeView()
+        #self.treeview_themes = gtk.TreeView()
         self.treeview_themes.set_headers_visible(False)
-        self.view_themes_scrol.add(self.treeview_themes)
+        #self.view_themes_scroll.add(self.treeview_themes)
         self.refresh_tree(themes, self.make_model(themes, self.treeview_themes))
-        self.view_themes_scrol.show_all()
+        self.view_themes_scroll.show_all()
 
     def apply_theme_callback(self, data=None):
         model = self.treeview_themes.get_model()
@@ -384,7 +389,26 @@ class awnPreferencesMini(awnPreferences):
         self.load_settings_from_theme(path[0])
         self.client.set_string(defs.THEME, defs.CURRENT_THEME, path[0])
 
-
+    def delete_theme_callback(self, data=None):
+        model = self.treeview_themes.get_model()
+        selection = self.treeview_themes.get_selection()
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            print 'deleting '+model.get_value(iter, 2)
+            
+    def callback_theme_selection(self, selection, data=None):
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            self.apply_theme.set_sensitive(True)
+            if os.access(model.get_value(iter, 2), os.W_OK):
+                self.delete_theme.set_sensitive(True)
+            else:
+                self.delete_theme.set_sensitive(False)
+        else:
+            self.apply_theme.set_sensitive(False)
+            self.delete_theme.set_sensitive(False)       
+        
+        
 class awnLauncherMini(awnLauncher):
     def __init__(self, glade):
         self.wTree = glade

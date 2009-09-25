@@ -403,7 +403,6 @@ class awnBzr(gobject.GObject):
         Return a catalog of themes or applets (list of desktop files from the sources list)
         type_catalog is the type of catalog (Theme of Applets)
         '''
-
         extension = '.awn-theme' if type_catalog == 'Theme' else '.desktop'
         catalog = self.catalog_from_sources_list(extension)
 
