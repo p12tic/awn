@@ -221,7 +221,15 @@ get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry * entry)
     gboolean  match = TRUE;
     if (iter->exec)
     {
-      gchar * exec = desktop_agnostic_fdo_desktop_entry_get_string (entry, "Exec");
+      gchar * exec = NULL;
+      if (desktop_agnostic_fdo_desktop_entry_key_exists (entry,"Exec"))
+      {
+        exec = desktop_agnostic_fdo_desktop_entry_get_string (entry, "Exec");
+      }
+      if (!exec)
+      {
+        continue;
+      }
 #ifdef DEBUG      
       g_debug ("%s: iter->exec = %s, exec = %s",__func__,iter->exec,exec);
 #endif

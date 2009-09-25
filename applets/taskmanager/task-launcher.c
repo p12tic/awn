@@ -285,7 +285,7 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   DesktopAgnosticVFSFile *file;
   GError *error = NULL;
   GdkPixbuf *pixbuf;
-  gchar * exec_key;
+  gchar * exec_key = NULL;
   gchar * needle;
   GdkPixbuf    *scaled;
   gint  height;
@@ -309,12 +309,17 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
 
   if (file == NULL || !desktop_agnostic_vfs_file_exists (file))
   {
+    if (file)
+    {
+      g_object_unref (file);
+    }
     g_critical ("File not found: '%s'", path);
     return;
   }
 
   priv->entry = desktop_agnostic_fdo_desktop_entry_new_for_file (file, &error);
 
+  g_object_unref (file);
   if (error)
   {
     g_critical ("Error when trying to load the launcher: %s", error->message);
@@ -323,6 +328,11 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   }
 
   if (priv->entry == NULL)
+  {
+    return;
+  }
+
+  if (!desktop_agnostic_fdo_desktop_entry_key_exists (priv->entry,"Exec"))
   {
     return;
   }

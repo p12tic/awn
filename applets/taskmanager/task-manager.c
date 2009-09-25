@@ -1260,16 +1260,27 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
             const gchar * fdo_options[] = {"%f","%F","%u","%U","%d","%D","%n","%N","%i","%c","%k","%v","%m",NULL};
             const gchar ** i;
             gchar ** j;
-            gchar * exec = desktop_agnostic_fdo_desktop_entry_get_string (desktop, "Exec");
-            gchar * exec_regex_escaped = g_regex_escape_string (exec,-1);
+            gchar * exec = NULL;
+            gchar * exec_regex_escaped = NULL;
             gchar ** exec_tokens;
             gchar * exec_base;
             gchar * cmd_base;
             gchar ** cmd_tokens;
 
+            if (desktop_agnostic_fdo_desktop_entry_key_exists (desktop,"Exec"))
+            {
+              exec = desktop_agnostic_fdo_desktop_entry_get_string (desktop, "Exec");
+              if (exec)
+              {
+                exec_regex_escaped = g_regex_escape_string (exec,-1);            
+              }
+            }
             g_free (exec);
             exec = NULL;
-            
+            if (!exec_regex_escaped)
+            {
+              continue;
+            }
             g_object_unref (desktop);
             for (i=fdo_options; *i;i++)
             {

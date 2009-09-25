@@ -1,3 +1,11 @@
+2009-09-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/util.c:
+	Check that desktop files keys exist before 
+	attempting to access the "Exec" key.  
+
 2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-background-flat.c:
