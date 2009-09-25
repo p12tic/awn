@@ -503,7 +503,7 @@ task_icon_constructed (GObject *object)
   }
 
   if (!do_bind_property (priv->client, "drag_and_drop", object,
-                         "drag_and_drop"))
+                         "draggable"))
   {
     return;
   }
