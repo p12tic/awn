@@ -413,6 +413,22 @@ class awnPreferencesMini(awnPreferences):
         dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
                                   buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
+        
+        filter = gtk.FileFilter()
+        filter.set_name("AWN Theme Package")
+        filter.add_pattern("*.tar.gz")
+        filter.add_pattern("*.tgz")
+        filter.add_pattern("*.bz2")
+        filter.add_pattern("*.awn-theme")
+        dialog.add_filter(filter)
+
+        response = dialog.run()
+        if response == gtk.RESPONSE_OK:
+            file = dialog.get_filename()
+            dialog.destroy()
+            print "installing "+file
+        else:
+            dialog.destroy()
             
 class awnLauncherMini(awnLauncher):
     def __init__(self, glade):
