@@ -482,6 +482,7 @@ class awnBzr(gobject.GObject):
         '''     Make a row for a list of applets or launchers
                 path : path of the desktop file
         '''
+        icon = None
         text = ""
         name = ""
         try:
@@ -490,21 +491,21 @@ class awnBzr(gobject.GObject):
 
             if os.path.splitext(path)[1] == '.desktop':
                 item = DesktopEntry (path)
-                text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
-                name = path
+                name = item.getName()
+                text = "<b>%s</b>\n%s" % (name, item.getComment())
                 icon_name = item.getIcon()
                 icon = self.make_icon(icon_name)
             else:
                 parser = ConfigParser()
                 parser.read(path)
-                text = "<b>%s</b> %s" % (parser.get('theme-info', 'Name'),
-                                          parser.get('theme-info', 'Version'))
+                name = parser.get('theme-info', 'Name')
+                text = "<b>%s</b> %s" % (name,
+                                         parser.get('theme-info', 'Version'))
                 if parser.has_option('theme-info', 'Author'):
                     text += "\n<span style='italic'>by</span> %s" % parser.get('theme-info', 'Author')
-                name = path
                 icon = self.make_icon(parser.get('theme-info', 'Icon'))
         except:
-            return None, "", ""
+            pass
         return icon, text, name
 
     def make_icon (self, name):
@@ -559,17 +560,15 @@ class awnBzr(gobject.GObject):
 
     def make_model(self, uris, treeview):
 
-        model = model = gtk.ListStore(gdk.Pixbuf, str, str,str)
-        model.set_sort_column_id(2, gtk.SORT_ASCENDING)
+        model = model = gtk.ListStore(gdk.Pixbuf, str, str, str)
         treeview.set_model (model)
-        treeview.set_search_column (3)
 
         ren = gtk.CellRendererPixbuf()
         col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
         treeview.append_column (col)
 
         ren = gtk.CellRendererText()
-        col = gtk.TreeViewColumn ("Name", ren, markup=1)
+        col = gtk.TreeViewColumn ("Description", ren, markup=1)
         treeview.append_column (col)
 
         ren = gtk.CellRendererText()
@@ -577,18 +576,20 @@ class awnBzr(gobject.GObject):
         col = gtk.TreeViewColumn ("Desktop", ren)
         treeview.append_column (col)
 
-        for i in uris:
-            if os.path.isfile(i):
-                icon, text, name = self.make_row (i)
+        ren = gtk.CellRendererText()
+        ren.props.visible = False
+        col = gtk.TreeViewColumn ("Name", ren)
+        treeview.append_column (col)
+
+        for uri in uris:
+            if os.path.isfile(uri):
+                icon, text, name = self.make_row (uri)
                 if len(text) > 2:
                     row = model.append ()
                     model.set_value (row, 0, icon)
                     model.set_value (row, 1, text)
-                    model.set_value (row, 2, name)
-                if len(uris) == 0:
-                    if (self.idle_id != 0):
-                        gobject.source_remove(self.idle_id)
-                    self.idle_id = gobject.idle_add(self.check_changes, [])
+                    model.set_value (row, 2, uri)
+                    model.set_value (row, 3, name)
 
         self.load_finished = True
 
@@ -598,19 +599,15 @@ class awnBzr(gobject.GObject):
 
     def refresh_tree (self, uris, model):
         model.clear()
-        for i in uris:
-            if os.path.isfile(i):
-                icon, text, name = self.make_row (i)
+        for uri in uris:
+            if os.path.isfile(uri):
+                icon, text, name = self.make_row (uri)
                 if len(text) > 2:
                     row = model.append ()
                     model.set_value (row, 0, icon)
                     model.set_value (row, 1, text)
-                    model.set_value (row, 2, name)
-                if len(uris) == 0:
-                    if (self.idle_id != 0):
-                        gobject.source_remove(self.idle_id)
-                    self.idle_id = gobject.idle_add(self.check_changes, [])
-        #model.show()
+                    model.set_value (row, 2, uri)
+                    model.set_value (row, 3, name)
 
     def create_dropdown(self, widget, entries, matrix_settings=False):
         '''     Create a dropdown.
@@ -934,36 +931,22 @@ _("You should have received a copy of the GNU General Public License along with 
 
 class awnLauncher(awnBzr):
     def reordered(self, model, path, iterator, data=None):
-        cur_index = self.model.get_path(iterator)[0]
-        cur_uri = self.model.get_value (iterator, 2)
-        l = {}
-        it = self.model.get_iter_first ()
-        while (it):
-            uri = self.model.get_value (it, 2)
-            l[self.model.get_path(it)[0]] = uri
-            it = self.model.iter_next (it)
-
-        remove = None
-        for item in l:
-            if l[item] == cur_uri and cur_index != item:
-                remove = item
-                break
-        if remove >= 0:
-            del l[remove]
-
-        launchers = []
-        for item in l:
-            launchers.append(l[item])
-
-        launchers = filter(None, launchers)
-
         if self.load_finished:
-            if (self.idle_id != 0):
-                gobject.source_remove(self.idle_id)
-            self.idle_id = gobject.idle_add(self.check_changes, launchers)
+            if (self.idle_id == 0):
+                self.idle_id = gobject.idle_add(self.check_changes, model)
 
-    def check_changes (self, data):
+    def check_changes (self, model):
         self.idle_id = 0
+
+        data = []
+        it = model.get_iter_first ()
+        while (it):
+            uri = model.get_value (it, 2)
+            data.append(uri)
+            it = model.iter_next (it)
+
+        data = filter(None, data)
+
         if (self.last_uris != data):
             self.last_uris = data[:]
             self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, data)
@@ -1015,14 +998,13 @@ class awnLauncher(awnBzr):
         selection = self.treeview_launchers.get_selection()
         (model, iter) = selection.get_selected()
         path = model.get_value(iter, 2)
-        # TODO: don't check if it exists, perhaps it's invalid
-        if os.path.exists(path):
-            paths = self.client_taskman.get_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST)
-            paths.remove(path)
-            if path.startswith(defs.HOME_LAUNCHERS_DIR):
-                os.remove(path)
-            self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, paths)
-            self.refresh_tree(paths, model)
+
+        paths = self.client_taskman.get_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST)
+        paths.remove(path)
+        if os.path.exists(path) and path.startswith(defs.HOME_LAUNCHERS_DIR):
+            os.remove(path)
+        self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, paths)
+        self.refresh_tree(paths, model)
 
     def getUniqueFileId(self, name, extension):
         append = 0
@@ -1316,7 +1298,10 @@ class awnApplet(awnBzr):
 
     def load_applets (self):
         applets = self.applets_by_categories()
-        self.make_model(applets, self.treeview_available)
+        model = self.make_model(applets, self.treeview_available)
+
+        model.set_sort_column_id(1, gtk.SORT_ASCENDING)
+        self.treeview_available.set_search_column (3)
 
     def update_applets(self, list_applets):
         applets = self.applets_by_categories(list_applets)

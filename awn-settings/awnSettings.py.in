@@ -410,7 +410,8 @@ class awnLauncherMini(awnLauncher):
         self.last_uris = self.launchers_uris[:] # make a copy
         launchers_model = self.make_model(self.launchers_uris,
                                           self.treeview_launchers)
-        self.refresh_tree(self.launchers_uris, launchers_model)
+        launchers_model.connect("row-inserted", self.reordered)
+
         self.client_taskman.notify_add(GROUP_DEFAULT,
                                        defs.LAUNCHERS_LIST,
                                        self.refresh_launchers,

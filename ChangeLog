@@ -1,5 +1,12 @@
 2009-09-25  Michal Hruby  <michal.mhr@gmail.com>
 
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Fix sort order in applets tab, make it searchable.
+	Launchers are now reorderable again.
+
+2009-09-25  Michal Hruby  <michal.mhr@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	Fix key being bound to wrong property.
 
