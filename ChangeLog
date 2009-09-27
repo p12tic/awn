@@ -1,3 +1,11 @@
+2009-09-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	patch by: Matt <sharkbaitbobby@gmail.com>
+
+	* ChangeLog:
+	* libawn/awn-dialog.c:
+	Fix color property setters.
+
 2009-09-26  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

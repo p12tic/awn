@@ -750,19 +750,19 @@ awn_dialog_get_property (GObject    *object,
     case PROP_EFFECTS_HILIGHT:
       g_value_set_boolean (value, priv->effects_activate);
       break;
-
     case PROP_DIALOG_BG:
-    case PROP_TITLE_BG:
-    case PROP_BORDER:
-    case PROP_HILIGHT:
-    {
-      DesktopAgnosticColor *color;
-
-      g_warning ("Property get unimplemented!");
-      color = desktop_agnostic_color_new_from_string ("white", NULL);
-      g_value_take_object (value, color);
+      g_value_set_object (value, priv->dialog_bg);
       break;
-    }
+    case PROP_TITLE_BG:
+      g_value_set_object (value, priv->title_bg);
+      break;
+    case PROP_BORDER:
+      g_value_set_object (value, priv->border_color);
+      break;
+    case PROP_HILIGHT:
+      g_value_set_object (value, priv->hilight_color);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
