@@ -1229,7 +1229,6 @@ task_icon_refresh_visible (TaskIcon *icon)
       g_object_set (G_OBJECT (priv->overlay_text),
                     "gravity", GDK_GRAVITY_SOUTH_EAST, 
                     "font-sizing", AWN_FONT_SIZE_LARGE,
-                    "apply-effects", TRUE,
                     NULL);
     }
 
