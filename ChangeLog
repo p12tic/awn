@@ -1,5 +1,10 @@
 2009-09-27  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-panel.c:
+	Make the panel fade-out animation a bit faster.
+
+2009-09-27  Michal Hruby  <michal.mhr@gmail.com>
+
 	patch by: Matt <sharkbaitbobby@gmail.com>
 
 	* ChangeLog:
