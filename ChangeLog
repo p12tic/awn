@@ -1,5 +1,14 @@
 2009-09-27  Michal Hruby  <michal.mhr@gmail.com>
 
+	* doc/reference/libawn-sections.txt:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	Add also "middle-clicked" signal to both AwnIcon and AwnAppletSimple.
+
+2009-09-27  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-panel.c:
 	Make the panel fade-out animation a bit faster.
 

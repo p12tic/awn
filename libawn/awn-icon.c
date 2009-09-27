@@ -48,7 +48,8 @@ struct _AwnIconPrivate
 
   gboolean bind_effects;
   gboolean hover_effects_enable;
-  gboolean was_pressed;
+  gboolean left_was_pressed;
+  gboolean middle_was_pressed;
 
   gint long_press_timeout;
   gdouble press_start_x;
@@ -82,6 +83,7 @@ enum
   SIZE_CHANGED,
 
   CLICKED,
+  MIDDLE_CLICKED,
   LONG_PRESS,
   MENU_POPUP,
 
@@ -226,7 +228,7 @@ awn_icon_pressed (AwnIcon *icon, GdkEventButton *event, gpointer data)
   switch (event->button)
   {
     case 1:
-      priv->was_pressed = TRUE;
+      priv->left_was_pressed = TRUE;
       g_object_set (priv->effects, "depressed", TRUE, NULL);
       priv->long_press_emitted = FALSE;
       if (priv->long_press_timer == 0)
@@ -241,6 +243,9 @@ awn_icon_pressed (AwnIcon *icon, GdkEventButton *event, gpointer data)
             icon,
             NULL);
       }
+      break;
+    case 2:
+      priv->middle_was_pressed = TRUE;
       break;
     case 3:
       g_signal_emit (icon, _icon_signals[MENU_POPUP], 0, event);
@@ -257,18 +262,32 @@ awn_icon_released (AwnIcon *icon, GdkEventButton *event, gpointer data)
 {
   AwnIconPrivate *priv = icon->priv;
 
-  if (priv->was_pressed && event->button == 1)
+  switch (event->button)
   {
-    priv->was_pressed = FALSE;
-    g_object_set (priv->effects, "depressed", FALSE, NULL);
-    if (priv->long_press_timer)
-    {
-      g_source_remove (priv->long_press_timer);
-      priv->long_press_timer = 0;
-    }
-    // emit clicked only if long-press wasn't emitted
-    if (priv->long_press_emitted == FALSE)
-      awn_icon_clicked (icon);
+    case 1:
+      if (priv->left_was_pressed)
+      {
+        priv->left_was_pressed = FALSE;
+        g_object_set (priv->effects, "depressed", FALSE, NULL);
+        if (priv->long_press_timer)
+        {
+          g_source_remove (priv->long_press_timer);
+          priv->long_press_timer = 0;
+        }
+        // emit clicked only if long-press wasn't emitted
+        if (priv->long_press_emitted == FALSE)
+          awn_icon_clicked (icon);
+      }
+      break;
+    case 2:
+      if (priv->middle_was_pressed)
+      {
+        priv->middle_was_pressed = FALSE;
+        awn_icon_middle_clicked (icon);
+      }
+      break;
+    default:
+      break;
   }
 
   return FALSE;
@@ -512,6 +531,15 @@ awn_icon_class_init (AwnIconClass *klass)
       G_OBJECT_CLASS_TYPE (obj_class),
       G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
       G_STRUCT_OFFSET (AwnIconClass, clicked),
+      NULL, NULL,
+      g_cclosure_marshal_VOID__VOID,
+      G_TYPE_NONE, 0);
+
+  _icon_signals[MIDDLE_CLICKED] =
+    g_signal_new ("middle-clicked",
+      G_OBJECT_CLASS_TYPE (obj_class),
+      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+      G_STRUCT_OFFSET (AwnIconClass, middle_clicked),
       NULL, NULL,
       g_cclosure_marshal_VOID__VOID,
       G_TYPE_NONE, 0);
@@ -1088,5 +1116,13 @@ awn_icon_clicked (AwnIcon *icon)
   g_return_if_fail (AWN_IS_ICON (icon));
 
   g_signal_emit (icon, _icon_signals[CLICKED], 0);
+}
+
+void
+awn_icon_middle_clicked (AwnIcon *icon)
+{
+  g_return_if_fail (AWN_IS_ICON (icon));
+
+  g_signal_emit (icon, _icon_signals[MIDDLE_CLICKED], 0);
 }
 
