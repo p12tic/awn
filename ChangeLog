@@ -1,3 +1,9 @@
+2009-09-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-icon.c:
+	unref the effects in finalize() instead of dispose().  Works as 
+	well and removes an possible source of error.
+
 2009-09-28  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

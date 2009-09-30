@@ -437,11 +437,6 @@ awn_icon_dispose (GObject *object)
     desktop_agnostic_config_client_unbind_all_for_object (client,
                                                           object, NULL);
   }
-  if (priv->effects)
-  {
-    g_object_unref (priv->effects);
-  }
-  priv->effects = NULL;
 
   if (priv->tooltip)
     gtk_widget_destroy (priv->tooltip);
@@ -459,6 +454,22 @@ awn_icon_dispose (GObject *object)
 }
 
 static void
+awn_icon_finalize (GObject *object)
+{
+  AwnIconPrivate *priv;
+
+  g_return_if_fail (AWN_IS_ICON (object));
+  priv = AWN_ICON (object)->priv;
+
+  if (priv->effects)
+  {
+    g_object_unref (priv->effects);
+  }
+  G_OBJECT_CLASS (awn_icon_parent_class)->finalize (object);
+}
+
+
+static void
 awn_icon_overlayable_init (AwnOverlayableIface *iface)
 {
   iface->get_effects = awn_icon_get_effects;
@@ -474,6 +485,7 @@ awn_icon_class_init (AwnIconClass *klass)
   obj_class->get_property = awn_icon_get_property;
   obj_class->set_property = awn_icon_set_property;
   obj_class->dispose      = awn_icon_dispose;
+  obj_class->finalize     = awn_icon_finalize;
 
   wid_class->size_request       = awn_icon_size_request;
   wid_class->expose_event       = awn_icon_expose_event;
