@@ -503,7 +503,7 @@ task_icon_constructed (GObject *object)
   }
 
   if (!do_bind_property (priv->client, "drag_and_drop", object,
-                         "drag_and_drop"))
+                         "draggable"))
   {
     return;
   }
@@ -975,10 +975,12 @@ static void
 _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
 {
   TaskIconPrivate *priv;
+  AwnEffects * effects;
 
   g_return_if_fail (TASK_IS_ICON (icon));
   g_return_if_fail (TASK_IS_ITEM (old_item));
 
+  effects = awn_overlayable_get_effects (AWN_OVERLAYABLE (icon));
   priv = icon->priv;
   priv->items = g_slist_remove (priv->items, old_item);
 
@@ -996,8 +998,10 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
   }
   if (g_slist_length (priv->items) == priv->ephemeral_count)
   {
-    awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                      AWN_EFFECT_ATTENTION);     
+    if (effects)
+    {
+      awn_effects_stop (effects, AWN_EFFECT_ATTENTION);
+    }
     g_slist_foreach (priv->items,(GFunc)gtk_widget_destroy,NULL);
     g_slist_free (priv->items);
     priv->items = NULL;
@@ -1005,8 +1009,10 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
   }
   else if ( !task_icon_count_require_attention (icon) )
   {
-    awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                      AWN_EFFECT_ATTENTION);
+    if (effects)
+    {
+      awn_effects_stop (effects, AWN_EFFECT_ATTENTION);
+    }
   }
   else
   {
@@ -1229,7 +1235,6 @@ task_icon_refresh_visible (TaskIcon *icon)
       g_object_set (G_OBJECT (priv->overlay_text),
                     "gravity", GDK_GRAVITY_SOUTH_EAST, 
                     "font-sizing", AWN_FONT_SIZE_LARGE,
-                    "apply-effects", TRUE,
                     NULL);
     }
 

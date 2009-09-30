@@ -1221,7 +1221,8 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
 static gboolean 
 alpha_blend_hide (gpointer data)
 {
-  g_return_val_if_fail(AWN_IS_PANEL(data), FALSE);
+  const int HIDE_COUNTER_MAX = 10;
+  g_return_val_if_fail (AWN_IS_PANEL (data), FALSE);
 
   AwnPanel *panel = AWN_PANEL (data);
   AwnPanelPrivate *priv = panel->priv;
@@ -1231,9 +1232,9 @@ alpha_blend_hide (gpointer data)
 
   win = gtk_widget_get_window (GTK_WIDGET (panel));
 
-  gdk_window_set_opacity (win, 1 - 0.05 * priv->hide_counter);
+  gdk_window_set_opacity (win, 1 - 1.0 / HIDE_COUNTER_MAX * priv->hide_counter);
 
-  if (priv->hide_counter == 20)
+  if (priv->hide_counter >= HIDE_COUNTER_MAX)
   {
     priv->hiding_timer_id = 0;
     priv->autohide_always_visible = FALSE; /* see the note in start function */

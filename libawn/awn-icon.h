@@ -64,6 +64,7 @@ struct _AwnIconClass
   /*< signals >*/
   void (*size_changed)       (AwnIcon *icon);
   void (*clicked)            (AwnIcon *icon);
+  void (*middle_clicked)     (AwnIcon *icon);
   void (*long_press)         (AwnIcon *icon);
   void (*context_menu_popup) (AwnIcon *icon, GdkEventButton *event);
 
@@ -117,6 +118,7 @@ gboolean        awn_icon_get_hover_effects   (AwnIcon *icon);
 void            awn_icon_set_hover_effects   (AwnIcon *icon, gboolean enable);
 
 void            awn_icon_clicked             (AwnIcon *icon);
+void            awn_icon_middle_clicked      (AwnIcon *icon);
 
 G_END_DECLS
 

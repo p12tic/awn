@@ -1,3 +1,63 @@
+2009-09-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-icon.c:
+	unref the effects in finalize() instead of dispose().  Works as 
+	well and removes an possible source of error.
+
+2009-09-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	This should fix the various crashes associated with
+	changing/restarting WM.
+
+2009-09-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* doc/reference/libawn-sections.txt:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	Add also "middle-clicked" signal to both AwnIcon and AwnAppletSimple.
+
+2009-09-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Make the panel fade-out animation a bit faster.
+
+2009-09-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	patch by: Matt <sharkbaitbobby@gmail.com>
+
+	* ChangeLog:
+	* libawn/awn-dialog.c:
+	Fix color property setters.
+
+2009-09-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Make text overlay consistent with the default. 
+	Effects are not applied.
+
+2009-09-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Fix sort order in applets tab, make it searchable.
+	Launchers are now reorderable again.
+
+2009-09-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix key being bound to wrong property.
+
+2009-09-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/util.c:
+	Check that desktop files keys exist before 
+	attempting to access the "Exec" key.  
+
 2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-background-flat.c:
