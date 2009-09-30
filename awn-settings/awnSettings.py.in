@@ -199,7 +199,7 @@ class awnPreferencesMini(awnPreferences):
             (self.client_taskman, GROUP_DEFAULT, defs.MATCH_STRENGTH,
                 "match-strength", "match_strength_config"),
         ]
-
+        
         for item in config_map_simple:
             client, group, key, prop_name, wtree_name = item
             bind_to_gtk_component (client, group, key, self, prop_name,
@@ -406,8 +406,9 @@ class awnPreferencesMini(awnPreferences):
             else:
                 self.delete_theme.set_sensitive(False)
         else:
-            self.apply_theme.set_sensitive(False)
-            self.delete_theme.set_sensitive(False)       
+            pass
+            #~ self.apply_theme.set_sensitive(False)
+            #~ self.delete_theme.set_sensitive(False)       
         
     def install_theme_callback(self, widget, data=None):
         dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
