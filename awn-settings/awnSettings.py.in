@@ -130,6 +130,9 @@ class awnPreferencesMini(awnPreferences):
         self.delete_theme.connect('clicked', self.delete_theme_callback)
         self.install_theme = self.wTree.get_object("install_theme")
         self.install_theme.connect('clicked', self.install_theme_callback)
+        self.build_theme = self.wTree.get_object("build_theme")
+        self.build_theme.connect('clicked', self.build_theme_callback)
+        
         
         self.setup_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
         #self.setup_freeze(self.wTree.get_object("freezeEffects"), self.wTree.get_object("iconeffects"), "effects")
@@ -409,6 +412,10 @@ class awnPreferencesMini(awnPreferences):
             pass
             #~ self.apply_theme.set_sensitive(False)
             #~ self.delete_theme.set_sensitive(False)       
+    
+    def build_theme_callback(self, widget, data=None):
+        self.themeWindow = self.wTree.get_object('themeWindow')
+        self.themeWindow.show()
         
     def install_theme_callback(self, widget, data=None):
         dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
