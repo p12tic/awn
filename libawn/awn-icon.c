@@ -569,7 +569,7 @@ awn_icon_class_init (AwnIconClass *klass)
     g_signal_new ("context-menu-popup",
       G_OBJECT_CLASS_TYPE (obj_class),
       G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
-      G_STRUCT_OFFSET (AwnIconClass, long_press),
+      G_STRUCT_OFFSET (AwnIconClass, context_menu_popup),
       NULL, NULL,
       g_cclosure_marshal_VOID__BOXED,
       G_TYPE_NONE, 1,
