@@ -1474,16 +1474,16 @@ awn_applet_set_uid (AwnApplet *applet, const gchar *uid)
 }
 
 /**
- * awn_applet_set_flags:
+ * awn_applet_set_behavior:
  * @applet: an #AwnApplet.
  * @flags: flags for this applet.
  *
- * Sets flags for this applet. Note that setting the flags to
+ * Sets behavior flags for this applet. Note that setting the flags to
  * #AWN_APPLET_IS_SEPARATOR or #AWN_APPLET_IS_EXPANDER will send a DBus request
  * to the associated AwnPanel which will destroy the socket used by this applet.
  */
 void
-awn_applet_set_flags (AwnApplet *applet, AwnAppletFlags flags)
+awn_applet_set_behavior (AwnApplet *applet, AwnAppletFlags flags)
 {
   AwnAppletPrivate *priv;
   GError *error = NULL;
@@ -1512,7 +1512,7 @@ awn_applet_set_flags (AwnApplet *applet, AwnAppletFlags flags)
 }
 
 /**
- * awn_applet_get_flags:
+ * awn_applet_get_behavior:
  * @applet: an #AwnApplet.
  *
  * Gets the flags set for this applet.
@@ -1520,7 +1520,7 @@ awn_applet_set_flags (AwnApplet *applet, AwnAppletFlags flags)
  * Returns: flags set for this applet.
  */
 AwnAppletFlags 
-awn_applet_get_flags (AwnApplet *applet)
+awn_applet_get_behavior (AwnApplet *applet)
 {
   g_return_val_if_fail (AWN_IS_APPLET (applet), AWN_APPLET_FLAGS_NONE);
 

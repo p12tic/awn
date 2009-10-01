@@ -324,15 +324,15 @@
   (return-type "const-gchar*")
 )
 
-(define-method get_flags
+(define-method get_behavior
   (of-object "AwnApplet")
-  (c-name "awn_applet_get_flags")
+  (c-name "awn_applet_get_behavior")
   (return-type "AwnAppletFlags")
 )
 
-(define-method set_flags
+(define-method set_behavior
   (of-object "AwnApplet")
-  (c-name "awn_applet_set_flags")
+  (c-name "awn_applet_set_behavior")
   (parameters
     '("AwnAppletFlags" "flags")
   )

@@ -104,6 +104,7 @@
 			<parameters>
 				<parameter name="path_type" type="AwnPathType"/>
 				<parameter name="position" type="GtkPositionType"/>
+				<parameter name="offset" type="gint"/>
 				<parameter name="offset_modifier" type="gfloat"/>
 				<parameter name="pos_x" type="gint"/>
 				<parameter name="pos_y" type="gint"/>
@@ -274,14 +275,14 @@
 					<parameter name="expand" type="gboolean"/>
 				</parameters>
 			</method>
-			<method name="get_canonical_name" symbol="awn_applet_get_canonical_name">
-				<return-type type="gchar*"/>
+			<method name="get_behavior" symbol="awn_applet_get_behavior">
+				<return-type type="AwnAppletFlags"/>
 				<parameters>
 					<parameter name="applet" type="AwnApplet*"/>
 				</parameters>
 			</method>
-			<method name="get_flags" symbol="awn_applet_get_flags">
-				<return-type type="AwnAppletFlags"/>
+			<method name="get_canonical_name" symbol="awn_applet_get_canonical_name">
+				<return-type type="gchar*"/>
 				<parameters>
 					<parameter name="applet" type="AwnApplet*"/>
 				</parameters>
@@ -339,7 +340,7 @@
 					<parameter name="panel_id" type="gint"/>
 				</parameters>
 			</constructor>
-			<method name="set_flags" symbol="awn_applet_set_flags">
+			<method name="set_behavior" symbol="awn_applet_set_behavior">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="applet" type="AwnApplet*"/>
@@ -595,6 +596,12 @@
 				</parameters>
 			</signal>
 			<signal name="long-press" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="simple" type="AwnAppletSimple*"/>
+				</parameters>
+			</signal>
+			<signal name="middle-clicked" when="FIRST">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="simple" type="AwnAppletSimple*"/>
@@ -884,6 +891,12 @@
 					<parameter name="icon" type="AwnIcon*"/>
 				</parameters>
 			</method>
+			<method name="middle_clicked" symbol="awn_icon_middle_clicked">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
+				</parameters>
+			</method>
 			<constructor name="new" symbol="awn_icon_new">
 				<return-type type="GtkWidget*"/>
 			</constructor>
@@ -983,6 +996,12 @@
 				</parameters>
 			</signal>
 			<signal name="long-press" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
+				</parameters>
+			</signal>
+			<signal name="middle-clicked" when="FIRST">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="icon" type="AwnIcon*"/>

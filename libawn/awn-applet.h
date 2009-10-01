@@ -135,8 +135,8 @@ const gchar *      awn_applet_get_uid             (AwnApplet      *applet);
 void               awn_applet_set_uid             (AwnApplet      *applet,
                                                    const gchar    *uid);
 
-AwnAppletFlags     awn_applet_get_flags           (AwnApplet      *applet);
-void               awn_applet_set_flags           (AwnApplet      *applet, 
+AwnAppletFlags     awn_applet_get_behavior        (AwnApplet      *applet);
+void               awn_applet_set_behavior        (AwnApplet      *applet,
                                                    AwnAppletFlags  flags);
 
 GtkWidget*         awn_applet_create_default_menu (AwnApplet      *applet);

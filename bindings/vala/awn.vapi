@@ -60,8 +60,8 @@ namespace Awn {
 		[NoWrapper]
 		public virtual void deleted (string uid);
 		public Gdk.NativeWindow docklet_request (int min_size, bool shrink, bool expand);
+		public Awn.AppletFlags get_behavior ();
 		public unowned string get_canonical_name ();
-		public Awn.AppletFlags get_flags ();
 		public int get_offset ();
 		public int get_offset_at (int x, int y);
 		public Awn.PathType get_path_type ();
@@ -73,7 +73,7 @@ namespace Awn {
 		public Applet (string canonical_name, string uid, int panel_id);
 		[NoWrapper]
 		public virtual void panel_configure (Gdk.EventConfigure event);
-		public void set_flags (Awn.AppletFlags flags);
+		public void set_behavior (Awn.AppletFlags flags);
 		public void set_offset (int offset);
 		public void set_path_type (Awn.PathType path);
 		public void set_pos_type (Gtk.PositionType position);
@@ -131,6 +131,7 @@ namespace Awn {
 		public virtual signal void clicked ();
 		public virtual signal void context_menu_popup (Gdk.EventButton event);
 		public virtual signal void long_press ();
+		public virtual signal void middle_clicked ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class Box : Gtk.Box, Gtk.Orientable, Atk.Implementor, Gtk.Buildable {
@@ -290,6 +291,7 @@ namespace Awn {
 		public virtual signal void clicked ();
 		public virtual signal void context_menu_popup (Gdk.EventButton event);
 		public virtual signal void long_press ();
+		public virtual signal void middle_clicked ();
 		public virtual signal void size_changed ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]

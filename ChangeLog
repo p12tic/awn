@@ -1,3 +1,15 @@
+2009-10-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/expander/applet.c:
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	Renamed AwnApplet.[gs]et_flags method to [gs]et_behavior. This fixes
+	problems in bindings.
+
 2009-09-29  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-icon.c:
