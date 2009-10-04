@@ -22,7 +22,7 @@
 #include "util.h"
 
 
-//#define DEBUG
+//#define DEBUG 1
 
 
 /*
@@ -39,6 +39,9 @@
       (point and click) and analyze.
  */
 
+static gchar * generate_id_from_cmd(gchar *cmd,gchar *res_name,
+                                    gchar *class_name, gchar*title);
+
 typedef struct
 {
   const gchar * exec;
@@ -53,7 +56,7 @@ typedef struct
   const gchar * res_name;
   const gchar * class_name;
   const gchar * title;
-  const gchar * id;
+  const void * id;
 }WindowMatch;
 
 typedef struct
@@ -76,6 +79,10 @@ typedef struct
 
 const gchar * blacklist[] = {"prism",
                        NULL};
+
+typedef gchar *(*fn_gen_id)(const gchar *,const gchar*,const gchar*,const gchar*);
+
+
 /*Assign an id to a desktop file
  
  exec field,name field,desktop filename,id
@@ -112,17 +119,21 @@ static  WindowMatch window_regexes[] =
   {".*prism.*google.*mail.*","Prism","Navigator",".*[Mm]ail.*","prism-google-mail"},
   {".*prism.*google.*reader.*","Prism","Navigator",".*[Rr]eader.*","prism-google-reader"},
   {".*prism.*google.*talk.*","Prism","Navigator",".*[Tt]alk.*","prism-google-talk"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*","OpenOffice-Writer"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","OpenOffice-Draw"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","OpenOffice-Impress"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","OpenOffice-Calc"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Math.*","OpenOffice-Math"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Base.*","OpenOffice-Base"},
+
+  {NULL,"Prism","Webrunner",NULL,generate_id_from_cmd},
+  
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Writer.*","OpenOffice-Writer"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Draw.*","OpenOffice-Draw"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Impress.*","OpenOffice-Impress"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Calc.*","OpenOffice-Calc"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Math.*","OpenOffice-Math"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Base.*","OpenOffice-Base"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*","^Database.*Wizard$","OpenOffice-Base"},      
   {NULL,"Amsn","amsn",".*aMSN.*","aMSN"},
   {NULL,"Chatwindow","container.*",".*Buddies.*Chat.*","aMSN"},
   {NULL,"Chatwindow","container.*",".*Untitled.*[wW]indow.*","aMSN"},
   {NULL,"Chatwindow","container.*",".*Offline.*Messaging.*","aMSN"},  
+  {NULL,"Chatwindow","container.*",NULL,"aMSN"},
   {NULL,"Toplevel","cfg",".*Preferences.*-.*Config.*","aMSN"},
   {NULL,"Toplevel","plugin_selector",".*Select.*Plugins.*","aMSN"},
   {NULL,"Toplevel","skin_selector",".*Please.*select.*skin.*","aMSN"},
@@ -162,21 +173,21 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {".*prism.*google.*talk.*","Prism","Navigator",".*[Tt]alk.*","prism-google-talk"},
 
   /*Debian*/
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*","openoffice.org-writer"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","openoffice.org-draw"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","openoffice.org-impress"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","openoffice.org-calc"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Math.*","openoffice.org-math"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Base.*","openoffice.org-base"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Writer.*","openoffice.org-writer"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Draw.*","openoffice.org-draw"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Impress.*","openoffice.org-impress"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Calc.*","openoffice.org-calc"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Math.*","openoffice.org-math"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Base.*","openoffice.org-base"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*","^Database.*Wizard$","openoffice.org-base"},
   
     /*Ubuntu*/
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Writer.*","ooo-writer"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Draw.*","ooo-draw"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Impress.*","ooo-impress"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Calc.*","ooo-calc"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Math.*","ooo-math"},
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*",".*Base.*","ooo-base"},  
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Writer.*","ooo-writer"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Draw.*","ooo-draw"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Impress.*","ooo-impress"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Calc.*","ooo-calc"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Math.*","ooo-math"},
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Base.*","ooo-base"},  
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*","^Database.*Wizard$","ooo-base"},
   
   {".*gimp.*",".*Gimp.*",".*gimp.*",".*GNU.*Image.*Manipulation.*Program.*","gimp"},
@@ -199,6 +210,18 @@ static  WindowWait windows_to_wait[] =
   {".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*","^OpenOffice\\.org.*",1000},
   {NULL,NULL,NULL,0}
 };
+
+
+static gchar *
+generate_id_from_cmd(gchar *cmd,gchar *res_name,gchar *class_name, gchar*title)
+{
+  if (cmd)
+  {
+    return g_strdup (cmd);
+  }
+  return NULL;
+}
+
 /*
  Special Casing should NOT be used for anything but a last resort.  
  Other matching algororithms are NOT used if something is special cased.
@@ -325,9 +348,19 @@ get_special_id_from_window_data (gchar * cmd, gchar *res_name, gchar * class_nam
         continue;
     } 
 #ifdef DEBUG    
-    g_debug ("%s:  Special cased Window ID: '%s'",__func__,iter->id);
+    g_debug ("%s:  Special cased Window ID: '%s'",__func__,(gchar *)iter->id);
 #endif
-    return g_strdup (iter->id);
+    if ( iter->id && (iter->id != generate_id_from_cmd) )
+    {
+      return g_strdup (iter->id);
+    }
+    else if (iter->id == generate_id_from_cmd)
+    {
+      fn_gen_id fn = iter->id;
+      /*conditional operator*/
+      return fn(iter->cmd,iter->res_name,iter->class_name,iter->title);
+    }
+    
   }
   return NULL;
 }
@@ -483,3 +516,4 @@ check_if_blacklisted (gchar * name)
   }
   return FALSE;
 }
+

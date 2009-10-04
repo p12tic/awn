@@ -1,3 +1,9 @@
+2009-10-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Seems that somewhere along the line the OO class names xprop
+	changed.
+
 2009-10-04  Julien Lavergne  <gilir@ubuntu.com>
 
 	* awn-settings/awnClass.py:
