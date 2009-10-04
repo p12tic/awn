@@ -1,3 +1,9 @@
+2009-10-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-icon.c:
+	Workaround for CSW bug introduced in gtk+ 2.17.3.
+	https://bugzilla.gnome.org/show_bug.cgi?id=597301
+
 2009-10-04  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awnClass.py:

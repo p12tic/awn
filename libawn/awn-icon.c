@@ -125,8 +125,18 @@ awn_icon_update_effects (GtkWidget *widget, gpointer data)
 
   if (gtk_widget_is_composited (widget))
   {
-    /* optimize the render speed */
+    /* optimize the render speed for GTK+ <2.17.3.*/
+    /*
+    TODO:
+    Once https://bugzilla.gnome.org/show_bug.cgi?id=597301 is resolve
+    we will need to set it back to FALSE for the fixed gtk versions
+    */
+#if GTK_CHECK_VERSION(2,17,3)
+    g_object_set (priv->effects, "indirect-paint", TRUE, NULL);
+#else
     g_object_set (priv->effects, "indirect-paint", FALSE, NULL);
+#endif
+
     if (priv->effects_backup_set)
     {
       g_object_set (priv->effects, "effects", priv->effects_backup, NULL);
