@@ -416,6 +416,9 @@ class awnBzr(gobject.GObject):
                 desktop = DesktopEntry(elem)
                 if desktop.get('X-AWN-Type') == type_catalog:
                     final_catalog.append(elem)
+                else:
+                    if desktop.get('X-AWN-AppletType') and type_catalog =='Applet':
+                        final_catalog.append(elem)
 
         return final_catalog
 
