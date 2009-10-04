@@ -1,3 +1,9 @@
+2009-10-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Fix up launcher adding/editing.
+
 2009-10-04  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:

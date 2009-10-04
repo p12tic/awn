@@ -417,10 +417,10 @@ class awnLauncherMini(awnLauncher):
                                        self.refresh_launchers,
                                        launchers_model)
 
-        self.applet_remove = self.wTree.get_object("launcher_remove")
-        self.applet_remove.connect("clicked", self.remove)
-        self.applet_add = self.wTree.get_object("launcher_add")
-        self.applet_add.connect("clicked", self.add)
+        self.launcher_remove = self.wTree.get_object("launcher_remove")
+        self.launcher_remove.connect("clicked", self.remove)
+        self.launcher_add = self.wTree.get_object("launcher_add")
+        self.launcher_add.connect("clicked", self.add)
         self.launcher_edit = self.wTree.get_object("launcher_edit")
         self.launcher_edit.connect("clicked", self.edit)
 

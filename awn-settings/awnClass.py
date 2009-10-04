@@ -979,7 +979,7 @@ class awnLauncher(awnBzr):
             output = None
         else:
             output = self.create_unique_launcher_file()
-        editor = LauncherEditorDialog(vfile, None)
+        editor = LauncherEditorDialog(vfile, output)
         editor.show_all()
         response = editor.run()
         if response == gtk.RESPONSE_APPLY and output is not None:
@@ -987,7 +987,6 @@ class awnLauncher(awnBzr):
             idx = paths.index(path)
             paths[idx] = output.props.path
             self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, paths)
-            self.refresh_tree(paths, model)
 
     def add(self, button):
         selection = self.treeview_launchers.get_selection()
@@ -995,7 +994,11 @@ class awnLauncher(awnBzr):
         vfile = self.create_unique_launcher_file()
         editor = LauncherEditorDialog(vfile, None)
         editor.show_all()
-        editor.run()
+        response = editor.run()
+        if response == gtk.RESPONSE_APPLY:
+            paths = self.client_taskman.get_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST)
+            paths.append(vfile.props.path)
+            self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, paths)
 
     def remove(self, button):
         selection = self.treeview_launchers.get_selection()
