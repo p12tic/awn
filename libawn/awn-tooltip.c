@@ -555,7 +555,7 @@ awn_tooltip_new_for_widget (GtkWidget *widget)
                          "decorated", FALSE,
                          "skip-pager-hint", TRUE,
                          "skip-taskbar-hint", TRUE,
-                         "focus", widget,
+                         "focus-widget", widget,
                          NULL);
 
   return tooltip;
