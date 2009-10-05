@@ -125,7 +125,7 @@ gint               awn_applet_get_offset_at       (AwnApplet      *applet,
 void               awn_applet_set_offset          (AwnApplet      *applet,
                                                    gint           offset);
 
-guint              awn_applet_get_size            (AwnApplet      *applet);
+gint               awn_applet_get_size            (AwnApplet      *applet);
 void               awn_applet_set_size            (AwnApplet      *applet,
                                                    gint           size);
 
