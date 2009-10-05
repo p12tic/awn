@@ -1406,15 +1406,15 @@ find_desktop_special_case (TaskIcon *icon, gchar * cmd, gchar *res_name,
 
 static gchar *
 search_desktop_cache (TaskManager * manager, TaskIcon * icon,gchar * class_name, 
-                      gchar * res_name, gchar * cmd)
+                      gchar * res_name, gchar * cmd, gchar *id)
 {
   TaskManagerPrivate *priv;
   gchar * key;
   gchar * desktop_path;
   TaskItem *launcher = NULL;
-  
+
   priv = manager->priv;
-  key = g_strdup_printf("%s::%s::%s",class_name,res_name,cmd);
+  key = g_strdup_printf("%s::%s::%s::%s",class_name,res_name,cmd,id);
   desktop_path = g_hash_table_lookup (priv->desktops_table,key);
 
   if (desktop_path)
@@ -1568,8 +1568,9 @@ process_window_opened (WnckWindow    *window,
     gchar   *cmd;
     gchar   *full_cmd;
     gchar   *cmd_basename = NULL;
+    gchar * id = NULL;
+    glibtop_proc_args buf;
     
-    glibtop_proc_args buf;    
     cmd = glibtop_get_proc_args (&buf,wnck_window_get_pid (window),1024);    
     full_cmd = get_full_cmd_from_pid (wnck_window_get_pid (window));
     if (cmd)
@@ -1584,8 +1585,8 @@ process_window_opened (WnckWindow    *window,
       g_debug ("%s: class name  = %s, res name = %s",__func__,class_name,res_name);
 #endif      
     
-    found_desktop = search_desktop_cache (manager,TASK_ICON(icon),class_name,res_name,cmd_basename);
-    
+    id = get_special_id_from_window_data (cmd, res_name, class_name, wnck_window_get_name(window));
+    found_desktop = search_desktop_cache (manager,TASK_ICON(icon),class_name,res_name,cmd_basename,id);
 /*
      Possible TODO:
      Check for saved signature.
@@ -1671,17 +1672,16 @@ process_window_opened (WnckWindow    *window,
       }
       if (found_desktop)
       {
-        gchar * key = g_strdup_printf("%s::%s::%s",class_name,res_name,cmd_basename);
+        gchar * key = g_strdup_printf("%s::%s::%s::%s",class_name,res_name,cmd_basename,id);
         
         g_hash_table_insert (priv->desktops_table, key,found_desktop);
       }
     }
-      
 /*
      Possible TODO
      if found and signature has not already been saved then save it.
 */
-    
+    g_free (id);    
     g_free (full_cmd);
     g_free (cmd);     
     g_free (class_name);

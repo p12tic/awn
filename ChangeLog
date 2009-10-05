@@ -1,5 +1,11 @@
 2009-10-04  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Fix an issue with the desktop caching code that was resulting in
+	incorrect desktop files being associated with some windows (OOO).
+
+2009-10-04  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-icon.c:
 	Workaround for CSW bug introduced in gtk+ 2.17.3.
 	https://bugzilla.gnome.org/show_bug.cgi?id=597301
