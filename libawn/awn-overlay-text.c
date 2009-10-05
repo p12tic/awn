@@ -286,7 +286,6 @@ static void
 awn_overlay_text_class_init (AwnOverlayTextClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec   *pspec;
 
   object_class->get_property = awn_overlay_text_get_property;
   object_class->set_property = awn_overlay_text_set_property;
@@ -309,15 +308,16 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
  * the standard awn font sizes.
  */        
   
-  pspec = g_param_spec_double ("font-sizing",
-                               "Font Sizing",
-                               "Font Sizing",
-                               1.0,
-                               100.0,
-                               AWN_FONT_SIZE_MEDIUM,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_FONT_SIZING, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_FONT_SIZING,
+    g_param_spec_double ("font-sizing",
+                         "Font Sizing",
+                         "Font Sizing",
+                         1.0,
+                         100.0,
+                         AWN_FONT_SIZE_MEDIUM,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
   
 
 /**
@@ -326,13 +326,14 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
  * The text to display as a string.
  */        
     
-  pspec = g_param_spec_string ("text",
-                               "Text",
-                               "Text Data",
-                               "",
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_TEXT, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_TEXT,
+    g_param_spec_string ("text",
+                         "Text",
+                         "Text Data",
+                         "",
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
 
 /**
@@ -343,51 +344,55 @@ awn_overlay_text_class_init (AwnOverlayTextClass *klass)
  * will be used.
  */        
     
-  pspec = g_param_spec_object ("text-color",
-                               "Text Colour",
-                               "Text Colour",
-                               DESKTOP_AGNOSTIC_TYPE_COLOR,
-                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_TEXT_COLOR, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_TEXT_COLOR,
+    g_param_spec_object ("text-color",
+                         "Text Colour",
+                         "Text Colour",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
-  pspec = g_param_spec_string ("text-color-astr",
-                               "Text color Astr",
-                               "Text color as string",
-                               "",
-                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_TEXT_COLOR_ASTR, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_TEXT_COLOR_ASTR,
+    g_param_spec_string ("text-color-astr",
+                         "Text color Astr",
+                         "Text color as string",
+                         "",
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
-  pspec = g_param_spec_object ("text-outline-color",
-                               "Text Outline Colour",
-                               "Text Outline Colour",
-                               DESKTOP_AGNOSTIC_TYPE_COLOR,
-                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_TEXT_OUTLINE_COLOR, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_TEXT_OUTLINE_COLOR,
+    g_param_spec_object ("text-outline-color",
+                         "Text Outline Colour",
+                         "Text Outline Colour",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
-  pspec = g_param_spec_string ("text-outline-color-astr",
-                               "Text Outline Color Astr",
-                               "Text outline color as string",
-                               "",
-                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_TEXT_OUTLINE_COLOR_ASTR, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_TEXT_OUTLINE_COLOR_ASTR,
+    g_param_spec_string ("text-outline-color-astr",
+                         "Text Outline Color Astr",
+                         "Text outline color as string",
+                         "",
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
-  pspec = g_param_spec_int ("font-mode",
-                               "Font Mode",
-                               "Font Mode",
-                               FONT_MODE_SOLID,
-                               FONT_MODE_OUTLINE_REVERSED,
-                               FONT_MODE_SOLID,
-                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_FONT_MODE, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_FONT_MODE,
+    g_param_spec_int ("font-mode",
+                      "Font Mode",
+                      "Font Mode",
+                      FONT_MODE_SOLID,
+                      FONT_MODE_OUTLINE_REVERSED,
+                      FONT_MODE_SOLID,
+                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
-  pspec = g_param_spec_double ("text-outline-width",
-                               "Text Outline Width",
-                               "Text Outline Width",
-                               0.0,
-                               10.0,
-                               2.5,
-                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_TEXT_OUTLINE_WIDTH, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_TEXT_OUTLINE_WIDTH,
+    g_param_spec_double ("text-outline-width",
+                         "Text Outline Width",
+                         "Text Outline Width",
+                         0.0, 10.0, 2.5,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   
   g_type_class_add_private (klass, sizeof (AwnOverlayTextPrivate));  
 

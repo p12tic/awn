@@ -58,7 +58,7 @@ struct _AwnAppletPrivate
   AwnPathType path_type;
   gint offset;
   gfloat offset_modifier;
-  guint size;
+  gint size;
   gint max_size;
 
   gboolean show_all_on_embed;
@@ -1403,7 +1403,7 @@ awn_applet_get_offset_at (AwnApplet *applet, gint x, gint y)
  *
  * Returns: current size set for the applet.
  */
-guint
+gint
 awn_applet_get_size (AwnApplet *applet)
 {
   AwnAppletPrivate *priv;

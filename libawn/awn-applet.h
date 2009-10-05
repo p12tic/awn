@@ -60,7 +60,6 @@ struct _AwnAppletClass
 {
   GtkPlugClass parent_class;
 
-  /*<signals >*/
   void (*position_changed) (AwnApplet *applet, GtkPositionType position);
   void (*offset_changed)   (AwnApplet *applet, gint offset);
   void (*size_changed)     (AwnApplet *applet, gint size);
@@ -70,7 +69,6 @@ struct _AwnAppletClass
   void (*panel_configure)  (AwnApplet *applet, GdkEventConfigure *event);
   void (*origin_changed)   (AwnApplet *applet, GdkRectangle *rect);
 
-  /*< Future padding >*/
   void (*_applet0) (void);
   void (*_applet1) (void);
   void (*_applet2) (void);
@@ -127,7 +125,7 @@ gint               awn_applet_get_offset_at       (AwnApplet      *applet,
 void               awn_applet_set_offset          (AwnApplet      *applet,
                                                    gint           offset);
 
-guint              awn_applet_get_size            (AwnApplet      *applet);
+gint               awn_applet_get_size            (AwnApplet      *applet);
 void               awn_applet_set_size            (AwnApplet      *applet,
                                                    gint           size);
 

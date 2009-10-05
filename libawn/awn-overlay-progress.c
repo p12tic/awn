@@ -101,7 +101,6 @@ static void
 awn_overlay_progress_class_init (AwnOverlayProgressClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec   *pspec; 
 
   object_class->get_property = awn_overlay_progress_get_property;
   object_class->set_property = awn_overlay_progress_set_property;
@@ -114,15 +113,14 @@ awn_overlay_progress_class_init (AwnOverlayProgressClass *klass)
  * A property of type double.  Set to the completion percentage for the overlay.
  */    
   
-  pspec = g_param_spec_double ("percent-complete",
-                               "Percent Complete",
-                               "Percent Complete",
-                               0.0,
-                               G_MAXDOUBLE,
-                               0.0,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_PERCENT_COMPLETE, pspec);     
+  g_object_class_install_property (object_class,
+    PROP_PERCENT_COMPLETE,
+    g_param_spec_double ("percent-complete",
+                         "Percent Complete",
+                         "Percent Complete",
+                         0.0, 100.0, 0.0,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
   
   g_type_class_add_private (klass, sizeof (AwnOverlayProgressPrivate));  
 }

@@ -224,7 +224,6 @@ static void
 awn_overlay_throbber_class_init (AwnOverlayThrobberClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec   *pspec;    
 
   object_class->get_property = awn_overlay_throbber_get_property;
   object_class->set_property = awn_overlay_throbber_set_property;
@@ -238,30 +237,31 @@ awn_overlay_throbber_class_init (AwnOverlayThrobberClass *klass)
  * AwnOverlayThrobber:icon:
  *
  * #AwnOverlaidIcon on which the throbber is displayed.
- */        
-  
-  pspec = g_param_spec_object ("icon",
-                               "Icon",
-                               "Icon",
-                               GTK_TYPE_WIDGET,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_ICON, pspec);
+ */
+
+  g_object_class_install_property (object_class,
+    PROP_ICON,
+    g_param_spec_object ("icon",
+                         "Icon",
+                         "Icon",
+                         GTK_TYPE_WIDGET,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
 /**
  * AwnOverlayThrobber:timeout:
  *
  * The time in milliseconds between throbber updates.
- */          
-  pspec = g_param_spec_uint ("timeout",
-                             "Timeout",
-                             "Timeout",
-                             50,
-                             10000,
-                             100,
-                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                             G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_TIMEOUT, pspec);   
+ */
+
+  g_object_class_install_property (object_class,
+    PROP_TIMEOUT,
+    g_param_spec_uint ("timeout",
+                       "Timeout",
+                       "Timeout",
+                       50, 10000, 100,
+                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                       G_PARAM_STATIC_STRINGS));
 
 /**
  * AwnOverlayThrobber:scale:
@@ -269,20 +269,18 @@ awn_overlay_throbber_class_init (AwnOverlayThrobberClass *klass)
  * Determines the size of the #AwnOverlayThrobber scaled against the dimensions
  * of the #AwnIcon.   A scale of 0.5 would result in an overlay that covers 
  * 25% of the Icon.
- */        
-  
-  pspec = g_param_spec_double ("scale",
-                               "scale",
-                               "Scale",
-                               0.01,
-                               1.0,
-                               0.6,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_SCALE, pspec);   
-  
-  g_type_class_add_private (klass, sizeof (AwnOverlayThrobberPrivate));
-  
+ */
+
+  g_object_class_install_property (object_class,
+    PROP_SCALE,
+    g_param_spec_double ("scale",
+                         "scale",
+                         "Scale",
+                         0.01, 1.0, 0.6,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
+
+  g_type_class_add_private (klass, sizeof (AwnOverlayThrobberPrivate));  
 }
 
 

@@ -148,7 +148,6 @@ static void
 awn_overlay_pixbuf_class_init (AwnOverlayPixbufClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec   *pspec;      
 
   object_class->get_property = awn_overlay_pixbuf_get_property;
   object_class->set_property = awn_overlay_pixbuf_set_property;
@@ -163,13 +162,14 @@ awn_overlay_pixbuf_class_init (AwnOverlayPixbufClass *klass)
  * A #GdkPixbuf to overlay.
  */        
   
-  pspec = g_param_spec_object ("pixbuf",
-                               "Pixbuf",
-                               "GdkPixbuf object",
-                               GDK_TYPE_PIXBUF,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_PIXBUF, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_PIXBUF,
+    g_param_spec_object ("pixbuf",
+                         "Pixbuf",
+                         "GdkPixbuf object",
+                         GDK_TYPE_PIXBUF,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
 /**
  * AwnOverlayPixbuf:scale:
@@ -178,15 +178,14 @@ awn_overlay_pixbuf_class_init (AwnOverlayPixbufClass *klass)
  * value of 0.5
  */        
   
-  pspec = g_param_spec_double ("scale",
-                               "scale",
-                               "Scale",
-                               0.0,
-                               1.0,
-                               0.5,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_SCALE, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_SCALE,
+    g_param_spec_double ("scale",
+                         "scale",
+                         "Scale",
+                         0.0, 1.0, 0.5,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
 /**
  * AwnOverlayPixbuf:alpha:
@@ -194,15 +193,14 @@ awn_overlay_pixbuf_class_init (AwnOverlayPixbufClass *klass)
  * An alpha value to apply to the Overlay.  Range of 0.0...1.0.  Default is 0.9.
  */        
   
-  pspec = g_param_spec_double ("alpha",
-                               "Alpha",
-                               "Alpha",
-                               0.0,
-                               1.0,
-                               0.9,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_ALPHA, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_ALPHA,
+    g_param_spec_double ("alpha",
+                         "Alpha",
+                         "Alpha",
+                         0.0, 1.0, 0.9,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
   
   g_type_class_add_private (klass, sizeof (AwnOverlayPixbufPrivate));  
 }
