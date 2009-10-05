@@ -37,11 +37,12 @@ _awn_applet_new(const gchar *canonical_name,
                 const gchar *uid,
                 gint         panel_id);
 static void
-launch_python(const gchar *file,
-              const gchar *module,
-              const gchar *uid,
-              gint64 window,
-              gint panel_id);
+launch_applet_with(const gchar *program,
+                   const gchar *file,
+                   const gchar *module,
+                   const gchar *uid,
+                   gint64 window,
+                   gint panel_id);
 
 static gboolean
 execute_wrapper (const gchar* cmd_line,
@@ -198,7 +199,13 @@ main(gint argc, gchar **argv)
 
   if (strcmp(type, "Python") == 0)
   {
-    launch_python(path, exec, uid, window, panel_id);
+    launch_applet_with ("python", path, exec, uid, window, panel_id);
+    return 0;
+  }
+
+  if (strcmp(type, "Mono") == 0)
+  {
+    launch_applet_with ("mono", path, exec, uid, window, panel_id);
     return 0;
   }
 
@@ -321,11 +328,12 @@ _awn_applet_new(const gchar *canonical_name,
 
 
 static void
-launch_python(const gchar *file,
-              const gchar *module,
-              const gchar *uid,
-              gint64 window,
-              gint panel_id)
+launch_applet_with(const gchar *program,
+                   const gchar *file,
+                   const gchar *module,
+                   const gchar *uid,
+                   gint64 window,
+                   gint panel_id)
 {
   gchar *cmd = NULL;
   gchar *exec = NULL;
@@ -344,9 +352,9 @@ launch_python(const gchar *file,
   }
 
 
-  cmd = g_strdup_printf("python %s --uid=%s "
+  cmd = g_strdup_printf("%s %s --uid=%s "
                         "--window=%" G_GINT64_FORMAT " --panel-id=%d",
-                        exec, uid, window, panel_id);
+                        program, exec, uid, window, panel_id);
 
   // this wraps execv
   execute_wrapper (cmd, &err);
