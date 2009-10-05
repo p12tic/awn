@@ -207,7 +207,7 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
 
 static  WindowWait windows_to_wait[] = 
 {
-  {".*OpenOffice.*",".*VCLSalFrame.*DocumentWindow.*","^OpenOffice\\.org.*",1000},
+  {".*OpenOffice.*",".*VCLSalFrame.*","^OpenOffice\\.org.*",1000},
   {NULL,NULL,NULL,0}
 };
 

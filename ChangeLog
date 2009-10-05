@@ -1,5 +1,11 @@
 2009-10-04  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/util.c:
+	Missed one of the updates to class name special case data for
+	OpenOffice.
+
+2009-10-04  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Fix an issue with the desktop caching code that was resulting in
 	incorrect desktop files being associated with some windows (OOO).
