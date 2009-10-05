@@ -1,5 +1,10 @@
 2009-10-05  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-effects.c:
+	Fix possible crash.
+
+2009-10-05  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awnSettings.py.in:
 	Minor clickthrough fix.
 

@@ -953,6 +953,8 @@ void
 awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
                      gboolean signal_start, gboolean signal_end)
 {
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+  
   if (effect == AWN_EFFECT_NONE || fx->widget == NULL)
   {
     return;
@@ -999,6 +1001,8 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
 void
 awn_effects_stop(AwnEffects * fx, const AwnEffect effect)
 {
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+  
   if (effect == AWN_EFFECT_NONE)
   {
     return;
@@ -1137,12 +1141,18 @@ awn_effects_main_effect_loop(AwnEffects * fx)
   }
   else
   {
+    /* the callbacks can try to destroy us, but we don't want to die... yet */
+    g_object_ref (fx);
+
     /* emit the signals */
     awn_effect_emit_anim_start(topEffect);
     awn_effect_emit_anim_end(topEffect);
 
     /* dispose AwnEffectsAnimation */
     awn_effects_stop(fx, topEffect->this_effect);
+
+    /* we can die now */
+    g_object_unref (fx);
   }
 }
 
