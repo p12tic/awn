@@ -242,7 +242,7 @@ class awnPreferencesMini(awnPreferences):
         def choose_behavior_callback(widget, *args):
             if widget.get_active() == 0:
                 if self.panel_mode: self.panel_mode = False
-                if self.clickthrough == 0: self.clickthrough = 1
+                if self.clickthrough != 1: self.clickthrough = 1
                 self.autohide_type = 0
             elif widget.get_active() == 1:
                 if not self.panel_mode: self.panel_mode = True

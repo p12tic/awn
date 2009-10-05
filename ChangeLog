@@ -1,5 +1,10 @@
 2009-10-05  Michal Hruby  <michal.mhr@gmail.com>
 
+	* awn-settings/awnSettings.py.in:
+	Minor clickthrough fix.
+
+2009-10-05  Michal Hruby  <michal.mhr@gmail.com>
+
 	* applet-activation/main.c:
 	* libawn/awn-applet.c:
 	* libawn/awn-applet.h:
