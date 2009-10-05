@@ -434,8 +434,8 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
   /* Class property */
   g_object_class_install_property (obj_class,
     PROP_FOCUS,
-    g_param_spec_object ("focus",
-                         "Focus",
+    g_param_spec_object ("focus-widget",
+                         "Focus Widget",
                          "Widget to focus on",
                          GTK_TYPE_WIDGET,
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));

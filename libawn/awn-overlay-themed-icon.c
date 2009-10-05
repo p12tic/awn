@@ -222,7 +222,6 @@ static void
 awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec   *pspec;      
 
   object_class->get_property = awn_overlay_themed_icon_get_property;
   object_class->set_property = awn_overlay_themed_icon_set_property;
@@ -239,15 +238,14 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
  * Defaults to 0.9
  */        
   
-  pspec = g_param_spec_double ("alpha",
-                               "alpha",
-                               "Alpha",
-                               0.0,
-                               1.0,
-                               0.9,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_ALPHA, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_ALPHA,
+    g_param_spec_double ("alpha",
+                         "alpha",
+                         "Alpha",
+                         0.0, 1.0, 0.9,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
 /**
  * AwnOverlayThemedIcon:scale:
@@ -256,15 +254,14 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
  * value of 0.3
  */        
   
-  pspec = g_param_spec_double ("scale",
-                               "scale",
-                               "Scale",
-                               0.0,
-                               1.0,
-                               0.3,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_SCALE, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_SCALE,
+    g_param_spec_double ("scale",
+                         "scale",
+                         "Scale",
+                         0.0, 1.0, 0.3,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
 /**
  * AwnOverlayThemedIcon:icon-name:
@@ -272,37 +269,39 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
  * The themed icon name of the icon to be overlayed.
  */        
   
-  pspec = g_param_spec_string ("icon-name",
-                               "Icon name",
-                               "Icon gtk theme name",
-                               "",
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_ICON_NAME, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_ICON_NAME,
+    g_param_spec_string ("icon-name",
+                         "Icon name",
+                         "Icon gtk theme name",
+                         "",
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
 /**
- * AwnOverlayThemedIcon:icon-name:
+ * AwnOverlayThemedIcon:icon-state:
  *
  * The icon-state to be associated with the themed icon for access through
  * #AwnThemedIcon.  Or NULL if it will not need to be directly accessed.
  */        
   
-  pspec = g_param_spec_string ("icon-state",
-                               "Icon state",
-                               "Icon state",
-                               "",
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_ICON_STATE, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_ICON_STATE,
+    g_param_spec_string ("icon-state",
+                         "Icon state",
+                         "Icon state",
+                         "",
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
-  pspec = g_param_spec_object ("icon",
-                               "Icon",
-                               "Icon",
-                               AWN_TYPE_THEMED_ICON,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_ICON, pspec);   
-  
+  g_object_class_install_property (object_class, 
+    PROP_ICON,
+    g_param_spec_object ("icon",
+                         "Icon",
+                         "Icon",
+                         AWN_TYPE_THEMED_ICON,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
   
   g_type_class_add_private (klass, sizeof (AwnOverlayThemedIconPrivate));  
 }

@@ -430,7 +430,6 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
 {
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
-  GParamSpec   *pspec;        
 
   obj_class->get_property = awn_themed_icon_get_property;
   obj_class->set_property = awn_themed_icon_set_property;
@@ -445,27 +444,29 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
  * Rotates the icon as per #GdkPixbufRotation.
  */
   
-  pspec = g_param_spec_enum ("rotate",
-                             "Rotate",
-                             "Rotation of the icon",
-                             GDK_TYPE_PIXBUF_ROTATION,
-                             GDK_PIXBUF_ROTATE_NONE,
-                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                             G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (obj_class, PROP_ROTATE, pspec);
+  g_object_class_install_property (obj_class, 
+    PROP_ROTATE,
+    g_param_spec_enum ("rotate",
+                       "Rotate",
+                       "Rotation of the icon",
+                       GDK_TYPE_PIXBUF_ROTATION,
+                       GDK_PIXBUF_ROTATE_NONE,
+                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                       G_PARAM_STATIC_STRINGS));
 
 /**
  * AwnThemedIcon:applet-name:
  *
  * The applet name.
  */
-  pspec = g_param_spec_string ("applet-name",
-                               "Applet Name",
-                               "Applet Name",
-                               NULL,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (obj_class, PROP_APPLET_NAME, pspec);   
+  g_object_class_install_property (obj_class,
+    PROP_APPLET_NAME,
+    g_param_spec_string ("applet-name",
+                         "Applet Name",
+                         "Applet Name",
+                         NULL,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   /**
    * AwnThemedIcon:drag-and-drop:
@@ -480,13 +481,13 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
    * a fallback by calling #awn_themed_icon_drag_data_received in a custom
    * signal handler for #GtkWidget::drag-data-received.
    */
-  pspec = g_param_spec_boolean ("drag_and_drop",
-                             "Drag and Drop",
-                             "Enable drag and drop",
-                             TRUE,
-                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
-  g_object_class_install_property (obj_class, PROP_DRAG_AND_DROP, pspec);
-
+  g_object_class_install_property (obj_class,
+    PROP_DRAG_AND_DROP,
+    g_param_spec_boolean ("drag_and_drop",
+                          "Drag and Drop",
+                          "Enable drag and drop",
+                          TRUE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
   
   g_type_class_add_private (obj_class, sizeof (AwnThemedIconPrivate));
 }
