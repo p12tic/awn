@@ -422,6 +422,30 @@ awn_applet_manager_new_from_config (DesktopAgnosticConfigClient *client)
   return manager;
 }
 
+gchar*
+awn_applet_manager_generate_uid (AwnAppletManager *manager)
+{
+  AwnAppletManagerPrivate *priv;
+  gchar *new_uid = NULL;
+
+  g_return_val_if_fail (AWN_IS_APPLET_MANAGER (manager), NULL);
+
+  priv = manager->priv;
+
+  GTimeVal time_val;
+  g_get_current_time (&time_val);
+
+  new_uid = g_strdup_printf ("%ld", time_val.tv_sec);
+  while (g_hash_table_lookup (priv->applets, new_uid) != NULL)
+  {
+    gchar *non_unique_uid = new_uid;
+    new_uid = g_strdup_printf ("%s%d", non_unique_uid, rand() % 10);
+    g_free (non_unique_uid);
+  }
+
+  return new_uid;
+}
+
 void
 awn_applet_manager_set_applet_flags (AwnAppletManager *manager,
                                      const gchar *uid,

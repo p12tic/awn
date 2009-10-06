@@ -1,5 +1,5 @@
 usr/bin/avant-window-navigator
-usr/lib/avant-window-navigator-trunk/awn-applet
+usr/bin/awn-applet*
 usr/lib/awn/applets/*/*.so
 usr/share/applications/avant-window-navigator.desktop
 usr/share/avant-window-navigator/applets/*.desktop

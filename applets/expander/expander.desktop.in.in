@@ -2,7 +2,8 @@
 Type=Application
 _Name=Expander
 _Comment=Fills space on the panel in expand mode
-Exec=@APPLETDIR@/expander/expander.so
+Exec=awn-applet -p %k
+X-AWN-AppletExec=@APPLETDIR@/expander/expander.so
 Icon=gtk-justify-fill
 X-AWN-Type=Applet
 X-AWN-AppletType=C

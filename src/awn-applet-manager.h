@@ -73,6 +73,8 @@ GtkWidget * awn_applet_manager_new_from_config   (DesktopAgnosticConfigClient *c
 
 void        awn_applet_manager_refresh_applets   (AwnAppletManager *manager);
 
+gchar*      awn_applet_manager_generate_uid      (AwnAppletManager *manager);
+
 void        awn_applet_manager_add_widget        (AwnAppletManager *manager,
                                                   GtkWidget *widget, gint pos);
 

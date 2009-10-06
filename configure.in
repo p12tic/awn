@@ -171,11 +171,8 @@ dnl ==============================================
 AS_AC_EXPAND([PKGDATADIR], [$datadir/$PACKAGE_NAME])
 AS_AC_EXPAND([DATADIR], [$datadir])
 AS_AC_EXPAND([LIBDIR], [$libdir])
-AS_AC_EXPAND([LIBEXECDIR], [$libexecdir])
 AS_AC_EXPAND([APPLETDIR], [$libdir/awn/applets])
 AS_AC_EXPAND([APPLETDATADIR], [$PKGDATADIR/applets])
-AC_DEFINE_UNQUOTED([LIBEXECDIR], ["$LIBEXECDIR"],
-                   [The directory where awn-applet is installed.])
 
 SHAVE_INIT([shave], [enable])
 

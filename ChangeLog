@@ -1,3 +1,22 @@
+2009-10-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applet-activation/Makefile.am:
+	* applet-activation/main.c:
+	* applets/expander/expander.desktop.in.in:
+	* applets/taskmanager/taskmanager.desktop.in.in:
+	* awn-settings/awnClass.py:
+	* configure.in:
+	* debian/avant-window-navigator-trunk.install:
+	* debian/awn-applet.1:
+	* debian/rules:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-applet-proxy.c:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Adapt awn-applet executable to support adding applets to panel.
+
 2009-10-05  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-tooltip.c:

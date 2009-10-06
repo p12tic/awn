@@ -81,6 +81,10 @@ GType       awn_panel_get_type            (void) G_GNUC_CONST;
 
 GtkWidget * awn_panel_new_from_config     (DesktopAgnosticConfigClient *client);
 
+gboolean    awn_panel_add_applet          (AwnPanel        *panel,
+                                           gchar           *desktop_file,
+                                           GError         **error);
+
 gboolean    awn_panel_delete_applet       (AwnPanel        *panel,
                                            gchar           *uid,
                                            GError         **error);
@@ -112,7 +116,7 @@ gboolean    awn_panel_get_all_server_flags(AwnPanel *panel,
                                            gchar     *name,
                                            GError   **error);
 
-gboolean    awn_panel_add_applet          (AwnPanel *panel,
+gboolean    awn_panel_ua_add_applet       (AwnPanel *panel,
                                            gchar *name, glong xid,
                                            gint width, gint height,
                                            gchar *size_type,

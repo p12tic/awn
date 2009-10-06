@@ -4,6 +4,10 @@
     <annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_panel"/>
   
     <!-- Methods -->
+    <method name="AddApplet">
+      <arg name="desktop_file" type="s" direction="in" />
+    </method>
+
     <method name="DeleteApplet">
       <arg name="uid" type="s" direction="in" />
     </method>
@@ -75,6 +79,7 @@
 
     <!-- Methods -->
     <method name="add_applet">
+      <annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_panel_ua_add_applet"/>
       <arg name="name" type="s" direction="in" />
       <arg name="uid" type="x" direction="in" />
       <arg name="width" type="i" direction="in" />

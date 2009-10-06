@@ -362,7 +362,7 @@ class awnBzr(gobject.GObject):
         struct['name'] = desktop_entry.get('Name')
         #TODO More to add
         struct['icon'] = desktop_entry.get('Icon')
-        struct['exec'] = desktop_entry.get('Exec')
+        struct['exec'] = desktop_entry.get('X-AWN-AppletExec')
         struct['applet_type'] = desktop_entry.get('X-AWN-AppletType')
         struct['applet_category'] = desktop_entry.get('X-AWN-AppletCategory').rsplit(",")
 
@@ -1174,7 +1174,7 @@ class awnApplet(awnBzr):
         result = dialog.run()
 
         if result == -3:
-            execpath = item.getExec()
+            execpath = item.get('X-AWN-AppletExec')
             fullpath = os.path.join(defs.HOME_APPLET_DIR, os.path.split(execpath)[0])
 
             if os.path.exists(fullpath) and ".config" in path:
