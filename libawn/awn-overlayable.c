@@ -47,6 +47,12 @@ awn_overlayable_base_init (AwnOverlayableIface *iface)
   iface->get_effects = NULL; // perhaps show a warning?
 }
 
+/**
+ * awn_overlayable_get_effects:
+ * @self: #AwnOverlayable instance.
+ *
+ * Returns: #AwnEffects instance managing animations for this instance.
+ */
 AwnEffects*
 awn_overlayable_get_effects (AwnOverlayable* self)
 {
@@ -55,15 +61,42 @@ awn_overlayable_get_effects (AwnOverlayable* self)
   return AWN_OVERLAYABLE_GET_INTERFACE (self)->get_effects (self);
 }
 
+/**
+ * awn_overlayable_add_overlay:
+ * @self: #AwnOverlayable instance.
+ * @overlay: #AwnOverlay instance which should be added.
+ *
+ * Adds an overlay to the list of rendered overlays.
+ */
 void
 awn_overlayable_add_overlay (AwnOverlayable* self, AwnOverlay *overlay)
 {
   awn_effects_add_overlay (awn_overlayable_get_effects (self), overlay);
 }
 
+/**
+ * awn_overlayable_remove_overlay:
+ * @self: #AwnOverlayable instance.
+ * @overlay: #AwnOverlay which was previously added using
+ *  awn_overlayable_add_overlay.
+ *
+ * Removes overlay from the list of rendered overlays.
+ */
 void
 awn_overlayable_remove_overlay (AwnOverlayable *self, AwnOverlay *overlay)
 {
   awn_effects_remove_overlay (awn_overlayable_get_effects (self), overlay);
+}
+
+/**
+ * awn_overlayable_get_overlays:
+ * @self: #AwnOverlayable instance.
+ *
+ * Returns: a newly-allocated list of the overlays added for this instance.
+ */
+GList*
+awn_overlayable_get_overlays (AwnOverlayable *self)
+{
+  return awn_effects_get_overlays (awn_overlayable_get_effects (self));
 }
 

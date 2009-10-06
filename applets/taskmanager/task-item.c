@@ -474,12 +474,25 @@ task_item_set_task_icon (TaskItem *item, TaskIcon *icon)
   if (priv->task_icon)
   {
     AwnOverlayable *over = AWN_OVERLAYABLE (priv->task_icon);
-    if (item->text_overlay)
+    GList *overlays = awn_overlayable_get_overlays (over);
+
+    if (item->text_overlay
+        && g_list_find (overlays, item->text_overlay))
+    {
       awn_overlayable_remove_overlay (over, AWN_OVERLAY (item->text_overlay));
-    if (item->progress_overlay)
+    }
+    if (item->progress_overlay
+        && g_list_find (overlays, item->progress_overlay))
+    {
       awn_overlayable_remove_overlay (over, AWN_OVERLAY (item->progress_overlay));
-    if (item->icon_overlay)
+    }
+    if (item->icon_overlay
+        && g_list_find (overlays, item->icon_overlay))
+    {
       awn_overlayable_remove_overlay (over, AWN_OVERLAY (item->icon_overlay));
+    }
+
+    g_list_free (overlays);
   }
 
   priv->task_icon = icon;

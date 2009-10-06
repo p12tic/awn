@@ -314,7 +314,7 @@
 				</parameters>
 			</method>
 			<method name="get_size" symbol="awn_applet_get_size">
-				<return-type type="guint"/>
+				<return-type type="gint"/>
 				<parameters>
 					<parameter name="applet" type="AwnApplet*"/>
 				</parameters>
@@ -1480,7 +1480,7 @@
 				</parameters>
 			</method>
 			<property name="delay" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
-			<property name="focus" type="GtkWidget*" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="focus-widget" type="GtkWidget*" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="offset" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="smart-behavior" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="toggle-on-click" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
@@ -1498,6 +1498,12 @@
 			</method>
 			<method name="get_effects" symbol="awn_overlayable_get_effects">
 				<return-type type="AwnEffects*"/>
+				<parameters>
+					<parameter name="self" type="AwnOverlayable*"/>
+				</parameters>
+			</method>
+			<method name="get_overlays" symbol="awn_overlayable_get_overlays">
+				<return-type type="GList*"/>
 				<parameters>
 					<parameter name="self" type="AwnOverlayable*"/>
 				</parameters>

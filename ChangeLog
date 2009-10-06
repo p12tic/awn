@@ -1,3 +1,14 @@
+2009-10-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* doc/reference/libawn-sections.txt:
+	* libawn/awn-overlayable.c:
+	* libawn/awn-overlayable.h:
+	Update bindings and gtk-doc.
+	Fix warning emitted while using taskmanager's DBus methods.
+
 2009-10-06  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
