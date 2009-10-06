@@ -1005,24 +1005,15 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
 
   if ( (g_slist_length (priv->items) == 1 ) && task_icon_contains_launcher(icon))
   {
-    if (effects)
-    {
-      awn_effects_stop (effects,AWN_EFFECT_ATTENTION); 
-    }
+    awn_effects_stop (effects,AWN_EFFECT_ATTENTION); 
   }
   else if ( g_slist_length (priv->items) <= priv->ephemeral_count)
   {    
-    if (effects)
-    {
-      awn_effects_stop (effects, AWN_EFFECT_ATTENTION);
-    }
+    awn_effects_stop (effects, AWN_EFFECT_ATTENTION);
   }
   else if ( !task_icon_count_require_attention (icon) )
   {
-    if (effects)
-    {
-      awn_effects_stop (effects, AWN_EFFECT_ATTENTION);
-    }
+    awn_effects_stop (effects, AWN_EFFECT_ATTENTION);
   }
   else
   {

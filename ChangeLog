@@ -1,6 +1,12 @@
 2009-10-06  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	Remove check that is no longer needed after recent 
+	modificatins to AwnIcon.
+
+2009-10-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-manager.c:
 	Fix for sporadic crashes in Taskmanager with simple/none
 	effect.
