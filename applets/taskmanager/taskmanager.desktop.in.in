@@ -2,7 +2,8 @@
 Type=Application
 _Name=Launcher/Taskmanager
 _Comment=Launcher/Taskmanager applet
-Exec=@APPLETDIR@/taskmanager/taskmanager.so
+Exec=awn-applet -p %k
+X-AWN-AppletExec=@APPLETDIR@/taskmanager/taskmanager.so
 Icon=avant-window-navigator
 X-AWN-Type=Applet
 X-AWN-AppletType=C

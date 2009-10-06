@@ -30,6 +30,9 @@
 #include <libdesktop-agnostic/fdo.h>
 #include <libawn/libawn.h>
 
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-bindings.h>
+
 /* Forwards */
 GtkWidget *
 _awn_applet_new(const gchar *canonical_name,
@@ -43,6 +46,9 @@ launch_applet_with(const gchar *program,
                    const gchar *uid,
                    gint64 window,
                    gint panel_id);
+
+static gint
+do_dbus_call ();
 
 static gboolean
 execute_wrapper (const gchar* cmd_line,
@@ -59,17 +65,17 @@ g_execute (const gchar *file,
 static gchar    *path = NULL;
 static gchar    *uid  = NULL;
 static gint64    window = 0;
-static gint      panel_id = 0;
+static gint      panel_id = 1;
 
 
 static GOptionEntry entries[] =
 {
   {  "path",
-    'p', 0,
-    G_OPTION_ARG_STRING,
-    &path,
-    "Path to the Awn applets desktop file.",
-    "" },
+     'p', 0,
+     G_OPTION_ARG_STRING,
+     &path,
+     "Path to the Awn applets desktop file.",
+     "" },
 
   {  "uid",
      'u', 0,
@@ -133,17 +139,30 @@ main(gint argc, gchar **argv)
 
   gtk_init(&argc, &argv);
 
-  if (uid == NULL)
+  if (path == NULL || path[0] == '\0')
   {
-    g_warning ("You need to provide a UID for this applet\n");
-    return 1;
-  }
-  else if (uid[0] == '\0' || strcmp (uid, "None") == 0)
-  {
-    g_warning ("You need to provide a valid UID for this applet\n");
+    g_warning ("You need to provide path to desktop file");
     return 1;
   }
 
+  if (uid == NULL && window == 0)
+  {
+    // the binary was run only with path to desktop file (and maybe panel-id)
+    // Try to connect to the panel and call its AddApplet method.
+    return do_dbus_call (panel_id, path);
+  }
+
+  if (uid == NULL || uid[0] == '\0' || strcmp (uid, "None") == 0)
+  {
+    g_warning ("You need to provide a valid UID for this applet");
+    return 1;
+  }
+
+  if (window == 0)
+  {
+    g_warning ("You need to specify window ID for this applet!");
+    return 1;
+  }
   /* Try and load the desktop file */
   desktop_file = desktop_agnostic_vfs_file_new_for_path (path, &error);
 
@@ -178,11 +197,13 @@ main(gint argc, gchar **argv)
   /* Now we have the file, lets see if we can
           a) load the dynamic library it points to
           b) Find the correct function within that library */
-  exec = desktop_agnostic_fdo_desktop_entry_get_string (entry, "Exec");
+  exec = desktop_agnostic_fdo_desktop_entry_get_string (entry, 
+                                                        "X-AWN-AppletExec");
 
   if (exec == NULL)
   {
-    g_warning ("No Exec key found in desktop file '%s', exiting.", path);
+    g_warning ("No X-AWN-AppletExec key found in desktop file '%s', exiting.",
+               path);
     return 1;
   }
 
@@ -225,7 +246,7 @@ main(gint argc, gchar **argv)
 
   if (applet == NULL)
   {
-    g_warning ("Could not create applet\n");
+    g_warning ("Could not create applet!");
     return 1;
   }
 
@@ -237,10 +258,6 @@ main(gint argc, gchar **argv)
   if (window)
   {
     gtk_plug_construct (GTK_PLUG (applet), window);
-  }
-  else
-  {
-    gtk_plug_construct (GTK_PLUG (applet), 0);
     // AwnApplet's embedded signal handler automatically calls show_all()
   }
 
@@ -253,6 +270,53 @@ main(gint argc, gchar **argv)
     g_error_free (error);
     return EXIT_FAILURE;
   }
+
+  return 0;
+}
+
+static gint
+do_dbus_call (gint panel_id, gchar *desktop_file_path)
+{
+  GError *error = NULL;
+  DBusGConnection *connection;
+  DBusGProxy *proxy;
+
+  connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+  if (error)
+  {
+    g_warning ("%s", error->message);
+    g_error_free (error);
+    return 1;
+  }
+
+  gchar *object_path = g_strdup_printf ("/org/awnproject/Awn/Panel%d",
+                                        panel_id);
+  proxy = dbus_g_proxy_new_for_name (connection,
+                                     "org.awnproject.Awn", object_path,
+                                     "org.awnproject.Awn.Panel");
+
+  if (!g_path_is_absolute (desktop_file_path))
+  {
+    // FIXME: leak
+    desktop_file_path = g_strdup_printf ("%s/%s", g_get_current_dir (),
+                                         desktop_file_path);
+  }
+
+
+  dbus_g_proxy_call (proxy, "AddApplet", &error,
+                     G_TYPE_STRING, desktop_file_path,
+                     G_TYPE_INVALID,
+                     G_TYPE_INVALID);
+
+  if (error)
+  {
+    g_warning ("%s", error->message);
+    g_error_free (error);
+    return 1;
+  }
+
+  g_object_unref (proxy);
+  dbus_g_connection_unref (connection);
 
   return 0;
 }

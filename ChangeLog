@@ -1,3 +1,15 @@
+2009-10-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applet-activation/main.c:
+	* applets/expander/expander.desktop.in.in:
+	* applets/taskmanager/taskmanager.desktop.in.in:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Adapt awn-applet executable to support adding applets to panel.
+
 2009-10-05  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-tooltip.c:

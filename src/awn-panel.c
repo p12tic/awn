@@ -2813,6 +2813,39 @@ awn_panel_remove_strut (AwnPanel *panel)
 /*
  * DBUS METHODS
  */
+
+gboolean
+awn_panel_add_applet (AwnPanel *panel, gchar *desktop_file, GError **error)
+{
+  AwnPanelPrivate *priv;
+
+  g_return_val_if_fail (AWN_IS_PANEL (panel), TRUE);
+  priv = panel->priv;
+
+  AwnAppletManager *manager = AWN_APPLET_MANAGER (priv->manager);
+  gchar *uid = awn_applet_manager_generate_uid (manager);
+
+  g_debug ("Adding applet \"%s\" with UID: %s", desktop_file, uid);
+
+  GValueArray *applets = g_value_array_new (0);
+  g_object_get (manager, "applet-list", &applets, NULL);
+
+  GValue applet = { 0, };
+  g_value_init (&applet, G_TYPE_STRING);
+  g_value_take_string (&applet, g_strdup_printf ("%s::%s", desktop_file, uid));
+
+  g_value_array_append (applets, &applet);
+
+  desktop_agnostic_config_client_set_list (priv->client,
+      AWN_GROUP_PANEL, AWN_PANEL_APPLET_LIST, applets, NULL);
+
+  g_value_unset (&applet);
+  g_value_array_free (applets);
+  g_free (uid);
+
+  return TRUE;
+}
+
 gboolean
 awn_panel_delete_applet (AwnPanel  *panel,
                          gchar     *uid,
@@ -3148,10 +3181,10 @@ awn_panel_get_all_server_flags (AwnPanel *panel,
 }
 
 gboolean
-awn_panel_add_applet (AwnPanel *panel, gchar *name, glong xid,
-                      gint width, gint height,
-                      gchar *size_type,
-                      GError **error)
+awn_panel_ua_add_applet (AwnPanel *panel, gchar *name, glong xid,
+                         gint width, gint height,
+                         gchar *size_type,
+                         GError **error)
 {
   AwnPanelPrivate *priv;
 
