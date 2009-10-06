@@ -1,3 +1,10 @@
+2009-10-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+	Fix for sporadic crashes in Taskmanager with simple/none
+	effect.
+
 2009-10-06  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applet-activation/Makefile.am:

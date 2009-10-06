@@ -817,9 +817,17 @@ update_icon_visible (TaskManager *manager, TaskIcon *icon)
 
   priv = manager->priv;
   
-  if (task_icon_is_visible (icon) && 
-      (!priv->only_show_launchers || 
-      (task_icon_contains_launcher (icon) && !task_icon_count_ephemeral_items(icon))))
+  if 
+    (
+      task_icon_is_visible (icon) && 
+      ( 
+        !priv->only_show_launchers || 
+        
+        (
+          task_icon_contains_launcher (icon) && !task_icon_count_ephemeral_items(icon)
+        )
+      )
+    )
   {
     visible = TRUE;
   }
@@ -869,12 +877,20 @@ on_icon_visible_changed (TaskManager *manager, TaskIcon *icon)
   update_icon_visible (manager, icon);
 }
 
+static gboolean
+_destroy_icon_cb (GtkWidget * icon)
+{
+  gtk_widget_destroy (icon);
+  return FALSE;
+}
+
 static void
 on_icon_effects_ends (TaskIcon   *icon,
                       AwnEffect   effect,
                       AwnEffects *instance)
-{
+{  
   g_return_if_fail (TASK_IS_ICON (icon));
+
   if (effect == AWN_EFFECT_CLOSING)
   {
     gboolean destroy = FALSE;
@@ -893,14 +909,20 @@ on_icon_effects_ends (TaskIcon   *icon,
         destroy = TRUE;
       }
     }
-   
     if (destroy)
     {
       /*we're done... disconnect this handler or it's going to get called again...
        for this object*/
       g_signal_handlers_disconnect_by_func (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)),
                             G_CALLBACK (on_icon_effects_ends), icon);
-      gtk_widget_destroy (GTK_WIDGET(icon));
+      /*
+       In the case of simple effects we receive this signal _before_ 
+       the TaskItems are finalized.  By using the g_idle_add we defer the 
+       destruction of the icon until after the TaskItems are gone (it's just 
+       far less nasty than the alternative
+      */
+      gtk_widget_hide (GTK_WIDGET(icon));
+      g_idle_add ((GSourceFunc)_destroy_icon_cb,icon);
     }
     else
     {
@@ -2392,10 +2414,6 @@ task_manager_active_window_changed_cb (WnckScreen *screen,
       g_debug ("%s: cookie is %u",__func__,priv->autohide_cookie);
 #endif
     }
-    return;
-  }
-  if ( wnck_window_get_window_type (win) == WNCK_WINDOW_DESKTOP )
-  {
     return;
   }
   app = wnck_window_get_application (win);

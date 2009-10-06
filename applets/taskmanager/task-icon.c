@@ -246,6 +246,18 @@ static void     task_icon_set_draggable_state (TaskIcon *icon, gboolean draggabl
 static void     theme_changed_cb (GtkIconTheme *icon_theme,TaskIcon * icon);
 static void     window_closed_cb (WnckScreen *screen,WnckWindow *window,
                                                         TaskIcon * icon);
+
+static void	_destroyed_task_item (TaskIcon *icon, TaskItem *old_item);
+
+static void on_main_item_name_changed (TaskItem    *item, const gchar *name, 
+                                          TaskIcon    *icon);
+static void on_main_item_icon_changed (TaskItem   *item, GdkPixbuf  *pixbuf, 
+                                          TaskIcon   *icon);
+
+static void on_main_item_visible_changed (TaskItem  *item,gboolean visible,
+                                          TaskIcon  *icon);
+
+
 /* GObject stuff */
 static void
 task_icon_get_property (GObject    *object,
@@ -375,12 +387,13 @@ task_icon_finalize (GObject *object)
 {
   TaskIconPrivate *priv = TASK_ICON_GET_PRIVATE (object);
 
-  /* FIXME  Check to see if icon needs to be unreffed */
-  if (priv->items)
-  {
-    g_slist_free (priv->items);
-    priv->items = NULL;
-  }
+  /*
+   This needs to be an empty list.
+
+   TODO post 0.4.  TaskItems should take a reference on TaskIcon.
+   */
+  g_assert (!priv->items);
+  
   if (priv->update_geometry_id)
   {
     g_source_remove (priv->update_geometry_id);
@@ -976,36 +989,33 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
 {
   TaskIconPrivate *priv;
   AwnEffects * effects;
-
   g_return_if_fail (TASK_IS_ICON (icon));
   g_return_if_fail (TASK_IS_ITEM (old_item));
 
   effects = awn_overlayable_get_effects (AWN_OVERLAYABLE (icon));
+  g_return_if_fail (effects);
   priv = icon->priv;
+
   priv->items = g_slist_remove (priv->items, old_item);
 
-  if (old_item == priv->main_item)
+  if (old_item == priv->main_item && priv->items)
   {
     task_icon_search_main_item (icon,NULL);
   }
 
-  task_icon_refresh_visible (icon);
-
   if ( (g_slist_length (priv->items) == 1 ) && task_icon_contains_launcher(icon))
   {
-    awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                      AWN_EFFECT_ATTENTION); 
+    if (effects)
+    {
+      awn_effects_stop (effects,AWN_EFFECT_ATTENTION); 
+    }
   }
-  if (g_slist_length (priv->items) == priv->ephemeral_count)
-  {
+  else if ( g_slist_length (priv->items) <= priv->ephemeral_count)
+  {    
     if (effects)
     {
       awn_effects_stop (effects, AWN_EFFECT_ATTENTION);
     }
-    g_slist_foreach (priv->items,(GFunc)gtk_widget_destroy,NULL);
-    g_slist_free (priv->items);
-    priv->items = NULL;
-    priv->ephemeral_count = 0;
   }
   else if ( !task_icon_count_require_attention (icon) )
   {
@@ -1016,8 +1026,9 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
   }
   else
   {
-    /* TODO: Load up with new icon etc */
+//    task_icon_refresh_visible (icon);    
   }
+  task_icon_refresh_visible (icon);  
 }
 
 /**
@@ -1524,11 +1535,11 @@ task_icon_increment_ephemeral_count (TaskIcon *icon)
   priv = icon->priv;
 
   priv->ephemeral_count++;
+/* if (priv->ephemeral_count >= g_slist_length (priv->items) )
+ {
+   gtk_widget_destroy (icon);
+ }*/
   
-  if (priv->ephemeral_count >= g_slist_length (priv->items) )
-  {
-    _destroyed_task_item (icon, priv->items->data);
-  }
 }
 /**
  * Returns the number of visible and unvisible items this TaskIcon contains.
@@ -1746,6 +1757,7 @@ task_icon_append_ephemeral_item (TaskIcon      *icon,
   priv->ephemeral_count++;
   task_icon_append_item (icon,item); 
 }
+
 
 GSList *  
 task_icon_get_items (TaskIcon     *icon)
