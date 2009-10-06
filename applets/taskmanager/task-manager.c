@@ -2117,7 +2117,7 @@ task_manager_get_capabilities (TaskManager *manager,
     "icon-file",
     "progress",
     "message",
-    "visible",
+    //"visible", // FIXME: uncomment once it's implemented
     NULL
   };
 
@@ -2601,8 +2601,11 @@ task_manager_update (TaskManager *manager,
         const gchar* filename = g_value_get_string (value);
         g_object_set (G_OBJECT (item->icon_overlay),
                       "active", filename && filename[0] != '\0', NULL);
-        g_object_set_property (G_OBJECT (item->icon_overlay),
-                               "file-name", value);
+        if (filename && filename[0] != '\0')
+        {
+          g_object_set_property (G_OBJECT (item->icon_overlay),
+                                 "file-name", value);
+        }
 
         // this refreshes the overlays on TaskIcon
         task_item_set_task_icon (item, task_item_get_task_icon (item));
@@ -2622,8 +2625,11 @@ task_manager_update (TaskManager *manager,
 
         g_object_set (G_OBJECT (item->progress_overlay),
                       "active", g_value_get_int (value) != -1, NULL);
-        g_object_set_property (G_OBJECT (item->progress_overlay),
-                               "percent-complete", value);
+        if (g_value_get_int (value) != -1)
+        {
+          g_object_set_property (G_OBJECT (item->progress_overlay),
+                                 "percent-complete", value);
+        }
 
         // this refreshes the overlays on TaskIcon
         task_item_set_task_icon (item, task_item_get_task_icon (item));
@@ -2642,7 +2648,13 @@ task_manager_update (TaskManager *manager,
           awn_overlayable_add_overlay (over, AWN_OVERLAY (item->text_overlay));
         }
 
-        g_object_set_property (G_OBJECT (item->text_overlay), "text", value);
+        const gchar* text = g_value_get_string (value);
+        g_object_set (G_OBJECT (item->text_overlay),
+                      "active", text && text[0] != '\0', NULL);
+        if (text && text[0] != '\0')
+        {
+          g_object_set_property (G_OBJECT (item->text_overlay), "text", value);
+        }
 
         // this refreshes the overlays on TaskIcon
         task_item_set_task_icon (item, task_item_get_task_icon (item));

@@ -1,5 +1,10 @@
 2009-10-07  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Fix a couple more possible warnings.
+
+2009-10-07  Michal Hruby  <michal.mhr@gmail.com>
+
 	* applets/taskmanager/task-item.c:
 	* bindings/vala/awn.gi:
 	* bindings/vala/awn.vapi:
