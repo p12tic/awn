@@ -1526,7 +1526,10 @@ task_icon_increment_ephemeral_count (TaskIcon *icon)
   priv = icon->priv;
 
   priv->ephemeral_count++;
-/* if (priv->ephemeral_count >= g_slist_length (priv->items) )
+/* TODO
+   Leaving this here for a little bit.  Going to review some code am assure
+   myself this is no longer required.
+ if (priv->ephemeral_count >= g_slist_length (priv->items) )
  {
    gtk_widget_destroy (icon);
  }*/
