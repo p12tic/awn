@@ -34,7 +34,12 @@ awn_utils_make_transparent_bg (GtkWidget *widget)
   GdkWindow *win;
 
   win = gtk_widget_get_window (widget);
-  g_return_if_fail (win != NULL);
+
+  /* This can happen on Window manager restarts/changes*/
+  if (!win)
+  {
+    return;
+  }
 
   if (gtk_widget_is_composited(widget))
   {

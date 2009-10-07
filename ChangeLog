@@ -1,3 +1,9 @@
+2009-10-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-utils.c:
+	Remove the source of some console spam when changing/restarting 
+	WMs.
+
 2009-10-07  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
