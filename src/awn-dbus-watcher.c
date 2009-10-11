@@ -38,8 +38,8 @@ struct _AwnDBusWatcherPrivate
 
 enum
 {
-  CONNECTION_OPENED,
-  CONNECTION_CLOSED,
+  NAME_APPEARED,
+  NAME_DISAPPEARED,
 
   LAST_SIGNAL
 };
@@ -61,17 +61,22 @@ on_name_owner_changed (DBusGProxy *proxy,
   if (old_owner[0] == '\0')
   {
     // there's a new object on the bus
-#if 0
-    // We don't really need this signal atm, so let's ignore it completely.
-    g_signal_emit (watcher, _dbus_watcher_signals[CONNECTION_OPENED],
-                   g_quark_from_string (new_owner), new_owner);
-#endif
+    GQuark owner_quark = g_quark_try_string (name);
+    // if there isn't quark created for the dbus name, it means that
+    // noone called g_signal_connect with this detail name, and we don't need
+    // to create it
+    g_signal_emit (watcher, _dbus_watcher_signals[NAME_APPEARED],
+                   owner_quark, name);
   }
   else if (new_owner[0] == '\0')
   {
     // an object disappeared from the bus
-    g_signal_emit (watcher, _dbus_watcher_signals[CONNECTION_CLOSED],
-                   g_quark_from_string (old_owner), old_owner);
+    GQuark owner_quark = g_quark_try_string (name);
+    // if there isn't quark created for the dbus name, it means that
+    // noone called g_signal_connect with this detail name, and we don't need
+    // to create it
+    g_signal_emit (watcher, _dbus_watcher_signals[NAME_DISAPPEARED],
+                   owner_quark, name);
   }
 }
 
@@ -138,8 +143,8 @@ awn_dbus_watcher_class_init (AwnDBusWatcherClass *klass)
   obj_class->finalize = awn_dbus_watcher_finalize;
 
   /* Add signals to the class */
-  _dbus_watcher_signals[CONNECTION_OPENED] =
-                g_signal_new ("connection-opened",
+  _dbus_watcher_signals[NAME_APPEARED] =
+                g_signal_new ("name-appeared",
                               G_OBJECT_CLASS_TYPE (obj_class),
                               G_SIGNAL_RUN_FIRST | G_SIGNAL_DETAILED,
                               G_STRUCT_OFFSET (AwnDBusWatcherClass,
@@ -149,8 +154,8 @@ awn_dbus_watcher_class_init (AwnDBusWatcherClass *klass)
                               G_TYPE_NONE,
                               1, G_TYPE_STRING);
 
-  _dbus_watcher_signals[CONNECTION_CLOSED] =
-                g_signal_new ("connection-closed",
+  _dbus_watcher_signals[NAME_DISAPPEARED] =
+                g_signal_new ("name-disappeared",
                               G_OBJECT_CLASS_TYPE (obj_class),
                               G_SIGNAL_RUN_FIRST | G_SIGNAL_DETAILED,
                               G_STRUCT_OFFSET (AwnDBusWatcherClass,

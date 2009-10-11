@@ -2942,7 +2942,7 @@ awn_panel_inhibit_autohide (AwnPanel *panel,
   // watch the sender on dbus and remove all its inhibits when it
   //   disappears (to be sure that we don't misbehave due to crashing app)
   gchar *sender = dbus_g_method_get_sender (context);
-  gchar *detailed_signal = g_strdup_printf ("connection-closed::%s", sender);
+  gchar *detailed_signal = g_strdup_printf ("name-disappeared::%s", sender);
   g_signal_connect (awn_dbus_watcher_get_default (), detailed_signal,
                     G_CALLBACK (dbus_inhibitor_lost),
                     g_hash_table_lookup (priv->inhibits, 

@@ -503,8 +503,6 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   priv->size_req_initialized = FALSE;
   gtk_widget_realize (GTK_WIDGET (proxy));
 
-  g_debug ("Loading Applet: %s %s", priv->path, priv->uid);
-
   /* FIXME: update tooltip with name of the applet?! */
 
   /* Load the applet */
@@ -530,6 +528,11 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   {
     priv->running = TRUE;
     g_child_watch_add(pid, on_child_exit, proxy);
+
+    gchar *desktop = g_path_get_basename (priv->path);
+    g_debug ("Spawned awn-applet[%d] for \"%s\", UID: %s, XID: %" G_GINT64_FORMAT,
+       pid, desktop, priv->uid, socket_id);
+    g_free (desktop);
   }
   else
   {

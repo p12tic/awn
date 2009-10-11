@@ -1,3 +1,11 @@
+2009-10-12  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-proxy.c:
+	* src/awn-dbus-watcher.c:
+	* src/awn-panel.c:
+	Optimization of AwnDbusWatcher.
+	Change the debug string when running applets.
+
 2009-10-07  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
