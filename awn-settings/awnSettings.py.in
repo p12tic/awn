@@ -87,7 +87,8 @@ class awnPreferencesMini(awnPreferences):
     monitor_force = gobject.property(type=bool, default=False)
     monitor_width = gobject.property(type=int, default=1024)
     monitor_height = gobject.property(type=int, default=768)
-    monitor_offset = gobject.property(type=int, default=0)
+    monitor_x_offset = gobject.property(type=int, default=0)
+    monitor_y_offset = gobject.property(type=int, default=0)
 
     reflection_offset = gobject.property(type=int, default=0)
     reflection_alpha = gobject.property(type=gobject.TYPE_FLOAT, default=0.3)
@@ -177,8 +178,10 @@ class awnPreferencesMini(awnPreferences):
                 "monitor-width", "monitor_width"),
             (self.client, defs.PANEL, defs.MONITOR_HEIGHT,
                 "monitor-height", "monitor_height"),
-            (self.client, defs.PANEL, defs.MONITOR_OFFSET,
-                "monitor-offset", "monitor_offset"),
+            (self.client, defs.PANEL, defs.MONITOR_X_OFFSET,
+                "monitor-x-offset", "monitor_x_offset"),
+            (self.client, defs.PANEL, defs.MONITOR_Y_OFFSET,
+                "monitor-y-offset", "monitor_y_offset"),
             (self.client, defs.EFFECTS, defs.REFLECTION_OFFSET,
                 "reflection-offset", "reflection_offset_config"),
             (self.client, defs.EFFECTS, defs.ICON_ALPHA,

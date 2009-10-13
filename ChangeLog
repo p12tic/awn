@@ -1,5 +1,12 @@
 2009-10-13  Michal Hruby  <michal.mhr@gmail.com>
 
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
+	Reflect changes to monitor keys in awn-settings.
+
+2009-10-13  Michal Hruby  <michal.mhr@gmail.com>
+
 	* data/avant-window-navigator.schema-ini.in.in:
 	* src/awn-defines.h:
 	* src/awn-monitor.c:
