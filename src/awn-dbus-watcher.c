@@ -58,25 +58,16 @@ on_name_owner_changed (DBusGProxy *proxy,
            name, old_owner, new_owner);
 #endif
 
-  if (old_owner[0] == '\0')
+  if (old_owner[0] == '\0' || new_owner[0] == '\0')
   {
-    // there's a new object on the bus
+    // there's either a new name on the bus, or a name disappeared
+    guint signal_id = _dbus_watcher_signals[old_owner[0] == '\0' ?
+                                            NAME_APPEARED : NAME_DISAPPEARED];
     GQuark owner_quark = g_quark_try_string (name);
     // if there isn't quark created for the dbus name, it means that
     // noone called g_signal_connect with this detail name, and we don't need
     // to create it
-    g_signal_emit (watcher, _dbus_watcher_signals[NAME_APPEARED],
-                   owner_quark, name);
-  }
-  else if (new_owner[0] == '\0')
-  {
-    // an object disappeared from the bus
-    GQuark owner_quark = g_quark_try_string (name);
-    // if there isn't quark created for the dbus name, it means that
-    // noone called g_signal_connect with this detail name, and we don't need
-    // to create it
-    g_signal_emit (watcher, _dbus_watcher_signals[NAME_DISAPPEARED],
-                   owner_quark, name);
+    g_signal_emit (watcher, signal_id, owner_quark, name);
   }
 }
 
