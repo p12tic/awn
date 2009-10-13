@@ -77,7 +77,12 @@ type = integer
 default = 768
 _description=The forced monitor height. Only used if monitor_force is true.
 
-[panel/monitor_offset]
+[panel/monitor_x_offset]
+type = integer
+default = 0
+_description=An optional offset when you have more than 1 monitors.
+
+[panel/monitor_y_offset]
 type = integer
 default = 0
 _description=An optional offset when you have more than 1 monitors.

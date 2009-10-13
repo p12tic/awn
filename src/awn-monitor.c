@@ -46,6 +46,7 @@ struct _AwnMonitorPrivate
   gboolean force_monitor;
 
   gint config_width, config_height;
+  gint config_x_offset, config_y_offset;
 };
 
 enum 
@@ -56,7 +57,8 @@ enum
   PROP_FORCE_MONITOR,
   PROP_HEIGHT,
   PROP_WIDTH,
-  PROP_OFFSET,
+  PROP_X_OFFSET,
+  PROP_Y_OFFSET,
   PROP_ALIGN
 };
 
@@ -81,27 +83,32 @@ awn_monitor_constructed (GObject *object)
 
   desktop_agnostic_config_client_bind (priv->client,
                                        AWN_GROUP_PANEL, AWN_PANEL_MONITOR_FORCE,
-                                       object, "monitor_force", FALSE,
+                                       object, "monitor-force", FALSE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
                                        AWN_GROUP_PANEL, AWN_PANEL_MONITOR_WIDTH,
-                                       object, "monitor_width", FALSE,
+                                       object, "monitor-width", FALSE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
                                        AWN_GROUP_PANEL, AWN_PANEL_MONITOR_HEIGHT,
-                                       object, "monitor_height", FALSE,
+                                       object, "monitor-height", FALSE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
-                                       AWN_GROUP_PANEL, AWN_PANEL_MONITOR_OFFSET,
-                                       object, "monitor_offset", FALSE,
+                                       AWN_GROUP_PANEL, AWN_PANEL_MONITOR_X_OFFSET,
+                                       object, "monitor-x-offset", FALSE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_MONITOR_Y_OFFSET,
+                                       object, "monitor-y-offset", FALSE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
                                        AWN_GROUP_PANEL, AWN_PANEL_MONITOR_ALIGN,
-                                       object, "monitor_align", FALSE,
+                                       object, "monitor-align", FALSE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 }
@@ -135,8 +142,11 @@ awn_monitor_get_property (GObject    *object,
     case PROP_WIDTH:
       g_value_set_int (value, monitor->width);
       break;
-    case PROP_OFFSET:
-      g_value_set_int (value, monitor->offset);
+    case PROP_X_OFFSET:
+      g_value_set_int (value, monitor->x_offset);
+      break;
+    case PROP_Y_OFFSET:
+      g_value_set_int (value, monitor->y_offset);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -145,9 +155,9 @@ awn_monitor_get_property (GObject    *object,
 
 static void
 awn_monitor_set_property (GObject      *object,
-                         guint         prop_id,
-                         const GValue *value,
-                         GParamSpec   *pspec)
+                          guint         prop_id,
+                          const GValue *value,
+                          GParamSpec   *pspec)
 {
   AwnMonitor *monitor = AWN_MONITOR (object);
   AwnMonitorPrivate *priv;
@@ -177,9 +187,16 @@ awn_monitor_set_property (GObject      *object,
       if (priv->force_monitor) monitor->height = priv->config_height;
       else return; // no signal emit
       break;
-    case PROP_OFFSET:
-      monitor->offset = g_value_get_int (value);
-      break;   
+    case PROP_X_OFFSET:
+      priv->config_x_offset = g_value_get_int (value);
+      if (priv->force_monitor) monitor->x_offset = priv->config_x_offset;
+      else return; // no signal emit
+      break;
+    case PROP_Y_OFFSET:
+      priv->config_y_offset = g_value_get_int (value);
+      if (priv->force_monitor) monitor->y_offset = priv->config_y_offset;
+      else return; // no signal emit
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -245,9 +262,18 @@ awn_monitor_class_init (AwnMonitorClass *klass)
                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
-    PROP_OFFSET,
-    g_param_spec_int ("monitor-offset",
-                      "Monitor Offset",
+    PROP_X_OFFSET,
+    g_param_spec_int ("monitor-x-offset",
+                      "Monitor X-offset",
+                      "An optional offset (for displays > 1)",
+                      0, G_MAXINT, 0,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
+    PROP_Y_OFFSET,
+    g_param_spec_int ("monitor-y-offset",
+                      "Monitor Y-offset",
                       "An optional offset (for displays > 1)",
                       0, G_MAXINT, 0,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
@@ -306,6 +332,8 @@ awn_monitor_update_fields (AwnMonitor *monitor)
   gdk_screen_get_monitor_geometry (priv->screen, monitor_number, &geometry);
   monitor->width = geometry.width;
   monitor->height = geometry.height;
+  monitor->x_offset = geometry.x;
+  monitor->y_offset = geometry.y;
 }
 
 static void
@@ -361,6 +389,8 @@ awn_monitor_set_force_monitor (AwnMonitor *monitor,
     g_object_set (monitor,
                   "monitor-width", priv->config_width,
                   "monitor-height", priv->config_height,
+                  "monitor-x-offset", priv->config_x_offset,
+                  "monitor-y-offset", priv->config_y_offset,
                   NULL);
   }
   else

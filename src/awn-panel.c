@@ -2065,23 +2065,23 @@ position_window (AwnPanel *panel)
   switch (priv->position)
   {
     case GTK_POS_TOP:
-      x = ROUND ((monitor->width - ww) * monitor->align) + monitor->offset;
-      y = 0;
+      x = ROUND ((monitor->width - ww) * monitor->align) + monitor->x_offset;
+      y = monitor->y_offset;
       break;
 
     case GTK_POS_RIGHT:
-      x = monitor->width - ww;
-      y = ROUND ((monitor->height - hh) * monitor->align) + monitor->offset;
+      x = monitor->width - ww + monitor->x_offset;
+      y = ROUND ((monitor->height - hh) * monitor->align) + monitor->y_offset;
       break;
 
     case GTK_POS_BOTTOM:
-      x = ROUND ((monitor->width - ww) * monitor->align) + monitor->offset;
-      y = monitor->height - hh;
+      x = ROUND ((monitor->width - ww) * monitor->align) + monitor->x_offset;
+      y = monitor->height - hh + monitor->y_offset;
       break;
 
     case GTK_POS_LEFT:
-      x = 0;
-      y = ROUND ((monitor->height - hh) * monitor->align) + monitor->offset;
+      x = monitor->x_offset;
+      y = ROUND ((monitor->height - hh) * monitor->align) + monitor->y_offset;
       break;
 
     default:

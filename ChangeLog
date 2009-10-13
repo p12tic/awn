@@ -1,5 +1,15 @@
 2009-10-13  Michal Hruby  <michal.mhr@gmail.com>
 
+	* data/avant-window-navigator.schema-ini.in.in:
+	* src/awn-defines.h:
+	* src/awn-monitor.c:
+	* src/awn-monitor.h:
+	* src/awn-panel.c:
+	Implement both x-offset and y-offset for auto-detection and overriding
+	of monitor layout.
+
+2009-10-13  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-dbus-watcher.c:
 	Minor cleanup.
 
