@@ -69,7 +69,7 @@ enum
 
 enum
 {
-  APPLET_DELETED,
+  APPLET_CRASHED,
 
   LAST_SIGNAL
 };
@@ -78,7 +78,6 @@ static guint _proxy_signals[LAST_SIGNAL] = { 0 };
 /* 
  * FORWARDS
  */
-static void     on_plug_added   (AwnAppletProxy *proxy, gpointer user_data);
 static gboolean on_plug_removed (AwnAppletProxy *proxy, gpointer user_data);
 static void     on_size_alloc   (AwnAppletProxy *proxy, GtkAllocation *a);
 static void     on_child_exit   (GPid pid, gint status, gpointer user_data);
@@ -266,15 +265,14 @@ awn_applet_proxy_class_init (AwnAppletProxyClass *klass)
         G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS));
 
   /* Class signals */
-  _proxy_signals[APPLET_DELETED] =
-    g_signal_new ("applet_deleted",
+  _proxy_signals[APPLET_CRASHED] =
+    g_signal_new ("applet-crashed",
         G_OBJECT_CLASS_TYPE (obj_class),
         G_SIGNAL_RUN_LAST,
-        G_STRUCT_OFFSET (AwnAppletProxyClass, applet_deleted),
+        G_STRUCT_OFFSET (AwnAppletProxyClass, applet_crashed),
         NULL, NULL,
-        g_cclosure_marshal_VOID__INT, 
-        G_TYPE_NONE,
-        1, G_TYPE_INT);
+        g_cclosure_marshal_VOID__VOID,
+        G_TYPE_NONE, 0);
 
   g_type_class_add_private (obj_class, sizeof (AwnAppletProxyPrivate));
 }
@@ -306,7 +304,6 @@ awn_applet_proxy_init (AwnAppletProxy *proxy)
   priv = proxy->priv = AWN_APPLET_PROXY_GET_PRIVATE (proxy);
 
   /* Connect to the socket signals */
-  g_signal_connect (proxy, "plug-added", G_CALLBACK (on_plug_added), NULL);
   g_signal_connect (proxy, "plug-removed", G_CALLBACK (on_plug_removed), NULL);
   g_signal_connect (proxy, "size-allocate", G_CALLBACK (on_size_alloc), NULL);
   awn_utils_ensure_transparent_bg (GTK_WIDGET (proxy));
@@ -353,15 +350,6 @@ awn_applet_proxy_new (const gchar *path,
 /*
  * GtkSocket callbacks
  */
-static void 
-on_plug_added (AwnAppletProxy *proxy, gpointer user_data)
-{
-  g_return_if_fail (AWN_IS_APPLET_PROXY (proxy));
-
-  gtk_widget_hide (GTK_WIDGET (proxy->priv->throbber));
-  gtk_widget_show (GTK_WIDGET (proxy));
-}
-
 static gboolean
 on_plug_removed (AwnAppletProxy *proxy, gpointer user_data)
 {
@@ -370,9 +358,6 @@ on_plug_removed (AwnAppletProxy *proxy, gpointer user_data)
   g_return_val_if_fail (AWN_IS_APPLET_PROXY (proxy), FALSE);
   priv = proxy->priv;
 
-  g_signal_emit (proxy, _proxy_signals[APPLET_DELETED], 0, priv->uid);
-
-  gtk_widget_hide (GTK_WIDGET (proxy));
   /* indicate that the applet crashed and allow restart */
   priv->running = FALSE;
   priv->crashed = TRUE;
@@ -381,7 +366,8 @@ on_plug_removed (AwnAppletProxy *proxy, gpointer user_data)
   awn_throbber_set_type (AWN_THROBBER (priv->throbber),
                          AWN_THROBBER_TYPE_SAD_FACE);
   awn_icon_set_hover_effects (AWN_ICON (priv->throbber), TRUE);
-  gtk_widget_show (priv->throbber);
+
+  g_signal_emit (proxy, _proxy_signals[APPLET_CRASHED], 0);
 
   return TRUE;
 }
@@ -479,6 +465,8 @@ on_child_exit (GPid pid, gint status, gpointer user_data)
     awn_icon_set_tooltip_text (AWN_ICON (priv->throbber),
       _("Whoops! The applet crashed. Click to restart it."));
     awn_icon_set_hover_effects (AWN_ICON (priv->throbber), TRUE);
+
+    g_signal_emit (user_data, _proxy_signals[APPLET_CRASHED], 0);
     /* we won't call gtk_widget_show - on_plug_removed does that
      * and if the plug wasn't even added, the throbber widget is still visible
      */
@@ -538,7 +526,7 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   {
     g_warning ("Unable to load applet %s: %s", priv->path, error->message);
     g_error_free (error);
-    g_signal_emit (proxy, _proxy_signals[APPLET_DELETED], 0, priv->uid);
+    g_signal_emit (proxy, _proxy_signals[APPLET_CRASHED], 0);
   }
 
   g_strfreev (argv);

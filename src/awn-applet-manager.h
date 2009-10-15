@@ -90,8 +90,9 @@ void        awn_applet_manager_set_applet_flags  (AwnAppletManager *manager,
 void        awn_applet_manager_show_applets      (AwnAppletManager *manager);
 void        awn_applet_manager_hide_applets      (AwnAppletManager *manager);
 
-void        awn_applet_manager_set_docklet_widget(AwnAppletManager *manager,
+void        awn_applet_manager_add_docklet       (AwnAppletManager *manager,
                                                   GtkWidget *docklet);
+gboolean    awn_applet_manager_get_docklet_mode  (AwnAppletManager *manager);
 
 GdkRegion*  awn_applet_manager_get_mask          (AwnAppletManager *manager,
                                                   AwnPathType path_type,

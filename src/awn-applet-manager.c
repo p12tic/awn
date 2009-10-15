@@ -627,7 +627,29 @@ _applet_plug_added (AwnAppletManager *manager, GtkWidget *applet)
 {
   g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
 
+  if (AWN_IS_APPLET_PROXY (applet))
+  {
+    AwnAppletProxy *proxy = AWN_APPLET_PROXY (applet);
+    if (manager->priv->docklet_mode == FALSE)
+    {
+      gtk_widget_show (applet);
+    }
+    gtk_widget_hide (awn_applet_proxy_get_throbber (proxy));
+  }
+
   g_signal_emit (manager, _applet_manager_signals[APPLET_EMBEDDED], 0, applet);
+}
+
+static void
+_applet_crashed (AwnAppletManager *manager, AwnAppletProxy *proxy)
+{
+  g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
+
+  gtk_widget_hide (GTK_WIDGET (proxy));
+  if (manager->priv->docklet_mode == FALSE)
+  {
+    gtk_widget_show (awn_applet_proxy_get_throbber (proxy));
+  }
 }
 
 static GtkWidget *
@@ -645,11 +667,16 @@ create_applet (AwnAppletManager *manager,
                                  priv->offset, priv->size);
   g_signal_connect_swapped (applet, "plug-added",
                             G_CALLBACK (_applet_plug_added), manager);
+  g_signal_connect_swapped (applet, "applet-crashed",
+                            G_CALLBACK (_applet_crashed), manager);
   notifier = awn_applet_proxy_get_throbber (AWN_APPLET_PROXY (applet));
 
   gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (manager), notifier, FALSE, FALSE, 0);
-  gtk_widget_show (notifier);
+  if (priv->docklet_mode == FALSE)
+  {
+    gtk_widget_show (notifier);
+  }
 
   g_object_set_qdata (G_OBJECT (applet), 
                       priv->touch_quark, GINT_TO_POINTER (0));
@@ -1048,14 +1075,24 @@ awn_applet_manager_hide_applets (AwnAppletManager *manager)
   g_list_free (list);
 }
 
+gboolean
+awn_applet_manager_get_docklet_mode (AwnAppletManager *manager)
+{
+  g_return_val_if_fail (AWN_IS_APPLET_MANAGER (manager), FALSE);
+
+  return manager->priv->docklet_mode;
+}
+
 void
-awn_applet_manager_set_docklet_widget (AwnAppletManager *manager,
-                                       GtkWidget *docklet)
+awn_applet_manager_add_docklet (AwnAppletManager *manager,
+                                GtkWidget *docklet)
 {
   g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
   AwnAppletManagerPrivate *priv = manager->priv;
 
   priv->docklet_widget = docklet;
+  g_object_add_weak_pointer (G_OBJECT (docklet), (gpointer)&priv->docklet_widget);
+  awn_applet_manager_add_widget (manager, docklet, 0);
 }
 
 GdkRegion*

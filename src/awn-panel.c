@@ -3150,8 +3150,8 @@ awn_panel_docklet_request (AwnPanel *panel,
     g_signal_connect (priv->docklet, "plug-removed",
                       G_CALLBACK (docklet_plug_removed), panel);
 
-    awn_applet_manager_add_widget (AWN_APPLET_MANAGER (priv->manager),
-                                   priv->docklet, 0);
+    awn_applet_manager_add_docklet (AWN_APPLET_MANAGER (priv->manager),
+                                    priv->docklet);
     gtk_widget_realize (priv->docklet);
     gtk_widget_hide (priv->docklet);
   }

@@ -61,7 +61,7 @@ struct _AwnAppletProxyClass
   GtkSocketClass parent_class;
 
   /*< signals >*/
-  void (*applet_deleted) (AwnAppletProxy *proxy, const gchar *uid);
+  void (*applet_crashed) (AwnAppletProxy *proxy);
 };
 
 GType       awn_applet_proxy_get_type          (void) G_GNUC_CONST;
