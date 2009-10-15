@@ -1,3 +1,8 @@
+2009-10-15  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applet-activation/main.c:
+	Check if the desktop file exists before sending DBus request.
+
 2009-10-13  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awn-settings.ui:

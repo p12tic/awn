@@ -148,7 +148,8 @@ main(gint argc, gchar **argv)
   if (uid == NULL && window == 0)
   {
     // the binary was run only with path to desktop file (and maybe panel-id)
-    // Try to connect to the panel and call its AddApplet method.
+    // try to connect to the panel and call its AddApplet method.
+
     return do_dbus_call (panel_id, path);
   }
 
@@ -175,7 +176,7 @@ main(gint argc, gchar **argv)
 
   if (desktop_file == NULL || !desktop_agnostic_vfs_file_exists (desktop_file))
   {
-    g_warning ("This desktop file '%s' does not exist.", path);
+    g_warning ("The desktop file '%s' does not exist.", path);
     return 1;
   }
 
@@ -190,7 +191,7 @@ main(gint argc, gchar **argv)
 
   if (entry == NULL)
   {
-    g_warning ("This desktop file '%s' does not exist.", path);
+    g_warning ("The desktop file '%s' does not exist.", path);
     return 1;
   }
 
@@ -278,6 +279,7 @@ static gint
 do_dbus_call (gint panel_id, gchar *desktop_file_path)
 {
   GError *error = NULL;
+  DesktopAgnosticVFSFile *desktop_file = NULL;
   DBusGConnection *connection;
   DBusGProxy *proxy;
 
@@ -289,19 +291,37 @@ do_dbus_call (gint panel_id, gchar *desktop_file_path)
     return 1;
   }
 
+  if (!g_path_is_absolute (desktop_file_path))
+  {
+    gchar *tmp = desktop_file_path;
+    desktop_file_path = g_strdup_printf ("%s/%s", g_get_current_dir (),
+                                         desktop_file_path);
+    g_free (tmp);
+  }
+
+  // check if the file exists
+  desktop_file = desktop_agnostic_vfs_file_new_for_path (desktop_file_path,
+                                                         &error);
+
+  if (error)
+  {
+    g_critical ("Error: %s", error->message);
+    g_error_free (error);
+    return 1;
+  }
+
+  if (desktop_file == NULL ||
+      !desktop_agnostic_vfs_file_exists (desktop_file))
+  {
+    g_warning ("The desktop file '%s' does not exist.", desktop_file_path);
+    return 1;
+  }
+
   gchar *object_path = g_strdup_printf ("/org/awnproject/Awn/Panel%d",
                                         panel_id);
   proxy = dbus_g_proxy_new_for_name (connection,
                                      "org.awnproject.Awn", object_path,
                                      "org.awnproject.Awn.Panel");
-
-  if (!g_path_is_absolute (desktop_file_path))
-  {
-    // FIXME: leak
-    desktop_file_path = g_strdup_printf ("%s/%s", g_get_current_dir (),
-                                         desktop_file_path);
-  }
-
 
   dbus_g_proxy_call (proxy, "AddApplet", &error,
                      G_TYPE_STRING, desktop_file_path,
