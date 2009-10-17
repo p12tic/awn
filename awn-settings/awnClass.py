@@ -34,6 +34,7 @@ try:
     import gobject
     import gtk
     import gtk.gdk as gdk
+    import pango
 except Exception, e:
     sys.stderr.write(str(e) + '\n')
     sys.exit(1)
@@ -85,6 +86,64 @@ def make_color_string(color, alpha):
     return string
 
 EMPTY = "none";
+
+class AwnAppletListStore(gtk.ListStore, gtk.TreeDragSource, gtk.TreeDragDest):
+
+    __gsignals__ = {
+        'foreign-drop':
+            (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+                [int, gobject.TYPE_OBJECT, int])
+        # we can't do TreePath easily, so lets use just int
+        # (change to string representation of TreePath if necessary)
+    }
+
+    def do_drag_data_received(self, dest, selection_data):
+        model, row = selection_data.tree_get_row_drag_data()
+        if model == self:
+            # drop from the same widget
+            src = row[0]
+            dst = dest[0]
+            if (src == dst):
+                return False
+
+            new_array = []
+            iter = self.get_iter_root()
+            while iter != None:
+                iter = self.iter_next(iter)
+                new_array.append(len(new_array))
+
+            # new_array[oldpos] = newpos
+            if src < dst:
+                new_array[src] = dst-1
+                for i in range(src+1, dst):
+                    new_array[i] = i-1
+            else:
+                new_array[src] = dst
+                for i in range(dst, src):
+                    new_array[i] = i+1
+
+            # need to map it to > new_order[newpos] = oldpos
+            new_order = new_array[:]
+            for i in range(len(new_array)): new_order[new_array[i]] = i
+            # emit change signals
+            self.reorder(new_order)
+        else:
+            self.emit("foreign-drop", dest[0], model, row[0])
+
+        return False
+
+    def do_row_drop_possible(self, dest_path, selection_data):
+        return True
+
+    def do_drag_data_delete(self, path):
+        return True
+
+    def do_drag_data_get(self, path, selection_data):
+        # if we return False the default handler will do exactly what we want
+        return False
+
+gobject.type_register (AwnAppletListStore)
+
 
 class awnBzr(gobject.GObject):
         #Utils Bzr
@@ -561,9 +620,65 @@ class awnBzr(gobject.GObject):
                         icon = None
         return icon
 
-    def make_model(self, uris, treeview):
+    def make_applet_model(self, uris, treeview):
+        self.applet_model = model = AwnAppletListStore(gdk.Pixbuf,
+                                                       str, str, str,
+                                                       gdk.Pixbuf)
+        treeview.set_model (model)
 
-        model = model = gtk.ListStore(gdk.Pixbuf, str, str, str)
+        def deactivate_applet(applet_model, dest, model, src):
+            itr = model.get_iter((src,))
+            model.remove(itr)
+            self.apply_applet_list_changes()
+
+        self.applet_model.connect("foreign-drop", deactivate_applet)
+
+        ren = gtk.CellRendererPixbuf()
+        col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
+        col.set_expand (False)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        ren.props.ellipsize = pango.ELLIPSIZE_END
+        col = gtk.TreeViewColumn ("Description", ren, markup=1)
+        col.set_expand (True)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        col = gtk.TreeViewColumn ("Desktop", ren)
+        col.set_visible (False)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        col = gtk.TreeViewColumn ("Name", ren)
+        col.set_visible (False)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererPixbuf()
+        ren.props.icon_name = "gtk-add"
+        ren.props.stock_size = gtk.ICON_SIZE_DND
+        col = gtk.TreeViewColumn ("AddIcon", ren)
+        col.set_expand (False)
+        treeview.append_column (col)
+
+        for uri in uris:
+            if os.path.isfile(uri):
+                icon, text, name = self.make_row (uri)
+                if len(text) > 2:
+                    row = model.append ()
+                    model.set_value (row, 0, icon)
+                    model.set_value (row, 1, text)
+                    model.set_value (row, 2, uri)
+                    model.set_value (row, 3, name)
+
+        self.load_finished = True
+
+        treeview.show()
+
+        return model
+
+    def make_model(self, uris, treeview):
+        model = gtk.ListStore(gdk.Pixbuf, str, str, str)
         treeview.set_model (model)
 
         ren = gtk.CellRendererPixbuf()
@@ -933,7 +1048,7 @@ _("You should have received a copy of the GNU General Public License along with 
         gtk.main()
 
 class awnLauncher(awnBzr):
-    def reordered(self, model, path, iterator, data=None):
+    def launchers_reordered(self, model, path, iterator, data=None):
         if self.load_finished:
             if (self.idle_id == 0):
                 self.idle_id = gobject.idle_add(self.check_changes, model)
@@ -1106,7 +1221,7 @@ class awnApplet(awnBzr):
                 if do_apply:
                     uid = "%d" % int(time.time())
                     self.model.set_value (row, 3, uid)
-                    self._apply ()
+                    self.apply_applet_list_changes ()
                 else:
                     model.set_value (row, 3, name)
 
@@ -1120,8 +1235,8 @@ class awnApplet(awnBzr):
             success.run()
             success.destroy()
 
-    def activate_applet (self, button):
-        select = self.treeview_available.get_selection()
+    def activate_applet (self, treeview, path, col):
+        select = treeview.get_selection()
         if not select:
             print "no selection"
             return
@@ -1135,7 +1250,7 @@ class awnApplet(awnBzr):
 
         self.active_model.append([icon, path, uid, text])
 
-        self._apply ()
+        self.apply_applet_list_changes()
 
     def row_active (self, q, w, e):
         self.activate_applet (None)
@@ -1180,7 +1295,7 @@ class awnApplet(awnBzr):
             if os.path.exists(fullpath) and ".config" in path:
                 model.remove (iterator)
                 self.remove_applet_dir(fullpath, path)
-                self._apply ()
+                self.apply_applet_list_changes()
                 dialog.destroy()
             else:
                 dialog.destroy()
@@ -1198,7 +1313,7 @@ class awnApplet(awnBzr):
         #applet_client = awn.Config(name, uid)
         #applet_client.clear()
         self.active_model.remove(itr)
-        self._apply()
+        self.apply_applet_list_changes()
 
     def remove_applet_dir(self, dirPath, filename):
         namesHere = os.listdir(dirPath)
@@ -1212,7 +1327,7 @@ class awnApplet(awnBzr):
         if os.path.exists(filename):
             os.unlink(filename)
 
-    def _apply (self):
+    def apply_applet_list_changes (self):
         applets_list = []
         ua_list = []
 
@@ -1231,33 +1346,20 @@ class awnApplet(awnBzr):
         self.client.set_list(defs.PANEL, defs.APPLET_LIST, applets_list)
         self.client.set_list(defs.PANEL, defs.UA_LIST, ua_list)
 
-    def up_clicked (self, button):
-        select = self.treeview.get_selection()
-        model, iterator = select.get_selected ()
-        uri = model.get_value (iterator, 2)
-        prev = None
-        it = model.get_iter_first ()
-        while it:
-            if model.get_value (it, 2) == uri:
-                break
-            prev = it
-            it = model.iter_next (it)
+    def make_active_applets_model (self):
+        self.active_model = AwnAppletListStore(gtk.gdk.Pixbuf,
+                                               str, str, str)
+        self.active_model.connect("row-inserted", self.applet_reorder)
+        self.active_model.connect("rows-reordered", self.applet_reorder)
 
-        if prev:
-            model.move_before (iterator, prev)
-        self._apply ()
+        def activate_applet(active_model, dst_row, model, src_row):
+            iter = model.get_iter((src_row,))
+            path = model.get_value (iter, 2)
+            icon, text, name = self.make_row (path)
+            uid = "%d" % int(time.time())
+            active_model.insert(dst_row, [icon, path, uid, text])
 
-    def down_clicked (self, button):
-        select = self.treeview.get_selection()
-        model, iterator = select.get_selected ()
-        next = model.iter_next (iterator)
-        if next:
-            model.move_after (iterator, next)
-        self._apply ()
-
-    def make_active_model (self):
-        self.active_model = gtk.ListStore(gtk.gdk.Pixbuf, str, str, str)
-        self.active_model.connect("row-changed", self.applet_reorder)
+        self.active_model.connect("foreign-drop", activate_applet)
 
         self.icon_view = gtk.IconView(self.active_model)
         self.icon_view.set_pixbuf_column(0)
@@ -1267,7 +1369,7 @@ class awnApplet(awnBzr):
             self.icon_view.set_tooltip_column(3)
         self.icon_view.set_item_width(-1)
         self.icon_view.set_size_request(48, -1)
-        self.icon_view.set_reorderable(True)
+        #self.icon_view.set_reorderable(True)
         self.icon_view.set_columns(100)
 
         self.scrollwindow1.add(self.icon_view)
@@ -1276,7 +1378,7 @@ class awnApplet(awnBzr):
         applets = self.client.get_list(defs.PANEL, defs.APPLET_LIST)
 
         ua_applets = self.client.get_list(defs.PANEL, defs.UA_LIST)
-	
+
         for ua in ua_applets:
             tokens = ua.split("::")
             applets.insert(int(tokens[1]), ua)
@@ -1304,7 +1406,7 @@ class awnApplet(awnBzr):
 
     def load_applets (self):
         applets = self.applets_by_categories()
-        model = self.make_model(applets, self.treeview_available)
+        model = self.make_applet_model(applets, self.treeview_available)
 
         model.set_sort_column_id(1, gtk.SORT_ASCENDING)
         self.treeview_available.set_search_column (3)
@@ -1321,30 +1423,19 @@ class awnApplet(awnBzr):
         success.destroy()
 
     def applet_reorder(self, model, path, iterator, data=None):
-        cur_index = model.get_path(iterator)[0]
-        cur_uri = model.get_value (iterator, 1)
-        cur_uid = model.get_value (iterator, 2)
-        cur_s = "%s::%s" % (cur_uri, cur_uid)
-        l = {}
-        it = model.get_iter_first ()
+        l = []
+        it = model.get_iter_root ()
         while (it):
             path = model.get_value (it, 1)
             uid = model.get_value (it, 2)
             s = "%s::%s" % (path, uid)
-            l[model.get_path(it)[0]] = s
+            l.append(s)
             it = model.iter_next (it)
 
-        remove = None
-        for item in l:
-            if l[item] == cur_s and cur_index != item:
-                remove = item
-                break
-        if remove >= 0:
-            del l[remove]
+        applets = l
+        applets = filter(None, applets)
 
-        applets = l.values()
-
-        if not None in applets and self.load_finished:
+        if self.load_finished:
             applets_list = []
             ua_list = []
             for a in applets:
