@@ -2,15 +2,14 @@ Source: avant-window-navigator-trunk
 Section: gnome
 Priority: optional
 Maintainer: Julien Lavergne <julien.lavergne@gmail.com>
-Build-Depends: 	debhelper (>= 5),
-		cdbs,
+Build-Depends: 	debhelper (>= 7),
 		intltool,
 		libwnck-dev,
 		libdbus-glib-1-dev,
 		libxcomposite-dev,
 		libxdamage-dev,
 		libgtop2-dev,
-		python-central (>= 0.5.6),
+		python-support (>= 0.7.0),
 		python-dev,
 		python-all-dev (>= 2.4),
 		python-gtk2-dev (>= 2.12),
@@ -26,7 +25,6 @@ Build-Depends: 	debhelper (>= 5),
 		vala-libdesktop-agnostic
 Standards-Version: 3.7.3
 Homepage: https://launchpad.net/avant-window-navigator/
-XS-Python-Version: >= 2.4
 
 Package: avant-window-navigator-trunk
 Section: gnome

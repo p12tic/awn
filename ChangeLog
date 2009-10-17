@@ -1,3 +1,18 @@
+2009-10-17  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/README.Debian:
+	* debian/avant-window-navigator.manpages:
+	* debian/awn-settings.1:
+	* debian/awn-settings.manpages:
+	* debian/compat:
+	* debian/control:
+	* debian/libawn-doc-trunk.install:
+	* debian/libawn-doc-trunk.links:
+	* debian/python-awn-trunk.preinst:
+	* debian/pyversions:
+	* debian/rules:
+	Update debian, with dh7, quilt and python-support
+
 2009-10-17  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awnClass.py:

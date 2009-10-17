@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+if [ "$1" = upgrade ]
+then
+	if dpkg --compare-versions "$2" lt 0.3.9-1; then
+		pycentral pkgremove python-awn-trunk
+	fi
+fi
+
+#DEBHELPER#
