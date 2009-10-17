@@ -1,5 +1,11 @@
 2009-10-17  Julien Lavergne <gilir@ubuntu.com>
 
+	* debian/TODO
+	* debian/pycompat
+	Remove unnecessary files.
+
+2009-10-17  Julien Lavergne <gilir@ubuntu.com>
+
 	* debian/README.Debian:
 	* debian/avant-window-navigator.manpages:
 	* debian/awn-settings.1:
