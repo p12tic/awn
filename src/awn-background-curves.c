@@ -47,9 +47,21 @@ static void awn_background_curves_draw (AwnBackground  *bg,
                                         GdkRectangle   *area);
 
 static void
+awn_background_curves_constructed (GObject *object)
+{
+    G_OBJECT_CLASS (awn_background_curves_parent_class)->constructed (object);
+
+    g_signal_connect (object, "notify::curves-symmetry",
+                      G_CALLBACK (awn_background_emit_padding_changed), NULL);
+}
+
+static void
 awn_background_curves_class_init (AwnBackgroundCurvesClass *klass)
 {
+  GObjectClass *obj_class = G_OBJECT_CLASS (klass);
   AwnBackgroundClass *bg_class = AWN_BACKGROUND_CLASS (klass);
+
+  obj_class->constructed = awn_background_curves_constructed;
 
   bg_class->draw = awn_background_curves_draw;
   bg_class->padding_request = awn_background_curves_padding_request;
@@ -141,7 +153,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_translate (cr, 0.5, 0.5);
   width -= 1;
   curves_height = height;
-  if(bg->curviness < 1)
+  if (bg->curviness < 1)
     curves_height = height*bg->curviness;
 
   /* Drawing outer ellips */
@@ -160,11 +172,17 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_stroke (cr);
 
   /* Drawing inner ellips */
-  gint width_inner = width*(1-bg->curves_symmetry*0.2);
+  gint width_inner = width * 3 / 4;
   pat = cairo_pattern_create_linear (0, height-curves_height/2.0, 0, height);
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
-  draw_rect_path (bg, cr, (width-width_inner)*bg->curves_symmetry*0.8, height-curves_height/2.0,  width_inner, curves_height/2.0, 0.5);
+
+  gdouble x_pos = (width-width_inner);
+  gdouble min = x_pos / 6;
+  x_pos = x_pos - min * 2;
+  x_pos = x_pos * (bg->curves_symmetry) + min;
+  draw_rect_path (bg, cr, x_pos, height-curves_height/2.0,  width_inner, curves_height/2.0, 0.5);
+
   cairo_set_source (cr, pat);
   cairo_fill (cr); 
   cairo_pattern_destroy (pat);
@@ -191,24 +209,31 @@ awn_background_curves_padding_request (AwnBackground *bg,
                                    guint *padding_left,
                                    guint *padding_right)
 {
-  gint padding = 20;
+  gfloat left = bg->curves_symmetry;
+  gfloat right = 1.0 - bg->curves_symmetry;
+  const gint BASE_PADDING = 10;
+  gint padding = 60;
 
   switch (position)
   {
     case GTK_POS_TOP:
       *padding_top  = 0; *padding_bottom = 0;
-      *padding_left = padding; *padding_right = padding;
+      *padding_left = BASE_PADDING + padding * right;
+      *padding_right = BASE_PADDING + padding * left;
       break;
     case GTK_POS_BOTTOM:
       *padding_top  = 0; *padding_bottom = 0;
-      *padding_left = padding; *padding_right = padding;
+      *padding_left = BASE_PADDING + padding * left;
+      *padding_right = BASE_PADDING + padding * right;
       break;
     case GTK_POS_LEFT:
-      *padding_top  = padding; *padding_bottom = padding;
+      *padding_top  = BASE_PADDING + padding * left;
+      *padding_bottom = BASE_PADDING + padding * right;
       *padding_left = 0; *padding_right = 0;
       break;
     case GTK_POS_RIGHT:
-      *padding_top  = padding; *padding_bottom = padding;
+      *padding_top  = BASE_PADDING + padding * right;
+      *padding_bottom = BASE_PADDING + padding * left;
       *padding_left = 0; *padding_right = 0;
       break;
     default:

@@ -1,3 +1,8 @@
+2009-10-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-curves.c:
+	Some changes to curves_symmetry handling.
+
 2009-10-18  Julien Lavergne <gilir@ubuntu.com>
 
 	* debian/changelog:
