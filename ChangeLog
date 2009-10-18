@@ -1,5 +1,10 @@
 2009-10-18  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-background-3d.c:
+	Increase the padding size for 3d style.
+
+2009-10-18  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awn-settings.ui:
 	* awn-settings/awnSettings.py.in:
 	Changes to awn-settings, still needs reorganization.

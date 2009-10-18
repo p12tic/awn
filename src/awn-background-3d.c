@@ -414,13 +414,17 @@ awn_background_3d_padding_request (AwnBackground *bg,
 {
   gint offset, size;
   guint padding;
-  g_object_get (bg->panel, "offset", &offset, NULL);
-  g_object_get (bg->panel, "size", &size, NULL);
+  g_object_get (bg->panel, "offset", &offset, "size", &size, NULL);
 
   if(offset > size)
     padding = (size+offset)/2.0/tan((90-bg->panel_angle)*M_PI/180);
   else
-    padding = offset/tan((90-bg->panel_angle)*M_PI/180);
+  {
+    double angle = 90 - CLAMP (bg->panel_angle, 0.0, 75.0);
+    double y_pos = size / 2.0 + bg->corner_radius;
+    double x = y_pos / tan (angle * M_PI/180);
+    padding = MAX (x, offset);
+  }
 
   switch (position)
   {
