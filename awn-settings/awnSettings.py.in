@@ -619,11 +619,17 @@ class awnManagerMini(awnManager):
             if data == None: return True
             path, pos = data
             widget.select_path(path)
-            widget.item_activated(path)
 
-            return False
+            return True
+
+        def activate_on_select(widget):
+            selection = widget.get_selected_items()
+            if len(selection) > 0:
+                path = selection[0]
+                widget.item_activated(path)
 
         self.main_menu_icon_view.connect("button-press-event", icon_view_clicked)
+        self.main_menu_icon_view.connect("selection-changed", activate_on_select)
         self.main_menu_icon_view.connect("item-activated", self.showPanel)
 
         store = gtk.ListStore(str, gtk.gdk.Pixbuf, str)
