@@ -356,9 +356,10 @@
         <child>
           <object class="GtkAlignment" id="alignment1">
             <property name="visible">True</property>
+            <property name="top_padding">6</property>
             <property name="left_padding">12</property>
             <child>
-              <object class="GtkVBox" id="vbox1">
+              <object class="GtkVBox" id="vbox2">
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <child>
@@ -656,7 +657,7 @@
             <property name="visible">True</property>
             <property name="spacing">6</property>
             <child>
-              <object class="GtkVBox" id="vbox2">
+              <object class="GtkVBox" id="vbox1">
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
@@ -687,7 +688,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkVBox" id="vbox3">
+              <object class="GtkVBox" id="vbox4">
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
@@ -803,7 +804,7 @@
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkFrame" id="frame2">
+              <object class="GtkFrame" id="frame1">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
                 <property name="shadow_type">none</property>
@@ -1071,7 +1072,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkFrame" id="frame3">
+              <object class="GtkFrame" id="frame4">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
                 <property name="shadow_type">none</property>
@@ -1444,7 +1445,7 @@
         <property name="left_padding">5</property>
         <property name="right_padding">5</property>
         <child>
-          <object class="GtkVBox" id="vbox4">
+          <object class="GtkVBox" id="vbox6">
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <child>
@@ -2072,13 +2073,13 @@
   </object>
   <object class="GtkSizeGroup" id="sizegroup_panel_labels">
     <widgets>
-      <widget name="monitor_align_hscale"/>
-      <widget name="behaviorcombo"/>
       <widget name="iconeffects"/>
-      <widget name="stylecombo"/>
-      <widget name="orientationcombo"/>
       <widget name="hbox2"/>
+      <widget name="orientationcombo"/>
+      <widget name="stylecombo"/>
       <widget name="iconeffects"/>
+      <widget name="behaviorcombo"/>
+      <widget name="monitor_align_hscale"/>
     </widgets>
   </object>
 </interface>

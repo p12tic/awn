@@ -1,5 +1,10 @@
 2009-10-19  Michal Hruby  <michal.mhr@gmail.com>
 
+	* awn-settings/awn-settings.ui:
+	awn-settings - minor fix.
+
+2009-10-19  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-background-curves.c:
 	Curved style - don't be so obvious that we're drawing half-sphere.
 
@@ -25,6 +30,8 @@
 	Increase the padding size for 3d style.
 
 2009-10-18  Michal Hruby  <michal.mhr@gmail.com>
+
+	patch by: onox
 
 	* awn-settings/awn-settings.ui:
 	* awn-settings/awnSettings.py.in:
