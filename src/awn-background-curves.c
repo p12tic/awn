@@ -119,7 +119,7 @@ draw_rect_path (AwnBackground  *bg,
   cairo_scale (cr, width/2.0, height);
 
   cairo_move_to (cr, 0.0, 1.0);
-  cairo_arc_negative (cr, 0.0, 1.0, 1.0, 0.0, M_PI);
+  cairo_arc_negative (cr, 0.0, 1.2, 1.0, 0.0, M_PI);
 
   cairo_restore (cr);
 }
@@ -211,29 +211,29 @@ awn_background_curves_padding_request (AwnBackground *bg,
 {
   gfloat left = bg->curves_symmetry;
   gfloat right = 1.0 - bg->curves_symmetry;
-  const gint BASE_PADDING = 10;
-  gint padding = 60;
+  const gint BASE_PADDING = 20;
+  const gint INC_PADDING = 75;
 
   switch (position)
   {
     case GTK_POS_TOP:
       *padding_top  = 0; *padding_bottom = 0;
-      *padding_left = BASE_PADDING + padding * right;
-      *padding_right = BASE_PADDING + padding * left;
+      *padding_left = BASE_PADDING + INC_PADDING * right;
+      *padding_right = BASE_PADDING + INC_PADDING * left;
       break;
     case GTK_POS_BOTTOM:
       *padding_top  = 0; *padding_bottom = 0;
-      *padding_left = BASE_PADDING + padding * left;
-      *padding_right = BASE_PADDING + padding * right;
+      *padding_left = BASE_PADDING + INC_PADDING * left;
+      *padding_right = BASE_PADDING + INC_PADDING * right;
       break;
     case GTK_POS_LEFT:
-      *padding_top  = BASE_PADDING + padding * left;
-      *padding_bottom = BASE_PADDING + padding * right;
+      *padding_top  = BASE_PADDING + INC_PADDING * left;
+      *padding_bottom = BASE_PADDING + INC_PADDING * right;
       *padding_left = 0; *padding_right = 0;
       break;
     case GTK_POS_RIGHT:
-      *padding_top  = BASE_PADDING + padding * right;
-      *padding_bottom = BASE_PADDING + padding * left;
+      *padding_top  = BASE_PADDING + INC_PADDING * right;
+      *padding_bottom = BASE_PADDING + INC_PADDING * left;
       *padding_left = 0; *padding_right = 0;
       break;
     default:
