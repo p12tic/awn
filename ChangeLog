@@ -1,7 +1,14 @@
+2009-10-18  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Merge ryancr's changes to awn-settings.
+
 2009-10-17  Julien Lavergne <gilir@ubuntu.com>
 
-	* debian/TODO
-	* debian/pycompat
+	* debian/TODO:
+	* debian/pycompat:
 	Remove unnecessary files.
 
 2009-10-17  Julien Lavergne <gilir@ubuntu.com>

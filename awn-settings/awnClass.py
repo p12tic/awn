@@ -462,7 +462,6 @@ class awnBzr(gobject.GObject):
         Return a catalog of themes or applets (list of desktop files from the sources list)
         type_catalog is the type of catalog (Theme of Applets)
         '''
-
         extension = '.awn-theme' if type_catalog == 'Theme' else '.desktop'
         catalog = self.catalog_from_sources_list(extension)
 
@@ -522,7 +521,7 @@ class awnBzr(gobject.GObject):
             for elem in applet['applet_category']:
                 if not elem in categories_list and elem is not "":
                     categories_list.append(elem)
-        categories_list.append("")
+        categories_list.append("All")
         return categories_list
 
     def applets_by_categories(self, categories = ""):
@@ -740,7 +739,7 @@ class awnBzr(gobject.GObject):
         cell = gtk.CellRendererText()
         widget.pack_start(cell)
         widget.add_attribute(cell,'text',0)
-
+    
 class awnPreferences(awnBzr):
     def setup_font(self, group, key, font_btn):
         """sets up font chooser"""
@@ -1369,9 +1368,8 @@ class awnApplet(awnBzr):
             self.icon_view.set_tooltip_column(3)
         self.icon_view.set_item_width(-1)
         self.icon_view.set_size_request(48, -1)
-        #self.icon_view.set_reorderable(True)
         self.icon_view.set_columns(100)
-
+ 
         self.scrollwindow1.add(self.icon_view)
         self.scrollwindow1.show_all()
 
@@ -1412,6 +1410,8 @@ class awnApplet(awnBzr):
         self.treeview_available.set_search_column (3)
 
     def update_applets(self, list_applets):
+        if list_applets == "All":
+            list_applets = ''
         applets = self.applets_by_categories(list_applets)
         self.refresh_tree(applets, self.treeview_available.get_model())
 
@@ -1456,3 +1456,19 @@ class awnApplet(awnBzr):
         model = self.choose_categorie.get_model()
         select_cat = model.get_value(self.choose_categorie.get_active_iter(),0)
         self.update_applets(select_cat)
+
+    def callback_widget_filter_applets_view(self, selection, data=None):
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            self.update_applets(model.get_value(iter, 0))
+    
+    def callback_applet_selection(self, selection, data=None):
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            if os.access(model.get_value(iter, 2), os.W_OK):
+                self.btn_delete.set_sensitive(True)
+            else:
+                self.btn_delete.set_sensitive(False)
+        else:
+            self.btn_delete.set_sensitive(False)
+

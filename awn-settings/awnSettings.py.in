@@ -118,13 +118,23 @@ class awnPreferencesMini(awnPreferences):
         if not os.path.isfile(os.path.join(defs.HOME_CONFIG_DIR,"sources.list")):
             self.create_sources_list()
             self.update_sources_list()
-
-        self.view_themes_scrol = self.wTree.get_object("list_themes_scrol")
+        
+        self.view_themes_scroll = self.wTree.get_object("list_themes_scroll")
+        self.treeview_themes = self.wTree.get_object("list_themes_view")
+        treeview_themes_selection = self.treeview_themes.get_selection()
+        treeview_themes_selection.connect('changed', self.callback_theme_selection)
         self.update_view_themes()
 
         self.apply_theme = self.wTree.get_object("apply_theme")
         self.apply_theme.connect("clicked", self.apply_theme_callback)
-
+        self.delete_theme = self.wTree.get_object("delete_theme")
+        self.delete_theme.connect('clicked', self.delete_theme_callback)
+        self.install_theme = self.wTree.get_object("install_theme")
+        self.install_theme.connect('clicked', self.install_theme_callback)
+        self.build_theme = self.wTree.get_object("build_theme")
+        self.build_theme.connect('clicked', self.build_theme_callback)
+        
+        
         self.setup_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
         #self.setup_freeze(self.wTree.get_object("freezeEffects"), self.wTree.get_object("iconeffects"), "effects")
 
@@ -195,7 +205,7 @@ class awnPreferencesMini(awnPreferences):
             (self.client_taskman, GROUP_DEFAULT, defs.MATCH_STRENGTH,
                 "match-strength", "match_strength_config"),
         ]
-
+        
         for item in config_map_simple:
             client, group, key, prop_name, wtree_name = item
             bind_to_gtk_component (client, group, key, self, prop_name,
@@ -210,13 +220,13 @@ class awnPreferencesMini(awnPreferences):
             (self.client, defs.THEME, defs.BORDER, "border_colorbutton"),
             (self.client, defs.THEME, defs.HILIGHT, "hilight_colorbutton")
         ]
-
+        '''
         for item in color_map:
             client, group, key, wtree_name = item
             widget = self.wTree.get_object(wtree_name)
             client.bind (group, key, widget, "da-color",
                          False, config.BIND_METHOD_FALLBACK)
-
+        '''
         #Advanced
         self.setup_autostart (self.wTree.get_object("autostart_config"))
 
@@ -308,6 +318,7 @@ class awnPreferencesMini(awnPreferences):
         #self.load_spin(defs.EFFECTS, defs.ARROW_ICON, self.wTree.get_object("arrow_icon_config"))
 
         #Repositories
+        '''
         update_win = self.wTree.get_object("update_repository")
         exit_button = self.wTree.get_object("exit_update_win")
         exit_button.connect("clicked", lambda data=None:  update_win.hide_all())
@@ -330,7 +341,7 @@ class awnPreferencesMini(awnPreferences):
 
         self.top_window_repo = self.wTree.get_object("add_repository")
         self.view_repo = self.wTree.get_object("list_repos_view")
-
+        '''
 
     def add_repo_win_callback(self, data=None):
         self.update_repo_view()
@@ -365,17 +376,17 @@ class awnPreferencesMini(awnPreferences):
         self.update_repo_view()
 
     def update_view_themes(self, data=None):
-        self.view_themes_scrol.hide_all()
+        #self.view_themes_scroll.hide_all()
 
-        for elem in self.view_themes_scrol.get_children():
-            elem.destroy()
+        #for elem in self.view_themes_scroll.get_children():
+        #    elem.destroy()
 
         themes = self.type_catalog_from_sources_list()
-        self.treeview_themes = gtk.TreeView()
+        #self.treeview_themes = gtk.TreeView()
         self.treeview_themes.set_headers_visible(False)
-        self.view_themes_scrol.add(self.treeview_themes)
+        #self.view_themes_scroll.add(self.treeview_themes)
         self.refresh_tree(themes, self.make_model(themes, self.treeview_themes))
-        self.view_themes_scrol.show_all()
+        self.view_themes_scroll.show_all()
 
     def apply_theme_callback(self, data=None):
         model = self.treeview_themes.get_model()
@@ -385,7 +396,51 @@ class awnPreferencesMini(awnPreferences):
         self.load_settings_from_theme(path[0])
         self.client.set_string(defs.THEME, defs.CURRENT_THEME, path[0])
 
+    def delete_theme_callback(self, data=None):
+        model = self.treeview_themes.get_model()
+        selection = self.treeview_themes.get_selection()
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            print 'deleting '+model.get_value(iter, 2)
+            
+    def callback_theme_selection(self, selection, data=None):
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            self.apply_theme.set_sensitive(True)
+            if os.access(model.get_value(iter, 2), os.W_OK):
+                self.delete_theme.set_sensitive(True)
+            else:
+                self.delete_theme.set_sensitive(False)
+        else:
+            pass
+            #~ self.apply_theme.set_sensitive(False)
+            #~ self.delete_theme.set_sensitive(False)       
+    
+    def build_theme_callback(self, widget, data=None):
+        self.themeWindow = self.wTree.get_object('themeWindow')
+        self.themeWindow.show()
+        
+    def install_theme_callback(self, widget, data=None):
+        dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                                  buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
+        dialog.set_default_response(gtk.RESPONSE_OK)
+        
+        filter = gtk.FileFilter()
+        filter.set_name("AWN Theme Package")
+        filter.add_pattern("*.tar.gz")
+        filter.add_pattern("*.tgz")
+        filter.add_pattern("*.bz2")
+        filter.add_pattern("*.awn-theme")
+        dialog.add_filter(filter)
 
+        response = dialog.run()
+        if response == gtk.RESPONSE_OK:
+            file = dialog.get_filename()
+            dialog.destroy()
+            print "installing "+file
+        else:
+            dialog.destroy()
+            
 class awnLauncherMini(awnLauncher):
     def __init__(self, glade):
         self.wTree = glade
@@ -441,6 +496,7 @@ class awnAppletMini(awnApplet):
 
         self.scrollwindow = self.wTree.get_object("appletScrollActive")
         self.scrollwindow1 = self.wTree.get_object("appletScrollActive1")
+        
         self.treeview_available =  self.wTree.get_object("appletTreeviewAvailable")
         self.treeview_available.set_headers_visible(False)
         self.treeview_available.connect("row-activated", self.activate_applet)
@@ -463,25 +519,52 @@ class awnAppletMini(awnApplet):
         #          gdk.ACTION_DEFAULT | gdk.ACTION_MOVE)
         #self.treeview_available.connect("drag_data_received", self.drag_data_received_data)
 
-        self.choose_categorie = self.wTree.get_object("applets_catagories")
-        self.create_dropdown(self.choose_categorie, self.list_applets_categories())
-        self.choose_categorie.connect("changed", self.callback_widget_filter_applets)
-
-        self.btn_deactivate = self.wTree.get_object("appletDeactivate")
-        self.btn_deactivate.connect("clicked", self.deactivate_applet)
-        self.btn_deactivate.props.visible = False
-
-        self.btn_activate = self.wTree.get_object("appletActivate")
-        self.btn_activate.connect("clicked", self.activate_applet)
-        self.btn_activate.props.visible = False
-
+        #self.choose_categorie = self.wTree.get_object("applets_catagories")
+        #self.create_dropdown(self.choose_categorie, self.list_applets_categories())
+        #self.choose_categorie.connect("changed", self.callback_widget_filter_applets)
+        
+        self.choose_category_view = self.wTree.get_object("appletCategoryList")
+        selection = self.choose_category_view.get_selection()
+        selection.connect('changed', self.callback_widget_filter_applets_view)
+        self.create_category_list(self.list_applets_categories())
+ 
         self.btn_delete = self.wTree.get_object("appletDelete")
         self.btn_delete.connect("clicked", self.delete_applet)
 
         self.btn_install = self.wTree.get_object("appletInstall")
         self.btn_install.connect("clicked", self.install_applet)
 
+        treeview_available_selection = self.treeview_available.get_selection()
+        treeview_available_selection.connect('changed', self.callback_applet_selection)
+
+    def create_category_list(self, categories):
+        category_model = gtk.ListStore(str)
+        
+        cell = gtk.CellRendererText()
+        col = gtk.TreeViewColumn("Categories", cell)
+        col.set_attributes(cell, markup=0)
+        
+        self.choose_category_view.append_column(col)
+        
+        category_model.set_sort_column_id(0, gtk.SORT_ASCENDING)
+        self.choose_category_view.set_model (category_model)
+        #self.choose_category_view.set_search_column (0)
+
+        #ren = gtk.CellRendererText()
+        #col = gtk.TreeViewColumn ("Category", ren, markup=1)
+        #self.choose_category_view.append_column (col)
+        
+        [category_model.append([elem]) for elem in categories]
+        
 class awnManagerMini(awnManager):
+    PREFERENCE_PANEL = 0
+    APPLET_PANEL = 1 
+    LAUNCHER_PANEL = 2
+    THEME_PANEL = 3
+    ADVANCED_PANEL = 4
+    
+    current_panel = None
+    
     def __init__(self):
         self.XML_PATH = os.path.join(AWN_SETTINGS_DIR, 'awn-settings.ui')
 
@@ -489,11 +572,15 @@ class awnManagerMini(awnManager):
         self.wTree.add_from_file(self.XML_PATH)
         self.wTree.set_translation_domain(defs.I18N_DOMAIN)
 
-        self.window = self.wTree.get_object("awnManagerWindow")
         self.theme = gtk.icon_theme_get_default()
         icon_search_path = os.path.join('@DATADIR@', 'icons')
         if icon_search_path not in self.theme.get_search_path():
             self.theme.append_search_path(icon_search_path)
+
+        self.window = self.wTree.get_object("awnManagerWindow")
+        self.panel_container = self.wTree.get_object("panelContainer")
+        self.createMainMenu()
+        
         icon_list = []
         icon_sizes = self.theme.get_icon_sizes('awn-settings')
         for size in icon_sizes:
@@ -519,7 +606,107 @@ class awnManagerMini(awnManager):
         close = self.wTree.get_object("buttonClose")
         close.connect("clicked", gtk.main_quit)
 
+        self.window.show()
+        
+    def createMainMenu(self):
+        self.main_menu_icon_view = self.wTree.get_object("mainMenuIconView")
 
+        # selection-changed event doesn't work very well, so hack it a bit
+        def icon_view_clicked(widget, event):
+            coords = event.get_coords()
+            coords = map(int, coords)
+            data = widget.get_dest_item_at_pos(coords[0], coords[1])
+            if data == None: return True
+            path, pos = data
+            widget.select_path(path)
+            widget.item_activated(path)
+
+            return False
+
+        self.main_menu_icon_view.connect("button-press-event", icon_view_clicked)
+        self.main_menu_icon_view.connect("item-activated", self.showPanel)
+
+        store = gtk.ListStore(str, gtk.gdk.Pixbuf, str)
+        size = 32
+        store.append([
+            'Preferences', 
+            self.safe_load_icon('gtk-preferences', size, gtk.ICON_LOOKUP_USE_BUILTIN),
+            self.PREFERENCE_PANEL
+        ])
+
+        store.append([
+            'Applets', 
+            self.safe_load_icon('awn-plugins', size, gtk.ICON_LOOKUP_USE_BUILTIN),
+            self.APPLET_PANEL
+        ])
+
+        store.append([
+            'Launchers',
+            self.safe_load_icon("gnome-panel-launcher", size, gtk.ICON_LOOKUP_USE_BUILTIN),
+            self.LAUNCHER_PANEL
+        ])
+
+        store.append([
+            'Themes', 
+            self.safe_load_icon("preferences-desktop-theme", size, gtk.ICON_LOOKUP_USE_BUILTIN),
+            self.THEME_PANEL
+        ])
+
+        store.append([
+            'Advanced', 
+            self.safe_load_icon('gtk-properties', size, gtk.ICON_LOOKUP_USE_BUILTIN),
+	        self.ADVANCED_PANEL
+        ])
+
+        self.main_menu_icon_view.set_model(store)
+        self.main_menu_icon_view.set_text_column(0)
+        self.main_menu_icon_view.set_pixbuf_column(1)
+        self.main_menu_icon_view.select_path(self.PREFERENCE_PANEL)
+        self.main_menu_icon_view.item_activated(self.PREFERENCE_PANEL)
+
+    def showPanel(self, widget, path):
+        store = widget.get_model()
+        panel = self.PREFERENCE_PANEL
+
+        iter = store.get_iter(path)
+        panel = int(store.get_value(iter, 2))
+
+        if self.current_panel is not None:
+            self.panel_container.remove(self.current_panel)
+            self.current_panel = None
+
+        if panel == self.APPLET_PANEL:
+            self.showAppletPanel()
+        elif panel == self.LAUNCHER_PANEL:
+            self.showLaunchPanel()
+        elif panel == self.THEME_PANEL:
+            self.showThemePanel()
+        elif panel == self.ADVANCED_PANEL:
+            self.showAdvPanel()
+        else:
+            self.showPrefPanel()
+
+    def showPrefPanel(self):
+        self.current_panel = self.wTree.get_object("prefPanel")
+        self.panel_container.add(self.current_panel)
+	
+    def showAppletPanel(self):
+        self.current_panel = self.wTree.get_object("appletPanel")
+        self.panel_container.add(self.current_panel)
+
+    def showLaunchPanel(self):
+        self.current_panel = self.wTree.get_object("launchPanel")
+        self.panel_container.add(self.current_panel)
+
+    def showThemePanel(self):
+        self.current_panel = self.wTree.get_object("themePanel")
+        self.panel_container.add(self.current_panel)
+	
+    def showAdvPanel(self):
+        self.current_panel = self.wTree.get_object("advPanel")
+        self.panel_container.add(self.current_panel)
+		
+        
 if __name__ == "__main__":
     vfs.init()
     try:
