@@ -12,8 +12,7 @@ include /usr/share/quilt/quilt.make
 
 LDFLAGS+=-Wl,-z,defs -Wl,--as-needed
 
-configure_flags += \
-			--prefix=/usr \
+configure_flags += 	--prefix=/usr \
 			--disable-pymod-checks \
 			--enable-gtk-doc \
 			--with-gconf-schema-file-dir=/etc/gconf/schemas \
@@ -22,7 +21,7 @@ configure_flags += \
 build: build-stamp
 build-stamp: $(QUILT_STAMPFN)
 	dh_testdir
-	./autogen.sh
+	./autogen.sh $(configure_flags)
 	dh_auto_configure -- $(configure_flags)
 	dh_auto_build
 	touch build-stamp
@@ -39,7 +38,7 @@ clean: unpatch
 	dh clean
 
 binary-arch: install
-	dh_strip --dbg-package=libawn0-dbg-trunk
+	dh_strip --dbg-package=libawn1-dbg-trunk
 	dh binary-arch --after test
 
 binary-indep: install

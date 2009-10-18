@@ -131,7 +131,7 @@ libawn_la_SOURCES = \
 	$(NULL)
 libawn_la_CFLAGS = $(WARNING_FLAGS)
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
-libawn_la_LDFLAGS = -version-info 0:1:0
+libawn_la_LDFLAGS = -version-info 1:1:0
 
 awn-enum-types.h: stamp-awn-enum-types.h
 	@true

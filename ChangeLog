@@ -1,3 +1,14 @@
+2009-10-18  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/changelog:
+	* debian/control:
+	* debian/libawn1-trunk.install:
+	* debian/rules:
+	* libawn/Makefile.am:
+	SONAME bump to libawn1 and update debian/ to this.
+	Add build-depends on quilt
+	Pass correct flag to autogen.sh to avoid stupid FTBFS
+
 2009-10-18  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-background-3d.c:
