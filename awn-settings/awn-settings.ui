@@ -657,7 +657,7 @@
             <property name="visible">True</property>
             <property name="spacing">6</property>
             <child>
-              <object class="GtkVBox" id="vbox1">
+              <object class="GtkVBox" id="vbox3">
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
@@ -804,7 +804,7 @@
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkFrame" id="frame1">
+              <object class="GtkFrame" id="frame3">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
                 <property name="shadow_type">none</property>
@@ -2073,13 +2073,13 @@
   </object>
   <object class="GtkSizeGroup" id="sizegroup_panel_labels">
     <widgets>
-      <widget name="iconeffects"/>
-      <widget name="hbox2"/>
-      <widget name="orientationcombo"/>
-      <widget name="stylecombo"/>
-      <widget name="iconeffects"/>
-      <widget name="behaviorcombo"/>
       <widget name="monitor_align_hscale"/>
+      <widget name="behaviorcombo"/>
+      <widget name="iconeffects"/>
+      <widget name="stylecombo"/>
+      <widget name="orientationcombo"/>
+      <widget name="hbox2"/>
+      <widget name="iconeffects"/>
     </widgets>
   </object>
 </interface>
