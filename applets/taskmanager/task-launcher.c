@@ -410,13 +410,22 @@ _get_icon (TaskItem *item)
   GError *error = NULL;
   GdkPixbuf *pixbuf = NULL;
 
-  if (g_path_is_absolute (priv->icon_name))
+  if (priv->icon_name != NULL)
   {
-    pixbuf = gdk_pixbuf_new_from_file_at_scale (priv->icon_name,
-                                                s->panel_size, s->panel_size,
-                                                TRUE, &error);
+    if (g_path_is_absolute (priv->icon_name))
+    {
+      pixbuf = gdk_pixbuf_new_from_file_at_scale (priv->icon_name,
+                                                  s->panel_size, s->panel_size,
+                                                  TRUE, &error);
+    }
   }
   else
+  {
+    // use fallback
+    priv->icon_name = g_strdup ("gtk-missing-image");
+  }
+
+  if (pixbuf == NULL)
   {
     GtkIconTheme *icon_theme = gtk_icon_theme_get_default ();
 
@@ -428,8 +437,8 @@ _get_icon (TaskItem *item)
     g_warning ("The launcher '%s' could not load the icon '%s': %s",
                priv->path, priv->icon_name, error->message);
     g_error_free (error);
-    return NULL;
   }
+
   return pixbuf;
 }
 
