@@ -2838,7 +2838,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
     return;
   }
   sdata_data = (gchar*)gtk_selection_data_get_data (sdata);
-  
+
   /* If we are dealing with a desktop file, then we want to do something else
    * FIXME: This is a crude way of checking
    */
@@ -2849,6 +2849,10 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
     for (i=tokens; *i;i++)
     {
       gchar * filename = g_filename_from_uri ((gchar*) *i,NULL,NULL);
+      if (!filename && ((gchar *)*i))
+      {
+        filename = g_strdup ((gchar*)*i);
+      }
       if (filename)
       {
         g_strstrip(filename);
