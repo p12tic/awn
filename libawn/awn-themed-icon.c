@@ -2005,6 +2005,9 @@ awn_themed_icon_create_custom_icon_item (AwnThemedIcon * icon,
                                   icon_name, NULL);
   
   item = gtk_image_menu_item_new_with_label (_("Customize Icon"));
+#if GTK_CHECK_VERSION (2,16,0)	
+	g_object_set (item,"always-show-image",TRUE,NULL);  
+#endif 
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
                                  gtk_image_new_from_stock(GTK_STOCK_OPEN,
                                                           GTK_ICON_SIZE_MENU));
@@ -2076,6 +2079,9 @@ awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon,
                                   icon_name, NULL);
   
   priv->remove_custom_icon_item = gtk_image_menu_item_new_with_label (_("Remove Customize Icon"));
+#if GTK_CHECK_VERSION (2,16,0)	
+  g_object_set( priv->remove_custom_icon_item,"always-show-image",TRUE,NULL);      
+ #endif
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (priv->remove_custom_icon_item),
                                  gtk_image_new_from_stock(GTK_STOCK_OPEN,
                                                          GTK_ICON_SIZE_MENU));

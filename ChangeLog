@@ -1,6 +1,15 @@
 2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* libawn/awn-applet.c:
+  	* libawn/awn-themed-icon.c:
+	A more complete/correct fix for images not being displayed
+	in menu items.
+
+2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	* applets/taskmanager/task-launcher.c:
 	Show the menu icons.
 

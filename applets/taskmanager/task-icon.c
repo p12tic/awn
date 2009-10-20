@@ -2341,7 +2341,9 @@ task_icon_button_press_event (GtkWidget      *widget,
         if (launcher)
         {
           item = gtk_image_menu_item_new_with_label (_("Launch"));
-          g_object_set (item,"always-show-image",TRUE,NULL);          
+#if GTK_CHECK_VERSION (2,16,0)	
+	        g_object_set (item,"always-show-image",TRUE,NULL);  
+#endif    
           if (launcher_pbuf)
           {
             gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
@@ -2440,7 +2442,9 @@ task_icon_button_press_event (GtkWidget      *widget,
       if (launcher)
       {
         item = gtk_image_menu_item_new_with_label (_("Launch"));        
-        g_object_set (item,"always-show-image",TRUE,NULL);        
+#if GTK_CHECK_VERSION (2,16,0)	
+      	g_object_set (item,"always-show-image",TRUE,NULL);  
+#endif   
         gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
                                       gtk_image_new_from_stock (GTK_STOCK_EXECUTE,GTK_ICON_SIZE_MENU));
         if (launcher_pbuf)

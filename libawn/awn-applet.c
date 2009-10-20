@@ -1000,6 +1000,9 @@ awn_applet_create_pref_item (void)
 	GtkWidget *item;
   
   item = gtk_image_menu_item_new_with_label (_("Dock Preferences"));
+#if GTK_CHECK_VERSION (2,16,0)	
+	g_object_set (item,"always-show-image",TRUE,NULL);  
+#endif
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
                                  gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
                                                           GTK_ICON_SIZE_MENU));
@@ -1151,7 +1154,9 @@ awn_applet_create_about_item (AwnApplet         *applet,
   }
   item_text = g_strdup_printf ("About %s", applet_name);
   item = gtk_image_menu_item_new_with_label (item_text); /* FIXME Add pretty icon */
-
+#if GTK_CHECK_VERSION (2,16,0)	
+	g_object_set (item,"always-show-image",TRUE,NULL);  
+#endif
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
     gtk_image_new_from_stock (GTK_STOCK_ABOUT, GTK_ICON_SIZE_MENU));
 
