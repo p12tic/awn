@@ -745,7 +745,7 @@ _left_click (TaskItem *item, GdkEventButton *event)
                                                "new",
                                                "ID",id,
                                                "NAME",priv->name,
-                                               "SCREEN","0",
+                                               "SCREEN",screen_name,
                                                NULL);
     //                                               "PID",pid,
     g_setenv ("DESKTOP_STARTUP_ID",id,TRUE);

@@ -1,5 +1,10 @@
 2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-launcher.c:
+	Use the proper value for the screen name.
+
+2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-launcher.c:
   	* libawn/awn-utils.c:
