@@ -618,7 +618,7 @@ class awnBzr(gobject.GObject):
                     except:
                         icon = None
         return icon
-
+        
     def make_applet_model(self, uris, treeview):
         self.applet_model = model = AwnAppletListStore(gdk.Pixbuf,
                                                        str, str, str,
@@ -1250,7 +1250,11 @@ class awnApplet(awnBzr):
         self.active_model.append([icon, path, uid, text])
 
         self.apply_applet_list_changes()
+        hs = self.scrollwindow1.get_hscrollbar()
+        ha = self.scrollwindow1.get_hadjustment()
+        hs.set_value(ha.upper - ha.page_size)
 
+        
     def row_active (self, q, w, e):
         self.activate_applet (None)
 
@@ -1258,7 +1262,7 @@ class awnApplet(awnBzr):
         if model.get_value (iterator, 2) == sel_path:
             self.active_found = True
             return True
-
+    
     def delete_applet(self,widget):
         self.active_found = False
         select = self.treeview_available.get_selection()
@@ -1301,8 +1305,14 @@ class awnApplet(awnBzr):
                 self.popup_msg("Unable to Delete Applet")
         else:
             dialog.destroy()
-
-    def deactivate_applet (self, button):
+    
+    def deactivate_applet(self, widget, drag_context, x, y, selection, targettype, timestamp):
+        data = selection.tree_get_row_drag_data()
+        itr = data[0].get_iter(data[1])
+        data[0].remove(itr)
+        self.apply_applet_list_changes()
+            
+    def deactivate_applet_old(self, button):
         cursor = self.icon_view.get_cursor()
         if not cursor:
             return

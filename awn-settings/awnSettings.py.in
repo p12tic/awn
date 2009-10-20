@@ -534,9 +534,14 @@ class awnAppletMini(awnApplet):
         self.btn_install = self.wTree.get_object("appletInstall")
         self.btn_install.connect("clicked", self.install_applet)
 
+        self.btn_deactivate = self.wTree.get_object("appletDeactivate")
+        self.btn_deactivate.connect("drag-data-received", self.deactivate_applet)
+        self.btn_deactivate.drag_dest_set(gtk.DEST_DEFAULT_ALL, [('GTK_TREE_MODEL_ROW', gtk.TARGET_SAME_APP, 0)], gtk.gdk.ACTION_COPY)
+
+		
         treeview_available_selection = self.treeview_available.get_selection()
         treeview_available_selection.connect('changed', self.callback_applet_selection)
-
+		
     def create_category_list(self, categories):
         category_model = gtk.ListStore(str)
         
