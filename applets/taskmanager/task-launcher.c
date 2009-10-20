@@ -32,7 +32,8 @@
 #undef G_DISABLE_SINGLE_INCLUDES
 #include <glibtop/procargs.h>
 #include <glibtop/procuid.h>
-
+#include <sys/types.h>
+#include <unistd.h>
 #include <libawn/libawn.h>
 
 #include "task-launcher.h"
@@ -697,15 +698,66 @@ _left_click (TaskItem *item, GdkEventButton *event)
   TaskLauncher *launcher;
   GError *error = NULL;
   GTimeVal timeval;
+  gboolean startup_set = FALSE;
   
   g_return_if_fail (TASK_IS_LAUNCHER (item));
   
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
 
-  priv->pid = 
-    desktop_agnostic_fdo_desktop_entry_launch (priv->entry,
-                                               0, NULL, &error);
+  if (desktop_agnostic_fdo_desktop_entry_key_exists (priv->entry,G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY))
+  {
+    GStrv tokens1;
+    GStrv tokens2;
+    gchar * screen_name = NULL;
+    gchar * id = g_strdup_printf("awn_task_manager_%u_TIME_%u",getpid(),event->time);
+    gchar * display_name = gdk_screen_make_display_name (gdk_screen_get_default());
+    tokens1 = g_strsplit (display_name,":",2);
+    if (tokens1 && tokens1[1])
+    {
+      tokens2 = g_strsplit(tokens1[1],".",2);
+      g_strfreev (tokens1);
+      if (tokens2 && tokens2[1])
+      {
+        screen_name = g_strdup (tokens2[1]);
+        g_strfreev (tokens2);
+      }
+      else
+      {
+        if (tokens2)
+        {
+          g_strfreev (tokens2);
+          screen_name = g_strdup ("0");          
+        }
+      }
+    }
+    else
+    {
+      if (tokens1)
+      {
+        g_strfreev (tokens1);
+      }
+      screen_name = g_strdup ("0");
+    }
+    
+    gdk_x11_display_broadcast_startup_message (gdk_display_get_default(),
+                                               "new",
+                                               "ID",id,
+                                               "NAME",priv->name,
+                                               "SCREEN","0",
+                                               NULL);
+    //                                               "PID",pid,
+    g_setenv ("DESKTOP_STARTUP_ID",id,TRUE);
+    startup_set = TRUE;
+    g_free (id);
+    g_free (screen_name);
+  }
+  priv->pid = desktop_agnostic_fdo_desktop_entry_launch (priv->entry,
+                                               0, NULL, &error);  
+  if (startup_set)
+  {
+    g_unsetenv ("DESKTOP_STARTUP_ID");
+  }
   g_get_current_time (&timeval);
   priv->timestamp = timeval.tv_sec;
 

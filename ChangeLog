@@ -1,3 +1,12 @@
+2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix removal of launchers.
+	Launch effect on drag over.
+
+  	* applets/taskmanager/task-launcher.c:
+	Startup notifications.
+
 2009-10-19  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awn-settings.ui:

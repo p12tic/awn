@@ -1528,11 +1528,11 @@ task_icon_increment_ephemeral_count (TaskIcon *icon)
   priv->ephemeral_count++;
 /* TODO
    Leaving this here for a little bit.  Going to review some code am assure
-   myself this is no longer required.
+   myself this is no longer required.*/
  if (priv->ephemeral_count >= g_slist_length (priv->items) )
  {
-   gtk_widget_destroy (icon);
- }*/
+   gtk_widget_destroy (GTK_WIDGET(icon));
+ }
   
 }
 /**
@@ -2693,7 +2693,8 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
 
   target = gtk_drag_dest_find_target (widget, context, NULL);
   target_name = gdk_atom_name (target);
-
+  awn_effects_start (awn_overlayable_get_effects(AWN_OVERLAYABLE(widget)), AWN_EFFECT_LAUNCHING);
+  
   if (g_strcmp0("awn/task-icon", target_name) == 0)
   {
     if(!priv->draggable) return FALSE;
@@ -2758,7 +2759,7 @@ task_icon_dest_drag_leave (GtkWidget      *widget,
     g_source_remove (priv->drag_tag);
     priv->drag_tag = 0;
   }
-
+  awn_effects_stop (awn_overlayable_get_effects(AWN_OVERLAYABLE(widget)), AWN_EFFECT_LAUNCHING);
   g_signal_emit (TASK_ICON (widget), _icon_signals[DEST_DRAG_LEAVE], 0);
 }
 
