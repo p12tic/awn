@@ -151,3 +151,25 @@ awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
   }
 }
 
+void awn_utils_show_menu_images (GtkMenu * menu)
+{
+#if GTK_CHECK_VERSION (2,16,0)	
+  GList * i;
+  GList * children = gtk_container_get_children (GTK_CONTAINER(menu));
+  GtkWidget * submenu;
+  
+  for (i = children; i; i = g_list_next (i) )
+  {
+    if (GTK_IS_IMAGE_MENU_ITEM (i->data) )
+    {
+    	g_object_set (i->data,"always-show-image",TRUE,NULL);  
+    }
+    submenu = gtk_menu_item_get_submenu (i->data);
+    if (submenu)
+    {
+      awn_utils_show_menu_images (GTK_MENU(submenu));
+    }
+  }
+  g_list_free (children);
+#endif   
+}

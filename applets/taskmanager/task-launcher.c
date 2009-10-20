@@ -35,6 +35,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <libawn/libawn.h>
+#include <libawn/awn-utils.h>
 
 #include "task-launcher.h"
 #include "task-window.h"
@@ -816,9 +817,6 @@ _right_click (TaskItem *item, GdkEventButton *event)
     gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), menu_item);
     
     menu_item = gtk_image_menu_item_new_with_label (_("Launch"));
-#if GTK_CHECK_VERSION (2,16,0)	
-	g_object_set (item,"always-show-image",TRUE,NULL);  
-#endif
     if (launcher_pbuf)
     {
       gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
@@ -830,6 +828,12 @@ _right_click (TaskItem *item, GdkEventButton *event)
                       G_CALLBACK(_middle_click),
                       item);        
   }
+
+#if GTK_CHECK_VERSION (2,16,0)	
+  /* null op if GTK+ < 2.16.0*/
+  awn_utils_show_menu_images (GTK_MENU(priv->menu));
+#endif
+  
   gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, 
                   NULL, NULL, event->button, event->time);
   return priv->menu;

@@ -37,6 +37,7 @@
 
 #include <libdesktop-agnostic/vfs.h>
 #include "libawn/gseal-transition.h"
+#include <libawn/awn-utils.h>
 
 #include "taskmanager-marshal.h"
 #include "task-icon.h"
@@ -2341,9 +2342,6 @@ task_icon_button_press_event (GtkWidget      *widget,
         if (launcher)
         {
           item = gtk_image_menu_item_new_with_label (_("Launch"));
-#if GTK_CHECK_VERSION (2,16,0)	
-	        g_object_set (item,"always-show-image",TRUE,NULL);  
-#endif    
           if (launcher_pbuf)
           {
             gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
@@ -2442,9 +2440,6 @@ task_icon_button_press_event (GtkWidget      *widget,
       if (launcher)
       {
         item = gtk_image_menu_item_new_with_label (_("Launch"));        
-#if GTK_CHECK_VERSION (2,16,0)	
-      	g_object_set (item,"always-show-image",TRUE,NULL);  
-#endif   
         gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
                                       gtk_image_new_from_stock (GTK_STOCK_EXECUTE,GTK_ICON_SIZE_MENU));
         if (launcher_pbuf)
@@ -2469,6 +2464,11 @@ task_icon_button_press_event (GtkWidget      *widget,
            AWN_APPLET_LICENSE_GPLV2,
            NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
     gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
+
+#if GTK_CHECK_VERSION (2,16,0)	
+    /* null op if GTK+ < 2.16.0*/
+    awn_utils_show_menu_images (GTK_MENU(priv->menu));
+#endif
 
     if (priv->menu)
     {

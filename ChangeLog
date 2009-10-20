@@ -1,3 +1,11 @@
+2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* libawn/awn-utils.c:
+  	* libawn/awn-utils.h:
+	Added  awn_utils_show_menu_images().
+
 2009-10-20  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-launcher.c:

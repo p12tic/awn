@@ -78,4 +78,14 @@ gfloat awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
  */
 GValueArray* awn_utils_gslist_to_gvaluearray (GSList *list);
 
+/**
+ * awn_utils_show_menu_images:
+ * @menu: A GtkMenu.
+ *
+ * Set all instances #GtkImageMenuItem in the #GtkMenu are set to visible. A 
+ * null op for GTK+ < 2.16.0
+ *
+ */
+void awn_utils_show_menu_images (GtkMenu * menu);
+
 #endif
