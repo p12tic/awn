@@ -1,3 +1,10 @@
+2009-10-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Remove the plus icons.
+	* themes/default.awn-theme:
+	Make sure gtk_theme_mode is off.
+
 2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

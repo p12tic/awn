@@ -17,6 +17,8 @@ style=1
 icon_effect=69905
 
 [config/theme]
+#Don't use gtk theme mode.
+gtk_theme_mode=false
 #First gradient step color.
 gstep1=#454545454545c8c8
 #Second gradient step color.

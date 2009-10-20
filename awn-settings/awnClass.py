@@ -621,8 +621,7 @@ class awnBzr(gobject.GObject):
         
     def make_applet_model(self, uris, treeview):
         self.applet_model = model = AwnAppletListStore(gdk.Pixbuf,
-                                                       str, str, str,
-                                                       gdk.Pixbuf)
+                                                       str, str, str)
         treeview.set_model (model)
 
         def deactivate_applet(applet_model, dest, model, src):
@@ -653,12 +652,13 @@ class awnBzr(gobject.GObject):
         col.set_visible (False)
         treeview.append_column (col)
 
-        ren = gtk.CellRendererPixbuf()
-        ren.props.icon_name = "gtk-add"
-        ren.props.stock_size = gtk.ICON_SIZE_DND
-        col = gtk.TreeViewColumn ("AddIcon", ren)
-        col.set_expand (False)
-        treeview.append_column (col)
+        # Plus icon
+        #ren = gtk.CellRendererPixbuf()
+        #ren.props.icon_name = "gtk-add"
+        #ren.props.stock_size = gtk.ICON_SIZE_DND
+        #col = gtk.TreeViewColumn ("AddIcon", ren)
+        #col.set_expand (False)
+        #treeview.append_column (col)
 
         for uri in uris:
             if os.path.isfile(uri):
