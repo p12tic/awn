@@ -21,7 +21,6 @@ configure_flags += 	--prefix=/usr \
 build: build-stamp
 build-stamp: $(QUILT_STAMPFN)
 	dh_testdir
-	./autogen.sh $(configure_flags)
 	dh_auto_configure -- $(configure_flags)
 	dh_auto_build
 	touch build-stamp
