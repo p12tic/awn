@@ -1,6 +1,12 @@
 2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-launcher.c:
+	Show the menu icons.
+
+2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Fix removal of launchers.
 	Launch effect on drag over.
 

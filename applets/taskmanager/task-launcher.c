@@ -816,6 +816,7 @@ _right_click (TaskItem *item, GdkEventButton *event)
     gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), menu_item);
     
     menu_item = gtk_image_menu_item_new_with_label (_("Launch"));
+    g_object_set (item,"always-show-image",TRUE,NULL);    
     if (launcher_pbuf)
     {
       gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
