@@ -1,5 +1,10 @@
 2009-10-21  Julien Lavergne <gilir@ubuntu.com>
 
+	* debian/control:
+	Add lsb-release and bzr to build-depends.
+
+2009-10-21  Julien Lavergne <gilir@ubuntu.com>
+
 	* debian/changelog:
 	Update version.
 	* debian/rules:
