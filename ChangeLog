@@ -1,5 +1,11 @@
 2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-applet.c:
+	Change the menu image for "Dock Preferences" from
+	stock preferences to "avant-window-navigotor" icon.
+
+2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-launcher.c:
 	Use the proper value for the screen name.
 

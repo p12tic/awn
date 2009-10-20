@@ -1004,7 +1004,7 @@ awn_applet_create_pref_item (void)
 	g_object_set (item,"always-show-image",TRUE,NULL);  
 #endif
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
-                                 gtk_image_new_from_stock(GTK_STOCK_PREFERENCES,
+                                 gtk_image_new_from_icon_name ("avant-window-navigator",
                                                           GTK_ICON_SIZE_MENU));
   gtk_widget_show_all (item);
   g_signal_connect (item, "activate", 
