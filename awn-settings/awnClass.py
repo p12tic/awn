@@ -504,6 +504,8 @@ class awnBzr(gobject.GObject):
                     try:
                         if value.isdigit(): value = int(value)
                         elif len(value.split('.')) == 2: value = float(value)
+                        elif value in ['true', 'false']:
+                            value = True if value is 'true' else False
                         elif value.startswith('#'): 
                             client.set_string(group, key, value)
                             continue

@@ -1,3 +1,11 @@
+2009-10-21  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Fix for themes with boolean config values.
+	* data/avant-window-navigator.schema-ini.in.in:
+	* themes/default.awn-theme:
+	Change the default hilight color.
+
 2009-10-21  Julien Lavergne <gilir@ubuntu.com>
 
 	* debian/rules:

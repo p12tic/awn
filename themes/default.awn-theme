@@ -24,9 +24,9 @@ gstep1=#454545454545c8c8
 #Second gradient step color.
 gstep2=#010101010101bebe
 #First highlight gradient step color.
-ghistep1=#ffffffffffff0b0b
+ghistep1=#0101010101018ebe
 #Second highlight gradient step color.
-ghistep2=#ffffffffffff0a0a
+ghistep2=#0101010101010a0a
 #Main border color.
 border=#000000000000cccc
 #Internal border color.

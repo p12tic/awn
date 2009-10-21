@@ -200,13 +200,13 @@ per_instance = false
 
 [theme/ghistep1]
 type = color
-default = #FFFFFF0B
+default = #0101018E
 _description=First highlight gradient step color.
 per_instance = false
 
 [theme/ghistep2]
 type = color
-default = #FFFFFF0A
+default = #0101010A
 _description=Second highlight gradient step color.
 per_instance = false
 
