@@ -447,28 +447,33 @@ class awnLauncherMini(awnLauncher):
         if not os.path.exists(defs.HOME_LAUNCHERS_DIR):
             os.makedirs(defs.HOME_LAUNCHERS_DIR)
 
-        self.load_finished = False
-
-        self.idle_id = 0
-
         self.client_taskman = awn.config_get_default_for_applet_by_info("taskmanager",
                                                                 "")
 
         self.scrollwindow = self.wTree.get_object("launchers_scroll_list")
 
         self.treeview_launchers = gtk.TreeView()
-        self.treeview_launchers.set_reorderable(True)
+        #self.treeview_launchers.set_reorderable(True)
         self.treeview_launchers.set_headers_visible(False)
 
         self.scrollwindow.add(self.treeview_launchers)
 
-        self.launchers_uris = self.client_taskman.get_list(GROUP_DEFAULT,
-                                                           defs.LAUNCHERS_LIST)
+        launcher_uris = self.client_taskman.get_list(GROUP_DEFAULT,
+                                                     defs.LAUNCHERS_LIST)
 
-        self.last_uris = self.launchers_uris[:] # make a copy
-        launchers_model = self.make_model(self.launchers_uris,
-                                          self.treeview_launchers)
-        launchers_model.connect("row-inserted", self.launchers_reordered)
+        self.last_uris = launcher_uris[:] # make a copy
+        launchers_model = self.make_launchers_model(launcher_uris,
+                                                    self.treeview_launchers)
+        launchers_model.connect("rows-reordered", self.launchers_reordered)
+        # we support both drag source (reorder) and dest (desktop files)
+        self.treeview_launchers.enable_model_drag_source(
+            gtk.gdk.BUTTON1_MASK,
+            [("GTK_TREE_MODEL_ROW", 0, 0)],
+            gtk.gdk.ACTION_COPY)
+        self.treeview_launchers.enable_model_drag_dest(
+            [("GTK_TREE_MODEL_ROW", gtk.TARGET_SAME_WIDGET, 0),
+            ("text/uri-list", gtk.TARGET_OTHER_APP, 1)],
+            gtk.gdk.ACTION_COPY)
 
         self.client_taskman.notify_add(GROUP_DEFAULT,
                                        defs.LAUNCHERS_LIST,
@@ -490,7 +495,6 @@ class awnAppletMini(awnApplet):
         self.client = awn.config_get_default(1)
 
         self.treeview_current = None
-        self.load_finished = False
 
         self.wTree = glade
 
@@ -503,27 +507,33 @@ class awnAppletMini(awnApplet):
         self.treeview_available.connect("row-activated", self.activate_applet)
 
         self.make_active_applets_model()
-        self.icon_view.enable_model_drag_source(gtk.gdk.BUTTON1_MASK,
-            [("GTK_TREE_MODEL_ROW", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE)
-        self.icon_view.enable_model_drag_dest([("GTK_TREE_MODEL_ROW", 0, 0)], gtk.gdk.ACTION_COPY)
+        # allow reorder by d&d and drop from "available applets" list
+        self.icon_view.enable_model_drag_source(
+            gtk.gdk.BUTTON1_MASK,
+            [("GTK_TREE_MODEL_ROW", 0, 0)],
+            gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE)
+        self.icon_view.enable_model_drag_dest(
+            [("GTK_TREE_MODEL_ROW", 0, 0)],
+            gtk.gdk.ACTION_COPY)
 
         if self.type_catalog_from_sources_list(type_catalog='Applet') == []:
             self.write_default_sources_list(sources_list_path = os.path.join(defs.HOME_CONFIG_DIR,"sources.list"))
 
         self.load_applets()
         #self.treeview_available.set_tooltip_column(1)
-        self.treeview_available.enable_model_drag_source(gtk.gdk.BUTTON1_MASK,
-            [("GTK_TREE_MODEL_ROW", 0, 0)], gtk.gdk.ACTION_COPY)
-        self.treeview_available.enable_model_drag_dest([("GTK_TREE_MODEL_ROW", gtk.TARGET_OTHER_WIDGET, 0)], gtk.gdk.ACTION_MOVE)
+        # allow drag from this widget to "active applets" and drop from there
+        self.treeview_available.enable_model_drag_source(
+            gtk.gdk.BUTTON1_MASK,
+            [("GTK_TREE_MODEL_ROW", 0, 0)],
+            gtk.gdk.ACTION_COPY)
+        self.treeview_available.enable_model_drag_dest(
+            [("GTK_TREE_MODEL_ROW", gtk.TARGET_OTHER_WIDGET, 0)],
+            gtk.gdk.ACTION_MOVE)
 
         #self.treeview_available.enable_model_drag_dest([('text/plain', 0, 0)],
         #          gdk.ACTION_DEFAULT | gdk.ACTION_MOVE)
         #self.treeview_available.connect("drag_data_received", self.drag_data_received_data)
 
-        #self.choose_categorie = self.wTree.get_object("applets_catagories")
-        #self.create_dropdown(self.choose_categorie, self.list_applets_categories())
-        #self.choose_categorie.connect("changed", self.callback_widget_filter_applets)
-        
         self.choose_category_view = self.wTree.get_object("appletCategoryList")
         selection = self.choose_category_view.get_selection()
         selection.connect('changed', self.callback_widget_filter_applets_view)

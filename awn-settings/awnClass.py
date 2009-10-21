@@ -87,20 +87,23 @@ def make_color_string(color, alpha):
 
 EMPTY = "none";
 
-class AwnAppletListStore(gtk.ListStore, gtk.TreeDragSource, gtk.TreeDragDest):
+class AwnListStore(gtk.ListStore, gtk.TreeDragSource, gtk.TreeDragDest):
 
     __gsignals__ = {
-        'foreign-drop':
-            (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
-                [int, gobject.TYPE_OBJECT, int])
         # we can't do TreePath easily, so lets use just int
         # (change to string representation of TreePath if necessary)
+        'foreign-drop':
+            (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+                [int, gtk.SelectionData.__gtype__])
     }
 
     def do_drag_data_received(self, dest, selection_data):
-        model, row = selection_data.tree_get_row_drag_data()
+        model, row = None, None
+        if selection_data.target == 'GTK_TREE_MODEL_ROW':
+            model, row = selection_data.tree_get_row_drag_data()
+
         if model == self:
-            # drop from the same widget
+            # drop from the same widget, handle reorder ourselves
             src = row[0]
             dst = dest[0]
             if (src == dst):
@@ -128,7 +131,7 @@ class AwnAppletListStore(gtk.ListStore, gtk.TreeDragSource, gtk.TreeDragDest):
             # emit change signals
             self.reorder(new_order)
         else:
-            self.emit("foreign-drop", dest[0], model, row[0])
+            self.emit("foreign-drop", dest[0], selection_data)
 
         return False
 
@@ -142,7 +145,7 @@ class AwnAppletListStore(gtk.ListStore, gtk.TreeDragSource, gtk.TreeDragDest):
         # if we return False the default handler will do exactly what we want
         return False
 
-gobject.type_register (AwnAppletListStore)
+gobject.type_register (AwnListStore)
 
 
 class awnBzr(gobject.GObject):
@@ -620,14 +623,25 @@ class awnBzr(gobject.GObject):
                     except:
                         icon = None
         return icon
-        
+
+    def add_uris_to_model(self, model, uris):
+        for uri in uris:
+            if os.path.isfile(uri):
+                icon, text, name = self.make_row (uri)
+                if len(text) > 2:
+                    row = model.append ()
+                    model.set_value (row, 0, icon)
+                    model.set_value (row, 1, text)
+                    model.set_value (row, 2, uri)
+                    model.set_value (row, 3, name)
+
     def make_applet_model(self, uris, treeview):
-        self.applet_model = model = AwnAppletListStore(gdk.Pixbuf,
-                                                       str, str, str)
+        self.applet_model = model = AwnListStore(gdk.Pixbuf, str, str, str)
         treeview.set_model (model)
 
-        def deactivate_applet(applet_model, dest, model, src):
-            itr = model.get_iter((src,))
+        def deactivate_applet(applet_model, dest, selection_data):
+            model, src = selection_data.tree_get_row_drag_data()
+            itr = model.get_iter(src)
             model.remove(itr)
             self.apply_applet_list_changes()
 
@@ -662,17 +676,47 @@ class awnBzr(gobject.GObject):
         #col.set_expand (False)
         #treeview.append_column (col)
 
-        for uri in uris:
-            if os.path.isfile(uri):
-                icon, text, name = self.make_row (uri)
-                if len(text) > 2:
-                    row = model.append ()
-                    model.set_value (row, 0, icon)
-                    model.set_value (row, 1, text)
-                    model.set_value (row, 2, uri)
-                    model.set_value (row, 3, name)
+        self.add_uris_to_model(model, uris)
 
-        self.load_finished = True
+        treeview.show()
+
+        return model
+
+    def make_launchers_model(self, uris, treeview):
+        model = AwnListStore(gdk.Pixbuf, str, str, str)
+        treeview.set_model (model)
+
+        def add_launcher(model, dest, selection):
+            data = urllib.unquote(selection.data)
+            data = data.replace("file://", "").replace("\r\n", "")
+            if data.endswith('.desktop'):
+                paths = self.client_taskman.get_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST)
+                paths.append(data)
+                self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, paths)
+            else:
+                print "This widget accepts only desktop files!"
+
+        model.connect('foreign-drop', add_launcher)
+
+        ren = gtk.CellRendererPixbuf()
+        col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        col = gtk.TreeViewColumn ("Description", ren, markup=1)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        ren.props.visible = False
+        col = gtk.TreeViewColumn ("Desktop", ren)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        ren.props.visible = False
+        col = gtk.TreeViewColumn ("Name", ren)
+        treeview.append_column (col)
+
+        self.add_uris_to_model(model, uris)
 
         treeview.show()
 
@@ -700,17 +744,7 @@ class awnBzr(gobject.GObject):
         col = gtk.TreeViewColumn ("Name", ren)
         treeview.append_column (col)
 
-        for uri in uris:
-            if os.path.isfile(uri):
-                icon, text, name = self.make_row (uri)
-                if len(text) > 2:
-                    row = model.append ()
-                    model.set_value (row, 0, icon)
-                    model.set_value (row, 1, text)
-                    model.set_value (row, 2, uri)
-                    model.set_value (row, 3, name)
-
-        self.load_finished = True
+        self.add_uris_to_model(model, uris)
 
         treeview.show()
 
@@ -718,15 +752,7 @@ class awnBzr(gobject.GObject):
 
     def refresh_tree (self, uris, model):
         model.clear()
-        for uri in uris:
-            if os.path.isfile(uri):
-                icon, text, name = self.make_row (uri)
-                if len(text) > 2:
-                    row = model.append ()
-                    model.set_value (row, 0, icon)
-                    model.set_value (row, 1, text)
-                    model.set_value (row, 2, uri)
-                    model.set_value (row, 3, name)
+        self.add_uris_to_model(model, uris)
 
     def create_dropdown(self, widget, entries, matrix_settings=False):
         '''     Create a dropdown.
@@ -1050,13 +1076,6 @@ _("You should have received a copy of the GNU General Public License along with 
 
 class awnLauncher(awnBzr):
     def launchers_reordered(self, model, path, iterator, data=None):
-        if self.load_finished:
-            if (self.idle_id == 0):
-                self.idle_id = gobject.idle_add(self.check_changes, model)
-
-    def check_changes (self, model):
-        self.idle_id = 0
-
         data = []
         it = model.get_iter_first ()
         while (it):
@@ -1069,8 +1088,6 @@ class awnLauncher(awnBzr):
         if (self.last_uris != data):
             self.last_uris = data[:]
             self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, data)
-
-        return False
 
     def refresh_launchers (self, group, key, value, extra):
         self.last_uris = value
@@ -1352,17 +1369,17 @@ class awnApplet(awnBzr):
         self.client.set_list(defs.PANEL, defs.UA_LIST, ua_list)
 
     def make_active_applets_model (self):
-        self.active_model = AwnAppletListStore(gtk.gdk.Pixbuf,
-                                               str, str, str)
-        self.active_model.connect("row-inserted", self.applet_reorder)
+        self.active_model = AwnListStore(gtk.gdk.Pixbuf, str, str, str)
         self.active_model.connect("rows-reordered", self.applet_reorder)
 
-        def activate_applet(active_model, dst_row, model, src_row):
-            iter = model.get_iter((src_row,))
+        def activate_applet(active_model, dst_row, selection_data):
+            model, src_row = selection_data.tree_get_row_drag_data()
+            iter = model.get_iter(src_row)
             path = model.get_value (iter, 2)
             icon, text, name = self.make_row (path)
             uid = "%d" % int(time.time())
             active_model.insert(dst_row, [icon, path, uid, text])
+            self.apply_applet_list_changes()
 
         self.active_model.connect("foreign-drop", activate_applet)
 
@@ -1442,22 +1459,20 @@ class awnApplet(awnBzr):
         applets = l
         applets = filter(None, applets)
 
-        if self.load_finished:
-            applets_list = []
-            ua_list = []
-            for a in applets:
-                tokens = a.split("::")
-                path = tokens[0]
-                if path.endswith(".desktop"):
-                    applets_list.append(a)
-                else:
-                    position = applets.index(a)
-                    ua = tokens[0] + "::" + str(position)
-                    ua_list.append(ua)
+        applets_list = []
+        ua_list = []
+        for a in applets:
+            tokens = a.split("::")
+            path = tokens[0]
+            if path.endswith(".desktop"):
+                applets_list.append(a)
+            else:
+                position = applets.index(a)
+                ua = tokens[0] + "::" + str(position)
+                ua_list.append(ua)
 
-            self.client.set_list(defs.PANEL, defs.APPLET_LIST, applets_list)
-            self.client.set_list(defs.PANEL, defs.UA_LIST, ua_list)
-
+        self.client.set_list(defs.PANEL, defs.APPLET_LIST, applets_list)
+        self.client.set_list(defs.PANEL, defs.UA_LIST, ua_list)
 
     def callback_widget_filter_applets(self, data=None):
         model = self.choose_categorie.get_model()

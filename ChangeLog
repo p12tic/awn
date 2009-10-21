@@ -1,3 +1,10 @@
+2009-10-22  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Small cleanup, allow dropping of desktop files to launcher list.
+	Fixes bug #189115.
+
 2009-10-21  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-dialog.c:
