@@ -1,5 +1,10 @@
 2009-10-21  Julien Lavergne <gilir@ubuntu.com>
 
+	* debian/rules:
+	Use autogen.sh instead of configure.
+
+2009-10-21  Julien Lavergne <gilir@ubuntu.com>
+
 	* debian/control:
 	Add lsb-release and bzr to build-depends.
 
