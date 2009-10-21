@@ -1,3 +1,8 @@
+2009-10-21  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Make the composited property read-only for outside world.
+
 2009-10-21  Julien Lavergne <gilir@ubuntu.com>
 
 	* debian/rules:

@@ -701,9 +701,6 @@ awn_panel_set_property (GObject      *object,
     case PROP_CLIENT:
       priv->client =  g_value_get_object (value);
       break;
-    case PROP_COMPOSITED:
-      priv->composited = g_value_get_boolean (value);
-      break;
     case PROP_PANEL_MODE:
       awn_panel_set_panel_mode (panel, g_value_get_boolean (value));
       break;
@@ -1586,7 +1583,7 @@ awn_panel_class_init (AwnPanelClass *klass)
                           "Composited",
                           "The window is composited",
                           TRUE,
-                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (obj_class,
     PROP_PANEL_MODE,
     g_param_spec_boolean ("panel-mode",
