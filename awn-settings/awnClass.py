@@ -1305,14 +1305,8 @@ class awnApplet(awnBzr):
                 self.popup_msg("Unable to Delete Applet")
         else:
             dialog.destroy()
-    
-    def deactivate_applet(self, widget, drag_context, x, y, selection, targettype, timestamp):
-        data = selection.tree_get_row_drag_data()
-        itr = data[0].get_iter(data[1])
-        data[0].remove(itr)
-        self.apply_applet_list_changes()
             
-    def deactivate_applet_old(self, button):
+    def deactivate_applet(self, button):
         cursor = self.icon_view.get_cursor()
         if not cursor:
             return
@@ -1419,6 +1413,7 @@ class awnApplet(awnBzr):
         model.set_sort_column_id(1, gtk.SORT_ASCENDING)
         self.treeview_available.set_search_column (3)
 
+        
     def update_applets(self, list_applets):
         if list_applets == "All":
             list_applets = ''
