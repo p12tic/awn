@@ -1302,7 +1302,7 @@ awn_dialog_set_anchor_applet (AwnDialog *dialog, AwnApplet *applet)
     priv->applet_size_id = 0;
   }
 
-  if (applet) g_return_if_fail (AWN_IS_APPLET (applet));
+  g_return_if_fail (applet == NULL || AWN_IS_APPLET (applet));
 
   priv->anchor_applet = applet;
 

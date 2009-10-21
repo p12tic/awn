@@ -1,5 +1,10 @@
 2009-10-21  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-dialog.c:
+	Avoid compiler warning/error.
+
+2009-10-21  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awnClass.py:
 	Fix for themes with boolean config values.
 	* data/avant-window-navigator.schema-ini.in.in:
