@@ -1,5 +1,10 @@
 2009-10-21  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* awn-settings/awnClass.py:
+	Forgot to convert an import statement (see previous commit).
+
+2009-10-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* awn-settings/awn-settings.ui:
 	* awn-settings/awnSettingsHelper.py:
 	Update to latest libdesktop-agnostic API change.

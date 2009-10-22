@@ -43,7 +43,7 @@ from xdg.DesktopEntry import DesktopEntry
 import awnDefs as defs
 from desktopagnostic import vfs
 from desktopagnostic.config import GROUP_DEFAULT
-from desktopagnostic.gtk import LauncherEditorDialog
+from desktopagnostic.ui import LauncherEditorDialog
 import tarfile
 
 from bzrlib import branch
