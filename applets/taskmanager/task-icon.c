@@ -823,8 +823,6 @@ task_icon_init (TaskIcon *icon)
                      GTK_DEST_DEFAULT_DROP,
                      drop_types, n_drop_types,
                      GDK_ACTION_COPY | GDK_ACTION_MOVE);
-  gtk_drag_dest_add_uri_targets (GTK_WIDGET (icon));
-  gtk_drag_dest_add_text_targets (GTK_WIDGET (icon));
   g_signal_connect (G_OBJECT (icon), "drag-failed",
                     G_CALLBACK (task_icon_source_drag_fail), NULL);
 
@@ -2699,8 +2697,8 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
 
   target = gtk_drag_dest_find_target (widget, context, NULL);
   target_name = gdk_atom_name (target);
-  awn_effects_start (awn_overlayable_get_effects(AWN_OVERLAYABLE(widget)), AWN_EFFECT_LAUNCHING);
-  
+  awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (widget)), 
+                  AWN_EFFECT_LAUNCHING, 1, FALSE, FALSE); 
   if (g_strcmp0("awn/task-icon", target_name) == 0)
   {
     if(!priv->draggable) return FALSE;
@@ -2765,7 +2763,6 @@ task_icon_dest_drag_leave (GtkWidget      *widget,
     g_source_remove (priv->drag_tag);
     priv->drag_tag = 0;
   }
-  awn_effects_stop (awn_overlayable_get_effects(AWN_OVERLAYABLE(widget)), AWN_EFFECT_LAUNCHING);
   g_signal_emit (TASK_ICON (widget), _icon_signals[DEST_DRAG_LEAVE], 0);
 }
 
