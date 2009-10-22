@@ -1,3 +1,9 @@
+2009-10-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnSettingsHelper.py:
+	Update to latest libdesktop-agnostic API change.
+
 2009-10-22  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awnClass.py:

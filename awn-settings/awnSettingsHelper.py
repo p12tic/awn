@@ -19,7 +19,7 @@
 import gtk
 from desktopagnostic import config
 from desktopagnostic import Color
-from desktopagnostic.gtk import ColorButton
+from desktopagnostic.ui import ColorButton
 
 
 def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
