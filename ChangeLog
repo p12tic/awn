@@ -1,3 +1,9 @@
+2009-10-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	Rearrange the library linking order so that using libdesktop-agnostic
+	UI widgets via GtkBuilder does not generate runtime errors.
+
 2009-10-21  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* awn-settings/awnClass.py:
