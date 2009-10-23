@@ -2036,6 +2036,7 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
          trigger it's removal.  Otherwise the it will be removed when it is
          no longer managing ay TaskWindows*/        
         task_icon_increment_ephemeral_count (icon_iter->data);
+        icon_iter = priv->icons;
       }
     }
   }
