@@ -143,6 +143,10 @@ class awnPreferencesMini(awnPreferences):
 
         self.theme_desktop = self.client.get_string(defs.THEME, defs.CURRENT_THEME)
 
+        # only available in pygtk 2.16 (karmic+)
+        if hasattr(gtk.Scale, 'add_mark'):
+            self.wTree.get_object("monitor_align_hscale").add_mark(0.5, gtk.POS_TOP, None)
+
         # setup orientation model
         dropdown = self.wTree.get_object("orientationcombo")
         self.create_dropdown(dropdown, [_("Left"), _("Right"),

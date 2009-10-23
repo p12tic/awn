@@ -170,7 +170,7 @@ per_instance = false
 
 [theme/current_theme]
 type = string
-default = @PKGDATADIR@/themes/awn-default.desktop
+default = @PKGDATADIR@/themes/default.awn-theme
 _description=Path to the current desktop file theme.
 per_instance = false
 
