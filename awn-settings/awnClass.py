@@ -1494,3 +1494,55 @@ class awnApplet(awnBzr):
         else:
             self.btn_delete.set_sensitive(False)
 
+
+
+class awnThemeBuilder():
+    
+    def __init__(self, awnPref):
+        self.themeWindow = awnPref.wTree.get_object('themeWindow')
+        self.themePreview = awnPref.wTree.get_object('theme_preview')
+        self.themeExport = awnPref.wTree.get_object('theme_export')
+        self.themeImport = awnPref.wTree.get_object('theme_import')
+        self.themeImport.connect('clicked', self.import_theme_callback)
+        self.themeAddto = awnPref.wTree.get_object('theme_addto')
+        self.themeClose = awnPref.wTree.get_object('theme_close')
+        self.themeClose.connect('clicked', self.close)
+        self.themeWindow.show()
+    
+        themeOrient = awnPref.wTree.get_object("theme_orient")
+        awnPref.create_dropdown(themeOrient, [_("Left"), _("Right"),
+                                        _("Top"), _("Bottom")])
+                                        
+    def close(self, widget):
+        self.themeWindow.hide()
+
+    def import_theme_callback(self, widget, data=None):
+        dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                                  buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
+        dialog.set_default_response(gtk.RESPONSE_OK)
+        
+        filter = gtk.FileFilter()
+        filter.set_name("AWN Theme File")
+        filter.add_pattern("*.awn-theme")
+        dialog.add_filter(filter)
+
+        response = dialog.run()
+        if response == gtk.RESPONSE_OK:
+            file = dialog.get_filename()
+            self.import_theme(file)
+            dialog.destroy()
+        else:
+            dialog.destroy()
+
+    def import_theme(self, path):
+        parser = ConfigParser()
+        parser.read(path)
+
+        for section in parser.sections():
+            print section
+            for key, value in parser.items(section):
+                pass
+                #print key
+                #print value
+                #print '-------'
+                ### Load settings into ui

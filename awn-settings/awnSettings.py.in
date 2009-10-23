@@ -22,6 +22,8 @@
 
 import sys
 import os
+import shutil
+import time
 
 PLAT_PKG = '@PY_PLAT_PKG@'
 SITE_PKG = '@PY_SITE_PKG@'
@@ -46,9 +48,10 @@ except Exception, e:
     sys.exit(1)
 
 #from awnTheme import AwnThemeManager
-from awnClass import awnPreferences, awnManager, awnLauncher, awnApplet
+from awnClass import awnPreferences, awnManager, awnLauncher, awnApplet, awnThemeBuilder
 #from awnApplet import awnApplet
 #from awnLauncher import awnLauncher
+
 
 from awnSettingsHelper import bind_to_gtk_component
 
@@ -401,7 +404,9 @@ class awnPreferencesMini(awnPreferences):
         selection = self.treeview_themes.get_selection()
         (model, iter) = selection.get_selected()
         if iter is not None:
-            print 'deleting '+model.get_value(iter, 2)
+            os.remove(model.get_value(iter, 2))
+            model.remove(iter)
+            self.delete_theme.set_sensitive(False)
             
     def callback_theme_selection(self, selection, data=None):
         (model, iter) = selection.get_selected()
@@ -412,13 +417,13 @@ class awnPreferencesMini(awnPreferences):
             else:
                 self.delete_theme.set_sensitive(False)
         else:
-            pass
-            #~ self.apply_theme.set_sensitive(False)
-            #~ self.delete_theme.set_sensitive(False)       
+            if hasattr(self, 'apply_theme'): 
+                self.apply_theme.set_sensitive(False)     
     
     def build_theme_callback(self, widget, data=None):
-        self.themeWindow = self.wTree.get_object('themeWindow')
-        self.themeWindow.show()
+        awnThemeBuilder(self)
+        #self.themeWindow = self.wTree.get_object('themeWindow')
+        #self.themeWindow.show()
         
     def install_theme_callback(self, widget, data=None):
         dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
@@ -426,10 +431,10 @@ class awnPreferencesMini(awnPreferences):
         dialog.set_default_response(gtk.RESPONSE_OK)
         
         filter = gtk.FileFilter()
-        filter.set_name("AWN Theme Package")
-        filter.add_pattern("*.tar.gz")
-        filter.add_pattern("*.tgz")
-        filter.add_pattern("*.bz2")
+        filter.set_name("AWN Theme File")
+        #filter.add_pattern("*.tar.gz")
+        #filter.add_pattern("*.tgz")
+        #filter.add_pattern("*.bz2")
         filter.add_pattern("*.awn-theme")
         dialog.add_filter(filter)
 
@@ -437,7 +442,11 @@ class awnPreferencesMini(awnPreferences):
         if response == gtk.RESPONSE_OK:
             file = dialog.get_filename()
             dialog.destroy()
-            print "installing "+file
+            filesplit = os.path.splitext(os.path.basename(file))
+            t = time.time()
+            newpath = defs.HOME_THEME_DIR+'/'+filesplit[0]+'-'+str(t)+filesplit[1]
+            shutil.copyfile(file, newpath)
+            self.add_uris_to_model(self.treeview_themes.get_model(),[newpath])
         else:
             dialog.destroy()
             
