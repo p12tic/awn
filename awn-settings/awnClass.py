@@ -1501,70 +1501,8 @@ class awnApplet(awnBzr):
 
 
 
-class awnThemeCustomize():
+class awnThemeCustomize(awnBzr):
     
-    def __init__(self, awnPref):
-        self.client = awnPref.client
-        self.wTree = awnPref.wTree
-        self.themeWindow = self.wTree.get_object('themeWindow')
-        self.themeExport = self.wTree.get_object('theme_export')
-        self.themeClose = self.wTree.get_object('theme_close')
-        self.themeClose.connect('clicked', self.close)
+    def ding(self):
+        pass
         
-        self.ui_setup()
-        
-        self.themeWindow.show()
-                                        
-    def close(self, widget):
-        self.themeWindow.hide()
-
-    def import_theme_callback(self, widget, data=None):
-        dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
-                                  buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
-        dialog.set_default_response(gtk.RESPONSE_OK)
-        
-        filter = gtk.FileFilter()
-        filter.set_name("AWN Theme File")
-        filter.add_pattern("*.awn-theme")
-        dialog.add_filter(filter)
-
-        response = dialog.run()
-        if response == gtk.RESPONSE_OK:
-            file = dialog.get_filename()
-            self.import_theme(file)
-            dialog.destroy()
-        else:
-            dialog.destroy()
-
-    def ui_setup(self):
-        color_map = [
-            (self.client, defs.THEME, defs.GSTEP1, "theme_firstgradient"),
-            (self.client, defs.THEME, defs.GSTEP2, "theme_secondgradient"),
-            (self.client, defs.THEME, defs.GHISTEP1, "theme_firsthighlight"),
-            (self.client, defs.THEME, defs.GHISTEP2, "theme_secondhighlight"),
-            (self.client, defs.THEME, defs.BORDER, "theme_outerborder"),
-            (self.client, defs.THEME, defs.HILIGHT, "theme_innerborder")
-        ]
-        
-        for item in color_map:
-            client, group, key, wtree_name = item
-            widget = self.wTree.get_object(wtree_name)
-            client.bind (group, key, widget, "da-color",
-                         False, config.BIND_METHOD_FALLBACK)
-    
-        '''
-        curviness = gobject.property(type=int, default=48)
-        curves_symmetry = gobject.property(type=int, default=48)
-        
-        config_map_simple = [
-            (self.client, defs.THEME, defs.CURVINESS,
-                "curviness", "theme_curviness"),
-            (self.client, defs.THEME, defs.CURVES_SYMMETRY,
-                "curves_symmetry", "theme_symmetry")
-        ]        
-                         
-        for item in config_map_simple:
-            client, group, key, prop_name, wtree_name = item
-            bind_to_gtk_component (client, group, key, self, prop_name,
-                                   self.wTree.get_object(wtree_name), False)
-        '''

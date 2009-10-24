@@ -1716,6 +1716,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x2022;</property>
+                        <property name="adjustment">adj_radius</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1747,6 +1748,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x2022;</property>
+                        <property name="adjustment">adj_radiu</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1779,6 +1781,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x2022;</property>
+                        <property name="adjustment">adj_symmetry</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1810,6 +1813,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x2022;</property>
+                        <property name="adjustment">adj_curviness</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -2014,5 +2018,22 @@
       <widget name="behaviorcombo"/>
       <widget name="monitor_align_hscale"/>
     </widgets>
+  </object>
+  <object class="GtkAdjustment" id="adj_curviness">
+    <property name="lower">5</property>
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="adj_symmetry">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="adj_radius">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="adj_radiu">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
   </object>
 </interface>
