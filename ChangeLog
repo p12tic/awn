@@ -1,5 +1,11 @@
 2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
 
+	* data/avant-window-navigator.schema-ini.in.in:
+	* libawn/awn-icon.c:
+	Binded effects/active_background_icon key. Fixes bug #246356.
+
+2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-background-flat.c:
 	* src/awn-background-floaty.c:
 	Minor polishing of Flat, Edgy (now react to changes to corner_radius

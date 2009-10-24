@@ -353,7 +353,12 @@ awn_icon_constructed (GObject *object)
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (client, "effects", "arrow_icon",
-                                       fx, "arrow_png", TRUE,
+                                       fx, "arrow-png", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (client, 
+                                       "effects", "active_background_icon",
+                                       fx, "custom-active-png", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 }

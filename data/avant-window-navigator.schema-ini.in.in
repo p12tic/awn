@@ -6,6 +6,12 @@ single_instance = false
 
 # configuration options
 # PLEASE KEEP THIS ALPHABETIZED!
+[effects/active_background_icon]
+type = string
+default = 
+_description=Path to the png containing the active icon background.
+per_instance = false
+
 [effects/arrow_icon]
 type = string
 default = __awn_internal_arrow1
@@ -184,6 +190,12 @@ per_instance = false
 type = float
 default = 10.0
 _description=The curviness of the panel in Curves mode.
+per_instance = false
+
+[theme/dialog_gtk_mode]
+type = boolean
+default = true
+_description=Whether AwnDialog should use Gtk theme colors.
 per_instance = false
 
 [theme/dialog_bg]
