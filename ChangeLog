@@ -1,6 +1,12 @@
 2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-background.c:
+	When using gtk_theme_mode, try to load colors which are defined for
+	panel.
+
+2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background.c:
 	* src/awn-background.h:
 	* src/awn-defines.h:
 	Separate gtk_theme_mode and dialog_gtk_theme_mode.

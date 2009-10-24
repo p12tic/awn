@@ -747,10 +747,16 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
 {
   DesktopAgnosticConfigClient *client = bg->client;
   GtkStyle        *style;
+  /*
   DesktopAgnosticColor *sep_color;
   GValue sep_color_val = {0};
+  */
 
-  style = gtk_widget_get_style (widget);
+  // try to get values which are set for the Panel, so we look like panel
+  GtkSettings *settings = gtk_settings_get_default ();
+  style = gtk_rc_get_style_by_paths (settings, "PanelWidget", "", G_TYPE_NONE);
+
+  if (style == NULL) style = gtk_widget_get_style (widget);
 
   g_debug ("Updating gtk theme colours");
 
@@ -760,14 +766,14 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
   set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 200,
                       client, AWN_THEME_GSTEP2);
 
-  set_cfg_from_theme (&style->light[GTK_STATE_NORMAL], 220,
+  set_cfg_from_theme (&style->bg[GTK_STATE_ACTIVE], 180,
                       client, AWN_THEME_GHISTEP1);
-  set_cfg_from_theme (&style->light[GTK_STATE_PRELIGHT], 32,
+  set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 32,
                       client, AWN_THEME_GHISTEP2);
 
   set_cfg_from_theme (&style->dark[GTK_STATE_ACTIVE], 200,
                       client, AWN_THEME_BORDER);
-  set_cfg_from_theme (&style->light[GTK_STATE_ACTIVE], 100,
+  set_cfg_from_theme (&style->base[GTK_STATE_ACTIVE], 100,
                       client, AWN_THEME_HILIGHT);
 
   /* Don't draw patterns */
@@ -781,6 +787,7 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
                                            AWN_GROUP_THEME,
                                            AWN_THEME_SHOW_SEP,
                                            TRUE, NULL);
+  /*
   sep_color = desktop_agnostic_color_new_from_string ("#FFFFFF00", NULL);
   g_value_init (&sep_color_val, DESKTOP_AGNOSTIC_TYPE_COLOR);
   g_value_set_object (&sep_color_val, sep_color);
@@ -790,6 +797,7 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
                                             &sep_color_val, NULL);
   g_value_unset (&sep_color_val);
   g_object_unref (sep_color);
+  */
 
   /* Misc settings */
 }
