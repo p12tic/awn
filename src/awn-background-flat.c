@@ -48,15 +48,20 @@ static void awn_background_flat_padding_request (AwnBackground *bg,
 static void
 awn_background_flat_expand_changed (AwnBackground *bg) // has more params...
 {
-  awn_background_emit_changed(bg);
+  awn_background_emit_changed (bg);
 }
 
 static void
 awn_background_flat_align_changed (AwnBackground *bg) // has more params...
 {
-  awn_background_emit_changed(bg);
+  awn_background_emit_changed (bg);
 }
 
+static void
+awn_background_flat_radius_changed (AwnBackground *bg)
+{
+  awn_background_emit_padding_changed (bg);
+}
 
 static void
 awn_background_flat_constructed (GObject *object)
@@ -65,6 +70,9 @@ awn_background_flat_constructed (GObject *object)
   gpointer monitor = NULL;
 
   G_OBJECT_CLASS (awn_background_flat_parent_class)->constructed (object);
+
+  g_signal_connect (bg, "notify::corner-radius",
+                    G_CALLBACK (awn_background_flat_radius_changed), NULL);
 
   g_return_if_fail (bg->panel);
 
@@ -239,24 +247,25 @@ void awn_background_flat_padding_request (AwnBackground *bg,
                                           guint *padding_left,
                                           guint *padding_right)
 {
-  #define SIDE_PADDING 6
   #define TOP_PADDING 2
+  const gint side_padding = MAX (6, bg->corner_radius * 3 / 4);
+
   switch (position)
   {
     case GTK_POS_TOP:
       *padding_top  = 0; *padding_bottom = TOP_PADDING;
-      *padding_left = SIDE_PADDING; *padding_right = SIDE_PADDING;
+      *padding_left = side_padding; *padding_right = side_padding;
       break;
     case GTK_POS_BOTTOM:
       *padding_top  = TOP_PADDING; *padding_bottom = 0;
-      *padding_left = SIDE_PADDING; *padding_right = SIDE_PADDING;
+      *padding_left = side_padding; *padding_right = side_padding;
       break;
     case GTK_POS_LEFT:
-      *padding_top  = SIDE_PADDING; *padding_bottom = SIDE_PADDING;
+      *padding_top  = side_padding; *padding_bottom = side_padding;
       *padding_left = 0; *padding_right = TOP_PADDING;
       break;
     case GTK_POS_RIGHT:
-      *padding_top  = SIDE_PADDING; *padding_bottom = SIDE_PADDING;
+      *padding_top  = side_padding; *padding_bottom = side_padding;
       *padding_left = TOP_PADDING; *padding_right = 0;
       break;
     default:

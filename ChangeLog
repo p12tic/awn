@@ -1,5 +1,12 @@
 2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-background-flat.c:
+	* src/awn-background-floaty.c:
+	Minor polishing of Flat, Edgy (now react to changes to corner_radius
+	key) & Floaty backgrounds.
+
+2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awnSettings.py.in:
 	Add mark to monitor align scale to make it easy to hit 0.5.
 	* data/avant-window-navigator.schema-ini.in.in:

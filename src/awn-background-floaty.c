@@ -46,9 +46,15 @@ static void awn_background_floaty_padding_request (AwnBackground *bg,
                                                    guint *padding_right);
 
 static void
+awn_background_floaty_expand_changed (AwnBackground *bg) // has more params...
+{
+  awn_background_emit_padding_changed (bg);
+}
+
+static void
 awn_background_floaty_constructed (GObject *object)
 {
-  //AwnBackground *bg = AWN_BACKGROUND (object);
+  AwnBackground *bg = AWN_BACKGROUND (object);
 
   G_OBJECT_CLASS (awn_background_floaty_parent_class)->constructed (object);
 
@@ -57,11 +63,18 @@ awn_background_floaty_constructed (GObject *object)
 
   g_signal_connect (object, "notify::curviness",
                     G_CALLBACK (awn_background_emit_padding_changed), NULL);
+
+  g_signal_connect_swapped (bg->panel, "notify::expand",
+                            G_CALLBACK (awn_background_floaty_expand_changed),
+                            object);
 }
 
 static void
 awn_background_floaty_dispose (GObject *object)
 {
+  g_signal_handlers_disconnect_by_func (AWN_BACKGROUND (object)->panel,
+      G_CALLBACK (awn_background_floaty_expand_changed), object);
+
   G_OBJECT_CLASS (awn_background_floaty_parent_class)->dispose (object);
 }
 
@@ -109,9 +122,10 @@ draw_rect (AwnBackground  *bg,
            gdouble         x,
            gdouble         y,
            gint            width,
-           gint            height)
+           gint            height,
+           gboolean        round_all)
 {
-  AwnCairoRoundCorners state = ROUND_ALL;
+  AwnCairoRoundCorners state = round_all ? ROUND_ALL : ROUND_TOP;
 
   awn_cairo_rounded_rect (cr, x, y, width, height, bg->corner_radius, state);
 }
@@ -125,6 +139,7 @@ draw_top_bottom_background (AwnBackground  *bg,
 {
   cairo_pattern_t *pat;
   gint bg_size;
+  gboolean expand = FALSE;
 
   /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
   cairo_translate (cr, 0.5, 0.5);
@@ -132,6 +147,15 @@ draw_top_bottom_background (AwnBackground  *bg,
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+
+  // eyecandy in expand mode
+  g_object_get (bg->panel, "expand", &expand, NULL);
+  if (expand)
+  {
+    gint extra_space = bg->curviness * 3 / 4;
+    cairo_translate (cr, extra_space, 0.0);
+    width -= 2*extra_space;
+  }
 
   bg_size = height - bg->curviness + 1;
 
@@ -144,7 +168,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   pat = cairo_pattern_create_linear (0, 0, 0, bg_size);
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
-  draw_rect (bg, cr, position, 1, 1, width-3, bg_size-2);
+  draw_rect (bg, cr, position, 1, 1, width-3, bg_size-2, TRUE);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
@@ -154,7 +178,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   pat = cairo_pattern_create_linear (0, 0, 0, (bg_size/3.0));
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
-  draw_rect (bg, cr, position, 1, 1, width-3, bg_size/3.0);
+  draw_rect (bg, cr, position, 1, 1, width-3, bg_size/3.0, FALSE);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
@@ -164,12 +188,12 @@ draw_top_bottom_background (AwnBackground  *bg,
 
   /* Internal border */
   awn_cairo_set_source_color (cr, bg->hilight_color);
-  draw_rect (bg, cr, position, 1, 1, width-3, bg_size-2);
+  draw_rect (bg, cr, position, 1, 1, width-3, bg_size-2, TRUE);
   cairo_stroke (cr);
 
   /* External border */
   awn_cairo_set_source_color (cr, bg->border_color);
-  draw_rect (bg, cr, position, 0, 0, width-1, bg_size);
+  draw_rect (bg, cr, position, 0, 0, width-1, bg_size, TRUE);
   cairo_stroke (cr);
 }
 
@@ -183,8 +207,16 @@ void awn_background_floaty_padding_request (AwnBackground *bg,
 {
   #define TOP_PADDING 2
   #define MIN_SIDE_PADDING 6
+  gboolean expand = FALSE;
+
   gint side_padding = bg->corner_radius * 3 / 4;
   if (side_padding < MIN_SIDE_PADDING) side_padding = MIN_SIDE_PADDING;
+
+  g_object_get (bg->panel, "expand", &expand, NULL);
+  if (expand)
+  {
+    side_padding += bg->curviness * 3 / 4;
+  }
   
   switch (position)
   {
@@ -283,7 +315,7 @@ awn_background_floaty_get_shape_mask (AwnBackground  *bg,
       break;
   }
 
-  draw_rect (bg, cr, position, 0, 0, width, height - bg->curviness + 2);
+  draw_rect (bg, cr, position, 0, 0, width, height - bg->curviness + 2, TRUE);
   cairo_fill (cr);
 
   cairo_restore (cr);
