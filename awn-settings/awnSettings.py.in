@@ -48,7 +48,7 @@ except Exception, e:
     sys.exit(1)
 
 #from awnTheme import AwnThemeManager
-from awnClass import awnPreferences, awnManager, awnLauncher, awnApplet, awnThemeBuilder
+from awnClass import awnPreferences, awnManager, awnLauncher, awnApplet, awnThemeCustomize
 #from awnApplet import awnApplet
 #from awnLauncher import awnLauncher
 
@@ -227,6 +227,7 @@ class awnPreferencesMini(awnPreferences):
             (self.client, defs.THEME, defs.BORDER, "border_colorbutton"),
             (self.client, defs.THEME, defs.HILIGHT, "hilight_colorbutton")
         ]
+        
         '''
         for item in color_map:
             client, group, key, wtree_name = item
@@ -425,7 +426,7 @@ class awnPreferencesMini(awnPreferences):
                 self.apply_theme.set_sensitive(False)     
     
     def build_theme_callback(self, widget, data=None):
-        awnThemeBuilder(self)
+        awnThemeCustomize(self)
         #self.themeWindow = self.wTree.get_object('themeWindow')
         #self.themeWindow.show()
         
