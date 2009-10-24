@@ -58,6 +58,7 @@
 #define AWN_THEME_BORDER           "border"
 #define AWN_THEME_HILIGHT          "hilight"
 
+#define AWN_THEME_DLG_GTK_MODE     "dialog_gtk_mode"
 #define AWN_THEME_DLG_BG           "dialog_bg"
 #define AWN_THEME_DLG_TITLE_BG     "dialog_title_bg"
 

@@ -590,9 +590,12 @@ awn_panel_constructed (GObject *object)
   priv->menu = gtk_menu_new ();
 
   item = gtk_image_menu_item_new_with_label (_("Dock Preferences"));
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), 
-                              gtk_image_new_from_stock (GTK_STOCK_PREFERENCES,
-                                                        GTK_ICON_SIZE_MENU));
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
+      gtk_image_new_from_icon_name ("avant-window-navigator",
+                                    GTK_ICON_SIZE_MENU));
+#if GTK_CHECK_VERSION(2, 16, 0)
+  gtk_image_menu_item_set_always_show_image (GTK_IMAGE_MENU_ITEM (item), TRUE);
+#endif
   gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
   g_signal_connect (G_OBJECT (item), "activate",
                     G_CALLBACK (on_prefs_activated), panel);
@@ -601,6 +604,9 @@ awn_panel_constructed (GObject *object)
   gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
 
   item = gtk_image_menu_item_new_from_stock (GTK_STOCK_CLOSE, NULL);
+#if GTK_CHECK_VERSION(2, 16, 0)
+  gtk_image_menu_item_set_always_show_image (GTK_IMAGE_MENU_ITEM (item), TRUE);
+#endif
   gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
   g_signal_connect (G_OBJECT (item), "activate",
                     G_CALLBACK (on_close_activated), panel);

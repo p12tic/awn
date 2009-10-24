@@ -1,5 +1,14 @@
 2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-background.c:
+	* src/awn-background.h:
+	* src/awn-defines.h:
+	Separate gtk_theme_mode and dialog_gtk_theme_mode.
+	* src/awn-panel.c:
+	Add always-show-image property to dock menu.
+
+2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-image.c:
 	* libawn/awn-label.c:
 	* libawn/awn-overlay-text.c:
