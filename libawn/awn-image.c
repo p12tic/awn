@@ -17,6 +17,13 @@
  *
  */
 
+/**
+ * AwnImage:
+ *
+ * Widget derived from #GtkImage, implementing #AwnOverlayable, so it can be
+ * used with overlays, animations and other eye-candy (using #AwnEffects).
+ */
+
 #include "awn-image.h"
 #include "awn-effects.h"
 #include "awn-overlayable.h"
@@ -142,6 +149,13 @@ static void awn_image_overlayable_init (AwnOverlayableIface *iface)
   iface->get_effects = awn_image_get_effects;
 }
 
+/**
+ * awn_image_new:
+ *
+ * Creates new instance of #AwnImage.
+ *
+ * Returns: An instance of #AwnImage.
+ */
 AwnImage*
 awn_image_new (void)
 {

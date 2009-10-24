@@ -19,7 +19,7 @@
 
 /**
  * SECTION: awn-overlay-themed-icon
- * @short_description: Themed Icon overlay for use with #AwnOverlaidIcon.
+ * @short_description: Themed Icon overlay for use with #AwnThemedIcon.
  * @see_also: #AwnEffects, #AwnOverlay, #AwnOverlayPixbuf, #AwnOverlayPixbufFile, 
  * #AwnOverlayThrobber, #AwnOverlayText, #AwnThemedIcon.
  * @stability: Unstable

@@ -20,20 +20,20 @@
 
 /**
  * SECTION: awn-overlay
- * @short_description: Base object for overlays used with #AwnOverlaidIcon.
- * @see_also: #AwnOverlaidIcon, #AwnOverlayText, #AwnOverlayIcon, #AwnOverlayThrobber
+ * @short_description: Base object for overlays used with #AwnOverlayable.
+ * @see_also: #AwnOverlayable, #AwnEffects, #AwnIcon, #AwnOverlayText, #AwnOverlayThemedIcon, #AwnOverlayThrobber
  * @stability: Unstable
  * @include: libawn/libawn.h
  *
- * Base object for overlays used with #AwnOverlaidIcon.  This object is only useful
- * as a base class from which others are derived.
+ * Base object for overlays used with #AwnOverlayable.  This object is only
+ * useful as a base class from which other classes are derived.
  */
 
 /**
  * AwnOverlay:
  *
- * Base object for overlays used with #AwnOverlaidIcon.  This object is only useful
- * as a base class from which others are derived.
+ * Base object for overlays used with #AwnOverlayable.  This object is only
+ * useful as a base class from which other classes are derived.
  */
 
 

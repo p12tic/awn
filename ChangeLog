@@ -1,5 +1,16 @@
 2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-image.c:
+	* libawn/awn-label.c:
+	* libawn/awn-overlay-text.c:
+	* libawn/awn-overlay-themed-icon.c:
+	* libawn/awn-overlay.c:
+	Fix line joins when using outlined font mode (AwnLabel and
+	AwnOverlayText).
+	Updated documentation.
+
+2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
+
 	* data/avant-window-navigator.schema-ini.in.in:
 	* libawn/awn-icon.c:
 	Binded effects/active_background_icon key. Fixes bug #246356.

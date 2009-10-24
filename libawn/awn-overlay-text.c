@@ -516,6 +516,7 @@ _awn_overlay_text_render (AwnOverlay* _overlay,
       /*conditional operator*/      
       awn_cairo_set_source_color (cr,priv->font_mode==FONT_MODE_OUTLINE?
                                   text_outline_colour:text_colour);
+      cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
       pango_cairo_layout_path (cr, layout);
       cairo_stroke_preserve (cr);
 

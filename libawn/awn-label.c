@@ -17,6 +17,15 @@
  *
  */
 
+/**
+ * AwnLabel:
+ *
+ * Widget derived from #GtkLabel, which should be used to display text
+ * on the panel, as it provides various modes of drawing the text - with
+ * or without an outline, and is therefore easily readable on non-solid 
+ * colored background.
+ */
+
 #include "awn-label.h"
 #include "awn-cairo-utils.h"
 #include "awn-config.h"
@@ -284,6 +293,7 @@ awn_label_expose (GtkWidget *widget, GdkEventExpose *event)
 
   awn_cairo_set_source_color (cr, priv->font_mode == FONT_MODE_OUTLINE ?
                               priv->text_outline_color : priv->text_color);
+  cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
   pango_cairo_layout_path (cr, layout);
   cairo_stroke (cr);
 
@@ -346,6 +356,14 @@ awn_label_init (AwnLabel *self)
                     G_CALLBACK (awn_label_expose), NULL);
 }
 
+/**
+ * awn_label_new:
+ *
+ * Creates new #AwnLabel. Automatically applies user configured colors and
+ * style.
+ *
+ * Returns: An instance of #AwnLabel.
+ */
 AwnLabel*
 awn_label_new (void)
 {
