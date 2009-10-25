@@ -57,6 +57,8 @@ def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
             return widget.get_active()
         elif (isinstance(widget, (gtk.SpinButton, gtk.Range))):
             return widget.get_value()
+        elif (isinstance(widget, gtk.FontButton)):
+            return widget.get_font_name()
         elif (isinstance(widget, ColorButton)):
             return widget.props.da_color
         else: raise NotImplementedError()
@@ -75,6 +77,8 @@ def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
             widget.set_active(value)
         elif (isinstance(widget, (gtk.SpinButton, gtk.Range))):
             widget.set_value(value)
+        elif (isinstance(widget, gtk.FontButton)):
+            return widget.set_font_name(value)
         elif (isinstance(widget, ColorButton)):
             widget.props.da_color = value
         else: raise NotImplementedError()
@@ -85,6 +89,7 @@ def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
             gtk.SpinButton: 'value-changed',
             gtk.ComboBox: 'changed',
             gtk.Range: 'value-changed',
+            gtk.FontButton: 'font-set',
             ColorButton: 'color-set'
         }
         for cls in signal_names.keys():

@@ -122,20 +122,7 @@ class awnPreferencesMini(awnPreferences):
             self.create_sources_list()
             self.update_sources_list()
         
-        self.view_themes_scroll = self.wTree.get_object("list_themes_scroll")
-        self.treeview_themes = self.wTree.get_object("list_themes_view")
-        treeview_themes_selection = self.treeview_themes.get_selection()
-        treeview_themes_selection.connect('changed', self.callback_theme_selection)
-        self.update_view_themes()
 
-        self.apply_theme = self.wTree.get_object("apply_theme")
-        self.apply_theme.connect("clicked", self.apply_theme_callback)
-        self.delete_theme = self.wTree.get_object("delete_theme")
-        self.delete_theme.connect('clicked', self.delete_theme_callback)
-        self.install_theme = self.wTree.get_object("install_theme")
-        self.install_theme.connect('clicked', self.install_theme_callback)
-        self.build_theme = self.wTree.get_object("build_theme")
-        self.build_theme.connect('clicked', self.build_theme_callback)
         
         
         self.setup_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
@@ -383,77 +370,6 @@ class awnPreferencesMini(awnPreferences):
         self.add_source(source)
         self.update_repo_view()
 
-    def update_view_themes(self, data=None):
-        #self.view_themes_scroll.hide_all()
-
-        #for elem in self.view_themes_scroll.get_children():
-        #    elem.destroy()
-
-        themes = self.type_catalog_from_sources_list()
-        #self.treeview_themes = gtk.TreeView()
-        self.treeview_themes.set_headers_visible(False)
-        #self.view_themes_scroll.add(self.treeview_themes)
-        self.refresh_tree(themes, self.make_model(themes, self.treeview_themes))
-        self.view_themes_scroll.show_all()
-
-    def apply_theme_callback(self, data=None):
-        model = self.treeview_themes.get_model()
-        selection = self.treeview_themes.get_selection()
-        select = selection.get_selected()
-        path = model.get(select[1], 2)
-        self.load_settings_from_theme(path[0])
-        self.client.set_string(defs.THEME, defs.CURRENT_THEME, path[0])
-
-    def delete_theme_callback(self, data=None):
-        model = self.treeview_themes.get_model()
-        selection = self.treeview_themes.get_selection()
-        (model, iter) = selection.get_selected()
-        if iter is not None:
-            os.remove(model.get_value(iter, 2))
-            model.remove(iter)
-            self.delete_theme.set_sensitive(False)
-            
-    def callback_theme_selection(self, selection, data=None):
-        (model, iter) = selection.get_selected()
-        if iter is not None:
-            self.apply_theme.set_sensitive(True)
-            if os.access(model.get_value(iter, 2), os.W_OK):
-                self.delete_theme.set_sensitive(True)
-            else:
-                self.delete_theme.set_sensitive(False)
-        else:
-            if hasattr(self, 'apply_theme'): 
-                self.apply_theme.set_sensitive(False)     
-    
-    def build_theme_callback(self, widget, data=None):
-        awnThemeCustomizeMini(self.wTree)
-        #self.themeWindow = self.wTree.get_object('themeWindow')
-        #self.themeWindow.show()
-        
-    def install_theme_callback(self, widget, data=None):
-        dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
-                                  buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
-        dialog.set_default_response(gtk.RESPONSE_OK)
-        
-        filter = gtk.FileFilter()
-        filter.set_name("AWN Theme File")
-        #filter.add_pattern("*.tar.gz")
-        #filter.add_pattern("*.tgz")
-        #filter.add_pattern("*.bz2")
-        filter.add_pattern("*.awn-theme")
-        dialog.add_filter(filter)
-
-        response = dialog.run()
-        if response == gtk.RESPONSE_OK:
-            file = dialog.get_filename()
-            dialog.destroy()
-            filesplit = os.path.splitext(os.path.basename(file))
-            t = time.time()
-            newpath = defs.HOME_THEME_DIR+'/'+filesplit[0]+'-'+str(t)+filesplit[1]
-            shutil.copyfile(file, newpath)
-            self.add_uris_to_model(self.treeview_themes.get_model(),[newpath])
-        else:
-            dialog.destroy()
             
 class awnLauncherMini(awnLauncher):
     def __init__(self, glade):
@@ -588,25 +504,45 @@ class awnThemeCustomizeMini(awnThemeCustomize):
     curves_symmetry = gobject.property(type=int, default=0)
     angle = gobject.property(type=int, default=45)
     radius = gobject.property(type=int, default=10)
+    gtk_theme_mode = gobject.property(type=bool, default=False)
+    icon_font_mode = gobject.property(type=int, default=0)
+    tooltip_font_name = gobject.property(type=gobject.TYPE_STRING, default='Sans 8')
         
     def __init__(self, wTree):
         awnThemeCustomize.__init__(self)
         
+        if not os.path.isdir(defs.HOME_THEME_DIR):
+            os.mkdir(defs.HOME_THEME_DIR)
+			
         self.wTree = wTree
         self.client = awn.config_get_default(awn.PANEL_ID_DEFAULT)
-        
+        self.view_themes_scroll = self.wTree.get_object("list_themes_scroll")
+        self.treeview_themes = self.wTree.get_object("list_themes_view")
+        treeview_themes_selection = self.treeview_themes.get_selection()
+        treeview_themes_selection.connect('changed', self.callback_theme_selection)
+        self.update_view_themes()
+        self.apply_theme = self.wTree.get_object("apply_theme")
+        self.apply_theme.connect("clicked", self.apply_theme_callback)
+        self.delete_theme = self.wTree.get_object("delete_theme")
+        self.delete_theme.connect('clicked', self.delete_theme_callback)
+        self.install_theme = self.wTree.get_object("install_theme")
+        self.install_theme.connect('clicked', self.install_theme_callback)
+        self.build_theme = self.wTree.get_object("build_theme")
+        self.build_theme.connect('clicked', self.build_theme_callback)
+
+        self.theme_list_panel = self.wTree.get_object("theme_list_panel")
+        self.theme_customize_panel = self.wTree.get_object("theme_customize_panel")
+		
         self.themeWindow = self.wTree.get_object('themeWindow')
         self.themeExport = self.wTree.get_object('theme_export')
         self.themeClose = self.wTree.get_object('theme_close')
         self.themeClose.connect('clicked', self.close)
-        
         self.ui_setup()
-        
-        self.themeWindow.show()
                                         
     def close(self, widget):
-        self.themeWindow.hide()
-
+        self.theme_customize_panel.hide()
+        self.theme_list_panel.show()
+		
     def import_theme_callback(self, widget, data=None):
         dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
                                   buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
@@ -626,6 +562,15 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             dialog.destroy()
 
     def ui_setup(self):
+		
+		
+		# setup orientation model
+        dropdown = self.wTree.get_object("theme_icon_font_mode")
+        self.create_dropdown(dropdown, [_("Solid"), _("Outline"),
+                                        _("Outline, Reversed")])
+        
+        
+                                        
         color_map = [
             (self.client, defs.THEME, defs.GSTEP1, "theme_firstgradient"),
             (self.client, defs.THEME, defs.GSTEP2, "theme_secondgradient"),
@@ -642,6 +587,8 @@ class awnThemeCustomizeMini(awnThemeCustomize):
                          False, config.BIND_METHOD_FALLBACK)
     
         config_map_simple = [
+			(self.client, defs.THEME, defs.ICON_FONT_MODE,
+                "icon-font-mode", "theme_icon_font_mode"),
             (self.client, defs.THEME, defs.CURVINESS,
                 "curviness", "theme_curviness"),
             (self.client, defs.THEME, defs.CURVES_SYMMETRY,
@@ -649,14 +596,99 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             (self.client, defs.THEME, defs.PANEL_ANGLE,
                 "angle", "theme_angle"),
             (self.client, defs.THEME, defs.CORNER_RADIUS,
-                "radius", "theme_radius")
+                "radius", "theme_radius"),
+            (self.client, defs.THEME, defs.GTK_THEME_MODE,
+                "gtk-theme-mode", "theme_gtk_theme_mode"),
+            (self.client, defs.THEME, defs.TOOLTIP_FONT_NAME,
+                "tooltip-font-name", "theme_tooltip_font_name"),   
+                
         ]        
                          
         for item in config_map_simple:
             client, group, key, prop_name, wtree_name = item
             bind_to_gtk_component (client, group, key, self, prop_name,
                                    self.wTree.get_object(wtree_name), False)
+		
+		#self.build_theme = self.wTree.get_object("theme_tooltip_font_name")
+        #self.build_theme.connect('clicked', self.tooltip_font_name_callback)
+		
+	def tooltip_font_name_callback(self, data=None):
+		fontselect = gtk.FontSelectionDialog('Select Tooltip Font')	
+		fontselect.set_font_name(fontname)
+
+		
+    def update_view_themes(self, data=None):
+        #self.view_themes_scroll.hide_all()
+
+        #for elem in self.view_themes_scroll.get_children():
+        #    elem.destroy()
+
+        themes = self.type_catalog_from_sources_list()
+        #self.treeview_themes = gtk.TreeView()
+        self.treeview_themes.set_headers_visible(False)
+        #self.view_themes_scroll.add(self.treeview_themes)
+        self.refresh_tree(themes, self.make_model(themes, self.treeview_themes))
+        self.view_themes_scroll.show_all()
+
+    def apply_theme_callback(self, data=None):
+        model = self.treeview_themes.get_model()
+        selection = self.treeview_themes.get_selection()
+        select = selection.get_selected()
+        path = model.get(select[1], 2)
+        self.load_settings_from_theme(path[0])
+        self.client.set_string(defs.THEME, defs.CURRENT_THEME, path[0])
+
+    def delete_theme_callback(self, data=None):
+        model = self.treeview_themes.get_model()
+        selection = self.treeview_themes.get_selection()
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            os.remove(model.get_value(iter, 2))
+            model.remove(iter)
+            self.delete_theme.set_sensitive(False)
+            
+    def callback_theme_selection(self, selection, data=None):
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            self.apply_theme.set_sensitive(True)
+            if os.access(model.get_value(iter, 2), os.W_OK):
+                self.delete_theme.set_sensitive(True)
+            else:
+                self.delete_theme.set_sensitive(False)
+        else:
+            if hasattr(self, 'apply_theme'): 
+                self.apply_theme.set_sensitive(False)     
     
+    def build_theme_callback(self, widget, data=None):
+        self.theme_customize_panel.show()
+        self.theme_list_panel.hide()
+        
+    def install_theme_callback(self, widget, data=None):
+        dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                                  buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
+        dialog.set_default_response(gtk.RESPONSE_OK)
+        
+        filter = gtk.FileFilter()
+        filter.set_name("AWN Theme File")
+        #filter.add_pattern("*.tar.gz")
+        #filter.add_pattern("*.tgz")
+        #filter.add_pattern("*.bz2")
+        filter.add_pattern("*.awn-theme")
+        dialog.add_filter(filter)
+
+        response = dialog.run()
+        if response == gtk.RESPONSE_OK:
+            file = dialog.get_filename()
+            dialog.destroy()
+            filesplit = os.path.splitext(os.path.basename(file))
+            t = time.time()
+            newpath = defs.HOME_THEME_DIR+'/'+filesplit[0]+'-'+str(t)+filesplit[1]
+            shutil.copyfile(file, newpath)
+            self.add_uris_to_model(self.treeview_themes.get_model(),[newpath])
+        else:
+            dialog.destroy()
+            
+               
 class awnManagerMini(awnManager):
     PREFERENCE_PANEL = 0
     APPLET_PANEL = 1 
@@ -700,7 +732,8 @@ class awnManagerMini(awnManager):
         self.prefManager = awnPreferencesMini(self.wTree)
         self.prefLauncher = awnLauncherMini(self.wTree)
         self.appletManager = awnAppletMini(self.wTree)
-
+        self.themeCustomize = awnThemeCustomizeMini(self.wTree)
+		
         about = self.wTree.get_object("buttonAbout")
         about.connect("clicked", self.about)
 
