@@ -1,5 +1,11 @@
 2009-10-24  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* README:
+	Update for 0.4.
+	Reformat using the reStructuredText syntax.
+
+2009-10-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* awn-settings/awnClass.py (awnManager.safe_load_icon):
 	Add support for selecting an icon from a list of acceptable icons.
 	Fall back to the "gtk-missing-image" stock icon if the specified
