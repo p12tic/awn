@@ -1003,16 +1003,36 @@ class awnPreferences(awnBzr):
             pass
 
 class awnManager:
-    def safe_load_icon(self, name, size, flags = 0):
-        try:
-            icon = self.theme.load_icon(name, size, flags)
-        except gobject.GError:
-            # must be on one line due to i18n
-            msg = _('Could not load the "%s" icon.  Make sure that the SVG loader for Gtk+ is installed. It usually comes with librsvg, or a package similarly named.') % name
-            dialog = gtk.MessageDialog(self.window, 0, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK, msg)
-            dialog.run()
-            dialog.destroy()
-            sys.exit(1)
+    def safe_load_icon(self, name, size, flags=0):
+        '''Loads an icon, with gtk-missing-image being the fallback.
+        :param name: Either the name of an icon, or a list of icon names.
+        :param size: The preferred size of the icon.
+        :param flags: The flags used to determine how the icon is loaded. See
+        gtk.IconLookupFlags for details.
+        :returns: a gdk.Pixbuf on success, None on failure.
+        '''
+        icon = None
+        if isinstance(name, (list, tuple)):
+            icons = list(name) + ['gtk-missing-image']
+            # Gtk.IconTheme.choose_icon() does not do what I want it to do...
+            for icon_name in icons:
+                if self.theme.has_icon(icon_name):
+                    try:
+                        icon = self.theme.load_icon(icon_name, size, flags)
+                        break
+                    except gobject.GError:
+                        pass
+            # if gtk-missing-image doesn't exist, we have a real problem...
+            if icon is None:
+                sys.stderr.write(_('Could not locate any of these icons: %s\n')
+                                 % ', '.join(icons))
+        else:
+            try:
+                icon = self.theme.load_icon(name, size, flags)
+            except gobject.GError:
+                icon = self.theme.load_icon('gtk-missing-image', size, flags)
+                sys.stderr.write(_('Could not locate the following icon: %s\n')
+                                 % name)
         return icon
 
     def make_menu_model(self):

@@ -1,3 +1,14 @@
+2009-10-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/awnClass.py (awnManager.safe_load_icon):
+	Add support for selecting an icon from a list of acceptable icons.
+	Fall back to the "gtk-missing-image" stock icon if the specified
+	icon(s) cannot be found.
+	Add documentation.
+	* awn-settings/awnSettings.py.in (awnManagerMini.createMainMenu):
+	Add fallback icons for the "Launchers" item.
+	Fixes Launchpad bug #459706.
+
 2009-10-25  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:

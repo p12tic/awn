@@ -749,7 +749,9 @@ class awnManagerMini(awnManager):
 
         store.append([
             'Launchers',
-            self.safe_load_icon("gnome-panel-launcher", size, gtk.ICON_LOOKUP_USE_BUILTIN),
+            self.safe_load_icon(['gnome-panel-launcher', 'launcher-program',
+                                 'system-run', 'run'],
+                                size, gtk.ICON_LOOKUP_USE_BUILTIN),
             self.LAUNCHER_PANEL
         ])
 
