@@ -501,7 +501,7 @@ class awnAppletMini(awnApplet):
 class awnThemeCustomizeMini(awnThemeCustomize):
     
     curviness = gobject.property(type=int, default=10)
-    curves_symmetry = gobject.property(type=int, default=0)
+    curves_symmetry = gobject.property(type=float, default=0)
     angle = gobject.property(type=int, default=45)
     radius = gobject.property(type=int, default=10)
     gtk_theme_mode = gobject.property(type=bool, default=False)
