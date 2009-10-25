@@ -127,7 +127,8 @@ struct _AwnThemedIconPrivate
   
   gchar  *applet_name;
   gchar  *uid;
-
+  gchar * custom_icon_name;
+  
   GList   *list;
   
   gint    current_size;
@@ -420,6 +421,7 @@ awn_themed_icon_finalize (GObject *object)
   priv->uid = NULL;
   g_free (priv->icon_dir);               
   priv->icon_dir = NULL;
+  g_free (priv->custom_icon_name);
   
   G_OBJECT_CLASS (awn_themed_icon_parent_class)->finalize (object);  
 }
@@ -566,7 +568,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   priv->list = NULL;
   priv->current_item = NULL;
   priv->current_size = 48;
- 
+  priv->custom_icon_name = NULL;
 
   /* Set-up the gtk-theme */
   priv->gtk_theme = gtk_icon_theme_get_default ();
@@ -899,8 +901,18 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
         }
 
         /* Check if we got a valid pixbuf on this run */
-        g_free (name);
-
+        if (pixbuf && priv->awn_theme_hit && name)
+        {
+          if (priv->custom_icon_name)
+          {
+            g_free (priv->custom_icon_name);
+          }
+          priv->custom_icon_name = name;
+        }
+        else
+        {
+          g_free (name);
+        }
         if (pixbuf)
         {
           /* FIXME: Should we make this position-aware? */
@@ -2023,11 +2035,20 @@ awn_themed_icon_create_custom_icon_item (AwnThemedIcon * icon,
 
 
 static void
-_remove_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
+_remove_icon (GtkMenuItem *menuitem,AwnThemedIcon * icon)
 {
   /* is there a correct way to determine the main icons dirs?*/
   gchar * del_file;
-
+  AwnThemedIconPrivate * priv;
+  
+  priv = icon->priv;
+  if ( ! priv->custom_icon_name)
+  {
+    return;
+  }
+  gchar * dest_filename_minus_ext = g_build_filename (priv->icon_dir,
+                                                      "awn-theme", "scalable",
+                                                      priv->custom_icon_name, NULL);
   del_file = g_strdup_printf("%s.png",dest_filename_minus_ext);
   g_unlink (del_file);
   g_free (del_file);
@@ -2037,6 +2058,7 @@ _remove_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
   
   gtk_icon_theme_set_custom_theme (get_awn_theme(), NULL);
   gtk_icon_theme_set_custom_theme (get_awn_theme(), AWN_ICON_THEME_NAME);  
+  g_free( dest_filename_minus_ext);
 }
 
 
@@ -2055,7 +2077,8 @@ _remove_icon_cleanup (AwnThemedIcon * icon, GtkWidget * widget)
 /**
  * awn_themed_icon_create_remove_custom_icon_item:
  * @icon: A pointer to an #AwnThemedIcon object.
- * @icon_name: The name of the customized icon.
+ * @icon_name: A custom icon or name or NULL if the default customer icons are
+ * to be used
  *
  * Creates a "Remove Customize Icon" menu item.  Will only be visible when a
  * custom icon is in use.
@@ -2064,21 +2087,22 @@ _remove_icon_cleanup (AwnThemedIcon * icon, GtkWidget * widget)
  */
 
 GtkWidget *
-awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon, 
-                                         const gchar *icon_name)
+awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon, const gchar *icon_name)
 {
-  gchar * dest_filename;
   AwnThemedIconPrivate * priv;
   
   g_return_val_if_fail (AWN_IS_THEMED_ICON(icon),NULL);
-  g_return_val_if_fail (icon_name,NULL);
-  
   priv = icon->priv;
-  dest_filename = g_build_filename (priv->icon_dir,
-                                  "awn-theme", "scalable",
-                                  icon_name, NULL);
-  
-  priv->remove_custom_icon_item = gtk_image_menu_item_new_with_label (_("Remove Customize Icon"));
+
+  if (icon_name )
+  {
+    if (priv->custom_icon_name)
+    {
+      g_free (priv->custom_icon_name);
+    }
+    priv->custom_icon_name = g_strdup (icon_name);
+  }
+  priv->remove_custom_icon_item = gtk_image_menu_item_new_with_label (_("Remove Customized Icon"));
 #if GTK_CHECK_VERSION (2,16,0)	
   g_object_set( priv->remove_custom_icon_item,"always-show-image",TRUE,NULL);      
  #endif
@@ -2095,9 +2119,7 @@ awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon,
   }
   
   g_signal_connect (priv->remove_custom_icon_item, "activate", 
-                    G_CALLBACK (_remove_icon), dest_filename);
-  g_object_weak_ref (G_OBJECT (priv->remove_custom_icon_item),
-                     (GWeakNotify) g_free, dest_filename);
+                    G_CALLBACK (_remove_icon), icon);
   g_object_weak_ref (G_OBJECT (priv->remove_custom_icon_item),
                     (GWeakNotify) _remove_icon_cleanup, icon);
   

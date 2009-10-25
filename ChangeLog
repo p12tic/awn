@@ -1,3 +1,10 @@
+2009-10-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-themed-icon.h:
+	Fix the code for awn_themed_icon_create_remove_custom_icon_item()
+	so it's useful for something other than TaskManager.
+
 2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-background.c:

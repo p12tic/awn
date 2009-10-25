@@ -119,8 +119,7 @@ GtkIconTheme *awn_themed_icon_get_awn_theme     (AwnThemedIcon * icon);
 
 GtkWidget *   awn_themed_icon_create_custom_icon_item (AwnThemedIcon * icon,
                                                  const gchar * icon_name);
-GtkWidget *   awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon,
-                                                 const gchar * icon_name);
+GtkWidget *   awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon,const gchar *icon_name);
 
 void awn_themed_icon_drag_data_received (GtkWidget        *widget, 
                                     GdkDragContext   *context,
