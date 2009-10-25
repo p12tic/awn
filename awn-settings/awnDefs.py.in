@@ -71,6 +71,7 @@ GSTEP2                  = "gstep2"              #string
 GHISTEP1                = "ghistep1"            #string
 GHISTEP2                = "ghistep2"            #string
 ICON_TEXT_COLOR         = "icon_text_color"     #string
+ICON_FONT_MODE          = "icon_font_mode"      #int
 BORDER                  = "border"              #string
 HILIGHT                 = "hilight"             #string
 SHOW_SEP                = "show_sep"            #bool
