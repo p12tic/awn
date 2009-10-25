@@ -1,5 +1,10 @@
 2009-10-25  Michal Hruby  <michal.mhr@gmail.com>
 
+	* awn-settings/awn-settings.ui:
+	Add image to 'Export theme'.
+
+2009-10-25  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-image.c:
 	Fix the FIXME.
 
