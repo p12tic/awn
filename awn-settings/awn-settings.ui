@@ -297,7 +297,6 @@
                         <property name="draw_value">False</property>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -386,11 +385,23 @@
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Icon _effects:</property>
                         <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">iconeffects</property>
                         <property name="max_width_chars">0</property>
                       </object>
                       <packing>
                         <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_edit_custom_effects">
+                        <property name="label">gtk-edit</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="use_stock">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
@@ -399,7 +410,7 @@
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="position">1</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
                   </object>
@@ -2290,7 +2301,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="preview_open">
-                    <property name="label" translatable="yes">gtk-media-play</property>
+                    <property name="label">gtk-media-play</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -2303,7 +2314,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="preview_close">
-                    <property name="label" translatable="yes">gtk-media-play</property>
+                    <property name="label">gtk-media-play</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -2318,7 +2329,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="preview_hover">
-                    <property name="label" translatable="yes">gtk-media-play</property>
+                    <property name="label">gtk-media-play</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -2333,7 +2344,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="preview_launch">
-                    <property name="label" translatable="yes">gtk-media-play</property>
+                    <property name="label">gtk-media-play</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -2348,7 +2359,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="preview_attention">
-                    <property name="label" translatable="yes">gtk-media-play</property>
+                    <property name="label">gtk-media-play</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -2390,7 +2401,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="effects_dialog_close">
-                <property name="label" translatable="yes">gtk-close</property>
+                <property name="label">gtk-close</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -2415,17 +2426,7 @@
       <action-widget response="0">effects_dialog_close</action-widget>
     </action-widgets>
   </object>
-  <object class="GtkSizeGroup" id="sizegroup_panel_labels">
-    <widgets>
-      <widget name="iconeffects"/>
-      <widget name="hbox2"/>
-      <widget name="orientationcombo"/>
-      <widget name="stylecombo"/>
-      <widget name="iconeffects"/>
-      <widget name="behaviorcombo"/>
-      <widget name="monitor_align_hscale"/>
-    </widgets>
-  </object>
+  <object class="GtkSizeGroup" id="sizegroup_panel_labels"/>
   <object class="GtkAdjustment" id="adj_curviness">
     <property name="lower">5</property>
     <property name="upper">100</property>

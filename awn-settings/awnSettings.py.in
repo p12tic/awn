@@ -113,6 +113,9 @@ class awnPreferencesMini(awnPreferences):
         self.client = awn.config_get_default(awn.PANEL_ID_DEFAULT)
         self.client_taskman = awn.config_get_default_for_applet_by_info("taskmanager", "")
 
+        self.btn_edit_custom_effects = self.wTree.get_object("btn_edit_custom_effects")
+        self.btn_edit_custom_effects.connect("clicked", self.btn_edit_custom_effects_callback)
+        
         # Make sure the config dir exist
         if not os.path.isdir(defs.HOME_CONFIG_DIR):
             os.mkdir(defs.HOME_CONFIG_DIR)
@@ -203,23 +206,7 @@ class awnPreferencesMini(awnPreferences):
             bind_to_gtk_component (client, group, key, self, prop_name,
                                    self.wTree.get_object(wtree_name), False)
 
-        # Colors
-        color_map = [
-            (self.client, defs.THEME, defs.GSTEP1, "gstep1_colorbutton"),
-            (self.client, defs.THEME, defs.GSTEP2, "gstep2_colorbutton"),
-            (self.client, defs.THEME, defs.GHISTEP1, "ghistep1_colorbutton"),
-            (self.client, defs.THEME, defs.GHISTEP2, "ghistep2_colorbutton"),
-            (self.client, defs.THEME, defs.BORDER, "border_colorbutton"),
-            (self.client, defs.THEME, defs.HILIGHT, "hilight_colorbutton")
-        ]
-        
-        '''
-        for item in color_map:
-            client, group, key, wtree_name = item
-            widget = self.wTree.get_object(wtree_name)
-            client.bind (group, key, widget, "da-color",
-                         False, config.BIND_METHOD_FALLBACK)
-        '''
+
         #Advanced
         self.setup_autostart (self.wTree.get_object("autostart_config"))
 
@@ -296,7 +283,11 @@ class awnPreferencesMini(awnPreferences):
                                self.wTree.get_object("arrow_triangle_radio"),
                                False,
                                arrow_type_getter, arrow_type_setter)
-
+    
+    def btn_edit_custom_effects_callback(self, widget, data=None):
+        response = self.custom_effects_dialog.run()
+        self.custom_effects_dialog.hide()
+        
     def init_custom_effects_dialog(self):
         self.custom_effects_dialog = self.wTree.get_object('customEffectsDialog')
 

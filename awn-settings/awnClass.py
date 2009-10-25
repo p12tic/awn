@@ -916,6 +916,7 @@ class awnPreferences(awnBzr):
                 active = hover_effect+1
         else:
             active = 10 #Custom
+            self.btn_edit_custom_effects.show()
 
         dropdown.set_active(int(active))
 
@@ -934,8 +935,10 @@ class awnPreferences(awnBzr):
             for i in range(5):
                 new_effects = new_effects << 4 | effect
             self.client.set_int(group, key, new_effects)
+            self.btn_edit_custom_effects.hide()
             print "Setting effects to: ", "0x%0.8X" % new_effects
         else:
+            self.btn_edit_custom_effects.show()
             response = self.custom_effects_dialog.run()
             self.custom_effects_dialog.hide()
 
