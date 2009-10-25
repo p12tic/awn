@@ -1,3 +1,8 @@
+2009-10-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-image.c:
+	Fix positioning when padding is set on the widget.
+
 2009-10-24  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* README:

@@ -67,11 +67,18 @@ awn_image_finalize (GObject *object)
 static void
 awn_image_size_request (GtkWidget *widget, GtkRequisition *req)
 {
+  gint xpad, ypad;
   GTK_WIDGET_CLASS (awn_image_parent_class)->size_request (widget, req);
 
   AwnImagePrivate *priv = AWN_IMAGE_GET_PRIVATE (widget);
 
-  awn_effects_set_icon_size (priv->effects, req->width, req->height, FALSE);
+  gtk_misc_get_padding (GTK_MISC (widget), &xpad, &ypad);
+  awn_effects_set_icon_size (priv->effects,
+                             req->width - xpad * 2,
+                             req->height - ypad * 2,
+                             FALSE);
+  // FIXME: wrong for LEFT/RIGHT
+  g_object_set (priv->effects, "icon-offset", ypad, NULL);
 }
 
 static gboolean
