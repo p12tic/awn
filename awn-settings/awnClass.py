@@ -579,7 +579,7 @@ class awnBzr(gobject.GObject):
             pass
         return icon, text, name
 
-    def make_icon (self, name):
+    def make_icon (self, name, icon_size=32):
         ''' Extract an icon from a desktop file
         '''
         icon_final = None
@@ -587,14 +587,28 @@ class awnBzr(gobject.GObject):
         pixmaps_path = [os.path.join(p, "share", "pixmaps") for p in ("/usr", "/usr/local", defs.PREFIX)]
         applets_path = [os.path.join(p, "share", "avant-window-navigator","applets") for p in ("/usr", "/usr/local", defs.PREFIX)]
         list_icons = (
-                ('theme icon', self.search_icon(name, type_icon="theme")),
-                ('stock_icon', self.search_icon(name, type_icon="stock")),
-                ('file_icon', self.search_icon(name)),
-                ('pixmap_png_icon', self.search_icon(name, pixmaps_path, extension=".png")),
-                ('pixmap_icon', self.search_icon(name, pixmaps_path)),
-                ('applets_png_icon', self.search_icon(name, applets_path, extension=".png")),
-                ('applets_svg_icon', self.search_icon(name, applets_path, extension=".svg"))
-                        )
+            ('theme icon', self.search_icon(
+                name, type_icon="theme", size=icon_size)
+            ),
+            ('stock_icon', self.search_icon(
+                name, type_icon="stock", size=icon_size)
+            ),
+            ('file_icon', self.search_icon(
+                name, size=icon_size)
+            ),
+            ('pixmap_png_icon', self.search_icon(
+                name, pixmaps_path, extension=".png", size=icon_size)
+            ),
+            ('pixmap_icon', self.search_icon(
+                name, pixmaps_path, size=icon_size)
+            ),
+            ('applets_png_icon', self.search_icon(
+                name, applets_path, extension=".png", size=icon_size)
+            ),
+            ('applets_svg_icon', self.search_icon(
+                name, applets_path, extension=".svg", size=icon_size)
+            )
+        )
 
         for i in list_icons:
             if i[1] is not None:
@@ -603,20 +617,21 @@ class awnBzr(gobject.GObject):
         if icon_final is not None:
             return icon_final
         else:
-            return theme.load_icon('gtk-execute', 32, 0)
+            return theme.load_icon('gtk-execute', icon_size, 0)
 
-    def search_icon (self, name, path="", extension="", type_icon="pixmap"):
+    def search_icon (self, name, path="", extension="",
+                     type_icon="pixmap", size=32):
         ''' Search a icon'''
         theme = gtk.icon_theme_get_default ()
         icon = None
         if type_icon is "theme":
             try:
-                icon = theme.load_icon (name, 32, 0)
+                icon = theme.load_icon (name, size, 0)
             except:
                 icon = None
         elif type_icon is "stock":
             try:
-                image = gtk.image_new_from_stock(name, 32)
+                image = gtk.image_new_from_stock(name, size)
                 icon = image.get_pixbuf()
             except:
                 icon = None
@@ -624,7 +639,7 @@ class awnBzr(gobject.GObject):
             for i in path:
                 if os.path.exists(os.path.join(i,name+extension)):
                     try:
-                        icon = gdk.pixbuf_new_from_file_at_size(os.path.join(i,name+extension), 32, 32)
+                        icon = gdk.pixbuf_new_from_file_at_size(os.path.join(i,name+extension), size, size)
                     except:
                         icon = None
         return icon
@@ -799,14 +814,10 @@ class awnPreferences(awnBzr):
     def reload_effect(self, group, key, value, dropdown):
         self.load_effect(group, key, dropdown)
 
-    def effect_changed(self, dropdown, groupkey):
-        group, key = groupkey
-        self.client.set_int(group, key, dropdown.get_active())
-
-    def setup_effect_custom(self, group, key):
+    def setup_custom_effects(self, group, key):
         self.effect_drop = []
-        for drop in ['hover', 'open', 'close', 'launch', 'attention']:
-            d = self.wTree.get_widget('effect_'+drop)
+        for drop in ['open', 'close', 'hover', 'launch', 'attention']:
+            d = self.wTree.get_object('effect_'+drop)
             self.effect_drop.append(d)
             model = gtk.ListStore(str)
             model.append([_("None")])
@@ -823,23 +834,26 @@ class awnPreferences(awnBzr):
             cell = gtk.CellRendererText()
             d.pack_start(cell)
             d.add_attribute(cell,'text',0)
+
         self.load_effect_custom(group,key)
         self.client.notify_add(group, key, self.reload_effect_custom)
-        for drop in ['hover', 'open', 'close', 'launch', 'attention']:
-            d = self.wTree.get_widget('effect_'+drop)
+        
+        for drop in ['open', 'close', 'hover', 'launch', 'attention']:
+            d = self.wTree.get_object('effect_'+drop)
             d.connect("changed", self.effect_custom_changed, (group, key))
 
     def load_effect_custom(self, group, key):
         effect_settings = self.client.get_int(group, key)
-        cnt = 0
-        for drop in ['hover', 'open', 'close', 'launch', 'attention']:
-            d = self.wTree.get_widget('effect_'+drop)
-            current_effect = (effect_settings & (15 << (cnt*4))) >> (cnt*4)
-            if(current_effect == 15):
+        effect_dict = {'open': 0xF, 'close': 0xF0, 'hover': 0xF00,
+                       'launch': 0xF000, 'attention': 0xF0000}
+        for drop in effect_dict.keys():
+            d = self.wTree.get_object('effect_'+drop)
+            current_effect = effect_settings & effect_dict[drop]
+            while current_effect > 15: current_effect >>= 4
+            if current_effect == 15:
                 d.set_active(0)
             else:
                 d.set_active(current_effect+1)
-            cnt = cnt+1
 
     def reload_effect_custom(self, group, key, value):
         self.load_effect_custom(group, key)
@@ -850,19 +864,21 @@ class awnPreferences(awnBzr):
             self.effects_dd.set_active(10) #Custom
             new_effects = self.get_custom_effects()
             self.client.set_int(group, key, new_effects)
-            print "effects set to: ", "%0.8X" % new_effects
+            print "Setting effects to:", "0x%0.8X" % new_effects
 
     def get_custom_effects(self):
         effects = 0
-        for drop in ['attention', 'launch', 'close', 'open', 'hover']:
-            d = self.wTree.get_widget('effect_'+drop)
+        dropdowns = ['open', 'close', 'hover', 'launch', 'attention']
+        dropdowns.reverse()
+        for drop in dropdowns:
+            d = self.wTree.get_object('effect_'+drop)
             if(d.get_active() == 0):
                 effects = effects << 4 | 15
             else:
                 effects = effects << 4 | int(d.get_active())-1
         return effects
 
-    def setup_effect(self, group, key, dropdown):
+    def setup_effects(self, group, key, dropdown):
         self.effects_dd = dropdown
         model = gtk.ListStore(str)
         model.append([_("None")])
@@ -884,26 +900,22 @@ class awnPreferences(awnBzr):
         self.load_effect(group,key,dropdown)
 
         dropdown.connect("changed", self.effect_changed, (group, key))
-        #self.setup_effect_custom(group, key)
         self.client.notify_add(group, key, self.reload_effect, dropdown)
 
     def load_effect(self, group, key, dropdown):
         effect_settings = self.client.get_int(group, key)
-        hover_effect = effect_settings & 15
+        hover_effect = effect_settings & 15 # not really hover
         bundle = 0
         for i in range(5):
             bundle = bundle << 4 | hover_effect
 
         if (bundle == effect_settings):
-        #    self.wTree.get_widget('customeffectsframe').hide()
-        #    self.wTree.get_widget('customeffectsframe').set_no_show_all(True)
             if (hover_effect == 15):
                 active = 0
             else:
                 active = hover_effect+1
         else:
             active = 10 #Custom
-        #    self.wTree.get_widget('customeffectsframe').show()
 
         dropdown.set_active(int(active))
 
@@ -914,20 +926,18 @@ class awnPreferences(awnBzr):
         group, key = groupkey
         new_effects = 0
         effect = 0
-        if(dropdown.get_active() != 10): # not Custom
-#            self.wTree.get_widget('customeffectsframe').hide()
-            if(dropdown.get_active() == 0):
+        if dropdown.get_active() != 10: # not Custom
+            if dropdown.get_active() == 0:
                 effect = 15
             else:
                 effect = dropdown.get_active() - 1
             for i in range(5):
                 new_effects = new_effects << 4 | effect
             self.client.set_int(group, key, new_effects)
-            print "effects set to: ", "%0.8X" % new_effects
-#            self.load_effect_custom(group, key)
+            print "Setting effects to: ", "0x%0.8X" % new_effects
         else:
-#            self.wTree.get_widget('customeffectsframe').show()
-            pass
+            response = self.custom_effects_dialog.run()
+            self.custom_effects_dialog.hide()
 
     def setup_autostart(self, check):
         """sets up checkboxes"""

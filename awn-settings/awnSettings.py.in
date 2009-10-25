@@ -121,12 +121,10 @@ class awnPreferencesMini(awnPreferences):
         if not os.path.isfile(os.path.join(defs.HOME_CONFIG_DIR,"sources.list")):
             self.create_sources_list()
             self.update_sources_list()
-        
 
-        
-        
-        self.setup_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
-        #self.setup_freeze(self.wTree.get_object("freezeEffects"), self.wTree.get_object("iconeffects"), "effects")
+        self.setup_effects (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
+
+        self.init_custom_effects_dialog()
 
         self.theme_desktop = self.client.get_string(defs.THEME, defs.CURRENT_THEME)
 
@@ -299,6 +297,51 @@ class awnPreferencesMini(awnPreferences):
                                False,
                                arrow_type_getter, arrow_type_setter)
 
+    def init_custom_effects_dialog(self):
+        self.custom_effects_dialog = self.wTree.get_object('customEffectsDialog')
+
+        pixbuf = self.make_icon('awn-settings', 128)
+
+        awn_image = awn.Image()
+        awn_image.set_from_pixbuf(pixbuf)
+        awn_image.set_padding(24, 24)
+        self.client.bind(defs.EFFECTS, defs.ICON_EFFECT, 
+                         awn_image.get_effects(), "effects", True,
+                         config.BIND_METHOD_FALLBACK)
+
+        placeholder = self.wTree.get_object('awn_image_placeholder')
+        placeholder.add(awn_image)
+        awn_image.show()
+
+        def preview(button, name):
+            fx_map = {
+                'open': awn.EFFECT_OPENING, 
+                'close': awn.EFFECT_CLOSING,
+                'launch': awn.EFFECT_LAUNCHING,
+                'attention': awn.EFFECT_ATTENTION
+            }
+            awn_image.get_effects().start_ex(fx_map[name], max_loops=1)
+
+        def preview_hover(button, event, start):
+            if start:
+                awn_image.get_effects().start(awn.EFFECT_HOVER)
+            else:
+                awn_image.get_effects().stop(awn.EFFECT_HOVER)
+            return False
+            
+        for name in ['open', 'close', 'launch', 'attention']:
+            button = self.wTree.get_object('preview_' + name)
+            button.connect('clicked', preview, name)
+        # hover must have special handling
+        button = self.wTree.get_object('preview_hover')
+        button.connect('button-press-event', preview_hover, True)
+        button.connect('button-release-event', preview_hover, False)
+
+        #button = self.wTree.get_object('effects_dialog_close')
+        #button.connect('clicked', lambda w: self.custom_effects_dialog.get_response_for_widget(w))
+
+        self.setup_custom_effects(defs.EFFECTS, defs.ICON_EFFECT)
+        
     def reload(self):
         # FIXME: this method should be unnecessary soon
         self.load_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
