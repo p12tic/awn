@@ -1239,6 +1239,17 @@
           </packing>
         </child>
         <child>
+          <object class="GtkAlignment" id="alignment6">
+            <property name="visible">True</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkHBox" id="hbox3">
             <property name="visible">True</property>
             <child>
@@ -1290,7 +1301,7 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
