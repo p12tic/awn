@@ -905,13 +905,16 @@ on_main_item_visible_changed (TaskItem  *item,
                               gboolean   visible,
                               TaskIcon  *icon)
 {
+  TaskIconPrivate *priv;
   g_return_if_fail (TASK_IS_ICON (icon));
 
+  priv = icon->priv;
   /* the main TaskItem should have been visible, so if
      the main TaskItem becomes visible only now,
      it indicates a bug. 
      FIXME: this is possible atm in TaskWindow */
   if (visible) return;
+  awn_icon_set_tooltip_text (AWN_ICON (icon),task_item_get_name (priv->main_item));  
 
 //  task_icon_search_main_item (icon,item);
 }
