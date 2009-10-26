@@ -895,6 +895,22 @@ on_main_item_icon_changed (TaskItem   *item,
   }
 }
 
+static void
+on_desktop_icon_changed (TaskItem   *item,
+                           GdkPixbuf  *pixbuf,
+                           TaskIcon   *icon)
+{
+  TaskIconPrivate *priv;
+
+  g_return_if_fail (TASK_IS_ICON (icon));
+  g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+
+  priv = icon->priv;
+  g_object_unref (priv->icon);
+  priv->icon = pixbuf;
+  g_object_ref (priv->icon);
+  awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
+}
 /**
  * The visibility of the main TaskItem in this TaskIcon changed.
  * Because normally the main TaskItem should always be visible,
@@ -1689,6 +1705,8 @@ task_icon_append_item (TaskIcon      *icon,
       }
       
       awn_themed_icon_set_size (AWN_THEMED_ICON(icon),size);
+      g_signal_connect (item, "icon-changed",G_CALLBACK (on_desktop_icon_changed), icon);
+      
       g_free (name);
       g_free (uid);
     }    

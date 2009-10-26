@@ -1,6 +1,12 @@
 2009-10-26  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-launcher.c:
+	Monitor launcher desktop files for changes.
+
+2009-10-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Ensure tooltips are correct for launchers when 
 	show_all_windows=false.
 

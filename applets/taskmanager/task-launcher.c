@@ -58,7 +58,9 @@ struct _TaskLauncherPrivate
 {
   gchar *path;
   DesktopAgnosticFDODesktopEntry *entry;
-
+  DesktopAgnosticVFSFile* file_vfs;
+  DesktopAgnosticVFSFileMonitor* monitor_vfs;
+  
   const gchar *name;
   const gchar *exec;
   const gchar *icon_name;
@@ -73,6 +75,7 @@ struct _TaskLauncherPrivate
   GtkWidget *name_label;    /*name label*/
   GtkWidget *image;   /*placed in button (TaskItem) with label*/
   GtkWidget *launcher_image;
+
 };
 
 enum
@@ -151,8 +154,11 @@ static void
 task_launcher_finalize (GObject *object)
 { 
   TaskLauncher *launcher = TASK_LAUNCHER (object);
+  TaskLauncherPrivate *priv = TASK_LAUNCHER_GET_PRIVATE (launcher);
 
   g_free (launcher->priv->special_id);
+  g_object_unref (priv->file_vfs);
+  g_object_unref (priv->monitor_vfs);
   
   G_OBJECT_CLASS (task_launcher_parent_class)->finalize (object);
 }
@@ -280,6 +286,87 @@ task_launcher_get_desktop_path     (TaskLauncher *launcher)
   return launcher->priv->path;
 }
 
+/*
+ TODO 
+ there's a fair amount of code duplication between this and 
+ task_launcher_set_desktop_file().  
+ */
+ 
+static void
+_desktop_changed (DesktopAgnosticVFSFileMonitor* monitor, 
+                       DesktopAgnosticVFSFile* self,                  
+                       DesktopAgnosticVFSFile* other, 
+                       DesktopAgnosticVFSFileMonitorEvent event,
+                       TaskLauncher * launcher
+                  )
+{
+  TaskLauncherPrivate *priv;
+  DesktopAgnosticFDODesktopEntry *entry;
+  GError * error = NULL;
+  gchar * needle;
+  gchar * exec_key; 
+  GdkPixbuf * pixbuf;
+  GdkPixbuf * scaled;  
+  gint height,width,scaled_width,scaled_height;
+  
+  g_return_if_fail (TASK_IS_LAUNCHER (launcher));
+
+  priv = launcher->priv;  
+  
+  entry = desktop_agnostic_fdo_desktop_entry_new_for_file (self, &error);
+  if (error)
+  {
+    g_critical ("Error when trying to load the launcher: %s", error->message);
+    g_error_free (error);
+    return;
+  }
+  if (!desktop_agnostic_fdo_desktop_entry_key_exists (priv->entry,"Exec"))
+  {
+    return;
+  }
+
+  g_object_unref (priv->entry);    
+  g_free (priv->special_id);
+  priv->entry = entry;
+  priv->special_id = get_special_id_from_desktop(priv->entry);
+  priv->name = desktop_agnostic_fdo_desktop_entry_get_name (priv->entry);  
+  task_item_emit_name_changed (TASK_ITEM (launcher), priv->name);
+
+  exec_key = g_strstrip (desktop_agnostic_fdo_desktop_entry_get_string (priv->entry, "Exec"));  
+  needle = strchr (exec_key,'%');
+  if (needle)
+  {
+          *needle = '\0';
+          g_strstrip (exec_key);
+  }
+  g_strstrip (exec_key);
+  priv->exec = exec_key;
+  
+  priv->icon_name = desktop_agnostic_fdo_desktop_entry_get_icon (priv->entry);
+
+  pixbuf = _get_icon (TASK_ITEM (launcher));
+  
+  height = gdk_pixbuf_get_height (pixbuf);
+  width = gdk_pixbuf_get_width (pixbuf);
+  gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON,&scaled_width,&scaled_height);  
+  if (height != scaled_height)
+  {
+    scaled = gdk_pixbuf_scale_simple (pixbuf,scaled_width,scaled_height,GDK_INTERP_BILINEAR);    
+  }
+  else
+  {
+    scaled = pixbuf;
+    g_object_ref (scaled);
+  }
+  gtk_image_set_from_pixbuf (GTK_IMAGE (priv->image), scaled);
+  g_object_unref (scaled);
+  
+  task_item_emit_icon_changed (TASK_ITEM (launcher), pixbuf);
+  g_object_unref (pixbuf);
+  task_item_emit_visible_changed (TASK_ITEM (launcher), TRUE);  
+}
+
+
 static void
 task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
 {
@@ -321,14 +408,28 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
 
   priv->entry = desktop_agnostic_fdo_desktop_entry_new_for_file (file, &error);
 
-  g_object_unref (file);
   if (error)
   {
     g_critical ("Error when trying to load the launcher: %s", error->message);
     g_error_free (error);
+    g_object_unref (file);    
     return;
   }
+  
+  priv->file_vfs = desktop_agnostic_vfs_file_new_for_path (path,&error);
 
+  if (error)
+  {
+    g_warning ("Unable to Monitor %s: %s",path, error->message);
+    g_error_free (error);
+  }
+  else
+  {
+    priv->monitor_vfs = desktop_agnostic_vfs_file_monitor (priv->file_vfs);
+    g_signal_connect (G_OBJECT(priv->monitor_vfs),"changed", G_CALLBACK(_desktop_changed),launcher);
+  }
+  
+  g_object_unref (file);  
   if (priv->entry == NULL)
   {
     return;
