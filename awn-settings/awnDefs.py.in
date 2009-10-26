@@ -38,7 +38,7 @@ VERSION = '@VERSION@'
 EXTRA_VERSION = '@EXTRA_VERSION@'
 
 #TODO update to real branches when stable
-DEFAULT_SOURCES_LIST = [[SYS_THEME_DIR,'local'],[HOME_THEME_DIR,'local'], [SYS_APPLET_DIR,'local']]
+DEFAULT_SOURCES_LIST = [[SYS_THEME_DIR,'local'],[HOME_THEME_DIR,'local'], [SYS_APPLET_DIR,'local'], [HOME_APPLET_DIR,'local']]
 
 
 # AwnConfigClient Groups/Keys
