@@ -97,7 +97,6 @@ class awnPreferencesMini(awnPreferences):
     reflection_alpha = gobject.property(type=gobject.TYPE_FLOAT, default=0.3)
     icon_alpha = gobject.property(type=gobject.TYPE_FLOAT, default=1.0)
     show_shadows = gobject.property(type=bool, default=False)
-    arrow_type = gobject.property(type=str)
 
     launchers_only = gobject.property(type=bool, default=False)
     show_all_windows = gobject.property(type=bool, default=True)
@@ -267,22 +266,6 @@ class awnPreferencesMini(awnPreferences):
         refresh_behaviour()
 
         self.choose_behavior.connect("changed", choose_behavior_callback)
-
-        # Arrow type radio group
-        def arrow_type_getter (arrow_type):
-            d = {"__awn_internal_arrow1": 0, "__awn_internal_arrow2": 1}
-            if arrow_type in d: return d[arrow_type]
-            else: return 2
-
-        arrow_type_setter = lambda x: ["__awn_internal_arrow1",
-                                       "__awn_internal_arrow2",
-                                       ""][x]
-
-        bind_to_gtk_component (self.client, defs.EFFECTS, defs.ARROW_ICON,
-                               self, "arrow-type",
-                               self.wTree.get_object("arrow_triangle_radio"),
-                               False,
-                               arrow_type_getter, arrow_type_setter)
     
     def btn_edit_custom_effects_callback(self, widget, data=None):
         response = self.custom_effects_dialog.run()
@@ -541,7 +524,8 @@ class awnThemeCustomizeMini(awnThemeCustomize):
     gtk_theme_mode = gobject.property(type=bool, default=False)
     icon_font_mode = gobject.property(type=int, default=0)
     tooltip_font_name = gobject.property(type=gobject.TYPE_STRING, default='Sans 8')
-        
+    arrow_type = gobject.property(type=str)
+            
     def __init__(self, wTree):
         awnThemeCustomize.__init__(self)
         
@@ -563,7 +547,15 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         self.install_theme.connect('clicked', self.install_theme_callback)
         self.build_theme = self.wTree.get_object("build_theme")
         self.build_theme.connect('clicked', self.build_theme_callback)
-
+        
+        self.custom_arrow_chooser_hbox = self.wTree.get_object("custom_arrow_chooser_hbox")
+        self.custom_arrow_chooser = self.wTree.get_object("custom_arrow_chooser")
+        self.custom_arrow_chooser.connect('selection-changed', self.arrow_select_callback)
+        filter = gtk.FileFilter()
+        filter.set_name("PNG Image")
+        filter.add_pattern("*.png")
+        self.custom_arrow_chooser.add_filter(filter)
+        
         self.theme_list_panel = self.wTree.get_object("theme_list_panel")
         self.theme_customize_panel = self.wTree.get_object("theme_customize_panel")
 		
@@ -596,15 +588,10 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             dialog.destroy()
 
     def ui_setup(self):
-		
-		
-		# setup orientation model
         dropdown = self.wTree.get_object("theme_icon_font_mode")
         self.create_dropdown(dropdown, [_("Solid"), _("Outline"),
                                         _("Outline, Reversed")])
-        
-        
-                                        
+                                      
         color_map = [
             (self.client, defs.THEME, defs.GSTEP1, "theme_firstgradient"),
             (self.client, defs.THEME, defs.GSTEP2, "theme_secondgradient"),
@@ -635,32 +622,26 @@ class awnThemeCustomizeMini(awnThemeCustomize):
                 "gtk-theme-mode", "theme_gtk_theme_mode"),
             (self.client, defs.THEME, defs.TOOLTIP_FONT_NAME,
                 "tooltip-font-name", "theme_tooltip_font_name"),   
-                
         ]        
                          
         for item in config_map_simple:
             client, group, key, prop_name, wtree_name = item
             bind_to_gtk_component (client, group, key, self, prop_name,
                                    self.wTree.get_object(wtree_name), False)
-		
-		#self.build_theme = self.wTree.get_object("theme_tooltip_font_name")
-        #self.build_theme.connect('clicked', self.tooltip_font_name_callback)
-		
+                                   
+        bind_to_gtk_component (self.client, defs.EFFECTS, defs.ARROW_ICON,
+					   self, "arrow-type",
+					   self.wTree.get_object("arrow_triangle_radio"),
+					   False,
+					   self.arrow_type_getter, self.arrow_type_setter)   
+                               
 	def tooltip_font_name_callback(self, data=None):
 		fontselect = gtk.FontSelectionDialog('Select Tooltip Font')	
 		fontselect.set_font_name(fontname)
-
 		
     def update_view_themes(self, data=None):
-        #self.view_themes_scroll.hide_all()
-
-        #for elem in self.view_themes_scroll.get_children():
-        #    elem.destroy()
-
         themes = self.type_catalog_from_sources_list()
-        #self.treeview_themes = gtk.TreeView()
         self.treeview_themes.set_headers_visible(False)
-        #self.view_themes_scroll.add(self.treeview_themes)
         self.refresh_tree(themes, self.make_model(themes, self.treeview_themes))
         self.view_themes_scroll.show_all()
 
@@ -721,7 +702,28 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             self.add_uris_to_model(self.treeview_themes.get_model(),[newpath])
         else:
             dialog.destroy()
-            
+    
+    def arrow_type_getter(self, arrow_type):    
+        d = {"__awn_internal_arrow1": 0, "__awn_internal_arrow2": 1}
+        if arrow_type in d: 
+            self.custom_arrow_chooser_hbox.hide()
+            return d[arrow_type]
+        else: 
+            self.custom_arrow_chooser_hbox.show()
+            return 2
+			
+    def arrow_type_setter(self, arrow_type):     
+        d = {0:"__awn_internal_arrow1", 1:"__awn_internal_arrow2"}
+        if arrow_type == 2:
+            self.custom_arrow_chooser_hbox.show()
+            return ''
+        else:
+            self.custom_arrow_chooser_hbox.hide()
+            return d[arrow_type]
+				
+    def arrow_select_callback(self, widget, data=None):
+        self.client.set_string(defs.EFFECTS, defs.ARROW_ICON, widget.get_filename())
+        
                
 class awnManagerMini(awnManager):
     PREFERENCE_PANEL = 0
