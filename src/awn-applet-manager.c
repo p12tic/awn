@@ -160,9 +160,9 @@ awn_applet_manager_constructed (GObject *object)
 
 static void
 awn_applet_manager_get_property (GObject    *object,
-                         guint       prop_id,
-                         GValue     *value,
-                         GParamSpec *pspec)
+                                 guint       prop_id,
+                                 GValue     *value,
+                                 GParamSpec *pspec)
 {
   AwnAppletManagerPrivate *priv;
 
@@ -193,7 +193,7 @@ awn_applet_manager_get_property (GObject    *object,
       g_value_take_boxed (value, awn_utils_gslist_to_gvaluearray (priv->ua_active_list));
       break;
     case PROP_EXPANDS:
-      g_value_set_boolean (value, priv->expands);
+      g_value_set_boolean (value, awn_applet_manager_get_expands (AWN_APPLET_MANAGER (object)));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -511,7 +511,20 @@ awn_applet_manager_set_applet_flags (AwnAppletManager *manager,
 gboolean
 awn_applet_manager_get_expands (AwnAppletManager *manager)
 {
+  AwnAppletManagerPrivate *priv;
   g_return_val_if_fail (AWN_IS_APPLET_MANAGER (manager), FALSE);
+
+  priv = manager->priv;
+
+  if (priv->docklet_mode)
+  {
+    gint w = -1, h = -1;
+    // docklet will have size request set if the request specified
+    //   expand == false
+    gtk_widget_get_size_request (priv->docklet_widget, &w, &h);
+
+    return (w == -1 && h == -1);
+  }
 
   return manager->priv->expands;
 }
@@ -1048,6 +1061,7 @@ awn_applet_manager_show_applets (AwnAppletManager *manager)
     }
   }
   priv->docklet_mode = FALSE;
+  g_object_notify (G_OBJECT (manager), "expands");
 
   g_list_free (list);
 }
@@ -1071,6 +1085,7 @@ awn_applet_manager_hide_applets (AwnAppletManager *manager)
     gtk_widget_hide (GTK_WIDGET (it->data));
   }
   priv->docklet_mode = TRUE;
+  g_object_notify (G_OBJECT (manager), "expands");
 
   g_list_free (list);
 }
@@ -1093,6 +1108,9 @@ awn_applet_manager_add_docklet (AwnAppletManager *manager,
   priv->docklet_widget = docklet;
   g_object_add_weak_pointer (G_OBJECT (docklet), (gpointer)&priv->docklet_widget);
   awn_applet_manager_add_widget (manager, docklet, 0);
+  // we will allow it to expand
+  gtk_box_set_child_packing (GTK_BOX (manager), priv->docklet_widget,
+                             TRUE, TRUE, 0, GTK_PACK_START);
 }
 
 GdkRegion*

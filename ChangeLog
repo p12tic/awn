@@ -1,5 +1,11 @@
 2009-10-27  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-applet-manager.c:
+	Allow the docklets to expand in expand mode, even without active
+	expanders.
+
+2009-10-27  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-dialog.c:
 	Added hide-on-unfocus property, which will ease our lives.
 
