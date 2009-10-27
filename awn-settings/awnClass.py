@@ -1113,6 +1113,18 @@ _("You should have received a copy of the GNU General Public License along with 
         gtk.main()
 
 class awnLauncher(awnBzr):
+    
+    def callback_launcher_selection(self, selection, data=None):
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            self.launcher_remove.set_sensitive(True)
+            self.launcher_edit.set_sensitive(True)
+        else:
+            if hasattr(self, 'launcher_remove'): 
+                self.launcher_remove.set_sensitive(False)
+            if hasattr(self, 'launcher_edit'): 
+                self.launcher_edit.set_sensitive(False)
+        
     def launchers_reordered(self, model, path, iterator, data=None):
         data = []
         it = model.get_iter_first ()

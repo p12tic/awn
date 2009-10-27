@@ -402,7 +402,9 @@ class awnLauncherMini(awnLauncher):
         self.treeview_launchers = gtk.TreeView()
         #self.treeview_launchers.set_reorderable(True)
         self.treeview_launchers.set_headers_visible(False)
-
+        treeview_available_selection = self.treeview_launchers.get_selection()
+        treeview_available_selection.connect('changed', self.callback_launcher_selection)
+        
         self.scrollwindow.add(self.treeview_launchers)
 
         launcher_uris = self.client_taskman.get_list(GROUP_DEFAULT,
@@ -592,7 +594,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         self.create_dropdown(dropdown, [_("Solid"), _("Outline"),
                                         _("Outline, Reversed")])
                                       
-        color_map = [
+        self.color_map = [
             (self.client, defs.THEME, defs.GSTEP1, "theme_firstgradient"),
             (self.client, defs.THEME, defs.GSTEP2, "theme_secondgradient"),
             (self.client, defs.THEME, defs.GHISTEP1, "theme_firsthighlight"),
@@ -601,7 +603,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             (self.client, defs.THEME, defs.HILIGHT, "theme_innerborder")
         ]
         
-        for item in color_map:
+        for item in self.color_map:
             client, group, key, wtree_name = item
             widget = self.wTree.get_object(wtree_name)
             client.bind (group, key, widget, "da-color",
@@ -618,8 +620,6 @@ class awnThemeCustomizeMini(awnThemeCustomize):
                 "angle", "theme_angle"),
             (self.client, defs.THEME, defs.CORNER_RADIUS,
                 "radius", "theme_radius"),
-            (self.client, defs.THEME, defs.GTK_THEME_MODE,
-                "gtk-theme-mode", "theme_gtk_theme_mode"),
             (self.client, defs.THEME, defs.TOOLTIP_FONT_NAME,
                 "tooltip-font-name", "theme_tooltip_font_name"),   
         ]        
@@ -634,7 +634,21 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 					   self.wTree.get_object("arrow_triangle_radio"),
 					   False,
 					   self.arrow_type_getter, self.arrow_type_setter)   
-                               
+  
+        bind_to_gtk_component (self.client, defs.THEME, defs.GTK_THEME_MODE,
+                       self, "gtk-theme-mode",
+                       self.wTree.get_object("theme_gtk_theme_mode"),
+                       False,
+                       self.disable_color_buttons, self.disable_color_buttons)
+					   
+    def disable_color_buttons(self, state=False):
+        for item in self.color_map:
+            client, group, key, wtree_name = item
+            obj = self.wTree.get_object(wtree_name)
+            if not state: obj.set_sensitive(True)
+            else: obj.set_sensitive(False)
+        return state
+		
 	def tooltip_font_name_callback(self, data=None):
 		fontselect = gtk.FontSelectionDialog('Select Tooltip Font')	
 		fontselect.set_font_name(fontname)
@@ -652,6 +666,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         path = model.get(select[1], 2)
         self.load_settings_from_theme(path[0])
         self.client.set_string(defs.THEME, defs.CURRENT_THEME, path[0])
+        self.wTree.get_object("theme_gtk_theme_mode").set_active(False)
 
     def delete_theme_callback(self, data=None):
         model = self.treeview_themes.get_model()
