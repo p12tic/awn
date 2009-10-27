@@ -1,3 +1,8 @@
+2009-10-28  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-alignment.c:
+	Allow the dev to specify scale value.
+
 2009-10-27  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-applet-manager.c:

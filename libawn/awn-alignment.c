@@ -43,6 +43,7 @@ struct _AwnAlignmentPrivate
   GtkPositionType position;
   gint offset_modifier;
   gint last_offset;
+  gfloat scale;
 
   gulong position_changed_id;
   gulong offset_changed_id;
@@ -53,12 +54,16 @@ enum
   PROP_0,
 
   PROP_APPLET,
+  PROP_SCALE,
   PROP_OFFSET_MOD
 };
 
 /* Forwards */
 static void awn_alignment_set_applet (AwnAlignment *alignment,
                                       AwnApplet *applet);
+
+static void on_position_changed      (AwnAlignment *alignment,
+                                      GtkPositionType position);
 
 static void ensure_alignment         (AwnAlignment *alignment);
 
@@ -81,6 +86,9 @@ awn_alignment_get_property (GObject    *object,
       break;
     case PROP_OFFSET_MOD:
       g_value_set_int (value, priv->offset_modifier);
+      break;
+    case PROP_SCALE:
+      g_value_set_float (value, priv->scale);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -108,6 +116,10 @@ awn_alignment_set_property (GObject      *object,
     case PROP_OFFSET_MOD:
       awn_alignment_set_offset_modifier (AWN_ALIGNMENT (object),
                                          g_value_get_int (value));
+      break;
+    case PROP_SCALE:
+      priv->scale = g_value_get_float (value);
+      on_position_changed (AWN_ALIGNMENT (object), priv->position);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -166,6 +178,16 @@ awn_alignment_class_init (AwnAlignmentClass *klass)
                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
                       G_PARAM_STATIC_STRINGS));
 
+  g_object_class_install_property (obj_class,
+    PROP_SCALE,
+    g_param_spec_float ("scale",
+                        "Scale",
+                        "If available space is bigger than needed for "
+                        "the child, how much of it to use for the child. "
+                        "0.0 means none, 1.0 means all.",
+                        0.0, 1.0, 1.0,
+                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
   g_type_class_add_private (obj_class, sizeof (AwnAlignmentPrivate));
 }
 
@@ -177,6 +199,7 @@ awn_alignment_init (AwnAlignment *alignment)
   priv = alignment->priv = AWN_ALIGNMENT_GET_PRIVATE (alignment);
 
   priv->last_offset = 0;
+  priv->scale = 1.0;
 
   g_signal_connect (alignment, "size-allocate",
                     G_CALLBACK (ensure_alignment), NULL);
@@ -210,16 +233,16 @@ on_position_changed (AwnAlignment *alignment, GtkPositionType position)
   switch (priv->position)
   {
     case GTK_POS_TOP:
-      gtk_alignment_set (align, 0.0, 0.0, 1.0, 0.0);
+      gtk_alignment_set (align, 0.5, 0.0, priv->scale, 0.0);
       break;
     case GTK_POS_BOTTOM:
-      gtk_alignment_set (align, 0.0, 1.0, 1.0, 0.0);
+      gtk_alignment_set (align, 0.5, 1.0, priv->scale, 0.0);
       break;
     case GTK_POS_LEFT:
-      gtk_alignment_set (align, 0.0, 0.0, 0.0, 1.0);
+      gtk_alignment_set (align, 0.0, 0.5, 0.0, priv->scale);
       break;
     case GTK_POS_RIGHT:
-      gtk_alignment_set (align, 1.0, 0.0, 0.0, 1.0);
+      gtk_alignment_set (align, 1.0, 0.5, 0.0, priv->scale);
       break;
   }
 
