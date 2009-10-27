@@ -62,6 +62,7 @@ struct _AwnDialogPrivate
   gboolean anchored;
   gboolean esc_hide;
   gboolean effects_activate;
+  gboolean unfocus_hide;
 
   gint window_offset;
   gint window_offset_pub;
@@ -80,6 +81,7 @@ struct _AwnDialogPrivate
   gulong position_changed_id;
 
   guint inhibit_cookie;
+  guint unfocus_timer_id;
 
   gint old_x, old_y, old_w, old_h;
   gint a_old_x, a_old_y, a_old_w, a_old_h;
@@ -99,6 +101,7 @@ enum
   PROP_WINDOW_PADDING,
   PROP_HIDE_ON_ESC,
   PROP_EFFECTS_HILIGHT,
+  PROP_HIDE_ON_UNFOCUS,
 
   PROP_DIALOG_BG,
   PROP_TITLE_BG,
@@ -286,6 +289,21 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
   }
 }
 
+static gboolean
+_enable_unfocus (GtkWidget *widget)
+{
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (widget);
+
+  priv->unfocus_timer_id = 0;
+  if (priv->unfocus_hide &&
+      gtk_window_is_active (GTK_WINDOW (widget)) == FALSE)
+  {
+    gtk_widget_hide (widget);
+  }
+
+  return FALSE;
+}
+
 static void
 _real_show (GtkWidget *widget)
 {
@@ -305,6 +323,14 @@ _real_show (GtkWidget *widget)
       awn_applet_inhibit_autohide (priv->anchor_applet,
                                    "AwnDialog being displayed");
   }
+
+  if (priv->unfocus_timer_id)
+  {
+    g_source_remove (priv->unfocus_timer_id);
+  }
+
+  priv->unfocus_timer_id =
+    g_timeout_add_seconds (2, (GSourceFunc)_enable_unfocus, widget);
 }
 
 static void
@@ -557,17 +583,22 @@ _on_title_notify(GObject *dialog, GParamSpec *spec, gpointer null)
 static void
 _on_active_changed(GObject *dialog, GParamSpec *spec, gpointer null)
 {
-  // FIXME: add property to disable this
   AwnDialogPrivate *priv;
 
-  priv = AWN_DIALOG(dialog)->priv;
+  priv = AWN_DIALOG_GET_PRIVATE (dialog);
 
-  if (!AWN_IS_OVERLAYABLE (priv->anchor) || !priv->effects_activate) return;
+  if (AWN_IS_OVERLAYABLE (priv->anchor) && priv->effects_activate)
+  {
+    AwnOverlayable *icon = AWN_OVERLAYABLE (priv->anchor);
 
-  AwnOverlayable *icon = AWN_OVERLAYABLE (priv->anchor);
+    g_object_set (awn_overlayable_get_effects (icon),
+                  "active", gtk_window_is_active (GTK_WINDOW (dialog)), NULL);
+  }
 
-  g_object_set (awn_overlayable_get_effects (icon),
-                "active", gtk_window_is_active (GTK_WINDOW (dialog)), NULL);
+  if (priv->unfocus_hide && priv->unfocus_timer_id == 0)
+  {
+    gtk_widget_hide (GTK_WIDGET (dialog));
+  }
 }
 
 static void
@@ -741,6 +772,9 @@ awn_dialog_get_property (GObject    *object,
     case PROP_HIDE_ON_ESC:
       g_value_set_boolean (value, priv->esc_hide);
       break;
+    case PROP_HIDE_ON_UNFOCUS:
+      g_value_set_boolean (value, priv->unfocus_hide);
+      break;
     case PROP_WINDOW_OFFSET:
       g_value_set_int (value, priv->window_offset_pub);
       break;
@@ -807,6 +841,9 @@ awn_dialog_set_property (GObject      *object,
       break;
     case PROP_HIDE_ON_ESC:
       priv->esc_hide = g_value_get_boolean (value);
+      break;
+    case PROP_HIDE_ON_UNFOCUS:
+      priv->unfocus_hide = g_value_get_boolean (value);
       break;
     case PROP_EFFECTS_HILIGHT:
       priv->effects_activate = g_value_get_boolean (value);
@@ -901,6 +938,12 @@ awn_dialog_finalize (GObject *object)
     priv->applet_size_id = 0;
   }
 
+  if (priv->unfocus_timer_id)
+  {
+    g_source_remove (priv->unfocus_timer_id);
+    priv->unfocus_timer_id = 0;
+  }
+
   G_OBJECT_CLASS (awn_dialog_parent_class)->finalize (object);
 }
 
@@ -952,6 +995,16 @@ awn_dialog_class_init (AwnDialogClass *klass)
                           "Anchored",
                           "Moves the window together with it's anchor widget",
                           TRUE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
+    PROP_HIDE_ON_UNFOCUS,
+    g_param_spec_boolean ("hide-on-unfocus",
+                          "hide on unfocus",
+                          "Whether to hide the dialog when it's "
+                          "no longer active",
+                          FALSE,
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                           G_PARAM_STATIC_STRINGS));
 
