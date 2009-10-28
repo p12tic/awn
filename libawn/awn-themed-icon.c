@@ -1939,7 +1939,7 @@ _select_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
   /* is there a correct way to determine the main icons dirs?*/
   gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog),"/usr/share/icons");
   gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog),filter);
-
+  gtk_window_set_icon_name (GTK_WINDOW (dialog),"avant-window-navigator");
   preview = gtk_image_new();
   gtk_file_chooser_set_preview_widget (GTK_FILE_CHOOSER(dialog), preview);
   g_signal_connect (dialog, "update-preview", G_CALLBACK (_update_preview), preview);

@@ -1498,8 +1498,8 @@ process_window_opened (WnckWindow    *window,
    off and on in certain circumstances.  Nip this in the bud.
    TODO:  Investigate wth this is happening...  it bothers me.
    */
-  if ( wnck_window_get_pid (window) == getpid() || 
-      g_strcmp0 (wnck_window_get_name (window),"awn-applet")==0 )
+//  if ( wnck_window_get_pid (window) == getpid() || 
+  if ( g_strcmp0 (wnck_window_get_name (window),"awn-applet")==0 )
   {
     return;
   }

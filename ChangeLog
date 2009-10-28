@@ -1,3 +1,10 @@
+2009-10-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* libawn/awn-themed-icon.c:
+	Fix so that the icon chooser dialog used by AwnThemedIcon/taskman
+	appears in the the taskmanager.
+
 2009-10-28  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-alignment.c:
