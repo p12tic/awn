@@ -1,7 +1,19 @@
-2009-10-28  Michal Hruby  <michal.mhr@gmail.com>
+2009-10-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+        Minor fix to match function.  If the WM_CLASS values
+        are 1 char in length then don't use them for a substing match.
+
+009-10-28  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awn-settings.ui:
 	Fix the size groups.
+
+2009-10-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Minor fix to match function.  If the WM_CLASS values
+	are 1 char in length then don't use them for a substing match.
 
 2009-10-28  Rodney Cryderman  <rcryderman@gmail.com>
 

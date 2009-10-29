@@ -707,7 +707,7 @@ _match (TaskItem *item,
 
   if (res_name_lower)
   {
-    if ( strlen(res_name_lower) && priv->exec)
+    if ( strlen(res_name_lower)>1 && priv->exec)
     {
       if ( g_strstr_len (priv->exec, strlen (priv->exec), res_name_lower) ||
            g_strstr_len (res_name_lower, strlen (res_name_lower), priv->exec))
@@ -723,7 +723,7 @@ _match (TaskItem *item,
    */
   if (class_name_lower)
   {
-    if (strlen(class_name_lower) && priv->exec)
+    if (strlen(class_name_lower)>1 && priv->exec)
     {
       if (g_strstr_len (priv->exec, strlen (priv->exec), class_name_lower))
       {
