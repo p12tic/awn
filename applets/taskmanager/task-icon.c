@@ -2324,7 +2324,7 @@ task_icon_button_press_event (GtkWidget      *widget,
   }
   gtk_icon_size_lookup (GTK_ICON_SIZE_MENU,&width,&height);
   launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),
-                                              "launcher-program",
+                                              "system-run",
                                               height,
                                               GTK_ICON_LOOKUP_FORCE_SIZE,
                                               NULL);
