@@ -40,6 +40,8 @@ namespace Awn {
 		public static GLib.ValueArray gslist_to_gvaluearray (GLib.SList list);
 		[CCode (cheader_filename = "libawn/awn-utils.h")]
 		public static void make_transparent_bg (Gtk.Widget widget);
+		[CCode (cheader_filename = "libawn/awn-utils.h")]
+		public static void show_menu_images (Gtk.Menu menu);
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class Alignment : Gtk.Alignment, Atk.Implementor, Gtk.Buildable {
@@ -50,6 +52,8 @@ namespace Awn {
 		[NoAccessorMethod]
 		public Awn.Applet applet { owned get; set; }
 		public int offset_modifier { get; set construct; }
+		[NoAccessorMethod]
+		public float scale { get; set; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class Applet : Gtk.Plug, Atk.Implementor, Gtk.Buildable {
@@ -139,6 +143,8 @@ namespace Awn {
 		public Box (Gtk.Orientation orient);
 		public void set_orientation (Gtk.Orientation orient);
 		public void set_orientation_from_pos_type (Gtk.PositionType pos_type);
+		[NoAccessorMethod]
+		public Gtk.Orientation orientation { get; set; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class Dialog : Gtk.Window, Atk.Implementor, Gtk.Buildable {
@@ -163,6 +169,8 @@ namespace Awn {
 		public bool effects_hilight { get; set construct; }
 		[NoAccessorMethod]
 		public bool hide_on_esc { get; set construct; }
+		[NoAccessorMethod]
+		public bool hide_on_unfocus { get; set construct; }
 		[NoAccessorMethod]
 		public DesktopAgnostic.Color hilight { owned get; set construct; }
 		[NoAccessorMethod]

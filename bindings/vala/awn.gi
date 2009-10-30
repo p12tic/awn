@@ -124,6 +124,12 @@
 				<parameter name="widget" type="GtkWidget*"/>
 			</parameters>
 		</function>
+		<function name="utils_show_menu_images" symbol="awn_utils_show_menu_images">
+			<return-type type="void"/>
+			<parameters>
+				<parameter name="menu" type="GtkMenu*"/>
+			</parameters>
+		</function>
 		<callback name="AwnAppletInitFunc">
 			<return-type type="gboolean"/>
 			<parameters>
@@ -225,6 +231,7 @@
 			</method>
 			<property name="applet" type="AwnApplet*" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="offset-modifier" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="scale" type="gfloat" readable="1" writable="1" construct="0" construct-only="0"/>
 		</object>
 		<object name="AwnApplet" parent="GtkPlug" type-name="AwnApplet" get-type="awn_applet_get_type">
 			<implements>
@@ -634,6 +641,7 @@
 					<parameter name="pos_type" type="GtkPositionType"/>
 				</parameters>
 			</method>
+			<property name="orientation" type="GtkOrientation" readable="1" writable="1" construct="0" construct-only="0"/>
 		</object>
 		<object name="AwnDialog" parent="GtkWindow" type-name="AwnDialog" get-type="awn_dialog_get_type">
 			<implements>
@@ -670,6 +678,7 @@
 			<property name="dialog-bg" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="effects-hilight" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="hide-on-esc" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="hide-on-unfocus" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="hilight" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="position" type="GtkPositionType" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="title-bg" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>

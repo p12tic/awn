@@ -1,3 +1,11 @@
+2009-10-30  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/vala/awn-custom.vala:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	Update Vala bindings.
+
 2009-10-29  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* po/avant-window-navigator.pot:
