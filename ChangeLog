@@ -1,3 +1,8 @@
+2009-10-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-settings.c:
+	Fix compiler warning.
+
 2009-10-28  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-launcher.c:

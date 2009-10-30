@@ -31,7 +31,7 @@
  */
 
 static void
-cfg_notify_int (const gchar *group, const gchar *key, const GValue *value,
+cfg_notify_int (const gchar *group, const gchar *key, GValue *value,
                 gpointer user_data)
 {
   gint* int_value = (gint*)user_data;
