@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-13 00:32-0700\n"
+"POT-Creation-Date: 2009-10-29 20:48-0700\n"
 "PO-Revision-Date: 2008-03-31 14:27+0000\n"
 "Last-Translator: Cédric VALMARY <Unknown>\n"
 "Language-Team: Occitan (post 1500) <oc@li.org>\n"
@@ -110,19 +110,19 @@ msgid ""
 "it's launchers"
 msgstr ""
 
-#: ../applets/taskmanager/task-launcher.c:747
-#: ../applets/taskmanager/task-icon.c:2288
-#: ../applets/taskmanager/task-icon.c:2382
+#: ../applets/taskmanager/task-launcher.c:920
+#: ../applets/taskmanager/task-icon.c:2363
+#: ../applets/taskmanager/task-icon.c:2461
 #, fuzzy
 msgid "Launch"
 msgstr "Aviada"
 
-#: ../applets/taskmanager/task-launcher.c:823
+#: ../applets/taskmanager/task-launcher.c:1002
 #, fuzzy, c-format
 msgid "Launch %s"
 msgstr "Aviada"
 
-#: ../applets/taskmanager/task-icon.c:2340
+#: ../applets/taskmanager/task-icon.c:2419
 #, fuzzy
 msgid "Add to Launcher List"
 msgstr "Apondre e levar d'aviaires"
@@ -143,112 +143,106 @@ msgstr ""
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:195
+#: ../awn-settings/awnClass.py:264
 msgid "Error, a sources.list already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:263
+#: ../awn-settings/awnClass.py:332
 msgid "Error, the path is empty or already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:474
-msgid "Error, the desktop file is not for a theme"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:491
+#: ../awn-settings/awnClass.py:452
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:732
-msgid "PNG Files"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:810 ../awn-settings/awnClass.py:866
-#: ../awn-settings/awnSettings.py.in:147
+#: ../awn-settings/awnClass.py:823 ../awn-settings/awnClass.py:884
+#: ../awn-settings/awnSettings.py.in:144
 msgid "None"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:811 ../awn-settings/awnClass.py:867
+#: ../awn-settings/awnClass.py:824 ../awn-settings/awnClass.py:885
 msgid "Simple"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:812 ../awn-settings/awnClass.py:868
+#: ../awn-settings/awnClass.py:825 ../awn-settings/awnClass.py:886
 msgid "Classic"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:813 ../awn-settings/awnClass.py:869
+#: ../awn-settings/awnClass.py:826 ../awn-settings/awnClass.py:887
 msgid "Fade"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:814 ../awn-settings/awnClass.py:870
+#: ../awn-settings/awnClass.py:827 ../awn-settings/awnClass.py:888
 msgid "Spotlight"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:871
+#: ../awn-settings/awnClass.py:828 ../awn-settings/awnClass.py:889
 msgid "Zoom"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:816 ../awn-settings/awnClass.py:872
+#: ../awn-settings/awnClass.py:829 ../awn-settings/awnClass.py:890
 msgid "Squish"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:817 ../awn-settings/awnClass.py:873
+#: ../awn-settings/awnClass.py:830 ../awn-settings/awnClass.py:891
 msgid "3D Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:818 ../awn-settings/awnClass.py:874
+#: ../awn-settings/awnClass.py:831 ../awn-settings/awnClass.py:892
 msgid "3D Spotlight Turn"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:819 ../awn-settings/awnClass.py:875
+#: ../awn-settings/awnClass.py:832 ../awn-settings/awnClass.py:893
 msgid "Glow"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:876 ../awn-settings/awnSettings.py.in:155
+#: ../awn-settings/awnClass.py:894 ../awn-settings/awnSettings.py.in:152
 msgid "Custom"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:959
+#: ../awn-settings/awnClass.py:974
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:969
+#: ../awn-settings/awnClass.py:984
 msgid "Confirm directory creation"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:970
+#: ../awn-settings/awnClass.py:985
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
 
-#. must be on one line due to i18n
-#: ../awn-settings/awnClass.py:1027
+#: ../awn-settings/awnClass.py:1040
 #, python-format
-msgid ""
-"Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
-"installed. It usually comes with librsvg, or a package similarly named."
+msgid "Could not locate any of these icons: %s\n"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1052
+#: ../awn-settings/awnClass.py:1047
+#, python-format
+msgid "Could not locate the following icon: %s\n"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1069
 msgid "AWN has been successfully refreshed"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1058
+#: ../awn-settings/awnClass.py:1075
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1076
+#: ../awn-settings/awnClass.py:1093
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1078
+#: ../awn-settings/awnClass.py:1095
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -256,7 +250,7 @@ msgid ""
 "any later version."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1080
+#: ../awn-settings/awnClass.py:1097
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -264,70 +258,86 @@ msgid ""
 "more details."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1082
+#: ../awn-settings/awnClass.py:1099
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:66
+#: ../awn-settings/awnSettings.py.in:69
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:142
+#: ../awn-settings/awnSettings.py.in:139
 msgid "Left"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:142
+#: ../awn-settings/awnSettings.py.in:139
 msgid "Right"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awnSettings.py.in:140
 msgid "Top"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awnSettings.py.in:140
 msgid "Bottom"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:147
+#: ../awn-settings/awnSettings.py.in:144
 msgid "Flat"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:148
+#: ../awn-settings/awnSettings.py.in:144
 msgid "3d"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:148
+#: ../awn-settings/awnSettings.py.in:145
 msgid "Curved"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:148
+#: ../awn-settings/awnSettings.py.in:145
 msgid "Edgy"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:152
+#: ../awn-settings/awnSettings.py.in:145
+msgid "Floaty"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:149
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:152
+#: ../awn-settings/awnSettings.py.in:149
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:153
+#: ../awn-settings/awnSettings.py.in:150
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:154
+#: ../awn-settings/awnSettings.py.in:151
 #, fuzzy
 msgid "Autohide Fade out"
 msgstr "Amagar la barra automaticament quand es inactiva"
 
-#: ../awn-settings/awnSettings.py.in:155
+#: ../awn-settings/awnSettings.py.in:152
 #, fuzzy
 msgid "Transparency"
 msgstr "Transparéncia :"
+
+#: ../awn-settings/awnSettings.py.in:594
+msgid "Solid"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:594
+msgid "Outline"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:595
+msgid "Outline, Reversed"
+msgstr ""
 
 #: ../bindings/python/__init__.py:117
 #, python-format
@@ -355,273 +365,279 @@ msgstr ""
 msgid "A dock-like window navigator."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:1
+#: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:2
+#: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:3
-msgid "4)"
+#: ../data/avant-window-navigator.schema-ini.in.in.h:3
+msgid "5)"
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:4
+#: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:5
+#: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid "Alignment of a non-expanded panel on the monitor edge."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:6
+#: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid "An optional offset when you have more than 1 monitors."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:7
+#: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:8
+#: ../data/avant-window-navigator.schema-ini.in.in.h:8
 #, fuzzy
 msgid "Background color for AwnDialog's title."
 msgstr "Color de fons :"
 
-#: ../data/avant-window-navigator.schema-ini.in.h:9
+#: ../data/avant-window-navigator.schema-ini.in.in.h:9
 #, fuzzy
 msgid "Background color for AwnDialog."
 msgstr "Color de fons :"
 
-#: ../data/avant-window-navigator.schema-ini.in.h:10
+#: ../data/avant-window-navigator.schema-ini.in.in.h:10
 #, fuzzy
 msgid "Background color of the tooltip"
 msgstr "Color de fons :"
 
-#: ../data/avant-window-navigator.schema-ini.in.h:11
+#: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:12
+#: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Draw separators."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:13
+#: ../data/avant-window-navigator.schema-ini.in.in.h:13
 #, fuzzy
 msgid "Enable drawing of a pattern."
 msgstr "Utilizar un motiu"
 
-#: ../data/avant-window-navigator.schema-ini.in.h:14
+#: ../data/avant-window-navigator.schema-ini.in.in.h:14
 #, fuzzy
 msgid "First gradient step color."
 msgstr "Color de començament :"
 
-#: ../data/avant-window-navigator.schema-ini.in.h:15
+#: ../data/avant-window-navigator.schema-ini.in.in.h:15
 #, fuzzy
 msgid "First highlight gradient step color."
 msgstr "Color de començament :"
 
-#: ../data/avant-window-navigator.schema-ini.in.h:16
+#: ../data/avant-window-navigator.schema-ini.in.in.h:16
 #, fuzzy
 msgid "Font color of the tooltip"
 msgstr "Color de fons :"
 
-#: ../data/avant-window-navigator.schema-ini.in.h:17
+#: ../data/avant-window-navigator.schema-ini.in.in.h:17
 #, fuzzy
 msgid "Font name of the tooltip"
 msgstr "Color de fons :"
 
-#: ../data/avant-window-navigator.schema-ini.in.h:18
+#: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "Force monitor geometry."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:19
+#: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "Icon text color.  Leave empty to use gtk theme color."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:20
+#: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:21
+#: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "If true, maximised windows will not cover the panel."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:22
+#: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:23
+#: ../data/avant-window-navigator.schema-ini.in.in.h:23
 #, fuzzy
 msgid "Internal border color."
 msgstr "Bordadura intèrna :"
 
-#: ../data/avant-window-navigator.schema-ini.in.h:24
+#: ../data/avant-window-navigator.schema-ini.in.in.h:24
 #, fuzzy
 msgid "Main border color."
 msgstr "Bordadura principala :"
 
-#: ../data/avant-window-navigator.schema-ini.in.h:25
+#: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "Offset between the icons and their dialog."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:26
+#: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "Offset of the icons from window border."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:27
+#: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Path to the current desktop file theme."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:28
+#: ../data/avant-window-navigator.schema-ini.in.in.h:28
+msgid "Path to the png containing the active icon background."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid "Path to the png containing the arrow icon."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:29
+#: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
 "Provides possibility to click on windows behind the panel. (0 - never click "
 "through, 1 - click through when holding CTRL, 2 - always click through and "
 "interact with panel only when holding CTRL)"
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:30
+#: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:31
+#: ../data/avant-window-navigator.schema-ini.in.in.h:32
 #, fuzzy
 msgid "Second gradient step color."
 msgstr "Color de fin :"
 
-#: ../data/avant-window-navigator.schema-ini.in.h:32
+#: ../data/avant-window-navigator.schema-ini.in.in.h:33
 #, fuzzy
 msgid "Second highlight gradient step color."
 msgstr "Color de fin :"
 
-#: ../data/avant-window-navigator.schema-ini.in.h:33
+#: ../data/avant-window-navigator.schema-ini.in.in.h:34
 #, fuzzy
 msgid "Separator color."
 msgstr "Color del separator :"
 
-#: ../data/avant-window-navigator.schema-ini.in.h:34
+#: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Show shadows for icons."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:35
+#: ../data/avant-window-navigator.schema-ini.in.in.h:36
 msgid "The active list UA Screenlets for this panel."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:36
+#: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid "The angle of the panel in 3D mode."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:37
+#: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "The curviness of the panel in Curves mode."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:38
+#: ../data/avant-window-navigator.schema-ini.in.in.h:39
 msgid "The forced monitor height. Only used if monitor_force is true."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:39
+#: ../data/avant-window-navigator.schema-ini.in.in.h:40
 msgid "The forced monitor width. Only used if monitor_force is true."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:40
+#: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:41
-msgid "The list of applets for this panel ordered from ltr or ttb."
+#: ../data/avant-window-navigator.schema-ini.in.in.h:42
+msgid ""
+"The list of applets for this panel ordered from left-to-right or top-to-"
+"bottom."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:42
+#: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The list of panels."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:43
+#: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The location of the pattern to draw."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:44
+#: ../data/avant-window-navigator.schema-ini.in.in.h:45
 msgid "The offset between the icon and it's reflection"
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:45
+#: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:46
+#: ../data/avant-window-navigator.schema-ini.in.in.h:47
 #, fuzzy
 msgid "The opacity of the pattern."
 msgstr "Utilizar un motiu"
 
-#: ../data/avant-window-navigator.schema-ini.in.h:47
+#: ../data/avant-window-navigator.schema-ini.in.in.h:48
 msgid "The symmetry of the curve in Curves mode."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:48
+#: ../data/avant-window-navigator.schema-ini.in.in.h:49
 msgid "The user-visible size of Awn."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:49
+#: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "Time in ms after which AwnIcon will emit long-press signal."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:50
+#: ../data/avant-window-navigator.schema-ini.in.in.h:51
+msgid "Whether AwnDialog should use Gtk theme colors."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "Whether to close dialogs on loss of focus."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:51
+#: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "Whether to use colors from the current Gtk theme."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.h:52
+#: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
 msgstr ""
 
-#: ../libawn/awn-applet.c:1002 ../src/awn-panel.c:583
+#: ../libawn/awn-applet.c:1002 ../src/awn-panel.c:592
 msgid "Dock Preferences"
 msgstr ""
 
-#: ../libawn/awn-themed-icon.c:1905
+#: ../libawn/awn-themed-icon.c:1931
 msgid "Icons"
 msgstr ""
 
-#: ../libawn/awn-themed-icon.c:1907
+#: ../libawn/awn-themed-icon.c:1933
 msgid "Choose Custom Icon"
 msgstr ""
 
-#: ../libawn/awn-themed-icon.c:1993
+#: ../libawn/awn-themed-icon.c:2019
 msgid "Customize Icon"
 msgstr ""
 
-#: ../libawn/awn-themed-icon.c:2064
-msgid "Remove Customize Icon"
+#: ../libawn/awn-themed-icon.c:2105
+msgid "Remove Customized Icon"
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:292 ../src/awn-applet-proxy.c:321
+#: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:381 ../src/awn-applet-proxy.c:481
+#: ../src/awn-applet-proxy.c:365 ../src/awn-applet-proxy.c:466
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:2971
+#: ../src/awn-panel.c:3098
 msgid "Close docklet"
-msgstr ""
-
-#: ../themes/awn-default.desktop.in.h:1
-msgid "Default Theme"
 msgstr ""
 
 #~ msgid "<b>Active Icon</b>"
