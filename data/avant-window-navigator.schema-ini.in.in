@@ -248,7 +248,7 @@ per_instance = false
 
 [theme/icon_font_mode]
 type = integer
-default = 0
+default = 1
 _description=0 - solid, 1 - outline, 2 - outline, reversed.
 per_instance = false
 
