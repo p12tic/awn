@@ -1,5 +1,11 @@
 2009-10-29  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* data/Makefile.am:
+	* po/POTFILES.in:
+	Make sure that 'make distcheck' works.
+
+2009-10-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/taskmanager/task-settings.c:
 	Fix compiler warning.
 

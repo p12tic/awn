@@ -78,4 +78,4 @@ EXTRA_DIST += \
 	active/spotlight_png_inline.c \
 	$(NULL)
 
-CLEANFILES = $(desktop_DATA) $(schemas_DATA) $(schema_in_DATA)
+CLEANFILES = $(desktop_DATA) $(schemas_DATA) $(schema_in_DATA) $(schema_DATA)

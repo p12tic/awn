@@ -9,10 +9,9 @@ awn-settings/awnClass.py
 awn-settings/awnSettings.py.in
 bindings/python/__init__.py
 data/avant-window-navigator.desktop.in
-[type: gettext/ini]data/avant-window-navigator.schema-ini.in
+[type: gettext/ini]data/avant-window-navigator.schema-ini.in.in
 data/awn-themed-icon.ui
 libawn/awn-applet.c
 libawn/awn-themed-icon.c
 src/awn-applet-proxy.c
 src/awn-panel.c
-themes/awn-default.desktop.in
