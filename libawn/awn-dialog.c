@@ -162,6 +162,28 @@ _on_composited_changed (GtkWidget *widget, gpointer data)
   awn_dialog_set_masks (widget, alloc.width, alloc.height);
 }
 
+/*
+ With Various WMs we seem to lose sticky after one, or in some 
+ cases more, show/hide cycles of the Dialog.
+
+ TODO: We may also be losing skip taskbar in gnome-shell (that needs further study) 
+ */
+static gboolean
+_on_window_state_event (GtkWidget *dialog, GdkEventWindowState *event)
+{
+/* Have we just lost sticky?
+   It would be nice to check event->changed_mask to see if STICKY changed but
+   we don't get the initail state change signal when we set sticky in at least
+   one WM (openbox).*/
+  if ( ! (GDK_WINDOW_STATE_STICKY & event->new_window_state) )
+  {
+    /*     For whatever reason, sticky is gone.  We don't want that.*/
+    gtk_window_stick (GTK_WINDOW (dialog));
+  }
+
+  return FALSE;
+}
+
 static void
 awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
                              gint width, gint height)
@@ -749,6 +771,7 @@ awn_dialog_constructed (GObject *object)
                                          DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                          NULL);
   }
+  g_signal_connect (object, "window-state-event", G_CALLBACK (_on_window_state_event), NULL);
 }
 
 static void

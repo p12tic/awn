@@ -1,5 +1,10 @@
 2009-10-30  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-dialog.c:
+	Deal with loss of sticky on the AwnDialog under some WMs.
+
+2009-10-30  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* data/avant-window-navigator.schema-ini.in.in:
 	Change default of icon_font_mode to 1.
 	
