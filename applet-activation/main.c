@@ -247,8 +247,16 @@ main(gint argc, gchar **argv)
 
   if (applet == NULL)
   {
-    g_warning ("Could not create applet!");
-    return 1;
+    if (desktop_agnostic_fdo_desktop_entry_key_exists (entry, "X-AWN-NoWindow"))
+    {
+      return desktop_agnostic_fdo_desktop_entry_get_boolean (entry, 
+          "X-AWN-NoWindow") ? 0 : 1;
+    }
+    else
+    {
+      g_warning ("Could not create applet!");
+      return 1;
+    }
   }
 
   if (name != NULL)
@@ -385,13 +393,7 @@ _awn_applet_new(const gchar *canonical_name,
                         (gpointer *)&initp_func))
     {
       /* Create the applet */
-      applet = AWN_APPLET(initp_func(canonical_name, uid, panel_id));
-
-      if (applet == NULL)
-      {
-        g_warning("awn_applet_factory_initp method returned NULL");
-        return NULL;
-      }
+      applet = initp_func(canonical_name, uid, panel_id);
     }
     else
     {
@@ -407,7 +409,7 @@ _awn_applet_new(const gchar *canonical_name,
     }
   }
 
-  return GTK_WIDGET (applet);
+  return (GtkWidget*)applet;
 }
 
 

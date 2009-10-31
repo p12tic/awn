@@ -36,7 +36,7 @@ awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
   dbus_g_proxy_call (proxy, "SetAppletFlags",
                      &error,
                      G_TYPE_STRING, uid,
-                     G_TYPE_INT, AWN_APPLET_IS_EXPANDER,
+                     G_TYPE_INT, AWN_APPLET_IS_SEPARATOR,
                      G_TYPE_INVALID, G_TYPE_INVALID);
 
   return NULL;

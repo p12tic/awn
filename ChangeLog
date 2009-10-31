@@ -1,3 +1,19 @@
+2009-10-31  Michal Hruby  <michal.mhr@gmail.com>
+
+	* Makefile.am:
+	* applet-activation/main.c:
+	* applets/expander/applet.c:
+	* applets/expander/expander.desktop.in.in:
+	* applets/separator/Makefile.am:
+	* applets/separator/applet.c:
+	* applets/separator/separator.desktop.in.in:
+	* configure.in:
+	* src/Makefile.am:
+	* src/awn-applet-manager.c:
+	* src/awn-separator.c:
+	* src/awn-separator.h:
+	Added separator applet.
+
 2009-10-30  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:

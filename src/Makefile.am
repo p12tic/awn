@@ -52,6 +52,8 @@ avant_window_navigator_SOURCES =	\
 	awn-panel.c \
 	awn-panel.h \
 	awn-panel-glue.h \
+	awn-separator.c \
+	awn-separator.h \
 	awn-throbber.c \
 	awn-throbber.h \
 	awn-ua-alignment.c \

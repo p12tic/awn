@@ -30,6 +30,7 @@
 #include "awn-ua-alignment.h"
 #include "awn-applet-proxy.h"
 #include "awn-throbber.h"
+#include "awn-separator.h"
 #include "xutils.h"
 
 #define MAX_UA_LIST_ENTRIES 50
@@ -472,6 +473,7 @@ awn_applet_manager_set_applet_flags (AwnAppletManager *manager,
 
       g_hash_table_replace (priv->applets, g_strdup (uid), image);
       gtk_widget_destroy (GTK_WIDGET (applet));
+      applet = NULL;
 
       awn_applet_manager_refresh_applets (manager);
 
@@ -481,24 +483,40 @@ awn_applet_manager_set_applet_flags (AwnAppletManager *manager,
         g_object_notify (G_OBJECT (manager), "expands");
       }
     }
-    // FIXME: separators!
-    if (flags & AWN_APPLET_HAS_SHAPE_MASK)
+    if ((flags & AWN_APPLET_IS_SEPARATOR) && AWN_IS_APPLET_PROXY (applet))
     {
-      GdkWindow *win = GTK_WIDGET (applet)->window;
-      g_object_set_qdata_full (G_OBJECT (applet), priv->shape_mask_quark,
-                               xutils_get_input_shape (win),
-                               (GDestroyNotify) gdk_region_destroy);
-      g_signal_emit (manager, _applet_manager_signals[SHAPE_MASK_CHANGED], 0);
+      GtkWidget *image = awn_separator_new_from_config_with_values (
+          priv->client, priv->position, priv->size, priv->offset);
+      gtk_widget_show (image);
+      gtk_box_pack_start (GTK_BOX (manager), image, FALSE, TRUE, 0);
+
+      g_hash_table_replace (priv->applets, g_strdup (uid), image);
+      gtk_widget_destroy (GTK_WIDGET (applet));
+      applet = NULL;
+
+      awn_applet_manager_refresh_applets (manager);
     }
-    else
+
+    if (applet)
     {
-      gpointer region = g_object_get_qdata (G_OBJECT (applet),
-                                            priv->shape_mask_quark);
-      if (region)
+      if (flags & AWN_APPLET_HAS_SHAPE_MASK)
       {
-        g_object_set_qdata (G_OBJECT (applet), priv->shape_mask_quark, NULL);
-        g_signal_emit (manager, _applet_manager_signals[SHAPE_MASK_CHANGED],
-                       0);
+        GdkWindow *win = GTK_WIDGET (applet)->window;
+        g_object_set_qdata_full (G_OBJECT (applet), priv->shape_mask_quark,
+                                 xutils_get_input_shape (win),
+                                 (GDestroyNotify) gdk_region_destroy);
+        g_signal_emit (manager, _applet_manager_signals[SHAPE_MASK_CHANGED], 0);
+      }
+      else
+      {
+        gpointer region = g_object_get_qdata (G_OBJECT (applet),
+                                              priv->shape_mask_quark);
+        if (region)
+        {
+          g_object_set_qdata (G_OBJECT (applet), priv->shape_mask_quark, NULL);
+          g_signal_emit (manager, _applet_manager_signals[SHAPE_MASK_CHANGED],
+                         0);
+        }
       }
     }
   }
@@ -730,7 +748,7 @@ delete_applets (gpointer key, GtkWidget *applet, AwnAppletManager *manager)
       g_object_get (applet, "uid", &uid, NULL);
       /* FIXME: Let the applet know it's about to be deleted ? */
     }
-    else if (GTK_IS_IMAGE (applet)) // expander
+    else if (GTK_IS_IMAGE (applet) && !AWN_IS_SEPARATOR (applet)) // expander
     {
       priv->expander_count--;
       if (priv->expander_count == 0 && priv->expands)
@@ -762,7 +780,10 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
   if (priv->applet_list == NULL)
   {
     g_debug ("No applets");
-    return; // FIXME: removing last applet doesn't work because of this
+    g_hash_table_foreach (priv->applets, (GHFunc)zero_applets, manager);
+    g_hash_table_foreach_remove (priv->applets, (GHRFunc)delete_applets, 
+                                 manager);
+    return;
   }
 
   guint applet_count = g_slist_length (priv->applet_list);

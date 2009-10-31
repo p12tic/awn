@@ -11,6 +11,7 @@ SUBDIRS = \
 	awn-settings \
 	applets/taskmanager \
 	applets/expander \
+	applets/separator \
 	bindings/python \
 	bindings/vala \
 	po \
