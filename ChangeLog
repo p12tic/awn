@@ -1,5 +1,13 @@
 2009-10-30  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-window.c:
+	Fixes the issues with disable_icon_changes = false and certain
+	applications (such as pidgin).  Also sees the return of the ugly
+	OpenOffice window icons.
+
+2009-10-30  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-dialog.c:
 	Deal with loss of sticky on the AwnDialog under some WMs.
 

@@ -338,8 +338,8 @@ task_icon_set_property (GObject      *object,
       }      
       break;
     case PROP_DISABLE_ICON_CHANGES:
-      task_icon_set_icon_pixbuf (TASK_ICON(object),icon->priv->main_item);
       icon->priv->disable_icon_changes = g_value_get_boolean (value);
+      task_icon_set_icon_pixbuf (TASK_ICON(object),icon->priv->main_item);      
       if (icon->priv->icon)
       {
         awn_icon_set_from_pixbuf (AWN_ICON (object), icon->priv->icon);
@@ -882,12 +882,14 @@ on_main_item_icon_changed (TaskItem   *item,
   g_return_if_fail (TASK_IS_ICON (icon));
   g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
 
+  g_debug ("%s",__func__);
   priv = icon->priv;
 #ifdef DEBUG
   g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(pixbuf), gdk_pixbuf_get_height(pixbuf));
 #endif
-  if (!priv->disable_icon_changes || !priv->icon || !task_icon_contains_launcher(icon))
+  if (!priv->disable_icon_changes )
   {
+    g_debug ("setting icon %s",__func__);
     g_object_unref (priv->icon);
     priv->icon = pixbuf;
     g_object_ref (priv->icon);
@@ -906,10 +908,15 @@ on_desktop_icon_changed (TaskItem   *item,
   g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
 
   priv = icon->priv;
-  g_object_unref (priv->icon);
-  priv->icon = pixbuf;
-  g_object_ref (priv->icon);
-  awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
+
+  if (priv->disable_icon_changes || TASK_IS_LAUNCHER (priv->main_item) )
+  {
+    g_object_unref (priv->icon);
+    g_debug ("setting icon %s",__func__);
+    priv->icon = pixbuf;
+    g_object_ref (priv->icon);
+    awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
+  }
 }
 /**
  * The visibility of the main TaskItem in this TaskIcon changed.
@@ -1160,7 +1167,7 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
   /*
    If the main_item actually changed 
    */
-  if (main_item && (main_item != old_main_item) )
+  if (main_item && ( (main_item != old_main_item) || (priv->main_item != main_item)) )
   {
     /* 
      Set the task icon.  In most cases the task item will _not_ get set to 
@@ -1172,6 +1179,7 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
      task_icon_set_icon_pixbuf does _not_ actually change the displayed icon,
      only (potentially) the value of priv->icon.
      */
+    g_debug ("%s:  main item changed: %p to %p",__func__,main_item,old_main_item);
     task_icon_set_icon_pixbuf (icon,main_item);
   }
   
@@ -1197,6 +1205,7 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
     /*
      Set the displayed pixbuf
      */
+    g_debug ("%s",__func__);
     awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
     awn_icon_set_tooltip_text (AWN_ICON (icon), 
                                task_item_get_name (priv->main_item));
@@ -1603,8 +1612,9 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   
   g_return_if_fail (TASK_IS_ICON (icon) );
   priv = icon->priv;  
-  
-  if (!item || TASK_IS_WINDOW(item) )
+
+  g_debug ("%s",__func__);
+  if ( !item ||  ( TASK_IS_WINDOW(item) && priv->disable_icon_changes) )
   {
     TaskItem * launcher = task_icon_get_launcher (icon);
     if (launcher)
@@ -1612,13 +1622,19 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
       item = launcher;
     }
   }
+
+  if (!item && priv->items)
+  {
+    item = priv->items->data;
+  }
   
-  if (TASK_IS_WINDOW(item))
+  if (item && TASK_IS_WINDOW(item))
   {
     if (priv->icon)
     {
       g_object_unref (priv->icon);
     }
+    g_debug ("setting to window %s",__func__);
     priv->icon = task_item_get_icon (item);
     g_object_ref (priv->icon);
   }
@@ -1644,6 +1660,7 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
     {
       state = "::no_drop::desktop";
     }    
+    g_debug ("setting to themed icon %s",__func__);    
     priv->icon = awn_themed_icon_get_icon_at_size (AWN_THEMED_ICON(icon),
                                                   size,
                                                   state);
@@ -1661,7 +1678,8 @@ task_icon_append_item (TaskIcon      *icon,
                        TaskItem      *item)
 {
   TaskIconPrivate *priv;
-  
+
+  g_debug ("%s: window = %d",__func__,TASK_IS_WINDOW(item));
   g_assert (item);
   g_assert (icon);
   g_return_if_fail (TASK_IS_ICON (icon));
@@ -1710,7 +1728,10 @@ task_icon_append_item (TaskIcon      *icon,
       g_free (name);
       g_free (uid);
     }    
-    task_icon_set_icon_pixbuf (icon,item);
+    if (!priv->icon || priv->disable_icon_changes)
+    {
+      task_icon_set_icon_pixbuf (icon,item);
+    }
   }
   
   priv->items = g_slist_append (priv->items, item);
@@ -1720,7 +1741,6 @@ task_icon_append_item (TaskIcon      *icon,
   g_object_weak_ref (G_OBJECT (item), (GWeakNotify)_destroyed_task_item, icon);
 
   task_item_set_task_icon (item, icon);
-
   task_icon_refresh_visible (icon);
 
   /* Connect item signals */
@@ -1753,6 +1773,7 @@ task_icon_append_item (TaskIcon      *icon,
     task_icon_schedule_geometry_refresh (icon);
   }
   task_icon_search_main_item (icon,item);
+  g_debug ("%s: main_item = %p",__func__,priv->main_item);
 }
 
 void
@@ -1798,41 +1819,10 @@ task_icon_refresh_icon (TaskIcon *icon, guint size)
   priv = icon->priv;
 
   awn_themed_icon_set_size (AWN_THEMED_ICON (icon),size);
-  if (priv->items && priv->items->data)
-  {
-    if (priv->icon && task_icon_contains_launcher (icon) )
-    {
-      const gchar * state;
-      g_object_unref (priv->icon);
-      /*
-       Check the awn-them for our customized icon name.  If it's present then
-       use that... otherwise use the standard name.  This just allows us to 
-       minimized the risk (to about zero) of name collisions with applets using
-       awn-theme.  Basically customization of launcher icons in taskmanager 
-       should not effect the themed icons used by applets.
-       */
-      if (gtk_icon_theme_has_icon(awn_themed_icon_get_awn_theme (AWN_THEMED_ICON(icon)),
-                                  priv->custom_name) )
-      {
-        state = "::no_drop::customized";
-      }
-      else
-      {
-        state = "::no_drop::desktop";
-      }
-      priv->icon = awn_themed_icon_get_icon_at_size (AWN_THEMED_ICON(icon),
-                                                  size,
-                                                  state);
-    }
-    else
-    {
-      task_icon_set_icon_pixbuf (icon, priv->items->data);
-    }
 #ifdef DEBUG
     g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 #endif
-    awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
-  }
+  awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
 }
 
 /*

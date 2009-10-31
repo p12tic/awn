@@ -480,6 +480,7 @@ on_window_icon_changed (WnckWindow *wnckwin, TaskWindow *window)
   g_return_if_fail (TASK_IS_WINDOW (window));
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
 
+  g_debug ("%s",__func__);
   priv = window->priv;
   
   pixbuf = _wnck_get_icon_at_size (wnckwin, s->panel_size, s->panel_size);
