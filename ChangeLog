@@ -1,5 +1,10 @@
 2009-10-31  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-effects-ops-new.c:
+	Disable the warning.
+
+2009-10-31  Michal Hruby  <michal.mhr@gmail.com>
+
 	* Makefile.am:
 	* applet-activation/main.c:
 	* applets/expander/applet.c:

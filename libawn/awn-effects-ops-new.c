@@ -444,7 +444,7 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
           break;
         }
         default:
-          g_warn_if_reached ();
+          // we're here if user isn't using valid png / doesn't want arrows
           break;
       }
     }
