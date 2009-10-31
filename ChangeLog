@@ -1,5 +1,11 @@
 2009-10-31  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-background.c:
+	* src/awn-separator.c:
+	Change separator color when gtk theme is changed.
+
+2009-10-31  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-effects-ops-new.c:
 	Disable the warning.
 

@@ -747,10 +747,6 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
 {
   DesktopAgnosticConfigClient *client = bg->client;
   GtkStyle        *style;
-  /*
-  DesktopAgnosticColor *sep_color;
-  GValue sep_color_val = {0};
-  */
 
   // try to get values which are set for the Panel, so we look like panel
   GtkSettings *settings = gtk_settings_get_default ();
@@ -776,6 +772,9 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
   set_cfg_from_theme (&style->base[GTK_STATE_ACTIVE], 100,
                       client, AWN_THEME_HILIGHT);
 
+  set_cfg_from_theme (&style->base[GTK_STATE_ACTIVE], 128,
+                      client, AWN_THEME_SEP_COLOR);
+
   /* Don't draw patterns */
   desktop_agnostic_config_client_set_bool (client,
                                            AWN_GROUP_THEME,
@@ -787,17 +786,6 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
                                            AWN_GROUP_THEME,
                                            AWN_THEME_SHOW_SEP,
                                            TRUE, NULL);
-  /*
-  sep_color = desktop_agnostic_color_new_from_string ("#FFFFFF00", NULL);
-  g_value_init (&sep_color_val, DESKTOP_AGNOSTIC_TYPE_COLOR);
-  g_value_set_object (&sep_color_val, sep_color);
-  desktop_agnostic_config_client_set_value (client,
-                                            AWN_GROUP_THEME,
-                                            AWN_THEME_SEP_COLOR,
-                                            &sep_color_val, NULL);
-  g_value_unset (&sep_color_val);
-  g_object_unref (sep_color);
-  */
 
   /* Misc settings */
 }

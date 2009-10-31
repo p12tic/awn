@@ -153,6 +153,12 @@ awn_separator_finalize (GObject *object)
                                                           object, NULL);
   }
 
+  if (priv->sep_color)
+  {
+    g_object_unref (priv->sep_color);
+    priv->sep_color = NULL;
+  }
+
   G_OBJECT_CLASS (awn_separator_parent_class)->finalize (object);
 }
 
@@ -217,6 +223,9 @@ awn_separator_expose (GtkWidget *widget, GdkEventExpose *event)
       orient = GTK_ORIENTATION_VERTICAL;
       break;
   }
+
+  // pixel perfection
+  cairo_translate (cr, 0.5, 0.5);
 
   // TODO: switch (style)
   if (orient == GTK_ORIENTATION_HORIZONTAL)
