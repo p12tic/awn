@@ -290,7 +290,7 @@ per_instance = false
 
 [theme/sep_color]
 type = color
-default = #FFFFFF00
+default = #AAAAAA64
 _description=Separator color.
 per_instance = false
 
