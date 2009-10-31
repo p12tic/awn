@@ -1,3 +1,8 @@
+2009-10-31  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-applet.c:
+	Don't destroy the about dialog when it is closed.
+
 2009-10-31  Michal Hruby  <michal.mhr@gmail.com>
 
 	* data/avant-window-navigator.schema-ini.in.in:

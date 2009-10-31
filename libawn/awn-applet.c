@@ -1024,7 +1024,7 @@ _cleanup_about_dialog (GtkWidget *widget,
                        GdkEvent  *event,
                        GtkWidget *dialog)
 {
-  gtk_widget_destroy (dialog);
+  gtk_widget_hide (dialog);
   return FALSE;
 }
 
