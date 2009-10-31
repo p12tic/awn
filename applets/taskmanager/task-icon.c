@@ -125,7 +125,7 @@ struct _TaskIconPrivate
   
   /*prop*/
   gboolean  enable_long_press;
-  gboolean  disable_icon_changes;
+  gint      icon_change_behavior;
   gint      desktop_copy;
   
   gboolean  long_press;     /*set to TRUE when there has been a long press so the clicked event can be ignored*/
@@ -142,7 +142,7 @@ enum
   PROP_MAX_INDICATORS,
   PROP_TXT_INDICATOR_THRESHOLD,
   PROP_USE_LONG_PRESS,
-  PROP_DISABLE_ICON_CHANGES,
+  PROP_ICON_CHANGE_BEHAVIOR,
   PROP_DESKTOP_COPY
 };
 
@@ -283,8 +283,8 @@ task_icon_get_property (GObject    *object,
     case PROP_USE_LONG_PRESS:
       g_value_set_boolean (value, priv->enable_long_press);
       break;
-    case PROP_DISABLE_ICON_CHANGES:
-      g_value_set_boolean (value, priv->disable_icon_changes);
+    case PROP_ICON_CHANGE_BEHAVIOR:
+      g_value_set_int (value, priv->icon_change_behavior);
       break;
     case PROP_DRAG_AND_DROP_HOVER_DELAY:
       g_value_set_int (value, priv->drag_and_drop_hover_delay);
@@ -337,9 +337,9 @@ task_icon_set_property (GObject      *object,
                     object);
       }      
       break;
-    case PROP_DISABLE_ICON_CHANGES:
-      icon->priv->disable_icon_changes = g_value_get_boolean (value);
-      task_icon_set_icon_pixbuf (TASK_ICON(object),icon->priv->main_item);      
+    case PROP_ICON_CHANGE_BEHAVIOR:
+      icon->priv->icon_change_behavior = g_value_get_int (value);
+      task_icon_set_icon_pixbuf (TASK_ICON(object),icon->priv->main_item);
       if (icon->priv->icon)
       {
         awn_icon_set_from_pixbuf (AWN_ICON (object), icon->priv->icon);
@@ -498,8 +498,8 @@ task_icon_constructed (GObject *object)
     return;
   }
   
-  if (!do_bind_property (priv->client, "disable_icon_changes", object,
-                         "disable_icon_changes"))
+  if (!do_bind_property (priv->client, "icon_change_behavior", object,
+                         "icon_change_behavior"))
   {
     return;
   }
@@ -715,12 +715,14 @@ task_icon_class_init (TaskIconClass *klass)
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_USE_LONG_PRESS, pspec);
   
-  pspec = g_param_spec_boolean ("disable_icon_changes",
+  pspec = g_param_spec_int ("icon_change_behavior",
                                 "Disable Icon Changes",
                                 "Disable Icon Changes by App",
-                                FALSE,
+                                0,
+                                2,
+                                0,
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
-  g_object_class_install_property (obj_class, PROP_DISABLE_ICON_CHANGES, pspec);
+  g_object_class_install_property (obj_class, PROP_ICON_CHANGE_BEHAVIOR, pspec);
 
   pspec = g_param_spec_int ("drag_and_drop_hover_delay",
                             "Drag and drop hover delay",
@@ -882,16 +884,16 @@ on_main_item_icon_changed (TaskItem   *item,
   g_return_if_fail (TASK_IS_ICON (icon));
   g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
 
-  g_debug ("%s",__func__);
   priv = icon->priv;
 #ifdef DEBUG
   g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(pixbuf), gdk_pixbuf_get_height(pixbuf));
 #endif
-  if (!priv->disable_icon_changes )
+  if ( (priv->icon_change_behavior==0) || 
+      (priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && task_window_use_win_icon(TASK_WINDOW(item))))
   {
-    g_debug ("setting icon %s",__func__);
     g_object_unref (priv->icon);
     priv->icon = pixbuf;
+    g_debug ("%s:  %s, %p",__func__,task_item_get_name(item),priv->icon);    
     g_object_ref (priv->icon);
     awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
   }
@@ -908,12 +910,12 @@ on_desktop_icon_changed (TaskItem   *item,
   g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
 
   priv = icon->priv;
-
-  if (priv->disable_icon_changes || TASK_IS_LAUNCHER (priv->main_item) )
+  if ( (priv->icon_change_behavior==2) || TASK_IS_LAUNCHER (priv->main_item) ||
+      (priv->icon_change_behavior==1 && TASK_IS_WINDOW(priv->main_item) && !task_window_use_win_icon(TASK_WINDOW(priv->main_item))))
   {
     g_object_unref (priv->icon);
-    g_debug ("setting icon %s",__func__);
     priv->icon = pixbuf;
+    g_debug ("%s: %s, %p",__func__,task_item_get_name(item),priv->icon);    
     g_object_ref (priv->icon);
     awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
   }
@@ -1179,10 +1181,9 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
      task_icon_set_icon_pixbuf does _not_ actually change the displayed icon,
      only (potentially) the value of priv->icon.
      */
-    g_debug ("%s:  main item changed: %p to %p",__func__,main_item,old_main_item);
     task_icon_set_icon_pixbuf (icon,main_item);
   }
-  
+
   /*
    Assuming we have a main_item
    */
@@ -1201,11 +1202,10 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
     if (!priv->icon)
     {
       task_icon_set_icon_pixbuf (icon,main_item);
+      /*
+       Set the displayed pixbuf
+       */
     }
-    /*
-     Set the displayed pixbuf
-     */
-    g_debug ("%s",__func__);
     awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
     awn_icon_set_tooltip_text (AWN_ICON (icon), 
                                task_item_get_name (priv->main_item));
@@ -1613,8 +1613,8 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   g_return_if_fail (TASK_IS_ICON (icon) );
   priv = icon->priv;  
 
-  g_debug ("%s",__func__);
-  if ( !item ||  ( TASK_IS_WINDOW(item) && priv->disable_icon_changes) )
+  if ( !item ||  ( priv->icon_change_behavior==2) ||
+      (priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && !task_window_use_win_icon(TASK_WINDOW(item))))
   {
     TaskItem * launcher = task_icon_get_launcher (icon);
     if (launcher)
@@ -1633,16 +1633,15 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
     if (priv->icon)
     {
       g_object_unref (priv->icon);
-    }
-    g_debug ("setting to window %s",__func__);
+    } 
     priv->icon = task_item_get_icon (item);
     g_object_ref (priv->icon);
+    awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);    
   }
   else if (priv->custom_name)
   {
     gint size;
     const gchar * state;
-    
     g_object_get (priv->applet,
                   "size",&size,
                   NULL);    
@@ -1660,14 +1659,20 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
     {
       state = "::no_drop::desktop";
     }    
-    g_debug ("setting to themed icon %s",__func__);    
     priv->icon = awn_themed_icon_get_icon_at_size (AWN_THEMED_ICON(icon),
                                                   size,
                                                   state);
-#ifdef DEBUG
-    g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
-#endif    
   }
+}
+
+static gboolean
+_refresh_icon (TaskIcon * icon)
+{
+  TaskIconPrivate *priv;
+  
+  priv = icon->priv;
+  awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
+  return FALSE;
 }
 
 /**
@@ -1679,7 +1684,6 @@ task_icon_append_item (TaskIcon      *icon,
 {
   TaskIconPrivate *priv;
 
-  g_debug ("%s: window = %d",__func__,TASK_IS_WINDOW(item));
   g_assert (item);
   g_assert (icon);
   g_return_if_fail (TASK_IS_ICON (icon));
@@ -1728,10 +1732,6 @@ task_icon_append_item (TaskIcon      *icon,
       g_free (name);
       g_free (uid);
     }    
-    if (!priv->icon || priv->disable_icon_changes)
-    {
-      task_icon_set_icon_pixbuf (icon,item);
-    }
   }
   
   priv->items = g_slist_append (priv->items, item);
@@ -1773,7 +1773,13 @@ task_icon_append_item (TaskIcon      *icon,
     task_icon_schedule_geometry_refresh (icon);
   }
   task_icon_search_main_item (icon,item);
-  g_debug ("%s: main_item = %p",__func__,priv->main_item);
+  /*
+   when the task manager is first started up, we don't get the window icons we
+   want from wnck.*/
+  if (priv->icon_change_behavior <2)
+  {
+    g_idle_add ((GSourceFunc) _refresh_icon,icon);
+  }
 }
 
 void

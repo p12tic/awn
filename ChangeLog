@@ -1,5 +1,15 @@
 2009-10-30  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+	Laid the foundation for the intermediary mode of icon change behaviour.
+	Renamed name from disable_icon_changes to icon_change_behavior. Type is int.
+
+2009-10-30  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-window.c:
 	Fixes the issues with disable_icon_changes = false and certain

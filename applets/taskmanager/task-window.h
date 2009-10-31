@@ -128,5 +128,7 @@ void            task_window_set_icon_geometry (TaskWindow     *window,
 
 gboolean        task_window_get_is_running    (TaskWindow     *window);
 
+gboolean        task_window_use_win_icon      (TaskWindow * item);
+
 #endif /* _TASK_WINDOW_H_ */
 

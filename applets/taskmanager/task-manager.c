@@ -409,7 +409,7 @@ task_manager_constructed (GObject *object)
   g_signal_connect (priv->screen,"active-window-changed",
                     G_CALLBACK(task_manager_active_window_changed_cb),object);
   g_signal_connect (priv->screen,"active-workspace-changed",
-                    G_CALLBACK(task_manager_active_workspace_changed_cb),object);
+                    G_CALLBACK(task_manager_active_workspace_changed_cb),object);  
 }
 
 static void
@@ -1715,10 +1715,8 @@ process_window_opened (WnckWindow    *window,
                               "animation-end", 
                               G_CALLBACK (on_icon_effects_ends), 
                               icon);
-
     update_icon_visible (manager, TASK_ICON (icon));
   }
-
 }
   
 static gboolean

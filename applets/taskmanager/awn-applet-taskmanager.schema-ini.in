@@ -18,11 +18,6 @@ type = integer
 default = 4
 _description=Number of seconds to inhibit autohide when a application requests attention. A value of 0 disables.
 
-[DEFAULT/disable_icon_changes]
-type = boolean
-default = true
-_description=Disables changing of panel icon when app indicates icon change.
-
 [DEFAULT/drag_and_drop]
 type = boolean
 default = false
@@ -47,6 +42,11 @@ _description=Enable long press to open Dialog.
 type = boolean
 default = true
 _description=Enabling group of tasks.
+
+[DEFAULT/icon_change_behavior]
+type = integer
+default = 0
+_description= Controls the display of window icons in the Task Icon. 0) Alway display application provided window icons when window is active. 1) Attempt to only display application provided icons when they are likely to provide useful/context info. 2) Ignore all application provide icons and only display the Lauuncher icon
 
 [DEFAULT/intellihide]
 type = boolean
