@@ -1,3 +1,10 @@
+2009-11-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	* src/xutils.c:
+	* src/xutils.h:
+	Fix issues with drag proxying.
+
 2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

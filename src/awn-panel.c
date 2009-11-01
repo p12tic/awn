@@ -381,10 +381,11 @@ awn_panel_set_drag_proxy (AwnPanel *panel, gboolean check_mouse_pos)
     gdk_window_get_origin (it_window, &win_x, &win_y);
     gdk_window_get_geometry (it_window, NULL, NULL, &win_w, &win_h, NULL);
 
-    // if mouse in
+    // if mouse in, and window is not minimized
     if (mouse_x >= win_x && mouse_x < win_x + win_w &&
         mouse_y >= win_y && mouse_y < win_y + win_h &&
-        gdk_window_is_visible (it_window))
+        gdk_window_is_visible (it_window) &&
+        xutils_is_window_minimized (it_window) == FALSE)
     {
       window = g_object_ref (it_window);
       // no break so we unref all other windows

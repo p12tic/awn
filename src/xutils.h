@@ -39,6 +39,8 @@ GdkRegion* xutils_get_input_shape (GdkWindow *window);
 
 GdkWindow* xutils_get_window_at_pointer (GdkDisplay *gdk_display);
 
+gboolean   xutils_is_window_minimized (GdkWindow *window);
+
 G_END_DECLS
 
 #endif /* WNCK_XUTILS_H */

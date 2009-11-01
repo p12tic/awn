@@ -172,3 +172,45 @@ xutils_get_window_at_pointer (GdkDisplay *display)
   return result;
 }
 
+gboolean
+xutils_is_window_minimized (GdkWindow *window)
+{
+  gboolean result = FALSE;
+
+  g_return_val_if_fail (GDK_IS_WINDOW (window), FALSE);
+
+  Atom type;
+  int format;
+  gulong nitems;
+  gulong bytes_after;
+  gulong *num;
+  Atom wm_state = gdk_x11_atom_to_xatom (
+      gdk_atom_intern_static_string ("WM_STATE"));
+
+  gdk_error_trap_push ();
+  type = None;
+  XGetWindowProperty (GDK_WINDOW_XDISPLAY (window),
+                      GDK_WINDOW_XWINDOW (window),
+                      wm_state,
+                      0,G_MAXLONG,
+                      False, wm_state, &type, &format, &nitems,
+                      &bytes_after, (void*)&num);
+
+  if (gdk_error_trap_pop ())
+  {
+    return FALSE;
+  }
+
+  if (type != wm_state)
+  {
+    XFree (num);
+    return FALSE;
+  }
+
+  result = *num == IconicState;
+
+  XFree (num);
+
+  return result;
+}
+
