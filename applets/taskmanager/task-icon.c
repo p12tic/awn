@@ -982,7 +982,6 @@ on_main_item_icon_changed (TaskItem   *item,
   if ( (priv->icon_change_behavior==0 && task_window_use_win_icon(TASK_WINDOW(item))!=USE_NEVER) || 
       (priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && (priv->icon || task_window_use_win_icon(TASK_WINDOW(item))==USE_ALWAYS)))
   {
-    g_assert (icon->priv->main_item == item);
     task_icon_set_icon_pixbuf (TASK_ICON(icon),priv->main_item);    
   }
 }
