@@ -1,3 +1,8 @@
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Update the icon on scroll events.
+
 2009-11-01  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:

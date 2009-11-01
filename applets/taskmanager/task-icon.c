@@ -2117,6 +2117,7 @@ task_icon_scroll_event (GtkWidget *widget, GdkEventScroll *event, TaskIcon *icon
       } while ( TASK_IS_LAUNCHER (cur_item->data) && (count <= g_slist_length(priv->items)) );
       priv->main_item = cur_item->data;
       task_window_activate (TASK_WINDOW(priv->main_item),event->time);
+      task_icon_set_icon_pixbuf (TASK_ICON(icon),priv->main_item);
       return TRUE;
     }
   }
