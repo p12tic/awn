@@ -76,6 +76,7 @@ struct _TaskWindowPrivate
   GtkWidget *name;    /*name label*/
   GtkWidget *image;   /*placed in button (TaskItem) with label*/
 
+  /*number of application initiated icon changes*/
   guint     icon_changes;
 };
 
@@ -125,6 +126,7 @@ static void   _active_window_changed  (WnckScreen *screen,
                                       WnckWindow *previously_active_window,
                                       TaskWindow * item);
 
+static void   theme_changed_cb (GtkIconTheme *icon_theme,TaskWindow * window);
 
 /* GObject stuff */
 static void
@@ -225,7 +227,10 @@ task_window_constructed (GObject *object)
   }
   g_signal_connect (wnck_screen_get_default(),"active-window-changed",
                     G_CALLBACK(_active_window_changed),object);
-  
+  g_signal_connect(G_OBJECT(gtk_icon_theme_get_default()),
+                   "changed",
+                   G_CALLBACK(theme_changed_cb),object);
+
   if (!do_bind_property (awn_config_get_default_for_applet (priv->applet, NULL), "activate_behavior", object,
                          "activate_behavior"))
   {
@@ -265,7 +270,9 @@ task_window_finalize (GObject *object)
                                        G_CALLBACK (_active_window_changed), 
                                        object);
   g_free (priv->special_id);
-  
+  g_signal_handlers_disconnect_by_func (G_OBJECT(gtk_icon_theme_get_default()),
+                          G_CALLBACK(theme_changed_cb),object);  
+
   G_OBJECT_CLASS (task_window_parent_class)->finalize (object);
   
 }
@@ -1079,6 +1086,27 @@ _get_image_widget (TaskItem *item)
   return priv->image;
 }
 
+static void
+theme_changed_cb (GtkIconTheme *icon_theme,TaskWindow * window)
+{
+  TaskWindowPrivate *priv;
+  
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  priv = window->priv;
+  /*
+   When a theme changes the icon changes.  However  icon_changes is a 
+   count of app initiated changes.  so the theme change shouldn't count
+
+   Get a bunch of these signals on startup... ignore them.
+   This check has to do with how some signals fire when doing things like a
+   make install.
+   */
+  if ( priv->icon_changes>0 && priv->icon_changes<3 )
+  {
+    priv->icon_changes--;
+    task_item_emit_icon_changed (TASK_ITEM (window), _get_icon (TASK_ITEM(window)));
+  }
+}
 
 static void
 _left_click (TaskItem *item, GdkEventButton *event)
