@@ -17,7 +17,6 @@
  *
  */
 
-#include "awn-box.h"
 #include "awn-icon-box.h"
 #include "awn-icon.h"
 #include "awn-utils.h"

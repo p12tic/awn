@@ -487,7 +487,7 @@
 				<interface name="AwnOverlayable"/>
 			</implements>
 			<method name="get_icon" symbol="awn_applet_simple_get_icon">
-				<return-type type="GtkWidget*"/>
+				<return-type type="AwnIcon*"/>
 				<parameters>
 					<parameter name="applet" type="AwnAppletSimple*"/>
 				</parameters>

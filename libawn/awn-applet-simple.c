@@ -498,12 +498,12 @@ awn_applet_simple_get_progress (AwnAppletSimple  *applet)
   return 0.0f;
 }
 
-GtkWidget *  
+AwnIcon *  
 awn_applet_simple_get_icon (AwnAppletSimple  *applet)
 {
   g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), NULL);
 
-  return applet->priv->icon;
+  return AWN_ICON (applet->priv->icon);
 }
 
 void  

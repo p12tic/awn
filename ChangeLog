@@ -1,5 +1,16 @@
 2009-11-01  Michal Hruby  <michal.mhr@gmail.com>
 
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-icon-box.h:
+	Change AwnAppletSimple.get_icon method to return AwnIcon.
+
+2009-11-01  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-panel.c:
 	* src/xutils.c:
 	* src/xutils.h:

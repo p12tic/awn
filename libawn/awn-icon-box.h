@@ -24,6 +24,7 @@
 
 #include "awn-defines.h"
 #include "awn-applet.h"
+#include "awn-box.h"
 
 G_BEGIN_DECLS
 

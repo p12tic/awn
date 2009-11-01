@@ -23,7 +23,7 @@
 #include <gtk/gtk.h>
 
 #include "awn-applet.h"
-#include "awn-effects.h"
+#include "awn-icon.h"
 
 G_BEGIN_DECLS
 
@@ -112,7 +112,7 @@ void          awn_applet_simple_set_progress     (AwnAppletSimple  *applet,
 
 gfloat        awn_applet_simple_get_progress     (AwnAppletSimple  *applet);
 
-GtkWidget *   awn_applet_simple_get_icon         (AwnAppletSimple  *applet);
+AwnIcon *     awn_applet_simple_get_icon         (AwnAppletSimple  *applet);
 
 void          awn_applet_simple_set_effect       (AwnAppletSimple  *applet,
                                                   AwnEffect         effect);

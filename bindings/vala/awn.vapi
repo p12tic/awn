@@ -118,7 +118,7 @@ namespace Awn {
 	public class AppletSimple : Awn.Applet, Atk.Implementor, Gtk.Buildable, Awn.Overlayable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public AppletSimple (string canonical_name, string uid, int panel_id);
-		public unowned Gtk.Widget get_icon ();
+		public unowned Awn.Icon get_icon ();
 		public unowned string get_message ();
 		public float get_progress ();
 		public unowned string get_tooltip_text ();

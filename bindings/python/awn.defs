@@ -528,7 +528,7 @@
 (define-method get_icon
   (of-object "AwnAppletSimple")
   (c-name "awn_applet_simple_get_icon")
-  (return-type "GtkWidget*")
+  (return-type "AwnIcon*")
 )
 
 (define-method set_effect
