@@ -1689,9 +1689,12 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
       ( priv->icon_change_behavior==2)
     )
   {
-    if (launcher)
+    if ( TASK_IS_WINDOW(item) && task_window_use_win_icon(TASK_WINDOW(item))!=USE_NEVER)
     {
-      item = launcher;
+      if (launcher)
+      {
+        item = launcher;
+      }
     }
   }
 
@@ -1793,6 +1796,9 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
         }
       }
       awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
+      g_object_set (G_OBJECT (icon->priv->overlay_app_icon),
+            "active",FALSE,
+            NULL);
     }
   }
 }

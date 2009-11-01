@@ -1,5 +1,12 @@
 2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/util.c:
+	Make sure that the demons of OO are exorcised.
+	Shut off some debugs.
+
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
   	* applets/taskmanager/util.c:
 	Fixes ugly icon used by OO when opening through a file manager.
