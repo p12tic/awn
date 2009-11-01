@@ -130,6 +130,11 @@ struct _TaskIconPrivate
   
   gboolean  long_press;     /*set to TRUE when there has been a long press so the clicked event can be ignored*/
   gchar * custom_name;
+
+  AwnOverlayPixbuf  * overlay_app_icon;
+  gboolean  overlay_application_icons;
+  gdouble   overlay_application_icons_scale;
+  gdouble   overlay_application_icons_alpha;
 };
 
 enum
@@ -143,7 +148,10 @@ enum
   PROP_TXT_INDICATOR_THRESHOLD,
   PROP_USE_LONG_PRESS,
   PROP_ICON_CHANGE_BEHAVIOR,
-  PROP_DESKTOP_COPY
+  PROP_DESKTOP_COPY,
+  PROP_OVERLAY_APPLICATION_ICONS,
+  PROP_OVERLAY_APPLICATION_ICONS_SCALE,
+  PROP_OVERLAY_APPLICATION_ICONS_ALPHA  
 };
 
 enum
@@ -289,6 +297,15 @@ task_icon_get_property (GObject    *object,
     case PROP_DRAG_AND_DROP_HOVER_DELAY:
       g_value_set_int (value, priv->drag_and_drop_hover_delay);
       break;
+    case PROP_OVERLAY_APPLICATION_ICONS:
+      g_value_set_boolean (value,priv->overlay_application_icons);
+      break;
+    case PROP_OVERLAY_APPLICATION_ICONS_SCALE:
+      g_value_set_double (value,priv->overlay_application_icons_scale);
+      break;
+    case PROP_OVERLAY_APPLICATION_ICONS_ALPHA:
+      g_value_set_double (value,priv->overlay_application_icons_alpha);
+      break;      
     case PROP_DESKTOP_COPY:
       g_value_set_int (value, priv->desktop_copy);
       break;      
@@ -346,6 +363,22 @@ task_icon_set_property (GObject      *object,
       break;
     case PROP_DESKTOP_COPY:
       icon->priv->desktop_copy = g_value_get_int (value);
+      break;
+    case PROP_OVERLAY_APPLICATION_ICONS:
+      icon->priv->overlay_application_icons = g_value_get_boolean (value);
+      task_icon_set_icon_pixbuf (icon,icon->priv->main_item);     
+      break;
+    case PROP_OVERLAY_APPLICATION_ICONS_SCALE:
+      icon->priv->overlay_application_icons_scale = g_value_get_double (value);
+      g_object_set (G_OBJECT (icon->priv->overlay_app_icon),
+                "scale",icon->priv->overlay_application_icons_scale,
+                NULL);
+      break;
+    case PROP_OVERLAY_APPLICATION_ICONS_ALPHA:
+      icon->priv->overlay_application_icons_alpha = g_value_get_double (value);
+      g_object_set (G_OBJECT (icon->priv->overlay_app_icon),
+                "alpha",icon->priv->overlay_application_icons_alpha,
+                NULL);
       break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -375,6 +408,11 @@ task_icon_dispose (GObject *object)
   {
     awn_overlayable_remove_overlay (AWN_OVERLAYABLE(object), AWN_OVERLAY(priv->overlay_text));
     priv->overlay_text = NULL;
+  }
+  if (priv->overlay_app_icon)
+  {
+    awn_overlayable_remove_overlay (AWN_OVERLAYABLE(object), AWN_OVERLAY(priv->overlay_app_icon));
+    priv->overlay_app_icon = NULL;
   }
   G_OBJECT_CLASS (task_icon_parent_class)->dispose (object);  
 }
@@ -520,6 +558,24 @@ task_icon_constructed (GObject *object)
 
   if (!do_bind_property (priv->client, "drag_and_drop", object,
                          "draggable"))
+  {
+    return;
+  }
+
+  if (!do_bind_property (priv->client, "overlay_application_icons", object,
+                         "overlay_application_icons"))
+  {
+    return;
+  }
+
+  if (!do_bind_property (priv->client, "overlay_application_icons_scale", object,
+                         "overlay_application_icons_scale"))
+  {
+    return;
+  }
+
+  if (!do_bind_property (priv->client, "overlay_application_icons_alpha", object,
+                         "overlay_application_icons_alpha"))
   {
     return;
   }
@@ -743,7 +799,32 @@ task_icon_class_init (TaskIconClass *klass)
                             DESKTOP_COPY_OWNER,
                             G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_DESKTOP_COPY, pspec);
-  
+
+  pspec = g_param_spec_boolean ("overlay_application_icons",
+                                "overlay_application_icons",
+                                "If a app icon is to be used, overlay instead of replacing launcher icon",
+                                FALSE,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_OVERLAY_APPLICATION_ICONS, pspec);
+
+  pspec = g_param_spec_double ("overlay_application_icons_scale",
+                            "overlay_application_icons_scale",
+                            "scale value for application icon overlays",
+                            0.1,
+                            0.7,
+                            0.5,
+                            G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_OVERLAY_APPLICATION_ICONS_SCALE, pspec);
+
+  pspec = g_param_spec_double ("overlay_application_icons_alpha",
+                            "overlay_application_icons_alpha",
+                            "alpha value for application icon overlays",
+                            0.0,
+                            1.0,
+                            1.0,
+                            G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_OVERLAY_APPLICATION_ICONS_ALPHA, pspec);
+
   /* Install signals */
   _icon_signals[VISIBLE_CHANGED] =
 		g_signal_new ("visible_changed",
@@ -818,6 +899,14 @@ task_icon_init (TaskIcon *icon)
   priv->visible = FALSE;
   priv->overlay_text = NULL;
   priv->ephemeral_count = 0;
+
+  priv->overlay_app_icon = awn_overlay_pixbuf_new ();
+  awn_overlayable_add_overlay (AWN_OVERLAYABLE (icon), 
+                               AWN_OVERLAY (priv->overlay_app_icon));
+  g_object_set (G_OBJECT (priv->overlay_app_icon),
+                "gravity", GDK_GRAVITY_SOUTH_EAST,
+                "active", FALSE,
+                NULL);
   
   awn_icon_set_pos_type (AWN_ICON (icon), GTK_POS_BOTTOM);
 
@@ -1582,10 +1671,14 @@ static void
 task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
 {
   TaskIconPrivate *priv;
+  TaskItem * launcher;
+  GdkPixbuf * launcher_icon = NULL;
+  GdkPixbuf * app_icon = NULL;
   
   g_return_if_fail (TASK_IS_ICON (icon) );
   priv = icon->priv;  
 
+  launcher = task_icon_get_launcher (icon);
   /*
   TODO: document the logic once it's set.
    */
@@ -1596,7 +1689,6 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
       ( priv->icon_change_behavior==2)
     )
   {
-    TaskItem * launcher = task_icon_get_launcher (icon);
     if (launcher)
     {
       item = launcher;
@@ -1610,25 +1702,17 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   
   if (item && TASK_IS_WINDOW(item))
   {
-    if (priv->icon)
-    {
-      g_object_unref (priv->icon);
-    } 
-    priv->icon = task_item_get_icon (item);
-    g_object_ref (priv->icon);
+    app_icon = task_item_get_icon (item);
+    g_object_ref (app_icon);
   }
-  else if (priv->custom_name)
+
+  if (priv->custom_name && launcher)
   {
     gint size;
     const gchar * state;
     g_object_get (priv->applet,
                   "size",&size,
                   NULL);    
-    if (priv->icon)
-    {
-      g_object_unref (priv->icon);
-
-    }          
     if (gtk_icon_theme_has_icon(awn_themed_icon_get_awn_theme (AWN_THEMED_ICON(icon)),
                                 priv->custom_name) )
     {
@@ -1638,13 +1722,78 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
     {
       state = "::no_drop::desktop";
     }    
-    priv->icon = awn_themed_icon_get_icon_at_size (AWN_THEMED_ICON(icon),
+    launcher_icon = awn_themed_icon_get_icon_at_size (AWN_THEMED_ICON(icon),
                                                   size,
                                                   state);
   }
-  if (priv->icon)
+  if (launcher_icon || app_icon)
   {
-    awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
+    if (priv->overlay_application_icons)
+    {
+      if (priv->icon)
+      {
+        g_object_unref(priv->icon);
+        priv->icon = NULL;
+      }      
+      if (TASK_IS_WINDOW(item) && launcher_icon)
+      {
+        priv->icon = launcher_icon;        
+        awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
+        if (app_icon)
+        {
+          g_object_set (G_OBJECT (icon->priv->overlay_app_icon),
+                "pixbuf",app_icon,
+                "active",TRUE,
+                NULL);          
+          g_object_unref (app_icon);
+        }        
+      }
+      else if (TASK_IS_WINDOW(item)) /* if this is true then launcher_icon is NULL*/
+      {
+        priv->icon = app_icon;
+        awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
+        g_object_set (G_OBJECT (icon->priv->overlay_app_icon),
+              "active",FALSE,
+              NULL);          
+      }
+      else /* The item is a Launcher*/
+      {
+        priv->icon = launcher_icon;
+        awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
+        g_object_set (G_OBJECT (icon->priv->overlay_app_icon),
+              "active",FALSE,
+              NULL);
+        if (app_icon)
+        {
+          g_object_unref (app_icon);
+        }
+      }
+    }
+    else
+    {
+      if (priv->icon)
+      {
+        g_object_unref(priv->icon);
+        priv->icon = NULL;
+      }
+      if (TASK_IS_WINDOW (item) )
+      {
+        priv->icon = app_icon;
+        if (launcher_icon)
+        {
+          g_object_unref (launcher_icon);
+        }
+      }
+      else
+      {
+        priv->icon = launcher_icon;
+        if (app_icon)
+        {
+          g_object_unref (launcher_icon);
+        }
+      }
+      awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
+    }
   }
 }
 

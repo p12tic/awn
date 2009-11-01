@@ -78,6 +78,21 @@ type = boolean
 default = false
 _description=Only show and manager launcher windows
 
+[DEFAULT/overlay_application_icons]
+type = boolean
+default = false
+_description= If true then application window icons will be overlayed on the Launcher icon instead of replacing according to the behaviour defined by icon_change_behavior.
+
+[DEFAULT/overlay_application_icons_scale]
+type = float
+default = 0.6
+_description= Controls the size of the overlay if overlay_application_icons is true. Valid range 0.2 to 0.7.
+
+[DEFAULT/overlay_application_icons_alpha]
+type = float
+default = 0.9
+_description= Controls the alpha of the overlay if overlay_application_icons is true. Valid range 0.0 to 1.0.
+
 [DEFAULT/show_all_windows]
 type = boolean
 default = true

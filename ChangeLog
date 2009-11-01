@@ -1,6 +1,13 @@
 2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+  	* applets/taskmanager/task-icon.c:
+	Added overlay_application_icons, overlay_application_icons_scale
+	overlay_application_icons_alpha.
+
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
 	* applets/taskmanager/task-icon.c:
 	* applets/taskmanager/task-manager.c:
 	* applets/taskmanager/task-window.c:
