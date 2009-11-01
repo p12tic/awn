@@ -1,3 +1,8 @@
+2009-10-31  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-applet.c:
+	Make the proper fix for not destroying the about dialog on close.
+
 2009-10-31  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-window.c:

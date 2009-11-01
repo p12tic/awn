@@ -1020,11 +1020,11 @@ _show_about_dialog (GtkMenuItem *menuitem,
 }
 
 static gboolean
-_cleanup_about_dialog (GtkWidget *widget,
+_cleanup_about_dialog (GtkWidget *menuitem,
                        GdkEvent  *event,
                        GtkWidget *dialog)
 {
-  gtk_widget_hide (dialog);
+  gtk_widget_destroy (dialog);
   return FALSE;
 }
 
@@ -1168,6 +1168,8 @@ awn_applet_create_about_item (AwnApplet         *applet,
   g_signal_connect (G_OBJECT (item), "destroy-event",
                     G_CALLBACK (_cleanup_about_dialog), dialog);
   g_signal_connect_swapped (dialog, "response",
+                            G_CALLBACK (gtk_widget_hide), dialog);
+  g_signal_connect_swapped (dialog, "delete-event",
                             G_CALLBACK (gtk_widget_hide), dialog);
   return item;
 }
