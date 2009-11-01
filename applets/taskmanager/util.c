@@ -232,7 +232,7 @@ static  WindowWait windows_to_wait[] =
  */
 static  IconUse icon_regexes[] = 
 {
-  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",NULL,USE_NEVER},
+  {NULL,".*OpenOffice.*",".*VCLSalFrame.*",NULL,USE_NEVER},
   {NULL,"Pidgin","pidgin",NULL,USE_ALWAYS},  
   {NULL,NULL,NULL,NULL,USE_DEFAULT}
 };
@@ -505,6 +505,7 @@ get_special_wait_from_window_data (gchar *res_name, gchar * class_name,const gch
   return FALSE;
 }
 
+#define DEBUG
 WinIconUse
 get_win_icon_use (gchar * cmd,gchar *res_name, gchar * class_name,const gchar *title)
 {
@@ -555,7 +556,7 @@ get_win_icon_use (gchar * cmd,gchar *res_name, gchar * class_name,const gchar *t
   }
   return USE_DEFAULT;
 }
-
+#undef DEBUG
 gchar * 
 get_full_cmd_from_pid (gint pid)
 {

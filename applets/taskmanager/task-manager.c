@@ -1720,6 +1720,7 @@ process_window_opened (WnckWindow    *window,
                               G_CALLBACK (on_icon_effects_ends), 
                               icon);
     update_icon_visible (manager, TASK_ICON (icon));
+    task_icon_refresh_icon (TASK_ICON(icon),awn_applet_get_size(AWN_APPLET(manager)));
   }
 }
   
