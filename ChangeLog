@@ -1,6 +1,15 @@
 2009-10-31  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	Icon theme "change" signals happen at the strangest times.
+	Handle theme change signals in TaskIcon instead of letting
+	AwnThemedIcon code deal with it (if we don't then AwnThemedIcon
+	will set our icon to a the desktop theme icon even when 
+	we want to use the App icon).
+
+2009-10-31  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Further reduction of number of locations where
 	awn_icon_set_from_pixbuf() is called.
 

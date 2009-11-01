@@ -400,6 +400,8 @@ task_icon_finalize (GObject *object)
                           G_CALLBACK (task_icon_active_window_changed), object);
   g_signal_handlers_disconnect_by_func (awn_themed_icon_get_awn_theme (AWN_THEMED_ICON(object)),
                           G_CALLBACK (theme_changed_cb),object);
+  g_signal_handlers_disconnect_by_func (G_OBJECT(gtk_icon_theme_get_default()),
+                          G_CALLBACK(theme_changed_cb),object);  
   g_signal_handlers_disconnect_by_func (wnck_screen_get_default(),
                           G_CALLBACK(window_closed_cb),object);  
   g_signal_handlers_disconnect_by_func (priv->applet,
@@ -463,6 +465,10 @@ task_icon_constructed (GObject *object)
   g_signal_connect(G_OBJECT(awn_themed_icon_get_awn_theme(AWN_THEMED_ICON(object))),
                    "changed",
                    G_CALLBACK(theme_changed_cb),object);
+  g_signal_connect(G_OBJECT(gtk_icon_theme_get_default()),
+                   "changed",
+                   G_CALLBACK(theme_changed_cb),object);
+  
   g_signal_connect (wnck_screen_get_default(),"window-closed",
                     G_CALLBACK(window_closed_cb),object);
   
@@ -907,8 +913,7 @@ on_desktop_icon_changed (TaskItem   *item,
       (priv->icon_change_behavior==1 && TASK_IS_WINDOW(priv->main_item) && !task_window_use_win_icon(TASK_WINDOW(priv->main_item))))
   {
     g_object_unref (priv->icon);
-    priv->icon = pixbuf;
-    g_debug ("%s: %s, %p",__func__,task_item_get_name(item),priv->icon);    
+    priv->icon = pixbuf; 
     g_object_ref (priv->icon);
     awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
   }
