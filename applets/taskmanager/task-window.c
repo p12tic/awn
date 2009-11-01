@@ -64,6 +64,8 @@ struct _TaskWindowPrivate
   gboolean hidden;
   gboolean needs_attention;
   gboolean is_active;
+  gboolean use_win_icon;
+  
   gint     activate_behavior;
   
   GtkWidget         *menu;
@@ -81,7 +83,8 @@ enum
 {
   PROP_0,
   PROP_WINDOW,
-  PROP_ACTIVATE_BEHAVIOR
+  PROP_ACTIVATE_BEHAVIOR,
+  PROP_USE_WIN_ICON
 };
 
 enum
@@ -143,6 +146,10 @@ task_window_get_property (GObject    *object,
     case PROP_ACTIVATE_BEHAVIOR:
       g_value_set_int (value, taskwin->priv->activate_behavior); 
       break;
+
+    case PROP_USE_WIN_ICON:
+      g_value_set_boolean (value, taskwin->priv->use_win_icon); 
+      break;
     
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -167,6 +174,10 @@ task_window_set_property (GObject      *object,
       
     case PROP_ACTIVATE_BEHAVIOR:
       priv->activate_behavior = g_value_get_int (value);
+      break;
+
+    case PROP_USE_WIN_ICON:
+      priv->use_win_icon = g_value_get_boolean (value);
       break;
 
     default:
@@ -359,7 +370,14 @@ task_window_class_init (TaskWindowClass *klass)
                                AWN_ACTIVATE_DEFAULT,
                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_ACTIVATE_BEHAVIOR, pspec);  
-  
+
+  pspec = g_param_spec_boolean ("use_win_icon",
+                               "Use the Applications Window icon",
+                               "Use the Applications Window icon",
+                               FALSE,
+                               G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_USE_WIN_ICON, pspec);  
+
   g_type_class_add_private (obj_class, sizeof (TaskWindowPrivate));
 }
 
@@ -1222,5 +1240,9 @@ _match (TaskItem *item,
 gboolean
 task_window_use_win_icon (TaskWindow * item)
 {
-  return FALSE;
+  TaskWindowPrivate *priv;
+  g_return_val_if_fail (TASK_IS_WINDOW(item),FALSE);
+  priv = item->priv;
+  
+  return priv->use_win_icon;
 }
