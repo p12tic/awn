@@ -1,6 +1,11 @@
 2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	Fix typo.
+
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
 	Change some default values so they get tested.
 
 2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
