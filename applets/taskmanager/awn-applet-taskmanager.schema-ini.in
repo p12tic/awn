@@ -45,7 +45,7 @@ _description=Enabling group of tasks.
 
 [DEFAULT/icon_change_behavior]
 type = integer
-default = 0
+default = 1
 _description= Controls the display of window icons in the Task Icon. 0) Alway display application provided window icons when window is active (except for a very few special cases). 1) Attempt to only display application provided icons when they are likely to provide useful/context info. 2) Ignore all application provide icons and only display the Lauuncher icon
 
 [DEFAULT/intellihide]
@@ -79,18 +79,18 @@ default = false
 _description=Only show and manager launcher windows
 
 [DEFAULT/overlay_application_icons]
-type = boolean
+type = true
 default = false
 _description= If true then application window icons will be overlayed on the Launcher icon instead of replacing according to the behaviour defined by icon_change_behavior.
 
 [DEFAULT/overlay_application_icons_scale]
 type = float
-default = 0.6
+default = 0.5
 _description= Controls the size of the overlay if overlay_application_icons is true. Valid range 0.2 to 0.7.
 
 [DEFAULT/overlay_application_icons_alpha]
 type = float
-default = 0.9
+default = 1.0
 _description= Controls the alpha of the overlay if overlay_application_icons is true. Valid range 0.0 to 1.0.
 
 [DEFAULT/show_all_windows]
