@@ -1638,7 +1638,7 @@ _refresh_icon (TaskIcon * icon)
   TaskIconPrivate *priv;
   
   priv = icon->priv;
-  awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
+  task_icon_set_icon_pixbuf (icon,priv->main_item);
   return FALSE;
 }
 

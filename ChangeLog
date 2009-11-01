@@ -1,6 +1,12 @@
 2009-10-31  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	Further reduction of number of locations where
+	awn_icon_set_from_pixbuf() is called.
+
+2009-10-31  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Simplified the icon change code further.
 
 2009-10-31  Mark Lee  <avant-wn@lazymalevolence.com>
