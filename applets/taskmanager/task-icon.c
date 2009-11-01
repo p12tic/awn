@@ -891,7 +891,7 @@ on_main_item_icon_changed (TaskItem   *item,
   g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(pixbuf), gdk_pixbuf_get_height(pixbuf));
 #endif
   if ( (priv->icon_change_behavior==0) || 
-      (priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && task_window_use_win_icon(TASK_WINDOW(item))))
+      (priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && (priv->icon || task_window_use_win_icon(TASK_WINDOW(item)))))
   {
     g_assert (icon->priv->main_item == item);
     task_icon_set_icon_pixbuf (TASK_ICON(icon),priv->main_item);    
@@ -910,7 +910,7 @@ on_desktop_icon_changed (TaskItem   *item,
 
   priv = icon->priv;
   if ( (priv->icon_change_behavior==2) || TASK_IS_LAUNCHER (priv->main_item) ||
-      (priv->icon_change_behavior==1 && TASK_IS_WINDOW(priv->main_item) && !task_window_use_win_icon(TASK_WINDOW(priv->main_item))))
+      (priv->icon_change_behavior==1 && TASK_IS_WINDOW(priv->main_item) && (!priv->icon || !task_window_use_win_icon(TASK_WINDOW(priv->main_item)))))
   {
     g_object_unref (priv->icon);
     priv->icon = pixbuf; 
@@ -1582,8 +1582,11 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   g_return_if_fail (TASK_IS_ICON (icon) );
   priv = icon->priv;  
 
+  /*
+  TODO: document the logic once it's set.
+   */
   if ( !item ||  ( priv->icon_change_behavior==2) ||
-      (priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && !task_window_use_win_icon(TASK_WINDOW(item))))
+      (priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && ( task_window_use_win_icon(TASK_WINDOW(item))?FALSE:(task_window_get_icon_changes(TASK_WINDOW(item))<2))))
   {
     TaskItem * launcher = task_icon_get_launcher (icon);
     if (launcher)
@@ -1635,16 +1638,6 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   {
     awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
   }
-}
-
-static gboolean
-_refresh_icon (TaskIcon * icon)
-{
-  TaskIconPrivate *priv;
-  
-  priv = icon->priv;
-  task_icon_set_icon_pixbuf (icon,priv->main_item);
-  return FALSE;
 }
 
 /**
@@ -1745,13 +1738,7 @@ task_icon_append_item (TaskIcon      *icon,
     task_icon_schedule_geometry_refresh (icon);
   }
   task_icon_search_main_item (icon,item);
-  /*
-   when the task manager is first started up, we don't get the window icons we
-   want from wnck.*/
-  if (priv->icon_change_behavior <2)
-  {
-    g_idle_add ((GSourceFunc) _refresh_icon,icon);
-  }
+  task_icon_set_icon_pixbuf (icon,priv->main_item);
 }
 
 void

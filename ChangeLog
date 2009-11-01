@@ -1,6 +1,15 @@
 2009-10-31  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+	icon_change_behaviour = 1 is now roughly equivalent to
+	the old disable_icon_changes = false.  Need to add
+	special case info capability next.
+
+2009-10-31  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Icon theme "change" signals happen at the strangest times.
 	Handle theme change signals in TaskIcon instead of letting
 	AwnThemedIcon code deal with it (if we don't then AwnThemedIcon

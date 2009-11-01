@@ -73,7 +73,8 @@ struct _TaskWindowPrivate
   GtkWidget *box;
   GtkWidget *name;    /*name label*/
   GtkWidget *image;   /*placed in button (TaskItem) with label*/
-  
+
+  guint     icon_changes;
 };
 
 enum
@@ -397,6 +398,7 @@ task_window_init (TaskWindow *window)
   gtk_box_pack_start (GTK_BOX (priv->box), priv->image, FALSE, FALSE, 0);
   
   priv->name = gtk_label_new ("");
+  priv->icon_changes = 0;
   /*
    TODO once get/set prop is available create this a config key and bind
    */
@@ -499,7 +501,8 @@ on_window_icon_changed (WnckWindow *wnckwin, TaskWindow *window)
   
   gtk_image_set_from_pixbuf (GTK_IMAGE (priv->image), scaled);
   g_object_unref (scaled);
-  
+
+  priv->icon_changes ++;
   task_item_emit_icon_changed (TASK_ITEM (window), pixbuf);
   g_object_unref (pixbuf);
 }
@@ -637,6 +640,17 @@ task_window_get_name (TaskWindow *window)
     return wnck_window_get_name (window->priv->window);
   
   return "";
+}
+
+/*
+ return the total number of icon changes 
+ */
+guint
+task_window_get_icon_changes (TaskWindow * window)
+{
+  g_return_val_if_fail (TASK_IS_WINDOW (window), 0);
+
+  return window->priv->icon_changes;
 }
 
 WnckScreen * 

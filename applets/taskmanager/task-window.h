@@ -130,5 +130,7 @@ gboolean        task_window_get_is_running    (TaskWindow     *window);
 
 gboolean        task_window_use_win_icon      (TaskWindow * item);
 
+guint           task_window_get_icon_changes (TaskWindow * window);
+
 #endif /* _TASK_WINDOW_H_ */
 
