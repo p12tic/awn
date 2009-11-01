@@ -37,6 +37,8 @@
  
       Tool to analyze and special case windows by advanced users ala xprop 
       (point and click) and analyze.
+
+      For 0.6 start making use of WM_WINDOW_ROLE when it is available
  */
 
 static gchar * generate_id_from_cmd(gchar *cmd,gchar *res_name,
@@ -76,6 +78,16 @@ typedef struct
   const gchar * title;
   guint wait;
 }WindowWait;
+
+typedef struct
+{
+  const gchar * cmd;
+  const gchar * res_name;
+  const gchar * class_name;
+  const gchar * title;
+  const WinIconUse  use;
+}IconUse;
+
 
 const gchar * blacklist[] = {"prism",
                        NULL};
@@ -209,6 +221,20 @@ static  WindowWait windows_to_wait[] =
 {
   {".*OpenOffice.*",".*VCLSalFrame.*","^OpenOffice\\.org.*",1000},
   {NULL,NULL,NULL,0}
+};
+
+
+/*
+ Only set something to USE_NEVER if the app sets it to something truly, truly,
+ ugly (There are multiple bug reports about just how ugly it is ), as this will
+ override the display of the app window icon even when the user has configured
+ taskman to always use them.
+ */
+static  IconUse icon_regexes[] = 
+{
+  {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",NULL,USE_NEVER},
+  {NULL,"Pidgin","pidgin",NULL,USE_ALWAYS},  
+  {NULL,NULL,NULL,NULL,USE_DEFAULT}
 };
 
 
@@ -479,6 +505,56 @@ get_special_wait_from_window_data (gchar *res_name, gchar * class_name,const gch
   return FALSE;
 }
 
+WinIconUse
+get_win_icon_use (gchar * cmd,gchar *res_name, gchar * class_name,const gchar *title)
+{
+  IconUse  *iter;
+  for (iter = icon_regexes; iter->use != USE_DEFAULT; iter++)
+  {
+    gboolean  match = TRUE;
+#ifdef DEBUG      
+      g_debug ("%s: iter->cmd = %s, cmd = %s",__func__,iter->cmd,cmd);
+#endif
+    if (iter->cmd)
+    {
+      match = cmd && g_regex_match_simple(iter->cmd, cmd,0,0);
+      if (!match)
+        continue;
+    }
+#ifdef DEBUG      
+      g_debug ("%s: iter->res_name = %s, res_name = %s",__func__,iter->res_name,res_name);
+#endif    
+    if (iter->res_name)
+    {
+      match = res_name && g_regex_match_simple(iter->res_name, res_name,0,0); 
+      if (!match)
+        continue;
+    }
+#ifdef DEBUG      
+      g_debug ("%s: iter->class_name = %s, class_name = %s",__func__,iter->class_name,class_name);
+#endif
+    if (iter->class_name)
+    {
+      match = class_name && g_regex_match_simple(iter->class_name, class_name,0,0);
+      if (!match)
+        continue;
+    } 
+#ifdef DEBUG
+      g_debug ("%s: iter->title = %s, title = %s",__func__,iter->title,title);
+#endif
+    if (iter->title)
+    {
+      match = title && g_regex_match_simple(iter->title, title,0,0);
+      if (!match)
+        continue;
+    }
+#ifdef DEBUG
+    g_debug ("%s: setting to %d for %s",__func__,iter->use,title);
+#endif
+    return iter->use;
+  }
+  return USE_DEFAULT;
+}
 
 gchar * 
 get_full_cmd_from_pid (gint pid)
@@ -516,4 +592,3 @@ check_if_blacklisted (gchar * name)
   }
   return FALSE;
 }
-

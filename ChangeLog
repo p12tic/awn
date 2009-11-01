@@ -1,3 +1,14 @@
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-window.c:
+	* applets/taskmanager/task-window.h:
+	* applets/taskmanager/util.c:
+	* applets/taskmanager/util.h:
+	Ability to special case hints about using app window icon.
+
 2009-10-31  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/awn-applet.c:

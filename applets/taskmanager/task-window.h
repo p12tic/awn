@@ -25,6 +25,7 @@
 #include <libwnck/libwnck.h>
 
 #include "task-item.h"
+#include "util.h"
 
 #define TASK_TYPE_WINDOW (task_window_get_type ())
 
@@ -46,7 +47,7 @@
 typedef struct _TaskWindow        TaskWindow;
 typedef struct _TaskWindowClass   TaskWindowClass;
 typedef struct _TaskWindowPrivate TaskWindowPrivate;
- 
+
 struct _TaskWindow
 {
   TaskItem        parent;	
@@ -128,9 +129,12 @@ void            task_window_set_icon_geometry (TaskWindow     *window,
 
 gboolean        task_window_get_is_running    (TaskWindow     *window);
 
-gboolean        task_window_use_win_icon      (TaskWindow * item);
+WinIconUse      task_window_use_win_icon      (TaskWindow * item);
 
-guint           task_window_get_icon_changes (TaskWindow * window);
+WinIconUse      task_window_get_icon_changes (TaskWindow * window);
+
+void            task_window_set_use_win_icon (TaskWindow * item, WinIconUse win_use);
+
 
 #endif /* _TASK_WINDOW_H_ */
 

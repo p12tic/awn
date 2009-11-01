@@ -20,6 +20,13 @@
 #include <libawn/libawn.h>
 #include <libdesktop-agnostic/fdo.h>
 
+
+typedef enum{
+  USE_DEFAULT=0,
+  USE_ALWAYS=1,
+  USE_NEVER=2
+}WinIconUse;
+
 gchar * get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry *entry);
 
 gchar * get_special_id_from_window_data (gchar * cmd, gchar *res_name, 
@@ -37,4 +44,8 @@ gboolean get_special_wait_from_window_data (gchar *res_name,
                                             gchar * class_name,
                                             const gchar *title);
 
+WinIconUse get_win_icon_use           (gchar * cmd,
+                                       gchar *res_name, 
+                                       gchar * class_name,
+                                       const gchar *title);
 #endif

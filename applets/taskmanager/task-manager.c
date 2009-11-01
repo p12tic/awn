@@ -1692,6 +1692,10 @@ process_window_opened (WnckWindow    *window,
      Possible TODO
      if found and signature has not already been saved then save it.
 */
+    task_window_set_use_win_icon (TASK_WINDOW(item),get_win_icon_use (full_cmd,
+                                                                      res_name,
+                                                                      class_name,
+                                                                      wnck_window_get_name (window)));
     g_free (id);    
     g_free (full_cmd);
     g_free (cmd);     

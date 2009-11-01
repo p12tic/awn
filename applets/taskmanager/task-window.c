@@ -64,7 +64,7 @@ struct _TaskWindowPrivate
   gboolean hidden;
   gboolean needs_attention;
   gboolean is_active;
-  gboolean use_win_icon;
+  gint     use_win_icon;
   
   gint     activate_behavior;
   
@@ -148,7 +148,7 @@ task_window_get_property (GObject    *object,
       break;
 
     case PROP_USE_WIN_ICON:
-      g_value_set_boolean (value, taskwin->priv->use_win_icon); 
+      g_value_set_int (value, taskwin->priv->use_win_icon); 
       break;
     
     default:
@@ -177,7 +177,7 @@ task_window_set_property (GObject      *object,
       break;
 
     case PROP_USE_WIN_ICON:
-      priv->use_win_icon = g_value_get_boolean (value);
+      priv->use_win_icon = g_value_get_int (value);
       break;
 
     default:
@@ -371,10 +371,12 @@ task_window_class_init (TaskWindowClass *klass)
                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_ACTIVATE_BEHAVIOR, pspec);  
 
-  pspec = g_param_spec_boolean ("use_win_icon",
+  pspec = g_param_spec_int ("use_win_icon",
                                "Use the Applications Window icon",
                                "Use the Applications Window icon",
-                               FALSE,
+                                USE_DEFAULT,
+                                USE_NEVER,
+                                0,
                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_USE_WIN_ICON, pspec);  
 
@@ -396,7 +398,8 @@ task_window_init (TaskWindow *window)
   priv->hidden = FALSE;
   priv->needs_attention = FALSE;
   priv->is_active = FALSE;
-  
+  priv->use_win_icon = USE_DEFAULT;
+
   /* let this button listen to every event */
   gtk_widget_add_events (GTK_WIDGET (window), GDK_ALL_EVENTS_MASK);
 
@@ -1234,15 +1237,23 @@ _match (TaskItem *item,
   return 0; 
 }
 
-/* 
- Placeholder for now 
- */
-gboolean
+WinIconUse
 task_window_use_win_icon (TaskWindow * item)
 {
   TaskWindowPrivate *priv;
-  g_return_val_if_fail (TASK_IS_WINDOW(item),FALSE);
+  g_return_val_if_fail (TASK_IS_WINDOW(item),0);
   priv = item->priv;
   
   return priv->use_win_icon;
 }
+
+void
+task_window_set_use_win_icon (TaskWindow * item, WinIconUse win_use)
+{
+  TaskWindowPrivate *priv;
+  g_return_if_fail (TASK_IS_WINDOW(item));
+  priv = item->priv;
+  
+  priv->use_win_icon = win_use;
+}
+  
