@@ -340,10 +340,6 @@ task_icon_set_property (GObject      *object,
     case PROP_ICON_CHANGE_BEHAVIOR:
       icon->priv->icon_change_behavior = g_value_get_int (value);
       task_icon_set_icon_pixbuf (TASK_ICON(object),icon->priv->main_item);
-      if (icon->priv->icon)
-      {
-        awn_icon_set_from_pixbuf (AWN_ICON (object), icon->priv->icon);
-      }
       break;
     case PROP_DRAG_AND_DROP_HOVER_DELAY:
       icon->priv->drag_and_drop_hover_delay = g_value_get_int (value);
@@ -891,11 +887,8 @@ on_main_item_icon_changed (TaskItem   *item,
   if ( (priv->icon_change_behavior==0) || 
       (priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && task_window_use_win_icon(TASK_WINDOW(item))))
   {
-    g_object_unref (priv->icon);
-    priv->icon = pixbuf;
-    g_debug ("%s:  %s, %p",__func__,task_item_get_name(item),priv->icon);    
-    g_object_ref (priv->icon);
-    awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
+    g_assert (icon->priv->main_item == item);
+    task_icon_set_icon_pixbuf (TASK_ICON(icon),priv->main_item);    
   }
 }
 
@@ -1059,8 +1052,7 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
 {
   TaskIconPrivate *priv;
   GSList * i;
-  TaskItem * old_main_item = main_item;
-  
+
   g_return_if_fail (TASK_IS_ICON (icon));
 
   priv = icon->priv;
@@ -1155,7 +1147,7 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
     }
   }
   //remove signals of old main_item
-  if (priv->main_item)
+  if (priv->main_item && ( main_item != priv->main_item) )
   {
     g_signal_handlers_disconnect_by_func(priv->main_item, 
                                          G_CALLBACK (on_main_item_name_changed), icon);
@@ -1167,27 +1159,9 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
   }
 
   /*
-   If the main_item actually changed 
-   */
-  if (main_item && ( (main_item != old_main_item) || (priv->main_item != main_item)) )
-  {
-    /* 
-     Set the task icon.  In most cases the task item will _not_ get set to 
-     what the main_item icon is unless main_item is the TaskLauncher or there
-     is not TaskLauncher.
-     The icon only gets set to the TaskWindows icons when there is no TaskLauncher 
-     _or_ the Windows specifically change their icons to indicate specific 
-     information.
-     task_icon_set_icon_pixbuf does _not_ actually change the displayed icon,
-     only (potentially) the value of priv->icon.
-     */
-    task_icon_set_icon_pixbuf (icon,main_item);
-  }
-
-  /*
    Assuming we have a main_item
    */
-  if (main_item)
+  if (main_item && ( main_item != priv->main_item) )
   {
     /*
      Set the TaskIcon to the Icon associated with the main_item.
@@ -1196,18 +1170,8 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
 #ifdef DEBUG
     g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 #endif
-    /*
-     It's possible priv->icon might be NULL.  Not likely.
-     */
-    if (!priv->icon)
-    {
-      task_icon_set_icon_pixbuf (icon,main_item);
-      /*
-       Set the displayed pixbuf
-       */
-    }
-    awn_icon_set_from_pixbuf (AWN_ICON (icon), priv->icon);
-    awn_icon_set_tooltip_text (AWN_ICON (icon), 
+    task_icon_set_icon_pixbuf (icon,main_item);
+    awn_icon_set_tooltip_text (AWN_ICON (icon),
                                task_item_get_name (priv->main_item));
     /*
      we have callbacks for when the main_item window do things
@@ -1636,7 +1600,6 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
     } 
     priv->icon = task_item_get_icon (item);
     g_object_ref (priv->icon);
-    awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);    
   }
   else if (priv->custom_name)
   {
@@ -1662,6 +1625,10 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
     priv->icon = awn_themed_icon_get_icon_at_size (AWN_THEMED_ICON(icon),
                                                   size,
                                                   state);
+  }
+  if (priv->icon)
+  {
+    awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
   }
 }
 
@@ -1828,7 +1795,7 @@ task_icon_refresh_icon (TaskIcon *icon, guint size)
 #ifdef DEBUG
     g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 #endif
-  awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
+  task_icon_set_icon_pixbuf (icon,priv->main_item);
 }
 
 /*
