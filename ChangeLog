@@ -1,7 +1,13 @@
 2009-11-02  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:
-	* applets/taskmanager/utilh:
+	* applets/taskmanager/task-icon.c:
+	Fix for gimp icon overlay  when it's opened from filemanager.
+	
+2009-11-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	* applets/taskmanager/util.h:
 	* applets/taskmanager/task-icon.c:
 	utils_gdk_pixbuf_similar_to() courtesy of Michal Hruby  
 	<michal.mhr@gmail.com>.

@@ -228,12 +228,14 @@ static  WindowWait windows_to_wait[] =
  Only set something to USE_NEVER if the app sets it to something truly, truly,
  ugly (There are multiple bug reports about just how ugly it is ), as this will
  override the display of the app window icon even when the user has configured
- taskman to always use them.
+ taskman to always use them.  USE_ALWAYS is disregarded (for overlays) if the 
+ icons are sufficiently similar.
  */
 static  IconUse icon_regexes[] = 
 {
   {NULL,".*OpenOffice.*",".*VCLSalFrame.*",NULL,USE_NEVER},
-  {NULL,"Pidgin","pidgin",NULL,USE_ALWAYS},  
+  {NULL,"Pidgin","pidgin",NULL,USE_ALWAYS},
+  {".*gimp.*",".*Gimp.*",".*gimp.*",NULL,USE_ALWAYS},  
   {NULL,NULL,NULL,NULL,USE_DEFAULT}
 };
 

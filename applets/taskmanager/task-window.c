@@ -1100,6 +1100,9 @@ theme_changed_cb (GtkIconTheme *icon_theme,TaskWindow * window)
    Get a bunch of these signals on startup... ignore them.
    This check has to do with how some signals fire when doing things like a
    make install.
+
+   TODO: This could probably be a priv->icon_changes==1. Verify. Leave it like 
+   this for the time being.
    */
   if ( priv->icon_changes>0 && priv->icon_changes<3 )
   {
