@@ -1,5 +1,15 @@
 2009-11-02  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/util.c:
+	* applets/taskmanager/utilh:
+	* applets/taskmanager/task-icon.c:
+	utils_gdk_pixbuf_similar_to() courtesy of Michal Hruby  
+	<michal.mhr@gmail.com>.
+	Allows TaskIcon to determine if an overlay icon is the same
+	as the Launcher Icon.
+
+2009-11-02  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	Fix a problem with errant setting of requires attention under
 	Metacity.

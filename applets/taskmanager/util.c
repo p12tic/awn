@@ -592,3 +592,82 @@ check_if_blacklisted (gchar * name)
   }
   return FALSE;
 }
+
+static gdouble
+compute_mse (GdkPixbuf *i1, GdkPixbuf *i2)
+{
+  int i, j;
+  int width, height, row_stride, has_alpha;
+  guchar *i1_pixels, *i2_pixels;
+  gdouble result = 0.0;
+
+  g_return_val_if_fail (GDK_IS_PIXBUF (i1) && GDK_IS_PIXBUF (i2), 0.0);
+
+  has_alpha = gdk_pixbuf_get_has_alpha(i1);
+  width = gdk_pixbuf_get_width (i1);
+  height = gdk_pixbuf_get_height (i1);
+  row_stride = gdk_pixbuf_get_rowstride (i1);
+
+  g_return_val_if_fail (
+    has_alpha == gdk_pixbuf_get_has_alpha (i2) &&
+    width == gdk_pixbuf_get_width (i2) &&
+    height == gdk_pixbuf_get_height (i2) &&
+    row_stride == gdk_pixbuf_get_rowstride (i2),
+    0.0
+  );
+
+  i1_pixels = gdk_pixbuf_get_pixels (i1);
+  i2_pixels = gdk_pixbuf_get_pixels (i2);
+
+  for (i = 0; i < height; i++)
+  {
+    guchar *it1, *it2;
+    it1 = i1_pixels + i * row_stride;
+    it2 = i2_pixels + i * row_stride;
+    for (j = 0; j < width; j++)
+    {
+      gdouble inc = 0.0;
+      gint delta_r = *(it1++);
+      delta_r -= *(it2++);
+      gint delta_g = *(it1++);
+      delta_g -= *(it2++);
+      gint delta_b = *(it1++);
+      delta_b -= *(it2++);
+      inc += delta_r * delta_r + delta_g * delta_g + delta_b * delta_b;
+      if (has_alpha)
+      {
+        gint delta_alpha = *(it1++) - *(it2++);
+        inc += delta_alpha * delta_alpha;
+      }
+      result += inc;
+    }
+  }
+
+  return result / width / height / (has_alpha ? 4 : 3);
+}
+
+static gdouble
+compute_psnr (gdouble MSE, gint max_val)
+{
+  return 10 * log10 (max_val * max_val / MSE);
+}
+
+gboolean
+utils_gdk_pixbuf_similar_to (GdkPixbuf *i1, GdkPixbuf *i2)
+{
+  gdouble MSE = compute_mse (i1, i2);
+
+  if (MSE < 0.01)
+  {
+#ifdef DEBUG
+    g_debug ("Same images...");
+#endif
+    return TRUE;
+  }
+
+  gdouble PSNR = compute_psnr (MSE, 255);
+#ifdef DEBUG
+  g_debug ("PSNR: %g", PSNR);
+#endif
+  return PSNR >= 9.5;
+}

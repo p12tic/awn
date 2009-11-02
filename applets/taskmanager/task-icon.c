@@ -1731,24 +1731,32 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   if (launcher_icon || app_icon)
   {
     if (priv->overlay_application_icons)
-    {
+    { 
       if (priv->icon)
       {
         g_object_unref(priv->icon);
         priv->icon = NULL;
-      }      
+      }
+      /* We have a TaskWindows _and_ a launcher icon*/
       if (TASK_IS_WINDOW(item) && launcher_icon)
       {
         priv->icon = launcher_icon;        
         awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
-        if (app_icon)
+        if (app_icon && 
+            utils_gdk_pixbuf_similar_to (launcher_icon, app_icon) == FALSE)
         {
           g_object_set (G_OBJECT (icon->priv->overlay_app_icon),
                 "pixbuf",app_icon,
                 "active",TRUE,
                 NULL);          
           g_object_unref (app_icon);
-        }        
+        }
+        else
+        {
+          g_object_set (G_OBJECT (icon->priv->overlay_app_icon),
+                "active",FALSE,
+                NULL);          
+        }
       }
       else if (TASK_IS_WINDOW(item)) /* if this is true then launcher_icon is NULL*/
       {

@@ -48,4 +48,7 @@ WinIconUse get_win_icon_use           (gchar * cmd,
                                        gchar *res_name, 
                                        gchar * class_name,
                                        const gchar *title);
+
+gboolean utils_gdk_pixbuf_similar_to (GdkPixbuf *i1, GdkPixbuf *i2);
+
 #endif
