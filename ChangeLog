@@ -1,3 +1,9 @@
+2009-11-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix a problem with errant setting of requires attention under
+	Metacity.
+
 2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

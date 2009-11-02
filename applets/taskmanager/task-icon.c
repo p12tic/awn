@@ -1997,7 +1997,7 @@ task_icon_minimize_group(TaskIcon * icon,TaskWindow * window)
 {
   g_return_if_fail (TASK_IS_WINDOW(window));
   g_return_if_fail (TASK_IS_ICON(icon));
-  
+
   gulong group_leader = wnck_window_get_group_leader (task_window_get_window(window));
   WnckApplication* application=wnck_application_get (group_leader);
   if (application)
@@ -2012,7 +2012,10 @@ task_icon_minimize_group(TaskIcon * icon,TaskWindow * window)
         if (!TASK_IS_WINDOW (i->data) ) continue;
         if ( iter->data == task_window_get_window(i->data))
         {
-          wnck_window_minimize (iter->data);
+          if (!wnck_window_is_minimized(iter->data) )
+          {
+            wnck_window_minimize (iter->data);
+          }
           break;
         }
       }
@@ -2029,7 +2032,7 @@ task_icon_restore_group(TaskIcon * icon,TaskWindow * window, guint32 timestamp)
 {
   g_return_if_fail (TASK_IS_WINDOW(window));
   g_return_if_fail (TASK_IS_ICON(icon));
-  
+
   gulong group_leader = wnck_window_get_group_leader (task_window_get_window(window));
   WnckApplication* application=wnck_application_get (group_leader);
   if (application)
@@ -2046,7 +2049,10 @@ task_icon_restore_group(TaskIcon * icon,TaskWindow * window, guint32 timestamp)
         
         if ( iter->data == task_window_get_window(i->data))
         {
-          wnck_window_unminimize  (iter->data,timestamp);
+          if (wnck_window_is_minimized(iter->data) )
+          {
+            wnck_window_unminimize  (iter->data,timestamp);
+          }
           break;
         }
       }
