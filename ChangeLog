@@ -1,5 +1,10 @@
 2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Don't play launching effect when dragging a TaskIcon.
+
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-window.c:
 	Deal with errant icon overlays appearing when theme change
 	signals fire.

@@ -2836,8 +2836,6 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
 
   target = gtk_drag_dest_find_target (widget, context, NULL);
   target_name = gdk_atom_name (target);
-  awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (widget)), 
-                  AWN_EFFECT_LAUNCHING, 1, FALSE, FALSE); 
   if (g_strcmp0("awn/task-icon", target_name) == 0)
   {
     if(!priv->draggable) return FALSE;
@@ -2849,6 +2847,9 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
   }
   else
   {
+    awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (widget)), 
+                  AWN_EFFECT_LAUNCHING, 1, FALSE, FALSE); 
+    
     if (priv->drag_tag)
     {
       /* If it is a launcher it should show that it accepts the drag.
