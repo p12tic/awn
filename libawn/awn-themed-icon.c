@@ -143,6 +143,8 @@ struct _AwnThemedIconPrivate
   /*used in management of "Remove Custom Icon" menu items */
   gboolean    awn_theme_hit;  
   GtkWidget * remove_custom_icon_item;
+
+  GList * preload_list;
 };
 
 typedef struct
@@ -150,6 +152,7 @@ typedef struct
   AwnThemedIcon * icon;
   gint            size;
   gchar         * state;
+  guint         id;
 }AwnThemedIconPreloadItem;
 
 enum
@@ -408,6 +411,7 @@ static void
 awn_themed_icon_finalize (GObject *object)
 {
   AwnThemedIconPrivate *priv;
+  GList * iter;
 
   g_return_if_fail (AWN_IS_THEMED_ICON (object));
   priv = AWN_THEMED_ICON (object)->priv;
@@ -422,7 +426,17 @@ awn_themed_icon_finalize (GObject *object)
   g_free (priv->icon_dir);               
   priv->icon_dir = NULL;
   g_free (priv->custom_icon_name);
-  
+  for (iter = priv->preload_list; iter; iter = g_list_next (iter) )
+  {
+    AwnThemedIconPreloadItem * item = iter->data;
+    g_source_remove (item->id);
+    g_free (item->state);
+    g_free (item);
+  }
+  if (priv->preload_list)
+  {
+    g_list_free (priv->preload_list);
+  }
   G_OBJECT_CLASS (awn_themed_icon_parent_class)->finalize (object);  
 }
 
@@ -569,7 +583,8 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   priv->current_item = NULL;
   priv->current_size = 48;
   priv->custom_icon_name = NULL;
-
+  priv->preload_list = NULL;
+  
   /* Set-up the gtk-theme */
   priv->gtk_theme = gtk_icon_theme_get_default ();
   priv->sig_id_for_gtk_theme = g_signal_connect (priv->gtk_theme, "changed", 
@@ -1634,8 +1649,8 @@ awn_themed_icon_preload_icon (AwnThemedIcon * icon, gchar * state, gint size)
   /*Conditional operator*/
   item->size = size > 0?size:priv->current_size;
   item->state = g_strdup(state);
-  g_idle_add (on_idle_preload,item);
-  
+  item->id = g_idle_add (on_idle_preload,item);
+  priv->preload_list = g_list_append (priv->preload_list,item);
 }
 
 /**
@@ -1688,6 +1703,7 @@ on_idle_preload (gpointer data)
                                item->state);
            
   g_object_unref (pixbuf);
+  priv->preload_list = g_list_remove (priv->preload_list,item);
   g_free (item->state);
   g_free (item);
   return FALSE;

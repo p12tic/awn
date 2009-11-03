@@ -1,5 +1,11 @@
 2009-11-02  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-themed-icon.c:
+	Remove source ids for icon preloads if the icon is finalized 
+	with them pending.
+
+2009-11-02  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-window.c:
 	Pull the theme change counting logic out.  The issues it causes
 	are more or less a wash with the issues it fixes (at least with
