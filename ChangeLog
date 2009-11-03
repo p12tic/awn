@@ -1,5 +1,13 @@
 2009-11-02  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-window.c:
+	Pull the theme change counting logic out.  The issues it causes
+	are more or less a wash with the issues it fixes (at least with
+	the introduction of utils_gdk_pixbuf_similar_to()).  Therefore,
+	choose the simpler of the two.
+
+2009-11-02  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/util.c:
 	* applets/taskmanager/task-icon.c:
 	Fix for gimp icon overlay  when it's opened from filemanager.

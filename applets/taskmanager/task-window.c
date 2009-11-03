@@ -1093,22 +1093,7 @@ theme_changed_cb (GtkIconTheme *icon_theme,TaskWindow * window)
   
   g_return_if_fail (TASK_IS_WINDOW (window));
   priv = window->priv;
-  /*
-   When a theme changes the icon changes.  However  icon_changes is a 
-   count of app initiated changes.  so the theme change shouldn't count
 
-   Get a bunch of these signals on startup... ignore them.
-   This check has to do with how some signals fire when doing things like a
-   make install.
-
-   TODO: This could probably be a priv->icon_changes==1. Verify. Leave it like 
-   this for the time being.
-   */
-  if ( priv->icon_changes>0 && priv->icon_changes<3 )
-  {
-    priv->icon_changes--;
-    task_item_emit_icon_changed (TASK_ITEM (window), _get_icon (TASK_ITEM(window)));
-  }
 }
 
 static void
