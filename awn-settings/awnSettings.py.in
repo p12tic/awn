@@ -600,7 +600,12 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             (self.client, defs.THEME, defs.GHISTEP1, "theme_firsthighlight"),
             (self.client, defs.THEME, defs.GHISTEP2, "theme_secondhighlight"),
             (self.client, defs.THEME, defs.BORDER, "theme_outerborder"),
-            (self.client, defs.THEME, defs.HILIGHT, "theme_innerborder")
+            (self.client, defs.THEME, defs.HILIGHT, "theme_innerborder"),
+            (self.client, defs.THEME, defs.ICON_TEXT_COLOR, "theme_icon_font_color"),
+            (self.client, defs.THEME, defs.ICON_TEXT_OUTLINE_COLOR, "theme_icon_font_outline_color"),
+            (self.client, defs.THEME, defs.TOOLTIP_FONT_COLOR, "theme_tooltip_font_color"),
+            (self.client, defs.THEME, defs.TOOLTIP_BG_COLOR, "theme_tooltip_bg_color"),
+            (self.client, defs.THEME, defs.SEP_COLOR, "theme_separator_color")
         ]
         
         for item in self.color_map:
@@ -721,19 +726,19 @@ class awnThemeCustomizeMini(awnThemeCustomize):
     def arrow_type_getter(self, arrow_type):    
         d = {"__awn_internal_arrow1": 0, "__awn_internal_arrow2": 1}
         if arrow_type in d: 
-            self.custom_arrow_chooser_hbox.hide()
+            self.custom_arrow_chooser_hbox.set_sensitive(False)
             return d[arrow_type]
         else: 
-            self.custom_arrow_chooser_hbox.show()
+            self.custom_arrow_chooser_hbox.set_sensitive(True)
             return 2
 			
     def arrow_type_setter(self, arrow_type):     
         d = {0:"__awn_internal_arrow1", 1:"__awn_internal_arrow2"}
         if arrow_type == 2:
-            self.custom_arrow_chooser_hbox.show()
+            self.custom_arrow_chooser_hbox.set_sensitive(True)
             return ''
         else:
-            self.custom_arrow_chooser_hbox.hide()
+            self.custom_arrow_chooser_hbox.set_sensitive(False)
             return d[arrow_type]
 				
     def arrow_select_callback(self, widget, data=None):
