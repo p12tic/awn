@@ -262,6 +262,7 @@ namespace Awn {
 	public class Icon : Gtk.DrawingArea, Atk.Implementor, Gtk.Buildable, Awn.Overlayable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public Icon ();
+		public Gdk.EventButton get_click_event ();
 		public bool get_hover_effects ();
 		public int get_indicator_count ();
 		public bool get_is_active ();

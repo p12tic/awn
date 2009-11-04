@@ -919,6 +919,12 @@
   (return-type "gint")
 )
 
+(define-method get_click_event
+  (of-object "AwnIcon")
+  (c-name "awn_icon_get_click_event")
+  (return-type "GdkEventButton*")
+)
+
 ;; From awn-icon-box.h
 
 (define-function awn_iconbox_new
