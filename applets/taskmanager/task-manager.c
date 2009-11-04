@@ -2818,13 +2818,14 @@ _drag_source_end(TaskManager *manager, GtkWidget *icon)
 {
   TaskManagerPrivate *priv;
   gint move_to;
-  GList* childs;
-  //GSList* d;
-  //GSList* launchers = NULL;
-  //TaskLauncher* launcher;
-  //gchar* launcher_path;
-  //GError *err = NULL;
-
+  GList * childs;
+  GList * iter;
+  const gchar * moved_desktop_file;
+  const gchar * following_desktop_file = NULL;
+  GValueArray *launcher_paths;
+  GValue moving_val = {0,};
+  TaskLauncher * launcher = NULL;
+  
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
   priv = TASK_MANAGER_GET_PRIVATE (manager);
@@ -2859,45 +2860,96 @@ _drag_source_end(TaskManager *manager, GtkWidget *icon)
   // Update the position in the config (Gconf) if the AwnIcon is a launcher.
   // FIXME: support multiple launchers in one AwnIcon?
 
-/*  if (task_icon_is_launcher (priv->dragged_icon))
+  /*
+   Get the name of the desktop file.
+   Get the name of the desktop file that next appears after it.
+   Search the launcherlist for the moved desktop file.
+     If there is no follower then move it to the end.
+   Else
+    Search the launcherlist for the following desktop file
+    Place the moved desktop in front of it.
+   */
+  if ( priv->dragged_icon && !task_icon_count_ephemeral_items (priv->dragged_icon))
   {
+    g_assert (TASK_IS_ICON (priv->dragged_icon) );
+    launcher = TASK_LAUNCHER(task_icon_get_launcher (priv->dragged_icon));
+  }
+      
+  if (launcher)
+  {
+    g_assert (TASK_IS_LAUNCHER(launcher));
+    moved_desktop_file = task_launcher_get_desktop_path (launcher);
     // get the updated list
     childs = gtk_container_get_children (GTK_CONTAINER(priv->box));
-    while(childs)
+    for (iter = g_list_first (childs);iter;iter=g_list_next(iter))
     {
-      if( TASK_IS_ICON(childs->data) && task_icon_is_launcher (TASK_ICON (childs->data)))
+      if (!TASK_IS_ICON(iter->data))
       {
-        launcher = task_icon_get_launcher (TASK_ICON (childs->data));
-        launcher_path = g_strdup (task_launcher_get_desktop_path (launcher));
-        launchers = g_slist_prepend (launchers, launcher_path);
+        continue;
       }
-      childs = childs->next;
+      g_assert (TASK_IS_ICON (iter->data) );      
+      if (priv->dragged_icon == iter->data)
+      {
+        for (iter = g_list_next(iter);iter;iter = g_list_next(iter) )
+        {
+          if (!iter)
+          {
+            continue;
+          }
+          if (!TASK_IS_ICON(iter->data))
+          {
+            continue;
+          }
+          g_assert (TASK_IS_ICON (iter->data) );
+          TaskItem * item = task_icon_get_launcher (iter->data);
+          if (!item || task_icon_count_ephemeral_items (iter->data))
+          {
+            continue;
+          }
+          following_desktop_file = task_launcher_get_desktop_path (TASK_LAUNCHER(item));
+          break;
+        }
+        break;
+      }
     }
-    launchers = g_slist_reverse(launchers);
-
-    GValue *val;
-
-    val = g_value_init (val, G_TYPE_BOXED);
-    g_value_set_boxed (val, launchers);
-
-    desktop_agnostic_config_client_set_value (priv->client,
-                                              DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
-                                              "launcher_paths",
-                                              val, &err);
-
-    g_value_unset (val);
-
-    for (d = launchers; d; d = d->next)
-      g_free (d->data);
-    g_slist_free (launchers);
-
-    if (err) {
-      g_warning ("Error: %s", err->message);
-      return;
+    g_object_get (G_OBJECT (manager), "launcher_paths", &launcher_paths, NULL);
+    g_value_init (&moving_val,G_TYPE_STRING);
+    g_value_set_string (&moving_val, moved_desktop_file);
+    
+    for (guint idx = 0; idx < launcher_paths->n_values; idx++)
+    {
+      gchar *path;
+      path = g_value_dup_string (g_value_array_get_nth (launcher_paths, idx));
+      if (g_strcmp0 (path,moved_desktop_file)==0)
+      {
+        g_free (path);        
+        g_value_array_remove (launcher_paths,idx);
+        if (!following_desktop_file)
+        {
+          g_value_array_append (launcher_paths,&moving_val);
+        }
+        else
+        {
+          for (idx = 0; idx < launcher_paths->n_values; idx++)
+          {
+            path = g_value_dup_string (g_value_array_get_nth (launcher_paths, idx));
+            if (g_strcmp0 (path,following_desktop_file)==0)
+            {
+              g_value_array_insert (launcher_paths,idx,&moving_val);
+              g_free (path);
+              break;
+            }
+          }
+        }
+        g_object_set (G_OBJECT (manager), "launcher_paths", launcher_paths, NULL);                            
+        break;
+      }
+      g_free (path);
+      task_manager_refresh_launcher_paths (manager, launcher_paths);
     }
+    g_value_unset (&moving_val);    
+    g_value_array_free (launcher_paths);
   }
-*/
-
   priv->dragged_icon = NULL;
 }
 
