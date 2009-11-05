@@ -383,7 +383,7 @@ task_window_class_init (TaskWindowClass *klass)
                                "Use the Applications Window icon",
                                 USE_DEFAULT,
                                 USE_NEVER,
-                                0,
+                                1,
                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_USE_WIN_ICON, pspec);  
 
