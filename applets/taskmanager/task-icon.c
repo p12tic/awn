@@ -1682,7 +1682,7 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   TODO: document the logic once it's set.
    */
   if ( 
-      !item ||  
+      !item ||
       ( priv->icon_change_behavior==0 && TASK_IS_WINDOW(item) && task_window_use_win_icon(TASK_WINDOW(item))==USE_NEVER ) ||
       ( priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && ( task_window_use_win_icon(TASK_WINDOW(item))==USE_ALWAYS?FALSE:(task_window_get_icon_changes(TASK_WINDOW(item))<2))) ||      
       ( priv->icon_change_behavior==2)
@@ -2128,9 +2128,11 @@ task_icon_scroll_event (GtkWidget *widget, GdkEventScroll *event, TaskIcon *icon
         }
         count ++;
       } while ( TASK_IS_LAUNCHER (cur_item->data) && (count <= g_slist_length(priv->items)) );
-      priv->main_item = cur_item->data;
-      task_window_activate (TASK_WINDOW(priv->main_item),event->time);
-      task_icon_set_icon_pixbuf (TASK_ICON(icon),priv->main_item);
+      if (!task_window_is_active (TASK_WINDOW(cur_item->data)))
+      {
+        task_window_activate (TASK_WINDOW(cur_item->data),event->time);
+      }
+      task_icon_search_main_item (TASK_ICON(icon),cur_item->data);
       return TRUE;
     }
   }

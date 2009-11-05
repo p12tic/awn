@@ -1,3 +1,9 @@
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Make sure the tooltipls are updated on mouse scroll also.
+	Let search_main_item do most of the work.
+
 2009-11-04  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:
