@@ -1064,6 +1064,7 @@ task_icon_active_window_changed (WnckScreen *screen,
   WnckWindow * active;
   GSList     *i;
   TaskIconPrivate *priv = icon->priv;
+  gint active_count;
 
   active = wnck_screen_get_active_window (screen);
 
@@ -1107,6 +1108,19 @@ task_icon_active_window_changed (WnckScreen *screen,
     }
     
   }
+
+  active_count = task_icon_count_require_attention (icon);
+
+  if ( active_count)
+  {
+    awn_icon_set_effect (AWN_ICON (icon),AWN_EFFECT_ATTENTION);
+  }
+  else
+  {
+    awn_effects_stop (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                      AWN_EFFECT_ATTENTION);
+  }
+  
   /* 
    if found is false then ther are no "visible" Windows
    */

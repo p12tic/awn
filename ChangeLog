@@ -1,5 +1,12 @@
 2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Check for require attention on window changes.  This should
+	resolve some corner cases where icons do not start/stop 
+	attention effect.
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
         * applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
 	Attention required nagging.  Defaults to every 60 seconds.
