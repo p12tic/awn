@@ -18,6 +18,11 @@ type = integer
 default = 4
 _description=Number of seconds to inhibit autohide when a application requests attention. A value of 0 disables.
 
+[DEFAULT/attention_required_reminder]
+type = integer
+default = 60
+_description=Number of seconds to wait before nagging again, by inhibiting autohide, if attention is required by any windows. A value of 0 disables.
+
 [DEFAULT/drag_and_drop]
 type = boolean
 default = false

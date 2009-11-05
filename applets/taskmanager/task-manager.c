@@ -101,6 +101,9 @@ struct _TaskManagerPrivate
   gint         intellihide_mode;
   gint         match_strength;
   gint         attention_autohide_timer;
+  
+  guint        attention_required_reminder_id;
+  gint         attention_required_reminder;
 };
 
 typedef struct
@@ -128,7 +131,9 @@ enum
   PROP_MATCH_STRENGTH,
   PROP_INTELLIHIDE,
   PROP_INTELLIHIDE_MODE,
-  PROP_ATTENTION_AUTOHIDE_TIMER
+  PROP_ATTENTION_AUTOHIDE_TIMER,
+  PROP_ATTENTION_REQUIRED_REMINDER,
+  PROP_ATTENTION_REQUIED_REMINDER_ID
 };
 
 /* Forwards */
@@ -183,6 +188,7 @@ static void task_manager_win_state_changed_cb (WnckWindow * window,
                                                WnckWindowState new_state,
                                                TaskManager * manager);
 
+static gboolean _attention_required_reminder_cb (TaskManager * manager);
 
 typedef enum 
 {
@@ -259,6 +265,10 @@ task_manager_get_property (GObject    *object,
       g_value_set_int (value, manager->priv->attention_autohide_timer);
       break;
 
+    case PROP_ATTENTION_REQUIRED_REMINDER:
+      g_value_set_int (value, manager->priv->attention_required_reminder);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -329,7 +339,22 @@ task_manager_set_property (GObject      *object,
     case PROP_ATTENTION_AUTOHIDE_TIMER:
       manager->priv->attention_autohide_timer = g_value_get_int (value);
       break;
-      
+
+    case PROP_ATTENTION_REQUIRED_REMINDER:
+      if (manager->priv->attention_required_reminder_id)
+      {
+        g_source_remove (manager->priv->attention_required_reminder_id);
+        manager->priv->attention_required_reminder_id = 0;
+      }
+      manager->priv->attention_required_reminder = g_value_get_int (value);
+      if (manager->priv->attention_required_reminder>0)
+      {
+        manager->priv->attention_required_reminder_id = g_timeout_add_seconds ( manager->priv->attention_required_reminder,
+                                                                             (GSourceFunc)_attention_required_reminder_cb,
+                                                                             object);
+      }
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -405,11 +430,17 @@ task_manager_constructed (GObject *object)
                                        object, "attention_autohide_timer", FALSE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
-  
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "attention_required_reminder",
+                                       object, "attention_required_reminder", FALSE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+
   g_signal_connect (priv->screen,"active-window-changed",
                     G_CALLBACK(task_manager_active_window_changed_cb),object);
   g_signal_connect (priv->screen,"active-workspace-changed",
-                    G_CALLBACK(task_manager_active_workspace_changed_cb),object);  
+                    G_CALLBACK(task_manager_active_workspace_changed_cb),object);
 }
 
 static void
@@ -496,6 +527,15 @@ task_manager_class_init (TaskManagerClass *klass)
                             10,
                             G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_ATTENTION_AUTOHIDE_TIMER, pspec);
+
+  pspec = g_param_spec_int ("attention_required_reminder",
+                            "Attention Required Reminder Timer",
+                            "Attention Required Reminder Timer",
+                            -1,
+                            9999,
+                            120,
+                            G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_ATTENTION_REQUIRED_REMINDER, pspec);
 
   g_type_class_add_private (obj_class, sizeof (TaskManagerPrivate));
 
@@ -696,7 +736,45 @@ uninhibit_timer (gpointer manager)
   awn_applet_uninhibit_autohide (AWN_APPLET(manager),priv->attention_cookie);
   priv->attention_cookie = 0;
   priv->attention_source = 0;
+  /* This will reset the nag timer*/
+  g_object_set (manager,
+                "attention_required_reminder",priv->attention_required_reminder,
+                NULL);
   return FALSE;
+}
+
+
+static gboolean
+_attention_required_reminder_cb (TaskManager * manager)
+{
+  TaskManagerPrivate *priv;
+  GSList * iter;
+  
+  g_return_val_if_fail (TASK_IS_MANAGER (manager),FALSE);
+  priv = manager->priv;  
+  for (iter=priv->windows; iter; iter = iter->next)
+  {
+    WnckWindowState win_state = wnck_window_get_state (task_window_get_window(iter->data));
+    if ( (win_state  & WNCK_WINDOW_STATE_DEMANDS_ATTENTION) || 
+        (win_state & WNCK_WINDOW_STATE_URGENT) )
+    {
+      if (priv->attention_autohide_timer && priv->attention_required_reminder)
+      {
+        if (priv->attention_cookie)
+        {
+          g_source_remove (priv->attention_source);
+        }
+        else
+        {
+          priv->attention_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager),
+                                                                "Attention" );      
+        }
+        priv->attention_source = g_timeout_add_seconds (priv->attention_autohide_timer,
+                                                        uninhibit_timer,manager);
+      }
+    }
+  }
+  return TRUE;
 }
 
 static void
@@ -1515,7 +1593,7 @@ process_window_opened (WnckWindow    *window,
   if (wnck_window_is_skip_tasklist (window))
   {
     g_signal_connect (window, "state-changed", 
-                      G_CALLBACK (on_window_state_changed), manager);    
+                      G_CALLBACK (on_window_state_changed), manager);
     return;
   }
 

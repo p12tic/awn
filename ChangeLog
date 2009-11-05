@@ -1,5 +1,11 @@
 2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+        * applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	Attention required nagging.  Defaults to every 60 seconds.
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
 	Added overlay_applications_icons_swapped.
