@@ -1,6 +1,14 @@
 2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	Added overlay_applications_icons_swapped.
+	Significantly simplified the ref/unref login in 
+	task_icon_set_icon_pixbuf().
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Make sure the tooltipls are updated on mouse scroll also.
 	Let search_main_item do most of the work.
 

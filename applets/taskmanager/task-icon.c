@@ -133,8 +133,10 @@ struct _TaskIconPrivate
 
   AwnOverlayPixbuf  * overlay_app_icon;
   gboolean  overlay_application_icons;
-  gdouble   overlay_application_icons_scale;
   gdouble   overlay_application_icons_alpha;
+  gdouble   overlay_application_icons_scale;
+  gboolean  overlay_application_icons_swap;
+
 };
 
 enum
@@ -150,8 +152,9 @@ enum
   PROP_ICON_CHANGE_BEHAVIOR,
   PROP_DESKTOP_COPY,
   PROP_OVERLAY_APPLICATION_ICONS,
+  PROP_OVERLAY_APPLICATION_ICONS_ALPHA,
   PROP_OVERLAY_APPLICATION_ICONS_SCALE,
-  PROP_OVERLAY_APPLICATION_ICONS_ALPHA  
+  PROP_OVERLAY_APPLICATION_ICONS_SWAP
 };
 
 enum
@@ -305,7 +308,10 @@ task_icon_get_property (GObject    *object,
       break;
     case PROP_OVERLAY_APPLICATION_ICONS_ALPHA:
       g_value_set_double (value,priv->overlay_application_icons_alpha);
-      break;      
+      break;
+    case PROP_OVERLAY_APPLICATION_ICONS_SWAP:
+      g_value_set_boolean (value,priv->overlay_application_icons_swap);
+      break;
     case PROP_DESKTOP_COPY:
       g_value_set_int (value, priv->desktop_copy);
       break;      
@@ -379,6 +385,10 @@ task_icon_set_property (GObject      *object,
       g_object_set (G_OBJECT (icon->priv->overlay_app_icon),
                 "alpha",icon->priv->overlay_application_icons_alpha,
                 NULL);
+      break;
+    case PROP_OVERLAY_APPLICATION_ICONS_SWAP:
+      icon->priv->overlay_application_icons_swap = g_value_get_boolean (value);
+      task_icon_set_icon_pixbuf (icon,icon->priv->main_item);     
       break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -580,6 +590,11 @@ task_icon_constructed (GObject *object)
     return;
   }
 
+  if (!do_bind_property (priv->client, "overlay_application_icons_swap", object,
+                         "overlay_application_icons_swap"))
+  {
+    return;
+  }
 }
 
 static void
@@ -803,7 +818,7 @@ task_icon_class_init (TaskIconClass *klass)
   pspec = g_param_spec_boolean ("overlay_application_icons",
                                 "overlay_application_icons",
                                 "If a app icon is to be used, overlay instead of replacing launcher icon",
-                                FALSE,
+                                TRUE,
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_OVERLAY_APPLICATION_ICONS, pspec);
 
@@ -825,6 +840,13 @@ task_icon_class_init (TaskIconClass *klass)
                             G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_OVERLAY_APPLICATION_ICONS_ALPHA, pspec);
 
+  pspec = g_param_spec_boolean ("overlay_application_icons_swap",
+                                "overlay_application_icons_swap",
+                                "Swap the overlay icon and Task Icon",
+                                FALSE,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_OVERLAY_APPLICATION_ICONS_SWAP, pspec);
+  
   /* Install signals */
   _icon_signals[VISIBLE_CHANGED] =
 		g_signal_new ("visible_changed",
@@ -1704,8 +1726,8 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   
   if (item && TASK_IS_WINDOW(item))
   {
+    /* Gets a Pixbuf without a reference for the caller */
     app_icon = task_item_get_icon (item);
-    g_object_ref (app_icon);
   }
 
   if (priv->custom_name && launcher)
@@ -1724,32 +1746,41 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
     {
       state = "::no_drop::desktop";
     }    
+    /* Gets a Pixbuf with a reference for the caller */    
     launcher_icon = awn_themed_icon_get_icon_at_size (AWN_THEMED_ICON(icon),
                                                   size,
                                                   state);
   }
   if (launcher_icon || app_icon)
   {
+    if (priv->icon)
+    {
+      g_object_unref(priv->icon);
+      priv->icon = NULL;
+    }
+    
     if (priv->overlay_application_icons)
     { 
-      if (priv->icon)
-      {
-        g_object_unref(priv->icon);
-        priv->icon = NULL;
-      }
       /* We have a TaskWindows _and_ a launcher icon*/
       if (TASK_IS_WINDOW(item) && launcher_icon)
       {
-        priv->icon = launcher_icon;        
+        if (priv->overlay_application_icons_swap)
+        {
+          priv->icon = app_icon;
+        }
+        else
+        {
+          priv->icon = launcher_icon;
+        }
         awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
         if (app_icon && 
             utils_gdk_pixbuf_similar_to (launcher_icon, app_icon) == FALSE)
         {
+          /*Conditional Operator*/
           g_object_set (G_OBJECT (icon->priv->overlay_app_icon),
-                "pixbuf",app_icon,
+                "pixbuf",priv->overlay_application_icons_swap?launcher_icon:app_icon,
                 "active",TRUE,
                 NULL);          
-          g_object_unref (app_icon);
         }
         else
         {
@@ -1773,41 +1804,29 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
         g_object_set (G_OBJECT (icon->priv->overlay_app_icon),
               "active",FALSE,
               NULL);
-        if (app_icon)
-        {
-          g_object_unref (app_icon);
-        }
       }
     }
     else
     {
-      if (priv->icon)
-      {
-        g_object_unref(priv->icon);
-        priv->icon = NULL;
-      }
       if (TASK_IS_WINDOW (item) )
       {
         priv->icon = app_icon;
-        if (launcher_icon)
-        {
-          g_object_unref (launcher_icon);
-        }
       }
       else
       {
         priv->icon = launcher_icon;
-        if (app_icon)
-        {
-          g_object_unref (launcher_icon);
-        }
       }
       awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
       g_object_set (G_OBJECT (icon->priv->overlay_app_icon),
             "active",FALSE,
             NULL);
     }
+    g_object_ref (priv->icon);
   }
+  if (launcher_icon)
+  {
+    g_object_unref (launcher_icon);
+  }  
 }
 
 /**
