@@ -24,6 +24,7 @@ import sys
 import os
 import shutil
 import time
+import pwd
 
 PLAT_PKG = '@PY_PLAT_PKG@'
 SITE_PKG = '@PY_SITE_PKG@'
@@ -47,6 +48,7 @@ except Exception, e:
     sys.stderr.write(str(e) + '\n')
     sys.exit(1)
 
+from ConfigParser import ConfigParser
 #from awnTheme import AwnThemeManager
 from awnClass import awnPreferences, awnManager, awnLauncher, awnApplet, awnThemeCustomize
 #from awnApplet import awnApplet
@@ -561,12 +563,46 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         self.theme_list_panel = self.wTree.get_object("theme_list_panel")
         self.theme_customize_panel = self.wTree.get_object("theme_customize_panel")
 		
-        self.themeWindow = self.wTree.get_object('themeWindow')
         self.themeExport = self.wTree.get_object('theme_export')
+        self.themeExport.connect('clicked', self.show_export_dialog)
         self.themeClose = self.wTree.get_object('theme_close')
         self.themeClose.connect('clicked', self.close)
+        
+        self.themeExportDialog = self.wTree.get_object('theme_export_dialog')
+        self.themeExportName = self.wTree.get_object('theme_export_name')
+        self.themeExportAuthor = self.wTree.get_object('theme_export_author')
+        self.themeExportVersion = self.wTree.get_object('theme_export_version')
+        self.themeExportCancel = self.wTree.get_object('theme_export_cancel')
+        self.themeExportCancel.connect('clicked', self.hide_export_dialog)
+        self.themeExportSave = self.wTree.get_object('theme_export_save')
+        self.themeExportSave.connect('clicked', self.export_save_theme)
+        
         self.ui_setup()
-                                        
+    
+    def export_save_theme(self, widget):
+		name = self.themeExportName.get_text()
+		author = self.themeExportAuthor.get_text()
+		version = self.themeExportVersion.get_text()
+		print name +":"+ author +":"+ version
+		#Write config file
+		
+		#Get Theme Image
+		
+		#Get Custom Arrow
+		
+		self.themeExportDialog.hide()
+				
+    def show_export_dialog(self, widget):
+		fullname = pwd.getpwnam(os.environ['USER'])[4]
+		if not fullname: fullname = os.environ['USER']
+		self.themeExportName.set_text('')
+		self.themeExportAuthor.set_text(fullname.rstrip(','))
+		self.themeExportVersion.set_text('')
+		self.themeExportDialog.show()
+
+    def hide_export_dialog(self, widget):
+		self.themeExportDialog.hide()
+				                                   
     def close(self, widget):
         self.theme_customize_panel.hide()
         self.theme_list_panel.show()
@@ -595,21 +631,21 @@ class awnThemeCustomizeMini(awnThemeCustomize):
                                         _("Outline, Reversed")])
                                       
         self.color_map = [
-            (self.client, defs.THEME, defs.GSTEP1, "theme_firstgradient"),
-            (self.client, defs.THEME, defs.GSTEP2, "theme_secondgradient"),
-            (self.client, defs.THEME, defs.GHISTEP1, "theme_firsthighlight"),
-            (self.client, defs.THEME, defs.GHISTEP2, "theme_secondhighlight"),
-            (self.client, defs.THEME, defs.BORDER, "theme_outerborder"),
-            (self.client, defs.THEME, defs.HILIGHT, "theme_innerborder"),
-            (self.client, defs.THEME, defs.ICON_TEXT_COLOR, "theme_icon_font_color"),
-            (self.client, defs.THEME, defs.ICON_TEXT_OUTLINE_COLOR, "theme_icon_font_outline_color"),
-            (self.client, defs.THEME, defs.TOOLTIP_FONT_COLOR, "theme_tooltip_font_color"),
-            (self.client, defs.THEME, defs.TOOLTIP_BG_COLOR, "theme_tooltip_bg_color"),
-            (self.client, defs.THEME, defs.SEP_COLOR, "theme_separator_color")
+            (self.client, defs.THEME, defs.GSTEP1, "theme_firstgradient", True),
+            (self.client, defs.THEME, defs.GSTEP2, "theme_secondgradient", True),
+            (self.client, defs.THEME, defs.GHISTEP1, "theme_firsthighlight", True),
+            (self.client, defs.THEME, defs.GHISTEP2, "theme_secondhighlight", True),
+            (self.client, defs.THEME, defs.BORDER, "theme_outerborder", True),
+            (self.client, defs.THEME, defs.HILIGHT, "theme_innerborder", True),
+            (self.client, defs.THEME, defs.ICON_TEXT_COLOR, "theme_icon_font_color", False),
+            (self.client, defs.THEME, defs.ICON_TEXT_OUTLINE_COLOR, "theme_icon_font_outline_color", False),
+            (self.client, defs.THEME, defs.TOOLTIP_FONT_COLOR, "theme_tooltip_font_color", False),
+            (self.client, defs.THEME, defs.TOOLTIP_BG_COLOR, "theme_tooltip_bg_color", False),
+            (self.client, defs.THEME, defs.SEP_COLOR, "theme_separator_color", False)
         ]
         
         for item in self.color_map:
-            client, group, key, wtree_name = item
+            client, group, key, wtree_name, gtk_mode = item
             widget = self.wTree.get_object(wtree_name)
             client.bind (group, key, widget, "da-color",
                          False, config.BIND_METHOD_FALLBACK)
@@ -648,10 +684,11 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 					   
     def disable_color_buttons(self, state=False):
         for item in self.color_map:
-            client, group, key, wtree_name = item
-            obj = self.wTree.get_object(wtree_name)
-            if not state: obj.set_sensitive(True)
-            else: obj.set_sensitive(False)
+            client, group, key, wtree_name, gtk_mode = item
+            if gtk_mode:
+				obj = self.wTree.get_object(wtree_name)
+				if not state: obj.set_sensitive(True)
+				else: obj.set_sensitive(False)
         return state
 		
 	def tooltip_font_name_callback(self, data=None):
