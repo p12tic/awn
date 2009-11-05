@@ -671,5 +671,5 @@ utils_gdk_pixbuf_similar_to (GdkPixbuf *i1, GdkPixbuf *i2)
 #ifdef DEBUG
   g_debug ("PSNR: %g", PSNR);
 #endif
-  return PSNR >= 9.5;
+  return PSNR >= 10.5;
 }

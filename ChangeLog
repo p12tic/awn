@@ -1,5 +1,12 @@
 2009-11-04  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/util.c:
+	Adjust the threshold up a bit for image comparison.  This may
+	result in an unacceptable level of false positives, please keep
+	an eye out for duplicate overlay images.
+
+2009-11-04  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-window.c:
 	Change the default to forcing app icon prop on.  A better 
 	choice due to some fun things that happen when the task-manager
