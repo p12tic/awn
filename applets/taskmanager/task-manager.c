@@ -699,12 +699,10 @@ task_manager_dispose (GObject *object)
  * WNCK_SCREEN CALLBACKS
  */
 
-/*
- * This signal is only connected for windows which were of type normal/utility
- * and were initially "skip-tasklist". If they are not skip-tasklist anymore
- * we treat them as newly opened windows.
- * STATE: done
- *
+/* 
+ check for state change to and from skip tasklist.
+ It appears we don't need to monitor loss of skip tasklist, but going to leave
+ as is for the moment.  FIXME ?
  */
 static void
 on_window_state_changed (WnckWindow      *window,
@@ -1613,13 +1611,7 @@ process_window_opened (WnckWindow    *window,
     return;
   }
   /* 
-   * If it's skip tasklist, connect to the state-changed signal and see if
-   * it ever becomes a normal window
-   *
-   * NOTE:  Shouldn't we just be connecting everything that gets to this point
-   * to state-changed.  Do we have the case of as window switching from in the 
-   * tasklist to skip_tasklist?   TODO:  investigate.
-   NOTE:  This _still_ bothers me.
+   * Monitors state change to and from skip tasklist.
    */
   g_signal_connect (window, "state-changed", G_CALLBACK (on_window_state_changed), manager);
 

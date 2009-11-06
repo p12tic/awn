@@ -1,6 +1,11 @@
 2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Revise some comments due to previous commit.
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Fixed a longstanding bug which _mostly_ involved windows minimizing
 	to the systray.  Removes a leak, and some unexpected behaviours
 	with apps engaging in said behaviour.
