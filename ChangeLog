@@ -1,6 +1,13 @@
 2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	If there is more than one window demaning attention in 
+	a group, then update the main_item to point to the next item
+	demanding attention after the first one is acknowledged.
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Check for require attention on window changes.  This should
 	resolve some corner cases where icons do not start/stop 
 	attention effect.
