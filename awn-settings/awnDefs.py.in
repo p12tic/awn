@@ -107,6 +107,9 @@ DRAG_AND_DROP           = "drag_and_drop"       #bool
 MATCH_STRENGTH          = "match_strength"      #int
 GROUPING                = "grouping"            #bool
 INTELLIHIDE             = "intellihide"         #bool
+LONG_PRESS              = "enable_long_press"   #bool
+OVERLAY_ICON            = "overlay_application_icons" #bool
+
 
 # i18n-related
 I18N_DOMAIN = "avant-window-navigator"

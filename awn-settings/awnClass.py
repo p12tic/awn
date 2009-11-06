@@ -1551,3 +1551,8 @@ class awnThemeCustomize(awnBzr):
     def ding(self):
         pass
         
+
+class awnTaskManager(awnBzr):
+    
+    def ding(self):
+        pass

@@ -50,7 +50,7 @@ except Exception, e:
 
 from ConfigParser import ConfigParser
 #from awnTheme import AwnThemeManager
-from awnClass import awnPreferences, awnManager, awnLauncher, awnApplet, awnThemeCustomize
+from awnClass import awnPreferences, awnManager, awnLauncher, awnApplet, awnThemeCustomize, awnTaskManager
 #from awnApplet import awnApplet
 #from awnLauncher import awnLauncher
 
@@ -100,12 +100,6 @@ class awnPreferencesMini(awnPreferences):
     icon_alpha = gobject.property(type=gobject.TYPE_FLOAT, default=1.0)
     show_shadows = gobject.property(type=bool, default=False)
 
-    launchers_only = gobject.property(type=bool, default=False)
-    show_all_windows = gobject.property(type=bool, default=True)
-    intellihide = gobject.property(type=bool, default=True)
-    group_windows = gobject.property(type=bool, default=True)
-    drag_and_drop = gobject.property(type=bool, default=True)
-    match_strength = gobject.property(type=int, default=99)
 
     def __init__(self, wTree):
         awnPreferences.__init__(self)
@@ -165,14 +159,6 @@ class awnPreferencesMini(awnPreferences):
                 "panel-expand", "expand_config"),
             (self.client, defs.PANEL, defs.MONITOR_ALIGN,
                 "monitor-align", "monitor_align_hscale"),
-            (self.client_taskman, GROUP_DEFAULT, defs.ONLY_LAUNCHERS,
-                "launchers-only", "only_launchers_config"),
-            (self.client_taskman, GROUP_DEFAULT, defs.ALL_WINDOWS,
-                "show-all-windows", "show_all_windows_config"),
-            (self.client_taskman, GROUP_DEFAULT, defs.GROUPING,
-                "group-windows", "grouping_config"),
-            (self.client_taskman, GROUP_DEFAULT, defs.INTELLIHIDE,
-                "intellihide", "intellihide_config"),
             # Advanced options
             (self.client, defs.PANEL, defs.OFFSET,
                 "panel-offset", "offset_config"),
@@ -195,11 +181,7 @@ class awnPreferencesMini(awnPreferences):
             (self.client, defs.EFFECTS, defs.REFLECTION_A_MULTIPLIER,
                 "reflection-alpha", "reflection_alpha_multiplier_config"),
             (self.client, defs.EFFECTS, defs.SHOW_SHADOWS,
-                "show-shadows", "show_shadows_config"),
-            (self.client_taskman, GROUP_DEFAULT, defs.DRAG_AND_DROP,
-                "drag-and-drop", "drag_and_drop_config"),
-            (self.client_taskman, GROUP_DEFAULT, defs.MATCH_STRENGTH,
-                "match-strength", "match_strength_config"),
+                "show-shadows", "show_shadows_config")
         ]
         
         for item in config_map_simple:
@@ -585,7 +567,33 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 		version = self.themeExportVersion.get_text()
 		print name +":"+ author +":"+ version
 		#Write config file
-		
+		theme_settings = [
+			(defs.THEME, defs.GSTEP1, 'str'),              
+			(defs.THEME, defs.GSTEP2, 'str'),                  
+			(defs.THEME, defs.GHISTEP1, 'str'),                
+			(defs.THEME, defs.GHISTEP2, 'str'),                
+			(defs.THEME, defs.ICON_TEXT_COLOR, 'str'),         
+			(defs.THEME, defs.ICON_TEXT_OUTLINE_COLOR, 'str'), 
+			(defs.THEME, defs.ICON_FONT_MODE, 'int'),          
+			(defs.THEME, defs.BORDER, 'str'),                  
+			(defs.THEME, defs.HILIGHT, 'str'),                               
+			(defs.THEME, defs.SEP_COLOR, 'str'),                     
+			(defs.THEME, defs.GTK_THEME_MODE, 'bool'),          
+			(defs.THEME, defs.CORNER_RADIUS, 'float'),           
+			(defs.THEME, defs.PANEL_ANGLE, 'float'),             
+			(defs.THEME, defs.CURVINESS, 'float'),               
+			(defs.THEME, defs.CURVES_SYMMETRY, 'float'),         
+			(defs.THEME, defs.TOOLTIP_FONT_NAME, 'str'),       
+			(defs.THEME, defs.TOOLTIP_FONT_COLOR, 'str'),      
+			(defs.THEME, defs.TOOLTIP_BG_COLOR, 'str'),
+			(defs.EFFECTS, defs.ARROW_ICON, 'str'),
+			(defs.EFFECTS, defs.SHOW_SHADOWS, 'bool')      
+		]
+
+		for item in theme_settings:
+			grp, key, type = item
+			#print os.path.join(grp, key)
+			print self.client.get_value(grp, key)
 		#Get Theme Image
 		
 		#Get Custom Arrow
@@ -641,7 +649,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             (self.client, defs.THEME, defs.ICON_TEXT_OUTLINE_COLOR, "theme_icon_font_outline_color", False),
             (self.client, defs.THEME, defs.TOOLTIP_FONT_COLOR, "theme_tooltip_font_color", False),
             (self.client, defs.THEME, defs.TOOLTIP_BG_COLOR, "theme_tooltip_bg_color", False),
-            (self.client, defs.THEME, defs.SEP_COLOR, "theme_separator_color", False)
+            (self.client, defs.THEME, defs.SEP_COLOR, "theme_separator_color", True)
         ]
         
         for item in self.color_map:
@@ -781,13 +789,52 @@ class awnThemeCustomizeMini(awnThemeCustomize):
     def arrow_select_callback(self, widget, data=None):
         self.client.set_string(defs.EFFECTS, defs.ARROW_ICON, widget.get_filename())
         
-               
+class awnTaskManagerMini(awnTaskManager):
+    launchers_only = gobject.property(type=bool, default=False)
+    show_all_windows = gobject.property(type=bool, default=True)
+    intellihide = gobject.property(type=bool, default=True)
+    group_windows = gobject.property(type=bool, default=True)
+    overlay_icons = gobject.property(type=bool, default=True)
+    long_press = gobject.property(type=bool, default=True)
+    drag_drop = gobject.property(type=bool, default=True)
+    #match_strength = gobject.property(type=int, default=99)
+          
+    def __init__(self, wTree):
+        awnThemeCustomize.__init__(self)
+			
+        self.wTree = wTree
+        self.client_taskman = awn.config_get_default_for_applet_by_info("taskmanager", "")
+        
+        config_map_simple = [
+            (self.client_taskman, GROUP_DEFAULT, defs.ONLY_LAUNCHERS,
+                "launchers-only", "only_launchers_config"),
+            (self.client_taskman, GROUP_DEFAULT, defs.ALL_WINDOWS,
+                "show-all-windows", "show_all_windows_config"),
+            (self.client_taskman, GROUP_DEFAULT, defs.GROUPING,
+                "group-windows", "grouping_config"),
+            (self.client_taskman, GROUP_DEFAULT, defs.INTELLIHIDE,
+                "intellihide", "intellihide_config"),
+            (self.client_taskman, GROUP_DEFAULT, defs.OVERLAY_ICON,
+                "overlay-icons", "tm_overlay_icons"),   
+            (self.client_taskman, GROUP_DEFAULT, defs.LONG_PRESS,
+                "long-press", "tm_long_press"), 
+            (self.client_taskman, GROUP_DEFAULT, defs.DRAG_AND_DROP,
+                "drag-drop", "tm_drag_drop"), 
+        ]        
+                         
+        for item in config_map_simple:
+            client, group, key, prop_name, wtree_name = item
+            bind_to_gtk_component (client, group, key, self, prop_name,
+                                   self.wTree.get_object(wtree_name), False)  
+                                   
+                                              
 class awnManagerMini(awnManager):
     PREFERENCE_PANEL = 0
-    APPLET_PANEL = 1 
-    LAUNCHER_PANEL = 2
-    THEME_PANEL = 3
-    ADVANCED_PANEL = 4
+    TASK_MANAGER_PANEL = 1
+    APPLET_PANEL = 2
+    LAUNCHER_PANEL = 3
+    THEME_PANEL = 4
+    ADVANCED_PANEL = 5
     
     current_panel = None
     
@@ -826,6 +873,7 @@ class awnManagerMini(awnManager):
         self.prefLauncher = awnLauncherMini(self.wTree)
         self.appletManager = awnAppletMini(self.wTree)
         self.themeCustomize = awnThemeCustomizeMini(self.wTree)
+        self.taskManager = awnTaskManagerMini(self.wTree)
 		
         about = self.wTree.get_object("buttonAbout")
         about.connect("clicked", self.about)
@@ -868,6 +916,12 @@ class awnManagerMini(awnManager):
         ])
 
         store.append([
+            'Task Manager', 
+            self.safe_load_icon('gtk-execute', size, gtk.ICON_LOOKUP_USE_BUILTIN),
+            self.TASK_MANAGER_PANEL
+        ])
+        
+        store.append([
             'Applets', 
             self.safe_load_icon('awn-plugins', size, gtk.ICON_LOOKUP_USE_BUILTIN),
             self.APPLET_PANEL
@@ -909,8 +963,10 @@ class awnManagerMini(awnManager):
         if self.current_panel is not None:
             self.panel_container.remove(self.current_panel)
             self.current_panel = None
-
-        if panel == self.APPLET_PANEL:
+		
+        if panel == self.TASK_MANAGER_PANEL:
+            self.showTaskManagerPanel()
+        elif panel == self.APPLET_PANEL:
             self.showAppletPanel()
         elif panel == self.LAUNCHER_PANEL:
             self.showLaunchPanel()
@@ -924,7 +980,11 @@ class awnManagerMini(awnManager):
     def showPrefPanel(self):
         self.current_panel = self.wTree.get_object("prefPanel")
         self.panel_container.add(self.current_panel)
-	
+        
+    def showTaskManagerPanel(self):
+		self.current_panel = self.wTree.get_object("taskManagerPanel")
+		self.panel_container.add(self.current_panel)
+
     def showAppletPanel(self):
         self.current_panel = self.wTree.get_object("appletPanel")
         self.panel_container.add(self.current_panel)
