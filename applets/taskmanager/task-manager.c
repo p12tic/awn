@@ -712,15 +712,46 @@ on_window_state_changed (WnckWindow      *window,
                          WnckWindowState  new_state,
                          TaskManager     *manager)
 {
+  TaskManagerPrivate *priv;
+  TaskWindow        * task_win=NULL;
+  TaskIcon          * icon=NULL;
+  
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
+  priv = TASK_MANAGER_GET_PRIVATE (manager);
+
   /* test if they don't skip-tasklist anymore*/
-  if (!wnck_window_is_skip_tasklist (window))
+  if (changed_mask & WNCK_WINDOW_STATE_SKIP_TASKLIST)
   {
-    g_signal_handlers_disconnect_by_func (window, 
-                                          on_window_state_changed, manager);
-    on_window_opened (NULL, window, manager);
-    return;
+    /*find the TaskWindow and destroy it*/
+    for (GSList *icon_iter = priv->icons;icon_iter != NULL && !task_win;icon_iter = icon_iter->next)
+    {
+      icon = icon_iter->data;
+      GSList *items = task_icon_get_items (icon);
+      for (GSList *item_iter = items;item_iter != NULL;item_iter = item_iter->next)
+      {
+        TaskItem *item = item_iter->data;
+        
+        if (TASK_IS_WINDOW (item) && window==task_window_get_window(TASK_WINDOW(item)) )
+        {
+          task_win = TASK_WINDOW(item);
+          break;
+        }
+      }
+    }
+    if (new_state & WNCK_WINDOW_STATE_SKIP_TASKLIST)
+    {
+        /*looks like we're ok in this case*/
+    }  
+    else
+    {
+      if (!task_win)
+      {
+        /*do this if we don't have TaskWindow for window yet*/
+        g_signal_handlers_disconnect_by_func (window,G_CALLBACK(on_window_state_changed),manager);
+        on_window_opened (NULL, window, manager);
+      }
+    }    
   }
 }
 
@@ -1590,10 +1621,10 @@ process_window_opened (WnckWindow    *window,
    * tasklist to skip_tasklist?   TODO:  investigate.
    NOTE:  This _still_ bothers me.
    */
+  g_signal_connect (window, "state-changed", G_CALLBACK (on_window_state_changed), manager);
+
   if (wnck_window_is_skip_tasklist (window))
   {
-    g_signal_connect (window, "state-changed", 
-                      G_CALLBACK (on_window_state_changed), manager);
     return;
   }
 

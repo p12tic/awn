@@ -1,5 +1,12 @@
 2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Fixed a longstanding bug which _mostly_ involved windows minimizing
+	to the systray.  Removes a leak, and some unexpected behaviours
+	with apps engaging in said behaviour.
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	If there is more than one window demaning attention in 
 	a group, then update the main_item to point to the next item
