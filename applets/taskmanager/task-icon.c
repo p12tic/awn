@@ -2159,11 +2159,9 @@ task_icon_scroll_event (GtkWidget *widget, GdkEventScroll *event, TaskIcon *icon
             break;
         }
         count ++;
-      } while ( TASK_IS_LAUNCHER (cur_item->data) && (count <= g_slist_length(priv->items)) );
-      if (!task_window_is_active (TASK_WINDOW(cur_item->data)))
-      {
-        task_window_activate (TASK_WINDOW(cur_item->data),event->time);
-      }
+      } while ( (TASK_IS_LAUNCHER (cur_item->data)||(!task_item_is_visible(cur_item->data))) 
+               && (count <= g_slist_length(priv->items)));
+      task_window_activate (TASK_WINDOW(cur_item->data),event->time);
       task_icon_search_main_item (TASK_ICON(icon),cur_item->data);
       return TRUE;
     }

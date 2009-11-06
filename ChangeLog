@@ -1,5 +1,13 @@
 2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Reinstate the minimize/restore behaviour of the scrollwheel when
+	there is only one window.
+	When using scroll wheel, do not scroll to a window that is set
+	skip_taskbar.
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Revise some comments due to previous commit.
 
