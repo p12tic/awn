@@ -724,6 +724,7 @@ class awnBzr(gobject.GObject):
 
         ren = gtk.CellRendererText()
         col = gtk.TreeViewColumn ("Description", ren, markup=1)
+        col.set_expand (True)
         treeview.append_column (col)
 
         ren = gtk.CellRendererText()
@@ -752,6 +753,7 @@ class awnBzr(gobject.GObject):
 
         ren = gtk.CellRendererText()
         col = gtk.TreeViewColumn ("Description", ren, markup=1)
+        col.set_expand (True)
         treeview.append_column (col)
 
         ren = gtk.CellRendererText()

@@ -288,6 +288,7 @@ awn_icon_get_hover_effects
 awn_icon_set_hover_effects
 awn_icon_clicked
 awn_icon_middle_clicked
+awn_icon_get_click_event
 <SUBSECTION Standard>
 AWN_ICON
 AWN_IS_ICON
@@ -489,6 +490,7 @@ awn_utils_ensure_transparent_bg
 awn_utils_make_transparent_bg
 awn_utils_get_offset_modifier_by_path_type
 awn_utils_gslist_to_gvaluearray
+awn_utils_show_menu_images
 </SECTION>
 
 <SECTION>

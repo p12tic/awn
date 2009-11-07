@@ -1,3 +1,11 @@
+2009-11-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Expand the description columns in our lists.
+	* doc/reference/libawn-sections.txt:
+	* libawn/awn-icon.c:
+	Updated documentation.
+
 2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

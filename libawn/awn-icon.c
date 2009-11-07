@@ -1147,7 +1147,7 @@ awn_icon_set_hover_effects (AwnIcon *icon, gboolean enable)
   }
 }
 
-/*
+/**
  * awn_icon_get_click_event:
  * @icon: #AwnIcon instance.
  *
