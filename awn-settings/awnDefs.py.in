@@ -109,7 +109,7 @@ GROUPING                = "grouping"            #bool
 INTELLIHIDE             = "intellihide"         #bool
 LONG_PRESS              = "enable_long_press"   #bool
 OVERLAY_ICON            = "overlay_application_icons" #bool
-
+ICON_BEHAVIOR           = "icon_change_behavior" #int
 
 # i18n-related
 I18N_DOMAIN = "avant-window-navigator"

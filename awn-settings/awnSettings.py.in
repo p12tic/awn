@@ -797,14 +797,27 @@ class awnTaskManagerMini(awnTaskManager):
     overlay_icons = gobject.property(type=bool, default=True)
     long_press = gobject.property(type=bool, default=True)
     drag_drop = gobject.property(type=bool, default=True)
-    #match_strength = gobject.property(type=int, default=99)
+    icon_behavior = gobject.property(type=int, default=1)
           
     def __init__(self, wTree):
-        awnThemeCustomize.__init__(self)
+        awnTaskManager.__init__(self)
 			
         self.wTree = wTree
+        self.client = awn.config_get_default(awn.PANEL_ID_DEFAULT)
         self.client_taskman = awn.config_get_default_for_applet_by_info("taskmanager", "")
         
+        applets = self.client.get_list(defs.PANEL, defs.APPLET_LIST)
+        for applet in applets:
+            tokens = applet.split("::")
+            if tokens[0].find('taskmanager.desktop') > 0:
+				print 'Taskmanager Active'
+        
+           
+        dropdown = self.wTree.get_object("tm_icon_behavior")
+        self.create_dropdown(dropdown, [_("Display app icon (method 1)"),
+                                        _("Display app icon (method 2)"),
+                                        _("Don't display app icons")])
+                                               
         config_map_simple = [
             (self.client_taskman, GROUP_DEFAULT, defs.ONLY_LAUNCHERS,
                 "launchers-only", "only_launchers_config"),
@@ -820,6 +833,8 @@ class awnTaskManagerMini(awnTaskManager):
                 "long-press", "tm_long_press"), 
             (self.client_taskman, GROUP_DEFAULT, defs.DRAG_AND_DROP,
                 "drag-drop", "tm_drag_drop"), 
+            (self.client_taskman, GROUP_DEFAULT, defs.ICON_BEHAVIOR,
+                "icon-behavior", "tm_icon_behavior")
         ]        
                          
         for item in config_map_simple:
@@ -827,14 +842,14 @@ class awnTaskManagerMini(awnTaskManager):
             bind_to_gtk_component (client, group, key, self, prop_name,
                                    self.wTree.get_object(wtree_name), False)  
                                    
-                                              
+
+                                                                              
 class awnManagerMini(awnManager):
     PREFERENCE_PANEL = 0
-    TASK_MANAGER_PANEL = 1
-    APPLET_PANEL = 2
-    LAUNCHER_PANEL = 3
-    THEME_PANEL = 4
-    ADVANCED_PANEL = 5
+    APPLET_PANEL = 1
+    LAUNCHER_PANEL = 2
+    THEME_PANEL = 3
+    ADVANCED_PANEL = 4
     
     current_panel = None
     
@@ -918,7 +933,7 @@ class awnManagerMini(awnManager):
         store.append([
             'Task Manager', 
             self.safe_load_icon('gtk-execute', size, gtk.ICON_LOOKUP_USE_BUILTIN),
-            self.TASK_MANAGER_PANEL
+            self.LAUNCHER_PANEL
         ])
         
         store.append([
@@ -926,7 +941,7 @@ class awnManagerMini(awnManager):
             self.safe_load_icon('awn-plugins', size, gtk.ICON_LOOKUP_USE_BUILTIN),
             self.APPLET_PANEL
         ])
-
+        '''
         store.append([
             'Launchers',
             self.safe_load_icon(['gnome-panel-launcher', 'launcher-program',
@@ -934,7 +949,7 @@ class awnManagerMini(awnManager):
                                 size, gtk.ICON_LOOKUP_USE_BUILTIN),
             self.LAUNCHER_PANEL
         ])
-
+        '''
         store.append([
             'Themes', 
             self.safe_load_icon("preferences-desktop-theme", size, gtk.ICON_LOOKUP_USE_BUILTIN),
@@ -964,9 +979,7 @@ class awnManagerMini(awnManager):
             self.panel_container.remove(self.current_panel)
             self.current_panel = None
 		
-        if panel == self.TASK_MANAGER_PANEL:
-            self.showTaskManagerPanel()
-        elif panel == self.APPLET_PANEL:
+        if panel == self.APPLET_PANEL:
             self.showAppletPanel()
         elif panel == self.LAUNCHER_PANEL:
             self.showLaunchPanel()
@@ -981,10 +994,6 @@ class awnManagerMini(awnManager):
         self.current_panel = self.wTree.get_object("prefPanel")
         self.panel_container.add(self.current_panel)
         
-    def showTaskManagerPanel(self):
-		self.current_panel = self.wTree.get_object("taskManagerPanel")
-		self.panel_container.add(self.current_panel)
-
     def showAppletPanel(self):
         self.current_panel = self.wTree.get_object("appletPanel")
         self.panel_container.add(self.current_panel)
