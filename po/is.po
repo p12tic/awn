@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-31 00:53-0700\n"
-"PO-Revision-Date: 2009-02-06 03:50+0000\n"
+"POT-Creation-Date: 2009-10-29 20:48-0700\n"
+"PO-Revision-Date: 2009-10-30 05:12+0000\n"
 "Last-Translator: Baldur <baldurpet@gmail.com>\n"
 "Language-Team: Icelandic <is@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2009-11-07 04:42+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -26,22 +26,103 @@ msgstr ""
 msgid "Fills space on the panel in expand mode"
 msgstr ""
 
-#: ../applets/taskmanager/task-launcher.c:747
-#: ../applets/taskmanager/task-icon.c:2248
-#: ../applets/taskmanager/task-icon.c:2342
-#, fuzzy
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
+msgid ""
+"Behavior when window on a different workspace is activated. (0 for default, "
+"1 - change active workspace, 2 - move to current workspace)"
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
+msgid "Delay before activating a window when dragging over an icon."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
+msgid ""
+"Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
+"Copy if owned by user, 2.. Do not copy."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
+msgid "Disables changing of panel icon when app indicates icon change."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
+msgid "Enable long press to open Dialog."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
+msgid "Enable reordering of windows by drag and drop "
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
+msgid "Enabling group of tasks."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
+msgid ""
+"How radical matching is applied for grouping items. The value should be "
+"between 0 and 99. 0 is as good as no grouping. 99 will match almost "
+"everything."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
+msgid ""
+"How to generate the list of windows tested for intersection when Intellihide "
+"is active.  0.. use windows on active workspace, 1.. use windows of "
+"currently focused app."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
+msgid ""
+"Intellihide if hide is enabled for the panel.  This will inhibit autohide of "
+"the panel if there are no intersecting windows in the relevant window list "
+"(see intellihide_mode)."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
+msgid ""
+"Maximum number of task indicators to show under icons. Valid range is 0..3."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
+msgid ""
+"Number of seconds to inhibit autohide when a application requests attention. "
+"A value of 0 disables."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
+msgid "Only show and manager launcher windows"
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
+msgid "Show windows from all workspaces"
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
+msgid ""
+"The threshold at which text count begins to be displayed. valid range 1.."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
+msgid ""
+"a list of paths to .desktop files from which the taskmanager should create "
+"it's launchers"
+msgstr ""
+
+#: ../applets/taskmanager/task-launcher.c:920
+#: ../applets/taskmanager/task-icon.c:2363
+#: ../applets/taskmanager/task-icon.c:2461
 msgid "Launch"
-msgstr "Ræsi"
+msgstr ""
 
-#: ../applets/taskmanager/task-launcher.c:823
-#, fuzzy, c-format
+#: ../applets/taskmanager/task-launcher.c:1002
+#, c-format
 msgid "Launch %s"
-msgstr "Ræsi"
+msgstr ""
 
-#: ../applets/taskmanager/task-icon.c:2300
-#, fuzzy
+#: ../applets/taskmanager/task-icon.c:2419
 msgid "Add to Launcher List"
-msgstr "Bæta við og fjarlægja ræsi"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -52,9 +133,8 @@ msgid "Launcher/Taskmanager applet"
 msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
-#, fuzzy
 msgid "Awn Settings"
-msgstr "Ræsi %s"
+msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
@@ -62,77 +142,66 @@ msgstr ""
 "Haltu utan um forritin, ræsina og stillingarnar á Awn stillingar og breyttu "
 "því hvernig það lítur út"
 
-#: ../awn-settings/awnClass.py:194
+#: ../awn-settings/awnClass.py:264
 msgid "Error, a sources.list already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:262
+#: ../awn-settings/awnClass.py:332
 msgid "Error, the path is empty or already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:473
-msgid "Error, the desktop file is not for a theme"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:490
+#: ../awn-settings/awnClass.py:452
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:731
-msgid "PNG Files"
-msgstr "PNG skrár"
-
-#: ../awn-settings/awnClass.py:795 ../awn-settings/awnClass.py:831
-msgid "Simple"
-msgstr ""
-
-#: ../awn-settings/awnClass.py:796 ../awn-settings/awnClass.py:832
-msgid "Classic"
-msgstr "Venjulegt"
-
-#: ../awn-settings/awnClass.py:797 ../awn-settings/awnClass.py:833
-msgid "Fade"
-msgstr "Hverfa"
-
-#: ../awn-settings/awnClass.py:798 ../awn-settings/awnClass.py:834
-msgid "Spotlight"
-msgstr "Ljós"
-
-#: ../awn-settings/awnClass.py:799 ../awn-settings/awnClass.py:835
-msgid "Zoom"
-msgstr "Stækka"
-
-#: ../awn-settings/awnClass.py:800 ../awn-settings/awnClass.py:836
-msgid "Squish"
-msgstr "Kremja"
-
-#: ../awn-settings/awnClass.py:801
-msgid "3D turn"
-msgstr "Snúast í þrívídd"
-
-#: ../awn-settings/awnClass.py:802
-msgid "3D turn with spotlight"
-msgstr "Snúast í þrívídd með ljósi"
-
-#: ../awn-settings/awnClass.py:803 ../awn-settings/awnClass.py:839
-msgid "Glow"
-msgstr "Lýsa"
-
-#: ../awn-settings/awnClass.py:830 ../awn-settings/awnSettings.py.in:147
+#: ../awn-settings/awnClass.py:823 ../awn-settings/awnClass.py:884
+#: ../awn-settings/awnSettings.py.in:144
 msgid "None"
 msgstr "Ekkert"
 
-#: ../awn-settings/awnClass.py:837
+#: ../awn-settings/awnClass.py:824 ../awn-settings/awnClass.py:885
+msgid "Simple"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:825 ../awn-settings/awnClass.py:886
+msgid "Classic"
+msgstr "Venjulegt"
+
+#: ../awn-settings/awnClass.py:826 ../awn-settings/awnClass.py:887
+msgid "Fade"
+msgstr "Hverfa"
+
+#: ../awn-settings/awnClass.py:827 ../awn-settings/awnClass.py:888
+msgid "Spotlight"
+msgstr "Ljós"
+
+#: ../awn-settings/awnClass.py:828 ../awn-settings/awnClass.py:889
+msgid "Zoom"
+msgstr "Stækka"
+
+#: ../awn-settings/awnClass.py:829 ../awn-settings/awnClass.py:890
+msgid "Squish"
+msgstr "Kremja"
+
+#: ../awn-settings/awnClass.py:830 ../awn-settings/awnClass.py:891
 msgid "3D Turn"
 msgstr "Snúast í þrívídd"
 
-#: ../awn-settings/awnClass.py:838
+#: ../awn-settings/awnClass.py:831 ../awn-settings/awnClass.py:892
 msgid "3D Spotlight Turn"
 msgstr "Þrívíddar ljós sem snýst"
 
-#: ../awn-settings/awnClass.py:912
+#: ../awn-settings/awnClass.py:832 ../awn-settings/awnClass.py:893
+msgid "Glow"
+msgstr "Lýsa"
+
+#: ../awn-settings/awnClass.py:894 ../awn-settings/awnSettings.py.in:152
+msgid "Custom"
+msgstr "Sérsniðið"
+
+#: ../awn-settings/awnClass.py:974
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
@@ -141,11 +210,11 @@ msgstr ""
 "Ekki tókst að búa til sjálfkrafa. Búðu möppuna til sjálfur:\n"
 "%s"
 
-#: ../awn-settings/awnClass.py:922
+#: ../awn-settings/awnClass.py:984
 msgid "Confirm directory creation"
 msgstr "Staðfesta að búa til möppu"
 
-#: ../awn-settings/awnClass.py:923
+#: ../awn-settings/awnClass.py:985
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
@@ -153,31 +222,30 @@ msgstr ""
 "Það er engin mappa sem keyrir sjálfkraga fyrir þennan notandaaðgang.\n"
 "Viltu að Awn búi til þannig möppu fyrir þig?"
 
-#. must be on one line due to i18n
-#: ../awn-settings/awnClass.py:980
+#: ../awn-settings/awnClass.py:1040
 #, python-format
-msgid ""
-"Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
-"installed. It usually comes with librsvg, or a package similarly named."
+msgid "Could not locate any of these icons: %s\n"
 msgstr ""
-"Gat ekki hlaðið inn „%s“ tákninu. Gakktu úr skugga um það að SVG hlaðinn "
-"fyrir Gtk+ sé inn á tölvunni þinni. Hann fylgir vanalega með librsvg, eða "
-"öðrum pakka sem heitir líku nafni."
 
-#: ../awn-settings/awnClass.py:1005
+#: ../awn-settings/awnClass.py:1047
+#, python-format
+msgid "Could not locate the following icon: %s\n"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1069
 msgid "AWN has been successfully refreshed"
 msgstr "Búið er að hressa upp á Awn"
 
-#: ../awn-settings/awnClass.py:1011
+#: ../awn-settings/awnClass.py:1075
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "Avant Window Navigator"
 
-#: ../awn-settings/awnClass.py:1029
+#: ../awn-settings/awnClass.py:1093
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr "Mjög fjölbreytileg stika fyrir GNOME."
 
-#: ../awn-settings/awnClass.py:1031
+#: ../awn-settings/awnClass.py:1095
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -188,7 +256,7 @@ msgstr ""
 "þú vilt undir GNU General Public Licence sem er gefið út af Free Software "
 "Foundation; annað hvort skv. annari útgáfu eða einhverri seinni útgáfu."
 
-#: ../awn-settings/awnClass.py:1033
+#: ../awn-settings/awnClass.py:1097
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -199,7 +267,7 @@ msgstr ""
 "EKKI ÁBYRGÐ; ekki einu sinni ábyrgð fyrir SELJANLEIKA eða NOTUNARLEIKA. "
 "Lestu GNU General Public License til að fá frekari upplýsingar."
 
-#: ../awn-settings/awnClass.py:1035
+#: ../awn-settings/awnClass.py:1099
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -209,97 +277,77 @@ msgstr ""
 "fylgdi ekki með þá geturðu sent bréf til Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 
-#: ../awn-settings/awnLauncherEditor.py:144
-msgid "Select an Executable File"
-msgstr "Veldu keyranlega skrá"
-
-#: ../awn-settings/awnLauncherEditor.py:162
-#, python-format
-msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr "Veldu nafn fyrir ræsinn í „%s“ svæðinu."
-
-#: ../awn-settings/awnLauncherEditor.py:162
-msgid "<b>Name:</b>"
-msgstr "<b>Nafn:</b>"
-
-#: ../awn-settings/awnLauncherEditor.py:165
-#, python-format
-msgid "Please provide a program to launch in the \"%s\" field."
-msgstr "Veldu forrit til að keyra í „%s“ svæðinu."
-
-#: ../awn-settings/awnLauncherEditor.py:165
-msgid "<b>Command:</b>"
-msgstr "<b>Skipun:</b>"
-
-#: ../awn-settings/awnLauncherEditor.py:177
-#, python-format
-msgid "Couldn't save the launcher. Error: %s"
-msgstr "Gat ekki vistað ræsi. Villa: %s"
-
-#: ../awn-settings/awnSettings.py.in:66
-#, fuzzy
+#: ../awn-settings/awnSettings.py.in:69
 msgid "Awn Settings can't be run as root."
-msgstr "Ekki er hægt að keyra Awn stikuna sem rót."
+msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:142
+#: ../awn-settings/awnSettings.py.in:139
 msgid "Left"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:142
+#: ../awn-settings/awnSettings.py.in:139
 msgid "Right"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awnSettings.py.in:140
 msgid "Top"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:143
-#, fuzzy
+#: ../awn-settings/awnSettings.py.in:140
 msgid "Bottom"
-msgstr "Stækka"
+msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
+#: ../awn-settings/awnSettings.py.in:144
 msgid "Flat"
-msgstr "Flöt stika"
+msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:148
+#: ../awn-settings/awnSettings.py.in:144
 msgid "3d"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:148
+#: ../awn-settings/awnSettings.py.in:145
 msgid "Curved"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:148
+#: ../awn-settings/awnSettings.py.in:145
 msgid "Edgy"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:152
+#: ../awn-settings/awnSettings.py.in:145
+msgid "Floaty"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:149
 msgid "Standard"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:152
+#: ../awn-settings/awnSettings.py.in:149
 msgid "Panel mode"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:153
+#: ../awn-settings/awnSettings.py.in:150
 msgid "Autohide Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:154
-#, fuzzy
+#: ../awn-settings/awnSettings.py.in:151
 msgid "Autohide Fade out"
-msgstr "Fela stikuna þegar hún er ekki í notkun"
+msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:155
-#, fuzzy
+#: ../awn-settings/awnSettings.py.in:152
 msgid "Transparency"
-msgstr "Gagnsæi:"
+msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:155
-msgid "Custom"
-msgstr "Sérsniðið"
+#: ../awn-settings/awnSettings.py.in:594
+msgid "Solid"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:594
+msgid "Outline"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:595
+msgid "Outline, Reversed"
+msgstr ""
 
 #: ../bindings/python/__init__.py:117
 #, python-format
@@ -325,276 +373,277 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
+msgstr "Stika sem hægt er að stilla."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:1
+msgid "0 - solid, 1 - outline, 2 - outline, reversed."
 msgstr ""
 
-#: ../libawn/awn-applet.c:1000 ../src/awn-panel.c:583
+#: ../data/avant-window-navigator.schema-ini.in.in.h:2
+msgid "3)"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:3
+msgid "5)"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:4
+msgid "A bitmask which stores the type of effect for each event"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:5
+msgid "Alignment of a non-expanded panel on the monitor edge."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:6
+msgid "An optional offset when you have more than 1 monitors."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:7
+msgid ""
+"Anything greater than 0 will draw a panel with corners. The greater the "
+"radius, the larger the corners."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:8
+msgid "Background color for AwnDialog's title."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:9
+msgid "Background color for AwnDialog."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:10
+msgid "Background color of the tooltip"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:11
+msgid ""
+"Determines if generic configuration editor is allowed for applets that do "
+"not have a customized preferences dialog."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:12
+msgid "Draw separators."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:13
+msgid "Enable drawing of a pattern."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:14
+msgid "First gradient step color."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:15
+msgid "First highlight gradient step color."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:16
+msgid "Font color of the tooltip"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:17
+msgid "Font name of the tooltip"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:18
+msgid "Force monitor geometry."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:19
+msgid "Icon text color.  Leave empty to use gtk theme color."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:20
+msgid "Icon text outline color.  Leave empty to use gtk theme color."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:21
+msgid "If true, maximised windows will not cover the panel."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:22
+msgid "If true, the panel will expand to full monitor width/height."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:23
+msgid "Internal border color."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:24
+msgid "Main border color."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:25
+msgid "Offset between the icons and their dialog."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:26
+msgid "Offset of the icons from window border."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:27
+msgid "Path to the current desktop file theme."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:28
+msgid "Path to the png containing the active icon background."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:29
+msgid "Path to the png containing the arrow icon."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:30
+msgid ""
+"Provides possibility to click on windows behind the panel. (0 - never click "
+"through, 1 - click through when holding CTRL, 2 - always click through and "
+"interact with panel only when holding CTRL)"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:31
+msgid "Reflection alpha as a multiple of the current alpha of the icon."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:32
+msgid "Second gradient step color."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:33
+msgid "Second highlight gradient step color."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:34
+msgid "Separator color."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:35
+msgid "Show shadows for icons."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:36
+msgid "The active list UA Screenlets for this panel."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:37
+msgid "The angle of the panel in 3D mode."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:38
+msgid "The curviness of the panel in Curves mode."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:39
+msgid "The forced monitor height. Only used if monitor_force is true."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:40
+msgid "The forced monitor width. Only used if monitor_force is true."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:41
+msgid ""
+"The list of UA Screenlets that have been previous added in the form "
+"ScreeneletInstance::Position."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:42
+msgid ""
+"The list of applets for this panel ordered from left-to-right or top-to-"
+"bottom."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:43
+msgid "The list of panels."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:44
+msgid "The location of the pattern to draw."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:45
+msgid "The offset between the icon and it's reflection"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:46
+msgid "The opacity of the icons, from 0.0 to 1.0"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:47
+msgid "The opacity of the pattern."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:48
+msgid "The symmetry of the curve in Curves mode."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:49
+msgid "The user-visible size of Awn."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:50
+msgid "Time in ms after which AwnIcon will emit long-press signal."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:51
+msgid "Whether AwnDialog should use Gtk theme colors."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:52
+msgid "Whether to close dialogs on loss of focus."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:53
+msgid "Whether to use colors from the current Gtk theme."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:54
+msgid ""
+"width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
+"- 5.0."
+msgstr ""
+
+#: ../libawn/awn-applet.c:1002 ../src/awn-panel.c:592
 msgid "Dock Preferences"
 msgstr "Stillingar fyrir stikuna"
 
-#: ../libawn/awn-themed-icon.c:1878
-#, fuzzy
+#: ../libawn/awn-themed-icon.c:1931
+msgid "Icons"
+msgstr ""
+
+#: ../libawn/awn-themed-icon.c:1933
 msgid "Choose Custom Icon"
-msgstr "Eyða myndum sem þú hefur bætt við?"
+msgstr ""
 
-#: ../libawn/awn-themed-icon.c:1959
-#, fuzzy
+#: ../libawn/awn-themed-icon.c:2019
 msgid "Customize Icon"
-msgstr "Eyða myndum sem þú hefur bætt við?"
+msgstr ""
 
-#: ../libawn/awn-themed-icon.c:2030
-#, fuzzy
-msgid "Remove Customize Icon"
-msgstr "Eyða myndum sem þú hefur bætt við?"
+#: ../libawn/awn-themed-icon.c:2105
+msgid "Remove Customized Icon"
+msgstr ""
 
-#: ../src/awn-applet-proxy.c:292 ../src/awn-applet-proxy.c:321
+#: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
 msgstr ""
 
-#: ../src/awn-applet-proxy.c:381 ../src/awn-applet-proxy.c:481
+#: ../src/awn-applet-proxy.c:365 ../src/awn-applet-proxy.c:466
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:2971
+#: ../src/awn-panel.c:3098
 msgid "Close docklet"
 msgstr ""
 
-#: ../themes/awn-default.desktop.in.h:1
-msgid "Default Theme"
-msgstr ""
-
-#~ msgid "Invalid launcher"
-#~ msgstr "Ógildur ræsir"
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Virkt tákn</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Stillingar forrits</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Örvar</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Högun stikunnar</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Lína umhverfis glugga</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Stilla tæknibrellur</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Almennar stillingar</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Stigull</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Auðkenna</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Brellur á táknum</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Stillingar ræsis</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Útlit </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Mynstur</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Lína sem skiptir</b>"
-
-#~ msgid "<b>Startup behaviour</b>"
-#~ msgstr "<b>Hegðun forrist þegar opnast</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Texti</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Þemu</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Gluggar</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Virkja"
-
-#~ msgid "Add and remove applets"
-#~ msgstr "Bæta við og fjarlægja forritum"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Bæta við og fjarlægja ræsi"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Bæta við, vista eða fjarlægja þemu"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Koma með áminningu þegar gluggi forrits uppfæris"
-
-#~ msgid "Attention"
-#~ msgstr "Athuga"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Fela stikuna þegar hún er ekki í notkun"
-
-#~ msgid "Automatically start AWN on login."
-#~ msgstr "Ræsa AWN þegar þú skráir þig inn."
-
-#~ msgid "Background color:"
-#~ msgstr "Bakgrunnslitur:"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Útlit stikunnar"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Halli stikunnar: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Hæð stikunnar: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Breyta útliti og hegðun á stikunni"
-
-#~ msgid "Closing"
-#~ msgstr "Lokun"
-
-#~ msgid "Color:"
-#~ msgstr "Litur:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Gera óvirkt"
-
-#~ msgid "Delete"
-#~ msgstr "Eyða"
-
-#~ msgid "Enable pattern"
-#~ msgstr "Leyfa mynstur"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Leyfa hringlótt horn"
-
-#~ msgid "Font:"
-#~ msgstr "Leturgerð:"
-
-#~ msgid "General"
-#~ msgstr "Almennt"
-
-#~ msgid "Icon offset: "
-#~ msgstr "Hliðrun á táknum: "
-
-#~ msgid "Install"
-#~ msgstr "Setja upp"
-
-#~ msgid "Launching"
-#~ msgstr "Ræsi"
-
-#~ msgid "Opening"
-#~ msgstr "Opna"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Litur skugga:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Hafa strik til að skilja á milli ræsa og forrita sem eru í gangi"
-
-#~ msgid "Show windows from all viewports"
-#~ msgstr "Sýna glugga frá öllum vinnusvæðum"
-
-#~ msgid "Transparency:"
-#~ msgstr "Gagnsæi:"
-
-#~ msgid "page 1"
-#~ msgstr "síða 1"
-
-#~ msgid "page 2"
-#~ msgstr "síða 2"
-
-#~ msgid "page 3"
-#~ msgstr "síða 3"
-
-#~ msgid "page 4"
-#~ msgstr "síða 4"
-
-#~ msgid "Awn Manager"
-#~ msgstr "Awn stika"
-
-#~ msgid "3D look"
-#~ msgstr "Þrívíð stika"
-
-#~ msgid "<b>Description:</b>"
-#~ msgstr "<b>Lýsing:</b>"
-
-#~ msgid "Directory:"
-#~ msgstr "Mappa:"
-
-#~ msgid "Launcher Editor"
-#~ msgstr "Breyta ræsum"
-
-#~ msgid "Launcher Icon"
-#~ msgstr "Tákn fyrir ræsinn"
-
-#~ msgid "Open..."
-#~ msgstr "Opna..."
-
-#~ msgid "Select A Folder"
-#~ msgstr "Veldu möppu"
-
-#~ msgid "Select Icon"
-#~ msgstr "Veldu tákn"
-
-#~ msgid "File is not a valid .desktop file"
-#~ msgstr "Þessi skrá er ekki gild .desktop skrá"
-
-#~ msgid "Unrecognized desktop file Version '%s'"
-#~ msgstr "Óþekkt desktop skráarútgáfa ‚%s‘"
-
-#~ msgid "Application does not accept documents on command line"
-#~ msgstr "Þetta forrit tekur ekki á móti skrám á skipanalínunni"
-
-#~ msgid "Unrecognized launch option: %d"
-#~ msgstr "Þessi valmöguleiki er ekki þekktur: %d"
-
-#~ msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
-#~ msgstr "Get ekki látið veffang ganga til ‚Type=Link‘"
-
-#~ msgid "Not a launchable item"
-#~ msgstr "Það er ekki hægt að keyra þennan hlut"
-
-#~ msgid "Clear all custom (applet) icons?"
-#~ msgstr "Eyða öllum myndum fyrir forrit sem þú hefur bætt við?"
-
-#~ msgid "Change Icon?"
-#~ msgstr "Breyta mynd?"
-
-#~ msgid "Use this icon?"
-#~ msgstr "Nota þessa mynd?"
-
-#~ msgid "Choose New Image..."
-#~ msgstr "Velja nýja mynd..."
-
-#~ msgid "Preferences"
-#~ msgstr "Stillingar"
-
-#~ msgid "Change Icon..."
-#~ msgstr "Breyta táknmynd..."
-
-#~ msgid "Change Image..."
-#~ msgstr "Breyta mynd..."
-
-#~ msgid "Change Icon"
-#~ msgstr "Breyta táknmynd"
-
-#~ msgid "Prints the version number"
-#~ msgstr "Sýnir útgáfunúmer"
-
-#~ msgid "Starts the Avant Window Navigator dock"
-#~ msgstr "Ræsir Avant Window Navigator stikuna"
-
-#~ msgid "Starting avant-window-navigator"
-#~ msgstr "Ræsi avant-window-navigator"
-
-#~ msgid "Don't show this message again."
-#~ msgstr "Ekki sýna þessi skilaboð aftur."
+#, python-format
+#~ msgid ""
+#~ "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
+#~ "installed. It usually comes with librsvg, or a package similarly named."
+#~ msgstr ""
+#~ "Gat ekki hlaðið inn „%s“ tákninu. Gakktu úr skugga um það að SVG hlaðinn "
+#~ "fyrir Gtk+ sé inn á tölvunni þinni. Hann fylgir vanalega með librsvg, eða "
+#~ "öðrum pakka sem heitir líku nafni."
+
+#~ msgid "PNG Files"
+#~ msgstr "PNG skrár"
