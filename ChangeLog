@@ -1,5 +1,10 @@
 2009-11-07  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/taskmanager/util.c:
+	Change to MSE computation.
+
+2009-11-07  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awnClass.py:
 	Expand the description columns in our lists.
 	* doc/reference/libawn-sections.txt:

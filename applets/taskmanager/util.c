@@ -636,10 +636,18 @@ compute_mse (GdkPixbuf *i1, GdkPixbuf *i2)
       gint delta_b = *(it1++);
       delta_b -= *(it2++);
       inc += delta_r * delta_r + delta_g * delta_g + delta_b * delta_b;
+
       if (has_alpha)
       {
-        gint delta_alpha = *(it1++) - *(it2++);
+        gint delta_alpha = *it1 - *it2;
         inc += delta_alpha * delta_alpha;
+        if (abs(delta_alpha) <= 10 && *it1 <= 10)
+        {
+          // alpha and alpha difference is very small - don't sum up this pixel
+          it1++; it2++;
+          continue;
+        }
+        it1++; it2++;
       }
       result += inc;
     }
@@ -671,5 +679,5 @@ utils_gdk_pixbuf_similar_to (GdkPixbuf *i1, GdkPixbuf *i2)
 #ifdef DEBUG
   g_debug ("PSNR: %g", PSNR);
 #endif
-  return PSNR >= 10.5;
+  return PSNR >= 11;
 }
