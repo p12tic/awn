@@ -664,6 +664,13 @@ class awnBzr(gobject.GObject):
             itr = model.get_iter(src)
             model.remove(itr)
             self.apply_applet_list_changes()
+            
+            infobar = self.wTree.get_object("tm_infobar")
+            if self.check_for_task_manager():
+                infobar.hide_all()
+            else:
+                infobar.show_all()
+                
 
         self.applet_model.connect("foreign-drop", deactivate_applet)
 
@@ -789,7 +796,15 @@ class awnBzr(gobject.GObject):
         cell = gtk.CellRendererText()
         widget.pack_start(cell)
         widget.add_attribute(cell,'text',0)
-    
+
+    def check_for_task_manager(self):
+		applets = self.client.get_list(defs.PANEL, defs.APPLET_LIST)
+		for applet in applets:
+			tokens = applet.split("::")
+			if tokens[0].find('taskmanager.desktop') > 0:
+				return True
+		return False
+        
 class awnPreferences(awnBzr):
     def setup_font(self, group, key, font_btn):
         """sets up font chooser"""
@@ -1324,8 +1339,7 @@ class awnApplet(awnBzr):
         hs = self.scrollwindow1.get_hscrollbar()
         ha = self.scrollwindow1.get_hadjustment()
         hs.set_value(ha.upper - ha.page_size)
-
-        
+            
     def row_active (self, q, w, e):
         self.activate_applet (None)
 
@@ -1432,7 +1446,13 @@ class awnApplet(awnBzr):
             uid = "%d" % int(time.time())
             active_model.insert(dst_row, [icon, path, uid, text])
             self.apply_applet_list_changes()
-
+            
+            infobar = self.wTree.get_object("tm_infobar")
+            if self.check_for_task_manager():
+                infobar.hide_all()
+            else:
+                infobar.show_all()
+            
         self.active_model.connect("foreign-drop", activate_applet)
 
         self.icon_view = gtk.IconView(self.active_model)

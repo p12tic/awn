@@ -806,13 +806,12 @@ class awnTaskManagerMini(awnTaskManager):
         self.client = awn.config_get_default(awn.PANEL_ID_DEFAULT)
         self.client_taskman = awn.config_get_default_for_applet_by_info("taskmanager", "")
         
-        applets = self.client.get_list(defs.PANEL, defs.APPLET_LIST)
-        for applet in applets:
-            tokens = applet.split("::")
-            if tokens[0].find('taskmanager.desktop') > 0:
-				print 'Taskmanager Active'
+        infobar = self.wTree.get_object("tm_infobar")
+        infobar.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#F7F7BD"))
+		
+        if not self.check_for_task_manager():
+			infobar.show_all()
         
-           
         dropdown = self.wTree.get_object("tm_icon_behavior")
         self.create_dropdown(dropdown, [_("Display app icon (method 1)"),
                                         _("Display app icon (method 2)"),

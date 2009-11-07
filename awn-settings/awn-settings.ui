@@ -2206,6 +2206,44 @@
     <property name="orientation">vertical</property>
     <property name="spacing">6</property>
     <child>
+      <object class="GtkEventBox" id="tm_infobar">
+        <child>
+          <object class="GtkHBox" id="hbox10">
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkImage" id="image3">
+                <property name="visible">True</property>
+                <property name="stock">gtk-info</property>
+                <property name="icon-size">5</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="padding">5</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label56">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="xpad">5</property>
+                <property name="ypad">11</property>
+                <property name="label" translatable="yes">&lt;b&gt;These settings require the Task Manager applet to be active. &lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
       <object class="GtkFrame" id="frame1">
         <property name="visible">True</property>
         <property name="label_xalign">0</property>
@@ -2380,7 +2418,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">False</property>
-        <property name="position">0</property>
+        <property name="position">1</property>
       </packing>
     </child>
     <child>
@@ -2416,7 +2454,7 @@
         </child>
       </object>
       <packing>
-        <property name="position">1</property>
+        <property name="position">2</property>
       </packing>
     </child>
     <child>
@@ -2471,7 +2509,7 @@
       </object>
       <packing>
         <property name="expand">False</property>
-        <property name="position">2</property>
+        <property name="position">3</property>
       </packing>
     </child>
   </object>
