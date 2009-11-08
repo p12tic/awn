@@ -109,6 +109,7 @@ GROUPING                = "grouping"            #bool
 INTELLIHIDE             = "intellihide"         #bool
 LONG_PRESS              = "enable_long_press"   #bool
 OVERLAY_ICON            = "overlay_application_icons" #bool
+OVERLAY_ICON_SWAP       = "overlay_application_icons_swap" #bool
 ICON_BEHAVIOR           = "icon_change_behavior" #int
 
 # i18n-related
