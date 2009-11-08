@@ -1,3 +1,9 @@
+2009-11-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Allow running awn-settings just to show About dialog.
+
 2009-11-07  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/util.c:

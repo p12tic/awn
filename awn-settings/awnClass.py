@@ -1033,6 +1033,9 @@ class awnPreferences(awnBzr):
             pass
 
 class awnManager:
+    def __init__(self):
+        self.theme = gtk.icon_theme_get_default()
+
     def safe_load_icon(self, name, size, flags=0):
         '''Loads an icon, with gtk-missing-image being the fallback.
         :param name: Either the name of an icon, or a list of icon names.

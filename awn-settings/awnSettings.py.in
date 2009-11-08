@@ -856,13 +856,13 @@ class awnManagerMini(awnManager):
     current_panel = None
     
     def __init__(self):
+        awnManager.__init__(self)
         self.XML_PATH = os.path.join(AWN_SETTINGS_DIR, 'awn-settings.ui')
 
         self.wTree = gtk.Builder()
         self.wTree.add_from_file(self.XML_PATH)
         self.wTree.set_translation_domain(defs.I18N_DOMAIN)
 
-        self.theme = gtk.icon_theme_get_default()
         icon_search_path = os.path.join('@DATADIR@', 'icons')
         if icon_search_path not in self.theme.get_search_path():
             self.theme.append_search_path(icon_search_path)
@@ -1016,7 +1016,11 @@ class awnManagerMini(awnManager):
 if __name__ == "__main__":
     vfs.init()
     try:
-        awnmanager = awnManagerMini()
-        awnmanager.main()
+        if '--about' in sys.argv:
+            awnmanager = awnManager()
+            awnmanager.about(None)
+        else:
+            awnmanager = awnManagerMini()
+            awnmanager.main()
     finally:
         vfs.shutdown()
