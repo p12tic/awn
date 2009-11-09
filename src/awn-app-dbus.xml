@@ -7,6 +7,10 @@
     <arg name="panels" type="ao" direction="out" />
   </method>
 
+  <method name="RemovePanel">
+    <arg name="panel_id" type="i" direction="in" />
+  </method>
+
 </interface>
 </node>
 

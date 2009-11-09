@@ -130,6 +130,18 @@ awn_app_init (AwnApp *app)
 }
 
 gboolean
+awn_app_remove_panel (AwnApp *app, gint panel_id, GError *error)
+{
+  // remove the panel for real once we do multiple panels
+  if (panel_id == AWN_PANEL_ID_DEFAULT)
+  {
+    gtk_main_quit ();
+  }
+
+  return TRUE;
+}
+
+gboolean
 awn_app_get_panels (AwnApp *app, GPtrArray **panels)
 {
   AwnAppPrivate *priv;

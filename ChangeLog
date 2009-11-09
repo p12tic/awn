@@ -1,5 +1,12 @@
 2009-11-09  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-app-dbus.xml:
+	* src/awn-app.c:
+	* src/awn-app.h:
+	Added DBus method to close a panel.
+
+2009-11-09  Michal Hruby  <michal.mhr@gmail.com>
+
 	* bindings/python/awn.defs:
 	* bindings/vala/awn.gi:
 	* bindings/vala/awn.vapi:
