@@ -99,7 +99,7 @@ class awnPreferencesMini(awnPreferences):
     reflection_alpha = gobject.property(type=gobject.TYPE_FLOAT, default=0.3)
     icon_alpha = gobject.property(type=gobject.TYPE_FLOAT, default=1.0)
     show_shadows = gobject.property(type=bool, default=False)
-
+    match_strength = gobject.property(type=int, default=99)
 
     def __init__(self, wTree):
         awnPreferences.__init__(self)
@@ -181,7 +181,9 @@ class awnPreferencesMini(awnPreferences):
             (self.client, defs.EFFECTS, defs.REFLECTION_A_MULTIPLIER,
                 "reflection-alpha", "reflection_alpha_multiplier_config"),
             (self.client, defs.EFFECTS, defs.SHOW_SHADOWS,
-                "show-shadows", "show_shadows_config")
+                "show-shadows", "show_shadows_config"),
+            (self.client_taskman, GROUP_DEFAULT, defs.MATCH_STRENGTH,
+                "match-strength", "match_strength_config")
         ]
         
         for item in config_map_simple:
@@ -500,7 +502,11 @@ class awnAppletMini(awnApplet):
         
         [category_model.append([elem]) for elem in categories]
     
-    
+
+import sys    
+import tarfile
+import tempfile
+import shutil
 class awnThemeCustomizeMini(awnThemeCustomize):
     
     curviness = gobject.property(type=int, default=10)
@@ -562,12 +568,28 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         self.ui_setup()
     
     def export_save_theme(self, widget):
+		config = ConfigParser()
+		config.add_section("theme-info")
+		config.add_section("config/panel/1")
+		config.add_section("config/theme")
+		config.add_section("config/effects")
+		
 		name = self.themeExportName.get_text()
 		author = self.themeExportAuthor.get_text()
 		version = self.themeExportVersion.get_text()
-		print name +":"+ author +":"+ version
+		
+		if not len( name ): return 0 
+		
+		config.set("theme-info", "Name", name)
+		#config.set("theme-info", "Icon", icon)
+		config.set("theme-info", "Author", author)
+		config.set("theme-info", "Version", version)
+		
 		#Write config file
 		theme_settings = [
+		    (defs.PANEL, defs.ORIENT, 'int'),
+		    (defs.PANEL, defs.SIZE, 'int'),
+		    (defs.PANEL, defs.STYLE, 'int'),
 			(defs.THEME, defs.GSTEP1, 'str'),              
 			(defs.THEME, defs.GSTEP2, 'str'),                  
 			(defs.THEME, defs.GHISTEP1, 'str'),                
@@ -587,18 +609,59 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 			(defs.THEME, defs.TOOLTIP_FONT_COLOR, 'str'),      
 			(defs.THEME, defs.TOOLTIP_BG_COLOR, 'str'),
 			(defs.EFFECTS, defs.ARROW_ICON, 'str'),
-			(defs.EFFECTS, defs.SHOW_SHADOWS, 'bool')      
+			(defs.EFFECTS, defs.SHOW_SHADOWS, 'bool'),
+			(defs.EFFECTS, defs.ICON_EFFECT, 'int')   
 		]
 
 		for item in theme_settings:
 			grp, key, type = item
-			#print os.path.join(grp, key)
-			print self.client.get_value(grp, key)
-		#Get Theme Image
+			if grp == 'panel':
+				config.set("config/panel/1", key, self.client.get_value(grp, key))
+			elif grp == 'theme':
+				config.set("config/theme", key, self.client.get_value(grp, key))
+			elif grp == 'effects':
+				config.set("config/effects", key, self.client.get_value(grp, key))
+
+		filename = "".join([x for x in name if x.isalpha() or x.isdigit()])
 		
-		#Get Custom Arrow
+		tmpdir = tempfile.gettempdir()
+		self.themefile = os.path.join(tmpdir, filename+'.awn-theme')
 		
-		self.themeExportDialog.hide()
+		'''
+		fc = gtk.FileChooserDialog(title='Save Theme...',
+                                   parent=None,
+                                   action=gtk.FILE_CHOOSER_ACTION_SAVE,
+                                   buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_SAVE,gtk.RESPONSE_OK))
+		fc.set_current_folder(os.path.expanduser('~'))
+		fc.set_default_response(gtk.RESPONSE_OK)
+		fc.set_current_name(filename+'.tgz')
+		filter = gtk.FileFilter()
+		filter.set_name('Awn Theme')
+		filter.add_pattern('*.tgz')
+		fc.add_filter(filter)
+		response = fc.run()
+		if response == gtk.RESPONSE_OK:
+			result = fc.get_filename()
+			f = open(self.themefile, "w")
+			config.write(f)
+			f.close()	
+			
+			self.tarpath = os.path.join(tmpdir, filename+'.tgz')
+			tFile = tarfile.open(self.tarpath, "w:gz")
+			tFile.add(self.themefile, os.path.basename(self.themefile))
+
+			arrow_path = self.client.get_string(defs.EFFECTS, defs.ARROW_ICON)
+			if os.path.exists(arrow_path):
+				tFile.add(arrow_path, os.path.basename(arrow_path))		
+
+			tFile.close()
+		
+			shutil.move(self.tarpath, result)
+			os.remove(self.themefile)
+		fc.destroy()
+		'''
+		
+		self.hide_export_dialog(None)
 				
     def show_export_dialog(self, widget):
 		fullname = pwd.getpwnam(os.environ['USER'])[4]
@@ -793,10 +856,11 @@ class awnTaskManagerMini(awnTaskManager):
     launchers_only = gobject.property(type=bool, default=False)
     show_all_windows = gobject.property(type=bool, default=True)
     intellihide = gobject.property(type=bool, default=True)
-    group_windows = gobject.property(type=bool, default=True)
-    overlay_icons = gobject.property(type=bool, default=True)
+    group_windows = gobject.property(type=bool, default=True)  
     long_press = gobject.property(type=bool, default=True)
     drag_drop = gobject.property(type=bool, default=True)
+    
+    overlay_icons = gobject.property(type=bool, default=True)
     icon_behavior = gobject.property(type=int, default=1)
     icon_overlay_swap = gobject.property(type=bool, default=False)
         
@@ -813,11 +877,12 @@ class awnTaskManagerMini(awnTaskManager):
         if not self.check_for_task_manager():
 			infobar.show_all()
         
-        dropdown = self.wTree.get_object("tm_icon_behavior")
-        self.create_dropdown(dropdown, [_("Display app icon (method 1)"),
-                                        _("Display app icon (method 2)"),
-                                        _("Don't display app icons")])
-                                               
+        icon_behave = self.wTree.get_object("tm_icon_behave")
+        self.create_dropdown(icon_behave, [_("Use Window Icons"),
+										_("Use Launcher Icons"),
+                                        _("Overlay Window Icon"),
+                                        _("Overlay Window Icon - Reversed")])
+                                                                           
         config_map_simple = [
             (self.client_taskman, GROUP_DEFAULT, defs.ONLY_LAUNCHERS,
                 "launchers-only", "only_launchers_config"),
@@ -826,26 +891,63 @@ class awnTaskManagerMini(awnTaskManager):
             (self.client_taskman, GROUP_DEFAULT, defs.GROUPING,
                 "group-windows", "grouping_config"),
             (self.client_taskman, GROUP_DEFAULT, defs.INTELLIHIDE,
-                "intellihide", "intellihide_config"),
-            (self.client_taskman, GROUP_DEFAULT, defs.OVERLAY_ICON,
-                "overlay-icons", "tm_overlay_icons"),   
+                "intellihide", "intellihide_config"), 
             (self.client_taskman, GROUP_DEFAULT, defs.LONG_PRESS,
                 "long-press", "tm_long_press"), 
             (self.client_taskman, GROUP_DEFAULT, defs.DRAG_AND_DROP,
-                "drag-drop", "tm_drag_drop"), 
-            (self.client_taskman, GROUP_DEFAULT, defs.ICON_BEHAVIOR,
-                "icon-behavior", "tm_icon_behavior"),
-            (self.client_taskman, GROUP_DEFAULT, defs.OVERLAY_ICON_SWAP,
-                "icon-overlay-swap", "tm_icon_overlay_swap")
+                "drag-drop", "tm_drag_drop")
         ]        
                          
         for item in config_map_simple:
             client, group, key, prop_name, wtree_name = item
             bind_to_gtk_component (client, group, key, self, prop_name,
-                                   self.wTree.get_object(wtree_name), False)  
+                                   self.wTree.get_object(wtree_name), False)
                                    
+        def icon_behave_callback(widget, *args):
+			active = widget.get_active()
+			if active == 0:
+				if self.icon_behavior != 0: self.icon_behavior = 0
+				if self.overlay_icons: self.overlay_icons = False
+				if self.icon_overlay_swap: self.icon_overlay_swap = False 
+			elif active == 1:
+				if self.icon_behavior != 2: self.icon_behavior = 2
+				if self.overlay_icons: self.overlay_icons = False
+				if self.icon_overlay_swap: self.icon_overlay_swap = False 
+			elif active == 2:
+				if self.icon_behavior != 1: self.icon_behavior = 1
+				if not self.overlay_icons: self.overlay_icons = True
+				if self.icon_overlay_swap: self.icon_overlay_swap = False 
+			elif active == 3:
+				if self.icon_behavior != 1: self.icon_behavior = 1
+				if not self.overlay_icons: self.overlay_icons = True
+				if not self.icon_overlay_swap: self.icon_overlay_swap = True 
+      
+        def refresh_behaviour(*args):
+            behaviour = (self.icon_behavior, self.overlay_icons, self.icon_overlay_swap)
+            new_active = 2
+            if behaviour == (0, False, False):
+                new_active = 0
+            elif behaviour == (2, False, False):
+                new_active = 1
+            elif behaviour == (1, True, False):
+                new_active = 2
+            elif behaviour == (1, True, True):
+                new_active = 3
 
-                                                                              
+            if (icon_behave.get_active() != new_active):
+                icon_behave.set_active(new_active)
+
+        self.client_taskman.bind (GROUP_DEFAULT, defs.ICON_BEHAVIOR, self, "icon-behavior",
+                          False, config.BIND_METHOD_FALLBACK)
+        self.client_taskman.bind (GROUP_DEFAULT, defs.OVERLAY_ICON, self, "overlay-icons",
+                          False, config.BIND_METHOD_FALLBACK)
+        self.client_taskman.bind (GROUP_DEFAULT, defs.OVERLAY_ICON_SWAP, self, "icon-overlay-swap",
+                          False, config.BIND_METHOD_FALLBACK)
+
+        refresh_behaviour()   			
+		
+        icon_behave.connect('changed', icon_behave_callback)
+			                                                                      
 class awnManagerMini(awnManager):
     PREFERENCE_PANEL = 0
     APPLET_PANEL = 1

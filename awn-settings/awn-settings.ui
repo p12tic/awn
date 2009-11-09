@@ -2255,7 +2255,7 @@
             <child>
               <object class="GtkTable" id="table3">
                 <property name="visible">True</property>
-                <property name="n_rows">5</property>
+                <property name="n_rows">4</property>
                 <property name="n_columns">3</property>
                 <property name="column_spacing">5</property>
                 <property name="row_spacing">5</property>
@@ -2265,85 +2265,95 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes">Show windows from all workspaces</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
                     <property name="y_options"></property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="grouping_config">
-                    <property name="label" translatable="yes">Group windows</property>
+                    <property name="label" translatable="yes">Group Common Windows</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes">Allow grouping of common windows under a single icon</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
                     <property name="y_options"></property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="only_launchers_config">
-                    <property name="label" translatable="yes">Launchers only</property>
+                    <property name="label" translatable="yes">Display Launchers Only</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes">Only show and manage launcher windows</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
-                    <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
                     <property name="y_options"></property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="tm_drag_drop">
-                    <property name="label" translatable="yes">Drag and Drop</property>
+                    <property name="label" translatable="yes">Drag and Drop Reordering</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes">Enable reordering of windows by drag and drop </property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
-                    <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
-                    <property name="y_options"></property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="tm_overlay_icons">
-                    <property name="label" translatable="yes">Overlay Icons</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="draw_indicator">True</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
-                    <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
                     <property name="y_options"></property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="tm_long_press">
-                    <property name="label" translatable="yes">Long Press</property>
+                    <property name="label" translatable="yes">Enable Long Press</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes">A 'long press' is required to show the Awn dialog. This allows you to interact with the icon without the dialog popping up right away</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
-                    <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
                     <property name="y_options"></property>
                   </packing>
+                </child>
+                <child>
+                  <object class="GtkComboBox" id="tm_icon_behave">
+                    <property name="visible">True</property>
+                    <property name="tooltip_text" translatable="yes">Sets the visual apperance of the icons</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label57">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Icons</property>
+                  </object>
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="intellihide_config">
@@ -2351,61 +2361,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="draw_indicator">True</property>
-                  </object>
-                  <packing>
-                    <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkHBox" id="hbox8">
-                    <property name="visible">True</property>
-                    <child>
-                      <object class="GtkLabel" id="label55">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Icon Change Behavior</property>
-                      </object>
-                      <packing>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBox" id="tm_icon_behavior">
-                        <property name="visible">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="right_attach">3</property>
-                    <property name="top_attach">4</property>
-                    <property name="bottom_attach">5</property>
-                  </packing>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="tm_icon_overlay_swap">
-                    <property name="label" translatable="yes">Overlay Icons Reverse</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes">When auto hide is enabled for the panel, this will inhibit auto hide if there are no windows touching the panel.</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -2414,6 +2370,18 @@
                     <property name="top_attach">3</property>
                     <property name="bottom_attach">4</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
               </object>
             </child>
