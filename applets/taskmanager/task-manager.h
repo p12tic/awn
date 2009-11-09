@@ -23,6 +23,7 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 #include <libawn/libawn.h>
+#include "task-icon.h"
 
 #define TASK_TYPE_MANAGER (task_manager_get_type ())
 
@@ -78,6 +79,8 @@ void task_manager_append_launcher (TaskManager  *manager,
                                     const gchar * launcher_path);
 
 void task_manager_remove_task_icon (TaskManager  *manager, GtkWidget *icon);
+
+void task_manager_add_icon         (TaskManager *manager, TaskIcon * icon);
 
 #endif /* _TASK_MANAGER_H_ */
 

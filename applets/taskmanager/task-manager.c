@@ -1569,6 +1569,34 @@ search_desktop_cache (TaskManager * manager, TaskIcon * icon,gchar * class_name,
   return NULL;
 }
 
+void
+task_manager_add_icon(TaskManager *manager, TaskIcon * icon)
+{
+  TaskManagerPrivate *priv;
+  
+  priv = manager->priv;  
+  priv->icons = g_slist_append (priv->icons, icon);
+  gtk_container_add (GTK_CONTAINER (priv->box), GTK_WIDGET(icon));
+  
+  /* reordening through D&D */
+  if(priv->drag_and_drop)
+  {
+    _drag_add_signals(manager, GTK_WIDGET(icon));
+  }
+
+  g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
+  g_signal_connect_swapped (icon, 
+                            "visible-changed",
+                            G_CALLBACK (on_icon_visible_changed), 
+                            manager);
+  g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                            "animation-end", 
+                            G_CALLBACK (on_icon_effects_ends), 
+                            icon);
+  update_icon_visible (manager, TASK_ICON (icon));
+  task_icon_refresh_icon (TASK_ICON(icon),awn_applet_get_size(AWN_APPLET(manager)));
+}  
+
 static void
 process_window_opened (WnckWindow    *window,
                   TaskManager   *manager)
@@ -1824,24 +1852,7 @@ process_window_opened (WnckWindow    *window,
     g_free (res_name);
     g_free (cmd_basename);
     task_icon_append_item (TASK_ICON (icon), item);
-    priv->icons = g_slist_append (priv->icons, icon);
-    gtk_container_add (GTK_CONTAINER (priv->box), icon);
-    
-    /* reordening through D&D */
-    if(priv->drag_and_drop)
-      _drag_add_signals(manager, icon);
-
-    g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
-    g_signal_connect_swapped (icon, 
-                              "visible-changed",
-                              G_CALLBACK (on_icon_visible_changed), 
-                              manager);
-    g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                              "animation-end", 
-                              G_CALLBACK (on_icon_effects_ends), 
-                              icon);
-    update_icon_visible (manager, TASK_ICON (icon));
-    task_icon_refresh_icon (TASK_ICON(icon),awn_applet_get_size(AWN_APPLET(manager)));
+    task_manager_add_icon (manager,TASK_ICON (icon));    
   }
 }
   
@@ -2442,7 +2453,11 @@ task_manager_check_for_intersection (TaskManager * manager,
     if ( wnck_window_get_window_type (iter->data) == WNCK_WINDOW_DESKTOP )
     {
       continue;
-    }    
+    }
+    if ( wnck_window_get_window_type (iter->data) == WNCK_WINDOW_DOCK )
+    {
+      continue;
+    }   
     /*
      It may be a good idea to go the same route as we go with the 
      panel to get the GdkRectangle.  But in practice it's _probably_
