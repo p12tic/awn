@@ -1,5 +1,18 @@
 2009-11-09  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Only check if the app/win icon should be displayed
+	if we have a TaskWindow.
+
+2009-11-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+        * applets/taskmanager/task-manager.h:
+	Preparation for getting group/ungroup working.
+	Ignore docks in the intellhide intersect check.
+
+2009-11-09  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-manager.c:
 	* applets/taskmanager/task-manager.h:
