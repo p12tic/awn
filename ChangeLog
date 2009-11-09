@@ -1,5 +1,16 @@
 2009-11-09  Michal Hruby  <michal.mhr@gmail.com>
 
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* doc/reference/libawn-sections.txt:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	Revert 1674 and 1660 - revisions which added AwnIcon.get_click_event,
+	as the same thing can be done using gtk_get_current_event().
+
+2009-11-09  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awn-settings.ui:
 	* awn-settings/awnClass.py:
 	Always center the awn-settings dialog.

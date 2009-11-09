@@ -63,9 +63,6 @@ struct _AwnIconPrivate
   gint icon_height;
   gint size;
 
-  /* let's save EventButton for use during clicked / middle-clicked event */
-  GdkEventButton *button_event;
-
   /* Info relating to the current icon */
   cairo_surface_t *icon_srfc;
 };
@@ -289,20 +286,14 @@ awn_icon_released (AwnIcon *icon, GdkEventButton *event, gpointer data)
         }
         // emit clicked only if long-press wasn't emitted
         if (priv->long_press_emitted == FALSE)
-        {
-          priv->button_event = event;
           awn_icon_clicked (icon);
-          priv->button_event = NULL;
-        }
       }
       break;
     case 2:
       if (priv->middle_was_pressed)
       {
         priv->middle_was_pressed = FALSE;
-        priv->button_event = event;
         awn_icon_middle_clicked (icon);
-        priv->button_event = NULL;
       }
       break;
     default:
@@ -616,7 +607,6 @@ awn_icon_init (AwnIcon *icon)
   priv->size = 50;
   priv->icon_width = 0;
   priv->icon_height = 0;
-  priv->button_event = NULL;
   priv->tooltip = awn_tooltip_new_for_widget (GTK_WIDGET (icon));
 
   priv->effects = awn_effects_new_for_widget (GTK_WIDGET (icon));
@@ -1145,23 +1135,6 @@ awn_icon_set_hover_effects (AwnIcon *icon, gboolean enable)
   {
     awn_effects_stop (priv->effects, AWN_EFFECT_HOVER);
   }
-}
-
-/**
- * awn_icon_get_click_event:
- * @icon: #AwnIcon instance.
- *
- * Gets the #GdkEventButton which is valid during the emmission of "clicked"
- * and "middle-clicked" signal, otherwise it returns NULL.
- *
- * Returns: #GdkEventButton instance or NULL.
- */
-GdkEventButton*
-awn_icon_get_click_event (AwnIcon *icon)
-{
-  g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
-
-  return icon->priv->button_event;
 }
 
 void

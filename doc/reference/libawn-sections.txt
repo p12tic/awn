@@ -288,7 +288,6 @@ awn_icon_get_hover_effects
 awn_icon_set_hover_effects
 awn_icon_clicked
 awn_icon_middle_clicked
-awn_icon_get_click_event
 <SUBSECTION Standard>
 AWN_ICON
 AWN_IS_ICON

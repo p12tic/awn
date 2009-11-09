@@ -858,12 +858,6 @@
 					<parameter name="icon" type="AwnIcon*"/>
 				</parameters>
 			</method>
-			<method name="get_click_event" symbol="awn_icon_get_click_event">
-				<return-type type="GdkEventButton*"/>
-				<parameters>
-					<parameter name="icon" type="AwnIcon*"/>
-				</parameters>
-			</method>
 			<method name="get_hover_effects" symbol="awn_icon_get_hover_effects">
 				<return-type type="gboolean"/>
 				<parameters>
