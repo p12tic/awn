@@ -1,3 +1,10 @@
+2009-11-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-manager.h:
+	Add a "grouping-changed" signal to TaskManager.
+
 2009-11-09  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-app-dbus.xml:

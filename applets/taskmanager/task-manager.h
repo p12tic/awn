@@ -55,6 +55,8 @@ struct _TaskManager
 struct _TaskManagerClass
 {
   AwnAppletClass   parent_class;
+
+  void (*grouping_changed) (TaskManager *manager,gboolean grouping);
 };
 
 GType       task_manager_get_type (void) G_GNUC_CONST;

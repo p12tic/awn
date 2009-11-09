@@ -136,6 +136,15 @@ enum
   PROP_ATTENTION_REQUIED_REMINDER_ID
 };
 
+
+enum
+{
+  GROUPING_CHANGED,
+  
+  LAST_SIGNAL
+};
+static guint32 _taskman_signals[LAST_SIGNAL] = { 0 };
+
 /* Forwards */
 static void update_icon_visible         (TaskManager   *manager, 
                                          TaskIcon      *icon);
@@ -536,6 +545,17 @@ task_manager_class_init (TaskManagerClass *klass)
                             120,
                             G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_ATTENTION_REQUIRED_REMINDER, pspec);
+
+  /* Install signals */
+  _taskman_signals[GROUPING_CHANGED] =
+		g_signal_new ("grouping_changed",
+			      G_OBJECT_CLASS_TYPE (obj_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TaskManagerClass, grouping_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__BOOLEAN, 
+			      G_TYPE_NONE, 1,
+            G_TYPE_BOOLEAN);
 
   g_type_class_add_private (obj_class, sizeof (TaskManagerPrivate));
 
@@ -2203,8 +2223,8 @@ task_manager_set_grouping (TaskManager *manager,
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
   TaskManagerPrivate *priv = manager->priv;
-  
   priv->grouping = grouping;
+  g_signal_emit (manager,_taskman_signals[GROUPING_CHANGED],0,grouping);
 }
 /**
  * D-BUS functionality

@@ -269,6 +269,8 @@ static void on_main_item_icon_changed (TaskItem   *item, GdkPixbuf  *pixbuf,
 static void on_main_item_visible_changed (TaskItem  *item,gboolean visible,
                                           TaskIcon  *icon);
 
+static void grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon);
+
 
 /* GObject stuff */
 static void
@@ -519,6 +521,8 @@ task_icon_constructed (GObject *object)
   
   g_signal_connect (wnck_screen_get_default(),"window-closed",
                     G_CALLBACK(window_closed_cb),object);
+
+  g_signal_connect (priv->applet,"grouping-changed",G_CALLBACK(grouping_changed_cb),object);
   
   priv->client = awn_config_get_default_for_applet (priv->applet, &error);
 
@@ -2391,6 +2395,15 @@ task_icon_button_release_event (GtkWidget      *widget,
   return FALSE;
 }
 
+
+static void
+grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
+{
+  g_assert (TASK_IS_MANAGER (applet));
+  g_assert (TASK_IS_ICON (icon));
+
+}
+  
 static void
 window_closed_cb (WnckScreen *screen,WnckWindow *window,TaskIcon * icon)
 {
