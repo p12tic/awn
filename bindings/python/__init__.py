@@ -19,6 +19,7 @@
 # -*- Mode: Python; py-indent-offset: 4 -*-
 
 import sys
+from gettext import gettext as _
 import getopt
 
 # load the required modules:

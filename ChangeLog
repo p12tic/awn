@@ -1,3 +1,8 @@
+2009-11-09  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/__init__.py:
+	Add missing import statement.
+
 2009-11-09  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:
