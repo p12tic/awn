@@ -6,7 +6,7 @@
   <object class="GtkWindow" id="awnManagerWindow">
     <property name="border_width">12</property>
     <property name="title" translatable="yes">Awn Settings</property>
-    <property name="window_position">mouse</property>
+    <property name="window_position">center-always</property>
     <property name="default_width">575</property>
     <property name="default_height">350</property>
     <signal name="destroy" handler="on_window_destroy"/>
