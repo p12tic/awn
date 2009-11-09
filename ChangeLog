@@ -1,3 +1,9 @@
+2009-11-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Fix python bindings for AppletSimple.set_icon_info().
+
 2009-11-09  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* bindings/python/__init__.py:
